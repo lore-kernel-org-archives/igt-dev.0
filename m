@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1A67CCD1BB
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Oct 2025 14:26:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80EFECCD1AB
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Oct 2025 15:59:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6031D10E7CD;
-	Wed, 22 Oct 2025 14:26:33 +0000 (UTC)
-Received: from 97596180aaec (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BF2410E7CD;
- Wed, 22 Oct 2025 14:26:32 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1104343487896674410=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3194110E836;
+	Wed, 22 Oct 2025 15:59:06 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S7K5jI5A";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 604B510E824
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Oct 2025 15:59:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1761148744; x=1792684744;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=GbmJzeV3X4DpxMudp42isQDGIZ+8twDNUJmIdWKW+Qg=;
+ b=S7K5jI5AH9n6wFYVzjV454HHBUoSnIOCgNzxSa+Qe0Hftfoko0bMl3Kv
+ 77Bca5rzXut0H6obMCr3glJYj4BLtQleyF4R7pWrgM1qCoiGlcOBvtqyT
+ TbGP25u0RGwFg2vbgeDD5Y6LTwjREa31G8VvwqMoUXQ8z1HHQkPq5c27X
+ ZzeMum+L9LXYbTZK1Zht6I/i+jucZnutvZ4wy5T1USScuOJlmfEVZHaZw
+ zc7RM0bILjv1e/UoT1alzdl8+61ew7AyJRRO6b930ZD8QdJTQYo3bauJr
+ TuYs4nYbws4fbc+cXQPAzq1Nii8zx+v4p2ENhDlmhk42Cldy+G58PbxVI w==;
+X-CSE-ConnectionGUID: TLq5jh4EQE6F67CuiU4TEg==
+X-CSE-MsgGUID: gtzfReD5RTOvquVKNqDw8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="80930405"
+X-IronPort-AV: E=Sophos;i="6.19,247,1754982000"; d="scan'208";a="80930405"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2025 08:58:46 -0700
+X-CSE-ConnectionGUID: QYlGuJoiT26KlefH1fsAXw==
+X-CSE-MsgGUID: 5fwl6sYaSz6e4OvKibaPhg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,247,1754982000"; d="scan'208";a="189033883"
+Received: from soc-5cg43972f8.clients.intel.com (HELO localhost)
+ ([172.28.180.164])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2025 08:58:43 -0700
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Michal Wajdeczko <michal.wajdeczko@intel.com>
+Subject: [PATCH i-g-t] lib/xe/xe_sriov_provisioning: Drop sched_if_idle reads
+Date: Wed, 22 Oct 2025 17:58:39 +0200
+Message-ID: <20251022155839.288289-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fexec=5Fres?=
- =?utf-8?q?et=3A_Fix_uninitialized_var?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Oct 2025 14:26:32 -0000
-Message-ID: <176114319263.42904.15346747777450098368@97596180aaec>
-X-Patchwork-Hint: ignore
-References: <20251022114655.70478-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20251022114655.70478-1-kamil.konieczny@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,251 +66,151 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1104343487896674410==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Reflect kernel change making sched_if_idle debugfs attribute write-only.
+Remove related getters, checks, and update default attributes and tests.
 
-== Series Details ==
+Link: https://lore.kernel.org/intel-xe/20251021210549.2114-1-michal.wajdeczko@intel.com/
 
-Series: tests/intel/xe_exec_reset: Fix uninitialized var
-URL   : https://patchwork.freedesktop.org/series/156333/
-State : failure
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+---
+ lib/xe/xe_sriov_provisioning.c | 41 +---------------------------------
+ lib/xe/xe_sriov_provisioning.h |  2 --
+ tests/intel/xe_pmu.c           |  9 ++++----
+ 3 files changed, 5 insertions(+), 47 deletions(-)
 
-== Summary ==
+diff --git a/lib/xe/xe_sriov_provisioning.c b/lib/xe/xe_sriov_provisioning.c
+index ff9d1f7d2..28ce3d95b 100644
+--- a/lib/xe/xe_sriov_provisioning.c
++++ b/lib/xe/xe_sriov_provisioning.c
+@@ -570,42 +570,6 @@ void xe_sriov_set_engine_reset(int pf, unsigned int gt_num, bool value)
+ 	igt_fail_on(__xe_sriov_set_engine_reset(pf, gt_num, value));
+ }
+ 
+-/**
+- * __xe_sriov_get_sched_if_idle - Get the scheduling if idle policy for a given GT
+- * @pf: PF device file descriptor
+- * @gt_num: GT number
+- * @value: Pointer to store the read scheduling if idle policy status
+- *
+- * Reads the scheduling if idle policy status for the given PF device @pf on GT @gt_num.
+- *
+- * Return: 0 on success, negative error code on failure.
+- */
+-int __xe_sriov_get_sched_if_idle(int pf, unsigned int gt_num, bool *value)
+-{
+-	return __xe_sriov_pf_debugfs_get_boolean(pf, 0, gt_num, "sched_if_idle", value);
+-}
+-
+-/**
+- * xe_sriov_get_sched_if_idle - Get the scheduling if idle policy for a given GT
+- * @pf: PF device file descriptor
+- * @gt_num: GT number
+- *
+- * A throwing version of __xe_sriov_get_sched_if_idle().
+- * Instead of returning an error code, it returns the scheduling if idle policy status
+- * and asserts in case of an error.
+- *
+- * Return: The scheduling if idle status for the given GT.
+- *         Asserts in case of failure.
+- */
+-bool xe_sriov_get_sched_if_idle(int pf, unsigned int gt_num)
+-{
+-	bool value;
+-
+-	igt_fail_on(__xe_sriov_get_sched_if_idle(pf, gt_num, &value));
+-
+-	return value;
+-}
+-
+ /**
+  * __xe_sriov_set_sched_if_idle - Set the scheduling if idle policy status for a given GT
+  * @pf: PF device file descriptor
+@@ -731,7 +695,6 @@ void xe_sriov_set_sched_priority(int pf, unsigned int vf_num, unsigned int gt_nu
+  * Default scheduling attributes are as follows for each VF and PF:
+  * - exec_quantum_ms equals zero (meaning infinity)
+  * - preempt_timeout_us equals zero (meaning infinity)
+- * - sched_if_idle equals false
+  * - reset_engine equals false
+  * - sched_priority equals XE_SRIOV_SCHED_PRIORITY_LOW
+  */
+@@ -739,13 +702,11 @@ void xe_sriov_require_default_scheduling_attributes(int pf)
+ {
+ 	unsigned int totalvfs = igt_sriov_get_total_vfs(pf);
+ 	enum xe_sriov_sched_priority sched_priority;
+-	bool sched_if_idle, reset_engine;
++	bool reset_engine;
+ 	uint32_t eq, pt;
+ 	unsigned int gt;
+ 
+ 	xe_for_each_gt(pf, gt) {
+-		igt_skip_on(__xe_sriov_get_sched_if_idle(pf, gt, &sched_if_idle));
+-		igt_require_f(!sched_if_idle, "sched_if_idle != false on gt%u\n", gt);
+ 		igt_skip_on(__xe_sriov_get_engine_reset(pf, gt, &reset_engine));
+ 		igt_require_f(!reset_engine, "reset_engine != false on gt%u\n", gt);
+ 
+diff --git a/lib/xe/xe_sriov_provisioning.h b/lib/xe/xe_sriov_provisioning.h
+index e1a9d0a63..8ee567bc8 100644
+--- a/lib/xe/xe_sriov_provisioning.h
++++ b/lib/xe/xe_sriov_provisioning.h
+@@ -134,8 +134,6 @@ int __xe_sriov_get_engine_reset(int pf, unsigned int gt_num, bool *value);
+ bool xe_sriov_get_engine_reset(int pf, unsigned int gt_num);
+ int __xe_sriov_set_engine_reset(int pf, unsigned int gt_num, bool value);
+ void xe_sriov_set_engine_reset(int pf, unsigned int gt_num, bool value);
+-int __xe_sriov_get_sched_if_idle(int pf, unsigned int gt_num, bool *value);
+-bool xe_sriov_get_sched_if_idle(int pf, unsigned int gt_num);
+ int __xe_sriov_set_sched_if_idle(int pf, unsigned int gt_num, bool value);
+ void xe_sriov_set_sched_if_idle(int pf, unsigned int gt_num, bool value);
+ int __xe_sriov_get_sched_priority(int pf, unsigned int vf_num,
+diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
+index 9525655ba..c630fd047 100644
+--- a/tests/intel/xe_pmu.c
++++ b/tests/intel/xe_pmu.c
+@@ -692,13 +692,13 @@ static void engine_activity_all_fn(int fd, struct drm_xe_engine_class_instance *
+ 	}
+ }
+ 
+-static void engine_activity_fn(int fd, struct drm_xe_engine_class_instance *eci, int function)
++static void engine_activity_fn(int fd, struct drm_xe_engine_class_instance *eci,
++			       int function, bool sched_if_idle)
+ {
+ 	uint64_t config, engine_active_ticks, engine_total_ticks, before[2], after[2];
+ 	double busy_percent, exec_quantum_ratio;
+ 	struct xe_cork *cork = NULL;
+ 	int pmu_fd[2], fn_fd;
+-	bool sched_if_idle;
+ 	uint32_t vm;
+ 
+ 	if (function > 0) {
+@@ -748,7 +748,6 @@ static void engine_activity_fn(int fd, struct drm_xe_engine_class_instance *eci,
+ 	if (function > 0)
+ 		close(fn_fd);
+ 
+-	sched_if_idle = xe_sriov_get_sched_if_idle(fd, eci->gt_id);
+ 	if (sched_if_idle)
+ 		assert_within_epsilon(engine_active_ticks, engine_total_ticks, tolerance);
+ 	else
+@@ -1188,13 +1187,13 @@ igt_main
+ 		igt_describe("Validate per-function engine activity");
+ 		test_each_engine("fn-engine-activity-load", fd, eci)
+ 			for (int fn = 0; fn < num_fns; fn++)
+-				engine_activity_fn(fd, eci, fn);
++				engine_activity_fn(fd, eci, fn, false);
+ 
+ 		igt_describe("Validate per-function engine activity when sched-if-idle is set");
+ 		test_each_engine("fn-engine-activity-sched-if-idle", fd, eci) {
+ 			xe_sriov_set_sched_if_idle(fd, eci->gt_id, 1);
+ 			for (int fn = 0; fn < num_fns; fn++)
+-				engine_activity_fn(fd, eci, fn);
++				engine_activity_fn(fd, eci, fn, true);
+ 		}
+ 
+ 		igt_fixture
+-- 
+2.43.0
 
-CI Bug Log - changes from XEIGT_8594_BAT -> XEIGTPW_13928_BAT
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_13928_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_13928_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (12 -> 12)
-------------------------------
-
-  Additional (1): bat-bmg-3 
-  Missing    (1): bat-pvc-2 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_13928_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * {igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p} (NEW):
-    - bat-bmg-3:          NOTRUN -> [FAIL][1] +5 other tests fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-bmg-3/igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p.html
-
-  
-New tests
----------
-
-  New tests have been introduced between XEIGT_8594_BAT and XEIGTPW_13928_BAT:
-
-### New IGT tests (4) ###
-
-  * igt@xe_peer2peer@read@read-gpua-system-gpub-vram01-p2p:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.24] s
-
-  * igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_peer2peer@write@write-gpua-system-gpub-vram01-p2p:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.23] s
-
-  * igt@xe_peer2peer@write@write-gpua-vram01-gpub-vram01-p2p:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.03] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13928_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-modeset:
-    - bat-adlp-7:         [PASS][2] -> [DMESG-WARN][3] ([Intel XE#4543]) +1 other test dmesg-warn
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8594/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html
-
-  * igt@xe_create@multigpu-create-massive-size:
-    - bat-bmg-3:          NOTRUN -> [SKIP][4] ([Intel XE#2504])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-bmg-3/igt@xe_create@multigpu-create-massive-size.html
-
-  * igt@xe_eudebug@multigpu-basic-client:
-    - bat-bmg-3:          NOTRUN -> [SKIP][5] ([Intel XE#4837]) +1 other test skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-bmg-3/igt@xe_eudebug@multigpu-basic-client.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#2504]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2504
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-  [Intel XE#4837]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837
-
-
-Build changes
--------------
-
-  * IGT: IGT_8594 -> IGTPW_13928
-  * Linux: xe-3950-76e60b5ce41fc1bcabf7941a57303d541bffd6ad -> xe-3964-b3696aee36c443dbea93e1068b9c3c765bc8e700
-
-  IGTPW_13928: 13928
-  IGT_8594: 8594
-  xe-3950-76e60b5ce41fc1bcabf7941a57303d541bffd6ad: 76e60b5ce41fc1bcabf7941a57303d541bffd6ad
-  xe-3964-b3696aee36c443dbea93e1068b9c3c765bc8e700: b3696aee36c443dbea93e1068b9c3c765bc8e700
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/index.html
-
---===============1104343487896674410==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_reset: Fix uninitialized var</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/156333/">https://patchwork.freedesktop.org/series/156333/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8594_BAT -&gt; XEIGTPW_13928_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_13928_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_13928_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (12 -&gt; 12)</h2>
-<p>Additional (1): bat-bmg-3 <br />
-  Missing    (1): bat-pvc-2 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_13928_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>{igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p} (NEW):<ul>
-<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-bmg-3/igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p.html">FAIL</a> +5 other tests fail</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between XEIGT_8594_BAT and XEIGTPW_13928_BAT:</p>
-<h3>New IGT tests (4)</h3>
-<ul>
-<li>
-<p>igt@xe_peer2peer@read@read-gpua-system-gpub-vram01-p2p:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.24] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_peer2peer@write@write-gpua-system-gpub-vram01-p2p:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.23] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_peer2peer@write@write-gpua-vram01-gpub-vram01-p2p:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13928_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8594/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_create@multigpu-create-massive-size:</p>
-<ul>
-<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-bmg-3/igt@xe_create@multigpu-create-massive-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2504">Intel XE#2504</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_eudebug@multigpu-basic-client:</p>
-<ul>
-<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-bmg-3/igt@xe_eudebug@multigpu-basic-client.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837">Intel XE#4837</a>) +1 other test skip</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8594 -&gt; IGTPW_13928</li>
-<li>Linux: xe-3950-76e60b5ce41fc1bcabf7941a57303d541bffd6ad -&gt; xe-3964-b3696aee36c443dbea93e1068b9c3c765bc8e700</li>
-</ul>
-<p>IGTPW_13928: 13928<br />
-  IGT_8594: 8594<br />
-  xe-3950-76e60b5ce41fc1bcabf7941a57303d541bffd6ad: 76e60b5ce41fc1bcabf7941a57303d541bffd6ad<br />
-  xe-3964-b3696aee36c443dbea93e1068b9c3c765bc8e700: b3696aee36c443dbea93e1068b9c3c765bc8e700</p>
-
-</body>
-</html>
-
---===============1104343487896674410==--
