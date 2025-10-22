@@ -4,92 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8E94CCD1AB
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Oct 2025 08:34:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F6DBCCD195
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Oct 2025 10:08:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 81E2110E046;
-	Wed, 22 Oct 2025 08:34:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C07F810E731;
+	Wed, 22 Oct 2025 10:08:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="TqqnLKHE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gzrR6z/2";
 	dkim-atps=neutral
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com
- [209.85.217.44])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CFF6310E046
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Oct 2025 08:34:42 +0000 (UTC)
-Received: by mail-vs1-f44.google.com with SMTP id
- ada2fe7eead31-5db24071011so156473137.1
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Oct 2025 01:34:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1761122081; x=1761726881;
- darn=lists.freedesktop.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DY7Vu3pKnkIMQxYDNTIRKoWNsPSvbhGXg/Fuq6dTPXQ=;
- b=TqqnLKHEwNqif9tJ4pFF6/YvrAxNoHeDkQZrbr8KpwJh9kTb4qU9U15HQbgtJL3hgA
- c5kmwjppYj0TLHj/DQp9QDBzms+65qVFJiwug+gELRfVgVkQ7rm4Mu3jbqi5+zcgg2Rq
- /3SwiacYDeuJjUnELeAUfKHsx9GVYnf61d7h4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761122081; x=1761726881;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DY7Vu3pKnkIMQxYDNTIRKoWNsPSvbhGXg/Fuq6dTPXQ=;
- b=uYZfLZzbm3J+vCcimxINsyR+BZMFUGQ/DNysBhJck0DtVvFlZ3A7O/g5iNcFmPoAuw
- XukJp5UI1BLdI43w/ZJGq/30aiPaNcny4skTfkU6aSIru/lOmsMhgxbYb0+tp2nOkCDZ
- XTO3KMy9zbIVJLROfV8GkkQpwkk3jn6Kb9f9GGlba7lvEGiT8i5b3TM1NXSILLO+dOT3
- hTTLT/qvbI1TsbWR5eGQIXfuQ5KkPMYTH8l2ys91TMu+2pRy0tQOEcb1Z5C3QHwsKv15
- Ako6O34KQBXW9JhmJiF6Gve/Tw+4TUzXh5ZQtmB2ihBo0pNrWTThCc4Y2p2SaC/5bBPQ
- wnvQ==
-X-Gm-Message-State: AOJu0YwPb3XhBAh+irTakaHbvS4lBQ9Skqdjgp5vyQT9tRduitIR9Y1U
- aXyb06Pe713GI7qvFT9Juzal+oDXxI8MnMPGkcZzOSPqvKcvm/tBdbWlQfFJUwfDkD5tdxBYQQo
- t0dc=
-X-Gm-Gg: ASbGncsc/jud36+uu3/mAPoP0Xcu5lgDftKY5PXVzWvClmMW8WXNZtnWSzWGw9zixsf
- lqxePnDPUcppgHbGmu/ccv5XNH952yRf+mwZRvX9b96ylrjkTcJQRGUCWCvh/MqChZP7vLekZtT
- k8qG/GT62X2dzdlUbJxzCKegjPNu6QdJRe9cQR70q9xRmi6hrrTwq2dZr9Uat/yEphL29ZbDgKT
- r9ZxGmJqPtcz20s3MmmX9C8Bx4TDVgC3x9lcWWaHmmmyd1ExbyroJfXA+86N8u8mdBvWc7tAtSX
- tEOUTWCsrjVDpLkxkJd/Udh8nXKkwIuiR1/WxPcE9Q7ErsbhoQYG+JCIEysDqSh7+7QNr2Sr9Wj
- hFqMRHjPbmFWQQnXqL+vxqZkykBx3yIL/oO3VMrbjMaaZ8vvk7ZnZLlf1mhHgHoQIr5vb2u/x9k
- uOWBiuwsrK3wfpSOAe347YUnb0K4SOyLlBMcI5ex+U+OWT3w==
-X-Google-Smtp-Source: AGHT+IF0S+hZfXtcn43XyuwLilqsZ8fQll0f1TiidxLS3FTpTE1pDe4Nk5lkZLItyyYc8vSDNJZEHA==
-X-Received: by 2002:a05:6102:44c2:20b0:51c:4443:16c7 with SMTP id
- ada2fe7eead31-5db1b3d2691mr877311137.6.1761122081636; 
- Wed, 22 Oct 2025 01:34:41 -0700 (PDT)
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com.
- [209.85.217.44]) by smtp.gmail.com with ESMTPSA id
- ada2fe7eead31-5db23d61d56sm138642137.8.2025.10.22.01.34.40
- for <igt-dev@lists.freedesktop.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 22 Oct 2025 01:34:40 -0700 (PDT)
-Received: by mail-vs1-f44.google.com with SMTP id
- ada2fe7eead31-5db24071011so156453137.1
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Oct 2025 01:34:40 -0700 (PDT)
-X-Received: by 2002:a05:6102:1a14:10b0:59c:d78:dca with SMTP id
- ada2fe7eead31-5db1b3fe897mr706638137.15.1761122080511; Wed, 22 Oct 2025
- 01:34:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20251021173912.4050926-1-jason-jh.lin@mediatek.com>
- <20251021173912.4050926-6-jason-jh.lin@mediatek.com>
-In-Reply-To: <20251021173912.4050926-6-jason-jh.lin@mediatek.com>
-From: Fei Shao <fshao@chromium.org>
-Date: Wed, 22 Oct 2025 16:34:04 +0800
-X-Gmail-Original-Message-ID: <CAC=S1nh_Fr2z-NV=N-0hDAyCBU06zoqYVxGLdLCH2tmh8ZsnbA@mail.gmail.com>
-X-Gm-Features: AS18NWADhS4C-OX_5l8Gq2cbAD3gSd7PR1dpjnT0v3kEzXhoygIA-Uf_A9h2r8c
-Message-ID: <CAC=S1nh_Fr2z-NV=N-0hDAyCBU06zoqYVxGLdLCH2tmh8ZsnbA@mail.gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 59CF610E731
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Oct 2025 10:08:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1761127703; x=1792663703;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=N4P0Gx5abKLwW340YzEdj2N2rwjxlIGTnofoNgXwASA=;
+ b=gzrR6z/2XzJhAwm1CDePJ3jkwyzBASLL5MogR7qMt8brE3g/I92m37so
+ 5AC4QmyHN64wrlc7Q3yFIcCvHy/2K1dnDr5qDOBtnmEdrqwkC4M7yY5qL
+ RQRLyCITtVqtBOFM2eN+s1lTTEHpNCH8c9LOKxrvZXZMciHbxQMUMVLlN
+ 9g2EZU4ja5enOIvsa33keICmVP9IdT2w35vh59iyywLXhdWsDiYlVeFX8
+ C4vKn8WmunFUdfMUgFlndcrt8Ic6OML6Ic0beMxfoeS+wVr05jEmF05+z
+ VPM9hBHthDB5btffi7uA714xjDWrMfmmzrk790pznDy/DB46pLRgfFFeu A==;
+X-CSE-ConnectionGUID: k1IdSZ8sQRSmy2epde68Bg==
+X-CSE-MsgGUID: yxJfKPveQIS9Qs73J0ujrQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63418664"
+X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; d="scan'208";a="63418664"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2025 03:08:23 -0700
+X-CSE-ConnectionGUID: 1pJ+uLe2TbKoYbYFFryWIg==
+X-CSE-MsgGUID: mtDYyINiRhGAvIrEXCCCgA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; d="scan'208";a="188239947"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 03:08:19 -0700
+Date: Wed, 22 Oct 2025 12:08:00 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Cc: Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org,
+ Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Fei Shao <fshao@chromium.org>, Paul-PL Chen <paul-pl.chen@mediatek.com>,
+ Nancy Lin <nancy.lin@mediatek.com>, Singo Chang <singo.chang@mediatek.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
 Subject: Re: [PATCH i-g-t v2 5/5] lib/igt_edid: Fix monitor name parsing and
  trim EDID string padding
-To: Jason-JH Lin <jason-jh.lin@mediatek.com>
-Cc: igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>, 
+Message-ID: <20251022100800.lpa2fibl3u662egy@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org,
+ Karthik B S <karthik.b.s@intel.com>,
  Swati Sharma <swati2.sharma@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, 
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
  Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
- Paul-PL Chen <paul-pl.chen@mediatek.com>, 
- Nancy Lin <nancy.lin@mediatek.com>, Singo Chang <singo.chang@mediatek.com>, 
- Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>, 
+ Fei Shao <fshao@chromium.org>,
+ Paul-PL Chen <paul-pl.chen@mediatek.com>,
+ Nancy Lin <nancy.lin@mediatek.com>,
+ Singo Chang <singo.chang@mediatek.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
  Project_Global_Chrome_Upstream_Group@mediatek.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+References: <20251021173912.4050926-1-jason-jh.lin@mediatek.com>
+ <20251021173912.4050926-6-jason-jh.lin@mediatek.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251021173912.4050926-6-jason-jh.lin@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,17 +90,84 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Oct 22, 2025 at 1:39=E2=80=AFAM Jason-JH Lin <jason-jh.lin@mediatek=
-.com> wrote:
->
+Hi Jason-JH,
+On 2025-10-22 at 01:37:53 +0800, Jason-JH Lin wrote:
 > Fix the EDID parsing logic by supporting EDID_DETAIL_MONITOR_STRING in
 > addition to EDID_DETAIL_MONITOR_NAME. Also, trim the trailing padding
 > spaces from the monitor vendor name when parsing the EDID string to
 > ensure the monitor name is correctly returned.
->
+> 
+
++cc Jani
+
 > Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
 > ---
 >  lib/igt_edid.c | 11 +++++++++--
 >  1 file changed, 9 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/igt_edid.c b/lib/igt_edid.c
+> index 627201c342df..d98106c3c22d 100644
+> --- a/lib/igt_edid.c
+> +++ b/lib/igt_edid.c
+> @@ -26,6 +26,7 @@
+>  #include "config.h"
+>  
+>  #include <assert.h>
+> +#include <ctype.h>
+>  #include <string.h>
+>  #include <stdint.h>
+>  #include <time.h>
+> @@ -215,7 +216,7 @@ void edid_get_monitor_name(const struct edid *edid, char *name, size_t name_size
+>  	const struct detailed_timing *dt;
+>  	const struct detailed_non_pixel *np;
+>  	const struct detailed_data_string *ds;
+> -	size_t i;
+> +	size_t i, n;
 
-Reviewed-by: Fei Shao <fshao@chromium.org>
+imho better:
+	ssize_t n;
+
+>  
+>  	assert(name_size > 0);
+>  	name[0] = '\0';
+> @@ -224,12 +225,18 @@ void edid_get_monitor_name(const struct edid *edid, char *name, size_t name_size
+>  		dt = &edid->detailed_timings[i];
+>  		np = &dt->data.other_data;
+>  
+> -		if (np->type != EDID_DETAIL_MONITOR_NAME)
+> +		if (np->type != EDID_DETAIL_MONITOR_NAME &&
+> +		    np->type != EDID_DETAIL_MONITOR_STRING)
+>  			continue;
+>  
+>  		ds = &np->data.string;
+>  		strncpy(name, ds->str, name_size - 1);
+>  		name[name_size - 1] = '\0';
+> +
+> +		/* remove the padding space from EDID */
+> +		for (n = name_size - 2; n > 0 && isspace(name[n]); n--)
+
+With ssize_t it could be:
+
+		for (n = name_size - 2; n >= 0 && isspace(name[n]); n--)
+
+so following line:
+
+> +			name[n] = '\0';
+
+will actually trim it into empty string.
+
+> +
+>  		igt_debug("Monitor name: %s\n", name);
+
+What about informing about empty name here? For example:
+
+  		igt_debug("Monitor name: %s\n", n > 0 ? name : "(empty)");
+
+Regards,
+Kamil
+
+>  		return;
+>  	}
+> -- 
+> 2.43.0
+> 
