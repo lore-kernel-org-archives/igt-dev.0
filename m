@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92A3FCCD1BB
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Oct 2025 12:15:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1A67CCD1BB
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Oct 2025 14:26:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4B6C810E768;
-	Wed, 22 Oct 2025 12:15:48 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="QGL3Gmm5";
-	dkim-atps=neutral
-Received: from bali.collaboradmins.com (bali.collaboradmins.com
- [148.251.105.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFA6510E768
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Oct 2025 12:15:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1761135345;
- bh=RAlJ7hU7KdLn1kAxLEMnM1PznnQ8G/9ojrH93KL6bdg=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=QGL3Gmm5x8HDbhAURaFIAYO4aTbbR+MlAGyTHDYE60DI4F7zaMBVnAjCnQKZAf/ZR
- DOe45e4vd8SH7543El2U/5CwffDOZTH+EjfE7A1qpA7wfbC+7GUS0hvo3BSMeJ3moa
- FAXaW/ibf4aJhI7lK62c0HJSI3aSUBwt2tL+15zlN71wiim9vRzk26fcJtrh78gbDN
- vENeUFNcF3UNbtKH/aS8zOBG6kAoUaHSa6EpFh2NxCfTNAulaZm7XCO3uIwTKoSSpJ
- w0HKQ9ZlnnshhihFodzqOcM7ePFx4LaYxDdY1dEtU9bpYsNVvUBeumZWiNbXNaPm37
- yzCdNDTiEfZsg==
-Received: from xpredator (unknown
- [IPv6:2a02:2f08:e41c:5800:e88e:21ff:fe65:be18])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits)
- server-digest SHA256) (No client certificate requested)
- (Authenticated sender: mvlad)
- by bali.collaboradmins.com (Postfix) with ESMTPSA id E313917E00AC;
- Wed, 22 Oct 2025 14:15:44 +0200 (CEST)
-Date: Wed, 22 Oct 2025 15:15:43 +0300
-From: Marius Vlad <marius.vlad@collabora.com>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, ashutosh.dixit@intel.com,
- adrinael@adrinael.net, juhapekka.heikkila@gmail.com,
- dmitry.baryshkov@oss.qualcomm.com, Swati Sharma <swati2.sharma@intel.com>,
- ville.syrjala@linux.intel.com, jani.nikula@linux.intel.com,
- daniels@collabora.com
-Subject: Re: [PATCH i-g-t] kms_max_link_bpc: Add 'link bpc' DRM connector
- property
-Message-ID: <aPjK70qWZlqJLrUO@xpredator>
-References: <20251006080705.2869-1-marius.vlad@collabora.com>
- <20251006095809.7ik5tgd74qi32nuj@kamilkon-DESK.igk.intel.com>
- <f6de4a3f-60e2-44de-859a-1352bbaa3008@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6031D10E7CD;
+	Wed, 22 Oct 2025 14:26:33 +0000 (UTC)
+Received: from 97596180aaec (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BF2410E7CD;
+ Wed, 22 Oct 2025 14:26:32 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1104343487896674410=="
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="KUp7fERNsOoV36b/"
-Content-Disposition: inline
-In-Reply-To: <f6de4a3f-60e2-44de-859a-1352bbaa3008@intel.com>
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fexec=5Fres?=
+ =?utf-8?q?et=3A_Fix_uninitialized_var?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 22 Oct 2025 14:26:32 -0000
+Message-ID: <176114319263.42904.15346747777450098368@97596180aaec>
+X-Patchwork-Hint: ignore
+References: <20251022114655.70478-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20251022114655.70478-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,499 +37,251 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============1104343487896674410==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
---KUp7fERNsOoV36b/
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+== Series Details ==
 
-Hi Kamil, Karthik and all,
+Series: tests/intel/xe_exec_reset: Fix uninitialized var
+URL   : https://patchwork.freedesktop.org/series/156333/
+State : failure
 
-Thanks for the reviews!
+== Summary ==
 
-I would like to have a quick note/heads-up here to let people know that
-I'm currently re-working the 'link bpc' property to address some of the
-comments I've got from Ville, Dmitry, Jani and Daniel on having the
-property being connector-agnostic, immutable and use an uevent to
-propagate the changes back to userspace rather than polling after a
-modeset (which this test does now).
+CI Bug Log - changes from XEIGT_8594_BAT -> XEIGTPW_13928_BAT
+====================================================
 
-Most likely this needs a bit of adjustment (including the comments I got
-already from Kamil and Karthik), hence me delaying on addressing the
-comments I've got so far.=20
+Summary
+-------
 
-+CC Ville, Dmitry, Jani, Daniel.
+  **FAILURE**
 
-On Fri, Oct 10, 2025 at 09:29:22AM +0530, Karthik B S wrote:
-> Hi Marius,
->=20
-> On 10/6/2025 3:28 PM, Kamil Konieczny wrote:
-> > Hi Marius,
-> > On 2025-10-06 at 11:07:01 +0300, Marius Vlad wrote:
-> > > We can make use of 'link bpc' -- assuming that's available, to determ=
-ine
-> > > the current physical bpc used by the driver on a particular connector.
-> > >=20
-> > > This adds support for the DRM connector property and adds a simple te=
-st
-> > > that would set-up 'max bpc' followed by reading back the 'link bpc'.
-> > > Test expect less or equal than 'max bpc'.
-> > >=20
-> > > kms_vrr, kms_hdr or kms_color assume CRC support  and all make use of
-> > > debugfs to query 'max bpc', while this test will get the actual min/m=
-ax
-> > > values from 'max bpc' without the implication of having CRC support.
-> > >=20
-> > > A more thorough test would be to come up with a way that's known to
-> > > lower the bpc value to an expected one but that's left for another ti=
-me.
-> > >=20
-> > > Reference: https://lore.kernel.org/dri-devel/20250801101750.1726-1-ma=
-rius.vlad@collabora.com/T/#u
-> > +cc Karthik and Swati
-> >=20
-> > Cc: Karthik B S <karthik.b.s@intel.com>
-> > Cc: Swati Sharma <swati2.sharma@intel.com>
-> >=20
-> > > Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
-> > > ---
-> > >   lib/igt_kms.c            |  40 +++++++
-> > >   lib/igt_kms.h            |   4 +
-> > >   tests/kms_max_link_bpc.c | 225 ++++++++++++++++++++++++++++++++++++=
-+++
-> > >   tests/meson.build        |   1 +
-> > Please split changes into lib/igt_kms and a new test
-> > tests/kms_max_link_bpc
-> >=20
-> > Btw why not a shorter name: tests/kms_link_bpc
-> >=20
-> > with one subtest basic-max-link-bpc
-> >=20
-> > >   4 files changed, 270 insertions(+)
-> > >   create mode 100644 tests/kms_max_link_bpc.c
-> > >=20
-> > > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> > > index df4a96a17..d00b85a96 100644
-> > > --- a/lib/igt_kms.c
-> > > +++ b/lib/igt_kms.c
-> > > @@ -732,6 +732,7 @@ const char * const igt_connector_prop_names[IGT_N=
-UM_CONNECTOR_PROPS] =3D {
-> > >   	[IGT_CONNECTOR_WRITEBACK_FB_ID] =3D "WRITEBACK_FB_ID",
-> > >   	[IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR] =3D "WRITEBACK_OUT_FENCE_P=
-TR",
-> > >   	[IGT_CONNECTOR_DITHERING_MODE] =3D "dithering mode",
-> > > +	[IGT_CONNECTOR_LINK_BPC] =3D "link bpc",
-> > >   };
-> > >   const char * const igt_rotation_names[] =3D {
-> > > @@ -6261,6 +6262,20 @@ unsigned int igt_get_output_max_bpc(int drmfd,=
- char *connector_name)
-> > >   	return maximum;
-> > >   }
-> > > +/**
-> > > + * igt_get_output_link_bpc:
-> > > + * @output: Target output
-> > > + *
-> > > + * Returns: The current 'link bpc' value from the connector property.
-> > > + */
-> > > +unsigned long int igt_get_output_link_bpc(igt_output_t *output)
-> > > +{
-> > > +	if (!igt_output_has_prop(output, IGT_CONNECTOR_LINK_BPC))
-> > > +		return 0;
-> > > +
-> > > +	return igt_output_get_prop(output, IGT_CONNECTOR_LINK_BPC);
-> > > +}
-> > > +
-> > >   /**
-> > >    * igt_get_pipe_current_bpc:
-> > >    * @drmfd: A drm file descriptor
-> > > @@ -6346,6 +6361,31 @@ bool igt_check_output_bpc_equal(int drmfd, enu=
-m pipe pipe,
-> > >   	return (current =3D=3D bpc);
-> > >   }
-> > > +/**
-> > > + * igt_assert_output_link_bpc_equal:
-> > > + * @output: Target output
-> > > + * @bpc: link bpc to compare with
-> > > + *
-> > > + * Assert if outputs's current link bpc is not matched with the requ=
-ested one.
-> > > + */
-> > > +void igt_assert_output_link_bpc_equal(igt_output_t *output, unsigned=
- int bpc)
-> > > +{
-> > > +	igt_assert_eq(igt_get_output_link_bpc(output), bpc);
-> > > +}
-> > > +
-> > > +/**
-> > > + * igt_check_output_link_bpc_equal:
-> > > + * @output: Target output
-> > > + * @bpc: link bpc to compare with
-> > > + *
-> > > + * Returns: True if outputs's current link bpc is matched with the r=
-equested bpc,
-> > > + * else False.
-> > > + */
-> > > +bool igt_check_output_link_bpc_equal(igt_output_t *output, unsigned =
-int bpc)
-> > > +{
-> > > +	return (igt_get_output_link_bpc(output) =3D=3D bpc);
-> > > +}
-> > > +
-> > >   /**
-> > >    * igt_max_bpc_constraint:
-> > >    * @display: a pointer to an #igt_display_t structure
-> > > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> > > index 6ef6871d5..04dcd39df 100644
-> > > --- a/lib/igt_kms.h
-> > > +++ b/lib/igt_kms.h
-> > > @@ -191,6 +191,7 @@ enum igt_atomic_connector_properties {
-> > >          IGT_CONNECTOR_WRITEBACK_FB_ID,
-> > >          IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR,
-> > >          IGT_CONNECTOR_DITHERING_MODE,
-> > > +       IGT_CONNECTOR_LINK_BPC,
-> > >          IGT_NUM_CONNECTOR_PROPS
-> > >   };
-> > > @@ -1234,11 +1235,14 @@ bool igt_override_all_active_output_modes_to_=
-fit_bw(igt_display_t *display);
-> > >   bool igt_fit_modes_in_bw(igt_display_t *display);
-> > >   bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name);
-> > >   unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name=
-);
-> > > +unsigned long int igt_get_output_link_bpc(igt_output_t *output);
-> > >   unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe);
-> > >   void igt_assert_output_bpc_equal(int drmfd, enum pipe pipe,
-> > >   				char *output_name, unsigned int bpc);
-> > >   bool igt_check_output_bpc_equal(int drmfd, enum pipe pipe,
-> > >   				char *output_name, unsigned int bpc);
-> > > +bool igt_check_output_link_bpc_equal(igt_output_t *output, unsigned =
-int bpc);
-> > > +void igt_assert_output_link_bpc_equal(igt_output_t *output, unsigned=
- int bpc);
-> > >   int sort_drm_modes_by_clk_dsc(const void *a, const void *b);
-> > >   int sort_drm_modes_by_clk_asc(const void *a, const void *b);
-> > > diff --git a/tests/kms_max_link_bpc.c b/tests/kms_max_link_bpc.c
-> > > new file mode 100644
-> > > index 000000000..f5e2006ab
-> > > --- /dev/null
-> > > +++ b/tests/kms_max_link_bpc.c
-> > > @@ -0,0 +1,225 @@
-> > Add SPDX here.
-> >=20
-> > > +/*
-> > > + * Copyright =A9 2025 Collabora Ltd.,
-> > > + *
-> > > + * Permission is hereby granted, free of charge, to any person obtai=
-ning a
-> > And remove text from here as SPDX raplaces it.
-> >=20
-> > > + * copy of this software and associated documentation files (the "So=
-ftware"),
-> > > + * to deal in the Software without restriction, including without li=
-mitation
-> > > + * the rights to use, copy, modify, merge, publish, distribute, subl=
-icense,
-> > > + * and/or sell copies of the Software, and to permit persons to whom=
- the
-> > > + * Software is furnished to do so, subject to the following conditio=
-ns:
-> > > + *
-> > > + * The above copyright notice and this permission notice (including =
-the next
-> > > + * paragraph) shall be included in all copies or substantial portion=
-s of the
-> > > + * Software.
-> > > + *
-> > > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, E=
-XPRESS OR
-> > > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTA=
-BILITY,
-> > > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVEN=
-T SHALL
-> > > + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAM=
-AGES OR
-> > > + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERW=
-ISE,
-> > > + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE US=
-E OR
-> > > + * OTHER DEALINGS IN THE SOFTWARE.
-> > > + *
-> > > + */
-> > > +
-> > > +/**
-> > > + * TEST: kms max link bpc
-> > > + * Category: Display
-> > > + * Description: Test 'link bpc' connector property. 'max bpc' gives =
-the
-> > Add also what BPC is (my guess: bits per color)
-> >=20
-> > > + * possiblity to set-up the maximum value but there's nothing to rel=
-y on for
-> > > + * the current physical link value, as drivers could downgrade the b=
-pc value.
-> > > + * 'link bpc' can be used to get the current physical bpc value
-> > > + * Mega feature: General Display Features
-> > Karthik or Swati: do we need more fields here?
-> No, this is sufficient as this test is agnostic of xe/i915.
-> >=20
-> > > + */
-> > > +
-> > > +#include "igt.h"
-> > Move igt headers after system ones, also with one newline
-> > separating them.
-> >=20
-> > > +#include <fcntl.h>
-> > > +#include <termios.h>
-> > > +#include <unistd.h>
-> > > +
-> > Here should go igt headers.
-> >=20
-> > > +/**
-> > > + * SUBTEST: max-link-bpc
-> > > + * Description: Verifies that 'link bpc' is at least the set-up valu=
-e of 'max
-> > > + * bpc'
-> Isn't it the other way around? "igt_assert_lte_u64(link_bpc, range.max)"
-> > > + *
-> > > + */
-> > > +
-> > > +IGT_TEST_DESCRIPTION("Test 'max bpc' and 'link bpc' connector proper=
-ties");
-> > > +
-> > > +/* Common test data. */
-> > > +typedef struct data {
-> > > +	igt_display_t display;
-> > > +	igt_plane_t *primary;
-> > > +	igt_output_t *output;
-> > > +	int fd;
-> > > +} data_t;
-> > > +
-> > > +typedef struct range {
-> > > +	uint64_t min;
-> > > +	uint64_t max;
-> > > +} range_t;
-> > > +
-> > > +/* rather than using debugfs to get max bpc or current max bpc
-> > > + * use the actual range */
-> > > +static range_t
-> > > +get_bpc_range(igt_output_t *output, const char *prop_name)
-> This function should be moved to lib, IMHO.
-> > > +{
-> > > +	range_t range =3D { 0, 0 };
-> > > +	drmModeObjectPropertiesPtr proplist;
-> > > +	drmModePropertyPtr _prop;
-> > > +	int drm_fd =3D output->display->drm_fd;
-> > > +	int conn_id =3D output->config.connector->connector_id;
-> > > +	int i;
-> > > +
-> > > +	if (!prop_name)
-> > > +		return range;
-> > > +
-> > > +	proplist =3D drmModeObjectGetProperties(drm_fd, conn_id, DRM_MODE_O=
-BJECT_CONNECTOR);
-> > > +	if (!proplist)
-> > > +		return range;
-> > > +
-> > > +	for (i =3D 0; i < proplist->count_props; i++) {
-> > > +		_prop =3D drmModeGetProperty(drm_fd, proplist->props[i]);
-> > > +		if (!_prop || !(_prop->flags & DRM_MODE_PROP_RANGE ||
-> > > +				_prop->flags & DRM_MODE_PROP_SIGNED_RANGE))
-> > > +			continue;
-> > > +
-> > > +		if (strcmp(_prop->name, prop_name) =3D=3D 0) {
-> > > +			igt_assert_eq(_prop->count_values, 2);
-> > > +
-> > > +			range.max =3D _prop->values[1];
-> > > +			range.min =3D _prop->values[0];
-> > > +
-> > > +			igt_log(IGT_LOG_DOMAIN, IGT_LOG_INFO,
-> > > +				"Found %s property with min %lu max %lu\n",
-> > > +				prop_name, range.min, range.max);
-> > > +
-> > > +			drmModeFreeProperty(_prop);
-> > > +			break;
-> > > +		} else {
-> > > +			drmModeFreeProperty(_prop);
-> > > +		}
-> > > +	}
-> > > +
-> > > +	drmModeFreeObjectProperties(proplist);
-> > > +	return range;
-> > > +}
-> > > +
-> > > +static void
-> > > +run_test_bpc(data_t *data, igt_output_t *output, range_t range)
-> > > +{
-> > > +	cairo_t *cr =3D NULL;
-> > > +	igt_fb_t fb;
-> > > +	int fb_id;
-> > > +	unsigned long int link_bpc =3D 0;
-> > > +
-> > > +	fb_id =3D igt_create_fb(data->fd, 512, 512,
-> > > +			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &fb);
-> > > +	igt_assert(fb_id);
-> > > +	cr =3D igt_get_cairo_ctx(fb.fd, &fb);
-> > > +
-> > > +	igt_paint_color(cr, 0, 0, fb.width, fb.height, 1.0, 1.0, 1.0);
-> > > +	igt_paint_test_pattern(cr, fb.width, fb.height);
-> > > +
-> > > +	igt_put_cairo_ctx(cr);
-> > > +
-> > > +	data->primary =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_=
-PRIMARY);
-> > > +
-> > > +	igt_plane_set_fb(data->primary, &fb);
-> > > +	igt_plane_set_size(data->primary, fb.width, fb.height);
-> > > +	igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_TEST_=
-ONLY, NULL);
-> > > +
-> > > +	/* set to range.max */
-> > > +	igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, range.max);
-> > > +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MOD=
-ESET, NULL);
-> > > +	link_bpc =3D igt_get_output_link_bpc(output);
-> > > +	igt_log(IGT_LOG_DOMAIN, IGT_LOG_INFO,
-> > > +		"Setting max bpc to %lu, link bpc is %lu\n", range.max, link_bpc);
-> Please use igt_info() here.
-> > > +	igt_assert_lte_u64(link_bpc, range.max);
-> > > +
-> > > +	/* FIXME: do a potential modeline change to determine a bpc downgra=
-de
-> > > +	 * which should be followed by a check for
-> > > +	 * (igt_get_output_link_bpc(output) < range.max)) */
-> > > +
-> > > +	/* set to range.min */
-> > > +	igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, range.min);
-> > > +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MOD=
-ESET, NULL);
-> > > +	link_bpc =3D igt_get_output_link_bpc(output);
-> > > +	igt_log(IGT_LOG_DOMAIN, IGT_LOG_INFO,
-> Please use igt_info() here.
-> > > +		"Setting max bpc to %lu, link bpc is %lu\n", range.min,
-> > > +		igt_get_output_link_bpc(output));
-> > > +	igt_assert_lte_u64(link_bpc, range.min);
-> > > +
-> > > +	/* go back to range.max */
-> > > +	igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, range.max);
-> > > +	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MOD=
-ESET, NULL);
-> > > +	link_bpc =3D igt_get_output_link_bpc(output);
-> > > +	igt_log(IGT_LOG_DOMAIN, IGT_LOG_INFO,
->=20
-> Please use igt_info() here.
->=20
-> Regards,
-> Karthik.B.S
-> > > +		"Setting max bpc to %lu, link bpc is %lu\n", range.max,
-> > > +		igt_get_output_link_bpc(output));
-> > > +	igt_assert_lte_u64(link_bpc, range.max);
-> > > +
-> > > +	igt_display_reset(&data->display);
-> > > +	igt_remove_fb(data->fd, &fb);
-> > > +}
-> > > +
-> > > +static void
-> > > +test_bpc(data_t *data)
-> > > +{
-> > > +	igt_output_t *output;
-> > > +	igt_display_t *display =3D &data->display;
-> > > +
-> > > +	igt_display_reset(display);
-> > > +
-> > > +	for_each_connected_output(display, output) {
-> > > +		enum pipe pipe;
-> > > +		range_t max_bpc_range;
-> > > +
-> > > +		if (!igt_output_has_prop(output, IGT_CONNECTOR_MAX_BPC)) {
-> > > +			igt_info("Output %s: Doesn't support \"max bpc\" property.\n",
-> > > +				 igt_output_name(output));
-> > > +			continue;
-> > > +		}
-> > > +
-> > > +		if (!igt_output_has_prop(output, IGT_CONNECTOR_LINK_BPC)) {
-> > > +			igt_info("Output %s: Doesn't support \"link bpc\" property.\n",
-> > > +				 igt_output_name(output));
-> > > +			continue;
-> > > +		}
-> > > +
-> > > +		max_bpc_range =3D get_bpc_range(output, "max bpc");
-> > > +		for_each_pipe(&data->display, pipe) {
-> > > +			igt_output_set_pipe(output, pipe);
-> > > +			if (!intel_pipe_output_combo_valid(&data->display)) {
-> > > +				igt_output_set_pipe(output, PIPE_NONE);
-> > > +				continue;
-> > > +			}
-> > > +
-> > > +			igt_dynamic_f("output-%s-%s", kmstest_pipe_name(pipe), output->na=
-me)
-> > > +				run_test_bpc(data, output, max_bpc_range);
-> > > +		}
-> > > +	}
-> > > +}
-> > > +
-> > > +igt_main
-> > > +{
-> > > +	data_t data =3D { 0 };
-> > > +
-> > > +	igt_fixture {
-> > > +		data.fd =3D drm_open_driver_master(DRIVER_ANY);
-> > > +		kmstest_set_vt_graphics_mode();
-> > > +
-> > > +		igt_display_require(&data.display, data.fd);
-> > > +		igt_require(data.display.is_atomic);
-> > > +		igt_display_require_output(&data.display);
-> > > +	}
-> > > +
-> > > +	igt_describe("Tests 'link bpc' being the at least 'max bpc'");
-> > > +	igt_subtest_with_dynamic("max-link-bpc")
-> > > +		test_bpc(&data);
-> > > +
-> > > +	igt_fixture {
-> > > +		igt_display_fini(&data.display);
-> > > +		drm_close_driver(data.fd);
-> > > +	}
-> > > +}
-> > > diff --git a/tests/meson.build b/tests/meson.build
-> > > index a7b9375ed..e948c5c3c 100644
-> > > --- a/tests/meson.build
-> > > +++ b/tests/meson.build
-> > > @@ -32,6 +32,7 @@ test_progs =3D [
-> > >   	'kms_cursor_legacy',
-> > >   	'kms_debugfs',
-> > >   	'kms_dither',
-> > > +	'kms_max_link_bpc',
-> > Move it to proper place to keep list in alphabeticall order.
-> >=20
-> > Regards,
-> > Kamil
-> >=20
-> > >   	'kms_display_modes',
-> > >   	'kms_dp_aux_dev',
-> > >   	'kms_feature_discovery',
-> > > --=20
-> > > 2.47.2
-> > >=20
+  Serious unknown changes coming with XEIGTPW_13928_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_13928_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
---KUp7fERNsOoV36b/
-Content-Type: application/pgp-signature; name="signature.asc"
+  
 
------BEGIN PGP SIGNATURE-----
+Participating hosts (12 -> 12)
+------------------------------
 
-iQIzBAABCAAdFiEEcDKHej6x6uPk3J379jQS5glH1u8FAmj4yuIACgkQ9jQS5glH
-1u+0oxAAxt1Iw2V6GdY7GNWiSNVpUYx/vxaKpbl0hQKA8H+IuHnF8ACtVGoppaTK
-dsHird1Z4VUK0jUZ8lNEniZgQu9+009Dk20eALuvnoR3aZpyGjL3ZPZ2yINmRxIY
-lQpdMeRhdi/EdUW7PbBescF22F+uFiWZe61/fdhQt44rv8ed3YSgb5rbPlkI58Cq
-W3wvuU30TzidjGSMOBkklKrFVnW2PJEiULE0PNFtSWjqQuGECzu/8CKzi+JjPv5F
-SjrRMZzpuIVqhNnX50u2qQiczYjlX9U88aHntzLy0nvn8gz5VSquwr7KpA71FCub
-R5KlgjOTvu7JYrQt06hT3Zzp2aRMvvywlHrwquH+kpnIvzuwANr1Ies56BwxaM+j
-wpjyK181F34R9eRHgclNsf6uXhWrzZyricHYvC0G8N4zHJ79cKwESvblCvZVdyuD
-LjgfAZcZjw66DXEPhKdLFR4RFSY3CMQHeBckkCPHlfIG3rF7q2mvuYToxecyBoP4
-NdihJWQQA3s9rVOWVIvUapwCxHIegGJFJpE42Z+XCHpHSWeu92cnRwRjQ364l5MB
-Qia7LAxwHm8uJEkpZVZEnlAMjzsT51UbOn++26XIMrfzL57EE3tllg80FpQEFtWw
-QymRXqLlBc1l1yJdIDES0L3m2Z2G1L0dR7X2mDNoGy4QY5uAJv8=
-=l0P9
------END PGP SIGNATURE-----
+  Additional (1): bat-bmg-3 
+  Missing    (1): bat-pvc-2 
 
---KUp7fERNsOoV36b/--
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_13928_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p} (NEW):
+    - bat-bmg-3:          NOTRUN -> [FAIL][1] +5 other tests fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-bmg-3/igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between XEIGT_8594_BAT and XEIGTPW_13928_BAT:
+
+### New IGT tests (4) ###
+
+  * igt@xe_peer2peer@read@read-gpua-system-gpub-vram01-p2p:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.24] s
+
+  * igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p:
+    - Statuses : 1 fail(s)
+    - Exec time: [0.03] s
+
+  * igt@xe_peer2peer@write@write-gpua-system-gpub-vram01-p2p:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.23] s
+
+  * igt@xe_peer2peer@write@write-gpua-vram01-gpub-vram01-p2p:
+    - Statuses : 1 fail(s)
+    - Exec time: [0.03] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13928_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - bat-adlp-7:         [PASS][2] -> [DMESG-WARN][3] ([Intel XE#4543]) +1 other test dmesg-warn
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8594/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html
+
+  * igt@xe_create@multigpu-create-massive-size:
+    - bat-bmg-3:          NOTRUN -> [SKIP][4] ([Intel XE#2504])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-bmg-3/igt@xe_create@multigpu-create-massive-size.html
+
+  * igt@xe_eudebug@multigpu-basic-client:
+    - bat-bmg-3:          NOTRUN -> [SKIP][5] ([Intel XE#4837]) +1 other test skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-bmg-3/igt@xe_eudebug@multigpu-basic-client.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#2504]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2504
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+  [Intel XE#4837]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8594 -> IGTPW_13928
+  * Linux: xe-3950-76e60b5ce41fc1bcabf7941a57303d541bffd6ad -> xe-3964-b3696aee36c443dbea93e1068b9c3c765bc8e700
+
+  IGTPW_13928: 13928
+  IGT_8594: 8594
+  xe-3950-76e60b5ce41fc1bcabf7941a57303d541bffd6ad: 76e60b5ce41fc1bcabf7941a57303d541bffd6ad
+  xe-3964-b3696aee36c443dbea93e1068b9c3c765bc8e700: b3696aee36c443dbea93e1068b9c3c765bc8e700
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/index.html
+
+--===============1104343487896674410==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_reset: Fix uninitialized var</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/156333/">https://patchwork.freedesktop.org/series/156333/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8594_BAT -&gt; XEIGTPW_13928_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_13928_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_13928_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>Additional (1): bat-bmg-3 <br />
+  Missing    (1): bat-pvc-2 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_13928_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>{igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p} (NEW):<ul>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-bmg-3/igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p.html">FAIL</a> +5 other tests fail</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8594_BAT and XEIGTPW_13928_BAT:</p>
+<h3>New IGT tests (4)</h3>
+<ul>
+<li>
+<p>igt@xe_peer2peer@read@read-gpua-system-gpub-vram01-p2p:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.24] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p:</p>
+<ul>
+<li>Statuses : 1 fail(s)</li>
+<li>Exec time: [0.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_peer2peer@write@write-gpua-system-gpub-vram01-p2p:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.23] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_peer2peer@write@write-gpua-vram01-gpub-vram01-p2p:</p>
+<ul>
+<li>Statuses : 1 fail(s)</li>
+<li>Exec time: [0.03] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13928_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8594/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_create@multigpu-create-massive-size:</p>
+<ul>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-bmg-3/igt@xe_create@multigpu-create-massive-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2504">Intel XE#2504</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_eudebug@multigpu-basic-client:</p>
+<ul>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13928/bat-bmg-3/igt@xe_eudebug@multigpu-basic-client.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837">Intel XE#4837</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8594 -&gt; IGTPW_13928</li>
+<li>Linux: xe-3950-76e60b5ce41fc1bcabf7941a57303d541bffd6ad -&gt; xe-3964-b3696aee36c443dbea93e1068b9c3c765bc8e700</li>
+</ul>
+<p>IGTPW_13928: 13928<br />
+  IGT_8594: 8594<br />
+  xe-3950-76e60b5ce41fc1bcabf7941a57303d541bffd6ad: 76e60b5ce41fc1bcabf7941a57303d541bffd6ad<br />
+  xe-3964-b3696aee36c443dbea93e1068b9c3c765bc8e700: b3696aee36c443dbea93e1068b9c3c765bc8e700</p>
+
+</body>
+</html>
+
+--===============1104343487896674410==--
