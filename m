@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9C3FCCD1BF
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Oct 2025 20:32:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7222CCCD1BF
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Oct 2025 20:40:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9141710E1EA;
-	Thu, 23 Oct 2025 20:32:45 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HFNvASWG";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B2AC10E1EA
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Oct 2025 20:32:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761251564; x=1792787564;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=sbNC51i7Lghf9wbXMM3X9EkWe8aFBHrnWpAI3E3TKPY=;
- b=HFNvASWG784FH7JDo8tcWNZbQDmB0GRNLgnc6xLPncHB9+pSmtxRKRsS
- DnFbeuGqEwUo5pALL0a0ZKvPAaf9k+Pb3xahXl7frFebXNhUIuHwo5VS8
- ANDqeBCLrKFnFQ5ggQNHtW6+VhwITs1Vkjv5Hbq/jAwW9swLqBr/pUlsA
- 9zZPMaNjrB5eD9B/UrZiTqwC+gBy4om2BFxVRnxy41QrL+zqoPsZd5hjL
- 0vslUpH6DPvaGUpIEI5Dl+sS6dralEW4/JNPI3LYPqFLM5W0GE6GHV5uG
- 2XYwvNzQervs/nukHeVz+xKEvAac1t9xn9C0nlDixXDSHq3u8Nc9pQ8uV A==;
-X-CSE-ConnectionGUID: c2dyS75DQE6i4b/P5P1wtg==
-X-CSE-MsgGUID: hGJLuqviRL6hIVi9xE6h7w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="86063017"
-X-IronPort-AV: E=Sophos;i="6.19,250,1754982000"; d="scan'208";a="86063017"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 13:32:44 -0700
-X-CSE-ConnectionGUID: sE6kAMo8QFaQX15C6wqlkQ==
-X-CSE-MsgGUID: gxGs6qpIRZWxxlOKrMzDnQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,250,1754982000"; d="scan'208";a="221450213"
-Received: from pmaziews-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.94.249.25])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 13:32:42 -0700
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- =?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>
-Subject: [PATCH i-g-t] tests/intel/xe_sriov_auto_provisioning: Add
- restore_auto_provisioning tests
-Date: Thu, 23 Oct 2025 22:32:33 +0200
-Message-ID: <20251023203233.592113-1-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 268BE10E1EB;
+	Thu, 23 Oct 2025 20:40:16 +0000 (UTC)
+Received: from 97596180aaec (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 465DE10E1EB;
+ Thu, 23 Oct 2025 20:40:14 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3095628497033449247=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_test/intel/xe=5Fpm=5Freside?=
+ =?utf-8?q?ncy=3A_Add_support_for_ASPM_Link_state_residency_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Karthik Poosa" <karthik.poosa@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 23 Oct 2025 20:40:14 -0000
+Message-ID: <176125201427.48939.14654756487690637513@97596180aaec>
+X-Patchwork-Hint: ignore
+References: <20251023193458.3371835-1-karthik.poosa@intel.com>
+In-Reply-To: <20251023193458.3371835-1-karthik.poosa@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,180 +37,375 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add subtests that verify restore_auto_provisioning with:
-- disabled VFs (succeeds; idempotent)
-- enabled VFs in auto mode (no-op)
-- enabled VFs in custom mode (-EBUSY; succeeds after disable)
+--===============3095628497033449247==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
----
- tests/intel/xe_sriov_auto_provisioning.c | 136 ++++++++++++++++++++++-
- 1 file changed, 135 insertions(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_sriov_auto_provisioning.c b/tests/intel/xe_sriov_auto_provisioning.c
-index 451c3c5ca..74cea5422 100644
---- a/tests/intel/xe_sriov_auto_provisioning.c
-+++ b/tests/intel/xe_sriov_auto_provisioning.c
-@@ -290,6 +290,98 @@ static void check_selfconfig(int pf_fd, unsigned int vf_num, unsigned int flags)
- 	igt_fail_on_f(fails, "selfconfig check failed\n");
- }
- 
-+static bool empty_shared_res_attributes(int pf_fd)
-+{
-+	struct xe_sriov_provisioned_range *ranges = NULL;
-+	enum xe_sriov_shared_res res;
-+	unsigned int gt;
-+	int fails = 0;
-+
-+	xe_for_each_gt(pf_fd, gt)
-+		xe_sriov_for_each_provisionable_shared_res(res, pf_fd, gt)
-+			if (xe_sriov_pf_debugfs_read_check_ranges(pf_fd, res, gt, &ranges, 0))
-+				fails++;
-+
-+	return fails == 0;
-+}
-+
-+/**
-+ * SUBTEST: restore-auto-provisioning-disabled-vfs
-+ * Description: Verify restore auto provisioning when VFs are disabled
-+ */
-+static void restore_auto_provisioning_disabled_vfs(int pf_fd)
-+{
-+	igt_require(xe_sriov_pf_debugfs_supports_restore_auto_provisioning(pf_fd));
-+	igt_skip_on(igt_sriov_get_enabled_vfs(pf_fd));
-+	igt_assert_eq(0, xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd));
-+	igt_assert(empty_shared_res_attributes(pf_fd));
-+	// check second call is noop
-+	igt_assert_eq(0, xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd));
-+	igt_assert(empty_shared_res_attributes(pf_fd));
-+}
-+
-+/**
-+ * SUBTEST: restore-auto-provisioning-enabled-vfs-auto_mode
-+ * Description: Verify that restore auto provisioning with VFs enabled in auto mode is noop
-+ */
-+static void restore_auto_provisioning_enabled_vfs_auto_mode(int pf_fd, unsigned int num_vfs)
-+{
-+	igt_require(xe_sriov_pf_debugfs_supports_restore_auto_provisioning(pf_fd));
-+	igt_skip_on(igt_sriov_get_enabled_vfs(pf_fd));
-+	igt_require(empty_shared_res_attributes(pf_fd));
-+	// ensure auto provisioning on
-+	igt_assert_eq(0, xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd));
-+	igt_assert(empty_shared_res_attributes(pf_fd));
-+	igt_sriov_disable_driver_autoprobe(pf_fd);
-+	igt_sriov_enable_vfs(pf_fd, num_vfs);
-+	// ensure noop
-+	igt_assert_eq(0, xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd));
-+	igt_assert(!empty_shared_res_attributes(pf_fd));
-+	igt_sriov_disable_vfs(pf_fd);
-+	igt_assert(empty_shared_res_attributes(pf_fd));
-+}
-+
-+/**
-+ * SUBTEST: restore-auto-provisioning-enabled-vfs-custom-mode
-+ * Description: Verify that restore auto provisioning with VFs enabled in custom mode is rejected
-+ *		and auto provisioning restored after VFs disabled
-+ */
-+static void restore_auto_provisioning_enabled_vfs_custom_mode(int pf_fd, unsigned int num_vfs)
-+{
-+	enum xe_sriov_shared_res res;
-+	unsigned int gt;
-+	uint64_t dummy_value = 10;
-+	uint64_t expected[num_vfs + 1];
-+
-+	igt_require(xe_sriov_pf_debugfs_supports_restore_auto_provisioning(pf_fd));
-+	igt_skip_on(igt_sriov_get_enabled_vfs(pf_fd));
-+	igt_require(empty_shared_res_attributes(pf_fd));
-+	// ensure auto provisioning on
-+	igt_assert_eq(0, xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd));
-+	igt_sriov_disable_driver_autoprobe(pf_fd);
-+
-+	xe_for_each_gt(pf_fd, gt) {
-+		xe_sriov_for_each_provisionable_shared_res(res, pf_fd, gt) {
-+			for (unsigned int vf = 1; vf <= num_vfs; vf++) {
-+				xe_sriov_pf_set_shared_res_attr(pf_fd, res, vf, gt, dummy_value);
-+				expected[vf] = xe_sriov_pf_get_shared_res_attr(pf_fd, res, vf, gt);
-+			}
-+
-+			igt_sriov_enable_vfs(pf_fd, num_vfs);
-+			igt_assert_eq(xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd),
-+				      -EBUSY);
-+
-+			for (unsigned int vf = 1; vf <= num_vfs; vf++)
-+				igt_assert_eq(expected[vf],
-+					      xe_sriov_pf_get_shared_res_attr(pf_fd, res, vf, gt));
-+
-+			igt_sriov_disable_vfs(pf_fd);
-+			igt_assert_eq(0, xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd));
-+			igt_assert(empty_shared_res_attributes(pf_fd));
-+		}
-+	}
-+}
-+
- static bool extended_scope;
- 
- static int opts_handler(int opt, int opt_index, void *data)
-@@ -432,10 +524,52 @@ igt_main_args("", long_opts, help_str, opts_handler, NULL)
- 		}
- 	}
- 
-+	igt_describe("Verify restore-auto-provisioning when VFs are disabled");
-+	igt_subtest("restore-auto-provisioning-disabled-vfs") {
-+		restore_auto_provisioning_disabled_vfs(pf_fd);
-+	}
-+
-+	igt_describe("Verify that restore auto provisioning with VFs enabled in auto mode is noop");
-+	igt_subtest_with_dynamic("restore-auto-provisioning-enabled-vfs-auto_mode") {
-+		if (extended_scope)
-+			for_each_sriov_num_vfs(pf_fd, num_vfs)
-+				igt_dynamic_f("numvfs-%d", num_vfs)
-+					restore_auto_provisioning_enabled_vfs_auto_mode(pf_fd,
-+											num_vfs);
-+
-+		for_random_sriov_num_vfs(pf_fd, num_vfs) {
-+			igt_dynamic_f("numvfs-random") {
-+				igt_debug("numvfs=%u\n", num_vfs);
-+				restore_auto_provisioning_enabled_vfs_auto_mode(pf_fd,
-+										num_vfs);
-+			}
-+		}
-+	}
-+
-+	igt_describe("Verify restore-auto-provisioning with VFs enabled in custom mode");
-+	igt_subtest_with_dynamic("restore-auto-provisioning-enabled-vfs-custom-mode") {
-+		if (extended_scope)
-+			for_each_sriov_num_vfs(pf_fd, num_vfs)
-+				igt_dynamic_f("numvfs-%d", num_vfs)
-+					restore_auto_provisioning_enabled_vfs_custom_mode(pf_fd,
-+											  num_vfs);
-+
-+		for_random_sriov_num_vfs(pf_fd, num_vfs) {
-+			igt_dynamic_f("numvfs-random") {
-+				igt_debug("numvfs=%u\n", num_vfs);
-+				restore_auto_provisioning_enabled_vfs_custom_mode(pf_fd,
-+										  num_vfs);
-+			}
-+		}
-+	}
-+
- 	igt_fixture {
- 		igt_sriov_disable_vfs(pf_fd);
- 		/* abort to avoid execution of next tests with enabled VFs */
--		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
-+		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)\n");
-+		if (xe_sriov_pf_debugfs_supports_restore_auto_provisioning(pf_fd))
-+			igt_abort_on_f(xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd),
-+				       "Failed to restore auto provisioning\n");
- 		autoprobe ? igt_sriov_enable_driver_autoprobe(pf_fd) :
- 			    igt_sriov_disable_driver_autoprobe(pf_fd);
- 		igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
--- 
-2.43.0
+Series: test/intel/xe_pm_residency: Add support for ASPM Link state residency (rev2)
+URL   : https://patchwork.freedesktop.org/series/155053/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8596_BAT -> XEIGTPW_13935_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_13935_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_13935_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (12 -> 13)
+------------------------------
+
+  Additional (1): bat-bmg-3 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_13935_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_module_load@load:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_module_load@load.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_module_load@load.html
+
+  * igt@xe_prime_self_import@basic-with_fd_dup:
+    - bat-dg2-oem2:       [PASS][3] -> [SKIP][4] +205 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_prime_self_import@basic-with_fd_dup.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_prime_self_import@basic-with_fd_dup.html
+
+  
+#### Warnings ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-dg2-oem2:       [SKIP][5] ([Intel XE#623]) -> [SKIP][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@sriov_basic@enable-vfs-autoprobe-off:
+    - bat-dg2-oem2:       [SKIP][7] ([Intel XE#1091] / [Intel XE#2849]) -> [SKIP][8] +1 other test skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@sriov_basic@enable-vfs-autoprobe-off.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@sriov_basic@enable-vfs-autoprobe-off.html
+
+  * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr:
+    - bat-dg2-oem2:       [SKIP][9] ([Intel XE#288]) -> [SKIP][10] +32 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-dg2-oem2:       [SKIP][11] ([Intel XE#255]) -> [SKIP][12]
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-dg2-oem2:       [SKIP][13] ([Intel XE#977]) -> [SKIP][14]
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-dg2-oem2:       [SKIP][15] ([Intel XE#2838] / [Intel XE#979]) -> [SKIP][16]
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-dg2-oem2:       [SKIP][17] ([Intel XE#979]) -> [SKIP][18]
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_pat@pat-index-xelpg.html
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_pat@pat-index-xelpg.html
+
+  * igt@xe_sriov_flr@flr-vf1-clear:
+    - bat-dg2-oem2:       [SKIP][19] ([Intel XE#3342]) -> [SKIP][20]
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_sriov_flr@flr-vf1-clear.html
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_sriov_flr@flr-vf1-clear.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13935_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@nullptr:
+    - bat-dg2-oem2:       [PASS][21] -> [SKIP][22] ([Intel XE#2134]) +4 other tests skip
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@fbdev@nullptr.html
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@fbdev@nullptr.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-dg2-oem2:       [PASS][23] -> [SKIP][24] ([Intel XE#2351])
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@xe_create@multigpu-create-massive-size:
+    - bat-bmg-3:          NOTRUN -> [SKIP][25] ([Intel XE#2504])
+   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-bmg-3/igt@xe_create@multigpu-create-massive-size.html
+
+  * igt@xe_eudebug@multigpu-basic-client:
+    - bat-bmg-3:          NOTRUN -> [SKIP][26] ([Intel XE#4837]) +1 other test skip
+   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-bmg-3/igt@xe_eudebug@multigpu-basic-client.html
+
+  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
+    - bat-dg2-oem2:       [PASS][27] -> [SKIP][28] ([Intel XE#2229] / [Intel XE#455]) +2 other tests skip
+   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+
+  * igt@xe_peer2peer@read:
+    - bat-bmg-3:          NOTRUN -> [FAIL][29] ([Intel XE#6433]) +3 other tests fail
+   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-bmg-3/igt@xe_peer2peer@read.html
+
+  
+#### Warnings ####
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-dg2-oem2:       [SKIP][30] ([Intel XE#455]) -> [SKIP][31] ([Intel XE#2351])
+   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_psr@psr-cursor-plane-move:
+    - bat-dg2-oem2:       [SKIP][32] ([Intel XE#1406] / [Intel XE#2850] / [Intel XE#929]) -> [SKIP][33] ([Intel XE#1406] / [Intel XE#2351]) +2 other tests skip
+   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@kms_psr@psr-cursor-plane-move.html
+   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@kms_psr@psr-cursor-plane-move.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1091]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091
+  [Intel XE#1406]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406
+  [Intel XE#2134]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#2351]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2351
+  [Intel XE#2504]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2504
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
+  [Intel XE#2849]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849
+  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#4837]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837
+  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
+  [Intel XE#6433]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6433
+  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8596 -> IGTPW_13935
+  * Linux: xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4 -> xe-3974-c63ccee28ae7ab4cb57a2433314f08c71da914ff
+
+  IGTPW_13935: 13935
+  IGT_8596: 8596
+  xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4: e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4
+  xe-3974-c63ccee28ae7ab4cb57a2433314f08c71da914ff: c63ccee28ae7ab4cb57a2433314f08c71da914ff
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/index.html
+
+--===============3095628497033449247==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>test/intel/xe_pm_residency: Add support for ASPM Link state residency (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/155053/">https://patchwork.freedesktop.org/series/155053/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8596_BAT -&gt; XEIGTPW_13935_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_13935_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_13935_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (12 -&gt; 13)</h2>
+<p>Additional (1): bat-bmg-3 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_13935_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@xe_module_load@load:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_module_load@load.html">FAIL</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_prime_self_import@basic-with_fd_dup:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_prime_self_import@basic-with_fd_dup.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_prime_self_import@basic-with_fd_dup.html">SKIP</a> +205 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-bindexecqueue-userptr:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html">SKIP</a> +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_pat@pat-index-xelpg.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13935_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@nullptr:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@fbdev@nullptr.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@fbdev@nullptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134">Intel XE#2134</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2351">Intel XE#2351</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_create@multigpu-create-massive-size:</p>
+<ul>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-bmg-3/igt@xe_create@multigpu-create-massive-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2504">Intel XE#2504</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_eudebug@multigpu-basic-client:</p>
+<ul>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-bmg-3/igt@xe_eudebug@multigpu-basic-client.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837">Intel XE#4837</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_peer2peer@read:</p>
+<ul>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-bmg-3/igt@xe_peer2peer@read.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6433">Intel XE#6433</a>) +3 other tests fail</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2351">Intel XE#2351</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-cursor-plane-move:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8596/bat-dg2-oem2/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/929">Intel XE#929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13935/bat-dg2-oem2/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2351">Intel XE#2351</a>) +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8596 -&gt; IGTPW_13935</li>
+<li>Linux: xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4 -&gt; xe-3974-c63ccee28ae7ab4cb57a2433314f08c71da914ff</li>
+</ul>
+<p>IGTPW_13935: 13935<br />
+  IGT_8596: 8596<br />
+  xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4: e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4<br />
+  xe-3974-c63ccee28ae7ab4cb57a2433314f08c71da914ff: c63ccee28ae7ab4cb57a2433314f08c71da914ff</p>
+
+</body>
+</html>
+
+--===============3095628497033449247==--
