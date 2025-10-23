@@ -4,88 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D2A4CCD1BE
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Oct 2025 13:44:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E0CECCD1BF
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Oct 2025 13:55:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BF8A810E04F;
-	Thu, 23 Oct 2025 13:44:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 39D3A10E04F;
+	Thu, 23 Oct 2025 13:55:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P9iTJNU0";
+	dkim=pass (2048-bit key; unprotected) header.d=ursulin-net.20230601.gappssmtp.com header.i=@ursulin-net.20230601.gappssmtp.com header.b="LsVGbjSs";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D48010E04F
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Oct 2025 13:44:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761227065; x=1792763065;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=TFOfdBM/e5mJQsj20RiWuRNdPETDldIcfi95L3mxTYY=;
- b=P9iTJNU0SYkKqcm+mgfkmM+pFvU9A3jH63BQbQCNHjFIFIPrlz3TgF46
- mSASmrAD6FgQZVfR4K7b/3p//6FsopOukI3Towo+TORp5Jf212vvNoObx
- x2cfnttbmIyLBssmCeDTNP3vd1eDD4O5Nwqv4epGwXHLZ7LO1lGwoT+Oi
- +xmKRy93CxZNm13D031XGxjQBtI9JwtBCEwLrUK4ILR8sE38SLvdDg6lr
- ChHxgNLPT8oJ14FA5Uxr8vfBAcURZMaSU3Gv0gRpOCmkesKfqQBqKBCU6
- PQtarGNc/rs2v/DEFRTX0qDxPRPGy9aRt0bdIUI6j/tBwHwQNTn/z8DtU Q==;
-X-CSE-ConnectionGUID: UisaR2pLTOO7KnygnNkOMQ==
-X-CSE-MsgGUID: 8/mrLWKUTG2WOwGiS6kbjg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62425217"
-X-IronPort-AV: E=Sophos;i="6.19,249,1754982000"; d="scan'208";a="62425217"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 06:44:25 -0700
-X-CSE-ConnectionGUID: 56soZeMQRqmx62a+XvyCDA==
-X-CSE-MsgGUID: w8rZtYmmSG6eTQDLTtnxEQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,249,1754982000"; d="scan'208";a="183382273"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 06:44:22 -0700
-Date: Thu, 23 Oct 2025 15:44:19 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jason-JH Lin =?utf-8?B?KOael+edv+elpSk=?= <Jason-JH.Lin@mediatek.com>
-Cc: "karthik.b.s@intel.com" <karthik.b.s@intel.com>,
- "swati2.sharma@intel.com" <swati2.sharma@intel.com>,
- "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>,
- "jani.nikula@intel.com" <jani.nikula@intel.com>,
- Singo Chang =?utf-8?B?KOW8teiIiOWciyk=?= <Singo.Chang@mediatek.com>,
- Nancy Lin =?utf-8?B?KOael+aso+ieoik=?= <Nancy.Lin@mediatek.com>,
- "bhanuprakash.modem@gmail.com" <bhanuprakash.modem@gmail.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- Paul-pl Chen =?utf-8?B?KOmZs+afj+mclik=?= <Paul-pl.Chen@mediatek.com>,
- Project_Global_Chrome_Upstream_Group
- <Project_Global_Chrome_Upstream_Group@mediatek.com>, 
- "gildekel@google.com" <gildekel@google.com>,
- "fshao@chromium.org" <fshao@chromium.org>,
- "markyacoub@chromium.org" <markyacoub@chromium.org>
-Subject: Re: [PATCH i-g-t v2 5/5] lib/igt_edid: Fix monitor name parsing and
- trim EDID string padding
-Message-ID: <20251023134419.duon7byxg5r6dzxx@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jason-JH Lin =?utf-8?B?KOael+edv+elpSk=?= <Jason-JH.Lin@mediatek.com>,
- "karthik.b.s@intel.com" <karthik.b.s@intel.com>,
- "swati2.sharma@intel.com" <swati2.sharma@intel.com>,
- "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>,
- "jani.nikula@intel.com" <jani.nikula@intel.com>,
- Singo Chang =?utf-8?B?KOW8teiIiOWciyk=?= <Singo.Chang@mediatek.com>,
- Nancy Lin =?utf-8?B?KOael+aso+ieoik=?= <Nancy.Lin@mediatek.com>,
- "bhanuprakash.modem@gmail.com" <bhanuprakash.modem@gmail.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- Paul-pl Chen =?utf-8?B?KOmZs+afj+mclik=?= <Paul-pl.Chen@mediatek.com>,
- Project_Global_Chrome_Upstream_Group
- <Project_Global_Chrome_Upstream_Group@mediatek.com>, 
- "gildekel@google.com" <gildekel@google.com>,
- "fshao@chromium.org" <fshao@chromium.org>,
- "markyacoub@chromium.org" <markyacoub@chromium.org>
-References: <20251021173912.4050926-1-jason-jh.lin@mediatek.com>
- <20251021173912.4050926-6-jason-jh.lin@mediatek.com>
- <20251022100800.lpa2fibl3u662egy@kamilkon-DESK.igk.intel.com>
- <31c5cc112765c060e4dd723c5873988526fba63c.camel@mediatek.com>
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com
+ [209.85.128.50])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AAC9910E04F
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Oct 2025 13:55:48 +0000 (UTC)
+Received: by mail-wm1-f50.google.com with SMTP id
+ 5b1f17b1804b1-4711f3c386eso6501135e9.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Oct 2025 06:55:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ursulin-net.20230601.gappssmtp.com; s=20230601; t=1761227747; x=1761832547;
+ darn=lists.freedesktop.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=ypSJUAPOGc7vump620amc0x8+4rUyTUWYkIT2LNoX1Y=;
+ b=LsVGbjSs9782TKn/Ft/SC8uF0LjDv2yPvaDi1sLRR83JITX/tscZHB7s0dRt+sI53M
+ YLZp+Ips6wHMJO/oDsNZkAHsLcErAohw9tpmQLZoVM1RJkvIm6qe4vWcqB+7MO+O6xna
+ VdnGJxcwCto5r0qTge6L7LIWEmg3y1TPi+ey/7JHRhqD5U5QnefRpIvJBYFPgIHmuSoe
+ IsQVvctzGXkr9B4G10EJ5/HWBP1/fdurhRKDRZp4drLdoH2n9F9GW63B464c+NZSbvzb
+ SRAwUvKGxysd+tvYdUWVDtc35AJzzXWIu7abifpD8uA+HfBKyBLo5E17b2n2mIlzccbM
+ yI2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1761227747; x=1761832547;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ypSJUAPOGc7vump620amc0x8+4rUyTUWYkIT2LNoX1Y=;
+ b=rHjykx4mQwOEKGKuJDj+4ZN+J0lTUJZj6zFGNZ12ZSREVoxud2pp/cdfRAW3DcQ+Zi
+ La++yl0Ke0O+wy6/i96bsYJE7m2z8ePp871YRrk4QQ3xQCNYOTbC0G/ZA+4wMhsaNoOR
+ EvZdfphU8Bvko2wkFrOWml7Wok9Z4WojScB54XOGZh+3Y/PRZTh4mKGclz1+/Ydqf/IQ
+ izdejj678ofbxqS0DOfAkxBNMFdbvbxPOlVgxzQ8fMRhOnsT9Vx+ckMUXg5kqG/MPszU
+ HmVonJSP0HB09weSzqtWUlE8jEQojwe+hl9mY55zaSHiCtAyDl5NpsRMqZeO4bhDxBen
+ NhqQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVDhj/oG1EbZb5zutXW+qmn+CgDZnWsbg1fghcEY1ziusUZVg9W61TJs7QhANAlr3gt1doNyJTE@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YzEpagdN+mByq/jIoDDtrUitOePkfJ5PvN57xuDj0NJmbHUVivR
+ BWRlLei7YW4Q1nQ2tMaB0j31CBAkZCunCqDbEu8Ybgsi+jQ/F+wVaFjyiwCEr1r+0Yw=
+X-Gm-Gg: ASbGncsK+BDyipTSq6K0/AXRtmD+ckIuA6Bh5VTjxCKOjfRNn7NhFRWyn7/jaFoGFVg
+ HxBeMkN8012IvbR4z4nCRBRYMeR7s21qPbUi5cKhwzfQUS9gNlOxP7EqlCzd7x7j351l8u/Vpni
+ NM9KTTSkNFR0SMxjQdrkoHJnOP5eUBfX1bT19RcIlLWD2xcGFyI63WBEvMS6Ae4CqVIeUIMeFF0
+ y6DRn7RI8Bi5cWWHxCnsqnUAKtEXyl0pc9uN5dpZd4jyhFpZHUqEg1oyFzBffBsGZLi/mdqcWFr
+ mqF52Z+spTitVb5P7JJgjizorcvwbLB/0wYK+4VT4e27ZAj3AAOhV25IzttT3JJpCI4p4bowU9J
+ t+fmTneoj/GHFSaNJIfIyb3KHPSKIqt7jHF+HH6DeC8kyM6QOrfUD/exg8zxVgAlpOCeFhffhnl
+ BIaJ7PCp4xxq/Fqyg7bT0aWu6UyA==
+X-Google-Smtp-Source: AGHT+IGC0hWFns1ZohzV/tNhHl8dQNGVjRTxxFifjMm+HmTfJPypXlBiqKGbGkL78NdPLlXw1O/5Ww==
+X-Received: by 2002:a05:600c:4e86:b0:471:13fc:4ad3 with SMTP id
+ 5b1f17b1804b1-4711787847bmr216476715e9.2.1761227746678; 
+ Thu, 23 Oct 2025 06:55:46 -0700 (PDT)
+Received: from [192.168.0.101] ([90.242.12.242])
+ by smtp.gmail.com with ESMTPSA id
+ ffacd0b85a97d-429898cce3bsm4057076f8f.38.2025.10.23.06.55.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 23 Oct 2025 06:55:46 -0700 (PDT)
+Message-ID: <631b387f-6f05-45be-b01f-a80dccab186b@ursulin.net>
+Date: Thu, 23 Oct 2025 14:55:45 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <31c5cc112765c060e4dd723c5873988526fba63c.camel@mediatek.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 3/3] intel_gpu_top: Add usage note about i915
+ compatibility and Xe driver transition
+To: Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
+ krzysztof.karas@intel.com, dmitry.v.rogozhkin@intel.com
+References: <cover.1761225010.git.sebastian.brzezinka@intel.com>
+ <26d376252a4ebc1ca256e476bba0b42611769225.1761225010.git.sebastian.brzezinka@intel.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tursulin@ursulin.net>
+In-Reply-To: <26d376252a4ebc1ca256e476bba0b42611769225.1761225010.git.sebastian.brzezinka@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,83 +95,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jason-JH,
-On 2025-10-22 at 11:16:22 +0000, Jason-JH Lin (林睿祥) wrote:
-> > 
-> [snip]
-> > >               ds = &np->data.string;
-> > >               strncpy(name, ds->str, name_size - 1);
-> > >               name[name_size - 1] = '\0';
 
-Btw is it possible to have non-empty name later on in this loop?
-So in case of empty name (all spaces) name could be searched in
-next round in:
-	for (i = 0; i < DETAILED_TIMINGS_LEN; i++) {
-
-> > > +
-> > > +             /* remove the padding space from EDID */
-> > > +             for (n = name_size - 2; n > 0 && isspace(name[n]); n-
-> > > -)
-> > 
-> > With ssize_t it could be:
-> > 
-> >                 for (n = name_size - 2; n >= 0 && isspace(name[n]);
-> > n--)
+On 23/10/2025 14:21, Sebastian Brzezinka wrote:
+> Updated the usage output to include a note clarifying that intel_gpu_top
+> is intended for Intel GPUs supported by the i915 kernel driver (Gen2
+> through Gen12/Xe-LP). For newer GPUs such as Xe-HPG and Xe2, users are
+> advised to use gputop, which supports the newer Xe kernel driver.
 > 
-> OK, I think I got your point.
+> Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+> ---
+>   tools/intel_gpu_top.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
 > 
-> If we use size_t n = name_size - 2,
-> when name_size = 0, then n = (size_t)-2.
+> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> index 1bd88ba7c..0d0d03717 100644
+> --- a/tools/intel_gpu_top.c
+> +++ b/tools/intel_gpu_top.c
+> @@ -1067,6 +1067,12 @@ usage(const char *appname)
+>   		"\t[-m]            Default to showing all memory regions.\n"
+>   		"\n",
+>   		appname, DEFAULT_PERIOD_MS);
+> +
+> +	printf("Note:\n"
+> +		"\tThis tool is designed for Intel GPUs supported by the i915 kernel driver,\n"
+> +		"\tincluding Gen2 through Gen12 (Xe-LP). For newer GPUs such as Xe-HPG and\n"
+> +		"\tXe2, users should consider using gputop, which supports the newer\n"
+> +		"\tXe kernel driver.\n\n");
 
-There is assert at begin for name_size > 0
-but it should really be > 1 to accomodate '\0'
+Man page already says the tools reads _i915_ performance counters and if 
+I run it with xe loaded I get this:
 
-> 
-> n = 0xFFFFFFFF - 2 // 32-bit unsigned
->   = 4294967294
-> 
-> Then, n > 0 && isspace(name[n]) will be out of bound in name[n].
-> 
-> I'll fix this at the next version. Thanks!
+$ sudo tools/intel_gpu_top
+No device filter specified and no discrete/integrated i915 devices found
 
-Or make it work other way around:
+So it is kind of clear already.
 
-for (n = name_size - 1; n > 0; ) {
-	if (!isspace(name[--n])
-		break;
-	
-	name[n] = '\0';
-}
+Downside of the message you add is that gputop currently does not do 
+anything Intel specific, no? And there are some files called xe_gputop.c 
+so what is with those? Are they orphans? Anyway, downside of the message 
+is that you have to update it if it won't be gputop but xe_gputop or 
+whatever.
 
-so non-empty name could be tested with name[0]
-
-> 
-> > 
-> > so following line:
-> > 
-> > > +                     name[n] = '\0';
-> > 
-> > will actually trim it into empty string.
-> > 
-> > > +
-> > >               igt_debug("Monitor name: %s\n", name);
-> > 
-> > What about informing about empty name here? For example:
-> > 
-> >                 igt_debug("Monitor name: %s\n", n > 0 ? name :
-> > "(empty)");
-
-And then here check with 'name[0] ? name : "(empty)"'
+Overall intel_gpu_top could have easily be made support both drivers but 
+what do I know.
 
 Regards,
-Kamil
 
-> 
-> Sure, I'll also add this to the next version.
-> 
-> Regards,
-> Jason-JH Lin
-> 
-> > 
-> > Regards,
-> > Kamil
+Tvrtko
+
+>   	printf("To access interactive help, press 'h' while the application is running.\n");
+>   	show_help_screen();
+>   	igt_device_print_filter_types();
+
