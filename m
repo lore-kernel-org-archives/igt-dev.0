@@ -4,62 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 105F4CCD1BE
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Oct 2025 10:45:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47E03CCD1BE
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Oct 2025 10:48:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B48E710E3B6;
-	Thu, 23 Oct 2025 10:45:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F39BB10E3C4;
+	Thu, 23 Oct 2025 10:48:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e8cULllP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k1f7ESzh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE7AD10E3B6
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Oct 2025 10:45:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7418710E3C4
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Oct 2025 10:48:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761216307; x=1792752307;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Zyur8Ojlv/rbYDw+5nhsKYSj9nGmgG6o3lPECDZn4+I=;
- b=e8cULllPThR/xoRM5diWia/CzbKQmyPTbZ1f/XKUfuHm9u9pmvVGw4sk
- 70dlGDeth83V31jubDcJ0orU/3Dcp8vav6/HbB02YLjH393g++RFr6FmS
- Yr8XpsvXDPwE3yeJGE72ZGCt6IJdSsqj7LLJhU5AHWIvwO3+eUo7no0kN
- Hyy1agGueEI+mqrPzk+DNou0KVMy5nDbA4i0yMZHb2ZXfAOQwC/0zGBa9
- APMXNK+ByHYZlxoHjdzRub4faI3JAtTgElnrdeNthXMkAI9HZgvULygCm
- ST9AuRtWVLwPmuhN4hD7G0TwEU/dVMXXlqQBqp8BmAa6NQMk5u1yW9CX7 A==;
-X-CSE-ConnectionGUID: s5THsg8KRoOyNGqmm/fYSQ==
-X-CSE-MsgGUID: t4wlWOniQzGF9o4y0boxtA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63275507"
-X-IronPort-AV: E=Sophos;i="6.19,249,1754982000"; d="scan'208";a="63275507"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2025 03:45:07 -0700
-X-CSE-ConnectionGUID: s/oc8jygR96uWSxm4YG75g==
-X-CSE-MsgGUID: 4f0GVEmTTAa3mnJ5WoniqQ==
+ t=1761216485; x=1792752485;
+ h=message-id:date:mime-version:subject:from:to:references:
+ in-reply-to:content-transfer-encoding;
+ bh=NQLY/5+POQ2By/Se9oNALHi9GyKpQH56d6eVCYjFl1E=;
+ b=k1f7ESzhMrapTkHMjOwbLDWLsgcU0A16cni1NL1ynyFzkZIB8kXNsvMc
+ Ck4Ic3DH8WiPU//DZpzrHfnh+mmkb+igAmb6izD2YEHtQkVISQgKXw11w
+ ORvXfmYxtVjqtdO9MzZFN4I8UpOM9IoPCbLus8R6X5FA5HEwQbmuw2Cp7
+ i7D+TKtVnCN6cAUheGt8/yUy8BNX2dGj+jcU5xZjGCnJLCqM29fOZXPEL
+ 7DqABp9O5oXqA2PBxqDbYw2Fj/+VuoIc8YL0+NQs9CWM2owjD8XpRnRQL
+ 5jeGG1rPK0AECIfIqdtyq5iTY9CKwt+2BoxLiu6uHbnsxRjSiHQdCsd3E g==;
+X-CSE-ConnectionGUID: xKVaRWtrSc2wXQLcPksS8g==
+X-CSE-MsgGUID: y+ZhrVS0SfeN4sMCjYvouw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="65997764"
+X-IronPort-AV: E=Sophos;i="6.19,249,1754982000"; d="scan'208";a="65997764"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2025 03:48:05 -0700
+X-CSE-ConnectionGUID: Zuixv7Y+SbWE7Ia/BIBtoQ==
+X-CSE-MsgGUID: N41q1RBBQwaTReNukKLCXA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,249,1754982000"; d="scan'208";a="188180152"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 03:45:05 -0700
-Date: Thu, 23 Oct 2025 12:45:02 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: igt-dev@lists.freedesktop.org, saurabhg.gupta@intel.com,
- alex.zuo@intel.com, stuart.summers@intel.com,
- daniele.ceraolospurio@intel.com
-Subject: Re: [PATCH] tests/intel/xe_fault_injection: Force clear injection
- list on task end
-Message-ID: <20251023104502.55n2wksij3tl4bof@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jonathan Cavitt <jonathan.cavitt@intel.com>,
- igt-dev@lists.freedesktop.org, saurabhg.gupta@intel.com,
- alex.zuo@intel.com, stuart.summers@intel.com,
- daniele.ceraolospurio@intel.com
-References: <20251022211147.27810-2-jonathan.cavitt@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,249,1754982000"; d="scan'208";a="183729177"
+Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.131])
+ ([172.28.182.131])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2025 03:48:04 -0700
+Message-ID: <53f01323-4fb7-4e10-bc54-760caa4d9ccf@linux.intel.com>
+Date: Thu, 23 Oct 2025 12:48:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251022211147.27810-2-jonathan.cavitt@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?B?UmU6IOKclyBYZS5DSS5GdWxsOiBmYWlsdXJlIGZvciBsaWIveGUveGVf?=
+ =?UTF-8?Q?sriov=5Fprovisioning=3A_Drop_sched=5Fif=5Fidle_reads?=
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org, lgci.bug.filing@intel.com
+References: <20251022155839.288289-1-marcin.bernatowicz@linux.intel.com>
+ <176119091188.44934.6498620758907493844@97596180aaec>
+ <c55a1762-fbdc-41c9-b425-2d812409600c@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <c55a1762-fbdc-41c9-b425-2d812409600c@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,35 +72,88 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jonathan,
-On 2025-10-22 at 21:11:48 +0000, Jonathan Cavitt wrote:
-> Add a call to injection_list_clear at the end of the test to erase any
-> potential lingering fault injections before performing the kmod bind to
-> rebind the Xe driver.
-> 
-> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> Cc: Stuart Summers <stuart.summers@intel.com>
-> Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-> ---
->  tests/intel/xe_fault_injection.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-> index 621af27d4b..4b48816341 100644
-> --- a/tests/intel/xe_fault_injection.c
-> +++ b/tests/intel/xe_fault_injection.c
-> @@ -688,6 +688,7 @@ igt_main_args("I:", NULL, help_str, opt_handler, NULL)
->  	igt_fixture {
->  		close(sysfs);
->  		drm_close_driver(fd);
-> +		injection_list_clear();
 
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+On 10/23/2025 10:22 AM, Bernatowicz, Marcin wrote:
+> On 10/23/2025 5:41 AM, Patchwork wrote:
+> > == Series Details ==
+> >
+> > Series: lib/xe/xe_sriov_provisioning: Drop sched_if_idle reads
+> > URL   :https://patchwork.freedesktop.org/series/156364/
+> > State : failure
+> >
+> > == Summary ==
+> >
+> > CI Bug Log - changes from XEIGT_8595_FULL -> XEIGTPW_13929_FULL
+> > ====================================================
+> >
+> > Summary
+> > -------
+> >
+> >    **FAILURE**
+> >
+> >    Serious unknown changes coming with XEIGTPW_13929_FULL absolutely need to be
+> >    verified manually.
+> >    
+> >    If you think the reported changes have nothing to do with the changes
+> >    introduced in XEIGTPW_13929_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+> >    to document this new failure mode, which will reduce false positives in CI.
+> >
+> >    
+> >
+> > Participating hosts (4 -> 3)
+> > ------------------------------
+> >
+> >    Missing    (1): shard-adlp
+> >
+> > Possible new issues
+> > -------------------
+> >
+> >    Here are the unknown changes that may have been introduced in XEIGTPW_13929_FULL:
+> >
+> > ### IGT changes ###
+> >
+> > #### Possible regressions ####
+> >
+> >    * igt@kms_flip@2x-flip-vs-suspend-interruptible@ab-dp2-hdmi-a3:
+> >      - shard-bmg:          NOTRUN -> [DMESG-WARN][1]
+> >     [1]:https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13929/shard-bmg-3/ 
+> > igt@kms_flip@2x-flip-vs-suspend-interruptible@ab-dp2-hdmi-a3.html
+> >
+> >    * igt@kms_flip@wf_vblank-ts-check-interruptible:
+> >      - shard-lnl:          [PASS][2] -> [INCOMPLETE][3] +1 other test incomplete
+> >     [2]:https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8595/shard-lnl-7/ 
+> > igt@kms_flip@wf_vblank-ts-check-interruptible.html
+> >     [3]:https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13929/shard-lnl-2/ 
+> > igt@kms_flip@wf_vblank-ts-check-interruptible.html
+> >
+> >    * igt@kms_rotation_crc@primary-4-tiled-reflect-x-180:
+> >      - shard-bmg:          [PASS][4] -> [INCOMPLETE][5]
+> >     [4]:https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8595/shard-bmg-6/ 
+> > igt@kms_rotation_crc@primary-4-tiled-reflect-x-180.html
+> >     [5]:https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13929/shard-bmg-7/ 
+> > igt@kms_rotation_crc@primary-4-tiled-reflect-x-180.html
+> >
 
->  		igt_kmod_bind("xe", pci_slot);
->  	}
->  }
-> -- 
-> 2.43.0
-> 
+not related to the change
+
+--
+
+marcin
+
+> >    
+> > Known issues
+> > ------------
+> [...]
+> > Build changes
+> > -------------
+> >
+> >    * IGT: IGT_8595 -> IGTPW_13929
+> >
+> >    IGTPW_13929: 13929
+> >    IGT_8595: 8595
+> >    xe-3969-71929a54e8bb5da291d41a931d80c6c9160073dd: 71929a54e8bb5da291d41a931d80c6c9160073dd
+> >
+> > == Logs ==
+> >
+> > For more details see:https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13929/index.html
+> >
