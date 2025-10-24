@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E657CCF9E0
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Oct 2025 14:30:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB116CCD1BF
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Oct 2025 15:07:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E6D8E10EAAA;
-	Fri, 24 Oct 2025 14:30:45 +0000 (UTC)
-Received: from 97596180aaec (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3319910EAAA;
- Fri, 24 Oct 2025 14:30:45 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8928767699757499024=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5A3EB10E10A;
+	Fri, 24 Oct 2025 15:07:51 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IduzAOKE";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A73210E10A
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Oct 2025 15:07:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1761318470; x=1792854470;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=fKYF4bSYX2PYWwtNWZXY7kipP6UwUAMvC6SWqPq/WDI=;
+ b=IduzAOKEpHzcNRiorS+cb3DcTxqb8HJvyQJU1izcbUSO7VQOZdfkGie2
+ 2WzdRsvIJbuWUn848GZ7oWrZDZfq5pxdzCVsk/IuLabhJ5e6/K5viVz9B
+ ecEIIESerPtbR6TyA0zLwDM04e1NbrKCHoMARmD4aVKlbRd7f4rbGjNdv
+ WB3srdj08560UlriNNoxLpDGDeeTJ2lAro2DBT9sk7HlU+3LqSJ0zCCVE
+ d8HXiBbq1Ohh0HLBKp8qlcb1JgVmDYXYbxYEfBP6Fdvj0XZkppRE20l7v
+ e5RjGH93TAaKQ7N9YF6K70JSrxSciggxfzwgJhZKRNyD43ryoCO+Sp/Te Q==;
+X-CSE-ConnectionGUID: IIdOsGicTPS0X5N7KLpndw==
+X-CSE-MsgGUID: zW3OGeAtQuiHBn0kF8DmFg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="88970166"
+X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="88970166"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Oct 2025 08:07:47 -0700
+X-CSE-ConnectionGUID: 8Y3O6Do0TTakN6gRQpoNpQ==
+X-CSE-MsgGUID: K6zY8ZDKRaKO1MMGc+qGow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="183674299"
+Received: from intel-s2600wft.iind.intel.com ([10.223.26.143])
+ by orviesa010.jf.intel.com with ESMTP; 24 Oct 2025 08:07:45 -0700
+From: S Sebinraj <s.sebinraj@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: jeevaka.badrappan@intel.com, zbigniew.kempczynski@intel.com,
+ kamil.konieczny@intel.com, S Sebinraj <s.sebinraj@intel.com>
+Subject: [PATCH i-g-t v8 0/3] lib/intel_allocator, tests/kms_concurrent,
+ tests/api_intel_allocator: check for sysvipc
+Date: Fri, 24 Oct 2025 20:24:08 +0530
+Message-Id: <20251024145411.3500452-1-s.sebinraj@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Sync_PCI_ids_with_kernel=3A?=
- =?utf-8?q?_split_BMG_to_BMG-G21_and_add_NVL-S?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 24 Oct 2025 14:30:45 -0000
-Message-ID: <176131624520.51928.17124085343835327933@97596180aaec>
-X-Patchwork-Hint: ignore
-References: <20251024121517.73013-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20251024121517.73013-1-kamil.konieczny@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,157 +63,32 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8928767699757499024==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Check for System V IPC support in kms_concurrent test to handle
+targets that don't have it enabled in their kernel.
 
-== Series Details ==
+Without this the test fails in systems that run Android or the
+ones which doesn't have SYSVIPC support.
 
-Series: Sync PCI ids with kernel: split BMG to BMG-G21 and add NVL-S
-URL   : https://patchwork.freedesktop.org/series/156479/
-State : success
+Snapshot of the error when tested with Intel Xe GPU, Target (PTL):
+CRITICAL: Test assertion failure function msgqueue_init,
+          file external/igt-gpu-tools/lib/intel_allocator_msgchannel.c:66:
+CRITICAL: Failed assertion: msgctl(queue, IPC_STAT, &qstat) == 0
+CRITICAL: Last errno: 38, Function not implemented 
 
-== Summary ==
+S Sebinraj (3):
+  lib/intel_allocator: Add SYSVIPC support check
+  tests/kms_concurrent: Fix for msg_queue failure
+  tests/api_intel_allocator: Check if multiprocess is supported
 
-CI Bug Log - changes from XEIGT_8596_BAT -> XEIGTPW_13939_BAT
-====================================================
+ lib/intel_allocator.c             | 37 ++++++++++++++++++++++++++++---
+ lib/intel_allocator.h             |  4 ++--
+ tests/intel/api_intel_allocator.c |  3 ++-
+ tests/kms_concurrent.c            |  3 ++-
+ 4 files changed, 40 insertions(+), 7 deletions(-)
 
-Summary
--------
+-- 
+2.43.0
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (12 -> 13)
-------------------------------
-
-  Additional (1): bat-bmg-3 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13939_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_create@multigpu-create-massive-size:
-    - bat-bmg-3:          NOTRUN -> [SKIP][1] ([Intel XE#2504])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13939/bat-bmg-3/igt@xe_create@multigpu-create-massive-size.html
-
-  * igt@xe_eudebug@multigpu-basic-client:
-    - bat-bmg-3:          NOTRUN -> [SKIP][2] ([Intel XE#4837]) +1 other test skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13939/bat-bmg-3/igt@xe_eudebug@multigpu-basic-client.html
-
-  * igt@xe_peer2peer@read:
-    - bat-bmg-3:          NOTRUN -> [FAIL][3] ([Intel XE#6433]) +3 other tests fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13939/bat-bmg-3/igt@xe_peer2peer@read.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#2504]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2504
-  [Intel XE#4837]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837
-  [Intel XE#6433]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6433
-
-
-Build changes
--------------
-
-  * IGT: IGT_8596 -> IGTPW_13939
-  * Linux: xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4 -> xe-3981-1e54d2c469a91e00a39ff7f6b98c31d290245ecf
-
-  IGTPW_13939: f65d9338edcddfc18205a143d5c150f9fc8782ea @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8596: 8596
-  xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4: e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4
-  xe-3981-1e54d2c469a91e00a39ff7f6b98c31d290245ecf: 1e54d2c469a91e00a39ff7f6b98c31d290245ecf
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13939/index.html
-
---===============8928767699757499024==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Sync PCI ids with kernel: split BMG to BMG-G21 and add NVL-S</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/156479/">https://patchwork.freedesktop.org/series/156479/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13939/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13939/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8596_BAT -&gt; XEIGTPW_13939_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 13)</h2>
-<p>Additional (1): bat-bmg-3 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13939_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_create@multigpu-create-massive-size:</p>
-<ul>
-<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13939/bat-bmg-3/igt@xe_create@multigpu-create-massive-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2504">Intel XE#2504</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_eudebug@multigpu-basic-client:</p>
-<ul>
-<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13939/bat-bmg-3/igt@xe_eudebug@multigpu-basic-client.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837">Intel XE#4837</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_peer2peer@read:</p>
-<ul>
-<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13939/bat-bmg-3/igt@xe_peer2peer@read.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6433">Intel XE#6433</a>) +3 other tests fail</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8596 -&gt; IGTPW_13939</li>
-<li>Linux: xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4 -&gt; xe-3981-1e54d2c469a91e00a39ff7f6b98c31d290245ecf</li>
-</ul>
-<p>IGTPW_13939: f65d9338edcddfc18205a143d5c150f9fc8782ea @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8596: 8596<br />
-  xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4: e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4<br />
-  xe-3981-1e54d2c469a91e00a39ff7f6b98c31d290245ecf: 1e54d2c469a91e00a39ff7f6b98c31d290245ecf</p>
-
-</body>
-</html>
-
---===============8928767699757499024==--
