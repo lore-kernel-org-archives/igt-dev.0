@@ -4,55 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DAC9CCD1BF
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Oct 2025 08:27:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBFAACCD1A5
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Oct 2025 08:52:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 44C5B10E0DB;
-	Fri, 24 Oct 2025 08:27:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6F50B10E1A1;
+	Fri, 24 Oct 2025 08:52:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ir5MxHPx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HyQFE9F6";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2813810E0DB
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Oct 2025 08:27:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E2C910E1A1
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Oct 2025 08:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761294426; x=1792830426;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=qHf10GqIal/1WFz/OzvvHVBrNdYbMe1NHjaphmJ78AY=;
- b=Ir5MxHPxK2jYjkCYu38S7mx9yS+jxfr1shPX0eN/5ec+oqphBtZqHa0D
- DhrR48LRXp8Qm70FM4gcWNLOqTxbejFUS+C7ki4LSX0k9YWx5s2aCu8Wf
- RckSUyxE9hpgzh+wOcZAuWLVlDHrx5fze+K7bmNnbtx1ScNdn1ZdMDaVC
- UTiLMHasMA4JSi5Ka6G9imfUsTXRscDkykzIOI/TXWzynJjSFh/6eAfVx
- S/5NHG2vr/qSjx+2zHvvVUQ9rzxrJ1wW6iMbMoxRFlrUMa54coA1zFGl+
- YnmjLzCWbxEel5FITx9tmiKzT6YCxlimrt6oygII7Sm1Eu9AYwr+3+MKE A==;
-X-CSE-ConnectionGUID: 2axE9/57Qmip+StXsWSy0Q==
-X-CSE-MsgGUID: UiPaUwQXQrawnZhGiFdMiQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74819395"
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="74819395"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2025 01:27:06 -0700
-X-CSE-ConnectionGUID: mkDtZPqMS5Ga0tawuhEIsw==
-X-CSE-MsgGUID: HR3D56NbTAKR6pqTjDITjA==
+ t=1761295960; x=1792831960;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=yAIetTu5SSB/rZvZGNBsYF8/eJ583e3eWayiwD0k4Xs=;
+ b=HyQFE9F60QkXuuVvVs4fKGXTcdGVZIrmh4HTkZopQfN08ppPQ4Lr+C3v
+ vBaOAELnnUVJDSVO5b6JfGWqOITotYRvcSEkcKVxJOqs7g5tIcP1yXRNl
+ cfV+9jDSRua+wWDT6L9tCCMyDN59ba2hE6g49Dvvzj3tDGIlbL6eXP4iw
+ JKBpa8NNzf3Khgf7dNP9Bck4k0zMtgsu1uQrdzQ50E8Akbd5eQqTJi3zV
+ S0PksTOXvoooWXdd1ptyYHVMdx5/Efs41F3xgen0CYyvE0RmI1Egrc0IF
+ SyI6x/rzDPxdDfPB/JaNwBzQtkcZ8RBysjoOimAZRyNm1mbERqULWkQX9 A==;
+X-CSE-ConnectionGUID: +krjjXGVS0eDTKEuM6r4FA==
+X-CSE-MsgGUID: FVfB5ymtQcCd9BG4vACIrw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="80910461"
+X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="80910461"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Oct 2025 01:52:39 -0700
+X-CSE-ConnectionGUID: pw0f/PZFRvKbcgCM+Axz9g==
+X-CSE-MsgGUID: HwYjUyIjTiWMc6QX9F4w4A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="185150375"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.85])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2025 01:27:05 -0700
-From: Pawel Sikora <pawel.sikora@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v12 6/6] gitlab-ci: Add MkDocs documentation support
-Date: Fri, 24 Oct 2025 10:26:25 +0200
-Message-ID: <20251024082628.1118783-7-pawel.sikora@intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251024082628.1118783-1-pawel.sikora@intel.com>
-References: <20251024082628.1118783-1-pawel.sikora@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="189506488"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.46])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Oct 2025 01:52:37 -0700
+Date: Fri, 24 Oct 2025 10:52:34 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: S Sebinraj <s.sebinraj@intel.com>
+Cc: igt-dev@lists.freedesktop.org, jeevaka.badrappan@intel.com, 
+ kamil.konieczny@intel.com
+Subject: Re: [PATCH i-g-t v7 1/3] lib/intel_allocator: Add SYSVIPC support
+ check
+Message-ID: <qi5zts5dskwtgcs64gnitt57ljgotw3xgtvkcd4eadysf5oe55@m27hjejs5ddt>
+References: <20251023063113.3485132-1-s.sebinraj@intel.com>
+ <20251023063113.3485132-2-s.sebinraj@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251023063113.3485132-2-s.sebinraj@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,65 +72,129 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This commit ensures two things:
+On Thu, Oct 23, 2025 at 12:01:11PM +0530, S Sebinraj wrote:
+> Check for System V IPC support in kms_concurrent test to handle
+> targets that don't have SYSVIPC enabled in their kernel. Without this
+> check, the test would fail with assertion errors when trying to use
+> message queues.
+> 
+> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
+> ---
+>  lib/intel_allocator.c | 39 ++++++++++++++++++++++++++++++++++++---
+>  lib/intel_allocator.h |  4 ++--
+>  2 files changed, 38 insertions(+), 5 deletions(-)
+> 
+> diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
+> index d22c70f1f..6664b004a 100644
+> --- a/lib/intel_allocator.c
+> +++ b/lib/intel_allocator.c
+> @@ -250,6 +250,20 @@ static struct allocator *__allocator_find(int fd, uint32_t ctx, uint32_t vm)
+>  	return igt_map_search(map, &al);
+>  }
+>  
+> +/**
+> + * Checks if the current system supports SYSVIPC by verifying the existence and accessibility
+> + * of the /proc/sysvipc directory.
+> + * Returns: true if accessible for read and write, false otherwise.
+> + */
+> +static bool system_supports_sysvipc(void)
+> +{
+> +	if (access("/proc/sysvipc", R_OK | W_OK) == 0)
+> +		return true;
+> +
+> +	alloc_debug("SYSVIPC not supported, cannot access /proc/sysvipc\n");
+> +	return false;
+> +}
+> +
+>  static struct allocator *__allocator_find_by_handle(uint64_t handle)
+>  {
+>  	struct handle_entry *h, he = { .handle = handle };
+> @@ -803,12 +817,17 @@ static void *allocator_thread_loop(void *data)
+>   * How to separate initialization steps take a look into api_intel_allocator.c
+>   * fork_simple_stress() function.
+>   */
+> -void __intel_allocator_multiprocess_prepare(void)
+> +bool __intel_allocator_multiprocess_prepare(void)
+>  {
+>  	intel_allocator_init();
+>  
+> +	if (!channel) {
+> +		return false;
+> +	}
+> +
 
- * The API reference manual is built and copied to
-   the MkDocs documentation directory.
+Unnecessary curly braces.
 
- * The MkDocs documentation (from the docs directory)
-   is also built.
+>  	multiprocess = true;
+>  	channel->init(channel);
+> +	return true;
+>  }
+>  
+>  #define START_TIMEOUT_MS 100
+> @@ -839,14 +858,21 @@ void __intel_allocator_multiprocess_start(void)
+>   *
+>   * Note. This destroys all previously created allocators and theirs content.
+>   */
+> -void intel_allocator_multiprocess_start(void)
+> +bool intel_allocator_multiprocess_start(void)
+>  {
+>  	alloc_info("allocator multiprocess start\n");
+>  
+>  	igt_assert_f(child_pid == -1,
+>  		     "Allocator thread can be spawned only in main IGT process\n");
+> -	__intel_allocator_multiprocess_prepare();
+> +
+> +	if(!__intel_allocator_multiprocess_prepare()) {
 
-As a result, the existing API reference manual will still be
-available via an internal link in the MkDocs documentation.
-(Note: the API reference retains original theme for now)
+Missing space after if.
 
-A relative link to api_reference/index.html is included
-in the MkDocs navigation. This file will be generated
-by the deploy job after the API reference manual is built.
+With nits addressed:
 
-After both builds are complete, all content will be copied
-into the site directory and then manually moved into
-public, for hosting on freedesktop GitLab Pages.
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
----
- .gitlab-ci.yml | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+--
+Zbigniew
 
-diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-index fb5713fba..c25e1c8dc 100644
---- a/.gitlab-ci.yml
-+++ b/.gitlab-ci.yml
-@@ -75,12 +75,15 @@ build:tests-fedora:
-   stage: build
-   script:
-     - meson setup --prefix=/opt/igt $MESON_OPTIONS build
-+    - pip install -r docs/requirements-docs.txt
-     - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
-     - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
-+    - mkdocs build
-     - DESTDIR="$PWD/installdir" ninja -C build install
-   artifacts:
-     paths:
-       - build
-+      - site
-       - installdir
- 
- build:tests-fedora-no-libunwind:
-@@ -241,8 +244,11 @@ pages:
-     - build:tests-fedora
-   stage: deploy
-   script:
--    - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
--    - cp -r build/docs/reference/igt-gpu-tools/html public
-+    - pip install -r docs/requirements-docs.txt
-+    - mkdir -p docs/api_reference
-+    - cp -r build/docs/reference/igt-gpu-tools/html/* docs/api_reference
-+    - mkdocs build
-+    - cp -r site public
-   artifacts:
-     paths:
-       - public
--- 
-2.51.0
-
+> +		igt_warn("System does not support multiprocess mode\n");
+> +		return false;
+> +	}
+> +
+>  	__intel_allocator_multiprocess_start();
+> +
+> +	return true;
+>  }
+>  
+>  /**
+> @@ -1678,6 +1704,13 @@ void intel_allocator_init(void)
+>  	__free_maps(vm_map, false);
+>  	__free_ahnd_map();
+>  
+> +	if (!system_supports_sysvipc()) {
+> +		alloc_debug("System doesn't support SysV IPC, "
+> +			   "multiprocess mode unsupported\n");
+> +		channel = NULL;
+> +		return;
+> +	}
+> +
+>  	atomic_init(&next_handle, 1);
+>  	handles = igt_map_create(hash_handles, equal_handles);
+>  	ctx_map = igt_map_create(hash_instance, equal_ctx);
+> diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
+> index 4b6292f06..9cd83ea27 100644
+> --- a/lib/intel_allocator.h
+> +++ b/lib/intel_allocator.h
+> @@ -164,9 +164,9 @@ struct intel_allocator {
+>  };
+>  
+>  void intel_allocator_init(void);
+> -void __intel_allocator_multiprocess_prepare(void);
+> +bool __intel_allocator_multiprocess_prepare(void);
+>  void __intel_allocator_multiprocess_start(void);
+> -void intel_allocator_multiprocess_start(void);
+> +bool intel_allocator_multiprocess_start(void);
+>  void intel_allocator_multiprocess_stop(void);
+>  
+>  uint64_t intel_allocator_open(int fd, uint32_t ctx, uint8_t allocator_type);
+> -- 
+> 2.43.0
+> 
