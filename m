@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A21FCCD1AB
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Oct 2025 08:55:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AE19CCD1AB
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Oct 2025 09:02:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E644E10E9FE;
-	Fri, 24 Oct 2025 08:55:19 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="O+fHQEhO";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4690210E9FE
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Oct 2025 08:55:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761296119; x=1792832119;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=8E3VApxmpfbuu0ehpjD0A6X58eI+Isfxb7fOOlP6OFM=;
- b=O+fHQEhOd4kmHtBPba91GN79bv1j6y1Nm3wNApvoIQSKsPD8K9KtO+NQ
- c8jRuyFqQrDJV5rgB5tRstTWTvQq69dCqYjadAdTzPYaufVlLW3pyBx4P
- l/GS/Rg5ZEHfmheoyvJaM7Bb5QyLSToCYCZVfd0+d6eYjHzOcorvogzhd
- RBFaov6Sl1rrkN2FW+XI+6uuIN7DRjPSVKwCn/iQES+OXtwKoPo5rijCI
- 5rnolkj0+C8uuOzfVNnsTSEHh+AF4Y+8XRbMLlrk920T2Y7OcyhXaz2kH
- WeCSWK2A67sRWa46Ev9PVR9vMyWa0xfV9Xg8eyesszlR2LfzJ+0eZfUPz g==;
-X-CSE-ConnectionGUID: 41jmSYVEQF63SR4AJ0B1OA==
-X-CSE-MsgGUID: vLbguuQwRyi/5g57y/tUhQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="66092269"
-X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="66092269"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2025 01:55:15 -0700
-X-CSE-ConnectionGUID: 2jVLgNRWT8q1Filf+kCQgQ==
-X-CSE-MsgGUID: Nzg4mqeCR4WOMajYdhpK/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="215038220"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
- ([10.245.245.46])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2025 01:55:14 -0700
-Date: Fri, 24 Oct 2025 10:55:11 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: S Sebinraj <s.sebinraj@intel.com>
-Cc: igt-dev@lists.freedesktop.org, jeevaka.badrappan@intel.com, 
- kamil.konieczny@intel.com
-Subject: Re: [PATCH i-g-t v7 3/3] tests/api_intel_allocator: Check if
- multiprocess is supported
-Message-ID: <2wfo32b7ddovw4rtkhrepwcrmfn5cds5lvzsxnl65cved5aasx@i4lm4mq3addr>
-References: <20251023063113.3485132-1-s.sebinraj@intel.com>
- <20251023063113.3485132-4-s.sebinraj@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0126010E1A1;
+	Fri, 24 Oct 2025 09:02:05 +0000 (UTC)
+Received: from 97596180aaec (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 00AA410E1A1;
+ Fri, 24 Oct 2025 09:02:03 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2288990295170271886=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251023063113.3485132-4-s.sebinraj@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fpm=3A_Test?=
+ =?utf-8?q?_to_validate_vram-sr_through_Mods_during_host_s2idle_=28rev5=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Soham Purkait" <soham.purkait@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 24 Oct 2025 09:02:03 -0000
+Message-ID: <176129652399.50821.13703309597335725134@97596180aaec>
+X-Patchwork-Hint: ignore
+References: <20251024080135.3731155-1-soham.purkait@intel.com>
+In-Reply-To: <20251024080135.3731155-1-soham.purkait@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,41 +37,157 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Oct 23, 2025 at 12:01:13PM +0530, S Sebinraj wrote:
-> Check if multiprocess is supported and if not, skip fork_simple_stress()
-> for targets that don't have SYSVIPC enabled in their kernel.
-> Without this check, the test would fail with assertion errors when
-> trying to use message queues.
-> 
-> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
-> ---
->  tests/intel/api_intel_allocator.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel/api_intel_allocator.c b/tests/intel/api_intel_allocator.c
-> index 15ba4828c..773c247db 100644
-> --- a/tests/intel/api_intel_allocator.c
-> +++ b/tests/intel/api_intel_allocator.c
-> @@ -487,7 +487,8 @@ static void fork_simple_stress(int fd, bool two_level_inception)
->  	uint64_t ahnd0, ahnd1;
->  	bool are_empty;
->  
-> -	__intel_allocator_multiprocess_prepare();
-> +	igt_require_f(__intel_allocator_multiprocess_prepare(),
-> +			"System does not support SYSVIPC, multiprocess mode unsupported\n");
+--===============2288990295170271886==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Same as in previous patch, check indentation. With this addressed:
+== Series Details ==
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Series: tests/intel/xe_pm: Test to validate vram-sr through Mods during host s2idle (rev5)
+URL   : https://patchwork.freedesktop.org/series/149731/
+State : success
 
---
-Zbigniew
->  
->  	igt_fork(child, 8) {
->  		if (two_level_inception) {
-> -- 
-> 2.43.0
-> 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8596_BAT -> XEIGTPW_13937_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 13)
+------------------------------
+
+  Additional (1): bat-bmg-3 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13937_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_create@multigpu-create-massive-size:
+    - bat-bmg-3:          NOTRUN -> [SKIP][1] ([Intel XE#2504])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13937/bat-bmg-3/igt@xe_create@multigpu-create-massive-size.html
+
+  * igt@xe_eudebug@multigpu-basic-client:
+    - bat-bmg-3:          NOTRUN -> [SKIP][2] ([Intel XE#4837]) +1 other test skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13937/bat-bmg-3/igt@xe_eudebug@multigpu-basic-client.html
+
+  * igt@xe_peer2peer@read:
+    - bat-bmg-3:          NOTRUN -> [FAIL][3] ([Intel XE#6433]) +3 other tests fail
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13937/bat-bmg-3/igt@xe_peer2peer@read.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#2504]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2504
+  [Intel XE#4837]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837
+  [Intel XE#6433]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6433
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8596 -> IGTPW_13937
+  * Linux: xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4 -> xe-3979-413d17c6dcb8f50d17083bd1b15258f97282cdd7
+
+  IGTPW_13937: 13937
+  IGT_8596: 8596
+  xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4: e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4
+  xe-3979-413d17c6dcb8f50d17083bd1b15258f97282cdd7: 413d17c6dcb8f50d17083bd1b15258f97282cdd7
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13937/index.html
+
+--===============2288990295170271886==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_pm: Test to validate vram-sr through Mods during host s2idle (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149731/">https://patchwork.freedesktop.org/series/149731/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13937/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13937/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8596_BAT -&gt; XEIGTPW_13937_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 13)</h2>
+<p>Additional (1): bat-bmg-3 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13937_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_create@multigpu-create-massive-size:</p>
+<ul>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13937/bat-bmg-3/igt@xe_create@multigpu-create-massive-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2504">Intel XE#2504</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_eudebug@multigpu-basic-client:</p>
+<ul>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13937/bat-bmg-3/igt@xe_eudebug@multigpu-basic-client.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837">Intel XE#4837</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_peer2peer@read:</p>
+<ul>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13937/bat-bmg-3/igt@xe_peer2peer@read.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6433">Intel XE#6433</a>) +3 other tests fail</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8596 -&gt; IGTPW_13937</li>
+<li>Linux: xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4 -&gt; xe-3979-413d17c6dcb8f50d17083bd1b15258f97282cdd7</li>
+</ul>
+<p>IGTPW_13937: 13937<br />
+  IGT_8596: 8596<br />
+  xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4: e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4<br />
+  xe-3979-413d17c6dcb8f50d17083bd1b15258f97282cdd7: 413d17c6dcb8f50d17083bd1b15258f97282cdd7</p>
+
+</body>
+</html>
+
+--===============2288990295170271886==--
