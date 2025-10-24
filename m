@@ -4,59 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29E02CCD1AB
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Oct 2025 08:13:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDADECCD1BF
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Oct 2025 08:14:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C2D5B10E9FC;
-	Fri, 24 Oct 2025 08:13:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A9F1710E9FC;
+	Fri, 24 Oct 2025 08:14:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Bo/vFIvo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aUSK406f";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7AA7E10E9FC
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Oct 2025 08:13:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D8D210E9FC
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Oct 2025 08:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761293598; x=1792829598;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=a75248JvAoDZXOAXLbcDXsXKFama4FN6O4b0aEKQ62c=;
- b=Bo/vFIvohqerywc2lFt5VJBXmISi4kMVudFoLoUDHz35zs/loiAvkc7i
- RcPz4DXRADnsp2logzBr+XlPsF11qNND1F1M/A6iKxYRpsuOyNsGGcVRH
- +jWcdtDRxG5jKp82KTtT/VodCanK2BxQXFGdceFakgnkXnrY/pD99k00H
- oCIa7QY0csQIl30Y+LnQQF/L5z0pUKijeJb3UI4Bt1hQAapy4MHHqCowh
- HYRBnv0h5G73YrCdtbkRpXOsYPVEXPUZ3DcrGzVBPpkTYaRmjycWNd9MQ
- njqC69f14qjIgn++IOTCEN0dpDFZ3vCNXOl+9aFwPAUd8O0Cm7CQsRqHc g==;
-X-CSE-ConnectionGUID: 3DFN7I5XTQyQoN1/F8MRtQ==
-X-CSE-MsgGUID: T5smQ+1mTVuNZdhe/8QQsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63397400"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="63397400"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2025 01:13:09 -0700
-X-CSE-ConnectionGUID: YEEgCnj9Rlmz01vTM2pZ3g==
-X-CSE-MsgGUID: AS2YkGQuSRivkJdZtPY+Pw==
+ t=1761293678; x=1792829678;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=1kid0UYCdb/W0em6+ptLHDl07uSFfFOdwYg2/Zc6pmU=;
+ b=aUSK406ffEe84Eua7yD6g0lyRQgJdzp7TFJOEgSKC1zE6C7p/LcpSpHP
+ RVVZqtRRDz5Kypzh2uPNYMTLGA3VF9i1TbB7W0Foinzc397W/Vh+Lh5UB
+ wrjMEAABvqLDThvsjvTmu8f6yXp7czRH/Q5PpW54fNEJq5HesAL2fC0uC
+ D4Ke4V3gHBa+rAPx2lvON/RP+OteKox66nfb/pD1jMw2Bk0VK6tffAIE1
+ BKwyQeLWAvrjELKoukN8mRr1Uva8GAvO3NDy6boG7gD/Uk6POeckgDj//
+ 9mXZ1rqbdfMpNzvd0MQsilomYDycALrh1CCFABNowqhQtxDYvUH+m948G Q==;
+X-CSE-ConnectionGUID: QUasttGgSxmcUiE9U9LBXg==
+X-CSE-MsgGUID: l+yXyXYbQMuLeXsrOpLmog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62682759"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="62682759"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Oct 2025 01:14:38 -0700
+X-CSE-ConnectionGUID: ozmwUZLsRzOM94DKEoFc4g==
+X-CSE-MsgGUID: LwR9DYZ1TteHXVDv0jbf/Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="184751103"
-Received: from pmaziews-mobl1.ger.corp.intel.com (HELO [10.94.249.25])
- ([10.94.249.25])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2025 01:13:07 -0700
-Message-ID: <ba3e07c1-9527-44b9-95e1-29c8f4a3a14d@linux.intel.com>
-Date: Fri, 24 Oct 2025 10:13:01 +0200
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="183599771"
+Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Oct 2025 01:14:35 -0700
+From: Soham Purkait <soham.purkait@intel.com>
+To: igt-dev@lists.freedesktop.org, sk.anirban@intel.com, riana.tauro@intel.com,
+ badal.nilawar@intel.com
+Cc: karthik.poosa@intel.com, anshuman.gupta@intel.com, soham.purkait@intel.com
+Subject: [PATCH i-g-t v4] tests/intel/xe_pm: Test to validate vram-sr through
+ Mods during host s2idle
+Date: Fri, 24 Oct 2025 13:31:35 +0530
+Message-Id: <20251024080135.3731155-1-soham.purkait@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_i915=2ECI=2EFull=3A_failure_for_tests/int?=
- =?UTF-8?Q?el/xe=5Fsriov=5Fauto=5Fprovisioning=3A_Add_restore=5Fauto=5Fprovi?=
- =?UTF-8?Q?sioning_tests?=
-To: igt-dev@lists.freedesktop.org, lgci.bug.filing@intel.com
-References: <20251023203233.592113-1-marcin.bernatowicz@linux.intel.com>
- <176129332777.50546.16990825399766919825@97596180aaec>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <176129332777.50546.16990825399766919825@97596180aaec>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,102 +67,193 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Add test to validate vram-sr through Mods during host s2idle. It checks
+whether vram self refresh capability is supported through debugfs node and
+then introduce host s2idle to check ModS residency to confirm vram self
+refresh capability upon success.
 
-On 10/24/2025 10:08 AM, Patchwork wrote:
-> == Series Details ==
->
-> Series: tests/intel/xe_sriov_auto_provisioning: Add restore_auto_provisioning tests
-> URL   : https://patchwork.freedesktop.org/series/156445/
-> State : failure
->
-> == Summary ==
->
-> CI Bug Log - changes from IGT_8596_full -> IGTPW_13936_full
-> ====================================================
->
-> Summary
-> -------
->
->    **FAILURE**
->
->    Serious unknown changes coming with IGTPW_13936_full absolutely need to be
->    verified manually.
->    
->    If you think the reported changes have nothing to do with the changes
->    introduced in IGTPW_13936_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->    to document this new failure mode, which will reduce false positives in CI.
->
->    External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13936/index.html
->
-> Participating hosts (11 -> 11)
-> ------------------------------
->
->    No changes in participating hosts
->
-> Possible new issues
-> -------------------
->
->    Here are the unknown changes that may have been introduced in IGTPW_13936_full:
->
-> ### IGT changes ###
->
-> #### Possible regressions ####
->
->    * igt@kms_plane_multiple@tiling-x:
->      - shard-dg1:          NOTRUN -> [FAIL][1] +4 other tests fail
->     [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13936/shard-dg1-16/igt@kms_plane_multiple@tiling-x.html
+v1:
+ - Define macros at the top. (Anirban)
+v2:
+ - gtidle no longer exists. (Anirban)
+ - Skip test if the system is not VRSR-capable. (Anirban)
+ - Release bo to avoid resource leaking. (Anirban)
+v3:
+ - Add VRSR capability check flag as "Y". (Anirban)
 
-Not related to the change.
+Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+---
+ tests/intel/xe_pm.c | 105 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 105 insertions(+)
 
---
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index 1db28a899..322a29199 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -10,10 +10,12 @@
+  * Sub-category: Suspend-resume tests
+  * Test category: functionality test
+  */
++#include <ctype.h>
+ 
+ #include <dirent.h>
+ #include <limits.h>
+ #include <fcntl.h>
++#include <stddef.h>
+ #include <string.h>
+ #include <sys/ioctl.h>
+ 
+@@ -48,6 +50,9 @@
+ #define I2C_AMC_ADDR	0x40
+ #define I2C_AMC_REG	0x00
+ 
++#define XE_BO_SIZE (350 * 1024 * 1024)
++#define MODS_PREFIX "ModS"
++
+ enum mem_op {
+ 	READ,
+ 	WRITE,
+@@ -55,6 +60,7 @@ enum mem_op {
+ 
+ typedef struct {
+ 	int fd_xe;
++	int debugfs_dir;
+ 	struct pci_device *pci_xe;
+ 	struct pci_device *pci_root;
+ 	char pci_slot_name[NAME_MAX];
+@@ -423,6 +429,46 @@ child_exec(void *arguments)
+ 	return NULL;
+ }
+ 
++static char *read_content_line(const char *content, const char *prefix)
++{
++	const char *line_start = content;
++	char line[1024];
++	char *result;
++	size_t len;
++
++	while (*line_start) {
++		const char *line_end = strchr(line_start, '\n');
++		size_t line_len = line_end ? (size_t)(line_end - line_start) : strlen(line_start);
++
++		if (line_len >= sizeof(line))
++			line_len = sizeof(line) - 1;
++
++		memcpy(line, line_start, line_len);
++		line[line_len] = '\0';
++
++		if (strstr(line, prefix)) {
++			char *colon = strchr(line, ':');
++
++			if (colon) {
++				colon++;
++				while (isspace((unsigned char)*colon))
++					colon++;
++
++				result = strdup(colon);
++				len = strlen(result);
++				if (len > 0 && result[len - 1] == '\n')
++					result[len - 1] = '\0';
++
++				return result;
++			}
++		}
++		line_start = line_end ? line_end + 1 : NULL;
++		if (!line_start)
++			break;
++	}
++	return NULL;
++}
++
+ /**
+  * SUBTEST: %s-basic
+  * Description: test CPU/GPU in and out of s/d state from %arg[1]
+@@ -871,6 +917,57 @@ static void i2c_test(device_t device, int sysfs_fd, enum igt_acpi_d_state d_stat
+ 	close(i2c_fd);
+ }
+ 
++/**
++ * SUBTEST: vrsr-capability-during-host-s2idle
++ * Functionality: pm - vram-sr
++ * Description: Test to validate vram self refresh through
++ * ModS residency counter during host s2idle
++ */
++static void test_vrsr_capability_during_host_s2idle(device_t device)
++{
++	u32 bo, placement;
++	u64 s2idle_start_mods, s2idle_end_mods;
++	int ret;
++	char buf[4096] = {0};
++	char *result;
++	void *map;
++
++	ret = igt_debugfs_simple_read(device.debugfs_dir, "vrsr_capable", buf, sizeof(buf));
++	igt_skip_on_f(ret < 0, "vrsr_capable node is not present in debugfs.\n");
++	igt_skip_on_f(!strstr(buf, "Y"), "VRSR capability is not supported.\n");
++
++	placement = vram_memory(device.fd_xe, 0);
++	bo = xe_bo_create(device.fd_xe, 0, XE_BO_SIZE, placement, 0);
++	map = xe_bo_map(device.fd_xe, bo, XE_BO_SIZE);
++	memset(map, 0, XE_BO_SIZE);
++
++	ret = igt_debugfs_simple_read(device.debugfs_dir, "dgfx_pkg_residencies",
++				      buf, sizeof(buf));
++	igt_assert_f(ret >= 0, "cannot read dgfx_pkg_residencies.\n");
++
++	result = read_content_line(buf, MODS_PREFIX);
++	igt_assert(result);
++	s2idle_start_mods = (uint64_t)strtoull(result, NULL, 10);
++	free(result);
++
++	igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
++	munmap(map, XE_BO_SIZE);
++	memset(buf, 0, sizeof(buf));
++
++	ret = igt_debugfs_simple_read(device.debugfs_dir, "dgfx_pkg_residencies",
++				      buf, sizeof(buf));
++	igt_assert_f(ret >= 0, "cannot read dgfx_pkg_residencies.\n");
++
++	result = read_content_line(buf, MODS_PREFIX);
++	igt_assert(result);
++	s2idle_end_mods = (uint64_t)strtoull(result, NULL, 10);
++	free(result);
++
++	gem_close(device.fd_xe, bo);
++
++	igt_assert(s2idle_start_mods != s2idle_end_mods);
++}
++
+ igt_main
+ {
+ 	device_t device;
+@@ -908,6 +1005,8 @@ igt_main
+ 	igt_fixture {
+ 		memset(&device, 0, sizeof(device));
+ 		device.fd_xe = drm_open_driver(DRIVER_XE);
++		device.debugfs_dir = igt_debugfs_dir(device.fd_xe);
++		igt_assert(device.debugfs_dir >= 0);
+ 		device.pci_xe = igt_device_get_pci_device(device.fd_xe);
+ 		device.pci_root = igt_device_get_pci_root_port(device.fd_xe);
+ 		igt_device_get_pci_slot_name(device.fd_xe, device.pci_slot_name);
+@@ -1052,12 +1151,18 @@ igt_main
+ 		test_vram_d3cold_threshold(device, sysfs_fd);
+ 	}
+ 
++	igt_describe("Validate VRAM self refresh capability during host s2idle");
++	igt_subtest("vrsr-capability-during-host-s2idle") {
++		test_vrsr_capability_during_host_s2idle(device);
++	}
++
+ 	igt_fixture {
+ 		close(sysfs_fd);
+ 		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
+ 		if (has_runtime_pm)
+ 			igt_restore_runtime_pm();
+ 		drmModeFreeResources(device.res);
++		close(device.debugfs_dir);
+ 		drm_close_driver(device.fd_xe);
+ 	}
+ }
+-- 
+2.34.1
 
-marcin
-
->    
-> New tests
-> ---------
->
->    New tests have been introduced between IGT_8596_full and IGTPW_13936_full:
->
-> ### New IGT tests (5) ###
->
->    * igt@kms_cursor_crc@cursor-onscreen-128x42@pipe-c-hdmi-a-2:
->      - Statuses : 1 pass(s)
->      - Exec time: [2.42] s
->
->    * igt@kms_cursor_crc@cursor-onscreen-256x256@pipe-c-hdmi-a-2:
->      - Statuses : 1 pass(s)
->      - Exec time: [2.42] s
->
->    * igt@kms_cursor_crc@cursor-random-256x256@pipe-c-hdmi-a-2:
->      - Statuses : 1 pass(s)
->      - Exec time: [4.07] s
->
->    * igt@kms_cursor_crc@cursor-sliding-128x128@pipe-c-hdmi-a-2:
->      - Statuses : 1 pass(s)
->      - Exec time: [3.92] s
->
->    * igt@kms_plane_alpha_blend@alpha-basic@pipe-c-hdmi-a-2:
->      - Statuses : 1 pass(s)
->      - Exec time: [2.89] s
->
->    
->
-> Known issues
-> ------------
-[...]
-> Build changes
-> -------------
->
->    * CI: CI-20190529 -> None
->    * IGT: IGT_8596 -> IGTPW_13936
->
->    CI-20190529: 20190529
->    CI_DRM_17415: c63ccee28ae7ab4cb57a2433314f08c71da914ff @ git://anongit.freedesktop.org/gfx-ci/linux
->    IGTPW_13936: 13936
->    IGT_8596: 8596
->
-> == Logs ==
->
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13936/index.html
->
