@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBFAACCD1A5
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Oct 2025 08:52:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6937ACCD1AB
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Oct 2025 08:53:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6F50B10E1A1;
-	Fri, 24 Oct 2025 08:52:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 046CB10E1A1;
+	Fri, 24 Oct 2025 08:53:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HyQFE9F6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F29AuIWx";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E2C910E1A1
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Oct 2025 08:52:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2073810E1A1
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Oct 2025 08:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761295960; x=1792831960;
+ t=1761296030; x=1792832030;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=yAIetTu5SSB/rZvZGNBsYF8/eJ583e3eWayiwD0k4Xs=;
- b=HyQFE9F60QkXuuVvVs4fKGXTcdGVZIrmh4HTkZopQfN08ppPQ4Lr+C3v
- vBaOAELnnUVJDSVO5b6JfGWqOITotYRvcSEkcKVxJOqs7g5tIcP1yXRNl
- cfV+9jDSRua+wWDT6L9tCCMyDN59ba2hE6g49Dvvzj3tDGIlbL6eXP4iw
- JKBpa8NNzf3Khgf7dNP9Bck4k0zMtgsu1uQrdzQ50E8Akbd5eQqTJi3zV
- S0PksTOXvoooWXdd1ptyYHVMdx5/Efs41F3xgen0CYyvE0RmI1Egrc0IF
- SyI6x/rzDPxdDfPB/JaNwBzQtkcZ8RBysjoOimAZRyNm1mbERqULWkQX9 A==;
-X-CSE-ConnectionGUID: +krjjXGVS0eDTKEuM6r4FA==
-X-CSE-MsgGUID: FVfB5ymtQcCd9BG4vACIrw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="80910461"
-X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="80910461"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2025 01:52:39 -0700
-X-CSE-ConnectionGUID: pw0f/PZFRvKbcgCM+Axz9g==
-X-CSE-MsgGUID: HwYjUyIjTiWMc6QX9F4w4A==
+ bh=SnqxzcF7uQkX6EaHHcMRgrumVD9tjVrfqvwKg8mWoyM=;
+ b=F29AuIWx8mJd6VRRJiULHEq7vPjMxxVvb6x6Xo+dKR4+YODBNQIPYZLy
+ yE57Nhzbz3QKbxo5bgTgn5Y5ikVR/Ao7CuRtzGU2u4EQo75HiBmXGPsHf
+ RxvleEfFSrnXm4HrjUaWb0owD0HY8FZ5PmvFsarJU6CLu7ZEWGtPndYZ4
+ X0ZsMi9WU7rIFx9wg2gfOxmNBzi/VsNnKa14r4IX6zwZoJMW4Jc/aawWg
+ n/2eKC0bxepY/HyZeWT9DLLwzIvdNlhNta5mc8RWD2DfOZIFgJ4ywdiGV
+ 6rK1EoisDMNIreB86B3EiJDfNuBpyitI0BbiyrsV2h1cuwM+Nn7Y8wE70 Q==;
+X-CSE-ConnectionGUID: jkWfywcqRbicFORZ/way4A==
+X-CSE-MsgGUID: IWKh6SceTBqqLpqO1vsnJw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63401687"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="63401687"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Oct 2025 01:53:50 -0700
+X-CSE-ConnectionGUID: DGO8veGmSS2jobuUij02TQ==
+X-CSE-MsgGUID: QsrStiZYTm2y8nZfc/O53Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="189506488"
+X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; d="scan'208";a="188676086"
 Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
  ([10.245.245.46])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2025 01:52:37 -0700
-Date: Fri, 24 Oct 2025 10:52:34 +0200
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Oct 2025 01:53:49 -0700
+Date: Fri, 24 Oct 2025 10:53:45 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: S Sebinraj <s.sebinraj@intel.com>
 Cc: igt-dev@lists.freedesktop.org, jeevaka.badrappan@intel.com, 
  kamil.konieczny@intel.com
-Subject: Re: [PATCH i-g-t v7 1/3] lib/intel_allocator: Add SYSVIPC support
- check
-Message-ID: <qi5zts5dskwtgcs64gnitt57ljgotw3xgtvkcd4eadysf5oe55@m27hjejs5ddt>
+Subject: Re: [PATCH i-g-t v7 2/3] tests/kms_concurrent: Fix for msg_queue
+ failure
+Message-ID: <taipwo2hbpba5vkfbyhhiayk5myufohg76eoh5aprsk5andotv@agvlxeqt3icp>
 References: <20251023063113.3485132-1-s.sebinraj@intel.com>
- <20251023063113.3485132-2-s.sebinraj@intel.com>
+ <20251023063113.3485132-3-s.sebinraj@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251023063113.3485132-2-s.sebinraj@intel.com>
+In-Reply-To: <20251023063113.3485132-3-s.sebinraj@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,129 +72,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Oct 23, 2025 at 12:01:11PM +0530, S Sebinraj wrote:
-> Check for System V IPC support in kms_concurrent test to handle
-> targets that don't have SYSVIPC enabled in their kernel. Without this
-> check, the test would fail with assertion errors when trying to use
-> message queues.
+On Thu, Oct 23, 2025 at 12:01:12PM +0530, S Sebinraj wrote:
+> Adds supports to check if the system supports SYSVIPC
+> and if not found it skips the test. This removes test
+> failures with msg_queue creation for systems that
+> don't support SYSVIPC.
 > 
 > Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
 > ---
->  lib/intel_allocator.c | 39 ++++++++++++++++++++++++++++++++++++---
->  lib/intel_allocator.h |  4 ++--
->  2 files changed, 38 insertions(+), 5 deletions(-)
+>  tests/kms_concurrent.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
-> index d22c70f1f..6664b004a 100644
-> --- a/lib/intel_allocator.c
-> +++ b/lib/intel_allocator.c
-> @@ -250,6 +250,20 @@ static struct allocator *__allocator_find(int fd, uint32_t ctx, uint32_t vm)
->  	return igt_map_search(map, &al);
->  }
->  
-> +/**
-> + * Checks if the current system supports SYSVIPC by verifying the existence and accessibility
-> + * of the /proc/sysvipc directory.
-> + * Returns: true if accessible for read and write, false otherwise.
-> + */
-> +static bool system_supports_sysvipc(void)
-> +{
-> +	if (access("/proc/sysvipc", R_OK | W_OK) == 0)
-> +		return true;
-> +
-> +	alloc_debug("SYSVIPC not supported, cannot access /proc/sysvipc\n");
-> +	return false;
-> +}
-> +
->  static struct allocator *__allocator_find_by_handle(uint64_t handle)
->  {
->  	struct handle_entry *h, he = { .handle = handle };
-> @@ -803,12 +817,17 @@ static void *allocator_thread_loop(void *data)
->   * How to separate initialization steps take a look into api_intel_allocator.c
->   * fork_simple_stress() function.
->   */
-> -void __intel_allocator_multiprocess_prepare(void)
-> +bool __intel_allocator_multiprocess_prepare(void)
->  {
->  	intel_allocator_init();
->  
-> +	if (!channel) {
-> +		return false;
-> +	}
-> +
+> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+> index 4f16f8b89..1f2da3001 100644
+> --- a/tests/kms_concurrent.c
+> +++ b/tests/kms_concurrent.c
+> @@ -396,7 +396,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  		igt_require(data.display.is_atomic);
+>  		igt_display_require_output(&data.display);
+>  		if (is_intel_device(data.drm_fd))
+> -			intel_allocator_multiprocess_start();
+> +			igt_require_f(intel_allocator_multiprocess_start(),
+> +				   "Allocator failure, no SYSV IPC\n");
 
-Unnecessary curly braces.
-
->  	multiprocess = true;
->  	channel->init(channel);
-> +	return true;
->  }
->  
->  #define START_TIMEOUT_MS 100
-> @@ -839,14 +858,21 @@ void __intel_allocator_multiprocess_start(void)
->   *
->   * Note. This destroys all previously created allocators and theirs content.
->   */
-> -void intel_allocator_multiprocess_start(void)
-> +bool intel_allocator_multiprocess_start(void)
->  {
->  	alloc_info("allocator multiprocess start\n");
->  
->  	igt_assert_f(child_pid == -1,
->  		     "Allocator thread can be spawned only in main IGT process\n");
-> -	__intel_allocator_multiprocess_prepare();
-> +
-> +	if(!__intel_allocator_multiprocess_prepare()) {
-
-Missing space after if.
-
-With nits addressed:
+Check indentation. With this nit addressed:
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
 
-> +		igt_warn("System does not support multiprocess mode\n");
-> +		return false;
-> +	}
-> +
->  	__intel_allocator_multiprocess_start();
-> +
-> +	return true;
->  }
+>  	}
 >  
->  /**
-> @@ -1678,6 +1704,13 @@ void intel_allocator_init(void)
->  	__free_maps(vm_map, false);
->  	__free_ahnd_map();
->  
-> +	if (!system_supports_sysvipc()) {
-> +		alloc_debug("System doesn't support SysV IPC, "
-> +			   "multiprocess mode unsupported\n");
-> +		channel = NULL;
-> +		return;
-> +	}
-> +
->  	atomic_init(&next_handle, 1);
->  	handles = igt_map_create(hash_handles, equal_handles);
->  	ctx_map = igt_map_create(hash_instance, equal_ctx);
-> diff --git a/lib/intel_allocator.h b/lib/intel_allocator.h
-> index 4b6292f06..9cd83ea27 100644
-> --- a/lib/intel_allocator.h
-> +++ b/lib/intel_allocator.h
-> @@ -164,9 +164,9 @@ struct intel_allocator {
->  };
->  
->  void intel_allocator_init(void);
-> -void __intel_allocator_multiprocess_prepare(void);
-> +bool __intel_allocator_multiprocess_prepare(void);
->  void __intel_allocator_multiprocess_start(void);
-> -void intel_allocator_multiprocess_start(void);
-> +bool intel_allocator_multiprocess_start(void);
->  void intel_allocator_multiprocess_stop(void);
->  
->  uint64_t intel_allocator_open(int fd, uint32_t ctx, uint8_t allocator_type);
+>  	run_tests_for_pipe(&data);
 > -- 
 > 2.43.0
 > 
