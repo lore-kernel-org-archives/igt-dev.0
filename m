@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDADECCD1BF
-	for <igt-dev@archiver.kernel.org>; Fri, 24 Oct 2025 08:14:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1FDDCCD1A5
+	for <igt-dev@archiver.kernel.org>; Fri, 24 Oct 2025 08:26:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A9F1710E9FC;
-	Fri, 24 Oct 2025 08:14:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 866C910E0DB;
+	Fri, 24 Oct 2025 08:26:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aUSK406f";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Bro138EY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D8D210E9FC
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Oct 2025 08:14:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C50410E0DB
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Oct 2025 08:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761293678; x=1792829678;
+ t=1761294403; x=1792830403;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=1kid0UYCdb/W0em6+ptLHDl07uSFfFOdwYg2/Zc6pmU=;
- b=aUSK406ffEe84Eua7yD6g0lyRQgJdzp7TFJOEgSKC1zE6C7p/LcpSpHP
- RVVZqtRRDz5Kypzh2uPNYMTLGA3VF9i1TbB7W0Foinzc397W/Vh+Lh5UB
- wrjMEAABvqLDThvsjvTmu8f6yXp7czRH/Q5PpW54fNEJq5HesAL2fC0uC
- D4Ke4V3gHBa+rAPx2lvON/RP+OteKox66nfb/pD1jMw2Bk0VK6tffAIE1
- BKwyQeLWAvrjELKoukN8mRr1Uva8GAvO3NDy6boG7gD/Uk6POeckgDj//
- 9mXZ1rqbdfMpNzvd0MQsilomYDycALrh1CCFABNowqhQtxDYvUH+m948G Q==;
-X-CSE-ConnectionGUID: QUasttGgSxmcUiE9U9LBXg==
-X-CSE-MsgGUID: l+yXyXYbQMuLeXsrOpLmog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62682759"
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="62682759"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2025 01:14:38 -0700
-X-CSE-ConnectionGUID: ozmwUZLsRzOM94DKEoFc4g==
-X-CSE-MsgGUID: LwR9DYZ1TteHXVDv0jbf/Q==
+ bh=VJ5IAIe0XD7e3GQPbwYYJpHn88vB4X27KLolfAgKU50=;
+ b=Bro138EYXX7S9lkIb/DTQ8pka00i++3pumdqNGUOTWqcW4fehlTetaVh
+ 14p8PBgiQWQT4Cpb0QYdCGqfT+yX090BMpTKy3j/h+PdRERfTdKYm4ptl
+ kenAU3GHh7QAHPLudcUcFjlR/niVQ3LRjFDT+KbtjtoE6QIM9el3brrUz
+ mKall1VQf2RNpITlsb049RzKq2HzQawIkN9DC0jA+RO7mWX08uI9RzQ3V
+ jWT3GQ0t7AeBjBrKds0AEussV7HFw6GYxFbfM53MwLuJTyy8cjT3A8aol
+ pN64miED9mZVdLktspUVwBiS4EYBKy+/r/G1wVxGQl1Au3u1HaEhyR1KT w==;
+X-CSE-ConnectionGUID: zg5hSHtKTke8bGtTLZ40ow==
+X-CSE-MsgGUID: vWh/CV/JSaSQi3uO0aD1Yw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74593721"
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="74593721"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Oct 2025 01:26:43 -0700
+X-CSE-ConnectionGUID: GTccxxVORBOUNjDzDVBCuQ==
+X-CSE-MsgGUID: vA3RuCtaSPG0Q5nYVS/GBQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="183599771"
-Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2025 01:14:35 -0700
-From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org, sk.anirban@intel.com, riana.tauro@intel.com,
- badal.nilawar@intel.com
-Cc: karthik.poosa@intel.com, anshuman.gupta@intel.com, soham.purkait@intel.com
-Subject: [PATCH i-g-t v4] tests/intel/xe_pm: Test to validate vram-sr through
- Mods during host s2idle
-Date: Fri, 24 Oct 2025 13:31:35 +0530
-Message-Id: <20251024080135.3731155-1-soham.purkait@intel.com>
-X-Mailer: git-send-email 2.34.1
+X-IronPort-AV: E=Sophos;i="6.19,251,1754982000"; d="scan'208";a="183551119"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.85])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Oct 2025 01:26:41 -0700
+From: Pawel Sikora <pawel.sikora@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v12 0/6] Establish MkDocs Documentation Framework for
+ IGT GPU Tools
+Date: Fri, 24 Oct 2025 10:26:19 +0200
+Message-ID: <20251024082628.1118783-1-pawel.sikora@intel.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,193 +67,230 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test to validate vram-sr through Mods during host s2idle. It checks
-whether vram self refresh capability is supported through debugfs node and
-then introduce host s2idle to check ModS residency to confirm vram self
-refresh capability upon success.
+Dear Maintainers,
 
-v1:
- - Define macros at the top. (Anirban)
+I am submitting a series of patches to introduce a comprehensive 
+documentation framework for the IGT GPU Tools project using MkDocs.
+
+For details regarding MkDocs please see: https://www.mkdocs.org/
+ 
+This effort aims to enhance organization and presentation of our
+documentation, making it easier for users and contributors to navigate
+and understand the project.
+
+How to build it for review (strongly recommended to use virtual
+environment - please relate to your OS/distro instructions)
+
+Set up venv for python local installation of required packages:
+$ python3 -m venv venv
+$ source ./venv/bin/activate
+
+Install requirements:
+$ pip3 install -r ./docs/requirements-docs.txt
+
+Build documentation:
+$ mkdocs build
+
+Start the server to host a local website:
+$ mkdocs serve
+
+Then, open in your favorite browser: http://127.0.0.1:8000/
+
+Detailed description of patches:
+
+Patch 1: docs: Set up MkDocs for documentation site
+
+This patch lays the foundation for the documentation site by adding essential 
+configuration files and assets. 
+The mkdocs.yml file is introduced to define the site's structure, including 
+project information, navigation, theme settings(Material for MkDocs: 
+https://squidfunk.github.io/mkdocs-material/), and plugins. 
+
+Additionally, requirements-docs.txt lists the necessary dependencies for 
+building the site with MkDocs.
+
+Custom styling is applied through extra.css, which incorporates a Monokai 
+theme adjusted to be colorblind-friendly. 
+This patch establishes the initial framework for generating the IGT GPU Tools 
+documentation site using MkDocs. 
+
+For more details on MkDocs, please refer to MkDocs Documentation.
+
+Patch 2:
+
+In a current mkdocs configuration (initial, actually) all
+documentation files need to be placed in the 'docs' directory.
+
+Thus, some files like CONTRIBUTING.md, MAINTAINERS, NEWS,
+README.md are left out of the scope for mkdocs.
+
+To mitigate that and maintain backward compatibility for
+current tools that may use those files, this patch creates
+symlinks in the 'docs' folder to those files (except README.md)
+and give an '.md' extention where it was missing for clarity.
+
+In the current MkDocs configuration (initial, actually),
+all documentation files need to be placed in the 'docs' directory.
+
+Thus, some files like CONTRIBUTING.md, MAINTAINERS, NEWS,
+and README.md are left out of the scope for MkDocs.
+
+To mitigate that and maintain backward compatibility for current
+tools that may use those files, this patch creates symlinks
+in the 'docs' folder to those files (except README.md) and adds
+a '.md' extension where it was missing for clarity.
+
+Patch 3: Rename cross-building.txt to .md
+
+Patch 4: docs: Initialize MkDocs documentation structure
+
+This patch focuses on organizing the documentation content within the project.
+
+The README is updated with basic content to reflect the reorganization, while 
+detailed documentation is moved into the docs directory. 
+
+The content is split across multiple markdown files, setting up a structure 
+that allows for automatic site generation using MkDocs. 
+
+This reorganization enhances the accessibility and maintenance of the 
+documentation, providing a clear and navigable structure for users.
+
+Patch 5: Add platform-specific documentation
+Add platforms.md with information about HW/SW to be used when running
+IGT tests/tools. Add Intel-specific details with a placeholder for other vendors.
+
+Patch 6: gitlab-ci: Add MkDocs documentation support
+
+This patch integrates MkDocs documentation support into the GitLab CI pipeline. 
+It ensures that the current API reference manual (which is currently hosted on 
+GitLab pages) is built and copied to the MkDocs documentation directory, 
+maintaining its availability via an internal link. 
+
+The MkDocs documentation from the docs directory is also built, 
+with a relative link to api_reference/index.html included in the navigation. 
+
+After both builds are complete, all content is copied into the site directory 
+and manually moved into public for hosting on freedesktop GitLab Pages. 
+This integration ensures that the documentation is consistently updated 
+and accessible alongside the API reference manual.
+
+Together, these patches improve the presentation and accessibility of the 
+IGT GPU Tools project. 
+
+I look forward to your feedback.
+
+
 v2:
- - gtidle no longer exists. (Anirban)
- - Skip test if the system is not VRSR-capable. (Anirban)
- - Release bo to avoid resource leaking. (Anirban)
+ - Add many new documentation content and corrections to v1 (Swati)
+ - Add colorblind friendly theme css (Kamil)
+ - Fix line width to 100 characters (Kamil)
+ - Keep MAINTAINERS file in the root dir, but second version(formatted)
+   is created in the docs dir (Kamil)
+
 v3:
- - Add VRSR capability check flag as "Y". (Anirban)
+ - Simplify mkdocs build (Pawel)
 
-Signed-off-by: Soham Purkait <soham.purkait@intel.com>
----
- tests/intel/xe_pm.c | 105 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 105 insertions(+)
+v4:
+ - Add symlinks instead of moving files into docs dir (Kamil)
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index 1db28a899..322a29199 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -10,10 +10,12 @@
-  * Sub-category: Suspend-resume tests
-  * Test category: functionality test
-  */
-+#include <ctype.h>
- 
- #include <dirent.h>
- #include <limits.h>
- #include <fcntl.h>
-+#include <stddef.h>
- #include <string.h>
- #include <sys/ioctl.h>
- 
-@@ -48,6 +50,9 @@
- #define I2C_AMC_ADDR	0x40
- #define I2C_AMC_REG	0x00
- 
-+#define XE_BO_SIZE (350 * 1024 * 1024)
-+#define MODS_PREFIX "ModS"
-+
- enum mem_op {
- 	READ,
- 	WRITE,
-@@ -55,6 +60,7 @@ enum mem_op {
- 
- typedef struct {
- 	int fd_xe;
-+	int debugfs_dir;
- 	struct pci_device *pci_xe;
- 	struct pci_device *pci_root;
- 	char pci_slot_name[NAME_MAX];
-@@ -423,6 +429,46 @@ child_exec(void *arguments)
- 	return NULL;
- }
- 
-+static char *read_content_line(const char *content, const char *prefix)
-+{
-+	const char *line_start = content;
-+	char line[1024];
-+	char *result;
-+	size_t len;
-+
-+	while (*line_start) {
-+		const char *line_end = strchr(line_start, '\n');
-+		size_t line_len = line_end ? (size_t)(line_end - line_start) : strlen(line_start);
-+
-+		if (line_len >= sizeof(line))
-+			line_len = sizeof(line) - 1;
-+
-+		memcpy(line, line_start, line_len);
-+		line[line_len] = '\0';
-+
-+		if (strstr(line, prefix)) {
-+			char *colon = strchr(line, ':');
-+
-+			if (colon) {
-+				colon++;
-+				while (isspace((unsigned char)*colon))
-+					colon++;
-+
-+				result = strdup(colon);
-+				len = strlen(result);
-+				if (len > 0 && result[len - 1] == '\n')
-+					result[len - 1] = '\0';
-+
-+				return result;
-+			}
-+		}
-+		line_start = line_end ? line_end + 1 : NULL;
-+		if (!line_start)
-+			break;
-+	}
-+	return NULL;
-+}
-+
- /**
-  * SUBTEST: %s-basic
-  * Description: test CPU/GPU in and out of s/d state from %arg[1]
-@@ -871,6 +917,57 @@ static void i2c_test(device_t device, int sysfs_fd, enum igt_acpi_d_state d_stat
- 	close(i2c_fd);
- }
- 
-+/**
-+ * SUBTEST: vrsr-capability-during-host-s2idle
-+ * Functionality: pm - vram-sr
-+ * Description: Test to validate vram self refresh through
-+ * ModS residency counter during host s2idle
-+ */
-+static void test_vrsr_capability_during_host_s2idle(device_t device)
-+{
-+	u32 bo, placement;
-+	u64 s2idle_start_mods, s2idle_end_mods;
-+	int ret;
-+	char buf[4096] = {0};
-+	char *result;
-+	void *map;
-+
-+	ret = igt_debugfs_simple_read(device.debugfs_dir, "vrsr_capable", buf, sizeof(buf));
-+	igt_skip_on_f(ret < 0, "vrsr_capable node is not present in debugfs.\n");
-+	igt_skip_on_f(!strstr(buf, "Y"), "VRSR capability is not supported.\n");
-+
-+	placement = vram_memory(device.fd_xe, 0);
-+	bo = xe_bo_create(device.fd_xe, 0, XE_BO_SIZE, placement, 0);
-+	map = xe_bo_map(device.fd_xe, bo, XE_BO_SIZE);
-+	memset(map, 0, XE_BO_SIZE);
-+
-+	ret = igt_debugfs_simple_read(device.debugfs_dir, "dgfx_pkg_residencies",
-+				      buf, sizeof(buf));
-+	igt_assert_f(ret >= 0, "cannot read dgfx_pkg_residencies.\n");
-+
-+	result = read_content_line(buf, MODS_PREFIX);
-+	igt_assert(result);
-+	s2idle_start_mods = (uint64_t)strtoull(result, NULL, 10);
-+	free(result);
-+
-+	igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
-+	munmap(map, XE_BO_SIZE);
-+	memset(buf, 0, sizeof(buf));
-+
-+	ret = igt_debugfs_simple_read(device.debugfs_dir, "dgfx_pkg_residencies",
-+				      buf, sizeof(buf));
-+	igt_assert_f(ret >= 0, "cannot read dgfx_pkg_residencies.\n");
-+
-+	result = read_content_line(buf, MODS_PREFIX);
-+	igt_assert(result);
-+	s2idle_end_mods = (uint64_t)strtoull(result, NULL, 10);
-+	free(result);
-+
-+	gem_close(device.fd_xe, bo);
-+
-+	igt_assert(s2idle_start_mods != s2idle_end_mods);
-+}
-+
- igt_main
- {
- 	device_t device;
-@@ -908,6 +1005,8 @@ igt_main
- 	igt_fixture {
- 		memset(&device, 0, sizeof(device));
- 		device.fd_xe = drm_open_driver(DRIVER_XE);
-+		device.debugfs_dir = igt_debugfs_dir(device.fd_xe);
-+		igt_assert(device.debugfs_dir >= 0);
- 		device.pci_xe = igt_device_get_pci_device(device.fd_xe);
- 		device.pci_root = igt_device_get_pci_root_port(device.fd_xe);
- 		igt_device_get_pci_slot_name(device.fd_xe, device.pci_slot_name);
-@@ -1052,12 +1151,18 @@ igt_main
- 		test_vram_d3cold_threshold(device, sysfs_fd);
- 	}
- 
-+	igt_describe("Validate VRAM self refresh capability during host s2idle");
-+	igt_subtest("vrsr-capability-during-host-s2idle") {
-+		test_vrsr_capability_during_host_s2idle(device);
-+	}
-+
- 	igt_fixture {
- 		close(sysfs_fd);
- 		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
- 		if (has_runtime_pm)
- 			igt_restore_runtime_pm();
- 		drmModeFreeResources(device.res);
-+		close(device.debugfs_dir);
- 		drm_close_driver(device.fd_xe);
- 	}
- }
+v5:
+ - Minor changes to documentation content (Kasia)
+ - Remove Intel logo (Lukas)
+ - Remove some unnecessary configuration from mkdocs.yml
+
+v6:
+ - Add information about MIT license in footer
+ - Add download.md and link Download section to it
+
+v7:
+ - Move changes into README.md and docs/cross-building.txt
+   into separate patches (Kamil)
+ - Fix mentions about 'blacklist' to 'blocklist'
+
+v8:
+ - Restore README.md to its original
+
+v9:
+ - Site directory creation dir change to just ./site
+
+v10:
+ - Remove ext deps and edit footer in mkdocs.yml file. (Kamil)
+ - Remove some unnecessary plugins and reqs
+
+v11:
+ - Minor changes in documentation content
+ - Separate platform-specific HW/SW details into platforms.md
+ - Change Copyright footer to IGT GPU Tools Team
+
+v12:
+ - Minor changes in documentation index/overview
+ - Change of path for copying api_reference files
+ - Correct some Intel platforms based informations (Zbigniew)
+
+Regards,
+Pawel
+
+Pawel Sikora (6):
+  docs: Set up MkDocs for IGT documentation site
+  docs: Create symlinks for NEWS/MAINTAINERS/CONTRIB
+  docs: Rename cross-building.txt to .md
+  docs: Initialize MkDocs documentation structure
+  docs: Add platform-specific documentation
+  gitlab-ci: Add MkDocs documentation support
+
+ .gitlab-ci.yml                       |  10 +-
+ docs/CONTRIBUTING.md                 |   1 +
+ docs/MAINTAINERS.md                  |   1 +
+ docs/NEWS.md                         |   1 +
+ docs/api.md                          |  29 ++
+ docs/blocklists.md                   | 354 ++++++++++++++++++++++++
+ docs/building.md                     |  27 ++
+ docs/{chamelium.txt => chamelium.md} |   2 +-
+ docs/ci_infrastructure.md            | 390 +++++++++++++++++++++++++++
+ docs/code_coverage.md                |  68 +++--
+ docs/cross-building.md               | 240 +++++++++++++++++
+ docs/cross-building.txt              | 122 ---------
+ docs/css/extra.css                   | 323 ++++++++++++++++++++++
+ docs/download.md                     |  25 ++
+ docs/faq.md                          |  92 +++++++
+ docs/how_to_build_docs.md            |  54 ++++
+ docs/index.md                        | 157 +++++++++++
+ docs/issues.md                       |  31 +++
+ docs/new_driver.md                   | 231 ++++++++++++++++
+ docs/patchwork.md                    |  18 ++
+ docs/platforms.md                    |  81 ++++++
+ docs/requirements-docs.txt           |   3 +
+ docs/running_tests.md                | 130 +++++++++
+ docs/test_categories.md              | 266 ++++++++++++++++++
+ docs/test_documentation.md           |  66 +++--
+ docs/test_plan.md                    | 216 +++++++++++++++
+ mkdocs.yml                           | 177 ++++++++++++
+ 27 files changed, 2921 insertions(+), 194 deletions(-)
+ create mode 120000 docs/CONTRIBUTING.md
+ create mode 120000 docs/MAINTAINERS.md
+ create mode 120000 docs/NEWS.md
+ create mode 100644 docs/api.md
+ create mode 100644 docs/blocklists.md
+ create mode 100644 docs/building.md
+ rename docs/{chamelium.txt => chamelium.md} (99%)
+ create mode 100644 docs/ci_infrastructure.md
+ create mode 100644 docs/cross-building.md
+ delete mode 100644 docs/cross-building.txt
+ create mode 100644 docs/css/extra.css
+ create mode 100644 docs/download.md
+ create mode 100644 docs/faq.md
+ create mode 100644 docs/how_to_build_docs.md
+ create mode 100644 docs/index.md
+ create mode 100644 docs/issues.md
+ create mode 100644 docs/new_driver.md
+ create mode 100644 docs/patchwork.md
+ create mode 100644 docs/platforms.md
+ create mode 100644 docs/requirements-docs.txt
+ create mode 100644 docs/running_tests.md
+ create mode 100644 docs/test_categories.md
+ create mode 100644 docs/test_plan.md
+ create mode 100644 mkdocs.yml
+
 -- 
-2.34.1
+2.51.0
 
