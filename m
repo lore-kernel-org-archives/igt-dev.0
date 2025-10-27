@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49118CCF9E0
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Oct 2025 05:04:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADFFACCF9E0
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Oct 2025 05:06:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DB86010E33E;
-	Mon, 27 Oct 2025 05:04:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5AC8110E138;
+	Mon, 27 Oct 2025 05:06:39 +0000 (UTC)
 Received: from 97596180aaec (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C2BAB10E33E;
- Mon, 27 Oct 2025 05:04:03 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8581705743921319417=="
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DE29D10E0A0;
+ Mon, 27 Oct 2025 05:06:37 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fatomic=5Ftransi?=
- =?utf-8?q?tion=3A_Add_info_messages_for_skipped_subtest?=
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_tests/kms=5Fatomic=5Ftran?=
+ =?utf-8?q?sition=3A_Add_info_messages_for_skipped_subtest_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "S, Sowmiya" <sowmiya.s@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 27 Oct 2025 05:04:03 -0000
-Message-ID: <176154144378.56453.7868135668632830701@97596180aaec>
+Date: Mon, 27 Oct 2025 05:06:37 -0000
+Message-ID: <176154159790.56453.2536925380342760286@97596180aaec>
 X-Patchwork-Hint: ignore
 References: <20251027044824.2995891-1-sowmiya.s@intel.com>
 In-Reply-To: <20251027044824.2995891-1-sowmiya.s@intel.com>
@@ -41,153 +41,18 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8581705743921319417==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: tests/kms_atomic_transition: Add info messages for skipped subtest
+Series: tests/kms_atomic_transition: Add info messages for skipped subtest (rev2)
 URL   : https://patchwork.freedesktop.org/series/156549/
-State : success
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8596_BAT -> XEIGTPW_13942_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (12 -> 13)
-------------------------------
-
-  Additional (1): bat-bmg-3 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13942_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_create@multigpu-create-massive-size:
-    - bat-bmg-3:          NOTRUN -> [SKIP][1] ([Intel XE#2504])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13942/bat-bmg-3/igt@xe_create@multigpu-create-massive-size.html
-
-  * igt@xe_eudebug@multigpu-basic-client:
-    - bat-bmg-3:          NOTRUN -> [SKIP][2] ([Intel XE#4837]) +1 other test skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13942/bat-bmg-3/igt@xe_eudebug@multigpu-basic-client.html
-
-  * igt@xe_peer2peer@read:
-    - bat-bmg-3:          NOTRUN -> [FAIL][3] ([Intel XE#6433]) +3 other tests fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13942/bat-bmg-3/igt@xe_peer2peer@read.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#2504]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2504
-  [Intel XE#4837]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837
-  [Intel XE#6433]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6433
+Applying: tests/kms_atomic_transition: Add info messages for skipped subtest
+Patch failed at 0001 tests/kms_atomic_transition: Add info messages for skipped subtest
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
 
-Build changes
--------------
-
-  * IGT: IGT_8596 -> IGTPW_13942
-  * Linux: xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4 -> xe-3988-c03916cb446b6eefe91538599775bb54bf98238c
-
-  IGTPW_13942: 13942
-  IGT_8596: 8596
-  xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4: e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4
-  xe-3988-c03916cb446b6eefe91538599775bb54bf98238c: c03916cb446b6eefe91538599775bb54bf98238c
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13942/index.html
-
---===============8581705743921319417==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_atomic_transition: Add info messages for skipped subtest</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/156549/">https://patchwork.freedesktop.org/series/156549/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13942/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13942/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8596_BAT -&gt; XEIGTPW_13942_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 13)</h2>
-<p>Additional (1): bat-bmg-3 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13942_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_create@multigpu-create-massive-size:</p>
-<ul>
-<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13942/bat-bmg-3/igt@xe_create@multigpu-create-massive-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2504">Intel XE#2504</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_eudebug@multigpu-basic-client:</p>
-<ul>
-<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13942/bat-bmg-3/igt@xe_eudebug@multigpu-basic-client.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837">Intel XE#4837</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_peer2peer@read:</p>
-<ul>
-<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13942/bat-bmg-3/igt@xe_peer2peer@read.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6433">Intel XE#6433</a>) +3 other tests fail</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8596 -&gt; IGTPW_13942</li>
-<li>Linux: xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4 -&gt; xe-3988-c03916cb446b6eefe91538599775bb54bf98238c</li>
-</ul>
-<p>IGTPW_13942: 13942<br />
-  IGT_8596: 8596<br />
-  xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4: e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4<br />
-  xe-3988-c03916cb446b6eefe91538599775bb54bf98238c: c03916cb446b6eefe91538599775bb54bf98238c</p>
-
-</body>
-</html>
-
---===============8581705743921319417==--
