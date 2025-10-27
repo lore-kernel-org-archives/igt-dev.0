@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC4ACCCF9E0
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Oct 2025 06:27:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E52ACCF9EB
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Oct 2025 06:33:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 59FAF10E0A0;
-	Mon, 27 Oct 2025 06:27:00 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BttueDVx";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A9BE10E0A0
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Oct 2025 06:26:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761546418; x=1793082418;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=kmYN6H5MzJdQ1Q7NtBaSW7aphnHW4f5OPysXdPPA39I=;
- b=BttueDVx/j0IFZbxGj68c58yls88K2WHbCPW8KPkvmhoyQeKDfIPsoVg
- SpFWbRUXZQgGBe9I/75eMupdsFKVybD8GcD7k4gprR81Z9IvMGeNS3Dfp
- tfRYhXOuMw9jjFoyVjIpXaW40Fv1pFAFwBzfmobclkCGQZlIesuzKUt/j
- hLsYmkDKdej3Y8yJUp4ieXLLNS0FcArk3psnhZYfSrAykDOEZjQS5qa2J
- P7gfQfzT71aLWcjwbi2o7E2uW0LhTPYhofLIvStTVHBlfzI9N9Rd4E2y4
- L6jj76Ut7dMnzHKhTaUykSTAXKOfI9nbq8sk4+lF9eZ4Ky2g8l05etSHx A==;
-X-CSE-ConnectionGUID: zsZ20ltNQLSq/ZVOBSu56w==
-X-CSE-MsgGUID: I3iBOiRjTFWraXkpKk8FfA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74295439"
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; d="scan'208";a="74295439"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Oct 2025 23:26:58 -0700
-X-CSE-ConnectionGUID: g5VUzyvSRxGnNd+ndnskMw==
-X-CSE-MsgGUID: RtnjTJ6XRMygYG7434ewTg==
-X-ExtLoop1: 1
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by fmviesa003.fm.intel.com with ESMTP; 26 Oct 2025 23:26:56 -0700
-From: Pranay Samala <pranay.samala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
- pranay.samala@intel.com
-Subject: [PATCH i-g-t] tests/kms_atomic_transition: Reduce iterations on
- simulation
-Date: Mon, 27 Oct 2025 12:05:27 +0530
-Message-Id: <20251027063527.607053-1-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 33B0E10E0CE;
+	Mon, 27 Oct 2025 06:33:21 +0000 (UTC)
+Received: from 97596180aaec (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A28810E0CE;
+ Mon, 27 Oct 2025 06:33:19 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5497040970164824179=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fatomic=5Ftransi?=
+ =?utf-8?q?tion=3A_Add_info_messages_for_skipped_subtest_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sowmiya S" <sowmiya.s@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 27 Oct 2025 06:33:19 -0000
+Message-ID: <176154679955.56588.7315671437170214824@97596180aaec>
+X-Patchwork-Hint: ignore
+References: <20251027044824.2995891-1-sowmiya.s@intel.com>
+In-Reply-To: <20251027044824.2995891-1-sowmiya.s@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,31 +37,157 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reduce pipe state combination iterations during modeset
-transitions test in simulation environment to reduce
-test execution time to avoid timeout in simulation.
+--===============5497040970164824179==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
----
- tests/kms_atomic_transition.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index a13830965..e1387bd89 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -961,7 +961,7 @@ retry:
- 	iter_max = (j > 0) ? (j << 1) : 1;
- 
- 	if (igt_run_in_simulation() && iter_max > 1)
--		iter_max = iter_max >> 1;
-+		iter_max = iter_max >> 2;
- 
- 	if (igt_display_try_commit_atomic(&data->display,
- 				DRM_MODE_ATOMIC_TEST_ONLY |
--- 
-2.34.1
+Series: tests/kms_atomic_transition: Add info messages for skipped subtest (rev3)
+URL   : https://patchwork.freedesktop.org/series/156549/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8596_BAT -> XEIGTPW_13944_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 13)
+------------------------------
+
+  Additional (1): bat-bmg-3 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13944_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_create@multigpu-create-massive-size:
+    - bat-bmg-3:          NOTRUN -> [SKIP][1] ([Intel XE#2504])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13944/bat-bmg-3/igt@xe_create@multigpu-create-massive-size.html
+
+  * igt@xe_eudebug@multigpu-basic-client:
+    - bat-bmg-3:          NOTRUN -> [SKIP][2] ([Intel XE#4837]) +1 other test skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13944/bat-bmg-3/igt@xe_eudebug@multigpu-basic-client.html
+
+  * igt@xe_peer2peer@read:
+    - bat-bmg-3:          NOTRUN -> [FAIL][3] ([Intel XE#6433]) +3 other tests fail
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13944/bat-bmg-3/igt@xe_peer2peer@read.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#2504]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2504
+  [Intel XE#4837]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837
+  [Intel XE#6433]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6433
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8596 -> IGTPW_13944
+  * Linux: xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4 -> xe-3988-c03916cb446b6eefe91538599775bb54bf98238c
+
+  IGTPW_13944: 13944
+  IGT_8596: 8596
+  xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4: e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4
+  xe-3988-c03916cb446b6eefe91538599775bb54bf98238c: c03916cb446b6eefe91538599775bb54bf98238c
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13944/index.html
+
+--===============5497040970164824179==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_atomic_transition: Add info messages for skipped subtest (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/156549/">https://patchwork.freedesktop.org/series/156549/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13944/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13944/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8596_BAT -&gt; XEIGTPW_13944_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 13)</h2>
+<p>Additional (1): bat-bmg-3 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13944_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_create@multigpu-create-massive-size:</p>
+<ul>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13944/bat-bmg-3/igt@xe_create@multigpu-create-massive-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2504">Intel XE#2504</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_eudebug@multigpu-basic-client:</p>
+<ul>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13944/bat-bmg-3/igt@xe_eudebug@multigpu-basic-client.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837">Intel XE#4837</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_peer2peer@read:</p>
+<ul>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13944/bat-bmg-3/igt@xe_peer2peer@read.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6433">Intel XE#6433</a>) +3 other tests fail</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8596 -&gt; IGTPW_13944</li>
+<li>Linux: xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4 -&gt; xe-3988-c03916cb446b6eefe91538599775bb54bf98238c</li>
+</ul>
+<p>IGTPW_13944: 13944<br />
+  IGT_8596: 8596<br />
+  xe-3973-e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4: e5409e1beaa3a7a89c5b5d90fd3a616ecacb1df4<br />
+  xe-3988-c03916cb446b6eefe91538599775bb54bf98238c: c03916cb446b6eefe91538599775bb54bf98238c</p>
+
+</body>
+</html>
+
+--===============5497040970164824179==--
