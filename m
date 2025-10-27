@@ -4,61 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82D6FCCF9EB
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Oct 2025 17:02:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60A18CCF9E0
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Oct 2025 17:02:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 560B710E51B;
-	Mon, 27 Oct 2025 17:02:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 139DA10E4F1;
+	Mon, 27 Oct 2025 17:02:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GL19bzu+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y+s7sFQf";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 29A8810E522
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Oct 2025 17:01:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 53D0A10E523
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Oct 2025 17:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761584462; x=1793120462;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=U9/VNrQ5N3/VINIq+bZlavNVrZs9X3XM0Va6PvorjzU=;
- b=GL19bzu+K3Jep+Y9heb/Xq1ACgPTilmLrdBIieKrqnfJnK1Q7gQ3fy8r
- x0YCHha3Y7AF8EfCceYDXORNRQuDY8B4FJcgIw0/xCMkJkBJG1DxPafVs
- Vmr96tjElU+Cs7MLxEarnLkS7UR4mdiNw76PKczmsBcxFVadylS0kpT5Z
- izhlz1cZqWyc5v21jXOjIv/lNlUw0qnmpXoeQ6OKz4QueUhHRzzFJKAQ3
- bw7NfEzTKjPWsY5exgPg6glx4Yg/GNVozGddKRRkX062+Wq1aWcbxCIZG
- J7vy410n1V8nxNu+/bamWrFtkWRGZ6DGPU+mCIMArUDQocHXS2nd8hOan Q==;
-X-CSE-ConnectionGUID: 0OFSzPoFSyKkegixzOA6Ug==
-X-CSE-MsgGUID: JI/UONjIRDqc4f8cHZNt4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="67537764"
-X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; d="scan'208";a="67537764"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Oct 2025 10:01:02 -0700
-X-CSE-ConnectionGUID: M9z5lNk4RbuXjy1Dn63RpQ==
-X-CSE-MsgGUID: LR+p88UHSQW4MMiGNHMo1Q==
+ t=1761584484; x=1793120484;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=rk7ywtHAgrDRAauSZU5/rAZzYwipvfd6YNwJmjHswDQ=;
+ b=Y+s7sFQflTihfPxdPZF/qDPg7GVZY8jgbfX2htKBp7JTbkZvDNFEt2Vm
+ 9cEbZmymQSd967rn4q6pkhYSo2u8eJQNGHTDw5ImXSuRtpArX5dD7A/jW
+ IDVD74DE/r7G9pmocMb+a6a2W9bUtvK7rsi+gEpPJn648X22R+qQhkrOj
+ pZBPJJr9irVb9k8lUZAMZbnrXUjOac+YBMfMnruIkZ1sGS0EPy0VIn/DH
+ vEVO9ye/9/txWnxV8vUjuoXdRwHwGQtvjOwAz/29ev8Y6DeSlAg65nRDk
+ i1R5qnxWtoN5HVrsD6XKKKyeHpdclxNKeIfmnH/SLzGYllNBtET46zdH2 Q==;
+X-CSE-ConnectionGUID: vIAOWOBKRhmdWtxEE9nCng==
+X-CSE-MsgGUID: 84P51DWyRF2IMpft6AX/Rg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63598563"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="63598563"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Oct 2025 10:01:23 -0700
+X-CSE-ConnectionGUID: kElJPG6OSNyxzWo8enXk/w==
+X-CSE-MsgGUID: aW3u98PAToysV/GqsBcdwA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; d="scan'208";a="184273846"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 10:01:00 -0700
-Date: Mon, 27 Oct 2025 18:00:58 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: =?utf-8?Q?Micha=C5=82?= Grzelak <michal.grzelak@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>
-Subject: Re: [RFC PATCH v1 1/1] tests/kms_big_fb: Open compatible driver for
- the platform
-Message-ID: <20251027170058.lqzg4a2ls6fvb5cb@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- =?utf-8?Q?Micha=C5=82?= Grzelak <michal.grzelak@intel.com>,
- igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>
-References: <20251027130025.1771523-1-michal.grzelak@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; d="scan'208";a="185864937"
+Received: from unknown (HELO [10.241.242.71]) ([10.241.242.71])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Oct 2025 10:01:23 -0700
+Message-ID: <a313477e-4ee6-460b-937c-420fb37114bb@linux.intel.com>
+Date: Mon, 27 Oct 2025 10:01:15 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251027130025.1771523-1-michal.grzelak@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/kms_atomic_transition: Fix dynamic subtest
+To: Gustavo Sousa <gustavo.sousa@intel.com>, igt-dev@lists.freedesktop.org
+References: <20251024233732.55832-1-ngai-mint.kwan@linux.intel.com>
+ <176157451100.3407.12104950322254043568@intel.com>
+Content-Language: en-US
+From: Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>
+In-Reply-To: <176157451100.3407.12104950322254043568@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,92 +69,69 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Michał,
-On 2025-10-27 at 14:00:25 +0100, Michał Grzelak wrote:
-> On platforms older than ADL-P, tests should be executed with i915 loaded
-> before xe. Currently, when tests are executed and xe is loaded first,
-> failures are reported in multiple subtests along errors in the dmesg.
-> 
-> Check if i915 has been loaded before xe. If not, open and optionally
-> reload proper driver according to platform's display version.
+Hi Gustavo,
 
-CI should use IGT_FORCE_DRIVER, like IGT_FORCE_DRIVER=i915 
-and/or just unload all other GPU drivers before tests start running.
+On 2025-10-27 07:15, Gustavo Sousa wrote:
+> Quoting Ngai-Mint Kwan (2025-10-24 20:37:28-03:00)
+>> Fix Segmentation Fault when calling igt_pipe_crc_free() due to double-freeing a
+>> dangling pointer.
+>>
+>> This occurs when a system connected to multiple displays executes a test with
+>> "1x-outputs" dynamic subtest.
+>>
+>> Example:
+>> kms_atomic_transition --run-subtest modeset-transition --dynamic-subtest 1x-outputs
+>>
+>> Signed-off-by: Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>
+>> ---
+>> tests/kms_atomic_transition.c | 10 +++++-----
+>> 1 file changed, 5 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+>> index a13830965..a7d8d88b4 100644
+>> --- a/tests/kms_atomic_transition.c
+>> +++ b/tests/kms_atomic_transition.c
+>> @@ -1065,8 +1065,7 @@ static void run_modeset_transition(data_t *data, int requested_outputs, bool non
+>>                  return;
+>>          }
+>>
+>> -        igt_dynamic_f("%ix-outputs", requested_outputs)
+>> -                run_modeset_tests(data, requested_outputs, nonblocking, fencing);
+>> +        run_modeset_tests(data, requested_outputs, nonblocking, fencing);
+>>
+>>          /* Cleanup */
+>>          unset_output_pipe(&data->display);
+>> @@ -1259,9 +1258,10 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>>                  igt_describe_f("%s", modeset_tests[i].desc);
+>>                  igt_subtest_with_dynamic_f("%s", modeset_tests[i].name) {
+>>                          for (j = 1; j <= count; j++) {
+>> -                                run_modeset_transition(&data, j,
+>> -                                                       modeset_tests[i].nonblocking,
+>> -                                                       modeset_tests[i].fencing);
+>> +                                igt_dynamic_f("%ix-outputs", j)
+>> +                                        run_modeset_transition(&data, j,
+>> +                                                               modeset_tests[i].nonblocking,
+>> +                                                               modeset_tests[i].fencing);
+> I believe one possible problem here is that we might end up creating a
+> dynamic subtest that ends not not getting exercised, when (num_outputs <
+> requested_outputs) evaluates to true inside run_modeset_transition().
+I looked at run_modeset_transition() and it looks more like an exit 
+criteria
+rather than a valid subtest when it is checking for (num_outputs < 
+requested_outputs)?
 
-Could you give links to gitlab issues you are trying to solve?
+Kwan
+>
+> Maybe we should rather move the cleanup code to be contained inside
+> run_modeset_tests()?
+>
+> --
+> Gustavo Sousa
+>
+>>                          }
+>>                  }
+>>          }
+>> -- 
+>> 2.43.0
+>>
 
-> 
-> Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
-> ---
->  tests/intel/kms_big_fb.c | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
-> 
-> diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
-> index 41fdcacab..5e8fa6112 100644
-> --- a/tests/intel/kms_big_fb.c
-> +++ b/tests/intel/kms_big_fb.c
-> @@ -30,6 +30,8 @@
->   */
->  
->  #include "igt.h"
-> +#include "igt_device.h"
-> +#include "igt_kmod.h"
-
-This should go after system includes.
-
->  #include <errno.h>
->  #include <stdbool.h>
->  #include <stdio.h>
-> @@ -967,6 +969,30 @@ static bool test_requirements(data_t *input_data, int l)
->  	return true;
->  }
->  
-> +static int open_compatible_driver(int drm_fd) {
-> +	uint32_t devid;
-> +	bool is_adl, is_xe;
-> +
-> +	devid = is_intel_device(drm_fd);
-> +	is_adl = intel_display_ver(devid) <= 13;
-> +	is_xe = is_xe_device(drm_fd);
-> +
-> +	if (!is_adl || !is_xe) return drm_fd;
-> +
-> +	igt_xe_driver_unload();
-
-I do not know if it is a good idea.
-
-+cc Karthik and Swati
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
-
-Regards,
-Kamil
-
-> +	if(igt_kmod_is_loaded("i915")) {
-> +		igt_kmod_unbind("i915", NULL);
-> +		igt_kmod_unload("i915");
-> +	}
-> +	igt_device_drop_master(drm_fd);
-> +	drm_close_driver(drm_fd);
-> +	drm_fd = drm_open_driver_master(DRIVER_INTEL);
-> +
-> +	igt_require(is_i915_device(drm_fd));
-> +
-> +	return drm_fd;
-> +}
-> +
->  igt_main
->  {
->  	igt_fixture {
-> @@ -976,6 +1002,8 @@ igt_main
->  
->  		igt_require(is_intel_device(data.drm_fd));
->  
-> +		data.drm_fd = open_compatible_driver(data.drm_fd);
-> +
->  		data.devid = intel_get_drm_devid(data.drm_fd);
->  
->  		kmstest_set_vt_graphics_mode();
-> -- 
-> 2.45.2
-> 
