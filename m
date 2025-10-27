@@ -4,69 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14C88CCF9EB
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Oct 2025 16:27:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 510B7CCF9E0
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Oct 2025 16:43:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9D8EE10E4F1;
-	Mon, 27 Oct 2025 16:27:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C411310E51C;
+	Mon, 27 Oct 2025 16:43:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="Mr5JN/p8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UmlPglaw";
 	dkim-atps=neutral
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com
- [209.85.215.171])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0443710E4F1
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Oct 2025 16:27:16 +0000 (UTC)
-Received: by mail-pg1-f171.google.com with SMTP id
- 41be03b00d2f7-b6ce6d1d3dcso3314829a12.3
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Oct 2025 09:27:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761582435; x=1762187235; darn=lists.freedesktop.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=aScZtylva1Z2pMJcvsQrebhO8pEA4MYgpZOPKv+/g2g=;
- b=Mr5JN/p8ZaN2PTgIGmIpGP9c0IxvshJWWpK8WBl16QDLibnr325zmuKYDJIGCorwYQ
- MpfxbcvXktAVrPwhKqmrm4eDSV0PlIMCixex8xiosw2wXxGgru/7Xuy8HxQ3CdiuI6y7
- Z9auWCclsV3X/lGs2wiyeovZHHtz9kY5m+RXu219Fbm1gCz9Qwp6geLzxO88tSeFUMH3
- arnb/vPYU4IdIc7TuTC0h2PO9vZmSffSJtBYf/qlxjLW05DRIrKUguG3mVfgB25J32s3
- aw6QPaSW3cKIkCw+lCSMK/np4vng++K8n2RWI52/ZpObd1NwvllUdMjye3TTjEJ8L8R4
- 3f1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761582435; x=1762187235;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=aScZtylva1Z2pMJcvsQrebhO8pEA4MYgpZOPKv+/g2g=;
- b=X/GlsTXBt8QwrlkOsVJGgTnlvaVpeOFvsv4CFB6ji0bhob27lVdYkXhg7paHImQVwh
- j9RTVYub8bKBNQEOb3yQOhCwJbdEhBD8HwdRPojChHU6RRcvUFSpk7aBRK8WvPosGiZZ
- SXkbr0aK+EIv6NL99GwChKWNM4clcWZL9aMGTK1wvd7T1V11IwwVslwxChOSKuWYriCn
- XWkXMj+3boTyUNTilK12l59GfC0+vW756CcqYjmhJBS1jXNIIfAgNZO/fJ6hx6XC227t
- lacFtFDzmCE3wWDSHKDdxZVZJEZDvFW6xuJr1pwNnBfUFuwDtWrweGDZK9QbZQGWOnfo
- JkSg==
-X-Gm-Message-State: AOJu0YzWji9etWxPRMjeDfxoNWjArHAziiXsH6uonOXo9o46Uz3TVr55
- fOnXx9znPXdZoebnsd8aMX3rkWPGHas0NFFRNfIatHR0yChkp0HZGl3LL2dfRufl6GLdFalleY1
- tW/DAGg0MjzbEeIza/3FDp13Q2uegmc9Qwvui7XI=
-X-Gm-Gg: ASbGncs/sCK7Sq8w/ngjJPXh7iS3IJp2DnD6ju7s25b+JQI1zwf4Wo7svNQwu21XdQu
- i73LayISjtKl4lo+6xeSP3Nlmq21DPM4giz6o28/uYsODTGZgjZ9ZNt+FD2RAfVSMoJ4xnbpWrw
- xrgC4kkiqlSgoFvVW2e4qeQR5abw31U/cPUxkMdaa3eg6mcWKUNwc2Y+JrOt3/zCF/Pjzo6A40r
- eKx80x3XEH4dOEfSd7aviiEUvEW1Yoz4+5F9T7OnxZjw/AiLfOWXUK8VxAjLANwiReM4UA3eQ==
-X-Google-Smtp-Source: AGHT+IGvhMLCRt+6CG3aF3nTGkqiT7EUHFTxcL8sZUKY11ddioR6GbNyy/dAM/uau9akxTvh2d9MIiP8is4IzgaZNKs=
-X-Received: by 2002:a17:902:ce8d:b0:293:e12:1bec with SMTP id
- d9443c01a7336-294cb3b9d5dmr7102685ad.20.1761582435253; Mon, 27 Oct 2025
- 09:27:15 -0700 (PDT)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C559110E51C
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Oct 2025 16:43:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1761583420; x=1793119420;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=25QJlGJJgjfN9KLtw+GBNJDfIrP6Rdc9NyrukIPQYaE=;
+ b=UmlPglawtPxvVPsLnjMq83ndsMLHZrUOem6269LfHUWy44Rer6KhdrjN
+ Jc4XXMicZP00/+WaGVoDRtFw9t2N7EYBJNKpY7NEavW7REdWXIC6Tx40p
+ dQcmSq+6RmnioDzvnhYeQhST9p0HfPuUf0Dlx9dR59tUKqiVhiB2E6tQt
+ v09gXryVxurVZND53T97OPsZL2QhADOXmFA9P1Qw+dnx6JGHTg5o6Q4a7
+ gywlD+uzznUFIpxOB4fvREFIgl4m3CTOPQMkTRfOzrSxwbZdpUzqIxcET
+ YtHERHlN2yc30WRB8x5B+b8NFxXwBhgGrMGAJ22OIOzPGVi9RFAB7ZOMR Q==;
+X-CSE-ConnectionGUID: jgXlpMZ7SKuaeruzfH1jHA==
+X-CSE-MsgGUID: oWl61e46SeqV/WKvadAK6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="67504482"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="67504482"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Oct 2025 09:43:39 -0700
+X-CSE-ConnectionGUID: +4gptS1WRdS9ZTL9bohzfg==
+X-CSE-MsgGUID: WgJ/Gm8NQI2yV8uHWXiqaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,259,1754982000"; d="scan'208";a="184269595"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 09:43:38 -0700
+Date: Mon, 27 Oct 2025 17:43:22 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Gustavo Sousa <gustavo.sousa@intel.com>,
+ Jani Nikula <jani.nikula@intel.com>,
+ Matt Roper <matthew.d.roper@intel.com>,
+ Shekhar Chauhan <shekhar.chauhan@intel.com>
+Subject: Re: [PATCH i-g-t v1 0/2] Sync PCI ids with kernel: split BMG to
+ BMG-G21 and add NVL-S
+Message-ID: <20251027164322.ht4lppo5cmnjxmqb@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Gustavo Sousa <gustavo.sousa@intel.com>,
+ Jani Nikula <jani.nikula@intel.com>,
+ Matt Roper <matthew.d.roper@intel.com>,
+ Shekhar Chauhan <shekhar.chauhan@intel.com>
+References: <20251024121517.73013-1-kamil.konieczny@linux.intel.com>
+ <3loc66jqittg2apyos7jvnn73r3p3jkcdlzua5icxlgxuncxev@fve2uvhiqyt6>
 MIME-Version: 1.0
-References: <20251027130025.1771523-1-michal.grzelak@intel.com>
-In-Reply-To: <20251027130025.1771523-1-michal.grzelak@intel.com>
-From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-Date: Mon, 27 Oct 2025 18:27:03 +0200
-X-Gm-Features: AWmQ_bkMPwfRh43dLNzVg2zqRXViY9-uA_gIL4sBaGZkJEiwRcRbbHv1p_RJc1Q
-Message-ID: <CAJ=qYWSqX2SBgbggxAreGsGRaVzXgu4MoY7jFoVVRogH2=VnVg@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 1/1] tests/kms_big_fb: Open compatible driver for
- the platform
-To: =?UTF-8?Q?Micha=C5=82_Grzelak?= <michal.grzelak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <3loc66jqittg2apyos7jvnn73r3p3jkcdlzua5icxlgxuncxev@fve2uvhiqyt6>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,86 +79,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Michal,
+Hi Lucas,
+On 2025-10-27 at 09:25:12 -0500, Lucas De Marchi wrote:
+> On Fri, Oct 24, 2025 at 02:15:15PM +0200, Kamil Konieczny wrote:
+> > This syncs Intel GPU PCI ids with drm-next kernel commits
+> > 
+> > edb660ad79ff ("drm/intel/pciids: Add match on vendor/id only")
+> > 78de8f876683 ("drm/xe: Handle Wa_22010954014 and Wa_14022085890 as device workarounds")
+> > c002b1764e7b ("drm/xe/nvl: Define NVL-S platform")
+> > 
+> > Cc: Gustavo Sousa <gustavo.sousa@intel.com>
+> > Cc: Jani Nikula <jani.nikula@intel.com>
+> > Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+> > Cc: Matt Roper <matthew.d.roper@intel.com>
+> > Cc: Shekhar Chauhan <shekhar.chauhan@intel.com>
+> > 
+> > Kamil Konieczny (2):
+> >  lib/pciids: Split out BMG-G21
+> >  lib/pciids: Add NovaLake NVL-S PCI ids
+> 
+> any adavantage on splitting the sync? I'd rather just have one and
+> already go with the tip of drm-xe-next, which also contains the PCI ID
+> for Crescent Island that we are also upstreaming:
+> 5e0de2dfbc1b ("drm/xe/cri: Add CRI platform definition")
+> 
+> thanks
+> Lucas De Marchi
+> 
 
-On Mon, Oct 27, 2025 at 3:00=E2=80=AFPM Micha=C5=82 Grzelak <michal.grzelak=
-@intel.com> wrote:
->
-> On platforms older than ADL-P, tests should be executed with i915 loaded
-> before xe. Currently, when tests are executed and xe is loaded first,
-> failures are reported in multiple subtests along errors in the dmesg.
->
-> Check if i915 has been loaded before xe. If not, open and optionally
-> reload proper driver according to platform's display version.
+It will be a little clear in git log --oneline, but I could also
+squash them if you prefer it.
 
-I was wondering what is the problem you are solving with this? adlp
-you mention is supported by both xe and i915 and I don't think it is
-good idea test silently switches the driver. If xe is loaded when
-running with adlp I'd expect it is done with force probing and it is
-intentional; ie test is wanted to be run against xe driver.
+Regards,
+Kamil
 
-/Juha-Pekka
-
->
-> Signed-off-by: Micha=C5=82 Grzelak <michal.grzelak@intel.com>
-> ---
->  tests/intel/kms_big_fb.c | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
->
-> diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
-> index 41fdcacab..5e8fa6112 100644
-> --- a/tests/intel/kms_big_fb.c
-> +++ b/tests/intel/kms_big_fb.c
-> @@ -30,6 +30,8 @@
->   */
->
->  #include "igt.h"
-> +#include "igt_device.h"
-> +#include "igt_kmod.h"
->  #include <errno.h>
->  #include <stdbool.h>
->  #include <stdio.h>
-> @@ -967,6 +969,30 @@ static bool test_requirements(data_t *input_data, in=
-t l)
->         return true;
->  }
->
-> +static int open_compatible_driver(int drm_fd) {
-> +       uint32_t devid;
-> +       bool is_adl, is_xe;
-> +
-> +       devid =3D is_intel_device(drm_fd);
-> +       is_adl =3D intel_display_ver(devid) <=3D 13;
-> +       is_xe =3D is_xe_device(drm_fd);
-> +
-> +       if (!is_adl || !is_xe) return drm_fd;
-> +
-> +       igt_xe_driver_unload();
-> +       if(igt_kmod_is_loaded("i915")) {
-> +               igt_kmod_unbind("i915", NULL);
-> +               igt_kmod_unload("i915");
-> +       }
-> +       igt_device_drop_master(drm_fd);
-> +       drm_close_driver(drm_fd);
-> +       drm_fd =3D drm_open_driver_master(DRIVER_INTEL);
-> +
-> +       igt_require(is_i915_device(drm_fd));
-> +
-> +       return drm_fd;
-> +}
-> +
->  igt_main
->  {
->         igt_fixture {
-> @@ -976,6 +1002,8 @@ igt_main
->
->                 igt_require(is_intel_device(data.drm_fd));
->
-> +               data.drm_fd =3D open_compatible_driver(data.drm_fd);
-> +
->                 data.devid =3D intel_get_drm_devid(data.drm_fd);
->
->                 kmstest_set_vt_graphics_mode();
-> --
-> 2.45.2
->
+> > 
+> > lib/pciids.h | 21 +++++++++++++++++++--
+> > 1 file changed, 19 insertions(+), 2 deletions(-)
+> > 
+> > -- 
+> > 2.51.1
+> > 
