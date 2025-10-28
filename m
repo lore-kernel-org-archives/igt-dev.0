@@ -4,71 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF9D2CCD1BF
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Oct 2025 16:07:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0D2FCCD1BF
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Oct 2025 16:36:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7A40B10E5F8;
-	Tue, 28 Oct 2025 16:07:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4DBC510E606;
+	Tue, 28 Oct 2025 16:36:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=mediatek.com header.i=@mediatek.com header.b="eAm4hkAD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kg7tqcrP";
 	dkim-atps=neutral
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61A6610E60F
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Oct 2025 16:07:47 +0000 (UTC)
-X-UUID: 3a9ffdbeb41811f0b33aeb1e7f16c2b6-20251029
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
- s=dk; 
- h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From;
- bh=TETRCx1QMzrXrtgYJ+xm7uybogYpjwB201RihhKyNaI=; 
- b=eAm4hkADURJFL/GjCAnjqAxU6HtNzjOnAi8ZeU6N8p3fHBnjBEg9/bcaLf73yq5QO2EPk2LpaXfkhgJW21X4U/r7y97iphUomMH3Z9nfP0CuXXUUWIDuMpdtn+vSoEXJmJfeWMMdeqXar22MHJdGfzdLWQLpmFsqMl6f1CDUMYI=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6, REQID:037c21d2-55f4-41eb-b7d7-de321cfbd1a0, IP:0,
- UR
- L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
- elease,TS:0
-X-CID-META: VersionHash:a9d874c, CLOUDID:ca6a6684-4124-4606-b51d-d5c9eec0e7b9,
- B
- ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|836|888|898,TC:-5,Content:
- 0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:0,OS
- I:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 3a9ffdbeb41811f0b33aeb1e7f16c2b6-20251029
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by
- mailgw02.mediatek.com (envelope-from <jason-jh.lin@mediatek.com>)
- (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
- with ESMTP id 254326201; Wed, 29 Oct 2025 00:07:40 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.26; Wed, 29 Oct 2025 00:07:38 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1748.26 via Frontend Transport; Wed, 29 Oct 2025 00:07:37 +0800
-From: Jason-JH Lin <jason-jh.lin@mediatek.com>
-To: <igt-dev@lists.freedesktop.org>, Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
- <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
- <bhanuprakash.modem@gmail.com>, Fei Shao <fshao@chromium.org>
-CC: Jani <jani.nikula@intel.com>, Jason-JH Lin <jason-jh.lin@mediatek.com>,
- Paul-PL Chen <paul-pl.chen@mediatek.com>, Nancy Lin <nancy.lin@mediatek.com>, 
- Singo Chang <singo.chang@mediatek.com>, Gil Dekel <gildekel@google.com>,
- Yacoub <markyacoub@chromium.org>,
- <Project_Global_Chrome_Upstream_Group@mediatek.com>
-Subject: [PATCH i-g-t v3 1/1] lib/igt_edid: Fix monitor name parsing and trim
- EDID string padding
-Date: Wed, 29 Oct 2025 00:07:04 +0800
-Message-ID: <20251028160738.3624415-2-jason-jh.lin@mediatek.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20251028160738.3624415-1-jason-jh.lin@mediatek.com>
-References: <20251028160738.3624415-1-jason-jh.lin@mediatek.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 951ED10E606
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Oct 2025 16:36:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1761669361; x=1793205361;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=7TPwAB+VvRz1WqbhknLUdpoVlaSEDihXdQzTeQ9Sls4=;
+ b=kg7tqcrPWOToWWaHbVukMzEzNeyojiz0D/ozO9mfyIlT2C+neNSIfsrH
+ 1qj52OtrMMno4S7rMWipd15Z5km1k9iPkRFoEEx1ggDFKe5HwsnfU/kXT
+ VufoO89dzUNrDtRPj5XlKnjuZMtozLFs5J3PFGe39xQLqhXS7ZH+1Duiz
+ 7gRAqgbKhX0ZcwbCkuulsstLqWq+jDfDW5/Li0NaeBDvWJJerwBtLJzmw
+ abEQHYoyh2MMknVI8RZViR+ZyFZJdokkI/BDm0D/mcEa38RLm2xN/zc8e
+ koxMhD5fPCtGrsPPv5iWGcufvugXBG3/rA5FrJsWO1gXadP4+Rw3ERYo8 w==;
+X-CSE-ConnectionGUID: domdYW97Rw2scmnujlvkNg==
+X-CSE-MsgGUID: 6/kTW5NwRs6MnAIy7Ha/+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74451499"
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; d="scan'208";a="74451499"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2025 09:36:00 -0700
+X-CSE-ConnectionGUID: a60oU+FfSS2P/2w7460qyA==
+X-CSE-MsgGUID: EQqLAvbsSGSy7xaFMNF6tw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; d="scan'208";a="189450867"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 09:35:58 -0700
+Date: Tue, 28 Oct 2025 17:35:41 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Matt Roper <matthew.d.roper@intel.com>,
+ Gustavo Sousa <gustavo.sousa@intel.com>,
+ Jani Nikula <jani.nikula@intel.com>,
+ Shekhar Chauhan <shekhar.chauhan@intel.com>
+Subject: Re: [PATCH i-g-t v2 1/1] lib/pciids: Add NVL-S and split out BMG-G21
+Message-ID: <20251028163541.gvaycyurtgaykt44@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Matt Roper <matthew.d.roper@intel.com>,
+ Gustavo Sousa <gustavo.sousa@intel.com>,
+ Jani Nikula <jani.nikula@intel.com>,
+ Shekhar Chauhan <shekhar.chauhan@intel.com>
+References: <20251028104234.14745-1-kamil.konieczny@linux.intel.com>
+ <20251028104234.14745-2-kamil.konieczny@linux.intel.com>
+ <4uubshfhdvnc2nxat3mwjoc5x3ayubtitzk534ks2ysb4mlrkd@gfzff2dbt43g>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <4uubshfhdvnc2nxat3mwjoc5x3ayubtitzk534ks2ysb4mlrkd@gfzff2dbt43g>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,68 +79,155 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Improve EDID monitor name parsing by supporting both
-EDID_DETAIL_MONITOR_NAME and EDID_DETAIL_MONITOR_STRING types.
-Additionally, remove trailing padding spaces from the monitor name
-extracted from the EDID string to ensure the returned name is accurate.
-Also, fix the assert to guarantee name_size > 1 for '\0' termination.
+Hi Lucas,
+On 2025-10-28 at 08:53:39 -0500, Lucas De Marchi wrote:
+> On Tue, Oct 28, 2025 at 11:42:34AM +0100, Kamil Konieczny wrote:
+> > Sync with drm-next kernel commit c002b1764e7b ("drm/xe/nvl: Define NVL-S platform")
+> > Link: https://lore.kernel.org/r/20251016-xe3p-v3-11-3dd173a3097a@intel.com
+> > 
+> > This adds NovaLake-S PCI ids, and with it there are two more PCI
+> > ids commits, one for splitting BMG-G21 out of BMG for workarounds
+> > and the other adds a kernel macro.
+> > 
+> > 78de8f876683 ("drm/xe: Handle Wa_22010954014 and Wa_14022085890 as device workarounds")
+> > Link: https://lore.kernel.org/r/20251013200944.2499947-40-matthew.d.roper@intel.com
+> > 
+> > edb660ad79ff ("drm/intel/pciids: Add match on vendor/id only")
+> > Link: https://lore.kernel.org/r/20250808-intel-pci-device-v1-1-ce3545d86502@intel.com
+> 
+> Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> 
+> I don't like the commit message, but I don't care enough about it right
+> now neither.
+> 
+> I think it would be much better if going forward we'd adopt a template
+> and maybe even automate it. Something like this:
+> 
+> 
+> 	Subject: lib/pciids: sync with kernel commit {kernel_head}
+> 
+> 	Synchronize PCI IDs with kernel up to {kernel_head}, which
+> 	includes the following changes:
+> 
+> 	{kernel_log}
+> 
 
-Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: Fei Shao <fshao@chromium.org>
----
- lib/igt_edid.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+Looks ok, I will change subject and description according to it
+and will send v3 with your r-b. Imho there should be a mension
+from which repo it was taken, drm-next or other, so anyone could
+verify it.
 
-diff --git a/lib/igt_edid.c b/lib/igt_edid.c
-index 627201c342df..c68ccf671eff 100644
---- a/lib/igt_edid.c
-+++ b/lib/igt_edid.c
-@@ -26,6 +26,7 @@
- #include "config.h"
- 
- #include <assert.h>
-+#include <ctype.h>
- #include <string.h>
- #include <stdint.h>
- #include <time.h>
-@@ -215,22 +216,33 @@ void edid_get_monitor_name(const struct edid *edid, char *name, size_t name_size
- 	const struct detailed_timing *dt;
- 	const struct detailed_non_pixel *np;
- 	const struct detailed_data_string *ds;
--	size_t i;
-+	size_t i, n;
- 
--	assert(name_size > 0);
-+	/* need one char for '\0' */
-+	assert(name_size > 1);
- 	name[0] = '\0';
- 
- 	for (i = 0; i < DETAILED_TIMINGS_LEN; i++) {
- 		dt = &edid->detailed_timings[i];
- 		np = &dt->data.other_data;
- 
--		if (np->type != EDID_DETAIL_MONITOR_NAME)
-+		if (np->type != EDID_DETAIL_MONITOR_NAME &&
-+		    np->type != EDID_DETAIL_MONITOR_STRING)
- 			continue;
- 
- 		ds = &np->data.string;
- 		strncpy(name, ds->str, name_size - 1);
- 		name[name_size - 1] = '\0';
--		igt_debug("Monitor name: %s\n", name);
-+
-+		/* remove the padding space from EDID */
-+		for (n = name_size - 1; n > 0; ) {
-+			if (!isspace(name[--n]))
-+				break;
-+
-+			name[n] = '\0';
-+		}
-+
-+		igt_debug("Monitor name: %s\n", name[0] ? name : "(empty)");
- 		return;
- 	}
- 	igt_debug("No monitor name found in EDID\n");
--- 
-2.43.0
+Regards,
+Kamil
 
+> Which could basically be generated by a (to be added) script:
+> 
+> 	tools/sync-intel-pciids [--head <commit>] [--base <commit>][--no-commit] <kernel-checkout>
+> 
+> What it does:
+> 	a) inspect the last commit in igt that touched the header and
+> 	   find the kernel_base. --base can override that.
+> 	b) git -C /path/to/kernel/checkout show $KERNEL_HEAD:include/drm/intel/pciids.h
+> 		> lib/pciids.h
+> 
+> 	   which basically copies the heade from whatever state of the
+> 	   kernel checkout we want - some times we may want it from a
+> 	   kernel release, some times from a particular branch, as long
+> 	   as it keeps moving forward.
+> 
+> 	   --head can force a specific commit from kernel, otherwise it
+> 	   uses a default (drm/drm-next may be a good default).
+> 
+> 	c) Commit the results with the template above.
+> 
+> 
+> This would avoid having commits to fix things up like because it went
+> astray. was done in commit
+> 3896691534ef ("lib/pciids: lib/pciids: Add Wildcat Lake"). Same script
+> can be easily adapted to help updating the include/uapi
+> headers.
+> 
+> This should get us back to having the updates like we had in the past:
+> 
+> 	2042426168cf lib: sync i915_pciids.h with kernel commit cfa7772880f8
+> 	440669b77f16 lib: sync i915_pciids.h with kernel commit d2c4b1db1c4f
+> 	9702d87169f7 lib: sync i915_pciids.h with kernel commit 7858cc0b55e3
+> 	ea767a50aa93 lib: sync i915_pciids.h with kernel commit bfbda4722767
+> 	940399b2f807 lib: sync i915_pciids.h with kernel commit aa3d586e1624
+> 	1dda137aea8b lib: sync i915_pciids.h with kernel commit 5c8c22adc802
+> 	167ffe4acb08 lib: sync i915_pciids.h with kernel commit 7b43a37348b7
+> 	2763d0874328 lib: sync i915_pciids.h with kernel commit 41c0f8a36f15
+> 	00dcfce5cb2b lib: sync i915_pciids.h with kernel commit 432ed92bfb55
+> 
+> Thoughts?
+> 
+> Lucas De Marchi
+> 
+> 
+> > 
+> > v2: squashed into one commit (Lucas)
+> > 
+> > Cc: Matt Roper <matthew.d.roper@intel.com>
+> > Cc: Gustavo Sousa <gustavo.sousa@intel.com>
+> > Cc: Jani Nikula <jani.nikula@intel.com>
+> > Cc: Shekhar Chauhan <shekhar.chauhan@intel.com>
+> > Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > ---
+> > lib/pciids.h | 21 +++++++++++++++++++--
+> > 1 file changed, 19 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/lib/pciids.h b/lib/pciids.h
+> > index 76f8d26f9..9f095a99d 100644
+> > --- a/lib/pciids.h
+> > +++ b/lib/pciids.h
+> > @@ -26,6 +26,11 @@
+> > #define __PCIIDS_H__
+> > 
+> > #ifdef __KERNEL__
+> > +#define INTEL_PCI_DEVICE(_id, _info) { \
+> > +	PCI_DEVICE(PCI_VENDOR_ID_INTEL, (_id)), \
+> > +	.driver_data = (kernel_ulong_t)(_info), \
+> > +}
+> > +
+> > #define INTEL_VGA_DEVICE(_id, _info) { \
+> > 	PCI_DEVICE(PCI_VENDOR_ID_INTEL, (_id)), \
+> > 	.class = PCI_BASE_CLASS_DISPLAY << 16, .class_mask = 0xff << 16, \
+> > @@ -844,7 +849,7 @@
+> > 	MACRO__(0x64B0, ## __VA_ARGS__)
+> > 
+> > /* BMG */
+> > -#define INTEL_BMG_IDS(MACRO__, ...) \
+> > +#define INTEL_BMG_G21_IDS(MACRO__, ...) \
+> > 	MACRO__(0xE202, ## __VA_ARGS__), \
+> > 	MACRO__(0xE209, ## __VA_ARGS__), \
+> > 	MACRO__(0xE20B, ## __VA_ARGS__), \
+> > @@ -853,7 +858,10 @@
+> > 	MACRO__(0xE210, ## __VA_ARGS__), \
+> > 	MACRO__(0xE211, ## __VA_ARGS__), \
+> > 	MACRO__(0xE212, ## __VA_ARGS__), \
+> > -	MACRO__(0xE216, ## __VA_ARGS__), \
+> > +	MACRO__(0xE216, ## __VA_ARGS__)
+> > +
+> > +#define INTEL_BMG_IDS(MACRO__, ...) \
+> > +	INTEL_BMG_G21_IDS(MACRO__, __VA_ARGS__), \
+> > 	MACRO__(0xE220, ## __VA_ARGS__), \
+> > 	MACRO__(0xE221, ## __VA_ARGS__), \
+> > 	MACRO__(0xE222, ## __VA_ARGS__), \
+> > @@ -876,4 +884,13 @@
+> > 	MACRO__(0xFD80, ## __VA_ARGS__), \
+> > 	MACRO__(0xFD81, ## __VA_ARGS__)
+> > 
+> > +/* NVL-S */
+> > +#define INTEL_NVLS_IDS(MACRO__, ...) \
+> > +	MACRO__(0xD740, ## __VA_ARGS__), \
+> > +	MACRO__(0xD741, ## __VA_ARGS__), \
+> > +	MACRO__(0xD742, ## __VA_ARGS__), \
+> > +	MACRO__(0xD743, ## __VA_ARGS__), \
+> > +	MACRO__(0xD744, ## __VA_ARGS__), \
+> > +	MACRO__(0xD745, ## __VA_ARGS__)
+> > +
+> > #endif /* __PCIIDS_H__ */
+> > -- 
+> > 2.51.1
+> > 
