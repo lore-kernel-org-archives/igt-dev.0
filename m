@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 930C3CCF9E0
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Oct 2025 14:36:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FD48CCD1BF
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Oct 2025 14:41:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 42F3710E0EE;
-	Tue, 28 Oct 2025 14:36:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D2CA110E105;
+	Tue, 28 Oct 2025 14:41:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DG1+sIGb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gDT0Ferx";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9C22D10E0EE
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Oct 2025 14:36:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB74B10E105
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Oct 2025 14:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761662200; x=1793198200;
+ t=1761662512; x=1793198512;
  h=from:to:cc:subject:in-reply-to:references:date:
  message-id:mime-version;
- bh=dLudGLAnngsF/UJni8G9X1ZjB0W9HT4zH0I/U4To924=;
- b=DG1+sIGbiFlDDko2zCs1UjLK9Ri+aIdGLfJzmo2pNe3JD0boKqIgWuql
- +fEL0ZeXWAu+MWZllGmW7FyjUsjSW4HriCgKhEJFyweWObZbETqqxg3T3
- XTfVNi/yJWVz+rf79hl3V6gFwRFHQXKGQgVOG0EkGdk26tyVqfP4jI1WF
- caCT3GA+Nl3aOH15EjC/WZOmfsGAhLRPWTH8OqdLFDiiZSOTmMr3/HC3x
- QzKG1wtzmiIVCdqglcyFdl9Qse3ceLvN3VQg3RPVLSTVOXm/RA19aIPIt
- 3+GrEF0JoA9V+cEUBbcz+/dqadM2TC1W+TQRWjRBZJsWnVvcVoxOQMJow Q==;
-X-CSE-ConnectionGUID: PLR071j5SbuN3Ls8scMmfA==
-X-CSE-MsgGUID: +wVAWM/2QnSVd8wSs7rvMw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62792818"
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; d="scan'208";a="62792818"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Oct 2025 07:36:40 -0700
-X-CSE-ConnectionGUID: BJep0qW1S8CWG38xmMW6sQ==
-X-CSE-MsgGUID: DDLJU8eUSZmXl6ZPc/TDLQ==
+ bh=Mm8HFwajKW7289BwKSMxMDTRASqCI7CrnMMmHajqhmg=;
+ b=gDT0FerxzXI2YA4Z4KYF6mzRog+eZbS5ppz9kpW8q6V5LyhwU+UAHnBx
+ +mj5CwJpNGWS0oZad8sl/svxJKLB0xnklUGsRi+2jKPFGW3yaAwNPV4dH
+ YbKI3x4+NU20LoO/k3baxPYBLkJtalzFjP2IAg9enpVohRMqgpHcci7q1
+ wY4O2S0bfTSTwaB481REzKH9xfCRZAZuK01ovi5CVgit2KHPm6iwTkLqL
+ BngteozyZzqGFdMltyzJNDbM5Lrr1GwRknUqJv0dgghPHky+VMC/gY0+v
+ Em4bm4osvPbTpYEZSqNGFsBqOqrpeinuwtLpmBbu3rfZP7A/LhskqM3is g==;
+X-CSE-ConnectionGUID: vtyamZWcQDGKedt7B1thUg==
+X-CSE-MsgGUID: h+T5hR3vQXuJ5vRqRlemfA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63666839"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="63666839"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2025 07:41:51 -0700
+X-CSE-ConnectionGUID: GZYYYW4uSkGpR7KgAcY6bQ==
+X-CSE-MsgGUID: VI6DV8FzQam+z/Gy9sFLTg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; d="scan'208";a="216019956"
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; d="scan'208";a="189680818"
 Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.246.90])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Oct 2025 07:36:37 -0700
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2025 07:41:49 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: Lucas De Marchi <lucas.demarchi@intel.com>, Kamil Konieczny
  <kamil.konieczny@linux.intel.com>
@@ -55,8 +55,8 @@ References: <20251028104234.14745-1-kamil.konieczny@linux.intel.com>
  <20251028104234.14745-2-kamil.konieczny@linux.intel.com>
  <4uubshfhdvnc2nxat3mwjoc5x3ayubtitzk534ks2ysb4mlrkd@gfzff2dbt43g>
  <e50339ef85b308fb2b6fd8d88f3acf4fc5bd0057@intel.com>
-Date: Tue, 28 Oct 2025 16:36:34 +0200
-Message-ID: <d43d1cadf1eb3b0a07a12da4c48a3cabc33f57eb@intel.com>
+Date: Tue, 28 Oct 2025 16:41:45 +0200
+Message-ID: <3015f56dd17cf5c019824f69f532a0e06b98253a@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -75,9 +75,74 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 On Tue, 28 Oct 2025, Jani Nikula <jani.nikula@intel.com> wrote:
-> This is the script I've used, but never bothered to upstream to igt.
+> This is the script I've used, but never bothered to upstream to igt. It
+> does create separate commits for each kernel change, which was useful in
+> catching up with a lot of kernel changes while remaining bisectable in
+> igt.
 
-PS. I've got a similar script for intel_vbt_defs.h.
+Seems to work still. Running it now generates this log:
+
+commit 3ce2a3f06b01cad80923740135bc33fe0967e237 (HEAD -> master)
+Author: Jani Nikula <jani.nikula@intel.com>
+Date:   Tue Oct 28 16:39:30 2025 +0200
+
+    lib: sync i915_pciids.h with kernel commit 5e0de2dfbc1b
+    
+    Synchronize i915_pciids.h with kernel commit:
+    
+    5e0de2dfbc1b ("drm/xe/cri: Add CRI platform definition")
+    
+    Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+
+commit 27720193af75e531f505921e13a17d7dd36a6482
+Author: Jani Nikula <jani.nikula@intel.com>
+Date:   Tue Oct 28 16:39:30 2025 +0200
+
+    lib: sync i915_pciids.h with kernel commit c002b1764e7b
+    
+    Synchronize i915_pciids.h with kernel commit:
+    
+    c002b1764e7b ("drm/xe/nvl: Define NVL-S platform")
+    
+    Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+
+commit 8dd7f13b8ee6f4dd10427481c9a5e28f6baeed2e
+Author: Jani Nikula <jani.nikula@intel.com>
+Date:   Tue Oct 28 16:39:30 2025 +0200
+
+    lib: sync i915_pciids.h with kernel commit 78de8f876683
+    
+    Synchronize i915_pciids.h with kernel commit:
+    
+    78de8f876683 ("drm/xe: Handle Wa_22010954014 and Wa_14022085890 as device workarounds")
+    
+    Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+
+commit 62e36b49a7441a7422e0b594c14dbdd2aca00968
+Author: Jani Nikula <jani.nikula@intel.com>
+Date:   Tue Oct 28 16:39:30 2025 +0200
+
+    lib: sync i915_pciids.h with kernel commit 32620e176443
+    
+    Synchronize i915_pciids.h with kernel commit:
+    
+    32620e176443 ("drm/pcids: Split PTL pciids group to make wcl subplatform")
+    
+    Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+
+commit faa31026a59875bc636619e69f7296a1d69fe289
+Author: Jani Nikula <jani.nikula@intel.com>
+Date:   Tue Oct 28 16:39:30 2025 +0200
+
+    lib: sync i915_pciids.h with kernel commit edb660ad79ff
+    
+    Synchronize i915_pciids.h with kernel commit:
+    
+    edb660ad79ff ("drm/intel/pciids: Add match on vendor/id only")
+    
+    Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+
+
 
 -- 
 Jani Nikula, Intel
