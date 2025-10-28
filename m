@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34CF1CCF9E0
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Oct 2025 10:42:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4603BCCF9E0
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Oct 2025 11:30:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BECD010E1D9;
-	Tue, 28 Oct 2025 10:42:46 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lF//i3r9";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BAFB710E1D9
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Oct 2025 10:42:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761648167; x=1793184167;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=t17XKpcvMFaO5oHkDi+mHfkpKrUSFRz3VXjnk1idMN8=;
- b=lF//i3r9y+hsMp6GH5EjwwZni8A5J5tmAL06CBagk8njEpk4t/5jvCYl
- brie1qgs3C4ue6koStzmyslR5reRSJ/NxgTV+aEuWfsVAvijnwG5xx5E4
- Kag0M6+NRY35MgK2c4JT3/vfaIBTjEV0yfGeZYQhDKWqL5LwlQVfvXDML
- S3LtZPj/Z/AzlokH5kf/sgDdiB6ILQ4T9gwrB8KE8BD8a5YiYv5rkE7/+
- LjpZwDGVNvg+xo+DYDyq/Q9nZzslIR6KxWfxi5iDAfcOCmz4DwDxJjHtw
- kRve2vjx4TFBfLtTWjbDfYj0ODZVTDTo3NLQq78y6WyKhNtW65FiZlzDU A==;
-X-CSE-ConnectionGUID: gBpC7iy+RxS3FFPByUWlMw==
-X-CSE-MsgGUID: lAzQrUQpRhaBjrxgXR2djg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63633236"
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; d="scan'208";a="63633236"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Oct 2025 03:42:47 -0700
-X-CSE-ConnectionGUID: tfjeGrLrTgqz7NVPqCfFmg==
-X-CSE-MsgGUID: 3g/+l+rnSw+O/crekFLK0w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; d="scan'208";a="184941242"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.244.157])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Oct 2025 03:42:43 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Matt Roper <matthew.d.roper@intel.com>,
- Gustavo Sousa <gustavo.sousa@intel.com>,
- Jani Nikula <jani.nikula@intel.com>,
- Shekhar Chauhan <shekhar.chauhan@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v2 1/1] lib/pciids: Add NVL-S and split out BMG-G21
-Date: Tue, 28 Oct 2025 11:42:34 +0100
-Message-ID: <20251028104234.14745-2-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251028104234.14745-1-kamil.konieczny@linux.intel.com>
-References: <20251028104234.14745-1-kamil.konieczny@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id F073310E1D9;
+	Tue, 28 Oct 2025 11:30:23 +0000 (UTC)
+Received: from 97596180aaec (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 88E5410E1D9;
+ Tue, 28 Oct 2025 11:30:22 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1097887716383329358=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Fixes_for_VRR_multidisplay_?=
+ =?utf-8?q?test_cases?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mitul Golani" <mitulkumar.ajitkumar.golani@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 28 Oct 2025 11:30:22 -0000
+Message-ID: <176165102255.62582.553336776927923420@97596180aaec>
+X-Patchwork-Hint: ignore
+References: <20251028084354.2682743-1-mitulkumar.ajitkumar.golani@intel.com>
+In-Reply-To: <20251028084354.2682743-1-mitulkumar.ajitkumar.golani@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,85 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Sync with drm-next kernel commit c002b1764e7b ("drm/xe/nvl: Define NVL-S platform")
-Link: https://lore.kernel.org/r/20251016-xe3p-v3-11-3dd173a3097a@intel.com
+--===============1097887716383329358==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This adds NovaLake-S PCI ids, and with it there are two more PCI
-ids commits, one for splitting BMG-G21 out of BMG for workarounds
-and the other adds a kernel macro.
+== Series Details ==
 
-78de8f876683 ("drm/xe: Handle Wa_22010954014 and Wa_14022085890 as device workarounds")
-Link: https://lore.kernel.org/r/20251013200944.2499947-40-matthew.d.roper@intel.com
+Series: Fixes for VRR multidisplay test cases
+URL   : https://patchwork.freedesktop.org/series/156637/
+State : success
 
-edb660ad79ff ("drm/intel/pciids: Add match on vendor/id only")
-Link: https://lore.kernel.org/r/20250808-intel-pci-device-v1-1-ce3545d86502@intel.com
+== Summary ==
 
-v2: squashed into one commit (Lucas)
+CI Bug Log - changes from XEIGT_8598_BAT -> XEIGTPW_13954_BAT
+====================================================
 
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Shekhar Chauhan <shekhar.chauhan@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- lib/pciids.h | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+Summary
+-------
 
-diff --git a/lib/pciids.h b/lib/pciids.h
-index 76f8d26f9..9f095a99d 100644
---- a/lib/pciids.h
-+++ b/lib/pciids.h
-@@ -26,6 +26,11 @@
- #define __PCIIDS_H__
- 
- #ifdef __KERNEL__
-+#define INTEL_PCI_DEVICE(_id, _info) { \
-+	PCI_DEVICE(PCI_VENDOR_ID_INTEL, (_id)), \
-+	.driver_data = (kernel_ulong_t)(_info), \
-+}
-+
- #define INTEL_VGA_DEVICE(_id, _info) { \
- 	PCI_DEVICE(PCI_VENDOR_ID_INTEL, (_id)), \
- 	.class = PCI_BASE_CLASS_DISPLAY << 16, .class_mask = 0xff << 16, \
-@@ -844,7 +849,7 @@
- 	MACRO__(0x64B0, ## __VA_ARGS__)
- 
- /* BMG */
--#define INTEL_BMG_IDS(MACRO__, ...) \
-+#define INTEL_BMG_G21_IDS(MACRO__, ...) \
- 	MACRO__(0xE202, ## __VA_ARGS__), \
- 	MACRO__(0xE209, ## __VA_ARGS__), \
- 	MACRO__(0xE20B, ## __VA_ARGS__), \
-@@ -853,7 +858,10 @@
- 	MACRO__(0xE210, ## __VA_ARGS__), \
- 	MACRO__(0xE211, ## __VA_ARGS__), \
- 	MACRO__(0xE212, ## __VA_ARGS__), \
--	MACRO__(0xE216, ## __VA_ARGS__), \
-+	MACRO__(0xE216, ## __VA_ARGS__)
-+
-+#define INTEL_BMG_IDS(MACRO__, ...) \
-+	INTEL_BMG_G21_IDS(MACRO__, __VA_ARGS__), \
- 	MACRO__(0xE220, ## __VA_ARGS__), \
- 	MACRO__(0xE221, ## __VA_ARGS__), \
- 	MACRO__(0xE222, ## __VA_ARGS__), \
-@@ -876,4 +884,13 @@
- 	MACRO__(0xFD80, ## __VA_ARGS__), \
- 	MACRO__(0xFD81, ## __VA_ARGS__)
- 
-+/* NVL-S */
-+#define INTEL_NVLS_IDS(MACRO__, ...) \
-+	MACRO__(0xD740, ## __VA_ARGS__), \
-+	MACRO__(0xD741, ## __VA_ARGS__), \
-+	MACRO__(0xD742, ## __VA_ARGS__), \
-+	MACRO__(0xD743, ## __VA_ARGS__), \
-+	MACRO__(0xD744, ## __VA_ARGS__), \
-+	MACRO__(0xD745, ## __VA_ARGS__)
-+
- #endif /* __PCIIDS_H__ */
--- 
-2.51.1
+  **SUCCESS**
 
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13954_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-plain-flip@a-edp1:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4543]) +1 other test dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8598/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13954/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html
+
+  
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8598 -> IGTPW_13954
+  * Linux: xe-3994-de43fe70c436c359e7478a5532d873f87357cb4e -> xe-3995-894bc3ad572262b3c29e8cf0352adaa07275dbfc
+
+  IGTPW_13954: 13954
+  IGT_8598: 8598
+  xe-3994-de43fe70c436c359e7478a5532d873f87357cb4e: de43fe70c436c359e7478a5532d873f87357cb4e
+  xe-3995-894bc3ad572262b3c29e8cf0352adaa07275dbfc: 894bc3ad572262b3c29e8cf0352adaa07275dbfc
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13954/index.html
+
+--===============1097887716383329358==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Fixes for VRR multidisplay test cases</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/156637/">https://patchwork.freedesktop.org/series/156637/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13954/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13954/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8598_BAT -&gt; XEIGTPW_13954_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13954_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@a-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8598/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13954/bat-adlp-7/igt@kms_flip@basic-plain-flip@a-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8598 -&gt; IGTPW_13954</li>
+<li>Linux: xe-3994-de43fe70c436c359e7478a5532d873f87357cb4e -&gt; xe-3995-894bc3ad572262b3c29e8cf0352adaa07275dbfc</li>
+</ul>
+<p>IGTPW_13954: 13954<br />
+  IGT_8598: 8598<br />
+  xe-3994-de43fe70c436c359e7478a5532d873f87357cb4e: de43fe70c436c359e7478a5532d873f87357cb4e<br />
+  xe-3995-894bc3ad572262b3c29e8cf0352adaa07275dbfc: 894bc3ad572262b3c29e8cf0352adaa07275dbfc</p>
+
+</body>
+</html>
+
+--===============1097887716383329358==--
