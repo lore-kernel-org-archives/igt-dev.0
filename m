@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CA7ECCD1BF
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Oct 2025 14:35:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 930C3CCF9E0
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Oct 2025 14:36:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BDE3110E5D8;
-	Tue, 28 Oct 2025 14:35:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 42F3710E0EE;
+	Tue, 28 Oct 2025 14:36:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RkjaE0Je";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DG1+sIGb";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EEF4210E0EE
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Oct 2025 14:35:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C22D10E0EE
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Oct 2025 14:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761662151; x=1793198151;
+ t=1761662200; x=1793198200;
  h=from:to:cc:subject:in-reply-to:references:date:
  message-id:mime-version;
- bh=lUJtSENRfHm3daz5u8Y2Qy/bf2wmtcyoCcyFOgnaASo=;
- b=RkjaE0JexVeceFpB76jW1V8ogyI2XUlzVOsxUaRLQJVE1CNazkV0tsEU
- 1zT2h1YDE1jnBOX0ZKBX03WTWIG7BFCBveD+PgUzQ8giUnnNryMARvAE7
- Nj7mTpZ+qcwsmRVyxrk5460A6cbX89VZSKS57SL378nOS/y4NA++JsW0o
- I5UXcvHG0jaUcJ/TKRnRoLjRWG+pTgEqLykNhMP8ZH9+iQ6NQRjPl7FSb
- PpcBCejmFRdPee9atwE3hwaVUrmjndR6YtO/mGQyWg1mU1wPPO1J1GOQp
- rS8gic268Asnx3WU4/FKVwfxT8HewwCtL60qEYpa2Zy3cqPXj45TjiJmE Q==;
-X-CSE-ConnectionGUID: 3Tt+feHeSS+FQgq94ISgwA==
-X-CSE-MsgGUID: aK9W3FPsSDGj7p9oV4ekkg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="75106937"
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; d="scan'208";a="75106937"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Oct 2025 07:35:50 -0700
-X-CSE-ConnectionGUID: XbOMbkw5SrSjES0nqLCUlw==
-X-CSE-MsgGUID: H0ofm7wIQUWzt2HFsLgYpA==
+ bh=dLudGLAnngsF/UJni8G9X1ZjB0W9HT4zH0I/U4To924=;
+ b=DG1+sIGbiFlDDko2zCs1UjLK9Ri+aIdGLfJzmo2pNe3JD0boKqIgWuql
+ +fEL0ZeXWAu+MWZllGmW7FyjUsjSW4HriCgKhEJFyweWObZbETqqxg3T3
+ XTfVNi/yJWVz+rf79hl3V6gFwRFHQXKGQgVOG0EkGdk26tyVqfP4jI1WF
+ caCT3GA+Nl3aOH15EjC/WZOmfsGAhLRPWTH8OqdLFDiiZSOTmMr3/HC3x
+ QzKG1wtzmiIVCdqglcyFdl9Qse3ceLvN3VQg3RPVLSTVOXm/RA19aIPIt
+ 3+GrEF0JoA9V+cEUBbcz+/dqadM2TC1W+TQRWjRBZJsWnVvcVoxOQMJow Q==;
+X-CSE-ConnectionGUID: PLR071j5SbuN3Ls8scMmfA==
+X-CSE-MsgGUID: +wVAWM/2QnSVd8wSs7rvMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62792818"
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; d="scan'208";a="62792818"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2025 07:36:40 -0700
+X-CSE-ConnectionGUID: BJep0qW1S8CWG38xmMW6sQ==
+X-CSE-MsgGUID: DDLJU8eUSZmXl6ZPc/TDLQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; d="scan'208";a="189679687"
+X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; d="scan'208";a="216019956"
 Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.246.90])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Oct 2025 07:35:48 -0700
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2025 07:36:37 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: Lucas De Marchi <lucas.demarchi@intel.com>, Kamil Konieczny
  <kamil.konieczny@linux.intel.com>
@@ -49,13 +49,14 @@ Cc: igt-dev@lists.freedesktop.org, Matt Roper <matthew.d.roper@intel.com>,
  Gustavo Sousa <gustavo.sousa@intel.com>, Shekhar Chauhan
  <shekhar.chauhan@intel.com>
 Subject: Re: [PATCH i-g-t v2 1/1] lib/pciids: Add NVL-S and split out BMG-G21
-In-Reply-To: <4uubshfhdvnc2nxat3mwjoc5x3ayubtitzk534ks2ysb4mlrkd@gfzff2dbt43g>
+In-Reply-To: <e50339ef85b308fb2b6fd8d88f3acf4fc5bd0057@intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 References: <20251028104234.14745-1-kamil.konieczny@linux.intel.com>
  <20251028104234.14745-2-kamil.konieczny@linux.intel.com>
  <4uubshfhdvnc2nxat3mwjoc5x3ayubtitzk534ks2ysb4mlrkd@gfzff2dbt43g>
-Date: Tue, 28 Oct 2025 16:35:45 +0200
-Message-ID: <e50339ef85b308fb2b6fd8d88f3acf4fc5bd0057@intel.com>
+ <e50339ef85b308fb2b6fd8d88f3acf4fc5bd0057@intel.com>
+Date: Tue, 28 Oct 2025 16:36:34 +0200
+Message-ID: <d43d1cadf1eb3b0a07a12da4c48a3cabc33f57eb@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -73,108 +74,10 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 28 Oct 2025, Lucas De Marchi <lucas.demarchi@intel.com> wrote:
-> I don't like the commit message, but I don't care enough about it right
-> now neither.
->
-> I think it would be much better if going forward we'd adopt a template
-> and maybe even automate it. Something like this:
->
->
-> 	Subject: lib/pciids: sync with kernel commit {kernel_head}
->
-> 	Synchronize PCI IDs with kernel up to {kernel_head}, which
-> 	includes the following changes:
->
-> 	{kernel_log}
->
-> Which could basically be generated by a (to be added) script:
->
-> 	tools/sync-intel-pciids [--head <commit>] [--base <commit>][--no-commit] <kernel-checkout>
->
-> What it does:
-> 	a) inspect the last commit in igt that touched the header and
-> 	   find the kernel_base. --base can override that.
-> 	b) git -C /path/to/kernel/checkout show $KERNEL_HEAD:include/drm/intel/pciids.h
-> 		> lib/pciids.h 
->
-> 	   which basically copies the heade from whatever state of the
-> 	   kernel checkout we want - some times we may want it from a
-> 	   kernel release, some times from a particular branch, as long
-> 	   as it keeps moving forward.
->
-> 	   --head can force a specific commit from kernel, otherwise it
-> 	   uses a default (drm/drm-next may be a good default).
->
-> 	c) Commit the results with the template above.
->
->
-> This would avoid having commits to fix things up like because it went
-> astray. was done in commit
-> 3896691534ef ("lib/pciids: lib/pciids: Add Wildcat Lake"). Same script
-> can be easily adapted to help updating the include/uapi
-> headers.
->
-> This should get us back to having the updates like we had in the past:
->
-> 	2042426168cf lib: sync i915_pciids.h with kernel commit cfa7772880f8
-> 	440669b77f16 lib: sync i915_pciids.h with kernel commit d2c4b1db1c4f
-> 	9702d87169f7 lib: sync i915_pciids.h with kernel commit 7858cc0b55e3
-> 	ea767a50aa93 lib: sync i915_pciids.h with kernel commit bfbda4722767
-> 	940399b2f807 lib: sync i915_pciids.h with kernel commit aa3d586e1624
-> 	1dda137aea8b lib: sync i915_pciids.h with kernel commit 5c8c22adc802
-> 	167ffe4acb08 lib: sync i915_pciids.h with kernel commit 7b43a37348b7
-> 	2763d0874328 lib: sync i915_pciids.h with kernel commit 41c0f8a36f15
-> 	00dcfce5cb2b lib: sync i915_pciids.h with kernel commit 432ed92bfb55
->
-> Thoughts?
+On Tue, 28 Oct 2025, Jani Nikula <jani.nikula@intel.com> wrote:
+> This is the script I've used, but never bothered to upstream to igt.
 
-This is the script I've used, but never bothered to upstream to igt. It
-does create separate commits for each kernel change, which was useful in
-catching up with a lot of kernel changes while remaining bisectable in
-igt.
-
-BR,
-Jani.
-
-
-#!/bin/bash
-
-TIP=drm-tip/drm-tip
-SINCE=f719c2a2d1e7fb891d45998f241ff4273d7ae7e6
-INFILE=include/drm/intel/pciids.h
-OUTFILE=lib/pciids.h
-KERNEL=$HOME/src/linux
-IGT=$HOME/src/intel-gpu-tools
-LAST=
-
-cd $KERNEL
-
-for commit in $(git log --reverse --pretty=%h $SINCE..$TIP -- $INFILE); do
-	echo $commit
-	if git show $commit:$INFILE | diff -q $IGT/$OUTFILE - >/dev/null; then
-		LAST=$commit
-		break
-	fi
-done
-
-if [[ -z "$LAST" ]]; then
-	echo "last update not found"
-	exit 1
-fi
-
-for commit in $(git log --no-merges --reverse --pretty=%h $LAST..$TIP -- $INFILE); do
-	ref=$(git cite $commit)
-	git show $commit:$INFILE > $IGT/$OUTFILE
-	cd $IGT
-	git commit -as \
-	    -m "lib: sync i915_pciids.h with kernel commit $commit" \
-	    -m "Synchronize i915_pciids.h with kernel commit:" \
-	    -m "$ref"
-	cd -
-done
-
-
+PS. I've got a similar script for intel_vbt_defs.h.
 
 -- 
 Jani Nikula, Intel
