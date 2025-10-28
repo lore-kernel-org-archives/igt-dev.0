@@ -4,68 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 173B2CCF9E0
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Oct 2025 16:59:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75AEFCCF9E0
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Oct 2025 17:05:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B07E010E60F;
-	Tue, 28 Oct 2025 16:59:39 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BblSgDy0";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B4EAF10E60F
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Oct 2025 16:59:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761670778; x=1793206778;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=di5LVqjK4RImpMYIV5uyjkW/by6gkhumw9rlvZ1+OS0=;
- b=BblSgDy04ZIELE98BSUL5YeSCa3MntXRp2cxHe4pnrWvWPa+ZBJA3kl3
- 5R/DualEjRDDfCk9VbOHudPssnCj4IYjuD/2TwLDnIj5kBnuBOPpJR7Sy
- LV2wOEmVj6AMbjFVgF1LKJJqRsJvlrJUjyqb1XeS+0+1yo0fOYA7ry+BW
- gL4QEA7KhqGPy/b18TRNEoIhJOf3crBPk7JwEgsINpBY8qcnEU74tmovz
- ZfFeoGaVO901TtviPsQUAjYn/Dpl0oDS4HyTXrwhnMaUI2rSr2tKXgEKU
- aUqZlpWHbMYHQKZwq6p6csFwHGzoA6Z3DqusyYJliqlCzj7oyEI5DS4Ic Q==;
-X-CSE-ConnectionGUID: duB3GwsAQWOrd0WdgJ/leQ==
-X-CSE-MsgGUID: J9RtYa7cTEy+4cVEi0bnSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="81200755"
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; d="scan'208";a="81200755"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Oct 2025 09:59:37 -0700
-X-CSE-ConnectionGUID: G++jbhhdRTq5D2hfZIQvtg==
-X-CSE-MsgGUID: BGi3ffQHQVGfIeQXi4iIyw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; d="scan'208";a="185738090"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 09:59:35 -0700
-Date: Tue, 28 Oct 2025 17:59:33 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org,
- Matt Roper <matthew.d.roper@intel.com>,
- Gustavo Sousa <gustavo.sousa@intel.com>,
- Shekhar Chauhan <shekhar.chauhan@intel.com>
-Subject: Re: [PATCH i-g-t v2 1/1] lib/pciids: Add NVL-S and split out BMG-G21
-Message-ID: <20251028165933.73ytkedshcwzs3sl@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jani Nikula <jani.nikula@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- igt-dev@lists.freedesktop.org,
- Matt Roper <matthew.d.roper@intel.com>,
- Gustavo Sousa <gustavo.sousa@intel.com>,
- Shekhar Chauhan <shekhar.chauhan@intel.com>
-References: <20251028104234.14745-1-kamil.konieczny@linux.intel.com>
- <20251028104234.14745-2-kamil.konieczny@linux.intel.com>
- <4uubshfhdvnc2nxat3mwjoc5x3ayubtitzk534ks2ysb4mlrkd@gfzff2dbt43g>
- <e50339ef85b308fb2b6fd8d88f3acf4fc5bd0057@intel.com>
- <3015f56dd17cf5c019824f69f532a0e06b98253a@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3281110E611;
+	Tue, 28 Oct 2025 17:05:50 +0000 (UTC)
+Received: from 97596180aaec (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CD9010E611;
+ Tue, 28 Oct 2025 17:05:49 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0113016863118526388=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <3015f56dd17cf5c019824f69f532a0e06b98253a@intel.com>
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fsurvivabil?=
+ =?utf-8?q?ity=3A_Add_xe=5Fsurvivability_test_=28rev8=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Anirban, Sk" <sk.anirban@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 28 Oct 2025 17:05:49 -0000
+Message-ID: <176167114937.63588.4217036749691551902@97596180aaec>
+X-Patchwork-Hint: ignore
+References: <20251028082856.3197023-5-sk.anirban@intel.com>
+In-Reply-To: <20251028082856.3197023-5-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,92 +37,236 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jani,
-On 2025-10-28 at 16:41:45 +0200, Jani Nikula wrote:
-> On Tue, 28 Oct 2025, Jani Nikula <jani.nikula@intel.com> wrote:
-> > This is the script I've used, but never bothered to upstream to igt. It
-> > does create separate commits for each kernel change, which was useful in
-> > catching up with a lot of kernel changes while remaining bisectable in
-> > igt.
-> 
-> Seems to work still. Running it now generates this log:
-> 
-> commit 3ce2a3f06b01cad80923740135bc33fe0967e237 (HEAD -> master)
-> Author: Jani Nikula <jani.nikula@intel.com>
-> Date:   Tue Oct 28 16:39:30 2025 +0200
-> 
->     lib: sync i915_pciids.h with kernel commit 5e0de2dfbc1b
->     
->     Synchronize i915_pciids.h with kernel commit:
+--===============0113016863118526388==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Every code rots, here there are no longer i915_pciids.h nor
-xe_pciids.h, it is now one pciids.h.
+== Series Details ==
 
-Up to you, if you want to upstream it and maintain it later.
+Series: tests/intel/xe_survivability: Add xe_survivability test (rev8)
+URL   : https://patchwork.freedesktop.org/series/154342/
+State : failure
 
->     
->     5e0de2dfbc1b ("drm/xe/cri: Add CRI platform definition")
->     
->     Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> 
-> commit 27720193af75e531f505921e13a17d7dd36a6482
-> Author: Jani Nikula <jani.nikula@intel.com>
-> Date:   Tue Oct 28 16:39:30 2025 +0200
-> 
->     lib: sync i915_pciids.h with kernel commit c002b1764e7b
->     
->     Synchronize i915_pciids.h with kernel commit:
->     
->     c002b1764e7b ("drm/xe/nvl: Define NVL-S platform")
->     
->     Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> 
-> commit 8dd7f13b8ee6f4dd10427481c9a5e28f6baeed2e
-> Author: Jani Nikula <jani.nikula@intel.com>
-> Date:   Tue Oct 28 16:39:30 2025 +0200
-> 
->     lib: sync i915_pciids.h with kernel commit 78de8f876683
->     
->     Synchronize i915_pciids.h with kernel commit:
->     
->     78de8f876683 ("drm/xe: Handle Wa_22010954014 and Wa_14022085890 as device workarounds")
->     
->     Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> 
-> commit 62e36b49a7441a7422e0b594c14dbdd2aca00968
-> Author: Jani Nikula <jani.nikula@intel.com>
-> Date:   Tue Oct 28 16:39:30 2025 +0200
-> 
->     lib: sync i915_pciids.h with kernel commit 32620e176443
->     
->     Synchronize i915_pciids.h with kernel commit:
->     
->     32620e176443 ("drm/pcids: Split PTL pciids group to make wcl subplatform")
+== Summary ==
 
-Hmm, I didn't see it in drm-next between vendor/id and 'Handle Wa_...'
+CI Bug Log - changes from XEIGT_8599_BAT -> XEIGTPW_13956_BAT
+====================================================
 
-Regards,
-Kamil
+Summary
+-------
 
->     
->     Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> 
-> commit faa31026a59875bc636619e69f7296a1d69fe289
-> Author: Jani Nikula <jani.nikula@intel.com>
-> Date:   Tue Oct 28 16:39:30 2025 +0200
-> 
->     lib: sync i915_pciids.h with kernel commit edb660ad79ff
->     
->     Synchronize i915_pciids.h with kernel commit:
->     
->     edb660ad79ff ("drm/intel/pciids: Add match on vendor/id only")
->     
->     Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> 
-> 
-> 
-> -- 
-> Jani Nikula, Intel
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_13956_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_13956_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_13956_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_survivability@i2c-functionality (NEW):
+    - bat-lnl-2:          NOTRUN -> [SKIP][1] +1 other test skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-lnl-2/igt@xe_survivability@i2c-functionality.html
+    - bat-ptl-2:          NOTRUN -> [SKIP][2] +1 other test skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-ptl-2/igt@xe_survivability@i2c-functionality.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] +1 other test skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-dg2-oem2/igt@xe_survivability@i2c-functionality.html
+    - bat-adlp-vm:        NOTRUN -> [SKIP][4] +1 other test skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-adlp-vm/igt@xe_survivability@i2c-functionality.html
+
+  * igt@xe_survivability@runtime-survivability (NEW):
+    - bat-bmg-2:          NOTRUN -> [DMESG-WARN][5]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-bmg-2/igt@xe_survivability@runtime-survivability.html
+    - bat-bmg-1:          NOTRUN -> [DMESG-WARN][6]
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-bmg-1/igt@xe_survivability@runtime-survivability.html
+    - bat-adlp-7:         NOTRUN -> [SKIP][7] +1 other test skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-adlp-7/igt@xe_survivability@runtime-survivability.html
+    - bat-atsm-2:         NOTRUN -> [SKIP][8] +1 other test skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-atsm-2/igt@xe_survivability@runtime-survivability.html
+    - bat-ptl-1:          NOTRUN -> [SKIP][9] +1 other test skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-ptl-1/igt@xe_survivability@runtime-survivability.html
+    - bat-ptl-vm:         NOTRUN -> [SKIP][10] +1 other test skip
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-ptl-vm/igt@xe_survivability@runtime-survivability.html
+    - bat-lnl-1:          NOTRUN -> [SKIP][11] +1 other test skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-lnl-1/igt@xe_survivability@runtime-survivability.html
+    - bat-pvc-2:          NOTRUN -> [SKIP][12] +1 other test skip
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-pvc-2/igt@xe_survivability@runtime-survivability.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between XEIGT_8599_BAT and XEIGTPW_13956_BAT:
+
+### New IGT tests (2) ###
+
+  * igt@xe_survivability@i2c-functionality:
+    - Statuses : 2 pass(s) 10 skip(s)
+    - Exec time: [0.0, 2.18] s
+
+  * igt@xe_survivability@runtime-survivability:
+    - Statuses : 2 dmesg-warn(s) 10 skip(s)
+    - Exec time: [0.0, 4.28] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13956_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-plain-flip@d-edp1:
+    - bat-adlp-7:         [DMESG-WARN][13] ([Intel XE#4543]) -> [PASS][14] +1 other test pass
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8599/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html
+
+  
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8599 -> IGTPW_13956
+
+  IGTPW_13956: 13956
+  IGT_8599: b22b9ca357de868f3848269e5eb7c4cc53b3f2d1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-3996-5742fc7aea99a1326637a7106eeaeac383a1c76d: 5742fc7aea99a1326637a7106eeaeac383a1c76d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/index.html
+
+--===============0113016863118526388==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_survivability: Add xe_survivability test (rev8)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154342/">https://patchwork.freedesktop.org/series/154342/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8599_BAT -&gt; XEIGTPW_13956_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_13956_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_13956_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_13956_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@xe_survivability@i2c-functionality (NEW):</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-lnl-2/igt@xe_survivability@i2c-functionality.html">SKIP</a> +1 other test skip</li>
+<li>bat-ptl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-ptl-2/igt@xe_survivability@i2c-functionality.html">SKIP</a> +1 other test skip</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-dg2-oem2/igt@xe_survivability@i2c-functionality.html">SKIP</a> +1 other test skip</li>
+<li>bat-adlp-vm:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-adlp-vm/igt@xe_survivability@i2c-functionality.html">SKIP</a> +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_survivability@runtime-survivability (NEW):</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-bmg-2/igt@xe_survivability@runtime-survivability.html">DMESG-WARN</a></li>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-bmg-1/igt@xe_survivability@runtime-survivability.html">DMESG-WARN</a></li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-adlp-7/igt@xe_survivability@runtime-survivability.html">SKIP</a> +1 other test skip</li>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-atsm-2/igt@xe_survivability@runtime-survivability.html">SKIP</a> +1 other test skip</li>
+<li>bat-ptl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-ptl-1/igt@xe_survivability@runtime-survivability.html">SKIP</a> +1 other test skip</li>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-ptl-vm/igt@xe_survivability@runtime-survivability.html">SKIP</a> +1 other test skip</li>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-lnl-1/igt@xe_survivability@runtime-survivability.html">SKIP</a> +1 other test skip</li>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-pvc-2/igt@xe_survivability@runtime-survivability.html">SKIP</a> +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8599_BAT and XEIGTPW_13956_BAT:</p>
+<h3>New IGT tests (2)</h3>
+<ul>
+<li>
+<p>igt@xe_survivability@i2c-functionality:</p>
+<ul>
+<li>Statuses : 2 pass(s) 10 skip(s)</li>
+<li>Exec time: [0.0, 2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_survivability@runtime-survivability:</p>
+<ul>
+<li>Statuses : 2 dmesg-warn(s) 10 skip(s)</li>
+<li>Exec time: [0.0, 4.28] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13956_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@d-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8599/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13956/bat-adlp-7/igt@kms_flip@basic-plain-flip@d-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8599 -&gt; IGTPW_13956</li>
+</ul>
+<p>IGTPW_13956: 13956<br />
+  IGT_8599: b22b9ca357de868f3848269e5eb7c4cc53b3f2d1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-3996-5742fc7aea99a1326637a7106eeaeac383a1c76d: 5742fc7aea99a1326637a7106eeaeac383a1c76d</p>
+
+</body>
+</html>
+
+--===============0113016863118526388==--
