@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7892CCF9F8
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Oct 2025 18:04:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A496BCCF9F0
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Oct 2025 18:29:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7A9EA10E31F;
-	Thu, 30 Oct 2025 18:04:55 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a1ZsiErZ";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8A65010E31F
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Oct 2025 18:04:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761847494; x=1793383494;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=nNKaHZFxJCmZZAfU81TafStUFHeaGayQJk8pCG0iHgA=;
- b=a1ZsiErZxv97C8bt1OUF0PlKuUdKA0MqmSe0LklUUUvFqIPixpJJGDJr
- GzlALWHXx2bdSclRL7qgxtcNTxbn3kSRpTkEkz8awHFFCMN9E6k8u05/w
- 5pm71H83UamRddJWbb0LfZHdv2xFXn9iSc95SjjD1FA31ZC4NNOke7/KO
- /xfEofnYSZhR2e4wHk3WDS6lRZXGEMulP+jd5nnPccx2glSrM9vEqv/Fb
- 5CihB9TmGZ5VhlaBZHlY/f3y+N4U0YYbZcuOz9ujaU9WY5mREtyJPtc2p
- AE2cxyuWyc4+FTlK9bG4hJC8nOXiHMb8dQCQUz+OIY5IzamwCoR+7OU6g A==;
-X-CSE-ConnectionGUID: ftuIrhErSUus2X7HhhVzrA==
-X-CSE-MsgGUID: MJOTQxIzT3uNq4v/VfZ6kw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="63909860"
-X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; d="scan'208";a="63909860"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2025 11:04:54 -0700
-X-CSE-ConnectionGUID: 6SP3HI4wQKeFvJIaJcnB5A==
-X-CSE-MsgGUID: Ty67lrqjSFKVJgMW3IILOA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; d="scan'208";a="190365983"
-Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2025 11:04:51 -0700
-From: Sk Anirban <sk.anirban@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
- mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
-Subject: [i-g-t,v8,3/3] HAX: Add xe_survivability tests to fast feedback list
-Date: Thu, 30 Oct 2025 23:30:17 +0530
-Message-ID: <20251030180015.3790528-8-sk.anirban@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251030180015.3790528-5-sk.anirban@intel.com>
-References: <20251030180015.3790528-5-sk.anirban@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 506CD10E2B9;
+	Thu, 30 Oct 2025 18:29:49 +0000 (UTC)
+Received: from 10055242dc62 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 545DB10E2B9;
+ Thu, 30 Oct 2025 18:29:48 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1836952891222442728=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_igt=5Fkms=3A_Rename_igt=5Fp?=
+ =?utf-8?q?ipe_member_enabled_to_valid?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Gustavo Sousa" <gustavo.sousa@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 30 Oct 2025 18:29:48 -0000
+Message-ID: <176184898833.190.333280368714812089@10055242dc62>
+X-Patchwork-Hint: ignore
+References: <20251029-rename-igt_pipe-dot-enabled-to-valid-v1-1-2aea1e009732@intel.com>
+In-Reply-To: <20251029-rename-igt_pipe-dot-enabled-to-valid-v1-1-2aea1e009732@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,29 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add xe_survivability to xe-fast-feedback
+--===============1836952891222442728==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist | 2 ++
- 1 file changed, 2 insertions(+)
+== Series Details ==
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 5f27baafb..d18a44610 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -187,6 +187,8 @@ igt@xe_sysfs_scheduler@job_timeout_ms-invalid
- igt@xe_sysfs_scheduler@job_timeout_ms-min-max
- igt@xe_survivability@i2c-functionality
- igt@xe_survivability@runtime-survivability
-+igt@xe_survivability@i2c-functionality
-+igt@xe_survivability@runtime-survivability
- #igt@xe_vm@bind-once
- #igt@xe_vm@scratch
- igt@xe_vm@shared-pte-page
--- 
-2.43.0
+Series: igt_kms: Rename igt_pipe member enabled to valid
+URL   : https://patchwork.freedesktop.org/series/156749/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8603_BAT -> XEIGTPW_13964_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 12)
+------------------------------
+
+  Missing    (1): bat-pvc-2 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8603 -> IGTPW_13964
+  * Linux: xe-4012-7fc84082559afd3f2019c4af5b1490548d58db63 -> xe-4013-05dafb7f913af8cf6b33e482649d28ee7912a209
+
+  IGTPW_13964: 621306d352af13acd6909948f044e9094bd32587 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8603: e6eb3c0fe0f28f3d6e530ae202fbb9f29bde9147 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4012-7fc84082559afd3f2019c4af5b1490548d58db63: 7fc84082559afd3f2019c4af5b1490548d58db63
+  xe-4013-05dafb7f913af8cf6b33e482649d28ee7912a209: 05dafb7f913af8cf6b33e482649d28ee7912a209
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13964/index.html
+
+--===============1836952891222442728==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>igt_kms: Rename igt_pipe member enabled to valid</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/156749/">https://patchwork.freedesktop.org/series/156749/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13964/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13964/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8603_BAT -&gt; XEIGTPW_13964_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 12)</h2>
+<p>Missing    (1): bat-pvc-2 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8603 -&gt; IGTPW_13964</li>
+<li>Linux: xe-4012-7fc84082559afd3f2019c4af5b1490548d58db63 -&gt; xe-4013-05dafb7f913af8cf6b33e482649d28ee7912a209</li>
+</ul>
+<p>IGTPW_13964: 621306d352af13acd6909948f044e9094bd32587 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8603: e6eb3c0fe0f28f3d6e530ae202fbb9f29bde9147 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4012-7fc84082559afd3f2019c4af5b1490548d58db63: 7fc84082559afd3f2019c4af5b1490548d58db63<br />
+  xe-4013-05dafb7f913af8cf6b33e482649d28ee7912a209: 05dafb7f913af8cf6b33e482649d28ee7912a209</p>
+
+</body>
+</html>
+
+--===============1836952891222442728==--
