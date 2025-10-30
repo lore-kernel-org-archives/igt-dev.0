@@ -4,54 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5156ECCF9F0
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Oct 2025 18:04:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FAA3CCF9FE
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Oct 2025 18:04:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EFE5410E0ED;
-	Thu, 30 Oct 2025 18:04:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3814510E31D;
+	Thu, 30 Oct 2025 18:04:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UBDV+A+V";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d31fh8Hn";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4829B10E0ED
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Oct 2025 18:04:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1DA0C10E31D
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Oct 2025 18:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761847485; x=1793383485;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=66vZE6tK5sbuB4WlzWaP35B7FyThbLdfeG6nL42I+aI=;
- b=UBDV+A+VW+8qxg99qPtjaaVh7S03dtoS1r5Sm/wp5DctfmJUgkeWZ4f7
- vjVD7nb5GBnX4tFrlnlmNZYLUTyrXhx4Ypymi/mfSTKFwQVRJqe5+2wFs
- dGAWC9+0mWuWTLBfEuhhTML3fvlT/hPgXG0+w8XnkFrU/I1gdQXUsvDBm
- O+3STPQ5datV6fn0jr89nsULRhEzzm2GaYaAlOg38FzNzweXpq108jOqL
- bZLM3oh7SZx+C1a6ff4SpXQPXZWoJRsgmnxewrNSxczLAeSDH4ydIT1y0
- FNIjUMd4WzSzJUCONVEEHETeEL1AaCxJ+6KtZrY0exjx2vIDchXmoDHq1 A==;
-X-CSE-ConnectionGUID: 00eNuU6BRiyzII+Rbh6Clg==
-X-CSE-MsgGUID: svb9wx1fSvCgUhpIz4qBPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="63909849"
-X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; d="scan'208";a="63909849"
+ t=1761847488; x=1793383488;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=b6DSoxyUk4Ar6LRRslkIPphKLfidJ5ytHyrGnhFvT+Q=;
+ b=d31fh8HnrYPqI2c/Wdv6SixXQBLHx4xUvx0HrBO1u/U2nfdhFZbDv70e
+ Rlxom9Kq49cDL7FeCByyI401z3x0KM7so6zLcVfLYQlz4JbsgnVmKnuae
+ h9/XF9ubEJ75uZbNpVLN9e+2aqcPJw0VfntqObQzAwCTBrGdrdZVmWE0D
+ f0doxyGW+THUEN//vTrsGiYGgdE96Yrc90Qxc+UPRXc5Q9fGaeKxw7K0Q
+ PfXmffpUIZ+yx/R5zjrXT84PkCJMSRrn/pJQuaBo+JTAyq9BLOHO+u7zt
+ Y5vsjwpakIiwPI9LOmEm4R7/O7SMzqHDN1AALdSS3lHVdynbOfcGNxjQx w==;
+X-CSE-ConnectionGUID: aImzywf5RVmYhWzhnV8f3Q==
+X-CSE-MsgGUID: EWH4LVLOS82+ntCCyAN0FQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="63909853"
+X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; d="scan'208";a="63909853"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2025 11:04:45 -0700
-X-CSE-ConnectionGUID: IcuFoEwHT8O/OjHSj5NdQA==
-X-CSE-MsgGUID: IbJ37Gp2QPSly37L/iYhTg==
+ 30 Oct 2025 11:04:48 -0700
+X-CSE-ConnectionGUID: XKb6rmpeTCyLfAFXV4Xt6w==
+X-CSE-MsgGUID: 5ritPhuNQbOj/hZxPtpDRA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; d="scan'208";a="190365945"
+X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; d="scan'208";a="190365956"
 Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2025 11:04:41 -0700
+ 30 Oct 2025 11:04:44 -0700
 From: Sk Anirban <sk.anirban@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
  karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
  mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
 Subject: [i-g-t, v8,
- 0/3] tests/intel/xe_survivability: Add xe_survivability test
-Date: Thu, 30 Oct 2025 23:30:14 +0530
-Message-ID: <20251030180015.3790528-5-sk.anirban@intel.com>
+ 1/3] tests/intel/xe_survivability: Add new xe_survivability test for
+ i2c adapter
+Date: Thu, 30 Oct 2025 23:30:15 +0530
+Message-ID: <20251030180015.3790528-6-sk.anirban@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251030180015.3790528-5-sk.anirban@intel.com>
+References: <20251030180015.3790528-5-sk.anirban@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,24 +72,204 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series creates a new xe_survivability.c test file with two subtests.
-i2c-functionality validates i2c adapter preservation in survivability
-mode for AMC firmware updates, and runtime-survivability tests CSC error
-injection, device wedged state recovery, and post-recovery GPU
-functionality validation.
+Add i2c adapter presence check in survivability mode to ensure
+the Add-In Management Controller (AMC) can receive firmware updates
+when the device is in survivability mode.
 
-Sk Anirban (3):
-  tests/intel/xe_survivability: Add new xe_survivability test for i2c
-    adapter
-  tests/intel/xe_survivability: Add new test runtime survivability
-  HAX: Add xe_survivability tests to fast feedback list
+v2: Create new file for test (Riana)
+v3: Update subject, description, nitpick (Kamil)
+    Use drm_close_driver() (Kamil)
+v4: Update test details (Riana)
+    Align with xe_configfs (Riana)
+    Create separate function for sysfs (Riana)
+v5: Remove duplicate close(fd) (Riana)
+    Modify fixture (Riana)
+    Move assert to function (Riana)
+v6: Move VF check (Riana)
+v7: Clear survivability mode (Riana)
 
- tests/intel-ci/xe-fast-feedback.testlist |   4 +
- tests/intel/xe_survivability.c           | 263 +++++++++++++++++++++++
- tests/meson.build                        |   1 +
- 3 files changed, 268 insertions(+)
+Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+---
+ tests/intel/xe_survivability.c | 157 +++++++++++++++++++++++++++++++++
+ tests/meson.build              |   1 +
+ 2 files changed, 158 insertions(+)
  create mode 100644 tests/intel/xe_survivability.c
 
+diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
+new file mode 100644
+index 000000000..b20192958
+--- /dev/null
++++ b/tests/intel/xe_survivability.c
+@@ -0,0 +1,157 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++#include <dirent.h>
++#include <fcntl.h>
++#include <limits.h>
++
++#include "igt.h"
++#include "igt_configfs.h"
++#include "igt_device.h"
++#include "igt_fs.h"
++#include "igt_kmod.h"
++#include "igt_sriov_device.h"
++#include "igt_sysfs.h"
++#include "xe/xe_query.h"
++
++/**
++ * TEST: Comprehensive survivability mode testing
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: Telemetry
++ * Functionality: survivability mode
++ * Description: Validate survivability mode functionality
++ * Test category: Functional tests
++ *
++ * SUBTEST: i2c-functionality
++ * Description: Validate i2c adapter functionality in survivability mode
++ */
++
++static char bus_addr[NAME_MAX];
++
++static bool check_survivability_mode_sysfs(void)
++{
++	char path[PATH_MAX];
++	int fd;
++
++	snprintf(path, PATH_MAX, "/sys/bus/pci/devices/%s/survivability_mode", bus_addr);
++	fd = open(path, O_RDONLY);
++	igt_assert_f(fd >= 0, "Survivability mode not set\n");
++	close(fd);
++	return true;
++}
++
++static int find_i2c_adapter(struct pci_device *pci_xe)
++{
++	char device_path[PATH_MAX];
++	struct dirent *dirent;
++	int i2c_adapter = -1;
++	DIR *device_dir;
++	int ret;
++
++	igt_require(igt_kmod_load("i2c-dev", NULL) == 0);
++
++	snprintf(device_path, sizeof(device_path), "/sys/bus/pci/devices/%s/%s.%hu", bus_addr,
++		 "i2c_designware", (pci_xe->bus << 8) | (pci_xe->dev));
++	device_dir = opendir(device_path);
++
++	if (!device_dir)
++		return -1;
++
++	while ((dirent = readdir(device_dir))) {
++		if (strncmp(dirent->d_name, "i2c-", 4) == 0) {
++			ret = sscanf(dirent->d_name, "i2c-%d", &i2c_adapter);
++			igt_assert_f(ret == 1, "Failed to parse i2c adapter number");
++			closedir(device_dir);
++			return i2c_adapter;
++		}
++	}
++
++	closedir(device_dir);
++	return i2c_adapter;
++}
++
++static void restore(int sig)
++{
++	int configfs_fd;
++
++	igt_kmod_unbind("xe", bus_addr);
++
++	configfs_fd = igt_configfs_open("xe");
++	if (configfs_fd >= 0)
++		igt_fs_remove_dir(configfs_fd, bus_addr);
++	close(configfs_fd);
++
++	igt_kmod_bind("xe", bus_addr);
++}
++
++static void set_survivability_mode(int configfs_device_fd, bool value)
++{
++	igt_kmod_unbind("xe", bus_addr);
++	igt_sysfs_set_boolean(configfs_device_fd, "survivability_mode", value);
++	igt_kmod_bind("xe", bus_addr);
++}
++
++static void test_i2c_functionality(int configfs_device_fd, struct pci_device *pci_xe)
++{
++	if (find_i2c_adapter(pci_xe) >= 0) {
++		/* Enable survivability mode */
++		set_survivability_mode(configfs_device_fd, true);
++
++		/* check presence of survivability mode sysfs */
++		check_survivability_mode_sysfs();
++
++		/* Check i2c adapter after survivability mode */
++		igt_assert_f(find_i2c_adapter(pci_xe) >= 0,
++			     "i2c not initialized\n");
++
++		set_survivability_mode(configfs_device_fd, false);
++	}
++}
++
++static int create_device_configfs_group(int configfs_fd)
++{
++	mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
++	int configfs_device_fd;
++
++	configfs_device_fd = igt_fs_create_dir(configfs_fd, bus_addr, mode);
++	igt_assert(configfs_device_fd);
++
++	return configfs_device_fd;
++}
++
++igt_main
++{
++	int fd, configfs_fd, configfs_device_fd;
++	struct pci_device *pci_xe;
++	bool vf_device;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_XE);
++		igt_require(IS_BATTLEMAGE(intel_get_drm_devid(fd)));
++		vf_device = intel_is_vf_device(fd);
++		igt_require_f(!vf_device, "survivability mode not supported in VF\n");
++		pci_xe = igt_device_get_pci_device(fd);
++		igt_device_get_pci_slot_name(fd, bus_addr);
++		configfs_fd = igt_configfs_open("xe");
++		igt_require(configfs_fd != -1);
++		configfs_device_fd = create_device_configfs_group(configfs_fd);
++		igt_install_exit_handler(restore);
++	}
++
++	igt_describe("Validate i2c adapter functionality in survivability mode");
++	igt_subtest("i2c-functionality") {
++		test_i2c_functionality(configfs_device_fd, pci_xe);
++		drm_close_driver(fd);
++		igt_kmod_rebind("xe", bus_addr);
++		fd = drm_open_driver(DRIVER_XE);
++	}
++
++	igt_fixture {
++		igt_fs_remove_dir(configfs_fd, bus_addr);
++		close(configfs_device_fd);
++		close(configfs_fd);
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 73edd3e71..31487f62e 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -329,6 +329,7 @@ intel_xe_progs = [
+ 	'xe_sriov_auto_provisioning',
+ 	'xe_sriov_flr',
+ 	'xe_sriov_scheduling',
++        'xe_survivability',
+ 	'xe_sriov_vram',
+ 	'xe_sysfs_defaults',
+ 	'xe_sysfs_preempt_timeout',
 -- 
 2.43.0
 
