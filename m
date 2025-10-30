@@ -4,55 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1D97CCF9FA
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Oct 2025 15:38:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3924FCCF9F8
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Oct 2025 16:34:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7A73710E9F9;
-	Thu, 30 Oct 2025 15:38:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C731810E295;
+	Thu, 30 Oct 2025 16:34:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J4an0SXD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jyPm3Mw5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 167E610E9F9
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Oct 2025 15:38:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C307D10E295
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Oct 2025 16:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761838719; x=1793374719;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=/YBEjU/qlDj6j6hhUn8WjIh/BQ5wVPhX1gnz0+0fjeY=;
- b=J4an0SXDwlqJ8wm2nIajkyjW1tS5gsuvHZv4SUrEAhtFVw2GKAtdZ0kD
- LeG4SRzkwqeWjkrqHTsl7hxWwwk7DXaZhyv/2nOO3dnhSnHNVo/yYZ5Wo
- NfmWGAaalVCrxMNqQXKiwVADW0TOKfQkfwHQhaiBUb8JF4BYYlH6ce0Th
- HayqPqnvzbhUouDq0TFswVW/2LGxNGHf81gAUNJgNonyr47Ud1x9enwhX
- o5NtJldEmtBXa0rTCe+iqe9g4Mjv/xNmSUnQbnIs/ldkyDmIFoTODv/+G
- Fpj3k5nh52eW3QTwAZSlEu63jP0R8lEkGee/9N38AfPV+JZyCSABUpM5h w==;
-X-CSE-ConnectionGUID: 3rEgvJeMRj+3PqyRvHHIwQ==
-X-CSE-MsgGUID: LALPIH3tTq2DgLeGrMgJ1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="67845634"
-X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; d="scan'208";a="67845634"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2025 08:38:39 -0700
-X-CSE-ConnectionGUID: EMX2RWTJRaSTgnC0Wp6xPQ==
-X-CSE-MsgGUID: Owbl8fjrQgO/ulCI8EG0eA==
+ t=1761842077; x=1793378077;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=nKndE7XcIbbNJe7ci3MJZ/ZH0nbFTl1o/4CZJeaBO5c=;
+ b=jyPm3Mw5vMNtOudnQAGAbsuRyQJBACG/qbNycYbv9Rx16DmJo2is/tk1
+ qGwgG99CnW3RRDzhqX0z5ddbAjdnpH2G2YcoDGEFBithQnOOuY7O+fknn
+ x2n1VHRXrxSgGTR5r8jz563+b4x1AsLXU9nnU0putlkCMM/9Vz/gI0Se7
+ AWKQw1obV6LyVfpUc7uVH9SEmsKuzRL13tZigN04nQL4VhcvljhyDUFq/
+ U0lDbfmrdAeHIuLpPvY0Kse6xQ0w6pSwVOv8GFxDVL4wX5B9Do33Wheyf
+ uqYboYrJrIx74N/hnqsvnH3FZo3NmKjjbbY52NBTuahcm34AThTpfp+Ef g==;
+X-CSE-ConnectionGUID: Ijez7WQfTAuH/M6hDDseVw==
+X-CSE-MsgGUID: 9HgHWwqeTlaJ5tfUfjODOQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="64022891"
+X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; d="scan'208";a="64022891"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Oct 2025 09:34:36 -0700
+X-CSE-ConnectionGUID: hI5/pTJ4RnGPV3qHeHcvSA==
+X-CSE-MsgGUID: pO3MGOO4TtaQj6/e3ogM9Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; d="scan'208";a="185190443"
-Received: from intel-s2600wft.iind.intel.com ([10.223.26.143])
- by orviesa006.jf.intel.com with ESMTP; 30 Oct 2025 08:38:37 -0700
-From: S Sebinraj <s.sebinraj@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jeevaka.badrappan@intel.com, zbigniew.kempczynski@intel.com,
- kamil.konieczny@intel.com, S Sebinraj <s.sebinraj@intel.com>
-Subject: [PATCH i-g-t v2 3/3] tools/intel_gpu_frequency: Add Xe driver support
-Date: Thu, 30 Oct 2025 20:54:05 +0530
-Message-Id: <20251030152405.3422044-4-s.sebinraj@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251030152405.3422044-1-s.sebinraj@intel.com>
-References: <20251030152405.3422044-1-s.sebinraj@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,267,1754982000"; d="scan'208";a="185265024"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa010-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 09:34:33 -0700
+Date: Thu, 30 Oct 2025 17:34:15 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Cc: igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Fei Shao <fshao@chromium.org>, Jani <jani.nikula@intel.com>,
+ Paul-PL Chen <paul-pl.chen@mediatek.com>,
+ Nancy Lin <nancy.lin@mediatek.com>, Singo Chang <singo.chang@mediatek.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+Subject: Re: [PATCH i-g-t v3 1/1] lib/igt_edid: Fix monitor name parsing and
+ trim EDID string padding
+Message-ID: <20251030163415.j46y7lucr3jl7x5d@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Fei Shao <fshao@chromium.org>, Jani <jani.nikula@intel.com>,
+ Paul-PL Chen <paul-pl.chen@mediatek.com>,
+ Nancy Lin <nancy.lin@mediatek.com>,
+ Singo Chang <singo.chang@mediatek.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+References: <20251028160738.3624415-1-jason-jh.lin@mediatek.com>
+ <20251028160738.3624415-2-jason-jh.lin@mediatek.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251028160738.3624415-2-jason-jh.lin@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,192 +89,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This change enhances intel_gpu_frequency to add compatibility with
-Xe drivers.
+Hi Jason-JH,
+On 2025-10-29 at 00:07:04 +0800, Jason-JH Lin wrote:
+> Improve EDID monitor name parsing by supporting both
+> EDID_DETAIL_MONITOR_NAME and EDID_DETAIL_MONITOR_STRING types.
+> Additionally, remove trailing padding spaces from the monitor name
+> extracted from the EDID string to ensure the returned name is accurate.
+> Also, fix the assert to guarantee name_size > 1 for '\0' termination.
+> 
+> Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+> Reviewed-by: Fei Shao <fshao@chromium.org>
+> ---
+>  lib/igt_edid.c | 20 ++++++++++++++++----
+>  1 file changed, 16 insertions(+), 4 deletions(-)
+> 
+> diff --git a/lib/igt_edid.c b/lib/igt_edid.c
+> index 627201c342df..c68ccf671eff 100644
+> --- a/lib/igt_edid.c
+> +++ b/lib/igt_edid.c
+> @@ -26,6 +26,7 @@
+>  #include "config.h"
+>  
+>  #include <assert.h>
+> +#include <ctype.h>
+>  #include <string.h>
+>  #include <stdint.h>
+>  #include <time.h>
+> @@ -215,22 +216,33 @@ void edid_get_monitor_name(const struct edid *edid, char *name, size_t name_size
+>  	const struct detailed_timing *dt;
+>  	const struct detailed_non_pixel *np;
+>  	const struct detailed_data_string *ds;
+> -	size_t i;
+> +	size_t i, n;
+>  
+> -	assert(name_size > 0);
+> +	/* need one char for '\0' */
+> +	assert(name_size > 1);
+>  	name[0] = '\0';
+>  
+>  	for (i = 0; i < DETAILED_TIMINGS_LEN; i++) {
+>  		dt = &edid->detailed_timings[i];
+>  		np = &dt->data.other_data;
+>  
+> -		if (np->type != EDID_DETAIL_MONITOR_NAME)
+> +		if (np->type != EDID_DETAIL_MONITOR_NAME &&
+> +		    np->type != EDID_DETAIL_MONITOR_STRING)
+>  			continue;
+>  
+>  		ds = &np->data.string;
+>  		strncpy(name, ds->str, name_size - 1);
+>  		name[name_size - 1] = '\0';
+> -		igt_debug("Monitor name: %s\n", name);
+> +
+> +		/* remove the padding space from EDID */
+> +		for (n = name_size - 1; n > 0; ) {
+> +			if (!isspace(name[--n]))
+> +				break;
+> +
+> +			name[n] = '\0';
+> +		}
+> +
+> +		igt_debug("Monitor name: %s\n", name[0] ? name : "(empty)");
 
-Key improvements:
-- Add runtime GT detection using xe_number_gt()
-- Auto-detect driver type using is_xe_device()
-- Driver-agnostic frequency management with unified interface
+Looks ok, maybe something for improvement would be to
+continue loop for name search, but this could be done
+later if needed.
 
-Driver-specific implementations:
-- Automatic frequency name mapping (RP1→rpe, RP0→rp0, RPn→rpn for Xe)
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-The tool now auto-detects Xe drivers and uses appropriate
-interfaces.
-
-Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
----
- tools/intel_gpu_frequency.c | 87 +++++++++++++++++++++++++++++--------
- 1 file changed, 68 insertions(+), 19 deletions(-)
-
-diff --git a/tools/intel_gpu_frequency.c b/tools/intel_gpu_frequency.c
-index 5c8c4d57e..8517ec069 100644
---- a/tools/intel_gpu_frequency.c
-+++ b/tools/intel_gpu_frequency.c
-@@ -32,11 +32,13 @@
- #include "igt_device.h"
- #include "igt_sysfs.h"
- #include "intel_chipset.h"
-+#include "xe/xe_gt.h"
- 
- #define VERSION "1.0"
- #define SYSFS_PATH_MAX 96
- 
- static int device, devid;
-+static bool is_xe;
- 
- enum {
- 	CUR=0,
-@@ -57,27 +59,55 @@ struct freq_info {
- static struct freq_info info[] = {
- 	{ "cur", "r"  },
- 	{ "min", "rb+" },
--	{ "RP1", "r" },
-+	{ "RP1", "r" },    /* i915: RP1, xe: rpe */
- 	{ "max", "rb+" },
--	{ "RP0", "r" },
--	{ "RPn", "r" }
-+	{ "RP0", "r" },    /* i915: RP0, xe: rp0 */
-+	{ "RPn", "r" }     /* i915: RPn, xe: rpn */
- };
- 
-+static int driver_get_num_gts(int fd)
-+{
-+	if (is_xe) {
-+		return xe_number_gt(fd);
-+	} else {
-+		return igt_sysfs_get_num_gt(fd);
-+	}
-+}
-+
- static char *
- get_sysfs_path(int fd, int gt_id, const char *which)
- {
- 	static char path[SYSFS_PATH_MAX];
- 	char *gt_path;
- 	int path_len, ret;
-+	const char *freq_name;
-+
-+	/* Get driver-specific GT path */
-+	if (is_xe)
-+		gt_path = xe_sysfs_gt_path(fd, gt_id, path, sizeof(path));
-+	else
-+		gt_path = igt_sysfs_gt_path(fd, gt_id, path, sizeof(path));
- 
--	gt_path = igt_sysfs_gt_path(fd, gt_id, path, sizeof(path));
- 	if (gt_path == NULL) {
--		fprintf(stderr, "igt_sysfs_gt_path returned NULL for GT%d\n", gt_id);
-+		fprintf(stderr, "sysfs_gt_path returned NULL for GT%d\n", gt_id);
- 		return NULL;
- 	}
-+
- 	path_len = strlen(gt_path);
--	ret = snprintf(path + path_len, sizeof(path) - path_len,
--		       "/rps_%s_freq_mhz", which);
-+
-+	if (is_xe) {
-+		/* Xe uses /freq0/ directory with different file names */
-+		freq_name = !strcmp(which, "RP1") ? "rpe" :
-+			    !strcmp(which, "RP0") ? "rp0" :
-+			    !strcmp(which, "RPn") ? "rpn" : which;
-+
-+		ret = snprintf(path + path_len, sizeof(path) - path_len,
-+			       "/freq0/%s_freq", freq_name);
-+	} else {
-+		/* i915 uses /rps_*_freq_mhz files */
-+		ret = snprintf(path + path_len, sizeof(path) - path_len,
-+			       "/rps_%s_freq_mhz", which);
-+	}
- 
- 	if (ret >= sizeof(path) - path_len) {
- 		fprintf(stderr, "Path truncated\n");
-@@ -147,7 +177,7 @@ static void process_gt_frequencies(int fd, int gt_id, bool write, bool *targets,
- 	int i, try = 1;
- 	bool fail = write;
- 
--	if (igt_sysfs_get_num_gt(fd) > 1)
-+	if (driver_get_num_gts(fd) > 1)
- 		printf("\n--- GT%d ---\n", gt_id);
- 
- 	/* If we've previously locked the frequency, we need to make sure to set things
-@@ -212,6 +242,8 @@ usage(const char *prog)
- 	printf("   intel_gpu_frequency --custom max=750 --gt 0\tSet GT0 max frequency to 750MHz\n");
- 	printf("   intel_gpu_frequency --list-gts\t\tList all available GTs\n");
- 	printf("\n");
-+	printf("Auto-detects i915 vs Xe driver and uses appropriate interfaces.\n");
-+	printf("\n");
- 	printf("Report bugs to https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues\n");
- 	exit(EXIT_FAILURE);
- }
-@@ -317,7 +349,7 @@ parse(int argc, char *argv[], int fd, bool *act_upon, size_t act_upon_n,
- 			}
- 			break;
- 		case 'e': /* efficient */
--			if (IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid)) {
-+			if (!is_xe && (IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid))) {
- 				/* the LP parts have special efficient frequencies */
- 				fprintf(stderr,
- 					"FIXME: Warning efficient frequency information is incorrect.\n");
-@@ -396,8 +428,13 @@ static void list_available_gts(int fd, int num_gts)
- 	for (i = 0; i < num_gts; i++) {
- 		char path[SYSFS_PATH_MAX];
- 
--		if (igt_sysfs_gt_path(fd, i, path, sizeof(path)))
--			printf("  GT%d: %s\n", i, path);
-+		if (is_xe) {
-+			if (xe_sysfs_gt_path(fd, i, path, sizeof(path)))
-+				printf("  GT%d: %s\n", i, path);
-+		} else {
-+			if (igt_sysfs_gt_path(fd, i, path, sizeof(path)))
-+				printf("  GT%d: %s\n", i, path);
-+		}
- 	}
- }
- 
-@@ -425,11 +462,15 @@ static void execute_frequency_operations(int fd, int specified_gt, bool write,
- 		/* Process single specified GT */
- 		process_gt_frequencies(fd, specified_gt, write, targets, set_freq);
- 	} else {
--		/* Process all GTs using for_each_gt pattern */
--		int gt_dir;
-+		/* Process all GTs using driver-specific for_each_gt pattern */
-+		if (is_xe) {
-+			xe_for_each_gt(fd, target_gt)
-+				process_gt_frequencies(fd, target_gt, write, targets, set_freq);
-+		} else {
-+			int gt_dir;
- 
--		i915_for_each_gt(fd, gt_dir, target_gt) {
--			process_gt_frequencies(fd, target_gt, write, targets, set_freq);
-+			i915_for_each_gt(fd, gt_dir, target_gt)
-+				process_gt_frequencies(fd, target_gt, write, targets, set_freq);
- 		}
- 	}
- }
-@@ -440,10 +481,18 @@ int main(int argc, char *argv[])
- 	int i, fd, set_freq[MAX+1] = {0}, num_gts;
- 	int specified_gt = -1;
- 
--	fd = __drm_open_driver(DRIVER_INTEL);
--	devid = intel_get_drm_devid(fd);
--	device = igt_device_get_card_index(fd);
--	num_gts = igt_sysfs_get_num_gt(fd);
-+	fd = __drm_open_driver(DRIVER_INTEL | DRIVER_XE);
-+	is_xe = is_xe_device(fd);
-+
-+	if (is_xe) {
-+		printf("Using Xe driver\n");
-+	} else {
-+		devid = intel_get_drm_devid(fd);
-+		device = igt_device_get_card_index(fd);
-+		printf("Using i915 driver\n");
-+	}
-+
-+	num_gts = driver_get_num_gts(fd);
- 
- 	write = parse(argc, argv, fd, targets, ARRAY_SIZE(targets), set_freq,
- 		      &list_gts, &specified_gt);
--- 
-2.43.0
-
+>  		return;
+>  	}
+>  	igt_debug("No monitor name found in EDID\n");
+> -- 
+> 2.43.0
+> 
