@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA6A2CCF9FF
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Oct 2025 10:33:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2382DCCF9F8
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Oct 2025 12:08:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8361410EB02;
-	Fri, 31 Oct 2025 10:33:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF6D410EB1D;
+	Fri, 31 Oct 2025 12:08:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EplHqwZw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PxGpHs1T";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 366AB10EB02
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Oct 2025 10:33:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8D6110EB1D
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Oct 2025 12:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761906812; x=1793442812;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=pFtc4RD8ue5ajhqz7F+e+7dAXexpF/lTBqBj7N0tzSU=;
- b=EplHqwZwxotv9CtDQDHujMQ+vQGDH0pHzWEUxfRdSWI/JCkoDNlrsOCO
- CrovYKon9PZeRyiE1iIpvym6yiWObZSIkh7EeN/tfS8MkoeAKhElggiTu
- EVeQWfl14txSONr7vPCZ36yLFplUQTYqfW+X//iht7/FD4lLbfjNtagkl
- Y6tzUBAWvXg9pqAR41ws+EdhTD69e8umEVUWy/e6i8vu8PjIXBpkA72Yp
- Oeqnb6quXD1NSZ/9Z2wxqVvPXhlXvA2r1VcH5UISXtpIweGGCaev1sheG
- FWV2I0sDFH6T1T5+LcPJMTOq4bw55PMK2YATbZv6ZP8wNKsW19MmeL9Fi w==;
-X-CSE-ConnectionGUID: QYKBJ1VQQbiQCpVQGLCd0A==
-X-CSE-MsgGUID: 4j8Tl7SvR+uUl7R6z2ERJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="64106483"
-X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; d="scan'208";a="64106483"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2025 03:33:31 -0700
-X-CSE-ConnectionGUID: exjgR9FXRpec0b/ZWPYatg==
-X-CSE-MsgGUID: fyccI9HwQ8Ssjd1Gtt5bRQ==
+ t=1761912503; x=1793448503;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=T3Jv4Y31M0kd1mJ5eJx1y33xFUBDgpMPDsrPfBkleTI=;
+ b=PxGpHs1TWtwNBQz3lk381HZNPg80/EwAr97hbFtkEeg0maFCHRgvb8Iz
+ noDvngnA2izpJm1U6+SF4WZiy95z3QIDsZpdNL74jenAalhfMUfzs2RoS
+ oEdh6Mo+KxYemrwO/izbAyx7SgA7EO+r7nlMxNSerWeUnb2fs9ZGDFXoq
+ 7bsO2JKG/+Jt0aEo25weVqj8uPE999csgQbK9f/m9Qo1373oHyIgZFWwQ
+ a9SjyVR3tjYV8b19qTEknlvQayowl7lC6N9Pib3XT/Qr+/1iGVNnQWMjq
+ si2YeZjcrcz7ywhkPCP7tDeyW01VicBdxUDLpy/9ss/sAbKpikKmCnxKx w==;
+X-CSE-ConnectionGUID: iSxHnt/GRYCw8TIXP8+dZg==
+X-CSE-MsgGUID: x0XokZt3QTyWjuzJewAj+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63999524"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="63999524"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2025 05:08:22 -0700
+X-CSE-ConnectionGUID: zHUmQKxWRli1Eu2K5/+Ihw==
+X-CSE-MsgGUID: /eWd69JdSoW61zqzyY716w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; d="scan'208";a="185476834"
-Received: from dut2943pvc.iind.intel.com ([10.190.215.39])
- by orviesa010.jf.intel.com with ESMTP; 31 Oct 2025 03:33:30 -0700
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- nishit.sharma@intel.com
-Subject: [PATCH i-g-t v7 3/3] tests/intel/xe_compute: Add eu-busy-10s test
-Date: Fri, 31 Oct 2025 10:33:23 +0000
-Message-ID: <20251031103323.11158-4-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251031103323.11158-1-nishit.sharma@intel.com>
-References: <20251031103323.11158-1-nishit.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; d="scan'208";a="209786926"
+Received: from abityuts-desk.ger.corp.intel.com (HELO mwauld-desk.intel.com)
+ ([10.245.244.98])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2025 05:08:22 -0700
+From: Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH i-g-t 1/2] lib/ioct_wrappers: add __prime_fd_to_handle()
+Date: Fri, 31 Oct 2025 12:08:14 +0000
+Message-ID: <20251031120813.269203-3-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,345 +67,69 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+We want to be able to intercept the error, if there is one, instead of
+always asserting a non-zero error. Add a version of prime_fd_to_handle()
+which allows to caller to handle the error.
 
-Add multi threading to utilize available CCS instances as per num_slices
-available in /sys/class/drm/cardX/device/tileX/gtX/num_cslices.
-Depending upon num_slices, number of threads will be created and
-schedule compute workload in different CCS instances. Sleep is
-called via loop_kernel_duration so that HW engine runs for sleep duration.
-During execution per EU utlization percentage is grabbed and displayed
-on console. Added igt_skip() if sriov is enabled in platform, so if
-sriov_numvfs > 0 then test will be skipped.
-
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 ---
- tests/intel/xe_compute.c | 274 ++++++++++++++++++++++++++++++++++++++-
- tests/meson.build        |   1 +
- 2 files changed, 274 insertions(+), 1 deletion(-)
+ lib/ioctl_wrappers.c | 29 +++++++++++++++++++++++++++++
+ lib/ioctl_wrappers.h |  1 +
+ 2 files changed, 30 insertions(+)
 
-diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index f8059b2d0..38a7350ff 100644
---- a/tests/intel/xe_compute.c
-+++ b/tests/intel/xe_compute.c
-@@ -19,9 +19,24 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- 
-+#include "igt_perf.h"
-+#include "igt_sriov_device.h"
-+
- #define LOOP_DURATION_2s	(1000000ull * 2)
- #define DURATION_MARGIN		0.2
- 
-+struct thread_data {
-+	pthread_t thread;
-+	pthread_mutex_t *mutex;
-+	pthread_cond_t *cond;
-+	int class;
-+	int fd;
-+	int gt;
-+	struct user_execenv *execenv;
-+	struct drm_xe_engine_class_instance *eci;
-+	bool *go;
-+};
-+
- static int gt_sysfs_open(int gt)
- {
- 	int fd, gt_fd;
-@@ -243,6 +258,233 @@ test_compute_kernel_loop(uint64_t loop_duration)
- 	drm_close_driver(fd);
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 176cbdacc..fe93d36f6 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -1139,6 +1139,35 @@ int prime_handle_to_fd_for_mmap(int fd, uint32_t handle)
+ 	return args.fd;
  }
  
-+static void
-+*intel_compute_thread(void *data)
-+{
-+	struct thread_data *t = (struct thread_data *)data;
-+	char device[30];
-+	uint64_t type;
-+	uint32_t engine_class, engine_instance, gt_shift;
-+	uint64_t engine_active_config, engine_total_config;
-+	int ret, fd1, fd2;
-+	uint64_t val[4];
-+	uint64_t param_config;
-+
-+	pthread_mutex_lock(t->mutex);
-+	while (*t->go == 0)
-+		pthread_cond_wait(t->cond, t->mutex);
-+	pthread_mutex_unlock(t->mutex);
-+
-+	type = igt_perf_type_id(xe_perf_device(t->fd, device, sizeof(device)));
-+	igt_debug("type: %lx, device: %s\n", type, device);
-+
-+	perf_event_format(device, "gt", &gt_shift);
-+	perf_event_format(device, "engine_class", &engine_class);
-+	perf_event_format(device, "engine_instance", &engine_instance);
-+
-+	ret = perf_event_config(device, "engine-active-ticks", &engine_active_config);
-+	igt_assert_eq(ret, 0);
-+	ret = perf_event_config(device, "engine-total-ticks", &engine_total_config);
-+	igt_assert_eq(ret, 0);
-+
-+	igt_debug("gt_id: %x, class: %x, instance: %x\n",
-+		   t->eci->gt_id, t->eci->engine_class, t->eci->engine_instance);
-+
-+	/* Setting collective counters for compute engine available in t->eci */
-+	param_config = (uint64_t)t->eci->gt_id << gt_shift |
-+		       t->eci->engine_class << engine_class |
-+		       t->eci->engine_instance << engine_instance;
-+
-+	fd1 = igt_perf_open_group(type, engine_active_config | param_config, -1);
-+	fd2 = igt_perf_open_group(type, engine_total_config | param_config, fd1);
-+	igt_debug("fd1: %d, fd2: %d\n", fd1, fd2);
-+
-+	ret = read(fd1, val, sizeof(val));
-+	igt_assert_eq(ret, sizeof(val));
-+	igt_info("start - active: %ld, total: %ld, busyness: %.1f before scheduling on engine_instance :%d\n",
-+		 val[2], val[3], (float)val[2] / (float)val[3] * 100.0, t->eci->engine_instance);
-+
-+	igt_assert_f(xe_run_intel_compute_kernel_on_engine(t->fd, t->eci, t->execenv,
-+							   EXECENV_PREF_VRAM_IF_POSSIBLE),
-+		     "Unable to run compute kernel successfully\n");
-+
-+	ret = read(fd1, val, sizeof(val));
-+	igt_assert_eq(ret, sizeof(val));
-+	igt_info("end - active: %ld, total: %ld, busyness: %.1f after scheduling on engine_instance :%d\n",
-+		 val[2], val[3], (float)val[2] / (float)val[3] * 100.0, t->eci->engine_instance);
-+
-+	igt_assert_f(((float)val[2] / (float)val[3] * 100.0) > 50.0,
-+		     "Engines utilization is below 50 perc\n");
-+
-+	close(fd1);
-+	close(fd2);
-+	return NULL;
-+}
-+
-+static void
-+igt_check_supported_pipeline(void)
-+{
-+	int fd;
-+	unsigned int ip_ver;
-+	const struct intel_compute_kernels *kernels;
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	kernels = intel_compute_square_kernels;
-+
-+	while (kernels->kernel) {
-+		if (ip_ver == kernels->ip_ver)
-+			break;
-+		kernels++;
-+	}
-+
-+	/* skip if loop_kernel is not supported by pipeline */
-+	if (!kernels->kernel || !kernels->loop_kernel) {
-+		drm_close_driver(fd);
-+		igt_skip("loop_kernel not supported by pipeline\n");
-+	} else {
-+		igt_info("loop kernel supported by pipeline\n");
-+		drm_close_driver(fd);
-+	}
-+}
-+
-+static void
-+igt_check_sriov(void)
-+{
-+	int fd = drm_open_driver(DRIVER_XE);
-+
-+	if (igt_sriov_is_pf(fd) && igt_sriov_vfs_supported(fd)) {
-+		drm_close_driver(fd);
-+		igt_skip("Skipping test when SRIOV is enabled\n");
-+	}
-+	drm_close_driver(fd);
-+}
-+
-+static void
-+igt_set_ccs_default_value(int ccs_mode[], int size)
-+{
-+	uint64_t gt_mask = get_gt_mask();
-+	u32 gt, num_slices;
-+	int gt_fd;
-+
-+	for_each_bit(gt_mask, gt) {
-+		if (!get_num_cslices(gt, &num_slices))
-+			continue;
-+
-+		gt_fd = gt_sysfs_open(gt);
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", ccs_mode[gt]) > 0);
-+		close(gt_fd);
-+	}
-+}
-+
 +/**
-+ * SUBTEST: eu-busy-10s
-+ * Functionality: OpenCL kernel
-+ * Description: Run loop_kernel for duration_sec and observe EU business
++ * __prime_fd_to_handle:
++ * @fd: open i915 drm file descriptor
++ * @dma_buf_fd: dma-buf fd handle
++ * @handle: output handle
++ *
++ * This wraps the PRIME_FD_TO_HANDLE ioctl, which is used to import a dma-buf
++ * file-descriptor into a gem buffer object.
++ *
++ * Returns: Zero one succeess, error code otherwise
 + */
-+static void
-+test_eu_busy(uint64_t duration_sec)
++int __prime_fd_to_handle(int fd, int dma_buf_fd, uint32_t *handle)
 +{
-+	struct user_execenv execenv = { 0 };
-+	struct thread_data *threads_data;
-+	struct drm_xe_engine_class_instance *hwe;
-+	const struct intel_compute_kernels *kernels;
-+	pthread_mutex_t mutex;
-+	pthread_cond_t cond;
-+	u32 gt, n_threads = 0, iterations = 0, n_instances = 0, i;
-+	bool go = false;
-+	int ccs_mode, gt_fd, fd;
-+	u32 num_slices, ip_ver;
-+	uint64_t gt_mask = get_gt_mask();
++	struct drm_prime_handle args;
++	int err;
 +
-+	for_each_bit(gt_mask, gt) {
-+		if (!get_num_cslices(gt, &num_slices))
-+			continue;
++	memset(&args, 0, sizeof(args));
++	args.fd = dma_buf_fd;
++	args.flags = 0;
++	args.handle = 0;
 +
-+		gt_fd = gt_sysfs_open(gt);
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", num_slices) > 0);
-+		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
-+		close(gt_fd);
-+	}
++	err = igt_ioctl(fd, DRM_IOCTL_PRIME_FD_TO_HANDLE, &args);
++	if (err)
++		return err;
 +
-+	igt_skip_on_f(ccs_mode <= 1, "Skipping test as ccs_mode <=1 not matching criteria :%d\n",
-+		      ccs_mode);
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+
-+	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	kernels = intel_compute_square_kernels;
-+	while (kernels->kernel) {
-+		if (ip_ver == kernels->ip_ver)
-+			break;
-+		kernels++;
-+	}
-+
-+	/*
-+	 * User should use different kernel if loop_kernel_duration not set
-+	 * With loop kernel and loop duration it assumes we stop it via memory write
-+	 *
-+	 */
-+
-+	execenv.loop_kernel_duration = duration_sec;
-+	execenv.kernel = kernels->loop_kernel;
-+	execenv.kernel_size = kernels->loop_kernel_size;
-+	drm_close_driver(fd);
-+
-+	gt_mask = get_gt_mask();
-+
-+	for_each_bit(gt_mask, gt) {
-+		fd = drm_open_driver(DRIVER_XE);
-+		xe_for_each_engine(fd, hwe) {
-+			igt_assert(hwe);
-+			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-+				++n_instances;
-+		}
-+		drm_close_driver(fd);
-+	}
-+
-+	threads_data = calloc(n_instances, sizeof(*threads_data));
-+	igt_assert(threads_data);
-+
-+	pthread_mutex_init(&mutex, 0);
-+	pthread_cond_init(&cond, 0);
-+
-+	gt_mask = get_gt_mask();
-+	fd = drm_open_driver(DRIVER_XE);
-+	for_each_bit(gt_mask, gt) {
-+		xe_for_each_engine(fd, hwe) {
-+			if (hwe->gt_id != gt ||
-+			    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-+				continue;
-+
-+			threads_data[i].mutex = &mutex;
-+			threads_data[i].cond = &cond;
-+			threads_data[i].fd = fd;
-+			threads_data[i].eci = hwe;
-+			threads_data[i].go = &go;
-+			threads_data[i].execenv = &execenv;
-+			++n_threads;
-+			pthread_create(&threads_data[i].thread, 0, intel_compute_thread,
-+				       &threads_data[i]);
-+			++i;
-+			++iterations;
-+		}
-+		pthread_mutex_lock(&mutex);
-+		go = true;
-+		pthread_cond_broadcast(&cond);
-+		pthread_mutex_unlock(&mutex);
-+
-+		for (int val = 0; val < i; ++val)
-+			pthread_join(threads_data[val].thread, NULL);
-+
-+		i = 0;
-+		n_threads = 0;
-+		iterations = 0;
-+	}
-+	free(threads_data);
-+	drm_close_driver(fd);
++	*handle = args.handle;
++	return 0;
 +}
 +
  /**
-  * SUBTEST: compute-square
-  * Mega feature: WMTP
-@@ -262,10 +504,23 @@ test_compute_square(int fd)
- 
- igt_main
- {
--	int xe;
-+	int xe, ccs_mode[4], gt_fd, gt;
-+	unsigned int ip_ver;
-+	u32 num_slices;
-+	uint64_t gt_mask;
- 
- 	igt_fixture {
- 		xe = drm_open_driver(DRIVER_XE);
-+		ip_ver = intel_graphics_ver(intel_get_drm_devid(xe));
-+		gt_mask = get_gt_mask();
-+		for_each_bit(gt_mask, gt) {
-+			if (!get_num_cslices(gt, &num_slices))
-+				continue;
-+
-+			gt_fd = gt_sysfs_open(gt);
-+			igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode[gt]);
-+			close(gt_fd);
-+		}
- 	}
- 
- 	igt_subtest("compute-square")
-@@ -284,4 +539,21 @@ igt_main
- 	/* To test compute function stops after loop_kernel_duration */
- 	igt_subtest("loop-duration-2s")
- 		test_compute_kernel_loop(LOOP_DURATION_2s);
-+
-+	/* test to check available EU utilisation in multi-ccs case */
-+	igt_subtest("eu-busy-10s") {
-+		/* skip test if loop_kernel not supported in pipeline */
-+		if (ip_ver < IP_VER(20, 0))
-+			igt_check_supported_pipeline();
-+
-+		/* skip if sriov enabled */
-+		igt_check_sriov();
-+
-+		test_eu_busy(5 * LOOP_DURATION_2s);
-+		/* calling sleep to make sure EUs done with execution */
-+		sleep(3);
-+	}
-+
-+	igt_fixture
-+		igt_set_ccs_default_value(ccs_mode, sizeof(ccs_mode));
- }
-diff --git a/tests/meson.build b/tests/meson.build
-index a7b9375ed..a7ffc6383 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -408,6 +408,7 @@ extra_dependencies = {
- 	'sw_sync': [ libatomic ],
- 	'xe_fault_injection': [ lib_igt_xe_oa ],
- 	'xe_oa': [ lib_igt_xe_oa ],
-+        'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_profiling,math ],
- }
- 
- test_executables = []
+  * prime_fd_to_handle:
+  * @fd: open i915 drm file descriptor
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index 7cf05e626..5a899f052 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -138,6 +138,7 @@ int prime_handle_to_fd(int fd, uint32_t handle);
+ #endif
+ int prime_handle_to_fd_for_mmap(int fd, uint32_t handle);
+ uint32_t prime_fd_to_handle(int fd, int dma_buf_fd);
++int __prime_fd_to_handle(int fd, int dma_buf_fd, uint32_t *handle);
+ off_t prime_get_size(int dma_buf_fd);
+ void prime_sync_start(int dma_buf_fd, bool write);
+ void prime_sync_end(int dma_buf_fd, bool write);
 -- 
-2.43.0
+2.51.0
 
