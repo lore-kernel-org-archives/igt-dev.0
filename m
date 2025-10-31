@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31EFCCCF9F8
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Oct 2025 14:18:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B396CCF9FE
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Oct 2025 14:30:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D3D2B10EB42;
-	Fri, 31 Oct 2025 14:18:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1B29F10EB7C;
+	Fri, 31 Oct 2025 14:30:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="exF5vNe4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hOHEq33/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8565010EB42
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Oct 2025 14:18:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C6E1B10EB7C
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Oct 2025 14:30:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761920304; x=1793456304;
+ t=1761921002; x=1793457002;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
  bh=SisHHDww19yc2xqSky4ZGn8GH4ekJRXrFBdXgIV1E0E=;
- b=exF5vNe47tvoP0UmMsg4f7Ih+yf7LVng3Z/h8VGrpmIPDBYLRGKYYROr
- m5CxxlBxHrpYJOTjwsGUGFJxGjMyMSn5+bY9WdegcCWSlJqsomZdw6TBz
- x37R18W6jNTeowNQdwHcSmP4xAG80aXoe+3v/eplWXFfx6+tCcGl2fmU/
- V3qA/yeQcY/u5UaLMh+jInJ5dX/XBJyCwiQXGybuEtB3gVP8kdkP6aH1t
- 2A1aFmO6XEfl1xbyqa5vAbjAgXr9uQ3LzlVEm585sB0zq6I+0hN/riyJT
- NRsuclVX9WiYXx1nwV5q2UgiBt7KfjVwmEHzokptj7NPmNGwwIvZyN+JA Q==;
-X-CSE-ConnectionGUID: NNxaSL92SuyxauGFdAb5MQ==
-X-CSE-MsgGUID: FBL/7ChGR6a01/C+NtC/gQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="67919326"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="67919326"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2025 07:18:24 -0700
-X-CSE-ConnectionGUID: UjAcOF/5SP2+xYpQ8kobGg==
-X-CSE-MsgGUID: A/uhNL1wTEmBp1jZMxPJAw==
+ b=hOHEq33/P+s45mQmcAnh05smbQdd1ZSTTKFh0ErJIBn90A5L0cc9ToJK
+ byK7hAKnam6yxD9Mxkx4FoHScUhgt9Vdt5NKwY7rnDzO6eUbC9StkZ32x
+ pHbCU+frCFB35cUH2ZAxBYIoQ83w7EDLXjypd03socJtkhhpH5gbHLyld
+ WzLciWc5KO9sAWHdMdc+WtEIjVNu88h0F8ts1sfOm6TSLfMmEBpIhpadx
+ pTcwszyoJsCBJ1tYykWK0eKK2vczcj8EBZiRDhKw+PfkWUVDkTv570bdN
+ coiLysN+jkfnvAWUF9BB3vxwgDSJ6D0PAVM066o66cwlZ8Utht2uty11/ w==;
+X-CSE-ConnectionGUID: IdpeEULIQrGY3rmR9FQVhg==
+X-CSE-MsgGUID: 4G3kEJwiR+Cw/vo6nSfyXg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="81493812"
+X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; d="scan'208";a="81493812"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2025 07:30:01 -0700
+X-CSE-ConnectionGUID: ztVug2OyRr2UbDBDzFHPrA==
+X-CSE-MsgGUID: +QiNCUbBR7iz+Q7/wFs74w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; d="scan'208";a="185462380"
+X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; d="scan'208";a="186704622"
 Received: from linux-raptor-lake-client-platform.iind.intel.com
  ([10.190.238.55])
- by orviesa006.jf.intel.com with ESMTP; 31 Oct 2025 07:18:23 -0700
+ by fmviesa009.fm.intel.com with ESMTP; 31 Oct 2025 07:30:00 -0700
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kunal1.joshi@intel.com,
 	Mohammed Thasleem <mohammed.thasleem@intel.com>
 Subject: [PATCH i-g-t] tests/intel/kms_pm_rpm: Add test to validate G7
  residency
-Date: Fri, 31 Oct 2025 19:47:57 +0530
-Message-ID: <20251031141757.10717-1-mohammed.thasleem@intel.com>
+Date: Fri, 31 Oct 2025 19:59:35 +0530
+Message-ID: <20251031142936.10874-1-mohammed.thasleem@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250916054830.23112-1-mohammed.thasleem@intel.com>
-References: <20250916054830.23112-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20250916062411.23433-1-mohammed.thasleem@intel.com>
+References: <20250916062411.23433-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
