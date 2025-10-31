@@ -4,52 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AB33CCF9FF
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Oct 2025 07:58:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0C62CCF9EE
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Oct 2025 07:58:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4506910EACF;
-	Fri, 31 Oct 2025 07:58:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3D3FF10EABE;
+	Fri, 31 Oct 2025 07:58:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m5Bd41N6";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="V67Ou+bH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9206410EABF
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Oct 2025 07:58:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7554010EABE
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Oct 2025 07:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761897523; x=1793433523;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=o4OTdx3frSbxH8QaHUzyIh/n9I6QG7BRD5mGa1PrGAY=;
- b=m5Bd41N6miX8W/3NYjIdfnG1vOqKqCw5x6lv+IiKLc2S/VZKA3ZeBS4v
- B7dHrG14XDHjuYwWYnowkVAij5mSW9BYCYh8Ab5A4Yw6KOPTywUuR2iRs
- glVwKgTxWobIYRB/hpXUIDMwiJY3KQUyz78RSSFiyKz+RgyDEYT6mSUnV
- Yy8AhGsXrtlK1TAjKI3BGzVnLFWIMORyd485njSVsdYADkcow8u7h35T+
- KGFkr4+8YIcObNY7UkuC/bdLkKxYv3+H8VtN+RmRcSBvk3epg/XiQc9Hv
- JgVoycXgD1l5NPnzxEyeNt4ylUqq+GK5U3MjoCRnkJJlQK9CKg7DSwlf4 A==;
-X-CSE-ConnectionGUID: RQovAbFdQCmzIxzOZBLV2g==
-X-CSE-MsgGUID: Ct6agg6cQmSwuiOvpJBR1g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="63966244"
-X-IronPort-AV: E=Sophos;i="6.19,268,1754982000"; d="scan'208";a="63966244"
+ t=1761897529; x=1793433529;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=7ylCMCaYJvKMiWcMPhZ6mT6qz1bYdvEhzFi0qA1pZCU=;
+ b=V67Ou+bHTyUrnZr+F307yylk78kkY5whZl0WTRJe+Bz+FkdA5J1bCMAA
+ gXdRxDnGC5BEjCmkqvt67jdHkHbWQyZbxdPHr+6hYABxXyJk/ffXj3199
+ N9akGQ5E8ui+jVUIhfvDdhfSVpBultalKIYPFWftzN+NV9gTFt3/IONvZ
+ 7z+9Zoro9Pu3k1DVbVi6fzvtMIFsMIArzTbGObgzpqV+MZP0PNCXFog4A
+ gIEdlG1L5HZ/JlKrArHvVWv4VdRHU0uGxFmbk4IulN4MsSvw9K+pdgU2e
+ FbD78fxqibPGTWNRTIHSNXzL7bcO5ZQ4JopcJ9HgnsCzOBQmbr4n71XWp A==;
+X-CSE-ConnectionGUID: oXNjmxWlT1a4TrpVEFKUKg==
+X-CSE-MsgGUID: 1kT5xuJdRJapUIFwxpI2oA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="75502598"
+X-IronPort-AV: E=Sophos;i="6.19,268,1754982000"; d="scan'208";a="75502598"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2025 00:58:43 -0700
-X-CSE-ConnectionGUID: OciZaM0sR82WwELHe+9YOw==
-X-CSE-MsgGUID: 8pu7pgRYQiiF7VlUn/ad2Q==
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2025 00:58:49 -0700
+X-CSE-ConnectionGUID: f198HTakTaGfyLS4oyAI9A==
+X-CSE-MsgGUID: hM8Oouy+RLOQFVK3cuELlg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,268,1754982000"; d="scan'208";a="186287278"
+X-IronPort-AV: E=Sophos;i="6.19,268,1754982000"; d="scan'208";a="186287290"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 00:58:42 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 00:58:48 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 00/10] Add new test to validate adaptive sharpness filter
-Date: Fri, 31 Oct 2025 13:35:24 +0530
-Message-Id: <20251031080534.880321-1-swati2.sharma@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>,
+ Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Subject: [PATCH i-g-t,
+ v5 01/10] lib/igt_kms: Add "sharpness strength" as crtc property
+Date: Fri, 31 Oct 2025 13:35:25 +0530
+Message-Id: <20251031080534.880321-2-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20251031080534.880321-1-swati2.sharma@intel.com>
+References: <20251031080534.880321-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,45 +70,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-New test is added to validate adaptive sharpness filter on
-LNL platform. Pipe scaler is repurposed to perform a portion
-of this work. This means pipe scaling will be unavailable while
-the sharpening function is being used. The other scaler can be
-used for plane scaler.
+Add "sharpness strength" as crtc property.
 
-In this series, attempt is made to validate adaptive sharpness
-solution which helps in improving the image quality. For this new
-CRTC property is added. The user can set this property with desired
-sharpness strength value with 0-255. A value of 1 representing
-minimum sharpening strength and 255 representing maximum
-sharpness strength. A strength value of 0 means no sharpening or
-sharpening feature disabled.
+v2: Replace SHARPENESS_STRENGTH with SHARPNESS_STRENGTH. (Nemesa)
+v3: Rebase
+v4: Rebase
+v5: Rebase
 
-KMD: https://patchwork.freedesktop.org/series/138754/
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+---
+ lib/igt_kms.c | 4 ++++
+ lib/igt_kms.h | 1 +
+ 2 files changed, 5 insertions(+)
 
-Swati Sharma (10):
-  lib/igt_kms: Add "sharpness strength" as crtc property
-  lib/igt_kms: Add func() to return scaling mode name string
-  tests/kms_sharpness_filter: Add adaptive sharpness basic filter tests
-  tests/kms_sharpness_filter: Add toggle subtest
-  tests/kms_sharpness_filter: Add filter-tap subtest
-  tests/kms_sharpness_filter: Add dpms/suspend subtests
-  tests/kms_sharpness_filter: Add scaler subtests
-  tests/kms_sharpness_filter: Add invalid subtests
-  lib/igt_chamelium: Add chamelium_frame_eq_or_dump_frame_pair()
-  tests/chamelium/kms_chamelium_sharpness_filter: Add basic test
-
- lib/igt_chamelium.c                           |  38 +
- lib/igt_chamelium.h                           |   3 +
- lib/igt_kms.c                                 |  23 +
- lib/igt_kms.h                                 |   2 +
- .../kms_chamelium_sharpness_filter.c          | 296 +++++++
- tests/kms_sharpness_filter.c                  | 760 ++++++++++++++++++
- tests/meson.build                             |   3 +
- 7 files changed, 1125 insertions(+)
- create mode 100644 tests/chamelium/kms_chamelium_sharpness_filter.c
- create mode 100644 tests/kms_sharpness_filter.c
-
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 2eaf483d4..87f949150 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -715,6 +715,7 @@ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
+ 	[IGT_CRTC_OUT_FENCE_PTR] = "OUT_FENCE_PTR",
+ 	[IGT_CRTC_VRR_ENABLED] = "VRR_ENABLED",
+ 	[IGT_CRTC_SCALING_FILTER] = "SCALING_FILTER",
++	[IGT_CRTC_SHARPNESS_STRENGTH] = "SHARPNESS_STRENGTH",
+ };
+ 
+ const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
+@@ -2616,6 +2617,9 @@ static void igt_pipe_reset(igt_pipe_t *pipe)
+ 	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_VRR_ENABLED))
+ 		igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_VRR_ENABLED, 0);
+ 
++	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_SHARPNESS_STRENGTH))
++		igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_SHARPNESS_STRENGTH, 0);
++
+ 	pipe->out_fence_fd = -1;
+ }
+ 
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 7121ab985..f59806b42 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -165,6 +165,7 @@ enum igt_atomic_crtc_properties {
+        IGT_CRTC_OUT_FENCE_PTR,
+        IGT_CRTC_VRR_ENABLED,
+        IGT_CRTC_SCALING_FILTER,
++       IGT_CRTC_SHARPNESS_STRENGTH,
+        IGT_NUM_CRTC_PROPS
+ };
+ 
 -- 
 2.25.1
 
