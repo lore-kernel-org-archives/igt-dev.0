@@ -4,49 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6311ACCFA0C
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93FFCCCFA0D
 	for <igt-dev@archiver.kernel.org>; Fri, 31 Oct 2025 18:36:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D628710E35C;
-	Fri, 31 Oct 2025 18:36:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 29C9710EC07;
+	Fri, 31 Oct 2025 18:36:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bStiQ7qV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LBkrOt6J";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0FF0F10E320
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F5BE10E32F
  for <igt-dev@lists.freedesktop.org>; Fri, 31 Oct 2025 18:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1761935763; x=1793471763;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=HQ+K0Hy2PCNfjQ1Q04bLHnvn0BhAolctA9yYeBDSido=;
- b=bStiQ7qVvxrTWZyiI6B6NrKOzT4qmP9nTbCso8cQPYLHv/OXGDHJHuVd
- tTcKHidkvC1t88Ry4SaVmZIfyoCbyr0NKkifMrjJE0hGYr/xKz+pM49gW
- 051eJ4H5RXB9d4+irGOUC536Yv6YbRng0r9wLb7ZbsUXRJ9WylPFURWyE
- zJrapdPcqdmt/uqYptzB1LHuEZoBi2MFhLTXFOzVH8rYIDhrnphSJoCYr
- qcPHN7pJkiBZEiJqZzFwY8OO6qzw13agNxjoNkhyHTBb3bYgSVBjbeE/V
- zKAsGiU2tXUi8Ri9jRdUOJQV0I9Nphijs23qctE3qnH3Va2myzz/j/Nmw g==;
-X-CSE-ConnectionGUID: 0VvR4axQTQynsNWTtexK2Q==
-X-CSE-MsgGUID: hr3reGnTR1Cr8CTY4fgyMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="64144726"
-X-IronPort-AV: E=Sophos;i="6.19,270,1754982000"; d="scan'208";a="64144726"
+ bh=HiDPG8orvAminiwZjHCgVRqL58ShbPuHz/JebwiTuOw=;
+ b=LBkrOt6JGmvPgjL1ljembvoV+n+NKjsL8d7OiA0RfFRV32Ol+EmcUqQi
+ 9dXNSCrJgheCp/1pB/QK3/+eIkRgJqzZg7GOSRNDrZLkZ6LHSi0HHLXzC
+ WfLUAOwuTokRHNnaLCctwCsndUaBt71Sjb0T+e8YLZgzD3avPxIbW5o04
+ p0/1CHoG3qMsoFn4KgjBNv79fTF3/bKH8UdvsDmz96sTao+NlrRESqib7
+ HxQuEomurauVwuCQLfNVSDxgGh0j5irH/I60MDzJZJCag5LSMfEt95d6x
+ UIKlBKd0KHeYB0TWhburTr/18LQLTxXWCgPRRsqIHXD//RHeHJrdtDzBR w==;
+X-CSE-ConnectionGUID: iQ/yCfomRoyHIkgA6ZxOCQ==
+X-CSE-MsgGUID: JfVSB6HmRFi36O2a9eIpDw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="64144729"
+X-IronPort-AV: E=Sophos;i="6.19,270,1754982000"; d="scan'208";a="64144729"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  31 Oct 2025 11:36:02 -0700
-X-CSE-ConnectionGUID: zmgebuFiSXO31B2teaSdmA==
-X-CSE-MsgGUID: SjgE17gmSfmtWQx1aAdpEQ==
+X-CSE-ConnectionGUID: 06O7wD5aRQSqJvc0gG4pvQ==
+X-CSE-MsgGUID: v658AXg7SPmgFoJsPNZrpw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,270,1754982000"; d="scan'208";a="190650019"
+X-IronPort-AV: E=Sophos;i="6.19,270,1754982000"; d="scan'208";a="190650023"
 Received: from nvishwa1-desk.sc.intel.com ([172.25.29.131])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  31 Oct 2025 11:36:00 -0700
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH 05/18] tests/xe_exec_multi_queue: Validate queue priority
- setting
-Date: Fri, 31 Oct 2025 11:35:42 -0700
-Message-ID: <20251031183555.1882721-6-niranjana.vishwanathapura@intel.com>
+Subject: [PATCH 07/18] tests/xe_exec_multi_queue: Add multiple placement test
+Date: Fri, 31 Oct 2025 11:35:44 -0700
+Message-ID: <20251031183555.1882721-8-niranjana.vishwanathapura@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251031183555.1882721-1-niranjana.vishwanathapura@intel.com>
 References: <20251031183555.1882721-1-niranjana.vishwanathapura@intel.com>
@@ -67,144 +66,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Validate setting priority of queues within the multi queue
-group.
+Validate using virtual exec queues with multiple placements.
 
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/intel/xe_exec_multi_queue.c | 65 +++++++++++++++++++++++++++++++
- 1 file changed, 65 insertions(+)
+ tests/intel/xe_exec_multi_queue.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
 diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
-index de2aae8f2..6c5ff54ec 100644
+index c9ff25ffc..eb40e92d2 100644
 --- a/tests/intel/xe_exec_multi_queue.c
 +++ b/tests/intel/xe_exec_multi_queue.c
-@@ -18,9 +18,13 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- 
-+#define XE_EXEC_QUEUE_PRIORITY_NORMAL	1
-+#define XE_EXEC_QUEUE_PRIORITY_HIGH	2
-+
- #define MAX_N_EXEC_QUEUES	64
- 
- #define USERPTR			(0x1 << 0)
-+#define PRIORITY		(0x1 << 1)
- 
- #define MAX_INSTANCE 9
- 
-@@ -35,6 +39,15 @@ __test_sanity(int fd, int gt, int class)
- 		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
- 		.value = DRM_XE_MULTI_GROUP_CREATE,
- 	};
-+	struct drm_xe_ext_set_property mq_priority = {
-+		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY,
-+	};
-+	struct drm_xe_ext_set_property priority = {
-+		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
-+		.value = XE_EXEC_QUEUE_PRIORITY_NORMAL,
-+	};
- 	uint64_t invalid_flag = 0, ext = to_user_pointer(&multi_queue);
- 	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
- 	struct drm_xe_engine_class_instance *hwe;
-@@ -75,6 +88,11 @@ __test_sanity(int fd, int gt, int class)
- 	multi_queue.base.next_extension = to_user_pointer(&multi_queue);
- 	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
- 
-+	/* Setting other queue properties are valid for Q0 */
-+	multi_queue.base.next_extension = to_user_pointer(&priority);
-+	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
-+	xe_exec_queue_destroy(fd, exec_queues[0]);
-+
- 	/* Adding queues to group after primary is destroyed is invalid */
- 	multi_queue.base.next_extension = 0;
- 	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
-@@ -103,6 +121,11 @@ __test_sanity(int fd, int gt, int class)
- 	if (n > 1)
- 		igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, n, eci, ext, &val), -EINVAL);
- 
-+	/* Setting properties (other than MULTI_QUEUE_PRIORITY) is invalid for secondary queues */
-+	multi_queue.base.next_extension = to_user_pointer(&priority);
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
-+
-+	multi_queue.base.next_extension = 0;
- 	for (i = 1; i < MAX_N_EXEC_QUEUES; i++)
- 		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
- 
-@@ -133,6 +156,37 @@ __test_sanity(int fd, int gt, int class)
- 			xe_exec_queue_destroy(fd, exec_queues[i]);
- 	}
- 
-+	/* MQ priority is not valid for regular queues */
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci,
-+					     to_user_pointer(&mq_priority), &val), -EINVAL);
-+
-+	/* MQ priority validation */
-+	multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
-+	multi_queue.base.next_extension = to_user_pointer(&mq_priority);
-+	mq_priority.value = XE_EXEC_QUEUE_PRIORITY_MAX;
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
-+
-+	mq_priority.value = XE_EXEC_QUEUE_PRIORITY_HIGH;
-+	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
-+	multi_queue.value = exec_queues[0];
-+	exec_queues[1] = xe_exec_queue_create(fd, vm, eci, ext);
-+	xe_exec_queue_destroy(fd, exec_queues[1]);
-+	xe_exec_queue_destroy(fd, exec_queues[0]);
-+
-+	igt_fork(child, 1) {
-+		igt_drop_root();
-+
-+		/* Tests MULTI_QUEUE_PRIORITY property by dropping root permissions */
-+		multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
-+		mq_priority.value = XE_EXEC_QUEUE_PRIORITY_HIGH;
-+		exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
-+		multi_queue.value = exec_queues[0];
-+		exec_queues[1] = xe_exec_queue_create(fd, vm, eci, ext);
-+		xe_exec_queue_destroy(fd, exec_queues[1]);
-+		xe_exec_queue_destroy(fd, exec_queues[0]);
-+	}
-+	igt_waitchildren();
-+
- 	xe_vm_destroy(fd, vm);
+@@ -379,6 +379,31 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci, int num_placement,
+ 	test_legacy_mode(fd, eci, num_placement, n_exec_queues, n_execs, flags);
  }
  
-@@ -195,8 +249,17 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
- 			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
- 			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
- 		};
-+		struct drm_xe_ext_set_property mq_priority = {
-+			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY,
-+		};
- 		uint64_t ext = to_user_pointer(&multi_queue);
- 
-+		if (flags & PRIORITY) {
-+			multi_queue.base.next_extension = to_user_pointer(&mq_priority);
-+			mq_priority.value = XE_EXEC_QUEUE_PRIORITY_NORMAL + (rand() % 2);
-+		}
++/**
++ * SUBTEST: virtual
++ * Description: Validate virtual queues with multiple placements
++ * Test category: functionality test
++ */
++static void
++test_exec_virtual(int fd, int gt, int class)
++{
++	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
++	struct drm_xe_engine_class_instance *hwe;
++	int n = 0;
 +
- 		multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
- 		igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, num_placement, eci,
- 						     ext, &exec_queues[i]), 0);
-@@ -297,6 +360,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
-  *
-  * @basic:					basic
-  * @userptr:					userptr
-+ * @priority:					priority
-  */
- static void
- test_exec(int fd, struct drm_xe_engine_class_instance *eci, int num_placement,
-@@ -314,6 +378,7 @@ igt_main
- 	} sections[] = {
- 		{ "basic", 0 },
- 		{ "userptr", USERPTR },
-+		{ "priority", PRIORITY },
- 		{ NULL },
- 	};
- 	int fd, gt, class;
++	xe_for_each_engine(fd, hwe) {
++		if (hwe->engine_class != class || hwe->gt_id != gt)
++			continue;
++
++		eci[n++] = *hwe;
++	}
++
++	if (n < 2)
++		return;
++
++	test_exec(fd, eci, n, n, n, 0);
++}
++
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -404,6 +429,11 @@ igt_main
+ 			xe_for_each_multi_queue_engine_class(class)
+ 				test_sanity(fd, gt, class);
+ 
++	igt_subtest_f("virtual")
++		xe_for_each_gt(fd, gt)
++			xe_for_each_multi_queue_engine_class(class)
++				test_exec_virtual(fd, gt, class);
++
+ 	for (const struct section *s = sections; s->name; s++) {
+ 		igt_subtest_f("one-queue-%s", s->name)
+ 			xe_for_each_multi_queue_engine(fd, hwe)
 -- 
 2.43.0
 
