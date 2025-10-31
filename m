@@ -4,58 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC256CCF9EE
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Oct 2025 07:59:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CA54CCF9FF
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Oct 2025 08:14:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 78EC810EABF;
-	Fri, 31 Oct 2025 07:59:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E535C10E294;
+	Fri, 31 Oct 2025 08:14:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mNG8heOj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Inc8CMbY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9ACAB10EABF
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Oct 2025 07:59:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 822D310E294
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Oct 2025 08:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1761897552; x=1793433552;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=+6hrbnygRmQFgzuD0cBH9dBxl+uL6suzE8FTd8PcROk=;
- b=mNG8heOjNHGAmUsdFfDx+XDmfXtf4xb3erYZ1jAaHDnpnslURRtqGlMc
- fjRVNNaVLSAKjLVC4oGGcSxlCkd4U4IxhptfKEmoxoQ5cf4Czb73EB5ox
- XFhS71Mfnx2Rf96lHXUpOtFaFNsLMrbygfOb6sGjELpJMa6IB/oAwH6w5
- nbZp2c60ovQtxEJkQNlea2E2BncSGJj78ux27kIeqlcynd/YSwLtWwu6g
- SpU6PexyO/yF+/r8NiQM5AFKtFQ7qrJ3gBxhmSpe8x9DHpotJkXBCEW7A
- VCKMcWmVgVH6N461ejwTf+kAxoaxPzhFBvb8fyCmLgqwiP9r9K9XSSXTF g==;
-X-CSE-ConnectionGUID: 0VGNWfOFRlGCAroL1VSLiw==
-X-CSE-MsgGUID: 5bKCxucdRVuyWlAcYtOB/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="75169907"
-X-IronPort-AV: E=Sophos;i="6.19,268,1754982000"; d="scan'208";a="75169907"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2025 00:59:12 -0700
-X-CSE-ConnectionGUID: bDaR9ovCRB2dSy+TV4U1cg==
-X-CSE-MsgGUID: EYDTgAi3RpaCJlcCNk/OpQ==
+ t=1761898469; x=1793434469;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=+N1tAJTZsthApvfq5RcfmqY0yZCUYcQC6Sf6tcynGYk=;
+ b=Inc8CMbYzmRdOgF3sR31rvEOITiZVP6KjneJdWrlhXPqr4D0/Ip27lur
+ JRWEAMAF+Ch0j40h4j+M6eET1R0q5m3iJn+oOONK/VetKPt351ALyTne7
+ 3M3p2xbetjOScd8ZaP4Ti540/dKbKSHkih6yor22l6/xlA9wk0ZneXn1g
+ 79zNK8cRqPSwSk9XdXdCVheLVESPHU+fXQVwRaUhqB+thZ+aNMz8dLjPq
+ +TaYJOBlog/Zb3y7ZxTobygiPQGBO3Ko80E/K39Sroxqj+WPAK9HsSNOl
+ SVLGfqr1foYJFQkDJLG7ntvFwXuAN7/AYXSs7/XjQcaiqzQlLASi3SleX g==;
+X-CSE-ConnectionGUID: q+qw1x6NSSi0QRdKy6qvdA==
+X-CSE-MsgGUID: KDzU4S+BSGaoU2A4ePSbow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11598"; a="75402538"
+X-IronPort-AV: E=Sophos;i="6.19,268,1754982000"; d="scan'208";a="75402538"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2025 01:14:29 -0700
+X-CSE-ConnectionGUID: mI7gwAImRIKDel0tBcZyMg==
+X-CSE-MsgGUID: 0Y5U1U7cQjGSOomefUktMg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,268,1754982000"; d="scan'208";a="186287437"
-Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 00:59:11 -0700
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>,
- Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Subject: [PATCH i-g-t,
- v6 10/10] tests/chamelium/kms_chamelium_sharpness_filter: Add basic
- test
-Date: Fri, 31 Oct 2025 13:35:34 +0530
-Message-Id: <20251031080534.880321-11-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251031080534.880321-1-swati2.sharma@intel.com>
-References: <20251031080534.880321-1-swati2.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,268,1754982000"; d="scan'208";a="190526041"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.54])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2025 01:14:28 -0700
+Date: Fri, 31 Oct 2025 09:14:26 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: nishit.sharma@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t v6 3/3] tests/intel/xe_compute: Add eu-busy-10s test
+Message-ID: <7tdzxj5v5y5wxtswv7leomvqbad6p5bw6s5y5f6a2bpnzzuxap@t6fadhnrptwr>
+References: <20251003113149.262620-1-nishit.sharma@intel.com>
+ <20251003113149.262620-4-nishit.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251003113149.262620-4-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,369 +69,354 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This test validates the content adaptive sharpness filter functionality
-by toggling the sharpness property on the CRTC and capturing frames
-using Chamelium. It ensures that the filter visually alters the output as
-expected.
+On Fri, Oct 03, 2025 at 11:31:49AM +0000, nishit.sharma@intel.com wrote:
+> From: Nishit Sharma <nishit.sharma@intel.com>
+> 
+> Add multi threading to utilize available CCS instances as per num_slices
+> available in /sys/class/drm/cardX/device/tileX/gtX/num_cslices.
+> Depending upon num_slices, number of threads will be created and
+> schedule compute workload in different CCS instances. Sleep is
+> called via loop_kernel_duration so that HW engine runs for sleep duration.
+> During execution per EU utlization percentage is grabbed and displayed
+> on console. Added igt_skip() if sriov is enabled in platform, so if
+> sriov_numvfs > 0 then test will be skipped.
+> 
+> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+> ---
+>  tests/intel/xe_compute.c | 273 ++++++++++++++++++++++++++++++++++++++-
+>  tests/meson.build        |   1 +
+>  2 files changed, 273 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+> index f8059b2d0..6596025cf 100644
+> --- a/tests/intel/xe_compute.c
+> +++ b/tests/intel/xe_compute.c
+> @@ -19,9 +19,24 @@
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>  
+> +#include "igt_perf.h"
+> +#include "igt_sriov_device.h"
+> +
+>  #define LOOP_DURATION_2s	(1000000ull * 2)
+>  #define DURATION_MARGIN		0.2
+>  
+> +struct thread_data {
+> +	pthread_t thread;
+> +	pthread_mutex_t *mutex;
+> +	pthread_cond_t *cond;
+> +	int class;
+> +	int fd;
+> +	int gt;
+> +	struct user_execenv *execenv;
+> +	struct drm_xe_engine_class_instance *eci;
+> +	bool *go;
+> +};
+> +
+>  static int gt_sysfs_open(int gt)
+>  {
+>  	int fd, gt_fd;
+> @@ -243,6 +258,233 @@ test_compute_kernel_loop(uint64_t loop_duration)
+>  	drm_close_driver(fd);
+>  }
+>  
+> +static void
+> +*intel_compute_thread(void *data)
+> +{
+> +	struct thread_data *t = (struct thread_data *)data;
+> +	char device[30];
+> +	uint64_t type;
+> +	uint32_t engine_class, engine_instance, gt_shift;
+> +	uint64_t engine_active_config, engine_total_config;
+> +	int ret, fd1, fd2;
+> +	uint64_t val[4];
+> +	uint64_t param_config;
+> +
+> +	pthread_mutex_lock(t->mutex);
+> +	while (*t->go == 0)
+> +		pthread_cond_wait(t->cond, t->mutex);
+> +	pthread_mutex_unlock(t->mutex);
+> +
+> +	type = igt_perf_type_id(xe_perf_device(t->fd, device, sizeof(device)));
+> +	igt_debug("type: %lx, device: %s\n", type, device);
+> +
+> +	perf_event_format(device, "gt", &gt_shift);
+> +	perf_event_format(device, "engine_class", &engine_class);
+> +	perf_event_format(device, "engine_instance", &engine_instance);
+> +
+> +	ret = perf_event_config(device, "engine-active-ticks", &engine_active_config);
+> +	igt_assert_eq(ret, 0);
+> +	ret = perf_event_config(device, "engine-total-ticks", &engine_total_config);
+> +	igt_assert_eq(ret, 0);
+> +
+> +	igt_debug("gt_id: %x, class: %x, instance: %x\n",
+> +		   t->eci->gt_id, t->eci->engine_class, t->eci->engine_instance);
+> +
+> +	/* Setting collective counters for compute engine available in t->eci */
+> +	param_config = (uint64_t)t->eci->gt_id << gt_shift |
+> +		       t->eci->engine_class << engine_class |
+> +		       t->eci->engine_instance << engine_instance;
+> +
+> +	fd1 = igt_perf_open_group(type, engine_active_config | param_config, -1);
+> +	fd2 = igt_perf_open_group(type, engine_total_config | param_config, fd1);
+> +	igt_debug("fd1: %d, fd2: %d\n", fd1, fd2);
+> +
+> +	ret = read(fd1, val, sizeof(val));
+> +	igt_assert_eq(ret, sizeof(val));
+> +	igt_info("start - active: %ld, total: %ld, busyness: %.1f before scheduling on engine_instance :%d\n",
+> +		 val[2], val[3], (float)val[2] / (float)val[3] * 100.0, t->eci->engine_instance);
+> +
+> +	igt_assert_f(xe_run_intel_compute_kernel_on_engine(t->fd, t->eci, t->execenv,
+> +							   EXECENV_PREF_VRAM_IF_POSSIBLE),
+> +		     "Unable to run compute kernel successfully\n");
+> +
+> +	ret = read(fd1, val, sizeof(val));
+> +	igt_assert_eq(ret, sizeof(val));
+> +	igt_info("end - active: %ld, total: %ld, busyness: %.1f after scheduling on engine_instance :%d\n",
+> +		 val[2], val[3], (float)val[2] / (float)val[3] * 100.0, t->eci->engine_instance);
+> +
+> +	igt_assert_f(((float)val[2] / (float)val[3] * 100.0) > 50.0,
+> +		     "Engines utilization is below 50 perc\n");
+> +
+> +	close(fd1);
+> +	close(fd2);
+> +	return NULL;
+> +}
+> +
+> +static void
+> +igt_check_supported_pipeline(void)
+> +{
+> +	int fd;
+> +	unsigned int ip_ver;
+> +	const struct intel_compute_kernels *kernels;
+> +
+> +	fd = drm_open_driver(DRIVER_XE);
+> +	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+> +	kernels = intel_compute_square_kernels;
+> +
+> +	while (kernels->kernel) {
+> +		if (ip_ver == kernels->ip_ver)
+> +			break;
+> +		kernels++;
+> +	}
+> +
+> +	/* skip if loop_kernel is not supported by pipeline */
+> +	if (!kernels->kernel || !kernels->loop_kernel) {
+> +		drm_close_driver(fd);
+> +		igt_skip("loop_kernel not supported by pipeline\n");
+> +	} else {
+> +		igt_info("loop kernel supported by pipeline\n");
+> +		drm_close_driver(fd);
+> +	}
+> +}
+> +
+> +static void
+> +igt_check_sriov(void)
+> +{
+> +	int fd = drm_open_driver(DRIVER_XE);
+> +
+> +	if (igt_sriov_is_pf(fd) && igt_sriov_vfs_supported(fd)) {
+> +		drm_close_driver(fd);
+> +		igt_skip("Skipping test when SRIOV is enabled\n");
+> +	}
+> +	drm_close_driver(fd);
+> +}
+> +
+> +static void
+> +igt_set_ccs_default_value(int ccs_mode[], int size)
+> +{
+> +	uint64_t gt_mask = get_gt_mask();
+> +	u32 gt, num_slices;
+> +	int gt_fd;
+> +
+> +	for_each_bit(gt_mask, gt) {
+> +		if (!get_num_cslices(gt, &num_slices))
+> +			continue;
+> +
+> +		gt_fd = gt_sysfs_open(gt);
+> +		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", ccs_mode[gt]) > 0);
+> +		close(gt_fd);
+> +	}
+> +}
+> +
+> +/**
+> + * SUBTEST: eu-busy-10s
+> + * Functionality: OpenCL kernel
+> + * Description: Run loop_kernel for duration_sec and observe EU business
+> + */
+> +static void
+> +test_eu_busy(uint64_t duration_sec)
+> +{
+> +	struct user_execenv execenv = { 0 };
+> +	struct thread_data *threads_data;
+> +	struct drm_xe_engine_class_instance *hwe;
+> +	const struct intel_compute_kernels *kernels;
+> +	pthread_mutex_t mutex;
+> +	pthread_cond_t cond;
+> +	u32 gt, n_threads = 0, iterations = 0, n_instances = 0, i;
+> +	bool go = false;
+> +	int ccs_mode, gt_fd, fd;
+> +	u32 num_slices, ip_ver;
+> +	uint64_t gt_mask = get_gt_mask();
+> +
+> +	for_each_bit(gt_mask, gt) {
+> +		if (!get_num_cslices(gt, &num_slices))
+> +			continue;
+> +
+> +		gt_fd = gt_sysfs_open(gt);
+> +		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", num_slices) > 0);
+> +		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
+> +		close(gt_fd);
+> +	}
+> +
+> +	igt_skip_on_f(ccs_mode <= 1, "Skipping test as ccs_mode <=1 not matching criteria :%d\n",
+> +		      ccs_mode);
+> +
+> +	fd = drm_open_driver(DRIVER_XE);
+> +
+> +	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+> +	kernels = intel_compute_square_kernels;
+> +	while (kernels->kernel) {
+> +		if (ip_ver == kernels->ip_ver)
+> +			break;
+> +		kernels++;
+> +	}
+> +
+> +	/*
+> +	 * User should use different kernel if loop_kernel_duration not set
+> +	 * With loop kernel and loop duration it assumes we stop it via memory write
+> +	 *
+> +	 */
+> +
+> +	execenv.loop_kernel_duration = duration_sec;
+> +	execenv.kernel = kernels->loop_kernel;
+> +	execenv.kernel_size = kernels->loop_kernel_size;
+> +	drm_close_driver(fd);
+> +
+> +	gt_mask = get_gt_mask();
+> +
+> +	for_each_bit(gt_mask, gt) {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		xe_for_each_engine(fd, hwe) {
+> +			igt_assert(hwe);
+> +			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
+> +				++n_instances;
+> +		}
+> +		drm_close_driver(fd);
+> +	}
+> +
+> +	threads_data = calloc(n_instances, sizeof(*threads_data));
+> +	igt_assert(threads_data);
+> +
+> +	pthread_mutex_init(&mutex, 0);
+> +	pthread_cond_init(&cond, 0);
+> +
+> +	gt_mask = get_gt_mask();
+> +	fd = drm_open_driver(DRIVER_XE);
+> +	for_each_bit(gt_mask, gt) {
+> +		xe_for_each_engine(fd, hwe) {
+> +			if (hwe->gt_id != gt ||
+> +			    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
+> +				continue;
+> +
+> +			threads_data[i].mutex = &mutex;
+> +			threads_data[i].cond = &cond;
+> +			threads_data[i].fd = fd;
+> +			threads_data[i].eci = hwe;
+> +			threads_data[i].go = &go;
+> +			threads_data[i].execenv = &execenv;
+> +			++n_threads;
+> +			pthread_create(&threads_data[i].thread, 0, intel_compute_thread,
+> +				       &threads_data[i]);
+> +			++i;
+> +			++iterations;
+> +		}
+> +		pthread_mutex_lock(&mutex);
+> +		go = true;
+> +		pthread_cond_broadcast(&cond);
+> +		pthread_mutex_unlock(&mutex);
+> +
+> +		for (int val = 0; val < i; ++val)
+> +			pthread_join(threads_data[val].thread, NULL);
+> +
+> +		i = 0;
+> +		n_threads = 0;
+> +		iterations = 0;
+> +	}
+> +	free(threads_data);
+> +	drm_close_driver(fd);
+> +}
+> +
+>  /**
+>   * SUBTEST: compute-square
+>   * Mega feature: WMTP
+> @@ -262,10 +504,22 @@ test_compute_square(int fd)
+>  
+>  igt_main
+>  {
+> -	int xe;
+> +	int xe, ccs_mode[4], gt_fd, gt;
+> +	unsigned int ip_ver;
+> +	u32 num_slices;
+> +	uint64_t gt_mask = get_gt_mask();
 
-    step 1. Display a test image with no sharpness filter.
-    step 2. Capture output (Frame 0).
-    step 3. Enable sharpness filter at mid strength.
-    step 4. Capture output (Frame 1).
-    step 5. Disable the filter again.
-    step 6. Capture output (Frame 2).
-    step 7. Re-enable filter with same strength.
-    step 8. Capture output (Frame 3).
-    step 9. Compare frame pairs:
-		- Frame 0 vs Frame 1 → should differ
-		- Frame 1 vs Frame 2 → should differ
-		- Frame 0 vs Frame 2 → should match
-		- Frame 1 vs Frame 3 → should match
+Calling get_gt_mask() here is not good idea and according to testlist
+processing it even fail the build.
 
-v2: -removed MIN/MAX_FILTER_STRENGTH (Ankit)
-    -fixed alignment (Ankit)
-    -removed commit with fb_ref (Ankit)
-    -set data->pipe_id (Ankit)
-    -removed disable_filter_strength_on_pipe()
-    -fixed CRASH
-    -fixed assert condition
-v3: -minor fixes
-v4: -modified test (Ankit)
-    -change in seq (Ankit)
-v5: -changed igt_assert() and return type of test_t()
-v6: -s/ret/match (Ankit)
-    -compare with true/false instead of 1 and 0 (Ankit)
+Please fix and resubmit.
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- .../kms_chamelium_sharpness_filter.c          | 296 ++++++++++++++++++
- tests/meson.build                             |   2 +
- 2 files changed, 298 insertions(+)
- create mode 100644 tests/chamelium/kms_chamelium_sharpness_filter.c
+--
+Zbigniew
 
-diff --git a/tests/chamelium/kms_chamelium_sharpness_filter.c b/tests/chamelium/kms_chamelium_sharpness_filter.c
-new file mode 100644
-index 000000000..fa397415d
---- /dev/null
-+++ b/tests/chamelium/kms_chamelium_sharpness_filter.c
-@@ -0,0 +1,296 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2025 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: kms chamelium sharpness filter
-+ * Category: Display
-+ * Description: Test to validate content adaptive sharpness filter using Chamelium
-+ * Driver requirement: xe
-+ * Mega feature: General Display Features
-+ */
-+
-+#include "igt.h"
-+#include "igt_kms.h"
-+
-+/**
-+ * SUBTEST: filter-basic
-+ * Description: Verify basic content adaptive sharpness filter.
-+ */
-+
-+IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter using Chamelium");
-+
-+#define MID_FILTER_STRENGTH		128
-+#define MAX_FRAMES			4
-+
-+typedef struct {
-+	int drm_fd;
-+	enum pipe pipe_id;
-+	struct igt_fb fb;
-+	igt_display_t display;
-+	igt_output_t *output;
-+	igt_plane_t *primary;
-+	drmModeModeInfo *mode;
-+	int filter_strength;
-+	struct chamelium *chamelium;
-+	struct chamelium_port **ports;
-+	int port_count;
-+} data_t;
-+
-+static bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
-+{
-+	bool ret = true;
-+
-+	igt_output_set_pipe(data->output, pipe);
-+	if (!intel_pipe_output_combo_valid(&data->display))
-+		ret = false;
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+
-+	return ret;
-+}
-+
-+static void set_filter_strength_on_pipe(data_t *data)
-+{
-+	igt_pipe_set_prop_value(&data->display, data->pipe_id,
-+				IGT_CRTC_SHARPNESS_STRENGTH,
-+				data->filter_strength);
-+}
-+
-+static void reset_filter_strength_on_pipe(data_t *data)
-+{
-+	igt_pipe_set_prop_value(&data->display, data->pipe_id,
-+				IGT_CRTC_SHARPNESS_STRENGTH, 0);
-+}
-+
-+static void paint_image(igt_fb_t *fb)
-+{
-+	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
-+	int img_x, img_y, img_w, img_h;
-+	const char *file = "1080p-left.png";
-+
-+	img_x = img_y = 0;
-+	img_w = fb->width;
-+	img_h = fb->height;
-+
-+	igt_paint_image(cr, file, img_x, img_y, img_w, img_h);
-+
-+	igt_put_cairo_ctx(cr);
-+}
-+
-+static void setup_fb(int fd, int width, int height, uint32_t format,
-+		     uint64_t modifier, struct igt_fb *fb)
-+{
-+	int fb_id;
-+
-+	fb_id = igt_create_fb(fd, width, height, format, modifier, fb);
-+	igt_assert(fb_id);
-+
-+	paint_image(fb);
-+}
-+
-+static void destroy_frame_dumps(struct chamelium_frame_dump *frames[], int count)
-+{
-+	for (int i = 0; i < count; i++) {
-+		if (frames[i]) {
-+			chamelium_destroy_frame_dump(frames[i]);
-+			frames[i] = NULL;
-+		}
-+	}
-+}
-+
-+static void cleanup(data_t *data)
-+{
-+	igt_remove_fb(data->drm_fd, &data->fb);
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+	igt_output_override_mode(data->output, NULL);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+
-+static void test_t(data_t *data, igt_plane_t *primary,
-+		   struct chamelium_port *port)
-+{
-+	struct chamelium_frame_dump *frame[4];
-+	drmModeModeInfo *mode;
-+	int height, width;
-+	bool match[4], match_ok = false;
-+
-+	igt_output_set_pipe(data->output, data->pipe_id);
-+
-+	mode = igt_output_get_mode(data->output);
-+	height = mode->hdisplay;
-+	width = mode->vdisplay;
-+
-+	setup_fb(data->drm_fd, height, width, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &data->fb);
-+
-+	igt_plane_set_fb(data->primary, &data->fb);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
-+	frame[0] =
-+		chamelium_read_captured_frame(data->chamelium, 0);
-+
-+	set_filter_strength_on_pipe(data);
-+	igt_display_commit_atomic(&data->display, 0, NULL);
-+
-+	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
-+	frame[1] =
-+		chamelium_read_captured_frame(data->chamelium, 0);
-+
-+	reset_filter_strength_on_pipe(data);
-+	igt_display_commit_atomic(&data->display, 0, NULL);
-+
-+	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
-+	frame[2] =
-+		chamelium_read_captured_frame(data->chamelium, 0);
-+
-+	set_filter_strength_on_pipe(data);
-+	igt_display_commit_atomic(&data->display, 0, NULL);
-+
-+	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
-+	frame[3] =
-+		chamelium_read_captured_frame(data->chamelium, 0);
-+
-+	match[0] = chamelium_frame_eq_or_dump_frame_pair(data->chamelium,
-+						       frame[0], frame[1]);
-+
-+	match[1] = chamelium_frame_eq_or_dump_frame_pair(data->chamelium,
-+						       frame[1], frame[2]);
-+
-+	match[2] = chamelium_frame_eq_or_dump_frame_pair(data->chamelium,
-+						       frame[0], frame[2]);
-+
-+	match[3] = chamelium_frame_eq_or_dump_frame_pair(data->chamelium,
-+						       frame[1], frame[3]);
-+
-+	match_ok = (match[0] == false) && (match[1] == false) && (match[2] == true) && (match[3] == true);
-+
-+	destroy_frame_dumps(frame, MAX_FRAMES);
-+	cleanup(data);
-+
-+	igt_assert_f(match_ok, "Sharpness filter test failed:\n"
-+	             "Expected: Frame[0]==Frame[1]: 0, Frame[1]==Frame[2]: 0, Frame[0]==Frame[2]: 1, Frame[1]==Frame[3]: 1\n"
-+		     "Observed: Frame[0]==Frame[1]: %d, Frame[1]==Frame[2]: %d, Frame[0]==Frame[2]: %d, Frame[1]==Frame[3]: %d\n", match[0], match[1], match[2], match[3]);
-+}
-+
-+static int test_setup(data_t *data, enum pipe p)
-+{
-+	igt_pipe_t *pipe;
-+	int i = 0;
-+
-+	igt_display_reset(&data->display);
-+
-+	pipe = &data->display.pipes[p];
-+	igt_require(pipe->n_planes >= 0);
-+
-+	data->primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-+	igt_assert(data->primary);
-+
-+	/*
-+	 * Prefer to run this test on HDMI connector if its connected, since on DP we
-+	 * sometimes face DP FSM issue
-+	 */
-+        for_each_valid_output_on_pipe(&data->display, p, data->output) {
-+		data->pipe_id = p;
-+		for (i = 0; i < data->port_count; i++) {
-+			if ((data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
-+			     data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIB) &&
-+			     strcmp(data->output->name, chamelium_port_get_name(data->ports[i])) == 0)
-+				return i;
-+		}
-+	}
-+
-+	for_each_valid_output_on_pipe(&data->display, p, data->output) {
-+		data->pipe_id = p;
-+		for (i = 0; i < data->port_count; i++) {
-+			if (strcmp(data->output->name,
-+				   chamelium_port_get_name(data->ports[i])) == 0)
-+				return i;
-+		}
-+	}
-+
-+	return -1;
-+}
-+
-+static void test_sharpness_filter(data_t *data,  enum pipe p)
-+{
-+	int port_idx = test_setup(data, p);
-+
-+	igt_require(port_idx >= 0);
-+	igt_require(igt_pipe_obj_has_prop(&data->display.pipes[p], IGT_CRTC_SHARPNESS_STRENGTH));
-+
-+	if (!pipe_output_combo_valid(data, p))
-+		return;
-+
-+	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), data->output->name)
-+		(test_t(data, data->primary, data->ports[port_idx]));
-+}
-+
-+static void
-+run_sharpness_filter_test(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	enum pipe pipe;
-+
-+	igt_describe("Verify basic content adaptive sharpness filter.");
-+	igt_subtest_with_dynamic("filter-basic") {
-+		for_each_pipe(display, pipe) {
-+			data->filter_strength = MID_FILTER_STRENGTH;
-+			test_sharpness_filter(data, pipe);
-+		}
-+	}
-+}
-+
-+igt_main
-+{
-+	data_t data = {};
-+
-+	igt_fixture {
-+		data.drm_fd = drm_open_driver_master(DRIVER_XE);
-+
-+		igt_display_require(&data.display, data.drm_fd);
-+		igt_require(data.display.is_atomic);
-+
-+		igt_chamelium_allow_fsm_handling = false;
-+
-+		/* we need to initalize chamelium after igt_display_require */
-+		data.chamelium = chamelium_init(data.drm_fd, &data.display);
-+		igt_require(data.chamelium);
-+
-+		data.ports = chamelium_get_ports(data.chamelium,
-+						 &data.port_count);
-+
-+		if (!data.port_count)
-+			igt_skip("No ports connected\n");
-+		/*
-+		 * The behavior differs based on the availability of port mappings:
-+		 * - When using port mappings (chamelium_read_port_mappings),
-+		 *   ports are not plugged
-+		 * - During autodiscovery, all ports are plugged at the end.
-+		 *
-+		 * This quick workaround (unplug, plug, and re-probe the connectors)
-+		 * prevents any ports from being unintentionally skipped in test_setup.
-+		 */
-+		for(int i = 0; i < data.port_count; i++) {
-+			chamelium_unplug(data.chamelium, data.ports[i]);
-+			chamelium_plug(data.chamelium, data.ports[i]);
-+			chamelium_wait_for_conn_status_change(&data.display,
-+							      data.chamelium,
-+							      data.ports[i],
-+							      DRM_MODE_CONNECTED);
-+			igt_assert_f(chamelium_reprobe_connector(&data.display,
-+								 data.chamelium,
-+								 data.ports[i]) == DRM_MODE_CONNECTED,
-+								 "Output not connected\n");
-+		}
-+
-+		kmstest_set_vt_graphics_mode();
-+	}
-+
-+	run_sharpness_filter_test(&data);
-+
-+	igt_fixture {
-+		igt_display_fini(&data.display);
-+		drm_close_driver(data.drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 8204aac5c..f2267bc09 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -355,6 +355,7 @@ chamelium_progs = [
- 	'kms_chamelium_edid',
- 	'kms_chamelium_frames',
- 	'kms_chamelium_hpd',
-+	'kms_chamelium_sharpness_filter',
- ]
- 
- test_deps = [ igt_deps ]
-@@ -380,6 +381,7 @@ extra_sources = {
- 	'kms_chamelium_edid': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
-+	'kms_chamelium_sharpness_filter': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_dp_linktrain_fallback': [
-            join_paths ('intel', 'kms_mst_helper.c'),
-            join_paths ('intel', 'kms_dsc_helper.c') ],
--- 
-2.25.1
-
+>  
+>  	igt_fixture {
+>  		xe = drm_open_driver(DRIVER_XE);
+> +		ip_ver = intel_graphics_ver(intel_get_drm_devid(xe));
+> +		for_each_bit(gt_mask, gt) {
+> +			if (!get_num_cslices(gt, &num_slices))
+> +				continue;
+> +
+> +			gt_fd = gt_sysfs_open(gt);
+> +			igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode[gt]);
+> +			close(gt_fd);
+> +		}
+>  	}
+>  
+>  	igt_subtest("compute-square")
+> @@ -284,4 +538,21 @@ igt_main
+>  	/* To test compute function stops after loop_kernel_duration */
+>  	igt_subtest("loop-duration-2s")
+>  		test_compute_kernel_loop(LOOP_DURATION_2s);
+> +
+> +	/* test to check available EU utilisation in multi-ccs case */
+> +	igt_subtest("eu-busy-10s") {
+> +		/* skip test if loop_kernel not supported in pipeline */
+> +		if (ip_ver < IP_VER(20, 0))
+> +			igt_check_supported_pipeline();
+> +
+> +		/* skip if sriov enabled */
+> +		igt_check_sriov();
+> +
+> +		test_eu_busy(5 * LOOP_DURATION_2s);
+> +		/* calling sleep to make sure EUs done with execution */
+> +		sleep(3);
+> +	}
+> +
+> +	igt_fixture
+> +		igt_set_ccs_default_value(ccs_mode, sizeof(ccs_mode));
+>  }
+> diff --git a/tests/meson.build b/tests/meson.build
+> index a7b9375ed..a7ffc6383 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -408,6 +408,7 @@ extra_dependencies = {
+>  	'sw_sync': [ libatomic ],
+>  	'xe_fault_injection': [ lib_igt_xe_oa ],
+>  	'xe_oa': [ lib_igt_xe_oa ],
+> +        'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_profiling,math ],
+>  }
+>  
+>  test_executables = []
+> -- 
+> 2.43.0
+> 
