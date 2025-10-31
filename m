@@ -4,74 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC016CCFA03
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Oct 2025 18:12:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDF3BCCFA03
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Oct 2025 18:36:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8076110EC07;
-	Fri, 31 Oct 2025 18:12:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 65C6D10E338;
+	Fri, 31 Oct 2025 18:36:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="H7gJUw60";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mQxozgXa";
 	dkim-atps=neutral
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com
- [209.85.210.182])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC86310EC07
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Oct 2025 18:12:50 +0000 (UTC)
-Received: by mail-pf1-f182.google.com with SMTP id
- d2e1a72fcca58-780fc3b181aso1902595b3a.2
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Oct 2025 11:12:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1761934370; x=1762539170; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OYuoxDgzyZKT/gZQPtjpaXQ4uF48N8ttTAEh9wdzuEk=;
- b=H7gJUw60qwXjsJIsDR4em6LQVEtSK3NDNcG9p7Z5Dqgu50IJjfq1zgimpnNTHDrHrp
- T61xGGtFtkUlBpYYaIFfYufMJxjIP0kGgcJTWfyVd5at7Hg07YTg4tQyfhwmxaHhPNpG
- dTfSL2abwcLG3orh/TQY0OGU4e+nyD9t+UinHPt0opGAw0gp/JuUuF06xzxwKT/a8Y7d
- k7mKZmilfJze+TfjzpyqT1f8S4hpL5W9M+sk0gi1aQXtDLBwYhtHkN+uAdct8AKmHao5
- XDo8X5jA/rgAmnGaue6/JzXFQGLM8dc3ehD8YyxjWCUpLb2upqLoOWPE0bEusYll2Wv1
- ERog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1761934370; x=1762539170;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OYuoxDgzyZKT/gZQPtjpaXQ4uF48N8ttTAEh9wdzuEk=;
- b=IOXEVhbYyyzhBDoVsWJ2oYcYB8vfVvB6vVqIVCjYpuD7+ab3ibDiZSnpu8+aSToW2j
- eAG38LCIPxmN7C3CRAB8hm9nUs11cz7AR+dMBvDqKHmJnDccJlQVlVrvStjgjOuWKAJR
- k7hxTTtbG2NxbQZu1X5jboFC9QrUt/I44D5OMI/2POGQNe+llKS3u1ZvC8QiY1DPoong
- Yd0mYNaJwW0QUBKtlAGyb4lei8TDPrqU8Vd67xbQQNN3NDhwoPKbe7rETI8HtmlhRZbo
- vlBxFTUegLFFpYl84kwAjvvPogrB0QM4l1xoweYIx3U+V1K3UdsXnPs4PvHspSXaaLVf
- k+lw==
-X-Gm-Message-State: AOJu0YxJhlH54Ybo/IvMcIT8YbgaO+DgNQSPql5IdL523XQwPIrWjDZU
- eDxNGbVHgAXgdVezBwRJ/rQcS661z6YjsxFzB3BmJ0PXHGdHOqfFzyx6blBoEJG3
-X-Gm-Gg: ASbGncvosXL4oZQcAfIpGlIZwHxxmCPjVb08RXcOSQdAIGf2HuOMKZ1Ju/cyw94cR/u
- V48bI6gLzyuR/PkmW7ZKCdf5OBPg2ST8zcY2EL6Ky3EQbEnJHUnzgmWOKkHaBHFgtw5XgOYno+n
- 4X2nh+wPijhxpF0wENQh6chscn+yhfkaPG21OGjcVLN4TkTMTQRrlfaC5BtUmQqNrmWaXwJMUGH
- 5a3a9yX72ZLi+f0Ra0DzOiTiKghR1u9G2zohvsoW+Qd6MjOJjp0MzIf38zMEOami5A3up/AImq0
- LyDZWvliG9Zp+hzxBqI4kxGd9pgQJYDiesb2/hdu/qP5mgYzbFf6LIzVr87J9SZ15Yqnwhm5zgU
- OtqYJigIOJZuUO61i5EPE/L/EtSBC/OzteCxLYyqqqeSE7fEGjpGrdcWKvTTh8VjVp9RvgZOz9F
- s0pG2+GUAJWyb7MRBP
-X-Google-Smtp-Source: AGHT+IHbBJ9cfFYi1OP5MPTOS1SJG2KlXth2DyBdCv9RBUQnoy2AApTmd688Ldi1x1+s23mr96qISw==
-X-Received: by 2002:a05:6a00:23d2:b0:782:2b62:8188 with SMTP id
- d2e1a72fcca58-7a7793c8651mr6370459b3a.15.1761934369980; 
- Fri, 31 Oct 2025 11:12:49 -0700 (PDT)
-Received: from localhost ([192.55.54.47]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-7a7db09f362sm2834184b3a.38.2025.10.31.11.12.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 31 Oct 2025 11:12:49 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ADA4D10E320
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Oct 2025 18:36:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1761935762; x=1793471762;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=jjerJT8RBbjYE6o4MGBEP7gSbO1czY56sCy4z3BQHp4=;
+ b=mQxozgXaId5zqrsCs4ubxg5Jim1/mVkeFKVsAbfU2odJrjoLr9jkDyR0
+ 6HnetPzx3NpiB5UDZWxIm8vdxOSswZ3khjuvGAQxv61jX9OKytiqvSBdg
+ c/ERb6ymGVk4okQl4xX/M5yd8Fg/DAMm1FojHNFxPUfkrV2Mq4FR/f5fw
+ vF/NcAvCpVCxjQ2jUf1bVZaABTGS8KwWEZIP5f09TW3/iZINDk28cTBT7
+ J9ANQbPHkyVO8MeWoLYGe4jObaB883VIo2bEuOCXnOb6jG4fV+PfIzmsp
+ VvptfxxomauffdpRyBwXMyEVJgAeBHKnjSJryis2ar0NY4I715YCRSsnb A==;
+X-CSE-ConnectionGUID: ewM5pqziS6ucD0+nQhojiQ==
+X-CSE-MsgGUID: WLUU0j+/TGChgIxhH6/tSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="64144724"
+X-IronPort-AV: E=Sophos;i="6.19,270,1754982000"; d="scan'208";a="64144724"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2025 11:36:01 -0700
+X-CSE-ConnectionGUID: XzNDSeRbRtCk3gSnEOw4+A==
+X-CSE-MsgGUID: amUaj6MMSE6hpWmTYu9PLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,270,1754982000"; d="scan'208";a="190650015"
+Received: from nvishwa1-desk.sc.intel.com ([172.25.29.131])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2025 11:36:00 -0700
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 1/1] tests/intel/i915_module_load: Add kernel default
- faul injection tests
-Date: Fri, 31 Oct 2025 20:12:12 +0200
-Message-ID: <20251031181216.172174-2-juhapekka.heikkila@gmail.com>
+Subject: [PATCH 03/18] tests/xe_exec_multi_queue: Add xe_exec_multi_queue test
+Date: Fri, 31 Oct 2025 11:35:40 -0700
+Message-ID: <20251031183555.1882721-4-niranjana.vishwanathapura@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251031181216.172174-1-juhapekka.heikkila@gmail.com>
-References: <20251031181216.172174-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20251031183555.1882721-1-niranjana.vishwanathapura@intel.com>
+References: <20251031183555.1882721-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -88,328 +67,196 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Here added fault-injection subtest which use kernel default fault
-injection with bind/unbind.
+Add sanity test for the multi queue feature.
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/intel/i915_module_load.c | 282 +++++++++++++++++++++++++++++++++
- 1 file changed, 282 insertions(+)
+ tests/intel/xe_exec_multi_queue.c | 163 ++++++++++++++++++++++++++++++
+ tests/meson.build                 |   1 +
+ 2 files changed, 164 insertions(+)
+ create mode 100644 tests/intel/xe_exec_multi_queue.c
 
-diff --git a/tests/intel/i915_module_load.c b/tests/intel/i915_module_load.c
-index 2047d1886..1d012f627 100644
---- a/tests/intel/i915_module_load.c
-+++ b/tests/intel/i915_module_load.c
-@@ -33,6 +33,10 @@
-  * Feature: core
-  * Test category: GEM_Legacy
-  *
-+ * SUBTEST: fault-injection
-+ * Description: Verify that i915 driver can be successfully bound and unbound with fault injection.
-+ * Functionality: fault
-+ *
-  * SUBTEST: load
-  * Description: Check if i915 and friends are not yet loaded, then load them.
-  *
-@@ -68,6 +72,7 @@
- #include "igt_kmod.h"
- #include "igt_sysfs.h"
- #include "igt_core.h"
-+#include "igt_device.h"
- 
- #define BAR_SIZE_SHIFT 20
- #define MIN_BAR_SIZE 256
-@@ -361,6 +366,279 @@ static uint32_t  driver_load_with_lmem_bar_size(uint32_t lmem_bar_size, bool che
- 	return lmem_bar_size;
- }
- 
-+struct fault_injection_params {
-+	/* @probability: Likelihood of failure injection, in percent. */
-+	uint32_t probability;
-+	/* @interval: Specifies the interval between failures */
-+	uint32_t interval;
-+	/* @times: Specifies how many times failures may happen at most */
-+	int32_t times;
-+	/*
-+	 * @space: Specifies how many times fault injection is suppressed before
-+	 * first injection
-+	 */
-+	uint32_t space;
-+};
-+
-+static int fail_function_open(void)
-+{
-+	int debugfs_fail_function_dir_fd;
-+	const char *debugfs_root;
-+	char path[96];
-+
-+	debugfs_root = igt_debugfs_mount();
-+	igt_assert(debugfs_root);
-+
-+	sprintf(path, "%s/fail_function", debugfs_root);
-+
-+	if (access(path, F_OK))
-+		return -1;
-+
-+	debugfs_fail_function_dir_fd = open(path, O_RDONLY);
-+	igt_debug_on_f(debugfs_fail_function_dir_fd < 0, "path: %s\n", path);
-+
-+	return debugfs_fail_function_dir_fd;
-+}
-+
-+static void injection_list_add(const char function_name[])
-+{
-+	int dir;
-+
-+	dir = fail_function_open();
-+
-+	igt_assert_lte(0, dir);
-+	igt_assert_lte(0, igt_sysfs_printf(dir, "inject", "%s", function_name));
-+
-+	close(dir);
-+}
-+
+diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
+new file mode 100644
+index 000000000..03b920dc8
+--- /dev/null
++++ b/tests/intel/xe_exec_multi_queue.c
+@@ -0,0 +1,163 @@
++// SPDX-License-Identifier: MIT
 +/*
-+ * Default fault injection parameters which injects fault on first call to the
-+ * configured fail_function.
++ * Copyright © 2025 Intel Corporation
 + */
-+static const struct fault_injection_params default_fault_params = {
-+	.probability = 100,
-+	.interval = 0,
-+	.times = -1,
-+	.space = 0
-+};
 +
-+/*
-+ * See https://docs.kernel.org/fault-injection/fault-injection.html#application-examples
++/**
++ * TEST: Basic tests for exec functionality with multi-queue feature
++ * Category: Hardware building block
++ * Mega feature: General Core features
++ * Sub-category: CMD submission
++ * Functionality: multi-queue
 + */
-+static void setup_injection_fault(const struct fault_injection_params *fault_params)
++
++#include "igt.h"
++#include "xe_drm.h"
++
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++
++#define MAX_N_EXEC_QUEUES	64
++
++#define MAX_INSTANCE 9
++
++#define XE_MULTI_GROUP_VALID_FLAGS   (DRM_XE_MULTI_GROUP_CREATE)
++
++static void
++__test_sanity(int fd, int gt, int class)
 +{
-+	int dir;
-+
-+	if (!fault_params)
-+		fault_params = &default_fault_params;
-+
-+	igt_assert(fault_params->probability >= 0);
-+	igt_assert(fault_params->probability <= 100);
-+
-+
-+	dir = fail_function_open();
-+	igt_assert_lte(0, dir);
-+
-+	igt_debug("probability = %d, interval = %d, times = %d, space = %u\n",
-+			fault_params->probability, fault_params->interval,
-+			fault_params->times, fault_params->space);
-+
-+	igt_assert_lte(0, igt_sysfs_printf(dir, "task-filter", "N"));
-+	igt_sysfs_set_u32(dir, "probability", fault_params->probability);
-+	igt_sysfs_set_u32(dir, "interval", fault_params->interval);
-+	igt_sysfs_set_s32(dir, "times", fault_params->times);
-+	igt_sysfs_set_u32(dir, "space", fault_params->space);
-+	igt_sysfs_set_u32(dir, "verbose", 1);
-+
-+	close(dir);
-+}
-+
-+static void injection_list_clear(void)
-+{
-+	/* If nothing specified (‘’) injection list is cleared */
-+	return injection_list_add("");
-+}
-+
-+/*
-+ * The injectable file requires CONFIG_FUNCTION_ERROR_INJECTION in kernel.
-+ */
-+static bool fail_function_injection_enabled(void)
-+{
-+	char *contents;
-+	int dir;
-+
-+	dir = fail_function_open();
-+	if (dir < 0)
-+		return false;
-+
-+	contents = igt_sysfs_get(dir, "injectable");
-+	if (contents == NULL)
-+		return false;
-+
-+	free(contents);
-+
-+	return true;
-+}
-+
-+static void cleanup_injection_fault(int sig)
-+{
-+	injection_list_clear();
-+}
-+
-+static void set_retval(const char function_name[], long long retval)
-+{
-+	char path[96];
-+	int dir;
-+
-+	dir = fail_function_open();
-+	igt_assert_lte(0, dir);
-+
-+	sprintf(path, "%s/retval", function_name);
-+	igt_assert_lte(0, igt_sysfs_printf(dir, path, "%#016llx", retval));
-+
-+	close(dir);
-+}
-+
-+static int
-+inject_fault_probe(int fd, const char pci_slot[], const char function_name[],
-+		   int inject_error, int devicefd)
-+{
-+	int err = 0;
-+
-+	injection_list_add(function_name);
-+	set_retval(function_name, inject_error);
-+
-+	igt_assert(igt_sysfs_set(devicefd, "reset", "1"));
-+	igt_kmod_bind("i915", pci_slot);
-+
-+	err = -errno;
-+	injection_list_clear();
-+	return err;
-+}
-+
-+static char *bus_addr(int fd, char *path)
-+{
-+	char sysfs[128];
-+	char *rp, *addr_pos;
-+
-+	if (!igt_sysfs_path(fd, sysfs, sizeof(sysfs)))
-+		return NULL;
-+
-+	if (128 <= (strlen(sysfs) + strlen("/device")))
-+		return NULL;
-+
-+	strcat(sysfs, "/device");
-+
-+	rp = realpath(sysfs, path);
-+
-+	igt_require(strstr(rp, "/sys/devices/pci") == rp);
-+	addr_pos = strrchr(rp, '/');
-+
-+	snprintf(path, PATH_MAX, "%s", addr_pos + 1);
-+	return path;
-+}
-+
-+static void test_fault_injection(void)
-+{
-+	char pci_slot[NAME_MAX], addr[PATH_MAX];
-+	int ret = 0;
-+	int sysfs = 0;
-+	int devicefd = 0;
-+	int fd;
-+
-+	char error_ignore[] =
-+		".*Device initialization failed.*"
-+		"|.*probe with driver i915 failed with error.*"
-+		"|.*\\*ERROR\\* GT1: GSC proxy handler failed to init.*"
-+		"|.*\\*ERROR\\* GT0: GUC: failed with -ENXIO.*"
-+		"|.*GuC fw rsa data creation failed -ENXIO.*"
-+		"|.*GUC: failed with -ENXIO.*"
-+		"|.*(\\*ERROR\\*) Failed to register driver for userspace access.*"
-+		"|.*\\*ERROR\\* Failed to register driver for userspace access.*"
-+		"|.*GT0: GuC fw rsa data creation failed -ENXIO.*"
-+		;
-+
-+	struct {
-+		const char *test_name;
-+		const char *function;
-+		int   faultcode;
-+	} fail_tests[] = {
-+		{"__uc_init", "__uc_init", -ENOMEM},
-+		{"i915_driver_mmio_probe", "i915_driver_mmio_probe", -ENODEV},
-+		{"i915_driver_hw_probe", "i915_driver_hw_probe", -ENODEV},
-+		{"i915_pci_probe", "i915_pci_probe", -ENODEV},
-+		{"__fw_domain_init", "__fw_domain_init", -ENOMEM},
-+		{"intel_connector_register", "intel_connector_register", -EFAULT},
-+		{"i915_driver_early_probe", "i915_driver_early_probe", -ENODEV},
-+		{"intel_gt_init-ENODEV", "intel_gt_init", -ENODEV},
-+		{"intel_guc_ct_init", "intel_guc_ct_init", -ENXIO},
-+		{"uc_fw_rsa_data_create", "uc_fw_rsa_data_create", -ENXIO},
++	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
++	struct drm_xe_ext_set_property multi_queue = {
++		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
++		.value = DRM_XE_MULTI_GROUP_CREATE,
 +	};
++	uint64_t invalid_flag = 0, ext = to_user_pointer(&multi_queue);
++	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
++	struct drm_xe_engine_class_instance *hwe;
++	uint32_t vm, vm2, val;
++	int i, n = 0;
 +
-+	igt_require(fail_function_injection_enabled());
-+	igt_install_exit_handler(cleanup_injection_fault);
++	xe_for_each_engine(fd, hwe) {
++		if (hwe->engine_class != class || hwe->gt_id != gt)
++			continue;
 +
-+	fd = drm_open_driver(DRIVER_INTEL);
-+	igt_require(fd);
-+
-+	sysfs = igt_sysfs_open(fd);
-+	devicefd = openat(sysfs, "device", O_DIRECTORY);
-+	bus_addr(fd, addr);
-+
-+	igt_device_get_pci_slot_name(fd, pci_slot);
-+
-+	for (int c = 0; c < ARRAY_SIZE(fail_tests); c++) {
-+		igt_dynamic(fail_tests[c].test_name) {
-+			igt_emit_ignore_dmesg_regex(error_ignore);
-+
-+			igt_set_timeout(60, "Driver unbind re-bind timeout!");
-+			igt_kmod_unbind("i915", pci_slot);
-+			setup_injection_fault(&default_fault_params);
-+
-+			ret = inject_fault_probe(fd, pci_slot,
-+						 fail_tests[c].function,
-+						 fail_tests[c].faultcode,
-+						 devicefd);
-+
-+			igt_reset_timeout();
-+
-+			if (ret == fail_tests[c].faultcode) {
-+				igt_info("Load failed with expected error %s (%d)\n",
-+					strerror(-ret), ret);
-+			} else if (ret == 0) {
-+				igt_info("Load succeeded - %s() was *not* executed!\n",
-+					fail_tests[c].function);
-+
-+				injection_list_clear();
-+				igt_assert_f(0, "%s() was *not* executed!\n",
-+					fail_tests[c].function);
-+
-+			} else {
-+				igt_info("Load failed with unexpected error %d (%s)\n",
-+					ret, strerror(-ret));
-+
-+				close(devicefd);
-+				close(sysfs);
-+				drm_close_driver(fd);
-+
-+				igt_i915_driver_unload();
-+				igt_i915_driver_load(NULL);
-+
-+				igt_assert_f(0, "unexpected error %d (%s)\n",
-+					ret, strerror(-ret));
-+			}
-+		}
++		eci[n++] = *hwe;
 +	}
 +
-+	close(devicefd);
-+	close(sysfs);
-+	drm_close_driver(fd);
++	if (!n)
++		return;
 +
-+	igt_i915_driver_unload();
-+	igt_i915_driver_load(NULL);
++	vm = xe_vm_create(fd, 0, 0);
++
++	/* Invalid flags */
++	while (!invalid_flag)
++		invalid_flag = (1ull << (rand() % 63)) & ~XE_MULTI_GROUP_VALID_FLAGS;
++	multi_queue.value |= invalid_flag;
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
++	multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
++
++	/* Q0 can't be a regular queue */
++	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, 0);
++	multi_queue.value = exec_queues[0];
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
++	xe_exec_queue_destroy(fd, exec_queues[0]);
++
++	/* Multi-Queue can't be a parallel queue */
++	multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
++	if (n > 1)
++		igt_assert_eq(__xe_exec_queue_create(fd, vm, 2, 1, eci, ext, &val), -EINVAL);
++
++	/* Specifying multiple MULTI_GROUP property is invalid */
++	multi_queue.base.next_extension = to_user_pointer(&multi_queue);
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
++
++	/* Adding queues to group after primary is destroyed is invalid */
++	multi_queue.base.next_extension = 0;
++	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
++	xe_exec_queue_destroy(fd, exec_queues[0]);
++	multi_queue.value = exec_queues[0];
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -ENOENT);
++
++	multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
++	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
++
++	/* Upper 32 bits must be 0 while adding secondary queues */
++	multi_queue.value = exec_queues[0] | (1ull << (32 + (rand() % 32)));
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
++
++	/* Invalid Q0 */
++	multi_queue.value = exec_queues[0] + 1;
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -ENOENT);
++
++	/* Queues in a queue group must share the same address space (vm) */
++	multi_queue.value = exec_queues[0];
++	vm2 = xe_vm_create(fd, 0, 0);
++	igt_assert_eq(__xe_exec_queue_create(fd, vm2, 1, 1, eci, ext, &val), -EINVAL);
++	xe_vm_destroy(fd, vm2);
++
++	/* Secondary queues must map to same engine instances as primary queue */
++	if (n > 1)
++		igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, n, eci, ext, &val), -EINVAL);
++
++	for (i = 1; i < MAX_N_EXEC_QUEUES; i++)
++		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
++
++	/* Queue group limit check */
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
++
++	/* Secondary queues can't be replaced once successfully created */
++	xe_exec_queue_destroy(fd, exec_queues[1]);
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
++
++	/* Primary queue can be destroyed before all secondary queues are destroyed */
++	xe_exec_queue_destroy(fd, exec_queues[0]);
++
++	for (i = 2; i < MAX_N_EXEC_QUEUES; i++)
++		xe_exec_queue_destroy(fd, exec_queues[i]);
++
++	/* Validate with multiple num_placements */
++	if (n > 1) {
++		multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
++		multi_queue.base.next_extension = 0;
++		igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, n, eci, ext, &exec_queues[0]), 0);
++
++		multi_queue.value = exec_queues[0];
++		for (i = 1; i < MAX_N_EXEC_QUEUES; i++)
++			igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, n, eci, ext, &exec_queues[i]), 0);
++
++		for (i = 0; i < MAX_N_EXEC_QUEUES; i++)
++			xe_exec_queue_destroy(fd, exec_queues[i]);
++	}
++
++	xe_vm_destroy(fd, vm);
 +}
 +
- igt_main
- {
- 	igt_describe("Check if i915 and friends are not yet loaded, then load them.");
-@@ -434,6 +712,10 @@ igt_main
- 		unload_or_die("i915");
- 	}
- 
-+	igt_describe("Test i915 fault injection");
-+	igt_subtest_with_dynamic_f("fault-injection")
-+		test_fault_injection();
++/**
++ * SUBTEST: sanity
++ * Description: Run sanity test
++ * Test category: functionality test
++ */
++static void
++test_sanity(int fd, int gt, int class)
++{
++	__test_sanity(fd, gt, class);
++}
 +
- 	igt_describe("Check whether lmem bar size can be resized to only supported sizes.");
- 	igt_subtest("resize-bar") {
- 		uint32_t result_bar_size;
++igt_main
++{
++	int fd, gt, class;
++
++	igt_fixture {
++		fd = drm_open_driver(DRIVER_XE);
++		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++	}
++
++	igt_subtest_f("sanity")
++		xe_for_each_gt(fd, gt)
++			xe_for_each_multi_queue_engine_class(class)
++				test_sanity(fd, gt, class);
++
++	igt_fixture
++		drm_close_driver(fd);
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 73edd3e71..7e67eb2be 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -296,6 +296,7 @@ intel_xe_progs = [
+ 	'xe_exec_compute_mode',
+ 	'xe_exec_fault_mode',
+ 	'xe_exec_mix_modes',
++	'xe_exec_multi_queue',
+ 	'xe_exec_queue_property',
+ 	'xe_exec_reset',
+ 	'xe_exec_sip',
 -- 
 2.43.0
 
