@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB2EBCCF9FE
-	for <igt-dev@archiver.kernel.org>; Sat,  1 Nov 2025 02:00:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C444ECCF9FE
+	for <igt-dev@archiver.kernel.org>; Sat,  1 Nov 2025 02:05:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 58EEF10E05E;
-	Sat,  1 Nov 2025 02:00:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 33D8710E119;
+	Sat,  1 Nov 2025 02:05:34 +0000 (UTC)
 Received: from 10055242dc62 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2221710E05E;
- Sat,  1 Nov 2025 02:00:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 66AE610E119;
+ Sat,  1 Nov 2025 02:05:33 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============1455332355453233008=="
+ boundary="===============4021623896105521691=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Multi-tile_support_for_xe?=
- =?utf-8?q?=5Fsriov=5Fflr_and_related_MMIO_improvements?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fpm=5Frpm?=
+ =?utf-8?q?=3A_Add_test_to_validate_G7_residency_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Sat, 01 Nov 2025 02:00:50 -0000
-Message-ID: <176196245013.8093.440125817326796882@10055242dc62>
+Date: Sat, 01 Nov 2025 02:05:33 -0000
+Message-ID: <176196273341.8092.7647163114034907772@10055242dc62>
 X-Patchwork-Hint: ignore
-References: <20251031125633.1374273-1-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20251031125633.1374273-1-marcin.bernatowicz@linux.intel.com>
+References: <20250916062411.23433-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20250916062411.23433-1-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1455332355453233008==
+--===============4021623896105521691==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Multi-tile support for xe_sriov_flr and related MMIO improvements
-URL   : https://patchwork.freedesktop.org/series/156839/
+Series: tests/intel/kms_pm_rpm: Add test to validate G7 residency (rev3)
+URL   : https://patchwork.freedesktop.org/series/154560/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8605_BAT -> XEIGTPW_13973_BAT
+CI Bug Log - changes from XEIGT_8605_BAT -> XEIGTPW_13974_BAT
 ====================================================
 
 Summary
@@ -81,19 +81,19 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8605 -> IGTPW_13973
+  * IGT: IGT_8605 -> IGTPW_13974
   * Linux: xe-4026-203c9c05c014fd3a624e9cb07d86820b3ad63bf9 -> xe-4027-089e83683d58db86cc4c69d34fba3a96904e40e1
 
-  IGTPW_13973: 2385fba686312e2d13c9ac26af2694ccff722fef @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_13974: 13974
   IGT_8605: 8605
   xe-4026-203c9c05c014fd3a624e9cb07d86820b3ad63bf9: 203c9c05c014fd3a624e9cb07d86820b3ad63bf9
   xe-4027-089e83683d58db86cc4c69d34fba3a96904e40e1: 089e83683d58db86cc4c69d34fba3a96904e40e1
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13973/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13974/index.html
 
---===============1455332355453233008==
+--===============4021623896105521691==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,16 +113,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Multi-tile support for xe_sriov_flr and related MMIO improvements</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/156839/">https://patchwork.freedesktop.org/series/156839/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_pm_rpm: Add test to validate G7 residency (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154560/">https://patchwork.freedesktop.org/series/154560/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13973/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13973/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13974/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13974/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8605_BAT -&gt; XEIGTPW_13973_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8605_BAT -&gt; XEIGTPW_13974_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
@@ -132,10 +132,10 @@ Content-Transfer-Encoding: 7bit
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8605 -&gt; IGTPW_13973</li>
+<li>IGT: IGT_8605 -&gt; IGTPW_13974</li>
 <li>Linux: xe-4026-203c9c05c014fd3a624e9cb07d86820b3ad63bf9 -&gt; xe-4027-089e83683d58db86cc4c69d34fba3a96904e40e1</li>
 </ul>
-<p>IGTPW_13973: 2385fba686312e2d13c9ac26af2694ccff722fef @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_13974: 13974<br />
   IGT_8605: 8605<br />
   xe-4026-203c9c05c014fd3a624e9cb07d86820b3ad63bf9: 203c9c05c014fd3a624e9cb07d86820b3ad63bf9<br />
   xe-4027-089e83683d58db86cc4c69d34fba3a96904e40e1: 089e83683d58db86cc4c69d34fba3a96904e40e1</p>
@@ -143,4 +143,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============1455332355453233008==--
+--===============4021623896105521691==--
