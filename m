@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0804ECCF9F8
-	for <igt-dev@archiver.kernel.org>; Mon,  3 Nov 2025 03:45:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4325FCCF9FE
+	for <igt-dev@archiver.kernel.org>; Mon,  3 Nov 2025 04:42:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9B12010E347;
-	Mon,  3 Nov 2025 03:45:41 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b/MlqnCf";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9FD5E10E347
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Nov 2025 03:45:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762141541; x=1793677541;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=g5VnmShDeGh82vpa1qky7DHtL3IfrVSE5Xj5ieXfUwg=;
- b=b/MlqnCfDdB1xQX2J10CeHmXf+kllGN2BO/8VmImppmea9iugthuqgGB
- ELFECnvXOQ53q6f0PMC2swZlQ99ufmW8Ej0gmC7GezVEsxR7CznqRl1Xs
- HqnIxhEnFPcaaXAqiW+HkU+ijX2LcCgToHUvHCqbsg7GR6/D5CP9tyV2S
- +QLLdqCaHqz2GdAZfy49LF3Ih724HlOjTRetMYDSZUDaOzkGZjttfBVwo
- 7boYcjSaiRwJ5n9hgGfXTdQ5qE68UdDMTZaYhxTXWz8dbseIjg251fU1s
- GVU00W9nQ5Ws51AwAMmpyGR9qbdZrh2KWhn35X3QHg5A8Ib5zSstcDFfL g==;
-X-CSE-ConnectionGUID: ZrBn/ZMtSP+HrjKpWOudWQ==
-X-CSE-MsgGUID: Vz/tyJjGR4OLdV+5A58YOg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="64252203"
-X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; d="scan'208";a="64252203"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Nov 2025 19:45:41 -0800
-X-CSE-ConnectionGUID: U1rO3c8qTeGwHr6N0oYCVg==
-X-CSE-MsgGUID: /X20otZZQNi3QaHpaGw4aw==
-X-ExtLoop1: 1
-Received: from dut2943pvc.iind.intel.com ([10.190.215.39])
- by fmviesa003.fm.intel.com with ESMTP; 02 Nov 2025 19:45:38 -0800
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- nishit.sharma@intel.com
-Subject: [PATCH i-g-t v8 3/3] tests/intel/xe_compute: Add eu-busy-10s test
-Date: Mon,  3 Nov 2025 03:45:33 +0000
-Message-ID: <20251103034533.24895-4-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251103034533.24895-1-nishit.sharma@intel.com>
-References: <20251103034533.24895-1-nishit.sharma@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9CBA110E04A;
+	Mon,  3 Nov 2025 04:42:22 +0000 (UTC)
+Received: from 10055242dc62 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8BC9B10E04A;
+ Mon,  3 Nov 2025 04:42:20 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4194488337011859437=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_Multi-CCS_support_in_IGT_?=
+ =?utf-8?q?=28rev8=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: nishit.sharma@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 03 Nov 2025 04:42:20 -0000
+Message-ID: <176214494056.9998.7546543013349474803@10055242dc62>
+X-Patchwork-Hint: ignore
+References: <20251103034533.24895-1-nishit.sharma@intel.com>
+In-Reply-To: <20251103034533.24895-1-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,349 +37,191 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+--===============4194488337011859437==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add multi threading to utilize available CCS instances as per num_slices
-available in /sys/class/drm/cardX/device/tileX/gtX/num_cslices.
-Depending upon num_slices, number of threads will be created and
-schedule compute workload in different CCS instances. Sleep is
-called via loop_kernel_duration so that HW engine runs for sleep duration.
-During execution per EU utlization percentage is grabbed and displayed
-on console. Added igt_skip() if sriov is enabled in platform, so if
-sriov_numvfs > 0 then test will be skipped.
+== Series Details ==
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- tests/intel/xe_compute.c | 275 ++++++++++++++++++++++++++++++++++++++-
- tests/meson.build        |   1 +
- 2 files changed, 275 insertions(+), 1 deletion(-)
+Series: Multi-CCS support in IGT (rev8)
+URL   : https://patchwork.freedesktop.org/series/153115/
+State : failure
 
-diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index f8059b2d0..9d47ef9ff 100644
---- a/tests/intel/xe_compute.c
-+++ b/tests/intel/xe_compute.c
-@@ -19,9 +19,24 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- 
-+#include "igt_perf.h"
-+#include "igt_sriov_device.h"
-+
- #define LOOP_DURATION_2s	(1000000ull * 2)
- #define DURATION_MARGIN		0.2
- 
-+struct thread_data {
-+	pthread_t thread;
-+	pthread_mutex_t *mutex;
-+	pthread_cond_t *cond;
-+	int class;
-+	int fd;
-+	int gt;
-+	struct user_execenv *execenv;
-+	struct drm_xe_engine_class_instance *eci;
-+	bool *go;
-+};
-+
- static int gt_sysfs_open(int gt)
- {
- 	int fd, gt_fd;
-@@ -243,6 +258,233 @@ test_compute_kernel_loop(uint64_t loop_duration)
- 	drm_close_driver(fd);
- }
- 
-+static void
-+*intel_compute_thread(void *data)
-+{
-+	struct thread_data *t = (struct thread_data *)data;
-+	char device[30];
-+	uint64_t type;
-+	uint32_t engine_class, engine_instance, gt_shift;
-+	uint64_t engine_active_config, engine_total_config;
-+	int ret, fd1, fd2;
-+	uint64_t val[4];
-+	uint64_t param_config;
-+
-+	pthread_mutex_lock(t->mutex);
-+	while (*t->go == 0)
-+		pthread_cond_wait(t->cond, t->mutex);
-+	pthread_mutex_unlock(t->mutex);
-+
-+	type = igt_perf_type_id(xe_perf_device(t->fd, device, sizeof(device)));
-+	igt_debug("type: %lx, device: %s\n", type, device);
-+
-+	perf_event_format(device, "gt", &gt_shift);
-+	perf_event_format(device, "engine_class", &engine_class);
-+	perf_event_format(device, "engine_instance", &engine_instance);
-+
-+	ret = perf_event_config(device, "engine-active-ticks", &engine_active_config);
-+	igt_assert_eq(ret, 0);
-+	ret = perf_event_config(device, "engine-total-ticks", &engine_total_config);
-+	igt_assert_eq(ret, 0);
-+
-+	igt_debug("gt_id: %x, class: %x, instance: %x\n",
-+		   t->eci->gt_id, t->eci->engine_class, t->eci->engine_instance);
-+
-+	/* Setting collective counters for compute engine available in t->eci */
-+	param_config = (uint64_t)t->eci->gt_id << gt_shift |
-+		       t->eci->engine_class << engine_class |
-+		       t->eci->engine_instance << engine_instance;
-+
-+	fd1 = igt_perf_open_group(type, engine_active_config | param_config, -1);
-+	fd2 = igt_perf_open_group(type, engine_total_config | param_config, fd1);
-+	igt_debug("fd1: %d, fd2: %d\n", fd1, fd2);
-+
-+	ret = read(fd1, val, sizeof(val));
-+	igt_assert_eq(ret, sizeof(val));
-+	igt_info("start - active: %ld, total: %ld, busyness: %.1f before scheduling on engine_instance :%d\n",
-+		 val[2], val[3], (float)val[2] / (float)val[3] * 100.0, t->eci->engine_instance);
-+
-+	igt_assert_f(xe_run_intel_compute_kernel_on_engine(t->fd, t->eci, t->execenv,
-+							   EXECENV_PREF_VRAM_IF_POSSIBLE),
-+		     "Unable to run compute kernel successfully\n");
-+
-+	ret = read(fd1, val, sizeof(val));
-+	igt_assert_eq(ret, sizeof(val));
-+	igt_info("end - active: %ld, total: %ld, busyness: %.1f after scheduling on engine_instance :%d\n",
-+		 val[2], val[3], (float)val[2] / (float)val[3] * 100.0, t->eci->engine_instance);
-+
-+	igt_assert_f(((float)val[2] / (float)val[3] * 100.0) > 50.0,
-+		     "Engines utilization is below 50 perc\n");
-+
-+	close(fd1);
-+	close(fd2);
-+	return NULL;
-+}
-+
-+static void
-+igt_check_supported_pipeline(void)
-+{
-+	int fd;
-+	unsigned int ip_ver;
-+	const struct intel_compute_kernels *kernels;
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	kernels = intel_compute_square_kernels;
-+
-+	while (kernels->kernel) {
-+		if (ip_ver == kernels->ip_ver)
-+			break;
-+		kernels++;
-+	}
-+
-+	/* skip if loop_kernel is not supported by pipeline */
-+	if (!kernels->kernel || !kernels->loop_kernel) {
-+		drm_close_driver(fd);
-+		igt_skip("loop_kernel not supported by pipeline\n");
-+	} else {
-+		igt_info("loop kernel supported by pipeline\n");
-+		drm_close_driver(fd);
-+	}
-+}
-+
-+static void
-+igt_check_sriov(void)
-+{
-+	int fd = drm_open_driver(DRIVER_XE);
-+
-+	if (igt_sriov_is_pf(fd) && igt_sriov_vfs_supported(fd)) {
-+		drm_close_driver(fd);
-+		igt_skip("Skipping test when SRIOV is enabled\n");
-+	}
-+	drm_close_driver(fd);
-+}
-+
-+static void
-+igt_set_ccs_default_value(int ccs_mode[], int size)
-+{
-+	uint64_t gt_mask = get_gt_mask();
-+	u32 gt, num_slices;
-+	int gt_fd;
-+
-+	for_each_bit(gt_mask, gt) {
-+		if (!get_num_cslices(gt, &num_slices))
-+			continue;
-+
-+		gt_fd = gt_sysfs_open(gt);
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", ccs_mode[gt]) > 0);
-+		close(gt_fd);
-+	}
-+}
-+
-+/**
-+ * SUBTEST: eu-busy-10s
-+ * Functionality: OpenCL kernel
-+ * Description: Run loop_kernel for duration_sec and observe EU business
-+ */
-+static void
-+test_eu_busy(uint64_t duration_sec)
-+{
-+	struct user_execenv execenv = { 0 };
-+	struct thread_data *threads_data;
-+	struct drm_xe_engine_class_instance *hwe;
-+	const struct intel_compute_kernels *kernels;
-+	pthread_mutex_t mutex;
-+	pthread_cond_t cond;
-+	u32 gt, n_threads = 0, iterations = 0, n_instances = 0, i;
-+	bool go = false;
-+	int ccs_mode, gt_fd, fd;
-+	u32 num_slices, ip_ver;
-+	uint64_t gt_mask = get_gt_mask();
-+
-+	for_each_bit(gt_mask, gt) {
-+		if (!get_num_cslices(gt, &num_slices))
-+			continue;
-+
-+		gt_fd = gt_sysfs_open(gt);
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", num_slices) > 0);
-+		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
-+		close(gt_fd);
-+	}
-+
-+	igt_skip_on_f(ccs_mode <= 1, "Skipping test as ccs_mode <=1 not matching criteria :%d\n",
-+		      ccs_mode);
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+
-+	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	kernels = intel_compute_square_kernels;
-+	while (kernels->kernel) {
-+		if (ip_ver == kernels->ip_ver)
-+			break;
-+		kernels++;
-+	}
-+
-+	/*
-+	 * User should use different kernel if loop_kernel_duration not set
-+	 * With loop kernel and loop duration it assumes we stop it via memory write
-+	 *
-+	 */
-+
-+	execenv.loop_kernel_duration = duration_sec;
-+	execenv.kernel = kernels->loop_kernel;
-+	execenv.kernel_size = kernels->loop_kernel_size;
-+	drm_close_driver(fd);
-+
-+	gt_mask = get_gt_mask();
-+
-+	for_each_bit(gt_mask, gt) {
-+		fd = drm_open_driver(DRIVER_XE);
-+		xe_for_each_engine(fd, hwe) {
-+			igt_assert(hwe);
-+			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-+				++n_instances;
-+		}
-+		drm_close_driver(fd);
-+	}
-+
-+	threads_data = calloc(n_instances, sizeof(*threads_data));
-+	igt_assert(threads_data);
-+
-+	pthread_mutex_init(&mutex, 0);
-+	pthread_cond_init(&cond, 0);
-+
-+	gt_mask = get_gt_mask();
-+	fd = drm_open_driver(DRIVER_XE);
-+	for_each_bit(gt_mask, gt) {
-+		xe_for_each_engine(fd, hwe) {
-+			if (hwe->gt_id != gt ||
-+			    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-+				continue;
-+
-+			threads_data[i].mutex = &mutex;
-+			threads_data[i].cond = &cond;
-+			threads_data[i].fd = fd;
-+			threads_data[i].eci = hwe;
-+			threads_data[i].go = &go;
-+			threads_data[i].execenv = &execenv;
-+			++n_threads;
-+			pthread_create(&threads_data[i].thread, 0, intel_compute_thread,
-+				       &threads_data[i]);
-+			++i;
-+			++iterations;
-+		}
-+		pthread_mutex_lock(&mutex);
-+		go = true;
-+		pthread_cond_broadcast(&cond);
-+		pthread_mutex_unlock(&mutex);
-+
-+		for (int val = 0; val < i; ++val)
-+			pthread_join(threads_data[val].thread, NULL);
-+
-+		i = 0;
-+		n_threads = 0;
-+		iterations = 0;
-+	}
-+	free(threads_data);
-+	drm_close_driver(fd);
-+}
-+
- /**
-  * SUBTEST: compute-square
-  * Mega feature: WMTP
-@@ -262,10 +504,31 @@ test_compute_square(int fd)
- 
- igt_main
- {
--	int xe;
-+	int xe, ccs_mode[4], gt_fd, gt;
-+	unsigned int ip_ver;
-+	u32 num_slices;
-+	uint64_t gt_mask;
- 
- 	igt_fixture {
-+		/* skip if sriov enabled */
-+		igt_check_sriov();
-+
- 		xe = drm_open_driver(DRIVER_XE);
-+		ip_ver = intel_graphics_ver(intel_get_drm_devid(xe));
-+
-+		/* skip test if loop_kernel not supported in pipeline */
-+		if (ip_ver < IP_VER(20, 0))
-+			igt_check_supported_pipeline();
-+
-+		gt_mask = get_gt_mask();
-+		for_each_bit(gt_mask, gt) {
-+			if (!get_num_cslices(gt, &num_slices))
-+				continue;
-+
-+			gt_fd = gt_sysfs_open(gt);
-+			igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode[gt]);
-+			close(gt_fd);
-+		}
- 	}
- 
- 	igt_subtest("compute-square")
-@@ -284,4 +547,14 @@ igt_main
- 	/* To test compute function stops after loop_kernel_duration */
- 	igt_subtest("loop-duration-2s")
- 		test_compute_kernel_loop(LOOP_DURATION_2s);
-+
-+	/* test to check available EU utilisation in multi-ccs case */
-+	igt_subtest("eu-busy-10s") {
-+		test_eu_busy(5 * LOOP_DURATION_2s);
-+		/* calling sleep to make sure EUs done with execution */
-+		sleep(3);
-+	}
-+
-+	igt_fixture
-+		igt_set_ccs_default_value(ccs_mode, sizeof(ccs_mode));
- }
-diff --git a/tests/meson.build b/tests/meson.build
-index a7b9375ed..a7ffc6383 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -408,6 +408,7 @@ extra_dependencies = {
- 	'sw_sync': [ libatomic ],
- 	'xe_fault_injection': [ lib_igt_xe_oa ],
- 	'xe_oa': [ lib_igt_xe_oa ],
-+        'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_profiling,math ],
- }
- 
- test_executables = []
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8605_BAT -> XEIGTPW_13977_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_13977_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_13977_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (12 -> 12)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_13977_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_compute@compute-square:
+    - bat-ptl-1:          [PASS][1] -> [SKIP][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-ptl-1/igt@xe_compute@compute-square.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-ptl-1/igt@xe_compute@compute-square.html
+    - bat-bmg-2:          [PASS][3] -> [SKIP][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-bmg-2/igt@xe_compute@compute-square.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-bmg-2/igt@xe_compute@compute-square.html
+    - bat-bmg-1:          [PASS][5] -> [SKIP][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-bmg-1/igt@xe_compute@compute-square.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-bmg-1/igt@xe_compute@compute-square.html
+    - bat-adlp-7:         [PASS][7] -> [SKIP][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-adlp-7/igt@xe_compute@compute-square.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-adlp-7/igt@xe_compute@compute-square.html
+    - bat-ptl-2:          [PASS][9] -> [SKIP][10]
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-ptl-2/igt@xe_compute@compute-square.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-ptl-2/igt@xe_compute@compute-square.html
+    - bat-dg2-oem2:       [PASS][11] -> [SKIP][12]
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-dg2-oem2/igt@xe_compute@compute-square.html
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-dg2-oem2/igt@xe_compute@compute-square.html
+    - bat-adlp-vm:        [PASS][13] -> [SKIP][14]
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-adlp-vm/igt@xe_compute@compute-square.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-adlp-vm/igt@xe_compute@compute-square.html
+    - bat-atsm-2:         [PASS][15] -> [SKIP][16]
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-atsm-2/igt@xe_compute@compute-square.html
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-atsm-2/igt@xe_compute@compute-square.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_13977_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-plain-flip@b-edp1:
+    - bat-adlp-7:         [PASS][17] -> [DMESG-WARN][18] ([Intel XE#4543]) +1 other test dmesg-warn
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html
+
+  
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8605 -> IGTPW_13977
+  * Linux: xe-4026-203c9c05c014fd3a624e9cb07d86820b3ad63bf9 -> xe-4030-b9356481c8ac3cba317f6c7af88db25452b0e515
+
+  IGTPW_13977: 13977
+  IGT_8605: 8605
+  xe-4026-203c9c05c014fd3a624e9cb07d86820b3ad63bf9: 203c9c05c014fd3a624e9cb07d86820b3ad63bf9
+  xe-4030-b9356481c8ac3cba317f6c7af88db25452b0e515: b9356481c8ac3cba317f6c7af88db25452b0e515
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/index.html
+
+--===============4194488337011859437==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Multi-CCS support in IGT (rev8)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153115/">https://patchwork.freedesktop.org/series/153115/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8605_BAT -&gt; XEIGTPW_13977_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_13977_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_13977_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_13977_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@xe_compute@compute-square:<ul>
+<li>bat-ptl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-ptl-1/igt@xe_compute@compute-square.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-ptl-1/igt@xe_compute@compute-square.html">SKIP</a></li>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-bmg-2/igt@xe_compute@compute-square.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-bmg-2/igt@xe_compute@compute-square.html">SKIP</a></li>
+<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-bmg-1/igt@xe_compute@compute-square.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-bmg-1/igt@xe_compute@compute-square.html">SKIP</a></li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-adlp-7/igt@xe_compute@compute-square.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-adlp-7/igt@xe_compute@compute-square.html">SKIP</a></li>
+<li>bat-ptl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-ptl-2/igt@xe_compute@compute-square.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-ptl-2/igt@xe_compute@compute-square.html">SKIP</a></li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-dg2-oem2/igt@xe_compute@compute-square.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-dg2-oem2/igt@xe_compute@compute-square.html">SKIP</a></li>
+<li>bat-adlp-vm:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-adlp-vm/igt@xe_compute@compute-square.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-adlp-vm/igt@xe_compute@compute-square.html">SKIP</a></li>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-atsm-2/igt@xe_compute@compute-square.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-atsm-2/igt@xe_compute@compute-square.html">SKIP</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_13977_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-plain-flip@b-edp1:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8605/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13977/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8605 -&gt; IGTPW_13977</li>
+<li>Linux: xe-4026-203c9c05c014fd3a624e9cb07d86820b3ad63bf9 -&gt; xe-4030-b9356481c8ac3cba317f6c7af88db25452b0e515</li>
+</ul>
+<p>IGTPW_13977: 13977<br />
+  IGT_8605: 8605<br />
+  xe-4026-203c9c05c014fd3a624e9cb07d86820b3ad63bf9: 203c9c05c014fd3a624e9cb07d86820b3ad63bf9<br />
+  xe-4030-b9356481c8ac3cba317f6c7af88db25452b0e515: b9356481c8ac3cba317f6c7af88db25452b0e515</p>
+
+</body>
+</html>
+
+--===============4194488337011859437==--
