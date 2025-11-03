@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3BC8CCF9FE
-	for <igt-dev@archiver.kernel.org>; Mon,  3 Nov 2025 06:17:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37594CCF9FE
+	for <igt-dev@archiver.kernel.org>; Mon,  3 Nov 2025 06:20:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4C1B410E14E;
-	Mon,  3 Nov 2025 06:17:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D0DDC10E357;
+	Mon,  3 Nov 2025 06:20:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nYhy2Qsj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f9neUI44";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1DCB510E14E
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Nov 2025 06:17:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D1B0310E14E
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Nov 2025 06:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762150667; x=1793686667;
+ t=1762150823; x=1793686823;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=NkQQqX/E7jgwli3MvTH7HxXRm+9Gr5/FZSrO6ht77cU=;
- b=nYhy2QsjJ91iLlHP8niNkeIJpdDDZk+BWD9C4Ut6gVMtteVNiR6sYfBO
- VGgtzoBpSdAzGwE0X31W2tcRLdFnhvft/3voZM9B4IjkXCzbwt7YrR/yO
- MAeUS5VzO5AGZVwHzCJUIqXIL/3683SW9HgZkw+tInBeNVwA2S8vDoyE3
- T1Y45kC/zN/v25rGmRzkrBVWX6ADq+K3XiyCBkswgEWyZXziuIVez2rft
- I9jR/UAWHkK0Ym13ewxwjFQCZOKt0/sdqpJUDEeX6c/ac0cllFXQce8dm
- JH09ReAfV+2Ckexw2JAlMbbPutXCOLnAB09L2NRvmjOzDHNIGUgWd20Uz g==;
-X-CSE-ConnectionGUID: 63YO3mSMTzKknedc4J+uDw==
-X-CSE-MsgGUID: O5ivH5dgQtuKSfs60ihvLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="68059267"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="68059267"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Nov 2025 22:17:46 -0800
-X-CSE-ConnectionGUID: 9fQA77bUS+uPu9NbWQMHuA==
-X-CSE-MsgGUID: U5sRzd/LQOCfdO/4rocg4g==
+ bh=Vow26SZd/LW76MDrhlVEKchTMpSootV5VI4E3Pomd4o=;
+ b=f9neUI44c+PN4KPtPk5skT55WMbiVIKFptTF6qlwtG8HOfUtsqKq7Pjb
+ VLy5btZWn/lIpWho7lDQXsZnzIm0ClkDU/amdWYB4pAftBUQMYRqsekTC
+ qXzfienXFJwqonxpU2ilx9hVhrvcoEpCDpEIrpjD/2cUKxkjtCK6Pmu8i
+ g977ilqcOtd0J0QLpmVJ56LHSa0/i0vCtrDGKvaXIl7NmHwjPmt7JVW+P
+ YzHCtLkz+Xv25JlF42tD6dg1nhpqfeFpaZEtLv/B4TD8h6mglFGwIIb8o
+ 4WygybYwBQO7dgWq7hyM6SzUr3hBidi6vLmeNfKrB5/G0SDVdmY777JfD g==;
+X-CSE-ConnectionGUID: eqNSBCFVSZmdyCa2Tj9JRQ==
+X-CSE-MsgGUID: IlzmOl+nTBGdD7jFF+fSsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="74898631"
+X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; d="scan'208";a="74898631"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Nov 2025 22:20:22 -0800
+X-CSE-ConnectionGUID: HR0ZAlZXSe+FY7dCoZ2L2w==
+X-CSE-MsgGUID: wbKnMBnERseYVQgbDOVDkw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; d="scan'208";a="191942596"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Nov 2025 22:17:45 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; d="scan'208";a="186735759"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Nov 2025 22:20:22 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Sun, 2 Nov 2025 22:17:45 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.2562.27; Sun, 2 Nov 2025 22:20:21 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Sun, 2 Nov 2025 22:17:45 -0800
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.25) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ 15.2.2562.27 via Frontend Transport; Sun, 2 Nov 2025 22:20:21 -0800
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.36) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Sun, 2 Nov 2025 22:17:44 -0800
+ 15.2.2562.27; Sun, 2 Nov 2025 22:20:21 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vHkiuTFPYV4gfRZSXX7cbLXVJfW0y9QRhM04294ZUxgDgLvwGJ25XAPaaVjRAQanho6mkfvj+1d+NBHMUQQBX4a+n60BZDQ6hWHCxn+hstDBfjn35ph/t6mBHnQseXx8v6yER4y5xhpu2VYFjSBTh/PjMjPnKpeNWVm5y6qMywmaXb/6q8q0YtQHMvEwRmq6Oem3kZDt73PGi639sh/T+Ihs/FXwqMRcWs5BBMwRuax7zsJX7L66wpEcaBQVzKoAv56qt8nbTODEtz51zGp0q50C2bTw0ARl1y5DdI/MDBLKrVc004jymE+PIvzhRcqtTUpnpHu8EzzqsLG7MrsgYg==
+ b=dO1WZcQQV210sfRLuqHfxlcDk6m7xMxIJ0/9tbkKe45g/+M8zHV2nxTgpbPYGyPkEm/AjcCJVCke9NMKIahu7jApIxuJpzGT9Lk8AkxSm6T7oSWTsrqCYebvB/hqO87J7ksgg9MOXicuVE2Yg/dnohh+ForCYtSxdnVHde6XPDZ9vr1Q2KG9j+1MxFIREqHjz/XAg5JMIbkWl12RUffNYZOOTkE6sKrOXtHHzYuUnDNZDMPoCn8E98IMtd4lRS4FAgVt6O4qLaIQSDDZGjZaivhcFCaKCUm2PZeS3Ki1GhkSgDg9w0aWNFiWbr86F3OZeIQMj1YTiAz08rfUtBYH8g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3HQz75kdWs5GV/FmjGuUfZfv1cSi5IYFsduW4AzmrBE=;
- b=dWulnGo/aPwumYlAHJEPO0AEQesqV/x/rFghu5YEm4Q0dlnXZxFaQyht+v8E+GBsfz9fjgRof+XPiidsLoMWCEeCghyGmDwW7fO2GBOm9bgUEQKSzywwRi8YIReIluIHAPsGsMq81zxXm5rNrmsNdJHN0XH7EDkp6Qcu/lah/aStQRPBvYpsNHTWtITBduFpPSNUmpGP/kHwuZts9NzvS3H8ua8pCnqdX/bOHRbFZ5HLsskt6anHS8vs5LIWPLJeQGS44lNFLBK4fgxWisaLZO93vLrgITHEpmsvIr7u8h8It0hpPhNGWxEscIrOUDFJwIzFV+TpDjxAId6s7D3hzQ==
+ bh=d+uXa93FzdzzKlcM78ULx0NTwLa64h0XpYH2LsLZ5rg=;
+ b=uROb3tbCfCpNhLy2zmPyHzI+brv5+NkH8+XZ8ZiCeBMZU1Lg/NuLua44sfACWRCD8/+qN1uhZ/60BwcV1ekP7NdTUI9E75o8NAmn2b9/gkOuZ7PCiISLEAOWSVAt8WN0rZ1iO979bCa+LF/PDJba2fongNAsz7Zx614/OPlIFmJLd+k3GzRxGohJhR162XXJNDGVTeS31Y2vjB55CxDP36Lvvkbd7Q8zKjd9/nTNpjXMFXHyprA4S1ETj9FKgcZD/qsrTNHUmrGHwc/T5xaKpp0izxzezBKS0OmDxc0UqlkOuNBsyio3KVzWkCcRoatMiI+NVYfgyWRwLZ9J/fmahA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,118 +69,118 @@ Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
  PH0PR11MB5093.namprd11.prod.outlook.com (2603:10b6:510:3e::23) with
  Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9275.16; Mon, 3 Nov 2025 06:17:43 +0000
+ 15.20.9275.16; Mon, 3 Nov 2025 06:20:20 +0000
 Received: from DS0PR11MB7958.namprd11.prod.outlook.com
  ([fe80::d3ba:63fc:10be:dfca]) by DS0PR11MB7958.namprd11.prod.outlook.com
  ([fe80::d3ba:63fc:10be:dfca%7]) with mapi id 15.20.9275.013; Mon, 3 Nov 2025
- 06:17:43 +0000
-Message-ID: <308b722c-765b-4a73-a977-afb7bb54aa79@intel.com>
-Date: Mon, 3 Nov 2025 11:47:35 +0530
+ 06:20:20 +0000
+Message-ID: <b062d08d-8405-4b14-9c64-7379c21da21b@intel.com>
+Date: Mon, 3 Nov 2025 11:50:12 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t, v9,
- 2/3] tests/intel/xe_survivability: Add new test runtime survivability
+Subject: Re: [i-g-t,v9,1/3] tests/intel/xe_survivability: Add new
+ xe_survivability test for i2c adapter
 To: Sk Anirban <sk.anirban@intel.com>, <igt-dev@lists.freedesktop.org>
 CC: <anshuman.gupta@intel.com>, <badal.nilawar@intel.com>,
  <karthik.poosa@intel.com>, <raag.jadav@intel.com>, <soham.purkait@intel.com>, 
  <mallesh.koujalagi@intel.com>
 References: <20251031093452.3842245-5-sk.anirban@intel.com>
- <20251031093452.3842245-7-sk.anirban@intel.com>
+ <20251031093452.3842245-6-sk.anirban@intel.com>
 Content-Language: en-US
 From: Riana Tauro <riana.tauro@intel.com>
-In-Reply-To: <20251031093452.3842245-7-sk.anirban@intel.com>
+In-Reply-To: <20251031093452.3842245-6-sk.anirban@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0212.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1ab::9) To DS0PR11MB7958.namprd11.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5P287CA0213.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1ab::11) To DS0PR11MB7958.namprd11.prod.outlook.com
  (2603:10b6:8:f9::19)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|PH0PR11MB5093:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3a9f445b-3422-4c83-322d-08de1aa0b2b4
+X-MS-Office365-Filtering-Correlation-Id: 92905c9a-3077-42ff-e1d5-08de1aa1101a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?MlgxbkhpUmRJT3VaemhrY2kvMTRXV2JRMW9Wb0Q5NDdLeXQveDU0TEZGbHZT?=
- =?utf-8?B?ak5GVklDZCs3ekdXOG1UbFhmR2dJQ3BEZGNkcEdqbmMxcnAxN2pJNW9DelBE?=
- =?utf-8?B?TzE0R0lndlJXdXhEN0dxdDZtdmthOVl4Nzk4bXpLR2Z3OUxyWUp6eFpCMlox?=
- =?utf-8?B?eDRaMUt3U2hvbUNMNnRzTjFJWDM3SmszV2hYaDZaY0RSQnB1WFUyUGhwekpx?=
- =?utf-8?B?ODBjaDEwb3ZKNi9uWmhsR0U3SDZDS1hYZUdmSGxZU2QvM2duK1J1ekZNcnQ2?=
- =?utf-8?B?d3A4NFU3MTlFWml0a1JKL1BmQ2Q3azJieHJGUEFNZHRCV3IyazdjUEt1WGRq?=
- =?utf-8?B?MWJORmFJODlLR1hyVXRSTGhLMGZmZVBXU3BBMyt5K1c5ZnU0WEJUcVpyRU0w?=
- =?utf-8?B?SXUzanVXcjdqNjRhOWFxMk5TTC9HSUt4ZCtkbU14SmlDL1BkcndjODU1WlB6?=
- =?utf-8?B?SUdTRmQrTUI2NEF5VkEvWFdSK21UVXlocVF5NVJMUHhkTW9XaC9uVk1yUU5n?=
- =?utf-8?B?YzQrQW1YNmtzeU1FN1lTTEpXdVhCMG5JQVpZbWQ0NmFhZXZILzF5TExjV0ht?=
- =?utf-8?B?anpyMWRsQlpScXc4M0ZQbWFmODM1ZStIQ1pMQ1lQNWJTblQwZU1waXIyYmw3?=
- =?utf-8?B?Y08wdTV3NmhGREh5dlpRbXUzQmI2WDgwZTJNV1kyd1VEMU5EREN5eFVBRmFn?=
- =?utf-8?B?bUNyaWtpczIwelB0OGh5Y1Q4Rlh4NTgxaWw3eGxheFV0c3lNRTVoWThYczFy?=
- =?utf-8?B?MDNGMDRiaHRDYk5VUVo3bW4xMTUxbkc3K25iWDRSSkpuSjh6MkRJYmRtR0p5?=
- =?utf-8?B?NDU3TkIvd0o0bWVTd21LdGNpZ2s4Vk5aRUtmV3I5WEZycktDZVRCZ0xzK3ZJ?=
- =?utf-8?B?cTcvQnEwWElCRW5sMVY0TUNkT013Ly93TVIvMzZqWUZmS0VUYkpZZS9Qd08r?=
- =?utf-8?B?cXFmcjM2OVNPNkNMRG5LYWRzQnUrc1F1R1FYd1kwS2xGUm42MHJoR0NBM0Uz?=
- =?utf-8?B?cjYxeG9nc28zeDFaOUFncGVsVk1mTHdnRGt2aEZzTllrbFpBdENReHY3VVo3?=
- =?utf-8?B?M1hVd3lCTHo5WkZPSHdaU3k2YzVyY1RUMlBwbnloQ1RQUy9Bd1kxWW5vRUhy?=
- =?utf-8?B?aE9hb2hUMC96NlBQcFBHQXhYYnNERFRJcTF0Y3VmVDIxaHRJWEpoQjlXeEtL?=
- =?utf-8?B?Ly9XNGdlK2J2ZEdEaXp4YjU3YmFQNzg2RkUrRVFEOThxc0o0ZG5LaThueitR?=
- =?utf-8?B?R2RBVkV5VWVIenNjTEpET3ZtOUJJLzdxeitmcnZDS1pmc2JuRHZtV1NTQ0sx?=
- =?utf-8?B?NnFQVHRCTlZFS2xobFN3eG9UMTR5a2ZoMTlEOWltc0JFdFFQME83TXdRUlV3?=
- =?utf-8?B?TGVnZUpzL0NWWUFEQ1VjbTVrUVdnTHZ3SUowa093SkgrNDh4RnFBc3A0RVZo?=
- =?utf-8?B?a0tpUmlEZGpIVEMyZnlNbGVUdmxhN0FlY3ZRSWw1SGVuRnQyNjRlZ1psd2ZV?=
- =?utf-8?B?YjVIVDNMdnZBK0xTa0tQNHIxOXQ0c1dZZ2o4c1BBRFJBcEh6UXdrdU9lWUhK?=
- =?utf-8?B?Z0w2SEo2REpnMFc2eFpqZEpONi9Jdm9PR2hQZWR1V0pKSGowT2ZWY3Iva1ht?=
- =?utf-8?B?RjkyUFJYcGVQRXJxK090U2dFNCtDcFlCUmpwZnNNakxUUE9XNCtFTk1hMG9x?=
- =?utf-8?B?Tll3TkhLZ3l5bTE0bFVYeTVITDNkdld3Z1pMcTlLM3pUVHlhclZFWlpOaGMx?=
- =?utf-8?B?QktEZG9HWmlRdUhHTi9RZ1I2bWtGMzhjaVB4V2s0a0t2SVRNUjZqM1BTVUhD?=
- =?utf-8?B?cGsxN3FrQ29Dcy9MN2NEcHVHVmptdmpiMzBBbDNVT2hiQTN4c3ArQWxmOWJO?=
- =?utf-8?B?ZWV6QWl5aGpDSVVhNWVTZGhvR1pqUFk2ZmFEdHRDeEdXUW5Icko0ZTc5ZlFN?=
- =?utf-8?Q?noNsCs/RO5LDQTnYBKZldcx9ELhO62ch?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UXRYdXF1emJXMmFyTkoxZjlTMDBVNWFqamJxM0ZXQ2g4cVQxeUdQQnNjNjlo?=
+ =?utf-8?B?cy9mU2hFOXZmMnZiRThjZFhmdVJLNWNBU2hqWnczOFNOSmtFOHQ4QUZzbEll?=
+ =?utf-8?B?QkJ2QXRHWUg1R1c2KzVvUHRnaCtBVXNoQzFpQ0Qvd2xtYzIyY3VvT0NXeGlW?=
+ =?utf-8?B?ci9zTXZoeGZzdmxUQXpvTkRuUmZyWGJ5M01wTjBjWVV2dHlQSm5aRkhmbHQx?=
+ =?utf-8?B?LzZHRXM3dGlEc2pkTHU2NzJCNnBDS2kwbkNnRGJvek9uTWVpZDQ5NmtVQWxV?=
+ =?utf-8?B?anZOTHZya21xSlN3alA3YlAwUTl4dkZEMnBtU3pyQ1Q4Sll4QUMwK21HbnBt?=
+ =?utf-8?B?UElCbTdUcnpkaGloME9mcXJlbXNrSjJvS3kvYWVlcWFOUEFhVS96ZGgySG83?=
+ =?utf-8?B?TWY5U2lzNkNuWUoyY0hQa3ZXS004bDRIbGE2bVNaTDJ4Q0g5bThwMUhCa1R4?=
+ =?utf-8?B?dGNONXoxMmswNHhTTkxmcDFYYUVsbVIvVWlsS3pDSTVWYkIvYlR4SDg5S0NR?=
+ =?utf-8?B?THUxdGs3a1FqdzJGSlorb0hnMVQyS2hYVkY1eEVJc2JnU0MzSGNaR0NDWHlL?=
+ =?utf-8?B?dXRveW8rRkN5WGlZbXFHSkRkdWZtNVhsOWtCVXJQdW90RUJXWWRFc2RJLzNi?=
+ =?utf-8?B?aU5ZcVNLblF5eW9XS2NxcWRxeTJIZ2FtcWpQek1iN3VVNFkxQmhHbGVwL1FK?=
+ =?utf-8?B?NWh5TUxFZWxlZjlKRk5lTGw5bjB0dUJ2emQzWWNxNmJjaDlockRVckx5US9w?=
+ =?utf-8?B?WnQyZnR3Y0cyL1FVcVdaajhuQkJ1OW9JNmxWVnIwdFFlbjRDMitkZWJXa3dI?=
+ =?utf-8?B?eEk2MUtzc0FncWw4Y3BYRzhqOW5pUXJ4L2d2ZUNObjc2UCtpc21HZmZDMnRo?=
+ =?utf-8?B?SHhNRXIzZDNSSzFtbTl0NVpxbjRFYXcxZVVSRjBrWE43Q2xiTTZvMGJBTFVm?=
+ =?utf-8?B?NVJVWmJkcUNQeTlBUWE4TS9MN2lFYnpTWlNEbktxU1NxbmNyTmRWRTdMeGxN?=
+ =?utf-8?B?MlRLamFPQ3djcU9ONHRETTM1LzZYdzVqaUVoVkVDRkFzbUJYLzA2OVhhSytk?=
+ =?utf-8?B?SWNoNkZtamJhSzMySjFDRWNrU05mclhDUGpjQ1orOHYrL1hZZWhFZTdWb1B6?=
+ =?utf-8?B?Q21WKzNMdnVWR3IvZ1YzNitxcUo4R2VCcWNnVFErNmZnRERYcVJqTHJGRURJ?=
+ =?utf-8?B?QmZGYi9rWGpWcm01eGdhcUI0Tnh1UytPRkV2dWxJWk1pdnRTdzJYM3RLTUwr?=
+ =?utf-8?B?MHYycDlJcERwZzlTMkVPc1ptK3lQYXhiNjJzMlNOL0JuUEpWVDhpTG5OUVlu?=
+ =?utf-8?B?R1ZPZFozeG5DRU5YVXJBMXhpaWhuaXVjRGIrYmVyd3FzQnFSRkx5TnlWR1ZK?=
+ =?utf-8?B?K2lkcXhhdHhiM2Q1Nk9zMHFpeXlsNHN3RmlRVmJwSGdUNGtrdWJ1QjFqQmZW?=
+ =?utf-8?B?ZGFVZmN0cUg0NmNydUNCQUdaNmV6dnl2dUREdUMrM1VkSS9UYWdOMThCZ0t5?=
+ =?utf-8?B?ZmcwSlI0NzhCUEhrTnNrdjhSNWpXT2JkeXRIMU9HdVREWlN6enBqeGVRMWpG?=
+ =?utf-8?B?ZFRCTEZDS0tBanZUYThCSzdBZG5uUHE5dXRpLzFnL1NpUnhyeFRuRVBIbG9w?=
+ =?utf-8?B?SHVJMVNETDdUTXlISjhvWFdFQ2VtWTBLa0kxQmZKMTRlcUpMY0pBQkxTOWU3?=
+ =?utf-8?B?c0VmamtRQmZKejB3TVVCcDJGS2hXQnVIMHcvOXh3Z3A2UFVUNzlrQ2NLOUtN?=
+ =?utf-8?B?N0pSUjVOTzBHMmQ5MGxlUCtFOEx2MWs0SVdaejduRlRUaGFldmZ3WCtTbzJx?=
+ =?utf-8?B?K2JzVXdsakpPeG4xWnpjMmg1MmlXcndzUE1KUVBPYzMvSWtZQVZJWEFhRmtI?=
+ =?utf-8?B?Q0JLREZRWUUzUlU1a0FCZmVkTmcwQW04Z0NycFFIRE5GdUhrV0xSRHc3dTRH?=
+ =?utf-8?Q?VbKc/tVBmxC4qRh20qNVzEmmxH32QpS8?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB7958.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cE9nK1Uwa2t1SjI2ZXZuczVZTTROV1JjeUN3djR0NUdkLzlPVXQ2UDBXU1M1?=
- =?utf-8?B?MUVBZ2NMU2NGVU1jME1HV0FNekV4TlFGOHVQWnNKakdYOTlZRHBxK0d2K0x1?=
- =?utf-8?B?NmFibnEvYmpsTGpNWTJtTmFIRGxQMDZ6U29QWjAwZmlmVnVSODBQZGFkeFh2?=
- =?utf-8?B?YTdhcFpCcmlEWlBTUFZPS3EycW9ycmIxNXNSaWx0ODA1VHM5akw3MUJxY1ZZ?=
- =?utf-8?B?L0piSlFwU3lhU3ZQbHFjay9iT0tFeWU0TmsyNVpxTVFYWXRmUkRocmZJYzRD?=
- =?utf-8?B?RGRLaVNoWFVFY3g3RTRDUXo4WW1lb1ZwdVRPSFJXUFFxU0dpci90cEZrelV2?=
- =?utf-8?B?bXZWK1I4aVFadDVPeVhpOVluZmVlYkhZbTVWSmpJMVE4V09NejNDQ3EvUFQw?=
- =?utf-8?B?L2dRcnBiUiszQ0ZIZGhOTmlZUGtxdEpEd2l4dzhBSVV3dkM2RmtCYXI2QnNo?=
- =?utf-8?B?Tlo3aEVxWk1EUzdqSVhXaWFjdlcrTE85YXRvZkhWenNmWGkvT05uak8vU2VO?=
- =?utf-8?B?MllCWlhQKzdHb1REeFlPa0RLLzJDZkJ3R2ZRVFAveCtkMEplNUF1K1ZyMlc2?=
- =?utf-8?B?YnhyRS96dm5DUVJXTERMUFdJb2oyblVlSTg2L0pYeEFlS243WWM5REthc3Bv?=
- =?utf-8?B?TFM5OHpHYzI2ODFvRU9IOVpVNVlYL011NjJrRGc4L2czREh3bmVOS2h1N3B1?=
- =?utf-8?B?MG1OQktYNE5FVXJIODBWVG1RZDRBNTVmakVwYVkxMkRpOEJtUnhQcUVXalFD?=
- =?utf-8?B?UUl6RUFQam9FckpRalViaytMNmJzaEluYWllSTRkSXhCeXBUWnB6UnNpOS80?=
- =?utf-8?B?MG12WWdIV2l0bWhqRkEweDYwUldhd3Noek9wN0tGekdOWHlSamQ0blVLTEZL?=
- =?utf-8?B?SkZ1ZWZEcEtOelNhQVFrdTA4RHdYM2RVaDRNMjl1L21kajNjT0JkZ0t3MGQx?=
- =?utf-8?B?REJna0I0U25ucFR3VllsTys2L0wvaFhnMWgxb3c2TlA2b2NpRVlnaWFEanpM?=
- =?utf-8?B?T2tabnVSeHF0eDB4YXZxa1p0L293MlBMRDM3eFBVN0FGY29RbVFDeUFQV3Zl?=
- =?utf-8?B?bFZaNm5jMnlHSStTRmlsc3NPRUIwK0Y4dVhKYU0yZ0szdWNKRHFEMlR5WEJv?=
- =?utf-8?B?Nk5FeFdUQVlJdkpDTXhKZ3NwSkRxVDBlT2FEMWRDbGtaWmZnZjd5UmxFMjhE?=
- =?utf-8?B?MjVodDBrY0psU3NRK25CdGJ0ak9HUjFQZkM3TTZ3bk0wYmlSVTJOcWdjWFBn?=
- =?utf-8?B?UUlNQlhBZkZ6WmJoTDhjaEJyaVd4K2dJbUkxNFU3R3dmRU5nTGYwaDJ6QldL?=
- =?utf-8?B?eTQ5RWNiUlhtaHdNVFF4dlFJSzMvcXMwU0VaYWllTDBpVXI1UlNrUkZrVlU4?=
- =?utf-8?B?MVUwNXNpMVFWOTc2dnFETDdJL2lwOEFzV21lVHpEKzVEb0tBV1NJL21EcFlr?=
- =?utf-8?B?dWtUQnVoZU9sM1Mwc3R6K3A4V0VXanFXaUxiYWxBNU1VOVBXMGZ6UTZmMjhp?=
- =?utf-8?B?bGN5UzdRNUhxeVRIN051cTduelpRMGtFSnBWd0xGemZ2TXFWZXNoeHorMHRj?=
- =?utf-8?B?aEF3d0hpaCtsZlhYaW1ESExrajRSRDkyNGN4am5RNTVGdC9GMW53MlA5VzNk?=
- =?utf-8?B?OVVEaFlxQktEc0RSSmlML3JJaWZMYjRGN0lNUzZWSTJoV0lUR24yTW9rM01B?=
- =?utf-8?B?ZXlnSEhsYTBORUFpU3VGOUZkK1JIdnJZbWdUNEpneHJFNTd6WVhmQ1JmWG0w?=
- =?utf-8?B?SnNDa3VId1RQMXZzWmxQTUlxWlBaQ0xOclU1ZndLeHVzQndDZjE4NkduTElK?=
- =?utf-8?B?cE4zTnBRVHB6bXFFUEoyc0hXS3A1UFlZQUtsaEJRUyttMUNHVDVwZGZOMmNY?=
- =?utf-8?B?dEJER1IvTGhQejdvd0pkN2FUMzdoOWtxdWNGSmFQL25Ganhyblk2SzE0Mjdk?=
- =?utf-8?B?Zlg1TGQreVgxREhnVG9OZ2c3SGlEL2RubzJnVC9YcEsxaG95Z3dkSGliQ1JT?=
- =?utf-8?B?R0VkdmZPWGRyZnpldU5Lc2orNWpoMDFrN3p0Sjl4NlNjdEUrUDlsRTBJMXFk?=
- =?utf-8?B?eHJuTHEwRFNIK0dyRnI5NEI1SW5LZGVzc2xRQThPYnlSVEZrcWc1VjlUZDJo?=
- =?utf-8?Q?3o+StvLevbRnckMNqm4eYCQ7+?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a9f445b-3422-4c83-322d-08de1aa0b2b4
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SDlVTmljRXh3QnE1L3hrZmxUZkQ4SFk3WnZhY3FRVWszRU1LOUkrejJYV2NS?=
+ =?utf-8?B?L1VocHJTTzRRSld2dFVXQXd5d1F4Z1ZDMFdoMmU5U213V1EraGZhc3FuLzVo?=
+ =?utf-8?B?aTBnMXZiOVNJMUFWYmg3bkI5VUdSN3JGcS81NDBCbDhYWHFHRWJrYUJrbEwv?=
+ =?utf-8?B?SWZnUFNCeGNBeW5SSGpwRnVCR25YaURzMHBwd3pxM2Q5OE10QUZDa0J1THl5?=
+ =?utf-8?B?RGtUci9wc3FsVUdmeGxtTTlpbkRnQk9RclZzTzNFak51dmJ5dWtndUIrZnJS?=
+ =?utf-8?B?M2ZlQnRtWHFVeVNQMS8yTEJnOGVaU24wTjZ0Ulk1SEwxNm12WWZHZlZ1eE00?=
+ =?utf-8?B?YUVkWWg3eUlvTzE1MW9pZWFGY3FBOGNUYWFRQ21YVmNqVERYV3ZLRDNobEV3?=
+ =?utf-8?B?Mk1TbE1GNVJ4dWQ4Ry95cmRMaWFsZ2w1dm5BRnF6bEY4MFJoM3B6TkJHeExO?=
+ =?utf-8?B?NS9nc0RIeW93M1F6TVpRbVhtRXVuNm9Zamt6cG5FSGZPeDdjdDRjNzJEZ0NH?=
+ =?utf-8?B?TUR5TEMrTG95SFFVL0Fyc256RkxhQkxRSytPdEVCQW95Y084b1k0Sm41bDJy?=
+ =?utf-8?B?NmxCdldXaW14VGdTY3JMSjhzSXh5Z3hFcVdkNE1MOUZYZ0tGRUtKN2QxSmR1?=
+ =?utf-8?B?b0V5OWN4dVg2aDBkQUZJbndlQlRBc0dtZkNIQjRibFJCUDVHVmZIdDdmQ1My?=
+ =?utf-8?B?c3lYZjcxYTZ2THJGVWEvbHJYUnBBc1ZML2lIY2E4MjV5VXJEUWxTQ2dEUnNa?=
+ =?utf-8?B?YzYvWkYyajVpc0llR3loUG1iT0FoZ1Jta0FPVis5UGw0bkhhMlROdkhZemlu?=
+ =?utf-8?B?QzBkRXZvMk9EVXFWMkthSUhTd3VodldCaDlpYU04dmkzZG4vMG5Ldkc2ZUFU?=
+ =?utf-8?B?bjRDNXE1a2psQnNTamtiMzFveGhMRGpxT2hlUFRrallDeU9CSmNSTXJFS3pz?=
+ =?utf-8?B?N3Z1U1hnSHp3SHpsNUxzQkNvRXF1Q0lHbnZHRXV0UTdsbTBOL25zK0M2VEVE?=
+ =?utf-8?B?d2psT2hXV3o4dWFlRmFRYm0vaHdlaFh4eXBRN2ZRMEx2bHAyMU5lVFA1VTVY?=
+ =?utf-8?B?aE1rTFZzRVZMYm0rQ0t5bGRkdlF2QmtFVlo4SDREclJPdHQyb0MxRkJsakhY?=
+ =?utf-8?B?QzVVbEozd251VWlOeHorV3ZkT3NucGRrRDM3a3BRbkF1NkIvcURUTGt6ZFo4?=
+ =?utf-8?B?Z0s4U2xKNEJES3d2SHBDNTZmbmlzbFRFMW85bnZTbUg0aDhSbWFOeVJOZzF1?=
+ =?utf-8?B?R2gxYzFqdVp0aVlJUjBFeUkyMUYveUp4YkJYL2hES1YzS0lFOGtXR1JrMlVk?=
+ =?utf-8?B?VVhIWTBCalVXUmpYM1g4OEIvVVlCMFZnTjd2eDAxejYxNHAxcnBrRTZmOXNi?=
+ =?utf-8?B?RHhRclo0OGZNWFgrQVBGem40SURmbmNrWlZvcHdNRFFRTjNNV08yK2lVQTJI?=
+ =?utf-8?B?c1d5OVlIZjgvY3g4QVZsaTcydUw3V1NiNURHUm1CTlJpelpGaEZ6d3A3RHRR?=
+ =?utf-8?B?N3VUN1JRV0JNMFB3cFQ3ZzR3d3NzTHZWcW1jcEZULzVpVDh5WlpxUDF3MEk4?=
+ =?utf-8?B?QlBBTDZUbmJvS2szV01LZ1hBL2QxTXZMY3djZ21qdE5xWEdHU3lYN2hYYTg4?=
+ =?utf-8?B?Z0RjclZPSDIxbTk4L2FTNSsrWWFIQ0tJRVNpcGhhcVhabDUzUzk1Wkx1TnM4?=
+ =?utf-8?B?YmREcmw2QjVsRjdpOFVja2RQaFpBVkNNRU14MTNzSEZkQ1Nhc05DNWNCNGky?=
+ =?utf-8?B?N1hSVUovbnM5UitqWW15VzFLWjYwamttdnBudDZKSlpBbWxMbjY0UGQwV0ln?=
+ =?utf-8?B?VVFrd0ZVYnIxNHpMajRXNThiZWtBT2Z3Q0E5eW1ScjNmNHpQYjNZbUpEU0R3?=
+ =?utf-8?B?eDdkVTE0bFFEM0UxV0dqYmpBbXFkZ0k2RldHbTdaRTdGUFVqc0ZscWNScXNV?=
+ =?utf-8?B?YmFMYU5jTzRwSmVudjliWExSR2txcGRRQnQxZ0RMRmQveld4L3Fxelc5ZCtD?=
+ =?utf-8?B?VnRNOHZCQlhabjJROHNQM2FaK0ZESTJYVzEvQVJoN283bkIvMHBJbU1SU2xq?=
+ =?utf-8?B?WG45Rlphb0hOL25ROHcxVWZUcFlUbXQrSkNJNHY2cFFlOHM3YlczOGFvaWZP?=
+ =?utf-8?Q?5x6OCMA5qT0ta0DXLpqsaQ8bE?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 92905c9a-3077-42ff-e1d5-08de1aa1101a
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2025 06:17:43.2415 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2025 06:20:19.9257 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wcLC65eda0aHweC20m+s/eGndMmbzbv6mIU8zpIiZhUPej7sTK+iCVRoy1QamxvrNxAg3+EQJgGtZdU/mXoQIw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: lvmqUEqYO8W6AaWC2nKOP8z0bnwuPqN71c18mqAPw/ataEOZ68MOl7VvluYHpoVF8WuALtARUtmbs1a5s5S/6g==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5093
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -198,204 +198,213 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
+Hi Anirban
 
 On 10/31/2025 3:04 PM, Sk Anirban wrote:
-> Inject CSC error using debugfs to test vendor-specific device wedged
-> state and runtime survivability mode.
-> To return the device to a normal state, reload the driver, as
-> the wedged state can only be resolved by rebinding/reprobing the driver.
+> Add i2c adapter presence check in survivability mode to ensure
+> the Add-In Management Controller (AMC) can receive firmware updates
+> when the device is in survivability mode.
 > 
-> v1: Modify the uevents interrupt handling (Riana)
-> v2: Use separate function for sysfs (Riana)
-> v3: Update ignore dmesg regex
+> v2: Create new file for test (Riana)
+> v3: Update subject, description, nitpick (Kamil)
+>      Use drm_close_driver() (Kamil)
+> v4: Update test details (Riana)
+>      Align with xe_configfs (Riana)
+>      Create separate function for sysfs (Riana)
+> v5: Remove duplicate close(fd) (Riana)
+>      Modify fixture (Riana)
+>      Move assert to function (Riana)
+> v6: Move VF check (Riana)
+> v7: Clear survivability mode (Riana)
 > 
 > Signed-off-by: Sk Anirban <sk.anirban@intel.com>
 > ---
->   tests/intel-ci/xe-fast-feedback.testlist |   2 +
->   tests/intel/xe_survivability.c           | 110 +++++++++++++++++++++++
->   2 files changed, 112 insertions(+)
+>   tests/intel/xe_survivability.c | 157 +++++++++++++++++++++++++++++++++
+>   tests/meson.build              |   1 +
+>   2 files changed, 158 insertions(+)
+>   create mode 100644 tests/intel/xe_survivability.c
 > 
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> index a9a4f105c..e64fdf400 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -186,6 +186,8 @@ igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
->   igt@xe_sysfs_scheduler@timeslice_duration_us-min-max
->   igt@xe_sysfs_scheduler@job_timeout_ms-invalid
->   igt@xe_sysfs_scheduler@job_timeout_ms-min-max
-> +igt@xe_survivability@i2c-functionality
-> +igt@xe_survivability@runtime-survivability
->   #igt@xe_vm@bind-once
->   #igt@xe_vm@scratch
->   igt@xe_vm@shared-pte-page
 > diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
-> index b20192958..9b8606939 100644
-> --- a/tests/intel/xe_survivability.c
+> new file mode 100644
+> index 000000000..b20192958
+> --- /dev/null
 > +++ b/tests/intel/xe_survivability.c
-> @@ -4,7 +4,9 @@
->    */
->   #include <dirent.h>
->   #include <fcntl.h>
-> +#include <libudev.h>
->   #include <limits.h>
-> +#include <poll.h>
->   
->   #include "igt.h"
->   #include "igt_configfs.h"
-> @@ -13,7 +15,11 @@
->   #include "igt_kmod.h"
->   #include "igt_sriov_device.h"
->   #include "igt_sysfs.h"
-> +#include "intel_allocator.h"
-> +#include "xe/xe_gt.h"
-> +#include "xe/xe_ioctl.h"
->   #include "xe/xe_query.h"
-> +#include "xe/xe_spin.h"
->   
->   /**
->    * TEST: Comprehensive survivability mode testing
-> @@ -26,10 +32,25 @@
->    *
->    * SUBTEST: i2c-functionality
->    * Description: Validate i2c adapter functionality in survivability mode
+> @@ -0,0 +1,157 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2025 Intel Corporation
+> + */
+> +#include <dirent.h>
+> +#include <fcntl.h>
+> +#include <limits.h>
+> +
+> +#include "igt.h"
+> +#include "igt_configfs.h"
+> +#include "igt_device.h"
+> +#include "igt_fs.h"
+> +#include "igt_kmod.h"
+> +#include "igt_sriov_device.h"
+> +#include "igt_sysfs.h"
+> +#include "xe/xe_query.h"
+> +
+> +/**
+> + * TEST: Comprehensive survivability mode testing
+> + * Category: Core
+> + * Mega feature: General Core features
+> + * Sub-category: Telemetry
+> + * Functionality: survivability mode
+> + * Description: Validate survivability mode functionality
+> + * Test category: Functional tests
 > + *
-> + * SUBTEST: runtime-survivability
-> + * Description: Force Xe device wedged after injecting a failure in CSC
-> + * to test runtime survivability mode
->    */
->   
->   static char bus_addr[NAME_MAX];
->   
-> +static void ignore_wedged_in_dmesg(void)
+> + * SUBTEST: i2c-functionality
+> + * Description: Validate i2c adapter functionality in survivability mode
+> + */
+> +
+> +static char bus_addr[NAME_MAX];
+> +
+> +static bool check_survivability_mode_sysfs(void)
 > +{
-> +	/* this is needed for igt_runner so it will ignore it */
-> +	igt_emit_ignore_dmesg_regex("GT[0-9A-Fa-f]*: failed to enable GuC scheduling policies: -ECANCELED"
-> +				    "|CRITICAL: Xe has declared device [0-9A-Fa-f:.]* as wedged"
-> +				    "|GT[0-9A-Fa-f]*: reset failed .-ECANCELED"
-> +				    "|GT[0-9A-Fa-f]*: Failed to submit"
-> +				    "|Modules linked in:"
-> +				    "|__pfx___drm_");
+> +	char path[PATH_MAX];
+> +	int fd;
+> +
+> +	snprintf(path, PATH_MAX, "/sys/bus/pci/devices/%s/survivability_mode", bus_addr);
+> +	fd = open(path, O_RDONLY);
+> +	igt_assert_f(fd >= 0, "Survivability mode not set\n");
+> +	close(fd);
+> +	return true;
 > +}
 > +
->   static bool check_survivability_mode_sysfs(void)
->   {
->   	char path[PATH_MAX];
-> @@ -42,6 +63,58 @@ static bool check_survivability_mode_sysfs(void)
->   	return true;
->   }
->   
-> +static void check_survivability_and_uevents(int fd, struct udev_monitor *mon)
+> +static int find_i2c_adapter(struct pci_device *pci_xe)
 > +{
-> +	struct udev_device *dev;
-> +	const char *prop_val;
-> +	const char *dev_path;
-> +	struct pollfd poll_fd = {
-> +		.fd = udev_monitor_get_fd(mon),
-> +		.events = POLLIN
-> +	};
-> +	bool event_received = false;
-> +	int timeout_secs = 30;
+> +	char device_path[PATH_MAX];
+> +	struct dirent *dirent;
+> +	int i2c_adapter = -1;
+> +	DIR *device_dir;
+> +	int ret;
 > +
-> +	check_survivability_mode_sysfs();
+> +	igt_require(igt_kmod_load("i2c-dev", NULL) == 0);
 > +
-> +	igt_until_timeout(timeout_secs) {
-> +		if (poll(&poll_fd, 1, 1000) <= 0)
-> +			continue;
+> +	snprintf(device_path, sizeof(device_path), "/sys/bus/pci/devices/%s/%s.%hu", bus_addr,
+> +		 "i2c_designware", (pci_xe->bus << 8) | (pci_xe->dev));
+> +	device_dir = opendir(device_path);
 > +
-> +		dev = udev_monitor_receive_device(mon);
-> +		if (!dev)
-> +			continue;
+> +	if (!device_dir)
+> +		return -1;
 > +
-> +		prop_val = udev_device_get_property_value(dev, "WEDGED");
-> +		dev_path = udev_device_get_property_value(dev, "DEVPATH");
+> +	while ((dirent = readdir(device_dir))) {
+> +		if (strncmp(dirent->d_name, "i2c-", 4) == 0) {
+> +			ret = sscanf(dirent->d_name, "i2c-%d", &i2c_adapter);
+> +			igt_assert_f(ret == 1, "Failed to parse i2c adapter number");
+> +			closedir(device_dir);
+> +			return i2c_adapter;
+> +		}
+> +	}
 > +
-> +		if (prop_val && !strcmp(prop_val, "vendor-specific")) {
-> +			event_received = true;
-> +			igt_assert_f(dev_path && strstr(dev_path, bus_addr),
-> +				     "Expected bus address '%s' to be part of DEVPATH '%s'",
-> +				     bus_addr, dev_path);
+> +	closedir(device_dir);
+> +	return i2c_adapter;
+> +}
+> +
+> +static void restore(int sig)
+> +{
+> +	int configfs_fd;
+> +
+> +	igt_kmod_unbind("xe", bus_addr);
+> +
+> +	configfs_fd = igt_configfs_open("xe");
+> +	if (configfs_fd >= 0)
+> +		igt_fs_remove_dir(configfs_fd, bus_addr);
+> +	close(configfs_fd);
+> +
+> +	igt_kmod_bind("xe", bus_addr);
+> +}
+> +
+> +static void set_survivability_mode(int configfs_device_fd, bool value)
+> +{
+> +	igt_kmod_unbind("xe", bus_addr);
+> +	igt_sysfs_set_boolean(configfs_device_fd, "survivability_mode", value);
+> +	igt_kmod_bind("xe", bus_addr);
+> +}
+> +
+> +static void test_i2c_functionality(int configfs_device_fd, struct pci_device *pci_xe)
+> +{
+> +	if (find_i2c_adapter(pci_xe) >= 0) {
+> +		/* Enable survivability mode */
+> +		set_survivability_mode(configfs_device_fd, true);
+> +
+> +		/* check presence of survivability mode sysfs */
+> +		check_survivability_mode_sysfs();
+> +
+> +		/* Check i2c adapter after survivability mode */
+> +		igt_assert_f(find_i2c_adapter(pci_xe) >= 0,
+> +			     "i2c not initialized\n");
+> +
+> +		set_survivability_mode(configfs_device_fd, false);
 
-you need to clean up udev here too
+Use only this for clear. No need to unbind rebind
+igt_sysfs_set_boolean(configfs_device_fd, "survivability_mode", value);
 
 With that
 
 Reviewed-by: Riana Tauro <riana.tauro@intel.com>
 
-> +			break;
-> +		}
+> +	}
+> +}
 > +
-> +		udev_device_unref(dev);
+> +static int create_device_configfs_group(int configfs_fd)
+> +{
+> +	mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+> +	int configfs_device_fd;
+> +
+> +	configfs_device_fd = igt_fs_create_dir(configfs_fd, bus_addr, mode);
+> +	igt_assert(configfs_device_fd);
+> +
+> +	return configfs_device_fd;
+> +}
+> +
+> +igt_main
+> +{
+> +	int fd, configfs_fd, configfs_device_fd;
+> +	struct pci_device *pci_xe;
+> +	bool vf_device;
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		igt_require(IS_BATTLEMAGE(intel_get_drm_devid(fd)));
+> +		vf_device = intel_is_vf_device(fd);
+> +		igt_require_f(!vf_device, "survivability mode not supported in VF\n");
+> +		pci_xe = igt_device_get_pci_device(fd);
+> +		igt_device_get_pci_slot_name(fd, bus_addr);
+> +		configfs_fd = igt_configfs_open("xe");
+> +		igt_require(configfs_fd != -1);
+> +		configfs_device_fd = create_device_configfs_group(configfs_fd);
+> +		igt_install_exit_handler(restore);
 > +	}
 > +
-> +	igt_cleanup_uevents(mon);
-> +
-> +	igt_assert_f(event_received,
-> +		     "Timeout waiting for vendor-specific wedged event after %d seconds",
-> +		     timeout_secs);
-> +}
-> +
-> +static void force_wedged_csc_error(int fd)
-> +{
-> +	igt_debugfs_write(fd, "inject_csc_hw_error/probability", "100");
-> +	igt_debugfs_write(fd, "inject_csc_hw_error/times", "1");
-> +
-> +	xe_force_gt_reset_sync(fd, 0);
-> +	sleep(1);
-> +}
-> +
->   static int find_i2c_adapter(struct pci_device *pci_xe)
->   {
->   	char device_path[PATH_MAX];
-> @@ -121,6 +194,18 @@ static int create_device_configfs_group(int configfs_fd)
->   	return configfs_device_fd;
->   }
->   
-> +static void test_spinner_after_recovery(int fd)
-> +{
-> +	uint64_t ahnd;
-> +	igt_spin_t *spin;
-> +
-> +	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-> +	spin = igt_spin_new(fd, .ahnd = ahnd);
-> +
-> +	igt_spin_free(fd, spin);
-> +	put_ahnd(ahnd);
-> +}
-> +
->   igt_main
->   {
->   	int fd, configfs_fd, configfs_device_fd;
-> @@ -148,6 +233,31 @@ igt_main
->   		fd = drm_open_driver(DRIVER_XE);
->   	}
->   
-> +	igt_describe("Inject CSC error to test device wedge and runtime survivability");
-> +	igt_subtest("runtime-survivability") {
-> +		struct udev_monitor *mon;
-> +
-> +		igt_require(igt_debugfs_exists(fd, "inject_csc_hw_error/probability",
-> +					       O_RDWR));
-> +
-> +		igt_debugfs_write(fd, "inject_csc_hw_error/verbose", "1");
-> +
-> +		ignore_wedged_in_dmesg();
-> +		mon = igt_watch_uevents();
-> +		force_wedged_csc_error(fd);
-> +
-> +		check_survivability_and_uevents(fd, mon);
-> +
+> +	igt_describe("Validate i2c adapter functionality in survivability mode");
+> +	igt_subtest("i2c-functionality") {
+> +		test_i2c_functionality(configfs_device_fd, pci_xe);
 > +		drm_close_driver(fd);
 > +		igt_kmod_rebind("xe", bus_addr);
 > +		fd = drm_open_driver(DRIVER_XE);
-> +
-> +		test_spinner_after_recovery(fd);
-> +
-> +		igt_debugfs_write(fd, "inject_csc_hw_error/probability", "0");
-> +		igt_debugfs_write(fd, "inject_csc_hw_error/times", "1");
 > +	}
 > +
->   	igt_fixture {
->   		igt_fs_remove_dir(configfs_fd, bus_addr);
->   		close(configfs_device_fd);
+> +	igt_fixture {
+> +		igt_fs_remove_dir(configfs_fd, bus_addr);
+> +		close(configfs_device_fd);
+> +		close(configfs_fd);
+> +		drm_close_driver(fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 73edd3e71..31487f62e 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -329,6 +329,7 @@ intel_xe_progs = [
+>   	'xe_sriov_auto_provisioning',
+>   	'xe_sriov_flr',
+>   	'xe_sriov_scheduling',
+> +        'xe_survivability',
+>   	'xe_sriov_vram',
+>   	'xe_sysfs_defaults',
+>   	'xe_sysfs_preempt_timeout',
 
