@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B29E9CCF9F8
-	for <igt-dev@archiver.kernel.org>; Mon,  3 Nov 2025 10:21:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 784BCCCFA05
+	for <igt-dev@archiver.kernel.org>; Mon,  3 Nov 2025 10:49:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 509EA10E3A9;
-	Mon,  3 Nov 2025 10:21:25 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M8d/+/tm";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6E9110E3A9
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Nov 2025 10:21:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762165285; x=1793701285;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=nXBcLA6HVh9DB2KyCpfIq1ZUPsIrFblRLqQ0lHSXxEs=;
- b=M8d/+/tmdJb1VEtgzJVFEcctvjwY9oC4McCeWLXTCFcrnFCixlxJz59s
- K/TTryUs9ibSwGEZOvI4xeducsJAHCwxDwvyH3J/ZtEUl50XiSpq2bgEU
- BeRll6e294OjNkQB4vW5akNIz9ztEIcFA7mgytxaZgDJNJWlqQNlYGchL
- a5lhfnwtUNzbeDrh8z4GlGYeRffNk3UhrZ7c0wqJ9IY8jGkSSF23b6hfu
- 3vM1N4+YX+ZVd2ea/zPGUyY66+ZG5H/iBCj2h6AmMqChcpEys8wW+DrWw
- /K2tkj8yYgwE4I5fPdwG8u8WMdm6FHAgid9O+aBcy1lg/hqvEqFMLd0td g==;
-X-CSE-ConnectionGUID: 1lXXC6mKS5m5h7XIxdNvtA==
-X-CSE-MsgGUID: PcsOA/+8Q6+Pq8gwKYUp2g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64162528"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="64162528"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Nov 2025 02:21:25 -0800
-X-CSE-ConnectionGUID: dOFyqkwYS8234Wg4req+Og==
-X-CSE-MsgGUID: 1z3NmeCrSpWJdmiZNBjDPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; d="scan'208";a="186120248"
-Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Nov 2025 02:21:23 -0800
-From: Sowmiya S <sowmiya.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
- Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v1 8/8] tests/kms_writeback: Refactor
- writeback-check-output subtest
-Date: Mon,  3 Nov 2025 16:08:42 +0530
-Message-ID: <20251103103842.3025204-9-sowmiya.s@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251103103842.3025204-1-sowmiya.s@intel.com>
-References: <20251103103842.3025204-1-sowmiya.s@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2D26810E00F;
+	Mon,  3 Nov 2025 10:49:34 +0000 (UTC)
+Received: from 10055242dc62 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15EF510E00F;
+ Mon,  3 Nov 2025 10:49:33 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4708664448299614639=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fsurvivabil?=
+ =?utf-8?q?ity=3A_Add_xe=5Fsurvivability_test_=28rev11=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sk Anirban" <sk.anirban@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 03 Nov 2025 10:49:33 -0000
+Message-ID: <176216697308.11009.12738711797140029633@10055242dc62>
+X-Patchwork-Hint: ignore
+References: <20251103095921.3889090-5-sk.anirban@intel.com>
+In-Reply-To: <20251103095921.3889090-5-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,139 +37,205 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Removed individual tests for each format for the test
-writeback-check-output and introduced dynamic subtest
-generation based on the formats supported.Framebuffer
-creation was now part of the subtest level based on
-the format and removed from fixture.
+--===============4708664448299614639==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
----
- tests/kms_writeback.c | 69 +++++++++++++------------------------------
- 1 file changed, 21 insertions(+), 48 deletions(-)
+== Series Details ==
 
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index e7c2d1fcf..3a19379bc 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -45,9 +45,6 @@
- #include "sw_sync.h"
- 
- /**
-- * SUBTEST: writeback-check-output-XRGB2101010
-- * Description: Check XRGB2101010 writeback output with CRC validation
-- *
-  * SUBTEST: writeback-check-output
-  * Description: Check writeback output with CRC validation
-  *
-@@ -595,9 +592,8 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
- 	igt_display_t display;
- 	igt_output_t *output;
- 	igt_plane_t *plane;
--	igt_fb_t input_fb, input_fb_10bit;
-+	igt_fb_t input_fb;
- 	drmModeModeInfo mode;
--	unsigned int fb_id;
- 	int ret;
- 
- 	memset(&display, 0, sizeof(display));
-@@ -630,22 +626,6 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
- 		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 		igt_assert(plane);
- 
--		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay,
--				      mode.vdisplay,
--				      DRM_FORMAT_XRGB8888,
--				      DRM_FORMAT_MOD_LINEAR,
--				      &input_fb);
--		igt_assert(fb_id >= 0);
--
--		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay,
--				      mode.vdisplay,
--				      DRM_FORMAT_XRGB2101010,
--				      DRM_FORMAT_MOD_LINEAR,
--				      &input_fb_10bit);
--		igt_assert(fb_id >= 0);
--
--		igt_plane_set_fb(plane, &input_fb);
--
- 		if (data.list_modes)
- 			list_writeback_modes(&display);
- 		if (data.dump_check)
-@@ -685,6 +665,7 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
- 		     "the combination of possible bad options");
- 	igt_subtest("writeback-invalid-parameters") {
- 		uint32_t format;
-+		unsigned int fb_id;
- 		igt_fb_t invalid_output_fb;
- 
- 		igt_skip_on(data.dump_check || data.list_modes);
-@@ -737,43 +718,35 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
- 	}
- 
- 	igt_describe("Check writeback output with CRC validation");
--	igt_subtest("writeback-check-output") {
--		igt_fb_t output_fb;
--
--		igt_skip_on(data.dump_check || data.list_modes);
--		igt_skip_on_f(!(data.supported_colors & XRGB8888),"DRM_FORMAT_XRGB8888 is unsupported\n");
--		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
--				      DRM_FORMAT_XRGB8888,
--				      igt_fb_mod_to_tiling(0),
--				      &output_fb);
--		igt_require(fb_id > 0);
--
--		writeback_check_output(output, plane, &input_fb, &output_fb, DRM_FORMAT_XRGB8888);
-+	igt_subtest_with_dynamic_f("writeback-check-output") {
-+		for (int i = 0; i < ARRAY_SIZE(fourcc); i++) {
-+			uint32_t test_format = fourcc[i];
- 
--		igt_remove_fb(display.drm_fd, &output_fb);
--	}
-+			if (is_intel_device(display.drm_fd))
-+				if (!strstr(igt_format_str(test_format), "BGR"))
-+					continue;
-+			igt_dynamic_f("writeback-check-output-%s", igt_format_str(test_format)) {
-+				igt_fb_t output_fb;
- 
--	igt_describe("Check XRGB2101010 writeback output with CRC validation");
--	igt_subtest("writeback-check-output-XRGB2101010") {
--		igt_fb_t output_fb;
-+				igt_skip_on(data.dump_check || data.list_modes);
-+				igt_skip_on_f(!(data.supported_colors & (1 << i)),
-+					      "DRM_FORMAT_%s is not supported\n",
-+					      igt_format_str(test_format));
- 
--		igt_skip_on(data.dump_check || data.list_modes);
--		igt_skip_on_f(!(data.supported_colors & XRGB2101010), "DRM_FORMAT_XRGB2101010 is unsupported\n");
--		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
--				      DRM_FORMAT_XRGB2101010,
--				      igt_fb_mod_to_tiling(0),
--				      &output_fb);
--		igt_require(fb_id > 0);
-+				create_fbs(&display, &input_fb, &output_fb, test_format, &mode);
-+				igt_plane_set_fb(plane, &input_fb);
- 
--		writeback_check_output(output, plane, &input_fb_10bit, &output_fb, DRM_FORMAT_XRGB2101010);
-+				writeback_check_output(output, plane, &input_fb,
-+						       &output_fb, test_format);
- 
--		igt_remove_fb(display.drm_fd, &output_fb);
-+				igt_remove_fb(display.drm_fd, &output_fb);
-+			}
-+		}
- 	}
- 
- 	igt_fixture {
- 		cleanup_writeback(&display, output);
- 		igt_remove_fb(display.drm_fd, &input_fb);
--		igt_remove_fb(display.drm_fd, &input_fb_10bit);
- 		igt_display_fini(&display);
- 		drm_close_driver(display.drm_fd);
- 	}
--- 
-2.43.0
+Series: tests/intel/xe_survivability: Add xe_survivability test (rev11)
+URL   : https://patchwork.freedesktop.org/series/154342/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8605_BAT -> XEIGTPW_13978_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_13978_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_13978_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (12 -> 12)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_13978_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_survivability@i2c-functionality (NEW):
+    - bat-lnl-2:          NOTRUN -> [SKIP][1] +1 other test skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-lnl-2/igt@xe_survivability@i2c-functionality.html
+    - bat-ptl-2:          NOTRUN -> [SKIP][2] +1 other test skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-ptl-2/igt@xe_survivability@i2c-functionality.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] +1 other test skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-dg2-oem2/igt@xe_survivability@i2c-functionality.html
+    - bat-adlp-vm:        NOTRUN -> [SKIP][4] +1 other test skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-adlp-vm/igt@xe_survivability@i2c-functionality.html
+
+  * igt@xe_survivability@runtime-survivability (NEW):
+    - bat-adlp-7:         NOTRUN -> [SKIP][5] +1 other test skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-adlp-7/igt@xe_survivability@runtime-survivability.html
+    - bat-atsm-2:         NOTRUN -> [SKIP][6] +1 other test skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-atsm-2/igt@xe_survivability@runtime-survivability.html
+    - bat-ptl-1:          NOTRUN -> [SKIP][7] +1 other test skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-ptl-1/igt@xe_survivability@runtime-survivability.html
+    - bat-ptl-vm:         NOTRUN -> [SKIP][8] +1 other test skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-ptl-vm/igt@xe_survivability@runtime-survivability.html
+    - bat-lnl-1:          NOTRUN -> [SKIP][9] +1 other test skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-lnl-1/igt@xe_survivability@runtime-survivability.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between XEIGT_8605_BAT and XEIGTPW_13978_BAT:
+
+### New IGT tests (2) ###
+
+  * igt@xe_survivability@i2c-functionality:
+    - Statuses : 2 pass(s) 9 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@xe_survivability@runtime-survivability:
+    - Statuses : 2 pass(s) 9 skip(s)
+    - Exec time: [0.0, 4.30] s
+
+  
+
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8605 -> IGTPW_13978
+  * Linux: xe-4026-203c9c05c014fd3a624e9cb07d86820b3ad63bf9 -> xe-4031-2901e10c5a4844b6d9eb9001c60cd99f5c0f84c9
+
+  IGTPW_13978: 13978
+  IGT_8605: 8605
+  xe-4026-203c9c05c014fd3a624e9cb07d86820b3ad63bf9: 203c9c05c014fd3a624e9cb07d86820b3ad63bf9
+  xe-4031-2901e10c5a4844b6d9eb9001c60cd99f5c0f84c9: 2901e10c5a4844b6d9eb9001c60cd99f5c0f84c9
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/index.html
+
+--===============4708664448299614639==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_survivability: Add xe_survivability test (rev11)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/154342/">https://patchwork.freedesktop.org/series/154342/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8605_BAT -&gt; XEIGTPW_13978_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_13978_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_13978_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_13978_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@xe_survivability@i2c-functionality (NEW):</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-lnl-2/igt@xe_survivability@i2c-functionality.html">SKIP</a> +1 other test skip</li>
+<li>bat-ptl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-ptl-2/igt@xe_survivability@i2c-functionality.html">SKIP</a> +1 other test skip</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-dg2-oem2/igt@xe_survivability@i2c-functionality.html">SKIP</a> +1 other test skip</li>
+<li>bat-adlp-vm:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-adlp-vm/igt@xe_survivability@i2c-functionality.html">SKIP</a> +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_survivability@runtime-survivability (NEW):</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-adlp-7/igt@xe_survivability@runtime-survivability.html">SKIP</a> +1 other test skip</li>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-atsm-2/igt@xe_survivability@runtime-survivability.html">SKIP</a> +1 other test skip</li>
+<li>bat-ptl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-ptl-1/igt@xe_survivability@runtime-survivability.html">SKIP</a> +1 other test skip</li>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-ptl-vm/igt@xe_survivability@runtime-survivability.html">SKIP</a> +1 other test skip</li>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13978/bat-lnl-1/igt@xe_survivability@runtime-survivability.html">SKIP</a> +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8605_BAT and XEIGTPW_13978_BAT:</p>
+<h3>New IGT tests (2)</h3>
+<ul>
+<li>
+<p>igt@xe_survivability@i2c-functionality:</p>
+<ul>
+<li>Statuses : 2 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_survivability@runtime-survivability:</p>
+<ul>
+<li>Statuses : 2 pass(s) 9 skip(s)</li>
+<li>Exec time: [0.0, 4.30] s</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8605 -&gt; IGTPW_13978</li>
+<li>Linux: xe-4026-203c9c05c014fd3a624e9cb07d86820b3ad63bf9 -&gt; xe-4031-2901e10c5a4844b6d9eb9001c60cd99f5c0f84c9</li>
+</ul>
+<p>IGTPW_13978: 13978<br />
+  IGT_8605: 8605<br />
+  xe-4026-203c9c05c014fd3a624e9cb07d86820b3ad63bf9: 203c9c05c014fd3a624e9cb07d86820b3ad63bf9<br />
+  xe-4031-2901e10c5a4844b6d9eb9001c60cd99f5c0f84c9: 2901e10c5a4844b6d9eb9001c60cd99f5c0f84c9</p>
+
+</body>
+</html>
+
+--===============4708664448299614639==--
