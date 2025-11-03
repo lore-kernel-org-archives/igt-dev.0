@@ -4,57 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D17AECCF9FE
-	for <igt-dev@archiver.kernel.org>; Mon,  3 Nov 2025 13:13:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E1FDCCF9F8
+	for <igt-dev@archiver.kernel.org>; Mon,  3 Nov 2025 14:36:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 83A2210E3E7;
-	Mon,  3 Nov 2025 13:13:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F014010E40D;
+	Mon,  3 Nov 2025 14:36:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fp/z5vm0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gS/wMktK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3906B10E3EC
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Nov 2025 13:13:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F168F10E40D
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Nov 2025 14:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762175581; x=1793711581;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=67pOxMbnofpoRj3Ft7a2zVGYRaC+Yia3+cyNGlJ1zTs=;
- b=fp/z5vm0zgyqgbKexTj/y2rlRcOYos5y3BGyNZ/HjRN7Rxp3Oee4Lo0o
- d5BvYDCxtxNoYicfNMX77Pc86lcOYdmVmIuDIi8J4EEcoud1WYl7c55xa
- ud/lF3n5K1XtG6wZeVRD+dFWyu8whMohwMmfdWh38GswXCs61cRWJqs/K
- hC+FnkDdglvxxv9bDBYzu+d/t3CpigeAVPjdaFuzdx1wvfbznNfhVdIQf
- 4/1Xr1pxfbhabSrIkYJ4rqt6ggbIdt7bbIeyHyp9ARlEYyi+lw1tmyVfP
- 8OcvDj3r2Y6OFMIv6S4ueIxdn4dz3nkXipz/1kjlsiJL87AfI4LSaPyCf g==;
-X-CSE-ConnectionGUID: l9ZIwQLpRt2K5qayux9ZNA==
-X-CSE-MsgGUID: keJ08xewQz6Je7Ezb6qFBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="64137292"
-X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; d="scan'208";a="64137292"
+ t=1762180572; x=1793716572;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Q+9QpvEVMiHTWLItvuvk2XVJuPQPb6MlvWi/dN6Y1Qo=;
+ b=gS/wMktKSmGBOGRB2n8Xz+xsBkHdFc7vR20XV45lrMckHgXPsYmvNbmr
+ xEtHxZEfUQbMi04i/n88ClAPrSUNCFQ9Ebl9DsAmOPWLmY3BiaPypz8Aq
+ qy306JvYK4hBCWE9KXybf3NsWx4t9KdZM2wxFHsLLVqjHe69HgZoQggm7
+ ls6qnN2cCqmas03JNgBFFpn5UOVaoRgxFTUGjcDYokFZG3yVdIUidq+du
+ kfXYJDcsogBxTudlOgFu56sohEV8ZS7l4QFX4CxUo5f7wXb4fF7lUKqQO
+ 8QXNeH0+MKmqkcjEzX/JyMQaYqBxwtlYNQsgc/8cOSURspe/D81HSlo+X w==;
+X-CSE-ConnectionGUID: YIYgXs9pQOWgwgDMt6AqkA==
+X-CSE-MsgGUID: aOjx1rTMRfqiBfrPIeIr5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="63952647"
+X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; d="scan'208";a="63952647"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Nov 2025 05:13:01 -0800
-X-CSE-ConnectionGUID: Xx8LNi4SQBSf0eazE/4S6w==
-X-CSE-MsgGUID: H3rPy39RR0CfIecTD1oWrA==
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Nov 2025 06:36:12 -0800
+X-CSE-ConnectionGUID: BXGTvZE2TrKORlK6CZbctg==
+X-CSE-MsgGUID: bNIxExnJTY2qFaESyFo37g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; d="scan'208";a="187179800"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO mwauld-desk.intel.com)
- ([10.245.245.24])
+X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; d="scan'208";a="187195633"
+Received: from sanjay-z690i-a-ultra-plus.iind.intel.com ([10.190.216.90])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Nov 2025 05:13:00 -0800
-From: Matthew Auld <matthew.auld@intel.com>
+ 03 Nov 2025 06:36:10 -0800
+From: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Sanjay Yadav <sanjay.kumar.yadav@intel.com>
-Subject: [PATCH i-g-t v2 2/2] tests/intel/xe_peer2peer: gracefully handle
- ENOSUP
-Date: Mon,  3 Nov 2025 13:12:46 +0000
-Message-ID: <20251103131244.28703-4-matthew.auld@intel.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251103131244.28703-3-matthew.auld@intel.com>
-References: <20251103131244.28703-3-matthew.auld@intel.com>
+Cc: matthew.auld@intel.com
+Subject: [PATCH] tests/intel/xe_pat: Add subtest to validate NO_COMPRESSION
+ flag
+Date: Mon,  3 Nov 2025 20:00:28 +0530
+Message-ID: <20251103143027.2882191-2-sanjay.kumar.yadav@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,120 +66,104 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently this blows up on the multi-dGPU setup we have in CI when
-importing the VRAM from one device into the other via dma-buf, due the
-P2P internals reporting this as unsupported on this machine. Trying to
-manually white list the hostbridge device on the P2P side is also
-unsuccessful since the read side test fails due to a data mismatch when
-reading from the exported VRAM. There are also no hangs or errors in
-dmesg although strangely the write side test passes. So it appears that
-the direction of the copy is broken when reading the exported VRAM from
-the importer side. Manually disabling/enabling iommu also make no
-difference. And finally hacking the test to force same device
-import/export makes the test pass, which should rule out any kind of
-test defect. With that gracefully skip running the VRAM import subtests
-if this is reported as unsupported by the kernel.
+Add bo-comp-disable-bind subtest to verify that a BO created with
+DRM_XE_GEM_CREATE_FLAG_NO_COMPRESSION cannot be bind with a compressed
+PAT index on Xe2+ (bind should fail with -EINVAL).
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6433
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1173
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
+This ensures the flag works as intended to skip CCS operations and
+related state management for such BOs.
+
+Signed-off-by: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
+Suggested-by: Matthew Auld <matthew.auld@intel.com>
 ---
- tests/intel/xe_peer2peer.c | 39 ++++++++++++++++++++++++++------------
- 1 file changed, 27 insertions(+), 12 deletions(-)
+ .../drm-uapi-experimental/intel_drm_local.h   |  2 +
+ tests/intel/xe_pat.c                          | 53 +++++++++++++++++++
+ 2 files changed, 55 insertions(+)
 
-diff --git a/tests/intel/xe_peer2peer.c b/tests/intel/xe_peer2peer.c
-index b777d2b66..70374e56d 100644
---- a/tests/intel/xe_peer2peer.c
-+++ b/tests/intel/xe_peer2peer.c
-@@ -116,11 +116,24 @@ static void test_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
- 	uint32_t im_xe = im_gpu->fd;
- 	uint32_t ex_src, dmabuf;
- 	uint32_t stride;
--
- 	struct drm_xe_engine_class_instance inst = {
- 		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
- 	};
- 	intel_ctx_t *ctx;
-+	int err;
+diff --git a/include/drm-uapi-experimental/intel_drm_local.h b/include/drm-uapi-experimental/intel_drm_local.h
+index b48c9e219..fc2aaa462 100644
+--- a/include/drm-uapi-experimental/intel_drm_local.h
++++ b/include/drm-uapi-experimental/intel_drm_local.h
+@@ -20,6 +20,8 @@ extern "C" {
+  * clean these up when kernel uapi headers are sync'd.
+  */
+ 
++#define DRM_XE_GEM_CREATE_FLAG_NO_COMPRESSION (1 << 3)
 +
-+	blt_copy_init(ex_xe, &ex_blt);
-+	src = blt_create_object(&ex_blt, ex_reg, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+ #if defined(__cplusplus)
+ }
+ #endif
+diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+index 169405799..5179c63fd 100644
+--- a/tests/intel/xe_pat.c
++++ b/tests/intel/xe_pat.c
+@@ -785,6 +785,56 @@ static void prime_external_import_coh(void)
+ 	drm_close_driver(fd2);
+ }
+ 
++/**
++ * SUBTEST: bo-comp-disable-bind
++ * Test category: functionality test
++ * Description: Validates that binding a BO created with
++ * the NO_COMPRESSION flag using a compressed PAT index fails
++ * with -EINVAL on Xe2+ platforms.
++ */
 +
-+	dmabuf = prime_handle_to_fd(ex_xe, src->handle);
-+	err = __prime_fd_to_handle(im_xe, dmabuf, &ex_src);
-+	if (err == -ENOTSUP) {
-+		blt_destroy_object(ex_xe, src);
-+		igt_assert(ex_reg != system_memory(ex_xe));
-+		igt_skip("P2P VRAM import not supported on this device, skipping.\n");
++static void bo_comp_disable_bind(int fd)
++{
++	size_t size = xe_get_default_alignment(fd);
++	uint32_t devid = intel_get_drm_devid(fd);
++	uint8_t comp_pat_index, uncomp_pat_index;
++	uint32_t vm, bo;
++	int ret;
++
++	ret = __xe_bo_create_caching(fd, 0, size, vram_if_possible(fd, 0),
++				     DRM_XE_GEM_CREATE_FLAG_NO_COMPRESSION,
++				     DRM_XE_GEM_CPU_CACHING_WC, &bo);
++
++	if (ret) {
++		igt_assert(intel_graphics_ver(devid) < IP_VER(20, 0));
++		igt_assert_eq(ret, -EOPNOTSUPP);
++		return;
 +	}
-+	igt_assert(!err);
- 
- 	vm = xe_vm_create(im_xe, 0, 0);
- 	exec_queue = xe_exec_queue_create(im_xe, vm, &inst, 0);
-@@ -129,17 +142,12 @@ static void test_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
- 					 INTEL_ALLOCATOR_SIMPLE,
- 					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
- 
--	blt_copy_init(ex_xe, &ex_blt);
- 	blt_copy_init(im_xe, &im_blt);
- 
--	src = blt_create_object(&ex_blt, ex_reg, width, height, bpp, 0,
--				T_LINEAR, COMPRESSION_DISABLED, 0, true);
- 	dst = blt_create_object(&im_blt, im_reg, width, height, bpp, 0,
- 				T_LINEAR, COMPRESSION_DISABLED, 0, true);
- 	blt_surface_fill_rect(ex_xe, src, width, height);
- 
--	dmabuf = prime_handle_to_fd(ex_xe, src->handle);
--	ex_src = prime_fd_to_handle(im_xe, dmabuf);
- 	im_src = calloc(1, sizeof(*im_src));
- 
- 	stride = width * 4;
-@@ -198,11 +206,23 @@ static void test_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
- 	uint32_t im_xe = im_gpu->fd;
- 	uint32_t ex_dst, dmabuf;
- 	uint32_t stride;
--
- 	struct drm_xe_engine_class_instance inst = {
- 		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
- 	};
- 	intel_ctx_t *ctx;
-+	int err;
 +
-+	blt_copy_init(ex_xe, &ex_blt);
-+	dst = blt_create_object(&ex_blt, ex_reg, width, height, bpp, 0,
-+				T_LINEAR, COMPRESSION_DISABLED, 0, true);
-+	dmabuf = prime_handle_to_fd(ex_xe, dst->handle);
-+	err = __prime_fd_to_handle(im_xe, dmabuf, &ex_dst);
-+	if (err == -ENOTSUP) {
-+		blt_destroy_object(ex_xe, dst);
-+		igt_assert(ex_reg != system_memory(ex_xe));
-+		igt_skip("P2P VRAM import not supported on this device, skipping.\n");
-+	}
-+	igt_assert(!err);
++	igt_assert(intel_graphics_ver(devid) >= IP_VER(20, 0));
++	vm = xe_vm_create(fd, 0, 0);
++
++	comp_pat_index = intel_get_pat_idx_uc_comp(fd);
++	uncomp_pat_index = intel_get_pat_idx_uc(fd);
++
++	/* Expect failure when binding with compressed PAT index */
++	igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x100000,
++				   size, 0, 0, NULL, 0,
++				   0, comp_pat_index, 0),
++		      -EINVAL);
++
++	/* Expect success when binding with uncompressed PAT index */
++	igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x100000,
++				   size, 0, 0, NULL, 0,
++				   0, uncomp_pat_index, 0),
++		      0);
++	xe_vm_unbind_sync(fd, vm, 0, 0x100000, size);
++
++	gem_close(fd, bo);
++
++	xe_vm_destroy(fd, vm);
++}
++
+ /**
+  * SUBTEST: display-vs-wb-transient
+  * Test category: functionality test
+@@ -1451,6 +1501,9 @@ igt_main_args("V", NULL, help_str, opt_handler, NULL)
+ 	igt_subtest("prime-external-import-coh")
+ 		prime_external_import_coh();
  
- 	vm = xe_vm_create(im_xe, 0, 0);
- 	exec_queue = xe_exec_queue_create(im_xe, vm, &inst, 0);
-@@ -211,17 +231,12 @@ static void test_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
- 					 INTEL_ALLOCATOR_SIMPLE,
- 					 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
- 
--	blt_copy_init(ex_xe, &ex_blt);
- 	blt_copy_init(im_xe, &im_blt);
- 
--	dst = blt_create_object(&ex_blt, ex_reg, width, height, bpp, 0,
--				T_LINEAR, COMPRESSION_DISABLED, 0, true);
- 	src = blt_create_object(&im_blt, im_reg, width, height, bpp, 0,
- 				T_LINEAR, COMPRESSION_DISABLED, 0, true);
- 	blt_surface_fill_rect(im_xe, src, width, height);
- 
--	dmabuf = prime_handle_to_fd(ex_xe, dst->handle);
--	ex_dst = prime_fd_to_handle(im_xe, dmabuf);
- 	im_dst = calloc(1, sizeof(*im_dst));
- 
- 	stride = width * 4;
++	igt_subtest("bo-comp-disable-bind")
++		bo_comp_disable_bind(fd);
++
+ 	igt_subtest_with_dynamic("pat-index-xelp") {
+ 		igt_require(intel_graphics_ver(dev_id) <= IP_VER(12, 55));
+ 		subtest_pat_index_modes_with_regions(fd, xelp_pat_index_modes,
 -- 
-2.51.1
+2.43.0
 
