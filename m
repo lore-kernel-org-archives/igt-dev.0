@@ -4,62 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D638CCFA04
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Nov 2025 11:00:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE39FCCF9E3
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Nov 2025 11:19:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D286E10E25A;
-	Tue,  4 Nov 2025 11:00:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5DB9610E25B;
+	Tue,  4 Nov 2025 11:19:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="npcS+My9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aItl125K";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E57A10E25A
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Nov 2025 11:00:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D85710E25B
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Nov 2025 11:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762254025; x=1793790025;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=XRp/Z3DWYN+uy4emK4XQg6ys9ByQnIXzCQD6V9Ts0kI=;
- b=npcS+My9QaZfbEdfMyg44aGrHQ0EH+4iOF+sqaWcE0OXfTo2+aXEELx6
- yicRjRcap/GU7cvrc5IKftEK5pPuKW7MNwhbgh4WEDayhOfs3yC3UwDVg
- hUangl9dy48QOR/erCn42nG0U1sRGiOghFWBCwcjgZop1dOnY4SY11xto
- 7seqKGfhCz6GaoLC1m7TbaEued6dOPelMJ86o28HRr1vwt2l4IH0TE53G
- Z39I01cg9A6GNqBisjK0yVEGioa5zw0TcWBupoNTVMveZbs7sEIEqCvbv
- 6RecXOjaKnqg8+hBHrurmI4EtFjU50ouVlD1vhCnE0EBySYW4Pw7C1oBk g==;
-X-CSE-ConnectionGUID: QWCrff5FQOCes2p+tFrZdA==
-X-CSE-MsgGUID: wVvzBLh+SdiRUlSTfRCvjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="68204432"
-X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; d="scan'208";a="68204432"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2025 03:00:25 -0800
-X-CSE-ConnectionGUID: lu/80iccTi2Cq+h8C6JWOQ==
-X-CSE-MsgGUID: ijaLp+E6Qy2d89NdlAmPiQ==
+ t=1762255188; x=1793791188;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=Zbst7AlmJ7nFPUVJCceSw/EDR9FR15XZ2MezF0hBrlc=;
+ b=aItl125KBQGG+B9UKaUIUA/pVGpxIBOGJ/gy6/HI6cuulgzGXqyklfsL
+ 904s1BYq4i7wZJWbtQaQq2Tx8WbZQY/Fezd6FBLu9XscUNjiajWkzZerK
+ deBwdSDeNHVqPAhnwDd7pg5fn4Doo9QQD0TIh7R+Lr8E/sDg9tGFu/oMd
+ HcnTQzJDmJ5mYccH7hKojf2yYP208Igw3kmxZ6aiKV8K6lkSiLxNSq+cQ
+ xZZ05313wmersmOg0uAbBQ/o6OnntgCP4yOh5iGYz7W1lId484SEdi2ds
+ mP2KqLPm0EeahFoPLuh8iDsS3FJMU0tyBBqBItDvojkBgllm2fOYIxGc/ Q==;
+X-CSE-ConnectionGUID: iznPGoWRRWC9q6VYaZC21w==
+X-CSE-MsgGUID: WD2bktKdT/SVgLM5ceSI1A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="75025985"
+X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; d="scan'208";a="75025985"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Nov 2025 03:19:48 -0800
+X-CSE-ConnectionGUID: 0q3RPIPcRbOhHc2He84k+w==
+X-CSE-MsgGUID: SgDy7JnTQ8SFpgETb40bqg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; d="scan'208";a="187436849"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 03:00:23 -0800
-Date: Tue, 4 Nov 2025 12:00:06 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Sanjay Yadav <sanjay.kumar.yadav@intel.com>
-Subject: Re: [PATCH i-g-t v2 1/2] lib/ioct_wrappers: add __prime_fd_to_handle()
-Message-ID: <20251104110006.vpj5io2rqsots4ed@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Matthew Auld <matthew.auld@intel.com>,
- igt-dev@lists.freedesktop.org,
- Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Sanjay Yadav <sanjay.kumar.yadav@intel.com>
-References: <20251103131244.28703-3-matthew.auld@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; d="scan'208";a="187082574"
+Received: from cmanszew-mobl2.igk.intel.com (HELO [172.28.180.197])
+ ([172.28.180.197])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Nov 2025 03:19:46 -0800
+Message-ID: <49ee16fe-3936-4756-9501-092d0ca4303f@intel.com>
+Date: Tue, 4 Nov 2025 12:19:44 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251103131244.28703-3-matthew.auld@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/7] lib/xe/xe_eudebug: fortify
+ xe_eudebug_for_each_event
+To: Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: dominik.karol.piatkowski@intel.com, maciej.patelczyk@intel.com,
+ jan.maslak@intel.com, zbigniew.kempczynski@intel.com
+References: <20251014093848.2394531-1-mika.kuoppala@linux.intel.com>
+ <20251014093848.2394531-2-mika.kuoppala@linux.intel.com>
+Content-Language: en-US
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20251014093848.2394531-2-mika.kuoppala@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,84 +76,98 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Matthew,
-On 2025-11-03 at 13:12:45 +0000, Matthew Auld wrote:
-> We want to be able to intercept the error, if there is one, instead of
-> always asserting a non-zero error. Add a version of prime_fd_to_handle()
-> which allows to caller to handle the error.
+Hi Mika,
 
-s/to caller/the caller/
-
+On 14.10.2025 11:38, Mika Kuoppala wrote:
+> Add rigorous checking for xe_eudebug_for_each_event so
+> that we catch errors early if unitialized data is fed
+> into the macro.
 > 
-> v2:
->   - Ensure we use errno.
-> 
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Cc: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
-> ---
->  lib/ioctl_wrappers.c | 27 +++++++++++++++++++++++++++
->  lib/ioctl_wrappers.h |  1 +
->  2 files changed, 28 insertions(+)
-> 
-> diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-> index 176cbdacc..e5b60951e 100644
-> --- a/lib/ioctl_wrappers.c
-> +++ b/lib/ioctl_wrappers.c
-> @@ -1139,6 +1139,33 @@ int prime_handle_to_fd_for_mmap(int fd, uint32_t handle)
->  	return args.fd;
->  }
->  
-> +/**
-> + * __prime_fd_to_handle:
-> + * @fd: open i915 drm file descriptor
+> Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 
-s/i915// as this is not only for i915
-
-Rest looks ok.
+Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
 
 Regards,
-Kamil
+Christoph
 
-> + * @dma_buf_fd: dma-buf fd handle
-> + * @handle: output handle
-> + *
-> + * This wraps the PRIME_FD_TO_HANDLE ioctl, which is used to import a dma-buf
-> + * file-descriptor into a gem buffer object.
-> + *
-> + * Returns: Zero one succeess, error code otherwise
-> + */
-> +int __prime_fd_to_handle(int fd, int dma_buf_fd, uint32_t *handle)
+> ---
+>   lib/xe/xe_eudebug.c |  1 -
+>   lib/xe/xe_eudebug.h | 45 ++++++++++++++++++++++++++++++++++++++++-----
+>   2 files changed, 40 insertions(+), 6 deletions(-)
+> 
+> diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
+> index 407940e122..4bf697a45e 100644
+> --- a/lib/xe/xe_eudebug.c
+> +++ b/lib/xe/xe_eudebug.c
+> @@ -1061,7 +1061,6 @@ static void debugger_run_triggers(struct xe_eudebug_debugger *d,
+>   	}
+>   }
+>   
+> -#define MAX_EVENT_SIZE (32 * 1024)
+>   static int
+>   xe_eudebug_read_event(int fd, struct drm_xe_eudebug_event *event)
+>   {
+> diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
+> index d2f64fe4c4..db79726c00 100644
+> --- a/lib/xe/xe_eudebug.h
+> +++ b/lib/xe/xe_eudebug.h
+> @@ -8,6 +8,7 @@
+>   #include <xe_drm.h>
+>   #include <xe_drm_eudebug.h>
+>   
+> +#include "igt_core.h"
+>   #include "igt_list.h"
+>   
+>   struct xe_eudebug_event_log {
+> @@ -90,11 +91,45 @@ typedef void (*xe_eudebug_trigger_fn)(struct xe_eudebug_debugger *,
+>   		if (hwe__->engine_class == DRM_XE_ENGINE_CLASS_RENDER || \
+>   		    hwe__->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
+>   
+> -#define xe_eudebug_for_each_event(_e, _log) \
+> -	for ((_e) = (_e) ? (void *)(uint8_t *)(_e) + (_e)->len : \
+> -		    (void *)(_log)->log; \
+> -	    (uint8_t *)(_e) < (_log)->log + (_log)->head; \
+> -	    (_e) = (void *)(uint8_t *)(_e) + (_e)->len)
+> +#define MAX_EVENT_SIZE (32 * 1024)
+> +
+> +static inline struct drm_xe_eudebug_event *
+> +next_event(struct drm_xe_eudebug_event *e, struct xe_eudebug_event_log *l)
 > +{
-> +	struct drm_prime_handle args;
+> +	uint8_t *start;
+> +	uint8_t *end;
 > +
-> +	memset(&args, 0, sizeof(args));
-> +	args.fd = dma_buf_fd;
-> +	args.flags = 0;
-> +	args.handle = 0;
+> +	igt_assert(l);
+> +	igt_assert(l->log);
+> +	igt_assert(l->head <= l->max_size);
 > +
-> +	if (igt_ioctl(fd, DRM_IOCTL_PRIME_FD_TO_HANDLE, &args))
-> +		return -errno;
+> +	if (!e)
+> +		return (struct drm_xe_eudebug_event *)l->log;
 > +
-> +	*handle = args.handle;
-> +	return 0;
+> +	start = (uint8_t *)e;
+> +
+> +	if (start == l->log + l->head)
+> +		return NULL;
+> +
+> +	igt_assert(start >= l->log);
+> +	igt_assert(start < l->log + l->head);
+> +	igt_assert(e->len);
+> +	igt_assert(e->len <= MAX_EVENT_SIZE);
+> +
+> +	end = (uint8_t *)e + e->len;
+> +
+> +	if (end == l->log + l->head)
+> +		return NULL;
+> +
+> +	igt_assert(end < l->log + l->head);
+> +
+> +	return (struct drm_xe_eudebug_event *)end;
 > +}
 > +
->  /**
->   * prime_fd_to_handle:
->   * @fd: open i915 drm file descriptor
-> diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-> index 7cf05e626..5a899f052 100644
-> --- a/lib/ioctl_wrappers.h
-> +++ b/lib/ioctl_wrappers.h
-> @@ -138,6 +138,7 @@ int prime_handle_to_fd(int fd, uint32_t handle);
->  #endif
->  int prime_handle_to_fd_for_mmap(int fd, uint32_t handle);
->  uint32_t prime_fd_to_handle(int fd, int dma_buf_fd);
-> +int __prime_fd_to_handle(int fd, int dma_buf_fd, uint32_t *handle);
->  off_t prime_get_size(int dma_buf_fd);
->  void prime_sync_start(int dma_buf_fd, bool write);
->  void prime_sync_end(int dma_buf_fd, bool write);
-> -- 
-> 2.51.1
-> 
+> +#define xe_eudebug_for_each_event(_e, _log)	\
+> +    for ((_e) = next_event((_e), (_log)); \
+> +         (_e); \
+> +         (_e) = next_event((_e), (_log)))
+>   
+>   #define xe_eudebug_assert(d, c)						\
+>   	do {								\
+
