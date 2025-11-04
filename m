@@ -4,53 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B060ACCFA00
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Nov 2025 09:13:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDF09CCFA00
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Nov 2025 09:20:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6691410E59A;
-	Tue,  4 Nov 2025 09:13:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7334910E24E;
+	Tue,  4 Nov 2025 09:20:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IhxqF2rQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B+kKmuyj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD15D10E256
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Nov 2025 09:13:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 09BEC10E24E
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Nov 2025 09:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762247612; x=1793783612;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=jQnZ+VmEAP2FMsCV3HyhTw5rjpoZDtYEvWZeDXZQEa8=;
- b=IhxqF2rQ/BaNSdrig0LYYbIiqc4Ko3zwWjxlze1he+3Lv/KlvIjzM+LY
- KrBbrmTRfdunlDurpNzg2iVBfp/0Sb7y1nZAMickR3JYiLc+D3X/7ISQa
- UxwPcEffzSLyDhrGRHdGIk6uLMagaOfuQq8uXexV75cTaCVwU/TZFiAjx
- Gntg69n+yTT8D9ShJs9JRs/TLqEEgqP42Jrzpqrj5OdqND15dMOcPRU7j
- zclUefg58f3r1HIZ290Je+zSolUMoK//B5HGxmO3I00S2kQoSnEf6cTXl
- 0TxY7kecrGev2ARrNg74Rycnt+5onjckoBs8OpVVvXe5SvKra23W2hqN2 Q==;
-X-CSE-ConnectionGUID: +sJst15/QcuV/lQK/TwqaQ==
-X-CSE-MsgGUID: bdI0k+h6S82zLIzeyuIAgg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="64488034"
-X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; d="scan'208";a="64488034"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2025 01:13:31 -0800
-X-CSE-ConnectionGUID: MqbDeeQBQw2ehl3WG/Dw5A==
-X-CSE-MsgGUID: k5Pz1aM0SdGtuydN1P3e1Q==
+ t=1762248047; x=1793784047;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=gv+ITvwisLtc6c6d8ybdfrbl7Umed2heVfnrUG/Bp6Y=;
+ b=B+kKmuyjdC0b7bxxgPKvNH9tNFQr7SxFAnwjv7Zti9c3vdZCZZpuUZmG
+ X2VBUC/mTFf1vnEp1CpdCztQkctvglKNVQCK5yQAWR/hoQ8do6XXcFLDS
+ 8UqOKG0G8QXU/FMtP69X6oVBMg4tizI6GCc/1BC4bq02tanB1Uq7jBWM+
+ tyY6/o1HTcr5SovnoMDNTwrxUP21masIgI4a9l7wpWmC3WLJO9PVpq2hz
+ F7XuGlHmr2AWHb4fH98K7j8/K2OUgJH8wkrPUxWKJnZ81KGA+uthHcy1A
+ R9W1q1cSt4e78C2Jsa9HFV7rdjstVBjYirMEMpox/aVklT2R7oKiwduBv w==;
+X-CSE-ConnectionGUID: RyIhvCKYTo6EyRAYwcfkIA==
+X-CSE-MsgGUID: FiC7LU14QMKyD2KqEYCO7w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="68174660"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="68174660"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Nov 2025 01:20:46 -0800
+X-CSE-ConnectionGUID: WM/wNxYnS7GTEdH+Op3Umw==
+X-CSE-MsgGUID: t5XnNnwfQ1Cb+LPR8IjfVQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; d="scan'208";a="186795940"
-Received: from dut2943pvc.iind.intel.com ([10.190.215.39])
- by orviesa009.jf.intel.com with ESMTP; 04 Nov 2025 01:13:27 -0800
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- nishit.sharma@intel.com
-Subject: [PATCH i-g-t v9 3/3] tests/intel/xe_compute: Add eu-busy-10s test
-Date: Tue,  4 Nov 2025 09:13:20 +0000
-Message-ID: <20251104091320.50619-4-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251104091320.50619-1-nishit.sharma@intel.com>
-References: <20251104091320.50619-1-nishit.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; d="scan'208";a="192276738"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 01:20:45 -0800
+Date: Tue, 4 Nov 2025 10:20:43 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Krzysztof Karas <krzysztof.karas@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Simon Fairweather <simon.n.fairweather@gmail.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: Re: [PATCH i-g-t v3] tools/intel_gpu_top: Add iteration option -n
+Message-ID: <20251104092043.prlqk7teecophc5r@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Simon Fairweather <simon.n.fairweather@gmail.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>
+References: <20251027153247.109572-1-kamil.konieczny@linux.intel.com>
+ <fzr6737mjmdkhfmkxh2uawj47gtzcuig3t4sqqtvtuqzme5pbx@evlm4bcue57t>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <fzr6737mjmdkhfmkxh2uawj47gtzcuig3t4sqqtvtuqzme5pbx@evlm4bcue57t>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,364 +75,123 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+Hi Krzysztof,
+On 2025-11-03 at 12:05:14 +0000, Krzysztof Karas wrote:
+> Hi Kamil,
+> 
+> > From: Simon Fairweather <simon.n.fairweather@gmail.com>
+> > 
+> > When using option -J or -c default is looping forever until user
+> > break process. Lets introduce new option -n <number> and break
+> > printing after reaching given number of iterations.
+> > 
+> > v2: corrected whitespaces, extended description (Kamil)
+> > v3: reduced number of vars and changed printed help (Krzysztof)
+> >   added description to man page (Tvrtko)
+> > 
+> > Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+> > Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+> > Signed-off-by: Simon Fairweather <simon.n.fairweather@gmail.com>
+> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > ---
+> 
+> [...]
+> 
+> >  		"\t[-d <device>]   Device filter, please check manual page for more details.\n"
+> >  		"\t[-p]            Default to showing physical engines instead of classes.\n"
+> >  		"\t[-m]            Default to showing all memory regions.\n"
+> > +		"\t[-n <number>]   Specify application running time as <number - 1> * <refresh period>\n"
+> Passing 0 or negative causes the app to spin indefinitely.
+> Furthermore, I think <number - 1> overcomplicates this endeavor.
+> We should consider a few scenarios and sanitize the inputs:
+> 
+> -n 0 - we break out immediately after a single print,
+> -n 1 (or any positive number) - the app works for
+> 	<refresh period> amount of time,
 
-Add multi threading to utilize available CCS instances as per num_slices
-available in /sys/class/drm/cardX/device/tileX/gtX/num_cslices.
-Depending upon num_slices, number of threads will be created and
-schedule compute workload in different CCS instances. Sleep is
-called via loop_kernel_duration so that HW engine runs for sleep duration.
-During execution per EU utlization percentage is grabbed and displayed
-on console. Added igt_skip() if sriov is enabled in platform, so if
-sriov_numvfs > 0 then test will be skipped.
+Could be, so for n=1 it will print info two times? This in turn
+is counter-ituitive, it imho specifies number of prints, not a
+time. What you think about this help:
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- tests/intel/xe_compute.c | 287 ++++++++++++++++++++++++++++++++++++++-
- tests/meson.build        |   1 +
- 2 files changed, 284 insertions(+), 4 deletions(-)
+"\t[-n <number>]   Specify application running time as <number - 1> * <refresh period>\n"
+"		   With options like -J it will print info <number> times. The default\n"
+"		   value is -1 which means work until user breaks with 'q' or Ctrl-C\n"
+"		   or sends signal.\n"
 
-diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index f8059b2d0..b2200420f 100644
---- a/tests/intel/xe_compute.c
-+++ b/tests/intel/xe_compute.c
-@@ -19,9 +19,24 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- 
-+#include "igt_perf.h"
-+#include "igt_sriov_device.h"
-+
- #define LOOP_DURATION_2s	(1000000ull * 2)
- #define DURATION_MARGIN		0.2
- 
-+struct thread_data {
-+	pthread_t thread;
-+	pthread_mutex_t *mutex;
-+	pthread_cond_t *cond;
-+	int class;
-+	int fd;
-+	int gt;
-+	struct user_execenv *execenv;
-+	struct drm_xe_engine_class_instance *eci;
-+	bool *go;
-+};
-+
- static int gt_sysfs_open(int gt)
- {
- 	int fd, gt_fd;
-@@ -243,6 +258,233 @@ test_compute_kernel_loop(uint64_t loop_duration)
- 	drm_close_driver(fd);
- }
- 
-+static void
-+*intel_compute_thread(void *data)
-+{
-+	struct thread_data *t = (struct thread_data *)data;
-+	char device[30];
-+	uint64_t type;
-+	uint32_t engine_class, engine_instance, gt_shift;
-+	uint64_t engine_active_config, engine_total_config;
-+	int ret, fd1, fd2;
-+	uint64_t val[4];
-+	uint64_t param_config;
-+
-+	pthread_mutex_lock(t->mutex);
-+	while (*t->go == 0)
-+		pthread_cond_wait(t->cond, t->mutex);
-+	pthread_mutex_unlock(t->mutex);
-+
-+	type = igt_perf_type_id(xe_perf_device(t->fd, device, sizeof(device)));
-+	igt_debug("type: %lx, device: %s\n", type, device);
-+
-+	perf_event_format(device, "gt", &gt_shift);
-+	perf_event_format(device, "engine_class", &engine_class);
-+	perf_event_format(device, "engine_instance", &engine_instance);
-+
-+	ret = perf_event_config(device, "engine-active-ticks", &engine_active_config);
-+	igt_assert_eq(ret, 0);
-+	ret = perf_event_config(device, "engine-total-ticks", &engine_total_config);
-+	igt_assert_eq(ret, 0);
-+
-+	igt_debug("gt_id: %x, class: %x, instance: %x\n",
-+		   t->eci->gt_id, t->eci->engine_class, t->eci->engine_instance);
-+
-+	/* Setting collective counters for compute engine available in t->eci */
-+	param_config = (uint64_t)t->eci->gt_id << gt_shift |
-+		       t->eci->engine_class << engine_class |
-+		       t->eci->engine_instance << engine_instance;
-+
-+	fd1 = igt_perf_open_group(type, engine_active_config | param_config, -1);
-+	fd2 = igt_perf_open_group(type, engine_total_config | param_config, fd1);
-+	igt_debug("fd1: %d, fd2: %d\n", fd1, fd2);
-+
-+	ret = read(fd1, val, sizeof(val));
-+	igt_assert_eq(ret, sizeof(val));
-+	igt_info("start - active: %ld, total: %ld, busyness: %.1f before scheduling on engine_instance :%d\n",
-+		 val[2], val[3], (float)val[2] / (float)val[3] * 100.0, t->eci->engine_instance);
-+
-+	igt_assert_f(xe_run_intel_compute_kernel_on_engine(t->fd, t->eci, t->execenv,
-+							   EXECENV_PREF_VRAM_IF_POSSIBLE),
-+		     "Unable to run compute kernel successfully\n");
-+
-+	ret = read(fd1, val, sizeof(val));
-+	igt_assert_eq(ret, sizeof(val));
-+	igt_info("end - active: %ld, total: %ld, busyness: %.1f after scheduling on engine_instance :%d\n",
-+		 val[2], val[3], (float)val[2] / (float)val[3] * 100.0, t->eci->engine_instance);
-+
-+	igt_assert_f(((float)val[2] / (float)val[3] * 100.0) > 50.0,
-+		     "Engines utilization is below 50 perc\n");
-+
-+	close(fd1);
-+	close(fd2);
-+	return NULL;
-+}
-+
-+static void
-+igt_check_supported_pipeline(void)
-+{
-+	int fd;
-+	unsigned int ip_ver;
-+	const struct intel_compute_kernels *kernels;
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	kernels = intel_compute_square_kernels;
-+
-+	while (kernels->kernel) {
-+		if (ip_ver == kernels->ip_ver)
-+			break;
-+		kernels++;
-+	}
-+
-+	/* skip if loop_kernel is not supported by pipeline */
-+	if (!kernels->kernel || !kernels->loop_kernel) {
-+		drm_close_driver(fd);
-+		igt_skip("loop_kernel not supported by pipeline\n");
-+	} else {
-+		igt_info("loop kernel supported by pipeline\n");
-+		drm_close_driver(fd);
-+	}
-+}
-+
-+static void
-+igt_check_sriov(void)
-+{
-+	int fd = drm_open_driver(DRIVER_XE);
-+
-+	if (igt_sriov_is_pf(fd) && igt_sriov_vfs_supported(fd)) {
-+		drm_close_driver(fd);
-+		igt_skip("Skipping test when SRIOV is enabled\n");
-+	}
-+	drm_close_driver(fd);
-+}
-+
-+static void
-+igt_set_ccs_default_value(int ccs_mode[], int size)
-+{
-+	uint64_t gt_mask = get_gt_mask();
-+	u32 gt, num_slices;
-+	int gt_fd;
-+
-+	for_each_bit(gt_mask, gt) {
-+		if (!get_num_cslices(gt, &num_slices))
-+			continue;
-+
-+		gt_fd = gt_sysfs_open(gt);
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", ccs_mode[gt]) > 0);
-+		close(gt_fd);
-+	}
-+}
-+
-+/**
-+ * SUBTEST: eu-busy-10s
-+ * Functionality: OpenCL kernel
-+ * Description: Run loop_kernel for duration_sec and observe EU business
-+ */
-+static void
-+test_eu_busy(uint64_t duration_sec)
-+{
-+	struct user_execenv execenv = { 0 };
-+	struct thread_data *threads_data;
-+	struct drm_xe_engine_class_instance *hwe;
-+	const struct intel_compute_kernels *kernels;
-+	pthread_mutex_t mutex;
-+	pthread_cond_t cond;
-+	u32 gt, n_threads = 0, iterations = 0, n_instances = 0, i;
-+	bool go = false;
-+	int ccs_mode, gt_fd, fd;
-+	u32 num_slices, ip_ver;
-+	uint64_t gt_mask = get_gt_mask();
-+
-+	for_each_bit(gt_mask, gt) {
-+		if (!get_num_cslices(gt, &num_slices))
-+			continue;
-+
-+		gt_fd = gt_sysfs_open(gt);
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", num_slices) > 0);
-+		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
-+		close(gt_fd);
-+	}
-+
-+	igt_skip_on_f(ccs_mode <= 1, "Skipping test as ccs_mode <=1 not matching criteria :%d\n",
-+		      ccs_mode);
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+
-+	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	kernels = intel_compute_square_kernels;
-+	while (kernels->kernel) {
-+		if (ip_ver == kernels->ip_ver)
-+			break;
-+		kernels++;
-+	}
-+
-+	/*
-+	 * User should use different kernel if loop_kernel_duration not set
-+	 * With loop kernel and loop duration it assumes we stop it via memory write
-+	 *
-+	 */
-+
-+	execenv.loop_kernel_duration = duration_sec;
-+	execenv.kernel = kernels->loop_kernel;
-+	execenv.kernel_size = kernels->loop_kernel_size;
-+	drm_close_driver(fd);
-+
-+	gt_mask = get_gt_mask();
-+
-+	for_each_bit(gt_mask, gt) {
-+		fd = drm_open_driver(DRIVER_XE);
-+		xe_for_each_engine(fd, hwe) {
-+			igt_assert(hwe);
-+			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-+				++n_instances;
-+		}
-+		drm_close_driver(fd);
-+	}
-+
-+	threads_data = calloc(n_instances, sizeof(*threads_data));
-+	igt_assert(threads_data);
-+
-+	pthread_mutex_init(&mutex, 0);
-+	pthread_cond_init(&cond, 0);
-+
-+	gt_mask = get_gt_mask();
-+	fd = drm_open_driver(DRIVER_XE);
-+	for_each_bit(gt_mask, gt) {
-+		xe_for_each_engine(fd, hwe) {
-+			if (hwe->gt_id != gt ||
-+			    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-+				continue;
-+
-+			threads_data[i].mutex = &mutex;
-+			threads_data[i].cond = &cond;
-+			threads_data[i].fd = fd;
-+			threads_data[i].eci = hwe;
-+			threads_data[i].go = &go;
-+			threads_data[i].execenv = &execenv;
-+			++n_threads;
-+			pthread_create(&threads_data[i].thread, 0, intel_compute_thread,
-+				       &threads_data[i]);
-+			++i;
-+			++iterations;
-+		}
-+		pthread_mutex_lock(&mutex);
-+		go = true;
-+		pthread_cond_broadcast(&cond);
-+		pthread_mutex_unlock(&mutex);
-+
-+		for (int val = 0; val < i; ++val)
-+			pthread_join(threads_data[val].thread, NULL);
-+
-+		i = 0;
-+		n_threads = 0;
-+		iterations = 0;
-+	}
-+	free(threads_data);
-+	drm_close_driver(fd);
-+}
-+
- /**
-  * SUBTEST: compute-square
-  * Mega feature: WMTP
-@@ -262,10 +504,24 @@ test_compute_square(int fd)
- 
- igt_main
- {
--	int xe;
-+	int xe, ccs_mode[4], gt_fd, gt;
-+	unsigned int ip_ver;
-+	u32 num_slices;
-+	uint64_t gt_mask;
- 
- 	igt_fixture {
-+
- 		xe = drm_open_driver(DRIVER_XE);
-+		ip_ver = intel_graphics_ver(intel_get_drm_devid(xe));
-+		gt_mask = get_gt_mask();
-+		for_each_bit(gt_mask, gt) {
-+			if (!get_num_cslices(gt, &num_slices))
-+				continue;
-+
-+			gt_fd = gt_sysfs_open(gt);
-+			igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode[gt]);
-+			close(gt_fd);
-+		}
- 	}
- 
- 	igt_subtest("compute-square")
-@@ -275,13 +531,36 @@ igt_main
- 		drm_close_driver(xe);
- 
- 	/* ccs mode tests should be run without open gpu file handles */
--	igt_subtest("ccs-mode-basic")
-+	igt_subtest("ccs-mode-basic") {
-+		/* skip if sriov enabled */
-+		igt_check_sriov();
- 		test_ccs_mode();
-+	}
- 
--	igt_subtest("ccs-mode-compute-kernel")
-+	igt_subtest("ccs-mode-compute-kernel") {
-+		/* skip if sriov enabled */
-+		igt_check_sriov();
- 		test_compute_kernel_with_ccs_mode();
-+	}
- 
- 	/* To test compute function stops after loop_kernel_duration */
--	igt_subtest("loop-duration-2s")
-+	igt_subtest("loop-duration-2s") {
-+		/* skip test if loop_kernel not supported in pipeline */
-+		if (ip_ver < IP_VER(20, 0))
-+			igt_check_supported_pipeline();
-+
- 		test_compute_kernel_loop(LOOP_DURATION_2s);
-+	}
-+
-+	/* test to check available EU utilisation in multi-ccs case */
-+	igt_subtest("eu-busy-10s") {
-+		/* skip test if loop_kernel not supported in pipeline */
-+		if (ip_ver < IP_VER(20, 0))
-+			igt_check_supported_pipeline();
-+
-+		test_eu_busy(5 * LOOP_DURATION_2s);
-+		/* calling sleep to make sure EUs done with execution */
-+		sleep(3);
-+		igt_set_ccs_default_value(ccs_mode, sizeof(ccs_mode));
-+	}
- }
-diff --git a/tests/meson.build b/tests/meson.build
-index a7b9375ed..a7ffc6383 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -408,6 +408,7 @@ extra_dependencies = {
- 	'sw_sync': [ libatomic ],
- 	'xe_fault_injection': [ lib_igt_xe_oa ],
- 	'xe_oa': [ lib_igt_xe_oa ],
-+        'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_profiling,math ],
- }
- 
- test_executables = []
--- 
-2.43.0
+> -n -1 (or any negative number):
+>  a) disallow that by returning an error and exiting the app,
+>  OR
+>  b) cast that to the closest value that makes sense (maybe 0?)
+> 
 
+-1 was a defualt, we should not change default behaviour.
+Default was to print indefinitly so user can have that with -1.
+Without allowing -1 it should remember that user did or did not
+used -n option, so one more var.
+With that only -n0 is edge case, no printing at all and exit immediatly.
+
+Regards,
+Kamil
+
+> >  		"\n",
+> >  		appname, DEFAULT_PERIOD_MS);
+> >  	printf("To access interactive help, press 'h' while the application is running.\n");
+> > @@ -2617,9 +2618,10 @@ int main(int argc, char **argv)
+> >  	struct igt_device_card card;
+> >  	char *codename = NULL;
+> >  	struct timespec ts;
+> > +	int iteration_count = 0;
+> >  
+> >  	/* Parse options */
+> > -	while ((ch = getopt(argc, argv, "o:s:d:mpcJLlh")) != -1) {
+> > +	while ((ch = getopt(argc, argv, "o:s:d:n:mpcJLlh")) != -1) {
+> >  		switch (ch) {
+> >  		case 'o':
+> >  			output_path = optarg;
+> > @@ -2630,6 +2632,9 @@ int main(int argc, char **argv)
+> >  		case 'd':
+> >  			opt_device = strdup(optarg);
+> >  			break;
+> > +		case 'n':
+> > +			iteration_count = atoi(optarg);
+> I'd suggest adding
+> if (iteration_count =< 0)
+> 	stop_top = true;
+> 
+> but I am a bit confused why there are 3 exit points from the
+> main while loop:
+>  1) the loop condition while (!stop_top) {,
+>  2) if (stop_top) before while(!consumed),
+>  3) if (stop_top) before if (output_mode == INTERACTIVE).
+> 
+> so maybe:
+> 
+> if (iteration_count =< 0)
+> 	iteration_count = 1;
+> 
+> would be good enough?
+> 
+> > +			break;
+> >  		case 'p':
+> >  			physical_engines = true;
+> >  			break;
+> > @@ -2857,6 +2862,12 @@ int main(int argc, char **argv)
+> >  		if (disp_clients != iclients.clients)
+> >  			free_display_clients(disp_clients);
+> >  
+> > +		if (iteration_count > 0) {
+> > +			--iteration_count;
+> > +			if (!iteration_count)
+> > +				stop_top = true;
+> > +		}
+> > +
+> >  		if (stop_top)
+> >  			break;
+> >  
+> > -- 
+> > 2.51.1
+> > 
+> 
+> -- 
+> Best Regards,
+> Krzysztof
