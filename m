@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 889B0CCFA00
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Nov 2025 09:53:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 017AECCFA00
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Nov 2025 09:57:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1BEAB10E59D;
-	Tue,  4 Nov 2025 09:53:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 94C3F10E257;
+	Tue,  4 Nov 2025 09:57:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hvUDYvt0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JUKC1w+z";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB05210E24A
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Nov 2025 09:53:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BCFA210E257
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Nov 2025 09:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762249982; x=1793785982;
+ t=1762250222; x=1793786222;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=LPfwQBDLqkkQk6ruteWmzjgFWUpvl1P3Dbh+0bChlY0=;
- b=hvUDYvt0tSs6Yi81vqAOgZH06HOL5bvob4LJV7fZGkov5fhvZ6vSzfu5
- ZC5Nhw2xld7bc858QyFx56GX6SvRSBG5EhwxC7XzgeTBsfSAzVQ5k202K
- 6byLrNgw+4DjNtgvIdR9/WU3U94pYcAzdt8cIGin8KnZyTqCiyh6Uuihy
- eN+nV0/IpDrgVv1k0XiHiM17hCrcjIr1tm2s2SxepiArJ129WTKR8o1rF
- 6dcX8vZLAD9ApG920fkncaSMFYG72erkGRq4rZ8VhJjY9TEw8Cv68HBsa
- JkJEwPLwXGSAklxgEKBRcnV9/efclBG8W1kfncRa6MqRt+RffulV7PClU Q==;
-X-CSE-ConnectionGUID: f922ECHaSl+C070BXEtXow==
-X-CSE-MsgGUID: BtU1DcSqQ+izM92484f6jg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="64036905"
-X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; d="scan'208";a="64036905"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2025 01:53:02 -0800
-X-CSE-ConnectionGUID: wD7CfehlQTa37Av2njwDVQ==
-X-CSE-MsgGUID: yQW/no6/R72UpPihJI4VcA==
+ bh=HeegDT6eXivu/PnDPswYpmWXhLbduksEfH53S+9Hil8=;
+ b=JUKC1w+zydcJyW1/QX6Io4mRWfU37QufwkqdrMt5jV3aNgYr3sZWt2TR
+ rK3Id6pKEyxlhPn+rT4TjzhvoIdbKJ9wJX9mdfbvQJC2pqOhlx7iL0zsw
+ Mc+P4ICbc6GhOIpB9OQls4qwGTvDrVxzP9z6XbqlWd2c2xJ9RrxlXzsdL
+ 7CjIIBJsZuWcIolLYZyh6w0VHoKUk4scAVc2HBwqGrJLiHh1PFawixrmz
+ ZLAAgIIzjMAPt1qONnzrnQ8hBdty7lY629UrsCuXth40Iqd1x8S0mssJ5
+ MwrMSHJEki6uIhBdTl/sHo8kRiqaOur9VeNyJDYQV5mwgo7k0cR8wt0Pj g==;
+X-CSE-ConnectionGUID: vxFHuHK/RWeKu4iME6ecRg==
+X-CSE-MsgGUID: y9jX7S30TMyZ4Yv0ujJDzA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="64225282"
+X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; d="scan'208";a="64225282"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Nov 2025 01:57:02 -0800
+X-CSE-ConnectionGUID: IRfJiFN6RmOMvI/cZ7uRYA==
+X-CSE-MsgGUID: u93+TFKyQ2i48WRAbvq6Mw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; d="scan'208";a="186357761"
+X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; d="scan'208";a="187267518"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 01:53:00 -0800
-Date: Tue, 4 Nov 2025 10:52:53 +0100
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 01:57:00 -0800
+Date: Tue, 4 Nov 2025 10:56:58 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Soham Purkait <soham.purkait@intel.com>
 Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
  badal.nilawar@intel.com, anshuman.gupta@intel.com,
  lucas.demarchi@intel.com, umesh.nerlige.ramappa@intel.com,
  kamil.konieczny@intel.com
-Subject: Re: [PATCH i-g-t 2/3] lib/xe/xe_spin: Export xe_spin_sync_wait
-Message-ID: <20251104095253.ofghwm5tu77xsaeb@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH i-g-t 1/3] lib/xe/xe_spin: Introduce xe_spin_reset
+Message-ID: <20251104095658.ie5x5ptnamc3pykv@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Soham Purkait <soham.purkait@intel.com>,
  igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
@@ -57,11 +57,11 @@ Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  lucas.demarchi@intel.com, umesh.nerlige.ramappa@intel.com,
  kamil.konieczny@intel.com
 References: <20251104055129.3826274-1-soham.purkait@intel.com>
- <20251104055129.3826274-3-soham.purkait@intel.com>
+ <20251104055129.3826274-2-soham.purkait@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251104055129.3826274-3-soham.purkait@intel.com>
+In-Reply-To: <20251104055129.3826274-2-soham.purkait@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,49 +78,75 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Soham,
-On 2025-11-04 at 11:21:28 +0530, Soham Purkait wrote:
-> libify xe_spin_sync_wait enabling reuse for Xe driver
+On 2025-11-04 at 11:21:27 +0530, Soham Purkait wrote:
+> libify spin reset enabling reuse for Xe driver
 
-Rafter "Make function xe_spin_sync_wait() public ...rest of description"
+/slibify/Create new function xe_spin_reset()/
 
-> 
-> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
-> ---
->  lib/xe/xe_spin.c | 2 +-
->  lib/xe/xe_spin.h | 1 +
->  2 files changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index 9909f4e03..d29d8281d 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -302,7 +302,7 @@ xe_spin_create(int fd, const struct igt_spin_factory *opt)
->  	return spin;
->  }
->  
-
-Add documentation here, each public function needs one.
+I assume it is a common pattern elsewhere,
+so also write that down (in which tests you will use it).
 
 Regards,
 Kamil
 
-> -static void xe_spin_sync_wait(int fd, struct igt_spin *spin)
-> +void xe_spin_sync_wait(int fd, struct igt_spin *spin)
->  {
->  	igt_assert(syncobj_wait(fd, &spin->syncobj, 1, INT64_MAX, 0, NULL));
+> 
+> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+> ---
+>  lib/xe/xe_spin.c | 28 ++++++++++++++++++++++++++++
+>  lib/xe/xe_spin.h |  1 +
+>  2 files changed, 29 insertions(+)
+> 
+> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+> index 72b13ef42..9909f4e03 100644
+> --- a/lib/xe/xe_spin.c
+> +++ b/lib/xe/xe_spin.c
+> @@ -179,6 +179,34 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+>  	igt_assert(b <= ARRAY_SIZE(spin->batch));
 >  }
+>  
+> +/**
+> + * xe_spin_reset:
+> + * @spin: spin state from xe_spin_new()
+> + *
+> + * Reset the state of spin, allowing its reuse.
+> + */
+> +void xe_spin_reset(int fd, igt_spin_t *spin)
+> +{
+> +	struct drm_xe_sync sync = {
+> +		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
+> +		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> +		.handle = spin->syncobj,
+> +	};
+> +	struct drm_xe_exec exec = {
+> +		.num_batch_buffer = 1,
+> +		.num_syncs = 1,
+> +		.syncs = to_user_pointer(&sync),
+> +		.exec_queue_id = spin->engine,
+> +		.address = spin->address,
+> +	};
+> +
+> +	xe_spin_init_opts((struct xe_spin *)spin->xe_spin,
+> +			  .addr = spin->address,
+> +			  .preempt = !(spin->opts.flags & IGT_SPIN_NO_PREEMPTION));
+> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
+> +	xe_spin_wait_started((struct xe_spin *)spin->xe_spin);
+> +}
+> +
+>  /**
+>   * xe_spin_started:
+>   * @spin: pointer to spinner mapped bo
 > diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-> index af32ab563..1cd578e2d 100644
+> index c2199d0aa..af32ab563 100644
 > --- a/lib/xe/xe_spin.h
 > +++ b/lib/xe/xe_spin.h
-> @@ -77,6 +77,7 @@ void xe_spin_reset(int fd, igt_spin_t *spin);
+> @@ -73,6 +73,7 @@ uint32_t xe_spin_nsec_to_ticks(int fd, int gt_id, uint64_t nsec);
+>  void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
+>  #define xe_spin_init_opts(fd, ...) \
+>  	xe_spin_init(fd, &((struct xe_spin_opts){__VA_ARGS__}))
+> +void xe_spin_reset(int fd, igt_spin_t *spin);
 >  bool xe_spin_started(struct xe_spin *spin);
 >  void xe_spin_wait_started(struct xe_spin *spin);
 >  void xe_spin_end(struct xe_spin *spin);
-> +void xe_spin_sync_wait(int fd, struct igt_spin *spin);
->  
->  /*
->   * xe_cork: higher level API that simplifies exec'ing an xe_spin by taking care
 > -- 
 > 2.34.1
 > 
