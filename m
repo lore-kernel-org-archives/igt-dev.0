@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9313CCCFA04
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Nov 2025 12:14:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F77ACCFA04
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Nov 2025 12:16:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4950710E5CC;
-	Tue,  4 Nov 2025 12:14:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0974F10E5CB;
+	Tue,  4 Nov 2025 12:16:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cmYeW945";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cu0Y/QFP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8031E10E5CB
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Nov 2025 12:14:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2CFD410E5CB
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Nov 2025 12:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762258471; x=1793794471;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=Fc1gyPmZNuAzIzmeU+acoQA238/b1j2Vbi9SYVh1wWs=;
- b=cmYeW945AG8gK2v6eEw3us6YCll2XBiZWSyLn7n+qUJz0VWGM+KAKMTL
- VZsX0kACvNjjdKukzLArLt9VTuSW2JuW70rr2WAXq/WjzBWNkpba831jL
- PIQNH1gxoPuViN/CM1EhcHPYqCHu7hdGfxMjgkxgc0gpBeO9Nt74Q+S7b
- pbk4eDKkN/17cUZE7SEARL+noVUrKmQU336QVD4lxrum9PcOqto4QS1bI
- 79puWrKS5iO0FdBmMd5b/sUvQJlFblZb5oZcMY0ZKzR5J6yV5uT8Qjnhi
- EVBm+UisLE1xokeoBah6FJoNSjMhQio6Q8SNMSi1SEjD5umCSNky1Vpli Q==;
-X-CSE-ConnectionGUID: j8ryl3iPRa6lPPf75Jr7eg==
-X-CSE-MsgGUID: 4OG7IB0lTHSc1/ZPY8wGpg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="75029403"
-X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; d="scan'208";a="75029403"
+ t=1762258613; x=1793794613;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=a8tKAq7JKJBtvr4jyowjCBao1vudu+25uHlHJl/T9Zc=;
+ b=cu0Y/QFPfb1f1b91mg9SvJTZNsQ10A9ySPcPLhEFXJiy/mBosCOuQSl4
+ Cz2QQV8pmGtBh/kAfuy3dSIkabi4QfDPEPl3Qv/EpoOMCu8hkVuep4NkT
+ RHqi/ZqiefEXXvXlLnRfw9WriNJmM+t7JsG4xEwunZkTI6o13Evr19a4m
+ pX34nyiEU0+LJxkutT+uNaI6u3W9tS/ZYQO04sc3d4Rh1bo4Y9cQbgwy3
+ vL35TMciMIzp7mlsiGhL6varAcQA1Qismsjkd3h7faPO1dP/8UCFihyTF
+ uah3YGfQwrojiSxKnmXftYeWwgzdmtErc2umuIrI51r6NhMT1WClUX0de Q==;
+X-CSE-ConnectionGUID: c+tn5aabQwWw6YTbKOGrWw==
+X-CSE-MsgGUID: m+a3iN0sQ22BVAXiKaNhFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="68209780"
+X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; d="scan'208";a="68209780"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2025 04:14:31 -0800
-X-CSE-ConnectionGUID: CRyRwGxuRLadfj76YJst4Q==
-X-CSE-MsgGUID: 2Uftw9HDQla3M+ZDRY+cvQ==
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Nov 2025 04:16:52 -0800
+X-CSE-ConnectionGUID: BdWBjxCoSh2LTN7u9piMkA==
+X-CSE-MsgGUID: mi+107RnTe+OoOIcEtXoOw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; d="scan'208";a="187092991"
+X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; d="scan'208";a="187093596"
 Received: from cmanszew-mobl2.igk.intel.com (HELO [172.28.180.197])
  ([172.28.180.197])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2025 04:14:30 -0800
-Message-ID: <3d6a9de9-203f-478d-bf11-f0095ed78820@intel.com>
-Date: Tue, 4 Nov 2025 13:14:27 +0100
+ 04 Nov 2025 04:16:51 -0800
+Message-ID: <a88d2d7f-3543-4090-a836-966f86443f7d@intel.com>
+Date: Tue, 4 Nov 2025 13:16:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 2/7] lib/xe/xe_eudebug: Fix token to str
-To: "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>,
- Mika Kuoppala <mika.kuoppala@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <20251014093848.2394531-3-mika.kuoppala@linux.intel.com>
- <20251014134825.2398331-1-mika.kuoppala@linux.intel.com>
- <DS0PR11MB72645EA54513F8230C4CDFE6D9E8A@DS0PR11MB7264.namprd11.prod.outlook.com>
+Subject: Re: [PATCH i-g-t 3/7] lib/xe/xe_eudebug: Improve pipe error messages
+To: Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: dominik.karol.piatkowski@intel.com, maciej.patelczyk@intel.com,
+ jan.maslak@intel.com, zbigniew.kempczynski@intel.com
+References: <20251014093848.2394531-1-mika.kuoppala@linux.intel.com>
+ <20251014093848.2394531-4-mika.kuoppala@linux.intel.com>
 Content-Language: en-US
 From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
 Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
  Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <DS0PR11MB72645EA54513F8230C4CDFE6D9E8A@DS0PR11MB7264.namprd11.prod.outlook.com>
+In-Reply-To: <20251014093848.2394531-4-mika.kuoppala@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,143 +75,72 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Mika and Dominik,
+Hi Mika,
 
-On 15.10.2025 11:36, Piatkowski, Dominik Karol wrote:
-> Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+On 14.10.2025 11:38, Mika Kuoppala wrote:
+> Client, debugger and session pipe communication
+> can be hard to debug. Make small improvement to debug output
+> to print when the actual otherside hung up early
+> to distinguish from just timeouts.
 > 
->> -----Original Message-----
->> From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
->> Sent: Tuesday, October 14, 2025 3:48 PM
->> To: igt-dev@lists.freedesktop.org
->> Cc: Mika Kuoppala <mika.kuoppala@linux.intel.com>; Piatkowski, Dominik
->> Karol <dominik.karol.piatkowski@intel.com>
->> Subject: [PATCH i-g-t 2/7] lib/xe/xe_eudebug: Fix token to str
->>
->> We print token types to see client/server flow. The printouts were off
->> by one. Fix array indexing.
->>
->> v2: remove client_fd (Dominik)
->>
->> Cc: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
->> Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
->> ---
->>   lib/xe/xe_eudebug.c | 22 +++++++++++++++++++---
->>   1 file changed, 19 insertions(+), 3 deletions(-)
->>
->> diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
->> index 4bf697a45e..f1dffe4ffb 100644
->> --- a/lib/xe/xe_eudebug.c
->> +++ b/lib/xe/xe_eudebug.c
->> @@ -41,6 +41,7 @@ struct match_dto {
->>   	uint64_t *bind_op_seqno;
->>   };
->>
->> +#define TOKEN_NONE  0
->>   #define CLIENT_PID  1
->>   #define CLIENT_RUN  2
->>   #define CLIENT_FINI 3
->> @@ -51,6 +52,7 @@ struct match_dto {
->>   static const char *token_to_str(uint64_t token)
->>   {
->>   	static const char * const s[] = {
->> +		"none",
->>   		"client pid",
->>   		"client run",
->>   		"client fini",
->> @@ -59,8 +61,12 @@ static const char *token_to_str(uint64_t token)
->>   		"debugger stage",
->>   	};
->>
->> -	if (token >= ARRAY_SIZE(s))
->> +	igt_assert(token);
->> +
->> +	if (token >= ARRAY_SIZE(s)) {
->> +		igt_warn("token outside of bounds %ld\n", token);
+> Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 
-Maybe:
-```
-igt_warn("token '%ld' out of bounds\n", token);
-```
-
->>   		return "unknown";
->> +	}
->>
->>   	return s[token];
->>   }
->> @@ -334,18 +340,25 @@ static uint64_t __wait_token(int pipe[2], const
->> uint64_t token, int timeout_ms)
->>
->>   static uint64_t client_wait_token(struct xe_eudebug_client *c, const uint64_t
->> token)
->>   {
->> -	uint64_t ret = __wait_token(c->p_in, token, c->timeout_ms);
->> +	uint64_t ret = 0;
->> +
->> +	igt_debug("client: %d waiting token %s\n", c->pid,
->> token_to_str(token));
-
-Maybe:
-```
-igt_debug("client: %d waiting for token '%s'\n", getpid(), 
-token_to_str(token));
-```
-
->>
->> +	ret = __wait_token(c->p_in, token, c->timeout_ms);
->>   	if (ret == DEAD_CLIENT)
->>   		igt_assert(c->allow_dead_client);
->>
->>   	return ret;
->> +
->>   }
->>
->>   static uint64_t wait_from_client(struct xe_eudebug_client *c, const uint64_t
->> token)
->>   {
->> -	uint64_t ret = __wait_token(c->p_out, token, c->timeout_ms);
->> +	uint64_t ret = 0;
->> +
->> +	igt_debug("debugger: %d waiting token %s\n", getpid(),
->> token_to_str(token));
-
-Maybe:
-```
-igt_debug("debugger: %d waiting for token '%s'\n", getpid(), 
-token_to_str(token));
-```
-
->>
->> +	ret = __wait_token(c->p_out, token, c->timeout_ms);
->>   	if (ret == DEAD_CLIENT)
->>   		igt_assert(c->allow_dead_client);
->>
->> @@ -354,6 +367,9 @@ static uint64_t wait_from_client(struct
->> xe_eudebug_client *c, const uint64_t tok
->>
->>   static void token_signal(int pipe[2], const uint64_t token, const uint64_t
->> value)
->>   {
->> +	igt_debug("%d signalling token %s with %ld\n",
->> +		  getpid(), token_to_str(token), value);
->> +
-
-Thinking out loud - would be good to have token_signal funcs matching 
-the wait_client and wait_from client functions. Aaand fix the naming on 
-those. But let's keep this battle for another day.
-
-Also maybe:
-```
-igt_debug("%d signalling token '%s' with value '%ld'\n", getpid(), 
-token_to_str(token));
-```
+Reviewed-by: Christoph Manszewski <christoph.manszewski@intel.com>
 
 Regards,
 Christoph
->>   	pipe_signal(pipe, token);
->>   	pipe_signal(pipe, value);
->>   }
->> --
->> 2.43.0
+
+> ---
+>   lib/xe/xe_eudebug.c | 22 ++++++++++++++++------
+>   1 file changed, 16 insertions(+), 6 deletions(-)
 > 
+> diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
+> index f43903f5b0..0989330b39 100644
+> --- a/lib/xe/xe_eudebug.c
+> +++ b/lib/xe/xe_eudebug.c
+> @@ -261,7 +261,7 @@ static int safe_pipe_read(int pipe[2], void *buf, int nbytes, int timeout_ms)
+>   {
+>   	int ret;
+>   	int t = 0;
+> -	struct pollfd fd = {
+> +	struct pollfd r = {
+>   		.fd = pipe[0],
+>   		.events = POLLIN,
+>   		.revents = 0
+> @@ -273,9 +273,9 @@ static int safe_pipe_read(int pipe[2], void *buf, int nbytes, int timeout_ms)
+>   	do {
+>   		const int interval_ms = 1000;
+>   
+> -		ret = poll(&fd, 1, interval_ms);
+> -
+> +		ret = poll(&r, 1, interval_ms);
+>   		if (!ret) {
+> +			igt_debug("poll: timeout\n");
+>   			catch_child_failure();
+>   			t += interval_ms;
+>   		} else if (ret == -1) {
+> @@ -285,10 +285,20 @@ static int safe_pipe_read(int pipe[2], void *buf, int nbytes, int timeout_ms)
+>   			}
+>   			return -errno;
+>   		}
+> -	} while (!ret && t < timeout_ms);
+>   
+> -	if (ret > 0)
+> -		return read(pipe[0], buf, nbytes);
+> +		if (ret == 1) {
+> +			if (r.revents == POLLIN)
+> +				return read(pipe[0], buf, nbytes);
+> +
+> +			if (r.revents & ~POLLIN) {
+> +				igt_debug("pipe read failed: %s%s (0x%x)\n",
+> +					  r.revents & POLLHUP ? "pipe closed" : "",
+> +					  r.revents & POLLERR ? "poll error" : "",
+> +					  r.revents);
+> +				return -EIO;
+> +			}
+> +		}
+> +	} while (!ret && t < timeout_ms);
+>   
+>   	return -ETIMEDOUT;
+>   }
 
