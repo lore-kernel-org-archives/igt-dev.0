@@ -4,56 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0238CCFA00
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Nov 2025 09:02:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6843ACCFA07
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Nov 2025 09:13:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 85B7E10E566;
-	Tue,  4 Nov 2025 09:02:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 139CF10E256;
+	Tue,  4 Nov 2025 09:13:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PX2nRCZj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Cnfjpghg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A819A10E58B
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Nov 2025 09:02:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 005C110E256
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Nov 2025 09:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762246937; x=1793782937;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=/Fl8hl0+ceTXa45RkoyZBzIqwchG5pm2YoLqdlm/TE8=;
- b=PX2nRCZjybE+JgYng3kPh3i/FryJQ6j7kUMTZl5folDO+fBNi/1C05Zf
- yWtmgDDbauZDqmAGrJeSEBwUQeeRd8PVn68BN3L3ivwvUmqPpRRd+CEwv
- NBjaUFN5DUsQaXDm6vYvYuTfXe+kYm/QmP5PaMS7TpN9Q5C1tc+1xOx1m
- onhkQWJbLaqVibCbRyh9ggC581IUVwLUyqlwnjfFZuqFnQVLbeUdH7LJc
- 7ZnXx4NupGNxTya7BvyNQGCZQjFq5ikIZlwPhTme66ZZhZsz8FXH/EYkN
- W3eelumELRxjA+XIyN9Q/GMwJdmuJ53x/17ubPOXAqRlABY9u/busr9Tx Q==;
-X-CSE-ConnectionGUID: glAtEMtqQQaSVaH2Hg74Aw==
-X-CSE-MsgGUID: XEVFczFSSI6mxpy7Z/auzw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="64032940"
-X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; d="scan'208";a="64032940"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2025 01:02:17 -0800
-X-CSE-ConnectionGUID: xBRvfJ1LSCijUzAgE3Zmgw==
-X-CSE-MsgGUID: ThkYy2kWSy6GcML86lahRQ==
+ t=1762247603; x=1793783603;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=MVB7VOLjudVp9NS3WnpFY7ppZA9trvoen56qXfQL2l0=;
+ b=CnfjpghgC21baqd26DMBh4jA8FgQHhrIpEUUURBQBXYZbGpHZBbco99D
+ O3nq2Fk5BcZO3UKAB9E4uW5H38cI0FwhsCmbqtiYEqeUIYLq5jZH9pFcs
+ VSZF+cTPBJKbb7Ta9l8SFqL6gFsejGB5wjlXdnOCqo1ohtJPdNkQdJWMw
+ jLepHxRI6ON/525zylJtanIYcXp1NtI2S9ZOhuP0QtaR9nRzvCuIsIqbH
+ ZwZLLSFRM8vcldw1c6v9M1e4He3WGHXgnBfBLKA5ebZkYwv+Q1QEXIZb6
+ ktehk5Xrlwf0+I1/a0PINSMDhqlx/NKESTEh7dWChdJl1jESdoZbMggzv A==;
+X-CSE-ConnectionGUID: FTg9fUnpRvKFC5vaAsh8pw==
+X-CSE-MsgGUID: s9ULr6BpRR2hxgWhk88nCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="81741368"
+X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; d="scan'208";a="81741368"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Nov 2025 01:13:23 -0800
+X-CSE-ConnectionGUID: tPFywGCIT8Cf9k7qBk1O6g==
+X-CSE-MsgGUID: vUK2ERkISVuDSz/vsur9yg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; d="scan'208";a="224354223"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2025 01:02:14 -0800
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, anshuman.gupta@intel.com, matthew.auld@intel.com,
- kamil.konieczny@intel.com, nidhi1.gupta@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v16 3/3] lib/igt_fb: Apply NEEDS_VISIBLE_VRAM in missing
- igt_fb
-Date: Tue,  4 Nov 2025 14:26:40 +0530
-Message-Id: <20251104085640.795121-4-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251104085640.795121-1-santhosh.reddy.guddati@intel.com>
-References: <20251104085640.795121-1-santhosh.reddy.guddati@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; d="scan'208";a="186795923"
+Received: from dut2943pvc.iind.intel.com ([10.190.215.39])
+ by orviesa009.jf.intel.com with ESMTP; 04 Nov 2025 01:13:22 -0800
+From: nishit.sharma@intel.com
+To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ nishit.sharma@intel.com
+Subject: [PATCH i-g-t v9 0/3] Multi-CCS support in IGT
+Date: Tue,  4 Nov 2025 09:13:17 +0000
+Message-ID: <20251104091320.50619-1-nishit.sharma@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,28 +65,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend the fix from commit b9a5a4d03955 ("tests/intel/xe_*: Use
-NEEDS_VISIBLE_VRAM flag where it's missing")
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- lib/igt_fb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Revision 1:
+Added loop_kernel_duration in available pipelines. loop_kernel_duration
+holds sleep duration and during sleep GPU will be workng.
+Patch-1/3: loop_kernel_duration addition in available pipelines in
+lib/intel_compute.c. igt_skip is called in pipeline which doesn't support
+loop_kernel shader.
+Patch-2/3: Added loop-duration-2s subtest in tests/intel/xe_compute to
+test if GPU is executing shader when sleep is called. This is verfied
+using gputop in another terminal. This also tests whether the test
+executed successfully in >= 2seconds of duration set
+Patch-3/3: Added eu-busy-10s test which creates multi threads depending
+on num_slices available and schedules workload on all ccs instances
+available. This also prints engine utlization in percentage while
+workload is executing.
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 60853b0af..92883a618 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -3029,7 +3029,8 @@ static void setup_context_and_memory_region(const struct igt_fb *fb, uint32_t *c
- 						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
- 
- 		*bb_size = xe_bb_size(fb->fd, *bb_size);
--		*bb = xe_bo_create(fb->fd, 0, *bb_size, *mem_region, 0);
-+		*bb = xe_bo_create(fb->fd, 0, *bb_size, *mem_region,
-+				   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 	}
- }
- 
+v2:
+- Addressed review comments from Zbyshek on description in Patch-1.
+- Added execution time check in Patch-2 regarding single iteration of
+  scheduling and executing workload on single instance of CCS engine.
+
+v3:
+- Added missing code section in Patch-1.
+- Modified LOOP_DURATIOn macro to LOOP_DURATION_2s to avoid confusion.
+- Used LOOP_DURATION_2s in place of LOOP_DURATION and adjusted sleep
+  durations.
+
+v4:
+- Test will skip if sriov is enabled and sriov_numfs > 0.
+- Test will continue runing if sriov_numvfs = 0
+
+v5:
+- Incorporated review comments (Zbigniew)
+
+v6:
+- Simplified logic to capture EU busyness
+- Removed header which had pmu counter and engine instance logic
+- Moved pthread_data structure to xe_compute file which is used during
+  thread creation
+
+v7:
+- collective counters are set per compute engine available in t->eci
+- fixed few nits
+
+v8:
+- Incorporated review comments (Zbigniew)
+- After workload execution set back ccs_mode to default value
+
+v9:
+- Moved get_gt_mask() in igt_fixture to avoid build failure
+
+v10:
+- Moved sriov enabled check in igt_fixture to skip test if sriov is
+  enabled without initilializing or creation of threads.
+- Moved check for loop_kernel support in pipeline in igt_fixture
+
+v11:
+- Moved sriov enabled check in subtests which is setting ccs_mode value
+- loop_kernel support check moved in subtests which are using
+  loop_kernel
+
+Nishit Sharma (3):
+  lib/intel_compute: loop_kernel_duration in Pipeline
+  tests/intel/xe_compute: Add loop_duration_2s subtest
+  tests/intel/xe_compute: Add eu-busy-10s test
+
+ lib/intel_compute.c      |  26 ++-
+ lib/intel_compute.h      |   2 +
+ tests/intel/xe_compute.c | 346 ++++++++++++++++++++++++++++++++++++++-
+ tests/meson.build        |   1 +
+ 4 files changed, 371 insertions(+), 4 deletions(-)
+
 -- 
-2.34.1
+2.43.0
 
