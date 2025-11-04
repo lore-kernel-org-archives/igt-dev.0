@@ -4,28 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7681CCF9E3
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Nov 2025 20:22:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B7DCCFA04
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Nov 2025 20:29:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6003310E326;
-	Tue,  4 Nov 2025 20:22:25 +0000 (UTC)
-Received: from 10055242dc62 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C49A010E2C2;
- Tue,  4 Nov 2025 20:22:24 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4406184662002132660=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id CE0B410E326;
+	Tue,  4 Nov 2025 20:29:19 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="RCdaiekm";
+	dkim-atps=neutral
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com
+ [136.143.188.112])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 58BA310E2C2;
+ Tue,  4 Nov 2025 20:29:18 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; t=1762288154; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=IlqRTj5vMIIIQC8hPvwoznm+nXnGblwjxW8OHx6+vRJzi/Mfw4CvvOPFrfXwYs0dSOCzYYkoOBfg1cTisnlv1hvUkKNnyKWKbrG/QFiBzi29FUbb+AubCQwdjQCRWfYGLIJ9jPr1Da0cUxT/9FSLpgoVLdYhWLepUlz6XglpuXo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1762288154;
+ h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=qy+8VGQUEM524MCht5wR5SFs4Lz0Ob0zxBjYPRSi7lQ=; 
+ b=TZjm3gud4ISslGWOU02T80l6aX5gNle4sUOjbCkrEhqqXRQLiFHjYiTvsih9V8QKBqoIe+AN5fzzzX7Dk8rbggzbF8V3HMfQDqxd5dT/JKj9+gMGaX1TBUAEOW9kmpNAqiYg3mAHCi69Vi2idpHSjTniGz4anzpOGOmonup5NiU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+ dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1762288154; 
+ s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+ h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=qy+8VGQUEM524MCht5wR5SFs4Lz0Ob0zxBjYPRSi7lQ=;
+ b=RCdaiekmHhjmdbQRiv+54MFsvS6eRrwapSRLdF83sQZDeKwmhtccanxANuyisPCA
+ z6ckiAT9xcuymjrNrLMox0x0OJsUoDJi3nSnj669T3lAla0wp+y0BBr3YfhND5vcOpy
+ KdxqjKnV2uJrbS05lbHojP1nc6Ok7rcaegZqgg5s=
+Received: by mx.zohomail.com with SMTPS id 1762288149012925.0226041957134;
+ Tue, 4 Nov 2025 12:29:09 -0800 (PST)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+To: adrinael@adrinael.net, arek@hiler.eu, kamil.konieczny@linux.intel.com,
+ juhapekka.heikkila@gmail.com, bhanuprakash.modem@gmail.com,
+ ashutosh.dixit@intel.com, karthik.b.s@intel.com,
+ boris.brezillon@collabora.com, liviu.dudau@arm.com, steven.price@arm.com,
+ aliceryhl@google.com, jeffv@google.com
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+ intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+Subject: [PATCH i-g-t v3 0/3] Add initial Panthor tests
+Date: Tue,  4 Nov 2025 17:28:40 -0300
+Message-ID: <20251104202845.2879460-1-daniel.almeida@collabora.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2C1/3=5D_lib/amdgpu=3A_skip_scheduler_mask_and_memcpy_tests_fo?=
- =?utf-8?q?r_user_queues?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jesse.Zhang" <jesse.zhang@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 04 Nov 2025 20:22:24 -0000
-Message-ID: <176228774479.17530.12004275814044919178@10055242dc62>
-X-Patchwork-Hint: ignore
-References: <20251104083208.3700055-1-Jesse.Zhang@amd.com>
-In-Reply-To: <20251104083208.3700055-1-Jesse.Zhang@amd.com>
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,129 +65,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4406184662002132660==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This series adds basic Panthor tests. In particular, these are being
+used to test both Panthor[0] and Tyr[1], i.e.: the new Rust GPU driver
+that implements Panthor's uAPI (i.e.: panthor_drm.h). Most of the
+initial tests were chosen in order to have something to test Tyr with,
+but this series lays the groundwork so that more interesting tests can
+be added to test more of Panthor itself.
 
-== Series Details ==
+This work is being tested on a RockPi 5, featuring an rk3588 SoC and
+Mali-G610 Valhall.
 
-Series: series starting with [i-g-t,1/3] lib/amdgpu: skip scheduler mask and memcpy tests for user queues
-URL   : https://patchwork.freedesktop.org/series/156972/
-State : success
+Note that there's a few (less than five?) remaining checkpatch.pl
+comments about long lines. IMHO there's no way to format them better so
+I hope we can live with this.
 
-== Summary ==
+[0]: https://patchwork.freedesktop.org/patch/msgid/20240229162230.2634044-12-boris.brezillon@collabora.com
+[1]: https://lore.kernel.org/dri-devel/aMLB0Vs0dJ_AkU4z@google.com/
 
-CI Bug Log - changes from XEIGT_8607_BAT -> XEIGTPW_13984_BAT
-====================================================
+Changes from v2:
 
-Summary
--------
+Thanks, Boris {
+  - New helpers for command stream manipulation (see "struct cs_instr")
+  - Reworked bad indentation and formatting
+  - Removed BE support (UMD doesn't care about this either)
+}
 
-  **SUCCESS**
+Thanks, Daniel Stone {
+  - Introduced igt_panthor_get_first_core(), which correctly computes
+    the first available core using ffs()
+  - Stopped hardcoding the page size and switched to getpagesize()
+    instead,
+  - Switched to more specific versions of igt_assert as appropriate (like
+    igt_assert_neq(), etc)
+  - Simplified panthor_group.c considerably by relying on the helpers in
+    igt_panthor.[ch]
+  - Switched to the syncobj_create() and syncobj_destroy() helpers.
+}
 
-  No regressions found.
+- Added group creation helpers with sensible defaults (see
+  igt_panthor_group_create_simple(), for example)
+- Picked up tags
 
-  
+- Link to v2: https://lore.kernel.org/dri-devel/20250912181931.3738444-1-daniel.almeida@collabora.com/
 
-Participating hosts (11 -> 11)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13984_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-modeset@d-edp1:
-    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#4543]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8607/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset@d-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13984/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset@d-edp1.html
-
-  
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-
-
-Build changes
--------------
-
-  * IGT: IGT_8607 -> IGTPW_13984
-  * Linux: xe-4040-3512eb46a8d42c3deb477856c25d519b19a7d165 -> xe-4041-369a5e1069542c966de4af7e256531fc12ad0b43
-
-  IGTPW_13984: 64e4e3dbf567920dc1f26c77dd9594e8400e0ce8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8607: 8607
-  xe-4040-3512eb46a8d42c3deb477856c25d519b19a7d165: 3512eb46a8d42c3deb477856c25d519b19a7d165
-  xe-4041-369a5e1069542c966de4af7e256531fc12ad0b43: 369a5e1069542c966de4af7e256531fc12ad0b43
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13984/index.html
-
---===============4406184662002132660==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Changes from v1:
+- Rebased on top of the latest master
+- Squashed patch 3 from v1 into patch 2.
+- Switched to /* */ comments in headers
+- Initialized padding fields to 0 as applicable in group_destroy and
+  vm_destroy
+- Removed wrong assert(gpu_rev != 0)
+- Changed indentation to use tabs
+- Rework igt_panthor_mmap_bo to take an offset (so we don't call the
+  mmap_offset ioctl twice)
+- Added igt_describe and docs to the functions igt_panthor.c
+- Linked to the driver in the cover letter and patch 1.
+- Improved the commit message for patch 1.
+Link to v1: https://lore.kernel.org/dri-devel/20250828130402.2549948-1-daniel.almeida@collabora.com/
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
 
+Daniel Almeida (3):
+  lib: add support for opening Panthor devices
+  panthor: add initial infrastructure
+  tests/panthor: add panthor tests
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/3] lib/amdgpu: skip scheduler mask and memcpy tests for user queues</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/156972/">https://patchwork.freedesktop.org/series/156972/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+ lib/drmtest.c                 |   1 +
+ lib/drmtest.h                 |   1 +
+ lib/igt_panthor.c             | 372 ++++++++++++++++++++++++++++++++++
+ lib/igt_panthor.h             | 221 ++++++++++++++++++++
+ lib/meson.build               |   1 +
+ meson.build                   |   8 +
+ tests/meson.build             |   2 +
+ tests/panthor/meson.build     |  15 ++
+ tests/panthor/panthor_gem.c   |  72 +++++++
+ tests/panthor/panthor_group.c | 123 +++++++++++
+ tests/panthor/panthor_query.c |  29 +++
+ tests/panthor/panthor_vm.c    |  84 ++++++++
+ 12 files changed, 929 insertions(+)
+ create mode 100644 lib/igt_panthor.c
+ create mode 100644 lib/igt_panthor.h
+ create mode 100644 tests/panthor/meson.build
+ create mode 100644 tests/panthor/panthor_gem.c
+ create mode 100644 tests/panthor/panthor_group.c
+ create mode 100644 tests/panthor/panthor_query.c
+ create mode 100644 tests/panthor/panthor_vm.c
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13984/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13984/index.html</a></td></tr>
+-- 
+2.51.0
 
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8607_BAT -&gt; XEIGTPW_13984_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 11)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13984_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-modeset@d-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8607/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13984/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset@d-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8607 -&gt; IGTPW_13984</li>
-<li>Linux: xe-4040-3512eb46a8d42c3deb477856c25d519b19a7d165 -&gt; xe-4041-369a5e1069542c966de4af7e256531fc12ad0b43</li>
-</ul>
-<p>IGTPW_13984: 64e4e3dbf567920dc1f26c77dd9594e8400e0ce8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8607: 8607<br />
-  xe-4040-3512eb46a8d42c3deb477856c25d519b19a7d165: 3512eb46a8d42c3deb477856c25d519b19a7d165<br />
-  xe-4041-369a5e1069542c966de4af7e256531fc12ad0b43: 369a5e1069542c966de4af7e256531fc12ad0b43</p>
-
-</body>
-</html>
-
---===============4406184662002132660==--
