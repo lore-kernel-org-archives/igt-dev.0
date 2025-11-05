@@ -4,53 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FDC7CCF9F8
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Nov 2025 08:44:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BA8BCCFA04
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Nov 2025 08:44:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C93CD10E6DB;
-	Wed,  5 Nov 2025 08:44:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D6A0F10E6DD;
+	Wed,  5 Nov 2025 08:44:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L1Nchj7F";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S93yR6/m";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 97F2510E6DB
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Nov 2025 08:44:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 423B810E6DC
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Nov 2025 08:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762332279; x=1793868279;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=gWYpfx6+GNCcU58CiGljxEftICf8zVUE/ZtxzsYVPms=;
- b=L1Nchj7Fug/bW2QrsuoyvCDG/PTEjUmb0ATHHvxqfyc79bNN2o58aiTR
- viAJktvtJuB+0RwNJX+Oshyg9LS1fKHcRWxEiOZPjGW9rBeqgWgyj0BTf
- pSefLbi7l/0kT0PRZLB0uDtZ2J/fgfMMdYSVWkJLsdCZHt+nJn6OEe6wr
- 7zlZycit+fTFekUIXEgzWno0465tWUWgvWiGn68GyWXsNXZ5vrJWJRHwO
- hbfMYoM+418QBFwoOrAPXkjRqdWhlmWQD73Er00K6hT8CP/jP9lgDropd
- 7lvZclbQnNSnRxjaJW32e2wZzQ5AnPVmNtUPZuoos0VuOzj1pdzOiWe+B Q==;
-X-CSE-ConnectionGUID: 8KYanbP3ROGvTHmC7oJApw==
-X-CSE-MsgGUID: VRQKnsUxS0uwyFmD0KzpjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="64471697"
-X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; d="scan'208";a="64471697"
+ t=1762332284; x=1793868284;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=WWjRLuBQsadeQRIhLk6g6YKzxNEQiByILrQISoSMFfs=;
+ b=S93yR6/m1w1iwgHRWS8twqneIIHwof3H5IGomWyzxAE3qUemJX1XRhyd
+ 1VktRZhkRVNL1DdcDO6G8O5+4VsjVYOJWk/HemzsAJoBb9fnAn7DULkRj
+ N/2nh2KSYPe1iUUIdapLvX1xAGjGW2fvw/Nnz2JfNdc97e2MAAIsmjlpS
+ cg/XOuDlCKaXGjUMf0RUtJdIe4MGRpzqlN+Gq+a83BLIleI7G7XRuijtY
+ C9rxeOp2vEnKG/HoC2IEn6OQ1dJLYfCumlL/z1CvkZZWZbyX/4N2MbuQ7
+ GhO5WEbE0ULUZ8Yx6EJ4G39bl9H4IPvSSRiGKgX6mahhmXpoKH0Y+vMEU Q==;
+X-CSE-ConnectionGUID: JvAN9sg3QDKyc7XDLxsJyA==
+X-CSE-MsgGUID: UElGQf8jQhy7/dZjxnqBwg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="67055696"
+X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; d="scan'208";a="67055696"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2025 00:44:38 -0800
-X-CSE-ConnectionGUID: /rY4muTvT+KrDbu0oedlcQ==
-X-CSE-MsgGUID: fEvCD8hxSmCJ/jpcqsPLTw==
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2025 00:44:44 -0800
+X-CSE-ConnectionGUID: XFWBxt4UTCONCmLF5mFbFg==
+X-CSE-MsgGUID: rZcyURxISFyaTpFjA/Xjkw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; d="scan'208";a="186685292"
+X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; d="scan'208";a="186685301"
 Received: from sinjan-super-server.iind.intel.com ([10.190.239.39])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2025 00:44:36 -0800
+ 05 Nov 2025 00:44:41 -0800
 From: Karthik Poosa <karthik.poosa@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
  rodrigo.vivi@intel.com, raag.jadav@intel.com, sk.anirban@intel.com,
  kamil.konieczny@linux.intel.com, Karthik Poosa <karthik.poosa@intel.com>
-Subject: [PATCH i-g-t v3 0/2] tests/intel/xe_pm_residency: Add ASPM Link
- residency test
-Date: Wed,  5 Nov 2025 14:14:24 +0530
-Message-Id: <20251105084426.601123-1-karthik.poosa@intel.com>
+Subject: [PATCH i-g-t v3 1/2] lib/igt_device: Add API to get pci device
+ upstream port
+Date: Wed,  5 Nov 2025 14:14:25 +0530
+Message-Id: <20251105084426.601123-2-karthik.poosa@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20251105084426.601123-1-karthik.poosa@intel.com>
+References: <20251105084426.601123-1-karthik.poosa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,23 +70,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add subtest aspm_link_residency to xe_pm_residency test to check ASPM Link state residency.
-This uses the debugfs /sys/kernel/debug/dri/0/dgfx_pcie_link_residencies to read the
-residency counters.
-Add an API igt_device_get_pci_usp() to get pcie device's upstream port.
+Add API igt_device_get_pci_usp() to get pci device's upstream port.
+This API returns struct pci_device* of the upstream port that is closest
+to the root port within the device's hierarchy.
 
-Previous patchwork link which is combined patch: https://patchwork.freedesktop.org/series/155053/
+Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
+---
+ lib/igt_device.c | 27 +++++++++++++++++++++++++++
+ lib/igt_device.h |  1 +
+ 2 files changed, 28 insertions(+)
 
-Karthik Poosa (2):
-  lib/igt_device: Add API to get pci device upstream port
-  tests/intel/xe_pm_residency: Add subtest for ASPM Link state residency
-
- lib/igt_device.c              |  27 ++++++
- lib/igt_device.h              |   1 +
- tests/intel/xe_pm_residency.c | 159 ++++++++++++++++++++++++++++++++++
- 3 files changed, 187 insertions(+)
- mode change 100644 => 100755 tests/intel/xe_pm_residency.c
-
+diff --git a/lib/igt_device.c b/lib/igt_device.c
+index c24f6a58d..17b6c578a 100644
+--- a/lib/igt_device.c
++++ b/lib/igt_device.c
+@@ -308,3 +308,30 @@ void igt_device_get_pci_slot_name(int fd, char *pci_slot_name)
+ 	snprintf(pci_slot_name, NAME_MAX, "%04x:%02x:%02x.%01x",
+ 		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+ }
++
++/**
++ * igt_device_get_pci_usp:
++ * @fd: fd of the GPU endpoint.
++ *
++ * Looks up for the pci device's upstream port using libpciaccess.
++ *
++ * Returns:
++ * The pci_device of upstream port of the device referenced by fd, NULL on any failures.
++ */
++struct pci_device *
++igt_device_get_pci_usp(int fd)
++{
++	struct pci_device *pci_dev, *prev = NULL, *parent;
++
++	pci_dev = igt_device_get_pci_device(fd);
++	parent = pci_device_get_parent_bridge(pci_dev);
++	while (parent) {
++		igt_debug("PCI device %04x:%02x:%02x.%01x\n",  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
++		igt_debug("PCI device parent %04x:%02x:%02x.%01x\n", parent->domain, parent->bus, parent->dev, parent->func);
++		prev = pci_dev;
++		pci_dev = parent;
++		parent = pci_device_get_parent_bridge(pci_dev);
++	}
++
++	return prev;
++}
+diff --git a/lib/igt_device.h b/lib/igt_device.h
+index dad7bb047..7de464c0e 100644
+--- a/lib/igt_device.h
++++ b/lib/igt_device.h
+@@ -35,6 +35,7 @@ int igt_device_get_card_index(int fd);
+ struct pci_device *igt_device_get_pci_device(int fd);
+ struct pci_device *__igt_device_get_pci_device(int fd, unsigned int vf_id);
+ struct pci_device *igt_device_get_pci_root_port(int fd);
++struct pci_device *igt_device_get_pci_usp(int fd);
+ 
+ void igt_device_get_pci_slot_name(int fd, char *pci_slot_name);
+ #endif /* __IGT_DEVICE_H__ */
 -- 
 2.25.1
 
