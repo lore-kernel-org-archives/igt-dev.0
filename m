@@ -4,49 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7628CCCF9F8
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Nov 2025 09:35:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6D07CCFA15
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Nov 2025 09:35:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7A05810E6EC;
-	Wed,  5 Nov 2025 09:35:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7711810E6ED;
+	Wed,  5 Nov 2025 09:35:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hSeEPjP6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a+8wnu/6";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E9B110E6E7
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Nov 2025 09:35:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4205D10E6ED
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Nov 2025 09:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762335303; x=1793871303;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=moy8yFY3WqkwecdUqMsNCRTwerNG9hBOW3C1StydnmA=;
- b=hSeEPjP6epar9pz+7brBB6mCaNU1sWYNVbdLOfB9uNtXFQetlEpt0hAa
- B3n53Ef49hv0Jeh1O/oF/nPEKTwUDKHUITocB+tdTr69Qpuv28QT5wCZa
- axW8E6Ru1MK29OgDe58A5VZlNezy/+E1A9fe6SFLl+g6E/q/AJv9eiNlf
- ZINVumR0kSF+I2IPddqLjwF01I5es2XYIP9mCD5PCm3X3kNKrGT5/sfVG
- cru1TqTv4GpozM/H5UkvJjktxWIdYfGExGtK8Y1iYJSPawJLVSbJ0AF51
- 8yhHKOFNHxx8lbSkMmn8fAGb7IyPUsskoYT3bUT/8i2afS7UttnWlYmkM Q==;
-X-CSE-ConnectionGUID: btzOoTENTg65M10a5fBXnQ==
-X-CSE-MsgGUID: sGiDW02hRd+g4zM9Con3mg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="64481753"
-X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; d="scan'208";a="64481753"
+ t=1762335305; x=1793871305;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=XCKcnMs9baJqo1s/2giUkCe+oxboDpxA/tiy0ql+1dU=;
+ b=a+8wnu/6PVbC+CFDnXVqgWdxZUTRG0nZuFbwDd0tJWv/Vg9UDcfTwhP7
+ cxIsnYrgyxJsxNCpR3C73zSFHvLNXLsyKdBlN2VdkKvGZz4/8sBoytwIO
+ 2+CBiFF9QM0kbhbVj80oUUDFMpQOLcPz1YL9xIju1eFZ/W3RY+ImExskT
+ YkZbEU33TFQ0IS1lUPktvjMEeOJlNTuOFuRioxAD2uqih9HTcWjmzDYRC
+ 4Mo0/6pbn4EfT/KBI6hxby1CxaLCIoSfryVyNL1pj0kJH9MgmIqfjfq42
+ StrW0I7ckebgjUHRZJ5jCM+xNhXLCSSmcFQfqE9RLSBdHq2CdLGHDZzVA w==;
+X-CSE-ConnectionGUID: nmSsAPvORp2E5i24Bq117g==
+X-CSE-MsgGUID: w3kU5ml9TcCWdXm8Jml4vQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="64481767"
+X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; d="scan'208";a="64481767"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2025 01:35:02 -0800
-X-CSE-ConnectionGUID: JwuKSp3lQmOarxmA5+PHGA==
-X-CSE-MsgGUID: AYL9G3ueRK2gVl5bEZqwOQ==
+ 05 Nov 2025 01:35:05 -0800
+X-CSE-ConnectionGUID: lWJ/bEsHSn6KIQ/hhfKA+Q==
+X-CSE-MsgGUID: PehDBykkTXSlPVG6KRrb0g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; d="scan'208";a="187860742"
+X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; d="scan'208";a="187860757"
 Received: from dut2943pvc.iind.intel.com ([10.190.215.39])
- by fmviesa009.fm.intel.com with ESMTP; 05 Nov 2025 01:35:00 -0800
+ by fmviesa009.fm.intel.com with ESMTP; 05 Nov 2025 01:35:03 -0800
 From: nishit.sharma@intel.com
 To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
  nishit.sharma@intel.com
-Subject: [PATCH i-g-t v11 0/3] Multi-CCS support in IGT
-Date: Wed,  5 Nov 2025 09:34:56 +0000
-Message-ID: <20251105093459.55946-1-nishit.sharma@intel.com>
+Subject: [PATCH i-g-t v11 2/3] tests/intel/xe_compute: Add loop_duration_2s
+ subtest
+Date: Wed,  5 Nov 2025 09:34:58 +0000
+Message-ID: <20251105093459.55946-3-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251105093459.55946-1-nishit.sharma@intel.com>
+References: <20251105093459.55946-1-nishit.sharma@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -67,85 +70,101 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Nishit Sharma <nishit.sharma@intel.com>
 
-Revision 1:
-Added loop_kernel_duration in available pipelines. loop_kernel_duration
-holds sleep duration and during sleep GPU will be workng.
-Patch-1/3: loop_kernel_duration addition in available pipelines in
-lib/intel_compute.c. igt_skip is called in pipeline which doesn't support
-loop_kernel shader.
-Patch-2/3: Added loop-duration-2s subtest in tests/intel/xe_compute to
-test if GPU is executing shader when sleep is called. This is verfied
-using gputop in another terminal. This also tests whether the test
-executed successfully in >= 2seconds of duration set
-Patch-3/3: Added eu-busy-10s test which creates multi threads depending
-on num_slices available and schedules workload on all ccs instances
-available. This also prints engine utlization in percentage while
-workload is executing.
+Verify introduced loop_kernel_duration parameter in user_execenv
+which makes GPU busy for specified duration. Execution should remain
+within a 0.2 second margin of the requested duration. loop_kernel shader
+is not supported in xehpc, xehp, xelpg pipelines so test will skip.
 
-v2:
-- Addressed review comments from Zbyshek on description in Patch-1.
-- Added execution time check in Patch-2 regarding single iteration of
-  scheduling and executing workload on single instance of CCS engine.
+Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ tests/intel/xe_compute.c | 61 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
 
-v3:
-- Added missing code section in Patch-1.
-- Modified LOOP_DURATIOn macro to LOOP_DURATION_2s to avoid confusion.
-- Used LOOP_DURATION_2s in place of LOOP_DURATION and adjusted sleep
-  durations.
-
-v4:
-- Test will skip if sriov is enabled and sriov_numfs > 0.
-- Test will continue runing if sriov_numvfs = 0
-
-v5:
-- Incorporated review comments (Zbigniew)
-
-v6:
-- Simplified logic to capture EU busyness
-- Removed header which had pmu counter and engine instance logic
-- Moved pthread_data structure to xe_compute file which is used during
-  thread creation
-
-v7:
-- collective counters are set per compute engine available in t->eci
-- fixed few nits
-
-v8:
-- Incorporated review comments (Zbigniew)
-- After workload execution set back ccs_mode to default value
-
-v9:
-- Moved get_gt_mask() in igt_fixture to avoid build failure
-
-v10:
-- Moved sriov enabled check in igt_fixture to skip test if sriov is
-  enabled without initilializing or creation of threads.
-- Moved check for loop_kernel support in pipeline in igt_fixture
-
-v11:
-- Moved sriov enabled check in subtests which is setting ccs_mode value
-- loop_kernel support check moved in subtests which are using
-  loop_kernel
-
-v12:
-- Added sriov enable check in subtest eu-busy-10s
-
-v13:
-- Incorporated review comments (Zbyshek)
-
-
-Nishit Sharma (3):
-  lib/intel_compute: loop_kernel_duration in Pipeline
-  tests/intel/xe_compute: Add loop_duration_2s subtest
-  tests/intel/xe_compute: Add eu-busy-10s test for EU utilization
-    measurement
-
- lib/intel_compute.c      |  26 ++-
- lib/intel_compute.h      |   2 +
- tests/intel/xe_compute.c | 349 ++++++++++++++++++++++++++++++++++++++-
- tests/meson.build        |   1 +
- 4 files changed, 374 insertions(+), 4 deletions(-)
-
+diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+index 5e9140902..f8059b2d0 100644
+--- a/tests/intel/xe_compute.c
++++ b/tests/intel/xe_compute.c
+@@ -19,6 +19,9 @@
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ 
++#define LOOP_DURATION_2s	(1000000ull * 2)
++#define DURATION_MARGIN		0.2
++
+ static int gt_sysfs_open(int gt)
+ {
+ 	int fd, gt_fd;
+@@ -186,6 +189,60 @@ test_compute_kernel_with_ccs_mode(void)
+ 	igt_require(num_gt_with_ccs_mode > 0);
+ }
+ 
++static double elapsed(const struct timeval *start,
++		      const struct timeval *end)
++{
++	return (end->tv_sec - start->tv_sec) + 1e-6*(end->tv_usec - start->tv_usec);
++}
++
++/**
++ * SUBTEST: loop-duration-2s
++ * Functionality: OpenCL kernel
++ * Description:
++ *	Run an openCL loop Kernel that for duration,
++ *	set in loop_kernel_duration ..
++ */
++static void
++test_compute_kernel_loop(uint64_t loop_duration)
++{
++	int fd;
++	unsigned int ip_ver;
++	const struct intel_compute_kernels *kernels;
++	struct user_execenv execenv = { 0 };
++	struct drm_xe_engine_class_instance *hwe;
++	struct timeval start, end;
++
++	fd = drm_open_driver(DRIVER_XE);
++	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
++	kernels = intel_compute_square_kernels;
++
++	while (kernels->kernel) {
++		if (ip_ver == kernels->ip_ver)
++			break;
++		kernels++;
++	}
++
++	/* loop_kernel_duration used as sleep to make EU busy for loop_duration */
++	execenv.loop_kernel_duration = loop_duration;
++	execenv.kernel = kernels->loop_kernel;
++	execenv.kernel_size = kernels->loop_kernel_size;
++
++	xe_for_each_engine(fd, hwe) {
++		if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
++			continue;
++
++		igt_info("Running loop_kernel on ccs engine %d\n", hwe->engine_instance);
++		gettimeofday(&start, NULL);
++		igt_assert_f(xe_run_intel_compute_kernel_on_engine(fd, hwe, &execenv,
++								   EXECENV_PREF_SYSTEM),
++			     "Unable to run compute kernel successfully\n");
++		gettimeofday(&end, NULL);
++		igt_assert((double)(loop_duration / LOOP_DURATION_2s - DURATION_MARGIN) < elapsed(&start, &end) &&
++			   (double)(loop_duration / LOOP_DURATION_2s + DURATION_MARGIN));
++	}
++	drm_close_driver(fd);
++}
++
+ /**
+  * SUBTEST: compute-square
+  * Mega feature: WMTP
+@@ -223,4 +280,8 @@ igt_main
+ 
+ 	igt_subtest("ccs-mode-compute-kernel")
+ 		test_compute_kernel_with_ccs_mode();
++
++	/* To test compute function stops after loop_kernel_duration */
++	igt_subtest("loop-duration-2s")
++		test_compute_kernel_loop(LOOP_DURATION_2s);
+ }
 -- 
 2.43.0
 
