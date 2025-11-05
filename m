@@ -4,59 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95FE5CCFA0D
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Nov 2025 14:05:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70529CCFA0D
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Nov 2025 14:19:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4865610E755;
-	Wed,  5 Nov 2025 14:05:29 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U0UM+Zbq";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBBA010E757
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Nov 2025 14:05:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762351528; x=1793887528;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=i3KPmW6+x0+iBtIAJ4pUkZl7OzaF/HwfqhwhDANeBgI=;
- b=U0UM+Zbq8+1M/U7TGrQR3tCzihYBAhiZ6/LbsMUeRwWGIBZ5sTJgycPA
- xJC4mEblkxBIKQWDYc21mqXpWw1EtL+grupwd+Z2KIm0GeEgdrOS+Z7Cg
- Znh5lm+SM0ZRw1ysjCpbzFPpJYUa78t15goIH0GqpID8wpfd1ohM1IukD
- 2JmfoUsw+ikuzZuztlRXvVXipOGVTRp+88atSkc+H7udhrVk7uZHHhbXY
- nW3nHK5EhC/pOW1jn7C63Xey0Y0aKUCFs/AJiBGmk7Gt3KqxMUivLXLXY
- LW93jleJVDZplowbJJBq7Elxt0uJZuRdR2j1FzlwkaVJ3fI9eXDvvWheX g==;
-X-CSE-ConnectionGUID: IRTYwutZT+OTfsb2PcXt5g==
-X-CSE-MsgGUID: 9Pt+AbXJTFqwKmoyHwn8xA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="74758115"
-X-IronPort-AV: E=Sophos;i="6.19,282,1754982000"; d="scan'208";a="74758115"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2025 06:05:28 -0800
-X-CSE-ConnectionGUID: yGO+ni6OSC+o7xpoDCNJHg==
-X-CSE-MsgGUID: lFdlSGy3RP6dZGYDl8O+UA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,282,1754982000"; d="scan'208";a="187131333"
-Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2025 06:05:25 -0800
-From: Sk Anirban <sk.anirban@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
- mallesh.koujalagi@intel.com, vinay.belgaumkar@intel.com,
- Sk Anirban <sk.anirban@intel.com>
-Subject: [i-g-t, v4,
- 2/2] tests/intel/gem_ctx_freq: Add null termination to sysfs
- frequency buffers
-Date: Wed,  5 Nov 2025 19:30:31 +0530
-Message-ID: <20251105140029.1796233-6-sk.anirban@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251105140029.1796233-4-sk.anirban@intel.com>
-References: <20251105140029.1796233-4-sk.anirban@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 26A5610E78E;
+	Wed,  5 Nov 2025 14:19:47 +0000 (UTC)
+Received: from 10055242dc62 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6BC8E10E782;
+ Wed,  5 Nov 2025 14:19:45 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6591630276279171006=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
+ =?utf-8?q?-g-t=2Cv2=2C1/2=5D_tests/intel/xe=5Fconfigfs=3A_Test_invalid_engi?=
+ =?utf-8?q?ne_with_valid_class?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 05 Nov 2025 14:19:45 -0000
+Message-ID: <176235238543.20673.1737670268380385049@10055242dc62>
+X-Patchwork-Hint: ignore
+References: <20251104164141.712312-3-lucas.demarchi@intel.com>
+In-Reply-To: <20251104164141.712312-3-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,70 +38,189 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Ensure buffers are properly null-terminated after reading frequency
-values from sysfs to fix intermittent frequency restoration failures.
+--===============6591630276279171006==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Split patches (Riana)
-v3: Fix subject line (Kamil)
+== Series Details ==
 
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>
----
- tests/intel/gem_ctx_freq.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+Series: series starting with [i-g-t,v2,1/2] tests/intel/xe_configfs: Test invalid engine with valid class
+URL   : https://patchwork.freedesktop.org/series/157026/
+State : success
 
-diff --git a/tests/intel/gem_ctx_freq.c b/tests/intel/gem_ctx_freq.c
-index bb890d195..6b510aca1 100644
---- a/tests/intel/gem_ctx_freq.c
-+++ b/tests/intel/gem_ctx_freq.c
-@@ -200,13 +200,19 @@ static void sysfs_range(int dirfd, int gt)
- static void __restore_sysfs_freq(int dirfd, int sysfs_fd, int fd)
- {
- 	char buf[256];
-+	int len;
- 
- 	igt_pm_ignore_slpc_efficient_freq(fd, dirfd, false);
- 
--	if (igt_sysfs_read(sysfs_fd, "gt_RPn_freq_mhz", buf, sizeof(buf)) > 0)
-+	len = igt_sysfs_read(sysfs_fd, "gt_RPn_freq_mhz", buf, sizeof(buf) - 1);
-+	if (len > 0) {
-+		buf[len] = '\0';
- 		igt_sysfs_rps_set(dirfd, RPS_MIN_FREQ_MHZ, buf);
-+	}
- 
--	if (igt_sysfs_rps_read(dirfd, RPS_RP0_FREQ_MHZ, buf, sizeof(buf)) > 0) {
-+	len = igt_sysfs_rps_read(dirfd, RPS_RP0_FREQ_MHZ, buf, sizeof(buf) - 1);
-+	if (len > 0) {
-+		buf[len] = '\0';
- 		igt_sysfs_rps_set(dirfd, RPS_MAX_FREQ_MHZ, buf);
- 		igt_sysfs_rps_set(dirfd, RPS_BOOST_FREQ_MHZ, buf);
- 	}
-@@ -230,14 +236,20 @@ static void restore_sysfs_freq(int sig)
- static void __disable_boost(int dirfd)
- {
- 	char buf[256];
-+	int len;
- 
--	if (igt_sysfs_rps_read(dirfd, RPS_RPn_FREQ_MHZ, buf, sizeof(buf)) > 0) {
-+	len = igt_sysfs_rps_read(dirfd, RPS_RPn_FREQ_MHZ, buf, sizeof(buf) - 1);
-+	if (len > 0) {
-+		buf[len] = '\0';
- 		igt_sysfs_rps_set(dirfd, RPS_MIN_FREQ_MHZ, buf);
- 		igt_sysfs_rps_set(dirfd, RPS_BOOST_FREQ_MHZ, buf);
- 	}
- 
--	if (igt_sysfs_rps_read(dirfd, RPS_RP0_FREQ_MHZ, buf, sizeof(buf)) > 0)
-+	len = igt_sysfs_rps_read(dirfd, RPS_RP0_FREQ_MHZ, buf, sizeof(buf) - 1);
-+	if (len > 0) {
-+		buf[len] = '\0';
- 		igt_sysfs_rps_set(dirfd, RPS_MAX_FREQ_MHZ, buf);
-+	}
- }
- 
- static void disable_boost(void)
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from IGT_8607 -> IGTPW_13993
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13993/index.html
+
+Participating hosts (46 -> 44)
+------------------------------
+
+  Missing    (2): fi-snb-2520m bat-twl-2 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_13993 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-rpls-4:         [PASS][1] -> [DMESG-WARN][2] ([i915#13400])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8607/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13993/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8607/bat-mtlp-8/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13993/bat-mtlp-8/igt@i915_selftest@live.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - fi-glk-j4005:       [INCOMPLETE][5] ([i915#15198]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8607/fi-glk-j4005/igt@i915_selftest@live.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13993/fi-glk-j4005/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-glk-j4005:       [INCOMPLETE][7] ([i915#15233]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8607/fi-glk-j4005/igt@i915_selftest@live@requests.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13993/fi-glk-j4005/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-11:         [DMESG-FAIL][9] ([i915#12061]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8607/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13993/bat-dg2-11/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
+  [i915#15198]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15198
+  [i915#15233]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15233
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8607 -> IGTPW_13993
+  * Linux: CI_DRM_17483 -> CI_DRM_17489
+
+  CI-20190529: 20190529
+  CI_DRM_17483: 23a9835dc75d0a8ce54cce440a3e0b36c4cec6af @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_17489: 8043455e28fb7b8089e55e4390547a4c3d7bd4dc @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_13993: 13993
+  IGT_8607: 8607
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13993/index.html
+
+--===============6591630276279171006==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/2] tests/intel/xe_configfs: Test invalid engine with valid class</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/157026/">https://patchwork.freedesktop.org/series/157026/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13993/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13993/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8607 -&gt; IGTPW_13993</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13993/index.html</p>
+<h2>Participating hosts (46 -&gt; 44)</h2>
+<p>Missing    (2): fi-snb-2520m bat-twl-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_13993 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8607/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13993/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8607/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13993/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8607/fi-glk-j4005/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15198">i915#15198</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13993/fi-glk-j4005/igt@i915_selftest@live.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8607/fi-glk-j4005/igt@i915_selftest@live@requests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15233">i915#15233</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13993/fi-glk-j4005/igt@i915_selftest@live@requests.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8607/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_13993/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8607 -&gt; IGTPW_13993</li>
+<li>Linux: CI_DRM_17483 -&gt; CI_DRM_17489</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17483: 23a9835dc75d0a8ce54cce440a3e0b36c4cec6af @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_17489: 8043455e28fb7b8089e55e4390547a4c3d7bd4dc @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_13993: 13993<br />
+  IGT_8607: 8607</p>
+
+</body>
+</html>
+
+--===============6591630276279171006==--
