@@ -4,28 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75A36CCF9F8
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Nov 2025 09:25:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F313ECCFA07
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Nov 2025 09:35:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2120310E2C1;
-	Wed,  5 Nov 2025 09:25:04 +0000 (UTC)
-Received: from 10055242dc62 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A8BE710E2C1;
- Wed,  5 Nov 2025 09:25:02 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7296156290174399585=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 72FC210E6EB;
+	Wed,  5 Nov 2025 09:35:04 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Poyq7rPC";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A34D210E6E7
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Nov 2025 09:35:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1762335304; x=1793871304;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=pRichPbMbq/rKFXraVP7Db3S2TkkCGxQgI22uTa0JVc=;
+ b=Poyq7rPCrUjOV08wsnTvv5NZmIpvrjz3DXXUli8Glfi0deSmRKdV3/L5
+ +Qr9OyHd/kNsfw/pFwozQV9nsFqYY5gwKt7xvFHLu2ToFJz+AWDgocuy8
+ bpubZzplO3/yyBepKa8PsEv/LMo3NznYvNh9cqHkXkyOc3ij6/RTl3cvB
+ dWTvr0ZRr35aatizea7iQG7ZoJPQbILroOXcbQFxiaA8ov/fJR/pQmFVv
+ dJ9gZfu9ScAoNa/8PCAM6NLUilfcQ1R3yoVxC5s3Tp8FBYMxuQQRjOLoF
+ QVRZIjkH7djN6M8X/WRJp4WmnX3Bm9U1IupSqXD7lcHWBjfvPk9XfpVHG A==;
+X-CSE-ConnectionGUID: jhxbTaEvSJG7cw1ZqgtbdQ==
+X-CSE-MsgGUID: 62piw/sLSiSJ5Gk7QZBDQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="64481757"
+X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; d="scan'208";a="64481757"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2025 01:35:03 -0800
+X-CSE-ConnectionGUID: bKJoct/DS3WLYchHsWX3Yg==
+X-CSE-MsgGUID: Zw4pkSCETq+Qxz4DCqJtVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; d="scan'208";a="187860751"
+Received: from dut2943pvc.iind.intel.com ([10.190.215.39])
+ by fmviesa009.fm.intel.com with ESMTP; 05 Nov 2025 01:35:02 -0800
+From: nishit.sharma@intel.com
+To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ nishit.sharma@intel.com
+Subject: [PATCH i-g-t v11 1/3] lib/intel_compute: loop_kernel_duration in
+ Pipeline
+Date: Wed,  5 Nov 2025 09:34:57 +0000
+Message-ID: <20251105093459.55946-2-nishit.sharma@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251105093459.55946-1-nishit.sharma@intel.com>
+References: <20251105093459.55946-1-nishit.sharma@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/xe=5Fexec=5Fsip=5Feud?=
- =?utf-8?q?ebug=3A_Band-aid_breakpoint-waitsip=28-heavy=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Dominik_Karol_Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 05 Nov 2025 09:25:02 -0000
-Message-ID: <176233470267.19958.7083270036636882658@10055242dc62>
-X-Patchwork-Hint: ignore
-References: <20251104115418.11917-1-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20251104115418.11917-1-dominik.karol.piatkowski@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,163 +65,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7296156290174399585==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-== Series Details ==
+Incase of multi-ccs it is expected that all ccs engines will be busy.
+There's no existing code which keeps GPU busy for a specified duration,
+So we need to terminate loop kernel from CPU after the desired time has
+elapsed.
+Introduce the loop_kernel_duration variable to control kernel execution
+duration in compute pipelines. Currently this is supported in xe2lg and
+xe3lpg pipelines.
 
-Series: tests/xe_exec_sip_eudebug: Band-aid breakpoint-waitsip(-heavy)
-URL   : https://patchwork.freedesktop.org/series/157003/
-State : failure
+Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/intel_compute.c | 26 +++++++++++++++++++++++++-
+ lib/intel_compute.h |  2 ++
+ 2 files changed, 27 insertions(+), 1 deletion(-)
 
-== Summary ==
+diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+index 147dd2916..8d632269c 100644
+--- a/lib/intel_compute.c
++++ b/lib/intel_compute.c
+@@ -849,6 +849,9 @@ static void compute_exec(int fd, const unsigned char *kernel,
+ 	uint16_t devid = intel_get_drm_devid(fd);
+ 	int entries = ARRAY_SIZE(bo_dict);
+ 
++	if (user && (user->kernel || user->loop_kernel_duration))
++		igt_skip("Pipeline doesn't support loop_kernel\n");
++
+ 	bo_execenv_create(fd, &execenv, eci, user);
+ 
+ 	/* Set dynamic sizes */
+@@ -1131,6 +1134,9 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
+ 	int entries = ARRAY_SIZE(bo_dict);
+ 
++	if (user && (user->kernel || user->loop_kernel_duration))
++		igt_skip("Pipeline doesn't support loop_kernel\n");
++
+ 	bo_execenv_create(fd, &execenv, eci, user);
+ 
+ 	/* Set dynamic sizes */
+@@ -1343,6 +1349,9 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ 	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
+ 	int entries = ARRAY_SIZE(bo_dict);
+ 
++	if (user && (user->kernel || user->loop_kernel_duration))
++		igt_skip("Pipeline doesn't support loop_kernel\n");
++
+ 	bo_execenv_create(fd, &execenv, eci, user);
+ 
+ 	/* Set dynamic sizes */
+@@ -1731,6 +1740,9 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ 	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
+ 	int entries = ARRAY_SIZE(bo_dict);
+ 
++	if (user && (user->kernel || user->loop_kernel_duration))
++		igt_skip("Pipeline doesn't support loop_kernel\n");
++
+ 	bo_execenv_create(fd, &execenv, eci, user);
+ 
+ 	/* Set dynamic sizes */
+@@ -1818,6 +1830,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
+ 	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
+ 	int entries = ARRAY_SIZE(bo_dict);
++	int64_t timeout_one_ns = 1;
+ 
+ 	bo_execenv_create(fd, &execenv, eci, user);
+ 
+@@ -1849,7 +1862,18 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 				    OFFSET_KERNEL, 0, false,
+ 				    execenv.array_size);
+ 
+-	bo_execenv_exec(&execenv, ADDR_BATCH);
++	if (user && user->loop_kernel_duration) {
++		bo_execenv_exec_async(&execenv, ADDR_BATCH);
++		igt_measured_usleep(user->loop_kernel_duration);
++		/* Check that the loop kernel has not completed yet */
++		igt_assert_neq(0, __xe_wait_ufence(fd, &execenv.bo_sync->sync, USER_FENCE_VALUE,
++						   execenv.exec_queue, &timeout_one_ns));
++		((int *)bo_dict[4].data)[0] = MAGIC_LOOP_STOP;
++		bo_execenv_sync(&execenv);
++		user->skip_results_check = 1;
++	} else {
++		bo_execenv_exec(&execenv, ADDR_BATCH);
++	}
+ 
+ 	if (!user || (user && !user->skip_results_check))
+ 		bo_check_square(input_data, output_data, execenv.array_size);
+diff --git a/lib/intel_compute.h b/lib/intel_compute.h
+index 412791d07..54a1c7f82 100644
+--- a/lib/intel_compute.h
++++ b/lib/intel_compute.h
+@@ -63,6 +63,8 @@ struct user_execenv {
+ 	uint64_t input_addr;
+ 	/** @output_addr: override default address of the output array if provided */
+ 	uint64_t output_addr;
++	/** @loop_kernel_duration: duration till kernel should execute in gpu **/
++	uint64_t loop_kernel_duration;
+ };
+ 
+ enum execenv_alloc_prefs {
+-- 
+2.43.0
 
-CI Bug Log - changes from XEIGT_8607_BAT -> XEIGTPW_13990_BAT
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_13990_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_13990_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (11 -> 11)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_13990_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_waitfence@engine:
-    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8607/bat-dg2-oem2/igt@xe_waitfence@engine.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13990/bat-dg2-oem2/igt@xe_waitfence@engine.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13990_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-modeset@d-edp1:
-    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#4543]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8607/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset@d-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13990/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset@d-edp1.html
-
-  
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-
-
-Build changes
--------------
-
-  * IGT: IGT_8607 -> IGTPW_13990
-  * Linux: xe-4040-3512eb46a8d42c3deb477856c25d519b19a7d165 -> xe-4045-957ab9ac657700dee50f42438ed79652dad939a0
-
-  IGTPW_13990: 5ac3db1469157af70120f121c57f2c7df1338866 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8607: 8607
-  xe-4040-3512eb46a8d42c3deb477856c25d519b19a7d165: 3512eb46a8d42c3deb477856c25d519b19a7d165
-  xe-4045-957ab9ac657700dee50f42438ed79652dad939a0: 957ab9ac657700dee50f42438ed79652dad939a0
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13990/index.html
-
---===============7296156290174399585==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe_exec_sip_eudebug: Band-aid breakpoint-waitsip(-heavy)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/157003/">https://patchwork.freedesktop.org/series/157003/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13990/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13990/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8607_BAT -&gt; XEIGTPW_13990_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_13990_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_13990_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (11 -&gt; 11)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_13990_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@xe_waitfence@engine:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8607/bat-dg2-oem2/igt@xe_waitfence@engine.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13990/bat-dg2-oem2/igt@xe_waitfence@engine.html">FAIL</a> +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13990_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-modeset@d-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8607/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13990/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset@d-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8607 -&gt; IGTPW_13990</li>
-<li>Linux: xe-4040-3512eb46a8d42c3deb477856c25d519b19a7d165 -&gt; xe-4045-957ab9ac657700dee50f42438ed79652dad939a0</li>
-</ul>
-<p>IGTPW_13990: 5ac3db1469157af70120f121c57f2c7df1338866 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8607: 8607<br />
-  xe-4040-3512eb46a8d42c3deb477856c25d519b19a7d165: 3512eb46a8d42c3deb477856c25d519b19a7d165<br />
-  xe-4045-957ab9ac657700dee50f42438ed79652dad939a0: 957ab9ac657700dee50f42438ed79652dad939a0</p>
-
-</body>
-</html>
-
---===============7296156290174399585==--
