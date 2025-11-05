@@ -4,27 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D207CCFA0D
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Nov 2025 10:03:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BEF2CCFA0D
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Nov 2025 10:15:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3497710E165;
-	Wed,  5 Nov 2025 10:03:53 +0000 (UTC)
-Received: from 10055242dc62 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4EABC10E165;
- Wed,  5 Nov 2025 10:03:52 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5954114975259638368=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id F3C5D10E2BE;
+	Wed,  5 Nov 2025 10:15:18 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kLtMqHIG";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F83B10E2BE;
+ Wed,  5 Nov 2025 10:15:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1762337716; x=1793873716;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=DNhIeBjCxh9weFihntukzyFUHo/b9hyRABG7gPKyRrg=;
+ b=kLtMqHIGX9P/1cMsiWjQmENvLToVaFoKs4QdfFDJ9Z/rVM7YSXBmC1ps
+ ito1CWcH+nCiHajMSk8aVQ5ZZGdFxdUtvrIwmHG5qLCLOfr2KujpD6ZYL
+ 0/VFYVFL30bwv/CUdDAnCE6PY6kJM3VztkRIB07z1bk2qtnh0/QQcXblU
+ lER/7gn+KNoElff4piohUHFoOWFHfi6c+9Rd8mGFMMG1ZS4gbYI7DaUoM
+ gHElXQVvfpQVMVTpIdeVlLlLCY/axqbim24alAbUo6rkLj9bRzNqEo6mu
+ eeTKqqAuMo8jgVo1hsptNE/+LcUtLnlc3QFJa3joOR24+tXmAy9lOsECC A==;
+X-CSE-ConnectionGUID: WUja/1H0S9SIDZqpGxnvhA==
+X-CSE-MsgGUID: P9F8bXeSQkyMyWsbp1IkYg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="63652857"
+X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; d="scan'208";a="63652857"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2025 02:15:15 -0800
+X-CSE-ConnectionGUID: IWTSxzQkTjW0d1odzPpUUg==
+X-CSE-MsgGUID: ljm+1h8xR6uWl+xtNScYOg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; d="scan'208";a="187263317"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.2])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2025 02:15:14 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Krzysztof Karas <krzysztof.karas@intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>, Nitin Gote <nitin.r.gote@intel.com>
+Subject: Re: [PATCH i-g-t] tests/dmabuf: Avoid soft lockups on slow platforms
+Date: Wed, 05 Nov 2025 11:15:12 +0100
+Message-ID: <5124974.0VBMTVartN@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <r5cgmntobqaj2ou75odamzl75itjp7hbkmxbkb4ek3tnw67wai@lqryev5nzshq>
+References: <20251104112116.432508-2-janusz.krzysztofik@linux.intel.com>
+ <r5cgmntobqaj2ou75odamzl75itjp7hbkmxbkb4ek3tnw67wai@lqryev5nzshq>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/kms=5Fvrr=3A_Fix_pote?=
- =?utf-8?q?ntial_NULL_dereference_in_test=5Fcleanup?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 05 Nov 2025 10:03:52 -0000
-Message-ID: <176233703231.19958.1349743991396801117@10055242dc62>
-X-Patchwork-Hint: ignore
-References: <20251104144512.1484094-1-ramanaidu.naladala@intel.com>
-In-Reply-To: <20251104144512.1484094-1-ramanaidu.naladala@intel.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,163 +71,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5954114975259638368==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Krzysztof,
 
-== Series Details ==
+Thanks for taking a look.
 
-Series: tests/kms_vrr: Fix potential NULL dereference in test_cleanup
-URL   : https://patchwork.freedesktop.org/series/157017/
-State : failure
+On Wednesday, 5 November 2025 09:37:14 CET Krzysztof Karas wrote:
+> Hi Janusz,
+> 
+> On 2025-11-04 at 12:20:24 +0100, Janusz Krzysztofik wrote:
+> > Certain selftests, while basically correct, may fail on certain platforms.
+> > E.g., igt@dmabuf@all-test@dma_fence_chain used to complete successfully,
+> > but on slow machines it triggers soft lockup warnings which taint the
+> > kernel.
+> > 
+> > Sometimes, like in the above mentioned case, it's not possible to fix a
+> > root cause of the issue since it is not recognized as a bug.  To avoid
+> > ever returning CI bug reports in such cases, allow selftests to be called
+> > via user provided wrappers that take care of not triggering unavoidable
+> > failures, e.g. by skipping specific selftests if some conditions are not
+> > met, or watching their execution and acting upon certain conditions or
+> > events.
+> > 
+> > With that in place, update the dmabuf test so it, as the first user of the
+> > new feature, skips the dma_fence_chain selftest if a machine looks too
+> > slow.  Since that's a hardware agnostic selftest, running it on a limited
+> > subset of machines seems acceptable, especially when the soft lockups it
+> > can trigger aren't recognized as bugs on the kernel side.
+> > 
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > ---
+> >  
+> 
+> [...]
+> 
+> > +static unsigned int bogomips(void)
+> > +{
+> > +	unsigned int bogomips, ret = 0;
+> > +	char *line = NULL;
+> > +	size_t size = 0;
+> > +	FILE *cpuinfo;
+> > +
+> > +	cpuinfo = fopen("/proc/cpuinfo", "r");
+> > +	if (igt_debug_on(!cpuinfo))
+> > +		return UINT_MAX;
+> Could this result in running the test on a slower machine
+> unintentionally? fopen() could fail, the bogomips() would return
+> a large value and wrapper function would behave as if the test
+> is running on a faster platform.
 
-== Summary ==
+Yes, if opening /proc/cpuinfo fails then my approach could result in running 
+the test on a machine that occurs too slow.  If that happens then an abort 
+caused by soft lockup will be reported again, but this time with the fopen() 
+failure also pointed out among debug messages.  But why could that failing 
+fopen() happen in practice?
 
-CI Bug Log - changes from XEIGT_8607_BAT -> XEIGTPW_13991_BAT
-====================================================
+One possible case is an environment with no /proc/cpuinfo (non-Linux, e.g., 
+FreeBSD).
 
-Summary
--------
+> 
+> > +
+> > +	while (getline(&line, &size, cpuinfo) != -1) {
+> It is unlikely, but getline() may fail with EINVAL or ENOMEM, so
+> maybe while(getline(&line, &size, cpuinfo) > 0)?
 
-  **FAILURE**
+No, getline returns -1 on any error, errno provides those extra error codes, 
+if that's what you had on mind.
 
-  Serious unknown changes coming with XEIGTPW_13991_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_13991_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+> 
+> > +		char *colon;
+> > +
+> > +		if (strncmp(line, "bogomips", 8))
+> > +			continue;
+> > +
+> > +		colon = strchr(line, ':');
+> > +		if (igt_debug_on(!colon))
+> > +			bogomips = 0;
+> > +		else
+> > +			bogomips = atoi(colon + 1);
+> > +
+> > +		if (igt_debug_on(!bogomips))
+> > +			break;
+> > +
+> > +		ret += bogomips;
+> > +	}
+> > +	free(line);
+> > +	fclose(cpuinfo);
+> > +
+> > +	return igt_debug_on(!bogomips) ? UINT_MAX : ret;
+> Same as my first comment in this function: will this not cause
+> sporadic runs on machines that are supposed to skip the test?
 
-  
+Yes, but if you think that's wrong then please first think of e.g. fopen() 
+failing on a fast machine for some reason, and then suggest a behaviour that 
+you think would be more correct in any of possible cases.  My thinking is that 
+it's more important to execute the selftest and preserve coverage than fail on 
+potential test issues that don't mean the selftest can't be executed.
 
-Participating hosts (11 -> 11)
-------------------------------
+> 
+> > +}
+> > +
+> > +static int wrapper(const char *dynamic_name,
+> The name could be more descriptive about what function does/is
+> used for, so maybe "check_skip_wrapper" would better achieve
+> that?
 
-  No changes in participating hosts
+If that was a global function then sure, its name should be more descriptive, 
+but here in this context I don't think that name may introduce any doubts.  
+But anyway, I can try to propose a more descriptive name if v2 is needed.
 
-Possible new issues
--------------------
+Thanks,
+Janusz
 
-  Here are the unknown changes that may have been introduced in XEIGTPW_13991_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_waitfence@engine:
-    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8607/bat-dg2-oem2/igt@xe_waitfence@engine.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13991/bat-dg2-oem2/igt@xe_waitfence@engine.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_13991_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-modeset@d-edp1:
-    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#4543]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8607/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset@d-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13991/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset@d-edp1.html
-
-  
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-
-
-Build changes
--------------
-
-  * IGT: IGT_8607 -> IGTPW_13991
-  * Linux: xe-4040-3512eb46a8d42c3deb477856c25d519b19a7d165 -> xe-4045-957ab9ac657700dee50f42438ed79652dad939a0
-
-  IGTPW_13991: 13991
-  IGT_8607: 8607
-  xe-4040-3512eb46a8d42c3deb477856c25d519b19a7d165: 3512eb46a8d42c3deb477856c25d519b19a7d165
-  xe-4045-957ab9ac657700dee50f42438ed79652dad939a0: 957ab9ac657700dee50f42438ed79652dad939a0
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13991/index.html
-
---===============5954114975259638368==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+> 
+> [...]
+> 
+> 
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_vrr: Fix potential NULL dereference in test_cleanup</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/157017/">https://patchwork.freedesktop.org/series/157017/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13991/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13991/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8607_BAT -&gt; XEIGTPW_13991_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_13991_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_13991_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (11 -&gt; 11)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_13991_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@xe_waitfence@engine:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8607/bat-dg2-oem2/igt@xe_waitfence@engine.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13991/bat-dg2-oem2/igt@xe_waitfence@engine.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_13991_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-modeset@d-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8607/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_13991/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset@d-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8607 -&gt; IGTPW_13991</li>
-<li>Linux: xe-4040-3512eb46a8d42c3deb477856c25d519b19a7d165 -&gt; xe-4045-957ab9ac657700dee50f42438ed79652dad939a0</li>
-</ul>
-<p>IGTPW_13991: 13991<br />
-  IGT_8607: 8607<br />
-  xe-4040-3512eb46a8d42c3deb477856c25d519b19a7d165: 3512eb46a8d42c3deb477856c25d519b19a7d165<br />
-  xe-4045-957ab9ac657700dee50f42438ed79652dad939a0: 957ab9ac657700dee50f42438ed79652dad939a0</p>
-
-</body>
-</html>
-
---===============5954114975259638368==--
