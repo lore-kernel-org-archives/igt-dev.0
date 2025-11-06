@@ -4,54 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2FBBCCF9F8
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 09:26:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E009BCCF9F8
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 09:27:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6C44810E85C;
-	Thu,  6 Nov 2025 09:26:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 97AFE10E85C;
+	Thu,  6 Nov 2025 09:27:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="b8Qx0BGx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Lg7Fg0aR";
 	dkim-atps=neutral
-Received: from bali.collaboradmins.com (bali.collaboradmins.com
- [148.251.105.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0E4110E85B;
- Thu,  6 Nov 2025 09:26:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1762421171;
- bh=nmdU0ge50fq0lHu4BpdYfA8ccSdhIjX9nEHLe1tS8fM=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=b8Qx0BGxinF49qrZIFoPZhxEnqFTWJ0bcvxxpUpFuDQPgRZkAukediUf0ihlnpV2y
- AGZzUU46f7dUkJzE36T0EcWRmQVj+DF8zGJnw7JXXkRYZ4vVvGSVcLDcSzWOrUTuGm
- CAv414HIW4fw98fL+E0zAS9M4BbPy3RMchUgzqNSQT8qftxdedAL/aVsMFIReASjlo
- EvIsNnAjPEyT9CrQjWgcl7XdrMmRXMQjBB0Ygf/Vl5KbeqHjwsJBgJl7uDejqSvkPb
- MQi1fVw8yOWDycoG2Y8vhKxUr3ivA8cxx10P/sCK+gQSGX2vQu0LI6lTNK2++vNR/3
- nIaZgyFEBAtZQ==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits)
- server-digest SHA256) (No client certificate requested)
- (Authenticated sender: bbrezillon)
- by bali.collaboradmins.com (Postfix) with ESMTPSA id EC8AD17E0CA1;
- Thu,  6 Nov 2025 10:26:10 +0100 (CET)
-Date: Thu, 6 Nov 2025 10:26:07 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: adrinael@adrinael.net, arek@hiler.eu, kamil.konieczny@linux.intel.com,
- juhapekka.heikkila@gmail.com, bhanuprakash.modem@gmail.com,
- ashutosh.dixit@intel.com, karthik.b.s@intel.com, liviu.dudau@arm.com,
- steven.price@arm.com, aliceryhl@google.com, jeffv@google.com,
- intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v3 3/3] tests/panthor: add panthor tests
-Message-ID: <20251106102607.7f1fe3f7@fedora>
-In-Reply-To: <20251104202845.2879460-4-daniel.almeida@collabora.com>
-References: <20251104202845.2879460-1-daniel.almeida@collabora.com>
- <20251104202845.2879460-4-daniel.almeida@collabora.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D6DE510E85C
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Nov 2025 09:27:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1762421258; x=1793957258;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=zBvCXZ1Oz5HGdAV3sCEFu5rmA4GyTEeO4Bis2zF8da0=;
+ b=Lg7Fg0aR4IlgAXsp/wpcMz1h4OYse4dXQa5tgImibHiL1dDf6prSWgB0
+ MDbDe/COf/R8BBXkFKIxMWunLBF96+kEgbMiruJgNTZmwjD/K1IgQtlNM
+ lqUNDLUJqqjnqmxEL25l3CnfJ+mg5BmLcjltaxoYnC1MOF9W6PXcwSJ90
+ 76SneeBHOPOBFJOHL1W2Id4Xyz7tRfJ9bOyCfiN1B7JEJGmpzn52Y1ERU
+ /Q/cKVWyInoymSiEDJixIwIaumTtbdxNxbqn9p0y0Qj0bl8DwZEW9PqFi
+ eruJew66dUKkyH2xuTjJiVVk3T45trhLzY0x6cB7SemM8bT3lJfPGMfJo g==;
+X-CSE-ConnectionGUID: QMl5bve1RHS4IAyr84jL7g==
+X-CSE-MsgGUID: fN6J/7ATQKqhfbyKynog9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="64591127"
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="64591127"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2025 01:27:38 -0800
+X-CSE-ConnectionGUID: CHMRokf9R+Ozl2shh60HFQ==
+X-CSE-MsgGUID: Soztl2OES5afool9/ssATQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="187991623"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2025 01:27:37 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Thu, 6 Nov 2025 01:27:36 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Thu, 6 Nov 2025 01:27:36 -0800
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.58) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Thu, 6 Nov 2025 01:27:36 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RkFtMpw6g05IWXMyhQW/aLogXcDGp/ZnvfYGKiqh3jx1aCwm/o/B6/YNbWuM/AQXVv+dGk64ejO+UyRhQajorHEUjAzmNwgjNvuOPlv4JZJJVF51foE6sxJ6IJFm6TkOQceWq0VIHiIj4ISo9z+rodKuCDumykA64AYauHajCx8oBYTQZAxG6lZCUUtn+IvHRT9oNQaCHNHK4/R7SOP9FQmd4XBQZ/M19gHbtSTfjqKtQO/HdvaDA/BrNrz1RqS2vGtkomETuzHrGId3BbhDmHmw46L/03KFOUe+IDJJ/BM+ctAeFnfJ7aT18m8u35pJHmZhiZsl5i8VlUz/0UMLfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=k+agUbgAoPWR1I4QHAiiHD2GDhw3v0qaldT8Kp3udPU=;
+ b=kdpaxX6ukL7DBOMxi4piJ8CiltGQbCm7Iy1+rz5wFdYvyU4WWOB3TRYdxb5Qawjylo1kj//H6SCSxHyyu7XlQwBbs6cXzD8Ss8B6LfJ7kcGtO6dfryKUVmt7eJF+7mXYf8aeXOAxuha6p0RAJP3xYZ/SEtJPtOxhdgPXjS2WqY+H4Qn2Ncy9JJ6vcB9ykPzDVYdS0YMzY2O1/GCjTjheDGS3cFMxEjHQ/ojHzBxJwImqQzEKlDSPjfo1bi6G7YQN/o55I6RlTI1bSTBwDTgjs3DIxaCY0EmK0+IeS3IOXlcqUCBcdgLP8tEph3Rx/WxErPbtWAl5daEaFT6YWGe8SA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CY5PR11MB6344.namprd11.prod.outlook.com (2603:10b6:930:3b::6)
+ by IA1PR11MB7319.namprd11.prod.outlook.com (2603:10b6:208:425::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Thu, 6 Nov
+ 2025 09:27:34 +0000
+Received: from CY5PR11MB6344.namprd11.prod.outlook.com
+ ([fe80::3ac4:e20e:84f1:f826]) by CY5PR11MB6344.namprd11.prod.outlook.com
+ ([fe80::3ac4:e20e:84f1:f826%4]) with mapi id 15.20.9298.007; Thu, 6 Nov 2025
+ 09:27:34 +0000
+From: "Golani, Mitulkumar Ajitkumar" <mitulkumar.ajitkumar.golani@intel.com>
+To: "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: RE: [PATCH i-g-t v1] tests/kms_vrr: Avoid NULL dereference on cleanup
+Thread-Topic: [PATCH i-g-t v1] tests/kms_vrr: Avoid NULL dereference on cleanup
+Thread-Index: AQHcTtuDFBFuw/C7E0264ayCTxWCo7TlYQtw
+Date: Thu, 6 Nov 2025 09:27:33 +0000
+Message-ID: <CY5PR11MB6344132D4932373CCD3C4366B2C2A@CY5PR11MB6344.namprd11.prod.outlook.com>
+References: <20251106050851.1502869-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20251106050851.1502869-1-ramanaidu.naladala@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY5PR11MB6344:EE_|IA1PR11MB7319:EE_
+x-ms-office365-filtering-correlation-id: 32e11e6e-3d09-49fd-a096-08de1d16b796
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|1800799024|376014|366016|38070700021|7053199007; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?jn7xAGFlDTmQ5FfKiBcjbt1SenwyEZzMU8LN1CJKTTi/5P0UOeivNiT4bpXR?=
+ =?us-ascii?Q?70JdKWAvsFYsmt5j98FrP+DUPzlr7mT8+64LqPMaApEp60k+CK60ROasNuT7?=
+ =?us-ascii?Q?KEky5HsrKvPsoDtVYy44X9+RG0C+qW7FDuVDw9fnEVTyP2elvPE5Zi+UTfTZ?=
+ =?us-ascii?Q?BrAoC3QBtOLcahSwZ4Pexm3Rx/lrcSnl7BEEPyL1NFFoXWSGtmmTM/mL7GP+?=
+ =?us-ascii?Q?bgv24kiG+9ihZ8LYij06PqeUZG/UauBy5toSXMfqb5ej9DtyhEveqe/iKgMk?=
+ =?us-ascii?Q?oQJL5KeKHgxlQkmMIp8wGkxyCwHr4jyw7j7Gn+mpRV980M9NxH4Swr5Giyk+?=
+ =?us-ascii?Q?Z9fcYVTBPzbP8vy0fDRJ84oFKEWxhSt1CfnY/tsFdeLvqKSszy7gagnfyXLZ?=
+ =?us-ascii?Q?TRB61sOT4YmXp5SPLIH+SL/iSPkKDqSKvCG5mZvKd9jJcp8Pi5yaBcrWJTZj?=
+ =?us-ascii?Q?YnBh5uRAZCbYkQesBvnOehkwVY3L64KN/ihFXvS8D+5tCmTiPy+pinNKe0SV?=
+ =?us-ascii?Q?wY64WVv+mhwW/GSSfvWuYN55jgO2tjzcsD1nR8JlX3O5el13pMTEaY4f/qNG?=
+ =?us-ascii?Q?UQXO4NfAr8cZNEg3bgDNATug3Fm+dVq/YPp0xSNasPcVL8K9E9KXm4BWSPYh?=
+ =?us-ascii?Q?N+vqyZiM15QdOz881o0WayPTObrBKAIOCP269FFVthpSOl6BcDwzD93gI8sA?=
+ =?us-ascii?Q?keDU0A9ko3CdwXLAcoD44omB2wLxcUdErney+Uzr2PXD9hy9cKfRIAf/madN?=
+ =?us-ascii?Q?QtBMhC8Jlud8f9lOB+sMqoraJJRsq9sXOIuVZU8tuOFfErX84DgZpe186fwr?=
+ =?us-ascii?Q?m1eloeefyUKol5iIAiwoAeUJJf+pAvOLkqeOr6kx27hL5wret2llLPa6fpS8?=
+ =?us-ascii?Q?0uHJYkZiqvuYG6M4VmvylvsNVfMjOYiiLnsxuC4KOCSXgyQIMu7hj6mk4HTg?=
+ =?us-ascii?Q?iBIoI1Xk5pJS5DT+BuDMSP5HLF4lfnlCeL0xMVjRVQ2hBSkTX+UebOwm7z/7?=
+ =?us-ascii?Q?fj3GxP5lEFdPgG9ruCv7b6GXd4RSqJa+XUmt+B1F8bdDPpi9Up5UMdqmTrUC?=
+ =?us-ascii?Q?ID1CcuMxYFihjSImfVbCRplPzWI1kUw2qHTWahVs/tNUCy0jyqT53badYnLr?=
+ =?us-ascii?Q?fYyaVOccwHnywyzc+E8wb1vPc1JbbXerybRHg97+lm94BvYBZOA9lhOLg4dm?=
+ =?us-ascii?Q?VUo4R3LKU7WgdpoPJ/oUXdub7Z/xpmHKHZTibeEWG+0cdaf4axrYf4mZBMK+?=
+ =?us-ascii?Q?nwVcRuECuZQNrICF2yr6cPrFKrmZb0JL8Cu7P7KB+uUtCuMQnYO+VedmSV+w?=
+ =?us-ascii?Q?aTjiwvjcxTXlg1OtaX1H0DR4e744RLt9gwkQ5n6A8ZUesLltkNm6sr6/Wq7+?=
+ =?us-ascii?Q?sohlKLlPYALR/GlMQtpNPAo0uu1VMyEaLnuG0+VrMYMKURiP4KSEy31YQOyk?=
+ =?us-ascii?Q?2qK/dGQWIFVyFVeZ47dMEy4I/sLWSwb/EiJ/PB1zVhN//eClrdcrfnKZaDSm?=
+ =?us-ascii?Q?mhPdybW4obySXIlrt9Wr0kAPLCeWVs+x4zD1?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY5PR11MB6344.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(38070700021)(7053199007); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?EabeOmJzVi91ykLdUvCiHyYfJVVagpTkBD2vhXMM0s2hg8lZouiESN4GuFY8?=
+ =?us-ascii?Q?F75shLg4h0tXa9rSd01hgGb4DUyBBeS0wxa9cY5IyjQfGMRibCARppUSHvGq?=
+ =?us-ascii?Q?/vvO68e41iWpsAYLWGNayX6oV7WRzzU7ZslZmLHQawxRJKxVqWtAg0tNPvZS?=
+ =?us-ascii?Q?vS2MUFHFp9bKtfBbwv4cO/rKS46XogOQymTuYb0k+xasRU6K1Emjehk3N5Eo?=
+ =?us-ascii?Q?xjDv4KYz6sPxXN2PM6NqAFhv8wUXFsIbv4/fA9YcFf8c6Dn9L1oziisHQvsy?=
+ =?us-ascii?Q?gG4wgSSLtax2qkZUADORHhgE7y0S0Ipb2JuLaDeJjWPMiDuerX2tviZxJCFv?=
+ =?us-ascii?Q?47bnRuwf7Q9HXEWrsKU9O0Y9643UhRULsyOLZEfykihOHH9c39qqBh5zeOb1?=
+ =?us-ascii?Q?Kgz3OU5XahuDiu+ASgbAaknXJalmTIjG9Ep2gn3vs0BRzNMi2T+XwTl3EUxW?=
+ =?us-ascii?Q?/jbd/XkDUpFPX5vJDENgTn6JgkSuk3KIcXZnY3HhIrdoW1eERaZ2SX4Z3FVk?=
+ =?us-ascii?Q?BBuc7JYpakOIgsiXUfln9L57xNUMHJDGulQV5j5oekY3I+7Ejr8jxeoeJdaN?=
+ =?us-ascii?Q?MR4BaauHg0EdS3eXR5BDbptmNFQdwFSq3GkKBXCs4ZCewLpulgZyLjJXIDSG?=
+ =?us-ascii?Q?HDiUxLvJW2BiNpnSnwmS0ola03IVMqvCClJkgQgeygd/fYrdGWMCy5xLCgAT?=
+ =?us-ascii?Q?FOEO3kSZTauiV2cNnx0Xe6jIeSrpiv3AN6vOVs3VdVbhOj3GZxSv/C2WuUJy?=
+ =?us-ascii?Q?i58Kv+UmVp/VvYF2G/xStjZlIfkri0zEJoR54kzB0yW4wTSscaU2aTLznxjb?=
+ =?us-ascii?Q?SG20DSU/HNW58z+KtdUlYovFA24SHRP4jdwl33uOerQ7DWVIp0b6d+SRh6qG?=
+ =?us-ascii?Q?hFoVWYpFIC+iMT+2weBffC/e4gl72sfe7rfGk12x217I+TP+6/UpUyu6xIjB?=
+ =?us-ascii?Q?r9xDr5SklFLTmvkARPr3Kkdj9VsLPQBUUbyPLplS039ObiNWIA0EGFZJDE8Y?=
+ =?us-ascii?Q?vcdEIszjxJNLWgetSQxbK4MW4txrCgMgjfDHgHlsYEUYFgCPDUHDwWFgzFMJ?=
+ =?us-ascii?Q?CH1qHEFVIbdezHlOvnLjZrLdkJDkHa73qLXvaU4Xryzh2xuYMloSEyDyXyj7?=
+ =?us-ascii?Q?B6BZd2UPwMT5xfx+iGsP/S3b/UkeydwRmdJK6fLnYrlYUf7dcut5F5qXSWWx?=
+ =?us-ascii?Q?QYBLpuiMDXFSd2FraiiCdAUKevGshV3T+8OGXp02Xbk2X1mZVSSoYstFw6S9?=
+ =?us-ascii?Q?KjUoH7pa6nhmihCwoGMJkiYT9I7F9j5bLiH7RH3b+G9LfxwjiHQrVxqGI/3/?=
+ =?us-ascii?Q?dcUxQ/ryLoSBO9IEtrkGi9lsZbRUrjXbcrpIHLgVpf1krAYjt/0lLqfLgko4?=
+ =?us-ascii?Q?e2pOv0jpup35enZlSaUslci2MnlFXsuGT0aw/o7YvOs9X5oxwaqivxQ/Pxai?=
+ =?us-ascii?Q?bFMzU/zXW6Vk0DOYEGScPzj/A5DiGXl0TOnZXOT+98Raqiz6KV8G5VeHSzTh?=
+ =?us-ascii?Q?YI2q8rp2rxpcoscVAq9jkU5gyX8ZxS52bu6GWeJ0wpq3C1UregMwqFG9iUqg?=
+ =?us-ascii?Q?ZNWalXvWWgbk8yu23rUMInmy2DS6E5rGNEuPG5UtXCIl3wYnmo3g9D/hr0u5?=
+ =?us-ascii?Q?u2maIwXCP/9BYAmYYHzcT4Y=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6344.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32e11e6e-3d09-49fd-a096-08de1d16b796
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Nov 2025 09:27:33.9474 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: BCbUa5Bu0iPbsWy8rtnAEE2y9d/0pN6SC9umSeDWWF/Pz/Fyt8HZ67HBA0VcYGwrdOZoCFz3upTJif+YccIfuJaBJEbGqw0vce/h0eA9737dBLXpFjWi5LSplb7upom1
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7319
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,728 +182,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue,  4 Nov 2025 17:28:43 -0300
-Daniel Almeida <daniel.almeida@collabora.com> wrote:
 
-> Add an initial test suit covering query device properties, allocating
-> memory, binding and unbinding VA ranges through VM_BIND and submitting a
-> simple piece of work through GROUP_SUBMIT.
-> 
-> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-With the indentation fixed, this is
-
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-
+> -----Original Message-----
+> From: Naladala, Ramanaidu <ramanaidu.naladala@intel.com>
+> Sent: 06 November 2025 10:39
+> To: igt-dev@lists.freedesktop.org
+> Cc: Golani, Mitulkumar Ajitkumar <mitulkumar.ajitkumar.golani@intel.com>;
+> Naladala, Ramanaidu <ramanaidu.naladala@intel.com>
+> Subject: [PATCH i-g-t v1] tests/kms_vrr: Avoid NULL dereference on cleanu=
+p
+>=20
+> Add a safeguard to prevent a possible crash during the cleanup phase of t=
+he
+> VRR test.
+>=20
+> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 > ---
->  lib/igt_panthor.c             | 331 ++++++++++++++++++++++++++++++++++
->  lib/igt_panthor.h             |  28 +++
->  tests/panthor/meson.build     |   5 +-
->  tests/panthor/panthor_gem.c   |  72 ++++++++
->  tests/panthor/panthor_group.c | 123 +++++++++++++
->  tests/panthor/panthor_vm.c    |  84 +++++++++
->  6 files changed, 642 insertions(+), 1 deletion(-)
->  create mode 100644 tests/panthor/panthor_gem.c
->  create mode 100644 tests/panthor/panthor_group.c
->  create mode 100644 tests/panthor/panthor_vm.c
-> 
-> diff --git a/lib/igt_panthor.c b/lib/igt_panthor.c
-> index 0b690f796..73ada9c59 100644
-> --- a/lib/igt_panthor.c
-> +++ b/lib/igt_panthor.c
-> @@ -6,6 +6,148 @@
->  #include "ioctl_wrappers.h"
->  #include "panthor_drm.h"
->  
-> +/**
-> + * igt_panthor_group_create:
-> + * @fd: device file descriptor
-> + * @group_create: pointer to group creation structure
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Create a group.
-> + */
-> +void igt_panthor_group_create(int fd, struct drm_panthor_group_create *group_create, int err)
-> +{
-> +	if (err)
-> +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_GROUP_CREATE, group_create, err);
-> +	else
-> +		do_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_CREATE, group_create);
-> +}
-> +
-> +/**
-> + * igt_panthor_group_destroy:
-> + * @fd: device file descriptor
-> + * @group_handle: group handle to destroy
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Destroy a group.
-> + */
-> +void igt_panthor_group_destroy(int fd, uint32_t group_handle, int err)
-> +{
-> +	struct drm_panthor_group_destroy group_destroy = {
-> +		.group_handle = group_handle,
-> +	};
-> +
-> +	if (err)
-> +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_GROUP_DESTROY, &group_destroy, err);
-> +	else
-> +		do_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_DESTROY, &group_destroy);
-> +}
-> +
-> +/**
-> + * igt_panthor_group_submit:
-> + * @fd: device file descriptor
-> + * @group_submit: pointer to group submission structure
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Submit work to a group.
-> + */
-> +void igt_panthor_group_submit(int fd, struct drm_panthor_group_submit *group_submit, int err)
-> +{
-> +	if (err)
-> +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_GROUP_SUBMIT, group_submit, err);
-> +	else
-> +		do_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_SUBMIT, group_submit);
-> +}
-> +
-> +/**
-> + * igt_panthor_get_first_core:
-> + * @cores_present: bitmask of available cores
-> + *
-> + * Get a mask with only the first available core bit set.
-> + *
-> + * Returns: core mask with first available core, or 0 if no cores available
-> + */
-> +uint64_t igt_panthor_get_first_core(uint64_t cores_present)
-> +{
-> +	if (cores_present == 0)
-> +		return 0;
-> +
-> +	return 1ULL << (ffs(cores_present) - 1);
-> +}
-> +
-> +/**
-> + * igt_panthor_group_create_simple:
-> + * @fd: device file descriptor
-> + * @vm_id: VM ID to associate with the group
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Create a group with a single queue and reasonable defaults.
-> + *
-> + * Returns: group handle on success
-> + */
-> +uint32_t igt_panthor_group_create_simple(int fd, uint32_t vm_id, int err)
-> +{
-> +	struct drm_panthor_gpu_info gpu_info = {};
-> +	struct drm_panthor_group_create group_create = {};
-> +	struct drm_panthor_queue_create queue = {};
-> +	struct drm_panthor_obj_array queues = {};
-> +
-> +	igt_panthor_query(fd, DRM_PANTHOR_DEV_QUERY_GPU_INFO, &gpu_info, sizeof(gpu_info), 0);
-> +
-> +	queue.priority = 0;
-> +	queue.ringbuf_size = 4096;
-> +	queues = (struct drm_panthor_obj_array)DRM_PANTHOR_OBJ_ARRAY(1, &queue);
-> +
-> +	group_create.queues = queues;
-> +	group_create.max_compute_cores = 1;
-> +	group_create.max_fragment_cores = 1;
-> +	group_create.max_tiler_cores = 1;
-> +	group_create.priority = PANTHOR_GROUP_PRIORITY_MEDIUM;
-> +	group_create.compute_core_mask = igt_panthor_get_first_core(gpu_info.shader_present);
-> +	group_create.fragment_core_mask = igt_panthor_get_first_core(gpu_info.shader_present);
-> +	group_create.tiler_core_mask = igt_panthor_get_first_core(gpu_info.tiler_present);
-> +	group_create.vm_id = vm_id;
-> +
-> +	igt_panthor_group_create(fd, &group_create, err);
-> +	return group_create.group_handle;
-> +}
-> +
-> +/**
-> + * igt_panthor_group_submit_simple:
-> + * @fd: device file descriptor
-> + * @group_handle: group handle to submit to
-> + * @queue_index: queue index within the group
-> + * @stream_addr: GPU address of the command stream
-> + * @stream_size: size of the command stream
-> + * @syncobj_handle: sync object handle for completion signaling
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Submit work to a group queue with a simple interface.
-> + */
-> +void igt_panthor_group_submit_simple(int fd, uint32_t group_handle,
-> +				     uint32_t queue_index, uint64_t stream_addr,
-> +				     uint32_t stream_size, uint32_t syncobj_handle,
-> +				     int err)
-> +{
-> +	struct drm_panthor_group_submit group_submit = {};
-> +	struct drm_panthor_queue_submit queue_submit = {};
-> +	struct drm_panthor_sync_op sync_op = {};
-> +
-> +	sync_op.handle = syncobj_handle;
-> +	sync_op.flags = DRM_PANTHOR_SYNC_OP_SIGNAL;
-> +
-> +	queue_submit.syncs = (struct drm_panthor_obj_array)DRM_PANTHOR_OBJ_ARRAY(1, &sync_op);
-> +	queue_submit.queue_index = queue_index;
-> +	queue_submit.stream_size = stream_size;
-> +	queue_submit.stream_addr = stream_addr;
-> +	queue_submit.latest_flush = 0;
-> +
-> +	group_submit.group_handle = group_handle;
-> +	group_submit.queue_submits = (struct drm_panthor_obj_array)
-> +		DRM_PANTHOR_OBJ_ARRAY(1, &queue_submit);
-> +
-> +	igt_panthor_group_submit(fd, &group_submit, err);
-> +}
-> +
->  /**
->   * SECTION:igt_panthor
->   * @short_description: Panthor support library
-> @@ -39,3 +181,192 @@ void igt_panthor_query(int fd, int32_t type, void *data, size_t size, int err)
->  	else
->  		do_ioctl(fd, DRM_IOCTL_PANTHOR_DEV_QUERY, &query);
->  }
-> +
-> +/**
-> + * igt_panthor_vm_create:
-> + * @fd: device file descriptor
-> + * @vm_id: pointer to store the created VM ID
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Creates a VM.
-> + */
-> +void igt_panthor_vm_create(int fd, uint32_t *vm_id, int err)
-> +{
-> +	struct drm_panthor_vm_create vm_create = {};
-> +
-> +	if (err) {
-> +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_VM_CREATE, &vm_create, err);
-> +	} else {
-> +		do_ioctl(fd, DRM_IOCTL_PANTHOR_VM_CREATE, &vm_create);
-> +		*vm_id = vm_create.id;
-> +	}
-> +}
-> +
-> +/**
-> + * igt_panthor_vm_destroy:
-> + * @fd: device file descriptor
-> + * @vm_id: VM ID to destroy
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Destroys a VM.
-> + */
-> +void igt_panthor_vm_destroy(int fd, uint32_t vm_id, int err)
-> +{
-> +	struct drm_panthor_vm_destroy vm_destroy = {
-> +		.id = vm_id,
-> +	};
-> +
-> +	if (err)
-> +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_VM_DESTROY, &vm_destroy, err);
-> +	else
-> +		do_ioctl(fd, DRM_IOCTL_PANTHOR_VM_DESTROY, &vm_destroy);
-> +}
-> +
-> +/**
-> + * igt_panthor_vm_bind:
-> + * @fd: device file descriptor
-> + * @vm_id: VM ID to bind the buffer to
-> + * @bo_handle: buffer object handle to bind
-> + * @va: virtual address to bind at
-> + * @size: size of the binding
-> + * @flags: binding flags
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Bind a buffer object to a virtual address in the specified VM.
-> + */
-> +void igt_panthor_vm_bind(int fd, uint32_t vm_id, uint32_t bo_handle,
-> +			 uint64_t va, uint64_t size, uint32_t flags, int err)
-> +{
-> +	struct drm_panthor_vm_bind_op bind_op = {
-> +		.flags = flags,
-> +		.bo_handle = bo_handle,
-> +		.va = va,
-> +		.size = size,
-> +	};
-> +
-> +	struct drm_panthor_vm_bind vm_bind = {
-> +		.vm_id = vm_id,
-> +		.flags = 0,
-> +		.ops = DRM_PANTHOR_OBJ_ARRAY(1, &bind_op),
-> +	};
-> +
-> +	if (err)
-> +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_VM_BIND, &vm_bind, err);
-> +	else
-> +		do_ioctl(fd, DRM_IOCTL_PANTHOR_VM_BIND, &vm_bind);
-> +}
-> +
-> +/**
-> + * igt_panthor_bo_create:
-> + * @fd: device file descriptor
-> + * @bo: pointer to panthor_bo structure to initialize
-> + * @size: requested buffer size in bytes
-> + * @flags: buffer object creation flags
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Creates a new buffer object
-> + */
-> +void igt_panthor_bo_create(int fd, struct panthor_bo *bo,
-> +			   uint64_t size, uint32_t flags, int err)
-> +{
-> +	struct drm_panthor_bo_create bo_create = {
-> +		.size = size,
-> +		.flags = flags,
-> +	};
-> +
-> +	if (err)
-> +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_BO_CREATE, &bo_create, err);
-> +	else
-> +		do_ioctl(fd, DRM_IOCTL_PANTHOR_BO_CREATE, &bo_create);
-> +
-> +	bo->handle = bo_create.handle;
-> +	bo->size = bo_create.size;
-> +	bo->offset = 0;
-> +	bo->map = NULL;
-> +}
-> +
-> +/**
-> + * igt_panthor_bo_mmap_offset:
-> + * @fd: device file descriptor
-> + * @handle: buffer object handle
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Get the mmap offset for a buffer object.
-> + *
-> + * Returns: the mmap offset for the buffer object
-> + */
-> +uint64_t igt_panthor_bo_mmap_offset(int fd, uint32_t handle, int err)
-> +{
-> +	struct drm_panthor_bo_mmap_offset bo_mmap_offset = {
-> +		.handle = handle,
-> +	};
-> +
-> +	if (err)
-> +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET, &bo_mmap_offset, err);
-> +	else
-> +		do_ioctl(fd, DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET, &bo_mmap_offset);
-> +
-> +	return bo_mmap_offset.offset;
-> +}
-> +
-> +/**
-> + * igt_panthor_mmap_bo:
-> + * @fd: device file descriptor
-> + * @handle: buffer object handle
-> + * @size: size of the buffer to map
-> + * @prot: memory protection flags (e.g., PROT_READ | PROT_WRITE)
-> + * @offset: mmap offset for the buffer object
-> + *
-> + * Map a buffer object into the process address space.
-> + *
-> + * Returns: pointer to the mapped memory, or NULL on failure
-> + */
-> +void *igt_panthor_mmap_bo(int fd, uint32_t handle, uint64_t size,
-> +			  unsigned int prot, uint64_t offset)
-> +{
-> +	void *ptr;
-> +
-> +	ptr = mmap(0, size, prot, MAP_SHARED, fd, offset);
-> +	if (ptr == MAP_FAILED)
-> +		return NULL;
-> +	else
-> +		return ptr;
-> +}
-> +
-> +/**
-> + * igt_panthor_bo_create_mapped:
-> + * @fd: device file descriptor
-> + * @bo: pointer to panthor_bo structure to initialize
-> + * @size: requested buffer size in bytes
-> + * @flags: buffer object creation flags
-> + * @err: expected error code, or 0 for success
-> + *
-> + * Create a new buffer object on the panthor device and map it into
-> + * the process address space.
-> + */
-> +void igt_panthor_bo_create_mapped(int fd, struct panthor_bo *bo, uint64_t size,
-> +				  uint32_t flags, int err)
-> +{
-> +	igt_panthor_bo_create(fd, bo, size, flags, err);
-> +	bo->offset = igt_panthor_bo_mmap_offset(fd, bo->handle, err);
-> +	bo->map = igt_panthor_mmap_bo(fd, bo->handle, bo->size,
-> +				      PROT_READ | PROT_WRITE, bo->offset);
-> +}
-> +
-> +/**
-> + * igt_panthor_free_bo:
-> + * @fd: panthor device file descriptor
-> + * @bo: pointer to panthor_bo structure to free
-> + *
-> + * Free a buffer object and unmap it if it was mapped.
-> + */
-> +void igt_panthor_free_bo(int fd, struct panthor_bo *bo)
-> +{
-> +	if (!bo)
-> +		return;
-> +
-> +	if (bo->map)
-> +		munmap(bo->map, bo->size);
-> +
-> +	gem_close(fd, bo->handle);
-> +}
-> diff --git a/lib/igt_panthor.h b/lib/igt_panthor.h
-> index 6f94b8f79..dc90033c0 100644
-> --- a/lib/igt_panthor.h
-> +++ b/lib/igt_panthor.h
-> @@ -7,8 +7,36 @@
->  #include <stddef.h>
->  #include <stdint.h>
->  #include <stdbool.h>
-> +#include "panthor_drm.h"
-> +
-> +struct panthor_bo {
-> +	int handle;
-> +	uint64_t offset;
-> +	uint64_t size;
-> +	void *map;
-> +};
->  
->  void igt_panthor_query(int fd, int32_t type, void *data, size_t size, int err);
-> +void igt_panthor_vm_create(int fd, uint32_t *vm_id, int err);
-> +void igt_panthor_vm_destroy(int fd, uint32_t vm_id, int err);
-> +void igt_panthor_vm_bind(int fd, uint32_t vm_id, uint32_t bo_handle, uint64_t va,
-> +			 uint64_t size, uint32_t flags, int err);
-> +void igt_panthor_bo_create(int fd, struct panthor_bo *bo, uint64_t size, uint32_t flags, int err);
-> +uint64_t igt_panthor_bo_mmap_offset(int fd, uint32_t handle, int err);
-> +void igt_panthor_free_bo(int fd, struct panthor_bo *bo);
-> +void igt_panthor_bo_create_mapped(int fd, struct panthor_bo *bo, uint64_t size,
-> +				  uint32_t flags, int err);
-> +void *igt_panthor_mmap_bo(int fd, uint32_t handle, uint64_t size,
-> +			  unsigned int prot, uint64_t offset);
-> +void igt_panthor_group_create(int fd, struct drm_panthor_group_create *group_create, int err);
-> +void igt_panthor_group_destroy(int fd, uint32_t group_handle, int err);
-> +void igt_panthor_group_submit(int fd, struct drm_panthor_group_submit *group_submit, int err);
-> +uint32_t igt_panthor_group_create_simple(int fd, uint32_t vm_id, int err);
-> +void igt_panthor_group_submit_simple(int fd, uint32_t group_handle,
-> +				     uint32_t queue_index, uint64_t stream_addr,
-> +				     uint32_t stream_size, uint32_t syncobj_handle,
-> +				     int err);
-> +uint64_t igt_panthor_get_first_core(uint64_t cores_present);
->  
->  enum cs_opcode {
->  	CS_OPCODE_NOP = 0,
-> diff --git a/tests/panthor/meson.build b/tests/panthor/meson.build
-> index ce13aebaa..42a46e993 100644
-> --- a/tests/panthor/meson.build
-> +++ b/tests/panthor/meson.build
-> @@ -1,5 +1,8 @@
->  panthor_progs = [
-> -	'panthor_query'
-> +	'panthor_gem',
-> +	'panthor_group',
-> +	'panthor_query',
-> +	'panthor_vm',
->  ]
->  
->  foreach prog : panthor_progs
-> diff --git a/tests/panthor/panthor_gem.c b/tests/panthor/panthor_gem.c
-> new file mode 100644
-> index 000000000..57cd97e80
-> --- /dev/null
-> +++ b/tests/panthor/panthor_gem.c
-> @@ -0,0 +1,72 @@
-> +// SPDX-License-Identifier: MIT
-> +// SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
-> +
-> +#include <unistd.h>
-> +
-> +#include "igt.h"
-> +#include "igt_core.h"
-> +#include "igt_panthor.h"
-> +
-> +igt_main {
-> +	int fd;
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_PANTHOR);
-> +	}
-> +
-> +	igt_describe("Create a buffer object");
-> +	igt_subtest("bo_create") {
-> +		struct panthor_bo bo;
-> +
-> +		igt_panthor_bo_create(fd, &bo, 4096, 0, 0);
-> +		igt_assert_neq(bo.handle, 0);
-> +
-> +		igt_panthor_free_bo(fd, &bo);
-> +	}
-> +
-> +	igt_describe("Create a fake mmap offset for a buffer object");
-> +	igt_subtest("bo_mmap_offset") {
-> +		struct panthor_bo bo;
-> +		uint64_t mmap_offset;
-> +
-> +		igt_panthor_bo_create(fd, &bo, 4096, 0, 0);
-> +		igt_assert_neq(bo.handle, 0);
-> +
-> +		mmap_offset = igt_panthor_bo_mmap_offset(fd, bo.handle, 0);
-> +		igt_assert_neq(mmap_offset, 0);
-> +
-> +		igt_panthor_free_bo(fd, &bo);
-> +	}
-> +
-> +	igt_describe("Same as bo_mmap_offset but with an invalid handle");
-> +	igt_subtest("bo_mmap_offset_invalid_handle") {
-> +		struct panthor_bo bo;
-> +		uint64_t mmap_offset;
-> +
-> +		igt_panthor_bo_create(fd, &bo, 4096, 0, 0);
-> +		igt_assert_neq(bo.handle, 0);
-> +
-> +		mmap_offset = igt_panthor_bo_mmap_offset(fd, 0xdeadbeef, ENOENT);
-> +		igt_assert_eq(mmap_offset, 0);
-> +
-> +		igt_panthor_free_bo(fd, &bo);
-> +	}
-> +
-> +	igt_describe_f("Create a buffer object whose size is not page-aligned, and check "
-> +		       "that the allocated size is rounded up to the next page size (%" PRIu64 ").",
-> +		       (uint64_t)getpagesize() * 2);
-> +	igt_subtest("bo_create_round_size") {
-> +		struct panthor_bo bo;
-> +		uint64_t expected_size = getpagesize() * 2;
-> +
-> +		igt_panthor_bo_create(fd, &bo, 5000, 0, 0);
-> +		igt_assert_neq(bo.handle, 0);
-> +		igt_assert_eq(bo.size, expected_size);
-> +
-> +		igt_panthor_free_bo(fd, &bo);
-> +	}
-> +
-> +	igt_fixture {
-> +		drm_close_driver(fd);
-> +	}
-> +}
-> diff --git a/tests/panthor/panthor_group.c b/tests/panthor/panthor_group.c
-> new file mode 100644
-> index 000000000..18c0fc8cb
-> --- /dev/null
-> +++ b/tests/panthor/panthor_group.c
-> @@ -0,0 +1,123 @@
-> +// SPDX-License-Identifier: MIT
-> +// SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
-> +
-> +#include <stdint.h>
-> +#include <sys/mman.h>
-> +#include <unistd.h>
-> +
-> +#include "igt.h"
-> +#include "igt_panthor.h"
-> +#include "igt_syncobj.h"
-> +#include "panthor_drm.h"
-> +
-> +static size_t
-> +issue_store_multiple(uint8_t *cs, uint64_t kernel_va, uint32_t constant)
-> +{
-> +	const uint8_t kernel_va_reg = 68;
-> +	const uint8_t constant_reg = 70;
-> +	uint64_t instrs[] = {
-> +		/* MOV48: Load the source register ([r68; r69]) with the kernel address */
-> +		cs_mov48(kernel_va_reg, kernel_va),
-> +		/* MOV32: Load a known constant into r70 */
-> +		cs_mov32(constant_reg, constant),
-> +		/* STORE_MULTIPLE: Store the first register to the address pointed
-> +		 * to by [r68; r69]
-> +		 */
-> +		cs_stm32(kernel_va_reg, constant_reg, 0),
-> +		/* FLUSH all Wait for all cores */
-> +		cs_wait(0xff, false),
-> +		/* MOV32: Clear r70 to 0 */
-> +		cs_mov32(constant_reg, 0),
-> +		/* FLUSH_CACHE: Clean and invalidate all caches */
-> +		cs_flush(CS_FLUSH_MODE_CLEAN_AND_INVALIDATE,
-> +			 CS_FLUSH_MODE_CLEAN_AND_INVALIDATE,
-> +			 CS_FLUSH_MODE_INVALIDATE,
-> +			 0, constant_reg, 1),
-> +		cs_wait(0xff, false),
-> +	};
-> +
-> +	memcpy(cs, instrs, sizeof(instrs));
-> +	return sizeof(instrs);
-> +}
-> +
-> +igt_main {
-> +	int fd;
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_PANTHOR);
-> +	}
-> +
-> +	igt_describe("Create and destroy a CSF group.");
-> +	igt_subtest("group_create") {
-> +		struct drm_panthor_vm_create vm_create = {};
-> +		struct drm_panthor_vm_destroy vm_destroy = {};
-> +		uint32_t group_handle;
-> +
-> +		vm_create.flags = 0;
-> +		do_ioctl(fd, DRM_IOCTL_PANTHOR_VM_CREATE, &vm_create);
-> +		igt_assert_neq(vm_create.id, 0);
-> +
-> +		group_handle = igt_panthor_group_create_simple(fd, vm_create.id, 0);
-> +		igt_assert_neq(group_handle, 0);
-> +
-> +		igt_panthor_group_destroy(fd, group_handle, 0);
-> +
-> +		vm_destroy = (struct drm_panthor_vm_destroy) { .id = vm_create.id };
-> +		do_ioctl(fd, DRM_IOCTL_PANTHOR_VM_DESTROY, &vm_destroy);
-> +	}
-> +
-> +	igt_describe("Submit a job to a group and wait for completion. "
-> +				 "The job writes a known value to a buffer object that is then "
-> +				 "mmaped and checked.");
-> +	igt_subtest("group_submit") {
-> +		uint32_t vm_id;
-> +		uint32_t group_handle;
-> +		struct panthor_bo cmd_buf_bo = {};
-> +		struct panthor_bo result_bo = {};
-> +		uint64_t command_stream_gpu_addr;
-> +		uint32_t command_stream_size;
-> +		uint64_t result_gpu_addr;
-> +		uint32_t syncobj_handle;
-> +		const int INITIAL_VA = 0x1000000;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +
-> +		igt_panthor_bo_create_mapped(fd, &cmd_buf_bo, 4096, 0, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, cmd_buf_bo.handle, INITIAL_VA,
-> +				    cmd_buf_bo.size, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
-> +		command_stream_gpu_addr = INITIAL_VA;
-> +
-> +		/* Create the BO to receive the result of the store. */
-> +		igt_panthor_bo_create_mapped(fd, &result_bo, 4096, 0, 0);
-> +		/* Also bind the result BO. */
-> +		igt_panthor_vm_bind(fd, vm_id, result_bo.handle, INITIAL_VA + 4096,
-> +				    result_bo.size, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
-> +		result_gpu_addr = INITIAL_VA + 4096;
-> +
-> +		command_stream_size = issue_store_multiple(cmd_buf_bo.map, result_gpu_addr, 0xdeadbeef);
-> +
-> +		group_handle = igt_panthor_group_create_simple(fd, vm_id, 0);
-> +		igt_assert_neq(group_handle, 0);
-> +
-> +		syncobj_handle = syncobj_create(fd, 0);
-> +
-> +		igt_panthor_group_submit_simple(fd, group_handle, 0, command_stream_gpu_addr, command_stream_size, syncobj_handle, 0);
-> +
-> +		igt_assert(syncobj_wait(fd, &syncobj_handle, 1, INT64_MAX, 0, NULL));
-> +
-> +		igt_assert_eq(*(uint32_t *)result_bo.map, 0xdeadbeef);
-> +
-> +		syncobj_destroy(fd, syncobj_handle);
-> +
-> +		igt_panthor_group_destroy(fd, group_handle, 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +
-> +		igt_panthor_free_bo(fd, &cmd_buf_bo);
-> +		igt_panthor_free_bo(fd, &result_bo);
-> +	}
-> +
-> +	igt_fixture {
-> +		drm_close_driver(fd);
-> +	}
-> +}
-> diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
-> new file mode 100644
-> index 000000000..18a0622c7
-> --- /dev/null
-> +++ b/tests/panthor/panthor_vm.c
-> @@ -0,0 +1,84 @@
-> +// SPDX-License-Identifier: MIT
-> +// SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
-> +
-> +#include "igt.h"
-> +#include "igt_core.h"
-> +#include "igt_panthor.h"
-> +#include "panthor_drm.h"
-> +
-> +igt_main {
-> +	int fd;
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_PANTHOR);
-> +	}
-> +
-> +	igt_describe("Create and destroy a VM");
-> +	igt_subtest("vm_create_destroy") {
-> +		uint32_t vm_id;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert_neq(vm_id, 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_subtest("vm_destroy_invalid") {
-> +		igt_panthor_vm_destroy(fd, 0xdeadbeef, EINVAL);
-> +	}
-> +
-> +	igt_describe("Test the VM_BIND API synchronously");
-> +	igt_subtest("vm_bind") {
-> +		uint32_t vm_id;
-> +		struct panthor_bo bo;
-> +		uint64_t bo_size = 0x1000;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert_neq(vm_id, 0);
-> +
-> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, bo.handle,
-> +				    0x1000, 0x1000, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_describe("Test unbinding a previously bound range");
-> +	igt_subtest("vm_unbind") {
-> +		uint32_t vm_id;
-> +		struct panthor_bo bo;
-> +		uint64_t bo_size = 0x1000;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert_neq(vm_id, 0);
-> +
-> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, bo.handle,
-> +				    0x1000, 0x1000, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, 0,
-> +				    0x1000, 0x1000, DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_describe("Test unbinding an address range that was not previously bound");
-> +	igt_subtest("vm_unbind_invalid_address") {
-> +		uint32_t vm_id;
-> +		struct panthor_bo bo;
-> +		uint64_t bo_size = 0x1000;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert_neq(vm_id, 0);
-> +
-> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-> +
-> +		/* This was not bound previously*/
-> +		igt_panthor_vm_bind(fd, vm_id, bo.handle,
-> +				    0x1000, 0x1000, DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, EINVAL);
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_fixture {
-> +		drm_close_driver(fd);
-> +	}
-> +}
+>  tests/kms_vrr.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c index bcb756202..a403de473
+> 100644
+> --- a/tests/kms_vrr.c
+> +++ b/tests/kms_vrr.c
+> @@ -961,7 +961,9 @@ static void test_cleanup(data_t *data, enum pipe
+> pipe, igt_output_t *output)  {
+>  	igt_pipe_set_prop_value(&data->display, pipe,
+> IGT_CRTC_VRR_ENABLED, false);
+>=20
+> -	igt_plane_set_fb(data->primary, NULL);
+> +	if (data->primary)
+> +		igt_plane_set_fb(data->primary, NULL);
+> +
+
+Please add fixes tag before merge.=20
+
+With that fixes tag looks good.=20
+Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+
+
+>  	igt_output_set_pipe(output, PIPE_NONE);
+>  	igt_output_override_mode(output, NULL);
+>  	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> --
+> 2.43.0
 
