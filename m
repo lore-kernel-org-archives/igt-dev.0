@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 042EECCF9F8
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 06:51:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99C95CCF9F8
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 07:02:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8E87810E820;
-	Thu,  6 Nov 2025 06:51:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3C61010E81E;
+	Thu,  6 Nov 2025 07:02:22 +0000 (UTC)
 Received: from 10055242dc62 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C2A7E10E133;
- Thu,  6 Nov 2025 06:51:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75F4F10E133;
+ Thu,  6 Nov 2025 07:02:21 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2452347477458298539=="
+ boundary="===============1374544415466142231=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fvrr=3A_Fix_pote?=
- =?utf-8?q?ntial_NULL_dereference_in_test=5Fcleanup_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/kms=5Fvrr=3A_Fix_po?=
+ =?utf-8?q?tential_NULL_dereference_in_test=5Fcleanup_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 06 Nov 2025 06:51:54 -0000
-Message-ID: <176241191478.23832.8651605568192621406@10055242dc62>
+Date: Thu, 06 Nov 2025 07:02:21 -0000
+Message-ID: <176241254147.23579.13321417523199630720@10055242dc62>
 X-Patchwork-Hint: ignore
 References: <20251106044103.1502264-1-ramanaidu.naladala@intel.com>
 In-Reply-To: <20251106044103.1502264-1-ramanaidu.naladala@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2452347477458298539==
+--===============1374544415466142231==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,124 +50,329 @@ Content-Transfer-Encoding: 7bit
 
 Series: tests/kms_vrr: Fix potential NULL dereference in test_cleanup (rev3)
 URL   : https://patchwork.freedesktop.org/series/157017/
-State : success
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8610_BAT -> XEIGTPW_14006_BAT
+CI Bug Log - changes from IGT_8610 -> IGTPW_14006
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
-
+  Serious unknown changes coming with IGTPW_14006 absolutely need to be
+  verified manually.
   
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_14006, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-Participating hosts (12 -> 10)
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/index.html
+
+Participating hosts (45 -> 44)
 ------------------------------
 
-  Missing    (2): bat-adlp-vm bat-ptl-vm 
+  Missing    (1): fi-snb-2520m 
 
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_14006:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_vrr@cmrr:
+    - bat-dg1-7:          NOTRUN -> [SKIP][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg1-7/igt@kms_vrr@cmrr.html
+    - bat-dg2-9:          NOTRUN -> [SKIP][2]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-9/igt@kms_vrr@cmrr.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][3]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-11/igt@kms_vrr@cmrr.html
+    - bat-rpls-4:         NOTRUN -> [SKIP][4]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rpls-4/igt@kms_vrr@cmrr.html
+    - bat-twl-1:          NOTRUN -> [SKIP][5]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-twl-1/igt@kms_vrr@cmrr.html
+    - bat-jsl-5:          NOTRUN -> [SKIP][6]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-5/igt@kms_vrr@cmrr.html
+    - bat-dg2-14:         NOTRUN -> [SKIP][7]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-14/igt@kms_vrr@cmrr.html
+    - bat-rplp-1:         NOTRUN -> [SKIP][8]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rplp-1/igt@kms_vrr@cmrr.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][9]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-tgl-1115g4/igt@kms_vrr@cmrr.html
+    - bat-mtlp-9:         NOTRUN -> [SKIP][10]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-9/igt@kms_vrr@cmrr.html
+    - bat-arls-6:         NOTRUN -> [SKIP][11]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-6/igt@kms_vrr@cmrr.html
+    - bat-mtlp-8:         NOTRUN -> [SKIP][12]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-8/igt@kms_vrr@cmrr.html
+    - bat-adlp-9:         NOTRUN -> [SKIP][13]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-9/igt@kms_vrr@cmrr.html
+    - bat-adls-6:         NOTRUN -> [SKIP][14]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adls-6/igt@kms_vrr@cmrr.html
+    - bat-jsl-1:          NOTRUN -> [SKIP][15]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-1/igt@kms_vrr@cmrr.html
+    - bat-arls-5:         NOTRUN -> [SKIP][16]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-5/igt@kms_vrr@cmrr.html
+    - bat-adlp-6:         NOTRUN -> [SKIP][17]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-6/igt@kms_vrr@cmrr.html
+
+  * igt@kms_vrr@flip-basic:
+    - fi-rkl-11600:       NOTRUN -> [SKIP][18] +11 other tests skip
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-rkl-11600/igt@kms_vrr@flip-basic.html
+
+  * igt@kms_vrr@flip-basic-fastset:
+    - bat-twl-1:          NOTRUN -> [FAIL][19] +1 other test fail
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-twl-1/igt@kms_vrr@flip-basic-fastset.html
+    - bat-mtlp-8:         NOTRUN -> [FAIL][20] +1 other test fail
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-8/igt@kms_vrr@flip-basic-fastset.html
+
+  * igt@kms_vrr@flip-dpms:
+    - bat-twl-2:          NOTRUN -> [SKIP][21] +4 other tests skip
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-twl-2/igt@kms_vrr@flip-dpms.html
+
+  * igt@kms_vrr@flip-suspend:
+    - bat-arlh-3:         NOTRUN -> [SKIP][22] +4 other tests skip
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arlh-3/igt@kms_vrr@flip-suspend.html
+
+  * igt@kms_vrr@max-min:
+    - bat-rpls-4:         NOTRUN -> [FAIL][23] +1 other test fail
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rpls-4/igt@kms_vrr@max-min.html
+
+  * igt@kms_vrr@seamless-rr-switch-virtual:
+    - bat-adlp-11:        NOTRUN -> [SKIP][24] +11 other tests skip
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-11/igt@kms_vrr@seamless-rr-switch-virtual.html
+    - bat-dg2-8:          NOTRUN -> [SKIP][25] +11 other tests skip
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-8/igt@kms_vrr@seamless-rr-switch-virtual.html
+
+  
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_14006_BAT that come from known issues:
+  Here are the changes found in IGTPW_14006 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
   * igt@kms_vrr@cmrr:
-    - bat-ptl-1:          NOTRUN -> [SKIP][1] ([Intel XE#5766]) +11 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-ptl-1/igt@kms_vrr@cmrr.html
-
-  * igt@kms_vrr@cmrr@pipe-a-edp-1:
-    - bat-lnl-1:          NOTRUN -> [FAIL][2] ([Intel XE#4459]) +1 other test fail
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-lnl-1/igt@kms_vrr@cmrr@pipe-a-edp-1.html
-    - bat-ptl-2:          NOTRUN -> [FAIL][3] ([Intel XE#4459]) +1 other test fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-ptl-2/igt@kms_vrr@cmrr@pipe-a-edp-1.html
+    - fi-pnv-d510:        NOTRUN -> [SKIP][26] +11 other tests skip
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-pnv-d510/igt@kms_vrr@cmrr.html
+    - bat-atsm-1:         NOTRUN -> [SKIP][27] ([i915#6078]) +11 other tests skip
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-atsm-1/igt@kms_vrr@cmrr.html
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][28] +11 other tests skip
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-kbl-8809g/igt@kms_vrr@cmrr.html
+    - fi-elk-e7500:       NOTRUN -> [SKIP][29] +11 other tests skip
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-elk-e7500/igt@kms_vrr@cmrr.html
 
   * igt@kms_vrr@flip-basic:
-    - bat-bmg-1:          NOTRUN -> [SKIP][4] ([Intel XE#1499]) +9 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-bmg-1/igt@kms_vrr@flip-basic.html
+    - fi-cfl-guc:         NOTRUN -> [SKIP][30] +11 other tests skip
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-cfl-guc/igt@kms_vrr@flip-basic.html
+    - bat-mtlp-9:         NOTRUN -> [SKIP][31] ([i915#3555] / [i915#8808]) +3 other tests skip
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-9/igt@kms_vrr@flip-basic.html
+    - bat-dg2-9:          NOTRUN -> [SKIP][32] ([i915#3555]) +3 other tests skip
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-9/igt@kms_vrr@flip-basic.html
+    - bat-adls-6:         NOTRUN -> [SKIP][33] ([i915#3555]) +3 other tests skip
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adls-6/igt@kms_vrr@flip-basic.html
+    - bat-jsl-1:          NOTRUN -> [SKIP][34] ([i915#3555]) +3 other tests skip
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-1/igt@kms_vrr@flip-basic.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][35] ([i915#3555]) +3 other tests skip
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-tgl-1115g4/igt@kms_vrr@flip-basic.html
+    - bat-arls-6:         NOTRUN -> [SKIP][36] ([i915#8808]) +3 other tests skip
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-6/igt@kms_vrr@flip-basic.html
 
   * igt@kms_vrr@flip-basic-fastset:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][5] ([Intel XE#455]) +8 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-dg2-oem2/igt@kms_vrr@flip-basic-fastset.html
+    - bat-arlh-3:         NOTRUN -> [SKIP][37] ([i915#9906]) +4 other tests skip
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arlh-3/igt@kms_vrr@flip-basic-fastset.html
+    - bat-dg1-7:          NOTRUN -> [SKIP][38] ([i915#9906]) +4 other tests skip
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg1-7/igt@kms_vrr@flip-basic-fastset.html
+    - bat-twl-2:          NOTRUN -> [SKIP][39] ([i915#9906]) +4 other tests skip
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-twl-2/igt@kms_vrr@flip-basic-fastset.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][40] ([i915#9906]) +4 other tests skip
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-11/igt@kms_vrr@flip-basic-fastset.html
+    - bat-jsl-5:          NOTRUN -> [SKIP][41] ([i915#9906]) +4 other tests skip
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-5/igt@kms_vrr@flip-basic-fastset.html
+
+  * igt@kms_vrr@flip-dpms:
+    - bat-dg1-7:          NOTRUN -> [SKIP][42] ([i915#3555]) +3 other tests skip
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg1-7/igt@kms_vrr@flip-dpms.html
+    - fi-glk-j4005:       NOTRUN -> [SKIP][43] +11 other tests skip
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-glk-j4005/igt@kms_vrr@flip-dpms.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][44] ([i915#3555]) +3 other tests skip
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-11/igt@kms_vrr@flip-dpms.html
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][45] +11 other tests skip
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-kbl-7567u/igt@kms_vrr@flip-dpms.html
+    - bat-jsl-5:          NOTRUN -> [SKIP][46] ([i915#3555]) +3 other tests skip
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-5/igt@kms_vrr@flip-dpms.html
 
   * igt@kms_vrr@flipline:
-    - bat-ptl-2:          NOTRUN -> [FAIL][6] ([Intel XE#4227]) +3 other tests fail
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-ptl-2/igt@kms_vrr@flipline.html
+    - bat-dg2-14:         NOTRUN -> [SKIP][47] ([i915#3555]) +3 other tests skip
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-14/igt@kms_vrr@flipline.html
+    - bat-arls-5:         NOTRUN -> [SKIP][48] ([i915#8808]) +3 other tests skip
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-5/igt@kms_vrr@flipline.html
+    - bat-adlp-6:         NOTRUN -> [SKIP][49] ([i915#3555]) +3 other tests skip
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-6/igt@kms_vrr@flipline.html
+    - bat-rplp-1:         NOTRUN -> [SKIP][50] ([i915#3555]) +3 other tests skip
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rplp-1/igt@kms_vrr@flipline.html
+
+  * igt@kms_vrr@flipline@pipe-a-edp-1:
+    - bat-mtlp-8:         NOTRUN -> [FAIL][51] ([i915#12933]) +1 other test fail
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-8/igt@kms_vrr@flipline@pipe-a-edp-1.html
 
   * igt@kms_vrr@lobf:
-    - bat-bmg-2:          NOTRUN -> [SKIP][7] ([Intel XE#3419]) +11 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-bmg-2/igt@kms_vrr@lobf.html
-    - bat-adlp-7:         NOTRUN -> [SKIP][8] ([Intel XE#2168]) +1 other test skip
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-adlp-7/igt@kms_vrr@lobf.html
-    - bat-bmg-1:          NOTRUN -> [SKIP][9] ([Intel XE#2168]) +1 other test skip
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-bmg-1/igt@kms_vrr@lobf.html
-    - bat-lnl-1:          NOTRUN -> [FAIL][10] ([Intel XE#6390]) +1 other test fail
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-lnl-1/igt@kms_vrr@lobf.html
-    - bat-ptl-2:          NOTRUN -> [FAIL][11] ([Intel XE#6390]) +1 other test fail
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-ptl-2/igt@kms_vrr@lobf.html
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][12] ([Intel XE#2168]) +1 other test skip
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-dg2-oem2/igt@kms_vrr@lobf.html
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][52] +11 other tests skip
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-bsw-n3050/igt@kms_vrr@lobf.html
+    - bat-adlp-6:         NOTRUN -> [SKIP][53] ([i915#11920])
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-6/igt@kms_vrr@lobf.html
+    - bat-arlh-3:         NOTRUN -> [SKIP][54] ([i915#11920])
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arlh-3/igt@kms_vrr@lobf.html
+    - bat-dg1-7:          NOTRUN -> [SKIP][55] ([i915#11920])
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg1-7/igt@kms_vrr@lobf.html
+    - bat-adlp-9:         NOTRUN -> [SKIP][56] ([i915#11920])
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-9/igt@kms_vrr@lobf.html
+    - bat-twl-2:          NOTRUN -> [SKIP][57] ([i915#11920])
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-twl-2/igt@kms_vrr@lobf.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][58] ([i915#11920])
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-11/igt@kms_vrr@lobf.html
+    - bat-rpls-4:         NOTRUN -> [SKIP][59] ([i915#11920])
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rpls-4/igt@kms_vrr@lobf.html
+    - bat-twl-1:          NOTRUN -> [SKIP][60] ([i915#11920])
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-twl-1/igt@kms_vrr@lobf.html
+    - bat-jsl-5:          NOTRUN -> [SKIP][61] ([i915#11920])
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-5/igt@kms_vrr@lobf.html
+    - bat-dg2-14:         NOTRUN -> [SKIP][62] ([i915#11920])
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-14/igt@kms_vrr@lobf.html
+    - bat-arls-5:         NOTRUN -> [SKIP][63] ([i915#11920])
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-5/igt@kms_vrr@lobf.html
+    - bat-rplp-1:         NOTRUN -> [SKIP][64] ([i915#11920])
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rplp-1/igt@kms_vrr@lobf.html
+    - bat-mtlp-9:         NOTRUN -> [SKIP][65] ([i915#11920])
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-9/igt@kms_vrr@lobf.html
+    - bat-arls-6:         NOTRUN -> [SKIP][66] ([i915#11920])
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-6/igt@kms_vrr@lobf.html
+    - bat-dg2-9:          NOTRUN -> [SKIP][67] ([i915#11920])
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-9/igt@kms_vrr@lobf.html
+    - bat-mtlp-8:         NOTRUN -> [SKIP][68] ([i915#11920])
+   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-8/igt@kms_vrr@lobf.html
+    - bat-adls-6:         NOTRUN -> [SKIP][69] ([i915#11920])
+   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adls-6/igt@kms_vrr@lobf.html
+    - bat-jsl-1:          NOTRUN -> [SKIP][70] ([i915#11920])
+   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-1/igt@kms_vrr@lobf.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][71] ([i915#11920])
+   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-tgl-1115g4/igt@kms_vrr@lobf.html
+
+  * igt@kms_vrr@max-min:
+    - bat-rplp-1:         NOTRUN -> [SKIP][72] ([i915#9906]) +4 other tests skip
+   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rplp-1/igt@kms_vrr@max-min.html
+    - fi-ilk-650:         NOTRUN -> [SKIP][73] +11 other tests skip
+   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-ilk-650/igt@kms_vrr@max-min.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][74] ([i915#9906]) +4 other tests skip
+   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-tgl-1115g4/igt@kms_vrr@max-min.html
+    - bat-mtlp-6:         NOTRUN -> [SKIP][75] ([i915#9792]) +11 other tests skip
+   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-6/igt@kms_vrr@max-min.html
+    - bat-mtlp-9:         NOTRUN -> [SKIP][76] ([i915#8808] / [i915#9906]) +4 other tests skip
+   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-9/igt@kms_vrr@max-min.html
 
   * igt@kms_vrr@negative-basic:
-    - bat-atsm-2:         NOTRUN -> [SKIP][13] ([Intel XE#1024]) +11 other tests skip
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-atsm-2/igt@kms_vrr@negative-basic.html
-    - bat-ptl-2:          NOTRUN -> [SKIP][14] ([Intel XE#5949])
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-ptl-2/igt@kms_vrr@negative-basic.html
+    - bat-kbl-2:          NOTRUN -> [SKIP][77] +11 other tests skip
+   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-kbl-2/igt@kms_vrr@negative-basic.html
+    - bat-arlh-2:         NOTRUN -> [SKIP][78] ([i915#11346]) +11 other tests skip
+   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arlh-2/igt@kms_vrr@negative-basic.html
+    - fi-skl-6600u:       NOTRUN -> [SKIP][79] +11 other tests skip
+   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-skl-6600u/igt@kms_vrr@negative-basic.html
+    - bat-dg1-7:          NOTRUN -> [SKIP][80] ([i915#3555] / [i915#9906])
+   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg1-7/igt@kms_vrr@negative-basic.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][81] ([i915#3555] / [i915#9906])
+   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-11/igt@kms_vrr@negative-basic.html
+    - bat-rpls-4:         NOTRUN -> [SKIP][82] ([i915#3555] / [i915#9906])
+   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rpls-4/igt@kms_vrr@negative-basic.html
+    - bat-jsl-5:          NOTRUN -> [SKIP][83] ([i915#3555] / [i915#9906])
+   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-5/igt@kms_vrr@negative-basic.html
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][84] ([i915#3555] / [i915#9906])
+   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-tgl-1115g4/igt@kms_vrr@negative-basic.html
+    - bat-mtlp-8:         NOTRUN -> [SKIP][85] ([i915#3555] / [i915#8808] / [i915#9906])
+   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-8/igt@kms_vrr@negative-basic.html
+    - bat-adlp-9:         NOTRUN -> [SKIP][86] ([i915#3555] / [i915#9906])
+   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-9/igt@kms_vrr@negative-basic.html
+    - bat-adls-6:         NOTRUN -> [SKIP][87] ([i915#3555] / [i915#9906])
+   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adls-6/igt@kms_vrr@negative-basic.html
 
   * igt@kms_vrr@seamless-rr-switch-drrs:
-    - bat-lnl-1:          NOTRUN -> [SKIP][15] ([Intel XE#1499]) +2 other tests skip
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-lnl-1/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][88] +11 other tests skip
+   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-cfl-8700k/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - bat-twl-1:          NOTRUN -> [SKIP][89] ([i915#9906]) +2 other tests skip
+   [89]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-twl-1/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - bat-apl-1:          NOTRUN -> [SKIP][90] +11 other tests skip
+   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-apl-1/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - bat-dg2-14:         NOTRUN -> [SKIP][91] ([i915#9906]) +4 other tests skip
+   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-14/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - fi-bsw-nick:        NOTRUN -> [SKIP][92] +11 other tests skip
+   [92]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-bsw-nick/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - bat-arls-5:         NOTRUN -> [SKIP][93] ([i915#8808] / [i915#9906]) +4 other tests skip
+   [93]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-5/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - bat-adlp-6:         NOTRUN -> [SKIP][94] ([i915#9906]) +4 other tests skip
+   [94]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-6/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - bat-rpls-4:         NOTRUN -> [SKIP][95] ([i915#9906]) +1 other test skip
+   [95]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rpls-4/igt@kms_vrr@seamless-rr-switch-drrs.html
+    - bat-mtlp-8:         NOTRUN -> [SKIP][96] ([i915#8808] / [i915#9906]) +1 other test skip
+   [96]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-8/igt@kms_vrr@seamless-rr-switch-drrs.html
 
-  * igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1:
-    - bat-ptl-2:          NOTRUN -> [FAIL][16] ([Intel XE#5862]) +1 other test fail
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-ptl-2/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.html
+  * igt@kms_vrr@seamless-rr-switch-virtual:
+    - bat-arls-6:         NOTRUN -> [SKIP][97] ([i915#8808] / [i915#9906]) +5 other tests skip
+   [97]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-6/igt@kms_vrr@seamless-rr-switch-virtual.html
+    - bat-dg2-9:          NOTRUN -> [SKIP][98] ([i915#9906]) +4 other tests skip
+   [98]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-9/igt@kms_vrr@seamless-rr-switch-virtual.html
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][99] +11 other tests skip
+   [99]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-kbl-x1275/igt@kms_vrr@seamless-rr-switch-virtual.html
+    - fi-hsw-4770:        NOTRUN -> [SKIP][100] +11 other tests skip
+   [100]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-hsw-4770/igt@kms_vrr@seamless-rr-switch-virtual.html
+    - fi-ivb-3770:        NOTRUN -> [SKIP][101] +11 other tests skip
+   [101]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-ivb-3770/igt@kms_vrr@seamless-rr-switch-virtual.html
+    - bat-dg1-6:          NOTRUN -> [SKIP][102] ([i915#12311]) +11 other tests skip
+   [102]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg1-6/igt@kms_vrr@seamless-rr-switch-virtual.html
+    - fi-kbl-guc:         NOTRUN -> [SKIP][103] +11 other tests skip
+   [103]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-kbl-guc/igt@kms_vrr@seamless-rr-switch-virtual.html
 
   * igt@kms_vrr@seamless-rr-switch-vrr:
-    - bat-adlp-7:         NOTRUN -> [SKIP][17] ([Intel XE#455]) +8 other tests skip
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-adlp-7/igt@kms_vrr@seamless-rr-switch-vrr.html
-    - bat-lnl-2:          NOTRUN -> [SKIP][18] ([Intel XE#2235]) +11 other tests skip
-   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-lnl-2/igt@kms_vrr@seamless-rr-switch-vrr.html
-    - bat-ptl-2:          NOTRUN -> [SKIP][19] ([Intel XE#5948]) +1 other test skip
-   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-ptl-2/igt@kms_vrr@seamless-rr-switch-vrr.html
+    - bat-adlp-9:         NOTRUN -> [SKIP][104] ([i915#9906]) +1 other test skip
+   [104]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-9/igt@kms_vrr@seamless-rr-switch-vrr.html
+    - bat-adls-6:         NOTRUN -> [SKIP][105] ([i915#9906]) +4 other tests skip
+   [105]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adls-6/igt@kms_vrr@seamless-rr-switch-vrr.html
+    - bat-jsl-1:          NOTRUN -> [SKIP][106] ([i915#9906]) +4 other tests skip
+   [106]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-1/igt@kms_vrr@seamless-rr-switch-vrr.html
 
   
-  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
-  [Intel XE#1499]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1499
-  [Intel XE#2168]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2168
-  [Intel XE#2235]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235
-  [Intel XE#3419]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419
-  [Intel XE#4227]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4227
-  [Intel XE#4459]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4459
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-  [Intel XE#5766]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5766
-  [Intel XE#5862]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5862
-  [Intel XE#5948]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5948
-  [Intel XE#5949]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5949
-  [Intel XE#6390]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6390
+  [i915#11346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346
+  [i915#11920]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920
+  [i915#12311]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311
+  [i915#12933]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12933
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#6078]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078
+  [i915#8808]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8808
+  [i915#9792]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792
+  [i915#9906]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_8610 -> IGTPW_14006
 
+  CI-20190529: 20190529
+  CI_DRM_17496: 893c123d23de1f19f4b609970cfe56caabd9ff96 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_14006: 14006
   IGT_8610: 8610
-  xe-4055-893c123d23de1f19f4b609970cfe56caabd9ff96: 893c123d23de1f19f4b609970cfe56caabd9ff96
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/index.html
 
---===============2452347477458298539==
+--===============1374544415466142231==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -189,103 +394,248 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>tests/kms_vrr: Fix potential NULL dereference in test_cleanup (rev3)</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/157017/">https://patchwork.freedesktop.org/series/157017/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8610_BAT -&gt; XEIGTPW_14006_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_8610 -&gt; IGTPW_14006</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 10)</h2>
-<p>Missing    (2): bat-adlp-vm bat-ptl-vm </p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_14006 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_14006, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/index.html</p>
+<h2>Participating hosts (45 -&gt; 44)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_14006:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_vrr@cmrr:</p>
+<ul>
+<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg1-7/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-9/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-11/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rpls-4/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-twl-1/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>bat-jsl-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-5/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-14/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rplp-1/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-tgl-1115g4/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>bat-mtlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-9/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>bat-arls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-6/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-8/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-9/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adls-6/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-1/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-5/igt@kms_vrr@cmrr.html">SKIP</a></li>
+<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-6/igt@kms_vrr@cmrr.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flip-basic:</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-rkl-11600/igt@kms_vrr@flip-basic.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flip-basic-fastset:</p>
+<ul>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-twl-1/igt@kms_vrr@flip-basic-fastset.html">FAIL</a> +1 other test fail</li>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-8/igt@kms_vrr@flip-basic-fastset.html">FAIL</a> +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flip-dpms:</p>
+<ul>
+<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-twl-2/igt@kms_vrr@flip-dpms.html">SKIP</a> +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flip-suspend:</p>
+<ul>
+<li>bat-arlh-3:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arlh-3/igt@kms_vrr@flip-suspend.html">SKIP</a> +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@max-min:</p>
+<ul>
+<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rpls-4/igt@kms_vrr@max-min.html">FAIL</a> +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@seamless-rr-switch-virtual:</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-11/igt@kms_vrr@seamless-rr-switch-virtual.html">SKIP</a> +11 other tests skip</li>
+<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-8/igt@kms_vrr@seamless-rr-switch-virtual.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+</ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14006_BAT that come from known issues:</p>
+<p>Here are the changes found in IGTPW_14006 that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
 <p>igt@kms_vrr@cmrr:</p>
 <ul>
-<li>bat-ptl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-ptl-1/igt@kms_vrr@cmrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5766">Intel XE#5766</a>) +11 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_vrr@cmrr@pipe-a-edp-1:</p>
-<ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-lnl-1/igt@kms_vrr@cmrr@pipe-a-edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4459">Intel XE#4459</a>) +1 other test fail</li>
-<li>bat-ptl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-ptl-2/igt@kms_vrr@cmrr@pipe-a-edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4459">Intel XE#4459</a>) +1 other test fail</li>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-pnv-d510/igt@kms_vrr@cmrr.html">SKIP</a> +11 other tests skip</li>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-atsm-1/igt@kms_vrr@cmrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078">i915#6078</a>) +11 other tests skip</li>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-kbl-8809g/igt@kms_vrr@cmrr.html">SKIP</a> +11 other tests skip</li>
+<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-elk-e7500/igt@kms_vrr@cmrr.html">SKIP</a> +11 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_vrr@flip-basic:</p>
 <ul>
-<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-bmg-1/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1499">Intel XE#1499</a>) +9 other tests skip</li>
+<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-cfl-guc/igt@kms_vrr@flip-basic.html">SKIP</a> +11 other tests skip</li>
+<li>bat-mtlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-9/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8808">i915#8808</a>) +3 other tests skip</li>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-9/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +3 other tests skip</li>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adls-6/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +3 other tests skip</li>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-1/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +3 other tests skip</li>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-tgl-1115g4/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +3 other tests skip</li>
+<li>bat-arls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-6/igt@kms_vrr@flip-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8808">i915#8808</a>) +3 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_vrr@flip-basic-fastset:</p>
 <ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-dg2-oem2/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +8 other tests skip</li>
+<li>bat-arlh-3:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arlh-3/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +4 other tests skip</li>
+<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg1-7/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +4 other tests skip</li>
+<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-twl-2/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +4 other tests skip</li>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-11/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +4 other tests skip</li>
+<li>bat-jsl-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-5/igt@kms_vrr@flip-basic-fastset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flip-dpms:</p>
+<ul>
+<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg1-7/igt@kms_vrr@flip-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +3 other tests skip</li>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-glk-j4005/igt@kms_vrr@flip-dpms.html">SKIP</a> +11 other tests skip</li>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-11/igt@kms_vrr@flip-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +3 other tests skip</li>
+<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-kbl-7567u/igt@kms_vrr@flip-dpms.html">SKIP</a> +11 other tests skip</li>
+<li>bat-jsl-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-5/igt@kms_vrr@flip-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +3 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_vrr@flipline:</p>
 <ul>
-<li>bat-ptl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-ptl-2/igt@kms_vrr@flipline.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4227">Intel XE#4227</a>) +3 other tests fail</li>
+<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-14/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +3 other tests skip</li>
+<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-5/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8808">i915#8808</a>) +3 other tests skip</li>
+<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-6/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +3 other tests skip</li>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rplp-1/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flipline@pipe-a-edp-1:</p>
+<ul>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-8/igt@kms_vrr@flipline@pipe-a-edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12933">i915#12933</a>) +1 other test fail</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_vrr@lobf:</p>
 <ul>
-<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-bmg-2/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419">Intel XE#3419</a>) +11 other tests skip</li>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-adlp-7/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2168">Intel XE#2168</a>) +1 other test skip</li>
-<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-bmg-1/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2168">Intel XE#2168</a>) +1 other test skip</li>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-lnl-1/igt@kms_vrr@lobf.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6390">Intel XE#6390</a>) +1 other test fail</li>
-<li>bat-ptl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-ptl-2/igt@kms_vrr@lobf.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6390">Intel XE#6390</a>) +1 other test fail</li>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-dg2-oem2/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2168">Intel XE#2168</a>) +1 other test skip</li>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-bsw-n3050/igt@kms_vrr@lobf.html">SKIP</a> +11 other tests skip</li>
+<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-6/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-arlh-3:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arlh-3/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg1-7/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-9/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-twl-2/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-11/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rpls-4/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-twl-1/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-jsl-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-5/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-14/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-5/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rplp-1/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-mtlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-9/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-arls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-6/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-9/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-8/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adls-6/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-1/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-tgl-1115g4/igt@kms_vrr@lobf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11920">i915#11920</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@max-min:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rplp-1/igt@kms_vrr@max-min.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +4 other tests skip</li>
+<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-ilk-650/igt@kms_vrr@max-min.html">SKIP</a> +11 other tests skip</li>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-tgl-1115g4/igt@kms_vrr@max-min.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +4 other tests skip</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-6/igt@kms_vrr@max-min.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +11 other tests skip</li>
+<li>bat-mtlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-9/igt@kms_vrr@max-min.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8808">i915#8808</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +4 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_vrr@negative-basic:</p>
 <ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-atsm-2/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +11 other tests skip</li>
-<li>bat-ptl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-ptl-2/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5949">Intel XE#5949</a>)</li>
+<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-kbl-2/igt@kms_vrr@negative-basic.html">SKIP</a> +11 other tests skip</li>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arlh-2/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>) +11 other tests skip</li>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-skl-6600u/igt@kms_vrr@negative-basic.html">SKIP</a> +11 other tests skip</li>
+<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg1-7/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>)</li>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-11/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>)</li>
+<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rpls-4/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>)</li>
+<li>bat-jsl-5:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-5/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>)</li>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-tgl-1115g4/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>)</li>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-8/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8808">i915#8808</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>)</li>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-9/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>)</li>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adls-6/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_vrr@seamless-rr-switch-drrs:</p>
 <ul>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-lnl-1/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1499">Intel XE#1499</a>) +2 other tests skip</li>
+<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-cfl-8700k/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> +11 other tests skip</li>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-twl-1/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +2 other tests skip</li>
+<li>bat-apl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-apl-1/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> +11 other tests skip</li>
+<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-14/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +4 other tests skip</li>
+<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-bsw-nick/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> +11 other tests skip</li>
+<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-5/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8808">i915#8808</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +4 other tests skip</li>
+<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-6/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +4 other tests skip</li>
+<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-rpls-4/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +1 other test skip</li>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-mtlp-8/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8808">i915#8808</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1:</p>
+<p>igt@kms_vrr@seamless-rr-switch-virtual:</p>
 <ul>
-<li>bat-ptl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-ptl-2/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5862">Intel XE#5862</a>) +1 other test fail</li>
+<li>bat-arls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-arls-6/igt@kms_vrr@seamless-rr-switch-virtual.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8808">i915#8808</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +5 other tests skip</li>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg2-9/igt@kms_vrr@seamless-rr-switch-virtual.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +4 other tests skip</li>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-kbl-x1275/igt@kms_vrr@seamless-rr-switch-virtual.html">SKIP</a> +11 other tests skip</li>
+<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-hsw-4770/igt@kms_vrr@seamless-rr-switch-virtual.html">SKIP</a> +11 other tests skip</li>
+<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-ivb-3770/igt@kms_vrr@seamless-rr-switch-virtual.html">SKIP</a> +11 other tests skip</li>
+<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-dg1-6/igt@kms_vrr@seamless-rr-switch-virtual.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a>) +11 other tests skip</li>
+<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/fi-kbl-guc/igt@kms_vrr@seamless-rr-switch-virtual.html">SKIP</a> +11 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_vrr@seamless-rr-switch-vrr:</p>
 <ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-adlp-7/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +8 other tests skip</li>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-lnl-2/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a>) +11 other tests skip</li>
-<li>bat-ptl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14006/bat-ptl-2/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5948">Intel XE#5948</a>) +1 other test skip</li>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adlp-9/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +1 other test skip</li>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-adls-6/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +4 other tests skip</li>
+<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14006/bat-jsl-1/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9906">i915#9906</a>) +4 other tests skip</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_8610 -&gt; IGTPW_14006</li>
 </ul>
-<p>IGTPW_14006: 14006<br />
-  IGT_8610: 8610<br />
-  xe-4055-893c123d23de1f19f4b609970cfe56caabd9ff96: 893c123d23de1f19f4b609970cfe56caabd9ff96</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17496: 893c123d23de1f19f4b609970cfe56caabd9ff96 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14006: 14006<br />
+  IGT_8610: 8610</p>
 
 </body>
 </html>
 
---===============2452347477458298539==--
+--===============1374544415466142231==--
