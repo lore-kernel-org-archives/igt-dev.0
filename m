@@ -4,59 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D6F9CCFA03
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 11:45:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38B3BCCFA05
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 11:58:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 00CF210E8A5;
-	Thu,  6 Nov 2025 11:45:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E73B410E5DC;
+	Thu,  6 Nov 2025 11:58:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jiXEIqTS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kJns5Ey8";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 937F710E8A5
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Nov 2025 11:45:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A069F10E5DC
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Nov 2025 11:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762429504; x=1793965504;
- h=message-id:subject:from:to:cc:date:in-reply-to:
- references:content-transfer-encoding:mime-version;
- bh=dq9kkm/uyrx8TtFXLlRo02gJWN3+2hglfq3nBeOaSBE=;
- b=jiXEIqTSpM7ikXWvAbTU9GnNT5ercBQJLYfVhheNaTIgM6WaNekBCKEL
- RhFr/rTKqvxb8wgK2DcCUN/SbFY955ewlM7UkmKWtCIj3bBIN8jlFcAoM
- l3zUJUEhz1/6I74V4yI+kOaW4+9V6/TYrJSjNxqzH/s/4PB6JIaPEAAFQ
- WssEESlZQZKXVNfVkfnO00IuULiu+dXjfNDG5azBB+6RbSeY+BkaeU2wJ
- OZfwRJp8l2y3hKQT/eAn3wxIIucPCfF2JMKz1Iu+OqB2ThCVPCW/ZHpA2
- Fa6A7QQI0j4XaPq9QimBNxTXrF2XlSsz0jpoGaMfhNeaPUN0YHKHZoyD4 A==;
-X-CSE-ConnectionGUID: JRn6Dv1nTxm/dukpCUftAA==
-X-CSE-MsgGUID: ZrNEUfdjTxGgu4RIE6XRkg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="75249040"
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="75249040"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ t=1762430319; x=1793966319;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=1IA3516wF7Wu/gEJnWtLpMaI4QCuPgDw3CdJYIp1mf0=;
+ b=kJns5Ey8Gj+eZNRenacrwvOOb35efx8UbBSWYcTmTMomAlGCanQUW0id
+ oySZybZEMKECFrol3F9gTxPpQ3P4WRB2peeGkqpfL9MThnC878yKtKAqT
+ Iuo5JPAtAS6lo4mKeAoCWQSCF8aOXH57naloOJ7Jffcfv2alQCarO8QvS
+ lKkEeRgYGeoypmSjCzK0WpmXcIRNkKfPZFffF/wciBleHy36+e042RodQ
+ yY0+cftgBqRxf4rxg1s+AjZPC2vPVDZV05JyY5G4obXKYLiY9cMtSKEkG
+ 0Jgi3N0MtRcCuqfepWhazG/HAQz5U9oFADUOcYdVkbcb88XrKrtfdwGJG w==;
+X-CSE-ConnectionGUID: xN1PlVi5Sq+dt2qjlHGX8Q==
+X-CSE-MsgGUID: pV+0ISUjSQW5gtnVVDSU0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="75249901"
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="75249901"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2025 03:45:03 -0800
-X-CSE-ConnectionGUID: DxST8G9IQnm2yTw+2zYQHA==
-X-CSE-MsgGUID: 3dhWlW+OQ1KoSFeoZjgMVA==
+ 06 Nov 2025 03:58:39 -0800
+X-CSE-ConnectionGUID: BJ7qbyE/ShWGPont84R2GA==
+X-CSE-MsgGUID: AhWgjP0ATUOVXTo3ND+gMQ==
 X-ExtLoop1: 1
-Received: from rvuia-mobl.ger.corp.intel.com (HELO [10.245.244.174])
- ([10.245.244.174])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2025 03:45:02 -0800
-Message-ID: <13bce67cabfae0c51f68a998ac1ddf8a9611bffe.camel@linux.intel.com>
-Subject: Re: [PATCH i-g-t v3 2/2] tests/intel/xe_peer2peer: gracefully
- handle ENOTSUP
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, Sanjay Yadav
- <sanjay.kumar.yadav@intel.com>
-Date: Thu, 06 Nov 2025 12:45:00 +0100
-In-Reply-To: <20251105115132.97222-4-matthew.auld@intel.com>
-References: <20251105115132.97222-3-matthew.auld@intel.com>
- <20251105115132.97222-4-matthew.auld@intel.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-2.fc41) 
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="188459010"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 03:58:38 -0800
+Date: Thu, 6 Nov 2025 12:58:36 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Shekhar Chauhan <shekhar.chauhan@intel.com>
+Cc: igt-dev@lists.freedesktop.org, lucas.demarchi@intel.com,
+ balasubramani.vivekanandan@intel.com
+Subject: Re: [PATCH i-g-t v1 3/3] lib/intel_pat: Define pat indices for
+ xe3p_xpc
+Message-ID: <20251106115836.napgvtcuyjkgsivg@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Shekhar Chauhan <shekhar.chauhan@intel.com>,
+ igt-dev@lists.freedesktop.org, lucas.demarchi@intel.com,
+ balasubramani.vivekanandan@intel.com
+References: <20251106053425.1731151-1-shekhar.chauhan@intel.com>
+ <20251106053425.1731151-4-shekhar.chauhan@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251106053425.1731151-4-shekhar.chauhan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,155 +74,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, 2025-11-05 at 11:51 +0000, Matthew Auld wrote:
-> Currently this blows up on the multi-dGPU setup we have in CI when
-> importing the VRAM from one device into the other via dma-buf, due
-> the
-> P2P internals reporting this as unsupported on this machine. Trying
-> to
-> manually white list the hostbridge device on the P2P side is also
-> unsuccessful since the read side test fails due to a data mismatch
-> when
-> reading from the exported VRAM. There are also no hangs or errors in
-> dmesg although strangely the write side test passes. So it appears
-> that
-> the direction of the copy is broken when reading the exported VRAM
-> from
-> the importer side. Manually disabling/enabling iommu also make no
-> difference. And finally hacking the test to force same device
-> import/export makes the test pass, which should rule out any kind of
-> test defect. With that gracefully skip running the VRAM import
-> subtests
-> if this is reported as unsupported by the kernel.
->=20
-> v2 (Kamil & Sanjay)
-> =C2=A0 - s/ENOSUP/ENOTSUP/ in commit title
->=20
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6433
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1173
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
+Hi Shekhar,
+On 2025-11-06 at 11:04:25 +0530, Shekhar Chauhan wrote:
+> From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+> 
+> Right PAT indices selected for xe3p_xpc.
+> 
+> Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+> Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
 
-LGTM.
-Reviewed-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
-> =C2=A0tests/intel/xe_peer2peer.c | 39 ++++++++++++++++++++++++++---------=
--
-> --
-> =C2=A01 file changed, 27 insertions(+), 12 deletions(-)
->=20
-> diff --git a/tests/intel/xe_peer2peer.c b/tests/intel/xe_peer2peer.c
-> index b777d2b66..70374e56d 100644
-> --- a/tests/intel/xe_peer2peer.c
-> +++ b/tests/intel/xe_peer2peer.c
-> @@ -116,11 +116,24 @@ static void test_read(struct gpu_info *ex_gpu,
-> struct gpu_info *im_gpu,
-> =C2=A0	uint32_t im_xe =3D im_gpu->fd;
-> =C2=A0	uint32_t ex_src, dmabuf;
-> =C2=A0	uint32_t stride;
-> -
-> =C2=A0	struct drm_xe_engine_class_instance inst =3D {
-> =C2=A0		.engine_class =3D DRM_XE_ENGINE_CLASS_COPY,
-> =C2=A0	};
-> =C2=A0	intel_ctx_t *ctx;
-> +	int err;
-> +
-> +	blt_copy_init(ex_xe, &ex_blt);
-> +	src =3D blt_create_object(&ex_blt, ex_reg, width, height, bpp,
-> 0,
-> +				T_LINEAR, COMPRESSION_DISABLED, 0,
-> true);
-> +
-> +	dmabuf =3D prime_handle_to_fd(ex_xe, src->handle);
-> +	err =3D __prime_fd_to_handle(im_xe, dmabuf, &ex_src);
-> +	if (err =3D=3D -ENOTSUP) {
-> +		blt_destroy_object(ex_xe, src);
-> +		igt_assert(ex_reg !=3D system_memory(ex_xe));
-> +		igt_skip("P2P VRAM import not supported on this
-> device, skipping.\n");
-> +	}
-> +	igt_assert(!err);
-> =C2=A0
-> =C2=A0	vm =3D xe_vm_create(im_xe, 0, 0);
-> =C2=A0	exec_queue =3D xe_exec_queue_create(im_xe, vm, &inst, 0);
-> @@ -129,17 +142,12 @@ static void test_read(struct gpu_info *ex_gpu,
-> struct gpu_info *im_gpu,
-> =C2=A0					 INTEL_ALLOCATOR_SIMPLE,
-> =C2=A0					 ALLOC_STRATEGY_LOW_TO_HIGH,
-> 0);
-> =C2=A0
-> -	blt_copy_init(ex_xe, &ex_blt);
-> =C2=A0	blt_copy_init(im_xe, &im_blt);
-> =C2=A0
-> -	src =3D blt_create_object(&ex_blt, ex_reg, width, height, bpp,
-> 0,
-> -				T_LINEAR, COMPRESSION_DISABLED, 0,
-> true);
-> =C2=A0	dst =3D blt_create_object(&im_blt, im_reg, width, height, bpp,
-> 0,
-> =C2=A0				T_LINEAR, COMPRESSION_DISABLED, 0,
-> true);
-> =C2=A0	blt_surface_fill_rect(ex_xe, src, width, height);
-> =C2=A0
-> -	dmabuf =3D prime_handle_to_fd(ex_xe, src->handle);
-> -	ex_src =3D prime_fd_to_handle(im_xe, dmabuf);
-> =C2=A0	im_src =3D calloc(1, sizeof(*im_src));
-> =C2=A0
-> =C2=A0	stride =3D width * 4;
-> @@ -198,11 +206,23 @@ static void test_write(struct gpu_info *ex_gpu,
-> struct gpu_info *im_gpu,
-> =C2=A0	uint32_t im_xe =3D im_gpu->fd;
-> =C2=A0	uint32_t ex_dst, dmabuf;
-> =C2=A0	uint32_t stride;
-> -
-> =C2=A0	struct drm_xe_engine_class_instance inst =3D {
-> =C2=A0		.engine_class =3D DRM_XE_ENGINE_CLASS_COPY,
-> =C2=A0	};
-> =C2=A0	intel_ctx_t *ctx;
-> +	int err;
-> +
-> +	blt_copy_init(ex_xe, &ex_blt);
-> +	dst =3D blt_create_object(&ex_blt, ex_reg, width, height, bpp,
-> 0,
-> +				T_LINEAR, COMPRESSION_DISABLED, 0,
-> true);
-> +	dmabuf =3D prime_handle_to_fd(ex_xe, dst->handle);
-> +	err =3D __prime_fd_to_handle(im_xe, dmabuf, &ex_dst);
-> +	if (err =3D=3D -ENOTSUP) {
-> +		blt_destroy_object(ex_xe, dst);
-> +		igt_assert(ex_reg !=3D system_memory(ex_xe));
-> +		igt_skip("P2P VRAM import not supported on this
-> device, skipping.\n");
-> +	}
-> +	igt_assert(!err);
-> =C2=A0
-> =C2=A0	vm =3D xe_vm_create(im_xe, 0, 0);
-> =C2=A0	exec_queue =3D xe_exec_queue_create(im_xe, vm, &inst, 0);
-> @@ -211,17 +231,12 @@ static void test_write(struct gpu_info *ex_gpu,
-> struct gpu_info *im_gpu,
-> =C2=A0					 INTEL_ALLOCATOR_SIMPLE,
-> =C2=A0					 ALLOC_STRATEGY_LOW_TO_HIGH,
-> 0);
-> =C2=A0
-> -	blt_copy_init(ex_xe, &ex_blt);
-> =C2=A0	blt_copy_init(im_xe, &im_blt);
-> =C2=A0
-> -	dst =3D blt_create_object(&ex_blt, ex_reg, width, height, bpp,
-> 0,
-> -				T_LINEAR, COMPRESSION_DISABLED, 0,
-> true);
-> =C2=A0	src =3D blt_create_object(&im_blt, im_reg, width, height, bpp,
-> 0,
-> =C2=A0				T_LINEAR, COMPRESSION_DISABLED, 0,
-> true);
-> =C2=A0	blt_surface_fill_rect(im_xe, src, width, height);
-> =C2=A0
-> -	dmabuf =3D prime_handle_to_fd(ex_xe, dst->handle);
-> -	ex_dst =3D prime_fd_to_handle(im_xe, dmabuf);
-> =C2=A0	im_dst =3D calloc(1, sizeof(*im_dst));
-> =C2=A0
-> =C2=A0	stride =3D width * 4;
-
+>  lib/intel_pat.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/lib/intel_pat.c b/lib/intel_pat.c
+> index 156b1ee5d..e3588110a 100644
+> --- a/lib/intel_pat.c
+> +++ b/lib/intel_pat.c
+> @@ -19,8 +19,12 @@ static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
+>  {
+>  	uint16_t dev_id = intel_get_drm_devid(fd);
+>  
+> -	if (intel_get_device_info(dev_id)->graphics_ver == 30 ||
+> -	    intel_get_device_info(dev_id)->graphics_ver == 20) {
+> +	if (intel_graphics_ver(dev_id) == IP_VER(35, 11)) {
+> +		pat->uc = 3;
+> +		pat->wb = 2;
+> +		pat->max_index = 31;
+> +	} else if (intel_get_device_info(dev_id)->graphics_ver == 30 ||
+> +		   intel_get_device_info(dev_id)->graphics_ver == 20) {
+>  		pat->uc = 3;
+>  		pat->wt = 15; /* Compressed + WB-transient */
+>  		pat->wb = 2;
+> -- 
+> 2.51.1
+> 
