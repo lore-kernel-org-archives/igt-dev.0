@@ -4,58 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C616FCCFA05
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 15:29:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 040CFCCF9F8
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 15:34:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 442C110E92E;
-	Thu,  6 Nov 2025 15:29:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 852EF10E935;
+	Thu,  6 Nov 2025 15:34:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DBEGl12Y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CE+sZiRg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEB7B10E92E
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Nov 2025 15:29:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4990C10E935
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Nov 2025 15:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762442953; x=1793978953;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=tiAEPRJ1zAvub5nnHbzn7YQA/nBiTV8Xo0Bjav3JCZc=;
- b=DBEGl12YG4oL2wFOIixN2a9Ua+HL0pcloJHRmQHzPHqwziFP5HaYtZ8h
- 4/8HnimA8/iZ0eTF30n2HkVwnncz2gYK1DXb8uEPfZu0y8TSs0t7e90fT
- LWBdS95QD00Kfn5sP2bjmDw9ykqG8sGMgWJhh9g0k11zc/DL3D1f7AtuS
- YUbjz8adxzwiPcYx4QGbPeSAtrc0dOYQIouI60VVjeVWcc/00/YERBNTB
- c15YtyzprPYKqFy2bAeO8DgLgRhotM7oNdquPd4frY24tXEYrKAhaC6qm
- W1HbOnDzMvoF0wVybUPt4y0yWN/sYBjLDqHRUJkFXQYo+FrL7kPGia2Bd g==;
-X-CSE-ConnectionGUID: h8jie99wRDuYDV3hZ8ryaA==
-X-CSE-MsgGUID: ZU0C5uVXRTy48h987LRA0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="87212091"
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="87212091"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2025 07:29:05 -0800
-X-CSE-ConnectionGUID: 4DxrApA+RjOOvOkE65cfnA==
-X-CSE-MsgGUID: p3NlwphJQSKrxpz4zVPabw==
+ t=1762443268; x=1793979268;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=MD6E2OvQd9z6Zi+ADmlmNZSdzLrgvcmBfsr5S2AhXlY=;
+ b=CE+sZiRgHRDbGKQn74fIzNsL1H4RsoXPkoTzUMVF31ErLIaYuVD8XaRB
+ 3Ug8SCF+BiLt65sTk9/6lLnI/AMDdF5f8UIisYjbw/2xoCIZ0n2gUC+1h
+ NjKIPzuTWTRYxOr64JUeMni4D4h3MGI9/ais3u1rZis2GwbW0yjB07FAH
+ wQJoIw5kz+SWD84eQLQicvqHJizA7PhceFshVUfqIJJMeJzfk+nFiy+Pz
+ C829O8//oC/EJjcY/7oR9DoIQlzGQ/kU5RXcXFVbFahcD6U1+acqFJk4W
+ JwxRhgkiQDDx/gbqvnW4Maae1aeWE6tnxoMID7qh0QiqivAaNE9x+wD3N Q==;
+X-CSE-ConnectionGUID: 2Nw5fxkFSGuc6mVLesi1Dg==
+X-CSE-MsgGUID: lvh+vh12QPKH2V2o1uAmhA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="64677550"
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="64677550"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2025 07:34:28 -0800
+X-CSE-ConnectionGUID: tNdTaHP2TlCSafUgcduXkg==
+X-CSE-MsgGUID: iJZrg6hfQAaZGgyE25C3/Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="187075154"
-Received: from soc-5cg43972f8.clients.intel.com (HELO localhost)
- ([172.28.180.65])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2025 07:29:03 -0800
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="191883162"
+Received: from shekharc-mobl2.iind.intel.com ([10.190.239.16])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2025 07:34:26 -0800
+From: Shekhar Chauhan <shekhar.chauhan@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: piotr.piorkowski@intel.com, lukasz.laguna@intel.com,
- jakub1.kolakowski@intel.com,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH i-g-t 6/6] tests/intel/xe_sriov_flr: Do not ignore failed
- prerequisites
-Date: Thu,  6 Nov 2025 16:28:10 +0100
-Message-ID: <20251106152811.1997614-7-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251106152811.1997614-1-marcin.bernatowicz@linux.intel.com>
-References: <20251106152811.1997614-1-marcin.bernatowicz@linux.intel.com>
+Cc: lucas.demarchi@intel.com, balasubramani.vivekanandan@intel.com,
+ kamil.konieczny@linux.intel.com, shekhar.chauhan@intel.com
+Subject: [PATCH i-g-t v2 0/3] Introduce NVL-S and CRI platforms
+Date: Thu,  6 Nov 2025 21:04:16 +0530
+Message-ID: <20251106153419.1741989-1-shekhar.chauhan@intel.com>
+X-Mailer: git-send-email 2.51.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -72,170 +66,20 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Mark failed prerequisites with an abort reason and treat them as test
-failures instead of skips. This ensures that such cases are caught by CI
-rather than silently ignored.
+This series adds the basic platform enabling patches for NVL-S and CRI.
 
-Suggested-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Reviewed-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
----
- tests/intel/xe_sriov_flr.c | 59 ++++++++++++++++++++++++--------------
- 1 file changed, 37 insertions(+), 22 deletions(-)
+Balasubramani Vivekanandan (2):
+  lib: Add Crescent Island Support
+  lib/intel_pat: Define pat indices for xe3p_xpc
 
-diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
-index e69de46c4..9868a5b7a 100644
---- a/tests/intel/xe_sriov_flr.c
-+++ b/tests/intel/xe_sriov_flr.c
-@@ -53,7 +53,9 @@
- 
- IGT_TEST_DESCRIPTION("Xe tests for SR-IOV VF FLR (Functional Level Reset)");
- 
--const char *SKIP_REASON = "SKIP";
-+static const char STOP_REASON_ABORT[] = "ABORT";
-+static const char STOP_REASON_FAIL[]  = "FAIL";
-+static const char STOP_REASON_SKIP[]  = "SKIP";
- 
- static struct g_mmio {
- 	struct xe_mmio *mmio;
-@@ -196,7 +198,7 @@ static void set_skip_reason(struct subcheck_data *data, const char *format, ...)
- 	va_list args;
- 
- 	va_start(args, format);
--	set_stop_reason_v(data, SKIP_REASON, format, args);
-+	set_stop_reason_v(data, STOP_REASON_SKIP, format, args);
- 	va_end(args);
- }
- 
-@@ -206,7 +208,17 @@ static void set_fail_reason(struct subcheck_data *data, const char *format, ...)
- 	va_list args;
- 
- 	va_start(args, format);
--	set_stop_reason_v(data, "FAIL", format, args);
-+	set_stop_reason_v(data, STOP_REASON_FAIL, format, args);
-+	va_end(args);
-+}
-+
-+__attribute__((format(printf, 2, 3)))
-+static void set_abort_reason(struct subcheck_data *data, const char *format, ...)
-+{
-+	va_list args;
-+
-+	va_start(args, format);
-+	set_stop_reason_v(data, STOP_REASON_ABORT, format, args);
- 	va_end(args);
- }
- 
-@@ -234,7 +246,7 @@ static bool no_subchecks_can_proceed(struct subcheck *checks, int num_checks)
- static bool is_subcheck_skipped(struct subcheck *subcheck)
- {
- 	return subcheck->data && subcheck->data->stop_reason &&
--	       !strncmp(SKIP_REASON, subcheck->data->stop_reason, strlen(SKIP_REASON));
-+	       !strncmp(STOP_REASON_SKIP, subcheck->data->stop_reason, strlen(STOP_REASON_SKIP));
- }
- 
- static void subchecks_report_results(struct subcheck *checks, int num_checks)
-@@ -593,8 +605,8 @@ static int populate_ggtt_pte_offsets(struct ggtt_data *gdata)
- 	ret = xe_sriov_find_ggtt_provisioned_pte_offsets(pf_fd, tile, mmio,
- 							 &ranges, &nr_ranges);
- 	if (ret) {
--		set_skip_reason(&gdata->base, "Failed to scan GGTT PTE offset ranges (%d)\n",
--				ret);
-+		set_abort_reason(&gdata->base, "Failed to scan GGTT PTE offset ranges (%d)\n",
-+				 ret);
- 		return -1;
- 	}
- 
-@@ -605,15 +617,17 @@ static int populate_ggtt_pte_offsets(struct ggtt_data *gdata)
- 			continue;
- 
- 		if (vf_id < 1 || vf_id > num_vfs) {
--			set_skip_reason(&gdata->base, "Unexpected VF%u at range entry %u [%#" PRIx64 "-%#" PRIx64 "], num_vfs=%u\n",
--					vf_id, i, ranges[i].start, ranges[i].end, num_vfs);
-+			set_abort_reason(&gdata->base,
-+					 "Unexpected VF%u at range entry %u [%#" PRIx64
-+					 "-%#" PRIx64 "], num_vfs=%u\n",
-+					 vf_id, i, ranges[i].start, ranges[i].end, num_vfs);
- 			free(ranges);
- 			return -1;
- 		}
- 
- 		if (gdata->pte_offsets[vf_id].end) {
--			set_skip_reason(&gdata->base, "Duplicate GGTT PTE offset range for VF%u\n",
--					vf_id);
-+			set_abort_reason(&gdata->base, "Duplicate GGTT PTE offset range for VF%u\n",
-+					 vf_id);
- 			free(ranges);
- 			return -1;
- 		}
-@@ -626,9 +640,9 @@ static int populate_ggtt_pte_offsets(struct ggtt_data *gdata)
- 
- 	for (int vf_id = 1; vf_id <= num_vfs; ++vf_id)
- 		if (!gdata->pte_offsets[vf_id].end) {
--			set_skip_reason(&gdata->base,
--					"Failed to find VF%u provisioned GGTT PTE offset range\n",
--					vf_id);
-+			set_abort_reason(&gdata->base,
-+					 "Failed to find VF%u provisioned GGTT PTE offset range\n",
-+					 vf_id);
- 			return -1;
- 		}
- 
-@@ -668,9 +682,9 @@ static void ggtt_subcheck_prepare_vf(int vf_id, struct subcheck_data *data)
- 	for_each_pte_offset(pte_offset, &gdata->pte_offsets[vf_id]) {
- 		if (!set_pte_gpa(&gdata->ggtt, mmio, data->tile, pte_offset,
- 				 (uint8_t)vf_id, &pte)) {
--			set_skip_reason(data,
--					"Prepare VF%u failed, unexpected gpa: Read PTE: %#" PRIx64 " at offset: %#x\n",
--					vf_id, pte, pte_offset);
-+			set_abort_reason(data,
-+					 "Prepare VF%u failed, unexpected gpa: Read PTE: %#" PRIx64 " at offset: %#x\n",
-+					 vf_id, pte, pte_offset);
- 			return;
- 		}
- 	}
-@@ -782,9 +796,9 @@ static int populate_vf_lmem_sizes(struct subcheck_data *data)
- 							  XE_SRIOV_SHARED_RES_LMEM,
- 							  main_gt, &ranges, &nr_ranges);
- 	if (ret) {
--		set_skip_reason(data, "Failed read %s on main GT (%d)\n",
--				xe_sriov_debugfs_provisioned_attr_name(XE_SRIOV_SHARED_RES_LMEM),
--				ret);
-+		set_abort_reason(data, "Failed read %s on main GT (%d)\n",
-+				 xe_sriov_debugfs_provisioned_attr_name(XE_SRIOV_SHARED_RES_LMEM),
-+				 ret);
- 		return -1;
- 	}
- 
-@@ -800,7 +814,7 @@ static int populate_vf_lmem_sizes(struct subcheck_data *data)
- 
- 	for (int vf_id = 1; vf_id <= data->num_vfs; ++vf_id)
- 		if (!ldata->vf_lmem_size[vf_id]) {
--			set_skip_reason(data, "No LMEM provisioned for VF%u\n", vf_id);
-+			set_abort_reason(data, "No LMEM provisioned for VF%u\n", vf_id);
- 			return -1;
- 		}
- 
-@@ -833,7 +847,7 @@ static void lmem_subcheck_prepare_vf(int vf_id, struct subcheck_data *data)
- 
- 	if (!lmem_mmap_write_munmap(data->pf_fd, vf_id,
- 				    ldata->vf_lmem_size[vf_id], vf_id)) {
--		set_skip_reason(data, "LMEM write failed on VF%u\n", vf_id);
-+		set_abort_reason(data, "LMEM write failed on VF%u\n", vf_id);
- 	}
- }
- 
-@@ -897,7 +911,8 @@ static void regs_subcheck_prepare_vf(int vf_id, struct subcheck_data *data)
- 
- 		xe_mmio_tile_write32(mmio, tile, reg, vf_id);
- 		if (xe_mmio_tile_read32(mmio, tile, reg) != vf_id) {
--			set_skip_reason(data, "Registers write/read check failed on VF%u\n", vf_id);
-+			set_abort_reason(data, "Registers write/read check failed on VF%u\n",
-+					 vf_id);
- 			return;
- 		}
- 	}
+Shekhar Chauhan (1):
+  lib: Add NVL-S support
+
+ lib/intel_chipset.h     |  6 +++++-
+ lib/intel_device_info.c | 22 ++++++++++++++++++++++
+ lib/intel_pat.c         |  8 ++++++--
+ 3 files changed, 33 insertions(+), 3 deletions(-)
+
 -- 
-2.43.0
+2.51.1
 
