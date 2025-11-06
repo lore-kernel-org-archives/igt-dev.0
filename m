@@ -4,57 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE16ACCF9F8
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 05:20:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FD1ECCFA03
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 05:34:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3B62510E331;
-	Thu,  6 Nov 2025 05:20:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 27DE710E239;
+	Thu,  6 Nov 2025 05:34:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Cwf2wqkz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VawaHJBS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2CEF510E331
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Nov 2025 05:20:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 870BB10E097
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Nov 2025 05:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762406409; x=1793942409;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=zXAHbZYt3NAFRM1ZhcjuEMq2ZPT5i9uR1RHq0iLTRKU=;
- b=Cwf2wqkzDHXsoUCf49pe5SIyT3tKmCJcdXMhIu88eGq4lSwv+Vu9gTXI
- 8Esg2qBlHSvWhIPnmqDgXsxUZ5aXi83GhvUjGsZ4r2UivW4lFGOJfXZ/Q
- 83afO30GjKcsAT9eox63QoT+eHaC5jl6nGq6KJm264DXn9kNCdp/K5U0N
- cOjb4mvZ2nfGaR6b47ZnGbCYA7A7XujkkTkizvfuealuK7leYlVxNc0T8
- UB+mDwCzoXM0ZT5F0YL/VeS7sZHnR/B6LwBHrIqiggJUKzg2hA41p16OP
- 931Nl53pefbIyAjQnLDcv7+enHbPTUtp8lzz5op6PuPDj2k74dQYltakn w==;
-X-CSE-ConnectionGUID: wZmKDQplSYKYgQAG577Lww==
-X-CSE-MsgGUID: 0V45XvZhQQuQojsmGuv5dQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="81936573"
-X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; d="scan'208";a="81936573"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2025 21:20:08 -0800
-X-CSE-ConnectionGUID: h3CoBqK4RQe9kXlbNR6xHQ==
-X-CSE-MsgGUID: fAScU5quQXit7XcXQRTMFQ==
+ t=1762407274; x=1793943274;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=y0G4PDGjE38i5OqoLyq7TjHUruZ3vjDAN8wqqhsSE60=;
+ b=VawaHJBSH0ShbvxiQcePtDbaxyWeKReRYe3qJ/ZNuJxkHeqxSAB8m6pq
+ UaivdsWFXPsXTscBqjA0Q25QypLeSgZgXmaKBAqRFos9bljnksqz4CbNk
+ uhr+6NOlkvpvXV7IM+hZdYM5XMj/HJpwnYCoLrB9VC3WgHJORqNyymSS2
+ Gu1pGYEMXqQfQ/Fd9DEShsGBsvB5yRRIGv3YzBw0t+YqVFig1g2WPrq91
+ ZxBMDG5aEnrazanbwtWXq0TOEP01v9yaHRrZdX//IKGIEOAirZziDLwGT
+ jzqjNl4r6bptgGrtLE273rM8y3gTEtjycNpaxhDo9Z0sC6tgjrwjZEYXw g==;
+X-CSE-ConnectionGUID: nt0TvT8yQcS8j0fCEzr4Jg==
+X-CSE-MsgGUID: q0fnpeRpR/S/UF6ILWCrhQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="75218495"
+X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; d="scan'208";a="75218495"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2025 21:34:33 -0800
+X-CSE-ConnectionGUID: 65KNIAz+T3u/jvR7XAs4lw==
+X-CSE-MsgGUID: NWd1JE6eTcmfKpng+wsFaw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; d="scan'208";a="187374647"
-Received: from lucas-s2600cw.jf.intel.com ([10.54.55.69])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2025 21:20:07 -0800
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
- Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
- Shekhar Chauhan <shekhar.chauhan@intel.com>
-Subject: Re: [PATCH i-g-t] lib/pciids: sync with kernel commit 5e0de2dfbc1b
-Date: Wed,  5 Nov 2025 21:19:34 -0800
-Message-ID: <176240634068.1456439.327275902575723656.b4-ty@intel.com>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251105185020.261265-1-kamil.konieczny@linux.intel.com>
-References: <20251105185020.261265-1-kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,283,1754982000"; d="scan'208";a="192022359"
+Received: from shekharc-mobl2.iind.intel.com ([10.190.239.16])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2025 21:34:31 -0800
+From: Shekhar Chauhan <shekhar.chauhan@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: lucas.demarchi@intel.com, balasubramani.vivekanandan@intel.com,
+ kamil.konieczny@linux.intel.com, shekhar.chauhan@intel.com
+Subject: [PATCH i-g-t v1 0/3] Introduce NVL-S and CRI platforms
+Date: Thu,  6 Nov 2025 11:04:22 +0530
+Message-ID: <20251106053425.1731151-1-shekhar.chauhan@intel.com>
+X-Mailer: git-send-email 2.51.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,21 +66,20 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+This series adds the basic platform enabling patches for NVL-S and CRI.
 
-On Wed, 05 Nov 2025 19:50:20 +0100, Kamil Konieczny wrote:
-> Synchronize PCI IDs with drm-next kernel commit
-> 5e0de2dfbc1b ("drm/xe/cri: Add CRI platform definition")
-> 
-> This adds CRI (Crescent Island) to known PCI IDs.
-> 
-> 
+Balasubramani Vivekanandan (2):
+  lib: Add Crescent Island Support
+  lib/intel_pat: Define pat indices for xe3p_xpc
 
-Applied, thanks!
+Shekhar Chauhan (1):
+  lib: Add NVL-S support
 
-[1/1] lib/pciids: sync with kernel commit 5e0de2dfbc1b
-      commit: 66a16504c045fbe4e96110f54caa5e35c254fd7d
+ lib/intel_chipset.h     |  4 ++++
+ lib/intel_device_info.c | 22 ++++++++++++++++++++++
+ lib/intel_pat.c         |  8 ++++++--
+ 3 files changed, 32 insertions(+), 2 deletions(-)
 
-Best regards,
 -- 
-Lucas De Marchi
+2.51.1
 
