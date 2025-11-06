@@ -4,60 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCA76CCFA05
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 13:09:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A039CCFA05
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 13:18:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4FB7310E3C5;
-	Thu,  6 Nov 2025 13:09:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D942010E8B1;
+	Thu,  6 Nov 2025 13:18:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kqBfvBrq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MbqGBY8h";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F76D10E3C5
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Nov 2025 13:09:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 10A8D10E8B1;
+ Thu,  6 Nov 2025 13:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762434554; x=1793970554;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=L4thtkps97y1ESBkeqrMgqkbR2c83zZcjg7zo0oeKsM=;
- b=kqBfvBrqeFUvfaoCKGydKDfRyEIyFlvFY+VrDFbKO7b6GL5E/qUJexiz
- lhi8IIhYWSUlanB9D5Kmj6bind8e3vAYP1Na84lA5rQ4t43RB55Tc6lPi
- eVOisSoMZom5ANYnW4LGQCz42TDrB67WnRNeiOSamI/UfVPZnzuAAoXln
- QwYcMBmnoexntW7xZkF2Bk+1M8ovhc862666w68y/cfbGUH2KGYdkbJ+x
- PXdvVMWtATibd1PP2dETU04/3u6cceq7o8fj0U4gJLWtPdytMX4dOVZFk
- sx6YFE3xB8iy/xtuWfNZaSOnYcPzaJZLyMmYijSd7VnhSNi1lC4aWsWkG g==;
-X-CSE-ConnectionGUID: 25zngcqtSC6kccK28wsoGw==
-X-CSE-MsgGUID: 9I6E2ABaSvO683DGKyTg9A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="87198520"
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="87198520"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ t=1762435137; x=1793971137;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=eG42LuezVAJhiRCoLsiCOy0GU4Ods4xOMnqnjamJeAU=;
+ b=MbqGBY8h9l/16NYBbNhYPKrAWNGHmDA19yvwSc9u8i1PyFsp2DKVtruE
+ oYhvbSRJmpRGZ6ydPyp33WgPy7ebINQBT5zvzwzSEIFuuAjf6QIe5VOI4
+ f8M1TElAsW+V9gIl191kbzOu26KMhxbTQuWNA4OxKzWSLI/hzWADeZXH7
+ fo/eWr0HL1+qvLPCAls0bKVXvxZ/0FASBkCuTti4BRHPn+OuiKLDApUI6
+ NNSAjAGoh8uQTKsjz4d06hGEmYvJYObBUv6jy2uAiXHhDHXLiEeqfv+Tr
+ TD0EAn5DEuXqjaxTyvWUUpaMZCN+PVHYXe2/FW2SjQocQL0kRCIdm7sEl w==;
+X-CSE-ConnectionGUID: dcxVjGmoSMazHCtPFx+mJQ==
+X-CSE-MsgGUID: cxRHVZ8ITkux44WGOHMNrw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="87199499"
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="87199499"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2025 05:09:13 -0800
-X-CSE-ConnectionGUID: xlvAh6deTqafz3YBQ00seg==
-X-CSE-MsgGUID: pGsl0NaNRZun+zWRD8WzJg==
+ 06 Nov 2025 05:18:57 -0800
+X-CSE-ConnectionGUID: mQ2wvDmGSo+3yKtQjAAPbA==
+X-CSE-MsgGUID: GlyJGNwIQAa8UuK0cxfcJg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="191849774"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.246.65])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2025 05:09:11 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: pranay.samala@intel.com, Naladala Ramanaidu
- <ramanaidu.naladala@intel.com>, "Syrjala, Ville"
- <ville.syrjala@intel.com>, "Saarinen, Jani" <jani.saarinen@intel.com>
-Subject: Re: [PATCH i-g-t v1 1/2] tests/kms_plane_scaling: Reduce debug log
- level in CI for scaling tests
-In-Reply-To: <20251106092204.1505129-2-ramanaidu.naladala@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20251106092204.1505129-1-ramanaidu.naladala@intel.com>
- <20251106092204.1505129-2-ramanaidu.naladala@intel.com>
-Date: Thu, 06 Nov 2025 15:09:08 +0200
-Message-ID: <191a8b272532dbd8de15b380b583de718a37e44f@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="192924822"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.73])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2025 05:18:53 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Zbigniew =?UTF-8?B?S2VtcGN6ecWEc2tp?= <zbigniew.kempczynski@intel.com>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?= <thomas.hellstrom@linux.intel.com>,
+ Ayaz A Siddiqui <ayaz.siddiqui@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Subject: Re: [PATCH i-g-t] tests/gem_lmem_swapping: Suppress output from
+ killed oom helpers
+Date: Thu, 06 Nov 2025 14:18:51 +0100
+Message-ID: <2264332.C4sosBPzcN@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20251104164225.473297-2-janusz.krzysztofik@linux.intel.com>
+References: <20251104164225.473297-2-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,56 +78,75 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 06 Nov 2025, Naladala Ramanaidu <ramanaidu.naladala@intel.com> wrote:
-> Reduce excessive logging in CI environments when multiple outputs
-> are connected. It prevents CI runners from exceeding disk usage
-> limits.
+Sorry for responding to myself, but some self-criticism is needed.
 
-So how do we debug issues when there are no KMD debug logs? This can't
-be the go-to solution in the long run.
-
-Moreover, update_debug_mask_if_ci() doesn't even log the actual mask
-being switched to.
-
-
-BR,
-Jani.
-
-
->
-> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+On Tuesday, 4 November 2025 17:42:19 CET Janusz Krzysztofik wrote:
+> Dynamic sub-subtests of smem-oom subtest spawn smem memory hog helper
+> processes which are expected to be killed by OOM killer.  When that
+> happens, a default IGT signal helper inherited from its parent process is
+> now executed inside the helper process.  That leads to a dynamic sub-
+> subtest CRASH result message sent to stdout, followed by a parent subtest
+> SUCCESS result message.  Meanwhile, processing of the dynamic sub-subtest
+> that spawned that helper still continues, and then another set of result
+> messages is submitted on its completion.  As a consequence, ambiguous
+> results from that dynamic sub-subtests and its parent subtest are detected
+> and reported by igt_runner, even if an error code returned by the helper
+> is ignored.
+> 
+> Shut those redundant messages up by installing a custom signal handler
+> that just exists the helper process when killed by the OOM killer, without
+> reporting any IGT results or executing any IGT exit handlers.
+> 
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5493
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 > ---
->  tests/kms_plane_scaling.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-> index 63d35d76b..34c8f8a64 100644
-> --- a/tests/kms_plane_scaling.c
-> +++ b/tests/kms_plane_scaling.c
-> @@ -32,6 +32,7 @@
+>  tests/intel/gem_lmem_swapping.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+> index 8e0dac42d8..5e11092c04 100644
+> --- a/tests/intel/gem_lmem_swapping.c
+> +++ b/tests/intel/gem_lmem_swapping.c
+> @@ -668,6 +668,11 @@ static void smem_oom_exit_handler(int sig)
+>  	(*lmem_done)++;
+>  }
 >  
->  #include "igt.h"
->  #include "igt_vec.h"
-> +#include "igt_sysfs.h"
->  #include <math.h>
->  
->  /**
-> @@ -1358,11 +1359,15 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->  		data.devid = is_intel_device(data.drm_fd) ?
->  			intel_get_drm_devid(data.drm_fd) : 0;
->  		igt_require(data.display.is_atomic);
-> +		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
->  	}
->  
->  	igt_subtest_group {
->  		igt_output_t *output;
->  
-> +		if (igt_get_connected_output_count(&data.display) > 1)
-> +			update_debug_mask_if_ci(DRM_UT_DRIVER | DRM_UT_CORE);
+> +static void smem_oom_helper_sig_handler(int sig)
+> +{
+> +	_exit(0);
+> +}
 > +
->  		for (int index = 0; index < ARRAY_SIZE(scaler_with_pixel_format_tests); index++) {
->  			igt_describe(scaler_with_pixel_format_tests[index].describe);
->  			igt_subtest_with_dynamic(scaler_with_pixel_format_tests[index].name) {
+>  static void test_smem_oom(int i915,
+>  			  const intel_ctx_t *ctx,
+>  			  struct drm_i915_memory_region_info *region)
+> @@ -706,6 +711,8 @@ static void test_smem_oom(int i915,
+>  	while (!READ_ONCE(*lmem_done)) {
+>  		igt_fork_helper(&smem_proc) {
+>  			igt_fork(child, 1) {
+> +				signal(SIGBUS, smem_oom_helper_sig_handler);
+> +
+>  				for (int pass = 0; pass < num_alloc; pass++) {
+>  					if (READ_ONCE(*lmem_done))
+>  						break;
+> @@ -715,6 +722,8 @@ static void test_smem_oom(int i915,
+>  			igt_fork(child, 1) {
+>  				int fd = drm_reopen_driver(i915);
+>  
+> +				signal(SIGBUS, smem_oom_helper_sig_handler);
 
--- 
-Jani Nikula, Intel
+While this patch looked to me like resolving the issue when I test tested it, 
+SIGBUS is not a direct indication of a process being killed by OOM killer.  
+More deep analysis is needed.  Please forget this patch.
+
+Thanks,
+Janusz
+
+> +
+>  				for (int pass = 0; pass < num_alloc; pass++) {
+>  					if (READ_ONCE(*lmem_done))
+>  						break;
+> 
+
+
+
+
