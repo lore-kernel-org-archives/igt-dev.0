@@ -4,59 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7380CCCFA05
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 13:01:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCA76CCFA05
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 13:09:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 274B410E141;
-	Thu,  6 Nov 2025 13:01:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4FB7310E3C5;
+	Thu,  6 Nov 2025 13:09:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eFkdgBxj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kqBfvBrq";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 773ED10E141
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Nov 2025 13:01:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F76D10E3C5
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Nov 2025 13:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762434061; x=1793970061;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=67Uqpe/f+BkwevbW7Nfy3Ru8xLxqbaIuAG1arJbtok0=;
- b=eFkdgBxjTvnKAKf26hboLsZXqje2Upl24RYrsu+h/6+kxT0YPNbq741u
- 4xonAQAQoe3L8UPFEwcOXLDTOFOuvZX9P6fpPDdYGiP73zwetRCfsMqpA
- jnnXF4ppTm4h5dOarIaFBhx9Nbbqmj/uKW7kj6BF38erDc4/rJGdECvNi
- l0J2CVHcCs4zSAsGwZG0JIun/3YorV7pLxQNBf8s4hSCa4tMgQJpfphoq
- k3jSvXOY8006+zqcOBn7Gd0vgRgom9BfuBzm5jjkybY370/gZd/IL9zDV
- ct70aAoHKMMm6jSdj/EGHL47F82MTlt/NMAA7FFx6HAHS7N7ao0xcv2tL g==;
-X-CSE-ConnectionGUID: +lirbYtjR7CFJUwKdeV0Xg==
-X-CSE-MsgGUID: 3ThfBIeNSPyjfceL+vCjMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="68217950"
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="68217950"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2025 05:01:01 -0800
-X-CSE-ConnectionGUID: JOCisb6rQTSJ9VCMOjvp2Q==
-X-CSE-MsgGUID: RUclB10CTvmcAqc4B4Okyw==
+ t=1762434554; x=1793970554;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=L4thtkps97y1ESBkeqrMgqkbR2c83zZcjg7zo0oeKsM=;
+ b=kqBfvBrqeFUvfaoCKGydKDfRyEIyFlvFY+VrDFbKO7b6GL5E/qUJexiz
+ lhi8IIhYWSUlanB9D5Kmj6bind8e3vAYP1Na84lA5rQ4t43RB55Tc6lPi
+ eVOisSoMZom5ANYnW4LGQCz42TDrB67WnRNeiOSamI/UfVPZnzuAAoXln
+ QwYcMBmnoexntW7xZkF2Bk+1M8ovhc862666w68y/cfbGUH2KGYdkbJ+x
+ PXdvVMWtATibd1PP2dETU04/3u6cceq7o8fj0U4gJLWtPdytMX4dOVZFk
+ sx6YFE3xB8iy/xtuWfNZaSOnYcPzaJZLyMmYijSd7VnhSNi1lC4aWsWkG g==;
+X-CSE-ConnectionGUID: 25zngcqtSC6kccK28wsoGw==
+X-CSE-MsgGUID: 9I6E2ABaSvO683DGKyTg9A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="87198520"
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="87198520"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2025 05:09:13 -0800
+X-CSE-ConnectionGUID: xlvAh6deTqafz3YBQ00seg==
+X-CSE-MsgGUID: pGsl0NaNRZun+zWRD8WzJg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="218507126"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2025 05:00:59 -0800
-Date: Thu, 6 Nov 2025 14:00:57 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Sk Anirban <sk.anirban@intel.com>
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
- riana.tauro@intel.com
-Subject: Re: [PATCH] tests/intel-ci/xe: Drop xe_survivability from fast
- feedback
-Message-ID: <20251106130057.or7inatubc4pq35v@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Sk Anirban <sk.anirban@intel.com>, igt-dev@lists.freedesktop.org,
- kamil.konieczny@intel.com, riana.tauro@intel.com
-References: <20251106122556.2307208-2-sk.anirban@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="191849774"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.65])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2025 05:09:11 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: pranay.samala@intel.com, Naladala Ramanaidu
+ <ramanaidu.naladala@intel.com>, "Syrjala, Ville"
+ <ville.syrjala@intel.com>, "Saarinen, Jani" <jani.saarinen@intel.com>
+Subject: Re: [PATCH i-g-t v1 1/2] tests/kms_plane_scaling: Reduce debug log
+ level in CI for scaling tests
+In-Reply-To: <20251106092204.1505129-2-ramanaidu.naladala@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20251106092204.1505129-1-ramanaidu.naladala@intel.com>
+ <20251106092204.1505129-2-ramanaidu.naladala@intel.com>
+Date: Thu, 06 Nov 2025 15:09:08 +0200
+Message-ID: <191a8b272532dbd8de15b380b583de718a37e44f@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251106122556.2307208-2-sk.anirban@intel.com>
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,48 +73,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sk,
-On 2025-11-06 at 17:55:57 +0530, Sk Anirban wrote:
+On Thu, 06 Nov 2025, Naladala Ramanaidu <ramanaidu.naladala@intel.com> wrote:
+> Reduce excessive logging in CI environments when multiple outputs
+> are connected. It prevents CI runners from exceeding disk usage
+> limits.
 
-Thank you for addressing this quickly. Imho subject could be
-improved:
+So how do we debug issues when there are no KMD debug logs? This can't
+be the go-to solution in the long run.
 
-[PATCH] intel-ci: Fix xe-fast-feedback testlist
+Moreover, update_debug_mask_if_ci() doesn't even log the actual mask
+being switched to.
 
-> Remove xe_survivability tests from xe-fast-feedback.testlist.
-> 
 
-Also here:
+BR,
+Jani.
 
-Fixes: d5e9a5b29adc ("tests/intel/xe_survivability: Add new test runtime survivability")
-> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
 
-I will make those corrections at merge soon,
-no need for resend.
-
-With above
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Regards,
-Kamil
-
+>
+> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 > ---
->  tests/intel-ci/xe-fast-feedback.testlist | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> index 5f27baafb..017e3ba2a 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -185,8 +185,6 @@ igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
->  igt@xe_sysfs_scheduler@timeslice_duration_us-min-max
->  igt@xe_sysfs_scheduler@job_timeout_ms-invalid
->  igt@xe_sysfs_scheduler@job_timeout_ms-min-max
-> -igt@xe_survivability@i2c-functionality
-> -igt@xe_survivability@runtime-survivability
->  #igt@xe_vm@bind-once
->  #igt@xe_vm@scratch
->  igt@xe_vm@shared-pte-page
-> -- 
-> 2.43.0
-> 
+>  tests/kms_plane_scaling.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+> index 63d35d76b..34c8f8a64 100644
+> --- a/tests/kms_plane_scaling.c
+> +++ b/tests/kms_plane_scaling.c
+> @@ -32,6 +32,7 @@
+>  
+>  #include "igt.h"
+>  #include "igt_vec.h"
+> +#include "igt_sysfs.h"
+>  #include <math.h>
+>  
+>  /**
+> @@ -1358,11 +1359,15 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>  		data.devid = is_intel_device(data.drm_fd) ?
+>  			intel_get_drm_devid(data.drm_fd) : 0;
+>  		igt_require(data.display.is_atomic);
+> +		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
+>  	}
+>  
+>  	igt_subtest_group {
+>  		igt_output_t *output;
+>  
+> +		if (igt_get_connected_output_count(&data.display) > 1)
+> +			update_debug_mask_if_ci(DRM_UT_DRIVER | DRM_UT_CORE);
+> +
+>  		for (int index = 0; index < ARRAY_SIZE(scaler_with_pixel_format_tests); index++) {
+>  			igt_describe(scaler_with_pixel_format_tests[index].describe);
+>  			igt_subtest_with_dynamic(scaler_with_pixel_format_tests[index].name) {
+
+-- 
+Jani Nikula, Intel
