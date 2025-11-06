@@ -4,54 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 998C1CCFA13
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 17:06:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98970CCFA05
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 17:13:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1FC0A10E98F;
-	Thu,  6 Nov 2025 17:06:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1E83C10E95D;
+	Thu,  6 Nov 2025 17:13:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eLVou4xZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bvtsBEcY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DCAC210E98F
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Nov 2025 17:06:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8AC4B10E95D;
+ Thu,  6 Nov 2025 17:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762448784; x=1793984784;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=ksIP6De5CYl2XhjiF764e/Vpb/zw2/zbCrrAXbGSTCg=;
- b=eLVou4xZ0YyfZ0wMyP56AVD5hf7OMG2r7Oa/neZJKXXxcyfDUr82MSFA
- qmXs+BvVoT8LlE5bPCpa2S2GlKae5s9NfXjlt3EexUVtict2c33/dZc2z
- rIEdSLeAIW8h92pcDwYuaKtYCMBZGD4GseeE4K0OH1Q3lf1gznvXTb6Nx
- 8odnJRC7ykoDsEqC4Xyqvyud1imqnxXd+UvDPyqU6Sug8HxiIbYdz7+TT
- z2iVMggHanRr1h6NHcdiwWedyemxqIa6yv+ZraWa1IKhDIgp/uhwFoIH9
- gJ2Pt0557XSR6UvJVSkRVmAFWWRCHCW986nQ6a4+3rMQ1JeSwmemEgT3N w==;
-X-CSE-ConnectionGUID: Yukhu8j2RGCQspV7skmwtQ==
-X-CSE-MsgGUID: Hh6CxGA/TXaSPF7AIOStDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="76041873"
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="76041873"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2025 09:06:24 -0800
-X-CSE-ConnectionGUID: hRSpyaguSeq/x4W852qxlQ==
-X-CSE-MsgGUID: TXaCKN+vT2GVo3u0R4vZhw==
+ t=1762449180; x=1793985180;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=lcCZiZ2INRyDrjBSxRlLCk4cLZw0iiyr3z9Z+ccAOhw=;
+ b=bvtsBEcYmr/w8OiXQnGzTvAta+A4j7topzOS8cpC2njPnYrV1MBWGwZL
+ 1lXcbnZ/OxZls6WPxcobb6qUwfKPahD6eQdU5bSIjpp+c+LqfVu0T22Jb
+ yLrxLnjM+RhgVUbMDONoS7BMrnVPHtFM9DlaI+TbnBQ8AoNt61V9iaRdB
+ CQIzD7TiKQouSV3YWsUaJD+wHU7V8baIMQmoEkrFV7TRa2nVspta4bEPT
+ pV9dSTakZELbfU8GL/vIrbW15FFVH5aAkis59uf6J/bVEGyPkZuHDrHHH
+ mi6eyQI5AroFAmmsQXT2F6f3WwzqILEqkqgJF/5H9YLt3265ZJkzKaT0S A==;
+X-CSE-ConnectionGUID: x5JOrAn1RQOg9szUTJpR5A==
+X-CSE-MsgGUID: KTDd0hUsTuajf4/ZKPurfw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="64510273"
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="64510273"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2025 09:10:30 -0800
+X-CSE-ConnectionGUID: 3ykIAbYwTRqkIOro9CuUwg==
+X-CSE-MsgGUID: 8jFYbEMPTJ2ou035E90oDg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="187649707"
-Received: from dut2943pvc.iind.intel.com ([10.190.215.39])
- by fmviesa006.fm.intel.com with ESMTP; 06 Nov 2025 09:06:22 -0800
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- nishit.sharma@intel.com
-Subject: [PATCH i-g-t v12 3/3] tests/intel/xe_compute: Add eu-busy-10s test
- for EU utilization measurement
-Date: Thu,  6 Nov 2025 17:06:16 +0000
-Message-ID: <20251106170616.62175-4-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251106170616.62175-1-nishit.sharma@intel.com>
-References: <20251106170616.62175-1-nishit.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="187529392"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 09:10:26 -0800
+Date: Thu, 6 Nov 2025 18:10:23 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, adrinael@adrinael.net,
+ arek@hiler.eu, juhapekka.heikkila@gmail.com,
+ bhanuprakash.modem@gmail.com, ashutosh.dixit@intel.com,
+ karthik.b.s@intel.com, liviu.dudau@arm.com, steven.price@arm.com,
+ aliceryhl@google.com, jeffv@google.com,
+ intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t v3 3/3] tests/panthor: add panthor tests
+Message-ID: <20251106171023.2mygkvtt3wvald3w@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ adrinael@adrinael.net, arek@hiler.eu, juhapekka.heikkila@gmail.com,
+ bhanuprakash.modem@gmail.com, ashutosh.dixit@intel.com,
+ karthik.b.s@intel.com, liviu.dudau@arm.com, steven.price@arm.com,
+ aliceryhl@google.com, jeffv@google.com,
+ intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+References: <20251104202845.2879460-1-daniel.almeida@collabora.com>
+ <20251104202845.2879460-4-daniel.almeida@collabora.com>
+ <20251106102607.7f1fe3f7@fedora>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251106102607.7f1fe3f7@fedora>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,375 +84,738 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+Hi Boris,
+On 2025-11-06 at 10:26:07 +0100, Boris Brezillon wrote:
+> On Tue,  4 Nov 2025 17:28:43 -0300
+> Daniel Almeida <daniel.almeida@collabora.com> wrote:
+> 
+> > Add an initial test suit covering query device properties, allocating
+> > memory, binding and unbinding VA ranges through VM_BIND and submitting a
+> > simple piece of work through GROUP_SUBMIT.
+> > 
+> > Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> 
+> With the indentation fixed, this is
+> 
+> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+> 
 
-This test measures the utilization of available CCS instances based on the
-number of slices reported in
-/sys/class/drm/cardX/device/tileX/gtX/num_cslices. Compute workload is
-scheduled on different CCS engines. The test runs workloads for fixed
-duration using loop_kernel_duration. SR-IOV and CCS mode features are
-mutually exclusive. This change updates the test to skip execution if
-SR-IOV is enabled on the platform.
+I fixed it during merging, also fixed subject in first patch
+and reformatted description (folding to 65-column).
+Thank you all for this work!
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- tests/intel/xe_compute.c | 299 ++++++++++++++++++++++++++++++++++++++-
- tests/meson.build        |   1 +
- 2 files changed, 296 insertions(+), 4 deletions(-)
+Regards,
+Kamil
 
-diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index 7665c2bb6..01c2f8848 100644
---- a/tests/intel/xe_compute.c
-+++ b/tests/intel/xe_compute.c
-@@ -19,9 +19,27 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- 
-+#include "igt_perf.h"
-+#include "igt_sriov_device.h"
-+
- #define LOOP_DURATION_2s	(1000000ull * 2)
- #define DURATION_MARGIN		0.2
- #define TIME_BOUND		1000000
-+#define MIN_BUSYNESS		95.0
-+
-+bool sriov_enabled;
-+
-+struct thread_data {
-+	pthread_t thread;
-+	pthread_mutex_t *mutex;
-+	pthread_cond_t *cond;
-+	int class;
-+	int fd;
-+	int gt;
-+	struct user_execenv *execenv;
-+	struct drm_xe_engine_class_instance *eci;
-+	bool *go;
-+};
- 
- static int gt_sysfs_open(int gt)
- {
-@@ -250,6 +268,242 @@ test_compute_kernel_loop(uint64_t loop_duration)
- 	drm_close_driver(fd);
- }
- 
-+static void
-+*intel_compute_thread(void *data)
-+{
-+	struct thread_data *t = (struct thread_data *)data;
-+	char device[30];
-+	uint64_t type;
-+	uint32_t engine_class, engine_instance, gt_shift;
-+	uint64_t engine_active_config, engine_total_config;
-+	int ret, fd1, fd2;
-+	uint64_t val[4];
-+	uint64_t param_config;
-+
-+	pthread_mutex_lock(t->mutex);
-+	while (*t->go == 0)
-+		pthread_cond_wait(t->cond, t->mutex);
-+	pthread_mutex_unlock(t->mutex);
-+
-+	type = igt_perf_type_id(xe_perf_device(t->fd, device, sizeof(device)));
-+	igt_debug("type: %lx, device: %s\n", type, device);
-+
-+	perf_event_format(device, "gt", &gt_shift);
-+	perf_event_format(device, "engine_class", &engine_class);
-+	perf_event_format(device, "engine_instance", &engine_instance);
-+
-+	ret = perf_event_config(device, "engine-active-ticks", &engine_active_config);
-+	igt_assert_eq(ret, 0);
-+	ret = perf_event_config(device, "engine-total-ticks", &engine_total_config);
-+	igt_assert_eq(ret, 0);
-+
-+	igt_debug("gt_id: %x, class: %x, instance: %x\n",
-+		  t->eci->gt_id, t->eci->engine_class, t->eci->engine_instance);
-+
-+	/* Setting collective counters for compute engine available in t->eci */
-+	param_config = (uint64_t)t->eci->gt_id << gt_shift |
-+		       t->eci->engine_class << engine_class |
-+		       t->eci->engine_instance << engine_instance;
-+
-+	fd1 = igt_perf_open_group(type, engine_active_config | param_config, -1);
-+	fd2 = igt_perf_open_group(type, engine_total_config | param_config, fd1);
-+
-+	ret = read(fd1, val, sizeof(val));
-+	igt_assert_eq(ret, sizeof(val));
-+	igt_info("start - active: %ld, total: %ld, busyness: %.1f before scheduling on engine_instance :%d\n",
-+		 val[2], val[3], (float)val[2] / (float)val[3] * 100.0, t->eci->engine_instance);
-+
-+	igt_assert_f(xe_run_intel_compute_kernel_on_engine(t->fd, t->eci, t->execenv,
-+							   EXECENV_PREF_VRAM_IF_POSSIBLE),
-+		     "Unable to run compute kernel successfully\n");
-+
-+	ret = read(fd1, val, sizeof(val));
-+	igt_assert_eq(ret, sizeof(val));
-+	igt_info("end - active: %ld, total: %ld, busyness: %.1f after scheduling on engine_instance :%d\n",
-+		 val[2], val[3], (float)val[2] / (float)val[3] * 100.0, t->eci->engine_instance);
-+
-+	igt_assert_f(((float)val[2] / (float)val[3] * 100.0) > MIN_BUSYNESS,
-+		     "Engines are under utilizated\n");
-+
-+	close(fd1);
-+	close(fd2);
-+	return NULL;
-+}
-+
-+static void
-+igt_check_supported_pipeline(void)
-+{
-+	int fd;
-+	unsigned int ip_ver;
-+	const struct intel_compute_kernels *kernels;
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	kernels = intel_compute_square_kernels;
-+	drm_close_driver(fd);
-+
-+	while (kernels->kernel) {
-+		if (ip_ver == kernels->ip_ver)
-+			break;
-+		kernels++;
-+	}
-+
-+	/* skip if loop_kernel is not supported by pipeline */
-+	if (!kernels->kernel || !kernels->loop_kernel)
-+		igt_skip("loop_kernel not supported by pipeline\n");
-+}
-+
-+static bool is_sriov_mode(int fd)
-+{
-+	bool is_sriov = false;
-+
-+	if (igt_sriov_is_pf(fd) && igt_sriov_vfs_supported(fd))
-+		is_sriov = true;
-+
-+	return is_sriov;
-+}
-+
-+static void
-+igt_store_ccs_mode(uint64_t gt_mask, int ccs_mode[], int size)
-+{
-+	int gt_fd, gt;
-+	u32 num_slices;
-+
-+	for_each_bit(gt_mask, gt) {
-+		if (!get_num_cslices(gt, &num_slices))
-+			continue;
-+
-+		gt_fd = gt_sysfs_open(gt);
-+		igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode[gt]);
-+		close(gt_fd);
-+	}
-+}
-+
-+static void
-+igt_restore_ccs_mode(int ccs_mode[], int size)
-+{
-+	uint64_t gt_mask = get_gt_mask();
-+	u32 gt, num_slices;
-+	int gt_fd;
-+
-+	for_each_bit(gt_mask, gt) {
-+		if (!get_num_cslices(gt, &num_slices))
-+			continue;
-+
-+		gt_fd = gt_sysfs_open(gt);
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", ccs_mode[gt]) > 0);
-+		close(gt_fd);
-+	}
-+}
-+
-+/**
-+ * SUBTEST: eu-busy-10s
-+ * Functionality: OpenCL kernel
-+ * Description: Run loop_kernel for duration_sec and observe EU business
-+ */
-+static void
-+test_eu_busy(uint64_t duration_sec)
-+{
-+	struct user_execenv execenv = { 0 };
-+	struct thread_data *threads_data;
-+	struct drm_xe_engine_class_instance *hwe;
-+	const struct intel_compute_kernels *kernels;
-+	pthread_mutex_t mutex;
-+	pthread_cond_t cond;
-+	u32 gt, n_threads = 0, iterations = 0, n_instances = 0, i;
-+	bool go = false;
-+	int ccs_mode, gt_fd, fd;
-+	u32 num_slices, ip_ver;
-+	uint64_t gt_mask = get_gt_mask();
-+
-+	for_each_bit(gt_mask, gt) {
-+		if (!get_num_cslices(gt, &num_slices))
-+			continue;
-+
-+		gt_fd = gt_sysfs_open(gt);
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", num_slices) > 0);
-+		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
-+		close(gt_fd);
-+	}
-+
-+	igt_skip_on_f(ccs_mode <= 1, "Skipping test as ccs_mode <=1 not matching criteria :%d\n",
-+		      ccs_mode);
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+
-+	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	kernels = intel_compute_square_kernels;
-+	while (kernels->kernel) {
-+		if (ip_ver == kernels->ip_ver)
-+			break;
-+		kernels++;
-+	}
-+
-+	/*
-+	 * User should use different kernel if loop_kernel_duration not set
-+	 * With loop kernel and loop duration it assumes we stop it via memory write
-+	 *
-+	 */
-+
-+	execenv.loop_kernel_duration = duration_sec;
-+	execenv.kernel = kernels->loop_kernel;
-+	execenv.kernel_size = kernels->loop_kernel_size;
-+	drm_close_driver(fd);
-+
-+	gt_mask = get_gt_mask();
-+
-+	for_each_bit(gt_mask, gt) {
-+		fd = drm_open_driver(DRIVER_XE);
-+		xe_for_each_engine(fd, hwe) {
-+			igt_assert(hwe);
-+			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-+				++n_instances;
-+		}
-+		drm_close_driver(fd);
-+	}
-+
-+	threads_data = calloc(n_instances, sizeof(*threads_data));
-+	igt_assert(threads_data);
-+
-+	pthread_mutex_init(&mutex, 0);
-+	pthread_cond_init(&cond, 0);
-+
-+	gt_mask = get_gt_mask();
-+	fd = drm_open_driver(DRIVER_XE);
-+	for_each_bit(gt_mask, gt) {
-+		xe_for_each_engine(fd, hwe) {
-+			if (hwe->gt_id != gt ||
-+			    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-+				continue;
-+
-+			threads_data[i].mutex = &mutex;
-+			threads_data[i].cond = &cond;
-+			threads_data[i].fd = fd;
-+			threads_data[i].eci = hwe;
-+			threads_data[i].go = &go;
-+			threads_data[i].execenv = &execenv;
-+			++n_threads;
-+			pthread_create(&threads_data[i].thread, 0, intel_compute_thread,
-+				       &threads_data[i]);
-+			++i;
-+			++iterations;
-+		}
-+		pthread_mutex_lock(&mutex);
-+		go = true;
-+		pthread_cond_broadcast(&cond);
-+		pthread_mutex_unlock(&mutex);
-+
-+		for (int val = 0; val < i; ++val)
-+			pthread_join(threads_data[val].thread, NULL);
-+
-+		i = 0;
-+		n_threads = 0;
-+		iterations = 0;
-+	}
-+	free(threads_data);
-+	drm_close_driver(fd);
-+}
-+
- /**
-  * SUBTEST: compute-square
-  * Mega feature: WMTP
-@@ -269,10 +523,16 @@ test_compute_square(int fd)
- 
- igt_main
- {
--	int xe;
-+	int xe, ccs_mode[4];
-+	unsigned int ip_ver;
-+	uint64_t gt_mask;
- 
- 	igt_fixture {
- 		xe = drm_open_driver(DRIVER_XE);
-+		sriov_enabled = is_sriov_mode(xe);
-+		ip_ver = intel_graphics_ver(intel_get_drm_devid(xe));
-+		gt_mask = get_gt_mask();
-+		igt_store_ccs_mode(gt_mask, ccs_mode, sizeof(ccs_mode));
- 	}
- 
- 	igt_subtest("compute-square")
-@@ -282,13 +542,44 @@ igt_main
- 		drm_close_driver(xe);
- 
- 	/* ccs mode tests should be run without open gpu file handles */
--	igt_subtest("ccs-mode-basic")
-+	igt_subtest("ccs-mode-basic") {
-+		/* skip if sriov enabled */
-+		if (sriov_enabled)
-+			igt_skip("Skipping test when SRIOV is enabled\n");
- 		test_ccs_mode();
-+	}
- 
--	igt_subtest("ccs-mode-compute-kernel")
-+	igt_subtest("ccs-mode-compute-kernel") {
-+		/* skip if sriov enabled */
-+		if (sriov_enabled)
-+			igt_skip("Skipping test when SRIOV is enabled\n");
- 		test_compute_kernel_with_ccs_mode();
-+	}
- 
- 	/* To test compute function stops after loop_kernel_duration */
--	igt_subtest("loop-duration-2s")
-+	igt_subtest("loop-duration-2s") {
-+		/* skip test if loop_kernel not supported in pipeline */
-+		if (ip_ver < IP_VER(20, 0))
-+			igt_check_supported_pipeline();
-+
- 		test_compute_kernel_loop(LOOP_DURATION_2s);
-+	}
-+
-+	/* test to check available EU utilisation in multi-ccs case */
-+	igt_subtest("eu-busy-10s") {
-+		/* skip if sriov enabled */
-+		if (sriov_enabled)
-+			igt_skip("Skipping test when SRIOV is enabled\n");
-+
-+		/* skip test if loop_kernel not supported in pipeline */
-+		if (ip_ver < IP_VER(20, 0))
-+			igt_check_supported_pipeline();
-+
-+		test_eu_busy(5 * LOOP_DURATION_2s);
-+	}
-+
-+	igt_fixture {
-+		if (!sriov_enabled)
-+			igt_restore_ccs_mode(ccs_mode, sizeof(ccs_mode));
-+	}
- }
-diff --git a/tests/meson.build b/tests/meson.build
-index a7b9375ed..a7ffc6383 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -408,6 +408,7 @@ extra_dependencies = {
- 	'sw_sync': [ libatomic ],
- 	'xe_fault_injection': [ lib_igt_xe_oa ],
- 	'xe_oa': [ lib_igt_xe_oa ],
-+        'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_profiling,math ],
- }
- 
- test_executables = []
--- 
-2.43.0
-
+> > ---
+> >  lib/igt_panthor.c             | 331 ++++++++++++++++++++++++++++++++++
+> >  lib/igt_panthor.h             |  28 +++
+> >  tests/panthor/meson.build     |   5 +-
+> >  tests/panthor/panthor_gem.c   |  72 ++++++++
+> >  tests/panthor/panthor_group.c | 123 +++++++++++++
+> >  tests/panthor/panthor_vm.c    |  84 +++++++++
+> >  6 files changed, 642 insertions(+), 1 deletion(-)
+> >  create mode 100644 tests/panthor/panthor_gem.c
+> >  create mode 100644 tests/panthor/panthor_group.c
+> >  create mode 100644 tests/panthor/panthor_vm.c
+> > 
+> > diff --git a/lib/igt_panthor.c b/lib/igt_panthor.c
+> > index 0b690f796..73ada9c59 100644
+> > --- a/lib/igt_panthor.c
+> > +++ b/lib/igt_panthor.c
+> > @@ -6,6 +6,148 @@
+> >  #include "ioctl_wrappers.h"
+> >  #include "panthor_drm.h"
+> >  
+> > +/**
+> > + * igt_panthor_group_create:
+> > + * @fd: device file descriptor
+> > + * @group_create: pointer to group creation structure
+> > + * @err: expected error code, or 0 for success
+> > + *
+> > + * Create a group.
+> > + */
+> > +void igt_panthor_group_create(int fd, struct drm_panthor_group_create *group_create, int err)
+> > +{
+> > +	if (err)
+> > +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_GROUP_CREATE, group_create, err);
+> > +	else
+> > +		do_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_CREATE, group_create);
+> > +}
+> > +
+> > +/**
+> > + * igt_panthor_group_destroy:
+> > + * @fd: device file descriptor
+> > + * @group_handle: group handle to destroy
+> > + * @err: expected error code, or 0 for success
+> > + *
+> > + * Destroy a group.
+> > + */
+> > +void igt_panthor_group_destroy(int fd, uint32_t group_handle, int err)
+> > +{
+> > +	struct drm_panthor_group_destroy group_destroy = {
+> > +		.group_handle = group_handle,
+> > +	};
+> > +
+> > +	if (err)
+> > +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_GROUP_DESTROY, &group_destroy, err);
+> > +	else
+> > +		do_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_DESTROY, &group_destroy);
+> > +}
+> > +
+> > +/**
+> > + * igt_panthor_group_submit:
+> > + * @fd: device file descriptor
+> > + * @group_submit: pointer to group submission structure
+> > + * @err: expected error code, or 0 for success
+> > + *
+> > + * Submit work to a group.
+> > + */
+> > +void igt_panthor_group_submit(int fd, struct drm_panthor_group_submit *group_submit, int err)
+> > +{
+> > +	if (err)
+> > +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_GROUP_SUBMIT, group_submit, err);
+> > +	else
+> > +		do_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_SUBMIT, group_submit);
+> > +}
+> > +
+> > +/**
+> > + * igt_panthor_get_first_core:
+> > + * @cores_present: bitmask of available cores
+> > + *
+> > + * Get a mask with only the first available core bit set.
+> > + *
+> > + * Returns: core mask with first available core, or 0 if no cores available
+> > + */
+> > +uint64_t igt_panthor_get_first_core(uint64_t cores_present)
+> > +{
+> > +	if (cores_present == 0)
+> > +		return 0;
+> > +
+> > +	return 1ULL << (ffs(cores_present) - 1);
+> > +}
+> > +
+> > +/**
+> > + * igt_panthor_group_create_simple:
+> > + * @fd: device file descriptor
+> > + * @vm_id: VM ID to associate with the group
+> > + * @err: expected error code, or 0 for success
+> > + *
+> > + * Create a group with a single queue and reasonable defaults.
+> > + *
+> > + * Returns: group handle on success
+> > + */
+> > +uint32_t igt_panthor_group_create_simple(int fd, uint32_t vm_id, int err)
+> > +{
+> > +	struct drm_panthor_gpu_info gpu_info = {};
+> > +	struct drm_panthor_group_create group_create = {};
+> > +	struct drm_panthor_queue_create queue = {};
+> > +	struct drm_panthor_obj_array queues = {};
+> > +
+> > +	igt_panthor_query(fd, DRM_PANTHOR_DEV_QUERY_GPU_INFO, &gpu_info, sizeof(gpu_info), 0);
+> > +
+> > +	queue.priority = 0;
+> > +	queue.ringbuf_size = 4096;
+> > +	queues = (struct drm_panthor_obj_array)DRM_PANTHOR_OBJ_ARRAY(1, &queue);
+> > +
+> > +	group_create.queues = queues;
+> > +	group_create.max_compute_cores = 1;
+> > +	group_create.max_fragment_cores = 1;
+> > +	group_create.max_tiler_cores = 1;
+> > +	group_create.priority = PANTHOR_GROUP_PRIORITY_MEDIUM;
+> > +	group_create.compute_core_mask = igt_panthor_get_first_core(gpu_info.shader_present);
+> > +	group_create.fragment_core_mask = igt_panthor_get_first_core(gpu_info.shader_present);
+> > +	group_create.tiler_core_mask = igt_panthor_get_first_core(gpu_info.tiler_present);
+> > +	group_create.vm_id = vm_id;
+> > +
+> > +	igt_panthor_group_create(fd, &group_create, err);
+> > +	return group_create.group_handle;
+> > +}
+> > +
+> > +/**
+> > + * igt_panthor_group_submit_simple:
+> > + * @fd: device file descriptor
+> > + * @group_handle: group handle to submit to
+> > + * @queue_index: queue index within the group
+> > + * @stream_addr: GPU address of the command stream
+> > + * @stream_size: size of the command stream
+> > + * @syncobj_handle: sync object handle for completion signaling
+> > + * @err: expected error code, or 0 for success
+> > + *
+> > + * Submit work to a group queue with a simple interface.
+> > + */
+> > +void igt_panthor_group_submit_simple(int fd, uint32_t group_handle,
+> > +				     uint32_t queue_index, uint64_t stream_addr,
+> > +				     uint32_t stream_size, uint32_t syncobj_handle,
+> > +				     int err)
+> > +{
+> > +	struct drm_panthor_group_submit group_submit = {};
+> > +	struct drm_panthor_queue_submit queue_submit = {};
+> > +	struct drm_panthor_sync_op sync_op = {};
+> > +
+> > +	sync_op.handle = syncobj_handle;
+> > +	sync_op.flags = DRM_PANTHOR_SYNC_OP_SIGNAL;
+> > +
+> > +	queue_submit.syncs = (struct drm_panthor_obj_array)DRM_PANTHOR_OBJ_ARRAY(1, &sync_op);
+> > +	queue_submit.queue_index = queue_index;
+> > +	queue_submit.stream_size = stream_size;
+> > +	queue_submit.stream_addr = stream_addr;
+> > +	queue_submit.latest_flush = 0;
+> > +
+> > +	group_submit.group_handle = group_handle;
+> > +	group_submit.queue_submits = (struct drm_panthor_obj_array)
+> > +		DRM_PANTHOR_OBJ_ARRAY(1, &queue_submit);
+> > +
+> > +	igt_panthor_group_submit(fd, &group_submit, err);
+> > +}
+> > +
+> >  /**
+> >   * SECTION:igt_panthor
+> >   * @short_description: Panthor support library
+> > @@ -39,3 +181,192 @@ void igt_panthor_query(int fd, int32_t type, void *data, size_t size, int err)
+> >  	else
+> >  		do_ioctl(fd, DRM_IOCTL_PANTHOR_DEV_QUERY, &query);
+> >  }
+> > +
+> > +/**
+> > + * igt_panthor_vm_create:
+> > + * @fd: device file descriptor
+> > + * @vm_id: pointer to store the created VM ID
+> > + * @err: expected error code, or 0 for success
+> > + *
+> > + * Creates a VM.
+> > + */
+> > +void igt_panthor_vm_create(int fd, uint32_t *vm_id, int err)
+> > +{
+> > +	struct drm_panthor_vm_create vm_create = {};
+> > +
+> > +	if (err) {
+> > +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_VM_CREATE, &vm_create, err);
+> > +	} else {
+> > +		do_ioctl(fd, DRM_IOCTL_PANTHOR_VM_CREATE, &vm_create);
+> > +		*vm_id = vm_create.id;
+> > +	}
+> > +}
+> > +
+> > +/**
+> > + * igt_panthor_vm_destroy:
+> > + * @fd: device file descriptor
+> > + * @vm_id: VM ID to destroy
+> > + * @err: expected error code, or 0 for success
+> > + *
+> > + * Destroys a VM.
+> > + */
+> > +void igt_panthor_vm_destroy(int fd, uint32_t vm_id, int err)
+> > +{
+> > +	struct drm_panthor_vm_destroy vm_destroy = {
+> > +		.id = vm_id,
+> > +	};
+> > +
+> > +	if (err)
+> > +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_VM_DESTROY, &vm_destroy, err);
+> > +	else
+> > +		do_ioctl(fd, DRM_IOCTL_PANTHOR_VM_DESTROY, &vm_destroy);
+> > +}
+> > +
+> > +/**
+> > + * igt_panthor_vm_bind:
+> > + * @fd: device file descriptor
+> > + * @vm_id: VM ID to bind the buffer to
+> > + * @bo_handle: buffer object handle to bind
+> > + * @va: virtual address to bind at
+> > + * @size: size of the binding
+> > + * @flags: binding flags
+> > + * @err: expected error code, or 0 for success
+> > + *
+> > + * Bind a buffer object to a virtual address in the specified VM.
+> > + */
+> > +void igt_panthor_vm_bind(int fd, uint32_t vm_id, uint32_t bo_handle,
+> > +			 uint64_t va, uint64_t size, uint32_t flags, int err)
+> > +{
+> > +	struct drm_panthor_vm_bind_op bind_op = {
+> > +		.flags = flags,
+> > +		.bo_handle = bo_handle,
+> > +		.va = va,
+> > +		.size = size,
+> > +	};
+> > +
+> > +	struct drm_panthor_vm_bind vm_bind = {
+> > +		.vm_id = vm_id,
+> > +		.flags = 0,
+> > +		.ops = DRM_PANTHOR_OBJ_ARRAY(1, &bind_op),
+> > +	};
+> > +
+> > +	if (err)
+> > +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_VM_BIND, &vm_bind, err);
+> > +	else
+> > +		do_ioctl(fd, DRM_IOCTL_PANTHOR_VM_BIND, &vm_bind);
+> > +}
+> > +
+> > +/**
+> > + * igt_panthor_bo_create:
+> > + * @fd: device file descriptor
+> > + * @bo: pointer to panthor_bo structure to initialize
+> > + * @size: requested buffer size in bytes
+> > + * @flags: buffer object creation flags
+> > + * @err: expected error code, or 0 for success
+> > + *
+> > + * Creates a new buffer object
+> > + */
+> > +void igt_panthor_bo_create(int fd, struct panthor_bo *bo,
+> > +			   uint64_t size, uint32_t flags, int err)
+> > +{
+> > +	struct drm_panthor_bo_create bo_create = {
+> > +		.size = size,
+> > +		.flags = flags,
+> > +	};
+> > +
+> > +	if (err)
+> > +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_BO_CREATE, &bo_create, err);
+> > +	else
+> > +		do_ioctl(fd, DRM_IOCTL_PANTHOR_BO_CREATE, &bo_create);
+> > +
+> > +	bo->handle = bo_create.handle;
+> > +	bo->size = bo_create.size;
+> > +	bo->offset = 0;
+> > +	bo->map = NULL;
+> > +}
+> > +
+> > +/**
+> > + * igt_panthor_bo_mmap_offset:
+> > + * @fd: device file descriptor
+> > + * @handle: buffer object handle
+> > + * @err: expected error code, or 0 for success
+> > + *
+> > + * Get the mmap offset for a buffer object.
+> > + *
+> > + * Returns: the mmap offset for the buffer object
+> > + */
+> > +uint64_t igt_panthor_bo_mmap_offset(int fd, uint32_t handle, int err)
+> > +{
+> > +	struct drm_panthor_bo_mmap_offset bo_mmap_offset = {
+> > +		.handle = handle,
+> > +	};
+> > +
+> > +	if (err)
+> > +		do_ioctl_err(fd, DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET, &bo_mmap_offset, err);
+> > +	else
+> > +		do_ioctl(fd, DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET, &bo_mmap_offset);
+> > +
+> > +	return bo_mmap_offset.offset;
+> > +}
+> > +
+> > +/**
+> > + * igt_panthor_mmap_bo:
+> > + * @fd: device file descriptor
+> > + * @handle: buffer object handle
+> > + * @size: size of the buffer to map
+> > + * @prot: memory protection flags (e.g., PROT_READ | PROT_WRITE)
+> > + * @offset: mmap offset for the buffer object
+> > + *
+> > + * Map a buffer object into the process address space.
+> > + *
+> > + * Returns: pointer to the mapped memory, or NULL on failure
+> > + */
+> > +void *igt_panthor_mmap_bo(int fd, uint32_t handle, uint64_t size,
+> > +			  unsigned int prot, uint64_t offset)
+> > +{
+> > +	void *ptr;
+> > +
+> > +	ptr = mmap(0, size, prot, MAP_SHARED, fd, offset);
+> > +	if (ptr == MAP_FAILED)
+> > +		return NULL;
+> > +	else
+> > +		return ptr;
+> > +}
+> > +
+> > +/**
+> > + * igt_panthor_bo_create_mapped:
+> > + * @fd: device file descriptor
+> > + * @bo: pointer to panthor_bo structure to initialize
+> > + * @size: requested buffer size in bytes
+> > + * @flags: buffer object creation flags
+> > + * @err: expected error code, or 0 for success
+> > + *
+> > + * Create a new buffer object on the panthor device and map it into
+> > + * the process address space.
+> > + */
+> > +void igt_panthor_bo_create_mapped(int fd, struct panthor_bo *bo, uint64_t size,
+> > +				  uint32_t flags, int err)
+> > +{
+> > +	igt_panthor_bo_create(fd, bo, size, flags, err);
+> > +	bo->offset = igt_panthor_bo_mmap_offset(fd, bo->handle, err);
+> > +	bo->map = igt_panthor_mmap_bo(fd, bo->handle, bo->size,
+> > +				      PROT_READ | PROT_WRITE, bo->offset);
+> > +}
+> > +
+> > +/**
+> > + * igt_panthor_free_bo:
+> > + * @fd: panthor device file descriptor
+> > + * @bo: pointer to panthor_bo structure to free
+> > + *
+> > + * Free a buffer object and unmap it if it was mapped.
+> > + */
+> > +void igt_panthor_free_bo(int fd, struct panthor_bo *bo)
+> > +{
+> > +	if (!bo)
+> > +		return;
+> > +
+> > +	if (bo->map)
+> > +		munmap(bo->map, bo->size);
+> > +
+> > +	gem_close(fd, bo->handle);
+> > +}
+> > diff --git a/lib/igt_panthor.h b/lib/igt_panthor.h
+> > index 6f94b8f79..dc90033c0 100644
+> > --- a/lib/igt_panthor.h
+> > +++ b/lib/igt_panthor.h
+> > @@ -7,8 +7,36 @@
+> >  #include <stddef.h>
+> >  #include <stdint.h>
+> >  #include <stdbool.h>
+> > +#include "panthor_drm.h"
+> > +
+> > +struct panthor_bo {
+> > +	int handle;
+> > +	uint64_t offset;
+> > +	uint64_t size;
+> > +	void *map;
+> > +};
+> >  
+> >  void igt_panthor_query(int fd, int32_t type, void *data, size_t size, int err);
+> > +void igt_panthor_vm_create(int fd, uint32_t *vm_id, int err);
+> > +void igt_panthor_vm_destroy(int fd, uint32_t vm_id, int err);
+> > +void igt_panthor_vm_bind(int fd, uint32_t vm_id, uint32_t bo_handle, uint64_t va,
+> > +			 uint64_t size, uint32_t flags, int err);
+> > +void igt_panthor_bo_create(int fd, struct panthor_bo *bo, uint64_t size, uint32_t flags, int err);
+> > +uint64_t igt_panthor_bo_mmap_offset(int fd, uint32_t handle, int err);
+> > +void igt_panthor_free_bo(int fd, struct panthor_bo *bo);
+> > +void igt_panthor_bo_create_mapped(int fd, struct panthor_bo *bo, uint64_t size,
+> > +				  uint32_t flags, int err);
+> > +void *igt_panthor_mmap_bo(int fd, uint32_t handle, uint64_t size,
+> > +			  unsigned int prot, uint64_t offset);
+> > +void igt_panthor_group_create(int fd, struct drm_panthor_group_create *group_create, int err);
+> > +void igt_panthor_group_destroy(int fd, uint32_t group_handle, int err);
+> > +void igt_panthor_group_submit(int fd, struct drm_panthor_group_submit *group_submit, int err);
+> > +uint32_t igt_panthor_group_create_simple(int fd, uint32_t vm_id, int err);
+> > +void igt_panthor_group_submit_simple(int fd, uint32_t group_handle,
+> > +				     uint32_t queue_index, uint64_t stream_addr,
+> > +				     uint32_t stream_size, uint32_t syncobj_handle,
+> > +				     int err);
+> > +uint64_t igt_panthor_get_first_core(uint64_t cores_present);
+> >  
+> >  enum cs_opcode {
+> >  	CS_OPCODE_NOP = 0,
+> > diff --git a/tests/panthor/meson.build b/tests/panthor/meson.build
+> > index ce13aebaa..42a46e993 100644
+> > --- a/tests/panthor/meson.build
+> > +++ b/tests/panthor/meson.build
+> > @@ -1,5 +1,8 @@
+> >  panthor_progs = [
+> > -	'panthor_query'
+> > +	'panthor_gem',
+> > +	'panthor_group',
+> > +	'panthor_query',
+> > +	'panthor_vm',
+> >  ]
+> >  
+> >  foreach prog : panthor_progs
+> > diff --git a/tests/panthor/panthor_gem.c b/tests/panthor/panthor_gem.c
+> > new file mode 100644
+> > index 000000000..57cd97e80
+> > --- /dev/null
+> > +++ b/tests/panthor/panthor_gem.c
+> > @@ -0,0 +1,72 @@
+> > +// SPDX-License-Identifier: MIT
+> > +// SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
+> > +
+> > +#include <unistd.h>
+> > +
+> > +#include "igt.h"
+> > +#include "igt_core.h"
+> > +#include "igt_panthor.h"
+> > +
+> > +igt_main {
+> > +	int fd;
+> > +
+> > +	igt_fixture {
+> > +		fd = drm_open_driver(DRIVER_PANTHOR);
+> > +	}
+> > +
+> > +	igt_describe("Create a buffer object");
+> > +	igt_subtest("bo_create") {
+> > +		struct panthor_bo bo;
+> > +
+> > +		igt_panthor_bo_create(fd, &bo, 4096, 0, 0);
+> > +		igt_assert_neq(bo.handle, 0);
+> > +
+> > +		igt_panthor_free_bo(fd, &bo);
+> > +	}
+> > +
+> > +	igt_describe("Create a fake mmap offset for a buffer object");
+> > +	igt_subtest("bo_mmap_offset") {
+> > +		struct panthor_bo bo;
+> > +		uint64_t mmap_offset;
+> > +
+> > +		igt_panthor_bo_create(fd, &bo, 4096, 0, 0);
+> > +		igt_assert_neq(bo.handle, 0);
+> > +
+> > +		mmap_offset = igt_panthor_bo_mmap_offset(fd, bo.handle, 0);
+> > +		igt_assert_neq(mmap_offset, 0);
+> > +
+> > +		igt_panthor_free_bo(fd, &bo);
+> > +	}
+> > +
+> > +	igt_describe("Same as bo_mmap_offset but with an invalid handle");
+> > +	igt_subtest("bo_mmap_offset_invalid_handle") {
+> > +		struct panthor_bo bo;
+> > +		uint64_t mmap_offset;
+> > +
+> > +		igt_panthor_bo_create(fd, &bo, 4096, 0, 0);
+> > +		igt_assert_neq(bo.handle, 0);
+> > +
+> > +		mmap_offset = igt_panthor_bo_mmap_offset(fd, 0xdeadbeef, ENOENT);
+> > +		igt_assert_eq(mmap_offset, 0);
+> > +
+> > +		igt_panthor_free_bo(fd, &bo);
+> > +	}
+> > +
+> > +	igt_describe_f("Create a buffer object whose size is not page-aligned, and check "
+> > +		       "that the allocated size is rounded up to the next page size (%" PRIu64 ").",
+> > +		       (uint64_t)getpagesize() * 2);
+> > +	igt_subtest("bo_create_round_size") {
+> > +		struct panthor_bo bo;
+> > +		uint64_t expected_size = getpagesize() * 2;
+> > +
+> > +		igt_panthor_bo_create(fd, &bo, 5000, 0, 0);
+> > +		igt_assert_neq(bo.handle, 0);
+> > +		igt_assert_eq(bo.size, expected_size);
+> > +
+> > +		igt_panthor_free_bo(fd, &bo);
+> > +	}
+> > +
+> > +	igt_fixture {
+> > +		drm_close_driver(fd);
+> > +	}
+> > +}
+> > diff --git a/tests/panthor/panthor_group.c b/tests/panthor/panthor_group.c
+> > new file mode 100644
+> > index 000000000..18c0fc8cb
+> > --- /dev/null
+> > +++ b/tests/panthor/panthor_group.c
+> > @@ -0,0 +1,123 @@
+> > +// SPDX-License-Identifier: MIT
+> > +// SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
+> > +
+> > +#include <stdint.h>
+> > +#include <sys/mman.h>
+> > +#include <unistd.h>
+> > +
+> > +#include "igt.h"
+> > +#include "igt_panthor.h"
+> > +#include "igt_syncobj.h"
+> > +#include "panthor_drm.h"
+> > +
+> > +static size_t
+> > +issue_store_multiple(uint8_t *cs, uint64_t kernel_va, uint32_t constant)
+> > +{
+> > +	const uint8_t kernel_va_reg = 68;
+> > +	const uint8_t constant_reg = 70;
+> > +	uint64_t instrs[] = {
+> > +		/* MOV48: Load the source register ([r68; r69]) with the kernel address */
+> > +		cs_mov48(kernel_va_reg, kernel_va),
+> > +		/* MOV32: Load a known constant into r70 */
+> > +		cs_mov32(constant_reg, constant),
+> > +		/* STORE_MULTIPLE: Store the first register to the address pointed
+> > +		 * to by [r68; r69]
+> > +		 */
+> > +		cs_stm32(kernel_va_reg, constant_reg, 0),
+> > +		/* FLUSH all Wait for all cores */
+> > +		cs_wait(0xff, false),
+> > +		/* MOV32: Clear r70 to 0 */
+> > +		cs_mov32(constant_reg, 0),
+> > +		/* FLUSH_CACHE: Clean and invalidate all caches */
+> > +		cs_flush(CS_FLUSH_MODE_CLEAN_AND_INVALIDATE,
+> > +			 CS_FLUSH_MODE_CLEAN_AND_INVALIDATE,
+> > +			 CS_FLUSH_MODE_INVALIDATE,
+> > +			 0, constant_reg, 1),
+> > +		cs_wait(0xff, false),
+> > +	};
+> > +
+> > +	memcpy(cs, instrs, sizeof(instrs));
+> > +	return sizeof(instrs);
+> > +}
+> > +
+> > +igt_main {
+> > +	int fd;
+> > +
+> > +	igt_fixture {
+> > +		fd = drm_open_driver(DRIVER_PANTHOR);
+> > +	}
+> > +
+> > +	igt_describe("Create and destroy a CSF group.");
+> > +	igt_subtest("group_create") {
+> > +		struct drm_panthor_vm_create vm_create = {};
+> > +		struct drm_panthor_vm_destroy vm_destroy = {};
+> > +		uint32_t group_handle;
+> > +
+> > +		vm_create.flags = 0;
+> > +		do_ioctl(fd, DRM_IOCTL_PANTHOR_VM_CREATE, &vm_create);
+> > +		igt_assert_neq(vm_create.id, 0);
+> > +
+> > +		group_handle = igt_panthor_group_create_simple(fd, vm_create.id, 0);
+> > +		igt_assert_neq(group_handle, 0);
+> > +
+> > +		igt_panthor_group_destroy(fd, group_handle, 0);
+> > +
+> > +		vm_destroy = (struct drm_panthor_vm_destroy) { .id = vm_create.id };
+> > +		do_ioctl(fd, DRM_IOCTL_PANTHOR_VM_DESTROY, &vm_destroy);
+> > +	}
+> > +
+> > +	igt_describe("Submit a job to a group and wait for completion. "
+> > +				 "The job writes a known value to a buffer object that is then "
+> > +				 "mmaped and checked.");
+> > +	igt_subtest("group_submit") {
+> > +		uint32_t vm_id;
+> > +		uint32_t group_handle;
+> > +		struct panthor_bo cmd_buf_bo = {};
+> > +		struct panthor_bo result_bo = {};
+> > +		uint64_t command_stream_gpu_addr;
+> > +		uint32_t command_stream_size;
+> > +		uint64_t result_gpu_addr;
+> > +		uint32_t syncobj_handle;
+> > +		const int INITIAL_VA = 0x1000000;
+> > +
+> > +		igt_panthor_vm_create(fd, &vm_id, 0);
+> > +
+> > +		igt_panthor_bo_create_mapped(fd, &cmd_buf_bo, 4096, 0, 0);
+> > +		igt_panthor_vm_bind(fd, vm_id, cmd_buf_bo.handle, INITIAL_VA,
+> > +				    cmd_buf_bo.size, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
+> > +		command_stream_gpu_addr = INITIAL_VA;
+> > +
+> > +		/* Create the BO to receive the result of the store. */
+> > +		igt_panthor_bo_create_mapped(fd, &result_bo, 4096, 0, 0);
+> > +		/* Also bind the result BO. */
+> > +		igt_panthor_vm_bind(fd, vm_id, result_bo.handle, INITIAL_VA + 4096,
+> > +				    result_bo.size, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
+> > +		result_gpu_addr = INITIAL_VA + 4096;
+> > +
+> > +		command_stream_size = issue_store_multiple(cmd_buf_bo.map, result_gpu_addr, 0xdeadbeef);
+> > +
+> > +		group_handle = igt_panthor_group_create_simple(fd, vm_id, 0);
+> > +		igt_assert_neq(group_handle, 0);
+> > +
+> > +		syncobj_handle = syncobj_create(fd, 0);
+> > +
+> > +		igt_panthor_group_submit_simple(fd, group_handle, 0, command_stream_gpu_addr, command_stream_size, syncobj_handle, 0);
+> > +
+> > +		igt_assert(syncobj_wait(fd, &syncobj_handle, 1, INT64_MAX, 0, NULL));
+> > +
+> > +		igt_assert_eq(*(uint32_t *)result_bo.map, 0xdeadbeef);
+> > +
+> > +		syncobj_destroy(fd, syncobj_handle);
+> > +
+> > +		igt_panthor_group_destroy(fd, group_handle, 0);
+> > +
+> > +		igt_panthor_vm_destroy(fd, vm_id, 0);
+> > +
+> > +		igt_panthor_free_bo(fd, &cmd_buf_bo);
+> > +		igt_panthor_free_bo(fd, &result_bo);
+> > +	}
+> > +
+> > +	igt_fixture {
+> > +		drm_close_driver(fd);
+> > +	}
+> > +}
+> > diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
+> > new file mode 100644
+> > index 000000000..18a0622c7
+> > --- /dev/null
+> > +++ b/tests/panthor/panthor_vm.c
+> > @@ -0,0 +1,84 @@
+> > +// SPDX-License-Identifier: MIT
+> > +// SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
+> > +
+> > +#include "igt.h"
+> > +#include "igt_core.h"
+> > +#include "igt_panthor.h"
+> > +#include "panthor_drm.h"
+> > +
+> > +igt_main {
+> > +	int fd;
+> > +
+> > +	igt_fixture {
+> > +		fd = drm_open_driver(DRIVER_PANTHOR);
+> > +	}
+> > +
+> > +	igt_describe("Create and destroy a VM");
+> > +	igt_subtest("vm_create_destroy") {
+> > +		uint32_t vm_id;
+> > +
+> > +		igt_panthor_vm_create(fd, &vm_id, 0);
+> > +		igt_assert_neq(vm_id, 0);
+> > +
+> > +		igt_panthor_vm_destroy(fd, vm_id, 0);
+> > +	}
+> > +
+> > +	igt_subtest("vm_destroy_invalid") {
+> > +		igt_panthor_vm_destroy(fd, 0xdeadbeef, EINVAL);
+> > +	}
+> > +
+> > +	igt_describe("Test the VM_BIND API synchronously");
+> > +	igt_subtest("vm_bind") {
+> > +		uint32_t vm_id;
+> > +		struct panthor_bo bo;
+> > +		uint64_t bo_size = 0x1000;
+> > +
+> > +		igt_panthor_vm_create(fd, &vm_id, 0);
+> > +		igt_assert_neq(vm_id, 0);
+> > +
+> > +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
+> > +		igt_panthor_vm_bind(fd, vm_id, bo.handle,
+> > +				    0x1000, 0x1000, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
+> > +
+> > +		igt_panthor_vm_destroy(fd, vm_id, 0);
+> > +	}
+> > +
+> > +	igt_describe("Test unbinding a previously bound range");
+> > +	igt_subtest("vm_unbind") {
+> > +		uint32_t vm_id;
+> > +		struct panthor_bo bo;
+> > +		uint64_t bo_size = 0x1000;
+> > +
+> > +		igt_panthor_vm_create(fd, &vm_id, 0);
+> > +		igt_assert_neq(vm_id, 0);
+> > +
+> > +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
+> > +		igt_panthor_vm_bind(fd, vm_id, bo.handle,
+> > +				    0x1000, 0x1000, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
+> > +		igt_panthor_vm_bind(fd, vm_id, 0,
+> > +				    0x1000, 0x1000, DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
+> > +
+> > +		igt_panthor_vm_destroy(fd, vm_id, 0);
+> > +	}
+> > +
+> > +	igt_describe("Test unbinding an address range that was not previously bound");
+> > +	igt_subtest("vm_unbind_invalid_address") {
+> > +		uint32_t vm_id;
+> > +		struct panthor_bo bo;
+> > +		uint64_t bo_size = 0x1000;
+> > +
+> > +		igt_panthor_vm_create(fd, &vm_id, 0);
+> > +		igt_assert_neq(vm_id, 0);
+> > +
+> > +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
+> > +
+> > +		/* This was not bound previously*/
+> > +		igt_panthor_vm_bind(fd, vm_id, bo.handle,
+> > +				    0x1000, 0x1000, DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, EINVAL);
+> > +		igt_panthor_vm_destroy(fd, vm_id, 0);
+> > +	}
+> > +
+> > +	igt_fixture {
+> > +		drm_close_driver(fd);
+> > +	}
+> > +}
+> 
