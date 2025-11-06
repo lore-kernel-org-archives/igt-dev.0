@@ -4,60 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 055BFCCFA03
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 11:34:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F09CCCFA05
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 11:41:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B22E910E722;
-	Thu,  6 Nov 2025 11:34:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D6DC810E722;
+	Thu,  6 Nov 2025 11:41:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z2fzGQF8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iOSn4lB7";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E610310E722
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Nov 2025 11:34:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C10110E722
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Nov 2025 11:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762428868; x=1793964868;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=WcA3VBdvT/VreNQ4/9RFKUrFgVxTY7HrRoAL474StJ8=;
- b=Z2fzGQF8N6LM8PgAtWVFnosimkLZRc7ovprOELu5qaxqkm9ECZj2ywUd
- Dr/jCZZMIqvKcaV4bfabHQj4IydnoK1qM7vOU74M8vaJTPFJoKKqbd5AM
- c0LfCR1MXukpHD/DLsr+b4NqR5Udu5u6C0+FWXyUUKCCoI1E18cyJoKiJ
- 32gL9UO5DVXAzm73x9ubo68BpqWCK59h7feZRxxpd+RDkOqtWV0N+r8m6
- SrZlZrsiGFIpvGjsnLHQJJqeHfT86LqmT0IpP7OtuJiXTDt1Q3AT6M44d
- qUSvq/q5S4w+YHmDVRZdY57jlvc9LHxF1KUzRQtIOdV6sxLoB714gzs49 g==;
-X-CSE-ConnectionGUID: BQgHahdjRmiahK3DB1sZPQ==
-X-CSE-MsgGUID: LjjJe1CVTS+5gdvGqcqkuQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="64597562"
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="64597562"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2025 03:34:28 -0800
-X-CSE-ConnectionGUID: h0fcJHstT3Ob9XiL4yFquw==
-X-CSE-MsgGUID: pc5jNcgNRI2nA8Rc4tqctA==
+ t=1762429285; x=1793965285;
+ h=message-id:subject:from:to:cc:date:in-reply-to:
+ references:content-transfer-encoding:mime-version;
+ bh=Y9aP6VgSZSC0J3YhhWfEqU3rfVeOJ5e/PeQ1VUfB5Bs=;
+ b=iOSn4lB7iZbSBFSWM7wfmG2w29JcLI1FFabf2c256QYZkubKPQJEdO7Z
+ oWJ9GNIeM/EntKEij4nrE+zM+VaHm5QW1EcBgA+TWuco65eAk9j6S3IK1
+ zetTDgWOj8t/F5g16adyiR990/BCMAeSyKGf/ouM2hJc2FjKqq9NpPCVx
+ E3PeJcSzXatp1DiTOmtpdVbjaCvuf0foAOkn0MiPlMnTEAc96SbcGqF3x
+ rQ+wz3LgrCudCOJ3HC8Mu/XHJhU5v21xOzURTNA7pEVUgT2uPSQVvy1GC
+ BvLWrEaziuKuf+N0VV7qkCtuII0u0Ab4Q6RHU7ni0VgKdgUZf07HVhlr+ A==;
+X-CSE-ConnectionGUID: gmKyBbIDSJ6ksGbt8HZVfw==
+X-CSE-MsgGUID: c/2gmi6CTVOT3o1a7cBBRg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="64658300"
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="64658300"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2025 03:41:25 -0800
+X-CSE-ConnectionGUID: 7wsS++nBT0agxc+AxkshNA==
+X-CSE-MsgGUID: J5m1os6nTYajMr4AXPnAzA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="191830694"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 03:34:26 -0800
-Date: Thu, 6 Nov 2025 12:34:24 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Shekhar Chauhan <shekhar.chauhan@intel.com>
-Cc: igt-dev@lists.freedesktop.org, lucas.demarchi@intel.com,
- balasubramani.vivekanandan@intel.com
-Subject: Re: [PATCH i-g-t v1 2/3] lib: Add Crescent Island Support
-Message-ID: <20251106113424.7nvgiojdqntwmpvb@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Shekhar Chauhan <shekhar.chauhan@intel.com>,
- igt-dev@lists.freedesktop.org, lucas.demarchi@intel.com,
- balasubramani.vivekanandan@intel.com
-References: <20251106053425.1731151-1-shekhar.chauhan@intel.com>
- <20251106053425.1731151-3-shekhar.chauhan@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="187400531"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO [10.245.244.174])
+ ([10.245.244.174])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2025 03:41:23 -0800
+Message-ID: <c8f29191129ffc8349a68abd69851f6fad38e719.camel@linux.intel.com>
+Subject: Re: [PATCH i-g-t v3 1/2] lib/ioct_wrappers: add __prime_fd_to_handle()
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, Sanjay Yadav
+ <sanjay.kumar.yadav@intel.com>
+Date: Thu, 06 Nov 2025 12:41:21 +0100
+In-Reply-To: <20251105115132.97222-3-matthew.auld@intel.com>
+References: <20251105115132.97222-3-matthew.auld@intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-2.fc41) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251106053425.1731151-3-shekhar.chauhan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,73 +71,85 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Shekhar,
-On 2025-11-06 at 11:04:24 +0530, Shekhar Chauhan wrote:
-> From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-> 
-> Add device info for Crescent Island (CRI).
-> 
-> Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-> Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+On Wed, 2025-11-05 at 11:51 +0000, Matthew Auld wrote:
+> We want to be able to intercept the error, if there is one, instead
+> of
+> always asserting a non-zero error. Add a version of
+> prime_fd_to_handle()
+> which allows the caller to handle the error.
+>=20
+> v2:
+> =C2=A0 - Ensure we use errno.
+> v3 (Kamil & Sanjay):
+> =C2=A0 - Some spelling fixes
+> =C2=A0 - s/i915//
+>=20
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
+
+Does it make sense to have prime_fd_to_handle() use this now?
+
+Either way,
+
+Reviewed-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+
 > ---
->  lib/intel_chipset.h     |  2 ++
->  lib/intel_device_info.c | 10 ++++++++++
->  2 files changed, 12 insertions(+)
-> 
-> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-> index 93275eac9..b857afc7f 100644
-> --- a/lib/intel_chipset.h
-> +++ b/lib/intel_chipset.h
-> @@ -94,6 +94,7 @@ struct intel_device_info {
->  	bool is_battlemage : 1;
->  	bool is_pantherlake : 1;
->  	bool is_novalake: 1;
-> +	bool is_crescentisland: 1;
->  
->  	const struct intel_cmds_info *cmds_info;
->  	const char *codename;
-> @@ -212,6 +213,7 @@ void intel_check_pch(void);
->  #define IS_BATTLEMAGE(devid)	(intel_get_device_info(devid)->is_battlemage)
->  #define IS_PANTHERLAKE(devid)  (intel_get_device_info(devid)->is_pantherlake)
->  #define IS_NOVALAKE(devid)  (intel_get_device_info(devid)->is_novalake)
-> +#define IS_CRESCENTISLAND(devid)  (intel_get_device_info(devid)->is_crescentisland)
-
-Here also make it one space (pinstead of two).
-
-With this
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
->  
->  #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
->  
-> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-> index fe452d50f..bb36c6968 100644
-> --- a/lib/intel_device_info.c
-> +++ b/lib/intel_device_info.c
-> @@ -549,6 +549,14 @@ static const struct intel_device_info intel_novalake_info = {
->  	.cmds_info = &xe2_cmds_info,
->  };
->  
-> +static const struct intel_device_info intel_crescentisland_info = {
-> +	.graphics_ver = 35,
-> +	.graphics_rel = 11,
-> +	.display_ver = 0,
-> +	.codename = "crescentisland",
-> +	.cmds_info = &xe2_cmds_info,
-> +};
+> =C2=A0lib/ioctl_wrappers.c | 27 +++++++++++++++++++++++++++
+> =C2=A0lib/ioctl_wrappers.h |=C2=A0 1 +
+> =C2=A02 files changed, 28 insertions(+)
+>=20
+> diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+> index 176cbdacc..284a502e5 100644
+> --- a/lib/ioctl_wrappers.c
+> +++ b/lib/ioctl_wrappers.c
+> @@ -1139,6 +1139,33 @@ int prime_handle_to_fd_for_mmap(int fd,
+> uint32_t handle)
+> =C2=A0	return args.fd;
+> =C2=A0}
+> =C2=A0
+> +/**
+> + * __prime_fd_to_handle:
+> + * @fd: open drm file descriptor
+> + * @dma_buf_fd: dma-buf fd handle
+> + * @handle: output handle
+> + *
+> + * This wraps the PRIME_FD_TO_HANDLE ioctl, which is used to import
+> a dma-buf
+> + * file-descriptor into a gem buffer object.
+> + *
+> + * Returns: Zero on success, error code otherwise
+> + */
+> +int __prime_fd_to_handle(int fd, int dma_buf_fd, uint32_t *handle)
+> +{
+> +	struct drm_prime_handle args;
 > +
->  #define INTEL_PCI_ID_INIT(_id, _info) { \
->  	.vendor_id = 0x8086, .device_id = (_id), \
->  	.subvendor_id = PCI_MATCH_ANY, .subdevice_id = PCI_MATCH_ANY, \
-> @@ -669,6 +677,8 @@ static const struct pci_id_match intel_device_match[] = {
->  
->  	INTEL_NVLS_IDS(INTEL_PCI_ID_INIT, &intel_novalake_info),
->  
-> +	INTEL_CRI_IDS(INTEL_PCI_ID_INIT, &intel_crescentisland_info),
+> +	memset(&args, 0, sizeof(args));
+> +	args.fd =3D dma_buf_fd;
+> +	args.flags =3D 0;
+> +	args.handle =3D 0;
 > +
->  	INTEL_PCI_ID_INIT(PCI_MATCH_ANY, &intel_generic_info),
->  };
->  
-> -- 
-> 2.51.1
-> 
+> +	if (igt_ioctl(fd, DRM_IOCTL_PRIME_FD_TO_HANDLE, &args))
+> +		return -errno;
+> +
+> +	*handle =3D args.handle;
+> +	return 0;
+> +}
+> +
+> =C2=A0/**
+> =C2=A0 * prime_fd_to_handle:
+> =C2=A0 * @fd: open i915 drm file descriptor
+> diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+> index 7cf05e626..5a899f052 100644
+> --- a/lib/ioctl_wrappers.h
+> +++ b/lib/ioctl_wrappers.h
+> @@ -138,6 +138,7 @@ int prime_handle_to_fd(int fd, uint32_t handle);
+> =C2=A0#endif
+> =C2=A0int prime_handle_to_fd_for_mmap(int fd, uint32_t handle);
+> =C2=A0uint32_t prime_fd_to_handle(int fd, int dma_buf_fd);
+> +int __prime_fd_to_handle(int fd, int dma_buf_fd, uint32_t *handle);
+> =C2=A0off_t prime_get_size(int dma_buf_fd);
+> =C2=A0void prime_sync_start(int dma_buf_fd, bool write);
+> =C2=A0void prime_sync_end(int dma_buf_fd, bool write);
+
