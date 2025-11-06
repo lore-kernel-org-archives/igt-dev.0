@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F09CCCFA05
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 11:41:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D6F9CCFA03
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Nov 2025 11:45:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D6DC810E722;
-	Thu,  6 Nov 2025 11:41:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 00CF210E8A5;
+	Thu,  6 Nov 2025 11:45:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iOSn4lB7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jiXEIqTS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C10110E722
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Nov 2025 11:41:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 937F710E8A5
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Nov 2025 11:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762429285; x=1793965285;
+ t=1762429504; x=1793965504;
  h=message-id:subject:from:to:cc:date:in-reply-to:
  references:content-transfer-encoding:mime-version;
- bh=Y9aP6VgSZSC0J3YhhWfEqU3rfVeOJ5e/PeQ1VUfB5Bs=;
- b=iOSn4lB7iZbSBFSWM7wfmG2w29JcLI1FFabf2c256QYZkubKPQJEdO7Z
- oWJ9GNIeM/EntKEij4nrE+zM+VaHm5QW1EcBgA+TWuco65eAk9j6S3IK1
- zetTDgWOj8t/F5g16adyiR990/BCMAeSyKGf/ouM2hJc2FjKqq9NpPCVx
- E3PeJcSzXatp1DiTOmtpdVbjaCvuf0foAOkn0MiPlMnTEAc96SbcGqF3x
- rQ+wz3LgrCudCOJ3HC8Mu/XHJhU5v21xOzURTNA7pEVUgT2uPSQVvy1GC
- BvLWrEaziuKuf+N0VV7qkCtuII0u0Ab4Q6RHU7ni0VgKdgUZf07HVhlr+ A==;
-X-CSE-ConnectionGUID: gmKyBbIDSJ6ksGbt8HZVfw==
-X-CSE-MsgGUID: c/2gmi6CTVOT3o1a7cBBRg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="64658300"
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="64658300"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2025 03:41:25 -0800
-X-CSE-ConnectionGUID: 7wsS++nBT0agxc+AxkshNA==
-X-CSE-MsgGUID: J5m1os6nTYajMr4AXPnAzA==
+ bh=dq9kkm/uyrx8TtFXLlRo02gJWN3+2hglfq3nBeOaSBE=;
+ b=jiXEIqTSpM7ikXWvAbTU9GnNT5ercBQJLYfVhheNaTIgM6WaNekBCKEL
+ RhFr/rTKqvxb8wgK2DcCUN/SbFY955ewlM7UkmKWtCIj3bBIN8jlFcAoM
+ l3zUJUEhz1/6I74V4yI+kOaW4+9V6/TYrJSjNxqzH/s/4PB6JIaPEAAFQ
+ WssEESlZQZKXVNfVkfnO00IuULiu+dXjfNDG5azBB+6RbSeY+BkaeU2wJ
+ OZfwRJp8l2y3hKQT/eAn3wxIIucPCfF2JMKz1Iu+OqB2ThCVPCW/ZHpA2
+ Fa6A7QQI0j4XaPq9QimBNxTXrF2XlSsz0jpoGaMfhNeaPUN0YHKHZoyD4 A==;
+X-CSE-ConnectionGUID: JRn6Dv1nTxm/dukpCUftAA==
+X-CSE-MsgGUID: ZrNEUfdjTxGgu4RIE6XRkg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="75249040"
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="75249040"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2025 03:45:03 -0800
+X-CSE-ConnectionGUID: DxST8G9IQnm2yTw+2zYQHA==
+X-CSE-MsgGUID: 3dhWlW+OQ1KoSFeoZjgMVA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; d="scan'208";a="187400531"
 Received: from rvuia-mobl.ger.corp.intel.com (HELO [10.245.244.174])
  ([10.245.244.174])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2025 03:41:23 -0800
-Message-ID: <c8f29191129ffc8349a68abd69851f6fad38e719.camel@linux.intel.com>
-Subject: Re: [PATCH i-g-t v3 1/2] lib/ioct_wrappers: add __prime_fd_to_handle()
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2025 03:45:02 -0800
+Message-ID: <13bce67cabfae0c51f68a998ac1ddf8a9611bffe.camel@linux.intel.com>
+Subject: Re: [PATCH i-g-t v3 2/2] tests/intel/xe_peer2peer: gracefully
+ handle ENOTSUP
 From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
 To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, Sanjay Yadav
  <sanjay.kumar.yadav@intel.com>
-Date: Thu, 06 Nov 2025 12:41:21 +0100
-In-Reply-To: <20251105115132.97222-3-matthew.auld@intel.com>
+Date: Thu, 06 Nov 2025 12:45:00 +0100
+In-Reply-To: <20251105115132.97222-4-matthew.auld@intel.com>
 References: <20251105115132.97222-3-matthew.auld@intel.com>
+ <20251105115132.97222-4-matthew.auld@intel.com>
 Organization: Intel Sweden AB, Registration Number: 556189-6027
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -72,84 +73,154 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 On Wed, 2025-11-05 at 11:51 +0000, Matthew Auld wrote:
-> We want to be able to intercept the error, if there is one, instead
-> of
-> always asserting a non-zero error. Add a version of
-> prime_fd_to_handle()
-> which allows the caller to handle the error.
+> Currently this blows up on the multi-dGPU setup we have in CI when
+> importing the VRAM from one device into the other via dma-buf, due
+> the
+> P2P internals reporting this as unsupported on this machine. Trying
+> to
+> manually white list the hostbridge device on the P2P side is also
+> unsuccessful since the read side test fails due to a data mismatch
+> when
+> reading from the exported VRAM. There are also no hangs or errors in
+> dmesg although strangely the write side test passes. So it appears
+> that
+> the direction of the copy is broken when reading the exported VRAM
+> from
+> the importer side. Manually disabling/enabling iommu also make no
+> difference. And finally hacking the test to force same device
+> import/export makes the test pass, which should rule out any kind of
+> test defect. With that gracefully skip running the VRAM import
+> subtests
+> if this is reported as unsupported by the kernel.
 >=20
-> v2:
-> =C2=A0 - Ensure we use errno.
-> v3 (Kamil & Sanjay):
-> =C2=A0 - Some spelling fixes
-> =C2=A0 - s/i915//
+> v2 (Kamil & Sanjay)
+> =C2=A0 - s/ENOSUP/ENOTSUP/ in commit title
 >=20
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6433
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1173
 > Signed-off-by: Matthew Auld <matthew.auld@intel.com>
 > Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > Cc: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
 
-Does it make sense to have prime_fd_to_handle() use this now?
-
-Either way,
-
+LGTM.
 Reviewed-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
 
 > ---
-> =C2=A0lib/ioctl_wrappers.c | 27 +++++++++++++++++++++++++++
-> =C2=A0lib/ioctl_wrappers.h |=C2=A0 1 +
-> =C2=A02 files changed, 28 insertions(+)
+> =C2=A0tests/intel/xe_peer2peer.c | 39 ++++++++++++++++++++++++++---------=
+-
+> --
+> =C2=A01 file changed, 27 insertions(+), 12 deletions(-)
 >=20
-> diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-> index 176cbdacc..284a502e5 100644
-> --- a/lib/ioctl_wrappers.c
-> +++ b/lib/ioctl_wrappers.c
-> @@ -1139,6 +1139,33 @@ int prime_handle_to_fd_for_mmap(int fd,
-> uint32_t handle)
-> =C2=A0	return args.fd;
-> =C2=A0}
+> diff --git a/tests/intel/xe_peer2peer.c b/tests/intel/xe_peer2peer.c
+> index b777d2b66..70374e56d 100644
+> --- a/tests/intel/xe_peer2peer.c
+> +++ b/tests/intel/xe_peer2peer.c
+> @@ -116,11 +116,24 @@ static void test_read(struct gpu_info *ex_gpu,
+> struct gpu_info *im_gpu,
+> =C2=A0	uint32_t im_xe =3D im_gpu->fd;
+> =C2=A0	uint32_t ex_src, dmabuf;
+> =C2=A0	uint32_t stride;
+> -
+> =C2=A0	struct drm_xe_engine_class_instance inst =3D {
+> =C2=A0		.engine_class =3D DRM_XE_ENGINE_CLASS_COPY,
+> =C2=A0	};
+> =C2=A0	intel_ctx_t *ctx;
+> +	int err;
+> +
+> +	blt_copy_init(ex_xe, &ex_blt);
+> +	src =3D blt_create_object(&ex_blt, ex_reg, width, height, bpp,
+> 0,
+> +				T_LINEAR, COMPRESSION_DISABLED, 0,
+> true);
+> +
+> +	dmabuf =3D prime_handle_to_fd(ex_xe, src->handle);
+> +	err =3D __prime_fd_to_handle(im_xe, dmabuf, &ex_src);
+> +	if (err =3D=3D -ENOTSUP) {
+> +		blt_destroy_object(ex_xe, src);
+> +		igt_assert(ex_reg !=3D system_memory(ex_xe));
+> +		igt_skip("P2P VRAM import not supported on this
+> device, skipping.\n");
+> +	}
+> +	igt_assert(!err);
 > =C2=A0
-> +/**
-> + * __prime_fd_to_handle:
-> + * @fd: open drm file descriptor
-> + * @dma_buf_fd: dma-buf fd handle
-> + * @handle: output handle
-> + *
-> + * This wraps the PRIME_FD_TO_HANDLE ioctl, which is used to import
-> a dma-buf
-> + * file-descriptor into a gem buffer object.
-> + *
-> + * Returns: Zero on success, error code otherwise
-> + */
-> +int __prime_fd_to_handle(int fd, int dma_buf_fd, uint32_t *handle)
-> +{
-> +	struct drm_prime_handle args;
+> =C2=A0	vm =3D xe_vm_create(im_xe, 0, 0);
+> =C2=A0	exec_queue =3D xe_exec_queue_create(im_xe, vm, &inst, 0);
+> @@ -129,17 +142,12 @@ static void test_read(struct gpu_info *ex_gpu,
+> struct gpu_info *im_gpu,
+> =C2=A0					 INTEL_ALLOCATOR_SIMPLE,
+> =C2=A0					 ALLOC_STRATEGY_LOW_TO_HIGH,
+> 0);
+> =C2=A0
+> -	blt_copy_init(ex_xe, &ex_blt);
+> =C2=A0	blt_copy_init(im_xe, &im_blt);
+> =C2=A0
+> -	src =3D blt_create_object(&ex_blt, ex_reg, width, height, bpp,
+> 0,
+> -				T_LINEAR, COMPRESSION_DISABLED, 0,
+> true);
+> =C2=A0	dst =3D blt_create_object(&im_blt, im_reg, width, height, bpp,
+> 0,
+> =C2=A0				T_LINEAR, COMPRESSION_DISABLED, 0,
+> true);
+> =C2=A0	blt_surface_fill_rect(ex_xe, src, width, height);
+> =C2=A0
+> -	dmabuf =3D prime_handle_to_fd(ex_xe, src->handle);
+> -	ex_src =3D prime_fd_to_handle(im_xe, dmabuf);
+> =C2=A0	im_src =3D calloc(1, sizeof(*im_src));
+> =C2=A0
+> =C2=A0	stride =3D width * 4;
+> @@ -198,11 +206,23 @@ static void test_write(struct gpu_info *ex_gpu,
+> struct gpu_info *im_gpu,
+> =C2=A0	uint32_t im_xe =3D im_gpu->fd;
+> =C2=A0	uint32_t ex_dst, dmabuf;
+> =C2=A0	uint32_t stride;
+> -
+> =C2=A0	struct drm_xe_engine_class_instance inst =3D {
+> =C2=A0		.engine_class =3D DRM_XE_ENGINE_CLASS_COPY,
+> =C2=A0	};
+> =C2=A0	intel_ctx_t *ctx;
+> +	int err;
 > +
-> +	memset(&args, 0, sizeof(args));
-> +	args.fd =3D dma_buf_fd;
-> +	args.flags =3D 0;
-> +	args.handle =3D 0;
-> +
-> +	if (igt_ioctl(fd, DRM_IOCTL_PRIME_FD_TO_HANDLE, &args))
-> +		return -errno;
-> +
-> +	*handle =3D args.handle;
-> +	return 0;
-> +}
-> +
-> =C2=A0/**
-> =C2=A0 * prime_fd_to_handle:
-> =C2=A0 * @fd: open i915 drm file descriptor
-> diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-> index 7cf05e626..5a899f052 100644
-> --- a/lib/ioctl_wrappers.h
-> +++ b/lib/ioctl_wrappers.h
-> @@ -138,6 +138,7 @@ int prime_handle_to_fd(int fd, uint32_t handle);
-> =C2=A0#endif
-> =C2=A0int prime_handle_to_fd_for_mmap(int fd, uint32_t handle);
-> =C2=A0uint32_t prime_fd_to_handle(int fd, int dma_buf_fd);
-> +int __prime_fd_to_handle(int fd, int dma_buf_fd, uint32_t *handle);
-> =C2=A0off_t prime_get_size(int dma_buf_fd);
-> =C2=A0void prime_sync_start(int dma_buf_fd, bool write);
-> =C2=A0void prime_sync_end(int dma_buf_fd, bool write);
+> +	blt_copy_init(ex_xe, &ex_blt);
+> +	dst =3D blt_create_object(&ex_blt, ex_reg, width, height, bpp,
+> 0,
+> +				T_LINEAR, COMPRESSION_DISABLED, 0,
+> true);
+> +	dmabuf =3D prime_handle_to_fd(ex_xe, dst->handle);
+> +	err =3D __prime_fd_to_handle(im_xe, dmabuf, &ex_dst);
+> +	if (err =3D=3D -ENOTSUP) {
+> +		blt_destroy_object(ex_xe, dst);
+> +		igt_assert(ex_reg !=3D system_memory(ex_xe));
+> +		igt_skip("P2P VRAM import not supported on this
+> device, skipping.\n");
+> +	}
+> +	igt_assert(!err);
+> =C2=A0
+> =C2=A0	vm =3D xe_vm_create(im_xe, 0, 0);
+> =C2=A0	exec_queue =3D xe_exec_queue_create(im_xe, vm, &inst, 0);
+> @@ -211,17 +231,12 @@ static void test_write(struct gpu_info *ex_gpu,
+> struct gpu_info *im_gpu,
+> =C2=A0					 INTEL_ALLOCATOR_SIMPLE,
+> =C2=A0					 ALLOC_STRATEGY_LOW_TO_HIGH,
+> 0);
+> =C2=A0
+> -	blt_copy_init(ex_xe, &ex_blt);
+> =C2=A0	blt_copy_init(im_xe, &im_blt);
+> =C2=A0
+> -	dst =3D blt_create_object(&ex_blt, ex_reg, width, height, bpp,
+> 0,
+> -				T_LINEAR, COMPRESSION_DISABLED, 0,
+> true);
+> =C2=A0	src =3D blt_create_object(&im_blt, im_reg, width, height, bpp,
+> 0,
+> =C2=A0				T_LINEAR, COMPRESSION_DISABLED, 0,
+> true);
+> =C2=A0	blt_surface_fill_rect(im_xe, src, width, height);
+> =C2=A0
+> -	dmabuf =3D prime_handle_to_fd(ex_xe, dst->handle);
+> -	ex_dst =3D prime_fd_to_handle(im_xe, dmabuf);
+> =C2=A0	im_dst =3D calloc(1, sizeof(*im_dst));
+> =C2=A0
+> =C2=A0	stride =3D width * 4;
 
