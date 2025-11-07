@@ -4,136 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C72DCCF9F8
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Nov 2025 15:23:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 830DCCCF9F8
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Nov 2025 15:25:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 43C0E10EAF8;
-	Fri,  7 Nov 2025 15:23:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 32C4A10E0E3;
+	Fri,  7 Nov 2025 15:25:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="AdF39dgY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NJ4/h2ns";
 	dkim-atps=neutral
-Received: from PH0PR06CU001.outbound.protection.outlook.com
- (mail-westus3azon11011022.outbound.protection.outlook.com [40.107.208.22])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B17F510EAF8
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Nov 2025 15:23:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2BF1C10E0E3
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Nov 2025 15:25:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1762529100; x=1794065100;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=kLY77kUUXtjtc67v7DR4aSHWqmfVxEUniBMj/rf+zWc=;
+ b=NJ4/h2nswNLgJU1MbZ5NRR0dPR8tw1H4oJcvDko2cT9iSigLD9W2Bx1e
+ qlqSFRtd8p68UoNsrkDpWJpNQFn0POg6E3tONtmWxeOgVgLHHNVyeunPs
+ YX76ohZfZmsUYtsHjlFsMZ/pAF2KqszVRJfvV6E0skWmh3u+lGanIXLwS
+ /TQsgc2n8GfDh9yVl4ebgcmrH4HNBKJyDo4epZ2RytqTUidYefL+5HL7M
+ sIYzrdHU2Uqr3Bo0djThgLm3nbpcJq+H8jCCsNFCye4n7il4+ke7CKu3E
+ FutPvG9NRqM4k6kZ+9GqAETN37BX5l9Yq31GKbp6SKVt1M5tXmSc4RxZJ g==;
+X-CSE-ConnectionGUID: Wz6yWcfSTz+JNh5Zf8ZEIw==
+X-CSE-MsgGUID: Sdo3a5icRkmHPPMrm/D7gw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11606"; a="75289853"
+X-IronPort-AV: E=Sophos;i="6.19,287,1754982000"; d="scan'208";a="75289853"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Nov 2025 07:25:00 -0800
+X-CSE-ConnectionGUID: g/eOpAVqSJePB6La3dJ/tQ==
+X-CSE-MsgGUID: FQwPP54QRlKxbeqHJD50fw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,287,1754982000"; d="scan'208";a="188228362"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Nov 2025 07:25:00 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Fri, 7 Nov 2025 07:24:59 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Fri, 7 Nov 2025 07:24:59 -0800
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.37)
+ by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Fri, 7 Nov 2025 07:24:58 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sTZIcPNFhl0+CPZKSkOdkzr0ht4K130kyxsO4hwLqdOhGh+Lyl+hcjoKZzBnlJLe4He3pjVzwlmuOuOrmOAZKSr5UA1dNfvrToVySb2aODPQDOSYt4J57o6Dp5I/Ix/t2/4bUWFZX5Zvi8ySaIHBbNLTLwInbpUYt1eAAijIzKB8r0f7v/B34Mh2KLYWpw2MMSY9WgPNj4kykEC/AvVxyi2KHY4o38JVhrxyw+5qm9zkjxlPVDDVMqWzk4f4Y6Dx3TijIB6uj0rIg8aPJogl/MzlWMKx78bITAY65tjZSRKVKkOeTCi2clQRbYbi0USRU2wVs0gcWBq+eRGvcTPg0w==
+ b=XzmBBSqziDr7axB51t8kd1LubayZu70RCnd5vOLe9Gh9Y0VDAeBGCqbME+JCoMJLiu/NNVO/W8XLtDAHIyM1M5q0uEpLf8L+Uja3sjNJ3yEWz16+mBFkD+cCfhJs9Os50bL1kB418u5JxpaWo97H3QXlcZQzBLnKdkO1izonBH7zPoxNC2heBJN8uBBm0+7gTx/LxA+aNsGwye38rmgvYAp1ZJ3MOlW00cPAHYNh7US+O8/OBCOGpenQ+wT7cjBHnd69MISe9sEjudAYzyHCSHcV0C7V+O0tu/+DPZvjjaSoQ4AkMUYIvQdjDMXRUOGtLZKeDpGzqnCeCTe6VTD3iw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PCz3/KNAdIDHBpjWXVJfF2vzjYEGllijQwaLlayBHf4=;
- b=VR6/qaSZQANkJZgptj7V68PjLhFt16XtEsyRm9eAZkU8hFCd0uhV3NQUs3bF2IuOAVeYj0kOmO0R+PMD8EjffCFeID+XXaasT7LILl/boScmOxvr5KkOQCk111VH1GEcXB1qDjWGemzGfwJmvS7MYOOiJXPHO+K91EyQCRptJNU6EtBqhVREGR0OJVyvTDFDTPbuZbSeTMv+V+PRvuJMBOSKiyW7U5gSSE14MX1zHvvPQpNP3tw7O5eAqn6hmBVdR6I+BgmhejdD74Cl1Xz+AtI1LUSSxKeuv/neXcmpwtnZ7ejjAEHjflS852gjf5ysM5FDEHb0w55SqVB99ir32A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PCz3/KNAdIDHBpjWXVJfF2vzjYEGllijQwaLlayBHf4=;
- b=AdF39dgY+kh9onzvk0IrXWiLSiYPP+vExjKdm6fgt6JvexLRsEFAr7VFe6QIS5F9kL9PHDXC1ZpD9XTDlmL9NFoQAFrD0Wu25ssJsrWPBNizo2G8t43Yuwwm5Es/Cq/UWJvjKuLIt6jl97XtXh3nw+UBjZGylTctlccJ16F9TpI=
-Received: from MW4PR04CA0205.namprd04.prod.outlook.com (2603:10b6:303:86::30)
- by SA0PR12MB7462.namprd12.prod.outlook.com (2603:10b6:806:24b::5)
+ bh=JUClT02VVhw8ULxi74nSZJUzQhKqlA+JBrhEkmM7Ik8=;
+ b=POoJdLKHzD9u5kBqQoY08uNUlz4B9h8oypz6zqUGyHXmO0ewl4WLNXHqzTaThlEWG+rPbfwXIf4YdCfCBIQKrGXtoiKrtB+ZaPHdsFWYQ3l40tNYL1q0+V0H9OWGatv3USNBwB3k7ajUT0nQusYWRbIhaz85JqOZaHjHTuXsyxn7RP1kxNGLQSZQaZIpj5SXWT3MjfG00wrfOWPWFaF/26sk02qQo9k7rZxebD5jW10gMxw+F7OWoQR80NxYl1nLmsNEHbx6hSj3JZlOgdRWlJHpv5KDY5yR2m4NSTrHouVAb+By+FCpD03g9mNir7hoCrR6BU7RylKM+2C4qXp0Eg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CH0PR11MB5444.namprd11.prod.outlook.com (2603:10b6:610:d3::13)
+ by SJ0PR11MB4944.namprd11.prod.outlook.com (2603:10b6:a03:2ae::17)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Fri, 7 Nov
- 2025 15:23:25 +0000
-Received: from SJ1PEPF00002310.namprd03.prod.outlook.com
- (2603:10b6:303:86:cafe::40) by MW4PR04CA0205.outlook.office365.com
- (2603:10b6:303:86::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9298.9 via Frontend Transport; Fri, 7
- Nov 2025 15:23:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ1PEPF00002310.mail.protection.outlook.com (10.167.242.164) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9298.6 via Frontend Transport; Fri, 7 Nov 2025 15:23:23 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Fri, 7 Nov
- 2025 07:23:17 -0800
-Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB05.amd.com
- (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 7 Nov
- 2025 09:23:17 -0600
-Received: from [10.254.40.65] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Fri, 7 Nov 2025 07:23:17 -0800
-Message-ID: <e7520dfe-4405-422a-81e4-56a9c1a3ea4a@amd.com>
-Date: Fri, 7 Nov 2025 10:23:16 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V11 00/32] IGT tests for the KMS Color Pipeline API
-To: Alex Hung <alex.hung@amd.com>, <igt-dev@lists.freedesktop.org>
-CC: <harry.wentland@amd.com>, <leo.liu@amd.com>
-References: <20251030042801.2315866-1-alex.hung@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.13; Fri, 7 Nov
+ 2025 15:24:56 +0000
+Received: from CH0PR11MB5444.namprd11.prod.outlook.com
+ ([fe80::5081:cd4:1a4b:a73e]) by CH0PR11MB5444.namprd11.prod.outlook.com
+ ([fe80::5081:cd4:1a4b:a73e%5]) with mapi id 15.20.9298.012; Fri, 7 Nov 2025
+ 15:24:56 +0000
+From: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Tauro,
+ Riana" <riana.tauro@intel.com>
+CC: "Gupta, saurabhg" <saurabhg.gupta@intel.com>, "Zuo, Alex"
+ <alex.zuo@intel.com>, "Wajdeczko, Michal" <Michal.Wajdeczko@intel.com>
+Subject: RE: [PATCH v3] tests/intel/xe_pmu: Tie preempt timeout to exec quantum
+Thread-Topic: [PATCH v3] tests/intel/xe_pmu: Tie preempt timeout to exec
+ quantum
+Thread-Index: AQHcT/kADgKDmXOxhUq9V+/UTW1MV7TnVNAw
+Date: Fri, 7 Nov 2025 15:24:56 +0000
+Message-ID: <CH0PR11MB54445C9848315986AA8F11D8E5C3A@CH0PR11MB5444.namprd11.prod.outlook.com>
+References: <20251107151251.6323-2-jonathan.cavitt@intel.com>
+In-Reply-To: <20251107151251.6323-2-jonathan.cavitt@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: Leo Li <sunpeng.li@amd.com>
-In-Reply-To: <20251030042801.2315866-1-alex.hung@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Received-SPF: None (SATLEXMB05.amd.com: sunpeng.li@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002310:EE_|SA0PR12MB7462:EE_
-X-MS-Office365-Filtering-Correlation-Id: 08fbfdd6-7df3-4b7c-d8ad-08de1e11977e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|42112799006|82310400026|376014|13003099007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Nkp6TWhyZ3B3eVRLeUozK3dqZGFFTGhXZm5KUEduT3dUL0RFZ2JJSHdLKzN5?=
- =?utf-8?B?bzQ3Ny9vU1FJdSsvT0wrRS8weDRRMC9GaS9LdGs5ME9OU1p0RGZ6LzJ6Sm42?=
- =?utf-8?B?UVNlVmorb1gxR0ZTN08zOHF0NVdnQWtQVWgyczV4NUdzYlJDd2RHZi9OUnJ5?=
- =?utf-8?B?WFlKK2kxNHpCdExoSUJSLzl4eVVOMzlXdEIwbFErNTNmUmNZcDZhZml5Tit3?=
- =?utf-8?B?dmlTTW81by9UdTBtTkNtbDdEcTBpalVEbEttR2xVbjFyVkZnY21IaWF0R1ht?=
- =?utf-8?B?Z0xJZjlIV3U5WHVRcDI2MHJMSy9uRnlOOVh4RG9DaWxJbGlYR1M5Z0g4TmlG?=
- =?utf-8?B?MmNsVVJ4andGWkZsdDFjSDlpS3hOaGtTR1BoT2pteXFvZmhRZUV2SVhDb3gr?=
- =?utf-8?B?dmhLUU03RTFlRFVveS80N0ppOFhydy9LVWtDcFNFaXRRRlR0cXpaR2pUUnNt?=
- =?utf-8?B?UW5XZ0R0dXNqNGpBVXdEbGZsTTEvUWF0Rm01L0FhOWVvbXc2ZlpKbjdaYmlF?=
- =?utf-8?B?WE1ybWEzRUVLUyt5emFXWGszT0xqQ21wV1paSE5FUGlNeDFZcTYxUDFMK1Qx?=
- =?utf-8?B?NDJKb2dFWXJmUjIzU1Y1ZjlQbTh0c2xoQXVIdk9kMHpkUzh0TFFESVowRzFu?=
- =?utf-8?B?TDRUTzJyY2h3aGNWcnptVkhidytvWkdYeW10RjMzbHlzQ2liMHd3WHpZVmhm?=
- =?utf-8?B?MnFEYUIrMHl2TDBMMEdPSWp2L1VkQk9kWGtqQUhFOEplelBEWm1TNXhrekV6?=
- =?utf-8?B?S1hCaWk3NGZUQjc1S0VBQkpjZmFQZFVyaW1FYWNQWWVMMDBZbXZKSk9TSXlI?=
- =?utf-8?B?cklrWFZkRDJ1a2tndGNqS242dVFxaHdKV2llRkozWWMyQVNyTit1VnRoOUpI?=
- =?utf-8?B?bSs4K3NMRVczZ0RvU1ljcGFkMC84KzRFTzBTYkRiS1VwK295TEU5ZGJOa0RH?=
- =?utf-8?B?R0hORHY5OW9XQ1VraUtMMWE3QS85d0VRMktCUlp5Z0poWk1jWWEvckJuK1RI?=
- =?utf-8?B?TjFOZ1ZrbUFkMlhwQkNBQTUybHhTTlN3L2JqMkVSc3d2Y0hwNUZtaXNuZFdD?=
- =?utf-8?B?bHpoeUFlT1pnZEkyN0U1ZVVUSlQ0Wll6OXRvTDVlSzRNak1oQS9rL3d2TG5a?=
- =?utf-8?B?enJGR2RHYUg0c3ZnR3VIVjVkd3Y0TjZxUGRJbUd4cmRyMEltWEYxeVdrMWR2?=
- =?utf-8?B?Q1F3Wkdoc1J6bm9XUytOVk5Sczh3a2JabldCQ29SdzFvNUZSVXJEVlpWczkx?=
- =?utf-8?B?YXlGRHNHcVhVZ1dPTWRZdDZTY1ZPVlg2RlNsUHoyS3Jwc2ZzUmM1QURDdlg1?=
- =?utf-8?B?aXR2REZVUEVpVHZaendoYWR4Z1JMamdsWlJMK0ZUVG40ZURLWjlpd01Ud3V1?=
- =?utf-8?B?OTN4ZmdleElsdjZrTHRVMUsvdUEvUVN3ZjNGb1hCUnpuQzNUSUJnK3c1YXl3?=
- =?utf-8?B?QVhTdlBERU53U1hpVmRZOEJzdVNoSGxoOERDdFcxMXRHVXdlYnd4QjROUlNy?=
- =?utf-8?B?cjBIMklJdndtTVB0eGxIVmpBTWh3NzBYOHFpaXdwNDVsS2pzKysvaGc2QSsr?=
- =?utf-8?B?VkV1d21oZjF0bkV5WldCWE5tcExUWjA5ZUhQay9Gb21vL1hrT3RUTUREdjF3?=
- =?utf-8?B?ZVR3VlFhN0MwSitCMHI3NElHUmJzbWZRWHNTajZoVVl1YXlqaUpnOXZ3N2c1?=
- =?utf-8?B?Zlhnei81b3N0QnRKeWJNTGZqdVNWeWJVZ1J2VDFubEV0bUFBTkxoeFk2bXdI?=
- =?utf-8?B?eHk2cjdCRjB3a0FFWmdhNE5UYlZJV2xxYTNwVStKVVg2N3drWXRTRjRNT1dB?=
- =?utf-8?B?K3d1QWJHZzdlT1psQWpkRDVscmdWNWZaQjRjSGdkd1dVcTk3ZnhFZTBZYlU4?=
- =?utf-8?B?U2RXbzJmd056Rkk2b1FERHFGRndCaW8raDdLemlWS1pCSkllcmhVWWJCcUtO?=
- =?utf-8?B?VHpvWEE4aGdqL3BoM21FSGJ3VDlHQ1JrRStqMUJUWi9XWjNoL0xsRjlQeHZC?=
- =?utf-8?B?ZmRIaXpPd0FDYWt6Tm1pTUhnMGZObHQvNTNlbStjL0txbW55SHF0VklsVklP?=
- =?utf-8?Q?nrzgfU?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(1800799024)(42112799006)(82310400026)(376014)(13003099007);
+X-Mentions: riana.tauro@intel.com
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH0PR11MB5444:EE_|SJ0PR11MB4944:EE_
+x-ms-office365-filtering-correlation-id: a5085827-ef56-460f-4e53-08de1e11ce8f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|10070799003|1800799024|366016|38070700021|7053199007; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?YNgcu3zKIyF0EmXqyjLQxrXns0GTKjV2S3EHz1YY7d2ciGD1kImsghzHD+of?=
+ =?us-ascii?Q?3HPJZ9u4V8NINc3o6eMsHDdAS6zxnIgW9kd8J1KLRMjCrUDer1dvAvYe1AYo?=
+ =?us-ascii?Q?b+C79JxyNYN2L7igbGzAu1RXcEN8nmkpC064Cdg70EVASUG+yrgtsc4YyGUT?=
+ =?us-ascii?Q?feA8v8eJ0bF34ta0j1skO0/KzmDehalJRwmEUyM33b8AU2YjXlWL1IowZSdL?=
+ =?us-ascii?Q?vHw65/UsNjL574Z7HHVJpqhYELGX2nQwa1eECYvWVt3W1JjiWpJP2+HHO2G4?=
+ =?us-ascii?Q?v8oWdPlQs/l2kfQOOKfLoui39AqyB6Uw6J87OWq81ZopwCiHPRznHXH2dxTp?=
+ =?us-ascii?Q?nbRo6ycpdnMdingC8FTvsvN/Uhj1N4HU+FDfP+d3sFRNWGwcekJIH/mAHB2X?=
+ =?us-ascii?Q?PefYtzSNAYmTj+3W59vzSz+tYQ6WKADQBeg7v2kNqMV3cuxa+S93z0HjHwmf?=
+ =?us-ascii?Q?KrQq7ySFz0U7x29qGp80iot+4gqT+l6v36zFqnBnFFJg5GtFz3U8G4KL0sbr?=
+ =?us-ascii?Q?9kTV9BbVsV407IY12Cz3r9eNry3rMkzFtpjdEHqRe68QD4QQrDBhOo6OsVqj?=
+ =?us-ascii?Q?3N3yV++r9Mc1SyCyD6jqpvAjCcT/NY5jSKZgQ1h0rUAdblr+OI/2QrZWg15Z?=
+ =?us-ascii?Q?JruuSDJeYFKgGijy0F3QaiMdXWo/e69+3up3+nS9vG9d/O8UR+FEem8NAGAm?=
+ =?us-ascii?Q?MByGTJTYzCU3aTViMBiLqhPftV9xzsVK0C18YcXLsEKVnn6OV/U9chNxV3RJ?=
+ =?us-ascii?Q?WjuW1wecsIc1Db0vnDg58d4lVY4WY8GFQYQL7guwV9hyTJCUiLCd1wlSkcqT?=
+ =?us-ascii?Q?O7GG8zuefNkktkXzFxm/xfqvQeIsyYYozejMFbOotp9F3zWXj5LjuA2NK/Ft?=
+ =?us-ascii?Q?KhM4yOkBtP9F2NLGP2mXt4eTOLkOfnY8Xq8tCz5EDOchA9zfynNjKwDU4Fqt?=
+ =?us-ascii?Q?GmdX8KufaegLVYKnXgB3WOMJFO87OszQIK2Ei+rYEh2dyf0R7ssWpiYOhUn/?=
+ =?us-ascii?Q?Hx/xMOAg05vjLfGfVJbmj2AnGWLCreJ3irSvrNDZGhcuAv1CzY/l5YJTDMm8?=
+ =?us-ascii?Q?dv4QHy17y2hADRwhDt9lO79thBsBudWEU9Ub3ABEqED0LxhTz1xGmw49Y8SS?=
+ =?us-ascii?Q?HOO46+MrybsH6gfh0FpLnoCzo9JIt6WduYPOUz6uzlIDhse6/0iN8U3BXXdj?=
+ =?us-ascii?Q?hVzw/cY0PQaxAqWdB2gh8IplduA54Hon24j4prSXD04piEQG0BO075AVMsKR?=
+ =?us-ascii?Q?d6/SFs5D/uGdukam6mknN4kx787+asirVYd3A+UBOkZclkH7lr4bxkJ/ReWf?=
+ =?us-ascii?Q?dHjv9baxhYORBXLKiBTESVdOa116y+fiM5oIqfFYh0YcGjA8riH3MK0mc7jo?=
+ =?us-ascii?Q?SQ+sihb5fvdX2NUrjhBfDaeyuu0YRWlVjmqGuCtprjkpRQkGkB/4+gJYaGf6?=
+ =?us-ascii?Q?wLNJIKxJWffH+Jbuq1cPN9B1tc2i/TAhsfr/2MhM0BVbsFPSNjDL2bVwS0ZB?=
+ =?us-ascii?Q?yHSX63haqp5zogX1xNwr4PZyOUGCZ+P62rHg?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH0PR11MB5444.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(10070799003)(1800799024)(366016)(38070700021)(7053199007);
  DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 15:23:23.6771 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 08fbfdd6-7df3-4b7c-d8ad-08de1e11977e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00002310.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7462
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?kAScouv3sPV2g4Ta4IdHKz/ba6ezHYXra9PT8jJtgLnzidZtIeHYCbK37bZY?=
+ =?us-ascii?Q?CdYyfKaGaSk83JY/bhb4VjPwZJhbGJ2OPZ4xMRjbvsbUVXSIOXW/8Ch0gPnw?=
+ =?us-ascii?Q?CwQItmVHUXNpQDIutkIzxEmDw4w/eCaqbQHMvPSU8gugCIJOGAu7b+Zhc6Ii?=
+ =?us-ascii?Q?N4aOnRFOsWSYFGV32JIN5YAdVH6KWNd0LRVLnpx65gudPwntditSAXxcoxS6?=
+ =?us-ascii?Q?6hQld1bFVYz9WET/ms3x7RehulGmPEmKLv29uSwdeUYpAe9XrIFtjncSYnBF?=
+ =?us-ascii?Q?/Bkb3+53piTLo5MuWix1fLgHtjcf2Yn9q2CGJbH44SMwlxXuLwRc3n2FKh/3?=
+ =?us-ascii?Q?TiD4mhdKcO+daydQqa/hv9NQz3pmiGWCJWthfdCj86Wefr/U0I8n4qYbl2HG?=
+ =?us-ascii?Q?yPMptk00/1jpZb3tzD08T6idb26bQfFmFjCYfiDPp/2j7tVvWbpVty8bzHAn?=
+ =?us-ascii?Q?AMotliZO+UzeYmYt+WAJRNI33oeEmB+Lw7xYf7oH/wPZcwg8+t6ALAv/BcsL?=
+ =?us-ascii?Q?eJvF/B+pjC5YAs8d05bndHhxs7hzHjqpIrQgI3KTpOewKx/4NKvvcg2Nyux+?=
+ =?us-ascii?Q?ce3kh3HHyFd/DSxI6kcZJkIjhPQdqNYplSuEeKGlsygKqUXAKJHJhYtzUFeN?=
+ =?us-ascii?Q?MUJYrxvlu8aExMtu6Sl6vANuW1fZRbXhtRZY6vtBBUnYONyNlwIFMHAs0OjE?=
+ =?us-ascii?Q?4Go5tmUYha3d1e5tDy/qMJ1TGeJFk+3aUfBLeoluHd/0i8/0iwCpXLLwZrJb?=
+ =?us-ascii?Q?ylv6qdwjrqaUs6aWXM8jUdCECitfwIQw6lypuZwhlt1J8amsx1qSDUSrn9H5?=
+ =?us-ascii?Q?rqsEshYueeZsAiNUDZAV6f/iriwj41RkMAssiiGVAld9xkXGXi78O+2sLeOK?=
+ =?us-ascii?Q?AnPpQVdjZDbhHsqC39hYJUGMOJYkH1xjdE8LYGwKPtrkcR1WgCl6nGdgXuum?=
+ =?us-ascii?Q?CHB4LmFr5qJ8COzfVOrD7dD0HeqpGAmBYONhQAxx2STDlLoS1fLXGr0Lg8XZ?=
+ =?us-ascii?Q?HoXV1vo4Gg4pEs+tK8LsnW4D2J3uWhmJpdegzQYW6zFWNGbrXLL6l6IdUCK6?=
+ =?us-ascii?Q?vXH/P5RGXUNhWfvfYzfQE9AJBx1Z2IVfqNX+7Owxvjs8VblZbQ6lB3PuF0Qb?=
+ =?us-ascii?Q?xvfPEZqnxw4Dwv30KXfSQOcydPQT2eg2aiiRl+9HlY44pWKo9UleyNIm5UOs?=
+ =?us-ascii?Q?m24126RziMMwPkn27+EBeIPL+iTebEv2DsGOPW4OCSiZDhGv1yB4DJ7qs7WP?=
+ =?us-ascii?Q?ohUZRf6PhisP3Zdc8NYPzN4GiAlhYkvCA2Yt7i3VYzx1aDEdUGGcZbrsctWZ?=
+ =?us-ascii?Q?5LpgI+97MzPKcBy9oh7uz7IhDCjPUw7e2fElTf6WRnL4GsoJOl2vrUZSWyFG?=
+ =?us-ascii?Q?v6mnUy00ybXJ9tBfW7bILtl9PZ5HY0maLGq0folikutG303RYHFgQSib0E6I?=
+ =?us-ascii?Q?+cmIo7yrzmLzFO4+xXhhpFVZIztAm21ln7B0ixrO7Xm3Nfq73YlkBeXC5tC7?=
+ =?us-ascii?Q?/kF0bfFJXPHQtlC7PgM275zwpnx/vGP5K8t4V3NlmFE547zIvjGnKzUree7N?=
+ =?us-ascii?Q?DbQ9Iy9Z0iDTZhxfHKCUEAVgqEHTEFHNzjIIvAKOxoG8nJsmT2pflhFHBWhk?=
+ =?us-ascii?Q?psCYpXlKn/BIINnKtushHPhrHyylvUw2XkvISLWR5hhL?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5444.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a5085827-ef56-460f-4e53-08de1e11ce8f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2025 15:24:56.1517 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: B9VB5blZoIWO8sFtOx367nMYC+xy2CNAnUX1OI55GOII+SfitsnYV6fLEDYrukVgo4CMfEriwILjmGob/cUoGgFgNGzrlPuPiyAmJJ8dApk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4944
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -149,160 +186,93 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Pinging @Tauro, Riana for confirmation on if the preempt timeout
+values look okay.
+-Jonathan Cavitt
 
-
-On 2025-10-30 00:27, Alex Hung wrote:
-> This series introduces support for
-> * drm_colorop DRM objects
-> * COLOR_PIPELINE plane property
-> 
-> Kernel changes can be found at [1] and on dri-devel.
-> 
-> It also adds a new kms_colorop test case that tests the color pipeline
-> API. The tests are designed to be easily extensible with a "transform"
-> and "compare" function pointer for each test. The "transform" function
-> performs the transformations under test via SW routines. The "compare"
-> function compares the DRM/KMS result (via a writeback connector) with
-> the result derived via the SW "transform".
-> 
-> This series introduces a number of tests for pre-defined transfer
-> functions, custom LUTs, 3x4 CTMs, a multiplier, 3D LUT, and a bypass
-> test.
-> 
-> It tests 8-bit and 10-bit RGB surface formats, depending on driver support
-> on the drm_plane as well as the writeback drm_connector end.
-> 
-> [1] https://gitlab.freedesktop.org/alex.hung/linux/-/tree/amd-color-pipeline-v12
-
-Hi Alex, Harry,
-
-With comments on patches 8, 29, and 32 resolved, the colorop tests are:
-Reviewed-by: Leo Li <sunpeng.li@amd.com>
-
-Thanks!
-
-> 
-> v11:
->  - Add new gamma 2.2 subtests (Patch 31 & 32)
->  - Remove unnecessary TODO comments
->  - Remove drmSetClientCap(... DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE)
->    out of igt_display_require
->  - Remove copyright (which is replaced by SPDX)
->  - Merge all colorop from drm_mode.h in kernel to a single commit
->  - Separate changes in kms_colorop and in lib to different commits
->  - Move sharable functions to lib, i.e.,
->   - get_and_wait_out_fence to igt_get_and_wait_out_fence
->   - detach_crtc to igt_detach_crtc
->  - Add --dump option to replace DUMP_FBS macro
->  - Misc fixes and cleanup in code and comments
->   - remove unused variables, functions and enum
->   - fix typos and incorrect indentation
->   - constify variables
-> 
-> v10:
->  - Merge some patches accordingly
->  - Change drm_color_lut_32 to drm_color_lut32
->  - Fix 16bit to 32bit coversions in configure_3dlut()
->  - Fix errors and warnings reported by checkpatch
->  - Clear dead code and redundant debug messages and comments
-> 
-> v9:
->  - Check !display->has_plane_color_pipeline before igt_plane_has_prop (
->    IGT_PLANE_COLOR_ENCODING and IGT_PLANE_COLOR_RANGE)  (Chaitanya Kumar Borah)
-> 
-> v8:
->  - Add a new colorop uniqueness subtest
->  - Include a patch "lib/igt_kms: Destroy colorops on exit"
->  - Add function documentation comment for get_writeback_formats_blob
->  - Fix indentation errors and a new blank line at EOF
-> 
-> v7:
->  - Add more documents and sync up with kernel implementation
->  - Update 3DLUT tests according to kernel changes
-> 
-> v5:
->  - Bypass test
->  - 10 bpc support
->  - Proper setup and cleanup
->  - PQ/BT2020 TFs
->  - 1D LUT tests
->  - Multiplier tests
->  - 3D LUT test
-> 
-> v4:
->  - Intel color pipeline work, to possibly be combined with v5 in a future iteration.
-> 
+-----Original Message-----
+From: Cavitt, Jonathan <jonathan.cavitt@intel.com>=20
+Sent: Friday, November 7, 2025 7:13 AM
+To: igt-dev@lists.freedesktop.org
+Cc: Cavitt, Jonathan <jonathan.cavitt@intel.com>; Gupta, saurabhg <saurabhg=
+.gupta@intel.com>; Zuo, Alex <alex.zuo@intel.com>; Wajdeczko, Michal <Micha=
+l.Wajdeczko@intel.com>
+Subject: [PATCH v3] tests/intel/xe_pmu: Tie preempt timeout to exec quantum
+>=20
+> When updating the exec quantum in enable_and_provision_vfs, update the
+> preempt timeout value to be equal to the exec quantum value.  Also,
+> reset the preempt timeout value on test end in
+> unprovision_and_disable_vfs.
+>=20
+> v2:
+> - Multiply exec quantum by 1 instead of 2 to get the preempt timeout
+>   (Michal)
+> - Compress the vf and pf exec quantum and preempt timeout values into a
+>   single define (VF_EXEC_QUANTUM), and operate on that using a
+>   PF_MULTIPLIER and PT_TO_EQ_RATIO to generate the requested values for
+>   xe_sriov_set_exec_quantum_ms and xe_sriov_set_preempt_timeout_us in
+>   enable_and_provision_vfs (jcavitt)
+>=20
 > v3:
->  - Remove need for IOCTLs and libdrm changes
->  - Test colorop properties with both atomic and legacy code paths
->  - move enum drm_colorop_type to drm_mode.h
->  - Add descriptions for public functions in lib (Kamil)
->  - Use SPDX style license identifier (Kamil)
->  - Replace Skia license comment with copyright note in file header
->  - Fix kms_colorop subtests if applicable color pipeline not found
-> 
-> Alex Hung (12):
->   drm-uapi/drm: sync with color pipeline commit
->   drm-uapi: Add COLOROP objects
->   lib/igt_kms: Add writeback functions
->   tests/kms_colorop: Add a TF sRGB test
->   lib/igt_color: Add 1D LUT color transformation support
->   tests/kms_colorop: Add tests that exercise the 1D LUT colorops
->   tests/kms_colorop: Add multiplier tests
->   scripts/convert_3dlut.py Convert a 3D LUT to igt_3dlut_t array for 3D
->     LUT API
->   tests/kms_colorop: Add a 3D LUT subtest
->   tests/kms_colorop: Add a colorop uniqueness subtest
->   lib/igt_color: Add support for Gamma 2.2
->   tests/kms_colorop: Add Gamma 2.2 tests for 1D Curves
-> 
-> Harry Wentland (20):
->   tests/kms_writeback: Fix kms_writeback for VKMS
->   lib/igt_kms: Introduce DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE
->   lib/igt_kms: Add COLOROP properties and helper functions
->   tests/kms_properties: Add colorop properties test
->   lib/igt_color/igt_fb: Add SW color transform functionality
->   lib/igt_fb: Add igt_copy_fb function
->   lib/drmtest: Add is_vkms_device()
->   tests/kms_colorop: Add kms_colorop tests
->   lib/igt_kms: Add support for DATA colorop property
->   lib/igt_color: Add support for 3x4 matrices
->   tests/kms_colorop: Add 3x4 CTM tests
->   tests/kms_colorop: Add bypass test
->   tests/kms_colorop: Add 10bpc test
->   tests/kms_colorop: Skip if writeback does not support fourcc
->   tests/kms_colorop: Refactor to use a subtest group with fixtures
->   lib/igt_color: Support color transform for XRGB2101010
->   lib/igt_color: Add PQ variants for 0-1 and 0-125 range
->   tests/kms_colorop: Add tests for PQ variants
->   lib/igt_color: add BT2020/BT709 transfer functions
->   tests/kms_colorop: Add TF BT2020/BT709 tests
-> 
->  include/drm-uapi/amdgpu_drm.h |    9 -
->  include/drm-uapi/drm.h        |   14 +
->  include/drm-uapi/drm_mode.h   |   92 +
->  lib/drmtest.c                 |    5 +
->  lib/drmtest.h                 |    1 +
->  lib/igt_color.c               |  651 +++++
->  lib/igt_color.h               |  149 +
->  lib/igt_color_lut.h           | 4946 +++++++++++++++++++++++++++++++++
->  lib/igt_fb.c                  |   45 +-
->  lib/igt_fb.h                  |    3 +
->  lib/igt_kms.c                 |  412 ++-
->  lib/igt_kms.h                 |  102 +
->  lib/meson.build               |    1 +
->  scripts/convert_3dlut.py      |   94 +
->  tests/kms_colorop.c           |  704 +++++
->  tests/kms_colorop.h           |  266 ++
->  tests/kms_properties.c        |   94 +-
->  tests/kms_writeback.c         |   24 +-
->  tests/meson.build             |    1 +
->  19 files changed, 7570 insertions(+), 43 deletions(-)
->  create mode 100644 lib/igt_color.c
->  create mode 100644 lib/igt_color.h
->  create mode 100644 lib/igt_color_lut.h
->  create mode 100755 scripts/convert_3dlut.py
->  create mode 100644 tests/kms_colorop.c
->  create mode 100644 tests/kms_colorop.h
-> 
-
+> - Revert conversion to defined macros and just add pf_preempt_timeout
+>   and vf_preempt_timeout as variables (Michal)
+>=20
+> Suggested-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
+> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> ---
+>  tests/intel/xe_pmu.c | 15 ++++++++++++---
+>  1 file changed, 12 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
+> index 9525655ba2..bc6688744f 100644
+> --- a/tests/intel/xe_pmu.c
+> +++ b/tests/intel/xe_pmu.c
+> @@ -974,6 +974,7 @@ static void test_gt_frequency(int fd, struct drm_xe_e=
+ngine_class_instance *eci)
+>  static unsigned int enable_and_provision_vfs(int fd)
+>  {
+>  	unsigned int gt, num_vfs;
+> +	int pf_preempt_timeout =3D 64000, vf_preempt_timeout =3D 32000;
+>  	int pf_exec_quantum =3D 64, vf_exec_quantum =3D 32, vf;
+> =20
+>  	igt_require(igt_sriov_is_pf(fd));
+> @@ -987,12 +988,18 @@ static unsigned int enable_and_provision_vfs(int fd=
+)
+>  	num_vfs =3D igt_sriov_get_enabled_vfs(fd);
+>  	igt_require(num_vfs =3D=3D 2);
+> =20
+> -	/* Set 32ms for VF execution quantum and 64ms for PF execution quantum =
+*/
+> +	/*
+> +	 * Set 32ms for VF execution quantum and 64ms for PF execution quantum.
+> +	 * Set the preempt timeout for the VF and PF to equal their execution q=
+uantum.
+> +	 */
+>  	xe_for_each_gt(fd, gt) {
+>  		xe_sriov_set_sched_if_idle(fd, gt, 0);
+> -		for (int fn =3D 0; fn <=3D num_vfs; fn++)
+> +		for (int fn =3D 0; fn <=3D num_vfs; fn++) {
+>  			xe_sriov_set_exec_quantum_ms(fd, fn, gt, fn ? vf_exec_quantum :
+>  						     pf_exec_quantum);
+> +			xe_sriov_set_preempt_timeout_us(fd, fn, gt, fn ? vf_preempt_timeout :
+> +							pf_preempt_timeout);
+> +		}
+>  	}
+> =20
+>  	/* probe VFs */
+> @@ -1011,8 +1018,10 @@ static void unprovision_and_disable_vfs(int fd)
+> =20
+>  	xe_for_each_gt(fd, gt) {
+>  		xe_sriov_set_sched_if_idle(fd, gt, 0);
+> -		for (int fn =3D 0; fn <=3D num_vfs; fn++)
+> +		for (int fn =3D 0; fn <=3D num_vfs; fn++) {
+>  			xe_sriov_set_exec_quantum_ms(fd, fn, gt, 0);
+> +			xe_sriov_set_preempt_timeout_us(fd, fn, gt, 0);
+> +		}
+>  	}
+> =20
+>  	xe_sriov_disable_vfs_restore_auto_provisioning(fd);
+> --=20
+> 2.43.0
+>=20
+>=20
