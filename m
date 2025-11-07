@@ -4,54 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36440CCFA18
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Nov 2025 15:15:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C72DCCF9F8
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Nov 2025 15:23:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CD9AB10EAF6;
-	Fri,  7 Nov 2025 15:15:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 43C0E10EAF8;
+	Fri,  7 Nov 2025 15:23:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U0/lh/FU";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="AdF39dgY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7760D10EAFC
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Nov 2025 15:15:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762528526; x=1794064526;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=8HFVGRN1MxiYRw2BppGhZ8FFikFzEDaDnfdRY02AEEA=;
- b=U0/lh/FUvMwDq2S3uYuKFl3ruViIvpyL/FSxsre6g/s3majJRliO8fji
- zNpYMEcl4Q75/mAZtkA45KpjhEps3TnQuZWo5Zzxo6v6VHCz8psxHmGTg
- qB7HhT/PZvUJwstaa93WLP5UhOUEHFnpVQfTCxKjoxSlxsXpMIbV4bDjx
- jWLVNHf0o9Mg/EwaUbuQO7ihjI+YBBEdKSn0STayxCWzqrxtXQRslP7uE
- idVtgneQ1nm7mZ4rKtuu4XtXpgYwAVe3Rev9RtpQ7XOgTmA/OW9bM5Ftp
- nmdIHh52UgaOQfiORRCjQ4Sgshur7aaAowcHODeBWmGpJugGkfwHbs7Us g==;
-X-CSE-ConnectionGUID: kGz1fpMNR+KdIwbutL3p7w==
-X-CSE-MsgGUID: 4KbSWOjDRZWj6RYbuNBzAw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11606"; a="64773453"
-X-IronPort-AV: E=Sophos;i="6.19,287,1754982000"; d="scan'208";a="64773453"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Nov 2025 07:15:26 -0800
-X-CSE-ConnectionGUID: n8V1f6qRSZyQuaQnsnwcGg==
-X-CSE-MsgGUID: t6uk6A1FT3q3g8bYuQUCHw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,287,1754982000"; d="scan'208";a="193087167"
-Received: from dut2943pvc.iind.intel.com ([10.190.215.39])
- by fmviesa004.fm.intel.com with ESMTP; 07 Nov 2025 07:15:24 -0800
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- nishit.sharma@intel.com
-Subject: [PATCH i-g-t v14 3/3] tests/intel/xe_compute: Add eu-busy-10s test
- for EU utilization measurement
-Date: Fri,  7 Nov 2025 15:15:19 +0000
-Message-ID: <20251107151519.66692-4-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251107151519.66692-1-nishit.sharma@intel.com>
-References: <20251107151519.66692-1-nishit.sharma@intel.com>
+Received: from PH0PR06CU001.outbound.protection.outlook.com
+ (mail-westus3azon11011022.outbound.protection.outlook.com [40.107.208.22])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B17F510EAF8
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Nov 2025 15:23:30 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sTZIcPNFhl0+CPZKSkOdkzr0ht4K130kyxsO4hwLqdOhGh+Lyl+hcjoKZzBnlJLe4He3pjVzwlmuOuOrmOAZKSr5UA1dNfvrToVySb2aODPQDOSYt4J57o6Dp5I/Ix/t2/4bUWFZX5Zvi8ySaIHBbNLTLwInbpUYt1eAAijIzKB8r0f7v/B34Mh2KLYWpw2MMSY9WgPNj4kykEC/AvVxyi2KHY4o38JVhrxyw+5qm9zkjxlPVDDVMqWzk4f4Y6Dx3TijIB6uj0rIg8aPJogl/MzlWMKx78bITAY65tjZSRKVKkOeTCi2clQRbYbi0USRU2wVs0gcWBq+eRGvcTPg0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PCz3/KNAdIDHBpjWXVJfF2vzjYEGllijQwaLlayBHf4=;
+ b=VR6/qaSZQANkJZgptj7V68PjLhFt16XtEsyRm9eAZkU8hFCd0uhV3NQUs3bF2IuOAVeYj0kOmO0R+PMD8EjffCFeID+XXaasT7LILl/boScmOxvr5KkOQCk111VH1GEcXB1qDjWGemzGfwJmvS7MYOOiJXPHO+K91EyQCRptJNU6EtBqhVREGR0OJVyvTDFDTPbuZbSeTMv+V+PRvuJMBOSKiyW7U5gSSE14MX1zHvvPQpNP3tw7O5eAqn6hmBVdR6I+BgmhejdD74Cl1Xz+AtI1LUSSxKeuv/neXcmpwtnZ7ejjAEHjflS852gjf5ysM5FDEHb0w55SqVB99ir32A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PCz3/KNAdIDHBpjWXVJfF2vzjYEGllijQwaLlayBHf4=;
+ b=AdF39dgY+kh9onzvk0IrXWiLSiYPP+vExjKdm6fgt6JvexLRsEFAr7VFe6QIS5F9kL9PHDXC1ZpD9XTDlmL9NFoQAFrD0Wu25ssJsrWPBNizo2G8t43Yuwwm5Es/Cq/UWJvjKuLIt6jl97XtXh3nw+UBjZGylTctlccJ16F9TpI=
+Received: from MW4PR04CA0205.namprd04.prod.outlook.com (2603:10b6:303:86::30)
+ by SA0PR12MB7462.namprd12.prod.outlook.com (2603:10b6:806:24b::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Fri, 7 Nov
+ 2025 15:23:25 +0000
+Received: from SJ1PEPF00002310.namprd03.prod.outlook.com
+ (2603:10b6:303:86:cafe::40) by MW4PR04CA0205.outlook.office365.com
+ (2603:10b6:303:86::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9298.9 via Frontend Transport; Fri, 7
+ Nov 2025 15:23:20 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ1PEPF00002310.mail.protection.outlook.com (10.167.242.164) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9298.6 via Frontend Transport; Fri, 7 Nov 2025 15:23:23 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Fri, 7 Nov
+ 2025 07:23:17 -0800
+Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 7 Nov
+ 2025 09:23:17 -0600
+Received: from [10.254.40.65] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Fri, 7 Nov 2025 07:23:17 -0800
+Message-ID: <e7520dfe-4405-422a-81e4-56a9c1a3ea4a@amd.com>
+Date: Fri, 7 Nov 2025 10:23:16 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V11 00/32] IGT tests for the KMS Color Pipeline API
+To: Alex Hung <alex.hung@amd.com>, <igt-dev@lists.freedesktop.org>
+CC: <harry.wentland@amd.com>, <leo.liu@amd.com>
+References: <20251030042801.2315866-1-alex.hung@amd.com>
+Content-Language: en-US
+From: Leo Li <sunpeng.li@amd.com>
+In-Reply-To: <20251030042801.2315866-1-alex.hung@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Received-SPF: None (SATLEXMB05.amd.com: sunpeng.li@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002310:EE_|SA0PR12MB7462:EE_
+X-MS-Office365-Filtering-Correlation-Id: 08fbfdd6-7df3-4b7c-d8ad-08de1e11977e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|1800799024|42112799006|82310400026|376014|13003099007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Nkp6TWhyZ3B3eVRLeUozK3dqZGFFTGhXZm5KUEduT3dUL0RFZ2JJSHdLKzN5?=
+ =?utf-8?B?bzQ3Ny9vU1FJdSsvT0wrRS8weDRRMC9GaS9LdGs5ME9OU1p0RGZ6LzJ6Sm42?=
+ =?utf-8?B?UVNlVmorb1gxR0ZTN08zOHF0NVdnQWtQVWgyczV4NUdzYlJDd2RHZi9OUnJ5?=
+ =?utf-8?B?WFlKK2kxNHpCdExoSUJSLzl4eVVOMzlXdEIwbFErNTNmUmNZcDZhZml5Tit3?=
+ =?utf-8?B?dmlTTW81by9UdTBtTkNtbDdEcTBpalVEbEttR2xVbjFyVkZnY21IaWF0R1ht?=
+ =?utf-8?B?Z0xJZjlIV3U5WHVRcDI2MHJMSy9uRnlOOVh4RG9DaWxJbGlYR1M5Z0g4TmlG?=
+ =?utf-8?B?MmNsVVJ4andGWkZsdDFjSDlpS3hOaGtTR1BoT2pteXFvZmhRZUV2SVhDb3gr?=
+ =?utf-8?B?dmhLUU03RTFlRFVveS80N0ppOFhydy9LVWtDcFNFaXRRRlR0cXpaR2pUUnNt?=
+ =?utf-8?B?UW5XZ0R0dXNqNGpBVXdEbGZsTTEvUWF0Rm01L0FhOWVvbXc2ZlpKbjdaYmlF?=
+ =?utf-8?B?WE1ybWEzRUVLUyt5emFXWGszT0xqQ21wV1paSE5FUGlNeDFZcTYxUDFMK1Qx?=
+ =?utf-8?B?NDJKb2dFWXJmUjIzU1Y1ZjlQbTh0c2xoQXVIdk9kMHpkUzh0TFFESVowRzFu?=
+ =?utf-8?B?TDRUTzJyY2h3aGNWcnptVkhidytvWkdYeW10RjMzbHlzQ2liMHd3WHpZVmhm?=
+ =?utf-8?B?MnFEYUIrMHl2TDBMMEdPSWp2L1VkQk9kWGtqQUhFOEplelBEWm1TNXhrekV6?=
+ =?utf-8?B?S1hCaWk3NGZUQjc1S0VBQkpjZmFQZFVyaW1FYWNQWWVMMDBZbXZKSk9TSXlI?=
+ =?utf-8?B?cklrWFZkRDJ1a2tndGNqS242dVFxaHdKV2llRkozWWMyQVNyTit1VnRoOUpI?=
+ =?utf-8?B?bSs4K3NMRVczZ0RvU1ljcGFkMC84KzRFTzBTYkRiS1VwK295TEU5ZGJOa0RH?=
+ =?utf-8?B?R0hORHY5OW9XQ1VraUtMMWE3QS85d0VRMktCUlp5Z0poWk1jWWEvckJuK1RI?=
+ =?utf-8?B?TjFOZ1ZrbUFkMlhwQkNBQTUybHhTTlN3L2JqMkVSc3d2Y0hwNUZtaXNuZFdD?=
+ =?utf-8?B?bHpoeUFlT1pnZEkyN0U1ZVVUSlQ0Wll6OXRvTDVlSzRNak1oQS9rL3d2TG5a?=
+ =?utf-8?B?enJGR2RHYUg0c3ZnR3VIVjVkd3Y0TjZxUGRJbUd4cmRyMEltWEYxeVdrMWR2?=
+ =?utf-8?B?Q1F3Wkdoc1J6bm9XUytOVk5Sczh3a2JabldCQ29SdzFvNUZSVXJEVlpWczkx?=
+ =?utf-8?B?YXlGRHNHcVhVZ1dPTWRZdDZTY1ZPVlg2RlNsUHoyS3Jwc2ZzUmM1QURDdlg1?=
+ =?utf-8?B?aXR2REZVUEVpVHZaendoYWR4Z1JMamdsWlJMK0ZUVG40ZURLWjlpd01Ud3V1?=
+ =?utf-8?B?OTN4ZmdleElsdjZrTHRVMUsvdUEvUVN3ZjNGb1hCUnpuQzNUSUJnK3c1YXl3?=
+ =?utf-8?B?QVhTdlBERU53U1hpVmRZOEJzdVNoSGxoOERDdFcxMXRHVXdlYnd4QjROUlNy?=
+ =?utf-8?B?cjBIMklJdndtTVB0eGxIVmpBTWh3NzBYOHFpaXdwNDVsS2pzKysvaGc2QSsr?=
+ =?utf-8?B?VkV1d21oZjF0bkV5WldCWE5tcExUWjA5ZUhQay9Gb21vL1hrT3RUTUREdjF3?=
+ =?utf-8?B?ZVR3VlFhN0MwSitCMHI3NElHUmJzbWZRWHNTajZoVVl1YXlqaUpnOXZ3N2c1?=
+ =?utf-8?B?Zlhnei81b3N0QnRKeWJNTGZqdVNWeWJVZ1J2VDFubEV0bUFBTkxoeFk2bXdI?=
+ =?utf-8?B?eHk2cjdCRjB3a0FFWmdhNE5UYlZJV2xxYTNwVStKVVg2N3drWXRTRjRNT1dB?=
+ =?utf-8?B?K3d1QWJHZzdlT1psQWpkRDVscmdWNWZaQjRjSGdkd1dVcTk3ZnhFZTBZYlU4?=
+ =?utf-8?B?U2RXbzJmd056Rkk2b1FERHFGRndCaW8raDdLemlWS1pCSkllcmhVWWJCcUtO?=
+ =?utf-8?B?VHpvWEE4aGdqL3BoM21FSGJ3VDlHQ1JrRStqMUJUWi9XWjNoL0xsRjlQeHZC?=
+ =?utf-8?B?ZmRIaXpPd0FDYWt6Tm1pTUhnMGZObHQvNTNlbStjL0txbW55SHF0VklsVklP?=
+ =?utf-8?Q?nrzgfU?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700013)(1800799024)(42112799006)(82310400026)(376014)(13003099007);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 15:23:23.6771 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 08fbfdd6-7df3-4b7c-d8ad-08de1e11977e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00002310.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7462
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,364 +149,160 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
 
-This test measures the utilization of available CCS instances based on the
-number of slices reported in
-/sys/class/drm/cardX/device/tileX/gtX/num_cslices. Compute workload is
-scheduled on different CCS engines. The test runs workloads for fixed
-duration using loop_kernel_duration. SR-IOV and CCS mode features are
-mutually exclusive. This change updates the test to skip execution if
-SR-IOV is enabled on the platform.
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- tests/intel/xe_compute.c | 289 ++++++++++++++++++++++++++++++++++++++-
- tests/meson.build        |   1 +
- 2 files changed, 286 insertions(+), 4 deletions(-)
+On 2025-10-30 00:27, Alex Hung wrote:
+> This series introduces support for
+> * drm_colorop DRM objects
+> * COLOR_PIPELINE plane property
+> 
+> Kernel changes can be found at [1] and on dri-devel.
+> 
+> It also adds a new kms_colorop test case that tests the color pipeline
+> API. The tests are designed to be easily extensible with a "transform"
+> and "compare" function pointer for each test. The "transform" function
+> performs the transformations under test via SW routines. The "compare"
+> function compares the DRM/KMS result (via a writeback connector) with
+> the result derived via the SW "transform".
+> 
+> This series introduces a number of tests for pre-defined transfer
+> functions, custom LUTs, 3x4 CTMs, a multiplier, 3D LUT, and a bypass
+> test.
+> 
+> It tests 8-bit and 10-bit RGB surface formats, depending on driver support
+> on the drm_plane as well as the writeback drm_connector end.
+> 
+> [1] https://gitlab.freedesktop.org/alex.hung/linux/-/tree/amd-color-pipeline-v12
 
-diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index 192cbf492..995d93dfb 100644
---- a/tests/intel/xe_compute.c
-+++ b/tests/intel/xe_compute.c
-@@ -19,8 +19,26 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- 
-+#include "igt_perf.h"
-+#include "igt_sriov_device.h"
-+
- #define LOOP_DURATION_2s	(1000000ull * 2)
- #define DURATION_MARGIN		0.2
-+#define MIN_BUSYNESS		95.0
-+
-+bool sriov_enabled;
-+
-+struct thread_data {
-+	pthread_t thread;
-+	pthread_mutex_t *mutex;
-+	pthread_cond_t *cond;
-+	int class;
-+	int fd;
-+	int gt;
-+	struct user_execenv *execenv;
-+	struct drm_xe_engine_class_instance *eci;
-+	bool *go;
-+};
- 
- static int gt_sysfs_open(int gt)
- {
-@@ -247,6 +265,234 @@ test_compute_kernel_loop(uint64_t loop_duration)
- 	drm_close_driver(fd);
- }
- 
-+static void
-+*intel_compute_thread(void *data)
-+{
-+	struct thread_data *t = (struct thread_data *)data;
-+	char device[30];
-+	uint64_t type;
-+	uint32_t engine_class, engine_instance, gt_shift;
-+	uint64_t engine_active_config, engine_total_config;
-+	int ret, fd1, fd2;
-+	uint64_t val[4];
-+	uint64_t param_config;
-+
-+	pthread_mutex_lock(t->mutex);
-+	while (*t->go == 0)
-+		pthread_cond_wait(t->cond, t->mutex);
-+	pthread_mutex_unlock(t->mutex);
-+
-+	type = igt_perf_type_id(xe_perf_device(t->fd, device, sizeof(device)));
-+	igt_debug("type: %lx, device: %s\n", type, device);
-+
-+	perf_event_format(device, "gt", &gt_shift);
-+	perf_event_format(device, "engine_class", &engine_class);
-+	perf_event_format(device, "engine_instance", &engine_instance);
-+
-+	ret = perf_event_config(device, "engine-active-ticks", &engine_active_config);
-+	igt_assert_eq(ret, 0);
-+	ret = perf_event_config(device, "engine-total-ticks", &engine_total_config);
-+	igt_assert_eq(ret, 0);
-+
-+	igt_debug("gt_id: %x, class: %x, instance: %x\n",
-+		  t->eci->gt_id, t->eci->engine_class, t->eci->engine_instance);
-+
-+	/* Setting collective counters for compute engine available in t->eci */
-+	param_config = (uint64_t)t->eci->gt_id << gt_shift |
-+		       t->eci->engine_class << engine_class |
-+		       t->eci->engine_instance << engine_instance;
-+
-+	fd1 = igt_perf_open_group(type, engine_active_config | param_config, -1);
-+	fd2 = igt_perf_open_group(type, engine_total_config | param_config, fd1);
-+
-+	ret = read(fd1, val, sizeof(val));
-+	igt_assert_eq(ret, sizeof(val));
-+	igt_info("start - active: %ld, total: %ld, busyness: %.1f before scheduling on engine_instance :%d\n",
-+		 val[2], val[3], (float)val[2] / (float)val[3] * 100.0, t->eci->engine_instance);
-+
-+	igt_assert_f(xe_run_intel_compute_kernel_on_engine(t->fd, t->eci, t->execenv,
-+							   EXECENV_PREF_VRAM_IF_POSSIBLE),
-+		     "Unable to run compute kernel successfully\n");
-+
-+	ret = read(fd1, val, sizeof(val));
-+	igt_assert_eq(ret, sizeof(val));
-+	igt_info("end - active: %ld, total: %ld, busyness: %.1f after scheduling on engine_instance :%d\n",
-+		 val[2], val[3], (float)val[2] / (float)val[3] * 100.0, t->eci->engine_instance);
-+
-+	igt_assert_f(((float)val[2] / (float)val[3] * 100.0) > MIN_BUSYNESS,
-+		     "Engines are under utilizated\n");
-+
-+	close(fd1);
-+	close(fd2);
-+	return NULL;
-+}
-+
-+static void
-+igt_check_supported_pipeline(void)
-+{
-+	int fd;
-+	unsigned int ip_ver;
-+	const struct intel_compute_kernels *kernels;
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	kernels = intel_compute_square_kernels;
-+	drm_close_driver(fd);
-+
-+	while (kernels->kernel) {
-+		if (ip_ver == kernels->ip_ver)
-+			break;
-+		kernels++;
-+	}
-+
-+	/* skip if loop_kernel is not supported by pipeline */
-+	if (!kernels->kernel || !kernels->loop_kernel)
-+		igt_skip("loop_kernel not supported by pipeline\n");
-+}
-+
-+static bool is_sriov_mode(int fd)
-+{
-+	bool is_sriov = false;
-+
-+	if (igt_sriov_is_pf(fd) && igt_sriov_vfs_supported(fd))
-+		is_sriov = true;
-+
-+	return is_sriov;
-+}
-+
-+static void
-+igt_store_ccs_mode(int ccs_mode[], int size)
-+{
-+	uint64_t gt_mask;
-+	uint32_t gt, num_slices;
-+	int gt_fd;
-+
-+	gt_mask = get_gt_mask();
-+	for_each_bit(gt_mask, gt) {
-+		if (!get_num_cslices(gt, &num_slices))
-+			continue;
-+		igt_assert(gt < size);
-+
-+		gt_fd = gt_sysfs_open(gt);
-+		igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode[gt]);
-+		close(gt_fd);
-+	}
-+}
-+
-+static void
-+igt_restore_ccs_mode(int ccs_mode[], int size)
-+{
-+	uint64_t gt_mask = get_gt_mask();
-+	uint32_t gt, num_slices;
-+	int gt_fd;
-+
-+	for_each_bit(gt_mask, gt) {
-+		if (!get_num_cslices(gt, &num_slices))
-+			continue;
-+		igt_assert(gt < size);
-+
-+		gt_fd = gt_sysfs_open(gt);
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", ccs_mode[gt]) > 0);
-+		close(gt_fd);
-+	}
-+}
-+
-+/**
-+ * SUBTEST: eu-busy-10s
-+ * Functionality: OpenCL kernel
-+ * Description: Run loop_kernel for duration_sec and observe EU business
-+ */
-+static void
-+test_eu_busy(uint64_t duration_sec)
-+{
-+	struct user_execenv execenv = { 0 };
-+	struct thread_data *threads_data;
-+	struct drm_xe_engine_class_instance *hwe;
-+	const struct intel_compute_kernels *kernels;
-+	pthread_mutex_t mutex;
-+	pthread_cond_t cond;
-+	u32 gt, n_instances = 0, i;
-+	bool go = false;
-+	int ccs_mode, gt_fd, fd;
-+	u32 num_slices, ip_ver;
-+	uint64_t gt_mask = get_gt_mask();
-+
-+	for_each_bit(gt_mask, gt) {
-+		if (!get_num_cslices(gt, &num_slices))
-+			continue;
-+
-+		gt_fd = gt_sysfs_open(gt);
-+		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", num_slices) > 0);
-+		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
-+		close(gt_fd);
-+	}
-+
-+	igt_skip_on_f(ccs_mode <= 1, "Skipping test as ccs_mode <=1 not matching criteria :%d\n",
-+		      ccs_mode);
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+
-+	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-+	kernels = intel_compute_square_kernels;
-+	while (kernels->kernel) {
-+		if (ip_ver == kernels->ip_ver)
-+			break;
-+		kernels++;
-+	}
-+	if (!kernels->loop_kernel_size)
-+		drm_close_driver(fd);
-+	igt_assert(kernels->loop_kernel_size);
-+
-+	/*
-+	 * User should use different kernel if loop_kernel_duration not set
-+	 * With loop kernel and loop duration it assumes we stop it via memory write
-+	 *
-+	 */
-+	execenv.loop_kernel_duration = duration_sec;
-+	execenv.kernel = kernels->loop_kernel;
-+	execenv.kernel_size = kernels->loop_kernel_size;
-+
-+	xe_for_each_engine(fd, hwe) {
-+		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-+			++n_instances;
-+	}
-+
-+	threads_data = calloc(n_instances, sizeof(*threads_data));
-+	if (!threads_data)
-+		drm_close_driver(fd); /* drop reference for retrieve ccs_mode */
-+	igt_assert(threads_data);
-+
-+	pthread_mutex_init(&mutex, 0);
-+	pthread_cond_init(&cond, 0);
-+
-+	i = 0;
-+	xe_for_each_engine(fd, hwe) {
-+		if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-+			continue;
-+
-+		threads_data[i].mutex = &mutex;
-+		threads_data[i].cond = &cond;
-+		threads_data[i].fd = fd;
-+		threads_data[i].eci = hwe;
-+		threads_data[i].go = &go;
-+		threads_data[i].execenv = &execenv;
-+		pthread_create(&threads_data[i].thread, 0, intel_compute_thread,
-+			       &threads_data[i]);
-+		++i;
-+	}
-+	pthread_mutex_lock(&mutex);
-+	go = true;
-+	pthread_cond_broadcast(&cond);
-+	pthread_mutex_unlock(&mutex);
-+
-+	for (int n = 0; n < i; ++n)
-+		pthread_join(threads_data[n].thread, NULL);
-+
-+	free(threads_data);
-+
-+	drm_close_driver(fd);
-+}
-+
- /**
-  * SUBTEST: compute-square
-  * Mega feature: WMTP
-@@ -266,10 +512,14 @@ test_compute_square(int fd)
- 
- igt_main
- {
--	int xe;
-+	int xe, ccs_mode[4];
-+	unsigned int ip_ver;
- 
- 	igt_fixture {
- 		xe = drm_open_driver(DRIVER_XE);
-+		sriov_enabled = is_sriov_mode(xe);
-+		ip_ver = intel_graphics_ver(intel_get_drm_devid(xe));
-+		igt_store_ccs_mode(ccs_mode, ARRAY_SIZE(ccs_mode));
- 	}
- 
- 	igt_subtest("compute-square")
-@@ -279,13 +529,44 @@ igt_main
- 		drm_close_driver(xe);
- 
- 	/* ccs mode tests should be run without open gpu file handles */
--	igt_subtest("ccs-mode-basic")
-+	igt_subtest("ccs-mode-basic") {
-+		/* skip if sriov enabled */
-+		if (sriov_enabled)
-+			igt_skip("Skipping test when SRIOV is enabled\n");
- 		test_ccs_mode();
-+	}
- 
--	igt_subtest("ccs-mode-compute-kernel")
-+	igt_subtest("ccs-mode-compute-kernel") {
-+		/* skip if sriov enabled */
-+		if (sriov_enabled)
-+			igt_skip("Skipping test when SRIOV is enabled\n");
- 		test_compute_kernel_with_ccs_mode();
-+	}
- 
- 	/* To test compute function stops after loop_kernel_duration */
--	igt_subtest("loop-duration-2s")
-+	igt_subtest("loop-duration-2s") {
-+		/* skip test if loop_kernel not supported in pipeline */
-+		if (ip_ver < IP_VER(20, 0))
-+			igt_check_supported_pipeline();
-+
- 		test_compute_kernel_loop(LOOP_DURATION_2s);
-+	}
-+
-+	/* test to check available EU utilisation in multi-ccs case */
-+	igt_subtest("eu-busy-10s") {
-+		/* skip if sriov enabled */
-+		if (sriov_enabled)
-+			igt_skip("Skipping test when SRIOV is enabled\n");
-+
-+		/* skip test if loop_kernel not supported in pipeline */
-+		if (ip_ver < IP_VER(20, 0))
-+			igt_check_supported_pipeline();
-+
-+		test_eu_busy(5 * LOOP_DURATION_2s);
-+	}
-+
-+	igt_fixture {
-+		if (!sriov_enabled)
-+			igt_restore_ccs_mode(ccs_mode, ARRAY_SIZE(ccs_mode));
-+	}
- }
-diff --git a/tests/meson.build b/tests/meson.build
-index a7b9375ed..a7ffc6383 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -408,6 +408,7 @@ extra_dependencies = {
- 	'sw_sync': [ libatomic ],
- 	'xe_fault_injection': [ lib_igt_xe_oa ],
- 	'xe_oa': [ lib_igt_xe_oa ],
-+        'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_profiling,math ],
- }
- 
- test_executables = []
--- 
-2.43.0
+Hi Alex, Harry,
+
+With comments on patches 8, 29, and 32 resolved, the colorop tests are:
+Reviewed-by: Leo Li <sunpeng.li@amd.com>
+
+Thanks!
+
+> 
+> v11:
+>  - Add new gamma 2.2 subtests (Patch 31 & 32)
+>  - Remove unnecessary TODO comments
+>  - Remove drmSetClientCap(... DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE)
+>    out of igt_display_require
+>  - Remove copyright (which is replaced by SPDX)
+>  - Merge all colorop from drm_mode.h in kernel to a single commit
+>  - Separate changes in kms_colorop and in lib to different commits
+>  - Move sharable functions to lib, i.e.,
+>   - get_and_wait_out_fence to igt_get_and_wait_out_fence
+>   - detach_crtc to igt_detach_crtc
+>  - Add --dump option to replace DUMP_FBS macro
+>  - Misc fixes and cleanup in code and comments
+>   - remove unused variables, functions and enum
+>   - fix typos and incorrect indentation
+>   - constify variables
+> 
+> v10:
+>  - Merge some patches accordingly
+>  - Change drm_color_lut_32 to drm_color_lut32
+>  - Fix 16bit to 32bit coversions in configure_3dlut()
+>  - Fix errors and warnings reported by checkpatch
+>  - Clear dead code and redundant debug messages and comments
+> 
+> v9:
+>  - Check !display->has_plane_color_pipeline before igt_plane_has_prop (
+>    IGT_PLANE_COLOR_ENCODING and IGT_PLANE_COLOR_RANGE)  (Chaitanya Kumar Borah)
+> 
+> v8:
+>  - Add a new colorop uniqueness subtest
+>  - Include a patch "lib/igt_kms: Destroy colorops on exit"
+>  - Add function documentation comment for get_writeback_formats_blob
+>  - Fix indentation errors and a new blank line at EOF
+> 
+> v7:
+>  - Add more documents and sync up with kernel implementation
+>  - Update 3DLUT tests according to kernel changes
+> 
+> v5:
+>  - Bypass test
+>  - 10 bpc support
+>  - Proper setup and cleanup
+>  - PQ/BT2020 TFs
+>  - 1D LUT tests
+>  - Multiplier tests
+>  - 3D LUT test
+> 
+> v4:
+>  - Intel color pipeline work, to possibly be combined with v5 in a future iteration.
+> 
+> v3:
+>  - Remove need for IOCTLs and libdrm changes
+>  - Test colorop properties with both atomic and legacy code paths
+>  - move enum drm_colorop_type to drm_mode.h
+>  - Add descriptions for public functions in lib (Kamil)
+>  - Use SPDX style license identifier (Kamil)
+>  - Replace Skia license comment with copyright note in file header
+>  - Fix kms_colorop subtests if applicable color pipeline not found
+> 
+> Alex Hung (12):
+>   drm-uapi/drm: sync with color pipeline commit
+>   drm-uapi: Add COLOROP objects
+>   lib/igt_kms: Add writeback functions
+>   tests/kms_colorop: Add a TF sRGB test
+>   lib/igt_color: Add 1D LUT color transformation support
+>   tests/kms_colorop: Add tests that exercise the 1D LUT colorops
+>   tests/kms_colorop: Add multiplier tests
+>   scripts/convert_3dlut.py Convert a 3D LUT to igt_3dlut_t array for 3D
+>     LUT API
+>   tests/kms_colorop: Add a 3D LUT subtest
+>   tests/kms_colorop: Add a colorop uniqueness subtest
+>   lib/igt_color: Add support for Gamma 2.2
+>   tests/kms_colorop: Add Gamma 2.2 tests for 1D Curves
+> 
+> Harry Wentland (20):
+>   tests/kms_writeback: Fix kms_writeback for VKMS
+>   lib/igt_kms: Introduce DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE
+>   lib/igt_kms: Add COLOROP properties and helper functions
+>   tests/kms_properties: Add colorop properties test
+>   lib/igt_color/igt_fb: Add SW color transform functionality
+>   lib/igt_fb: Add igt_copy_fb function
+>   lib/drmtest: Add is_vkms_device()
+>   tests/kms_colorop: Add kms_colorop tests
+>   lib/igt_kms: Add support for DATA colorop property
+>   lib/igt_color: Add support for 3x4 matrices
+>   tests/kms_colorop: Add 3x4 CTM tests
+>   tests/kms_colorop: Add bypass test
+>   tests/kms_colorop: Add 10bpc test
+>   tests/kms_colorop: Skip if writeback does not support fourcc
+>   tests/kms_colorop: Refactor to use a subtest group with fixtures
+>   lib/igt_color: Support color transform for XRGB2101010
+>   lib/igt_color: Add PQ variants for 0-1 and 0-125 range
+>   tests/kms_colorop: Add tests for PQ variants
+>   lib/igt_color: add BT2020/BT709 transfer functions
+>   tests/kms_colorop: Add TF BT2020/BT709 tests
+> 
+>  include/drm-uapi/amdgpu_drm.h |    9 -
+>  include/drm-uapi/drm.h        |   14 +
+>  include/drm-uapi/drm_mode.h   |   92 +
+>  lib/drmtest.c                 |    5 +
+>  lib/drmtest.h                 |    1 +
+>  lib/igt_color.c               |  651 +++++
+>  lib/igt_color.h               |  149 +
+>  lib/igt_color_lut.h           | 4946 +++++++++++++++++++++++++++++++++
+>  lib/igt_fb.c                  |   45 +-
+>  lib/igt_fb.h                  |    3 +
+>  lib/igt_kms.c                 |  412 ++-
+>  lib/igt_kms.h                 |  102 +
+>  lib/meson.build               |    1 +
+>  scripts/convert_3dlut.py      |   94 +
+>  tests/kms_colorop.c           |  704 +++++
+>  tests/kms_colorop.h           |  266 ++
+>  tests/kms_properties.c        |   94 +-
+>  tests/kms_writeback.c         |   24 +-
+>  tests/meson.build             |    1 +
+>  19 files changed, 7570 insertions(+), 43 deletions(-)
+>  create mode 100644 lib/igt_color.c
+>  create mode 100644 lib/igt_color.h
+>  create mode 100644 lib/igt_color_lut.h
+>  create mode 100755 scripts/convert_3dlut.py
+>  create mode 100644 tests/kms_colorop.c
+>  create mode 100644 tests/kms_colorop.h
+> 
 
