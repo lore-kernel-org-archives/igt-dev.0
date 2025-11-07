@@ -4,67 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0EE3CCF9F8
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Nov 2025 12:24:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E0F2CCFA05
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Nov 2025 12:24:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5516010E0AA;
+	by gabe.freedesktop.org (Postfix) with ESMTP id D189510E1C5;
 	Fri,  7 Nov 2025 12:24:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DlVAiMdK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aguaqPcR";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFBF010E1C5
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F67910E0AA
  for <igt-dev@lists.freedesktop.org>; Fri,  7 Nov 2025 12:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762518274; x=1794054274;
- h=from:date:subject:mime-version:content-transfer-encoding:
- message-id:references:in-reply-to:to:cc;
- bh=+18mstpBpFDBBCZHmfkbm2G2zGKZ2R4bkXIiY28AGIg=;
- b=DlVAiMdK2/hX51qarLMaEsRbTQwnnL/tRuDcbAbfJvN51H8R6w3+3mYw
- ioa+WhsEwDIhsqn1saU9TLWwDkfciOOB3pUgXp+vnyyYo/etCzpLfMWtQ
- lkc5z0dN3DCFo/8EXzbhSGC8ERkMP5PfTjjLAiRWFQSLkp9f4OEHHKrB6
- MEyyR39+H4SwWrXxi5ETNHpAV+AcCxrfX5vCrzl8r/ztIgKjVPpYbRgO7
- yqujHfq61gv+LYOw/vmrbtwUcCfCW2K8yJNE86ML6WrzvFT/Zrv6UeX9K
- T2faHBe6YNezyZPUCzXwHbYFzH32KG8adyieKUNMX1yaSktqQanB1Z4tB Q==;
-X-CSE-ConnectionGUID: sL/AbfMmS7eqf9b/pdvxCg==
-X-CSE-MsgGUID: EIKTdDURTkW/FruHoO+R8A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11605"; a="64365672"
-X-IronPort-AV: E=Sophos;i="6.19,286,1754982000"; d="scan'208";a="64365672"
+ t=1762518273; x=1794054273;
+ h=from:subject:date:message-id:mime-version:
+ content-transfer-encoding:to:cc;
+ bh=mLp9+62nTXXBxX/MbbM31+VhBYzIv8zXaO2efYIkHm4=;
+ b=aguaqPcRJp2noIlhtWC7dazXcn2etYWZKZvw938F5xZmA0fJFdj+mDX8
+ vagUKfvuL+UUP8hhpyFy1dg4mG4t/q9qKLmK//y9Nvzko2IY6j3pDvb+N
+ XAD6YXaCRNjZrVEjv3oK/G07PDjcUOFSTkAA4N3swfNmrZ/UL4dPjDlDz
+ WL5ZrZbrWdqEW4hnN4UYg7zA6S7xr04mB9te2vooGJgaNqhKj6RN6N3fX
+ cjI0HnrHTYvSqlVp0IMUOarbJViHfc7uBxjxGnzHXF2nnpW7WL8QuYPyz
+ RCABgr1sThjW4sq0BQyaH5vK2irPQCyb+2EGsubD8108CDlxvRVV7IcEs w==;
+X-CSE-ConnectionGUID: 6OI2jhIuQgi13LaDynn38g==
+X-CSE-MsgGUID: WRXCLmP8Sw2XF5E5aQ1DVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11605"; a="64365671"
+X-IronPort-AV: E=Sophos;i="6.19,286,1754982000"; d="scan'208";a="64365671"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 Nov 2025 04:24:33 -0800
-X-CSE-ConnectionGUID: lwPtUDNyRxOjbDDeTXUnnw==
-X-CSE-MsgGUID: m7IBK5DhQr6XBqPAhaMCSg==
+X-CSE-ConnectionGUID: M/SoVjclRaeks4SCJHv8Cg==
+X-CSE-MsgGUID: L8MPHuEnQUWDIXG3gDM+ag==
 X-ExtLoop1: 1
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Nov 2025 04:24:33 -0800
+ 07 Nov 2025 04:24:32 -0800
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Fri, 07 Nov 2025 13:23:14 +0100
-Subject: [PATCH v2 1/8] lib/xe_query: add helper to get first value of hwconfig
+Subject: [PATCH v2 0/8] lib/xe/xe_query: implement few query helpers
+Date: Fri, 07 Nov 2025 13:23:13 +0100
+Message-Id: <20251107-xe_query_helpers-v2-0-ec66ba6af1c1@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251107-xe_query_helpers-v2-1-ec66ba6af1c1@intel.com>
-References: <20251107-xe_query_helpers-v2-0-ec66ba6af1c1@intel.com>
-In-Reply-To: <20251107-xe_query_helpers-v2-0-ec66ba6af1c1@intel.com>
+X-B4-Tracking: v=1; b=H4sIALHkDWkC/32OSw6DIBRFt2IY97WC1E9H3UdjDMJTSRQsqNEY9
+ 150AR2ewTn37sSj0+jJK9qJw0V7bU0AdouI7IRpEbQKTFjMnpTGKaxYfWd0W9VhP6LzUAhe8IS
+ pnOWKBG102Oj1Sn7KwLXwCLUTRnZnqOaPUbTYiLmfwBoE28AgzHaqnfaTddt1ZqFn4M/uQiEGl
+ aVUFJxLlmRvbSbs79IOpDyO4wexa61A2wAAAA==
+X-Change-ID: 20251106-xe_query_helpers-9a49432d828d
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1725;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2007;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=+18mstpBpFDBBCZHmfkbm2G2zGKZ2R4bkXIiY28AGIg=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpDeS6s4hzchJagdixU9lzjjdn9qYkKDV/YkOEe
- L+3EIn0AmOJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaQ3kugAKCRAjYrKT3hD9
- 17UYDACYuOBT9WLE5s7QBRLLkVPhqrhSLLUW19oUWaDmkdSamfOw5/eUqzT9fCPGqZPD9KjDJkT
- 23CNd0jd1Ze1RXbIIHJHqkpFcr9yI4x9wrEd5Beo75WHpvvHYWMLVnkVPxRznUN05abcdZO/DBd
- sNwqfONV5W4v/zZItAf6NSSLSo5lGqQEuhK4bHacV3Wdb5db+zTY8wOXWdRzg2uMLN3cBD8WyNj
- Ha6rXkwgOcPg6Qq2PFUHXfpF6Ia4cLdhaYUUKd7zHxZULzg3hFr+wet485DtQr+kSiS5YrQ8UJI
- g0cBIbOh9Ub1x8aW7vrKusLXyN2Y+jaUiPkxq5fTUQf4o1XI4Gy10pA9ttXKMt6pA3Blevucv2p
- MI2pCGqE0fx7Y6t/n7unk8I+PTO275vs0ai9M+4dI2T5ULXcZTQsNWvUeqvLIou3BPBtKrniRBD
- hDCyQUQyvW0h2HhsikLGMdi7OL6+/ikEEPxg2R60e0c1+ip7ppcGCMGZcf+5MZ9t0sNVM=
+ bh=mLp9+62nTXXBxX/MbbM31+VhBYzIv8zXaO2efYIkHm4=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpDeS57PVX8pHNe2gDsk/oAiCOWbsmHg65P9Alh
+ 7vZGX6nSmWJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaQ3kuQAKCRAjYrKT3hD9
+ 1z3VC/9m3Y2G6xdl/++pX6nYmGCaOzERhAcToc90PeP10Myh9njPWhiJ+fBUjSBGx7Ihq/Wmnsb
+ 4cEwu2HGMac7ZLwcDxokwqZtUemu5lW4GKMjRdWzWV/hmK2MvRx+6GKBuxedfdJs81YFC0TwBm4
+ rtt0s7WRdFxRpXcAdgvYnxTMjEl5stR5DlPTsZ6S+YC5VblswKqcg1ALw0YoiTjbW9RF2ekJ7LR
+ eGgUrrhGnxCgC3S1jwcpyOhDr/IzT4Q759p5kmPqNsH3lPqcqycumqmuGeQqyHKihjibIytm8XE
+ ww/yQ8VR35ToCzJ80PBpASFHbehTZtYxUyEsd6uieTIH9Zeurpnpqfib1bDRGjHY9kOpra2DFU7
+ 6XygfP9LrhdjidPybV/ilYDrv3ena+SsU57UIfmyGQOgZqNrP61igYKsGJDt3+Ur4jJDztnBiTv
+ EygjdkMOs1duXWM3AHQASlYs37aAra9Ek6cziHRLowZfjx1sBK6UT/ncbZQQ6AY1BkrMI=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -82,55 +85,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Most hwconfig attributes are single values. Let's simplify querying them.
+This patchset adds following helpers to xe_query library:
+- xe_hwconfig_get_u32 - to get single value from hwconfig,
+  similar helper exists in kernel,
+- xe_query_device - encapsulates common code around DRM_IOCTL_XE_DEVICE_QUERY,
+- xe_for_each_topology_mask - iterator for blob returned by DRM_XE_DEVICE_QUERY_GT_TOPOLOGY
+Beside adding helpers patchset also shows their usefullness.
+
+Cleaner code and diffstat of 85 insertions vs 282 deletions hopefuly
+proves usability of these helpers.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- lib/xe/xe_query.c | 17 +++++++++++++++++
- lib/xe/xe_query.h |  1 +
- 2 files changed, 18 insertions(+)
+Changes in v2:
+- add xe_query_device arg to allow fail without assert,
+  because EU_STALL and OA_UNITS are not implemented on old platforms,
+- also return NULL if data size is 0 - case of hwconfig on old platforms,
+- split first patch to implementation and conversion,
+- Link to v1: https://lore.kernel.org/r/20251106-xe_query_helpers-v1-0-d761a944c237@intel.com
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index a89e0b980643e9aa16b35d9a98c180ffd92a543c..d8ea79108d67dbbb8c859762b1f56d954ee749c3 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -1035,6 +1035,23 @@ uint32_t *xe_hwconfig_lookup_value(int fd, enum intel_hwconfig attribute, uint32
- 	return NULL;
- }
- 
-+/**
-+ * xe_hwconfig_get_u32:
-+ * @fd: xe device fd
-+ * @attribute: hwconfig attribute id
-+ * @default_value: value to be returned in case attribute is not present
-+ *
-+ * Returns attribute value, if present, @default_value otherwise.
-+ */
-+uint32_t xe_hwconfig_get_u32(int fd, enum intel_hwconfig attribute, uint32_t default_value)
-+{
-+	uint32_t *vals, len;
-+
-+	vals = xe_hwconfig_lookup_value(fd, attribute, &len);
-+
-+	return vals ? *vals : default_value;
-+}
-+
- /**
-  * xe_query_pxp_status:
-  * @fd: xe device fd
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 715b64e2f62cfbbce8dcd987dffefef7b1af72c4..acf3291b07968e829e6e72ebcbf08f00e847e27a 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -136,6 +136,7 @@ bool xe_is_media_gt(int fd, int gt);
- bool xe_is_main_gt(int fd, int gt);
- uint16_t xe_gt_get_tile_id(int fd, int gt);
- uint32_t *xe_hwconfig_lookup_value(int fd, enum intel_hwconfig attribute, uint32_t *len);
-+uint32_t xe_hwconfig_get_u32(int fd, enum intel_hwconfig attribute, uint32_t default_value);
- int xe_query_pxp_status(int fd);
- int xe_wait_for_pxp_init(int fd);
- 
+---
+Andrzej Hajda (8):
+      lib/xe_query: add helper to get first value of hwconfig
+      tests/intel/xe_eudebug_online: use helper to get hwconfig value
+      lib/xe/xe_query: introduce helper for device query
+      lib/xe/xe_query: use recently introduced helper to query device
+      lib/xe/xe_query: introduce iterator for GT topology masks
+      tests/intel/xe_eudebug_online: use xe_query helpers for query GT topology
+      tests/intel/xe_query: use xe_query helpers for query GT topology
+      lib/xe/xe_oa: use xe_query helpers for query GT topology
 
+ lib/xe/xe_oa.c                  |  37 ++-----
+ lib/xe/xe_query.c               | 218 ++++++++++------------------------------
+ lib/xe/xe_query.h               |   8 ++
+ tests/intel/xe_eudebug_online.c |  41 +-------
+ tests/intel/xe_query.c          |  69 ++++---------
+ 5 files changed, 91 insertions(+), 282 deletions(-)
+---
+base-commit: b35f18b8bd2b3b18332e7db550e5dde851d7a8e1
+change-id: 20251106-xe_query_helpers-9a49432d828d
+
+Best regards,
 -- 
-2.43.0
+Andrzej Hajda <andrzej.hajda@intel.com>
 
