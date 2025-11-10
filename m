@@ -4,63 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A1A1CD13D3
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 13:40:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6DE0CCF9E3
+	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 13:40:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 39DD710E3BE;
-	Mon, 10 Nov 2025 13:40:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6B9E610E3B9;
+	Mon, 10 Nov 2025 13:40:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="S4qdtCQ1";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="T+IaGIDz";
 	dkim-atps=neutral
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8461510E3BA
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:40:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 69DB410E3B9
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:40:00 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 620D24E41608;
- Mon, 10 Nov 2025 13:40:01 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 546CC4E41608;
+ Mon, 10 Nov 2025 13:39:59 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 31ED8606F5;
- Mon, 10 Nov 2025 13:40:01 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 2C08C606F5;
+ Mon, 10 Nov 2025 13:39:59 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 5AE1C10371905; Mon, 10 Nov 2025 14:40:00 +0100 (CET)
+ with ESMTPSA id 40D951037188A; Mon, 10 Nov 2025 14:39:58 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1762782000; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1762781998; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=yjdf9CqaTw7sQHIpVQltdn9by8IA+kolxwfiXeb+Fk4=;
- b=S4qdtCQ1T0pXULvHKSuzr9HI04GXbwrXprOoRKd4gYHZF9h7/MUg8YpHT3N7PurlJREbky
- PUkVH/9exCBGM/PKkeZAGwaDplD+lde3oc55qF/1938QqASKaihLqvP7si9xAcx17sOteZ
- CK5kg+0UHUkUr/RHEw9Pfc1joq03V+PHBimirw+SnB7Tu5xMWAn1wyDpB33oOVlu8cn2ZV
- AO706GXqqrWw7fVXwoRfUNx0uGhJtIxPGWVDfbrMPU6Nn+1oEW2OTcf79A1xeGtDXx1Vgv
- puKVbPG4c0YFwjhVyc08g02MFB0RVXtLKSK2pBEjLA2BQmCD9E8JpU/5VprLvw==
+ bh=+8E2v68A4MExtyzqrTRGnIbKnXuEdX23VigGYPpZt6M=;
+ b=T+IaGIDznSmZYv14WNBGUX2EzcL4DLaD9sTMYJJ2EGHwQ9dEWFBN0ll3PU156A4o4yVzYC
+ cr6S39eWUy4ZsANvvwKQY+oNmsTTAGD5wr80W5Kuex/x7WBRVF60gR1J9b7awhGwdfwQ23
+ KZOIJyhMCFiVOwfzuW1bT4fqpJsn6+yHpMBzUQao8CUyA/OY9tHXiDErjVA9htMCwIvq1X
+ l3cwBx+heSH4tttmDN0WKQiZWj1zph5J4ySaG4UIURNsMuVf/nPC79xTp+lk2IeFz/EHt9
+ 01IAZuaJsr3+VvuIg7EwBRNXYUtSMH68hKUSQYthjXx0GilWkBXTrxi6N3zQIQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 10 Nov 2025 13:39:35 +0000
-Subject: [PATCH i-g-t v4 33/46] lib/unigraf: add
- unigraf_get_connector_by_stream
+Date: Mon, 10 Nov 2025 13:39:32 +0000
+Subject: [PATCH i-g-t v4 30/46] tests/unigraf: Add basic unigraf tests
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251110-unigraf-integration-v4-33-0fc7bb1b4101@bootlin.com>
+Message-Id: <20251110-unigraf-integration-v4-30-0fc7bb1b4101@bootlin.com>
 References: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
 In-Reply-To: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2402;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5073;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=lbCRviPjsD706ROEKJhwet/klUSs+LX9os2HalhwZX8=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBpEesSScnh+jy9MmD0vrF3pDgLhXszRCS+5xz/d
- mzW3gcaZFWJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaRHrEgAKCRAgrS7GWxAs
- 4lXvD/45naf852+xYvfg0KsifVe214evN73agUnqpGQboL25+YAnXdGxWRpRzwq1X/3x4uHpW3f
- OpCihBMs0BZGmK4Hj1FWXb5tknAhyhrCKfyF6pyJ7U8KuClYuG1v0RnmWN+ZtcCCEe2MY2KWwIr
- 44NspuFgwviYP7eqUE3718K3/Sa2wDcP/dbikY6TtGQFqeiT16dcH493hciAmKbfo+5Tt1kYj/o
- 5PS+i6MXRfkZUbd7FlQXdUMwyDfsx6ft1VX8jH15SyPUFGfKgH04SODAhwCDJW4nQ4bNd08FFPU
- ZfNKv1Qig4mKEzax8r9yWyGFPsufTD4WxbYzZhxrX1aVlm/apXWzsAJNtbA7rOkUnReva6LGcYt
- xrUqizsBdM01V7uGFB5SfOADkSTtfLxXz05HfTdYLOWCf/GvtZAgItl/BCC2Vhe9BtZf8jXGnUN
- L+fUi5g0ejZ4H3oarEEedwf3LSbnMUck75iQ7El6m+rEl0GgqhkMzNzIO1bYs/sP0F3ptF9/uPu
- 51qsHrs6oQO+wx1soAShTjoiw3znSBPYDsz7LqPAh8iwLdjTGg3XH2XgK62ki9vDCrKLrpS/xRt
- E5C37C26uTwXvGM3xo8UDEnupVINkZMVrXG2quQLlzs40Umi0vO70M2vu192fAA2hhkOF51Bdfw
- w3s1IEOJuL4wXpQ==
+ bh=qX/vTYsC+gmAfi26Qyy+0cFivVrTOSYWel98GfjQyhE=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBpEesRBlGV11W/+RyFuy1UcHgonJ+Pnjr5U4oOo
+ QEPTg/u8SGJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaRHrEQAKCRAgrS7GWxAs
+ 4gT3D/9RFawsT5iBPBtSWVUH2wn3kxH3A8W/RwxVay++8LvJkGSvVuZHbhJ4tCme0W+b3rJ37BW
+ l77950qszxgJuM4/MGVtXXw7jT9/JajyAtqOwtfl9+y6ARvn6ZO9pUV293m4/wuDIGWqaK14Xgg
+ 8Pz1FLlAlWQQKLYeb+O5+heh8gtItzwOEHHYMMSIqNm3lgTJnrKCKNdrjxeSPzY3K1EZ+dTXS3g
+ P222IO39HD7qo8tfaYuxUikJaLhRa5RAZmQ7h5FXiQIN8bJF4pg9Yohtf4DmY9Mt3eQ4xTwfHAL
+ MitORjX2sSf1b6tuHqCBj1GZgSw5lx5MUjsnPVmilL1vsr/JvKCc17VAYp9rprJ6+Fa1cU+djGP
+ 8TV0hXBpdgw7gaQs2fwayBazGxBR+C3Bqcl0eQuoCfcsa00wBmH2VUwpZOlFNw/cQfsbtSJz+YZ
+ bF9ppRFJZe3Vdtv3O3VwUbnK5FA7iBq7tMBwAZKNg68Gz0ilO8YfXNqUqKSCrjz3YIcZ8ALOTBP
+ x4GlXHEhyp339UKedSiD7roUbKdfVEsg9RY3XjmZiD1+ONsgkzhGlIi9SJB009txe7C6vv5Vcw6
+ 6n8EqlsQLeMNmbmEc6R36m2GVF0nMXbjjqzbQYFndRsZvZusj/lo+AKBoVT6yWyAJO7K19A8Hcq
+ iJ2V8ZMkNMt5RgQ==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,85 +78,183 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As unigraf can emulate MST, we need a way to grab the corresponding DRM
-connector from the stream id.
+Adds two tests to validate unigraf communication.
+
+unigraf-connected checks if the device is connected and if the EDID is
+properly applied.
+
+ungiraf-disconnect checks if the device can be connected/reconnected using
+SST and MST configurations.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/unigraf/unigraf.c | 36 ++++++++++++++++++++++++++++++++++++
- lib/unigraf/unigraf.h |  7 +++++++
- 2 files changed, 43 insertions(+)
+ tests/meson.build                    |   4 ++
+ tests/unigraf/meson.build            |  12 ++++
+ tests/unigraf/unigraf_connectivity.c | 123 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 139 insertions(+)
 
-diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index ce8a12a1f889..7770d3a86ad1 100644
---- a/lib/unigraf/unigraf.c
-+++ b/lib/unigraf/unigraf.c
-@@ -6,6 +6,7 @@
- #include <stdio.h>
- #include <string.h>
- #include <time.h>
+diff --git a/tests/meson.build b/tests/meson.build
+index 9736f2338507..30bad12a904d 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -463,6 +463,10 @@ foreach prog : intel_progs
+ 	endif
+ endforeach
+ 
++if libtsi.found()
++	subdir('unigraf')
++endif
++
+ if chamelium.found()
+ 	foreach prog : chamelium_progs
+ 		testexe = executable(prog,
+diff --git a/tests/unigraf/meson.build b/tests/unigraf/meson.build
+new file mode 100644
+index 000000000000..4ef8c32151e4
+--- /dev/null
++++ b/tests/unigraf/meson.build
+@@ -0,0 +1,12 @@
++unigraf_progs = [
++	'unigraf_connectivity',
++]
++
++foreach prog : unigraf_progs
++	test_executables += executable(prog, prog + '.c',
++				       dependencies : test_deps,
++				       install_dir : unigrafdir,
++				       install_rpath : unigraf_rpathdir,
++				       install : true)
++	test_list += join_paths('unigraf', prog)
++endforeach
+diff --git a/tests/unigraf/unigraf_connectivity.c b/tests/unigraf/unigraf_connectivity.c
+new file mode 100644
+index 000000000000..38b777a89228
+--- /dev/null
++++ b/tests/unigraf/unigraf_connectivity.c
+@@ -0,0 +1,123 @@
++// SPDX-License-Identifier: MIT
++
++#include <stdint.h>
++#include <stdlib.h>
++#include <unistd.h>
 +#include <xf86drmMode.h>
- 
- #include "unigraf.h"
- #include "TSI_types.h"
-@@ -292,6 +293,41 @@ drmModeConnectorPtr unigraf_get_connector(int drm_fd)
- 	return igt_get_connector_from_name(drm_fd, unigraf_connector_name);
- }
- 
-+int unigraf_get_connector_by_stream(int drm_fd, int stream_id)
++
++#include "drmtest.h"
++#include "igt_aux.h"
++#include "igt_core.h"
++#include "igt_kms.h"
++#include "unigraf/unigraf.h"
++
++/**
++ * TEST: unigraf connectivity
++ * Category: Core
++ * Description: Testing connectivity with a unigraf device
++ *
++ * SUBTEST: unigraf-open
++ * Description: Make sure that a unigraf device can be accessed
++ *
++ * SUBTEST: unigraf-connected
++ * Description: Make sure that the unigraf device is connected to the DUT
++ */
++
++IGT_TEST_DESCRIPTION("Test basic unigraf connectivity");
++igt_main
 +{
-+	drmModeConnectorPtr main_connector = unigraf_get_connector(drm_fd);
-+	drmModeResPtr res = drmModeGetResources(drm_fd);
++	int drm_fd;
 +
-+	char *mst_path;
-+	int mst_path_len = asprintf(&mst_path, "mst:%d-", main_connector->connector_id);
-+
-+	igt_assert(mst_path_len >= 0);
-+
-+	for (int i = 0; i < res->count_connectors; i++) {
-+		drmModePropertyBlobPtr path_blob = kmstest_get_path_blob(drm_fd,
-+									 res->connectors[i]);
-+
-+		if (path_blob && path_blob->length >= mst_path_len) {
-+			if (memcmp(path_blob->data, mst_path, mst_path_len) == 0) {
-+				if (stream_id == 0) {
-+					drmModeFreePropertyBlob(path_blob);
-+					drmModeFreeResources(res);
-+					drmModeFreeConnector(main_connector);
-+					return res->connectors[i];
-+				}
-+				stream_id--;
-+			}
-+
-+			drmModeFreePropertyBlob(path_blob);
-+		}
++	igt_fixture {
++		drm_fd = drm_open_driver_master(DRIVER_ANY);
 +	}
 +
-+	drmModeFreeResources(res);
-+	drmModeFreeConnector(main_connector);
++	igt_describe("Make sure that the unigraf device is connected to the DUT");
++	igt_subtest("unigraf-connected") {
++		drmModePropertyBlobPtr edid_blob = NULL;
++		struct igt_display display;
++		uint64_t edid_blob_id;
++		igt_output_t *output;
++		uint32_t unigraf_edid_len;
++		void *unigraf_edid;
++		bool found = false;
 +
-+	return 0;
++		unigraf_require_device(drm_fd);
++		unigraf_hpd_deassert();
++		sleep(1);
++		unigraf_set_sst();
++		unigraf_hpd_assert();
++
++		sleep(5);
++
++		igt_display_require(&display, drm_fd);
++		sleep(5);
++
++		unigraf_edid = unigraf_read_edid(0, &unigraf_edid_len);
++
++		for_each_connected_output(&display, output) {
++			if (output->config.connector->connector_type ==
++			    DRM_MODE_CONNECTOR_DisplayPort) {
++				igt_assert(kmstest_get_property(drm_fd,
++								output->config.connector->connector_id,
++								DRM_MODE_OBJECT_CONNECTOR, "EDID",
++								NULL, &edid_blob_id, NULL));
++				edid_blob = drmModeGetPropertyBlob(drm_fd, edid_blob_id);
++				if (!edid_blob)
++					continue;
++
++				found |= memcmp(unigraf_edid, edid_blob->data,
++						min(edid_blob->length, unigraf_edid_len)) == 0;
++
++				drmModeFreePropertyBlob(edid_blob);
++			}
++		}
++		igt_assert_f(found, "No output with the correct EDID was found\n");
++
++		free(unigraf_edid);
++	}
++
++	igt_describe("Make sure that the unigraf device can be deconnected/reconnected");
++	igt_subtest("ungiraf-disconnect") {
++		int newly_connected_count, already_connected_count, diff_len;
++		uint32_t *newly_connected = NULL, *already_connected = NULL, *diff = NULL;
++		int max_count;
++
++		unigraf_require_device(drm_fd);
++		max_count = unigraf_get_mst_stream_max_count();
++
++		unigraf_hpd_deassert();
++
++		already_connected_count = igt_get_connected_connectors(drm_fd, &already_connected);
++
++		igt_debug("Already connected count: %d\n", already_connected_count);
++
++		// i = 0 is SST
++		for (int i = 0; i <= max_count; i++) {
++			unigraf_hpd_deassert();
++
++			sleep(1);
++			unigraf_set_mst_stream_count(max(i, 1));
++			if (i == 0)
++				unigraf_set_sst();
++			else
++				unigraf_set_mst();
++
++			unigraf_hpd_assert();
++
++			sleep(5);
++
++			newly_connected_count = kms_wait_for_new_connectors(&newly_connected,
++									    already_connected,
++									    already_connected_count,
++									    drm_fd);
++
++			diff_len = get_list_diff(newly_connected, newly_connected_count,
++						 already_connected, already_connected_count, &diff);
++
++			igt_assert_f(diff_len == max(i, 1),
++				     "Invalid connected connector count, expected %d found %d\n",
++				     max(i, 1), diff_len);
++		}
++	}
 +}
-+
- bool unigraf_open_device(int drm_fd)
- {
- 	TSI_RESULT r;
-diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
-index 9c7c71a22d82..f870843cc7b5 100644
---- a/lib/unigraf/unigraf.h
-+++ b/lib/unigraf/unigraf.h
-@@ -182,4 +182,11 @@ void unigraf_read_crc(int stream, igt_crc_t *out);
-  */
- bool unigraf_use_crc(void);
- 
-+/**
-+ * unigraf_get_connector_by_stream() - Get a connector id from a stream id
-+ * @drm_fd: DRM device where the unigraf is attached
-+ * @stream_id: Stream to grab the connector from
-+ */
-+int unigraf_get_connector_by_stream(int drm_fd, int stream_id);
-+
- #endif // UNIGRAF_H
 
 -- 
 2.51.0
