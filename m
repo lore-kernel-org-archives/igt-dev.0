@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC3FFCCF9E3
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 14:25:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76718CCFA13
+	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 14:27:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E9B010E3EA;
-	Mon, 10 Nov 2025 14:25:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1685510E22E;
+	Mon, 10 Nov 2025 14:27:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ltbZV1oI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K3yAWvre";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A30B10E3E4
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 14:25:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D36D10E074
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 14:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762784706; x=1794320706;
+ t=1762784872; x=1794320872;
  h=from:to:subject:date:message-id:references:in-reply-to:
  content-transfer-encoding:mime-version;
- bh=5iURagAiSYtkFXeXbTci7rPQWWdP9dVgijSMmyy7w6s=;
- b=ltbZV1oIZPg/37SF6zTW2HYSC27ejbz3BQXyjaos2g8ZLGn1NT1yh45D
- tS2u6dfrvEwZLOY+iimQu2Ed1c8jdHUZyZ9m1XUqLhccHEpA60gQWH9SG
- lrut1FfbIuz3SHwHOfpoJenyasmE1NyhRjtHYigXA2XAlcne/W2oOjBRn
- Z9l+JIyAx5s2yk4eaLsLwYRs9SNrAzqGpa8zWdDeVDkAhQQ5/uUwUB0L3
- a2ezarp7Wya0NbazSvpjkwdc9YfUI6Mbc3W2eTdIBLk18McXqLHoBDufU
- qFd36GWKo0zyum7sRXFb0ZN+3tLA0Nu3/C83vqHlNUMCBZgAFc+jiGfmQ w==;
-X-CSE-ConnectionGUID: nShzmfNoTtOtgR2iPlfqIQ==
-X-CSE-MsgGUID: PZfyQXEBQEafI0NTBni1lw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="67439983"
-X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; d="scan'208";a="67439983"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Nov 2025 06:25:05 -0800
-X-CSE-ConnectionGUID: nSBJ7xYyQ6m2B6pjJ9GXQQ==
-X-CSE-MsgGUID: 5qipwFUxSUW4j3kUCVEiow==
+ bh=c2VMPw5qIaHNH0XgaqUxgUby4smih6Z3pF1gsV/hQ3U=;
+ b=K3yAWvreF4fdZUSGFY2Bv1Tttg+J/+IgRRWvS8Jv9iQlOYttMzgAWOQs
+ yWVFEV4ygdQX6bhBQxderRVDfI6VgYgm6DYpuKhg3lnmJPJxtjAZiPvPC
+ O3PlTj4ayKLVS+U6C8jFx4Qd/OrHj8Ejcx5Qs0dj+JpPkhgFBWKqfnN5S
+ NGYcjpFsN8mKGypISFVvcIcEghSa/uCKi4jVqnW6gDadMXsuIBZSuLbYr
+ Z3JXDs30JfMYa1P8KtEq+GSb8bUCEVXj6qmy9S20o+MxqwAISEBeHIFam
+ F3DKtfKLaMvh+J1o9HR0Vmq34U23JKC1fh7mV1QpUq29Mj9g85H6HIlpO Q==;
+X-CSE-ConnectionGUID: WSMZeDUGR/aAQ+pTs+44rw==
+X-CSE-MsgGUID: J14K28rJSd+JIjh3/lc3eQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="64869118"
+X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; d="scan'208";a="64869118"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2025 06:27:51 -0800
+X-CSE-ConnectionGUID: SNFQfKIaQZeAStixEjfDXA==
+X-CSE-MsgGUID: Tkl798VhSomdVh4y0S2vXw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; d="scan'208";a="192795897"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Nov 2025 06:25:06 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; d="scan'208";a="188327334"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+ by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2025 06:27:51 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 10 Nov 2025 06:25:05 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ 15.2.2562.27; Mon, 10 Nov 2025 06:27:51 -0800
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Mon, 10 Nov 2025 06:25:05 -0800
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.49) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.27 via Frontend Transport; Mon, 10 Nov 2025 06:27:51 -0800
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.26) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 10 Nov 2025 06:25:05 -0800
+ 15.2.2562.27; Mon, 10 Nov 2025 06:27:50 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XU7tP2GsvCywOIyUgFDWL2zpexUCicZe81nhMKXdgu2KlopPnoq2CcCm5wBkccfnFXvcFHgi3+/naIRRKEP/2jUsGoj+Ai0E7N8o/Eg2QxyxwCqD8ZO7T0FDCP5V5BFwxpxsnlsfwq3OoiHE+OD7zq4NZ4e0/Xwi9lKx/vOan7Nc/LZso+OVozcZKQDtPxo+BN8nwUVJMg0iFX4W84qsZpitihTZOo47qLeHUXDKkq7hTsEnL1nVc+r9MQZ09EJR0bp/TC9Esz413E6RmrAqhY4DVFXtTdfqbRwpV3bT1YP8U+tIZEmAQR4LVOT4gmN4x6R8KhEdU5YJE9t7AR0J6Q==
+ b=km6JzzbVd64qxvTTIOAS4RGcSinLmDC93NmUNLixl1A4SRoXMgBnz8F4oUbL8gcLsGt74TCdKZDfTANqFi6MYSSvZrdYJvHhnnMQ/tL5z7Goj+5Ijkh2GS0ycSkyblBzxTuaLfZGYAxW5swzuuWgLMfXqJUOTThBAdbLF9857YKj1PgAgMYZPtFl0ueLwwD0p6vo1/Uzwox8YuOh9Jn2z78LKvJcX8AyDU/cqz+C90dbV7LWAT1evUF04JSZlRjY2J5poZGYXiKDaY4E+6riExRNCsP0cDiFdbqBtqTsI4Itrw2GZ1OthIdaasTIQ8uLVW8u7c0tTD9ffVJNC/186w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tab7I/QU28+Dx1HzsdrtZ6xMiicCLJJiA6Js9hjDSmM=;
- b=kPBy2ox71D0J7Tjel0K9UeaVFagoLEZsbHSqfNXdvI09hV6hRI1EMCXSLVlmSf/ZzeGVgg3jkj6Iil1go1+BW0HBmnM7H7UFJhCcT8P+KujkZFDzBASka7XX2/S/fdiCRMs3k393TWDjoo+Xe+yNmHjCOGSQODR5oHN/odNMxLafqR8h7VpoOJdFJpyv8ONmtVmuz4/eSI4V/wqXbRdtzoVhpOZtjzjiN6gZzGj1x9PizmC6dd8hjPb59SNqZthgCICR8XIi/tQ89i1OPPTRxPy+zRmQXbETbOf1sfsbyR/KtTAlk67ohXWEBJ6ByKg7AmmWhr1thd6sCl8YtrRNQg==
+ bh=6rJw99Vz3VxWdHYXjnWH80JJunOM7zVRxYCElNg4zr4=;
+ b=TY3uxo5/HKNMf7rM71gxg51lULo78o6xYT/SQjYhKyL4twR6F3Klu7HcNhHRUOegEH7hxUerHYx519dD5g5obnpHtVCSvI8c8af5vXHq/VPgSA3VvNBlfwkCtUzOCDqBxxiv9dcS0XmxjGbSyCZA/TwkKmU8omYqrMn24mtrZZLQYcsy/v2ZXz06QHrWEr4vres5y5nBCGzKWF1WFhgsgnCnRAa5D+F+ONVCnm3f1Ejtp7MJnKsXcoSUpPDdgidSOAepcGhM1ZSbyUVCn9Stw+orUjpQ2hK5isfC80i5yADFkG57Y8ruDwsyl/HeliPIh609SHS9eig7DuGFvJIv6A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from IA3PR11MB9013.namprd11.prod.outlook.com (2603:10b6:208:57c::9)
- by PH7PR11MB6954.namprd11.prod.outlook.com (2603:10b6:510:205::8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Mon, 10 Nov
- 2025 14:24:57 +0000
+ by SJ5PPF4DC104A0B.namprd11.prod.outlook.com
+ (2603:10b6:a0f:fc02::827) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Mon, 10 Nov
+ 2025 14:27:45 +0000
 Received: from IA3PR11MB9013.namprd11.prod.outlook.com
  ([fe80::112f:20be:82b3:8563]) by IA3PR11MB9013.namprd11.prod.outlook.com
  ([fe80::112f:20be:82b3:8563%5]) with mapi id 15.20.9298.015; Mon, 10 Nov 2025
- 14:24:57 +0000
+ 14:27:45 +0000
 From: "Gandi, Ramadevi" <ramadevi.gandi@intel.com>
 To: "Girotra, Himanshu" <himanshu.girotra@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Konieczny,
- Kamil" <kamil.konieczny@intel.com>, "Chauhan, Aditya"
- <aditya.chauhan@intel.com>
-Subject: RE: [PATCH v2 i-g-t] tests/intel-ci: Update blocklists for xe
-Thread-Topic: [PATCH v2 i-g-t] tests/intel-ci: Update blocklists for xe
-Thread-Index: AQHcUjs2eJIo9jYOZk2BPYR527njr7Tr9umQ
-Date: Mon, 10 Nov 2025 14:24:57 +0000
-Message-ID: <IA3PR11MB9013334812AD3744493CC9D085CEA@IA3PR11MB9013.namprd11.prod.outlook.com>
-References: <20251110121225.8849-1-himanshu.girotra@intel.com>
-In-Reply-To: <20251110121225.8849-1-himanshu.girotra@intel.com>
+ Kamil" <kamil.konieczny@intel.com>, "Dandamudi, Priyanka"
+ <priyanka.dandamudi@intel.com>, "Tahvanainen, Jari"
+ <jari.tahvanainen@intel.com>
+Subject: RE: [PATCH v2 i-g-t] tests/intel: Adjust test documentation
+Thread-Topic: [PATCH v2 i-g-t] tests/intel: Adjust test documentation
+Thread-Index: AQHcUkK+3xpqn/8SmUSwVo+Io3KU47Tr9yXw
+Date: Mon, 10 Nov 2025 14:27:45 +0000
+Message-ID: <IA3PR11MB901378843FD0F706347BBA1E85CEA@IA3PR11MB9013.namprd11.prod.outlook.com>
+References: <20251110130614.28345-1-himanshu.girotra@intel.com>
+In-Reply-To: <20251110130614.28345-1-himanshu.girotra@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -91,82 +92,82 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB9013:EE_|PH7PR11MB6954:EE_
-x-ms-office365-filtering-correlation-id: 512aba21-c80e-4393-a490-08de2064ec93
+x-ms-traffictypediagnostic: IA3PR11MB9013:EE_|SJ5PPF4DC104A0B:EE_
+x-ms-office365-filtering-correlation-id: f11d4c01-1c09-43ef-6a40-08de206550af
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
  ARA:13230040|1800799024|366016|376014|38070700021|7053199007; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?1XrzO26oGswcmN4GwJfKDI2i3cqLN90NjUmS3PuqN4Co9bmV/6K1qJU02diH?=
- =?us-ascii?Q?BRFOgwQydtPYZzeddDMLKbjFFDUaItuAYNvhY1/C9krMiJD+1RzqQ3EoBMkW?=
- =?us-ascii?Q?3HSdPfPYRvkhXINi5bIp7xNHed9/rnRha3ZDmZtf4CK+AG69qTdNVt40JrVP?=
- =?us-ascii?Q?zHsIgsluG/UmlFrci5l3a37qPaJKUWmMwrsG8hLVFf4U6SEI356ON3fjbxpu?=
- =?us-ascii?Q?Z+ryVCaW8WFTFAKSR1A2+QV0f0Wt4oZHE5ewaAJK3T7b7T/gaflcwvZvmu5H?=
- =?us-ascii?Q?FixJkpwv1TkWoo63Tk++c7sazKGmSiBp8+EaZWCwQbD5LDxPrlKKV1KuAtd/?=
- =?us-ascii?Q?g+C6MQXIUH/RqaHTzcQ/d7URRGgbNWE0WG+Prj9b+bB3M9x/5MdfyqjMwMxj?=
- =?us-ascii?Q?xn3Pt2bjRzmGAU0DUnaFyeStMgotSE6wq6RpCHgnvlxJ0HU7Fti55+N1oNTH?=
- =?us-ascii?Q?WONLQoQvy0YisBVXGza4iFcdH/t4X861itSQJZF99FkLHhwh1EZJbGHlivLR?=
- =?us-ascii?Q?XOLMZkrK9+coGSI9/KbKlJlzqdU6aTf0RLQTLvMSyTrQUNYl5YkJh+g8qoED?=
- =?us-ascii?Q?ql3vKeQT8QgJcrMljrIj/+m29vMS08a2OfV8PaczgZncYwq+myx/v5nE8ago?=
- =?us-ascii?Q?lnJxPzBsDvIZ0w/HTrsTQ4/Cq8fOGby37/5ti5V/g++JaOS+hYT9l2clFl99?=
- =?us-ascii?Q?JREs88SXmlqNWUWyapnxJf7gMQ5ArbEql4Z2OVyHjRnkv2cE5isbijd+ijv/?=
- =?us-ascii?Q?G/JhgucO5/nPh/NmXOd/eHl+3CQm4FfEhBlJ9xu8H/LeWJhez+pPnfZAtJWI?=
- =?us-ascii?Q?sqI7IY2xmuXNCsB7KD4gZGmzFE+mpOFa+aTlfRtMS8AeA0x3Lo6xp9+bPXDR?=
- =?us-ascii?Q?24pgiGHVSg1zUZcX/1tiwbvYg+HbUxig7Q5oxC5JEyFqg0c/sHvUxYo7Qoqz?=
- =?us-ascii?Q?JKYDhKc8fKK7TIUrteEjemQCiEsvc56mOgU9G5qar/YTFgEf8p3ZJvgzyaO6?=
- =?us-ascii?Q?sQPMvSsGH2PsF4QY2krebIFfQNjkIOp6Wsi08QGjwGph7hakuFoWevkyBALD?=
- =?us-ascii?Q?AKcuoXj82IoGlueHRpCn1Ck44jwoV4BGWRcg+HRVFSf4wt2dUPsnMRE7XPO/?=
- =?us-ascii?Q?PxMwcoDxDmxNq7OuBWWFex5c4nmy9cgXY2LqWO4dVpXSzcB5i6uZ7Y2zPSe8?=
- =?us-ascii?Q?glM3INB7TvO0PApd2wZ51K1q9YEAkZMRbPmMTiDCHhSuQso/Kplrk+eoUMAS?=
- =?us-ascii?Q?yZDwEcnPOfbc0mh0b2H437D04hj0Uz08LMwCmPKqN7g1X624HNK7WnMUasbn?=
- =?us-ascii?Q?I7toOsKxQmMlLHQvKRLEa1nzh0JgameNbYarReA9Jmr2umrvlXxto4qhYFID?=
- =?us-ascii?Q?2Qx9O5+4uZU9/eFpmoPUpou9fho1wb1yyJwzq4zrS0a7juFyoRQE60uQ/4lE?=
- =?us-ascii?Q?gpGKipW6FGe2quOIpzN+3jkI/xUnuLl7RKrSDv74JXaR7eGAgjqUhgT/Hh20?=
- =?us-ascii?Q?Uo9zCov7GTDONS2QzIiJ4nTjn3pT4+6mudMC?=
+x-microsoft-antispam-message-info: =?us-ascii?Q?6A3CcnAEAfpRinPEAHVkER4JPsnhE2Uehcc9jNB4Jcvc3fptn1LIiTCG6mJk?=
+ =?us-ascii?Q?f4JxCWIKZcZ9Ih828tToxd/zP5iHSGKF+meLZ4KDKZ8OEv6/CVnzAORPiSa9?=
+ =?us-ascii?Q?n6oUVjBFIeAFKgL7yZFuQwJD/BZhTx3VLT3mLhBF+XhsZM6eFkv9ZCbxsDKa?=
+ =?us-ascii?Q?hLrnIj8uGGSYpviMgyH18UiSH9onKTxDQ+0SI9FQJ4BWWom2cg8v4aFRXnuo?=
+ =?us-ascii?Q?4JTe8BlRyCWXfWOX0D3GOIz+/eq4tiQ+0Flu4kSvHRcAFnheZSbgsmwwAX+g?=
+ =?us-ascii?Q?UldUZA/94eGwWXuiwZqnGBg1is4wbzfIpJX375hQeUiTsGy4qWbxf0UhSzRg?=
+ =?us-ascii?Q?4M/PGDZP8PIlRJs2Drw0b9XTo2b/edj6Dsr2x0lfTc/0R8rx4Q5CZnVnZF9I?=
+ =?us-ascii?Q?oVFJFiRiqIqGMOOEykW8Y90KTV2qR90tG33XeEX385R0n4BuKuIK2wNZSiVQ?=
+ =?us-ascii?Q?bLeFfmve0kYoHyOBo/EV0+j/3ErvNZ+abebO5Sa4H33u4XkpJWETHd10Lv/4?=
+ =?us-ascii?Q?/wXv/ukhqmYUPnSkLFN0AdKYFZQxe5LR9Hh8yFGbCgGrkYcs2PdwwtlAdGTB?=
+ =?us-ascii?Q?Y7A05WiA/dSBumBeNBfR5Hi6OxvTHS3zwCUQ67U5KdWHArSQw2bE2XmW/ZAQ?=
+ =?us-ascii?Q?GWgRJRtv/GeHrxX2jgD6/184VOql3N4hkAs69p5TKPyACPTZv9Fh8oC/IaF9?=
+ =?us-ascii?Q?vFYqpxIGr3hr0WAnH5Vul28iXx6AHB1tRjl8KhTlyUA1FGiqHxwNvWRErF1q?=
+ =?us-ascii?Q?fCwybQl+SUFlekxTypNPHe+NCtKstldoSmctfxwAq/YDZ2GRhr0HRiugZIfB?=
+ =?us-ascii?Q?UuSPlf7GrwxeJ/jjyYh3a5rT/rlnsPLeSYHDuVQHOhQtBSS17iWgTkZMCSAN?=
+ =?us-ascii?Q?6By8+VC5wSpwiH5cXbO2D9ccvDkL+5x0c9PGfHTW7WJMbj/y5+NhGLGIlFcV?=
+ =?us-ascii?Q?uPToq3XUGPxoQt1ssErNwuM8h2mmEOFrQN4QJJLomJ9Qs09dyKrGhUl5FnuJ?=
+ =?us-ascii?Q?DYZCe59S2sVqn3zp1t2tXpy2Hnxjph9pSscArUEoYhjlen5lVvr/sS35QtGj?=
+ =?us-ascii?Q?fJGpg4zhIEDD+TYeInCAIqU+unPqkTU/vVeY2iGW2ouIMLh5CXB19DACtMId?=
+ =?us-ascii?Q?/5q7ap4uyngwC82e+09hUjkx/JuAGt75IGGXwc+mQD1HDmyVPhWHtdGn70f2?=
+ =?us-ascii?Q?eEzyaBm/Wah1SCv/iG8PVPCrUt59zAB+buPAn5r4826HtXkOaBBE1ueY5eMF?=
+ =?us-ascii?Q?SeyocZa6qoBkMU5wzw3GvTXsNBe6huIHJLJH/ys5LeZhMQkJJYpaLcL1TLNj?=
+ =?us-ascii?Q?nxhCc1xMUVeKywXeTjz3E2PfG0tydC26a08sviXQU9pXH6rNBsWmSdqB8TCj?=
+ =?us-ascii?Q?MkvCTGSba+LZhXkepAT/ZvTQFsm2rOZsDmuC+oMICL5vKeXR0ZAeIJ1yE8r+?=
+ =?us-ascii?Q?8+dTZywCjdKTLKAMF+sjM/OcRxlDDyaTb/vBpTiylYAWV2iF8A3xoMN/jlrh?=
+ =?us-ascii?Q?qJhKgxe8PwB5gqmAhFBEzaJHMzTUaxA9H9ru?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:IA3PR11MB9013.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(366016)(376014)(38070700021)(7053199007); DIR:OUT;
  SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Seyj0Q28umPqSVoreUWAicgrp1D4PW3jooyOiDBWdXh695gjy+bI+rk5XE5i?=
- =?us-ascii?Q?/mAPbfTxVBkkJirEOlbbN7V0ITyZLmwXOjt3u1JuVFp7p0o/0Cbfvk6v67nW?=
- =?us-ascii?Q?VhwXxrP84rrW1qeIsk9fDQuNhY5eR3NpfON0krLBXMiOJc8oDrqQJ4ZDkdhk?=
- =?us-ascii?Q?WMLGfJHHFKm+hiLceG8bZ55US8a6y4G+t7mak5W+qEXHkNedyWJN809Mn1s9?=
- =?us-ascii?Q?Uesefm+MnsmSjBN7SGdxSR8jyNCBzZ48ao25qdYjMb6cC9/lKk3N5qphgprF?=
- =?us-ascii?Q?LMKWU0dOS/FseIbK6yFZ37s0FcE5V38y7zCWBr1soRRkCsPY//8FpaJQ/pzd?=
- =?us-ascii?Q?cxASm+TQ/oi9/Am8+VKBgUCR+LI+G/PXBYJtjaabNJnOvtHOqOAMzta9EneI?=
- =?us-ascii?Q?SptwR+e7WLDsCJ0o+84OGle4jlQoLVjSA8hu68EcjKdNmG/uOkBT4LqZ/Kcn?=
- =?us-ascii?Q?tyxOLr3UvqsRxFdisMGPyBT4qXkVDm/a0AbsZmoDJvA4uOWbknhpkyb3YGQZ?=
- =?us-ascii?Q?nGpuRAKRzw4AdvmkM5eSAQfp9yije4pM9so2uofdadm5UypdCXZq5ku7ze2/?=
- =?us-ascii?Q?a79MQS43YDfiWhyrFoaPXiGo8y55Aix5Y+Vfx1l9cWGg/thtryrAHJTjwDYl?=
- =?us-ascii?Q?ygcXw2A4m8/cUhyx4Ml4MXZAWW0j6p12S5qzYpBp2Nkpx1LXr2u0XCyK6WFO?=
- =?us-ascii?Q?HZE6I/Klw4FU1OZzlRjD9fBW+aZQkbiVCLFdBHG7sIDD9iGEuDfhuZpInmvO?=
- =?us-ascii?Q?3B2DwTTMwdYP7bAMQyeZcts4zuVPHna0rNc6NtzA0j4+drNTj1q5wgso69+Z?=
- =?us-ascii?Q?g8277ouP9k17QZCahZAnZZP/p4j/lZG1WuJv7eK5YY27RyDZsI1PIFB0bk+y?=
- =?us-ascii?Q?n47KrvkQSQKcvmXFfVpgdcQTjrN8znoSKHFI4eZATS+yfo4ZZ2XIguQDHY11?=
- =?us-ascii?Q?UeOcHs4lBWyekS6reAu3THj13TBgqv97GDkaLlK8TwvEV+tRbuqfVwsRgUJe?=
- =?us-ascii?Q?IbKw+4Ua/EO7qVr/Cx+bIuXblkAs5DYtj+xOm7j+I1GuSwvsy2PwlmXAmlfw?=
- =?us-ascii?Q?uKeMcXyM3beVGjFO5w99cYkhmBS1WoN+jmNy3Q+OMDlvXmDD/WSGHyjQD32O?=
- =?us-ascii?Q?TtpX70R7OKmCdk9ywm1UdTdBNaMa4u8w3z0dofuGbRTvOmy9ADZAq3bKdHtB?=
- =?us-ascii?Q?gxF3DJU27C4W4FS3iaOSheoUfKfQZKlfpLTDqOEWy7w6He3GWoewPvA8aAaY?=
- =?us-ascii?Q?rK5bXT1MriKdpbPjsDTF8yyptCRs7TlRaQ7jbU89feEkYmcGer7WwPmWxxOb?=
- =?us-ascii?Q?AV8m0ZZ/gK4go7L97Omu3rf58ZoxOUgm1mhVMGuvRDhWwOSliNQRQDGwzbnf?=
- =?us-ascii?Q?vDqX2i7oNhEDzFR8ku03Ege+VOSmTXMc8+cc50BDZ5nrZjlAwxqGegiLge/9?=
- =?us-ascii?Q?hNrtFxbAUthymOEO/CPQZo5bQ82ZrJKSXeDWabtDoOQU5aquuFjPqt1ucwDl?=
- =?us-ascii?Q?+R1MQMm3iZkEmPtzgUuEETEVSY1/deJ38ag4AWn7QhIErwBrtAyLXez7YrrF?=
- =?us-ascii?Q?jzkDgfLukxd0fe+JGoVIm/PQPBvXIBRSwa8BsS+W?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?YtMAgA0XWA+W86OqmQT755vcwQoM358SOrWf8zlyXZNMDDKH/HuUSDPio2xc?=
+ =?us-ascii?Q?AB5xpBxPrb1XOwgpW2srnf/4fPLRHnjKlzrxh5Ydh2nWUlMMT9I5ulYUrjkm?=
+ =?us-ascii?Q?xHGDBffHQg3RKScpk8JcPJxRHVpToEbu2y/zENmX5R4qgom/Zv1KjL3U3clW?=
+ =?us-ascii?Q?CR9tThl96rUh8zlgfZHsOpqK2os4MBh23WruSLcLMVFeHDGiEMN+r7ysNuup?=
+ =?us-ascii?Q?XTUe/pPTPe44bYgSuLqWGA49WHHL0/r+kYPurdeylAAhacCiQ9E/mcfME2yd?=
+ =?us-ascii?Q?bPUar9SLAt09MMF4k+vTc3JwjEbDpFFsEk5u2vpid9z3jADXEak+0+28d6B2?=
+ =?us-ascii?Q?mnM2gv4HJzqZ/nLevmCl/NbB1lqJZA+ucpVX0IcLac8T09NzCWmZpRuB1lZX?=
+ =?us-ascii?Q?ZlQgMC8DF96HvOErTKO7NycKSLy1yd0bhMUCXjh40PsqpyEnFHkF7bIByqo3?=
+ =?us-ascii?Q?W0luMeJVt7NeoHBCnva4jv6GqGcQjfwMAh4+4mO45VEKAronkKtlPp6bMkgW?=
+ =?us-ascii?Q?9gRggYYqmyUUIY4iQOjsKjmx6kRozZmJWJ/QR/2jkqUmvh+hz6WZeAb3Yx7x?=
+ =?us-ascii?Q?pCwq3MB9Y+xsinA+3LT3S5LJfTXPHLrJtjOid//O/0SYtk7DGzbFXJYDKojA?=
+ =?us-ascii?Q?O+BznWgmm0e1hdXZsKBKkyG46G/kAFp5pPEqIVYh1+kZiNDeCB3HCSEF7hjg?=
+ =?us-ascii?Q?h8MXzpjW749UvXCdEO2g1imaqgM/dGUhyK+PxltR67iy4JYxhHth81fC/Cd1?=
+ =?us-ascii?Q?ubStUWSQr5L9y6OnVcShEGT5WF2gjal5nIxZ47hC6lL7CBB5iqvPP1Qh7Gv3?=
+ =?us-ascii?Q?o5kRnxYv1j5GMbF2DX3oyBeuikZBXYbZaGBderSFvIT24F/FyFpH/nNkozGw?=
+ =?us-ascii?Q?xR6UPV+aaj6SpsbhM8vgNgyJqafjLk7I6qA/Aj7ca+6FE9u9HvdH5ylL53za?=
+ =?us-ascii?Q?eS0JJXEGtz8Nac77zN4SiV7L7P8ooXIwts0J6QTD3gek35Jy86cV/VVK4oYZ?=
+ =?us-ascii?Q?Ov7pL8SlLSlDrn5nak1SvVA5AK75xDmU9i0c66atdvnTWhqk3ucSkH4rP+Fx?=
+ =?us-ascii?Q?zumcPH7v9hXav4z7I9NQvqOibhfQqOdJAdr1cIV8RmDlnqvFGW3wuPNmHqIx?=
+ =?us-ascii?Q?7ltu3Vps1kEEgzZHJuWOugavw0KidIHpa3/UrntFZ/p+vxUvb42f5PT/pDNZ?=
+ =?us-ascii?Q?GHMzvLbNDebyb6wHUBS+5tul15w2UwA8LWn71HAhDJKJ0q2UO0k3n/+oJG2t?=
+ =?us-ascii?Q?kubKO0qd+w1Hz7qiwoZSgVCG7DBIxys+P9N1n4F50GJWt7C1KKdGoJLdb1jr?=
+ =?us-ascii?Q?i2T/9deilLpYBQnHORqwfg+J1bJakYFkdcX694a1gRxcz7v3hW/KpmX96Exd?=
+ =?us-ascii?Q?nQnd1jmUV1YrKDoB8N/P9Y9CrntQrxjC6DQB4esCbU6NppsQvcYWNnUz551t?=
+ =?us-ascii?Q?3Li79AYb6cQ9r/Jq/FdFvs9vKK4PA//zu604wIyPR0v2PmSQSKDcMnApSeXP?=
+ =?us-ascii?Q?h5L20DeU4IMV6sPhGhcr//iKsoJVP/o4ghbSSL2E+3te0MQZwevax4kC95RE?=
+ =?us-ascii?Q?NusbllWcWn3zPIbvzJaBgg4fJBqAJVIM2fct3kYg?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB9013.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 512aba21-c80e-4393-a490-08de2064ec93
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Nov 2025 14:24:57.0994 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f11d4c01-1c09-43ef-6a40-08de206550af
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Nov 2025 14:27:45.0357 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: yRmhTwQNDJtSRiZBZvvUu7P0f6ZXL2h8WWiavx7a96DG7PTQZEFrB24VIwiaGonDSzPbAqB6B0gTUe3CtgXaxN1chg8fEdrLkKsgTTVHMig=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6954
+X-MS-Exchange-CrossTenant-userprincipalname: TUSGhT7dH5F3RokZ8OUHA6suOsI4EQjZ0gnBrY+fKPFRGzpN/TJ9uGnYN/HLzO78fI17ihKtv+FpCH3hBpP+R33T5g/zoTTOdmmkqD/y3U0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF4DC104A0B
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -188,88 +189,299 @@ Reviewed-by: Gandi Ramadevi <ramadevi.gandi@intel.com>
 
 > -----Original Message-----
 > From: Girotra, Himanshu <himanshu.girotra@intel.com>
-> Sent: Monday, November 10, 2025 5:42 PM
+> Sent: Monday, November 10, 2025 6:36 PM
 > To: igt-dev@lists.freedesktop.org; Gandi, Ramadevi
 > <ramadevi.gandi@intel.com>; Konieczny, Kamil
-> <kamil.konieczny@intel.com>; Chauhan, Aditya
-> <aditya.chauhan@intel.com>
-> Subject: [PATCH v2 i-g-t] tests/intel-ci: Update blocklists for xe
+> <kamil.konieczny@intel.com>; Dandamudi, Priyanka
+> <priyanka.dandamudi@intel.com>; Tahvanainen, Jari
+> <jari.tahvanainen@intel.com>
+> Subject: [PATCH v2 i-g-t] tests/intel: Adjust test documentation
 >=20
 > From: Himanshu Girotra <himanshu.girotra@intel.com>
 >=20
-> Blocklist non-intel gpu tests across xe platforms running in CI and updat=
-e
-> wise Blocklist files for BMG and PTL.
+> Change mega feature and sub-category for multigpu subtests and some
+> other legacy tests so that it can be fetched under correct Feature Bucket=
+.
+>=20
+> v2 Remove subcategory entries when possible, as they duplicate the
+> information already captured in mega-feature entries (Priyanka).
 >=20
 > Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
 > ---
->  tests/intel-ci/xe.blocklist.txt          | 1 +
->  tests/intel-ci/xe.bmg.core.blocklist.txt | 1 +  tests/intel-
-> ci/xe.ptl.core.blocklist.txt | 5 +++++
->  3 files changed, 7 insertions(+)
+>  tests/intel/xe_create.c          |  2 +-
+>  tests/intel/xe_eudebug.c         |  2 ++
+>  tests/intel/xe_exec_basic.c      |  6 ++---
+>  tests/intel/xe_peer2peer.c       |  4 ++--
+>  tests/intel/xe_query.c           | 38 ++++++++++++++------------------
+>  tests/intel/xe_sysfs_defaults.c  |  2 +-  tests/intel/xe_sysfs_scheduler=
+.c |  2
+> +-
+>  7 files changed, 27 insertions(+), 29 deletions(-)
 >=20
-> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklis=
-t.txt index
-> aa480c6d2..8706721e3 100644
-> --- a/tests/intel-ci/xe.blocklist.txt
-> +++ b/tests/intel-ci/xe.blocklist.txt
-> @@ -13,6 +13,7 @@ igt@vgem_.*
->  igt@.*virtgpu.*
->  igt@vkms.*
->  igt@vmwgfx.*
-> +igt@panthor.*
->=20
-> ################################################################
-> ##
->  # Exclude all i915 tests
->=20
-> ################################################################
-> ##
-> diff --git a/tests/intel-ci/xe.bmg.core.blocklist.txt b/tests/intel-
-> ci/xe.bmg.core.blocklist.txt
-> index 15dbbf2b8..3a127f780 100644
-> --- a/tests/intel-ci/xe.bmg.core.blocklist.txt
-> +++ b/tests/intel-ci/xe.bmg.core.blocklist.txt
-> @@ -70,6 +70,7 @@ igt@xe_evict@evict-(beng-)?large-multi-vm-cm$
->  # pxp support not available for BMG
->=20
-> ################################################################
-> ##
->  igt@xe_pxp@(?!pxp-bo-alloc$|pxp-queue-alloc$).*
-> +igt@xe_fault_injection@exec-queue-create-fail-xe_pxp_exec_queue_add
->=20
-> ################################################################
-> ##
->  # I2c tests needs AMC capable BMG in CI
-> ################################################################
-> ##
-> diff --git a/tests/intel-ci/xe.ptl.core.blocklist.txt b/tests/intel-
-> ci/xe.ptl.core.blocklist.txt
-> index 811062449..bb8587656 100644
-> --- a/tests/intel-ci/xe.ptl.core.blocklist.txt
-> +++ b/tests/intel-ci/xe.ptl.core.blocklist.txt
-> @@ -69,8 +69,13 @@ igt@xe_pm_residency@toggle-gt-c6  # Expected skip
-> as PXP is not enabled for PTL upstream
-> ################################################################
-> ##
->  igt@xe_pxp@.*
-> +igt@xe_fault_injection@exec-queue-create-fail-xe_pxp_exec_queue_add
->=20
-> ################################################################
-> ##
->  # System allocator feature is not POR for PTL
-> ################################################################
-> ##
->  igt@xe_exec_system_allocator@.*
->=20
-> ################################################################
-> ##
-> +# survivability feature not applicable for PTL
-> +###############################################################
-> ###
-> +igt@xe_survivability@.*
-> +###############################################################
-> ##
+> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c index
+> e8b8bb025..d7fe9d626 100644
+> --- a/tests/intel/xe_create.c
+> +++ b/tests/intel/xe_create.c
+> @@ -383,7 +383,7 @@ static void create_execqueues(int fd, enum
+> exec_queue_destroy ed,
+>   *              buffer sizes.
+>   *
+>   * SUBTEST: multigpu-create-massive-size
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Functionality: ioctl
+>   * Test category: functionality test
+>   * Feature: multigpu
+> diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c index
+> 59aca526e..9d1280528 100644
+> --- a/tests/intel/xe_eudebug.c
+> +++ b/tests/intel/xe_eudebug.c
+> @@ -932,11 +932,13 @@ static void test_read_event(int fd)
+>   *	partial unbind, unbind and unbind all operations.
+>   *
+>   * SUBTEST: multigpu-basic-client
+> + * Mega feature: MultiGPU
+>   * Functionality: attach multiGPU
+>   * Description:
+>   *	Attach the debugger to process which opens and closes xe drm client
+> on all Xe devices.
+>   *
+>   * SUBTEST: multigpu-basic-client-many
+> + * Mega feature: MultiGPU
+>   * Functionality: attach multiGPU
+>   * Description:
+>   *	Simultaneously attach many debuggers to many processes on all Xe
+> devices.
+> diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c in=
+dex
+> f652ab6b2..616fd262c 100644
+> --- a/tests/intel/xe_exec_basic.c
+> +++ b/tests/intel/xe_exec_basic.c
+> @@ -58,16 +58,16 @@
+>   *
+>   * SUBTEST: multigpu-once-%s
+>   * Description: Run %arg[1] test only once on multiGPU
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Test category: functionality test
+>   *
+>   * SUBTEST: multigpu-many-execqueues-many-vm-%s
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Description: Run %arg[1] test on many exec_queues and many VMs on
+> multiGPU
+>   * Test category: stress test
+>   *
+>   * SUBTEST: multigpu-no-exec-%s
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Description: Run no-exec %arg[1] test on multiGPU
+>   * Test category: functionality test
+>   *
+> diff --git a/tests/intel/xe_peer2peer.c b/tests/intel/xe_peer2peer.c inde=
+x
+> 70374e56d..92cb6a65f 100644
+> --- a/tests/intel/xe_peer2peer.c
+> +++ b/tests/intel/xe_peer2peer.c
+> @@ -18,8 +18,8 @@
+>  /**
+>   * TEST: xe_peer2peer
+>   * Category: Core
+> - * Mega feature: General Core features
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+> + * Sub-category: MultiGPU tests
+>   * Functionality: dma buf copy
+>   * Description: Peer2peer dma buf copy tests
+>   * Test category: xe
+> diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c index
+> 2de88fac9..928daaf58 100644
+> --- a/tests/intel/xe_query.c
+> +++ b/tests/intel/xe_query.c
+> @@ -184,7 +184,7 @@ const char *get_topo_name(int value)
+>   * Test category: functionality test
+>   *
+>   * SUBTEST: multigpu-query-engines
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Description: Display engine classes available for all Xe devices.
+>   * Test category: functionality test
+>   */
+> @@ -211,7 +211,7 @@ test_query_engines(int fd)
+>   * Test category: functionality test
+>   *
+>   * SUBTEST: multigpu-query-mem-usage
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Description: Display memory information for all Xe devices.
+>   * Test category: functionality test
+>   */
+> @@ -275,7 +275,7 @@ test_query_mem_regions(int fd)
+>   * Test category: functionality test
+>   *
+>   * SUBTEST: multigpu-query-gt-list
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Description: Display information about GT components for all Xe devic=
+es.
+>   * Test category: functionality test
+>   */
+> @@ -350,7 +350,7 @@ test_query_gt_list(int fd)
+>   * Test category: functionality test
+>   *
+>   * SUBTEST: multigpu-query-topology
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Description: Display topology information of GT for all Xe devices.
+>   * Test category: functionality test
+>   */
+> @@ -414,7 +414,7 @@ test_query_gt_topology(int fd)
+>   * Test category: functionality test
+>   *
+>   * SUBTEST: multigpu-query-topology-l3-bank-mask
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Description: Check the value of the l3 bank mask for all Xe devices.
+>   * Test category: functionality test
+>   */
+> @@ -486,7 +486,7 @@ test_query_gt_topology_l3_bank_mask(int fd)
+>   * Test category: functionality test
+>   *
+>   * SUBTEST: multigpu-query-config
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Description: Display config information for all Xe devices.
+>   * Test category: functionality test
+>   */
+> @@ -543,7 +543,7 @@ test_query_config(int fd)
+>   * Test category: functionality test
+>   *
+>   * SUBTEST: multigpu-query-hwconfig
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Description: Display hardware configuration for all Xe devices.
+>   * Test category: functionality test
+>   */
+> @@ -582,7 +582,7 @@ test_query_hwconfig(int fd)
+>   * Test category: negative test
+>   *
+>   * SUBTEST: multigpu-query-invalid-query
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Description: Check query with invalid arguments for all Xe devices.
+>   * Test category: negative test
+>   */
+> @@ -605,7 +605,7 @@ test_query_invalid_query(int fd)
+>   * Test category: negative test
+>   *
+>   * SUBTEST: multigpu-query-invalid-size
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Description: Check query with invalid size for all Xe devices.
+>   * Test category: negative test
+>   */
+> @@ -628,7 +628,7 @@ test_query_invalid_size(int fd)
+>   * Test category: negative test
+>   *
+>   * SUBTEST: multigpu-query-invalid-extension
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Description: Check query with invalid extension for all Xe devices.
+>   * Test category: negative test
+>   */
+> @@ -793,8 +793,7 @@ __engine_cycles(int fd, struct
+> drm_xe_engine_class_instance *hwe)
+>   * SUBTEST: multigpu-query-cs-cycles
+>   * Description: Query CPU-GPU timestamp correlation for all Xe devices.
+>   * Category: Core
+> - * Mega feature: General Core features
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   */
+>  static void test_query_engine_cycles(int fd)  { @@ -815,8 +814,7 @@ stat=
+ic
+> void test_query_engine_cycles(int fd)
+>   * SUBTEST: multigpu-query-invalid-cs-cycles
+>   * Description: Check query with invalid arguments for all Xe devices.
+>   * Category: Core
+> - * Mega feature: General Core features
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   */
+>  static void test_engine_cycles_invalid(int fd)  { @@ -929,8 +927,7 @@
+> test_query_uc_fw_version(int fd, uint32_t uc_type)
+>   *
+>   * SUBTEST: multigpu-query-uc-fw-version-guc
+>   * Description: Display GuC firmware submission version for all Xe devic=
+es.
+> - * Mega feature: General Core features
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Test category: functionality test
+>   */
+>  static void
+> @@ -946,8 +943,7 @@ test_query_uc_fw_version_guc(int fd)
+>   *
+>   * SUBTEST: multigpu-query-invalid-uc-fw-version-mbz
+>   * Description: Check query with invalid arguments for all Xe devices.
+> - * Mega feature: General Core features
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Test category: functionality test
+>   */
+>  static void
+> @@ -996,7 +992,7 @@ test_query_uc_fw_version_invalid_mbz(int fd)
+>   *
+>   * SUBTEST: multigpu-query-uc-fw-version-huc
+>   * Description: Display HuC firmware version for all Xe devices.
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   * Test category: functionality test
+>   */
+>  static void
+> @@ -1011,7 +1007,7 @@ test_query_uc_fw_version_huc(int fd)
+>   *
+>   * SUBTEST: multigpu-query-oa-units
+>   * Description: Display fields for OA unit query for all GPU devices
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   */
+>  static void test_query_oa_units(int fd)  { @@ -1063,7 +1059,7 @@ static
+> void test_query_oa_units(int fd)
+>   *
+>   * SUBTEST: multigpu-query-pxp-status
+>   * Description: Display fields for PXP unit query for all Xe devices
+> - * Sub-category: MultiGPU
+> + * Mega feature: MultiGPU
+>   */
+>  static void test_query_pxp_status(int fd)  { diff --git
+> a/tests/intel/xe_sysfs_defaults.c b/tests/intel/xe_sysfs_defaults.c index
+> 393e56651..f21ae94e6 100644
+> --- a/tests/intel/xe_sysfs_defaults.c
+> +++ b/tests/intel/xe_sysfs_defaults.c
+> @@ -7,7 +7,7 @@
+>   * TEST: xe sysfs defaults
+>   * Description: check if the sysfs engine .defaults node has all values.
+>   * Category: Core
+> - * Mega feature: SysMan
+> + * Mega feature: General Core features
+>   * Sub-category: SysMan tests
+>   * Functionality: sysman defaults
+>   * Test category: functionality test
+> diff --git a/tests/intel/xe_sysfs_scheduler.c
+> b/tests/intel/xe_sysfs_scheduler.c
+> index faafabd29..90d4ab8fd 100644
+> --- a/tests/intel/xe_sysfs_scheduler.c
+> +++ b/tests/intel/xe_sysfs_scheduler.c
+> @@ -6,7 +6,7 @@
+>  /**
+>   * TEST: xe sysfs scheduler
+>   * Category: Core
+> - * Mega feature: SysMan
+> + * Mega feature: General Core features
+>   * Sub-category: SysMan tests
+>   * Functionality: scheduler control interface
+>   *
 > --
 > 2.50.1
 
