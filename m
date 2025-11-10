@@ -4,66 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4001ACD1297
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 13:40:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63DAECCFA13
+	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 13:57:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E89C410E3B9;
-	Mon, 10 Nov 2025 13:40:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 179B110E0B1;
+	Mon, 10 Nov 2025 13:57:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="RmSO89OF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Qc+vYnKq";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E01610E3BA
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:40:11 +0000 (UTC)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 6245B1A19AA
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:40:10 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 38F96606F5;
- Mon, 10 Nov 2025 13:40:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 359BD10371920; Mon, 10 Nov 2025 14:40:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1762782009; h=from:subject:date:message-id:to:cc:mime-version:content-type:
- content-transfer-encoding:in-reply-to:references;
- bh=EdwRGwaUABaygXxYiDrrtqDNXAB4uefliOf6w2MtlOc=;
- b=RmSO89OFn3zW+grIs6GtyjmyQmhJoVRSS8ZJ1HPVJeoLSpVu6jp8WUDnaTgt/LAhy5I6xw
- JSOedx6awiX6WBPJhhPSkuxyxfrboy7qx49wYYuhnIyvmSdI2dvKJKXfdTSoCClBpH6NpZ
- /xIXWpU2lb+URlIHrNVl0oCXp6MJvVFhfA/9pD+CPnzbm5uJyTMpqPUWhqReZGF+1eYg/o
- Hzq4yaDIbLq1TxdoNvFaXxP5rp2EmGp8xxvXdqMS3t3ZH5MRwvUr83/RkaxtU2HgfFKDBS
- FSfBmisH3Wh2DUBReJiK7px8MC6iOxLb0YzK2u1RPMDkfp3xrEAnOwlm0BBprQ==
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 10 Nov 2025 13:39:46 +0000
-Subject: [PATCH i-g-t v4 44/46] lib/igt_kms: Add helper to get a pipe from
- an output
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251110-unigraf-integration-v4-44-0fc7bb1b4101@bootlin.com>
-References: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
-In-Reply-To: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43D2610E0B1
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:57:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1762783055; x=1794319055;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=QW9Ohlr2wRHi0rE74LG3CTfw39yxtNvE6C6otodaZao=;
+ b=Qc+vYnKqK9SveRykzRkV08mBfsynzuUni2ljSBaqwfMtQBmPmGvpeVta
+ E8UBMRpkQ4zLg9F9XW9NXW/e7S55cp63s7tzK+RDimgKC0GB2gh4Ncr4R
+ q38Mhy/VgwYNh2ixVfZl82KuHYPWt0/ak7FYYLIHql68kXPwrQBgxllMc
+ DSn5HiJygtVaJ72MoyvZ8LyLvm3aH9OP/lkVos+X+QISNFVzUy5PcZsdl
+ aHa3040ZhFRYlx1tzMG6r06jsAr5WsO7DtVLXPljv4eH5RY/BJHRd/OQA
+ Im5B18sudk6K+O8Q/oHJltctth3fAR0U4WJNEv8pU2uDjwz2tm/G5AqLe Q==;
+X-CSE-ConnectionGUID: 2VpyIQ+lQfWtelH5kkXZSQ==
+X-CSE-MsgGUID: +nnFQECWT5aj0M+rO/IYOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="64740030"
+X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; d="scan'208";a="64740030"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2025 05:57:35 -0800
+X-CSE-ConnectionGUID: fMAGRHgxS7aSdg38wRZdxA==
+X-CSE-MsgGUID: ULUrVtGaTxueGumL4azptA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,293,1754982000"; d="scan'208";a="188422943"
+Received: from bvivekan-desk.iind.intel.com ([10.190.238.63])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2025 05:57:34 -0800
+From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com, 
- khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1566;
- i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=uvKNeNbhgN+n31kbFaJpqESwmeiEKw3R3CtOIRkV8FM=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBpEesU76HZTyCsUBvGj7GtcvJMaKeTe/QhVgwNn
- C6CaT5CPomJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaRHrFAAKCRAgrS7GWxAs
- 4kRgEACM5IfEjW9LuEcd613/V1y47QgbZZgSfC0lvFYHBGyCqF7Iwd9b/Ndp85pQyVvI6HUMvEv
- Iw8wHbY+AYjZZx2RrQ2sYi/PIB4qpodwd9Uyrc8Iq2IRHjRoFhbKqdYqmzjercI4Uq1LhPgFjk8
- tz/+IOew3Liq4JLUsa6bOOGLkrTPnRj3pDaco9OH6VnL6sfddl0+MlNF9gqOwiTKoC44ZtSMIjJ
- /jsjlgGBE0QdZDPFoQy5m8lvvGOgxDGAosAn7vRZOeJJO26zld1VaX+yLN6JkJEXzOt4VuPj6AD
- H3LTKgJPrUfSPgFoqzW8MnQ44Kq6iMuiYQPMQryZOp338fJgStGofltzwwCQ4mBNvMcmDbTaKaj
- R0a/gSe3c/FAtWyNprngq2mone+5L2tbYa7L8JdGbw+i1OPXvbJnyej0z1mTDYPxPwNB+RW6F0s
- MLbnwAhXSkQFTaMr9yiTO2RUsYfnCD0FODLqTMn21GISMgeXhxhECZwk2oPXc3FbiWS5WcTLb/l
- Tc3mBeUWuL5av49uL3rrUVl2h59Tl9+jvljsKMM3vwF8CNaL5pXT/7AwN/zcihTVKzzyY6w35da
- 473sLvv8TFQTzHhO/zKm7khIawUMigqc5oa1nur9tCf90FSlRlA8uaJ+HBXGYCrT98UZMrwaIAJ
- LjLp6fO92W9bfog==
-X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
- fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
-X-Last-TLS-Session-Version: TLSv1.3
+Cc: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+Subject: [PATCH 1/2] lib/intel_blt: BB index should be incremented in dwords
+Date: Mon, 10 Nov 2025 19:28:06 +0530
+Message-ID: <20251110135805.3620715-3-balasubramani.vivekanandan@intel.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,59 +65,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Grabbing a valid pipe from a specific output is useful when testing
-the output.
+Size in bytes in used to increment the BB index, which is incorrect.
+Convert bytes to number of dwords.
 
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
 ---
- lib/igt_kms.c | 22 ++++++++++++++++++++++
- lib/igt_kms.h |  4 ++++
- 2 files changed, 26 insertions(+)
+ lib/intel_blt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index b3178ace4a8c..a80849d2bae7 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -7564,3 +7564,25 @@ enum pipe igt_get_pipe_from_connector(int drm_fd, int connector_id)
- 	}
- 	return PIPE_NONE;
- }
-+
-+/*
-+ * igt_get_pipe_for_output:
-+ * @display: display to fetch the pipes
-+ * @output: output to use
-+ *
-+ * Get a valid pipe for a specific output. The return value is the pipe first valid pipe for a
-+ * specific output.
-+ */
-+enum pipe igt_get_pipe_for_output(igt_display_t *display,
-+				  igt_output_t *output)
-+{
-+	enum pipe pipe;
-+
-+	for_each_pipe(display, pipe) {
-+		if (igt_output_is_connected(output) &&
-+		    (output->config.valid_crtc_idx_mask & (1 << (pipe))))
-+			return pipe;
-+	}
-+
-+	return PIPE_NONE;
-+}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 86e5b3224df3..79dd467f0252 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1318,4 +1318,8 @@ get_list_diff(const uint32_t *list_a, int list_a_len, const uint32_t *list_b, in
-  * Returns PIPE_NONE if the connector is not connected to any pipe
-  */
- enum pipe igt_get_pipe_from_connector(int drm_fd, int connector_id);
-+
-+enum pipe igt_get_pipe_for_output(igt_display_t *display,
-+				  igt_output_t *output);
-+
- #endif /* __IGT_KMS_H__ */
-
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index 7f7f5485e..9a0bcb96b 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -1714,7 +1714,7 @@ uint64_t emit_blt_fast_copy(int fd,
+ 
+ 	igt_assert(bb_pos + sizeof(data) < blt->bb.size);
+ 	memcpy(bb + bb_pos, &data, sizeof(data));
+-	bb_pos += sizeof(data);
++	bb_pos += DIV_ROUND_UP(sizeof(data), sizeof(*bb));
+ 
+ 	if (emit_bbe) {
+ 		igt_assert(bb_pos + sizeof(uint32_t) < blt->bb.size);
 -- 
-2.51.0
+2.43.0
 
