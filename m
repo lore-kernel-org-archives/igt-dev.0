@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93771CD13D3
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 13:40:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4001ACD1297
+	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 13:40:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4DD0A10E3BA;
-	Mon, 10 Nov 2025 13:40:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E89C410E3B9;
+	Mon, 10 Nov 2025 13:40:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="JseZylXT";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="RmSO89OF";
 	dkim-atps=neutral
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4543210E3C9
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:40:12 +0000 (UTC)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 392401A19A7
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6E01610E3BA
  for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:40:11 +0000 (UTC)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 6245B1A19AA
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:40:10 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 04491606F5;
- Mon, 10 Nov 2025 13:40:11 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 38F96606F5;
+ Mon, 10 Nov 2025 13:40:10 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 0DA9910371921; Mon, 10 Nov 2025 14:40:09 +0100 (CET)
+ with ESMTPSA id 359BD10371920; Mon, 10 Nov 2025 14:40:09 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1762782010; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1762782009; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=NYcfeBVwfiir9MaBCw4QQDAAmOnInfMpIgfyrA7cah4=;
- b=JseZylXTmqcsXXEUyWxJpwJ8AMykJoWvtH+FsPu4FhiACzJ/MmU2sdg123QDIGMCCLYiL8
- /xFN/DEotwEeQI+RgoJ35RbT+rO1AdEViFBR7hAHWI9g5htkmLiAaFE9dweSGQ65xXwEp8
- gjvWt9m1htjPQPvykinnv28oSxN339lMC1ItsOACIZVaOyevGC/zLUmXtq4yEjD7/K2zTy
- 7//bkPaMNPfzjgg0YUPGrMaOEBRGsNPaNsxLFx91lmXVHDCMSWf4LJ6fhk5KqGYkjGBYBq
- FWH/+MHRCKlQ3AXyrKEoCAmjLNrKsIT2Z97Zgm5gP1cto5jaxtcY4bNA0FPC0g==
+ bh=EdwRGwaUABaygXxYiDrrtqDNXAB4uefliOf6w2MtlOc=;
+ b=RmSO89OFn3zW+grIs6GtyjmyQmhJoVRSS8ZJ1HPVJeoLSpVu6jp8WUDnaTgt/LAhy5I6xw
+ JSOedx6awiX6WBPJhhPSkuxyxfrboy7qx49wYYuhnIyvmSdI2dvKJKXfdTSoCClBpH6NpZ
+ /xIXWpU2lb+URlIHrNVl0oCXp6MJvVFhfA/9pD+CPnzbm5uJyTMpqPUWhqReZGF+1eYg/o
+ Hzq4yaDIbLq1TxdoNvFaXxP5rp2EmGp8xxvXdqMS3t3ZH5MRwvUr83/RkaxtU2HgfFKDBS
+ FSfBmisH3Wh2DUBReJiK7px8MC6iOxLb0YzK2u1RPMDkfp3xrEAnOwlm0BBprQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 10 Nov 2025 13:39:47 +0000
-Subject: [PATCH i-g-t v4 45/46] lib/unigraf: Add helpers to get the current
- LT status
+Date: Mon, 10 Nov 2025 13:39:46 +0000
+Subject: [PATCH i-g-t v4 44/46] lib/igt_kms: Add helper to get a pipe from
+ an output
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251110-unigraf-integration-v4-45-0fc7bb1b4101@bootlin.com>
+Message-Id: <20251110-unigraf-integration-v4-44-0fc7bb1b4101@bootlin.com>
 References: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
 In-Reply-To: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1229;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1566;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=TIoWGzKYP2CUP66TQH07bxu2Hofnsr0Bto9BshXVFSg=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBpEesU1NoszjlId0uKvUg+EB3kSWfYcsx+ASrEI
- PW7R+JIPeOJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaRHrFAAKCRAgrS7GWxAs
- 4vTWD/4nlTMu9QssNHc6u8GUxBD1putQRSLbzgPWhDiIOQbDzUg15DQa9+4feherNaZo8HBKs3W
- SRXtaYvdnJz7v/7mcnSUi8sPe9+3eFCGlFn4HkW2Dz2VhsaxaS9MgY+Mb930wHfFsiiA5UdVInf
- yMSv/ZdZiWtQ5IyDR3gALAFWNJ5Ys0xQM3scBelO+TF3swL92pX3BxJiFzpk1tHgCj1XJ2eu37l
- uA9UkGRxw5SyuoU0dsLaZtMHrEdgR9JQWVdcG5jkNysVsLzg81KAiKc0WLyTeOfcskCGKfsBsM2
- P0ykrJWdEdEVjB9Un7Gdx0G3JW41Ayjgrc9mOL6oNfBraJqgg1BhLtg9EDMKTGJjhVi3srCFxGe
- qROZoyce6XwMeqIOzuJBEOogGCY6K89PRgIemrc/NU8NpBnKCYqy0WuWf+i7aqzeVOIkopCJLJO
- c+cnbvY0YyvhypHIYjAyaWOgkXSnQ4f4MaAYclHDsQ2CNCUeecfJ0u8eJcWroUc4BBEJxVGU8JP
- /v/8fYGj/6TwQ/MOxa3Eaj2xvfq9fxoHDj43Fi8ylVh9ArbCAwAKij7Vg9wA1Zr9DUdLJRrMtnL
- 6O17doUvMh/cbPytuTMAkZaLWWzxhECqCgLdws/fvOjYHN68zZZVoIzDtXzMcA/Nf3r85WAtAQf
- dZpEf5WoDXbM+rQ==
+ bh=uvKNeNbhgN+n31kbFaJpqESwmeiEKw3R3CtOIRkV8FM=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBpEesU76HZTyCsUBvGj7GtcvJMaKeTe/QhVgwNn
+ C6CaT5CPomJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaRHrFAAKCRAgrS7GWxAs
+ 4kRgEACM5IfEjW9LuEcd613/V1y47QgbZZgSfC0lvFYHBGyCqF7Iwd9b/Ndp85pQyVvI6HUMvEv
+ Iw8wHbY+AYjZZx2RrQ2sYi/PIB4qpodwd9Uyrc8Iq2IRHjRoFhbKqdYqmzjercI4Uq1LhPgFjk8
+ tz/+IOew3Liq4JLUsa6bOOGLkrTPnRj3pDaco9OH6VnL6sfddl0+MlNF9gqOwiTKoC44ZtSMIjJ
+ /jsjlgGBE0QdZDPFoQy5m8lvvGOgxDGAosAn7vRZOeJJO26zld1VaX+yLN6JkJEXzOt4VuPj6AD
+ H3LTKgJPrUfSPgFoqzW8MnQ44Kq6iMuiYQPMQryZOp338fJgStGofltzwwCQ4mBNvMcmDbTaKaj
+ R0a/gSe3c/FAtWyNprngq2mone+5L2tbYa7L8JdGbw+i1OPXvbJnyej0z1mTDYPxPwNB+RW6F0s
+ MLbnwAhXSkQFTaMr9yiTO2RUsYfnCD0FODLqTMn21GISMgeXhxhECZwk2oPXc3FbiWS5WcTLb/l
+ Tc3mBeUWuL5av49uL3rrUVl2h59Tl9+jvljsKMM3vwF8CNaL5pXT/7AwN/zcihTVKzzyY6w35da
+ 473sLvv8TFQTzHhO/zKm7khIawUMigqc5oa1nur9tCf90FSlRlA8uaJ+HBXGYCrT98UZMrwaIAJ
+ LjLp6fO92W9bfog==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,48 +79,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To ensure that the link training was correct, grab actual link
-training status from unigraf.
+Grabbing a valid pipe from a specific output is useful when testing
+the output.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/unigraf/unigraf.c | 10 ++++++++++
- lib/unigraf/unigraf.h |  3 +++
- 2 files changed, 13 insertions(+)
+ lib/igt_kms.c | 22 ++++++++++++++++++++++
+ lib/igt_kms.h |  4 ++++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index f1d6d809e216..a8a42953bdf3 100644
---- a/lib/unigraf/unigraf.c
-+++ b/lib/unigraf/unigraf.c
-@@ -718,6 +718,16 @@ int unigraf_get_max_lane_count(void)
- 	return max_lanes;
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index b3178ace4a8c..a80849d2bae7 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -7564,3 +7564,25 @@ enum pipe igt_get_pipe_from_connector(int drm_fd, int connector_id)
+ 	}
+ 	return PIPE_NONE;
  }
- 
-+uint32_t unigraf_get_lt_rate(void)
-+{
-+	return unigraf_read_u32(TSI_DPRX_LT_RATE_R);
-+}
 +
-+uint32_t unigraf_get_lt_lane_count(void)
++/*
++ * igt_get_pipe_for_output:
++ * @display: display to fetch the pipes
++ * @output: output to use
++ *
++ * Get a valid pipe for a specific output. The return value is the pipe first valid pipe for a
++ * specific output.
++ */
++enum pipe igt_get_pipe_for_output(igt_display_t *display,
++				  igt_output_t *output)
 +{
-+	return unigraf_read_u32(TSI_DPRX_LT_LANE_COUNT_R);
-+}
++	enum pipe pipe;
 +
- void unigraf_set_max_link_rate(int bandwidth)
- {
- 	unigraf_write_u32(TSI_DPRX_MAX_LINK_RATE, bandwidth);
-diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
-index 721fd025924e..3b94eb9aca29 100644
---- a/lib/unigraf/unigraf.h
-+++ b/lib/unigraf/unigraf.h
-@@ -251,4 +251,7 @@ int unigraf_get_max_link_rate(void);
++	for_each_pipe(display, pipe) {
++		if (igt_output_is_connected(output) &&
++		    (output->config.valid_crtc_idx_mask & (1 << (pipe))))
++			return pipe;
++	}
++
++	return PIPE_NONE;
++}
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 86e5b3224df3..79dd467f0252 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1318,4 +1318,8 @@ get_list_diff(const uint32_t *list_a, int list_a_len, const uint32_t *list_b, in
+  * Returns PIPE_NONE if the connector is not connected to any pipe
   */
- int unigraf_rate_to_kbs(enum unigraf_rate rate);
- 
-+uint32_t unigraf_get_lt_rate(void);
-+uint32_t unigraf_get_lt_lane_count(void);
+ enum pipe igt_get_pipe_from_connector(int drm_fd, int connector_id);
 +
- #endif // UNIGRAF_H
++enum pipe igt_get_pipe_for_output(igt_display_t *display,
++				  igt_output_t *output);
++
+ #endif /* __IGT_KMS_H__ */
 
 -- 
 2.51.0
