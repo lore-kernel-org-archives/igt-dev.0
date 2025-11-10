@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2BE9CCFA1A
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 03:59:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79578CCF9E3
+	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 04:02:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8786410E114;
-	Mon, 10 Nov 2025 03:59:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2BF2110E29D;
+	Mon, 10 Nov 2025 04:02:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K/WtDTNG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AO6ZTmL2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 541EE10E114
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 03:59:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21C5B10E29D
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 04:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762747195; x=1794283195;
+ t=1762747341; x=1794283341;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
  bh=ohBsqUEXzXNZlsCwE9TgyglpedVvIPKpJWMcRy7ewLE=;
- b=K/WtDTNGu96/PEMyEBcVh4mZspLH/Fi7QqQWrGcBCFPdiWJVjwQmLMNv
- ge/MB/FnGNamBnekHfZb+VssManHEjfepHXjT33hRLTb2e+GB1rbdCUcS
- Z9+x75SP0gkX593wws2sKLPDG/TUdCg0jj6M96O4bsB3EvecWr042FBvV
- 2bQROTW5FeJztIZTfzT6DVc1PMm6NboV16czKAbH4XH9BXPO07ITAGZcc
- L2eCQnG/6ZaoFXgSw0wtxvBpOFG3y2+p5r0uIVAjwbgFREezOYOscDgQQ
- q+tON8poIzpH8ew5ICcYl6GMO4Xf7JSRbP8KOEjXhFzwRz1HXcMkbg37A w==;
-X-CSE-ConnectionGUID: biKWXIjLS4yiFvL7bvq3Yg==
-X-CSE-MsgGUID: 5bNIbat8TfePi0eLQjrjmw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64722976"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="64722976"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Nov 2025 19:59:40 -0800
-X-CSE-ConnectionGUID: yM5lbXYiTcibJGaUwWMq2g==
-X-CSE-MsgGUID: U9fpJvf8RBu01DMC0KPXTA==
+ b=AO6ZTmL2NhCqiMwU/gtJmtXITIilS8c8angIEI9ksRF2Tj5sJd2xsFrK
+ l/ae2jOUbFTRpa+zHbnc21xi8vVpWGghtc5G/zcG/waxDct+hHnqJe77p
+ UzFHyBUOmvsdMTYukq6HjOjJWcE3Balu7sHg2gjh9ZH5UjZOW/zXZoiKv
+ P5IF9FhSizchOqRNVYDO9fJMd4FmJ5+xc7gtardgZkEXm/JQO7KJWHw/S
+ ljHoh7mpEHyN+cE0Rmym/mJ2PnZ4OCm7bWfeo4ft1wr3CLshhN4LOVN3U
+ g0U5ws7c5wjtGxh2hzylsx/yKuov507ywKEPZBMaMWU6T01e8l4PT3JvC g==;
+X-CSE-ConnectionGUID: MUvr1rsLSluSiZewtI6YWQ==
+X-CSE-MsgGUID: Cv73RMH/QMSYsEpXpvCVOQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11608"; a="75406237"
+X-IronPort-AV: E=Sophos;i="6.19,292,1754982000"; d="scan'208";a="75406237"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Nov 2025 20:02:21 -0800
+X-CSE-ConnectionGUID: ZZCTXy+JS624RtLuz210sQ==
+X-CSE-MsgGUID: 90G59I55QniNEPdWwLAL/Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,292,1754982000"; d="scan'208";a="187818834"
+X-IronPort-AV: E=Sophos;i="6.19,292,1754982000"; d="scan'208";a="225823503"
 Received: from dut7069bmgfrd.fm.intel.com (HELO DUT7069BMGFRD..) ([10.1.40.39])
- by orviesa006.jf.intel.com with ESMTP; 09 Nov 2025 19:59:40 -0800
+ by orviesa001.jf.intel.com with ESMTP; 09 Nov 2025 20:02:21 -0800
 From: Nishit Sharma <nishit.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Subject: [PATCH i-g-t v4 8/8] tests/intel/xe_multi-gpusvm.c: Add SVM multi-GPU
  migration test
-Date: Mon, 10 Nov 2025 03:59:37 +0000
-Message-ID: <20251110035939.222876-1-nishit.sharma@intel.com>
+Date: Mon, 10 Nov 2025 04:02:04 +0000
+Message-ID: <20251110040220.223836-1-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251104153201.677938-1-nishit.sharma@intel.com>
 References: <20251104153201.677938-1-nishit.sharma@intel.com>
