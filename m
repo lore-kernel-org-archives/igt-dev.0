@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00D2BCD13D2
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 13:40:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49B62CD13D8
+	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 13:40:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A7FD610E3C6;
+	by gabe.freedesktop.org (Postfix) with ESMTP id DF5F510E3C2;
 	Mon, 10 Nov 2025 13:40:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Tr0ULgGG";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="aVLeoDWk";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E454C10E3BE
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:40:03 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C62CF10E3B9
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:40:05 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id CC2BF4E41609
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:40:02 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id B71961A19A7
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:40:04 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id A33CE606F5;
- Mon, 10 Nov 2025 13:40:02 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 86034606F5;
+ Mon, 10 Nov 2025 13:40:04 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id D087110371908; Mon, 10 Nov 2025 14:40:01 +0100 (CET)
+ with ESMTPSA id 49B8710371906; Mon, 10 Nov 2025 14:40:03 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1762782002; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1762782004; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=EH6dOXsf4nTdgy/ZMDi1FwKub9ab+CgaiCz2MqCiDxs=;
- b=Tr0ULgGGmQwH7SWaRJ3J2hzMJpzbva+W9KnVQg2ffhpSUEuJGONru5TxIYjlVtKipj9mSX
- l9GgZL3otMWLWB8cveCHHFTP+lPg4BYArkGVPF/PZpyPFx+MKdjohNBBd+O2gsYSwqCDdc
- xMlHh0hFRNElL4L02x/WdXGV76quu2d6JwTc+wEymmhZ0Fa+qJK9+MpkWGLfONz81+D60X
- tpFus64huPv5EzbZOhLJlBUuKNSSec9GxLXdUlX1m9121MqP7EEPcKrfeHriTU3DGz7UvR
- ZKm1Qh4joGQKv75M7WVVJ0LVbkUqFNPO3HZ8MX+62YYGNVHgcrQSO7l3xaDo4g==
+ bh=Ls71hxRclezvD237yplTg1+q/r07RDHo6itz6b1oRKo=;
+ b=aVLeoDWk9NT4nlC75y4RrcOXr0+jOI3h5r/vFC1usVcZF5/2PDVAk29nGpK2zKREbaoL2I
+ 8FKaWUDHBPnV0+wJd4CJpzbz48TODKidAb+f1heSswpeh28hMTsnrpG1MYFN8N88fZ+LEh
+ ktuI37lB6dHgfosLYsS9iKHTVnBmIaDVWPz4+w/GZDt1cuSLlw/aSpLKbrDvADiQec93RC
+ SJBR2qMRe0XHNwrtLg+8dRr4mmD4Ig4/wWKXQQELR6zMTadY1RFAY0dBQ6VaAZ/Ttv081y
+ 7gGrGC5elM/k+pfWdtY/H0uK1UxnJJuL+F1RMDQlAaiOQ3geMBuw5s8MEW3saw==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 10 Nov 2025 13:39:37 +0000
-Subject: [PATCH i-g-t v4 35/46] lib/igt_pipe_crc: Add ungiraf crc calculation
+Date: Mon, 10 Nov 2025 13:39:39 +0000
+Subject: [PATCH i-g-t v4 37/46] docs/unigraf: Add unigraf documentation
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20251110-unigraf-integration-v4-35-0fc7bb1b4101@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251110-unigraf-integration-v4-37-0fc7bb1b4101@bootlin.com>
 References: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
 In-Reply-To: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3813;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3634;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=pd5v84XVhIiXfJWWhFm0XWERCx6/1xt5gN/nw8qzOaE=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBpEesSBM8uQ4cNhR1HZBmcMY5xLqcGr6SZfeQQH
- ESpF3DXh2aJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaRHrEgAKCRAgrS7GWxAs
- 4naWEACFVWfQBnyF6GZxXNEvvOj5edPdPIzyjHMj/qAHvOaqlaItUx+KF2kdpTvSY8RcDZeeen1
- JooEd2RWcZ4hRVt9GW2Rr30ULrc/cz4c5khCAcrrkTbt5niIj/aG7M60gysNzREDW7TK6E/TNph
- lmFuVJtMnEfTltOgoRZBn1/ScRnNTJdwI7pfljq1TX+K5QpCkQIJMrceK7yRbNNeayDmqeLxnkw
- 0uFhah0ITqjHBRWMx2rMGmIFIode7PAdouUOKE3REO4GD54kUDCFXFGU3TTbb4fsS+TLQK9LTfR
- sNvgrmVAWN1k+csCfQyabZaRm8FXt27s+YLV8rOumJBVPCKvxEiMgrtBVV4qd94999gF0hw4PiU
- 78hcCBOu3mjILrpe3z54e9/2LdzLTyhd88qTZoBXw3Wk4U19QQ3ciZDqjpIGgohZBVg8EUxnqG4
- jrOER+XPrOq754YAx/BsG2CfD9prWQr8O2wyXGDIz/H8o5t3kTa0pcHVRg/Viw08LgIvchTs2a7
- ouoa9PLdOLY62oq+jQgAymPZ8Pyn2RjaM1Ns7399gkfd7OLMcSDshOfhJjpVFGc3W1L8YeakEcM
- GFFZLmBxEH+C8vxqMjz2lxKQK2wn27S+Hw60R7HgF8O9s7cIWoYuqT/W2mDvbGyzYQ868NdUBHA
- 2PbUmGRaDXpC/Uw==
+ bh=WSbOf2L5bFj7DWr00Q4EdmO8BQAHLBnhiuAjgJZmvuk=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBpEesSSUlc1QRyMbMIBmC5lSbF6LLh0JX0tCwJ2
+ UrwI36nSTOJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaRHrEgAKCRAgrS7GWxAs
+ 4m02D/4vedDkslcONypkuBLa3TNjJtFP21pt8To/DH00Tqu6r5xz+lQY+t01Gy/8RQihXpE43zL
+ h34o5beOj0ObbVLNGJASw06pVreHVbYT87jjSoTR2ZwLwu+KU7kx00ILwwvZxQdYy3xC55B+/8W
+ RnSlIB34YChNwlOqEBhxpif7W38hnkkMpxlRtXgvUucDnoS4FJ5s+nREtHbQnKoBn/ahNJjDoeq
+ j6tM7T/w5dM4Nel91f6HnCFJEdi8yv0lvIWHs7GXqQ69Asc0p2njczSJOQCcsCxsH0MnAopqA/L
+ exe1cdYuTtSShWIIdBv/MrwkNjKZiuOTOPXY2sKljO5orKmbfIWvK9TZaCKwk252+/r0G1FpKrf
+ lYHGHtw1XzKJ9PRySZATQ4Lcf8PHeo+oPxmYG5rtSTn0nn+ahi4HdJLn1o/RBa7UxU8wSHokq8r
+ yd9Ly4f6cOB1Qn9hr9M3TBqo7fb8EJM7M5U6WyMuJyQn5B7wQsVgydoZRNt8uSXU/shh3qDn2u9
+ hO4Qtlwc1JjD027vLh8sUIHlkgEk/IopUHuBVousClzi9pJwgsdZIzuuauFq/LrLWOFlwBeqfpw
+ u1qDQkiDDc/GQhDJVB4ZgcTFll4sjBa23Bnc6X5kT/oQ7Kl6gYUdAzcCCSLR0OuIi6Upnh6r0yw
+ kLVlLgjb2BwAJ4A==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -78,138 +78,100 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Unigraf can read crc from the physical output, use this CRC instead of
-internal CRC when configured. This allows to also test the hardware signal
-generation.
-
-This small addition allows to use the unigraf device for most of the
-kms_* tests.
+Add unigraf documentation to explain how to compile and use it with IGT.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_pipe_crc.c    | 28 ++++++++++++++++++++++++++++
- lib/unigraf/unigraf.c | 24 ++++++++++++++++++++++++
- 2 files changed, 52 insertions(+)
+ docs/unigraf.txt | 81 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 81 insertions(+)
 
-diff --git a/lib/igt_pipe_crc.c b/lib/igt_pipe_crc.c
-index 866bf2881cbd..32fd7f09ff5a 100644
---- a/lib/igt_pipe_crc.c
-+++ b/lib/igt_pipe_crc.c
-@@ -3,9 +3,12 @@
-  * Copyright © 2013 Intel Corporation
-  */
- 
-+#include "igt_core.h"
-+#include "unigraf/unigraf.h"
- #include <inttypes.h>
- #include <sys/stat.h>
- #include <sys/mount.h>
-+#include <xf86drmMode.h>
- #ifdef __linux__
- #include <sys/sysmacros.h>
- #endif
-@@ -359,6 +362,31 @@ static void read_one_crc(igt_pipe_crc_t *pipe_crc, igt_crc_t *out)
- 	} while (ret == -EINTR);
- 
- 	fcntl(pipe_crc->crc_fd, F_SETFL, pipe_crc->flags);
+diff --git a/docs/unigraf.txt b/docs/unigraf.txt
+new file mode 100644
+index 000000000000..49225a6f4e51
+--- /dev/null
++++ b/docs/unigraf.txt
+@@ -0,0 +1,81 @@
++Unigraf Support in IGT
++========================
 +
-+#if HAVE_UNIGRAF
-+	if (unigraf_open_device(pipe_crc->fd) && unigraf_use_crc()) {
-+		int pipe_id;
-+		int stream_id;
-+		drmModeConnectorPtr connector = unigraf_get_connector(pipe_crc->fd);
++This document provides information, instructions and for Unigraf support in IGT.
 +
-+		if (!connector)
-+			return;
++Introduction
++------------
 +
-+		pipe_id = igt_get_pipe_from_connector(pipe_crc->fd, connector->connector_id);
-+		if (pipe_id != PIPE_NONE && pipe_id == pipe_crc->pipe) {
-+			unigraf_read_crc(0, out);
-+			return;
-+		}
++Unigraf devices are a set of devices that can be used to test all sort of graphical
++interface and signals. See Unigraf website for more information about all the
++capabilities of earch devices: https://unigraf.fi
 +
-+		for (stream_id = 0; stream_id < unigraf_get_mst_stream_count(); stream_id++) {
-+			pipe_id = unigraf_get_connector_by_stream(pipe_crc->fd, stream_id);
-+			if (pipe_id != PIPE_NONE && pipe_id == pipe_crc->pipe) {
-+				unigraf_read_crc(stream_id, out);
-+				return;
-+			}
-+		}
-+	}
-+#endif
- }
- 
- /**
-diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index 51f1f13af354..74bc9b2137d1 100644
---- a/lib/unigraf/unigraf.c
-+++ b/lib/unigraf/unigraf.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: MIT
- 
- #include "glib.h"
-+#include "igt_aux.h"
- #include "igt_core.h"
- #include <stdint.h>
- #include <stdio.h>
-@@ -65,6 +66,13 @@ static bool unigraf_crc;
-  */
- #define UNIGRAF_CONFIG_USE_CRC_NAME "UseCRC"
- 
-+/**
-+ * UNIGRAF_CONFIG_MST_STREAM_COUNT - Key for the stream count configuration
-+ *
-+ * Set to 0 to use SST, 1..4 for MST
-+ */
-+#define UNIGRAF_CONFIG_MST_STREAM_COUNT "MSTStreams"
++Unigraf documentation
++---------------------
 +
- /**
-  * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf device
-  */
-@@ -341,6 +349,7 @@ bool unigraf_open_device(int drm_fd)
- 	int chosen_device;
- 	int chosen_role;
- 	int chosen_input;
-+	int unigraf_stream_count;
- 
- 	assert(igt_can_fail());
- 
-@@ -368,6 +377,7 @@ bool unigraf_open_device(int drm_fd)
- 		cfg_edid_name = NULL;
- 		unigraf_connector_name = NULL;
- 		unigraf_crc = true;
-+		unigraf_stream_count = 0;
- 	} else {
- 		cfg_device = g_key_file_get_string(igt_key_file, cfg_group,
- 						   UNIGRAF_CONFIG_DEVICE_NAME, &cfg_error);
-@@ -416,6 +426,15 @@ bool unigraf_open_device(int drm_fd)
- 			unigraf_debug("CRC usage not configured, using unigraf CRC.\n");
- 			unigraf_crc = true;
- 		}
++All the documentation for libTSI, the library used to communicate with the unigraf,
++can be found on unigraf website: TODO
 +
-+		cfg_error = NULL;
-+		unigraf_stream_count = g_key_file_get_boolean(igt_key_file, cfg_group,
-+							      UNIGRAF_CONFIG_MST_STREAM_COUNT,
-+							      &cfg_error);
-+		if (cfg_error) {
-+			unigraf_debug("MST usage not configured, using SST.\n");
-+			unigraf_stream_count = 0;
-+		}
- 	}
- 
- 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
-@@ -497,6 +516,11 @@ bool unigraf_open_device(int drm_fd)
- 
- 	unigraf_reset();
- 
-+	if (unigraf_stream_count == 0)
-+		unigraf_set_sst();
-+	else
-+		unigraf_set_mst_stream_count(unigraf_stream_count);
++Setting up Unigraf
++------------------
 +
- 	return unigraf_connector_name != NULL;
- }
- 
++For most of the unigraf devices, this should be as simple as "plugging the
++unigraf and plug the video cable". If you need to install some license, upgrade
++the firmawre... please take a look at the official unigraf documentation.
++
++Compiling IGT with Unigraf support
++----------------------------------
++
++Unfortunatly, the communication with the device use a proprietary library and the
++underlaying protocol is not open. To use the unigraf you need to install the unigraf
++SDK, grab the libTSI.so and make it available on the build machine and the DUT.
++
++Deploying the Unigraf with IGT
++------------------------------
++
++Unigraf may work out of the box: by default if IGT find a unigraf device, it will
++try to connect and configure it to use USB-C input. This allows running most of
++the existing tests without an actual screens.
++
++Here is a complete example configuration:
++
++        [Unigraf]
++        # Choose a device using his name, you can find it in UCDConsole (installed with the SDK)
++        Device=UCD-500 [2434C620]
++        # Choose a role for the device, you can find it UCDConsole
++        Role=USB-C, DP Alt Mode Source and Sink
++        # Choose active input for the device
++        Input=DP RX
++        # Set the connector name used by the unigraf device. If not set, IGT will try to
++        # autodetect which connector is used.
++        Connector=DP-2
++        # Set the EDID used by Unigraf
++        EDID=DEL_16543_DELL_P2314T_DP
++        # Enable or disable the use of Unigraf's CRCs instead of the CRTC CRCs
++        UseCRC=1
++        # Set the number of emulated MST streams (0 = Single Stream Transport, >=1 = MST)
++        MSTStreams=0'
++
++Current Support in IGT
++----------------------
++
++Support for the Unigraf devices in IGT is found in the following places:
++* lib/unigraf/unigraf.[ch] -> IGT API
++* lib/unigraf/TSI.h -> Header for libTSI.so, not provided by Unigraf
++* lib/unigraf/TSI_types.h -> Header containing all the relevant values from unigraf SDK. The unigraf SDK can't be used directly because it is only compatible with windows and c++.
++
++Current unigraf.c features are:
++* Plug, unplug, hotplug pulse
++* EDID management
++* MST/SST stream management
++* CRC calculation
++
++Current testing are:
++* All igt tests that require a display and use a CRC (kms_plane, )
++* Basic EDID and MST tests
++
++Planned tests:
++* Link training scenarios (link rate, lane count, scrambling, ...)
++* Bandwidth constraint management
++* HDCP content protection
++* Display stream compression
 
 -- 
 2.51.0
