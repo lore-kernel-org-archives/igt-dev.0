@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05038CD1297
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E0E2CD13D2
 	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 13:40:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AE84210E3BA;
+	by gabe.freedesktop.org (Postfix) with ESMTP id E96CB10E3C7;
 	Mon, 10 Nov 2025 13:40:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="vV9ZVhxC";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="RGzZ59Qn";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA4F910E3B9
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:40:10 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D5D7110E3BE
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:40:08 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 934674E41609
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:40:09 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id CA9D71A19A8
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:40:07 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 6A878606F5;
- Mon, 10 Nov 2025 13:40:09 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id A078D606F5;
+ Mon, 10 Nov 2025 13:40:07 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 5DBB61037191F; Mon, 10 Nov 2025 14:40:08 +0100 (CET)
+ with ESMTPSA id 93C0B1037191D; Mon, 10 Nov 2025 14:40:06 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1762782008; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1762782007; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=vzeG3guB0/AvkIgdwetjHN1P3J+jBsJ1ZUddNs3YsWw=;
- b=vV9ZVhxCHcRQHzbmIV79Nxm4gsj27nymq2WklFObHl89d2Rlkm/PfyYxv+g+J0Si7P26o5
- wRrq28kVmTde6fKZqGnbyRD86+Zbp7GBlt1AzFmdC9I2LEL56pl6zoQSyfncszLHdTRBMA
- +qIXbcHjNmJQ3XimbBeQDeJY1K9fC123nE7DMxtxwxCkPj8sP9eRa6FIj8USxFZp+mG38g
- GoP0pv9peUqjrKw5s+79Kb9E6p5gsf9kC9bMIN7JiWlcgR2lI2ve7u2Vn27g26SlX/TWen
- GNDNiMAH50BYq5AJf0etP8jKKCx3iIZWlCJASXsfci00sEXuyF+oXyysqR6Lfg==
+ bh=mH02HBk1UThXLzJWtUwwJzGJcJxKGAweHqA4FO4cox4=;
+ b=RGzZ59Qn8rh9uk6Zb6abBlNJacC7xIFd04x6p4D5wJ2Fe4hWTaZvdO7avI5ohlD7J6G7ER
+ iNfODmO4zlQyiTXuy6a9Wx3Sp+rGjRzmjromGlbAMl/yfKyyf1Yq93DAFhKtu5ZwuTCvVZ
+ 9r1rbV3R+jbqt2v0CP9gPqKZpblnPlOEwsnvbndD1yFQ1NmZ5M5lq8G3pxaBgZA9K2uzbk
+ HXk+NK4mnYVOOXbSoaS7BSG0wCfrMR9Dx34Wh97HNdBlVzXex/dM4MOht8vTgeuT8Qr0y0
+ DJW8cZVcrpfcf4dx2rDdwc+Wq6Cro6Wxf0GZsFBmO5ck25ZpQM0DZFFRv+alaA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 10 Nov 2025 13:39:45 +0000
-Subject: [PATCH i-g-t v4 43/46] lib/igt_kms: Add asserts to avoid null
- pointer dereference
+Date: Mon, 10 Nov 2025 13:39:43 +0000
+Subject: [PATCH i-g-t v4 41/46] lib/i915/dp: Add helper to get maximum
+ supported rate
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251110-unigraf-integration-v4-43-0fc7bb1b4101@bootlin.com>
+Message-Id: <20251110-unigraf-integration-v4-41-0fc7bb1b4101@bootlin.com>
 References: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
 In-Reply-To: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=649;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2254;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=FwvsTg87U2UpWAvURZ7nihkFfkhago9B2auBVLDYuWU=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBpEesUHKLmgyD8Q3/sYttd7JNRThxXDk8MjWLE+
- SPszOKsvnOJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaRHrFAAKCRAgrS7GWxAs
- 4qQ7EACs7w9BFX7T6Vpuhqzbw81r5B5+CyosHjBQNNPWCjDxW+svUg0oKKV7QILzEWNYl5duQJ5
- dZk8zEaeK4axZt1+fsQLyI4mklVlwBr1HPJbOe5oWy9qjgNwJ2T8RW7A81pEmJaQKECZwMjpFK0
- 8EBMm+MTdDb4xgZAKeJZtJDd1JuIRG7yxmPJ2fiSUVsQVhb5/ukycWR5P5ZnFgad+vhW6qVwjnQ
- ZmcdGLEGFNIvFArQkLirDQLGR3ybH8lNblXPyyTZC3my1EOQA/nne/pFjy9ZE/4a9QuUO9zJIzd
- 0Fl8pCgu9A9aSqd+6/tHCC6Tnsz5rcFReF8J158F1oV5E7LWJPioJKDIdmeOBTX2pKGDxjWaADB
- Lt1NmpHsnGAloLg8PtwvE3nmvd0H8RQR3UQo6yttHKrelFNhWMh/O49C4Ufy2ND/ruLmTq5n6HO
- DN4R7aCoabaZOQkdLqwUphnnjh1GozrncGkd94aKMz+lwGSIayH4YCjYSaEG5n7W6MEGTIGj1Px
- BphJbryQ9R8DTlS6EZxW1QFoLZDBpWel4OcDJlcRcyyyqZC+KwukH21w1T4OEDbnU+rxrcTI9pI
- CWqCUJZJGxSvfx/OwgEODxktzX5pidtB9/wYW9BIRK2K6pnEupjVuCukTEV7noIN0JA5zJCejvb
- 9Ec22Pxe/fSfOcA==
+ bh=LubGZXytxx3/y+tau7NYC9weVtLa9FN3QPjeZPobd1A=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBpEesTtlZEmACxruKrfrghEQXoWl3FNtqYSkBFa
+ VnK8e5zgWKJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaRHrEwAKCRAgrS7GWxAs
+ 4i+mD/44kcdJMSODUGm82d08OLfeLIeLXQRS83dFgirx8FOqAyHgI9QrFE98nMlQp4N3BwZOoNu
+ TQokXC+HMbxp+/fKgHKL8tUKTGVdqp3+txYKjXijXfHZRAhZHQi1MT5X1E1pOgFwh+JcXAgDZHc
+ VZjOioBlB7yRKXveCbzJruZjuKwyV7sG//hRmTgO5wu6PWk6yQn86pmchgjuM7O8NWHGr8whBaA
+ OmvSlBN/Rn+7zhWtXvUKBordU6x2BTAasry2N43XReffxuC3lZfgqh6rABJCPI0HmKryLQRd2wZ
+ kZCKiI3mZofKBlNJdtH+79xH6j0RWKuTTdJeJHuQySwH+k9XGiOUGlkMZYMDrwO7DqdhSvXq7H6
+ LXVF4m0d+QPzxp2OWKpUUBCUGLaUMLk8Nt4eQXQ5bX9/grsAfGu9l2gr7cV0Y53OO5lRKvQN6y7
+ vThdJE9AW0vPMfZlWjBoVrBXdBUaZfJ9dtnL+EUTqEptAYAGbr1XZZ3h6dajIGDuijYhusEJsoI
+ hjYsz2lK469ovnpxEQzMehJpIBGEQnjJZw2XNUCy3xn1gqlo6MkwOWT8f3TANTC/q6AwoVCQg4f
+ BWNnUJawRu2gGUK5XZBG6ACiW8guplzGtCnKYkVsQQCx4r8zcHcK5VOSwjlD4Exnm9yAw1mxk1j
+ fMq5+sPA/tmSiOA==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,27 +79,78 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To help debugging and avoid null pointer dereference, add some asserts in
-igt_output_from_connector.
+Some GPU can't reach all the DP rates. To avoid false positive during
+testing with unigraf, add an helper to filter tests based on the maximum
+supported rate of the current GPU.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_kms.c | 2 ++
- 1 file changed, 2 insertions(+)
+ lib/i915/i915_dp.c | 35 +++++++++++++++++++++++++++++++++++
+ lib/i915/i915_dp.h |  1 +
+ 2 files changed, 36 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 326dde1fba33..b3178ace4a8c 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -3184,6 +3184,8 @@ igt_output_t *igt_output_from_connector(igt_display_t *display,
- {
- 	int i;
- 	igt_output_t *found = NULL;
-+	igt_assert(display);
-+	igt_assert(connector);
+diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
+index c5b9273ebafd..219f3d29e362 100644
+--- a/lib/i915/i915_dp.c
++++ b/lib/i915/i915_dp.c
+@@ -1,7 +1,9 @@
+ // SPDX-License-Identifier: MIT
  
- 	for (i = 0; i < display->n_outputs; i++) {
- 		igt_output_t *output = &display->outputs[i];
+ #include <ctype.h>
++#include <errno.h>
+ #include <stdio.h>
++#include <stdlib.h>
+ #include <string.h>
+ 
+ #include "i915_dp.h"
+@@ -317,3 +319,36 @@ void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
+ 	temp = drmModeGetConnector(drm_fd, output->config.connector->connector_id);
+ 	drmModeFreeConnector(temp);
+ }
++
++/**
++ * i915_dp_get_max_supported_rate:
++ * @drm_fd: A drm file descriptor
++ * @output: Target output
++ *
++ * Returns: Max supported link rate available for output, else -1
++ */
++int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output)
++{
++	char buf[512];
++	int res, max_rate = -1;
++	char *token;
++
++	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
++					      "i915_dp_force_link_rate",
++					      buf, sizeof(buf));
++	igt_assert_f(res == 0, "Unable to read %s/i915_dp_force_link_rate\n",
++		     igt_output_name(output));
++
++	token = strtok(buf, " ");
++	while (token) {
++		int rate;
++
++		errno = 0;
++		rate = strtol(token, NULL, 0);
++		if (errno == 0 && rate > max_rate)
++			max_rate = rate;
++		token = strtok(NULL, " ");
++	}
++
++	return max_rate;
++}
+diff --git a/lib/i915/i915_dp.h b/lib/i915/i915_dp.h
+index 65057cff4ff4..709684f564f9 100644
+--- a/lib/i915/i915_dp.h
++++ b/lib/i915/i915_dp.h
+@@ -18,5 +18,6 @@ int i915_dp_get_pending_retrain(int drm_fd, igt_output_t *output);
+ void i915_dp_reset_link_params(int drm_fd, igt_output_t *output);
+ void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
+ 			     char *link_rate, char *lane_count);
++int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output);
+ 
+ #endif
 
 -- 
 2.51.0
