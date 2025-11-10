@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D693CD1297
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7B8ACCFA13
 	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 13:39:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4785910E3C6;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 875EF10E3BE;
 	Mon, 10 Nov 2025 13:39:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Sc9PxwtG";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="TiySGR6K";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA18E10E3B9
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:39:55 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 14C6810E3BA
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 13:39:57 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id A45824E41609;
- Mon, 10 Nov 2025 13:39:54 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 6B498C108F0;
+ Mon, 10 Nov 2025 13:39:34 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 7B317606F5;
- Mon, 10 Nov 2025 13:39:54 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id D9025606F5;
+ Mon, 10 Nov 2025 13:39:55 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id A047E1037190F; Mon, 10 Nov 2025 14:39:53 +0100 (CET)
+ with ESMTPSA id 1C3B610371916; Mon, 10 Nov 2025 14:39:55 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1762781994; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1762781995; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=eB4m7vnUbFj2oqWXROHfDVeG2PKD5WT4nOxaqHmPVR4=;
- b=Sc9PxwtG/CUh6Tfx/O8qciB/d4LErp7yOjmdWXiOoYy9QQqvwjRtkriXGdD6V3y/4tIpCs
- tRt/a3CPhI01PCHo25Qtp4apal0yZXw1BE4f6RmPMi4OLt8FLWS1zF4q8V/2s3JksNN/nm
- B2kIYHu/7LCNuyhIjO3lW0iyGR56n8kg5GaFlS4812XVacjZGO4eg33k4HDAsdSKFS2QJm
- edyc/YM4RhrjUkorJOswj+SzJM2e5sCyMYgXAsC0WcTm1hMkgRgDUwbngcSqEOMa06iqCE
- ++HsNLC6zW1MWkv+eeaGASzmHq9qn5nQOY0ax63wBArWsutrJTQmE/2FBUwfkQ==
+ bh=9rB9IU1tvt1IZt4zrTNeSQ5QdIzr8JuNQLpV3dIJW28=;
+ b=TiySGR6KyNRn3V356rAa6UhD0YlGQ+Bm7t9mNoJoLhfYK3UWkBxY4DoVXQ6zYf8Qu06g4R
+ KuKFsUUDk1K2VOC93fJLq6KJm4KQ2jn8knYHXk0OSWAAk0Le8mJEKNKoJe7ZT/NbHu8xwW
+ X8h2Gj/M3yh+QgcyU6wnyy+TsSp8YU5PIApew0K3PsnFGLYFCwYRvQc3sQqEAMcgj7auKW
+ KzsFPbkKGPLXMUlGABd+fnlAGXd7b0QDMSp3k5RUh6A8rif3qjF5rZtFWHeahGVCZZ68uk
+ sS4eoyJbMs3sONkRhKrL9WSiZzvP1kx0xzMKddEm7IyphHFhOB1vSxEE6B0HKA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 10 Nov 2025 13:39:26 +0000
-Subject: [PATCH i-g-t v4 24/46] lib/unigraf: Add reset function
+Date: Mon, 10 Nov 2025 13:39:28 +0000
+Subject: [PATCH i-g-t v4 26/46] lib/unigraf: Add plug/unplug helpers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251110-unigraf-integration-v4-24-0fc7bb1b4101@bootlin.com>
+Message-Id: <20251110-unigraf-integration-v4-26-0fc7bb1b4101@bootlin.com>
 References: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
 In-Reply-To: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1463;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1587;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=gcemdSjKVzR0lZV4mYLLtsWTJrUbNRSDuzp81IZ7U88=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBpEesQfKHt0f8E5u/w4AUYVgHKflVDl/mSPmNnu
- mcDlZqu8Q2JAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaRHrEAAKCRAgrS7GWxAs
- 4nduD/9Uz1Eezs4xx+de31B5b/zcDPLMuDK1cE7irfVB7mfVXyzm/bQjAQwnKrpytCcT1kf4xsi
- rxUgIH4L/ab7PDhp2l3q5rGlC1ej/XUEaXJx8Imfs5266MsSUcezl9F/1eBNkcTyskH1RayiY6S
- KT29G++GAY0HFVObcXXRsA5XMfIV+BlP+Ko6JlZWGWpcUGApnwiVWGEJFIzn1vEfsMSK4Z8nDUp
- a8AUfyIm7m3Ek9ZWSft1OnZiPuIFax4rbtEE+8kkYjiCXLrKnvaqE6scKgywayvLHtt21+aNGcF
- PdQnPRfqeoA9xCowd7X2VGvaqPNrlDkDkgoQAOaX6iSo0ipHeg5lUWPU9ayMA/hh7uzWzlE1qqP
- IJDrk5lOWZRyPqbDJYd7zjEeQRtCYlI7RWsRVqNhHiOMYVqC3vZxSxhvZsHCTo/3GIEFrNrMLv6
- I2aCxrL/DiREUs6R3qwEvLzemBKwYAbYp9bno8ox8+QbaVRPNN7yMc7leON68Uj8F6gLpvFJPUF
- n20jgVM1UCEENQfZlTca8Hy7oS+hWFg6cdnBjrpSKNDuNFQ2olWtJ34wztivnjMvnIvG/ofC9W1
- lCZdl5AH/NZ0d3IAx2Px0YRW2SJVP7ejZVm0so1LhvHE1TX6sbr/oo4Btaicf+kmoRtrEZlvhgu
- MuNy2F//dbZ5yAw==
+ bh=m0Jkv3FXdnMAKmZ+rDbEFIrX8LpG8F1l4hNNucWW+XQ=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBpEesQDH5/3Ew1gdSOZ5oL5itaMfgJ8zqUNlUPb
+ 7dg6MRDYwSJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaRHrEAAKCRAgrS7GWxAs
+ 4hxOD/4oP06ZuHfJZr1iqlHI4Pr1Tpe9WupklRhL8FI/ZnPZOHCiZmWffM1CJxnHD+R92vN3d5F
+ kqOixlsh07OZr8U+bqvIo+tBw6UOo1WcTJx3AI4+BIpGq6o0vpNdCbwL59FNqp/OPFM2wjStVIP
+ ztUwcT0aFa42SNN0VZaVYRUhHZuIWzA82iixdtV1dy5Ijf8gZ0OB/tqg/4FnV8dFhELYBUdoSAq
+ bTAKxzh5KDJHPRmCDSrKhkNe6b/Cjh0b4YijtvK2YisoiYGqWb1KTjcfQEc1NWRMGbeQT00XFjl
+ poiY4G+J0TRYj6cruoSpy9/l63v4vDPE0uLYZVMxNj3PxxBP76WN2/MiB4hPsXvvSbsIDJfAY+W
+ bt1aCJ64425318QVOOukYjiGCzfkXWvEyxT+O/pG0cX+ZEy17t0RCXWSh3uONvzzGyUR/sC6mYs
+ KBWY3r2SIJxrHjdczjGzFAC/58bC8uF8bseBtRkPGFmdofqa7+kzqrW5EG/V/e91YSgvj6b94x7
+ hjhlEtEATTO0NspA5YvD/14FM12bIfNJOseyutu5etbwvlsKMhtDCcdnGbnPWcAgRQU5bA+rWkt
+ F+0gc8qTOqzAPZGVcHeHkpcWY9X+HXhy+LreNZE/2bsHwLQvxAW3BkTtopA9pyBI9eOMr9v3ZDF
+ F3F/DHus1VrVI4w==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -78,51 +78,69 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To have a consistent state at the beginning of tests, add a unigraf_reset
-function that will restore a known state.
+The unigraf can emulate a full cable plug/unplug, so add helper to emulate
+this.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/unigraf/unigraf.c | 5 +++++
- lib/unigraf/unigraf.h | 9 +++++++++
- 2 files changed, 14 insertions(+)
+ lib/unigraf/unigraf.c | 18 +++++++++++++++++-
+ lib/unigraf/unigraf.h | 14 ++++++++++++++
+ 2 files changed, 31 insertions(+), 1 deletion(-)
 
 diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index 59a85e1b84c9..e96c7fc3a91e 100644
+index 40daa42ef7e9..5ce1bd7d757b 100644
 --- a/lib/unigraf/unigraf.c
 +++ b/lib/unigraf/unigraf.c
-@@ -278,6 +278,8 @@ bool unigraf_open_device(int drm_fd)
- 	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
- 	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
- 
-+	unigraf_reset();
-+
- 	return true;
+@@ -309,7 +309,9 @@ void unigraf_require_device(int drm_fd)
  }
  
-@@ -285,3 +287,6 @@ void unigraf_require_device(int drm_fd)
+ void unigraf_reset(void)
+-{}
++{
++	unigraf_plug();
++}
+ 
+ void unigraf_hpd_assert(void)
  {
- 	igt_require(unigraf_open_device(drm_fd));
+@@ -330,3 +332,17 @@ void unigraf_hpd_deassert(void)
+ {
+ 	unigraf_write_u32(TSI_FORCE_HOT_PLUG_STATE_W, 0);
  }
 +
-+void unigraf_reset(void)
-+{}
++void unigraf_unplug(void)
++{
++	int d = 2 << 2;
++
++	unigraf_write_u32(TSI_DPRX_HPD_FORCE, d);
++}
++
++void unigraf_plug(void)
++{
++	int d = 3 << 2;
++
++	unigraf_write_u32(TSI_DPRX_HPD_FORCE, d);
++}
 diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
-index a93bd464bac3..76f4f8878c2c 100644
+index 17a3dacc768a..14e5fd984159 100644
 --- a/lib/unigraf/unigraf.h
 +++ b/lib/unigraf/unigraf.h
-@@ -48,4 +48,13 @@ bool unigraf_open_device(int drm_fd);
+@@ -79,4 +79,18 @@ void unigraf_hpd_pulse(int duration);
   */
- void unigraf_require_device(int drm_fd);
+ void unigraf_hpd_assert(void);
  
 +/**
-+ * unigraf_reset() - Reset the Unigraf device
++ * unigraf_plug() - Emulate a cable plug
 + *
-+ * This function performs a hardware reset of the Unigraf device, restoring it to a
-+ * default state. This includes resetting all configuration parameters, stream settings,
-+ * and link parameters to default values.
++ * This function will emulate a full cable plug (not a simple HPD line change)
 + */
-+void unigraf_reset(void);
++void unigraf_plug(void);
++
++/**
++ * unigraf_plug() - Emulate a cable unplug
++ *
++ * This function will emulate a full cable unplug (not a simple HPD line change)
++ */
++void unigraf_unplug(void);
 +
  #endif // UNIGRAF_H
 
