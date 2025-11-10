@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6FA6CCF9E3
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 03:50:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23DC4CCFA1A
+	for <igt-dev@archiver.kernel.org>; Mon, 10 Nov 2025 03:56:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5D21C10E16E;
-	Mon, 10 Nov 2025 03:50:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9376910E16E;
+	Mon, 10 Nov 2025 03:56:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z7WZjHS9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iT+92Ym4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39A9610E16E
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 03:50:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F00310E16E
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Nov 2025 03:56:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762746621; x=1794282621;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=yKcv5sAMH8XHft5i67hL4YD7ga8QpNM4TiNlSdeiL/g=;
- b=Z7WZjHS9ktmwK3MgipoAHvcW4zBRFGalk5fLYltXqORgAXFGobdoMZ5M
- TWlDrYANRhmnGLG/Itq1HXI0ov/MFsHFSmvBSgNwAVnwsOXTp7eCSKh2g
- rOC4i1yIssGOKgL+We2rrpLERwB612CEukuxrVRQQfsPUi+E98dczaSj4
- 509gT/ZBFAb0mmLgnxgln32fBIUc7QwLHih+OBvEgeF0JJcY5c9jxbf8M
- WT0O82lftEWHwyJ2y5MPOdOTfK3po+d/69xfoVHSbvZZ0lvI004CFpdzH
- TYz77sTpv87kdwslVIYVNbHUr/Ys6XG96ZdvFM5Opbz/gvqwbBdGyDy1S w==;
-X-CSE-ConnectionGUID: tGiYmL39TZ2u7TLS6koL+w==
-X-CSE-MsgGUID: BM+7AN7xTsKch/QZuYV2tg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11608"; a="76143610"
-X-IronPort-AV: E=Sophos;i="6.19,292,1754982000"; d="scan'208";a="76143610"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Nov 2025 19:50:21 -0800
-X-CSE-ConnectionGUID: dhdyaJlWRyy50FmjwOl4sQ==
-X-CSE-MsgGUID: ZBgUPgaGRnitjjjF3ee6Wg==
+ t=1762746966; x=1794282966;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=or+1oIhn6PwmU6lZLgfw8RFkd9yo0h77Q7GJEWhgYDw=;
+ b=iT+92Ym4RBMhSkkRunnn9+srXvUk6QDcFrAB5ebPcO8eVtS0kNl6Z0N0
+ 9Kr8UF+m3VNycc9eSBbKhsHMPuJtJvrm5HKNYs3x1rWZR111KWK4/kzEd
+ xWYZj96HbH5z+vCxqjyEkbWIxrcyJQiQcY/A8Dlp7f80tB04uIYeXcGEB
+ 7LuN7gQJrXVawoJj39I4lNBgqbjP5udnWA8IFf8dO8r+gOcC2tUGYUVBE
+ cR4Sjn3EErf8wGhGdt3ApbIfu7efjnpGLxr1qlAUb1F53CAy+DS/wl345
+ 1L2nXaDedf8n2lR1DN6RqiHEUsapy9cOfYoEEPSqq5uzZm9TPopqhlxRv Q==;
+X-CSE-ConnectionGUID: Ev1VUMAgQE2hTFT45k+W5A==
+X-CSE-MsgGUID: ZPu1reB8RiGB91EYyq/hug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64722883"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="64722883"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Nov 2025 19:56:05 -0800
+X-CSE-ConnectionGUID: 7NXx7Cv3SYmx8jaLrJemvA==
+X-CSE-MsgGUID: h+elucIARfiru4VkMyFoLQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,292,1754982000"; d="scan'208";a="189287640"
-Received: from dut7069bmgfrd.fm.intel.com (HELO DUT7069BMGFRD..) ([10.1.40.39])
- by fmviesa010.fm.intel.com with ESMTP; 09 Nov 2025 19:50:21 -0800
-From: Nishit Sharma <nishit.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,292,1754982000"; d="scan'208";a="188519027"
+Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2025 19:56:03 -0800
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v4 8/8] tests/intel/xe_multi-gpusvm.c: Add SVM multi-GPU
- migration test
-Date: Mon, 10 Nov 2025 03:50:17 +0000
-Message-ID: <20251110035020.221884-1-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251104153201.677938-1-nishit.sharma@intel.com>
-References: <20251104153201.677938-1-nishit.sharma@intel.com>
+Cc: ankit.k.nautiyal@intel.com,
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v2] tests/kms_vrr: Fix logical condition for DRRS support
+Date: Mon, 10 Nov 2025 09:25:40 +0530
+Message-ID: <20251110035540.1644079-1-ramanaidu.naladala@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251104081009.1474197-1-ramanaidu.naladala@intel.com>
+References: <20251104081009.1474197-1-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,33 +69,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This test allocates a buffer in SVM, accesses it from GPU 1, then GPU 2
-and then the CPU. It verifies that the buffer migrates correctly between
-devices and remains accessible across all agents in a multi-GPU environment.
----
- tests/intel/xe_multisvm.c | 2 ++
- 1 file changed, 2 insertions(+)
+Fix platform detection logic to correctly identify LNL and newer
+platforms, and disable DRRS accordingly.
 
-diff --git a/tests/intel/xe_multisvm.c b/tests/intel/xe_multisvm.c
-index a57b3d62a..7bb41c62f 100644
---- a/tests/intel/xe_multisvm.c
-+++ b/tests/intel/xe_multisvm.c
-@@ -47,6 +47,7 @@ struct xe_svm_gpu_info {
- 	int fd;
- };
+v2: Update platform logic and commit message. (Ankit)
+
+Fixes: 734ee5297842 ("tests/kms_vrr: Skip DRRS-related tests on LNL and newer platforms")
+
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+---
+ tests/kms_vrr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index d83aa2de1..05c8a581d 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -1068,7 +1068,7 @@ static bool config_constraint(data_t *data, igt_output_t *output, uint32_t flags
+ 	}
  
-+#if 0
- static void xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
- 			       uint64_t addr, uint64_t size, uint32_t flags)
- {
-@@ -84,6 +85,7 @@ static void xe_vm_unbind_lr_sync(int fd, uint32_t vm, uint64_t offset,
- 		xe_wait_ufence(fd, (uint64_t *)sync_addr, BIND_SYNC_VAL, 0, NSEC_PER_SEC * 10);
- 	free((void *)sync_addr);
- }
-+#endif
- 
- static void batch_init(int fd, uint32_t vm, uint64_t src_addr, uint64_t dst_addr,
- 		       uint64_t copy_size, uint32_t *bo, uint64_t *addr)
+ 	if ((flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS)) &&
+-	    (intel_display_ver(data->drm_fd) >= 14)) {
++	    (intel_display_ver(data->drm_fd) >= 20)) {
+ 		igt_info("DRRS is not supported on LNL and newer platforms\n");
+ 		return false;
+ 	}
 -- 
-2.48.1
+2.43.0
 
