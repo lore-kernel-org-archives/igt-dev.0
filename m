@@ -4,56 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4BA3CCFA1A
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Nov 2025 15:29:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21E00CCFA1A
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Nov 2025 16:22:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3C0E510E113;
-	Tue, 11 Nov 2025 15:29:51 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eb8yJUi2";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 222AE10E113
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Nov 2025 15:29:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762874991; x=1794410991;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=nhuktN7ZeFYh7wsAmqzTCAnIeSTiDkCvpidFlHTiMV0=;
- b=eb8yJUi2k90Mn2ttlLTIbuRgFgM9Fiit5Cd0LwjkAOPM0TiZfXWm2csX
- Lz1LnVGMOsnpuFisMMSj18f5I1N5XFfYFiXXHGaqU2+L1aQlXtmEdhcN5
- bQ+JJUljtfSao5tVsdnHmQPdXBmgB2K9+1U2xB0S7fOzh5QH8EdSpFqdf
- Pb6QEr54ZiVuyJA6Pz5zUUH4r2rOPC7pUAbZHVROoFuAiqZ07QOXKx2e/
- quEw6rmfoWhqwwRnn7+vumQ5aqT3XWUqMKSJFEQjYGJPSCf2Te7XM3QDj
- l0nfK/LblRjNe6DpNYXq7VzOD7tpZNZYCyAIQguihXb2KECPcV7KxUwQ0 Q==;
-X-CSE-ConnectionGUID: DW7uNBpuRg+mzSZVZzKawA==
-X-CSE-MsgGUID: RLE6U9hcTiiTfWnW9stfeA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64854936"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="64854936"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Nov 2025 07:29:50 -0800
-X-CSE-ConnectionGUID: UVUiDgJFTk2QcH2o1L/mrw==
-X-CSE-MsgGUID: QJYnW6INQ3GSh5qWL7C/sg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,296,1754982000"; d="scan'208";a="212384011"
-Received: from bvivekan-desk.iind.intel.com ([10.190.238.63])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Nov 2025 07:29:49 -0800
-From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
- Matt Roper <matthew.d.roper@intel.com>
-Subject: [PATCH v2 2/2] xe_exercise_blt: Insert a flush between two
- consecutive FAST_COPY
-Date: Tue, 11 Nov 2025 21:00:16 +0530
-Message-ID: <20251111153014.3681794-4-balasubramani.vivekanandan@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251111153014.3681794-3-balasubramani.vivekanandan@intel.com>
-References: <20251111153014.3681794-3-balasubramani.vivekanandan@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id C7E6010E605;
+	Tue, 11 Nov 2025 16:22:03 +0000 (UTC)
+Received: from 10055242dc62 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6659F10E342;
+ Tue, 11 Nov 2025 16:22:03 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0022514462601842533=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bv2?=
+ =?utf-8?q?=2C1/2=5D_lib/intel=5Fblt=3A_BB_index_should_be_incremented_in_dw?=
+ =?utf-8?q?ords?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Balasubramani Vivekanandan" <balasubramani.vivekanandan@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 11 Nov 2025 16:22:03 -0000
+Message-ID: <176287812340.42606.7060506811401330216@10055242dc62>
+X-Patchwork-Hint: ignore
+References: <20251111153014.3681794-3-balasubramani.vivekanandan@intel.com>
+In-Reply-To: <20251111153014.3681794-3-balasubramani.vivekanandan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,97 +38,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As per the spec, a flush is required between two dependent BLT
-instructions. In fast-copy-emit, the source of the second BLT
-instruction was the destination of the previous BLT instuction.
-Therefore a flush is required between them.
+--===============0022514462601842533==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Bpsec: 57567,57555
+== Series Details ==
 
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
----
- lib/intel_blt.c               | 29 +++++++++++++++++++++++++++++
- lib/intel_blt.h               |  3 +++
- tests/intel/xe_exercise_blt.c |  8 ++++++++
- 3 files changed, 40 insertions(+)
+Series: series starting with [v2,1/2] lib/intel_blt: BB index should be incremented in dwords
+URL   : https://patchwork.freedesktop.org/series/157393/
+State : success
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index fd7b29ccd..96dd76a34 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -1634,6 +1634,35 @@ static inline uint64_t bb_remaining_size(const struct blt_copy_batch *bb,
- 	return bb->size - bb_pos * sizeof(uint32_t);
- }
- 
-+/**
-+ * emit_flush_dw:
-+ * @fd: drm fd
-+ * @blt: blitter data which provides the BB pointer
-+ * @bb_pos: position at which to insert the flush command
-+ *
-+ * Function emits a flush instruction to the BB
-+ *
-+ * Returns:
-+ * Next write position in batch.
-+ */
-+uint64_t emit_flush_dw(int fd, const struct blt_copy_data *blt,
-+		       uint64_t bb_pos)
-+{
-+	uint32_t *bb;
-+
-+#define MI_FLUSH_DW_SIZE_BYTES (4 * sizeof(uint32_t))
-+
-+	igt_assert(bb_remaining_size(&blt->bb, bb_pos) >= MI_FLUSH_DW_SIZE_BYTES);
-+	bb = bo_map(fd, blt->bb.handle, blt->bb.size, blt->driver);
-+	bb[bb_pos++] = MI_FLUSH_DW_CMD | 2;
-+	bb[bb_pos++] = 0;
-+	bb[bb_pos++] = 0;
-+	bb[bb_pos++] = 0;
-+	munmap(bb, blt->bb.size);
-+
-+	return bb_pos;
-+}
-+
- /**
-  * emit_blt_fast_copy:
-  * @fd: drm fd
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index 54a096c03..d75dbfcf1 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -263,6 +263,9 @@ int blt_ctrl_surf_copy(int fd,
- 		       uint64_t ahnd,
- 		       const struct blt_ctrl_surf_copy_data *surf);
- 
-+uint64_t emit_flush_dw(int fd, const struct blt_copy_data *blt,
-+		       uint64_t bb_pos);
-+
- uint64_t emit_blt_fast_copy(int fd,
- 			    uint64_t ahnd,
- 			    const struct blt_copy_data *blt,
-diff --git a/tests/intel/xe_exercise_blt.c b/tests/intel/xe_exercise_blt.c
-index a545654d3..266e311e6 100644
---- a/tests/intel/xe_exercise_blt.c
-+++ b/tests/intel/xe_exercise_blt.c
-@@ -103,6 +103,14 @@ static int fast_copy_one_bb(int xe,
- 	blt_tmp.print_bb = blt->print_bb;
- 	bb_pos = emit_blt_fast_copy(xe, ahnd, &blt_tmp, bb_pos, false);
- 
-+	/*
-+	 * Bspec asks to insert a flush between two BLIT instructions to resolve
-+	 * BLIT level dependency. Though the spec is not clear in explaining
-+	 * it, HW team requested for a flush instuction between these two BLIT
-+	 * instuctions as they have a dependency.
-+	 */
-+	bb_pos = emit_flush_dw(xe, &blt_tmp, bb_pos);
-+
- 	/* Second blit */
- 	blt_copy_init(xe, &blt_tmp);
- 	blt_tmp.src = blt->mid;
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8620_BAT -> XEIGTPW_14037_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14037_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_waitfence@abstime:
+    - bat-dg2-oem2:       [PASS][1] -> [TIMEOUT][2] ([Intel XE#6506])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8620/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14037/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#4543]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8620/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14037/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html
+
+  * igt@xe_waitfence@reltime:
+    - bat-dg2-oem2:       [FAIL][5] ([Intel XE#6520]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8620/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14037/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+
+  
+  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
+  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
+  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8620 -> IGTPW_14037
+  * Linux: xe-4085-4ce351022716985e9c1dd18583acd4d3d149cb5b -> xe-4086-52764bea2cf028d285b0f4d86ee1ebfd4e196486
+
+  IGTPW_14037: 14037
+  IGT_8620: 8620
+  xe-4085-4ce351022716985e9c1dd18583acd4d3d149cb5b: 4ce351022716985e9c1dd18583acd4d3d149cb5b
+  xe-4086-52764bea2cf028d285b0f4d86ee1ebfd4e196486: 52764bea2cf028d285b0f4d86ee1ebfd4e196486
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14037/index.html
+
+--===============0022514462601842533==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [v2,1/2] lib/intel_blt: BB index should be incremented in dwords</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/157393/">https://patchwork.freedesktop.org/series/157393/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14037/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14037/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8620_BAT -&gt; XEIGTPW_14037_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14037_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_waitfence@abstime:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8620/bat-dg2-oem2/igt@xe_waitfence@abstime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14037/bat-dg2-oem2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8620/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14037/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_waitfence@reltime:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8620/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14037/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8620 -&gt; IGTPW_14037</li>
+<li>Linux: xe-4085-4ce351022716985e9c1dd18583acd4d3d149cb5b -&gt; xe-4086-52764bea2cf028d285b0f4d86ee1ebfd4e196486</li>
+</ul>
+<p>IGTPW_14037: 14037<br />
+  IGT_8620: 8620<br />
+  xe-4085-4ce351022716985e9c1dd18583acd4d3d149cb5b: 4ce351022716985e9c1dd18583acd4d3d149cb5b<br />
+  xe-4086-52764bea2cf028d285b0f4d86ee1ebfd4e196486: 52764bea2cf028d285b0f4d86ee1ebfd4e196486</p>
+
+</body>
+</html>
+
+--===============0022514462601842533==--
