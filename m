@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93673CCFA18
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Nov 2025 06:29:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5570CCFA18
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Nov 2025 06:29:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 37F0810E097;
-	Tue, 11 Nov 2025 06:29:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6983F10E097;
+	Tue, 11 Nov 2025 06:29:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c76hOoob";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JuU4xhM4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3327F10E097
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Nov 2025 06:29:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A64F110E097
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Nov 2025 06:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762842567; x=1794378567;
+ t=1762842586; x=1794378586;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=44ecqWGUMhLur5s6k7XYGFmsb6T+JaffvrLPp1qpIfE=;
- b=c76hOoobcO3+ZQXCJ3jsy30UP4D4F1omNKBuENp0JtOn7HxkxnoXZ8wo
- pasXgcwqtdXG+cY3xKd2dIneuQrSwq68wzcqnX+26EkBpx5aTyCxR5KUo
- gKWvGfHWebk++VK8Iw/Mr8PBfCvPunQlM93c/PsJQdLQzj0BAilkI3wJj
- SOJqq8D2qDyi4c3l5WanF+Etv8f08LuiLgsBx2MKktjrP+zmAKGNjCxDo
- rIMB4238ObVDVztPOK0R2Row5J3zz/H/cIfjtXqDhBji3jnnIw3NB9gqv
- +6Jil5AjyCPMBC8fx7avWMPT1B//ATs871LQ9YsN2uA645CMlFoWr7sDn Q==;
-X-CSE-ConnectionGUID: GGBhL1/WQaO48YALrMoWNQ==
-X-CSE-MsgGUID: 5bS7KF/HT8GO2FkUZ81nCw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="65056565"
-X-IronPort-AV: E=Sophos;i="6.19,295,1754982000"; d="scan'208";a="65056565"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Nov 2025 22:29:26 -0800
-X-CSE-ConnectionGUID: /Aqwvmm4QcGp7LlEwZvl+w==
-X-CSE-MsgGUID: G55+8YI/ScWQsf8aLYo+GQ==
+ bh=4uPpiG9dYOFNLdExxd9CsgpxXZxMeeETQ2dfJ8oVS8Y=;
+ b=JuU4xhM4CKRpv2zwaO3sJAf7xldf1CvhiUzq1/nQEljreHG+oTtIDJuc
+ FcTldcRDeytd6WuzImpIbmlt6hyslyh0zpejFrlgk7i2WQxqiHxKlajHz
+ Pu79n4YcSDNLbvHEBUcRfaaEasBd5nDb4ROMm3Vyv4QJlnpXMvjf4eTPp
+ zVsUsGS6FPXQGueX7z30xiR9cOKD9UdIvzewmxIoF1VcQqu6oNjxob4OM
+ EXBZo7r0qiSPgE1v1lDtGQW6buo/emAehjsLo0tdJE6aBR5+GqwyBBXlY
+ e2wcz9Qs8NzGEYBKVCM/3OpmtPNY7kegjx4iTqD8odT9IrsNgu6x5OVuW g==;
+X-CSE-ConnectionGUID: FBBvRDEoQMGjhxUlVsUtPw==
+X-CSE-MsgGUID: 4UGgQK9ATVqCyK3CxItZ5w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64833859"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="64833859"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2025 22:29:45 -0800
+X-CSE-ConnectionGUID: LIhp8MHxQdic/d5M6bqxkw==
+X-CSE-MsgGUID: mvKdpa6bQ3COWfnJ3KHfbA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,295,1754982000"; d="scan'208";a="194070544"
+X-IronPort-AV: E=Sophos;i="6.19,295,1754982000"; d="scan'208";a="219532748"
 Received: from sanbuman-mobl.gar.corp.intel.com (HELO [10.247.200.233])
  ([10.247.200.233])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Nov 2025 22:29:24 -0800
-Message-ID: <7ff21ca0-afef-4442-8b3f-b7c82c3edbc4@intel.com>
-Date: Tue, 11 Nov 2025 11:59:24 +0530
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2025 22:29:44 -0800
+Message-ID: <81304e75-5c07-409c-9bb7-411721cdc163@intel.com>
+Date: Tue, 11 Nov 2025 11:59:43 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [v1,3/8] Revert "tests/intel/kms_fbcon_fbt: Enable the tests
- support variations based on the WAs"
+Subject: Re: [v1,4/8] Revert "tests/intel/kms_psr: Enable the tests support
+ variations based on the WAs"
 To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
  igt-dev@lists.freedesktop.org
 Cc: vinod.govindapillai@intel.com
-References: <20251110192454.44385-4-mohammed.thasleem@intel.com>
+References: <20251110192454.44385-5-mohammed.thasleem@intel.com>
 Content-Language: en-US
 From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20251110192454.44385-4-mohammed.thasleem@intel.com>
+In-Reply-To: <20251110192454.44385-5-mohammed.thasleem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -74,7 +74,7 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 11-11-2025 00:54, Mohammed Thasleem wrote:
-> This reverts commit 47b875a087b33f2c866492624d8a7a4ef45f55e9.
+> This reverts commit 897af2724210dd42e98e2d560c526db5a6dbadbb.
 >
 > Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 LGTM
