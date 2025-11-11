@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C0F5CCFA18
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Nov 2025 06:30:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 952BFCCF9E3
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Nov 2025 06:31:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1224410E097;
-	Tue, 11 Nov 2025 06:30:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4A1D410E097;
+	Tue, 11 Nov 2025 06:31:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XTVz/cCN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j7oHbCTk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 70AE410E097
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Nov 2025 06:30:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 79B4710E097
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Nov 2025 06:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762842653; x=1794378653;
+ t=1762842674; x=1794378674;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
  bh=YkvkE16d9Xh0uLC/e4NlHbRogvoQeId2V9jZv1W80ns=;
- b=XTVz/cCNihPqUmvSdnfjhXRNHGza/5Z0cBvYlWdt1XXS75MlUB+FKJCx
- 87C4D9Hz/ghGMeDEV1aNqI79bZSfrCSV64ZI3kV5tZP/7lcAo9Fxxdklk
- dxCDcPGoo8axxR1jvjqofCjGZn89UYlyYXOyZXYSE0GPwZFNYP/JJIWeV
- 7wfA9GvHmN168lriH/+agcgQQ2UbZ5uofzc8vxl+L5CmfFUXwsK1OQjI3
- eD8iKl248fdo3Wk+tPygHL9GVtuWuQiDZKLAph5nBc/eedrictS6+q8NY
- GHlpESH2Vh5moa9dHQ44V7Ar4KWr9RVAdVEx6wvRnjVRJQA1qTgr1ZqLt Q==;
-X-CSE-ConnectionGUID: 69fm7wzpT1i9L7UUla0h5A==
-X-CSE-MsgGUID: zsmXOTZnRv2joKjTd1amcg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="64786291"
-X-IronPort-AV: E=Sophos;i="6.19,295,1754982000"; d="scan'208";a="64786291"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Nov 2025 22:30:53 -0800
-X-CSE-ConnectionGUID: fFqDZ5NPRvKPiXgRwz4D/w==
-X-CSE-MsgGUID: H6KwpZeARJ2s81ikB1Sk2g==
+ b=j7oHbCTkkkcj1NzGPmX3uATUd9F30J3onVNQJbElgP6PAIsbHn/Zda9e
+ lPS+/RcPQmMvvOW/tKO7Fqj6D0dleX56s61drxpzXLZ6GKmjyd3QTuXmv
+ xNIuj+ZsEBIEGscET+J9FKg7JsiczUI1QVc9DYRzk+Mz3ZzxyEr1+AeVG
+ 5jCsmzRkPV9wgcoevMtbY9TXvlPt3ReoMkM9qrWMdeiC1i3+DPSakjkJr
+ CA6kbQ72CH2CJFQwSiTcfP8qLbxMLv0UJmOsndYTDRdChgNXq2o3gdxmI
+ qBbZGltzjQgSNokXmdxXavPCWi08/CtpAbYDt5dfn0exOj6I4Oo1E3i+r Q==;
+X-CSE-ConnectionGUID: a5YE5SD0TZaF+dHiT/bBAw==
+X-CSE-MsgGUID: JekzVXs1TyaOWgUmJkVV9w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="64816856"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; d="scan'208";a="64816856"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2025 22:31:14 -0800
+X-CSE-ConnectionGUID: i3jVe9sxSfKJsxvUlIGCNQ==
+X-CSE-MsgGUID: cl5G1nM0QwKoM7r5qta1Xw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,295,1754982000"; d="scan'208";a="188720229"
+X-IronPort-AV: E=Sophos;i="6.19,295,1754982000"; d="scan'208";a="188210832"
 Received: from sanbuman-mobl.gar.corp.intel.com (HELO [10.247.200.233])
  ([10.247.200.233])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Nov 2025 22:30:50 -0800
-Message-ID: <63a368c4-627f-40b5-9986-6532b5d7c978@intel.com>
-Date: Tue, 11 Nov 2025 12:00:50 +0530
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2025 22:31:12 -0800
+Message-ID: <85ed8a60-0e4e-4595-be44-e44a842d89fd@intel.com>
+Date: Tue, 11 Nov 2025 12:01:11 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [v1,7/8] tests/intel/kms_psr: Skip FBC tests on BMG platform
+Subject: Re: [v1,8/8] tests/intel/kms_psr2_sf: Skip FBC tests on BMG platform
 To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
  igt-dev@lists.freedesktop.org
 Cc: vinod.govindapillai@intel.com
-References: <20251110192454.44385-8-mohammed.thasleem@intel.com>
+References: <20251110192454.44385-9-mohammed.thasleem@intel.com>
 Content-Language: en-US
 From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20251110192454.44385-8-mohammed.thasleem@intel.com>
+In-Reply-To: <20251110192454.44385-9-mohammed.thasleem@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
