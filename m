@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 573C9CCF9E3
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Nov 2025 00:51:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 888A6CCFA18
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Nov 2025 04:14:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E15B110E243;
-	Tue, 11 Nov 2025 00:51:27 +0000 (UTC)
-Received: from 10055242dc62 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5637010E243;
- Tue, 11 Nov 2025 00:51:26 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1640339399039254031=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 081B010E0AE;
+	Tue, 11 Nov 2025 04:14:48 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Qfa1r3sS";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 03B5310E0AE
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Nov 2025 04:14:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1762834487; x=1794370487;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=STXk83MJPGKF+YVcUiTbyJofM1WxXQOacG/v1j0KhJY=;
+ b=Qfa1r3sS1GG4r/w6DRJ2BIBC81BffHdqUoTl0SQFUjJ66PR2ZFt1HgzZ
+ tJiZL3Z+I8wv9PjTF08tpUbqlrkbQu3hTb3Ke2eqgaN29WPSaV5u4wFP4
+ HaVnuCuzgfOT9G/xzvsmshXstI+Veb15oxiq0TDNLvmEeLIsVxcomJUby
+ uZjH8rE9HaFjawQn/mM0/cJJB373UszFnqdpz1WEPtFFRQdroM4kzjrUj
+ 9iM4e2MFUl43y2U0McP5Yv6CHHpB7g5JufdmxIVK9uHYWXdFMirEwNVAj
+ mOAWc/+lGG3fbSH3n4/vslImTG/OA+k2BNhq8rotZ5TbfnJVoF8EHZXXK w==;
+X-CSE-ConnectionGUID: yt4d87aeRveO2aMGO36VtA==
+X-CSE-MsgGUID: YSkvRPGpT56sm/w4mPLrpg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="67497971"
+X-IronPort-AV: E=Sophos;i="6.19,295,1754982000"; d="scan'208";a="67497971"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2025 20:14:46 -0800
+X-CSE-ConnectionGUID: BRbGidiWQuqBkL4WFWvhDQ==
+X-CSE-MsgGUID: 3jzjPHoYSB+EM9MfgT+ciw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,295,1754982000"; d="scan'208";a="188822059"
+Received: from karthik-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.238.68])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2025 20:14:44 -0800
+From: Karthik B S <karthik.b.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: santhosh.reddy.guddati@intel.com,
+	Karthik B S <karthik.b.s@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_joiner: Cleanup igt_require checks
+Date: Tue, 11 Nov 2025 09:45:05 +0530
+Message-ID: <20251111041505.2438654-1-karthik.b.s@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Revert_WAs_and_skip_FBC_on_?=
- =?utf-8?q?BMG?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Nov 2025 00:51:26 -0000
-Message-ID: <176282228634.38379.15208661937159212371@10055242dc62>
-X-Patchwork-Hint: ignore
-References: <20251110192454.44385-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20251110192454.44385-1-mohammed.thasleem@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,354 +63,293 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1640339399039254031==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Both the main and invalid subtests of each category require the same
+igt_require checks. Add these into subtests groups.
 
-== Series Details ==
+Also, the variable names used in igt_require checks are self
+explanatory, so remove the duplicate print messages.
 
-Series: Revert WAs and skip FBC on BMG
-URL   : https://patchwork.freedesktop.org/series/157348/
-State : success
+Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+---
+ tests/intel/kms_joiner.c | 225 +++++++++++++++++++--------------------
+ 1 file changed, 108 insertions(+), 117 deletions(-)
 
-== Summary ==
+diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
+index d1ddbeb60..654ff8bed 100644
+--- a/tests/intel/kms_joiner.c
++++ b/tests/intel/kms_joiner.c
+@@ -626,160 +626,151 @@ igt_main
+ 		}
+ 	}
+ 
+-	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
+-	igt_subtest_with_dynamic("basic-big-joiner") {
+-			igt_require_f(data.big_joiner_output_count > 0,
+-				      "No bigjoiner output found\n");
+-			igt_require_f(data.n_pipes > 1,
+-				      "Minimum 2 pipes required\n");
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(data.big_joiner_output_count > 0);
++			igt_require(data.n_pipes > 1);
++		}
++
++		igt_describe("Verify the basic modeset on big joiner mode on all pipes");
++		igt_subtest_with_dynamic("basic-big-joiner") {
+ 			igt_dynamic_f("single-joiner")
+ 				test_single_joiner(&data, data.big_joiner_output_count, false);
+ 			if (data.big_joiner_output_count > 1)
+ 				igt_dynamic_f("multi-joiner")
+ 					test_multi_joiner(&data, data.big_joiner_output_count, false);
+-	}
+-
+-	igt_describe("Verify the basic modeset on ultra joiner mode on all pipes");
+-	igt_subtest_with_dynamic("basic-ultra-joiner") {
+-			igt_require_f(data.ultra_joiner_output_count > 0,
+-				      "No ultrajoiner output found\n");
+-			igt_require_f(data.n_pipes > 3,
+-				      "Minimum 4 pipes required\n");
+-			igt_dynamic_f("single-joiner")
+-				test_ultra_joiner(&data, false, false, false);
+-	}
+-
+-	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
+-		     "when the pipe is active with a big joiner modeset");
+-	igt_subtest_with_dynamic("invalid-modeset-big-joiner") {
+-		igt_require_f(data.big_joiner_output_count > 0, "Non big joiner output not found\n");
+-		igt_require_f(data.n_pipes > 1, "Minimum of 2 pipes are required\n");
+-		if (data.big_joiner_output_count >= 1)
+-			igt_dynamic_f("big_joiner_on_last_pipe")
+-				test_joiner_on_last_pipe(&data, false);
+-		if (data.big_joiner_output_count > 1)
+-			igt_dynamic_f("invalid_combinations")
+-				test_invalid_modeset_two_joiner(&data, false, false);
+-		if (data.mixed_output_count)
+-			igt_dynamic_f("mixed_output")
+-				test_invalid_modeset_two_joiner(&data, true, false);
+-	}
++		}
+ 
+-	igt_describe("Verify if the modeset on the other pipes are rejected "
+-		     "when the pipe A is active with a ultra joiner modeset");
+-	igt_subtest_with_dynamic("invalid-modeset-ultra-joiner") {
+-		igt_require_f(data.ultra_joiner_output_count > 0, "Ultra joiner output not found\n");
+-		igt_require_f(data.n_pipes > 3, "Minimum of 4 pipes are required\n");
+-
+-		igt_dynamic_f("ultra_joiner_on_invalid_pipe")
+-			test_ultra_joiner(&data, true, false, false);
+-		if (data.non_ultra_joiner_output_count > 0) {
+-			igt_dynamic_f("2x")
+-				test_ultra_joiner(&data, false, true, false);
++		igt_describe("Verify if the modeset on the adjoining pipe is rejected "
++			     "when the pipe is active with a big joiner modeset");
++		igt_subtest_with_dynamic("invalid-modeset-big-joiner") {
++			if (data.big_joiner_output_count >= 1)
++				igt_dynamic_f("big_joiner_on_last_pipe")
++					test_joiner_on_last_pipe(&data, false);
++			if (data.big_joiner_output_count > 1)
++				igt_dynamic_f("invalid_combinations")
++					test_invalid_modeset_two_joiner(&data, false, false);
++			if (data.mixed_output_count)
++				igt_dynamic_f("mixed_output")
++					test_invalid_modeset_two_joiner(&data, true, false);
+ 		}
+ 	}
+ 
+-	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
+-	igt_subtest_with_dynamic("basic-force-big-joiner") {
+-		igt_require_f(data.non_big_joiner_output_count > 0,
+-			      "No non big joiner output found\n");
+-		igt_require_f(data.n_pipes > 1,
+-			      "Minimum 2 pipes required\n");
+-		igt_dynamic_f("single") {
+-			enable_force_joiner_on_all_non_big_joiner_outputs(&data);
+-			test_single_joiner(&data, data.non_big_joiner_output_count, true);
+-			igt_reset_connectors();
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(data.non_big_joiner_output_count > 0);
++			igt_require(data.n_pipes > 1);
+ 		}
+-		if (data.non_big_joiner_output_count > 1) {
+-			igt_dynamic_f("multi") {
++
++		igt_describe("Verify the basic modeset on big joiner mode on all pipes");
++		igt_subtest_with_dynamic("basic-force-big-joiner") {
++			igt_dynamic_f("single") {
+ 				enable_force_joiner_on_all_non_big_joiner_outputs(&data);
+-				test_multi_joiner(&data, data.non_big_joiner_output_count, true);
++				test_single_joiner(&data, data.non_big_joiner_output_count, true);
+ 				igt_reset_connectors();
+ 			}
+-		}
+-	}
+ 
+-	igt_subtest_with_dynamic("invalid-modeset-force-big-joiner") {
+-		igt_require_f(data.non_big_joiner_output_count > 0,
+-			      "Non big joiner output not found\n");
+-		igt_require_f(data.n_pipes > 1,
+-			      "Minimum of 2 pipes are required\n");
+-		if (data.non_big_joiner_output_count >= 1) {
+-			igt_dynamic_f("big_joiner_on_last_pipe") {
+-				enable_force_joiner_on_all_non_big_joiner_outputs(&data);
+-				test_joiner_on_last_pipe(&data, true);
+-				igt_reset_connectors();
++			if (data.non_big_joiner_output_count > 1) {
++				igt_dynamic_f("multi") {
++					enable_force_joiner_on_all_non_big_joiner_outputs(&data);
++					test_multi_joiner(&data, data.non_big_joiner_output_count, true);
++					igt_reset_connectors();
++				}
+ 			}
+ 		}
+-		if (data.non_big_joiner_output_count > 1) {
+-			igt_dynamic_f("invalid_combinations") {
+-				enable_force_joiner_on_all_non_big_joiner_outputs(&data);
+-				test_invalid_modeset_two_joiner(&data, false, true);
+-				igt_reset_connectors();
++
++		igt_subtest_with_dynamic("invalid-modeset-force-big-joiner") {
++			if (data.non_big_joiner_output_count >= 1) {
++				igt_dynamic_f("big_joiner_on_last_pipe") {
++					enable_force_joiner_on_all_non_big_joiner_outputs(&data);
++					test_joiner_on_last_pipe(&data, true);
++					igt_reset_connectors();
++				}
++			}
++
++			if (data.non_big_joiner_output_count > 1) {
++				igt_dynamic_f("invalid_combinations") {
++					enable_force_joiner_on_all_non_big_joiner_outputs(&data);
++					test_invalid_modeset_two_joiner(&data, false, true);
++					igt_reset_connectors();
++				}
+ 			}
+ 		}
+ 	}
+ 
+-	igt_describe("Verify the basic modeset on ultra joiner mode on all pipes");
+-	igt_subtest_with_dynamic("basic-force-ultra-joiner") {
+-		igt_require_f(ultra_joiner_supported,
+-			      "Ultra joiner not supported on this platform\n");
+-		igt_require_f(data.non_ultra_joiner_output_count > 0,
+-			      "No non ultra joiner output found\n");
+-		igt_require_f(data.n_pipes > 3,
+-			      "Minimum 4 pipes required\n");
+-		igt_dynamic_f("single") {
+-			enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
+-			test_ultra_joiner(&data, false, false, true);
+-			igt_reset_connectors();
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(data.ultra_joiner_output_count > 0);
++			igt_require(data.n_pipes > 3);
+ 		}
+-	}
+ 
+-	igt_describe("Verify modeset switch between ultra joiner and big joiner");
+-	igt_subtest_with_dynamic("switch-modeset-ultra-joiner-big-joiner") {
+-		igt_require_f(ultra_joiner_supported,
+-			      "Ultra joiner not supported on this platform\n");
+-		igt_require_f(data.ultra_joiner_output_count > 0 ||
+-			      data.non_ultra_joiner_output_count > 0,
+-				  "No ultra joiner or force ultra joiner output found\n");
+-		igt_require_f(data.n_pipes > 3,
+-			      "Minimum 4 pipes required\n");
++		igt_describe("Verify the basic modeset on ultra joiner mode on all pipes");
++		igt_subtest_with_dynamic("basic-ultra-joiner") {
++			igt_dynamic_f("single-joiner")
++				test_ultra_joiner(&data, false, false, false);
++		}
+ 
+-		for_each_connected_output(&data.display, output) {
+-			switch_modeset_ultra_joiner_big_joiner(&data, output);
++		igt_describe("Verify if the modeset on the other pipes are rejected "
++			     "when the pipe A is active with a ultra joiner modeset");
++		igt_subtest_with_dynamic("invalid-modeset-ultra-joiner") {
++			igt_dynamic_f("ultra_joiner_on_invalid_pipe")
++				test_ultra_joiner(&data, true, false, false);
++			if (data.non_ultra_joiner_output_count > 0) {
++				igt_dynamic_f("2x")
++					test_ultra_joiner(&data, false, true, false);
++			}
+ 		}
+ 	}
+ 
+-	igt_subtest_with_dynamic("invalid-modeset-force-ultra-joiner") {
+-		igt_require_f(ultra_joiner_supported,
+-			      "Ultra joiner not supported on this platform\n");
+-		igt_require_f(data.non_ultra_joiner_output_count > 0,
+-			      "Non ultra joiner output not found\n");
+-		igt_require_f(data.n_pipes > 3,
+-			      "Minimum of 3 pipes are required\n");
+-
+-		igt_dynamic_f("ultra_joiner_on_invalid_pipe") {
+-			enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
+-			test_ultra_joiner(&data, true, false, true);
+-			igt_reset_connectors();
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(ultra_joiner_supported);
++			igt_require(data.non_ultra_joiner_output_count > 0);
++			igt_require(data.n_pipes > 3);
+ 		}
+ 
+-		if (data.non_ultra_joiner_output_count >= 1 && data.output_count > 1) {
+-			igt_dynamic_f("2x") {
++		igt_describe("Verify the basic modeset on ultra joiner mode on all pipes");
++		igt_subtest_with_dynamic("basic-force-ultra-joiner") {
++			igt_dynamic_f("single") {
+ 				enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
+-				test_ultra_joiner(&data, false, true, true);
++				test_ultra_joiner(&data, false, false, true);
+ 				igt_reset_connectors();
+ 			}
+ 		}
++
++		igt_subtest_with_dynamic("invalid-modeset-force-ultra-joiner") {
++			igt_dynamic_f("ultra_joiner_on_invalid_pipe") {
++				enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
++				test_ultra_joiner(&data, true, false, true);
++				igt_reset_connectors();
++			}
++
++			if (data.non_ultra_joiner_output_count >= 1 && data.output_count > 1) {
++				igt_dynamic_f("2x") {
++					enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
++					test_ultra_joiner(&data, false, true, true);
++					igt_reset_connectors();
++				}
++			}
++		}
++	}
++
++	igt_describe("Verify modeset switch between ultra joiner and big joiner");
++	igt_subtest_with_dynamic("switch-modeset-ultra-joiner-big-joiner") {
++		igt_require(ultra_joiner_supported);
++		igt_require(data.ultra_joiner_output_count > 0 ||
++			    data.non_ultra_joiner_output_count > 0);
++		igt_require(data.n_pipes > 3);
++
++		for_each_connected_output(&data.display, output)
++			switch_modeset_ultra_joiner_big_joiner(&data, output);
+ 	}
+ 
+ 	igt_describe("Verify the basic modeset on the maximum non-joiner mode across "
+ 		     "all pipes");
+ 	igt_subtest_with_dynamic("basic-max-non-joiner") {
+-		igt_require_f(data.n_pipes >= 1,
+-			      "At least one pipe is required.\n");
+-		igt_require_f(data.non_joiner_output_count  > 0,
+-			      "No suitable non-joiner mode found\n");
++		igt_require(data.n_pipes >= 1);
++		igt_require(data.non_joiner_output_count  > 0);
+ 			test_basic_max_non_joiner(&data);
+ 	}
+ 
+-- 
+2.43.0
 
-CI Bug Log - changes from XEIGT_8618_BAT -> XEIGTPW_14035_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14035_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@fbdev@nullptr:
-    - bat-dg2-oem2:       [SKIP][1] ([Intel XE#2134]) -> [PASS][2] +4 other tests pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@fbdev@nullptr.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@fbdev@nullptr.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-dg2-oem2:       [SKIP][3] ([Intel XE#2351] / [Intel XE#6456]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@xe_dma_buf_sync@export-dma-buf-once-read-write-sync:
-    - bat-dg2-oem2:       [SKIP][5] ([Intel XE#6456] / [Intel XE#6557]) -> [PASS][6] +6 other tests pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_dma_buf_sync@export-dma-buf-once-read-write-sync.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_dma_buf_sync@export-dma-buf-once-read-write-sync.html
-
-  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
-    - bat-dg2-oem2:       [SKIP][7] ([Intel XE#2229] / [Intel XE#455]) -> [PASS][8] +2 other tests pass
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
-
-  * igt@xe_module_load@load:
-    - bat-dg2-oem2:       [FAIL][9] ([Intel XE#6456]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_module_load@load.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_module_load@load.html
-
-  * igt@xe_prime_self_import@basic-with_fd_dup:
-    - bat-dg2-oem2:       [SKIP][11] ([Intel XE#6456]) -> [PASS][12] +196 other tests pass
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_prime_self_import@basic-with_fd_dup.html
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_prime_self_import@basic-with_fd_dup.html
-
-  
-#### Warnings ####
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-dg2-oem2:       [SKIP][13] ([Intel XE#6456]) -> [SKIP][14] ([Intel XE#623])
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-dg2-oem2:       [SKIP][15] ([Intel XE#2351] / [Intel XE#6456]) -> [SKIP][16] ([Intel XE#455])
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_psr@psr-cursor-plane-move:
-    - bat-dg2-oem2:       [SKIP][17] ([Intel XE#1406] / [Intel XE#2351] / [Intel XE#6456]) -> [SKIP][18] ([Intel XE#1406] / [Intel XE#2850] / [Intel XE#929]) +2 other tests skip
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@kms_psr@psr-cursor-plane-move.html
-   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@kms_psr@psr-cursor-plane-move.html
-
-  * igt@sriov_basic@enable-vfs-autoprobe-off:
-    - bat-dg2-oem2:       [SKIP][19] ([Intel XE#6456]) -> [SKIP][20] ([Intel XE#1091] / [Intel XE#2849]) +1 other test skip
-   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@sriov_basic@enable-vfs-autoprobe-off.html
-   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@sriov_basic@enable-vfs-autoprobe-off.html
-
-  * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr:
-    - bat-dg2-oem2:       [SKIP][21] ([Intel XE#6456]) -> [SKIP][22] ([Intel XE#288]) +30 other tests skip
-   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html
-   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html
-
-  * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate:
-    - bat-dg2-oem2:       [SKIP][23] ([Intel XE#6456] / [Intel XE#6557]) -> [SKIP][24] ([Intel XE#288]) +1 other test skip
-   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html
-   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html
-
-  * igt@xe_huc_copy@huc_copy:
-    - bat-dg2-oem2:       [SKIP][25] ([Intel XE#6456]) -> [SKIP][26] ([Intel XE#255])
-   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
-   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
-
-  * igt@xe_pat@pat-index-xe2:
-    - bat-dg2-oem2:       [SKIP][27] ([Intel XE#6456]) -> [SKIP][28] ([Intel XE#977])
-   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html
-   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html
-
-  * igt@xe_pat@pat-index-xehpc:
-    - bat-dg2-oem2:       [SKIP][29] ([Intel XE#6456] / [Intel XE#6557]) -> [SKIP][30] ([Intel XE#2838] / [Intel XE#979])
-   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html
-   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html
-
-  * igt@xe_pat@pat-index-xelpg:
-    - bat-dg2-oem2:       [SKIP][31] ([Intel XE#6456]) -> [SKIP][32] ([Intel XE#979])
-   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_pat@pat-index-xelpg.html
-   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_pat@pat-index-xelpg.html
-
-  * igt@xe_sriov_flr@flr-vf1-clear:
-    - bat-dg2-oem2:       [SKIP][33] ([Intel XE#6456]) -> [SKIP][34] ([Intel XE#3342])
-   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_sriov_flr@flr-vf1-clear.html
-   [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_sriov_flr@flr-vf1-clear.html
-
-  * igt@xe_waitfence@abstime:
-    - bat-dg2-oem2:       [SKIP][35] ([Intel XE#6456]) -> [TIMEOUT][36] ([Intel XE#6506])
-   [35]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_waitfence@abstime.html
-   [36]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_waitfence@abstime.html
-
-  * igt@xe_waitfence@reltime:
-    - bat-dg2-oem2:       [SKIP][37] ([Intel XE#6456] / [Intel XE#6557]) -> [FAIL][38] ([Intel XE#6520])
-   [37]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_waitfence@reltime.html
-   [38]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_waitfence@reltime.html
-
-  
-  [Intel XE#1091]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091
-  [Intel XE#1406]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406
-  [Intel XE#2134]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#2351]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2351
-  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
-  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
-  [Intel XE#2849]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849
-  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
-  [Intel XE#6456]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456
-  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
-  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
-  [Intel XE#6557]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6557
-  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
-  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
-  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
-
-
-Build changes
--------------
-
-  * IGT: IGT_8618 -> IGTPW_14035
-  * Linux: xe-4083-f2aadc35c771894c27f9b742d2593a2e00bb6ebd -> xe-4085-4ce351022716985e9c1dd18583acd4d3d149cb5b
-
-  IGTPW_14035: fad14abd3a7a92da013019e20413d84b052f56fc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8618: 8618
-  xe-4083-f2aadc35c771894c27f9b742d2593a2e00bb6ebd: f2aadc35c771894c27f9b742d2593a2e00bb6ebd
-  xe-4085-4ce351022716985e9c1dd18583acd4d3d149cb5b: 4ce351022716985e9c1dd18583acd4d3d149cb5b
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/index.html
-
---===============1640339399039254031==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Revert WAs and skip FBC on BMG</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/157348/">https://patchwork.freedesktop.org/series/157348/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8618_BAT -&gt; XEIGTPW_14035_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14035_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@fbdev@nullptr:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@fbdev@nullptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134">Intel XE#2134</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@fbdev@nullptr.html">PASS</a> +4 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2351">Intel XE#2351</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_dma_buf_sync@export-dma-buf-once-read-write-sync:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_dma_buf_sync@export-dma-buf-once-read-write-sync.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6557">Intel XE#6557</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_dma_buf_sync@export-dma-buf-once-read-write-sync.html">PASS</a> +6 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">PASS</a> +2 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_module_load@load:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_module_load@load.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_module_load@load.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_prime_self_import@basic-with_fd_dup:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_prime_self_import@basic-with_fd_dup.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_prime_self_import@basic-with_fd_dup.html">PASS</a> +196 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2351">Intel XE#2351</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-cursor-plane-move:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2351">Intel XE#2351</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/929">Intel XE#929</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-bindexecqueue-userptr:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +30 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6557">Intel XE#6557</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_huc_copy@huc_copy:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xe2:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6557">Intel XE#6557</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelpg:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_waitfence@abstime:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_waitfence@abstime.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_waitfence@reltime:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8618/bat-dg2-oem2/igt@xe_waitfence@reltime.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6456">Intel XE#6456</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6557">Intel XE#6557</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14035/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8618 -&gt; IGTPW_14035</li>
-<li>Linux: xe-4083-f2aadc35c771894c27f9b742d2593a2e00bb6ebd -&gt; xe-4085-4ce351022716985e9c1dd18583acd4d3d149cb5b</li>
-</ul>
-<p>IGTPW_14035: fad14abd3a7a92da013019e20413d84b052f56fc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8618: 8618<br />
-  xe-4083-f2aadc35c771894c27f9b742d2593a2e00bb6ebd: f2aadc35c771894c27f9b742d2593a2e00bb6ebd<br />
-  xe-4085-4ce351022716985e9c1dd18583acd4d3d149cb5b: 4ce351022716985e9c1dd18583acd4d3d149cb5b</p>
-
-</body>
-</html>
-
---===============1640339399039254031==--
