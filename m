@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96C5BCCF9F8
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Nov 2025 10:14:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 224DCCCF9F8
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Nov 2025 10:25:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4324410E032;
-	Wed, 12 Nov 2025 10:14:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BF5AF10E08E;
+	Wed, 12 Nov 2025 10:25:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OVr/RlOp";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q0+9PgZ3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9292A10E032
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Nov 2025 10:14:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 22A2810E08E;
+ Wed, 12 Nov 2025 10:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762942482; x=1794478482;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=TS+UviHjjedQf88ahLT7vCD82cad5DSt/tWavJTJdkg=;
- b=OVr/RlOpJtuIdfuYlvXVsLIZ6xJNJZDek4MO14UdThXVkoQdqKEFiTDG
- tKPs6Hd8q3zRZ+l0PJnfOj8CvIaQBZmTdcP10D0V5jZQZQdrlmg3jaKN3
- MKA2xTtFVTZPrKs/HYoL0MdkcSXOnBeIKaBJnIpIKGoI5/hr5ZTu6wA6J
- b/Fb0CA8qwnQX5ptCziEryliS/D+c5bwV0lfu91NuXPIoNiqR76Lxrtat
- /jLYZqyQiGQLkAZXS8T87oJCDgkgJyYrup/LP5oeUYCp5pjhIs0MM67sm
- bs4Mp+DJRG+KhaiHxbuU95QVVWF/5HRz482Ci2G4oZcpe6xpmWaKjd3rr w==;
-X-CSE-ConnectionGUID: lRoLqsD0S7uonaNiKncV4w==
-X-CSE-MsgGUID: JAs1j+geQR6V8tdd4XFCQQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11610"; a="64709037"
-X-IronPort-AV: E=Sophos;i="6.19,299,1754982000"; d="scan'208";a="64709037"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Nov 2025 02:14:41 -0800
-X-CSE-ConnectionGUID: pN3elkEES5eFsH7VKzbRBg==
-X-CSE-MsgGUID: oUY2j9WoRPGDbBo/nMndAw==
+ t=1762943130; x=1794479130;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=DaXPieHiNQ1U3UaHBJArkQaAO5NZgTlhI4BuQSW0ECg=;
+ b=Q0+9PgZ3V7N/9R8LUDiESSDf1l/S+drGd0KFHFigqnKFk5R7gbG74sEp
+ HrKlJbAiZrd6QCiZZ6wrUCcsg9/KHBQQhB+W/tH3GMobcRLYWxhQMwIuq
+ ieaLGUkmoVDJ0A1oSghDg4rUukZJW+hDzYIUZ00HbLygE91bxSRibvypw
+ bgtUjYNAVPXBc0M1u4waer7HmacPB51RaskFMcUvmVPMA6atnYrDuhTBi
+ DgeL3u9h11+IX06QHoivHUg66CRVy6A/RIfqAdgwQ4h9Mb9avLcEq3/uG
+ 1Dsn3+sm272+jFzKSRJVX6+6gKoXaP2gzXm++F2m7CctutPnGaCLPq5Mc A==;
+X-CSE-ConnectionGUID: KjJzOI9LQjC9g/7qjrBcwA==
+X-CSE-MsgGUID: 1gcAbVMQQMW3JoaNzUji8A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11610"; a="65039098"
+X-IronPort-AV: E=Sophos;i="6.19,299,1754982000"; d="scan'208";a="65039098"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Nov 2025 02:25:30 -0800
+X-CSE-ConnectionGUID: oywryyY3R/KYS8uEN0i0wQ==
+X-CSE-MsgGUID: trjR5wbTRSyGWQkY+orGhw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,299,1754982000"; d="scan'208";a="188477407"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.244.194])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Nov 2025 02:14:40 -0800
-Date: Wed, 12 Nov 2025 11:14:37 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: nishit.sharma@intel.com
+X-IronPort-AV: E=Sophos;i="6.19,299,1754982000"; d="scan'208";a="189620447"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.63])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Nov 2025 02:25:29 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: I915-ci-infra@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v15 2/3] tests/intel/xe_compute: Add
- loop_duration_2s subtest
-Message-ID: <fut37wg46pgm3n43fs5gqstlhpxgb6g6nv4k4j4acd5eighfjg@hrum6vlibx2t>
-References: <20251112093510.15195-1-nishit.sharma@intel.com>
- <20251112093510.15195-3-nishit.sharma@intel.com>
+Subject: Re: =?UTF-8?B?4pyX?= i915.CI.Full: failure for tests/dmabuf: Avoid
+ soft lockups on slow platforms (rev2)
+Date: Wed, 12 Nov 2025 11:22:56 +0100
+Message-ID: <1969470.eGJsNajkDb@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <176264564673.33229.10496747398313496958@10055242dc62>
+References: <20251104112116.432508-2-janusz.krzysztofik@linux.intel.com>
+ <176264564673.33229.10496747398313496958@10055242dc62>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251112093510.15195-3-nishit.sharma@intel.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,116 +71,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Nov 12, 2025 at 09:35:09AM +0000, nishit.sharma@intel.com wrote:
-> From: Nishit Sharma <nishit.sharma@intel.com>
-> 
-> Verify introduced loop_kernel_duration parameter in user_execenv
-> which makes GPU busy for specified duration. Execution should remain
-> within a 0.2 second margin of the requested duration. loop_kernel shader
-> is not supported in xehpc, xehp, xelpg pipelines so test will skip.
-> 
-> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
-> ---
->  tests/intel/xe_compute.c | 65 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 65 insertions(+)
-> 
-> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-> index 5e9140902..87be69514 100644
-> --- a/tests/intel/xe_compute.c
-> +++ b/tests/intel/xe_compute.c
-> @@ -19,6 +19,9 @@
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
->  
-> +#define LOOP_DURATION_2s	(1000000ull * 2)
-> +#define DURATION_MARGIN		0.2
-> +
->  static int gt_sysfs_open(int gt)
->  {
->  	int fd, gt_fd;
-> @@ -186,6 +189,64 @@ test_compute_kernel_with_ccs_mode(void)
->  	igt_require(num_gt_with_ccs_mode > 0);
->  }
->  
-> +static double elapsed(const struct timeval *start,
-> +		      const struct timeval *end)
-> +{
-> +	return (end->tv_sec - start->tv_sec) + 1e-6*(end->tv_usec - start->tv_usec);
-> +}
-> +
-> +/**
-> + * SUBTEST: loop-duration-2s
-> + * Functionality: OpenCL kernel
-> + * Description:
-> + *	Run an openCL loop Kernel that for duration,
-> + *	set in loop_kernel_duration ..
-> + */
-> +static void
-> +test_compute_kernel_loop(uint64_t loop_duration)
-> +{
-> +	int fd;
-> +	unsigned int ip_ver;
-> +	const struct intel_compute_kernels *kernels;
-> +	struct user_execenv execenv = { 0 };
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	struct timeval start, end;
-> +	double elapse_time, lower_bound, upper_bound;
-> +
-> +	fd = drm_open_driver(DRIVER_XE);
-> +	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
-> +	kernels = intel_compute_square_kernels;
-> +
-> +	while (kernels->kernel) {
-> +		if (ip_ver == kernels->ip_ver)
-> +			break;
-> +		kernels++;
-> +	}
-> +
-> +	/* loop_kernel_duration used as sleep to make EU busy for loop_duration */
-> +	execenv.loop_kernel_duration = loop_duration;
-> +	execenv.kernel = kernels->loop_kernel;
-> +	execenv.kernel_size = kernels->loop_kernel_size;
-> +
-> +	xe_for_each_engine(fd, hwe) {
-> +		if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-> +			continue;
-> +
-> +		igt_info("Running loop_kernel on ccs engine %d\n", hwe->engine_instance);
-> +		gettimeofday(&start, NULL);
-> +		igt_assert_f(xe_run_intel_compute_kernel_on_engine(fd, hwe, &execenv,
-> +								   EXECENV_PREF_SYSTEM),
-> +			     "Unable to run compute kernel successfully\n");
-> +		gettimeofday(&end, NULL);
-> +		elapse_time = elapsed(&start, &end);
-> +		lower_bound = (loop_duration / 1e6 - DURATION_MARGIN);
-> +		upper_bound = (loop_duration / 1e6 + DURATION_MARGIN);
+Hi I915-ci-infra@lists.freedesktop.org,
 
-These round brackets are not necessary here, but we can remove them
-before merge. From me:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
-
-> +
-> +		igt_assert(lower_bound < elapse_time && elapse_time < upper_bound);
-> +	}
-> +	drm_close_driver(fd);
-> +}
-> +
->  /**
->   * SUBTEST: compute-square
->   * Mega feature: WMTP
-> @@ -223,4 +284,8 @@ igt_main
->  
->  	igt_subtest("ccs-mode-compute-kernel")
->  		test_compute_kernel_with_ccs_mode();
-> +
-> +	/* To test compute function stops after loop_kernel_duration */
-> +	igt_subtest("loop-duration-2s")
-> +		test_compute_kernel_loop(LOOP_DURATION_2s);
->  }
-> -- 
-> 2.43.0
+On Sunday, 9 November 2025 00:47:26 CET Patchwork wrote:
+> == Series Details ==
 > 
+> Series: tests/dmabuf: Avoid soft lockups on slow platforms (rev2)
+> URL   : https://patchwork.freedesktop.org/series/156999/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_17515_full -> IGTPW_14024_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_14024_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_14024_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14024/index.html
+> 
+> Participating hosts (12 -> 10)
+> ------------------------------
+> 
+>   Missing    (2): shard-snb-0 shard-dg2-set2 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_14024_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@panthor/panthor_vm@vm_unbind:
+>     - shard-dg1:          NOTRUN -> [SKIP][1]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14024/shard-dg1-15/igt@panthor/panthor_vm@vm_unbind.html
+> 
+>   * igt@panthor/panthor_vm@vm_unbind_invalid_address:
+>     - shard-dg2:          NOTRUN -> [SKIP][2] +3 other tests skip
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14024/shard-dg2-3/igt@panthor/panthor_vm@vm_unbind_invalid_address.html
+
+The scope of the change under this pre-merge testing is limited to dmabuf test 
+and i915_selftest to some extent, then the above failures are not related to 
+this change.  Please update CBL filters and re-report.
+
+Please also note those are new tests for non-Intel platform, then should be 
+rather blocklisted.  Opening a request for them to be added to the blocklist 
+seems to be a good idea.
+
+Thanks,
+Janusz
+
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@panthor/panthor_vm@vm_create_destroy:
+>     - shard-rkl:          [SKIP][3] ([i915#14544]) -> [SKIP][4] +3 other tests skip
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17515/shard-rkl-6/igt@panthor/panthor_vm@vm_create_destroy.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14024/shard-rkl-8/igt@panthor/panthor_vm@vm_create_destroy.html
+> 
+>   
+> New tests
+> ---------
+...
+
+
