@@ -4,57 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8905DCCFA1A
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Nov 2025 08:28:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF948CCFA1A
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Nov 2025 08:29:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3EC2F10E6CE;
-	Wed, 12 Nov 2025 08:28:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A5C2B10E6CE;
+	Wed, 12 Nov 2025 08:29:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hxORvfDg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jFwIT2og";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39A1610E6CE
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Nov 2025 08:28:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D01F210E6CE
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Nov 2025 08:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1762936089; x=1794472089;
+ t=1762936171; x=1794472171;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=sfTx9z7ecN4dEd6u5OyANxKX991osLsxUOzGWUBUSyg=;
- b=hxORvfDgf66hJRJgMzbDYa0a7s3UeaZVNR/xY1fEcJuWFYlazLvHc3im
- MxDYDbvfbLtYUXZN2NYDGcvxaA5CqBh5L7CThWJOd+25qfYq2HnVu1Qin
- KuqTm1PEU/ECq4bqLrLOQDPYQdnRPZBnH5DhpztsZ7A9IlMrFw4EWIH14
- cr/Qe1WlUhNPLRgizxmViBOCmnueV2wgz12c3AT70j5uQeiD+UsR9pbee
- hPPBulDkxCQUnxQ8Y3I7jBom+jstZOQ5eIZmbupxkuaBf3fJ9zYZv37Rl
- o9PD2rf4AgjmwBMcrzijjZ0AbVHJswe831OwlexjJa881itlgex7xnR7g A==;
-X-CSE-ConnectionGUID: T+Vc7luyQuK5VeKBeJ6IJw==
-X-CSE-MsgGUID: rJbLdG+TTM+VECKKK/9gmA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11610"; a="75299620"
-X-IronPort-AV: E=Sophos;i="6.19,298,1754982000"; d="scan'208";a="75299620"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Nov 2025 00:28:09 -0800
-X-CSE-ConnectionGUID: VBZRqZdzQPmgLd0xCgzWhQ==
-X-CSE-MsgGUID: VDVxDMTnS5q0UV5nG2iqcQ==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=Ep8P35FHTaJescfC0DlYUwite/Fm2NpfBWTk16kJ7OM=;
+ b=jFwIT2og+oD6TZP/TThInZUhLkJKFyAgvsoqrTCQXnqIE3udRmda02U4
+ Uln6OP7X+q9LxPJ3KOmjJRVqEwlennjSgHqKhOsa6U85Q31/bwYbtw0qu
+ Xvngh+EzSaDXk8Xh+dxYQ6aEJPbhoxja8VQ8owqoNHXAHQA84nO5+Q4xU
+ lKgHq8GVwc0DkLsSBefkFGBNdjn3DvxnGfe9QKVgFd27NjFhomswxgnvL
+ dYo4QKBqoHP22mS8+jQbFRZTEeNYfROfiemJuyFMMgnS04G8MbWX/GDM0
+ PEL85R/NgCG6uE8jzNG71Nzac9QC9a/i4ZTYJfyE5ctUpWyMY0Q9tC1w5 Q==;
+X-CSE-ConnectionGUID: 4ZoVElS4SAmLXXB2wwjMIg==
+X-CSE-MsgGUID: gYNUsQmZR7idnZp8Hp5k1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11610"; a="64001356"
+X-IronPort-AV: E=Sophos;i="6.19,298,1754982000"; d="scan'208";a="64001356"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Nov 2025 00:29:30 -0800
+X-CSE-ConnectionGUID: W6cayImxTPmlUA++PyuU2Q==
+X-CSE-MsgGUID: esWizH3rQlSH6aoKpmChCw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,298,1754982000"; d="scan'208";a="194354938"
+X-IronPort-AV: E=Sophos;i="6.19,298,1754982000"; d="scan'208";a="189417748"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.244.194])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Nov 2025 00:28:08 -0800
-Date: Wed, 12 Nov 2025 09:28:05 +0100
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Nov 2025 00:29:30 -0800
+Date: Wed, 12 Nov 2025 09:29:27 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: nishit.sharma@intel.com
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw=?= =?utf-8?Q?=3A?= failure for
- Multi-CCS support in IGT (rev14)
-Message-ID: <h7hpp4bud4xfg5dk3kmrxseqsfxh3r7qsjtzushiosicqlg4sh@bj6gjbtzso4o>
+To: nishit.sharma@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t v14 3/3] tests/intel/xe_compute: Add eu-busy-10s
+ test for EU utilization measurement
+Message-ID: <zf4wtxphjxu42eyjeg7cj2nbne5vva6kqsmfx5422cwzokrbuz@j3eaf3f3hhz7>
 References: <20251107151519.66692-1-nishit.sharma@intel.com>
- <176267471314.33229.607536672644246736@10055242dc62>
+ <20251107151519.66692-4-nishit.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <176267471314.33229.607536672644246736@10055242dc62>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251107151519.66692-4-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,633 +71,373 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Sun, Nov 09, 2025 at 07:51:53AM +0000, Patchwork wrote:
->    Patch Details
+On Fri, Nov 07, 2025 at 03:15:19PM +0000, nishit.sharma@intel.com wrote:
+> From: Nishit Sharma <nishit.sharma@intel.com>
 > 
->    Series:  Multi-CCS support in IGT (rev14)                                 
->    URL:     https://patchwork.freedesktop.org/series/153115/                 
->    State:   failure                                                          
->    Details: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14026/index.html 
-> 
->         CI Bug Log - changes from XEIGT_8614_FULL -> XEIGTPW_14026_FULL
-> 
-> Summary
-> 
->    FAILURE
-> 
->    Serious unknown changes coming with XEIGTPW_14026_FULL absolutely need to
->    be
->    verified manually.
-> 
->    If you think the reported changes have nothing to do with the changes
->    introduced in XEIGTPW_14026_FULL, please notify your bug team
->    (I915-ci-infra@lists.freedesktop.org) to allow them
->    to document this new failure mode, which will reduce false positives in
->    CI.
-> 
-> Participating hosts (4 -> 3)
-> 
->    Missing (1): shard-adlp
-> 
-> Possible new issues
-> 
->    Here are the unknown changes that may have been introduced in
->    XEIGTPW_14026_FULL:
-> 
->   IGT changes
-> 
->     Possible regressions
-> 
->      * igt@panthor/panthor_query@query:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP +2 other tests skip
->      * igt@xe_compute@eu-busy-10s (NEW):
-> 
->           * shard-bmg: NOTRUN -> SKIP
->           * shard-lnl: NOTRUN -> SKIP
-> 
->     Warnings
-> 
->      * igt@xe_compute@ccs-mode-basic:
-> 
->           * shard-bmg: FAIL (Intel XE#5794) -> SKIP
->      * igt@xe_compute@ccs-mode-compute-kernel:
-> 
->           * shard-bmg: FAIL (Intel XE#5963) -> SKIP
+> This test measures the utilization of available CCS instances based on the
+> number of slices reported in
+> /sys/class/drm/cardX/device/tileX/gtX/num_cslices. Compute workload is
+> scheduled on different CCS engines. The test runs workloads for fixed
+> duration using loop_kernel_duration. SR-IOV and CCS mode features are
+> mutually exclusive. This change updates the test to skip execution if
+> SR-IOV is enabled on the platform.
 
-This is expected. Changing ccs with sriov is not possible, so
-change handles this now.
+Ok, I think this time this is ready for being merge. From me:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
 
 > 
-> New tests
+> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+> ---
+>  tests/intel/xe_compute.c | 289 ++++++++++++++++++++++++++++++++++++++-
+>  tests/meson.build        |   1 +
+>  2 files changed, 286 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+> index 192cbf492..995d93dfb 100644
+> --- a/tests/intel/xe_compute.c
+> +++ b/tests/intel/xe_compute.c
+> @@ -19,8 +19,26 @@
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>  
+> +#include "igt_perf.h"
+> +#include "igt_sriov_device.h"
+> +
+>  #define LOOP_DURATION_2s	(1000000ull * 2)
+>  #define DURATION_MARGIN		0.2
+> +#define MIN_BUSYNESS		95.0
+> +
+> +bool sriov_enabled;
+> +
+> +struct thread_data {
+> +	pthread_t thread;
+> +	pthread_mutex_t *mutex;
+> +	pthread_cond_t *cond;
+> +	int class;
+> +	int fd;
+> +	int gt;
+> +	struct user_execenv *execenv;
+> +	struct drm_xe_engine_class_instance *eci;
+> +	bool *go;
+> +};
+>  
+>  static int gt_sysfs_open(int gt)
+>  {
+> @@ -247,6 +265,234 @@ test_compute_kernel_loop(uint64_t loop_duration)
+>  	drm_close_driver(fd);
+>  }
+>  
+> +static void
+> +*intel_compute_thread(void *data)
+> +{
+> +	struct thread_data *t = (struct thread_data *)data;
+> +	char device[30];
+> +	uint64_t type;
+> +	uint32_t engine_class, engine_instance, gt_shift;
+> +	uint64_t engine_active_config, engine_total_config;
+> +	int ret, fd1, fd2;
+> +	uint64_t val[4];
+> +	uint64_t param_config;
+> +
+> +	pthread_mutex_lock(t->mutex);
+> +	while (*t->go == 0)
+> +		pthread_cond_wait(t->cond, t->mutex);
+> +	pthread_mutex_unlock(t->mutex);
+> +
+> +	type = igt_perf_type_id(xe_perf_device(t->fd, device, sizeof(device)));
+> +	igt_debug("type: %lx, device: %s\n", type, device);
+> +
+> +	perf_event_format(device, "gt", &gt_shift);
+> +	perf_event_format(device, "engine_class", &engine_class);
+> +	perf_event_format(device, "engine_instance", &engine_instance);
+> +
+> +	ret = perf_event_config(device, "engine-active-ticks", &engine_active_config);
+> +	igt_assert_eq(ret, 0);
+> +	ret = perf_event_config(device, "engine-total-ticks", &engine_total_config);
+> +	igt_assert_eq(ret, 0);
+> +
+> +	igt_debug("gt_id: %x, class: %x, instance: %x\n",
+> +		  t->eci->gt_id, t->eci->engine_class, t->eci->engine_instance);
+> +
+> +	/* Setting collective counters for compute engine available in t->eci */
+> +	param_config = (uint64_t)t->eci->gt_id << gt_shift |
+> +		       t->eci->engine_class << engine_class |
+> +		       t->eci->engine_instance << engine_instance;
+> +
+> +	fd1 = igt_perf_open_group(type, engine_active_config | param_config, -1);
+> +	fd2 = igt_perf_open_group(type, engine_total_config | param_config, fd1);
+> +
+> +	ret = read(fd1, val, sizeof(val));
+> +	igt_assert_eq(ret, sizeof(val));
+> +	igt_info("start - active: %ld, total: %ld, busyness: %.1f before scheduling on engine_instance :%d\n",
+> +		 val[2], val[3], (float)val[2] / (float)val[3] * 100.0, t->eci->engine_instance);
+> +
+> +	igt_assert_f(xe_run_intel_compute_kernel_on_engine(t->fd, t->eci, t->execenv,
+> +							   EXECENV_PREF_VRAM_IF_POSSIBLE),
+> +		     "Unable to run compute kernel successfully\n");
+> +
+> +	ret = read(fd1, val, sizeof(val));
+> +	igt_assert_eq(ret, sizeof(val));
+> +	igt_info("end - active: %ld, total: %ld, busyness: %.1f after scheduling on engine_instance :%d\n",
+> +		 val[2], val[3], (float)val[2] / (float)val[3] * 100.0, t->eci->engine_instance);
+> +
+> +	igt_assert_f(((float)val[2] / (float)val[3] * 100.0) > MIN_BUSYNESS,
+> +		     "Engines are under utilizated\n");
+> +
+> +	close(fd1);
+> +	close(fd2);
+> +	return NULL;
+> +}
+> +
+> +static void
+> +igt_check_supported_pipeline(void)
+> +{
+> +	int fd;
+> +	unsigned int ip_ver;
+> +	const struct intel_compute_kernels *kernels;
+> +
+> +	fd = drm_open_driver(DRIVER_XE);
+> +	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+> +	kernels = intel_compute_square_kernels;
+> +	drm_close_driver(fd);
+> +
+> +	while (kernels->kernel) {
+> +		if (ip_ver == kernels->ip_ver)
+> +			break;
+> +		kernels++;
+> +	}
+> +
+> +	/* skip if loop_kernel is not supported by pipeline */
+> +	if (!kernels->kernel || !kernels->loop_kernel)
+> +		igt_skip("loop_kernel not supported by pipeline\n");
+> +}
+> +
+> +static bool is_sriov_mode(int fd)
+> +{
+> +	bool is_sriov = false;
+> +
+> +	if (igt_sriov_is_pf(fd) && igt_sriov_vfs_supported(fd))
+> +		is_sriov = true;
+> +
+> +	return is_sriov;
+> +}
+> +
+> +static void
+> +igt_store_ccs_mode(int ccs_mode[], int size)
+> +{
+> +	uint64_t gt_mask;
+> +	uint32_t gt, num_slices;
+> +	int gt_fd;
+> +
+> +	gt_mask = get_gt_mask();
+> +	for_each_bit(gt_mask, gt) {
+> +		if (!get_num_cslices(gt, &num_slices))
+> +			continue;
+> +		igt_assert(gt < size);
+> +
+> +		gt_fd = gt_sysfs_open(gt);
+> +		igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode[gt]);
+> +		close(gt_fd);
+> +	}
+> +}
+> +
+> +static void
+> +igt_restore_ccs_mode(int ccs_mode[], int size)
+> +{
+> +	uint64_t gt_mask = get_gt_mask();
+> +	uint32_t gt, num_slices;
+> +	int gt_fd;
+> +
+> +	for_each_bit(gt_mask, gt) {
+> +		if (!get_num_cslices(gt, &num_slices))
+> +			continue;
+> +		igt_assert(gt < size);
+> +
+> +		gt_fd = gt_sysfs_open(gt);
+> +		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", ccs_mode[gt]) > 0);
+> +		close(gt_fd);
+> +	}
+> +}
+> +
+> +/**
+> + * SUBTEST: eu-busy-10s
+> + * Functionality: OpenCL kernel
+> + * Description: Run loop_kernel for duration_sec and observe EU business
+> + */
+> +static void
+> +test_eu_busy(uint64_t duration_sec)
+> +{
+> +	struct user_execenv execenv = { 0 };
+> +	struct thread_data *threads_data;
+> +	struct drm_xe_engine_class_instance *hwe;
+> +	const struct intel_compute_kernels *kernels;
+> +	pthread_mutex_t mutex;
+> +	pthread_cond_t cond;
+> +	u32 gt, n_instances = 0, i;
+> +	bool go = false;
+> +	int ccs_mode, gt_fd, fd;
+> +	u32 num_slices, ip_ver;
+> +	uint64_t gt_mask = get_gt_mask();
+> +
+> +	for_each_bit(gt_mask, gt) {
+> +		if (!get_num_cslices(gt, &num_slices))
+> +			continue;
+> +
+> +		gt_fd = gt_sysfs_open(gt);
+> +		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", num_slices) > 0);
+> +		igt_assert(igt_sysfs_scanf(gt_fd, "ccs_mode", "%u", &ccs_mode) > 0);
+> +		close(gt_fd);
+> +	}
+> +
+> +	igt_skip_on_f(ccs_mode <= 1, "Skipping test as ccs_mode <=1 not matching criteria :%d\n",
+> +		      ccs_mode);
+> +
+> +	fd = drm_open_driver(DRIVER_XE);
+> +
+> +	ip_ver = intel_graphics_ver(intel_get_drm_devid(fd));
+> +	kernels = intel_compute_square_kernels;
+> +	while (kernels->kernel) {
+> +		if (ip_ver == kernels->ip_ver)
+> +			break;
+> +		kernels++;
+> +	}
+> +	if (!kernels->loop_kernel_size)
+> +		drm_close_driver(fd);
+> +	igt_assert(kernels->loop_kernel_size);
+> +
+> +	/*
+> +	 * User should use different kernel if loop_kernel_duration not set
+> +	 * With loop kernel and loop duration it assumes we stop it via memory write
+> +	 *
+> +	 */
+> +	execenv.loop_kernel_duration = duration_sec;
+> +	execenv.kernel = kernels->loop_kernel;
+> +	execenv.kernel_size = kernels->loop_kernel_size;
+> +
+> +	xe_for_each_engine(fd, hwe) {
+> +		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
+> +			++n_instances;
+> +	}
+> +
+> +	threads_data = calloc(n_instances, sizeof(*threads_data));
+> +	if (!threads_data)
+> +		drm_close_driver(fd); /* drop reference for retrieve ccs_mode */
+> +	igt_assert(threads_data);
+> +
+> +	pthread_mutex_init(&mutex, 0);
+> +	pthread_cond_init(&cond, 0);
+> +
+> +	i = 0;
+> +	xe_for_each_engine(fd, hwe) {
+> +		if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
+> +			continue;
+> +
+> +		threads_data[i].mutex = &mutex;
+> +		threads_data[i].cond = &cond;
+> +		threads_data[i].fd = fd;
+> +		threads_data[i].eci = hwe;
+> +		threads_data[i].go = &go;
+> +		threads_data[i].execenv = &execenv;
+> +		pthread_create(&threads_data[i].thread, 0, intel_compute_thread,
+> +			       &threads_data[i]);
+> +		++i;
+> +	}
+> +	pthread_mutex_lock(&mutex);
+> +	go = true;
+> +	pthread_cond_broadcast(&cond);
+> +	pthread_mutex_unlock(&mutex);
+> +
+> +	for (int n = 0; n < i; ++n)
+> +		pthread_join(threads_data[n].thread, NULL);
+> +
+> +	free(threads_data);
+> +
+> +	drm_close_driver(fd);
+> +}
+> +
+>  /**
+>   * SUBTEST: compute-square
+>   * Mega feature: WMTP
+> @@ -266,10 +512,14 @@ test_compute_square(int fd)
+>  
+>  igt_main
+>  {
+> -	int xe;
+> +	int xe, ccs_mode[4];
+> +	unsigned int ip_ver;
+>  
+>  	igt_fixture {
+>  		xe = drm_open_driver(DRIVER_XE);
+> +		sriov_enabled = is_sriov_mode(xe);
+> +		ip_ver = intel_graphics_ver(intel_get_drm_devid(xe));
+> +		igt_store_ccs_mode(ccs_mode, ARRAY_SIZE(ccs_mode));
+>  	}
+>  
+>  	igt_subtest("compute-square")
+> @@ -279,13 +529,44 @@ igt_main
+>  		drm_close_driver(xe);
+>  
+>  	/* ccs mode tests should be run without open gpu file handles */
+> -	igt_subtest("ccs-mode-basic")
+> +	igt_subtest("ccs-mode-basic") {
+> +		/* skip if sriov enabled */
+> +		if (sriov_enabled)
+> +			igt_skip("Skipping test when SRIOV is enabled\n");
+>  		test_ccs_mode();
+> +	}
+>  
+> -	igt_subtest("ccs-mode-compute-kernel")
+> +	igt_subtest("ccs-mode-compute-kernel") {
+> +		/* skip if sriov enabled */
+> +		if (sriov_enabled)
+> +			igt_skip("Skipping test when SRIOV is enabled\n");
+>  		test_compute_kernel_with_ccs_mode();
+> +	}
+>  
+>  	/* To test compute function stops after loop_kernel_duration */
+> -	igt_subtest("loop-duration-2s")
+> +	igt_subtest("loop-duration-2s") {
+> +		/* skip test if loop_kernel not supported in pipeline */
+> +		if (ip_ver < IP_VER(20, 0))
+> +			igt_check_supported_pipeline();
+> +
+>  		test_compute_kernel_loop(LOOP_DURATION_2s);
+> +	}
+> +
+> +	/* test to check available EU utilisation in multi-ccs case */
+> +	igt_subtest("eu-busy-10s") {
+> +		/* skip if sriov enabled */
+> +		if (sriov_enabled)
+> +			igt_skip("Skipping test when SRIOV is enabled\n");
+> +
+> +		/* skip test if loop_kernel not supported in pipeline */
+> +		if (ip_ver < IP_VER(20, 0))
+> +			igt_check_supported_pipeline();
+> +
+> +		test_eu_busy(5 * LOOP_DURATION_2s);
+> +	}
+> +
+> +	igt_fixture {
+> +		if (!sriov_enabled)
+> +			igt_restore_ccs_mode(ccs_mode, ARRAY_SIZE(ccs_mode));
+> +	}
+>  }
+> diff --git a/tests/meson.build b/tests/meson.build
+> index a7b9375ed..a7ffc6383 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -408,6 +408,7 @@ extra_dependencies = {
+>  	'sw_sync': [ libatomic ],
+>  	'xe_fault_injection': [ lib_igt_xe_oa ],
+>  	'xe_oa': [ lib_igt_xe_oa ],
+> +        'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_profiling,math ],
+>  }
+>  
+>  test_executables = []
+> -- 
+> 2.43.0
 > 
->    New tests have been introduced between XEIGT_8614_FULL and
->    XEIGTPW_14026_FULL:
-> 
->   New IGT tests (2)
-> 
->      * igt@xe_compute@eu-busy-10s:
-> 
->           * Statuses : 3 skip(s)
->           * Exec time: [0.0, 0.05] s
->      * igt@xe_compute@loop-duration-2s:
-> 
->           * Statuses : 2 pass(s) 1 skip(s)
->           * Exec time: [0.02, 2.05] s
-> 
-> Known issues
-> 
->    Here are the changes found in XEIGTPW_14026_FULL that come from known
->    issues:
-> 
->   IGT changes
-> 
->     Issues hit
-> 
->      * igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#3658)
->      * igt@kms_big_fb@x-tiled-16bpp-rotate-270:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#316) +2 other tests skip
->      * igt@kms_big_fb@x-tiled-32bpp-rotate-90:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2327) +4 other tests skip
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1407) +1 other test skip
->      * igt@kms_big_fb@y-tiled-32bpp-rotate-0:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1124) +2 other tests skip
->      * igt@kms_big_fb@y-tiled-64bpp-rotate-90:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#1124) +10 other tests skip
->      * igt@kms_big_fb@y-tiled-addfb:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2328)
->      * igt@kms_big_fb@y-tiled-addfb-size-offset-overflow:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#607)
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#607)
->      * igt@kms_big_fb@yf-tiled-addfb:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#619)
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1467)
->      * igt@kms_big_fb@yf-tiled-addfb-size-overflow:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#610)
->      * igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1124) +4 other tests
->             skip
->      * igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2314 / Intel XE#2894) +1
->             other test skip
->      * igt@kms_bw@linear-tiling-2-displays-2560x1440p:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#367) +3 other tests skip
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#367)
->      * igt@kms_bw@linear-tiling-3-displays-2160x1440p:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#367) +3 other tests skip
->      * igt@kms_ccs@bad-rotation-90-y-tiled-gen12-rc-ccs-cc:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2887) +20 other tests skip
->      * igt@kms_ccs@crc-primary-basic-yf-tiled-ccs@pipe-d-dp-4:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#455 / Intel XE#787) +21
->             other tests skip
->      * igt@kms_ccs@crc-primary-rotation-180-4-tiled-mtl-rc-ccs@pipe-a-dp-4:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#787) +76 other tests
->             skip
->      * igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#3442)
->      * igt@kms_ccs@crc-primary-suspend-4-tiled-mtl-rc-ccs-cc:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#3432) +3 other tests skip
->      * igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#3432) +1 other test skip
->      * igt@kms_ccs@random-ccs-data-4-tiled-dg2-mc-ccs:
-> 
->           * shard-dg2-set2: PASS -> INCOMPLETE (Intel XE#2705 / Intel XE#4212
->             / Intel XE#4345)
->      * igt@kms_ccs@random-ccs-data-4-tiled-dg2-mc-ccs@pipe-a-dp-4:
-> 
->           * shard-dg2-set2: PASS -> INCOMPLETE (Intel XE#2705 / Intel XE#4212
->             / Intel XE#6014)
->      * igt@kms_ccs@random-ccs-data-4-tiled-lnl-ccs@pipe-c-dp-2:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2652 / Intel XE#787) +8 other
->             tests skip
->      * igt@kms_ccs@random-ccs-data-4-tiled-mtl-rc-ccs:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#2887) +6 other tests skip
->      * igt@kms_cdclk@mode-transition-all-outputs:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2724)
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4418)
->      * igt@kms_chamelium_color@ctm-blue-to-red:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#306)
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#306)
->      * igt@kms_chamelium_color@ctm-red-to-blue:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2325)
->      * igt@kms_chamelium_edid@dp-edid-resolution-list:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#373) +6 other tests skip
->      * igt@kms_chamelium_frames@hdmi-crc-fast:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#373) +2 other tests skip
->      * igt@kms_chamelium_hpd@dp-hpd-after-suspend:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2252) +10 other tests skip
->      * igt@kms_chamelium_sharpness_filter@filter-basic:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#6507)
->      * igt@kms_content_protection@atomic:
-> 
->           * shard-dg2-set2: NOTRUN -> FAIL (Intel XE#1178) +1 other test fail
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#3278)
->      * igt@kms_content_protection@lic-type-1:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#455) +11 other tests
->             skip
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2341)
->      * igt@kms_content_protection@srm:
-> 
->           * shard-bmg: NOTRUN -> FAIL (Intel XE#1178) +1 other test fail
->      * igt@kms_cursor_crc@cursor-random-32x32:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2320) +10 other tests skip
->      * igt@kms_cursor_crc@cursor-random-512x512:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#308)
->      * igt@kms_cursor_crc@cursor-random-max-size:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1424)
->      * igt@kms_cursor_legacy@cursora-vs-flipb-varying-size:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2291) +1 other test skip
->      * igt@kms_dp_link_training@uhbr-sst:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#4354)
->      * igt@kms_dsc@dsc-fractional-bpp:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2244)
->      * igt@kms_fbc_dirty_rect@fbc-dirty-rectangle-out-visible-area:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#4422)
->      * igt@kms_feature_discovery@chamelium:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#701)
->      * igt@kms_feature_discovery@display-3x:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2373)
->      * igt@kms_feature_discovery@display-4x:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1138)
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1138)
->      * igt@kms_feature_discovery@psr2:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1135)
->      * igt@kms_flip@2x-flip-vs-panning-interruptible:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2316) +1 other test skip
->      * igt@kms_flip@2x-plain-flip:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1421) +4 other tests skip
->      * igt@kms_flip@2x-wf_vblank-ts-check-interruptible:
-> 
->           * shard-bmg: PASS -> SKIP (Intel XE#2316) +1 other test skip
->      * igt@kms_flip@blocking-wf_vblank:
-> 
->           * shard-lnl: PASS -> FAIL (Intel XE#6266) +1 other test fail
->      * igt@kms_flip@flip-vs-expired-vblank@c-edp1:
-> 
->           * shard-lnl: PASS -> FAIL (Intel XE#301 / Intel XE#3149) +3 other
->             tests fail
->      * igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs-downscaling@pipe-a-valid-mode:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2293) +4 other tests skip
->      * igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tiledg2rcccs-downscaling:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2380) +1 other test skip
->      * igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-16bpp-yftile-downscaling:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2293 / Intel XE#2380) +4
->             other tests skip
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1401 / Intel XE#1745) +1
->             other test skip
->      * igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-16bpp-yftile-downscaling@pipe-a-default-mode:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1401) +1 other test skip
->      * igt@kms_frontbuffer_tracking@drrs-1p-offscreen-pri-indfb-draw-blt:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#6312)
->      * igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-mmap-wc:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#651) +14 other tests
->             skip
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#651) +5 other tests skip
->      * igt@kms_frontbuffer_tracking@fbc-1p-offscreen-pri-shrfb-draw-mmap-wc:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#6313) +1 other test skip
->      * igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-blt:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#5390) +15 other tests skip
->      * igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscreen-pri-indfb-draw-render:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2311) +33 other tests skip
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#6312) +5 other tests
->             skip
->      * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2312) +4 other tests skip
->      * igt@kms_frontbuffer_tracking@fbcdrrs-tiling-y:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#658)
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1469)
->      * igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-draw-mmap-wc:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#656) +12 other tests skip
->      * igt@kms_frontbuffer_tracking@plane-fbc-rte:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2350)
->      * igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-draw-blt:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2313) +38 other tests skip
->      * igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-indfb-draw-blt:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#653) +12 other tests
->             skip
->      * igt@kms_hdr@brightness-with-hdr:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#3374 / Intel XE#3544)
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#3374 / Intel XE#3544)
->      * igt@kms_hdr@static-swap:
-> 
->           * shard-bmg: PASS -> SKIP (Intel XE#1503)
->      * igt@kms_joiner@basic-big-joiner:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#346) +1 other test skip
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#346)
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#346)
->      * igt@kms_joiner@basic-ultra-joiner:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#2927)
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#2927)
->      * igt@kms_multipipe_modeset@basic-max-pipe-crc-check:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2501)
->      * igt@kms_panel_fitting@atomic-fastset:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2486)
->      * igt@kms_pipe_stress@stress-xrgb8888-ytiled:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#4329)
->      * igt@kms_plane_lowres@tiling-none@pipe-b-edp-1:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#599) +3 other tests skip
->      * igt@kms_plane_multiple@2x-tiling-4:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#4596)
->      * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-a:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#2763) +3 other tests skip
->      * igt@kms_pm_dc@dc5-retention-flops:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#3309)
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#3309)
->      * igt@kms_pm_dc@dc6-psr:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2392)
->      * igt@kms_pm_lpsp@kms-lpsp:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2499)
->      * igt@kms_pm_rpm@dpms-mode-unset-lpsp:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#1439 / Intel XE#836)
->      * igt@kms_pm_rpm@modeset-lpsp:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#1439 / Intel XE#3141 / Intel
->             XE#836)
->      * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1406 / Intel XE#2893 / Intel
->             XE#4608) +1 other test skip
->      * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf@pipe-b-edp-1:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1406 / Intel XE#4608) +3
->             other tests skip
->      * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-sf:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#1406 / Intel XE#1489) +11
->             other tests skip
->      * igt@kms_psr2_sf@pr-overlay-plane-move-continuous-exceed-sf:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1406 / Intel XE#2893)
->      * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1406 / Intel XE#1489) +4
->             other tests skip
->      * igt@kms_psr2_su@frontbuffer-xrgb8888:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#1406 / Intel XE#2387)
->      * igt@kms_psr@fbc-pr-cursor-plane-move:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1406 / Intel XE#2850 /
->             Intel XE#929) +8 other tests skip
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1406) +2 other tests skip
->      * igt@kms_psr@psr2-sprite-blt:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#1406 / Intel XE#2234 / Intel
->             XE#2850) +13 other tests skip
->      * igt@kms_psr_stress_test@invalidate-primary-flip-overlay:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#1406 / Intel XE#2414)
->           * shard-lnl: PASS -> SKIP (Intel XE#1406 / Intel XE#4692)
->      * igt@kms_rotation_crc@sprite-rotation-90:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#3414 / Intel XE#3904) +1
->             other test skip
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#3414)
->      * igt@kms_scaling_modes@scaling-mode-center:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2413)
->      * igt@kms_setmode@invalid-clone-exclusive-crtc:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#1435)
->      * igt@kms_sharpness_filter@invalid-filter-with-scaling-mode:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#6503) +2 other tests skip
->      * igt@kms_tiled_display@basic-test-pattern:
-> 
->           * shard-bmg: NOTRUN -> FAIL (Intel XE#1729)
->           * shard-dg2-set2: NOTRUN -> FAIL (Intel XE#1729)
->      * igt@kms_tv_load_detect@load-detect:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#330)
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#330)
->      * igt@kms_vrr@flip-basic-fastset:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#1499)
->      * igt@panthor/panthor_gem@bo_mmap_offset_invalid_handle:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#6530) +2 other tests skip
->      * igt@panthor/panthor_query@query:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#6530)
->      * igt@sriov_basic@enable-vfs-bind-unbind-each-numvfs-all:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1091 / Intel XE#2849)
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1091 / Intel XE#2849)
->           * shard-bmg: NOTRUN -> FAIL (Intel XE#5937)
->      * igt@xe_copy_basic@mem-copy-linear-0x369:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1123)
->      * igt@xe_eu_stall@invalid-event-report-count:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#5626)
->      * igt@xe_eudebug@basic-vm-bind-metadata-discovery:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#4837) +14 other tests skip
->      * igt@xe_eudebug@multigpu-basic-client-many:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#4837) +4 other tests skip
->      * igt@xe_eudebug@multiple-sessions:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4837) +7 other tests
->             skip
->      * igt@xe_evict@evict-beng-mixed-many-threads-small:
-> 
->           * shard-bmg: NOTRUN -> INCOMPLETE (Intel XE#6321)
->      * igt@xe_evict_ccs@evict-overcommit-parallel-nofree-reopen:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#688) +3 other tests skip
->      * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2322) +10 other tests skip
->      * igt@xe_exec_basic@multigpu-once-bindexecqueue:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1392) +3 other tests skip
->      * igt@xe_exec_fault_mode@once-invalid-userptr-fault:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#288) +14 other tests
->             skip
->      * igt@xe_exec_mix_modes@exec-spinner-interrupted-dma-fence:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#2360)
->      * igt@xe_exec_system_allocator@once-mmap-huge:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#4943) +7 other tests skip
->      * igt@xe_exec_system_allocator@threads-many-large-mmap-shared-remap-dontunmap-eocheck:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4915) +209 other tests
->             skip
->      * igt@xe_exec_system_allocator@threads-many-mmap-new-huge-nomemset:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#4943) +27 other tests skip
->      * igt@xe_exec_system_allocator@twice-malloc-prefetch-madvise:
-> 
->           * shard-lnl: NOTRUN -> WARN (Intel XE#5786)
->      * igt@xe_fault_injection@probe-fail-guc-xe_guc_ct_send_recv:
-> 
->           * shard-dg2-set2: NOTRUN -> ABORT (Intel XE#5466)
->           * shard-bmg: NOTRUN -> ABORT (Intel XE#5466 / Intel XE#5530)
->      * igt@xe_module_load@force-load:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#378)
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#378)
->      * igt@xe_oa@syncs-userptr-wait-cfg:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#3573) +7 other tests
->             skip
->      * igt@xe_pat@pat-index-xelpg:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#979)
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#979)
->      * igt@xe_pm@d3cold-basic:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#2284)
->      * igt@xe_pm@d3cold-basic-exec:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#2284 / Intel XE#366)
->      * igt@xe_pmu@engine-activity-accuracy-90@engine-drm_xe_engine_class_copy0:
-> 
->           * shard-lnl: PASS -> FAIL (Intel XE#6251)
->      * igt@xe_pmu@gt-frequency:
-> 
->           * shard-dg2-set2: PASS -> FAIL (Intel XE#4819) +1 other test fail
->      * igt@xe_pxp@pxp-stale-bo-bind-post-rpm:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4733) +1 other test skip
->      * igt@xe_pxp@pxp-stale-bo-exec-post-suspend:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#4733) +2 other tests skip
->      * igt@xe_query@multigpu-query-hwconfig:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#944)
->      * igt@xe_query@multigpu-query-invalid-cs-cycles:
-> 
->           * shard-bmg: NOTRUN -> SKIP (Intel XE#944) +3 other tests skip
->      * igt@xe_query@multigpu-query-topology:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#944) +1 other test skip
->      * igt@xe_render_copy@render-stress-2-copies:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4814)
->      * igt@xe_sriov_auto_provisioning@exclusive-ranges:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4130)
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#4130)
->      * igt@xe_sriov_flr@flr-vfs-parallel:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#4273)
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#4273)
-> 
->     Possible fixes
-> 
->      * igt@kms_cursor_edge_walk@128x128-left-edge:
-> 
->           * shard-bmg: SKIP -> PASS
->      * igt@kms_cursor_legacy@flip-vs-cursor-atomic:
-> 
->           * shard-bmg: FAIL (Intel XE#4633) -> PASS
->      * igt@kms_flip@2x-flip-vs-expired-vblank-interruptible:
-> 
->           * shard-dg2-set2: FAIL (Intel XE#301) -> PASS
->      * igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@bd-hdmi-a6-dp4:
-> 
->           * shard-dg2-set2: FAIL (Intel XE#301 / Intel XE#3321) -> PASS
->      * igt@kms_flip@2x-flip-vs-suspend-interruptible@ab-dp2-hdmi-a3:
-> 
->           * shard-bmg: DMESG-WARN (Intel XE#3428) -> PASS +9 other tests pass
->      * igt@kms_flip@2x-plain-flip-fb-recreate:
-> 
->           * shard-bmg: SKIP (Intel XE#2316) -> PASS +3 other tests pass
->      * igt@kms_flip@modeset-vs-vblank-race-interruptible:
-> 
->           * shard-lnl: FAIL (Intel XE#3098) -> PASS +1 other test pass
->      * igt@kms_hdr@invalid-metadata-sizes:
-> 
->           * shard-bmg: SKIP (Intel XE#1503) -> PASS
->      * igt@kms_pm_dc@dc6-dpms:
-> 
->           * shard-lnl: FAIL (Intel XE#718) -> PASS
->      * igt@kms_setmode@basic@pipe-a-hdmi-a-6:
-> 
->           * shard-dg2-set2: FAIL (Intel XE#6361) -> PASS +2 other tests pass
->      * igt@kms_setmode@basic@pipe-b-edp-1:
-> 
->           * shard-lnl: FAIL (Intel XE#6361) -> PASS +2 other tests pass
->      * igt@kms_vblank@query-idle@pipe-d-dp-2:
-> 
->           * shard-bmg: FAIL -> PASS +4 other tests pass
->      * igt@xe_exec_basic@multigpu-once-bindexecqueue:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1392) -> PASS +1 other test pass
->      * igt@xe_fault_injection@probe-fail-guc-xe_guc_mmio_send_recv:
-> 
->           * shard-dg2-set2: DMESG-WARN (Intel XE#5893) -> PASS
->      * igt@xe_pm@s2idle-basic:
-> 
->           * shard-dg2-set2: INCOMPLETE (Intel XE#4504) -> PASS
->      * igt@xe_pmu@engine-activity-accuracy-90@engine-drm_xe_engine_class_video_decode0:
-> 
->           * shard-lnl: FAIL (Intel XE#6251) -> PASS +1 other test pass
->      * igt@xe_pmu@gt-c6-idle:
-> 
->           * shard-dg2-set2: FAIL (Intel XE#6366) -> PASS
-> 
->     Warnings
-> 
->      * igt@kms_cursor_legacy@cursorb-vs-flipb-toggle:
-> 
->           * shard-bmg: DMESG-WARN (Intel XE#3428) -> SKIP (Intel XE#2291)
->      * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-draw-blt:
-> 
->           * shard-bmg: SKIP (Intel XE#2312) -> SKIP (Intel XE#2311) +2 other
->             tests skip
->      * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-indfb-plflip-blt:
-> 
->           * shard-bmg: SKIP (Intel XE#2312) -> SKIP (Intel XE#5390) +2 other
->             tests skip
->      * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-cur-indfb-draw-render:
-> 
->           * shard-bmg: SKIP (Intel XE#5390) -> SKIP (Intel XE#2312) +3 other
->             tests skip
->      * igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-indfb-plflip-blt:
-> 
->           * shard-bmg: SKIP (Intel XE#2311) -> SKIP (Intel XE#2312) +6 other
->             tests skip
->      * igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-onoff:
-> 
->           * shard-bmg: SKIP (Intel XE#2312) -> SKIP (Intel XE#2313) +3 other
->             tests skip
->      * igt@kms_frontbuffer_tracking@psr-2p-primscrn-indfb-plflip-blt:
-> 
->           * shard-bmg: SKIP (Intel XE#2313) -> SKIP (Intel XE#2312) +11 other
->             tests skip
->      * igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1:
-> 
->           * shard-lnl: FAIL (Intel XE#5862) -> FAIL (Intel XE#5862 / Intel
->             XE#6554) +1 other test fail
-> 
-> Build changes
-> 
->      * IGT: IGT_8614 -> IGTPW_14026
->      * Linux: xe-4073-4dff427fe8bbfd0bdbf7935d23a2aba0c350ab2d ->
->        xe-4074-2bc418aa7efaae562e49d84e8b28f799cf624745
-> 
->    IGTPW_14026: 14026
->    IGT_8614: 8614
->    xe-4073-4dff427fe8bbfd0bdbf7935d23a2aba0c350ab2d:
->    4dff427fe8bbfd0bdbf7935d23a2aba0c350ab2d
->    xe-4074-2bc418aa7efaae562e49d84e8b28f799cf624745:
->    2bc418aa7efaae562e49d84e8b28f799cf624745
