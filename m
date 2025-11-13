@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C661CD5BBB
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Nov 2025 10:55:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 529E0CD5BC2
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Nov 2025 10:59:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F09A610E632;
-	Thu, 13 Nov 2025 10:55:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0A63D10E78D;
+	Thu, 13 Nov 2025 10:59:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W6556NcH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b6FUU30g";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6E0C10E0DB;
- Thu, 13 Nov 2025 10:55:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D58410E6D8;
+ Thu, 13 Nov 2025 10:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763031344; x=1794567344;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=JhqEZtJ297dzUy3abn6AN+9YMEF4DlxoIRLN6Lx/lVQ=;
- b=W6556NcH1PQVsBuP3sFHAEQRN721Cv9zOwikWe+em5zn1ZFw1B5usaGH
- PDpyhmOK8tKmnJpArNITa1gYxG7FoICpWhXAFqqnVQ50JIwsmQRgnp0V8
- HxSGF7iIDHP7nCUFqFQrX9bnWe0McMIGjXBw4djUDeQ1strvXnzzK4IAv
- KIsxMsb+5kjAQlAeREJ34pL42Rx+8FzDcTOgSq08srvzz4kll0cDo142u
- qdF+DnY8bcb3FjiNWWgcVhVtU5rLY6RwJTlgeeNUp0aGUV3TLGkpXBVkM
- SFJCt8lEUhmvDcpsOUsqDUHh4kxYeNx4iwte5z8YRVVng9YUHKiC80tT1 w==;
-X-CSE-ConnectionGUID: LoiyS6tKRsen1mdFm1FNiw==
-X-CSE-MsgGUID: PN2RxKSwT5WjlwqKY5wmjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="67708636"
-X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="67708636"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2025 02:55:43 -0800
-X-CSE-ConnectionGUID: ZOMZ2r/pReWDp2e9f3QYog==
-X-CSE-MsgGUID: BfnlLNMuQY+sB0hFVmwJwg==
+ t=1763031550; x=1794567550;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=hDZcbrum0ngaACPac93ZCoTD4wk8nx1NE6lI0l4MRgw=;
+ b=b6FUU30gqOXgJi06kfPZaEt4LY1szx1wKPwlsMLGGTiO8o6lfStl0kV2
+ xDCxzPilN6su39u+etoMRlqp0hEGIC6EQKCxdAJHGv7tFwnF6b6HQN2B9
+ ZcNNzB0zyfwgHBp4XGvT6fnSK4c+X+T1LyeVO87L9Y112EPOYBcbk9MGu
+ 7qWuaqTSOE+Ce5EZjHVELbCEAUeliYWinO1PbdAArIE/jOjJmXRIbWk2E
+ QTov0OpWVHQukuxhl2GKdWHjCOPypI7g6ZwCq7FzSk4/5GEYYG5PUsZJS
+ 25ep/xU9f4acwa/q9rZag7NUvWjvs+FmG+S5AcViuqzWijcAPTfy/5bn3 w==;
+X-CSE-ConnectionGUID: cWaSIwh1THqIXB3CFpIkxQ==
+X-CSE-MsgGUID: GA7Tp/uHQNa60LV+/m2QRw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="65201965"
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="65201965"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Nov 2025 02:59:10 -0800
+X-CSE-ConnectionGUID: 6LCbhKDWTNCzpfSsvjlAqA==
+X-CSE-MsgGUID: U8GzcVS7Q8GWj25K2o9hMA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="193586654"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2025 02:55:43 -0800
-Date: Thu, 13 Nov 2025 11:55:40 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw=?= =?utf-8?Q?=3A?= failure for
- intel-ci: Block Panthor testing
-Message-ID: <20251113105540.xyir7y7eep5tiilm@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20251112162834.12305-1-kamil.konieczny@linux.intel.com>
- <176302999958.49008.6785775568631268524@10055242dc62>
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="188745468"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.158])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Nov 2025 02:59:10 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: I915-ci-infra@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: =?UTF-8?B?4pyX?= i915.CI.Full: failure for
+ tests/gem_lmem_swapping: Run smem-oom helper loop in background
+Date: Thu, 13 Nov 2025 11:59:06 +0100
+Message-ID: <13158851.VsHLxoZxqI@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <176302360206.48346.2771500328291882681@10055242dc62>
+References: <20251112104913.701052-2-janusz.krzysztofik@linux.intel.com>
+ <176302360206.48346.2771500328291882681@10055242dc62>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <176302999958.49008.6785775568631268524@10055242dc62>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,17 +71,18 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2025-11-13 at 10:33:19 -0000, Patchwork wrote:
+Hi I915-ci-infra@lists.freedesktop.org,
+
+On Thursday, 13 November 2025 09:46:42 CET Patchwork wrote:
 > == Series Details ==
 > 
-> Series: intel-ci: Block Panthor testing
-> URL   : https://patchwork.freedesktop.org/series/157442/
+> Series: tests/gem_lmem_swapping: Run smem-oom helper loop in background
+> URL   : https://patchwork.freedesktop.org/series/157429/
 > State : failure
 > 
 > == Summary ==
 > 
-> CI Bug Log - changes from XEIGT_8622_FULL -> XEIGTPW_14045_FULL
+> CI Bug Log - changes from CI_DRM_17531_full -> IGTPW_14044_full
 > ====================================================
 > 
 > Summary
@@ -89,51 +90,50 @@ On 2025-11-13 at 10:33:19 -0000, Patchwork wrote:
 > 
 >   **FAILURE**
 > 
->   Serious unknown changes coming with XEIGTPW_14045_FULL absolutely need to be
+>   Serious unknown changes coming with IGTPW_14044_full absolutely need to be
 >   verified manually.
 >   
 >   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_14045_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   introduced in IGTPW_14044_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
 >   to document this new failure mode, which will reduce false positives in CI.
 > 
->   
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14044/index.html
 > 
-> Participating hosts (4 -> 3)
+> Participating hosts (10 -> 10)
 > ------------------------------
 > 
->   Missing    (1): shard-adlp 
+>   No changes in participating hosts
 > 
 > Possible new issues
 > -------------------
 > 
->   Here are the unknown changes that may have been introduced in XEIGTPW_14045_FULL:
+>   Here are the unknown changes that may have been introduced in IGTPW_14044_full:
 > 
 > ### IGT changes ###
 > 
 > #### Possible regressions ####
 > 
->   * igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-rc-ccs-cc@pipe-c-hdmi-a-6:
->     - shard-dg2-set2:     [PASS][1] -> [INCOMPLETE][2]
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8622/shard-dg2-466/igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-rc-ccs-cc@pipe-c-hdmi-a-6.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14045/shard-dg2-435/igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-rc-ccs-cc@pipe-c-hdmi-a-6.html
+>   * igt@kms_addfb_basic@legacy-format:
+>     - shard-dg1:          [PASS][1] -> [DMESG-WARN][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17531/shard-dg1-18/igt@kms_addfb_basic@legacy-format.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14044/shard-dg1-13/igt@kms_addfb_basic@legacy-format.html
 > 
->   * igt@kms_plane@plane-panning-bottom-right-suspend:
->     - shard-dg2-set2:     NOTRUN -> [TIMEOUT][3] +1 other test timeout
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14045/shard-dg2-466/igt@kms_plane@plane-panning-bottom-right-suspend.html
+>   * igt@kms_plane@plane-panning-top-left@pipe-a:
+>     - shard-mtlp:         [PASS][3] -> [FAIL][4] +2 other tests fail
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17531/shard-mtlp-3/igt@kms_plane@plane-panning-top-left@pipe-a.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14044/shard-mtlp-6/igt@kms_plane@plane-panning-top-left@pipe-a.html
+
+The above two tests are in any way related to the change under this pre-merge 
+testing, which can only affect gem_lmem_swapping test, nothing more.  Please 
+update CBL filters and re-report.
+
+Thanks,
+Janusz
+
 > 
-
-Unrelated.
-
-Regards,
-Kamil
-
 >   
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_14045_FULL that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-...cut...
+> New tests
+> ---------
+...
+
+
