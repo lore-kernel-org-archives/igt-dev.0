@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88AC6CCFA18
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Nov 2025 08:02:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1EECCD4F50
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Nov 2025 08:18:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 40EF210E510;
-	Thu, 13 Nov 2025 08:02:30 +0000 (UTC)
-Received: from 10055242dc62 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 098CB10E510;
- Thu, 13 Nov 2025 08:02:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_Add_writeback_changes_for?=
- =?utf-8?q?_intel-supported_formats?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sowmiya S" <sowmiya.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 13 Nov 2025 08:02:29 -0000
-Message-ID: <176302094903.48377.12037848861951538987@10055242dc62>
-X-Patchwork-Hint: ignore
-References: <20251103103842.3025204-1-sowmiya.s@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8939710E09A;
+	Thu, 13 Nov 2025 08:18:01 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SM9QeNKl";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B4F910E09A
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Nov 2025 08:18:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1763021880; x=1794557880;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=APUcOfZaFs2VcjxYVKVhMz3CKxNJCfuZsxCD1EWMhLQ=;
+ b=SM9QeNKlBR5bhSk3l4T1pt9w74NZdAwITYS9/pjlQCBvbEDRgFgYFnYO
+ zh9Xm2ctFZYn8NuyYcyXgX3Zm8a1FwGi4fbIM+IfI6cm6nIQaP4d+/Njv
+ aB5HsEdjX98fGtWH2zBwN+WG0IcUlhOncVNEzuCzOqFzA/W9+ufTBC3Dp
+ 73Z4O+ylpDvoELKMOl57uTNk6mK8ujgNTHwzQxLwTPerwoJCrhW1Bb9rr
+ ILVa9+dBm7FCwYOYiNPYhR8O+DReVtJO6BRmkrWj1KpQYHtRAhhSTTHuK
+ Bmxs8gpXSi5RhJK1q35xveXbetmJJFDsmpAfsCy1dQsNTEU6ND53acUGY g==;
+X-CSE-ConnectionGUID: 4V8MSJrpTWuUSd4JTMZEQA==
+X-CSE-MsgGUID: wJE+//zXSmunJqCeN7Ve1A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="65000502"
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="65000502"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Nov 2025 00:18:00 -0800
+X-CSE-ConnectionGUID: dZYj6S2KTCmt2aofhLx7Ig==
+X-CSE-MsgGUID: oKTercqLSBaMNcwGaYqMLg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="212822296"
+Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Nov 2025 00:17:59 -0800
+From: Sowmiya S <sowmiya.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Sowmiya S <sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v2 0/9] Add writeback changes for intel-supported formats
+Date: Thu, 13 Nov 2025 14:05:46 +0530
+Message-ID: <20251113083555.3088873-1-sowmiya.s@intel.com>
+X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251103103842.3025204-1-sowmiya.s@intel.com>
+References: <20251103103842.3025204-1-sowmiya.s@intel.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,30 +64,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+This series introduces validation for writeback functionality
+across newly supported formats specific to Intel platforms.
+existing functions with limited format support were retained
+for compatibility. After validating new formats introduced by
+the platform, additional format support was added to the
+writeback test suite. Subtests leveraging common framebuffer
+creation logic were consolidated and dynamic subtest generation
+was implemented to efficiently handle format-specific variations.
 
-Series: Add writeback changes for intel-supported formats
-URL   : https://patchwork.freedesktop.org/series/156913/
-State : failure
+Sowmiya S (9):
+  tests/kms_writeback: Add support for intel-specific formats
+  lib/igt_fb: Validate supported formats for crc calculation
+  tests/kms_writeback: Validate supported formats
+  tests/kms_writeback: Add intel specific check
+  tests/kms_writeback: Refactor format handling in commit_and_dump_fb
+  tests/kms_writeback: Add utility function for shared logic
+  tests/kms_writeback: FB creation within subtest
+  tests/kms_writeback: Refactor writeback-fb-id subtest
+  tests/kms_writeback: Refactor writeback-check-output subtest
 
-== Summary ==
+ lib/igt_fb.c          |   9 +-
+ tests/kms_writeback.c | 231 +++++++++++++++++++++++++-----------------
+ 2 files changed, 143 insertions(+), 97 deletions(-)
 
-Applying: tests/kms_writeback: Add support for intel-specific formats
-Applying: tests/kms_writeback: Validate supported formats lib/igt_fb: Validate supported formats for crc calculation
-Applying: tests/kms_writeback: Add intel specific check
-Applying: tests/kms_writeback: Refactor format handling in commit_and_dump_fb
-Applying: tests/kms_writeback: Add utility function for shared logic
-Applying: tests/kms_writeback: FB creation within subtest
-Applying: tests/kms_writeback: Refactor writeback-fb-id subtest
-Applying: tests/kms_writeback: Refactor writeback-check-output subtest
-Applying: tests/kms_writeback: Refactor writeback-check-output subtest
-Patch failed at 0009 tests/kms_writeback: Refactor writeback-check-output subtest
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
+-- 
+2.43.0
 
