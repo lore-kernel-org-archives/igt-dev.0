@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 891E5CD4F50
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Nov 2025 07:59:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B42B7CCFA18
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Nov 2025 07:59:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 33CBC10E514;
-	Thu, 13 Nov 2025 07:59:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 69C3F10E350;
+	Thu, 13 Nov 2025 07:59:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EyUCecza";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kzAzpYsr";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D15710E350
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Nov 2025 07:58:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 95CB010E515
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Nov 2025 07:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763020739; x=1794556739;
+ t=1763020743; x=1794556743;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=83Ghp8o4jqhs0OEVao1pkH2jmQ6DyRb29Hp59uLUrr8=;
- b=EyUCeczarYAXOpNXXIdLCMzj3fO8EOQOXFAEXPKBGhAo5Ku04oJDqrp+
- wOYc4rfhVMlCsbiUMqAdY4jhk1/nikf4Q7JAdy9Hj2Cvr8uB27J9oAPYL
- 0WyccefKD1y2YSIpcvWwpQHiVmGl2jlwBDrVTIcwtD8MHM1M/1zxyWNYk
- XCZ2gPn1oNzd5yNVt445QuTo2Vsj47PMAxlAmK+aTTBau0c+zoeiOqFq+
- +Lp2rGu21PWwxocfGO0cgwq45zBTGZhQcQHa4MDOBcESehi1bmNT9SiOk
- eDnZUdzLOALSVzQDC6kw/MHjwuCqX4DN0bsQEqaSLWcKARNIxI5igqt2v Q==;
-X-CSE-ConnectionGUID: AiuwW0QQSlqrmKNYFaAymQ==
-X-CSE-MsgGUID: Wuz/EqHJSma5BxDvMwmiAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="64298403"
-X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="64298403"
+ bh=lPE80CpXa1o0DDP5tcJ2AetDS9rcaOIQ6h//9FxFrD4=;
+ b=kzAzpYsrQQ+LxkWsxAZbtr0GMhE6zOUQf/muYcn1ssZF/LPRwaTSNUK8
+ iA7B92PmEPY9f5zE68aZA+CDgpUgkbk6JpZHxbk/Fr9tgTRiDXeYdNTJc
+ CFmiP0WGGynmTc1qpmiTCQKM/ffdvX4XRtGRAIvjAfkgkhF2llOEHmBSE
+ 6mK6xHAt8FHij0fX/JGMxYBoHxlD+qHaVi0DC3NUavy2RiwKqXtDiVgU9
+ TyVTkqEabNKfAAFaGErnrGZuInjV/9dmQoqoGKEFevTxERrVfJ92HAcWq
+ vFVpnSI5aCGKLMR60Fc/MBMYe5blhPQUNnZgWF7/mEiGMaMGEy/TE7tK1 Q==;
+X-CSE-ConnectionGUID: DbENNpMgRYCC7THWLBIdQw==
+X-CSE-MsgGUID: B/yozipzQyyjomMUSKMn9g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="64298420"
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="64298420"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Nov 2025 23:58:54 -0800
-X-CSE-ConnectionGUID: DENMdsZ+RY6O4GFWcjlg+Q==
-X-CSE-MsgGUID: RWkPavdYTmilawmJL8oveA==
+ 12 Nov 2025 23:59:03 -0800
+X-CSE-ConnectionGUID: hP0McYVgT5+78PPeeS+CLw==
+X-CSE-MsgGUID: R3h7ZIKYThWH91y0gu/2TA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="189230403"
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="189230434"
 Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Nov 2025 23:58:53 -0800
+ 12 Nov 2025 23:59:02 -0800
 From: Sowmiya S <sowmiya.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: suraj.kandpal@intel.com,
 	Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v1 1/9] tests/kms_writeback: Add support for
- intel-specific formats
-Date: Thu, 13 Nov 2025 13:45:15 +0530
-Message-ID: <20251113081523.3088787-2-sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v1 5/9] tests/kms_writeback: Refactor format handling in
+ commit_and_dump_fb
+Date: Thu, 13 Nov 2025 13:45:19 +0530
+Message-ID: <20251113081523.3088787-6-sowmiya.s@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251113081523.3088787-1-sowmiya.s@intel.com>
 References: <20251103103842.3025204-1-sowmiya.s@intel.com>
@@ -70,46 +70,100 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Integrated BGR formats supported by the intel
-into the supported format list
+Modified commit_and_dump_fb to select supported
+formats if provided; defaults are applied based
+on the platform when none are specified.
 
 Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
 ---
- tests/kms_writeback.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ tests/kms_writeback.c | 45 ++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 40 insertions(+), 5 deletions(-)
 
 diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index 1b81088d7..de0f67a58 100644
+index b6d38ab28..46fada8b8 100644
 --- a/tests/kms_writeback.c
 +++ b/tests/kms_writeback.c
-@@ -90,6 +90,15 @@ static data_t data;
- enum {
- 	XRGB8888 = 1 << 0,
- 	XRGB2101010 = 1 << 1,
-+	XBGR8888 = 1 << 2,
-+	XBGR2101010 = 1 << 3,
-+};
+@@ -444,7 +444,7 @@ static void do_single_commit(igt_output_t *output, igt_plane_t *plane, igt_fb_t
+ }
+ 
+ static void commit_and_dump_fb(igt_display_t *display, igt_output_t *output, igt_plane_t *plane,
+-			        igt_fb_t *input_fb, drmModeModeInfo *mode)
++				drmModeModeInfo *mode)
+ {
+ 	cairo_surface_t *fb_surface_out;
+ 	char filepath_out[PATH_MAX];
+@@ -452,17 +452,51 @@ static void commit_and_dump_fb(igt_display_t *display, igt_output_t *output, igt
+ 	char *path_name;
+ 	char *file_name;
+ 	unsigned int fb_id;
+-	igt_fb_t output_fb;
++	igt_fb_t input_fb, output_fb;
++	uint32_t format;
+ 
+ 	path_name = getenv("IGT_FRAME_DUMP_PATH");
+ 	file_name = getenv("FRAME_PNG_FILE_NAME");
+ 
++	if (!data.wb_fmt && is_intel_device(display->drm_fd)) {
++		format = DRM_FORMAT_XBGR8888;
++	} else if (!data.wb_fmt && !is_intel_device(display->drm_fd)) {
++		format = DRM_FORMAT_XRGB8888;
++	} else {
++		drmModePropertyBlobRes *formats_blob;
 +
-+const uint32_t fourcc[] = {
-+	DRM_FORMAT_XRGB8888,
-+	DRM_FORMAT_XRGB2101010,
-+	DRM_FORMAT_XBGR8888,
-+	DRM_FORMAT_XBGR2101010,
- };
++		formats_blob = igt_get_writeback_formats_blob(output);
++		igt_assert_f(formats_blob, "No writeback pixel formats\n");
++		igt_assert(!(formats_blob->length % 4));
++		for (int i = 0; i < formats_blob->length; i++) {
++			format = ((uint32_t *)formats_blob->data)[i];
++			// Skip zero or unknown formats
++			if (format == 0 || strcmp(igt_format_str(format), "invalid") == 0) {
++				format = 0;
++				continue;
++			}
++			igt_debug("Supported writeback format: %s\n", igt_format_str(format));
++			if (format == data.format)
++				break;
++			format = 0;
++		}
++		drmModeFreePropertyBlob(formats_blob);
++	}
++	igt_assert_f(format, "Given format not supported\n");
++	fb_id = igt_create_fb(display->drm_fd, mode->hdisplay,
++			      mode->vdisplay,
++			      format,
++			      DRM_FORMAT_MOD_LINEAR,
++			      &input_fb);
++	igt_assert(fb_id >= 0);
++	igt_plane_set_fb(plane, &input_fb);
++
+ 	fb_id = igt_create_fb(display->drm_fd, mode->hdisplay, mode->vdisplay,
+-			      data.wb_fmt ? data.format : DRM_FORMAT_XRGB8888,
++			      format,
+ 			      igt_fb_mod_to_tiling(0), &output_fb);
+ 	igt_require(fb_id > 0);
  
- static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
-@@ -101,11 +110,6 @@ static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
- 	int width, height, ret;
- 	uint16_t i;
+-	do_single_commit(output, plane, input_fb, &output_fb);
++	do_single_commit(output, plane, &input_fb, &output_fb);
  
--	const uint32_t fourcc[] = {
--		DRM_FORMAT_XRGB8888,
--		DRM_FORMAT_XRGB2101010,
--	};
--
- 	igt_output_override_mode(output, &override_mode);
+ 	fb_surface_out = igt_get_cairo_surface(display->drm_fd, &output_fb);
+ 	snprintf(filepath_out, PATH_MAX, "%s/%s.png", path_name, file_name);
+@@ -470,6 +504,7 @@ static void commit_and_dump_fb(igt_display_t *display, igt_output_t *output, igt
+ 	igt_assert_eq(status, CAIRO_STATUS_SUCCESS);
+ 	cairo_surface_destroy(fb_surface_out);
  
- 	width = override_mode.hdisplay;
++	igt_remove_fb(display->drm_fd, &input_fb);
+ 	igt_remove_fb(display->drm_fd, &output_fb);
+ }
+ 
+@@ -599,7 +634,7 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+ 		if (data.list_modes)
+ 			list_writeback_modes(&display);
+ 		if (data.dump_check)
+-			commit_and_dump_fb(&display, output, plane, &input_fb, &mode);
++			commit_and_dump_fb(&display, output, plane, &mode);
+ 	}
+ 	/*
+ 	 * When dump_check or list_modes flag is high, then the following subtests will be skipped
 -- 
 2.43.0
 
