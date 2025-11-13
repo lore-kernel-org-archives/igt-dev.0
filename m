@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3E38CCFA18
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Nov 2025 07:57:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73A77CD4F34
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Nov 2025 07:59:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6C9EE10E34C;
-	Thu, 13 Nov 2025 07:57:51 +0000 (UTC)
-Received: from 10055242dc62 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB68A10E34C;
- Thu, 13 Nov 2025 07:57:49 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1494556851982749732=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2657910E350;
+	Thu, 13 Nov 2025 07:59:00 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a9bMd5Dp";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 822B910E350
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Nov 2025 07:58:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1763020739; x=1794556739;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=mUZTHL7Ok44ltkY3YvBWiwiZVxBexs2bX54EctI4Syw=;
+ b=a9bMd5Dph9HTvjt04ETPbrgGn4re3sjjhaB+Is0vZolbfT+nbT90Ut7h
+ z1EgJabrgL4v6+qnAIIoclsHk0a2skNn/ZiwReMzWSoRbLy/gKkhtO29D
+ WcFr5brvpuQkD4i4ivutalfC6aH7bSlcJO/YwpqAPURo9ojA9TuTtYi+g
+ Fe244RurbO6kutXGo8bDe0FOjCNvzdyey9CC3oVq6PBPxoJcvBPUMkbHl
+ PNqhezdmz1xYvoqvQA0thbH4e5/EwyfiMa7Sp8YhEg7q87umQmveqdjHO
+ iwD8MHkGbMhgSrqO5EZbkhSd/e1MGIV11rqekrq7DkW/OTVww60GujsY1 Q==;
+X-CSE-ConnectionGUID: 5FPeFk8ETva8ce0n37xRnw==
+X-CSE-MsgGUID: ySEeBx3GRzef7YMXHcdC6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11611"; a="64298410"
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="64298410"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Nov 2025 23:58:59 -0800
+X-CSE-ConnectionGUID: zTBp7K1TRLSiaPA4+barcA==
+X-CSE-MsgGUID: jA4hqM+jSmmkQtVy9aDeYQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,301,1754982000"; d="scan'208";a="189230413"
+Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Nov 2025 23:58:58 -0800
+From: Sowmiya S <sowmiya.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: suraj.kandpal@intel.com,
+	Sowmiya S <sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v1 3/9] tests/kms_writeback: Validate supported formats
+Date: Thu, 13 Nov 2025 13:45:17 +0530
+Message-ID: <20251113081523.3088787-4-sowmiya.s@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251113081523.3088787-1-sowmiya.s@intel.com>
+References: <20251103103842.3025204-1-sowmiya.s@intel.com>
+ <20251113081523.3088787-1-sowmiya.s@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fpat=3A_add?=
- =?utf-8?q?_helper_funtion_to_read_PAT_table?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Wang, X" <x.wang@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 13 Nov 2025 07:57:49 -0000
-Message-ID: <176302066989.48377.14934561935590921201@10055242dc62>
-X-Patchwork-Hint: ignore
-References: <20251113070502.2148615-1-x.wang@intel.com>
-In-Reply-To: <20251113070502.2148615-1-x.wang@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,172 +66,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1494556851982749732==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add logic to verify that provided formats
+are supported before proceeding with test execution
 
-== Series Details ==
+Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
+---
+ tests/kms_writeback.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-Series: tests/intel/xe_pat: add helper funtion to read PAT table
-URL   : https://patchwork.freedesktop.org/series/157481/
-State : failure
+diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+index de0f67a58..e9173ea4a 100644
+--- a/tests/kms_writeback.c
++++ b/tests/kms_writeback.c
+@@ -299,7 +299,10 @@ static void fill_fb(igt_fb_t *fb, uint32_t pixel)
+ 	uint32_t *ptr;
+ 	int64_t pixel_count, i;
+ 
+-	igt_assert(fb->drm_format == DRM_FORMAT_XRGB8888 || fb->drm_format == DRM_FORMAT_XRGB2101010);
++	igt_assert(fb->drm_format == DRM_FORMAT_XRGB8888 ||
++		   fb->drm_format == DRM_FORMAT_XRGB2101010 ||
++		   fb->drm_format == DRM_FORMAT_XBGR8888 ||
++		   fb->drm_format == DRM_FORMAT_XBGR2101010);
+ 
+ 	ptr = igt_fb_map_buffer(fb->fd, fb);
+ 	igt_assert(ptr);
+@@ -334,7 +337,8 @@ static void writeback_sequence(igt_output_t *output, igt_plane_t *plane,
+ 	uint32_t clear_color = 0xffffffff;
+ 	igt_crc_t cleared_crc, out_expected;
+ 
+-	if (fourcc_color == DRM_FORMAT_XRGB2101010)
++	if (fourcc_color == DRM_FORMAT_XRGB2101010 ||
++	    fourcc_color == DRM_FORMAT_XBGR2101010)
+ 		in_fb_colors = in_fb_colors_10bits;
+ 	else
+ 		in_fb_colors = in_fb_colors_8bits;
+@@ -420,7 +424,12 @@ static void writeback_check_output(igt_output_t *output, igt_plane_t *plane,
+ static void do_single_commit(igt_output_t *output, igt_plane_t *plane, igt_fb_t *in_fb,
+ 			      igt_fb_t *out_fb)
+ {
+-	uint32_t in_fb_color = 0xffff0000;
++	uint32_t in_fb_color;
++
++	if (data.format == DRM_FORMAT_XRGB8888 || data.format == DRM_FORMAT_XBGR8888)
++		in_fb_color = 0xffff0000;
++	else
++		in_fb_color = 0x3ff00000;
+ 
+ 	fill_fb(in_fb, in_fb_color);
+ 
+-- 
+2.43.0
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8622_BAT -> XEIGTPW_14048_BAT
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_14048_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_14048_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_14048_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_module_load@load:
-    - bat-dg2-oem2:       [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8622/bat-dg2-oem2/igt@xe_module_load@load.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14048/bat-dg2-oem2/igt@xe_module_load@load.html
-
-  * igt@xe_pat@pat-index-all:
-    - bat-ptl-vm:         [PASS][3] -> [FAIL][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8622/bat-ptl-vm/igt@xe_pat@pat-index-all.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14048/bat-ptl-vm/igt@xe_pat@pat-index-all.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14048_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-plain-flip@b-edp1:
-    - bat-adlp-7:         [PASS][5] -> [DMESG-WARN][6] ([Intel XE#4543]) +1 other test dmesg-warn
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8622/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14048/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html
-
-  
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-
-
-Build changes
--------------
-
-  * IGT: IGT_8622 -> IGTPW_14048
-
-  IGTPW_14048: 14048
-  IGT_8622: 8622
-  xe-4096-2395af7950abb996316c9ee00f68a639fb6eb1c0: 2395af7950abb996316c9ee00f68a639fb6eb1c0
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14048/index.html
-
---===============1494556851982749732==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_pat: add helper funtion to read PAT table</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/157481/">https://patchwork.freedesktop.org/series/157481/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14048/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14048/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8622_BAT -&gt; XEIGTPW_14048_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_14048_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_14048_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_14048_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@xe_module_load@load:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8622/bat-dg2-oem2/igt@xe_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14048/bat-dg2-oem2/igt@xe_module_load@load.html">ABORT</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-all:</p>
-<ul>
-<li>bat-ptl-vm:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8622/bat-ptl-vm/igt@xe_pat@pat-index-all.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14048/bat-ptl-vm/igt@xe_pat@pat-index-all.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14048_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-plain-flip@b-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8622/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14048/bat-adlp-7/igt@kms_flip@basic-plain-flip@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8622 -&gt; IGTPW_14048</li>
-</ul>
-<p>IGTPW_14048: 14048<br />
-  IGT_8622: 8622<br />
-  xe-4096-2395af7950abb996316c9ee00f68a639fb6eb1c0: 2395af7950abb996316c9ee00f68a639fb6eb1c0</p>
-
-</body>
-</html>
-
---===============1494556851982749732==--
