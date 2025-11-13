@@ -4,53 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E50ECD8CAD
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Nov 2025 17:10:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96C2ECD8CAC
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Nov 2025 17:10:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 839BF10E8F9;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7AC8710E8DF;
 	Thu, 13 Nov 2025 17:10:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HQnjgM86";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gw1a+l79";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC52C10E8DF
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5993210E8DF
  for <igt-dev@lists.freedesktop.org>; Thu, 13 Nov 2025 17:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763053803; x=1794589803;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=socyUAnG5Xoraj3L2c5pbJ5GcoJ1S2de4XcfHOLrvKA=;
- b=HQnjgM86aZYUUxmr38KWQQhRaOGvj0NRFFFwz/zdf3eShENYDLqt7h1j
- fMd4YXunxMqlEzbvcioBXUj4Lv3Xdg9BtSdw64uErqJ/rnDQlifGS9sv3
- C41Av+q1qSA5/xbfavJ5N9JCNyjAZbgpd1LOhXco0Ct29ewzMXs9daObS
- 9KoBhZZDZb4YDlcrrsLiZFxl6qQYrCoG+c0XtUb3NaBJJSko2YFXtlsZy
- fsd5+YPlW//BBmmdbMyu4d7fst0vSMbcFuCgZl2K2G+GU+4P+mHP8096R
- Ai3qm+yfYEoaeCJHsYq1Jo6Gp/FIWwp70uxXnZhplfLyAGp+gy2hmBwWk A==;
-X-CSE-ConnectionGUID: keT4PMuaQ5yvl9zZ7Wkk7Q==
-X-CSE-MsgGUID: 0h7EbWH7SRqYUCKi1zt0oA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="64850226"
-X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; d="scan'208";a="64850226"
+ t=1763053802; x=1794589802;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=61/Eo0F8WGm36C8uefiGy1qvCGj9iqdJ4BhUckr7Jkw=;
+ b=gw1a+l79aUshNSUAD6UrBmcHGdr0qCPCxKS2NNRX3eZxyLeYeVv6etXy
+ iJTrcxv7+FRPZ2whUfXekLSgcroIo1VcRCwLYlQtW7VDvBmeiDGyQ1iPH
+ tf01rjSrnsccSXR2DOs0GY8GroZPMJ3KO0pgVKatfscBPCAjSf7DUvUvR
+ nJs96hMwfe+059LKX6b+VnYYdPoe8T16Mvgcis6C6CpItYP//idXnKpv7
+ 03EmcoYgnzL1LNW0DzKs/cBingBSCX+AwJ9lRtKIsA2vw0K1Gp/egcDr4
+ Gjd9IZhfhpavEaoBXZ96NfDgObKA9whxVtA7gLHddxm2z0HF2vJot0Fno Q==;
+X-CSE-ConnectionGUID: a2ZVsqI4RmeJAAja8/1Mgw==
+X-CSE-MsgGUID: HI9hytd2QgyvTk1evChGbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="64850223"
+X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; d="scan'208";a="64850223"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  13 Nov 2025 09:10:02 -0800
-X-CSE-ConnectionGUID: Ym0A1BAeSle43UH3i0y4LQ==
-X-CSE-MsgGUID: xVy3UCmkQK2lYxQNbDqYoQ==
+X-CSE-ConnectionGUID: 5Yfj9/iDQHSfobZBJLWSJQ==
+X-CSE-MsgGUID: Gqn5PCopRtKsC+LQtUhsew==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; d="scan'208";a="189394594"
+X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; d="scan'208";a="189394586"
 Received: from dut7069bmgfrd.fm.intel.com (HELO DUT7069BMGFRD..) ([10.1.40.39])
- by fmviesa006.fm.intel.com with ESMTP; 13 Nov 2025 09:10:02 -0800
+ by fmviesa006.fm.intel.com with ESMTP; 13 Nov 2025 09:10:01 -0800
 From: nishit.sharma@intel.com
 To: igt-dev@lists.freedesktop.org,
 	nishit.sharma@intel.com
-Subject: [PATCH i-g-t v7 02/10] tests/intel/xe_exec_system_allocator: Add
- parameter in madvise call
-Date: Thu, 13 Nov 2025 17:09:54 +0000
-Message-ID: <20251113171001.635563-3-nishit.sharma@intel.com>
+Subject: [PATCH i-g-t v7 00/10] SVM madvise feature in multi-GPU config
+Date: Thu, 13 Nov 2025 17:09:52 +0000
+Message-ID: <20251113171001.635563-1-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251113171001.635563-1-nishit.sharma@intel.com>
-References: <20251113171001.635563-1-nishit.sharma@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,55 +67,54 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Nishit Sharma <nishit.sharma@intel.com>
 
-Parameter instance added in xe_vm_madvise() call. This parameter
-addition cause compilation issue in system_allocator test. As a fix
-0 as instance parameter passed in xe_vm_madvise() calls.
+This patch series adds comprehensive SVM multi-GPU IGT test coverage for
+madvise and prefetch functionality.
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- tests/intel/xe_exec_system_allocator.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ver2:
+- Test name changed in commits
+- In patchwork v1 patch is missing due to last patch was not sent
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index b88967e58..1e7175061 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -1164,7 +1164,7 @@ madvise_swizzle_op_exec(int fd, uint32_t vm, struct test_exec_data *data,
- 	xe_vm_madvise(fd, vm, to_user_pointer(data), bo_size, 0,
- 		      DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
- 		      preferred_loc,
--		      0);
-+		      0, 0);
- }
- 
- static void
-@@ -1172,7 +1172,7 @@ xe_vm_madvixe_pat_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
- 		       int pat_index)
- {
- 	xe_vm_madvise(fd, vm, addr, range, 0,
--		      DRM_XE_MEM_RANGE_ATTR_PAT, pat_index, 0);
-+		      DRM_XE_MEM_RANGE_ATTR_PAT, pat_index, 0, 0);
- }
- 
- static void
-@@ -1181,7 +1181,7 @@ xe_vm_madvise_atomic_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
- {
- 	xe_vm_madvise(fd, vm, addr, range, 0,
- 		      DRM_XE_MEM_RANGE_ATTR_ATOMIC,
--		      mem_attr, 0);
-+		      mem_attr, 0, 0);
- }
- 
- static void
-@@ -1190,7 +1190,7 @@ xe_vm_madvise_migrate_pages(int fd, uint32_t vm, uint64_t addr, uint64_t range)
- 	xe_vm_madvise(fd, vm, addr, range, 0,
- 		      DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
- 		      DRM_XE_PREFERRED_LOC_DEFAULT_SYSTEM,
--		      DRM_XE_MIGRATE_ALL_PAGES);
-+		      DRM_XE_MIGRATE_ALL_PAGES, 0);
- }
- 
- static void
+ver3:
+- In patch-7 tags were added and it was not sent on patchwork
+
+ver4:
+- In patch file was added which is not available in source which caused
+  CI build failure.
+
+ver5:
+- Added subtest function wrappers
+- Subtests executing for all GPUs enumerated
+
+ver7:
+- Optimized function calling which are frequenctly called
+- Incorporated review comments (Thomas Hellstrom)
+
+
+Nishit Sharma (10):
+  lib/xe: Add instance parameter to xe_vm_madvise and introduce lr_sync
+    helpers
+  tests/intel/xe_exec_system_allocator: Add parameter in madvise call
+  tests/intel/xe_multi_gpusvm: Add SVM multi-GPU cross-GPU memory access
+    test
+  tests/intel/xe_multi_gpusvm: Add SVM multi-GPU atomic operations
+  tests/intel/xe_multi_gpusvm: Add SVM multi-GPU coherency test
+  tests/intel/xe_multi_gpusvm: Add SVM multi-GPU performance test
+  tests/intel/xe_multi_gpusvm: Add SVM multi-GPU fault handling test
+  tests/intel/xe_multi_gpusvm: Add SVM multi-GPU simultaneous access
+    test
+  tests/intel/xe_multi_gpusvm: Add SVM multi-GPU conflicting madvise
+    test
+  tests/intel/xe_multi-gpusvm: Add SVM multi-GPU migration test
+
+ include/drm-uapi/xe_drm.h              |    4 +-
+ lib/xe/xe_ioctl.c                      |   53 +-
+ lib/xe/xe_ioctl.h                      |   11 +-
+ tests/intel/xe_exec_system_allocator.c |    8 +-
+ tests/intel/xe_multi_gpusvm.c          | 1441 ++++++++++++++++++++++++
+ tests/meson.build                      |    1 +
+ 6 files changed, 1504 insertions(+), 14 deletions(-)
+ create mode 100644 tests/intel/xe_multi_gpusvm.c
+
 -- 
 2.48.1
 
