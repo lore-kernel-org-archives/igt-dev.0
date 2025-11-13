@@ -4,47 +4,47 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90462CD8C9D
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Nov 2025 17:01:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB9FECD8CA4
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Nov 2025 17:01:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 408EF10E901;
-	Thu, 13 Nov 2025 17:01:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6F3A210E902;
+	Thu, 13 Nov 2025 17:01:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M8MrCGkZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BSI32OHC";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5975610E8F8
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A7E8110E8F2
  for <igt-dev@lists.freedesktop.org>; Thu, 13 Nov 2025 17:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1763053278; x=1794589278;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=Aa3Ak86n+L7M3sQ9oDVugoXZMGm0CRF2IqTbpqv5+lg=;
- b=M8MrCGkZIniVNLWlm1vaafKV+V+JNr30qkURZSuuOi/gwxyUaUUmjaHc
- 4fm7t2sJmTgON9XUog+lrRnN16QJp+wnAwU/LakSQ8KdtiRQ7bBuEuIUl
- ngW0i8Vc1XHveqG+LVvsGMaEm5nPv/17Xn+01K162Z1Fw8ZNWhYOv6eUl
- qGCC3vnj+Bmw+FIhdUPo6ccEAcGqkwGq3BDH7DPkmZnpvJEv5pT/hxM2A
- EhD71K6WUEcPFgLcdOE71GiJoXP06B/iEM5uGzuMCdfdQ+Qw4Fn2Tx8Q/
- XQe8zl//TBkvzFqOdzyLpMWGwjPtl8La1xwYi39N/RCu9NbiT8EGuj1bj A==;
-X-CSE-ConnectionGUID: 5bnyM8tdRYGPYtm/vsbZww==
-X-CSE-MsgGUID: syNqwyPUQ8uiRARHLso6yw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="75456356"
-X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; d="scan'208";a="75456356"
+ bh=9ihzV05J7eSXBGGvgTQthAntg3MyNFjL9YhQ1v73css=;
+ b=BSI32OHC+1dcNiGH6bxE2Y3KSb2sgWQN+d5ilIagiw9Bob5BPBS/hWrD
+ Jx7R+nG6MJZnhw3fffmRwZ5xPKQkjhdiq9pLYBky08b3eGDEQdmbLWSYx
+ zk1v+XjppC7X7Dk8ir3QL+5Oe8iT39ddlWDzQm1AwJno7R9cRJOrYlHp9
+ 09thWd1PptLIRqWyDJIIWcdnMS4K2nFgFHRd7F8ql31vnbpP/cRC82K9n
+ q7805vKlhAafSN1Skwe1fNVex7DSonvYhhmt32E0KzxN+3Qv4aFhM/7F4
+ 1V87tPmRa11/kkzkHHwOzBfLwZ0TuVEKm2nM65q7XW2rAn2ZBO9KqSYBM A==;
+X-CSE-ConnectionGUID: 4eaCBNlxRrafd4HN86f1jg==
+X-CSE-MsgGUID: 0MLZAuu/SmSZp5rEjs3mxQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="75456360"
+X-IronPort-AV: E=Sophos;i="6.19,302,1754982000"; d="scan'208";a="75456360"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  13 Nov 2025 09:01:17 -0800
-X-CSE-ConnectionGUID: M9V51BGWStm7BvupYe/wJQ==
-X-CSE-MsgGUID: Jwegaq4mTy+ra3p8pXZk5Q==
+X-CSE-ConnectionGUID: NxKweb5bQUuUQRcWZJey8w==
+X-CSE-MsgGUID: Hx4ijSo1R+28/KVhdNKWOg==
 X-ExtLoop1: 1
 Received: from dut7069bmgfrd.fm.intel.com (HELO DUT7069BMGFRD..) ([10.1.40.39])
  by fmviesa003.fm.intel.com with ESMTP; 13 Nov 2025 09:01:16 -0800
 From: Nishit Sharma <nishit.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v7 05/10] tests/intel/xe_multi_gpusvm: Add SVM multi-GPU
- coherency test
-Date: Thu, 13 Nov 2025 17:00:50 +0000
-Message-ID: <20251113170112.635182-6-nishit.sharma@intel.com>
+Subject: [PATCH i-g-t v7 09/10] tests/intel/xe_multi_gpusvm: Add SVM multi-GPU
+ conflicting madvise test
+Date: Thu, 13 Nov 2025 17:00:54 +0000
+Message-ID: <20251113170112.635182-10-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251113170112.635182-1-nishit.sharma@intel.com>
 References: <20251104153201.677938-1-nishit.sharma@intel.com>
@@ -66,41 +66,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This test verifies memory coherency in a multi-GPU environment using SVM.
-GPU 1 writes to a shared buffer, GPU 2 reads and checks for correct data
-without explicit synchronization, and the test is repeated with CPU and
-both GPUs to ensure consistent memory visibility across agents.
+This test calls madvise operations on GPU0 with the preferred location set
+to GPU1 and vice versa. It reports conflicts when conflicting memory advice
+is given for shared SVM buffers in a multi-GPU environment.
 
 Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
 ---
- tests/intel/xe_multi_gpusvm.c | 203 +++++++++++++++++++++++++++++++++-
- 1 file changed, 201 insertions(+), 2 deletions(-)
+ tests/intel/xe_multi_gpusvm.c | 143 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 143 insertions(+)
 
 diff --git a/tests/intel/xe_multi_gpusvm.c b/tests/intel/xe_multi_gpusvm.c
-index 54e036724..6792ef72c 100644
+index dc2a8f9c8..afbf010e6 100644
 --- a/tests/intel/xe_multi_gpusvm.c
 +++ b/tests/intel/xe_multi_gpusvm.c
-@@ -34,8 +34,13 @@
-  * SUBTEST: atomic-inc-gpu-op
+@@ -59,6 +59,11 @@
   * Description:
-  * 	This test does atomic operation in multi-gpu by executing atomic
-- *	operation on GPU1 and then atomic operation on GPU2 using same
-- *	adress
-+ * 	operation on GPU1 and then atomic operation on GPU2 using same
-+ * 	adress
+  * 	This tests aunches simultaneous workloads on both GPUs accessing the
+  * 	same SVM buffer synchronizes with fences, and verifies data integrity
 + *
-+ * SUBTEST: coherency-multi-gpu
++ * SUBTEST: conflicting-madvise-gpu
 + * Description:
-+ * 	This test checks coherency in multi-gpu by writing from GPU0
-+ * 	reading from GPU1 and verify and repeating with CPU and both GPUs
++ * 	This test checks conflicting madvise by allocating shared buffer
++ * 	prefetches from both and checks for migration conflicts
   */
  
  #define MAX_XE_REGIONS	8
-@@ -93,6 +98,11 @@ static void gpu_atomic_inc_wrapper(struct xe_svm_gpu_info *src,
- 				   struct drm_xe_engine_class_instance *eci,
- 				   void *extra_args);
+@@ -69,6 +74,8 @@
+ #define EXEC_SYNC_VAL 0x676767
+ #define COPY_SIZE SZ_64M
+ #define	ATOMIC_OP_VAL	56
++#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
++#define FIVE_SEC                (5LL * NSEC_PER_SEC)
  
-+static void gpu_coherecy_test_wrapper(struct xe_svm_gpu_info *src,
+ struct xe_svm_gpu_info {
+ 	bool supports_faults;
+@@ -136,6 +143,11 @@ static void gpu_simult_test_wrapper(struct xe_svm_gpu_info *src,
+ 				    struct drm_xe_engine_class_instance *eci,
+ 				    void *extra_args);
+ 
++static void gpu_conflict_test_wrapper(struct xe_svm_gpu_info *src,
 +				      struct xe_svm_gpu_info *dst,
 +				      struct drm_xe_engine_class_instance *eci,
 +				      void *extra_args);
@@ -108,178 +112,115 @@ index 54e036724..6792ef72c 100644
  static void
  create_vm_and_queue(struct xe_svm_gpu_info *gpu, struct drm_xe_engine_class_instance *eci,
  		    uint32_t *vm, uint32_t *exec_queue)
-@@ -214,6 +224,35 @@ atomic_batch_init(int fd, uint32_t vm, uint64_t src_addr,
- 	*addr = batch_addr;
+@@ -798,6 +810,116 @@ pagefault_test_multigpu(struct xe_svm_gpu_info *gpu0,
+ 	cleanup_vm_and_queue(gpu1, vm[1], exec_queue[1]);
  }
  
++#define	XE_BO_FLAG_SYSTEM	BIT(1)
++#define XE_BO_FLAG_CPU_ADDR_MIRROR      BIT(24)
++
 +static void
-+store_dword_batch_init(int fd, uint32_t vm, uint64_t src_addr,
-+                       uint32_t *bo, uint64_t *addr, int value)
++conflicting_madvise(struct xe_svm_gpu_info *gpu0,
++		    struct xe_svm_gpu_info *gpu1,
++		    struct drm_xe_engine_class_instance *eci,
++		    bool no_prefetch)
 +{
-+        uint32_t batch_bo_size = BATCH_SIZE(fd);
-+        uint32_t batch_bo;
-+        uint64_t batch_addr;
-+        void *batch;
-+        uint32_t *cmd;
-+        int i = 0;
-+
-+        batch_bo = xe_bo_create(fd, vm, batch_bo_size, vram_if_possible(fd, 0), 0);
-+        batch = xe_bo_map(fd, batch_bo, batch_bo_size);
-+        cmd = (uint32_t *) batch;
-+
-+        cmd[i++] = MI_STORE_DWORD_IMM_GEN4;
-+        cmd[i++] = src_addr;
-+        cmd[i++] = src_addr >> 32;
-+        cmd[i++] = value;
-+        cmd[i++] = MI_BATCH_BUFFER_END;
-+
-+        batch_addr = to_user_pointer(batch);
-+
-+        /* Punch a gap in the SVM map where we map the batch_bo */
-+        xe_vm_bind_lr_sync(fd, vm, batch_bo, 0, batch_addr, batch_bo_size, 0);
-+        *bo = batch_bo;
-+        *addr = batch_addr;
-+}
-+
- static void batch_init(int fd, uint32_t vm, uint64_t src_addr,
- 		       uint64_t dst_addr, uint64_t copy_size,
- 		       uint32_t *bo, uint64_t *addr)
-@@ -373,6 +412,143 @@ gpu_mem_access_wrapper(struct xe_svm_gpu_info *src,
- 	copy_src_dst(src, dst, eci, args->prefetch_req);
- }
- 
-+static void
-+coherency_test_multigpu(struct xe_svm_gpu_info *gpu0,
-+			struct xe_svm_gpu_info *gpu1,
-+			struct drm_xe_engine_class_instance *eci,
-+			bool coh_fail_set,
-+			bool prefetch_req)
-+{
-+        uint64_t addr;
-+        uint32_t vm[2];
-+        uint32_t exec_queue[2];
-+        uint32_t batch_bo, batch1_bo[2];
-+        uint64_t batch_addr, batch1_addr[2];
-+        struct drm_xe_sync sync = {};
-+        volatile uint64_t *sync_addr;
-+        int value = 60;
-+	uint64_t *data1;
-+	void *copy_dst;
++	uint64_t addr;
++	uint32_t vm[2];
++	uint32_t exec_queue[2];
++	uint32_t batch_bo[2];
++	void *data;
++	uint64_t batch_addr[2];
++	struct drm_xe_sync sync[2] = {};
++	volatile uint64_t *sync_addr[2];
++	int local_fd;
++	uint16_t local_vram;
 +
 +	create_vm_and_queue(gpu0, eci, &vm[0], &exec_queue[0]);
 +	create_vm_and_queue(gpu1, eci, &vm[1], &exec_queue[1]);
 +
-+        data1 = aligned_alloc(SZ_2M, SZ_4K);
-+	igt_assert(data1);
-+	addr = to_user_pointer(data1);
++	data = aligned_alloc(SZ_2M, SZ_4K);
++	igt_assert(data);
++	addr = to_user_pointer(data);
 +
-+	copy_dst = aligned_alloc(SZ_2M, SZ_4K);
-+	igt_assert(copy_dst);
++	xe_vm_madvise(gpu0->fd, vm[0], addr, SZ_4K, 0,
++		      DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
++		      DRM_XE_PREFERRED_LOC_DEFAULT_SYSTEM, 0, 0);
 +
-+        store_dword_batch_init(gpu0->fd, vm[0], addr, &batch_bo, &batch_addr, value);
++	store_dword_batch_init(gpu0->fd, vm[0], addr, &batch_bo[0], &batch_addr[0], 10);
++	store_dword_batch_init(gpu1->fd, vm[0], addr, &batch_bo[1], &batch_addr[1], 20);
 +
-+        /* Place destination in GPU0 local memory location to test */
-+	xe_multigpu_madvise(gpu0->fd, vm[0], addr, SZ_4K, 0,
-+			    DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
++	/* Place destination in an optionally remote location to test */
++	local_fd = gpu0->fd;
++	local_vram = gpu0->vram_regions[0];
++	xe_multigpu_madvise(gpu0->fd, vm[0], addr, SZ_4K,
++			    0, DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
++			    gpu1->fd, 0, gpu1->vram_regions[0], exec_queue[0],
++			    local_fd, local_vram);
++
++	local_fd = gpu1->fd;
++	local_vram = gpu1->vram_regions[0];
++	xe_multigpu_madvise(gpu1->fd, vm[1], addr, SZ_4K,
++			    0, DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
 +			    gpu0->fd, 0, gpu0->vram_regions[0], exec_queue[0],
-+			    0, 0);
++			    local_fd, local_vram);
 +
-+	setup_sync(&sync, &sync_addr, BIND_SYNC_VAL);
-+	xe_multigpu_prefetch(gpu0->fd, vm[0], addr, SZ_4K, &sync,
-+			     sync_addr, exec_queue[0], prefetch_req);
++	setup_sync(&sync[0], &sync_addr[0], BIND_SYNC_VAL);
++	setup_sync(&sync[1], &sync_addr[1], BIND_SYNC_VAL);
 +
-+        sync_addr = (void *)((char *)batch_addr + SZ_4K);
-+        sync.addr = to_user_pointer((uint64_t *)sync_addr);
-+        sync.timeline_value = EXEC_SYNC_VAL;
-+        *sync_addr = 0;
++	/* For simultaneous access need to call xe_wait_ufence for both gpus after prefetch */
++	if(!no_prefetch) {
++		xe_vm_prefetch_async(gpu0->fd, vm[0], 0, 0, addr,
++				     SZ_4K, &sync[0], 1,
++				     DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC);
 +
-+        /* Execute STORE command on GPU0 */
-+        xe_exec_sync(gpu0->fd, exec_queue[0], batch_addr, &sync, 1);
-+        if (*sync_addr != EXEC_SYNC_VAL)
-+                xe_wait_ufence(gpu0->fd, (uint64_t *)sync_addr, EXEC_SYNC_VAL, exec_queue[0],
-+			       NSEC_PER_SEC * 10);
++		xe_vm_prefetch_async(gpu1->fd, vm[1], 0, 0, addr,
++				     SZ_4K, &sync[1], 1,
++				     DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC);
 +
-+        igt_assert_eq(*(uint64_t *)addr, value);
-+
-+	/* Creating batch for GPU1 using addr as Src which have value from GPU0 */
-+	batch_init(gpu1->fd, vm[1], addr, to_user_pointer(copy_dst),
-+		   SZ_4K, &batch_bo, &batch_addr);
-+
-+        /* Place destination in GPU1 local memory location to test */
-+	xe_multigpu_madvise(gpu1->fd, vm[1], addr, SZ_4K, 0,
-+			    DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
-+			    gpu1->fd, 0, gpu1->vram_regions[0], exec_queue[1],
-+			    0, 0);
-+
-+	setup_sync(&sync, &sync_addr, BIND_SYNC_VAL);
-+	xe_multigpu_prefetch(gpu1->fd, vm[1], addr, SZ_4K, &sync,
-+			     sync_addr, exec_queue[1], prefetch_req);
-+
-+        sync_addr = (void *)((char *)batch_addr + SZ_4K);
-+        sync.addr = to_user_pointer((uint64_t *)sync_addr);
-+        sync.timeline_value = EXEC_SYNC_VAL;
-+        *sync_addr = 0;
-+
-+        /* Execute COPY command on GPU1 */
-+        xe_exec_sync(gpu1->fd, exec_queue[1], batch_addr, &sync, 1);
-+        if (*sync_addr != EXEC_SYNC_VAL)
-+                xe_wait_ufence(gpu1->fd, (uint64_t *)sync_addr, EXEC_SYNC_VAL, exec_queue[1],
-+			       NSEC_PER_SEC * 10);
-+
-+        igt_assert_eq(*(uint64_t *)copy_dst, value);
-+
-+        /* CPU writes 10, memset set bytes no integer hence memset fills 4 bytes with 0x0A */
-+        memset((void *)(uintptr_t)addr, 10, sizeof(int));
-+        igt_assert_eq(*(uint64_t *)addr, 0x0A0A0A0A);
-+
-+	if (coh_fail_set) {
-+		igt_info("coherency fail impl\n");
-+
-+		/* Coherency fail scenario */
-+		store_dword_batch_init(gpu0->fd, vm[0], addr, &batch1_bo[0], &batch1_addr[0], value + 10);
-+		store_dword_batch_init(gpu1->fd, vm[1], addr, &batch1_bo[1], &batch1_addr[1], value + 20);
-+
-+		sync_addr = (void *)((char *)batch1_addr[0] + SZ_4K);
-+		sync.addr = to_user_pointer((uint64_t *)sync_addr);
-+		sync.timeline_value = EXEC_SYNC_VAL;
-+		*sync_addr = 0;
-+
-+		/* Execute STORE command on GPU1 */
-+		xe_exec_sync(gpu0->fd, exec_queue[0], batch1_addr[0], &sync, 1);
-+		if (*sync_addr != EXEC_SYNC_VAL)
-+			xe_wait_ufence(gpu0->fd, (uint64_t *)sync_addr, EXEC_SYNC_VAL, exec_queue[0],
++		if (*sync_addr[0] != BIND_SYNC_VAL)
++			xe_wait_ufence(gpu0->fd, (uint64_t *)sync_addr[0], BIND_SYNC_VAL, exec_queue[0],
 +				       NSEC_PER_SEC * 10);
-+
-+		sync_addr = (void *)((char *)batch1_addr[1] + SZ_4K);
-+		sync.addr = to_user_pointer((uint64_t *)sync_addr);
-+		sync.timeline_value = EXEC_SYNC_VAL;
-+		*sync_addr = 0;
-+
-+		/* Execute STORE command on GPU2 */
-+		xe_exec_sync(gpu1->fd, exec_queue[1], batch1_addr[1], &sync, 1);
-+		if (*sync_addr != EXEC_SYNC_VAL)
-+			xe_wait_ufence(gpu1->fd, (uint64_t *)sync_addr, EXEC_SYNC_VAL, exec_queue[1],
++		free((void *)sync_addr[0]);
++		if (*sync_addr[1] != BIND_SYNC_VAL)
++			xe_wait_ufence(gpu1->fd, (uint64_t *)sync_addr[1], BIND_SYNC_VAL, exec_queue[1],
 +				       NSEC_PER_SEC * 10);
-+
-+		igt_warn_on_f(*(uint64_t *)addr != (value + 10),
-+			      "GPU2(dst_gpu] has overwritten value at addr\n");
-+
-+		munmap((void *)batch1_addr[0], BATCH_SIZE(gpu0->fd));
-+		munmap((void *)batch1_addr[1], BATCH_SIZE(gpu1->fd));
-+
-+		batch_fini(gpu0->fd, vm[0], batch1_bo[0], batch1_addr[0]);
-+		batch_fini(gpu1->fd, vm[1], batch1_bo[1], batch1_addr[1]);
++		free((void *)sync_addr[1]);
 +	}
 +
-+        /* CPU writes 11, memset set bytes no integer hence memset fills 4 bytes with 0x0B */
-+        memset((void *)(uintptr_t)addr, 11, sizeof(int));
-+        igt_assert_eq(*(uint64_t *)addr, 0x0B0B0B0B);
++	if (no_prefetch) {
++		free((void *)sync_addr[0]);
++		free((void *)sync_addr[1]);
++	}
 +
-+        munmap((void *)batch_addr, BATCH_SIZE(gpu0->fd));
-+        batch_fini(gpu0->fd, vm[0], batch_bo, batch_addr);
-+        batch_fini(gpu1->fd, vm[1], batch_bo, batch_addr);
-+        free(data1);
-+	free(copy_dst);
++	for (int i = 0; i < 1; i++) {
++		sync_addr[0] = (void *)((char *)batch_addr[0] + SZ_4K);
++		sync[0].addr = to_user_pointer((uint64_t *)sync_addr[0]);
++		sync[0].timeline_value = EXEC_SYNC_VAL;
++
++		sync_addr[1] = (void *)((char *)batch_addr[1] + SZ_4K);
++		sync[1].addr = to_user_pointer((uint64_t *)sync_addr[1]);
++		sync[1].timeline_value = EXEC_SYNC_VAL;
++		*sync_addr[0] = 0;
++		*sync_addr[1] = 0;
++
++		xe_exec_sync(gpu0->fd, exec_queue[0], batch_addr[0], &sync[0], 1);
++		if (*sync_addr[0] != EXEC_SYNC_VAL)
++			xe_wait_ufence(gpu0->fd, (uint64_t *)sync_addr[0], EXEC_SYNC_VAL, exec_queue[0],
++				       NSEC_PER_SEC * 10);
++		xe_exec_sync(gpu1->fd, exec_queue[1], batch_addr[1], &sync[1], 1);
++		if (*sync_addr[1] != EXEC_SYNC_VAL)
++			xe_wait_ufence(gpu1->fd, (uint64_t *)sync_addr[1], EXEC_SYNC_VAL, exec_queue[1],
++				       NSEC_PER_SEC * 10);
++	}
++
++	igt_assert_eq(*(uint64_t *)addr, 20);
++
++	munmap((void *)batch_addr[0], BATCH_SIZE(gpu0->fd));
++	munmap((void *)batch_addr[1], BATCH_SIZE(gpu0->fd));
++	batch_fini(gpu0->fd, vm[0], batch_bo[0], batch_addr[0]);
++	batch_fini(gpu1->fd, vm[1], batch_bo[1], batch_addr[1]);
++	free(data);
 +
 +	cleanup_vm_and_queue(gpu0, vm[0], exec_queue[0]);
 +	cleanup_vm_and_queue(gpu1, vm[1], exec_queue[1]);
@@ -288,12 +229,12 @@ index 54e036724..6792ef72c 100644
  static void
  atomic_inc_op(struct xe_svm_gpu_info *gpu0,
  	      struct xe_svm_gpu_info *gpu1,
-@@ -472,6 +648,19 @@ gpu_atomic_inc_wrapper(struct xe_svm_gpu_info *src,
- 	atomic_inc_op(src, dst, eci, args->prefetch_req);
+@@ -1012,6 +1134,19 @@ multigpu_access_test(struct xe_svm_gpu_info *gpu0,
+ 	cleanup_vm_and_queue(gpu1, vm[1], exec_queue[1]);
  }
  
 +static void
-+gpu_coherecy_test_wrapper(struct xe_svm_gpu_info *src,
++gpu_conflict_test_wrapper(struct xe_svm_gpu_info *src,
 +			  struct xe_svm_gpu_info *dst,
 +			  struct drm_xe_engine_class_instance *eci,
 +			  void *extra_args)
@@ -302,29 +243,27 @@ index 54e036724..6792ef72c 100644
 +	igt_assert(src);
 +	igt_assert(dst);
 +
-+	coherency_test_multigpu(src, dst, eci, args->op_mod, args->prefetch_req);
++        conflicting_madvise(src, dst, eci, args->prefetch_req);
 +}
 +
- igt_main
- {
- 	struct xe_svm_gpu_info gpus[MAX_XE_GPUS];
-@@ -519,6 +708,16 @@ igt_main
- 		for_each_gpu_pair(gpu_cnt, gpus, &eci, gpu_atomic_inc_wrapper, &atomic_args);
+ static void
+ gpu_latency_test_wrapper(struct xe_svm_gpu_info *src,
+ 			 struct xe_svm_gpu_info *dst,
+@@ -1108,6 +1243,14 @@ igt_main
+ 		for_each_gpu_pair(gpu_cnt, gpus, &eci, gpu_coherecy_test_wrapper, &coh_args);
  	}
  
-+	igt_subtest("coherency-multi-gpu") {
-+		struct multigpu_ops_args coh_args;
-+		coh_args.prefetch_req = 1;
-+		coh_args.op_mod = 0;
-+		for_each_gpu_pair(gpu_cnt, gpus, &eci, gpu_coherecy_test_wrapper, &coh_args);
-+		coh_args.prefetch_req = 0;
-+		coh_args.op_mod = 1;
-+		for_each_gpu_pair(gpu_cnt, gpus, &eci, gpu_coherecy_test_wrapper, &coh_args);
++	igt_subtest("conflicting-madvise-gpu") {
++		struct multigpu_ops_args conflict_args;
++		conflict_args.prefetch_req = 1;
++		for_each_gpu_pair(gpu_cnt, gpus, &eci, gpu_conflict_test_wrapper, &conflict_args);
++		conflict_args.prefetch_req = 0;
++		for_each_gpu_pair(gpu_cnt, gpus, &eci, gpu_conflict_test_wrapper, &conflict_args);
 +	}
 +
- 	igt_fixture {
- 		int cnt;
- 
+ 	igt_subtest("latency-multi-gpu") {
+ 		struct multigpu_ops_args latency_args;
+ 		latency_args.prefetch_req = 1;
 -- 
 2.48.1
 
