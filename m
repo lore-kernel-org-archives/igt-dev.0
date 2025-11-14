@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02D39CE8D66
-	for <igt-dev@archiver.kernel.org>; Fri, 14 Nov 2025 17:22:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5FB8CE8D60
+	for <igt-dev@archiver.kernel.org>; Fri, 14 Nov 2025 17:22:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A782A10EAE8;
-	Fri, 14 Nov 2025 17:22:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 91F7E10EAD9;
+	Fri, 14 Nov 2025 17:22:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YnI8Wvmb";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bpMm3mJb";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F9C310EAD9
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Nov 2025 17:22:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D50710EAEA
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Nov 2025 17:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763140962; x=1794676962;
+ t=1763140964; x=1794676964;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=2LQVWHCnhspy5Q5JDeDTT4KX8EUI2vJs0xcjPJVE8vM=;
- b=YnI8WvmbwGC5RnfCzCDKre+7UZlJJB/6M84NCJemYzQEVuxGKkLtx1fs
- +iv+UcP71iV5CBdtvJEb8n7y/K1LImCGXRExotvv1curxFSxgdaxDGHMo
- 6phgH3rXojblUB34bX39DlB078HM5Gw79OA+bW1wskdsB8/rz26RALZQU
- co5nBDn0s0JPa+PhbYW0iT53dqve0EW0HUNAoNL8aLnplSg15g9ANV/69
- i6xnNNXGG1B4gR+uVvkyPDVlp8ZAlhZkTk/QLaEQG5U4HHnu2npn4/+ok
- nD6eamz6VMqb2cXZPPg1GhL9IqKd+MyT6ECcKUDNRGUiU2z5Lr6JjXFeI A==;
-X-CSE-ConnectionGUID: JtA7tNHATbCjlys5bcMZqQ==
-X-CSE-MsgGUID: usGobLZpQzC1JMQ+dt/P4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11613"; a="82871447"
-X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; d="scan'208";a="82871447"
+ bh=vx2qSZhWUUksywXAfI8LJtkpGaPVCsXr4g16Zvx1sd8=;
+ b=bpMm3mJbZr9b00TaukXgAlvx+bBYrU5QS7oKsiArnJMPD89bvPoMD41h
+ iGM/gN7c0LFuFFWJ2KdMkg0SJJFZ5CojJnI5gJT/Q2ZvBABADdhNUiS/A
+ 1mfI7TXrxv4nnKeymZqMzL2Z3g4EI9TwNDqUXrAlehXr+/Twrys32RQiq
+ Uib28Cei4o2lM6LnIwgZ6485t6N9McO+cYIABCeuiahGx1vTO07q9JEzO
+ qUjW66JLz+v6P/pVLfOlLQdSucfVpkbvkHlbCiWBrwwzF04BAwksbvItG
+ WPMZ+bWYFFAo3p0VYUo0wmeRhjhmLtyXXazW89tDCH9Ff2O1Cn4HgOZvQ Q==;
+X-CSE-ConnectionGUID: Ie+BhO4tSYiPAIjUZeOE2A==
+X-CSE-MsgGUID: O2kripybSZeLZW77/Af5pA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11613"; a="82871450"
+X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; d="scan'208";a="82871450"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2025 09:22:42 -0800
-X-CSE-ConnectionGUID: kpjM8ex3S8W6wpvQGgPBzQ==
-X-CSE-MsgGUID: JBEoKAqqTD+h0npddn0TGw==
+ 14 Nov 2025 09:22:44 -0800
+X-CSE-ConnectionGUID: g1AcphqSQg6QyYZPSVjpxg==
+X-CSE-MsgGUID: x/FUwt5bSRyRtUT+GJ+Ssg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; d="scan'208";a="194981468"
+X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; d="scan'208";a="194981483"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 09:22:40 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2025 09:22:42 -0800
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: uma.shankar@intel.com, chaitanya.kumar.borah@intel.com,
  Swati Sharma <swati2.sharma@intel.com>
 Subject: [PATCH i-g-t,
- v4 10/23] tests/kms_color: Add helper for plane color pipeline tests
-Date: Fri, 14 Nov 2025 22:58:55 +0530
-Message-Id: <20251114172908.1027816-11-swati2.sharma@intel.com>
+ v4 11/23] tests/kms_color: Add Intel plane pipeline tests with LUT1D
+ and CTM
+Date: Fri, 14 Nov 2025 22:58:56 +0530
+Message-Id: <20251114172908.1027816-12-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251114172908.1027816-1-swati2.sharma@intel.com>
 References: <20251114172908.1027816-1-swati2.sharma@intel.com>
@@ -69,70 +70,199 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a helper to run plane color pipeline tests across
-all pipes and outputs.
+For now, Intel plane color pipeline contains 3 colorops:
+Pre-csc gamma (1D LUT) --> CTM 3x4 --> Post-csc gamma (1D LUT)
+
+Create subtests to cover different combinations of available
+colorops:
+  igt@kms_color@plane-lut1d
+  igt@kms_color@plane-lut1d-ctm3x4
+  igt@kms_color@plane-ctm3x4-lut1d
+  igt@kms_color@plane-lut1d-lut1d
+  igt@kms_color@plane-lut1d-ctm3x4-lut1d
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_color.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ tests/kms_color.c | 115 ++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 101 insertions(+), 14 deletions(-)
 
 diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 576fd5329..a47c71f33 100644
+index a47c71f33..72857e822 100644
 --- a/tests/kms_color.c
 +++ b/tests/kms_color.c
-@@ -891,6 +891,10 @@ static void test_setup(data_t *data, enum pipe p)
- 					  data->primary->pipe->pipe,
- 					  IGT_PIPE_CRC_SOURCE_AUTO);
+@@ -32,6 +32,8 @@
  
-+	igt_display_require_output_on_pipe(&data->display, p);
-+	data->output = igt_get_single_output_for_pipe(&data->display, p);
-+	igt_require(data->output);
+ #include "kms_color_helper.h"
+ 
++#define MAX_COLOROPS	5
 +
- 	igt_display_reset(&data->display);
+ /**
+  * SUBTEST: degamma
+  * Description: Verify that degamma LUT transformation works correctly
+@@ -76,7 +78,21 @@
+  * @gamma-lut:          Gamma LUT
+  */
+ 
+-IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
++/**
++ * SUBTEST: plane-%s
++ * Description: Test plane color pipeline with colorops: %arg[1].
++ *
++ * arg[1]:
++ *
++ * @lut1d:			1D LUT
++ * @ctm3x4:			3X4 CTM
++ * @lut1d-ctm3x4:		1D LUT --> 3X4 CTM
++ * @ctm3x4-lut1d:		3X4 CTM --> 1D LUT
++ * @lut1d-lut1d:		1D LUT --> 1D LUT
++ * @lut1d-ctm3x4-lut1d:		1D LUT --> 3X4 CTM --> 1D LUT
++ */
++
++IGT_TEST_DESCRIPTION("Test Color Features at Pipe and Plane level");
+ 
+ static bool test_pipe_degamma(data_t *data,
+ 			      igt_plane_t *primary)
+@@ -724,7 +740,6 @@ static void test_pipe_limited_range_ctm(data_t *data,
+ }
+ #endif
+ 
+-__maybe_unused
+ static void clear_lut_data(kms_colorop_t *colorops[])
+ {
+ 	int i;
+@@ -735,7 +750,6 @@ static void clear_lut_data(kms_colorop_t *colorops[])
+ 	}
  }
  
-@@ -984,6 +988,40 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
+-__maybe_unused
+ static void prepare_lut_data(data_t *data, kms_colorop_t *colorops[])
+ {
+ 	int i;
+@@ -773,7 +787,6 @@ static void prepare_lut_data(data_t *data, kms_colorop_t *colorops[])
+ 	}
+ }
+ 
+-__maybe_unused
+ static bool ctm_colorop_only(kms_colorop_t *colorops[])
+ {
+ 	int i;
+@@ -784,7 +797,6 @@ static bool ctm_colorop_only(kms_colorop_t *colorops[])
+ 	return true;
+ }
+ 
+-__maybe_unused
+ static bool test_plane_colorops(data_t *data,
+ 				const color_t *fb_colors,
+ 				const color_t *exp_colors,
+@@ -988,7 +1000,6 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
  	test_cleanup(data);
  }
  
-+__maybe_unused
-+static void run_plane_color_tests(data_t *data,
-+				  const color_t *fb_colors,
-+				  const color_t *exp_colors,
-+				  kms_colorop_t *colorops[])
-+{
-+	enum pipe pipe;
-+
-+	data->color_depth = 8;
-+	data->drm_format = DRM_FORMAT_XRGB8888;
-+
-+	for_each_pipe(&data->display, pipe) {
-+		test_setup(data, pipe);
-+
-+		data->mode = igt_output_get_mode(data->output);
-+
-+		if (!pipe_output_combo_valid(data, pipe)){
-+			test_cleanup(data);
-+			continue;
+-__maybe_unused
+ static void run_plane_color_tests(data_t *data,
+ 				  const color_t *fb_colors,
+ 				  const color_t *exp_colors,
+@@ -1327,16 +1338,92 @@ run_tests_for_pipe(data_t *data)
+ 		}
+ 	}
+ 
+-	igt_fixture
+-		igt_require(data->display.is_atomic);
++	igt_subtest_group {
++		static const color_t colors_red_to_blue[] = {
++			{ 0.0, 0.0, 1.0 },
++			{ 0.0, 1.0, 0.0 },
++			{ 0.0, 0.0, 1.0 },
++		};
++		const igt_matrix_3x4_t ctm_red_to_blue = { {
++			0.0, 0.0, 0.0, 0.0,
++			0.0, 1.0, 0.0, 0.0,
++			1.0, 0.0, 1.0, 0.0,
++		} };
++		kms_colorop_t lut1d_linear = {
++			.type = KMS_COLOROP_CUSTOM_LUT1D,
++			.name = "Pre/Post CSC GAMMA (linear LUT)",
++			.lut_type = KMS_COLOROP_LUT1D_LINEAR,
++		};
++		kms_colorop_t lut1d_max = {
++			.type = KMS_COLOROP_CUSTOM_LUT1D,
++			.name = "Pre/Post CSC GAMMA (max LUT)",
++			.lut_type = KMS_COLOROP_LUT1D_MAX,
++		};
++		kms_colorop_t ctm_3x4 = {
++			.type = KMS_COLOROP_CTM_3X4,
++			.name = "CTM 3X4 (red to blue)",
++			.matrix_3x4 = &ctm_red_to_blue,
++		};
++		struct {
++			const char *name;
++			const color_t *fb_colors;
++			const color_t *exp_colors;
++			kms_colorop_t *colorops[MAX_COLOROPS];
++		} plane_colorops_tests[] = {
++			{ .name = "lut1d",
++			  .fb_colors = colors_rgb,
++			  .exp_colors = colors_rgb,
++			  .colorops = { &lut1d_max, NULL },
++			},
++			{ .name = "ctm3x4",
++			  .fb_colors = colors_rgb,
++			  .exp_colors = colors_red_to_blue,
++			  .colorops = { &ctm_3x4, NULL },
++			},
++			{ .name = "lut1d-ctm3x4",
++			  .fb_colors = colors_rgb,
++			  .exp_colors = colors_red_to_blue,
++			  .colorops = { &lut1d_max, &ctm_3x4, NULL },
++			},
++			{ .name = "ctm3x4-lut1d",
++			  .fb_colors = colors_rgb,
++			  .exp_colors = colors_red_to_blue,
++			  .colorops = { &ctm_3x4, &lut1d_max, NULL },
++			},
++			{ .name = "lut1d-lut1d",
++			  .fb_colors = colors_rgb,
++			  .exp_colors = colors_rgb,
++			  .colorops = { &lut1d_linear, &lut1d_max, NULL },
++			},
++			{ .name = "lut1d-ctm3x4-lut1d",
++			  .fb_colors = colors_rgb,
++			  .exp_colors = colors_red_to_blue,
++			  .colorops = { &lut1d_linear, &ctm_3x4, &lut1d_max, NULL },
++			},
++		};
+ 
+-	igt_describe("Verify that deep color works correctly");
+-	igt_subtest_with_dynamic("deep-color") {
+-		for_each_pipe(&data->display, pipe) {
+-			run_deep_color_tests_for_pipe(data, pipe);
++		igt_fixture {
++			if (drmSetClientCap(data->display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
++				data->display.is_atomic = 1;
++		}
+ 
+-			if (igt_run_in_simulation())
+-				break;
++		for (i = 0; i < ARRAY_SIZE(plane_colorops_tests); i++) {
++			igt_describe_f("Test plane color pipeline with colorops: %s", plane_colorops_tests[i].name);
++			igt_subtest_with_dynamic_f("plane-%s", plane_colorops_tests[i].name)
++				run_plane_color_tests(data,
++						      plane_colorops_tests[i].fb_colors,
++						      plane_colorops_tests[i].exp_colors,
++						      plane_colorops_tests[i].colorops);
 +		}
 +
-+		 /* TODO: extend the test to multiple planes (HDR & SDR) */
-+		if (!igt_plane_has_prop(data->primary, IGT_PLANE_COLOR_PIPELINE))
-+			continue;
++		igt_describe("Verify that deep color works correctly");
++		igt_subtest_with_dynamic("deep-color") {
++			for_each_pipe(&data->display, pipe) {
++				run_deep_color_tests_for_pipe(data, pipe);
 +
-+		igt_dynamic_f("pipe-%s-%s",
-+			      kmstest_pipe_name(pipe),
-+			      igt_output_name(data->output))
-+			igt_assert(test_plane_colorops(data, fb_colors, exp_colors, colorops));
-+	}
-+
-+	test_cleanup(data);
-+}
-+
- static void
- run_deep_color_tests_for_pipe(data_t *data, enum pipe p)
- {
++				if (igt_run_in_simulation())
++					break;
++			}
+ 		}
+ 	}
+ }
 -- 
 2.25.1
 
