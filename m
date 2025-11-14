@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F90FCDE004
-	for <igt-dev@archiver.kernel.org>; Fri, 14 Nov 2025 05:10:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90970CDE006
+	for <igt-dev@archiver.kernel.org>; Fri, 14 Nov 2025 05:27:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AD2F310E224;
-	Fri, 14 Nov 2025 05:10:29 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I3/VENla";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B7E9310E221
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Nov 2025 05:10:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763097027; x=1794633027;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=lc6nIIhF0G/i9bDFiJov+ZyTjtCrdsO/gi2xf554e10=;
- b=I3/VENlaNNAWA5j757sBpUOBkkifzgzevwBnVSfcqE9cH8R/2Zk+pFmU
- f/aqX+eskRjrZYLQHv8Cf+lY/JQE0pELTuuyEG9mhJ7J1CGprlrV5oa5Z
- nwenNO1ZtKrYqwsCLWHeuk5TfKk+f5AEVJuCZ56AYatr4OMPXxUj4VL8+
- 630YZfwcO03s7Rei0BAXMlLdoz0miAjsecjCTwIhuPCWUp/W7020ye0DE
- lR7bg28DLCbVdfsiMSKoy9PF9xSGd3bj2nRMJRieDaJhFJz+5NPb5hkfl
- /WBlmz5pFQWKYSX73fSxKSymIRAzEytrdQ/Oe4Bv6/rx2QXXQMSLWoJ6c A==;
-X-CSE-ConnectionGUID: IsteDp5fQSWzWldlzSx+7w==
-X-CSE-MsgGUID: Ui6dAhwmSDSnnbkiV5OV0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11612"; a="90664163"
-X-IronPort-AV: E=Sophos;i="6.19,304,1754982000"; d="scan'208";a="90664163"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2025 21:10:27 -0800
-X-CSE-ConnectionGUID: hHanaWX1QmWP9HJIxlyA5A==
-X-CSE-MsgGUID: 9W4WcHksSGu7PyhrBXirvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,304,1754982000"; d="scan'208";a="190109667"
-Received: from nitin-super-server.iind.intel.com ([10.190.238.72])
- by fmviesa009.fm.intel.com with ESMTP; 13 Nov 2025 21:10:25 -0800
-From: Nitin Gote <nitin.r.gote@intel.com>
-To: matthew.auld@intel.com
-Cc: igt-dev@lists.freedesktop.org, matthew.brost@intel.com,
- Nitin Gote <nitin.r.gote@intel.com>,
- Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Subject: [PATCH] tests/intel/xe_ccs: add VM_BIND DECOMPRESS flag and basic
- decompression tests
-Date: Fri, 14 Nov 2025 11:10:38 +0530
-Message-ID: <20251114054037.1824150-2-nitin.r.gote@intel.com>
-X-Mailer: git-send-email 2.50.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 40CE010E9A2;
+	Fri, 14 Nov 2025 05:27:00 +0000 (UTC)
+Received: from 10055242dc62 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC57610E220;
+ Fri, 14 Nov 2025 05:26:59 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0974420093954968188=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_test/kms=5Fcolor=3A_Selec?=
+ =?utf-8?q?t_atomic_commit_if_display_is_configured_atomic_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jason-JH Lin" <jason-jh.lin@mediatek.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 14 Nov 2025 05:26:59 -0000
+Message-ID: <176309801989.54264.7055229904007014573@10055242dc62>
+X-Patchwork-Hint: ignore
+References: <20251113153851.2428277-1-jason-jh.lin@mediatek.com>
+In-Reply-To: <20251113153851.2428277-1-jason-jh.lin@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,753 +37,166 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add new userspace uapi flag DRM_XE_VM_BIND_FLAG_DECOMPRESS to request a
-decompressed GPU view when mapping compressed BOs. These tests validate
-VM_BIND DECOMPRESS support. Corresponding KMD series:
-https://patchwork.freedesktop.org/series/154714/ (KMD patch required).
+--===============0974420093954968188==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add two tests to xe_ccs.c:
- 1. vm-bind-decompress:
-    - Map compressed BO with DECOMPRESS flag and verifies decompression.
- 2. vm-bind-fault-mode-decompress:
-    - Verifies decompression via the page_fault path in FAULT_MODE VMs.
+== Series Details ==
 
-Tests use the blitter to produce compressed surfaces and verify
-correctness via GPU operations; they also ensure allocator ordering
-to avoid implicit VM_BINDs that carry a signal (LR/FAULT mode).
-Requires XE2+ and compression support;
-Add small utilities (pattern fill, print, verify) used by tests.
+Series: test/kms_color: Select atomic commit if display is configured atomic (rev2)
+URL   : https://patchwork.freedesktop.org/series/157508/
+State : success
 
-v3: (Matthew Auld)
-  - Avoid manual edit in xe_drm.h, instead put change in
-    include/drm-uapi-experimental/intel_drm_local.h and after
-    official header is re-generated then drop this change.
-  - Add a comment to give idea about sparse pattern values
-  - Set pat_index to something well define before calling first
-    vm_bind ioctl.
-  - Nits
+== Summary ==
 
-v2:
-    When unmapping a VM_BIND explicitly clear the DECOMPRESS flag
-    (bind_args.bind.flags &= ~DRM_XE_VM_BIND_FLAG_DECOMPRESS)
-    to ensure the unmap/update operation is not interpreted as a
-    decompression request. This prevents the kernel from attempting
-    a decompress on an unmap.
+CI Bug Log - changes from IGT_8623 -> IGTPW_14058
+====================================================
 
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
----
-Hi Matt,
+Summary
+-------
 
-In these tests, I have covered the positive scenarios.
-The IGT team is currently working on implementing the negative
-test cases for this feature.
+  **SUCCESS**
 
--Nitin
+  No regressions found.
 
- .../drm-uapi-experimental/intel_drm_local.h   |   2 +
- tests/intel/xe_ccs.c                          | 622 +++++++++++++++++-
- 2 files changed, 620 insertions(+), 4 deletions(-)
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14058/index.html
 
-diff --git a/include/drm-uapi-experimental/intel_drm_local.h b/include/drm-uapi-experimental/intel_drm_local.h
-index b48c9e219..10cc011f7 100644
---- a/include/drm-uapi-experimental/intel_drm_local.h
-+++ b/include/drm-uapi-experimental/intel_drm_local.h
-@@ -20,6 +20,8 @@ extern "C" {
-  * clean these up when kernel uapi headers are sync'd.
-  */
- 
-+#define DRM_XE_VM_BIND_FLAG_DECOMPRESS	(1 << 7)
-+
- #if defined(__cplusplus)
- }
- #endif
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index 61cf97d52..1b2ad8acd 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -11,6 +11,8 @@
- #endif
- #include <sys/ioctl.h>
- #include <sys/time.h>
-+#include <sys/mman.h>
-+#include <unistd.h>
- #include <malloc.h>
- #include "drm.h"
- #include "igt.h"
-@@ -60,6 +62,12 @@
-  *
-  * SUBTEST: suspend-resume
-  * Description: Check flatccs data persists after suspend / resume (S0)
-+ *
-+ * SUBTEST: vm-bind-decompress
-+ * Description: Validate VM_BIND with DECOMPRESS flag functionality
-+ *
-+ * SUBTEST: vm-bind-fault-mode-decompress
-+ * Description: Validate VM_BIND with DECOMPRESS flag functionality in fault mode
-  */
- 
- IGT_TEST_DESCRIPTION("Exercise gen12 blitter with and without flatccs compression on Xe");
-@@ -90,6 +98,8 @@ struct test_config {
- 	bool surfcopy;
- 	bool new_ctx;
- 	bool suspend_resume;
-+	bool vm_bind_decompress;
-+	bool vm_bind_fault_mode_decompress;
- 	int width_increment;
- 	int width_steps;
- 	int overwrite_width;
-@@ -104,6 +114,115 @@ struct test_config {
- 	if (param.write_png) \
- 		blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
- 
-+/**
-+ * verify_test_pattern() - Verify buffer contains expected test pattern
-+ * @buffer: pointer to buffer data
-+ * @size: buffer size in bytes
-+ * @label: label for debug output
-+ * @return: true if pattern is correct, false otherwise
-+ */
-+static bool verify_test_pattern(const void *buffer, size_t size, const char *label)
-+{
-+	const u32 *buffer_u32 = (const u32 *)buffer;
-+	size_t num_u32_elements = size / sizeof(uint32_t);
-+	size_t errors = 0;
-+	size_t max_errors_to_show = 10;
-+
-+	igt_info("Verifying test pattern in %s buffer (%zu elements)...\n",
-+		 label, num_u32_elements);
-+
-+	for (size_t i = 0; i < num_u32_elements && errors < max_errors_to_show; i++) {
-+		/* Calculate expected value based on sparse pattern with many zeros */
-+		u32 expected;
-+
-+		switch (i & 0xf) {
-+		case 0:
-+			expected = 0xdeadbeef; break;
-+		case 4:
-+			expected = 0xefbed000; break;
-+		case 8:
-+			expected = 0x00cfe111; break;
-+		case 12:
-+			expected = 0x11e0f222; break;
-+		default:
-+			expected = 0x00000000; break;
-+		}
-+
-+		if (buffer_u32[i] != expected) {
-+			igt_info("Pattern mismatch at offset %zu: expected 0x%08X, found 0x%08X\n",
-+				 i * sizeof(uint32_t), expected, buffer_u32[i]);
-+			errors++;
-+		}
-+	}
-+
-+	if (errors == 0) {
-+		igt_info("Pattern verification SUCCESS for %s buffer - all %zu elements correct\n",
-+			 label, num_u32_elements);
-+		return true;
-+	}
-+
-+	igt_info("Pattern verification FAILED for %s buffer - %zu errors found%s\n",
-+		 label, errors, errors >= max_errors_to_show ? " (truncated)" : "");
-+	return false;
-+}
-+
-+/**
-+ * print_buffer_data() - Print buffer data in hex format for debugging
-+ * @data: pointer to buffer data
-+ * @size: buffer size in bytes
-+ * @label: label to identify the data (e.g., "BEFORE", "AFTER")
-+ * @max_lines: maximum number of lines to print (each line = 16 bytes)
-+ */
-+static void print_buffer_data(const void *data, size_t size, const char *label, int max_lines)
-+{
-+	const u8 *bytes = (const uint8_t *)data;
-+	size_t lines_to_print = min((size + 15) / 16, (size_t)max_lines);
-+	size_t i, j;
-+
-+	igt_info("Buffer Data [%s] (showing first %zu lines, %zu bytes each):\n",
-+		 label, lines_to_print, min(size, lines_to_print * 16));
-+
-+	for (i = 0; i < lines_to_print && i * 16 < size; i++) {
-+		igt_info("%s [%04zx]: ", label, i * 16);
-+
-+		/* Print hex bytes */
-+		for (j = 0; j < 16 && (i * 16 + j) < size; j++)
-+			igt_info("%02x ", bytes[i * 16 + j]);
-+
-+		/* Pad if last line is incomplete */
-+		for (; j < 16; j++)
-+			igt_info("   ");
-+
-+		igt_info("\n");
-+	}
-+
-+	if (size > lines_to_print * 16)
-+		igt_info("%s [...] (%zu more bytes not shown)\n",
-+			 label, size - lines_to_print * 16);
-+}
-+
-+/* Simple helper to fill buffer with a more compressible pattern */
-+static void fill_buffer_simple_pattern(void *ptr, size_t size)
-+{
-+	u32 *buffer = (uint32_t *)ptr;
-+	size_t num_elements = size / sizeof(uint32_t);
-+	size_t i;
-+
-+	/* Sparse pattern chosen to produce highly compressible data;
-+	 * non‑zero sentinels every 16 dwords (0xDEADBEEF, ..)
-+	 * ensure we aren’t relying on clear-zero CCS encoding.
-+	 */
-+	for (i = 0; i < num_elements; i += 16) {
-+		buffer[i] = 0xdeadbeef;
-+		if (i + 4 < num_elements)
-+			buffer[i + 4] = 0xefbed000;
-+		if (i + 8 < num_elements)
-+			buffer[i + 8] = 0x00cfe111;
-+		if (i + 12 < num_elements)
-+			buffer[i + 12] = 0x11e0f222;
-+	}
-+}
-+
- static void surf_copy(int xe,
- 		      intel_ctx_t *ctx,
- 		      uint64_t ahnd,
-@@ -654,6 +773,460 @@ static void block_copy_large(int xe,
- 	igt_assert_f(result, "ccs data must have no zeros!\n");
- }
- 
-+/**
-+ * vm_bind_decompress_test()
-+ *
-+ * This test validates the VM_BIND with DECOMPRESS flag:
-+ * 1. Create source data with known pattern
-+ * 2. Compress data using GPU blit engine
-+ * 3. Use VM_BIND_OP_MAP_DECOMPRESS to test in-place decompression
-+ * 4. Verify API functionality
-+ * 5. Test data integrity before/after VM_BIND operations
-+ *
-+ * SUCCESS: Decompressed data must match original source pattern
-+ * FAILURE: Any other outcome results in test failure
-+ */
-+static void vm_bind_decompress_test(int xe,
-+				    intel_ctx_t *ctx,
-+				    u64 ahnd,
-+				    u32 region1,
-+				    u32 region2,
-+				    u32 width,
-+				    u32 height,
-+				    enum blt_tiling_type tiling,
-+				    const struct test_config *config)
-+{
-+	struct drm_xe_vm_bind bind_args = {};
-+	struct drm_xe_gem_mmap_offset mmap_offset = {};
-+	struct blt_copy_data blt = {};
-+	struct blt_block_copy_data_ext ext = {};
-+	struct blt_copy_object *compressed, *src;
-+	const u32 bpp = 32;
-+	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
-+	u64 bb_size = xe_bb_size(xe, SZ_4K);
-+	u64 vm_map_addr;
-+	u64 size = width * height * 4;
-+	u32 map_size;
-+	u32 uncompressed_pat;
-+	u32 vm;
-+	u32 bb;
-+	u32 devid = intel_get_drm_devid(xe);
-+	u8 uc_mocs = intel_get_uc_mocs_index(xe);
-+	void *mapped_data = MAP_FAILED;
-+	void *src_ptr;
-+	u32 *mapped_ptr = NULL;
-+	int result, unmap_result = 0;
-+	bool pattern_matches = false;
-+
-+	/* VM_BIND decompression requires XE2+ (Gen 20+) */
-+	igt_require(intel_gen(devid) >= 20);
-+	igt_require(config->compression);
-+	igt_require(blt_uses_extended_block_copy(xe));
-+
-+	/* PAT index for uncompressed memory access */
-+	uncompressed_pat = intel_get_pat_idx_uc(xe);
-+
-+	vm = xe_vm_create(xe, 0, 0);
-+	igt_assert(vm > 0);
-+
-+	bb = xe_bo_create(xe, 0, bb_size, region1,
-+			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	igt_assert(bb > 0);
-+	blt_copy_init(xe, &blt);
-+
-+	igt_debug("Step 1: Creating source buffer with test pattern...\n");
-+	src = blt_create_object(&blt, region1, width, height,
-+				bpp, uc_mocs, T_LINEAR, COMPRESSION_DISABLED,
-+				comp_type, true);
-+
-+	src_ptr = src->ptr;
-+	igt_assert(src && src->ptr);
-+
-+	fill_buffer_simple_pattern(src_ptr, src->size);
-+	igt_assert_f(verify_test_pattern(src_ptr, src->size, "SOURCE"),
-+		     "Source pattern verification failed");
-+
-+	igt_debug("Original source data (first 64 bytes):\n");
-+	print_buffer_data(src_ptr, 64, "ORIGINAL", 4);
-+
-+	igt_debug("Step 2: Compressing data using GPU...\n");
-+	compressed = blt_create_object(&blt, region2, width, height,
-+				       bpp, uc_mocs, tiling, COMPRESSION_ENABLED,
-+				       comp_type, true);
-+	igt_assert(compressed);
-+
-+	/* Configure blit operation to compress source data into compressed buffer */
-+	blt.color_depth = CD_32bit;
-+	blt.print_bb = param.print_bb;
-+
-+	/* Set source and destination objects for the blit operation */
-+	blt_set_copy_object(&blt.src, src);
-+	blt_set_copy_object(&blt.dst, compressed);
-+
-+	/* Configure extended blit parameters for compression */
-+	blt_set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
-+	blt_set_object_ext(&ext.dst, param.compression_format, width, height, SURFACE_TYPE_2D);
-+
-+	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
-+	intel_ctx_xe_sync(ctx, true);
-+
-+	/* Verify compression occurred */
-+	if (blt_platform_has_flat_ccs_enabled(xe)) {
-+		bool is_compressed = blt_surface_is_compressed(xe, ctx, NULL, ahnd, compressed);
-+
-+		if (!is_compressed)
-+			igt_assert_f(false,
-+				     "Surface compression failed - cannot test decompression");
-+	}
-+
-+	igt_debug("Compressed data before VM_BIND (first 64 bytes):\n");
-+	print_buffer_data(compressed->ptr, 64, "COMPRESSED", 4);
-+
-+	igt_debug("Step 3: Testing VM_BIND with DECOMPRESS flag ...\n");
-+	/* VM_BIND operation parameters */
-+	vm_map_addr = 0x30000000;
-+	map_size = ALIGN(size, xe_get_default_alignment(xe));
-+
-+	/* Configure the VM bind operation for decompression mapping */
-+	memset(&bind_args, 0, sizeof(bind_args));
-+	bind_args.vm_id = vm;
-+	bind_args.num_binds = 1;
-+	bind_args.bind.obj = compressed->handle;
-+	bind_args.bind.obj_offset = 0;
-+	bind_args.bind.range = map_size;
-+	bind_args.bind.addr = vm_map_addr;
-+	bind_args.bind.pat_index = intel_get_pat_idx_uc_comp(xe);
-+	bind_args.bind.op = DRM_XE_VM_BIND_OP_MAP;
-+
-+	/* Create the mapping first; do a separate update to change PAT/flags below. */
-+	result = igt_ioctl(xe, DRM_IOCTL_XE_VM_BIND, &bind_args);
-+	igt_assert_eq(result, 0);
-+
-+	/* Update the existing mapping to request a decompressed GPU view */
-+	bind_args.bind.pat_index = uncompressed_pat;
-+	bind_args.bind.flags = DRM_XE_VM_BIND_FLAG_DECOMPRESS;
-+
-+	/* Execute VM_BIND ioctl */
-+	result = igt_ioctl(xe, DRM_IOCTL_XE_VM_BIND, &bind_args);
-+	if (result != 0)
-+		igt_assert_f(false, "VM_BIND with DECOMPRESS flag failed: %d (%s)",
-+			     result, strerror(errno));
-+
-+	igt_debug("Step 4: Verifying decompression by checking buffer data...\n");
-+	/* Get mmap offset for the compressed buffer */
-+	mmap_offset.handle = compressed->handle;
-+	mmap_offset.flags = 0;
-+
-+	result = igt_ioctl(xe, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmap_offset);
-+	igt_assert_eq(result, 0);
-+
-+	/* Map the buffer for CPU access */
-+	mapped_data = mmap(NULL, size, PROT_READ, MAP_SHARED, xe, mmap_offset.offset);
-+	igt_assert(mapped_data != MAP_FAILED);
-+
-+	mapped_ptr = (uint32_t *)mapped_data;
-+
-+	igt_debug("Buffer data after page fault handling (first 64 bytes):\n");
-+	print_buffer_data(mapped_ptr, 64, "AFTER_FAULT", 4);
-+
-+	/* Verify that the buffer now contains the original test pattern */
-+	igt_debug("Checking if buffer contains decompressed data (original pattern)...\n");
-+	pattern_matches = verify_test_pattern(mapped_ptr, size, "DECOMPRESSED");
-+
-+	if (pattern_matches) {
-+		igt_info("SUCCESS: Buffer contains original test pattern!\n");
-+		igt_debug("Data verification successful:\n");
-+	} else {
-+		/* provide concise diagnostics for reviewers */
-+		igt_debug("Decompression verification failed - showing short dumps\n");
-+		print_buffer_data(mapped_ptr, min_t(size_t, 256, size), "CURRENT_STATE", 4);
-+		print_buffer_data(src_ptr, min_t(size_t, 256, src->size), "EXPECTED", 4);
-+	}
-+
-+	munmap(mapped_data, size);
-+
-+	igt_debug("Step 5: Cleaning up resources...\n");
-+	/* Unmap the VM binding */
-+	bind_args.bind.op = DRM_XE_VM_BIND_OP_UNMAP;
-+	bind_args.bind.obj = 0;
-+	bind_args.bind.flags &= ~DRM_XE_VM_BIND_FLAG_DECOMPRESS;
-+
-+	unmap_result = igt_ioctl(xe, DRM_IOCTL_XE_VM_BIND, &bind_args);
-+	if (unmap_result != 0)
-+		igt_warn("VM unmap failed: %d (%s)", unmap_result, strerror(errno));
-+
-+	/* Remove address mappings from allocator */
-+	put_offset(ahnd, src->handle);
-+	put_offset(ahnd, compressed->handle);
-+	put_offset(ahnd, bb);
-+	intel_allocator_bind(ahnd, 0, 0);
-+	blt_destroy_object(xe, src);
-+	blt_destroy_object(xe, compressed);
-+	gem_close(xe, bb);
-+	xe_vm_destroy(xe, vm);
-+
-+	/* SUCCESS: Test only passes if decompression occurred */
-+	if (!pattern_matches)
-+		igt_assert_f(false, "TEST FAILED: Decompression did not occurred");
-+}
-+
-+/**
-+ * vm_bind_fault_mode_decompress_test()
-+ *
-+ * This test validates that VM_BIND with DECOMPRESS flag triggers actual decompression
-+ * when a page fault occurs in FAULT_MODE VMs. Success is determined by comparing
-+ * decompressed data with the original source pattern.
-+ *
-+ * SUCCESS: Decompressed data must match original source pattern
-+ * FAILURE: Any other outcome results in test failure
-+ */
-+static void vm_bind_fault_mode_decompress_test(int xe,
-+					       intel_ctx_t *ctx,
-+					       u64 ahnd,
-+					       u32 region1,
-+					       u32 region2,
-+					       u32 width,
-+					       u32 height,
-+					       enum blt_tiling_type tiling,
-+					       const struct test_config *config)
-+{
-+	struct drm_xe_vm_bind bind_args = {};
-+	struct drm_xe_gem_mmap_offset mmap_offset = {};
-+	struct drm_xe_exec exec = {};
-+	struct blt_block_copy_data_ext ext = {};
-+	struct blt_copy_data blt = {};
-+	struct blt_copy_object *compressed, *src;
-+	struct drm_xe_engine_class_instance inst = {
-+		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-+	};
-+	const u32 bpp = 32;
-+	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
-+	u64 bb_size = xe_bb_size(xe, SZ_4K);
-+	u64 vm_map_addr;
-+	u64 size = (u64)width * height * 4;
-+	u32 map_size;
-+	u32 uncompressed_pat;
-+	u32 vm;
-+	u32 bb;
-+	u32 devid = intel_get_drm_devid(xe);
-+	u8 uc_mocs = intel_get_uc_mocs_index(xe);
-+	void *mapped_data = MAP_FAILED;
-+	void *src_ptr;
-+	u32 *mapped_ptr = NULL;
-+	u32 *cmd = MAP_FAILED;
-+	u64 fault_ahnd = 0;
-+	u32 fault_exec_queue = 0;
-+	u32 cmd_bo = 0;
-+	int unmap_result = 0;
-+	int exec_result = -1;
-+	int result;
-+	bool pattern_matches = false;
-+	intel_ctx_t *fault_ctx = NULL;
-+
-+	/* VM_BIND decompression requires XE2+ (Gen 20+) */
-+	igt_require(intel_gen(devid) >= 20);
-+	igt_require(config->compression);
-+	igt_require(blt_uses_extended_block_copy(xe));
-+
-+	/* PAT index for uncompressed memory access */
-+	uncompressed_pat = intel_get_pat_idx_uc(xe);
-+
-+	/* Create FAULT_MODE VM (requires LR_MODE) for VM_BIND operation */
-+	vm = xe_vm_create(xe, DRM_XE_VM_CREATE_FLAG_LR_MODE | DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-+	igt_assert(vm > 0);
-+
-+	bb = xe_bo_create(xe, 0, bb_size, region1, DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	igt_assert(bb > 0);
-+	blt_copy_init(xe, &blt);
-+
-+	igt_debug("Step 1: Creating source buffer with test pattern...\n");
-+	src = blt_create_object(&blt, region1, width, height, bpp, uc_mocs,
-+				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
-+	igt_assert(src && src->ptr);
-+	src_ptr = src->ptr;
-+	igt_assert(src && src->ptr);
-+
-+	fill_buffer_simple_pattern(src_ptr, src->size);
-+	igt_assert_f(verify_test_pattern(src_ptr, src->size, "SOURCE"),
-+		     "Source pattern verification failed");
-+
-+	igt_debug("Original source data (first 64 bytes):\n");
-+	print_buffer_data(src_ptr, 64, "ORIGINAL", 4);
-+
-+	igt_debug("Step 2: Compressing data using GPU...\n");
-+	compressed = blt_create_object(&blt, region2, width, height, bpp, uc_mocs,
-+				       tiling, COMPRESSION_ENABLED, comp_type, true);
-+	igt_assert(compressed);
-+	blt.color_depth = CD_32bit;
-+	blt.print_bb = param.print_bb;
-+
-+	/* Set source and destination objects for the blit operation */
-+	blt_set_copy_object(&blt.src, src);
-+	blt_set_copy_object(&blt.dst, compressed);
-+
-+	/* Configure extended blit parameters for compression */
-+	blt_set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
-+	blt_set_object_ext(&ext.dst, param.compression_format, width, height, SURFACE_TYPE_2D);
-+
-+	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
-+	intel_ctx_xe_sync(ctx, true);
-+
-+	/* Verify compression occurred */
-+	if (blt_platform_has_flat_ccs_enabled(xe)) {
-+		bool is_compressed = blt_surface_is_compressed(xe, ctx, NULL, ahnd, compressed);
-+
-+		if (!is_compressed)
-+			igt_assert_f(false,
-+				     "Surface compression failed - cannot test decompression");
-+	}
-+
-+	igt_debug("Compressed data before VM_BIND (first 64 bytes):\n");
-+	print_buffer_data(compressed->ptr, 64, "COMPRESSED", 4);
-+
-+	igt_debug("Step 3: Testing VM_BIND with DECOMPRESS flag in FAULT_MODE...\n");
-+	/* VM_BIND operation parameters */
-+	vm_map_addr = ALIGN(0x40000, 4096);
-+	map_size = ALIGN(size, xe_get_default_alignment(xe));
-+
-+	/* Configure VM_BIND operation */
-+	memset(&bind_args, 0, sizeof(bind_args));
-+	bind_args.vm_id = vm;
-+	bind_args.num_binds = 1;
-+	bind_args.bind.obj = compressed->handle;
-+	bind_args.bind.obj_offset = 0;
-+	bind_args.bind.range = map_size;
-+	bind_args.bind.addr = vm_map_addr;
-+	bind_args.bind.pat_index = intel_get_pat_idx_uc_comp(xe);
-+	bind_args.bind.op = DRM_XE_VM_BIND_OP_MAP;
-+
-+	/* Ensure no syncobj/signal usage in LR/FAULT mode */
-+	bind_args.num_syncs = 0;
-+	bind_args.syncs = 0;
-+	bind_args.extensions = 0;
-+
-+	/* Create the mapping first; do a separate update to change PAT/flags below */
-+	result = igt_ioctl(xe, DRM_IOCTL_XE_VM_BIND, &bind_args);
-+	igt_assert_eq(result, 0);
-+
-+	/* Update the existing mapping to request a decompressed GPU view */
-+	bind_args.bind.pat_index = uncompressed_pat;
-+	bind_args.bind.flags = DRM_XE_VM_BIND_FLAG_DECOMPRESS;
-+
-+	/* Execute VM_BIND ioctl */
-+	result = igt_ioctl(xe, DRM_IOCTL_XE_VM_BIND, &bind_args);
-+	if (result != 0) {
-+		igt_assert_f(false, "VM_BIND with DECOMPRESS flag failed: %d (%s)",
-+			     result, strerror(errno));
-+	}
-+
-+	igt_debug("Step 4: Triggering page fault to activate decompression...\n");
-+	/* Create execution context with FAULT_MODE VM */
-+	fault_exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
-+	fault_ctx = intel_ctx_xe(xe, vm, fault_exec_queue, 0, 0, 0);
-+	fault_ahnd = intel_allocator_open(xe, vm, INTEL_ALLOCATOR_RELOC);
-+
-+	/* Create small command buffer that writes to vm_map_addr to trigger page fault */
-+	cmd_bo = xe_bo_create(xe, 0, 4096, region1, 0);
-+	cmd = xe_bo_map(xe, cmd_bo, 4096);
-+	igt_assert(cmd && cmd != MAP_FAILED);
-+
-+	/* Use MI_STORE_DWORD_IMM to write to mapped address */
-+	cmd[0] = 0x00000000;
-+	cmd[1] = MI_STORE_DWORD_IMM | (1 << 22);
-+	cmd[2] = (uint32_t)(vm_map_addr);
-+	cmd[3] = (uint32_t)(vm_map_addr >> 32);
-+	cmd[4] = 0xDEADBEEF;
-+	cmd[5] = MI_BATCH_BUFFER_END;
-+
-+	/* Properly initialize exec structure */
-+	memset(&exec, 0, sizeof(exec));
-+	exec.exec_queue_id = fault_exec_queue;
-+	exec.address = get_offset(fault_ahnd, cmd_bo, 4096, 0);
-+	exec.num_batch_buffer = 1;
-+	exec.num_syncs = 0;
-+	exec.syncs = 0;
-+	exec.num_syncs = 0;
-+	exec.extensions = 0;
-+
-+	exec_result = igt_ioctl(xe, DRM_IOCTL_XE_EXEC, &exec);
-+	if (exec_result != 0) {
-+		igt_warn("EXEC ioctl failed: %d (%s) - continuing to verification\n",
-+			 exec_result, strerror(errno));
-+	} else {
-+		/*
-+		 * Wait for GPU submission that used fault_ctx to
-+		 * finish so page-fault handling completes
-+		 */
-+		usleep(10000);
-+	}
-+
-+	/* Cleanup fault test resources */
-+	if (cmd && cmd != MAP_FAILED)
-+		munmap(cmd, 4096);
-+	gem_close(xe, cmd_bo);
-+	put_ahnd(fault_ahnd);
-+	xe_exec_queue_destroy(xe, fault_exec_queue);
-+	free(fault_ctx);
-+
-+	igt_debug("Step 5: Verifying decompression by checking buffer data...\n");
-+	/* Get mmap offset for the compressed buffer */
-+	mmap_offset.handle = compressed->handle;
-+	mmap_offset.flags = 0;
-+
-+	result = igt_ioctl(xe, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmap_offset);
-+	igt_assert_eq(result, 0);
-+
-+	/* Map the buffer for CPU access */
-+	mapped_data = mmap(NULL, size, PROT_READ, MAP_SHARED, xe, mmap_offset.offset);
-+	igt_assert(mapped_data != MAP_FAILED);
-+	mapped_ptr = (uint32_t *)mapped_data;
-+
-+	igt_debug("Buffer data after page fault handling (first 64 bytes):\n");
-+	print_buffer_data(mapped_ptr, 64, "AFTER_FAULT", 4);
-+
-+	igt_debug("Checking if buffer contains decompressed data (original pattern)...\n");
-+	pattern_matches = verify_test_pattern(mapped_ptr, size, "DECOMPRESSED");
-+
-+	if (pattern_matches) {
-+		igt_info("SUCCESS: Buffer contains original test pattern!\n");
-+		/* Show comparison */
-+		igt_debug("Data verification successful:\n");
-+	} else {
-+		/* provide concise diagnostics for reviewers */
-+		igt_debug("Decompression verification failed - showing short dumps\n");
-+		print_buffer_data(mapped_ptr, min_t(size_t, 256, size), "CURRENT_STATE", 4);
-+		print_buffer_data(src_ptr, min_t(size_t, 256, src->size), "EXPECTED", 4);
-+	}
-+
-+	munmap(mapped_data, size);
-+
-+	igt_debug("Step 6: Cleaning up resources...\n");
-+	/* Unmap the VM binding */
-+	bind_args.bind.op = DRM_XE_VM_BIND_OP_UNMAP;
-+	bind_args.bind.obj = 0;
-+	bind_args.bind.flags &= ~DRM_XE_VM_BIND_FLAG_DECOMPRESS;
-+	unmap_result = igt_ioctl(xe, DRM_IOCTL_XE_VM_BIND, &bind_args);
-+	if (unmap_result != 0)
-+		igt_warn("VM unmap failed: %d (%s)", unmap_result, strerror(errno));
-+
-+	/* Clean up memory resources */
-+	put_offset(ahnd, src->handle);
-+	put_offset(ahnd, compressed->handle);
-+	put_offset(ahnd, bb);
-+	intel_allocator_bind(ahnd, 0, 0);
-+	blt_destroy_object(xe, src);
-+	blt_destroy_object(xe, compressed);
-+	gem_close(xe, bb);
-+	xe_vm_destroy(xe, vm);
-+
-+	/* SUCCESS CRITERIA: Test only passes if decompression occurred */
-+	if (!pattern_matches)
-+		igt_assert_f(false,
-+			     "TEST FAILED: Decompression did not occur during page fault handling");
-+}
-+
- enum copy_func {
- 	BLOCK_COPY,
- 	BLOCK_MULTICOPY,
-@@ -685,6 +1258,7 @@ static void single_copy(int xe, const struct test_config *config,
- 	uint32_t vm, exec_queue;
- 	uint32_t sync_bind, sync_out;
- 	intel_ctx_t *ctx;
-+	u64 ahnd;
- 
- 	vm = xe_vm_create(xe, 0, 0);
- 	exec_queue = xe_exec_queue_create(xe, vm, &inst, 0);
-@@ -693,10 +1267,24 @@ static void single_copy(int xe, const struct test_config *config,
- 	ctx = intel_ctx_xe(xe, vm, exec_queue,
- 			   0, sync_bind, sync_out);
- 
--	copyfns[copy_function].copyfn(xe, ctx,
--				      region1, region2,
--				      width, height,
--				      tiling, config);
-+	if (config->vm_bind_fault_mode_decompress) {
-+		ahnd = intel_allocator_open(xe, vm, INTEL_ALLOCATOR_RELOC);
-+		vm_bind_fault_mode_decompress_test(xe, ctx, ahnd,
-+						   region1, region2, width,
-+						   height, tiling, config);
-+		put_ahnd(ahnd);
-+	} else if (config->vm_bind_decompress) {
-+		ahnd = intel_allocator_open(xe, vm, INTEL_ALLOCATOR_RELOC);
-+		vm_bind_decompress_test(xe, ctx, ahnd,
-+					region1, region2, width,
-+					height, tiling, config);
-+		put_ahnd(ahnd);
-+	} else {
-+		copyfns[copy_function].copyfn(xe, ctx,
-+					      region1, region2,
-+					      width, height,
-+					      tiling, config);
-+	}
- 
- 	xe_exec_queue_destroy(xe, exec_queue);
- 	xe_vm_destroy(xe, vm);
-@@ -969,6 +1557,32 @@ igt_main_args("bf:pst:W:H:", NULL, help_str, opt_handler, NULL)
- 		block_copy_test(xe, &config, set, BLOCK_COPY);
- 	}
- 
-+	igt_describe("Validate VM_BIND with DECOMPRESS flag functionality");
-+	igt_subtest("vm-bind-decompress") {
-+		struct test_config config = { .compression = true,
-+					      .vm_bind_decompress = true };
-+		u32 region1 = system_memory(xe);
-+		u32 region2 = vram_if_possible(xe, 0);
-+		int tiling = T_LINEAR;
-+		int width = param.width;
-+		int height = param.height;
-+
-+		single_copy(xe, &config, region1, region2, width, height, tiling, BLOCK_COPY);
-+	}
-+
-+	igt_describe("Validate VM_BIND with DECOMPRESS flag functionality in fault mode");
-+	igt_subtest("vm-bind-fault-mode-decompress") {
-+		struct test_config config = { .compression = true,
-+					      .vm_bind_fault_mode_decompress = true };
-+		u32 region1 = system_memory(xe);
-+		u32 region2 = vram_if_possible(xe, 0);
-+		int tiling = T_LINEAR;
-+		int width = param.width;
-+		int height = param.height;
-+
-+		single_copy(xe, &config, region1, region2, width, height, tiling, BLOCK_COPY);
-+	}
-+
- 	igt_fixture {
- 		xe_device_put(xe);
- 		close(xe);
--- 
-2.50.1
+Participating hosts (44 -> 43)
+------------------------------
 
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14058 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8623/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14058/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [DMESG-FAIL][3] ([i915#12061]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8623/bat-mtlp-8/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14058/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-9:          [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8623/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14058/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-9:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8623/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14058/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8623 -> IGTPW_14058
+  * Linux: CI_DRM_17544 -> CI_DRM_17545
+
+  CI-20190529: 20190529
+  CI_DRM_17544: 9d61bbd3042d1976dc5f67a30e0aa6c010cbc98f @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_17545: e15c082b1af0c5cd053273ea096ab84fbc309657 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14058: 5fa7d40e0c55003bc192fab8da3a30a452f41922 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8623: 8623
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14058/index.html
+
+--===============0974420093954968188==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>test/kms_color: Select atomic commit if display is configured atomic (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/157508/">https://patchwork.freedesktop.org/series/157508/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14058/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14058/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8623 -&gt; IGTPW_14058</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14058/index.html</p>
+<h2>Participating hosts (44 -&gt; 43)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14058 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8623/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14058/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8623/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14058/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8623/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14058/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8623/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14058/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8623 -&gt; IGTPW_14058</li>
+<li>Linux: CI_DRM_17544 -&gt; CI_DRM_17545</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17544: 9d61bbd3042d1976dc5f67a30e0aa6c010cbc98f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_17545: e15c082b1af0c5cd053273ea096ab84fbc309657 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14058: 5fa7d40e0c55003bc192fab8da3a30a452f41922 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8623: 8623</p>
+
+</body>
+</html>
+
+--===============0974420093954968188==--
