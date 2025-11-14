@@ -4,57 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFD58CE8D79
-	for <igt-dev@archiver.kernel.org>; Fri, 14 Nov 2025 19:08:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B93DDCE8D7D
+	for <igt-dev@archiver.kernel.org>; Fri, 14 Nov 2025 19:23:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6608F10EAE6;
-	Fri, 14 Nov 2025 19:08:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 65C7610EAED;
+	Fri, 14 Nov 2025 19:23:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e2YwXksT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P1Imm0ee";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E80610EAE6
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Nov 2025 19:08:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F0E1D10EAED
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Nov 2025 19:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763147318; x=1794683318;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=+FoIqylJv8DJF3iF2z+6Xv/HoJWC4+EUmGKBsLw+VpE=;
- b=e2YwXksT8SfAW0y5y/JLvjUWmL+fcjCZ/3iP2luV52IJV4QiXH0XeUhI
- PXUA9O4qKVUry277oEAqQc6yMxyQ6r6XG4Qf7q1j8HYCvbsSbJuFq2olY
- 6zRbK/cGRU3mOWRTwkYCwe+5WWi53PTWUWd1IwkKp8cRG/cc2bfN9OfCO
- W8c6h2cSOUggH4MWy3o/hK0LZDxu4qR8JIUclNlKriJhs9FmBHhuUd8wG
- JrDQeXPoFdbTKfX9IT8sEkwG0FAfynhsHUVnCssJRp7EkWclGrTtFT4Df
- LokSJ9O7G3qc61zE0Gk+lB9sqvxMOKe4JNbUo7LPB12qXhaMm4wA3AfGf g==;
-X-CSE-ConnectionGUID: 2FFmHMuTREaTSHwRy3d51Q==
-X-CSE-MsgGUID: ynS1UrD2Rju5HdFD2XydFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11613"; a="76593012"
-X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; d="scan'208";a="76593012"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2025 11:08:37 -0800
-X-CSE-ConnectionGUID: rcld2s2MQjqi2mxv/jJwUA==
-X-CSE-MsgGUID: z2fKh5k5S6aBwZylqQedFg==
+ t=1763148197; x=1794684197;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=8mg/M0bjjth0LDY2sepFi/rLIqu05i4PTy+q70n0cAE=;
+ b=P1Imm0eeP9cXtGmVDfR4xIQPPrQpDXAENBN6jE+ZYzJaL4uCYii/h/7u
+ Va6G7wMmnXWmIDuna6S6s2OZeXcJ9PSXQPcr/AafapzD/dhONR5LByMdH
+ aRb67pVy1ntDKnasA6wZdAXJ9gRzmPvAyd4L4uVshlEw52/UpoesDJp1I
+ m4WIo5a+Cn5xq+8j/dVmsN+5b5MmYsT5vW0+3VGcQFMLR+tU6u9cDaUmK
+ yq41oh50V4T1zad9p8ODFNYlhat4qJyyenLUbc+D5ENgswDpjlPx/bKi2
+ 2V/m6yuTKpgwy/hIfuc7ePCi4hnTHoLNlXIJEtOpQvBI+APiF3qdy787x w==;
+X-CSE-ConnectionGUID: YN18VlU2R6ODgLNkdnpS+A==
+X-CSE-MsgGUID: HM7CZmfiQpyjcWJeeXAPog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11613"; a="90727944"
+X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; d="scan'208";a="90727944"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Nov 2025 11:23:17 -0800
+X-CSE-ConnectionGUID: p5KARaFXR1WfBq0U+w9ZoQ==
+X-CSE-MsgGUID: BfVBEF+UTH28F9vafWpYXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; d="scan'208";a="190104309"
-Received: from mkrakus-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.246.23.186])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Nov 2025 11:08:36 -0800
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,305,1754982000"; d="scan'208";a="194158110"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.61])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Nov 2025 11:23:16 -0800
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
- lukasz.laguna@intel.com, michal.wajdeczko@intel.com,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH i-g-t 5/5] tests/intel/xe_sriov_scheduling: Prefer SR-IOV
- admin sysfs accessors
-Date: Fri, 14 Nov 2025 20:07:55 +0100
-Message-ID: <20251114190757.2295174-6-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251114190757.2295174-1-marcin.bernatowicz@linux.intel.com>
-References: <20251114190757.2295174-1-marcin.bernatowicz@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t] tools/intel_gpu_frequency: Fix help and version options
+Date: Fri, 14 Nov 2025 20:23:05 +0100
+Message-ID: <20251114192308.133691-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.51.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,93 +66,111 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use SR-IOV admin bulk setters for scheduling parameters when present,
-falling back to debugfs attributes.
+Using either help or version option without root permissions
+cause now a fail and stack dump. Fix this and parse those two
+early.
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_sriov_scheduling.c | 55 ++++++++++++++++++++-----------
- 1 file changed, 36 insertions(+), 19 deletions(-)
+ tools/intel_gpu_frequency.c | 42 +++++++++++++++++++++++++++++--------
+ 1 file changed, 33 insertions(+), 9 deletions(-)
 
-diff --git a/tests/intel/xe_sriov_scheduling.c b/tests/intel/xe_sriov_scheduling.c
-index 3a0c0d438..1e5e19334 100644
---- a/tests/intel/xe_sriov_scheduling.c
-+++ b/tests/intel/xe_sriov_scheduling.c
-@@ -9,6 +9,7 @@
- #include "xe_drm.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_spin.h"
-+#include "xe/xe_sriov_admin.h"
- #include "xe/xe_sriov_provisioning.h"
- 
- /**
-@@ -374,27 +375,43 @@ struct vf_sched_params {
- static int __set_vfs_scheduling_params(int pf_fd, int num_vfs,
- 				       const struct vf_sched_params *p)
- {
--	unsigned int gt;
--	int vf, ret;
--
--	xe_for_each_gt(pf_fd, gt) {
--		for (vf = 0; vf <= num_vfs; ++vf) {
--			ret = __xe_sriov_set_exec_quantum_ms(pf_fd, vf, gt,
--							     p->exec_quantum_ms);
--			if (igt_warn_on_f(ret,
--					  "Failed to set exec_quantum_ms=%u (VF%d GT%u): %d\n",
--					  p->exec_quantum_ms, vf, gt, ret))
--				return ret;
--
--			ret = __xe_sriov_set_preempt_timeout_us(pf_fd, vf, gt,
--								p->preempt_timeout_us);
--			if (igt_warn_on_f(ret,
--					  "Failed to set preempt_timeout_us=%u (VF%d GT%u): %d\n",
--					  p->preempt_timeout_us, vf, gt, ret))
--				return ret;
-+	int ret = 0;
-+
-+	if (xe_sriov_admin_is_present(pf_fd)) {
-+		ret = __xe_sriov_bulk_set_exec_quantum_ms(pf_fd, p->exec_quantum_ms);
-+		if (igt_warn_on_f(ret,
-+				  "Failed to bulk set exec quantum=%u: %d\n",
-+				  p->exec_quantum_ms, ret))
-+			return ret;
-+
-+		ret = __xe_sriov_bulk_set_preempt_timeout_us(pf_fd, p->preempt_timeout_us);
-+		if (igt_warn_on_f(ret,
-+				  "Failed to bulk set preempt timeout=%u: %d\n",
-+				  p->preempt_timeout_us, ret))
-+			return ret;
-+	} else {
-+		unsigned int gt;
-+
-+		xe_for_each_gt(pf_fd, gt) {
-+			for (int vf = 0; vf <= num_vfs; ++vf) {
-+				ret = __xe_sriov_set_exec_quantum_ms(pf_fd, vf, gt,
-+								     p->exec_quantum_ms);
-+				if (igt_warn_on_f(ret,
-+						  "Failed to set exec quantum=%u (VF%d GT%u): %d\n",
-+						  p->exec_quantum_ms, vf, gt, ret))
-+					return ret;
-+
-+				ret = __xe_sriov_set_preempt_timeout_us(pf_fd, vf, gt,
-+									p->preempt_timeout_us);
-+				if (igt_warn_on_f(ret,
-+						  "Failed to set preempt timeout=%u (VF%d GT%u): %d\n",
-+						  p->preempt_timeout_us, vf, gt, ret))
-+					return ret;
-+			}
- 		}
- 	}
--	return 0;
-+
-+	return ret;
+diff --git a/tools/intel_gpu_frequency.c b/tools/intel_gpu_frequency.c
+index de0c6ddba..8c3c91313 100644
+--- a/tools/intel_gpu_frequency.c
++++ b/tools/intel_gpu_frequency.c
+@@ -118,7 +118,7 @@ static int get_frequency(struct freq_info *freq_info)
  }
  
- static void set_vfs_scheduling_params(int pf_fd, int num_vfs,
+ static void __attribute__((noreturn))
+-usage(const char *prog)
++usage(const char *prog, int err)
+ {
+ 	printf("%s A program to manipulate Intel GPU frequencies.\n\n", prog);
+ 	printf("Usage: %s [-e] [--min | --max] [--get] [--set frequency_mhz]\n\n", prog);
+@@ -139,7 +139,7 @@ usage(const char *prog)
+ 	printf("   intel_gpu_frequency --custom max=750\tSet the max frequency to 750MHz\n");
+ 	printf("\n");
+ 	printf("Report bugs to https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues\n");
+-	exit(EXIT_FAILURE);
++	exit(err);
+ }
+ 
+ static void
+@@ -149,6 +149,31 @@ version(const char *prog)
+ 	printf("Copyright © 2015,2018 Intel Corporation\n");
+ }
+ 
++static void
++parse_version_or_help(int argc, char *argv[])
++{
++	char *s;
++	int c;
++
++	if (argc == 1) /* No args */
++		return;
++
++	s = argv[1];
++	c = *s++;
++	if (c == '-')
++		c = *s++;
++	if (c == '-')
++		c = *s++;
++
++	if (c == 'v') {
++		version(argv[0]);
++		exit(EXIT_SUCCESS);
++	}
++
++	if (c == 'h')
++		usage(argv[0], EXIT_SUCCESS);
++}
++
+ /* Returns read or write operation */
+ static bool
+ parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq)
+@@ -192,7 +217,7 @@ parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq)
+ 			break;
+ 		case 's':
+ 			if (!optarg)
+-				usage(argv[0]);
++				usage(argv[0], EXIT_FAILURE);
+ 
+ 			if (write == true) {
+ 				fprintf(stderr, "Only one write may be specified at a time\n");
+@@ -207,7 +232,7 @@ parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq)
+ 			break;
+ 		case 'c':
+ 			if (!optarg)
+-				usage(argv[0]);
++				usage(argv[0], EXIT_FAILURE);
+ 
+ 			if (write == true) {
+ 				fprintf(stderr, "Only one write may be specified at a time\n");
+@@ -264,12 +289,9 @@ parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq)
+ 			act_upon[MAX] = true;
+ 			write = true;
+ 			break;
+-		case 'v':
+-			version(argv[0]);
+-			exit(0);
+-		case 'h':
+ 		default:
+-			usage(argv[0]);
++			fprintf(stderr, "Error: unknown option\n");
++			usage(argv[0], EXIT_FAILURE);
+ 		}
+ 	}
+ 
+@@ -283,6 +305,8 @@ int main(int argc, char *argv[])
+ 	bool write, fail, targets[MAX+1] = {false};
+ 	int i, fd, try = 1, set_freq[MAX+1] = {0};
+ 
++	parse_version_or_help(argc, argv);
++
+ 	fd = __drm_open_driver(DRIVER_INTEL);
+ 	devid = intel_get_drm_devid(fd);
+ 	device = igt_device_get_card_index(fd);
 -- 
-2.43.0
+2.51.2
 
