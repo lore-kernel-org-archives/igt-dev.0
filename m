@@ -4,44 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5D8BCE8D6B
-	for <igt-dev@archiver.kernel.org>; Sat, 15 Nov 2025 00:20:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2729FCE8D6B
+	for <igt-dev@archiver.kernel.org>; Sat, 15 Nov 2025 00:20:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8173210EBEA;
-	Sat, 15 Nov 2025 00:20:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D485310EBEB;
+	Sat, 15 Nov 2025 00:20:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="GbW88jCl";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="SvxmtDJD";
 	dkim-atps=neutral
-Received: from CH4PR04CU002.outbound.protection.outlook.com
- (mail-northcentralusazon11013053.outbound.protection.outlook.com
- [40.107.201.53])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0466E10EBEA
- for <igt-dev@lists.freedesktop.org>; Sat, 15 Nov 2025 00:20:34 +0000 (UTC)
+Received: from BN1PR04CU002.outbound.protection.outlook.com
+ (mail-eastus2azon11010002.outbound.protection.outlook.com [52.101.56.2])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1EF7710EBEB
+ for <igt-dev@lists.freedesktop.org>; Sat, 15 Nov 2025 00:20:46 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V+er/apOsmqUYlgh+6aICwZ7omHwSjrzmH0JibBDEe6gskZakL8F9govdGZe310lXZfOr/Oq5RQEq/EEGTB0V2w1tPlOXI2zWIY6RGVIBQqaMD4eB+gwFc4vh5rFn9hDIeGwNvXleTw/BZ86NNT1ubLAAEbJjthAQf2aIJTqrvOtzrLgku1M3fqvdL4BpG1xliAV9Abw0oAeTJI3MNAPJxrmgCciRCB8DQgsV4wHQYO05Vsd1l6Y86uD6yWSP+YMQJGUIstK0XWkrzqpohwlsqPsZQ1WEXfzloo1xtCkVX4VjrGGYGGGTkNoabWvQdxXEbeLZs1pHvDrEJd5ddZkFw==
+ b=ph1H3+X6/Zq1XDxTqJQ732a3VhkxQ4PZoutkCh2WPNww+3ftDlQPs0P1p0PWWw9EN9eR4z60NTi2glrL8mcfnGlwXWK2uW0n1O4p/jC6qylJS+5RQMBOFaFao0PM1mPN0YWreDKwmCCQ8zO8uHz1u1f8fcPBig0HOlz/MfswhYpib0K80k7HFOQrmdQo9OT7gZe2DF16or7+jCt6hShBsGAWgK7uWJdWGLOBERTAVh418xIsdJc8dbemZkZ8hLCxIMozjyfVedTGiXagX3BMXwHweA35bYvxU3rCCeQ5rldRWRlWQeea5P3CtiMemAqqjoCkn2zavfbt34s1P+G9Tg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GF2/X7qvI26tj0PkaKo19uc3gagRg/VDiX1MjAHEQW0=;
- b=X+tnN99d1PPre6d4Fh6hSJaSB7jL+woJHO1+WbqTk9zMQ9zqV9vnIpenc+ccKQGg5exq3ekdfMSFuWXUtVzJG6Nn4y5cWA0netWJI02wpQLH68Pqb5F2r80cCOO8X6Rrk83UAdDzTY8lZe2IPp+RsgINg0+zQ0FWyPWLFVqRAY8CZhQKK8psl+/PN0S7p4lFLQUDzbcHgZfrpfn04l12oGNHbbO55Ac6eQgNkVqihC+oRk1AZrDxw8pxujiMfechJX4yYOzo44JB8kzTt0RxrBT4mqEEP6Ee6FsOexPj93tTi7y06U2TS66p+4VUwHQfaHck8JQST8etHBKIP8LLbg==
+ bh=sKUl2PllQSJONh6uzT9wJBdqNReCnIOYEqKKVJ7yqH0=;
+ b=WJ3O07DcW3BC0VRcAQqYAYABta6VQcbIumsonfax+MfSmjODeYpbfIw+W7dXC9RVI5eOqEruNJE1x64Cd0bsCKDsunvqc09YW5Mz0vi2CcspecA0r3BCKcmuTICBxi+KGPZGGJy90r30GUTlfu/7XgRWrOsxCinWcXfeo/8FkxSKNmq9RBAWlhdHihRmcKuSZHiuEvYGv+Cp+9iPtJEU/LQ1fvt33pG6MlKnvSbFdb5niIh40KV7szLcduZC9c2AM3amwlzpOlRvj+vGZCEqfawi0iiG1M2y90KYbtmNGBaS+nl1GblM2euGG8P9CJaM51zsCGdzH4UNFtVwgUHKiw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GF2/X7qvI26tj0PkaKo19uc3gagRg/VDiX1MjAHEQW0=;
- b=GbW88jClhF/jsJa42+hRV3EkSjCpBjGqdYFCyibb8uQmGu/rRDlUXD6NBJ1PAEPDfBsFrDrfAQbi5pS7zmOssyJut7iL+uSjAIaYjl8FVimCUOTi7hv8RLD9n50urAdc88fPaB3qUn1F++ZiF39BIR9lYB/1stGNbc0X3x9vanM=
-Received: from BLAP220CA0008.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:32c::13)
- by SA1PR12MB6824.namprd12.prod.outlook.com (2603:10b6:806:25f::12)
+ bh=sKUl2PllQSJONh6uzT9wJBdqNReCnIOYEqKKVJ7yqH0=;
+ b=SvxmtDJDMiV4HMyPhoigwmaogeKmrj5Hx92IYLX0B1CpbkYEn25Ki5jtNbX7fhNiRg2WtCu6JuJIDAFf/nEeufNBc5MzNUi1Y6XqY7oNkI1d4bz+ePi7B3W7+U6xwpZlKRQGvoijrMruTMGzNwK53C12gw63LycvIkyPQwZd1VA=
+Received: from MN0P221CA0026.NAMP221.PROD.OUTLOOK.COM (2603:10b6:208:52a::14)
+ by IA1PR12MB6236.namprd12.prod.outlook.com (2603:10b6:208:3e4::19)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.15; Sat, 15 Nov
- 2025 00:20:29 +0000
-Received: from BL6PEPF0001AB4D.namprd04.prod.outlook.com
- (2603:10b6:208:32c:cafe::58) by BLAP220CA0008.outlook.office365.com
- (2603:10b6:208:32c::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.17 via Frontend Transport; Sat,
- 15 Nov 2025 00:20:29 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Sat, 15 Nov
+ 2025 00:20:41 +0000
+Received: from BL6PEPF0001AB51.namprd04.prod.outlook.com
+ (2603:10b6:208:52a:cafe::c) by MN0P221CA0026.outlook.office365.com
+ (2603:10b6:208:52a::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.18 via Frontend Transport; Sat,
+ 15 Nov 2025 00:20:30 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -49,20 +48,20 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF0001AB4D.mail.protection.outlook.com (10.167.242.71) with Microsoft
+ BL6PEPF0001AB51.mail.protection.outlook.com (10.167.242.75) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.13 via Frontend Transport; Sat, 15 Nov 2025 00:20:29 +0000
+ 15.20.9320.13 via Frontend Transport; Sat, 15 Nov 2025 00:20:41 +0000
 Received: from kylin.lan (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 14 Nov
- 2025 16:20:28 -0800
+ 2025 16:20:40 -0800
 From: Alex Hung <alex.hung@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: <alex.hung@amd.com>, <harry.wentland@amd.com>, <leo.liu@amd.com>, Leo Li
  <sunpeng.li@amd.com>
-Subject: [PATCH V12 08/32] lib/igt_fb: Add igt_copy_fb function
-Date: Fri, 14 Nov 2025 17:18:17 -0700
-Message-ID: <20251115001841.3563993-9-alex.hung@amd.com>
+Subject: [PATCH V12 09/32] lib/igt_kms: Add writeback functions
+Date: Fri, 14 Nov 2025 17:18:18 -0700
+Message-ID: <20251115001841.3563993-10-alex.hung@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251115001841.3563993-1-alex.hung@amd.com>
 References: <20251115001841.3563993-1-alex.hung@amd.com>
@@ -74,53 +73,53 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4D:EE_|SA1PR12MB6824:EE_
-X-MS-Office365-Filtering-Correlation-Id: b7a64cd2-8d69-430d-59eb-08de23dcc876
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB51:EE_|IA1PR12MB6236:EE_
+X-MS-Office365-Filtering-Correlation-Id: 95056e1c-3008-458a-9687-08de23dccf69
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
  ARA:13230040|82310400026|1800799024|376014|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?OHd5fbIHLl/I4koQBBLVMuUNHnOCd2UXKvB7Gl4qzm0l6ZzDIUrQimLVqvli?=
- =?us-ascii?Q?JT9dFlRRTjB1p0iLahIHGbSeFnRW+2ULVLFO2z786E9bPoeJ6Vqx932NpnzH?=
- =?us-ascii?Q?pE+S7eXR42I+t3p8E6qzJotuvQjEp/vRCE0KeYRtHOYD1O2M4hzdf+5gC1pg?=
- =?us-ascii?Q?/gwJgd1bQtVImahkM57VBOikdBsK3WWANK4dePwmOqwPNxyFnfM/CWU9UZw5?=
- =?us-ascii?Q?NGVw2H2wbclT0EOhNk9bof1dk2au2PthpRub0EppiraEiBI6uly5D8Tqhe8v?=
- =?us-ascii?Q?/jr0+3EDffBCnrN6rnHrAPNIOMCnO4HKEVLwp1qS9SdBKeNR/1xgEWHiVyAL?=
- =?us-ascii?Q?OaFOLSQw1bSIkWvIjwmldB5kjIlLkPKecAm8B7u62t5DTVBzZVLgLev1Smq/?=
- =?us-ascii?Q?s75kg2vU2rWxCWN3eyYGqhkqFQa/gTRWP9vX/IduIcvRVEi6bbg17PA7eX03?=
- =?us-ascii?Q?mOJLoxQjZpBGnuESHwGN0qiqydeuWWxlNvc08vzvjVi/9l1EBaDGJqgR5uSO?=
- =?us-ascii?Q?Lkc+XL7udNZuspieo4QoVookw4b/4Qb9q2Qab0rdiFUFR1LjvapWxyPqtG+s?=
- =?us-ascii?Q?JLRJlfQvBBw9MYqfQ6/Zai44cxJ26ZuidBfMGjgdEJMOWBdTND2mScsVM87I?=
- =?us-ascii?Q?BZmNXZLNi04TTe7lV6IxIZ+SRmsaduEyC7v7cpUWzIOcqj/dETflz6sxKf8z?=
- =?us-ascii?Q?Kf9vJp18W6L4hgEmAHxr++Qh2YZclAQPM/djODGfqU0WAtZLbUpFoxGrNEje?=
- =?us-ascii?Q?C8Ag+xPN2YJr9XBUQtVbFhLsQhF/+wGMRiT0HVYj3Cgl/XKHAe+sH/GmB1kT?=
- =?us-ascii?Q?axnZovzru+vHvOAX39px40rkg51wMMolfimfVSpPjxSMocxToIqwHUsrl4AD?=
- =?us-ascii?Q?5/7urgmW3/qd1Ozhm4eKcMgwKuzEGf9cwoc3ASnb0+7BGodBfLhCuducvTgS?=
- =?us-ascii?Q?K+3PifSY6tYyfRQK/N6YOgw8FQrrSSauz4jbbcBQ2Ra2TU6D1++EjrMxrqRx?=
- =?us-ascii?Q?BBOqfz7Gc7vmtyBHqk6CFDd4D8Bn438AJYWOp1POn9ePWh4yje4oKCp31DML?=
- =?us-ascii?Q?T7tniWSIigkSVGRCedhcN4ZUXk5K5acEfRQAcN3B3iIDzZSzwjKhMyLaEc2v?=
- =?us-ascii?Q?lSW7oNfAdG/TAdrKzBXOfucU7NL9koBkzRovOaR+fgNJmlRKLzf6d6AAhHf2?=
- =?us-ascii?Q?jCgTbdBR6EaVrQLWup1Ke6Ly/Rzi0tZOmIarAKtrDt78Z/Q5ZXorqMZAUW6p?=
- =?us-ascii?Q?MUyoioFnsePfhJpPEFx9UeBIjZIG9rV2iuF7nj9msu2QcvugIDWnWdjq5M5Q?=
- =?us-ascii?Q?XWVbRIsQAVpHopzizT5zIGAnISAR2MEpvplwczPVuYnoDWDS/C0TcCo7qh3P?=
- =?us-ascii?Q?C8oS/7dCoPEG1nV+didVLEJ4bgdtEBE7Lb7l2byNMmsnqvMlSeeflAumr2ru?=
- =?us-ascii?Q?C1AYi7ARrSE7wejgsCAfUnUzxS/QstEWH3omHaTecfptVeYdgUT7esCFTz7D?=
- =?us-ascii?Q?Q3nGxSqBfOZsXdbCtZ5irS6vtcGEwqa/mX5PSABYyWrVqDPwrKm23zS8kX61?=
- =?us-ascii?Q?72yn2n7ZS3jFpKDCPOo=3D?=
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Wfn4QcQPrijHZfEalSBPkTVKZtK8scvCVV7q59hp9QxUUkG8NuWwPNYwuhrG?=
+ =?us-ascii?Q?ua/4EvrNNrvGvBmCsF01jO/AZe7MV3I/uT1MCA4BnRsEnGHgAja7vyXNi5et?=
+ =?us-ascii?Q?1HGU8UdlYycHGU7dcidSJlLebnYqMIpAQtDVX2shbipaasKI/OmY8Y7Kk4VH?=
+ =?us-ascii?Q?jdRfqIQGE1XT1GFOaQqKOoIub9YVGtP4eRvup1xMMjj55D6y8MJYdJWi9Szh?=
+ =?us-ascii?Q?Q+G8h3z+D+f2ebmYc/JWWNXpBjHWp+ocOgUoX/TVwAyEx6ft7/1bXEqfY7ml?=
+ =?us-ascii?Q?0+39WJb9vtERxMBOGwsG/bk1TwE5aTCmFqcZ9uPGhgi4llCTs39ebFSM1dOV?=
+ =?us-ascii?Q?tqelccCc3k9C2Tx92nE35LgNJfEC5GtBQ+9TNl5HxiE1v3Z0Zn7j/6KEPU2b?=
+ =?us-ascii?Q?7VTfAHlpV9S0Z0TTOdaeIol8BGYa2OKatsYfACiknHThXStdjQNPvXeqFCkw?=
+ =?us-ascii?Q?i0TdrG8qiyVqAK25eCFZKKrOIQtrhOle4KAhbbskXDParPKp8UF8F2TMNytg?=
+ =?us-ascii?Q?Z8vHWFbFKUmqG7U4kHxLDfTBv/GdqaH1EFAYIsL8g7LyJjpVN4mGswdAyzc8?=
+ =?us-ascii?Q?mUSp9oyLjTrUzGW9gVA+tzGWleOU7Y92uuJaLWSFyYEy2acfZ99qr4/4YsCc?=
+ =?us-ascii?Q?tw0HcL6ddvv8F9b+5/Ls1h44+RvQKXFekad7jkPlyKoSABjGEARPrDsvHnEW?=
+ =?us-ascii?Q?zsKKjnKsViVkFdxwPbg2yj8qD3bF38e5bOREFn6U7BseJawHkk8lkW5r2PWr?=
+ =?us-ascii?Q?RPBCjx+p/ZD2zcLaLuaTdZ6e1EhKOgGgG4y74fMGw5fGtqBD99D3IDuWGbFA?=
+ =?us-ascii?Q?tWguWHO0xradDlFXmAxgsSPlAeEl86TW9QPfaxfH4SmY5jYqRUp//ZLpHdXd?=
+ =?us-ascii?Q?28K4uC0eB8CZEHqBkiqXSp4e0g1XXm8gzqLorMPT1WPViR9uN9SsUqeXfvvE?=
+ =?us-ascii?Q?78yQrMsopUeDA2tEwwySyrt3CUlBP9rPeNLckxpTRHDWjzkaYfeBDHyGmy9M?=
+ =?us-ascii?Q?MaDqyDJgZih5WZG88FI8ax0Guzjx6Wc/uVIBdWUSboyUXED2OoHIuu5Htv5Z?=
+ =?us-ascii?Q?treRQvrpmcdNj/TjMTirkYMcHtsACYs0yFy8m6OHRAkofjA8yqTkJSTuF0cj?=
+ =?us-ascii?Q?zu9j5D45DckNnzbGxpf8ZzNA31kCURAUcrAl/UY0VpNEi7aQ3sXzXg0XcvJT?=
+ =?us-ascii?Q?nLn2viqhYNzR0nCpWcOIifi9ceJrMcEZRDacl16kSx1R083Sq0OtZHBx0aLa?=
+ =?us-ascii?Q?KV75Zy9QUyBMvsOTOvXPZ7cprwvwjTllH8GVg4B55HQ1oomgmL0vrD4a2zer?=
+ =?us-ascii?Q?7j7oa+GX2t1whVdB2KrGBc96agrinxIengNbNNxgB/d1XKhkXdhQnZXGseqM?=
+ =?us-ascii?Q?SPfESleoBg/CoHBrWPyrp8utk+LM30YM4A+D32vNOo9ZZMorMcTPOC00QVBo?=
+ =?us-ascii?Q?iCF5nUvMHaTFe1FlIod0MJyoovhd8MCNdtt00CKdBaM/lupuucPt0C5tKMdd?=
+ =?us-ascii?Q?UqPRLAta1Qqg5ZqVgpQrfEeMvvyiMmuY27mrrFWhvYBvS+GDIdVNjoLt4P7b?=
+ =?us-ascii?Q?yu7O+TwSHTSRj2DLZSM=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
  SFS:(13230040)(82310400026)(1800799024)(376014)(36860700013); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2025 00:20:29.5703 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b7a64cd2-8d69-430d-59eb-08de23dcc876
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2025 00:20:41.2326 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95056e1c-3008-458a-9687-08de23dccf69
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB4D.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB51.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6824
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6236
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,83 +135,90 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Harry Wentland <harry.wentland@amd.com>
-
-Add a function to copy fb of DRM_FORMAT_XRGB8888.
+Add three writeback functions that can be shared in writeback and
+colorop tests:
+- igt_get_writeback_fb_id
+- igt_detach_crtc
+- igt_get_and_wait_out_fence
 
 Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
 Reviewed-by: Leo Li <sunpeng.li@amd.com>
 ---
-v12: 
- - Replace fb->width * fb->height * cpp by fb->size
+ lib/igt_kms.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h |  4 ++++
+ 2 files changed, 49 insertions(+)
 
- lib/igt_fb.c | 39 +++++++++++++++++++++++++++++++++++++++
- lib/igt_fb.h |  1 +
- 2 files changed, 40 insertions(+)
-
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index a1df3d070..d20ff1095 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2172,6 +2172,45 @@ unsigned int igt_create_fb(int fd, int width, int height, uint32_t format,
- 					  fb, 0, 0);
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index a2b704e68..7b7b8e310 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -7840,6 +7840,51 @@ drmModePropertyBlobRes *igt_get_writeback_formats_blob(igt_output_t *output)
+ 	return blob;
  }
  
 +/**
-+ * igt_copy_fb:
-+ * @fd: open drm file descriptor
-+ * @src: pointer to source #igt_fb structure
-+ * @fb: pointer to destination #igt_fb structure
++ * igt_get_writeback_fb_id - Get writeback framebuffer ID
++ * @display: display structure
 + *
-+ * This function creates a new framebuffer with the same properties as @src
-+ * and copies the pixel data.
-+ *
-+ * Returns:
-+ * The kms id of the created framebuffer on success or a negative error code.
++ * Returns the framebuffer ID for writeback capture, or 0 if none configured.
 + */
-+int igt_copy_fb(int fd, struct igt_fb *src, struct igt_fb *fb)
++uint64_t igt_get_writeback_fb_id(igt_output_t *output)
 +{
-+	char *in_ptr, *out_ptr;
-+	int fb_id = 0;
++	return igt_output_get_prop(output, IGT_CONNECTOR_WRITEBACK_FB_ID);
++}
 +
-+	igt_assert(src);
++/**
++ * igt_detach_crtc - Detach the crtc from the output
++ * @display: display structure
++ * @output: output structure
++ *
++ * Detach the crtc from the output.
++ */
++void igt_detach_crtc(igt_display_t *display, igt_output_t *output)
++{
++	if (igt_get_writeback_fb_id(output) == 0)
++		return;
 +
-+	if (src->num_planes != 1)
-+		return -EINVAL;
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++}
 +
-+	fb_id = igt_create_fb(fd, src->width, src->height, src->drm_format,
-+			      src->modifier, fb);
++/**
++ * igt_get_and_wait_out_fence - Get and wait for the out fence
++ * @output: output structure
++ *
++ * wait for fence from the writeback.
++ */
++void igt_get_and_wait_out_fence(igt_output_t *output)
++{
++	int ret;
 +
-+	/* copy buffer contents */
-+	in_ptr = igt_fb_map_buffer(fb->fd, src);
-+	igt_assert(in_ptr);
-+	out_ptr = igt_fb_map_buffer(fb->fd, fb);
-+	igt_assert(out_ptr);
++	igt_assert(output->writeback_out_fence_fd >= 0);
 +
-+	igt_memcpy_from_wc(out_ptr, in_ptr, fb->size);
-+
-+	igt_fb_unmap_buffer(fb, out_ptr);
-+	igt_fb_unmap_buffer(src, in_ptr);
-+
-+	return fb_id;
++	ret = sync_fence_wait(output->writeback_out_fence_fd, 1000);
++	igt_assert_f(ret == 0, "sync_fence_wait failed: %s\n", strerror(-ret));
++	close(output->writeback_out_fence_fd);
++	output->writeback_out_fence_fd = -1;
 +}
 +
  /**
-  * igt_create_color_fb:
-  * @fd: open drm file descriptor
-diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-index fe0bb580c..ac0e0909e 100644
---- a/lib/igt_fb.h
-+++ b/lib/igt_fb.h
-@@ -141,6 +141,7 @@ struct intel_buf *igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
- 					  const struct igt_fb *fb, const char *name);
- unsigned int igt_create_fb(int fd, int width, int height, uint32_t format,
- 			   uint64_t modifier, struct igt_fb *fb);
-+int igt_copy_fb(int fd, struct igt_fb *src, struct igt_fb *fb);
- unsigned int igt_create_color_fb(int fd, int width, int height,
- 				 uint32_t format, uint64_t modifier,
- 				 double r, double g, double b,
+  * igt_get_connected_output_count:
+  * @display: pointer to igt_display_t
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 9bfa70bab..bdb5cf5e5 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1387,6 +1387,10 @@ uint32_t igt_get_connected_output_count(igt_display_t *display);
+ 
+ drmModePropertyBlobRes *igt_get_writeback_formats_blob(igt_output_t *output);
+ 
++uint64_t igt_get_writeback_fb_id(igt_output_t *output);
++void igt_detach_crtc(igt_display_t *display, igt_output_t *output);
++void igt_get_and_wait_out_fence(igt_output_t *output);
++
+ igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
+ 
+ #endif /* __IGT_KMS_H__ */
 -- 
 2.43.0
 
