@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6149DCE8D6B
-	for <igt-dev@archiver.kernel.org>; Sat, 15 Nov 2025 00:25:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D9BECEACF9
+	for <igt-dev@archiver.kernel.org>; Sat, 15 Nov 2025 00:25:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1A35F10EC06;
-	Sat, 15 Nov 2025 00:25:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B9CD310EC0B;
+	Sat, 15 Nov 2025 00:25:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="yj2HqZSX";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="XQ4MJw7y";
 	dkim-atps=neutral
-Received: from CH5PR02CU005.outbound.protection.outlook.com
- (mail-northcentralusazon11012032.outbound.protection.outlook.com
- [40.107.200.32])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB18310EC06
- for <igt-dev@lists.freedesktop.org>; Sat, 15 Nov 2025 00:25:06 +0000 (UTC)
+Received: from SN4PR2101CU001.outbound.protection.outlook.com
+ (mail-southcentralusazon11012063.outbound.protection.outlook.com
+ [40.93.195.63])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 736BC10EC0B
+ for <igt-dev@lists.freedesktop.org>; Sat, 15 Nov 2025 00:25:09 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RPfDCzVx/W/clVQwrWYIrlyTMigNVqru46DIS/fCjpVe/eDF5s3y7F2YxLh3ubp6WT28bF4QSG937eqMfV6lj4Vzhit0gsW+aJ+0eqfzBbjIUBrkap0agNH/lXy9kJ1yFvcR3xfZ1+fH6ILKUda5Q5+nmwpSNgloGH2w45Qkrp0tipggiCVk6cIpbclT7p2gDuiFO93nkwyWLdlAMF4OKu8XyjRt+qhhjOryKj1TTCa8C+lbWijr9xeYBK/CnYnbEE6tZlefziXRNiPXtWkAfz2lST0uG3HKuIXZSkrhHn4VRWzAW4Fz4U+sy5yFfTs+56fx3QOYWYbeC7wK6gToSA==
+ b=xkum/tlYXaMLsl8L2Wqq0D4XA01Io+QBzvjqGfBYamImbZe2uWqtlVlUtHsw5XQInxBqrDqENTHWZNrCfKiaItELNi1mczbXC6TsX0xE2grGYIyor9LNl54+uxWMSvbWDWBDPl/t7XZn0p0ByGaK4hHU3saO1Nvyva5Mw7rWmYMVSv01iyhiAIzTJpNl3dcAmcwWZQZIUSrAbilf1bJFAolLisYj6UuxoY+nnd6v1qTUVdtcCaf+5dnFMd4a8/Vhlt5GcDJ/zOBr2shYY7Q1QZqqtFD4+RbpumubVGrNsRWpoNSF47hry18fSA632+kPUQwV4uQpBq2YdwtLVdUSdQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cMotHwf55LbcVp+qc1s0Ih9m2qKjXzk6CVCDEO0Iji0=;
- b=cAjbbRubFh03jLMr90Ncp1lMmmb6Vg9QO3oPEo2Z7OCp9MDipYobMrtJQ1AFw3EKHBfspBuFyz6Z+Pg4yoPtDVs0gDeCUzqYwhR4XFF2DZRXNDU4lY2UTxz2pamjfU4VAda1ko+3fkqaioBre1HPJs+LA5/aegjBn+yYySjG8PCoRd5SJ47E2xaX6VtTsUwcs+iJQzde5GBkCYd1nPPCNbO8UKbxAVNFyCod2k4hkxY6G5Kbr6jMNnQrANFhxkPl3YvG64olLCRb1ZEGl5afV3QDV+NJTH9QxYp7NnVtGf6PHH5xd5NT0WVM0M0ZyRtw5XJ/AioF2IVc3DIMqWTZMw==
+ bh=I1JBkLOkD66f8PT80Bavr8g5j0EBogV+/TtMxhWAdhs=;
+ b=iQ98qz5ztc2mvJJ2uTLRYD8O6hwJ97uzxI9hrQ9qx3eLqBM8G8QvBLkD85lYTl0pcrEbq5J6OjZ1MGBu5+0IfOJiCy/f+pxVzxV7+y6Y0qp/Ry1JgJgISk00AvJ3sqUvQiuWhnDbqtWia6ee0rR7f0l4EPtykHPDBKLLqN0D6v46xvUdcv4orqNFogmKit6rJnRwaY04sTtFgjB43RBq/uYO1XTg5RpX46uC1tuiWlh4nY4F74USe+ulqmuqEa1aXmrl4xcNmR71RYS0p/IV7Q+nOcNsGgmZ1jHBLX/MoAfvpHr+s3K9BKElWkJ+yA6bap3fKCcR+n8AyOwi3AO9TQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cMotHwf55LbcVp+qc1s0Ih9m2qKjXzk6CVCDEO0Iji0=;
- b=yj2HqZSXWaeTBAqQoKRSy1U4s1gU7jC0ZxFLkEgCHXkr5LQ/NNXnet5AIEMgdQrIm/kdA7V/BKvpeI17hS/KfHzxxOqoRKwDS2gPQNxwib36FdSnKoKzXlo9CcNokQvAnb0FuSkx/LslyMiddUgQT6rTYbd8eECVpRVbd54oobQ=
-Received: from DM6PR13CA0034.namprd13.prod.outlook.com (2603:10b6:5:bc::47) by
- SJ0PR12MB5674.namprd12.prod.outlook.com (2603:10b6:a03:42c::7) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.18; Sat, 15 Nov 2025 00:25:01 +0000
+ bh=I1JBkLOkD66f8PT80Bavr8g5j0EBogV+/TtMxhWAdhs=;
+ b=XQ4MJw7yJEbA/Qoy4GKg0BSACjKd6A4faL7AqrOTxen7Y02Z5MFSaxadGlD5NruGaP67FQP5eFXjUd0uJkX0BY8f3UeBX6zfvZGLKDkDlRMX40EK3vkSj04Gw9cAQY/Nl5e7VEI5Pk/SyyOrtArpL1RUkkrde4DTKNlWS2k+6UI=
+Received: from DM6PR13CA0020.namprd13.prod.outlook.com (2603:10b6:5:bc::33) by
+ PH0PR12MB7959.namprd12.prod.outlook.com (2603:10b6:510:282::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.18; Sat, 15 Nov
+ 2025 00:25:06 +0000
 Received: from DS1PEPF0001708E.namprd03.prod.outlook.com
- (2603:10b6:5:bc:cafe::8e) by DM6PR13CA0034.outlook.office365.com
- (2603:10b6:5:bc::47) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:5:bc:cafe::5d) by DM6PR13CA0020.outlook.office365.com
+ (2603:10b6:5:bc::33) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.8 via Frontend Transport; Sat,
- 15 Nov 2025 00:25:00 +0000
+ 15 Nov 2025 00:25:05 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -51,19 +51,18 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from satlexmb07.amd.com (165.204.84.17) by
  DS1PEPF0001708E.mail.protection.outlook.com (10.167.17.134) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.13 via Frontend Transport; Sat, 15 Nov 2025 00:25:00 +0000
+ 15.20.9320.13 via Frontend Transport; Sat, 15 Nov 2025 00:25:05 +0000
 Received: from kylin.lan (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 14 Nov
- 2025 16:24:27 -0800
+ 2025 16:24:52 -0800
 From: Alex Hung <alex.hung@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: <alex.hung@amd.com>, <harry.wentland@amd.com>, <leo.liu@amd.com>, Leo Li
  <sunpeng.li@amd.com>
-Subject: [PATCH V12 28/32] scripts/convert_3dlut.py Convert a 3D LUT to
- igt_3dlut_t array for 3D LUT API
-Date: Fri, 14 Nov 2025 17:18:37 -0700
-Message-ID: <20251115001841.3563993-29-alex.hung@amd.com>
+Subject: [PATCH V12 30/32] tests/kms_colorop: Add a colorop uniqueness subtest
+Date: Fri, 14 Nov 2025 17:18:39 -0700
+Message-ID: <20251115001841.3563993-31-alex.hung@amd.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251115001841.3563993-1-alex.hung@amd.com>
 References: <20251115001841.3563993-1-alex.hung@amd.com>
@@ -75,53 +74,53 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF0001708E:EE_|SJ0PR12MB5674:EE_
-X-MS-Office365-Filtering-Correlation-Id: 50ebb985-7272-423e-bb51-08de23dd6a11
+X-MS-TrafficTypeDiagnostic: DS1PEPF0001708E:EE_|PH0PR12MB7959:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3a8fd0d4-5e9a-4a50-7cb0-08de23dd6d11
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|36860700013|376014|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?j3D6+Rf496eX7QjYWa6qQdnn1s1XG/V84z89JJcCZodlq0QlbNQhS8x0jQlx?=
- =?us-ascii?Q?IMAUpAQLpPlc3J/9/fjqwShdOXmp4EuG6Ijz4+M5Umlcxi0cqwHn2+C+sy1q?=
- =?us-ascii?Q?n0RGbqN9npdhqBUpURbXDhl++NtDxUx28n+dToyfLIfwwF6YNvvchCYvFgD5?=
- =?us-ascii?Q?ytmQzrhvLtjT1LRz8Bstn63sENEAkQ1PYrt+VTrOsr8lJmcUu3ON8lfrGrMv?=
- =?us-ascii?Q?e2CKxvSqgsOLEoXab5DzyK8OgajJ8P+C7t769e2yezNLQV8YfzDCEcixtnyY?=
- =?us-ascii?Q?5xveD4UQOPxCbZmxnL3sVQMnOm8tv+vI0Q7359yii+uAMyghZ3tFOl34nj94?=
- =?us-ascii?Q?Oi3axnwNeMKKVYwFSe9nYbFyVWs18X6+SV6c37vswJ4pj9t10rIS2QmCM4mO?=
- =?us-ascii?Q?20f6gnBv1RZ8QKofD0/q5snpIggxUD7ikAUq2xlwg4jHu+P20fI8koMxpd5Z?=
- =?us-ascii?Q?LX0XJVPSx4DkW+RL+RJgS8WkcvTaLArIk1e+BoiQa8fVVGCb02/YD/fVHiLk?=
- =?us-ascii?Q?yqHsVaf9/IMvZTDaUdNxpNCRqPweZtth/+wQRPo/k7encDUnw948pLGUxCmc?=
- =?us-ascii?Q?yXXttoneFlP7c5dpxvc8W5JOTDpGVXteo9SbkHHfscNG2focHpD4OooVuMve?=
- =?us-ascii?Q?6Pp3WzU+BRMgX0mWkNBFDEOqSeevfEV2PlulTJKcc05sKM1Pa/FJVpvZprh0?=
- =?us-ascii?Q?HhorBhqtcFtqa49b5P6rHlfttGLP+Lh9ZUyhmN4ROlYAPuDqYx73GlfMP/yv?=
- =?us-ascii?Q?DMxqnk+bcyhLa8sAQPm7dwbeEnXI8pB+lM5mPVDmWT+0j7/7uO63J/jmFxc5?=
- =?us-ascii?Q?AyTgz6kutrkMLAmL4Q+RW6In1b58Zh9XE3M/wUlrdfRl4vypePzPP4d79lzT?=
- =?us-ascii?Q?odkzKHwcfVdDXD04XTST4jFLCTFV/NkU6Z+rnGafehyzEN+MHX8XQGZXlleO?=
- =?us-ascii?Q?LGSpmBggC2O2e9nMOnYxFFKR1A6qLEJoGgQ6JtPHIgQZn+Yt2+1BhehXVlv6?=
- =?us-ascii?Q?BG5/j0oQj5p0aWbWNPdqyP45Ra7gbJI0RfGpn0oEYHjXsxcMNytixQfHvS/C?=
- =?us-ascii?Q?scy3IplRGQ2VlXBid4PNurV9KKN87Kmwv08teD7rwstRXSy9cQjxryem4V7F?=
- =?us-ascii?Q?5DgkntcZ6VtiR7J0JYKB0EyoLXB/WZ3oZh1qdmDpV0DhW6KFsgScI63bFQlW?=
- =?us-ascii?Q?OIUx4a3VfFDjB/QjVAps2rri/+MzU9XkG9cHoRqvdJIBlyink4ib5+TmlKva?=
- =?us-ascii?Q?aKvilbHDB6amKv+XMr0gVYIxB1pIBNY6B4c7JenXH72HXfE8eO5l6sJ66Im4?=
- =?us-ascii?Q?NSEC5p4S/CELeBtfwOlAQMymHNWTrvkkfB0BugW6xsHjUpkIlacnL8SSfLAs?=
- =?us-ascii?Q?ZcvH/svU8dER3k75eq4Qmsz7XXwZ4qdQAbVcm/XLmfRugloG1cGKX+zA3OQb?=
- =?us-ascii?Q?Oj8wdOOSE19fduGkuIAzaXagi+Fs2KSxyqDyPLDXlyWZjE76VPOl9/rlJMnr?=
- =?us-ascii?Q?ic6SNTYyZx7RfMFX9gzJudjextMnNoE0ZSsGroGk2OJO493gOKeKTU3Df7fT?=
- =?us-ascii?Q?8q7KWkGeISipl31Y9fI=3D?=
+ ARA:13230040|1800799024|82310400026|376014|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?3TeVT34L49Hbonc+UDGF1qbqq7MeMYNaTaZ4hmWD5vWYmiOb8Oj2mPy55dS+?=
+ =?us-ascii?Q?HgO4sYdcfque5mtfdpDmc/LWU6n3ve1QYASbPylLxyVJ5zCDNNOHtlyoX23x?=
+ =?us-ascii?Q?pr9RZ2ybGZNQOHMoBcnNTSsQhuGQNN+OebgmbwaPvlXKZMicaliJ5Pd5bDJY?=
+ =?us-ascii?Q?AjybDioH61tkaBV3tEzArsP3veRePUtfzcMb3oS6XOZlNkeq8gCfP46HsQ7d?=
+ =?us-ascii?Q?JHQ4ropZcrNjnp7/M5emza5YygJdZscK3zSD01C1ah5+OHEKRzOW1Y7z2T6z?=
+ =?us-ascii?Q?iHzsvJ8rDbnl9YTWakD/hwtc0pXrejHSRTOBDStjlt/+2V5uN6DwxtS+SV31?=
+ =?us-ascii?Q?xn9FyqT1Bb9lfm81WQa8pAPOSRi7tb6iwBGzK/dkz56LGWdogeFX/9xevU/C?=
+ =?us-ascii?Q?ROC6jXTKyxUu5dC3PvNVDqJLYEiuEzQv9SktLofeMkG03o2OuS1UBUxXa43O?=
+ =?us-ascii?Q?IyoF0EAM21Vqgb9r8Qzrp21NdrQeCAF1nP5wPkfYEltsqK5uxiFXlOk6NxLg?=
+ =?us-ascii?Q?0GMAMBSwcLCW1ty+jk5xJ2OGkZMpPCsaPVoY21yRvJW4dFgtNHGuAFgLys0B?=
+ =?us-ascii?Q?towhidObal7ca/jWOgUTRV0EOuyKKjs2DOp1r+NuJ6SCrdNwua1J7tG1mgaF?=
+ =?us-ascii?Q?2eJd+BpT7Pv/3ce4mZHem+DuXIgmsi7XAfRgcUCWLhiVnBkwbxcEen2syuu/?=
+ =?us-ascii?Q?TceLw5LiaZ0OISa3j4/yea7TlIbjrnUtIr9jlOxfWjRIL1s0O5kA/qG5FLGS?=
+ =?us-ascii?Q?8RqlTvi8afIkoTOfbXmYDnACjKRSlEoUnkQdG+sKwiJnbgwgqnUGUdZUopAR?=
+ =?us-ascii?Q?DOAWRfXCKXINTwoEP1aw7baVD28ZeZTBkq73LLxQAAcVMGQNhu0i273nPpCU?=
+ =?us-ascii?Q?MkNXcnu8Hzbk/sXiOqwQO1tW89SwhHzsJjKToO8xHJaLZaAuXDe0kcDhL6Rm?=
+ =?us-ascii?Q?RcDEH495kgYQP+hBAOm6fNFWrImIYE23jzm80sqSAkgg9SBM0ztSDoqChbym?=
+ =?us-ascii?Q?bNaeat+3bd0lIaa/p4iK+xojVQarpAuic8DDC66fDGdVHSyU6fT1RCrUKfHl?=
+ =?us-ascii?Q?RsMFx92MabKEwpUNOpB38PwKkQdfsOyVXbmQ4TnHG06gaefgx5Q54O5Wcjho?=
+ =?us-ascii?Q?etEeJrp1wacy5rXYOoIs7prjQyyFxtQpz8goxQ0HnmM7hl5DIztLvJm0nHtx?=
+ =?us-ascii?Q?nViu74QlgKtV/3qbq5W5BBmcRXy2y40ThIGDF2405rnq8ZE9kT0bnw6IcW5t?=
+ =?us-ascii?Q?Vf9TQVObd/TJ9+u6zMifukPkVACys+1aMox8XGw3+CDCfh6PcWKKG7oes4J7?=
+ =?us-ascii?Q?oB5tBWU2DX/ftnWkkd0B2mmBoU2o+xmdt3JFuP2z2ihWoz6VxpvPP+YJGxOu?=
+ =?us-ascii?Q?DBoQVvwvg7w3hbVVD8LgZqsxefj2EgUIjkiRExxCw5QYNKickxej2uoOVA+n?=
+ =?us-ascii?Q?rDY51jbJIl9GOqCEnx5gROmlLfNnKCQNVxgEpyoOyFRQlOei3INFxApTX/Dr?=
+ =?us-ascii?Q?0ChC3eto1OpdcWF14B9WFulgYSm6mWhd7Giic0H8yj5bj4XVULGxoApXCfPI?=
+ =?us-ascii?Q?C2zt/FBrnOml+pPZ6BA=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026); DIR:OUT;
+ SFS:(13230040)(1800799024)(82310400026)(376014)(36860700013); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2025 00:25:00.6686 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 50ebb985-7272-423e-bb51-08de23dd6a11
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2025 00:25:05.7003 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3a8fd0d4-5e9a-4a50-7cb0-08de23dd6d11
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF0001708E.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5674
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7959
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,128 +136,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This script converts a 17x17x17 3D LUT in a txt file to the following
-(i.e. 4913 entries):
-
-	{ .red = 0.000000, .green = 0.000000, .blue = 0.000000 },
-	{ .red = 0.175580, .green = 0.003419, .blue = 0.006838 },
-	{ .red = 0.338706, .green = 0.015140, .blue = 0.012454 },
-	...
-
-The text file should contains 3 column (RGB) in following form:
-
-	0000 0000 0000
-	0255 0307 0606
-	0225 0306 0893
-	...
+A colorop should have unique ID.
 
 Signed-off-by: Alex Hung <alex.hung@amd.com>
 Reviewed-by: Leo Li <sunpeng.li@amd.com>
 ---
- scripts/convert_3dlut.py | 94 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
- create mode 100755 scripts/convert_3dlut.py
+ tests/kms_colorop.c | 50 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/scripts/convert_3dlut.py b/scripts/convert_3dlut.py
-new file mode 100755
-index 000000000..35189b549
---- /dev/null
-+++ b/scripts/convert_3dlut.py
-@@ -0,0 +1,94 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: (GPL-2.0 OR MIT)
+diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
+index a0c016d10..da4710b07 100644
+--- a/tests/kms_colorop.c
++++ b/tests/kms_colorop.c
+@@ -8,11 +8,16 @@
+ #include "sw_sync.h"
+ #include "kms_colorop.h"
+ 
++#include <glib.h>
 +
-+## Copyright (C) 2024 Advanced Micro Devices, Inc.         ##
-+## Author: Alex Hung <alex.hung@amd.com>                   ##
+ /**
+  * TEST: kms colorop
+  * Category: Display
+  * Description: Test to validate the retrieving and setting of DRM colorops
+  *
++ * SUBTEST: check_plane_colorop_ids
++ * Description: Verify that all igt_colorop_t IDs are unique across planes
++ *
+  * SUBTEST: plane-%s-%s
+  * Description: Tests DRM colorop properties on a plane
+  * Driver requirement: amdgpu
+@@ -486,6 +491,47 @@ static void colorop_plane_test(igt_display_t *display,
+ 	igt_get_and_wait_out_fence(output);
+ }
+ 
++static void check_plane_colorop_ids(igt_display_t *display)
++{
++	igt_plane_t *plane;
++	int colorop_idx;
++	igt_colorop_t *next;
++	int prop_val = 0, pipe = 0;
 +
-+import sys, os, argparse
-+import numpy as np
-+import pprint
++	/* Use hash tables to track drm_planes and unique IDs */
++	GHashTable *plane_set = g_hash_table_new(g_direct_hash, g_direct_equal);
++	GHashTable *id_set = g_hash_table_new(g_direct_hash, g_direct_equal);
 +
-+import pprint
++	for_each_pipe(display, pipe) {
++		for_each_plane_on_pipe(display, pipe, plane) {
++			/* Skip when a drm_plane is already scanned */
++			if (g_hash_table_contains(plane_set, GINT_TO_POINTER(plane->drm_plane->plane_id)))
++				continue;
 +
-+class Color:
-+    def __init__(self, r, g, b):
-+        self.r = r
-+        self.g = g
-+        self.b = b
-+    def __str__(self):
-+        r = self.r
-+        g = self.g
-+        b = self.b
-+        rgb = "\t{ " + ".red = {0:05f}, .green = {1:05f}, .blue = {2:05f}".format(r, g, b) + " },"
-+        return rgb
++			g_hash_table_add(plane_set, GINT_TO_POINTER(plane->drm_plane->plane_id));
 +
-+def print_lut(ind, lut):
-+    for i, v in enumerate(lut):
-+        if (i - ind) % (17 * 17) == 0:
-+            print(str(i) + " " + v)
-+            #print(v)
++			for (colorop_idx = 0; colorop_idx < plane->num_color_pipelines; colorop_idx++) {
++				next = plane->color_pipelines[colorop_idx];
++				while (next) {
++					/* Check if the ID already exists in the set */
++					if (g_hash_table_contains(id_set, GINT_TO_POINTER(next->id))) {
++						igt_fail_on_f(true, "Duplicate colorop ID %u found on plane %d\n",
++						next->id, plane->drm_plane->plane_id);
++					}
 +
-+def parse_lut_file(file_path, max_value=4095):
-+    lut = []
++					g_hash_table_add(id_set, GINT_TO_POINTER(next->id));
++					prop_val = igt_colorop_get_prop(display, next, IGT_COLOROP_NEXT);
++					next = igt_find_colorop(display, prop_val);
++				}
++			}
++		}
++	}
 +
-+    try:
-+        with open(file_path, "r") as file:
-+            for line in file:
-+                values = line.strip().split()  # Split values by spaces or tabs
-+                if len(values) == 3:
-+                    r, g, b = map(float, values)  # Convert to floats
-+                    r = r / max_value
-+                    g = g / max_value
-+                    b = b / max_value
-+                    color = Color(r, g, b)
-+                    lut.append(color)
-+                else:
-+                    print(f"Skipping invalid line: '{line.strip()}'")
-+    except FileNotFoundError:
-+        print(f"File '{file_path}' not found.")
++	g_hash_table_destroy(id_set);
++	g_hash_table_destroy(plane_set);
++	igt_info("All igt_colorop_t IDs are unique across planes\n");
++}
 +
-+    return lut
+ static int opt_handler(int option, int option_index, void *_data)
+ {
+ 	switch (option) {
+@@ -577,6 +623,10 @@ igt_main_args("d", long_options, help_str, opt_handler, NULL)
+ 		igt_require(display.is_atomic);
+ 	}
+ 
++	igt_subtest_f("check_plane_colorop_ids") {
++		check_plane_colorop_ids(&display);
++	}
 +
-+def fill_3d_array(lut, size=17):
-+    lut3d = np.zeros((size, size, size), dtype=object)
-+
-+    for i in range(size):
-+        for j in range(size):
-+            for k in range(size):
-+                index = i * (size ** 2) +  j * size + k
-+                color = lut[index]
-+                lut3d[i][j][k] = color
-+    return lut3d
-+
-+def print_3d_array_rgb(lut3d, size=17):
-+    for i in range(size):
-+        for j in range(size):
-+            for k in range(size):
-+                print(lut3d[i][j][k])
-+
-+def print_3d_array_bgr(lut3d, size=17):
-+    for i in range(size):
-+        for j in range(size):
-+            for k in range(size):
-+                print(lut3d[k][j][i])
-+
-+def main():
-+
-+    parser = argparse.ArgumentParser(description='Convert integer values in a 3D LUT file to IGT format.')
-+    parser.add_argument("-f", "--input", help="3D LUT file", required=True)
-+    parser.add_argument("-t", "--traversal", help="traversal order", required=True)
-+    args = parser.parse_args()
-+
-+    lut = parse_lut_file(args.input)
-+    lut3d = fill_3d_array(lut)
-+
-+    if args.traversal.lower() == "rgb":
-+        print_3d_array_rgb(lut3d)
-+    elif args.traversal.lower() == "bgr":
-+        print_3d_array_bgr(lut3d)
-+
-+    return 0
-+
-+if __name__ == "__main__":
-+    ret = main()
-+    sys.exit(ret)
+ 	for (j = 0; j < ARRAY_SIZE(formats); j++) {
+ 		igt_output_t *output;
+ 		igt_plane_t *plane;
 -- 
 2.43.0
 
