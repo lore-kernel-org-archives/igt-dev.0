@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 116FECEACF9
-	for <igt-dev@archiver.kernel.org>; Sat, 15 Nov 2025 00:18:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B251CEACF9
+	for <igt-dev@archiver.kernel.org>; Sat, 15 Nov 2025 00:19:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B73D810EBBD;
-	Sat, 15 Nov 2025 00:18:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1129210EBCE;
+	Sat, 15 Nov 2025 00:19:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="Fwp8j+CF";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="hecMH8eh";
 	dkim-atps=neutral
-Received: from SJ2PR03CU001.outbound.protection.outlook.com
- (mail-westusazon11012057.outbound.protection.outlook.com [52.101.43.57])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F4ED10EBBD
- for <igt-dev@lists.freedesktop.org>; Sat, 15 Nov 2025 00:18:57 +0000 (UTC)
+Received: from DM1PR04CU001.outbound.protection.outlook.com
+ (mail-centralusazon11010040.outbound.protection.outlook.com [52.101.61.40])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5DDA110EBCE
+ for <igt-dev@lists.freedesktop.org>; Sat, 15 Nov 2025 00:19:10 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KgJCZNtt4BP7sEiFhb/FjLfgv1lQ6jMZjalgQ1wanIgmrppOkQCxDjQ5NM8urgGsNmZ5pn5v3rkjYadtlVphczr/nD1p2yQnhHU1LRG3BS8HCikH4nmNsPXBzjEHMItEhMbdF1cd48IHYcQkg96drdG5eCi6i8+eht9OePCXrqPb946stRJvLyrQVRXaglfjKLCB/sri63yQlBmix7QD+OarVmjj2mOrCnqnQ1hQBp85nkBGQFoMlb2R1s3UV0itw28KR0l0+86JFtrEIHjLDkRHL0Z0a1zOvMhE03zN7+FMxASvmIhAs5urC9Lg1pUhtQH0R5y0HZH3iEfxygyFyg==
+ b=j+0v5ags3NMIV1RHD4PJKU3V0rqYsqeNyZK4Q7uFleRYSHhEls8Zt+bly+ure/ZST0Paa19IMlq7SKddjTPKuEHdrJOEO1WYQgjH2VflIcW975IXGbcCLeCTQ/RUZcviSizaI0iaV34Z8i0pcA82uSWgJzedQNCeMaKq72icnLSKQshtLj7FI/ssLSspDZgJAORRmBsOSgy+spRGVyh23MRoxWNPrldBu8q0tnHP4yPpsHdBTOhuIP/3rrmZLUQCD87eN/IKaOkzrLWcgbgjn5yMEgJqHkqwXNKPA4MyIjXV7KHI4zykbLMZehz0jiRXbM2vmaMEdlmTx3B8luAELg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=deZWCFkBN4FaNhu1EZ3JG5RYO/1kku6zKzN4zb7S3Nw=;
- b=LQij5ixsGeYzhzyoYS9cTJDRmt3OTwwtizFimSiCtVe4md8umX/x9VL0RejVJDWAZtm/fh0TQvB+e37e4ljH8XnNRhGkuFMgY33UdxifduCSqbfsPG2xPxwaZQ9GG86fEdxHwt47QCnaFIjvBHcw4GCWCOzTeaW3QnEH3J/1mauQBGI/JqjtpEIbhkLePdQgQZT5MCkRxRMHcVk9O5ev0kuEq1Yv/dUC98Pajq7dVrVpf+TkP7p7ou1yvaj7lLso7n11gnkFxPJTorreq4KWx8ofvUKvQFf8rot9WOOmUw49bwyOMVPmMx+lS+TRoI40dLhQeSp5m/byeJFn+usHkQ==
+ bh=aSH4coo6jf8KUZxFw1QqkWuqMDG8jy/FP9WNSzSsWVA=;
+ b=O68K24CDejR45j8qgE4xFPp+b3q5tbI3IdKOR5u11rR+iuF8cawXwIody3puQIfcMZJBFG+nAhclL4L4vNm2TGOuD9hgCEfmbl8tH7yrCe9m2sNKvX/Vn4g4n+9U+sV9c5L0zEsLkdXlUMICdv0GOkxxBNUig1VLy5YxxI5cmv2rvI5wT/1Yjsd7A39BomD/K7yJHw7k5AXY1vs57J/CkjLOHQBAEwia0P9Og0vZfkCov+p+L5W0Hk1pAFeMZlmDc4OkVvLCVYVAjRQOAXXDT7YfeWBxJ5kWgLqLXDZcA9Yr3O0c0fC7Vox+xwdge3unIi4L0tKr0lSjPo5U8oqQWw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=deZWCFkBN4FaNhu1EZ3JG5RYO/1kku6zKzN4zb7S3Nw=;
- b=Fwp8j+CFl+YnzB3pI+OKzpUBaikDa9/G5dfdVygT+far9sjwfFqvhEpLAVHwUZN032NSIZ+cMEOMjvcaDjPKiV5pNwWGKd+armRrhyq0nvnpv5W4o1WYlEqyKJcpCmzIXNhtTmTTT+V5jYe9b1hQAlHSOYs+N3fgRD19sfyZ/XY=
-Received: from BLAPR03CA0035.namprd03.prod.outlook.com (2603:10b6:208:32d::10)
- by DM6PR12MB4298.namprd12.prod.outlook.com (2603:10b6:5:21e::9) with
+ bh=aSH4coo6jf8KUZxFw1QqkWuqMDG8jy/FP9WNSzSsWVA=;
+ b=hecMH8ehGCkpFDTQXsKRHzE360QZ+2SKAApa2ohB1tTb4EhfxBVWvUZK8NzJA8ErLHPHpJw47JxFFVc1onMyuLC56SFzDapDx5J/6KTjYD4q/zWT3NmrhPBhxpS0MAFskQfoOVc7Nq+od31tnpv9WeimLKOfDzEOFc7y/mhktoU=
+Received: from BN1PR13CA0010.namprd13.prod.outlook.com (2603:10b6:408:e2::15)
+ by DM4PR12MB5747.namprd12.prod.outlook.com (2603:10b6:8:5e::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.18; Sat, 15 Nov
- 2025 00:18:53 +0000
-Received: from BL6PEPF0001AB4B.namprd04.prod.outlook.com
- (2603:10b6:208:32d:cafe::29) by BLAPR03CA0035.outlook.office365.com
- (2603:10b6:208:32d::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.18 via Frontend Transport; Sat,
- 15 Nov 2025 00:18:25 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Sat, 15 Nov
+ 2025 00:19:07 +0000
+Received: from BL6PEPF0001AB4A.namprd04.prod.outlook.com
+ (2603:10b6:408:e2:cafe::1b) by BN1PR13CA0010.outlook.office365.com
+ (2603:10b6:408:e2::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.7 via Frontend Transport; Sat,
+ 15 Nov 2025 00:19:02 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,20 +48,23 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF0001AB4B.mail.protection.outlook.com (10.167.242.69) with Microsoft
+ BL6PEPF0001AB4A.mail.protection.outlook.com (10.167.242.68) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.13 via Frontend Transport; Sat, 15 Nov 2025 00:18:53 +0000
+ 15.20.9320.13 via Frontend Transport; Sat, 15 Nov 2025 00:19:06 +0000
 Received: from kylin.lan (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 14 Nov
- 2025 16:18:52 -0800
+ 2025 16:19:04 -0800
 From: Alex Hung <alex.hung@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-CC: <alex.hung@amd.com>, <harry.wentland@amd.com>, <leo.liu@amd.com>
-Subject: [PATCH V12 00/32] IGT tests for the KMS Color Pipeline API
-Date: Fri, 14 Nov 2025 17:18:09 -0700
-Message-ID: <20251115001841.3563993-1-alex.hung@amd.com>
+CC: <alex.hung@amd.com>, <harry.wentland@amd.com>, <leo.liu@amd.com>, Leo Li
+ <sunpeng.li@amd.com>
+Subject: [PATCH V12 01/32] tests/kms_writeback: Fix kms_writeback for VKMS
+Date: Fri, 14 Nov 2025 17:18:10 -0700
+Message-ID: <20251115001841.3563993-2-alex.hung@amd.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251115001841.3563993-1-alex.hung@amd.com>
+References: <20251115001841.3563993-1-alex.hung@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -70,52 +73,53 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4B:EE_|DM6PR12MB4298:EE_
-X-MS-Office365-Filtering-Correlation-Id: 94a19e20-6976-4ba6-010b-08de23dc8f15
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4A:EE_|DM4PR12MB5747:EE_
+X-MS-Office365-Filtering-Correlation-Id: 20203e04-7d32-407b-ab72-08de23dc9712
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|36860700013|82310400026|1800799024|13003099007; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?W+ajTBX4D6XVLBF06L1A4lIRbopAkfzBQgPMO6U2UCAP5qZU8Vtmm3GprYQD?=
- =?us-ascii?Q?mQ/5CRp+tu61HthitMTOYKlXd+5SP+oKA+g8RzMKAJ1T4XZ300pqOo9fNXoV?=
- =?us-ascii?Q?3d1gtG/5sypOORp/M38FAshQT+L1AYy43cXVKer0WN56B1fHOlkkf5zPy3Bb?=
- =?us-ascii?Q?R3oO/tJgUg37lI1EVKKaCc6YH6BkUvP+NTzFYy5ANxOaxHWVbecBrZX+/P/a?=
- =?us-ascii?Q?7WafILWvw/3NSxr8BVxxFwRF7SKWBYKGsO3NMf55fSyK69bZhK8n41XVsy54?=
- =?us-ascii?Q?ECcSWuOqgt/ZhGH3yMeu03RUzD53zHTd4Os9XsDHxlzCZq2uZ18pkVnzq04C?=
- =?us-ascii?Q?zpAeV6gs5Mau4CFg83yOYQ+Fc4iSJzy7MzuCUm8p/N3vK4OUwhk1LT+OjTO4?=
- =?us-ascii?Q?rLR+Js4D2cYGdJ865l6F77NO4ovwEMTqKf8sUk+DLpnMWrhwIYXpXkUCHa+D?=
- =?us-ascii?Q?Yv2KRPaVcsqhp2Y//1zOZYwVshI5JclepcPzfqsPueD7hwtGjwUer98TT0W5?=
- =?us-ascii?Q?okf83i1uUuOThIIr7vY4KfSiouSQPCQXcl8omaCzEvBLGSfpSRFQT5xMIieO?=
- =?us-ascii?Q?SGbEe9qhsNhWBmgSb6SZ4M/cfci0M0T/GYoiice6o0EGmEn784vGcl4Cb/mp?=
- =?us-ascii?Q?8jEXVpEmvCzpU3u2fBAa8akCWAwtfAynQ5h5vWAybV49Niz7ODS3bl6p9rLV?=
- =?us-ascii?Q?4zOAMfV09uAzvfDbwIHxNW+givhGIPgvuPwhp9vS9y/4DodKAh4MtYB8a09S?=
- =?us-ascii?Q?xn3LFuGLO8oH8UKYvTR1PlPj21bUDoULg9NnDCBRhQkog8ZMbs38Zm7bRQ+l?=
- =?us-ascii?Q?OSj1BaJo7WuxRxkcsqlMzC032Bzu1/av2zVy9ziTaCmSm52cKvqSD6DXB86z?=
- =?us-ascii?Q?U7znGs2tg2eF01bdfzcOIDbHvvv8vIuBUWq1PWesGwuYa/mHvyabTzSVn6Fv?=
- =?us-ascii?Q?FhSCxvlAx5cqr4EMQQHuoMGUuY1cgeQh/NjxhHtWNmNQIvzpG3RwnLaImi84?=
- =?us-ascii?Q?RXwnzNgC3eiIVhTwDJ7Hm07HSymizf+kf/uc9/E6JBtMgMwrUppO7KtnwvcH?=
- =?us-ascii?Q?K5ns+8biGFFsGi7spyc63jZ5Cjf2QjiU4/hBT7pqsOCLnrKXAm03AM3PahOE?=
- =?us-ascii?Q?ApA+jiKTsU8mP72YN6PQyKMACTo3RlJKrNWHAfMDUTafEwTQ/USwSHGFfWTJ?=
- =?us-ascii?Q?MGfTgfpn7idWHRBbHSeB5l1IwruDnrbkxyc6jU3w63poCfCUaHCN3zQYCL+N?=
- =?us-ascii?Q?KLGI9XqCy9hR0RBvBmNBj6InBXLAwPUzKoC9QWQuRgjr2OxEhaiEUsBQQPBh?=
- =?us-ascii?Q?D4upNiWq/6boyg1q4UYZ4oXNP5Gfx7DMLr6oEbg3caFvr5prEfhIwQS+Qqxo?=
- =?us-ascii?Q?euw8GZ7iz2uwEa2SaGMrAKGJRlbxt9kNgxq0WENcfFw8tNMV2jlwbmlhcaS7?=
- =?us-ascii?Q?bPmPFTnFXlOSlNu5nPoUUG6m8uPt4afP9khIBX1cTvkW2u2+sOtljQanbaFI?=
- =?us-ascii?Q?tX340XQJnHr6qGdHar0inhRp7aFi5g9m4BRv?=
+ ARA:13230040|1800799024|36860700013|82310400026|376014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Y6KJwXP/qkhP173sxC7i+Z0+RmYVYo10eKIj30PXzimbcIwbVN61V2nG3klC?=
+ =?us-ascii?Q?qE7exPXSdRvWBxPg2RV4V5yf5ua9oPIDDciV+ebqtFDrkWhSCf84ngg2IwvJ?=
+ =?us-ascii?Q?NK3dakosrbGixf95AHG635SI6c/PhKDui7pY8w20grN4H4za6MImgVnp9x8X?=
+ =?us-ascii?Q?BjEbgZYTLRcPfCqDR7/mTG1wIui2KOorsBfqUKevzl6QZiQiVqDhWdL5n+pe?=
+ =?us-ascii?Q?4aHIlibLf4bbY0LqRyw/wtPXr9Hwj2wTwUlw4kon6m2RwZ7P2+Yi1NBMB2fG?=
+ =?us-ascii?Q?pX0GiU7vsb/16Hg+pD4Lx6slJUKtZU+FaFYyhwkNdAfLC+/vpng9XZhg/+Nl?=
+ =?us-ascii?Q?3Ol5RtFi8loj+Xg7bqy6znTyHNNcOusvByRzKXUFQnRYF7uwVhb9U5gboOTM?=
+ =?us-ascii?Q?+yhP4LTNixiPYFhufSAbf3wp48Lghzw2wAG7wgWuVuBITxFKHDJ3SCpyZ4Pw?=
+ =?us-ascii?Q?6awPvn8h1x3vdoUs5bhI01856x80nD8tm0x+UwMWtrJF0PQHv5eQSRW9nzRG?=
+ =?us-ascii?Q?hXQ+cF9HwXyB3/q0dXzAIopdxeCuSjtYqgSOrojKRQRYwRjJ0NJ125B9XX9s?=
+ =?us-ascii?Q?2fYq/EmTHq0U9kRdMaPT3wmbdudA2J+ajUdI2Ct8DEzqylIW5/hO3ZVSnGcx?=
+ =?us-ascii?Q?GhYW+J0UuH1qk2yvcy98AwQUwQMBZDhrFpTju0RiNARgT4MK6IE9zxR/9Z2v?=
+ =?us-ascii?Q?xR5/W5RP754xbtzfHNQXh1FcNso7crxIbGBN0C1fFj9gOPelYM2/EsBSndPU?=
+ =?us-ascii?Q?5Uvx4kgGdulKcYFIm7bOwIpEdYEV9QhNuu/xstezhX7NfzWQMx7UnL1xHw2L?=
+ =?us-ascii?Q?pLBpTAkH4VI4r9P0THJzPscweCKg7TZ7ch1DSlrQeF0bzoUcGVDWxAABTIy2?=
+ =?us-ascii?Q?PWzOg9Sri6bpXOBRoMYCD+sy6XD84mR4r7sjAvELFZ2U0ekCDi8YPlT+woD7?=
+ =?us-ascii?Q?D/jT069hrQLRSMEDzGOIzD0FATVrZbZM1vBISFRpwr8EgtzIS+JlDpatgCEu?=
+ =?us-ascii?Q?dnm/3RdZ5oy18AhE1pldKS1gAcmaQHLb2gPv+Z0S1W8S1bp2Ydwq70EcPb+F?=
+ =?us-ascii?Q?TiKeGuo/UDkEf28bshUfa0UEtAhAdc5Fd9+6tFHsGcfTPCCfyn2yNI/lJkAA?=
+ =?us-ascii?Q?jPv929zezJhejt8h21CtXPqQwJJQCFmBn6s8EAJwPKWJ50PEhIq8VV8p4m6d?=
+ =?us-ascii?Q?tkmV9r8OQ4XuTeK+LSp7YHGnS834b06FAkYwQymCDKqwLK5/CFOwumsqPUXb?=
+ =?us-ascii?Q?ZNVSF/QMz4lPjXi589aU7n2a2PSsiibm09qs98jY4hcM+CS6uAKTvXEkREVE?=
+ =?us-ascii?Q?/KBqlSQTVoixBlFtnDZ0b8wE0F/47B5VGI2gcA09kLZNQp70f9h7+i/BHn/A?=
+ =?us-ascii?Q?1TTTOfdIK2thfUsNKVJiLPyREx6Pf1giGomhO9mVrPpRSz+wUW8gFo/EDrKK?=
+ =?us-ascii?Q?MUYkUY411u5fas6yghZ5sRhqeLTGJNOnFb31nu8wYjFzKgcIXOLTJ7lVgJvM?=
+ =?us-ascii?Q?MCrU5R+wmQEhPYuJyfxgIJHa444Dp43AqKB0z1w+k0K0goXeYS4KoX981aDv?=
+ =?us-ascii?Q?0FAITN/N5h5hvN7nWgI=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024)(13003099007);
- DIR:OUT; SFP:1101; 
+ SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014); DIR:OUT;
+ SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2025 00:18:53.3029 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 94a19e20-6976-4ba6-010b-08de23dc8f15
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2025 00:19:06.7113 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 20203e04-7d32-407b-ab72-08de23dc9712
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB4B.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB4A.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4298
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5747
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -131,160 +135,75 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Both kernel patches and IGT patches are reviewed and the API is stable
-for a few revisions. Does anyone have concerns if kernel and IGT patches
-are to be merged?
+From: Harry Wentland <harry.wentland@amd.com>
 
-This series introduces support for
-* drm_colorop DRM objects
-* COLOR_PIPELINE plane property
+VKMS doesn't like us to add buffers with unknown fourcc
+type. Other drivers might behave similarly. Make sure
+we avoid creating 10bpc buffers if they are not supported.
 
-Kernel changes can be found at [1] and on dri-devel.
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Leo Li <sunpeng.li@amd.com>
+---
+ tests/kms_writeback.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-It also adds a new kms_colorop test case that tests the color pipeline
-API. The tests are designed to be easily extensible with a "transform"
-and "compare" function pointer for each test. The "transform" function
-performs the transformations under test via SW routines. The "compare"
-function compares the DRM/KMS result (via a writeback connector) with
-the result derived via the SW "transform".
-
-This series introduces a number of tests for pre-defined transfer
-functions, custom LUTs, 3x4 CTMs, a multiplier, 3D LUT, and a bypass
-test.
-
-It tests 8-bit and 10-bit RGB surface formats, depending on driver support
-on the drm_plane as well as the writeback drm_connector end.
-
-[1] https://gitlab.freedesktop.org/alex.hung/linux/-/tree/amd-color-pipeline-v13
-
-v12:
- - Replace fb->width * fb->height * cpp by fb->size
- - Remove unused enum "IGT_COLOROP_COLOR_DEPTH"
- - Clarify gamma 2.2 names (Gamma 2.2 Inverse OETF and Gamma 2.2 OETF)
-
-v11:
- - Add new gamma 2.2 subtests (Patch 31 & 32)
- - Remove unnecessary TODO comments
- - Remove drmSetClientCap(... DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE)
-   out of igt_display_require
- - Remove copyright (which is replaced by SPDX)
- - Merge all colorop from drm_mode.h in kernel to a single commit
- - Separate changes in kms_colorop and in lib to different commits
- - Move sharable functions to lib, i.e.,
-  - get_and_wait_out_fence to igt_get_and_wait_out_fence
-  - detach_crtc to igt_detach_crtc
- - Add --dump option to replace DUMP_FBS macro
- - Misc fixes and cleanup in code and comments
-  - remove unused variables, functions and enum
-  - fix typos and incorrect indentation
-  - constify variables
-
-v10:
- - Merge some patches accordingly
- - Change drm_color_lut_32 to drm_color_lut32
- - Fix 16bit to 32bit coversions in configure_3dlut()
- - Fix errors and warnings reported by checkpatch
- - Clear dead code and redundant debug messages and comments
-
-v9:
- - Check !display->has_plane_color_pipeline before igt_plane_has_prop (
-   IGT_PLANE_COLOR_ENCODING and IGT_PLANE_COLOR_RANGE)  (Chaitanya Kumar Borah)
-
-v8:
- - Add a new colorop uniqueness subtest
- - Include a patch "lib/igt_kms: Destroy colorops on exit"
- - Add function documentation comment for get_writeback_formats_blob
- - Fix indentation errors and a new blank line at EOF
-
-v7:
- - Add more documents and sync up with kernel implementation
- - Update 3DLUT tests according to kernel changes
-
-v5:
- - Bypass test
- - 10 bpc support
- - Proper setup and cleanup
- - PQ/BT2020 TFs
- - 1D LUT tests
- - Multiplier tests
- - 3D LUT test
-
-v4:
- - Intel color pipeline work, to possibly be combined with v5 in a future iteration.
-
-v3:
- - Remove need for IOCTLs and libdrm changes
- - Test colorop properties with both atomic and legacy code paths
- - move enum drm_colorop_type to drm_mode.h
- - Add descriptions for public functions in lib (Kamil)
- - Use SPDX style license identifier (Kamil)
- - Replace Skia license comment with copyright note in file header
- - Fix kms_colorop subtests if applicable color pipeline not found
-
-Alex Hung (12):
-  drm-uapi/drm: sync with color pipeline commit
-  drm-uapi: Add COLOROP objects
-  lib/igt_kms: Add writeback functions
-  tests/kms_colorop: Add a TF sRGB test
-  lib/igt_color: Add 1D LUT color transformation support
-  tests/kms_colorop: Add tests that exercise the 1D LUT colorops
-  tests/kms_colorop: Add multiplier tests
-  scripts/convert_3dlut.py Convert a 3D LUT to igt_3dlut_t array for 3D
-    LUT API
-  tests/kms_colorop: Add a 3D LUT subtest
-  tests/kms_colorop: Add a colorop uniqueness subtest
-  lib/igt_color: Add support for Gamma 2.2
-  tests/kms_colorop: Add Gamma 2.2 tests for 1D Curves
-
-Harry Wentland (20):
-  tests/kms_writeback: Fix kms_writeback for VKMS
-  lib/igt_kms: Introduce DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE
-  lib/igt_kms: Add COLOROP properties and helper functions
-  tests/kms_properties: Add colorop properties test
-  lib/igt_color/igt_fb: Add SW color transform functionality
-  lib/igt_fb: Add igt_copy_fb function
-  lib/drmtest: Add is_vkms_device()
-  tests/kms_colorop: Add kms_colorop tests
-  lib/igt_kms: Add support for DATA colorop property
-  lib/igt_color: Add support for 3x4 matrices
-  tests/kms_colorop: Add 3x4 CTM tests
-  tests/kms_colorop: Add bypass test
-  tests/kms_colorop: Add 10bpc test
-  tests/kms_colorop: Skip if writeback does not support fourcc
-  tests/kms_colorop: Refactor to use a subtest group with fixtures
-  lib/igt_color: Support color transform for XRGB2101010
-  lib/igt_color: Add PQ variants for 0-1 and 0-125 range
-  tests/kms_colorop: Add tests for PQ variants
-  lib/igt_color: add BT2020/BT709 transfer functions
-  tests/kms_colorop: Add TF BT2020/BT709 tests
-
- include/drm-uapi/amdgpu_drm.h |    9 -
- include/drm-uapi/drm.h        |   14 +
- include/drm-uapi/drm_mode.h   |   92 +
- lib/drmtest.c                 |    5 +
- lib/drmtest.h                 |    1 +
- lib/igt_color.c               |  651 +++++
- lib/igt_color.h               |  149 +
- lib/igt_color_lut.h           | 4946 +++++++++++++++++++++++++++++++++
- lib/igt_fb.c                  |   43 +-
- lib/igt_fb.h                  |    3 +
- lib/igt_kms.c                 |  411 ++-
- lib/igt_kms.h                 |  101 +
- lib/meson.build               |    1 +
- scripts/convert_3dlut.py      |   94 +
- tests/kms_colorop.c           |  704 +++++
- tests/kms_colorop.h           |  266 ++
- tests/kms_properties.c        |   94 +-
- tests/kms_writeback.c         |   24 +-
- tests/meson.build             |    1 +
- 19 files changed, 7566 insertions(+), 43 deletions(-)
- create mode 100644 lib/igt_color.c
- create mode 100644 lib/igt_color.h
- create mode 100644 lib/igt_color_lut.h
- create mode 100755 scripts/convert_3dlut.py
- create mode 100644 tests/kms_colorop.c
- create mode 100644 tests/kms_colorop.h
-
+diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+index 1b81088d7..2fdb5bc16 100644
+--- a/tests/kms_writeback.c
++++ b/tests/kms_writeback.c
+@@ -112,6 +112,10 @@ static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
+ 	height = override_mode.vdisplay;
+ 
+ 	for (i = 0; i < sizeof(fourcc) / sizeof(uint32_t); i++) {
++		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++
++		if (!igt_plane_has_format_mod(plane, fourcc[i], DRM_FORMAT_MOD_LINEAR))
++			continue;
+ 
+ 		ret = igt_create_fb(display->drm_fd, width, height,
+ 				    fourcc[i], modifier, &input_fb);
+@@ -121,7 +125,6 @@ static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
+ 				    fourcc[i], modifier, &output_fb);
+ 		igt_assert_lte(0, ret);
+ 
+-		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 		igt_plane_set_fb(plane, &input_fb);
+ 		igt_output_set_writeback_fb(output, &output_fb);
+ 
+@@ -571,12 +574,14 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+ 				      &input_fb);
+ 		igt_assert(fb_id >= 0);
+ 
+-		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay,
+-				      mode.vdisplay,
+-				      DRM_FORMAT_XRGB2101010,
+-				      DRM_FORMAT_MOD_LINEAR,
+-				      &input_fb_10bit);
+-		igt_assert(fb_id >= 0);
++		if (data.supported_colors & XRGB2101010) {
++			fb_id = igt_create_fb(display.drm_fd, mode.hdisplay,
++					      mode.vdisplay,
++					      DRM_FORMAT_XRGB2101010,
++					      DRM_FORMAT_MOD_LINEAR,
++					      &input_fb_10bit);
++			igt_assert(fb_id >= 0);
++		}
+ 
+ 		igt_plane_set_fb(plane, &input_fb);
+ 
+@@ -704,7 +709,10 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+ 	igt_fixture {
+ 		cleanup_writeback(&display, output);
+ 		igt_remove_fb(display.drm_fd, &input_fb);
+-		igt_remove_fb(display.drm_fd, &input_fb_10bit);
++
++		if (data.supported_colors & XRGB2101010)
++			igt_remove_fb(display.drm_fd, &input_fb_10bit);
++
+ 		igt_display_fini(&display);
+ 		drm_close_driver(display.drm_fd);
+ 	}
 -- 
 2.43.0
 
