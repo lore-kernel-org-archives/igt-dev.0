@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE2C0CE8D6B
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 10:18:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 879B0CE8D6B
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 10:29:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 580AB10E335;
-	Mon, 17 Nov 2025 10:18:03 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aElej+lU";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5EA0D10E323
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Nov 2025 10:18:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763374680; x=1794910680;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=JYGuDbcWonfxL+IuMXD9MKpGT1RiZI5NEakEHHL+RVU=;
- b=aElej+lUT4kZe/61GuzCTLQX0uNJmei6V73LMTK/V9YXSKbOJBcyGwG1
- xc52StD5I2x8RcuyTTomg41lT5qo0eKxfSf9Z+PdegcmiuY/Ebow83PAS
- lxR41pDQG3yO7vqeuCxiTOvuhQ9Dxsp+mW5BbdDoZefrS0b+zlh6gAip2
- IrQGZnR0xXFr46aqw4yUZEtFYc9rtvKSyLxbazR7QILSoBycroxqGIu+R
- 8wnVeeuS10aeMFstojr49cp2PQu8YBE3Ij6CHMSZ4lzfSsS92k1WMj1Ul
- abenIND2iIfc59tIz/E6bJ6LA7AZ+GXg8FqDHzEUgVuMTDT/MezBeqiPg w==;
-X-CSE-ConnectionGUID: /znJipifQqKzmEgydvROpg==
-X-CSE-MsgGUID: 7h9/53zLQiiOlZnOaG6ETg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="64574051"
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="64574051"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 02:18:00 -0800
-X-CSE-ConnectionGUID: RqpQFhr4TPKWyPVFoUzM+A==
-X-CSE-MsgGUID: U31UremyRliedv/RhLd9EA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="221053942"
-Received: from bvivekan-desk.iind.intel.com ([10.190.238.63])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 02:17:58 -0800
-From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
- Matt Roper <matthew.d.roper@intel.com>
-Subject: [PATCH v4 2/2] xe_exercise_blt: Insert a flush between two
- consecutive FAST_COPY
-Date: Mon, 17 Nov 2025 15:48:38 +0530
-Message-ID: <20251117101836.3892456-4-balasubramani.vivekanandan@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251117101836.3892456-3-balasubramani.vivekanandan@intel.com>
-References: <20251117101836.3892456-3-balasubramani.vivekanandan@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3D10110E1BD;
+	Mon, 17 Nov 2025 10:29:54 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BCCA910E00E;
+ Mon, 17 Nov 2025 10:29:52 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2136875835479867101=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fdp=5Fli?=
+ =?utf-8?q?nktrain=5Ffallback=3A_log_before_assert?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 17 Nov 2025 10:29:52 -0000
+Message-ID: <176337539276.271.7983743907950299173@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20251117080552.471414-1-kunal1.joshi@intel.com>
+In-Reply-To: <20251117080552.471414-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,128 +37,184 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As per the spec, a flush is required between two dependent BLT
-instructions. In fast-copy-emit, the source of the second BLT
-instruction was the destination of the previous BLT instuction.
-Therefore a flush is required between them.
+--===============2136875835479867101==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Bpsec: 57567,57555
+== Series Details ==
 
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
----
+Series: tests/intel/kms_dp_linktrain_fallback: log before assert
+URL   : https://patchwork.freedesktop.org/series/157644/
+State : success
 
-v2, v3, v4:
-  - Package the flush insert instructions into a helper function, making
-    it part of library (Matt)
+== Summary ==
 
-___
- lib/intel_blt.c               | 54 +++++++++++++++++++++++++++++++++++
- lib/intel_blt.h               |  3 ++
- tests/intel/xe_exercise_blt.c |  8 ++++++
- 3 files changed, 65 insertions(+)
+CI Bug Log - changes from IGT_8627 -> IGTPW_14067
+====================================================
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index e63341a02..82e6186bf 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -1629,6 +1629,60 @@ static void dump_bb_fast_cmd(struct gen12_fast_copy_data *data)
- 		 cmd[9], data->dw09.src_address_hi);
- }
- 
-+struct xe_flush_dw_cmd {
-+	struct {
-+		uint32_t length:	BITRANGE(0, 5);
-+		uint32_t rsvd0:		BITRANGE(6, 7);
-+		uint32_t notify_en: 	BITRANGE(8, 8);
-+		uint32_t flush_llc:	BITRANGE(9, 9);
-+		uint32_t rsvd1:		BITRANGE(10, 13);
-+		uint32_t postsync:	BITRANGE(14, 15);
-+		uint32_t flush_ccs:	BITRANGE(16, 16);
-+		uint32_t rsvd2:		BITRANGE(17, 17);
-+		uint32_t tlb_inval:	BITRANGE(18, 18);
-+		uint32_t rsvd3:		BITRANGE(19, 20);
-+		uint32_t store_index:	BITRANGE(21, 21);
-+		uint32_t rsvd4:		BITRANGE(22, 22);
-+		uint32_t opcode:	BITRANGE(23, 28);
-+		uint32_t client:	BITRANGE(29, 31);
-+	} dw00;
-+
-+	uint32_t dw01;
-+	uint32_t dw02;
-+	uint32_t dw03;
-+	uint32_t dw04;
-+};
-+
-+/**
-+ * emit_xe_flush_dw:
-+ * @fd: drm fd
-+ * @blt: blitter data which provides the BB pointer
-+ * @bb_pos: position at which to insert the flush command
-+ *
-+ * Function emits a flush instruction to the BB
-+ *
-+ * Returns:
-+ * Next write position in batch.
-+ */
-+uint64_t emit_xe_flush_dw(int fd, const struct blt_copy_data *blt,
-+			  uint64_t bb_pos)
-+{
-+	uint8_t *bb;
-+	struct xe_flush_dw_cmd data = {};
-+
-+	igt_assert(bb_pos + sizeof(data) < blt->bb.size);
-+
-+	bb = bo_map(fd, blt->bb.handle, blt->bb.size, blt->driver);
-+	data.dw00.opcode = 0x26;
-+	data.dw00.length = 3;
-+	memcpy(bb + bb_pos, &data, sizeof(data));
-+	bb_pos += sizeof(data);
-+
-+	munmap(bb, blt->bb.size);
-+
-+	return bb_pos;
-+}
-+
- /**
-  * emit_blt_fast_copy:
-  * @fd: drm fd
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index 54a096c03..c87178abf 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -263,6 +263,9 @@ int blt_ctrl_surf_copy(int fd,
- 		       uint64_t ahnd,
- 		       const struct blt_ctrl_surf_copy_data *surf);
- 
-+uint64_t emit_xe_flush_dw(int fd, const struct blt_copy_data *blt,
-+			  uint64_t bb_pos);
-+
- uint64_t emit_blt_fast_copy(int fd,
- 			    uint64_t ahnd,
- 			    const struct blt_copy_data *blt,
-diff --git a/tests/intel/xe_exercise_blt.c b/tests/intel/xe_exercise_blt.c
-index a545654d3..e24a48abf 100644
---- a/tests/intel/xe_exercise_blt.c
-+++ b/tests/intel/xe_exercise_blt.c
-@@ -103,6 +103,14 @@ static int fast_copy_one_bb(int xe,
- 	blt_tmp.print_bb = blt->print_bb;
- 	bb_pos = emit_blt_fast_copy(xe, ahnd, &blt_tmp, bb_pos, false);
- 
-+	/*
-+	 * Bspec asks to insert a flush between two BLIT instructions to resolve
-+	 * BLIT level dependency. Though the spec is not clear in explaining
-+	 * it, HW team requested for a flush instuction between these two BLIT
-+	 * instuctions as they have a dependency.
-+	 */
-+	bb_pos = emit_xe_flush_dw(xe, &blt_tmp, bb_pos);
-+
- 	/* Second blit */
- 	blt_copy_init(xe, &blt_tmp);
- 	blt_tmp.src = blt->mid;
--- 
-2.43.0
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14067/index.html
+
+Participating hosts (44 -> 42)
+------------------------------
+
+  Missing    (2): fi-snb-2520m bat-adls-6 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14067 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8627/bat-mtlp-8/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14067/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-atsm-1:         [PASS][3] -> [INCOMPLETE][4] ([i915#14564])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8627/bat-atsm-1/igt@i915_selftest@live@requests.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14067/bat-atsm-1/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-9:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8627/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14067/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-tgl-1115g4:      [PASS][7] -> [FAIL][8] ([i915#14867])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8627/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14067/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-atsm-1:         [DMESG-FAIL][9] ([i915#12061] / [i915#13929]) -> [INCOMPLETE][10] ([i915#12061] / [i915#14564] / [i915#15157])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8627/bat-atsm-1/igt@i915_selftest@live.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14067/bat-atsm-1/igt@i915_selftest@live.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
+  [i915#14564]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14564
+  [i915#14867]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14867
+  [i915#15157]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15157
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8627 -> IGTPW_14067
+
+  CI-20190529: 20190529
+  CI_DRM_17557: b2e41c70a5eeddce427dc6df02508b6856eb4a11 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14067: 14067
+  IGT_8627: 8627
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14067/index.html
+
+--===============2136875835479867101==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_dp_linktrain_fallback: log before assert</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/157644/">https://patchwork.freedesktop.org/series/157644/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14067/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14067/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8627 -&gt; IGTPW_14067</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14067/index.html</p>
+<h2>Participating hosts (44 -&gt; 42)</h2>
+<p>Missing    (2): fi-snb-2520m bat-adls-6 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14067 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8627/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14067/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8627/bat-atsm-1/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14067/bat-atsm-1/igt@i915_selftest@live@requests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14564">i915#14564</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8627/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14067/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8627/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14067/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14867">i915#14867</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8627/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14067/bat-atsm-1/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14564">i915#14564</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15157">i915#15157</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8627 -&gt; IGTPW_14067</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17557: b2e41c70a5eeddce427dc6df02508b6856eb4a11 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14067: 14067<br />
+  IGT_8627: 8627</p>
+
+</body>
+</html>
+
+--===============2136875835479867101==--
