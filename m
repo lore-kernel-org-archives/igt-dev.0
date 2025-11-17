@@ -4,27 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8FD1CE8D6B
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 16:31:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A6C7CE8D6B
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 17:15:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6948910E052;
-	Mon, 17 Nov 2025 16:31:09 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D786610E052;
- Mon, 17 Nov 2025 16:31:08 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2672252126274440670=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 99BF510E105;
+	Mon, 17 Nov 2025 17:15:38 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="brqWKdCY";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2CD5610E105
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Nov 2025 17:15:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1763399737; x=1794935737;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=j7sPR6vWgz1lx/23zU+WGa123LakF67LseKwloJiIZM=;
+ b=brqWKdCYedjSbFThZhe6FQCbf4DplAO+EMgrWKjiqmbtGTsZDqtsAUVy
+ lAsyn44R1grNePk/xTJSZXCnkvDfUIRKiowiierG0cmYE1wVZKoCN7U1B
+ 7578kxsz1+Ar2bnB9VBtFsTRaLFzpaLNY3RFqx0pFhuehEEjlzognopap
+ GzHWtUHCw24EpmUCKuSc5pPxCYXpwd9+calDhHHLZTM4AEu7bz2WxbR8b
+ ofu9i3IUBHxUPDj2Xf5KmGEw+TeoXWBsGXSpR3sLsG6I13RRarxljFPs4
+ NEckjhec9S7xBF+BwlJtk0nOsgSNdhQCKGs8z7YhTO4BPKOBi+b4O+RH9 Q==;
+X-CSE-ConnectionGUID: xKKQb7JRTPG19GMASEh/AA==
+X-CSE-MsgGUID: BVG2J8W4Si+dz6Mj8vSCGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="90883026"
+X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; d="scan'208";a="90883026"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2025 09:15:36 -0800
+X-CSE-ConnectionGUID: bOUrGShtQ1unW48ggJwGiQ==
+X-CSE-MsgGUID: YnoFWiB/T+6tzd2JcyfEuw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; d="scan'208";a="221162638"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 09:15:36 -0800
+Date: Mon, 17 Nov 2025 18:15:20 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Zongyao Bai <zongyao.bai@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Matthew Auld <matthew.auld@intel.com>,
+ Xin Wang <x.wang@intel.com>
+Subject: Re: [PATCH 1/2] tests/intel/xe_pat: switch PAT tests to igt_srandom()
+Message-ID: <20251117171520.mbh7upuhlud4eqd4@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Zongyao Bai <zongyao.bai@intel.com>, igt-dev@lists.freedesktop.org,
+ Matthew Auld <matthew.auld@intel.com>, Xin Wang <x.wang@intel.com>
+References: <20251115011730.3700391-1-zongyao.bai@intel.com>
+ <20251115011730.3700391-2-zongyao.bai@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/gem=5Flmem=5Fsw?=
- =?utf-8?q?apping=3A_Run_smem-oom_helper_loop_in_background?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 17 Nov 2025 16:31:08 -0000
-Message-ID: <176339706887.2323.16527477540705979830@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20251117113032.1143849-2-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20251117113032.1143849-2-janusz.krzysztofik@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251115011730.3700391-2-zongyao.bai@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,145 +69,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2672252126274440670==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Zongyao,
+On 2025-11-15 at 01:17:29 +0000, Zongyao Bai wrote:
+> For consistency with the igt framework, use igt_srandom() to generate
+> random seed instead of srand().
+> 
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: Xin Wang <x.wang@intel.com>
+> Signed-off-by: Zongyao Bai <zongyao.bai@intel.com>
+> ---
+>  tests/intel/xe_pat.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
+> 
+> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+> index 59dfb6b11..54bedefbb 100644
+> --- a/tests/intel/xe_pat.c
+> +++ b/tests/intel/xe_pat.c
+> @@ -1161,15 +1161,9 @@ igt_main_args("V", NULL, help_str, opt_handler, NULL)
+>  	int fd;
+>  
+>  	igt_fixture {
+> -		uint32_t seed;
+> -
+> +		igt_srandom();
 
-== Series Details ==
+You could also remove this line, it is done by igt_core at
+initialization so no need for repeating it here.
 
-Series: tests/intel/gem_lmem_swapping: Run smem-oom helper loop in background
-URL   : https://patchwork.freedesktop.org/series/157662/
-State : success
+Regards,
+Kamil
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8628_BAT -> XEIGTPW_14071_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14071_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-modeset:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#4543]) +1 other test dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8628/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14071/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html
-
-  
-#### Possible fixes ####
-
-  * igt@xe_waitfence@abstime:
-    - bat-dg2-oem2:       [TIMEOUT][3] ([Intel XE#6506]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8628/bat-dg2-oem2/igt@xe_waitfence@abstime.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14071/bat-dg2-oem2/igt@xe_waitfence@abstime.html
-
-  
-  [Intel XE#4543]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543
-  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
-
-
-Build changes
--------------
-
-  * IGT: IGT_8628 -> IGTPW_14071
-  * Linux: xe-4116-b2e41c70a5eeddce427dc6df02508b6856eb4a11 -> xe-4118-4ebea764d0e6ddbcaed6a474aee387f9c45e2eab
-
-  IGTPW_14071: 06dc61d54888a8b82292137d321e2657bdc4d11c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8628: 8628
-  xe-4116-b2e41c70a5eeddce427dc6df02508b6856eb4a11: b2e41c70a5eeddce427dc6df02508b6856eb4a11
-  xe-4118-4ebea764d0e6ddbcaed6a474aee387f9c45e2eab: 4ebea764d0e6ddbcaed6a474aee387f9c45e2eab
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14071/index.html
-
---===============2672252126274440670==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/gem_lmem_swapping: Run smem-oom helper loop in background</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/157662/">https://patchwork.freedesktop.org/series/157662/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14071/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14071/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8628_BAT -&gt; XEIGTPW_14071_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14071_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-modeset:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8628/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14071/bat-adlp-7/igt@kms_flip@basic-flip-vs-modeset.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4543">Intel XE#4543</a>) +1 other test dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_waitfence@abstime:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8628/bat-dg2-oem2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14071/bat-dg2-oem2/igt@xe_waitfence@abstime.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8628 -&gt; IGTPW_14071</li>
-<li>Linux: xe-4116-b2e41c70a5eeddce427dc6df02508b6856eb4a11 -&gt; xe-4118-4ebea764d0e6ddbcaed6a474aee387f9c45e2eab</li>
-</ul>
-<p>IGTPW_14071: 06dc61d54888a8b82292137d321e2657bdc4d11c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8628: 8628<br />
-  xe-4116-b2e41c70a5eeddce427dc6df02508b6856eb4a11: b2e41c70a5eeddce427dc6df02508b6856eb4a11<br />
-  xe-4118-4ebea764d0e6ddbcaed6a474aee387f9c45e2eab: 4ebea764d0e6ddbcaed6a474aee387f9c45e2eab</p>
-
-</body>
-</html>
-
---===============2672252126274440670==--
+>  		fd = drm_open_driver(DRIVER_XE);
+>  		dev_id = intel_get_drm_devid(fd);
+> -
+> -		seed = time(NULL);
+> -		srand(seed);
+> -		igt_debug("seed: %d\n", seed);
+> -
+>  		xe_device_get(fd);
+>  	}
+>  
+> -- 
+> 2.43.0
+> 
