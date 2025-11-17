@@ -4,27 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B337CE8D6B
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 11:17:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47EADCE8D6B
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 11:31:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BF5EA10E1C4;
-	Mon, 17 Nov 2025 11:17:29 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC63810E1C4;
- Mon, 17 Nov 2025 11:17:28 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6111011040426500121=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id F057710E3A8;
+	Mon, 17 Nov 2025 11:31:09 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MB4Si0hU";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 791C910E3A1;
+ Mon, 17 Nov 2025 11:31:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1763379069; x=1794915069;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=5dJYCYL1eKWFKknCLQIN8BTc0M9yj9jzT5WIpJyzSU4=;
+ b=MB4Si0hUBtACsbF6sIwuDfSTYf3j/CDscSQL0TS9dMVwukOjdQyGDJQo
+ ylFfcAkFrT0OdUcny3KznBTVMnY6pZGmVQKiZ3m6g0O2Y4HSPn6WHEWDW
+ yQjsZu6PPHlcRt7CvXz69OrMjDr/+Sf07xUwbP+YzTTe4t1vUmf7G5eGG
+ artrKKrcKx7HgZ8nlh62hNwfWXKX7tedeFVCaUCV17v4nA9tMWSDAP5BT
+ JfLqlq8KaeQgpSPoMTsbgeDBwoa/L3yT4H8Ydhc0goVOD12elLZpBjNrd
+ o0/mq1tM/x6gJlcq9yqCOvh6YZ+AAypZrLIj5X9K+wQIoYLEZhbWOYLuE w==;
+X-CSE-ConnectionGUID: Db6UCUUCSvCTG5nzEyzR1A==
+X-CSE-MsgGUID: 27jObJyWRYuPETIQ8rh+8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="65257322"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="65257322"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2025 03:31:08 -0800
+X-CSE-ConnectionGUID: RUVLBCeYSF2DnbIS5/Ffdw==
+X-CSE-MsgGUID: n8/OYCnQTn+ucCaXScXTvA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="194532752"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.53])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2025 03:31:05 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Petri Latvala <adrinael@adrinael.net>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Ayaz A Siddiqui <ayaz.siddiqui@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t v2] tests/intel/gem_lmem_swapping: Run smem-oom helper
+ loop in background
+Date: Mon, 17 Nov 2025 12:29:42 +0100
+Message-ID: <20251117113032.1143849-2-janusz.krzysztofik@linux.intel.com>
+X-Mailer: git-send-email 2.51.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/i915=5Fpm=5Frps?=
- =?utf-8?q?=3A_Added_Multi-GT_support_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mallesh Koujalagi" <mallesh.koujalagi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 17 Nov 2025 11:17:28 -0000
-Message-ID: <176337824883.356.18204567178464751286@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20251117052506.578422-4-mallesh.koujalagi@intel.com>
-In-Reply-To: <20251117052506.578422-4-mallesh.koujalagi@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,125 +73,88 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6111011040426500121==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The smem-oom subtest forks SMEM helper processes from a loop run in the
+main process.  That loop is supposed to be terminated only when exit
+handler of a formerly forked LMEM eviction process signals its completion.
+However, since the subtest arranges OOM conditions, the LMEM process may
+get killed and its completion never signaled.  When that happens, the
+subtest may keep re-spawning SMEM helpers indefinitely and complete only
+when killed, e.g., by igt_runner on per-test timeout expiration.
 
-== Series Details ==
+Instead of waiting for completion of the loop of the SMEM helpers, run
+the loop in background and wait for completion of the LMEM eviction
+process.  Also, take care of signaling the SMEM helper processes about
+LMEM eviction process completion in case it has got killed and hasn't had
+a chance to do that itself.
 
-Series: tests/intel/i915_pm_rps: Added Multi-GT support (rev2)
-URL   : https://patchwork.freedesktop.org/series/153509/
-State : success
+This patch addresses timeout results reported to the below mentioned
+upstream issue.  Other failures (incomplete / dmesg-warn / crash) may
+need additional patches, but let's fix those timeouts first to get a more
+clear picture.
 
-== Summary ==
+v2: Add a comment on why igt_waitchildren() has been replaced with its
+    non-failing variant (Krzysztof),
+  - in commit description, use "LMEM eviction process" wording in place of
+    just "LMEM process" (Krzysztof),
+  - insert "intel" component into the commit message tag (Kamil).
 
-CI Bug Log - changes from XEIGT_8628_BAT -> XEIGTPW_14068_BAT
-====================================================
+Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5493
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ tests/intel/gem_lmem_swapping.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-Summary
--------
+diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+index 8e0dac42d8..6f494b5342 100644
+--- a/tests/intel/gem_lmem_swapping.c
++++ b/tests/intel/gem_lmem_swapping.c
+@@ -678,6 +678,7 @@ static void test_smem_oom(int i915,
+ 	const unsigned int num_alloc = 1 + smem_size / (alloc >> 20);
+ 	struct igt_helper_process smem_proc = {};
+ 	unsigned int n;
++	int lmem_err;
+ 
+ 	lmem_done = mmap(0, sizeof(*lmem_done), PROT_WRITE,
+ 			 MAP_SHARED | MAP_ANON, -1, 0);
+@@ -703,8 +704,8 @@ static void test_smem_oom(int i915,
+ 	}
+ 
+ 	/* smem memory hog process, respawn till the lmem process completes */
+-	while (!READ_ONCE(*lmem_done)) {
+-		igt_fork_helper(&smem_proc) {
++	igt_fork_helper(&smem_proc) {
++		while (!READ_ONCE(*lmem_done)) {
+ 			igt_fork(child, 1) {
+ 				for (int pass = 0; pass < num_alloc; pass++) {
+ 					if (READ_ONCE(*lmem_done))
+@@ -730,11 +731,19 @@ static void test_smem_oom(int i915,
+ 			for (n = 0; n < 2; n++)
+ 				wait(NULL);
+ 		}
+-		igt_wait_helper(&smem_proc);
+ 	}
++
++	/* Reap exit status of the lmem process but don't fail before cleanup */
++	lmem_err = __igt_waitchildren();
++
++	/* Make sure SMEM helpers stop even when the LMEM process gets killed */
++	if (lmem_err)
++		(*lmem_done)++;
+ 	munmap(lmem_done, sizeof(*lmem_done));
+-	/* Reap exit status of the lmem process */
+-	igt_waitchildren();
++
++	igt_wait_helper(&smem_proc);
++
++	igt_assert_eq(lmem_err, 0);
+ }
+ 
+ #define dynamic_lmem_subtest(reg, regs, subtest_name...) \
+-- 
+2.51.1
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14068_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_waitfence@reltime:
-    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#6520])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8628/bat-dg2-oem2/igt@xe_waitfence@reltime.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14068/bat-dg2-oem2/igt@xe_waitfence@reltime.html
-
-  
-  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
-
-
-Build changes
--------------
-
-  * IGT: IGT_8628 -> IGTPW_14068
-
-  IGTPW_14068: 14068
-  IGT_8628: 8628
-  xe-4116-b2e41c70a5eeddce427dc6df02508b6856eb4a11: b2e41c70a5eeddce427dc6df02508b6856eb4a11
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14068/index.html
-
---===============6111011040426500121==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/i915_pm_rps: Added Multi-GT support (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/153509/">https://patchwork.freedesktop.org/series/153509/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14068/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14068/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8628_BAT -&gt; XEIGTPW_14068_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14068_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_waitfence@reltime:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8628/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14068/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8628 -&gt; IGTPW_14068</li>
-</ul>
-<p>IGTPW_14068: 14068<br />
-  IGT_8628: 8628<br />
-  xe-4116-b2e41c70a5eeddce427dc6df02508b6856eb4a11: b2e41c70a5eeddce427dc6df02508b6856eb4a11</p>
-
-</body>
-</html>
-
---===============6111011040426500121==--
