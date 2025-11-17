@@ -4,75 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47DC1CEBF93
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 10:49:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14622CE8D6B
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 11:00:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EF9A210E1B9;
-	Mon, 17 Nov 2025 10:49:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C3CB810E3A4;
+	Mon, 17 Nov 2025 11:00:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WRX0WHr6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PYc819lQ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09F7F10E1B9
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Nov 2025 10:49:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B99D810E3A4
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Nov 2025 11:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763376558; x=1794912558;
- h=from:date:subject:mime-version:content-transfer-encoding:
- message-id:references:in-reply-to:to:cc;
- bh=k+1aGXhyU6t8jOAKA9+yzx+CxzrChS9sd0iESZiVxcU=;
- b=WRX0WHr6xzhOV6kmb/CCGZZN3Knh0QUUxeNvCv2kOvD48Edke3KOVGBA
- aM3MlevV/UpTiJW9D32quA+RtPi7j1zAEcjyQxwOGP2ojzkIJZ+qOg5cT
- J9AwApM9tAIQc8B6INl5F02nslW0WFuzc2Ga5y/z/HCxPVvcj427e3JBM
- KGu+lDC6lr4DLgF41tSBLJaCSG61KqR/ulzPeG+3SDx5JSQ1jUfoaABK/
- CpbvCqzw3rEem3qvevbWNKU21O4CjbWsBsmNhakdE33h58vR7XQo4uXKi
- gDR/glIo7o962taJdDA/cmRTLwhGtb9hNzPaqbv73fno5ZgoI061/I8UT Q==;
-X-CSE-ConnectionGUID: YLRxuBwtQ+yNbjuRc/kvWA==
-X-CSE-MsgGUID: MjimLPfCRQq6k7uzBZPmCw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="65306084"
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="65306084"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 02:49:18 -0800
-X-CSE-ConnectionGUID: +mpWveExQX2lbC6PhHFR5w==
-X-CSE-MsgGUID: g1KZILUrTbSCcFKHTV0HgA==
+ t=1763377216; x=1794913216;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=xDh2ASmul0IBsrgffzjabRUgGD/NFtCDvtInGMtZmrE=;
+ b=PYc819lQhXqZtjE/+iyQ8ST4Hs9n765hawiq+gS9Ql6neKWzaGjzvdbI
+ hLUcPSlwxNRxjwYewrKM1CL1cm6LUYftiBFvFQ0ANDRbNLLUjhpPT2khQ
+ EdZzYgbedRxuFPIOhvNkm8Wuz7lWIOfWfTzyQ5IS2IMQjaXl91GkpX97t
+ rLcZZqtGGQL+gKaBz7Y1E3bdSBNGutI2ciOyiy+fc9S4+v9pzn6WxFy0H
+ FFc1VhqU/MOIg7M84L4NNO7azGfbuAdPC6MEHn6Di+4GcJw/+9czTnrYD
+ lBp10iVlTwXV9GKJalMZaGGkorNRsavwSwlnm0ouYTWQvwomU+s/m99jk A==;
+X-CSE-ConnectionGUID: XgbE0Rn+SO+sofdNb+G6Ng==
+X-CSE-MsgGUID: Ci37/oGySRy0a1M4tIsbVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="65406572"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="65406572"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2025 03:00:16 -0800
+X-CSE-ConnectionGUID: pEIKXViYRAiA8eOzANXkCQ==
+X-CSE-MsgGUID: SMhcJo8pQ/KDQZtPS4P4dA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="213817969"
-Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 02:49:15 -0800
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Mon, 17 Nov 2025 11:47:40 +0100
-Subject: [PATCH v3 2/8] tests/intel/xe_eudebug_online: use helper to get
- hwconfig value
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="227759860"
+Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.180.91])
+ ([172.28.180.91])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2025 03:00:14 -0800
+Message-ID: <1a594c0a-d921-42bd-a4cd-21d7f99b1806@linux.intel.com>
+Date: Mon, 17 Nov 2025 12:00:12 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251117-xe_query_helpers-v3-2-25d984ae58cb@intel.com>
-References: <20251117-xe_query_helpers-v3-0-25d984ae58cb@intel.com>
-In-Reply-To: <20251117-xe_query_helpers-v3-0-25d984ae58cb@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Priyanka Dandamudi <priyanka.dandamudi@intel.com>, 
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>, 
- =?utf-8?q?Piotr_Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>, 
- Christoph Manszewski <christoph.manszewski@intel.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1510;
- i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=k+1aGXhyU6t8jOAKA9+yzx+CxzrChS9sd0iESZiVxcU=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpGv1jwCLFLtSzDUZzkmqzffOuO9Rxma3Ig6Yi8
- JwKB872gY6JAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaRr9YwAKCRAjYrKT3hD9
- 17ksC/9VV9SpujdW8p6cxRoIjZS6DWn+EubSI6c4I7ieD0WxybZNiPhr4HfjBuOtFXnSCSpjXf6
- J6fK6SaNPf0mtc8u0oaGki1uj9SmsMNw3EVht7L3jlG3MV+bsZO3LvaLd29th7/jVGWeblENt5e
- U8k4564rgmKaz/XehCxXH70FK68Z8Jb+ehW4MAEK1QzYdVyr1cqBna8sn7zn8oAPpQsTMHbLJjs
- yuib5BC1/cupAAN+5Vkk+KrkQOJBCG4ucnWvFgaT6dNPgzT6iq4CO7sTKUgE0Ik3jWNkbmcPzxO
- d4NVpFq6h83L2HhQgbxKfK7Hdmom13a7kfmY9K7Q/8pwY2ixnLjP1VqobOda1wKMyz0UJHrUNh0
- bxpipKSHtRB52+nhMp8gYfYroEtg/2+5+vPl9GMdopQzaXWuRPauXgUkQ2pH0wWxbQ+9Rb+nUxx
- 3NLpl/M7dIKqXb/vI1ZYuDlgvXFm038jhXrcdPDwCvjLIrHJK5WGhtH7We2V3qRuAIxPk=
-X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
- fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 2/5] lib/xe/xe_sriov_provisioning: Add sched
+ priority mask to string helper
+To: Michal Wajdeczko <michal.wajdeczko@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
+ lukasz.laguna@intel.com
+References: <20251114190757.2295174-1-marcin.bernatowicz@linux.intel.com>
+ <20251114190757.2295174-3-marcin.bernatowicz@linux.intel.com>
+ <7ae62677-eb16-4e8f-b55a-8c1356697a3d@intel.com>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <7ae62677-eb16-4e8f-b55a-8c1356697a3d@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,44 +75,137 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Recently introduced helper makes the code cleaner.
 
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
----
- tests/intel/xe_eudebug_online.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+On 11/14/2025 9:15 PM, Michal Wajdeczko wrote:
+>
+> On 11/14/2025 8:07 PM, Marcin Bernatowicz wrote:
+>> Introduce xe_sriov_sched_priority_mask_to_string() to format a
+>> scheduling priority bitmask as a space-separated list of priority names.
+>>
+>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+>> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+>> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+>> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+>> Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+>> ---
+>>   lib/xe/xe_sriov_provisioning.c | 54 ++++++++++++++++++++++++++++++++++
+>>   lib/xe/xe_sriov_provisioning.h | 11 +++++++
+>>   2 files changed, 65 insertions(+)
+>>
+>> diff --git a/lib/xe/xe_sriov_provisioning.c b/lib/xe/xe_sriov_provisioning.c
+>> index 532335abe..da0df4d31 100644
+>> --- a/lib/xe/xe_sriov_provisioning.c
+>> +++ b/lib/xe/xe_sriov_provisioning.c
+>> @@ -693,6 +693,60 @@ int xe_sriov_sched_priority_from_string(const char *s,
+>>   	return -EINVAL;
+>>   }
+>>   
+>> +_Static_assert(BIT(XE_SRIOV_SCHED_PRIORITY_LOW) == XE_SRIOV_SCHED_PRIORITY_MASK_LOW,
+>> +	       "LOW mask bit must match enum order");
+>> +_Static_assert(BIT(XE_SRIOV_SCHED_PRIORITY_NORMAL) == XE_SRIOV_SCHED_PRIORITY_MASK_NORMAL,
+>> +	       "NORMAL mask bit must match enum order");
+>> +_Static_assert(BIT(XE_SRIOV_SCHED_PRIORITY_HIGH) == XE_SRIOV_SCHED_PRIORITY_MASK_HIGH,
+>> +	       "HIGH mask bit must match enum order");
+> see below
+>
+>> +
+>> +/**
+>> + * xe_sriov_sched_priority_mask_to_string - Format priority mask as text
+>> + * @mask: Priority bitmask.
+>> + * @sel: Optional selected priority (NULL for none).
+>> + * @buf: Output buffer.
+>> + * @buf_sz: Size of @buf.
+>> + *
+>> + * Converts @mask to a space-separated string of priority names. If @sel is
+>> + * non-NULL and present in @mask, that priority is wrapped in brackets, e.g.
+>> + * "low [normal] high". Writes "none" if the mask is empty.
+>> + *
+>> + * Returns: @buf.
+>> + */
+>> +const char *xe_sriov_sched_priority_mask_to_string(unsigned int mask,
+>> +						   const enum xe_sriov_sched_priority *sel,
+> this shouldn't be "SR-IOV priority" only function, as such pattern is planned
+> to be used also for other attributes
+>
+> you may just pass array of strings and index to the one you want to highlight
 
-diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-index e1516c202f15d9bb90d3cf0f6ed30700b5479af9..ef700c2591291f9a22849c2995c83cc5ec0ac6d9 100644
---- a/tests/intel/xe_eudebug_online.c
-+++ b/tests/intel/xe_eudebug_online.c
-@@ -1182,9 +1182,7 @@ static bool intel_gen_has_lockstep_eus(int fd)
- 
- static int query_attention_bitmask_size(int fd, int gt)
- {
--	uint32_t thread_count_len;
--	uint32_t *thread_count_ptr;
--	uint32_t threads_per_eu = 8;
-+	uint32_t threads_per_eu = xe_hwconfig_get_u32(fd, INTEL_HWCONFIG_NUM_THREADS_PER_EU, 8);
- 	struct drm_xe_query_topology_mask *c_dss = NULL, *g_dss = NULL, *eu_per_dss = NULL;
- 	struct drm_xe_query_topology_mask *topology;
- 	struct drm_xe_device_query query = {
-@@ -1197,13 +1195,6 @@ static int query_attention_bitmask_size(int fd, int gt)
- 	int pos = 0;
- 	int i, last_dss_idx;
- 
--	thread_count_ptr = xe_hwconfig_lookup_value(fd, INTEL_HWCONFIG_NUM_THREADS_PER_EU,
--						    &thread_count_len);
--	if (thread_count_ptr) {
--		igt_assert(thread_count_len == 1);
--		threads_per_eu = *thread_count_ptr;
--	}
--
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
- 	igt_assert_neq(query.size, 0);
- 
+Ok, I'll add a generic helper to igt_sysfs:
 
--- 
-2.43.0
+     const char *igt_sysfs_format_mask(char *buf, size_t buf_sz,
+                                       const char * const *names,
+                                       unsigned int mask,
+                                       int selected_idx);
 
+and keep xe_sriov_sched_priority_mask_to_string() as a thin wrapper
+passing the SR-IOV priority names and the selected enum.
+
+>> +						   char *buf, size_t buf_sz)
+>> +{
+>> +	size_t n = buf_sz;
+>> +	bool first = true;
+>> +	char *p = buf;
+>> +
+>> +	igt_assert(buf && buf_sz);
+>> +
+>> +	for (enum xe_sriov_sched_priority prio = XE_SRIOV_SCHED_PRIORITY_LOW;
+>> +	     prio <= XE_SRIOV_SCHED_PRIORITY_HIGH; prio++) {
+>> +		const char *name = xe_sriov_sched_priority_to_string(prio);
+>> +		unsigned int bit = BIT(prio);
+>> +
+>> +		if (mask & bit) {
+>> +			bool highlight = sel && (*sel == prio);
+>> +
+>> +			p += snprintf(p, n, "%s%s%s%s",
+>> +				      first ? "" : " ",
+>> +				      highlight ? "[" : "",
+>> +				      name ?: "?",
+>> +				      highlight ? "]" : "");
+>> +			n = buf_sz - (p - buf);
+>> +			first = false;
+>> +		}
+>> +	}
+>> +
+>> +	if (first)
+>> +		snprintf(buf, buf_sz, "none");
+> if there is nothing then why not just return an empty string ?
+I'll drop the "none" literal and return an empty string.
+>> +
+>> +	return buf;
+>> +}
+>> +
+>>   /**
+>>    * __xe_sriov_get_sched_priority - Get the scheduling priority for a given VF
+>>    * @pf: PF device file descriptor
+>> diff --git a/lib/xe/xe_sriov_provisioning.h b/lib/xe/xe_sriov_provisioning.h
+>> index 65f0597fe..9305eceec 100644
+>> --- a/lib/xe/xe_sriov_provisioning.h
+>> +++ b/lib/xe/xe_sriov_provisioning.h
+>> @@ -75,6 +75,14 @@ enum xe_sriov_sched_priority {
+>>   	XE_SRIOV_SCHED_PRIORITY_HIGH
+>>   };
+>>   
+>> +#define XE_SRIOV_SCHED_PRIORITY_MASK_LOW    (1u << XE_SRIOV_SCHED_PRIORITY_LOW)
+>> +#define XE_SRIOV_SCHED_PRIORITY_MASK_NORMAL (1u << XE_SRIOV_SCHED_PRIORITY_NORMAL)
+>> +#define XE_SRIOV_SCHED_PRIORITY_MASK_HIGH   (1u << XE_SRIOV_SCHED_PRIORITY_HIGH)
+> can't you use BIT() here?
+>
+> then above _Static_assert() could be dropped
+Ok
+>> +#define XE_SRIOV_SCHED_PRIORITY_MASK_ALL \
+>> +	(XE_SRIOV_SCHED_PRIORITY_MASK_LOW | \
+>> +	 XE_SRIOV_SCHED_PRIORITY_MASK_NORMAL | \
+>> +	 XE_SRIOV_SCHED_PRIORITY_MASK_HIGH)
+>> +
+>>   /**
+>>    * struct xe_sriov_provisioned_range - Provisioned range for a Virtual Function (VF)
+>>    * @vf_id: The ID of the VF
+>> @@ -143,6 +151,9 @@ int xe_sriov_sched_priority_from_string(const char *s, enum xe_sriov_sched_prior
+>>   int __xe_sriov_get_sched_priority(int pf, unsigned int vf_num,
+>>   				  unsigned int gt_num,
+>>   				  enum xe_sriov_sched_priority *value);
+>> +const char *xe_sriov_sched_priority_mask_to_string(unsigned int mask,
+>> +						   const enum xe_sriov_sched_priority *sel,
+>> +						   char *buf, size_t buf_sz);
+>>   enum xe_sriov_sched_priority xe_sriov_get_sched_priority(int pf, unsigned int vf_num,
+>>   							 unsigned int gt_num);
+>>   int __xe_sriov_set_sched_priority(int pf, unsigned int vf_num, unsigned int gt_num,
