@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3630FCEBF9A
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 10:49:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87573CEBF8D
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 10:49:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E277210E03A;
-	Mon, 17 Nov 2025 10:49:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 335FC10E1BD;
+	Mon, 17 Nov 2025 10:49:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Net360qt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XLey7ImW";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A24510E03A
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Nov 2025 10:49:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA13A10E1B9
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Nov 2025 10:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763376563; x=1794912563;
+ t=1763376560; x=1794912560;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=XKUt8QJuKjsoT6oJdIetYClT2ZkaF6xMxbXEvXMqjt0=;
- b=Net360qtnAjsEFPh4F7X9ZlumNLWMtUrSWFVJtHcnIIlVAAZmL2UFiNt
- 7LFYHaDuDgjvvJHGaO7EmPazp/syktNkMPWrM3Dxi0SCDf7CR+29crVhY
- p5WuF+j2v+ZKtmmIFKSYBeqvxg5SsuMr8JACbq5eAafqcW70x341sl+fD
- eIEY2bOGOMtPD/k0XSqIhvhovNMvA0uqrGBrIkVkkl7StUFl63K3hBT7l
- l8NsqeeFr98xo8cdpdPOR2Phq6eCy9D3xbFmNAbwncUZ9ikiYurjiHtec
- eT1n361aC2neqBg8E5AFOE+ikLyXJqxKhhArhR3cdINOaJV/mXz4WITYl A==;
-X-CSE-ConnectionGUID: HSKb96ytSiCONKW23Gg8kw==
-X-CSE-MsgGUID: 0jqEU7bdQC6b6pdogYQLoA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="65306104"
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="65306104"
+ bh=Z1fS+ZWvsGZu4JSBmY6dctr5c++laBgLQuuTiiAzvMU=;
+ b=XLey7ImW5XY7DgMck8a6aTvDIhPRp+yr9N4lxCfBSeQ22sy1BD0kqkd2
+ WHS3EX0w5lSttmetUxsY0KpAMqkuxsqHD595oCuGjFJGeAFI0o7WRID0q
+ om2+yz7KeS7lu3cym3jb4kc+DnbAvRhhN+HVNHJWxuVeT6GLEj9PHFIkk
+ efCwMZmWqhVfrjqxFSM41UUW6aTfQY4C1tbkTioV3+uN8kCKHj6xRRm9t
+ n3RKLlTOkLrECe70DKT92BoI5avHJBtvsiPzhZG6FJSqbe33eK2rBzJNs
+ fO4C7HHsoG7/1nvKysFbKWYxvF9FQyKXVUbtF4nAxEeNEZ2Z1zQDwsYyF w==;
+X-CSE-ConnectionGUID: 0LrEu9YITLeCQ68fV/EpBg==
+X-CSE-MsgGUID: 4LQMMrV+TKeHi+xsLXLEAw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="65306093"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="65306093"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 02:49:23 -0800
-X-CSE-ConnectionGUID: zg4NAdiJRBaiXU5gMUxqRQ==
-X-CSE-MsgGUID: eGtW/hT+SW61O82M7P4buw==
+ 17 Nov 2025 02:49:19 -0800
+X-CSE-ConnectionGUID: wcuCbyx3RvOwZh2hcZD0FA==
+X-CSE-MsgGUID: MD2kNya3RQ2kEUVGbGbymw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="213817995"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="213817980"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 02:49:20 -0800
+ 17 Nov 2025 02:49:17 -0800
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Mon, 17 Nov 2025 11:47:43 +0100
-Subject: [PATCH v3 5/8] lib/xe/xe_query: introduce iterator for GT topology
- masks
+Date: Mon, 17 Nov 2025 11:47:41 +0100
+Subject: [PATCH v3 3/8] lib/xe/xe_query: introduce helper for device query
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251117-xe_query_helpers-v3-5-25d984ae58cb@intel.com>
+Message-Id: <20251117-xe_query_helpers-v3-3-25d984ae58cb@intel.com>
 References: <20251117-xe_query_helpers-v3-0-25d984ae58cb@intel.com>
 In-Reply-To: <20251117-xe_query_helpers-v3-0-25d984ae58cb@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -59,18 +58,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1234;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2914;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=XKUt8QJuKjsoT6oJdIetYClT2ZkaF6xMxbXEvXMqjt0=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpGv1krBgMYbzYMbR0rwCYjQapkZREOA4dXaeby
- rX34Yt6xyCJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaRr9ZAAKCRAjYrKT3hD9
- 19vdDACdMGKKUVyjqlLnbSLccLVowcJSJVrASxFcozesuy7XDdZKBYgK29+xTDOCj5L3vEnbowz
- YoTP+zSxmojnhLyXX/FxiMvlDUZs0ZYvzYizPylom/YtpGSoJt/rlJ7FPmZfXQ2kdsoDy3HYsiM
- KCnl4QSXNpytSXth042VJZrA6hZBnmk1Cvqjxr3nQffmL5D1bnsIM7K4YXGfkXJ13ZhsbUSoFN5
- 9zgKHKKoWEmmRhfncD6mNKJBrwCaIEZBX6XDdYzpGQ2518LejEGVARhK52upITuSwi6LjvyN44A
- otllUGjlj2J9SmzFNpj6u/goTqDypWD5ioap3XXPttyw1Np/RbR2SNK7wOP1Ji7rsE1Xvq0cCbv
- YmSDMcF3B6r1QSJKh72+HZbHeWweFjT1TmiOY23JRVGBq7+klClc02/aDNxUz6C68DaYlghPz44
- I6R9FN7rEByCArd1kaIYOG0Hu7VOktJ/DsqzYG2AGxGMictYmRUi03OugGp64NoEeRxIk=
+ bh=Z1fS+ZWvsGZu4JSBmY6dctr5c++laBgLQuuTiiAzvMU=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpGv1jlMKZP7J9aAP7W76YdHO3cxPg0PUHN06P8
+ 6yEs3qt8NuJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaRr9YwAKCRAjYrKT3hD9
+ 14K3C/9bszlwvLoGr6yd6zfZGYcGHpPsnegq1t3ijbTj6bDGHVoUC01+N9Hc1ElPw+mF8LYM1Oj
+ 9s+lEvtB8wc7H4UTRMVmrKWXxGQzGI9pdAuc48RZeL84jysh7jRoNUm5TBr0YY7mrtgBXu5g0c1
+ yGGpxwh/g5dxNTxg2OXBNF++yRetMFTsIa3/c20xBiTLBSIGXfVbq+BFWPEZ7UXHHl0wiYwNbL4
+ htiSa/6Z0BgAPT+An9NvxSBWVud+XQhrvfIBk21abs0YmPRA/87+ljq2MbAJyjBDyXS89h0kcp4
+ favSjfHFXK9tC7imyvjOCjCJUCW1iUc3/Q3y+rpb6qIJx+DtUSUJKGzKUPDURQ8ZjFob4lgnore
+ RDK8OBi8lKyEP+THfyWQM64xMCKvD2tGPK28bNW4MMRHJln0xhNJD/CE8hSoidRy2QWND6iLW02
+ LtnXItiKY9zFMVMFRkHv1X3KLC9J8p7G352onw/gdgAsLJC/8o7HzjpyXF0eOVBav2WSg=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -88,32 +87,92 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Topology masks returned by device query DRM_XE_DEVICE_QUERY_GT_TOPOLOGY
-are placed sequentially in one blob of memory, moreover every mask can
-have different size as they contains flexible arrays.
+The helper abstracts out common bits of DRM_XE_DEVICE_QUERY_HWCONFIG ioctl:
+- query data size,
+- alloc memory,
+- get data,
+- error checks,
+- valgrind annotations.
+
+Since almost all users of DRM_XE_DEVICE_QUERY_HWCONFIG use asserts for
+error checking helper uses them as well.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- lib/xe/xe_query.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ lib/xe/xe_query.c | 47 +++++++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_query.h |  1 +
+ 2 files changed, 48 insertions(+)
 
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index a3fab133e6c4d9f949564b47cc817383bee7a568..4d46b36fa9754fc48e50633dd79f06b935ce8300 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -25,6 +25,53 @@
+ #include "xe_query.h"
+ #include "xe_ioctl.h"
+ 
++/**
++ * xe_query_device:
++ * @fd: xe device fd
++ * @type: query type, one of DRM_XE_DEVICE_QUERY_* values
++ * @size: pointer to get size of returned data, can be NULL
++ * @can_fail: bool indicating if query can fail
++ *
++ * Calls DRM_IOCTL_XE_DEVICE_QUERY ioctl to query device information
++ * about specified @type. Returns pointer to malloc'ed data, which
++ * should be freed later by the user. @can_fail indicates if function
++ * should return NULL or assert if @query is not supported.
++ * On any other error it asserts.
++ */
++void *xe_query_device(int fd, uint32_t type, uint32_t *size, bool can_fail)
++{
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = type,
++		.size = 0,
++		.data = 0,
++	};
++	void *data = NULL;
++
++	/* In case of unsupported query xe driver usually returns error,
++	 * but in case of HWCONFIG it can also return query.size == 0
++	 * on older platforms.
++	 */
++	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query) || !query.size)
++		igt_assert(can_fail);
++	if (!query.size)
++		goto skip_query;
++
++	data = malloc(query.size);
++	igt_assert(data);
++
++	query.data = to_user_pointer(data);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	VG(VALGRIND_MAKE_MEM_DEFINED(data, query.size));
++
++skip_query:
++	if (size)
++		*size = query.size;
++
++	return data;
++}
++
+ static struct drm_xe_query_config *xe_query_config_new(int fd)
+ {
+ 	struct drm_xe_query_config *config;
 diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index b1483f5eb6ac330454e719423dee52013b4b6137..01ca1d57fdb1c52c0676eb255caf6a5223e3f973 100644
+index 4f1c0687133c03b81ba53f95457c55860e5ce194..b1483f5eb6ac330454e719423dee52013b4b6137 100644
 --- a/lib/xe/xe_query.h
 +++ b/lib/xe/xe_query.h
-@@ -97,6 +97,12 @@ struct xe_device {
- #define XE_IS_CLASS_SYSMEM(__region) ((__region)->mem_class == DRM_XE_MEM_REGION_CLASS_SYSMEM)
- #define XE_IS_CLASS_VRAM(__region) ((__region)->mem_class == DRM_XE_MEM_REGION_CLASS_VRAM)
+@@ -143,6 +143,7 @@ uint16_t xe_gt_get_tile_id(int fd, int gt);
+ uint16_t xe_tile_get_main_gt_id(int fd, uint8_t tile);
+ uint32_t *xe_hwconfig_lookup_value(int fd, enum intel_hwconfig attribute, uint32_t *len);
+ uint32_t xe_hwconfig_get_u32(int fd, enum intel_hwconfig attribute, uint32_t default_value);
++void *xe_query_device(int fd, uint32_t type, uint32_t *size, bool can_fail);
+ int xe_query_pxp_status(int fd);
+ int xe_wait_for_pxp_init(int fd);
  
-+#define xe_for_each_topology_mask(__masks, __size, __mask) \
-+	for (__mask = (__masks); \
-+	     (void *)__mask->mask - (void *)(__masks) < (__size) && \
-+	     (void *)&__mask->mask[__mask->num_bytes] - (void *)(__masks) <= (__size); \
-+	     __mask = (void *)&__mask->mask[__mask->num_bytes])
-+
- /*
-  * Max possible engine instance in drm_xe_engine_class_instance::engine_instance. Only
-  * used to declare arrays of drm_xe_engine_class_instance
 
 -- 
 2.43.0
