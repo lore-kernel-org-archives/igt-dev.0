@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A14E2CEACEF
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 23:34:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E153CCE8D6B
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 23:34:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3AE4410E1DC;
-	Mon, 17 Nov 2025 23:34:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 90C7410E1DC;
+	Mon, 17 Nov 2025 23:34:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GSEKCxG2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lXqKkzLH";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E06510E1DC
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Nov 2025 23:34:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CBD3310E1DC
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Nov 2025 23:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763422460; x=1794958460;
+ t=1763422493; x=1794958493;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=QZPMUgiwNs2PYz32pK99yKhO9tqa9ymLnsulWAjgKeY=;
- b=GSEKCxG2sOQAIyPiuXSwhvRVsLPEP5B6vqhmYCnCrlZ8t0b7qe91lZu0
- dQo2loZl5+eULorVguFpSBTRLKnOhsY1w0j5DY3Gxthtd8f9j3pJ1a05t
- gPeD1DoYg8UG7MesBsVVL9EX58GFCaynaUTbryKxdL+VHtSRPkeagRmbM
- /ohp8pvtRt/0zuqceNj0LrLh6J5CdjdL4bakmXncpLRyGQWvNSZgHxo0f
- focsCk8s7CGFvWU7LELGfzEbi4Rl8GI+lJ8zUpkKxqvqIzI6RIQW2y+MN
- wDR1nZQ2Ihba3g2mSF0CFmqq0pJa0uOvCGQC7vaGqZRYkCOfF5yt/5vua w==;
-X-CSE-ConnectionGUID: OzIXIM43QWOIflq7UieMWA==
-X-CSE-MsgGUID: 5Uj/9JsXT1akAESDEDlO+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="76112193"
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="76112193"
+ bh=tiEA8c/13JEJ2m3/8dtfdlmzCO/wIKckoBtC9LK3a4k=;
+ b=lXqKkzLHYu1nRuiqoyLdV+XyI0M4u2JyT34Q0TYSzYrMZz8NZsEr1OjU
+ 6894EFPsEyX5vjA+pXvO5wgb7dU/WLVmNyvq7RJ4h6gjfBawpEdpmO+7T
+ unqdoYGPUvKvLXDpXZAtPtThkrLaPTX+tlIvtGeokh6NvhnQqoN3t/OTF
+ sLap38MK8cwxFGxptwrSaaFq1C53Ugm+dHXwbyyRN8eRTQCqmlJy7OVeh
+ vTsjCety8XzgnhUKi3nU+83hHpld1ok1uDznmtpk3gn+ShKy512+LsyIr
+ ZET+n/qv5myY0iHxfEE0gEJDK3BaM6wCTrwV48Zp+Rvz7c0GGmbLpZE7X g==;
+X-CSE-ConnectionGUID: XLDDMHERRrylXbZ8MfsW9Q==
+X-CSE-MsgGUID: 3ZfCTiGLRVi/tqM2hykaCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="76112255"
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="76112255"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 15:34:19 -0800
-X-CSE-ConnectionGUID: UgP4VGZDTWSTUGrx7WuXGQ==
-X-CSE-MsgGUID: CKioAKtwREqv6OJjEcDVlg==
+ 17 Nov 2025 15:34:52 -0800
+X-CSE-ConnectionGUID: UnJ0BH+4TDaVVqz0hlHlRw==
+X-CSE-MsgGUID: f5gXIPxFSWGA7AC5DxzZjw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="190741670"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="190741884"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 15:34:19 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ 17 Nov 2025 15:34:53 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 17 Nov 2025 15:34:18 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ 15.2.2562.27; Mon, 17 Nov 2025 15:34:52 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Mon, 17 Nov 2025 15:34:18 -0800
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.10) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ 15.2.2562.27 via Frontend Transport; Mon, 17 Nov 2025 15:34:52 -0800
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.65) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 17 Nov 2025 15:34:18 -0800
+ 15.2.2562.27; Mon, 17 Nov 2025 15:34:51 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=puvhZ7p3IH2oxHC4kDBZqGQcLmN0rf8m1zFBPF17VAKd2GHo9Rk7h25DMO3rZpG3BONg7WXk4brENrWIlg7eatWDMukIT7z5r7CBhd2oIFOVmaNJZxbveftYAwsMyLvbUeo696wKOSYQ4oi0VQ9SDROn+mbkhHIsqiR7z6jhGnb4N0IMWNrel6Z6Dy/EukB3/QhN4XpsWyiPyvV5LPnFWCJWJxzeARJBsFAMP5gThJ/cbEz+k/Y7WlCq0Fq/OYZsLDoyasgV70OIvyug1fw59JhCcf1WvXRfIbmK6aAOa1dgKdk0nXwd9HBhO1IkinbmUtccyB5EHG8U76AG5TnTWw==
+ b=cbV1W3fa7o1QJoLvCswAxiTbN+Q/uNoX1i6oP8CLvcPu3dtxUiVUlJ0MZ8OoV171+kJarVxByKWUcZ4xyjimq8505cwf/eVjROv0VzzKI+pvvtBIKpD6LAg1T7sYzD7oqFDw6yMOPBv1hLGgTZhAdZ/fVaelwqZyAd3DGqvZxwMV613F+7QJWhv8DmF3BZPRqqNBxNImhKobWXRq1AdSso1dD7bhawcgo7KMFnXHV9EXwD8IyNn+ks/Td4c3J7NSlvH3i2l6wm9D1fyOP6lLJUylpOpjRat7a1T25oDviYJPDUUzLEy/sfTh1L7lS6eXYuOkh2kpPqN+s0yDIhZVrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yjpyKtqbDgkmpkvX6mtV1439wxUZxuchWZTqrNhfsP4=;
- b=LDbWcv2r/vIdJ/ohx5cQ9tbMc3SInua9dxPGnNXA7byCid1pMZZnptrD3IJXVJPRa4w4jdW6XlesFE2VQtr0MxmGuaBptAy+qJR5DBZGYvCIpm82HCciyb1/Xhu8zhwLPxm3tX6075reozFfUCKlKZFrNapmSxEK6tp3g+AvCMW1AqlIQSe2DSELrWT5kIbwrRG5HwP4YOGKNlzZ0/tfqkLN/32oDinczkSB4Msv3fKwG930LNwlPGbqQ02b1myTyKtIj2byvRaAYH0lLoinBYhIBQ/4y71cqJTY2OM56j7jvoe5TuQjQUEYGkX82wYsvc745i6gH6eADPMMMrvUEw==
+ bh=ct4ww2drB9kMhROTi02nVgpfWWDC9T53RiwoeIFIYcA=;
+ b=uas/7x6t2TNw5JqwOoMqsoHjoGkBHdhr+m7+qTAK3/ONJzXf2vW3gpWRNhaMsFSxDZLtVnTH24n+opHulne1EOqIdpQm0jOEl8AuzNeWG+yXS47NSij9hHC0TNaV++ELVfDmexemZyoh4upkNGhVPDumMcbIe+Yj41waDGnFzp+z42gPKj1s9oUXU3YOQTMXdsM/jotaSXXLPNJBhNav45OgelQXE7qo647HxuZ5ir3zbHnF/vca4Mi/uEJCus4VaYmKZVegOAyXCYaGeqePW0tKu6SIfuTQzsB5clQVH7UanP67VwyDkDKTK812jpk5VWwPN2t+uoGs3mAmFK3FIw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,120 +69,120 @@ Received: from DM4PR11MB7757.namprd11.prod.outlook.com (2603:10b6:8:103::22)
  by DS4PPFE70B31BEF.namprd11.prod.outlook.com (2603:10b6:f:fc02::5a) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.21; Mon, 17 Nov
- 2025 23:34:16 +0000
+ 2025 23:34:49 +0000
 Received: from DM4PR11MB7757.namprd11.prod.outlook.com
  ([fe80::60c9:10e5:60f0:13a1]) by DM4PR11MB7757.namprd11.prod.outlook.com
  ([fe80::60c9:10e5:60f0:13a1%2]) with mapi id 15.20.9320.018; Mon, 17 Nov 2025
- 23:34:15 +0000
-Message-ID: <0591545d-1cf0-4ed3-a64d-b1cc1dfd129d@intel.com>
-Date: Mon, 17 Nov 2025 15:34:13 -0800
+ 23:34:46 +0000
+Message-ID: <cdf236c4-600a-4a02-86c5-e301651dfa19@intel.com>
+Date: Mon, 17 Nov 2025 15:34:45 -0800
 User-Agent: Mozilla Thunderbird
-Subject: Re: [v14 i-g-t 1/2] tests/intel/i915_pm_rps: Add Multi-GT support for
- freq scaling tests
+Subject: Re: [v14 i-g-t 2/2] tests/intel/i915_pm_rps: Extend Multi-GT support
+ to waitboost and reset tests
 To: Mallesh Koujalagi <mallesh.koujalagi@intel.com>,
  <igt-dev@lists.freedesktop.org>
 CC: <anshuman.gupta@intel.com>, <badal.nilawar@intel.com>,
  <riana.tauro@intel.com>, <karthik.poosa@intel.com>, <sk.anirban@intel.com>,
  <raag.jadav@intel.com>
 References: <20251117052506.578422-4-mallesh.koujalagi@intel.com>
- <20251117052506.578422-5-mallesh.koujalagi@intel.com>
+ <20251117052506.578422-6-mallesh.koujalagi@intel.com>
 Content-Language: en-US
 From: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
-In-Reply-To: <20251117052506.578422-5-mallesh.koujalagi@intel.com>
+In-Reply-To: <20251117052506.578422-6-mallesh.koujalagi@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY3PR10CA0019.namprd10.prod.outlook.com
- (2603:10b6:a03:255::24) To DM4PR11MB7757.namprd11.prod.outlook.com
+X-ClientProxiedBy: BY3PR10CA0022.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::27) To DM4PR11MB7757.namprd11.prod.outlook.com
  (2603:10b6:8:103::22)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM4PR11MB7757:EE_|DS4PPFE70B31BEF:EE_
-X-MS-Office365-Filtering-Correlation-Id: 11f55b9f-672f-429d-f966-08de2631d1b5
+X-MS-Office365-Filtering-Correlation-Id: 3e7eb9cd-2d65-4b5c-a839-08de2631e43c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?SDl1VitWdVdNSlVVMVpEci9oWDNST01QaDlTeUFSU3ViK2l6bkFjeGRTU21I?=
- =?utf-8?B?RGNzSWZmd1JxUElyR3VSdDNYTXhqUEJkSFdJa0pXNjZ2Tkt2SnZUMnZlNHZz?=
- =?utf-8?B?eHdzR3NlRDdJc05YVVVwSG9VVUZsdmNRNHdEQ2dZcWx4UXBnM3cxL0V1c2Vv?=
- =?utf-8?B?MlJCNTYybVZPYnc5dVV3RnZtM0hPMWFNZHFjYlNmZm84OUU5OXphdHMzckxu?=
- =?utf-8?B?MVVnc3RzRU9LQ0lHWis1Ny9UdzZETytYZjV1U29tSzRIL3FNR0dnSTVPUk1R?=
- =?utf-8?B?OENOREZjbkZ5K1hjNkhIaE9FS0xPRy9rRTFROWY1cE80RUluUnh4TkRvNDNM?=
- =?utf-8?B?V3ROSmRIQWVPd0M4UHlDMUJRNHlzekR5R1k1QkpabE5OR0VWUFd5VDl0MHBl?=
- =?utf-8?B?OVh0aUs0SHJpYVVtNFBPL2d5QnNOdldsdzZBRnkxVGRUNGxVSTFCTzdhbDBy?=
- =?utf-8?B?d3I0QTFBdDlLTFk3dFQxVFArWnJFcFUyOXN1djRJSWpGaDVvc0ZqUGU4aXU3?=
- =?utf-8?B?dC9RQVQ0V1RyVHcydGNNZG90SktQbldaNjh4Y3lDWXFSUmluNWZ5S0RkZmdi?=
- =?utf-8?B?bjVraElNTkFaZktUQm1uNUFYditBcHpHVExSWHMzbFlaWVpaeUJ5cGxXRjk2?=
- =?utf-8?B?dnZoYkdpRjU2dEo5SmxSd0hjTEo0MTFveFlNaW1lTG5LVWdmN1BPODNBWXU2?=
- =?utf-8?B?UDYrZG0xNHZqZUc3TUtGSTB4VjRwRzdNczFYdFJWeXZOdTdnZDJPakMreW5u?=
- =?utf-8?B?d1R3b1F6YlF2eXl2RXZwYmNCWHU1bTY3UkNsbHkybzIyL1FxUWlZL0xNZ205?=
- =?utf-8?B?eEtyTUhzbHVrMUZPTDVWQUNkeDhteHQ2UWVqOW9OMEcwK0pTSGQ4dzZlYXhp?=
- =?utf-8?B?UkxHYzE0TGtHOTU1YXFCQXFjM29Ya3IrWEZaV1R4NHZZdDdpbWlSL1ZpWkIr?=
- =?utf-8?B?VVdaYzc5Y0FlRXF4UHorc2Jnd2xGTGxIbDJ6akFaQTBMV3ptR0FOa3RmQit3?=
- =?utf-8?B?b0VHLzNnRG1WaVBPeng0dk9MYXNpN0tDOWhjREpJWS9lWDJKNVFMVzFxcnlR?=
- =?utf-8?B?VEZhZzNxemwzRlJYREVpWHFkNUt4SEJGM243QlRBeDlDSHVNRFFiVUNYR0RU?=
- =?utf-8?B?WHFzNVA3Wlc3NUVOY3NoMmlvVTJsVVRZcXE3Smh1bC9scm4wWWc3SjZOTURj?=
- =?utf-8?B?OHEvVTFkSytGRm02VlZibWgvL0IvM1dzUG5LTzN0RTNuTWlvaEFpdDhCVVRr?=
- =?utf-8?B?bkpPVjIzZmx6Y0o2ZFNlYjZvWFRkUjVXZ2htT1ZhL29mQVdQNW1UeUpWS0FQ?=
- =?utf-8?B?bWpkNldmVDd5ZGdSMHRINGROR2E5NXZFakxZb0dGVy9tblVUMU1XaWtzRGI4?=
- =?utf-8?B?RGN4ZmlhTjFHRTQvT1NuU0l5ZitLZU10N24yVEJIb2thRmFLcUFiVnh6UENC?=
- =?utf-8?B?NmJSbFJHd0xldkhQek1hVk43cDdTamREdXB5bmwwQmY2eHJickpDZG5ZZVpB?=
- =?utf-8?B?dEdqSGRGYnFLY0NoM0lqdFoxVU1TMU5vb2UrWk8yNUREMVgxcFNlMHp3d1hx?=
- =?utf-8?B?K1d5R2t3MmZiRFBINXhjWjdzaEJIQnhRTk5mNzNWZ1hJM2laandMeXU5dWVF?=
- =?utf-8?B?MCtvVlFQVkErQUxnVzJ4czlPZnF0Ny9hMWZnUlU0blYzQjFMRXdlTjlwb2lH?=
- =?utf-8?B?V1N6bnZCNm9ueldsOE5rYnVsL0R4QWxQczBXR1VCNXNCTXpwRGxBcjhmdmFh?=
- =?utf-8?B?bkpaNFpDSXlVZ0c1OWtaUnVFQ2ZSUFdGc3Y1V3hYODNZMWRKZXI0VmRyRlBX?=
- =?utf-8?B?MFlFYVNQQlJHblhTcldzeTUzTjVQZ2k2NTRJNlNERG9DQXBncFFJbFViVzYz?=
- =?utf-8?B?b2trVlp1M3llZEdxQVNuQXdaOTY1SGxmMFpsSjBZSWhwVDhtWmNXZERWcjZU?=
- =?utf-8?Q?bon4d9oGV7/4w70uL9+PofDfPtrwpp6V?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?TFNpUCtlN05pMWl2aXB2YlErV3RVZ09rZE1INEJXSHpySksxbnlNbHQwTkw2?=
+ =?utf-8?B?Qk5kaTRNTVg5NWVobGxEekJZTzlPeU04MU9jWlJBS1NuUGgwTm0zS2tDV3Ji?=
+ =?utf-8?B?Z3laaWRFRU50d3FrRS9XTXYxZHRQZHJuRXlMUGdTYjZsb1AwUjZHVVdScllM?=
+ =?utf-8?B?N1Y3dzZXSUtPMU5tZWdZbTBXcC91eUhtTHVDSGhlVGIvK216V0s5QXp6YVdr?=
+ =?utf-8?B?b2w1WndTbFNoeDBtWkRzTXk4bE9taCt2Smw4bDhyMWtjbUdJSmhRUzVhZU4z?=
+ =?utf-8?B?OFI1YittWDhjQmcxVHlITkZMWndCcU4xbGh1bDJad2l0alVHcVd3VEFaNVRw?=
+ =?utf-8?B?UmtBUnV1aVVna2pOSzhzN2VMWVp4UFVIQUlBNnFtVTNobmtMY2ZXNU1YblE2?=
+ =?utf-8?B?eW1JdVR6TEVhM1hiY3lCMkhmWjJweTd4Tlh5L0JPcUtieGlPOVI5NDMxRE9t?=
+ =?utf-8?B?ZlNFNW9EZlUrOEhSbCtOUHRmSW1YT2gwbnJNY3hzNm8vSGkrd0Y1cklBakNQ?=
+ =?utf-8?B?eXIybWd3MUpvL3FyNmFDZlJ4UkVGVFBpWnptNTFjRkYwS2FZN0dlYVdqVkZW?=
+ =?utf-8?B?V2t6S3V1UW4vUmZXc0xuSkZBNmxtUVo2RDVxSW1tclZteUZwZWRGMmxxMjR6?=
+ =?utf-8?B?N1lZanJ4bjFtSHdjWVNEZ3hxZC9BaUsySVpNdFR4b1lvVnRTSUZYRGhHWmRx?=
+ =?utf-8?B?Slg2RXVXenNKdG1tVVlIclZuWFgwUVgxRGErYjY5djlsTmpxMHR5anpPSkRY?=
+ =?utf-8?B?U0NpQnFlMU4xU1hNUVhmRzhvbzRKNWlaUWxUREpRVUYrQjc5MWpjazl4eEZX?=
+ =?utf-8?B?Mk95Q0ZOZUlMQWVnUHhtc3ZPS3czRHRUZ1hWRzQyNVpVU29tUGl6YXgrWUM4?=
+ =?utf-8?B?enJzL1VIemxvSWtjOENjRTVsZ3p5c2h4b00rZDZJNE44M3BpYVhqdzB2WlV4?=
+ =?utf-8?B?eG5KNUVFTWFlNFh1K1dCN3F1eHBkYUlIRGdmTlJSNmxNTy9yMEVQY0NJSkxn?=
+ =?utf-8?B?ZFJVSGpTbjBMUlVnU3ZYTmM0dDdLWWxTZ1BHYmdYdDRBV3pCMEwxQlp4Zzkv?=
+ =?utf-8?B?SFhiRDJtWHVqNUFGYXRZM3FEMDhwbitnaHRLUkszcXV4Wlo1di9XOENDakhL?=
+ =?utf-8?B?UGFaR2ZQSlF2TEZDTUtVWUV1U0VrQUZIYUc0N0Y3dlNBYnZHeWNTc3Rpa1V4?=
+ =?utf-8?B?V2ZlOUkrQlJWNHlGS25nc21zTjI2WmhFVU1aaytNV0VtMy9scTkvUmIyRzNt?=
+ =?utf-8?B?cHo1RFNrS3F4ZkZrdnhKSXBYdVZrbFNaWWdDV3JVM3FhVnc0U1crR3ZTRjVt?=
+ =?utf-8?B?VkI5ZlFyZGtoZEpPc0k0elA4RjBaWTBJV1NlYlpmK0cwQ0tFc3JqdWtuTTJ1?=
+ =?utf-8?B?RjlQaXJHdGkvUUdoUUs3ZUtZRG81WDdhcGw3QnJaaUMxNytPa3J1WDdiaGwr?=
+ =?utf-8?B?RmdVTHNxNXkzUGdvb3B6VTJvS3N1eG8zSWxPcG5XZDI0aXBZM0NvTGIzYkV6?=
+ =?utf-8?B?UTJYRTliZ1JTdkE5aDFrWXJRSDlSNllPaGQzdmw0c0RvZmZwaDErbDUzNWFv?=
+ =?utf-8?B?eGNxK2JveFp2TDhsS3BCOW9BWjBxYjBlUVpETVhpSm91S2tBWHZadVhpMlpp?=
+ =?utf-8?B?Zjg4SFNNNGRWRVcvVG9tT1hMVkdFQ2FwQUc4SFdWekhPUDRtbmw5N29yNEx5?=
+ =?utf-8?B?b3B4V0ZOcEtvd1Q0c0d3SUhDcVRrQ0tZZkZ2dktMYS9Najg1b3pmUnBOQ3Jt?=
+ =?utf-8?B?VHgvVUtTSWtvU3VOcTdYcFpIa0g5UXMvRlpHVWRoTDcza1FEcmNjN1hsN2dK?=
+ =?utf-8?B?d25PQ0dFbEtEcnpjblc3RjdnaDlUMGxMVVhYK1k4SUw0a01EWG4yY0ttZjNv?=
+ =?utf-8?B?d2ZhdHZIOUZlSXMzTjV1dHNRc0ZaNmt4VFh4NDlOTVI3Wm1GWGwrZ0RsZG1u?=
+ =?utf-8?Q?PPYSqnZ3LvTXd4tXLIpJSQaO2zfNHKWt?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM4PR11MB7757.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UDVKWEhlZ1dPaEtwNGl0KzBDNDR4R0xhSXlPZEJQdHdaZVp3dWRMWkNZNDA2?=
- =?utf-8?B?dDgxWldvcWFHeWh0emRaVU1PeWgzSFp5TDRJcVNzdnFLZzlMcVk3c0Fvdm5R?=
- =?utf-8?B?OGRsWEpWTkRjd1Rqcm0vYTIybmVTTm9JWHZZaXg5LzM5QW4yTmVWYlF0NXRD?=
- =?utf-8?B?SVNrZ0M3Tnh4YitLejZxNVcrdE04MmVjOUpnK3J1NmxTSWdtOE9FZ0g5bFox?=
- =?utf-8?B?WmFEaGFwQkhkNVdXdFNqS3cyNVlhb2lYS1ZTM2xQRDJFdkd4VFZ6SmE4TXd4?=
- =?utf-8?B?ajdhamRJekdNOEFNNmNqRlRQaDloS2ZFbHdQVVhMMHY0TlRmUklhbjdISGxV?=
- =?utf-8?B?cEtvRnFKY3RLTjk2YWpPT1R0bHdQbDF0UGtEQmdHejhiMHBmajNWQ0FrSFpZ?=
- =?utf-8?B?TXRiSkhaSUhwWDdxbVhKa3pwQWxlTHI3cFo2SFV0MFdZZy9idW1yWVJrTlZm?=
- =?utf-8?B?ZVBsOTJKZnJMZGQ3VXpWK1NWTXFMNVhiMkRnclJLaUVhUDMyY1gxTHdlZlNC?=
- =?utf-8?B?Y3NZVVdjR1lDRHJhbXZrQzU3RWh6aWNQd0pUQkNsMHNGTWZSbnZ3SUV1aURY?=
- =?utf-8?B?TTRFUnhYYS9MdGRSNW9FSVRaa21lckpIZGExVjUyL01BaU1iR015YmN5bVkz?=
- =?utf-8?B?VFhmZnRhTGtOMHZOMWwxZWppVDFQWDRLdnhiclY4UWJLbXQ4N25kZ3NMMlZH?=
- =?utf-8?B?ZXFsM1ZpUW8zUFMyM1lVL1JHR2RzSWIzUHFuQXMvTWV3T3B0bUQ1K0IxTHVx?=
- =?utf-8?B?dG9aZ2c1amFLNThTaEd4WWxrSVZ6eDBHb1lqRnBXRGxIVEw5YXNkcFRJbmpj?=
- =?utf-8?B?VUFwaUsxZkY5REtKTkYxOW1TSDdzd1NTUjVHODl4TEs4bjJsVXRpS3R2N0s5?=
- =?utf-8?B?SGRPSms1NzlvOGc1MisrWkNvR1huMjA3dk8wZEM1ZnFzOUpwRThyMlhiY0t6?=
- =?utf-8?B?bDhDNmVBUWlmTDViWGFGcldpcFhMUE9RTlRScitqdHNZY2c3d1FycUdheGI0?=
- =?utf-8?B?aTlUdGNla0ZQeGwvZDVMRXhkZ3RzdkRkUlUwMHNsR1lHYmpuWk4wdTR1dEwy?=
- =?utf-8?B?WWtJWENUSENMQk1GYUkvYUxydmlNL09yNGdCeXhQckRuMWJMcFp2VzFiUzhF?=
- =?utf-8?B?UW0xb2UwZzRTVDZpZ1ptcVJROWVYU1MvUWNOWW5MR0lXL3RJWU9tRTJEODlC?=
- =?utf-8?B?YWlkbysyK09UTXBRZ2Q2Y3YwQlJnMXk1NlVPRWQ4WHhicS9tZ3pMZFpFckcv?=
- =?utf-8?B?T09KZ2RWVWlqRWZRd1NWLzUySHBaZXBHVU5ISnpuWkQ4anFNYzczbEErejFq?=
- =?utf-8?B?OEpUaGNFRUVNenFLby81Mkl5QU9qakQzUVUycE9sdWJlK3dib3hTVHllSUZF?=
- =?utf-8?B?bXIxVXBKYzFCYnBXd2VVTTBaY1VYcXVRcG05QldyZVlEZ01yaXJrdWVUejBO?=
- =?utf-8?B?L1hUbWNWTEhGUGpDQ1ZESEpMTTdLTFFWdG1LS3pRYUdnaEhBaDd0ek5qZGdJ?=
- =?utf-8?B?Nk51UjVPMEFMYU9hUVFJU1FNeDhlQ3I3cDlRRTJ1c3lsNnJVVkpEMFgyRFph?=
- =?utf-8?B?MFdlU1dRbUR4a1ZNdHhJM0txRXB5aVpUNk5KYVFuRmpCNWRkdHpTQlRHazVa?=
- =?utf-8?B?ZHNmU0lXVmFOY2pBSGNjVzhrZERYQ3pST05SNDl1QWcyQitOZVdFTFR4U01B?=
- =?utf-8?B?a2sxVVFtTkx0cENLNkI0SUxQSmZrSlZpdlRvdjQzRXpNOER6L214dGhzZXhp?=
- =?utf-8?B?cmN5d2xIa0lwMTVlQlp5TW9vNHFTTVhnY3M2YzM5TjJjYXVHRFEyaUFhNDVa?=
- =?utf-8?B?RXpUZXh0aXFIUVE2TEM2NldNZk1NSFA4OGU1T0VGcDFxVGJpMEV5ZHdwdk5r?=
- =?utf-8?B?ZXh4NHhPUlBoaE9ieFlwWVlQcjBHb085WkJFRG9zUFh0TmRjL0lkbjFnMEpQ?=
- =?utf-8?B?R3F3dWFUcmN1U29ZWGhuQkdDWlhKY2Zpek40MHMvU0ptcUlReU10Q3B3SzMv?=
- =?utf-8?B?MmlZOXBHZWYzd0VzNjNBYnYvSExVNHdwaUg3MG0xNzNxMnV5Y09XZjdKVWU4?=
- =?utf-8?B?NDlGeVFMUC8vaFFlc28wWUZ4Q3BUbVZhTURGWGNiMXJOY0NOZmFUYzJPbGxs?=
- =?utf-8?B?Tk56dkhnS1VDYVlzdTMxL0Fmd1lWUEM3U2hHZ0tuaVFyU2NjSG01SzMyZmRL?=
- =?utf-8?B?TXc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11f55b9f-672f-429d-f966-08de2631d1b5
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eDlYL0l6dDlIdmFhcVNJeWVuVVFNRkZSQUg0a1BDOTd6clY2dlRkRDVncFJY?=
+ =?utf-8?B?NVlNeENPbjVqK0l2TjFReHhhUmRqSnYzVjRJZEV5RXRWUmt1dFY3bnRmRW9N?=
+ =?utf-8?B?Z2JMMnkxanRDb25MYVRMRnhLYnkyb1RnMk4wRTVlN2JvZXk0K2lvSHdJcGpM?=
+ =?utf-8?B?a09kcVJ0Q2MxK3R0RFN3aUxxTCtJY2hXR3ppTDFXOWFoY00wWjQ2bkdnaHFD?=
+ =?utf-8?B?N0dMd0V4M3ErektqOFJLYWJMRXliWDgrNzJOVkg5NGRLRlVDQjN1ZkJTN1JY?=
+ =?utf-8?B?NWRpVHJOaUtjOVBzSU43aEk5VjlmL3NQbnhJNlFZZFdHVzJwTFJJVlRLbVFl?=
+ =?utf-8?B?ZkZIcEMzTnJpV29EZkJ4a2pKUmE0YU41V2w3V1dZV2dwdVNsQVp4bFJVVzly?=
+ =?utf-8?B?aEJhY1JvYUtxbmt0UzRrN1lVYkpyZjhBMlFJQUF4SWdmTklzN2FoZ2FObE9p?=
+ =?utf-8?B?QmljYlVydyt4U0hpQ3NXbTlDWGlTYzhKb0Y4SUdpYm9CYmo0TXJoMDBDMEt1?=
+ =?utf-8?B?bUJwSlBreVB1RVkvTk1yMnZ4RkN1Zy9zb1lHcWVHNzJ6ZG1odjlwK0VZNzNn?=
+ =?utf-8?B?SjZjaDRBU21xWGFvbXNYQnh3Q2lPWmZrVXZJUXdGZTg4Slh4M2pDS1A0TUNt?=
+ =?utf-8?B?aWUzN1libUxRZHJWNXBlRjlCWEt2c0xhWVJ0RysrdVFWTitmNEhTc2c1aUFU?=
+ =?utf-8?B?VVJCdVUxNGxiWGx0WVpTMlZqTmJ2Y2RaUWhjSVlnRmJjdEE0dzFBYmlZZVIz?=
+ =?utf-8?B?a3hzOUVXM3FZL2tEdU4wVWgwcVRQakRwSGF4d0NnWGlrSXhRRjVNbk5ORjN0?=
+ =?utf-8?B?WFU4WUVFaDkzZmlxaFZ0SXpYcGhIMzZnT2cyVlZLL0xIdGlpVmZoY29aL1dr?=
+ =?utf-8?B?MFVBY2JCMUx2a3ZSR2tVQzFXWnQrUXErRTcweU1NRWw5dG41V2Npb2txaHlO?=
+ =?utf-8?B?L1pOTFZTdU5md2FnNkM2cE1kS1daT241NDlrelMxeXI1blRYU24vNE9pMWZT?=
+ =?utf-8?B?dXNTbUdpY0dBOXVhQytROTcyK2JjUjREVVBGNFhiZUVsRDlMRFN1VGhoZENw?=
+ =?utf-8?B?VFFQTXBoeGViY1VPRzV5TmpQdzVTVFB6d2J0NVZxOWtQbGRhOVhqTDY1bFFC?=
+ =?utf-8?B?aGRyUHpOZzduenlzbWMyREVXdDhSVW5JVy9ydVZUTjdQZ1dxbVNrblJtaGhl?=
+ =?utf-8?B?Y0o3TkxaVk5PR0dBWVo3anJjeDlQL0YwbFNaMDBidUF0aVRFN2pMMEZ3WjFI?=
+ =?utf-8?B?NE1NUnhqOWg2N3VmbXVwaVdpbXlFT0IyWVVvazJkNUNJa25IOFhPTEFKakRR?=
+ =?utf-8?B?TUhvK0lDMkpaSVpCNkVxeS8yMysxaFdjT3FQaHJJZFhjL1V5bXJxRXVLL3V5?=
+ =?utf-8?B?QW9GckMyYzhWc2I1WFFMUDY0RFlheWVKNVRYdk1idTVHQm5PWWJiK1J2aHVC?=
+ =?utf-8?B?NStEQUl1OWNwRERXV25wTXJlMkdldXE5aGhJenlGZGRSWGVVSnM5Q3RrR25x?=
+ =?utf-8?B?RWNXaFZmODI1Y1JQeGw4bE5qVUwxL3pONWZHS1E1aHpEN2MvbkZWc0w3ZHhp?=
+ =?utf-8?B?STZQc2V1VnY4ZjgrOHBjQUY5TFlxTDBndkQxNmo1Um16WUtFRDZhMzhoUUNs?=
+ =?utf-8?B?UDhJWFFhSFgra1JkbHV3Vk1ONEd4a2NhaENmdnQ4SStQNWZ2TzlPVm9IL2hy?=
+ =?utf-8?B?cXBqYm1XcHBjRE9uRTlLSlVETHVPTWJtbEFVTGxIRGYwT09KS215L0RDd0cx?=
+ =?utf-8?B?TXEycnJuVWMyK0VDV0MwOVJCbVVZMzF1emNOeTNDSVF1NWtXRk5pdkQwVk1P?=
+ =?utf-8?B?Tzd6Z3dwSERkRUdtZkhZZWlKOU5vN3dlVVFwamhSclpUYmg2WDRxeTZUaGVm?=
+ =?utf-8?B?TlFiQ3VZRWs1L05XYm0yTFhHVjhzTzZ2OWFSNjVPMnhYcmdLbTNJMHhKV3J6?=
+ =?utf-8?B?Qy9EbS93VHFBWkpXVEdaQzJWYkJiMnd6dDg3Q25BUDlkbFZtMktGUkk2OXk3?=
+ =?utf-8?B?U2lmNVJJb1prUzJ2SVp6N1RaYlR5WnRDYndJRzVSRjFUa3krdW5QZFNud2ls?=
+ =?utf-8?B?K3l6QXhGS1FvL25SVjZ6T2ZuVTZjendaN0theWJNc2xGSHU2VisvQkgyejFV?=
+ =?utf-8?B?Wll2TEVBN2FWQUFFOVpNNStWLzRFbU9UKzBkYm4yMng4dUN5V0dyOEFvUDM2?=
+ =?utf-8?B?N0E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e7eb9cd-2d65-4b5c-a839-08de2631e43c
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB7757.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 23:34:14.9154 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 23:34:45.9955 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: J44zdEbuDWHO+QErGBOLN5B2LDEcde30EukvtsWhkrO2jAFd+SU/virI1524i1d5FeuhTRkdBXVZVG6yLZWFqqZVHemn+3auhclQZtTSsM4=
+X-MS-Exchange-CrossTenant-UserPrincipalName: GJS7hc7syfDw6aEx/DJXvCf6JPSd99tfrQ8JuUI//HRUWe1WTZLlkxULi0omBjFB7dygLu4PQB2O6fwRAyS2VTlTr2LzHC33oRdl8wQyopM=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPFE70B31BEF
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -202,813 +202,144 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 11/16/2025 9:25 PM, Mallesh Koujalagi wrote:
-> Extends the RPS (Render P-States) test framework to support Multi-GT
-> configurations. This patch support the frequency scaling tests to
-> work with Multi-GT GPU architectures by:
+> Builds upon the Multi-GT infrastructure to extend support for RPS test
+> scenarios including waitboost functionality and reset recovery testing
+> across Multi-GT.
 >
-> - Refactoring global frequency arrays to per-GT data structures
-> - Adding GT enumeration and initialization logic
-> - Updating all frequency validation functions to operate per-GT
-> - Extending min-max configuration tests across multiple GT tiles
-> - Ensuring frequency scaling verification works for each GT independently
+> This patch enhances the multi-GT test framework by:
 >
-> The changes ensure that basic frequency scaling tests work correctly
-> across Multi-GT configurations.
+> - Adding Multi-GT support for waitboost functionality validation
+> - Extending reset test case to ensure compatibility with multi-GT setups
 >
-> v2: Split the patches based on test cases. (Vinay/Anirban)
+> Waitboost and reset test cases validate that GPU frequency boosting and
+> reset recovery mechanism work correctly across Multi-GT configuration.
 >
-> v3: Remove while loop in restore and boost_freq functions. (Anirban)
+> v11: Remove expected_val variable. (Vinay)
+>     - The restore_sysfs_on_each_gt function required for waitboost
+>       and reset test cases only.
 >
-> v4: Refactor GT initialization to use detection loop for proper
->      multi-tile suppor. (Vinay)
+> v12: Use Single spinner in boost_freq function. (Vinay)
 >
-> v5: Consistently use gt_id instead of sysfs_gt. (Vinay)
+> v13: Add the 4 spinners back since freq was not ramping.
 >
-> v6: Refactor Multi-GT code.
->
-> v7: Use GT in load runner. (Vinay)
->
-> v8: Refactor first and second patch.
->
-> v9: Replace sysfs_gt to gt_id. (Vinay)
->    - Add read sysfs file code to separate function. (Vinay)
->    - Move GT initialization function to first patch. (Vinay)
->    - Remove the comment. (Vinay)
->
-> v10: Change generic description of each patch. (Vinay)
->     - Rename read_sysfs_to_origfreq to read_sysfs_freq
->     - Move load_helper_run function to first patch
+> v14: Revert igt_spin_free function. (Vinay).
+>     - Add GT-specific context binding to properly trigger
+>       waitboost mechanism in multi-GT scenarios.
 >
 > Signed-off-by: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
 Reviewed-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
 > ---
->   tests/intel/i915_pm_rps.c | 369 ++++++++++++++++++++++----------------
->   1 file changed, 219 insertions(+), 150 deletions(-)
+>   tests/intel/i915_pm_rps.c | 61 +++++++++++++++++++++++++++++++++++----
+>   1 file changed, 55 insertions(+), 6 deletions(-)
 >
 > diff --git a/tests/intel/i915_pm_rps.c b/tests/intel/i915_pm_rps.c
-> index 80f3e76c1..9a1af20c9 100644
+> index 9a1af20c9..359776a6d 100644
 > --- a/tests/intel/i915_pm_rps.c
 > +++ b/tests/intel/i915_pm_rps.c
-> @@ -77,7 +77,11 @@
->    * SUBTEST: waitboost
->    */
->   
-> +#define NUMFREQ		8
-> +#define MAX_GTS		8
-> +
->   IGT_TEST_DESCRIPTION("Render P-States tests - verify GPU frequency changes");
-> +static void dump(const int *freqs, int gt_id);
->   
->   static int drm_fd;
->   
-> @@ -89,28 +93,63 @@ enum {
->   	RP0,
->   	RP1,
->   	RPn,
-> -	BOOST,
-> -	NUMFREQ
-> +	BOOST
->   };
->   
-> -static int origfreqs[NUMFREQ];
-> +static int origfreqs[MAX_GTS][NUMFREQ];
->   
->   struct sysfs_file {
->   	const char *name;
->   	const char *mode;
->   	FILE *filp;
-> -} sysfs_files[] = {
-> -	{ "act", "r", NULL },
-> -	{ "cur", "r", NULL },
-> -	{ "min", "rb+", NULL },
-> -	{ "max", "rb+", NULL },
-> -	{ "RP0", "r", NULL },
-> -	{ "RP1", "r", NULL },
-> -	{ "RPn", "r", NULL },
-> -	{ "boost", "rb+", NULL },
-> -	{ NULL, NULL, NULL }
-> +} sysfs_files[MAX_GTS][NUMFREQ];
-> +
-> +static const char *freq_names[NUMFREQ] = {
-> +	[ACT]   = "act",
-> +	[CUR]   = "cur",
-> +	[MIN]   = "min",
-> +	[MAX]   = "max",
-> +	[RP0]   = "RP0",
-> +	[RP1]   = "RP1",
-> +	[RPn]   = "RPn",
-> +	[BOOST] = "boost"
-> +};
-> +
-> +static const char *freq_modes[NUMFREQ] = {
-> +	[ACT]   = "r",
-> +	[CUR]   = "r",
-> +	[MIN]   = "rb+",
-> +	[MAX]   = "rb+",
-> +	[RP0]   = "r",
-> +	[RP1]   = "r",
-> +	[RPn]   = "r",
-> +	[BOOST] = "rb+"
->   };
->   
-> +static void init_sysfs_files(void)
-> +{
-> +	int tmp, gt;
-> +	int actual_gt_count = 0;
-> +
-> +	/* Count actual GTs and initialize sysfs_files dynamically */
-> +	i915_for_each_gt(drm_fd, tmp, gt) {
-> +		if (gt >= MAX_GTS) {
-> +			igt_warn("GT index %d exceeds MAX_GTS (%d), skipping\n", gt, MAX_GTS);
-> +			continue;
-> +		}
-> +
-> +		actual_gt_count = gt + 1;
-> +
-> +		for (int j = 0; j < NUMFREQ; j++) {
-> +			sysfs_files[gt][j].name = freq_names[j];
-> +			sysfs_files[gt][j].mode = freq_modes[j];
-> +			sysfs_files[gt][j].filp = NULL;
-> +		}
-> +	}
-> +
-> +	igt_debug("Detected %d GT(s)\n", actual_gt_count);
-> +}
-> +
->   static int readval(FILE *filp)
->   {
->   	int val;
-> @@ -123,12 +162,12 @@ static int readval(FILE *filp)
->   	return val;
->   }
->   
-> -static void read_freqs(int *freqs)
-> +static void read_freqs(int *freqs, int gt_id)
->   {
->   	int i;
->   
->   	for (i = 0; i < NUMFREQ; i++)
-> -		freqs[i] = readval(sysfs_files[i].filp);
-> +		freqs[i] = readval(sysfs_files[gt_id][i].filp);
->   }
->   
->   static void nsleep(unsigned long ns)
-> @@ -147,14 +186,13 @@ static void nsleep(unsigned long ns)
->   	} while (ret && errno == EINTR);
->   }
->   
-> -static void wait_freq_settle(void)
-> +static void wait_freq_settle(int gt_id)
->   {
->   	int timeout = 10;
->   
->   	while (1) {
->   		int freqs[NUMFREQ];
-> -
-> -		read_freqs(freqs);
-> +		read_freqs(freqs, gt_id);
->   		if (freqs[CUR] >= freqs[MIN] && freqs[CUR] <= freqs[MAX])
->   			break;
->   		nsleep(1000000);
-> @@ -163,7 +201,7 @@ static void wait_freq_settle(void)
->   	}
->   }
->   
-> -static int do_writeval(FILE *filp, int val, int lerrno, bool readback_check)
-> +static int do_writeval(FILE *filp, int val, int lerrno, bool readback_check, int gt_id)
->   {
->   	int ret, orig;
->   
-> @@ -177,24 +215,30 @@ static int do_writeval(FILE *filp, int val, int lerrno, bool readback_check)
->   		if (readback_check)
->   			igt_assert_eq(readval(filp), orig);
->   	} else {
-> +		if (ret < 0) {
-> +			int freqs[NUMFREQ];
-> +
-> +			read_freqs(freqs, gt_id);
-> +			dump(freqs, gt_id);
-> +		}
->   		/* Expecting no error */
->   		igt_assert_lt(0, ret);
-> -		wait_freq_settle();
-> +		wait_freq_settle(gt_id);
->   		if (readback_check)
->   			igt_assert_eq(readval(filp), val);
->   	}
->   
->   	return ret;
->   }
-> -#define writeval(filp, val) do_writeval(filp, val, 0, true)
-> -#define writeval_inval(filp, val) do_writeval(filp, val, EINVAL, true)
-> -#define writeval_nocheck(filp, val) do_writeval(filp, val, 0, false)
-> +
-> +#define writeval(filp, val, gt_id) do_writeval(filp, val, 0, true, gt_id)
-> +#define writeval_inval(filp, val, gt_id) do_writeval(filp, val, EINVAL, true, gt_id)
-> +#define writeval_nocheck(filp, val, gt_id) do_writeval(filp, val, 0, false, gt_id)
->   
->   static void check_freq_constraints(const int *freqs)
->   {
->   	igt_assert_lte(freqs[MIN], freqs[MAX]);
->   	igt_assert_lte(freqs[CUR], freqs[MAX]);
-> -	igt_assert_lte(freqs[RPn], freqs[CUR]);
->   	igt_assert_lte(freqs[RPn], freqs[MIN]);
->   	igt_assert_lte(freqs[MAX], freqs[RP0]);
->   	igt_assert_lte(freqs[RP1], freqs[RP0]);
-> @@ -203,14 +247,13 @@ static void check_freq_constraints(const int *freqs)
->   	igt_assert_neq(freqs[RP1], 0);
->   }
->   
-> -static void dump(const int *freqs)
-> +static void dump(const int *freqs, int gt_id)
->   {
->   	int i;
->   
-> -	igt_debug("gt freq (MHz):");
-> +	igt_debug("gt%d freq (MHz):", gt_id);
->   	for (i = 0; i < NUMFREQ; i++)
-> -		igt_debug("  %s=%d", sysfs_files[i].name, freqs[i]);
-> -
-> +		igt_debug("  %s=%d", sysfs_files[gt_id][i].name, freqs[i]);
->   	igt_debug("\n");
->   }
->   
-> @@ -224,6 +267,7 @@ static struct load_helper {
->   	enum load load;
->   	bool exit;
->   	bool signal;
-> +	int target_gt;
->   	struct igt_helper_process igt_proc;
->   } lh;
->   
-> @@ -260,7 +304,7 @@ static void load_helper_set_load(enum load load)
->   	load_helper_sync();
->   }
->   
-> -static void load_helper_run(enum load load)
-> +static void load_helper_run(enum load load, int target_gt)
->   {
->   	int link[2];
->   
-> @@ -278,6 +322,7 @@ static void load_helper_run(enum load load)
->   	lh.exit = false;
->   	lh.load = load;
->   	lh.signal = true;
-> +	lh.target_gt = target_gt;
->   
->   	pipe(link);
->   	lh.link = link[1];
-> @@ -287,19 +332,21 @@ static void load_helper_run(enum load load)
->   		bool prev_load;
->   		uint32_t handle;
->   		uint64_t ahnd;
-> +		const intel_ctx_t *ctx;
->   
->   		intel_allocator_init();
-> -		ahnd = get_reloc_ahnd(drm_fd, 0);
-> +		ctx = intel_ctx_create_for_gt(drm_fd, lh.target_gt);
-> +		ahnd = get_reloc_ahnd(drm_fd, ctx->id);
->   
->   		signal(SIGTERM, load_helper_signal_handler);
->   		signal(SIGUSR2, load_helper_signal_handler);
->   
-> -		igt_debug("Applying %s load...\n", lh.load ? "high" : "low");
-> +		igt_debug("Applying %s load on GT%d...\n", lh.load ? "high" : "low", lh.target_gt);
->   
->   		prev_load = lh.load == HIGH;
-> -		spin[0] = __igt_spin_new(drm_fd, .ahnd = ahnd);
-> +		spin[0] = __igt_spin_new(drm_fd, .ahnd = ahnd, .ctx = ctx);
->   		if (prev_load)
-> -			spin[1] = __igt_spin_new(drm_fd, .ahnd = ahnd);
-> +			spin[1] = __igt_spin_new(drm_fd, .ahnd = ahnd, .ctx = ctx);
->   		prev_load = !prev_load; /* send the initial signal */
->   		while (!lh.exit) {
->   			bool high_load;
-> @@ -319,7 +366,7 @@ static void load_helper_run(enum load load)
->   			} else {
->   				spin[0] = spin[1];
->   			}
-> -			spin[high_load] = __igt_spin_new(drm_fd, .ahnd = ahnd);
-> +			spin[high_load] = __igt_spin_new(drm_fd, .ahnd = ahnd, .ctx = ctx);
->   
->   			if (lh.signal && high_load != prev_load) {
->   				igt_assert_eq(write(lh.link, &lh.signal, sizeof(lh.signal)),
-> @@ -352,6 +399,7 @@ static void load_helper_run(enum load load)
->   		igt_spin_free(drm_fd, spin[1]);
->   		igt_spin_free(drm_fd, spin[0]);
->   		put_ahnd(ahnd);
-> +		intel_ctx_destroy(drm_fd, ctx);
->   	}
->   
->   	close(lh.link);
-> @@ -367,22 +415,22 @@ static void load_helper_stop(void)
->   	igt_assert(igt_wait_helper(&lh.igt_proc) == 0);
->   }
->   
-> -static void do_load_gpu(void)
-> +static void do_load_gpu(int target_gt)
->   {
-> -	load_helper_run(LOW);
-> +	load_helper_run(LOW, target_gt);
->   	nsleep(10000000);
->   	load_helper_stop();
->   }
->   
->   /* Return a frequency rounded by HW to the nearest supported value */
-> -static int get_hw_rounded_freq(int target)
-> +static int get_hw_rounded_freq(int target, int gt_id)
->   {
->   	int freqs[NUMFREQ];
->   	int old_freq;
->   	int idx;
->   	int ret;
->   
-> -	read_freqs(freqs);
-> +	read_freqs(freqs, gt_id);
->   
->   	if (freqs[MIN] > target)
->   		idx = MIN;
-> @@ -390,10 +438,10 @@ static int get_hw_rounded_freq(int target)
->   		idx = MAX;
->   
->   	old_freq = freqs[idx];
-> -	writeval_nocheck(sysfs_files[idx].filp, target);
-> -	read_freqs(freqs);
-> +	writeval_nocheck(sysfs_files[gt_id][idx].filp, target, gt_id);
-> +	read_freqs(freqs, gt_id);
->   	ret = freqs[idx];
-> -	writeval_nocheck(sysfs_files[idx].filp, old_freq);
-> +	writeval_nocheck(sysfs_files[gt_id][idx].filp, old_freq, gt_id);
->   
->   	return ret;
->   }
-> @@ -402,112 +450,112 @@ static int get_hw_rounded_freq(int target)
->    * Modify softlimit MIN and MAX freqs to valid and invalid levels. Depending
->    * on subtest run different check after each modification.
->    */
-> -static void min_max_config(void (*check)(void), bool load_gpu)
-> +static void min_max_config(void (*check)(int), bool load_gpu, int gt_id)
->   {
-> -	int fmid = (origfreqs[RPn] + origfreqs[RP0]) / 2;
-> +	int fmid = (origfreqs[gt_id][RPn] + origfreqs[gt_id][RP0]) / 2;
->   
->   	/*
->   	 * hw (and so kernel) rounds to the nearest value supported by
->   	 * the given platform.
->   	 */
-> -	fmid = get_hw_rounded_freq(fmid);
-> +	fmid = get_hw_rounded_freq(fmid, gt_id);
->   
->   	igt_debug("\nCheck original min and max...\n");
->   	if (load_gpu)
-> -		do_load_gpu();
-> -	check();
-> +		do_load_gpu(gt_id);
-> +	check(gt_id);
->   
->   	igt_debug("\nSet min=RPn and max=RP0...\n");
-> -	writeval(sysfs_files[MIN].filp, origfreqs[RPn]);
-> -	writeval(sysfs_files[MAX].filp, origfreqs[RP0]);
-> +	writeval(sysfs_files[gt_id][MIN].filp, origfreqs[gt_id][RPn], gt_id);
-> +	writeval(sysfs_files[gt_id][MAX].filp, origfreqs[gt_id][RP0], gt_id);
->   	if (load_gpu)
-> -		do_load_gpu();
-> -	check();
-> +		do_load_gpu(gt_id);
-> +	check(gt_id);
->   
->   	igt_debug("\nIncrease min to midpoint...\n");
-> -	writeval(sysfs_files[MIN].filp, fmid);
-> +	writeval(sysfs_files[gt_id][MIN].filp, fmid, gt_id);
->   	if (load_gpu)
-> -		do_load_gpu();
-> -	check();
-> +		do_load_gpu(gt_id);
-> +	check(gt_id);
->   
->   	igt_debug("\nIncrease min to RP0...\n");
-> -	writeval(sysfs_files[MIN].filp, origfreqs[RP0]);
-> +	writeval(sysfs_files[gt_id][MIN].filp, origfreqs[gt_id][RP0], gt_id);
->   	if (load_gpu)
-> -		do_load_gpu();
-> -	check();
-> +		do_load_gpu(gt_id);
-> +	check(gt_id);
->   
->   	igt_debug("\nIncrease min above RP0 (invalid)...\n");
-> -	writeval_inval(sysfs_files[MIN].filp, origfreqs[RP0] + 1000);
-> -	check();
-> +	writeval_inval(sysfs_files[gt_id][MIN].filp, origfreqs[gt_id][RP0] + 1000, gt_id);
-> +	check(gt_id);
->   
-> -	if (origfreqs[RPn] < origfreqs[RP0]) {
-> +	if (origfreqs[gt_id][RPn] < origfreqs[gt_id][RP0]) {
->   		igt_debug("\nDecrease max to RPn (invalid)...\n");
-> -		writeval_inval(sysfs_files[MAX].filp, origfreqs[RPn]);
-> -		check();
-> +		writeval_inval(sysfs_files[gt_id][MAX].filp, origfreqs[gt_id][RPn], gt_id);
-> +		check(gt_id);
->   	}
->   
->   	igt_debug("\nDecrease min to midpoint...\n");
-> -	writeval(sysfs_files[MIN].filp, fmid);
-> +	writeval(sysfs_files[gt_id][MIN].filp, fmid, gt_id);
->   	if (load_gpu)
-> -		do_load_gpu();
-> -	check();
-> +		do_load_gpu(gt_id);
-> +	check(gt_id);
->   
->   	igt_debug("\nDecrease min to RPn...\n");
-> -	writeval(sysfs_files[MIN].filp, origfreqs[RPn]);
-> +	writeval(sysfs_files[gt_id][MIN].filp, origfreqs[gt_id][RPn], gt_id);
->   	if (load_gpu)
-> -		do_load_gpu();
-> -	check();
-> +		do_load_gpu(gt_id);
-> +	check(gt_id);
->   
->   	igt_debug("\nDecrease min below RPn (invalid)...\n");
-> -	writeval_inval(sysfs_files[MIN].filp, 0);
-> -	check();
-> +	writeval_inval(sysfs_files[gt_id][MIN].filp, 0, gt_id);
-> +	check(gt_id);
->   
->   	igt_debug("\nDecrease max to midpoint...\n");
-> -	writeval(sysfs_files[MAX].filp, fmid);
-> -	check();
-> +	writeval(sysfs_files[gt_id][MAX].filp, fmid, gt_id);
-> +	check(gt_id);
->   
->   	igt_debug("\nDecrease max to RPn...\n");
-> -	writeval(sysfs_files[MAX].filp, origfreqs[RPn]);
-> -	check();
-> +	writeval(sysfs_files[gt_id][MAX].filp, origfreqs[gt_id][RPn], gt_id);
-> +	check(gt_id);
->   
->   	igt_debug("\nDecrease max below RPn (invalid)...\n");
-> -	writeval_inval(sysfs_files[MAX].filp, 0);
-> -	check();
-> +	writeval_inval(sysfs_files[gt_id][MAX].filp, 0, gt_id);
-> +	check(gt_id);
->   
-> -	if (origfreqs[RP0] > origfreqs[RPn]) {
-> +	if (origfreqs[gt_id][RP0] > origfreqs[gt_id][RPn]) {
->   		igt_debug("\nIncrease min to RP0 (invalid)...\n");
-> -		writeval_inval(sysfs_files[MIN].filp, origfreqs[RP0]);
-> -		check();
-> +		writeval_inval(sysfs_files[gt_id][MIN].filp, origfreqs[gt_id][RP0], gt_id);
-> +		check(gt_id);
->   	}
->   
->   	igt_debug("\nIncrease max to midpoint...\n");
-> -	writeval(sysfs_files[MAX].filp, fmid);
-> -	check();
-> +	writeval(sysfs_files[gt_id][MAX].filp, fmid, gt_id);
-> +	check(gt_id);
->   
->   	igt_debug("\nIncrease max to RP0...\n");
-> -	writeval(sysfs_files[MAX].filp, origfreqs[RP0]);
-> -	check();
-> +	writeval(sysfs_files[gt_id][MAX].filp, origfreqs[gt_id][RP0], gt_id);
-> +	check(gt_id);
->   
->   	igt_debug("\nIncrease max above RP0 (invalid)...\n");
-> -	writeval_inval(sysfs_files[MAX].filp, origfreqs[RP0] + 1000);
-> -	check();
-> +	writeval_inval(sysfs_files[gt_id][MAX].filp, origfreqs[gt_id][RP0] + 1000, gt_id);
-> +	check(gt_id);
->   
-> -	writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
-> -	writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-> +	writeval(sysfs_files[gt_id][MIN].filp, origfreqs[gt_id][MIN], gt_id);
-> +	writeval(sysfs_files[gt_id][MAX].filp, origfreqs[gt_id][MAX], gt_id);
->   }
->   
-> -static void basic_check(void)
-> +static void basic_check(int gt_id)
->   {
->   	int freqs[NUMFREQ];
->   
-> -	read_freqs(freqs);
-> -	dump(freqs);
-> +	read_freqs(freqs, gt_id);
-> +	dump(freqs, gt_id);
->   	check_freq_constraints(freqs);
->   }
->   
->   #define IDLE_WAIT_TIMESTEP_MSEC 250
->   #define IDLE_WAIT_TIMEOUT_MSEC 2500
-> -static void idle_check(void)
-> +static void idle_check(int gt_id)
->   {
->   	int freqs[NUMFREQ];
->   	int wait = 0;
-> @@ -515,8 +563,8 @@ static void idle_check(void)
->   	/* Monitor frequencies until cur settles down to min, which should
->   	 * happen within the allotted time */
->   	do {
-> -		read_freqs(freqs);
-> -		dump(freqs);
-> +		read_freqs(freqs, gt_id);
-> +		dump(freqs, gt_id);
->   		check_freq_constraints(freqs);
->   		if (freqs[ACT] <= freqs[RPn])
->   			break;
-> @@ -532,7 +580,7 @@ static void idle_check(void)
->   
->   #define LOADED_WAIT_TIMESTEP_MSEC 100
->   #define LOADED_WAIT_TIMEOUT_MSEC 3000
-> -static void loaded_check(void)
-> +static void loaded_check(int gt_id)
->   {
->   	int freqs[NUMFREQ];
->   	int wait = 0;
-> @@ -540,8 +588,8 @@ static void loaded_check(void)
->   	/* Monitor frequencies until cur increases to max, which should
->   	 * happen within the allotted time */
->   	do {
-> -		read_freqs(freqs);
-> -		dump(freqs);
-> +		read_freqs(freqs, gt_id);
-> +		dump(freqs, gt_id);
->   		check_freq_constraints(freqs);
->   		if (freqs[CUR] >= freqs[MAX])
->   			break;
-> @@ -556,19 +604,19 @@ static void loaded_check(void)
->   
->   #define STABILIZE_WAIT_TIMESTEP_MSEC 250
->   #define STABILIZE_WAIT_TIMEOUT_MSEC 15000
-> -static void stabilize_check(int *out)
-> +static void stabilize_check(int *out, int gt_id)
->   {
->   	int freqs[NUMFREQ];
->   	int wait = 0;
->   
->   	/* Monitor frequencies until HW will stabilize cur frequency.
->   	 * It should happen within allotted time */
-> -	read_freqs(freqs);
-> -	dump(freqs);
-> +	read_freqs(freqs, gt_id);
-> +	dump(freqs, gt_id);
->   	usleep(1000 * STABILIZE_WAIT_TIMESTEP_MSEC);
->   	do {
-> -		read_freqs(out);
-> -		dump(out);
-> +		read_freqs(out, gt_id);
-> +		dump(out, gt_id);
->   
->   		if (memcmp(freqs, out, sizeof(freqs)) == 0)
->   			break;
-> @@ -581,7 +629,7 @@ static void stabilize_check(int *out)
+> @@ -629,17 +629,58 @@ static void stabilize_check(int *out, int gt_id)
 >   	igt_debug("Waited %d msec to stabilize cur\n", wait);
 >   }
 >   
-> -static void boost_freq(int fd, int *boost_freqs)
-> +static void boost_freq(int fd, int *boost_freqs, int gt_id)
->   {
->   	int64_t timeout = 1;
->   	igt_spin_t *load;
-> @@ -596,8 +644,8 @@ static void boost_freq(int fd, int *boost_freqs)
->   	/* Waiting will grant us a boost to maximum */
->   	gem_wait(fd, load->handle, &timeout);
->   
-> -	read_freqs(boost_freqs);
-> -	dump(boost_freqs);
-> +	read_freqs(boost_freqs, gt_id);
-> +	dump(boost_freqs, gt_id);
->   
->   	/* Avoid downlocking till boost request is pending */
->   	igt_spin_end(load);
-> @@ -606,21 +654,22 @@ static void boost_freq(int fd, int *boost_freqs)
->   	put_ahnd(ahnd);
->   }
->   
-> -static void waitboost(int fd, bool reset)
-> +static void waitboost(int fd, bool reset, int gt_id)
->   {
->   	int pre_freqs[NUMFREQ];
->   	int boost_freqs[NUMFREQ];
->   	int post_freqs[NUMFREQ];
-> -	int fmid = (origfreqs[RPn] + origfreqs[RP0]) / 2;
-> -	fmid = get_hw_rounded_freq(fmid);
-> +	int fmid = (origfreqs[gt_id][RPn] + origfreqs[gt_id][RP0]) / 2;
->   
-> -	igt_require(origfreqs[RP0] > origfreqs[RPn]);
-> +	fmid = get_hw_rounded_freq(fmid, gt_id);
->   
-> -	load_helper_run(LOW);
-> +	igt_require(origfreqs[gt_id][RP0] > origfreqs[gt_id][RPn]);
+> +static void verify_sysfs_values(int gt)
+> +{
+> +	int current_val;
 > +
-> +	load_helper_run(LOW, gt_id);
->   
->   	igt_debug("Apply low load...\n");
->   	sleep(1);
-> -	stabilize_check(pre_freqs);
-> +	stabilize_check(pre_freqs, gt_id);
->   
->   	if (reset) {
->   		igt_debug("Reset gpu...\n");
-> @@ -629,23 +678,23 @@ static void waitboost(int fd, bool reset)
->   	}
->   
->   	/* Set max freq to less than boost freq */
-> -	writeval(sysfs_files[MAX].filp, fmid);
-> +	writeval(sysfs_files[gt_id][MAX].filp, fmid, gt_id);
->   
->   	/* When we wait upon the GPU, we want to temporarily boost it
->   	 * to maximum.
->   	 */
-> -	boost_freq(fd, boost_freqs);
-> +	boost_freq(fd, boost_freqs, gt_id);
->   
->   	/* Set max freq to original softmax */
-> -	writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-> +	writeval(sysfs_files[gt_id][MAX].filp, origfreqs[gt_id][MAX], gt_id);
->   
->   	igt_debug("Apply low load again...\n");
->   	sleep(1);
-> -	stabilize_check(post_freqs);
-> +	stabilize_check(post_freqs, gt_id);
->   
->   	igt_debug("Removing load...\n");
->   	load_helper_stop();
-> -	idle_check();
-> +	idle_check(gt_id);
->   
->   	igt_assert_lt(pre_freqs[CUR], pre_freqs[MAX]);
->   	igt_assert_eq(boost_freqs[CUR], boost_freqs[BOOST]);
-> @@ -899,13 +948,17 @@ static void engine_order(int i915)
->   
->   static void pm_rps_exit_handler(int sig)
->   {
-> -	if (sysfs_files[MAX].filp) {
-> -		if (origfreqs[MIN] > readval(sysfs_files[MAX].filp)) {
-> -			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-> -			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
-> -		} else {
-> -			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
-> -			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-> +	int tmp, gt;
+> +	/* Verify MIN frequency */
+> +	current_val = readval(sysfs_files[gt][MIN].filp);
+> +	if (current_val != origfreqs[gt][MIN]) {
+> +		igt_warn("GT%d MIN freq verification failed: expected %d, got %d\n",
+> +			 gt, origfreqs[gt][MIN], current_val);
+> +	}
 > +
-> +	i915_for_each_gt(drm_fd, tmp, gt) {
-> +		if (sysfs_files[gt][MAX].filp) {
-> +			if (origfreqs[gt][MIN] > readval(sysfs_files[gt][MAX].filp)) {
-> +				writeval(sysfs_files[gt][MAX].filp, origfreqs[gt][MAX], gt);
-> +				writeval(sysfs_files[gt][MIN].filp, origfreqs[gt][MIN], gt);
-> +			} else {
-> +				writeval(sysfs_files[gt][MIN].filp, origfreqs[gt][MIN], gt);
-> +				writeval(sysfs_files[gt][MAX].filp, origfreqs[gt][MAX], gt);
-> +			}
->   		}
->   	}
->   
-> @@ -1080,26 +1133,19 @@ static void test_thresholds(int i915, unsigned int gt, unsigned int flags)
->   	put_ahnd(ahnd);
->   }
->   
-> -igt_main
-> +static void read_sysfs_freq(char *sysfs_path)
->   {
-> -	igt_fixture {
-> -		struct sysfs_file *sysfs_file = sysfs_files;
-> -		char sysfs_path[80];
-> -		int ret;
-> +	int tmp, gt;
->   
-> -		/* Use drm_open_driver to verify device existence */
-> -		drm_fd = drm_open_driver(DRIVER_INTEL);
-> -		igt_require_gem(drm_fd);
-> -		igt_require(gem_can_store_dword(drm_fd, 0));
-> -		igt_assert(igt_sysfs_path(drm_fd, sysfs_path,
-> -					  sizeof(sysfs_path)));
-> -
-> -		do {
-> +	i915_for_each_gt(drm_fd, tmp, gt) {
-> +		for (int j = 0; j < NUMFREQ; j++) {
-> +			struct sysfs_file *sysfs_file = &sysfs_files[gt][j];
->   			int val = -1;
->   			char *path;
-> +			int ret;
->   
-> -			ret = asprintf(&path, "%s/gt_%s_freq_mhz",
-> -				       sysfs_path, sysfs_file->name);
-> +			ret = asprintf(&path, "%s/gt/gt%d/rps_%s_freq_mhz",
-> +				       sysfs_path, gt, sysfs_file->name);
->   			igt_assert(ret != -1);
->   			sysfs_file->filp = fopen(path, sysfs_file->mode);
->   			igt_require(sysfs_file->filp);
-> @@ -1107,39 +1153,64 @@ igt_main
->   
->   			val = readval(sysfs_file->filp);
->   			igt_assert(val >= 0);
-> -			sysfs_file++;
-> -		} while (sysfs_file->name != NULL);
-> +			origfreqs[gt][j] = val;
-> +			free(path);
-> +		}
+> +	/* Verify MAX frequency */
+> +	current_val = readval(sysfs_files[gt][MAX].filp);
+> +	if (current_val != origfreqs[gt][MAX]) {
+> +		igt_warn("GT%d MAX freq verification failed: expected %d, got %d\n",
+> +			 gt, origfreqs[gt][MAX], current_val);
+> +	}
+> +
+> +	/* Verify BOOST frequency */
+> +	current_val = readval(sysfs_files[gt][BOOST].filp);
+> +	if (current_val != origfreqs[gt][BOOST]) {
+> +		igt_warn("GT%d BOOST freq verification failed: expected %d, got %d\n",
+> +			 gt, origfreqs[gt][BOOST], current_val);
 > +	}
 > +}
->   
-> -		read_freqs(origfreqs);
-> +igt_main
+> +
+> +static void restore_sysfs_on_each_gt(void)
 > +{
 > +	int tmp, gt;
->   
-> +	igt_fixture {
-> +		char sysfs_path[80];
 > +
-> +		/* Use drm_open_driver to verify device existence */
-> +		drm_fd = drm_open_driver(DRIVER_INTEL);
-> +		igt_require_gem(drm_fd);
-> +		igt_require(gem_can_store_dword(drm_fd, 0));
-> +		igt_assert(igt_sysfs_path(drm_fd, sysfs_path,
-> +					  sizeof(sysfs_path)));
-> +		/* Initialize sysfs_files str dynamically based on actual GTs */
-> +		init_sysfs_files();
-> +		read_sysfs_freq(sysfs_path);
->   		igt_install_exit_handler(pm_rps_exit_handler);
->   	}
+> +	i915_for_each_gt(drm_fd, tmp, gt) {
+> +		writeval(sysfs_files[gt][MIN].filp, origfreqs[gt][MIN], gt);
+> +		writeval(sysfs_files[gt][MAX].filp, origfreqs[gt][MAX], gt);
+> +		writeval(sysfs_files[gt][BOOST].filp, origfreqs[gt][BOOST], gt);
+> +		verify_sysfs_values(gt);
+> +	}
+> +}
+> +
+>   static void boost_freq(int fd, int *boost_freqs, int gt_id)
+>   {
+> +	const intel_ctx_t *ctx;
+>   	int64_t timeout = 1;
+>   	igt_spin_t *load;
+> -	/* We need to keep dependency spin offset for load->handle */
+> -	uint64_t ahnd = get_simple_l2h_ahnd(fd, 0);
+> +	uint64_t ahnd;
+> +
+> +	ctx = intel_ctx_create_for_gt(fd, gt_id);
+> +	ahnd = get_reloc_ahnd(fd, ctx->id);
 >   
->   	igt_subtest("basic-api") {
->   		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
->   			      "This subtest is not supported when SLPC is enabled\n");
-> -		min_max_config(basic_check, false);
-> +		i915_for_each_gt(drm_fd, tmp, gt) {
-> +			min_max_config(basic_check, false, gt);
-> +		}
->   	}
+> -	load = igt_spin_new(fd, .ahnd = ahnd);
+> +	load = igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx);
 >   
->   	/* Verify the constraints, check if we can reach idle */
->   	igt_subtest("min-max-config-idle") {
->   		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
->   			      "This subtest is not supported when SLPC is enabled\n");
-> -		min_max_config(idle_check, true);
-> +			i915_for_each_gt(drm_fd, tmp, gt) {
-> +				min_max_config(idle_check, true, gt);
-> +			}
->   	}
+>   	/* Strip off extra fences from the object, and keep it from starting */
+> -	igt_spin_free(fd, igt_spin_new(fd, .ahnd = ahnd, .dependency = load->handle));
+> +	igt_spin_free(fd, igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx, .dependency = load->handle));
 >   
->   	/* Verify the constraints with high load, check if we can reach max */
->   	igt_subtest("min-max-config-loaded") {
->   		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
->   			      "This subtest is not supported when SLPC is enabled\n");
-> -		load_helper_run(HIGH);
-> -		min_max_config(loaded_check, false);
-> -		load_helper_stop();
-> +		i915_for_each_gt(drm_fd, tmp, gt) {
-> +			load_helper_run(HIGH, gt);
-> +			min_max_config(loaded_check, false, gt);
-> +			load_helper_stop();
-> +		}
->   	}
+>   	/* Waiting will grant us a boost to maximum */
+>   	gem_wait(fd, load->handle, &timeout);
+> @@ -652,6 +693,7 @@ static void boost_freq(int fd, int *boost_freqs, int gt_id)
+>   	gem_sync(fd, load->handle);
+>   	igt_spin_free(fd, load);
+>   	put_ahnd(ahnd);
+> +	intel_ctx_destroy(fd, ctx);
+>   }
+>   
+>   static void waitboost(int fd, bool reset, int gt_id)
+> @@ -696,9 +738,9 @@ static void waitboost(int fd, bool reset, int gt_id)
+>   	load_helper_stop();
+>   	idle_check(gt_id);
+>   
+> -	igt_assert_lt(pre_freqs[CUR], pre_freqs[MAX]);
+> +	igt_assert_lte(pre_freqs[CUR], pre_freqs[MAX]);
+>   	igt_assert_eq(boost_freqs[CUR], boost_freqs[BOOST]);
+> -	igt_assert_lt(post_freqs[CUR], post_freqs[MAX]);
+> +	igt_assert_lte(post_freqs[CUR], post_freqs[MAX]);
+>   }
+>   
+>   static uint32_t batch_create(int i915, uint64_t sz)
+> @@ -1208,7 +1250,10 @@ igt_main
 >   
 >   	/* Checks if we achieve boost using gem_wait */
 >   	igt_subtest("waitboost") {
-> -		waitboost(drm_fd, false);
-> +		i915_for_each_gt(drm_fd, tmp, gt) {
-> +			waitboost(drm_fd, false, gt);
-> +		}
+> +		restore_sysfs_on_each_gt();
+> +		sleep(1);
+>   		i915_for_each_gt(drm_fd, tmp, gt) {
+> +			igt_info("gt%u\n", gt);
+>   			waitboost(drm_fd, false, gt);
+>   		}
 >   	}
->   
->   	igt_describe("Check if the order of fences does not affect waitboosting");
-> @@ -1156,12 +1227,13 @@ igt_main
+> @@ -1226,8 +1271,12 @@ igt_main
+>   	/* Test boost frequency after GPU reset */
 >   	igt_subtest("reset") {
 >   		igt_hang_t hang;
+> +
+> +		restore_sysfs_on_each_gt();
+> +		sleep(1);
 >   		hang = igt_allow_hang(drm_fd, 0, 0);
-> -		waitboost(drm_fd, true);
-> +		i915_for_each_gt(drm_fd, tmp, gt) {
-> +			waitboost(drm_fd, true, gt);
-> +		}
+>   		i915_for_each_gt(drm_fd, tmp, gt) {
+> +			igt_info("gt%u\n", gt);
+>   			waitboost(drm_fd, true, gt);
+>   		}
 >   		igt_disallow_hang(drm_fd, hang);
->   	}
->   
->   	igt_subtest_with_dynamic("thresholds-idle") {
-> -		int tmp, gt;
->   		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
->   			      "This subtest is not supported when SLPC is enabled\n");
->   		i915_for_each_gt(drm_fd, tmp, gt) {
-> @@ -1171,7 +1243,6 @@ igt_main
->   	}
->   
->   	igt_subtest_with_dynamic("thresholds") {
-> -		int tmp, gt;
->   		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
->   			      "This subtest is not supported when SLPC is enabled\n");
->   		i915_for_each_gt(drm_fd, tmp, gt) {
-> @@ -1181,7 +1252,6 @@ igt_main
->   	}
->   
->   	igt_subtest_with_dynamic("thresholds-park") {
-> -		int tmp, gt;
->   		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
->   			      "This subtest is not supported when SLPC is enabled\n");
->   		i915_for_each_gt(drm_fd, tmp, gt) {
-> @@ -1191,7 +1261,6 @@ igt_main
->   	}
->   
->   	igt_subtest_with_dynamic("thresholds-idle-park") {
-> -		int tmp, gt;
->   		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
->   			      "This subtest is not supported when SLPC is enabled\n");
->   
