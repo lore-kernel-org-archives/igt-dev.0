@@ -4,187 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E153CCE8D6B
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 23:34:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFEC4CE8D6B
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 23:42:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 90C7410E1DC;
-	Mon, 17 Nov 2025 23:34:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 54F8E10E1DC;
+	Mon, 17 Nov 2025 23:42:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lXqKkzLH";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="p++g2SYd";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBD3310E1DC
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Nov 2025 23:34:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763422493; x=1794958493;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=tiEA8c/13JEJ2m3/8dtfdlmzCO/wIKckoBtC9LK3a4k=;
- b=lXqKkzLHYu1nRuiqoyLdV+XyI0M4u2JyT34Q0TYSzYrMZz8NZsEr1OjU
- 6894EFPsEyX5vjA+pXvO5wgb7dU/WLVmNyvq7RJ4h6gjfBawpEdpmO+7T
- unqdoYGPUvKvLXDpXZAtPtThkrLaPTX+tlIvtGeokh6NvhnQqoN3t/OTF
- sLap38MK8cwxFGxptwrSaaFq1C53Ugm+dHXwbyyRN8eRTQCqmlJy7OVeh
- vTsjCety8XzgnhUKi3nU+83hHpld1ok1uDznmtpk3gn+ShKy512+LsyIr
- ZET+n/qv5myY0iHxfEE0gEJDK3BaM6wCTrwV48Zp+Rvz7c0GGmbLpZE7X g==;
-X-CSE-ConnectionGUID: XLDDMHERRrylXbZ8MfsW9Q==
-X-CSE-MsgGUID: 3ZfCTiGLRVi/tqM2hykaCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="76112255"
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="76112255"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 15:34:52 -0800
-X-CSE-ConnectionGUID: UnJ0BH+4TDaVVqz0hlHlRw==
-X-CSE-MsgGUID: f5gXIPxFSWGA7AC5DxzZjw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; d="scan'208";a="190741884"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2025 15:34:53 -0800
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 17 Nov 2025 15:34:52 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Mon, 17 Nov 2025 15:34:52 -0800
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.65) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Mon, 17 Nov 2025 15:34:51 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cbV1W3fa7o1QJoLvCswAxiTbN+Q/uNoX1i6oP8CLvcPu3dtxUiVUlJ0MZ8OoV171+kJarVxByKWUcZ4xyjimq8505cwf/eVjROv0VzzKI+pvvtBIKpD6LAg1T7sYzD7oqFDw6yMOPBv1hLGgTZhAdZ/fVaelwqZyAd3DGqvZxwMV613F+7QJWhv8DmF3BZPRqqNBxNImhKobWXRq1AdSso1dD7bhawcgo7KMFnXHV9EXwD8IyNn+ks/Td4c3J7NSlvH3i2l6wm9D1fyOP6lLJUylpOpjRat7a1T25oDviYJPDUUzLEy/sfTh1L7lS6eXYuOkh2kpPqN+s0yDIhZVrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ct4ww2drB9kMhROTi02nVgpfWWDC9T53RiwoeIFIYcA=;
- b=uas/7x6t2TNw5JqwOoMqsoHjoGkBHdhr+m7+qTAK3/ONJzXf2vW3gpWRNhaMsFSxDZLtVnTH24n+opHulne1EOqIdpQm0jOEl8AuzNeWG+yXS47NSij9hHC0TNaV++ELVfDmexemZyoh4upkNGhVPDumMcbIe+Yj41waDGnFzp+z42gPKj1s9oUXU3YOQTMXdsM/jotaSXXLPNJBhNav45OgelQXE7qo647HxuZ5ir3zbHnF/vca4Mi/uEJCus4VaYmKZVegOAyXCYaGeqePW0tKu6SIfuTQzsB5clQVH7UanP67VwyDkDKTK812jpk5VWwPN2t+uoGs3mAmFK3FIw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB7757.namprd11.prod.outlook.com (2603:10b6:8:103::22)
- by DS4PPFE70B31BEF.namprd11.prod.outlook.com (2603:10b6:f:fc02::5a) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.21; Mon, 17 Nov
- 2025 23:34:49 +0000
-Received: from DM4PR11MB7757.namprd11.prod.outlook.com
- ([fe80::60c9:10e5:60f0:13a1]) by DM4PR11MB7757.namprd11.prod.outlook.com
- ([fe80::60c9:10e5:60f0:13a1%2]) with mapi id 15.20.9320.018; Mon, 17 Nov 2025
- 23:34:46 +0000
-Message-ID: <cdf236c4-600a-4a02-86c5-e301651dfa19@intel.com>
-Date: Mon, 17 Nov 2025 15:34:45 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [v14 i-g-t 2/2] tests/intel/i915_pm_rps: Extend Multi-GT support
- to waitboost and reset tests
-To: Mallesh Koujalagi <mallesh.koujalagi@intel.com>,
- <igt-dev@lists.freedesktop.org>
-CC: <anshuman.gupta@intel.com>, <badal.nilawar@intel.com>,
- <riana.tauro@intel.com>, <karthik.poosa@intel.com>, <sk.anirban@intel.com>,
- <raag.jadav@intel.com>
-References: <20251117052506.578422-4-mallesh.koujalagi@intel.com>
- <20251117052506.578422-6-mallesh.koujalagi@intel.com>
-Content-Language: en-US
-From: "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>
-In-Reply-To: <20251117052506.578422-6-mallesh.koujalagi@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY3PR10CA0022.namprd10.prod.outlook.com
- (2603:10b6:a03:255::27) To DM4PR11MB7757.namprd11.prod.outlook.com
- (2603:10b6:8:103::22)
+Received: from bali.collaboradmins.com (bali.collaboradmins.com
+ [148.251.105.195])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C9D210E1DC;
+ Mon, 17 Nov 2025 23:42:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+ s=mail; t=1763422969;
+ bh=Ql44bLapHvVnSdUDhShp/RQmmGjCT7w4C8SXojTM/M8=;
+ h=From:Date:Subject:To:Cc:From;
+ b=p++g2SYdMYG5HI9GhLpobFnF47otEQN6VAE/1EiaOvx+YX4VzIvSDfv4iLnYUsCv9
+ ybZ7oXRPcVJ+DkwYhmyEoZw5WCltXmdUhIRSFtG59dnRd5uhcWBaU4W0ncAqXjZ/tU
+ eY8QHt46oBlkoshYr9K7cW2SVSF01lOuLsa9LoxQCNtQr9v6YCB1YIgUdTNjIF+uyt
+ AmqTvJPhdBs7l10L0ernIFQsPJHyzZVVyyt2AJHiZl3yASuFGOpTFh52k8JtmvSS+x
+ EHBhYmjvlHWNtL0dWkGy4L6tJ6yJmfZdmnqiS7/pe2QADOxAM10REeLbrx/zzdgIWQ
+ QpKU/ZGgE5S/g==
+Received: from localhost (unknown [82.79.138.145])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits)
+ server-digest SHA256) (No client certificate requested)
+ (Authenticated sender: cristicc)
+ by bali.collaboradmins.com (Postfix) with ESMTPSA id B1BF617E0B85;
+ Tue, 18 Nov 2025 00:42:49 +0100 (CET)
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Date: Tue, 18 Nov 2025 01:42:23 +0200
+Subject: [PATCH i-g-t v2] tests: (Re)add kms_crtc_background_color test
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB7757:EE_|DS4PPFE70B31BEF:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3e7eb9cd-2d65-4b5c-a839-08de2631e43c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?TFNpUCtlN05pMWl2aXB2YlErV3RVZ09rZE1INEJXSHpySksxbnlNbHQwTkw2?=
- =?utf-8?B?Qk5kaTRNTVg5NWVobGxEekJZTzlPeU04MU9jWlJBS1NuUGgwTm0zS2tDV3Ji?=
- =?utf-8?B?Z3laaWRFRU50d3FrRS9XTXYxZHRQZHJuRXlMUGdTYjZsb1AwUjZHVVdScllM?=
- =?utf-8?B?N1Y3dzZXSUtPMU5tZWdZbTBXcC91eUhtTHVDSGhlVGIvK216V0s5QXp6YVdr?=
- =?utf-8?B?b2w1WndTbFNoeDBtWkRzTXk4bE9taCt2Smw4bDhyMWtjbUdJSmhRUzVhZU4z?=
- =?utf-8?B?OFI1YittWDhjQmcxVHlITkZMWndCcU4xbGh1bDJad2l0alVHcVd3VEFaNVRw?=
- =?utf-8?B?UmtBUnV1aVVna2pOSzhzN2VMWVp4UFVIQUlBNnFtVTNobmtMY2ZXNU1YblE2?=
- =?utf-8?B?eW1JdVR6TEVhM1hiY3lCMkhmWjJweTd4Tlh5L0JPcUtieGlPOVI5NDMxRE9t?=
- =?utf-8?B?ZlNFNW9EZlUrOEhSbCtOUHRmSW1YT2gwbnJNY3hzNm8vSGkrd0Y1cklBakNQ?=
- =?utf-8?B?eXIybWd3MUpvL3FyNmFDZlJ4UkVGVFBpWnptNTFjRkYwS2FZN0dlYVdqVkZW?=
- =?utf-8?B?V2t6S3V1UW4vUmZXc0xuSkZBNmxtUVo2RDVxSW1tclZteUZwZWRGMmxxMjR6?=
- =?utf-8?B?N1lZanJ4bjFtSHdjWVNEZ3hxZC9BaUsySVpNdFR4b1lvVnRTSUZYRGhHWmRx?=
- =?utf-8?B?Slg2RXVXenNKdG1tVVlIclZuWFgwUVgxRGErYjY5djlsTmpxMHR5anpPSkRY?=
- =?utf-8?B?U0NpQnFlMU4xU1hNUVhmRzhvbzRKNWlaUWxUREpRVUYrQjc5MWpjazl4eEZX?=
- =?utf-8?B?Mk95Q0ZOZUlMQWVnUHhtc3ZPS3czRHRUZ1hWRzQyNVpVU29tUGl6YXgrWUM4?=
- =?utf-8?B?enJzL1VIemxvSWtjOENjRTVsZ3p5c2h4b00rZDZJNE44M3BpYVhqdzB2WlV4?=
- =?utf-8?B?eG5KNUVFTWFlNFh1K1dCN3F1eHBkYUlIRGdmTlJSNmxNTy9yMEVQY0NJSkxn?=
- =?utf-8?B?ZFJVSGpTbjBMUlVnU3ZYTmM0dDdLWWxTZ1BHYmdYdDRBV3pCMEwxQlp4Zzkv?=
- =?utf-8?B?SFhiRDJtWHVqNUFGYXRZM3FEMDhwbitnaHRLUkszcXV4Wlo1di9XOENDakhL?=
- =?utf-8?B?UGFaR2ZQSlF2TEZDTUtVWUV1U0VrQUZIYUc0N0Y3dlNBYnZHeWNTc3Rpa1V4?=
- =?utf-8?B?V2ZlOUkrQlJWNHlGS25nc21zTjI2WmhFVU1aaytNV0VtMy9scTkvUmIyRzNt?=
- =?utf-8?B?cHo1RFNrS3F4ZkZrdnhKSXBYdVZrbFNaWWdDV3JVM3FhVnc0U1crR3ZTRjVt?=
- =?utf-8?B?VkI5ZlFyZGtoZEpPc0k0elA4RjBaWTBJV1NlYlpmK0cwQ0tFc3JqdWtuTTJ1?=
- =?utf-8?B?RjlQaXJHdGkvUUdoUUs3ZUtZRG81WDdhcGw3QnJaaUMxNytPa3J1WDdiaGwr?=
- =?utf-8?B?RmdVTHNxNXkzUGdvb3B6VTJvS3N1eG8zSWxPcG5XZDI0aXBZM0NvTGIzYkV6?=
- =?utf-8?B?UTJYRTliZ1JTdkE5aDFrWXJRSDlSNllPaGQzdmw0c0RvZmZwaDErbDUzNWFv?=
- =?utf-8?B?eGNxK2JveFp2TDhsS3BCOW9BWjBxYjBlUVpETVhpSm91S2tBWHZadVhpMlpp?=
- =?utf-8?B?Zjg4SFNNNGRWRVcvVG9tT1hMVkdFQ2FwQUc4SFdWekhPUDRtbmw5N29yNEx5?=
- =?utf-8?B?b3B4V0ZOcEtvd1Q0c0d3SUhDcVRrQ0tZZkZ2dktMYS9Najg1b3pmUnBOQ3Jt?=
- =?utf-8?B?VHgvVUtTSWtvU3VOcTdYcFpIa0g5UXMvRlpHVWRoTDcza1FEcmNjN1hsN2dK?=
- =?utf-8?B?d25PQ0dFbEtEcnpjblc3RjdnaDlUMGxMVVhYK1k4SUw0a01EWG4yY0ttZjNv?=
- =?utf-8?B?d2ZhdHZIOUZlSXMzTjV1dHNRc0ZaNmt4VFh4NDlOTVI3Wm1GWGwrZ0RsZG1u?=
- =?utf-8?Q?PPYSqnZ3LvTXd4tXLIpJSQaO2zfNHKWt?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB7757.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eDlYL0l6dDlIdmFhcVNJeWVuVVFNRkZSQUg0a1BDOTd6clY2dlRkRDVncFJY?=
- =?utf-8?B?NVlNeENPbjVqK0l2TjFReHhhUmRqSnYzVjRJZEV5RXRWUmt1dFY3bnRmRW9N?=
- =?utf-8?B?Z2JMMnkxanRDb25MYVRMRnhLYnkyb1RnMk4wRTVlN2JvZXk0K2lvSHdJcGpM?=
- =?utf-8?B?a09kcVJ0Q2MxK3R0RFN3aUxxTCtJY2hXR3ppTDFXOWFoY00wWjQ2bkdnaHFD?=
- =?utf-8?B?N0dMd0V4M3ErektqOFJLYWJMRXliWDgrNzJOVkg5NGRLRlVDQjN1ZkJTN1JY?=
- =?utf-8?B?NWRpVHJOaUtjOVBzSU43aEk5VjlmL3NQbnhJNlFZZFdHVzJwTFJJVlRLbVFl?=
- =?utf-8?B?ZkZIcEMzTnJpV29EZkJ4a2pKUmE0YU41V2w3V1dZV2dwdVNsQVp4bFJVVzly?=
- =?utf-8?B?aEJhY1JvYUtxbmt0UzRrN1lVYkpyZjhBMlFJQUF4SWdmTklzN2FoZ2FObE9p?=
- =?utf-8?B?QmljYlVydyt4U0hpQ3NXbTlDWGlTYzhKb0Y4SUdpYm9CYmo0TXJoMDBDMEt1?=
- =?utf-8?B?bUJwSlBreVB1RVkvTk1yMnZ4RkN1Zy9zb1lHcWVHNzJ6ZG1odjlwK0VZNzNn?=
- =?utf-8?B?SjZjaDRBU21xWGFvbXNYQnh3Q2lPWmZrVXZJUXdGZTg4Slh4M2pDS1A0TUNt?=
- =?utf-8?B?aWUzN1libUxRZHJWNXBlRjlCWEt2c0xhWVJ0RysrdVFWTitmNEhTc2c1aUFU?=
- =?utf-8?B?VVJCdVUxNGxiWGx0WVpTMlZqTmJ2Y2RaUWhjSVlnRmJjdEE0dzFBYmlZZVIz?=
- =?utf-8?B?a3hzOUVXM3FZL2tEdU4wVWgwcVRQakRwSGF4d0NnWGlrSXhRRjVNbk5ORjN0?=
- =?utf-8?B?WFU4WUVFaDkzZmlxaFZ0SXpYcGhIMzZnT2cyVlZLL0xIdGlpVmZoY29aL1dr?=
- =?utf-8?B?MFVBY2JCMUx2a3ZSR2tVQzFXWnQrUXErRTcweU1NRWw5dG41V2Npb2txaHlO?=
- =?utf-8?B?L1pOTFZTdU5md2FnNkM2cE1kS1daT241NDlrelMxeXI1blRYU24vNE9pMWZT?=
- =?utf-8?B?dXNTbUdpY0dBOXVhQytROTcyK2JjUjREVVBGNFhiZUVsRDlMRFN1VGhoZENw?=
- =?utf-8?B?VFFQTXBoeGViY1VPRzV5TmpQdzVTVFB6d2J0NVZxOWtQbGRhOVhqTDY1bFFC?=
- =?utf-8?B?aGRyUHpOZzduenlzbWMyREVXdDhSVW5JVy9ydVZUTjdQZ1dxbVNrblJtaGhl?=
- =?utf-8?B?Y0o3TkxaVk5PR0dBWVo3anJjeDlQL0YwbFNaMDBidUF0aVRFN2pMMEZ3WjFI?=
- =?utf-8?B?NE1NUnhqOWg2N3VmbXVwaVdpbXlFT0IyWVVvazJkNUNJa25IOFhPTEFKakRR?=
- =?utf-8?B?TUhvK0lDMkpaSVpCNkVxeS8yMysxaFdjT3FQaHJJZFhjL1V5bXJxRXVLL3V5?=
- =?utf-8?B?QW9GckMyYzhWc2I1WFFMUDY0RFlheWVKNVRYdk1idTVHQm5PWWJiK1J2aHVC?=
- =?utf-8?B?NStEQUl1OWNwRERXV25wTXJlMkdldXE5aGhJenlGZGRSWGVVSnM5Q3RrR25x?=
- =?utf-8?B?RWNXaFZmODI1Y1JQeGw4bE5qVUwxL3pONWZHS1E1aHpEN2MvbkZWc0w3ZHhp?=
- =?utf-8?B?STZQc2V1VnY4ZjgrOHBjQUY5TFlxTDBndkQxNmo1Um16WUtFRDZhMzhoUUNs?=
- =?utf-8?B?UDhJWFFhSFgra1JkbHV3Vk1ONEd4a2NhaENmdnQ4SStQNWZ2TzlPVm9IL2hy?=
- =?utf-8?B?cXBqYm1XcHBjRE9uRTlLSlVETHVPTWJtbEFVTGxIRGYwT09KS215L0RDd0cx?=
- =?utf-8?B?TXEycnJuVWMyK0VDV0MwOVJCbVVZMzF1emNOeTNDSVF1NWtXRk5pdkQwVk1P?=
- =?utf-8?B?Tzd6Z3dwSERkRUdtZkhZZWlKOU5vN3dlVVFwamhSclpUYmg2WDRxeTZUaGVm?=
- =?utf-8?B?TlFiQ3VZRWs1L05XYm0yTFhHVjhzTzZ2OWFSNjVPMnhYcmdLbTNJMHhKV3J6?=
- =?utf-8?B?Qy9EbS93VHFBWkpXVEdaQzJWYkJiMnd6dDg3Q25BUDlkbFZtMktGUkk2OXk3?=
- =?utf-8?B?U2lmNVJJb1prUzJ2SVp6N1RaYlR5WnRDYndJRzVSRjFUa3krdW5QZFNud2ls?=
- =?utf-8?B?K3l6QXhGS1FvL25SVjZ6T2ZuVTZjendaN0theWJNc2xGSHU2VisvQkgyejFV?=
- =?utf-8?B?Wll2TEVBN2FWQUFFOVpNNStWLzRFbU9UKzBkYm4yMng4dUN5V0dyOEFvUDM2?=
- =?utf-8?B?N0E9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e7eb9cd-2d65-4b5c-a839-08de2631e43c
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB7757.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 23:34:45.9955 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GJS7hc7syfDw6aEx/DJXvCf6JPSd99tfrQ8JuUI//HRUWe1WTZLlkxULi0omBjFB7dygLu4PQB2O6fwRAyS2VTlTr2LzHC33oRdl8wQyopM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPFE70B31BEF
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20251118-crtc-bgcolor-v2-1-dce4063f85a9@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAN6yG2kC/22NwQqDMBBEf0X23C1JwNT01P8oHpK46oI1ZROkR
+ fz3Bs89zhvmzQ6ZhCnDvdlBaOPMaa3BXBqIs18nQh5qBqNMq7VWGKVEDFNMSxIcLQ3Otx2pMEK
+ dvIVG/py6JzBOWKCveOZcknzPk02f5X/fplGj6ax1wTrjbupR+eJDEn+N6QX9cRw/rfV4t7MAA
+ AA=
+X-Change-ID: 20251110-crtc-bgcolor-f6ed9a58e0bf
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Sandy Huang <hjc@rock-chips.com>, 
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+ Andy Yan <andy.yan@rock-chips.com>
+Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+ linux-rockchip@lists.infradead.org, kernel@collabora.com
+X-Mailer: b4 0.14.3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -200,146 +70,352 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Provide test to verify the behavior of BACKGROUND_COLOR DRM CRTC
+property.
 
-On 11/16/2025 9:25 PM, Mallesh Koujalagi wrote:
-> Builds upon the Multi-GT infrastructure to extend support for RPS test
-> scenarios including waitboost functionality and reset recovery testing
-> across Multi-GT.
->
-> This patch enhances the multi-GT test framework by:
->
-> - Adding Multi-GT support for waitboost functionality validation
-> - Extending reset test case to ensure compatibility with multi-GT setups
->
-> Waitboost and reset test cases validate that GPU frequency boosting and
-> reset recovery mechanism work correctly across Multi-GT configuration.
->
-> v11: Remove expected_val variable. (Vinay)
->     - The restore_sysfs_on_each_gt function required for waitboost
->       and reset test cases only.
->
-> v12: Use Single spinner in boost_freq function. (Vinay)
->
-> v13: Add the 4 spinners back since freq was not ramping.
->
-> v14: Revert igt_spin_free function. (Vinay).
->     - Add GT-specific context binding to properly trigger
->       waitboost mechanism in multi-GT scenarios.
->
-> Signed-off-by: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
-Reviewed-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-> ---
->   tests/intel/i915_pm_rps.c | 61 +++++++++++++++++++++++++++++++++++----
->   1 file changed, 55 insertions(+), 6 deletions(-)
->
-> diff --git a/tests/intel/i915_pm_rps.c b/tests/intel/i915_pm_rps.c
-> index 9a1af20c9..359776a6d 100644
-> --- a/tests/intel/i915_pm_rps.c
-> +++ b/tests/intel/i915_pm_rps.c
-> @@ -629,17 +629,58 @@ static void stabilize_check(int *out, int gt_id)
->   	igt_debug("Waited %d msec to stabilize cur\n", wait);
->   }
->   
-> +static void verify_sysfs_values(int gt)
-> +{
-> +	int current_val;
-> +
-> +	/* Verify MIN frequency */
-> +	current_val = readval(sysfs_files[gt][MIN].filp);
-> +	if (current_val != origfreqs[gt][MIN]) {
-> +		igt_warn("GT%d MIN freq verification failed: expected %d, got %d\n",
-> +			 gt, origfreqs[gt][MIN], current_val);
-> +	}
-> +
-> +	/* Verify MAX frequency */
-> +	current_val = readval(sysfs_files[gt][MAX].filp);
-> +	if (current_val != origfreqs[gt][MAX]) {
-> +		igt_warn("GT%d MAX freq verification failed: expected %d, got %d\n",
-> +			 gt, origfreqs[gt][MAX], current_val);
-> +	}
-> +
-> +	/* Verify BOOST frequency */
-> +	current_val = readval(sysfs_files[gt][BOOST].filp);
-> +	if (current_val != origfreqs[gt][BOOST]) {
-> +		igt_warn("GT%d BOOST freq verification failed: expected %d, got %d\n",
-> +			 gt, origfreqs[gt][BOOST], current_val);
-> +	}
-> +}
-> +
-> +static void restore_sysfs_on_each_gt(void)
-> +{
-> +	int tmp, gt;
-> +
-> +	i915_for_each_gt(drm_fd, tmp, gt) {
-> +		writeval(sysfs_files[gt][MIN].filp, origfreqs[gt][MIN], gt);
-> +		writeval(sysfs_files[gt][MAX].filp, origfreqs[gt][MAX], gt);
-> +		writeval(sysfs_files[gt][BOOST].filp, origfreqs[gt][BOOST], gt);
-> +		verify_sysfs_values(gt);
-> +	}
-> +}
-> +
->   static void boost_freq(int fd, int *boost_freqs, int gt_id)
->   {
-> +	const intel_ctx_t *ctx;
->   	int64_t timeout = 1;
->   	igt_spin_t *load;
-> -	/* We need to keep dependency spin offset for load->handle */
-> -	uint64_t ahnd = get_simple_l2h_ahnd(fd, 0);
-> +	uint64_t ahnd;
-> +
-> +	ctx = intel_ctx_create_for_gt(fd, gt_id);
-> +	ahnd = get_reloc_ahnd(fd, ctx->id);
->   
-> -	load = igt_spin_new(fd, .ahnd = ahnd);
-> +	load = igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx);
->   
->   	/* Strip off extra fences from the object, and keep it from starting */
-> -	igt_spin_free(fd, igt_spin_new(fd, .ahnd = ahnd, .dependency = load->handle));
-> +	igt_spin_free(fd, igt_spin_new(fd, .ahnd = ahnd, .ctx = ctx, .dependency = load->handle));
->   
->   	/* Waiting will grant us a boost to maximum */
->   	gem_wait(fd, load->handle, &timeout);
-> @@ -652,6 +693,7 @@ static void boost_freq(int fd, int *boost_freqs, int gt_id)
->   	gem_sync(fd, load->handle);
->   	igt_spin_free(fd, load);
->   	put_ahnd(ahnd);
-> +	intel_ctx_destroy(fd, ctx);
->   }
->   
->   static void waitboost(int fd, bool reset, int gt_id)
-> @@ -696,9 +738,9 @@ static void waitboost(int fd, bool reset, int gt_id)
->   	load_helper_stop();
->   	idle_check(gt_id);
->   
-> -	igt_assert_lt(pre_freqs[CUR], pre_freqs[MAX]);
-> +	igt_assert_lte(pre_freqs[CUR], pre_freqs[MAX]);
->   	igt_assert_eq(boost_freqs[CUR], boost_freqs[BOOST]);
-> -	igt_assert_lt(post_freqs[CUR], post_freqs[MAX]);
-> +	igt_assert_lte(post_freqs[CUR], post_freqs[MAX]);
->   }
->   
->   static uint32_t batch_create(int i915, uint64_t sz)
-> @@ -1208,7 +1250,10 @@ igt_main
->   
->   	/* Checks if we achieve boost using gem_wait */
->   	igt_subtest("waitboost") {
-> +		restore_sysfs_on_each_gt();
-> +		sleep(1);
->   		i915_for_each_gt(drm_fd, tmp, gt) {
-> +			igt_info("gt%u\n", gt);
->   			waitboost(drm_fd, false, gt);
->   		}
->   	}
-> @@ -1226,8 +1271,12 @@ igt_main
->   	/* Test boost frequency after GPU reset */
->   	igt_subtest("reset") {
->   		igt_hang_t hang;
-> +
-> +		restore_sysfs_on_each_gt();
-> +		sleep(1);
->   		hang = igt_allow_hang(drm_fd, 0, 0);
->   		i915_for_each_gt(drm_fd, tmp, gt) {
-> +			igt_info("gt%u\n", gt);
->   			waitboost(drm_fd, true, gt);
->   		}
->   		igt_disallow_hang(drm_fd, hang);
+This is achieved by filling a full-screen primary plane with a given
+color and comparing the resulting CRC with the one obtained after
+turning off all planes while having the CRTC background set to the same
+color.
+
+Also note this is a reworked version of the test that has been dropped
+over 5 years ago via commit 33f07391e5f6 ("tests: Remove
+kms_crtc_background_color test"), as the required kernel changes never
+landed because of missing support in userland.
+
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+---
+This has been tested on both VKMS and the Rockchip RK3588 SoC based
+Radxa ROCK 5B board.  It relies on the kernel series [1] introducing the
+BACKGROUND_COLOR CRTC property and a few additional patches from [2]
+enabling the required CRC functionality for the Rockchip platform.
+
+The patch adding support for setting custom background color in VKMS is
+currently available at [3], but will be submitted soon as part of [1].
+
+It's worth noting CRC is only supported by the display controller (VOP2)
+present in the RK3576 SoC variant.  However, the computation is done by
+the hardware before applying the background color, hence it has limited
+usage in IGT testing.
+
+Luckily, the frame CRCs can be captured through DPCD, i.e. at
+DisplayPort AUX channel level, hence I used the USB-C DP AltMode capable
+port of the aforementioned board to perform the actual validation.
+
+[1] https://lore.kernel.org/all/20251013-rk3588-bgcolor-v2-0-25cc3810ba8c@collabora.com/
+[2] https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux/-/commits/cristicc/rk3588-vop2-crc
+[3] https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux/-/commits/cristicc/vkms-bgcolor
+
+* Test results on VKMS
+
+virtme-ng$ IGT_FORCE_DRIVER=vkms build/tests/kms_crtc_background_color
+
+IGT-Version: 2.2-gf50583245 (x86_64) (Linux: 6.18.0-rc5-next-20251111+ x86_64)
+Using IGT_SRANDOM=1763159189 for randomisation
+Opened device: /dev/dri/card0
+Starting subtest: background-color-red
+Starting dynamic subtest: pipe-A-Virtual-1
+Dynamic subtest pipe-A-Virtual-1: SUCCESS (0.071s)
+Subtest background-color-red: SUCCESS (0.072s)
+Starting subtest: background-color-green
+Starting dynamic subtest: pipe-A-Virtual-1
+Dynamic subtest pipe-A-Virtual-1: SUCCESS (0.072s)
+Subtest background-color-green: SUCCESS (0.072s)
+Starting subtest: background-color-blue
+Starting dynamic subtest: pipe-A-Virtual-1
+Dynamic subtest pipe-A-Virtual-1: SUCCESS (0.072s)
+Subtest background-color-blue: SUCCESS (0.072s)
+Starting subtest: background-color-yellow
+Starting dynamic subtest: pipe-A-Virtual-1
+Dynamic subtest pipe-A-Virtual-1: SUCCESS (0.073s)
+Subtest background-color-yellow: SUCCESS (0.073s)
+Starting subtest: background-color-purple
+Starting dynamic subtest: pipe-A-Virtual-1
+Dynamic subtest pipe-A-Virtual-1: SUCCESS (0.073s)
+Subtest background-color-purple: SUCCESS (0.073s)
+Starting subtest: background-color-cyan
+Starting dynamic subtest: pipe-A-Virtual-1
+Dynamic subtest pipe-A-Virtual-1: SUCCESS (0.073s)
+Subtest background-color-cyan: SUCCESS (0.073s)
+Starting subtest: background-color-black
+Starting dynamic subtest: pipe-A-Virtual-1
+Dynamic subtest pipe-A-Virtual-1: SUCCESS (0.073s)
+Subtest background-color-black: SUCCESS (0.073s)
+Starting subtest: background-color-white
+Starting dynamic subtest: pipe-A-Virtual-1
+Dynamic subtest pipe-A-Virtual-1: SUCCESS (0.072s)
+Subtest background-color-white: SUCCESS (0.072s)
+
+* Test results on ROCK5B
+
+rock5b$ cat /sys/kernel/debug/dri/1/vop2/summary
+
+Video Port0: DISABLED
+Video Port1: DISABLED
+Video Port2: ACTIVE
+    Connector: DP-1
+	bus_format[1018]: RGB101010_1X30
+	output_mode[f] color_space[0]
+	background color (10bpc): r=0x0 g=0x0 b=0x0
+    Display mode: 3840x2160p60
+	clk[594000] real_clk[594000] type[48] flag[9]
+	H: 3840 4016 4104 4400
+	V: 2160 2164 2174 2250
+    Cluster2-win0: ACTIVE
+	win_id: 2
+	format: XR24 little-endian (0x34325258) glb_alpha[0xff]
+	rotate: xmirror: 0 ymirror: 0 rotate_90: 0 rotate_270: 0
+	zpos: 0
+	src: pos[0, 0] rect[3840 x 2160]
+	dst: pos[0, 0] rect[3840 x 2160]
+	buf[0]: addr: 0x0000000000000000 pitch: 15360 offset: 0
+
+rock5b$ build/tests/kms_crtc_background_color --device drm:/dev/dri/card1
+
+IGT-Version: 2.2-g3e4ec308e (aarch64) (Linux: 6.18.0-rc1 aarch64)
+Using IGT_SRANDOM=1762774806 for randomisation
+Opened device: /dev/dri/card1
+Starting subtest: background-color-red
+Starting dynamic subtest: pipe-C-DP-1
+Dynamic subtest pipe-C-DP-1: SUCCESS (0.491s)
+Subtest background-color-red: SUCCESS (0.493s)
+Starting subtest: background-color-green
+Starting dynamic subtest: pipe-C-DP-1
+Dynamic subtest pipe-C-DP-1: SUCCESS (0.533s)
+Subtest background-color-green: SUCCESS (0.535s)
+Starting subtest: background-color-blue
+Starting dynamic subtest: pipe-C-DP-1
+Dynamic subtest pipe-C-DP-1: SUCCESS (0.541s)
+Subtest background-color-blue: SUCCESS (0.544s)
+Starting subtest: background-color-yellow
+Starting dynamic subtest: pipe-C-DP-1
+Dynamic subtest pipe-C-DP-1: SUCCESS (0.535s)
+Subtest background-color-yellow: SUCCESS (0.537s)
+Starting subtest: background-color-purple
+Starting dynamic subtest: pipe-C-DP-1
+Dynamic subtest pipe-C-DP-1: SUCCESS (0.536s)
+Subtest background-color-purple: SUCCESS (0.538s)
+Starting subtest: background-color-cyan
+Starting dynamic subtest: pipe-C-DP-1
+Dynamic subtest pipe-C-DP-1: SUCCESS (0.539s)
+Subtest background-color-cyan: SUCCESS (0.541s)
+Starting subtest: background-color-black
+Starting dynamic subtest: pipe-C-DP-1
+(kms_crtc_background_color:744) igt_pipe_crc-WARNING: Warning on condition all_zero in function crc_sanity_checks, file ../lib/igt_pipe_crc.c:475
+(kms_crtc_background_color:744) igt_pipe_crc-WARNING: Suspicious CRC: All values are 0.
+(kms_crtc_background_color:744) igt_pipe_crc-WARNING: Warning on condition all_zero in function crc_sanity_checks, file ../lib/igt_pipe_crc.c:475
+(kms_crtc_background_color:744) igt_pipe_crc-WARNING: Suspicious CRC: All values are 0.
+Dynamic subtest pipe-C-DP-1: SUCCESS (0.535s)
+Subtest background-color-black: SUCCESS (0.537s)
+Starting subtest: background-color-white
+Starting dynamic subtest: pipe-C-DP-1
+Dynamic subtest pipe-C-DP-1: SUCCESS (0.540s)
+Subtest background-color-white: SUCCESS (0.542s)
+---
+Changes in v2:
+- Added VKMS test report
+- Set the value of the CRTC background color property with 16bpc instead
+  of 8bpc, to avoid CRC check failures because of framebuffer format
+  precision mismatch - display controller drivers shall convert it back
+  from 16bpc to their internal representation of the pixel color if
+  necessary, e.g. VKMS already uses 16bpc, hence no conversion is
+  required in that case
+- Replaced deprecated DRM_FORMAT_MOD_NONE with DRM_FORMAT_MOD_LINEAR
+- Updated copyright section
+- Link to v1: https://lore.kernel.org/r/20251110-crtc-bgcolor-v1-1-28669b692970@collabora.com
+---
+ lib/igt_kms.c                     |   1 +
+ lib/igt_kms.h                     |   3 +-
+ tests/kms_crtc_background_color.c | 140 ++++++++++++++++++++++++++++++++++++++
+ tests/meson.build                 |   1 +
+ 4 files changed, 144 insertions(+), 1 deletion(-)
+
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 8973ffdb22a6..a6f547c04ce3 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -705,6 +705,7 @@ const char * const igt_plane_prop_names[IGT_NUM_PLANE_PROPS] = {
+ };
+ 
+ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
++	[IGT_CRTC_BACKGROUND] = "BACKGROUND_COLOR",
+ 	[IGT_CRTC_CTM] = "CTM",
+ 	[IGT_CRTC_GAMMA_LUT] = "GAMMA_LUT",
+ 	[IGT_CRTC_GAMMA_LUT_SIZE] = "GAMMA_LUT_SIZE",
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index f7ff0b17eb02..8e757a204197 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -156,7 +156,8 @@ void kmstest_restore_vt_mode(void);
+ void kmstest_set_vt_text_mode(void);
+ 
+ enum igt_atomic_crtc_properties {
+-       IGT_CRTC_CTM = 0,
++       IGT_CRTC_BACKGROUND = 0,
++       IGT_CRTC_CTM,
+        IGT_CRTC_GAMMA_LUT,
+        IGT_CRTC_GAMMA_LUT_SIZE,
+        IGT_CRTC_DEGAMMA_LUT,
+diff --git a/tests/kms_crtc_background_color.c b/tests/kms_crtc_background_color.c
+new file mode 100644
+index 000000000000..079c85ec55a2
+--- /dev/null
++++ b/tests/kms_crtc_background_color.c
+@@ -0,0 +1,140 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2013,2014 Intel Corporation
++ * Copyright © 2025 Amazon.com, Inc. or its affiliates.
++ * Copyright © 2025 Collabora, Ltd.
++ */
++
++#include "igt.h"
++
++IGT_TEST_DESCRIPTION("Test crtc background color feature");
++
++typedef struct {
++	int drm_fd;
++	int debugfs;
++	igt_display_t display;
++} data_t;
++
++#define __DRM_ARGB64_PREP(c, shift)					\
++	(((__u64)(c) & 0xffffU) << (shift))
++
++#define DRM_ARGB64_PREP(alpha, red, green, blue)			\
++	(__DRM_ARGB64_PREP(alpha, 48) |					\
++	 __DRM_ARGB64_PREP(red,   32) |					\
++	 __DRM_ARGB64_PREP(green, 16) |					\
++	 __DRM_ARGB64_PREP(blue,   0))
++
++static void test_background(data_t *data, enum pipe pipe, igt_output_t *output,
++			    __u16 red, __u16 green, __u16 blue)
++{
++	igt_display_t *display = &data->display;
++	igt_crc_t plane_crc, bg_crc;
++	igt_pipe_crc_t *pipe_crc;
++	igt_plane_t *plane;
++	drmModeModeInfo *mode;
++	struct igt_fb fb;
++
++	igt_display_reset(display);
++
++	igt_output_set_pipe(output, pipe);
++	mode = igt_output_get_mode(output);
++
++	plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++
++	/* Fill the primary plane and set the background to the same color */
++	igt_create_color_fb(data->drm_fd,
++			    mode->hdisplay, mode->vdisplay,
++			    DRM_FORMAT_XRGB8888,
++			    DRM_FORMAT_MOD_LINEAR,
++			    (double)red / 0xffff,
++			    (double)green / 0xffff,
++			    (double)blue / 0xffff,
++			    &fb);
++
++	igt_plane_set_fb(plane, &fb);
++	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_BACKGROUND,
++				DRM_ARGB64_PREP(0xffff, red, green, blue));
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, IGT_PIPE_CRC_SOURCE_AUTO);
++	igt_pipe_crc_collect_crc(pipe_crc, &plane_crc);
++
++	/* Turn off the primary plane so that only the background is visible */
++	igt_plane_set_fb(plane, NULL);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++	igt_pipe_crc_collect_crc(pipe_crc, &bg_crc);
++
++	/*
++	 * The test assumes hardware is able to generate valid CRCs when setting
++	 * the background color. Some platforms, e.g. Intel, might require at
++	 * least one plane to be visible before reading the pipe-level ("dmux")
++	 * CRC. Other platforms, e.g. Rockchip, do not take background color
++	 * into account when computing CRC at CRTC level.
++	 * A possible workaround would be to use alternative CRC sources, e.g.
++	 * where computation is performed at encoder or sink level.
++	 */
++	igt_assert_crc_equal(&plane_crc, &bg_crc);
++
++	/* Clean-up */
++	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_BACKGROUND,
++				DRM_ARGB64_PREP(0xffff, 0, 0, 0));
++	igt_pipe_crc_free(pipe_crc);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit(display);
++	igt_remove_fb(data->drm_fd, &fb);
++}
++
++igt_main
++{
++	igt_output_t *output;
++	data_t data = {};
++	enum pipe pipe;
++	int i;
++
++	struct {
++		const char *color;
++		__u16 red;
++		__u16 green;
++		__u16 blue;
++	} tests[] = {
++		{ "red",    0xffff, 0x0000, 0x0000, },
++		{ "green",  0x0000, 0xffff, 0x0000, },
++		{ "blue",   0x0000, 0x0000, 0xffff, },
++		{ "yellow", 0xffff, 0xffff, 0x0000, },
++		{ "purple", 0xffff, 0x0000, 0xffff, },
++		{ "cyan",   0x0000, 0xffff, 0xffff, },
++		{ "black",  0x0000, 0x0000, 0x0000, },
++		{ "white",  0xffff, 0xffff, 0xffff, },
++	};
++
++	igt_fixture {
++		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
++
++		kmstest_set_vt_graphics_mode();
++
++		igt_display_require(&data.display, data.drm_fd);
++		igt_display_require_output(&data.display);
++		igt_require_pipe_crc(data.drm_fd);
++
++		data.debugfs = igt_debugfs_dir(data.drm_fd);
++	}
++
++	for (i = 0; i < ARRAY_SIZE(tests); i++) {
++		igt_describe_f("Test crtc background color %s", tests[i].color);
++		igt_subtest_with_dynamic_f("background-color-%s", tests[i].color) {
++			for_each_pipe_with_single_output(&data.display, pipe, output) {
++				igt_require(igt_pipe_has_prop(&data.display, pipe,
++							      IGT_CRTC_BACKGROUND));
++
++				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
++					test_background(&data, pipe, output, tests[i].red,
++							tests[i].green, tests[i].blue);
++			}
++		}
++	}
++
++	igt_fixture {
++		igt_display_fini(&data.display);
++		drm_close_driver(data.drm_fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index ecc0f4c7f6f3..14067fd3d770 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -27,6 +27,7 @@ test_progs = [
+ 	'kms_color',
+ 	'kms_concurrent',
+ 	'kms_content_protection',
++	'kms_crtc_background_color',
+ 	'kms_cursor_crc',
+ 	'kms_cursor_edge_walk',
+ 	'kms_cursor_legacy',
+
+---
+base-commit: 3813b62c3c6200f69d6cc8be1c5e621243ace24f
+change-id: 20251110-crtc-bgcolor-f6ed9a58e0bf
+
