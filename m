@@ -4,182 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6113CE8D6B
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 05:48:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26856CE8D6B
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 06:15:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 784DB10E2E6;
-	Mon, 17 Nov 2025 05:48:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ABA9310E192;
+	Mon, 17 Nov 2025 06:15:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UdXsu40l";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fGcWltjE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 28D8210E2E6
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Nov 2025 05:48:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A921810E192
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Nov 2025 06:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763358500; x=1794894500;
+ t=1763360102; x=1794896102;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=KZMSdatYVDxlWhSV6So7dCgHrKIOYNqP9lPFCPV1xzs=;
- b=UdXsu40lgXjpQmibiK7aUVjISeIs+0BA2GSCySYF7B+XCB1mH/XGCD6g
- snjoJ/bB6U1XKjXCHAaP6k1W8QxdASyquq5jDzQqO5wkO9q99AvoIsEQ2
- EAmKrODmpvAVeCG7KoLZ3PUadinnB4EbLeUv9VJkJv9jLNs1aP0eSzeIm
- L5oVuFEWCFZFf/AL+Z2I2CfnGDAcRUzHjGzgqOi7wzOs7bDI7z1z2ftSm
- QNMDJbs2VOQNEXObopKPSevsTxzbHPrNQdGTLVyxyLV+9d4kk2ykUW9+l
- lBgLn1qiC/ndkeSvRuTlN8cgaOWAKpeosUaEYkltgoAUtW1piDWodYqMN Q==;
-X-CSE-ConnectionGUID: ELJajqYnTQOPWyUveMyIxw==
-X-CSE-MsgGUID: UZe5O1YdSXC7M6YdEDSTfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="82738549"
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="82738549"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Nov 2025 21:48:19 -0800
-X-CSE-ConnectionGUID: SXO01erjR6qp/Wz12jQ7YA==
-X-CSE-MsgGUID: 6JHZlXJmRlGYeHBDbdJzjw==
+ bh=vjA6TsyFi7qvv9O5+Q9ItnOQtmsgnE0Z1A2p1TzJlsY=;
+ b=fGcWltjEQR7EItFNxzYlYtXtuub5ncKn3IpkU4mBjpcuEFf1t2QNZ5r7
+ s90MxqG3PrzCF5Bbz6gz0uI8ABzYGuBtCc02JvqTHqO1vdQ2DaBZfxNhG
+ r9DecuRTFkM960W2dJ2wTIa2FvPL/K3calrUeJ5dYqTm8zkauujGeSHuT
+ g0YV3NTgduxEpkx6KXTMqBY05suHHXN4tt2OvZKt72M8bLMQY6yeGvq9v
+ K0WTqDDkQhLdyVDwKZrZ/3YPUDZCnvjHVpGsYyPb8BOvfqKzEEd5kUFhi
+ C3SbcD/sLqiYIovu782A6dEZ62L2rI7gY3DKp2Hxwrumy+YVyAKxWGA/e g==;
+X-CSE-ConnectionGUID: CLt4fL7NRGWuzFZ7IOjl9g==
+X-CSE-MsgGUID: eRbp6p3nSbq3a8EXmy+UCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="65505267"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="65505267"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Nov 2025 22:15:01 -0800
+X-CSE-ConnectionGUID: epWgobbIQXaW4AesD1Q4tA==
+X-CSE-MsgGUID: VuzRz93tRSKdxKzz80Yn3g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="190154592"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Nov 2025 21:48:17 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="190022644"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Nov 2025 22:15:01 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Sun, 16 Nov 2025 21:48:16 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.2.2562.27; Sun, 16 Nov 2025 22:15:00 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Sun, 16 Nov 2025 21:48:16 -0800
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.26) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ 15.2.2562.27 via Frontend Transport; Sun, 16 Nov 2025 22:15:00 -0800
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.71) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Sun, 16 Nov 2025 21:48:16 -0800
+ 15.2.2562.27; Sun, 16 Nov 2025 22:14:59 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=loIcASnOYQmvqleNIHKp01t3WkQvRKv+46ZCX68GK4S6oVTCgw60oWEo+YrHdfslcr6uolNUVzjtjCrnAb/FxUcb3CKQJIHe4qaIe1E/g5+NiZ1Zm7VU9uxojrd16cD1Qyk8hV3qRRFJ151vp5KPEeGm0pCR7/z5lyeFHfm0ot51iVAwHgGgrISkZrCTNMTzjMmAVCuBVThgG6LWXHMN9fSGkXRxQtdplOzBFqh9iWuc/0Kqlc/w4LjiS2PGWartw5iejJta7eQgXR6cLUhysoTuc+mxfjYRiEiLSuvfsmoaQnh5jDAgivCG4VwxxupcCnl4EW7f+Qyruddm3FBRbg==
+ b=o+pN2FaLhVBOyQSxqqGcNGa+1De6gUTBD82XOfQi4189zYAdBimSRgBhenqaZlvY/0B4fFrJrCt2Wn5NC5SAwrTTn7WpddygCi9H4KqJqZ30pEpr/V3mBd+wPWhZzChbLegqG0IW+wh4tuBMFVjzlmPAKlhGFcabcSzWpgqB+SJ3rVzAgPd65ZO3iLQkv7rmGohmJPKSdIs+IyhEQrYVfBCzBOq+zUlMd+q8Ybt2vfRhx75GHYCJ5kQFGNtKBYVj3Vj+lAfBespi4gWk6HqS4wB2qG9Sk8I9dEXovl8PA7gLKibyaYclMQ2MjhuJsVdKuFjnWY86N0KzGlEq86SC2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lZrJ3DMmmPLmrlNNleO77VDxYvIFCkxiUueERECtXck=;
- b=tGFvzE/7Nq/nyo75djatbaqdZlE6kcSDDRaNfn5p2zY+LtcPWC1hzVyhwGLtSIUIrUn6EjgvxqulSb5sj06ZSZHgKLjVSfsfAifCgfAyBhdBO5cwDafRklMWMT6JHOcqy1bcm50/XjzodUYsuhe0kgtT578CFtWBbtiTpHSLwrd6h5hA90WPV1ddK2LQDWzSWwhlw2SGawk9/zMWua0L0uSeBUSpKR3jN6GwR+/kp3G2Ks1thl4lfUt5IbVOErgidcdHK2aHKwV2Zh+IhH1oRBLRsWmQi+z2WAToV9dWlOG7zIwABMqwfQ7QHQgv1sUQuT0scysfbIOyeoh52AOQ4g==
+ bh=pQxljDkp6Imup1//H6b78Igg29TWG7zxV6s2yBTUphU=;
+ b=PjEgE9DAd+wZaj3c6rTmnzCe2flX+MIxdSycrNHwtggzB8faFUkciyDT++/kdiPiXlvwQSj2Jwd7NbyXV+46iYmrVr7AFIF+q4zKNIug9gLBd8qDeeXzhmB/dcmwdQjiIGHPfgdBf9o6hlTVqhQ54GMrxK1jcX76mijOZt7NlZfq+yfna6cW2f0IS4qWm3/860mIzT0dQdhY/+Oks+CEg762Vv53AyyQCmHUzpw1Kd9P63XGRgKmjXm4Ee5G6x1qjJtKVqhCGaFibd8hfI4s8nwdWntxl1n6KqSBmA6CL9r6Z9xYiHKcqehcm4O1qZjky+/NwpsCueTwuwP7Q91JAA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from CH0PR11MB5690.namprd11.prod.outlook.com (2603:10b6:610:ed::9)
- by SA2PR11MB5177.namprd11.prod.outlook.com (2603:10b6:806:11c::10) with
+ by MN2PR11MB4742.namprd11.prod.outlook.com (2603:10b6:208:26b::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Mon, 17 Nov
- 2025 05:48:13 +0000
+ 2025 06:14:57 +0000
 Received: from CH0PR11MB5690.namprd11.prod.outlook.com
  ([fe80::6b98:f467:da49:e062]) by CH0PR11MB5690.namprd11.prod.outlook.com
  ([fe80::6b98:f467:da49:e062%4]) with mapi id 15.20.9320.021; Mon, 17 Nov 2025
- 05:48:13 +0000
-Message-ID: <65ac2812-0913-40ea-a96c-f75c0c8bfed2@intel.com>
-Date: Mon, 17 Nov 2025 11:18:06 +0530
+ 06:14:57 +0000
+Message-ID: <3dab9440-1eac-49ad-979e-5b4cd9db6a3a@intel.com>
+Date: Mon, 17 Nov 2025 11:44:50 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 2/4] tools/displaytop: Add Display debugfs entry
- for display top
+Subject: Re: [PATCH i-g-t v2 3/4] tools/displaytop: Add DPCD register read
+ support
 To: Pranay Samala <pranay.samala@intel.com>, <igt-dev@lists.freedesktop.org>
 CC: <sameer.lattannavar@intel.com>, Adith Narein T <adith.narein.t@intel.com>
 References: <20251105060914.673664-1-pranay.samala@intel.com>
- <20251105060914.673664-3-pranay.samala@intel.com>
+ <20251105060914.673664-4-pranay.samala@intel.com>
 Content-Language: en-US
 From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20251105060914.673664-3-pranay.samala@intel.com>
+In-Reply-To: <20251105060914.673664-4-pranay.samala@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0037.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:81::7) To CH0PR11MB5690.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA5P287CA0088.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d8::9) To CH0PR11MB5690.namprd11.prod.outlook.com
  (2603:10b6:610:ed::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|SA2PR11MB5177:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a361f96-5f26-4a60-9d5e-08de259ce55d
+X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|MN2PR11MB4742:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9165227c-b0f5-42a9-0af0-08de25a0a179
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0; ARA:13230040|366016|1800799024|376014|42112799006;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?bGs4dk5tQmRQVVJMM1RnVXR4YXZCTkNEN1RmVGxzdXh1Z2ZVQTBuZzc0cDlK?=
- =?utf-8?B?MmZmVkd1Z2NvSFpZbVo5cXIxM3pEN2hQVHQvQ1MzN2M4RktaTDIvSXhpclVV?=
- =?utf-8?B?SCtlekZwSSttbzllMTRyZ2NBUGoxdWFQN3A0UStxTVZFeUFyUGxqS1l6U1J4?=
- =?utf-8?B?eDVaM3Y3akRULy9CZUhRQnZNVFhuejdPeGtiQUZieUZaMUZSNkorU2txWTMz?=
- =?utf-8?B?UmMxQ0dUKzVtV0ZYN0JKZFpzUWpqb0tlcnRLdXV3aEZCenZPNmpvQ1B2S2V3?=
- =?utf-8?B?YUZ6WFdHOGx6NWRkeCtXS0pldERiSkJRcGpFNVA0cGx1Z0pGdWxSc241dUdP?=
- =?utf-8?B?WG1QVnk1T3ZIWko5UVUyR0d6ZHJlZ0NMZHR5STVPeFhlVTBqR0I3QTcwY1ll?=
- =?utf-8?B?TVgra0RGSXZhNElvZ05FdzFEUm1VRm93ZlJmRDBBU0I3Qkc0WEsyeVY0UGtX?=
- =?utf-8?B?N25jZFRjc21QV05CaVpJRnVNZ1JFY0kvNkJpZ1dMWTZ3SXVWV3FEZndNbUxL?=
- =?utf-8?B?d1E0dk52YVhaMGs0dnFDOTdIUVhEQXN1TzhtYkZHQStyVlNBU0dXbjNxdFFD?=
- =?utf-8?B?SnlZa1lXaGllaExoM3BEdGdHQlBDYVRqdkZhaWZUOHNDbjcyUFZyUEgxbVpG?=
- =?utf-8?B?RE9EK1RTeCtFWEdMMWxpM3Y2cUh4L0dwVnpaaU56azMwdTBqcjBnQS9teGxS?=
- =?utf-8?B?RklCemg5bjRpL3QxR1FWaTFtWFBSSy9VTzZxbnY3QkZxb0xmcTlaV2NrZWoz?=
- =?utf-8?B?YlpqTktYK2w3OFhRb3A5TE9xUE1COU1rUy8zOGtJWGdFS2NTelVDSkY3cVVp?=
- =?utf-8?B?RVZwMDhIRWI1M1EraEVUNXRIenRuYVhKYmRFWGROZkNmK0tGR3M3OSt2R1ha?=
- =?utf-8?B?b0RaRU9NWjY3WEtsUU82MDVHN0JzbEtZMkhEbk5qbjhYWTYzMU90YzdTRVpL?=
- =?utf-8?B?dlJVN1l1NzhNUks5aUIrdW9hTkdXcjZZbWNoQkZBWHdMOG5UY1BYUXphbEVG?=
- =?utf-8?B?amd5U0NzaTJ0ZGIwNE1QK2hKZkNVelJQbXVMemtieExpM1pTTFJmNDVmbFY4?=
- =?utf-8?B?S2s2UUhJUFcrMEt2RUovb2FYT3dxQkNiMGdnMktiUzBEdW1oMGpKU3I2V3VT?=
- =?utf-8?B?a2hscDJUd20zMjJFSmsyV3JVelp4WlZRUGo1ZkFNbENwOWlMWnoxR0lBZGdw?=
- =?utf-8?B?UTBjNXVFWlBibkNQRmZNUktyczkwZkJ2MHJGWXhEMjdodmlxY2VzdFdqTnRr?=
- =?utf-8?B?MnMxTktQOFRTajY2Si9HR2JmUDlwMStGWXBlcUxCR0pOaUNJWUdzU0ZWV01Z?=
- =?utf-8?B?N3FSVlF4SDg4NXR1MG44Mm9IRTNmVmJoRzZMaUNYSTBYVnlIamdpNC9kSVhL?=
- =?utf-8?B?Q1RReUpWbkRPWTM2ZytFejBSRGZHZFovNmVUR20rbkxtc01BZ3ExMzcwUjFZ?=
- =?utf-8?B?WWFTa0cySVdLc2J0Mm55TG5vZlBGelcxVFN6bEd2M0w4bXVuL3pzeWFJZytO?=
- =?utf-8?B?UTJiVzROTC9IMHg2cTJ3bTdhVlN1Q3FUY3BHTVBpNFZkbEFJcjIvb2J6OU9Z?=
- =?utf-8?B?MzloQnVhRTdPVGhGeFo2QmpVSGJHcDFIbGFxaXRsQ3pycEdtUTA0U3I1b2VD?=
- =?utf-8?B?Q1ptNWlnZnkzNS9vK2pNOWpheEY1UkRpUDNjTkZvbzNLVnZqTGZvRGlISEtu?=
- =?utf-8?B?ZWl2K3IyQVFRZndmcHFpaGJ3N1RVblRPbkVRbUJHcE5yV0lQeHl3TkNwK1FO?=
- =?utf-8?B?SzFCY2s5c003WVp2cE9WMTQvNHNXcU9QUVNZVmFFcEFRMGhPV3VWalhVSXZ0?=
- =?utf-8?B?K211b1JWb3JHaGlGT0Z1cVZraFE3Vmx5R2trOFFPMjJuL0FzSCtramVOMUt3?=
- =?utf-8?B?VXVQcllWQnA4azZzT040b0k0bFZ0c0FPSUdzMEY4NjFZRDcxeHpnWGJnUkd0?=
- =?utf-8?Q?k0P0ySh3nUNF0QY+HLOflvj9M5YXXu3X?=
+X-Microsoft-Antispam: BCL:0; ARA:13230040|366016|1800799024|42112799006|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?QWdac0tnNXYzcVg0aDVaZlQ5UmEwVkltZ2wzdEZBZVA5dXE4RWI5TjFZeEdZ?=
+ =?utf-8?B?MjgrenVJcHZmZXY2Q2wzMHRUc3BybWRJdkJ2L1hOQ1NNenJxdW45UVZOV0M1?=
+ =?utf-8?B?QnhzdU5QTnVqWGtLZHJJTDF3TnEvWVo3VGJFQWNxRFRLdEpZbHlTaDg1TkZX?=
+ =?utf-8?B?bTJmSnQ0TTAwWmtieDFNTVU4SFNoR3pWdEFaL21QdEM4eTV4blY5Ym9uLzV1?=
+ =?utf-8?B?RmFPc2lwNmlCbXJBVUgwR3BWUGVnQjIwR241ZmN2T1R1U0xkQzNUekloRHp1?=
+ =?utf-8?B?Y0JEWFJtUG9FYUJxNnlybkhTdFVHbFNqcG5HLzFBVm9rcWpXdEpGb3ZLVi9i?=
+ =?utf-8?B?NlZ5YUZURXVrVURTSW1oL2ltM0NYdjFCU0ZXSGN3Q0RoWko5U0UwMm1LMHpN?=
+ =?utf-8?B?Y1lrTTk5bzZNWER2RGZKNWxBSCtnZkFheW0vN1FFWVJPQWlkVXlOTFp5djRT?=
+ =?utf-8?B?QW92b2RYWnVvQXYzeXZkQ3pmeVFacm13SHgyR0xxdXpFeDNsVytIamNJNE12?=
+ =?utf-8?B?OHNuWTNuejN0Yi9USE4vczFJUHJqVlB4NjZZYlB3eThhWGVtMGxxUzYyaENn?=
+ =?utf-8?B?UWhUc1JkMUcwTGd0Y3ZCdDAwQTNDTTZGdURTa1FLTUxBaEsvY3hkejI2Tk5m?=
+ =?utf-8?B?T3pkNjRQT3VWYURrbW5WVzVwSWJxMWcxZGdIdXd0RTh3cXJpSTVPS1ZIZHc4?=
+ =?utf-8?B?YkZ0VTZEODNwTTZBbHNmYVNPT2wzODJGdW1wV215cU1ERE9iYm8vT01udWxR?=
+ =?utf-8?B?TDdhVTcveDZLZ3BiRzBoOU1JR3BDRnVEVmF0aCs0R2JwVFc1THNBN2p5UDYw?=
+ =?utf-8?B?RnZHUytHNzViTzAxTWF4UkRFTFFtaXF0M3puekRSdmhXVTA5YnRhT29UNGR2?=
+ =?utf-8?B?SUNFS05uZE9lemJNTUE3REdXdGJNa29DZmUxSmxiMU1JQjlWUFRjVGZYVWpq?=
+ =?utf-8?B?UWQxelpFRjQzSnBJb3h2ZzZGYzIrbFlnemJsbGptWnFhM3pUcDIyUkF2VUxZ?=
+ =?utf-8?B?L2JpT3FVNlh4ZkdCaDlNZ3FEYldPOS9Vano3cWpiOFh5RTNnaHRNVkJYcTQ5?=
+ =?utf-8?B?QURUc2VpeGxRMk9TN3lFUmRYc2VwOXZmdTc0eUQ3bkNteFNHTmZLeXdVVjRx?=
+ =?utf-8?B?K2JNN013Y3BpV0VWQVoxSVlPVTJWVXZ3ZzZybGQ4ZzlpRWdMQVNibTRlQ05m?=
+ =?utf-8?B?MFc1S1pmaDVCZzJJOTV3WWsxT3NGbTAwN0toMkw5aXdIUHVBNXU1SUdIOVdh?=
+ =?utf-8?B?K0hoZS9VNjVjbjEyeFNsblZnK2c2RU9sWHBhMGRpQ1ZGWXFmaXljMWEzN3dC?=
+ =?utf-8?B?dHc3c2R6OXk3SEpGZ1F5L3BxdUdOK0lBTlJVcjQzV3VDTXNMbTgvcmM0b282?=
+ =?utf-8?B?U0JHa0RSaHJ6cWV1dVZMc1NxdGlnOHgxd3JsZjFHV21Cbk4xRk1uejlxejhV?=
+ =?utf-8?B?Ujl3V0Jkclp4VUJCR3NEczFLSXVoUkpFSUMyb3RJeGxBcVoxTHlvcWVlZGt0?=
+ =?utf-8?B?ZDd5K29RK0FFcmZWNDdyZVB0akxBVm9JRGhIdVRza0JhWG1RamF6bkN4ZkFo?=
+ =?utf-8?B?U3NOUXd1dW8rdUZhZTFkR2xqWjhQZTNKTlN5dEdyRzMyN0hiRURGR25OYmZW?=
+ =?utf-8?B?Tk8wSVJxZTh0OVNRUVp4VXJiNmhkUzBZLzFmZDFrS2xydTYyVjZ2a3E1R0cv?=
+ =?utf-8?B?Qnh6TEtNK3M1bE8wK3prYlUvbytBNmZGMGFwNDkzRWZyVWVnaWQ3Rml1RWZO?=
+ =?utf-8?B?eE15MFZDekp3UTBjbEEwaTNIai92aU8waE1ZM1dGSmNlQ1BWYWxsNVFDYXNi?=
+ =?utf-8?B?ck1tRGViYnJ3dG9WNGc2bmZxOTRJaXJRenhFVDVTMUhsQXQ2NWNDR3ArZ0RM?=
+ =?utf-8?B?S2FQQWpaV1dEK2c0NTRzaUZBd3dRQlM3WjVMdGtiOTRPSEQrV1hPdkNQYUZn?=
+ =?utf-8?Q?I8G1jbagrX3C/PXqslT9/JR04W467pVS?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CH0PR11MB5690.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(42112799006); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(366016)(1800799024)(42112799006)(376014); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dnJlNkZ2UCtBdzlUUlA3RU1wUkVxSlhTMHZGVDBKb0pWZXdtOFZNcEFlMzNv?=
- =?utf-8?B?OWFnVXhjWlpwT0MzSlU0SjBrR2drdjQ4cU1nRUMvd2ZJWk5WdFpZY0JQTk1E?=
- =?utf-8?B?cDZ3RmUrcWxEQUVvaDFzUGVpSVRaSVpBNkFIeXJ4a0NZT0FMMXp2c1ZwRWNL?=
- =?utf-8?B?SENoVUpjMjAzNlVIdFpyLzlYcHM0bWd3ZW1hNEhVOEU3T0k3amtyNE1LMTZz?=
- =?utf-8?B?VHNkVXpSTFYrKzZjQlljMVc1U1JlWEFVaitvdHJnUFpqQzBLZzQ5N2prblcz?=
- =?utf-8?B?UkpIR3hiTzNWTitxNVVjSUYwSWtLSkR6aFdORU1hUUg5SUp0RmhucWR1REx3?=
- =?utf-8?B?bjRPQmtGMzk2VTZlK0RML3g5Wnl4alpPeHF6MWVNeU9xWk91NmJKMisyRnZT?=
- =?utf-8?B?c2d1Z1M1SFVhS3ZvcWZRVjY3dWppZGNmdno4SkdVWW1HclBUTTBpVks0YUxR?=
- =?utf-8?B?UmFKK0ROdFAraVlxZTJzRmZaaHdxUG9HSms5blp0MkQvTlJjWU1FV0drbUNL?=
- =?utf-8?B?YlhwTWxNbjNqZ0hKV0NrWXZvVzlQRXBEMUV6Y1BaZlRzanZUaHI2Y1d0N2xY?=
- =?utf-8?B?Qmt1UzVyR0d3Y1RDbkVaWUhsZGdZbWdqZnd0TEI2dys4R2NaVGZvNXMzTm9X?=
- =?utf-8?B?a1dmdG8wYVV0L2x1OXY1NVgwWng5aVFnZ1lMVnRoeEl6MHZPcnRSbmlBUXhB?=
- =?utf-8?B?d0FUNXVleVZva1g1bnU2dFp1eUQ1K2lReWtVMzU0QVhlVTBpc05WSUtZZy9o?=
- =?utf-8?B?RXAvc0pVL0ZBeGJVZkR1akp4bTZCMXZXa1lDdE9QbmtoTGs2OVRtOG5UOUdn?=
- =?utf-8?B?bnRubVhTeS9YM0pCMDBiV3lyeGQreFVMN2VCMkNqcTgySENpQTJ0WWdGRmxv?=
- =?utf-8?B?M2tlYy9sOFNIR2F1akxubTZmb3YxQUFqcm5WVEZSMk5oeDdnZmxIMmxHTWta?=
- =?utf-8?B?czhYM0VHTzl5KzE1M3phUUVNaFVHL1hPc25tS1BBTHN4ajhXekEzSTVEMXNl?=
- =?utf-8?B?WjlqaXRMekVoWVNqRnNXZ1YxQ3Z3WTNOUHU1dW1SMFdvWGZVQ1NrazBTZFNZ?=
- =?utf-8?B?SzF4QjA0c29HZ29FNWtsTVNiOTB5UlBTaEFFbCtJbExXMm9uTlVjNm04eWJj?=
- =?utf-8?B?TEpFVlhpTzVYQkNJWUZTckZzU2VZU2NWVkNNd2VKRkgwaHkyREYwVytmOURl?=
- =?utf-8?B?VndSc0F6aEpLSGJRVTJRSk85dis4VVB0SWl0K2l3eEtsRVRjcnQrbzNjbGNG?=
- =?utf-8?B?b0dlczI1ZUlWemdNRUJmb2VYUkZLM09KYVFaRXN6b3laTGFidjJPMExkR2Y5?=
- =?utf-8?B?TVZUZk5pTXBwUjB5NGlPSER0U1FYVHVLa3pkTzljWTVGcHQrVUpSLzNYVzZv?=
- =?utf-8?B?YWx4NzJuQUdLQmVlSzZnV0xNcTR0c2FNR2Z4RUNiRW4yNm9QSzlJNm1nbStC?=
- =?utf-8?B?SjBvWTNLVmUycW5FRDNNV0k2MTBtZkF3U01YalZwclBab3dITGhiTHg5QTVr?=
- =?utf-8?B?STlCZ29Da1RYSXdMaHQ3TUlFL0VFMXpVd2pwN0wrSTBoN1Q4VWRweisvSE1r?=
- =?utf-8?B?YzJKL2tZZlJHSFF0S3lLbXNWaWY4MTZ1SHd6M0xwd3lvOFh1QUhhdG5zTkI2?=
- =?utf-8?B?emp4MWcxMEcwTnJ6QUQrSXk0emVGOFI1VHVUckRlclh6UjIyTWl6WHlMT1gr?=
- =?utf-8?B?K044bzRncDYwMWNMcHZscThVbWNrNDJIVVFVT0QxS05LT1ptWEFVQitSc3hC?=
- =?utf-8?B?OG00dHpFSTZHeTBFSStSRnJkMzRsSmxLdTU4SnJhc0l4QWFlSld5OVAxZmx6?=
- =?utf-8?B?ckxvZmdmeXBocDlBWjQvVnRHU3ljKzdHT0xvUVFyVmJIMnFneG9YOXhxa3RQ?=
- =?utf-8?B?azM1YlVjRW1GalpYKzFaUFRwM3Vhb2xGQWZUS1JiMGNtVHhaS1RkNFdSem5y?=
- =?utf-8?B?UDE1d0JzNDlZY2tPMDZYUmRZSk42a1VzN3JrQ3JKZk9lM3YvdkU1RVQxV3U4?=
- =?utf-8?B?OFJ5MFNtbk5hdTVINGptYWFvMkl0c1YxVU5pRVJUMEoyWTJIZ2tIMWxPcStr?=
- =?utf-8?B?eHVNWWRyRmlFVnUwVWRPWldaek9pZFQ1aGxtZ0tBdjBCUWk5TXdERDlTdGhq?=
- =?utf-8?Q?eDBOB2W8xqZfp3MNUjEA59HbB?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a361f96-5f26-4a60-9d5e-08de259ce55d
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MW9DUDI0VmVBekxYQ1MyS2JKNkU2Vk1lWURNTk5qWVZtUjRrc0ZuWHUyVWJY?=
+ =?utf-8?B?MTNaT2tvRFNtTjVtcmxIcUJVNHIwaVdYUjI5ZHgwTGd3WnBFeVdIK3BuQWVF?=
+ =?utf-8?B?ZE1mODR4SFJVZFNCSjRObDVGNExDZGhYUXorUWtsV3h2ODVGUUpFSDBIZjFk?=
+ =?utf-8?B?UUhPb2h0bERuMjRUWHl1UU1sdE4xMEUreVFLNUkyWG16cC8rUklIcHdVY0x4?=
+ =?utf-8?B?a0ZPNzlhMldKVFBZREFUbjBYZlA5TDFaYXpLU1BiaUE0UllPaDVwQWFhOUVV?=
+ =?utf-8?B?bndGc0JVQ0FDaXBXeWR2Qkh1T2g1RWhDSUc5Y0RhWmx2SjdTN1NlSVc2RGdB?=
+ =?utf-8?B?UFhDenJITGQ0aWZ4endzRWNaNUc1K25PN3Q3RlptSGlZbjV1VDgwYU9uRkVa?=
+ =?utf-8?B?TXhacmZMOExPT2lxU2E1MWErNmgvMjRqNTdiek1rcmdKS3RVanhaK2pmYXBL?=
+ =?utf-8?B?UDRxYkZQZEJpdzRSN2ZYbjFIM0VtK0dRRWFvQXpPV0ljSE1LbU5Fam5JdFdm?=
+ =?utf-8?B?cE1IcU1ZT1RjN2dOc3o4bzIxMWV1MERrRTV4THVIc0V4Y3pRZjAzZDJQbXFT?=
+ =?utf-8?B?ZS9ldlBnaFNwcmFDeGdsTU52OENZd2VFYzl3NHIwaHpwVVJrdi9RMHRQTm5G?=
+ =?utf-8?B?bWdxTEFYaFZqN3ROdDVtTHdUK2JlRE9BTmZEdWgvYVJBRkM3aStzQmVwYlhP?=
+ =?utf-8?B?ZXBod2VtZ0M4UlBBaTBXNmdWUlN1WmRZejUwaW9zN3hCaHJjS1BEYXZBMmV5?=
+ =?utf-8?B?Zzh6UGZDclFKNHJRVEN6Ly9jYVlPMm9acTNDTDRsZlM0TzdXNkQxNWJuTmdo?=
+ =?utf-8?B?MXloY2k3SnNrRXF0NDRINWxkUmlBRWZJbDFtYVpLekhGK1NNTVFwSUlaMlU4?=
+ =?utf-8?B?VkI4eHg5RTA2OFRZdHptOHBBQlpOV3ZQWGpndktVNjZQcy9WTmlkSzQzL1Fo?=
+ =?utf-8?B?dUtpSy9PWjcweTlJL0VqM3JTNDN5UC90WW5JbDk3REU4NmkzL0JjRTdJK093?=
+ =?utf-8?B?ZFNCbG0zWDAxN0pXanBRZ2ErVnBRaHBsREx3ejJwUExCNFRET05jUXM2TDBm?=
+ =?utf-8?B?cmtJWUhTM3BTWTFqbXdjUlJzNkdJWnljcE1jM21oRFZFMDJJN29uRWVDZGtH?=
+ =?utf-8?B?MDZiWmlSUEFZZTF6Q1M1OHhRcS9QZUhZa01tQ2p4Sjk4M2k3T05GSVFTc3Rl?=
+ =?utf-8?B?QzExU3NEZGQyVmtaakIxM2pIUGwxM01LSExNQkJNbWF3d1FHTDllWnA1T3g2?=
+ =?utf-8?B?SmQzUVF4SlpGa0lLWGtuT0FzMXdTNFd3MnlKSmQycG9ZK2pEY2pSVjBWOFpx?=
+ =?utf-8?B?bDNBVEI2d09mNEtGb2p6MXhCSmQ1dlI3S0dSSXJ2ZWhhQkUwRTlnTGZIQVpL?=
+ =?utf-8?B?MlhSOG4vYzFoQzk4elhOT2krcXZ3YnhBMUltSEh3bGtiS3Myb00vMmV3ZEE2?=
+ =?utf-8?B?WHVHRGpibnd3S1QzdjdWVXk0OVU3aGI0SWZKTUliNWFTYVpvcGVyYkxRWHY2?=
+ =?utf-8?B?cnJ5NmpuN0x5OThrbzNLYTFhQU9NL2xaZTZzMTdkWVRDWUFlRzN4dFhSUldZ?=
+ =?utf-8?B?L3V2L2Q2NDZoMWtFMXpuNkdETWdseHRXS1Zzb0JKYXF0aWN2TVBhUHQ1UGlB?=
+ =?utf-8?B?YVFqcjdXb3FRY1FCazNZWDNhMzVUbWtJRGM3dkYxQjNJQVhJNi9ndi9KLzV3?=
+ =?utf-8?B?NmZVL2xycWU5QXZyU1hXdW02aHZBczNDT2FBMDFYa25YWHlDT09WZ2F4TWRj?=
+ =?utf-8?B?RkR3ZytLVWluUWo5bXNiYnExbmdiUm4zYlVHdEgzOUt4ZHZqN2xpOW8ybC8v?=
+ =?utf-8?B?R1FLeXJld1F5bUdEL093SDY5Y2ltam9hK2xuSCtGTWp3Z1huR3kzZDIrSkZH?=
+ =?utf-8?B?Wm1LK0R4UUlxK0I5RTVFWE9FNnM3OHNPbVFpd2w3NFBEeUFlMGtqVEo5Qmh1?=
+ =?utf-8?B?ckhuTXBPTVA3Z1VHZk15TnBQdjhDZlIzRnRUa0pKdTZuS1htUlNvNGdJMTZp?=
+ =?utf-8?B?VUxKTnhFdjJCOTFwYzhQVGFTZVJ2bGQ2cDFYb25Ca1BSOEV2UnRBR0loY0Zj?=
+ =?utf-8?B?UDNxZlFLTVp0KzlORmp1UVJhcVc2ZEZTMVFudHY1WW1ZKzJKSWVTeEZVakZZ?=
+ =?utf-8?Q?Xewk9T1tH3rgioogBM4kk7mVp?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9165227c-b0f5-42a9-0af0-08de25a0a179
 X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5690.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 05:48:13.0021 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 06:14:57.6245 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HJPEIOR+5ulwpM+aUFhuE1tV4FG/pvS67FvUYmxfghXeboMtAQwRzOAY2yWJzhfnWhRR6IggqmCbKPh31ZC2rw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5177
+X-MS-Exchange-CrossTenant-UserPrincipalName: zTkL1D1vWqm3dSLZSJyx9ZJoF/geo4p+XEF1kJ+vvQyknOHlkD9fUGEvn/1Mbp8dzTqYu7wzY5gkC650EXajWA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4742
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -198,117 +198,4864 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Pranay,
 
+The dpcd.json is good to add, but for the dpcd read and write part we 
+already have dpcd_reg tool. Can those functions be reused here?
+
+Regards,
+Karthik.B.S
 On 11/5/2025 11:39 AM, Pranay Samala wrote:
 > From: Adith Narein T <adith.narein.t@intel.com>
 >
-> This patch adds support for reading the Display debugfs entry to fetch
-> display pipeline information used in the Display Top tool.
+> This patch introduces DPCD (DisplayPort Configuration Data) register
+> read support to the DisplayTop tool. It allows users to inspect the
+> state of connected DisplayPort sinks via a terminal-based UI.
+>
+> The implementation uses the DRM subsystem’s drm_dp.h header to provide
+> official DPCD register addresses and bitfield definitions. This ensures
+> accurate decoding and interpretation of register contents.
+>
+> Features included in this patch:
+>
+> - DPCD register dump per connected DisplayPort output
+> - Bitfield parsing and labeling using drm_dp.h macros
 >
 > Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 > Signed-off-by: Adith Narein T <adith.narein.t@intel.com>
 > Co-authored-by: Pranay Samala <pranay.samala@intel.com>
 > ---
->   tools/displaytop/README.md                    |   1 +
->   tools/displaytop/include/data.h               |   2 +
->   tools/displaytop/include/display.h            |   2 +
->   tools/displaytop/include/populate.h           |   1 +
->   tools/displaytop/include/utils.h              |   2 +
->   tools/displaytop/meson.build                  |   7 +
->   tools/displaytop/src/display_debugfs.c        | 124 ++++++++++++++++++
->   tools/displaytop/src/populate.c               |   1 +
->   .../displaytop/src/populate_display_debugfs.c |  96 ++++++++++++++
->   tools/displaytop/src/utils_driver.c           |  16 +++
->   10 files changed, 252 insertions(+)
->   create mode 100644 tools/displaytop/src/display_debugfs.c
->   create mode 100644 tools/displaytop/src/populate_display_debugfs.c
+>   tools/displaytop/README.md             |    1 +
+>   tools/displaytop/data/dpcd.json        | 4661 ++++++++++++++++++++++++
+>   tools/displaytop/include/data.h        |   12 +
+>   tools/displaytop/include/display.h     |    1 +
+>   tools/displaytop/include/populate.h    |    1 +
+>   tools/displaytop/include/utils.h       |    7 +-
+>   tools/displaytop/meson.build           |    7 +-
+>   tools/displaytop/src/data.c            |   13 +
+>   tools/displaytop/src/display_DPCD.c    |  252 ++
+>   tools/displaytop/src/populate.c        |    1 +
+>   tools/displaytop/src/populate_DPCD.c   |  233 ++
+>   tools/displaytop/src/utils.c           |   68 +
+>   tools/displaytop/src/utils_registers.c |   88 +
+>   13 files changed, 5343 insertions(+), 2 deletions(-)
+>   create mode 100644 tools/displaytop/data/dpcd.json
+>   create mode 100644 tools/displaytop/src/display_DPCD.c
+>   create mode 100644 tools/displaytop/src/populate_DPCD.c
+>   create mode 100644 tools/displaytop/src/utils_registers.c
 >
 > diff --git a/tools/displaytop/README.md b/tools/displaytop/README.md
-> index 299445a0e..34bab6772 100644
+> index 34bab6772..a47051f8d 100644
 > --- a/tools/displaytop/README.md
 > +++ b/tools/displaytop/README.md
-> @@ -7,6 +7,7 @@ A terminal-based tool for monitoring and debugging the display pipeline.
->   - Terminal UI using `ncurses`
+> @@ -8,6 +8,7 @@ A terminal-based tool for monitoring and debugging the display pipeline.
 >   - Dump feature for all the menus
 >   - Real-time display Configuration
-> +- view Live Display Debugfs in a terminal ui
+>   - view Live Display Debugfs in a terminal ui
+> +- Read & view DPCD register value & bitfield information
 >   
 >   ---
 >   
+> diff --git a/tools/displaytop/data/dpcd.json b/tools/displaytop/data/dpcd.json
+> new file mode 100644
+> index 000000000..106535d2e
+> --- /dev/null
+> +++ b/tools/displaytop/data/dpcd.json
+> @@ -0,0 +1,4661 @@
+> +{
+> +    "DP_DPCD": {
+> +        "DP_DPCD_REV": {
+> +            "address": "0x000",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DPCD_REV_10",
+> +                    "value": "0x10"
+> +                },
+> +                {
+> +                    "name": "DP_DPCD_REV_11",
+> +                    "value": "0x11"
+> +                },
+> +                {
+> +                    "name": "DP_DPCD_REV_12",
+> +                    "value": "0x12"
+> +                },
+> +                {
+> +                    "name": "DP_DPCD_REV_13",
+> +                    "value": "0x13"
+> +                },
+> +                {
+> +                    "name": "DP_DPCD_REV_14",
+> +                    "value": "0x14"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DPCD_MAX_ADD": {
+> +            "address": "0xfffff"
+> +        }
+> +    },
+> +    "DP_MAX": {
+> +        "DP_MAX_LINK_RATE": {
+> +            "address": "0x001"
+> +        },
+> +        "DP_MAX_LANE_COUNT": {
+> +            "address": "0x002",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_MAX_LANE_COUNT_MASK",
+> +                    "value": "0x1f"
+> +                },
+> +                {
+> +                    "name": "DP_TPS3_SUPPORTED",
+> +                    "value": "(1 << 6) /* 1.2 */"
+> +                },
+> +                {
+> +                    "name": "DP_ENHANCED_FRAME_CAP",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_MAX_DOWNSPREAD": {
+> +            "address": "0x003",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_MAX_DOWNSPREAD_0_5",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_STREAM_REGENERATION_STATUS_CAP",
+> +                    "value": "(1 << 1) /* 2.0 */"
+> +                },
+> +                {
+> +                    "name": "DP_NO_AUX_HANDSHAKE_LINK_TRAINING",
+> +                    "value": "(1 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_TPS4_SUPPORTED",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_MAX_DOWNSTREAM_PORTS": {
+> +            "address": "0x10"
+> +        },
+> +        "DP_MAX_LINK_RATE_PHY_REPEATER": {
+> +            "address": "0xf0001"
+> +        },
+> +        "DP_MAX_LANE_COUNT_PHY_REPEATER": {
+> +            "address": "0xf0004"
+> +        }
+> +    },
+> +    "DP_NORP": {
+> +        "address": "0x004"
+> +    },
+> +    "DP_DOWNSTREAMPORT_PRESENT": {
+> +        "address": "0x005",
+> +        "bitfields": [
+> +            {
+> +                "name": "DP_DWN_STRM_PORT_PRESENT",
+> +                "value": "(1 << 0)"
+> +            },
+> +            {
+> +                "name": "DP_DWN_STRM_PORT_TYPE_MASK",
+> +                "value": "0x06"
+> +            },
+> +            {
+> +                "name": "DP_DWN_STRM_PORT_TYPE_DP",
+> +                "value": "(0 << 1)"
+> +            },
+> +            {
+> +                "name": "DP_DWN_STRM_PORT_TYPE_ANALOG",
+> +                "value": "(1 << 1)"
+> +            },
+> +            {
+> +                "name": "DP_DWN_STRM_PORT_TYPE_TMDS",
+> +                "value": "(2 << 1)"
+> +            },
+> +            {
+> +                "name": "DP_DWN_STRM_PORT_TYPE_OTHER",
+> +                "value": "(3 << 1)"
+> +            },
+> +            {
+> +                "name": "DP_FORMAT_CONVERSION",
+> +                "value": "(1 << 3)"
+> +            },
+> +            {
+> +                "name": "DP_DETAILED_CAP_INFO_AVAILABLE",
+> +                "value": "(1 << 4) /* DPI */"
+> +            }
+> +        ]
+> +    },
+> +    "DP_MAIN": {
+> +        "DP_MAIN_LINK_CHANNEL_CODING": {
+> +            "address": "0x006",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_CAP_ANSI_8B10B",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_CAP_ANSI_128B132B",
+> +                    "value": "(1 << 1) /* 2.0 */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_MAIN_LINK_CHANNEL_CODING_SET": {
+> +            "address": "0x108",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_SET_ANSI_8B10B",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_SET_ANSI_128B132B",
+> +                    "value": "(1 << 1)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_MAIN_LINK_CHANNEL_CODING_PHY_REPEATER": {
+> +            "address": "0xf0006",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PHY_REPEATER_128B132B_SUPPORTED",
+> +                    "value": "(1 << 0)"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_DOWN_STREAM_PORT_COUNT": {
+> +        "address": "0x007",
+> +        "bitfields": [
+> +            {
+> +                "name": "DP_PORT_COUNT_MASK",
+> +                "value": "0x0f"
+> +            },
+> +            {
+> +                "name": "DP_MSA_TIMING_PAR_IGNORED",
+> +                "value": "(1 << 6) /* eDP */"
+> +            },
+> +            {
+> +                "name": "DP_OUI_SUPPORT",
+> +                "value": "(1 << 7)"
+> +            }
+> +        ]
+> +    },
+> +    "DP_RECEIVE": {
+> +        "DP_RECEIVE_PORT_0_CAP_0": {
+> +            "address": "0x008",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_LOCAL_EDID_PRESENT",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_ASSOCIATED_TO_PRECEDING_PORT",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_HBLANK_EXPANSION_CAPABLE",
+> +                    "value": "(1 << 3)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_RECEIVE_PORT_0_BUFFER_SIZE": {
+> +            "address": "0x009"
+> +        },
+> +        "DP_RECEIVE_PORT_1_CAP_0": {
+> +            "address": "0x00a"
+> +        },
+> +        "DP_RECEIVE_PORT_1_BUFFER_SIZE": {
+> +            "address": "0x00b"
+> +        }
+> +    },
+> +    "DP_I2C": {
+> +        "DP_I2C_SPEED_CAP": {
+> +            "address": "0x00c",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_I2C_SPEED_1K",
+> +                    "value": "0x01"
+> +                },
+> +                {
+> +                    "name": "DP_I2C_SPEED_5K",
+> +                    "value": "0x02"
+> +                },
+> +                {
+> +                    "name": "DP_I2C_SPEED_10K",
+> +                    "value": "0x04"
+> +                },
+> +                {
+> +                    "name": "DP_I2C_SPEED_100K",
+> +                    "value": "0x08"
+> +                },
+> +                {
+> +                    "name": "DP_I2C_SPEED_400K",
+> +                    "value": "0x10"
+> +                },
+> +                {
+> +                    "name": "DP_I2C_SPEED_1M",
+> +                    "value": "0x20"
+> +                }
+> +            ]
+> +        },
+> +        "DP_I2C_SPEED_CONTROL_STATUS": {
+> +            "address": "0x109"
+> +        }
+> +    },
+> +    "DP_EDP": {
+> +        "DP_EDP_CONFIGURATION_CAP": {
+> +            "address": "0x00d",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_ALTERNATE_SCRAMBLER_RESET_CAP",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_FRAMING_CHANGE_CAP",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_DPCD_DISPLAY_CONTROL_CAPABLE",
+> +                    "value": "(1 << 3) /* edp v1.2 or higher */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_EDP_CONFIGURATION_SET": {
+> +            "address": "0x10a",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_ALTERNATE_SCRAMBLER_RESET_ENABLE",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_FRAMING_CHANGE_ENABLE",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_SELF_TEST_ENABLE",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_EDP_DPCD_REV": {
+> +            "address": "0x700",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_EDP_11",
+> +                    "value": "0x00"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_12",
+> +                    "value": "0x01"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_13",
+> +                    "value": "0x02"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_14",
+> +                    "value": "0x03"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_14a",
+> +                    "value": "0x04    /* eDP 1.4a */"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_14b",
+> +                    "value": "0x05    /* eDP 1.4b */"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_15",
+> +                    "value": "0x06    /* eDP 1.5 */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_EDP_GENERAL_CAP_1": {
+> +            "address": "0x701",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_EDP_TCON_BACKLIGHT_ADJUSTMENT_CAP",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_PIN_ENABLE_CAP",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_AUX_ENABLE_CAP",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_PANEL_SELF_TEST_PIN_ENABLE_CAP",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_PANEL_SELF_TEST_AUX_ENABLE_CAP",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_FRC_ENABLE_CAP",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_COLOR_ENGINE_CAP",
+> +                    "value": "(1 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_SET_POWER_CAP",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_EDP_BACKLIGHT_ADJUSTMENT_CAP": {
+> +            "address": "0x702",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_BRIGHTNESS_PWM_PIN_CAP",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_BRIGHTNESS_AUX_SET_CAP",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_BRIGHTNESS_BYTE_COUNT",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_AUX_PWM_PRODUCT_CAP",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_FREQ_PWM_PIN_PASSTHRU_CAP",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_FREQ_AUX_SET_CAP",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_DYNAMIC_BACKLIGHT_CAP",
+> +                    "value": "(1 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_VBLANK_BACKLIGHT_UPDATE_CAP",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_EDP_GENERAL_CAP_2": {
+> +            "address": "0x703",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_EDP_OVERDRIVE_ENGINE_ENABLED",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_PANEL_LUMINANCE_CONTROL_CAPABLE",
+> +                    "value": "(1 << 4)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_EDP_GENERAL_CAP_3": {
+> +            "address": "0x704",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_EDP_X_REGION_CAP_MASK",
+> +                    "value": "(0xf << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_X_REGION_CAP_SHIFT",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_Y_REGION_CAP_MASK",
+> +                    "value": "(0xf << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_Y_REGION_CAP_SHIFT",
+> +                    "value": "4"
+> +                }
+> +            ]
+> +        },
+> +        "DP_EDP_DISPLAY_CONTROL_REGISTER": {
+> +            "address": "0x720",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_ENABLE",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_BLACK_VIDEO_ENABLE",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_FRC_ENABLE",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_COLOR_ENGINE_ENABLE",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_VBLANK_BACKLIGHT_UPDATE_ENABLE",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_EDP_BACKLIGHT_MODE_SET_REGISTER": {
+> +            "address": "0x721",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_CONTROL_MODE_MASK",
+> +                    "value": "(3 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_CONTROL_MODE_PWM",
+> +                    "value": "(0 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_CONTROL_MODE_PRESET",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_CONTROL_MODE_DPCD",
+> +                    "value": "(2 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_CONTROL_MODE_PRODUCT",
+> +                    "value": "(3 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_FREQ_PWM_PIN_PASSTHRU_ENABLE",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_FREQ_AUX_SET_ENABLE",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_DYNAMIC_BACKLIGHT_ENABLE",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_REGIONAL_BACKLIGHT_ENABLE",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_UPDATE_REGION_BRIGHTNESS",
+> +                    "value": "(1 << 6) /* eDP 1.4 */"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_PANEL_LUMINANCE_CONTROL_ENABLE",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_EDP_BACKLIGHT_BRIGHTNESS_MSB": {
+> +            "address": "0x722"
+> +        },
+> +        "DP_EDP_BACKLIGHT_BRIGHTNESS_LSB": {
+> +            "address": "0x723"
+> +        },
+> +        "DP_EDP_PWMGEN_BIT_COUNT": {
+> +            "address": "0x724"
+> +        },
+> +        "DP_EDP_PWMGEN_BIT_COUNT_CAP_MIN": {
+> +            "address": "0x725"
+> +        },
+> +        "DP_EDP_PWMGEN_BIT_COUNT_CAP_MAX": {
+> +            "address": "0x726",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_EDP_PWMGEN_BIT_COUNT_MASK",
+> +                    "value": "(0x1f << 0)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_EDP_BACKLIGHT_CONTROL_STATUS": {
+> +            "address": "0x727"
+> +        },
+> +        "DP_EDP_BACKLIGHT_FREQ_SET": {
+> +            "address": "0x728",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_EDP_BACKLIGHT_FREQ_BASE_KHZ",
+> +                    "value": "27000"
+> +                }
+> +            ]
+> +        },
+> +        "DP_EDP_BACKLIGHT_FREQ_CAP_MIN_MSB": {
+> +            "address": "0x72a"
+> +        },
+> +        "DP_EDP_BACKLIGHT_FREQ_CAP_MIN_MID": {
+> +            "address": "0x72b"
+> +        },
+> +        "DP_EDP_BACKLIGHT_FREQ_CAP_MIN_LSB": {
+> +            "address": "0x72c"
+> +        },
+> +        "DP_EDP_BACKLIGHT_FREQ_CAP_MAX_MSB": {
+> +            "address": "0x72d"
+> +        },
+> +        "DP_EDP_BACKLIGHT_FREQ_CAP_MAX_MID": {
+> +            "address": "0x72e"
+> +        },
+> +        "DP_EDP_BACKLIGHT_FREQ_CAP_MAX_LSB": {
+> +            "address": "0x72f"
+> +        },
+> +        "DP_EDP_DBC_MINIMUM_BRIGHTNESS_SET": {
+> +            "address": "0x732"
+> +        },
+> +        "DP_EDP_DBC_MAXIMUM_BRIGHTNESS_SET": {
+> +            "address": "0x733"
+> +        },
+> +        "DP_EDP_PANEL_TARGET_LUMINANCE_VALUE": {
+> +            "address": "0x734"
+> +        },
+> +        "DP_EDP_REGIONAL_BACKLIGHT_BASE": {
+> +            "address": "0x740"
+> +        },
+> +        "DP_EDP_REGIONAL_BACKLIGHT_0": {
+> +            "address": "0x741"
+> +        },
+> +        "DP_EDP_MSO_LINK_CAPABILITIES": {
+> +            "address": "0x7a4",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_EDP_MSO_NUMBER_OF_LINKS_MASK",
+> +                    "value": "(7 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_MSO_NUMBER_OF_LINKS_SHIFT",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_EDP_MSO_INDEPENDENT_LINK_BIT",
+> +                    "value": "(1 << 3)"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_TRAINING": {
+> +        "DP_TRAINING_AUX_RD_INTERVAL": {
+> +            "address": "0x00e",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_TRAINING_AUX_RD_MASK",
+> +                    "value": "0x7F    /* DP 1.3 */"
+> +                },
+> +                {
+> +                    "name": "DP_EXTENDED_RECEIVER_CAP_FIELD_PRESENT",
+> +                    "value": "(1 << 7) /* DP 1.3 */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TRAINING_PATTERN_SET": {
+> +            "address": "0x102",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_TRAINING_PATTERN_DISABLE",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_TRAINING_PATTERN_1",
+> +                    "value": "1"
+> +                },
+> +                {
+> +                    "name": "DP_TRAINING_PATTERN_2",
+> +                    "value": "2"
+> +                },
+> +                {
+> +                    "name": "DP_TRAINING_PATTERN_2_CDS",
+> +                    "value": "3\t    /* 2.0 E11 */"
+> +                },
+> +                {
+> +                    "name": "DP_TRAINING_PATTERN_3",
+> +                    "value": "3\t    /* 1.2 */"
+> +                },
+> +                {
+> +                    "name": "DP_TRAINING_PATTERN_4",
+> +                    "value": "7       /* 1.4 */"
+> +                },
+> +                {
+> +                    "name": "DP_TRAINING_PATTERN_MASK",
+> +                    "value": "0x3"
+> +                },
+> +                {
+> +                    "name": "DP_TRAINING_PATTERN_MASK_1_4",
+> +                    "value": "0xf"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_11_DISABLE",
+> +                    "value": "(0 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_11_D10_2",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_11_ERROR_RATE",
+> +                    "value": "(2 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_11_PRBS7",
+> +                    "value": "(3 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_11_MASK",
+> +                    "value": "(3 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_RECOVERED_CLOCK_OUT_EN",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_SCRAMBLING_DISABLE",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_SYMBOL_ERROR_COUNT_BOTH",
+> +                    "value": "(0 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_SYMBOL_ERROR_COUNT_DISPARITY",
+> +                    "value": "(1 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_SYMBOL_ERROR_COUNT_SYMBOL",
+> +                    "value": "(2 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_SYMBOL_ERROR_COUNT_MASK",
+> +                    "value": "(3 << 6)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TRAINING_LANE0_SET": {
+> +            "address": "0x103"
+> +        },
+> +        "DP_TRAINING_LANE1_SET": {
+> +            "address": "0x104"
+> +        },
+> +        "DP_TRAINING_LANE2_SET": {
+> +            "address": "0x105"
+> +        },
+> +        "DP_TRAINING_LANE3_SET": {
+> +            "address": "0x106",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_TRAIN_VOLTAGE_SWING_MASK",
+> +                    "value": "0x3"
+> +                },
+> +                {
+> +                    "name": "DP_TRAIN_VOLTAGE_SWING_SHIFT",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_TRAIN_MAX_SWING_REACHED",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_TRAIN_VOLTAGE_SWING_LEVEL_0",
+> +                    "value": "(0 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_TRAIN_VOLTAGE_SWING_LEVEL_1",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_TRAIN_VOLTAGE_SWING_LEVEL_2",
+> +                    "value": "(2 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_TRAIN_VOLTAGE_SWING_LEVEL_3",
+> +                    "value": "(3 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_TRAIN_PRE_EMPHASIS_MASK",
+> +                    "value": "(3 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_TRAIN_PRE_EMPH_LEVEL_0",
+> +                    "value": "(0 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_TRAIN_PRE_EMPH_LEVEL_1",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_TRAIN_PRE_EMPH_LEVEL_2",
+> +                    "value": "(2 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_TRAIN_PRE_EMPH_LEVEL_3",
+> +                    "value": "(3 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_TRAIN_PRE_EMPHASIS_SHIFT",
+> +                    "value": "3"
+> +                },
+> +                {
+> +                    "name": "DP_TRAIN_MAX_PRE_EMPHASIS_REACHED",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_TX_FFE_PRESET_VALUE_MASK",
+> +                    "value": "(0xf << 0) /* 2.0 128b/132b Link Layer */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TRAINING_LANE0_1_SET2": {
+> +            "address": "0x10f"
+> +        },
+> +        "DP_TRAINING_LANE2_3_SET2": {
+> +            "address": "0x110",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_LANE02_POST_CURSOR2_SET_MASK",
+> +                    "value": "(3 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_LANE02_MAX_POST_CURSOR2_REACHED",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_LANE13_POST_CURSOR2_SET_MASK",
+> +                    "value": "(3 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_LANE13_MAX_POST_CURSOR2_REACHED",
+> +                    "value": "(1 << 6)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TRAINING_PATTERN_SET_PHY_REPEATER1": {
+> +            "address": "0xf0010"
+> +        },
+> +        "DP_TRAINING_LANE0_SET_PHY_REPEATER1": {
+> +            "address": "0xf0011"
+> +        },
+> +        "DP_TRAINING_LANE1_SET_PHY_REPEATER1": {
+> +            "address": "0xf0012"
+> +        },
+> +        "DP_TRAINING_LANE2_SET_PHY_REPEATER1": {
+> +            "address": "0xf0013"
+> +        },
+> +        "DP_TRAINING_LANE3_SET_PHY_REPEATER1": {
+> +            "address": "0xf0014"
+> +        },
+> +        "DP_TRAINING_AUX_RD_INTERVAL_PHY_REPEATER1": {
+> +            "address": "0xf0020"
+> +        }
+> +    },
+> +    "DP_ADAPTER": {
+> +        "DP_ADAPTER_CAP": {
+> +            "address": "0x00f",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_FORCE_LOAD_SENSE_CAP",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_ALTERNATE_I2C_PATTERN_CAP",
+> +                    "value": "(1 << 1)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_ADAPTER_CTRL": {
+> +            "address": "0x1a0",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_ADAPTER_CTRL_FORCE_LOAD_SENSE",
+> +                    "value": "(1 << 0)"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_SUPPORTED_LINK_RATES": {
+> +        "address": "0x010",
+> +        "bitfields": [
+> +            {
+> +                "name": "DP_MAX_SUPPORTED_RATES",
+> +                "value": "8\t    /* 16-bit little-endian */"
+> +            }
+> +        ]
+> +    },
+> +    "DP_FAUX_CAP": {
+> +        "address": "0x020",
+> +        "bitfields": [
+> +            {
+> +                "name": "DP_FAUX_CAP_1",
+> +                "value": "(1 << 0)"
+> +            }
+> +        ]
+> +    },
+> +    "DP_SINK": {
+> +        "DP_SINK_VIDEO_FALLBACK_FORMATS": {
+> +            "address": "0x020",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_FALLBACK_1024x768_60HZ_24BPP",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_FALLBACK_1280x720_60HZ_24BPP",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_FALLBACK_1920x1080_60HZ_24BPP",
+> +                    "value": "(1 << 2)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_SINK_DEVICE_AUX_FRAME_SYNC_CAP": {
+> +            "address": "0x02f",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_AUX_FRAME_SYNC_CAP",
+> +                    "value": "(1 << 0)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_SINK_DEVICE_AUX_FRAME_SYNC_CONF": {
+> +            "address": "0x117",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_AUX_FRAME_SYNC_ENABLE",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_IRQ_HPD_ENABLE",
+> +                    "value": "(1 << 1)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_SINK_COUNT": {
+> +            "address": "0x200",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_SINK_CP_READY",
+> +                    "value": "(1 << 6)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_SINK_STATUS": {
+> +            "address": "0x205",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_RECEIVE_PORT_0_STATUS",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_RECEIVE_PORT_1_STATUS",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_STREAM_REGENERATION_STATUS",
+> +                    "value": "(1 << 2) /* 2.0 */"
+> +                },
+> +                {
+> +                    "name": "DP_INTRA_HOP_AUX_REPLY_INDICATION",
+> +                    "value": "(1 << 3) /* 2.0 */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_SINK_OUI": {
+> +            "address": "0x400"
+> +        },
+> +        "DP_SINK_COUNT_ESI": {
+> +            "address": "0x2002"
+> +        },
+> +        "DP_SINK_STATUS_ESI": {
+> +            "address": "0x200f"
+> +        },
+> +        "DP_SINK_DEVICE_PR_AND_FRAME_LOCK_STATUS": {
+> +            "address": "0x2022",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_SINK_DEVICE_PANEL_REPLAY_STATUS_MASK",
+> +                    "value": "(7 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_SINK_FRAME_LOCKED_SHIFT",
+> +                    "value": "3"
+> +                },
+> +                {
+> +                    "name": "DP_SINK_FRAME_LOCKED_MASK",
+> +                    "value": "(3 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_SINK_FRAME_LOCKED_STATUS_VALID_SHIFT",
+> +                    "value": "5"
+> +                },
+> +                {
+> +                    "name": "DP_SINK_FRAME_LOCKED_STATUS_VALID_MASK",
+> +                    "value": "(1 << 5)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_SINK_EVENT_NOTIFY": {
+> +            "address": "0x30"
+> +        }
+> +    },
+> +    "DP_MSTM": {
+> +        "DP_MSTM_CAP": {
+> +            "address": "0x021",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_MST_CAP",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_SINGLE_STREAM_SIDEBAND_MSG",
+> +                    "value": "(1 << 1) /* 2.0 */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_MSTM_CTRL": {
+> +            "address": "0x111",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_MST_EN",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_UP_REQ_EN",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_UPSTREAM_IS_SRC",
+> +                    "value": "(1 << 2)"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_NUMBER_OF_AUDIO_ENDPOINTS": {
+> +        "address": "0x022"
+> +    },
+> +    "DP_AV_GRANULARITY": {
+> +        "address": "0x023",
+> +        "bitfields": [
+> +            {
+> +                "name": "DP_AG_FACTOR_MASK",
+> +                "value": "(0xf << 0)"
+> +            },
+> +            {
+> +                "name": "DP_AG_FACTOR_3MS",
+> +                "value": "(0 << 0)"
+> +            },
+> +            {
+> +                "name": "DP_AG_FACTOR_2MS",
+> +                "value": "(1 << 0)"
+> +            },
+> +            {
+> +                "name": "DP_AG_FACTOR_1MS",
+> +                "value": "(2 << 0)"
+> +            },
+> +            {
+> +                "name": "DP_AG_FACTOR_500US",
+> +                "value": "(3 << 0)"
+> +            },
+> +            {
+> +                "name": "DP_AG_FACTOR_200US",
+> +                "value": "(4 << 0)"
+> +            },
+> +            {
+> +                "name": "DP_AG_FACTOR_100US",
+> +                "value": "(5 << 0)"
+> +            },
+> +            {
+> +                "name": "DP_AG_FACTOR_10US",
+> +                "value": "(6 << 0)"
+> +            },
+> +            {
+> +                "name": "DP_AG_FACTOR_1US",
+> +                "value": "(7 << 0)"
+> +            },
+> +            {
+> +                "name": "DP_VG_FACTOR_MASK",
+> +                "value": "(0xf << 4)"
+> +            },
+> +            {
+> +                "name": "DP_VG_FACTOR_3MS",
+> +                "value": "(0 << 4)"
+> +            },
+> +            {
+> +                "name": "DP_VG_FACTOR_2MS",
+> +                "value": "(1 << 4)"
+> +            },
+> +            {
+> +                "name": "DP_VG_FACTOR_1MS",
+> +                "value": "(2 << 4)"
+> +            },
+> +            {
+> +                "name": "DP_VG_FACTOR_500US",
+> +                "value": "(3 << 4)"
+> +            },
+> +            {
+> +                "name": "DP_VG_FACTOR_200US",
+> +                "value": "(4 << 4)"
+> +            },
+> +            {
+> +                "name": "DP_VG_FACTOR_100US",
+> +                "value": "(5 << 4)"
+> +            }
+> +        ]
+> +    },
+> +    "DP_AUD": {
+> +        "DP_AUD_DEC_LAT0": {
+> +            "address": "0x024"
+> +        },
+> +        "DP_AUD_DEC_LAT1": {
+> +            "address": "0x025"
+> +        },
+> +        "DP_AUD_PP_LAT0": {
+> +            "address": "0x026"
+> +        },
+> +        "DP_AUD_PP_LAT1": {
+> +            "address": "0x027"
+> +        },
+> +        "DP_AUD_DEL_INS0": {
+> +            "address": "0x02b"
+> +        },
+> +        "DP_AUD_DEL_INS1": {
+> +            "address": "0x02c"
+> +        },
+> +        "DP_AUD_DEL_INS2": {
+> +            "address": "0x02d"
+> +        }
+> +    },
+> +    "DP_VID": {
+> +        "DP_VID_INTER_LAT": {
+> +            "address": "0x028"
+> +        },
+> +        "DP_VID_PROG_LAT": {
+> +            "address": "0x029"
+> +        }
+> +    },
+> +    "DP_REP_LAT": {
+> +        "address": "0x02a"
+> +    },
+> +    "DP_RECEIVER": {
+> +        "DP_RECEIVER_ALPM_CAP": {
+> +            "address": "0x02e",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_ALPM_CAP",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_ALPM_PM_STATE_2A_SUPPORT",
+> +                    "value": "(1 << 1) /* eDP 1.5 */"
+> +                },
+> +                {
+> +                    "name": "DP_ALPM_AUX_LESS_CAP",
+> +                    "value": "(1 << 2) /* eDP 1.5 */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_RECEIVER_ALPM_CONFIG": {
+> +            "address": "0x116",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_ALPM_ENABLE",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_ALPM_LOCK_ERROR_IRQ_HPD_ENABLE",
+> +                    "value": "(1 << 1) /* eDP 1.5 */"
+> +                },
+> +                {
+> +                    "name": "DP_ALPM_MODE_AUX_LESS",
+> +                    "value": "(1 << 2) /* eDP 1.5 */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_RECEIVER_ALPM_STATUS": {
+> +            "address": "0x200b",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_ALPM_LOCK_TIMEOUT_ERROR",
+> +                    "value": "(1 << 0)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_RECEIVER_CAP_SIZE": {
+> +            "address": "0xf"
+> +        }
+> +    },
+> +    "DP_GUID": {
+> +        "address": "0x030"
+> +    },
+> +    "DP_DSC": {
+> +        "DP_DSC_SUPPORT": {
+> +            "address": "0x060",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DSC_DECOMPRESSION_IS_SUPPORTED",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_PASSTHROUGH_IS_SUPPORTED",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_DYNAMIC_PPS_UPDATE_SUPPORT_COMP_TO_COMP",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_DYNAMIC_PPS_UPDATE_SUPPORT_UNCOMP_TO_COMP",
+> +                    "value": "(1 << 3)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_REV": {
+> +            "address": "0x061",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DSC_MAJOR_MASK",
+> +                    "value": "(0xf << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_MINOR_MASK",
+> +                    "value": "(0xf << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_MAJOR_SHIFT",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_MINOR_SHIFT",
+> +                    "value": "4"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_RC_BUF_BLK_SIZE": {
+> +            "address": "0x062",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DSC_RC_BUF_BLK_SIZE_1",
+> +                    "value": "0x0"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_RC_BUF_BLK_SIZE_4",
+> +                    "value": "0x1"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_RC_BUF_BLK_SIZE_16",
+> +                    "value": "0x2"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_RC_BUF_BLK_SIZE_64",
+> +                    "value": "0x3"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_RC_BUF_SIZE": {
+> +            "address": "0x063"
+> +        },
+> +        "DP_DSC_SLICE_CAP_1": {
+> +            "address": "0x064",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DSC_1_PER_DP_DSC_SINK",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_2_PER_DP_DSC_SINK",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_4_PER_DP_DSC_SINK",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_6_PER_DP_DSC_SINK",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_8_PER_DP_DSC_SINK",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_10_PER_DP_DSC_SINK",
+> +                    "value": "(1 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_12_PER_DP_DSC_SINK",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_LINE_BUF_BIT_DEPTH": {
+> +            "address": "0x065",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DSC_LINE_BUF_BIT_DEPTH_MASK",
+> +                    "value": "(0xf << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_LINE_BUF_BIT_DEPTH_9",
+> +                    "value": "0x0"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_LINE_BUF_BIT_DEPTH_10",
+> +                    "value": "0x1"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_LINE_BUF_BIT_DEPTH_11",
+> +                    "value": "0x2"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_LINE_BUF_BIT_DEPTH_12",
+> +                    "value": "0x3"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_LINE_BUF_BIT_DEPTH_13",
+> +                    "value": "0x4"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_LINE_BUF_BIT_DEPTH_14",
+> +                    "value": "0x5"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_LINE_BUF_BIT_DEPTH_15",
+> +                    "value": "0x6"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_LINE_BUF_BIT_DEPTH_16",
+> +                    "value": "0x7"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_LINE_BUF_BIT_DEPTH_8",
+> +                    "value": "0x8"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_BLK_PREDICTION_SUPPORT": {
+> +            "address": "0x066",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DSC_BLK_PREDICTION_IS_SUPPORTED",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_RGB_COLOR_CONV_BYPASS_SUPPORT",
+> +                    "value": "(1 << 1)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_MAX_BITS_PER_PIXEL_LOW": {
+> +            "address": "0x067"
+> +        },
+> +        "DP_DSC_MAX_BITS_PER_PIXEL_HI": {
+> +            "address": "0x068",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DSC_MAX_BITS_PER_PIXEL_HI_MASK",
+> +                    "value": "(0x3 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_MAX_BPP_DELTA_VERSION_MASK",
+> +                    "value": "(0x3 << 5)\t/* eDP 1.5 & DP 2.0 */"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_MAX_BPP_DELTA_AVAILABILITY",
+> +                    "value": "(1 << 7)\t/* eDP 1.5 & DP 2.0 */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_DEC_COLOR_FORMAT_CAP": {
+> +            "address": "0x069",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DSC_RGB",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_YCbCr444",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_YCbCr422_Simple",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_YCbCr422_Native",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_YCbCr420_Native",
+> +                    "value": "(1 << 4)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_DEC_COLOR_DEPTH_CAP": {
+> +            "address": "0x06A",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DSC_8_BPC",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_10_BPC",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_12_BPC",
+> +                    "value": "(1 << 3)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_PEAK_THROUGHPUT": {
+> +            "address": "0x06B",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_MASK",
+> +                    "value": "(0xf << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_SHIFT",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_UNSUPPORTED",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_340",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_400",
+> +                    "value": "(2 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_450",
+> +                    "value": "(3 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_500",
+> +                    "value": "(4 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_550",
+> +                    "value": "(5 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_600",
+> +                    "value": "(6 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_650",
+> +                    "value": "(7 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_700",
+> +                    "value": "(8 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_750",
+> +                    "value": "(9 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_800",
+> +                    "value": "(10 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_850",
+> +                    "value": "(11 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_900",
+> +                    "value": "(12 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_950",
+> +                    "value": "(13 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_1000",
+> +                    "value": "(14 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_0_170",
+> +                    "value": "(15 << 0) /* 1.4a */"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_MASK",
+> +                    "value": "(0xf << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_SHIFT",
+> +                    "value": "4"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_UNSUPPORTED",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_340",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_400",
+> +                    "value": "(2 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_450",
+> +                    "value": "(3 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_500",
+> +                    "value": "(4 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_550",
+> +                    "value": "(5 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_600",
+> +                    "value": "(6 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_650",
+> +                    "value": "(7 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_700",
+> +                    "value": "(8 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_750",
+> +                    "value": "(9 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_800",
+> +                    "value": "(10 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_850",
+> +                    "value": "(11 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_900",
+> +                    "value": "(12 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_950",
+> +                    "value": "(13 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_1000",
+> +                    "value": "(14 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_THROUGHPUT_MODE_1_170",
+> +                    "value": "(15 << 4)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_MAX_SLICE_WIDTH": {
+> +            "address": "0x06C",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DSC_MIN_SLICE_WIDTH_VALUE",
+> +                    "value": "2560"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_SLICE_WIDTH_MULTIPLIER",
+> +                    "value": "320"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_SLICE_CAP_2": {
+> +            "address": "0x06D",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DSC_16_PER_DP_DSC_SINK",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_20_PER_DP_DSC_SINK",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_24_PER_DP_DSC_SINK",
+> +                    "value": "(1 << 2)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_BITS_PER_PIXEL_INC": {
+> +            "address": "0x06F",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DSC_RGB_YCbCr444_MAX_BPP_DELTA_MASK",
+> +                    "value": "0x1f"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_RGB_YCbCr420_MAX_BPP_DELTA_MASK",
+> +                    "value": "0xe0"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_BITS_PER_PIXEL_1_16",
+> +                    "value": "0x0"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_BITS_PER_PIXEL_1_8",
+> +                    "value": "0x1"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_BITS_PER_PIXEL_1_4",
+> +                    "value": "0x2"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_BITS_PER_PIXEL_1_2",
+> +                    "value": "0x3"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_BITS_PER_PIXEL_1_1",
+> +                    "value": "0x4"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_BRANCH_OVERALL_THROUGHPUT_0": {
+> +            "address": "0x0a0"
+> +        },
+> +        "DP_DSC_BRANCH_OVERALL_THROUGHPUT_1": {
+> +            "address": "0x0a1"
+> +        },
+> +        "DP_DSC_BRANCH_MAX_LINE_WIDTH": {
+> +            "address": "0x0a2"
+> +        },
+> +        "DP_DSC_ENABLE": {
+> +            "address": "0x160",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DECOMPRESSION_EN",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_PASSTHROUGH_EN",
+> +                    "value": "(1 << 1)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_CONFIGURATION": {
+> +            "address": "0x161"
+> +        },
+> +        "DP_DSC_SUPPORT_AND_DSC_DECODER_COUNT": {
+> +            "address": "0x2260",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DSC_DECODER_COUNT_MASK",
+> +                    "value": "(0b111 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_DECODER_COUNT_SHIFT",
+> +                    "value": "5"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_MAX_SLICE_COUNT_AND_AGGREGATION_0": {
+> +            "address": "0x2270",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DSC_DECODER_0_MAXIMUM_SLICE_COUNT_MASK",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_DECODER_0_AGGREGATION_SUPPORT_MASK",
+> +                    "value": "(0b111 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_DSC_DECODER_0_AGGREGATION_SUPPORT_SHIFT",
+> +                    "value": "1"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DSC_RECEIVER_CAP_SIZE": {
+> +            "address": "0x10",
+> +            "bitfields": [
+> +                {
+> +                    "name": "EDP_PSR_RECEIVER_CAP_SIZE",
+> +                    "value": "2"
+> +                },
+> +                {
+> +                    "name": "EDP_DISPLAY_CTL_CAP_SIZE",
+> +                    "value": "5"
+> +                },
+> +                {
+> +                    "name": "DP_LTTPR_COMMON_CAP_SIZE",
+> +                    "value": "8"
+> +                },
+> +                {
+> +                    "name": "DP_LTTPR_PHY_CAP_SIZE",
+> +                    "value": "3"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_PSR": {
+> +        "DP_PSR_SUPPORT": {
+> +            "address": "0x070",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PSR_IS_SUPPORTED",
+> +                    "value": "1"
+> +                },
+> +                {
+> +                    "name": "DP_PSR2_IS_SUPPORTED",
+> +                    "value": "2\t    /* eDP 1.4 */"
+> +                },
+> +                {
+> +                    "name": "DP_PSR2_WITH_Y_COORD_IS_SUPPORTED",
+> +                    "value": "3\t    /* eDP 1.4a */"
+> +                },
+> +                {
+> +                    "name": "DP_PSR2_WITH_Y_COORD_ET_SUPPORTED",
+> +                    "value": "4\t    /* eDP 1.5, adopted eDP 1.4b SCR */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PSR_CAPS": {
+> +            "address": "0x071",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PSR_NO_TRAIN_ON_EXIT",
+> +                    "value": "1"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SETUP_TIME_330",
+> +                    "value": "(0 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SETUP_TIME_275",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SETUP_TIME_220",
+> +                    "value": "(2 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SETUP_TIME_165",
+> +                    "value": "(3 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SETUP_TIME_110",
+> +                    "value": "(4 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SETUP_TIME_55",
+> +                    "value": "(5 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SETUP_TIME_0",
+> +                    "value": "(6 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SETUP_TIME_MASK",
+> +                    "value": "(7 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SETUP_TIME_SHIFT",
+> +                    "value": "1"
+> +                },
+> +                {
+> +                    "name": "DP_PSR2_SU_Y_COORDINATE_REQUIRED",
+> +                    "value": "(1 << 4)  /* eDP 1.4a */"
+> +                },
+> +                {
+> +                    "name": "DP_PSR2_SU_GRANULARITY_REQUIRED",
+> +                    "value": "(1 << 5)  /* eDP 1.4b */"
+> +                },
+> +                {
+> +                    "name": "DP_PSR2_SU_AUX_FRAME_SYNC_NOT_NEEDED",
+> +                    "value": "(1 << 6)/* eDP 1.5, adopted eDP 1.4b SCR */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PSR_EN_CFG": {
+> +            "address": "0x170",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PSR_ENABLE",
+> +                    "value": "BIT(0)"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_MAIN_LINK_ACTIVE",
+> +                    "value": "BIT(1)"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_CRC_VERIFICATION",
+> +                    "value": "BIT(2)"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_FRAME_CAPTURE",
+> +                    "value": "BIT(3)"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SU_REGION_SCANLINE_CAPTURE",
+> +                    "value": "BIT(4) /* eDP 1.4a */"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_IRQ_HPD_WITH_CRC_ERRORS",
+> +                    "value": "BIT(5) /* eDP 1.4a */"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_ENABLE_PSR2",
+> +                    "value": "BIT(6) /* eDP 1.4a */"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_ENABLE_SU_REGION_ET",
+> +                    "value": "BIT(7) /* eDP 1.5 */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PSR_ERROR_STATUS": {
+> +            "address": "0x2006",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PSR_LINK_CRC_ERROR",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_RFB_STORAGE_ERROR",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_VSC_SDP_UNCORRECTABLE_ERROR",
+> +                    "value": "(1 << 2) /* eDP 1.4 */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PSR_ESI": {
+> +            "address": "0x2007",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PSR_CAPS_CHANGE",
+> +                    "value": "(1 << 0)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PSR_STATUS": {
+> +            "address": "0x2008",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PSR_SINK_INACTIVE",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SINK_ACTIVE_SRC_SYNCED",
+> +                    "value": "1"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SINK_ACTIVE_RFB",
+> +                    "value": "2"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SINK_ACTIVE_SINK_SYNCED",
+> +                    "value": "3"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SINK_ACTIVE_RESYNC",
+> +                    "value": "4"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SINK_INTERNAL_ERROR",
+> +                    "value": "7"
+> +                },
+> +                {
+> +                    "name": "DP_PSR_SINK_STATE_MASK",
+> +                    "value": "0x07"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_PSR2": {
+> +        "DP_PSR2_SU_X_GRANULARITY": {
+> +            "address": "0x072"
+> +        },
+> +        "DP_PSR2_SU_Y_GRANULARITY": {
+> +            "address": "0x074"
+> +        }
+> +    },
+> +    "DP_DOWNSTREAM_PORT_0": {
+> +        "address": "0x80",
+> +        "bitfields": [
+> +            {
+> +                "name": "DP_DS_PORT_TYPE_MASK",
+> +                "value": "(7 << 0)"
+> +            },
+> +            {
+> +                "name": "DP_DS_PORT_TYPE_DP",
+> +                "value": "0"
+> +            },
+> +            {
+> +                "name": "DP_DS_PORT_TYPE_VGA",
+> +                "value": "1"
+> +            },
+> +            {
+> +                "name": "DP_DS_PORT_TYPE_DVI",
+> +                "value": "2"
+> +            },
+> +            {
+> +                "name": "DP_DS_PORT_TYPE_HDMI",
+> +                "value": "3"
+> +            },
+> +            {
+> +                "name": "DP_DS_PORT_TYPE_NON_EDID",
+> +                "value": "4"
+> +            },
+> +            {
+> +                "name": "DP_DS_PORT_TYPE_DP_DUALMODE",
+> +                "value": "5"
+> +            },
+> +            {
+> +                "name": "DP_DS_PORT_TYPE_WIRELESS",
+> +                "value": "6"
+> +            },
+> +            {
+> +                "name": "DP_DS_PORT_HPD",
+> +                "value": "(1 << 3)"
+> +            },
+> +            {
+> +                "name": "DP_DS_NON_EDID_MASK",
+> +                "value": "(0xf << 4)"
+> +            },
+> +            {
+> +                "name": "DP_DS_NON_EDID_720x480i_60",
+> +                "value": "(1 << 4)"
+> +            },
+> +            {
+> +                "name": "DP_DS_NON_EDID_720x480i_50",
+> +                "value": "(2 << 4)"
+> +            },
+> +            {
+> +                "name": "DP_DS_NON_EDID_1920x1080i_60",
+> +                "value": "(3 << 4)"
+> +            },
+> +            {
+> +                "name": "DP_DS_NON_EDID_1920x1080i_50",
+> +                "value": "(4 << 4)"
+> +            },
+> +            {
+> +                "name": "DP_DS_NON_EDID_1280x720_60",
+> +                "value": "(5 << 4)"
+> +            },
+> +            {
+> +                "name": "DP_DS_NON_EDID_1280x720_50",
+> +                "value": "(7 << 4)"
+> +            },
+> +            {
+> +                "name": "DP_DS_MAX_BPC_MASK",
+> +                "value": "(3 << 0)"
+> +            },
+> +            {
+> +                "name": "DP_DS_8BPC",
+> +                "value": "0"
+> +            },
+> +            {
+> +                "name": "DP_DS_10BPC",
+> +                "value": "1"
+> +            },
+> +            {
+> +                "name": "DP_DS_12BPC",
+> +                "value": "2"
+> +            },
+> +            {
+> +                "name": "DP_DS_16BPC",
+> +                "value": "3"
+> +            },
+> +            {
+> +                "name": "DP_PCON_MAX_FRL_BW",
+> +                "value": "(7 << 2)"
+> +            },
+> +            {
+> +                "name": "DP_PCON_MAX_0GBPS",
+> +                "value": "(0 << 2)"
+> +            },
+> +            {
+> +                "name": "DP_PCON_MAX_9GBPS",
+> +                "value": "(1 << 2)"
+> +            },
+> +            {
+> +                "name": "DP_PCON_MAX_18GBPS",
+> +                "value": "(2 << 2)"
+> +            },
+> +            {
+> +                "name": "DP_PCON_MAX_24GBPS",
+> +                "value": "(3 << 2)"
+> +            },
+> +            {
+> +                "name": "DP_PCON_MAX_32GBPS",
+> +                "value": "(4 << 2)"
+> +            },
+> +            {
+> +                "name": "DP_PCON_MAX_40GBPS",
+> +                "value": "(5 << 2)"
+> +            },
+> +            {
+> +                "name": "DP_PCON_MAX_48GBPS",
+> +                "value": "(6 << 2)"
+> +            },
+> +            {
+> +                "name": "DP_PCON_SOURCE_CTL_MODE",
+> +                "value": "(1 << 5)"
+> +            },
+> +            {
+> +                "name": "DP_DS_DVI_DUAL_LINK",
+> +                "value": "(1 << 1)"
+> +            },
+> +            {
+> +                "name": "DP_DS_DVI_HIGH_COLOR_DEPTH",
+> +                "value": "(1 << 2)"
+> +            },
+> +            {
+> +                "name": "DP_DS_HDMI_FRAME_SEQ_TO_FRAME_PACK",
+> +                "value": "(1 << 0)"
+> +            },
+> +            {
+> +                "name": "DP_DS_HDMI_YCBCR422_PASS_THROUGH",
+> +                "value": "(1 << 1)"
+> +            },
+> +            {
+> +                "name": "DP_DS_HDMI_YCBCR420_PASS_THROUGH",
+> +                "value": "(1 << 2)"
+> +            },
+> +            {
+> +                "name": "DP_DS_HDMI_YCBCR444_TO_422_CONV",
+> +                "value": "(1 << 3)"
+> +            },
+> +            {
+> +                "name": "DP_DS_HDMI_YCBCR444_TO_420_CONV",
+> +                "value": "(1 << 4)"
+> +            },
+> +            {
+> +                "name": "DP_DS_HDMI_BT601_RGB_YCBCR_CONV",
+> +                "value": "(1 << 5)"
+> +            },
+> +            {
+> +                "name": "DP_DS_HDMI_BT709_RGB_YCBCR_CONV",
+> +                "value": "(1 << 6)"
+> +            },
+> +            {
+> +                "name": "DP_DS_HDMI_BT2020_RGB_YCBCR_CONV",
+> +                "value": "(1 << 7)"
+> +            }
+> +        ]
+> +    },
+> +    "DP_FEC": {
+> +        "DP_FEC_CAPABILITY": {
+> +            "address": "0x090",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_FEC_CAPABLE",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_FEC_UNCORR_BLK_ERROR_COUNT_CAP",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_FEC_CORR_BLK_ERROR_COUNT_CAP",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_FEC_BIT_ERROR_COUNT_CAP",
+> +                    "value": "(1 << 3)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_FEC_CAPABILITY_1": {
+> +            "address": "0x091"
+> +        },
+> +        "DP_FEC_CONFIGURATION": {
+> +            "address": "0x120",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_FEC_READY",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_FEC_ERR_COUNT_SEL_MASK",
+> +                    "value": "(7 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_FEC_ERR_COUNT_DIS",
+> +                    "value": "(0 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_FEC_UNCORR_BLK_ERROR_COUNT",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_FEC_CORR_BLK_ERROR_COUNT",
+> +                    "value": "(2 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_FEC_BIT_ERROR_COUNT",
+> +                    "value": "(3 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_FEC_LANE_SELECT_MASK",
+> +                    "value": "(3 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_FEC_LANE_0_SELECT",
+> +                    "value": "(0 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_FEC_LANE_1_SELECT",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_FEC_LANE_2_SELECT",
+> +                    "value": "(2 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_FEC_LANE_3_SELECT",
+> +                    "value": "(3 << 4)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_FEC_STATUS": {
+> +            "address": "0x280",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_FEC_DECODE_EN_DETECTED",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_FEC_DECODE_DIS_DETECTED",
+> +                    "value": "(1 << 1)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_FEC_ERROR_COUNT_LSB": {
+> +            "address": "0x0281"
+> +        },
+> +        "DP_FEC_ERROR_COUNT_MSB": {
+> +            "address": "0x0282",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_FEC_ERROR_COUNT_MASK",
+> +                    "value": "0x7F"
+> +                },
+> +                {
+> +                    "name": "DP_FEC_ERR_COUNT_VALID",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_FEC_STATUS_PHY_REPEATER1": {
+> +            "address": "0xf0290"
+> +        },
+> +        "DP_FEC_ERROR_COUNT_PHY_REPEATER1": {
+> +            "address": "0xf0291"
+> +        },
+> +        "DP_FEC_CAPABILITY_PHY_REPEATER1": {
+> +            "address": "0xf0294"
+> +        }
+> +    },
+> +    "DP_PCON": {
+> +        "DP_PCON_DSC_ENCODER_CAP_SIZE": {
+> +            "address": "0xD"
+> +        },
+> +        "DP_PCON_DSC_ENCODER": {
+> +            "address": "0x092",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PCON_DSC_ENCODER_SUPPORTED",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_PPS_ENC_OVERRIDE",
+> +                    "value": "(1 << 1)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PCON_DSC_VERSION": {
+> +            "address": "0x093",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PCON_DSC_MAJOR_MASK",
+> +                    "value": "(0xF << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_MINOR_MASK",
+> +                    "value": "(0xF << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_MAJOR_SHIFT",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_MINOR_SHIFT",
+> +                    "value": "4"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PCON_DSC_RC_BUF_BLK_INFO": {
+> +            "address": "0x094",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PCON_DSC_RC_BUF_BLK_SIZE",
+> +                    "value": "(0x3 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_RC_BUF_BLK_1KB",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_RC_BUF_BLK_4KB",
+> +                    "value": "1"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_RC_BUF_BLK_16KB",
+> +                    "value": "2"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_RC_BUF_BLK_64KB",
+> +                    "value": "3"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PCON_DSC_RC_BUF_SIZE": {
+> +            "address": "0x095"
+> +        },
+> +        "DP_PCON_DSC_SLICE_CAP_1": {
+> +            "address": "0x096",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PCON_DSC_1_PER_DSC_ENC",
+> +                    "value": "(0x1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_2_PER_DSC_ENC",
+> +                    "value": "(0x1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_4_PER_DSC_ENC",
+> +                    "value": "(0x1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_6_PER_DSC_ENC",
+> +                    "value": "(0x1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_8_PER_DSC_ENC",
+> +                    "value": "(0x1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_10_PER_DSC_ENC",
+> +                    "value": "(0x1 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_12_PER_DSC_ENC",
+> +                    "value": "(0x1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PCON_DSC_BUF_BIT_DEPTH": {
+> +            "address": "0x097",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PCON_DSC_BIT_DEPTH_MASK",
+> +                    "value": "(0xF << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_DEPTH_9_BITS",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_DEPTH_10_BITS",
+> +                    "value": "1"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_DEPTH_11_BITS",
+> +                    "value": "2"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_DEPTH_12_BITS",
+> +                    "value": "3"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_DEPTH_13_BITS",
+> +                    "value": "4"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_DEPTH_14_BITS",
+> +                    "value": "5"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_DEPTH_15_BITS",
+> +                    "value": "6"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_DEPTH_16_BITS",
+> +                    "value": "7"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_DEPTH_8_BITS",
+> +                    "value": "8"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PCON_DSC_BLOCK_PREDICTION": {
+> +            "address": "0x098",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PCON_DSC_BLOCK_PRED_SUPPORT",
+> +                    "value": "(0x1 << 0)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PCON_DSC_ENC_COLOR_FMT_CAP": {
+> +            "address": "0x099",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PCON_DSC_ENC_RGB",
+> +                    "value": "(0x1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_ENC_YUV444",
+> +                    "value": "(0x1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_ENC_YUV422_S",
+> +                    "value": "(0x1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_ENC_YUV422_N",
+> +                    "value": "(0x1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_ENC_YUV420_N",
+> +                    "value": "(0x1 << 4)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PCON_DSC_ENC_COLOR_DEPTH_CAP": {
+> +            "address": "0x09A",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PCON_DSC_ENC_8BPC",
+> +                    "value": "(0x1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_ENC_10BPC",
+> +                    "value": "(0x1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_ENC_12BPC",
+> +                    "value": "(0x1 << 3)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PCON_DSC_MAX_SLICE_WIDTH": {
+> +            "address": "0x09B"
+> +        },
+> +        "DP_PCON_DSC_SLICE_CAP_2": {
+> +            "address": "0x09C",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PCON_DSC_16_PER_DSC_ENC",
+> +                    "value": "(0x1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_20_PER_DSC_ENC",
+> +                    "value": "(0x1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_24_PER_DSC_ENC",
+> +                    "value": "(0x1 << 2)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PCON_DSC_BPP_INCR": {
+> +            "address": "0x09E",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PCON_DSC_BPP_INCR_MASK",
+> +                    "value": "(0x7 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_ONE_16TH_BPP",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_ONE_8TH_BPP",
+> +                    "value": "1"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_ONE_4TH_BPP",
+> +                    "value": "2"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_ONE_HALF_BPP",
+> +                    "value": "3"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_DSC_ONE_BPP",
+> +                    "value": "4"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PCON_HDMI_LINK_CONFIG_1": {
+> +            "address": "0x305A",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PCON_ENABLE_MAX_FRL_BW",
+> +                    "value": "(7 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENABLE_MAX_BW_0GBPS",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENABLE_MAX_BW_9GBPS",
+> +                    "value": "1"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENABLE_MAX_BW_18GBPS",
+> +                    "value": "2"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENABLE_MAX_BW_24GBPS",
+> +                    "value": "3"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENABLE_MAX_BW_32GBPS",
+> +                    "value": "4"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENABLE_MAX_BW_40GBPS",
+> +                    "value": "5"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENABLE_MAX_BW_48GBPS",
+> +                    "value": "6"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENABLE_SOURCE_CTL_MODE",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENABLE_CONCURRENT_LINK",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENABLE_SEQUENTIAL_LINK",
+> +                    "value": "(0 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENABLE_LINK_FRL_MODE",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENABLE_HPD_READY",
+> +                    "value": "(1 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENABLE_HDMI_LINK",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PCON_HDMI_LINK_CONFIG_2": {
+> +            "address": "0x305B",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PCON_MAX_LINK_BW_MASK",
+> +                    "value": "(0x3F << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_FRL_BW_MASK_9GBPS",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_FRL_BW_MASK_18GBPS",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_FRL_BW_MASK_24GBPS",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_FRL_BW_MASK_32GBPS",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_FRL_BW_MASK_40GBPS",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_FRL_BW_MASK_48GBPS",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_FRL_LINK_TRAIN_EXTENDED",
+> +                    "value": "(1 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_FRL_LINK_TRAIN_NORMAL",
+> +                    "value": "(0 << 6)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PCON_HDMI_TX_LINK_STATUS": {
+> +            "address": "0x303B",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PCON_HDMI_TX_LINK_ACTIVE",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_FRL_READY",
+> +                    "value": "(1 << 1)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PCON_HDMI_POST_FRL_STATUS": {
+> +            "address": "0x3036",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PCON_HDMI_LINK_MODE",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_HDMI_MODE_TMDS",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_HDMI_MODE_FRL",
+> +                    "value": "1"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_HDMI_FRL_TRAINED_BW",
+> +                    "value": "(0x3F << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_FRL_TRAINED_BW_9GBPS",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_FRL_TRAINED_BW_18GBPS",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_FRL_TRAINED_BW_24GBPS",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_FRL_TRAINED_BW_32GBPS",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_FRL_TRAINED_BW_40GBPS",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_FRL_TRAINED_BW_48GBPS",
+> +                    "value": "(1 << 6)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PCON_HDMI_ERROR_STATUS_LN0": {
+> +            "address": "0x3037"
+> +        },
+> +        "DP_PCON_HDMI_ERROR_STATUS_LN1": {
+> +            "address": "0x3038"
+> +        },
+> +        "DP_PCON_HDMI_ERROR_STATUS_LN2": {
+> +            "address": "0x3039"
+> +        },
+> +        "DP_PCON_HDMI_ERROR_STATUS_LN3": {
+> +            "address": "0x303A",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PCON_HDMI_ERROR_COUNT_MASK",
+> +                    "value": "(0x7 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_HDMI_ERROR_COUNT_THREE_PLUS",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_HDMI_ERROR_COUNT_TEN_PLUS",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_HDMI_ERROR_COUNT_HUNDRED_PLUS",
+> +                    "value": "(1 << 2)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PCON_HDMI_PPS_OVERRIDE_BASE": {
+> +            "address": "0x3100"
+> +        },
+> +        "DP_PCON_HDMI_PPS_OVRD_SLICE_HEIGHT": {
+> +            "address": "0x3180"
+> +        },
+> +        "DP_PCON_HDMI_PPS_OVRD_SLICE_WIDTH": {
+> +            "address": "0x3182"
+> +        },
+> +        "DP_PCON_HDMI_PPS_OVRD_BPP": {
+> +            "address": "0x3184"
+> +        }
+> +    },
+> +    "DP_DFP_CAPABILITY_EXTENSION_SUPPORT": {
+> +        "address": "0x0a3"
+> +    },
+> +    "DP_PANEL": {
+> +        "DP_PANEL_REPLAY_CAP": {
+> +            "address": "0x0b0",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_SUPPORT",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_SU_SUPPORT",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_EARLY_TRANSPORT_SUPPORT",
+> +                    "value": "(1 << 2) /* eDP 1.5 */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PANEL_PANEL_REPLAY_CAPABILITY": {
+> +            "address": "0xb1",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PANEL_PANEL_REPLAY_SU_GRANULARITY_REQUIRED",
+> +                    "value": "(1 << 5)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PANEL_PANEL_REPLAY_X_GRANULARITY": {
+> +            "address": "0xb2"
+> +        },
+> +        "DP_PANEL_PANEL_REPLAY_Y_GRANULARITY": {
+> +            "address": "0xb4"
+> +        },
+> +        "DP_PANEL_REPLAY_ERROR_STATUS": {
+> +            "address": "0x2020",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_LINK_CRC_ERROR",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_RFB_STORAGE_ERROR",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_VSC_SDP_UNCORRECTABLE_ERROR",
+> +                    "value": "(1 << 2)"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_LINK": {
+> +        "DP_LINK_BW_SET": {
+> +            "address": "0x100",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_LINK_RATE_TABLE",
+> +                    "value": "0x00    /* eDP 1.4 */"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_BW_1_62",
+> +                    "value": "0x06"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_BW_2_7",
+> +                    "value": "0x0a"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_BW_5_4",
+> +                    "value": "0x14    /* 1.2 */"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_BW_8_1",
+> +                    "value": "0x1e    /* 1.4 */"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_BW_10",
+> +                    "value": "0x01    /* 2.0 128b/132b Link Layer */"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_BW_13_5",
+> +                    "value": "0x04    /* 2.0 128b/132b Link Layer */"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_BW_20",
+> +                    "value": "0x02    /* 2.0 128b/132b Link Layer */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_LINK_QUAL_LANE0_SET": {
+> +            "address": "0x10b"
+> +        },
+> +        "DP_LINK_QUAL_LANE1_SET": {
+> +            "address": "0x10c"
+> +        },
+> +        "DP_LINK_QUAL_LANE2_SET": {
+> +            "address": "0x10d"
+> +        },
+> +        "DP_LINK_QUAL_LANE3_SET": {
+> +            "address": "0x10e",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_DISABLE",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_D10_2",
+> +                    "value": "1"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_ERROR_RATE",
+> +                    "value": "2"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_PRBS7",
+> +                    "value": "3"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_80BIT_CUSTOM",
+> +                    "value": "4"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_CP2520_PAT_1",
+> +                    "value": "5"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_CP2520_PAT_2",
+> +                    "value": "6"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_CP2520_PAT_3",
+> +                    "value": "7"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_128B132B_TPS1",
+> +                    "value": "0x08"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_128B132B_TPS2",
+> +                    "value": "0x10"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_PRSBS9",
+> +                    "value": "0x18"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_PRSBS11",
+> +                    "value": "0x20"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_PRSBS15",
+> +                    "value": "0x28"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_PRSBS23",
+> +                    "value": "0x30"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_PRSBS31",
+> +                    "value": "0x38"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_CUSTOM",
+> +                    "value": "0x40"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_SQUARE",
+> +                    "value": "0x48"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_SQUARE_PRESHOOT_DISABLED",
+> +                    "value": "0x49"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_SQUARE_DEEMPHASIS_DISABLED",
+> +                    "value": "0x4a"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_QUAL_PATTERN_SQUARE_PRESHOOT_DEEMPHASIS_DISABLED",
+> +                    "value": "0x4b"
+> +                }
+> +            ]
+> +        },
+> +        "DP_LINK_RATE_SET": {
+> +            "address": "0x115",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_LINK_RATE_SET_SHIFT",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_RATE_SET_MASK",
+> +                    "value": "(7 << 0)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_LINK_SERVICE_IRQ_VECTOR_ESI0": {
+> +            "address": "0x2005",
+> +            "bitfields": [
+> +                {
+> +                    "name": "RX_CAP_CHANGED",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "LINK_STATUS_CHANGED",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "STREAM_STATUS_CHANGED",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "HDMI_LINK_STATUS_CHANGED",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "CONNECTED_OFF_ENTRY_REQUESTED",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_TUNNELING_IRQ",
+> +                    "value": "(1 << 5)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_LINK_ADDRESS": {
+> +            "address": "0x01"
+> +        },
+> +        "DP_LINK_CONSTANT_N_VALUE": {
+> +            "address": "0x8000",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_LINK_STATUS_SIZE",
+> +                    "value": "6"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_LANE": {
+> +        "DP_LANE_COUNT_SET": {
+> +            "address": "0x101",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_LANE_COUNT_MASK",
+> +                    "value": "0x0f"
+> +                },
+> +                {
+> +                    "name": "DP_LANE_COUNT_ENHANCED_FRAME_EN",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_LANE_ALIGN_STATUS_UPDATED": {
+> +            "address": "0x204",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_INTERLANE_ALIGN_DONE",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_128B132B_DPRX_EQ_INTERLANE_ALIGN_DONE",
+> +                    "value": "(1 << 2) /* 2.0 E11 */"
+> +                },
+> +                {
+> +                    "name": "DP_128B132B_DPRX_CDS_INTERLANE_ALIGN_DONE",
+> +                    "value": "(1 << 3) /* 2.0 E11 */"
+> +                },
+> +                {
+> +                    "name": "DP_128B132B_LT_FAILED",
+> +                    "value": "(1 << 4) /* 2.0 E11 */"
+> +                },
+> +                {
+> +                    "name": "DP_DOWNSTREAM_PORT_STATUS_CHANGED",
+> +                    "value": "(1 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_STATUS_UPDATED",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_LANE_ALIGN_STATUS_UPDATED_ESI": {
+> +            "address": "0x200e"
+> +        },
+> +        "DP_LANE_ALIGN_STATUS_UPDATED_PHY_REPEATER1": {
+> +            "address": "0xf0032"
+> +        }
+> +    },
+> +    "DP_DOWNSPREAD_CTRL": {
+> +        "address": "0x107",
+> +        "bitfields": [
+> +            {
+> +                "name": "DP_SPREAD_AMP_0_5",
+> +                "value": "(1 << 4)"
+> +            },
+> +            {
+> +                "name": "DP_FIXED_VTOTAL_AS_SDP_EN_IN_PR_ACTIVE",
+> +                "value": "(1 << 6)"
+> +            },
+> +            {
+> +                "name": "DP_MSA_TIMING_PAR_IGNORE_EN",
+> +                "value": "(1 << 7) /* eDP */"
+> +            }
+> +        ]
+> +    },
+> +    "DP_AUDIO": {
+> +        "DP_AUDIO_DELAY0": {
+> +            "address": "0x112"
+> +        },
+> +        "DP_AUDIO_DELAY1": {
+> +            "address": "0x113"
+> +        },
+> +        "DP_AUDIO_DELAY2": {
+> +            "address": "0x114"
+> +        }
+> +    },
+> +    "DP_UPSTREAM_DEVICE_DP_PWR_NEED": {
+> +        "address": "0x118",
+> +        "bitfields": [
+> +            {
+> +                "name": "DP_PWR_NOT_NEEDED",
+> +                "value": "(1 << 0)"
+> +            }
+> +        ]
+> +    },
+> +    "DP_EXTENDED": {
+> +        "DP_EXTENDED_DPRX_SLEEP_WAKE_TIMEOUT_GRANT": {
+> +            "address": "0x119",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DPRX_SLEEP_WAKE_TIMEOUT_PERIOD_GRANTED",
+> +                    "value": "(1 << 0)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_EXTENDED_DPRX_SLEEP_WAKE_TIMEOUT_REQUEST": {
+> +            "address": "0x2211",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_DPRX_SLEEP_WAKE_TIMEOUT_PERIOD_MASK",
+> +                    "value": "0xff"
+> +                },
+> +                {
+> +                    "name": "DP_DPRX_SLEEP_WAKE_TIMEOUT_PERIOD_1_MS",
+> +                    "value": "0x00"
+> +                },
+> +                {
+> +                    "name": "DP_DPRX_SLEEP_WAKE_TIMEOUT_PERIOD_20_MS",
+> +                    "value": "0x01"
+> +                },
+> +                {
+> +                    "name": "DP_DPRX_SLEEP_WAKE_TIMEOUT_PERIOD_40_MS",
+> +                    "value": "0x02"
+> +                },
+> +                {
+> +                    "name": "DP_DPRX_SLEEP_WAKE_TIMEOUT_PERIOD_60_MS",
+> +                    "value": "0x03"
+> +                },
+> +                {
+> +                    "name": "DP_DPRX_SLEEP_WAKE_TIMEOUT_PERIOD_80_MS",
+> +                    "value": "0x04"
+> +                },
+> +                {
+> +                    "name": "DP_DPRX_SLEEP_WAKE_TIMEOUT_PERIOD_100_MS",
+> +                    "value": "0x05"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_SDP": {
+> +        "DP_SDP_ERROR_DETECTION_CONFIGURATION": {
+> +            "address": "0x121",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_SDP_CRC16_128B132B_EN",
+> +                    "value": "BIT(0)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_SDP_AUDIO_TIMESTAMP": {
+> +            "address": "0x01"
+> +        },
+> +        "DP_SDP_AUDIO_STREAM": {
+> +            "address": "0x02"
+> +        },
+> +        "DP_SDP_EXTENSION": {
+> +            "address": "0x04"
+> +        },
+> +        "DP_SDP_AUDIO_COPYMANAGEMENT": {
+> +            "address": "0x05"
+> +        },
+> +        "DP_SDP_ISRC": {
+> +            "address": "0x06"
+> +        },
+> +        "DP_SDP_VSC": {
+> +            "address": "0x07"
+> +        },
+> +        "DP_SDP_ADAPTIVE_SYNC": {
+> +            "address": "0x22"
+> +        },
+> +        "DP_SDP_PPS": {
+> +            "address": "0x10"
+> +        },
+> +        "DP_SDP_VSC_EXT_VESA": {
+> +            "address": "0x20"
+> +        },
+> +        "DP_SDP_VSC_EXT_CEA": {
+> +            "address": "0x21"
+> +        },
+> +        "DP_SDP_AUDIO_INFOFRAME_HB2": {
+> +            "address": "0x1b"
+> +        },
+> +        "DP_SDP_PPS_HEADER_PAYLOAD_BYTES_MINUS_1": {
+> +            "address": "0x7F",
+> +            "bitfields": [
+> +                {
+> +                    "name": "EDP_VSC_PSR_STATE_ACTIVE",
+> +                    "value": "(1<<0)"
+> +                },
+> +                {
+> +                    "name": "EDP_VSC_PSR_UPDATE_RFB",
+> +                    "value": "(1<<1)"
+> +                },
+> +                {
+> +                    "name": "EDP_VSC_PSR_CRC_VALUES_VALID",
+> +                    "value": "(1<<2)"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_BRANCH": {
+> +        "DP_BRANCH_DEVICE_CTRL": {
+> +            "address": "0x1a1",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_BRANCH_DEVICE_IRQ_HPD",
+> +                    "value": "(1 << 0)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_BRANCH_OUI": {
+> +            "address": "0x500"
+> +        },
+> +        "DP_BRANCH_ID": {
+> +            "address": "0x503"
+> +        },
+> +        "DP_BRANCH_REVISION_START": {
+> +            "address": "0x509"
+> +        },
+> +        "DP_BRANCH_HW_REV": {
+> +            "address": "0x509"
+> +        },
+> +        "DP_BRANCH_SW_REV": {
+> +            "address": "0x50A"
+> +        },
+> +        "DP_BRANCH_OUI_HEADER_SIZE": {
+> +            "address": "0xc"
+> +        }
+> +    },
+> +    "PANEL_REPLAY": {
+> +        "PANEL_REPLAY_CONFIG": {
+> +            "address": "0x1b0",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_ENABLE",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_VSC_SDP_CRC_EN",
+> +                    "value": "(1 << 1) /* eDP 1.5 */"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_UNRECOVERABLE_ERROR_EN",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_RFB_STORAGE_ERROR_EN",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_ACTIVE_FRAME_CRC_ERROR_EN",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_SU_ENABLE",
+> +                    "value": "(1 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_ENABLE_SU_REGION_ET",
+> +                    "value": "(1 << 7) /* DP 2.1 */"
+> +                }
+> +            ]
+> +        },
+> +        "PANEL_REPLAY_CONFIG2": {
+> +            "address": "0x1b1",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_SINK_REFRESH_RATE_UNLOCK_GRANTED",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_CRC_VERIFICATION",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_SU_Y_GRANULARITY_EXTENDED_EN",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_SU_Y_GRANULARITY_EXTENDED_VAL_SEL_SHIFT",
+> +                    "value": "3"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_SU_Y_GRANULARITY_EXTENDED_VAL_SEL_MASK",
+> +                    "value": "(0xf << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_SU_REGION_SCANLINE_CAPTURE",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_PAYLOAD": {
+> +        "DP_PAYLOAD_ALLOCATE_SET": {
+> +            "address": "0x1c0"
+> +        },
+> +        "DP_PAYLOAD_ALLOCATE_START_TIME_SLOT": {
+> +            "address": "0x1c1"
+> +        },
+> +        "DP_PAYLOAD_ALLOCATE_TIME_SLOT_COUNT": {
+> +            "address": "0x1c2"
+> +        },
+> +        "DP_PAYLOAD_TABLE_UPDATE_STATUS": {
+> +            "address": "0x2c0",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PAYLOAD_TABLE_UPDATED",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_PAYLOAD_ACT_HANDLED",
+> +                    "value": "(1 << 1)"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_DEVICE": {
+> +        "DP_DEVICE_SERVICE_IRQ_VECTOR": {
+> +            "address": "0x201",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_REMOTE_CONTROL_COMMAND_PENDING",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_AUTOMATED_TEST_REQUEST",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_CP_IRQ",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_MCCS_IRQ",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_DOWN_REP_MSG_RDY",
+> +                    "value": "(1 << 4) /* 1.2 MST */"
+> +                },
+> +                {
+> +                    "name": "DP_UP_REQ_MSG_RDY",
+> +                    "value": "(1 << 5) /* 1.2 MST */"
+> +                },
+> +                {
+> +                    "name": "DP_SINK_SPECIFIC_IRQ",
+> +                    "value": "(1 << 6)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DEVICE_SERVICE_IRQ_VECTOR_ESI0": {
+> +            "address": "0x2003"
+> +        },
+> +        "DP_DEVICE_SERVICE_IRQ_VECTOR_ESI1": {
+> +            "address": "0x2004",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_RX_GTC_MSTR_REQ_STATUS_CHANGE",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_LOCK_ACQUISITION_REQUEST",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_IRQ",
+> +                    "value": "(1 << 2)"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_LANE0": {
+> +        "DP_LANE0_1_STATUS": {
+> +            "address": "0x202"
+> +        },
+> +        "DP_LANE0_1_STATUS_ESI": {
+> +            "address": "0x200c"
+> +        },
+> +        "DP_LANE0_1_STATUS_PHY_REPEATER1": {
+> +            "address": "0xf0030"
+> +        }
+> +    },
+> +    "DP_LANE2": {
+> +        "DP_LANE2_3_STATUS": {
+> +            "address": "0x203",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_LANE_CR_DONE",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_LANE_CHANNEL_EQ_DONE",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_LANE_SYMBOL_LOCKED",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_CHANNEL_EQ_BITS",
+> +                    "value": "(DP_LANE_CR_DONE |\t\t\\"
+> +                }
+> +            ]
+> +        },
+> +        "DP_LANE2_3_STATUS_ESI": {
+> +            "address": "0x200d"
+> +        },
+> +        "DP_LANE2_3_STATUS_PHY_REPEATER1": {
+> +            "address": "0xf0031"
+> +        }
+> +    },
+> +    "DP_ADJUST": {
+> +        "DP_ADJUST_REQUEST_LANE0_1": {
+> +            "address": "0x206"
+> +        },
+> +        "DP_ADJUST_REQUEST_LANE2_3": {
+> +            "address": "0x207",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_ADJUST_VOLTAGE_SWING_LANE0_MASK",
+> +                    "value": "0x03"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_VOLTAGE_SWING_LANE0_SHIFT",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_PRE_EMPHASIS_LANE0_MASK",
+> +                    "value": "0x0c"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_PRE_EMPHASIS_LANE0_SHIFT",
+> +                    "value": "2"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_VOLTAGE_SWING_LANE1_MASK",
+> +                    "value": "0x30"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_VOLTAGE_SWING_LANE1_SHIFT",
+> +                    "value": "4"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_PRE_EMPHASIS_LANE1_MASK",
+> +                    "value": "0xc0"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_PRE_EMPHASIS_LANE1_SHIFT",
+> +                    "value": "6"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_TX_FFE_PRESET_LANE0_MASK",
+> +                    "value": "(0xf << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_TX_FFE_PRESET_LANE0_SHIFT",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_TX_FFE_PRESET_LANE1_MASK",
+> +                    "value": "(0xf << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_TX_FFE_PRESET_LANE1_SHIFT",
+> +                    "value": "4"
+> +                }
+> +            ]
+> +        },
+> +        "DP_ADJUST_REQUEST_POST_CURSOR2": {
+> +            "address": "0x20c",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_ADJUST_POST_CURSOR2_LANE0_MASK",
+> +                    "value": "0x03"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_POST_CURSOR2_LANE0_SHIFT",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_POST_CURSOR2_LANE1_MASK",
+> +                    "value": "0x0c"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_POST_CURSOR2_LANE1_SHIFT",
+> +                    "value": "2"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_POST_CURSOR2_LANE2_MASK",
+> +                    "value": "0x30"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_POST_CURSOR2_LANE2_SHIFT",
+> +                    "value": "4"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_POST_CURSOR2_LANE3_MASK",
+> +                    "value": "0xc0"
+> +                },
+> +                {
+> +                    "name": "DP_ADJUST_POST_CURSOR2_LANE3_SHIFT",
+> +                    "value": "6"
+> +                }
+> +            ]
+> +        },
+> +        "DP_ADJUST_REQUEST_LANE0_1_PHY_REPEATER1": {
+> +            "address": "0xf0033"
+> +        },
+> +        "DP_ADJUST_REQUEST_LANE2_3_PHY_REPEATER1": {
+> +            "address": "0xf0034"
+> +        }
+> +    },
+> +    "DP_TEST": {
+> +        "DP_TEST_REQUEST": {
+> +            "address": "0x218",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_TEST_LINK_TRAINING",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_TEST_LINK_VIDEO_PATTERN",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_TEST_LINK_EDID_READ",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_TEST_LINK_PHY_TEST_PATTERN",
+> +                    "value": "(1 << 3) /* DPCD >= 1.1 */"
+> +                },
+> +                {
+> +                    "name": "DP_TEST_LINK_FAUX_PATTERN",
+> +                    "value": "(1 << 4) /* DPCD >= 1.2 */"
+> +                },
+> +                {
+> +                    "name": "DP_TEST_LINK_AUDIO_PATTERN",
+> +                    "value": "(1 << 5) /* DPCD >= 1.2 */"
+> +                },
+> +                {
+> +                    "name": "DP_TEST_LINK_AUDIO_DISABLED_VIDEO",
+> +                    "value": "(1 << 6) /* DPCD >= 1.2 */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TEST_LINK_RATE": {
+> +            "address": "0x219",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_LINK_RATE_162",
+> +                    "value": "(0x6)"
+> +                },
+> +                {
+> +                    "name": "DP_LINK_RATE_27",
+> +                    "value": "(0xa)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TEST_LANE_COUNT": {
+> +            "address": "0x220"
+> +        },
+> +        "DP_TEST_PATTERN": {
+> +            "address": "0x221",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_NO_TEST_PATTERN",
+> +                    "value": "0x0"
+> +                },
+> +                {
+> +                    "name": "DP_COLOR_RAMP",
+> +                    "value": "0x1"
+> +                },
+> +                {
+> +                    "name": "DP_BLACK_AND_WHITE_VERTICAL_LINES",
+> +                    "value": "0x2"
+> +                },
+> +                {
+> +                    "name": "DP_COLOR_SQUARE",
+> +                    "value": "0x3"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TEST_H_TOTAL_HI": {
+> +            "address": "0x222"
+> +        },
+> +        "DP_TEST_H_TOTAL_LO": {
+> +            "address": "0x223"
+> +        },
+> +        "DP_TEST_V_TOTAL_HI": {
+> +            "address": "0x224"
+> +        },
+> +        "DP_TEST_V_TOTAL_LO": {
+> +            "address": "0x225"
+> +        },
+> +        "DP_TEST_H_START_HI": {
+> +            "address": "0x226"
+> +        },
+> +        "DP_TEST_H_START_LO": {
+> +            "address": "0x227"
+> +        },
+> +        "DP_TEST_V_START_HI": {
+> +            "address": "0x228"
+> +        },
+> +        "DP_TEST_V_START_LO": {
+> +            "address": "0x229"
+> +        },
+> +        "DP_TEST_HSYNC_HI": {
+> +            "address": "0x22A",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_TEST_HSYNC_POLARITY",
+> +                    "value": "(1 << 7)"
+> +                },
+> +                {
+> +                    "name": "DP_TEST_HSYNC_WIDTH_HI_MASK",
+> +                    "value": "(127 << 0)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TEST_HSYNC_WIDTH_LO": {
+> +            "address": "0x22B"
+> +        },
+> +        "DP_TEST_VSYNC_HI": {
+> +            "address": "0x22C",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_TEST_VSYNC_POLARITY",
+> +                    "value": "(1 << 7)"
+> +                },
+> +                {
+> +                    "name": "DP_TEST_VSYNC_WIDTH_HI_MASK",
+> +                    "value": "(127 << 0)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TEST_VSYNC_WIDTH_LO": {
+> +            "address": "0x22D"
+> +        },
+> +        "DP_TEST_H_WIDTH_HI": {
+> +            "address": "0x22E"
+> +        },
+> +        "DP_TEST_H_WIDTH_LO": {
+> +            "address": "0x22F"
+> +        },
+> +        "DP_TEST_V_HEIGHT_HI": {
+> +            "address": "0x230"
+> +        },
+> +        "DP_TEST_V_HEIGHT_LO": {
+> +            "address": "0x231"
+> +        },
+> +        "DP_TEST_MISC0": {
+> +            "address": "0x232"
+> +        },
+> +        "DP_TEST_MISC1": {
+> +            "address": "0x233",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_TEST_REFRESH_DENOMINATOR",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_TEST_INTERLACED",
+> +                    "value": "(1 << 1)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TEST_REFRESH_RATE_NUMERATOR": {
+> +            "address": "0x234"
+> +        },
+> +        "DP_TEST_CRC_R_CR": {
+> +            "address": "0x240"
+> +        },
+> +        "DP_TEST_CRC_G_Y": {
+> +            "address": "0x242"
+> +        },
+> +        "DP_TEST_CRC_B_CB": {
+> +            "address": "0x244"
+> +        },
+> +        "DP_TEST_SINK_MISC": {
+> +            "address": "0x246",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_TEST_CRC_SUPPORTED",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_TEST_COUNT_MASK",
+> +                    "value": "0xf"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TEST_HBR2_SCRAMBLER_RESET": {
+> +            "address": "0x24A"
+> +        },
+> +        "DP_TEST_80BIT_CUSTOM_PATTERN_7_0": {
+> +            "address": "0x250"
+> +        },
+> +        "DP_TEST_80BIT_CUSTOM_PATTERN_15_8": {
+> +            "address": "0x251"
+> +        },
+> +        "DP_TEST_80BIT_CUSTOM_PATTERN_23_16": {
+> +            "address": "0x252"
+> +        },
+> +        "DP_TEST_80BIT_CUSTOM_PATTERN_31_24": {
+> +            "address": "0x253"
+> +        },
+> +        "DP_TEST_80BIT_CUSTOM_PATTERN_39_32": {
+> +            "address": "0x254"
+> +        },
+> +        "DP_TEST_80BIT_CUSTOM_PATTERN_47_40": {
+> +            "address": "0x255"
+> +        },
+> +        "DP_TEST_80BIT_CUSTOM_PATTERN_55_48": {
+> +            "address": "0x256"
+> +        },
+> +        "DP_TEST_80BIT_CUSTOM_PATTERN_63_56": {
+> +            "address": "0x257"
+> +        },
+> +        "DP_TEST_80BIT_CUSTOM_PATTERN_71_64": {
+> +            "address": "0x258"
+> +        },
+> +        "DP_TEST_80BIT_CUSTOM_PATTERN_79_72": {
+> +            "address": "0x259"
+> +        },
+> +        "DP_TEST_RESPONSE": {
+> +            "address": "0x260",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_TEST_ACK",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_TEST_NAK",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_TEST_EDID_CHECKSUM_WRITE",
+> +                    "value": "(1 << 2)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TEST_EDID_CHECKSUM": {
+> +            "address": "0x261"
+> +        },
+> +        "DP_TEST_SINK": {
+> +            "address": "0x270",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_TEST_SINK_START",
+> +                    "value": "(1 << 0)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TEST_AUDIO_MODE": {
+> +            "address": "0x271"
+> +        },
+> +        "DP_TEST_AUDIO_PATTERN_TYPE": {
+> +            "address": "0x272"
+> +        },
+> +        "DP_TEST_AUDIO_PERIOD_CH1": {
+> +            "address": "0x273"
+> +        },
+> +        "DP_TEST_AUDIO_PERIOD_CH2": {
+> +            "address": "0x274"
+> +        },
+> +        "DP_TEST_AUDIO_PERIOD_CH3": {
+> +            "address": "0x275"
+> +        },
+> +        "DP_TEST_AUDIO_PERIOD_CH4": {
+> +            "address": "0x276"
+> +        },
+> +        "DP_TEST_AUDIO_PERIOD_CH5": {
+> +            "address": "0x277"
+> +        },
+> +        "DP_TEST_AUDIO_PERIOD_CH6": {
+> +            "address": "0x278"
+> +        },
+> +        "DP_TEST_AUDIO_PERIOD_CH7": {
+> +            "address": "0x279"
+> +        },
+> +        "DP_TEST_AUDIO_PERIOD_CH8": {
+> +            "address": "0x27A"
+> +        },
+> +        "DP_TEST_264BIT_CUSTOM_PATTERN_7_0": {
+> +            "address": "0x2230"
+> +        },
+> +        "DP_TEST_264BIT_CUSTOM_PATTERN_263_256": {
+> +            "address": "0x2250"
+> +        }
+> +    },
+> +    "DP_PHY": {
+> +        "DP_PHY_TEST_PATTERN": {
+> +            "address": "0x248",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_PHY_TEST_PATTERN_SEL_MASK",
+> +                    "value": "0x7"
+> +                },
+> +                {
+> +                    "name": "DP_PHY_TEST_PATTERN_NONE",
+> +                    "value": "0x0"
+> +                },
+> +                {
+> +                    "name": "DP_PHY_TEST_PATTERN_D10_2",
+> +                    "value": "0x1"
+> +                },
+> +                {
+> +                    "name": "DP_PHY_TEST_PATTERN_ERROR_COUNT",
+> +                    "value": "0x2"
+> +                },
+> +                {
+> +                    "name": "DP_PHY_TEST_PATTERN_PRBS7",
+> +                    "value": "0x3"
+> +                },
+> +                {
+> +                    "name": "DP_PHY_TEST_PATTERN_80BIT_CUSTOM",
+> +                    "value": "0x4"
+> +                },
+> +                {
+> +                    "name": "DP_PHY_TEST_PATTERN_CP2520",
+> +                    "value": "0x5"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PHY_SQUARE_PATTERN": {
+> +            "address": "0x249"
+> +        },
+> +        "DP_PHY_REPEATER_CNT": {
+> +            "address": "0xf0002"
+> +        },
+> +        "DP_PHY_REPEATER_MODE": {
+> +            "address": "0xf0003"
+> +        },
+> +        "DP_PHY_REPEATER_EXTENDED_WAIT_TIMEOUT": {
+> +            "address": "0xf0005",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_EXTENDED_WAKE_TIMEOUT_REQUEST_MASK",
+> +                    "value": "0x7f"
+> +                },
+> +                {
+> +                    "name": "DP_EXTENDED_WAKE_TIMEOUT_GRANT",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PHY_REPEATER_128B132B_RATES": {
+> +            "address": "0xf0007"
+> +        },
+> +        "DP_PHY_REPEATER_EQ_DONE": {
+> +            "address": "0xf0008"
+> +        },
+> +        "DP_PHY_REPEATER_MODE_TRANSPARENT": {
+> +            "address": "0x55"
+> +        },
+> +        "DP_PHY_REPEATER_MODE_NON_TRANSPARENT": {
+> +            "address": "0xaa",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_HDCP_2_2_AKE_INIT_OFFSET",
+> +                    "value": "DP_HDCP_2_2_REG_RTX_OFFSET"
+> +                },
+> +                {
+> +                    "name": "DP_HDCP_2_2_AKE_SEND_CERT_OFFSET",
+> +                    "value": "DP_HDCP_2_2_REG_CERT_RX_OFFSET"
+> +                },
+> +                {
+> +                    "name": "DP_HDCP_2_2_AKE_NO_STORED_KM_OFFSET",
+> +                    "value": "DP_HDCP_2_2_REG_EKPUB_KM_OFFSET"
+> +                },
+> +                {
+> +                    "name": "DP_HDCP_2_2_AKE_STORED_KM_OFFSET",
+> +                    "value": "DP_HDCP_2_2_REG_EKH_KM_WR_OFFSET"
+> +                },
+> +                {
+> +                    "name": "DP_HDCP_2_2_AKE_SEND_HPRIME_OFFSET",
+> +                    "value": "DP_HDCP_2_2_REG_HPRIME_OFFSET"
+> +                },
+> +                {
+> +                    "name": "DP_HDCP_2_2_AKE_SEND_PAIRING_INFO_OFFSET",
+> +                    "value": "\\"
+> +                },
+> +                {
+> +                    "name": "DP_HDCP_2_2_LC_INIT_OFFSET",
+> +                    "value": "DP_HDCP_2_2_REG_RN_OFFSET"
+> +                },
+> +                {
+> +                    "name": "DP_HDCP_2_2_LC_SEND_LPRIME_OFFSET",
+> +                    "value": "DP_HDCP_2_2_REG_LPRIME_OFFSET"
+> +                },
+> +                {
+> +                    "name": "DP_HDCP_2_2_SKE_SEND_EKS_OFFSET",
+> +                    "value": "DP_HDCP_2_2_REG_EDKEY_KS_OFFSET"
+> +                },
+> +                {
+> +                    "name": "DP_HDCP_2_2_REP_SEND_RECVID_LIST_OFFSET",
+> +                    "value": "DP_HDCP_2_2_REG_RXINFO_OFFSET"
+> +                },
+> +                {
+> +                    "name": "DP_HDCP_2_2_REP_SEND_ACK_OFFSET",
+> +                    "value": "DP_HDCP_2_2_REG_V_OFFSET"
+> +                },
+> +                {
+> +                    "name": "DP_HDCP_2_2_REP_STREAM_MANAGE_OFFSET",
+> +                    "value": "DP_HDCP_2_2_REG_SEQ_NUM_M_OFFSET"
+> +                },
+> +                {
+> +                    "name": "DP_HDCP_2_2_REP_STREAM_READY_OFFSET",
+> +                    "value": "DP_HDCP_2_2_REG_MPRIME_OFFSET"
+> +                },
+> +                {
+> +                    "name": "HDCP_2_2_DP_RXSTATUS_LEN",
+> +                    "value": "1"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_VC_PAYLOAD_ID_SLOT_1": {
+> +        "address": "0x2c1"
+> +    },
+> +    "DP_SOURCE_OUI": {
+> +        "address": "0x300"
+> +    },
+> +    "DP_SET_POWER": {
+> +        "address": "0x600",
+> +        "bitfields": [
+> +            {
+> +                "name": "DP_SET_POWER_D0",
+> +                "value": "0x1"
+> +            },
+> +            {
+> +                "name": "DP_SET_POWER_D3",
+> +                "value": "0x2"
+> +            },
+> +            {
+> +                "name": "DP_SET_POWER_MASK",
+> +                "value": "0x3"
+> +            },
+> +            {
+> +                "name": "DP_SET_POWER_D3_AUX_ON",
+> +                "value": "0x5"
+> +            }
+> +        ]
+> +    },
+> +    "DP_SIDEBAND": {
+> +        "DP_SIDEBAND_MSG_DOWN_REQ_BASE": {
+> +            "address": "0x1000"
+> +        },
+> +        "DP_SIDEBAND_MSG_UP_REP_BASE": {
+> +            "address": "0x1200"
+> +        },
+> +        "DP_SIDEBAND_MSG_DOWN_REP_BASE": {
+> +            "address": "0x1400"
+> +        },
+> +        "DP_SIDEBAND_MSG_UP_REQ_BASE": {
+> +            "address": "0x1600"
+> +        },
+> +        "DP_SIDEBAND_REPLY_ACK": {
+> +            "address": "0x00"
+> +        },
+> +        "DP_SIDEBAND_REPLY_NAK": {
+> +            "address": "0x01"
+> +        }
+> +    },
+> +    "DP_SYNCHRONIZATION_LATENCY_IN_SINK": {
+> +        "address": "0x2009",
+> +        "bitfields": [
+> +            {
+> +                "name": "DP_MAX_RESYNC_FRAME_COUNT_MASK",
+> +                "value": "(0xf << 0)"
+> +            },
+> +            {
+> +                "name": "DP_MAX_RESYNC_FRAME_COUNT_SHIFT",
+> +                "value": "0"
+> +            },
+> +            {
+> +                "name": "DP_LAST_ACTUAL_SYNCHRONIZATION_LATENCY_MASK",
+> +                "value": "(0xf << 4)"
+> +            },
+> +            {
+> +                "name": "DP_LAST_ACTUAL_SYNCHRONIZATION_LATENCY_SHIFT",
+> +                "value": "4"
+> +            }
+> +        ]
+> +    },
+> +    "DP_LAST_RECEIVED_PSR_SDP": {
+> +        "address": "0x200a",
+> +        "bitfields": [
+> +            {
+> +                "name": "DP_PSR_STATE_BIT",
+> +                "value": "(1 << 0) /* eDP 1.2 */"
+> +            },
+> +            {
+> +                "name": "DP_UPDATE_RFB_BIT",
+> +                "value": "(1 << 1) /* eDP 1.2 */"
+> +            },
+> +            {
+> +                "name": "DP_CRC_VALID_BIT",
+> +                "value": "(1 << 2) /* eDP 1.2 */"
+> +            },
+> +            {
+> +                "name": "DP_SU_VALID",
+> +                "value": "(1 << 3) /* eDP 1.4 */"
+> +            },
+> +            {
+> +                "name": "DP_FIRST_SCAN_LINE_SU_REGION",
+> +                "value": "(1 << 4) /* eDP 1.4 */"
+> +            },
+> +            {
+> +                "name": "DP_LAST_SCAN_LINE_SU_REGION",
+> +                "value": "(1 << 5) /* eDP 1.4 */"
+> +            },
+> +            {
+> +                "name": "DP_Y_COORDINATE_VALID",
+> +                "value": "(1 << 6) /* eDP 1.4a */"
+> +            }
+> +        ]
+> +    },
+> +    "DP_DP13_DPCD_REV": {
+> +        "address": "0x2200"
+> +    },
+> +    "DP_DPRX": {
+> +        "DP_DPRX_FEATURE_ENUMERATION_LIST": {
+> +            "address": "0x2210",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_GTC_CAP",
+> +                    "value": "(1 << 0)  /* DP 1.3 */"
+> +                },
+> +                {
+> +                    "name": "DP_SST_SPLIT_SDP_CAP",
+> +                    "value": "(1 << 1)  /* DP 1.4 */"
+> +                },
+> +                {
+> +                    "name": "DP_AV_SYNC_CAP",
+> +                    "value": "(1 << 2)  /* DP 1.3 */"
+> +                },
+> +                {
+> +                    "name": "DP_VSC_SDP_EXT_FOR_COLORIMETRY_SUPPORTED",
+> +                    "value": "(1 << 3)  /* DP 1.3 */"
+> +                },
+> +                {
+> +                    "name": "DP_VSC_EXT_VESA_SDP_SUPPORTED",
+> +                    "value": "(1 << 4)  /* DP 1.4 */"
+> +                },
+> +                {
+> +                    "name": "DP_VSC_EXT_VESA_SDP_CHAINING_SUPPORTED",
+> +                    "value": "(1 << 5)  /* DP 1.4 */"
+> +                },
+> +                {
+> +                    "name": "DP_VSC_EXT_CEA_SDP_SUPPORTED",
+> +                    "value": "(1 << 6)  /* DP 1.4 */"
+> +                },
+> +                {
+> +                    "name": "DP_VSC_EXT_CEA_SDP_CHAINING_SUPPORTED",
+> +                    "value": "(1 << 7)  /* DP 1.4 */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_DPRX_FEATURE_ENUMERATION_LIST_CONT_1": {
+> +            "address": "0x2214",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_ADAPTIVE_SYNC_SDP_SUPPORTED",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_ADAPTIVE_SYNC_SDP_OPERATION_MODE",
+> +                    "value": "GENMASK(1, 0)"
+> +                },
+> +                {
+> +                    "name": "DP_ADAPTIVE_SYNC_SDP_LENGTH",
+> +                    "value": "GENMASK(5, 0)"
+> +                },
+> +                {
+> +                    "name": "DP_AS_SDP_FIRST_HALF_LINE_OR_3840_PIXEL_CYCLE_WINDOW_NOT_SUPPORTED",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_VSC_EXT_SDP_FRAMEWORK_VERSION_1_SUPPORTED",
+> +                    "value": "(1 << 4)"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_128B132B": {
+> +        "DP_128B132B_SUPPORTED_LINK_RATES": {
+> +            "address": "0x2215",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_UHBR10",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_UHBR20",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_UHBR13_5",
+> +                    "value": "(1 << 2)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_128B132B_TRAINING_AUX_RD_INTERVAL": {
+> +            "address": "0x2216",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_128B132B_TRAINING_AUX_RD_INTERVAL_1MS_UNIT",
+> +                    "value": "(1 << 7)"
+> +                },
+> +                {
+> +                    "name": "DP_128B132B_TRAINING_AUX_RD_INTERVAL_MASK",
+> +                    "value": "0x7f"
+> +                },
+> +                {
+> +                    "name": "DP_128B132B_TRAINING_AUX_RD_INTERVAL_400_US",
+> +                    "value": "0x00"
+> +                },
+> +                {
+> +                    "name": "DP_128B132B_TRAINING_AUX_RD_INTERVAL_4_MS",
+> +                    "value": "0x01"
+> +                },
+> +                {
+> +                    "name": "DP_128B132B_TRAINING_AUX_RD_INTERVAL_8_MS",
+> +                    "value": "0x02"
+> +                },
+> +                {
+> +                    "name": "DP_128B132B_TRAINING_AUX_RD_INTERVAL_12_MS",
+> +                    "value": "0x03"
+> +                },
+> +                {
+> +                    "name": "DP_128B132B_TRAINING_AUX_RD_INTERVAL_16_MS",
+> +                    "value": "0x04"
+> +                },
+> +                {
+> +                    "name": "DP_128B132B_TRAINING_AUX_RD_INTERVAL_32_MS",
+> +                    "value": "0x05"
+> +                },
+> +                {
+> +                    "name": "DP_128B132B_TRAINING_AUX_RD_INTERVAL_64_MS",
+> +                    "value": "0x06"
+> +                }
+> +            ]
+> +        },
+> +        "DP_128B132B_TRAINING_AUX_RD_INTERVAL_PHY_REPEATER1": {
+> +            "address": "0xf0022"
+> +        }
+> +    },
+> +    "DP_CEC": {
+> +        "DP_CEC_TUNNELING_CAPABILITY": {
+> +            "address": "0x3000",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_CEC_TUNNELING_CAPABLE",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_SNOOPING_CAPABLE",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_MULTIPLE_LA_CAPABLE",
+> +                    "value": "(1 << 2)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_CEC_TUNNELING_CONTROL": {
+> +            "address": "0x3001",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_CEC_TUNNELING_ENABLE",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_SNOOPING_ENABLE",
+> +                    "value": "(1 << 1)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_CEC_RX_MESSAGE_INFO": {
+> +            "address": "0x3002",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_CEC_RX_MESSAGE_LEN_MASK",
+> +                    "value": "(0xf << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_RX_MESSAGE_LEN_SHIFT",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_RX_MESSAGE_HPD_STATE",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_RX_MESSAGE_HPD_LOST",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_RX_MESSAGE_ACKED",
+> +                    "value": "(1 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_RX_MESSAGE_ENDED",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_CEC_TX_MESSAGE_INFO": {
+> +            "address": "0x3003",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_CEC_TX_MESSAGE_LEN_MASK",
+> +                    "value": "(0xf << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_TX_MESSAGE_LEN_SHIFT",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_TX_RETRY_COUNT_MASK",
+> +                    "value": "(0x7 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_TX_RETRY_COUNT_SHIFT",
+> +                    "value": "4"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_TX_MESSAGE_SEND",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_CEC_TUNNELING_IRQ_FLAGS": {
+> +            "address": "0x3004",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_CEC_RX_MESSAGE_INFO_VALID",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_RX_MESSAGE_OVERFLOW",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_TX_MESSAGE_SENT",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_TX_LINE_ERROR",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_TX_ADDRESS_NACK_ERROR",
+> +                    "value": "(1 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_TX_DATA_NACK_ERROR",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_CEC_LOGICAL_ADDRESS_MASK": {
+> +            "address": "0x300E",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_0",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_1",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_2",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_3",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_4",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_5",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_6",
+> +                    "value": "(1 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_7",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_CEC_LOGICAL_ADDRESS_MASK_2": {
+> +            "address": "0x300F",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_8",
+> +                    "value": "(1 << 0)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_9",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_10",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_11",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_12",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_13",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_14",
+> +                    "value": "(1 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_CEC_LOGICAL_ADDRESS_15",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_CEC_RX_MESSAGE_BUFFER": {
+> +            "address": "0x3010"
+> +        },
+> +        "DP_CEC_TX_MESSAGE_BUFFER": {
+> +            "address": "0x3020"
+> +        },
+> +        "DP_CEC_MESSAGE_BUFFER_LENGTH": {
+> +            "address": "0x10"
+> +        }
+> +    },
+> +    "DP_PROTOCOL": {
+> +        "DP_PROTOCOL_CONVERTER_CONTROL_0": {
+> +            "address": "0x3050",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_HDMI_DVI_OUTPUT_CONFIG",
+> +                    "value": "(1 << 0) /* DP 1.3 */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PROTOCOL_CONVERTER_CONTROL_1": {
+> +            "address": "0x3051",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_CONVERSION_TO_YCBCR420_ENABLE",
+> +                    "value": "(1 << 0) /* DP 1.3 */"
+> +                },
+> +                {
+> +                    "name": "DP_HDMI_EDID_PROCESSING_DISABLE",
+> +                    "value": "(1 << 1) /* DP 1.4 */"
+> +                },
+> +                {
+> +                    "name": "DP_HDMI_AUTONOMOUS_SCRAMBLING_DISABLE",
+> +                    "value": "(1 << 2) /* DP 1.4 */"
+> +                },
+> +                {
+> +                    "name": "DP_HDMI_FORCE_SCRAMBLING",
+> +                    "value": "(1 << 3) /* DP 1.4 */"
+> +                }
+> +            ]
+> +        },
+> +        "DP_PROTOCOL_CONVERTER_CONTROL_2": {
+> +            "address": "0x3052",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_CONVERSION_TO_YCBCR422_ENABLE",
+> +                    "value": "(1 << 0) /* DP 1.3 */"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENABLE_DSC_ENCODER",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENCODER_PPS_OVERRIDE_MASK",
+> +                    "value": "(0x3 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENC_PPS_OVERRIDE_DISABLED",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENC_PPS_OVERRIDE_EN_PARAMS",
+> +                    "value": "1"
+> +                },
+> +                {
+> +                    "name": "DP_PCON_ENC_PPS_OVERRIDE_EN_BUFFER",
+> +                    "value": "2"
+> +                },
+> +                {
+> +                    "name": "DP_CONVERSION_RGB_YCBCR_MASK",
+> +                    "value": "(7 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_CONVERSION_BT601_RGB_YCBCR_ENABLE",
+> +                    "value": "(1 << 4)"
+> +                },
+> +                {
+> +                    "name": "DP_CONVERSION_BT709_RGB_YCBCR_ENABLE",
+> +                    "value": "(1 << 5)"
+> +                },
+> +                {
+> +                    "name": "DP_CONVERSION_BT2020_RGB_YCBCR_ENABLE",
+> +                    "value": "(1 << 6)"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_HDCP": {
+> +        "DP_HDCP_2_2_REG_RTX_OFFSET": {
+> +            "address": "0x69000"
+> +        },
+> +        "DP_HDCP_2_2_REG_TXCAPS_OFFSET": {
+> +            "address": "0x69008"
+> +        },
+> +        "DP_HDCP_2_2_REG_CERT_RX_OFFSET": {
+> +            "address": "0x6900B"
+> +        },
+> +        "DP_HDCP_2_2_REG_RRX_OFFSET": {
+> +            "address": "0x69215"
+> +        },
+> +        "DP_HDCP_2_2_REG_RX_CAPS_OFFSET": {
+> +            "address": "0x6921D"
+> +        },
+> +        "DP_HDCP_2_2_REG_EKPUB_KM_OFFSET": {
+> +            "address": "0x69220"
+> +        },
+> +        "DP_HDCP_2_2_REG_EKH_KM_WR_OFFSET": {
+> +            "address": "0x692A0"
+> +        },
+> +        "DP_HDCP_2_2_REG_M_OFFSET": {
+> +            "address": "0x692B0"
+> +        },
+> +        "DP_HDCP_2_2_REG_HPRIME_OFFSET": {
+> +            "address": "0x692C0"
+> +        },
+> +        "DP_HDCP_2_2_REG_EKH_KM_RD_OFFSET": {
+> +            "address": "0x692E0"
+> +        },
+> +        "DP_HDCP_2_2_REG_RN_OFFSET": {
+> +            "address": "0x692F0"
+> +        },
+> +        "DP_HDCP_2_2_REG_LPRIME_OFFSET": {
+> +            "address": "0x692F8"
+> +        },
+> +        "DP_HDCP_2_2_REG_EDKEY_KS_OFFSET": {
+> +            "address": "0x69318"
+> +        },
+> +        "DP_HDCP_2_2_REG_RIV_OFFSET": {
+> +            "address": "0x69328"
+> +        },
+> +        "DP_HDCP_2_2_REG_RXINFO_OFFSET": {
+> +            "address": "0x69330"
+> +        },
+> +        "DP_HDCP_2_2_REG_SEQ_NUM_V_OFFSET": {
+> +            "address": "0x69332"
+> +        },
+> +        "DP_HDCP_2_2_REG_VPRIME_OFFSET": {
+> +            "address": "0x69335"
+> +        },
+> +        "DP_HDCP_2_2_REG_RECV_ID_LIST_OFFSET": {
+> +            "address": "0x69345"
+> +        },
+> +        "DP_HDCP_2_2_REG_V_OFFSET": {
+> +            "address": "0x693E0"
+> +        },
+> +        "DP_HDCP_2_2_REG_SEQ_NUM_M_OFFSET": {
+> +            "address": "0x693F0"
+> +        },
+> +        "DP_HDCP_2_2_REG_K_OFFSET": {
+> +            "address": "0x693F3"
+> +        },
+> +        "DP_HDCP_2_2_REG_STREAM_ID_TYPE_OFFSET": {
+> +            "address": "0x693F5"
+> +        },
+> +        "DP_HDCP_2_2_REG_MPRIME_OFFSET": {
+> +            "address": "0x69473"
+> +        },
+> +        "DP_HDCP_2_2_REG_RXSTATUS_OFFSET": {
+> +            "address": "0x69493"
+> +        },
+> +        "DP_HDCP_2_2_REG_STREAM_TYPE_OFFSET": {
+> +            "address": "0x69494"
+> +        },
+> +        "DP_HDCP_2_2_REG_DBG_OFFSET": {
+> +            "address": "0x69518"
+> +        }
+> +    },
+> +    "DP_TUNNELING": {
+> +        "DP_TUNNELING_OUI": {
+> +            "address": "0xe0000",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_TUNNELING_OUI_BYTES",
+> +                    "value": "3"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TUNNELING_DEV_ID": {
+> +            "address": "0xe0003",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_TUNNELING_DEV_ID_BYTES",
+> +                    "value": "6"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TUNNELING_HW_REV": {
+> +            "address": "0xe0009",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_TUNNELING_HW_REV_MAJOR_SHIFT",
+> +                    "value": "4"
+> +                },
+> +                {
+> +                    "name": "DP_TUNNELING_HW_REV_MAJOR_MASK",
+> +                    "value": "(0xf << DP_TUNNELING_HW_REV_MAJOR_SHIFT)"
+> +                },
+> +                {
+> +                    "name": "DP_TUNNELING_HW_REV_MINOR_SHIFT",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_TUNNELING_HW_REV_MINOR_MASK",
+> +                    "value": "(0xf << DP_TUNNELING_HW_REV_MINOR_SHIFT)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TUNNELING_SW_REV_MAJOR": {
+> +            "address": "0xe000a"
+> +        },
+> +        "DP_TUNNELING_SW_REV_MINOR": {
+> +            "address": "0xe000b"
+> +        },
+> +        "DP_TUNNELING_CAPABILITIES": {
+> +            "address": "0xe000d",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_IN_BW_ALLOCATION_MODE_SUPPORT",
+> +                    "value": "(1 << 7)"
+> +                },
+> +                {
+> +                    "name": "DP_PANEL_REPLAY_OPTIMIZATION_SUPPORT",
+> +                    "value": "(1 << 6)"
+> +                },
+> +                {
+> +                    "name": "DP_TUNNELING_SUPPORT",
+> +                    "value": "(1 << 0)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TUNNELING_STATUS": {
+> +            "address": "0xe0025",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_BW_ALLOCATION_CAPABILITY_CHANGED",
+> +                    "value": "(1 << 3)"
+> +                },
+> +                {
+> +                    "name": "DP_ESTIMATED_BW_CHANGED",
+> +                    "value": "(1 << 2)"
+> +                },
+> +                {
+> +                    "name": "DP_BW_REQUEST_SUCCEEDED",
+> +                    "value": "(1 << 1)"
+> +                },
+> +                {
+> +                    "name": "DP_BW_REQUEST_FAILED",
+> +                    "value": "(1 << 0)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_TUNNELING_MAX_LINK_RATE": {
+> +            "address": "0xe0028"
+> +        },
+> +        "DP_TUNNELING_MAX_LANE_COUNT": {
+> +            "address": "0xe0029"
+> +        },
+> +        "DP_TUNNELING_MAX_LANE_COUNT_MASK": {
+> +            "address": "0x1f"
+> +        }
+> +    },
+> +    "DP_IN": {
+> +        "DP_IN_ADAPTER_INFO": {
+> +            "address": "0xe000e",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_IN_ADAPTER_NUMBER_BITS",
+> +                    "value": "7"
+> +                },
+> +                {
+> +                    "name": "DP_IN_ADAPTER_NUMBER_MASK",
+> +                    "value": "((1 << DP_IN_ADAPTER_NUMBER_BITS) - 1)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_IN_ADAPTER_TUNNEL_INFORMATION": {
+> +            "address": "0xe0021",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_GROUP_ID_BITS",
+> +                    "value": "3"
+> +                },
+> +                {
+> +                    "name": "DP_GROUP_ID_MASK",
+> +                    "value": "((1 << DP_GROUP_ID_BITS) - 1)"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_USB4": {
+> +        "DP_USB4_DRIVER_ID": {
+> +            "address": "0xe000f",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_USB4_DRIVER_ID_BITS",
+> +                    "value": "4"
+> +                },
+> +                {
+> +                    "name": "DP_USB4_DRIVER_ID_MASK",
+> +                    "value": "((1 << DP_USB4_DRIVER_ID_BITS) - 1)"
+> +                }
+> +            ]
+> +        },
+> +        "DP_USB4_DRIVER_BW_CAPABILITY": {
+> +            "address": "0xe0020",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_USB4_DRIVER_BW_ALLOCATION_MODE_SUPPORT",
+> +                    "value": "(1 << 7)"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_BW": {
+> +        "DP_BW_GRANULARITY": {
+> +            "address": "0xe0022"
+> +        },
+> +        "DP_BW_GRANULARITY_MASK": {
+> +            "address": "0x3"
+> +        }
+> +    },
+> +    "DP_ESTIMATED_BW": {
+> +        "address": "0xe0023"
+> +    },
+> +    "DP_ALLOCATED_BW": {
+> +        "address": "0xe0024"
+> +    },
+> +    "DP_DPTX_BW_ALLOCATION_MODE_CONTROL": {
+> +        "address": "0xe0030",
+> +        "bitfields": [
+> +            {
+> +                "name": "DP_DISPLAY_DRIVER_BW_ALLOCATION_MODE_ENABLE",
+> +                "value": "(1 << 7)"
+> +            },
+> +            {
+> +                "name": "DP_UNMASK_BW_ALLOCATION_IRQ",
+> +                "value": "(1 << 6)"
+> +            }
+> +        ]
+> +    },
+> +    "DP_REQUEST_BW": {
+> +        "address": "0xe0031",
+> +        "bitfields": [
+> +            {
+> +                "name": "MAX_DP_REQUEST_BW",
+> +                "value": "255"
+> +            }
+> +        ]
+> +    },
+> +    "DP_LT_TUNABLE_PHY_REPEATER_FIELD_DATA_STRUCTURE_REV": {
+> +        "address": "0xf0000"
+> +    },
+> +    "DP_Repeater_FEC_CAPABILITY": {
+> +        "address": "0xf0004"
+> +    },
+> +    "_": {
+> +        "__DP_LTTPR1_BASE": {
+> +            "address": "0xf0010"
+> +        },
+> +        "__DP_LTTPR2_BASE": {
+> +            "address": "0xf0060"
+> +        },
+> +        "__DP_FEC1_BASE": {
+> +            "address": "0xf0290"
+> +        },
+> +        "__DP_FEC2_BASE": {
+> +            "address": "0xf0298"
+> +        }
+> +    },
+> +    "DP_TRANSMITTER_CAPABILITY_PHY_REPEATER1": {
+> +        "address": "0xf0021",
+> +        "bitfields": [
+> +            {
+> +                "name": "DP_VOLTAGE_SWING_LEVEL_3_SUPPORTED",
+> +                "value": "BIT(0)"
+> +            },
+> +            {
+> +                "name": "DP_PRE_EMPHASIS_LEVEL_3_SUPPORTED",
+> +                "value": "BIT(1)"
+> +            }
+> +        ]
+> +    },
+> +    "DP_SYMBOL": {
+> +        "DP_SYMBOL_ERROR_COUNT_LANE0_PHY_REPEATER1": {
+> +            "address": "0xf0035"
+> +        },
+> +        "DP_SYMBOL_ERROR_COUNT_LANE1_PHY_REPEATER1": {
+> +            "address": "0xf0037"
+> +        },
+> +        "DP_SYMBOL_ERROR_COUNT_LANE2_PHY_REPEATER1": {
+> +            "address": "0xf0039"
+> +        },
+> +        "DP_SYMBOL_ERROR_COUNT_LANE3_PHY_REPEATER1": {
+> +            "address": "0xf003b"
+> +        }
+> +    },
+> +    "DP_OUI_PHY_REPEATER1": {
+> +        "address": "0xf003d"
+> +    },
+> +    "DP_LTTPR_MAX_ADD": {
+> +        "address": "0xf02ff"
+> +    },
+> +    "DP_PEER": {
+> +        "DP_PEER_DEVICE_NONE": {
+> +            "address": "0x0"
+> +        },
+> +        "DP_PEER_DEVICE_SOURCE_OR_SST": {
+> +            "address": "0x1"
+> +        },
+> +        "DP_PEER_DEVICE_MST_BRANCHING": {
+> +            "address": "0x2"
+> +        },
+> +        "DP_PEER_DEVICE_SST_SINK": {
+> +            "address": "0x3"
+> +        },
+> +        "DP_PEER_DEVICE_DP_LEGACY_CONV": {
+> +            "address": "0x4"
+> +        }
+> +    },
+> +    "DP_GET_MSG_TRANSACTION_VERSION": {
+> +        "address": "0x00"
+> +    },
+> +    "DP_CONNECTION_STATUS_NOTIFY": {
+> +        "address": "0x02"
+> +    },
+> +    "DP_ENUM_PATH_RESOURCES": {
+> +        "address": "0x10"
+> +    },
+> +    "DP_ALLOCATE_PAYLOAD": {
+> +        "address": "0x11"
+> +    },
+> +    "DP_QUERY": {
+> +        "DP_QUERY_PAYLOAD": {
+> +            "address": "0x12"
+> +        },
+> +        "DP_QUERY_STREAM_ENC_STATUS": {
+> +            "address": "0x38",
+> +            "bitfields": [
+> +                {
+> +                    "name": "DP_QUERY_STREAM_ENC_STATUS_STATE_NO_EXIST",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_QUERY_STREAM_ENC_STATUS_STATE_INACTIVE",
+> +                    "value": "1"
+> +                },
+> +                {
+> +                    "name": "DP_QUERY_STREAM_ENC_STATUS_STATE_ACTIVE",
+> +                    "value": "2"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "DP_RESOURCE_STATUS_NOTIFY": {
+> +        "address": "0x13"
+> +    },
+> +    "DP_CLEAR_PAYLOAD_ID_TABLE": {
+> +        "address": "0x14"
+> +    },
+> +    "DP_REMOTE": {
+> +        "DP_REMOTE_DPCD_READ": {
+> +            "address": "0x20"
+> +        },
+> +        "DP_REMOTE_DPCD_WRITE": {
+> +            "address": "0x21"
+> +        },
+> +        "DP_REMOTE_I2C_READ": {
+> +            "address": "0x22"
+> +        },
+> +        "DP_REMOTE_I2C_WRITE": {
+> +            "address": "0x23"
+> +        }
+> +    },
+> +    "DP_POWER": {
+> +        "DP_POWER_UP_PHY": {
+> +            "address": "0x24"
+> +        },
+> +        "DP_POWER_DOWN_PHY": {
+> +            "address": "0x25"
+> +        }
+> +    },
+> +    "DP_NAK": {
+> +        "DP_NAK_WRITE_FAILURE": {
+> +            "address": "0x01"
+> +        },
+> +        "DP_NAK_INVALID_READ": {
+> +            "address": "0x02"
+> +        },
+> +        "DP_NAK_CRC_FAILURE": {
+> +            "address": "0x03"
+> +        },
+> +        "DP_NAK_BAD_PARAM": {
+> +            "address": "0x04"
+> +        },
+> +        "DP_NAK_DEFER": {
+> +            "address": "0x05"
+> +        },
+> +        "DP_NAK_LINK_FAILURE": {
+> +            "address": "0x06"
+> +        },
+> +        "DP_NAK_NO_RESOURCES": {
+> +            "address": "0x07"
+> +        },
+> +        "DP_NAK_DPCD_FAIL": {
+> +            "address": "0x08"
+> +        },
+> +        "DP_NAK_I2C_NAK": {
+> +            "address": "0x09"
+> +        },
+> +        "DP_NAK_ALLOCATE_FAIL": {
+> +            "address": "0x0a",
+> +            "bitfields": [
+> +                {
+> +                    "name": "MODE_I2C_START",
+> +                    "value": "1"
+> +                },
+> +                {
+> +                    "name": "MODE_I2C_WRITE",
+> +                    "value": "2"
+> +                },
+> +                {
+> +                    "name": "MODE_I2C_READ",
+> +                    "value": "4"
+> +                },
+> +                {
+> +                    "name": "MODE_I2C_STOP",
+> +                    "value": "8"
+> +                },
+> +                {
+> +                    "name": "DP_MST_PHYSICAL_PORT_0",
+> +                    "value": "0"
+> +                },
+> +                {
+> +                    "name": "DP_MST_LOGICAL_PORT_0",
+> +                    "value": "8"
+> +                }
+> +            ]
+> +        }
+> +    },
+> +    "EDP_SDP": {
+> +        "EDP_SDP_HEADER_REVISION_MASK": {
+> +            "address": "0x1F"
+> +        },
+> +        "EDP_SDP_HEADER_VALID_PAYLOAD_BYTES": {
+> +            "address": "0x1F"
+> +        }
+> +    }
+> +}
 > diff --git a/tools/displaytop/include/data.h b/tools/displaytop/include/data.h
-> index d2698ecae..1c3e1094c 100644
+> index 1c3e1094c..7cdbd2cb2 100644
 > --- a/tools/displaytop/include/data.h
 > +++ b/tools/displaytop/include/data.h
-> @@ -35,4 +35,6 @@ extern struct Node *root; /* shared throughout the program */
->   #define DRM_PRIMARY_PREFIX "card"
+> @@ -36,5 +36,17 @@ extern struct Node *root; /* shared throughout the program */
 >   #define DRM_RENDER_PREFIX "renderD"
 >   
-> +#define DEBUGFS_DRI_PATH "/sys/kernel/debug/dri"
+>   #define DEBUGFS_DRI_PATH "/sys/kernel/debug/dri"
+> +#define DPCD_SIZE 1
+> +#define DPCD_PATH "/dev"
+> +#define DPCD_JSON_FILE "dpcd.json"
+> +#define DATA_SUBDIR "/tools/displaytop/data/"
 > +
+> +struct DP_mapping {
+> +	char *card_name;
+> +	char *dp_name;
+> +};
+> +
+> +struct DP_mapping **get_dp_mapping_storage(void);
+> +int *get_dp_mapping_count_ptr(void);
+>   
 >   #endif
 > diff --git a/tools/displaytop/include/display.h b/tools/displaytop/include/display.h
-> index ee07694a4..bcf1bc0ae 100644
+> index bcf1bc0ae..c2502b040 100644
 > --- a/tools/displaytop/include/display.h
 > +++ b/tools/displaytop/include/display.h
-> @@ -44,4 +44,6 @@ void display_framebuffer(WINDOW *pad, struct Node *node, int *content_line);
->   
+> @@ -45,5 +45,6 @@ void display_framebuffer(WINDOW *pad, struct Node *node, int *content_line);
 >   void display_summary(WINDOW *pad, struct Node *node, int *content_line);
 >   
-> +void display_debugfs_file(WINDOW *pad, struct Node *node, int *content_line);
-> +
+>   void display_debugfs_file(WINDOW *pad, struct Node *node, int *content_line);
+> +void display_dpcd(WINDOW *pad, struct Node *node, int *content_line);
+>   
 >   #endif
 > diff --git a/tools/displaytop/include/populate.h b/tools/displaytop/include/populate.h
-> index b4056d084..340fb7679 100644
+> index 340fb7679..eb29ac31d 100644
 > --- a/tools/displaytop/include/populate.h
 > +++ b/tools/displaytop/include/populate.h
-> @@ -34,5 +34,6 @@
->   void populate_data(void);
+> @@ -35,5 +35,6 @@ void populate_data(void);
 >   
 >   void initialize_display_config(void);
-> +void initialize_display_debugfs(void);
+>   void initialize_display_debugfs(void);
+> +void initialize_DPCD(void);
 >   
 >   #endif
 > diff --git a/tools/displaytop/include/utils.h b/tools/displaytop/include/utils.h
-> index 3f5a1f620..8f771d7b4 100644
+> index 8f771d7b4..ab3424cee 100644
 > --- a/tools/displaytop/include/utils.h
 > +++ b/tools/displaytop/include/utils.h
-> @@ -122,4 +122,6 @@ const char *get_basic_modifier_str(uint64_t modifier);
->   const char *get_connector_type_name(uint32_t connector_type);
+> @@ -58,6 +58,8 @@
+>   #include <drm/i915_drm.h>
+>   #include <drm/drm_fourcc.h>
+>   
+> +#include <cjson/cJSON.h>
+> +
+>   #include "log.h"
+>   #include "node.h"
+>   #include "data.h"
+> @@ -109,7 +111,7 @@ void ensure_dump_directory(void);
+>   void strip_whitespace(char *str);
+>   char *read_file(const char *filename);
+>   
+> -char *get_file_path(const char *filename);
+> +char *get_data_file_path(const char *filename);
+>   
+>   /* utils_drm.c */
+>   char *find_drm_device(bool primary);
+> @@ -123,5 +125,8 @@ const char *get_connector_type_name(uint32_t connector_type);
 >   const char *get_encoder_type_name(uint32_t encoder_type);
 >   
-> +char *find_debugfs_dir(int drm_fd);
+>   char *find_debugfs_dir(int drm_fd);
+> +int read_dpcd_registers(const char *aux_path, unsigned char *buffer, size_t size, uint64_t offset);
 > +
+> +uint64_t parse_hex_address(const char *hex_str);
+>   
 >   #endif
 > diff --git a/tools/displaytop/meson.build b/tools/displaytop/meson.build
-> index 082386198..a56f966f7 100644
+> index a56f966f7..e54ffec26 100644
 > --- a/tools/displaytop/meson.build
 > +++ b/tools/displaytop/meson.build
-> @@ -38,6 +38,11 @@ if have_displaytop
->       menu_dep,
->       form_dep,
->       panel_dep,
-> +    igt_deps,
-> +    lib_igt_perf,
-> +    lib_igt_drm_clients,
-> +    lib_igt_drm_fdinfo,
-> +    lib_igt_profiling,
+> @@ -26,8 +26,9 @@ ncurses_dep = dependency('ncurses', required: false)
+>   menu_dep    = dependency('menu', required: false)
+>   form_dep    = dependency('form', required: false)
+>   panel_dep   = dependency('panel', required: false)
+> +cjson_dep   = cc.find_library('cjson', required: false)
+>   
+> -have_displaytop = ncurses_dep.found() and menu_dep.found() and form_dep.found() and panel_dep.found()
+> +have_displaytop = ncurses_dep.found() and menu_dep.found() and form_dep.found() and panel_dep.found() and cjson_dep.found()
+>   
+>   if have_displaytop
+>     message('All dependencies found. Building displaytop.')
+> @@ -43,6 +44,7 @@ if have_displaytop
+>       lib_igt_drm_clients,
+>       lib_igt_drm_fdinfo,
+>       lib_igt_profiling,
+> +    cjson_dep,
 >     ]
 >     # Source files
 >     source = files(
-> @@ -58,6 +63,8 @@ if have_displaytop
->       'src/utils_driver.c',
->       'src/utils_drm.c',
+> @@ -65,6 +67,9 @@ if have_displaytop
 >       'src/utils_search.c',
-> +    'src/populate_display_debugfs.c',
-> +    'src/display_debugfs.c',
+>       'src/populate_display_debugfs.c',
+>       'src/display_debugfs.c',
+> +    'src/display_DPCD.c',
+> +    'src/populate_DPCD.c',
+> +    'src/utils_registers.c',
 >     )
 >   
 >     if meson.is_subproject()
-> diff --git a/tools/displaytop/src/display_debugfs.c b/tools/displaytop/src/display_debugfs.c
+> diff --git a/tools/displaytop/src/data.c b/tools/displaytop/src/data.c
+> index 8d2712ca4..002421ffc 100644
+> --- a/tools/displaytop/src/data.c
+> +++ b/tools/displaytop/src/data.c
+> @@ -28,3 +28,16 @@
+>   /* This file holds all the global variables that are being used in the tool */
+>   
+>   struct Node *root;
+> +
+> +static struct DP_mapping *dp_mappings;
+> +static int dp_mapping_count;
+> +
+> +struct DP_mapping **get_dp_mapping_storage(void)
+> +{
+> +	return &dp_mappings;
+> +}
+> +
+> +int *get_dp_mapping_count_ptr(void)
+> +{
+> +	return &dp_mapping_count;
+> +}
+> diff --git a/tools/displaytop/src/display_DPCD.c b/tools/displaytop/src/display_DPCD.c
 > new file mode 100644
-> index 000000000..9a36416d8
+> index 000000000..827f22ff2
 > --- /dev/null
-> +++ b/tools/displaytop/src/display_debugfs.c
-> @@ -0,0 +1,124 @@
+> +++ b/tools/displaytop/src/display_DPCD.c
+> @@ -0,0 +1,252 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
 > + * Copyright © 2025 Intel Corporation
@@ -335,126 +5082,248 @@ On 11/5/2025 11:39 AM, Pranay Samala wrote:
 > +
 > +#include "display.h"
 > +#include "utils.h"
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include "igt.h"
+> +#include "data.h"
 > +
 > +/**
-> + * /docs
-> + * build_full_path - Constructs the full filesystem path for a given node in the debugfs tree.
-> + * @node:       Pointer to the Node structure for which the path is to be built.
-> + * @full_path:  Buffer to store the resulting full path as a null-terminated string.
-> + * @size:       Size of the @full_path buffer.
+> + * @brief Reads DPCD (DisplayPort Configuration Data) registers.
 > + *
-> + * This function traverses the parent hierarchy of the given node, collecting
-> + * each node's name (excluding a trailing '*' if present), and constructs the
-> + * relative path from the root node named "Display Debugfs" down to the given node.
-> + * The resulting path is prefixed with the debugfs directory path (as returned by
-> + * find_debugfs_dir()) and stored in @full_path.
+> + * This function reads a specified number of bytes from the DPCD registers
+> + * starting at a given offset and stores the data in the provided buffer.
 > + *
-> + * The function ensures that the constructed path does not exceed the provided buffer size.
+> + * @param aux_path The path to the AUX device file.
+> + * @param buffer A pointer to the buffer where the read data will be stored.
+> + * @param size The number of bytes to read from the DPCD registers.
+> + * @param offset The starting offset in the DPCD registers from which to begin reading.
+> + * @return An integer indicating the success or failure of the read operation.
+> + *         Typically, 0 indicates success, while a negative value indicates an error.
 > + */
-> +static void build_full_path(struct Node *node, char *full_path, size_t size)
-
-We should be already doing this in few of the existing tests. Can those 
-helpers be reused here?
-
-Regards,
-Karthik.B.S
+> +int read_dpcd_registers(const char *aux_path, unsigned char *buffer, size_t size, uint64_t offset)
 > +{
-> +	int i;
-> +	int depth = 0;
-> +	char segments[20][256];
-> +	char relative_path[1024] = {0};
+> +	FILE *fp = NULL;
+> +	size_t bytes_read = 0;
 > +
-> +	while (node && node->parent && strcmp(node->name, "Display Debugfs") != 0) {
-> +		char *name = node->name;
-> +		size_t name_len = strlen(name);
-> +
-> +		if (name_len > 0 && name[name_len - 1] == '*')
-> +			snprintf(segments[depth], sizeof(segments[depth]), "%.*s",
-> +				 (int)(name_len - 1), name);
-> +		else
-> +			snprintf(segments[depth], sizeof(segments[depth]), "%s", name);
-> +
-> +		depth++;
-> +		node = node->parent;
+> +	fp = fopen(aux_path, "rb");
+> +	if (!fp) {
+> +		log_message(LOG_ERROR, "Failed to open DPCD AUX path: %s", aux_path);
+> +		return -1;
 > +	}
 > +
-> +	for (i = depth - 1; i >= 0; i--) {
-> +		strncat(relative_path, "/", sizeof(relative_path) - strlen(relative_path) - 1);
-> +		strncat(relative_path, segments[i],
-> +			sizeof(relative_path) - strlen(relative_path) - 1);
+> +	if (fseek(fp, offset, SEEK_SET) != 0) {
+> +		log_message(LOG_ERROR, "Failed to seek to offset %ld in %s", offset, aux_path);
+> +		fclose(fp);
+> +		return -1;
 > +	}
 > +
-> +	snprintf(full_path, size, "%s%s", find_debugfs_dir(drm_fd), relative_path);
+> +	bytes_read = fread(buffer, 1, size, fp);
+> +	fclose(fp);
+> +
+> +	if (bytes_read != size)
+> +		log_message(LOG_WARNING, "Expected %zu bytes but read %zu bytes", size, bytes_read);
+> +
+> +	return (int)bytes_read;
 > +}
 > +
-> +void display_debugfs_file(WINDOW *pad, struct Node *node, int *content_line)
+> +/**
+> + * @brief Displays DPCD (DisplayPort Configuration Data) information on a given pad window.
+> + *
+> + * This function takes a pad window, a JSON object representing the DPCD register data,
+> + * and a pointer to an integer representing the current line number. It displays the
+> + * DPCD data on the pad window, starting from the specified line.
+> + *
+> + * @param pad A pointer to the pad window where the DPCD data will be displayed.
+> + * @param reg A cJSON object containing the DPCD register data.
+> + * @param line A pointer to an integer representing the current line number. This will be
+> + *             updated as the function writes data to the pad window.
+> + */
+> +static void display_dpcd_data(WINDOW *pad, cJSON *reg, int *line)
+> +{
+> +	int width, col_widths[2], bitFieldCount = 0;
+> +	cJSON *bitField, *bitFieldItem, *name, *value;
+> +	char *name_buffer, *value_buffer;
+> +
+> +	if (!cJSON_IsObject(reg)) {
+> +		print_red_text(pad, (*line)++, 1, "Invalid JSON object");
+> +		return;
+> +	}
+> +
+> +	bitField = cJSON_GetObjectItem(reg, "bitfields");
+> +	if (!bitField) {
+> +		print_red_text(pad, (*line)++, 1, "Bitfields not found in Register");
+> +		return;
+> +	}
+> +
+> +	print_bold_text(pad, (*line)++, 1, "Bitfield Information: ");
+> +	(*line)++;
+> +
+> +	width = getmaxx(pad);
+> +	width -= 2;
+> +	width -= 3;
+> +
+> +	col_widths[0] = (int)(width * 0.30f) - 2;
+> +	col_widths[1] = (int)(width * 0.70f) - 2;
+> +
+> +	if (cJSON_IsArray(bitField))
+> +		bitFieldCount = cJSON_GetArraySize(bitField);
+> +	else
+> +		bitFieldCount = 1;
+> +
+> +	wattron(pad, A_BOLD);
+> +	mvwprintw(pad, (*line)++, 1, "| %-*s | %-*s |", col_widths[0], "BitField", col_widths[1], "Value & Description");
+> +	wattroff(pad, A_BOLD);
+> +
+> +	for (int i = 0; i < bitFieldCount; i++) {
+> +		if (cJSON_IsArray(bitField))
+> +			bitFieldItem = cJSON_GetArrayItem(bitField, i);
+> +		else
+> +			bitFieldItem = bitField;
+> +
+> +		name = cJSON_GetObjectItem(bitFieldItem, "name");
+> +		value = cJSON_GetObjectItem(bitFieldItem, "value");
+> +
+> +		name_buffer = name && cJSON_IsString(name) ? strdup(name->valuestring) : strdup("NA");
+> +		value_buffer = value && cJSON_IsString(value) ? strdup(value->valuestring) : strdup("NA");
+> +
+> +		mvwprintw(pad, (*line)++, 1, "| %-*s | %-*s |", col_widths[0], name_buffer,
+> +			  col_widths[1], value_buffer);
+> +
+> +		free(value_buffer);
+> +		free(name_buffer);
+> +	}
+> +}
+> +
+> +/**
+> + * @brief Displays the DPCD (DisplayPort Configuration Data) information for a given node.
+> + *
+> + * This function finds the parent node with "DP" in its name, retrieves the corresponding
+> + * DPCD AUX path, reads the DPCD JSON file to get the register offset, and then reads
+> + * and displays the DPCD register data.
+> + *
+> + * @param pad The window pad where the information will be displayed.
+> + * @param node The node for which the DPCD information is to be displayed.
+> + * @param content_line Pointer to an integer that will be updated with the current line number.
+> + *
+> + * The function performs the following steps:
+> + * 1. Finds the parent node with "DP" in its name.
+> + * 2. Retrieves the corresponding DPCD AUX path from the DP mappings.
+> + * 3. Reads the DPCD JSON file to get the register offset for the node.
+> + * 4. Reads the DPCD register data from the DPCD AUX path.
+> + * 5. Displays the DPCD register data and additional information on the pad.
+> + *
+> + * If any step fails, an appropriate error message is displayed on the pad.
+> + */
+> +void display_dpcd(WINDOW *pad, struct Node *node, int *content_line)
 > +{
 > +	int line = 0;
-> +	int max_x = getmaxx(pad) - 4;
-> +	int start, break_point;
+> +	struct Node *parent = node;
+> +	struct DP_mapping *mappings = *get_dp_mapping_storage();
+> +	int count = *get_dp_mapping_count_ptr();
+> +	char dpcd_aux_path[256] = "";
+> +	char *json_data = NULL;
+> +	cJSON *json = NULL, *node_item = NULL, *Address = NULL;
+> +	uint64_t offset = 0;
+> +	unsigned char dpcd_buffer[DPCD_SIZE] = {0};
 > +
-> +	FILE *file;
-> +	char temp[1024];
-> +	char buffer[1024];
-> +	char full_file_path[1024] = {0};
+> +	while (parent && !strstr(parent->name, "DP "))
+> +		parent = parent->parent;
 > +
-> +	build_full_path(node, full_file_path, sizeof(full_file_path));
-> +
-> +	file = fopen(full_file_path, "r");
-> +	if (!file) {
-> +		print_red_text(pad, line++, 1, "Error opening file: %s", full_file_path);
+> +	if (!parent) {
+> +		print_red_text(pad, line++, 1, "No parent with 'DP' found");
 > +		*content_line = line;
 > +		return;
 > +	}
 > +
-> +	while (fgets(buffer, sizeof(buffer), file)) {
-> +		buffer[strcspn(buffer, "\n")] = '\0';
-> +
-> +		start = 0;
-> +		while (start < (int)strlen(buffer)) {
-> +			break_point = start + max_x;
-> +			if (break_point < (int)strlen(buffer)) {
-> +				while (break_point > start && !isspace(buffer[break_point]))
-> +					break_point--;
-> +				if (break_point == start)
-> +					break_point = start + max_x;
-> +			} else {
-> +				break_point = strlen(buffer);
-> +			}
-> +
-> +			strncpy(temp, buffer + start, break_point - start);
-> +			temp[break_point - start] = '\0';
-> +
-> +			mvwprintw(pad, line++, 2, "%s", temp);
-> +			start = (buffer[break_point] == ' ') ? break_point + 1 : break_point;
+> +	for (int i = 0; i < count; i++) {
+> +		if (strcmp(mappings[i].card_name, parent->name) == 0) {
+> +			snprintf(dpcd_aux_path, sizeof(dpcd_aux_path), "/dev/%s",
+> +				 mappings[i].dp_name);
+> +			break;
 > +		}
 > +	}
 > +
+> +	print_bold_text(pad, line++, 1, "DPCD AUX Path: %s\n", dpcd_aux_path);
+> +
+> +	json_data = read_file(get_data_file_path(DPCD_JSON_FILE));
+> +	if (!json_data) {
+> +		print_red_text(pad, line++, 1, "Failed to read DPCD JSON file");
+> +		*content_line = line;
+> +		return;
+> +	}
+> +
+> +	json = cJSON_Parse(json_data);
+> +	if (!json) {
+> +		print_red_text(pad, line++, 1, "Failed to parse DPCD JSON content");
+> +		free(json_data);
+> +		*content_line = line;
+> +		return;
+> +	}
+> +
+> +	node_item = cJSON_GetObjectItemCaseSensitive(json, node->name);
+> +	if (!node_item) {
+> +		cJSON *child = NULL;
+> +
+> +		cJSON_ArrayForEach(child, json) {
+> +			node_item = cJSON_GetObjectItemCaseSensitive(child, node->name);
+> +			if (node_item)
+> +				break;
+> +		}
+> +	}
+> +
+> +	if (!node_item) {
+> +		print_red_text(pad, line++, 1, "Node item '%s' not found in JSON", node->name);
+> +		cJSON_Delete(json);
+> +		free(json_data);
+> +		*content_line = line;
+> +		return;
+> +	}
+> +
+> +	Address = cJSON_GetObjectItem(node_item, "address");
+> +	if (Address) {
+> +		offset = parse_hex_address(Address->valuestring);
+> +	} else {
+> +		print_red_text(pad, line++, 1, "Address not found in Register");
+> +		return;
+> +	}
+> +
 > +	line++;
-> +	mvwprintw(pad, line++, 2, "-----------------EOF-------------------");
+> +	print_bold_text(pad, line++, 1, "DPCD Register: %s", node->name);
+> +	print_green_text(pad, line++, 1, "DPCD Register Offset: 0x%lx", offset);
+> +	line++;
+> +
+> +	if (read_dpcd_registers(dpcd_aux_path, dpcd_buffer, DPCD_SIZE, offset) > 0) {
+> +		print_bold_text(pad, line++, 1, "DPCD Data:");
+> +		print_bold_text(pad, line++, 1, "-------------------------------------------------");
+> +		for (int i = 0; i < DPCD_SIZE; i++) {
+> +			mvwprintw(pad, line++, 1, "0x%02x (", dpcd_buffer[i]);
+> +			for (int bit = 7; bit >= 0; bit--)
+> +				wprintw(pad, "%d", (dpcd_buffer[i] >> bit) & 1);
+> +			wprintw(pad, ")");
+> +		}
+> +		print_bold_text(pad, line++, 1, "-------------------------------------------------");
+> +	} else {
+> +		print_red_text(pad, line++, 1, "Failed to read DPCD registers");
+> +	}
+> +
+> +	line++;
+> +	display_dpcd_data(pad, node_item, &line);
 > +
 > +	*content_line = line;
-> +	fclose(file);
 > +}
 > diff --git a/tools/displaytop/src/populate.c b/tools/displaytop/src/populate.c
-> index 7109249f9..7963523d5 100644
+> index 7963523d5..ae0af5b20 100644
 > --- a/tools/displaytop/src/populate.c
 > +++ b/tools/displaytop/src/populate.c
-> @@ -29,4 +29,5 @@ void populate_data(void)
->   {
+> @@ -30,4 +30,5 @@ void populate_data(void)
 >   	root = create_node("Display Top", display_summary, NULL);
 >   	initialize_display_config();
-> +	initialize_display_debugfs();
+>   	initialize_display_debugfs();
+> +	initialize_DPCD();
 >   }
-> diff --git a/tools/displaytop/src/populate_display_debugfs.c b/tools/displaytop/src/populate_display_debugfs.c
+> diff --git a/tools/displaytop/src/populate_DPCD.c b/tools/displaytop/src/populate_DPCD.c
 > new file mode 100644
-> index 000000000..fc0ed8a83
+> index 000000000..99f5b58a8
 > --- /dev/null
-> +++ b/tools/displaytop/src/populate_display_debugfs.c
-> @@ -0,0 +1,96 @@
+> +++ b/tools/displaytop/src/populate_DPCD.c
+> @@ -0,0 +1,233 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
 > + * Copyright © 2025 Intel Corporation
@@ -479,106 +5348,385 @@ Karthik.B.S
 > + * DEALINGS IN THE SOFTWARE.
 > + */
 > +
+> +#include "data.h"
 > +#include "populate.h"
-> +#include "utils.h"
-> +#include <stdlib.h>
-> +#include <stdio.h>
-> +#include "igt.h"
 > +
-> +static void populate_debugfs_recursive(struct Node *parent, const char *currentPath)
+> +#define DRM_PATH "/sys/class/drm"
+> +
+> +static char *find_dp_card(const char *dp_aux)
+> +{
+> +	struct dirent *entry;
+> +	DIR *dp;
+> +	struct DP_mapping **dp_mappings;
+> +	int *dp_mapping_count;
+> +	char *result;
+> +	char aux_path[512];
+> +	char *dp_name;
+> +	char *formatted_name;
+> +	char *p;
+> +
+> +	dp = opendir(DRM_PATH);
+> +	if (!dp) {
+> +		log_message(LOG_ERROR, "Failed to open DRM path");
+> +		return NULL;
+> +	}
+> +
+> +	dp_mappings = get_dp_mapping_storage();
+> +	dp_mapping_count = get_dp_mapping_count_ptr();
+> +	result = NULL;
+> +
+> +	while ((entry = readdir(dp)) != NULL) {
+> +		if (strstr(entry->d_name, "card") && strstr(entry->d_name, "-DP")) {
+> +			snprintf(aux_path, sizeof(aux_path), "%s/%s/%s", DRM_PATH,
+> +				 entry->d_name, dp_aux);
+> +
+> +			if (access(aux_path, F_OK) == 0) {
+> +				*dp_mappings = realloc(*dp_mappings,
+> +						       (*dp_mapping_count + 1) *
+> +						       sizeof(struct DP_mapping));
+> +				if (!*dp_mappings) {
+> +					log_message(LOG_ERROR,
+> +						    "Failed to allocate memory for DP mappings");
+> +					closedir(dp);
+> +					return NULL;
+> +				}
+> +
+> +				dp_name = strstr(entry->d_name, "-DP") + 1;
+> +				formatted_name = strdup(dp_name);
+> +				if (!formatted_name) {
+> +					log_message(LOG_ERROR,
+> +						    "Failed to allocate memory for formatted name");
+> +					closedir(dp);
+> +					return NULL;
+> +				}
+> +
+> +				for (p = formatted_name; *p; p++) {
+> +					if (*p == '-')
+> +						*p = ' ';
+> +				}
+> +
+> +				(*dp_mappings)[*dp_mapping_count].card_name =
+> +						strdup(formatted_name);
+> +				(*dp_mappings)[*dp_mapping_count].dp_name = strdup(dp_aux);
+> +				if (!(*dp_mappings)[*dp_mapping_count].card_name ||
+> +				    !(*dp_mappings)[*dp_mapping_count].dp_name) {
+> +					log_message(LOG_ERROR,
+> +						    "Failed to allocate memory for DP mapping names");
+> +					free(formatted_name);
+> +					closedir(dp);
+> +					return NULL;
+> +				}
+> +				(*dp_mapping_count)++;
+> +
+> +				result = strdup(formatted_name);
+> +				free(formatted_name);
+> +				break;
+> +			}
+> +		}
+> +	}
+> +	closedir(dp);
+> +	return result;
+> +}
+> +
+> +static void process_DPCD_json_Helper(cJSON *json, struct Node *parentNode)
+> +{
+> +	cJSON *reg = NULL;
+> +	const char *name;
+> +	struct Node *currentNode;
+> +	cJSON *address;
+> +
+> +	cJSON_ArrayForEach(reg, json) {
+> +		name = reg->string;
+> +		if (name) {
+> +			currentNode = create_node(name, display_dpcd, parentNode);
+> +
+> +			address = cJSON_GetObjectItem(reg, "address");
+> +			if (!address)
+> +				currentNode->display_function = NULL;
+> +
+> +			if (cJSON_IsObject(reg) && !address)
+> +				process_DPCD_json_Helper(reg, currentNode);
+> +			add_child(parentNode, currentNode);
+> +		}
+> +	}
+> +}
+> +
+> +static void process_DPCD_json(struct Node *parentNode)
+> +{
+> +	FILE *file;
+> +	long fileSize;
+> +	char *jsonContent;
+> +	cJSON *json;
+> +
+> +	log_message(LOG_INFO, "Opening DPCD json file");
+> +	file = fopen(get_data_file_path(DPCD_JSON_FILE), "r");
+> +	if (!file) {
+> +		log_message(LOG_ERROR, "Failed to open DPCD json file");
+> +		return;
+> +	}
+> +
+> +	log_message(LOG_INFO, "Reading DPCD json file");
+> +	fseek(file, 0, SEEK_END);
+> +	fileSize = ftell(file);
+> +	fseek(file, 0, SEEK_SET);
+> +
+> +	jsonContent = malloc(fileSize + 1);
+> +	if (!jsonContent) {
+> +		log_message(LOG_ERROR, "Failed to allocate memory for json content");
+> +		fclose(file);
+> +		return;
+> +	}
+> +
+> +	fread(jsonContent, 1, fileSize, file);
+> +	jsonContent[fileSize] = '\0';
+> +	fclose(file);
+> +
+> +	log_message(LOG_INFO, "Parsing DPCD json content");
+> +	json = cJSON_Parse(jsonContent);
+> +	if (!json) {
+> +		log_message(LOG_ERROR, "Failed to parse DPCD json");
+> +		free(jsonContent);
+> +		return;
+> +	}
+> +
+> +	process_DPCD_json_Helper(json, parentNode);
+> +
+> +	log_message(LOG_INFO, "Cleaning up");
+> +	cJSON_Delete(json);
+> +	free(jsonContent);
+> +}
+> +
+> +void initialize_DPCD(void)
 > +{
 > +	DIR *dir;
 > +	struct dirent *entry;
-> +	char full_path[1024];
-> +	char dir_name_with_asterisk[1024];
-> +	struct stat pathStat;
-> +	struct Node *fileNode;
-> +	struct Node *dirNode;
+> +	static char dpcd_path[256];
+> +	struct Node *DPCD;
+> +	char *dp_aux;
 > +
-> +	dir = opendir(currentPath);
+> +	if (access(get_data_file_path(DPCD_JSON_FILE), F_OK) != 0) {
+> +		log_message(LOG_ERROR, "DPCD json file does not exist");
+> +		return;
+> +	}
+> +
+> +	DPCD = create_node("DPCD Registers", NULL, root);
+> +	if (!DPCD) {
+> +		log_message(LOG_ERROR, "Failed to create DPCD node");
+> +		log_message(LOG_ERROR, "malloc");
+> +		return;
+> +	}
+> +
+> +	dir = opendir(DPCD_PATH);
 > +	if (!dir) {
-> +		log_message(LOG_ERROR, "Failed to open directory: %s", currentPath);
+> +		log_message(LOG_ERROR, "Failed to open debugfs dri directory (Run as root?)");
 > +		return;
 > +	}
 > +
-> +	while ((entry = readdir(dir)) != NULL) {
-> +		if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
-> +			continue;
+> +	while ((entry = readdir(dir))) {
+> +		if (strstr(entry->d_name, "drm_dp")) {
+> +			struct Node *dpcdNode;
 > +
-> +		snprintf(full_path, sizeof(full_path), "%s/%s", currentPath, entry->d_name);
+> +			if (snprintf(dpcd_path, sizeof(dpcd_path), "%s/%s", DPCD_PATH,
+> +				     entry->d_name) >= (int)sizeof(dpcd_path)) {
+> +				log_message(LOG_ERROR, "DPCD AUX path truncated: %s/%s",
+> +					    DPCD_PATH, entry->d_name);
+> +				continue;
+> +			}
 > +
-> +		if (stat(full_path, &pathStat) == -1) {
-> +			log_message(LOG_WARNING, "Could not stat path: %s", full_path);
-> +			continue;
-> +		}
+> +			log_message(LOG_INFO, "Found DPCD AUX path: %s", dpcd_path);
+> +			dp_aux = find_dp_card(entry->d_name);
+> +			if (!dp_aux) {
+> +				log_message(LOG_ERROR, "Failed to find DP card for %s",
+> +					    entry->d_name);
+> +				continue;
+> +			}
 > +
-> +		if (S_ISREG(pathStat.st_mode)) {
-> +			fileNode = create_node(entry->d_name, display_debugfs_file, parent);
-> +			add_child(parent, fileNode);
-> +		} else if (S_ISDIR(pathStat.st_mode)) {
-> +			snprintf(dir_name_with_asterisk, sizeof(dir_name_with_asterisk), "%s*",
-> +				 entry->d_name);
-> +			dirNode = create_node(dir_name_with_asterisk, NULL, parent);
-> +			populate_debugfs_recursive(dirNode, full_path);
-> +			add_child(parent, dirNode);
+> +			dpcdNode = create_node(dp_aux, NULL, DPCD);
+> +			if (!dpcdNode) {
+> +				log_message(LOG_ERROR, "Failed to create node for %s", dp_aux);
+> +				free(dp_aux);
+> +				closedir(dir);
+> +				return;
+> +			}
+> +
+> +			process_DPCD_json(dpcdNode);
+> +			add_child(DPCD, dpcdNode);
+> +			free(dp_aux);
 > +		}
 > +	}
-> +
 > +	closedir(dir);
+> +	add_child(root, DPCD);
 > +}
-> +
-> +static void populate_debugfs(struct Node *parent)
-> +{
-> +	char *selected_path = find_debugfs_dir(drm_fd);
-> +
-> +	if (!selected_path)
-> +		return;
-> +
-> +	populate_debugfs_recursive(parent, selected_path);
-> +	free(selected_path);
-> +}
-> +
-> +void initialize_display_debugfs(void)
-> +{
-> +	struct Node *display_debugfs;
-> +
-> +	display_debugfs = create_node("Display Debugfs", NULL, root);
-> +	populate_debugfs(display_debugfs);
-> +
-> +	if (display_debugfs->children_size == 0) {
-> +		free(display_debugfs);
-> +		return;
-> +	}
-> +	add_child(root, display_debugfs);
-> +}
-> diff --git a/tools/displaytop/src/utils_driver.c b/tools/displaytop/src/utils_driver.c
-> index 53fdbec19..1df23f6db 100644
-> --- a/tools/displaytop/src/utils_driver.c
-> +++ b/tools/displaytop/src/utils_driver.c
-> @@ -23,6 +23,7 @@
+> diff --git a/tools/displaytop/src/utils.c b/tools/displaytop/src/utils.c
+> index 753e74cfd..e85b5a9a0 100644
+> --- a/tools/displaytop/src/utils.c
+> +++ b/tools/displaytop/src/utils.c
+> @@ -23,6 +23,74 @@
 >    */
 >   
 >   #include "utils.h"
-> +#include "igt_debugfs.h"
->   
->   static int is_driver_loaded(const char *driver)
->   {
-> @@ -168,3 +169,18 @@ void check_and_load_driver(void)
->   	else
->   		show_driver_menu();
->   }
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <unistd.h>
+> +#include <limits.h>
 > +
-> +char *find_debugfs_dir(int fd)
+> +char *get_data_file_path(const char *filename)
 > +{
-> +	char *path = malloc(PATH_MAX);
+> +	static char final_path[PATH_MAX];
+> +	char exe_path[PATH_MAX];
+> +	char base_path[PATH_MAX];
+> +	int written = 0;
+> +	ssize_t len;
+> +	char *match;
+> +	char *cursor;
+> +	char *after;
+> +	size_t base_len;
+> +	size_t required_len;
 > +
-> +	if (!path)
-> +		return 0;
+> +	len = readlink("/proc/self/exe", exe_path, sizeof(exe_path) - 1);
+> +	if (len == -1) {
+> +		log_message(LOG_ERROR, "readlink failed: %s\n", strerror(errno));
+> +		return NULL;
+> +	}
+> +	exe_path[len] = '\0';
 > +
-> +	if (!igt_debugfs_path(fd, path, PATH_MAX)) {
-> +		free(path);
+> +	match = NULL;
+> +	cursor = exe_path;
+> +	while ((cursor = strstr(cursor, "igt-gpu-tools"))) {
+> +		char next_char = cursor[strlen("igt-gpu-tools")];
+> +
+> +		if (next_char == '/' || next_char == '-' || next_char == '\0')
+> +			match = cursor;
+> +		cursor += strlen("igt-gpu-tools");
+> +	}
+> +
+> +	if (!match) {
+> +		log_message(LOG_ERROR, "Could not find igt-gpu-tools directory in path: %s\n",
+> +			    exe_path);
+> +		return NULL;
+> +	}
+> +
+> +	after = strchr(match, '/');
+> +	base_len = after ? (size_t)(after - exe_path) : strlen(exe_path);
+> +
+> +	if (base_len >= sizeof(base_path)) {
+> +		log_message(LOG_ERROR, "Base path too long.\n");
+> +		return NULL;
+> +	}
+> +
+> +	memcpy(base_path, exe_path, base_len);
+> +	base_path[base_len] = '\0';
+> +
+> +	required_len = base_len + strlen(DATA_SUBDIR) + strlen(filename) + 1;
+> +	if (required_len >= sizeof(final_path)) {
+> +		log_message(LOG_ERROR, "Data file path too long. Buffer would overflow.\n");
+> +		return NULL;
+> +	}
+> +
+> +	written = snprintf(final_path, sizeof(final_path), "%s%s%s", base_path, DATA_SUBDIR,
+> +			   filename);
+> +	if (written < 0 || (size_t)written >= sizeof(final_path)) {
+> +		log_message(LOG_ERROR, "snprintf failed or truncated.\n");
+> +		return NULL;
+> +	}
+> +
+> +	return final_path;
+> +}
+>   
+>   char *read_file(const char *filename)
+>   {
+> diff --git a/tools/displaytop/src/utils_registers.c b/tools/displaytop/src/utils_registers.c
+> new file mode 100644
+> index 000000000..9ceaac9f9
+> --- /dev/null
+> +++ b/tools/displaytop/src/utils_registers.c
+> @@ -0,0 +1,88 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2025 Intel Corporation
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the next
+> + * paragraph) shall be included in all copies or substantial portions of the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+> + * DEALINGS IN THE SOFTWARE.
+> + */
+> +
+> +#include "utils.h"
+> +
+> +/**
+> + * @brief Parses a hexadecimal address string and converts it to a 64-bit unsigned integer.
+> + *
+> + * This function takes a hexadecimal string representation of an address, optionally
+> + * cleans it by removing a trailing 'h' or 'H', and converts it to a uint64_t value.
+> + * It also handles strings prefixed with "0x" or "0X".
+> + *
+> + * @param hex_str A pointer to the hexadecimal string to be parsed. The string can
+> + *                optionally end with 'h' or 'H' and may start with "0x" or "0X".
+> + *                Passing NULL or an empty string will result in an error.
+> + *
+> + * @return The parsed 64-bit unsigned integer address. If the input string is invalid
+> + *         or the conversion fails, the function logs an error and returns 0.
+> + *
+> + * @note The function logs errors using the `log_message` function with the `LOG_ERROR` level
+> + *       in the following cases:
+> + *       - The input string is NULL or empty.
+> + *       - Memory allocation fails while cleaning the input string.
+> + *       - The input string cannot be converted to a valid hexadecimal number.
+> + *
+> + * @note The caller is responsible for ensuring that the input string is properly null-terminated.
+> + */
+> +uint64_t parse_hex_address(const char *hex_str)
+> +{
+> +	size_t len;
+> +	char *cleaned = NULL;
+> +	char *start = NULL;
+> +	char *endptr;
+> +	uint64_t address = 0;
+> +
+> +	if (!hex_str || *hex_str == '\0') {
+> +		log_message(LOG_ERROR, "Invalid hex string: NULL or empty");
 > +		return 0;
 > +	}
 > +
-> +	return path;
+> +	len = strlen(hex_str);
+> +	if (hex_str[len - 1] == 'h' || hex_str[len - 1] == 'H')
+> +		cleaned = strndup(hex_str, len - 1);
+> +	else
+> +		cleaned = strdup(hex_str);
+> +
+> +	if (!cleaned) {
+> +		log_message(LOG_ERROR, "Memory allocation failed while cleaning hex string");
+> +		return 0;
+> +	}
+> +
+> +	start = cleaned;
+> +	if (cleaned[0] == '0' && (cleaned[1] == 'x' || cleaned[1] == 'X'))
+> +		start += 2;
+> +
+> +	errno = 0;
+> +	address = strtoull(start, &endptr, 16);
+> +
+> +	if (errno != 0 || *endptr != '\0')	{
+> +		log_message(LOG_ERROR, "Invalid hex string: conversion failed");
+> +		free(cleaned);
+> +		return 0;
+> +	}
+> +
+> +	free(cleaned);
+> +	return address;
 > +}
