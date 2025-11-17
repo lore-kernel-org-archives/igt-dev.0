@@ -4,58 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DF21CEBF61
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 08:08:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C3B6CEACEF
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Nov 2025 08:11:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7DD7E10E19D;
-	Mon, 17 Nov 2025 08:08:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3E08410E19D;
+	Mon, 17 Nov 2025 08:11:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FJ+b9qGn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nJYo70Na";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6436D10E18C
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Nov 2025 05:25:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 194EB10E19D
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Nov 2025 08:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763357142; x=1794893142;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=L3NMpVPra6rdCmToEwqd2oAy/oi8JB1M+Uhdl80fT3M=;
- b=FJ+b9qGnUkAcodidPdBKE+CSXS6IQxLUr24Gi9pgdz4p382ojY/Xvl3f
- vvXyMIeGgidF8le0bAEQRxbjEeFMk64hTpQW5j5z7AUQN1PMvJx1X6JPh
- gesa+DTvzbzNLjO1EJdlSvmxIcBeI0VdsdRuzyE7IB4JRlRJnAaD2c9CV
- OVLNSyQx/hfEgDa6rtZ15DpeXuGpUVO+eRFB+71rnflSHOGI0U4EdLFdt
- Z9OG8iY7iW56jhACWcPAjJXYBAtM4mOfu25Nl6GNCJVMeCBBp8qCaYj2a
- nYrEuZDCVgmMBm1Kq0Eqw78Wx+5A1OFqTskoBo3G57/3B+/0IV9FSnikS Q==;
-X-CSE-ConnectionGUID: OcktTTJXSB2GSwExfYP0ug==
-X-CSE-MsgGUID: 3Mqzwq6XTJ+pKAn2ETvsnw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="67955872"
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="67955872"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Nov 2025 21:25:42 -0800
-X-CSE-ConnectionGUID: i08sznFiRdSFQVEL7HOIiQ==
-X-CSE-MsgGUID: ZBS5J+jASAy1yq0EkxBftg==
+ t=1763367096; x=1794903096;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=6Kqu+TvQPtTkv2rSaFqYw68zHgralyRzGiJZ3+A1lXU=;
+ b=nJYo70Na7Lm386Aas6DQq9MS+LetlURbRg7wb9Px8XS6F5P1Hun9Dwkd
+ dYJOocNJEWDHFo65+eLZ5VoOgy9Rt0bpJ4vYc7nWkvscC2l8SwPkTYaE3
+ oFK7BQBO6lASSNik+e/PRPwRG/ZPL62fqjSPecGBkJ3eafcKV0gBEJ+xQ
+ T7+lp4NxLJnbEUy1W6R2n1KS39A0rECfJbvZ9qOSQG1S79L+Tahuz7BT8
+ 567WVUldipsXWb9jiiraWKJAKmlpoWAmuGqawNLCA1OiN+TlJv1dE3JXt
+ KAj+5rDhWe0ijegzCCvbPbv6mcJ/F+W0cLlHlyNILLHddh8m0JKhBllIT Q==;
+X-CSE-ConnectionGUID: cOWOmHiwRM+nKB5R51otSQ==
+X-CSE-MsgGUID: IoHb5lHzRbyiilp77bRNgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11615"; a="76040186"
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="76040186"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2025 00:11:35 -0800
+X-CSE-ConnectionGUID: r8j/rX94RUWH4EWHwkJmDQ==
+X-CSE-MsgGUID: qRrz4jl3SdiZpt513Jailw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="190372749"
-Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
- by orviesa007.jf.intel.com with ESMTP; 16 Nov 2025 21:25:40 -0800
-From: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, vinay.belgaumkar@intel.com,
- badal.nilawar@intel.com, riana.tauro@intel.com, karthik.poosa@intel.com,
- sk.anirban@intel.com, raag.jadav@intel.com,
- Mallesh Koujalagi <mallesh.koujalagi@intel.com>
-Subject: [v14 i-g-t 1/2] tests/intel/i915_pm_rps: Add Multi-GT support for
- freq scaling tests
-Date: Mon, 17 Nov 2025 10:55:08 +0530
-Message-ID: <20251117052506.578422-5-mallesh.koujalagi@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251117052506.578422-4-mallesh.koujalagi@intel.com>
-References: <20251117052506.578422-4-mallesh.koujalagi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,311,1754982000"; d="scan'208";a="195517739"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2025 00:11:36 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Mon, 17 Nov 2025 00:11:35 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Mon, 17 Nov 2025 00:11:35 -0800
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.12) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Mon, 17 Nov 2025 00:11:33 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wlnPMhNoZv3uKfaUMRrA+3kQWqx1hA3BPgr2AjbJO8+pDAYResv8xx+gKC9772gZJUG5RLFI17byhPFXcuN5eo0bm3v+QatSXbtCF+xfNDG0S7SG7NPFqE5OJJfyuj8f1EdMY47OzYCJ84esoGYMVHwokaXuhh1F/COFe+//YCHkfT4y3jyT0aHi9qxTX5nlZ7mp1FFlwDkyrUhQSYtvGA1axMd50bkWuD8fPPyAuTw8pz7FrzGofHydsCqDXjg+wrPlZuxp9B/0xpIlggpYHMBbROaFtwHI1LxS2M+Bud6ISDsqLiSChwu2qzKTGPLRTbC4rV8+x64V0rln0zyDgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1bLYJJCOUbtH2YPdRGPzn9qbJQm8TT282BMl5xuVhoE=;
+ b=ubcCs3WUE0QfKseQwdankVFeNI4yWZH0AXp1VVLpWgMnUR+Xp3pyV3O4kC3y8VAd0QYgjqAnhrXlVTXi4lVZ5BFRQ9NOG9FOx6XDM1qhiaJOKWa4Ahy8pF/MFRYMmzQTABlb0zrdk30iPQB1rBHnUIzMqKaAHrZLtoCgeiPzT5//4wJ8FeI7QgHM3+FVybebBGXjoBZrW1VMe9BZL5KSjKU+XvLpOL8HYx5DHb/x0lYgEGmPG6uD4YuDOCVpqpRAKS4mMIKOGlWgnq644ZGIl5a4yoP1H+Aw0O7Qu44AVhtH3xkOCSsCbaSjVJNx7L9cCXYXBwypzgeI7odiwevQJw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH0PR11MB4806.namprd11.prod.outlook.com (2603:10b6:510:31::21)
+ by MW3PR11MB4697.namprd11.prod.outlook.com (2603:10b6:303:2c::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Mon, 17 Nov
+ 2025 08:11:31 +0000
+Received: from PH0PR11MB4806.namprd11.prod.outlook.com
+ ([fe80::c37b:a730:acc7:479c]) by PH0PR11MB4806.namprd11.prod.outlook.com
+ ([fe80::c37b:a730:acc7:479c%3]) with mapi id 15.20.9298.015; Mon, 17 Nov 2025
+ 08:11:31 +0000
+From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
+To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+CC: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+Subject: RE: [PATCH] tests/intel/kms_dp_linktrain_fallback: log before assert
+Thread-Topic: [PATCH] tests/intel/kms_dp_linktrain_fallback: log before assert
+Thread-Index: AQHcV5bY+4Bxu2MOoUaDon+V35+i87T2hDEA
+Date: Mon, 17 Nov 2025 08:11:31 +0000
+Message-ID: <PH0PR11MB48062494F3C644FE7B205ECFE4C9A@PH0PR11MB4806.namprd11.prod.outlook.com>
+References: <20251117080552.471414-1-kunal1.joshi@intel.com>
+In-Reply-To: <20251117080552.471414-1-kunal1.joshi@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR11MB4806:EE_|MW3PR11MB4697:EE_
+x-ms-office365-filtering-correlation-id: 19000393-7f2b-4a4a-bebb-08de25b0eae4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|10070799003|1800799024|366016|38070700021|7053199007; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?p62ocrwe4HBxgZuL4yGLGhTYJ+zdUI11yJeBuxoYp46cDygA1v3zVTrPNrzW?=
+ =?us-ascii?Q?dks+kfvhyM6ZmFjlrBMZeN0/Mo/HthZ1rZETgs1NBOJqplObBGZyCTlUMns1?=
+ =?us-ascii?Q?M5wG02eJdyq8PjIfdoILdsoJ26ghTJR8siyrQMigXNEiog9rkJPuSnGbObuD?=
+ =?us-ascii?Q?kApRxctWnSCW5OUvYuhca3zYJmCvu1n2aLcWnhXfKmXobRGO7l2vOOLeviCV?=
+ =?us-ascii?Q?VuxUTp15fSMIEMQs2DnQYSCAmerXBdbP43TCxlVYT218XyMoV3Yi8XXa+MoZ?=
+ =?us-ascii?Q?wKojMkEpIKRZC24pIy3UYnMK1qg0nMEGK4opiceNOF1PNWtZdRLMI6HOoGuu?=
+ =?us-ascii?Q?3ACvj8qLrYSrcs9T66aj8ABp6YhG1RLHtikLgvspVIs/dX7jXTCyjOoqtOuG?=
+ =?us-ascii?Q?wqTzQdZEYjDR/cU75jNv968EA3kMqcqDHyT5PYgy4AkPA71Ag8cG1z8p2rBw?=
+ =?us-ascii?Q?PTAsAfStDldSsNfgGtMn4lYmEHdi7ATB9sIanFacvwztCAXhbTfPZhF7o9pK?=
+ =?us-ascii?Q?LsBX2xGppQHuvEGuaxab0d8juUI2yThrJlunck20ZhpSEneINQfLtLg8nECY?=
+ =?us-ascii?Q?VWWVueSqTGG1RVvQCj2wuCJqKBGGYPJ9R7g0NV4LI3Cwa4IXkJj19geqDV1t?=
+ =?us-ascii?Q?yda9lcRIlPgui29y2XiiOKrhpReL/FnDo0sRfWN3v1L8vCgqlLXuX+GVcj7E?=
+ =?us-ascii?Q?k3A8d4ktg/P0Txo8i/f2VzRRamY83GbO4FOc4QHB8XOwHlR9k7AeY6bOXj+K?=
+ =?us-ascii?Q?I5sfTgpRizGPDLwmD/Fd32n+TvyHj07BxBby7nEf1omQnncEv7JPupMS6P7j?=
+ =?us-ascii?Q?/GNU6StvV1Kwib/Idf/MZ69rIH1+x8cz6QeQTDESxnC29TTksUyfjqunKx3j?=
+ =?us-ascii?Q?sJY5iT+0L+7purd4r2HdthdFxEOobNkBO7sASW3sNtk3TdBCib3rjBCpVx0+?=
+ =?us-ascii?Q?bZKy7xo0YBy3hAx+WFeooCwwujKXHnn45e8KHky6GooX6brEPrenVsWZ9wdP?=
+ =?us-ascii?Q?Hgi57wNjXrPHJ+dhWzNCudqj5xQh1mgb51SwRxdtJ0NZMdI+ouGfnkNQ/VAr?=
+ =?us-ascii?Q?M0oSSl7SO3oExwRjDdr73vdhoSNETOoKgVDkS9Spu7xipbun1MlCY+f9NHwm?=
+ =?us-ascii?Q?0xW4+bHaJAdIQaCBUCjAAMCGAgT104Ms0W1o4v+5fzchfpYARd6rXSkTwUn0?=
+ =?us-ascii?Q?Andd6kKjOkHkPOEps7v6QoIlqQxOA1wbzpVZZ2xKYACEvetMPeZKnFreuJGd?=
+ =?us-ascii?Q?9rjsvw8QMmvmmS4B/6UBYmdd1o82bFHB7nD7AE4YnH96AeNAY39pURPjIp+t?=
+ =?us-ascii?Q?MyYsx1kcjhz1Hwl4UY8WPtdNsxBmFXHtzs/ddEzg0kINsGSZOkD62E/buyTN?=
+ =?us-ascii?Q?LUb2ZN1E7+LjC7+JQSgsI7QhWyVW4eJdjRWCv9UOdWC/A5V7Y31Q4AZKZznk?=
+ =?us-ascii?Q?7a3XHRyfAjGWq3Nza+5g3cwbXKzetfIA10zc5Vyc81FIcgbjYYJ1fAIMZe3m?=
+ =?us-ascii?Q?TLEBB8iy28crv63PWRh7dJvVUFnZfdLbm7dG?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR11MB4806.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(10070799003)(1800799024)(366016)(38070700021)(7053199007);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?mVe3UFzIruvMrYXQJZR/y3lhT7eoOedDAZhzsjgZo10muVN1GxSd6SaSFCji?=
+ =?us-ascii?Q?JpIsHUdR+KRqogA9z88HiXW+ZbL2sQXW6+NDzxEtIDSk2GM6Q5ErUSSY0+bf?=
+ =?us-ascii?Q?pgm0tqbWP1plMfltus/rC4GdzDrC32bGlRDPmRmsECApFIl1Fo3j34HMcCUN?=
+ =?us-ascii?Q?rSnQbD3l59EKEtIj+66PdjJIHOBVk62Uyhh7KINgY2WDp5Wct8lx8jxtrYU+?=
+ =?us-ascii?Q?qsp2dG9at5scSR7/Sqnjqm5f6XCdRZAjJUW+owl9wYOPXzg4hcn7eij3aOgz?=
+ =?us-ascii?Q?jCSLm6UcbCjeRrF2433eJWn6boMO2Z7UWn49Zno9YR09Otp8PFHPxGL0oikC?=
+ =?us-ascii?Q?gho7X3Rdshlkw7bmlq6pO9Af+GnmJRVgpeg9nJ2cRcA83BE5cFrhAd52sehm?=
+ =?us-ascii?Q?YkF6Nry1SQ1tpMmDGgMkEQFC4QXJ0S7dJ+LEMXXIPxmRqK4aucf/6SO19E/q?=
+ =?us-ascii?Q?tYVVg2Av7B8R5CNOQyTmerZ0sVxIV+s1VOzGvdzLtFy7v0ZaEShhkOCVxdF9?=
+ =?us-ascii?Q?A37y90MQ53zQTewjuXE6NUGhMdgjNkgM+EAK5+41fM4UvlfsZYqAPRtojQ3h?=
+ =?us-ascii?Q?aAesdmVeYkgIIjxw6QucmE274r1RNBaPeupzRVRNqU63vpsqhrYs6y7VOwGW?=
+ =?us-ascii?Q?9jD+8WH2GKLkG1zN0QyJs0s5XzfPOUlt8gAMy+e2FYfW4TtF7vy+EIgiqNkM?=
+ =?us-ascii?Q?yK0v94Z6qw+Ol8vJXpWF0ONHGd3XksAcoVk9EUKUu90/yW0lg5BabI5ZaLpc?=
+ =?us-ascii?Q?ywGGZ9H8JWHnWNlA399/SkSURqc9PVJ9rAJGaO3TRC0Rh7bvpVfdoiKF34/I?=
+ =?us-ascii?Q?v1wiKqBiwuRoQUv3u4J++BFvt7dSS2gFE5yl1YYL7CjX/g+OogzO9u2+TYex?=
+ =?us-ascii?Q?gjSd5gQdRzNmTEmEt/RMCo5UnMxpBMjd3NLmLfMotmj30R8pe2/v6ORq8MW/?=
+ =?us-ascii?Q?47UiEy1W/13xsOEFrCMhzH4S9BPdkrf8beusnayfSiX+xs9hOigNyUS1T1UK?=
+ =?us-ascii?Q?ahcLbWRoragIiTfcSkCa4t2e8cLsEo5FzhsYd5lymqDdffRW3nQvUK5o6BIi?=
+ =?us-ascii?Q?W9oDk3fsliQsU7pPnb5VV4ilXWs1VzgWb9hctGyds0kF8zMbT6oBKqSNN6A1?=
+ =?us-ascii?Q?93ZwCHVtgq0sKgF7Ovbq3rmb8m/6v/VJhPOByhHcfsMpp2GuPxtIOO9Ksj6O?=
+ =?us-ascii?Q?c9HmvBKukmtW0gYL1zdxBbQaqW9TY+giSgMXrqqANzfIx13ST1PGCLJlmnnN?=
+ =?us-ascii?Q?xDpC3/Q4ll3ZrjYmJqHUuBO4GAYlLnOacqUDMDdueqxa53tcn0QkSY15awWf?=
+ =?us-ascii?Q?RxkaYHeC+2qWuPtpDPn7UfrlVGuxWSVlfEk8TicnloZM9fOsXKmWc5dHzhjF?=
+ =?us-ascii?Q?eS7E7C2dVpRIxwGGsqCNKy3lS/kX3heBVkga03Yy9KDp/sj/jawfAy7wbTVP?=
+ =?us-ascii?Q?nQDgadXC80+Y4ZGTRhF/ViArgR5CLERGqKC9zWMvVAWKamt3Qi6BN7lQS+d8?=
+ =?us-ascii?Q?Kax0jdSssLfGC/NPNsk8mgv/Gr7dJEMoWxShxicjBCdNnuS7orblyHFLi/xB?=
+ =?us-ascii?Q?XqoHRGBaMRfrMUXePMVGCMUQ4aG6Y+XtjovsuFgxCYKksvxsyxgy1CgYxZEG?=
+ =?us-ascii?Q?UFJkJnky+523/ZARmxE3K8PqNEzGNfJsUSqVbMJviLfBj+M8Rvih6bkaa+8V?=
+ =?us-ascii?Q?X2uwKw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Mon, 17 Nov 2025 08:08:03 +0000
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB4806.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19000393-7f2b-4a4a-bebb-08de25b0eae4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Nov 2025 08:11:31.8381 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: W2BuI1Jb03KMnXQGnQQwc24FMpMQ7Cc6CjvcNqZhvaifNwTNa+R3jcTsDMOfOPAeabsprmeua1+iPYBnxCTi3qsZ4RFKGh5Dk7m6tk9t7xg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4697
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,815 +184,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extends the RPS (Render P-States) test framework to support Multi-GT
-configurations. This patch support the frequency scaling tests to
-work with Multi-GT GPU architectures by:
 
-- Refactoring global frequency arrays to per-GT data structures
-- Adding GT enumeration and initialization logic
-- Updating all frequency validation functions to operate per-GT
-- Extending min-max configuration tests across multiple GT tiles
-- Ensuring frequency scaling verification works for each GT independently
 
-The changes ensure that basic frequency scaling tests work correctly
-across Multi-GT configurations.
+-----Original Message-----
+From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Kunal Jo=
+shi
+Sent: 17 November 2025 01:36 PM
+To: igt-dev@lists.freedesktop.org
+Cc: Joshi, Kunal1 <kunal1.joshi@intel.com>
+Subject: [PATCH] tests/intel/kms_dp_linktrain_fallback: log before assert
 
-v2: Split the patches based on test cases. (Vinay/Anirban)
+Improve logging in fallback test to reveal the real reason behind the asser=
+t
 
-v3: Remove while loop in restore and boost_freq functions. (Anirban)
-
-v4: Refactor GT initialization to use detection loop for proper
-    multi-tile suppor. (Vinay)
-
-v5: Consistently use gt_id instead of sysfs_gt. (Vinay)
-
-v6: Refactor Multi-GT code.
-
-v7: Use GT in load runner. (Vinay)
-
-v8: Refactor first and second patch.
-
-v9: Replace sysfs_gt to gt_id. (Vinay)
-  - Add read sysfs file code to separate function. (Vinay)
-  - Move GT initialization function to first patch. (Vinay)
-  - Remove the comment. (Vinay)
-
-v10: Change generic description of each patch. (Vinay)
-   - Rename read_sysfs_to_origfreq to read_sysfs_freq
-   - Move load_helper_run function to first patch
-
-Signed-off-by: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+LGTM.
+Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/intel/i915_pm_rps.c | 369 ++++++++++++++++++++++----------------
- 1 file changed, 219 insertions(+), 150 deletions(-)
+ tests/intel/kms_dp_linktrain_fallback.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/intel/i915_pm_rps.c b/tests/intel/i915_pm_rps.c
-index 80f3e76c1..9a1af20c9 100644
---- a/tests/intel/i915_pm_rps.c
-+++ b/tests/intel/i915_pm_rps.c
-@@ -77,7 +77,11 @@
-  * SUBTEST: waitboost
-  */
- 
-+#define NUMFREQ		8
-+#define MAX_GTS		8
-+
- IGT_TEST_DESCRIPTION("Render P-States tests - verify GPU frequency changes");
-+static void dump(const int *freqs, int gt_id);
- 
- static int drm_fd;
- 
-@@ -89,28 +93,63 @@ enum {
- 	RP0,
- 	RP1,
- 	RPn,
--	BOOST,
--	NUMFREQ
-+	BOOST
- };
- 
--static int origfreqs[NUMFREQ];
-+static int origfreqs[MAX_GTS][NUMFREQ];
- 
- struct sysfs_file {
- 	const char *name;
- 	const char *mode;
- 	FILE *filp;
--} sysfs_files[] = {
--	{ "act", "r", NULL },
--	{ "cur", "r", NULL },
--	{ "min", "rb+", NULL },
--	{ "max", "rb+", NULL },
--	{ "RP0", "r", NULL },
--	{ "RP1", "r", NULL },
--	{ "RPn", "r", NULL },
--	{ "boost", "rb+", NULL },
--	{ NULL, NULL, NULL }
-+} sysfs_files[MAX_GTS][NUMFREQ];
-+
-+static const char *freq_names[NUMFREQ] = {
-+	[ACT]   = "act",
-+	[CUR]   = "cur",
-+	[MIN]   = "min",
-+	[MAX]   = "max",
-+	[RP0]   = "RP0",
-+	[RP1]   = "RP1",
-+	[RPn]   = "RPn",
-+	[BOOST] = "boost"
-+};
-+
-+static const char *freq_modes[NUMFREQ] = {
-+	[ACT]   = "r",
-+	[CUR]   = "r",
-+	[MIN]   = "rb+",
-+	[MAX]   = "rb+",
-+	[RP0]   = "r",
-+	[RP1]   = "r",
-+	[RPn]   = "r",
-+	[BOOST] = "rb+"
- };
- 
-+static void init_sysfs_files(void)
-+{
-+	int tmp, gt;
-+	int actual_gt_count = 0;
-+
-+	/* Count actual GTs and initialize sysfs_files dynamically */
-+	i915_for_each_gt(drm_fd, tmp, gt) {
-+		if (gt >= MAX_GTS) {
-+			igt_warn("GT index %d exceeds MAX_GTS (%d), skipping\n", gt, MAX_GTS);
-+			continue;
-+		}
-+
-+		actual_gt_count = gt + 1;
-+
-+		for (int j = 0; j < NUMFREQ; j++) {
-+			sysfs_files[gt][j].name = freq_names[j];
-+			sysfs_files[gt][j].mode = freq_modes[j];
-+			sysfs_files[gt][j].filp = NULL;
-+		}
-+	}
-+
-+	igt_debug("Detected %d GT(s)\n", actual_gt_count);
-+}
-+
- static int readval(FILE *filp)
- {
- 	int val;
-@@ -123,12 +162,12 @@ static int readval(FILE *filp)
- 	return val;
- }
- 
--static void read_freqs(int *freqs)
-+static void read_freqs(int *freqs, int gt_id)
- {
- 	int i;
- 
- 	for (i = 0; i < NUMFREQ; i++)
--		freqs[i] = readval(sysfs_files[i].filp);
-+		freqs[i] = readval(sysfs_files[gt_id][i].filp);
- }
- 
- static void nsleep(unsigned long ns)
-@@ -147,14 +186,13 @@ static void nsleep(unsigned long ns)
- 	} while (ret && errno == EINTR);
- }
- 
--static void wait_freq_settle(void)
-+static void wait_freq_settle(int gt_id)
- {
- 	int timeout = 10;
- 
- 	while (1) {
- 		int freqs[NUMFREQ];
--
--		read_freqs(freqs);
-+		read_freqs(freqs, gt_id);
- 		if (freqs[CUR] >= freqs[MIN] && freqs[CUR] <= freqs[MAX])
- 			break;
- 		nsleep(1000000);
-@@ -163,7 +201,7 @@ static void wait_freq_settle(void)
- 	}
- }
- 
--static int do_writeval(FILE *filp, int val, int lerrno, bool readback_check)
-+static int do_writeval(FILE *filp, int val, int lerrno, bool readback_check, int gt_id)
- {
- 	int ret, orig;
- 
-@@ -177,24 +215,30 @@ static int do_writeval(FILE *filp, int val, int lerrno, bool readback_check)
- 		if (readback_check)
- 			igt_assert_eq(readval(filp), orig);
- 	} else {
-+		if (ret < 0) {
-+			int freqs[NUMFREQ];
-+
-+			read_freqs(freqs, gt_id);
-+			dump(freqs, gt_id);
-+		}
- 		/* Expecting no error */
- 		igt_assert_lt(0, ret);
--		wait_freq_settle();
-+		wait_freq_settle(gt_id);
- 		if (readback_check)
- 			igt_assert_eq(readval(filp), val);
- 	}
- 
- 	return ret;
- }
--#define writeval(filp, val) do_writeval(filp, val, 0, true)
--#define writeval_inval(filp, val) do_writeval(filp, val, EINVAL, true)
--#define writeval_nocheck(filp, val) do_writeval(filp, val, 0, false)
-+
-+#define writeval(filp, val, gt_id) do_writeval(filp, val, 0, true, gt_id)
-+#define writeval_inval(filp, val, gt_id) do_writeval(filp, val, EINVAL, true, gt_id)
-+#define writeval_nocheck(filp, val, gt_id) do_writeval(filp, val, 0, false, gt_id)
- 
- static void check_freq_constraints(const int *freqs)
- {
- 	igt_assert_lte(freqs[MIN], freqs[MAX]);
- 	igt_assert_lte(freqs[CUR], freqs[MAX]);
--	igt_assert_lte(freqs[RPn], freqs[CUR]);
- 	igt_assert_lte(freqs[RPn], freqs[MIN]);
- 	igt_assert_lte(freqs[MAX], freqs[RP0]);
- 	igt_assert_lte(freqs[RP1], freqs[RP0]);
-@@ -203,14 +247,13 @@ static void check_freq_constraints(const int *freqs)
- 	igt_assert_neq(freqs[RP1], 0);
- }
- 
--static void dump(const int *freqs)
-+static void dump(const int *freqs, int gt_id)
- {
- 	int i;
- 
--	igt_debug("gt freq (MHz):");
-+	igt_debug("gt%d freq (MHz):", gt_id);
- 	for (i = 0; i < NUMFREQ; i++)
--		igt_debug("  %s=%d", sysfs_files[i].name, freqs[i]);
--
-+		igt_debug("  %s=%d", sysfs_files[gt_id][i].name, freqs[i]);
- 	igt_debug("\n");
- }
- 
-@@ -224,6 +267,7 @@ static struct load_helper {
- 	enum load load;
- 	bool exit;
- 	bool signal;
-+	int target_gt;
- 	struct igt_helper_process igt_proc;
- } lh;
- 
-@@ -260,7 +304,7 @@ static void load_helper_set_load(enum load load)
- 	load_helper_sync();
- }
- 
--static void load_helper_run(enum load load)
-+static void load_helper_run(enum load load, int target_gt)
- {
- 	int link[2];
- 
-@@ -278,6 +322,7 @@ static void load_helper_run(enum load load)
- 	lh.exit = false;
- 	lh.load = load;
- 	lh.signal = true;
-+	lh.target_gt = target_gt;
- 
- 	pipe(link);
- 	lh.link = link[1];
-@@ -287,19 +332,21 @@ static void load_helper_run(enum load load)
- 		bool prev_load;
- 		uint32_t handle;
- 		uint64_t ahnd;
-+		const intel_ctx_t *ctx;
- 
- 		intel_allocator_init();
--		ahnd = get_reloc_ahnd(drm_fd, 0);
-+		ctx = intel_ctx_create_for_gt(drm_fd, lh.target_gt);
-+		ahnd = get_reloc_ahnd(drm_fd, ctx->id);
- 
- 		signal(SIGTERM, load_helper_signal_handler);
- 		signal(SIGUSR2, load_helper_signal_handler);
- 
--		igt_debug("Applying %s load...\n", lh.load ? "high" : "low");
-+		igt_debug("Applying %s load on GT%d...\n", lh.load ? "high" : "low", lh.target_gt);
- 
- 		prev_load = lh.load == HIGH;
--		spin[0] = __igt_spin_new(drm_fd, .ahnd = ahnd);
-+		spin[0] = __igt_spin_new(drm_fd, .ahnd = ahnd, .ctx = ctx);
- 		if (prev_load)
--			spin[1] = __igt_spin_new(drm_fd, .ahnd = ahnd);
-+			spin[1] = __igt_spin_new(drm_fd, .ahnd = ahnd, .ctx = ctx);
- 		prev_load = !prev_load; /* send the initial signal */
- 		while (!lh.exit) {
- 			bool high_load;
-@@ -319,7 +366,7 @@ static void load_helper_run(enum load load)
- 			} else {
- 				spin[0] = spin[1];
- 			}
--			spin[high_load] = __igt_spin_new(drm_fd, .ahnd = ahnd);
-+			spin[high_load] = __igt_spin_new(drm_fd, .ahnd = ahnd, .ctx = ctx);
- 
- 			if (lh.signal && high_load != prev_load) {
- 				igt_assert_eq(write(lh.link, &lh.signal, sizeof(lh.signal)),
-@@ -352,6 +399,7 @@ static void load_helper_run(enum load load)
- 		igt_spin_free(drm_fd, spin[1]);
- 		igt_spin_free(drm_fd, spin[0]);
- 		put_ahnd(ahnd);
-+		intel_ctx_destroy(drm_fd, ctx);
- 	}
- 
- 	close(lh.link);
-@@ -367,22 +415,22 @@ static void load_helper_stop(void)
- 	igt_assert(igt_wait_helper(&lh.igt_proc) == 0);
- }
- 
--static void do_load_gpu(void)
-+static void do_load_gpu(int target_gt)
- {
--	load_helper_run(LOW);
-+	load_helper_run(LOW, target_gt);
- 	nsleep(10000000);
- 	load_helper_stop();
- }
- 
- /* Return a frequency rounded by HW to the nearest supported value */
--static int get_hw_rounded_freq(int target)
-+static int get_hw_rounded_freq(int target, int gt_id)
- {
- 	int freqs[NUMFREQ];
- 	int old_freq;
- 	int idx;
- 	int ret;
- 
--	read_freqs(freqs);
-+	read_freqs(freqs, gt_id);
- 
- 	if (freqs[MIN] > target)
- 		idx = MIN;
-@@ -390,10 +438,10 @@ static int get_hw_rounded_freq(int target)
- 		idx = MAX;
- 
- 	old_freq = freqs[idx];
--	writeval_nocheck(sysfs_files[idx].filp, target);
--	read_freqs(freqs);
-+	writeval_nocheck(sysfs_files[gt_id][idx].filp, target, gt_id);
-+	read_freqs(freqs, gt_id);
- 	ret = freqs[idx];
--	writeval_nocheck(sysfs_files[idx].filp, old_freq);
-+	writeval_nocheck(sysfs_files[gt_id][idx].filp, old_freq, gt_id);
- 
- 	return ret;
- }
-@@ -402,112 +450,112 @@ static int get_hw_rounded_freq(int target)
-  * Modify softlimit MIN and MAX freqs to valid and invalid levels. Depending
-  * on subtest run different check after each modification.
-  */
--static void min_max_config(void (*check)(void), bool load_gpu)
-+static void min_max_config(void (*check)(int), bool load_gpu, int gt_id)
- {
--	int fmid = (origfreqs[RPn] + origfreqs[RP0]) / 2;
-+	int fmid = (origfreqs[gt_id][RPn] + origfreqs[gt_id][RP0]) / 2;
- 
- 	/*
- 	 * hw (and so kernel) rounds to the nearest value supported by
- 	 * the given platform.
- 	 */
--	fmid = get_hw_rounded_freq(fmid);
-+	fmid = get_hw_rounded_freq(fmid, gt_id);
- 
- 	igt_debug("\nCheck original min and max...\n");
- 	if (load_gpu)
--		do_load_gpu();
--	check();
-+		do_load_gpu(gt_id);
-+	check(gt_id);
- 
- 	igt_debug("\nSet min=RPn and max=RP0...\n");
--	writeval(sysfs_files[MIN].filp, origfreqs[RPn]);
--	writeval(sysfs_files[MAX].filp, origfreqs[RP0]);
-+	writeval(sysfs_files[gt_id][MIN].filp, origfreqs[gt_id][RPn], gt_id);
-+	writeval(sysfs_files[gt_id][MAX].filp, origfreqs[gt_id][RP0], gt_id);
- 	if (load_gpu)
--		do_load_gpu();
--	check();
-+		do_load_gpu(gt_id);
-+	check(gt_id);
- 
- 	igt_debug("\nIncrease min to midpoint...\n");
--	writeval(sysfs_files[MIN].filp, fmid);
-+	writeval(sysfs_files[gt_id][MIN].filp, fmid, gt_id);
- 	if (load_gpu)
--		do_load_gpu();
--	check();
-+		do_load_gpu(gt_id);
-+	check(gt_id);
- 
- 	igt_debug("\nIncrease min to RP0...\n");
--	writeval(sysfs_files[MIN].filp, origfreqs[RP0]);
-+	writeval(sysfs_files[gt_id][MIN].filp, origfreqs[gt_id][RP0], gt_id);
- 	if (load_gpu)
--		do_load_gpu();
--	check();
-+		do_load_gpu(gt_id);
-+	check(gt_id);
- 
- 	igt_debug("\nIncrease min above RP0 (invalid)...\n");
--	writeval_inval(sysfs_files[MIN].filp, origfreqs[RP0] + 1000);
--	check();
-+	writeval_inval(sysfs_files[gt_id][MIN].filp, origfreqs[gt_id][RP0] + 1000, gt_id);
-+	check(gt_id);
- 
--	if (origfreqs[RPn] < origfreqs[RP0]) {
-+	if (origfreqs[gt_id][RPn] < origfreqs[gt_id][RP0]) {
- 		igt_debug("\nDecrease max to RPn (invalid)...\n");
--		writeval_inval(sysfs_files[MAX].filp, origfreqs[RPn]);
--		check();
-+		writeval_inval(sysfs_files[gt_id][MAX].filp, origfreqs[gt_id][RPn], gt_id);
-+		check(gt_id);
- 	}
- 
- 	igt_debug("\nDecrease min to midpoint...\n");
--	writeval(sysfs_files[MIN].filp, fmid);
-+	writeval(sysfs_files[gt_id][MIN].filp, fmid, gt_id);
- 	if (load_gpu)
--		do_load_gpu();
--	check();
-+		do_load_gpu(gt_id);
-+	check(gt_id);
- 
- 	igt_debug("\nDecrease min to RPn...\n");
--	writeval(sysfs_files[MIN].filp, origfreqs[RPn]);
-+	writeval(sysfs_files[gt_id][MIN].filp, origfreqs[gt_id][RPn], gt_id);
- 	if (load_gpu)
--		do_load_gpu();
--	check();
-+		do_load_gpu(gt_id);
-+	check(gt_id);
- 
- 	igt_debug("\nDecrease min below RPn (invalid)...\n");
--	writeval_inval(sysfs_files[MIN].filp, 0);
--	check();
-+	writeval_inval(sysfs_files[gt_id][MIN].filp, 0, gt_id);
-+	check(gt_id);
- 
- 	igt_debug("\nDecrease max to midpoint...\n");
--	writeval(sysfs_files[MAX].filp, fmid);
--	check();
-+	writeval(sysfs_files[gt_id][MAX].filp, fmid, gt_id);
-+	check(gt_id);
- 
- 	igt_debug("\nDecrease max to RPn...\n");
--	writeval(sysfs_files[MAX].filp, origfreqs[RPn]);
--	check();
-+	writeval(sysfs_files[gt_id][MAX].filp, origfreqs[gt_id][RPn], gt_id);
-+	check(gt_id);
- 
- 	igt_debug("\nDecrease max below RPn (invalid)...\n");
--	writeval_inval(sysfs_files[MAX].filp, 0);
--	check();
-+	writeval_inval(sysfs_files[gt_id][MAX].filp, 0, gt_id);
-+	check(gt_id);
- 
--	if (origfreqs[RP0] > origfreqs[RPn]) {
-+	if (origfreqs[gt_id][RP0] > origfreqs[gt_id][RPn]) {
- 		igt_debug("\nIncrease min to RP0 (invalid)...\n");
--		writeval_inval(sysfs_files[MIN].filp, origfreqs[RP0]);
--		check();
-+		writeval_inval(sysfs_files[gt_id][MIN].filp, origfreqs[gt_id][RP0], gt_id);
-+		check(gt_id);
- 	}
- 
- 	igt_debug("\nIncrease max to midpoint...\n");
--	writeval(sysfs_files[MAX].filp, fmid);
--	check();
-+	writeval(sysfs_files[gt_id][MAX].filp, fmid, gt_id);
-+	check(gt_id);
- 
- 	igt_debug("\nIncrease max to RP0...\n");
--	writeval(sysfs_files[MAX].filp, origfreqs[RP0]);
--	check();
-+	writeval(sysfs_files[gt_id][MAX].filp, origfreqs[gt_id][RP0], gt_id);
-+	check(gt_id);
- 
- 	igt_debug("\nIncrease max above RP0 (invalid)...\n");
--	writeval_inval(sysfs_files[MAX].filp, origfreqs[RP0] + 1000);
--	check();
-+	writeval_inval(sysfs_files[gt_id][MAX].filp, origfreqs[gt_id][RP0] + 1000, gt_id);
-+	check(gt_id);
- 
--	writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
--	writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-+	writeval(sysfs_files[gt_id][MIN].filp, origfreqs[gt_id][MIN], gt_id);
-+	writeval(sysfs_files[gt_id][MAX].filp, origfreqs[gt_id][MAX], gt_id);
- }
- 
--static void basic_check(void)
-+static void basic_check(int gt_id)
- {
- 	int freqs[NUMFREQ];
- 
--	read_freqs(freqs);
--	dump(freqs);
-+	read_freqs(freqs, gt_id);
-+	dump(freqs, gt_id);
- 	check_freq_constraints(freqs);
- }
- 
- #define IDLE_WAIT_TIMESTEP_MSEC 250
- #define IDLE_WAIT_TIMEOUT_MSEC 2500
--static void idle_check(void)
-+static void idle_check(int gt_id)
- {
- 	int freqs[NUMFREQ];
- 	int wait = 0;
-@@ -515,8 +563,8 @@ static void idle_check(void)
- 	/* Monitor frequencies until cur settles down to min, which should
- 	 * happen within the allotted time */
- 	do {
--		read_freqs(freqs);
--		dump(freqs);
-+		read_freqs(freqs, gt_id);
-+		dump(freqs, gt_id);
- 		check_freq_constraints(freqs);
- 		if (freqs[ACT] <= freqs[RPn])
- 			break;
-@@ -532,7 +580,7 @@ static void idle_check(void)
- 
- #define LOADED_WAIT_TIMESTEP_MSEC 100
- #define LOADED_WAIT_TIMEOUT_MSEC 3000
--static void loaded_check(void)
-+static void loaded_check(int gt_id)
- {
- 	int freqs[NUMFREQ];
- 	int wait = 0;
-@@ -540,8 +588,8 @@ static void loaded_check(void)
- 	/* Monitor frequencies until cur increases to max, which should
- 	 * happen within the allotted time */
- 	do {
--		read_freqs(freqs);
--		dump(freqs);
-+		read_freqs(freqs, gt_id);
-+		dump(freqs, gt_id);
- 		check_freq_constraints(freqs);
- 		if (freqs[CUR] >= freqs[MAX])
- 			break;
-@@ -556,19 +604,19 @@ static void loaded_check(void)
- 
- #define STABILIZE_WAIT_TIMESTEP_MSEC 250
- #define STABILIZE_WAIT_TIMEOUT_MSEC 15000
--static void stabilize_check(int *out)
-+static void stabilize_check(int *out, int gt_id)
- {
- 	int freqs[NUMFREQ];
- 	int wait = 0;
- 
- 	/* Monitor frequencies until HW will stabilize cur frequency.
- 	 * It should happen within allotted time */
--	read_freqs(freqs);
--	dump(freqs);
-+	read_freqs(freqs, gt_id);
-+	dump(freqs, gt_id);
- 	usleep(1000 * STABILIZE_WAIT_TIMESTEP_MSEC);
- 	do {
--		read_freqs(out);
--		dump(out);
-+		read_freqs(out, gt_id);
-+		dump(out, gt_id);
- 
- 		if (memcmp(freqs, out, sizeof(freqs)) == 0)
- 			break;
-@@ -581,7 +629,7 @@ static void stabilize_check(int *out)
- 	igt_debug("Waited %d msec to stabilize cur\n", wait);
- }
- 
--static void boost_freq(int fd, int *boost_freqs)
-+static void boost_freq(int fd, int *boost_freqs, int gt_id)
- {
- 	int64_t timeout = 1;
- 	igt_spin_t *load;
-@@ -596,8 +644,8 @@ static void boost_freq(int fd, int *boost_freqs)
- 	/* Waiting will grant us a boost to maximum */
- 	gem_wait(fd, load->handle, &timeout);
- 
--	read_freqs(boost_freqs);
--	dump(boost_freqs);
-+	read_freqs(boost_freqs, gt_id);
-+	dump(boost_freqs, gt_id);
- 
- 	/* Avoid downlocking till boost request is pending */
- 	igt_spin_end(load);
-@@ -606,21 +654,22 @@ static void boost_freq(int fd, int *boost_freqs)
- 	put_ahnd(ahnd);
- }
- 
--static void waitboost(int fd, bool reset)
-+static void waitboost(int fd, bool reset, int gt_id)
- {
- 	int pre_freqs[NUMFREQ];
- 	int boost_freqs[NUMFREQ];
- 	int post_freqs[NUMFREQ];
--	int fmid = (origfreqs[RPn] + origfreqs[RP0]) / 2;
--	fmid = get_hw_rounded_freq(fmid);
-+	int fmid = (origfreqs[gt_id][RPn] + origfreqs[gt_id][RP0]) / 2;
- 
--	igt_require(origfreqs[RP0] > origfreqs[RPn]);
-+	fmid = get_hw_rounded_freq(fmid, gt_id);
- 
--	load_helper_run(LOW);
-+	igt_require(origfreqs[gt_id][RP0] > origfreqs[gt_id][RPn]);
-+
-+	load_helper_run(LOW, gt_id);
- 
- 	igt_debug("Apply low load...\n");
- 	sleep(1);
--	stabilize_check(pre_freqs);
-+	stabilize_check(pre_freqs, gt_id);
- 
- 	if (reset) {
- 		igt_debug("Reset gpu...\n");
-@@ -629,23 +678,23 @@ static void waitboost(int fd, bool reset)
- 	}
- 
- 	/* Set max freq to less than boost freq */
--	writeval(sysfs_files[MAX].filp, fmid);
-+	writeval(sysfs_files[gt_id][MAX].filp, fmid, gt_id);
- 
- 	/* When we wait upon the GPU, we want to temporarily boost it
- 	 * to maximum.
- 	 */
--	boost_freq(fd, boost_freqs);
-+	boost_freq(fd, boost_freqs, gt_id);
- 
- 	/* Set max freq to original softmax */
--	writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-+	writeval(sysfs_files[gt_id][MAX].filp, origfreqs[gt_id][MAX], gt_id);
- 
- 	igt_debug("Apply low load again...\n");
- 	sleep(1);
--	stabilize_check(post_freqs);
-+	stabilize_check(post_freqs, gt_id);
- 
- 	igt_debug("Removing load...\n");
- 	load_helper_stop();
--	idle_check();
-+	idle_check(gt_id);
- 
- 	igt_assert_lt(pre_freqs[CUR], pre_freqs[MAX]);
- 	igt_assert_eq(boost_freqs[CUR], boost_freqs[BOOST]);
-@@ -899,13 +948,17 @@ static void engine_order(int i915)
- 
- static void pm_rps_exit_handler(int sig)
- {
--	if (sysfs_files[MAX].filp) {
--		if (origfreqs[MIN] > readval(sysfs_files[MAX].filp)) {
--			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
--			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
--		} else {
--			writeval(sysfs_files[MIN].filp, origfreqs[MIN]);
--			writeval(sysfs_files[MAX].filp, origfreqs[MAX]);
-+	int tmp, gt;
-+
-+	i915_for_each_gt(drm_fd, tmp, gt) {
-+		if (sysfs_files[gt][MAX].filp) {
-+			if (origfreqs[gt][MIN] > readval(sysfs_files[gt][MAX].filp)) {
-+				writeval(sysfs_files[gt][MAX].filp, origfreqs[gt][MAX], gt);
-+				writeval(sysfs_files[gt][MIN].filp, origfreqs[gt][MIN], gt);
-+			} else {
-+				writeval(sysfs_files[gt][MIN].filp, origfreqs[gt][MIN], gt);
-+				writeval(sysfs_files[gt][MAX].filp, origfreqs[gt][MAX], gt);
-+			}
- 		}
- 	}
- 
-@@ -1080,26 +1133,19 @@ static void test_thresholds(int i915, unsigned int gt, unsigned int flags)
- 	put_ahnd(ahnd);
- }
- 
--igt_main
-+static void read_sysfs_freq(char *sysfs_path)
- {
--	igt_fixture {
--		struct sysfs_file *sysfs_file = sysfs_files;
--		char sysfs_path[80];
--		int ret;
-+	int tmp, gt;
- 
--		/* Use drm_open_driver to verify device existence */
--		drm_fd = drm_open_driver(DRIVER_INTEL);
--		igt_require_gem(drm_fd);
--		igt_require(gem_can_store_dword(drm_fd, 0));
--		igt_assert(igt_sysfs_path(drm_fd, sysfs_path,
--					  sizeof(sysfs_path)));
--
--		do {
-+	i915_for_each_gt(drm_fd, tmp, gt) {
-+		for (int j = 0; j < NUMFREQ; j++) {
-+			struct sysfs_file *sysfs_file = &sysfs_files[gt][j];
- 			int val = -1;
- 			char *path;
-+			int ret;
- 
--			ret = asprintf(&path, "%s/gt_%s_freq_mhz",
--				       sysfs_path, sysfs_file->name);
-+			ret = asprintf(&path, "%s/gt/gt%d/rps_%s_freq_mhz",
-+				       sysfs_path, gt, sysfs_file->name);
- 			igt_assert(ret != -1);
- 			sysfs_file->filp = fopen(path, sysfs_file->mode);
- 			igt_require(sysfs_file->filp);
-@@ -1107,39 +1153,64 @@ igt_main
- 
- 			val = readval(sysfs_file->filp);
- 			igt_assert(val >= 0);
--			sysfs_file++;
--		} while (sysfs_file->name != NULL);
-+			origfreqs[gt][j] = val;
-+			free(path);
-+		}
-+	}
-+}
- 
--		read_freqs(origfreqs);
-+igt_main
-+{
-+	int tmp, gt;
- 
-+	igt_fixture {
-+		char sysfs_path[80];
-+
-+		/* Use drm_open_driver to verify device existence */
-+		drm_fd = drm_open_driver(DRIVER_INTEL);
-+		igt_require_gem(drm_fd);
-+		igt_require(gem_can_store_dword(drm_fd, 0));
-+		igt_assert(igt_sysfs_path(drm_fd, sysfs_path,
-+					  sizeof(sysfs_path)));
-+		/* Initialize sysfs_files str dynamically based on actual GTs */
-+		init_sysfs_files();
-+		read_sysfs_freq(sysfs_path);
- 		igt_install_exit_handler(pm_rps_exit_handler);
- 	}
- 
- 	igt_subtest("basic-api") {
- 		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
- 			      "This subtest is not supported when SLPC is enabled\n");
--		min_max_config(basic_check, false);
-+		i915_for_each_gt(drm_fd, tmp, gt) {
-+			min_max_config(basic_check, false, gt);
-+		}
- 	}
- 
- 	/* Verify the constraints, check if we can reach idle */
- 	igt_subtest("min-max-config-idle") {
- 		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
- 			      "This subtest is not supported when SLPC is enabled\n");
--		min_max_config(idle_check, true);
-+			i915_for_each_gt(drm_fd, tmp, gt) {
-+				min_max_config(idle_check, true, gt);
-+			}
- 	}
- 
- 	/* Verify the constraints with high load, check if we can reach max */
- 	igt_subtest("min-max-config-loaded") {
- 		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
- 			      "This subtest is not supported when SLPC is enabled\n");
--		load_helper_run(HIGH);
--		min_max_config(loaded_check, false);
--		load_helper_stop();
-+		i915_for_each_gt(drm_fd, tmp, gt) {
-+			load_helper_run(HIGH, gt);
-+			min_max_config(loaded_check, false, gt);
-+			load_helper_stop();
-+		}
- 	}
- 
- 	/* Checks if we achieve boost using gem_wait */
- 	igt_subtest("waitboost") {
--		waitboost(drm_fd, false);
-+		i915_for_each_gt(drm_fd, tmp, gt) {
-+			waitboost(drm_fd, false, gt);
-+		}
- 	}
- 
- 	igt_describe("Check if the order of fences does not affect waitboosting");
-@@ -1156,12 +1227,13 @@ igt_main
- 	igt_subtest("reset") {
- 		igt_hang_t hang;
- 		hang = igt_allow_hang(drm_fd, 0, 0);
--		waitboost(drm_fd, true);
-+		i915_for_each_gt(drm_fd, tmp, gt) {
-+			waitboost(drm_fd, true, gt);
-+		}
- 		igt_disallow_hang(drm_fd, hang);
- 	}
- 
- 	igt_subtest_with_dynamic("thresholds-idle") {
--		int tmp, gt;
- 		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
- 			      "This subtest is not supported when SLPC is enabled\n");
- 		i915_for_each_gt(drm_fd, tmp, gt) {
-@@ -1171,7 +1243,6 @@ igt_main
- 	}
- 
- 	igt_subtest_with_dynamic("thresholds") {
--		int tmp, gt;
- 		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
- 			      "This subtest is not supported when SLPC is enabled\n");
- 		i915_for_each_gt(drm_fd, tmp, gt) {
-@@ -1181,7 +1252,6 @@ igt_main
- 	}
- 
- 	igt_subtest_with_dynamic("thresholds-park") {
--		int tmp, gt;
- 		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
- 			      "This subtest is not supported when SLPC is enabled\n");
- 		i915_for_each_gt(drm_fd, tmp, gt) {
-@@ -1191,7 +1261,6 @@ igt_main
- 	}
- 
- 	igt_subtest_with_dynamic("thresholds-idle-park") {
--		int tmp, gt;
- 		igt_skip_on_f(i915_is_slpc_enabled(drm_fd),
- 			      "This subtest is not supported when SLPC is enabled\n");
- 
--- 
-2.45.2
+diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_l=
+inktrain_fallback.c
+index fa58999e8..4d6740883 100644
+--- a/tests/intel/kms_dp_linktrain_fallback.c
++++ b/tests/intel/kms_dp_linktrain_fallback.c
+@@ -400,6 +400,11 @@ static void test_fallback(data_t *data, bool is_mst)
+ 		curr_link_rate =3D igt_get_current_link_rate(data->drm_fd, data->output)=
+;
+ 		curr_lane_count =3D igt_get_current_lane_count(data->drm_fd, data->outpu=
+t);
+=20
++		igt_debug("Fallback state: prev %dx%d, curr %dx%d, max %dx%d, retries=3D=
+%u\n",
++			  prev_link_rate, prev_lane_count,
++			  curr_link_rate, curr_lane_count,
++			  max_link_rate,  max_lane_count,
++			  retries);
+ 		igt_assert_f((curr_link_rate < prev_link_rate ||
+ 			     curr_lane_count < prev_lane_count) ||
+ 			     ((curr_link_rate =3D=3D max_link_rate && curr_lane_count =3D=3D ma=
+x_lane_count) && --retries),
+--
+2.25.1
 
