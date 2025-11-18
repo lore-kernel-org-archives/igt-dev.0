@@ -4,57 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34E8ACEDDA4
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Nov 2025 16:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D598CEE342
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Nov 2025 17:42:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D8D9610E505;
-	Tue, 18 Nov 2025 16:56:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C28BE10E1C9;
+	Tue, 18 Nov 2025 17:42:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Vf3iLu1o";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EEZSP47g";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2009F10E505
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Nov 2025 16:56:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B7BC910E1C9
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Nov 2025 17:42:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763485011; x=1795021011;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=TYd9DT8HdNuV/ZAhpBn0Wog+P+jX4IE6oTuDADTjE6s=;
- b=Vf3iLu1oJwGA82VNnn9W9R8npj81G05/NiyBthUFlnWUicInyb++AZ5p
- 4vUQh2ayvVtx7GBh2GNYatOeGZs7+B3ccDpfHMekJawVIwLc61tKYbwGJ
- lhbvLsjqa+CeBuwBfwa1yJ2BuWJcM45eHYA/YAGGAlOHsf3Cl0GnZQnDY
- LRB20qb+A7T0GTJhpwLmhfvkmxYVvujzVWNhqUPBS2yATFZjfGr952HK3
- JhCn2JWPLdSv6G1LR3Vgds2xqAk7P6Tmm57SIQvROj4fPjJlVfBI82dq4
- iwvlp3rnaBGd3MhDb8iGVSaxPOdcIEWkegcdebuSVcoo8BMwCIHc7w4vU Q==;
-X-CSE-ConnectionGUID: yPztSAbuRkW91S/AeoiDwQ==
-X-CSE-MsgGUID: diQ56wDbQtOti/XHRfmKgg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="75838890"
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="75838890"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2025 08:56:50 -0800
-X-CSE-ConnectionGUID: JUwnDrkARGyYJ5ELoNrUCQ==
-X-CSE-MsgGUID: kE03UMPeT12b1YCt9xOF5A==
+ t=1763487771; x=1795023771;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=s7daDm2ygeQzplrwrdCvuO5ga/anIcHJP+ViVMkDN2M=;
+ b=EEZSP47gZbM2oPfe1tZYKjijQQNl1OksJBmCeygXL8Tq7z1VdZaYjO31
+ yAGcKwnps7XWkD8K4rHGlsyxwHZ4fWTT3hWSQaQOf4QoghUsG71xPUXev
+ cGwZ1+5bkgyDdPJ/XoE8qx13wywJFiEVFpwHrW5RWCaPgB8QcHLWRpcoc
+ 9nUrQG+0hcrqgu4fC2OIxYNHoyvJgrqt8aucKL/NK5tT5BCzegDssZB8r
+ agYem3S/KMiuVStUIYCSEIM+SAt8p2MevxMkh8ahvt9cOIY/beQiQ2UOQ
+ hZgFbOHUl4rGl2NkPE5uIyW6J8Q/UrWS7Gz0cjq+2hY+Mb5XUPzyp6IRP g==;
+X-CSE-ConnectionGUID: bXj4rs+9ThyO6vwEnpURrg==
+X-CSE-MsgGUID: KJnZXLf0SoGrNgpcuoJXsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="53089545"
+X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="53089545"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2025 09:42:50 -0800
+X-CSE-ConnectionGUID: et5c28SKQeaOWxk9MHU1kA==
+X-CSE-MsgGUID: iaiPHv+vSVaeaxRx3gR8WQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="228142361"
-Received: from emccabe-mobl.ger.corp.intel.com (HELO [10.245.32.67])
- ([10.245.32.67])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2025 08:56:49 -0800
-Message-ID: <08970521-fd84-4f75-88f4-a92b32292e94@linux.intel.com>
-Date: Tue, 18 Nov 2025 17:56:46 +0100
+X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="190968660"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2025 09:42:49 -0800
+Date: Tue, 18 Nov 2025 18:42:46 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: S Sebinraj <s.sebinraj@intel.com>
+Cc: igt-dev@lists.freedesktop.org, jeevaka.badrappan@intel.com,
+ zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com
+Subject: Re: [PATCH i-g-t v2 2/3] tools/intel_gpu_frequency: Add multi-GT
+ support
+Message-ID: <20251118174246.4ou7g4fdfcu6kvir@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ S Sebinraj <s.sebinraj@intel.com>, igt-dev@lists.freedesktop.org,
+ jeevaka.badrappan@intel.com, zbigniew.kempczynski@intel.com,
+ kamil.konieczny@intel.com
+References: <20251030152405.3422044-1-s.sebinraj@intel.com>
+ <20251030152405.3422044-3-s.sebinraj@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/5] Redesign of the xe_debugfs test
-To: =?UTF-8?Q?Pi=C3=B3rkowski=2C_Piotr?= <piotr.piorkowski@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20251113114615.3736269-1-piotr.piorkowski@intel.com>
-Content-Language: en-US
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20251113114615.3736269-1-piotr.piorkowski@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251030152405.3422044-3-s.sebinraj@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,31 +74,476 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-
-On 11/13/2025 12:46 PM, Piórkowski, Piotr wrote:
-> From: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Hi S,
+On 2025-10-30 at 20:54:04 +0530, S Sebinraj wrote:
+> This change enhances intel_gpu_frequency to support Intel GPUs
+> with multiple Graphics Technology (GT) units.
 > 
-> As part of the work on patch [1], it became necessary to update the
-> xe_debugfs test to account for the new debugfs structure. However,
-> while reviewing the test, I concluded that a broader redesign would make
-> the test easier to maintain, extend, and adapt to future debugfs changes.
-> 
-> As part of this redesign, I propose replacing the old subtests with a new,
-> clearer layout. Instead of the previous subtests:
-> xe-base — validate debugfs root directory and check the contents of the info file
-> xe-forcewake — check the forcewake node
-> the new subtests would be:
-> root-dir — validate the debugfs root directory
-> tile-dir — validate the debugfs directory for each tile
-> info-read — validate the contents of the info file
-> 
-> The new subtests rely on a table-driven approach: all expected debugfs
-> nodes are defined in an array. This allows both conditional tests
-> (e.g., testing vram_mm only when VRAM is available) and dynamically
-> generated nodes (e.g., gt%u based on gt_mask, or tile%u based on
-> tile_mask).
+> Key improvements:
+> - Add runtime GT detection using igt_sysfs_get_num_gt()
+> - New --gt/-t option to specify target GT (defaults to GT0)
+> - New --list-gts/-l option to display available GTs
 
-I think the redesign makes sense. Please let me know how can I help further.
+When there is a new option, man page also needs an update.
+Also imho please use --list only, because it could be later
+extended into tiles + GTs.
 
-Peter
+> - Update sysfs path generation to use igt_sysfs_gt_path()
+> - As simulataneous read and write is not allowed, the same goes
+>   vice versa, fix for the same is added.
+
+Simultanous is not allowed but you could do it one after another,
+so imho it should work unless user has no rigths to write, when
+she/he is not a root nor sudo.
+
+> 
+> Usage examples:
+>   intel_gpu_frequency --get --gt 1     # Get GT1 frequencies
+>   intel_gpu_frequency --set 400 --gt 0 # Set GT0 frequency
+>   intel_gpu_frequency --list-gts       # List available GTs
+> 
+> The tool now dynamically detects available GTs at runtime and provides
+> error messages when invalid GT numbers are specified. Also by default
+> for set / get operations it acts upon all available GTs unless
+> specified.
+
+Can it keep old behaviour and only for new option give more info?
+Also consider adding a little more, what about a table with
+freq in columns, and GTs/other info in raw? Like:
+
+card BDF:         min  curr RP   max (MHz)
+0    0000:02:00.0 100  350  350  1300
+
+So with tile + GT it would be:
+
+card/tile/GT   BDF:    min  curr RP   max (MHz)
+0/t0/GT0  0000:02:00.0 100  350  350  1300
+0/t0/GT1  0000:02:00.0 100  350  350  400
+
+What you think?
+
+Regards,
+Kamil
+
+PS. old one:
+Opened device: /dev/dri/card1
+cur: 350 MHz
+min: 100 MHz
+RP1: 350 MHz
+max: 1300 MHz
+
+> 
+> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
+> Signed-off-by: Jeevaka Badrappan <jeevaka.badrappan@intel.com>
+> ---
+>  tools/intel_gpu_frequency.c | 255 ++++++++++++++++++++++++++----------
+>  1 file changed, 188 insertions(+), 67 deletions(-)
+> 
+> diff --git a/tools/intel_gpu_frequency.c b/tools/intel_gpu_frequency.c
+> index 3378f3927..5c8c4d57e 100644
+> --- a/tools/intel_gpu_frequency.c
+> +++ b/tools/intel_gpu_frequency.c
+> @@ -24,14 +24,17 @@
+>  #include <assert.h>
+>  #include <getopt.h>
+>  #include <stdio.h>
+> +#include <stdlib.h>
+>  #include <time.h>
+>  #include <unistd.h>
+>  
+>  #include "drmtest.h"
+>  #include "igt_device.h"
+> +#include "igt_sysfs.h"
+>  #include "intel_chipset.h"
+>  
+>  #define VERSION "1.0"
+> +#define SYSFS_PATH_MAX 96
+>  
+>  static int device, devid;
+>  
+> @@ -61,29 +64,51 @@ static struct freq_info info[] = {
+>  };
+>  
+>  static char *
+> -get_sysfs_path(const char *which)
+> +get_sysfs_path(int fd, int gt_id, const char *which)
+>  {
+> -	static const char fmt[] = "/sys/class/drm/card%1d/gt_%3s_freq_mhz";
+> -	char *path;
+> -	int ret;
+> +	static char path[SYSFS_PATH_MAX];
+> +	char *gt_path;
+> +	int path_len, ret;
+> +
+> +	gt_path = igt_sysfs_gt_path(fd, gt_id, path, sizeof(path));
+> +	if (gt_path == NULL) {
+> +		fprintf(stderr, "igt_sysfs_gt_path returned NULL for GT%d\n", gt_id);
+> +		return NULL;
+> +	}
+> +	path_len = strlen(gt_path);
+> +	ret = snprintf(path + path_len, sizeof(path) - path_len,
+> +		       "/rps_%s_freq_mhz", which);
+>  
+> -#define STATIC_STRLEN(string) (sizeof(string) / sizeof(string [0]))
+> -	ret = asprintf(&path, fmt, device, which);
+> -	assert(ret == (STATIC_STRLEN(fmt) - 3));
+> -#undef STATIC_STRLEN
+> +	if (ret >= sizeof(path) - path_len) {
+> +		fprintf(stderr, "Path truncated\n");
+> +		return NULL;
+> +	}
+>  
+>  	return path;
+>  }
+>  
+>  static void
+> -initialize_freq_info(struct freq_info *freq_info)
+> +initialize_freq_info(struct freq_info *freq_info, int fd, int gt_id)
+>  {
+> -	if (freq_info->filp)
+> -		return;
+> +	/* Always close existing file handle and reopen for correct GT */
+> +	if (freq_info->filp) {
+> +		fclose(freq_info->filp);
+> +		freq_info->filp = NULL;
+> +	}
+>  
+> -	freq_info->path = get_sysfs_path(freq_info->name);
+> +	if (freq_info->path)
+> +		free(freq_info->path);
+> +
+> +	freq_info->path = strdup(get_sysfs_path(fd, gt_id, freq_info->name));
+> +	if (!freq_info->path) {
+> +		fprintf(stderr, "Failed to get sysfs path for %s on GT%d\n",
+> +			freq_info->name, gt_id);
+> +	}
+>  	assert(freq_info->path);
+> +
+>  	freq_info->filp = fopen(freq_info->path, freq_info->mode);
+> +	if (!freq_info->filp)
+> +		fprintf(stderr, "Failed to open %s\n", freq_info->path);
+>  	assert(freq_info->filp);
+>  }
+>  
+> @@ -97,31 +122,75 @@ static void wait_freq_settle(void)
+>  	clock_nanosleep(CLOCK_MONOTONIC, 0, &ts, NULL);
+>  }
+>  
+> -static void set_frequency(struct freq_info *freq_info, int val)
+> +static void set_frequency(struct freq_info *freq_info, int fd, int gt_id, int val)
+>  {
+> -	initialize_freq_info(freq_info);
+> +	initialize_freq_info(freq_info, fd, gt_id);
+>  	rewind(freq_info->filp);
+>  	assert(fprintf(freq_info->filp, "%d", val) > 0);
+>  
+>  	wait_freq_settle();
+>  }
+>  
+> -static int get_frequency(struct freq_info *freq_info)
+> +static int get_frequency(struct freq_info *freq_info, int fd, int gt_id)
+>  {
+>  	int val;
+>  
+> -	initialize_freq_info(freq_info);
+> +	initialize_freq_info(freq_info, fd, gt_id);
+>  	rewind(freq_info->filp);
+>  	assert(fscanf(freq_info->filp, "%d", &val)==1);
+>  
+>  	return val;
+>  }
+>  
+> +static void process_gt_frequencies(int fd, int gt_id, bool write, bool *targets, int *set_freq)
+> +{
+> +	int i, try = 1;
+> +	bool fail = write;
+> +
+> +	if (igt_sysfs_get_num_gt(fd) > 1)
+> +		printf("\n--- GT%d ---\n", gt_id);
+> +
+> +	/* If we've previously locked the frequency, we need to make sure to set things
+> +	 * in the correct order, or else the operation will fail (ie. min = max = 200,
+> +	 * and we set min to 300, we fail because it would try to set min >
+> +	 * max). This can be accomplished be going either forward or reverse
+> +	 * through the loop. MIN is always before MAX.
+> +	 *
+> +	 * XXX: Since only min and max are at play, the super lazy way is to do this
+> +	 * 3 times and if we still fail after 3, it's for real.
+> +	 */
+> +again:
+> +	if (try > 2) {
+> +		fprintf(stderr, "Did not achieve desired freq on GT%d.\n", gt_id);
+> +		exit(EXIT_FAILURE);
+> +	}
+> +	for (i = 0; i < ARRAY_SIZE(info); i++) {
+> +		if (targets[i] == false)
+> +			continue;
+> +
+> +		if (write) {
+> +			set_frequency(&info[i], fd, gt_id, set_freq[i]);
+> +			if (get_frequency(&info[i], fd, gt_id) != set_freq[i])
+> +				fail = true;
+> +			else
+> +				fail = false;
+> +		} else {
+> +			printf("%s: %d MHz\n", info[i].name, get_frequency(&info[i], fd, gt_id));
+> +		}
+> +	}
+> +
+> +	if (fail) {
+> +		try++;
+> +		goto again;
+> +	}
+> +}
+> +
+>  static void __attribute__((noreturn))
+>  usage(const char *prog)
+>  {
+>  	printf("%s A program to manipulate Intel GPU frequencies.\n\n", prog);
+> -	printf("Usage: %s [-e] [--min | --max] [--get] [--set frequency_mhz]\n\n", prog);
+> +	printf("Usage: %s [-e] [--min | --max] [--get] [--set frequency_mhz] ", prog);
+> +	printf("[--gt gt_number]\n\n");
+>  	printf("Options: \n");
+>  	printf("  -e		Lock frequency to the most efficient frequency\n");
+>  	printf("  -g, --get     Get all the frequency settings\n");
+> @@ -130,13 +199,18 @@ usage(const char *prog)
+>  	printf("  -m  --max     Lock frequency to max frequency\n");
+>  	printf("  -i  --min     Lock frequency to min (never a good idea, DEBUG ONLY)\n");
+>  	printf("  -d  --defaults  Return the system to hardware defaults\n");
+> +	printf("  -t  --gt      Specify GT number (0, 1, 2, etc.). Default: 0\n");
+> +	printf("  -l  --list-gts List available GTs\n");
+>  	printf("  -h  --help    Returns this\n");
+>  	printf("  -v  --version Version\n");
+>  	printf("\n");
+>  	printf("Examples:\n");
+> -	printf("   intel_gpu_frequency --get\t\tGet the current and minimum frequency\n");
+> -	printf("   intel_gpu_frequency --set 400\tLock frequency to 400Mhz\n");
+> -	printf("   intel_gpu_frequency --custom max=750\tSet the max frequency to 750MHz\n");
+> +	printf("   intel_gpu_frequency --get\t\t\tGet frequency settings for all GTs\n");
+> +	printf("   intel_gpu_frequency --get --gt 1\t\tGet frequency settings for GT1 only\n");
+> +	printf("   intel_gpu_frequency --set 400\t\t\tLock all GTs frequency to 400Mhz\n");
+> +	printf("   intel_gpu_frequency --set 400 --gt 1\tLock GT1 frequency to 400Mhz\n");
+> +	printf("   intel_gpu_frequency --custom max=750 --gt 0\tSet GT0 max frequency to 750MHz\n");
+> +	printf("   intel_gpu_frequency --list-gts\t\tList all available GTs\n");
+>  	printf("\n");
+>  	printf("Report bugs to https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues\n");
+>  	exit(EXIT_FAILURE);
+> @@ -151,11 +225,13 @@ version(const char *prog)
+>  
+>  /* Returns read or write operation */
+>  static bool
+> -parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq)
+> +parse(int argc, char *argv[], int fd, bool *act_upon, size_t act_upon_n,
+> +	int *new_freq, bool *list_gts, int *specified_gt)
+>  {
+>  	int c, tmp;
+>  	bool write = false;
+>  	bool reader = false;
+> +	bool gtt_specified = false;
+>  
+>  	/* No args means -g" */
+>  	if (argc == 1) {
+> @@ -173,11 +249,13 @@ parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq)
+>  			{ "max", no_argument, NULL, 'm' },
+>  			{ "defaults", no_argument, NULL, 'd' },
+>  			{ "help", no_argument, NULL, 'h' },
+> +			{ "gt", required_argument, NULL, 't' },
+> +			{ "list-gts", no_argument, NULL, 'l' },
+>  			{ "version", no_argument, NULL, 'v' },
+>  			{ NULL, 0, NULL, 0}
+>  		};
+>  
+> -		c = getopt_long(argc, argv, "egs:c:midh", long_options, &option_index);
+> +		c = getopt_long(argc, argv, "egs:c:midht:lv", long_options, &option_index);
+>  		if (c == -1)
+>  			break;
+>  
+> @@ -245,7 +323,7 @@ parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq)
+>  					"FIXME: Warning efficient frequency information is incorrect.\n");
+>  				exit(EXIT_FAILURE);
+>  			}
+> -			tmp = get_frequency(&info[EFF]);
+> +			tmp = get_frequency(&info[EFF], fd, *specified_gt >= 0 ? *specified_gt : 0);
+>  			new_freq[MIN] = tmp;
+>  			new_freq[MAX] = tmp;
+>  			act_upon[MIN] = true;
+> @@ -253,7 +331,8 @@ parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq)
+>  			write = true;
+>  			break;
+>  		case 'i': /* mIn */
+> -			tmp = get_frequency(&info[RPn]);
+> +			tmp = get_frequency(&info[RPn], fd,
+> +					    *specified_gt >= 0 ? *specified_gt : 0);
+>  			new_freq[MIN] = tmp;
+>  			new_freq[MAX] = tmp;
+>  			act_upon[MIN] = true;
+> @@ -261,7 +340,8 @@ parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq)
+>  			write = true;
+>  			break;
+>  		case 'm': /* max */
+> -			tmp = get_frequency(&info[RP0]);
+> +			tmp = get_frequency(&info[RP0], fd,
+> +					    *specified_gt >= 0 ? *specified_gt : 0);
+>  			new_freq[MIN] = tmp;
+>  			new_freq[MAX] = tmp;
+>  			act_upon[MIN] = true;
+> @@ -269,12 +349,32 @@ parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq)
+>  			write = true;
+>  			break;
+>  		case 'd': /* defaults */
+> -			new_freq[MIN] = get_frequency(&info[RPn]);
+> -			new_freq[MAX] = get_frequency(&info[RP0]);
+> +			new_freq[MIN] = get_frequency(&info[RPn], fd,
+> +						      *specified_gt >= 0 ? *specified_gt : 0);
+> +			new_freq[MAX] = get_frequency(&info[RP0], fd,
+> +						      *specified_gt >= 0 ? *specified_gt : 0);
+>  			act_upon[MIN] = true;
+>  			act_upon[MAX] = true;
+>  			write = true;
+>  			break;
+> +		case 't': /* gt */
+> +			if (!optarg)
+> +				usage(argv[0]);
+> +
+> +			if (gtt_specified) {
+> +				fprintf(stderr, "Only one GT may be specified at a time\n");
+> +				exit(EXIT_FAILURE);
+> +			}
+> +			*specified_gt = atoi(optarg);
+> +			if (*specified_gt < 0) {
+> +				fprintf(stderr, "Invalid GT number: %d\n", *specified_gt);
+> +				exit(EXIT_FAILURE);
+> +			}
+> +			gtt_specified = true;
+> +			break;
+> +		case 'l': /* list-gts */
+> +			*list_gts = true;
+> +			break;
+>  		case 'v':
+>  			version(argv[0]);
+>  			exit(0);
+> @@ -288,60 +388,81 @@ done:
+>  	return write;
+>  }
+>  
+> -int main(int argc, char *argv[])
+> +static void list_available_gts(int fd, int num_gts)
+>  {
+> +	int i;
+> +
+> +	printf("Available GTs: %d\n", num_gts);
+> +	for (i = 0; i < num_gts; i++) {
+> +		char path[SYSFS_PATH_MAX];
+>  
+> -	bool write, fail, targets[MAX+1] = {false};
+> -	int i, fd, try = 1, set_freq[MAX+1] = {0};
+> +		if (igt_sysfs_gt_path(fd, i, path, sizeof(path)))
+> +			printf("  GT%d: %s\n", i, path);
+> +	}
+> +}
+> +
+> +static void validate_specified_gt(int fd, int specified_gt, int num_gts)
+> +{
+> +	if (specified_gt >= 0) {
+> +		if (specified_gt >= num_gts) {
+> +			fprintf(stderr, "Error: GT%d does not exist. Available GTs: 0-%d\n",
+> +				specified_gt, num_gts - 1);
+> +			close(fd);
+> +			exit(EXIT_FAILURE);
+> +		}
+> +		printf("Operating on GT%d (Total GTs: %d)\n", specified_gt, num_gts);
+> +	} else {
+> +		printf("Operating on all GTs (Total GTs: %d)\n", num_gts);
+> +	}
+> +}
+> +
+> +static void execute_frequency_operations(int fd, int specified_gt, bool write,
+> +					 bool *targets, int *set_freq)
+> +{
+> +	int target_gt;
+> +
+> +	if (specified_gt >= 0) {
+> +		/* Process single specified GT */
+> +		process_gt_frequencies(fd, specified_gt, write, targets, set_freq);
+> +	} else {
+> +		/* Process all GTs using for_each_gt pattern */
+> +		int gt_dir;
+> +
+> +		i915_for_each_gt(fd, gt_dir, target_gt) {
+> +			process_gt_frequencies(fd, target_gt, write, targets, set_freq);
+> +		}
+> +	}
+> +}
+> +
+> +int main(int argc, char *argv[])
+> +{
+> +	bool write, targets[MAX+1] = {false}, list_gts = false;
+> +	int i, fd, set_freq[MAX+1] = {0}, num_gts;
+> +	int specified_gt = -1;
+>  
+>  	fd = __drm_open_driver(DRIVER_INTEL);
+>  	devid = intel_get_drm_devid(fd);
+>  	device = igt_device_get_card_index(fd);
+> -	close(fd);
+> +	num_gts = igt_sysfs_get_num_gt(fd);
+>  
+> -	write = parse(argc, argv, targets, ARRAY_SIZE(targets), set_freq);
+> -	fail = write;
+> +	write = parse(argc, argv, fd, targets, ARRAY_SIZE(targets), set_freq,
+> +		      &list_gts, &specified_gt);
+>  
+> -	/* If we've previously locked the frequency, we need to make sure to set things
+> -	 * in the correct order, or else the operation will fail (ie. min = max = 200,
+> -	 * and we set min to 300, we fail because it would try to set min >
+> -	 * max). This can be accomplished be going either forward or reverse
+> -	 * through the loop. MIN is always before MAX.
+> -	 *
+> -	 * XXX: Since only min and max are at play, the super lazy way is to do this
+> -	 * 3 times and if we still fail after 3, it's for real.
+> -	 */
+> -again:
+> -	if (try > 2) {
+> -		fprintf(stderr, "Did not achieve desired freq.\n");
+> -		exit(EXIT_FAILURE);
+> -	}
+> -	for (i = 0; i < ARRAY_SIZE(targets); i++) {
+> -		if (targets[i] == false)
+> -			continue;
+> +	/* Handle --list-gts option */
+> +	if (list_gts)
+> +		list_available_gts(fd, num_gts);
+>  
+> -		if (write) {
+> -			set_frequency(&info[i], set_freq[i]);
+> -			if (get_frequency(&info[i]) != set_freq[i])
+> -				fail = true;
+> -			else
+> -				fail = false;
+> -		} else {
+> -			printf("%s: %d MHz\n", info[i].name, get_frequency(&info[i]));
+> -		}
+> -	}
+> +	/* Validate specified GT */
+> +	validate_specified_gt(fd, specified_gt, num_gts);
+>  
+> -	if (fail) {
+> -		try++;
+> -		goto again;
+> -	}
+> +	/* Process frequencies for specified GT or all GTs */
+> +	execute_frequency_operations(fd, specified_gt, write, targets, set_freq);
+>  
+>  	for (i = 0; i < ARRAY_SIZE(targets); i++) {
+> -		if (info[i].filp) {
+> +		if (info[i].filp)
+>  			fclose(info[i].filp);
+> -			free(info[i].path);
+> -		}
+>  	}
+>  
+> +	close(fd);
+>  	return EXIT_SUCCESS;
+>  }
+> -- 
+> 2.43.0
+> 
