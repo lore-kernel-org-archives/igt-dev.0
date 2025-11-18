@@ -4,74 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C904CEDD97
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Nov 2025 14:33:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 547F3CEE32A
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Nov 2025 15:50:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D800210E4D0;
-	Tue, 18 Nov 2025 14:33:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EA0F910E4E8;
+	Tue, 18 Nov 2025 15:50:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="DZVPkKnu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dXV7Sjt7";
 	dkim-atps=neutral
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com
- [209.85.216.54])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2FB4F10E4D0
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Nov 2025 14:33:25 +0000 (UTC)
-Received: by mail-pj1-f54.google.com with SMTP id
- 98e67ed59e1d1-34361025290so4243045a91.1
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Nov 2025 06:33:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1763476404; x=1764081204; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eT/0UQVKEnn7dZyxX4zoJYKYTtyhPenp94F2Ge9GuzA=;
- b=DZVPkKnuBpNJhn+FGbCIkg6pueQ/wnmSMlmLuN927CJVAtS7hlhMYjwBmzjRXxFLgZ
- xeuWphsVtHmnMSqKdskyuwzgnDJztkBD48X5tclQnjY/7rA7DUmcEyIbfVBywS+qWDEk
- txHvjmDj5s+xByOshV0ITIWR11ZtA2+JyoegWhdFVJmMgRBdud6uwb4eGYJwEOvVA3f1
- s3YR9f4wIXX2+iLwslgCu+5D09kKMtPungVv5krPjG7kvjMi/8iAlhL7ozOACqXaFSrU
- OfhayVEQzB5Ztd2IOpbLzwRQlNN8x2gE5WRzXD30/neYhHpt29SzBZwvb3WYy/0tOnNn
- 2F1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763476404; x=1764081204;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=eT/0UQVKEnn7dZyxX4zoJYKYTtyhPenp94F2Ge9GuzA=;
- b=YTbfAkLRFDfpZEO7S1TCcijzduY1UwwDz33dhbxeigjzAWdFl4bWKdBBFw4lLfo2bj
- PwxcUtN+DhIpejn3IOjjdA7GxEIBxGQieDQ0woGHPhTe3klEHyIxb8NF0dOkjmiW9wn6
- 9LNP8p/ur/AjLIMLb9bDAgBoEOv6b+EvtM8zogIZ3tLlHZjzd4Rb7tnTy+SXO0/xU012
- qEXSw/aIrmqt2GPr62eBcsCqjDKw/Lm2TWSeDQLzsLifa1eLRdJVIn1wodpwJGCzCgLh
- hdXzgQxqgiwiDgHDjjfYC5EpDLPFKjqPzQEBCZ91TwJ0D07H2i7sF0uF9u0VYfs2NoDF
- ZVwA==
-X-Gm-Message-State: AOJu0Ywh77zKXraSP9ZU71mSNEXR9z80xAZ9YeK1KAIQVdvGwrX64UFE
- lk7YPR2hvFHCzXMXLMH58Ad3VdwtgfwUVQXKJ7rroy1y51MktY5seSNzeeg3WDTJ
-X-Gm-Gg: ASbGncuH0k1QIKX2j/sWTJzkwSqeezcRt+7nka4dNA1C3+l2g1vYdG/atQ74gvnycQk
- k+yBubrBAf2yOQzbUIkLjp69YiU3leHfBIuOItCRVeJGdFd7v5N40EPuSYjCURuS90z/5o2XzKJ
- ODBE9udRBps5e92nAxAl45ho5ECiLw2AkXR5+DQ/XeQHMOA96mnLwt8q188HH1HrClZloSqI5dX
- kdlkdDajxZ77AYNNJ+jo18C7ZF03OzpOcoerbC6KHXSxX4gahQr91lbv7oss2lWGsY2Jlh4yImL
- TI794Kr8kUoXa1PrT8ToCwJbioTsywO6yzZYG9OcNjay0Ri6X0zdkRQ2AFwNPO7Vp6ER+VrCvpG
- VqPnOtvTXPX3SSmdhhQXvW6ZdczYLVMnVWh+8wCHIKrRfQ5mR7eZxAvLqe6TeX3nbhaypMpMHs7
- cY8J0FoXtZ0ADmmuM=
-X-Google-Smtp-Source: AGHT+IEhwVINQDZjtUAkFNl4zg2TTOyv+nZARR05yx5siic0HPor9AX0NVv9UESJIMyMSLjszYkk/A==
-X-Received: by 2002:a17:90b:5804:b0:340:f05a:3ed3 with SMTP id
- 98e67ed59e1d1-343fa52544fmr19493731a91.17.1763476404306; 
- Tue, 18 Nov 2025 06:33:24 -0800 (PST)
-Received: from localhost ([192.55.55.44]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-345b03c7515sm1285267a91.5.2025.11.18.06.33.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Nov 2025 06:33:23 -0800 (PST)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 2/2] tests/intel/i915_module_load: take out
- reload-with-fault-injection test
-Date: Tue, 18 Nov 2025 16:32:53 +0200
-Message-ID: <20251118143301.510707-3-juhapekka.heikkila@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251118143301.510707-1-juhapekka.heikkila@gmail.com>
-References: <20251118143301.510707-1-juhapekka.heikkila@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ACDDC10E4E8
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Nov 2025 15:50:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1763481038; x=1795017038;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=csWBdEBJciZwKwwG144JpmE9OzDAbdPc0P/uMYIGoSc=;
+ b=dXV7Sjt7jJPrRHlL9CZ8Wil1FrtRfTvplYlYL8zUcVPnh+/Q1VtY/Qiz
+ eLEv9mMWfAORWOFYMQL0awjdU8GwyYQ8VZz36P0qZzGc8fmsUAQ6OEZFL
+ Fr5OqSZ017Yi0kbRO6yldtQOG9OQu3XeSiMqGzbDujzf8NOIH41oepWjE
+ CL8DmzPvSwWRlVLV8dchn6D4CKas/UClzk59uPyLEeysx9NpX3X4xCcgJ
+ LPX+zGtn2lOuw+gSYUBSlxRjgiEEE77hR7MCs8b7xlQheSydhRwGKiOmZ
+ 2JR+YbCtrZMpLrXj8L+UqwPd+LvgFij/ypgCAEA0oe4kIkLL8bFz+7bqT g==;
+X-CSE-ConnectionGUID: sd8fEDSMQ+2n0PNBt8xkvg==
+X-CSE-MsgGUID: O2V6fdD/STqC+hN7DU62yA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="65406268"
+X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="65406268"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2025 07:50:36 -0800
+X-CSE-ConnectionGUID: oXRm6w/zSjODEEgEbX9Fow==
+X-CSE-MsgGUID: Rvj0NwzESeGtptwGK3DI7Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="228127571"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+ by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2025 07:50:35 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Tue, 18 Nov 2025 07:50:35 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Tue, 18 Nov 2025 07:50:35 -0800
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.48) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Tue, 18 Nov 2025 07:50:35 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KkMrcH0pwuSHCBugv+WzFCxp2cDtwEdq2MPYA7NMCY51pvBHKONkF8M3aIMQ0JPElqPHeiFKcAAM9tfKeMA/NfWqBP2rna3ryMaKV5eC4QELTIvKUEDDcn0UXQ0wAHFFHA71459x0oNPOUc5u6Z9egn+vAIZdiBxbG3/06rB1CVG+nIHiDr5nykDAF9DG5oV1gOHldJ/EMHK8ix2X9rBCJ6zyxQhVMsBsEfcloXv+NxhWGfGHkTsXM4ZxHUcsNeauAu5swBa1fCZFdb9LxtwRlpKzVJvA5/Hbt1APMVXH0fwIy5MTf2qJDZRH9b3M9307RUtb5sp21uYAWthFgSaJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hzu//VSg1jJvBgi4z31HZKawgBxe4eiiz20phEoAOaU=;
+ b=so6DJAPcRmQ0tdwhcUd2AF2g1X8NAFGCaCS0W7gTjLD/7yGPVaTVxM7sAvVgqBIR8OoyijhTc4vhmp0R1oOOpPJqqSnNFwSW4OxHVtiujVUrl/YFOTHbBQY86SLv3bLTJeF7lds1AxpcGqcKN5ASgybA0XdhpEzkJmd5c43Y1v3rDrW4xVLfu6GvoXkL4+N3vSGPWZfBom3u6et8q5KUjIsCB3RErhelsozu+IKynLqJaxZ37IsNUNe/9iDM+CP+O9cUgorPXhnkp3P6uDgEFFB8lDtKQEyDF8h28uUo4nki9n3sPaivXFus2HrxSOrv6c0MNmmEBuDdCeImJjNqpg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO1PR11MB5057.namprd11.prod.outlook.com (2603:10b6:303:6c::15)
+ by LV3PR11MB8556.namprd11.prod.outlook.com (2603:10b6:408:1b4::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.21; Tue, 18 Nov
+ 2025 15:50:32 +0000
+Received: from CO1PR11MB5057.namprd11.prod.outlook.com
+ ([fe80::3b75:a8d2:464e:30cc]) by CO1PR11MB5057.namprd11.prod.outlook.com
+ ([fe80::3b75:a8d2:464e:30cc%3]) with mapi id 15.20.9320.021; Tue, 18 Nov 2025
+ 15:50:32 +0000
+Date: Tue, 18 Nov 2025 15:50:19 +0000
+From: Krzysztof Karas <krzysztof.karas@intel.com>
+To: S Sebinraj <s.sebinraj@intel.com>
+CC: <igt-dev@lists.freedesktop.org>, <jeevaka.badrappan@intel.com>,
+ <zbigniew.kempczynski@intel.com>, <kamil.konieczny@intel.com>
+Subject: Re: [PATCH i-g-t v3] RFC: tools/gputop: Add GPU frequencies to the
+ client headers
+Message-ID: <42itzms3hb3wvq224i6tmv6am7et624dx2w4lvqx6k6yex4snu@lq7ojx3jjphf>
+"Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316"
+References: <20251118055043.660759-1-s.sebinraj@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <20251118055043.660759-1-s.sebinraj@intel.com>
+X-ClientProxiedBy: TL2P290CA0028.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:3::10) To CO1PR11MB5057.namprd11.prod.outlook.com
+ (2603:10b6:303:6c::15)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PR11MB5057:EE_|LV3PR11MB8556:EE_
+X-MS-Office365-Filtering-Correlation-Id: 00d9b0a7-41bd-4110-b84a-08de26ba34af
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RncwbTlaN0F6NXV5bWwrbDB2S2NUTFhNQXhncUZuS2pCcCtTZHBhMk9ZNXhn?=
+ =?utf-8?B?Z3lNZWh0RTl3YzBVZGRCalFDNWZnKzc0ekR2UksxTzErdmE1M3YxdTdvQkhF?=
+ =?utf-8?B?ck5wTVArTTZnekdxWmI2SkxuemVSVnBXdEdTOThadzhWbGVTVS9pSXIvOFJH?=
+ =?utf-8?B?ZUk1b1VKSmVYQVdld2NEaWdtd0gycE9zZnRhbmF0QUhLb3ZpL2dvdFNySVh5?=
+ =?utf-8?B?L1kwTU01M2tnbEVQK1ZWSzFpRm1xTUZaYlQ1eWVudDBDVjc3WDZyY3l0K3U0?=
+ =?utf-8?B?MEFMb3FrcE9EbFpxZDJrQXEzSCt0Z2VKWkVVM3JaRS9ZZTVJeWlTTE1HZEdw?=
+ =?utf-8?B?eDFhNDZGbGJnVTZENW1RbzVXNDBhUTdPaFNvZyt4NjZ2T2JPNVA3K2pnWDB2?=
+ =?utf-8?B?ZGl3YnFNbVVYWmEvU0JqVEllY3ByWVJ3ZDJ3N2FpREd5N2hPV3RZQUlvNzZQ?=
+ =?utf-8?B?SkY4WmlhSzQ2Rk5MTjE3WXhXSWNKeUQ4Rm9pNXd4UDlOWjh4SDdHUkhnSmkz?=
+ =?utf-8?B?VmZMYmloK0ZMSnJKdlZVSnhKL2NMclVoZGp6aElPcTkzYUlKR0dCTzRFWEVT?=
+ =?utf-8?B?WEdETHlmVTR0QmJhSzQ1elhSR00zTUlTYmRENVJ0ZGtjKzR3NVh2Y2szdlBt?=
+ =?utf-8?B?eW8zQTVNZDlIYS9DZHBJZEpJeFVqOVZKdk1uMGwzRlpDZWVoVEU1UTY4R084?=
+ =?utf-8?B?RGVpT1lhcVM5RTRBY3NzQjMydlNCWmtXUFZmaGRlRGVVazczeURGL3JtS2tX?=
+ =?utf-8?B?bkVqNW5aNFZCRHFmM0lDUFVhTUNBZWpKU3JpYzFHa2lCamJiZUY5enZEUXpC?=
+ =?utf-8?B?anZUVWpSYk1JMEkrWHRkajFUazJra20zUW9aVmJ1N2F2Z1FMY3MwWXhsODVo?=
+ =?utf-8?B?N0prVU1BVnR6YkNoTW84NzRNWXY1TUkreXB5OU4xMWtCU0hiekJYbnVOelo5?=
+ =?utf-8?B?ZWdnYzR5cFFBS2lOQUV5OVJMWnpiV0Z1cHkrZDZiZzAvYlRQWXlvUjNkVnFG?=
+ =?utf-8?B?SVo0SGwveDAzRWZ3UzYrYlpsZXJpdE0xMlFwVkNjQmdvTjlCazZaRFNzQmFx?=
+ =?utf-8?B?bzI4djRWc00veGtzeVB1VlpsVkwzcWlzOFY3U1dsY2Y3djhtVm9UT1FFSUJW?=
+ =?utf-8?B?Sy83VUZXeWJSN04xWUhnMGpPUVZaVWdhS1hCZmhyK1BXeHNjMVNDS1FsM3Qv?=
+ =?utf-8?B?bDI3N0hNV2dhaW9pOWxRVkdJcERVcVVTbENjTTJaSHZ3Y1p0TVFtQWhEVEpM?=
+ =?utf-8?B?eUhxQ1NVeGI3b2YrK05HZmk3RHYxL2RVd3p5R3I2ODhicldnSUdSb2FFazh1?=
+ =?utf-8?B?RXdxelV1Y0pVeHMyRFpyUnBoUmVtbEs4Mm0wUEtXamtBbWRwd2lUeTJaSlF0?=
+ =?utf-8?B?aTB6VWw1dFZCWnNHRWFTUWJuV1QvejRhVHdDb3NZVkRNUnpWQkN1Rm90ZFpU?=
+ =?utf-8?B?MFRtaE5mVk1DelhhYlkyR0QxbW50QXNRMzdwcXJrVFNuclVsU0hCQlNPaHpl?=
+ =?utf-8?B?ZkRRemZRdDNpckZwNnF3U1hmWGs1YXA4STBoMWpTQXpXSzNxbnVaSlBmTFFQ?=
+ =?utf-8?B?N0E1dkhwYnRXeElMMWZvZ2kxVVVLRVBOVzdwM2d1SmM3ZHNzdUdqenN2ZEJE?=
+ =?utf-8?B?TDdRZmJ1eXRiVFgwRXZNRHkyNFpPd1VhL1JnRk5taG1hVUd1di8zeFN4OGUy?=
+ =?utf-8?B?Y0RXc2J3STNoYTdTWmRISVAzVzBJTzNxelp3Y3IyRFhYdWk4S2xSVUhGMUp3?=
+ =?utf-8?B?Y3JMZEZXMTRxWEttSWlhRkp6K0swOTAwM3hLTHVmakw3Q2RGenBaTFFXQ1Ja?=
+ =?utf-8?B?RmkveEVVQk0yMW1tL1JTajkwd0t0UFhXZElITFJHRUtCak1vWGQwMFM4amll?=
+ =?utf-8?B?RjgrTFFsQWwrNkFLVUhRWWtleVRJdFFyeDFqTG1lSTBnUlh1WElUTkFCRldo?=
+ =?utf-8?Q?8xx/CG3ER+V5vNRZPN6fsZnON5oGGkT7?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CO1PR11MB5057.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OTVwQjhRUTRvbUlSbzZTbzhYT2RlRGdMQmF2c1VURVBXemdKM0JPYnZoN1dy?=
+ =?utf-8?B?WlM3eXBmVTBKeXdGOGxJNjlnQnlwN3JTT0Y1YjRMUTE5c1ppQkVyYlVzMlJ2?=
+ =?utf-8?B?ZjViV0w2enJ4TndZejdqSXRYK3hDMlNwdXAzTks0UkYyelF3MDZtT08vRExx?=
+ =?utf-8?B?QmxsY3puVkxqWndaYnVtN0lCMzFlYTlDUGtnUjdhVjFCMTcvNE16RFRnbDJ0?=
+ =?utf-8?B?c0FmZE9GUHBLakhWM1FLTDVqSzhod2txRXpvNmRTdDZhN0drcHpyNnExcEoy?=
+ =?utf-8?B?TDdSSWJxazkzeDRobm5aV3BqeXVrNEpib1BndXBiRjNoVnZsRlBycVkrMEN3?=
+ =?utf-8?B?QnZ5d2JleE4yZzdHNVNNZjAzMngrVncxMHU0K1NjZHNrM0VKeUdNSm9GRTFJ?=
+ =?utf-8?B?aWhOU0NQZ1ZlYTNkUFM2VnVteWZ0d0t6N0FtbzVHcE8zZ3BOQ3Q5bUQ5RzEx?=
+ =?utf-8?B?MnM0aUFrOW0xQlhJQXJ0T0FIc3pRNmJMRzhPU24xd1M4dGRzRGpNOExnNGhn?=
+ =?utf-8?B?SU1FamtZK3R5Wlh0Q2lSRmRDbVYzTWRiNEtyc0lBaXBtU0tVcFpNSVpvY3RT?=
+ =?utf-8?B?VG5PKzE2QTNOMjRUQUVwQnE4TXl5MzNPR1Q5ZWpleWVteFhmVUhKeUczMEdJ?=
+ =?utf-8?B?eWhZWkRJUmlWaFRUWFJwVHYvT3FvZmVCUzM2NG83dndQVFB4WklWOTdyRlBQ?=
+ =?utf-8?B?eWVGU0hzRDNLMCsxUkxIOTgwQURabjlmYlFxdy8va2lONmV6THhaMEsxQUZB?=
+ =?utf-8?B?WHcwbFRSYjViYlhYTk5IdW1SRUF3QS9ReEpOK3lkRk15c0FaMmdTdTZ0R3Zr?=
+ =?utf-8?B?QVhzSEFEZ0tOVjY4b1FhQXVTZWkzaHB0Y3hiYmgzaDl6azV4SUFxYWRvV0M0?=
+ =?utf-8?B?NHdQUU96RzJXYjczNEtNUTRrZTMvSE53SHN1c2FjMGcydDM0M0xNM3MwWmpl?=
+ =?utf-8?B?ZkJ3SGJoaWxNZTIzandHaE1uN1pBZVRxakJiQWVyT0lOMFpLaGFuZkFHWjBM?=
+ =?utf-8?B?S2hJN1BIazczTHdObllkaUJBVWcxdVgyZktvaVdGdEtlMWlQR0hBaWhCRHY2?=
+ =?utf-8?B?dGU0MzVOZDROQnp5QVArRDRYT0F2QmovMDYvRHRzNVVPYjBLak0rWDNZbERG?=
+ =?utf-8?B?a2pxSnBGNWlhbmZMODlZZVl5RVVCZ29ySFFOY1VlNUFkVmlOZW5YbmpnOGsr?=
+ =?utf-8?B?RFkwdXVoV1FaZlJlQjhjNnNwRWtZSkdvbEVhcmUvcjI1YTdQNGZXZFJ2YVVX?=
+ =?utf-8?B?S29RNFZ1WnNaUm1PM2tyZWpWNFRwZ0FJdTRYWGlySCtLdDZWMDZMMnhVVzEw?=
+ =?utf-8?B?N0psWHQyb201MWg1MkVaZGJYR1JobkliSU5CUWZzTmF3WFNHcStvd1VOVnFJ?=
+ =?utf-8?B?NWVweHduS1ZoMFRHeXhnekhvVTR6QWZKT01CY3Bnb0x1dEJwc3psK0ZJVllY?=
+ =?utf-8?B?MHNVMm01ODZncHJJN011OUpPaXUxVmdsRVVmUDhheDBKbjkyK0NOTVZJM0xj?=
+ =?utf-8?B?d3dRYWpRYkphZmFwRTc5UHREaE94TjVKeU5kMWVwclkzT01rbVJZQU83T01j?=
+ =?utf-8?B?RHFDbXZ1Y3BRR0N2S2t2ZU1FM0VIT2JmSFROSDJ5YXdzUk1rL3AzRFlKdUhV?=
+ =?utf-8?B?ODM5SnEycmVTTlJEWmhMTHNFMEpCdmVBOE43Q2ZqTGp1YkV1SUhPRWc2S3ds?=
+ =?utf-8?B?WmdtdzVBOFFEUDN6TmY0RDBXRjIwU2NPRHhJUCt6YTQ5aXI5Q0YwMFM1d2Ey?=
+ =?utf-8?B?TTlXVzg5Rml4a0xPK1JJRXd4SzEvc29oYUJCOXRwTzRYME1HR2p4U3VjWWJ5?=
+ =?utf-8?B?QUM5SUhyVTRiL3AxaHlCZkp1LytZMWEzMjhDR3ZpeE83akRMTUdBREx0SWhE?=
+ =?utf-8?B?Zk1qakNCM3hySngwUGVFSWxXU3Z0T0trM1NUTkZRTisxaGs0MFFsSkhNTjN1?=
+ =?utf-8?B?RW13TUZaUUx0WW5oZ2grWkxqMWx4bTRMOHZhRkVSYVBZdFI3dko0TTd5RE5h?=
+ =?utf-8?B?Y1czSHRaMDBtc1ZZWTVUY2FNS3J3cUlwL2NuV0hHaDBEbVYzVEtnd01wNEZP?=
+ =?utf-8?B?RW11aTR0RGVnQ202K05zUDRibEdBMkRIdW96OGpXVjZUMmlERWtpeXg0bGh1?=
+ =?utf-8?B?L2t3OFM3NEZSTGx6aHlHb3gxclpid3ZvY1V1dkowU2xvNTdYL2tZOUdvSEMw?=
+ =?utf-8?B?OVE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 00d9b0a7-41bd-4110-b84a-08de26ba34af
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5057.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2025 15:50:32.4623 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3/m3EnfE1vqjrusF2wQuBL1QHIJYfwiPJJe73/yOziTSm/LxPau5/W6GOai1fcA14Z+2x2wgfr6aes3oras2lEsgGTKJE8VR1RhM10qN2fo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8556
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,130 +197,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-i915 fault injection mechanism is replaced with kernel generic
-fault inject mechanishm hence take reload-with-fault-injection
-test out as it would just skip.
+Hi,
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/intel/i915_module_load.c | 83 ----------------------------------
- 1 file changed, 83 deletions(-)
+> Enhance gputop to display GPU frequency information (current/actual)
+> for each GT in the client header line alongside the DRM minor number.
+> 
+> Key changes:
+> - Add get_gt_frequencies() function to read GT frequency values
+> - Support both i915 and Xe drivers using appropriate sysfs paths
+> - Display format: "DRM minor X  Freq(cur/act) GT0-freq/freq GT1-freq/freq"
+> - Use IGT API functions (xe_sysfs_gt_path, igt_sysfs_gt_path) for
+>   driver-agnostic sysfs access
+> 
+> The frequency information helps users monitor GPU performance states
+> in real-time while observing client workload utilization.
+> 
+> Example output:
+>   DRM minor 0          Freq(cur/act) GT0-1800/1800 GT1-400/400
+>   DRM minor 128        Freq(cur/act) GT0-400/400 GT1-400/400
+> 
+> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
+> ---
 
-diff --git a/tests/intel/i915_module_load.c b/tests/intel/i915_module_load.c
-index c23b6cd30..6bdd1d8ba 100644
---- a/tests/intel/i915_module_load.c
-+++ b/tests/intel/i915_module_load.c
-@@ -48,10 +48,6 @@
-  * Description: Verify that i915 driver can be successfully loaded with disabled display.
-  * Feature: core, sriov-core
-  *
-- * SUBTEST: reload-with-fault-injection
-- * Description: Verify that i915 driver can be successfully reloaded at least once with fault injection.
-- * Feature: core, sriov-core
-- *
-  * SUBTEST: resize-bar
-  * Description: Check whether lmem bar size can be resized to only supported sizes.
-  */
-@@ -194,14 +190,6 @@ static void store_all(int i915)
- 		igt_assert_eq_u32(engines[i], i);
- }
- 
--static int open_parameters(const char *module_name)
--{
--	char path[256];
--
--	snprintf(path, sizeof(path), "/sys/module/%s/parameters", module_name);
--	return open(path, O_RDONLY);
--}
--
- static void unload_or_die(const char *module_name)
- {
- 	int err, loop;
-@@ -224,40 +212,6 @@ static void unload_or_die(const char *module_name)
- 		       module_name, err, loop);
- }
- 
--static void must_unload(int sig)
--{
--	unload_or_die("i915");
--}
--
--static int
--inject_fault(const char *module_name, const char *opt, int fault)
--{
--	char buf[1024];
--	int dir;
--
--	igt_assert_lt(0, fault);
--	snprintf(buf, sizeof(buf), "%s=%d", opt, fault);
--
--	if (igt_kmod_load(module_name, buf)) {
--		igt_warn("Failed to load module '%s' with options '%s'\n",
--			 module_name, buf);
--		return 1;
--	}
--
--	dir = open_parameters(module_name);
--	igt_sysfs_scanf(dir, opt, "%d", &fault);
--	close(dir);
--
--	igt_debug("Loaded '%s %s', result=%d\n", module_name, buf, fault);
--
--	if (strcmp(module_name, "i915")) /* XXX better ideas! */
--		igt_kmod_unload(module_name);
--	else
--		igt_i915_driver_unload();
--
--	return fault;
--}
--
- static void gem_sanitycheck(void)
- {
- 	struct drm_i915_gem_busy args = {};
-@@ -680,43 +634,6 @@ igt_main
- 		igt_i915_driver_unload();
- 	}
- 
--	igt_describe("Verify that i915 driver can be successfully reloaded at least once"
--		     " with fault injection.");
--	igt_subtest("reload-with-fault-injection") {
--		const char *param;
--		int i;
--
--		igt_i915_driver_unload();
--
--		/*
--		 * inject_fault() leaves the module unloaded, but if that fails
--		 * we must abort the run. Otherwise, we leave a dangerous
--		 * modparam affecting all subsequent tests causing bizarre
--		 * failures.
--		 */
--		igt_install_exit_handler(must_unload);
--
--		i = 0;
--		param = getenv("IGT_SRANDOM");
--		if (param)
--			i = atoi(param);
--		if (!i)
--			i = time(NULL);
--		igt_info("Using IGT_SRANDOM=%d for randomised faults\n", i);
--		srandom(i);
--
--		param = "inject_probe_failure";
--		if (!igt_kmod_has_param("i915", param))
--			param = "inject_load_failure";
--		igt_require(igt_kmod_has_param("i915", param));
--
--		i = 1;
--		while (inject_fault("i915", param, i) == 0)
--			i += 1 + random() % 17;
--
--		unload_or_die("i915");
--	}
--
- 	igt_describe("Test i915 fault injection");
- 	igt_subtest_with_dynamic_f("fault-injection")
- 		test_fault_injection();
+Thanks for applying my suggestions. I tested this while running
+some workloads via IGT tests and it seems all the values are
+displayed correctly.
+
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+
 -- 
-2.43.0
-
+Best Regards,
+Krzysztof
