@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1F64CEDD97
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Nov 2025 14:33:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C904CEDD97
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Nov 2025 14:33:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5DC1310E4CD;
-	Tue, 18 Nov 2025 14:33:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D800210E4D0;
+	Tue, 18 Nov 2025 14:33:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="m6Jl5+Kt";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="DZVPkKnu";
 	dkim-atps=neutral
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com
- [209.85.214.172])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 32C7310E4CE
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Nov 2025 14:33:20 +0000 (UTC)
-Received: by mail-pl1-f172.google.com with SMTP id
- d9443c01a7336-298250d7769so37900425ad.0
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Nov 2025 06:33:20 -0800 (PST)
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com
+ [209.85.216.54])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2FB4F10E4D0
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Nov 2025 14:33:25 +0000 (UTC)
+Received: by mail-pj1-f54.google.com with SMTP id
+ 98e67ed59e1d1-34361025290so4243045a91.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Nov 2025 06:33:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1763476399; x=1764081199; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1763476404; x=1764081204; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=imn43e3TNtKNkxmaGExStL07Vdf85Adpl4q0ar2Gr74=;
- b=m6Jl5+Kt2u9oQIUaM4VCTc+R3y9WgDiRZtypIWnJCXCB1kxqTT9Y8zLDhRIYAm/+AO
- Uw3w1r9eQOr6HkXNperZh+MLQn3b9W1/coBDPdQFPzCl88JsRtA0veqlG+a8/TgUBohV
- O2tx4kwuQ7XBGh9ZMk0+48WeptJKOrHCcFPHejiuzfTbMGJfpl0yIRkYt24VzMsFVUNh
- cy7eq0PdkU+xtcL5VGE6A70O9c5IVtp7ltU7+u1uMMxWXggcdYX1GCWmF3XVsYupAZ8p
- b2nPwNhmSSLLbeN7ZOKJoI6HWjLlyizbiURQ7ywNgSkTDPvKbIs5ozM3R2he3GhRQT/d
- Pe/A==
+ bh=eT/0UQVKEnn7dZyxX4zoJYKYTtyhPenp94F2Ge9GuzA=;
+ b=DZVPkKnuBpNJhn+FGbCIkg6pueQ/wnmSMlmLuN927CJVAtS7hlhMYjwBmzjRXxFLgZ
+ xeuWphsVtHmnMSqKdskyuwzgnDJztkBD48X5tclQnjY/7rA7DUmcEyIbfVBywS+qWDEk
+ txHvjmDj5s+xByOshV0ITIWR11ZtA2+JyoegWhdFVJmMgRBdud6uwb4eGYJwEOvVA3f1
+ s3YR9f4wIXX2+iLwslgCu+5D09kKMtPungVv5krPjG7kvjMi/8iAlhL7ozOACqXaFSrU
+ OfhayVEQzB5Ztd2IOpbLzwRQlNN8x2gE5WRzXD30/neYhHpt29SzBZwvb3WYy/0tOnNn
+ 2F1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1763476399; x=1764081199;
+ d=1e100.net; s=20230601; t=1763476404; x=1764081204;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=imn43e3TNtKNkxmaGExStL07Vdf85Adpl4q0ar2Gr74=;
- b=jQTuJEs00Zk5xx/SVAW/tZwkChF+DUBo/pXdvLtvTY4NcXH+rthV4TvO4RiHE++PcM
- ZVncxsoHMziRty0c4Risjseym9n6yMFfL2pkuOl1AOL6YJ7FeXLWSSY+uGkhQxeomUWW
- TQkU9E4yOqa4PZuLQA7GyjcOG78/sjNYd7zOVyBPCgSFV1/DY2Se9Jo9J/4zRz2L1mim
- BTsnUqfccNV+OnaAzUWoKPgp1iU3SimLhCyNH1mebzHndsQQbFAdg4YTxnlBnv+27x2q
- C3nYj+5Gr1GEz7DpCgovSEa2OXEGFFBRFjjWlG8QVmcvIaXETrqjXjbcLBWKa+8kWLzO
- tuTA==
-X-Gm-Message-State: AOJu0YwLZNsZ6s0EbtvqHT9hMQDc+v46a8llxfLMksEs0INCDbgwb5wT
- H/OhZ9pSMb/Zw9ZIfVvfRki3peLGZ6TdvRNJlO5k3OCuSCnXzuyKZr6k54yYmM61
-X-Gm-Gg: ASbGncuekPDoq2kgmlqcCKgpvQlP9YBWfeg1zbAd5qjSdo1GclwbV8MKq3i1DSZiCaY
- 7tqLHn2SMtzCBcsY1Hu8jF6d7X0DemPitxsBSqmYIcKg4JQsTo3ZnKwF60TlczTGUIZF5WL4a8r
- Sx3iJOzdci4MFdSL9ySqev5s+/JYvMhPE/Q6X6Cu+ZcbF2rGyyuNL42laFdvPEULREHIVPBxG2w
- ZBJ+yEPNo+anm1SrVKZvbXscHzul+z7MCQt4RFPuWOb01YKmZfL0n/Q0sqwfwvjTLBFqdBEc/tB
- BuACHoZs9L+Dhf7Mq1FqeyG3UDjbiWHbS2lDdE9ixItNdiHMZTNM99UMM+iDU2+DDqpf3kMo9XT
- APb3Wm7g5e8ePI1kAUHenYJffcxkEvyNH5gPSJg+l85QbplCkPPw11xHzMyx8SjDzy2paNhzgFj
- QpqeDfjuzd5BE1opdK+fEF2e7D5A==
-X-Google-Smtp-Source: AGHT+IHiHWuieYlft4EVWfgMtA/MNesbMgsm28NreUeIbyMZeUdgNT5cQBBtDyn50PGTec/fo/d39g==
-X-Received: by 2002:a17:903:230f:b0:297:d741:d28a with SMTP id
- d9443c01a7336-2986a72cb1fmr186810495ad.31.1763476399221; 
- Tue, 18 Nov 2025 06:33:19 -0800 (PST)
+ bh=eT/0UQVKEnn7dZyxX4zoJYKYTtyhPenp94F2Ge9GuzA=;
+ b=YTbfAkLRFDfpZEO7S1TCcijzduY1UwwDz33dhbxeigjzAWdFl4bWKdBBFw4lLfo2bj
+ PwxcUtN+DhIpejn3IOjjdA7GxEIBxGQieDQ0woGHPhTe3klEHyIxb8NF0dOkjmiW9wn6
+ 9LNP8p/ur/AjLIMLb9bDAgBoEOv6b+EvtM8zogIZ3tLlHZjzd4Rb7tnTy+SXO0/xU012
+ qEXSw/aIrmqt2GPr62eBcsCqjDKw/Lm2TWSeDQLzsLifa1eLRdJVIn1wodpwJGCzCgLh
+ hdXzgQxqgiwiDgHDjjfYC5EpDLPFKjqPzQEBCZ91TwJ0D07H2i7sF0uF9u0VYfs2NoDF
+ ZVwA==
+X-Gm-Message-State: AOJu0Ywh77zKXraSP9ZU71mSNEXR9z80xAZ9YeK1KAIQVdvGwrX64UFE
+ lk7YPR2hvFHCzXMXLMH58Ad3VdwtgfwUVQXKJ7rroy1y51MktY5seSNzeeg3WDTJ
+X-Gm-Gg: ASbGncuH0k1QIKX2j/sWTJzkwSqeezcRt+7nka4dNA1C3+l2g1vYdG/atQ74gvnycQk
+ k+yBubrBAf2yOQzbUIkLjp69YiU3leHfBIuOItCRVeJGdFd7v5N40EPuSYjCURuS90z/5o2XzKJ
+ ODBE9udRBps5e92nAxAl45ho5ECiLw2AkXR5+DQ/XeQHMOA96mnLwt8q188HH1HrClZloSqI5dX
+ kdlkdDajxZ77AYNNJ+jo18C7ZF03OzpOcoerbC6KHXSxX4gahQr91lbv7oss2lWGsY2Jlh4yImL
+ TI794Kr8kUoXa1PrT8ToCwJbioTsywO6yzZYG9OcNjay0Ri6X0zdkRQ2AFwNPO7Vp6ER+VrCvpG
+ VqPnOtvTXPX3SSmdhhQXvW6ZdczYLVMnVWh+8wCHIKrRfQ5mR7eZxAvLqe6TeX3nbhaypMpMHs7
+ cY8J0FoXtZ0ADmmuM=
+X-Google-Smtp-Source: AGHT+IEhwVINQDZjtUAkFNl4zg2TTOyv+nZARR05yx5siic0HPor9AX0NVv9UESJIMyMSLjszYkk/A==
+X-Received: by 2002:a17:90b:5804:b0:340:f05a:3ed3 with SMTP id
+ 98e67ed59e1d1-343fa52544fmr19493731a91.17.1763476404306; 
+ Tue, 18 Nov 2025 06:33:24 -0800 (PST)
 Received: from localhost ([192.55.55.44]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2985c245d4bsm177871755ad.34.2025.11.18.06.33.17
+ 98e67ed59e1d1-345b03c7515sm1285267a91.5.2025.11.18.06.33.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Nov 2025 06:33:18 -0800 (PST)
+ Tue, 18 Nov 2025 06:33:23 -0800 (PST)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 1/2] tests/intel/i915_module_load: Add kernel default
- faul injection tests
-Date: Tue, 18 Nov 2025 16:32:52 +0200
-Message-ID: <20251118143301.510707-2-juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 2/2] tests/intel/i915_module_load: take out
+ reload-with-fault-injection test
+Date: Tue, 18 Nov 2025 16:32:53 +0200
+Message-ID: <20251118143301.510707-3-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251118143301.510707-1-juhapekka.heikkila@gmail.com>
 References: <20251118143301.510707-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -88,333 +87,130 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Here added fault-injection subtest which use kernel default fault
-injection with bind/unbind.
+i915 fault injection mechanism is replaced with kernel generic
+fault inject mechanishm hence take reload-with-fault-injection
+test out as it would just skip.
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- tests/intel/i915_module_load.c | 287 +++++++++++++++++++++++++++++++++
- 1 file changed, 287 insertions(+)
+ tests/intel/i915_module_load.c | 83 ----------------------------------
+ 1 file changed, 83 deletions(-)
 
 diff --git a/tests/intel/i915_module_load.c b/tests/intel/i915_module_load.c
-index 2047d1886..c23b6cd30 100644
+index c23b6cd30..6bdd1d8ba 100644
 --- a/tests/intel/i915_module_load.c
 +++ b/tests/intel/i915_module_load.c
-@@ -33,6 +33,10 @@
-  * Feature: core
-  * Test category: GEM_Legacy
+@@ -48,10 +48,6 @@
+  * Description: Verify that i915 driver can be successfully loaded with disabled display.
+  * Feature: core, sriov-core
   *
-+ * SUBTEST: fault-injection
-+ * Description: Verify that i915 driver can be successfully bound and unbound with fault injection.
-+ * Functionality: fault
-+ *
-  * SUBTEST: load
-  * Description: Check if i915 and friends are not yet loaded, then load them.
-  *
-@@ -68,6 +72,7 @@
- #include "igt_kmod.h"
- #include "igt_sysfs.h"
- #include "igt_core.h"
-+#include "igt_device.h"
- 
- #define BAR_SIZE_SHIFT 20
- #define MIN_BAR_SIZE 256
-@@ -361,6 +366,284 @@ static uint32_t  driver_load_with_lmem_bar_size(uint32_t lmem_bar_size, bool che
- 	return lmem_bar_size;
+- * SUBTEST: reload-with-fault-injection
+- * Description: Verify that i915 driver can be successfully reloaded at least once with fault injection.
+- * Feature: core, sriov-core
+- *
+  * SUBTEST: resize-bar
+  * Description: Check whether lmem bar size can be resized to only supported sizes.
+  */
+@@ -194,14 +190,6 @@ static void store_all(int i915)
+ 		igt_assert_eq_u32(engines[i], i);
  }
  
-+struct fault_injection_params {
-+	/* @probability: Likelihood of failure injection, in percent. */
-+	uint32_t probability;
-+	/* @interval: Specifies the interval between failures */
-+	uint32_t interval;
-+	/* @times: Specifies how many times failures may happen at most */
-+	int32_t times;
-+	/*
-+	 * @space: Specifies how many times fault injection is suppressed before
-+	 * first injection
-+	 */
-+	uint32_t space;
-+};
-+
-+static int fail_function_open(void)
-+{
-+	int debugfs_fail_function_dir_fd;
-+	const char *debugfs_root;
-+	char path[96];
-+
-+	debugfs_root = igt_debugfs_mount();
-+	igt_assert(debugfs_root);
-+
-+	sprintf(path, "%s/fail_function", debugfs_root);
-+
-+	if (access(path, F_OK))
-+		return -1;
-+
-+	debugfs_fail_function_dir_fd = open(path, O_RDONLY);
-+	igt_debug_on_f(debugfs_fail_function_dir_fd < 0, "path: %s\n", path);
-+
-+	return debugfs_fail_function_dir_fd;
-+}
-+
-+static void injection_list_add(const char function_name[])
-+{
-+	int dir;
-+
-+	dir = fail_function_open();
-+
-+	igt_assert_lte(0, dir);
-+	igt_assert_lte(0, igt_sysfs_printf(dir, "inject", "%s", function_name));
-+
-+	close(dir);
-+}
-+
-+/*
-+ * Default fault injection parameters which injects fault on first call to the
-+ * configured fail_function.
-+ */
-+static const struct fault_injection_params default_fault_params = {
-+	.probability = 100,
-+	.interval = 0,
-+	.times = -1,
-+	.space = 0
-+};
-+
-+/*
-+ * See https://docs.kernel.org/fault-injection/fault-injection.html#application-examples
-+ */
-+static void setup_injection_fault(const struct fault_injection_params *fault_params)
-+{
-+	int dir;
-+
-+	if (!fault_params)
-+		fault_params = &default_fault_params;
-+
-+	igt_assert(fault_params->probability >= 0);
-+	igt_assert(fault_params->probability <= 100);
-+
-+	dir = fail_function_open();
-+	igt_assert_lte(0, dir);
-+
-+	igt_debug("probability = %d, interval = %d, times = %d, space = %u\n",
-+			fault_params->probability, fault_params->interval,
-+			fault_params->times, fault_params->space);
-+
-+	igt_assert_lte(0, igt_sysfs_printf(dir, "task-filter", "N"));
-+	igt_sysfs_set_u32(dir, "probability", fault_params->probability);
-+	igt_sysfs_set_u32(dir, "interval", fault_params->interval);
-+	igt_sysfs_set_s32(dir, "times", fault_params->times);
-+	igt_sysfs_set_u32(dir, "space", fault_params->space);
-+	igt_sysfs_set_u32(dir, "verbose", 1);
-+
-+	close(dir);
-+}
-+
-+static void injection_list_clear(void)
-+{
-+	/* If nothing specified (‘’) injection list is cleared */
-+	return injection_list_add("");
-+}
-+
-+/*
-+ * The injectable file requires CONFIG_FUNCTION_ERROR_INJECTION in kernel.
-+ */
-+static bool fail_function_injection_enabled(void)
-+{
-+	char *contents;
-+	int dir;
-+
-+	dir = fail_function_open();
-+	if (dir < 0)
-+		return false;
-+
-+	contents = igt_sysfs_get(dir, "injectable");
-+	if (contents == NULL)
-+		return false;
-+
-+	free(contents);
-+
-+	return true;
-+}
-+
-+static void cleanup_injection_fault(int sig)
-+{
-+	injection_list_clear();
-+}
-+
-+static void set_retval(const char function_name[], long long retval)
-+{
-+	char path[96];
-+	int dir;
-+
-+	dir = fail_function_open();
-+	igt_assert_lte(0, dir);
-+
-+	sprintf(path, "%s/retval", function_name);
-+	igt_assert_lte(0, igt_sysfs_printf(dir, path, "%#016llx", retval));
-+
-+	close(dir);
-+}
-+
-+static int
-+inject_fault_probe(int fd, const char pci_slot[], const char function_name[],
-+		   int inject_error, int devicefd)
-+{
-+	int err = 0;
-+
-+	injection_list_add(function_name);
-+	set_retval(function_name, inject_error);
-+
-+	igt_assert(igt_sysfs_set(devicefd, "reset", "1"));
-+	igt_kmod_bind("i915", pci_slot);
-+
-+	err = -errno;
-+	injection_list_clear();
-+	return err;
-+}
-+
-+static char *bus_addr(int fd, char *path)
-+{
-+	char sysfs[128];
-+	char *rp, *addr_pos;
-+
-+	if (!igt_sysfs_path(fd, sysfs, sizeof(sysfs)))
-+		return NULL;
-+
-+	if (128 <= (strlen(sysfs) + strlen("/device")))
-+		return NULL;
-+
-+	strcat(sysfs, "/device");
-+
-+	rp = realpath(sysfs, path);
-+
-+	igt_require(strstr(rp, "/sys/devices/pci") == rp);
-+	addr_pos = strrchr(rp, '/');
-+
-+	snprintf(path, PATH_MAX, "%s", addr_pos + 1);
-+	return path;
-+}
-+
-+static void test_fault_injection(void)
-+{
-+	char pci_slot[NAME_MAX], addr[PATH_MAX];
-+	int ret = 0;
-+	int sysfs = 0;
-+	int devicefd = 0;
-+	int fd, guc;
-+
-+	char error_ignore[] =
-+		".*Failed to register driver for userspace access!"
-+		"|.*Device initialization failed.*"
-+		"|.*probe with driver i915 failed with error.*"
-+		"|.*GT1: GSC proxy handler failed to init.*"
-+		"|.*GT0: GUC: failed with -ENXIO.*"
-+		"|.*GuC fw rsa data creation failed -ENXIO.*"
-+		"|.*GUC: failed with -ENXIO.*"
-+		"|.*Failed to register driver for userspace access.*"
-+		"|.*GT0: GuC fw rsa data creation failed -ENXIO.*"
-+		;
-+
-+	struct {
-+		const char *test_name;
-+		const char *function;
-+		int faultcode;
-+		int flags; // 0x1 = guc related tests
-+	} fail_tests[] = {
-+		{"__uc_init", "__uc_init", -ENOMEM, 1},
-+		{"i915_driver_mmio_probe", "i915_driver_mmio_probe", -ENODEV, 0},
-+		{"i915_driver_hw_probe", "i915_driver_hw_probe", -ENODEV, 0},
-+		{"i915_pci_probe", "i915_pci_probe", -ENODEV, 0},
-+		{"__fw_domain_init", "__fw_domain_init", -ENOMEM, 1},
-+		{"intel_connector_register", "intel_connector_register", -EFAULT, 0},
-+		{"i915_driver_early_probe", "i915_driver_early_probe", -ENODEV, 0},
-+		{"intel_gt_init-ENODEV", "intel_gt_init", -ENODEV, 1},
-+		{"intel_guc_ct_init", "intel_guc_ct_init", -ENXIO, 1},
-+		{"uc_fw_rsa_data_create", "uc_fw_rsa_data_create", -ENXIO, 1},
-+	};
-+
-+	igt_require(fail_function_injection_enabled());
-+
-+	fd = drm_open_driver(DRIVER_INTEL);
-+	igt_require(fd);
-+
-+	guc = gem_submission_method(fd);
-+
-+	sysfs = igt_sysfs_open(fd);
-+	devicefd = openat(sysfs, "device", O_DIRECTORY);
-+	bus_addr(fd, addr);
-+	igt_install_exit_handler(cleanup_injection_fault);
-+
-+	igt_device_get_pci_slot_name(fd, pci_slot);
-+
-+	for (int c = 0; c < ARRAY_SIZE(fail_tests); c++) {
-+		igt_dynamic(fail_tests[c].test_name) {
-+			if (fail_tests[c].flags & 0x1)
-+				igt_require(guc == GEM_SUBMISSION_GUC);
-+
-+			igt_emit_ignore_dmesg_regex(error_ignore);
-+
-+			igt_set_timeout(60, "Driver unbind re-bind timeout!");
-+			igt_kmod_unbind("i915", pci_slot);
-+			setup_injection_fault(&default_fault_params);
-+
-+			ret = inject_fault_probe(fd, pci_slot,
-+						 fail_tests[c].function,
-+						 fail_tests[c].faultcode,
-+						 devicefd);
-+
-+			igt_reset_timeout();
-+
-+			if (ret == fail_tests[c].faultcode) {
-+				igt_info("Load failed with expected error %s (%d)\n",
-+					 strerror(-ret), ret);
-+			} else if (ret == 0) {
-+				igt_info("Load succeeded - %s() was *not* executed!\n",
-+					 fail_tests[c].function);
-+
-+				injection_list_clear();
-+				igt_assert_f(0, "%s() was *not* executed!\n",
-+					     fail_tests[c].function);
-+
-+			} else {
-+				igt_info("Load failed with unexpected error %d (%s)\n",
-+					ret, strerror(-ret));
-+
-+				close(devicefd);
-+				close(sysfs);
-+				drm_close_driver(fd);
-+
-+				igt_i915_driver_unload();
-+				igt_i915_driver_load(NULL);
-+
-+				igt_assert_f(0, "unexpected error %d (%s)\n",
-+					     ret, strerror(-ret));
-+			}
-+		}
-+	}
-+
-+	close(devicefd);
-+	close(sysfs);
-+	drm_close_driver(fd);
-+
-+	unload_or_die("i915");
-+	igt_i915_driver_load(NULL);
-+}
-+
- igt_main
+-static int open_parameters(const char *module_name)
+-{
+-	char path[256];
+-
+-	snprintf(path, sizeof(path), "/sys/module/%s/parameters", module_name);
+-	return open(path, O_RDONLY);
+-}
+-
+ static void unload_or_die(const char *module_name)
  {
- 	igt_describe("Check if i915 and friends are not yet loaded, then load them.");
-@@ -434,6 +717,10 @@ igt_main
- 		unload_or_die("i915");
+ 	int err, loop;
+@@ -224,40 +212,6 @@ static void unload_or_die(const char *module_name)
+ 		       module_name, err, loop);
+ }
+ 
+-static void must_unload(int sig)
+-{
+-	unload_or_die("i915");
+-}
+-
+-static int
+-inject_fault(const char *module_name, const char *opt, int fault)
+-{
+-	char buf[1024];
+-	int dir;
+-
+-	igt_assert_lt(0, fault);
+-	snprintf(buf, sizeof(buf), "%s=%d", opt, fault);
+-
+-	if (igt_kmod_load(module_name, buf)) {
+-		igt_warn("Failed to load module '%s' with options '%s'\n",
+-			 module_name, buf);
+-		return 1;
+-	}
+-
+-	dir = open_parameters(module_name);
+-	igt_sysfs_scanf(dir, opt, "%d", &fault);
+-	close(dir);
+-
+-	igt_debug("Loaded '%s %s', result=%d\n", module_name, buf, fault);
+-
+-	if (strcmp(module_name, "i915")) /* XXX better ideas! */
+-		igt_kmod_unload(module_name);
+-	else
+-		igt_i915_driver_unload();
+-
+-	return fault;
+-}
+-
+ static void gem_sanitycheck(void)
+ {
+ 	struct drm_i915_gem_busy args = {};
+@@ -680,43 +634,6 @@ igt_main
+ 		igt_i915_driver_unload();
  	}
  
-+	igt_describe("Test i915 fault injection");
-+	igt_subtest_with_dynamic_f("fault-injection")
-+		test_fault_injection();
-+
- 	igt_describe("Check whether lmem bar size can be resized to only supported sizes.");
- 	igt_subtest("resize-bar") {
- 		uint32_t result_bar_size;
+-	igt_describe("Verify that i915 driver can be successfully reloaded at least once"
+-		     " with fault injection.");
+-	igt_subtest("reload-with-fault-injection") {
+-		const char *param;
+-		int i;
+-
+-		igt_i915_driver_unload();
+-
+-		/*
+-		 * inject_fault() leaves the module unloaded, but if that fails
+-		 * we must abort the run. Otherwise, we leave a dangerous
+-		 * modparam affecting all subsequent tests causing bizarre
+-		 * failures.
+-		 */
+-		igt_install_exit_handler(must_unload);
+-
+-		i = 0;
+-		param = getenv("IGT_SRANDOM");
+-		if (param)
+-			i = atoi(param);
+-		if (!i)
+-			i = time(NULL);
+-		igt_info("Using IGT_SRANDOM=%d for randomised faults\n", i);
+-		srandom(i);
+-
+-		param = "inject_probe_failure";
+-		if (!igt_kmod_has_param("i915", param))
+-			param = "inject_load_failure";
+-		igt_require(igt_kmod_has_param("i915", param));
+-
+-		i = 1;
+-		while (inject_fault("i915", param, i) == 0)
+-			i += 1 + random() % 17;
+-
+-		unload_or_die("i915");
+-	}
+-
+ 	igt_describe("Test i915 fault injection");
+ 	igt_subtest_with_dynamic_f("fault-injection")
+ 		test_fault_injection();
 -- 
 2.43.0
 
