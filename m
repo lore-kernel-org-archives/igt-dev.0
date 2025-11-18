@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8328BCEDD97
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF163CED63B
 	for <igt-dev@archiver.kernel.org>; Tue, 18 Nov 2025 14:24:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 396C789950;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5294589E3F;
 	Tue, 18 Nov 2025 14:24:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Mdx4PZXw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hOGoj9sv";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB79089950
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Nov 2025 14:24:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67B3D89950
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Nov 2025 14:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763475884; x=1795011884;
+ t=1763475886; x=1795011886;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Bw4Wd/4eP3PlQgGEJ4NDYW9bt+ganLHeXVeiIpzMjvs=;
- b=Mdx4PZXw08jNtOIulXaRwipvgaiMYlUkClgRkIIOP9e3Z66LZFxpmIOO
- 5YYc+5urw4oOvnDcWne4haskliEXOimzQ4kP4MPabrLEiKJON/dawORCu
- 8piqOwQm4vzg3vjFXbX1CS93wnl9N/pOkJ7rAL/XmGAgKGMagR6RB7TNo
- OeY3COAg/+XQrjUKSN6vtqi54flb5EdrwoxUoNWQyOckABJlBfUaGE1dn
- lCBtV91VFiJ+UkABIUGXFDl756jE8tJ+raO7VhSPOqwrXkjf8b+ZhdOcq
- zEW2yGr8yyWboas8HFtpjehrbVw5GD9FwwgoGPSIhTyhaRsi9XUVqC9K6 A==;
-X-CSE-ConnectionGUID: fqVudmuQTOW9deSI3QO0yw==
-X-CSE-MsgGUID: cYi4hMErRl+XxAjbN2LTIg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="65587303"
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="65587303"
+ bh=eEwsiA5n0JQqswwghukU5+61qqgaeQNv+gB7a80Lh+k=;
+ b=hOGoj9svCJTtGXM5gN0KLqawiqNLkRF+jofQz1bXF4m0yytkdNgNM+/G
+ ekD3IUG80uP5/Qv0JS+5phO26+tNg6C9OXac64VvQ2za/4mlh9NPbQxVT
+ xhChnRpdFgpmllBco1sizRzcLadlPkZJ4UT2oi26C14zQpI1V1DkPRHQ7
+ GytpxWArlClh0TttazFnemHaJ1zmacezya1SQFxFz1X2AqCwL4ab1Ntm9
+ lzlG1kpknkb/pLiBIMPI3lMp++cXIzMC79V2l9Cu7DKRkcTMjR/KfQUY+
+ 2s5o5m/1cGqAW5sqefdWC8CcOWtXy4Wt1zNbEiNjwb/zFSIwzdj4Nx+Zt g==;
+X-CSE-ConnectionGUID: 0/PUTlVwRwGDOCAalnLAnw==
+X-CSE-MsgGUID: haHcuA1BRz+5y7ztslZZ0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="65587304"
+X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="65587304"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2025 06:24:44 -0800
-X-CSE-ConnectionGUID: Rz7pVp7KSKWok8Bz/0vQ8Q==
-X-CSE-MsgGUID: 5aeJalw1QFuJ5mnxnCGCOg==
+ 18 Nov 2025 06:24:46 -0800
+X-CSE-ConnectionGUID: Ige80ZyPTT+3sDHajb8BYQ==
+X-CSE-MsgGUID: npsWNdtMQCexxZQv+gNywA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="214168188"
+X-IronPort-AV: E=Sophos;i="6.19,314,1754982000"; d="scan'208";a="214168191"
 Received: from bvivekan-desk.iind.intel.com ([10.190.238.63])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2025 06:24:43 -0800
+ 18 Nov 2025 06:24:44 -0800
 From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Francois Dugast <francois.dugast@intel.com>,
  Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-Subject: [PATCH 1/2] lib/xe_spin: Pass drm file handle for mem_copy
-Date: Tue, 18 Nov 2025 19:55:24 +0530
-Message-ID: <20251118142522.3957318-5-balasubramani.vivekanandan@intel.com>
+Subject: [PATCH 2/2] lib/xe_spin: Fix mocs index field in mem_copy for Xe2
+ platforms
+Date: Tue, 18 Nov 2025 19:55:25 +0530
+Message-ID: <20251118142522.3957318-6-balasubramani.vivekanandan@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251118142522.3957318-4-balasubramani.vivekanandan@intel.com>
 References: <20251118142522.3957318-4-balasubramani.vivekanandan@intel.com>
@@ -69,54 +70,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Receive the drm file handle for mem_copy. It is required to check the IP
-version while constructing the mem_copy instruction due to change in
-the instruction structure between platforms.
-Following patch will be using the file handle.
+The source and destination mocs index fields has changed in the MEM_COPY
+instruction in platforms after Xe2. So we need to check for the IP
+version before placing the mocs index in the instruction.
 
 Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
 ---
- lib/xe/xe_spin.h             | 1 +
- tests/intel/xe_render_copy.c | 1 +
- tests/intel/xe_spin_batch.c  | 1 +
- 3 files changed, 3 insertions(+)
+ lib/intel_blt.h  |  4 +++-
+ lib/xe/xe_spin.c | 11 +++++++++--
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-index c2199d0aa..92479eb45 100644
---- a/lib/xe/xe_spin.h
-+++ b/lib/xe/xe_spin.h
-@@ -35,6 +35,7 @@ void xe_spin_free(int fd, struct igt_spin *spin);
-  * Used to perform memory copy with the spinner.
-  */
- struct xe_spin_mem_copy {
-+	int fd;
- 	struct blt_mem_object *src;
- 	struct blt_mem_object *dst;
- 	uint64_t src_offset;
-diff --git a/tests/intel/xe_render_copy.c b/tests/intel/xe_render_copy.c
-index ae2bb6f59..dffce1e7f 100644
---- a/tests/intel/xe_render_copy.c
-+++ b/tests/intel/xe_render_copy.c
-@@ -458,6 +458,7 @@ static void mem_copy_busy(int fd, struct drm_xe_engine_class_instance *hwe, uint
- 	int32_t src_handle, dst_handle;
- 	struct blt_mem_object src, dst;
- 	struct xe_spin_mem_copy mem_copy = {
-+		.fd = fd,
- 		.src = &src,
- 		.dst = &dst,
- 	};
-diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
-index ee2d0ec3f..615373917 100644
---- a/tests/intel/xe_spin_batch.c
-+++ b/tests/intel/xe_spin_batch.c
-@@ -333,6 +333,7 @@ static void xe_spin_mem_copy_region(int fd, struct drm_xe_engine_class_instance
- 	int32_t src_handle, dst_handle;
- 	struct blt_mem_object src, dst;
- 	struct xe_spin_mem_copy mem_copy = {
-+		.fd = fd,
- 		.src = &src,
- 		.dst = &dst,
- 	};
+diff --git a/lib/intel_blt.h b/lib/intel_blt.h
+index 54a096c03..2fae045bc 100644
+--- a/lib/intel_blt.h
++++ b/lib/intel_blt.h
+@@ -53,7 +53,9 @@
+ #include "intel_cmds_info.h"
+ 
+ #define CCS_RATIO(fd) (intel_gen(intel_get_drm_devid(fd)) >= 20 ? 512 : 256)
+-#define XE2_MEM_COPY_MOCS_SHIFT                     25
++#define GEN12_MEM_COPY_MOCS_SHIFT		25
++#define XE2_MEM_COPY_SRC_MOCS_SHIFT		28
++#define XE2_MEM_COPY_DST_MOCS_SHIFT		3
+ 
+ enum blt_color_depth {
+ 	CD_8bit,
+diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+index 72b13ef42..1b12ce991 100644
+--- a/lib/xe/xe_spin.c
++++ b/lib/xe/xe_spin.c
+@@ -54,6 +54,7 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+ 	uint64_t pad_addr = opts->addr + offsetof(struct xe_spin, pad);
+ 	uint64_t timestamp_addr = opts->addr + offsetof(struct xe_spin, timestamp);
+ 	int b = 0;
++	uint32_t devid;
+ 
+ 	spin->start = 0;
+ 	spin->end = 0xffffffff;
+@@ -163,8 +164,14 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+ 		spin->batch[b++] = opts->mem_copy->src_offset << 32;
+ 		spin->batch[b++] = opts->mem_copy->dst_offset;
+ 		spin->batch[b++] = opts->mem_copy->dst_offset << 32;
+-		spin->batch[b++] = opts->mem_copy->src->mocs_index << XE2_MEM_COPY_MOCS_SHIFT |
+-				   opts->mem_copy->dst->mocs_index;
++
++		devid = intel_get_drm_devid(opts->mem_copy->fd);
++		if (intel_graphics_ver(devid) >= IP_VER(20, 0))
++			spin->batch[b++] = opts->mem_copy->src->mocs_index << XE2_MEM_COPY_SRC_MOCS_SHIFT |
++					   opts->mem_copy->dst->mocs_index << XE2_MEM_COPY_DST_MOCS_SHIFT;
++		else
++			spin->batch[b++] = opts->mem_copy->src->mocs_index << GEN12_MEM_COPY_MOCS_SHIFT |
++					   opts->mem_copy->dst->mocs_index;
+ 	}
+ 
+ 	spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
 -- 
 2.43.0
 
