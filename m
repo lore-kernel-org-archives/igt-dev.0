@@ -4,57 +4,194 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81107CF3186
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Nov 2025 09:52:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2AF4CF3194
+	for <igt-dev@archiver.kernel.org>; Wed, 19 Nov 2025 10:54:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3E4E610E038;
-	Wed, 19 Nov 2025 09:52:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4E1A810E5DC;
+	Wed, 19 Nov 2025 10:54:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oJ7LOXrk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lOvQ9b2O";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB5C910E038
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Nov 2025 09:52:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E5E5610E231
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Nov 2025 10:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763545932; x=1795081932;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=CvgfVTzKBSWZ2MiFJTtULub5vWXiqbv5BTQ3VtdYtjU=;
- b=oJ7LOXrkIfNS5Rhne5pJgqO0XogGHD4f5ubZ/AiZf1N3JrdImTCWJvAc
- xgnh9BhNyQd/I1KHksjGYeKzyZrAL9t/p/zoBJAYXySDWsVe1w4gYsIO9
- 8xSI5dXCT7X0/l58TeVuXElY9q5AgIIz9xt7UfOFjoYHWEOIftgr259MO
- LzxPWJK6int7Xfyu5sI9Ne9b4mX0EyMVBUPqTPZC0JN+dZfz+IzXbqGFc
- Xikd5gh1UEGBaVszHa4j+9/YgMy0Gt0Q6ZkBwQNtVgMe3HZH0t6aomDY4
- XfXcpR6v8x3zexUQh15yy/hn/1UCsOBq72Zz7cG+87IMXFiQdgY5CiGFx g==;
-X-CSE-ConnectionGUID: 8roRgvAoSRaTa0rIMQ5krQ==
-X-CSE-MsgGUID: p3yvrT+5R0Oooi6/oduYHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="83207063"
-X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; d="scan'208";a="83207063"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Nov 2025 01:52:12 -0800
-X-CSE-ConnectionGUID: DBS0l0CAQ++wbXTbFzS4JA==
-X-CSE-MsgGUID: ++Z/aZ9jSBGPrs2ANAKWNg==
+ t=1763549679; x=1795085679;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=X3aM3uzbAGKG+3IdWHpd9Nw2tOKFcHehC7YamcMKYkA=;
+ b=lOvQ9b2O2kO3mRgf4K8x0AzS4/tI/JShRhJ5xWSr2EUwb0Cq/AQS9OnD
+ ygsOXXYglpi9W2LW7F8sLQ+x3KNSGpXRump/iSoIlIxX3qYmW0x7KW/wt
+ vy5Eu+9Zec3vr23iwiBTnABlPLmmQCcAh9lY3S0wmHXIMS2E53ZR3WN6h
+ iLYDqmEdoBWD7Td70wbUt0FTBy8pmdbNykbDPv/sG4WAnjpZgx4/eyvlw
+ 5icBnw1hcPNnCudNWbq0xi38cV+InCrg/R9DJNF2j8IKCIkJErgWYdqFS
+ yjmBEtKgwz2tEAulIw7U8v7UyWwl5XFIPgDF+00Pu/L5pZXHev0CC5HG2 g==;
+X-CSE-ConnectionGUID: JfqrRfXsQtyD2sYe2CxUbQ==
+X-CSE-MsgGUID: T1UuEGRrQ8KpXVdWorD5QA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11617"; a="65743562"
+X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; d="scan'208";a="65743562"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Nov 2025 02:54:38 -0800
+X-CSE-ConnectionGUID: xafCS+yXSLe+bES9hz8QIA==
+X-CSE-MsgGUID: gEvCCOliRuecuIqakD39jw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; d="scan'208";a="195954697"
-Received: from sinjan-super-server.iind.intel.com ([10.190.239.39])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Nov 2025 01:52:09 -0800
-From: Karthik Poosa <karthik.poosa@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
- rodrigo.vivi@intel.com, raag.jadav@intel.com, sk.anirban@intel.com,
- kamil.konieczny@linux.intel.com, Karthik Poosa <karthik.poosa@intel.com>
-Subject: [PATCH i-g-t v4 2/2] tests/intel/xe_pm_residency: Add subtest for
- ASPM Link state residency
-Date: Wed, 19 Nov 2025 15:21:54 +0530
-Message-Id: <20251119095154.2501720-3-karthik.poosa@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251119095154.2501720-1-karthik.poosa@intel.com>
-References: <20251119095154.2501720-1-karthik.poosa@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,315,1754982000"; d="scan'208";a="195497574"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+ by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Nov 2025 02:54:39 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Wed, 19 Nov 2025 02:54:38 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27 via Frontend Transport; Wed, 19 Nov 2025 02:54:37 -0800
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.52) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.27; Wed, 19 Nov 2025 02:54:37 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=esKnTNwukfgA5OswKlQBqlIwICa4iMkD0VuqI3Cs9Bhth3Vz1vDKsP2BLI2cXHsUrsRwoVTd9nvbiBZ4M/PreEfL5R/nbwZIRHupmZzLu7MkwlKnZncx5jaM/neGjUN+4U15JYcbrLr4M/LjxPoyCxUmg7ORuKu/exTIgZNppx4JpsBbxAWs4Ep12F4i+ED5Hlr2xXguBlEuW4lU1iyGYJw851lGSUuufvB/gme8n4a3AaCMu4jVpgf+h4yFFUL4t1OTprtRA03y2Up2L9y63y97pevtCLDju3LHZsKJEV7X/CMs2ACVPkg41mgIMhQIboBN60oxnMhx84p9uCspnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=X3aM3uzbAGKG+3IdWHpd9Nw2tOKFcHehC7YamcMKYkA=;
+ b=IBRrp5/gE9sKOiP8+ZDYRsB9Z+Yd10NnsSPUxvOosbiz4uuXsBRdXhiN33tYqJOomYNZhF9tHGyd42Dyn9FZZUO7UeB2jJNNcfvS5KDjK3lMiQ12AUxvHN9zRQvHwlGR4+D4Aca7fYwmAyQTp5yg0ULMib0E9nanSbF/PYq6n1XUqUfgH7EuuATBn4Ew76mHwTlX5L76g3L7YVVzXdE1FHKV/LKa7IaXsNUahuhNGh5phyfxsobMgIZ5D1QOUdx3Ld1P3wdaSkriRe8biR6AWqFy8NG8eUWK6houZNvjuhtVutQ3P1oZL8vXv632jq9XbuIJnCLJBsagfW2dT8aziA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CH3PR11MB8434.namprd11.prod.outlook.com (2603:10b6:610:176::19)
+ by BN9PR11MB5289.namprd11.prod.outlook.com (2603:10b6:408:136::10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Wed, 19 Nov
+ 2025 10:54:36 +0000
+Received: from CH3PR11MB8434.namprd11.prod.outlook.com
+ ([fe80::1670:23da:3abe:c525]) by CH3PR11MB8434.namprd11.prod.outlook.com
+ ([fe80::1670:23da:3abe:c525%4]) with mapi id 15.20.9320.021; Wed, 19 Nov 2025
+ 10:54:36 +0000
+From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
+To: "Hajda, Andrzej" <andrzej.hajda@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>, "Mun, Gwan-gyeong"
+ <gwan-gyeong.mun@intel.com>, "Piorkowski, Piotr"
+ <piotr.piorkowski@intel.com>, "Manszewski, Christoph"
+ <christoph.manszewski@intel.com>
+Subject: RE: [PATCH v3 5/8] lib/xe/xe_query: introduce iterator for GT
+ topology masks
+Thread-Topic: [PATCH v3 5/8] lib/xe/xe_query: introduce iterator for GT
+ topology masks
+Thread-Index: AQHcV6/aocufahJTr02C7aCfFNPfpbT51iIA
+Date: Wed, 19 Nov 2025 10:54:35 +0000
+Message-ID: <CH3PR11MB8434834D6D4791D76277B1768DD7A@CH3PR11MB8434.namprd11.prod.outlook.com>
+References: <20251117-xe_query_helpers-v3-0-25d984ae58cb@intel.com>
+ <20251117-xe_query_helpers-v3-5-25d984ae58cb@intel.com>
+In-Reply-To: <20251117-xe_query_helpers-v3-5-25d984ae58cb@intel.com>
+Accept-Language: en-IN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH3PR11MB8434:EE_|BN9PR11MB5289:EE_
+x-ms-office365-filtering-correlation-id: 3e8d677e-08f6-4d47-0a59-08de275a0783
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|366016|1800799024|7053199007|38070700021; 
+x-microsoft-antispam-message-info: =?utf-8?B?ZFNyTUFUZXNGaWJ3TzFmT3NMNU1KMWlpYWRwMmZreW1TdHFCYkNtUzFaZUxk?=
+ =?utf-8?B?YllESjhRM3VOdHJTKzNmK2p6R0V2d3czK1hGZkRIV05JZVhsVWs0dUxGZUIz?=
+ =?utf-8?B?dlNHQmIyU2FGNUpjbXExVEQ2NlFVeGdWYjB3bk9DTEcyUG0xSFNMdXh5Z0ZX?=
+ =?utf-8?B?ZkJKSzE0OHFnR0ZWcFdUUjZvQUUwd3pwL3ZESUNMSjlabGxrekhvVGlXY2sx?=
+ =?utf-8?B?VllMZXRRcFd1NG54NStndnFVcmlNdVp6TlNReGZzYlM4QTRzeHVxd3k5YXZ3?=
+ =?utf-8?B?RnYvYmNnTTAxbG1IYVpDWWVObGFET3hsMW9QNnlCeVN6Y1FQWHQ2ODJRZ1B1?=
+ =?utf-8?B?S3hXaXh1MFByN2xtTEppdS8vQXJ3NW1NWUdqenk1cm9yRTM5WGlZWkVsRC8y?=
+ =?utf-8?B?VzNmMURIOGxVY29ncXhBN09sSDhEU3pQRDF3RWNoeUw0bXRUcHdscHExbzlE?=
+ =?utf-8?B?K2FaNjA0UHJEanpTTFpPSTlYL01QV1g2RmFJT3cxN0NuVzFyUHVDbGQ3UERF?=
+ =?utf-8?B?VlY5akpJUDhXZFVPZHA1TWl3ZmV5dzlES3hrclJkMG1CK2FKeGlLclAxa1JK?=
+ =?utf-8?B?bGxxL08wM1k4bktnVFN4emp2anE2cDhYZTgwSzhXS2pjRzhoanFDY0Y1RXFF?=
+ =?utf-8?B?bkZSd0ZxcFhrVVJWaFNmNFBPa25UYlBaV3hpbU1ON2xqNUNKQjFSc0dBRUFs?=
+ =?utf-8?B?SnY3bVprSVlKTzVGMXc1Vk9ZR2oySDhTTDIvRWNFL0pLL25wZ1BlQzMvTzF2?=
+ =?utf-8?B?cHgwSnA0SkNxWWtRcFFsQjUzaEl1Q1VFdFJTN0JWYlZlaHhodGQ0VHdrNmhZ?=
+ =?utf-8?B?Umhjbm1EdzJDemNiS3E1WnNIZnBEV25iYVp2bnhMclRGRFV1QmtHdU9LMk1K?=
+ =?utf-8?B?c3M1eUlncWdhVGpoWFpJZ3JQbkhtTzU5Q0N1NkkrWE1SWVdLQWQ4WDQ4R0JK?=
+ =?utf-8?B?cVNQRzJwc2pIOWpkR2hWdHpwbFVRYnZUZndSUHlkczhUcEtOT0htK3BpcEdU?=
+ =?utf-8?B?K1JnRC9KdnVBdkt0OUlFbGc1dnVLTFNZa0RDU0hZd1VTaXBnZkh6U0haNVo1?=
+ =?utf-8?B?SWNneW9LRXI2YXhYQXlWeUFMK2o5b1ZZLzVheWJObjNPVk12RmJKTW5ud0tt?=
+ =?utf-8?B?bHJzTTNBUE1aZEF1QXVVUDhlUDFMSlZ5T1o3eHR1MVlzZU1WbmVxT2pzT3lF?=
+ =?utf-8?B?dmtZbjJRMUxNY1R2VFphNnJqOWwvTitocUVCSnJxQjJUU21pczhBb0dDK1lB?=
+ =?utf-8?B?REViSG8yR3VHWENuNUtVcm1iNWdUSWlOM25XQzA5NTFjZ2RMd1hDQkpKbTJY?=
+ =?utf-8?B?WmlCc2o1QUEzZi94RUUraGNkNVBGdDdvMmFpaVA4S0swaTk2VzExQXVsYkw3?=
+ =?utf-8?B?ZDFjWWJXN29Eblk3OXRDejRWZ1hYRGp0bHY2SnF1R2ZGSkJXdmFzZk5ETGho?=
+ =?utf-8?B?cWdvRDhIY3p3M3ZLSjJTVy9XL1ZpSlhCOERldkJOVk5Za2pMKy94aklINWU5?=
+ =?utf-8?B?a3JGN0xtTHNDTXQ5UmkzbG8waU4zWnpubFJmSWM0eEhFbUFRdTc5TTlYZkVq?=
+ =?utf-8?B?SHZZM3kycDhtREF6KzgyTUVqMTlZSHd3cGFkdk81dndmU0lkMW8wVzhXRjdG?=
+ =?utf-8?B?T3hFYWZ5b284aThYbFhWVHVNakFHVGhuWTJPeXFGSHZsalNMWkRwdVJ6bU9T?=
+ =?utf-8?B?UUdkWkY1V3lRYUIyQnFUMGovUXRwc01Zc2NxWElpRndHa052a050dG8zVWE0?=
+ =?utf-8?B?Q3UzS0htZ3o0eHRRRGtVeGxXOHkxZXdBa3RiOU5lWklUcUFYNW54QzM0cHFi?=
+ =?utf-8?B?OTI4cUVubU5FMG1NTHVvUUxpdG5NRmlJcVlTMkZrMmV6QmREd3U5N3QvTG41?=
+ =?utf-8?B?TWx0SHp0Y05SWWRPOVVoQU1EVk5Uc1pidzBlY3JucmlPaEtlL0VpaVp1b3Qv?=
+ =?utf-8?B?Wm9FcFBKUkUrSElkbm8xWGlYV3J1TjZ3d2VPa3A2ZTNtQWdwcGZvdk85UklH?=
+ =?utf-8?B?OEpBZ3Brd3VhMWJYWHROWDN6VUgrV0REeVk0dGJ6dkYxMk5DcUw3elM3azRJ?=
+ =?utf-8?Q?bwMZVN?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH3PR11MB8434.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(7053199007)(38070700021); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZDJiOTZLNi9waGEzSFRXRXV3S0MxeG5NRlVTajdpaVVPQTc4RmFUNzV5UEV0?=
+ =?utf-8?B?ZXdCREZFT2pOMDhkYjVCQXRWZnV5Y2RSZ1cwOVZZQnkzb1FvSHd5NTBWaG5v?=
+ =?utf-8?B?YnphRmVOOWsvVXhXbCtHOFNXYlpDWk42VnMvcG1mR29oQVBYb2svVFd6eC9l?=
+ =?utf-8?B?VU1tVDRjelhYY05SM295VWtuK1VWQmRwaktyYk9keGRkR0JnbDR4c2RxdmJF?=
+ =?utf-8?B?WWY1enBjanZreWVqRnA2SWNML1gvWXlGYUg0Qkd3QUc4cDVCOGgwaHU5L082?=
+ =?utf-8?B?bTF1WC8vOFdXK2N2MThLLzJ4ZXF4d0ZBQTJ2NEg2U2NHNlBvalVWbmZNd1Mv?=
+ =?utf-8?B?NzVzdkJIbWEzYUdqbEc5dmZmMDZka1I5eXJJSVZMcU5EcmxoWHlZMHRjQkJL?=
+ =?utf-8?B?cGxXZEFlTGIrWkM2RGFuaFJDc0JRODZydlZjV0JGOEpjWWpUYkxLbnM0c2xZ?=
+ =?utf-8?B?RWRZWkowRnVFUWNreFhhQzBQejhZenVHUDFIMVlENDRuMldqWXRSTGdJWGdn?=
+ =?utf-8?B?N3hHcFgwNm9DR0VxNngzWVBvdFExNmNDazZxcGRwWk9TRHI2TSsvMFpwWGJk?=
+ =?utf-8?B?TDRKWjc1WmNhNldUbFhWY2Q3K1dyU3FmelVRbnpLWWF2L2djdlhPYjhkT0Qv?=
+ =?utf-8?B?a2xPSFc1YzVaN1N4V09wS1RVeldCMXRKUHRDSzBVV0owT3E0bWxHWkt5MVdI?=
+ =?utf-8?B?STdjSkNkb1RsbUpaSExCOWt1WENsWFlOR29lQXNpUlBxRk1FdjJ2Q3V6aEI0?=
+ =?utf-8?B?d05wU29IUnVXZkVBbWVrRGFUemdKa3VhYVhhVmcycVl6cDB6dGRSelZHcC93?=
+ =?utf-8?B?a3VxV0tZMWJwQmJOcTNvWmVCTkMyc2FMVkZFRm00VzhXMWNyTk9mY0NwQTBJ?=
+ =?utf-8?B?M2hBMDdPTEdwUjdEczhSZ2w5UC80VXdiM1pWbURPU3MvdE9IclBUM0FXK0Vi?=
+ =?utf-8?B?Wlo4N3JZTnF1VkRFU082SGZ1NHBlSmxHSithSG05NzUxTUV5eFk3UmpGc3hN?=
+ =?utf-8?B?UkpmL0Q1bCt0NDhlb3hMNmVGVTNKVjlkQ3dEb0dpRzl0bTN2a3FoNlZMMk1z?=
+ =?utf-8?B?cDQvTGVzOE5oMFB3L1hFb1FMWkJQT3ZqUUQ5UE5CWVQvdnFwYndXTTc4S2Ex?=
+ =?utf-8?B?ZHlsbzI3WUNnSEVUbk9UK3JmVVZEYStrWlR1amp3VEloNERkcDZOQ0xScVFo?=
+ =?utf-8?B?SEdDRTAvY1l0M21jUGhkU0pDWWRhR0UrVHJuOXBpSnFoZ0s4a25Zd0V2Ulhh?=
+ =?utf-8?B?VXA3L2JVa3RNRytjRUhISUkrWFZzeVVCa0krN3E1dmJlaHZkSWdZMnpFa2lo?=
+ =?utf-8?B?czd3ZFIvcFplV09BQ1hyZXBOZGdWaEVZcUVhYTZ2UkFheXpJSkVTNzY5c2wx?=
+ =?utf-8?B?Vy9pdDN5TGVsSDNwMUZvdDMvbDNaRVkyZEpPYnhkQVVUYUtxREQ5c3VTV01O?=
+ =?utf-8?B?SWcrcVVHc0tRL0hqYnZPbHJJMEV2T2FGUUM0ZGh4c2RPUVdHTndQdjkvaTlo?=
+ =?utf-8?B?NnRJM2hRS29wbHVMdFRCMDZsZjdCUHlKSklaSlBGUUhVSU50ZG9ZL21SWDJC?=
+ =?utf-8?B?cng0azZkZlJpWHN5V2E1d0krQkFMRWpxVFd3SnJsc3R2czFEWGRVN21qd3pQ?=
+ =?utf-8?B?R1ZOQURDSEtoTCtVcmNIZi81RVphaGsxVHVucE1vK0xSSGF5cHVwUGFJWmRV?=
+ =?utf-8?B?b3pnQnhhaTFndkF3dnhuU0x1RDhEL01WSC9GZXJObXFKa0R2SUkranlGeFdM?=
+ =?utf-8?B?WHJuYWNWQ3Q4THBrcHJST2FyeE1SUjhMaHhVakkyWEFMeHdJOS9WalF1dHRn?=
+ =?utf-8?B?V2plK0hjMFFpL2ZDVzhER2FVYjhIeFY4dlVjM2lucVFZNkZjWG94VnNUVWV2?=
+ =?utf-8?B?K2lnZ01XajZlcFVWVmJVcGV6R1FYRlVoc1FzeXZ2ZkNwMjBIV1BraW1mbStp?=
+ =?utf-8?B?RGc0eU5GUDVPcVZ0WFBWNG96RWpNOElkd1BEeUc1Y3YzalBzZzhDUGNxNnhk?=
+ =?utf-8?B?SG9kbW1haDFEbjI5a2taaHcyZ21FdXlRTy9DaFRzNmxEK3o0eHJFa2RVMDZ0?=
+ =?utf-8?B?S1BrMWhlWGp3VU1pbjZKOXRNbVRvUDlGZ1IvN1VmUnl5MTROT3FpM1hIbG1z?=
+ =?utf-8?B?Ujk0ZzJtd2QxeWZ1bXh1VUZzS0VTd0ZuVGlMc2JkTm5VeGJ6bTM2RXdzNlI4?=
+ =?utf-8?B?NHc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8434.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e8d677e-08f6-4d47-0a59-08de275a0783
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Nov 2025 10:54:35.9413 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: U0Fuk2CBt0ePNn7lx/8JmAgJcSgl9Hahn63M6Km+xenA5EnRsfj4KFNBIAdsNpOtm8tvSX7nllTe3guhemnRZHnIoEWx6Fbsx+eT6Oj/rbE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR11MB5289
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,239 +207,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add subtest aspm_link_residency to verify PCIe ASPM.
-Active State Power Management (ASPM) is a power management mechanism
-for PCI Express (PCIe) devices that aims to save power while the devices
-are in a fully active state.
-This test uses link state counters from debugfs - dgfx_pcie_link_residencies
-to verify this.
-
-v2:
- - Add dedicated function to get pcie endpoint upstream port. (Badal)
- - Read residency counter as unsigned long long int instead of
-   unsigned long int.
- - Print residency counter before sleep also.
- - Don't assert if sysfs not corresponding to aspm_link_state
-   is not present. (Badal)
- - Run workload before validation of aspm link residency. (Anshuman)
-
-v3:
- - Move igt_device_get_pci_usp to separate patch. (Kamil)
- - Move reading of residency to separate function. (Badal)
-
-v4:
- - Add description about PCIe ASPM in commit message and code. (Kamil)
- - Add a NULL check for the return value of igt_device_get_pci_usp().
- - Resolve compilation warnings about using variable as format string
-   to sscanf.
-
-Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
----
- tests/intel/xe_pm_residency.c | 160 ++++++++++++++++++++++++++++++++++
- 1 file changed, 160 insertions(+)
- mode change 100644 => 100755 tests/intel/xe_pm_residency.c
-
-diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-old mode 100644
-new mode 100755
-index 1749d6467..583d66bee
---- a/tests/intel/xe_pm_residency.c
-+++ b/tests/intel/xe_pm_residency.c
-@@ -37,6 +37,27 @@ enum test_type {
- 	TEST_IDLE,
- };
- 
-+enum link_state_index {
-+	LINK_STATE_ASPM,
-+	LINK_STATE_ASPM_L1_1,
-+	LINK_STATE_ASPM_L1_2,
-+	LINK_STATE_PCIPM_L1_1,
-+	LINK_STATE_PCIPM_L1_2,
-+	MAX_LINK_STATES,
-+};
-+
-+struct link_state_info {
-+	const char *filename;
-+	char state;
-+	const char *parse_str;
-+} link_state_sysfs [] = {
-+	{ "l1_aspm", 0, "PCIE LINK L1 RESIDENCY : "},
-+	{ "l1_1_aspm", 0, "NULL"},
-+	{ "l1_2_aspm", 0, "PCIE LINK L1.2 RESIDENCY : "},
-+	{ "l1_1_pcipm", 0, NULL},
-+	{ "l1_2_pcipm", 0, NULL},
-+};
-+
- /**
-  * SUBTEST: gt-c6-on-idle
-  * Description: Validate GT C6 state on idle
-@@ -64,6 +85,10 @@ enum test_type {
-  * SUBTEST: cpg-gt-toggle
-  * Description: Toggle GT coarse power gating states by acquiring/releasing
-  *		forcewake.
-+ *
-+ * SUBTEST: aspm_link_residency
-+ * Description: Check for PCIe ASPM (Active State Power Management) link states
-+ * entry while device is in D0.
-  */
- IGT_TEST_DESCRIPTION("Tests for gtidle properties");
- 
-@@ -255,6 +280,24 @@ static void idle_residency_on_exec(int fd, struct drm_xe_engine_class_instance *
- 	munmap(done, 4096);
- }
- 
-+static void do_exec(int fd, struct drm_xe_engine_class_instance *hwe)
-+{
-+	unsigned long *done;
-+
-+	igt_info("Running on %s:%d\n",
-+		 xe_engine_class_string(hwe->engine_class), hwe->engine_instance);
-+	done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-+	igt_assert(done != MAP_FAILED);
-+	memset(done, 0, 4096);
-+
-+	igt_fork(child, 1)
-+		exec_load(fd, hwe, done);
-+
-+	*done = 1;
-+	igt_waitchildren();
-+	munmap(done, 4096);
-+}
-+
- static void measure_power(struct igt_power *gpu, double *power)
- {
- 	struct power_sample power_sample[2];
-@@ -370,6 +413,109 @@ static void cpg_gt_toggle(int fd)
- 		powergate_status(fd, gt, "down");
- }
- 
-+
-+static bool check_link_residency_entry(int fd_xe, const char* filename, uint8_t aspm_link_state)
-+{
-+	int fd_debugfs_dir = 0;
-+	int ret = 0;
-+	char *ptr = NULL;
-+	char path[256] = {0}, buf[1024] = {0};
-+	uint64_t residency_pre = 0, residency_post = 0;
-+
-+	fd_debugfs_dir = igt_debugfs_dir(fd_xe);
-+	igt_assert(fd_debugfs_dir >= 0);
-+
-+	ret = igt_debugfs_simple_read(fd_debugfs_dir, filename, buf, sizeof(buf));
-+	igt_assert_f(ret >= 0, "cannot read pre %s.\n", filename);
-+	ptr = strstr(buf, link_state_sysfs[aspm_link_state].parse_str);
-+	igt_assert_f((ptr != NULL), "cannot find residency string %s\n", link_state_sysfs[aspm_link_state].parse_str);
-+	if (ptr != NULL) {
-+		sprintf(path, "%s%%llu", link_state_sysfs[aspm_link_state].parse_str);
-+		igt_debug("searching for-%s\n", link_state_sysfs[aspm_link_state].parse_str);
-+		sscanf(ptr + strlen(link_state_sysfs[aspm_link_state].parse_str), "%lu", &residency_pre);
-+		igt_info("Link residency before %"PRIu64"\n", residency_pre);
-+		igt_info("Waiting for link to enter idle....\n");
-+		sleep(5);
-+		ret = igt_debugfs_simple_read(fd_debugfs_dir, filename, buf, sizeof(buf));
-+		igt_assert_f(ret >= 0, "cannot read post %s.\n", filename);
-+		sscanf(ptr + strlen(link_state_sysfs[aspm_link_state].parse_str), "%lu", &residency_post);
-+	}
-+
-+	igt_info("Link residency after %"PRIu64"\n", residency_post);
-+	close(fd_debugfs_dir);
-+
-+	return (residency_post > residency_pre) ? true : false;
-+}
-+
-+static void test_aspm_link_residency(int fd_xe, uint8_t aspm_link_state)
-+{
-+	struct pci_device *pci_dev;
-+	int fd_pci_usp = 0;
-+	char name[PATH_MAX];
-+	int ret = 0;
-+	char path[256] = {0};
-+	bool aspm_entered = 0;
-+
-+	/* Get upstream port pci_dev */
-+	pci_dev = igt_device_get_pci_usp(fd_xe);
-+	igt_assert_f(pci_dev != NULL, "Couldn't get pci device of upstream port\n");
-+	igt_debug("Upstream port PCI device: %04x:%02x:%02x.%01x\n", pci_dev->domain,
-+		  pci_dev->bus, pci_dev->dev, pci_dev->func);
-+
-+	snprintf(name, sizeof(name), "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/link",
-+		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-+	fd_pci_usp = open(name, O_DIRECTORY);
-+	igt_assert_f((fd_pci_usp >= 0), "Can't open link directory upstream port %s, ret %d\n", name, fd_pci_usp);
-+
-+	/* Disable runtime PM as link ASPM entry happens during device is in D0 only. */
-+	igt_assert(igt_setup_runtime_pm(fd_xe));
-+	igt_disable_runtime_pm();
-+
-+	sprintf(path, "%s", link_state_sysfs[aspm_link_state].filename);
-+	igt_require_f(!faccessat(fd_pci_usp, path, R_OK, 0), "%s is not present\n", path);
-+	ret = igt_sysfs_scanf(fd_pci_usp, path, "%c", &link_state_sysfs[aspm_link_state].state);
-+	igt_assert_f((ret > 0), "couldn't read residency for %s", path);
-+
-+	/* Save current state of all available link sysfs entries and enable only the one needed. */
-+	for (int i = 0 ; i < MAX_LINK_STATES ; i++) {
-+		sprintf(path, "%s", link_state_sysfs[i].filename);
-+		if (faccessat(fd_pci_usp, path, R_OK, 0)) {
-+			igt_info("%s not present to save\n", path);
-+			continue;
-+		}
-+		ret = igt_sysfs_scanf(fd_pci_usp, path, "%c", &link_state_sysfs[i].state);
-+		igt_assert_lt(0, ret);
-+		igt_debug("saved %s = %c\n", link_state_sysfs[i].filename , link_state_sysfs[i].state);
-+
-+		if(i == aspm_link_state) {
-+			igt_debug("Enabling %s\n", link_state_sysfs[i].filename);
-+			ret = igt_sysfs_printf(fd_pci_usp, path, "%c", '1');
-+		}
-+		else {
-+			ret = igt_sysfs_printf(fd_pci_usp, path, "%c", '0');
-+		}
-+		igt_assert_lt(0, ret);
-+	}
-+
-+	aspm_entered = check_link_residency_entry(fd_xe, "dgfx_pcie_link_residencies", aspm_link_state);
-+
-+	/* Restore states of L1 sysfs entries. */
-+	for (int i = 0 ; i < MAX_LINK_STATES ; i++) {
-+		sprintf(path, "%s", link_state_sysfs[i].filename);
-+		if (faccessat(fd_pci_usp, path, R_OK, 0)) {
-+			igt_info("%s not present to restore\n", path);
-+			continue;
-+		}
-+		ret = igt_sysfs_printf(fd_pci_usp, path, "%c", link_state_sysfs[i].state);
-+		igt_debug("restored %s to %c\n", link_state_sysfs[i].filename , link_state_sysfs[i].state);
-+	}
-+
-+	igt_restore_runtime_pm();
-+	close(fd_pci_usp);
-+	close(fd_xe);
-+	igt_assert_f(aspm_entered , "ASPM Link idle entry failed!\n");
-+}
-+
- igt_main
- {
- 	uint32_t d3cold_allowed;
-@@ -444,6 +590,20 @@ igt_main
- 		cpg_gt_toggle(fd);
- 	}
- 
-+	igt_describe("ASPM Link residency validation");
-+	igt_subtest_with_dynamic("aspm_link_residency") {
-+		xe_for_each_gt(fd, gt) {
-+			xe_for_each_engine(fd, hwe) {
-+				if (gt == hwe->gt_id && !hwe->engine_instance) {
-+					igt_dynamic_f("gt%u-engine-%s", gt,
-+						      xe_engine_class_string(hwe->engine_class))
-+						do_exec(fd, hwe);
-+				}
-+			}
-+		}
-+		test_aspm_link_residency(fd, LINK_STATE_ASPM);
-+	}
-+
- 	igt_fixture {
- 		close(fd);
- 	}
--- 
-2.25.1
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSGFqZGEsIEFuZHJ6ZWog
+PGFuZHJ6ZWouaGFqZGFAaW50ZWwuY29tPg0KPiBTZW50OiAxNyBOb3ZlbWJlciAyMDI1IDA0OjE4
+IFBNDQo+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzogS2FtaWwgS29u
+aWVjem55IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPjsgRGFuZGFtdWRpLCBQcml5
+YW5rYQ0KPiA8cHJpeWFua2EuZGFuZGFtdWRpQGludGVsLmNvbT47IE11biwgR3dhbi1neWVvbmcg
+PGd3YW4tDQo+IGd5ZW9uZy5tdW5AaW50ZWwuY29tPjsgUGlvcmtvd3NraSwgUGlvdHIgPHBpb3Ry
+LnBpb3Jrb3dza2lAaW50ZWwuY29tPjsNCj4gTWFuc3pld3NraSwgQ2hyaXN0b3BoIDxjaHJpc3Rv
+cGgubWFuc3pld3NraUBpbnRlbC5jb20+OyBIYWpkYSwgQW5kcnplag0KPiA8YW5kcnplai5oYWpk
+YUBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFtQQVRDSCB2MyA1LzhdIGxpYi94ZS94ZV9xdWVyeTog
+aW50cm9kdWNlIGl0ZXJhdG9yIGZvciBHVCB0b3BvbG9neQ0KPiBtYXNrcw0KPiANCj4gVG9wb2xv
+Z3kgbWFza3MgcmV0dXJuZWQgYnkgZGV2aWNlIHF1ZXJ5DQo+IERSTV9YRV9ERVZJQ0VfUVVFUllf
+R1RfVE9QT0xPR1kgYXJlIHBsYWNlZCBzZXF1ZW50aWFsbHkgaW4gb25lIGJsb2INCj4gb2YgbWVt
+b3J5LCBtb3Jlb3ZlciBldmVyeSBtYXNrIGNhbiBoYXZlIGRpZmZlcmVudCBzaXplIGFzIHRoZXkg
+Y29udGFpbnMNCj4gZmxleGlibGUgYXJyYXlzLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQW5kcnpl
+aiBIYWpkYSA8YW5kcnplai5oYWpkYUBpbnRlbC5jb20+DQo+IC0tLQ0KPiAgbGliL3hlL3hlX3F1
+ZXJ5LmggfCA2ICsrKysrKw0KPiAgMSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKQ0KPiAN
+Cj4gZGlmZiAtLWdpdCBhL2xpYi94ZS94ZV9xdWVyeS5oIGIvbGliL3hlL3hlX3F1ZXJ5LmggaW5k
+ZXgNCj4gYjE0ODNmNWViNmFjMzMwNDU0ZTcxOTQyM2RlZTUyMDEzYjRiNjEzNy4uMDFjYTFkNTdm
+ZGIxYzUyYzA2NzZlYjINCj4gNTVjYWY2YTUyMjNlM2Y5NzMgMTAwNjQ0DQo+IC0tLSBhL2xpYi94
+ZS94ZV9xdWVyeS5oDQo+ICsrKyBiL2xpYi94ZS94ZV9xdWVyeS5oDQo+IEBAIC05Nyw2ICs5Nywx
+MiBAQCBzdHJ1Y3QgeGVfZGV2aWNlIHsNCj4gICNkZWZpbmUgWEVfSVNfQ0xBU1NfU1lTTUVNKF9f
+cmVnaW9uKSAoKF9fcmVnaW9uKS0+bWVtX2NsYXNzID09DQo+IERSTV9YRV9NRU1fUkVHSU9OX0NM
+QVNTX1NZU01FTSkgICNkZWZpbmUNCj4gWEVfSVNfQ0xBU1NfVlJBTShfX3JlZ2lvbikgKChfX3Jl
+Z2lvbiktPm1lbV9jbGFzcyA9PQ0KPiBEUk1fWEVfTUVNX1JFR0lPTl9DTEFTU19WUkFNKQ0KPiAN
+Cj4gKyNkZWZpbmUgeGVfZm9yX2VhY2hfdG9wb2xvZ3lfbWFzayhfX21hc2tzLCBfX3NpemUsIF9f
+bWFzaykgXA0KPiArCWZvciAoX19tYXNrID0gKF9fbWFza3MpOyBcDQo+ICsJICAgICAodm9pZCAq
+KV9fbWFzay0+bWFzayAtICh2b2lkICopKF9fbWFza3MpIDwgKF9fc2l6ZSkgJiYgXA0KPiArCSAg
+ICAgKHZvaWQgKikmX19tYXNrLT5tYXNrW19fbWFzay0+bnVtX2J5dGVzXSAtICh2b2lkICopKF9f
+bWFza3MpDQo+IDw9IChfX3NpemUpOyBcDQo+ICsJICAgICBfX21hc2sgPSAodm9pZCAqKSZfX21h
+c2stPm1hc2tbX19tYXNrLT5udW1fYnl0ZXNdKQ0KPiArDQpMR1RNLA0KUmV2aWV3ZWQtYnk6IFBy
+aXlhbmthIERhbmRhbXVkaSA8cHJpeWFua2EuZGFuZGFtdWRpQGludGVsLmNvbT4NCj4gIC8qDQo+
+ICAgKiBNYXggcG9zc2libGUgZW5naW5lIGluc3RhbmNlIGluDQo+IGRybV94ZV9lbmdpbmVfY2xh
+c3NfaW5zdGFuY2U6OmVuZ2luZV9pbnN0YW5jZS4gT25seQ0KPiAgICogdXNlZCB0byBkZWNsYXJl
+IGFycmF5cyBvZiBkcm1feGVfZW5naW5lX2NsYXNzX2luc3RhbmNlDQo+IA0KPiAtLQ0KPiAyLjQz
+LjANCg0K
