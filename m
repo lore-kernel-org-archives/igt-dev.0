@@ -4,55 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D304CF58F5
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Nov 2025 21:02:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44D07CF58FD
+	for <igt-dev@archiver.kernel.org>; Wed, 19 Nov 2025 21:09:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DAB1810E690;
-	Wed, 19 Nov 2025 21:02:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E8C7410E690;
+	Wed, 19 Nov 2025 21:09:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KAtq0otM";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="oBhzSkif";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E663E10E699
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Nov 2025 21:02:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763586167; x=1795122167;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=UqQY3EBY2fC9Tbz3UIHmBDcknwBG/jbMn3j7RJPjpMA=;
- b=KAtq0otMV816bbXZlcpStO4s3DzF8wbwKUSG8ZhIALbMafkdYGkocTn2
- rAwRR6zDt/SMsfZO998t3l9Uh2nqzqDjkQY874eFzpQ4SbWAbxSok4mVX
- JytJnx2QgBz1vkJJMkQ0wPr9Y72WLtfn4idN71cAJApPlhcTF9320DmjK
- o/ygpoHUg1OgRuFYlI7rTGVTPp+CGYFIG2r5ytbJvZHXcR6roUkmyrE1C
- BXjwJhFamclJwjvMkJlQ07RW+GPpn31C1ij1qN/IU/kfIzOiEP4zRmfBS
- 3NQMKyslAQkkX6tv+IURNoBRADZX6V5nOGF5r/VdJw5kWeFSaMkiZEnpy Q==;
-X-CSE-ConnectionGUID: E3AogcbwQ+S2C9+AWCSQ9Q==
-X-CSE-MsgGUID: 1V0lbo7RT0anvlq7x9+k3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="68249397"
-X-IronPort-AV: E=Sophos;i="6.19,316,1754982000"; d="scan'208";a="68249397"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Nov 2025 13:02:47 -0800
-X-CSE-ConnectionGUID: NdC9QvecRymznd3pOkbL8A==
-X-CSE-MsgGUID: HnwmQkf5RvCjYqotvxTMsQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,316,1754982000"; d="scan'208";a="222099825"
-Received: from intel-s2600wft.iind.intel.com ([10.223.26.143])
- by fmviesa001.fm.intel.com with ESMTP; 19 Nov 2025 13:02:45 -0800
-From: S Sebinraj <s.sebinraj@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jeevaka.badrappan@intel.com, zbigniew.kempczynski@intel.com,
- kamil.konieczny@intel.com, S Sebinraj <s.sebinraj@intel.com>
-Subject: [PATCH i-g-t v3 3/3] tools/intel_gpu_frequency: Add Xe driver support
-Date: Thu, 20 Nov 2025 02:15:30 +0530
-Message-Id: <20251119204530.1357940-4-s.sebinraj@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251119204530.1357940-1-s.sebinraj@intel.com>
-References: <20251119204530.1357940-1-s.sebinraj@intel.com>
+Received: from bali.collaboradmins.com (bali.collaboradmins.com
+ [148.251.105.195])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41C8F10E690;
+ Wed, 19 Nov 2025 21:09:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+ s=mail; t=1763586568;
+ bh=LrJ1g/mq1v+P1H2W9YtowF9FN91OOwyC6sLp2U2TUlY=;
+ h=Date:Subject:To:References:From:In-Reply-To:From;
+ b=oBhzSkifGTm8y9o1E0H/MtIGYftr8h7ch5J+7dzvEVj8uqwXsN8cdElEYPWy6IZKA
+ ziucCHlMQRH2RmQgCxhcJg2X1EI41OLdGH5vVIv9Gm4kMbEvwHxjV4MQd+sGLoOk/0
+ c/7JavOLDHXljoeIcEP8VOC7FT5I88yu9XyNjoFoXbnlLLWVGYXva4nTSgk19s3SOQ
+ xtlZ+h1pwXivLIMKPj/HQDaA5BJMDqhIAJI/kA+XNtPtZuOFufNsXX8yvvoGBGAztF
+ I60+hlZKY/5+4Nh+19jvzjToJ3nRYdcD4+TkEdePoujy73ZDv3Vq4rDZgyFY03iBas
+ gyyW4mRVW5iPg==
+Received: from [192.168.1.90] (unknown [82.79.138.145])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested) (Authenticated sender: cristicc)
+ by bali.collaboradmins.com (Postfix) with ESMTPSA id CB80217E107C;
+ Wed, 19 Nov 2025 22:09:27 +0100 (CET)
+Message-ID: <dd1717b7-4e20-4ed7-ae08-7286713d4a71@collabora.com>
+Date: Wed, 19 Nov 2025 23:09:27 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests: (Re)add kms_crtc_background_color test
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Sandy Huang <hjc@rock-chips.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ Andy Yan <andy.yan@rock-chips.com>, igt-dev@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-rockchip@lists.infradead.org,
+ kernel@collabora.com, Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>, Swati Sharma <swati2.sharma@intel.com>
+References: <20251110-crtc-bgcolor-v1-1-28669b692970@collabora.com>
+ <20251119132149.spbl5k3dmj2lwzon@kamilkon-DESK.igk.intel.com>
+Content-Language: en-US
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+In-Reply-To: <20251119132149.spbl5k3dmj2lwzon@kamilkon-DESK.igk.intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,187 +71,179 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This change enhances intel_gpu_frequency to add compatibility with
-Xe drivers.
+Hi Kamil,
 
-Key improvements:
-- Add runtime GT detection using xe_number_gt()
-- Auto-detect driver type using is_xe_device()
-- Driver-agnostic frequency management with unified interface
+On 11/19/25 3:21 PM, Kamil Konieczny wrote:
+> Hi Cristian,
+> On 2025-11-10 at 15:18:05 +0200, Cristian Ciocaltea wrote:
+>> Provide test to verify the behavior of BACKGROUND_COLOR DRM CRTC
+>> property.
+>>
+>> This is done by filling a full-screen primary plane with a given color
+>> and comparing the resulting CRC with the one obtained after turning off
+>> all planes while having the CRTC background set to the same color.
+>>
+>> It's worth noting this is a reworked version of the test that has been
+>> dropped over 5 years ago via commit 33f07391e5f6 ("tests: Remove
+>> kms_crtc_background_color test"), as the required kernel changes never
+>> landed because of missing userspace support.
+>>
+> +cc J-P, Karthik, Swati
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> 
+> I have few nits, see below.
+> 
+>> Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+>> ---
+>> This has been tested on a Radxa ROCK 5B board which is based on Rockchip
+>> RK3588 SoC.  It relies on the kernel series [1] introducing the
+>> BACKGROUND_COLOR CRTC property and a few additional patches from [2]
+>> enabling the required CRC functionality for the Rockchip platform (still
+>> require a bit more work before sending those upstream).
+>>
+>> It's worth noting CRC is only supported by the display controller (VOP2)
+>> present in the RK3576 SoC variant.  However, the computation is done by
+>> the hardware before applying the background color, hence it has limited
+>> usage in IGT testing.
+>>
+>> Luckily, the frame CRCs can be captured through DPCD, i.e. at
+>> DisplayPort AUX channel level, hence I used the USB-C DP AltMode capable
+>> port of the aforementioned board to perform the actual validation.
+>>
+>> [1] https://lore.kernel.org/all/20251013-rk3588-bgcolor-v2-0-25cc3810ba8c@collabora.com/
+>> [2] https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux/-/commits/cristicc/rk3588-vop2-crc
+>>
 
-Driver-specific implementations:
-- Automatic frequency name mapping (RP1→rpe, RP0→rp0, RPn→rpn for Xe)
+[...]
 
-The tool now auto-detects Xe drivers and uses appropriate
-interfaces.
+> Please add here:
+> 
+> /**
+>  * TEST: crtc background color
+>  * Category: Display
+>  * Description: Test background color feature with CRC at CRTC
+>  * Driver requirement: i915, xe
+>  * Mega feature: General Display Features
+>  */
+> 
+> Feel free to correct me with name and/or description.
 
-Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
----
- tools/intel_gpu_frequency.c | 87 ++++++++++++++++++++++++++++---------
- 1 file changed, 67 insertions(+), 20 deletions(-)
+Ack.
 
-diff --git a/tools/intel_gpu_frequency.c b/tools/intel_gpu_frequency.c
-index aaadd0857..2c56f0e2e 100644
---- a/tools/intel_gpu_frequency.c
-+++ b/tools/intel_gpu_frequency.c
-@@ -32,11 +32,13 @@
- #include "igt_device.h"
- #include "igt_sysfs.h"
- #include "intel_chipset.h"
-+#include "xe/xe_gt.h"
- 
- #define VERSION "1.0"
- #define SYSFS_PATH_MAX 96
- 
- static int device, devid;
-+static bool is_xe;
- 
- enum {
- 	CUR=0,
-@@ -57,27 +59,55 @@ struct freq_info {
- static struct freq_info info[] = {
- 	{ "cur", "r"  },
- 	{ "min", "rb+" },
--	{ "RP1", "r" },
-+	{ "RP1", "r" },    /* i915: RP1, xe: rpe */
- 	{ "max", "rb+" },
--	{ "RP0", "r" },
--	{ "RPn", "r" }
-+	{ "RP0", "r" },    /* i915: RP0, xe: rp0 */
-+	{ "RPn", "r" }     /* i915: RPn, xe: rpn */
- };
- 
-+static int driver_get_num_gts(int fd)
-+{
-+	if (is_xe) {
-+		return xe_number_gt(fd);
-+	} else {
-+		return igt_sysfs_get_num_gt(fd);
-+	}
-+}
-+
- static char *
- get_sysfs_path(int fd, int gt_id, const char *which)
- {
- 	static char path[SYSFS_PATH_MAX];
- 	char *gt_path;
- 	int path_len, ret;
-+	const char *freq_name;
-+
-+	/* Get driver-specific GT path */
-+	if (is_xe)
-+		gt_path = xe_sysfs_gt_path(fd, gt_id, path, sizeof(path));
-+	else
-+		gt_path = igt_sysfs_gt_path(fd, gt_id, path, sizeof(path));
- 
--	gt_path = igt_sysfs_gt_path(fd, gt_id, path, sizeof(path));
- 	if (gt_path == NULL) {
--		fprintf(stderr, "igt_sysfs_gt_path returned NULL for GT%d\n", gt_id);
-+		fprintf(stderr, "sysfs_gt_path returned NULL for GT%d\n", gt_id);
- 		return NULL;
- 	}
-+
- 	path_len = strlen(gt_path);
--	ret = snprintf(path + path_len, sizeof(path) - path_len,
--		       "/rps_%s_freq_mhz", which);
-+
-+	if (is_xe) {
-+		/* Xe uses /freq0/ directory with different file names */
-+		freq_name = !strcmp(which, "RP1") ? "rpe" :
-+			    !strcmp(which, "RP0") ? "rp0" :
-+			    !strcmp(which, "RPn") ? "rpn" : which;
-+
-+		ret = snprintf(path + path_len, sizeof(path) - path_len,
-+			       "/freq0/%s_freq", freq_name);
-+	} else {
-+		/* i915 uses /rps_*_freq_mhz files */
-+		ret = snprintf(path + path_len, sizeof(path) - path_len,
-+			       "/rps_%s_freq_mhz", which);
-+	}
- 
- 	if (ret >= sizeof(path) - path_len) {
- 		fprintf(stderr, "Path truncated\n");
-@@ -263,6 +293,8 @@ usage(const char *prog)
- 	printf("   intel_gpu_frequency --custom max=750 --gt 0\tSet GT0 max frequency to 750MHz\n");
- 	printf("   intel_gpu_frequency --list\t\t\tList all available GTs\n");
- 	printf("\n");
-+	printf("Auto-detects i915 vs Xe driver and uses appropriate interfaces.\n");
-+	printf("\n");
- 	printf("Report bugs to https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues\n");
- 	exit(EXIT_FAILURE);
- }
-@@ -356,7 +388,7 @@ parse(int argc, char *argv[], int fd, bool *act_upon, size_t act_upon_n, int *ne
- 			}
- 			break;
- 		case 'e': /* efficient */
--			if (IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid)) {
-+			if (!is_xe && (IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid))) {
- 				/* the LP parts have special efficient frequencies */
- 				fprintf(stderr,
- 					"FIXME: Warning efficient frequency information is incorrect.\n");
-@@ -435,8 +467,13 @@ static void list_available_gts(int fd, int num_gts)
- 	for (i = 0; i < num_gts; i++) {
- 		char path[SYSFS_PATH_MAX];
- 
--		if (igt_sysfs_gt_path(fd, i, path, sizeof(path)))
--			printf("  GT%d: %s\n", i, path);
-+		if (is_xe) {
-+			if (xe_sysfs_gt_path(fd, i, path, sizeof(path)))
-+				printf("  GT%d: %s\n", i, path);
-+		} else {
-+			if (igt_sysfs_gt_path(fd, i, path, sizeof(path)))
-+				printf("  GT%d: %s\n", i, path);
-+		}
- 	}
- }
- 
-@@ -464,26 +501,36 @@ static void execute_frequency_operations(int argc, int fd, int specified_gt, boo
- 		/* Process single specified GT */
- 		process_gt_frequencies(argc, fd, specified_gt, write, reader, targets, set_freq);
- 	} else {
--		/* Process all GTs using for_each_gt pattern */
--		int gt_dir;
--
--		i915_for_each_gt(fd, gt_dir, target_gt) {
--			process_gt_frequencies(argc, fd, target_gt, write, reader, targets, set_freq);
-+		/* Process all GTs using driver-specific for_each_gt pattern */
-+		if (is_xe) {
-+			xe_for_each_gt(fd, target_gt)
-+				process_gt_frequencies(argc, fd, target_gt, write, reader, targets, set_freq);
-+		} else {
-+			int gt_dir;
-+			i915_for_each_gt(fd, gt_dir, target_gt)
-+				process_gt_frequencies(argc, fd, target_gt, write, reader, targets, set_freq);
- 		}
- 	}
- }
- 
- int main(int argc, char *argv[])
- {
--
- 	bool write, reader = false, targets[MAX+1] = {false}, list_gts = false;
- 	int i, fd, set_freq[MAX+1] = {0}, num_gts;
- 	int specified_gt = -1;
- 
--	fd = drm_open_driver(DRIVER_INTEL);
--	devid = intel_get_drm_devid(fd);
--	device = igt_device_get_card_index(fd);
--	num_gts = igt_sysfs_get_num_gt(fd);
-+	fd = drm_open_driver(DRIVER_INTEL | DRIVER_XE);
-+	is_xe = is_xe_device(fd);
-+
-+	if (is_xe) {
-+		igt_debug("Using Xe driver\n");
-+	} else {
-+		devid = intel_get_drm_devid(fd);
-+		device = igt_device_get_card_index(fd);
-+		igt_debug("Using i915 driver\n");
-+	}
-+
-+	num_gts = driver_get_num_gts(fd);
- 
- 	write = parse(argc, argv, fd, targets, ARRAY_SIZE(targets), set_freq, &reader,
- 		       &list_gts, &specified_gt);
--- 
-2.43.0
+> Karthik or Swati, please also correct this if I made any
+> mistake here.
+> 
+>> +#include "igt.h"
+>> +
+>> +IGT_TEST_DESCRIPTION("Test crtc background color feature");
+>> +
+>> +typedef struct {
+>> +	int drm_fd;
+>> +	int debugfs;
+>> +	igt_display_t display;
+>> +} data_t;
+>> +
+>> +#define __DRM_ARGB64_PREP(c, shift, bpc)			\
+>> +	(((__u64)(c) << (16 - (bpc)) & 0xffffU) << (shift))
+>> +
+>> +#define DRM_ARGB64_PREP_BPC(alpha, red, green, blue, bpc)	\
+>> +	(__DRM_ARGB64_PREP(alpha, 48, bpc) |			\
+>> +	 __DRM_ARGB64_PREP(red,   32, bpc) |			\
+>> +	 __DRM_ARGB64_PREP(green, 16, bpc) |			\
+>> +	 __DRM_ARGB64_PREP(blue,   0, bpc))
+>> +
+>> +static void test_background(data_t *data, enum pipe pipe, igt_output_t *output,
+>> +			    __u16 red, __u16 green, __u16 blue)
+>> +{
+>> +	igt_display_t *display = &data->display;
+>> +	igt_crc_t plane_crc, bg_crc;
+>> +	igt_pipe_crc_t *pipe_crc;
+>> +	igt_plane_t *plane;
+>> +	drmModeModeInfo *mode;
+>> +	struct igt_fb fb;
+>> +
+>> +	igt_display_reset(display);
+>> +
+>> +	igt_output_set_pipe(output, pipe);
+>> +	mode = igt_output_get_mode(output);
+>> +
+>> +	plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+>> +
+>> +	/* Fill the primary plane and set the background to the same color */
+>> +	igt_create_color_fb(data->drm_fd,
+>> +			    mode->hdisplay, mode->vdisplay,
+>> +			    DRM_FORMAT_XRGB8888,
+>> +			    DRM_FORMAT_MOD_NONE,
+>> +			    (double)red / 0xffff,
+>> +			    (double)green / 0xffff,
+>> +			    (double)blue / 0xffff,
+>> +			    &fb);
+>> +
+>> +	igt_plane_set_fb(plane, &fb);
+>> +	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_BACKGROUND,
+>> +				DRM_ARGB64_PREP_BPC(0xffff, red, green, blue, 8));
+>> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>> +
+>> +	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, IGT_PIPE_CRC_SOURCE_AUTO);
+>> +	igt_pipe_crc_collect_crc(pipe_crc, &plane_crc);
+>> +
+>> +	/* Turn off the primary plane so that only the background is visible */
+>> +	igt_plane_set_fb(plane, NULL);
+>> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>> +	igt_pipe_crc_collect_crc(pipe_crc, &bg_crc);
+>> +
+>> +	/*
+>> +	 * The test assumes hardware is able to generate valid CRCs when setting
+>> +	 * the background color. Some platforms, e.g. Intel, might require at
+>> +	 * least one plane to be visible before reading the pipe-level ("dmux")
+>> +	 * CRC. Other platforms, e.g. Rockchip, do not take background color
+>> +	 * into account when computing CRC at CRTC level.
+>> +	 * A possible workaround would be to use alternative CRC sources, e.g.
+>> +	 * where computation is performed at encoder or sink level.
+>> +	 */
+>> +	igt_assert_crc_equal(&plane_crc, &bg_crc);
+>> +
+>> +	/* Clean-up */
+>> +	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_BACKGROUND,
+>> +				DRM_ARGB64_PREP_BPC(0xffff, 0, 0, 0, 8));
+>> +	igt_pipe_crc_free(pipe_crc);
+>> +	igt_output_set_pipe(output, PIPE_NONE);
+>> +	igt_display_commit(display);
+>> +	igt_remove_fb(data->drm_fd, &fb);
+>> +}
+>> +
+> 
+> Add here:
+> 
+> /**
+>  * SUBTEST: background-color-%s
+>  * Description: Tests %arg[1] in background color
+>  *
+>  * arg[1]:
+>  *
+>  * @red:      red
+>  * @green:    green
+>  * @blue:     blue
+>  * @yellow:   yellow
+>  * @purple:   purple
+>  * @cyan:     cyan
+>  * @black:    black
+>  * @white:    white
+>  */
+> 
+> With this it will compile and will be tested by Intel CI.
 
+Great!  Please note there's already a 2nd revision [1] available which might
+require adjusting your kernel driver due to the following change:
+
+- Set the value of the CRTC background color property with 16bpc instead
+  of 8bpc, to avoid CRC check failures because of framebuffer format
+  precision mismatch - display controller drivers shall convert it back
+  from 16bpc to their internal representation of the pixel color if
+  necessary, e.g. VKMS already uses 16bpc, hence no conversion is
+  required in that case
+
+[1] https://lore.kernel.org/all/20251118-crtc-bgcolor-v2-1-dce4063f85a9@collabora.com/
