@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 190DBCF856E
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Nov 2025 15:46:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4AF6CF8864
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Nov 2025 16:11:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A1EA910E779;
-	Thu, 20 Nov 2025 15:46:58 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yls9UdRP";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00B0010E77A
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Nov 2025 15:46:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763653617; x=1795189617;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=tGZC4bKNooDEpJyqWB4amDcpY4Dxf8AxqDTL1LnrUSM=;
- b=Yls9UdRPaIF9FF+SuXSPkhBAZtnN87bdb79OW3aA7i6SG6vtvIee/Eei
- H79HqGm1HMwb4Ssyvo2r46UdIR3hQl6rGt9af9cnil+DcHKRMVx9cEarK
- N4wfl1tsa82ahMjatIPXNs1f2LQ/YKVwGJwQRO9RSeb7OJmdsyGWJG57y
- xbjv0m4YxHmOWn6lFMqbJ9czwVPC6tBCLKYH+q7dE0EXdK/mffeGCnjsG
- yLIp0F58V/mCuTQgMEoDbCzeM3jycQeAGyOImKnwDoMQ+7ITclw6wptI9
- Dxg79dMZzHyKPLRJf7VnhQitqrnUMdnx/kYuqinWGFcX6121EmxmI1WAE g==;
-X-CSE-ConnectionGUID: 7SgWb33GTPKqTI/fIvXwtw==
-X-CSE-MsgGUID: 8NMajDibTWiGqlkP655Wdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="76055363"
-X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="76055363"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 07:46:57 -0800
-X-CSE-ConnectionGUID: MqrctIgYTtWdyXWBGRupXA==
-X-CSE-MsgGUID: 0iUUHibMQQqiblvI5D+ebw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="222348572"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 07:46:55 -0800
-Date: Thu, 20 Nov 2025 16:46:37 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Zongyao Bai <zongyao.bai@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Xin Wang <x.wang@intel.com>,
- Matthew Auld <matthew.auld@intel.com>
-Subject: Re: [PATCH 1/2] tests/intel/xe_pat: switch PAT tests to igt_srandom()
-Message-ID: <20251120154637.xjaelakr6cu3kxq6@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Zongyao Bai <zongyao.bai@intel.com>, igt-dev@lists.freedesktop.org,
- Xin Wang <x.wang@intel.com>, Matthew Auld <matthew.auld@intel.com>
-References: <20251119231900.3797119-1-zongyao.bai@intel.com>
- <20251119231900.3797119-2-zongyao.bai@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9B3C210E550;
+	Thu, 20 Nov 2025 16:11:31 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA3C910E550;
+ Thu, 20 Nov 2025 16:11:30 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4486654840483368439=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251119231900.3797119-2-zongyao.bai@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fconfigfs?=
+ =?utf-8?q?=3A_Test_gt=5Ftypes=5Fallowed_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: priyanka.dandamudi@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 20 Nov 2025 16:11:30 -0000
+Message-ID: <176365509094.14563.12637110139000465689@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20251120123437.467347-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20251120123437.467347-1-priyanka.dandamudi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,54 +37,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zongyao,
-On 2025-11-19 at 23:18:59 +0000, Zongyao Bai wrote:
-> For consistency with the igt framework, use igt_srandom() to generate
-> random seed instead of srand().
-> 
-> v2:
->   In the IGT framework, each running test case is initialized through
->   common_init(), which has called igt_srandom(), additional calls are
->   not needed. (Kamil)
-> 
-> Suggested-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Reviewed-by: Xin Wang <x.wang@intel.com>
-> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-> Signed-off-by: Zongyao Bai <zongyao.bai@intel.com>
+--===============4486654840483368439==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Series Details ==
 
-Regards,
-Kamil
+Series: tests/intel/xe_configfs: Test gt_types_allowed (rev2)
+URL   : https://patchwork.freedesktop.org/series/157501/
+State : success
 
-> ---
->  tests/intel/xe_pat.c | 7 -------
->  1 file changed, 7 deletions(-)
-> 
-> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-> index 59dfb6b11..4294af71c 100644
-> --- a/tests/intel/xe_pat.c
-> +++ b/tests/intel/xe_pat.c
-> @@ -1161,15 +1161,8 @@ igt_main_args("V", NULL, help_str, opt_handler, NULL)
->  	int fd;
->  
->  	igt_fixture {
-> -		uint32_t seed;
-> -
->  		fd = drm_open_driver(DRIVER_XE);
->  		dev_id = intel_get_drm_devid(fd);
-> -
-> -		seed = time(NULL);
-> -		srand(seed);
-> -		igt_debug("seed: %d\n", seed);
-> -
->  		xe_device_get(fd);
->  	}
->  
-> -- 
-> 2.43.0
-> 
+== Summary ==
+
+CI Bug Log - changes from IGT_8636 -> IGTPW_14088
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14088/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14088 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-9:          [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8636/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14088/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8636 -> IGTPW_14088
+
+  CI-20190529: 20190529
+  CI_DRM_17575: 13909978d70fc4ded88b778a313b68ad86ba881a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14088: d52a8b05bcdd62361014d67f6c34698827ffad6b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8636: 254cd102396ff95d61f2ebe49fc09128878bf483 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14088/index.html
+
+--===============4486654840483368439==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_configfs: Test gt_types_allowed (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/157501/">https://patchwork.freedesktop.org/series/157501/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14088/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14088/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8636 -&gt; IGTPW_14088</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14088/index.html</p>
+<h2>Participating hosts (45 -&gt; 44)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14088 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8636/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14088/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8636 -&gt; IGTPW_14088</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17575: 13909978d70fc4ded88b778a313b68ad86ba881a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14088: d52a8b05bcdd62361014d67f6c34698827ffad6b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8636: 254cd102396ff95d61f2ebe49fc09128878bf483 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4486654840483368439==--
