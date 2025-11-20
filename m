@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2740CF8860
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Nov 2025 14:28:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0516CF8860
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Nov 2025 14:28:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 545BF10E75E;
-	Thu, 20 Nov 2025 14:28:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 54BBB10E75A;
+	Thu, 20 Nov 2025 14:28:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M2cOh4ro";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J8OMJ9UI";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6901E10E758
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Nov 2025 14:28:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0CB3F10E761
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Nov 2025 14:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763648890; x=1795184890;
+ t=1763648891; x=1795184891;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=k+1aGXhyU6t8jOAKA9+yzx+CxzrChS9sd0iESZiVxcU=;
- b=M2cOh4roYBFSbD/32s4lZqiGGdRPpZaAFpjfHtMNEfdolOclb5XrGrGx
- t+xfuhCrQ3/IDEuRkZhpPVrd0wJko5VJOxHoc3O8zpP+VsNQfVTY3gyWt
- jgLR7CTfkSYT3sjYEkQtTM70sKQKvqZMM7lWfgH1HzIJZu8c6rRpLGm5s
- Bjs4WsAXQQI+E4vbE92qBtQaMFfGClRtJRAFOcMNUOA2CeVZzvC+4FAU+
- EJmO3nmw2Wm3qyfSiHUb7sD8jecBfGZmj4B2NCtPD15eNixS16gqeZzI5
- Wz3yYCeWaWSdLTzLmQGBNmCTwztdTR06yPqPWLymleKWbKRXF8AQRJKXn w==;
-X-CSE-ConnectionGUID: XNEw+MLATuiS5+xRvJo21w==
-X-CSE-MsgGUID: 6hYbvNryTsyGM4HIRuFKMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="76824128"
-X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="76824128"
+ bh=nbzWUyqFt9ms85E42TVpzLbmVkPoyYHM6r7qt6sQI3g=;
+ b=J8OMJ9UIF671WpYS13t6+7r8e8AcYxziW++T8hGo1qJZGNtrxiHI2k+/
+ S94/rJBZ+M3LkrmAwFm0KwIyd26+IUkEjipwQ/npSPKeVhze798v/AtAo
+ 6kITJkn9rPlnNN3w7IXd9DaHvZoiBSdxg6lREz09E9irxqT8ofCNXuZih
+ M4L901AJecO2NnEW05uldxFuIoQ7ynW8bzoW2vKmB3NtLiVftffHciAhs
+ uRVF2zu+l2TeyDFe4+uzgal41temYdBVBV7FeuQh/Az7fDqWQA69YjKN2
+ 9mhc6fMkIt6Vl1sPLppiv+THR5Bd9E+hmQud8b0rGTmW2nE7Wgvv3djO7 A==;
+X-CSE-ConnectionGUID: aNJS55bnSjCjaVQFj14AtA==
+X-CSE-MsgGUID: 46WbkPamR/OWkcnJiTOgew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="76824132"
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="76824132"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 06:28:09 -0800
-X-CSE-ConnectionGUID: j7B4t+gkQjO1Kdk3qxzDkg==
-X-CSE-MsgGUID: jlaZK7YrQYyGk/aFpqN35A==
+ 20 Nov 2025 06:28:11 -0800
+X-CSE-ConnectionGUID: x9Urfp1WTSm5WohAdEeJBw==
+X-CSE-MsgGUID: Rofdj7GsQ7Whl+x4slDeMw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="191057640"
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="191057652"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 06:28:08 -0800
+ 20 Nov 2025 06:28:09 -0800
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Thu, 20 Nov 2025 15:25:39 +0100
-Subject: [PATCH v4 2/6] tests/intel/xe_eudebug_online: use helper to get
- hwconfig value
+Date: Thu, 20 Nov 2025 15:25:40 +0100
+Subject: [PATCH v4 3/6] lib/xe/xe_query: introduce helpers for device query
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251120-xe_query_helpers-v4-2-2ed6dc04dd94@intel.com>
+Message-Id: <20251120-xe_query_helpers-v4-3-2ed6dc04dd94@intel.com>
 References: <20251120-xe_query_helpers-v4-0-2ed6dc04dd94@intel.com>
 In-Reply-To: <20251120-xe_query_helpers-v4-0-2ed6dc04dd94@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -59,18 +58,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1510;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3562;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=k+1aGXhyU6t8jOAKA9+yzx+CxzrChS9sd0iESZiVxcU=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpHyUvvRUzX0lMo/M80/cVQiiJD0xdL6Qd+PUde
- AM47d6NC0SJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaR8lLwAKCRAjYrKT3hD9
- 10+0C/9+3ErPFADBn2vuSNvV1/vdkX6eMO3w6UMPsJztCcycEhB+qAznAXBqyTKBU/+qhQ7LaAh
- 9nZDtYetO8ABwPmXl7FuuXacBW7eiCv1al71eehZ+lHcR4pFLKVJ32e6ha/jbOKMwZU0eXa1e0P
- zE4UU2pu8rnBt92ZYXeFb3oCi7zsBVbDi5+kA62GzWtizXwtSu84/dllrtgabbGqU6EIdcJYhnO
- +Ch9DJ/DUTKfstX68rd+ftXlACV3tF+lFvvJe5CvWZOFpUuZ3iC/xgQdEJO5JwMW3sd05nc+J/M
- XJ8aPb9NbeQGPl8P/6fU5e1H09voorHeRPNz1nZwn6nMMV7GCKI2wkDeBpUHlZyfAN5ux66CSZi
- f3SylZrenM86sAnkFE/i4ZXp5AnZ7qSL/w3NENOCDFSRZFLrUknlF0ZkkQ5RJnVNK438GD0wTsX
- BSwwEQ4Qe0S+8G02GNRu3SMYxv1F51Kx65SCzaXv092y0IOQMhCYAaL4TmlA85NRuwA0I=
+ bh=nbzWUyqFt9ms85E42TVpzLbmVkPoyYHM6r7qt6sQI3g=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpHyUv6JYMCtQ9RuubGdWrrcFmzPEbzc/cDCO7d
+ ce1s/FtR6GJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaR8lLwAKCRAjYrKT3hD9
+ 1yM8DACeMnuGQjVhO3hB8IRPqNrp3P+wZ6Pt5MP/Te+vXtks7wtm7nkVKEX/f/xNPh2P0zdDBQC
+ 8T2OKa9s5mUPh5VUzZ9a0BrgkM/L6ISuVXCHoS9xhhD2i9zQxkgvpQmbjoR4ugz2qJzYq8Z2QtY
+ w0uls+6dYanEQpkD49sKJhYx0h3OSFj2NdxVCD+W+b8ZZjFAuzUlyNtmzJdHx57+PFxUNIluqIM
+ sQ6FiSJJ4dBANzxWiTVCw+nmixCL9Wk2sJvHKGAMchvVSqclzPbNGXegg5K2pVY3AsHD/O3el4f
+ kYpN9ptD5nTQTwEEhYWyo7zVfw5y+apjjAKhcvFLwKlO3BQyynoljtbEisZAYBpnUqFJZ7OILdx
+ rBUxJEvuE5x1MTm3EwWzMPC4LKS82sCxuktfjCbcUfkifPkWa+YaPtprsDRm0toW09JP3Tgrwbw
+ bV+T1flFqk0VI6ydqSZ6SnkJDXXT2MPsVLGu5LIcUyhM8boXcT6BmgMcODXwOgZ+9hDdA=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -88,42 +87,110 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Recently introduced helper makes the code cleaner.
+Helpers abstracts out common bits of DRM_XE_DEVICE_QUERY_HWCONFIG ioctl:
+- query data size,
+- alloc memory,
+- get data,
+- error checks,
+- valgrind annotations.
+
+There are two flawors, to fulfill current usage patterns:
+- xe_query_device_may_fail - returns NULL if query is not supported,
+- xe_query_device - asserts on error otherwise returns valid pointer.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- tests/intel/xe_eudebug_online.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ lib/xe/xe_query.c | 43 +++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_query.h | 20 ++++++++++++++++++++
+ 2 files changed, 63 insertions(+)
 
-diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-index e1516c202f15d9bb90d3cf0f6ed30700b5479af9..ef700c2591291f9a22849c2995c83cc5ec0ac6d9 100644
---- a/tests/intel/xe_eudebug_online.c
-+++ b/tests/intel/xe_eudebug_online.c
-@@ -1182,9 +1182,7 @@ static bool intel_gen_has_lockstep_eus(int fd)
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index a3fab133e6c4d9f949564b47cc817383bee7a568..f3c9de4aa219162610af6becb6c3c02500187099 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -25,6 +25,49 @@
+ #include "xe_query.h"
+ #include "xe_ioctl.h"
  
- static int query_attention_bitmask_size(int fd, int gt)
++/**
++ * xe_query_device_may_fail:
++ * @fd: xe device fd
++ * @type: query type, one of DRM_XE_DEVICE_QUERY_* values
++ * @size: pointer to get size of returned data, can be NULL
++ *
++ * Calls DRM_IOCTL_XE_DEVICE_QUERY ioctl to query device information
++ * about specified @type. Returns pointer to malloc'ed data, which
++ * should be freed later by the user. If @query is not supported
++ * function returns NULL. On any other error it asserts.
++ */
++void *xe_query_device_may_fail(int fd, uint32_t type, uint32_t *size)
++{
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = type,
++		.size = 0,
++		.data = 0,
++	};
++	void *data = NULL;
++
++	/* In case of unsupported query xe driver usually returns error,
++	 * but in case of HWCONFIG it can also return query.size == 0
++	 * on older platforms.
++	 */
++	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query) || !query.size)
++		goto skip_query;
++
++	data = malloc(query.size);
++	igt_assert(data);
++
++	query.data = to_user_pointer(data);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	VG(VALGRIND_MAKE_MEM_DEFINED(data, query.size));
++
++skip_query:
++	if (size)
++		*size = query.size;
++
++	return data;
++}
++
+ static struct drm_xe_query_config *xe_query_config_new(int fd)
  {
--	uint32_t thread_count_len;
--	uint32_t *thread_count_ptr;
--	uint32_t threads_per_eu = 8;
-+	uint32_t threads_per_eu = xe_hwconfig_get_u32(fd, INTEL_HWCONFIG_NUM_THREADS_PER_EU, 8);
- 	struct drm_xe_query_topology_mask *c_dss = NULL, *g_dss = NULL, *eu_per_dss = NULL;
- 	struct drm_xe_query_topology_mask *topology;
- 	struct drm_xe_device_query query = {
-@@ -1197,13 +1195,6 @@ static int query_attention_bitmask_size(int fd, int gt)
- 	int pos = 0;
- 	int i, last_dss_idx;
+ 	struct drm_xe_query_config *config;
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index 4f1c0687133c03b81ba53f95457c55860e5ce194..3e4d73e01b922b47f29731d3cbccc72f67b4c4e1 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -143,9 +143,29 @@ uint16_t xe_gt_get_tile_id(int fd, int gt);
+ uint16_t xe_tile_get_main_gt_id(int fd, uint8_t tile);
+ uint32_t *xe_hwconfig_lookup_value(int fd, enum intel_hwconfig attribute, uint32_t *len);
+ uint32_t xe_hwconfig_get_u32(int fd, enum intel_hwconfig attribute, uint32_t default_value);
++void *xe_query_device_may_fail(int fd, uint32_t type, uint32_t *size);
+ int xe_query_pxp_status(int fd);
+ int xe_wait_for_pxp_init(int fd);
  
--	thread_count_ptr = xe_hwconfig_lookup_value(fd, INTEL_HWCONFIG_NUM_THREADS_PER_EU,
--						    &thread_count_len);
--	if (thread_count_ptr) {
--		igt_assert(thread_count_len == 1);
--		threads_per_eu = *thread_count_ptr;
--	}
--
- 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
- 	igt_assert_neq(query.size, 0);
++/**
++ * xe_query_device:
++ * @fd: xe device fd
++ * @type: query type, one of DRM_XE_DEVICE_QUERY_* values
++ * @size: pointer to get size of returned data, can be NULL
++ *
++ * Calls DRM_IOCTL_XE_DEVICE_QUERY ioctl to query device information
++ * about specified @type. Returns pointer to malloc'ed data, which
++ * should be freed later by the user. If @query is not supported
++ * or on any other error it asserts.
++ */
++static inline void *xe_query_device(int fd, uint32_t type, uint32_t *size)
++{
++	void *data = xe_query_device_may_fail(fd, type, size);
++
++	igt_assert(data);
++	return data;
++}
++
+ struct xe_device *xe_device_get(int fd);
+ void xe_device_put(int fd);
  
 
 -- 
