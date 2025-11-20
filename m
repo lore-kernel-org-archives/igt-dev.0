@@ -4,27 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3565CF8875
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Nov 2025 15:44:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 190DBCF856E
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Nov 2025 15:46:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 88BCB10E074;
-	Thu, 20 Nov 2025 15:44:12 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4929510E074;
- Thu, 20 Nov 2025 15:44:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id A1EA910E779;
+	Thu, 20 Nov 2025 15:46:58 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yls9UdRP";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 00B0010E77A
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Nov 2025 15:46:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1763653617; x=1795189617;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=tGZC4bKNooDEpJyqWB4amDcpY4Dxf8AxqDTL1LnrUSM=;
+ b=Yls9UdRPaIF9FF+SuXSPkhBAZtnN87bdb79OW3aA7i6SG6vtvIee/Eei
+ H79HqGm1HMwb4Ssyvo2r46UdIR3hQl6rGt9af9cnil+DcHKRMVx9cEarK
+ N4wfl1tsa82ahMjatIPXNs1f2LQ/YKVwGJwQRO9RSeb7OJmdsyGWJG57y
+ xbjv0m4YxHmOWn6lFMqbJ9czwVPC6tBCLKYH+q7dE0EXdK/mffeGCnjsG
+ yLIp0F58V/mCuTQgMEoDbCzeM3jycQeAGyOImKnwDoMQ+7ITclw6wptI9
+ Dxg79dMZzHyKPLRJf7VnhQitqrnUMdnx/kYuqinWGFcX6121EmxmI1WAE g==;
+X-CSE-ConnectionGUID: 7SgWb33GTPKqTI/fIvXwtw==
+X-CSE-MsgGUID: 8NMajDibTWiGqlkP655Wdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="76055363"
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="76055363"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Nov 2025 07:46:57 -0800
+X-CSE-ConnectionGUID: MqrctIgYTtWdyXWBGRupXA==
+X-CSE-MsgGUID: 0iUUHibMQQqiblvI5D+ebw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="222348572"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Nov 2025 07:46:55 -0800
+Date: Thu, 20 Nov 2025 16:46:37 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Zongyao Bai <zongyao.bai@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Xin Wang <x.wang@intel.com>,
+ Matthew Auld <matthew.auld@intel.com>
+Subject: Re: [PATCH 1/2] tests/intel/xe_pat: switch PAT tests to igt_srandom()
+Message-ID: <20251120154637.xjaelakr6cu3kxq6@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Zongyao Bai <zongyao.bai@intel.com>, igt-dev@lists.freedesktop.org,
+ Xin Wang <x.wang@intel.com>, Matthew Auld <matthew.auld@intel.com>
+References: <20251119231900.3797119-1-zongyao.bai@intel.com>
+ <20251119231900.3797119-2-zongyao.bai@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_lib/xe/xe=5Fquery=3A_impl?=
- =?utf-8?q?ement_few_query_helpers_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Andrzej Hajda" <andrzej.hajda@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 20 Nov 2025 15:44:11 -0000
-Message-ID: <176365345129.14563.14266256424929702357@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20251120-xe_query_helpers-v4-0-2ed6dc04dd94@intel.com>
-In-Reply-To: <20251120-xe_query_helpers-v4-0-2ed6dc04dd94@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251119231900.3797119-2-zongyao.bai@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,30 +69,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+Hi Zongyao,
+On 2025-11-19 at 23:18:59 +0000, Zongyao Bai wrote:
+> For consistency with the igt framework, use igt_srandom() to generate
+> random seed instead of srand().
+> 
+> v2:
+>   In the IGT framework, each running test case is initialized through
+>   common_init(), which has called igt_srandom(), additional calls are
+>   not needed. (Kamil)
+> 
+> Suggested-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Reviewed-by: Xin Wang <x.wang@intel.com>
+> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+> Signed-off-by: Zongyao Bai <zongyao.bai@intel.com>
 
-Series: lib/xe/xe_query: implement few query helpers (rev4)
-URL   : https://patchwork.freedesktop.org/series/157140/
-State : failure
+LGTM
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Summary ==
+Regards,
+Kamil
 
-Applying: lib/xe_query: add helper to get first value of hwconfig
-Using index info to reconstruct a base tree...
-M	lib/xe/xe_query.c
-M	lib/xe/xe_query.h
-Falling back to patching base and 3-way merge...
-Auto-merging lib/xe/xe_query.h
-CONFLICT (content): Merge conflict in lib/xe/xe_query.h
-Auto-merging lib/xe/xe_query.c
-CONFLICT (content): Merge conflict in lib/xe/xe_query.c
-Patch failed at 0001 lib/xe_query: add helper to get first value of hwconfig
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
-
+> ---
+>  tests/intel/xe_pat.c | 7 -------
+>  1 file changed, 7 deletions(-)
+> 
+> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+> index 59dfb6b11..4294af71c 100644
+> --- a/tests/intel/xe_pat.c
+> +++ b/tests/intel/xe_pat.c
+> @@ -1161,15 +1161,8 @@ igt_main_args("V", NULL, help_str, opt_handler, NULL)
+>  	int fd;
+>  
+>  	igt_fixture {
+> -		uint32_t seed;
+> -
+>  		fd = drm_open_driver(DRIVER_XE);
+>  		dev_id = intel_get_drm_devid(fd);
+> -
+> -		seed = time(NULL);
+> -		srand(seed);
+> -		igt_debug("seed: %d\n", seed);
+> -
+>  		xe_device_get(fd);
+>  	}
+>  
+> -- 
+> 2.43.0
+> 
