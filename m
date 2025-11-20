@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DC4FCF857F
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Nov 2025 10:28:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CBA6CF857D
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Nov 2025 10:33:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CE9AE10E741;
-	Thu, 20 Nov 2025 10:28:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 270E710E0F0;
+	Thu, 20 Nov 2025 10:33:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CCy8xaqr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eiPq3yBb";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B854610E73F
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Nov 2025 10:28:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C01110E0F0
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Nov 2025 10:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763634516; x=1795170516;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=/dEuRBXe8RKiJeLAFzBjIA6hU+XKm/zvdJA2bEu25jU=;
- b=CCy8xaqrQSPeA4D27BvqZLZVmzbU3uCDdBHH6p1YDb8QjSDce0Y77tbS
- ASiac91Xuvk9DbBz9V/e1HS3HQgL5LZBh8EomE/caPEjKQea4H+ZdlsSI
- 1KhLsKn8oJ8OR9zNDQh7N0P+q6nxPRoj8MIfYYb6FRm9nt24RTHZZ8JDX
- dW/3zxqQFLdxbJv1SylK0pSRlzqUo5YwD9CxowV89w+ZIAXyCPuoTzLNw
- nPXFz6Oqv2Sp55A6sjxhcur2hB6CKwcY64Eok7nSapZH7nYpEL4txQKza
- LCFC2btd/uPx2hn4IImsdBO+oi3FZtAPZ7lfbU4aFHbRPOZdmGF8wVmCa g==;
-X-CSE-ConnectionGUID: VpaYacscTjOSmrGBCIbYNg==
-X-CSE-MsgGUID: r+rU3WM8Sc6mIG/BlyObGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="65736286"
-X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; d="scan'208";a="65736286"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ t=1763634790; x=1795170790;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=bEvcS6BGOKGULC6pMFKqJJbBo+McUXQKKM/ni6v7zAs=;
+ b=eiPq3yBbNyvcQQOQeUma/AG5PnqlgyQKK0mSndkIXyE7NU3yzcaRXVGn
+ uQQ//KxcuWZcp30Ev+Rg2JLgMLZhghAUJuTZ5T1l/y0pYm8f/vVuUScDk
+ wCyeqW7losSPO+ZuTN02CYYlGSUxaV7W7ZjVLYsGzCyUuW6BlAt8nYF/A
+ JNmBL3AtfI0IZmzXKBvv0e0Z7ngG7RJTAXx/sAgd1uJJgROFSjRh4t+BD
+ YX76/ovqnqytHWLfu4EEuGjZq6lbKzf+Hncvg91wPoaLGCn97Qam/N4P8
+ gXILfimStbmc+ZZecnWaFdtPXzPOE8WWBT7jP36YK3fJycGPfm0g10Quc A==;
+X-CSE-ConnectionGUID: U5BxKQLKRVy6K+LInADIpA==
+X-CSE-MsgGUID: Q5lkU56UTvS4RIDVY1V3ZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="65736629"
+X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; d="scan'208";a="65736629"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 02:28:36 -0800
-X-CSE-ConnectionGUID: YyehtwaTRZyV6ZuJ+uFCig==
-X-CSE-MsgGUID: dpJuG4jMQoqoMc1qHWHRzA==
+ 20 Nov 2025 02:33:10 -0800
+X-CSE-ConnectionGUID: MNn6JPk+SReZlvcSEpKpAw==
+X-CSE-MsgGUID: ktE1RwD+TsmIAGIweHmVZQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; d="scan'208";a="221966475"
-Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 02:28:36 -0800
-From: Swati Sharma <swati2.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; d="scan'208";a="222259856"
+Received: from inaky-mobl1.amr.corp.intel.com (HELO localhost)
+ ([10.245.244.147])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Nov 2025 02:31:49 -0800
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 2/3] intel-ci: Add sharpness filter tests to i915
- blocklist
-Date: Thu, 20 Nov 2025 16:05:31 +0530
-Message-Id: <20251120103532.1055144-3-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251120103532.1055144-1-swati2.sharma@intel.com>
-References: <20251120103532.1055144-1-swati2.sharma@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ S Sebinraj <s.sebinraj@intel.com>, Xin Wang <x.wang@intel.com>
+Subject: [PATCH i-g-t v1 0/2] intel_gpu_frequency: Allow printing frequencies
+ by regular user
+Date: Thu, 20 Nov 2025 11:31:36 +0100
+Message-ID: <20251120103139.17169-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,28 +68,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Blocklist the new sharpness filter tests for i915:
- - kms_sharpness_filter
- - kms_chamelium_sharpness_filter
+Currently printing current frequencies with this tool without
+sudo nor root rights ends with an assert and a FAIL, like in any
+igt test:
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/intel-ci/i915.blocklist.txt | 2 ++
- 1 file changed, 2 insertions(+)
+$ build/tools/intel_gpu_frequency
+(intel_gpu_frequency:3142) intel_chipset-CRITICAL: Test assertion failure function intel_get_drm_devid, file ../lib/intel_chipset.c:145:
+(intel_gpu_frequency:3142) intel_chipset-CRITICAL: Failed assertion: is_intel_device(fd)
+(intel_gpu_frequency:3142) intel_chipset-CRITICAL: Last errno: 9, Bad file descriptor
+Stack trace:
+  #0 ../lib/igt_core.c:2075 __igt_fail_assert()
+  #1 ../lib/intel_chipset.c:155 intel_get_drm_devid()
+  #2 ../tools/intel_gpu_frequency.c:312 main()
+  #3 ../sysdeps/nptl/libc_start_call_main.h:74 __libc_start_call_main()
+  #4 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
+  #5 [_start+0x25]
+Test (null) failed.
+**** DEBUG ****
+[cut]
+(intel_gpu_frequency:3142) igt_core-INFO:   #5 [_start+0x25]
+****  END  ****
+FAIL (-1.000s)
 
-diff --git a/tests/intel-ci/i915.blocklist.txt b/tests/intel-ci/i915.blocklist.txt
-index 083b660c7..96d69ca79 100644
---- a/tests/intel-ci/i915.blocklist.txt
-+++ b/tests/intel-ci/i915.blocklist.txt
-@@ -172,6 +172,8 @@ igt@kms_frontbuffer_tracking@plane-fbc-rte
- igt@kms_pm_dc@deep-pkgc
- igt@kms_vrr@cmrr
- igt@kms_fbc_dirty_rect.*
-+igt@kms_sharpness_filter@.*
-+igt@kms_chamelium_sharpness_filter@.*
- 
- ###############################################
- # Test was written with the idea that edid read shouldn't take an
+This is a tool, not a test, so change it and allow a normal user
+printing current Intel GPU frequencies. While at it, fix also
+printing program name and print only program name, without a
+full path.
+
+Cc: S Sebinraj <s.sebinraj@intel.com>
+Cc: Xin Wang <x.wang@intel.com>
+
+Kamil Konieczny (2):
+  tools/intel_gpu_frequency: print short program name
+  tools/intel_gpu_frequency: Allow printing by regular user
+
+ tools/intel_gpu_frequency.c | 141 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 129 insertions(+), 12 deletions(-)
+
 -- 
-2.25.1
+2.52.0
 
