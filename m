@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D4EDCF8864
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2740CF8860
 	for <igt-dev@archiver.kernel.org>; Thu, 20 Nov 2025 14:28:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B7E3010E758;
-	Thu, 20 Nov 2025 14:28:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 545BF10E75E;
+	Thu, 20 Nov 2025 14:28:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ht/Puole";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M2cOh4ro";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6600A10E758
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Nov 2025 14:28:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6901E10E758
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Nov 2025 14:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763648889; x=1795184889;
+ t=1763648890; x=1795184890;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=33SvUPaVoyA/WJY+bFJm4DM1IzOXxHAf2Dzp/aus6Zw=;
- b=Ht/PuoleAupVSkVZQnOrWYWeUPmvtsxx8iY5SYq1scuYZrrCzjHpPOnq
- lHQnvxnV14a46YIXRzTpMrC46fXsKbCJieDxVkBLpyPHp99vNhrPmUWp3
- s9QbgtrotxLkwK9cjtyH7qtb83qsOReyuS6W7mPnfeYsoK9uJhSEI92KP
- JmGhw5+dbe0j1e5bvpBHT9hWJwmRhy4EyfzEwgj03R0Pq0YeFmTfhUQky
- j9DdriJh/NPxRe0drjZ4KEiYc65iO7l6aSh4q8VNfYDHUA/rxOD1z8wnZ
- iSlRnXS8OnInDi2uPhj6Zjsf0sCOHG7hVeKcT7Q9TPOo4o9VmWD6Xvgpr g==;
-X-CSE-ConnectionGUID: fG/jD3GxSjSHPGh1pzkEKA==
-X-CSE-MsgGUID: OS47AO/ZQsSb3tV0dUqUgg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="76824124"
-X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="76824124"
+ bh=k+1aGXhyU6t8jOAKA9+yzx+CxzrChS9sd0iESZiVxcU=;
+ b=M2cOh4roYBFSbD/32s4lZqiGGdRPpZaAFpjfHtMNEfdolOclb5XrGrGx
+ t+xfuhCrQ3/IDEuRkZhpPVrd0wJko5VJOxHoc3O8zpP+VsNQfVTY3gyWt
+ jgLR7CTfkSYT3sjYEkQtTM70sKQKvqZMM7lWfgH1HzIJZu8c6rRpLGm5s
+ Bjs4WsAXQQI+E4vbE92qBtQaMFfGClRtJRAFOcMNUOA2CeVZzvC+4FAU+
+ EJmO3nmw2Wm3qyfSiHUb7sD8jecBfGZmj4B2NCtPD15eNixS16gqeZzI5
+ Wz3yYCeWaWSdLTzLmQGBNmCTwztdTR06yPqPWLymleKWbKRXF8AQRJKXn w==;
+X-CSE-ConnectionGUID: XNEw+MLATuiS5+xRvJo21w==
+X-CSE-MsgGUID: 6hYbvNryTsyGM4HIRuFKMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="76824128"
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="76824128"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 06:28:08 -0800
-X-CSE-ConnectionGUID: 7UCc4Tl4RnGWLVC75y4swQ==
-X-CSE-MsgGUID: +gSv9a/kRWeMHsBsSWtD3Q==
+ 20 Nov 2025 06:28:09 -0800
+X-CSE-ConnectionGUID: j7B4t+gkQjO1Kdk3qxzDkg==
+X-CSE-MsgGUID: jlaZK7YrQYyGk/aFpqN35A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="191057633"
+X-IronPort-AV: E=Sophos;i="6.20,213,1758610800"; d="scan'208";a="191057640"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 06:28:06 -0800
+ 20 Nov 2025 06:28:08 -0800
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Thu, 20 Nov 2025 15:25:38 +0100
-Subject: [PATCH v4 1/6] lib/xe_query: add helper to get first value of hwconfig
+Date: Thu, 20 Nov 2025 15:25:39 +0100
+Subject: [PATCH v4 2/6] tests/intel/xe_eudebug_online: use helper to get
+ hwconfig value
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251120-xe_query_helpers-v4-1-2ed6dc04dd94@intel.com>
+Message-Id: <20251120-xe_query_helpers-v4-2-2ed6dc04dd94@intel.com>
 References: <20251120-xe_query_helpers-v4-0-2ed6dc04dd94@intel.com>
 In-Reply-To: <20251120-xe_query_helpers-v4-0-2ed6dc04dd94@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -58,18 +59,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1820;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1510;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=33SvUPaVoyA/WJY+bFJm4DM1IzOXxHAf2Dzp/aus6Zw=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpHyUuKySEwe2UTgv5eFs6kyfgF0k+rgz38KUxi
- ok6P3VTBpyJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaR8lLgAKCRAjYrKT3hD9
- 1woiDAC5mmJbuMA62we2bZBxkIbOnTQQG/g9Z3mV3EfClJ7cva4HCB15y05xleSnNIfSXE7vkuG
- 0a5sXIgNoRO3UZr/UJJsiW799LelBMhpZeAZiS7ZImQ4u0G2CpvB1NV2u9WZhlM841Xh3yMM34p
- M8/O6lU4mkViKLWfM6Km7seoCFUs+5ogbzd+ou6qg5qHnZI8Zt7ZB1OqpxRJS1RJnrH4S5kPzs7
- Oi8P9qioJ7WoWNPQWFVJDtvh42fYpvcEbFkPrYqBmbg915y31GXPi2gsH0dNUSc70AvMSXGggtt
- FQ+Ncu288dbb4zVowVNB68vYAAz6+7S1R1hWuq4cRQzCr4eovzj4CHHEusCYt6QfH1RAFXcHIHu
- pVcTljm9KkY7xjSvr3+DlAyb1qejgVlZDqwtyS6DXcGxgsGnWxXv2SSOHSCVxScI7GslQJZFRA+
- BUx/uti+Kw2JTknVHul9KhVFxfOJSDtQTZ7db/xrFiqttQ44nXRJKl2FLc6Cmspi1anLo=
+ bh=k+1aGXhyU6t8jOAKA9+yzx+CxzrChS9sd0iESZiVxcU=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpHyUvvRUzX0lMo/M80/cVQiiJD0xdL6Qd+PUde
+ AM47d6NC0SJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaR8lLwAKCRAjYrKT3hD9
+ 10+0C/9+3ErPFADBn2vuSNvV1/vdkX6eMO3w6UMPsJztCcycEhB+qAznAXBqyTKBU/+qhQ7LaAh
+ 9nZDtYetO8ABwPmXl7FuuXacBW7eiCv1al71eehZ+lHcR4pFLKVJ32e6ha/jbOKMwZU0eXa1e0P
+ zE4UU2pu8rnBt92ZYXeFb3oCi7zsBVbDi5+kA62GzWtizXwtSu84/dllrtgabbGqU6EIdcJYhnO
+ +Ch9DJ/DUTKfstX68rd+ftXlACV3tF+lFvvJe5CvWZOFpUuZ3iC/xgQdEJO5JwMW3sd05nc+J/M
+ XJ8aPb9NbeQGPl8P/6fU5e1H09voorHeRPNz1nZwn6nMMV7GCKI2wkDeBpUHlZyfAN5ux66CSZi
+ f3SylZrenM86sAnkFE/i4ZXp5AnZ7qSL/w3NENOCDFSRZFLrUknlF0ZkkQ5RJnVNK438GD0wTsX
+ BSwwEQ4Qe0S+8G02GNRu3SMYxv1F51Kx65SCzaXv092y0IOQMhCYAaL4TmlA85NRuwA0I=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -87,54 +88,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Most hwconfig attributes are single values. Let's simplify querying them.
+Recently introduced helper makes the code cleaner.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Reviewed-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- lib/xe/xe_query.c | 17 +++++++++++++++++
- lib/xe/xe_query.h |  1 +
- 2 files changed, 18 insertions(+)
+ tests/intel/xe_eudebug_online.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 8e3e05fd3a7cf949a0bc0f64f06853e96be8c78e..a3fab133e6c4d9f949564b47cc817383bee7a568 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -1080,6 +1080,23 @@ uint32_t *xe_hwconfig_lookup_value(int fd, enum intel_hwconfig attribute, uint32
- 	return NULL;
- }
+diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+index e1516c202f15d9bb90d3cf0f6ed30700b5479af9..ef700c2591291f9a22849c2995c83cc5ec0ac6d9 100644
+--- a/tests/intel/xe_eudebug_online.c
++++ b/tests/intel/xe_eudebug_online.c
+@@ -1182,9 +1182,7 @@ static bool intel_gen_has_lockstep_eus(int fd)
  
-+/**
-+ * xe_hwconfig_get_u32:
-+ * @fd: xe device fd
-+ * @attribute: hwconfig attribute id
-+ * @default_value: value to be returned in case attribute is not present
-+ *
-+ * Returns attribute value, if present, @default_value otherwise.
-+ */
-+uint32_t xe_hwconfig_get_u32(int fd, enum intel_hwconfig attribute, uint32_t default_value)
-+{
-+	uint32_t *vals, len;
-+
-+	vals = xe_hwconfig_lookup_value(fd, attribute, &len);
-+
-+	return (vals && len > 0) ? *vals : default_value;
-+}
-+
- /**
-  * xe_query_pxp_status:
-  * @fd: xe device fd
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index bcdfb54b027540b442da95d3c6a3cfd0f8b08dca..4f1c0687133c03b81ba53f95457c55860e5ce194 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -142,6 +142,7 @@ bool xe_is_main_gt(int fd, int gt);
- uint16_t xe_gt_get_tile_id(int fd, int gt);
- uint16_t xe_tile_get_main_gt_id(int fd, uint8_t tile);
- uint32_t *xe_hwconfig_lookup_value(int fd, enum intel_hwconfig attribute, uint32_t *len);
-+uint32_t xe_hwconfig_get_u32(int fd, enum intel_hwconfig attribute, uint32_t default_value);
- int xe_query_pxp_status(int fd);
- int xe_wait_for_pxp_init(int fd);
+ static int query_attention_bitmask_size(int fd, int gt)
+ {
+-	uint32_t thread_count_len;
+-	uint32_t *thread_count_ptr;
+-	uint32_t threads_per_eu = 8;
++	uint32_t threads_per_eu = xe_hwconfig_get_u32(fd, INTEL_HWCONFIG_NUM_THREADS_PER_EU, 8);
+ 	struct drm_xe_query_topology_mask *c_dss = NULL, *g_dss = NULL, *eu_per_dss = NULL;
+ 	struct drm_xe_query_topology_mask *topology;
+ 	struct drm_xe_device_query query = {
+@@ -1197,13 +1195,6 @@ static int query_attention_bitmask_size(int fd, int gt)
+ 	int pos = 0;
+ 	int i, last_dss_idx;
+ 
+-	thread_count_ptr = xe_hwconfig_lookup_value(fd, INTEL_HWCONFIG_NUM_THREADS_PER_EU,
+-						    &thread_count_len);
+-	if (thread_count_ptr) {
+-		igt_assert(thread_count_len == 1);
+-		threads_per_eu = *thread_count_ptr;
+-	}
+-
+ 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+ 	igt_assert_neq(query.size, 0);
  
 
 -- 
