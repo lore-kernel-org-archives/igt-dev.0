@@ -4,168 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF3AECFA44A
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Nov 2025 22:35:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F83ACFA454
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Nov 2025 23:19:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 84E6010E08A;
-	Thu, 20 Nov 2025 22:35:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2178310E7DC;
+	Thu, 20 Nov 2025 23:19:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GYq5fkt4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AojVBjNp";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E898C10E08A
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Nov 2025 22:35:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6856A10E7DC
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Nov 2025 23:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763678157; x=1795214157;
+ t=1763680748; x=1795216748;
  h=date:from:to:cc:subject:message-id:references:
  in-reply-to:mime-version;
- bh=GPb+T6JTaVzpdEJi6Qc1tWHXka5afe8+WwqFcg4oT2M=;
- b=GYq5fkt45oAZC04YgK2YP+mBsgbyEod74ehepfk/M10oWRLto5Ms6Ek+
- toOEtMqf751kWweW8T6EtFHgUf+WGdG+xr3TyICNvYZXfMDbvMJ5JG5hv
- DAqNqRcAuSr9zBH0U3rUbL10gAAvkD8VuUlFYn76ZWt34h5CEQk/uMPQz
- 829Kc0fpiELTdv98FMSatHvQyzCvvIaEhuRFk1hb5Do6Kph15FxEpnIRA
- ODBS2EY2PcjKtQCrDUN6VHQtIEbOQYYAfa28yF8koivFu3KX1d2rmBY27
- KhFjSuFs7n5KnJ/Aujj17yPw9xsUVb476nbEb9K/sonB2zdcPfEV11kz7 w==;
-X-CSE-ConnectionGUID: MPsKAn57TL6SFO8JnDEtvQ==
-X-CSE-MsgGUID: M4m2oUYsTYSxtK76FbAhRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="65795578"
-X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; d="scan'208";a="65795578"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 14:35:56 -0800
-X-CSE-ConnectionGUID: gwckl4HESbSinC5Sa6DoCA==
-X-CSE-MsgGUID: 352I4NN4R9qgBxVMukYU0w==
+ bh=+GqdyGK7PveMvh+q15wKXZFbAmGqCu1ObIRadY8KeCs=;
+ b=AojVBjNpdpApjXlH6OHmGRd4poWKII7iy3KuwLXPFzdrva3N9r/0/jcn
+ APPWMWkdHZg7RENRk2t/ifEScokqSS8hZ6rPmSAonX7wMqptMfbQ+FxbM
+ 4RAkEcA4+Ywenx8hvLnQSFmBMKHdoJk964fiBG1DU1wDb82FWp+yo/pxO
+ mq+ShBDlXuD1Np4aTD6hnt8vZBKlGPu5cD6EBOBaee0Oxm70JMxxiyR70
+ ZZlG20mYM0f3aqrnsNF/GaeOH/H33pCT7+kwJqD1BVp4oruAMwGjwsOBq
+ Q4pMHRVdDcM+PFBc2j38/bConhY4ThEFcuuWQIu3J8Gx0atwCA5P3qxEB Q==;
+X-CSE-ConnectionGUID: z4tn0q30SOq1QGrsOAtPaA==
+X-CSE-MsgGUID: g7lVJgJJTmGIs4KkGzIvpg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="83389802"
+X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; d="scan'208";a="83389802"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Nov 2025 15:19:06 -0800
+X-CSE-ConnectionGUID: QwaDhu4vSnuATCJCgvhNFA==
+X-CSE-MsgGUID: ioofafL4S6CXIMoCcXNZXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; d="scan'208";a="190798171"
+X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; d="scan'208";a="222455271"
 Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 14:35:57 -0800
+ by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Nov 2025 15:19:06 -0800
 Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
  fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 20 Nov 2025 14:35:56 -0800
+ 15.2.2562.27; Thu, 20 Nov 2025 15:19:05 -0800
 Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
  FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Thu, 20 Nov 2025 14:35:56 -0800
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.61) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.27 via Frontend Transport; Thu, 20 Nov 2025 15:19:05 -0800
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.29)
+ by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 20 Nov 2025 14:35:55 -0800
+ 15.2.2562.27; Thu, 20 Nov 2025 15:19:05 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jlLkOT0pbzpiYNP/pbv7MKu0pABAeo1HAQd3PVamVzPIetFqDVhwW6hD5xuUbZBev8OR/TLjLqte5mzyqjp1RZENEfAT149E6B0iEe64B1UWhSS11kkTxSm5WwZvJ/Wty9nyB23Rn8ZggwkNLivagXOfYoVBcpfqPD42lYQmVynbIa28715S3mHnDlXnc4Mkc/A9ZVhGNcV4rX2IR4y3kWuvDpgcUutntziuvuuzFnVzuLC0sIfgLvXmyqhR+ML+7JKoHLyYqM0sTr1dtPvyuqyQ7sKSTLTwzaE4XjbeSPrbBChn+nO9UuH0q4IbWx2URu2/75CsCjm6gUx8l/yyHg==
+ b=SyRcSz3sin+51jbqh9HfT86ISkFzEzKa9B1bTU5ZVGBBbQs+80qbdacZtO6ip8QsZSKAFpJILQmbYcY/0UtmJATMa4hK5ve3vjUM4b+4A3oc0iFUS2PMx/IdxyUECUjx2FrI0tDByn4oQa0g0O44x5HOp3sGRipoyY57miaPsVVW16hL++9ATf06WahJkjEUW5i4uGEDkfuiS/PhPNGFc1JErfPr3NIdEWuSxt+Ddjs5vpZZkAYMvxneURZOqeO8QICXWvuS5MfRUEn180dyOSzD7YYXRcemMw7kHpON8mD9VGPStMO+jL3FOa9CJXMKacRtH8E/ka4FGurPGHst6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jD5ZTifPE5krZcAiUp/EBoI9s05lQV1RM7To1Xah7pI=;
- b=cgd4O9FQDw66ef5S1BkL+2HI4jwpN50ISKZrv55tc+pfvcywKKlmd4/p0sdbXy7nIMfBQXC8la/IdhA3IscHVJKRXKMOUdS9bXsSlazl1lWb7WuGK4yMlueapmFbYZcmx9qOUc6UY1Vn+7qbewUfBxw0Fk1pBDt+ahtOEaGwUBy+qWgty3uWA7z1yKyBnwZh6nwj+s52Gc2rLX5+Us03Rf3A0fZhgqEO9GsO+HYRR5wB3lapyew6XFjIOA1vtB7Lk5De9fFx4SbvSrKnFITi4NmRmLmmybeo2UQTJHM9k4mrOrTa0zpuC+xWIlMkVGAzwzxmI6rnmmxZtsjHYOJQzQ==
+ bh=0eZ8IPGQI9EzSFO9yWQ9H0wFN8t3RBmwW69KTfKcrP8=;
+ b=y7iBrhMppl8lV65SambTO41dMPJ9zjn2b1eLseKIx/RnUtZm6dkImKMUl2CZ/7SoaghD2wzj5UA2d5M9m4122qPd7yCJ6j9l7eePZcikErr9X5gdHYlYKVJsExdUfspn/rP6UEQmMvYjPCchNUkdQZVLSHW9vbl2A5Y1xXmxd+VyCd58KxONU+ggCJy/mSSE7IXeczzRDCuOwXZiY8jsrkpgJ7Xpxy6AXXXb43osh+5OALjp8LwjmRufo6anc+9jRjA2iZ1+BUkF+MUcKq1IpvG81P1dtLg6zX5C1X8LsOk8E/3OpjP80rOeTJ+TkdqtjtIUJR+aBu44y/Pl76X9jw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from BL3PR11MB6410.namprd11.prod.outlook.com (2603:10b6:208:3b9::15)
- by MW3PR11MB4745.namprd11.prod.outlook.com (2603:10b6:303:5e::9) with
- Microsoft SMTP Server (version=TLS1_2,
+ by IA1PR11MB7823.namprd11.prod.outlook.com (2603:10b6:208:3f3::14)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Thu, 20 Nov
- 2025 22:35:52 +0000
+ 2025 23:18:58 +0000
 Received: from BL3PR11MB6410.namprd11.prod.outlook.com
  ([fe80::b01a:aa33:165:efc]) by BL3PR11MB6410.namprd11.prod.outlook.com
  ([fe80::b01a:aa33:165:efc%3]) with mapi id 15.20.9343.011; Thu, 20 Nov 2025
- 22:35:52 +0000
-Date: Thu, 20 Nov 2025 14:35:49 -0800
+ 23:18:58 +0000
+Date: Thu, 20 Nov 2025 15:18:55 -0800
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
-CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH 07/18] tests/xe_exec_multi_queue: Add multiple placement
- test
-Message-ID: <aR-XxXe33njob3Ia@nvishwa1-desk>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH 05/18] tests/xe_exec_multi_queue: Validate queue priority
+ setting
+Message-ID: <aR-h39wgSWVorKDs@nvishwa1-desk>
 References: <20251031183555.1882721-1-niranjana.vishwanathapura@intel.com>
- <20251031183555.1882721-8-niranjana.vishwanathapura@intel.com>
- <20251112175408.5v5262kluhmnxbue@kamilkon-DESK.igk.intel.com>
- <CH3PR11MB8434710EF04A9B8FECF075BA8DD4A@CH3PR11MB8434.namprd11.prod.outlook.com>
- <aR-SPYoEGUKE-ntZ@nvishwa1-desk>
+ <20251031183555.1882721-6-niranjana.vishwanathapura@intel.com>
+ <CH3PR11MB843486FA9DE31AE5BFD3F8198DCFA@CH3PR11MB8434.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset="us-ascii"; format=flowed
 Content-Disposition: inline
-In-Reply-To: <aR-SPYoEGUKE-ntZ@nvishwa1-desk>
-X-ClientProxiedBy: SJ0PR13CA0019.namprd13.prod.outlook.com
- (2603:10b6:a03:2c0::24) To BL3PR11MB6410.namprd11.prod.outlook.com
+In-Reply-To: <CH3PR11MB843486FA9DE31AE5BFD3F8198DCFA@CH3PR11MB8434.namprd11.prod.outlook.com>
+X-ClientProxiedBy: SJ0PR05CA0057.namprd05.prod.outlook.com
+ (2603:10b6:a03:33f::32) To BL3PR11MB6410.namprd11.prod.outlook.com
  (2603:10b6:208:3b9::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR11MB6410:EE_|MW3PR11MB4745:EE_
-X-MS-Office365-Filtering-Correlation-Id: f1fae678-d2f3-4cdf-4429-08de2885292c
+X-MS-TrafficTypeDiagnostic: BL3PR11MB6410:EE_|IA1PR11MB7823:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8ed7b60f-b32e-463b-c074-08de288b2eb3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?SZ4XHKivBXKeCrPL7jAKXWEchlu8QYME4nnvvYEhyPIa7K4bWEJOJOjJw7BF?=
- =?us-ascii?Q?OIQPkyqRDSNMtu7MkxqEHgwApc9atlTSSEgaZHo5x3YZrkNCCJlY0grFxbyH?=
- =?us-ascii?Q?X7Ivff9FTG5ShVLd5hfxNrR4hJ2dEPQZJjLh26TxPsIUb7gJlemqERN7V36P?=
- =?us-ascii?Q?PFIgLRHmmdKNz3jq2HCaQfJk5ubpSvH4+VOUIXaSBu/VK4eIFbr4r2zUxIPq?=
- =?us-ascii?Q?5uOPNQBiO40kD4nEPzexEVmilWcIol5A1VVQGAKiGYKN+oDKnqkvaY7mFa+a?=
- =?us-ascii?Q?pTMD7fXsoAWgYoO5+HtlKdp5CTya9F8ZX8C15S+e5VLmmYwTRyduXm7lKgf4?=
- =?us-ascii?Q?/6ufh2nP+A8ng9dUjPPxTQOvQSbdcqPoknS1PZyqq+uFYxbVqPJzW5noHMS7?=
- =?us-ascii?Q?Fiv7M6db0d1t61Wt5RzlIBwLb7DrL9u4XThi2IvV60AdRYFWClPqvrS9NKbE?=
- =?us-ascii?Q?680SEsMCafg9UEXNlH6tUnU57qrVi/sP65d0SZ4iTegpa/ShdjQa+Y6CFvlu?=
- =?us-ascii?Q?uINJQSsZvyU3yGS0QsgY5TtkWSO6SNQQ1CFbwfBY4XnqHaaDzHfkdTuAGve5?=
- =?us-ascii?Q?krn7IA/flmlbohW5IdiVJTiXhHAsZb5MBg0VuEXL+NF8+2HQtawV6eRpIZFC?=
- =?us-ascii?Q?7e9BEdcLvm8tRiUF/mfnXB8PvC1K36U3KKAZwkm/W2sotzwyHlNdSQf99ZfL?=
- =?us-ascii?Q?6zx6Eqrxm+KF/+PH7mWqCqULvsbkOqeZbDEas6isOAqdo8TXroENoK9tkDEu?=
- =?us-ascii?Q?0HcpWryA/2sNKRvyiZgivhHO59wFAGki5pYA+mQGld4eXKCDNWhMkvPvQi/d?=
- =?us-ascii?Q?zqwa6wYG9nsuxRRzi2mwKmTQyeQg/U/RzfzorOhGobpKoNN5VRNog6tyDyvW?=
- =?us-ascii?Q?Pc2RwNi1QxQmf4wjZW1d6QmXr6gBa6XCzA/SNQ0sKCRzcfzNpCWFsdjg7PpI?=
- =?us-ascii?Q?6WQKisl6AelRc3EYnxYob+XtS+AMgXaEg8vYyl6AieCZkzvx/bAv9+ZgoDhG?=
- =?us-ascii?Q?6auVZW/4NGz1Z0GkCwIEqymOwbpIoPIWpE1sbCb9dtcEoKWbxZj5am0Dbini?=
- =?us-ascii?Q?IKrezctfp4ZGAod7VGcS5O3NKugTR1j8aK8NhmQNuxpE6iYh1G/+aYqXx2F3?=
- =?us-ascii?Q?Trx58XjJjE/y/AmgC2mUQgtwUbHhSlexI7emAiaeXwqL+ix+sB7rmuKNbjlO?=
- =?us-ascii?Q?WibHJoiCqNPMOPkpPhvtZEC6YD5J9SW9lMU6F1hRvQ4ACeBFYLzMk6Sb0Ep7?=
- =?us-ascii?Q?+uZHCKparvwlYJNs6Vvth9hD5EGEXLdUmNFrlEwmdTSEVBVjOjnrF5P0TkVj?=
- =?us-ascii?Q?YWslAgNkkvNOnalHn0F8HhIETQJnc5JkQXs2ACDx8H+f+QNpGvcuVFp3XADv?=
- =?us-ascii?Q?WI7SZrHcbky3YfOsVMPylgdWpALBe1WpgDzFRQrCz6oR4FJD5KpIw1dkv412?=
- =?us-ascii?Q?dckuCG9mPiNRLCPX4T8mn394jpNkiKn3?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?6nmOqY8dI0NpL1PNcl4c4nPdApFrf2iRtAXi6eAIcGxKZ4lfjf24KSQy1Iff?=
+ =?us-ascii?Q?7KNSbnkllzk3h1xLdBqi0vJpMaLOAqs9DL5QmTyhn+OoEpJx8K8FbQe4AkyZ?=
+ =?us-ascii?Q?7MZ4a7GQQyTQsr3itBZlZ+i2eVpdNFB8rpNTLJ2XZELO/Q+MBcbCTRituveI?=
+ =?us-ascii?Q?8te/TNuWL60ugt/pn47CgXWANgL/PDXGrFJ56DkFTPTzxeX7vV6SAuB9tg0/?=
+ =?us-ascii?Q?ZhdqUQ9Zn31zJEagnRFvYWIIWzg8UizFZEUzuGklFX7jFmNRPyOqv4i/BibN?=
+ =?us-ascii?Q?/4r7g7zrCt8uO801wwvLUONvKVcNBajHjREN4IfNPWxvMrl8K5Id9DFcL1Mx?=
+ =?us-ascii?Q?ZbEHY/PIJai3dgWViTYbPPE6S5EowbXyDSRcD4Lp+O0n13hTvU5ZuUb3F58S?=
+ =?us-ascii?Q?cNxISGIwSSeod67GbfYxJVysJVsu7GJZd8YfBeIORS+RE779y3OGtIiKS8xZ?=
+ =?us-ascii?Q?KvljYPJYMxFObqgOQYN9MP4XeOP3CaS5ok1Rhaw8/anNv5oXD1KGQfz0m1uB?=
+ =?us-ascii?Q?GDnl/Nz2SmSTQV4vwWeGZqRZzTnyY8UY+UBjgUnVCkegZ3/wPKUUPTILy4VO?=
+ =?us-ascii?Q?/EFXsL+nzn4FUX2620IqpVRWblWFQmb5hQuBNj2kxvGN62RS+xgpNbdJiGZb?=
+ =?us-ascii?Q?PlUTwDKE7P0euFYBSPlccKhxhFKkuaewYY38dm8DXM90UBtP8aAQwO84MW8o?=
+ =?us-ascii?Q?BsYMeWEv9QZL4O+b9Y+BsmZ5SEGrG5oRznk7XX/aacLA2kL+bQ6qdMJkBGUT?=
+ =?us-ascii?Q?Ndx8g/vENIcO6P4X5lgKYrkkm0NAkJG/QKBpd00riED9A53/HoTjAez4DfQv?=
+ =?us-ascii?Q?on42vFKntVP1eR2Owkryitp3uSBNSBY8YBokonMvLWvVa2W7GEOLTW5kCXx8?=
+ =?us-ascii?Q?Lq43CanVsvNrPndsGrefElRFBm0wcyBUqXu0Ppa7UNdji98gXPKAkxYmYWrX?=
+ =?us-ascii?Q?4fOF39DgY6646PXBbgxOC6b91U7ctSOQ8c6NLGaQxkP+dCja2bFsY4QEbC1T?=
+ =?us-ascii?Q?r5nkS9bdG1QT3iDczk5ExXih9oV3hM5TpU56zmH1vWf1ZrE3Kuvae8IZD0UR?=
+ =?us-ascii?Q?M16DBHewheIyJMUm9TL5zrtaxAfM0K71RttYAzH1tI7zsBvj5TQ11xdQsO71?=
+ =?us-ascii?Q?0LSNPUc/jiUfKn2/4QjTpll2uivs52rxWnG/mXuFsXDJyR3/X/MRg3r+kh/X?=
+ =?us-ascii?Q?Z2ehc19U+EaEeW7VirM5asydfaHTmCRi1sp+6lX2jkpLQLFd1SZnsqw4j7pZ?=
+ =?us-ascii?Q?P3wkka1avhrW2DsnPxb3cfeMl+qf24teR2qUBSKRQrSIbGoajYSWj+mAgvJB?=
+ =?us-ascii?Q?7dgTGEah5NY8TJPsWugR08BZD0UKTZLACzk/wEQ6ObNA4h6kKYDLKx+Quj80?=
+ =?us-ascii?Q?tdhwAYmUXRjLEHL6vh5Edu8Y8GxHOJHQQfzh8xYvaoMuf+9dYLVTE1aJNzoG?=
+ =?us-ascii?Q?OgGRn1jqp9mQ1Ljvqj1Cy3Fef0Eonz1y?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BL3PR11MB6410.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(366016)(376014)(1800799024)(7053199007); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1fvtTRSiDJIgp5lK0ZVqJMo2KpsvNd0+5zsZwWHfplbk6/uJeNan1hnXi4aa?=
- =?us-ascii?Q?KjtQkwceKf6HwK8e8itgwQCyxOTzw8NwPFXcujilmmq1relQeOZG0Gijgo3N?=
- =?us-ascii?Q?l8MkDgGPInG/HlYnRjooAc0uM2XOBlE5cpEPY4zoCVojOMSS9vehuUwjvYkQ?=
- =?us-ascii?Q?cPuuJQtxgfl0Z5dMgKlN1HgG+GDpdnxfxVy9FZyjalYxm/4Ko00BrxUVyRef?=
- =?us-ascii?Q?RxZbioCNfP3GBl6liYsa1Epxg6tBVbskNiMDGe8RTIpMwkhONdeAuDO8GEi5?=
- =?us-ascii?Q?pSI7YCTzu3P/9tc2iO+9uecijFqtFr+BAAl+Wiw8sFgRp5NRmxQr1ZpM8pLX?=
- =?us-ascii?Q?MNez8Q+iYTLCK5IsH/O9dYURmNZkGabj/BYzYqSkRu9qjRX9ZGZWpEtQnVCS?=
- =?us-ascii?Q?3Ibo5CZZjq506TCAjKXTwG3CbR+TqS9PLVV7OBFIgFv609iZ00L/M1vM+rkX?=
- =?us-ascii?Q?p7Xwk072d/EjNUAfv8004emRp1KkbIIupn21MeWrVx+5g6pM9XgmBzdvD7DJ?=
- =?us-ascii?Q?z+HwjAYqqG8ubXXGg5v8pCtHtzW5da4Ry3vhAif7pGlZoZJhkyrlsOY++aFd?=
- =?us-ascii?Q?Vpdc57YGVyo+/5/VnJqNz7Pt0LBIKUm/X4CsrzBvcLaqm6I1a1vQTNq4Yare?=
- =?us-ascii?Q?n846dSKxfxQfI79dPn5oZY1t2HIWI1y9IzccPQiMNxEK4YfQWAzbnAubvlbB?=
- =?us-ascii?Q?J/fA+0GJk1Ww2rIB13V9W9NcnzSyu1egR1D0tVNTyAf5RkJm6gJ9vqSA0RNS?=
- =?us-ascii?Q?MKX8T0LQ0HTwLHsCs4+ShmfC120tkVuWmuSrIcpmYhnZOL4hzoJ1p4ePk/nc?=
- =?us-ascii?Q?1sh7uWVvgJXm8T96CW0f2VSWhuA0E5Gs4VpD/lFuewhcFO7dtk41FUBogoVc?=
- =?us-ascii?Q?cH7dnXO7Mu9qvU8lgO7lfqVobJodPHSAT29DST5mrJGzLG6c0jxVmjWvVRYY?=
- =?us-ascii?Q?Kz1AvSbYrGzpFKljtbB3dMtHg2FIIHFrQx2m5Za/96zzU50qjq5leSaAutXw?=
- =?us-ascii?Q?YOTbt2bpfT6G2JHmXkwNUi6d/G099NqbEtR8+tFNxN+gCEZuIi5ANR8S+zbh?=
- =?us-ascii?Q?6OWv4dx2ViGiJuHotJjzcNsD244AYeRtQCu3+iySUielnONtTup+RVXmw0UL?=
- =?us-ascii?Q?/1QAYo9lLt4cixxPSHDePrTD790u/sODGfAGwvJtrIHIZ6f2kN59eigPouyo?=
- =?us-ascii?Q?H3d0J/edl0ba6lE2/W1L+DmHzDqFVeiIsDLTe+sWKWhBhzxF/kjM79QOQMEf?=
- =?us-ascii?Q?tEskwDXsXx5S9aDX1evZnAHa3tD/BJonfwDN99YT+F2vrStMrMVMADv82YBs?=
- =?us-ascii?Q?enxnSHRwIHpeEkcA+QQTnbjZ/VYmwjK2x5elH7cJ5wVlUYxy3OcNKOpwhuj/?=
- =?us-ascii?Q?MVvU/otysaMaYzZXJ38VvIwK8CHPicoVkKE9USymb3UoT/0Sj6OfScygIQhO?=
- =?us-ascii?Q?KAE8QfHnsiwrAaHIQ8f68fmA3gfpvPEFtYWxlme3DGLKL43Qs7f6x8PQ/49q?=
- =?us-ascii?Q?ImtJ2SIZeg99GgL79dyjcvclCNhzj6Mf6/m5eb3lUEGzBkP8bAPvM+fYF4nv?=
- =?us-ascii?Q?zYwVrHsFPNvzI5yEBQolwyzpjrP612j5uJmvP6jDLDSYsWdEFMXMgCWvNzHz?=
- =?us-ascii?Q?zJWkx+0Qpb3CEdzZOD0h8/Y=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: f1fae678-d2f3-4cdf-4429-08de2885292c
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?FBKsSsFoohC46IWaAkAKV31DGbIpGqE0Sc8xibLPP16V/5S08sicSWcotb4V?=
+ =?us-ascii?Q?A5S7joUyosiv4P49ECL6tkQR5J1IIggQKygPN0UTlHd+y/Ztahbpuoh4sdZu?=
+ =?us-ascii?Q?5kZ8ouY6P6Y+8PxJpa+5pSccha6/UI2A6f9QJnmK9VqJmhGCd36ymE+H9WON?=
+ =?us-ascii?Q?TbiVCuwKbJlJyea6a3fsNZcSvzufGYTO/E0xt6htgEoiUysr/g/fkOqs3l59?=
+ =?us-ascii?Q?apaO7cmTNhjhLjb6S4Y/5Cky8sqsVMyUP1uCpZG7dprZ70CD/y4bqqyNerRH?=
+ =?us-ascii?Q?e/Vpk1r8SHb+WbbKgPCdK2cFGCR0YeuKXCVRgSWLinUYXTMmpvad+1juvPmn?=
+ =?us-ascii?Q?QOInx6ZXoemThnuJparhZKxTQS+3JLtEWq07WN3lrtma5YmcquIkOpQxY2Ap?=
+ =?us-ascii?Q?U6adBolCPaRHeVaeOcygIRQphgCbQNEIyasYoS55h2I6OnAE8c1+A0aPKKxa?=
+ =?us-ascii?Q?tqOVUUZaU7Oody2PKFT20WyFkmSRJ9y49ySbENgcZ+7e4FLSzyzXYcX2DM1d?=
+ =?us-ascii?Q?+cs1xjcixd7FnCSn/Js1ANvNyRGE/m1X7awWgwYlUUrzREK8vVB7xknW9lKU?=
+ =?us-ascii?Q?TYFr+CMKJCeA+cx6ZdbD0f+K1FGMfDzOAxK0TnTxE9Ex2pwfVIzSYRvqZ+R0?=
+ =?us-ascii?Q?RYgALVQNAHxOm7Cwmas1oP1yQI7TS9vNtDnziMsR7QcbV7fFKjFMCqzgzp5d?=
+ =?us-ascii?Q?Vvjf6zSsbbtSPyQdiKkB7H2HgHVipkVGYgOmBGpoDDJZQ3aSeV+U+HggYQ+z?=
+ =?us-ascii?Q?IDJFO4/Atui/344guZ2FNU93dWMJn9uAaqlOiaCOdlCw6VhziKwlLQqAESBZ?=
+ =?us-ascii?Q?mFeoOGBlVTZDM3sC9RLTghXW9G5+GFDg0Bkq0K/MFLfzIYdwDr1unDZKFYp8?=
+ =?us-ascii?Q?6ruoLMg3xGV9Lj4cmL2LcJ7j7BEyVG98PHJISyTCudqPA2L4HWS2WBzhsNvs?=
+ =?us-ascii?Q?X9YVdSvwIXeceKyMgl27H5KiXzq40uoWfllJ4zSIEpvUV1b3WLMxIw18LTxJ?=
+ =?us-ascii?Q?w4pADRHkUyJb6wTyZFvNH/OQuRvaEvZRsvinJ49Ykm6sXAb1UENDYmABLzrj?=
+ =?us-ascii?Q?i0BBoeS+ouq2ZNUTlgRzlbGT6eghru5qsIX5cY6rlXtcOE0eKWf8oiPITzJR?=
+ =?us-ascii?Q?nJW9Y70gOy3AEbbFNXzZJxlusRH6sA3v2lSASyy1JtuxzxaX+rnaYOUEaIwl?=
+ =?us-ascii?Q?cRjEwXfB07jkFAC0qfBry6r/Zkjv3KewRud3jMRCULvr6l57x5V7Amr4Llm2?=
+ =?us-ascii?Q?8AUoRMK9Pd+QgynDNA1aorM8pjy6MZ7viO76B3SczGe/KNtk4pztTYWk2ABH?=
+ =?us-ascii?Q?JpIZHx3LjKcsCMPim6RAf+BEoLdzcE8XHId+TVx0BqMaPA69AXWsstwweoUB?=
+ =?us-ascii?Q?yF9qyvtX/TD0vfbfho64OTWvvQDTTCXRrkzZrdhBLQTgALR3RAucTWRmQaVa?=
+ =?us-ascii?Q?geaxZEyFXFVfzglbvvt4cPYMUiw9C8BkCtboEmC4XA6v+vx+ZVDwi3V/3Afx?=
+ =?us-ascii?Q?3X5Xi/A26JUoq/5OQDrUslRx+oahk6NeKVj9tJG+cELKZ2Clqo56ZIzumvnG?=
+ =?us-ascii?Q?/3o+/ukP4gYTP9fqOpgqM66ephh49QRm17iRI0b0lav6xUbJEBQycE2wSDve?=
+ =?us-ascii?Q?FJ4JXJBCMdid/3oSexjQqYQ=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8ed7b60f-b32e-463b-c074-08de288b2eb3
 X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6410.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 22:35:52.3459 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 23:18:58.3886 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /XYJ3U6Y6M503iAT/2mzG/x62bOMlauX9W+yejmh3WeB9MKutuggOe9AxvpF/DPeBIs+mwtdorM8Db+Y7sqEW6lWwCfX860+UO3l69qdjY1XnR3nvZay3wNyEGiZQV9w
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4745
+X-MS-Exchange-CrossTenant-UserPrincipalName: +nCCq0oxJuhpmraSVQvLpb7ch37B8lK7CxFeTP2sBBCUBmYp/Et+UYRZuDlT3JHD1p1H6Pfx5JJHLHhlhjZPFEzWiEpYbG3mtYszkv4EbZ1SKPutGrnWBOQKMSXhJ72N
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7823
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -182,104 +179,186 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Nov 20, 2025 at 02:12:13PM -0800, Niranjana Vishwanathapura wrote:
->On Wed, Nov 19, 2025 at 09:18:56PM -0800, Dandamudi, Priyanka wrote:
->>
->>
->>>-----Original Message-----
->>>From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Kamil
->>>Konieczny
->>>Sent: 12 November 2025 11:24 PM
->>>To: Vishwanathapura, Niranjana <niranjana.vishwanathapura@intel.com>
->>>Cc: igt-dev@lists.freedesktop.org
->>>Subject: Re: [PATCH 07/18] tests/xe_exec_multi_queue: Add multiple
->>>placement test
->>>
->>>Hi Niranjana,
->>>On 2025-10-31 at 11:35:44 -0700, Niranjana Vishwanathapura wrote:
->>>> Validate using virtual exec queues with multiple placements.
->>>
->>>Please add 'intel/' prefix after 'tests/', so subject will be:
->>>
->>>[PATCH 07/18] tests/intel/xe_exec_multi_queue: Add multiple placement test
->>>
->>>Also do it in all other 'tests/xe_...' patches.
->>>
->>>Regards,
->>>Kamil
->>>
->>>>
->>>> Signed-off-by: Niranjana Vishwanathapura
->>>> <niranjana.vishwanathapura@intel.com>
->>>> ---
->>>>  tests/intel/xe_exec_multi_queue.c | 30
->>>++++++++++++++++++++++++++++++
->>>>  1 file changed, 30 insertions(+)
->>>>
->>>> diff --git a/tests/intel/xe_exec_multi_queue.c
->>>> b/tests/intel/xe_exec_multi_queue.c
->>>> index c9ff25ffc..eb40e92d2 100644
->>>> --- a/tests/intel/xe_exec_multi_queue.c
->>>> +++ b/tests/intel/xe_exec_multi_queue.c
->>>> @@ -379,6 +379,31 @@ test_exec(int fd, struct
->>>drm_xe_engine_class_instance *eci, int num_placement,
->>>>  	test_legacy_mode(fd, eci, num_placement, n_exec_queues, n_execs,
->>>> flags);  }
->>>>
->>>> +/**
->>>> + * SUBTEST: virtual
->>>> + * Description: Validate virtual queues with multiple placements
->>>> + * Test category: functionality test
->>>> + */
->>>> +static void
->>>> +test_exec_virtual(int fd, int gt, int class) {
->>>> +	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
->>>> +	struct drm_xe_engine_class_instance *hwe;
->>>> +	int n = 0;
->>>> +
->>>> +	xe_for_each_engine(fd, hwe) {
->>>> +		if (hwe->engine_class != class || hwe->gt_id != gt)
->>>> +			continue;
->>>> +
->>>> +		eci[n++] = *hwe;
->>>> +	}
->>>> +
->>>> +	if (n < 2)
->>>> +		return;
->>If n < 2, test will pass successfully without running for virtual queues with multiple placements
->>Which is not expected, when condition is not met test should skip with reason something like igt_skip_on_f(n < 2, "Skipping test as number of queues is less to validate.\n");
+On Mon, Nov 10, 2025 at 11:48:53PM -0800, Dandamudi, Priyanka wrote:
 >
->The virtual test is for multiple placements if there are more instances of an engine class exists.
->As the test runs for all engine classes, if one engine class doesn't have multiple instances,
->then we shouldn't skip the wole test.
 >
+>> -----Original Message-----
+>> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
+>> Niranjana Vishwanathapura
+>> Sent: 01 November 2025 12:06 AM
+>> To: igt-dev@lists.freedesktop.org
+>> Subject: [PATCH 05/18] tests/xe_exec_multi_queue: Validate queue priority
+>> setting
+>>
+>> Validate setting priority of queues within the multi queue group.
+>>
+>> Signed-off-by: Niranjana Vishwanathapura
+>> <niranjana.vishwanathapura@intel.com>
+>> ---
+>>  tests/intel/xe_exec_multi_queue.c | 65
+>> +++++++++++++++++++++++++++++++
+>>  1 file changed, 65 insertions(+)
+>>
+>> diff --git a/tests/intel/xe_exec_multi_queue.c
+>> b/tests/intel/xe_exec_multi_queue.c
+>> index de2aae8f2..6c5ff54ec 100644
+>> --- a/tests/intel/xe_exec_multi_queue.c
+>> +++ b/tests/intel/xe_exec_multi_queue.c
+>> @@ -18,9 +18,13 @@
+>>  #include "xe/xe_ioctl.h"
+>>  #include "xe/xe_query.h"
+>>
+>> +#define XE_EXEC_QUEUE_PRIORITY_NORMAL	1
+>> +#define XE_EXEC_QUEUE_PRIORITY_HIGH	2
+>> +
+>>  #define MAX_N_EXEC_QUEUES	64
+>>
+>>  #define USERPTR			(0x1 << 0)
+>> +#define PRIORITY		(0x1 << 1)
+>>
+>>  #define MAX_INSTANCE 9
+>>
+>> @@ -35,6 +39,15 @@ __test_sanity(int fd, int gt, int class)
+>>  		.property =
+>> DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
+>>  		.value = DRM_XE_MULTI_GROUP_CREATE,
+>>  	};
+>> +	struct drm_xe_ext_set_property mq_priority = {
+>> +		.base.name =
+>> DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+>> +		.property =
+>> DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY,
+>> +	};
+>> +	struct drm_xe_ext_set_property priority = {
+>> +		.base.name =
+>> DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+>> +		.property =
+>> DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
+>> +		.value = XE_EXEC_QUEUE_PRIORITY_NORMAL,
+>> +	};
+>>  	uint64_t invalid_flag = 0, ext = to_user_pointer(&multi_queue);
+>>  	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
+>>  	struct drm_xe_engine_class_instance *hwe; @@ -75,6 +88,11 @@
+>> __test_sanity(int fd, int gt, int class)
+>>  	multi_queue.base.next_extension = to_user_pointer(&multi_queue);
+>>  	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -
+>> EINVAL);
+>>
+>> +	/* Setting other queue properties are valid for Q0 */
+>> +	multi_queue.base.next_extension = to_user_pointer(&priority);
+>> +	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
+>> +	xe_exec_queue_destroy(fd, exec_queues[0]);
+>> +
+>>  	/* Adding queues to group after primary is destroyed is invalid */
+>>  	multi_queue.base.next_extension = 0;
+>>  	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext); @@ -103,6
+>> +121,11 @@ __test_sanity(int fd, int gt, int class)
+>>  	if (n > 1)
+>>  		igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, n, eci, ext,
+>> &val), -EINVAL);
+>>
+>> +	/* Setting properties (other than MULTI_QUEUE_PRIORITY) is invalid
+>> for secondary queues */
+>> +	multi_queue.base.next_extension = to_user_pointer(&priority);
+>> +	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val),
+>> +-EINVAL);
+>> +
+>> +	multi_queue.base.next_extension = 0;
+>>  	for (i = 1; i < MAX_N_EXEC_QUEUES; i++)
+>>  		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
+>>
+>> @@ -133,6 +156,37 @@ __test_sanity(int fd, int gt, int class)
+>>  			xe_exec_queue_destroy(fd, exec_queues[i]);
+>>  	}
+>>
+>> +	/* MQ priority is not valid for regular queues */
+>> +	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci,
+>> +					     to_user_pointer(&mq_priority),
+>> &val), -EINVAL);
+>> +
+>> +	/* MQ priority validation */
+>> +	multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
+>> +	multi_queue.base.next_extension = to_user_pointer(&mq_priority);
+>> +	mq_priority.value = XE_EXEC_QUEUE_PRIORITY_MAX;
+>Why is it that XE_EXEC_QUEUE_PRIORITY_MAX creating error, if that is the case anything beyond HIGH should throw error.
+>Naming MAX is not making sense as MAX mean until that value it should be valid as per my understanding.
 
-But instead of simply returning here, let me make the test always run
-event if there is only one instance of the engine class specified here.
+Ok, will rename it to XE_EXEC_QUEUE_NUM_PRIORITIES.
 
 Niranjana
 
->Niranjana
+>> +	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val),
+>> +-EINVAL);
+>> +
+>> +	mq_priority.value = XE_EXEC_QUEUE_PRIORITY_HIGH;
+>> +	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
+>> +	multi_queue.value = exec_queues[0];
+>> +	exec_queues[1] = xe_exec_queue_create(fd, vm, eci, ext);
+>> +	xe_exec_queue_destroy(fd, exec_queues[1]);
+>> +	xe_exec_queue_destroy(fd, exec_queues[0]);
+>> +
+>> +	igt_fork(child, 1) {
+>> +		igt_drop_root();
+>> +
+>> +		/* Tests MULTI_QUEUE_PRIORITY property by dropping root
+>> permissions */
+>> +		multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
+>> +		mq_priority.value = XE_EXEC_QUEUE_PRIORITY_HIGH;
+>> +		exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
+>> +		multi_queue.value = exec_queues[0];
+>> +		exec_queues[1] = xe_exec_queue_create(fd, vm, eci, ext);
+>> +		xe_exec_queue_destroy(fd, exec_queues[1]);
+>> +		xe_exec_queue_destroy(fd, exec_queues[0]);
+>> +	}
+>> +	igt_waitchildren();
+>> +
+>>  	xe_vm_destroy(fd, vm);
+>>  }
+>>
+>> @@ -195,8 +249,17 @@ test_legacy_mode(int fd, struct
+>> drm_xe_engine_class_instance *eci, int num_place
+>>  			.base.name =
+>> DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+>>  			.property =
+>> DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
+>>  		};
+>> +		struct drm_xe_ext_set_property mq_priority = {
+>> +			.base.name =
+>> DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+>> +			.property =
+>> DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY,
+>> +		};
+>>  		uint64_t ext = to_user_pointer(&multi_queue);
+>>
+>> +		if (flags & PRIORITY) {
+>> +			multi_queue.base.next_extension =
+>> to_user_pointer(&mq_priority);
+>> +			mq_priority.value =
+>> XE_EXEC_QUEUE_PRIORITY_NORMAL + (rand() % 2);
+>> +		}
+>> +
+>>  		multi_queue.value = i ? exec_queues[0] :
+>> DRM_XE_MULTI_GROUP_CREATE;
+>>  		igt_assert_eq(__xe_exec_queue_create(fd, vm, 1,
+>> num_placement, eci,
+>>  						     ext, &exec_queues[i]), 0);
+>> @@ -297,6 +360,7 @@ test_legacy_mode(int fd, struct
+>> drm_xe_engine_class_instance *eci, int num_place
+>>   *
+>>   * @basic:					basic
+>>   * @userptr:					userptr
+>> + * @priority:					priority
+>>   */
+>>  static void
+>>  test_exec(int fd, struct drm_xe_engine_class_instance *eci, int
+>> num_placement, @@ -314,6 +378,7 @@ igt_main
+>>  	} sections[] = {
+>>  		{ "basic", 0 },
+>>  		{ "userptr", USERPTR },
+>> +		{ "priority", PRIORITY },
+>>  		{ NULL },
+>>  	};
+>>  	int fd, gt, class;
+>> --
+>> 2.43.0
 >
->>>> +
->>>> +	test_exec(fd, eci, n, n, n, 0);
->>>> +}
->>>> +
->>>>  igt_main
->>>>  {
->>>>  	struct drm_xe_engine_class_instance *hwe; @@ -404,6 +429,11 @@
->>>> igt_main
->>>>  			xe_for_each_multi_queue_engine_class(class)
->>>>  				test_sanity(fd, gt, class);
->>>>
->>>> +	igt_subtest_f("virtual")
->>>> +		xe_for_each_gt(fd, gt)
->>>> +			xe_for_each_multi_queue_engine_class(class)
->>>> +				test_exec_virtual(fd, gt, class);
->>>> +
->>>>  	for (const struct section *s = sections; s->name; s++) {
->>>>  		igt_subtest_f("one-queue-%s", s->name)
->>>>  			xe_for_each_multi_queue_engine(fd, hwe)
->>>> --
->>>> 2.43.0
->>>>
