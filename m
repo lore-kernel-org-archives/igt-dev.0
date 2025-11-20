@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1178CCF857B
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Nov 2025 10:28:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DC4FCF857F
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Nov 2025 10:28:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B574910E740;
-	Thu, 20 Nov 2025 10:28:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CE9AE10E741;
+	Thu, 20 Nov 2025 10:28:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PXuBrFhr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CCy8xaqr";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F3DF10E740
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Nov 2025 10:28:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B854610E73F
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Nov 2025 10:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763634518; x=1795170518;
+ t=1763634516; x=1795170516;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=9SIxaEPlUA0SlVwmebOrOXhLdTSJ06OtdUJC+V9PC3w=;
- b=PXuBrFhrUzdTOAJ8TeO2yqa71hkZ0VHeg43qnJ79a4Kf1eoej3hwD3Pm
- w33EMK1L5R33PsTO8PUvcz9IBXVyB50uMa90GV1c17VwI51uQy3ovR9H0
- PuGIYgWOYr+x6C65grqS0OV0ElgMQDmdEeRf/uZAWSuonRmmsop39mTWl
- 6Uut0Rhdm/7aRnu4E0coN6bxupnI4FjnY1U5a9zcMxdH5aqufvAkndRAa
- azYI6wBJXglv1f18cFfdvyTVDPrZWbZJDx+gnEeD2SKKdDKKPJDGktUmW
- yErmAKoUtaELIXEVyfrKGyyjtZBpnztINFe0VoQZnbhZLe3iGB62L9fFj Q==;
-X-CSE-ConnectionGUID: /YDlofYyR6ypTVvVyj6dTg==
-X-CSE-MsgGUID: mAQxopDRRoiCq+zxsh3hwQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="65736289"
-X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; d="scan'208";a="65736289"
+ bh=/dEuRBXe8RKiJeLAFzBjIA6hU+XKm/zvdJA2bEu25jU=;
+ b=CCy8xaqrQSPeA4D27BvqZLZVmzbU3uCDdBHH6p1YDb8QjSDce0Y77tbS
+ ASiac91Xuvk9DbBz9V/e1HS3HQgL5LZBh8EomE/caPEjKQea4H+ZdlsSI
+ 1KhLsKn8oJ8OR9zNDQh7N0P+q6nxPRoj8MIfYYb6FRm9nt24RTHZZ8JDX
+ dW/3zxqQFLdxbJv1SylK0pSRlzqUo5YwD9CxowV89w+ZIAXyCPuoTzLNw
+ nPXFz6Oqv2Sp55A6sjxhcur2hB6CKwcY64Eok7nSapZH7nYpEL4txQKza
+ LCFC2btd/uPx2hn4IImsdBO+oi3FZtAPZ7lfbU4aFHbRPOZdmGF8wVmCa g==;
+X-CSE-ConnectionGUID: VpaYacscTjOSmrGBCIbYNg==
+X-CSE-MsgGUID: r+rU3WM8Sc6mIG/BlyObGA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11618"; a="65736286"
+X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; d="scan'208";a="65736286"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 02:28:38 -0800
-X-CSE-ConnectionGUID: B6n1sp95SAOpHFC7cNWPZA==
-X-CSE-MsgGUID: d8hffpc2RTOYpg/Kk7BXhA==
+ 20 Nov 2025 02:28:36 -0800
+X-CSE-ConnectionGUID: YyehtwaTRZyV6ZuJ+uFCig==
+X-CSE-MsgGUID: dpJuG4jMQoqoMc1qHWHRzA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; d="scan'208";a="221966479"
+X-IronPort-AV: E=Sophos;i="6.19,317,1754982000"; d="scan'208";a="221966475"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 02:28:37 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 02:28:36 -0800
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 3/3] tests/kms_sharpness_filter: Skip pipes without
- minimum scaler support
-Date: Thu, 20 Nov 2025 16:05:32 +0530
-Message-Id: <20251120103532.1055144-4-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 2/3] intel-ci: Add sharpness filter tests to i915
+ blocklist
+Date: Thu, 20 Nov 2025 16:05:31 +0530
+Message-Id: <20251120103532.1055144-3-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251120103532.1055144-1-swati2.sharma@intel.com>
 References: <20251120103532.1055144-1-swati2.sharma@intel.com>
@@ -68,32 +68,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a check in sharpness filter tests to skip pipes that do not support
-at least two scalers. This avoids running the test on unsupported
-hardware paths and prevents false failures.
+Blocklist the new sharpness filter tests for i915:
+ - kms_sharpness_filter
+ - kms_chamelium_sharpness_filter
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_sharpness_filter.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/intel-ci/i915.blocklist.txt | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/kms_sharpness_filter.c b/tests/kms_sharpness_filter.c
-index ef3ce3995..2c33ed4c3 100644
---- a/tests/kms_sharpness_filter.c
-+++ b/tests/kms_sharpness_filter.c
-@@ -439,6 +439,12 @@ run_sharpness_filter_test(data_t *data, enum test_type type)
- 			data->pipe = &display->pipes[data->pipe_id];
- 			data->mode = igt_output_get_mode(data->output);
+diff --git a/tests/intel-ci/i915.blocklist.txt b/tests/intel-ci/i915.blocklist.txt
+index 083b660c7..96d69ca79 100644
+--- a/tests/intel-ci/i915.blocklist.txt
++++ b/tests/intel-ci/i915.blocklist.txt
+@@ -172,6 +172,8 @@ igt@kms_frontbuffer_tracking@plane-fbc-rte
+ igt@kms_pm_dc@deep-pkgc
+ igt@kms_vrr@cmrr
+ igt@kms_fbc_dirty_rect.*
++igt@kms_sharpness_filter@.*
++igt@kms_chamelium_sharpness_filter@.*
  
-+			if (get_num_scalers(display, pipe) < 2) {
-+				igt_info("%s: Doesn't support minimum 2 scalers.\n",
-+				kmstest_pipe_name(data->pipe_id));
-+				continue;
-+			}
-+
- 			if (!has_sharpness_filter(data->pipe)) {
- 				igt_info("%s: Doesn't support IGT_CRTC_SHARPNESS_STRENGTH.\n",
- 				kmstest_pipe_name(data->pipe_id));
+ ###############################################
+ # Test was written with the idea that edid read shouldn't take an
 -- 
 2.25.1
 
