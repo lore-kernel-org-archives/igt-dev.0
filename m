@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42D68CFA475
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74E9FCFA474
 	for <igt-dev@archiver.kernel.org>; Fri, 21 Nov 2025 05:41:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EE71710E071;
-	Fri, 21 Nov 2025 05:41:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 23FE410E110;
+	Fri, 21 Nov 2025 05:41:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n9FKk5ZH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LorlzMKq";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF66210E7EF
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Nov 2025 05:41:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E299210E110
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Nov 2025 05:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763703669; x=1795239669;
+ t=1763703667; x=1795239667;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=CeUqyFiu6OYCYlOTen+730SpWa/bo2ij2XIb6wHnv1A=;
- b=n9FKk5ZH17qf1ff2d7ONcILGKKp3x7EiNVCA0H48F4EZGwa10U/krsWQ
- FTaWYGZ8HXKQM2ZOd40bjxDS/xhaLo94OmMqt7JsXD9oxQH+2QcLIt0w0
- LaIF4CJiRg/CRUCa9R/GGVEMmRqP796CllWs2sfvgvJf/P5DXx2ZWHsDg
- rUgup9nUrUSEcd93VUNEnrzzQyso8LQzDbb4An3qyianf4VsT5U5a+DOo
- 5p/4/8G6vZd2JFLBvKFbGVZsye+A2dISSb5Rvhg3L92WOkI1dl/rnw9BJ
- Qx9lXSNovuCfk2QfraxUUgJvSxjj/Ax8XqcvzCen/mlr7fJJJy2U7J5/P A==;
-X-CSE-ConnectionGUID: zx3Y4iySSnO4qNGTe3lGGQ==
-X-CSE-MsgGUID: J5UaGdKIRjWKrODR7jS2wQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="69658159"
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="69658159"
+ bh=yJ/jWCo8EZb20uAZoqCSQHWFNkN/Q17yOs7eGjbfSQE=;
+ b=LorlzMKqDsYz3ckQCViw909lZ0Od9Up9UptVzMR8IJue858KN2Y5rX5N
+ K1PfdZ76H7w/0Gc5rvF8nO5rNRUtRRHv6RXW9bRM8fKeX8veO0Vi7z3mZ
+ cw9tygRwWpKKQB8YuTQ6kFKXEDtaDB/qBuVGzcEk54WByBs2el1q9XcZ0
+ SgfzKHqKq8XuHeScQ1dGc/IipSGndDXxKbcAbsJwHgsG8O0yVfJpDlaON
+ hY+SNp8/8c5KqY5hhjKG7vyDNsglyNkbwou6qGs47feEVYs5sr0rcoRtU
+ D60P8SlgrXrt79Itn9gXMN4QF4fPQHbe8UK2viia0js/B7rvXmTdSChRW A==;
+X-CSE-ConnectionGUID: 9iSElqmJSMiQfWqtZNPkOw==
+X-CSE-MsgGUID: oE+5uGsKQiaLeL/qt5ghbg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="69658158"
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="69658158"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 21:41:09 -0800
-X-CSE-ConnectionGUID: ArYYv1bbSVmyVOYW+kP04Q==
-X-CSE-MsgGUID: 7tWx6clzQ8m6g7hoo8Clbg==
+ 20 Nov 2025 21:41:07 -0800
+X-CSE-ConnectionGUID: paj+PL8mTIK799e1rhlJQw==
+X-CSE-MsgGUID: jZAmM7/9SVOMxR8D8nJ0cQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="214961897"
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="214961884"
 Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 21:41:07 -0800
+ 20 Nov 2025 21:41:05 -0800
 From: Sowmiya S <sowmiya.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: swati2.sharma@intel.com, suraj.kandpal@intel.com,
  Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v3 11/12] tests/kms_writeback: Add negative test for
- invalid-mode
-Date: Fri, 21 Nov 2025 11:28:38 +0530
-Message-ID: <20251121055839.3116906-12-sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v3 10/12] tests/kms_writeback: Add negative test case
+ for invalid-format
+Date: Fri, 21 Nov 2025 11:28:37 +0530
+Message-ID: <20251121055839.3116906-11-sowmiya.s@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251121055839.3116906-1-sowmiya.s@intel.com>
 References: <20251121055839.3116906-1-sowmiya.s@intel.com>
@@ -70,75 +70,110 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Introduced a negative test case to validate
-invalid-mode inputs.
+handling of invalid-format inputs.Each case
+is now executed as a dynamic subtest
 
 Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
 ---
- tests/kms_writeback.c | 44 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ tests/kms_writeback.c | 38 ++++++++++++++++++++++++++++++--------
+ 1 file changed, 30 insertions(+), 8 deletions(-)
 
 diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index c35d1f948..98fcf8a52 100644
+index 581963fe6..c35d1f948 100644
 --- a/tests/kms_writeback.c
 +++ b/tests/kms_writeback.c
-@@ -431,6 +431,44 @@ static void writeback_check_output(igt_output_t *output, igt_plane_t *plane,
- 	igt_remove_fb(output_fb->fd, &second_out_fb);
+@@ -234,40 +234,54 @@ static int do_writeback_test(igt_output_t *output, uint32_t fb_id,
+ 	return ret;
  }
  
-+static void  do_invalid_mode(igt_output_t *output, igt_display_t *display,
-+			     igt_fb_t *input_fb, drmModeModeInfo *mode)
-+{
-+	int ret;
-+	unsigned int fb_id;
-+	int32_t out_fence;
-+	drmModeModeInfo test_mode = {
-+		.clock = 1066500,
-+		.hdisplay = 5120,
-+		.hsync_start = 5152,
-+		.hsync_end = 5184,
-+		.htotal = 5300,
-+		.hskew = 0,
-+		.vdisplay = 2880,
-+		.vsync_start = 2883,
-+		.vsync_end = 2888,
-+		.vtotal = 2900,
-+		.vscan = 0,
-+		.vrefresh = 120,
-+		.flags = DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
-+		.name = {"5120x2880-120"},
-+	};
-+
-+	igt_output_override_mode(output, &test_mode);
-+	test_mode = *igt_output_get_mode(output);
-+	fb_id = igt_create_fb(display->drm_fd, test_mode.hdisplay,
-+			      test_mode.vdisplay,
-+			      is_intel_device(data.drm_fd) ? DRM_FORMAT_XBGR8888
-+			      : DRM_FORMAT_XRGB8888,
-+			      DRM_FORMAT_MOD_LINEAR,
-+			      input_fb);
-+	igt_assert(fb_id >= 0);
-+	ret = do_writeback_test(output, fb_id,
-+				&out_fence,
-+				false);
-+	igt_assert_neq(ret, 0);
-+}
-+
- static void do_single_commit(igt_output_t *output, igt_plane_t *plane, igt_fb_t *in_fb,
- 			      igt_fb_t *out_fb)
+-static void test_invalid_parameters(igt_output_t *output, igt_fb_t *valid_fb, igt_fb_t *invalid_fb)
++static void test_invalid_parameters(igt_output_t *output, igt_fb_t *valid_fb,
++				    igt_fb_t *invalid_fb, igt_fb_t *invalid_format)
  {
-@@ -767,6 +805,12 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
- 		}
+ 	int i, ret;
+ 	int32_t out_fence;
+ 	struct {
++		const char *name;
+ 		uint32_t fb_id;
+ 		bool ptr_valid;
+ 		int32_t *out_fence_ptr;
+ 	} invalid_tests[] = {
+ 		{
+ 			/* No output buffer, but the WRITEBACK_OUT_FENCE_PTR set. */
++			.name = "invalid-missing-framebuffer",
+ 			.fb_id = 0,
+ 			.ptr_valid = true,
+ 			.out_fence_ptr = &out_fence,
+ 		},
+ 		{
+ 			/* Invalid output buffer. */
++			.name = "invalid-output-buffer",
+ 			.fb_id = invalid_fb->fb_id,
+ 			.ptr_valid = true,
+ 			.out_fence_ptr = &out_fence,
+ 		},
+ 		{
+ 			/* Invalid WRITEBACK_OUT_FENCE_PTR. */
++			.name = "invalid-fence-ptr",
+ 			.fb_id = valid_fb->fb_id,
+ 			.ptr_valid = false,
+ 			.out_fence_ptr = (int32_t *)0x8,
+ 		},
++		{
++			/* Invalid format */
++			.name = "invalid-format",
++			.fb_id = invalid_format->fb_id,
++			.ptr_valid = false,
++			.out_fence_ptr =  &out_fence,
++		},
+ 	};
+ 
+ 	for (i = 0; i < ARRAY_SIZE(invalid_tests); i++) {
+-		ret = do_writeback_test(output, invalid_tests[i].fb_id,
+-					invalid_tests[i].out_fence_ptr,
+-					invalid_tests[i].ptr_valid);
+-		igt_assert_neq(ret, 0);
++		igt_dynamic_f("%s", invalid_tests[i].name) {
++			ret = do_writeback_test(output, invalid_tests[i].fb_id,
++						invalid_tests[i].out_fence_ptr,
++						invalid_tests[i].ptr_valid);
++			igt_assert_neq(ret, 0);
++		}
+ 	}
+ }
+ 
+@@ -664,10 +678,10 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+ 	igt_describe("Writeback has a couple of parameters linked together"
+ 		     "(output framebuffer and fence); this test goes through"
+ 		     "the combination of possible bad options");
+-	igt_subtest("writeback-invalid-parameters") {
++	igt_subtest_with_dynamic_f("writeback-invalid-parameters") {
+ 		uint32_t format;
+ 		unsigned int fb_id;
+-		igt_fb_t invalid_output_fb;
++		igt_fb_t invalid_output_fb, invalid_format_fb;
+ 
+ 		igt_skip_on(data.dump_check || data.list_modes);
+ 		if (is_intel_device(display.drm_fd))
+@@ -689,9 +703,17 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+ 				      &invalid_output_fb);
+ 		igt_require(fb_id > 0);
+ 
+-		test_invalid_parameters(output, &input_fb, &invalid_output_fb);
++		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay,
++				      mode.vdisplay,
++				      DRM_FORMAT_NV12,
++				      DRM_FORMAT_MOD_LINEAR,
++				      &invalid_format_fb);
++		igt_require(fb_id > 0);
++
++		test_invalid_parameters(output, &input_fb, &invalid_output_fb, &invalid_format_fb);
+ 
+ 		igt_remove_fb(display.drm_fd, &invalid_output_fb);
++		igt_remove_fb(display.drm_fd, &invalid_format_fb);
  	}
  
-+	igt_describe("check writeback fb with invalid mode");
-+	igt_subtest("invalid-mode") {
-+		igt_skip_on(data.dump_check || data.list_modes);
-+		do_invalid_mode(output, &display, &input_fb, &mode);
-+	}
-+
- 	igt_fixture {
- 		cleanup_writeback(&display, output);
- 		igt_remove_fb(display.drm_fd, &input_fb);
+ 	igt_describe("Validate WRITEBACK_FB_ID with valid and invalid options");
 -- 
 2.43.0
 
