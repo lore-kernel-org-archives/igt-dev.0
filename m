@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ACA3CFC501
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Nov 2025 19:07:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA824CFC29A
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Nov 2025 19:07:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6985010E8F4;
-	Fri, 21 Nov 2025 19:07:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6BBC210E8F7;
+	Fri, 21 Nov 2025 19:07:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aAw9sokv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z9O5zaQR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E13410E037
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B26610E037
  for <igt-dev@lists.freedesktop.org>; Fri, 21 Nov 2025 19:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1763752034; x=1795288034;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=KXZ8d1QjAFtZNcwrDiESflvd69bHdWC0mDESA0YI6Xk=;
- b=aAw9sokv0dyFZlyK2bnWM8hxNJvqv9uBar2oBi7fGyyBg8U/5cCfwaiy
- 0q7R5la1xoWmnKSmY9e0s0Vk0HDqfaOACiYQPTIgLqYWudVqc4NsZ3bgW
- eE/xit7VQhTiW0QQRF29q0gSW1AM4E8/WAyrW3wx0DL3ccP3nQuaBdhRa
- QJQRBVwFv63TNbkXsNO3gkkiTZUszwj21G+RoTX8vzdTFASYC69d1KEsa
- jryUSpefr4XptpjS6xKeo9ySiGA1cV/EWgqsGA5PsXs5Aay0rqjTaE4wS
- 8tLi49oqlDTnKFcFYjwq/d506rGDlT5YGqGcE7igCOg4s9s5LhXbNBSVn g==;
-X-CSE-ConnectionGUID: ZDocF0jkQFOuZDrj/nKsyg==
-X-CSE-MsgGUID: aFAMnlJOT9i/mqk/3vPTGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="68454444"
-X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; d="scan'208";a="68454444"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2025 11:07:10 -0800
-X-CSE-ConnectionGUID: UYKfFZWhRUedhVQ/kiHvEw==
-X-CSE-MsgGUID: zFJF2CK1RWeSrRaYoKEY9Q==
+ bh=TTVvo1bh3IvLp17hQMJfkRf5GRrnNJLKLeOGVtyJBfI=;
+ b=Z9O5zaQROjUPOjgcMAfbF7HcVIQ27/ZPrgygUeSqwqBB+L8Wu18QtXXk
+ InlLOiVqEkRdMaPfuLD50Jlws9upTsHZUaAa1tP2j9MWab08sAYaCsNaY
+ F0pPBf8xJHr+ID9cKixaCD9YURlMKP0o2ZX56AFJuhE/IXRiStVq2vypE
+ y5nPQIsp7W3e/Cac6b7QZdSXh1Iw3FpvbdFAvzz7IgSbEkSBtchm5xhv+
+ /dPsrObTZZ663gSjE1vRA/OFPLPZTkggtyMF9p+ZFfhIAJGHENGzLdXc+
+ gJKZ38zYTct2bmfDrJv5P8yqX3X9lo2ISMnufb8PnOP8YIV2jyhWQhQZy A==;
+X-CSE-ConnectionGUID: Z+OXp72EQ4iqdwwjlV5N+w==
+X-CSE-MsgGUID: dlme+oIAS9SvkiGyUoeM6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="69718575"
+X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; d="scan'208";a="69718575"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Nov 2025 11:07:14 -0800
+X-CSE-ConnectionGUID: BowlDvj4TuiyBMkbTlNkuw==
+X-CSE-MsgGUID: vXYJ5UYfR3q5jIi8aga1kg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; d="scan'208";a="192537668"
+X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; d="scan'208";a="196053118"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.245.31])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2025 11:07:09 -0800
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Nov 2025 11:07:13 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 7/8] lib/kms: Turn the igt_pipe_obj*prop*() marcos into
- functions
-Date: Fri, 21 Nov 2025 21:06:32 +0200
-Message-ID: <20251121190633.24522-8-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 8/8] test/kms_color: Don't dig around in
+ display->pipes[] so much
+Date: Fri, 21 Nov 2025 21:06:33 +0200
+Message-ID: <20251121190633.24522-9-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20251121190633.24522-1-ville.syrjala@linux.intel.com>
 References: <20251121190633.24522-1-ville.syrjala@linux.intel.com>
@@ -72,112 +72,173 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Use functions instead of macros for the crtc property stuff.
-Macros are generally not type safe, hideous to look at, and
-a pain to modify. So using macros when you don't have to
-is simply a bad idea.
+Don't take pointless detours via display->pipes[] when
+we don't have to. My plan is to completely hide the
+display->pipes[] stuff inside igt_kms.[ch]. Getting
+rid of the completely pointless uses is the first step.
+
+Done with cocci:
+\#include "scripts/iterators.cocci"
+
+@plane@
+igt_display_t *display;
+igt_plane_t *plane;
+identifier M;
+@@
+(
+- display->pipes[plane->pipe->pipe].M
++ plane->pipe->M
+|
+- &display->pipes[plane->pipe->pipe]
++ plane->pipe
+)
+
+@depends on plane@
+expression E;
+identifier display;
+@@
+- igt_display_t *display = E;
+... when != display;
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_kms.h | 50 +++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 35 insertions(+), 15 deletions(-)
+ tests/kms_color.c | 25 ++++++++++---------------
+ 1 file changed, 10 insertions(+), 15 deletions(-)
 
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 8fbc78aa5b75..66168e7b732c 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -957,8 +957,11 @@ uint64_t igt_pipe_obj_get_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties
-  *
-  * Check whether a given @prop changed for the @pipe_obj.
-  */
--#define igt_pipe_obj_is_prop_changed(pipe_obj, prop) \
--	(!!((pipe_obj)->changed & (1 << (prop))))
-+static inline bool igt_pipe_obj_is_prop_changed(igt_pipe_t *pipe_obj,
-+						enum igt_atomic_crtc_properties prop)
-+{
-+	return pipe_obj->changed & (1 << prop);
-+}
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 16155bc4bcaf..42dce9a0e5e9 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -82,7 +82,6 @@ static bool test_pipe_degamma(data_t *data,
+ 			      igt_plane_t *primary)
+ {
+ 	igt_output_t *output = data->output;
+-	igt_display_t *display = &data->display;
+ 	gamma_lut_t *degamma_linear, *degamma_full;
+ 	color_t red_green_blue[] = {
+ 		{ 1.0, 0.0, 0.0 },
+@@ -132,7 +131,7 @@ static bool test_pipe_degamma(data_t *data,
+ 	igt_plane_set_fb(primary, &fb);
+ 	igt_display_commit(&data->display);
+ 	igt_wait_for_vblank(data->drm_fd,
+-			    display->pipes[primary->pipe->pipe].crtc_offset);
++			    primary->pipe->crtc_offset);
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
  
- /**
-  * igt_pipe_is_prop_changed:
-@@ -967,8 +970,12 @@ uint64_t igt_pipe_obj_get_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties
-  *
-  * Check whether a given @prop changed for the @pipe.
-  */
--#define igt_pipe_is_prop_changed(display, pipe, prop) \
--	igt_pipe_obj_is_prop_changed(&(display)->pipes[(pipe)], prop)
-+static inline bool igt_pipe_is_prop_changed(igt_display_t *display,
-+					    enum pipe pipe,
-+					    enum igt_atomic_crtc_properties prop)
-+{
-+	return igt_pipe_obj_is_prop_changed(&display->pipes[pipe], prop);
-+}
+ 	/*
+@@ -144,7 +143,7 @@ static bool test_pipe_degamma(data_t *data,
+ 	set_degamma(data, primary->pipe, degamma_full);
+ 	igt_display_commit(&data->display);
+ 	igt_wait_for_vblank(data->drm_fd,
+-			    display->pipes[primary->pipe->pipe].crtc_offset);
++			    primary->pipe->crtc_offset);
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
  
- /**
-  * igt_pipe_obj_set_prop_changed:
-@@ -977,8 +984,11 @@ uint64_t igt_pipe_obj_get_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties
-  *
-  * Sets the given @prop for the @pipe_obj.
-  */
--#define igt_pipe_obj_set_prop_changed(pipe_obj, prop) \
--	(pipe_obj)->changed |= 1 << (prop)
-+static inline void igt_pipe_obj_set_prop_changed(igt_pipe_t *pipe_obj,
-+						 enum igt_atomic_crtc_properties prop)
-+{
-+	pipe_obj->changed |= 1 << prop;
-+}
+ 	/*
+@@ -174,7 +173,6 @@ static bool test_pipe_gamma(data_t *data,
+ 			    igt_plane_t *primary)
+ {
+ 	igt_output_t *output = data->output;
+-	igt_display_t *display = &data->display;
+ 	gamma_lut_t *gamma_full;
+ 	color_t red_green_blue[] = {
+ 		{ 1.0, 0.0, 0.0 },
+@@ -222,7 +220,7 @@ static bool test_pipe_gamma(data_t *data,
+ 	igt_plane_set_fb(primary, &fb);
+ 	igt_display_commit(&data->display);
+ 	igt_wait_for_vblank(data->drm_fd,
+-			    display->pipes[primary->pipe->pipe].crtc_offset);
++			    primary->pipe->crtc_offset);
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
  
- /**
-  * igt_pipe_obj_clear_prop_changed:
-@@ -987,8 +997,11 @@ uint64_t igt_pipe_obj_get_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties
-  *
-  * Clears the given @prop for the @pipe_obj.
-  */
--#define igt_pipe_obj_clear_prop_changed(pipe_obj, prop) \
--	(pipe_obj)->changed &= ~(1 << (prop))
-+static inline void igt_pipe_obj_clear_prop_changed(igt_pipe_t *pipe_obj,
-+						   enum igt_atomic_crtc_properties prop)
-+{
-+	pipe_obj->changed &= ~(1 << prop);
-+}
+ 	/*
+@@ -233,7 +231,7 @@ static bool test_pipe_gamma(data_t *data,
+ 	igt_plane_set_fb(primary, &fb);
+ 	igt_display_commit(&data->display);
+ 	igt_wait_for_vblank(data->drm_fd,
+-			    display->pipes[primary->pipe->pipe].crtc_offset);
++			    primary->pipe->crtc_offset);
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
  
- /**
-  * igt_pipe_obj_set_prop_value:
-@@ -998,11 +1011,13 @@ uint64_t igt_pipe_obj_get_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties
-  *
-  * Sets the given @prop with the @value for the @pipe_obj.
-  */
--#define igt_pipe_obj_set_prop_value(pipe_obj, prop, value) \
--	do { \
--		(pipe_obj)->values[prop] = (value); \
--		igt_pipe_obj_set_prop_changed(pipe_obj, prop); \
--	} while (0)
-+static inline void igt_pipe_obj_set_prop_value(igt_pipe_t *pipe_obj,
-+					       enum igt_atomic_crtc_properties prop,
-+					       uint64_t value)
-+{
-+	pipe_obj->values[prop] = value;
-+	igt_pipe_obj_set_prop_changed(pipe_obj, prop);
-+}
+ 	/*
+@@ -263,7 +261,6 @@ static bool test_pipe_legacy_gamma(data_t *data,
+ 				   igt_plane_t *primary)
+ {
+ 	igt_output_t *output = data->output;
+-	igt_display_t *display = &data->display;
+ 	color_t red_green_blue[] = {
+ 		{ 1.0, 0.0, 0.0 },
+ 		{ 0.0, 1.0, 0.0 },
+@@ -319,7 +316,7 @@ static bool test_pipe_legacy_gamma(data_t *data,
+ 	igt_plane_set_fb(primary, &fb);
+ 	igt_display_commit(&data->display);
+ 	igt_wait_for_vblank(data->drm_fd,
+-			    display->pipes[primary->pipe->pipe].crtc_offset);
++			    primary->pipe->crtc_offset);
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
  
- /**
-  * igt_pipe_set_prop_value:
-@@ -1012,8 +1027,13 @@ uint64_t igt_pipe_obj_get_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties
-  *
-  * Sets the given @prop with the @value for the @pipe.
-  */
--#define igt_pipe_set_prop_value(display, pipe, prop, value) \
--	igt_pipe_obj_set_prop_value(&(display)->pipes[(pipe)], prop, value)
-+static inline void igt_pipe_set_prop_value(igt_display_t *display,
-+					   enum pipe pipe,
-+					   enum igt_atomic_crtc_properties prop,
-+					   uint64_t value)
-+{
-+	igt_pipe_obj_set_prop_value(&display->pipes[pipe], prop, value);
-+}
+ 	/*
+@@ -336,7 +333,7 @@ static bool test_pipe_legacy_gamma(data_t *data,
+ 					  legacy_lut_size, red_lut, green_lut, blue_lut), 0);
+ 	igt_display_commit(&data->display);
+ 	igt_wait_for_vblank(data->drm_fd,
+-			    display->pipes[primary->pipe->pipe].crtc_offset);
++			    primary->pipe->crtc_offset);
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullgamma);
  
- extern bool igt_pipe_obj_try_prop_enum(igt_pipe_t *pipe,
- 				       enum igt_atomic_crtc_properties prop,
+ 	/*
+@@ -518,7 +515,6 @@ static bool test_pipe_ctm(data_t *data,
+ 	gamma_lut_t *degamma_linear = NULL, *gamma_linear = NULL;
+ 	igt_output_t *output = data->output;
+ 	bool ret = true;
+-	igt_display_t *display = &data->display;
+ 	drmModeModeInfo *mode = data->mode;
+ 	struct igt_fb fb_modeset, fb;
+ 	igt_crc_t crc_software, crc_hardware;
+@@ -579,7 +575,7 @@ static bool test_pipe_ctm(data_t *data,
+ 	set_ctm(primary->pipe, ctm_identity);
+ 	igt_display_commit(&data->display);
+ 	igt_wait_for_vblank(data->drm_fd,
+-			    display->pipes[primary->pipe->pipe].crtc_offset);
++			    primary->pipe->crtc_offset);
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_software);
+ 
+ 	/* With CTM transformation. */
+@@ -588,7 +584,7 @@ static bool test_pipe_ctm(data_t *data,
+ 	set_ctm(primary->pipe, ctm_matrix);
+ 	igt_display_commit(&data->display);
+ 	igt_wait_for_vblank(data->drm_fd,
+-			    display->pipes[primary->pipe->pipe].crtc_offset);
++			    primary->pipe->crtc_offset);
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_hardware);
+ 
+ 	/*
+@@ -645,7 +641,6 @@ static void test_pipe_limited_range_ctm(data_t *data,
+ 	gamma_lut_t *degamma_linear, *gamma_linear;
+ 	igt_output_t *output;
+ 	bool has_broadcast_rgb_output = false;
+-	igt_display_t *display = &data->display;
+ 
+ 	degamma_linear = generate_table(data->degamma_lut_size, 1.0);
+ 	gamma_linear = generate_table(data->gamma_lut_size, 1.0);
+@@ -691,7 +686,7 @@ static void test_pipe_limited_range_ctm(data_t *data,
+ 		igt_plane_set_fb(primary, &fb);
+ 		igt_display_commit(&data->display);
+ 		igt_wait_for_vblank(data->drm_fd,
+-				display->pipes[primary->pipe->pipe].crtc_offset);
++				primary->pipe->crtc_offset);
+ 		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_full);
+ 
+ 		/* Set the output into limited range. */
+@@ -700,7 +695,7 @@ static void test_pipe_limited_range_ctm(data_t *data,
+ 		igt_plane_set_fb(primary, &fb);
+ 		igt_display_commit(&data->display);
+ 		igt_wait_for_vblank(data->drm_fd,
+-				display->pipes[primary->pipe->pipe].crtc_offset);
++				primary->pipe->crtc_offset);
+ 		igt_pipe_crc_collect_crc(data->pipe_crc, &crc_limited);
+ 
+ 		/* And reset.. */
 -- 
 2.49.1
 
