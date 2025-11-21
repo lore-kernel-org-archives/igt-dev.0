@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B26CECFC26E
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Nov 2025 12:24:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 968E9CFC26E
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Nov 2025 12:24:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5D41210E243;
-	Fri, 21 Nov 2025 12:24:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4922C10E030;
+	Fri, 21 Nov 2025 12:24:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SBGibx+A";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N+QmscsW";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8572510E243
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Nov 2025 12:24:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15F1889F49
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Nov 2025 12:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763727889; x=1795263889;
+ t=1763727891; x=1795263891;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=R8mmDw7hPZnGKmuaNufmtZtrW74uOQvK7pxFEpCRqrc=;
- b=SBGibx+ATr/kCb6hF1ArN0tUJAvEbq9D4jyfqgrO0Oix4b37RUytAvxm
- APhuPaLp+a2jzSAjjDne8fVSfxwNiv8lgiRTJ1pb2MDw3ZmsIHCdLYl30
- yCT2ZxRBFbkDaypW3TyH23LaOT1LDtc/TflkbTacJ35/RWe1TpBGY7c3y
- QAwzLgL4fABfDw7+utq4IGfXkk0wR6g7z1gDW8SiaeOZGOos5EAoTZoAS
- K6+qjPxtb0ICFTxMPlaBxLoPLZ7oTW3Vqe+6+zdQLjzDIiQWLhJtCzRmy
- 4dhdu5OzRe4ubEbS5/tT986pIdQ1Y240K6q2QXgYn+IK38PsAZVv7/bj/ A==;
-X-CSE-ConnectionGUID: YITGZqFTRke2eU1csLOCAw==
-X-CSE-MsgGUID: ni135BrTTFmu4C/qFDtugQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="77289595"
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="77289595"
+ bh=M2KbnKJN/z+XkoMJFYDBSIS2EOqNuWkl+mgkvp3SHNc=;
+ b=N+QmscsWSDba4jxF38a7jTc3ahMelF4OawwBpIxPstkMDfHXZ1/z+qX2
+ 1Id+JqBw2Ks2Uv56mjg2jfW9G8dW6aDCJYb1CPIqglv/dpqnaOawHDwqP
+ o+dKIoxm8y4mmV1/yIV/EPhbdjF7afgG42kVlkcHVfp8df6ZaNszkehHF
+ 2LJvIHVuc5Q5ukS5vexlg00tP2k0Feepmz4PduCaiUCze4mw753e/hjab
+ AP8r3+xQgS2/wyav/q7wCep950cukJ2QOpx+AjS0sAMRW1r8H9EZyOA/L
+ wSV4mtSl5k6ACmgSJY7aMV9T8k0sdYkhBJeLX66vkxfs0fbONcbnixwUE w==;
+X-CSE-ConnectionGUID: 6OE7wfRbTTauDll/tn6IIA==
+X-CSE-MsgGUID: MQFIHPmzRZm84f8j2jXa+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="77289596"
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="77289596"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2025 04:24:49 -0800
-X-CSE-ConnectionGUID: dFemGRUoQLa0+8dtjiz2jQ==
-X-CSE-MsgGUID: Gw92HTSkQWi9pMQvwyHQcQ==
+ 21 Nov 2025 04:24:50 -0800
+X-CSE-ConnectionGUID: mf4KoGsaQ5mBz35EW1YbAg==
+X-CSE-MsgGUID: kCAjm0t/QgWbRmzezOn32A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="215047360"
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="215047364"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 04:24:48 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 04:24:49 -0800
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ankit.k.nautiyal@intel.com,
 	Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 5/6] lib/kms: Add helper to detect presence of scaler
- blocks
-Date: Fri, 21 Nov 2025 18:01:33 +0530
-Message-Id: <20251121123134.1099006-6-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 6/6] tests/intel/kms_sharpness_filter: Skip pipes
+ without sharpness-capable scaler[1]
+Date: Fri, 21 Nov 2025 18:01:34 +0530
+Message-Id: <20251121123134.1099006-7-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251121123134.1099006-1-swati2.sharma@intel.com>
 References: <20251121123134.1099006-1-swati2.sharma@intel.com>
@@ -69,61 +69,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a new helper, has_scaler_block(), to query the presence of a specific
-scaler block (scalers[idx]) in the per-pipe section of i915_display_info.
+Sharpness Filter is implemented only in scaler[1] (the second scaler).
+Scaler[0] does not contain the sharpness hardware block.
+
+The test now explicitly checks for the presence of "scaler[1]" in
+i915_display_info. If scaler[1] is missing, the pipe cannot
+support sharpness and the subtest is skipped.
+Bspec: 69908
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_kms.c | 23 +++++++++++++++++++++++
- lib/igt_kms.h |  1 +
- 2 files changed, 24 insertions(+)
+ tests/intel/kms_sharpness_filter.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index a75323645..ec636b8ca 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -7094,6 +7094,29 @@ int get_num_scalers(igt_display_t *display, enum pipe pipe)
- 	return num_scalers;
- }
+diff --git a/tests/intel/kms_sharpness_filter.c b/tests/intel/kms_sharpness_filter.c
+index ef3ce3995..969d83151 100644
+--- a/tests/intel/kms_sharpness_filter.c
++++ b/tests/intel/kms_sharpness_filter.c
+@@ -439,6 +439,12 @@ run_sharpness_filter_test(data_t *data, enum test_type type)
+ 			data->pipe = &display->pipes[data->pipe_id];
+ 			data->mode = igt_output_get_mode(data->output);
  
-+/**
-+ * has_scaler_block:
-+ * @display: the display
-+ * @pipe: display pipe
-+ * @idx: scaler index
-+ *
-+ * Returns: True if the scaler block "scalers[idx]:" is present in the
-+ * 	    i915_display_info debugfs output for the given pipe.
-+ */
-+bool has_scaler_block(igt_display_t *display, enum pipe pipe, int idx)
-+{
-+	char buf[8120];
-+	char *pipe_loc;
-+	char scaler_tag[32];
++			if (!has_scaler_block(display, pipe, 1)) {
++				 igt_info("%s: Doesn't support scaler[1].\n",
++				 kmstest_pipe_name(data->pipe_id));
++				 continue;
++			}
 +
-+	sprintf(scaler_tag, "scalers[%d]:", idx);
-+
-+	pipe_loc = read_pipe_info(display->drm_fd, pipe, buf, sizeof(buf));
-+	igt_assert(pipe_loc);
-+
-+	return strstr(pipe_loc, scaler_tag) ? 1 : 0;
-+}
-+
- /**
-  * igt_parse_marked_value:
-  * @buf: Buffer containing the content to parse
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index f7ff0b17e..13b1765af 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1280,6 +1280,7 @@ bool intel_pipe_output_combo_valid(igt_display_t *display);
- bool igt_check_output_is_dp_mst(igt_output_t *output);
- int igt_get_dp_mst_connector_id(igt_output_t *output);
- int get_num_scalers(igt_display_t *display, enum pipe pipe);
-+bool has_scaler_block(igt_display_t *display, enum pipe pipe, int idx);
- int igt_get_current_lane_count(int drm_fd, igt_output_t *output);
- int igt_get_current_link_rate(int drm_fd, igt_output_t *output);
- int igt_get_max_link_rate(int drm_fd, igt_output_t *output);
+ 			if (!has_sharpness_filter(data->pipe)) {
+ 				igt_info("%s: Doesn't support IGT_CRTC_SHARPNESS_STRENGTH.\n",
+ 				kmstest_pipe_name(data->pipe_id));
 -- 
 2.25.1
 
