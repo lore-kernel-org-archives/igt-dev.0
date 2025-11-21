@@ -4,77 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 443D2CFA76E
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Nov 2025 10:38:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC323CFA76D
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Nov 2025 11:00:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CFD5410E84D;
-	Fri, 21 Nov 2025 10:38:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6E0C010E852;
+	Fri, 21 Nov 2025 11:00:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XD0KfOFu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FHQhCQxK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D87B110E84D
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Nov 2025 10:38:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4958010E0A0
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Nov 2025 11:00:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763721508; x=1795257508;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=OVhbhjoAVgUcH6xJVzzCNkZ3pcPhWj9TBDQArFL3vwY=;
- b=XD0KfOFuZFBCrZBcnRgpDwWiMyBoRqzqpu78DgW+XzkwSJtCU1bSu5Sw
- iqr3gbwOzFHJgltsgQL5Y9FqwLRcx75F1ynsxHutnD18+9lsQjiRl15uq
- Up4CAl5uaS8xpRa/TGo9ey/BNZ70XmkK/Fqk9WLnMyyaNlVaaMyX2DO1q
- 1kS9+HcSx2Kh4d2TjmJmOxRHmP8R90fVOjZbrcIlJGIyQxGsC0o7TAWCO
- BqYTRqjz2EoTI0z1CuywNjrHSwl2LxmwAg9XBw90UjoaUHV+Umo9xPx0I
- aR4iKhVzsaV9drb2cV9d0kUe1RbsWpIftbp+43uwZZiHSZYG2EV71vpia Q==;
-X-CSE-ConnectionGUID: R1EZHmdhRnSkRGG2EyaFQg==
-X-CSE-MsgGUID: fnRcIc21R0y+AdRitl+g2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="91292927"
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="91292927"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2025 02:38:27 -0800
-X-CSE-ConnectionGUID: l8dkLkmHSXWNqPnTkXq95g==
-X-CSE-MsgGUID: FqYlukMuQEW366HtUQNb9A==
+ t=1763722830; x=1795258830;
+ h=from:date:subject:mime-version:content-transfer-encoding:
+ message-id:references:in-reply-to:to:cc;
+ bh=MxemYzqftO1mnV484PapWj/xoSQFjt0Swgc+kMaQ2Bc=;
+ b=FHQhCQxKSZlvJhbBeOyKkQkwusbR/ZZnScuWgkcYTtE2QwWAztHodzZx
+ UMFOD+jPmRp79rWJWXvfRPJUo/zIF4XZEFWvvDbDrdhTJsP+pxCCExi8r
+ RwhhxlS5GsLsfRqgRxPAQFgJAhYZjaINnxsiBM4mmB9+zmRMxmeY9NN9s
+ ZuOQHo17afK+doqpEx4maTbZ8Rd6jbCaOiCQ9qyIleKi0KkDgBDZGCmQW
+ g68ChfDalHCcTIqrn+fytELsyzDUm2m8875pDpPiMShbTAabVOx/2O41n
+ fgserIgzXYHS0nQsSfn/BkgV78CoAy4CtpD6M3+YmnmHpuV7jmUeiFJL9 Q==;
+X-CSE-ConnectionGUID: VEdbK2xnRqme7zbc5bFP/g==
+X-CSE-MsgGUID: wLKodNkuSTaCwmkxPEYtlA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="83203548"
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="83203548"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Nov 2025 03:00:29 -0800
+X-CSE-ConnectionGUID: tyLGcHDkRXiYgsalm5nFhw==
+X-CSE-MsgGUID: l/vZLIfuSKChvGZAfIdlxg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="191451611"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.31])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2025 02:38:23 -0800
-Date: Fri, 21 Nov 2025 12:38:19 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Jason-JH Lin =?utf-8?B?KOael+edv+elpSk=?= <Jason-JH.Lin@mediatek.com>
-Cc: "swati2.sharma@intel.com" <swati2.sharma@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "karthik.b.s@intel.com" <karthik.b.s@intel.com>,
- "jani.nikula@intel.com" <jani.nikula@intel.com>,
- "chaitanya.kumar.borah@intel.com" <chaitanya.kumar.borah@intel.com>,
- Nancy Lin =?utf-8?B?KOael+aso+ieoik=?= <Nancy.Lin@mediatek.com>,
- Project_Global_Chrome_Upstream_Group
- <Project_Global_Chrome_Upstream_Group@mediatek.com>, 
- Paul-pl Chen =?utf-8?B?KOmZs+afj+mclik=?= <Paul-pl.Chen@mediatek.com>,
- "bhanuprakash.modem@gmail.com" <bhanuprakash.modem@gmail.com>,
- "gildekel@google.com" <gildekel@google.com>,
- "fshao@chromium.org" <fshao@chromium.org>,
- "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>,
- Singo Chang =?utf-8?B?KOW8teiIiOWciyk=?= <Singo.Chang@mediatek.com>,
- "uma.shankar@intel.com" <uma.shankar@intel.com>,
- "markyacoub@chromium.org" <markyacoub@chromium.org>,
- "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
-Subject: Re: [PATCH i-g-t v2] tests/kms_color: Always use atomic_commit for
- setting color properties
-Message-ID: <aSBBG2n64m65CWLR@intel.com>
-References: <20251121075406.2006325-1-jason-jh.lin@mediatek.com>
- <aSApNt1PwpgrX5E9@intel.com>
- <0a2d25af2c0ba3c5bc26e445a46413c90a77a19e.camel@mediatek.com>
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="195953839"
+Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Nov 2025 03:00:28 -0800
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+Date: Fri, 21 Nov 2025 11:59:00 +0100
+Subject: [PATCH v5 1/5] tests/intel/xe_eudebug_online: use helper to get
+ hwconfig value
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0a2d25af2c0ba3c5bc26e445a46413c90a77a19e.camel@mediatek.com>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251121-xe_query_helpers-v5-1-d69c1c160e96@intel.com>
+References: <20251121-xe_query_helpers-v5-0-d69c1c160e96@intel.com>
+In-Reply-To: <20251121-xe_query_helpers-v5-0-d69c1c160e96@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Priyanka Dandamudi <priyanka.dandamudi@intel.com>, 
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>, 
+ =?utf-8?q?Piotr_Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>, 
+ Christoph Manszewski <christoph.manszewski@intel.com>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1516;
+ i=andrzej.hajda@intel.com; h=from:subject:message-id;
+ bh=MxemYzqftO1mnV484PapWj/xoSQFjt0Swgc+kMaQ2Bc=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpIEYFc+ywDwnoak2BWZzyuYc+MQTSdXHctwtFT
+ EEAHxg2xY6JAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaSBGBQAKCRAjYrKT3hD9
+ 14lPDACUwZnDHjZ+7Dp7vQEOGmz2Q/9W7RA167fC2PY8Xp8z7LSot5PspD0l0E26NRw21/E5OHM
+ LxKDmLNzsgQTiMskCTpP2W8o85B9/bNeIohIuLtNzeXpKqPJVFpDIUo4CYhoktISM3SMZ1a4XSJ
+ OKWNe+aFzmDMIMXs6ErqtkqCVecbrc6ZYYzH4bVTl6BHZiGBYs2dv5UkNWs+DgwPoPX/2sh+EJa
+ pMPUZ7TUTupz+ugckgAlpgHk2dvyDW8y11A6JpDE30YnqMIR1f5sZtOWnXePByqBRWwtdayb7pK
+ l0gvtScycgDs1OAlepLlj54lCyoCqsnBRPj02gVEEAQtW3m+A8FawTahVuFab4v6ojzunvJgK4Q
+ FLQdT5o7EHtsLBQ114JAJc0x4At7z4O/WukMAwJzdieC1GTYsEVms9T8GoqkIArx5RX5vJceVDR
+ Ycer+FYyti0480htj6Tjo8eG06HL/iQDumdxLKritcF01IF5x0dAKu7b9jRdFC+LtkGJc=
+X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
+ fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,147 +88,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Nov 21, 2025 at 09:47:52AM +0000, Jason-JH Lin (林睿祥) wrote:
-> Hi Ville,
-> 
-> Thanks for your rapid reply.
-> 
-> On Fri, 2025-11-21 at 10:56 +0200, Ville Syrjälä wrote:
-> > 
-> > External email : Please do not click links or open attachments until
-> > you have verified the sender or the content.
-> > 
-> > 
-> > On Fri, Nov 21, 2025 at 03:53:54PM +0800, Jason-JH Lin wrote:
-> > > When a driver makes use of gamma_lut, degamma_lut, or ctm
-> > > properties
-> > > from crtc state, these properties are applied only via atomic
-> > > commit.
-> > > This change ensures all relevant properties are properly
-> > > synchronized
-> > > to crtc state during testing.
-> > > 
-> > > All upstream drivers that support color management properties also
-> > > support atomic commits, so legacy commit handling in kms_color is
-> > > no
-> > > longer needed.
-> > 
-> > Incorrect.
-> 
-> The conclusion is refer from:
-> https://patchwork.freedesktop.org/patch/254752/?series=50539&rev=1
-> 
-> I'll remove it because I'm not sure for this.
-> 
-> > 
-> > But rather than spreading the current mess even further, I think
-> > what we want is a igt_display_commit() variant that takes care of
-> > the is_atomic check. So add that, blast it over all the existing
-> > places that do the check by hand (with cocci/sed/etc), and
-> > and then look at using it for new stuff like this where it
-> > probably makes sense to use atomic when available.
-> > 
-> 
-> Sorry for missing you in the cc loop.
-> Does my previous version of this patch satisfy this?
-> https://patchwork.freedesktop.org/patch/687863/
+Recently introduced helper makes the code cleaner.
 
-I meant that you should add some kind of
- igt_display_commit_something()
+Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+---
+ tests/intel/xe_eudebug_online.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
+
+diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+index 50d95988e6b3aa727f12e5d1c8ca52692de4d302..a5b2864a47a34b9051756174f73667bbc602e00b 100644
+--- a/tests/intel/xe_eudebug_online.c
++++ b/tests/intel/xe_eudebug_online.c
+@@ -1206,9 +1206,7 @@ static bool intel_gen_has_lockstep_eus(int fd)
+ 
+ static int query_attention_bitmask_size(int fd, int gt)
  {
- 	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- }
-wrapper thingy, and deploy it everwhere that currently
-has that is_atomic check open coded. I guess the real problem
-is coming up with a name... igt_display_commit_auto() maybe?
-
-> 
-> > > 
-> > > Update the test logic to always use igt_display_commit_atomic with
-> > > DRM_MODE_ATOMIC_ALLOW_MODESET for all color management operations.
-> > > This simplifies code and guarantees correct validation of gamma,
-> > > degamma, and ctm properties.
-> > 
-> > What do you mean with "guarantees correct validation"? The current
-> > code works just fine AFAIK.
-> 
-> I have encountered that GAMM_LUT drm property is not updated into the
-> gamma_lut struct in drm_crtc_state via igt_disaply_commit().
-> 
-> I found igt_disaply_commit() will finally call
-> drmModeObjectSetProperty() and igt_plane_commit() in igt_pipe_commit().
-> These functions will set GAMM_LUT property to drm driver but they won't
-> update the gamma_lut struct in crtc state. So our GAMMA driver won't do
-> anything when running these IGT KmsColorTest.
-
-Whether the commit comes via that atomic ioctl or the setproperty ioctl
-the same exact code gets used to update the blobs in the crtc state,
-and then the driver's atomic hooks get called in exactly the same way.
-
-But with the non-atomic igt commit you obviously will see multiple
-commits coming into the kernel, and you won't see the full state in
-the kernel until all the commits are done. 
-
-So if you're saying that the crtc state gamma blob didn't have the
-expected new stuff in it, then I think you were either looking at 
-the state before all the commits had arrived, or you have some kind
-of driver bug where the state gets corrupted.
-
-> 
-> Then I found igt_atomic_commit() will sync these properties to drm_crtc
-> _state and make our HW driver work successfully. So I send the patch to
-> ask for review and guidance.
-> 
-> Or do you know what I may miss in the original igt_disaply_commit()?
-
-IIRC the one thing that is busted in the legacy commit path is
-plane properties for primary/cursor planes. Pretty sure I sent
-a patch to fix that long ago, but it might have had some kind of
-performance problem due to some unintended property value
-ping-pong. I suppose I should take another look at it again...
-
-Anyways, that's only about plane properties so should have nothing
-to do with the crtc gamma stuff.
-
-> 
-> > 
-> > > 
-> > > Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
-> > > ---
-> > >  tests/kms_color.c | 47 ++++++++++++++++++++++++-------------------
-> > > ----
-> > >  1 file changed, 24 insertions(+), 23 deletions(-)
-> > > 
-> > > diff --git a/tests/kms_color.c b/tests/kms_color.c
-> > > index c424083b7fd4..0d2baf8f8aad 100644
-> > > --- a/tests/kms_color.c
-> > > +++ b/tests/kms_color.c
-> > > @@ -125,12 +125,12 @@ static bool test_pipe_degamma(data_t *data,
-> > >       disable_ctm(primary->pipe);
-> > >       disable_gamma(primary->pipe);
-> > >       set_degamma(data, primary->pipe, degamma_linear);
-> > > -     igt_display_commit(&data->display);
-> > > +     igt_display_commit_atomic(display,
-> > > DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-> > > 
-> > >       /* Draw solid colors with linear degamma transformation. */
-> > >       paint_rectangles(data, mode, red_green_blue, &fb);
-> > >       igt_plane_set_fb(primary, &fb);
-> > > -     igt_display_commit(&data->display);
-> > > +     igt_display_commit_atomic(display,
-> > > DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-> > >       igt_wait_for_vblank(data->drm_fd,
-> > 
-> 
-> [snip]
-> 
-> > --
-> > Ville Syrjälä
-> > Intel
-> 
-> Regards,
-> Jason-JH Lin
+-	uint32_t thread_count_len;
+-	uint32_t *thread_count_ptr;
+-	uint32_t threads_per_eu = 8;
++	uint32_t threads_per_eu = xe_hwconfig_lookup_value_u32(fd, INTEL_HWCONFIG_NUM_THREADS_PER_EU);
+ 	struct drm_xe_query_topology_mask *c_dss = NULL, *g_dss = NULL, *eu_per_dss = NULL;
+ 	struct drm_xe_query_topology_mask *topology;
+ 	struct drm_xe_device_query query = {
+@@ -1221,13 +1219,6 @@ static int query_attention_bitmask_size(int fd, int gt)
+ 	int pos = 0;
+ 	int i, last_dss_idx;
+ 
+-	thread_count_ptr = xe_hwconfig_lookup_value(fd, INTEL_HWCONFIG_NUM_THREADS_PER_EU,
+-						    &thread_count_len);
+-	if (thread_count_ptr) {
+-		igt_assert(thread_count_len == 1);
+-		threads_per_eu = *thread_count_ptr;
+-	}
+-
+ 	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+ 	igt_assert_neq(query.size, 0);
+ 
 
 -- 
-Ville Syrjälä
-Intel
+2.43.0
+
