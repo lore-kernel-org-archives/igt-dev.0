@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D2D5CFA761
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Nov 2025 09:24:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBCAACFA762
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Nov 2025 09:26:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D603710E11B;
-	Fri, 21 Nov 2025 09:24:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5FB2010E803;
+	Fri, 21 Nov 2025 09:26:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ea+gWfI5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jGGoPuSX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76FF410E11B
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Nov 2025 09:24:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B466C10E803
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Nov 2025 09:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763717061; x=1795253061;
+ t=1763717218; x=1795253218;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=H6cGozKs+3YV+KZrMEZxVbgnrvmYL5LQdvbjR0h1gi8=;
- b=ea+gWfI5L/Fhpam/jsRfjOrdb2fe7Y9s7C3s5i1uHiON6NRiPt3mW8Cl
- c2nHR5FWlgVrIA0Erk3e4s8aXOz737i2laepAunsi6Fc0ZArtBU7yLeGe
- uS2vIIZiHatTMYCJVWR9ZL0lhm2JUYekcJ/AwBNTbRREP55FgVeRlS94L
- 0js5B+GGzCYZagpANq/cZHOiOYNTFCEqackdTlWuO+B1HMSSrpfCA8FNh
- gC8McsP+F2xAI0QHcSqBQ6lIhAnNFsW8fZLjvYrA2VrxfNHD5AnQcT9MH
- EZyO6scArRYWfdKTc+sSWrtBa3tUBMBrQcusHer79U8ULrFWHzhG6If7e g==;
-X-CSE-ConnectionGUID: qA9g3WgQSN2Q13Use6FMuw==
-X-CSE-MsgGUID: Drts6aodQOuIDnDqkHgEIw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="88457209"
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="88457209"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2025 01:24:21 -0800
-X-CSE-ConnectionGUID: ghCfId3LQz2oGk+UxyogwQ==
-X-CSE-MsgGUID: 2FMVUJmVSUqJjBPou2ZQHA==
+ bh=INKiGKDQK59vz/dIF20jE0EePJtBk3ZYSUVokEvnS6s=;
+ b=jGGoPuSXRc2Coy8DqhMb9JplxUhqigYXwaJ7gsmLKx1z0KqRsrmzEGN8
+ JvOj1UYUBLSDv+5y7DirBiVG/27cC9HtfMKyJQDVn4D7t2wdAamB1jRyW
+ 5ww0V9GBP6SpuSfmk7hpMpbJ76eS0wbv4LVuXZJdxYoBHSq36Z0XHXLeI
+ FvewSljkAo4oKVjKVGtXUzZ9bhQHWAbJ+8EirvGlt6r+NsNeynp+WgEJo
+ ENhpSISXntC/PT3s52Q+rGS9inJZTLkA5j3DUWQndMtLwPcWgn/EQojPQ
+ EK8td2XrrCeOnd4/b2JRBiCza4O1S65W9Y1m3tRz6adFeFxSiI9w97pk2 A==;
+X-CSE-ConnectionGUID: TgPNJXt5REaRDBbG7bu9SQ==
+X-CSE-MsgGUID: FxEYE7+wSCa+ThF5Vo8qGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="83196558"
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="83196558"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Nov 2025 01:26:58 -0800
+X-CSE-ConnectionGUID: zym+gKC0QVeNfWPcH7h0SA==
+X-CSE-MsgGUID: JI/cunuJTfaO36UAm/rRKA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="196596721"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2025 01:24:19 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="191436843"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+ by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Nov 2025 01:26:57 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Fri, 21 Nov 2025 01:24:19 -0800
+ 15.2.2562.27; Fri, 21 Nov 2025 01:26:56 -0800
 Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Fri, 21 Nov 2025 01:24:19 -0800
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.31) by
+ 15.2.2562.27 via Frontend Transport; Fri, 21 Nov 2025 01:26:56 -0800
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.56) by
  edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Fri, 21 Nov 2025 01:24:19 -0800
+ 15.2.2562.27; Fri, 21 Nov 2025 01:26:56 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=X84948VD9Cai3dljdsRjizb1PfziiAd9/far9MOe6xi/zOP4ynMVs/MMSb/m2eb2XlZhRYmvrXCXtjsndH6FiOtMNkYnVwu4YKB6ePSbmxF9vE4W6PU44ruGMLwLjR9qIfFGIjz41w9Y7Gl5qKrB0h9QPjhXqoD3ZJxBFMLUynDEAHRoUlWSv+bNiFs30k6I9aSfucnre/lo2TelNjUYQYi20PAQQIxprc59NKMh5EwmmiXshcecXnO90kiRUFGwlE9eYkOfE55LStoaH6zBP5XY873oaEYeBLPH1FnQrZVkKNw+pOZvEiUoPAg9adbjRP4svVMIDCsxshkDsosU/g==
+ b=PXjSUlzfEH6ox0P7t4FQpktj597jezZ4RPBsHnDNBgKOhe/QtJvLrwJ/U1UBk4AfxE0aNJJXFWQ5fSziZIBGCC85W8FQ9PqyiCNkEB1mIE3Ztz5ZdVhxyhTy991JyhuaGaNSzbS93b1h4r6oac14jBjviqz3X0jBk5hFboTU1zrkLMqxsG9Jh1faTFoEG7+0ynEIZT/4qoTEFCfsQgX3xifMKV5VLL3TRxCZuTFoYJixpsQQGPvddWwCq/aO4mfa38wC9tMegdqDO+NUv5vGS+ZVzq4LcymiaD4jSzHRbHDdfghgTClyG7d2AxKAS00+klzISDrm/xaTs6kCNXaZaQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6jqdE1GyKFLA1eAEBycH/UXJq8mMEfoBQ+UFC/h0gK8=;
- b=tCzPmy71rsqFa1rxo5QxO4a3lBI7Puk0X8I/NMnUaaExahQpI0cAjiwRted0er/SeszodN93n29/n1/Ya+9WALWqT62isaAw6mBWNLTwHE8ON2/JNvgAFZfhw0rRKmWeWmDY+36pivbK8XQYsMQA2ZywbDWGhjcmm6BeHq5Rr00xFjGk1bkavcEdquRMbLsgIAFaL3dTNNeE2xwORUlsi8p1adVxA6AR6Qg9AHfeNyZcedKaur5mpzrlL56rdXC+4HSEKRY2AoCGMcqZRu0JLbzs7QOLNLIaVBRPbni25jERNv/lIWKQVu2VChnUb6I8fd0+OCxN6NmSFR8Q5/boRg==
+ bh=4LmuxR9JHBCkT3NjIGSyMHtbi2fqAPFmog4MWQP+gBI=;
+ b=B7znDaIp+3NeWALcoNhuVYTfh4l3ZL2W/JZL0iPAs3bDd9/Qbnw6KqAjpe9/1dG1OwwTIU7YjpHRx5XQMnfIkVyG4b2Qi3illvFGAAEww/R4yJS8rv31GIcVBP7uwVL8FvOgcen3aPl3oqfBpCOAeDXb+o3T9rl27rJ4wc0hbK+2c2YIjrtvcFYaKhz300HPe5P/I3rXenVb3mUyPETx+GA64o9KEiWjIMLly48pB2hTBoZQX0wTJz2JZ3oSrIcD9if009JDMeWJtrg5RdlR0ToncAXU5x2Lc4G5qzeCmO5Z4WMafE6cE2aPJAHbvCKnjIyjzf4mrmsict+72AERMA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -67,25 +67,25 @@ Received: from DM3PPF208195D8D.namprd11.prod.outlook.com
  (2603:10b6:f:fc00::f13) by SJ2PR11MB7476.namprd11.prod.outlook.com
  (2603:10b6:a03:4c4::16) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Fri, 21 Nov
- 2025 09:24:16 +0000
+ 2025 09:26:49 +0000
 Received: from DM3PPF208195D8D.namprd11.prod.outlook.com
  ([fe80::95c9:5973:5297:d3cc]) by DM3PPF208195D8D.namprd11.prod.outlook.com
  ([fe80::95c9:5973:5297:d3cc%6]) with mapi id 15.20.9343.011; Fri, 21 Nov 2025
- 09:24:15 +0000
+ 09:26:49 +0000
 From: "Kandpal, Suraj" <suraj.kandpal@intel.com>
 To: "S, Sowmiya" <sowmiya.s@intel.com>, "igt-dev@lists.freedesktop.org"
  <igt-dev@lists.freedesktop.org>
 CC: "Sharma, Swati2" <swati2.sharma@intel.com>
-Subject: RE: [PATCH i-g-t v3 09/12] tests/kms_writeback: Refactor
- writeback-check-output subtest
-Thread-Topic: [PATCH i-g-t v3 09/12] tests/kms_writeback: Refactor
- writeback-check-output subtest
-Thread-Index: AQHcWql2riYb1TyIrU+XgoY/TxnnpbT82zhg
-Date: Fri, 21 Nov 2025 09:24:15 +0000
-Message-ID: <DM3PPF208195D8DC12BB0071BF913C6DB30E3D5A@DM3PPF208195D8D.namprd11.prod.outlook.com>
+Subject: RE: [PATCH i-g-t v3 10/12] tests/kms_writeback: Add negative test
+ case for invalid-format
+Thread-Topic: [PATCH i-g-t v3 10/12] tests/kms_writeback: Add negative test
+ case for invalid-format
+Thread-Index: AQHcWql0m1wUjXFGEEC4ownD2Ooo+7T83EKg
+Date: Fri, 21 Nov 2025 09:26:49 +0000
+Message-ID: <DM3PPF208195D8DB3882F346A7A6F398959E3D5A@DM3PPF208195D8D.namprd11.prod.outlook.com>
 References: <20251121055839.3116906-1-sowmiya.s@intel.com>
- <20251121055839.3116906-10-sowmiya.s@intel.com>
-In-Reply-To: <20251121055839.3116906-10-sowmiya.s@intel.com>
+ <20251121055839.3116906-11-sowmiya.s@intel.com>
+In-Reply-To: <20251121055839.3116906-11-sowmiya.s@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -94,78 +94,78 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: DM3PPF208195D8D:EE_|SJ2PR11MB7476:EE_
-x-ms-office365-filtering-correlation-id: c8892a25-da27-433e-de5c-08de28dfbdbb
+x-ms-office365-filtering-correlation-id: 7666f6c6-b67b-432c-99e2-08de28e01974
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|376014|366016|38070700021;
-x-microsoft-antispam-message-info: =?us-ascii?Q?zZYp2cbR5QmjD3OHlMIW6X4NAEI3Az/1aoqZXczAKwrmZ8jee9WRZX24aKHb?=
- =?us-ascii?Q?tkKJfkUMgAE/9W/+s5tXpcbbHD7GzkFbgNEe9MIajk9RLy85F8BLhIfMCfYS?=
- =?us-ascii?Q?pudoWSp2RHH5fEQyAPHRihQBX2FxWLKtB/6ijrC6sVjYiQaPWS4D0lh0jeRJ?=
- =?us-ascii?Q?MQrsu4Y1SGCGaTnhWATnQB954Lh+mjzrz9uFc2Q1FkXnqUE5Tj7Yn5XdZVpF?=
- =?us-ascii?Q?Wbbz/GzUgugdSS93BfKDJ67QbTp4lMTnO1hI+gXc38DPyu/SHJWCL3juJiQP?=
- =?us-ascii?Q?3AyfOn5fpLmBWgHK1BxYBW0eIaJmV+25sMfq6Dj30R/SPRt5sE8c7gV2Z6fZ?=
- =?us-ascii?Q?Xnul0k5xZ6OgB1QmEW3aFZigEIUDM8ihnVxdX5h0NdbNNyATRLwxmMek51rx?=
- =?us-ascii?Q?lDyLC55xemx+4IA1JRk0Qtv2AmmhpW07d4UO3IJzR5O3+uUcmdzLunQNgeFg?=
- =?us-ascii?Q?jLzC5+O3oxMDyFr9Wisvb3V9OFXroaTWL0v0eR7u0UKJ9Mdu9HB4JUnw2edg?=
- =?us-ascii?Q?ORe6gEcYt01NDhZjhFBXOfrtblCKGuURI+yeiqGncbC6l1b37WARy1UZnc9p?=
- =?us-ascii?Q?bNHFF++EOQ2AfKBJ6NkAscaYgVmrn+fmGgBvxl3vtZtZU5YCV8h57zJqRrgM?=
- =?us-ascii?Q?SIEev1qt8YzWy0bPrEVn+irEAbjSKw5w9jxLIlUR3lK7YEOEayCol3T0ySLd?=
- =?us-ascii?Q?ZFdNC8lT2xwr4xDv5S6AdFT6+Oc1l0Odb99Usv6ab+M4x6amj/tRNRgKIzOe?=
- =?us-ascii?Q?BfLYLynEQ1ztaSBZMiHyC3vnLaasFAHrif4FfAPViFm4lLm5JPsLqRHvlfYa?=
- =?us-ascii?Q?MOygLSzouxdu9GeA5FhAxy2LguiHgcvHJd0g13vQfKIK5EiuofLMoWje8Qwb?=
- =?us-ascii?Q?6zVPVaofT59H8w9cwMHmjv6yZtSnV7yiPXmAyzfcyHsQwtf7yZoKeCW2nFK/?=
- =?us-ascii?Q?ELOHQ6QOM5bj2FJa+n7F45IYLpDiS7FvhAxwQCFrTxFzMZo+eAlOCVUc+t31?=
- =?us-ascii?Q?/RKxJZIaEqcAPfyZPDPbM24v8T9Z3OleyNoNkq1alQKej9V72JhBr4XvP4wg?=
- =?us-ascii?Q?HWT7rFsPVwgBx1WI1tLRpc/S9DeNZIpJHw2kqJD23lkvPNvyS2EbhJN7I3Vr?=
- =?us-ascii?Q?FFN1mUEdkGxrIIRIt3rKe32DQ8EK9eatoIqpUWc4V6YS2jIjn3HaIhUYJLCM?=
- =?us-ascii?Q?PF8VeKBl2Bl6vWjWB1YB8Sr/Yv8T/AAvYNjuu4e2vWr1NtVLmSuclbGPKDdH?=
- =?us-ascii?Q?ngZm+woCpJJbVGPWLg0fsVofvojgCYzG0XjkeXJ/38VdqmK5ByvrliRIXa0R?=
- =?us-ascii?Q?2nHJr6J7C4M7fhyNeHeLtYz0BC6lZ5oia0q8jQn2odfSiiBne4yEMWwwAriU?=
- =?us-ascii?Q?30+wQjUOerqa1/QiD26yfbIn+gwHgzDtcspL1RdgkpQi24Na5Sj177Cfg1+/?=
- =?us-ascii?Q?tKXBPmwOn+P4aKbs0kTw2AMvZf+xYIlX3KbiXefLBfzOlQLClkSrjShkZgfV?=
- =?us-ascii?Q?w1YUPQMP37dcxXGq9mfx/nYF2ByUlG+i9wBL?=
+x-microsoft-antispam-message-info: =?us-ascii?Q?s2E75aefsv0+ZCvuGnsxHlb/abpJrcaxc7zTR0i0N85f2pdruX7hJE6a/vK3?=
+ =?us-ascii?Q?/QIYNSbOvelfK1ami0d2DelWEPWOWjeMmPHNo7/3ByKxTXP52q/5/78ika7o?=
+ =?us-ascii?Q?B1bFyf+npfTih5IkrJ1ypdjgGx9ZiOM6i05orZ6qtw1gcMK+JlptT3q9UHDj?=
+ =?us-ascii?Q?Q3J/wA/OIOfE6JY3JPTssqGc9yt2U2u8EgnE6ThtgFz7XSgASNBB0BXgFE7H?=
+ =?us-ascii?Q?lpL8/0JaNmmckRSU8/y1KXX2AyqmdHyj5e6KqPhzTFFqkQ0v3Hzawa1clgjS?=
+ =?us-ascii?Q?C6Siwv7k8uGM+7Bz9Pc1v4O1TSoKC+vDodxPIearFWrxonwuafX7e7hsUU4G?=
+ =?us-ascii?Q?AJ3H1TL3QSbbQ43X2SConEFYn+MCjFtARLze5xmryxiCvl4NIouHQA8rD/kf?=
+ =?us-ascii?Q?cZDAURF18ShRjPCNl2A+uuBYveo8Y8dNKoXTjTSEbToiSdUTYFgBTVgTdPvj?=
+ =?us-ascii?Q?XOdeyACXfy/ZUqAJDy6H7m9g4t4QlT4hR6xel40WyFrivBjiuQtJE7TN6/3S?=
+ =?us-ascii?Q?N6GQLahunu1YNWT8E0Q/fpzt7WKRfUccytcbiQQLDYXnDhRfkHdkVBRZVuB4?=
+ =?us-ascii?Q?WT4hdU4GprwHDOR/dy/6/Oqq+DodpgUaO60rbIlcB9kl8NW0pt8gYJ57eezK?=
+ =?us-ascii?Q?OnLGEUVwGL510n1Hsu7Z/bWIj/9UlglUiXkxyHl2RGdenW+nHmkq0yW5Him9?=
+ =?us-ascii?Q?2/mfzx0bMeQ7HlcgbsxX2FMrY/JlznShdJ9wKUPLJ6LaMXlcf5aPP/qjTbRn?=
+ =?us-ascii?Q?zlm4N6WD4zx0d/HsKPnzEsJUPECnvCSm4d0B8B4VApJ5XGZQdH0abtH0L7kQ?=
+ =?us-ascii?Q?2Z3K7RaVmBqDYYEtvQ0lE7HMlxqchmdrSI1HRoYgCijmFgopIihG5Pcjv0WU?=
+ =?us-ascii?Q?ixLankbwtGEbK3H5ijyfMVFkqIEQoMsOSk8pM6vb0cCr6Mayp3gIGgQE6WRZ?=
+ =?us-ascii?Q?jsa7jR9xta8cDWzCHmgUkkeRuWJoEzeFGPql0bm3bAPu9FaQUDjoJWenLeTn?=
+ =?us-ascii?Q?zLg/oitlFPoXXBOj0xkmgqg2A08mASxNGME3d8okoxMJfIdiMl3h2Lvh4jQP?=
+ =?us-ascii?Q?c/7B9ni1rz9QFFPR/dSbusEg8/NMNzvA5Noe/5SdiyTZxcWTopwipIOCWxhI?=
+ =?us-ascii?Q?dpouydLt/8gAwlN48P0CSnGbLcUVXiAc8CjzRJoFkB2Ul6HaJh2OCxyJ735k?=
+ =?us-ascii?Q?We//3aglk1OQHG5BoHCEcFnuox1+T5nIFe/1YWiCb4lhAB9uYJMDH+NA7Poq?=
+ =?us-ascii?Q?Snx/lKB2ZZvMdwJEKNObqeJgSjhEn77U+YPimfCGuKBRjWnefmgk+966GAE5?=
+ =?us-ascii?Q?pSBc3dce1XjNMco5V5PTALQQ9R5KH04krGrKm7ztb9BvumtSKstsz5cifgAb?=
+ =?us-ascii?Q?spBZVz3lHEtHfEzejfeK9hALnLB59X4R1Htf68/vpPJt/aivvNeAdbusH6eo?=
+ =?us-ascii?Q?wPrdGdGW2PSWdrlobpapzKynPZB2aKgZ2MJsHFuOGXXvLciFeZL37Va6EDkg?=
+ =?us-ascii?Q?DBlCBgLD+kPUhBRfYikH7ADgiKTspCFXGCQ6?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM3PPF208195D8D.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(376014)(366016)(38070700021); DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?ffq6gDKWAnKUAqOFyno2tDZMrtM37LjaP13S1XgvMrwLl6crTuJZ3pz9hYPC?=
- =?us-ascii?Q?nRJBwwTQHm3sHQmn97R/vs1DpUx6G+GEyoKHz6wx+TKu7DYrpf5CCPkZVTnh?=
- =?us-ascii?Q?2RefdfVAmrfwveCthUOvN4Kd5alQHt/rvDDVVxjReZOjAiP0UcOZNx3ppbPi?=
- =?us-ascii?Q?2lPXPsbTjR7a98tHwwG3JR88gQtS1zawzz8Qg7My4+aHP9vWJcsop/4rYGWQ?=
- =?us-ascii?Q?w6gUguEfXq9/sLmhJVeo+CcqYsyruU5V/1swg8j1WmC+cJtVgA1cS9v2iQbZ?=
- =?us-ascii?Q?jjZXSBASo/7C1fWB4n73QAxBm/fS2jhui3dmyl0OF2GJCt9U2bDzRpsZX3UF?=
- =?us-ascii?Q?rCG/ZLXyS43HWHviECJ5Nn/rLFvd59ehhQGFJiAEQOy90NxOA7bEcaQJiL5G?=
- =?us-ascii?Q?+C5af2WQUk4IiXZktESvb3yW0ySWebWCam+ALIRnmATuMP2RhqBD3Phjx9uf?=
- =?us-ascii?Q?LkooM5tudgkBvldfFpUX9yufYCISIOYRNwPPnwgWeOvKiqsCBaFDCGvhAja8?=
- =?us-ascii?Q?WOy4JMwlSVSYF8J+3M3RwDRs9ASY3uUBoRGHLYn06G7KG2MEfmCmH6frEduU?=
- =?us-ascii?Q?zlZy05yib6PsUqEzq28eOBXTEfpWurGssrc0C+ccsnMZUbFYvH3r9JQXKK1N?=
- =?us-ascii?Q?QJCuV3OsAubMCv8S/mxoSOLkr2aFnQc0yq3e3nwPd0sDo1O9I9jjkMOId1Ah?=
- =?us-ascii?Q?eY43d2LgpkbC8ugdNuX6CJmMHaMrcZjo0RekvDPbPo2H5oyoWjHHgx2OcEoH?=
- =?us-ascii?Q?odY12xyF4ZvmvQJNKqAsmst/RCwNSMTrrYY2IA0n4WCrk0DJRCpT2SI1SLbF?=
- =?us-ascii?Q?8vFSrQf5eLt6vWBD2uPO/KV6RtzPfNfHKMmPQATDaQhmc7NFdwP+lw2Kdk6T?=
- =?us-ascii?Q?y35jFEVcOKWM9aA8lhqFLDLKeWI+p4fbc+uC5MrLK4jRXpSCTLTRkgDeuZKY?=
- =?us-ascii?Q?cR4E/aQ9aFiWl+FRVsbg5NgCYBI08pOZ9pbtn9wD+gQX3xm2JOwM6BmIrmb3?=
- =?us-ascii?Q?X9J2DzuWHCdj93MqHaTwMoqWaGZVng8nJqCzPZqu93aG8S3AVxXU9Ht1bJSk?=
- =?us-ascii?Q?yYN8A+4ZmLT8dbLgQ+jlImTSWbrLLO8MHYpWt2ySP5aDIrFWm8qA0Q2IsTLn?=
- =?us-ascii?Q?mX0OHB/jBM5M6zIZL9af9u9W+UpjZmbJ9zwdvk45OpWHvcsgFGC7rhx+zhbq?=
- =?us-ascii?Q?YkGRQZ2suYmmG8/lZFZYHe6dvXPX/gZOjtIqq75ZJdA/CnWFYldCkPpWGUDO?=
- =?us-ascii?Q?R+JULOt5S3V4h2lefItti9z1DCMoy2LE9O1J/iK3Z3tA0a5q0jsxg4P65Jr9?=
- =?us-ascii?Q?tJE1XkkjD5cPabNuYwrF7qC/cmt+t86PBIiUFaOZ09Ag8QtR60JtBejt6isg?=
- =?us-ascii?Q?cz2sKBb24Zse/XpHfYgmnXv0obAfJLBZ/VQpGTpwe4BcfBpoVf5OciVvNbYj?=
- =?us-ascii?Q?RBwxLeX/ImV7BDwXk/mNu5s0ZAiBoBXZHSWGPD+iqu1SpQ4eUV1rTCV0REzw?=
- =?us-ascii?Q?NCjC0yZ+SannhsQV3iSw53aolpujPTYIJq11TOz3LPc7+O4ZgLWDRb8XTnis?=
- =?us-ascii?Q?4PoAnP1JXyi9ePXpWLE3LZBdR4Hlijf3wJv2Sz32?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?B/Ys3crp5Mb7mccguS7JrBEKvnoIJ2w+t6TEsya4/LVQhkH2/w0DkraqoXeS?=
+ =?us-ascii?Q?+K6s/ROOVvpJTsOU8YcsqaG7Cg9i9v0cgGLqKJafJQl0UDNKPb7MLvIy/nFq?=
+ =?us-ascii?Q?tqkrqRZJewL3+hV6wU7wMURUg26AyV+ppyDnInw4cM4b9tJarb7cu0SXM2vr?=
+ =?us-ascii?Q?/XynE3E0e4714OGfybRMUDFgPFuUAuTacUrDdiLh4t1lYC7Pp95i5dAg65Nq?=
+ =?us-ascii?Q?YndVvdojdD40X/M2V0OSdU31iA2l/3zKk0lkEjihv8Somq78RdenaJRG7sFC?=
+ =?us-ascii?Q?lOFn5lHRuQwn890l5cHHCbryHNWsolQuAtQALajemoxJMyIkCNkY7m9lxFX4?=
+ =?us-ascii?Q?t8Iu3kXBNKhZaZw81K5Mfj5UmrkFsAldLuMEePqYRG1yUxnej/Js4VawPhN6?=
+ =?us-ascii?Q?MgUF6NuzDz/Uy2g9E6DAEaFnPHIUIKXAy9WTG+VjIxOe+dY1xPMA+/yCFdHh?=
+ =?us-ascii?Q?T47kvrlrlMMzykgZ3cQtWCU4t6DUj7yD9epfYiCPMhVOVaK75JKI//Oclenw?=
+ =?us-ascii?Q?9pS/n+rKyxNLoI2tQ7k+wAVm6ZeO4bVgX8FtFUI4tyscde8GaP/a/Ac+5R/D?=
+ =?us-ascii?Q?0Uv/qViy+P3PmAW+KwbwYn/jq/XZle1DaQaSZ9iTsJF3vNULy6NnVGY3SZtV?=
+ =?us-ascii?Q?HZBScM9MTy9cLpRf+bXq2pHMQuz1JYjY/lTZrlZ4iOFJ85FsHfCzbub5HUV+?=
+ =?us-ascii?Q?ha4ymDk/N7BZ8gZEKFCV3mn8Sx6GEwgg/u3UHqOOHMc7szA9a/6bFCXfoaZ5?=
+ =?us-ascii?Q?7BI0G/8hlKP2Ch2wj4W1QGOmRY0Uyx/ZSTS3B3Oz+ZGocdSOwGQUjCKfAUCa?=
+ =?us-ascii?Q?9y/oUVetiWKcfzAJEpatuDftYPNN1YPmSyBmIOxyTi8n3SCpmj8DYFk9qJDm?=
+ =?us-ascii?Q?NiYmpE3GRt8NoW6kT1FBUG+XdSgFTVKAtFm8082ZAghygn3N7+HoAiUsJIWc?=
+ =?us-ascii?Q?LRdUub92Ti72+d7tvnhXh3Mbz0ErDrRr4W91i6yllEqX482mJWPrQmxDig8N?=
+ =?us-ascii?Q?1NLVogakCBKl5iWu42/1kbCtgtRNW320mhocD+frb/YlTrj64u8jOsNb63vd?=
+ =?us-ascii?Q?d103gjvFuW9sdf5MHCA/3otrtdVKbIdqAqW8ZTH3GC5zX5Ho055R5txyimOn?=
+ =?us-ascii?Q?SNdstIrWbE3Z+Z6V3MkEoYw6fkGHjqvKjaXBBF7iGCuvcciHEpxZFCEErUwJ?=
+ =?us-ascii?Q?4LsM38BMi03fdPpjH1iWhKi8aXQgvzRjZzNYO0N9yOHmbK9S2kcrYPyh2nUZ?=
+ =?us-ascii?Q?CJiVNfK41hKF9TUEzgQmK5nivXfXXbTQH0aXEIqU8qaQLRXRqng/GKK8fBgW?=
+ =?us-ascii?Q?LN0DT6kNJLx4WXBHUi9uFI6512n0lap4bYGlto1vCB902dhDFlBh1pGMa2gg?=
+ =?us-ascii?Q?OlSaCBg2YZCNVVOpaMlibyuDzoQVPNA5wV7hXFDL0gQJpdVA/4ipvxbpk+hQ?=
+ =?us-ascii?Q?vMmdr9t738YQiHisFOH0YKCUlFHvHyDdf0e34ZV7AgMr8Pt3wXqRpSVBJizl?=
+ =?us-ascii?Q?+phz8eae83lJvYnO47w/HMwvhtnPLIyIB4liIIaMSs15KUqMAH9iJswxwcE2?=
+ =?us-ascii?Q?StlQI3rYRn97y4Yi55il3QyruRQhGvjoKCe8LNgz?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: DM3PPF208195D8D.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8892a25-da27-433e-de5c-08de28dfbdbb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2025 09:24:15.8741 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7666f6c6-b67b-432c-99e2-08de28e01974
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Nov 2025 09:26:49.7974 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: FVnXYKmDHNxtVadAgXymxSCJwP8ezh0/uDxNoUT5VqoOpqOXwJIIu7TKLjSJv9e5rMd6vMi5nWNsNz9MDaFVew==
+X-MS-Exchange-CrossTenant-userprincipalname: 24YxxMnyI/NhBHuWIRGC/XuW86+xavd9TlbTY2DhXjyiqFmae368rqVK9gVgsZNWA1Sy6i2BEcGN/ZINqbImPQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7476
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -183,166 +183,135 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-> Subject: [PATCH i-g-t v3 09/12] tests/kms_writeback: Refactor writeback-c=
-heck-
-> output subtest
+> Subject: [PATCH i-g-t v3 10/12] tests/kms_writeback: Add negative test ca=
+se for
+> invalid-format
 >=20
-> Removed individual tests for each format for the test writeback-check-out=
-put
-> and introduced dynamic subtest generation based on the formats
-> supported.Framebuffer creation was now part of the subtest level based on=
- the
-> format and removed from fixture.
->=20
+> Introduced a negative test case to validate handling of invalid-format
+> inputs.Each case is now executed as a dynamic subtest
 
-Not needed till we verify BGR2101010 till then just skip BGR2101010 and jus=
-t provide either RGB8888 or BGR8888 based on condition
+Don't add tests in a patch series which is aimed at refactor specially if t=
+he refactor was not done
+For the purpose of these new tests.
+Same for patch 11
 
 Regards,
 Suraj Kandpal
 
+>=20
 > Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
 > ---
->  tests/kms_writeback.c | 69 +++++++++++++------------------------------
->  1 file changed, 21 insertions(+), 48 deletions(-)
+>  tests/kms_writeback.c | 38 ++++++++++++++++++++++++++++++--------
+>  1 file changed, 30 insertions(+), 8 deletions(-)
 >=20
 > diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c index
-> 530915ea1..581963fe6 100644
+> 581963fe6..c35d1f948 100644
 > --- a/tests/kms_writeback.c
 > +++ b/tests/kms_writeback.c
-> @@ -45,9 +45,6 @@
->  #include "sw_sync.h"
+> @@ -234,40 +234,54 @@ static int do_writeback_test(igt_output_t *output,
+> uint32_t fb_id,
+>  	return ret;
+>  }
 >=20
->  /**
-> - * SUBTEST: writeback-check-output-XRGB2101010
-> - * Description: Check XRGB2101010 writeback output with CRC validation
-> - *
->   * SUBTEST: writeback-check-output
->   * Description: Check writeback output with CRC validation
->   *
-> @@ -596,9 +593,8 @@ igt_main_args("b:c:f:dl", long_options, help_str,
-> opt_handler, NULL)
->  	igt_display_t display;
->  	igt_output_t *output;
->  	igt_plane_t *plane;
-> -	igt_fb_t input_fb, input_fb_10bit;
-> +	igt_fb_t input_fb;
->  	drmModeModeInfo mode;
-> -	unsigned int fb_id;
->  	int ret;
+> -static void test_invalid_parameters(igt_output_t *output, igt_fb_t *vali=
+d_fb,
+> igt_fb_t *invalid_fb)
+> +static void test_invalid_parameters(igt_output_t *output, igt_fb_t *vali=
+d_fb,
+> +				    igt_fb_t *invalid_fb, igt_fb_t
+> *invalid_format)
+>  {
+>  	int i, ret;
+>  	int32_t out_fence;
+>  	struct {
+> +		const char *name;
+>  		uint32_t fb_id;
+>  		bool ptr_valid;
+>  		int32_t *out_fence_ptr;
+>  	} invalid_tests[] =3D {
+>  		{
+>  			/* No output buffer, but the
+> WRITEBACK_OUT_FENCE_PTR set. */
+> +			.name =3D "invalid-missing-framebuffer",
+>  			.fb_id =3D 0,
+>  			.ptr_valid =3D true,
+>  			.out_fence_ptr =3D &out_fence,
+>  		},
+>  		{
+>  			/* Invalid output buffer. */
+> +			.name =3D "invalid-output-buffer",
+>  			.fb_id =3D invalid_fb->fb_id,
+>  			.ptr_valid =3D true,
+>  			.out_fence_ptr =3D &out_fence,
+>  		},
+>  		{
+>  			/* Invalid WRITEBACK_OUT_FENCE_PTR. */
+> +			.name =3D "invalid-fence-ptr",
+>  			.fb_id =3D valid_fb->fb_id,
+>  			.ptr_valid =3D false,
+>  			.out_fence_ptr =3D (int32_t *)0x8,
+>  		},
+> +		{
+> +			/* Invalid format */
+> +			.name =3D "invalid-format",
+> +			.fb_id =3D invalid_format->fb_id,
+> +			.ptr_valid =3D false,
+> +			.out_fence_ptr =3D  &out_fence,
+> +		},
+>  	};
 >=20
->  	memset(&display, 0, sizeof(display));
-> @@ -631,22 +627,6 @@ igt_main_args("b:c:f:dl", long_options, help_str,
-> opt_handler, NULL)
->  		plane =3D igt_output_get_plane_type(output,
-> DRM_PLANE_TYPE_PRIMARY);
->  		igt_assert(plane);
->=20
-> -		fb_id =3D igt_create_fb(display.drm_fd, mode.hdisplay,
-> -				      mode.vdisplay,
-> -				      DRM_FORMAT_XRGB8888,
-> -				      DRM_FORMAT_MOD_LINEAR,
-> -				      &input_fb);
-> -		igt_assert(fb_id >=3D 0);
-> -
-> -		fb_id =3D igt_create_fb(display.drm_fd, mode.hdisplay,
-> -				      mode.vdisplay,
-> -				      DRM_FORMAT_XRGB2101010,
-> -				      DRM_FORMAT_MOD_LINEAR,
-> -				      &input_fb_10bit);
-> -		igt_assert(fb_id >=3D 0);
-> -
-> -		igt_plane_set_fb(plane, &input_fb);
-> -
->  		if (data.list_modes)
->  			list_writeback_modes(&display);
->  		if (data.dump_check)
-> @@ -686,6 +666,7 @@ igt_main_args("b:c:f:dl", long_options, help_str,
-> opt_handler, NULL)
->  		     "the combination of possible bad options");
->  	igt_subtest("writeback-invalid-parameters") {
->  		uint32_t format;
-> +		unsigned int fb_id;
->  		igt_fb_t invalid_output_fb;
->=20
->  		igt_skip_on(data.dump_check || data.list_modes); @@ -
-> 738,43 +719,35 @@ igt_main_args("b:c:f:dl", long_options, help_str,
-> opt_handler, NULL)
->  	}
->=20
->  	igt_describe("Check writeback output with CRC validation");
-> -	igt_subtest("writeback-check-output") {
-> -		igt_fb_t output_fb;
-> -
-> -		igt_skip_on(data.dump_check || data.list_modes);
-> -		igt_skip_on_f(!(data.supported_colors &
-> XRGB8888),"DRM_FORMAT_XRGB8888 is unsupported\n");
-> -		fb_id =3D igt_create_fb(display.drm_fd, mode.hdisplay,
-> mode.vdisplay,
-> -				      DRM_FORMAT_XRGB8888,
-> -				      igt_fb_mod_to_tiling(0),
-> -				      &output_fb);
-> -		igt_require(fb_id > 0);
-> -
-> -		writeback_check_output(output, plane, &input_fb,
-> &output_fb, DRM_FORMAT_XRGB8888);
-> +	igt_subtest_with_dynamic_f("writeback-check-output") {
-> +		for (int i =3D 0; i < ARRAY_SIZE(fourcc); i++) {
-> +			uint32_t test_format =3D fourcc[i];
->=20
-> -		igt_remove_fb(display.drm_fd, &output_fb);
-> -	}
-> +			if (is_intel_device(display.drm_fd))
-> +				if (!strstr(igt_format_str(test_format), "BGR"))
-> +					continue;
-> +			igt_dynamic_f("writeback-check-output-%s",
-> igt_format_str(test_format)) {
-> +				igt_fb_t output_fb;
->=20
-> -	igt_describe("Check XRGB2101010 writeback output with CRC
-> validation");
-> -	igt_subtest("writeback-check-output-XRGB2101010") {
-> -		igt_fb_t output_fb;
-> +				igt_skip_on(data.dump_check ||
-> data.list_modes);
-> +				igt_skip_on_f(!(data.supported_colors & (1 <<
-> i)),
-> +					      "DRM_FORMAT_%s is not
-> supported\n",
-> +					      igt_format_str(test_format));
->=20
-> -		igt_skip_on(data.dump_check || data.list_modes);
-> -		igt_skip_on_f(!(data.supported_colors & XRGB2101010),
-> "DRM_FORMAT_XRGB2101010 is unsupported\n");
-> -		fb_id =3D igt_create_fb(display.drm_fd, mode.hdisplay,
-> mode.vdisplay,
-> -				      DRM_FORMAT_XRGB2101010,
-> -				      igt_fb_mod_to_tiling(0),
-> -				      &output_fb);
-> -		igt_require(fb_id > 0);
-> +				create_fbs(&display, &input_fb, &output_fb,
-> test_format, &mode);
-> +				igt_plane_set_fb(plane, &input_fb);
->=20
-> -		writeback_check_output(output, plane, &input_fb_10bit,
-> &output_fb, DRM_FORMAT_XRGB2101010);
-> +				writeback_check_output(output, plane,
-> &input_fb,
-> +						       &output_fb, test_format);
->=20
-> -		igt_remove_fb(display.drm_fd, &output_fb);
-> +				igt_remove_fb(display.drm_fd, &output_fb);
-> +			}
+>  	for (i =3D 0; i < ARRAY_SIZE(invalid_tests); i++) {
+> -		ret =3D do_writeback_test(output, invalid_tests[i].fb_id,
+> -					invalid_tests[i].out_fence_ptr,
+> -					invalid_tests[i].ptr_valid);
+> -		igt_assert_neq(ret, 0);
+> +		igt_dynamic_f("%s", invalid_tests[i].name) {
+> +			ret =3D do_writeback_test(output, invalid_tests[i].fb_id,
+> +						invalid_tests[i].out_fence_ptr,
+> +						invalid_tests[i].ptr_valid);
+> +			igt_assert_neq(ret, 0);
 > +		}
 >  	}
+>  }
 >=20
->  	igt_fixture {
->  		cleanup_writeback(&display, output);
->  		igt_remove_fb(display.drm_fd, &input_fb);
-> -		igt_remove_fb(display.drm_fd, &input_fb_10bit);
->  		igt_display_fini(&display);
->  		drm_close_driver(display.drm_fd);
+> @@ -664,10 +678,10 @@ igt_main_args("b:c:f:dl", long_options, help_str,
+> opt_handler, NULL)
+>  	igt_describe("Writeback has a couple of parameters linked together"
+>  		     "(output framebuffer and fence); this test goes through"
+>  		     "the combination of possible bad options");
+> -	igt_subtest("writeback-invalid-parameters") {
+> +	igt_subtest_with_dynamic_f("writeback-invalid-parameters") {
+>  		uint32_t format;
+>  		unsigned int fb_id;
+> -		igt_fb_t invalid_output_fb;
+> +		igt_fb_t invalid_output_fb, invalid_format_fb;
+>=20
+>  		igt_skip_on(data.dump_check || data.list_modes);
+>  		if (is_intel_device(display.drm_fd))
+> @@ -689,9 +703,17 @@ igt_main_args("b:c:f:dl", long_options, help_str,
+> opt_handler, NULL)
+>  				      &invalid_output_fb);
+>  		igt_require(fb_id > 0);
+>=20
+> -		test_invalid_parameters(output, &input_fb,
+> &invalid_output_fb);
+> +		fb_id =3D igt_create_fb(display.drm_fd, mode.hdisplay,
+> +				      mode.vdisplay,
+> +				      DRM_FORMAT_NV12,
+> +				      DRM_FORMAT_MOD_LINEAR,
+> +				      &invalid_format_fb);
+> +		igt_require(fb_id > 0);
+> +
+> +		test_invalid_parameters(output, &input_fb,
+> &invalid_output_fb,
+> +&invalid_format_fb);
+>=20
+>  		igt_remove_fb(display.drm_fd, &invalid_output_fb);
+> +		igt_remove_fb(display.drm_fd, &invalid_format_fb);
 >  	}
+>=20
+>  	igt_describe("Validate WRITEBACK_FB_ID with valid and invalid
+> options");
 > --
 > 2.43.0
 
