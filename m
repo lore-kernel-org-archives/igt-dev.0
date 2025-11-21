@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 663CCCFA477
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 316BDCFA476
 	for <igt-dev@archiver.kernel.org>; Fri, 21 Nov 2025 03:57:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BC7A110E802;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9EF7C10E801;
 	Fri, 21 Nov 2025 03:57:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H+mZknRD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Vm39bAg8";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD09D10E7F8
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B2DC10E7F9
  for <igt-dev@lists.freedesktop.org>; Fri, 21 Nov 2025 03:57:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1763697448; x=1795233448;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=cz/t3rMUIuBUQHaempLQa5qYuty18UUjkJoXLl7Nqx0=;
- b=H+mZknRDnfNLFfaEIUH84wt+zTt1rRN/r7B3GJ+C5smFCEcOMCdsH6l/
- kA05rs9t48O53Agz+Zi8Xvq4yBC1uUtLi0W/0A9dXMS6/l2FfVkGEjifg
- U8EhZ7EBrBVyMtyKLSnR7cN+aZdh2eizrt9BaZZe7JrkY2mSC0hSpnghl
- mDyMCSyExnHp/OOhcedket7zvzei5hZSLkoih5rDt5d3pEuljA5DYMoE/
- cwcA1b9N+DUtpsIhM20YXZ+nQ4gRb+b7Q9bYyH7kkM7ED2kqaDzxkodrV
- 2BYy5ghDsNUGbPGaVFE9gZEkOjsqLhwPr/LwgIz0N+3/c7rgnhc+GGGj5 A==;
-X-CSE-ConnectionGUID: s9x7xskOR9aIQwVz5iENCg==
-X-CSE-MsgGUID: Aueake3hSP2apqH3njpRtQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="65484681"
-X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; d="scan'208";a="65484681"
+ bh=KFLdrvNPcVJn0GzO4sF3+PRE24JYm/b7hSY9/lbQ0IM=;
+ b=Vm39bAg8kg/5pk4fJ7lHQfOespK0YKMaSynEB2GlpKxG/ulx/x0WcU/V
+ FChajcgJFh6UPBIFcMTWZ6oMH3BwxKBCkSdWnluFwWaqgtznoNMbp5q6W
+ QhBK+vAhsla7gK6GZfx23DRGbrLJEGUkd4w9tD9pLidrBaiZoBOTZocZ5
+ Nq+t/uM6a9YaSLPJMuPxpwIDTjYd4AY15q+ZwS4aZNGZKmBWLLu88dW3t
+ cKrWgCTdcqU1R19uVPGl/yECk3yqX4eHz3X5KFfE1fGOjOg7cYNBTUfAk
+ KmLis+/cWXuikPfi7pYqM7SkjzkZTyCUEOFnfKGBLWbPhY3c2ZzOCO+ub A==;
+X-CSE-ConnectionGUID: 5VwfjdUpSh+55aZvJcQz3w==
+X-CSE-MsgGUID: lOWwMV1eQqKYYOwck7xrmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="65484670"
+X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; d="scan'208";a="65484670"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 19:57:27 -0800
-X-CSE-ConnectionGUID: X9/Ml8mCSj6N1iYq/s0YaA==
-X-CSE-MsgGUID: X08G7N1cQ3+dYu8MsFjHkg==
+ 20 Nov 2025 19:57:26 -0800
+X-CSE-ConnectionGUID: O3hOlPfPTeWJc2osMV9MDQ==
+X-CSE-MsgGUID: EIrHpr3mQHeyo+dzH0KL7w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; d="scan'208";a="191433518"
+X-IronPort-AV: E=Sophos;i="6.20,214,1758610800"; d="scan'208";a="191433485"
 Received: from nvishwa1-desk.sc.intel.com ([172.25.29.139])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  20 Nov 2025 19:57:25 -0800
@@ -45,10 +45,10 @@ From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: sai.gowtham.ch@intel.com, priyanka.dandamudi@intel.com,
  kamil.konieczny@linux.intel.com
-Subject: [PATCH v2 19/19] tests/intel/xe_exec_queue_property: Update
- invalid-property test
-Date: Thu, 20 Nov 2025 19:57:31 -0800
-Message-ID: <20251121035715.767226-40-niranjana.vishwanathapura@intel.com>
+Subject: [PATCH v2 08/19] tests/intel/xe_exec_multi_queue: Add preempt mode
+ test
+Date: Thu, 20 Nov 2025 19:57:20 -0800
+Message-ID: <20251121035715.767226-29-niranjana.vishwanathapura@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251121035715.767226-21-niranjana.vishwanathapura@intel.com>
 References: <20251121035715.767226-21-niranjana.vishwanathapura@intel.com>
@@ -69,27 +69,234 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Given we have new multi-queue exec_queue properties, update
-the invalid-property test accordingly.
+Validate multi queue group functionality in preempt mode.
+
+v2: Remove simulation related code (Priyanka)
+    Use BASE_ADDRESS macro for address (Sai)
 
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 ---
- tests/intel/xe_exec_queue_property.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/intel/xe_exec_multi_queue.c | 153 +++++++++++++++++++++++++++++-
+ 1 file changed, 148 insertions(+), 5 deletions(-)
 
-diff --git a/tests/intel/xe_exec_queue_property.c b/tests/intel/xe_exec_queue_property.c
-index 4dfcf09e2..e1be1c9de 100644
---- a/tests/intel/xe_exec_queue_property.c
-+++ b/tests/intel/xe_exec_queue_property.c
-@@ -189,7 +189,7 @@ static void invalid_property(int xe)
+diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
+index fdaaf78c4..1e33c5db8 100644
+--- a/tests/intel/xe_exec_multi_queue.c
++++ b/tests/intel/xe_exec_multi_queue.c
+@@ -28,6 +28,7 @@
+ #define USERPTR			(0x1 << 0)
+ #define PRIORITY		(0x1 << 1)
+ #define CLOSE_FD		(0x1 << 2)
++#define PREEMPT_MODE		(0x1 << 3)
  
- 	/* This will fail as soon as a new property is introduced. It is
- 	 * expected and the test will have to be updated. */
--	for (int i = 3; i < 16; i++ ) {
-+	for (int i = 5; i < 16; i++ ) {
- 		ext.property = i;
- 		igt_assert_eq(__xe_exec_queue_create(xe, vm, 1, 1, &instance,
- 						     to_user_pointer(&ext), &exec_queue_id), -EINVAL);
+ #define MAX_INSTANCE 9
+ 
+@@ -36,7 +37,7 @@
+ #define BASE_ADDRESS	0x1a0000
+ 
+ static void
+-__test_sanity(int fd, int gt, int class)
++__test_sanity(int fd, int gt, int class, bool preempt_mode)
+ {
+ 	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
+ 	struct drm_xe_ext_set_property multi_queue = {
+@@ -69,7 +70,7 @@ __test_sanity(int fd, int gt, int class)
+ 	if (!n)
+ 		return;
+ 
+-	vm = xe_vm_create(fd, 0, 0);
++	vm = xe_vm_create(fd, preempt_mode ? DRM_XE_VM_CREATE_FLAG_LR_MODE : 0, 0);
+ 
+ 	/* Invalid flags */
+ 	while (!invalid_flag)
+@@ -118,7 +119,7 @@ __test_sanity(int fd, int gt, int class)
+ 
+ 	/* Queues in a queue group must share the same address space (vm) */
+ 	multi_queue.value = exec_queues[0];
+-	vm2 = xe_vm_create(fd, 0, 0);
++	vm2 = xe_vm_create(fd, preempt_mode ? DRM_XE_VM_CREATE_FLAG_LR_MODE : 0, 0);
+ 	igt_assert_eq(__xe_exec_queue_create(fd, vm2, 1, 1, eci, ext, &val), -EINVAL);
+ 	xe_vm_destroy(fd, vm2);
+ 
+@@ -203,7 +204,137 @@ __test_sanity(int fd, int gt, int class)
+ static void
+ test_sanity(int fd, int gt, int class)
+ {
+-	__test_sanity(fd, gt, class);
++	__test_sanity(fd, gt, class, false);
++	__test_sanity(fd, gt, class, true);
++}
++
++static void
++test_preempt_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_placement,
++		  int n_exec_queues, int n_execs, unsigned int flags)
++{
++#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
++	struct drm_xe_sync sync = {
++		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.timeline_value = USER_FENCE_VALUE,
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++	uint32_t vm;
++	uint64_t addr = BASE_ADDRESS;
++	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
++	int64_t fence_timeout = NSEC_PER_SEC;
++	uint64_t vm_sync = 0;
++	size_t bo_size;
++	uint32_t bo = 0;
++	struct {
++		uint32_t batch[16];
++		uint64_t pad;
++		uint64_t exec_sync;
++		uint32_t data;
++	} *data;
++	int i, b;
++
++	if (flags & CLOSE_FD)
++		fd = drm_open_driver(DRIVER_XE);
++
++	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
++	bo_size = xe_bb_size(fd, sizeof(*data) * n_execs);
++
++	if (flags & USERPTR) {
++		data = aligned_alloc(xe_get_default_alignment(fd), bo_size);
++		igt_assert(data);
++
++		memset(data, 0, bo_size);
++	} else {
++		bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci[0].gt_id),
++				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++		data = xe_bo_map(fd, bo, bo_size);
++	}
++
++	for (i = 0; i < n_exec_queues; i++) {
++		struct drm_xe_ext_set_property multi_queue = {
++			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
++		};
++		struct drm_xe_ext_set_property mq_priority = {
++			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY,
++		};
++		uint64_t ext = to_user_pointer(&multi_queue);
++
++		if (flags & PRIORITY) {
++			multi_queue.base.next_extension = to_user_pointer(&mq_priority);
++			mq_priority.value = XE_EXEC_QUEUE_PRIORITY_NORMAL + (rand() % 2);
++		}
++
++		multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
++		igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, num_placement, eci,
++						     ext, &exec_queues[i]), 0);
++	};
++
++	sync.addr = to_user_pointer(&vm_sync);
++	if (bo)
++		xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, &sync, 1);
++	else
++		xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(data),
++					 addr, bo_size, &sync, 1);
++
++	xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, fence_timeout);
++	vm_sync = 0;
++
++	for (i = 0; i < n_execs; i++) {
++		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
++		uint64_t batch_addr = addr + batch_offset;
++		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
++		uint64_t sdi_addr = addr + sdi_offset;
++		int e = i % n_exec_queues;
++
++		b = 0;
++		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++		data[i].batch[b++] = sdi_addr;
++		data[i].batch[b++] = sdi_addr >> 32;
++		data[i].batch[b++] = 0xc0ffee;
++		data[i].batch[b++] = MI_BATCH_BUFFER_END;
++		igt_assert(b <= ARRAY_SIZE(data[i].batch));
++
++		sync.addr = addr + (char *)&data[i].exec_sync - (char *)data;
++
++		exec.exec_queue_id = exec_queues[e];
++		exec.address = batch_addr;
++		xe_exec(fd, &exec);
++	}
++
++	for (i = 0; i < n_execs; i++)
++		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
++			       exec_queues[i % n_exec_queues], fence_timeout);
++
++	sync.addr = to_user_pointer(&vm_sync);
++	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, &sync, 1);
++	xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, fence_timeout);
++
++	for (i = 0; i < n_execs; i++)
++		igt_assert_eq(data[i].data, 0xc0ffee);
++
++	if (!(flags & CLOSE_FD))
++		for (i = 0; i < n_exec_queues; i++)
++			xe_exec_queue_destroy(fd, exec_queues[i]);
++
++	if (bo) {
++		munmap(data, bo_size);
++		gem_close(fd, bo);
++	} else {
++		free(data);
++	}
++
++	if (!(flags & CLOSE_FD))
++		xe_vm_destroy(fd, vm);
++	else
++		drm_close_driver(fd);
+ }
+ 
+ static void
+@@ -375,12 +506,19 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
+  * @userptr:					userptr
+  * @priority:					priority
+  * @close-fd:					close fd without destroying exec queues
++ * @preempt-mode-basic:				preempt-mode basic
++ * @preempt-mode-userptr:			preempt-mode userptr
++ * @preempt-mode-priority:			preempt-mode priority
++ * @preempt-mode-close-fd:			preempt-mode close fd without destroying exec queues
+  */
+ static void
+ test_exec(int fd, struct drm_xe_engine_class_instance *eci, int num_placement,
+ 	  int n_exec_queues, int n_execs, unsigned int flags)
+ {
+-	test_legacy_mode(fd, eci, num_placement, n_exec_queues, n_execs, flags);
++	if (flags & PREEMPT_MODE)
++		test_preempt_mode(fd, eci, num_placement, n_exec_queues, n_execs, flags);
++	else
++		test_legacy_mode(fd, eci, num_placement, n_exec_queues, n_execs, flags);
+ }
+ 
+ /**
+@@ -404,6 +542,7 @@ test_exec_virtual(int fd, int gt, int class)
+ 	igt_assert(n);
+ 
+ 	test_exec(fd, eci, n, n, n, 0);
++	test_exec(fd, eci, n, n, n, PREEMPT_MODE);
+ }
+ 
+ igt_main
+@@ -417,6 +556,10 @@ igt_main
+ 		{ "userptr", USERPTR },
+ 		{ "priority", PRIORITY },
+ 		{ "close-fd", CLOSE_FD },
++		{ "preempt-mode-basic", PREEMPT_MODE },
++		{ "preempt-mode-userptr", PREEMPT_MODE | USERPTR },
++		{ "preempt-mode-priority", PREEMPT_MODE | PRIORITY },
++		{ "preempt-mode-close-fd", PREEMPT_MODE | CLOSE_FD },
+ 		{ NULL },
+ 	};
+ 	int fd, gt, class;
 -- 
 2.43.0
 
