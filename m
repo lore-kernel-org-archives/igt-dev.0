@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90AF0CFC29F
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Nov 2025 19:07:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ACA3CFC501
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Nov 2025 19:07:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4125A10E2C2;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6985010E8F4;
 	Fri, 21 Nov 2025 19:07:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Deo6gSMS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aAw9sokv";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E0D410E037
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Nov 2025 19:07:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E13410E037
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Nov 2025 19:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763752033; x=1795288033;
+ t=1763752034; x=1795288034;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=bx+yAXkMQje6McIneLcT+Nf8fbm0tkLj+WCbsEo6PnA=;
- b=Deo6gSMSt7kRqF3aifkJcvJBAM7HOS5xFXipp1zNDxOxalLQhFie9hrm
- +7+2xAgPHMj+fupzIlveX65EzmuaK8rs0PLgsx7aNiQOhbsaYgOJhRjcc
- 0VdS6KijJ3PjdWHxDYx9zQlYLrI4ha5lm7XBF7RI2y8Ja9a1AhKA8PrEC
- qLP05/BQ+mqlPi2g2GKPGYSILLjgO0tlVOEny34vqx6BPkf74LcDURs1K
- O82BLxa6XV9HVfrOsT1D6phq3SOtmes6ufsD4hBcY8r0TsvUW/0CWH+F8
- Pr9G9ZIvG1JR4LE7+ufKwhhtebt1Y4lzz2QCVtMTZtrw2b82FN6UyYFCz g==;
-X-CSE-ConnectionGUID: RhUMXugsSeOiikFKlALy9w==
-X-CSE-MsgGUID: 8ocGsA8YTbGgGDSWs09arA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="68454416"
-X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; d="scan'208";a="68454416"
+ bh=KXZ8d1QjAFtZNcwrDiESflvd69bHdWC0mDESA0YI6Xk=;
+ b=aAw9sokv0dyFZlyK2bnWM8hxNJvqv9uBar2oBi7fGyyBg8U/5cCfwaiy
+ 0q7R5la1xoWmnKSmY9e0s0Vk0HDqfaOACiYQPTIgLqYWudVqc4NsZ3bgW
+ eE/xit7VQhTiW0QQRF29q0gSW1AM4E8/WAyrW3wx0DL3ccP3nQuaBdhRa
+ QJQRBVwFv63TNbkXsNO3gkkiTZUszwj21G+RoTX8vzdTFASYC69d1KEsa
+ jryUSpefr4XptpjS6xKeo9ySiGA1cV/EWgqsGA5PsXs5Aay0rqjTaE4wS
+ 8tLi49oqlDTnKFcFYjwq/d506rGDlT5YGqGcE7igCOg4s9s5LhXbNBSVn g==;
+X-CSE-ConnectionGUID: ZDocF0jkQFOuZDrj/nKsyg==
+X-CSE-MsgGUID: aFAMnlJOT9i/mqk/3vPTGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="68454444"
+X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; d="scan'208";a="68454444"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2025 11:07:00 -0800
-X-CSE-ConnectionGUID: s90u3MCJSZCS+zcgXLNeSg==
-X-CSE-MsgGUID: H6Ayk54lTLezEJ4HOJ9W3g==
+ 21 Nov 2025 11:07:10 -0800
+X-CSE-ConnectionGUID: UYKfFZWhRUedhVQ/kiHvEw==
+X-CSE-MsgGUID: zFJF2CK1RWeSrRaYoKEY9Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; d="scan'208";a="192537628"
+X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; d="scan'208";a="192537668"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.245.31])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2025 11:06:59 -0800
+ 21 Nov 2025 11:07:09 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 5/8] lib/kms: Turn the igt_plane*prop*() marcos into
+Subject: [PATCH i-g-t 7/8] lib/kms: Turn the igt_pipe_obj*prop*() marcos into
  functions
-Date: Fri, 21 Nov 2025 21:06:30 +0200
-Message-ID: <20251121190633.24522-6-ville.syrjala@linux.intel.com>
+Date: Fri, 21 Nov 2025 21:06:32 +0200
+Message-ID: <20251121190633.24522-8-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.49.1
 In-Reply-To: <20251121190633.24522-1-ville.syrjala@linux.intel.com>
 References: <20251121190633.24522-1-ville.syrjala@linux.intel.com>
@@ -72,102 +72,112 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Use functions instead of macros for the plane property stuff.
+Use functions instead of macros for the crtc property stuff.
 Macros are generally not type safe, hideous to look at, and
 a pain to modify. So using macros when you don't have to
 is simply a bad idea.
 
-With the type safe functions we now see that tests/kms_cursor_legacy
-was using the wrong macros to set cursor properties. But I guess
-in this case the implementation of the wrong macros was close
-enough that they actually worked correctly.
-
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_kms.h             | 33 ++++++++++++++++++++++-----------
- tests/kms_cursor_legacy.c |  4 ++--
- 2 files changed, 24 insertions(+), 13 deletions(-)
+ lib/igt_kms.h | 50 +++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 35 insertions(+), 15 deletions(-)
 
 diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 91776e73e309..9b2c2a7062fe 100644
+index 8fbc78aa5b75..66168e7b732c 100644
 --- a/lib/igt_kms.h
 +++ b/lib/igt_kms.h
-@@ -788,8 +788,11 @@ uint64_t igt_plane_get_prop(igt_plane_t *plane, enum igt_atomic_plane_properties
+@@ -957,8 +957,11 @@ uint64_t igt_pipe_obj_get_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties
   *
-  * Check whether a given @prop changed for the @plane.
+  * Check whether a given @prop changed for the @pipe_obj.
   */
--#define igt_plane_is_prop_changed(plane, prop) \
--	(!!((plane)->changed & (1 << (prop))))
-+static inline bool igt_plane_is_prop_changed(igt_plane_t *plane,
-+					     enum igt_atomic_plane_properties prop)
+-#define igt_pipe_obj_is_prop_changed(pipe_obj, prop) \
+-	(!!((pipe_obj)->changed & (1 << (prop))))
++static inline bool igt_pipe_obj_is_prop_changed(igt_pipe_t *pipe_obj,
++						enum igt_atomic_crtc_properties prop)
 +{
-+	return plane->changed & (1 << prop);
++	return pipe_obj->changed & (1 << prop);
 +}
  
  /**
-  * igt_plane_set_prop_changed:
-@@ -798,8 +801,11 @@ uint64_t igt_plane_get_prop(igt_plane_t *plane, enum igt_atomic_plane_properties
+  * igt_pipe_is_prop_changed:
+@@ -967,8 +970,12 @@ uint64_t igt_pipe_obj_get_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties
   *
-  * Sets the given @prop for the @plane.
+  * Check whether a given @prop changed for the @pipe.
   */
--#define igt_plane_set_prop_changed(plane, prop) \
--	(plane)->changed |= 1 << (prop)
-+static inline void igt_plane_set_prop_changed(igt_plane_t *plane,
-+					      enum igt_atomic_plane_properties prop)
+-#define igt_pipe_is_prop_changed(display, pipe, prop) \
+-	igt_pipe_obj_is_prop_changed(&(display)->pipes[(pipe)], prop)
++static inline bool igt_pipe_is_prop_changed(igt_display_t *display,
++					    enum pipe pipe,
++					    enum igt_atomic_crtc_properties prop)
 +{
-+	plane->changed |= 1 << prop;
++	return igt_pipe_obj_is_prop_changed(&display->pipes[pipe], prop);
 +}
  
  /**
-  * igt_plane_clear_prop_changed:
-@@ -808,8 +814,11 @@ uint64_t igt_plane_get_prop(igt_plane_t *plane, enum igt_atomic_plane_properties
+  * igt_pipe_obj_set_prop_changed:
+@@ -977,8 +984,11 @@ uint64_t igt_pipe_obj_get_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties
   *
-  * Clears the given @prop for the @plane.
+  * Sets the given @prop for the @pipe_obj.
   */
--#define igt_plane_clear_prop_changed(plane, prop) \
--	(plane)->changed &= ~(1 << (prop))
-+static inline void igt_plane_clear_prop_changed(igt_plane_t *plane,
-+						enum igt_atomic_plane_properties prop)
+-#define igt_pipe_obj_set_prop_changed(pipe_obj, prop) \
+-	(pipe_obj)->changed |= 1 << (prop)
++static inline void igt_pipe_obj_set_prop_changed(igt_pipe_t *pipe_obj,
++						 enum igt_atomic_crtc_properties prop)
 +{
-+	plane->changed &= ~(1 << prop);
++	pipe_obj->changed |= 1 << prop;
 +}
  
  /**
-  * igt_plane_set_prop_value:
-@@ -819,11 +828,13 @@ uint64_t igt_plane_get_prop(igt_plane_t *plane, enum igt_atomic_plane_properties
+  * igt_pipe_obj_clear_prop_changed:
+@@ -987,8 +997,11 @@ uint64_t igt_pipe_obj_get_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties
   *
-  * Sets the given @prop with the @value for the @plane.
+  * Clears the given @prop for the @pipe_obj.
   */
--#define igt_plane_set_prop_value(plane, prop, value) \
+-#define igt_pipe_obj_clear_prop_changed(pipe_obj, prop) \
+-	(pipe_obj)->changed &= ~(1 << (prop))
++static inline void igt_pipe_obj_clear_prop_changed(igt_pipe_t *pipe_obj,
++						   enum igt_atomic_crtc_properties prop)
++{
++	pipe_obj->changed &= ~(1 << prop);
++}
+ 
+ /**
+  * igt_pipe_obj_set_prop_value:
+@@ -998,11 +1011,13 @@ uint64_t igt_pipe_obj_get_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties
+  *
+  * Sets the given @prop with the @value for the @pipe_obj.
+  */
+-#define igt_pipe_obj_set_prop_value(pipe_obj, prop, value) \
 -	do { \
--		plane->values[prop] = value; \
--		igt_plane_set_prop_changed(plane, prop); \
+-		(pipe_obj)->values[prop] = (value); \
+-		igt_pipe_obj_set_prop_changed(pipe_obj, prop); \
 -	} while (0)
-+static inline void igt_plane_set_prop_value(igt_plane_t *plane,
-+					    enum igt_atomic_plane_properties prop,
-+					    uint64_t value)
++static inline void igt_pipe_obj_set_prop_value(igt_pipe_t *pipe_obj,
++					       enum igt_atomic_crtc_properties prop,
++					       uint64_t value)
 +{
-+	plane->values[prop] = value;
-+	igt_plane_set_prop_changed(plane, prop);
++	pipe_obj->values[prop] = value;
++	igt_pipe_obj_set_prop_changed(pipe_obj, prop);
 +}
  
- extern bool igt_plane_try_prop_enum(igt_plane_t *plane,
- 				    enum igt_atomic_plane_properties prop,
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 865853c38fac..ca9e7a4cab00 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -403,8 +403,8 @@ static	igt_plane_t
+ /**
+  * igt_pipe_set_prop_value:
+@@ -1012,8 +1027,13 @@ uint64_t igt_pipe_obj_get_prop(igt_pipe_t *pipe, enum igt_atomic_crtc_properties
+  *
+  * Sets the given @prop with the @value for the @pipe.
+  */
+-#define igt_pipe_set_prop_value(display, pipe, prop, value) \
+-	igt_pipe_obj_set_prop_value(&(display)->pipes[(pipe)], prop, value)
++static inline void igt_pipe_set_prop_value(igt_display_t *display,
++					   enum pipe pipe,
++					   enum igt_atomic_crtc_properties prop,
++					   uint64_t value)
++{
++	igt_pipe_obj_set_prop_value(&display->pipes[pipe], prop, value);
++}
  
- static void set_cursor_hotspot(igt_plane_t *cursor, int  hot_x, int hot_y)
- {
--	igt_output_set_prop_value(cursor, IGT_PLANE_HOTSPOT_X, hot_x);
--	igt_output_set_prop_value(cursor, IGT_PLANE_HOTSPOT_Y, hot_y);
-+	igt_plane_set_prop_value(cursor, IGT_PLANE_HOTSPOT_X, hot_x);
-+	igt_plane_set_prop_value(cursor, IGT_PLANE_HOTSPOT_Y, hot_y);
- }
- 
- static void populate_cursor_args(igt_display_t *display, enum pipe pipe,
+ extern bool igt_pipe_obj_try_prop_enum(igt_pipe_t *pipe,
+ 				       enum igt_atomic_crtc_properties prop,
 -- 
 2.49.1
 
