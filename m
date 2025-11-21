@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7102BCFA475
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Nov 2025 05:41:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75BE5CFA474
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Nov 2025 05:41:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1717010E7E8;
-	Fri, 21 Nov 2025 05:41:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2639F10E7E9;
+	Fri, 21 Nov 2025 05:41:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z0Qr/7pT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dSMvGy10";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90A4F10E7E7
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Nov 2025 05:40:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7437210E058
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Nov 2025 05:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763703657; x=1795239657;
+ t=1763703663; x=1795239663;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=p7bmXFMZTVRR1SV8yhY+zsteCw8ijIogyJq3wv/gc04=;
- b=Z0Qr/7pTN4RZKItJjohfkiyMDLc1WZjXS9L0OVsil54wdcShiDOhFvEM
- i1yNRowf1ggDaeATOX8Lb5jyE+PhoJ4BjyYICV+8VOM8jSmhWskqY098I
- UmrUB9WBVasMrUYVELWL+zzX2wFx0iJVtJlSyWeTQN/bmHQDytOjqdCw/
- 7ma8EZ0Q+iPKtsdTh/MUR/1nuhTiHpitogchnKmsyNeJa8WAU0u3TA7Lf
- /l4fBkcLnzOYYMqoBtot1TBWeuGprU/+6LeKhYmUGkY5FmEZpHb9cfn5G
- 9w5mQlSDQ2gRkIMbzjpunxLDGaEYCdWPgBhGDl7UtmYhPWeSMVSrJJ4Ba w==;
-X-CSE-ConnectionGUID: s36JDGzKQde8YT7sMmO92A==
-X-CSE-MsgGUID: 6SuwWVvHTzagDtXx/Aqykw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="69658148"
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="69658148"
+ bh=WpTz3w5VAE62ZgOrkmdaYrm43yyuj3AJoGaQkO8tLgg=;
+ b=dSMvGy10/JroxgFuNSgxGXpI+JHeY3lhUpD24kLvFw3A06lDf7LWbcnV
+ 96ucZzeEfbNe14dSUPNj7HOibiHWAIAcW4CgFRJ6SZJNrkq9jWUO34DDC
+ k6rq8rT3nEQfuddYgrfSC2ZXtAv7yr/NLLxpPmHSx8rWT5kYNer+tSeh0
+ s1nPeJ0ZZg4vkWRr7/GdA8jh7+xlBCAHFy5PvSbGvxtAfLsXGmMQcIcfy
+ uSc2K43yY+Fdl2gxCpMFBgwml2MNmauTC3e3Gu8TGYI1qycOveAQfxxXb
+ SaZmyZYCcIRVhNvB89SjxxW1liQYMKLml4bxl87gy6Nchptyb3qXpGIiz w==;
+X-CSE-ConnectionGUID: YFdpPBr/Q9264BKKiHI4fw==
+X-CSE-MsgGUID: GAleqSh+T2SGQ8lcKTklLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="69658155"
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="69658155"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 21:40:56 -0800
-X-CSE-ConnectionGUID: Mw0K/Wv6QJywky0OnyThgQ==
-X-CSE-MsgGUID: Bt8rKmgFQjyK7uFiF+9Zdg==
+ 20 Nov 2025 21:41:03 -0800
+X-CSE-ConnectionGUID: HutK5WIJTaaqOBZzphBpHQ==
+X-CSE-MsgGUID: q2d6t0/DQRy+Yvs9PTiljA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="214961811"
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; d="scan'208";a="214961853"
 Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2025 21:40:55 -0800
+ 20 Nov 2025 21:41:02 -0800
 From: Sowmiya S <sowmiya.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: swati2.sharma@intel.com, suraj.kandpal@intel.com,
  Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v3 04/12] tests/kms_writeback: Add intel specific check
-Date: Fri, 21 Nov 2025 11:28:31 +0530
-Message-ID: <20251121055839.3116906-5-sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v3 08/12] tests/kms_writeback: Refactor writeback-fb-id
+ subtest
+Date: Fri, 21 Nov 2025 11:28:35 +0530
+Message-ID: <20251121055839.3116906-9-sowmiya.s@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251121055839.3116906-1-sowmiya.s@intel.com>
 References: <20251121055839.3116906-1-sowmiya.s@intel.com>
@@ -68,53 +69,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a check to ensure this line of code
-executes only on Intel platforms.
+Removed individual tests for each format for the test
+writeback-fb-id and introduced dynamic subtest generation
+based on the formats supported. framebuffer creation was
+now part of the subtest level based on format.
+This logic was previously part of the fixture
 
 Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
 ---
- tests/kms_writeback.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tests/kms_writeback.c | 47 ++++++++++++++++---------------------------
+ 1 file changed, 17 insertions(+), 30 deletions(-)
 
 diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index e9173ea4a..b6d38ab28 100644
+index f724cd33f..530915ea1 100644
 --- a/tests/kms_writeback.c
 +++ b/tests/kms_writeback.c
-@@ -74,6 +74,7 @@ IGT_TEST_DESCRIPTION(
- );
+@@ -51,9 +51,6 @@
+  * SUBTEST: writeback-check-output
+  * Description: Check writeback output with CRC validation
+  *
+- * SUBTEST: writeback-fb-id-XRGB2101010
+- * Description: Validate WRITEBACK_FB_ID with valid and invalid options
+- *
+  * SUBTEST: writeback-fb-id
+  * Description: Validate WRITEBACK_FB_ID with valid and invalid options
+  *
+@@ -717,37 +714,27 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+ 	}
  
- typedef struct {
-+	int drm_fd;
- 	bool builtin_mode;
- 	bool custom_mode;
- 	bool list_modes;
-@@ -287,7 +288,7 @@ static void writeback_fb_id(igt_output_t *output, igt_fb_t *valid_fb, igt_fb_t *
+ 	igt_describe("Validate WRITEBACK_FB_ID with valid and invalid options");
+-	igt_subtest("writeback-fb-id") {
+-		igt_fb_t output_fb;
+-
+-		igt_skip_on(data.dump_check || data.list_modes);
+-		igt_skip_on_f(!(data.supported_colors & XRGB8888),"DRM_FORMAT_XRGB8888 is unsupported\n");
+-		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
+-				      DRM_FORMAT_XRGB8888,
+-				      DRM_FORMAT_MOD_LINEAR,
+-				      &output_fb);
+-		igt_require(fb_id > 0);
+-
+-		writeback_fb_id(output, &input_fb, &output_fb);
+-
+-		igt_remove_fb(display.drm_fd, &output_fb);
+-	}
++	igt_subtest_with_dynamic_f("writeback-fb-id") {
++		for (int i = 0; i < ARRAY_SIZE(fourcc); i++) {
++			uint32_t test_format = fourcc[i];
  
- 	/* Zero WRITEBACK_FB_ID */
- 	ret = do_writeback_test(output, 0, NULL, false);
--	igt_assert_eq(ret, 0);
-+	igt_assert_eq(ret, is_intel_device(data.drm_fd) ? -EINVAL : 0);
+-	igt_describe("Validate XRGB2101010 WRITEBACK_FB_ID with valid and invalid options");
+-	igt_subtest("writeback-fb-id-XRGB2101010") {
+-		igt_fb_t output_fb;
++			if (is_intel_device(display.drm_fd))
++				if (!strstr(igt_format_str(test_format), "BGR"))
++					continue;
++			igt_dynamic_f("writeback-fb-id-%s", igt_format_str(test_format)) {
++				igt_fb_t output_fb;
  
- 	/* Valid output buffer */
- 	ret = do_writeback_test(output, valid_fb->fb_id, NULL, false);
-@@ -402,7 +403,8 @@ static void writeback_check_output(igt_output_t *output, igt_plane_t *plane,
+-		igt_skip_on(data.dump_check || data.list_modes);
+-		igt_skip_on_f(!(data.supported_colors & XRGB2101010), "DRM_FORMAT_XRGB2101010 is unsupported\n");
+-		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
+-				      DRM_FORMAT_XRGB2101010,
+-				      DRM_FORMAT_MOD_LINEAR,
+-				      &output_fb);
+-		igt_require(fb_id > 0);
++				igt_skip_on(data.dump_check || data.list_modes);
++				igt_skip_on_f(!(data.supported_colors & (1 << i)),
++					      "DRM_FORMAT_%s is not supported\n",
++					      igt_format_str(test_format));
  
- 	/* Two commits, the second with no writeback */
- 	out_fbs[0] = output_fb;
--	writeback_sequence(output, plane, input_fb, out_fbs, 2, fourcc_color);
-+	if (!is_intel_device(data.drm_fd))
-+		writeback_sequence(output, plane, input_fb, out_fbs, 2, fourcc_color);
+-		writeback_fb_id(output, &input_fb_10bit, &output_fb);
++				create_fbs(&display, &input_fb, &output_fb, test_format, &mode);
++				writeback_fb_id(output, &input_fb, &output_fb);
  
- 	/* Two commits, both with writeback */
- 	out_fbs[1] = output_fb;
-@@ -552,6 +554,7 @@ igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+-		igt_remove_fb(display.drm_fd, &output_fb);
++				igt_remove_fb(display.drm_fd, &output_fb);
++			}
++		}
+ 	}
  
- 	igt_fixture {
- 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
-+		data.drm_fd = display.drm_fd;
- 
- 		kmstest_set_vt_graphics_mode();
- 
+ 	igt_describe("Check writeback output with CRC validation");
 -- 
 2.43.0
 
