@@ -4,61 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F929CFC29F
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Nov 2025 19:59:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D696CFD2E3
+	for <igt-dev@archiver.kernel.org>; Sat, 22 Nov 2025 18:58:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F361010E11C;
-	Fri, 21 Nov 2025 19:59:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 41EF410E0AB;
+	Sat, 22 Nov 2025 18:58:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IUy6XkWP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P8m4Cp8r";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 94C9C10E11C
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Nov 2025 19:59:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2923210E0AB
+ for <igt-dev@lists.freedesktop.org>; Sat, 22 Nov 2025 18:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763755173; x=1795291173;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=wTBIKgDBmCjdWd8VnK4hZhFaBli7FhJPL44rYvJ8G2k=;
- b=IUy6XkWPIfcBLqZ6DiL/J7Lo7GiP0S/vbMOvHWmX+Xls0hHxyiKoQOFZ
- 6UiNC62ONJKs2odfZlGII45m+DQgypUk9Iq3hm1mP6sQ5bw3HH4X2Rsar
- LTiFteXvbV3rokkqk6+878VfRCMF0UN9P09RUSOQrGFEgAY2nAuk/mulD
- eOMO+KXHpSrssz7hlo5Gmz9esCZfGQhd16tbPtRsn13PrhJyXwLMeItUu
- hQdz+xInA887Cc30Me3N0wd1XGa6LdIlqNPCGsN6WFQx8O8ztOh5NmkdW
- AzRHsp4QRgnKyGSG4q0L2HiFqeenAf+o0bptapPooRMxg4sxe8THLm1oF g==;
-X-CSE-ConnectionGUID: bAy61y2kQEKJvq7CCrNqtA==
-X-CSE-MsgGUID: GY72vtY6R8WjfKp44yqw3w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11620"; a="65553724"
-X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; d="scan'208";a="65553724"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Nov 2025 11:59:33 -0800
-X-CSE-ConnectionGUID: qmyYPfTpRnWjd7N6VtPQRw==
-X-CSE-MsgGUID: ixlznRQ8StqR49URxu+dnw==
+ t=1763837898; x=1795373898;
+ h=message-id:date:mime-version:to:from:subject:
+ content-transfer-encoding;
+ bh=il1BiEo732wZkHgb8xUVue59srtNPV5FbXFmwh/h0SM=;
+ b=P8m4Cp8r11RLg/oyjJ933kKY8EUMlun4q8xcz57cHjpvfqn4Hnpt3A/a
+ MBLoigjZXTx7i10awwZy72YjLCYWgZjdLqDetJvXXjq6W3qir4++Boxna
+ p5u0FJFuSQzd7BrSQU8asKeve0t88qob+qsiVfun8dF246D0AnczyCQKl
+ nbUN0X74EUzHORqaK9Udtz1gbXQ5K2fHDnxLn4GcxHuo1ycIc8U3xP1tp
+ PHnwBf2bB0NRLedrgM84E4y+S86ZuJHAbd4Y32qfae47RPAHpPIJUopOB
+ G9QxGXhDLy8Vh13vjB/xnZ32ewhCg1a+1nUPE+YUhqOUQRWWv8RGtoklF g==;
+X-CSE-ConnectionGUID: VVXREJGdQLiztMoWEk9pCQ==
+X-CSE-MsgGUID: xtnRho+tRBK/V5MMEYd8hQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11621"; a="69756814"
+X-IronPort-AV: E=Sophos;i="6.20,219,1758610800"; d="scan'208";a="69756814"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Nov 2025 10:58:18 -0800
+X-CSE-ConnectionGUID: HluH00rFR9uSQQWFVNzwJw==
+X-CSE-MsgGUID: PETb1xLAR7G6WaRu6tGSxA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,216,1758610800"; d="scan'208";a="190965774"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2025 11:59:31 -0800
-Date: Fri, 21 Nov 2025 20:59:28 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: S Sebinraj <s.sebinraj@intel.com>
-Cc: igt-dev@lists.freedesktop.org, jeevaka.badrappan@intel.com,
- zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com
-Subject: Re: [PATCH i-g-t v5 2/4] tools/intel_gpu_frequency: Add multi-GT
- support
-Message-ID: <20251121195928.nrt4krbemkkqf6qc@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- S Sebinraj <s.sebinraj@intel.com>, igt-dev@lists.freedesktop.org,
- jeevaka.badrappan@intel.com, zbigniew.kempczynski@intel.com,
- kamil.konieczny@intel.com
-References: <20251121050154.1533992-1-s.sebinraj@intel.com>
- <20251121050154.1533992-3-s.sebinraj@intel.com>
+X-IronPort-AV: E=Sophos;i="6.20,219,1758610800"; d="scan'208";a="196437491"
+Received: from rubishem-mobl.ger.corp.intel.com (HELO [10.245.32.232])
+ ([10.245.32.232])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Nov 2025 10:58:17 -0800
+Message-ID: <425497dd-1cad-4887-8ec8-4088197b95fc@linux.intel.com>
+Date: Sat, 22 Nov 2025 19:58:14 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251121050154.1533992-3-s.sebinraj@intel.com>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ daniele.ceraolospurio@intel.com, Lucas De Marchi <lucas.demarchi@intel.com>,
+ =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Subject: Issues with Multi-GPU Device Isolation for Fault Injection Tests
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,550 +69,387 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi S,
-On 2025-11-21 at 10:31:52 +0530, S Sebinraj wrote:
-> This change enhances intel_gpu_frequency to support Intel GPUs
-> with multiple Graphics Technology (GT) units.
-> 
-> Key improvements:
-> - Add runtime GT detection using igt_sysfs_get_num_gt()
-> - New --gt/-t option to specify target GT (defaults to GT0)
-> - New --list/-l option to display available GTs
-> - Update sysfs path generation to use igt_sysfs_gt_path()
-> - Update the man page for new options
-> 
-> Usage examples:
->   intel_gpu_frequency --get --gt 1     # Get GT1 frequencies
->   intel_gpu_frequency --set 400 --gt 0 # Set GT0 frequency
->   intel_gpu_frequency --list           # List available GTs
-> 
-> The tool now dynamically detects available GTs at runtime and provides
-> error messages when invalid GT numbers are specified. Also by default
-> for set / get operations it acts upon all available GTs unless
-> specified.
-> 
-> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
-> Signed-off-by: Jeevaka Badrappan <jeevaka.badrappan@intel.com>
-> ---
->  lib/drmtest.c               |   2 +-
->  man/intel_gpu_frequency.rst |  34 ++++-
->  tools/intel_gpu_frequency.c | 254 ++++++++++++++++++++++++++++++------
->  3 files changed, 241 insertions(+), 49 deletions(-)
-> 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 3d8c8e79e..d4f2a5f4a 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -311,7 +311,7 @@ static void log_opened_device_path(const char *device_path)
->  	item->path = strdup(device_path);
->  	igt_assert(item->path);
->  	igt_list_add(&item->link, &opened_paths);
-> -	igt_info("Opened device: %s\n", item->path);
-> +	igt_debug("Opened device: %s\n", item->path);
+Hello,
 
-Please do not change it, I plan removing drmtest.h include
-from intel_gpu_frequency.c
-Imho using sysfs should be enough for this tool.
+I've been working on the multi-GPU device isolation feature for fault
+injection tests that was requested, but I've run into some blockers...
 
-Regards,
-Kamil
+As discussed, fault injection tests operate at the driver level and
+affect all GPUs bound to the xe driver. The goal was to automatically
+unbind non-selected devices when running tests with --device on
+multi-GPU systems, then rebind them after the tests complete.
 
->  }
->  
->  /**
-> diff --git a/man/intel_gpu_frequency.rst b/man/intel_gpu_frequency.rst
-> index 92f039645..285870857 100644
-> --- a/man/intel_gpu_frequency.rst
-> +++ b/man/intel_gpu_frequency.rst
-> @@ -38,7 +38,8 @@ OPTIONS
->      Lock frequency to the most efficient frequency.
->  
->  -g, --get
-> -    Get all the current frequency settings.
-> +    Get all the current frequency settings. Displays results
-> +    showing all GTs with their corresponding frequencies.
->  
->  -s FREQUENCY, --set=FREQUENCY
->      Lock frequency to an absolute value (MHz).
-> @@ -55,6 +56,14 @@ OPTIONS
->  -d, --defaults
->      Return the system to hardware defaults.
->  
-> +-t GT_NUMBER, --gt=GT_NUMBER
-> +    Specify which GT (Graphics Technology) to operate on. GT numbers start from 0.
-> +    If not specified, operations apply to all available GTs. Use with --list
-> +    to see available GTs.
-> +
-> +-l, --list
-> +    List all available GTs in the system with their sysfs paths.
-> +
->  -h, --help
->      Show help.
->  
-> @@ -64,14 +73,29 @@ OPTIONS
->  EXAMPLES
->  ========
->  
-> -intel_gpu_frequency -gmin,cur
-> -    Get the current and minimum frequency.
-> +intel_gpu_frequency
-> +    Display frequency information for all GTs in table format.
-> +
-> +intel_gpu_frequency -g
-> +    Get frequency settings for all GTs (displays in table format).
-> +
-> +intel_gpu_frequency --list-gts
-> +    List all available GTs in the system.
-> +
-> +intel_gpu_frequency --get --gt 1
-> +    Get frequency settings for GT1 only.
->  
->  intel_gpu_frequency -s 400
-> -    Lock frequency to 400Mhz.
-> +    Lock frequency to 400Mhz for all GTs.
-> +
-> +intel_gpu_frequency -s 400 --gt 0
-> +    Lock frequency to 400Mhz for GT0 only.
->  
->  intel_gpu_frequency -c max=750
-> -    Set the max frequency to 750MHz
-> +    Set the max frequency to 750MHz for all GTs.
-> +
-> +intel_gpu_frequency -c max=750 --gt 1
-> +    Set the max frequency to 750MHz for GT1 only.
->  
->  REPORTING BUGS
->  ==============
-> diff --git a/tools/intel_gpu_frequency.c b/tools/intel_gpu_frequency.c
-> index 2f43bf6fc..1931db72b 100644
-> --- a/tools/intel_gpu_frequency.c
-> +++ b/tools/intel_gpu_frequency.c
-> @@ -24,14 +24,18 @@
->  #include <assert.h>
->  #include <getopt.h>
->  #include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
->  #include <time.h>
->  #include <unistd.h>
->  
->  #include "drmtest.h"
->  #include "igt_device.h"
-> +#include "igt_sysfs.h"
->  #include "intel_chipset.h"
->  
->  #define VERSION "1.0"
-> +#define SYSFS_PATH_MAX 96
->  
->  static int device, devid;
->  
-> @@ -61,29 +65,51 @@ static struct freq_info info[] = {
->  };
->  
->  static char *
-> -get_sysfs_path(const char *which)
-> +get_sysfs_path(int fd, int gt_id, const char *which)
->  {
-> -	static const char fmt[] = "/sys/class/drm/card%1d/gt_%3s_freq_mhz";
-> -	char *path;
-> -	int ret;
-> +	static char path[SYSFS_PATH_MAX];
-> +	char *gt_path;
-> +	int path_len, ret;
-> +
-> +	gt_path = igt_sysfs_gt_path(fd, gt_id, path, sizeof(path));
-> +	if (gt_path == NULL) {
-> +		fprintf(stderr, "igt_sysfs_gt_path returned NULL for GT%d\n", gt_id);
-> +		return NULL;
-> +	}
-> +	path_len = strlen(gt_path);
-> +	ret = snprintf(path + path_len, sizeof(path) - path_len,
-> +		       "/rps_%s_freq_mhz", which);
->  
-> -#define STATIC_STRLEN(string) (sizeof(string) / sizeof(string [0]))
-> -	ret = asprintf(&path, fmt, device, which);
-> -	assert(ret == (STATIC_STRLEN(fmt) - 3));
-> -#undef STATIC_STRLEN
-> +	if (ret >= sizeof(path) - path_len) {
-> +		fprintf(stderr, "Path truncated\n");
-> +		return NULL;
-> +	}
->  
->  	return path;
->  }
->  
->  static void
-> -initialize_freq_info(struct freq_info *freq_info)
-> +initialize_freq_info(struct freq_info *freq_info, int fd, int gt_id)
->  {
-> -	if (freq_info->filp)
-> -		return;
-> +	/* Always close existing file handle and reopen for correct GT */
-> +	if (freq_info->filp) {
-> +		fclose(freq_info->filp);
-> +		freq_info->filp = NULL;
-> +	}
-> +
-> +	if (freq_info->path)
-> +		free(freq_info->path);
->  
-> -	freq_info->path = get_sysfs_path(freq_info->name);
-> +	freq_info->path = strdup(get_sysfs_path(fd, gt_id, freq_info->name));
-> +	if (!freq_info->path) {
-> +		fprintf(stderr, "Failed to get sysfs path for %s on GT%d\n",
-> +			freq_info->name, gt_id);
-> +	}
->  	assert(freq_info->path);
-> +
->  	freq_info->filp = fopen(freq_info->path, freq_info->mode);
-> +	if (!freq_info->filp)
-> +		fprintf(stderr, "Failed to open %s\n", freq_info->path);
->  	assert(freq_info->filp);
->  }
->  
-> @@ -97,20 +123,20 @@ static void wait_freq_settle(void)
->  	clock_nanosleep(CLOCK_MONOTONIC, 0, &ts, NULL);
->  }
->  
-> -static void set_frequency(struct freq_info *freq_info, int val)
-> +static void set_frequency(struct freq_info *freq_info, int val, int fd, int gt_id)
->  {
-> -	initialize_freq_info(freq_info);
-> +	initialize_freq_info(freq_info, fd, gt_id);
->  	rewind(freq_info->filp);
->  	assert(fprintf(freq_info->filp, "%d", val) > 0);
->  
->  	wait_freq_settle();
->  }
->  
-> -static int get_frequency(struct freq_info *freq_info)
-> +static int get_frequency(struct freq_info *freq_info, int fd, int gt_id)
->  {
->  	int val;
->  
-> -	initialize_freq_info(freq_info);
-> +	initialize_freq_info(freq_info, fd, gt_id);
->  	rewind(freq_info->filp);
->  	assert(fscanf(freq_info->filp, "%d", &val)==1);
->  
-> @@ -121,7 +147,7 @@ static void __attribute__((noreturn))
->  usage(const char *prog, int err)
->  {
->  	printf("%s A program to manipulate Intel GPU frequencies.\n\n", prog);
-> -	printf("Usage: %s [-e] [--min | --max] [--get] [--set frequency_mhz]\n\n", prog);
-> +	printf("Usage: %s [-e] [--min | --max] [--get] [--set frequency_mhz] [--gt GT_NUM] [--list]\n\n", prog);
->  	printf("Options: \n");
->  	printf("  -e		Lock frequency to the most efficient frequency\n");
->  	printf("  -g, --get     Get all the frequency settings\n");
-> @@ -130,6 +156,8 @@ usage(const char *prog, int err)
->  	printf("  -m  --max     Lock frequency to max frequency\n");
->  	printf("  -i  --min     Lock frequency to min (never a good idea, DEBUG ONLY)\n");
->  	printf("  -d  --defaults  Return the system to hardware defaults\n");
-> +	printf("  -t  --gt      Specify GT number to operate on (default: all GTs)\n");
-> +	printf("  -l  --list    List all available GTs\n");
->  	printf("  -h  --help    Returns this\n");
->  	printf("  -v  --version Version\n");
->  	printf("\n");
-> @@ -137,6 +165,8 @@ usage(const char *prog, int err)
->  	printf("   intel_gpu_frequency --get\t\tGet the current and minimum frequency\n");
->  	printf("   intel_gpu_frequency --set 400\tLock frequency to 400Mhz\n");
->  	printf("   intel_gpu_frequency --custom max=750\tSet the max frequency to 750MHz\n");
-> +	printf("   intel_gpu_frequency --get --gt 1\tGet frequencies for GT1\n");
-> +	printf("   intel_gpu_frequency --list\t\tList all available GTs\n");
->  	printf("\n");
->  	printf("Report bugs to https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues\n");
->  	exit(err);
-> @@ -176,10 +206,12 @@ parse_version_or_help(int argc, char *argv[])
->  
->  /* Returns read or write operation */
->  static bool
-> -parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq, bool *reader)
-> +parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq,
-> +      bool *reader, int *specified_gt, bool *list_gts, int fd)
->  {
->  	int c, tmp;
->  	bool write = false;
-> +	bool gtt_specified = false;
->  
->  	/* No args means -g" */
->  	if (argc == 1) {
-> @@ -196,12 +228,14 @@ parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq,
->  			{ "min", no_argument, NULL, 'i' },
->  			{ "max", no_argument, NULL, 'm' },
->  			{ "defaults", no_argument, NULL, 'd' },
-> +			{ "gt", required_argument, NULL, 't' },
-> +			{ "list", no_argument, NULL, 'l' },
->  			{ "help", no_argument, NULL, 'h' },
->  			{ "version", no_argument, NULL, 'v' },
->  			{ NULL, 0, NULL, 0}
->  		};
->  
-> -		c = getopt_long(argc, argv, "egs:c:midh", long_options, &option_index);
-> +		c = getopt_long(argc, argv, "egs:c:midt:lhv", long_options, &option_index);
->  		if (c == -1)
->  			break;
->  
-> @@ -258,7 +292,8 @@ parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq,
->  					"FIXME: Warning efficient frequency information is incorrect.\n");
->  				exit(EXIT_FAILURE);
->  			}
-> -			tmp = get_frequency(&info[EFF]);
-> +			tmp = get_frequency(&info[EFF], fd,
-> +					    *specified_gt >= 0 ? *specified_gt : 0);
->  			new_freq[MIN] = tmp;
->  			new_freq[MAX] = tmp;
->  			act_upon[MIN] = true;
-> @@ -266,7 +301,8 @@ parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq,
->  			write = true;
->  			break;
->  		case 'i': /* mIn */
-> -			tmp = get_frequency(&info[RPn]);
-> +			tmp = get_frequency(&info[RPn], fd,
-> +					    *specified_gt >= 0 ? *specified_gt : 0);
->  			new_freq[MIN] = tmp;
->  			new_freq[MAX] = tmp;
->  			act_upon[MIN] = true;
-> @@ -274,7 +310,8 @@ parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq,
->  			write = true;
->  			break;
->  		case 'm': /* max */
-> -			tmp = get_frequency(&info[RP0]);
-> +			tmp = get_frequency(&info[RP0], fd,
-> +					    *specified_gt >= 0 ? *specified_gt : 0);
->  			new_freq[MIN] = tmp;
->  			new_freq[MAX] = tmp;
->  			act_upon[MIN] = true;
-> @@ -282,12 +319,36 @@ parse(int argc, char *argv[], bool *act_upon, size_t act_upon_n, int *new_freq,
->  			write = true;
->  			break;
->  		case 'd': /* defaults */
-> -			new_freq[MIN] = get_frequency(&info[RPn]);
-> -			new_freq[MAX] = get_frequency(&info[RP0]);
-> +			new_freq[MIN] = get_frequency(&info[RPn], fd,
-> +						      *specified_gt >= 0 ? *specified_gt : 0);
-> +			new_freq[MAX] = get_frequency(&info[RP0], fd,
-> +						      *specified_gt >= 0 ? *specified_gt : 0);
->  			act_upon[MIN] = true;
->  			act_upon[MAX] = true;
->  			write = true;
->  			break;
-> +		case 't': /* gt */
-> +			if (!optarg)
-> +				usage(argv[0], EXIT_FAILURE);
-> +
-> +			if (gtt_specified) {
-> +				fprintf(stderr, "Only one GT may be specified at a time\n");
-> +				exit(EXIT_FAILURE);
-> +			}
-> +			*specified_gt = atoi(optarg);
-> +			if (*specified_gt < 0) {
-> +				fprintf(stderr, "Invalid GT number: %d\n", *specified_gt);
-> +				exit(EXIT_FAILURE);
-> +			}
-> +			gtt_specified = true;
-> +			break;
-> +		case 'l': /* list */
-> +			*list_gts = true;
-> +			break;
-> +		case 'v':
-> +			version(argv[0]);
-> +			exit(0);
-> +		case 'h':
->  		default:
->  			fprintf(stderr, "Error: unknown option\n");
->  			usage(argv[0], EXIT_FAILURE);
-> @@ -298,21 +359,92 @@ done:
->  	return write;
->  }
->  
-> -int main(int argc, char *argv[])
-> +static void print_freq_table_header(void)
->  {
-> +	printf("%-15s %-15s %6s %6s %6s %6s %6s %6s %3s\n",
-> +	       "card/tile/GT", "BDF", "min", "curr", "RP1", "max", "RP0", "RPn", "(MHz)");
-> +	printf("%-15s %-15s %6s %6s %6s %6s %6s %6s\n",
-> +	       "------------", "------------", "----", "----", "----", "----", "----", "----");
-> +}
->  
-> -	bool write, reader = false, fail, targets[MAX+1] = {false};
-> -	int i, fd, try = 1, set_freq[MAX+1] = {0};
-> +static void print_freq_table_row(int fd, int card, int gt_id)
-> +{
-> +	char bdf[16] = "N/A";
-> +	char gt_label[16];
-> +	int freqs[ARRAY_SIZE(info)];
-> +	int i;
-> +
-> +	/* Get BDF (Bus:Device.Function) for this device */
-> +	igt_device_get_pci_slot_name(fd, bdf);
-> +
-> +	/* Format GT label as card/tile/GT */
-> +	snprintf(gt_label, sizeof(gt_label), "%d/t0/GT%d", card, gt_id);
-> +
-> +	/* Read all frequencies */
-> +	for (i = 0; i < ARRAY_SIZE(info); i++)
-> +		freqs[i] = get_frequency(&info[i], fd, gt_id);
-> +
-> +	/* Print the row: GT label, BDF, and all frequencies */
-> +	printf("%-15s %-15s %6d %6d %6d %6d %6d %6d\n",
-> +	       gt_label, bdf,
-> +	       freqs[MIN], freqs[CUR], freqs[EFF],
-> +	       freqs[MAX], freqs[RP0], freqs[RPn]);
-> +}
->  
-> -	parse_version_or_help(argc, argv);
-> +static void process_gt_frequencies(int argc, int fd, int gt_id, bool write, bool reader,
-> +						bool *targets, int *set_freq);
->  
-> -	fd = __drm_open_driver(DRIVER_INTEL);
-> -	devid = intel_get_drm_devid(fd);
-> -	device = igt_device_get_card_index(fd);
-> -	close(fd);
-> +static void list_available_gts(int fd, int num_gts)
-> +{
-> +	int i;
->  
-> -	write = parse(argc, argv, targets, ARRAY_SIZE(targets), set_freq, &reader);
-> -	fail = write;
-> +	printf("Available GTs: %d\n", num_gts);
-> +	for (i = 0; i < num_gts; i++) {
-> +		char path[SYSFS_PATH_MAX];
-> +
-> +		if (igt_sysfs_gt_path(fd, i, path, sizeof(path)))
-> +			printf("  GT%d: %s\n", i, path);
-> +	}
-> +}
-> +
-> +static void validate_specified_gt(int fd, int specified_gt, int num_gts)
-> +{
-> +	if (specified_gt >= 0) {
-> +		if (specified_gt >= num_gts) {
-> +			fprintf(stderr, "Error: GT%d does not exist. Available GTs: 0-%d\n",
-> +				specified_gt, num_gts - 1);
-> +			close(fd);
-> +			exit(EXIT_FAILURE);
-> +		}
-> +		igt_debug("Operating on GT%d (Total GTs: %d)\n", specified_gt, num_gts);
-> +	} else {
-> +		igt_debug("Operating on all GTs (Total GTs: %d)\n", num_gts);
-> +	}
-> +}
-> +
-> +static void execute_frequency_operations(int argc, int fd, int specified_gt, bool write, bool reader,
-> +								bool *targets, int *set_freq)
-> +{
-> +	int target_gt;
-> +
-> +	if (specified_gt >= 0) {
-> +		/* Process single specified GT */
-> +		process_gt_frequencies(argc, fd, specified_gt, write, reader, targets, set_freq);
-> +	} else {
-> +		/* Process all GTs */
-> +		int num_gts = igt_sysfs_get_num_gt(fd);
-> +
-> +		for (target_gt = 0; target_gt < num_gts; target_gt++)
-> +			process_gt_frequencies(argc, fd, target_gt, write, reader, targets, set_freq);
-> +	}
-> +}
-> +
-> +static void process_gt_frequencies(int argc, int fd, int gt_id, bool write, bool reader,
-> +						bool *targets, int *set_freq)
-> +{
-> +	int i, try = 1;
-> +	bool fail = write;
-> +	static bool table_header_printed = false;
->  
->  	/* If we've previously locked the frequency, we need to make sure to set things
->  	 * in the correct order, or else the operation will fail (ie. min = max = 200,
-> @@ -325,24 +457,27 @@ int main(int argc, char *argv[])
->  	 */
->  again:
->  	if (try > 2) {
-> -		fprintf(stderr, "Did not achieve desired freq.\n");
-> +		fprintf(stderr, "Did not achieve desired freq on GT%d.\n", gt_id);
->  		exit(EXIT_FAILURE);
->  	}
->  
->  	if (write) {
-> -		/* only reset and set max & min act_upons flags if a read operation is also requested */
-> +		/* only reset and set max & min act_upons flags
-> +		 * if a read operation is also requested
-> +		 */
->  		if (reader != false) {
-> -			for (int j = 0; j < ARRAY_SIZE(targets); j++)
-> +			for (int j = 0; j < ARRAY_SIZE(info); j++)
->  				targets[j] = false;
->  			targets[MIN] = true;
->  			targets[MAX] = true;
->  		}
->  
-> -		for (i = 0; i < ARRAY_SIZE(targets); i++) {
-> +		for (i = 0; i < ARRAY_SIZE(info); i++) {
->  			if (targets[i] == false)
->  				continue;
-> -			set_frequency(&info[i], set_freq[i]);
-> -			if (get_frequency(&info[i]) != set_freq[i])
-> +
-> +			set_frequency(&info[i], set_freq[i], fd, gt_id);
-> +			if (get_frequency(&info[i], fd, gt_id) != set_freq[i])
->  				fail = true;
->  			else
->  				fail = false;
-> @@ -355,12 +490,44 @@ again:
->  	}
->  
->  	if (reader || argc == 1) {
-> -		for (i = 0; i < ARRAY_SIZE(targets); i++) {
-> -			/* loop for all frequencies for get operations */
-> -			printf("%s: %d MHz\n", info[i].name, get_frequency(&info[i]));
-> +		/* Print table header only once for all GTs */
-> +		if (!table_header_printed) {
-> +			print_freq_table_header();
-> +			table_header_printed = true;
->  		}
-> +
-> +		/* Print frequency row for this GT */
-> +		print_freq_table_row(fd, device, gt_id);
-> +	}
-> +}
-> +
-> +int main(int argc, char *argv[])
-> +{
-> +	bool write, reader = false, list_gts = false, targets[MAX+1] = {false};
-> +	int i, fd, set_freq[MAX+1] = {0};
-> +	int specified_gt = -1;
-> +	int num_gts;
-> +
-> +	parse_version_or_help(argc, argv);
-> +
-> +	fd = __drm_open_driver(DRIVER_INTEL);
-> +	devid = intel_get_drm_devid(fd);
-> +	device = igt_device_get_card_index(fd);
-> +	num_gts = igt_sysfs_get_num_gt(fd);
-> +
-> +	write = parse(argc, argv, targets, ARRAY_SIZE(targets), set_freq, &reader,
-> +		      &specified_gt, &list_gts, fd);
-> +
-> +	if (list_gts) {
-> +		list_available_gts(fd, num_gts);
-> +		close(fd);
-> +		return EXIT_SUCCESS;
->  	}
->  
-> +	validate_specified_gt(fd, specified_gt, num_gts);
-> +
-> +	execute_frequency_operations(argc, fd, specified_gt, write, reader, targets, set_freq);
-> +
->  	for (i = 0; i < ARRAY_SIZE(targets); i++) {
->  		if (info[i].filp) {
->  			fclose(info[i].filp);
-> @@ -368,5 +535,6 @@ again:
->  		}
->  	}
->  
-> +	close(fd);
->  	return EXIT_SUCCESS;
->  }
-> -- 
-> 2.43.0
-> 
+The approach:
+ - Scans /sys/bus/pci/drivers/xe/ to detect all bound devices
+ - Detects when --device flag is used via igt_device_filter_count()
+ - Unbinds non-selected devices before running tests
+ - Attempts to restore the system state after tests complete
+
+The problem is that rebinding devices does not work reliably. I've
+encountered two major issues:
+1. Device Rebinding Issues:
+ - Rebinding either works but returns an error code from sysfs, or
+ - It completely locks the machine, usually on the second rebind attempt
+ - This makes the cleanup unreliable and potentially dangerous
+
+2. Module Reload Alternative:
+ - I tried replacing rebind with a full module reload (using
+igt_xe_driver_unload() and load_and_check_xe(NULL))
+ - This approach also failed and did not provide a reliable solution as
+the driver fails to unload.
+
+I am under the impression that unbinding a GPU from the driver leaves
+the driver in an unclean state that is preventing successful module
+reload and successful GPU bind. As I used the standard igt library
+functions that are used elsewhere in the code, I am uncertain if there
+is a way out here.
+
+Given these issues, I don't believe the current approach of runtime
+device management is viable for production use. Please see the attached
+code for details on what I've tried.
+
+Ideas?
+
+Thank you,
+
+Peter
+
+
+
+
+From 8f90be5f622cebc294dab14111eea4ac9e4ee3d7 Mon Sep 17 00:00:00 2001
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Date: Wed, 19 Nov 2025 22:24:48 +0100
+Subject: [PATCH i-g-t] devc
+
+---
+ tests/intel/xe_fault_injection.c | 276 +++++++++++++++++++++++++++++++
+ 1 file changed, 276 insertions(+)
+
+diff --git a/tests/intel/xe_fault_injection.c
+b/tests/intel/xe_fault_injection.c
+index 4b4881634..38676bbbb 100644
+--- a/tests/intel/xe_fault_injection.c
++++ b/tests/intel/xe_fault_injection.c
+@@ -12,9 +12,12 @@
+  */
+
+ #include <limits.h>
++#include <dirent.h>
++#include <ctype.h>
+
+ #include "igt.h"
+ #include "igt_device.h"
++#include "igt_device_scan.h"
+ #include "igt_kmod.h"
+ #include "igt_sriov_device.h"
+ #include "igt_sysfs.h"
+@@ -45,6 +48,269 @@ struct fault_injection_params {
+ 	uint32_t space;
+ };
+
++#define PCI_NAME_MAX 256
++#define MAX_XE_DEVICES 16
++
++/**
++ * struct xe_device_info - Information about a single Xe device
++ * @pci_slot: PCI slot name (e.g., "0000:03:00.0")
++ * @is_selected: Whether this device was selected via --device filter
++ * @was_bound: Whether this device was originally bound to xe driver
++ * @needs_rebind: Whether this device needs to be rebound on cleanup
++ */
++struct xe_device_info {
++	char pci_slot[PCI_NAME_MAX];
++	bool is_selected;
++	bool was_bound;
++	bool needs_rebind;
++};
++
++/**
++ * struct xe_device_context - Context for managing multiple Xe devices
++ * @devices: Array of detected Xe devices
++ * @device_count: Number of devices detected
++ * @selected_device: Pointer to the selected device (NULL if none)
++ * @multi_gpu_system: Whether multiple GPUs are bound to xe driver
++ */
++struct xe_device_context {
++	struct xe_device_info devices[MAX_XE_DEVICES];
++	int device_count;
++	struct xe_device_info *selected_device;
++	bool multi_gpu_system;
++};
++
++/**
++ * scan_xe_devices - Scan for Xe devices bound to the driver
++ * @ctx: Device context to populate
++ *
++ * Scans /sys/bus/pci/drivers/xe/ to find all PCI devices currently bound
++ * to the xe driver. Records each device's PCI slot name.
++ *
++ * Returns: 0 on success, -1 on error
++ */
++static int scan_xe_devices(struct xe_device_context *ctx)
++{
++	DIR *dir;
++	struct dirent *entry;
++	const char *xe_driver_path = "/sys/bus/pci/drivers/xe";
++
++	memset(ctx, 0, sizeof(*ctx));
++
++	dir = opendir(xe_driver_path);
++	if (!dir) {
++		igt_debug("Could not open %s: %s\n", xe_driver_path, strerror(errno));
++		return 0; /* Not an error - driver might not be loaded */
++	}
++
++	while ((entry = readdir(dir)) != NULL) {
++		/* PCI device entries are symlinks that start with a digit */
++		if (entry->d_type != DT_LNK || !isdigit(entry->d_name[0]))
++			continue;
++
++		if (ctx->device_count >= MAX_XE_DEVICES) {
++			igt_warn("Found more than %d Xe devices, ignoring extras\n",
++				 MAX_XE_DEVICES);
++			break;
++		}
++
++		snprintf(ctx->devices[ctx->device_count].pci_slot,
++			 PCI_NAME_MAX, "%s", entry->d_name);
++		ctx->devices[ctx->device_count].was_bound = true;
++		ctx->device_count++;
++
++		igt_debug("Found Xe device: %s\n", entry->d_name);
++	}
++
++	closedir(dir);
++
++	ctx->multi_gpu_system = (ctx->device_count > 1);
++
++	igt_debug("Detected %d Xe device%s\n", ctx->device_count,
++		  ctx->device_count == 1 ? "" : "s");
++
++	return 0;
++}
++
++/**
++ * get_selected_device - Determine which device was selected via --device
++ * @ctx: Device context
++ * @fd: Open file descriptor to the selected device
++ *
++ * Compares the PCI slot of the open device fd with the scanned devices
++ * to determine which device the user selected with the --device filter.
++ * If found, marks that device as selected.
++ *
++ * Returns: Pointer to selected device info, or NULL if not found
++ */
++static struct xe_device_info *get_selected_device(struct
+xe_device_context *ctx, int fd)
++{
++	char selected_pci_slot[NAME_MAX];
++	int i;
++
++	igt_device_get_pci_slot_name(fd, selected_pci_slot);
++	igt_debug("Device selected via --device filter: %s\n", selected_pci_slot);
++
++	for (i = 0; i < ctx->device_count; i++) {
++		if (strcmp(ctx->devices[i].pci_slot, selected_pci_slot) == 0) {
++			ctx->devices[i].is_selected = true;
++			ctx->selected_device = &ctx->devices[i];
++			return &ctx->devices[i];
++		}
++	}
++
++	igt_warn("Selected device %s not found in scanned devices\n",
++		 selected_pci_slot);
++	return NULL;
++}
++
++/**
++ * unbind_other_devices - Unbind all non-selected Xe devices
++ * @ctx: Device context
++ *
++ * Unbinds all Xe devices except the selected one from the xe driver.
++ * Marks devices as needing rebind for cleanup.
++ *
++ * Returns: 0 on success, -1 on error
++ */
++static int unbind_other_devices(struct xe_device_context *ctx)
++{
++	int i;
++	int ret = 0;
++
++	if (!ctx->multi_gpu_system)
++		return 0;
++
++	if (!ctx->selected_device) {
++		igt_warn("No selected device, cannot unbind others\n");
++		return -1;
++	}
++
++	igt_info("Unbinding non-selected Xe devices...\n");
++
++	for (i = 0; i < ctx->device_count; i++) {
++		if (ctx->devices[i].is_selected)
++			continue;
++
++		igt_info("Unbinding device: %s\n", ctx->devices[i].pci_slot);
++
++		if (igt_kmod_unbind("xe", ctx->devices[i].pci_slot) != 0) {
++			igt_warn("Failed to unbind device %s\n",
++				 ctx->devices[i].pci_slot);
++			ret = -1;
++			continue;
++		}
++
++		ctx->devices[i].needs_rebind = true;
++	}
++
++	return ret;
++}
++
++/**
++ * cleanup_device_context - Cleanup device context after tests
++ * @ctx: Device context
++ *
++ * Reloads the xe module if any devices were unbound during test setup.
++ * This is safer than rebinding individual devices as it avoids issues
++ * with module dependencies (e.g., audio modules).
++ */
++static void cleanup_device_context(struct xe_device_context *ctx)
++{
++	bool any_unbound = false;
++	int i;
++
++	if (!ctx->multi_gpu_system)
++		return;
++
++	/* Check if any devices were unbound */
++	for (i = 0; i < ctx->device_count; i++) {
++		if (ctx->devices[i].needs_rebind) {
++			if (igt_kmod_bind("xe", ctx->devices[i].pci_slot) != 0) {
++				igt_warn("Failed to rebind device %s\n",
++					 ctx->devices[i].pci_slot);
++			}
++			any_unbound = true;
++		}
++	}
++
++	if (!any_unbound)
++		return;
++
++	igt_info("Reloading xe module to restore all devices...\n");
++
++	/* Unload and reload the xe module */
++	if (igt_xe_driver_unload() != 0) {
++		igt_warn("Failed to unload xe driver\n");
++		return;
++	}
++
++	if (igt_xe_driver_load(NULL) != 0) {
++		igt_warn("Failed to reload xe driver\n");
++		return;
++	}
++
++	igt_info("Xe module reloaded successfully\n");
++}
++
++/**
++ * validate_device_context - Validate device setup and apply policy
++ * @ctx: Device context
++ * @fd: Open file descriptor to device
++ *
++ * Validates the device setup according to the test's requirements:
++ * - Single GPU: Tests run normally
++ * - Multiple GPUs with --device: Unbind non-selected devices
++ * - Multiple GPUs without --device: Skip all tests with warning
++ *
++ * Returns: 0 if tests should proceed, -1 if tests should be skipped
++ */
++static int validate_device_context(struct xe_device_context *ctx, int fd)
++{
++	bool device_filter_used;
++
++	if (scan_xe_devices(ctx) != 0) {
++		igt_warn("Failed to scan Xe devices\n");
++		return -1;
++	}
++
++	/* Check if --device filter was explicitly used */
++	device_filter_used = (igt_device_filter_count() > 0);
++
++	igt_debug("Xe devices found: %d, --device filter used: %s\n",
++		  ctx->device_count, device_filter_used ? "yes" : "no");
++
++	if (!ctx->multi_gpu_system) {
++		igt_info("Single Xe device detected, proceeding normally\n");
++		return 0;
++	}
++
++	/* Multiple GPUs detected */
++	igt_info("Multiple Xe devices detected (%d devices)\n",
+ctx->device_count);
++
++	if (!device_filter_used) {
++		igt_warn("Multiple Xe devices bound to driver, but no device selected
+with --device\n");
++		igt_warn("Fault injection affects all devices bound to the driver.\n");
++		igt_warn("Please use --device to select exactly one GPU.\n");
++		return -1;
++	}
++
++	/* Device filter was used, find which device was selected */
++	if (!get_selected_device(ctx, fd)) {
++		igt_warn("Could not determine selected device from --device filter\n");
++		return -1;
++	}
++
++	igt_info("Device %s selected, unbinding other devices\n",
++		 ctx->selected_device->pci_slot);
++
++	if (unbind_other_devices(ctx) != 0) {
++		igt_warn("Failed to unbind other devices\n");
++		return -1;
++	}
++
++	return 0;
++}
++
+ static int fail_function_open(void)
+ {
+ 	int debugfs_fail_function_dir_fd;
+@@ -561,6 +827,7 @@ igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+ 	static uint32_t devid;
+ 	char pci_slot[NAME_MAX];
+ 	bool is_vf_device;
++	struct xe_device_context device_ctx;
+ 	const struct section {
+ 		const char *name;
+ 		unsigned int flags;
+@@ -635,6 +902,12 @@ igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+ 		setup_injection_fault(&default_fault_params);
+ 		igt_install_exit_handler(cleanup_injection_fault);
+ 		is_vf_device = intel_is_vf_device(fd);
++
++		/* Validate device setup for multi-GPU systems */
++		if (!validate_device_context(&device_ctx, fd) == 0) {
++			igt_skip("Multiple Xe devices bound to driver, but no device
+selected with --device\n"
++				 "Please use --device to select exactly one GPU.\n");
++		}
+ 	}
+
+ 	for (const struct section *s = vm_create_fail_functions; s->name; s++)
+@@ -686,6 +959,9 @@ igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+ 		}
+
+ 	igt_fixture {
++		/* Cleanup: reload xe module if any devices were unbound */
++		cleanup_device_context(&device_ctx);
++
+ 		close(sysfs);
+ 		drm_close_driver(fd);
+ 		injection_list_clear();
+-- 
+2.43.0
+
+
