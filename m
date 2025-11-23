@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA3D3CFA46B
-	for <igt-dev@archiver.kernel.org>; Sun, 23 Nov 2025 15:08:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E680CFD2F6
+	for <igt-dev@archiver.kernel.org>; Sun, 23 Nov 2025 15:08:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9D10E10E152;
+	by gabe.freedesktop.org (Postfix) with ESMTP id E0D2410E186;
 	Sun, 23 Nov 2025 15:08:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nIOopl77";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d1hjH3wO";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C1E010E056
- for <igt-dev@lists.freedesktop.org>; Sun, 23 Nov 2025 15:08:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4B0610E056
+ for <igt-dev@lists.freedesktop.org>; Sun, 23 Nov 2025 15:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763910530; x=1795446530;
+ t=1763910533; x=1795446533;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=HNLnOcH50a8KMKla068nhEBwEqggkOckazrz9QI/3xs=;
- b=nIOopl773JBsB2OU/5CgToLPGOhfd0SoOtikVOcgmA4Yl8qRVX2IbE1y
- KtfxN00Ig2JEPc27xQpEnSEKgwGUlsIoTyXrRH6R2p8nFNKCTmnJ6XdKp
- cDVpXV62/nVr309+LCxynptgZuhT2vqK/rd9uRZlKGINf1Uomdv+r5An5
- MVY2r27OWL/kHsCycuKIWZ89leLXbd8NQ0SGHNe0GyyzR81TkleYwQAGg
- aLzSITnPu4XJ95+T9Nve5kvrjrDaH/jZEjib04IDR+C6c9/erAelqHqrk
- igyfU7avKDot5/yaFEf9AFnHTZ96PbDCZWWKO8BR+KVvkhc/CloEkdEMD A==;
-X-CSE-ConnectionGUID: bjNB5fMkRPurdfRkrmWt2w==
-X-CSE-MsgGUID: WyNDj8FlQaKr0RbECa3nKg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="76615211"
-X-IronPort-AV: E=Sophos;i="6.20,221,1758610800"; d="scan'208";a="76615211"
+ bh=bNpey3g/T7kzjhslSw3anD0OdrT70oCkAu/tkt7auYQ=;
+ b=d1hjH3wOcUtNkp7wJSJPT8FyLnvpve0ucDfPY5W1b1yIBE/yY1PVl80n
+ CU+e0UCVDi3n/1gSL0pATk0t1q2foxoXZbnq+O58Nanpf8FnqFFPDVVZ2
+ lYPnPAcY19WU7kE4j3/XgKKERRFbVKRJsybjcGAjjjhpt/KgqT3030B72
+ 3Kud3aFJNVWlg727nzS9ZVhgXoNiSQuEKR3E4pQQTEzLAGQ7wpHz6HPdj
+ OLwYg0/G+xSNoMYp9wh+YbgQHf7bfiM2VcXIinq3oQOQNpbSJwjMlZWe9
+ N6sp9NuFYiGZlZy3hCEppCQaVsJY05HzKv6p2vU7aSI85meahCOuzugmx g==;
+X-CSE-ConnectionGUID: lOxu8bLHTZez1gZgHFdO9g==
+X-CSE-MsgGUID: 1bjyHI09ScORjmBIYbw3Cg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="76615213"
+X-IronPort-AV: E=Sophos;i="6.20,221,1758610800"; d="scan'208";a="76615213"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Nov 2025 07:08:50 -0800
-X-CSE-ConnectionGUID: RC3doRdsS3ugtER6d4zo+w==
-X-CSE-MsgGUID: 02XaTiXpS2GYbW2qxwCLEw==
+ 23 Nov 2025 07:08:52 -0800
+X-CSE-ConnectionGUID: A43KJ2ExSN2aKG4HmuOf2w==
+X-CSE-MsgGUID: zcwE7GWbTv6GyPMAaHqqqQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,221,1758610800"; d="scan'208";a="191903819"
+X-IronPort-AV: E=Sophos;i="6.20,221,1758610800"; d="scan'208";a="191903827"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2025 07:08:49 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2025 07:08:52 -0800
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 22/35] tests/kms_pwrite_crc: use display-aware pipe CRC
- helper
-Date: Sun, 23 Nov 2025 20:53:59 +0530
-Message-Id: <20251123152412.599801-23-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 24/35] tests/kms_frontbuffer_tracking: use display-aware
+ pipe CRC helper
+Date: Sun, 23 Nov 2025 20:54:01 +0530
+Message-Id: <20251123152412.599801-25-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251123152412.599801-1-kunal1.joshi@intel.com>
 References: <20251123152412.599801-1-kunal1.joshi@intel.com>
@@ -68,29 +68,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Switch kms_pwrite_crc to igt_pipe_crc_new_for_display so CRC capture uses the display mapping instead of assuming pipe index matches CRTC index.
+Switch kms_frontbuffer_tracking CRC setup to igt_pipe_crc_new_for_display so the underlying CRTC index is derived from the display state instead of assuming the pipe index matches the CRTC index.
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/intel/kms_pwrite_crc.c | 5 +++--
+ tests/intel/kms_frontbuffer_tracking.c | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/kms_pwrite_crc.c b/tests/intel/kms_pwrite_crc.c
-index 981d7b38e..a881d6389 100644
---- a/tests/intel/kms_pwrite_crc.c
-+++ b/tests/intel/kms_pwrite_crc.c
-@@ -141,8 +141,9 @@ static void prepare_crtc(data_t *data)
- 	if (data->pipe_crc)
- 		igt_pipe_crc_free(data->pipe_crc);
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index 0f162d9a5..5bf7ba9a1 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -1942,8 +1942,9 @@ static void init_blue_crc(enum pixel_format format, enum tiling_type tiling)
+ 	igt_display_commit(&drm.display);
  
--	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
--					  IGT_PIPE_CRC_SOURCE_AUTO);
-+	data->pipe_crc = igt_pipe_crc_new_for_display(&data->display,
-+					   data->pipe,
-+					   IGT_PIPE_CRC_SOURCE_AUTO);
+ 	if (!pipe_crc) {
+-		pipe_crc = igt_pipe_crc_new(drm.fd, prim_mode_params.pipe,
+-					    IGT_PIPE_CRC_SOURCE_AUTO);
++			pipe_crc = igt_pipe_crc_new_for_display(&drm.display,
++						       prim_mode_params.pipe,
++						       IGT_PIPE_CRC_SOURCE_AUTO);
+ 		igt_assert(pipe_crc);
+ 	}
  
- 	/* get reference crc for the white fb */
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
 -- 
 2.25.1
 
