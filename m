@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54C65CFD2F6
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD289CFD318
 	for <igt-dev@archiver.kernel.org>; Sun, 23 Nov 2025 15:08:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 04EEF10E179;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6265610E17F;
 	Sun, 23 Nov 2025 15:08:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gNo7ksjZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jj/1JhiE";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1035210E179
- for <igt-dev@lists.freedesktop.org>; Sun, 23 Nov 2025 15:08:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9F03210E179
+ for <igt-dev@lists.freedesktop.org>; Sun, 23 Nov 2025 15:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763910503; x=1795446503;
+ t=1763910501; x=1795446501;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/lS6wjJyYKtHqS6IIwlXh+zIiJ4hHxK2i3HtRJICbMw=;
- b=gNo7ksjZoXxzpTJVP6vSe/caWp/3MrfX3kEa23xZTExGA6qRXYSXkDto
- SGK47Uok1CUwY+GP4IvePzS4CenrQVvtRWYypdpseHwU/tYmdIyXK2Qt1
- hH1a9aT8ljNloUgamKl/Op8pk7YTYpYHlobmv88E0imVoet5/F61M4IcM
- d5Wqbm6qSv4exM1vv5XoXHRRAX2nXDD7jA1ByibOqyJfGYW6zD7Y5DBrj
- Z9/iejefmc9huvOaEIhESlOgCDqJ36xyu7Tp4CdhKbIEcNuW+PxsRyN9e
- u6DwyPL8e1rKR3vomMkpNoK4N6oQuWl/RHuZAerF+cXe88npqpa4k+idw Q==;
-X-CSE-ConnectionGUID: PieXafPnR5uLkpU3BuW8Rw==
-X-CSE-MsgGUID: +TKQopVjQ3iulV5JAUd79w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="76615163"
-X-IronPort-AV: E=Sophos;i="6.20,221,1758610800"; d="scan'208";a="76615163"
+ bh=FUb+JPhbOEldj0JvxRciTUaeYN/2wwL/8lTJ8TvrUj8=;
+ b=Jj/1JhiE/nALGLGS5f4rz0+BhnLBz7KutsxqqDRo9AXd0KZ94nHXPnkK
+ lqeEAmfx85sHaOHoUcchGpQ4Xj/ZTqSBkA4a8tYDSsgOC+GupJfG7y0Ku
+ imQsjM4+tZnpRBXRKaUhgiSJJVBhn2mIYh54NU+MAPQxtur+lA0ektacj
+ Nhy2elOHRcBDswrZ+woyu+2+L+NAALRHohHbuDrI6kfRZ4wKfkzLxmE6a
+ RlTFxSBm43OE2IAGTe/HEfvuNOWb5unGZgzAG+Es5LStlSsFj0Ft8xqz1
+ V3WpRoGcvQARFgtPngkx/oipdu+uvuFWQ6PXlPsuUpiSdmBEYapzIaJ9Y w==;
+X-CSE-ConnectionGUID: De/F1N3aQXyEI3n8i4pSqg==
+X-CSE-MsgGUID: 2/NMTZi7TOiNPCO3tB5VyQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="76615162"
+X-IronPort-AV: E=Sophos;i="6.20,221,1758610800"; d="scan'208";a="76615162"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Nov 2025 07:08:23 -0800
-X-CSE-ConnectionGUID: vGI7qrzzToit9quV1PXwbg==
-X-CSE-MsgGUID: oQVVx57HT/GBytEVlEFIrw==
+ 23 Nov 2025 07:08:21 -0800
+X-CSE-ConnectionGUID: bHxFZ10FQ22SpxQA++NpYA==
+X-CSE-MsgGUID: GadECMYmQUaJiWQ2GrwNKQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,221,1758610800"; d="scan'208";a="191903722"
+X-IronPort-AV: E=Sophos;i="6.20,221,1758610800"; d="scan'208";a="191903719"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2025 07:08:22 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2025 07:08:21 -0800
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 03/35] tests/kms_color: use display-aware pipe CRC helper
-Date: Sun, 23 Nov 2025 20:53:40 +0530
-Message-Id: <20251123152412.599801-4-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 02/35] tests/kms_atomic: use display-aware pipe CRC
+ helper
+Date: Sun, 23 Nov 2025 20:53:39 +0530
+Message-Id: <20251123152412.599801-3-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251123152412.599801-1-kunal1.joshi@intel.com>
 References: <20251123152412.599801-1-kunal1.joshi@intel.com>
@@ -67,38 +68,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-kms_color currently constructs pipe CRC helpers by passing the pipe taken from
-data->primary->pipe->pipe into igt_pipe_crc_new(fd, pipe, ...), implicitly
-assuming that the pipe enum matches the CRTC index used in the debugfs
-crtc-<index>/crc/ paths. That assumption no longer holds once CRTC indices and
-hardware pipes diverge.
+kms_atomic currently constructs pipe CRC helpers by passing the logical pipe
+enum directly into igt_pipe_crc_new(fd, pipe, ...), which assumes that the
+pipe number matches the CRTC index used in the debugfs crtc-<index>/crc/
+paths. That assumption breaks once CRTC indices and hardware pipes are no
+longer 1:1.
 
-Update the test setup to use igt_pipe_crc_new_for_display(&data->display,
-data->primary->pipe->pipe, IGT_PIPE_CRC_SOURCE_AUTO) so that the CRC debugfs
-paths are derived from display->pipes[pipe].crtc_offset instead of the pipe
-enum.
+Update kms_atomic to use igt_pipe_crc_new_for_display(&data->display, pipe,
+IGT_PIPE_CRC_SOURCE_AUTO) so that the CRC debugfs paths are derived from
+display->pipes[pipe].crtc_offset instead of the pipe enum.
 
-This makes kms_color resilient to non-trivial CRTC index to hardware pipe
-mappings without otherwise changing the test logic.
+This makes kms_atomic robust to non-trivial CRTC index to hardware pipe
+mappings while keeping the test logic otherwise unchanged.
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_color.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/kms_atomic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index c424083b7..8daac5b41 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -755,7 +755,7 @@ static void test_setup(data_t *data, enum pipe p)
- 	igt_require(pipe->n_planes >= 0);
+diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+index 474df3fa4..baa53a184 100644
+--- a/tests/kms_atomic.c
++++ b/tests/kms_atomic.c
+@@ -474,8 +474,8 @@ plane_immutable_zpos(data_t *data, igt_output_t *output, enum pipe pipe, int n_p
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
  
- 	data->primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
--	data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
-+	data->pipe_crc = igt_pipe_crc_new_for_display(&data->display,
- 					  data->primary->pipe->pipe,
- 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 	/* create the pipe_crc object for this pipe */
+-	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
+-				    IGT_PIPE_CRC_SOURCE_AUTO);
++	pipe_crc = igt_pipe_crc_new_for_display(&data->display, pipe,
++				   IGT_PIPE_CRC_SOURCE_AUTO);
  
+ 	/* get reference crc */
+ 	igt_pipe_crc_start(pipe_crc);
 -- 
 2.25.1
 
