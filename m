@@ -4,62 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5ED2CFD356
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Nov 2025 20:55:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21DB2CFD356
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Nov 2025 20:57:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 84BB810E0ED;
-	Mon, 24 Nov 2025 20:55:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CA31F10E25A;
+	Mon, 24 Nov 2025 20:57:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y/EORxHn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c9xUAX73";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E44AB10E0ED
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Nov 2025 20:55:33 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C69DB10E25A
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Nov 2025 20:57:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764017734; x=1795553734;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=lBN0y1qep4zkqdjgvtWOeWa97KaxfBOjGWUYOS8+CHg=;
- b=Y/EORxHnbD2AmGYQkWeXDOX73x37Z5e58lP0ANeQOQ+csKA6fhCPTRgX
- +zlAtX9W1jA2SPY+WhXGVl6bdI075yuEdBGhXXDsY5POxEezJBed5732v
- uxcScv0sMuZBQRrPHWmS8T2DCa9ziBTYC4MiVevTSQyDAbxwgzVGLrATt
- Rue9akcBL2hsEhYtb9L2Pur4onbSukEkrjtaYF7gvkCBVFri2RfCeHIqY
- pck4k5Ym9LP5jOHzDo2CCWPen7frJjZUkWa8/gXN0xwcI9SunMl4n/jzj
- RWQURwXHmDKde13nrsUcGFpPzsPh1yWy4mO3cJOWqysMzJJjzX3WpUbo1 g==;
-X-CSE-ConnectionGUID: zsieV/d/TK+MlEkMIk16AA==
-X-CSE-MsgGUID: Rly3/wkaRYWu4GbszJw3Yg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="77504008"
-X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; d="scan'208";a="77504008"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Nov 2025 12:55:34 -0800
-X-CSE-ConnectionGUID: a2P+7hwwRV2DxzWxThqTdQ==
-X-CSE-MsgGUID: zP+fIMB/R+SsFHr6h0QoNA==
+ t=1764017872; x=1795553872;
+ h=from:to:subject:in-reply-to:references:date:message-id:
+ mime-version; bh=FSJBUNIqG8+wlT4C9Hr8XAXZwbN5Z8R14UXpF/W6AtE=;
+ b=c9xUAX733mCHkvZE3oIOFD2sObFledh4LjjIN3UHEXl972OaAYnKnSQ2
+ CYIGULoKl60xVs38kb1MdeO93tgLADZwq94pEon18EyLvadEWWqYgHzLc
+ qVOJxnYK38vraOPA9TP7/XYzZbTdYfdhvWu/gF7k7STGPUlHkqv9bSohR
+ tmpRhTMwDz65CefaBNvv9rl/kqMDeWg88vUTWp1hFHOs2emcwaCzXVEpb
+ OuOM+jsLEPZ/M48U585a4ofQOdPHPDDuJjiQuz0hLqM7Q3mXaz8Bjanlx
+ PAYdSngkP3SUnPRRpJx6UH2L2Ae+yAa8JS5G3kF1GHT3xaeX9yJAgSvzM w==;
+X-CSE-ConnectionGUID: oHuWzERQRkOexSPaDNX0+A==
+X-CSE-MsgGUID: uL9nisWrTmaBKMXwuUymIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="53597562"
+X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; d="scan'208";a="53597562"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Nov 2025 12:57:48 -0800
+X-CSE-ConnectionGUID: hVNRBy+CSCC15hCcXVEapw==
+X-CSE-MsgGUID: PJIV199SRX6bXHlKzn3CZQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; d="scan'208";a="229718852"
-Received: from dnelso2-mobl.amr.corp.intel.com (HELO localhost)
- ([10.124.222.165])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Nov 2025 12:55:32 -0800
-Date: Mon, 24 Nov 2025 22:55:29 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 01/35] lib/igt_pipe_crc: separate CRTC index from
- pipe
-Message-ID: <aSTGQa80OSZSiLty@intel.com>
-References: <20251123152412.599801-1-kunal1.joshi@intel.com>
- <20251123152412.599801-2-kunal1.joshi@intel.com>
- <aSSu4eSzuKMa4R2q@intel.com>
- <235aeb5e8949b83daf535586475fe047714458a9@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <235aeb5e8949b83daf535586475fe047714458a9@intel.com>
-X-Patchwork-Hint: comment
+X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; d="scan'208";a="196619938"
+Received: from krybak-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.177])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Nov 2025 12:57:46 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com
+Subject: Re: [PATCH i-g-t 0/7] igt: Help out coccinelle
+In-Reply-To: <b1d1fc5f-09d8-4046-b99c-77677a5b2b06@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20251120191415.4236-1-ville.syrjala@linux.intel.com>
+ <b1d1fc5f-09d8-4046-b99c-77677a5b2b06@linux.intel.com>
+Date: Mon, 24 Nov 2025 22:57:43 +0200
+Message-ID: <c22c7a7b942a53bc8699121226d0b4dc2895b066@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,155 +68,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Nov 24, 2025 at 10:31:31PM +0200, Jani Nikula wrote:
-> On Mon, 24 Nov 2025, Ville Syrjälä <ville.syrjala@linux.intel.com> wrote:
-> > On Sun, Nov 23, 2025 at 08:53:38PM +0530, Kunal Joshi wrote:
-> >> The pipe CRC helpers have historically treated the logical pipe enum as if it
-> >> were the CRTC index, and used that directly in the debugfs paths under
-> >> crtc-<index>/crc/. This only works as long as crtc_index == pipe, which is no
-> >> longer guaranteed once pipes are virtualized, fused off, or reordered.
-> >> 
-> >> Introduce an explicit CRTC index in igt_pipe_crc and wire it through the
-> >> debugfs control/data paths. Add new constructors that take either a raw CRTC
-> >> index or an igt_display+pipe pair, and update kms_pipe_crc_basic to use the
-> >> display-aware helper so it always uses display->pipes[pipe].crtc_offset.
-> >> 
-> >> Keep the existing igt_pipe_crc_new(fd, pipe, ...) API as a thin wrapper that
-> >> still assumes crtc_index == pipe for now so existing callers continue to work.
-> >> This is a first incremental step towards fully decoupling CRTC indices from
-> >> hardware pipes across the KMS tests.
-> >> ---
-> >>  lib/igt_pipe_crc.c         | 39 +++++++++++++++++++++++++++++++++++---
-> >>  lib/igt_pipe_crc.h         |  6 ++++++
-> >>  tests/kms_pipe_crc_basic.c | 12 ++++++------
-> >>  3 files changed, 48 insertions(+), 9 deletions(-)
-> >> 
-> >> diff --git a/lib/igt_pipe_crc.c b/lib/igt_pipe_crc.c
-> >> index 866bf2881..24aa72bcc 100644
-> >> --- a/lib/igt_pipe_crc.c
-> >> +++ b/lib/igt_pipe_crc.c
-> >> @@ -190,6 +190,8 @@ struct _igt_pipe_crc {
-> >>  	int flags;
-> >>  
-> >>  	enum pipe pipe;
-> >
-> > This whole pipe thing needs to go away.
-> 
-> I think there's basically two approaches:
-> 
-> 1) Just assume pipe == crtc_index everywhere, and single out the cases
->    where the "physical" pipe is actually something else. Use a separate
->    enum for the physical pipe. The downside is that this will continue
->    to confuse and trick people, because the kernel has largely migrated
->    away from this.
-> 
-> 2) Roll up the sleeves, and call things by their real names. enum pipe
->    needs to mean the physical pipe, and everything else needs to be
->    converted to crtc_index. And where the physical pipe is not needed,
->    which is most places, it needs to be removed. Like here.
-> 
-> I'm in favour of 2, if the churn it causes is acceptable. Personally I
-> think it's worth it to clarify a lot of things all over the place.
+On Mon, 24 Nov 2025, Peter Senna Tschudin <peter.senna@linux.intel.com> wrote:
+> Hi Ville,
+>
+> I need to see the value proposition before supporting ~2000 lines of churn.
+>
+> - Can you share the specific Coccinelle scripts that require these changes?
+> - What transformations are you planning that can't work with the current
+> syntax?
+> - Have you attempted these transformations and confirmed current syntax
+> blocks them?
+>
+> More importantly: Coccinelle provides mechanisms to handle non-standard
+> macros (iterator declarations, custom isomorphisms, virtual rules,
+> etc.). Have you exhausted all options for teaching Coccinelle about our
+> existing macro syntax before concluding we need to modify the codebase
+> itself?
+>
+> It seems backwards to change ~2000 code locations to accommodate a tool
+> when the tool is designed to be configurable for exactly these situations.
 
-Yeah, I think we want as much as possible to just use igt_pipe_t and
-rename it to igt_crtc_t. I wrote a bunch of cocci for that as well.
-Looks like my current wip branch has about 40 patches or so. That's 
-pretty much all pure refactoring. After that things will get harder
-and probably will involve manual work to convert most of the tests
-to iterate over igt_crtc_t instead of pipes.
+Generally speaking, Coccinelle is not a user-friendly tool. And that's
+about the nicest way to put it. It takes a while to get used to, and to
+get even the simplest changes done. But it can be really powerful when
+you've banged it into submission.
 
-> 
-> >
-> >> +	/* CRTC index in drmModeRes.crtcs used for debugfs paths. */
-> >> +	unsigned int crtc_index;
-> >>  	char *source;
-> >>  };
-> >>  
-> >> @@ -215,7 +217,8 @@ void igt_require_pipe_crc(int fd)
-> >>  }
-> >>  
-> >>  static igt_pipe_crc_t *
-> >> -pipe_crc_new(int fd, enum pipe pipe, const char *source, int flags)
-> >> +pipe_crc_new_internal(int fd, enum pipe pipe, unsigned int crtc_index,
-> >> +		     const char *source, int flags)
-> >>  {
-> >>  	igt_pipe_crc_t *pipe_crc;
-> >>  	char buf[128];
-> >> @@ -235,7 +238,7 @@ pipe_crc_new(int fd, enum pipe pipe, const char *source, int flags)
-> >>  	pipe_crc = calloc(1, sizeof(struct _igt_pipe_crc));
-> >>  	igt_assert(pipe_crc);
-> >>  
-> >> -	sprintf(buf, "crtc-%d/crc/control", pipe);
-> >> +	sprintf(buf, "crtc-%u/crc/control", crtc_index);
-> >>  	pipe_crc->ctl_fd = openat(debugfs, buf, O_WRONLY);
-> >>  	igt_assert(pipe_crc->ctl_fd != -1);
-> >>  
-> >> @@ -243,6 +246,7 @@ pipe_crc_new(int fd, enum pipe pipe, const char *source, int flags)
-> >>  	pipe_crc->fd = fd;
-> >>  	pipe_crc->dir = debugfs;
-> >>  	pipe_crc->pipe = pipe;
-> >> +	pipe_crc->crtc_index = crtc_index;
-> >>  	pipe_crc->source = strdup(env_source);
-> >>  	igt_assert(pipe_crc->source);
-> >>  	pipe_crc->flags = flags;
-> >> @@ -250,6 +254,15 @@ pipe_crc_new(int fd, enum pipe pipe, const char *source, int flags)
-> >>  	return pipe_crc;
-> >>  }
-> >>  
-> >> +static igt_pipe_crc_t *
-> >> +pipe_crc_new(int fd, enum pipe pipe, const char *source, int flags)
-> >> +{
-> >> +	/* Existing callers pass a logical pipe; assume crtc_index == pipe
-> >> +	 * until they are converted to use the new helpers.
-> >> +	 */
-> >> +	return pipe_crc_new_internal(fd, pipe, pipe, source, flags);
-> >> +}
-> >> +
-> >>  /**
-> >>   * igt_pipe_crc_new:
-> >>   * @fd: fd of the device
-> >> @@ -288,6 +301,26 @@ igt_pipe_crc_new_nonblock(int fd, enum pipe pipe, const char *source)
-> >>  	return pipe_crc_new(fd, pipe, source, O_RDONLY | O_NONBLOCK);
-> >>  }
-> >>  
-> >> +igt_pipe_crc_t *
-> >> +igt_pipe_crc_new_for_crtc(int fd, unsigned int crtc_index,
-> >> +			 const char *source)
-> >> +{
-> >> +	return pipe_crc_new_internal(fd, PIPE_A, crtc_index, source, O_RDONLY);
-> >> +}
-> >> +
-> >> +igt_pipe_crc_t *
-> >> +igt_pipe_crc_new_for_display(struct igt_display *display, enum pipe pipe,
-> >> +			     const char *source)
-> >> +{
-> >
-> > I think it's better to just pass in the whole igt_pipe_t.
-> > In fact I already wrote the cocci for that, but I need to
-> > get a bunch of refactroing done in before it can be done.
-> > I already posted two small refactoring series, but more
-> > will be needed.
-> 
-> That with the s/igt_pipe_t/igt_crtc_t/ rename would be great.
-> 
-> There are a few special cases like tools/intel_display_crc.c which
-> currently don't have any igt_pipe_t available. But I think the parameter
-> for it should anyway be crtc_index not pipe.
+I think the question here is about unlocking the powers of Coccinelle on
+the igt code base. If you can't do the simplest transformations without
+first figuring out how to dodge all the idiosyncrasies of igt syntax,
+you're just not going to do it, are you?
 
-Yeah, looks like what I did in my wip branch is s/pipe/crtc_index/
-for the current stuff, and then add igt_crtc_crc_new*(igt_crtc_t*, ...)
-wrappers around that.
+Or are you proposing to start maintaining an igt library of mandatory
+Coccinelle includes, something that very few people are going to
+understand at all?
 
-> 
-> Hmm, looking at the tool, how does it even work at all? Where does
-> ctx.fd come from? I digress.
+> Without concrete examples of problems being solved and evidence that
+> Coccinelle-side solutions were explored, this looks like speculative
+> refactoring with unclear ROI.
 
-Looks completely broken to me. Looking at the git log, passing vs. 
-not passing the fd to the crc stuff has been applied and reverted
-a few times. Personally I just frob the crc debugfs directly
-whenever I need to grab CRCs outside of igts, so IMO we could just
-nuke the tool.
+I presume the prime use case is to stop conflating crtc_index with enum
+pipe [1].
+
+
+BR,
+Jani.
+
+
+[1] https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/187
+
 
 -- 
-Ville Syrjälä
-Intel
+Jani Nikula, Intel
