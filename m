@@ -4,57 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F701CFD35B
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Nov 2025 21:39:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57629CFD355
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Nov 2025 21:49:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 08E27893DB;
-	Mon, 24 Nov 2025 21:39:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0D9AA897F6;
+	Mon, 24 Nov 2025 21:49:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ADKP0iNf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ViOJ30ZB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D018893DB
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Nov 2025 21:39:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A7F5897F6
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Nov 2025 21:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764020393; x=1795556393;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=KCuTuV6oZKLQW4zIajVlZcW0PwZI4KwRylbnKXYpRNo=;
- b=ADKP0iNfIa7Bl2UBHUziytm3v1bfttxU4jWhtfc7TZSQBE+/1UxUkjL3
- 4ZqY0wPBuJB7UdYwPAtWoRiPI+iPJ/08qq7Cuio5DfEFekDc84IfNAHpM
- 8yk1VhUygBQwtXcKWeKpziAkqvp65/ZAIf+JGTKrAAR84LbNTKWj1F3L2
- tKp84qaSvjJVya2rUWL/o43fvIHY/8tKD/VC1WEhKHKu8duTIyT1bUDkt
- xRNG1Q4SGfcJ9Jo3ZmKvqmkjbw5R1BbaoGTckzztMV0gQxx00aeEepYhL
- c048U3q186ibA6A1QZrJRsDwa8BwQQUgS99JDQNHUewo+fGbdE3Kow3n/ g==;
-X-CSE-ConnectionGUID: GyDrZvuESKOq3EGFRrvheA==
-X-CSE-MsgGUID: wTFItpuLRhqLxQdEqLuLYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="65916705"
-X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; d="scan'208";a="65916705"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Nov 2025 13:39:52 -0800
-X-CSE-ConnectionGUID: DL2lqRuNTlC2ZkKjyXI7hg==
-X-CSE-MsgGUID: U/RL+U4SQ0i0RMqpZ9XuHA==
+ t=1764020984; x=1795556984;
+ h=date:from:to:subject:message-id:references:mime-version:
+ content-transfer-encoding:in-reply-to;
+ bh=4u4c0zZFt6mV4L/6dgwzmMhvPFnUttE3nyjH6VZkyE4=;
+ b=ViOJ30ZBdSZpfY+grrw+4w2ocobT1h3sjuvYYl4FiPEXQRlQOgP7jr+S
+ 9aVKkYh9/ziWRTZCpIr9g3AsKHZ9OfJahFJuQooq8iI3MFNQFmd5sj+5e
+ uLHUDBfX4w9MYBPZpNAGw20Xfhk9nYWIpr3dfLUzIsgn+nCQMfrtzOjBZ
+ 0QUgChsWAnYZoPThCIB+4IHiYBW9rkazROzrUl3qBVahTR4KlWUu9Pmaf
+ 6buu8xSs8V92HQyukArTkUZC0yuUyODZgmG0ZAfem25efUh4msRr6AwNV
+ kGJGf2BRimSxuwuK1JeDmJLlC/qmH3V8d5qoUNx/gwxS5MrkylMKJJiFm Q==;
+X-CSE-ConnectionGUID: EM0H7vEmRLuIo76XLtxQzA==
+X-CSE-MsgGUID: tjkyXjdqSbOVdcjZ6H6prg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="76718297"
+X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; d="scan'208";a="76718297"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Nov 2025 13:49:44 -0800
+X-CSE-ConnectionGUID: OazKcBQlR6emKl2IbgQbzg==
+X-CSE-MsgGUID: Q7U4eDocRJ+Uh8H93OrzxQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; d="scan'208";a="192908208"
+X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; d="scan'208";a="223428408"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.124.222.176])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Nov 2025 13:39:50 -0800
-Date: Mon, 24 Nov 2025 23:39:47 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Nov 2025 13:49:43 -0800
+Date: Mon, 24 Nov 2025 23:49:40 +0200
 From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 0/7] igt: Help out coccinelle
-Message-ID: <aSTQo-enEW5TmAlv@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 7/7] scripts/cocci: Add iterators.cocci
+Message-ID: <aSTS9ENX7KARW9lb@intel.com>
 References: <20251120191415.4236-1-ville.syrjala@linux.intel.com>
- <b1d1fc5f-09d8-4046-b99c-77677a5b2b06@linux.intel.com>
+ <20251120191415.4236-8-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <b1d1fc5f-09d8-4046-b99c-77677a5b2b06@linux.intel.com>
+In-Reply-To: <20251120191415.4236-8-ville.syrjala@linux.intel.com>
 X-Patchwork-Hint: comment
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -72,69 +71,95 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Nov 24, 2025 at 07:12:12PM +0100, Peter Senna Tschudin wrote:
-> Hi Ville,
+On Thu, Nov 20, 2025 at 09:14:15PM +0200, Ville Syrjala wrote:
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > 
-> I need to see the value proposition before supporting ~2000 lines of churn.
+> Coccinelle often chokes on magic iterator macros. We
+> can lend it a hand by explicitly declaring those macros
+> as iterators. Start collecting them in
+> scripts/iterators.cocci which people can easily include
+> in their cocci scripts.
 > 
-> - Can you share the specific Coccinelle scripts that require these changes?
-
-It doesn't matter what you want to change or how. Any time cocci sees
-eg. igt_fixture or igt_main it barfs and gives up. So currently you
-can't do any kind change with coccinelle to most of tests/.
-
-> - What transformations are you planning that can't work with the current
-> syntax?
-
-We need to fix the massive pipe vs. crtc mess. And in general
-it would be nice to be able to use cocci over the igt codebase.
-Currently that is impossible.
-
-> - Have you attempted these transformations and confirmed current syntax
-> blocks them?
-
-Of course I tried, How else do you think I could have
-even come up with this stuff?
-
+> The "struct dummy" is there because coccinelle doesn't
+> like an empty script. Dunno if there's a cleaner way
+> around that?
 > 
-> More importantly: Coccinelle provides mechanisms to handle non-standard
-> macros (iterator declarations,
-
-Iterators is exactly what I used. Did you read the
-commit messages?
-
-> custom isomorphisms, virtual rules,
-> etc.). Have you exhausted all options for teaching Coccinelle about our
-> existing macro syntax before concluding we need to modify the codebase
-> itself?
-
-"all options" would probably involev rewriting coccinelle. So no, I
-haven't exhausted all options. I have spent quite a bit of time with
-coccinelle and I'm not aware of any way to teach it about this kind of
-non-standard syntax.
-
-If you can pull some kind of rabbit out of your hat please do so,
-and stick it into scripts/ so that other people can also use cocci
-without spending a month reverse engineering the syntax.
-
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> ---
+>  scripts/iterators.cocci | 53 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 53 insertions(+)
+>  create mode 100644 scripts/iterators.cocci
 > 
-> It seems backwards to change ~2000 code locations to accommodate a tool
+> diff --git a/scripts/iterators.cocci b/scripts/iterators.cocci
+> new file mode 100644
+> index 000000000000..90d3ae437a15
+> --- /dev/null
+> +++ b/scripts/iterators.cocci
+> @@ -0,0 +1,53 @@
+> +// SPDX-License-Identifier: MIT
+> +//
+> +// Use with
+> +// #include "scripts/iterators.cocci"
+> +// at the start of your cocci script
+> +
+> +@@
+> +iterator name for_each_collection_data;
+> +iterator name for_each_combination;
+> +iterator name for_each_connected_output;
+> +iterator name for_each_connector_mode;
+> +iterator name for_each_ctx_engine;
+> +iterator name for_each_disconnected_output;
+> +iterator name for_each_format;
+> +iterator name for_each_if;
+> +iterator name for_each_output;
+> +iterator name for_each_pipe;
+> +iterator name for_each_pipe_static;
+> +iterator name for_each_pipe_with_single_output;
+> +iterator name for_each_pipe_with_valid_output;
+> +iterator name for_each_plane_on_pipe;
+> +iterator name for_each_prime_number;
+> +iterator name for_each_sriov_enabled_vf;
+> +iterator name for_each_sriov_num_vfsfor_each_sriov_vf;
+> +iterator name for_each_sriov_num_vfs_in_rangefor_each_sriov_vf_in_range;
+> +iterator name for_each_sriov_vf;
+> +iterator name for_each_sriov_vf_in_range;
+> +iterator name for_each_subset;
+> +iterator name for_each_subset;
+> +iterator name for_each_sysfs_gt_dirfd;
+> +iterator name for_each_sysfs_gt_path;
+> +iterator name for_each_sysfs_tile_dirfd;
+> +iterator name for_each_tiling;
+> +iterator name for_each_valid_output_on_pipe;
+> +iterator name for_each_variation_nr;
+> +iterator name for_each_variation_r;
+> +iterator name igt_for_each_drm_client;
+> +iterator name igt_list_for_each_entry;
+> +iterator name igt_list_for_each_entry_reverse;
+> +iterator name igt_list_for_each_entry_safe;
+> +iterator name igt_list_for_each_entry_safe_reverse;
+> +iterator name igt_dynamic;
+> +iterator name igt_dynamic_f;
+> +iterator name igt_fixture;
+> +iterator name igt_fork;
+> +iterator name igt_require;
+> +iterator name igt_subtest;
+> +iterator name igt_subtest_f;
+> +iterator name igt_subtest_group;
+> +iterator name igt_subtest_with_dynamic;
+> +iterator name igt_subtest_with_dynamic_f;
 
-It doesn't really matter how many places need changing. It's all
-done completely mechanically with sed, so entirely trivial.
+Couple of other needed iterators I apparently forgot to include here:
 
-> when the tool is designed to be configurable for exactly these situations.
++iterator name igt_until_timeout;
++iterator name igt_while_interruptible;
 
-It's designed to consume somewhat standard C. igt is not that.
+I should also check if cocci supports regexp with iterator names since
+that could reduce this list quite a bit...
 
-> 
-> Without concrete examples of problems being solved and evidence that
-> Coccinelle-side solutions were explored, this looks like speculative
-> refactoring with unclear ROI.
-
-If you need to convince yourself then just try to do some kind of
-trivial change over all of tests/ and see how far you can get
-without this series and its scripts/iterators.cocci.
+> +@@
+> +struct dummy
+> -- 
+> 2.49.1
 
 -- 
 Ville Syrjälä
