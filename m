@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24428CFA466
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Nov 2025 09:34:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C734FCFA466
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Nov 2025 09:37:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C998F10E1F8;
-	Mon, 24 Nov 2025 09:34:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 661E110E1FB;
+	Mon, 24 Nov 2025 09:37:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k0ofsEBv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LcZnyIv6";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8339910E1F8
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Nov 2025 09:34:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 32C3310E1FB
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Nov 2025 09:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1763976879; x=1795512879;
+ t=1763977048; x=1795513048;
  h=from:to:subject:in-reply-to:references:date:message-id:
  mime-version:content-transfer-encoding;
- bh=jSR2wSsHXBQg9UTnTDegfmDP5ALD+3PLJ8uR4ZtZfi8=;
- b=k0ofsEBvf1xxE+uDPQ7RsiNp8szMbDcuaOM3z1ROQ/Embd/SAyZwAD04
- d2Tk8nAs5/zUSwS5/jxQz3rqQYU01XtHt1QEuvPcjGQwp6FAqk5lfIxy4
- cqCnYKWDAeHzUMKAAONaJJ+MU7vs5X97yIE1Nnxi1taLms0Qdbv/t4o4J
- 6Vxs/sQ7+LYv3HNeZS9qz8ayr7sr+SKjCNi+TwEcDWH2LvzwFTCs8rXOy
- GgprnmR5P/RBk/sLyNpIBS+5lkCHEgn201CNfwtcrv7pA+8GDLNmC51TB
- ayLG37ar1SYqGvmwRacZnRRBtHtIKm8SAnsiksSTsBoEJ6wZi74FTcj4a w==;
-X-CSE-ConnectionGUID: YlwHCrmhSdS9Z8hUalnWUg==
-X-CSE-MsgGUID: duDqE0jQTsiXXUwT0ECyfw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="65154227"
-X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; d="scan'208";a="65154227"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Nov 2025 01:34:38 -0800
-X-CSE-ConnectionGUID: 0zAxnO99Rqu46wfsgNiVSA==
-X-CSE-MsgGUID: IUj56dszSceBNLSo2qLUtA==
+ bh=XAXcYIm4FFs7FV8znsIwzTsvAGqJK2RjnraxaiyKiY4=;
+ b=LcZnyIv63M+3GWqtVmq7Qdg+yAaIZGSZP95rlXBb2vLN7w52A7HmOH4V
+ uX4zsbPq1d25gzStTpLX9giLIfjRlwEN9SFMMg0ukm68N6b1X5WaBTOli
+ gjku5RnXD4mF7pz5si3GStjmyZlyWCaq8CR1WkV8vVH9wt/7xp4MyDmnr
+ qT4tYSqJEqW+tlSEs6Aq+6/KsJ3l1ln2ueE+PqwnQ6SvEx95Ncw4sLvGI
+ Iw8qMelHJPszVneo9VtuVDnfiI1UPOBiw7eCmi6ANhGiaPLTvTRYEV39t
+ T0yOGOwgaEnZ+Q0exCOeoxp0rCAop72atXHs2AchqrKK97C2KYTcDGYPK w==;
+X-CSE-ConnectionGUID: 7I/1lsynTIGgCyNdF9108w==
+X-CSE-MsgGUID: UZS5dBLYQMidmXjelKJpKQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11622"; a="66049489"
+X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; d="scan'208";a="66049489"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Nov 2025 01:37:28 -0800
+X-CSE-ConnectionGUID: ptPC1nK2QKWXTin1zsSNmA==
+X-CSE-MsgGUID: u0wBR/pMRPSI4YaHbUfRzw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; d="scan'208";a="192307436"
+X-IronPort-AV: E=Sophos;i="6.20,222,1758610800"; d="scan'208";a="192162234"
 Received: from krybak-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.177])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Nov 2025 01:34:36 -0800
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Nov 2025 01:37:27 -0800
 From: Jani Nikula <jani.nikula@intel.com>
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 0/8] kms: Small cleanups and refactoring
-In-Reply-To: <20251121190633.24522-1-ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t 1/8] igt: Name drmModeCrtc variables 'drm_crtc'
+In-Reply-To: <20251121190633.24522-2-ville.syrjala@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 References: <20251121190633.24522-1-ville.syrjala@linux.intel.com>
-Date: Mon, 24 Nov 2025 11:34:33 +0200
-Message-ID: <e46f4335ed23eeb1946cdb0d2e467500b18fbc91@intel.com>
+ <20251121190633.24522-2-ville.syrjala@linux.intel.com>
+Date: Mon, 24 Nov 2025 11:37:23 +0200
+Message-ID: <2a9ad8950036a45431774a6ab66b11d65a8a041f@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -72,44 +73,24 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 On Fri, 21 Nov 2025, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
 > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >
-> Some fairly trivial cleanups and some refactoring.
-
-Did not do detailed review, but, FWIW,
-
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-
-on the series.
-
-
+> The current situation with pipes vs. crtcs is a giant mess.
+> In order to untangle things properly I think we need to
+> move away from the pipe stuff into a more pure crtc world.
 >
-> Ville Syrj=C3=A4l=C3=A4 (8):
->   igt: Name drmModeCrtc variables 'drm_crtc'
->   lib/kms: Nuke PIPE_ANY
->   lib/kms: Nuke unused kmstest_{crtc,plane}
->   igt/kms: Nuke unused igt_pipe_*prop*() marcos and functions
->   lib/kms: Turn the igt_plane*prop*() marcos into functions
->   lib/kms: Turn the igt_output*prop*() marcos into functions
->   lib/kms: Turn the igt_pipe_obj*prop*() marcos into functions
->   test/kms_color: Don't dig around in display->pipes[] so much
->
->  lib/igt_kms.c                     |  10 +-
->  lib/igt_kms.h                     | 238 ++++++++++--------------------
->  tests/intel/kms_fb_coherency.c    |   2 +-
->  tests/intel/kms_flip_scaled_crc.c |   8 +-
->  tests/intel/kms_flip_tiling.c     |   2 +-
->  tests/intel/perf_pmu.c            |   2 +-
->  tests/intel/prime_mmap_kms.c      |   2 +-
->  tests/kms_atomic.c                |  25 ++--
->  tests/kms_color.c                 |  41 +++--
->  tests/kms_cursor_legacy.c         |   4 +-
->  tests/kms_flip_event_leak.c       |   2 +-
->  tests/kms_lease.c                 |  14 +-
->  tests/kms_plane.c                 |  16 +-
->  tests/kms_plane_multiple.c        |   2 +-
->  tests/kms_rmfb.c                  |  14 +-
->  tests/vmwgfx/vmw_prime.c          |   2 +-
->  tools/msm_dp_compliance.c         |  12 +-
->  17 files changed, 156 insertions(+), 240 deletions(-)
+> I suspect the best way to get there is by renaming igt_pipe_t
+> into igt_crtc_t and making everyone use it instead of the raw
+> index/pipe numbers. And presumable we'll want to call the
+> igt_crtc_t variables 'crtc', so let's clear out the namespace
+> for that by using 'drm_crtc' as the variable name for the
+> lower level drmModeCrtc stuff.
+
+For clarity, I suppose also s/crtc_offset/crtc_index/g for the member in
+igt_pipe_t (igt_crtc_t) would be in order as follow-up.
+
+
+BR,
+Jani.
+
 
 --=20
 Jani Nikula, Intel
