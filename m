@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79C71CFD37F
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Nov 2025 10:23:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5B9ACFD37F
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Nov 2025 10:23:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2E00E10E3A7;
-	Tue, 25 Nov 2025 10:23:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7A05010E39F;
+	Tue, 25 Nov 2025 10:23:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JGWaAIUC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Lz8p7vZJ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1D9A10E3A7
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Nov 2025 10:23:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F5E810E39F
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Nov 2025 10:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764066234; x=1795602234;
+ t=1764066238; x=1795602238;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=34M5XyEfbl92A/NVc+mX8tfu4UDyawbpD+jf+zcKPrU=;
- b=JGWaAIUCQpr7t+Z9y599TLs4Xo1e9k0gftOlPQ6Q+NaymNC2sEpY2Kps
- GmOfn89VN68kX8GkCU/ucsNH3FXbOLjOJsryaZZ3+fzqFMxpJg7hqVcxu
- o3hm6O9PZ+eqfYiawQ1HEaprllOkic6qz5/fkRnuZToRfVfgNyW4ZtRiz
- 5dC0sgL3q6F7bsC/oBX/NF4BI5gpPnMPFYrhOI839VaFTCtMJbFFEYbyO
- bEt9oUfNOzrY0oLl0qZ8DkxpwL6eDd2Eb6iegtOsjNCOb0d1uz/2GE4zW
- 6n3y/KOGeAHB/rNJWfjILmqE8p6IPMPCPzPQyJYcwszl9Wh6jbC7KBv4H A==;
-X-CSE-ConnectionGUID: WOjNOMTgRFSP/CeDyEge1A==
-X-CSE-MsgGUID: Gjo5xlpYQAyCSdJT7VXOtQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="65968439"
-X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; d="scan'208";a="65968439"
+ bh=MADUXc//nMTgLogn4sr9j1OguC1ShH7IjG4oy9AOZGk=;
+ b=Lz8p7vZJaWbbP6u8jibVNxSZByueNRHIkz85fRRNzbKos1IiPQhy7oQo
+ c/MiDVOMPYOjVao64aS6Y/6Ye8HHPvReBLK32KkFqh6DE3sfKIC99jmwe
+ mPkw3Ab6gGFwO5HT21OWy7S0m/yyqkZkS2B7GJBUOG9LIQUq0yquuhHFn
+ PofdET6jYhGrkFt5/MpA/RAtiJL9XZpDjMnElw+LWZnkTu1EGMMvkXSKF
+ xUUM96SIvhx9H+mfg52FKVDVqAUcbRz2lrT7Cs8RGTGLAGanJ3BNhj8Z8
+ FNUoDCXdG5uP+wVGPQDjEAhbG8qPDgN3fInnt3Pi/izd51fvilZy4sKLE A==;
+X-CSE-ConnectionGUID: p3DHy/wySly4+zM11IFMTg==
+X-CSE-MsgGUID: xwRSn7dWToykMqjcQhqJuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="65968445"
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; d="scan'208";a="65968445"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Nov 2025 02:23:54 -0800
-X-CSE-ConnectionGUID: iPX/oIgtS6i5N5PV42ac1w==
-X-CSE-MsgGUID: 8fhd5pjTRAegmjN04oe20Q==
+ 25 Nov 2025 02:23:58 -0800
+X-CSE-ConnectionGUID: mSh2fPk2Rc+0DiUZ+jSb9A==
+X-CSE-MsgGUID: 79AXplhAS4eET4aFbMm5Hw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; d="scan'208";a="192235391"
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; d="scan'208";a="192235401"
 Received: from soc-5cg43972f8.clients.intel.com (HELO localhost)
  ([172.28.182.102])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Nov 2025 02:23:52 -0800
+ 25 Nov 2025 02:23:56 -0800
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
  lukasz.laguna@intel.com, michal.wajdeczko@intel.com,
  Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH i-g-t v2 07/10] tests/intel/xe_sriov_scheduling: Avoid assert
- on scheduling params restore in cleanup
-Date: Tue, 25 Nov 2025 11:23:06 +0100
-Message-ID: <20251125102312.43142-8-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t v2 08/10] tests/intel/xe_sriov_scheduling: Prefer SR-IOV
+ admin sysfs accessors
+Date: Tue, 25 Nov 2025 11:23:07 +0100
+Message-ID: <20251125102312.43142-9-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251125102312.43142-1-marcin.bernatowicz@linux.intel.com>
 References: <20251125102312.43142-1-marcin.bernatowicz@linux.intel.com>
@@ -71,104 +71,84 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add __set_vfs_scheduling_params() that returns error instead of asserting.
-Use the non-asserting helper in cleanup paths to ensure VFs are properly
-disabled before aborting.
+Use SR-IOV admin sysfs setters for scheduling parameters,
+skip if sriov_admin sysfs not available.
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
 Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
 Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
 ---
- tests/intel/xe_sriov_scheduling.c | 41 ++++++++++++++++++++++++-------
- 1 file changed, 32 insertions(+), 9 deletions(-)
+v2: Switch to SR-IOV sysfs setters (Michal)
+---
+---
+ tests/intel/xe_sriov_scheduling.c | 38 ++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 21 deletions(-)
 
 diff --git a/tests/intel/xe_sriov_scheduling.c b/tests/intel/xe_sriov_scheduling.c
-index 5e8c87755..3a0c0d438 100644
+index 3a0c0d438..491d2eb0a 100644
 --- a/tests/intel/xe_sriov_scheduling.c
 +++ b/tests/intel/xe_sriov_scheduling.c
-@@ -371,17 +371,36 @@ struct vf_sched_params {
- 	uint32_t preempt_timeout_us;
- };
+@@ -9,6 +9,7 @@
+ #include "xe_drm.h"
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_spin.h"
++#include "xe/xe_sriov_admin.h"
+ #include "xe/xe_sriov_provisioning.h"
  
--static void set_vfs_scheduling_params(int pf_fd, int num_vfs,
--				      const struct vf_sched_params *p)
-+static int __set_vfs_scheduling_params(int pf_fd, int num_vfs,
-+				       const struct vf_sched_params *p)
+ /**
+@@ -374,27 +375,21 @@ struct vf_sched_params {
+ static int __set_vfs_scheduling_params(int pf_fd, int num_vfs,
+ 				       const struct vf_sched_params *p)
  {
- 	unsigned int gt;
-+	int vf, ret;
- 
- 	xe_for_each_gt(pf_fd, gt) {
--		for (int vf = 0; vf <= num_vfs; ++vf) {
--			xe_sriov_set_exec_quantum_ms(pf_fd, vf, gt, p->exec_quantum_ms);
--			xe_sriov_set_preempt_timeout_us(pf_fd, vf, gt, p->preempt_timeout_us);
-+		for (vf = 0; vf <= num_vfs; ++vf) {
-+			ret = __xe_sriov_set_exec_quantum_ms(pf_fd, vf, gt,
-+							     p->exec_quantum_ms);
-+			if (igt_warn_on_f(ret,
-+					  "Failed to set exec_quantum_ms=%u (VF%d GT%u): %d\n",
-+					  p->exec_quantum_ms, vf, gt, ret))
-+				return ret;
+-	unsigned int gt;
+-	int vf, ret;
+-
+-	xe_for_each_gt(pf_fd, gt) {
+-		for (vf = 0; vf <= num_vfs; ++vf) {
+-			ret = __xe_sriov_set_exec_quantum_ms(pf_fd, vf, gt,
+-							     p->exec_quantum_ms);
+-			if (igt_warn_on_f(ret,
+-					  "Failed to set exec_quantum_ms=%u (VF%d GT%u): %d\n",
+-					  p->exec_quantum_ms, vf, gt, ret))
+-				return ret;
+-
+-			ret = __xe_sriov_set_preempt_timeout_us(pf_fd, vf, gt,
+-								p->preempt_timeout_us);
+-			if (igt_warn_on_f(ret,
+-					  "Failed to set preempt_timeout_us=%u (VF%d GT%u): %d\n",
+-					  p->preempt_timeout_us, vf, gt, ret))
+-				return ret;
+-		}
+-	}
+-	return 0;
++	int ret = 0;
 +
-+			ret = __xe_sriov_set_preempt_timeout_us(pf_fd, vf, gt,
-+								p->preempt_timeout_us);
-+			if (igt_warn_on_f(ret,
-+					  "Failed to set preempt_timeout_us=%u (VF%d GT%u): %d\n",
-+					  p->preempt_timeout_us, vf, gt, ret))
-+				return ret;
- 		}
- 	}
-+	return 0;
-+}
++	ret = __xe_sriov_bulk_set_exec_quantum_ms(pf_fd, p->exec_quantum_ms);
++	if (igt_warn_on_f(ret,
++			  "Failed to bulk set exec quantum=%u: %d\n",
++			  p->exec_quantum_ms, ret))
++		return ret;
 +
-+static void set_vfs_scheduling_params(int pf_fd, int num_vfs,
-+				      const struct vf_sched_params *p)
-+{
-+	igt_assert_eq(0, __set_vfs_scheduling_params(pf_fd, num_vfs, p));
- }
- 
- static bool check_within_epsilon(const double x, const double ref, const double tol)
-@@ -729,7 +748,7 @@ static void throughput_ratio(int pf_fd, int num_vfs, const struct subm_opts *opt
- 
- 	/* cleanup */
- 	subm_set_fini(set);
--	set_vfs_scheduling_params(pf_fd, num_vfs, &(struct vf_sched_params){});
-+	__set_vfs_scheduling_params(pf_fd, num_vfs, &(struct vf_sched_params){});
- 	xe_sriov_disable_vfs_restore_auto_provisioning(pf_fd);
- }
- 
-@@ -815,7 +834,7 @@ static void nonpreempt_engine_resets(int pf_fd, int num_vfs,
- 
- 	/* cleanup */
- 	subm_set_fini(set);
--	set_vfs_scheduling_params(pf_fd, num_vfs, &(struct vf_sched_params){});
-+	__set_vfs_scheduling_params(pf_fd, num_vfs, &(struct vf_sched_params){});
- 	xe_sriov_disable_vfs_restore_auto_provisioning(pf_fd);
- }
- 
-@@ -923,8 +942,10 @@ igt_main_args("", long_opts, help_str, subm_opts_handler, NULL)
- 	}
- 
- 	igt_fixture {
--		set_vfs_scheduling_params(pf_fd, igt_sriov_get_total_vfs(pf_fd),
--					  &(struct vf_sched_params){});
-+		int ret;
++	ret = __xe_sriov_bulk_set_preempt_timeout_us(pf_fd, p->preempt_timeout_us);
++	if (igt_warn_on_f(ret,
++			  "Failed to bulk set preempt timeout=%u: %d\n",
++			  p->preempt_timeout_us, ret))
++		return ret;
 +
-+		ret = __set_vfs_scheduling_params(pf_fd, igt_sriov_get_total_vfs(pf_fd),
-+						  &(struct vf_sched_params){});
- 		xe_sriov_disable_vfs_restore_auto_provisioning(pf_fd);
- 		/* abort to avoid execution of next tests with enabled VFs */
- 		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0,
-@@ -933,6 +954,8 @@ igt_main_args("", long_opts, help_str, subm_opts_handler, NULL)
- 			    igt_sriov_disable_driver_autoprobe(pf_fd);
- 		igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
- 			       "Failed to restore sriov_drivers_autoprobe value\n");
-+		igt_abort_on_f(ret,
-+			       "Failed to restore scheduling params\n");
- 		drm_close_driver(pf_fd);
- 	}
++	return ret;
  }
+ 
+ static void set_vfs_scheduling_params(int pf_fd, int num_vfs,
+@@ -912,6 +907,7 @@ igt_main_args("", long_opts, help_str, subm_opts_handler, NULL)
+ 		pf_fd = drm_open_driver(DRIVER_XE);
+ 		igt_require(igt_sriov_is_pf(pf_fd));
+ 		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
++		igt_require(xe_sriov_admin_is_present(pf_fd));
+ 		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
+ 		xe_sriov_require_default_scheduling_attributes(pf_fd);
+ 	}
 -- 
 2.43.0
 
