@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40EE6CFD315
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Nov 2025 09:39:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E63CCFD315
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Nov 2025 09:39:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E6EFC10E3A7;
-	Tue, 25 Nov 2025 09:39:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0143610E39C;
+	Tue, 25 Nov 2025 09:39:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fJtuD30w";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RKbjuHXA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B6BB10E39D
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Nov 2025 09:39:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7985E10E39D
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Nov 2025 09:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764063544; x=1795599544;
+ t=1764063551; x=1795599551;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=P3FWH+kIiULSf9ZkxcvMyGcYjjTyTL5hAwgS7XYwQJM=;
- b=fJtuD30wYf8P++WIJfgqOqL1ZX7yoGshqjRkVtvjS/kohXlfbmxY1b5K
- LEBGlRPEbIpZa8VbfErlm/2n/tEbo2maA9C5/2e1dqs0NDXzLn5Ysz99l
- VBnqKfsvuhiS5JhD0yW1r767ZsTA+TZwT0jSOV8W2UTAOfTDF5cl6yau+
- W/R5B8qKJMstWND/F/K0XMpS0UQU8w1kE8SHccuzNW6xjjwSUDcFnTqmU
- SonR7MJ0AXS8imxELpo9r2TX20TE/YvkK2ILu1hbRRPvmjC/0BTltk928
- Oyas+POF55YmIUPjHS2PCnyeumy/HG5MbdIaqymdBrfhltnLbc3c006lS Q==;
-X-CSE-ConnectionGUID: 6DRRi7IwQb2zhRsgduplCA==
-X-CSE-MsgGUID: 8htxUr+BSIS+LOtsxjZ6eA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="66022196"
-X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; d="scan'208";a="66022196"
+ bh=ooZ9eUf7LJ2scjMtNlU6Cu5Enlwm0EIxOXzMeOsi+rE=;
+ b=RKbjuHXA4UYeGXHPsswHN6DUAROoz3aMDABYavR2BaMEq0ZCCixvk8C5
+ wvqwA4Slu6VbuFMqng0U0GR/l2ertoMS7mFUKnxpFxEiVUTgmmNZj++W/
+ wx05L0VaQUvBLyTmr6VVGfv5TxDVcb9gxzKck1PAp0eqijGur08Ql9E1o
+ SaDYpRJCUByKiJIGlSCP+q4qBHTo7Tb1L9mwxuyuWeiTnv35bGWsMJmEs
+ wvD+qaiBCJe5PtLB8ggzzCMj6EvVOY+eP8geKJ24lrudZxcoxPRL/C9QQ
+ 7DYHKGV0qEXpcF+lrfRVw/nig5XXGMPPg3jbBAM/yFxwDzGIkuOEaxuCY Q==;
+X-CSE-ConnectionGUID: WJEomWmNR56vU8b7gGMSjQ==
+X-CSE-MsgGUID: 8pDYa8tESYCkU2djqDJbGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="66022197"
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; d="scan'208";a="66022197"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Nov 2025 01:39:04 -0800
-X-CSE-ConnectionGUID: T8psWyOoRsi8QX1XO4h+wg==
-X-CSE-MsgGUID: 4nSmBga8TpSvyZOHbK76zQ==
+ 25 Nov 2025 01:39:06 -0800
+X-CSE-ConnectionGUID: kS3TGb+oSey/rZSt7FT6YQ==
+X-CSE-MsgGUID: 6Q+NtsCKSW6bul8HAGODFw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; d="scan'208";a="215944019"
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; d="scan'208";a="215944025"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Nov 2025 01:39:02 -0800
+ 25 Nov 2025 01:39:03 -0800
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Tue, 25 Nov 2025 10:37:26 +0100
-Subject: [PATCH v6 6/7] tests/intel/xe_query: use xe_query helpers for
- query GT topology
+Date: Tue, 25 Nov 2025 10:37:27 +0100
+Subject: [PATCH v6 7/7] tests/intel/xe_eudebug_online: use xe_query helpers
+ for query GT topology
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251125-xe_query_helpers-v6-6-97686fac1b77@intel.com>
+Message-Id: <20251125-xe_query_helpers-v6-7-97686fac1b77@intel.com>
 References: <20251125-xe_query_helpers-v6-0-97686fac1b77@intel.com>
 In-Reply-To: <20251125-xe_query_helpers-v6-0-97686fac1b77@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -59,18 +59,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4268;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1987;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=P3FWH+kIiULSf9ZkxcvMyGcYjjTyTL5hAwgS7XYwQJM=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpJXjncCFnGeamzItrVfTOKcLh2yJWxFkL6b5og
- erfUfn3BXmJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaSV45wAKCRAjYrKT3hD9
- 17DWC/4zdUpnqMNJ/4gUjPCzPFStLcXcdISFsFu47cdI3kWVsxpBVBAG1F0V95/rzSB+fVSnwAR
- FcR9nMavRMEU6pwfkHZKP+zwOjUf9Evg/B2l0nqBALRw+KhLVsr6Rqgf5ZdBiw3jYnDWCqQVWKx
- j9NEs1hfruQxk6jG6p1iVec/N+An7CpdI43XKL+eY6IEqNWGX1zfF9RUdDgmxMnD4MbtpCT19NU
- 5TZqZbR0H8ZsTnFO+RPGhRwcbOq0tHP3GCwlN+PgZcsqvvwVDMLowLWq6UvG1i0oso1ZKwQkDQh
- t4PlHBqaIZGe7abyliE+KtpSESlREwQ0+FALMkRaoyJAC/mCr+pAoywO6udnWWBjtBI89KtlLKM
- K+k+EpPdtmYEbZ1lhXyU3uUXP2XF0Upyc0WHt8hPmW6ds6biXkGD5eY+6pxmFemJF3uRfRQSEFs
- JekWxaEl3dOpQeL8UNevZlgB3eBfWW94VpmAm/k6v7eCEcpONl5N+QA52VCN/B6U8Try0=
+ bh=ooZ9eUf7LJ2scjMtNlU6Cu5Enlwm0EIxOXzMeOsi+rE=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpJXjo3z/3VNFl08+bft7XNW2aVs9WBDVB0zfKT
+ 9qmHm3cBs6JAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaSV46AAKCRAjYrKT3hD9
+ 1/CpDACPXHAAMxc0GdnXRr+ySLVH70xu+Ud4YX21yJb94qMjINJV2eKRV6XbsIWjHcdiQiduNhl
+ O/uAZk+QI7j5NLKvYSM0D0NliULx4vYuvcPy1koVRZZiNIALjrEzmEC5rVpDOABNHKWABgwakqb
+ 9+wv5w+kOsyotZwrA7M7aibATybJQxHgqldTUvDUPoMKKqvPk2+QmetWHTBjCLppSWlyANYbL7/
+ Yzynm0LaDrORIb1nO2b8XIYnDMTnBJbHRH594No4NwBaoUXJ90NBRQnAyZkWl5NqkppbrR4YbNt
+ Ov/ADeCUesbYpLh5zpMKJtppLcOLTQ+dh18+twx1H+gMQEnmC/UqfZCKs0easpJ8+yQZ4OPWClK
+ g7ncpeurkwS9G6Gx6HCQx3r7BARzdAqugFraptl3KDuHtLiY+LQSovgxo4RJMHml8gjO5TL4baE
+ mADRBA2vsBVMXKwI8zxSu2woFd2KxMD4bjsVnfKT8sjREyibDNeYPdxlJOYVe22sdibs8=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -93,71 +93,18 @@ Using xe_query_device and xe_for_each_topology_mask simplifies the code.
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_query.c | 69 +++++++++++++-------------------------------------
- 1 file changed, 17 insertions(+), 52 deletions(-)
+ tests/intel/xe_eudebug_online.c | 30 ++++--------------------------
+ 1 file changed, 4 insertions(+), 26 deletions(-)
 
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index 928daaf5875d8e62888f8b994e31d5d6315afe73..36f9d87002d50ff3f4973657def65e282e53c899 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -358,42 +358,25 @@ static void
- test_query_gt_topology(int fd)
+diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+index a5b2864a47a34b9051756174f73667bbc602e00b..1e160b0c3d8a3d616bfd99e2a99fb6b0d042f021 100644
+--- a/tests/intel/xe_eudebug_online.c
++++ b/tests/intel/xe_eudebug_online.c
+@@ -1208,36 +1208,14 @@ static int query_attention_bitmask_size(int fd, int gt)
  {
- 	uint16_t dev_id = intel_get_drm_devid(fd);
+ 	uint32_t threads_per_eu = xe_hwconfig_lookup_value_u32(fd, INTEL_HWCONFIG_NUM_THREADS_PER_EU);
+ 	struct drm_xe_query_topology_mask *c_dss = NULL, *g_dss = NULL, *eu_per_dss = NULL;
 -	struct drm_xe_query_topology_mask *topology;
--	int pos = 0;
--	struct drm_xe_device_query query = {
--		.extensions = 0,
--		.query = DRM_XE_DEVICE_QUERY_GT_TOPOLOGY,
--		.size = 0,
--		.data = 0,
--	};
--	uint32_t topo_types = 0;
-+	struct drm_xe_query_topology_mask *topology, *topo;
-+	uint32_t topo_types = 0, size;
- 
--	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
--	igt_assert_neq(query.size, 0);
--
--	topology = malloc(query.size);
--	igt_assert(topology);
-+	topology = xe_query_device(fd, DRM_XE_DEVICE_QUERY_GT_TOPOLOGY, &size);
- 
--	query.data = to_user_pointer(topology);
--	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+	igt_info("size: %d\n", size);
- 
--	igt_info("size: %d\n", query.size);
--	dump_hex_debug(topology, query.size);
-+	dump_hex_debug(topology, size);
- 
--	while (query.size >= sizeof(struct drm_xe_query_topology_mask)) {
--		struct drm_xe_query_topology_mask *topo = (struct drm_xe_query_topology_mask*)((unsigned char*)topology + pos);
--		int sz = sizeof(struct drm_xe_query_topology_mask) + topo->num_bytes;
--
--		igt_info(" gt_id: %2d type: %-12s (%d) n:%d [%d] ", topo->gt_id,
--			 get_topo_name(topo->type), topo->type, topo->num_bytes, sz);
-+	xe_for_each_topology_mask(topology, size, topo) {
-+		igt_info(" gt_id: %2d type: %-12s (%d) n:%d [%zd] ", topo->gt_id,
-+			 get_topo_name(topo->type), topo->type, topo->num_bytes,
-+			 sizeof(struct drm_xe_query_topology_mask) + topo->num_bytes);
- 
- 		for (int j=0; j< topo->num_bytes; j++)
- 			igt_info(" %02x", topo->mask[j]);
- 
- 		topo_types = 1 << topo->type;
- 		igt_info("\n");
--		query.size -= sz;
--		pos += sz;
- 	}
- 
- 	/* sanity check EU type */
-@@ -422,35 +405,20 @@ static void
- test_query_gt_topology_l3_bank_mask(int fd)
- {
- 	uint16_t dev_id = intel_get_drm_devid(fd);
--	struct drm_xe_query_topology_mask *topology;
--	int pos = 0;
 -	struct drm_xe_device_query query = {
 -		.extensions = 0,
 -		.query = DRM_XE_DEVICE_QUERY_GT_TOPOLOGY,
@@ -165,47 +112,35 @@ index 928daaf5875d8e62888f8b994e31d5d6315afe73..36f9d87002d50ff3f4973657def65e28
 -		.data = 0,
 -	};
 +	struct drm_xe_query_topology_mask *topology, *topo;
+ 	uint8_t dss_mask, last_dss;
+-	int pos = 0;
 +	uint32_t size;
+ 	int i, last_dss_idx;
  
 -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
 -	igt_assert_neq(query.size, 0);
-+	topology = xe_query_device(fd, DRM_XE_DEVICE_QUERY_GT_TOPOLOGY, &size);
- 
+-
 -	topology = malloc(query.size);
 -	igt_assert(topology);
 -
 -	query.data = to_user_pointer(topology);
 -	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
 -
--	igt_info("size: %d\n", query.size);
--
 -	while (query.size >= sizeof(struct drm_xe_query_topology_mask)) {
--		struct drm_xe_query_topology_mask *topo = (struct drm_xe_query_topology_mask *)((unsigned char *)topology + pos);
--		int sz = sizeof(struct drm_xe_query_topology_mask) + topo->num_bytes;
-+	igt_info("size: %d\n", size);
- 
-+	xe_for_each_topology_mask(topology, size, topo) {
- 		if (topo->type == DRM_XE_TOPO_L3_BANK) {
- 			int count = 0;
- 
--			igt_info(" gt_id: %2d type: %-12s (%d) n:%d [%d] ", topo->gt_id,
--				 get_topo_name(topo->type), topo->type, topo->num_bytes, sz);
-+			igt_info(" gt_id: %2d type: %-12s (%d) n:%d [%zd] ", topo->gt_id,
-+				 get_topo_name(topo->type), topo->type, topo->num_bytes,
-+				 sizeof(struct drm_xe_query_topology_mask) + topo->num_bytes);
- 			for (int j = 0; j < topo->num_bytes; j++)
- 				igt_info(" %02x", topo->mask[j]);
- 
-@@ -471,9 +439,6 @@ test_query_gt_topology_l3_bank_mask(int fd)
- 			else if (IS_DG2(dev_id))
- 				igt_assert_eq((count % 8), 0);
- 		}
+-		struct drm_xe_query_topology_mask *topo;
+-		int sz;
+-
+-		topo = (struct drm_xe_query_topology_mask *)((unsigned char *)topology + pos);
+-		sz = sizeof(struct drm_xe_query_topology_mask) + topo->num_bytes;
 -
 -		query.size -= sz;
 -		pos += sz;
- 	}
++	topology = xe_query_device(fd, DRM_XE_DEVICE_QUERY_GT_TOPOLOGY, &size);
  
- 	free(topology);
++	xe_for_each_topology_mask(topology, size, topo) {
+ 		if (topo->gt_id != gt)
+ 			continue;
+ 
 
 -- 
 2.43.0
