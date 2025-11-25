@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C027CFD315
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9551CCFD379
 	for <igt-dev@archiver.kernel.org>; Tue, 25 Nov 2025 09:39:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C801710E39E;
-	Tue, 25 Nov 2025 09:39:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4C33510E39F;
+	Tue, 25 Nov 2025 09:39:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mtqf4ucf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TGRXqFFl";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C04610E39E
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Nov 2025 09:39:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D34F10E3A0
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Nov 2025 09:38:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764063541; x=1795599541;
+ t=1764063539; x=1795599539;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=v/vuJl7CJZ2GZTCl0tHqLLhlRDSypPOvZQjQtno0+2o=;
- b=mtqf4ucfixYxBFytNhi7M+hP4Pcj/p9lMa9mWg65hd94WQzzRos+5XFp
- P0uXOtJCs0bnDTo9Fc+iyA3sy9n+0/kiF/UxwjHH3zr8K/+iwzcy57dKI
- bp+D1jFK8Fc4rdu34ubyAE5/sw/9rKlIuSqr1N/wr5n8Dja1gQyR4GGct
- pcgT0hxWe/qnnPIOWOsQnAEVL42QXeXfaeYpGmJnUzWpQFzhGaKsqUq7s
- cvtflyQQLgr7VQTUOpAPKASe8UzQRElZQnb4+he/WtyuW8v2HzNcERcp1
- 5M8E0xdHup48z8BeD9OJ6pD14N4fEiKleieo2os4pJpSMi60d6phINWri g==;
-X-CSE-ConnectionGUID: +v+j8jmxSjqpnxEwcM5PZw==
-X-CSE-MsgGUID: x5F4KRZYQIaVbSdN9FoQ/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="66022186"
-X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; d="scan'208";a="66022186"
+ bh=0Nk6BofhcsvZtHcuj5Rf7yRGizMz7IMHy0OFKeeBfYs=;
+ b=TGRXqFFlnLMDs8t3ZM9mBaD8RFbiUZC+KoNriilzO9egGYFbw8Ajp0X9
+ 0Q/VVivR06IEwiTJq/+JfVruaLz2Ot4fNpqMwL5GhWy7ZJnvEE8gkNJAE
+ OVxEgZCZFoIjClWLYKUyNPaEs3562FrgNGbEPmr1vjsHy6oBtvHpIDmsh
+ OumUZDheXwgIhL3DxL/S21nOf0ChF4p0huQYV+OjMCk4SD1RsCtkGC4Vw
+ EccIlgoL23oaUzEuBT/SpdtF/WSAmxAmbEXgIRr+VKidgl71spmf7Lt7X
+ mOl3/l5fLGiPgVMl9ssmIoWr04G9wBVi3dxhlcuXwWFT006nra/euDWZP g==;
+X-CSE-ConnectionGUID: RxrZFy2LQfaBQfruY3aYaQ==
+X-CSE-MsgGUID: 6kaDPKw0R5eo92xNqHwzhQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="66022183"
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; d="scan'208";a="66022183"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Nov 2025 01:39:00 -0800
-X-CSE-ConnectionGUID: ATFkuaI7T5S9mKUB/XqqOg==
-X-CSE-MsgGUID: vteh1cAfReCpfNqyANJotQ==
+ 25 Nov 2025 01:38:59 -0800
+X-CSE-ConnectionGUID: vfT5dkBcTvqX+BYEbU/a3A==
+X-CSE-MsgGUID: 7rfI9UzBRyyg9/uU5EzKMg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; d="scan'208";a="215943995"
+X-IronPort-AV: E=Sophos;i="6.20,225,1758610800"; d="scan'208";a="215943988"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Nov 2025 01:38:58 -0800
+ 25 Nov 2025 01:38:57 -0800
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Tue, 25 Nov 2025 10:37:24 +0100
-Subject: [PATCH v6 4/7] lib/xe/xe_query: introduce iterator for GT topology
- masks
+Date: Tue, 25 Nov 2025 10:37:23 +0100
+Subject: [PATCH v6 3/7] lib/xe/xe_query: use recently introduced helper to
+ query device
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251125-xe_query_helpers-v6-4-97686fac1b77@intel.com>
+Message-Id: <20251125-xe_query_helpers-v6-3-97686fac1b77@intel.com>
 References: <20251125-xe_query_helpers-v6-0-97686fac1b77@intel.com>
 In-Reply-To: <20251125-xe_query_helpers-v6-0-97686fac1b77@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -59,18 +59,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1298;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7578;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=v/vuJl7CJZ2GZTCl0tHqLLhlRDSypPOvZQjQtno0+2o=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpJXjmGReO/RK4BlHSObIajf+ejj5WBXJazkL45
- /kz1qmAX8uJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaSV45gAKCRAjYrKT3hD9
- 1wgoC/0abVyzN+4gYYZQsd3WM1dXFLq1J3kE/rVmqCtOPXYScX+9sk6zo27nhp0Z8wXrIbPwl0x
- Kk68Xv71WtPOSm0JFGH9Mtif3yEKMx2QTsBNjwTUXYKekoPIPD/eyoeOrWV7JBHQJ/RZl+GrCVC
- wBxePt/oTd7i/pc8x1ZgSDRvwa1iw3wxIYg0f7S0MCZwy2U9Oyy7ori2NeG2KX7C+iPfAk8NSod
- pFfJF9j7eqVqRUZ4kqFvSWdlVR8v2AQCTtjPLlW/zxpUQGl/MPC6nKhnDipzlNMASqF2LiM2X/k
- V/g1lgOC9Vh1RtKHrcITo3HHzQRL9OPbLlZAZBJo4o4pSVkvlRxAtTyAVkLqfzf9HQ0LAVhIQ+M
- tubuL5R9ZDFBvQ5OE4JTUg7yRg0Br7flsXXfSJiaaOOiRyjxcncE2ssMxg7dI7TcpaojT7kMbg+
- 2sSHu3u1s65W78dgfSraIV/AEeL17CceMHny+WnSNoI5hpvJ604wu/Qgq6tAkYsQO30fg=
+ bh=0Nk6BofhcsvZtHcuj5Rf7yRGizMz7IMHy0OFKeeBfYs=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpJXjmx9HF3sV3yGvlfT1VAOqGvBkzkWGPSSiEx
+ G1i2hR6HSaJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaSV45gAKCRAjYrKT3hD9
+ 19mVC/4gij/m8BqFFn8nmAdK3pzD2uwBIuSjK0rcd5TPFdHQBpl5T7AOnNi/UF8uGhYoNNpUmA1
+ g8YjEN3Sn1bN4Zatg3FRjODaiYp62LRuryzrv7cl20gEGn8IWr0On5PZOS6WCTzmLcEOyS1ULfg
+ mQYXHosEgCnxs3j+Y/AQy8YpxqExe7i6AyxgIIv77vQIgVJhBFSgINAulDPAvhG5DBaDs1qVS5Q
+ UZPvSH3ikG1EMrw+HwOHSayL7fwixNMiZ99Rr4OxAaQzriADxlyzCp7aG8biWlDoNc6R1cX2dlh
+ O4bWiVlLbaPA9kSrc6JRM3oMlbJJ5SMrAv6iqcZ3+ZLVMq0RhbWafvNsSxewX/8OZXhM7YvkX6N
+ E/s4FW7+V7LwaNoqONKPncrd76AcZkEiuA+i2TGDiSaLUYrHT0OdW/Q5weiRdMYa2GM3L4LmnJd
+ DlJ29v7L14vtSTxXl0A9PTYekZSAl0QkUV+OhjQ7m9EI/FxQ/CoFIHMoXQEcWJhbutg7A=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -88,33 +88,245 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Topology masks returned by device query DRM_XE_DEVICE_QUERY_GT_TOPOLOGY
-are placed sequentially in one blob of memory, moreover every mask can
-have different size as they contains flexible arrays.
+It simplifies the code.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/xe/xe_query.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ lib/xe/xe_query.c | 190 +++---------------------------------------------------
+ 1 file changed, 8 insertions(+), 182 deletions(-)
 
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 15d5c26baf5be6e107495247ca1aaefea551d821..3eb05a6c0535f3f2edce8b8591d17198ee356b68 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -97,6 +97,12 @@ struct xe_device {
- #define XE_IS_CLASS_SYSMEM(__region) ((__region)->mem_class == DRM_XE_MEM_REGION_CLASS_SYSMEM)
- #define XE_IS_CLASS_VRAM(__region) ((__region)->mem_class == DRM_XE_MEM_REGION_CLASS_VRAM)
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index a185b852e19b87e393f4bc6edbf9e0952439d518..3f3ee9b965949c2d0b821c9346183021db8338a9 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -68,83 +68,6 @@ skip_query:
+ 	return data;
+ }
  
-+#define xe_for_each_topology_mask(__masks, __size, __mask) \
-+	for (__mask = (__masks); \
-+	     (void *)__mask->mask - (void *)(__masks) < (__size) && \
-+	     (void *)&__mask->mask[__mask->num_bytes] - (void *)(__masks) <= (__size); \
-+	     __mask = (void *)&__mask->mask[__mask->num_bytes])
-+
- /*
-  * Max possible engine instance in drm_xe_engine_class_instance::engine_instance. Only
-  * used to declare arrays of drm_xe_engine_class_instance
+-static struct drm_xe_query_config *xe_query_config_new(int fd)
+-{
+-	struct drm_xe_query_config *config;
+-	struct drm_xe_device_query query = {
+-		.extensions = 0,
+-		.query = DRM_XE_DEVICE_QUERY_CONFIG,
+-		.size = 0,
+-		.data = 0,
+-	};
+-
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+-
+-	config = malloc(query.size);
+-	igt_assert(config);
+-
+-	query.data = to_user_pointer(config);
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+-
+-	VG(VALGRIND_MAKE_MEM_DEFINED(config, query.size));
+-
+-	igt_assert(config->num_params > 0);
+-
+-	return config;
+-}
+-
+-static uint32_t *xe_query_hwconfig_new(int fd, uint32_t *hwconfig_size)
+-{
+-	uint32_t *hwconfig;
+-	struct drm_xe_device_query query = {
+-		.extensions = 0,
+-		.query = DRM_XE_DEVICE_QUERY_HWCONFIG,
+-		.size = 0,
+-		.data = 0,
+-	};
+-
+-	/* Perform the initial query to get the size */
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+-	if (!query.size)
+-		return NULL;
+-
+-	hwconfig = malloc(query.size);
+-	igt_assert(hwconfig);
+-
+-	query.data = to_user_pointer(hwconfig);
+-
+-	/* Perform the query to get the actual data */
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+-
+-	VG(VALGRIND_MAKE_MEM_DEFINED(hwconfig, query.size));
+-
+-	*hwconfig_size = query.size;
+-	return hwconfig;
+-}
+-
+-static struct drm_xe_query_gt_list *xe_query_gt_list_new(int fd)
+-{
+-	struct drm_xe_query_gt_list *gt_list;
+-	struct drm_xe_device_query query = {
+-		.extensions = 0,
+-		.query = DRM_XE_DEVICE_QUERY_GT_LIST,
+-		.size = 0,
+-		.data = 0,
+-	};
+-
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+-
+-	gt_list = malloc(query.size);
+-	igt_assert(gt_list);
+-
+-	query.data = to_user_pointer(gt_list);
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+-
+-	VG(VALGRIND_MAKE_MEM_DEFINED(gt_list, query.size));
+-
+-	return gt_list;
+-}
+-
+ static uint64_t __memory_regions(const struct drm_xe_query_gt_list *gt_list)
+ {
+ 	uint64_t regions = 0;
+@@ -157,103 +80,6 @@ static uint64_t __memory_regions(const struct drm_xe_query_gt_list *gt_list)
+ 	return regions;
+ }
+ 
+-static struct drm_xe_query_engines *xe_query_engines(int fd)
+-{
+-	struct drm_xe_query_engines *engines;
+-	struct drm_xe_device_query query = {
+-		.extensions = 0,
+-		.query = DRM_XE_DEVICE_QUERY_ENGINES,
+-		.size = 0,
+-		.data = 0,
+-	};
+-
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+-
+-	engines = malloc(query.size);
+-	igt_assert(engines);
+-
+-	query.data = to_user_pointer(engines);
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+-
+-	VG(VALGRIND_MAKE_MEM_DEFINED(engines, query.size));
+-
+-	return engines;
+-}
+-
+-static struct drm_xe_query_mem_regions *xe_query_mem_regions_new(int fd)
+-{
+-	struct drm_xe_query_mem_regions *mem_regions;
+-	struct drm_xe_device_query query = {
+-		.extensions = 0,
+-		.query = DRM_XE_DEVICE_QUERY_MEM_REGIONS,
+-		.size = 0,
+-		.data = 0,
+-	};
+-
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+-
+-	mem_regions = malloc(query.size);
+-	igt_assert(mem_regions);
+-
+-	query.data = to_user_pointer(mem_regions);
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+-
+-	VG(VALGRIND_MAKE_MEM_DEFINED(mem_regions, query.size));
+-
+-	return mem_regions;
+-}
+-
+-static struct drm_xe_query_eu_stall *xe_query_eu_stall_new(int fd)
+-{
+-	struct drm_xe_query_eu_stall *query_eu_stall;
+-	struct drm_xe_device_query query = {
+-		.extensions = 0,
+-		.query = DRM_XE_DEVICE_QUERY_EU_STALL,
+-		.size = 0,
+-		.data = 0,
+-	};
+-
+-	/* Support older kernels where this uapi is not yet available */
+-	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
+-		return NULL;
+-	igt_assert_neq(query.size, 0);
+-
+-	query_eu_stall = malloc(query.size);
+-	igt_assert(query_eu_stall);
+-
+-	query.data = to_user_pointer(query_eu_stall);
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+-
+-	VG(VALGRIND_MAKE_MEM_DEFINED(query_eu_stall, query.size));
+-
+-	return query_eu_stall;
+-}
+-
+-static struct drm_xe_query_oa_units *xe_query_oa_units_new(int fd)
+-{
+-	struct drm_xe_query_oa_units *oa_units;
+-	struct drm_xe_device_query query = {
+-		.extensions = 0,
+-		.query = DRM_XE_DEVICE_QUERY_OA_UNITS,
+-		.size = 0,
+-		.data = 0,
+-	};
+-
+-	/* Support older kernels where this uapi is not yet available */
+-	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
+-		return NULL;
+-
+-	oa_units = malloc(query.size);
+-	igt_assert(oa_units);
+-
+-	query.data = to_user_pointer(oa_units);
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
+-
+-	VG(VALGRIND_MAKE_MEM_DEFINED(oa_units, query.size));
+-
+-	return oa_units;
+-}
+-
+ static uint64_t native_region_for_gt(const struct drm_xe_gt *gt)
+ {
+ 	uint64_t region;
+@@ -412,11 +238,11 @@ struct xe_device *xe_device_get(int fd)
+ 	igt_assert(xe_dev);
+ 
+ 	xe_dev->fd = fd;
+-	xe_dev->config = xe_query_config_new(fd);
+-	xe_dev->hwconfig = xe_query_hwconfig_new(fd, &xe_dev->hwconfig_size);
++	xe_dev->config = xe_query_device(fd, DRM_XE_DEVICE_QUERY_CONFIG, NULL);
++	xe_dev->hwconfig = xe_query_device_may_fail(fd, DRM_XE_DEVICE_QUERY_HWCONFIG, &xe_dev->hwconfig_size);
+ 	xe_dev->va_bits = xe_dev->config->info[DRM_XE_QUERY_CONFIG_VA_BITS];
+ 	xe_dev->dev_id = xe_dev->config->info[DRM_XE_QUERY_CONFIG_REV_AND_DEVICE_ID] & 0xffff;
+-	xe_dev->gt_list = xe_query_gt_list_new(fd);
++	xe_dev->gt_list = xe_query_device(fd, DRM_XE_DEVICE_QUERY_GT_LIST, NULL);
+ 
+ 	/* GT IDs may be non-consecutive; keep a mask of valid IDs */
+ 	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++)
+@@ -427,10 +253,10 @@ struct xe_device *xe_device_get(int fd)
+ 		xe_dev->tile_mask |= (1ull << xe_dev->gt_list->gt_list[gt].tile_id);
+ 
+ 	xe_dev->memory_regions = __memory_regions(xe_dev->gt_list);
+-	xe_dev->engines = xe_query_engines(fd);
+-	xe_dev->mem_regions = xe_query_mem_regions_new(fd);
+-	xe_dev->eu_stall = xe_query_eu_stall_new(fd);
+-	xe_dev->oa_units = xe_query_oa_units_new(fd);
++	xe_dev->engines = xe_query_device(fd, DRM_XE_DEVICE_QUERY_ENGINES, NULL);
++	xe_dev->mem_regions = xe_query_device(fd, DRM_XE_DEVICE_QUERY_MEM_REGIONS, NULL);
++	xe_dev->eu_stall = xe_query_device_may_fail(fd, DRM_XE_DEVICE_QUERY_EU_STALL, NULL);
++	xe_dev->oa_units = xe_query_device_may_fail(fd, DRM_XE_DEVICE_QUERY_OA_UNITS, NULL);
+ 
+ 	/*
+ 	 * vram_size[] and visible_vram_size[] are indexed by uapi ID; ensure
+@@ -860,7 +686,7 @@ static void __available_vram_size_snapshot(int fd, int gt, struct __available_vr
+ 	mem_region = &xe_dev->mem_regions->mem_regions[region_idx];
+ 
+ 	if (XE_IS_CLASS_VRAM(mem_region)) {
+-		mem_regions = xe_query_mem_regions_new(fd);
++		mem_regions = xe_query_device(fd, DRM_XE_DEVICE_QUERY_MEM_REGIONS, NULL);
+ 		pthread_mutex_lock(&cache.cache_mutex);
+ 		mem_region->used = mem_regions->mem_regions[region_idx].used;
+ 		mem_region->cpu_visible_used =
 
 -- 
 2.43.0
