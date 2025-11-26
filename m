@@ -4,34 +4,34 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C66C3D1039D
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Nov 2025 10:56:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 315CED1039D
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Nov 2025 10:56:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8144C10E591;
-	Wed, 26 Nov 2025 10:56:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DC5FF10E5A9;
+	Wed, 26 Nov 2025 10:56:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="Quu15OgZ";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="SM1SMyzO";
 	dkim-atps=neutral
 Received: from bali.collaboradmins.com (bali.collaboradmins.com
  [148.251.105.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7E4910E52C
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Nov 2025 10:56:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF63710E52C
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Nov 2025 10:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1764154568;
- bh=G131HyoeR1Go/n6SAY05vCQbnSDNoVlqcnG8kPBhfHQ=;
- h=From:To:Cc:Subject:Date:From;
- b=Quu15OgZfSRQd41Z3o0DNSr+iSlXHN+245o9Vo80V3tI2Taw/zMVACJExMI5KRKTM
- UAicvvS1ysWoDmTsHuHlaK9qU1oF1bX8DWH/3G5C8NIUbESuUbvK2iYTSobSivUNCF
- jtC37J6sU8W5wfpZEfkWo0bdzbC5TJCaAfoNNq4U6mEBr8Rk9LguBP3kXTn7BLBqXO
- xvi2eC9YxH6TACMY6WLxS+BJ7hwuaMp9UJyM8o5ePHbkLPg2vldImBn/xTGiVK1JKJ
- WjXojB7UVWfaEVrs587dNGteHmicpW9doM9+qQvpXCMFqMUeBzIHHSoZvC7YmKTjil
- Vo3hrcQsu3hMQ==
+ s=mail; t=1764154569;
+ bh=spd3sGeHufDzu8aD1MUvWyGgDF/BHCXB/HLe9TFNy2s=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=SM1SMyzOyag9nr9sifjr7BFzAjuF5wwywhvw5ChxR5F5osxbzuhSbzWrhclWLmxcv
+ tt5tNtNs3GEIdf5IJfEgv4ms/yHxRsawZNNae90FcIqCAiBF0C5xxk4vD5q4l7cjB+
+ Sb54oGGLSnfuzHIKjGxPJezVRe7AVrC8km0OBM+UvX0tjY06yOtSrhiJzTSp8pq7a9
+ hxO31iW7aiGKHo2iba4TG3CAaWXzESu9Qhux19n1iw0G6LaNBLdoahjT468JjOCn9E
+ rbE6jma5NqiWztAcFEvOHECmrsvUA3pmk24VgPLZSOFxIOSXqyJfsM94d4tnOm6sJ9
+ fhySgAQkviuvg==
 Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:a2a7:f53:ebb0:945e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested) (Authenticated sender: bbrezillon)
- by bali.collaboradmins.com (Postfix) with ESMTPSA id 9E12217E00B0;
- Wed, 26 Nov 2025 11:56:07 +0100 (CET)
+ by bali.collaboradmins.com (Postfix) with ESMTPSA id D0F8817E110C;
+ Wed, 26 Nov 2025 11:56:08 +0100 (CET)
 From: Boris Brezillon <boris.brezillon@collabora.com>
 To: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
  Arkadiusz Hiler <arek@hiler.eu>,
@@ -42,10 +42,13 @@ Cc: Boris Brezillon <boris.brezillon@collabora.com>,
  Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
  =?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
  Daniel Almeida <daniel.almeida@collabora.com>, kernel@collabora.com
-Subject: [PATCH i-g-t v1 v1 0/3] tests/panthor: Add more tests
-Date: Wed, 26 Nov 2025 11:55:55 +0100
-Message-ID: <20251126105558.3607460-1-boris.brezillon@collabora.com>
+Subject: [PATCH i-g-t v1 v1 2/3] tests/panthor: Add a test to make sure the
+ buffer is zeroed at alloc time
+Date: Wed, 26 Nov 2025 11:55:57 +0100
+Message-ID: <20251126105558.3607460-3-boris.brezillon@collabora.com>
 X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251126105558.3607460-1-boris.brezillon@collabora.com>
+References: <20251126105558.3607460-1-boris.brezillon@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -63,30 +66,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hello,
+This covering for this bug [1]. Add an IGT test to make sure we don't
+hit that again.
 
-Here's a bunch of tests that were developped while fixing different
-bugs in panthor. I'm posting them before I forget.
+[1]https://lore.kernel.org/20251107171214.1186299-1-boris.brezillon@collabora.com
 
-Regards,
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+---
+ tests/panthor/panthor_gem.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Boris
-
-Boris Brezillon (3):
-  drm-uapi/panthor: Sync panthor uapi
-  tests/panthor: Add a test to make sure the buffer is zeroed at alloc
-    time
-  tests/panthor: Add scheduler tests
-
- include/drm-uapi/panthor_drm.h | 213 +++++++++++++++++----
- lib/igt_panthor.c              |  46 +++++
- lib/igt_panthor.h              |  77 ++++++++
- tests/panthor/meson.build      |   1 +
- tests/panthor/panthor_gem.c    |  11 ++
- tests/panthor/panthor_sched.c  | 338 +++++++++++++++++++++++++++++++++
- 6 files changed, 644 insertions(+), 42 deletions(-)
- create mode 100644 tests/panthor/panthor_sched.c
-
+diff --git a/tests/panthor/panthor_gem.c b/tests/panthor/panthor_gem.c
+index 57cd97e809fd..1566c713f876 100644
+--- a/tests/panthor/panthor_gem.c
++++ b/tests/panthor/panthor_gem.c
+@@ -66,6 +66,17 @@ igt_main {
+ 		igt_panthor_free_bo(fd, &bo);
+ 	}
+ 
++	igt_describe_f("Check zero-ing of buffer at creation time");
++	igt_subtest("bo_zeroed") {
++		struct panthor_bo bo;
++
++		igt_panthor_bo_create_mapped(fd, &bo, getpagesize(), 0, 0);
++		igt_assert(bo.map);
++		igt_assert_eq(*((uint32_t *)bo.map), 0);
++
++		igt_panthor_free_bo(fd, &bo);
++	}
++
+ 	igt_fixture {
+ 		drm_close_driver(fd);
+ 	}
 -- 
 2.51.1
 
