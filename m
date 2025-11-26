@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FF7DD10379
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Nov 2025 03:50:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22BE1D1037D
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Nov 2025 03:50:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 27BBF10E502;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6D07A10E509;
 	Wed, 26 Nov 2025 03:50:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DupX6qim";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EmAc7Olq";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB74B10E0F7
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A24BC10E4FF
  for <igt-dev@lists.freedesktop.org>; Wed, 26 Nov 2025 03:50:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1764129020; x=1795665020;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=lySY9flbcu/nxrRGrRrEQ95q+nBKI0Jm5VpRh9OIGms=;
- b=DupX6qimG4bu2q8Ficumj3WJ1sjBNEe/Rl70SDZmYzJxT9nq2jNp/xDt
- YaBu6xY2moHSPWAr9y+oGhQ78g8Bl88qNVsAq/8he/OTQbH/uHXWgg+/5
- Mh7tascYhcSTcdZmcOTZjRmZ20Qk7gQ+QP0fAqAKXq7sw6cfvdRqQD5wh
- f7aScAoWYwpAumiNLbzXr4jcJfLSbMfl5AQq5LExG+ZqCpufgRWlMaFpd
- ScLEa4SuQSzoRb+S3yuAHJ/BTdMbV6ROOq+nO3C988/g/eZ7in4REtoTq
- aDCrkcESHtDnhsYApe3r5bSjUNd4w76RW4ijTcV5Iyj9V+45B3f8ktSo+ Q==;
-X-CSE-ConnectionGUID: WSTZzsEpTzWe+5U2NprPHw==
-X-CSE-MsgGUID: jP5MVAZfRoyiJw4qy9Nuqg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="76840039"
-X-IronPort-AV: E=Sophos;i="6.20,227,1758610800"; d="scan'208";a="76840039"
+ bh=wGmSivA0d4Qn6t+x0/ONM/MpKBLKy6TrykkJwu0dDUE=;
+ b=EmAc7Olq2kxmtG8KUgdsxF2CmgsCTMhdcdKc1M5gnURIJBJqxkVX8qHv
+ bNVO2v5v/hSTvPuGYq/ql4RRh/mkA2gNTyq8F7uxT3izhyptTaBn262ZZ
+ n2USY3CsDeFIsvDa8ZYjJbMqPE9arStCXN74FSfetji3gBTTJz10r/5uY
+ ktmk08QGsyOOcflGO7lXqkx+EZ9uUKgB7pG9RY/94ItV54cH2f+MPpzKk
+ hU2WhrtIZPLZPfkNFMizh6tdqyZLH5aDVD7yn7YFE6py5TXHCTSuS5UrR
+ tco23BSCmPyoA6+OL3XlRn9ZFzK8+H1mf9iKpzv3ZbzMiOsdfQsxJGl3P A==;
+X-CSE-ConnectionGUID: WECb24laTAKkkqm9e82yFQ==
+X-CSE-MsgGUID: KFYYCMF2RFafotwO2pYtvQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11624"; a="76840038"
+X-IronPort-AV: E=Sophos;i="6.20,227,1758610800"; d="scan'208";a="76840038"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  25 Nov 2025 19:50:19 -0800
-X-CSE-ConnectionGUID: fFPg/AYgR+m43uoB992jZw==
-X-CSE-MsgGUID: dZQ1x6yGQsSv1ZNLBFxltA==
+X-CSE-ConnectionGUID: BFOMVNrQQsawfOthHn/cqw==
+X-CSE-MsgGUID: mj/rDsWMS8SwMrA/DpCb2A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,227,1758610800"; d="scan'208";a="193639497"
+X-IronPort-AV: E=Sophos;i="6.20,227,1758610800"; d="scan'208";a="193639494"
 Received: from orsosgc001.jf.intel.com ([10.88.27.185])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  25 Nov 2025 19:50:19 -0800
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: [PATCH i-g-t 4/5] tests/intel/xe_oa: Run mmio-trigger tests on all OA
- units
-Date: Tue, 25 Nov 2025 19:50:11 -0800
-Message-ID: <20251126035012.12967-5-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 3/5] tests/intel/xe_oa: Return hwe from same gt from
+ oa_unit_engine()
+Date: Tue, 25 Nov 2025 19:50:10 -0800
+Message-ID: <20251126035012.12967-4-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20251126035012.12967-1-ashutosh.dixit@intel.com>
 References: <20251126035012.12967-1-ashutosh.dixit@intel.com>
@@ -68,201 +68,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Expand mmio-trigger tests to all OA units (rather than just OAG unit).
+For some tests (e.g. mmio trigger) a hwe (and exec_queue) is needed for
+batch submissions, even when the OA unit does not have any attached
+hwe's (e.g. OAM SAG). To enable such use cases, return a hwe from the same
+gt when an OA unit has no attached engines.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/intel/xe_oa.c | 102 +++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 87 insertions(+), 15 deletions(-)
+ tests/intel/xe_oa.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index c8475720c5..2f966e808f 100644
+index 9302d1c83a..c8475720c5 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -73,9 +73,7 @@
+@@ -486,7 +486,22 @@ static u64 oa_format_fields(u64 name)
  
- #define OAG_OASTATUS (0xdafc)
- #define OAG_PERF_COUNTER_B(idx) (0xDA94 + 4 * (idx))
--#define OAG_OATAILPTR (0xdb04)
- #define OAG_OATAILPTR_MASK 0xffffffc0
--#define OAG_OABUFFER (0xdb08)
- 
- #define XE_OA_MAX_SET_PROPERTIES 16
- 
-@@ -93,6 +91,24 @@ struct accumulator {
- 	uint64_t deltas[MAX_RAW_OA_COUNTERS];
- };
- 
-+#define MEDIA_GT_GSI_OFFSET		0x380000
-+#define XE_OAM_SAG_BASE_ADJ		(MEDIA_GT_GSI_OFFSET + 0x13000)
-+#define XE_OAM_SCMI_0_BASE_ADJ		(MEDIA_GT_GSI_OFFSET + 0x14000)
-+#define XE_OAM_SCMI_1_BASE_ADJ		(MEDIA_GT_GSI_OFFSET + 0x14800)
+ static const struct drm_xe_engine_class_instance *oa_unit_engine(const struct drm_xe_oa_unit *oau)
+ {
+-	return !oau ? NULL : oau->num_engines ? &oau->eci[random() % oau->num_engines] : NULL;
++	const struct drm_xe_engine_class_instance *hwe;
 +
-+/** struct xe_oa_regs - Registers for each OA unit */
-+struct xe_oa_regs {
-+	u32 base;
-+	u32 oa_head_ptr;
-+	u32 oa_tail_ptr;
-+	u32 oa_buffer;
-+	u32 oa_ctx_ctrl;
-+	u32 oa_ctrl;
-+	u32 oa_debug;
-+	u32 oa_status;
-+	u32 oa_mmio_trg;
-+};
++	igt_assert(oau);
 +
- struct oa_buf_size {
- 	char name[12];
- 	uint32_t size;
-@@ -3901,10 +3917,10 @@ emit_oa_reg_read(struct intel_bb *ibb, struct intel_buf *dst, uint32_t offset,
++	hwe = oau->num_engines ? &oau->eci[random() % oau->num_engines] : NULL;
++
++	/* If an OA unit has no hwe's, return a hwe from the same gt */
++	if (hwe || !(oau->capabilities & DRM_XE_OA_CAPS_OA_UNIT_GT_ID))
++		goto exit;
++
++	xe_for_each_engine(drm_fd, hwe)
++		if (hwe->gt_id == oau->gt_id)
++			break;
++	igt_assert(hwe);
++exit:
++	return hwe;
  }
  
- static void
--emit_mmio_triggered_report(struct intel_bb *ibb, uint32_t value)
-+emit_mmio_triggered_report(struct intel_bb *ibb, uint32_t reg, uint32_t value)
- {
- 	intel_bb_out(ibb, MI_LOAD_REGISTER_IMM(1));
--	intel_bb_out(ibb, OAG_MMIOTRIGGER);
-+	intel_bb_out(ibb, reg);
- 	intel_bb_out(ibb, value);
- }
- 
-@@ -3979,6 +3995,58 @@ static u32 oa_get_mmio_base(const struct drm_xe_engine_class_instance *hwe)
- 	return mmio_base;
- }
- 
-+/* For register mmio offsets look at drivers/gpu/drm/xe/regs/xe_oa_regs.h in the kernel */
-+static struct xe_oa_regs __oag_regs(void)
-+{
-+	return (struct xe_oa_regs) {
-+		.base		= 0,
-+		.oa_head_ptr	= 0xdb00,
-+		.oa_tail_ptr	= 0xdb04,
-+		.oa_buffer	= 0xdb08,
-+		.oa_ctx_ctrl	= 0x2b28,
-+		.oa_ctrl	= 0xdaf4,
-+		.oa_debug	= 0xdaf8,
-+		.oa_status	= 0xdafc,
-+		.oa_mmio_trg	= 0xdb1c,
-+	};
-+}
-+
-+static struct xe_oa_regs __oam_regs(u32 base)
-+{
-+	return (struct xe_oa_regs) {
-+		.base		= base,
-+		.oa_head_ptr	= base + 0x1a0,
-+		.oa_tail_ptr	= base + 0x1a4,
-+		.oa_buffer	= base + 0x1a8,
-+		.oa_ctx_ctrl	= base + 0x1bc,
-+		.oa_ctrl	= base + 0x194,
-+		.oa_debug	= base + 0x198,
-+		.oa_status	= base + 0x19c,
-+		.oa_mmio_trg	= base + 0x1d0,
-+	};
-+}
-+
-+static struct xe_oa_regs oa_unit_regs(const struct drm_xe_oa_unit *oau)
-+{
-+	switch (oau->oa_unit_type) {
-+	case DRM_XE_OA_UNIT_TYPE_OAM: {
-+		const struct drm_xe_oa_unit *first_oam_unit =
-+			oa_unit_by_type(drm_fd, DRM_XE_OA_UNIT_TYPE_OAM);
-+
-+		igt_assert(first_oam_unit);
-+		if (oau->oa_unit_id == first_oam_unit->oa_unit_id)
-+			return __oam_regs(XE_OAM_SCMI_0_BASE_ADJ);
-+		else
-+			return __oam_regs(XE_OAM_SCMI_1_BASE_ADJ);
-+	}
-+	case DRM_XE_OA_UNIT_TYPE_OAM_SAG:
-+		return __oam_regs(XE_OAM_SAG_BASE_ADJ);
-+	case DRM_XE_OA_UNIT_TYPE_OAG:
-+	default:
-+		return __oag_regs();
-+	}
-+}
-+
- /**
-  * SUBTEST: oa-regs-whitelisted
-  * Description: Verify that OA registers are whitelisted
-@@ -4034,6 +4102,7 @@ __test_mmio_triggered_reports(const struct drm_xe_oa_unit *oau)
- {
- 	struct intel_xe_perf_metric_set *test_set = oa_unit_metric_set(oau);
- 	const struct drm_xe_engine_class_instance *hwe = oa_unit_engine(oau);
-+	struct xe_oa_regs regs = oa_unit_regs(oau);
- 	uint64_t properties[] = {
- 		DRM_XE_OA_PROPERTY_OA_UNIT_ID, oau->oa_unit_id,
- 		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-@@ -4078,18 +4147,18 @@ __test_mmio_triggered_reports(const struct drm_xe_oa_unit *oau)
- 	buf = mmap(0, default_oa_buffer_size, PROT_READ, MAP_PRIVATE, stream_fd, 0);
- 	igt_assert(buf != NULL);
- 
--	emit_oa_reg_read(ibb, dst_buf, 0, OAG_OABUFFER);
--	emit_oa_reg_read(ibb, dst_buf, 4, OAG_OATAILPTR);
--	emit_mmio_triggered_report(ibb, 0xc0ffee11);
-+	emit_oa_reg_read(ibb, dst_buf, 0, regs.oa_buffer);
-+	emit_oa_reg_read(ibb, dst_buf, 4, regs.oa_tail_ptr);
-+	emit_mmio_triggered_report(ibb, regs.oa_mmio_trg, 0xc0ffee11);
- 
--	if (render_copy)
-+	if (render_copy && oau->oa_unit_type == DRM_XE_OA_UNIT_TYPE_OAG)
- 		render_copy(ibb,
- 			    &src, 0, 0, rc_width, rc_height,
- 			    &dst, 0, 0);
- 
--	emit_mmio_triggered_report(ibb, 0xc0ffee22);
-+	emit_mmio_triggered_report(ibb, regs.oa_mmio_trg, 0xc0ffee22);
- 
--	emit_oa_reg_read(ibb, dst_buf, 8, OAG_OATAILPTR);
-+	emit_oa_reg_read(ibb, dst_buf, 8, regs.oa_tail_ptr);
- 
- 	intel_bb_flush_render(ibb);
- 	intel_bb_sync(ibb);
-@@ -4141,6 +4210,7 @@ __test_mmio_triggered_reports_read(const struct drm_xe_oa_unit *oau)
- {
- 	struct intel_xe_perf_metric_set *test_set = oa_unit_metric_set(oau);
- 	const struct drm_xe_engine_class_instance *hwe = oa_unit_engine(oau);
-+	struct xe_oa_regs regs = oa_unit_regs(oau);
- 	uint64_t properties[] = {
- 		DRM_XE_OA_PROPERTY_OA_UNIT_ID, oau->oa_unit_id,
- 		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-@@ -4174,14 +4244,14 @@ __test_mmio_triggered_reports_read(const struct drm_xe_oa_unit *oau)
- 	stream_fd = __perf_open(drm_fd, &param, false);
- 	set_fd_flags(stream_fd, O_CLOEXEC);
- 
--	emit_mmio_triggered_report(ibb, 0xc0ffee11);
-+	emit_mmio_triggered_report(ibb, regs.oa_mmio_trg, 0xc0ffee11);
- 
--	if (render_copy)
-+	if (render_copy && oau->oa_unit_type == DRM_XE_OA_UNIT_TYPE_OAG)
- 		render_copy(ibb,
- 			    &src, 0, 0, rc_width, rc_height,
- 			    &dst, 0, 0);
- 
--	emit_mmio_triggered_report(ibb, 0xc0ffee22);
-+	emit_mmio_triggered_report(ibb, regs.oa_mmio_trg, 0xc0ffee22);
- 
- 	intel_bb_flush_render(ibb);
- 	intel_bb_sync(ibb);
-@@ -5195,13 +5265,15 @@ igt_main_args("b:t", long_options, help_str, opt_handler, NULL)
- 
- 		igt_subtest_with_dynamic("mmio-triggered-reports") {
- 			igt_require(HAS_OA_MMIO_TRIGGER(devid));
--			__for_oa_unit_by_type(DRM_XE_OA_UNIT_TYPE_OAG)
-+			igt_require(oau->capabilities & DRM_XE_OA_CAPS_OA_UNIT_GT_ID);
-+			__for_each_oa_unit(oau)
- 				test_mmio_triggered_reports(oau, false);
- 		}
- 
- 		igt_subtest_with_dynamic("mmio-triggered-reports-read") {
- 			igt_require(HAS_OA_MMIO_TRIGGER(devid));
--			__for_oa_unit_by_type(DRM_XE_OA_UNIT_TYPE_OAG)
-+			igt_require(oau->capabilities & DRM_XE_OA_CAPS_OA_UNIT_GT_ID);
-+			__for_each_oa_unit(oau)
- 				test_mmio_triggered_reports(oau, true);
- 		}
- 	}
+ static int __first_and_num_oa_units(const struct drm_xe_oa_unit **oau)
 -- 
 2.48.1
 
