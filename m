@@ -4,34 +4,34 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFC15D1037B
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D716BD10F22
 	for <igt-dev@archiver.kernel.org>; Wed, 26 Nov 2025 10:56:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8441110E5AC;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8436510E534;
 	Wed, 26 Nov 2025 10:56:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="geWcUH2T";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="XVDeRYd3";
 	dkim-atps=neutral
 Received: from bali.collaboradmins.com (bali.collaboradmins.com
  [148.251.105.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3422610E52C
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Nov 2025 10:56:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5868B10E52C
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Nov 2025 10:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1764154569;
- bh=gum/XHEqJr78bkaW47ECzDM0QW6UXYTJ3hGJ481ZXSM=;
+ s=mail; t=1764154568;
+ bh=khc+F9U4eZv4t/LvrjYeHe/lsPW5X7t0dTqipi/oWww=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=geWcUH2TwiTF92ZmJK94lvtOql/e5qdfjdnZuvtbp2uDqty335k3NzlqDACxM4WV8
- W0DFb86An1//B3TkvH/KIyH7bKl8dP6t9yz41JII2NpvCeDIQiOsvMjU3ohrD2jGfP
- cwSWi18Hwe+6BgELbjVRZVOCiNccTy/Qr6HOebeP7saJx8sueoQ8p3gMj/ntxtjqyX
- rnRDJZepUYT2xs3xzkA4B2AkFO2DPZHpSJabTq1EKX8PJ1HVRA0w4xkltWd8WlMPyy
- EwE7ygsUXI6Bjq1KKYkGMocP3bvRBrcd6XS5EBdUqSLwWzZoQNnQ86ol9HNDtNYfL6
- 1+JKCn1RXaFbw==
+ b=XVDeRYd3tZYs437/+OW+AH5bwiadIzRMYvZN4Rkb9JQ6JGIB3SNROfdBNgvOVXMds
+ DfKFlxUOSeiCX53Fm0IGZPRgSpYl3QbyyBo+FCK7eR9AoMOLpHUW9zQjneVpx2Rn1X
+ JVDrVljTmmqNDwQTmP4XDIF4e9FrbxjWAuiCDZAGJuBSZQlr9qFqxpiXwoQrAOrcMN
+ MiSotaLnPapfXXjKxPR11cfLCowau3L3H158IYSXrmWqpbRRzU0Q+9FmmFbb/x6r+J
+ 3UlKoe0BhVWhKBAB5xoxGILMcQ6RpAQxjDowcNS+BvwUvgn1nS9i7zAhfbSohk3x8M
+ 4k5df04fEJb+w==
 Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:a2a7:f53:ebb0:945e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested) (Authenticated sender: bbrezillon)
- by bali.collaboradmins.com (Postfix) with ESMTPSA id 698CB17E13D5;
- Wed, 26 Nov 2025 11:56:09 +0100 (CET)
+ by bali.collaboradmins.com (Postfix) with ESMTPSA id 43B9B17E101A;
+ Wed, 26 Nov 2025 11:56:08 +0100 (CET)
 From: Boris Brezillon <boris.brezillon@collabora.com>
 To: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
  Arkadiusz Hiler <arek@hiler.eu>,
@@ -42,9 +42,9 @@ Cc: Boris Brezillon <boris.brezillon@collabora.com>,
  Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
  =?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
  Daniel Almeida <daniel.almeida@collabora.com>, kernel@collabora.com
-Subject: [PATCH i-g-t v1 v1 3/3] tests/panthor: Add scheduler tests
-Date: Wed, 26 Nov 2025 11:55:58 +0100
-Message-ID: <20251126105558.3607460-4-boris.brezillon@collabora.com>
+Subject: [PATCH i-g-t v1 v1 1/3] drm-uapi/panthor: Sync panthor uapi
+Date: Wed, 26 Nov 2025 11:55:56 +0100
+Message-ID: <20251126105558.3607460-2-boris.brezillon@collabora.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251126105558.3607460-1-boris.brezillon@collabora.com>
 References: <20251126105558.3607460-1-boris.brezillon@collabora.com>
@@ -65,580 +65,288 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Tests developed while working on this set of fixes [1].
-
-[1]https://lore.kernel.org/all/20251112115142.1270931-1-boris.brezillon@collabora.com/
+Will be needed for the scheduler tests.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 ---
- lib/igt_panthor.c             |  46 +++++
- lib/igt_panthor.h             |  77 ++++++++
- tests/panthor/meson.build     |   1 +
- tests/panthor/panthor_sched.c | 338 ++++++++++++++++++++++++++++++++++
- 4 files changed, 462 insertions(+)
- create mode 100644 tests/panthor/panthor_sched.c
+ include/drm-uapi/panthor_drm.h | 213 ++++++++++++++++++++++++++-------
+ 1 file changed, 171 insertions(+), 42 deletions(-)
 
-diff --git a/lib/igt_panthor.c b/lib/igt_panthor.c
-index 73ada9c59bfc..5ae1a26b0e44 100644
---- a/lib/igt_panthor.c
-+++ b/lib/igt_panthor.c
-@@ -2,6 +2,7 @@
- // SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
+diff --git a/include/drm-uapi/panthor_drm.h b/include/drm-uapi/panthor_drm.h
+index e23a7f9b0eac..467d365ed7ba 100644
+--- a/include/drm-uapi/panthor_drm.h
++++ b/include/drm-uapi/panthor_drm.h
+@@ -127,50 +127,25 @@ enum drm_panthor_ioctl_id {
  
- #include "drmtest.h"
-+#include "igt_aux.h"
- #include "igt_panthor.h"
- #include "ioctl_wrappers.h"
- #include "panthor_drm.h"
-@@ -370,3 +371,48 @@ void igt_panthor_free_bo(int fd, struct panthor_bo *bo)
- 
- 	gem_close(fd, bo->handle);
- }
+ 	/** @DRM_PANTHOR_TILER_HEAP_DESTROY: Destroy a tiler heap. */
+ 	DRM_PANTHOR_TILER_HEAP_DESTROY,
 +
-+void igt_panthor_ctx_create(int fd, struct panthor_ctx *ctx)
-+{
-+	memset(ctx, 0, sizeof(*ctx));
-+	igt_panthor_query(fd, DRM_PANTHOR_DEV_QUERY_GPU_INFO,
-+			  &ctx->gpu_info, sizeof(ctx->gpu_info), 0);
-+	igt_panthor_vm_create(fd, &ctx->vm, 0);
-+}
++	/** @DRM_PANTHOR_BO_SET_LABEL: Label a BO. */
++	DRM_PANTHOR_BO_SET_LABEL,
 +
-+void igt_panthor_ctx_destroy(int fd, struct panthor_ctx *ctx)
-+{
-+	for (uint32_t i = 0; i < ctx->group_count; i++) {
-+		struct drm_panthor_group_destroy group_destroy = {
-+			.group_handle = ctx->groups[i],
-+		};
-+
-+		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_DESTROY, &group_destroy), 0);
-+	}
-+
-+	igt_panthor_vm_destroy(fd, ctx->vm, 0);
-+}
-+
-+void igt_panthor_ctx_add_group(int fd, struct panthor_ctx *ctx,
-+			       enum drm_panthor_group_priority group_prio,
-+			       const struct drm_panthor_queue_create *queues,
-+			       uint32_t queue_count)
-+{
-+	unsigned int shader_core_count = igt_hweight(ctx->gpu_info.shader_present);
-+	struct drm_panthor_group_create group_create = {
-+		.queues = DRM_PANTHOR_OBJ_ARRAY(queue_count, queues),
-+		.max_compute_cores = shader_core_count,
-+		.max_fragment_cores = shader_core_count,
-+		.max_tiler_cores = 1,
-+		.priority = group_prio,
-+		.compute_core_mask = ctx->gpu_info.shader_present,
-+		.fragment_core_mask = ctx->gpu_info.shader_present,
-+		.tiler_core_mask = ctx->gpu_info.tiler_present,
-+		.vm_id = ctx->vm,
-+	};
-+
-+	igt_assert(ctx->group_count < ARRAY_SIZE(ctx->groups));
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_CREATE, &group_create), 0);
-+	igt_assert(group_create.group_handle > 0);
-+	ctx->groups[ctx->group_count++] = group_create.group_handle;
-+}
-diff --git a/lib/igt_panthor.h b/lib/igt_panthor.h
-index dc90033c0ad4..17b91b81cb40 100644
---- a/lib/igt_panthor.h
-+++ b/lib/igt_panthor.h
-@@ -9,6 +9,8 @@
- #include <stdbool.h>
- #include "panthor_drm.h"
- 
-+#include "panthor_drm.h"
-+
- struct panthor_bo {
- 	int handle;
- 	uint64_t offset;
-@@ -16,7 +18,17 @@ struct panthor_bo {
- 	void *map;
++	/**
++	 * @DRM_PANTHOR_SET_USER_MMIO_OFFSET: Set the offset to use as the user MMIO offset.
++	 *
++	 * The default behavior is to pick the MMIO offset based on the size of the pgoff_t
++	 * type seen by the process that manipulates the FD, such that a 32-bit process can
++	 * always map the user MMIO ranges. But this approach doesn't work well for emulators
++	 * like FEX, where the emulator is an 64-bit binary which might be executing 32-bit
++	 * code. In that case, the kernel thinks it's the 64-bit process and assumes
++	 * DRM_PANTHOR_USER_MMIO_OFFSET_64BIT is in use, but the UMD library expects
++	 * DRM_PANTHOR_USER_MMIO_OFFSET_32BIT, because it can't mmap() anything above the
++	 * pgoff_t size.
++	 */
++	DRM_PANTHOR_SET_USER_MMIO_OFFSET,
  };
  
-+#define MAX_GROUPS_PER_CTX	128
+-/**
+- * DRM_IOCTL_PANTHOR() - Build a Panthor IOCTL number
+- * @__access: Access type. Must be R, W or RW.
+- * @__id: One of the DRM_PANTHOR_xxx id.
+- * @__type: Suffix of the type being passed to the IOCTL.
+- *
+- * Don't use this macro directly, use the DRM_IOCTL_PANTHOR_xxx
+- * values instead.
+- *
+- * Return: An IOCTL number to be passed to ioctl() from userspace.
+- */
+-#define DRM_IOCTL_PANTHOR(__access, __id, __type) \
+-	DRM_IO ## __access(DRM_COMMAND_BASE + DRM_PANTHOR_ ## __id, \
+-			   struct drm_panthor_ ## __type)
+-
+-#define DRM_IOCTL_PANTHOR_DEV_QUERY \
+-	DRM_IOCTL_PANTHOR(WR, DEV_QUERY, dev_query)
+-#define DRM_IOCTL_PANTHOR_VM_CREATE \
+-	DRM_IOCTL_PANTHOR(WR, VM_CREATE, vm_create)
+-#define DRM_IOCTL_PANTHOR_VM_DESTROY \
+-	DRM_IOCTL_PANTHOR(WR, VM_DESTROY, vm_destroy)
+-#define DRM_IOCTL_PANTHOR_VM_BIND \
+-	DRM_IOCTL_PANTHOR(WR, VM_BIND, vm_bind)
+-#define DRM_IOCTL_PANTHOR_VM_GET_STATE \
+-	DRM_IOCTL_PANTHOR(WR, VM_GET_STATE, vm_get_state)
+-#define DRM_IOCTL_PANTHOR_BO_CREATE \
+-	DRM_IOCTL_PANTHOR(WR, BO_CREATE, bo_create)
+-#define DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET \
+-	DRM_IOCTL_PANTHOR(WR, BO_MMAP_OFFSET, bo_mmap_offset)
+-#define DRM_IOCTL_PANTHOR_GROUP_CREATE \
+-	DRM_IOCTL_PANTHOR(WR, GROUP_CREATE, group_create)
+-#define DRM_IOCTL_PANTHOR_GROUP_DESTROY \
+-	DRM_IOCTL_PANTHOR(WR, GROUP_DESTROY, group_destroy)
+-#define DRM_IOCTL_PANTHOR_GROUP_SUBMIT \
+-	DRM_IOCTL_PANTHOR(WR, GROUP_SUBMIT, group_submit)
+-#define DRM_IOCTL_PANTHOR_GROUP_GET_STATE \
+-	DRM_IOCTL_PANTHOR(WR, GROUP_GET_STATE, group_get_state)
+-#define DRM_IOCTL_PANTHOR_TILER_HEAP_CREATE \
+-	DRM_IOCTL_PANTHOR(WR, TILER_HEAP_CREATE, tiler_heap_create)
+-#define DRM_IOCTL_PANTHOR_TILER_HEAP_DESTROY \
+-	DRM_IOCTL_PANTHOR(WR, TILER_HEAP_DESTROY, tiler_heap_destroy)
+-
+ /**
+  * DOC: IOCTL arguments
+  */
+@@ -260,6 +235,14 @@ enum drm_panthor_dev_query_type {
+ 
+ 	/** @DRM_PANTHOR_DEV_QUERY_CSIF_INFO: Query command-stream interface information. */
+ 	DRM_PANTHOR_DEV_QUERY_CSIF_INFO,
 +
-+struct panthor_ctx {
-+	struct drm_panthor_gpu_info gpu_info;
-+	uint32_t vm;
-+	uint32_t group_count;
-+	uint32_t groups[MAX_GROUPS_PER_CTX];
++	/** @DRM_PANTHOR_DEV_QUERY_TIMESTAMP_INFO: Query timestamp information. */
++	DRM_PANTHOR_DEV_QUERY_TIMESTAMP_INFO,
++
++	/**
++	 * @DRM_PANTHOR_DEV_QUERY_GROUP_PRIORITIES_INFO: Query allowed group priorities information.
++	 */
++	DRM_PANTHOR_DEV_QUERY_GROUP_PRIORITIES_INFO,
+ };
+ 
+ /**
+@@ -327,6 +310,9 @@ struct drm_panthor_gpu_info {
+ 	/** @as_present: Bitmask encoding the number of address-space exposed by the MMU. */
+ 	__u32 as_present;
+ 
++	/** @pad0: MBZ. */
++	__u32 pad0;
++
+ 	/** @shader_present: Bitmask encoding the shader cores exposed by the GPU. */
+ 	__u64 shader_present;
+ 
+@@ -341,6 +327,9 @@ struct drm_panthor_gpu_info {
+ 
+ 	/** @pad: MBZ. */
+ 	__u32 pad;
++
++	/** @gpu_features: Bitmask describing supported GPU-wide features */
++	__u64 gpu_features;
+ };
+ 
+ /**
+@@ -377,6 +366,42 @@ struct drm_panthor_csif_info {
+ 	__u32 pad;
+ };
+ 
++/**
++ * struct drm_panthor_timestamp_info - Timestamp information
++ *
++ * Structure grouping all queryable information relating to the GPU timestamp.
++ */
++struct drm_panthor_timestamp_info {
++	/**
++	 * @timestamp_frequency: The frequency of the timestamp timer or 0 if
++	 * unknown.
++	 */
++	__u64 timestamp_frequency;
++
++	/** @current_timestamp: The current timestamp. */
++	__u64 current_timestamp;
++
++	/** @timestamp_offset: The offset of the timestamp timer. */
++	__u64 timestamp_offset;
 +};
 +
- void igt_panthor_query(int fd, int32_t type, void *data, size_t size, int err);
++/**
++ * struct drm_panthor_group_priorities_info - Group priorities information
++ *
++ * Structure grouping all queryable information relating to the allowed group priorities.
++ */
++struct drm_panthor_group_priorities_info {
++	/**
++	 * @allowed_mask: Bitmask of the allowed group priorities.
++	 *
++	 * Each bit represents a variant of the enum drm_panthor_group_priority.
++	 */
++	__u8 allowed_mask;
 +
- void igt_panthor_vm_create(int fd, uint32_t *vm_id, int err);
- void igt_panthor_vm_destroy(int fd, uint32_t vm_id, int err);
- void igt_panthor_vm_bind(int fd, uint32_t vm_id, uint32_t bo_handle, uint64_t va,
-@@ -38,12 +50,21 @@ void igt_panthor_group_submit_simple(int fd, uint32_t group_handle,
- 				     int err);
- uint64_t igt_panthor_get_first_core(uint64_t cores_present);
- 
-+void igt_panthor_ctx_create(int fd, struct panthor_ctx *ctx);
-+void igt_panthor_ctx_destroy(int fd, struct panthor_ctx *ctx);
-+void igt_panthor_ctx_add_group(int fd, struct panthor_ctx *ctx,
-+			       enum drm_panthor_group_priority group_prio,
-+			       const struct drm_panthor_queue_create *queues,
-+			       uint32_t queue_count);
++	/** @pad: Padding fields, MBZ. */
++	__u8 pad[3];
++};
 +
- enum cs_opcode {
- 	CS_OPCODE_NOP = 0,
- 	CS_OPCODE_MOVE48 = 1,
- 	CS_OPCODE_MOVE32 = 2,
- 	CS_OPCODE_WAIT = 3,
-+	CS_OPCODE_ADD64 = 17,
- 	CS_OPCODE_STM = 21,
-+	CS_OPCODE_BRANCH = 22,
- 	CS_OPCODE_FLUSH_CACHE = 36,
+ /**
+  * struct drm_panthor_dev_query - Arguments passed to DRM_PANTHOR_IOCTL_DEV_QUERY
+  */
+@@ -698,6 +723,13 @@ enum drm_panthor_group_priority {
+ 	 * Requires CAP_SYS_NICE or DRM_MASTER.
+ 	 */
+ 	PANTHOR_GROUP_PRIORITY_HIGH,
++
++	/**
++	 * @PANTHOR_GROUP_PRIORITY_REALTIME: Realtime priority group.
++	 *
++	 * Requires CAP_SYS_NICE or DRM_MASTER.
++	 */
++	PANTHOR_GROUP_PRIORITY_REALTIME,
  };
  
-@@ -61,6 +82,16 @@ enum cs_flush_mode {
- #error "big endian not supported"
+ /**
+@@ -872,6 +904,15 @@ enum drm_panthor_group_state_flags {
+ 	 * When a group ends up with this flag set, no jobs can be submitted to its queues.
+ 	 */
+ 	DRM_PANTHOR_GROUP_STATE_FATAL_FAULT = 1 << 1,
++
++	/**
++	 * @DRM_PANTHOR_GROUP_STATE_INNOCENT: Group was killed during a reset caused by other
++	 * groups.
++	 *
++	 * This flag can only be set if DRM_PANTHOR_GROUP_STATE_TIMEDOUT is set and
++	 * DRM_PANTHOR_GROUP_STATE_FATAL_FAULT is not.
++	 */
++	DRM_PANTHOR_GROUP_STATE_INNOCENT = 1 << 2,
+ };
+ 
+ /**
+@@ -959,6 +1000,94 @@ struct drm_panthor_tiler_heap_destroy {
+ 	__u32 pad;
+ };
+ 
++/**
++ * struct drm_panthor_bo_set_label - Arguments passed to DRM_IOCTL_PANTHOR_BO_SET_LABEL
++ */
++struct drm_panthor_bo_set_label {
++	/** @handle: Handle of the buffer object to label. */
++	__u32 handle;
++
++	/**  @pad: MBZ. */
++	__u32 pad;
++
++	/**
++	 * @label: User pointer to a NUL-terminated string
++	 *
++	 * Length cannot be greater than 4096
++	 */
++	__u64 label;
++};
++
++/**
++ * struct drm_panthor_set_user_mmio_offset - Arguments passed to
++ * DRM_IOCTL_PANTHOR_SET_USER_MMIO_OFFSET
++ *
++ * This ioctl is only really useful if you want to support userspace
++ * CPU emulation environments where the size of an unsigned long differs
++ * between the host and the guest architectures.
++ */
++struct drm_panthor_set_user_mmio_offset {
++	/**
++	 * @offset: User MMIO offset to use.
++	 *
++	 * Must be either DRM_PANTHOR_USER_MMIO_OFFSET_32BIT or
++	 * DRM_PANTHOR_USER_MMIO_OFFSET_64BIT.
++	 *
++	 * Use DRM_PANTHOR_USER_MMIO_OFFSET (which selects OFFSET_32BIT or
++	 * OFFSET_64BIT based on the size of an unsigned long) unless you
++	 * have a very good reason to overrule this decision.
++	 */
++	__u64 offset;
++};
++
++/**
++ * DRM_IOCTL_PANTHOR() - Build a Panthor IOCTL number
++ * @__access: Access type. Must be R, W or RW.
++ * @__id: One of the DRM_PANTHOR_xxx id.
++ * @__type: Suffix of the type being passed to the IOCTL.
++ *
++ * Don't use this macro directly, use the DRM_IOCTL_PANTHOR_xxx
++ * values instead.
++ *
++ * Return: An IOCTL number to be passed to ioctl() from userspace.
++ */
++#define DRM_IOCTL_PANTHOR(__access, __id, __type) \
++	DRM_IO ## __access(DRM_COMMAND_BASE + DRM_PANTHOR_ ## __id, \
++			   struct drm_panthor_ ## __type)
++
++enum {
++	DRM_IOCTL_PANTHOR_DEV_QUERY =
++		DRM_IOCTL_PANTHOR(WR, DEV_QUERY, dev_query),
++	DRM_IOCTL_PANTHOR_VM_CREATE =
++		DRM_IOCTL_PANTHOR(WR, VM_CREATE, vm_create),
++	DRM_IOCTL_PANTHOR_VM_DESTROY =
++		DRM_IOCTL_PANTHOR(WR, VM_DESTROY, vm_destroy),
++	DRM_IOCTL_PANTHOR_VM_BIND =
++		DRM_IOCTL_PANTHOR(WR, VM_BIND, vm_bind),
++	DRM_IOCTL_PANTHOR_VM_GET_STATE =
++		DRM_IOCTL_PANTHOR(WR, VM_GET_STATE, vm_get_state),
++	DRM_IOCTL_PANTHOR_BO_CREATE =
++		DRM_IOCTL_PANTHOR(WR, BO_CREATE, bo_create),
++	DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET =
++		DRM_IOCTL_PANTHOR(WR, BO_MMAP_OFFSET, bo_mmap_offset),
++	DRM_IOCTL_PANTHOR_GROUP_CREATE =
++		DRM_IOCTL_PANTHOR(WR, GROUP_CREATE, group_create),
++	DRM_IOCTL_PANTHOR_GROUP_DESTROY =
++		DRM_IOCTL_PANTHOR(WR, GROUP_DESTROY, group_destroy),
++	DRM_IOCTL_PANTHOR_GROUP_SUBMIT =
++		DRM_IOCTL_PANTHOR(WR, GROUP_SUBMIT, group_submit),
++	DRM_IOCTL_PANTHOR_GROUP_GET_STATE =
++		DRM_IOCTL_PANTHOR(WR, GROUP_GET_STATE, group_get_state),
++	DRM_IOCTL_PANTHOR_TILER_HEAP_CREATE =
++		DRM_IOCTL_PANTHOR(WR, TILER_HEAP_CREATE, tiler_heap_create),
++	DRM_IOCTL_PANTHOR_TILER_HEAP_DESTROY =
++		DRM_IOCTL_PANTHOR(WR, TILER_HEAP_DESTROY, tiler_heap_destroy),
++	DRM_IOCTL_PANTHOR_BO_SET_LABEL =
++		DRM_IOCTL_PANTHOR(WR, BO_SET_LABEL, bo_set_label),
++	DRM_IOCTL_PANTHOR_SET_USER_MMIO_OFFSET =
++		DRM_IOCTL_PANTHOR(WR, SET_USER_MMIO_OFFSET, set_user_mmio_offset),
++};
++
+ #if defined(__cplusplus)
+ }
  #endif
- 
-+enum cs_branch_cond {
-+	CS_BRANCH_COND_LE = 0,
-+	CS_BRANCH_COND_GT = 1,
-+	CS_BRANCH_COND_EQ = 2,
-+	CS_BRANCH_COND_NE = 3,
-+	CS_BRANCH_COND_LT = 4,
-+	CS_BRANCH_COND_GE = 5,
-+	CS_BRANCH_COND_ALWAYS = 6,
-+};
-+
- struct cs_instr {
- 	union {
- 		struct {
-@@ -89,6 +120,13 @@ struct cs_instr {
- 			uint64_t unused1: 23;
- 			uint64_t opcode: 8;
- 		} wait;
-+		struct {
-+			uint64_t immediate: 32;
-+			uint64_t unused0: 8;
-+			uint64_t src: 8;
-+			uint64_t dst: 8;
-+			uint64_t opcode: 8;
-+		} add64;
- 		struct {
- 			uint64_t offset: 16;
- 			uint64_t mask: 16;
-@@ -97,6 +135,15 @@ struct cs_instr {
- 			uint64_t src: 8;
- 			uint64_t opcode: 8;
- 		} stm;
-+		struct {
-+			uint64_t offset: 16;
-+			uint64_t unused0: 12;
-+			uint64_t cond: 4;
-+			uint64_t unused1: 8;
-+			uint64_t src: 8;
-+			uint64_t unused2: 8;
-+			uint64_t opcode: 8;
-+		} branch;
- 		struct {
- 			uint64_t l2_mode: 4;
- 			uint64_t lsc_mode: 4;
-@@ -167,6 +214,21 @@ cs_wait(uint16_t wait_mask, bool progress_inc)
- 	return instr.raw;
- }
- 
-+static inline uint64_t
-+cs_add64(uint32_t imm, uint8_t src, uint8_t dst)
-+{
-+	struct cs_instr instr = {
-+		.add64 = {
-+			.immediate = imm,
-+			.src = src,
-+			.dst = dst,
-+			.opcode = CS_OPCODE_ADD64,
-+		},
-+	};
-+
-+	return instr.raw;
-+}
-+
- static inline uint64_t
- cs_stm(uint8_t address, uint8_t src, uint16_t mask, int16_t offset)
- {
-@@ -195,6 +257,21 @@ cs_stm64(uint8_t address, uint8_t src, int16_t offset)
- 	return cs_stm(address, src, 0x3, offset);
- }
- 
-+static inline uint64_t
-+cs_branch(int16_t offset, enum cs_branch_cond cond, uint8_t src)
-+{
-+	struct cs_instr instr = {
-+		.branch = {
-+			.offset = (uint16_t)offset,
-+			.cond = cond,
-+			.src = src,
-+			.opcode = CS_OPCODE_BRANCH,
-+		},
-+	};
-+
-+	return instr.raw;
-+}
-+
- static inline uint64_t
- cs_flush(enum cs_flush_mode l2_mode,
- 	 enum cs_flush_mode lsc_mode,
-diff --git a/tests/panthor/meson.build b/tests/panthor/meson.build
-index 42a46e9934a9..8bd391596a97 100644
---- a/tests/panthor/meson.build
-+++ b/tests/panthor/meson.build
-@@ -2,6 +2,7 @@ panthor_progs = [
- 	'panthor_gem',
- 	'panthor_group',
- 	'panthor_query',
-+	'panthor_sched',
- 	'panthor_vm',
- ]
- 
-diff --git a/tests/panthor/panthor_sched.c b/tests/panthor/panthor_sched.c
-new file mode 100644
-index 000000000000..7cded16c0acd
---- /dev/null
-+++ b/tests/panthor/panthor_sched.c
-@@ -0,0 +1,338 @@
-+// SPDX-License-Identifier: MIT
-+// SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
-+
-+#include <stdint.h>
-+#include <sys/mman.h>
-+#include <unistd.h>
-+
-+#include "drm.h"
-+#include "igt.h"
-+#include "igt_core.h"
-+#include "igt_panthor.h"
-+#include "panthor_drm.h"
-+
-+static size_t
-+infinite_incr_loop(uint64_t *cs, uint64_t counter_va)
-+{
-+	const uint8_t counter_va_reg = 68;
-+	const uint8_t val_reg = 70;
-+	uint64_t instrs[] = {
-+		/* Load the source register ([r68; r69]) with the kernel address */
-+		cs_mov48(counter_va_reg, counter_va),
-+		/* Load a 0 into r70 */
-+		cs_mov48(val_reg, 1),
-+		/* STORE_MULTIPLE: Store the first register to the address pointed to by
-+		 * [r68; r69]
-+		 */
-+		cs_stm64(counter_va_reg, val_reg, 0),
-+		cs_wait(1, false),
-+		cs_add64(1, val_reg, val_reg),
-+		cs_branch(-4, CS_BRANCH_COND_ALWAYS, 0),
-+	};
-+
-+	memcpy(cs, instrs, sizeof(instrs));
-+	return sizeof(instrs);
-+}
-+
-+struct panthor_sched_test_group_ctx {
-+	uint32_t handle;
-+	uint64_t *counter;
-+	uint64_t cs_va;
-+	uint32_t cs_size;
-+};
-+
-+#define MAX_GROUPS	128
-+
-+struct panthor_sched_test_ctx {
-+	struct panthor_ctx ctx;
-+	struct panthor_bo cs_bo;
-+	uint32_t cs_bo_offset;
-+	struct panthor_bo counter_bo;
-+	uint32_t counter_bo_offset;
-+	uint32_t group_count;
-+	struct panthor_sched_test_group_ctx groups[MAX_GROUPS];
-+};
-+
-+#define CS_BO_VA	0x100000
-+#define COUNTER_BO_VA	0x200000
-+
-+static void
-+sched_test_ctx_create(int fd, struct panthor_sched_test_ctx *ctx)
-+{
-+	memset(ctx, 0, sizeof(*ctx));
-+	igt_panthor_ctx_create(fd, &ctx->ctx);
-+	igt_panthor_bo_create_mapped(fd, &ctx->cs_bo, getpagesize(), 0, 0);
-+	igt_panthor_vm_bind(fd, ctx->ctx.vm, ctx->cs_bo.handle, CS_BO_VA, ctx->cs_bo.size,
-+			    DRM_PANTHOR_VM_BIND_OP_MAP_READONLY |
-+			    DRM_PANTHOR_VM_BIND_OP_TYPE_MAP,
-+			    0);
-+	igt_panthor_bo_create_mapped(fd, &ctx->counter_bo, getpagesize(), 0, 0);
-+	igt_panthor_vm_bind(fd, ctx->ctx.vm, ctx->counter_bo.handle, COUNTER_BO_VA,
-+			    ctx->counter_bo.size,
-+			    DRM_PANTHOR_VM_BIND_OP_MAP_UNCACHED |
-+			    DRM_PANTHOR_VM_BIND_OP_MAP_NOEXEC |
-+			    DRM_PANTHOR_VM_BIND_OP_TYPE_MAP,
-+			    0);
-+}
-+
-+static void
-+sched_test_ctx_destroy(int fd, struct panthor_sched_test_ctx *ctx)
-+{
-+	igt_panthor_ctx_destroy(fd, &ctx->ctx);
-+}
-+
-+static void
-+sched_test_ctx_add_group(int fd, struct panthor_sched_test_ctx *ctx,
-+			 enum drm_panthor_group_priority group_prio)
-+{
-+	struct drm_panthor_queue_create queue_create = {
-+		.priority = 0,
-+		.ringbuf_size = getpagesize(),
-+	};
-+	uint64_t *cs = (uint64_t *)((uint8_t *)ctx->cs_bo.map + ctx->cs_bo_offset);
-+	uint64_t *counters = ctx->counter_bo.map;
-+	unsigned int group_idx = ctx->group_count;
-+	uint64_t counter_va = COUNTER_BO_VA + group_idx * sizeof(counters[0]);
-+	unsigned int cs_size;
-+
-+	igt_assert_lt(ctx->group_count, ARRAY_SIZE(ctx->groups));
-+
-+	igt_panthor_ctx_add_group(fd, &ctx->ctx, group_prio, &queue_create, 1);
-+	cs_size = infinite_incr_loop(cs, counter_va);
-+	cs_size = ALIGN(cs_size, 64);
-+	ctx->groups[ctx->group_count++] = (struct panthor_sched_test_group_ctx){
-+		.handle = ctx->ctx.groups[group_idx],
-+		.counter = &counters[group_idx],
-+		.cs_va = CS_BO_VA + ctx->cs_bo_offset,
-+		.cs_size = cs_size,
-+	};
-+
-+	ctx->cs_bo_offset += cs_size;
-+	igt_assert_lt(ctx->cs_bo_offset, ctx->cs_bo.size);
-+}
-+
-+static void
-+sched_test_ctx_submit_group(int fd, struct panthor_sched_test_ctx *ctx,
-+			    unsigned int group_idx)
-+{
-+	struct drm_panthor_queue_submit qsubmit = {
-+		.queue_index = 0,
-+		.stream_size = ctx->groups[group_idx].cs_size,
-+		.stream_addr = ctx->groups[group_idx].cs_va,
-+		.latest_flush = 0,
-+	};
-+	struct drm_panthor_group_submit gsubmit = {
-+		.group_handle = ctx->groups[group_idx].handle,
-+		.queue_submits = DRM_PANTHOR_OBJ_ARRAY(1, &qsubmit),
-+	};
-+
-+	igt_assert_lt(group_idx, ctx->group_count);
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_SUBMIT, &gsubmit), 0);
-+}
-+
-+igt_main {
-+	int fd;
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_PANTHOR);
-+	}
-+
-+	igt_describe("Schedule 8 groups with the same prio");
-+	igt_subtest("sched_8_groups_same_prio") {
-+		uint64_t min_cnt = UINT64_MAX, max_cnt = 0;
-+		struct panthor_sched_test_ctx ctx;
-+		const unsigned int group_cnt = 8;
-+
-+		sched_test_ctx_create(fd, &ctx);
-+
-+		for (unsigned int i = 0; i < group_cnt; i++)
-+			sched_test_ctx_add_group(fd, &ctx, PANTHOR_GROUP_PRIORITY_MEDIUM);
-+
-+		for (unsigned int i = 0; i < group_cnt; i++) {
-+			sched_test_ctx_submit_group(fd, &ctx, i);
-+
-+			/* Add some delay, to make sure each group becomes
-+			 * active at a different time, and exercise the
-+			 * idle -> active transition that appeared to be
-+			 * broken at some point.
-+			 */
-+			usleep(100000);
-+		}
-+
-+		/* Jobs will timeout, because we've issued an infinte loop,
-+		 * but leave it some time before checking the counter
-+		 * values.
-+		 */
-+		sleep(6);
-+
-+		for (unsigned int i = 0; i < group_cnt; i++) {
-+			min_cnt = min(min_cnt, *ctx.groups[i].counter);
-+			max_cnt = max(max_cnt, *ctx.groups[i].counter);
-+		}
-+
-+		igt_assert_lt(200000, min_cnt);
-+		igt_assert_lte(min_cnt, max_cnt);
-+
-+		/* Allow a 20% difference max? */
-+		igt_assert_lt((((max_cnt - min_cnt) * 100) / min_cnt), 20);
-+
-+		sched_test_ctx_destroy(fd, &ctx);
-+	}
-+
-+	igt_describe("Schedule 16 groups with the same prio");
-+	igt_subtest("sched_16_groups_same_prio") {
-+		uint64_t min_cnt = UINT64_MAX, max_cnt = 0;
-+		struct panthor_sched_test_ctx ctx;
-+		const unsigned int group_cnt = 16;
-+
-+		sched_test_ctx_create(fd, &ctx);
-+
-+		for (unsigned int i = 0; i < group_cnt; i++)
-+			sched_test_ctx_add_group(fd, &ctx, PANTHOR_GROUP_PRIORITY_MEDIUM);
-+
-+		for (unsigned int i = 0; i < group_cnt; i++) {
-+			sched_test_ctx_submit_group(fd, &ctx, i);
-+
-+			/* Add some delay, to make sure each group becomes
-+			 * active at a different time, and exercise the
-+			 * idle -> active transition that appeared to be
-+			 * broken at some point.
-+			 */
-+			usleep(100000);
-+		}
-+
-+		/* Jobs will timeout, because we've issued an infinte loop,
-+		 * but leave it some time before checking the counter
-+		 * values.
-+		 */
-+		sleep(15);
-+
-+		for (unsigned int i = 0; i < group_cnt; i++) {
-+			min_cnt = min(min_cnt, *ctx.groups[i].counter);
-+			max_cnt = max(max_cnt, *ctx.groups[i].counter);
-+		}
-+
-+		igt_assert_lt(200000, min_cnt);
-+		igt_assert_lte(min_cnt, max_cnt);
-+
-+		/* Allow a 20% difference max? */
-+		igt_assert_lt((((max_cnt - min_cnt) * 100) / min_cnt), 20);
-+
-+		sched_test_ctx_destroy(fd, &ctx);
-+	}
-+
-+	igt_describe("Schedule 15 groups with medium prio, one high");
-+	igt_subtest("sched_15_groups_med_1_high") {
-+		uint64_t min_cnt = UINT64_MAX, max_cnt = 0;
-+		struct panthor_sched_test_ctx ctx;
-+		const unsigned int group_cnt = 16;
-+		const unsigned int group_high = group_cnt - 1;
-+
-+		sched_test_ctx_create(fd, &ctx);
-+
-+		for (unsigned int i = 0; i < group_cnt; i++) {
-+			sched_test_ctx_add_group(fd, &ctx,
-+						 i == group_high ?
-+						 PANTHOR_GROUP_PRIORITY_HIGH :
-+						 PANTHOR_GROUP_PRIORITY_MEDIUM);
-+		}
-+
-+		for (unsigned int i = 0; i < group_cnt; i++) {
-+			sched_test_ctx_submit_group(fd, &ctx, i);
-+
-+			/* Add some delay, to make sure each group becomes
-+			 * active at a different time, and exercise the
-+			 * idle -> active transition that appeared to be
-+			 * broken at some point.
-+			 */
-+			usleep(100000);
-+		}
-+
-+		/* Jobs will timeout, because we've issued an infinte loop,
-+		 * but leave it some time before checking the counter
-+		 * values.
-+		 */
-+		sleep(15);
-+
-+		for (unsigned int i = 0; i < group_cnt; i++) {
-+			if (i == group_high)
-+				continue;
-+
-+			min_cnt = min(min_cnt, *ctx.groups[i].counter);
-+			max_cnt = max(max_cnt, *ctx.groups[i].counter);
-+		}
-+
-+		igt_assert_lt(200000, min_cnt);
-+		igt_assert_lte(min_cnt, max_cnt);
-+
-+		/* Allow a 30% difference max on all med groups? */
-+		igt_assert_lt((((max_cnt - min_cnt) * 100) / min_cnt), 30);
-+
-+		/* High group's counter must be at least 1.5x the other groups. */
-+		igt_assert_lt((float)max_cnt * 1.5, (float)*ctx.groups[group_high].counter);
-+
-+		sched_test_ctx_destroy(fd, &ctx);
-+	}
-+
-+	igt_describe("Schedule 4 groups with RT prio, one high");
-+	igt_subtest("sched_4_groups_rt_1_high") {
-+		uint64_t min_cnt = UINT64_MAX, max_cnt = 0;
-+		struct panthor_sched_test_ctx ctx;
-+		const unsigned int group_cnt = 5;
-+		const unsigned int group_high = group_cnt - 1;
-+		uint64_t group_high_counter;
-+
-+		sched_test_ctx_create(fd, &ctx);
-+
-+		for (unsigned int i = 0; i < group_cnt; i++) {
-+			sched_test_ctx_add_group(fd, &ctx,
-+						 i == group_high ?
-+						 PANTHOR_GROUP_PRIORITY_HIGH :
-+						 PANTHOR_GROUP_PRIORITY_REALTIME);
-+		}
-+
-+		for (unsigned int i = 0; i < group_cnt; i++) {
-+			if (i == group_high)
-+				continue;
-+			sched_test_ctx_submit_group(fd, &ctx, i);
-+		}
-+
-+		/* Leave it some time so the SW scheduler can make all RT groups
-+		 * active, and the high one really doesn't get a chance to run.
-+		 * Ideally the dequeueing of jobs would also take the group
-+		 * priority into account, but that's not the case.
-+		 */
-+		usleep(200000);
-+		sched_test_ctx_submit_group(fd, &ctx, group_high);
-+
-+		/* Make sure we wait less than the timeout, otherwise the group with
-+		 * high priority will be left a chance to run as soon as one of the RT
-+		 * group dies.
-+		 */
-+		sleep(2);
-+
-+		group_high_counter = *ctx.groups[group_high].counter;
-+		for (unsigned int i = 0; i < group_cnt; i++) {
-+			if (i == group_high)
-+				continue;
-+
-+			min_cnt = min(min_cnt, *ctx.groups[i].counter);
-+			max_cnt = max(max_cnt, *ctx.groups[i].counter);
-+		}
-+
-+		igt_assert_lt(200000, min_cnt);
-+		igt_assert_lte(min_cnt, max_cnt);
-+
-+		/* Allow a 30% difference max on all med groups? */
-+		igt_assert_lt((((max_cnt - min_cnt) * 100) / min_cnt), 30);
-+
-+		/* High group should never run. */
-+		igt_assert_eq(group_high_counter, 0);
-+
-+		sched_test_ctx_destroy(fd, &ctx);
-+	}
-+
-+	igt_fixture {
-+		drm_close_driver(fd);
-+	}
-+}
 -- 
 2.51.1
 
