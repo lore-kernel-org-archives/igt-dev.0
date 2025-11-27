@@ -4,54 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F96FD116E2
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Nov 2025 14:24:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 311E9D116E2
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Nov 2025 14:35:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2E31B10E76A;
-	Thu, 27 Nov 2025 14:24:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CC03E10E76A;
+	Thu, 27 Nov 2025 14:35:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="esgvLZ2S";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BHNxpq6m";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15B2C10E76A
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Nov 2025 14:24:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1987710E76A
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Nov 2025 14:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764253492; x=1795789492;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=fj1iPfdETMybxNPrctxUQQivN/jMT4gtMnU8HyDU2y8=;
- b=esgvLZ2S2gfztfXusjr+xwhv+PZ0ybAEL8Q/fNZ7cP8NynQtkaGJV2//
- /drgtPp6kBwwrpp93mhiGSWEKpZUvOhuSekAqezYKi+jMSuCt7g2wsyXK
- hypwBi/1xT4exY5rT7m/ywruYuBbI0q0mCgofLFl/yBxB2oxMZOgTSRFT
- j8fbQX35gxise8nWfqs2sgcgdL1jL+znMu/aIAH+Vgbf8EJf8/uhm9nlK
- tKP2bRnrgxqEV92b0OUdz9GIB77RBxs13KarfcuzPZZL+osnYJnsU4PEz
- /vHr0hxBT11bzQf2UD/0SHniUUFzbau/PVB4hS0NFu5Fa2GZz7A04YhJs A==;
-X-CSE-ConnectionGUID: Z8bog6CmTsOHB1QW18daXw==
-X-CSE-MsgGUID: KL77HR4STgWQfAKj6IAIyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="77662309"
-X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; d="scan'208";a="77662309"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2025 06:24:51 -0800
-X-CSE-ConnectionGUID: eK4QMLM5T4GMRcbeu3ctqg==
-X-CSE-MsgGUID: hy1WlZnZRH6MvP7MOzc9yw==
+ t=1764254142; x=1795790142;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=yULIUefO+NUjuPsAdnvrpGKrbUPj8tYuNmlursA4LU8=;
+ b=BHNxpq6moyZ8wnysmUTba4VEQ4zi3Qxgf8x92eIUmM6t6I2am6zInRzK
+ E9J32cQbG8kU+mzQQtnHfpsiNHAeEY5zAAppKSj6GrObo873OhdC+Wj/X
+ plgcSFnNViFs/FCxCpo2v/W/q4tjQK387tx6075j4EAUTnVhGPo5f+me7
+ xI1irjGDA2Hiuvt36oLduaIRQwSKxfJ4NeRmvaeL18A2HdpSWyM6SB+PQ
+ hiJyo+6n9bl+fRd3AofTyeF+fuk0J03fiRwtvidF250D/JYLFaymsDwJh
+ rpNgl5/ikm0v6XTvESLdScPXVq8o1d6FyMymBH20+YXoAzKeJR7VPdVFZ w==;
+X-CSE-ConnectionGUID: duVsNRR1SXuq9SMSPssvYw==
+X-CSE-MsgGUID: Pn1eyg0wSZKFk6rmE1giTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="66376766"
+X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; d="scan'208";a="66376766"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Nov 2025 06:35:42 -0800
+X-CSE-ConnectionGUID: rTvtf715QcGxjZC/CJsvpA==
+X-CSE-MsgGUID: FHQczILOSwugMn24wqCh2w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; d="scan'208";a="198187555"
-Received: from dut-2a59.iind.intel.com ([10.190.239.113])
- by fmviesa004.fm.intel.com with ESMTP; 27 Nov 2025 06:24:50 -0800
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com,
-	juha-pekka.heikkila@intel.com
-Subject: [PATCH i-g-t v2] tests/kms_plane_cursor: Use additional FB for
- reference image
-Date: Thu, 27 Nov 2025 19:38:00 +0530
-Message-Id: <20251127140800.1379905-1-chaitanya.kumar.borah@intel.com>
-X-Mailer: git-send-email 2.25.1
+X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; d="scan'208";a="197561495"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2025 06:35:40 -0800
+Date: Thu, 27 Nov 2025 15:35:38 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, karthik.b.s@intel.com
+Subject: Re: [PATCH i-g-t v1] tools/registers: Add Alderlake-P register
+ definitions
+Message-ID: <20251127143538.d5fqsifubvxzgwi6@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ igt-dev@lists.freedesktop.org, karthik.b.s@intel.com
+References: <20251125051458.2049269-1-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251125051458.2049269-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,111 +71,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Painting directly on the FB currently being scanned out ends up
-modifying the frontbuffer. Since the FB isn’t marked dirty, those
-updates never reach the actual buffer, leading to stale or incorrect
-reference images during testing.
+Hi Naladala,
+On 2025-11-25 at 10:44:58 +0530, Naladala Ramanaidu wrote:
+> Add register definitions for Alderlake-P (ADLP) to support IGT
+> register dump and debug tools. Includes base registers, pipe
+> interrupt registers, and platform manifest for ADLP.
+> 
+> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+> ---
+>  tools/registers/adlp_base.txt  | 2118 ++++++++++++++++++++++++++++++++
+>  tools/registers/adlp_delta.txt |  231 ++++
+>  tools/registers/alderlake_p    |    2 +
+>  3 files changed, 2351 insertions(+)
+>  create mode 100644 tools/registers/adlp_base.txt
+>  create mode 100644 tools/registers/adlp_delta.txt
+>  create mode 100644 tools/registers/alderlake_p
 
-To avoid this, create a reference framebuffer in addition to the one
-created for the primary plane and  alternately flip
-between them while collecting crcs for the reference image and output
-image respectively.
+LGTM
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-While at it, remove draw_color as it is no longer used.
+Regards,
+Kamil 
 
-v2:
- - Simplify implementation to use a single ref_fb instead of two
- - Remove draw_color()
- - Remove redundant commit
-
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
----
- tests/kms_plane_cursor.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
-
-diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
-index 9fa36bfd4..258b22b1a 100644
---- a/tests/kms_plane_cursor.c
-+++ b/tests/kms_plane_cursor.c
-@@ -78,6 +78,7 @@ typedef struct data {
- 	igt_pipe_t *pipe;
- 	igt_pipe_crc_t *pipe_crc;
- 	drmModeModeInfo *mode;
-+	igt_fb_t ref_fb;
- 	igt_fb_t pfb;
- 	igt_fb_t ofb;
- 	igt_fb_t cfb;
-@@ -129,16 +130,6 @@ static void test_fini(data_t *data)
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- }
- 
--/* Fills a FB with the solid color given. */
--static void draw_color(igt_fb_t *fb, double r, double g, double b)
--{
--	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
--
--	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
--	igt_paint_color(cr, 0, 0, fb->width, fb->height, r, g, b);
--	igt_put_cairo_ctx(cr);
--}
--
- /*
-  * Draws white and gray (if overlay FB is given) on the primary FB.
-  * Draws a magenta square where the cursor should be over top both planes.
-@@ -152,6 +143,7 @@ static void test_cursor_pos(data_t *data, int x, int y, unsigned int flags)
- {
- 	igt_crc_t ref_crc, test_crc;
- 	cairo_t *cr;
-+	igt_fb_t *ref_fb = &data->ref_fb;
- 	igt_fb_t *pfb = &data->pfb;
- 	igt_fb_t *ofb = &data->ofb;
- 	igt_fb_t *cfb = &data->cfb;
-@@ -159,8 +151,8 @@ static void test_cursor_pos(data_t *data, int x, int y, unsigned int flags)
- 	int ch = cfb->height;
- 	const rect_t *or = &data->or;
- 
--	cr = igt_get_cairo_ctx(pfb->fd, pfb);
--	igt_paint_color(cr, 0, 0, pfb->width, pfb->height, 1.0, 1.0, 1.0);
-+	cr = igt_get_cairo_ctx(ref_fb->fd, ref_fb);
-+	igt_paint_color(cr, 0, 0, ref_fb->width, ref_fb->height, 1.0, 1.0, 1.0);
- 
- 	if (flags & TEST_OVERLAY)
- 		igt_paint_color(cr, or->x, or->y, or->w, or->h, 0.5, 0.5, 0.5);
-@@ -168,6 +160,7 @@ static void test_cursor_pos(data_t *data, int x, int y, unsigned int flags)
- 	igt_paint_color(cr, x, y, cw, ch, 1.0, 0.0, 1.0);
- 	igt_put_cairo_ctx(cr);
- 
-+	igt_plane_set_fb(data->primary, ref_fb);
- 	if (flags & TEST_OVERLAY)
- 		igt_plane_set_fb(data->overlay, NULL);
- 	igt_plane_set_fb(data->cursor, NULL);
-@@ -176,7 +169,7 @@ static void test_cursor_pos(data_t *data, int x, int y, unsigned int flags)
- 	igt_pipe_crc_start(data->pipe_crc);
- 	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &ref_crc);
- 
--	draw_color(pfb, 1.0, 1.0, 1.0);
-+	igt_plane_set_fb(data->primary, pfb);
- 
- 	if (flags & TEST_OVERLAY) {
- 		igt_plane_set_fb(data->overlay, ofb);
-@@ -249,6 +242,7 @@ static void test_cleanup(data_t *data)
- 	igt_remove_fb(data->drm_fd, &data->cfb);
- 	igt_remove_fb(data->drm_fd, &data->ofb);
- 	igt_remove_fb(data->drm_fd, &data->pfb);
-+	igt_remove_fb(data->drm_fd, &data->ref_fb);
- }
- 
- static void test_cursor(data_t *data, int size, unsigned int flags)
-@@ -263,6 +257,9 @@ static void test_cursor(data_t *data, int size, unsigned int flags)
- 
- 	test_cleanup(data);
- 
-+	igt_create_fb(data->drm_fd, sw, sh, DRM_FORMAT_XRGB8888,
-+		      DRM_FORMAT_MOD_LINEAR, &data->ref_fb);
-+
- 	igt_create_color_fb(data->drm_fd, sw, sh, DRM_FORMAT_XRGB8888,
- 			    DRM_FORMAT_MOD_LINEAR, 1.0, 1.0, 1.0, &data->pfb);
- 
--- 
-2.25.1
-
+> 
+> diff --git a/tools/registers/adlp_base.txt b/tools/registers/adlp_base.txt
+> new file mode 100644
+> index 000000000..6f4fd405c
+> --- /dev/null
+> +++ b/tools/registers/adlp_base.txt
+> @@ -0,0 +1,2118 @@
+> +('VGA_CONTROL', '0x41000', '')
+> +('VGA_DEBUG', '0x41004', '')
+> +('FUSE_STATUS', '0x42000', '')
+> +('RM_TIMEOUT', '0x42060', '')
+[cut]
