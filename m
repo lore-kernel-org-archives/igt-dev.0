@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F282AD111A8
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Nov 2025 16:28:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60F96D111A8
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Nov 2025 16:28:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A6AFE10E81E;
-	Thu, 27 Nov 2025 16:28:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1307010E729;
+	Thu, 27 Nov 2025 16:28:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OxcXp3yv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iJZinpeS";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3ED9810E81E
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Nov 2025 16:28:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19B7910E729
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Nov 2025 16:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764260908; x=1795796908;
+ t=1764260911; x=1795796911;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=n6lkdvlVzxLS3e6FUNevT347opbcYucxAol6FKVx2dc=;
- b=OxcXp3yvklIuWjawbI5jSN9E1VmrAZvjLRSCh9BEsF0PEmgIqR9lcgDJ
- AOm9WByNnzZ4qQ8HbLzmhHGJoGNebJWau/7yKFL0BGKOs3OIu8oRqRh9j
- YYtcEFlxxZd0cbHjGsMt/lbeAa2OLB947ABUcHk9qbTZOzIST9LS3VVIf
- MXpk/DxQWuFZl9TKHb1jrwhv64tT9vO5V5Y0CEvQLZ4rGUSsksd2VAwMJ
- 87t8DuPlE8wWaeuklyUBVb/RDFuu/S7V/7qXA2awbsryvTK3H833y+Uhg
- 9Mb2/CIctAG7WYFaH023Ej5vM51/onl8FN5uChvQz9r+4gSMzwGWDdGkM g==;
-X-CSE-ConnectionGUID: nJ78exRuTVuRLeFuWX2Sig==
-X-CSE-MsgGUID: zzsho8KKQmKt8tsjDFW9/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="66204327"
-X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; d="scan'208";a="66204327"
+ bh=gyKSGY2M48DP0kZGNgKXarIl3xbOCE2/1jt0yqoCGnM=;
+ b=iJZinpeSiWlGa/vD19lZVzan+bdckwY2U1Wh+ZmW5xlx8AJRmJWKjTyI
+ AGlRVXvf9enfjdUmNP8Y01qIyz384H3CEvKuR+1VCo7ipyVKKsx++SjBf
+ XhbZQ1jF21sDNgFd7xNTBUrXvYav3CaArT9DUTriZ/PGj482cM3CUMJBm
+ P1WnhZ8KZQWoOJ0TAyTT2lAHrik40Bk4nrLlpQ3MGYRrkB/bYHuNtO9ZW
+ GY/dcpBiyiq2TTZFvElYpDsh5s7Mrp0pUv9VOHNvgnzeUzF1sgvV4trbA
+ t0BAugRGCel4EqcR6+74BX5F2/Fd40CAoYCo9lr/vSrD/y/Q5rkKcaiVo Q==;
+X-CSE-ConnectionGUID: edrvplZ7RVeKLCLp6c52QQ==
+X-CSE-MsgGUID: qBt8x56+R7Sw+d/BxQrpdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="66204334"
+X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; d="scan'208";a="66204334"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2025 08:28:27 -0800
-X-CSE-ConnectionGUID: 2Zw5cEPERR+cW6lhLm80MA==
-X-CSE-MsgGUID: E1xj0ke6QVuLESuR3/81fg==
+ 27 Nov 2025 08:28:31 -0800
+X-CSE-ConnectionGUID: LF607QJZQ5uEsXdOJlXemg==
+X-CSE-MsgGUID: dhkUJiIWRUicDNqLOD/g7Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; d="scan'208";a="193363963"
+X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; d="scan'208";a="193363968"
 Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
  ([10.245.244.59])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2025 08:28:25 -0800
+ 27 Nov 2025 08:28:29 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- S Sebinraj <s.sebinraj@intel.com>, Xin Wang <x.wang@intel.com>
-Subject: [PATCH i-g-t v3 2/3] tools/intel_gpu_frequency: Change Intel card
- detection
-Date: Thu, 27 Nov 2025 17:28:03 +0100
-Message-ID: <20251127162806.173535-3-kamil.konieczny@linux.intel.com>
+ S Sebinraj <s.sebinraj@intel.com>, Xin Wang <x.wang@intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>
+Subject: [PATCH i-g-t v3 3/3] tools/intel_gpu_frequency: Allow printing by
+ regular user
+Date: Thu, 27 Nov 2025 17:28:04 +0100
+Message-ID: <20251127162806.173535-4-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251127162806.173535-1-kamil.konieczny@linux.intel.com>
 References: <20251127162806.173535-1-kamil.konieczny@linux.intel.com>
@@ -71,176 +71,123 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Change card detection by using directly sysfs. With this on
-systems without Intel card or without any drm driver loaded,
-instead of failing on assert it will print one of messages:
+Printing frequencies by non-root user is now not possible as it
+ends up with an assert. However, reading corresponding sysfs as
+non-priviliged user and printing frequencies is possible:
 
-No Intel card found in /dev/dri
+$ cd /sys/class/drm/card1/
 
-or
+$ ls -1 gt_*
+gt_RP0_freq_mhz
+gt_RP1_freq_mhz
+gt_RPn_freq_mhz
+gt_act_freq_mhz
+gt_boost_freq_mhz
+gt_cur_freq_mhz
+gt_max_freq_mhz
+gt_min_freq_mhz
 
-Cannot open /dev/dri/
-Error: <errno>
+$ cat gt_*
+1300
+350
+100
+0
+1300
+350
+1300
+100
 
-when /dev/dri folder is not present.
+Add such feature to this tool, with this:
 
-v2: split out card detection to separate patch (Kamil)
-v3: clarify description and error prints (Krzysztof)
+$ ./intel_gpu_frequency
+cur: 350 MHz
+min: 100 MHz
+RP1: 350 MHz
+max: 1300 MHz
 
-Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+v2: split out card detection to simplify review, rewritten
+  opening for write (Kamil)
+
 Cc: S Sebinraj <s.sebinraj@intel.com>
 Cc: Xin Wang <x.wang@intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
 ---
- tools/intel_gpu_frequency.c | 120 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 117 insertions(+), 3 deletions(-)
+ tools/intel_gpu_frequency.c | 31 +++++++++++++++++++++++++++----
+ 1 file changed, 27 insertions(+), 4 deletions(-)
 
 diff --git a/tools/intel_gpu_frequency.c b/tools/intel_gpu_frequency.c
-index 999db756b..10de4c707 100644
+index 10de4c707..b89c99aa7 100644
 --- a/tools/intel_gpu_frequency.c
 +++ b/tools/intel_gpu_frequency.c
-@@ -22,6 +22,8 @@
-  */
+@@ -51,6 +51,7 @@ struct freq_info {
+ 	const char *mode;
+ 	FILE *filp;
+ 	char *path;
++	bool write;
+ };
  
- #include <assert.h>
-+#include <dirent.h>
-+#include <fcntl.h>
- #include <getopt.h>
- #include <stdio.h>
- #include <time.h>
-@@ -75,6 +77,113 @@ get_sysfs_path(const char *which)
- 	return path;
+ static struct freq_info info[] = {
+@@ -185,17 +186,39 @@ get_intel_card(void)
  }
  
-+/* Returns:
-+ * 1 if Intel card was bound by i915 driver
-+ * 0 otherwise
-+ * -errno on error
-+ */
-+static int
-+is_intel_card(int card)
-+{
-+	static const char fmt[] = "/sys/class/drm/card%d/device/driver/module/drivers";
-+	char path[PATH_MAX];
-+	struct dirent *entry;
-+	int dirfd;
-+	DIR *dirp;
-+	int found = 0;
-+
-+	if (card < 0)
-+		return -1;
-+
-+	sprintf(path, fmt, card);
-+
-+	dirfd = open(path, O_RDONLY | O_DIRECTORY);
-+	if (dirfd < 0)
-+		return -errno;
-+
-+	dirp = fdopendir(dirfd);
-+	if (!dirp) {
-+		close(dirfd);
-+		return -errno;
-+	}
-+
-+	while ((entry = readdir(dirp))) {
-+		if (strcmp(entry->d_name, ".") == 0 ||
-+		    strcmp(entry->d_name, "..") == 0)
-+			continue;
-+
-+		if (strncmp(entry->d_name, "pci:", 4))
-+			continue;
-+
-+		if (!strcmp(entry->d_name, "pci:i915")) {
-+			found = 1;
-+			break;
-+		}
-+	}
-+
-+	closedir(dirp);
-+
-+	return found;
-+}
-+
-+static void __attribute__((noreturn))
-+exit_error(const char *msg, int err)
-+{
-+	if (msg)
-+		fprintf(stderr, "%s\n", msg);
-+
-+	if (err > 0)
-+		fprintf(stderr, "Error: %d %s\n", err, strerror(err));
-+
-+	exit(EXIT_FAILURE);
-+}
-+
-+static int
-+get_intel_card(void)
-+{
-+	struct dirent *entry;
-+	int intel_card = -1;
-+	int dirfd, err;
-+	DIR *dirp;
-+
-+	dirfd = open("/dev/dri/", O_RDONLY | O_DIRECTORY);
-+	if (dirfd < 0)
-+		exit_error("Cannot open /dev/dri/", errno);
-+
-+	dirp = fdopendir(dirfd);
-+	if (!dirp) {
-+		err = errno;
-+		close(dirfd);
-+		exit_error("Cannot open directory /dev/dri/", err);
-+	}
-+
-+	while ((entry = readdir(dirp))) {
-+		int num;
-+
-+		if (strcmp(entry->d_name, ".") == 0 ||
-+		    strcmp(entry->d_name, "..") == 0)
-+			continue;
-+
-+		if (entry->d_type == DT_DIR)
-+			continue;
-+
-+		if (strncmp(entry->d_name, "card", 4))
-+			continue;
-+
-+		if (sscanf(entry->d_name, "card%d", &num) != 1)
-+			exit_error("Cannot parse card ID as integer", 0);
-+
-+		if (is_intel_card(num) > 0) {
-+			intel_card = num;
-+			break;
-+		}
-+	}
-+
-+	closedir(dirp);
-+
-+	return intel_card;
-+}
-+
  static void
- initialize_freq_info(struct freq_info *freq_info)
+-initialize_freq_info(struct freq_info *freq_info)
++initialize_read_info(struct freq_info *freq_info)
  {
-@@ -317,10 +426,15 @@ int main(int argc, char *argv[])
+ 	if (freq_info->filp)
+ 		return;
  
- 	parse_version_or_help(argc, argv);
+ 	freq_info->path = get_sysfs_path(freq_info->name);
+ 	assert(freq_info->path);
+-	freq_info->filp = fopen(freq_info->path, freq_info->mode);
++	freq_info->filp = fopen(freq_info->path, "r");
+ 	assert(freq_info->filp);
+ }
  
-+	device = get_intel_card();
-+	if (device < 0)
-+		exit_error("No Intel card found in /dev/dri\n", 0);
++static void
++initialize_write_info(struct freq_info *freq_info)
++{
++	if (freq_info->write)
++		return;
 +
- 	fd = __drm_open_driver(DRIVER_INTEL);
--	devid = intel_get_drm_devid(fd);
--	device = igt_device_get_card_index(fd);
--	close(fd);
-+	if (fd >= 0) {
-+		devid = intel_get_drm_devid(fd);
-+		close(fd);
++	if (freq_info->filp)
++		fclose(freq_info->filp);
++	else
++		freq_info->path = get_sysfs_path(freq_info->name);
++
++	assert(freq_info->path);
++	freq_info->filp = fopen(freq_info->path, freq_info->mode);
++	if (!(freq_info->filp)) {
++		fprintf(stderr, "Cannot open file %s for write mode %s\nerror %d %s\n",
++			freq_info->path, freq_info->mode, errno, strerror(errno));
++		exit(EXIT_FAILURE);
 +	}
++
++	freq_info->write = true;
++}
++
+ static void wait_freq_settle(void)
+ {
+ 	struct timespec ts;
+@@ -208,7 +231,7 @@ static void wait_freq_settle(void)
  
- 	write = parse(argc, argv, targets, ARRAY_SIZE(targets), set_freq);
- 	fail = write;
+ static void set_frequency(struct freq_info *freq_info, int val)
+ {
+-	initialize_freq_info(freq_info);
++	initialize_write_info(freq_info);
+ 	rewind(freq_info->filp);
+ 	assert(fprintf(freq_info->filp, "%d", val) > 0);
+ 
+@@ -219,7 +242,7 @@ static int get_frequency(struct freq_info *freq_info)
+ {
+ 	int val;
+ 
+-	initialize_freq_info(freq_info);
++	initialize_read_info(freq_info);
+ 	rewind(freq_info->filp);
+ 	assert(fscanf(freq_info->filp, "%d", &val)==1);
+ 
 -- 
 2.52.0
 
