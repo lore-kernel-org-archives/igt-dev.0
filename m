@@ -4,54 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AF9ACFD2F6
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Nov 2025 09:51:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F60FD116E2
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Nov 2025 09:51:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ABB4310E7FA;
-	Thu, 27 Nov 2025 09:51:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 07B8310E7FB;
+	Thu, 27 Nov 2025 09:51:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RA85pKI6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GQIojO0L";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2EC910E7FA
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Nov 2025 09:51:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E088F10E7FB
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Nov 2025 09:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764237070; x=1795773070;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=etscxkwR23DasX/WrQUTAK5ZNtm86kEzgeLqbJZ9nu4=;
- b=RA85pKI6eJjjJHjGFD8giMnvTUX9NVo9KcL9zzHqvZHVXj8mH4KYKKyQ
- iGhsF7fzrkHvDU/9vFwseZ8srpcxJyHyG7Pmtgp1WgLoqO2sj+LGLNliN
- ZtFigHPtppF3POomDnZhOK+WqnVgZamXwKzV8JwV7fKndZkB5tbq55bef
- 6YStiwb8lRyu4rRGxc3q4PzKhZ1eQMuXI8o+oQX4oxupS8WQTEmYBGAX0
- VjUJkm3JQUma0YmGFghUNa21xx5yLRMaf8Yrmid9xvNhqFn0MJHi9pdY/
- qVWFsujuAEWylIpBuDMoQwl8dnILX/z7wB1Mu0UwQZF2B4Glc3JrhjxjH Q==;
-X-CSE-ConnectionGUID: QNPwH6fDR4qPsFyxyC1KfA==
-X-CSE-MsgGUID: +5WGjMUuTxSuWLaS9BVxnw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="65467980"
-X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; d="scan'208";a="65467980"
+ t=1764237072; x=1795773072;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=apdOf3PSxol20bhy4bnJU8HpAfqPujZrDBhQNiQZIZ0=;
+ b=GQIojO0Lye9E9drHZCauXiegKJUMFJTQYxdrTcTZ9CSdGisIREA2wVGh
+ uLzcugQDvUFvEFc/oOynw2fWdu8UsyL7bqZJB05tp0o7LpSFV9xvjRnZU
+ qUfhNw2J4evkjc3ktgTPw2NKa5t61tniYimiRwBhkZEOpAh4xvzn2W8M9
+ ACYaZvdPRa5AVBwLa3r3oBTXJJ7jq/KxafHtyDrlA6aKyHZqXaB1krRbl
+ s6CDL8oryRKf3GdB5bRJROAhCebbgGwdoIEmtGWTAP3hTgKE3RhFcwqpH
+ CqN0mMj8rc79ILlWtkIriv6Cbf9+FTUQVPQYZy3xsfq+ihSjVakZa63ru g==;
+X-CSE-ConnectionGUID: 7vhXNmpgTnS3IiOsd+TGoQ==
+X-CSE-MsgGUID: zyGkpBirTuG3wKNB1MHILg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="65467982"
+X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; d="scan'208";a="65467982"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2025 01:51:10 -0800
-X-CSE-ConnectionGUID: xv8ijSiOThec0XdP+dVa2A==
-X-CSE-MsgGUID: hJqbRgq/SpuRwWYOasUn6w==
+ 27 Nov 2025 01:51:12 -0800
+X-CSE-ConnectionGUID: fp2ZzsT7TVS9tlLE+/0HBQ==
+X-CSE-MsgGUID: FESXFP/FTnyApQRSrVSkIw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; d="scan'208";a="194001871"
+X-IronPort-AV: E=Sophos;i="6.20,230,1758610800"; d="scan'208";a="194001875"
 Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2025 01:51:07 -0800
+ 27 Nov 2025 01:51:09 -0800
 From: Soham Purkait <soham.purkait@intel.com>
 To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
  badal.nilawar@intel.com
 Cc: anshuman.gupta@intel.com, soham.purkait@intel.com,
  lucas.demarchi@intel.com, umesh.nerlige.ramappa@intel.com,
  kamil.konieczny@intel.com
-Subject: [PATCH i-g-t 0/2] Close any open drm device after engine
- initialization in GPUTOP
-Date: Thu, 27 Nov 2025 15:10:41 +0530
-Message-Id: <20251127094043.3916839-1-soham.purkait@intel.com>
+Subject: [PATCH i-g-t 1/2] tools/gputop/xe_gputop: Close card_fd after engine
+ population in xe_populate_engines()
+Date: Thu, 27 Nov 2025 15:10:42 +0530
+Message-Id: <20251127094043.3916839-2-soham.purkait@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251127094043.3916839-1-soham.purkait@intel.com>
+References: <20251127094043.3916839-1-soham.purkait@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,49 +71,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-    During the engine initialization for a specific device, igt helper
-functions need card_fd to access each engine and respective configs which
-is required in obtaining the busyness of the same through PMU.
-But during KMS tests no other DRM client should run. So once the required
-configs and engines are obtained, the card_fd should be closed as opened
-card_fd in gputop makes appear itself as DRM client.
-  
-  GPUTOP is also capable of running without superuser access through setting
-CAP_PERFMON or an appropriate perf_event_paranoid setting, although in that
-case GPU client busyness is not available as without being superuser, other
-processes' fd could not be inspected.
+During the engine initialization for a specific device in GPUTOP, IGT helper
+functions need card_fd to access each engine and respective configs.
+These are required in obtaining the busyness of the respective engines through
+PMU in GPUTOP. But for KMS tests no other DRM client should run while it is running.
+So once the required configs and engines are obtained, the card_fd is closed
+as opened card_fd in xe_populate_engines() makes appear itself as DRM client.
 
-Steps to enable GPUTOP to run without root (using CAP_PERFMON):
-$ cd /path/to/igt-gpu-tools/
-$ sudo setcap cap_perfmon=+ep $(pwd)/build/tools/gputop/gputop
-$ sudo sh -c "echo $(pwd)/build/lib > /etc/ld.so.conf.d/lib-igt.conf"
-$ sudo ldconfig
-Steps to revert once done:
-$ sudo setcap cap_perfmon=-ep $(pwd)/build/tools/gputop/gputop
-$ sudo rm /etc/ld.so.conf.d/lib-igt.conf
-$ sudo ldconfig
+Fixes: c8106465683f ("tools/gputop/xe_gputop: Add gputop support for xe specific devices")
+Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+---
+ tools/gputop/xe_gputop.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Steps to enable GPUTOP to run without root (using perf_event_paranoid):
-# Save the current value
-$ orig_val=$(sysctl -n kernel.perf_event_paranoid)
-# Set the value to allow running GPUTOP without root privileges
-$ sudo sysctl -w kernel.perf_event_paranoid=-1
-Steps to revert once done:
-$ sudo sysctl -w kernel.perf_event_paranoid=$orig_val
-
-Soham Purkait (2):
-  tools/gputop/xe_gputop: Close card_fd after engine population in
-    xe_populate_engines()
-  tools/gputop/gputop: Enable support for multiple GPUs and instances
-
- tools/{ => gputop}/gputop.c | 253 ++++++++++++++++++++++++++++++------
- tools/gputop/meson.build    |   6 +
- tools/gputop/xe_gputop.c    |   6 +-
- tools/meson.build           |   6 +-
- 4 files changed, 224 insertions(+), 47 deletions(-)
- rename tools/{ => gputop}/gputop.c (63%)
- create mode 100644 tools/gputop/meson.build
-
+diff --git a/tools/gputop/xe_gputop.c b/tools/gputop/xe_gputop.c
+index bb2caa6ea..69818cbdc 100644
+--- a/tools/gputop/xe_gputop.c
++++ b/tools/gputop/xe_gputop.c
+@@ -197,6 +197,8 @@ void *xe_populate_engines(const void *obj, int index)
+ 		engines->num_engines++;
+ 	}
+ 
++	close(card_fd);
++
+ 	if (!ret) {
+ 		errno = ret;
+ 		return NULL;
+@@ -263,11 +265,11 @@ int xe_pmu_init(const void *obj, int index)
+ 		fd = _open_pmu(type, &engines->num_counters, &engine->engine_active_ticks,
+ 			       &engines->fd);
+ 		if (fd < 0)
+-			return -1;
++			return fd;
+ 		fd = _open_pmu(type, &engines->num_counters, &engine->engine_total_ticks,
+ 			       &engines->fd);
+ 		if (fd < 0)
+-			return -1;
++			return fd;
+ 	}
+ 	return 0;
+ }
 -- 
 2.34.1
 
