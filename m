@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 432EBD116E4
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Nov 2025 01:12:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D52CD116E3
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Nov 2025 01:13:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E2C0710E716;
-	Thu, 27 Nov 2025 01:12:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ED2E810E6FF;
+	Thu, 27 Nov 2025 01:13:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="OQizEiav";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="BYt87N5Q";
 	dkim-atps=neutral
-Received: from CO1PR03CU002.outbound.protection.outlook.com
- (mail-westus2azon11010025.outbound.protection.outlook.com [52.101.46.25])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 10F9B10E716
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Nov 2025 01:12:55 +0000 (UTC)
+Received: from PH0PR06CU001.outbound.protection.outlook.com
+ (mail-westus3azon11011062.outbound.protection.outlook.com [40.107.208.62])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2DCBF10E6FF
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Nov 2025 01:13:00 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BEhsMO43hAg00x2n4eM9hfDShgUp1mzInCaYW7/Xd8mF/I2zLK87GqxUn+r896Pgv2Db9UcFfkoglH1uhrsU7jUGn9nZfPt9Gv3F09W1Grh3PkN36i0Bx16RfhDSnUB0eVtzbAO0TFWGG/EE+pEz4KNw+RcQVUQOKVotG7ANgOxSk3hOTwdIodgc87gf5VNuSaIroQ52NEuMnCNmbYk9taV7sqOJB5rezHTgXRtvDP2P/6OlOBwiUuL4JwuEjei87HZMP+ZQ3tzu+umiQIpW+U6JqG/+yoxc74RnEgh4hfwfqu37w5RLHakPRmyaPRsL1M6oDTgwZ7EG2EXESS93qA==
+ b=yNhnX9YzRSmitPlSIx516OKul9aMtGc0fi+g1anki3aoPeAJJd3503lZDssmKbhon+TkQvmnVP2HGgbBAszw4bavOEUjBZnKi13hO24vk+PinPrG171zRr48nlTCl7YUPgfuog3NAUOcKVo26GJdxvvFYopAzma7ooBgioQwK/FzMo7OoNoN6jq0y7jI49DVO0iRyvqV6IpionDTKffb2omFMGa4szgr9cGdMUqskd14FEUIR6BkMHIvApoksCm2tPrPZVEFnD975L9noVoZNahWrJz6yB08dknTF77nTU/2KBk4GC8oB8i1Wj2I9+LqlQkcunLA1tVX2s/bwb/mdA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bpXa21DHuATllJCB1FI7FMTHRlZBFSb8OjLPEr9PrG4=;
- b=OwW3hHAr3MmJM2h4T0zqhZMG/2THHFdbpcX/00mTrzO1nLYJInam50nYWoyR6naot+KOn697xkSLP3lAlKM+2h5wAYtZ6aL8HlkjpAS4OIWhQfJomeHrXzqOD9N0XjpS63Owbz/Ev0ILTPYC4EtK8JjK81qNDyaI8QXHX2jHADOc6H77DgREgpSRrYBY5d1uEz4XQu0XrwHCkHPWiNmCMQIXc8U8Ef6iCTpLPnFAcEdIUA4fPwoLG5fhZ6dfBSneqLgTXGxYvK8Xbfnao4XEQhiWtQ0NCSgHfS1i0zLGq8R9BmRSCzvhoPlJj5hzG3JJV8A2ck4cUVDlByuFBCCCgQ==
+ bh=eBR9sNQ8urVZzDy1lyhfge/2EKTDtLXUYLRBaEOjLxc=;
+ b=T7lhDn0Gfrk/oy4yMyuTC7gdFjDg4vY3CsBx2hiEgxha6N2I8zkUJ0DFq/0uVAUVX4gwiAsHkrbu5bTrOzHzHgcOkZhVNtoKlHCUFkv8FdJ0PJwTaEWaQq5SP1B5PvZkrn1o9qVAe86OvQJpVE0oU8uOoLQDCPnyVqiaCYt1i4HlUDzLG8j7zw58M6jwqYqaL1FPZhhNTd7rzaaIcMRAgg8rvpnu0mxO2IuUQsJKfswTfGhMY5+dZJNxHy9+Vd6pYAuS/FyTn9Ze/OplLvNRj/mGqZNL0KQS98DOOlAPcSDhlTH7Szrjpu0/C9dgsPM17zZkY/Lr2IgyPKzctmNKBw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bpXa21DHuATllJCB1FI7FMTHRlZBFSb8OjLPEr9PrG4=;
- b=OQizEiavg9zA7M4sewQW5Z/nkXJ/FL4GjAVtFUHusoVQsbRBi+X5mvy1QgUS2ExcUZQpNOlYKunJUNcc1OHSypNxNmS3VeyHlpTtMueucDsbpNuVtUDJJLQX2NeELYI/mLw7NlPC6qm0Ym6kKEUCQK0Hh26yI5raoqPt2K8UJQQ=
-Received: from SJ0PR03CA0352.namprd03.prod.outlook.com (2603:10b6:a03:39c::27)
- by DS7PR12MB5981.namprd12.prod.outlook.com (2603:10b6:8:7c::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.14; Thu, 27 Nov
- 2025 01:12:47 +0000
-Received: from MWH0EPF000A6734.namprd04.prod.outlook.com
- (2603:10b6:a03:39c:cafe::b5) by SJ0PR03CA0352.outlook.office365.com
- (2603:10b6:a03:39c::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.14 via Frontend Transport; Thu,
- 27 Nov 2025 01:12:44 +0000
+ bh=eBR9sNQ8urVZzDy1lyhfge/2EKTDtLXUYLRBaEOjLxc=;
+ b=BYt87N5QZ0s0QsEwwIskJi8mFm/RHit5tm4Q9VRXR57Lm0RLxqn1SwUKDuAxtl98hQ3Nk8v2PXlJFgjUnjlIa1+OEuTZbFD/oiS8xmCkrmHwB4vPe0S0igABHBxTtCFxTw4/4iAKeAwU7C77qZMt8g7zxD+U06IyuvYqg5t8CSo=
+Received: from BYAPR08CA0064.namprd08.prod.outlook.com (2603:10b6:a03:117::41)
+ by CH3PR12MB9429.namprd12.prod.outlook.com (2603:10b6:610:1c9::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.13; Thu, 27 Nov
+ 2025 01:12:54 +0000
+Received: from MWH0EPF000A672F.namprd04.prod.outlook.com
+ (2603:10b6:a03:117:cafe::e4) by BYAPR08CA0064.outlook.office365.com
+ (2603:10b6:a03:117::41) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.13 via Frontend Transport; Thu,
+ 27 Nov 2025 01:12:54 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,24 +48,25 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
 Received: from satlexmb08.amd.com (165.204.84.17) by
- MWH0EPF000A6734.mail.protection.outlook.com (10.167.249.26) with Microsoft
+ MWH0EPF000A672F.mail.protection.outlook.com (10.167.249.21) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9366.7 via Frontend Transport; Thu, 27 Nov 2025 01:12:46 +0000
+ 15.20.9366.7 via Frontend Transport; Thu, 27 Nov 2025 01:12:53 +0000
 Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 26 Nov
- 2025 19:12:45 -0600
+ 2025 19:12:52 -0600
 Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
  satlexmb08.amd.com (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17
- via Frontend Transport; Wed, 26 Nov 2025 17:12:39 -0800
+ via Frontend Transport; Wed, 26 Nov 2025 17:12:46 -0800
 From: Jesse.Zhang <Jesse.Zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
  Jesse.Zhang <Jesse.Zhang@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
-Subject: [PATCH i-g-t v2 3/6] lib/amdgpu: add GPU memory utilities
-Date: Thu, 27 Nov 2025 09:11:24 +0800
-Message-ID: <20251127011219.3119242-3-Jesse.Zhang@amd.com>
+Subject: [PATCH i-g-t v2 4/6] lib/amdgpu: add utility functions and GFX1200
+ family macro
+Date: Thu, 27 Nov 2025 09:11:25 +0800
+Message-ID: <20251127011219.3119242-4-Jesse.Zhang@amd.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251127011219.3119242-1-Jesse.Zhang@amd.com>
 References: <20251127011219.3119242-1-Jesse.Zhang@amd.com>
@@ -74,53 +75,53 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A6734:EE_|DS7PR12MB5981:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8e9abf1d-9f8d-49fa-14f7-08de2d52136d
+X-MS-TrafficTypeDiagnostic: MWH0EPF000A672F:EE_|CH3PR12MB9429:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4bb85bc1-154c-4fdb-7775-08de2d521756
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
  ARA:13230040|376014|1800799024|82310400026|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?yRaumYZ/hJFJ14ii9mOWr9mJxYjnuBcXmHcBZPDFRmLy3ADsIqxAtoiW/gVf?=
- =?us-ascii?Q?3h95uHqTBVhnPicS7OTDhukYd94cRK0kofSUE2ve8YydBIeiJm3ZYYM2vewb?=
- =?us-ascii?Q?mO8ffzVWts41JmOw+XKJ0qZzzTA0/nW4us00q2YjuEdaL+3jNKdTcSQg//DA?=
- =?us-ascii?Q?dZ/DySszBvhkTn9vviYu5bg1crKqkNGMTLrfjDtoeEWmDgmhNxbaJBAYWKPm?=
- =?us-ascii?Q?0RH92nsYgvflaCZVttVSOi4++T5bqo5Sq7BdWFLqwFJfxBQUO+UJKhE9EeDc?=
- =?us-ascii?Q?SLLQmdXr5w+HxsIeEFw7LvXwyzTzK6IrFKc4p7LPPriKzR4vCvuVOnbF2djP?=
- =?us-ascii?Q?F4MX4A59odD74//yGoL3uuhEIqX0ZmO+J2MjJKNoP60ySRlwSoOniIF0cNSp?=
- =?us-ascii?Q?2Bw8613bpQOfVS2bRUi0Lrn2G/e/CQP+pUh1fqwspiBioYGRqhCjytrcqaSk?=
- =?us-ascii?Q?GR+Gl378peqUbiXRRMNmpzIMFKSwORVy3vRYt30Ds7juSmQJ304AosB1ydCg?=
- =?us-ascii?Q?lGvS2ijDL97l0adDaGC5WywiravU7kswPuxZ/SayLvaoYUCHVI2il3TbgMbI?=
- =?us-ascii?Q?XPSQiS7pBd1m8yy1gSqr1BfolT/Bz5WeWuQAaG+Ho8tPUX74pQQ4g7Vylhtj?=
- =?us-ascii?Q?+oBhOcg2zmM5WglRJ4KhUhB7ms/CmApR1kEXQwcO0WePmQFcjbvN99fO+720?=
- =?us-ascii?Q?QRk597yvg76B9JIBEg+mwjFouBmhCgoeX8i5JzjxDGY+VW27dNJMaLnM2W7n?=
- =?us-ascii?Q?SdktWZbO4nzw68Z6gti7wjhgmQ9vi/OQ6frYOniqS7F/zbBRt84tPJg9itOu?=
- =?us-ascii?Q?YL55aFO7ZEGl1RolFN6QCEhjofeizmjWXDAs/n6sXJj8129K7ehTakSIR+hr?=
- =?us-ascii?Q?P0Fz2DNoNSuWFUdNxfHiIXzKQFzBL0DBtfhjuSOF35gBQrrDbKar7hGFtX4F?=
- =?us-ascii?Q?WLoaA8Z8btz/DSEskHDHk6hHg2E6jRXhweTlhXaztZwLxhXhVhJkyAJsqowG?=
- =?us-ascii?Q?ddtZRynvdm7ahVtIHvYaok6UoD3GvmQLSAuw6EegX9eRGoitP6wLJNprN5SE?=
- =?us-ascii?Q?rR8tC4Hk+g/2zeqb2eDveI2xUzmnka+e6+WcCswSlfXBj6Tfy15V3x5slegG?=
- =?us-ascii?Q?khlV0tl3x7z44TEeTIPZnwigVm/0SzgKLo/fzvd49yj4ajME8XHuNfi5bGBN?=
- =?us-ascii?Q?5oLEkuzZKLrbLYEcJSbNIqfsZVw4L8Zqu0SvdY6ONSbbe/+2mXf33YSzfY2x?=
- =?us-ascii?Q?k9B3/3sVKWAo35cTSkLpxICPF+7gW5B55QMFZJ3tAcwkirq6YHHc7EzNIvND?=
- =?us-ascii?Q?8+nB3SOFPsRUTUxfNWuOAxnONu9uyfolK2L9IQxGrDlgqhUH2Yt+5DSoPDQF?=
- =?us-ascii?Q?F+yt8jDm2vBdh40skuD9FbCDnO4V/ETw102gODWtjoF7TKPHIyxqIFDnRXlf?=
- =?us-ascii?Q?x4OE7yXCbK8siC5VYMA5EqtoEvIKlJ6aRmSHakV2QMg+43Amsg9lX0Q+CeP4?=
- =?us-ascii?Q?DmkgHkRdQZbq+1wNsjalpp2KxvZ4QE0lmW66adCJlY+f1VTvsnR9tWc0+ufo?=
- =?us-ascii?Q?oE7iMFqAVWofE2slRFU=3D?=
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?c9bK6v3zKdXri0yAGOPhTUI2Gx3sse//Qls9cSX/kUnxAM634sM+kVb8vcMV?=
+ =?us-ascii?Q?IOwUpDDFZjnChcbFfa3jrhpLDjh5T43+eraFWPoKAs9Dm+45f1AapsHLbgxD?=
+ =?us-ascii?Q?NQeQ+S5uHPwMLL7OXdoMEQDCaN3X2PJV9PyF+3o3O4SAQkDeuBdAWq6UI23c?=
+ =?us-ascii?Q?hf4kKVvUOWkfG8adcN9YihrygZOw76vkxfbkokOqQvatvQEAVkL5+DH2Ipka?=
+ =?us-ascii?Q?Y7pVXFKTES1REWvl5EngNgTXPvunFjuk9njCnXn2C+QdpV+ejFtQHZ3WKe7g?=
+ =?us-ascii?Q?7ShG2cWlYTSfPACF1lEQ2jmrda8Cws1mHyZgCRThy1wS/uOg+zhEGVfSE3ye?=
+ =?us-ascii?Q?7phIbmbzHF+3pBg+cYbM5GhuP7GLi+ulLfSBEGMLwPsjUJjpljeaLFw7RE1H?=
+ =?us-ascii?Q?cqmpOJvBmYbFogN/BMZQ341wii2ODD/zN/vs/t4EFMo+ltAZhqrZxf26AUEk?=
+ =?us-ascii?Q?w/P7Kir61s+BuyDKR3ujZTsskttqhX0EfmUzbO124oew3MsJtja99JQsD5lc?=
+ =?us-ascii?Q?ch0GxwTMYlt7/v2fnL6oscgNP4p+FrKHuvn0MzTISsWVGi8w7/M3PT4hwkPB?=
+ =?us-ascii?Q?roPc0DgZuTaOE240cFmh6jsusgrcmMGDMmpChqhql1o1Ms2sF9VcfJsC8SQ7?=
+ =?us-ascii?Q?C4EM1XSAXg3IxkI2YGO6UhyslKMsCkU8zNDTU/SjtRl9yHtXQsSKtTcyWAxl?=
+ =?us-ascii?Q?PCrVI/ayBJUngQS51PDkI4f6RcsNM4EGZiS6oxJeUO4Ehe0xbH8+fZDdqrUh?=
+ =?us-ascii?Q?NQ36ZqPFP9+VcRF5CwBJEur2phZTXKP634ncIv3nqiXY0w/eX2Dx4oYLAvkD?=
+ =?us-ascii?Q?1dgviW7LA5QD/k4rnkLw8SeT/4cEsF4FqVhhk6DdYOmPKnOuTL6dfoxWRKBM?=
+ =?us-ascii?Q?U5GbSSU8XNCZlEpMLUyVNqzsZJaP8XmBMoP0JRpQWjwdNMYXOI+7S/ts8ezv?=
+ =?us-ascii?Q?6eOKNovdj1tO7a15dhWulTw/xRddEjAV/h8N/1w3NVDQzLVsnnGL5sIe3SzH?=
+ =?us-ascii?Q?0zPurQZlfih/Ly8DmM9ZK/hY1PFtMkNWUi/W4Esz2bFRz9WU4+U1tUaO7+EV?=
+ =?us-ascii?Q?GtWf8c9jK12KKvNP1l+s1m4scivTEWuTqBGWRQ9YSNF2+2jjvLhvchq2DuUh?=
+ =?us-ascii?Q?zBStFnj2wpZ4RDxVtBD5GxLwiVznwkEFMq31LCJntXD+CzwSy0I0dyDW4Z3O?=
+ =?us-ascii?Q?W/kK+V+sJii1yeFkkMOfz17LSv//XAE+tf+Ckchg425xiGRv9qa6pan4PrXv?=
+ =?us-ascii?Q?WrXGKZxmHDBME5jFlUIe8z4Lg9qod3O+VdHOqGnf2/a1Fv98eXa/JuxdqGWV?=
+ =?us-ascii?Q?VJUHg+Q3OBTTdE8/ccgxxwUB5XHNY78zajX/bOrWqtWJTS31rdbpu+vuNyTZ?=
+ =?us-ascii?Q?T8VNNx/4zEasEVGD3OCtKvgJfcCxD7LE9H5379UgMoRMg51u+1lwnUxbxEQf?=
+ =?us-ascii?Q?QVxUsLwm+eWzcvt02UCzchJMR20m1HVwGskBCOLrm4b6vHFlXodgnrBM5pVj?=
+ =?us-ascii?Q?3d/+MsX5yy6u69lIvlNO/nvuN5zpFuZV//RxMR7BcFBKFx9xPfAyhU1mq09z?=
+ =?us-ascii?Q?OXY4NrkaHpQvlxrWxIE=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
  SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2025 01:12:46.8334 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e9abf1d-9f8d-49fa-14f7-08de2d52136d
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2025 01:12:53.4469 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4bb85bc1-154c-4fdb-7775-08de2d521756
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000A6734.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000A672F.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5981
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9429
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,390 +137,140 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend amd_memory.c with a suite of reusable memory management utilities.
+1. amd_ip_blocks.c additions:
+   - get_dri_index_from_device(): Extract DRI index from device FD symlink (supports renderD/card paths)
+     for debugfs access in tests.
+   - is_apu(): Check if GPU is an APU using AMDGPU_IDS_FLAGS_FUSION flag.
+   - cmd_get_ip_name(): Return human-readable IP block name (GFX/Compute/DMA/etc.) for logging.
 
-Key additions:
-1. Memory info queries:
-   - get_available_system_memory(): Fetch max allocatable GTT size via heap info
-   - get_available_vram(): Fetch max allocatable VRAM size via heap info
-   - get_gpu_memory_info(): Comprehensive memory info (VRAM/GTT/CPU-accessible VRAM)
-     using amdgpu_query_info(AMDGPU_INFO_MEMORY)
+2. amdgpu_asic_addr.h addition:
+   - FAMILY_IS_GFX1200 macro: Add GFX1200 architecture support for family checks.
 
-2. DMA-BUF and GPU BO utilities:
-   - create_dmabuf(): Convert user-space memory to GPU-accessible DMA-BUF via amdgpu_bo
-   - virtual_mem_to_gpu_bo(): Map user-space memory to GPU BO (DMA-BUF import + VA mapping)
-   - virtual_alloc_memory(): Wrapper for mmap with protection flag mapping
-   - virtual_free_memory(): Wrapper for munmap
-   - wait_on_value(): Poll memory for expected value with timeout (test utility)
-
-Suggested-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
 ---
- lib/amdgpu/amd_memory.c | 300 ++++++++++++++++++++++++++++++++++++++++
- lib/amdgpu/amd_memory.h |  29 +++-
- 2 files changed, 328 insertions(+), 1 deletion(-)
+ lib/amdgpu/amd_ip_blocks.c    | 64 +++++++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_ip_blocks.h    | 16 +++++++++
+ lib/amdgpu/amdgpu_asic_addr.h |  1 +
+ 3 files changed, 81 insertions(+)
 
-diff --git a/lib/amdgpu/amd_memory.c b/lib/amdgpu/amd_memory.c
-index 72ea3db6c..12fe23c65 100644
---- a/lib/amdgpu/amd_memory.c
-+++ b/lib/amdgpu/amd_memory.c
-@@ -26,6 +26,14 @@
- #include "amd_memory.h"
- #include "amd_PM4.h"
- #include "amd_ip_blocks.h"
-+#include <amdgpu.h>
-+#include <amdgpu_drm.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <sys/mman.h>
-+#include <inttypes.h>
-+
- /**
-  *
-  * @param device_handle
-@@ -398,4 +406,296 @@ void amdgpu_command_submission_multi_fence_wait_all(amdgpu_device_handle device,
- 	igt_assert_eq(r, 0);
+diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+index b44c29819..221eb6eda 100644
+--- a/lib/amdgpu/amd_ip_blocks.c
++++ b/lib/amdgpu/amd_ip_blocks.c
+@@ -1767,3 +1767,67 @@ bool is_support_page_queue(enum amd_ip_block_type ip_type, const struct pci_addr
+ 	/* Return true if files matching the pattern were found, otherwise return false */
+ 	return (ret == 0 && glob_result.gl_pathc > 0);
  }
++
++int get_dri_index_from_device(amdgpu_device_handle device)
++{
++        /* For AMDGPU, the DRI index is typically available through the render node */
++        /* We can use the device fd to determine the appropriate debugfs path */
++        char path[64];
++        char target[1024];
++        ssize_t len;
++        int dri_index = 0;
++
++        /* Try to read the symlink from /proc/self/fd */
++        snprintf(path, sizeof(path), "/proc/self/fd/%d", amdgpu_device_get_fd(device));
++
++        len = readlink(path, target, sizeof(target) - 1);
++        if (len != -1) {
++                target[len] = '\0';
++                /* Extract DRI index from path like /dev/dri/renderD128 */
++                if (sscanf(target, "/dev/dri/renderD%d", &dri_index) == 1) {
++                        return dri_index;
++                }
++                /* Try card path as well */
++                if (sscanf(target, "/dev/dri/card%d", &dri_index) == 1) {
++                        return dri_index;
++                }
++        }
++
++        return 0; /* Default to 0 */
++}
++
++bool is_apu(const struct amdgpu_gpu_info *info)
++{
++    return !!(info && (info->ids_flags & AMDGPU_IDS_FLAGS_FUSION));
++}
++
++/**
++ * Get IP block name string
++ */
++const char *cmd_get_ip_name(enum amd_ip_block_type ip_type)
++{
++    switch (ip_type) {
++	case AMD_IP_GFX:
++	return "GFX";
++	case AMD_IP_COMPUTE:
++	return "Compute";
++	case AMD_IP_DMA:
++	return "DMA";
++	case AMD_IP_UVD:
++	return "UVD";
++	case AMD_IP_VCE:
++	return "VCE";
++	case AMD_IP_UVD_ENC:
++	return "UVD_ENC";
++	case AMD_IP_VCN_DEC:
++	return "VCN_DEC";
++	case AMD_IP_VCN_ENC:
++	return "VCN_ENC";
++	case AMD_IP_VCN_JPEG:
++	return "VCN_JPEG";
++	case AMD_IP_VPE:
++	return "VPE";
++	default:
++	return "Unknown";
++    }
++}
+diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+index c319ded6e..c591d21c1 100644
+--- a/lib/amdgpu/amd_ip_blocks.h
++++ b/lib/amdgpu/amd_ip_blocks.h
+@@ -21,6 +21,10 @@
+ #include "amd_registers.h"
+ #include "amd_family.h"
  
-+/*
-+ * Get available GTT size of the GPU node
-+ * Equivalent to Thunk's hsaKmtAvailableMemory function, using amdgpu_query_heap_info
-+ * to fetch max allocatable size from GTT domain heap.
-+ */
-+uint64_t get_available_system_memory(amdgpu_device_handle dev)
-+{
-+	struct amdgpu_heap_info gtt_heap;
-+	int ret;
++#ifndef MIN
++#define MIN(a, b) ((a) < (b) ? (a) : (b))
++#endif
 +
-+	ret = amdgpu_query_heap_info(dev, AMDGPU_GEM_DOMAIN_GTT, 0, &gtt_heap);
-+	if (ret != 0) {
-+		fprintf(stderr, "Failed to query VRAM heap: %d\n", ret);
-+		return 0;
-+	}
-+
-+	return gtt_heap.max_allocation;
-+}
-+
-+/*
-+ * Get available VRAM size of the GPU node
-+ * Equivalent to Thunk's hsaKmtAvailableMemory function, using amdgpu_query_heap_info
-+ * to fetch max allocatable size from VRAM domain heap.
-+ */
-+uint64_t get_available_vram(amdgpu_device_handle dev)
-+{
-+	struct amdgpu_heap_info vram_heap;
-+	int ret;
-+
-+	ret = amdgpu_query_heap_info(dev, AMDGPU_GEM_DOMAIN_VRAM, 0, &vram_heap);
-+	if (ret != 0) {
-+		fprintf(stderr, "Failed to query VRAM heap: %d\n", ret);
-+		return 0;
-+	}
-+
-+	return vram_heap.max_allocation;
-+}
-+
-+/**
-+ * get_gpu_memory_info - Get GPU memory information
-+ * @device: AMDGPU device handle
-+ * @vram_size: Output for VRAM usable heap size
-+ * @cpu_accessible_vram_size: Output for CPU accessible VRAM usable heap size
-+ * @gtt_size: Output for GTT usable heap size
-+ *
-+ * Returns 0 on success, error code on failure.
-+ */
-+int get_gpu_memory_info(amdgpu_device_handle device,
-+			       uint64_t *vram_size,
-+			       uint64_t *cpu_accessible_vram_size,
-+			       uint64_t *gtt_size)
-+{
-+	struct drm_amdgpu_memory_info mem_info;
-+	int r;
-+
-+	r = amdgpu_query_info(device, AMDGPU_INFO_MEMORY, sizeof(mem_info), &mem_info);
-+	if (r) {
-+		igt_info("Failed to query GPU memory info, error: %d\n", r);
-+		return r;
-+	}
-+
-+	if (vram_size)
-+		*vram_size = mem_info.vram.usable_heap_size;
-+
-+	if (cpu_accessible_vram_size)
-+		*cpu_accessible_vram_size = mem_info.cpu_accessible_vram.usable_heap_size;
-+
-+	if (gtt_size)
-+		*gtt_size = mem_info.gtt.usable_heap_size;
-+
-+	igt_debug("GPU Memory Info: VRAM=%" PRIu64 " MB, CPU_ACCESSIBLE_VRAM=%" PRIu64 " MB, GTT=%" PRIu64 " MB\n",
-+		(uint64_t)(mem_info.vram.usable_heap_size / (1024 * 1024)),
-+		(uint64_t)(mem_info.cpu_accessible_vram.usable_heap_size / (1024 * 1024)),
-+		(uint64_t)(mem_info.gtt.usable_heap_size / (1024 * 1024)));
-+	return 0;
-+}
-+
-+/**
-+ * Create a DMA-BUF to encapsulate system memory (using amdgpu_bo_alloc instead of DRM_IOCTL_GEM_CREATE)
-+ * Workflow: Allocate GPU-accessible BO -> Map to user space -> Copy system memory data -> Export as DMA-BUF
-+ */
-+int create_dmabuf(amdgpu_device_handle dev, void *sys_addr, size_t size)
-+{
-+	struct amdgpu_bo *bo = NULL;
-+	struct amdgpu_bo_alloc_request alloc_req = {0};
-+	void *bo_map = NULL;
-+	int dmabuf_fd = -1;
-+	int ret;
-+
-+	/* 1. Allocate GPU buffer object (replaces DRM_IOCTL_GEM_CREATE) */
-+	alloc_req.alloc_size = size;
-+	alloc_req.flags = AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;  // Allow CPU access
-+	alloc_req.preferred_heap = AMDGPU_GEM_DOMAIN_GTT;  // Use GTT domain (system memory accessible)
-+	ret = amdgpu_bo_alloc(dev, &alloc_req, &bo);
-+	if (ret != 0) {
-+		igt_warn("amdgpu_bo_alloc failed: %d\n", ret);
-+		return -1;
-+	}
-+
-+	/* 2. Map BO to user space (facilitates copying system memory data) */
-+	ret = amdgpu_bo_cpu_map(bo, &bo_map);
-+	if (ret != 0) {
-+		igt_warn("amdgpu_bo_cpu_map failed: %d\n", ret);
-+		goto free_bo;
-+	}
-+
-+	/* 3. Copy system memory data to GPU BO */
-+	memcpy(bo_map, sys_addr, size);
-+
-+	/* 4. Unmap from user space (data copy completed) */
-+	amdgpu_bo_cpu_unmap(bo);
-+	bo_map = NULL;
+ #define MAX_CARDS_SUPPORTED 4
  
-+	/* 5. Export BO as DMA-BUF (replaces DRM_IOCTL_PRIME_HANDLE_TO_FD) */
-+	ret = amdgpu_bo_export(bo, amdgpu_bo_handle_type_dma_buf_fd, (uint32_t *)&dmabuf_fd);
-+	if (ret != 0) {
-+		igt_warn("amdgpu_bo_export failed: %d\n", ret);
-+		goto free_bo;
-+	}
-+
-+	/* 6. Free BO handle (DMA-BUF exists independently) */
-+	amdgpu_bo_free(bo);
-+	return dmabuf_fd;
-+
-+free_bo:
-+	if (bo)
-+		amdgpu_bo_free(bo);
-+	return -1;
-+}
-+
-+/**
-+ * virtual_mem_to_gpu_bo - Map user-space virtual memory to GPU buffer object
-+ * @device: AMDGPU device handle
-+ * @cpu_ptr: Pointer to user-space memory to map
-+ * @size: Size of the memory region to map
-+ * @out_bo: Output pointer for the created GPU buffer handle
-+ * @out_gpu_va: Output pointer for the GPU virtual address of the mapped buffer
-+ * @out_va_handle: Output pointer for the VA range handle
-+ *
-+ * This function converts a user-space memory region to a DMA-BUF, imports it
-+ * as a GPU buffer object (BO), and maps it to the GPU's virtual address space.
-+ * Returns 0 on success, negative error code on failure.
-+ */
-+int virtual_mem_to_gpu_bo(amdgpu_device_handle device,
-+			  void *cpu_ptr,
-+				 size_t size,
-+				 amdgpu_bo_handle *out_bo,
-+				 uint64_t *out_gpu_va,
-+				 amdgpu_va_handle *out_va_handle)
-+{
-+	int r;
-+	int dmabuf_fd;
-+	struct amdgpu_bo_import_result import_result = {0};
-+	uint64_t aligned_size = ALIGN(size, getpagesize());
-+	uint64_t va_base;
-+	amdgpu_va_handle va_handle;
-+
-+	/* Convert user memory to DMA-BUF */
-+	dmabuf_fd = create_dmabuf(device, cpu_ptr, size);
-+	if (dmabuf_fd < 0) {
-+		igt_warn("Failed to create DMA-BUF fd\n");
-+		return -1;
-+	}
-+
-+	/* Import DMA-BUF into AMDGPU as a buffer object */
-+	r = amdgpu_bo_import(device,
-+			     amdgpu_bo_handle_type_dma_buf_fd,
-+			     dmabuf_fd,
-+			     &import_result);
-+	close(dmabuf_fd); /* FD no longer needed after import */
-+	if (r != 0) {
-+		igt_warn("amdgpu_bo_import failed: %d\n", r);
-+		return r;
-+	}
-+
-+	/* Allocate GPU virtual address range for the buffer */
-+	r = amdgpu_va_range_alloc(device,
-+				  amdgpu_gpu_va_range_general,
-+				 aligned_size,
-+				 getpagesize(),
-+				 0,
-+				 &va_base,
-+				 &va_handle,
-+				 0);
-+	if (r != 0) {
-+		igt_warn("amdgpu_va_range_alloc failed: %d\n", r);
-+		amdgpu_bo_free(import_result.buf_handle);
-+		return r;
-+	}
-+
-+	/* Map buffer object to the allocated GPU virtual address */
-+	r = amdgpu_bo_va_op(import_result.buf_handle,
-+			    0,
-+			   aligned_size,
-+			   va_base,
-+			   AMDGPU_VM_PAGE_READABLE | AMDGPU_VM_PAGE_WRITEABLE,
-+			   AMDGPU_VA_OP_MAP);
-+	if (r != 0) {
-+		igt_warn("amdgpu_bo_va_op failed: %d\n", r);
-+		amdgpu_va_range_free(va_handle);
-+		amdgpu_bo_free(import_result.buf_handle);
-+		return r;
-+	}
-+
-+	/* Output results */
-+	*out_bo = import_result.buf_handle;
-+	*out_gpu_va = va_base;
-+	*out_va_handle = va_handle;
-+
-+	return 0;
-+}
-+
-+/**
-+ * Virtual memory allocation wrapper
-+ */
-+void *virtual_alloc_memory(void *address, unsigned int size, int memProtection)
-+{
-+	void *ptr;
-+	/**
-+	* Memory protection flags mapping table
-+	*
-+	* This array maps logical memory protection combinations to the corresponding
-+	* POSIX mmap protection flags. The index corresponds to the memory protection
-+	* type defined in the test framework.
-+	*
-+	* Index mapping:
-+	* 0: MEM_NONE      - No access permissions
-+	* 1: MEM_READ      - Read-only access
-+	* 2: MEM_WRITE     - Write-only access
-+	* 3: MEM_READ_WRITE - Read and write access
-+	* 4: MEM_EXEC      - Execute-only access
-+	* 5: MEM_EXEC_READ - Execute and read access
-+	* 6: MEM_EXEC_WRITE - Execute and write access
-+	* 7: MEM_EXEC_READ_WRITE - Execute, read and write access
-+	*
-+	* Note: Some combinations like write-only (PROT_WRITE) may not be supported
-+	* on all systems and typically require read permission as well.
-+	*/
-+	static int protection_flags[8] = {
-+	PROT_NONE,                           // 0: No access
-+	PROT_READ,                           // 1: Read-only
-+	PROT_WRITE,                          // 2: Write-only (may not work on some systems)
-+	PROT_READ | PROT_WRITE,              // 3: Read and write
-+	PROT_EXEC,                           // 4: Execute-only
-+	PROT_EXEC | PROT_READ,               // 5: Execute and read
-+	PROT_EXEC | PROT_WRITE,              // 6: Execute and write
-+	PROT_EXEC | PROT_READ | PROT_WRITE   // 7: Execute, read and write
-+	};
-+
-+	ptr = mmap(address, size, protection_flags[memProtection],
-+		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+
-+	if (ptr == MAP_FAILED) {
-+		igt_warn("mmap failed: %s\n", strerror(errno));
-+		ptr = NULL;
-+	}
-+
-+	return ptr;
-+}
-+
-+/**
-+ * Virtual memory free wrapper
-+ */
-+bool virtual_free_memory(void *address, unsigned int size)
-+{
-+	if (munmap(address, size) == 0)
-+		return true;
-+	else {
-+		igt_warn("munmap failed: %s\n", strerror(errno));
-+		return false;
-+	}
-+}
-+
-+/**
-+ * Wait for specific value in memory with timeout
-+ */
-+bool wait_on_value(unsigned int *ptr, unsigned int expected)
-+{
-+	const int timeout_ms = 5000; // 5 second timeout
-+	int elapsed_ms = 0;
-+
-+	while (*ptr != expected) {
-+		usleep(1000); // 1ms
-+		elapsed_ms++;
-+
-+		if (elapsed_ms > timeout_ms) {
-+			igt_info("Timeout waiting for value 0x%08X, got 0x%08X\n",
-+				 expected, *ptr);
-+			return false;
-+		}
-+	}
-+	return true;
-+}
-diff --git a/lib/amdgpu/amd_memory.h b/lib/amdgpu/amd_memory.h
-index 9b0e3f392..e26c85bc4 100644
---- a/lib/amdgpu/amd_memory.h
-+++ b/lib/amdgpu/amd_memory.h
-@@ -29,7 +29,6 @@
- #include <amdgpu.h>
- #include <amdgpu_drm.h>
+ /* reset mask */
+@@ -431,6 +435,18 @@ is_support_page_queue(enum amd_ip_block_type ip_type, const struct pci_addr *pci
+ int
+ find_dri_id_by_pci(const struct pci_addr *pci);
  
--
- amdgpu_bo_handle
- gpu_mem_alloc(amdgpu_device_handle device_handle,
- 				      uint64_t size,
-@@ -80,4 +79,32 @@ amdgpu_get_bo_list(amdgpu_device_handle dev, amdgpu_bo_handle bo1,
- void amdgpu_command_submission_multi_fence_wait_all(amdgpu_device_handle device,
- 						    bool wait_all);
- 
-+uint64_t
-+get_available_system_memory(amdgpu_device_handle dev);
-+
-+uint64_t
-+get_available_vram(amdgpu_device_handle dev);
-+
 +int
-+get_gpu_memory_info(amdgpu_device_handle device,
-+                               uint64_t *vram_size,
-+                               uint64_t *cpu_accessible_vram_size,
-+                               uint64_t *gtt_size);
-+int
-+create_dmabuf(amdgpu_device_handle dev, void *sys_addr, size_t size);
++get_dri_index_from_device(amdgpu_device_handle device);
++/**
++ * is_apu - Check if the GPU is an APU (accelerated processing unit)
++ * @info: Pointer to amdgpu_gpu_info structure containing device info
++ *
++ * Returns true if the device is an APU, false otherwise.
++ */
++bool is_apu(const struct amdgpu_gpu_info *info);
 +
-+int virtual_mem_to_gpu_bo(amdgpu_device_handle device,
-+                                 void *cpu_ptr,
-+                                 size_t size,
-+                                 amdgpu_bo_handle *out_bo,
-+                                 uint64_t *out_gpu_va,
-+                                 amdgpu_va_handle *out_va_handle);
-+void
-+*virtual_alloc_memory(void *address, unsigned int size, int memProtection);
++const char *cmd_get_ip_name(enum amd_ip_block_type ip_type);
 +
-+bool
-+virtual_free_memory(void *address, unsigned int size);
-+
-+bool
-+wait_on_value(unsigned int *ptr, unsigned int expected);
- #endif
+ int
+ amdgpu_bo_alloc_and_map_uq(amdgpu_device_handle device_handle, unsigned int size,
+ 			       unsigned int alignment, unsigned int heap, uint64_t alloc_flags,
+diff --git a/lib/amdgpu/amdgpu_asic_addr.h b/lib/amdgpu/amdgpu_asic_addr.h
+index 63cea1a5d..e7326b0f8 100644
+--- a/lib/amdgpu/amdgpu_asic_addr.h
++++ b/lib/amdgpu/amdgpu_asic_addr.h
+@@ -50,6 +50,7 @@
+ #define FAMILY_IS_GFX1037(f) FAMILY_IS(f, GFX1037)
+ #define FAMILY_IS_GFX1100(f) FAMILY_IS(f, GFX1100)
+ #define FAMILY_IS_GFX1150(f) FAMILY_IS(f, GFX1150)
++#define FAMILY_IS_GFX1200(f) FAMILY_IS(f, GFX1200)
+ 
+ #define AMDGPU_UNKNOWN          0xFF
+ 
 -- 
 2.49.0
 
