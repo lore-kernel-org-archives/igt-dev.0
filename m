@@ -4,55 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C876CFD2F6
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Nov 2025 16:28:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC653CFD2F6
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Nov 2025 16:28:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 02D2410E81E;
-	Thu, 27 Nov 2025 16:28:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5616E10E729;
+	Thu, 27 Nov 2025 16:28:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="luJVlU6y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BholqmqO";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9535910E81E
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Nov 2025 16:28:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D4AF10E828
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Nov 2025 16:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764260899; x=1795796899;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=NjaBp7m6+qoTdn39249Z/11tMWn1sJmkhBWnuTVLNBo=;
- b=luJVlU6y22LahOEjLaahhn3bl5EM1oU9X4UvM9ol1SzJN7Np9w1E7zee
- 6331W43CXAzAieIXayCh+rdBpzdeOuOdggL0b3sNcJXfyggXfrv1mGVJB
- /Kw4ZpWZfJ6Y6+JfJKIGfwizNNN9YXl/Rtd6IvV0bAMIv/W7szMs0AG5c
- tY3JRlTJFRSKnkOUq6KsLQ7ykuAldw7PXyWtFQJOUoOVE+cCs9VVnJgXm
- U/xyAPlvTFdp10yHamMrI74UBT7uCPqwgx4xHWqxhIdwhdnpo7BB5iTJ/
- dej0+PDrBBUMVqknEE87XMLTOoiOyVNDOXR5UZVovmBSrJB9uNbvpfTD4 A==;
-X-CSE-ConnectionGUID: Dx58KyxaQ6+gmcKX7tlYAg==
-X-CSE-MsgGUID: RF1z3zHiS6CK28gxCi4f+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="66204316"
-X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; d="scan'208";a="66204316"
+ t=1764260903; x=1795796903;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=N0BODyyEBEEZB9Wt2B/zPi3vvTZk34SNi+g/JGkRU60=;
+ b=BholqmqOiei39QpWwTsrS9gY/91lqXMwgOt61ARlJkqT1nx/RbPN5T9I
+ xzbBG9tPFMYdItwM1/JqCGkyUMgU9PG1KyinVgWFzL0geLfHmxGLFmltV
+ m+s2cAjuCz4/+vR4fXAbT0e/LPzwssYGLvWL4pwZ9cXR7NInZ6QVEf4Tp
+ fSWfleDA7r+maCq21swvtI/MMZPbFh/cy0n+qbkc6/DXVWuAfqhdDSCj2
+ SZSFnVuQgvZ//2OEcNRVuW972llHxfch2Fxv+L86rrjlg3TjuO2qxqQd2
+ mXGOePPnIe4gat3lYgQztio26u0b4eYRMYggdYgsga4yesjxBYkpsgU6W Q==;
+X-CSE-ConnectionGUID: 37UVZaCVRxybx99Nein3rQ==
+X-CSE-MsgGUID: Egu+uTMlT4qCeKrQ4Wkk6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="66204321"
+X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; d="scan'208";a="66204321"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2025 08:28:18 -0800
-X-CSE-ConnectionGUID: LrrZfvgsSi+kDNaw1F3hHg==
-X-CSE-MsgGUID: c7+W88QwRYa5qFfriCnlzA==
+ 27 Nov 2025 08:28:22 -0800
+X-CSE-ConnectionGUID: qIfZdfA3QsixRdDa9LmThw==
+X-CSE-MsgGUID: G2mGSDfSSyyRzjsfDOpJfw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; d="scan'208";a="193363912"
+X-IronPort-AV: E=Sophos;i="6.20,231,1758610800"; d="scan'208";a="193363917"
 Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
  ([10.245.244.59])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2025 08:28:17 -0800
+ 27 Nov 2025 08:28:21 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- S Sebinraj <s.sebinraj@intel.com>, Xin Wang <x.wang@intel.com>
-Subject: [PATCH i-g-t v3 0/3] intel_gpu_frequency: Allow printing frequencies
- by regular user
-Date: Thu, 27 Nov 2025 17:28:01 +0100
-Message-ID: <20251127162806.173535-1-kamil.konieczny@linux.intel.com>
+ Krzysztof Karas <krzysztof.karas@intel.com>
+Subject: [PATCH i-g-t v3 1/3] tools/intel_gpu_frequency: print short program
+ name
+Date: Thu, 27 Nov 2025 17:28:02 +0100
+Message-ID: <20251127162806.173535-2-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251127162806.173535-1-kamil.konieczny@linux.intel.com>
+References: <20251127162806.173535-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,50 +71,65 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently printing current frequencies with this tool without
-sudo nor root rights ends with an assert and a FAIL, like in any
-igt test:
+When printing help or version info, print only short program
+name, without a path used to run it. Also while at it, update
+copyright year.
 
-$ build/tools/intel_gpu_frequency
-(intel_gpu_frequency:3142) intel_chipset-CRITICAL: Test assertion failure function intel_get_drm_devid, file ../lib/intel_chipset.c:145:
-(intel_gpu_frequency:3142) intel_chipset-CRITICAL: Failed assertion: is_intel_device(fd)
-(intel_gpu_frequency:3142) intel_chipset-CRITICAL: Last errno: 9, Bad file descriptor
-Stack trace:
-  #0 ../lib/igt_core.c:2075 __igt_fail_assert()
-  #1 ../lib/intel_chipset.c:155 intel_get_drm_devid()
-  #2 ../tools/intel_gpu_frequency.c:312 main()
-  #3 ../sysdeps/nptl/libc_start_call_main.h:74 __libc_start_call_main()
-  #4 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
-  #5 [_start+0x25]
-Test (null) failed.
-**** DEBUG ****
-[cut]
-(intel_gpu_frequency:3142) igt_core-INFO:   #5 [_start+0x25]
-****  END  ****
-FAIL (-1.000s)
+v2: shorten also name used for version info, update year at
+  version print (Kamil)
 
-This is a tool, not a test, so change it and allow a normal user
-printing current Intel GPU frequencies. While at it, fix also
-printing program name and print only it, without a full path.
-In second patch, I addressed problem when no Intel card is
-present.
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+---
+ tools/intel_gpu_frequency.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-v2: split device detection to separate patch (Kamil)
-  changed opening for writing (Kamil)
-v3: corrected description and improved error prints (Krzysztof)
-
-Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-Cc: S Sebinraj <s.sebinraj@intel.com>
-Cc: Xin Wang <x.wang@intel.com>
-
-Kamil Konieczny (3):
-  tools/intel_gpu_frequency: print short program name
-  tools/intel_gpu_frequency: Change Intel card detection
-  tools/intel_gpu_frequency: Allow printing by regular user
-
- tools/intel_gpu_frequency.c | 171 +++++++++++++++++++++++++++++++++---
- 1 file changed, 159 insertions(+), 12 deletions(-)
-
+diff --git a/tools/intel_gpu_frequency.c b/tools/intel_gpu_frequency.c
+index 8c3c91313..999db756b 100644
+--- a/tools/intel_gpu_frequency.c
++++ b/tools/intel_gpu_frequency.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright © 2015,2018 Intel Corporation
++ * Copyright © 2015,2018,2025 Intel Corporation
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a
+  * copy of this software and associated documentation files (the "Software"),
+@@ -117,11 +117,21 @@ static int get_frequency(struct freq_info *freq_info)
+ 	return val;
+ }
+ 
++static const char *
++get_shortname(const char *prog)
++{
++	const char *slash = strrchr(prog, '/');
++
++	return slash ? slash + 1 : prog;
++}
++
+ static void __attribute__((noreturn))
+ usage(const char *prog, int err)
+ {
+-	printf("%s A program to manipulate Intel GPU frequencies.\n\n", prog);
+-	printf("Usage: %s [-e] [--min | --max] [--get] [--set frequency_mhz]\n\n", prog);
++	const char *shortname = get_shortname(prog);
++
++	printf("%s A program to manipulate Intel GPU frequencies.\n\n", shortname);
++	printf("Usage: %s [-e] [--min | --max] [--get] [--set frequency_mhz]\n\n", shortname);
+ 	printf("Options: \n");
+ 	printf("  -e		Lock frequency to the most efficient frequency\n");
+ 	printf("  -g, --get     Get all the frequency settings\n");
+@@ -145,8 +155,8 @@ usage(const char *prog, int err)
+ static void
+ version(const char *prog)
+ {
+-	printf("%s: %s\n", prog, VERSION);
+-	printf("Copyright © 2015,2018 Intel Corporation\n");
++	printf("%s: %s\n", get_shortname(prog), VERSION);
++	printf("Copyright © 2015,2018,2025 Intel Corporation\n");
+ }
+ 
+ static void
 -- 
 2.52.0
 
