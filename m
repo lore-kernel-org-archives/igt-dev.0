@@ -4,56 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB621D116EA
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Nov 2025 09:40:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EA11CFD376
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Nov 2025 11:04:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 74D1210E04A;
-	Fri, 28 Nov 2025 09:40:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 226D210E8C8;
+	Fri, 28 Nov 2025 11:04:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="cKMvXhff";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Fp+r4Oic";
 	dkim-atps=neutral
-Received: from bali.collaboradmins.com (bali.collaboradmins.com
- [148.251.105.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3ED110E04A
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Nov 2025 09:40:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1764322847;
- bh=aKgaxX602FR92SIGcqzpcAA39pbHCIVMraLrbOpeW+k=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=cKMvXhfflAoA3gH7Frpfo5/KeavL/ngG4djXyjJ/Ztfkchv2Pfbvv/CcGjFnop3RL
- TqWwqqlAxa7VrsNPhdrkL8OLylLhIPNXdXEmAQmyEen2e0eFCL/NptwXLyQ7XwFDGI
- 5vHyUUlZOnUTGKGIqLpUnY6NWngCWIw+wFWPox3AHZobUCbamZB5xpophwud4D0k6n
- bwxE5nicPvptcKr7DoCb0WPjgTuvcCvMGqVuX4NYmq7+kHsJL9UBY1CMphFuoeFy7J
- 78D8piluhHBO3C8aFT1Bd+nTXqdUwbykLi95UjmiC8S8zXi3YOyO/Og2CTaPbACv3D
- vXVgFiOu8knMA==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits)
- server-digest SHA256) (No client certificate requested)
- (Authenticated sender: bbrezillon)
- by bali.collaboradmins.com (Postfix) with ESMTPSA id 2734417E0117;
- Fri, 28 Nov 2025 10:40:47 +0100 (CET)
-Date: Fri, 28 Nov 2025 10:40:43 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>, Juha-Pekka Heikkila
- <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
- <bhanuprakash.modem@gmail.com>, Steven Price <steven.price@arm.com>, Liviu
- Dudau <liviu.dudau@arm.com>, =?UTF-8?B?QWRyacOhbg==?= Larumbe
- <adrian.larumbe@collabora.com>, Daniel Almeida
- <daniel.almeida@collabora.com>, kernel@collabora.com
-Subject: Re: [PATCH i-g-t v1 v1 3/3] tests/panthor: Add scheduler tests
-Message-ID: <20251128104043.4b33976c@fedora>
-In-Reply-To: <20251127150037.3s7celzcl25sv74h@kamilkon-DESK.igk.intel.com>
-References: <20251126105558.3607460-1-boris.brezillon@collabora.com>
- <20251126105558.3607460-4-boris.brezillon@collabora.com>
- <20251127150037.3s7celzcl25sv74h@kamilkon-DESK.igk.intel.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8626D10E8C8
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Nov 2025 11:04:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1764327852; x=1795863852;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=YqzegU6WMcAXJL5Ol8z3SulTuq8rMIJfnFZUZvojS88=;
+ b=Fp+r4OicjeOIvqDUX0APO7LN9snRV0e2zxjoEBWooWEajZJq6vAedWbF
+ jHLKbl55GS+lrsbw2JwGfX1K71DUARP+xPF9O6Zxx7HkK1UDhF7cT46wy
+ paPlFTO2ZT696+708+tZnBRkTa6yIGQRn6kfIbZ6kXtCfO0iRr/sLQcZZ
+ 9nvaw8q5owX3GngEId8zzxC85nQw82LRfDA68MGi8VZaTh0f1oBLuDL0A
+ lQMK1hThhgilmfDAk0lubhfXmKYv8+xGHfSsCTNMdGKOjuwx4DVJPW/VB
+ v8zvhgMqh7ERYzYquBTsOKcWaOqu+J+45L/Q6CTABWnsABZH6KZGhF/wW g==;
+X-CSE-ConnectionGUID: LeCB05h2Taqv4P3AD4PfWw==
+X-CSE-MsgGUID: lmGNZ7yWTjyPoCFw0Zw/6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="77720694"
+X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; d="scan'208";a="77720694"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Nov 2025 03:04:12 -0800
+X-CSE-ConnectionGUID: xh3nb7OPTZu1dfhcj2FmHg==
+X-CSE-MsgGUID: JfmwPN5pQ+iobgH7mNSnDw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; d="scan'208";a="224143130"
+Received: from mkrakus-mobl1.ger.corp.intel.com (HELO [10.246.23.186])
+ ([10.246.23.186])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Nov 2025 03:04:10 -0800
+Message-ID: <09a5d3b7-20a9-4a68-9fc3-c6135508c181@linux.intel.com>
+Date: Fri, 28 Nov 2025 12:04:07 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/intel/xe_sriov_auto_provisioning: Add
+ restore_auto_provisioning tests
+To: "Laguna, Lukasz" <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ =?UTF-8?Q?Micha=C5=82_Wajdeczko?= <michal.wajdeczko@intel.com>
+References: <20251023203233.592113-1-marcin.bernatowicz@linux.intel.com>
+ <55200caf-2c88-4d3c-9e7b-20040d1f020a@intel.com>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <55200caf-2c88-4d3c-9e7b-20040d1f020a@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,111 +74,241 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kamil,
 
-On Thu, 27 Nov 2025 16:00:37 +0100
-Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
+On 11/19/2025 12:44 PM, Laguna, Lukasz wrote:
+> On 10/23/2025 22:32, Marcin Bernatowicz wrote:
+>> Add subtests that verify restore_auto_provisioning with:
+>> - disabled VFs (succeeds; idempotent)
+>> - enabled VFs in auto mode (no-op)
+>> - enabled VFs in custom mode (-EBUSY; succeeds after disable)
+>>
+>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+>> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+>> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+>> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+>> Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
+>> ---
+>>   tests/intel/xe_sriov_auto_provisioning.c | 136 ++++++++++++++++++++++-
+>>   1 file changed, 135 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/tests/intel/xe_sriov_auto_provisioning.c 
+>> b/tests/intel/xe_sriov_auto_provisioning.c
+>> index 451c3c5ca..74cea5422 100644
+>> --- a/tests/intel/xe_sriov_auto_provisioning.c
+>> +++ b/tests/intel/xe_sriov_auto_provisioning.c
+>> @@ -290,6 +290,98 @@ static void check_selfconfig(int pf_fd, unsigned 
+>> int vf_num, unsigned int flags)
+>>       igt_fail_on_f(fails, "selfconfig check failed\n");
+>>   }
+>>   +static bool empty_shared_res_attributes(int pf_fd)
+>> +{
+>> +    struct xe_sriov_provisioned_range *ranges = NULL;
+>> +    enum xe_sriov_shared_res res;
+>> +    unsigned int gt;
+>> +    int fails = 0;
+>> +
+>> +    xe_for_each_gt(pf_fd, gt)
+>> +        xe_sriov_for_each_provisionable_shared_res(res, pf_fd, gt)
+>> +            if (xe_sriov_pf_debugfs_read_check_ranges(pf_fd, res, 
+>> gt, &ranges, 0))
+>> +                fails++;
+>> +
+>> +    return fails == 0;
+>> +}
+>> +
+>> +/**
+>> + * SUBTEST: restore-auto-provisioning-disabled-vfs
+>> + * Description: Verify restore auto provisioning when VFs are disabled
+>> + */
+>> +static void restore_auto_provisioning_disabled_vfs(int pf_fd)
+>> +{
+>> + 
+>> igt_require(xe_sriov_pf_debugfs_supports_restore_auto_provisioning(pf_fd));
+>> +    igt_skip_on(igt_sriov_get_enabled_vfs(pf_fd));
+>
+> We have such prerequisite in the main test fixture so I'm not sure if 
+> we need it here.
+ok
+>
+> Let's add a new line to separate prerequisites from the subtest 
+> operations.
+ok
+>
+>> +    igt_assert_eq(0, 
+>> xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd));
+>> +    igt_assert(empty_shared_res_attributes(pf_fd));
+>> +    // check second call is noop
+>
+> I think /* ... */ comment style is preferred in linux kernel
+ok
+>
+>
+>> +    igt_assert_eq(0, 
+>> xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd));
+>> +    igt_assert(empty_shared_res_attributes(pf_fd));
+>> +}
+>> +
+>> +/**
+>> + * SUBTEST: restore-auto-provisioning-enabled-vfs-auto_mode
+>
+> s/auto_mode/auto-mode ?
+good catch, thanks
+>
+>> + * Description: Verify that restore auto provisioning with VFs 
+>> enabled in auto mode is noop
+>> + */
+>> +static void restore_auto_provisioning_enabled_vfs_auto_mode(int 
+>> pf_fd, unsigned int num_vfs)
+>> +{
+>> + 
+>> igt_require(xe_sriov_pf_debugfs_supports_restore_auto_provisioning(pf_fd));
+>> +    igt_skip_on(igt_sriov_get_enabled_vfs(pf_fd));
+>> +    igt_require(empty_shared_res_attributes(pf_fd));
+>> +    // ensure auto provisioning on
+>> +    igt_assert_eq(0, 
+>> xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd));
+>> +    igt_assert(empty_shared_res_attributes(pf_fd));
+>
+> New line + comments format
+>
+>> + igt_sriov_disable_driver_autoprobe(pf_fd);
+>> +    igt_sriov_enable_vfs(pf_fd, num_vfs);
+>> +    // ensure noop
+>> +    igt_assert_eq(0, 
+>> xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd));
+>> +    igt_assert(!empty_shared_res_attributes(pf_fd));
+>> +    igt_sriov_disable_vfs(pf_fd);
+>> +    igt_assert(empty_shared_res_attributes(pf_fd));
+>> +}
+>> +
+>> +/**
+>> + * SUBTEST: restore-auto-provisioning-enabled-vfs-custom-mode
+>> + * Description: Verify that restore auto provisioning with VFs 
+>> enabled in custom mode is rejected
+>> + *        and auto provisioning restored after VFs disabled
+>> + */
+>> +static void restore_auto_provisioning_enabled_vfs_custom_mode(int 
+>> pf_fd, unsigned int num_vfs)
+>> +{
+>> +    enum xe_sriov_shared_res res;
+>> +    unsigned int gt;
+>> +    uint64_t dummy_value = 10;
+>> +    uint64_t expected[num_vfs + 1];
+>> +
+>> + 
+>> igt_require(xe_sriov_pf_debugfs_supports_restore_auto_provisioning(pf_fd));
+>> +    igt_skip_on(igt_sriov_get_enabled_vfs(pf_fd));
+>> +    igt_require(empty_shared_res_attributes(pf_fd));
+>> +    // ensure auto provisioning on
+>> +    igt_assert_eq(0, 
+>> xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd));
+>
+> New line + comments format
+ok
+>
+>> + igt_sriov_disable_driver_autoprobe(pf_fd);
+>> +
+>> +    xe_for_each_gt(pf_fd, gt) {
+>> +        xe_sriov_for_each_provisionable_shared_res(res, pf_fd, gt) {
+>> +            for (unsigned int vf = 1; vf <= num_vfs; vf++) {
+>> +                xe_sriov_pf_set_shared_res_attr(pf_fd, res, vf, gt, 
+>> dummy_value);
+>> +                expected[vf] = 
+>> xe_sriov_pf_get_shared_res_attr(pf_fd, res, vf, gt);
+>
+> assert(expected == dummy)
 
-> Hi Boris,
-> On 2025-11-26 at 11:55:58 +0100, Boris Brezillon wrote:
-> > Tests developed while working on this set of fixes [1].
-> > 
-> > [1]https://lore.kernel.org/all/20251112115142.1270931-1-boris.brezillon@collabora.com/
-> > 
-> > Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-> > ---
-> >  lib/igt_panthor.c             |  46 +++++
-> >  lib/igt_panthor.h             |  77 ++++++++
-> >  tests/panthor/meson.build     |   1 +
-> >  tests/panthor/panthor_sched.c | 338 ++++++++++++++++++++++++++++++++++
-> >  4 files changed, 462 insertions(+)
-> >  create mode 100644 tests/panthor/panthor_sched.c
-> > 
-> > diff --git a/lib/igt_panthor.c b/lib/igt_panthor.c
-> > index 73ada9c59bfc..5ae1a26b0e44 100644
-> > --- a/lib/igt_panthor.c
-> > +++ b/lib/igt_panthor.c
-> > @@ -2,6 +2,7 @@
-> >  // SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
-> >  
-> >  #include "drmtest.h"
-> > +#include "igt_aux.h"
-> >  #include "igt_panthor.h"
-> >  #include "ioctl_wrappers.h"
-> >  #include "panthor_drm.h"
-> > @@ -370,3 +371,48 @@ void igt_panthor_free_bo(int fd, struct panthor_bo *bo)
-> >  
-> >  	gem_close(fd, bo->handle);
-> >  }
-> > +
-> > +void igt_panthor_ctx_create(int fd, struct panthor_ctx *ctx)  
-> 
-> Please add description to each new library function, here
-> and below.
+That may not be true,  the value set may be different (depends on 
+resource granularity),
 
-Done.
+so expected >= dummy seems more appropriate or expected != 0
 
-> 
-> > +{
-> > +	memset(ctx, 0, sizeof(*ctx));
-> > +	igt_panthor_query(fd, DRM_PANTHOR_DEV_QUERY_GPU_INFO,
-> > +			  &ctx->gpu_info, sizeof(ctx->gpu_info), 0);
-> > +	igt_panthor_vm_create(fd, &ctx->vm, 0);
-> > +}
-> > +
-> > +void igt_panthor_ctx_destroy(int fd, struct panthor_ctx *ctx)
-> > +{
-> > +	for (uint32_t i = 0; i < ctx->group_count; i++) {
-> > +		struct drm_panthor_group_destroy group_destroy = {
-> > +			.group_handle = ctx->groups[i],
-> > +		};
-> > +
-> > +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_DESTROY, &group_destroy), 0);
-> > +	}
-> > +
-> > +	igt_panthor_vm_destroy(fd, ctx->vm, 0);
-> > +}
-> > +
-> > +void igt_panthor_ctx_add_group(int fd, struct panthor_ctx *ctx,
-> > +			       enum drm_panthor_group_priority group_prio,
-> > +			       const struct drm_panthor_queue_create *queues,
-> > +			       uint32_t queue_count)
-> > +{
-> > +	unsigned int shader_core_count = igt_hweight(ctx->gpu_info.shader_present);
-> > +	struct drm_panthor_group_create group_create = {
-> > +		.queues = DRM_PANTHOR_OBJ_ARRAY(queue_count, queues),
-> > +		.max_compute_cores = shader_core_count,
-> > +		.max_fragment_cores = shader_core_count,
-> > +		.max_tiler_cores = 1,
-> > +		.priority = group_prio,
-> > +		.compute_core_mask = ctx->gpu_info.shader_present,
-> > +		.fragment_core_mask = ctx->gpu_info.shader_present,
-> > +		.tiler_core_mask = ctx->gpu_info.tiler_present,
-> > +		.vm_id = ctx->vm,
-> > +	};
-> > +
-> > +	igt_assert(ctx->group_count < ARRAY_SIZE(ctx->groups));
-> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_CREATE, &group_create), 0);
-> > +	igt_assert(group_create.group_handle > 0);
-> > +	ctx->groups[ctx->group_count++] = group_create.group_handle;
-> > +}
-> > diff --git a/lib/igt_panthor.h b/lib/igt_panthor.h
-> > index dc90033c0ad4..17b91b81cb40 100644
-> > --- a/lib/igt_panthor.h
-> > +++ b/lib/igt_panthor.h
-> > @@ -9,6 +9,8 @@
-> >  #include <stdbool.h>  
-> 
-> Add newline here.
-> 
-> >  #include "panthor_drm.h"
-> >  
-> > +#include "panthor_drm.h"  
-> 
-> You already have it.
+--
 
-Fixed.
+marcin
 
-Thanks,
-
-Boris
+>> +            }
+>> +
+>> +            igt_sriov_enable_vfs(pf_fd, num_vfs);
+>> + igt_assert_eq(xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd),
+>> +                      -EBUSY);
+>> +
+>> +            for (unsigned int vf = 1; vf <= num_vfs; vf++)
+>> +                igt_assert_eq(expected[vf],
+>> + xe_sriov_pf_get_shared_res_attr(pf_fd, res, vf, gt));
+>> +
+>> +            igt_sriov_disable_vfs(pf_fd);
+>> +            igt_assert_eq(0, 
+>> xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd));
+>> +            igt_assert(empty_shared_res_attributes(pf_fd));
+>> +        }
+>> +    }
+>> +}
+>> +
+>>   static bool extended_scope;
+>>     static int opts_handler(int opt, int opt_index, void *data)
+>> @@ -432,10 +524,52 @@ igt_main_args("", long_opts, help_str, 
+>> opts_handler, NULL)
+>>           }
+>>       }
+>>   +    igt_describe("Verify restore-auto-provisioning when VFs are 
+>> disabled");
+>> +    igt_subtest("restore-auto-provisioning-disabled-vfs") {
+>> +        restore_auto_provisioning_disabled_vfs(pf_fd);
+>> +    }
+>> +
+>> +    igt_describe("Verify that restore auto provisioning with VFs 
+>> enabled in auto mode is noop");
+>> + 
+>> igt_subtest_with_dynamic("restore-auto-provisioning-enabled-vfs-auto_mode") 
+>> {
+>> +        if (extended_scope)
+>> +            for_each_sriov_num_vfs(pf_fd, num_vfs)
+>> +                igt_dynamic_f("numvfs-%d", num_vfs)
+>> + restore_auto_provisioning_enabled_vfs_auto_mode(pf_fd,
+>> +                                            num_vfs);
+>> +
+>> +        for_random_sriov_num_vfs(pf_fd, num_vfs) {
+>> +            igt_dynamic_f("numvfs-random") {
+>> +                igt_debug("numvfs=%u\n", num_vfs);
+>> + restore_auto_provisioning_enabled_vfs_auto_mode(pf_fd,
+>> +                                        num_vfs);
+>> +            }
+>> +        }
+>> +    }
+>> +
+>> +    igt_describe("Verify restore-auto-provisioning with VFs enabled 
+>> in custom mode");
+>> + 
+>> igt_subtest_with_dynamic("restore-auto-provisioning-enabled-vfs-custom-mode") 
+>> {
+>> +        if (extended_scope)
+>> +            for_each_sriov_num_vfs(pf_fd, num_vfs)
+>> +                igt_dynamic_f("numvfs-%d", num_vfs)
+>> + restore_auto_provisioning_enabled_vfs_custom_mode(pf_fd,
+>> +                                              num_vfs);
+>> +
+>> +        for_random_sriov_num_vfs(pf_fd, num_vfs) {
+>> +            igt_dynamic_f("numvfs-random") {
+>> +                igt_debug("numvfs=%u\n", num_vfs);
+>> + restore_auto_provisioning_enabled_vfs_custom_mode(pf_fd,
+>> +                                          num_vfs);
+>> +            }
+>> +        }
+>> +    }
+>> +
+>>       igt_fixture {
+>>           igt_sriov_disable_vfs(pf_fd);
+>>           /* abort to avoid execution of next tests with enabled VFs */
+>> -        igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed 
+>> to disable VF(s)");
+>> +        igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed 
+>> to disable VF(s)\n");
+>> +        if 
+>> (xe_sriov_pf_debugfs_supports_restore_auto_provisioning(pf_fd))
+>> + igt_abort_on_f(xe_sriov_pf_debugfs_restore_auto_provisioning(pf_fd),
+>> +                       "Failed to restore auto provisioning\n");
+>>           autoprobe ? igt_sriov_enable_driver_autoprobe(pf_fd) :
+>>                   igt_sriov_disable_driver_autoprobe(pf_fd);
+>>           igt_abort_on_f(autoprobe != 
+>> igt_sriov_is_driver_autoprobe_enabled(pf_fd),
