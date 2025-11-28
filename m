@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2518ECFD376
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Nov 2025 14:14:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 027E0D116F1
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Nov 2025 14:14:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3990310E90A;
-	Fri, 28 Nov 2025 14:14:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 125C810E8E4;
+	Fri, 28 Nov 2025 14:14:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gl4lZeMG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S6AjZkeR";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B7A010E8E4
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Nov 2025 14:14:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D840A10E905
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Nov 2025 14:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764339268; x=1795875268;
+ t=1764339270; x=1795875270;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=3u9zaSDivRe9IJHXXzPUmN9KMlUZs5dwQXGL/V9VYLI=;
- b=gl4lZeMGBGS8QXDIZDFvPMhRTE6gKOvmbuNnx1H/XyQB5LPSgXHz9TQz
- sim6/qkI/rv0M/tzHaNtnHYg0BvSsQJdNtvBq/l6F86LQzcOS8N/06Dfv
- XM6sOYNC9qlGwnTk9KyaGRI/GyWp7SKguG+lSGMeOhC4ONNIiAz15wg1X
- rnyEnkRjOBT0lMqBa52zSfC//ct+jq2J2gvPbJKouRRZyTlCls24DwXC6
- vxWU2hqrS2ivNxeUmc3cdQfdzC/qnPu0zO9xevtkK6E9G/DhSNuziFBA4
- b2FPvMETTTItPwC/1U3uZOXkWrmAMF2QZf0TL6Ej3u/GS93RiKz1mEQq7 Q==;
-X-CSE-ConnectionGUID: 4bjW50CRQfO1i3aQfWo2RQ==
-X-CSE-MsgGUID: 3LfIt7WRSzinbym5sWpwQQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="66261604"
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; d="scan'208";a="66261604"
+ bh=ClgxNvYVSOr2E7T5aQlGKiwpsLNK5QjhYEDY9lDAybo=;
+ b=S6AjZkeRBx4xBh0i2DhgKNkBchpDO0Tv8uIE7R9YwEAdqEaMAv22Txpt
+ xOv42Kaz3S7O8jjxaiecgCquvh/MkrPeiT98qYdcpKHR/s4EBqOGa00oy
+ ATzEpKgawBGpyMEhQNCve9zL7oHsItVt3au9uufK59emH1xewVFqne70l
+ 2g8AU9k/WGlLlWBAnYLCt4A/VmuYWbhrEuZqox1Dd3tXSbZZ31f7IrKV/
+ cepjE3VhpDEvjVJLz/CV0z72el8C4Vq0/ujOxYeoSPdFxPKOviN2zyXCf
+ d1gC3f3p/RjbI1iIdhSEsTK3q7uc7tDPl1MDU0VGMVhBqQRJOyroyABDY w==;
+X-CSE-ConnectionGUID: kyox0ArQQ2+xBwyWi5QjBw==
+X-CSE-MsgGUID: 1095fWnOS+eoZ/cScah4QQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="66261607"
+X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; d="scan'208";a="66261607"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Nov 2025 06:14:28 -0800
-X-CSE-ConnectionGUID: uu98oBSjSBmKIBWZCRROOQ==
-X-CSE-MsgGUID: sv36R6/CTk+nk1aI+N1Svw==
+ 28 Nov 2025 06:14:29 -0800
+X-CSE-ConnectionGUID: R1hAI+YARJ+S8kYOjlNXEw==
+X-CSE-MsgGUID: vfny+ChdQ623mBtQgyQLBw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; d="scan'208";a="224173653"
+X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; d="scan'208";a="224173660"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Nov 2025 06:14:27 -0800
+ 28 Nov 2025 06:14:29 -0800
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Fri, 28 Nov 2025 15:12:09 +0100
-Subject: [PATCH 05/11] lib/igt_aux: add fls helper for bitmaps
+Date: Fri, 28 Nov 2025 15:12:10 +0100
+Subject: [PATCH 06/11] tests/intel/xe_eudebug_online: use igt_bitmap_fls to
+ calculate max dss count
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251128-pagefault-one-of-many-v1-5-a8377a93da8f@intel.com>
+Message-Id: <20251128-pagefault-one-of-many-v1-6-a8377a93da8f@intel.com>
 References: <20251128-pagefault-one-of-many-v1-0-a8377a93da8f@intel.com>
 In-Reply-To: <20251128-pagefault-one-of-many-v1-0-a8377a93da8f@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -56,18 +57,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>, 
  Jan Maslak <jan.maslak@intel.com>, Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1336;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1993;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=3u9zaSDivRe9IJHXXzPUmN9KMlUZs5dwQXGL/V9VYLI=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpKa30S437Hp2B5zvS2h0iRWl+ODBWjLNwIdODp
- 9tdfgMgaQmJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaSmt9AAKCRAjYrKT3hD9
- 173CC/9KwvmNzbPei1yvHzegTxAYBE23fHtmm5xVjoESgJep/4begREtgfRhm+3Nd6eOKc9aYwJ
- SVs6zg/VUBDidUu9DlLqwtbrcA/G/zBUXcUrBGzrStisY2c8+Nllz1ex2uohO4WMYN+goKky+IS
- 8Vl6MW41am9GdRBDYWIljA3In1QOEn0c5vMsTKw38WUbMxRvq35qxaX4rnVkEUB2YhZ8iPGa7tN
- 9cbiaSgP64FLF+Fy/mz4lo00V3IMWL1eNO5ExNx+IsCCsH0+uRLnW0cFT5Xdwtk7PxNhU3YHNrb
- vQRcK/iNRSX8KoH5wt9YE1nF8RKYxl59+39R7NTaQobeCErj6Ua51psqR6bo/Om+p4R8p51mITV
- GUja/HAAFf+T1BspS2aZpke+7q+4jtldcLsCHz3Fkc05SrS3btOYsqT4fl8II1rj+VZmo+WQkte
- mMOWp81Ugh542QTtXbA8Sj1ll+6yrOJQjKTRlZI+UPHpL1BiqVxsOxq4/Vmqcea/8lzQA=
+ bh=ClgxNvYVSOr2E7T5aQlGKiwpsLNK5QjhYEDY9lDAybo=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpKa30EEigTfNCb52EocisCjpiCVYNYlfGNRBbi
+ D7CNkIm8q6JAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaSmt9AAKCRAjYrKT3hD9
+ 1yioC/9VFfCKK5J8IM1wsmXrq6IS/PBA+iWeF8z8qjTao7B2LqzYeeMDJoZXwvgTCWFrkNanppw
+ OZDsOmuHFY6bRQz83Dg4QHNg1r9vAgrp1EJNaCH2h8KIyY7j+SodW9fCq/Sq2j5YYuvmR/GPe6M
+ WL5+8RQb/2lfl0BeBjpX7E0g+lEk2TMpBsXoekAyi0wvKELckkri+WeK2VuDmwgp6JrwvDbU9Qz
+ gEnNa/k6iudTxwh98XAETvRCqtKGId/cOyWJGm9xm4om3H7N3ahWdUirWUBwV6TdVUhiGUG1P4A
+ zu0b4YgzmvZ8yl/kjIZD+SCzDQ9lCYp+6NN1W+c4hpNxmvL9WoM705GOesEjxwoorSvqzD8gKHM
+ ZTHsf2p7Y4bymgyGuVMgdBTsUyCOeiGq/3yLlNGlsSevdBGPRXDakY7Slb+KmIwMi68Od0iaAhf
+ uM05F02szUBAUDk69LQ9ynMosDPG1NDQEadkRBVAdIcye8kMzMA+M3sH0IARVMlToK9ZI=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -85,53 +86,62 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There are multiple places where such helper can be useful.
+Simplifies the code, and makes it more readable.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- lib/igt_aux.c | 20 ++++++++++++++++++++
- lib/igt_aux.h |  1 +
- 2 files changed, 21 insertions(+)
+ tests/intel/xe_eudebug_online.c | 24 +++++++-----------------
+ 1 file changed, 7 insertions(+), 17 deletions(-)
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index d3280c3514a0..abfd8b0fdbd9 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -2152,3 +2152,23 @@ int igt_bitmap_hweight(void *bitmap, int nbits)
- 		ret += igt_hweight(bitmap_get_nbits(p, nbits));
- 	return ret;
+diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+index 3e446fff5604..3ed079b74216 100644
+--- a/tests/intel/xe_eudebug_online.c
++++ b/tests/intel/xe_eudebug_online.c
+@@ -1195,9 +1195,8 @@ static int query_attention_bitmask_size(int fd, int gt)
+ 	uint32_t threads_per_eu = xe_hwconfig_lookup_value_u32(fd, INTEL_HWCONFIG_NUM_THREADS_PER_EU);
+ 	struct drm_xe_query_topology_mask *c_dss = NULL, *g_dss = NULL, *eu_per_dss = NULL;
+ 	struct drm_xe_query_topology_mask *topology, *topo;
+-	uint8_t dss_mask, last_dss;
+ 	uint32_t size;
+-	int i, last_dss_idx;
++	int i, max_eu_count;
+ 
+ 	topology = xe_query_device(fd, DRM_XE_DEVICE_QUERY_GT_TOPOLOGY, &size);
+ 
+@@ -1217,27 +1216,18 @@ static int query_attention_bitmask_size(int fd, int gt)
+ 	igt_assert(g_dss && c_dss && eu_per_dss);
+ 	igt_assert_eq_u32(c_dss->num_bytes, g_dss->num_bytes);
+ 
+-	for (i = 0; i < c_dss->num_bytes; i++) {
+-		dss_mask = c_dss->mask[i] | g_dss->mask[i];
+-		if (dss_mask) {
+-			last_dss = dss_mask;
+-			last_dss_idx = i;
+-		}
+-	}
+-
+-	last_dss_idx *= BITS_PER_BYTE;
+-	do {
+-		last_dss_idx++;
+-	} while (last_dss >>= 1);
++	for (i = 0; i < c_dss->num_bytes; i++)
++		c_dss->mask[i] |= g_dss->mask[i];
+ 
+-	last_dss_idx *= igt_bitmap_hweight(eu_per_dss->mask, eu_per_dss->num_bytes * 8);
++	max_eu_count = igt_bitmap_fls(c_dss->mask, c_dss->num_bytes * 8) *
++		       igt_bitmap_hweight(eu_per_dss->mask, eu_per_dss->num_bytes * 8);
+ 
+ 	if (intel_gen_has_lockstep_eus(fd))
+-		last_dss_idx /= 2;
++		max_eu_count /= 2;
+ 
+ 	free(topology);
+ 
+-	return last_dss_idx * DIV_ROUND_UP(threads_per_eu, 8);
++	return max_eu_count * DIV_ROUND_UP(threads_per_eu, 8);
  }
-+
-+/**
-+ * igt_bitmap_fls: find last set bit in bitmap
-+ *
-+ * @bitmap: pointer to bitmap
-+ * @nbits: number of bits to examine
-+ *
-+ * Bitmap version of fls.
-+ */
-+int igt_bitmap_fls(void *bitmap, int nbits)
-+{
-+	uint64_t *p = bitmap;
-+	int n = nbits / BITS_PER_TYPE(*p), r = nbits % BITS_PER_TYPE(*p);
-+	uint64_t v = r ? bitmap_get_nbits(p + n, r) : 0;
-+
-+	while (!v && n)
-+		v = p[--n];
-+
-+	return n * BITS_PER_TYPE(*p) + igt_fls(v);
-+}
-diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-index 885c6b096e49..8ff182384cce 100644
---- a/lib/igt_aux.h
-+++ b/lib/igt_aux.h
-@@ -353,5 +353,6 @@ void *igt_memdup(const void *ptr, size_t len);
- void igt_wait_and_close(int fence_fd);
  
- int igt_bitmap_hweight(void *bitmap, int nbits);
-+int igt_bitmap_fls(void *bitmap, int nbits);
- 
- #endif /* IGT_AUX_H */
+ static struct drm_xe_eudebug_event_exec_queue *
 
 -- 
 2.43.0
