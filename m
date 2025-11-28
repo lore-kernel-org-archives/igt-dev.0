@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B193CFD2F6
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Nov 2025 01:03:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE7F3D111A8
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Nov 2025 01:03:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4074310E6E8;
-	Fri, 28 Nov 2025 01:03:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 82CA610E109;
+	Fri, 28 Nov 2025 01:03:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LnDt1e5o";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MMIKQ97y";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 79A2010E6E8
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Nov 2025 01:02:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE5C910E777
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Nov 2025 01:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764291780; x=1795827780;
+ t=1764291783; x=1795827783;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=gdAttQ9rn1S2DyJvu7c4LJNlV1jPWNv5UvSrfnBxHDs=;
- b=LnDt1e5oFMQ1YwCwLOh3YL+GZGpYww5iSR0wDSmH/ag8Tmo90FW0eIYN
- X9klBmrj29ZaUXIoJiMWR3x/jfxQ/CDnH6ONmddFi267jfFjdUF1ldxwT
- p0xBTRJlVpxc8oHHFPOkQwmKzk4flQmODpzAFDnNBOu4/N1H4cPDgTBro
- d8nUsXVb23gH+ycf2pLckcc3EK0h7hsP2E3UGIxsN9KN69CScIzy8GJKY
- TBOy2r6BbO/Kdd0P3ZPY0HCWg0Audi2v8eKXbhz4AIpHXjzDOPyUqXw6m
- AO8EoVZy1Cbw4psMpB5EB3pBfhp60+oZmp311/C45Jk/YTG3Lg5R6rEal g==;
-X-CSE-ConnectionGUID: VabagEkgSiieDd8oScHt4w==
-X-CSE-MsgGUID: IhujAaP/S8KNEA5ffq7vaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="53897935"
-X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; d="scan'208";a="53897935"
+ bh=0/Ybdo/4z8wRCBOe6lzoVnHv9ZWlmAwWxWo0iuveDaE=;
+ b=MMIKQ97y6tRUjclVv/DmWStn2qv01eK+fJt/Fhdiwd1cc4LZZ3zhgLnN
+ L7Ggfz5dbe7AknE86Aduoi8l9kkAn/lHG6G4BQ7Mqn+q9olmwrKpcivPB
+ 3kQemjyyimyf0pGpoEwYHwRHKlJNpHtisat7FI7tvNYwPlhEgXzzQ1Ui/
+ h2TiLsSMtX6A7G7lOptZ1oCbc99jYsnHqMK7YPrha1ojsLi5i6k8WpvXr
+ JK4PTZU4xk+IU9R2ZaBkwA47vEK3psMf79mlVBz+f2N4NpZ5aFompyUty
+ GlBJ9J2ZsHjK0jNeneCvJ8EuPmOwjB1ofLlEy9GhkaQ/fN/CxWxVm3TwP g==;
+X-CSE-ConnectionGUID: 3LmTL3AWRyGqzQNB5SFPcQ==
+X-CSE-MsgGUID: X5gX3e2xQAW75Qd4WLT5fg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="53897941"
+X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; d="scan'208";a="53897941"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2025 17:02:59 -0800
-X-CSE-ConnectionGUID: axt4C65kRE2w61GdlSIE0g==
-X-CSE-MsgGUID: 1JXj/JTGQVGl5wlPJv8f6w==
+ 27 Nov 2025 17:03:03 -0800
+X-CSE-ConnectionGUID: +0qGrJeoTWuuEU1Gf7UePg==
+X-CSE-MsgGUID: 1PRKX5iKQEiCV2kZ8VzA0Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; d="scan'208";a="193439659"
+X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; d="scan'208";a="193439679"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.244.140])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2025 17:02:57 -0800
+ 27 Nov 2025 17:03:01 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 1/3] intel: Nuke blt_copy_batch::region
-Date: Fri, 28 Nov 2025 03:02:49 +0200
-Message-ID: <20251128010251.18988-2-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 2/3] intel/xe: Allocate batch buffers from system RAM
+Date: Fri, 28 Nov 2025 03:02:50 +0200
+Message-ID: <20251128010251.18988-3-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251128010251.18988-1-ville.syrjala@linux.intel.com>
 References: <20251128010251.18988-1-ville.syrjala@linux.intel.com>
@@ -71,426 +71,300 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-No idea what this blt_copy_batch::region thing is supposed to
-indicate. It's completely unused, and just confusing everyone
-that calls blt_set_batch(). Nuke it.
+I have no idea why we're allocating batch buffers from VRAM.
+Just stick them into system memory like a normal person and
+let the GPU DMA them in.
+
+The helps small BAR systems because we often forget to specify
+that we need CPU visible VRAM if the batch resides in VRAM.
+
+This more or less cover all the simple blit type cases where
+the bo contains nothing but the batch. There are a lot of
+exec tests and tests using the spinner that also allocate
+batches from VRAM. But those would need a more thorough
+analysis since they tend to pack other stuff besides the
+batch into the same bo.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- benchmarks/xe_blt.c             |  2 +-
- lib/igt_fb.c                    |  2 +-
- lib/intel_blt.c                 |  5 ++---
- lib/intel_blt.h                 |  3 +--
- lib/xe/xe_util.c                |  2 +-
- tests/intel/gem_ccs.c           | 12 ++++++------
- tests/intel/gem_exercise_blt.c  |  6 +++---
- tests/intel/gem_lmem_swapping.c |  4 ++--
- tests/intel/kms_ccs.c           |  2 +-
- tests/intel/xe_ccs.c            | 12 ++++++------
- tests/intel/xe_copy_basic.c     |  4 ++--
- tests/intel/xe_evict_ccs.c      |  2 +-
- tests/intel/xe_exercise_blt.c   |  6 +++---
- tests/intel/xe_pat.c            |  2 +-
- tests/intel/xe_peer2peer.c      |  4 ++--
- tests/kms_prime.c               |  2 +-
- tools/intel_tiling_detect.c     |  2 +-
- 17 files changed, 35 insertions(+), 37 deletions(-)
+ benchmarks/gem_wsim.c         |  4 +---
+ benchmarks/xe_blt.c           |  2 +-
+ benchmarks/xe_exec_ctx.c      |  6 +-----
+ lib/igt_fb.c                  |  3 +--
+ lib/intel_batchbuffer.c       | 14 ++++++--------
+ tests/intel/xe_ccs.c          |  6 +++---
+ tests/intel/xe_copy_basic.c   |  4 ++--
+ tests/intel/xe_evict_ccs.c    |  3 +--
+ tests/intel/xe_exercise_blt.c |  4 ++--
+ tests/intel/xe_peer2peer.c    |  4 ++--
+ tests/kms_prime.c             |  3 +--
+ tools/intel_tiling_detect.c   |  2 +-
+ 12 files changed, 22 insertions(+), 33 deletions(-)
 
+diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+index bebb59f283bb..0d515c3c20de 100644
+--- a/benchmarks/gem_wsim.c
++++ b/benchmarks/gem_wsim.c
+@@ -1790,9 +1790,7 @@ xe_alloc_step_batch(struct workload *wrk, struct w_step *w)
+ 	int i;
+ 
+ 	w->bb_size = xe_bb_size(fd, PAGE_SIZE);
+-	w->bb_handle = xe_bo_create(fd, vm->id, w->bb_size,
+-				    vram_if_possible(fd, eq->hwe_list[0].gt_id),
+-				    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	w->bb_handle = xe_bo_create(fd, vm->id, w->bb_size, system_memory(fd), 0);
+ 	w->xe.data = xe_bo_map(fd, w->bb_handle, w->bb_size);
+ 	w->xe.exec.address =
+ 		intel_allocator_alloc_with_strategy(vm->ahnd, w->bb_handle, w->bb_size,
 diff --git a/benchmarks/xe_blt.c b/benchmarks/xe_blt.c
-index 555178380956..4830cae3cbc5 100644
+index 4830cae3cbc5..f06e4177ad0c 100644
 --- a/benchmarks/xe_blt.c
 +++ b/benchmarks/xe_blt.c
-@@ -144,7 +144,7 @@ static int src_copy(int xe, const intel_ctx_t *ctx,
+@@ -134,7 +134,7 @@ static int src_copy(int xe, const intel_ctx_t *ctx,
+ 	uint32_t bb;
+ 	int ret = 0;
  
- 	blt_set_copy_object(&blt.src, src);
- 	blt_set_copy_object(&blt.dst, dst);
--	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_set_batch(&blt.bb, bb, bb_size);
+-	bb = xe_bo_create(xe, 0, bb_size, region1, 0);
++	bb = xe_bo_create(xe, 0, bb_size, system_memory(xe), 0);
+ 	blt_copy_init(xe, &blt);
+ 	src = blt_create_object(&blt, region1, width, height, bpp, 0,
+ 				T_LINEAR, COMPRESSION_DISABLED, 0, true);
+diff --git a/benchmarks/xe_exec_ctx.c b/benchmarks/xe_exec_ctx.c
+index d08c974022ee..f58dafd9b0c7 100644
+--- a/benchmarks/xe_exec_ctx.c
++++ b/benchmarks/xe_exec_ctx.c
+@@ -45,7 +45,6 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 	uint32_t bind_syncobjs[MAX_N_EXEC_QUEUES];
+ 	struct drm_gem_flink flink;
+ 	struct drm_gem_open open_struct;
+-	uint32_t bo_flags;
+ 	size_t bo_size;
+ 	uint32_t bo = 0;
+ 	struct {
+@@ -71,10 +70,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 		sparse_addr[i] = sparse_addr[i - 1] + (0x1ull << 32);
+ 	}
  
- 	ret = blt_src_copy(xe, ctx, NULL, ahnd, &blt, height, val, count_value, loop);
+-	bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
+-
+-	bo = xe_bo_create(fd, n_vm == 1 ? vm[0] : 0, bo_size,
+-			  vram_if_possible(fd, 0), bo_flags);
++	bo = xe_bo_create(fd, n_vm == 1 ? vm[0] : 0, bo_size, system_memory(fd), 0);
  
+ 	flink.handle = bo;
+ 	ret = igt_ioctl(fd, DRM_IOCTL_GEM_FLINK, &flink);
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 92883a6186cd..2b4d50531e70 100644
+index 2b4d50531e70..78d49aed8283 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -3092,7 +3092,7 @@ static void do_block_copy(const struct igt_fb *src_fb,
- 		pext = &ext;
+@@ -3029,8 +3029,7 @@ static void setup_context_and_memory_region(const struct igt_fb *fb, uint32_t *c
+ 						  ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+ 
+ 		*bb_size = xe_bb_size(fb->fd, *bb_size);
+-		*bb = xe_bo_create(fb->fd, 0, *bb_size, *mem_region,
+-				   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++		*bb = xe_bo_create(fb->fd, 0, *bb_size, system_memory(fb->fd), 0);
  	}
- 
--	blt_set_batch(&blt.bb, xe_bb, bb_size, mem_region);
-+	blt_set_batch(&blt.bb, xe_bb, bb_size);
- 	blt_block_copy(src_fb->fd, ctx, e, ahnd, &blt, pext);
- 
- 	if (e)
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index 2b59cc7e90e8..e7dc6db197af 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -2322,11 +2322,10 @@ void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
  }
  
- void blt_set_batch(struct blt_copy_batch *batch,
--		   uint32_t handle, uint64_t size, uint32_t region)
-+		   uint32_t handle, uint64_t size)
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 4bc1cf5b65c1..839e237cf76a 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -964,8 +964,7 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
+ 
+ 		ibb->alignment = alignment;
+ 		size = ALIGN(size + xe_cs_prefetch_size(fd), ibb->alignment);
+-		ibb->handle = xe_bo_create(fd, 0, size, region,
+-					   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++		ibb->handle = xe_bo_create(fd, 0, size, system_memory(fd), 0);
+ 
+ 		/* Limit to 48-bit due to MI_* address limitation */
+ 		ibb->gtt_size = 1ull << min_t(uint32_t, xe_va_bits(fd), 48);
+@@ -1084,7 +1083,7 @@ struct intel_bb *intel_bb_create_with_allocator(int fd, uint32_t ctx, uint32_t v
  {
- 	batch->handle = handle;
- 	batch->size = size;
--	batch->region = region;
+ 	return __intel_bb_create(fd, ctx, vm, cfg, size, false, 0, 0, 0,
+ 				 allocator_type, ALLOC_STRATEGY_HIGH_TO_LOW,
+-				 is_i915_device(fd) ? REGION_SMEM : vram_if_possible(fd, 0));
++				 is_i915_device(fd) ? REGION_SMEM : system_memory(fd));
  }
  
- struct blt_copy_object *
-@@ -2609,7 +2608,7 @@ void blt_surface_get_flatccs_data(int fd,
- 				 uc_mocs, comp_pat_index, BLT_INDIRECT_ACCESS);
- 	blt_set_ctrl_surf_object(&surf.dst, ccs, sysmem, ccssize, uc_mocs,
- 				 DEFAULT_PAT_INDEX, DIRECT_ACCESS);
--	blt_set_batch(&surf.bb, bb, bb_size, sysmem);
-+	blt_set_batch(&surf.bb, bb, bb_size);
- 	blt_ctrl_surf_copy(fd, ctx, e, ahnd, &surf);
+ static bool aux_needs_softpin(int fd)
+@@ -1126,7 +1125,7 @@ struct intel_bb *intel_bb_create(int fd, uint32_t size)
+ 				 relocs && !aux_needs_softpin(fd), 0, 0, 0,
+ 				 INTEL_ALLOCATOR_SIMPLE,
+ 				 ALLOC_STRATEGY_HIGH_TO_LOW,
+-				 is_i915 ? REGION_SMEM : vram_if_possible(fd, 0));
++				 is_i915 ? REGION_SMEM : system_memory(fd));
+ }
  
- 	if (surf.driver == INTEL_DRIVER_XE) {
-diff --git a/lib/intel_blt.h b/lib/intel_blt.h
-index c87178abfb45..72512b3f72a5 100644
---- a/lib/intel_blt.h
-+++ b/lib/intel_blt.h
-@@ -110,7 +110,6 @@ struct blt_mem_object {
+ /**
+@@ -1155,7 +1154,7 @@ intel_bb_create_with_context(int fd, uint32_t ctx, uint32_t vm,
+ 				 relocs && !aux_needs_softpin(fd), 0, 0, 0,
+ 				 INTEL_ALLOCATOR_SIMPLE,
+ 				 ALLOC_STRATEGY_HIGH_TO_LOW,
+-				 is_i915 ? REGION_SMEM : vram_if_possible(fd, 0));
++				 is_i915 ? REGION_SMEM : system_memory(fd));
+ }
  
- struct blt_copy_batch {
- 	uint32_t handle;
--	uint32_t region;
- 	uint64_t size;
- };
+ /**
+@@ -1254,7 +1253,7 @@ struct intel_bb *intel_bb_create_no_relocs(int fd, uint32_t size)
+ 	return __intel_bb_create(fd, 0, 0, NULL, size, false, 0, 0, 0,
+ 				 INTEL_ALLOCATOR_SIMPLE,
+ 				 ALLOC_STRATEGY_HIGH_TO_LOW,
+-				 is_i915 ? REGION_SMEM : vram_if_possible(fd, 0));
++				 is_i915 ? REGION_SMEM : system_memory(fd));
+ }
  
-@@ -298,7 +297,7 @@ void blt_set_geom(struct blt_copy_object *obj, uint32_t pitch,
- 		  int16_t x1, int16_t y1, int16_t x2, int16_t y2,
- 		  uint16_t x_offset, uint16_t y_offset);
- void blt_set_batch(struct blt_copy_batch *batch,
--		   uint32_t handle, uint64_t size, uint32_t region);
-+		   uint32_t handle, uint64_t size);
+ static void __intel_bb_destroy_relocations(struct intel_bb *ibb)
+@@ -1484,8 +1483,7 @@ void intel_bb_reset(struct intel_bb *ibb, bool purge_objects_cache)
+ 		ibb->handle = gem_create(ibb->fd, ibb->size);
+ 	else
+ 		ibb->handle = xe_bo_create(ibb->fd, 0, ibb->size,
+-					   vram_if_possible(ibb->fd, 0),
+-					   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++					   system_memory(ibb->fd), 0);
  
- struct blt_copy_object *
- blt_create_object(const struct blt_copy_data *blt, uint32_t region,
-diff --git a/lib/xe/xe_util.c b/lib/xe/xe_util.c
-index 6246841e6192..c71bd0162106 100644
---- a/lib/xe/xe_util.c
-+++ b/lib/xe/xe_util.c
-@@ -350,7 +350,7 @@ void xe_fast_copy(int fd,
- 
- 	blt_set_copy_object(&blt.src, &src);
- 	blt_set_copy_object(&blt.dst, &dst);
--	blt_set_batch(&blt.bb, bb, bb_size, system_memory(fd));
-+	blt_set_batch(&blt.bb, bb, bb_size);
- 
- 	blt_fast_copy(fd, ctx, NULL, ahnd, &blt);
- 
-diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
-index a84a47cc46c4..68632372d8f5 100644
---- a/tests/intel/gem_ccs.c
-+++ b/tests/intel/gem_ccs.c
-@@ -127,7 +127,7 @@ static void surf_copy(int i915,
- 				 uc_mocs, DEFAULT_PAT_INDEX, DIRECT_ACCESS);
- 	bb_size = 4096;
- 	igt_assert_eq(__gem_create(i915, &bb_size, &bb1), 0);
--	blt_set_batch(&surf.bb, bb1, bb_size, REGION_SMEM);
-+	blt_set_batch(&surf.bb, bb1, bb_size);
- 	blt_ctrl_surf_copy(i915, ctx, e, ahnd, &surf);
- 	gem_sync(i915, surf.dst.handle);
- 
-@@ -179,7 +179,7 @@ static void surf_copy(int i915,
- 	blt_set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
- 	blt_set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
- 	igt_assert_eq(__gem_create(i915, &bb_size, &bb2), 0);
--	blt_set_batch(&blt.bb, bb2, bb_size, REGION_SMEM);
-+	blt_set_batch(&blt.bb, bb2, bb_size);
- 	blt_block_copy(i915, ctx, e, ahnd, &blt, &ext);
- 	gem_sync(i915, blt.dst.handle);
- 	WRITE_PNG(i915, run_id, "corrupted", &blt.dst, dst->x2, dst->y2, bpp);
-@@ -368,7 +368,7 @@ static void block_copy(int i915,
- 	blt_set_copy_object(&blt.dst, mid);
- 	blt_set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
- 	blt_set_object_ext(&ext.dst, mid_compression_format, width, height, SURFACE_TYPE_2D);
--	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_set_batch(&blt.bb, bb, bb_size);
- 
- 	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
- 	gem_sync(i915, mid->handle);
-@@ -425,7 +425,7 @@ static void block_copy(int i915,
- 		blt.dst.ptr = mid->ptr;
- 	}
- 
--	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_set_batch(&blt.bb, bb, bb_size);
- 	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
- 	gem_sync(i915, blt.dst.handle);
- 	WRITE_PNG(i915, run_id, "dst", &blt.dst, width, height, bpp);
-@@ -506,7 +506,7 @@ static void block_multicopy(int i915,
- 	blt_set_object_ext(&ext3.mid, mid_compression_format, width, height, SURFACE_TYPE_2D);
- 	blt_set_object_ext(&ext3.dst, 0, width, height, SURFACE_TYPE_2D);
- 	blt_set_object_ext(&ext3.final, 0, width, height, SURFACE_TYPE_2D);
--	blt_set_batch(&blt3.bb, bb, bb_size, region1);
-+	blt_set_batch(&blt3.bb, bb, bb_size);
- 
- 	blt_block_copy3(i915, ctx, e, ahnd, &blt3, pext3);
- 	gem_sync(i915, blt3.final.handle);
-@@ -577,7 +577,7 @@ static void block_copy_large(int i915,
- 	blt_set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
- 	blt_set_object_ext(&ext.dst, param.compression_format,
- 			   width, height, SURFACE_TYPE_2D);
--	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_set_batch(&blt.bb, bb, bb_size);
- 	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
- 	gem_sync(i915, blt.dst.handle);
- 
-diff --git a/tests/intel/gem_exercise_blt.c b/tests/intel/gem_exercise_blt.c
-index 72f3b6b347b3..74388f7f05cf 100644
---- a/tests/intel/gem_exercise_blt.c
-+++ b/tests/intel/gem_exercise_blt.c
-@@ -175,7 +175,7 @@ static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
- 	blt_set_copy_object(&blt.src, src);
- 	blt_set_copy_object(&blt.mid, mid);
- 	blt_set_copy_object(&blt.dst, dst);
--	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_set_batch(&blt.bb, bb, bb_size);
- 
- 	fast_copy_one_bb(i915, ctx, e, ahnd, &blt);
- 	gem_sync(i915, blt.dst.handle);
-@@ -229,7 +229,7 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
- 	blt.print_bb = param.print_bb;
- 	blt_set_copy_object(&blt.src, src);
- 	blt_set_copy_object(&blt.dst, mid);
--	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_set_batch(&blt.bb, bb, bb_size);
- 
- 	blt_fast_copy(i915, ctx, e, ahnd, &blt);
- 	gem_sync(i915, mid->handle);
-@@ -242,7 +242,7 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
- 	blt.print_bb = param.print_bb;
- 	blt_set_copy_object(&blt.src, mid);
- 	blt_set_copy_object(&blt.dst, dst);
--	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_set_batch(&blt.bb, bb, bb_size);
- 
- 	blt_fast_copy(i915, ctx, e, ahnd, &blt);
- 	gem_sync(i915, blt.dst.handle);
-diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
-index 6f494b534251..b1f869e432b0 100644
---- a/tests/intel/gem_lmem_swapping.c
-+++ b/tests/intel/gem_lmem_swapping.c
-@@ -207,7 +207,7 @@ init_object_ccs(int i915, struct object *obj, struct blt_copy_object *tmp,
- 	cmd = calloc(1, sizeof(*cmd));
- 	igt_assert(cmd);
- 	cmd->handle = gem_create_from_pool(i915, &size, region);
--	blt_set_batch(cmd, cmd->handle, size, region);
-+	blt_set_batch(cmd, cmd->handle, size);
- 
- 	buf = gem_mmap__device_coherent(i915, tmp->handle, 0, obj->size, PROT_WRITE);
- 	gem_set_domain(i915, tmp->handle, I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
-@@ -275,7 +275,7 @@ verify_object_ccs(int i915, const struct object *obj,
- 	cmd = calloc(1, sizeof(*cmd));
- 	igt_assert(cmd);
- 	cmd->handle = gem_create_from_pool(i915, &size, region);
--	blt_set_batch(cmd, cmd->handle, size, region);
-+	blt_set_batch(cmd, cmd->handle, size);
- 
- 	blt_copy_init(i915, &blt);
- 	blt.color_depth = CD_32bit;
-diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
-index ab081aa755fa..898d50c8a725 100644
---- a/tests/intel/kms_ccs.c
-+++ b/tests/intel/kms_ccs.c
-@@ -592,7 +592,7 @@ static void access_flat_ccs_surface(struct igt_fb *fb, bool verify_compression)
- 
- 	bb_size = xe_bb_size(fb->fd, SZ_4K);
- 	bb1 = xe_bo_create(fb->fd, 0, bb_size, sysmem, 0);
--	blt_set_batch(&surf.bb, bb1, bb_size, sysmem);
-+	blt_set_batch(&surf.bb, bb1, bb_size);
- 	blt_ctrl_surf_copy(fb->fd, surf_ctx, NULL, surf_ahnd, &surf);
- 	intel_ctx_xe_sync(surf_ctx, true);
- 
+ 	/* Reacquire offset for RELOC and SIMPLE */
+ 	if (ibb->allocator_type == INTEL_ALLOCATOR_SIMPLE ||
 diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index 61cf97d52550..e15cc24468f4 100644
+index e15cc24468f4..92e451c1e722 100644
 --- a/tests/intel/xe_ccs.c
 +++ b/tests/intel/xe_ccs.c
-@@ -144,7 +144,7 @@ static void surf_copy(int xe,
- 				 DEFAULT_PAT_INDEX, DIRECT_ACCESS);
- 	bb_size = xe_bb_size(xe, SZ_4K);
- 	bb1 = xe_bo_create(xe, 0, bb_size, sysmem, 0);
--	blt_set_batch(&surf.bb, bb1, bb_size, sysmem);
-+	blt_set_batch(&surf.bb, bb1, bb_size);
- 	blt_ctrl_surf_copy(xe, ctx, NULL, ahnd, &surf);
- 	intel_ctx_xe_sync(ctx, true);
+@@ -362,7 +362,7 @@ static void block_copy(int xe,
+ 	uint8_t uc_mocs = intel_get_uc_mocs_index(xe);
+ 	int result;
  
-@@ -215,7 +215,7 @@ static void surf_copy(int xe,
- 	blt_set_object_ext(&ext.src, mid->compression_type, mid->x2, mid->y2, SURFACE_TYPE_2D);
- 	blt_set_object_ext(&ext.dst, 0, dst->x2, dst->y2, SURFACE_TYPE_2D);
- 	bb2 = xe_bo_create(xe, 0, bb_size, sysmem, 0);
--	blt_set_batch(&blt.bb, bb2, bb_size, sysmem);
-+	blt_set_batch(&blt.bb, bb2, bb_size);
- 	blt_block_copy(xe, ctx, NULL, ahnd, &blt, &ext);
- 	intel_ctx_xe_sync(ctx, true);
- 	WRITE_PNG(xe, run_id, "corrupted", &blt.dst, dst->x2, dst->y2, bpp);
-@@ -389,7 +389,7 @@ static void block_copy(int xe,
- 	blt_set_copy_object(&blt.dst, mid);
- 	blt_set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
- 	blt_set_object_ext(&ext.dst, mid_compression_format, width, height, SURFACE_TYPE_2D);
--	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_set_batch(&blt.bb, bb, bb_size);
- 	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
- 	intel_ctx_xe_sync(ctx, true);
+-	bb = xe_bo_create(xe, 0, bb_size, region1, DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	bb = xe_bo_create(xe, 0, bb_size, system_memory(xe), 0);
  
-@@ -450,7 +450,7 @@ static void block_copy(int xe,
- 		blt.dst.ptr = mid->ptr;
- 	}
+ 	if (!blt_uses_extended_block_copy(xe))
+ 		pext = NULL;
+@@ -497,7 +497,7 @@ static void block_multicopy(int xe,
+ 	uint8_t uc_mocs = intel_get_uc_mocs_index(xe);
+ 	int result;
  
--	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_set_batch(&blt.bb, bb, bb_size);
- 	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
- 	intel_ctx_xe_sync(ctx, true);
+-	bb = xe_bo_create(xe, 0, bb_size, region1, DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	bb = xe_bo_create(xe, 0, bb_size, system_memory(xe), 0);
  
-@@ -543,7 +543,7 @@ static void block_multicopy(int xe,
- 	blt_set_object_ext(&ext3.mid, mid_compression_format, width, height, SURFACE_TYPE_2D);
- 	blt_set_object_ext(&ext3.dst, 0, width, height, SURFACE_TYPE_2D);
- 	blt_set_object_ext(&ext3.final, 0, width, height, SURFACE_TYPE_2D);
--	blt_set_batch(&blt3.bb, bb, bb_size, region1);
-+	blt_set_batch(&blt3.bb, bb, bb_size);
+ 	if (!blt_uses_extended_block_copy(xe))
+ 		pext3 = NULL;
+@@ -593,7 +593,7 @@ static void block_copy_large(int xe,
+ 	bool result = true;
+ 	int i;
  
- 	blt_block_copy3(xe, ctx, ahnd, &blt3, pext3);
- 	intel_ctx_xe_sync(ctx, true);
-@@ -619,7 +619,7 @@ static void block_copy_large(int xe,
- 	blt_set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
- 	blt_set_object_ext(&ext.dst, param.compression_format,
- 			   width, height, SURFACE_TYPE_2D);
--	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_set_batch(&blt.bb, bb, bb_size);
- 	blt_block_copy(xe, ctx, NULL, ahnd, &blt, pext);
- 	intel_ctx_xe_sync(ctx, true);
+-	bb = xe_bo_create(xe, 0, bb_size, region1, DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	bb = xe_bo_create(xe, 0, bb_size, system_memory(xe), 0);
  
+ 	if (!blt_uses_extended_block_copy(xe))
+ 		pext = NULL;
 diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
-index 09cfa470dd74..e24216ee18e4 100644
+index e24216ee18e4..7b944370a1c5 100644
 --- a/tests/intel/xe_copy_basic.c
 +++ b/tests/intel/xe_copy_basic.c
-@@ -119,7 +119,7 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
- 	for (i = 0; i < size; i++)
- 		psrc[i] = rand();
+@@ -98,7 +98,7 @@ mem_copy(int fd, uint32_t src_handle, uint32_t dst_handle, const intel_ctx_t *ct
+ 	igt_debug("size: %u, pitch: %u, width: %u, height: %u (type: %d, mode: %d)\n",
+ 		  size, pitch, width, height, type, mode);
  
--	blt_set_batch(&mem.bb, bb, bb_size, region);
-+	blt_set_batch(&mem.bb, bb, bb_size);
- 	igt_assert(mem.src.width == mem.dst.width);
+-	bb = xe_bo_create(fd, 0, bb_size, region, DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	bb = xe_bo_create(fd, 0, bb_size, system_memory(fd), 0);
  
- 	blt_mem_copy(fd, ctx, NULL, ahnd, &mem);
-@@ -190,7 +190,7 @@ mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx, uint32_t size,
+ 	blt_mem_copy_init(fd, &mem, mode, type);
+ 	mem.print_bb = param.print_bb;
+@@ -185,7 +185,7 @@ mem_set(int fd, uint32_t dst_handle, const intel_ctx_t *ctx, uint32_t size,
+ 	uint32_t bb;
+ 	uint8_t *result;
+ 
+-	bb = xe_bo_create(fd, 0, bb_size, region, DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	bb = xe_bo_create(fd, 0, bb_size, system_memory(fd), 0);
+ 	blt_mem_set_init(fd, &mem, TYPE_LINEAR);
  	blt_set_mem_object(&mem.dst, dst_handle, size, width, width, height, region,
  			   dst_mocs, DEFAULT_PAT_INDEX, COMPRESSION_DISABLED);
- 	mem.dst.ptr = xe_bo_map(fd, dst_handle, size);
--	blt_set_batch(&mem.bb, bb, bb_size, region);
-+	blt_set_batch(&mem.bb, bb, bb_size);
- 	blt_mem_set(fd, ctx, NULL, ahnd, &mem, fill_data);
- 
- 	result = (uint8_t *)mem.dst.ptr;
 diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
-index 7cba378cdb1d..175461a4f5d8 100644
+index 175461a4f5d8..828ddd2cf3a1 100644
 --- a/tests/intel/xe_evict_ccs.c
 +++ b/tests/intel/xe_evict_ccs.c
-@@ -94,7 +94,7 @@ static void copy_obj(struct blt_copy_data *blt,
- 	blt_set_copy_object(&blt->dst, dst_obj);
- 	blt_set_object_ext(&ext.src, 0, w, h, SURFACE_TYPE_2D);
- 	blt_set_object_ext(&ext.dst, 0, w, h, SURFACE_TYPE_2D);
--	blt_set_batch(&blt->bb, bb, bb_size, vram_if_possible(fd, 0));
-+	blt_set_batch(&blt->bb, bb, bb_size);
- 	blt_block_copy(fd, ctx, NULL, ahnd, blt, &ext);
- 	intel_ctx_xe_sync(ctx, true);
+@@ -85,8 +85,7 @@ static void copy_obj(struct blt_copy_data *blt,
+ 	w = src_obj->x2;
+ 	h = src_obj->y2;
  
+-	bb = xe_bo_create(fd, 0, bb_size, vram_memory(fd, 0),
+-			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	bb = xe_bo_create(fd, 0, bb_size, system_memory(fd), 0);
+ 
+ 	blt->color_depth = CD_32bit;
+ 	blt->print_bb = params.print_bb;
 diff --git a/tests/intel/xe_exercise_blt.c b/tests/intel/xe_exercise_blt.c
-index e24a48abf54a..211605a8b399 100644
+index 211605a8b399..e6aaa8a80d74 100644
 --- a/tests/intel/xe_exercise_blt.c
 +++ b/tests/intel/xe_exercise_blt.c
-@@ -165,7 +165,7 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
- 	blt_set_copy_object(&blt.src, src);
- 	blt_set_copy_object(&blt.mid, mid);
- 	blt_set_copy_object(&blt.dst, dst);
--	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_set_batch(&blt.bb, bb, bb_size);
+@@ -141,7 +141,7 @@ static void fast_copy_emit(int xe, const intel_ctx_t *ctx,
+ 	uint32_t bb;
+ 	int result;
  
- 	fast_copy_one_bb(xe, ctx, ahnd, &blt);
+-	bb = xe_bo_create(xe, 0, bb_size, region1, DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	bb = xe_bo_create(xe, 0, bb_size, system_memory(xe), 0);
  
-@@ -217,7 +217,7 @@ static void fast_copy(int xe, const intel_ctx_t *ctx,
- 	blt.print_bb = param.print_bb;
- 	blt_set_copy_object(&blt.src, src);
- 	blt_set_copy_object(&blt.dst, mid);
--	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_set_batch(&blt.bb, bb, bb_size);
+ 	blt_copy_init(xe, &bltinit);
+ 	src = blt_create_object(&bltinit, region1, width, height, bpp, 0,
+@@ -200,7 +200,7 @@ static void fast_copy(int xe, const intel_ctx_t *ctx,
+ 	uint32_t bb;
+ 	int result;
  
- 	blt_fast_copy(xe, ctx, NULL, ahnd, &blt);
+-	bb = xe_bo_create(xe, 0, bb_size, region1, DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	bb = xe_bo_create(xe, 0, bb_size, system_memory(xe), 0);
  
-@@ -229,7 +229,7 @@ static void fast_copy(int xe, const intel_ctx_t *ctx,
- 	blt.print_bb = param.print_bb;
- 	blt_set_copy_object(&blt.src, mid);
- 	blt_set_copy_object(&blt.dst, dst);
--	blt_set_batch(&blt.bb, bb, bb_size, region1);
-+	blt_set_batch(&blt.bb, bb, bb_size);
- 
- 	blt_fast_copy(xe, ctx, NULL, ahnd, &blt);
- 
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index 59dfb6b1115f..9e8ab2afcde7 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -297,7 +297,7 @@ static void pat_index_blt(struct xe_pat_param *p)
- 
- 	blt_set_copy_object(&blt.src, &src);
- 	blt_set_copy_object(&blt.dst, &dst);
--	blt_set_batch(&blt.bb, bb, bb_size, system_memory(fd));
-+	blt_set_batch(&blt.bb, bb, bb_size);
- 
- 	/* Ensure we always see zeroes for the initial KMD zeroing */
- 	blt_fast_copy(fd, ctx, NULL, ahnd, &blt);
+ 	blt_copy_init(xe, &blt);
+ 	src = blt_create_object(&blt, region1, width, height, bpp, 0,
 diff --git a/tests/intel/xe_peer2peer.c b/tests/intel/xe_peer2peer.c
-index 92cb6a65f515..5cfb986c194e 100644
+index 5cfb986c194e..f5ebfeaa591c 100644
 --- a/tests/intel/xe_peer2peer.c
 +++ b/tests/intel/xe_peer2peer.c
-@@ -161,7 +161,7 @@ static void test_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
+@@ -160,7 +160,7 @@ static void test_read(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
+ 	blt_set_copy_object(&im_blt.src, im_src);
  	blt_set_copy_object(&im_blt.dst, dst);
  
- 	bb = xe_bo_create(im_xe, 0, im_bb_size, im_reg, 0);
--	blt_set_batch(&im_blt.bb, bb, im_bb_size, im_reg);
-+	blt_set_batch(&im_blt.bb, bb, im_bb_size);
+-	bb = xe_bo_create(im_xe, 0, im_bb_size, im_reg, 0);
++	bb = xe_bo_create(im_xe, 0, im_bb_size, system_memory(im_xe), 0);
+ 	blt_set_batch(&im_blt.bb, bb, im_bb_size);
  
  	blt_fast_copy(im_xe, ctx, NULL, ahnd, &im_blt);
- 
-@@ -250,7 +250,7 @@ static void test_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
+@@ -249,7 +249,7 @@ static void test_write(struct gpu_info *ex_gpu, struct gpu_info *im_gpu,
+ 	blt_set_copy_object(&im_blt.src, src);
  	blt_set_copy_object(&im_blt.dst, im_dst);
  
- 	bb = xe_bo_create(im_xe, 0, im_bb_size, im_reg, 0);
--	blt_set_batch(&im_blt.bb, bb, im_bb_size, im_reg);
-+	blt_set_batch(&im_blt.bb, bb, im_bb_size);
+-	bb = xe_bo_create(im_xe, 0, im_bb_size, im_reg, 0);
++	bb = xe_bo_create(im_xe, 0, im_bb_size, system_memory(im_xe), 0);
+ 	blt_set_batch(&im_blt.bb, bb, im_bb_size);
  
  	blt_fast_copy(im_xe, ctx, NULL, ahnd, &im_blt);
- 
 diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-index aa3cc386cc05..2f77b5073017 100644
+index 2f77b5073017..3ce5535b5904 100644
 --- a/tests/kms_prime.c
 +++ b/tests/kms_prime.c
-@@ -322,7 +322,7 @@ static void import_fb(int importer_fd, struct igt_fb *fb,
- 					     vram_if_possible(importer_fd, 0),
- 					     DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+@@ -319,8 +319,7 @@ static void import_fb(int importer_fd, struct igt_fb *fb,
+ 			blt_set_copy_object(&blt.dst, dst);
  
--			blt_set_batch(&blt.bb, xe_bb, bb_size, vram_if_possible(importer_fd, 0));
-+			blt_set_batch(&blt.bb, xe_bb, bb_size);
+ 			xe_bb = xe_bo_create(importer_fd, 0, bb_size,
+-					     vram_if_possible(importer_fd, 0),
+-					     DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++					     system_memory(importer_fd), 0);
+ 
+ 			blt_set_batch(&blt.bb, xe_bb, bb_size);
  			blt_fast_copy(importer_fd, xe_ctx, NULL, ahnd, &blt);
- 
- 			put_offset(ahnd, dst->handle);
 diff --git a/tools/intel_tiling_detect.c b/tools/intel_tiling_detect.c
-index 951e2eecd04a..0bc1e202d33c 100644
+index 0bc1e202d33c..a72999057088 100644
 --- a/tools/intel_tiling_detect.c
 +++ b/tools/intel_tiling_detect.c
-@@ -142,7 +142,7 @@ static void blt_copy(int fd,
- 	blt_set_copy_object(&blt.dst, dst);
- 	blt_set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
- 	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
--	blt_set_batch(&blt.bb, bb, bb_size, src_region);
-+	blt_set_batch(&blt.bb, bb, bb_size);
- 	if (fn == BLOCK_COPY)
- 		blt_block_copy(fd, ctx, e, ahnd, &blt, pext);
- 	else if (fn == FAST_COPY)
+@@ -112,7 +112,7 @@ static void blt_copy(int fd,
+ 		bb_size = xe_bb_size(fd, SZ_4K);
+ 		src_region = system_memory(fd);
+ 		dst_region = vram_if_possible(fd, 0);
+-		bb = xe_bo_create(fd, 0, bb_size, src_region, 0);
++		bb = xe_bo_create(fd, 0, bb_size, system_memory(fd), 0);
+ 	} else {
+ 		bb_size = SZ_4K;
+ 		src_region = REGION_SMEM;
 -- 
 2.51.2
 
