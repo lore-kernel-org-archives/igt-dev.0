@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A287D116F1
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Nov 2025 14:14:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2518ECFD376
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Nov 2025 14:14:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CA84310E8E5;
-	Fri, 28 Nov 2025 14:14:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3990310E90A;
+	Fri, 28 Nov 2025 14:14:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g4futNfV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gl4lZeMG";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14E2F10E90D
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Nov 2025 14:14:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B7A010E8E4
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Nov 2025 14:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764339265; x=1795875265;
+ t=1764339268; x=1795875268;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=yDcZhY8ErJWmAx3PtAC7+Xjo5rag6c49FNkbSJtPiQg=;
- b=g4futNfV73t+tqjdPUDfBsZ4exSfEKwbN7KSx22gncWCOdQACTTC3mjD
- cyy/PO8C9+3iMe2YcCZ2v7iOJ4hFnfn5b4rbY6TgLfUP8SKUW4hACy7iy
- DcUKa8bmjrmAEXIVwsU2Q0gnKrUjxWVJFdYOoK2BIdkUX58rktzEYAjGi
- 6f/5OBcotN3tqa/0xhKX3U79dvP1rd5W/Ny1vP+yFf7b8KRhnHBlB/6+p
- F4YpPXI90wPdBPNimrY9c3V/yz2U5UF/BvXZZGCm0FUeSTJ3Y7FOgtefH
- ODy9zfSCYRb64JGeGGztV87Kx7O4hu/uPHxn5yjMnNFEwngAoyAVs714s g==;
-X-CSE-ConnectionGUID: FO/aaycFRO64HKzeZllIOQ==
-X-CSE-MsgGUID: brwuBdmFTc6eKxyxET7sxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="66261601"
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; d="scan'208";a="66261601"
+ bh=3u9zaSDivRe9IJHXXzPUmN9KMlUZs5dwQXGL/V9VYLI=;
+ b=gl4lZeMGBGS8QXDIZDFvPMhRTE6gKOvmbuNnx1H/XyQB5LPSgXHz9TQz
+ sim6/qkI/rv0M/tzHaNtnHYg0BvSsQJdNtvBq/l6F86LQzcOS8N/06Dfv
+ XM6sOYNC9qlGwnTk9KyaGRI/GyWp7SKguG+lSGMeOhC4ONNIiAz15wg1X
+ rnyEnkRjOBT0lMqBa52zSfC//ct+jq2J2gvPbJKouRRZyTlCls24DwXC6
+ vxWU2hqrS2ivNxeUmc3cdQfdzC/qnPu0zO9xevtkK6E9G/DhSNuziFBA4
+ b2FPvMETTTItPwC/1U3uZOXkWrmAMF2QZf0TL6Ej3u/GS93RiKz1mEQq7 Q==;
+X-CSE-ConnectionGUID: 4bjW50CRQfO1i3aQfWo2RQ==
+X-CSE-MsgGUID: 3LfIt7WRSzinbym5sWpwQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="66261604"
+X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; d="scan'208";a="66261604"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Nov 2025 06:14:25 -0800
-X-CSE-ConnectionGUID: Ae2aaB2rTSSixqcS+1yYXQ==
-X-CSE-MsgGUID: cUq8HG4HRsmkXfCIyq6AlQ==
+ 28 Nov 2025 06:14:28 -0800
+X-CSE-ConnectionGUID: uu98oBSjSBmKIBWZCRROOQ==
+X-CSE-MsgGUID: sv36R6/CTk+nk1aI+N1Svw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; d="scan'208";a="224173644"
+X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; d="scan'208";a="224173653"
 Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Nov 2025 06:14:24 -0800
+ 28 Nov 2025 06:14:27 -0800
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Fri, 28 Nov 2025 15:12:07 +0100
-Subject: [PATCH 03/11] lib/gpgpu_shader: use recently introduced helper to
- get EU thread count
+Date: Fri, 28 Nov 2025 15:12:09 +0100
+Subject: [PATCH 05/11] lib/igt_aux: add fls helper for bitmaps
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251128-pagefault-one-of-many-v1-3-a8377a93da8f@intel.com>
+Message-Id: <20251128-pagefault-one-of-many-v1-5-a8377a93da8f@intel.com>
 References: <20251128-pagefault-one-of-many-v1-0-a8377a93da8f@intel.com>
 In-Reply-To: <20251128-pagefault-one-of-many-v1-0-a8377a93da8f@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -57,18 +56,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>, 
  Jan Maslak <jan.maslak@intel.com>, Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1359;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1336;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=yDcZhY8ErJWmAx3PtAC7+Xjo5rag6c49FNkbSJtPiQg=;
- b=owEB7AET/pANAwAKASNispPeEP3XAcsmYgBpKa3ziV6m311QuVRMG+EkKbRRHg9eHr9pC859z
- sSpy75OOIqJAbIEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaSmt8wAKCRAjYrKT3hD9
- 15n8C/iEtCd1XPre5Zb+XAg+C8xhYyKIkJMVDMWA8jex0DOVpnL4xfNzJwjXY03MVzhaClVDPmW
- 2Prv5bnmzjizTrxObAvpPd/G9I6LL9U4e/8o8gCrQEWseF1WpORsfLH+gqaKj+5MsgegTFfwCCw
- b9MewHIASJ+y5wcN6KygwXk3LKXKPGhIO1qqix3hHc2B8QYTR5PKsxrw3BMq2h9a1G4tHio0ZE3
- lwoB66LEosK2bxIE93PepZglF3m8BFV7+7WikQAk2MTK2sKYJrOUH3G1aqI0IESOzyOeQMFP/s0
- XGoIwtPLtG8EmB2RQSE3McHOX9/aAAks7zsap3F34UoXDLk0uim/mM5TyWebab4FlUVbDLd0hfg
- d73H7A2JCkuDk0ezfrWVqd8r4tXWKby3EZOCduIxgHhpiIFgcc0Ou3BBlzHHYENJYqGpcaZlxy6
- 9dQtr5/4RRcKEvhu11lAsohwaTRvflc1i0BpuZ50FhsJUnc0oa4NPWmSbeMU4VqWzGhg==
+ bh=3u9zaSDivRe9IJHXXzPUmN9KMlUZs5dwQXGL/V9VYLI=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBpKa30S437Hp2B5zvS2h0iRWl+ODBWjLNwIdODp
+ 9tdfgMgaQmJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCaSmt9AAKCRAjYrKT3hD9
+ 173CC/9KwvmNzbPei1yvHzegTxAYBE23fHtmm5xVjoESgJep/4begREtgfRhm+3Nd6eOKc9aYwJ
+ SVs6zg/VUBDidUu9DlLqwtbrcA/G/zBUXcUrBGzrStisY2c8+Nllz1ex2uohO4WMYN+goKky+IS
+ 8Vl6MW41am9GdRBDYWIljA3In1QOEn0c5vMsTKw38WUbMxRvq35qxaX4rnVkEUB2YhZ8iPGa7tN
+ 9cbiaSgP64FLF+Fy/mz4lo00V3IMWL1eNO5ExNx+IsCCsH0+uRLnW0cFT5Xdwtk7PxNhU3YHNrb
+ vQRcK/iNRSX8KoH5wt9YE1nF8RKYxl59+39R7NTaQobeCErj6Ua51psqR6bo/Om+p4R8p51mITV
+ GUja/HAAFf+T1BspS2aZpke+7q+4jtldcLsCHz3Fkc05SrS3btOYsqT4fl8II1rj+VZmo+WQkte
+ mMOWp81Ugh542QTtXbA8Sj1ll+6yrOJQjKTRlZI+UPHpL1BiqVxsOxq4/Vmqcea/8lzQA=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -86,44 +85,53 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The patch removes private implementation in favor of recently introduced
-with support for Xe3 increased number of threads.
+There are multiple places where such helper can be useful.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- lib/gpgpu_shader.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ lib/igt_aux.c | 20 ++++++++++++++++++++
+ lib/igt_aux.h |  1 +
+ 2 files changed, 21 insertions(+)
 
-diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
-index 0c777d12df45..767bddb7ba54 100644
---- a/lib/gpgpu_shader.c
-+++ b/lib/gpgpu_shader.c
-@@ -11,6 +11,7 @@
- #include "ioctl_wrappers.h"
- #include "gpgpu_shader.h"
- #include "gpu_cmds.h"
-+#include "xe/xe_query.h"
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index d3280c3514a0..abfd8b0fdbd9 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -2152,3 +2152,23 @@ int igt_bitmap_hweight(void *bitmap, int nbits)
+ 		ret += igt_hweight(bitmap_get_nbits(p, nbits));
+ 	return ret;
+ }
++
++/**
++ * igt_bitmap_fls: find last set bit in bitmap
++ *
++ * @bitmap: pointer to bitmap
++ * @nbits: number of bits to examine
++ *
++ * Bitmap version of fls.
++ */
++int igt_bitmap_fls(void *bitmap, int nbits)
++{
++	uint64_t *p = bitmap;
++	int n = nbits / BITS_PER_TYPE(*p), r = nbits % BITS_PER_TYPE(*p);
++	uint64_t v = r ? bitmap_get_nbits(p + n, r) : 0;
++
++	while (!v && n)
++		v = p[--n];
++
++	return n * BITS_PER_TYPE(*p) + igt_fls(v);
++}
+diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+index 885c6b096e49..8ff182384cce 100644
+--- a/lib/igt_aux.h
++++ b/lib/igt_aux.h
+@@ -353,5 +353,6 @@ void *igt_memdup(const void *ptr, size_t len);
+ void igt_wait_and_close(int fence_fd);
  
- struct label_entry {
- 	uint32_t id;
-@@ -131,7 +132,7 @@ __xelp_gpgpu_execfunc(struct intel_bb *ibb,
+ int igt_bitmap_hweight(void *bitmap, int nbits);
++int igt_bitmap_fls(void *bitmap, int nbits);
  
- 	gen9_emit_state_base_address(ibb);
- 
--	xelp_emit_vfe_state(ibb, THREADS, GEN8_GPGPU_URB_ENTRIES,
-+	xelp_emit_vfe_state(ibb, xe_query_eu_thread_count(ibb->fd, 0), GEN8_GPGPU_URB_ENTRIES,
- 			    GPGPU_URB_SIZE, GPGPU_CURBE_SIZE, true);
- 
- 	gen7_emit_interface_descriptor_load(ibb, interface_descriptor);
-@@ -197,7 +198,7 @@ __xehp_gpgpu_execfunc(struct intel_bb *ibb,
- 	xehp_emit_state_base_address(ibb);
- 	xehp_emit_state_compute_mode(ibb, shdr->vrt != VRT_DISABLED);
- 	xehp_emit_state_binding_table_pool_alloc(ibb);
--	xehp_emit_cfe_state(ibb, THREADS);
-+	xehp_emit_cfe_state(ibb, xe_query_eu_thread_count(ibb->fd, 0));
- 
- 	if (sip_offset)
- 		emit_sip(ibb, sip_offset);
+ #endif /* IGT_AUX_H */
 
 -- 
 2.43.0
