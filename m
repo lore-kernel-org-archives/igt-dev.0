@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57E4DD116E2
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Nov 2025 17:23:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9159D116EA
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Nov 2025 19:00:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D6A4210E18B;
-	Fri, 28 Nov 2025 17:23:33 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ing8rkKP";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F5F410E8F9
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Nov 2025 17:23:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764350612; x=1795886612;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=y+ksbLg3jV4pXRYSiK7X9Kr2qOO6hzH5JmxaQaU/CqQ=;
- b=ing8rkKP7zXCvNn/izZKD0r83fZPWr/AGAiOjjE4e8pz/9bO1+YCl8Ib
- I9tX2+z13Bv5OVhuvlRtAvi2x/GRD0LPnxMNMfcLCgOG+28sK1atR+p/b
- UnwLSJ/H+TIfnAlFVNPAp6izbwxss5Gb3RnWdyf2XXVs5Yh6K6rLhSiAi
- rq5IC/QmAPmjZ+o/GmNO/AO3x06CFrh/v26q4M6fZYh1IPXUJVourLPz4
- rGTs5OYZVd9yAmXGqULKWdNOOMx/KOrvQYGhqhIkmnSNbszOYTqjxbYsg
- 9Gh1PhUdMFpYtxJ8LHxY7s53EjBJi/9G584UBy74pULPHF+CRilLbYZL2 Q==;
-X-CSE-ConnectionGUID: Up7NOyJoQ+2Y7jCZG3mErQ==
-X-CSE-MsgGUID: KuAWu4KbQ0a6vTRtvdIyYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="77744312"
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; d="scan'208";a="77744312"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Nov 2025 09:23:32 -0800
-X-CSE-ConnectionGUID: ukaIhOJRTJyeRJrDWdSitA==
-X-CSE-MsgGUID: nJe7d2RgREqepAtEJwAvsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; d="scan'208";a="193173413"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.240])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Nov 2025 09:23:31 -0800
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Simon Fairweather <simon.n.fairweather@gmail.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v4] tools/intel_gpu_top: Add iteration option -n
-Date: Fri, 28 Nov 2025 18:23:26 +0100
-Message-ID: <20251128172326.92483-1-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6AD8410E906;
+	Fri, 28 Nov 2025 19:00:11 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 40A0710E906;
+ Fri, 28 Nov 2025 19:00:10 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3587448004032313518=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fvrr=3A_Fix_logi?=
+ =?utf-8?q?cal_condition_for_DRRS_support_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 28 Nov 2025 19:00:10 -0000
+Message-ID: <176435641025.38795.14276507663447909520@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20251104081009.1474197-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20251104081009.1474197-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,114 +37,243 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Simon Fairweather <simon.n.fairweather@gmail.com>
+--===============3587448004032313518==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-When using option -c, -J or -l default is looping forever until
-user break process. Lets introduce new option -n <number> and
-break printing after reaching given number of iterations. Also
-while at it, update copyright year in man page.
+== Series Details ==
 
-v2: corrected whitespaces, extended description (Kamil)
-v3: reduced number of vars and changed printed help (Krzysztof)
-  added description to man page (Tvrtko)
-v4: improved help (Krzysztof), changed var to long, update
-  copyright year, added also -l option in description, added
-  closes tag (Kamil)
+Series: tests/kms_vrr: Fix logical condition for DRRS support (rev3)
+URL   : https://patchwork.freedesktop.org/series/156969/
+State : success
 
-Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/173
-Signed-off-by: Simon Fairweather <simon.n.fairweather@gmail.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- man/intel_gpu_top.rst | 10 +++++++++-
- tools/intel_gpu_top.c | 19 ++++++++++++++++++-
- 2 files changed, 27 insertions(+), 2 deletions(-)
+== Summary ==
 
-diff --git a/man/intel_gpu_top.rst b/man/intel_gpu_top.rst
-index 44a54a5f2..20204fdcf 100644
---- a/man/intel_gpu_top.rst
-+++ b/man/intel_gpu_top.rst
-@@ -9,7 +9,7 @@ Display a top-like summary of Intel GPU usage
- :Author: IGT Developers <igt-dev@lists.freedesktop.org>
- :Date: 2023-01-27
- :Version: |PACKAGE_STRING|
--:Copyright: 2009,2011,2012,2016,2018,2019,2020,2023 Intel Corporation
-+:Copyright: 2009,2011,2012,2016,2018,2019,2020,2023,2025 Intel Corporation
- :Manual section: |MANUAL_SECTION|
- :Manual group: |MANUAL_GROUP|
- 
-@@ -58,6 +58,14 @@ OPTIONS
- -m
-    Default to showing all memory regions separately.
- 
-+-n <number>
-+   Specify application running time as <number - 1> * <refresh period>.
-+   Passing 0 (default) or negative number will run it in infinite loop
-+   until user breaks with q or Ctrl-C or sends a signal. With options
-+   -c, -J or -l it will print info <number> times.
-+
-+
-+
- RUNTIME CONTROL
- ===============
- 
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 1bd88ba7c..fd6ad7b5e 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -1065,6 +1065,11 @@ usage(const char *appname)
- 		"\t[-d <device>]   Device filter, please check manual page for more details.\n"
- 		"\t[-p]            Default to showing physical engines instead of classes.\n"
- 		"\t[-m]            Default to showing all memory regions.\n"
-+		"\t[-n <number>]   Specify running time as <number - 1> * <refresh period>.\n"
-+		"\t                Passing 0 (default) or negative number will run it in\n"
-+		"\t                infinite loop until user breaks with q or Ctrl-C or sends\n"
-+		"\t                a signal. With options -c, -J or -l it will print info\n"
-+		"\t                <number> times.\n"
- 		"\n",
- 		appname, DEFAULT_PERIOD_MS);
- 	printf("To access interactive help, press 'h' while the application is running.\n");
-@@ -2617,9 +2622,10 @@ int main(int argc, char **argv)
- 	struct igt_device_card card;
- 	char *codename = NULL;
- 	struct timespec ts;
-+	long iteration_count = 0;
- 
- 	/* Parse options */
--	while ((ch = getopt(argc, argv, "o:s:d:mpcJLlh")) != -1) {
-+	while ((ch = getopt(argc, argv, "o:s:d:n:mpcJLlh")) != -1) {
- 		switch (ch) {
- 		case 'o':
- 			output_path = optarg;
-@@ -2630,6 +2636,11 @@ int main(int argc, char **argv)
- 		case 'd':
- 			opt_device = strdup(optarg);
- 			break;
-+		case 'n':
-+			iteration_count = atol(optarg);
-+			if (iteration_count < 0)
-+				iteration_count = 0;
-+			break;
- 		case 'p':
- 			physical_engines = true;
- 			break;
-@@ -2857,6 +2868,12 @@ int main(int argc, char **argv)
- 		if (disp_clients != iclients.clients)
- 			free_display_clients(disp_clients);
- 
-+		if (iteration_count > 0) {
-+			--iteration_count;
-+			if (!iteration_count)
-+				stop_top = true;
-+		}
-+
- 		if (stop_top)
- 			break;
- 
--- 
-2.52.0
+CI Bug Log - changes from XEIGT_8645_BAT -> XEIGTPW_14133_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 12)
+------------------------------
+
+  Additional (1): bat-dg2-oem2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14133_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] ([Intel XE#623])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] ([Intel XE#455])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_psr@psr-cursor-plane-move:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][3] ([Intel XE#1406] / [Intel XE#2850] / [Intel XE#929]) +2 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@kms_psr@psr-cursor-plane-move.html
+
+  * igt@sriov_basic@enable-vfs-autoprobe-off:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][4] ([Intel XE#1091] / [Intel XE#2849]) +1 other test skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@sriov_basic@enable-vfs-autoprobe-off.html
+
+  * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][5] ([Intel XE#288]) +32 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][6] ([Intel XE#255])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][7] ([Intel XE#2229])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][8] ([Intel XE#977])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][9] ([Intel XE#2838] / [Intel XE#979])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][10] ([Intel XE#979])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@xe_pat@pat-index-xelpg.html
+
+  * igt@xe_sriov_flr@flr-vf1-clear:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][11] ([Intel XE#3342])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@xe_sriov_flr@flr-vf1-clear.html
+
+  
+  [Intel XE#1091]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091
+  [Intel XE#1406]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
+  [Intel XE#2849]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849
+  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#3342]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#623]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/623
+  [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8645 -> IGTPW_14133
+  * Linux: xe-4166-e1c1b3e03e356d1e20432dcb0d38ad44d5e92670 -> xe-4168-7fe1b006b65af67bc0ef5df53aedcd265be7fb19
+
+  IGTPW_14133: dd6596a1fb280eff81ed28fa87fb5ed0f6620a28 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8645: 8645
+  xe-4166-e1c1b3e03e356d1e20432dcb0d38ad44d5e92670: e1c1b3e03e356d1e20432dcb0d38ad44d5e92670
+  xe-4168-7fe1b006b65af67bc0ef5df53aedcd265be7fb19: 7fe1b006b65af67bc0ef5df53aedcd265be7fb19
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/index.html
+
+--===============3587448004032313518==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_vrr: Fix logical condition for DRRS support (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/156969/">https://patchwork.freedesktop.org/series/156969/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8645_BAT -&gt; XEIGTPW_14133_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 12)</h2>
+<p>Additional (1): bat-dg2-oem2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14133_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/623">Intel XE#623</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-cursor-plane-move:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/929">Intel XE#929</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2849">Intel XE#2849</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-bindexecqueue-userptr:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14133/bat-dg2-oem2/igt@xe_sriov_flr@flr-vf1-clear.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3342">Intel XE#3342</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8645 -&gt; IGTPW_14133</li>
+<li>Linux: xe-4166-e1c1b3e03e356d1e20432dcb0d38ad44d5e92670 -&gt; xe-4168-7fe1b006b65af67bc0ef5df53aedcd265be7fb19</li>
+</ul>
+<p>IGTPW_14133: dd6596a1fb280eff81ed28fa87fb5ed0f6620a28 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8645: 8645<br />
+  xe-4166-e1c1b3e03e356d1e20432dcb0d38ad44d5e92670: e1c1b3e03e356d1e20432dcb0d38ad44d5e92670<br />
+  xe-4168-7fe1b006b65af67bc0ef5df53aedcd265be7fb19: 7fe1b006b65af67bc0ef5df53aedcd265be7fb19</p>
+
+</body>
+</html>
+
+--===============3587448004032313518==--
