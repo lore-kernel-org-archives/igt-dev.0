@@ -4,34 +4,34 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09119CFD376
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6358DD116F5
 	for <igt-dev@archiver.kernel.org>; Fri, 28 Nov 2025 09:39:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 45C7410E77C;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 79A3910E7A2;
 	Fri, 28 Nov 2025 09:39:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="TLs+c0iE";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="Dl332sTr";
 	dkim-atps=neutral
 Received: from bali.collaboradmins.com (bali.collaboradmins.com
  [148.251.105.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA1B510E04A
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Nov 2025 09:39:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 57C9410E04A
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Nov 2025 09:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1764322749;
- bh=Ue8VCj9mbv1uJ9TKQVTJMDoqTDn+N6/bfErnp64dZTk=;
+ s=mail; t=1764322750;
+ bh=hmIN+ScTAV+FZtm5lW28uLG3iK86qYwpc91AgMYGVeg=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=TLs+c0iExEHVEnI9Grv23Qs5y07hgG4AhRC+Ie3eoGOOnGnPkLG+NA+8GSuLxLhWs
- aKUOE1AH7JCqD2Qzo/mtK271fMMJI3rgFm4zbAbrcWCXb1ht4/4Swx90v+xa2SIS2e
- X4LY/Zrdyl22cs4HNHWNf0GdhrV59Yn8rYgOjZkzcxrRPr8xzNuYu+uU8H7pG5fyKD
- AcZkOV03Fx4mpj8ojsa0UUC15IegPyoNZ/fDcGDWIX0ScjG5RUezk4gnFPNhZXf3/n
- 7G4tRx96oZiJlyAp+7M18v9hFzj+bOEcLi3UVTz1kDvu/6HmxgWkjKMugekSjtMZNK
- +uHaH9Ako1x+w==
+ b=Dl332sTr+IgN2XVb4HF6N9wz8wF+iohZUXbfv2N0EuMK+zsMtBhIWYK2kBZu0ywjP
+ czB0pswMlbOlCpeCrg4vKX8znbKpfRTFFuryvng+hkRs6eWTRNifV5PjKDGylZ8VG4
+ MYZXHb5/VudY91StcbNdqjMDraztDc3eoHvnBsF81hq5nz6gVLctSS5IUzzkR+6GFH
+ FNzMbqTdwHhlWwT9jZgowLtHJg5UAHbLNuNRBE6XJGNpUOHee7whjm6PIvXY6mp7bW
+ w8sq1hHanG0aSpWHY/ZRLq904a9WxcmQBiSyejUEg8rmEaiNhAj2PP8rRW9VIb3t3O
+ c9nWOMijrm6Tg==
 Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:a2a7:f53:ebb0:945e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested) (Authenticated sender: bbrezillon)
- by bali.collaboradmins.com (Postfix) with ESMTPSA id EAAAF17E10E7;
- Fri, 28 Nov 2025 10:39:08 +0100 (CET)
+ by bali.collaboradmins.com (Postfix) with ESMTPSA id 87E4717E10F6;
+ Fri, 28 Nov 2025 10:39:09 +0100 (CET)
 From: Boris Brezillon <boris.brezillon@collabora.com>
 To: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
  Arkadiusz Hiler <arek@hiler.eu>,
@@ -42,9 +42,10 @@ Cc: Boris Brezillon <boris.brezillon@collabora.com>,
  Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
  =?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
  Daniel Almeida <daniel.almeida@collabora.com>, kernel@collabora.com
-Subject: [PATCH i-g-t v2 1/3] drm-uapi/panthor: Sync panthor uapi
-Date: Fri, 28 Nov 2025 10:38:56 +0100
-Message-ID: <20251128093858.3844420-2-boris.brezillon@collabora.com>
+Subject: [PATCH i-g-t v2 2/3] tests/panthor: Add a test to make sure the
+ buffer is zeroed at alloc time
+Date: Fri, 28 Nov 2025 10:38:57 +0100
+Message-ID: <20251128093858.3844420-3-boris.brezillon@collabora.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251128093858.3844420-1-boris.brezillon@collabora.com>
 References: <20251128093858.3844420-1-boris.brezillon@collabora.com>
@@ -65,290 +66,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Align with kernel commit 3b1dc21d6d80 ("drm/panthor: Add support for
-Mali-Gx15 family of GPUs"). Will be needed for the scheduler tests.
+This covering for this bug [1]. Add an IGT test to make sure we don't
+hit that again.
+
+[1]https://lore.kernel.org/20251107171214.1186299-1-boris.brezillon@collabora.com
 
 Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 ---
- include/drm-uapi/panthor_drm.h | 213 ++++++++++++++++++++++++++-------
- 1 file changed, 171 insertions(+), 42 deletions(-)
+ tests/panthor/panthor_gem.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/drm-uapi/panthor_drm.h b/include/drm-uapi/panthor_drm.h
-index e23a7f9b0eac..467d365ed7ba 100644
---- a/include/drm-uapi/panthor_drm.h
-+++ b/include/drm-uapi/panthor_drm.h
-@@ -127,50 +127,25 @@ enum drm_panthor_ioctl_id {
+diff --git a/tests/panthor/panthor_gem.c b/tests/panthor/panthor_gem.c
+index 57cd97e809fd..1566c713f876 100644
+--- a/tests/panthor/panthor_gem.c
++++ b/tests/panthor/panthor_gem.c
+@@ -66,6 +66,17 @@ igt_main {
+ 		igt_panthor_free_bo(fd, &bo);
+ 	}
  
- 	/** @DRM_PANTHOR_TILER_HEAP_DESTROY: Destroy a tiler heap. */
- 	DRM_PANTHOR_TILER_HEAP_DESTROY,
++	igt_describe_f("Check zero-ing of buffer at creation time");
++	igt_subtest("bo_zeroed") {
++		struct panthor_bo bo;
 +
-+	/** @DRM_PANTHOR_BO_SET_LABEL: Label a BO. */
-+	DRM_PANTHOR_BO_SET_LABEL,
++		igt_panthor_bo_create_mapped(fd, &bo, getpagesize(), 0, 0);
++		igt_assert(bo.map);
++		igt_assert_eq(*((uint32_t *)bo.map), 0);
 +
-+	/**
-+	 * @DRM_PANTHOR_SET_USER_MMIO_OFFSET: Set the offset to use as the user MMIO offset.
-+	 *
-+	 * The default behavior is to pick the MMIO offset based on the size of the pgoff_t
-+	 * type seen by the process that manipulates the FD, such that a 32-bit process can
-+	 * always map the user MMIO ranges. But this approach doesn't work well for emulators
-+	 * like FEX, where the emulator is an 64-bit binary which might be executing 32-bit
-+	 * code. In that case, the kernel thinks it's the 64-bit process and assumes
-+	 * DRM_PANTHOR_USER_MMIO_OFFSET_64BIT is in use, but the UMD library expects
-+	 * DRM_PANTHOR_USER_MMIO_OFFSET_32BIT, because it can't mmap() anything above the
-+	 * pgoff_t size.
-+	 */
-+	DRM_PANTHOR_SET_USER_MMIO_OFFSET,
- };
- 
--/**
-- * DRM_IOCTL_PANTHOR() - Build a Panthor IOCTL number
-- * @__access: Access type. Must be R, W or RW.
-- * @__id: One of the DRM_PANTHOR_xxx id.
-- * @__type: Suffix of the type being passed to the IOCTL.
-- *
-- * Don't use this macro directly, use the DRM_IOCTL_PANTHOR_xxx
-- * values instead.
-- *
-- * Return: An IOCTL number to be passed to ioctl() from userspace.
-- */
--#define DRM_IOCTL_PANTHOR(__access, __id, __type) \
--	DRM_IO ## __access(DRM_COMMAND_BASE + DRM_PANTHOR_ ## __id, \
--			   struct drm_panthor_ ## __type)
--
--#define DRM_IOCTL_PANTHOR_DEV_QUERY \
--	DRM_IOCTL_PANTHOR(WR, DEV_QUERY, dev_query)
--#define DRM_IOCTL_PANTHOR_VM_CREATE \
--	DRM_IOCTL_PANTHOR(WR, VM_CREATE, vm_create)
--#define DRM_IOCTL_PANTHOR_VM_DESTROY \
--	DRM_IOCTL_PANTHOR(WR, VM_DESTROY, vm_destroy)
--#define DRM_IOCTL_PANTHOR_VM_BIND \
--	DRM_IOCTL_PANTHOR(WR, VM_BIND, vm_bind)
--#define DRM_IOCTL_PANTHOR_VM_GET_STATE \
--	DRM_IOCTL_PANTHOR(WR, VM_GET_STATE, vm_get_state)
--#define DRM_IOCTL_PANTHOR_BO_CREATE \
--	DRM_IOCTL_PANTHOR(WR, BO_CREATE, bo_create)
--#define DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET \
--	DRM_IOCTL_PANTHOR(WR, BO_MMAP_OFFSET, bo_mmap_offset)
--#define DRM_IOCTL_PANTHOR_GROUP_CREATE \
--	DRM_IOCTL_PANTHOR(WR, GROUP_CREATE, group_create)
--#define DRM_IOCTL_PANTHOR_GROUP_DESTROY \
--	DRM_IOCTL_PANTHOR(WR, GROUP_DESTROY, group_destroy)
--#define DRM_IOCTL_PANTHOR_GROUP_SUBMIT \
--	DRM_IOCTL_PANTHOR(WR, GROUP_SUBMIT, group_submit)
--#define DRM_IOCTL_PANTHOR_GROUP_GET_STATE \
--	DRM_IOCTL_PANTHOR(WR, GROUP_GET_STATE, group_get_state)
--#define DRM_IOCTL_PANTHOR_TILER_HEAP_CREATE \
--	DRM_IOCTL_PANTHOR(WR, TILER_HEAP_CREATE, tiler_heap_create)
--#define DRM_IOCTL_PANTHOR_TILER_HEAP_DESTROY \
--	DRM_IOCTL_PANTHOR(WR, TILER_HEAP_DESTROY, tiler_heap_destroy)
--
- /**
-  * DOC: IOCTL arguments
-  */
-@@ -260,6 +235,14 @@ enum drm_panthor_dev_query_type {
- 
- 	/** @DRM_PANTHOR_DEV_QUERY_CSIF_INFO: Query command-stream interface information. */
- 	DRM_PANTHOR_DEV_QUERY_CSIF_INFO,
++		igt_panthor_free_bo(fd, &bo);
++	}
 +
-+	/** @DRM_PANTHOR_DEV_QUERY_TIMESTAMP_INFO: Query timestamp information. */
-+	DRM_PANTHOR_DEV_QUERY_TIMESTAMP_INFO,
-+
-+	/**
-+	 * @DRM_PANTHOR_DEV_QUERY_GROUP_PRIORITIES_INFO: Query allowed group priorities information.
-+	 */
-+	DRM_PANTHOR_DEV_QUERY_GROUP_PRIORITIES_INFO,
- };
- 
- /**
-@@ -327,6 +310,9 @@ struct drm_panthor_gpu_info {
- 	/** @as_present: Bitmask encoding the number of address-space exposed by the MMU. */
- 	__u32 as_present;
- 
-+	/** @pad0: MBZ. */
-+	__u32 pad0;
-+
- 	/** @shader_present: Bitmask encoding the shader cores exposed by the GPU. */
- 	__u64 shader_present;
- 
-@@ -341,6 +327,9 @@ struct drm_panthor_gpu_info {
- 
- 	/** @pad: MBZ. */
- 	__u32 pad;
-+
-+	/** @gpu_features: Bitmask describing supported GPU-wide features */
-+	__u64 gpu_features;
- };
- 
- /**
-@@ -377,6 +366,42 @@ struct drm_panthor_csif_info {
- 	__u32 pad;
- };
- 
-+/**
-+ * struct drm_panthor_timestamp_info - Timestamp information
-+ *
-+ * Structure grouping all queryable information relating to the GPU timestamp.
-+ */
-+struct drm_panthor_timestamp_info {
-+	/**
-+	 * @timestamp_frequency: The frequency of the timestamp timer or 0 if
-+	 * unknown.
-+	 */
-+	__u64 timestamp_frequency;
-+
-+	/** @current_timestamp: The current timestamp. */
-+	__u64 current_timestamp;
-+
-+	/** @timestamp_offset: The offset of the timestamp timer. */
-+	__u64 timestamp_offset;
-+};
-+
-+/**
-+ * struct drm_panthor_group_priorities_info - Group priorities information
-+ *
-+ * Structure grouping all queryable information relating to the allowed group priorities.
-+ */
-+struct drm_panthor_group_priorities_info {
-+	/**
-+	 * @allowed_mask: Bitmask of the allowed group priorities.
-+	 *
-+	 * Each bit represents a variant of the enum drm_panthor_group_priority.
-+	 */
-+	__u8 allowed_mask;
-+
-+	/** @pad: Padding fields, MBZ. */
-+	__u8 pad[3];
-+};
-+
- /**
-  * struct drm_panthor_dev_query - Arguments passed to DRM_PANTHOR_IOCTL_DEV_QUERY
-  */
-@@ -698,6 +723,13 @@ enum drm_panthor_group_priority {
- 	 * Requires CAP_SYS_NICE or DRM_MASTER.
- 	 */
- 	PANTHOR_GROUP_PRIORITY_HIGH,
-+
-+	/**
-+	 * @PANTHOR_GROUP_PRIORITY_REALTIME: Realtime priority group.
-+	 *
-+	 * Requires CAP_SYS_NICE or DRM_MASTER.
-+	 */
-+	PANTHOR_GROUP_PRIORITY_REALTIME,
- };
- 
- /**
-@@ -872,6 +904,15 @@ enum drm_panthor_group_state_flags {
- 	 * When a group ends up with this flag set, no jobs can be submitted to its queues.
- 	 */
- 	DRM_PANTHOR_GROUP_STATE_FATAL_FAULT = 1 << 1,
-+
-+	/**
-+	 * @DRM_PANTHOR_GROUP_STATE_INNOCENT: Group was killed during a reset caused by other
-+	 * groups.
-+	 *
-+	 * This flag can only be set if DRM_PANTHOR_GROUP_STATE_TIMEDOUT is set and
-+	 * DRM_PANTHOR_GROUP_STATE_FATAL_FAULT is not.
-+	 */
-+	DRM_PANTHOR_GROUP_STATE_INNOCENT = 1 << 2,
- };
- 
- /**
-@@ -959,6 +1000,94 @@ struct drm_panthor_tiler_heap_destroy {
- 	__u32 pad;
- };
- 
-+/**
-+ * struct drm_panthor_bo_set_label - Arguments passed to DRM_IOCTL_PANTHOR_BO_SET_LABEL
-+ */
-+struct drm_panthor_bo_set_label {
-+	/** @handle: Handle of the buffer object to label. */
-+	__u32 handle;
-+
-+	/**  @pad: MBZ. */
-+	__u32 pad;
-+
-+	/**
-+	 * @label: User pointer to a NUL-terminated string
-+	 *
-+	 * Length cannot be greater than 4096
-+	 */
-+	__u64 label;
-+};
-+
-+/**
-+ * struct drm_panthor_set_user_mmio_offset - Arguments passed to
-+ * DRM_IOCTL_PANTHOR_SET_USER_MMIO_OFFSET
-+ *
-+ * This ioctl is only really useful if you want to support userspace
-+ * CPU emulation environments where the size of an unsigned long differs
-+ * between the host and the guest architectures.
-+ */
-+struct drm_panthor_set_user_mmio_offset {
-+	/**
-+	 * @offset: User MMIO offset to use.
-+	 *
-+	 * Must be either DRM_PANTHOR_USER_MMIO_OFFSET_32BIT or
-+	 * DRM_PANTHOR_USER_MMIO_OFFSET_64BIT.
-+	 *
-+	 * Use DRM_PANTHOR_USER_MMIO_OFFSET (which selects OFFSET_32BIT or
-+	 * OFFSET_64BIT based on the size of an unsigned long) unless you
-+	 * have a very good reason to overrule this decision.
-+	 */
-+	__u64 offset;
-+};
-+
-+/**
-+ * DRM_IOCTL_PANTHOR() - Build a Panthor IOCTL number
-+ * @__access: Access type. Must be R, W or RW.
-+ * @__id: One of the DRM_PANTHOR_xxx id.
-+ * @__type: Suffix of the type being passed to the IOCTL.
-+ *
-+ * Don't use this macro directly, use the DRM_IOCTL_PANTHOR_xxx
-+ * values instead.
-+ *
-+ * Return: An IOCTL number to be passed to ioctl() from userspace.
-+ */
-+#define DRM_IOCTL_PANTHOR(__access, __id, __type) \
-+	DRM_IO ## __access(DRM_COMMAND_BASE + DRM_PANTHOR_ ## __id, \
-+			   struct drm_panthor_ ## __type)
-+
-+enum {
-+	DRM_IOCTL_PANTHOR_DEV_QUERY =
-+		DRM_IOCTL_PANTHOR(WR, DEV_QUERY, dev_query),
-+	DRM_IOCTL_PANTHOR_VM_CREATE =
-+		DRM_IOCTL_PANTHOR(WR, VM_CREATE, vm_create),
-+	DRM_IOCTL_PANTHOR_VM_DESTROY =
-+		DRM_IOCTL_PANTHOR(WR, VM_DESTROY, vm_destroy),
-+	DRM_IOCTL_PANTHOR_VM_BIND =
-+		DRM_IOCTL_PANTHOR(WR, VM_BIND, vm_bind),
-+	DRM_IOCTL_PANTHOR_VM_GET_STATE =
-+		DRM_IOCTL_PANTHOR(WR, VM_GET_STATE, vm_get_state),
-+	DRM_IOCTL_PANTHOR_BO_CREATE =
-+		DRM_IOCTL_PANTHOR(WR, BO_CREATE, bo_create),
-+	DRM_IOCTL_PANTHOR_BO_MMAP_OFFSET =
-+		DRM_IOCTL_PANTHOR(WR, BO_MMAP_OFFSET, bo_mmap_offset),
-+	DRM_IOCTL_PANTHOR_GROUP_CREATE =
-+		DRM_IOCTL_PANTHOR(WR, GROUP_CREATE, group_create),
-+	DRM_IOCTL_PANTHOR_GROUP_DESTROY =
-+		DRM_IOCTL_PANTHOR(WR, GROUP_DESTROY, group_destroy),
-+	DRM_IOCTL_PANTHOR_GROUP_SUBMIT =
-+		DRM_IOCTL_PANTHOR(WR, GROUP_SUBMIT, group_submit),
-+	DRM_IOCTL_PANTHOR_GROUP_GET_STATE =
-+		DRM_IOCTL_PANTHOR(WR, GROUP_GET_STATE, group_get_state),
-+	DRM_IOCTL_PANTHOR_TILER_HEAP_CREATE =
-+		DRM_IOCTL_PANTHOR(WR, TILER_HEAP_CREATE, tiler_heap_create),
-+	DRM_IOCTL_PANTHOR_TILER_HEAP_DESTROY =
-+		DRM_IOCTL_PANTHOR(WR, TILER_HEAP_DESTROY, tiler_heap_destroy),
-+	DRM_IOCTL_PANTHOR_BO_SET_LABEL =
-+		DRM_IOCTL_PANTHOR(WR, BO_SET_LABEL, bo_set_label),
-+	DRM_IOCTL_PANTHOR_SET_USER_MMIO_OFFSET =
-+		DRM_IOCTL_PANTHOR(WR, SET_USER_MMIO_OFFSET, set_user_mmio_offset),
-+};
-+
- #if defined(__cplusplus)
- }
- #endif
+ 	igt_fixture {
+ 		drm_close_driver(fd);
+ 	}
 -- 
 2.51.1
 
