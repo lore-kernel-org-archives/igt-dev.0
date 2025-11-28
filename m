@@ -4,184 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98C52CFD376
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Nov 2025 04:47:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 706EAD116EA
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Nov 2025 05:17:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0D23610E81B;
-	Fri, 28 Nov 2025 04:47:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0B7A410E0DD;
+	Fri, 28 Nov 2025 05:17:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JXwTXoRG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lxolkfoW";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A15D710E81B
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Nov 2025 04:47:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 00A5C10E0DD
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Nov 2025 05:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764305268; x=1795841268;
+ t=1764307050; x=1795843050;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=R++KUZe8/wnIvKwXilB2AqelP99Yfw31jXzIfio28oU=;
- b=JXwTXoRGp3qYva/J1YyUmUDKRrn9FggDfh55RSTHPHIMVwobxLCzQT13
- Po6/DVCGLHK9pFP81g2Yv9QQZQmaGszT4KVODh1pW+qFqsPjsL8opPkL0
- 1ccq2/eChqp1h4xElnRDci/SoGos0eRfH43dfaykYffDN/1s205z6zt43
- Jr070JU+D7t9NLCvgFDMcXSZeJoMdciO91Hw4xEQaAYte/tjkLB4HVNwX
- JeW7gsSSc1WYoxqN6jXiU01KYJy55sXod7s+Ptgrgw/7xly5E4xPmkmle
- SinOBqjnWwxg9ocSc2b2eQU3oZRoCALREz/czLN/bDiqLXHgAi5MK8SE2 w==;
-X-CSE-ConnectionGUID: JSQWKBgLSJSO0EVpruVrAw==
-X-CSE-MsgGUID: BwI08FycSf6FEJmLGq7iLw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="77445666"
-X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; d="scan'208";a="77445666"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2025 20:47:47 -0800
-X-CSE-ConnectionGUID: tn4j8zIYSeuV2b44/qFsOw==
-X-CSE-MsgGUID: oztzliBySEqOscnAyxsmuA==
+ bh=xA4eWLQU9p5pkzwt/k5JrkAbnM7FWvb1HNc3CD06Pyw=;
+ b=lxolkfoWYAvZfGARjEi+K28tmttYHdgtKi1MlnTOwrO5rheKEUhWO9Al
+ RwJSui3L5xKTChSy/8zzb3Gs5PKLuFGB8QepSM2ljCKf6WTga6MepE72P
+ 4KydManrj8dG08O4YalLafz0MTloH5O9i/dHJfOboT8Qs3fw3wUlNc/4F
+ C3rstD31Oe10FOH0Xf90Xr7ObDNrKKFE9BrIG/BaXkb0+VfOyeoNht9rl
+ CBz4NXeKefNn3QwHMKvHa6XOyjO7jTCKzGK5kxFz+C7QzPLC0eLF8hdwl
+ 88I+iwz3YYsj6gqmcbusjE2j270fi8du5+K0JgZtJg/PPLDWNhUhBCZra g==;
+X-CSE-ConnectionGUID: edG/jTMaQVi7dMO7Lq2zSQ==
+X-CSE-MsgGUID: JrwBe7eaTg2w0WmFQXt+ag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11626"; a="66506413"
+X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; d="scan'208";a="66506413"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Nov 2025 21:17:30 -0800
+X-CSE-ConnectionGUID: i7d2EG9MSGSHjPLRhZZIhg==
+X-CSE-MsgGUID: XKswsjxeQzydv1qcYvVMjA==
 X-ExtLoop1: 1
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2025 20:47:46 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.20,232,1758610800"; d="scan'208";a="192509322"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Nov 2025 21:17:29 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 27 Nov 2025 20:47:45 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ 15.2.2562.29; Thu, 27 Nov 2025 21:17:28 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Thu, 27 Nov 2025 20:47:45 -0800
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.3) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.29 via Frontend Transport; Thu, 27 Nov 2025 21:17:28 -0800
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.63) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 27 Nov 2025 20:47:45 -0800
+ 15.2.2562.29; Thu, 27 Nov 2025 21:17:28 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TWzJ/jOaoGetgOefAXV9Gpqr1NVZoPvRDhNVOB499nb88IpS8zGV4XnXjYqjRGQCbbwe7oFLEVPfx3s7wawM4prASmOiD208xrL/CCdJwrE/VrD5SeGFnNG02S9VQyUyspsFHBl5ElLeWYQ+qJgWrs3lpPPQdUkngji7lsBxdPJ5c0S/sCjRFaAmjtO7oDspaSLt3vKjIsTgZ7q8Ufcgw7NNL8gxB5xf8IWRfjb39jK/lAoUofiWxumlUpvAzMncbXEtXQeG8h/YkF29FG3CzvGX2Fd0aWicY4ihDzd8G2DyFUSlG98+AKIi2cdE/3NNIF4lStenY8+0UVTdPIEodg==
+ b=egg9cPtgsCvNX6DVoPRQ8iDnqlds1aqf47Vd7b/a0MyAz/Bb96w3usOf/nMthJ7gZ2DIkUAz6Ub3/F3WAZUyd1cBA/LNUrPKfSmlHPmEbXTTRgUcn4MD4khDZ80rjkTCO5PFegNbbzze8zxpUEO09q3J+fN/j+V+iOogZGqJa/96yDxxd+pAzMHwwBEsvYWsiDFBExXCPZmr6zELg6ylqWk6xe1y1qiXymumsOlLxQrC/OoDU9NnZW3y4I710QY7g5lj9t6Aml3/qySGH+zGj49NApDQ2/yJimZMzev9KbBTEumBwVvv2EhANgb5oejnjYSt8EEOrEbvlwmuchIMqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7QghpIhgg1k0EPEabgcY3viBSLkEnHM1ZQGHNtH5SFk=;
- b=LgXAdJZYWjoJO7JPNbfS6qa6zLGD3KWFtAOw1bK+JpOVMelDYqBJu9u6V+T5yduGFVd5nVWhxZ9OJ339t5r/7nKfvn7yvqsirgmBwYsxxNgmkUZU4dSXNrWVG7F3eLf82DBVwLY/M0gOnBC8bmeP4exClDw90DRQMFdYlC4iZjoy88K0mS5N2CtV9KlucLQinV0QNOs8hzIL69EF4nObUNRfoFRTy9Gy5YEH/BREWBP0TcKt0m5y6cLc9RGGa7+630Re7+iUteqNtHquLDe7VdSuibwIXmrv1GnAGKGMUARTTxMr4MT85gfvjOfd9J+E70z/U7dDCrcBsE1NPQc8tA==
+ bh=sidttMzhXig2PDF2FlkjfonerZHIgeqXyLoSgZUhyTw=;
+ b=kNbKu6EeDjQayFK/Bb09NZh9z1qC8BIE7dt849hVqvR/6s5bIqjg1FeXgrF+9HBg2tf6KC+IDp+jsNz0g0xiqjddHh927mbAc5JqXScO+2ruCWL3RbprDdnvGOv20mhsogmmEe46QxlxhOIJZi2Wz1W1Nv+UAdJ7L+NA9dNp5FJG55jJr9fSp3SK279ZtCNZ0JyWNk8x2KFEWJIG0Apwyg7lYcAmuOXG4hVi983HL9YohgqKM/z+4zMcUCBTbtjqoCaCbrPHTtx8che1FT2qFeo4CcFa8q1JAgu89duTakmwY0AQe3+4c4y+Zp8L6Hl/g3p+Fe8EzGGxkGuXTV7/yQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BN9PR11MB5530.namprd11.prod.outlook.com (2603:10b6:408:103::8)
- by LV3PR11MB8674.namprd11.prod.outlook.com (2603:10b6:408:217::21)
+Received: from SN7PR11MB7140.namprd11.prod.outlook.com (2603:10b6:806:2a3::22)
+ by MW3PR11MB4681.namprd11.prod.outlook.com (2603:10b6:303:57::14)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.16; Fri, 28 Nov
- 2025 04:47:42 +0000
-Received: from BN9PR11MB5530.namprd11.prod.outlook.com
- ([fe80::13bd:eb49:2046:32a9]) by BN9PR11MB5530.namprd11.prod.outlook.com
- ([fe80::13bd:eb49:2046:32a9%4]) with mapi id 15.20.9366.012; Fri, 28 Nov 2025
- 04:47:42 +0000
-Message-ID: <e098c0fc-1e40-4137-9dbc-d6bac708c5ef@intel.com>
-Date: Fri, 28 Nov 2025 10:17:33 +0530
+ 2025 05:17:25 +0000
+Received: from SN7PR11MB7140.namprd11.prod.outlook.com
+ ([fe80::4201:bc5d:e6ee:8aac]) by SN7PR11MB7140.namprd11.prod.outlook.com
+ ([fe80::4201:bc5d:e6ee:8aac%7]) with mapi id 15.20.9366.012; Fri, 28 Nov 2025
+ 05:17:25 +0000
+Message-ID: <4bbc0fb1-16a2-41ff-b770-21c1e351dbd7@intel.com>
+Date: Fri, 28 Nov 2025 10:47:19 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4 2/2] tests/intel/xe_pm_residency: Add subtest for
- ASPM Link state residency
-To: Karthik Poosa <karthik.poosa@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <anshuman.gupta@intel.com>, <riana.tauro@intel.com>,
- <rodrigo.vivi@intel.com>, <raag.jadav@intel.com>, <sk.anirban@intel.com>,
- <kamil.konieczny@linux.intel.com>
-References: <20251119095154.2501720-1-karthik.poosa@intel.com>
- <20251119095154.2501720-3-karthik.poosa@intel.com>
+Subject: Re: [PATCH i-g-t v3 1/1] tests/intel/xe_exec_system_allocator: Added
+ 64k alignment support
+To: Sobin Thomas <sobin.thomas@intel.com>, <igt-dev@lists.freedesktop.org>
+CC: <kamil.konieczny@intel.com>
+References: <20251128043832.322810-1-sobin.thomas@intel.com>
+ <20251128043832.322810-2-sobin.thomas@intel.com>
 Content-Language: en-US
-From: "Nilawar, Badal" <badal.nilawar@intel.com>
-In-Reply-To: <20251119095154.2501720-3-karthik.poosa@intel.com>
+From: "Sharma, Nishit" <nishit.sharma@intel.com>
+In-Reply-To: <20251128043832.322810-2-sobin.thomas@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0030.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:17a::14) To BN9PR11MB5530.namprd11.prod.outlook.com
- (2603:10b6:408:103::8)
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5P287CA0181.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b6::8) To SN7PR11MB7140.namprd11.prod.outlook.com
+ (2603:10b6:806:2a3::22)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR11MB5530:EE_|LV3PR11MB8674:EE_
-X-MS-Office365-Filtering-Correlation-Id: ac3b5fda-f18b-4b5b-cfd3-08de2e3943bb
+X-MS-TrafficTypeDiagnostic: SN7PR11MB7140:EE_|MW3PR11MB4681:EE_
+X-MS-Office365-Filtering-Correlation-Id: 393e5cc8-6012-4e5f-5f04-08de2e3d6ac8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?clJpY3NRcThicUhpNTZMejI5ejM0dnpJbDcvdndrQmJITFJPZUNqanlFM242?=
- =?utf-8?B?NE1sVENkSU94TEpKbkpPbjAxaUFaOHE1UjVCSDhZbyt4Y2FueDErejNNK3Fp?=
- =?utf-8?B?WWd3WXlDems2S05sM1dMZFNvSWFnNi93eERPWWdjT2JVNCtiMVZvaElpYWZx?=
- =?utf-8?B?NDlScm15UmpSZzJQYmE0VTV4d1ZuU2lhQVExWFZmL01zTnZYZThtV0VPZFhp?=
- =?utf-8?B?eGc3K21PZnNXRW9GRUJLdVFhT1ZnSTFqRExyRnl0SzJCciszaVpWSEd4eXV6?=
- =?utf-8?B?OVBPNHNSWW1NamFUbkR2Z2E4d0ROZHA0YkdPQjlkRURkcE91dmdZY3JRUHdp?=
- =?utf-8?B?c3RsdXVyeFEycWxKRExoZW9XTVlOdCtNVk83THZGVjNPR3IyQVBMUHgzc0J4?=
- =?utf-8?B?RWVIK0VrWFNOL1FYQnZPLzBJdG5sVndDSnZ3aWFjcHpRWlJMYmUyeXJUeS8r?=
- =?utf-8?B?YXNxcGcxREJGODAwdkZ1MXpTUTZsdENqVE9TRGZVSGllZmVUaHJSTjFtNjc0?=
- =?utf-8?B?QVYyWDhFcjludGpYSG5DNFhGM2c5bVRZemVMUW5zc2g0amhNRWlCYmNBQVg2?=
- =?utf-8?B?VVhFc1BZMlhJSGFxSHJRKzArVm9KS1crRzR0SStJaEZtOVJkTms1M2V6dlB2?=
- =?utf-8?B?N0ZZcnRYL0RxY3Jpd0hldkpWQXc0Rm5ZR2M4WlBnbHk1Nm5XM0JHNnhkZ1JM?=
- =?utf-8?B?VGhhekJIcTZCZzZGckxYbld0OStneGtrcDYrWlRFS3cxUDQrUXZiYnFsNEJW?=
- =?utf-8?B?YmRxVXdsUDM5N1FZYkwwdDVWU0t6WVBnUnRyNTJiNjB2ZnQrY1BLRFYzMjNU?=
- =?utf-8?B?c1EyMWQrSzVmZlJhNnN1YUs2R2g2aXFsWnpZNy8wNmwwdElTb0tPVVRHOFpL?=
- =?utf-8?B?Q0xuWjdyZUlINWhlYmlaaElidk5IcXFUTFJ0WVVIbjZoQUxsNGZTRXc0WXhh?=
- =?utf-8?B?RTUwZGJTMVhDRGF0UThtTEt1Z0hlWDhCK0Z1WHkrMXB6dUNoQldEd2FTWDFv?=
- =?utf-8?B?ZWtxZHVRaTNPWVFQRExuVUQ2MDh4eXJGaDRrOS9LZkJYb2x2Y1gzVG9OUHdk?=
- =?utf-8?B?WVd6K0hCWnJJRGNub0tiUDUyYWU1Y1NKaHBsRGFxVFFvdThXeENIT3p0UDBL?=
- =?utf-8?B?V2ZkN3l1Z3h6OXN0aitnZk1RN1UzZ0hqbC9mYnJWS2tOSHRndHhSaldNcGtY?=
- =?utf-8?B?YmRQUmhuYlhUZ0NQdEt3SlZhWmpFK20rL0tML2dCYzhjaExMeUhNVXJwUlpU?=
- =?utf-8?B?QjFXLzcyM3VQamFhcXpvdlVPZndyOUZMTi9kOU1xYTBwOUtySmdId2U5RklY?=
- =?utf-8?B?U1hQOWZiaEgyMDMrOWhjZEcraGlsREhJWHc5enNvTmlIb2R5VzhJSFdwZ3lL?=
- =?utf-8?B?Mks4WTFnRnhudXNHS0hBV1RONm1LVjB0NlJhV0VJODZML25EeU9IVjFuYnJt?=
- =?utf-8?B?U1pqZkVWeG9Ra1FXVFZlTnBBd29zaWdpaDR4QThmbUt1TisrT1pEd2E3NXlS?=
- =?utf-8?B?anVydXVPalRCL0JRaXVXbG13dTMvQUFPaVl6V05GamZPTGVrUENmNzVuWXhG?=
- =?utf-8?B?WC9XbHVZZ094Q1ZwdkJPNFcxRXlBQkp1TXBTUWRlaFZWNGJrMHl2NUhabi9F?=
- =?utf-8?B?c2luK1MxcUQrMGJCaHM3S1J2U2lBM3BTdVhkUVNQMWhqL2NaR1R2TFArc21V?=
- =?utf-8?B?OHI0MXErWEg4bjdNb3JNMVMvcWNUSk1uUnZDYjBGMmhxRVUwZllub2I0VUEx?=
- =?utf-8?B?eWlza0V1bnl4QUFtS1BTRENzYWpHck1wcmh2OERPT1lYNUQ5VldGUllMeGxF?=
- =?utf-8?B?Y2FoR21oeFBaanAyRFJ0VlI1SmZYbjd1RmJKckN2MHdJV1FCR0pPZEFxVE1W?=
- =?utf-8?B?MmcxR2VOV2Q0aUo5VUtEdWtHNFRZL0J5dWZGeWQxQjFmQ3ZkQmNZWjFyRDJC?=
- =?utf-8?Q?wTDM3jnpV5xGL0DwlXZb6BjltZ43cYiy?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?YUFFRVdCS2xqWFh4TkQ3UWJvS2tkUUdaejFnR0pvbEpNWDFTRVYwNFlmaXlQ?=
+ =?utf-8?B?ZHIzSmdTajZXTXNqV3Z3aDc1RkVrNkVBbmhxOVgxS3VzeHpPenpGblRneCs5?=
+ =?utf-8?B?ZXhWNVp5ODJIb0pzNWV3WmU0ZWRZa2JTRkwzaUFRTzI1bkhHSmNjRlJ3OWEz?=
+ =?utf-8?B?aGRFaEJ0RjFQdTNtSTk3TXVVbnR6c2NURXhHcXM3WnV4SEdPRUkxaENkQ0xl?=
+ =?utf-8?B?WUNiYzVGZGlodWRkSW5JaTRKd09wT1VlMVJ4bWFFNC8wc3o5U3BaS0ZlZmtK?=
+ =?utf-8?B?Y1JXQVdiaWhWd3FWdUptMW9ucW5xTnRQeWFvcDVhUEtESG5iN1haVWswWExw?=
+ =?utf-8?B?Mjk1ZktnTmxHL1lKSVBwNnVxOVlmKzZIdyt6QXUwNGhPSVlObEcwQ01rYThR?=
+ =?utf-8?B?cnViSkoveGJkcnIyTzNBd1NUUEdvOHRBZGRzcEZGT2RWYzBucTdGRnFqL2k1?=
+ =?utf-8?B?d0xmdXBkdStnVURNSkZ3bExtdWcvb2VYTjA5UU5SckFCMW5NQkVjY056cy9V?=
+ =?utf-8?B?Tk1xVUhjUWJoUnNSOXZtcUFXRTJNK0tXUEZNdGY2ZTVtdGxtQmVQbHRnTUV3?=
+ =?utf-8?B?dXJURllVU3FwSjNEeGIvdXR1UFQxK3Y3RUpUaE92ZklrbUdOY1NQb0lybmpZ?=
+ =?utf-8?B?N1ZLQlRKSU5iVE5WS3M1Qkc5dnFtNVBxTkFpQzMydiszY0NNQW5xa0Zqei9s?=
+ =?utf-8?B?dTZOemNhZklEb0VYcG94SE16S3VFaWRzT2wybDVKOWEwdjl3WDYzTFk1Z3VR?=
+ =?utf-8?B?S0RwS3Y5dGkrYTZDbWFMM29Cd05ua1NLTFJzZXBmODdVZ2lvRURZUzF0YzA1?=
+ =?utf-8?B?cVQrbWdDT1hoU2lmRm1DdzgvOEtXclJNOUZ2WWc5QXhmRXBFZHRFL3E2bXY5?=
+ =?utf-8?B?WVc5K2IzdlNOZmd6UUpTR3BjY2x3UE5DYkk5UHFkKzRmeXNBaFQva3c4ZUEx?=
+ =?utf-8?B?UlNJRTRmcFp3QjhCNnF4OFdabFNKdVQ4eG9UNThPQ1dYdEFCcDVpOC9aVWVU?=
+ =?utf-8?B?UmFiWlR0VFBySEY3OXE4S1IvTXpRNFZneitEZXIxbTFlU1hkdkkrTXd3VmtW?=
+ =?utf-8?B?YUtJMks2UlhoT2Z3cFVDaTZSN0pjLzhvSkcyc0FDa2d2WHdJQVI2TTYzaGRr?=
+ =?utf-8?B?Y3JvYktFZXpRNUJMakVlczQyWlNWWmxoZk03c0oxbk1mL2FUa1doajVwVi80?=
+ =?utf-8?B?RmhJbmpzVE01VnlSU3lpZDJTcWNLV3gyWndoQlViLy9FalFRZGRrL1VKaEFG?=
+ =?utf-8?B?eTFWeU1qSk9ESGtlOC9NTG1pcmN6NE9waTQ1cmVNRnF3MHlubUZSNi95ODRY?=
+ =?utf-8?B?MjQ4dlpXWXFkY3Y3OGhWSzlHUzhZOWovQkE1SXIwNzhyV1U0ZXhkb3doUjZW?=
+ =?utf-8?B?MW1tSkduVGpHYlo0V3RaWkNkZ1B3cjhMbmUzdXFoekp4SnlLVWhraVZ2eTBI?=
+ =?utf-8?B?VWY1YW4zQm8zWlRZUU9Oc3FsK014amRaZFpFblRvbWFFNHVMcjRsNWt0NnFp?=
+ =?utf-8?B?dmNjVERHZ1E3dzNna2dmbmdSY2MzdWw2SW0vNDJPb0NSa2pLWjhoL3cveEhG?=
+ =?utf-8?B?WTdFVE9YTlJWNWs3bGpmeGhuMGVFa2ZpMjFOclQxSm5KbTRTQUN3MllmdmNl?=
+ =?utf-8?B?VTBENldHc28wcTVhOS9aelB2eDdRS3FGR0tiTmZEVlZrVGdRNHAxdS9mNG83?=
+ =?utf-8?B?RDVwL2Z5WG50MUg2RThZeXEvL1dTVXpSYU5xR1l4ZERQMUppbE92UUlFYzcr?=
+ =?utf-8?B?R1BmaHRkcWF1NVkraGJOMjRLZTJReHoxdld3YmViOGZ5a1hxN1lnQjRuVjlv?=
+ =?utf-8?B?ZlZWU01jNUovS2dwbWtBRHRaTS9kV29FVkoyb2JnNXVlOE9EUjZyZkRPRFZO?=
+ =?utf-8?B?SnFUcU43N2FqcDVneG1TU3g2RlJCeU1NdExGMkxDRi9BcFRKWXJlcTk0NXNl?=
+ =?utf-8?Q?Z4rnkr8i7XSOXDwX1qEI/itcC1vlNsc9?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BN9PR11MB5530.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:SN7PR11MB7140.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SGZGY1BHRy84S3pKdDcyQnI4ZlNKRWlVMlhjRWlmWUlTbkFmUjlvR0M3UXRy?=
- =?utf-8?B?c3hQWmJidWF2cXczRmhqV1c4T3VwS3BXTFpSTnlORTZ1S1dLRjR6UysrbUtM?=
- =?utf-8?B?S0htZGh3Sk9TbS9ZQkVsLzVoRVZxdkhyQjRrSkoyRzlmY2JLT1hjMlBwa1o4?=
- =?utf-8?B?cXVFWDM4ekhYelpUSlRsOExVSkpDZWFWTlpJSm9JMk92Uk9xd3Y1RGI4Tk93?=
- =?utf-8?B?Q2hjV1FOODFKRW1lb0M0bzBranluN3NYN056bmhjaWgvSEl1RU54L0hNZjVk?=
- =?utf-8?B?cmttWXREbWRZbXplU2pic2FjS21YalNUSzRJcHY0alhBNEhSa0dpbzJZVGdJ?=
- =?utf-8?B?NGxDYm1WS2ptUXdCYWZES3ZKWmhnTG5uNVJ5di9UekV0ZFZSZjBtcEZ3L3pm?=
- =?utf-8?B?QnRMMnA2OEtpTEdFRkJsYWJPNEdMNm1aMXcrVTlYamVJTkZzV0FjeWhpTEVz?=
- =?utf-8?B?Z1ROdlVqUnlUYW9VRjB4MExKRFZHNkU3ajlHUEVtZFhCMmdOb2lUUjZHVVZo?=
- =?utf-8?B?TVBVQXdyRDNLSGtqL2dJay9UQXpoelIwWXgwMHNwbm4wVXpxZEFVZHFsWEFS?=
- =?utf-8?B?TkE5d0RXamJBSm02OTUxME4xQk5VVE4weGFBbnFuZy9iM0l0aHIyNXQ5bVlS?=
- =?utf-8?B?MWEyTm51K0U2Y3poYU5DM0tTa09JWGlnMnZ6UHBBcHYyU0J1RUxsNUJmQ1dP?=
- =?utf-8?B?Zmx3bi9oTG1DQlVub0R5Q0ljcFNQbElvZmlKYnlEaUNXUlc0Ylgwb0xTQ08r?=
- =?utf-8?B?ZUx5SEMvODZBVkNyRHVNa2R2dVJsdWtlcHBsZjBMNzBKQU9wQTI5OGZHZTRn?=
- =?utf-8?B?L0xiNWd2L1BVU3M5K0RwckVYL2t6N3hkMG1DamdKaGphQW8wSGFDODNLRG1D?=
- =?utf-8?B?UzJqMUh6YnJjY0dyY0MvVlJ1T21QSi9QNmpyeDYxTFNSSStpYVFaL1RseGFz?=
- =?utf-8?B?QkhXRU5vUFlQdjNKUmFCSXVFLzRtYWFDTWFNTXBYNE1hUjJsNW5ua2FCRXFC?=
- =?utf-8?B?eEpDbklBNmUrUU5WOW84c2xNdzl5d1dYR2Y0ekZOTDdPVVJxWHFjZU9rOUlp?=
- =?utf-8?B?ejV4SGlLems5MlljN2EwemZNTFFscisyS0l1QkdsRkZwcTNGeHJJZlA3dm11?=
- =?utf-8?B?clZTMFNwY2lnM1dXN0lhbGNYK2hxdk13alBHM1hLYWRNK1NWQTFGSnFlZnNs?=
- =?utf-8?B?RE16aFB6QS9RRTh3QjFkeGZDdGEvM3o2S3FLQlExclpHc1Rkekkya0IwaFZy?=
- =?utf-8?B?dzBXalVHN2VuYlV2dy9uYWltaW9xSjZvTlY5STZ6R1FoOEN0RnhlQk1UVlF5?=
- =?utf-8?B?ZTJla1BlZXRLeWQ5MmZxZHltSU4xWkVubFFQN1FRVmR6QmNEQWhLYUViWEl2?=
- =?utf-8?B?ZTBEOHdoMkVjVnpWaXVrWUZvNVZidHB2Z3d4L2tXejFCbkRVMEtqV1NxY240?=
- =?utf-8?B?M3EvRm5lZEdHbHprTEsydy9KZUJsSTlkdUo3VWhTdXFGUzNvU05lU05BTTJL?=
- =?utf-8?B?cmcxM2tJaHRKQ2ZHdVlwdVlrRFJ0RWxDcDRtWEg4TzJVWWNKUXNmcTNES01a?=
- =?utf-8?B?QWx3Ri9kSjJJbEJYbFB6RXI0SU54WUpUemhueDBjMkw4azNRL0wvNVNSaHJU?=
- =?utf-8?B?Lzd2YjB1ckszQXJzUzRiWFFFUStWL3hveDVtVFpkbStCb3FabExMK1NLNmRp?=
- =?utf-8?B?d0w3YVVtOFR0SG94SEhLeTZSNEo4Skk5UTNMd0tRcGtnK3J5UWxjZ3BZYlZD?=
- =?utf-8?B?RFlja0lQNWY5aGdGRm91ZERQc3ZzbUVEOE5vbjdrUGY2R1l5KzRRcGEvZU41?=
- =?utf-8?B?eWczZ3YrNW00d0E4bHd3aFNoTmNpanhvUGdMN2k0UnlBWWRUbVdiWndJY0Np?=
- =?utf-8?B?OThScStTTVJCZE02ZVF3b0FicnZWbzAxaHZLamNpRUt4RE4ybHIyYXF2dWJQ?=
- =?utf-8?B?V3JmNm9nb3NRbTVudkNDSWROMVdRZTVMbG5vQTBHSUFUeFBuaHBwK3VTV2Ir?=
- =?utf-8?B?TVFzNU1VSWtETU1kRTZmWGNOS3ZteTZpckxxbUxsK1lmUS93MWFEc3cvdndh?=
- =?utf-8?B?cFFzSWdrUWFnakJTVklaUXovZ2JiVHk1bE1HcTlhSC8vOSttUnN5VGVLdklk?=
- =?utf-8?B?WkxEUFJxcHVYNzV2R0crOUdYOWJRNElyejNCY2JkWUJrdmloT1ZWUkJlYVhN?=
- =?utf-8?B?dnc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: ac3b5fda-f18b-4b5b-cfd3-08de2e3943bb
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5530.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SGhRU0FWRDIwaFZ6NXNDQjB1ZW9SWjE4Y2NKMGo3V2pGUCtkaWtsd01CNUlT?=
+ =?utf-8?B?SUtYVUQ2QzhMQ201QUpNZlFwWGpzaUtSUHhqUGcxc3BtRDNkS2JhTjYwWUpa?=
+ =?utf-8?B?Tk9tYmVxVVE1am1SVG03cUpNSVUyazh5S0dTd0dOZWQ3SEF5UnAxenNFUUhQ?=
+ =?utf-8?B?bG9GQjBaSlpzSFpNa25TWU1IU3NmQTYvbER5WTJOMUpFUkZLZzM2RnNaWFBv?=
+ =?utf-8?B?azQ0L0EycE9KVTJRN0YvV29NeUdqV1ZpT0xqU2Jsbm80ZWNHV0lBQVF3OSt1?=
+ =?utf-8?B?dk9nbllnTllmcGpKY2xaUW00cUVDZUE2N0FHYi9UTzBMQnIrSzBoVXFCK2JW?=
+ =?utf-8?B?eXdaTUZHOHBleVd1Wkp4OTBDdXZGcXRTOHhZWTFvZ21DOTYyMS9JRFY3clEz?=
+ =?utf-8?B?QVVRVExYQTNtK1AwWWFkYmFHV3FXcVBhL01nd1V5YW1jcDNyTkY3cmt2OGpN?=
+ =?utf-8?B?QVVFU2VBeVpCQUllbHNWYjJ4TUI3dkg2OGRUM05LMmJ2YzdTOTVQeHdxNko2?=
+ =?utf-8?B?LytzOE9kdURCNGh5OEtoTnpITmZ0Q0JPUmVoYm9jZ0pyRHgraXdRTHZCbFhZ?=
+ =?utf-8?B?aFA3ZjlRUWN0YmQwdnNuYmFvUVpSYVpya1lLSnhmTVVIVjE5eUE5aU1JMStz?=
+ =?utf-8?B?UmlCdVZIcHA4TWx4NzdmelJ0N1ZDUUQrekVrYy9vZGwvK1hmMDNWc3ZCQUdF?=
+ =?utf-8?B?NTRjUTM4U255QmpobXhKTEN6UmpadDVUcEFBQ0l1dkhYUk14NkJ4TW9wbkNo?=
+ =?utf-8?B?MmlCVUNpNEtTWWhaUkhLdjN1N0RMenBxTzVkN0hhNy9zQW1ndXRsMkxFd1Q3?=
+ =?utf-8?B?cnVZRWpZQVdYWnR0bmVMeDBRT2d5T1FKZzVka09DNUVSc3RDL1liRlJEeDB1?=
+ =?utf-8?B?OEVUMU8weGRzMDV5emYzcDBTSENaS01kVGRXcmFhZ0pSTGVxamFQck84eHFk?=
+ =?utf-8?B?MWNUREtkS3dPc0FXTi8vQmJNMmRtOWhZdmdndGtTVDlPY3J2WEU1UFRwZEtW?=
+ =?utf-8?B?eHhBSTFtejlUQ3c0ai9NbXg2d1RXS3dMSlkxV3c3MXpqekx0M0RIWWxsZCtD?=
+ =?utf-8?B?QVRLam9hUG5vdTZDVGVJKzN0YXZuWmRxNzJnVVJtK2hRaWxFMkVwMFM5ZDZR?=
+ =?utf-8?B?VVZYcFc4MHRtbEhGNVZIQndVbDh2a004RUZlT0hUNnlaS3JtVEIzcXIwMDBx?=
+ =?utf-8?B?TklKWE9zMEhYZnY3cDY5dExYTGxQWEc4Wnl4Nk1OeEI3R3Q0WGRkZHR1d3Fp?=
+ =?utf-8?B?MVpyTHVlZGE5YWlrYTdSRTBReVZqTjhCOThNQ1ljd1JTZUc0WVh6aVdDd09V?=
+ =?utf-8?B?aXhsSmZpZEVLRUowSVkwdDIzWGNPVWY4Y0FJYWJEb0lkSVRJeFcrRUhWcCs2?=
+ =?utf-8?B?VlpVM3dYM2J1TmNKTEJxdG9BYnNkaUFocm8zR0xGSUhPVUVXNWNhZ1BlbThS?=
+ =?utf-8?B?dUl4V1kwSEFMTW9WR0ZvVnZPT2tZTzEyL3JtSjFDcUZtY09sTkxBNmpTQ3I1?=
+ =?utf-8?B?OFF1TXZQTGNXNllGSXBMZWE0VzhGYnhKc0IrZFlxT3FsN0tuRDRhRXJubnVl?=
+ =?utf-8?B?VHBlQUdPOGpwSnE4ZDNpTjRxVmpaMVJnTGVlR3h3Ukd1Z2NYNFhPTE42dVdr?=
+ =?utf-8?B?c1ErMXhBRTZtdk5wcXpSRENYanBERXF4VG56dEdVMERhOWJIWlJRNmIrZ1V6?=
+ =?utf-8?B?OHk2dDI1RFVKWnp3U2pmbHJqQnpIK2VxcjZpaXdoTU15RnpRUGtaY0xWZ01l?=
+ =?utf-8?B?RDIrQmZOQ21vTEl6YXg4SUxkM0o4aHp2S3lqekhKYzQ1ZkdyMWJjUFVwdzY0?=
+ =?utf-8?B?emhSdjgxbDZlZGU2UmlVelVTSXNnUDhqYk9zQmxLMTIwdVRxM1BuckFOcDJq?=
+ =?utf-8?B?OEpwb3NwVVdrdVh1SEdXdzVGUGxIM0F6b1RQdm1lSHZ6UTlzNUF2WHNsdjdP?=
+ =?utf-8?B?QVBVOWJGb2dSU1gxck5WYUpFdEkveGRoMThUTjYzWXhISjZwZ3BwSEZpUE5Z?=
+ =?utf-8?B?WENBL0dlbncySXhYcFlWYk1DN21jQTl2eVR0MmVHNWliTGtxTjN3SVNXMDZr?=
+ =?utf-8?B?UnY1RzZJdWRWdlJNZjgzMnh4cmRoUVFQbU9oNjV1TGgwNGNabWphUmhoUVpr?=
+ =?utf-8?B?NVFuZjRVN1N1SURYbnhlb0ZFcGFzRXZaTHBWSGFaMUdxRGJOZXdVYlI5VHFV?=
+ =?utf-8?B?bEE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 393e5cc8-6012-4e5f-5f04-08de2e3d6ac8
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB7140.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2025 04:47:42.2362 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2025 05:17:25.6278 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2O8T0u9+i16fz84ZBnhSZs80wNdAeTeYs7CzMxH02E+DbezcvzaQHzGSfdQa9f6eu780+htfv98cJjPwSBlmDQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8674
+X-MS-Exchange-CrossTenant-UserPrincipalName: kyXVAH/6vwYl8gmd9ejPa39daN8yaWa7Hwf0DlwM89Y3i1LTXMxXOmL4zBqZrGL9bqJgv/6T4it+Qa7t9wJqhg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4681
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -199,273 +198,80 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 19-11-2025 15:21, Karthik Poosa wrote:
-> Add subtest aspm_link_residency to verify PCIe ASPM.
-> Active State Power Management (ASPM) is a power management mechanism
-> for PCI Express (PCIe) devices that aims to save power while the devices
-> are in a fully active state.
-> This test uses link state counters from debugfs - dgfx_pcie_link_residencies
-> to verify this.
+On 11/28/2025 10:08 AM, Sobin Thomas wrote:
+> The original test for madvise split vm only supported 4 KB alignment,
+> which failed certain hardware such as PVC that required 64 KB page
+> alignment. The test has been updated to include support for 64 KB
+> page alignment.
+
+The original test for madvise split vm only supported 4KB alignment
+which failed in hardware such as PVC which require 64KB page alignment.
+Test has been updated with 64KB alignment in case of PVC and 4KB alignment as
+default.
+
 >
-> v2:
->   - Add dedicated function to get pcie endpoint upstream port. (Badal)
->   - Read residency counter as unsigned long long int instead of
->     unsigned long int.
->   - Print residency counter before sleep also.
->   - Don't assert if sysfs not corresponding to aspm_link_state
->     is not present. (Badal)
->   - Run workload before validation of aspm link residency. (Anshuman)
+> ver2:
+>   - Added check for PVC.
 >
-> v3:
->   - Move igt_device_get_pci_usp to separate patch. (Kamil)
->   - Move reading of residency to separate function. (Badal)
+> ver3:
+>   - Moved declarations in MADVISE_SPLIT_VMA scope. (Nishit)
 >
-> v4:
->   - Add description about PCIe ASPM in commit message and code. (Kamil)
->   - Add a NULL check for the return value of igt_device_get_pci_usp().
->   - Resolve compilation warnings about using variable as format string
->     to sscanf.
->
-> Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
+> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
 > ---
->   tests/intel/xe_pm_residency.c | 160 ++++++++++++++++++++++++++++++++++
->   1 file changed, 160 insertions(+)
->   mode change 100644 => 100755 tests/intel/xe_pm_residency.c
+>   tests/intel/xe_exec_system_allocator.c | 25 +++++++++++++++++++------
+>   1 file changed, 19 insertions(+), 6 deletions(-)
 >
-> diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-> old mode 100644
-> new mode 100755
-> index 1749d6467..583d66bee
-> --- a/tests/intel/xe_pm_residency.c
-> +++ b/tests/intel/xe_pm_residency.c
-> @@ -37,6 +37,27 @@ enum test_type {
->   	TEST_IDLE,
->   };
->   
-> +enum link_state_index {
-> +	LINK_STATE_ASPM,
-> +	LINK_STATE_ASPM_L1_1,
-> +	LINK_STATE_ASPM_L1_2,
-> +	LINK_STATE_PCIPM_L1_1,
-> +	LINK_STATE_PCIPM_L1_2,
-> +	MAX_LINK_STATES,
-> +};
-> +
-> +struct link_state_info {
-> +	const char *filename;
-> +	char state;
-> +	const char *parse_str;
-> +} link_state_sysfs [] = {
-> +	{ "l1_aspm", 0, "PCIE LINK L1 RESIDENCY : "},
-> +	{ "l1_1_aspm", 0, "NULL"},
-> +	{ "l1_2_aspm", 0, "PCIE LINK L1.2 RESIDENCY : "},
-> +	{ "l1_1_pcipm", 0, NULL},
-> +	{ "l1_2_pcipm", 0, NULL},
-> +};
-> +
->   /**
->    * SUBTEST: gt-c6-on-idle
->    * Description: Validate GT C6 state on idle
-> @@ -64,6 +85,10 @@ enum test_type {
->    * SUBTEST: cpg-gt-toggle
->    * Description: Toggle GT coarse power gating states by acquiring/releasing
->    *		forcewake.
-> + *
-> + * SUBTEST: aspm_link_residency
-> + * Description: Check for PCIe ASPM (Active State Power Management) link states
-> + * entry while device is in D0.
->    */
->   IGT_TEST_DESCRIPTION("Tests for gtidle properties");
->   
-> @@ -255,6 +280,24 @@ static void idle_residency_on_exec(int fd, struct drm_xe_engine_class_instance *
->   	munmap(done, 4096);
->   }
->   
-> +static void do_exec(int fd, struct drm_xe_engine_class_instance *hwe)
-> +{
-> +	unsigned long *done;
-> +
-> +	igt_info("Running on %s:%d\n",
-> +		 xe_engine_class_string(hwe->engine_class), hwe->engine_instance);
-> +	done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> +	igt_assert(done != MAP_FAILED);
-> +	memset(done, 0, 4096);
-> +
-> +	igt_fork(child, 1)
-> +		exec_load(fd, hwe, done);
-> +
-> +	*done = 1;
-> +	igt_waitchildren();
-> +	munmap(done, 4096);
-> +}
-> +
->   static void measure_power(struct igt_power *gpu, double *power)
->   {
->   	struct power_sample power_sample[2];
-> @@ -370,6 +413,109 @@ static void cpg_gt_toggle(int fd)
->   		powergate_status(fd, gt, "down");
->   }
->   
-> +
-> +static bool check_link_residency_entry(int fd_xe, const char* filename, uint8_t aspm_link_state)
-s/aspm_link_state/link_state/
-> +{
-> +	int fd_debugfs_dir = 0;
-> +	int ret = 0;
-> +	char *ptr = NULL;
-> +	char path[256] = {0}, buf[1024] = {0};
-> +	uint64_t residency_pre = 0, residency_post = 0;
-> +
-> +	fd_debugfs_dir = igt_debugfs_dir(fd_xe);
-> +	igt_assert(fd_debugfs_dir >= 0);
-> +
-> +	ret = igt_debugfs_simple_read(fd_debugfs_dir, filename, buf, sizeof(buf));
-> +	igt_assert_f(ret >= 0, "cannot read pre %s.\n", filename);
-> +	ptr = strstr(buf, link_state_sysfs[aspm_link_state].parse_str);
-> +	igt_assert_f((ptr != NULL), "cannot find residency string %s\n", link_state_sysfs[aspm_link_state].parse_str);
-> +	if (ptr != NULL) {
-> +		sprintf(path, "%s%%llu", link_state_sysfs[aspm_link_state].parse_str);
-> +		igt_debug("searching for-%s\n", link_state_sysfs[aspm_link_state].parse_str);
-> +		sscanf(ptr + strlen(link_state_sysfs[aspm_link_state].parse_str), "%lu", &residency_pre);
-> +		igt_info("Link residency before %"PRIu64"\n", residency_pre);
-> +		igt_info("Waiting for link to enter idle....\n");
-> +		sleep(5);
-> +		ret = igt_debugfs_simple_read(fd_debugfs_dir, filename, buf, sizeof(buf));
-> +		igt_assert_f(ret >= 0, "cannot read post %s.\n", filename);
-> +		sscanf(ptr + strlen(link_state_sysfs[aspm_link_state].parse_str), "%lu", &residency_post);
-> +	}
-> +
-> +	igt_info("Link residency after %"PRIu64"\n", residency_post);
-> +	close(fd_debugfs_dir);
-
-I was suggesting to add igt_get_link_state_residency().
-
-residency_post = igt_get_link_state_residency();
-sleep(5);
-residency_pre = igt_get_link_state_residency();
-
-We can drop check_link_residency_entry() and move above logic to 
-test_aspm_link_residency();
-
-> +
-> +	return (residency_post > residency_pre) ? true : false;
-> +}
-> +
-> +static void test_aspm_link_residency(int fd_xe, uint8_t aspm_link_state)
-> +{
-> +	struct pci_device *pci_dev;
-> +	int fd_pci_usp = 0;
-> +	char name[PATH_MAX];
-> +	int ret = 0;
-> +	char path[256] = {0};
-> +	bool aspm_entered = 0;
-
-I recommend restricting this to ASPM states only, so please add an 
-assertion here:
-igt_assert(aspm_link_state <= LINK_STATE_ASPM_L1_2);
-
-> +
-> +	/* Get upstream port pci_dev */
-> +	pci_dev = igt_device_get_pci_usp(fd_xe);
-> +	igt_assert_f(pci_dev != NULL, "Couldn't get pci device of upstream port\n");
-> +	igt_debug("Upstream port PCI device: %04x:%02x:%02x.%01x\n", pci_dev->domain,
-> +		  pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +
-> +	snprintf(name, sizeof(name), "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/link",
-> +		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-> +	fd_pci_usp = open(name, O_DIRECTORY);
-> +	igt_assert_f((fd_pci_usp >= 0), "Can't open link directory upstream port %s, ret %d\n", name, fd_pci_usp);
-> +
-> +	/* Disable runtime PM as link ASPM entry happens during device is in D0 only. */
-> +	igt_assert(igt_setup_runtime_pm(fd_xe));
-> +	igt_disable_runtime_pm();
-> +
-> +	sprintf(path, "%s", link_state_sysfs[aspm_link_state].filename);
-> +	igt_require_f(!faccessat(fd_pci_usp, path, R_OK, 0), "%s is not present\n", path);
-> +	ret = igt_sysfs_scanf(fd_pci_usp, path, "%c", &link_state_sysfs[aspm_link_state].state);
-> +	igt_assert_f((ret > 0), "couldn't read residency for %s", path);
-> +
-> +	/* Save current state of all available link sysfs entries and enable only the one needed. */
-> +	for (int i = 0 ; i < MAX_LINK_STATES ; i++) {
-> +		sprintf(path, "%s", link_state_sysfs[i].filename);
-> +		if (faccessat(fd_pci_usp, path, R_OK, 0)) {
-> +			igt_info("%s not present to save\n", path);
-
-This isn’t required, or you could use igt_debug instead.
-
-> +			continue;
-> +		}
-> +		ret = igt_sysfs_scanf(fd_pci_usp, path, "%c", &link_state_sysfs[i].state);
-> +		igt_assert_lt(0, ret);
-> +		igt_debug("saved %s = %c\n", link_state_sysfs[i].filename , link_state_sysfs[i].state);
-> +
-Enable outside for loop. Could you please wrap save restore inside 
-separate functions and disable everything while saving.
-> +		if(i == aspm_link_state) {
-> +			igt_debug("Enabling %s\n", link_state_sysfs[i].filename);
-> +			ret = igt_sysfs_printf(fd_pci_usp, path, "%c", '1');
-> +		}
-> +		else {
-> +			ret = igt_sysfs_printf(fd_pci_usp, path, "%c", '0');
-> +		}
-> +		igt_assert_lt(0, ret);
-> +	}
-> +
-> +	aspm_entered = check_link_residency_entry(fd_xe, "dgfx_pcie_link_residencies", aspm_link_state);
-
-The test should be made more readable.
-
-Pseudo code: save_disable_link_states();
-enable ASPM ;
-residency_pre = igt_get_link_state_residency(aspm_link_state);
-sleep(5);
-residency_post = igt_get_link_state_residency(aspm_link_state);
-
-igt_assert(residency_post > residency_pre);
-restore_link_states();
-
-Thanks,
-Badal
-
-> +
-> +	/* Restore states of L1 sysfs entries. */
-> +	for (int i = 0 ; i < MAX_LINK_STATES ; i++) {
-> +		sprintf(path, "%s", link_state_sysfs[i].filename);
-> +		if (faccessat(fd_pci_usp, path, R_OK, 0)) {
-> +			igt_info("%s not present to restore\n", path);
-> +			continue;
-> +		}
-> +		ret = igt_sysfs_printf(fd_pci_usp, path, "%c", link_state_sysfs[i].state);
-> +		igt_debug("restored %s to %c\n", link_state_sysfs[i].filename , link_state_sysfs[i].state);
-> +	}
-> +
-> +	igt_restore_runtime_pm();
-> +	close(fd_pci_usp);
-> +	close(fd_xe);
-> +	igt_assert_f(aspm_entered , "ASPM Link idle entry failed!\n");
-> +}
-> +
->   igt_main
->   {
->   	uint32_t d3cold_allowed;
-> @@ -444,6 +590,20 @@ igt_main
->   		cpg_gt_toggle(fd);
+> diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
+> index b88967e58..c54a52690 100644
+> --- a/tests/intel/xe_exec_system_allocator.c
+> +++ b/tests/intel/xe_exec_system_allocator.c
+> @@ -1251,17 +1251,30 @@ xe_vm_parse_execute_madvise(int fd, uint32_t vm, struct test_exec_data *data,
 >   	}
 >   
-> +	igt_describe("ASPM Link residency validation");
-> +	igt_subtest_with_dynamic("aspm_link_residency") {
-> +		xe_for_each_gt(fd, gt) {
-> +			xe_for_each_engine(fd, hwe) {
-> +				if (gt == hwe->gt_id && !hwe->engine_instance) {
-> +					igt_dynamic_f("gt%u-engine-%s", gt,
-> +						      xe_engine_class_string(hwe->engine_class))
-> +						do_exec(fd, hwe);
-> +				}
-> +			}
-> +		}
-> +		test_aspm_link_residency(fd, LINK_STATE_ASPM);
-> +	}
+>   	if (flags & MADVISE_SPLIT_VMA) {
+> +		uint16_t dev_id = intel_get_drm_devid(fd);
+> +		uint64_t split_addr, split_size;
+> +		uint64_t alignment = SZ_4K;
 > +
->   	igt_fixture {
->   		close(fd);
+> +		if (IS_PONTEVECCHIO(dev_id))
+> +			alignment = SZ_64K;
+> +
+>   		if (bo_size)
+> -			bo_size = ALIGN(bo_size, SZ_4K);
+> +			bo_size = ALIGN(bo_size, alignment);
+> +
+> +		split_addr = to_user_pointer(data) + bo_size/2;
+> +		split_addr = ALIGN(split_addr, alignment);
+> +		split_size = bo_size / 2;
+> +		split_size = ALIGN(split_size, alignment);
+>   
+>   		bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
+>   		bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci->gt_id),
+>   				  bo_flags);
+> -		xe_vm_bind_async(fd, vm, 0, bo, 0, to_user_pointer(data) + bo_size / 2,
+> -				 bo_size / 2, 0, 0);
+>   
+> -		__xe_vm_bind_assert(fd, vm, 0, 0, 0, to_user_pointer(data) + bo_size / 2,
+> -				    bo_size / 2, DRM_XE_VM_BIND_OP_MAP,
+> +		xe_vm_bind_async(fd, vm, 0, bo, 0, split_addr,
+> +				 split_size, 0, 0);
+> +
+> +		__xe_vm_bind_assert(fd, vm, 0, 0, 0, split_addr,
+> +				    split_size, DRM_XE_VM_BIND_OP_MAP,
+>   				    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR, sync,
+>   				    1, 0, 0);
+>   		xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, FIVE_SEC);
+> @@ -1269,7 +1282,7 @@ xe_vm_parse_execute_madvise(int fd, uint32_t vm, struct test_exec_data *data,
+>   		gem_close(fd, bo);
+>   		bo = 0;
+>   
+> -		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size / 2,
+> +		xe_vm_madvise_atomic_attr(fd, vm, split_addr, split_size,
+>   					  DRM_XE_ATOMIC_GLOBAL);
 >   	}
+>   
+
+Modify description. Rest LGTM
+
+Reviewed-by: Nishit Sharma <nishit.sharma@intel.com>
+
