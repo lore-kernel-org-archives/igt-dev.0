@@ -4,54 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D247FD11702
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D23BBD11701
 	for <igt-dev@archiver.kernel.org>; Mon,  1 Dec 2025 09:03:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5D43D10E371;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5DFCC10E373;
 	Mon,  1 Dec 2025 09:03:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lwk73YER";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KVI39Efm";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B3CB10E367
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Dec 2025 09:03:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A94A10E365
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Dec 2025 09:03:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764579830; x=1796115830;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=4rd06otD74shs9U8Mjn9CvwkyHqUEcceHDHf3m/Q2QU=;
- b=lwk73YERz955xmc3Y7zc1Qmqh+GyyFh4dmGuadUJkJE3q4SYA+3cyg2y
- KQk4+vmKeEPwwK6bbKUEwRI73uOLh/wl5RgQrfAYHkioIYadWfFhoODE7
- 2S3VpSb2rU9jSD3F755w9qQoo9xze+nstggMFXhriU0vWM7FzAO2iNS2/
- O9U2MFYUcfEqrBZWHCnAcg7QrVYaZNLWL62CL5hvbrKQ943KQaef4CM3s
- cz39zFRdlsImVmYbyjxm5HGnY9dgkjnqAqbi2FHpgPaf5Tw8EcHNQnFOn
- f0A3TRgDASa+65uGoUQGVNnbONGESQK8Mq4GcumdUU5qbntQ5lnTnClvu g==;
-X-CSE-ConnectionGUID: tYzoEGDmRMugR7MMGUQE5Q==
-X-CSE-MsgGUID: sZ76t40mQRm1c/RhwIfpVQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11629"; a="77199542"
-X-IronPort-AV: E=Sophos;i="6.20,240,1758610800"; d="scan'208";a="77199542"
+ t=1764579829; x=1796115829;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ptZUjSllnQ8mOFw6nkVZFEeM6MXj5HcI1DGT1b/wfOw=;
+ b=KVI39EfmbHQLrchihha6fKEhHlq5poqbvW5Gv1qYUkfD6UBcK3HDKYhp
+ +bnomi/xOEe5LUD3L6bJ4mD/8J9fKQS3q4uDWdIjcHWcyyU2WQrinq1OM
+ 6YF0XPIbEPqjKVI3KI/4gDFH98J9WsFliaP0stOrjDbjLSzxAnYTfHV5H
+ exUckqbc1GC2bRsawtSouAOtR3O4iVUxbRgeq1xS+IGyvoApJfLvrXwwz
+ clRhhIsW+wzGdhSxPVFuCu+Yny4rVXlIe/HXWZQWf9+i2SmVuyDkQhImw
+ sJ31O/ABIOXjjpgR+MKpJGlyWmv3Vi+yZSEDlrlRgR3yXmKPXQrlKArfd A==;
+X-CSE-ConnectionGUID: smz1SK/jQ8Geo96ynwKlqA==
+X-CSE-MsgGUID: 63qiegOGRH6iu/9YXo04bA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11629"; a="77199533"
+X-IronPort-AV: E=Sophos;i="6.20,240,1758610800"; d="scan'208";a="77199533"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Dec 2025 01:03:49 -0800
-X-CSE-ConnectionGUID: 1vfOXztpT0KMSXWnEifK1Q==
-X-CSE-MsgGUID: befIlOwNTJ2/DlDNlYzWlw==
+ 01 Dec 2025 01:03:48 -0800
+X-CSE-ConnectionGUID: sco7rEtaS/Wr8cGEQUjTIQ==
+X-CSE-MsgGUID: PhEYokmwQ3u9BZi1pWO7ug==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,240,1758610800"; d="scan'208";a="198501980"
+X-IronPort-AV: E=Sophos;i="6.20,240,1758610800"; d="scan'208";a="198501952"
 Received: from dut7069bmgfrd.fm.intel.com (HELO DUT7069BMGFRD..)
  ([10.1.40.114])
- by orviesa004.jf.intel.com with ESMTP; 01 Dec 2025 01:03:50 -0800
+ by orviesa004.jf.intel.com with ESMTP; 01 Dec 2025 01:03:49 -0800
 From: nishit.sharma@intel.com
 To: igt-dev@lists.freedesktop.org, nishit.sharma@intel.com,
  pravalika.gurram@intel.com
-Subject: [PATCH i-g-t v9 09/10] tests/intel/xe_multi_gpusvm: Add SVM multi-GPU
- conflicting madvise test
-Date: Mon,  1 Dec 2025 09:03:48 +0000
-Message-ID: <20251201090349.326673-10-nishit.sharma@intel.com>
+Subject: [PATCH i-g-t v9 00/10] Madvise feature in SVM for Multi-GPU configs
+Date: Mon,  1 Dec 2025 09:03:39 +0000
+Message-ID: <20251201090349.326673-1-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251201090349.326673-1-nishit.sharma@intel.com>
-References: <20251201090349.326673-1-nishit.sharma@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,244 +68,64 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Nishit Sharma <nishit.sharma@intel.com>
 
-This test calls madvise operations on GPU0 with the preferred location set
-to GPU1 and vice versa. It reports conflicts when conflicting memory advice
-is given for shared SVM buffers in a multi-GPU environment.
+This patch series adds comprehensive SVM multi-GPU IGT test coverage for
+madvise and prefetch functionality.
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- tests/intel/xe_multi_gpusvm.c | 143 ++++++++++++++++++++++++++++++++++
- 1 file changed, 143 insertions(+)
+ver2:
+- Test name changed in commits
+- In patchwork v1 patch is missing due to last patch was not sent
 
-diff --git a/tests/intel/xe_multi_gpusvm.c b/tests/intel/xe_multi_gpusvm.c
-index bdbaa7a16..688ee0757 100644
---- a/tests/intel/xe_multi_gpusvm.c
-+++ b/tests/intel/xe_multi_gpusvm.c
-@@ -110,6 +110,23 @@
-  *	Test concurrent atomic memory operations with prefetch where
-  *	multiple GPUs simultaneously access shared memory to validate
-  *	coherency with memory migration and local VRAM access
-+ *
-+ * SUBTEST: mgpu-atomic-op-conflict
-+ * Description:
-+ *	Multi-GPU atomic operation with conflicting madvise regions
-+ *
-+ * SUBTEST: mgpu-coherency-conflict
-+ * Description:
-+ *	Multi-GPU coherency test with conflicting madvise regions
-+ *
-+ * SUBTEST: mgpu-concurrent-access-conflict
-+ * Description:
-+ *	Multi-GPU concurrent access with conflicting madvise regions
-+ *
-+ * SUBTEST: mgpu-pagefault-conflict
-+ * Description:
-+ *	Multi-GPU page fault test with conflicting madvise regions
-+ *
-  */
- 
- #define MAX_XE_REGIONS	8
-@@ -123,6 +140,9 @@
- #define BATCH_VALUE	60
- #define NUM_ITER	200
- 
-+#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
-+#define FIVE_SEC                (5LL * NSEC_PER_SEC)
-+
- #define MULTIGPU_PREFETCH		BIT(1)
- #define MULTIGPU_XGPU_ACCESS		BIT(2)
- #define MULTIGPU_ATOMIC_OP		BIT(3)
-@@ -132,6 +152,7 @@
- #define MULTIGPU_PERF_REM_COPY		BIT(7)
- #define MULTIGPU_PFAULT_OP		BIT(8)
- #define MULTIGPU_CONC_ACCESS		BIT(9)
-+#define MULTIGPU_CONFLICT		BIT(10)
- 
- #define INIT	2
- #define STORE	3
-@@ -199,6 +220,12 @@ static void gpu_simult_test_wrapper(struct xe_svm_gpu_info *src,
- 				    struct drm_xe_engine_class_instance *eci,
- 				    unsigned int flags);
- 
-+static void
-+conflicting_madvise(struct xe_svm_gpu_info *gpu1,
-+		    struct xe_svm_gpu_info *gpu2,
-+		    struct drm_xe_engine_class_instance *eci,
-+		    unsigned int flags);
-+
- static void
- create_vm_and_queue(struct xe_svm_gpu_info *gpu, struct drm_xe_engine_class_instance *eci,
- 		    uint32_t *vm, uint32_t *exec_queue)
-@@ -616,6 +643,11 @@ atomic_inc_op(struct xe_svm_gpu_info *gpu1,
- 	if (mgpu_check_fault_support(gpu1, gpu2))
- 		return;
- 
-+	if (flags & MULTIGPU_CONFLICT) {
-+		conflicting_madvise(gpu1, gpu2, eci, flags);
-+		return;
-+	}
-+
- 	create_vm_and_queue(gpu1, eci, &vm[0], &exec_queue[0]);
- 	create_vm_and_queue(gpu2, eci, &vm[1], &exec_queue[1]);
- 
-@@ -697,6 +729,11 @@ coherency_test_multigpu(struct xe_svm_gpu_info *gpu1,
- 	if (mgpu_check_fault_support(gpu1, gpu2))
- 		return;
- 
-+	if (flags & MULTIGPU_CONFLICT) {
-+		conflicting_madvise(gpu1, gpu2, eci, flags);
-+		return;
-+	}
-+
- 	create_vm_and_queue(gpu1, eci, &vm[0], &exec_queue[0]);
- 	create_vm_and_queue(gpu2, eci, &vm[1], &exec_queue[1]);
- 
-@@ -985,6 +1022,11 @@ pagefault_test_multigpu(struct xe_svm_gpu_info *gpu1,
- 	if (mgpu_check_fault_support(gpu1, gpu2))
- 		return;
- 
-+	if (flags & MULTIGPU_CONFLICT) {
-+		conflicting_madvise(gpu1, gpu2, eci, flags);
-+		return;
-+	}
-+
- 	create_vm_and_queue(gpu1, eci, &vm[0], &exec_queue[0]);
- 	create_vm_and_queue(gpu2, eci, &vm[1], &exec_queue[1]);
- 
-@@ -1101,6 +1143,11 @@ multigpu_access_test(struct xe_svm_gpu_info *gpu1,
- 	if (mgpu_check_fault_support(gpu1, gpu2))
- 		return;
- 
-+	if (flags & MULTIGPU_CONFLICT) {
-+		conflicting_madvise(gpu1, gpu2, eci, flags);
-+		return;
-+	}
-+
- 	create_vm_and_queue(gpu1, eci, &vm[0], &exec_queue[0]);
- 	create_vm_and_queue(gpu2, eci, &vm[1], &exec_queue[1]);
- 
-@@ -1235,6 +1282,98 @@ multigpu_access_test(struct xe_svm_gpu_info *gpu1,
- 	cleanup_vm_and_queue(gpu2, vm[1], exec_queue[1]);
- }
- 
-+static void
-+conflicting_madvise(struct xe_svm_gpu_info *gpu1,
-+		    struct xe_svm_gpu_info *gpu2,
-+		    struct drm_xe_engine_class_instance *eci,
-+		    unsigned int flags)
-+{
-+	uint64_t addr;
-+	uint32_t vm[2];
-+	uint32_t exec_queue[2];
-+	uint32_t batch_bo[2];
-+	void *data;
-+	uint64_t batch_addr[2];
-+	struct drm_xe_sync sync[2] = {};
-+	uint64_t *sync_addr[2];
-+
-+	/* Skip if either GPU doesn't support faults */
-+	if (!gpu1->supports_faults || !gpu2->supports_faults) {
-+		igt_debug("Both GPUs must support page faults for this test\n");
-+		return;
-+	}
-+
-+	create_vm_and_queue(gpu1, eci, &vm[0], &exec_queue[0]);
-+	create_vm_and_queue(gpu2, eci, &vm[1], &exec_queue[1]);
-+
-+	data = aligned_alloc(SZ_2M, SZ_4K);
-+	igt_assert(data);
-+	addr = to_user_pointer(data);
-+
-+	store_dword_batch_init(gpu1->fd, vm[0], addr, &batch_bo[0], &batch_addr[0], 10);
-+	store_dword_batch_init(gpu2->fd, vm[1], addr, &batch_bo[1], &batch_addr[1], 20);
-+
-+	xe_multigpu_madvise(gpu1->fd, vm[0], addr, SZ_4K,
-+			    0, DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
-+			    DRM_XE_PREFERRED_LOC_DEFAULT_SYSTEM, 0, 0, exec_queue[0]);
-+
-+	igt_info("Testing GPU1 VM trying to prefer GPU2's VRAM (should fail)\n");
-+
-+	/* This SHOULD fail - GPU1's VM cannot prefer GPU2's VRAM */
-+	xe_multigpu_madvise(gpu1->fd, vm[0], addr, SZ_4K,
-+			    0, DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
-+			    gpu2->fd, 0, gpu2->vram_regions[0], exec_queue[0]);
-+
-+	/* This SHOULD also fail - GPU2's VM cannot prefer GPU1's VRAM */
-+	xe_multigpu_madvise(gpu2->fd, vm[1], addr, SZ_4K,
-+			    0, DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
-+			    gpu1->fd, 0, gpu1->vram_regions[0], exec_queue[0]);
-+
-+	setup_sync(&sync[0], &sync_addr[0], BIND_SYNC_VAL);
-+	setup_sync(&sync[1], &sync_addr[1], BIND_SYNC_VAL);
-+
-+	/* For simultaneous access need to call xe_wait_ufence for both gpus after prefetch */
-+	xe_multigpu_prefetch(gpu1->fd, vm[0], addr, SZ_4K, &sync[0],
-+			     sync_addr[0], exec_queue[0], flags);
-+	free(sync_addr[0]);
-+
-+	xe_multigpu_prefetch(gpu2->fd, vm[1], addr, SZ_4K, &sync[1],
-+			     sync_addr[1], exec_queue[1], flags);
-+	free(sync_addr[1]);
-+
-+	for (int i = 0; i < NUM_ITER; i++) {
-+		sync_addr[0] = (void *)((char *)batch_addr[0] + SZ_4K);
-+		sync[0].addr = to_user_pointer((uint64_t *)sync_addr[0]);
-+		sync[0].timeline_value = EXEC_SYNC_VAL;
-+
-+		sync_addr[1] = (void *)((char *)batch_addr[1] + SZ_4K);
-+		sync[1].addr = to_user_pointer((uint64_t *)sync_addr[1]);
-+		sync[1].timeline_value = EXEC_SYNC_VAL;
-+		WRITE_ONCE(*sync_addr[0], 0);
-+		WRITE_ONCE(*sync_addr[1], 0);
-+
-+		xe_exec_sync(gpu1->fd, exec_queue[0], batch_addr[0], &sync[0], 1);
-+		if (READ_ONCE(*sync_addr[0]) != EXEC_SYNC_VAL)
-+			xe_wait_ufence(gpu1->fd, (uint64_t *)sync_addr[0], EXEC_SYNC_VAL,
-+				       exec_queue[0], NSEC_PER_SEC * 10);
-+		xe_exec_sync(gpu2->fd, exec_queue[1], batch_addr[1], &sync[1], 1);
-+		if (READ_ONCE(*sync_addr[1]) != EXEC_SYNC_VAL)
-+			xe_wait_ufence(gpu2->fd, (uint64_t *)sync_addr[1], EXEC_SYNC_VAL,
-+				       exec_queue[1], NSEC_PER_SEC * 10);
-+	}
-+
-+	igt_assert_eq(READ_ONCE(*(uint64_t *)addr), 20);
-+
-+	munmap((void *)batch_addr[0], BATCH_SIZE(gpu1->fd));
-+	munmap((void *)batch_addr[1], BATCH_SIZE(gpu2->fd));
-+	batch_fini(gpu1->fd, vm[0], batch_bo[0], batch_addr[0]);
-+	batch_fini(gpu2->fd, vm[1], batch_bo[1], batch_addr[1]);
-+	free(data);
-+
-+	cleanup_vm_and_queue(gpu1, vm[0], exec_queue[0]);
-+	cleanup_vm_and_queue(gpu2, vm[1], exec_queue[1]);
-+}
-+
- static void
- gpu_mem_access_wrapper(struct xe_svm_gpu_info *src,
- 		       struct xe_svm_gpu_info *dst,
-@@ -1346,9 +1485,11 @@ igt_main
- 		{ "xgpu-access-prefetch", MULTIGPU_PREFETCH | MULTIGPU_XGPU_ACCESS },
- 		{ "atomic-op-basic", MULTIGPU_ATOMIC_OP },
- 		{ "atomic-op-prefetch", MULTIGPU_PREFETCH | MULTIGPU_ATOMIC_OP },
-+		{ "atomic-op-conflict", MULTIGPU_CONFLICT | MULTIGPU_ATOMIC_OP },
- 		{ "coherency-basic", MULTIGPU_COH_OP },
- 		{ "coherency-fail-basic", MULTIGPU_COH_OP | MULTIGPU_COH_FAIL },
- 		{ "coherency-prefetch", MULTIGPU_PREFETCH | MULTIGPU_COH_OP },
-+		{ "coherency-conflict", MULTIGPU_CONFLICT | MULTIGPU_COH_OP },
- 		{ "coherency-fail-prefetch",
- 		  MULTIGPU_PREFETCH | MULTIGPU_COH_OP | MULTIGPU_COH_FAIL},
- 		{ "latency-basic", MULTIGPU_PERF_OP },
-@@ -1359,8 +1500,10 @@ igt_main
- 		  MULTIGPU_PREFETCH | MULTIGPU_PERF_OP | MULTIGPU_PERF_REM_COPY },
- 		{ "pagefault-basic", MULTIGPU_PFAULT_OP },
- 		{ "pagefault-prefetch", MULTIGPU_PREFETCH | MULTIGPU_PFAULT_OP },
-+		{ "pagefault-conflict", MULTIGPU_CONFLICT | MULTIGPU_PFAULT_OP },
- 		{ "concurrent-access-basic", MULTIGPU_CONC_ACCESS },
- 		{ "concurrent-access-prefetch", MULTIGPU_PREFETCH | MULTIGPU_CONC_ACCESS },
-+		{ "concurrent-access-conflict", MULTIGPU_CONFLICT | MULTIGPU_CONC_ACCESS },
- 		{ NULL },
- 	};
- 
+ver3:
+- In patch-7 tags were added and it was not sent on patchwork
+
+ver4:
+- In patch file was added which is not available in source which caused
+  CI build failure.
+
+ver5:
+- Added subtest function wrappers
+- Subtests executing for all GPUs enumerated
+
+ver7:
+- Optimized function calling which are frequenctly called
+- Incorporated review comments (Thomas Hellstrom)
+
+ver8:
+- Incorporated review comments (Thomas Hellstrom)
+- Seperated madvise and lr_sync patches
+- merged added 0 as instance parameter in xe_vm_madvise() call in
+  xe_exec_system_allocator with xe_vm_madvise lib changes
+- Subtests declared in const struct section[] and optimized
+- All subtests executed with and without prefetch
+
+ver9:
+- Incorporated review comments (Pravalika, Thomas)
+- Optimized code. Multiple same function called put in single function
+- Added READ_ONCE/WRITE_once instead dereferecing.
+
+Nishit Sharma (10):
+  lib/xe: Add instance parameter to xe_vm_madvise
+  lib/xe: Add synchronous helpers for VM bind/unbind operations
+  tests/intel/xe_multi_gpusvm: Add SVM multi-GPU xGPU memory access test
+  tests/intel/xe_multi_gpusvm: Add SVM multi-GPU atomic operations
+  tests/intel/xe_multi_gpusvm: Add SVM multi-GPU coherency test
+  tests/intel/xe_multi_gpusvm: Add SVM multi-GPU performance test
+  tests/intel/xe_multi_gpusvm: Add SVM multi-GPU fault handling test
+  tests/intel/xe_multi_gpusvm: Add SVM multi-GPU simultaneous access
+    test
+  tests/intel/xe_multi_gpusvm: Add SVM multi-GPU conflicting madvise
+    test
+  tests/intel/xe_multi-gpusvm: Add SVM multi-GPU migration test
+
+ include/drm-uapi/xe_drm.h              |    4 +-
+ lib/xe/xe_ioctl.c                      |   52 +-
+ lib/xe/xe_ioctl.h                      |    9 +-
+ tests/intel/xe_exec_system_allocator.c |    8 +-
+ tests/intel/xe_multi_gpusvm.c          | 1664 ++++++++++++++++++++++++
+ tests/meson.build                      |    1 +
+ 6 files changed, 1726 insertions(+), 12 deletions(-)
+ create mode 100644 tests/intel/xe_multi_gpusvm.c
+
 -- 
 2.48.1
 
