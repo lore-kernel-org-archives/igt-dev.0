@@ -4,56 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1BE3D116F3
-	for <igt-dev@archiver.kernel.org>; Mon,  1 Dec 2025 17:33:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32675D116F3
+	for <igt-dev@archiver.kernel.org>; Mon,  1 Dec 2025 18:21:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 872BD10E2BD;
-	Mon,  1 Dec 2025 17:33:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D737810E453;
+	Mon,  1 Dec 2025 18:21:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z/ntykft";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NBGvnaFF";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 42E8010E2BD
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Dec 2025 17:33:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D73E610E454
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Dec 2025 18:21:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764610404; x=1796146404;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=8PUS7VGTRHuPvktlQHioEtaMNqvoXIysC7AcxowXLi0=;
- b=Z/ntykftNi4qrgQKrAlsUJQmWgJhC5hI+vNJ7ERE+wUYkSzpHZAVy21l
- hbP92G3XGCMVBNplZDV75CdYM6evH5zrH3i3hkfRgtm/GE24An1O+Ny5A
- prJdM6SETkO4+tc+4k9Rd07xYG2EO8N5HbkAeIlVkX4r9jmNY/EKHKrX9
- 2U1db40MlJsit+Yn72R6RIBFjA2p28wGGlsLB+VIHg5uzbn5Z3EUcDgqW
- 6/lqTfj3e/F4JevIE6vBZoHoY7mkRMu3hsSAJi9BnxLUG7oGrtDaW291T
- kK3Yr/EwWIztB4NezqJaW6UiJTP9mW09xHnelauTOvsylRKnrDVsgKyT+ Q==;
-X-CSE-ConnectionGUID: 4G4NJG6QTvu2yAxsqAQGsQ==
-X-CSE-MsgGUID: k1exj+t+TMueSWU4qMR7eA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="89205486"
-X-IronPort-AV: E=Sophos;i="6.20,241,1758610800"; d="scan'208";a="89205486"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ t=1764613279; x=1796149279;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=g6cTt7oUXn/GXGC5Nbob0tQ8fuYmAbOK/LNVJJXAQ3M=;
+ b=NBGvnaFFq4Js3uPQ95p1pPZtZnJA26SmSHK2A+mrXXLIoCA/Fj19ovmY
+ WftmItmlcaDr9d0eUue+IaKBCAV5lpjaaQTpN564CeuAkuf5JY8dZwTId
+ aMmpFMJxR2GkC4t5wgL3vzoO6uYubktyywoJbYqcca0IzfVAFH9iF9/G8
+ OtVbOez/4XaoBMyfxOpmMfIlWDCSiJF6usVdfGitH/s95PLthmm6kjjpU
+ LsULBjpIpmI9AgoPX6Sij89Livz6aJeiLvNNveGOE5X4qog8CkR4IhqAY
+ FgAnHVbpjcHCYEaE8kucj1rVD24H1HRFwYJ6DVtx2btMX9zGCiE5pb1UB A==;
+X-CSE-ConnectionGUID: GjA6X4DNQVa9HSTwmSfpKA==
+X-CSE-MsgGUID: pKaeJLSmSRmjpGuoefnlPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="89210573"
+X-IronPort-AV: E=Sophos;i="6.20,241,1758610800"; d="scan'208";a="89210573"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Dec 2025 09:33:24 -0800
-X-CSE-ConnectionGUID: I6s25ScuR5u6ENogoNSehw==
-X-CSE-MsgGUID: MhpUUrJIQQqbdbBNoH6PIw==
+ 01 Dec 2025 10:21:19 -0800
+X-CSE-ConnectionGUID: 3kZYaQihQzWFMn9uk9vwRw==
+X-CSE-MsgGUID: bmPjJ8+4Q/yKPex2yJUiBQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,241,1758610800"; d="scan'208";a="193248479"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.235])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Dec 2025 09:33:23 -0800
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.20,241,1758610800"; d="scan'208";a="193968529"
+Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Dec 2025 10:21:18 -0800
+From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- S Sebinraj <s.sebinraj@intel.com>, Xin Wang <x.wang@intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>
-Subject: [PATCH i-g-t v4 3/3] tools/intel_gpu_frequency: Allow printing by
- regular user
-Date: Mon,  1 Dec 2025 18:33:03 +0100
-Message-ID: <20251201173305.111564-4-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251201173305.111564-1-kamil.konieczny@linux.intel.com>
-References: <20251201173305.111564-1-kamil.konieczny@linux.intel.com>
+Subject: [PATCH 1/2] drm-uapi/xe: Sync with exec queue replay interface
+Date: Mon,  1 Dec 2025 10:21:13 -0800
+Message-Id: <20251201182114.851967-1-matthew.brost@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -71,123 +64,84 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Printing frequencies by non-root user is now not possible as it
-ends up with an assert. However, reading corresponding sysfs as
-non-priviliged user and printing frequencies is possible:
+Align with kernel commit  b80961a86b40 ("drm/xe/uapi: Add
+DRM_XE_EXEC_QUEUE_SET_HANG_REPLAY_STATE"). This is to bring in exec
+queue replay interface changes from KMD.
 
-$ cd /sys/class/drm/card1/
-
-$ ls -1 gt_*
-gt_RP0_freq_mhz
-gt_RP1_freq_mhz
-gt_RPn_freq_mhz
-gt_act_freq_mhz
-gt_boost_freq_mhz
-gt_cur_freq_mhz
-gt_max_freq_mhz
-gt_min_freq_mhz
-
-$ cat gt_*
-1300
-350
-100
-0
-1300
-350
-1300
-100
-
-Add such feature to this tool, with this:
-
-$ ./intel_gpu_frequency
-cur: 350 MHz
-min: 100 MHz
-RP1: 350 MHz
-max: 1300 MHz
-
-v2: split out card detection to simplify review, rewritten
-  opening for write (Kamil)
-
-Cc: S Sebinraj <s.sebinraj@intel.com>
-Cc: Xin Wang <x.wang@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- tools/intel_gpu_frequency.c | 31 +++++++++++++++++++++++++++----
- 1 file changed, 27 insertions(+), 4 deletions(-)
+ include/drm-uapi/xe_drm.h | 30 +++++++++++++++++++++++++++---
+ 1 file changed, 27 insertions(+), 3 deletions(-)
 
-diff --git a/tools/intel_gpu_frequency.c b/tools/intel_gpu_frequency.c
-index 7a2ac89b9..6316c2e58 100644
---- a/tools/intel_gpu_frequency.c
-+++ b/tools/intel_gpu_frequency.c
-@@ -51,6 +51,7 @@ struct freq_info {
- 	const char *mode;
- 	FILE *filp;
- 	char *path;
-+	bool write;
- };
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 89ab549354..e56b77542e 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -210,8 +210,12 @@ struct drm_xe_ext_set_property {
+ 	/** @pad: MBZ */
+ 	__u32 pad;
  
- static struct freq_info info[] = {
-@@ -187,17 +188,39 @@ get_intel_card(void)
- }
+-	/** @value: property value */
+-	__u64 value;
++	union {
++		/** @value: property value */
++		__u64 value;
++		/** @ptr: pointer to user value */
++		__u64 ptr;
++	};
  
- static void
--initialize_freq_info(struct freq_info *freq_info)
-+initialize_read_info(struct freq_info *freq_info)
- {
- 	if (freq_info->filp)
- 		return;
+ 	/** @reserved: Reserved */
+ 	__u64 reserved[2];
+@@ -771,7 +775,11 @@ struct drm_xe_device_query {
+  *    until the object is either bound to a virtual memory region via
+  *    VM_BIND or accessed by the CPU. As a result, no backing memory is
+  *    reserved at the time of GEM object creation.
+- *  - %DRM_XE_GEM_CREATE_FLAG_SCANOUT
++ *  - %DRM_XE_GEM_CREATE_FLAG_SCANOUT - Indicates that the GEM object is
++ *    intended for scanout via the display engine. When set, kernel ensures
++ *    that the allocation is placed in a memory region compatible with the
++ *    display engine requirements. This may impose restrictions on tiling,
++ *    alignment, and memory placement to guarantee proper display functionality.
+  *  - %DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM - When using VRAM as a
+  *    possible placement, ensure that the corresponding VRAM allocation
+  *    will always use the CPU accessible part of VRAM. This is important
+@@ -1013,6 +1021,20 @@ struct drm_xe_vm_destroy {
+  *    valid on VMs with DRM_XE_VM_CREATE_FLAG_FAULT_MODE set. The CPU address
+  *    mirror flag are only valid for DRM_XE_VM_BIND_OP_MAP operations, the BO
+  *    handle MBZ, and the BO offset MBZ.
++ *  - %DRM_XE_VM_BIND_FLAG_MADVISE_AUTORESET - Can be used in combination with
++ *    %DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR to reset madvises when the underlying
++ *    CPU address space range is unmapped (typically with munmap(2) or brk(2)).
++ *    The madvise values set with &DRM_IOCTL_XE_MADVISE are reset to the values
++ *    that were present immediately after the &DRM_IOCTL_XE_VM_BIND.
++ *    The reset GPU virtual address range is the intersection of the range bound
++ *    using &DRM_IOCTL_XE_VM_BIND and the virtual CPU address space range
++ *    unmapped.
++ *    This functionality is present to mimic the behaviour of CPU address space
++ *    madvises set using madvise(2), which are typically reset on unmap.
++ *    Note: free(3) may or may not call munmap(2) and/or brk(2), and may thus
++ *    not invoke autoreset. Neither will stack variables going out of scope.
++ *    Therefore it's recommended to always explicitly reset the madvises when
++ *    freeing the memory backing a region used in a &DRM_IOCTL_XE_MADVISE call.
+  *
+  * The @prefetch_mem_region_instance for %DRM_XE_VM_BIND_OP_PREFETCH can also be:
+  *  - %DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC, which ensures prefetching occurs in
+@@ -1119,6 +1141,7 @@ struct drm_xe_vm_bind_op {
+ #define DRM_XE_VM_BIND_FLAG_DUMPABLE	(1 << 3)
+ #define DRM_XE_VM_BIND_FLAG_CHECK_PXP	(1 << 4)
+ #define DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR	(1 << 5)
++#define DRM_XE_VM_BIND_FLAG_MADVISE_AUTORESET	(1 << 6)
+ 	/** @flags: Bind flags */
+ 	__u32 flags;
  
- 	freq_info->path = get_sysfs_path(freq_info->name);
- 	assert(freq_info->path);
--	freq_info->filp = fopen(freq_info->path, freq_info->mode);
-+	freq_info->filp = fopen(freq_info->path, "r");
- 	assert(freq_info->filp);
- }
- 
-+static void
-+initialize_write_info(struct freq_info *freq_info)
-+{
-+	if (freq_info->write)
-+		return;
-+
-+	if (freq_info->filp)
-+		fclose(freq_info->filp);
-+	else
-+		freq_info->path = get_sysfs_path(freq_info->name);
-+
-+	assert(freq_info->path);
-+	freq_info->filp = fopen(freq_info->path, freq_info->mode);
-+	if (!(freq_info->filp)) {
-+		fprintf(stderr, "Cannot open file %s for write mode %s\nerror %d %s\n",
-+			freq_info->path, freq_info->mode, errno, strerror(errno));
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	freq_info->write = true;
-+}
-+
- static void wait_freq_settle(void)
- {
- 	struct timespec ts;
-@@ -210,7 +233,7 @@ static void wait_freq_settle(void)
- 
- static void set_frequency(struct freq_info *freq_info, int val)
- {
--	initialize_freq_info(freq_info);
-+	initialize_write_info(freq_info);
- 	rewind(freq_info->filp);
- 	assert(fprintf(freq_info->filp, "%d", val) > 0);
- 
-@@ -221,7 +244,7 @@ static int get_frequency(struct freq_info *freq_info)
- {
- 	int val;
- 
--	initialize_freq_info(freq_info);
-+	initialize_read_info(freq_info);
- 	rewind(freq_info->filp);
- 	assert(fscanf(freq_info->filp, "%d", &val)==1);
+@@ -1273,6 +1296,7 @@ struct drm_xe_exec_queue_create {
+ #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY		0
+ #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE		1
+ #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PXP_TYPE		2
++#define   DRM_XE_EXEC_QUEUE_SET_HANG_REPLAY_STATE		3
+ 	/** @extensions: Pointer to the first extension struct, if any */
+ 	__u64 extensions;
  
 -- 
-2.52.0
+2.34.1
 
