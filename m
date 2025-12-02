@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E142ED1266A
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Dec 2025 19:08:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56B64D1266A
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Dec 2025 19:43:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 961BD10E68E;
-	Tue,  2 Dec 2025 19:08:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E96A610E6A3;
+	Tue,  2 Dec 2025 19:43:57 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DEF210E68E;
- Tue,  2 Dec 2025 19:08:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C741210E6A3;
+ Tue,  2 Dec 2025 19:43:56 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4054273334387124477=="
+ boundary="===============2257375073964141927=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Madvise_feature_in_SVM_for_?=
- =?utf-8?q?Multi-GPU_configs?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_intel-ci=3A_unify_Xe_and_i9?=
+ =?utf-8?q?15_block/test/lists?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: nishit.sharma@intel.com
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 02 Dec 2025 19:08:14 -0000
-Message-ID: <176470249450.51117.11951180025532135778@a3b018990fe9>
+Date: Tue, 02 Dec 2025 19:43:56 -0000
+Message-ID: <176470463667.50931.10719602464023386146@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20251202155951.21369-1-nishit.sharma@intel.com>
-In-Reply-To: <20251202155951.21369-1-nishit.sharma@intel.com>
+References: <20251202180851.148444-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20251202180851.148444-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,162 +41,64 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4054273334387124477==
+--===============2257375073964141927==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Madvise feature in SVM for Multi-GPU configs
-URL   : https://patchwork.freedesktop.org/series/158386/
-State : success
+Series: intel-ci: unify Xe and i915 block/test/lists
+URL   : https://patchwork.freedesktop.org/series/158391/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8649_BAT -> XEIGTPW_14144_BAT
+CI Bug Log - changes from XEIGT_8649_BAT -> XEIGTPW_14145_BAT
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with XEIGTPW_14145_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_14145_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
   
 
-Participating hosts (11 -> 11)
+Participating hosts (11 -> 0)
 ------------------------------
 
-  No changes in participating hosts
+  ERROR: It appears as if the changes made in XEIGTPW_14145_BAT prevented too many machines from booting.
 
-Possible new issues
--------------------
+  Missing    (11): bat-lnl-2 bat-lnl-1 bat-ptl-1 bat-ptl-vm bat-ptl-2 bat-dg2-oem2 bat-atsm-2 bat-bmg-3 bat-bmg-2 bat-adlp-vm bat-adlp-7 
 
-  Here are the unknown changes that may have been introduced in XEIGTPW_14144_BAT:
 
-### IGT changes ###
+Changes
+-------
 
-#### Possible regressions ####
-
-  * {igt@xe_multigpu_svm@mgpu-pagefault-conflict} (NEW):
-    - bat-bmg-3:          NOTRUN -> [FAIL][1] +20 other tests fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14144/bat-bmg-3/igt@xe_multigpu_svm@mgpu-pagefault-conflict.html
-
-  
-New tests
----------
-
-  New tests have been introduced between XEIGT_8649_BAT and XEIGTPW_14144_BAT:
-
-### New IGT tests (21) ###
-
-  * igt@xe_multigpu_svm@mgpu-atomic-op-basic:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-atomic-op-conflict:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-atomic-op-prefetch:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-coherency-basic:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-coherency-conflict:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-coherency-fail-basic:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-coherency-fail-prefetch:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-coherency-prefetch:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-concurrent-access-basic:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-concurrent-access-prefetch:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-latency-basic:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-latency-copy-basic:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-latency-copy-prefetch:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-latency-prefetch:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-migration-basic:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-migration-prefetch:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-pagefault-basic:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-pagefault-conflict:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-pagefault-prefetch:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_multigpu_svm@mgpu-xgpu-access-basic:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.09] s
-
-  * igt@xe_multigpu_svm@mgpu-xgpu-access-prefetch:
-    - Statuses : 1 fail(s)
-    - Exec time: [0.09] s
-
-  
-
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
+  No changes found
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8649 -> IGTPW_14144
+  * IGT: IGT_8649 -> IGTPW_14145
 
-  IGTPW_14144: beb3412e16ddf3273bb240eabae5459949c27a46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_14145: 14145
   IGT_8649: f76e05461c8d5938856ed75ac8668640946f9ecd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-4180-f7bb20c7069861306b0e034a78dc6648d21f3993: f7bb20c7069861306b0e034a78dc6648d21f3993
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14144/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14145/index.html
 
---===============4054273334387124477==
+--===============2257375073964141927==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -216,194 +118,37 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Madvise feature in SVM for Multi-GPU configs</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/158386/">https://patchwork.freedesktop.org/series/158386/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>intel-ci: unify Xe and i915 block/test/lists</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/158391/">https://patchwork.freedesktop.org/series/158391/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14144/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14144/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14145/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14145/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8649_BAT -&gt; XEIGTPW_14144_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8649_BAT -&gt; XEIGTPW_14145_BAT</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 11)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_14144_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>{igt@xe_multigpu_svm@mgpu-pagefault-conflict} (NEW):<ul>
-<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14144/bat-bmg-3/igt@xe_multigpu_svm@mgpu-pagefault-conflict.html">FAIL</a> +20 other tests fail</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between XEIGT_8649_BAT and XEIGTPW_14144_BAT:</p>
-<h3>New IGT tests (21)</h3>
-<ul>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-atomic-op-basic:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-atomic-op-conflict:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-atomic-op-prefetch:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-coherency-basic:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-coherency-conflict:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-coherency-fail-basic:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-coherency-fail-prefetch:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-coherency-prefetch:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-concurrent-access-basic:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-concurrent-access-prefetch:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-latency-basic:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-latency-copy-basic:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-latency-copy-prefetch:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-latency-prefetch:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-migration-basic:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-migration-prefetch:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-pagefault-basic:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-pagefault-conflict:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-pagefault-prefetch:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-xgpu-access-basic:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_multigpu_svm@mgpu-xgpu-access-prefetch:</p>
-<ul>
-<li>Statuses : 1 fail(s)</li>
-<li>Exec time: [0.09] s</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_14145_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_14145_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (11 -&gt; 0)</h2>
+<p>ERROR: It appears as if the changes made in XEIGTPW_14145_BAT prevented too many machines from booting.</p>
+<p>Missing    (11): bat-lnl-2 bat-lnl-1 bat-ptl-1 bat-ptl-vm bat-ptl-2 bat-dg2-oem2 bat-atsm-2 bat-bmg-3 bat-bmg-2 bat-adlp-vm bat-adlp-7 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8649 -&gt; IGTPW_14144</li>
+<li>IGT: IGT_8649 -&gt; IGTPW_14145</li>
 </ul>
-<p>IGTPW_14144: beb3412e16ddf3273bb240eabae5459949c27a46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_14145: 14145<br />
   IGT_8649: f76e05461c8d5938856ed75ac8668640946f9ecd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-4180-f7bb20c7069861306b0e034a78dc6648d21f3993: f7bb20c7069861306b0e034a78dc6648d21f3993</p>
 
 </body>
 </html>
 
---===============4054273334387124477==--
+--===============2257375073964141927==--
