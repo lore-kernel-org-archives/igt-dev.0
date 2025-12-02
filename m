@@ -4,63 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1A5CCFD2F6
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Dec 2025 09:35:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72975CFD2F6
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Dec 2025 09:43:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6574A10E544;
-	Tue,  2 Dec 2025 09:35:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F19BB10E5CF;
+	Tue,  2 Dec 2025 09:43:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U/bhlQQX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IkKA4qWL";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3EDA110E544
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Dec 2025 09:35:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6434E10E5CF
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Dec 2025 09:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764668140; x=1796204140;
+ t=1764668588; x=1796204588;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=7nWZtmN8DjCj6ebSF5OzElibcfUjZD6uALrI3skmEOQ=;
- b=U/bhlQQXdN01QmN2snLSAiULF75rlaoWcvHuV2t+GUGoWLkvmfCEFSut
- fgf7xqud/V+uZsgW94bN6YhOyu/bT3LxHREESU/axs+VEUEssSthzld6v
- NKVqRYCsLFCMCGiU6ILMyVl0GlE50WBs6LgAPfhrTOyhOwrOZE9GF1vZk
- /dxzY6BiPsDNEWjl83UujSuu59Uun+6UZtEY0G5ltqNeJdy9QE/INHw13
- xCxZ/NP6gXbJW9zJi0THijuE5LhJvSFJ2gfZi+lshqOuzi8ybDBkM/QmV
- oJSigesjenuJseFBYFRg6eExAFmsI8NFw2oQVWoAivpQI2U0hDfu8MaN2 A==;
-X-CSE-ConnectionGUID: AB5FSn6nR4WkjDFJBIULVw==
-X-CSE-MsgGUID: Vd9HmgBuQOeAd1uZR6Nw+g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="70244340"
-X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; d="scan'208";a="70244340"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2025 01:35:40 -0800
-X-CSE-ConnectionGUID: MUwg5MMlTKWagwOklOlLHA==
-X-CSE-MsgGUID: +WDyncXSTsKNpy64ne6f3A==
+ bh=6DVmUISF3Rd32mhBTWuuvRxW8UqDatU7msS1WJsenT8=;
+ b=IkKA4qWLFadheyqPcQAq8WrRmwzbHj62ti27XHNvp14fweG7fSITkIBg
+ gyOwtafAgsUlftyTlj5sVnSKIq4UPXaRhdKPA6eaPGOSVgHoLbzrY/oEh
+ IwKCf6kd0uE49oeK3Y3vnjYID6TapzxONkbYaJOUmFT6FbH5BuuZMbYtg
+ ZiuiB1A+kLm2zJwpBM216408nWrp3nfVshJxxLdPnEDmvRxmPsyUrybWi
+ q7pqJ5vYvux1NMjc87PbYaTLYjTmC+5CZKNwMqqZ847t389fFHG2mvfKv
+ KT8gcfJqduMkBGs6EKAgt1J3NiGa5EDvebneVqpqIxQKb2eebOhpDGi3S A==;
+X-CSE-ConnectionGUID: m5S/oXkvQ+yRVSdxSw+znw==
+X-CSE-MsgGUID: zlO3aCoCR3C8ou7y86qbaQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="77315356"
+X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; d="scan'208";a="77315356"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Dec 2025 01:43:08 -0800
+X-CSE-ConnectionGUID: cb4vqq2qTZqTYimEy++qqA==
+X-CSE-MsgGUID: 6GtoJW0GSF24zzHkRkI7Uw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; d="scan'208";a="225014425"
+X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; d="scan'208";a="198791397"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 01:35:39 -0800
-Date: Tue, 2 Dec 2025 10:35:36 +0100
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 01:43:07 -0800
+Date: Tue, 2 Dec 2025 10:43:03 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 3/3] intel/i915: Allocate batch buffers from system
- RAM
-Message-ID: <20251202093536.btk3lw2ltp53zpfo@kamilkon-DESK.igk.intel.com>
+To: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ igt-dev@lists.freedesktop.org, David Yat Sin <David.YatSin@amd.com>
+Subject: Re: [PATCH v2] tests/amdgpu/amd_bo: Add UMQ-based HDP =?utf-8?Q?f?=
+ =?utf-8?B?bHVzaCBWUkFN4oaSR1RU?= coherency test v2
+Message-ID: <20251202094303.zdk3lz7pvdngxzzx@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Ville Syrjala <ville.syrjala@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20251128010251.18988-1-ville.syrjala@linux.intel.com>
- <20251128010251.18988-4-ville.syrjala@linux.intel.com>
- <xrwgg6ihstx3h67swchic7apfzjczybedmnslmrtegjf5sthy6@xf4qzvqnlk4e>
+ Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ igt-dev@lists.freedesktop.org, David Yat Sin <David.YatSin@amd.com>
+References: <20251201185947.292015-1-srinivasan.shanmugam@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <xrwgg6ihstx3h67swchic7apfzjczybedmnslmrtegjf5sthy6@xf4qzvqnlk4e>
+In-Reply-To: <20251201185947.292015-1-srinivasan.shanmugam@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,124 +78,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zbigniew,
-On 2025-12-01 at 18:16:02 +0100, Zbigniew Kempczyński wrote:
-> On Fri, Nov 28, 2025 at 03:02:51AM +0200, Ville Syrjala wrote:
-> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > 
-> > I have no idea why we're allocating batch buffers from VRAM.
-> > Just stick them into system memory like a normal person and
-> > let the GPU DMA them in.
+Hi Srinivasan,
+On 2025-12-02 at 00:29:47 +0530, Srinivasan Shanmugam wrote:
+> Introduce a UMQ-only coherency test that validates host HDP flush behaviour
+> using MMIO_REMAP and a VRAM→GTT linear copy. The flow performs one PASS-A
 
+Please do not use non-ascii chars in subject nor description, here
+it is better 'VRAM to GTT'
 
-imho s/like a normal person//
-could be done at merge.
+Also in subject no need for 'test v2':
 
-> 
-> "normal person", I feel touched ;)
-> 
-> But code is correct and:
-> 
-> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> 
-> --
-> Zbigniew
-> 
-> > 
-> > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > ---
-> >  lib/igt_fb.c                   | 2 +-
-
-Maybe this one should be split into separate change as it touch
-display tests.
+[PATCH v2] tests/amdgpu/amd_bo: Add UMQ-based HDP flush VRAM to GTT coherency test
 
 Regards,
 Kamil
 
-> >  tests/intel/gem_ccs.c          | 6 +++---
-> >  tests/intel/gem_exercise_blt.c | 4 ++--
-> >  tools/intel_tiling_detect.c    | 2 +-
-> >  4 files changed, 7 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> > index 78d49aed8283..f7743d05f62a 100644
-> > --- a/lib/igt_fb.c
-> > +++ b/lib/igt_fb.c
-> > @@ -3017,7 +3017,7 @@ static void setup_context_and_memory_region(const struct igt_fb *fb, uint32_t *c
-> >  		igt_assert(__gem_create_in_memory_regions(fb->fd,
-> >  							  bb,
-> >  							  bb_size,
-> > -							  *mem_region) == 0);
-> > +							  REGION_SMEM) == 0);
-> >  	} else if (is_xe_device(fb->fd)) {
-> >  		*vm = xe_vm_create(fb->fd, 0, 0);
-> >  		*exec_queue = xe_exec_queue_create(fb->fd, *vm, &inst, 0);
-> > diff --git a/tests/intel/gem_ccs.c b/tests/intel/gem_ccs.c
-> > index 68632372d8f5..885e043540c1 100644
-> > --- a/tests/intel/gem_ccs.c
-> > +++ b/tests/intel/gem_ccs.c
-> > @@ -341,7 +341,7 @@ static void block_copy(int i915,
-> >  	uint8_t uc_mocs = intel_get_uc_mocs_index(i915);
-> >  	int result;
-> >  
-> > -	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
-> > +	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, REGION_SMEM) == 0);
-> >  
-> >  	if (!blt_uses_extended_block_copy(i915))
-> >  		pext = NULL;
-> > @@ -464,7 +464,7 @@ static void block_multicopy(int i915,
-> >  	uint8_t uc_mocs = intel_get_uc_mocs_index(i915);
-> >  	int result;
-> >  
-> > -	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
-> > +	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, REGION_SMEM) == 0);
-> >  
-> >  	if (!blt_uses_extended_block_copy(i915))
-> >  		pext3 = NULL;
-> > @@ -551,7 +551,7 @@ static void block_copy_large(int i915,
-> >  	bool result = true;
-> >  	int i;
-> >  
-> > -	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
-> > +	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, REGION_SMEM) == 0);
-> >  
-> >  	if (!blt_uses_extended_block_copy(i915))
-> >  		pext = NULL;
-> > diff --git a/tests/intel/gem_exercise_blt.c b/tests/intel/gem_exercise_blt.c
-> > index 74388f7f05cf..7cacb5b7a6d9 100644
-> > --- a/tests/intel/gem_exercise_blt.c
-> > +++ b/tests/intel/gem_exercise_blt.c
-> > @@ -151,7 +151,7 @@ static void fast_copy_emit(int i915, const intel_ctx_t *ctx,
-> >  	uint32_t bb, width = param.width, height = param.height;
-> >  	int result;
-> >  
-> > -	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
-> > +	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, REGION_SMEM) == 0);
-> >  
-> >  	blt_copy_init(i915, &bltinit);
-> >  	src = blt_create_object(&bltinit, region1, width, height, bpp, 0,
-> > @@ -212,7 +212,7 @@ static void fast_copy(int i915, const intel_ctx_t *ctx,
-> >  	uint32_t width = param.width, height = param.height;
-> >  	int result;
-> >  
-> > -	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, region1) == 0);
-> > +	igt_assert(__gem_create_in_memory_regions(i915, &bb, &bb_size, REGION_SMEM) == 0);
-> >  
-> >  	blt_copy_init(i915, &blt);
-> >  	src = blt_create_object(&blt, region1, width, height, bpp, 0,
-> > diff --git a/tools/intel_tiling_detect.c b/tools/intel_tiling_detect.c
-> > index a72999057088..fac8a2f590c5 100644
-> > --- a/tools/intel_tiling_detect.c
-> > +++ b/tools/intel_tiling_detect.c
-> > @@ -117,7 +117,7 @@ static void blt_copy(int fd,
-> >  		bb_size = SZ_4K;
-> >  		src_region = REGION_SMEM;
-> >  		dst_region = gem_has_lmem(fd) ? REGION_LMEM(0) : REGION_SMEM;
-> > -		igt_assert(__gem_create_in_memory_regions(fd, &bb, &bb_size, src_region) == 0);
-> > +		igt_assert(__gem_create_in_memory_regions(fd, &bb, &bb_size, REGION_SMEM) == 0);
-> >  	}
-> >  
-> >  	if (!blt_uses_extended_block_copy(fd))
-> > -- 
-> > 2.51.2
-> > 
+> (with flush) and one PASS-B (without flush) to detect whether CPU writes
+> propagate without an explicit HDP poke.
+> 
+> v2:
+>  - Move all local declarations to the top of their blocks. (Vitaly)
+>  - No functional changes from v1; logic and test flow remain identical.
+> 
+> TODO: A kernel patch enabling this path is pending merge; once it lands,
+> the Link below can serve as the stable reference.
+> 
+> Link: https://patchwork.freedesktop.org/series/153209/#rev5
+> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Cc: David Yat Sin <David.YatSin@amd.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+> ---
+>  tests/amdgpu/amd_bo.c | 296 ++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 296 insertions(+)
+> 
+[cut]
