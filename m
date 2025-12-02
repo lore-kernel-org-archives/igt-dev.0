@@ -4,181 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49485D116F5
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Dec 2025 21:33:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81F5BD12674
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Dec 2025 21:37:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E904B10E6DF;
-	Tue,  2 Dec 2025 21:33:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2F59310E6E3;
+	Tue,  2 Dec 2025 21:37:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YsW4H0tD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I0nrfEK8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC8CB10E6DF
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Dec 2025 21:33:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE2BA10E6E2
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Dec 2025 21:37:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764711192; x=1796247192;
+ t=1764711446; x=1796247446;
  h=date:from:to:cc:subject:message-id:references:
  in-reply-to:mime-version;
- bh=pgFaMgFmJEomTHKDBC9rG9+WB+x3xJjHMgiE/Fe7/y8=;
- b=YsW4H0tDZEnnnA7+HcucmtOG4jpYJd9W7GOAm+SqOdK2nP8y62Tgl6Em
- LAa5H5xNZ5hCy05wB8K4mNDiG+0Zae53EZlLwFUXGmMalifXmDg/Pffjp
- Ki4iuKOO5PZrxiHuQXaVKLo9dHO6jFeloWkxTLfPs5lVGlQTSwerbhghw
- uJ/EQWmFVjU2k+xBxtlVcy8PoWaf95BHotXiUp6UUm26i63MBXc6+76CQ
- hP2JLKOKRM/+e5bitsmy/uGNr2y7C6HH0MJ38Rdm69+zkao2a1uHsRKmm
- H2QZknTlmGC5iBO7cs+BMIB1z6rufQwRMgQrglM716H7BLtXlOudbhxVj A==;
-X-CSE-ConnectionGUID: QAFBYGyNTBOa1RD/jdAHCQ==
-X-CSE-MsgGUID: mE+HfslyShiI6PDnWyJ9Pg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="70547116"
-X-IronPort-AV: E=Sophos;i="6.20,244,1758610800"; d="scan'208";a="70547116"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2025 13:33:11 -0800
-X-CSE-ConnectionGUID: uMkAjnraRoCBoeLocwpENQ==
-X-CSE-MsgGUID: 3L7LJPP8SxWRBrHqy+aU5w==
+ bh=TnejUJLla7qccEndeW3J36Qp7L9fM18yZfmXzckKHx0=;
+ b=I0nrfEK8dwsf1j3OPXCUlWh/WiK8JvjM0V3CQVqwm4XH6uzss3ErKJJ7
+ 4Be5GrwyTqHk8VBG8dTJ8R0gVIY2MbTjCsJxeJuwSA5EMCQD3wvEnhNf1
+ oZDMkX1XDeoYSZiuJLk9D/RGCkR7+dfqtcuM7DGJhXD6lGdcvyWbJnspQ
+ 8zKJ1p0Y8wITVnRy24KO1ct7hn7ObYD4nHAQ38jdqIXWXlZiIdZjC0XYn
+ PxEeK9cKZrY5nxYI3GZHsFgqEm6VB7/0gavyujWxIsbo2MBJWJBGlC2+k
+ hQe8Q5QSu+qxA21aysop9RjaEmjYsdD4QsPIiLIEiSTHh6nQNfBUDem/B A==;
+X-CSE-ConnectionGUID: WJ+4WrwrTuSR1KvTUNsKYw==
+X-CSE-MsgGUID: HVOnpz79QuOItO5vT7TpYQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="66654668"
+X-IronPort-AV: E=Sophos;i="6.20,244,1758610800"; d="scan'208";a="66654668"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Dec 2025 13:37:26 -0800
+X-CSE-ConnectionGUID: 2iwfKqkzT8ifY27vFps0HQ==
+X-CSE-MsgGUID: c9gDtFdOSy6ZvWlTjbiCjQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,244,1758610800"; d="scan'208";a="194589266"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2025 13:33:12 -0800
+X-IronPort-AV: E=Sophos;i="6.20,244,1758610800"; d="scan'208";a="195283626"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Dec 2025 13:37:26 -0800
 Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 2 Dec 2025 13:33:10 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ 15.2.2562.29; Tue, 2 Dec 2025 13:37:25 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Tue, 2 Dec 2025 13:33:10 -0800
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.9) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ 15.2.2562.29 via Frontend Transport; Tue, 2 Dec 2025 13:37:25 -0800
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.17) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 2 Dec 2025 13:33:10 -0800
+ 15.2.2562.29; Tue, 2 Dec 2025 13:37:25 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fTLIH0s0orgZHqlNrJCMK2AaLbhDQ28LFjs9tUgScMFVGGo/BPb55MOhujapU1vb3LIr/lfIGfQMhIfBxMf+cCuNzbYAtHenQDFxCya2AEa9ZNjL+1amnNyxIEvRIUQwOdwPMkecOoh0p07VlC2anQsLaXnlmsOxEhZ9vutp9AukTUtZFYKz1fZG6Abdc+klcLMD+cSGEz6Dz2r0Sg7nNAUucNejX5t3YugBFH37LjL8H1Pk7xLTktmD1bb4qI0r6BZqcqosG0+Y6WEOnxZ4urjlwWuSyZva4HXupJqgN9EI8Ex35j/u9p6Pmsk7kgUGhJMKDuDskUXYqRzfrUNCyA==
+ b=h2cpPpCGM8xNkgeQIbWHLpCtj7cFgVrnW1lTkYXds3y29B3mkdfY+hk5Jb/VvPUez51vDIHpRzTyTz5MIBWBSb8/1S6ZhOuPFzJoxtkc3iIy3cbQ0qGix0swUmzvfHHeejq17rhEY4BVuRorJYYq8J9+H8KRWIg//SYc8qqvbLf1TKIc/GFw+nDgfkg0wAac/RU2lMH61WLIOTCqH55EAb505oG5MH9NrL6YC6csXbqNXidf4GxZvfMYpoL5zj54ONn9w+wvcszYEhyJxdDp3L/he8FJ/M20f6QkmvdjxFmtFKgc1+r2PZMfMK3KseZPYbbcZkqg70VP5/of/dkkRA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YIm825Bk+wv/CcvNGqBIlvvB30Ri76hySOnp3MZG7Ew=;
- b=n8ndW8jvby238TjWeU8sfJYegAHrOiUnXbPw4u9N+xgglbrSJWSZYNo3+jMEJz8t+e7xhYchYtwDg6tWEF3PxZkiTho3gwithaBThi4MeWyd/9kXYMe8kB73gdwZBK9KnDS5etFZTPUmlauPyxAifS+6zrs4E1kDRtXxhP8i9QjAdRKgvtXH40pXa343eIGlwdOh2hg128YI2DWpOPnl1GZ29Mv3sjyrO/kGPQttERs+R35h+AZDla+hjLrp7v3JD2jAYlvQ8QUW/vXYl4oRSOH7n/ZlRQ1JdtMubWYDAV/iSVo6FDsLDTHWwGau6Q1puCOm4tvIyJSlkvFMmZasXQ==
+ bh=fODXfF/77ch/+casGTByiwo1zcdusE2Mc6uqzq5t+/Y=;
+ b=OevBaOSam7gqAmmfgszq8kPlWOSKlvNW5+TyVlDTp8R7QksQaaN1i2nmwZMsWKA/QUjDHc6jgXeKKae9VT2JVcuyOgwwhb6CQtK2itz+yVdi7/mdRa1eTLZntuMv5A7zAEEhPup13Lq0ALR/YjDNCT48kMHhCrWcVLmEhavqX0tcS3vjOcdS3nYQczm+yjcd3Wms1dgw6+AzWd4xMGGwL6NV7RacN3SqnsYpPzgrIX6ouO7n8jz5yAyX7WaD7rXTBkxYn1UEYr+YqrgceZvX/gg1k7NLhXfyH6tmotVXw6wP4nj8RBMWgZRr+xy4T5wH8BXmpwoU7zkpzkJszjkykQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DS0PR11MB7408.namprd11.prod.outlook.com (2603:10b6:8:136::15)
- by DS4PPFFAE6AEB4B.namprd11.prod.outlook.com (2603:10b6:f:fc02::61) with
+ by DS0PR11MB7482.namprd11.prod.outlook.com (2603:10b6:8:14a::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Tue, 2 Dec
- 2025 21:33:02 +0000
+ 2025 21:37:23 +0000
 Received: from DS0PR11MB7408.namprd11.prod.outlook.com
  ([fe80::6387:4b73:8906:7543]) by DS0PR11MB7408.namprd11.prod.outlook.com
  ([fe80::6387:4b73:8906:7543%7]) with mapi id 15.20.9388.003; Tue, 2 Dec 2025
- 21:33:02 +0000
-Date: Tue, 2 Dec 2025 13:32:56 -0800
+ 21:37:23 +0000
+Date: Tue, 2 Dec 2025 13:37:21 -0800
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: Ashutosh Dixit <ashutosh.dixit@intel.com>
 CC: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t 1/5] tests/intel/xe_oa: Drop
- oa-unit-exclusive-stream-exec-q
-Message-ID: <aS9bCONHSv1pBSV0@soc-5CG1426VCC.clients.intel.com>
+Subject: Re: [PATCH i-g-t 4/5] tests/intel/xe_oa: Run mmio-trigger tests on
+ all OA units
+Message-ID: <aS9cEab+ZLht/1HJ@soc-5CG1426VCC.clients.intel.com>
 References: <20251126035012.12967-1-ashutosh.dixit@intel.com>
- <20251126035012.12967-2-ashutosh.dixit@intel.com>
+ <20251126035012.12967-5-ashutosh.dixit@intel.com>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20251126035012.12967-2-ashutosh.dixit@intel.com>
-X-ClientProxiedBy: MW4PR03CA0229.namprd03.prod.outlook.com
- (2603:10b6:303:b9::24) To DS0PR11MB7408.namprd11.prod.outlook.com
+In-Reply-To: <20251126035012.12967-5-ashutosh.dixit@intel.com>
+X-ClientProxiedBy: MW4PR04CA0386.namprd04.prod.outlook.com
+ (2603:10b6:303:81::31) To DS0PR11MB7408.namprd11.prod.outlook.com
  (2603:10b6:8:136::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7408:EE_|DS4PPFFAE6AEB4B:EE_
-X-MS-Office365-Filtering-Correlation-Id: 69206463-5cc2-46f8-9348-08de31ea5f00
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7408:EE_|DS0PR11MB7482:EE_
+X-MS-Office365-Filtering-Correlation-Id: a017dbf7-7872-436c-a1ed-08de31eafac4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?UVFkeXN3dDRmWkRwYWEzWWpWaC9CbnozZTR0SXF2ZEVERmNHNlRZUGl4bW5D?=
- =?utf-8?B?QTFDQXJiS3p1UGd5QktxUFYxMVFwRi9wRjF0bGpIVlZoeUxmL2kvYTJVMzFq?=
- =?utf-8?B?L0R4V1J3bGFrdXMzU3lTdnhsTUdKVkQ3VE95OHN2RVVJQUtXMmVqcURiU0dh?=
- =?utf-8?B?VlhyNWs2d3RQNE9OZFpqdmZ3Z1BjS1g0dnlIS0J1bkQxY2FaR0ZtY1dTb0FC?=
- =?utf-8?B?UjYyb25IZFRmcnhmV010N1B0dFdOZEc0U0h1Q3MzeStPOVFna3ljdnRaY240?=
- =?utf-8?B?Z2J6RzlvSTVsYXFCUTRxdlJoeWdyNmpjSlhkZ25HMW5PZkpEY3orQnc1OHF3?=
- =?utf-8?B?eGkzM0hYbmFJUVJ3QkFaMGxPdHVIVmkvaFFzTGo1cHMwTFJlcEZ3SlNQdXJy?=
- =?utf-8?B?dXk1SlIxL0xVUHJqSzVuMHFMbzhZMHErbWcvWGNTdnh4K1pPeFliZHNBei83?=
- =?utf-8?B?dm1CZmZJUUpsWDBTWEVtVXRBRGFCMXpVZkkwYmpuYUZlNVdSUkNHWjNWUWFh?=
- =?utf-8?B?ZUhFckx3aHRIcUNsSjV4ekgza21pV2VBNlFxa0lsMWhTWFhPdm84bEJzREhQ?=
- =?utf-8?B?QURNQWJkd3B5R1Q1UUM0UERRRTA2OWxuRkVzSnFpdDUwRU56NmREbThhZlkr?=
- =?utf-8?B?dGxwbEZCRloxWXpldS91MDluck05c0JBT0xoVUJzWm5aUkVCbW8rVUhLN3Y4?=
- =?utf-8?B?c3I5a0d6U25HcDVBRW55SVdYeTcvT203WjYxK1dFbDJqRmluMWRiQlI5OTdH?=
- =?utf-8?B?bWNMNHVmeEJ5S1lDL2RxY3h4QzAxVjBzZzJxQ3NYUlJrOVNSdzJ3T0M1bmNP?=
- =?utf-8?B?ZktDUGtjM3IySmVzUlprVURlbUZHNGNKanNkZGdHN1RwSlZ6RnhWdE5YbEJq?=
- =?utf-8?B?Zk1oZ0dDd1BueDEraFFRMy9aM1pYN3IwWEtPb1h3bzYzRXRZWFd1R0lZWGF1?=
- =?utf-8?B?MXFFay9nTUxtYVFiQ01nSjkzOVNucks5NDh1WDBUa2d1Z3BkY3JLK0sveC82?=
- =?utf-8?B?aWsySXI1bVpLck82b3JUcjN1T0FmdWpOcUoxemtLUWtFdW84RFB5YVI4Ulgz?=
- =?utf-8?B?WkJ5Z3c0TTQwMlBydVhUYzRqd1pvWXk1WEVPZHlhTDdkMHhSR0djRmNEQjRG?=
- =?utf-8?B?V3pZeDVVcUEvMEZ2VHBjS2M5a0VLWG11aHZaVVhPblNLaTAzYVRMbHh5Nm1j?=
- =?utf-8?B?QzBKL08zblJhSW1RNTFFK3RWdmVLSDZVZWFtd3VoVHNqU25vU2tvVWZGdDRY?=
- =?utf-8?B?TWEwS3F1VVAveFhLOUswcFdGcTg0QXZ5OC9CTFNKTSt4bEFVT3RNOGJ5VEpo?=
- =?utf-8?B?MUphV3dON3MrSTBUcy9HWndScTNzbHFUVmYvTzVCb09BVW0vRjRKU2JBeWti?=
- =?utf-8?B?bkFYcTF0TjFOaWhLZmdJbVIxRWwyZTdGa2NZb0JUaytESlIrZFdGWDFqR2xy?=
- =?utf-8?B?ZUpsaXF2MjZmcXBCb3RaVnlVR2VJWU1qSkE5ZmE1WGdxOWNpYlNUR2ptclhW?=
- =?utf-8?B?RUNtRlp3TjBoYitqWXdla1h2VFowZjg3OFU4b3ZGQ0pVWUtpUWc1WWh6aUZv?=
- =?utf-8?B?cVZOcmVOWTUyQVZSL094S3NJSmxra1VxTFQ0bGVuRmdEb2dlblIwWUZnc0xy?=
- =?utf-8?B?Tm1UVGVDWXlYcjJYUkJudmU0c29oQWRSUkwwMmxpSVpFUXJabDZ3TzZOVHpZ?=
- =?utf-8?B?aU96TEVLQ1Qxa2VhdnpzQzNVWlhKZG1LbUg2NXpFMDU0ektacG1UUjZ5SG1t?=
- =?utf-8?B?UUltZEtWZExNajh1MVFucWxaUXJjVXU4aExKUit5UXo1NDk3MnhNd1dkUXI0?=
- =?utf-8?B?dUVWRzNyQjJCRjlXbDFuMzMyYmVCdEN0OVh1YWxwVkpjOU9HVllVR0paMFVH?=
- =?utf-8?B?eSt3RDFUY3lNck1MZUs3NElIdjloZDVSakppa0F3UHA4bXpJZlYweXd4bmRU?=
- =?utf-8?Q?x5ox1xsWoaN4lK9ctBB0BTNVfLE41uBM?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?TEd4TzUzTFA2RitBU2FCOFllZUt5RG5xSW1tdUV0NnA5b2xub2VqVEF4L0lR?=
+ =?utf-8?B?aGZQODBHbk1BV0xQTHFhL3lQL3hJNXVWVVgrSEJyMlEzL29hdmc0ZEViUUhK?=
+ =?utf-8?B?SEVDL2pxNGdTVDUrTGRnbElsVEk2ODRCWTRHY3FwZGZTcGZHOEN0ZkYzbFpQ?=
+ =?utf-8?B?Qkc3bU1SZVN1TW9UM2gwcy8zaGhHYyt0cjY3MFIvRXgxbHBvbW1STUxwREVk?=
+ =?utf-8?B?WlQ3L0J5RjVkelV1VWQ1YW5MNFczc1lHbnB4WE1RWForajFHTlo4amtwMVJ4?=
+ =?utf-8?B?VjVuMlh4Z1VselJnY1pBZDJoTHllM1dRZHZEMDFFanFENzVSYzNveE93NWt3?=
+ =?utf-8?B?TTVhdGhnYUNtdXdzRFdROHZHcTN4bWVBbVRUUEVscG9UdEYva2VyYkN2cXJL?=
+ =?utf-8?B?c25vRFZlZmRDUGxuMStqVVpTeFZtVlY4RjBURWt2Q01NZ0FtY1l0WERlTEdi?=
+ =?utf-8?B?YjRMZlVLODhlY0NUOHExZURFRERZd1NZaEFpc0pYUmo3amNZTHhYUGpaQjcy?=
+ =?utf-8?B?NlJXL2lhQ0c5UCs4V2NiTFpiQmdUK3ZtZmtvSEJwVnYzbkJ3YTdueGRoMjRi?=
+ =?utf-8?B?WjdRM0x3cTltL3FlZ0xzMDhHc0NVUnJ1aWJXL25PRVpnQW1FZEZVS2hnMFZm?=
+ =?utf-8?B?VXdiSm9paXNEY1Q2d2ZnNGZxQnVUQ3NXWFpUYWU2NkFUR1B4ZUJwdURSMkxl?=
+ =?utf-8?B?d0wxU2N1SXVRVkdOZFNZeTRFcmxCL25YLzljL240b0t6L2g0Q3RRMUlCbC9h?=
+ =?utf-8?B?Zm1hZ2ZzQ1QycHZKTWZ1WGZqNTRSYWRML3VMSjhOZzM4dk9IVld1RXBBY3FR?=
+ =?utf-8?B?WDhqckltcmJ0WWVMTk43QXBzSTN6QTRWT3p6RVlscXo5RW1RSGN0Tm1NTlNQ?=
+ =?utf-8?B?Q3gySW0wWDRlRDNwcmJuUXZzME82SG9kRHYzYW9SaW5wN2RDd29iNjVKV29H?=
+ =?utf-8?B?UVFhNEpPR2RSRS82MjRnLzVqVnJ1SU9mQUd5V0tJMXN0b3hWSFNpVEJsSkQy?=
+ =?utf-8?B?NjhaOGw1bmFhMnFYWnA1TEFyUlRWcE9vTXVRS3lUTjIyb05hRDYrY25EYXcy?=
+ =?utf-8?B?dVpVSTgvYlE1TjU3MFV2YnRqbDZScHIyK214TldtOEZiZG1ZVDJZbzc5Qm9r?=
+ =?utf-8?B?WmNxQkU3cnlpanVHRCs2dFRuTUNReUg5V1ExNHVBZGFlTGxwRlhFY1FrVVls?=
+ =?utf-8?B?elFQbGx4U2NMZkhuc3pXaHAxdFJVcndtckNoSHEwWVZJaENTZmdmaVREUVVY?=
+ =?utf-8?B?Yy9MY0VvUkdoUDRKelZ2V01RbURwM3pMWTFHY0V5OUdsR3VRbU9Id0JMTkdr?=
+ =?utf-8?B?RjR5dkkyVWcvWUZmM3pITTBNbGk1c0dPV0VreldINGtVeW5QRHdGMDVRWVpH?=
+ =?utf-8?B?U0VNb0FKTCtUNVRxcnpnVm8rUFYvNUtHNzZ1cEFUNXJDZ1draEkrYWtqQTgy?=
+ =?utf-8?B?SWxwZVZrRmFiMGJqN08wbjdTVnVUZVZCOWxoQXMxSnM3Vmd6QUxxZHhkZTZj?=
+ =?utf-8?B?L0RjLzVWZmp1MEJnc2RhbHZlZ2tMOEE4U1R1L0QwMXJhQ2I3SnR2V3RlS256?=
+ =?utf-8?B?WEoyeHVtVVg3NzRLNkF5L1Z0THFrZ0hDYWxKNVpvLy9WRFYxRlNnbjg4bDVu?=
+ =?utf-8?B?QlVxbjNXZ3lMbVdvY0JMNkptcXVDTVVFK25iaXdxRi9JNmc4SnprZFlRTzlE?=
+ =?utf-8?B?TG0rTzVpcE1HR3gzSUljZUgrZktnMHZSQjFxU3E0anM1d0RWbFphZXlFd0Uz?=
+ =?utf-8?B?U0FlWE5ueUFyaE9VbURibVRXL1dNRnFZanBESGd5RVc0WEdFUXVsa0pUU2dt?=
+ =?utf-8?B?MCtRK1hXM0FrL3JOOGM3QTB6b1VyZ3VoTWRDSFJlR2ZMZUJPM3NsN2F2M0JX?=
+ =?utf-8?B?VG9uVHhUWVNONTZ4dkNIQ2ZoQ2VnM3lpd1lhZTdWc2QxR3QzWi90V2dzWHVW?=
+ =?utf-8?Q?fcr6afeGe75CRh8znQzEfR+lmJkCCESS?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB7408.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bGNWZFlqWGc1cGJuUm1VbHhTMVB2aDVrMVVwdm1ZVjU2QVJUUkRudnRFVjVy?=
- =?utf-8?B?Zk96bjRzSCs0NUxjNzQ5TFRpZjJlOG8ybUlHNll6aXJyeTB2SnZWMk42SXQz?=
- =?utf-8?B?dXlXRU9ZUFh3MVN0NU91enY5Rng4K2lZOENSNm9CdHhuRmJHNm5mZ0lld0tp?=
- =?utf-8?B?bitmd0hMLzdhdlEydUJSdm9EU2NwQXo1d1ZsUHV1MVZxUnQwQTFSTGhPYUhG?=
- =?utf-8?B?TVhXQWlkYUtLbXZ6Qk8rTDNVS2l0ZGtSTVdwQjM5NE80WUg4N0hzMTZsOTNW?=
- =?utf-8?B?SzJXUWhwc3UvaTg4RHV5dHArNUpSbm9nQTVaandqVHAxaW1IRE92NWpTVVJJ?=
- =?utf-8?B?Rmdsc3UzUGZsUEVQa0JDZktSOEVpYTRRUXpCV0dHcW1SQXR3ZWc0aVp0MnVE?=
- =?utf-8?B?S25ORlRFRFFuMzYxRmdha0VKWWZNM01XWUNGZW1PV2IvUjBOeWdxUXJMc1lV?=
- =?utf-8?B?R2lSRy9xSzFyellIWGtLQm1FTk5wbmFmOXp3MXV6d3E0YUY3OGhSZ1FKWEFR?=
- =?utf-8?B?Z3dNVEJQN2JnVTZ4M2FZV0c4Z2RQYzdIK1c2TW1ZVDNXQmtkeFpMNVpQV2NH?=
- =?utf-8?B?SnlKa3lxWVdJT0E0U3JWMmkwanZCYUd0ZklIakZqY3NKOWxrcUZEWC9kMm5K?=
- =?utf-8?B?SnB3bEE3WFNoSC9OTjJFK0V1T3RzdTQ1bHRUWTA1cUo4aFpRRHNPZXBrSE1q?=
- =?utf-8?B?L1RicjhNeXlwanBaTWVxdllsMGVPYjV6QitYS0VNRzVDOEFxZ0VoallHcm1S?=
- =?utf-8?B?UFNoNGVIdVErcnhibUZObzBqYmdMcVpOelV2TTBJZW9ScUZETm91VFllL0hL?=
- =?utf-8?B?dVFQa1JmbEs3eGMxL0FSMlNIUmkrOTdIeTFXeUJiNEtBQ2MzU3NSdzZvdmht?=
- =?utf-8?B?OW5YZlNiTVk3M01TSGRuS2NZWitrMkhWbDhLSis2YWl4OWdNNGVoMTlhS0xJ?=
- =?utf-8?B?cmJHUWF2eWJvNk1kcnlJVzFVT3hsZjY5MXVBUVhCbldGT0RZWFh0Zm9CYWpt?=
- =?utf-8?B?akpJTUZCZCsveklWOW42d3hkWDNCV20vOHJWRisxR1crZU13NVVPRXdhVUwr?=
- =?utf-8?B?NWE1ejhKV01GUmVNY0hMS1pERitmTExRdXFyaGVhV0Q3K2N2N2tXM1dTMzJj?=
- =?utf-8?B?cDd4QkdLakthZUNSdVYvbG53eDRadSt2ZVB3RVRyMFhXQ2ZJWDR4bGw5Z3lx?=
- =?utf-8?B?V2tyUjAxb1d6VDV3c3BObHhqUUFCSzRIZGJEMVVEMW55VkYxaEhjSFhPM3Iy?=
- =?utf-8?B?b2hKeHBtT2VYV2J5Qng5VnYvcW9kelhveHAzQU1SdVlKSTN4a3lJQ3Z4Y3E1?=
- =?utf-8?B?bzM1UjN0elVzWlQ4SGY3NlpkMFliZlhzazVsbFMxdlpGNmJSczJ2d09BNzFG?=
- =?utf-8?B?d0hReFl6TFZBQ2s1TnhOd1RoZ0lXclRQUVgvUVd6Yi9QTTBmaS9tOGFrRFhN?=
- =?utf-8?B?S29GZldLaTU4QmNhRStRSXVpd24wcFBHd3FGWW8yUDV6bWQ5S2pyN2tGRDRH?=
- =?utf-8?B?ajRxQkZaRTJQejlweHVwSWVPRUoxS2E3NTdjRWJESUJnQ0dhc3pYY0FDMzF2?=
- =?utf-8?B?Tk9iZTVycWN6eTd1eStqemdWNnVkL1QrMTNFdEhLK2hUaFVxb1IrZW13MVZN?=
- =?utf-8?B?Smgzc09aTEkyZG1TYjFTOXFTT2N3eDlxQ2FlNGMyQUdxeDNKUGRmVjFoZVRT?=
- =?utf-8?B?djhVQWgzVGZvTTlsRDBOZ04vM1FMQVRZRmVENXVhY2pWeEtpZXFiVS83R3lG?=
- =?utf-8?B?Rjk4WmQ4cXplMEhhZE9lamxoZkt4K1l1RzdocmpjVzZiSWhDZFBIWG54RTIw?=
- =?utf-8?B?ckMvSlVvK0xXdmRzbk91SkUyNFJoVEUzR0VuSjllR1pvbkJxY3VOWTlranl1?=
- =?utf-8?B?TWFNRGF3aUw2MkFNS05nWm90RDU2bHNmOFBRWjc5NFlEZzJpMnl2dDJ2cHlt?=
- =?utf-8?B?U1RjNXQzcWxqZ01JelU5ZTA2MmJYRlJ4ZDJyRHlTRzJiMS9xSy9OVFUvM1Av?=
- =?utf-8?B?TjgvMDFYT09SelFray9idFhmbnEwNXBOb1JjVHhOdForYnMxNUFZTlZiOE5W?=
- =?utf-8?B?ai9RYWU2RkZTMkVaSnZIamJBOGtiNXA0bmprQ1ZyTm9vOWxaMHh6Wi9ybFRO?=
- =?utf-8?B?dm1rdkdaWTk5Wjd6V292L1lQRVQvUXM4Z2E0bnpMMHRSbCtXYzFkNjZ3T3hB?=
- =?utf-8?Q?Z7JRHNSc8LTsXM+qdXXtwkY=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 69206463-5cc2-46f8-9348-08de31ea5f00
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Ym9OVmZuYkpMQWFrZE52QXBMenlZdDNjdEptR1l3Mk1aTlhaa0NnYlYzRE43?=
+ =?utf-8?B?SkM5RDZjTkVvQnQzaWczbXJrZFRpQXNwK1ptYzhWZXhHYlk1UEpWZk1qWlBF?=
+ =?utf-8?B?M2NESkpFWVRqdDQremg3TTRWUzQ2d2RueVFYWWFCNVBjWk5DL0tHbHBtMlpa?=
+ =?utf-8?B?WkJKd3NYOURna1RHYndYWXdpSktsUVJLOFpmNEF6VUZhQ1pKc3lHTEZBL2Ra?=
+ =?utf-8?B?Y2YyMjZZdWVsV3dzVnFuejhjN1ZGb1QyR3VmazN1UmIwbmJJbzUvYkh5bmNo?=
+ =?utf-8?B?ZTlCU0lMU3NGbzBKMTFQbWVXQklWbjV1SHdhWXN5SGhxM2hIcXNqREdsWCts?=
+ =?utf-8?B?NGdiZzc2RFNHdjBsaTRBLzBBd054VFdwcG84WDJ4ZlhycStVT1dSV0pzMDA4?=
+ =?utf-8?B?WjdpSW5penVzQnBQbjByQ2wvSVNXQXNUVFpuWnl1UUFQU00ycUlFbmpxV0s0?=
+ =?utf-8?B?Wlp6MDRNYW50aDNxYVQrSmFIRDR0NVJISHRtZThuQm1sOU9USCszWnFaempm?=
+ =?utf-8?B?NlFQQWxNVGl6NVJzMWQrYkk4WmI5bjkrME9XR3NnSVlRTkNCcGJJdjBHTjR6?=
+ =?utf-8?B?c1BpaHhKck9yVUN6NXpqVHZ2cjFObWthMDBuZHdXREdFSHlmYWVnQ3FENFFE?=
+ =?utf-8?B?N1FqTVI4WERjNzdVTUlCWFRVa3YxbVcyTkpyUGJ6WmtUU01wMEVGK2JpZE9V?=
+ =?utf-8?B?bmRIam5jY1JQbzBvT3BUOHdETDZVT0d3OEsvYW9wa1hmTGVDQkZvSDdvbklZ?=
+ =?utf-8?B?SkgzQUhLdFBHRFJhZjhVd2RpRkxoaTFWbU1XaFBlbU9xOHFEVktCN08wejdi?=
+ =?utf-8?B?K2JXK2ExOCtUc0x3VGVQY2xKSzVrNWVsV3VhbFJ1d1NzNmZrUFlpcFdRdm16?=
+ =?utf-8?B?STIveWVCVUdDNjQzY0dmcEtoYmZ6N2xubnZBL0JyRCtoTG1IRFprMTRrZGZG?=
+ =?utf-8?B?QXVDSmtrOWJQUHEwakRoUjZuVkp3M1ZuelFxNGdwWXExU1ZuSUNEemhQQVI5?=
+ =?utf-8?B?cEpkbHUrTVBqcHVXNk1uSklZSWdwcFBMeXVyQTQwMXJudU9zMG1rLzZNQlN0?=
+ =?utf-8?B?NVlwdDRYZlFrZklYZEZMeHcvMWtqSDNmN21WYVFiQmhBN1hIL2w5MWh1NVUx?=
+ =?utf-8?B?cC9YdDhTcW1UVkNWdmwyWUVuT0ZvUXBmNFQ3aWJBRHBBbHRPRXQzajk1WFVL?=
+ =?utf-8?B?cWpOTzFwQ1V2c0tKQWFwUlVOQ092L2JzZjg5eExrQ3BzVXg2aVgzd25ML0VO?=
+ =?utf-8?B?YUVnWk9mMUxCdUdhdTZsU0s3YmRvK1I1YVNDWEtqVHk0N3lybTdHeXdPRUJt?=
+ =?utf-8?B?SGwvL2E3NjBhRXA1dUF0c0hJMmtvMmRWSnJCOHhTT2d3ZHl0RHpiZ3FjK2xV?=
+ =?utf-8?B?WWl3MjFMbkR4eWNROWIvWk5yQWszaTRGbEpaMTBoUkRPejZPcTZieTlxbE5q?=
+ =?utf-8?B?RHptdklrZUoxMDhCWENseHFMWDRsK29BTlg0Z0dUbnlKempPTWpIOVZEdDdp?=
+ =?utf-8?B?Wll3R3BsSmNFSGtDeUY0OHpCaGNmdU5UL3A2aUpENTNmQ0pLa1k3N0cvckZX?=
+ =?utf-8?B?YjRKNThxVzdEZW1NeWFobXNKZFYrRGZzOExxVWI1b2grQjg3a3VUNW5TUjlr?=
+ =?utf-8?B?MGFRUGp5eUxLb3UrbXh5b3dFMHpOWFIvRnFHQldVL01zY1paVGlMcGVaOXdP?=
+ =?utf-8?B?Y25lZU1WWEk5TnBibHhPalRSZm9vbzdYY1psbENQMnlIMkFoejZJU05WQjB6?=
+ =?utf-8?B?cEl2SGJoSTJ6am9CcTNPb3NwL0hTOXlERWR5cWZzcFZGSzk1ODU5MW9KdTZw?=
+ =?utf-8?B?V1dHWWcrMFJXcU5Jb3E3ckp2c3hjMDJsNGMyM1huVkVnUVU1N3M0K1gvM2xv?=
+ =?utf-8?B?RUdRcDJmN1YxN1dNenhWUHBZc1BSWnJFd1NodVNIZW1DcDhud05FdCtIVExl?=
+ =?utf-8?B?SExqYnFvejQwUG1MVUVxcm85MjZZVnI2VkJXZFFPTFIydzkvMU96K0VTcTdL?=
+ =?utf-8?B?Ty90WkU0aEZ5T0ZWWU9LYjdCamlvTkN2Q3J4YW9pbUtNV20wYkxuVmJmSHNE?=
+ =?utf-8?B?V1dhOFlFWTRMVUVUVGhLbjd2eG9QRXZYWXNvSW0vc3Z0SnlEMHFqSGZXQlFz?=
+ =?utf-8?B?anliY0l6aGdGUXM5cGp4Sm8wVUF3WmtRS3oxa216dU9OQ0NMOU9aSlhNVVhM?=
+ =?utf-8?Q?dawbeozHVjsmYqEMGT0zmUE=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a017dbf7-7872-436c-a1ed-08de31eafac4
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7408.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 21:33:02.0883 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 21:37:23.3779 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EgU5QmaUwa6gywx/Wczv2Bg9VR/u5PWru1FT2pBfuIYMGLshwi/ihtlxEbL35PXcBQ8UE0TMYGK1nkXFOok0EdC22V26m+Ml3vfZQLtl2Ds=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPFFAE6AEB4B
+X-MS-Exchange-CrossTenant-UserPrincipalName: WuDcVIsARsc1B15zmUdTcEetIpynC7MQdjUvqUHYwpgIXBFpInbKD/GNUwuhlK2t32LqS8Dbwj8H4O3j0XINaJ5gyXcGw5moekQbsNRcXoo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7482
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -195,165 +195,211 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Nov 25, 2025 at 07:50:08PM -0800, Ashutosh Dixit wrote:
->In the kernel we have restricted exec_queue's to be specified only for the
->OAG unit. Therefore the "oa-unit-exclusive-stream-exec-q" IGT test needs to
->be modified. However, the main purpose of the "oa-unit-exclusive-stream"
->tests is to ensure that only a single OA stream can be opened on an OA
->unit. For this an exec_queue is not needed, just the sampling mode is
->sufficient. Therefore, discontinue oa-unit-exclusive-stream-exec-q test. It
->can be added back later if it is determined that it is really needed.
+On Tue, Nov 25, 2025 at 07:50:11PM -0800, Ashutosh Dixit wrote:
+>Expand mmio-trigger tests to all OA units (rather than just OAG unit).
 >
 >Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-LGTM,
+Only the oa_buffer, oa_tail_ptr and the oa_mmio_trg are needed, but if 
+you want to retain the definition for all regs for debug etc, should be 
+okay.
 
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
 Thanks,
 Umesh
 >---
-> tests/intel/xe_oa.c | 70 +++++++--------------------------------------
-> 1 file changed, 10 insertions(+), 60 deletions(-)
+> tests/intel/xe_oa.c | 102 +++++++++++++++++++++++++++++++++++++-------
+> 1 file changed, 87 insertions(+), 15 deletions(-)
 >
 >diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
->index 0c9e693f7d..9302d1c83a 100644
+>index c8475720c5..2f966e808f 100644
 >--- a/tests/intel/xe_oa.c
 >+++ b/tests/intel/xe_oa.c
->@@ -4254,111 +4254,64 @@ test_sysctl_defaults(void)
-> }
+>@@ -73,9 +73,7 @@
 >
-> /**
->- * SUBTEST: oa-unit-exclusive-stream-sample-oa
->- * Description: Check that only a single stream can be opened on an OA unit (with sampling)
->- *
->- * SUBTEST: oa-unit-exclusive-stream-exec-q
->- * Description: Check that only a single stream can be opened on an OA unit (for OAR/OAC)
->+ * SUBTEST: oa-unit-exclusive-stream
->+ * Description: Check that only a single stream can be opened on an OA unit
-> */
-> /*
->  * Test if OA buffer streams can be independently opened on OA unit. Once a user
->  * opens a stream, that oa unit is exclusive to the user, other users get -EBUSY on
->  * trying to open a stream.
->  */
->-static void
->-test_oa_unit_exclusive_stream(bool exponent)
->+static void test_oa_unit_exclusive_stream(void)
-> {
-> 	struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
->-	const struct drm_xe_engine_class_instance *hwe;
-> 	const struct drm_xe_oa_unit *oau;
-> 	uint64_t properties[] = {
-> 		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-> 		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-> 		DRM_XE_OA_PROPERTY_OA_METRIC_SET, 0,
-> 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(0),
->-		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, 0,
-> 		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent_default,
-> 	};
-> 	struct intel_xe_oa_open_prop param = {
-> 		.num_properties = ARRAY_SIZE(properties) / 2,
-> 		.properties_ptr = to_user_pointer(properties),
-> 	};
->-	uint32_t *exec_q = calloc(qoa->num_oa_units, sizeof(u32));
-> 	uint32_t *perf_fd = calloc(qoa->num_oa_units, sizeof(u32));
->-	u32 vm = xe_vm_create(drm_fd, 0, 0);
-> 	struct intel_xe_perf_metric_set *test_set;
-> 	uint32_t i;
+> #define OAG_OASTATUS (0xdafc)
+> #define OAG_PERF_COUNTER_B(idx) (0xDA94 + 4 * (idx))
+>-#define OAG_OATAILPTR (0xdb04)
+> #define OAG_OATAILPTR_MASK 0xffffffc0
+>-#define OAG_OABUFFER (0xdb08)
 >
->-	/* for each oa unit, open one random perf stream with sample OA */
->+	/* for each oa unit, open one stream with sample OA */
-> 	for (i = 0; i < qoa->num_oa_units; i++) {
-> 		oau = oa_unit_by_id(drm_fd, i);
->-		hwe = oa_unit_engine(oau);
->-
->-		if (!hwe)
->-			continue;
-> 		test_set = oa_unit_metric_set(oau);
+> #define XE_OA_MAX_SET_PROPERTIES 16
 >
->-		igt_debug("opening OA buffer with c:i %d:%d\n",
->-			  hwe->engine_class, hwe->engine_instance);
->-		exec_q[i] = xe_exec_queue_create_deconst(drm_fd, vm, hwe, 0);
->-		if (!exponent) {
->-			properties[10] = DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID;
->-			properties[11] = exec_q[i];
->-		}
->+		igt_debug("Opening OA stream on OA unit id:type %d:%d\n", i, oau->oa_unit_type);
+>@@ -93,6 +91,24 @@ struct accumulator {
+> 	uint64_t deltas[MAX_RAW_OA_COUNTERS];
+> };
 >
-> 		properties[1] = oau->oa_unit_id;
-> 		properties[5] = test_set->perf_oa_metrics_set;
-> 		properties[7] = __ff(test_set->perf_oa_format);
->-		properties[9] = hwe->engine_instance;
-> 		perf_fd[i] = intel_xe_perf_ioctl(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &param);
-> 		igt_assert(perf_fd[i] >= 0);
-> 	}
->
->-	/* Xe KMD holds reference to the exec_q's so they shouldn't be really destroyed */
->-	for (i = 0; i < qoa->num_oa_units; i++)
->-		if (exec_q[i])
->-			xe_exec_queue_destroy(drm_fd, exec_q[i]);
->-
-> 	/* for each oa unit make sure no other streams can be opened */
-> 	for (i = 0; i < qoa->num_oa_units; i++) {
->-		int err;
->-
-> 		oau = oa_unit_by_id(drm_fd, i);
->-		hwe = oa_unit_engine(oau);
->-
->-		if (!hwe)
->-			continue;
-> 		test_set = oa_unit_metric_set(oau);
->
->-		igt_debug("try with exp with c:i %d:%d\n",
->-			  hwe->engine_class, hwe->engine_instance);
->+		igt_debug("Try on OA unit id:type %d:%d\n", i, oau->oa_unit_type);
+>+#define MEDIA_GT_GSI_OFFSET		0x380000
+>+#define XE_OAM_SAG_BASE_ADJ		(MEDIA_GT_GSI_OFFSET + 0x13000)
+>+#define XE_OAM_SCMI_0_BASE_ADJ		(MEDIA_GT_GSI_OFFSET + 0x14000)
+>+#define XE_OAM_SCMI_1_BASE_ADJ		(MEDIA_GT_GSI_OFFSET + 0x14800)
 >+
-> 		/* case 1: concurrent access to OAG should fail */
-> 		properties[1] = oau->oa_unit_id;
-> 		properties[5] = test_set->perf_oa_metrics_set;
-> 		properties[7] = __ff(test_set->perf_oa_format);
->-		properties[9] = hwe->engine_instance;
->-		properties[10] = DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT;
->-		properties[11] = oa_exponent_default;
-> 		intel_xe_perf_ioctl_err(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &param, EBUSY);
->-
->-		/* case 2: concurrent access to non-OAG unit should fail */
->-		igt_debug("try with exec_q with c:i %d:%d\n",
->-			  hwe->engine_class, hwe->engine_instance);
->-		exec_q[i] = xe_exec_queue_create_deconst(drm_fd, vm, hwe, 0);
->-		properties[10] = DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID;
->-		properties[11] = exec_q[i];
->-		errno = 0;
->-		err = intel_xe_perf_ioctl(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &param);
->-		igt_assert_lt(err, 0);
->-		igt_assert(errno == EBUSY || errno == ENODEV);
-> 	}
->
->-	for (i = 0; i < qoa->num_oa_units; i++) {
->+	for (i = 0; i < qoa->num_oa_units; i++)
-> 		if (perf_fd[i])
-> 			close(perf_fd[i]);
->-		if (exec_q[i])
->-			xe_exec_queue_destroy(drm_fd, exec_q[i]);
->-	}
+>+/** struct xe_oa_regs - Registers for each OA unit */
+>+struct xe_oa_regs {
+>+	u32 base;
+>+	u32 oa_head_ptr;
+>+	u32 oa_tail_ptr;
+>+	u32 oa_buffer;
+>+	u32 oa_ctx_ctrl;
+>+	u32 oa_ctrl;
+>+	u32 oa_debug;
+>+	u32 oa_status;
+>+	u32 oa_mmio_trg;
+>+};
+>+
+> struct oa_buf_size {
+> 	char name[12];
+> 	uint32_t size;
+>@@ -3901,10 +3917,10 @@ emit_oa_reg_read(struct intel_bb *ibb, struct intel_buf *dst, uint32_t offset,
 > }
 >
+> static void
+>-emit_mmio_triggered_report(struct intel_bb *ibb, uint32_t value)
+>+emit_mmio_triggered_report(struct intel_bb *ibb, uint32_t reg, uint32_t value)
+> {
+> 	intel_bb_out(ibb, MI_LOAD_REGISTER_IMM(1));
+>-	intel_bb_out(ibb, OAG_MMIOTRIGGER);
+>+	intel_bb_out(ibb, reg);
+> 	intel_bb_out(ibb, value);
+> }
+>
+>@@ -3979,6 +3995,58 @@ static u32 oa_get_mmio_base(const struct drm_xe_engine_class_instance *hwe)
+> 	return mmio_base;
+> }
+>
+>+/* For register mmio offsets look at drivers/gpu/drm/xe/regs/xe_oa_regs.h in the kernel */
+>+static struct xe_oa_regs __oag_regs(void)
+>+{
+>+	return (struct xe_oa_regs) {
+>+		.base		= 0,
+>+		.oa_head_ptr	= 0xdb00,
+>+		.oa_tail_ptr	= 0xdb04,
+>+		.oa_buffer	= 0xdb08,
+>+		.oa_ctx_ctrl	= 0x2b28,
+>+		.oa_ctrl	= 0xdaf4,
+>+		.oa_debug	= 0xdaf8,
+>+		.oa_status	= 0xdafc,
+>+		.oa_mmio_trg	= 0xdb1c,
+>+	};
+>+}
+>+
+>+static struct xe_oa_regs __oam_regs(u32 base)
+>+{
+>+	return (struct xe_oa_regs) {
+>+		.base		= base,
+>+		.oa_head_ptr	= base + 0x1a0,
+>+		.oa_tail_ptr	= base + 0x1a4,
+>+		.oa_buffer	= base + 0x1a8,
+>+		.oa_ctx_ctrl	= base + 0x1bc,
+>+		.oa_ctrl	= base + 0x194,
+>+		.oa_debug	= base + 0x198,
+>+		.oa_status	= base + 0x19c,
+>+		.oa_mmio_trg	= base + 0x1d0,
+>+	};
+>+}
+>+
+>+static struct xe_oa_regs oa_unit_regs(const struct drm_xe_oa_unit *oau)
+>+{
+>+	switch (oau->oa_unit_type) {
+>+	case DRM_XE_OA_UNIT_TYPE_OAM: {
+>+		const struct drm_xe_oa_unit *first_oam_unit =
+>+			oa_unit_by_type(drm_fd, DRM_XE_OA_UNIT_TYPE_OAM);
+>+
+>+		igt_assert(first_oam_unit);
+>+		if (oau->oa_unit_id == first_oam_unit->oa_unit_id)
+>+			return __oam_regs(XE_OAM_SCMI_0_BASE_ADJ);
+>+		else
+>+			return __oam_regs(XE_OAM_SCMI_1_BASE_ADJ);
+>+	}
+>+	case DRM_XE_OA_UNIT_TYPE_OAM_SAG:
+>+		return __oam_regs(XE_OAM_SAG_BASE_ADJ);
+>+	case DRM_XE_OA_UNIT_TYPE_OAG:
+>+	default:
+>+		return __oag_regs();
+>+	}
+>+}
+>+
 > /**
->@@ -5151,11 +5104,8 @@ igt_main_args("b:t", long_options, help_str, opt_handler, NULL)
+>  * SUBTEST: oa-regs-whitelisted
+>  * Description: Verify that OA registers are whitelisted
+>@@ -4034,6 +4102,7 @@ __test_mmio_triggered_reports(const struct drm_xe_oa_unit *oau)
+> {
+> 	struct intel_xe_perf_metric_set *test_set = oa_unit_metric_set(oau);
+> 	const struct drm_xe_engine_class_instance *hwe = oa_unit_engine(oau);
+>+	struct xe_oa_regs regs = oa_unit_regs(oau);
+> 	uint64_t properties[] = {
+> 		DRM_XE_OA_PROPERTY_OA_UNIT_ID, oau->oa_unit_id,
+> 		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+>@@ -4078,18 +4147,18 @@ __test_mmio_triggered_reports(const struct drm_xe_oa_unit *oau)
+> 	buf = mmap(0, default_oa_buffer_size, PROT_READ, MAP_PRIVATE, stream_fd, 0);
+> 	igt_assert(buf != NULL);
+>
+>-	emit_oa_reg_read(ibb, dst_buf, 0, OAG_OABUFFER);
+>-	emit_oa_reg_read(ibb, dst_buf, 4, OAG_OATAILPTR);
+>-	emit_mmio_triggered_report(ibb, 0xc0ffee11);
+>+	emit_oa_reg_read(ibb, dst_buf, 0, regs.oa_buffer);
+>+	emit_oa_reg_read(ibb, dst_buf, 4, regs.oa_tail_ptr);
+>+	emit_mmio_triggered_report(ibb, regs.oa_mmio_trg, 0xc0ffee11);
+>
+>-	if (render_copy)
+>+	if (render_copy && oau->oa_unit_type == DRM_XE_OA_UNIT_TYPE_OAG)
+> 		render_copy(ibb,
+> 			    &src, 0, 0, rc_width, rc_height,
+> 			    &dst, 0, 0);
+>
+>-	emit_mmio_triggered_report(ibb, 0xc0ffee22);
+>+	emit_mmio_triggered_report(ibb, regs.oa_mmio_trg, 0xc0ffee22);
+>
+>-	emit_oa_reg_read(ibb, dst_buf, 8, OAG_OATAILPTR);
+>+	emit_oa_reg_read(ibb, dst_buf, 8, regs.oa_tail_ptr);
+>
+> 	intel_bb_flush_render(ibb);
+> 	intel_bb_sync(ibb);
+>@@ -4141,6 +4210,7 @@ __test_mmio_triggered_reports_read(const struct drm_xe_oa_unit *oau)
+> {
+> 	struct intel_xe_perf_metric_set *test_set = oa_unit_metric_set(oau);
+> 	const struct drm_xe_engine_class_instance *hwe = oa_unit_engine(oau);
+>+	struct xe_oa_regs regs = oa_unit_regs(oau);
+> 	uint64_t properties[] = {
+> 		DRM_XE_OA_PROPERTY_OA_UNIT_ID, oau->oa_unit_id,
+> 		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+>@@ -4174,14 +4244,14 @@ __test_mmio_triggered_reports_read(const struct drm_xe_oa_unit *oau)
+> 	stream_fd = __perf_open(drm_fd, &param, false);
+> 	set_fd_flags(stream_fd, O_CLOEXEC);
+>
+>-	emit_mmio_triggered_report(ibb, 0xc0ffee11);
+>+	emit_mmio_triggered_report(ibb, regs.oa_mmio_trg, 0xc0ffee11);
+>
+>-	if (render_copy)
+>+	if (render_copy && oau->oa_unit_type == DRM_XE_OA_UNIT_TYPE_OAG)
+> 		render_copy(ibb,
+> 			    &src, 0, 0, rc_width, rc_height,
+> 			    &dst, 0, 0);
+>
+>-	emit_mmio_triggered_report(ibb, 0xc0ffee22);
+>+	emit_mmio_triggered_report(ibb, regs.oa_mmio_trg, 0xc0ffee22);
+>
+> 	intel_bb_flush_render(ibb);
+> 	intel_bb_sync(ibb);
+>@@ -5195,13 +5265,15 @@ igt_main_args("b:t", long_options, help_str, opt_handler, NULL)
+>
+> 		igt_subtest_with_dynamic("mmio-triggered-reports") {
+> 			igt_require(HAS_OA_MMIO_TRIGGER(devid));
+>-			__for_oa_unit_by_type(DRM_XE_OA_UNIT_TYPE_OAG)
+>+			igt_require(oau->capabilities & DRM_XE_OA_CAPS_OA_UNIT_GT_ID);
+>+			__for_each_oa_unit(oau)
+> 				test_mmio_triggered_reports(oau, false);
+> 		}
+>
+> 		igt_subtest_with_dynamic("mmio-triggered-reports-read") {
+> 			igt_require(HAS_OA_MMIO_TRIGGER(devid));
+>-			__for_oa_unit_by_type(DRM_XE_OA_UNIT_TYPE_OAG)
+>+			igt_require(oau->capabilities & DRM_XE_OA_CAPS_OA_UNIT_GT_ID);
+>+			__for_each_oa_unit(oau)
+> 				test_mmio_triggered_reports(oau, true);
+> 		}
 > 	}
->
-> 	igt_subtest_group {
->-		igt_subtest("oa-unit-exclusive-stream-sample-oa")
->-			test_oa_unit_exclusive_stream(true);
->-
->-		igt_subtest("oa-unit-exclusive-stream-exec-q")
->-			test_oa_unit_exclusive_stream(false);
->+		igt_subtest("oa-unit-exclusive-stream")
->+			test_oa_unit_exclusive_stream();
->
-> 		igt_subtest("oa-unit-concurrent-oa-buffer-read") {
-> 			igt_require(!igt_run_in_simulation());
 >-- 
 >2.48.1
 >
