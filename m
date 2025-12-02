@@ -4,193 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 243FFCFD2F6
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Dec 2025 09:22:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5B71CFD376
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Dec 2025 09:23:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 95D5C10E59E;
-	Tue,  2 Dec 2025 09:22:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 931A310E5C6;
+	Tue,  2 Dec 2025 09:23:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BUCXtXiW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NRwNO1Gx";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2630B10E59E
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Dec 2025 09:22:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC87310E5C6
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Dec 2025 09:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764667331; x=1796203331;
- h=from:to:subject:date:message-id:references:in-reply-to:
- content-id:content-transfer-encoding:mime-version;
- bh=+paRB7TDwaV5c+zJE+Oq2cyh80IM1oO5QgCo54Px03Q=;
- b=BUCXtXiW6hqW3vWOqnnxiuCSJIUXb8DEBTvpDJMIgZdaSujGe02Q3NcB
- 2Ol0cphvHzKg+rDVG36iuWkRRk6e+fowjD9iTwjJqhK+8i7sMlXZqwrsv
- FqagT5mZn8UOzDf5Xb2+bxcLjwSY6mqAICH8lt7gjz+EJKvR+N5VR+sMz
- 306T6T/YSffZWrWW7txt5fm87xb2iBTT/zBtZhErDEGbDCb91a7BZDfzX
- G1uYP2PvEAyH09RP4xUssERAHk7zRRRbLFCE++cbxLw2zCjrv8ff14t1T
- pLbilIYj9ialnDEXx+YxKtgJ8Nzf3LFOdbfEd+RC+k97C6/hU/OeZnmDT A==;
-X-CSE-ConnectionGUID: Ut3s4hyGRcGrnGMe3U5ZDQ==
-X-CSE-MsgGUID: mw5ivhKKRg+PwuHJ33dUNg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="84022148"
-X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; d="scan'208";a="84022148"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2025 01:22:11 -0800
-X-CSE-ConnectionGUID: qIgDjbsPTxSSrDC7jt3lPg==
-X-CSE-MsgGUID: MQXBFXIYSLu3hqz8gTbG4g==
+ t=1764667405; x=1796203405;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=ENc64b7Z3SGKjg/7n3S0+A6I6DWOqCCiLgil7a+Eq08=;
+ b=NRwNO1Gxia2PQWd6ygwWmnHPQsoNL7VZNfLDCvOZlM0Gc+xqfzD+43mr
+ 0NwujaO6PNcPDaFo62MuaruaIW8CTyi6dUDdSghQGMlX6ImgbPgzT53Sz
+ rQVvLrIvBkA2RZj2YZqMnZlQ5qIWkC+sdSRbBBUV1n56sv4W24G+jL70Y
+ isbDgkHOO7c2SLOk2Y4KNCoLuXB5BtDe10S5I87oK9tTdEoCqiuXmTdKN
+ hDy4kUCfvRBJ5KS+jyitMWOfLwAKNdwkByXsTFWtqNOp+RQ69aLEqmbhT
+ pDlzAl7cefd8yw7noVCdGUul4/jci1ftLNndxZcPGEbf7HytCsuxEmDMu A==;
+X-CSE-ConnectionGUID: 9sYt2gl9QUizQ2FZV6hzDg==
+X-CSE-MsgGUID: G4VNWTyGR/WJ3CzfnwIXJA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="65629490"
+X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; d="scan'208";a="65629490"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Dec 2025 01:23:24 -0800
+X-CSE-ConnectionGUID: PeiNxqghSU2E3dp25FtLYA==
+X-CSE-MsgGUID: 274S7DtwR5usBNV1pTEXzA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; d="scan'208";a="193621621"
+X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; d="scan'208";a="194209984"
 Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Dec 2025 01:22:11 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Dec 2025 01:23:24 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 2 Dec 2025 01:22:10 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ 15.2.2562.29; Tue, 2 Dec 2025 01:23:23 -0800
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Tue, 2 Dec 2025 01:22:10 -0800
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.50)
- by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.2562.29 via Frontend Transport; Tue, 2 Dec 2025 01:23:23 -0800
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.47) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 2 Dec 2025 01:22:09 -0800
+ 15.2.2562.29; Tue, 2 Dec 2025 01:23:23 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NayiiiTIQu8ZRyiy3D5mCdesPY6dfzlGrb80zuCSzI6w+9S98dV2vn1z5fej2MQgqAnev/AVC0tNDAe2ne60c6ZKkCFTAA0GNE1Y8EB3Ym78ZZpUCrhjFoYAAhmRqxgcUfSUPKDUDhivIXWUvUUEWdMAoOz3ReuD+xdLh1+FR1C92jSCsIi3v4QdkWpg/WA5F7vI3GBzDOYt1nSu3c31ZBNKb0eZmhNYTP8bzcdPdjj6gthPevxTGFgEY3hFaS0l8pgGzfyrApgB873EXAnRIBGESrTUL0BkdJiG+zkygpSX3Du+/NGq6TKrfywfXK/b4LpLzNE6pd+SHbFteRlrxQ==
+ b=cgq5uHq7jDq3iqIqttr2VzZKR1va5ITkpdcOU8hAYb3vkkczhquCtOFeMMIEE14iLO3QhFOWRj1iuwG9J0dII170jErbXRqTbc8g0tXE/9SGzuc4U/GWDtpImlz7JCtQ5DfIW3k/+ujDuV3wS+15keRyThFMvz1PyxB34y/k1CR8FSKKj0HY0Tak/0/pwEWFEoKzEXyovTo45I7O7Y9ReqHmZlHdWqxIKrN1f4BBIj6jkToEKhymUdJmhre+T0lHUMIXw8aXxq4zO9zzNwZFz3mxuuJX6TX+FbK9SlhyDUmcZLcLwGLrorJo+eqexklaWvDgA27RbC6GC0rPdYWVwA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+paRB7TDwaV5c+zJE+Oq2cyh80IM1oO5QgCo54Px03Q=;
- b=R2I2vrb9sIoMmjOsv450zjK40s23WfewXXbqkFl2I6isr5GHjJChPCUG+kp7ZPMMts5d/HhtwqqjdpqAMrwFZeNZlTIvTWK6xURk7gaU2XX+z2qFBXoOmm6xd/QoxgwWO0HO9kF5VG3EDBg48VIUhr2Cpo3dzW+RCcCgT+43G7FUUU5ZtUTSSopUQr5zgs2sBYhDB6hfmEEKr3oLd2quA85BRSuTmjmj44dQ+Xm8/nwfEaCvQMUAtyGAdDUQj2F4qlrcisaSsQxtLR4H35dtbaIaTR2BSt8TtEiDKgz74mIWZVRh0Jm4/j1pF+uFjiEhh/vaY1aZ39M3ER9gtOpLiw==
+ bh=PrRjVbShOW+6VOnZJIBWDWlXHpSu+ykDZwKuNmll1as=;
+ b=K28uaTjLCuCP2OGvcajWUllesOkHxsrwlwT1eqNCvoQ17SrZdMVvLVjDrJaoxBkcqe9GUOXAL/nNdHMLMdfBNvnJkdjZRYEjP2x/moQls4hb3iRDI/umQNLGl7hM+VkY7xXqi/3jr9KyAbETtilC1ejtmv0Zr3aIb3ul1p/iFxeswRuw0tWXDYmmikYaZIFf6ycF3v6vpE7geMA2XHbKhOvlvlMTLrCY0ylT6PrMLyLF2PY4vVo1nO7aOEDyOybHQJ7oZzE77yfvyhaeQjRoCIKy+qpkEYXFhjUrXkMJ/j8SjnB+ZAf6nwu0xcJ0muBaafMCsGBregu9KpJOmRCHKw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from DS0PR11MB7733.namprd11.prod.outlook.com (2603:10b6:8:dc::19) by
- DM3PPF777B3455C.namprd11.prod.outlook.com (2603:10b6:f:fc00::f2f)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Tue, 2 Dec
- 2025 09:22:03 +0000
-Received: from DS0PR11MB7733.namprd11.prod.outlook.com
- ([fe80::41a9:1573:32ad:202c]) by DS0PR11MB7733.namprd11.prod.outlook.com
- ([fe80::41a9:1573:32ad:202c%6]) with mapi id 15.20.9388.003; Tue, 2 Dec 2025
- 09:22:02 +0000
-From: "Hellstrom, Thomas" <thomas.hellstrom@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Sharma, 
- Nishit" <nishit.sharma@intel.com>, "Gurram, Pravalika"
- <pravalika.gurram@intel.com>
-Subject: Re: [PATCH i-g-t v9 10/10] tests/intel/xe_multi-gpusvm: Add SVM
- multi-GPU migration test
-Thread-Topic: [PATCH i-g-t v9 10/10] tests/intel/xe_multi-gpusvm: Add SVM
- multi-GPU migration test
-Thread-Index: AQHcYqEwFFWDg3W13kObrfrEgeQyuLUOFPaA
-Date: Tue, 2 Dec 2025 09:22:02 +0000
-Message-ID: <8c146e91276542829baecfbf267baffe823445f1.camel@intel.com>
-References: <20251121162537.77551-1-nishit.sharma@intel.com>
- <20251201090201.326595-1-nishit.sharma@intel.com>
- <20251201090201.326595-11-nishit.sharma@intel.com>
-In-Reply-To: <20251201090201.326595-11-nishit.sharma@intel.com>
-Accept-Language: en-SE, en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.54.3 (3.54.3-2.fc41) 
-authentication-results: dkim=none (message not signed)
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS0PR11MB7733:EE_|DM3PPF777B3455C:EE_
-x-ms-office365-filtering-correlation-id: f0280c33-51fa-455b-4423-08de31844104
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|376014|366016|10070799003|1800799024|38070700021; 
-x-microsoft-antispam-message-info: =?utf-8?B?TWNsTGFIbUg2RDRrTFZpVVh6aTZUYkY0ZGNPZkRRMUMrREtLOGpXZy9sYzQ2?=
- =?utf-8?B?Mm9jN1FFTFJmSkxQVVlzTU9MYThubkV0S0tUQUY1b3p5cVhkd0pGSUR4KzNI?=
- =?utf-8?B?eFlhM0tNV0tIS0FHNm82eURFbDhUL2NzazhWbUdadlkzTUdTc1R2OUlubFZI?=
- =?utf-8?B?WW5NVHlSa01rYUJtQ0E2RVBkS0VUQm5wRU90OFA2VERkUnlocVkrM1FDQ0cr?=
- =?utf-8?B?Ly9weVhhVS9OdVk3ZVU3TnRlSUw2M3hYT1VBTnZlZ2s4ZktLVWpXUXJRNHJT?=
- =?utf-8?B?cHRpM2p6MmR6dkxWTHkwS2tuY0wvQnBDbnZnUmVKSFZRK0g1b1VQcm9EYlZ2?=
- =?utf-8?B?dnI5S3NYOTVnRnEzTkJxeERQQWYxZkZDYmo3R1lYSXZqTXRWZVorajgvcmY4?=
- =?utf-8?B?SjAxMEx6QSt2T3dsMFZlcGNoalh1Y0ErdFdhZUo0YWVuRUtRMmpZaDdXNFI5?=
- =?utf-8?B?TlF4SGJBclZjN1pGV3llMGc2TGpxNkNzaVlZRGs3MzFkUC9yUTFqeE5UL05p?=
- =?utf-8?B?YWpSU2prVjhyZzNaSXVNUHphT1F3UjFFWFFIaTlQanVJL0hnOGNBbDY2S2RF?=
- =?utf-8?B?UFI0VU1lK1NRWUVVc091eUl0Z2FpSnJKekpXekg0bDdyQlI2QkNYd2pyVFpi?=
- =?utf-8?B?REhWTmxXWTRvQ3VaeExkRnZSTVhpVlpsd0hFd3poWHI2dVFrVFRxZUVkYVhG?=
- =?utf-8?B?SmplUVZ5YWRmTjU0Yi9jd21uM0ZhVEQ0R3JhVTh0dVpXa3UrMmNZdzl0TjBS?=
- =?utf-8?B?M3lpSlJLaFEzU1hjYVhzMzRacFVEMHNhUVFyUVByVjlCWlFuVTZCUGtZV05Y?=
- =?utf-8?B?UURodEtER2NGNVQxUGY4TEtZVkpRam8vajNWZldaTU1NbGdCUTI1RTYzbFhW?=
- =?utf-8?B?U3JCZ1l6d2dUcU9BWG9LcmZoRmh6eHY4dkppTXNUSSt5dytIWXJFUXJwc1Bt?=
- =?utf-8?B?cy9qaVdTRWU5YWtmWFYvYlpqUVFuSmhodEFPeGx5Nzh3SGxtRGx1ZXNJdTU0?=
- =?utf-8?B?SDFvbmYxTk1lK2VWdUdHZjVwSkh3RHY3SmF1Y0oveFJ1OXdOMVgwTlJhWkYx?=
- =?utf-8?B?a25lRnE3dTFvc1MzbUZmOXQ3R3RQUjR3SUFCT0t0clFjSDhiMW1PZlZJVHpa?=
- =?utf-8?B?Mmt3YU13OXB1cGJVSnJsMHZOaG5VeUc5ZVhuZ3oxSmtBZHBGNk5zS0ptbVd1?=
- =?utf-8?B?M0lKQ2VxbWhHUlJqRDVLVXUzS1BJYWpkK0ZJZjh4UG5mSkNyczcrZ29JWnFo?=
- =?utf-8?B?QkxVUWVTVUlTWTdrMnA3N0hDS2srTG11NElSU1dEQUNNdzZlVUtHUjJwNEtp?=
- =?utf-8?B?V3JuTVZGMmdJajhEWkczRkxrOEdWc1lJZGd5OGRyR1RZMGR2YmV3RWQ3N0Vn?=
- =?utf-8?B?SGhzUnR6czdiZWxsTjJYdkZpOGJiNTZuOWpqU2lTU2VCMW1NNUNiUkZlcmF0?=
- =?utf-8?B?OXpLTVJTRU1OQ0lYYXpMRkRsU2gwQjR6dklHSEdCV04xWXlSSjJrOW5pQjZ4?=
- =?utf-8?B?T2c5TnBEL29TTVpKamVSdlVhUjZKaitKMlo1cjNvc2NHVnZRb29qcERaUmZU?=
- =?utf-8?B?b2w4elYydFI5YWM3dS94b2xuVTJOSm1aSU82ZlZOYzFJS1RRZU5EaTNiVnhI?=
- =?utf-8?B?K0Rzb2pRZDBjWXBBRUpmTHZEblVWL1lra2R2enhkNzNsc2RXS0w2aGxTd1lK?=
- =?utf-8?B?L1VtdnRlby91andnalMxNnZGbitHaWg0WDNESlpSQlRRVHBqYThRbXFFNUNO?=
- =?utf-8?B?RE5tc1RIR3c0MlJlUlBFL0xkMWk4QnNEZ1FIdGpjNktZczVNUHNYR2syOEpW?=
- =?utf-8?B?M2JmWE5FbjFseVVINHZwdVRSMC8xemhOTmQycWRTdHRrTks0Qmx0SmplZngy?=
- =?utf-8?B?bUhoN2VBdUVSZ3NpcnZwL1R4WEpPVld1eS9IcmVoZEFld3hqYWRXM0h5QWdU?=
- =?utf-8?B?cHBhaGxSQ0dsbWZsMjZJR3NYamwxOTZoS1hhMGpBMGh6bnpDd1dCMktGb0ds?=
- =?utf-8?B?YWtiS0J6akYyY24vbG1BR053YXBmcXZhS29pTlJPcFNoQU5sQzU3cjMySGxF?=
- =?utf-8?Q?eHtOKj?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR11MB7733.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(10070799003)(1800799024)(38070700021); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?am0wbndtczY3RnBLRWtkaGMxYkFnWHoyb0xaSklwM2ZEYVE0UEV5N1MwdUhm?=
- =?utf-8?B?T1VBckZldVhaNXhiSG9zcWVaUkFOYno1M05PV09pQmVEQUhYYm41V1ZSMFlL?=
- =?utf-8?B?QUpVcnFKWHdoMVMwRjhpZUlGMGpsNnQwelNSSnpYazFQMTNHSzJ5SGJ5TFBB?=
- =?utf-8?B?M210SHcyMlh4dHRYTTNZNk5VM3YyMkkxNTBLdFBtcFFXTVpvL0YzQkdrZ3FK?=
- =?utf-8?B?SStQZ1dPZ2J1TXQ1cWpNZGZCSW1CUlM0ZGpCK01VN1FpUVhzWnpsRGFJalpD?=
- =?utf-8?B?MFZBM042Qzk3WnFRblBGdlBKSDZQemNQMEx1UDJtdS9JUUZzeGZTQnlvclZW?=
- =?utf-8?B?eE5BMHdqVmtxZ2NDcmRQZmJOV1RFUG1scjh2c1diWTg3VXJWckhuRjd5SFA2?=
- =?utf-8?B?U2ZsL0NYcStJZWY1S1RtbzdOY05WeWR3alNhUFc1RnZMZFFmdWp6Y3dpczhs?=
- =?utf-8?B?SzhFcGM5eUVNVVJFR3BBa1owNzI5UWNOS2RlRWxmQ2EvS2liWTJqeTlHSnRw?=
- =?utf-8?B?ZDFBcEtnTEcweDYxUFVQN24xMkxQTmY1MXJ3bVNobHlNNXhaN2UwSU1nZC9r?=
- =?utf-8?B?NnA4S3BRbnhPejBBMFJNVVJ5RDI0M2FIU3BJMGF2OWswMEo4VW4yQ2I1SVRt?=
- =?utf-8?B?Qm5YekVQUkljYUJZNWtrYzg1bHdNRTBXWDNRRDFobHJuVFhDSUVrUTVuc0VI?=
- =?utf-8?B?bU5aNmZ1Q3dyaUZyZkpmZWZ1RHR0ZTJXVmRLY0J5Y0VOMisyR0NzTURreDY2?=
- =?utf-8?B?RVBQVzhQenZRUmROU1lYR1NycGl0SktFQUlnYjFVSHhFWHp0R2J4KzRCcklm?=
- =?utf-8?B?azM1ZDh3TEVib2VHUkpIbHdrMVB2aE15aVdrK1hzOE5wVTZ4a0NaekJvYWE2?=
- =?utf-8?B?UW1CYzRLVVJJbVRSL01QVHhWTmZwdW5yb1VQV3NlanErbEFET3JHb25OK000?=
- =?utf-8?B?UGVpUjA0bWlmNUEyUE10a2N3YWV6TlRPelNDUXFKaWJGUDlZdUZya25ZVk0z?=
- =?utf-8?B?czBpd1lIWlJRWEZSeFMxMHF2MjdxVVVWdVR5ZytWdHhvdHFZOXFtYnFlcXE3?=
- =?utf-8?B?T0dKRGxJcEZjTmlNVXFXeXN1dlpYZms2K2hoeTJaK1h2MGhLcHpNU3MxZFZt?=
- =?utf-8?B?RFlpOU5iUW9lVWhXWmNRd0tKUVNFOTM5K3ZBUGhCZVI2ckM3TFJkUjhPeG0w?=
- =?utf-8?B?WSt2dW1iT05XT2FKdFd4SkFwclpUOExqYnpSVHRva1IvaFo1SEp6dmdXM0xK?=
- =?utf-8?B?YXMzNklNLzlwL1hVdWp2dzJOcm9SWHlHdHR1NUlxcjRNREtqdTM1OVlBMDFv?=
- =?utf-8?B?UTl6RzNocktUeXkzNkFaeWdVN2p4SlVzVnhDMkZzaFRpZldyOXJieS9aeEhP?=
- =?utf-8?B?RW5uWjVNUzl4VklyVHkrTFhRb0JFQlFDM2IraUtTME9pY3F3V09IUm83SFp1?=
- =?utf-8?B?b0xHMFllVzFid245eTRIWnNZTi8xY2drWG9YaFlkamVRTUxCa0ZpWnRnL2tk?=
- =?utf-8?B?SmxtZENvOHROQzJWZ0JlYVZhTzh6Q0x2NFZTUEp1dU9DNzE2QWlBcnBVOG1k?=
- =?utf-8?B?U1pwWnJWZ0l1RVdxc2VwRWo2NTM5V2tWMmxqZk1qc0NkMnczdXVpN01YeERX?=
- =?utf-8?B?SlhZT0dTM0c0blg1bmJNd0d2akFtTnZmeEFWc3VvOWdiL21uOHY0cWVBWld0?=
- =?utf-8?B?ZlJmK3A4UGJwTnpXWHhqUlk3aDRjeGgxUGh3cmV0b3ArODN1WlljcjVnU2Ix?=
- =?utf-8?B?SUhrZ2xTbnlXd20zVllJM09ESVJFV1c3SEJRbi9ScXorMHFxN0RZK1NFL05P?=
- =?utf-8?B?QVNacXRWSVRLcTNldTJQMlNyUmFneFljMEs2Q1psSFh2Q2tZNlczVUgvSk5C?=
- =?utf-8?B?WlR3Znk4YnNTWjFYRmN3UUtlOS9VM3g1eGo3NmtlRDNTMGpNNzRFbHBXc3RT?=
- =?utf-8?B?Um0za2UwUG9oWWwvRW5ZR2pkU2ZSZWx1RS9Nek5kMjFZbGR6bzBDMUdrc3BS?=
- =?utf-8?B?Rjk5cG85MW5FSko4cDRWVlQ2VVdiVDBGdmlHeXFkcmxEQVRoUUpvczE5QXF2?=
- =?utf-8?B?VjEvWEFlOXlOdWpYSGI0SEpiNjRuY3NYUEF6a3UzUU9Kejd6MHYyQ293MXJ4?=
- =?utf-8?B?TDF2cFdTTnpRbncxS3NwNjRZbGFNYnNHUjBOT3d0R3RHcFp5RzJ2NlRTakZR?=
- =?utf-8?Q?4YuxBnVdz3NjpmglZHObWfu+ZIKQWoO5lRfhjTM0K6QF?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C707292D87BEBC43ABD40434399EC03F@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from CH0PR11MB5690.namprd11.prod.outlook.com (2603:10b6:610:ed::9)
+ by BL4PR11MB8870.namprd11.prod.outlook.com (2603:10b6:208:5a8::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Tue, 2 Dec
+ 2025 09:23:21 +0000
+Received: from CH0PR11MB5690.namprd11.prod.outlook.com
+ ([fe80::6b98:f467:da49:e062]) by CH0PR11MB5690.namprd11.prod.outlook.com
+ ([fe80::6b98:f467:da49:e062%4]) with mapi id 15.20.9388.003; Tue, 2 Dec 2025
+ 09:23:20 +0000
+Message-ID: <96d10d84-ecf2-4320-b028-89392aa4f976@intel.com>
+Date: Tue, 2 Dec 2025 14:53:13 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] tests/intel/kms_pm_vrsr: Add test to validate VRSR
+ with system suspend
+To: "Samala, Pranay" <pranay.samala@intel.com>, "Thasleem, Mohammed"
+ <mohammed.thasleem@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>, "Poosa, Karthik" <karthik.poosa@intel.com>
+References: <20251111180004.11865-1-mohammed.thasleem@intel.com>
+ <20251111180004.11865-2-mohammed.thasleem@intel.com>
+ <PH7PR11MB6053406D406468DAB8479E05E7C9A@PH7PR11MB6053.namprd11.prod.outlook.com>
+ <PH7PR11MB60533A10CD2C21E8321A20D6E7C9A@PH7PR11MB6053.namprd11.prod.outlook.com>
+ <PH0PR11MB4806C67F8B4156A537FB81B5E4D4A@PH0PR11MB4806.namprd11.prod.outlook.com>
+ <PH7PR11MB605365FB561855E7F6A8E79DE7DBA@PH7PR11MB6053.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <PH7PR11MB605365FB561855E7F6A8E79DE7DBA@PH7PR11MB6053.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MAXPR01CA0102.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:5d::20) To CH0PR11MB5690.namprd11.prod.outlook.com
+ (2603:10b6:610:ed::9)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|BL4PR11MB8870:EE_
+X-MS-Office365-Filtering-Correlation-Id: 73a0eb52-d614-47de-e435-08de31846f08
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0; ARA:13230040|366016|376014|1800799024|42112799006;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?K1dDWHJGVFVkbzBqZkxsTzdCbnQrekhrV0lPdXVPckdxMEZGK2kzR2IyVk9B?=
+ =?utf-8?B?RHorWGJuMDRIMFhKUkt5Y3pSL2FCVXJ6djBoM1kxMGFRU2x5M2RjYjNOUU9j?=
+ =?utf-8?B?cjNQc1o0UWhCUTZVcHlBY2V5Kyt3SVZSQkVJNkthVFFodHVwRm5YQkZFdUVR?=
+ =?utf-8?B?Z1dNby9rVDhlR3NlQTY5a3lzbUJrUTVHOXlLQjBkaUJyYUpJekc5clVTWUFi?=
+ =?utf-8?B?SnNqbDM2bzhSbWtDVkFWQnpPTmpEQTE0UFRwY1d2TzdTVS9xUC9vYW5VTVNv?=
+ =?utf-8?B?SGZDcThuTDhtMWdWbEsrYXo3Q0V0OHRjTGpzNzlkSndhUXVFTENqSnNjanBT?=
+ =?utf-8?B?YWphTzZWVGdnc0syZnJKamxaUzZqRkF4K2dMVFhCWmxWUFJzaEVVYjVrcFY5?=
+ =?utf-8?B?VnhwM1VnaFZuT1FOUGQwbkpEcW8wbTVHQ2loSHRFMmxyYkNUU3NPUC83amVB?=
+ =?utf-8?B?NnkydFdUVnd2eWpsSG5YdVBPTUZYMFpJWUF6SWwydVhWMzQvUkY3MDNrMk5E?=
+ =?utf-8?B?UkdONVFkSkVvTUErU2hkN2lJMlNpQ2VLalhXUTBjRDUzUitxY0JyaDJaZVJS?=
+ =?utf-8?B?OVcxVXU0SXdtS3FkaStEVDZieFRQTHBjZzdnbjBQM1ViTVNSM3VEcWpRZmhJ?=
+ =?utf-8?B?ZnB3WEVCQVNZT3F1bmpRTkFwSGk1UzU2U3hUcVBmTFFNL2tFblpoTWNJQ08z?=
+ =?utf-8?B?V3ZCSjY1NlFlaUt0czVxQWc3YjlVUGFERU9qam1RRlV0SCtzYldQdUVMc3ov?=
+ =?utf-8?B?bitqV1RJUXp6a0NOUEI2VWNMMmQ2UGRPVEhzWTFZOWJwbExDbjE2UWNLVzdC?=
+ =?utf-8?B?VmFKc0J3YlBHY3F5TS9SUjdJZy9qR3hMMEZCVkczVlpkejVGbXBFaVRaYUJl?=
+ =?utf-8?B?S3ZPa3RLMzFFaktpSm5jb2ZnUXMyalh3MTl2TFZadExKb3dDTXM3Vkc1dkNG?=
+ =?utf-8?B?SGNpZUJxZGhSMWxhR0lBTGhyY0dlbUhFMjNkQ1RTWUtGc0FvQ1l1TzhGSFAz?=
+ =?utf-8?B?WEd6RmhudVZaQkRWUHNzMlFuY0R3MjdUT0Eva1g1UmhQdUZ0ak1uU1pSY0w4?=
+ =?utf-8?B?MWlhcUcxUkZSUXMyTmVMQUt6WmkrcjlmNjh1d25sMmplUGw5NU9pbVNmY2hv?=
+ =?utf-8?B?TzN1dzBqdGRGT0FxVW5oUElERjUzVU1vTGJpUDRDaDJiVFEvK00rTjNQa3Jp?=
+ =?utf-8?B?WGtQNHJJZlR6UjRpR1pNZVI5dDh0allJclRJT04vaWNueHlhaXhrOEFNb1Vi?=
+ =?utf-8?B?VmJtMlptb09nb0JMNUZseC9rQUFhQmxNditkYjNQaXZGNG15N0F1RCtkbFF0?=
+ =?utf-8?B?TUtYeWl0OTAvc1BHakt5QUN4ZjJBZWpjUHAzTEpRNlUyMCtqWU12L2FMM1ZL?=
+ =?utf-8?B?ZDB1YXlVR3pHaGpYVms4VTk1ZExLRVlhNWZQcTkzVUlpU2ZUclJUS2FNTE9q?=
+ =?utf-8?B?cGJReTBtY1pLS2VnelVlL0J1MzFVNWh2bW0rSFQ5Z3VxMERZQXNlOC8zTU8v?=
+ =?utf-8?B?UVZ6RVUrWmtaT3QxeEVOeTNJTjFRa0JKUndyZzcrSTZqb291bUVzektIdUUy?=
+ =?utf-8?B?NS9TdVBHdkhjbGpDeHAyNUNQWU5wa0M1T3FnVHF2UzE1Q05iTUFLVGhSeEVG?=
+ =?utf-8?B?TndwM0FsQ3lwN1V1N3JYTkY4azlOUWt1b0Zwdjdra0NPU1puMEIvNkFDRmZk?=
+ =?utf-8?B?cCtwVUp6VlNhTDU4c0IrVXA3MnMxdDQvVXdYOTRNVXNHTkU2dExHNm4rOG9v?=
+ =?utf-8?B?V1dQK3cvVkVBNTdmT1V4Y1VjVzhmVmtsUGp3UEQyMnRldzM2VXNuU1R1cGRm?=
+ =?utf-8?B?b0ZxRHZmWTFNdjIvSmJPVVhTaWcyOFhRNmc0L3h0TW9veEJqaWgvblArM0F2?=
+ =?utf-8?B?WkEvZG9ISU1tZWV0WEtVQzBDQ3FyZk0vRTFLR1dPNmFZVWs0K1VyQlJNRTVM?=
+ =?utf-8?Q?DEecixE+d7ciOCB8hJBjWxGZU02Ssnc3?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH0PR11MB5690.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(42112799006); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dlNBUFZkK2syYS9NZzZ1cXNKSHcxemI5aHYwUjVpL3dpZDAybFZDRXhWYjJv?=
+ =?utf-8?B?NzNiV0QxeDJRNFl1UEZ1eEJ2TlZZQnhuNUFvNkUyUnlQbkFKRlRmZy9IVXJp?=
+ =?utf-8?B?M25Nd3BKbWp1bFF2WFhzc0NnRzV0eEsyWno5c1BvekZ3ZGNFYjJldTNDRzhu?=
+ =?utf-8?B?azBGbGFMVGRNS0ZJZFAzQUV0M1VjaFUrM0ZjS3ROUENUaVo5QkZrYzhmMlAw?=
+ =?utf-8?B?SUh3NVIxdlRiUFNSV2xWdDZzbWRBdThSWm1OVmQ3UDhlQWl0UzJlbEJVTDJ4?=
+ =?utf-8?B?NkhKMHQ0bWlNakEwQXdQQWZTczVnTDVNbzhXZmNua2tMOEF0U1FXTlpsb3o2?=
+ =?utf-8?B?Zm41ekRyejlod1JVZWhxclMxejFod2JqY0lDKzFoMDg4Q1F4dnMreW1mUjUx?=
+ =?utf-8?B?eHY4bU9vWGNYUVp5d0lJV2c5TmxGU2lTUlBsVXpEdVpYSUVsaXh6SElzWWlS?=
+ =?utf-8?B?TVJ3SkJ3VklPeWdGSzlyMTN0YlR6ZTc4UXlIbU5MN1hVOHp6TkFrQkkzVndv?=
+ =?utf-8?B?Sld5alpFTkY5K0oyUWx5U3VkTnJoVk5udEoyQm1kcTMvWkZKc0E2amp6NlE2?=
+ =?utf-8?B?cDg2R0VOeFZ1UEM2a2tWNVhSRjJhNjI4RzU2TGNDSnRWRWNZN3YrdEhzUUVP?=
+ =?utf-8?B?UnQwSVM5Ym1iVVg4Z09ZQjNKb0JMRnN1TjBqTGZYblJUazBHcnI5S3I3WU1R?=
+ =?utf-8?B?NXQ0TVo2b0RieW5XTUhJZG9CTy9BdVZ3YUlkS3lPUjNteGhqRmZYVGRpVlIz?=
+ =?utf-8?B?RndNZmxwVG1uR0NHTVViK2Fyb2xXaVF1aUJwR1ZUUVcxS3Z4SWx4dUN1d2hY?=
+ =?utf-8?B?eXNJVGJnQzVrUjFkZFlOVVRPRks1bHUxbGlVQmlyMERYLzF4RldBZkRqK2NO?=
+ =?utf-8?B?emhrNk93VWpVUkFLS0NyakZIWHRpdkY2bGpOY2FuRG1CekxtTGhVdXdVaERq?=
+ =?utf-8?B?d0todzU4QjRQd0tieXlVYWNpcitDeXowbEtMTHlqTVVGVVlwa0VsOVc4L1R2?=
+ =?utf-8?B?akhGMGFmVE1uMEFyZDVSM3lNTU1Sc2l3eXpQVkxzMGViQW10NC85NFhTZTNp?=
+ =?utf-8?B?YmRiTndHb2pwYmtWM2g1TU13aE1qTU9pQk1rWGtLRGN1c3d0ekhMZWNzOGJF?=
+ =?utf-8?B?ajB4ejRkK085Uzc1TGN0c2xNZlRmZXVscjdYTWY1M0h6cnNrNnU4b2wzZDJS?=
+ =?utf-8?B?ZDhmZlBXbEZKbmpQRloycFlINjBRZ0pNU1VwMk1zOVZNc3A4NERaMXRhclZn?=
+ =?utf-8?B?UkZENE1jQi85azNQcWdpM0Fqd1JlVUhBUW5rbitscDZEdGlmZE5EMUtHMDlm?=
+ =?utf-8?B?ZjI1UUk2dU1qUUR5clZnQnJtSmtqNkw0V0VwMS8zWUlPdGtqYXZiSVNPVlJ0?=
+ =?utf-8?B?ak1mZUF4eVFIQTBlS1hMMndPVjgvNVkzeXhXdUVKZ1JISm5HNktKaDFPeVk3?=
+ =?utf-8?B?QnBvSy9WcCtJaDVPeE5BQ0t6Q3EzZVREU0xadGNBK0F1c09DbEpydVYxRWp1?=
+ =?utf-8?B?eGVVbWJKVXJwb1hnK1JlR056RWlVbThqWElsalVsMWppSGxNWlRucXV5RzZr?=
+ =?utf-8?B?QmF0bmRkdVhSV05IdXpOdko0K2d5WC9JdzE0ZWZ2S0VMTDIzVkhsSVdyUm9Z?=
+ =?utf-8?B?K3BibGc0TVB1N2VvSW85REZITTdVRFRqQlRUcGM1aFZIWE90SjF6ZU1PYmRq?=
+ =?utf-8?B?V3BVTUFJUVpxREpCSkFmNnFvTHc3bWE0WmNVR3dXeS9HUXYzSFVmNDgveWdP?=
+ =?utf-8?B?RjJVM3NvY2dnRTZXbFJLeXFzVytpMHVybU5uandDSTNZY2VVVytlV2NWMG1G?=
+ =?utf-8?B?YlRZaWJjZjZVNlNFcWc4QitwUG5aWEFHdUQxVndCYTZZZDA0RHdRMDEwOG5S?=
+ =?utf-8?B?Y1BRN0R5a0FYb0YwQzlPZzNUUmw4bmh6YVFLaWc4M08zMU83QWR6dnZJR2M2?=
+ =?utf-8?B?NkxVNEJHSzBWZFRBcGRKa296YlhyNzVvYWpMOWl3UXJJbEpRbTFYM3JBN1pw?=
+ =?utf-8?B?U0tXV0QwQW4rN2JOSC81UVMwMWpTOFJIaGluUTdHR0krTVJ1QWdlUG05WFB4?=
+ =?utf-8?B?U1RhN3UrM1RvMDRYOTE4V3Z0eGpGSnBUaHhpR1hpQkVPRnVaOWsrMnowNjZJ?=
+ =?utf-8?Q?3f71L/B3RMTKmCFzlbDOXoTKM?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 73a0eb52-d614-47de-e435-08de31846f08
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5690.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7733.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f0280c33-51fa-455b-4423-08de31844104
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2025 09:22:02.9351 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: lWMBHKEaCyVvD441aXA3Ina7yMllzY81y8fJzUgQl4t/S4ZWpCVjun6zfFKxrkwxTx1VTlnl6Cjaru4+BVCk6hsDT/BBO0zxKRgAuyBSBVE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF777B3455C
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 09:23:20.5112 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UPPGcUoSODYIPDtoPcfI4Jj1+OXEpMpwruzBN7YBUrusO7EoikKcEwLCsRnabK3PEaf7XSlKAZPtiXJ3BuyKYg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR11MB8870
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -207,137 +201,762 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-DQpOaXQ6IFRoZSBwYXRjaCBzdWJqZWN0IGxpbmUgc2F5cyB4ZV9tdWx0aS1ncHVzdm0gaW5zdGVh
-ZCBvZg0KeGVfbXVsdGlfZ3B1c3ZtLg0KDQovVGhvbWFzDQoNCg0KT24gTW9uLCAyMDI1LTEyLTAx
-IGF0IDA5OjAyICswMDAwLCBuaXNoaXQuc2hhcm1hQGludGVsLmNvbSB3cm90ZToNCj4gRnJvbTog
-TmlzaGl0IFNoYXJtYSA8bmlzaGl0LnNoYXJtYUBpbnRlbC5jb20+DQo+IA0KPiBUaGlzIHRlc3Qg
-YWxsb2NhdGVzIGEgYnVmZmVyIGluIFNWTSwgYWNjZXNzZXMgaXQgZnJvbSBHUFUgMSwgdGhlbiBH
-UFUNCj4gMg0KPiBhbmQgdGhlbiB0aGUgQ1BVLiBJdCB2ZXJpZmllcyB0aGF0IHRoZSBidWZmZXIg
-bWlncmF0ZXMgY29ycmVjdGx5DQo+IGJldHdlZW4NCj4gZGV2aWNlcyBhbmQgcmVtYWlucyBhY2Nl
-c3NpYmxlIGFjcm9zcyBhbGwgYWdlbnRzIGluIGENCj4gbXVsdGktR1BVIGVudmlyb25tZW50Lg0K
-PiANCj4gU2lnbmVkLW9mZi1ieTogTmlzaGl0IFNoYXJtYSA8bmlzaGl0LnNoYXJtYUBpbnRlbC5j
-b20+DQo+IC0tLQ0KPiDCoHRlc3RzL2ludGVsL3hlX211bHRpX2dwdXN2bS5jIHwgMTIyDQo+ICsr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gwqAxIGZpbGUgY2hhbmdlZCwgMTIy
-IGluc2VydGlvbnMoKykNCj4gDQo+IGRpZmYgLS1naXQgYS90ZXN0cy9pbnRlbC94ZV9tdWx0aV9n
-cHVzdm0uYw0KPiBiL3Rlc3RzL2ludGVsL3hlX211bHRpX2dwdXN2bS5jDQo+IGluZGV4IDY4OGVl
-MDc1Ny4uZDdkNmFiMTE2IDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9pbnRlbC94ZV9tdWx0aV9ncHVz
-dm0uYw0KPiArKysgYi90ZXN0cy9pbnRlbC94ZV9tdWx0aV9ncHVzdm0uYw0KPiBAQCAtMTI3LDYg
-KzEyNywxOCBAQA0KPiDCoCAqIERlc2NyaXB0aW9uOg0KPiDCoCAqCU11bHRpLUdQVSBwYWdlIGZh
-dWx0IHRlc3Qgd2l0aCBjb25mbGljdGluZyBtYWR2aXNlIHJlZ2lvbnMNCj4gwqAgKg0KPiArICog
-U1VCVEVTVDogbWdwdS1taWdyYXRpb24tYmFzaWMNCj4gKyAqIERlc2NyaXB0aW9uOg0KPiArICoJ
-VGVzdCBidWZmZXIgbWlncmF0aW9uIGFjcm9zcyBtdWx0aXBsZSBHUFVzIGFuZCBtZW1vcnkNCj4g
-ZG9tYWlucw0KPiArICoJVmFsaWRhdGVzIHRoYXQgYSBzaGFyZWQgYnVmZmVyIGNhbiBtaWdyYXRl
-IGJldHdlZW4gc3lzdGVtDQo+IG1lbW9yeSwNCj4gKyAqCUdQVTEgVlJBTSwgYW5kIEdQVTIgVlJB
-TSB3aGlsZSBtYWludGFpbmluZyBkYXRhIGNvaGVyZW5jeS4NCj4gKyAqDQo+ICsgKiBTVUJURVNU
-OiBtZ3B1LW1pZ3JhdGlvbi1wcmVmZXRjaA0KPiArICogRGVzY3JpcHRpb246DQo+ICsgKglUZXN0
-IGJ1ZmZlciBtaWdyYXRpb24gYWNyb3NzIG11bHRpcGxlIEdQVXMgd2l0aCBleHBsaWNpdA0KPiBw
-cmVmZXRjaCBvcGVyYXRpb25zDQo+ICsgKglTaW1pbGFyIHRvIG1ncHUtbWlncmF0aW9uLWJhc2lj
-IGJ1dCB1c2VzDQo+IFhFX1ZNX1BSRUZFVENIX0FTWU5DIHRvIGV4cGxpY2l0bHkNCj4gKyAqCXRy
-aWdnZXIgcGFnZSBtaWdyYXRpb24gYmVmb3JlIEdQVSBhY2Nlc3MNCj4gKyAqDQo+IMKgICovDQo+
-IMKgDQo+IMKgI2RlZmluZSBNQVhfWEVfUkVHSU9OUwk4DQo+IEBAIC0xNTMsNiArMTY1LDcgQEAN
-Cj4gwqAjZGVmaW5lIE1VTFRJR1BVX1BGQVVMVF9PUAkJQklUKDgpDQo+IMKgI2RlZmluZSBNVUxU
-SUdQVV9DT05DX0FDQ0VTUwkJQklUKDkpDQo+IMKgI2RlZmluZSBNVUxUSUdQVV9DT05GTElDVAkJ
-QklUKDEwKQ0KPiArI2RlZmluZSBNVUxUSUdQVV9NSUdSQVRFCQlCSVQoMTEpDQo+IMKgDQo+IMKg
-I2RlZmluZSBJTklUCTINCj4gwqAjZGVmaW5lIFNUT1JFCTMNCj4gQEAgLTIyMCw2ICsyMzMsMTAg
-QEAgc3RhdGljIHZvaWQgZ3B1X3NpbXVsdF90ZXN0X3dyYXBwZXIoc3RydWN0DQo+IHhlX3N2bV9n
-cHVfaW5mbyAqc3JjLA0KPiDCoAkJCQnCoMKgwqAgc3RydWN0DQo+IGRybV94ZV9lbmdpbmVfY2xh
-c3NfaW5zdGFuY2UgKmVjaSwNCj4gwqAJCQkJwqDCoMKgIHVuc2lnbmVkIGludCBmbGFncyk7DQo+
-IMKgDQo+ICtzdGF0aWMgdm9pZCBncHVfbWlncmF0aW9uX3Rlc3Rfd3JhcHBlcihzdHJ1Y3QgeGVf
-c3ZtX2dwdV9pbmZvICpzcmMsDQo+ICsJCQkJwqDCoMKgwqDCoMKgIHN0cnVjdCB4ZV9zdm1fZ3B1
-X2luZm8gKmRzdCwNCj4gKwkJCQnCoMKgwqDCoMKgwqAgc3RydWN0DQo+IGRybV94ZV9lbmdpbmVf
-Y2xhc3NfaW5zdGFuY2UgKmVjaSwNCj4gKwkJCQnCoMKgwqDCoMKgwqAgdW5zaWduZWQgaW50IGZs
-YWdzKTsNCj4gwqBzdGF0aWMgdm9pZA0KPiDCoGNvbmZsaWN0aW5nX21hZHZpc2Uoc3RydWN0IHhl
-X3N2bV9ncHVfaW5mbyAqZ3B1MSwNCj4gwqAJCcKgwqDCoCBzdHJ1Y3QgeGVfc3ZtX2dwdV9pbmZv
-ICpncHUyLA0KPiBAQCAtMTM3NCw2ICsxMzkxLDk1IEBAIGNvbmZsaWN0aW5nX21hZHZpc2Uoc3Ry
-dWN0IHhlX3N2bV9ncHVfaW5mbw0KPiAqZ3B1MSwNCj4gwqAJY2xlYW51cF92bV9hbmRfcXVldWUo
-Z3B1Miwgdm1bMV0sIGV4ZWNfcXVldWVbMV0pOw0KPiDCoH0NCj4gwqANCj4gK3N0YXRpYyB2b2lk
-DQo+ICttdWx0aWdwdV9taWdyYXRlX3Rlc3Qoc3RydWN0IHhlX3N2bV9ncHVfaW5mbyAqZ3B1MSwN
-Cj4gKwkJwqDCoMKgwqDCoCBzdHJ1Y3QgeGVfc3ZtX2dwdV9pbmZvICpncHUyLA0KPiArCQnCoMKg
-wqDCoMKgIHN0cnVjdCBkcm1feGVfZW5naW5lX2NsYXNzX2luc3RhbmNlICplY2ksDQo+ICsJCcKg
-wqDCoMKgwqAgdW5zaWduZWQgaW50IGZsYWdzKQ0KPiArew0KPiArCXVpbnQ2NF90IGFkZHI7DQo+
-ICsJdWludDMyX3Qgdm1bMl0sIGV4ZWNfcXVldWVbMl0sIGJhdGNoMV9ib1syXTsNCj4gKwl1aW50
-NjRfdCBiYXRjaDFfYWRkclsyXTsNCj4gKwl1aW50NjRfdCAqZGF0YTsNCj4gKwl1aW50MzJfdCB0
-ZXN0X3BhdHRlcm5fc3lzLCB0ZXN0X3BhdHRlcm5fZ3B1MSwNCj4gdGVzdF9wYXR0ZXJuX2dwdTI7
-DQo+ICsJdm9pZCAqY29weV9kc3Q7DQo+ICsJdWludDMyX3QgZmluYWxfdmFsdWU7DQo+ICsNCj4g
-Kwl0ZXN0X3BhdHRlcm5fc3lzID0gMHgxMjM0NTY3ODsNCj4gKwl0ZXN0X3BhdHRlcm5fZ3B1MSA9
-IDB4REVBREJFRUY7DQo+ICsJdGVzdF9wYXR0ZXJuX2dwdTIgPSAweENBRkVCQUJFOw0KPiArDQo+
-ICsJLyogU2tpcCBpZiBlaXRoZXIgR1BVIGRvZXNuJ3Qgc3VwcG9ydCBmYXVsdHMgKi8NCj4gKwlp
-ZiAoIWdwdTEtPnN1cHBvcnRzX2ZhdWx0cyB8fCAhZ3B1Mi0+c3VwcG9ydHNfZmF1bHRzKSB7DQo+
-ICsJCWlndF9kZWJ1ZygiQm90aCBHUFVzIG11c3Qgc3VwcG9ydCBwYWdlIGZhdWx0cyBmb3INCj4g
-dGhpcyB0ZXN0XG4iKTsNCj4gKwkJcmV0dXJuOw0KPiArCX0NCj4gKw0KPiArCWNyZWF0ZV92bV9h
-bmRfcXVldWUoZ3B1MSwgZWNpLCAmdm1bMF0sICZleGVjX3F1ZXVlWzBdKTsNCj4gKwljcmVhdGVf
-dm1fYW5kX3F1ZXVlKGdwdTIsIGVjaSwgJnZtWzFdLCAmZXhlY19xdWV1ZVsxXSk7DQo+ICsNCj4g
-KwlkYXRhID0gYWxpZ25lZF9hbGxvYyhTWl8yTSwgU1pfNEspOw0KPiArCWlndF9hc3NlcnQoZGF0
-YSk7DQo+ICsJbWVtc2V0KGRhdGEsIDAsIFNaXzRLKTsNCj4gKwlhZGRyID0gdG9fdXNlcl9wb2lu
-dGVyKGRhdGEpOw0KPiArDQo+ICsJY29weV9kc3QgPSBhbGlnbmVkX2FsbG9jKFNaXzJNLCBTWl80
-Syk7DQo+ICsJaWd0X2Fzc2VydChjb3B5X2RzdCk7DQo+ICsNCj4gKwlpZ3RfaW5mbygiPT09IFBo
-YXNlIDE6IFN5c3RlbSBNZW1vcnkg4oaSIEdQVTEgVlJBTSA9PT1cbiIpOw0KPiArDQo+ICsJLyog
-Q1BVIHdyaXRlcyBpbml0aWFsIHBhdHRlcm4gaW4gc3lzdGVtIG1lbW9yeSAqLw0KPiArCVdSSVRF
-X09OQ0UoKih1aW50MzJfdCAqKWRhdGEsIHRlc3RfcGF0dGVybl9zeXMpOw0KPiArCWlndF9pbmZv
-KCJDUFUgd3JvdGUgMHgleCB0byBzeXN0ZW0gbWVtb3J5XG4iLA0KPiB0ZXN0X3BhdHRlcm5fc3lz
-KTsNCj4gKw0KPiArCS8qIEdQVTEgd3JpdGVzIG5ldyBwYXR0ZXJuIC0gc2hvdWxkIGhhcHBlbiBp
-biBHUFUxIFZSQU0gKi8NCj4gKwlzdG9yZV9kd29yZF9iYXRjaF9pbml0KGdwdTEtPmZkLCB2bVsw
-XSwgYWRkciwgJmJhdGNoMV9ib1swXSwNCj4gJmJhdGNoMV9hZGRyWzBdLA0KPiArCQkJwqDCoMKg
-wqDCoMKgIHRlc3RfcGF0dGVybl9ncHUxKTsNCj4gKw0KPiArCS8qR1BVMTogTWFkdmlzZSBhbmQg
-UHJlZmV0Y2ggT3BzIHdpdGggcHJlZmVycmVkIGxvY2F0aW9uDQo+IEdQVTEgVlJBTSAqLw0KPiAr
-CWdwdV9tYWR2aXNlX3N5bmMoZ3B1MSwgdm1bMF0sIGV4ZWNfcXVldWVbMF0sIGFkZHIsDQo+ICZi
-YXRjaDFfYWRkclswXSwgZmxhZ3MpOw0KPiArDQo+ICsJaWd0X2luZm8oIj09PSBQaGFzZSAyOiBH
-UFUxIFZSQU0g4oaSIEdQVTIgVlJBTSA9PT1cbiIpOw0KPiArDQo+ICsJLyogR1BVMjogY29weSBH
-UFUxJ3MgdmFsdWUgKi8NCj4gKwlncHVfYmF0Y2hfY3JlYXRlKGdwdTIsIHZtWzFdLCBleGVjX3F1
-ZXVlWzFdLCBhZGRyLA0KPiB0b191c2VyX3BvaW50ZXIoY29weV9kc3QpLA0KPiArCQkJICZiYXRj
-aDFfYm9bMV0sICZiYXRjaDFfYWRkclsxXSwgZmxhZ3MsDQo+IElOSVQpOw0KPiArDQo+ICsJLypH
-UFUyOiBNYWR2aXNlIGFuZCBQcmVmZXRjaCBPcHMgd2l0aCBwcmVmZXJyZWQgbG9jYXRpb24NCj4g
-R1BVMiBWUkFNICovDQo+ICsJZ3B1X21hZHZpc2Vfc3luYyhncHUyLCB2bVsxXSwgZXhlY19xdWV1
-ZVsxXSwNCj4gdG9fdXNlcl9wb2ludGVyKGNvcHlfZHN0KSwNCj4gKwkJCSAmYmF0Y2gxX2FkZHJb
-MV0sIGZsYWdzKTsNCj4gKw0KPiArCS8qIFZlcmlmeSBHUFUxIHdyb3RlIGNvcnJlY3RseSAqLw0K
-PiArCWZpbmFsX3ZhbHVlID0gKih1aW50MzJfdCAqKWNvcHlfZHN0Ow0KPiArCS8vaWd0X2Fzc2Vy
-dF9lcV91MzIoUkVBRF9PTkNFKCoodWludDMyX3QgKiljb3B5X2RzdCksDQo+IHRlc3RfcGF0dGVy
-bl9ncHUxKTsNCj4gKwlpZ3RfYXNzZXJ0X2VxX3UzMihmaW5hbF92YWx1ZSwgdGVzdF9wYXR0ZXJu
-X2dwdTEpOw0KPiArDQo+ICsJaWd0X2luZm8oIj09PSBQaGFzZSAzOiBHUFUyIFZSQU0g4oaSIFN5
-c3RlbSBNZW1vcnkgPT09XG4iKTsNCj4gKw0KPiArCS8qIEdQVTEgd3JpdGVzIG5ldyBwYXR0ZXJu
-IC0gc2hvdWxkIGhhcHBlbiBpbiBHUFUxIFZSQU0gKi8NCj4gKwlzdG9yZV9kd29yZF9iYXRjaF9p
-bml0KGdwdTItPmZkLCB2bVsxXSwNCj4gdG9fdXNlcl9wb2ludGVyKGNvcHlfZHN0KSwNCj4gKwkJ
-CcKgwqDCoMKgwqDCoCAmYmF0Y2gxX2JvWzFdLCAmYmF0Y2gxX2FkZHJbMV0sDQo+IHRlc3RfcGF0
-dGVybl9ncHUyKTsNCj4gKw0KPiArCS8qR1BVMjogTWFkdmlzZSBhbmQgUHJlZmV0Y2ggT3BzIHdp
-dGggcHJlZmVycmVkIGxvY2F0aW9uDQo+IEdQVTIgVlJBTSAqLw0KPiArCWdwdV9tYWR2aXNlX3N5
-bmMoZ3B1Miwgdm1bMV0sIGV4ZWNfcXVldWVbMV0sDQo+IHRvX3VzZXJfcG9pbnRlcihjb3B5X2Rz
-dCksDQo+ICsJCQkgJmJhdGNoMV9hZGRyWzFdLCBmbGFncyk7DQo+ICsNCj4gKwkvKiBDUFUgYWNj
-ZXNzIHNob3VsZCBtaWdyYXRlIGJhY2sgdG8gc3lzdGVtIG1lbW9yeSAqLw0KPiArCWlndF9hc3Nl
-cnRfZXFfdTMyKFJFQURfT05DRSgqKHVpbnQzMl90ICopY29weV9kc3QpLA0KPiB0ZXN0X3BhdHRl
-cm5fZ3B1Mik7DQo+ICsNCj4gKwlpZ3RfaW5mbygiTWlncmF0aW9uIHRlc3QgY29tcGxldGVkIHN1
-Y2Nlc3NmdWxseVxuIik7DQo+ICsNCj4gKwltdW5tYXAoKHZvaWQgKiliYXRjaDFfYWRkclswXSwg
-QkFUQ0hfU0laRShncHUxLT5mZCkpOw0KPiArCW11bm1hcCgodm9pZCAqKWJhdGNoMV9hZGRyWzFd
-LCBCQVRDSF9TSVpFKGdwdTItPmZkKSk7DQo+ICsJYmF0Y2hfZmluaShncHUxLT5mZCwgdm1bMF0s
-IGJhdGNoMV9ib1swXSwgYmF0Y2gxX2FkZHJbMF0pOw0KPiArCWJhdGNoX2ZpbmkoZ3B1Mi0+ZmQs
-IHZtWzFdLCBiYXRjaDFfYm9bMV0sIGJhdGNoMV9hZGRyWzFdKTsNCj4gKwlmcmVlKGRhdGEpOw0K
-PiArCWZyZWUoY29weV9kc3QpOw0KPiArDQo+ICsJY2xlYW51cF92bV9hbmRfcXVldWUoZ3B1MSwg
-dm1bMF0sIGV4ZWNfcXVldWVbMF0pOw0KPiArCWNsZWFudXBfdm1fYW5kX3F1ZXVlKGdwdTIsIHZt
-WzFdLCBleGVjX3F1ZXVlWzFdKTsNCj4gK30NCj4gKw0KPiDCoHN0YXRpYyB2b2lkDQo+IMKgZ3B1
-X21lbV9hY2Nlc3Nfd3JhcHBlcihzdHJ1Y3QgeGVfc3ZtX2dwdV9pbmZvICpzcmMsDQo+IMKgCQnC
-oMKgwqDCoMKgwqAgc3RydWN0IHhlX3N2bV9ncHVfaW5mbyAqZHN0LA0KPiBAQCAtMTQ0Niw2ICsx
-NTUyLDE4IEBAIGdwdV9zaW11bHRfdGVzdF93cmFwcGVyKHN0cnVjdCB4ZV9zdm1fZ3B1X2luZm8N
-Cj4gKnNyYywNCj4gwqAJbXVsdGlncHVfYWNjZXNzX3Rlc3Qoc3JjLCBkc3QsIGVjaSwgZmxhZ3Mp
-Ow0KPiDCoH0NCj4gwqANCj4gK3N0YXRpYyB2b2lkDQo+ICtncHVfbWlncmF0aW9uX3Rlc3Rfd3Jh
-cHBlcihzdHJ1Y3QgeGVfc3ZtX2dwdV9pbmZvICpzcmMsDQo+ICsJCQnCoMKgIHN0cnVjdCB4ZV9z
-dm1fZ3B1X2luZm8gKmRzdCwNCj4gKwkJCcKgwqAgc3RydWN0IGRybV94ZV9lbmdpbmVfY2xhc3Nf
-aW5zdGFuY2UgKmVjaSwNCj4gKwkJCcKgwqAgdW5zaWduZWQgaW50IGZsYWdzKQ0KPiArew0KPiAr
-CWlndF9hc3NlcnQoc3JjKTsNCj4gKwlpZ3RfYXNzZXJ0KGRzdCk7DQo+ICsNCj4gKwltdWx0aWdw
-dV9taWdyYXRlX3Rlc3Qoc3JjLCBkc3QsIGVjaSwgZmxhZ3MpOw0KPiArfQ0KPiArDQo+IMKgc3Rh
-dGljIHZvaWQNCj4gwqB0ZXN0X21ncHVfZXhlYyhpbnQgZ3B1X2NudCwgc3RydWN0IHhlX3N2bV9n
-cHVfaW5mbyAqZ3B1cywNCj4gwqAJwqDCoMKgwqDCoMKgIHN0cnVjdCBkcm1feGVfZW5naW5lX2Ns
-YXNzX2luc3RhbmNlICplY2ksDQo+IEBAIC0xNDYzLDYgKzE1ODEsOCBAQCB0ZXN0X21ncHVfZXhl
-YyhpbnQgZ3B1X2NudCwgc3RydWN0DQo+IHhlX3N2bV9ncHVfaW5mbyAqZ3B1cywNCj4gwqAJCWZv
-cl9lYWNoX2dwdV9wYWlyKGdwdV9jbnQsIGdwdXMsIGVjaSwNCj4gZ3B1X2ZhdWx0X3Rlc3Rfd3Jh
-cHBlciwgZmxhZ3MpOw0KPiDCoAlpZiAoZmxhZ3MgJiBNVUxUSUdQVV9DT05DX0FDQ0VTUykNCj4g
-wqAJCWZvcl9lYWNoX2dwdV9wYWlyKGdwdV9jbnQsIGdwdXMsIGVjaSwNCj4gZ3B1X3NpbXVsdF90
-ZXN0X3dyYXBwZXIsIGZsYWdzKTsNCj4gKwlpZiAoZmxhZ3MgJiBNVUxUSUdQVV9NSUdSQVRFKQ0K
-PiArCQlmb3JfZWFjaF9ncHVfcGFpcihncHVfY250LCBncHVzLCBlY2ksDQo+IGdwdV9taWdyYXRp
-b25fdGVzdF93cmFwcGVyLCBmbGFncyk7DQo+IMKgfQ0KPiDCoA0KPiDCoHN0cnVjdCBzZWN0aW9u
-IHsNCj4gQEAgLTE1MDQsNiArMTYyNCw4IEBAIGlndF9tYWluDQo+IMKgCQl7ICJjb25jdXJyZW50
-LWFjY2Vzcy1iYXNpYyIsIE1VTFRJR1BVX0NPTkNfQUNDRVNTIH0sDQo+IMKgCQl7ICJjb25jdXJy
-ZW50LWFjY2Vzcy1wcmVmZXRjaCIsIE1VTFRJR1BVX1BSRUZFVENIIHwNCj4gTVVMVElHUFVfQ09O
-Q19BQ0NFU1MgfSwNCj4gwqAJCXsgImNvbmN1cnJlbnQtYWNjZXNzLWNvbmZsaWN0IiwgTVVMVElH
-UFVfQ09ORkxJQ1QgfA0KPiBNVUxUSUdQVV9DT05DX0FDQ0VTUyB9LA0KPiArCQl7ICJtaWdyYXRp
-b24tYmFzaWMiLCBNVUxUSUdQVV9NSUdSQVRFIH0sDQo+ICsJCXsgIm1pZ3JhdGlvbi1wcmVmZXRj
-aCIsIE1VTFRJR1BVX1BSRUZFVENIIHwNCj4gTVVMVElHUFVfTUlHUkFURSB9LA0KPiDCoAkJeyBO
-VUxMIH0sDQo+IMKgCX07DQo+IMKgDQoNCg==
+Hi Thasleem/Pranay,
+
+On 12/1/2025 1:35 PM, Samala, Pranay wrote:
+> Hi Thasleem,
+>
+> I mean split the patch logically if possible. For eg, add the subtest/fixture in one patch, and then add functions like primary output detection or so in 2nd, then thread executions in 3rd and so on.
+> It will be easy to review the patch.
+I agree on the split part as this patch is a little bulky, but cannot 
+split functional parts separately as mentioned by Thasleem. IMHO we can 
+move out few of the functions to lib, called it out below.
+>
+> Regards,
+> Pranay
+>
+>> -----Original Message-----
+>> From: Thasleem, Mohammed <mohammed.thasleem@intel.com>
+>> Sent: Thursday, November 20, 2025 8:47 PM
+>> To: Samala, Pranay <pranay.samala@intel.com>; igt-
+>> dev@lists.freedesktop.org; Poosa, Karthik <karthik.poosa@intel.com>
+>> Cc: B S, Karthik <karthik.b.s@intel.com>
+>> Subject: RE: [PATCH v4 1/2] tests/intel/kms_pm_vrsr: Add test to validate
+>> VRSR with system suspend
+>>
+>> Hi @Samala, Pranay ,  This is a new file with one subtest. Is there a specific
+>> rationale for splitting the patch into multiple submissions?
+>>
+>> -----Original Message-----
+>> From: Samala, Pranay <pranay.samala@intel.com>
+>> Sent: 17 November 2025 10:49 AM
+>> To: Thasleem, Mohammed <mohammed.thasleem@intel.com>; igt-
+>> dev@lists.freedesktop.org
+>> Cc: Poosa, Karthik <karthik.poosa@intel.com>; B S, Karthik
+>> <karthik.b.s@intel.com>; Thasleem, Mohammed
+>> <mohammed.thasleem@intel.com>
+>> Subject: RE: [PATCH v4 1/2] tests/intel/kms_pm_vrsr: Add test to validate
+>> VRSR with system suspend
+>>
+>> Also Please split this patch into 2 or more.
+>>
+>>> -----Original Message-----
+>>> From: Samala, Pranay
+>>> Sent: Monday, November 17, 2025 10:14 AM
+>>> To: Mohammed Thasleem <mohammed.thasleem@intel.com>; igt-
+>>> dev@lists.freedesktop.org
+>>> Cc: Poosa, Karthik <karthik.poosa@intel.com>; B S, Karthik
+>>> <Karthik.B.S@intel.com>; Thasleem, Mohammed
+>>> <mohammed.thasleem@intel.com>
+>>> Subject: RE: [PATCH v4 1/2] tests/intel/kms_pm_vrsr: Add test to
+>>> validate VRSR with system suspend
+>>>
+>>> Hi Thasleem,
+>>>
+>>>> -----Original Message-----
+>>>> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
+>>>> Mohammed Thasleem
+>>>> Sent: Tuesday, November 11, 2025 11:30 PM
+>>>> To: igt-dev@lists.freedesktop.org
+>>>> Cc: Poosa, Karthik <karthik.poosa@intel.com>; B S, Karthik
+>>>> <karthik.b.s@intel.com>; Thasleem, Mohammed
+>>>> <mohammed.thasleem@intel.com>
+>>>> Subject: [PATCH v4 1/2] tests/intel/kms_pm_vrsr: Add test to
+>>>> validate VRSR with system suspend
+>>>>
+>>>> This test detect primary connected panel and also adds a test for
+>>>> VRAM Self Refresh (VRSR), focusing on display flip and power
+>>>> management efficiency. It handles transitions between power states
+>>>> like system suspend. The patch includes validation of VRAM residency
+>>>> and power state transitions, ensuring accurate testing of VRSR
+>> functionality.
+>>>> v2: Add skip check for output and primary plane in device struct. (Pranay)
+>>>>      Remove primary plane structure declaration from cleanup. (Pranay)
+>>>>      Use igt_sysfs_open at igt fixture. (Anirban)
+>>>> v3: Add spaces between concatenated string and rename variable.
+>>>> (Pranay)
+>>>> v3: Refactor VRSR test into common function supporting system suspend.
+>>>>
+>>>> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+>>>> ---
+>>>>   tests/intel/kms_pm_vrsr.c | 563
+>>>> ++++++++++++++++++++++++++++++++++++++
+>>>>   tests/meson.build         |   1 +
+>>>>   2 files changed, 564 insertions(+)
+>>>>   create mode 100644 tests/intel/kms_pm_vrsr.c
+>>>>
+>>>> diff --git a/tests/intel/kms_pm_vrsr.c b/tests/intel/kms_pm_vrsr.c
+>>>> new file mode 100644 index 000000000..5a96eebfa
+>>>> --- /dev/null
+>>>> +++ b/tests/intel/kms_pm_vrsr.c
+>>>> @@ -0,0 +1,563 @@
+>>>> +// SPDX-License-Identifier: MIT
+>>>> +/*
+>>>> + * Copyright © 2025 Intel Corporation  */
+>>>> +
+>>>> +/**
+>>>> + * TEST: kms pm vrsr
+>>>> + * Category: Display
+>>>> + * Description: This test to validate VRAM Self Refresh
+>>>> + * Driver requirement: xe
+>>>> + * Mega feature: Display Power Management  */
+>>>> +
+>>>> +#include "igt.h"
+>>>> +#include "igt_sysfs.h"
+>>>> +#include "igt_device.h"
+>>>> +#include "igt_device_scan.h"
+>>>> +#include "igt_pm.h"
+>>>> +#include "intel_common.h"
+>>>> +#include "lib/igt_syncobj.h"
+>>>> +#include "lib/intel_reg.h"
+>>>> +#include "lib/igt_kmod.h"
+>>>> +
+>>>> +#include <dirent.h>
+>>>> +#include <limits.h>
+>>>> +#include <fcntl.h>
+>>>> +#include <string.h>
+>>>> +#include <sys/ioctl.h>
+>>>> +
+>>>> +#include "xe_drm.h"
+>>>> +#include "xe/xe_ioctl.h"
+>>>> +#include "xe/xe_query.h"
+>>>> +
+>>>> +#define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
+>>>> +#define KMS_POLL_DISABLE 0
+>>>> +
+>>>> +#define MAX_N_EXEC_QUEUES 16
+>>>> +#define NO_SUSPEND -1
+>>>> +#define NO_RPM -1
+>>>> +
+>>>> +#define USERPTR (0x1 << 0)
+>>>> +#define PREFETCH (0x1 << 1)
+>>>> +#define UNBIND_ALL (0x1 << 2)
+>>>> +
+>>>> +/**
+>>>> + * SUBTEST: vrsr-system-suspend
+>>>> + * Description: Validated VRSR during system suspend alongside
+>>>> +active display flip
+>>>> + *
+>>>> + */
+>>>> +
+>>>> +IGT_TEST_DESCRIPTION("This test to validate VRAM Self Refresh");
+>>>> +
+>>>> +bool kms_poll_saved_state;
+>>>> +
+>>>> +typedef struct {
+>>>> +	int fd_xe;
+>>>> +	int debugfs_fd;
+>>>> +	struct igt_fb fb_white;
+>>>> +	drmModeModeInfo *mode;
+>>>> +	igt_display_t display;
+>>>> +	igt_output_t *output;
+>>>> +	igt_plane_t *primary;
+>>>> +	struct pci_device *pci_xe;
+>>>> +	struct pci_device *pci_root;
+>>>> +	char pci_slot_name[NAME_MAX];
+>>> NAME_MAX is not defined anywhere.
+>>> And since a PCI slot name has a known format (e.g., "0000:00:02.0"),
+>>> you can use a fixed size.
+>>>
+>>>> +	drmModeResPtr res;
+>>>> +} device_t;
+>>>> +
+>>>> +static pthread_mutex_t suspend_lock = PTHREAD_MUTEX_INITIALIZER;
+>>>> static
+>>>> +pthread_cond_t suspend_cond = PTHREAD_COND_INITIALIZER; static
+>>>> +pthread_mutex_t child_ready_lock = PTHREAD_MUTEX_INITIALIZER;
+>>> static
+>>>> +pthread_cond_t child_ready_cond = PTHREAD_COND_INITIALIZER;
+>> static
+>>>> bool
+>>>> +child_ready;
+>>>> +
+>>>> +typedef struct {
+>>>> +	device_t device;
+>>>> +	struct drm_xe_engine_class_instance *eci;
+>>>> +	int n_exec_queues;
+>>>> +	int n_execs;
+>>>> +	enum igt_suspend_state s_state;
+>>>> +	enum igt_acpi_d_state d_state;
+>>>> +	unsigned int flags;
+>>>> +} child_exec_args;
+>>>> +
+>>>> +typedef enum {
+>>>> +	SUSPEND_SYSTEM,
+>>>> +} suspend_type;
+>>>> +
+>>>> +static void setup_primary(device_t *device) {
+>>>> +	igt_plane_set_fb(device->primary, NULL);
+This will not take effect without a commit. Is this required?
+>>>> +	igt_create_color_fb(device->fd_xe,
+>>>> +			device->mode->hdisplay, device->mode->vdisplay,
+>>>> +			DRM_FORMAT_XRGB8888,
+>>>> +			DRM_FORMAT_MOD_LINEAR,
+>>>> +			1.0, 1.0, 1.0,
+>>>> +			&device->fb_white);
+>>>> +	igt_plane_set_fb(device->primary, &device->fb_white);
+>>>> +	igt_display_commit(&device->display);
+>>>> +}
+>>>> +
+>>>> +/* Assumption that detected panel is primary display gpu */ static
+>>>> +void detect_primary_output(device_t *device) {
+>>>> +	igt_display_t *display = &device->display;
+>>>> +	igt_output_t *output;
+>>>> +	enum pipe pipe;
+>>>> +
+>>>> +	for_each_pipe_with_valid_output(display, pipe, output) {
+>>>> +		drmModeConnectorPtr connector = output-
+>>>>> config.connector;
+>>>> +
+>>>> +		if (connector->connection != DRM_MODE_CONNECTED)
+This check is redundant and already covered with 
+for_each_pipe_with_valid_output.
+>>>> +			continue;
+>>>> +
+>>>> +		igt_display_reset(display);
+>>>> +		igt_output_set_pipe(output, pipe);
+>>>> +
+>>>> +		if (!intel_pipe_output_combo_valid(display))
+>>>> +			continue;
+>>>> +
+>>>> +		device->output = output;
+>>>> +		device->mode = igt_output_get_mode(output);
+>>>> +		device->primary = igt_output_get_plane_type(output,
+>>>> +DRM_PLANE_TYPE_PRIMARY);
+>>>> +
+>>>> +		break;
+>>>> +	}
+>>>> +
+>>>> +	igt_require_f(device->output && device->mode, "No valid connected
+>>>> +output found\n"); }
+>>>> +
+>>>> +/* runtime_usage is only available if kernel build
+>>>> +CONFIG_PM_ADVANCED_DEBUG */ static bool
+>>>> runtime_usage_available(struct
+>>>> +pci_device *pci) {
+>>>> +	char name[PATH_MAX];
+>>>> +
+>>>> +	snprintf(name, PATH_MAX,
+>>>> "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/runtime_usage",
+>>>> +		 pci->domain, pci->bus, pci->dev, pci->func);
+>>>> +	return access(name, F_OK) == 0;
+>>>> +}
+>>>> +
+>>>> +static uint64_t get_vram_d3cold_threshold(int sysfs) {
+Could this be moved to lib?
+>>>> +	uint64_t threshold;
+>>>> +	char path[64];
+>>>> +	int ret;
+>>>> +
+>>>> +	sprintf(path, "device/vram_d3cold_threshold");
+>>>> +	igt_require_f(!faccessat(sysfs, path, R_OK, 0),
+>>>> "vram_d3cold_threshold
+>>>> +is not present\n");
+>>>> +
+>>>> +	ret = igt_sysfs_scanf(sysfs, path, "%" PRIu64 "", &threshold);
+>>>> +	igt_assert_lt(0, ret);
+>>>> +
+>>>> +	return threshold;
+>>>> +}
+>>>> +
+>>>> +static void set_vram_d3cold_threshold(int sysfs, uint64_t threshold) {
+
+Same here.
+
+Thanks and Regards,
+Karthik.B.S
+>>>> +	char path[64];
+>>>> +	int ret;
+>>>> +
+>>>> +	sprintf(path, "device/vram_d3cold_threshold");
+>>>> +
+>>>> +	if (!faccessat(sysfs, path, R_OK | W_OK, 0))
+>>>> +		ret = igt_sysfs_printf(sysfs, path, "%" PRIu64 "", threshold);
+>>>> +	else
+>>>> +		igt_warn("vram_d3cold_threshold is not present\n");
+>>>> +
+>>>> +	igt_assert_lt(0, ret);
+>>>> +}
+>>>> +
+>>>> +static bool in_d3(device_t device, enum igt_acpi_d_state state) {
+Same here.
+>>>> +	/* We need to wait for the autosuspend to kick in before we can
+>>>> check */
+>>>> +	if
+>>>> (!igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED))
+>>>> +		return false;
+>>>> +
+>>>> +	if (runtime_usage_available(device.pci_xe) &&
+>>>> +	    igt_pm_get_runtime_usage(device.pci_xe) != 0)
+>>>> +		return false;
+>>>> +
+>>>> +	switch (state) {
+>>>> +	case IGT_ACPI_D3Cold:
+>>>> +		return
+>>>> igt_wait(igt_pm_get_acpi_real_d_state(device.pci_root) ==
+>>>> +				IGT_ACPI_D3Cold, 10000, 100);
+>>>> +	default:
+>>>> +		igt_info("Invalid D3 State\n");
+>>>> +		igt_assert(0);
+>>>> +	}
+>>>> +
+>>>> +	return true;
+>>>> +}
+>>>> +
+>>>> +#define MAX_VMAS 2
+>>>> +
+>>>> +static void*
+>>>> +child_exec(void *arguments)
+>>>> +{
+>>>> +	child_exec_args *args = (child_exec_args *)arguments;
+>>>> +
+>>>> +	uint32_t vm;
+>>>> +	uint64_t addr = 0x1a0000;
+>>>> +	struct drm_xe_sync sync[2] = {
+>>>> +		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags =
+>>>> DRM_XE_SYNC_FLAG_SIGNAL, },
+>>>> +		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags =
+>>>> DRM_XE_SYNC_FLAG_SIGNAL, },
+>>>> +	};
+>>>> +	struct drm_xe_exec exec = {
+>>>> +		.num_batch_buffer = 1,
+>>>> +		.num_syncs = 2,
+>>>> +		.syncs = to_user_pointer(sync),
+>>>> +	};
+>>>> +	int n_vmas = args->flags & UNBIND_ALL ? MAX_VMAS : 1;
+>>>> +	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
+>>>> +	uint32_t bind_exec_queues[MAX_N_EXEC_QUEUES];
+>>>> +	uint32_t syncobjs[MAX_N_EXEC_QUEUES];
+>>>> +	size_t bo_size;
+>>>> +	uint32_t bo = 0;
+>>>> +	struct {
+>>>> +		uint32_t batch[16];
+>>>> +		uint64_t pad;
+>>>> +		uint32_t data;
+>>>> +	} *data;
+>>>> +	int i, b;
+>>>> +	uint64_t active_time;
+>>>> +	bool check_rpm = (args->d_state == IGT_ACPI_D3Hot ||
+>>>> +			  args->d_state == IGT_ACPI_D3Cold);
+>>>> +
+>>>> +	igt_assert_lte(args->n_exec_queues, MAX_N_EXEC_QUEUES);
+>>>> +	igt_assert_lt(0, args->n_execs);
+>>>> +
+>>>> +	if (check_rpm) {
+>>>> +		igt_assert(in_d3(args->device, args->d_state));
+>>>> +		active_time = igt_pm_get_runtime_active_time(args-
+>>>>> device.pci_xe);
+>>>> +	}
+>>>> +
+>>>> +	vm = xe_vm_create(args->device.fd_xe, 0, 0);
+>>>> +
+>>>> +	if (check_rpm)
+>>>> +		igt_assert(igt_pm_get_runtime_active_time(args-
+>>>>> device.pci_xe) >
+>>>> +			   active_time);
+>>>> +
+>>>> +	bo_size = sizeof(*data) * args->n_execs;
+>>>> +	bo_size = xe_bb_size(args->device.fd_xe, bo_size);
+>>>> +
+>>>> +	if (args->flags & USERPTR) {
+>>>> +		data = aligned_alloc(xe_get_default_alignment(args-
+>>>>> device.fd_xe),
+>>>> +				     bo_size);
+>>>> +		memset(data, 0, bo_size);
+>>>> +	} else {
+>>>> +		if (args->flags & PREFETCH)
+>>>> +			bo = xe_bo_create(args->device.fd_xe, 0, bo_size,
+>>>> +					  all_memory_regions(args-
+>>>>> device.fd_xe) |
+>>>> +					  vram_if_possible(args-
+>>>>> device.fd_xe, 0),
+>>>> +
+>>>> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+>>>> +		else
+>>>> +			bo = xe_bo_create(args->device.fd_xe, vm, bo_size,
+>>>> +					  vram_if_possible(args-
+>>>>> device.fd_xe, args->eci->gt_id),
+>>>> +
+>>>> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+>>>> +		data = xe_bo_map(args->device.fd_xe, bo, bo_size);
+>>>> +	}
+>>>> +
+>>>> +	for (i = 0; i < args->n_exec_queues; i++) {
+>>>> +		exec_queues[i] = xe_exec_queue_create(args->device.fd_xe,
+>>>> vm,
+>>>> +						      args->eci, 0);
+>>>> +		bind_exec_queues[i] = 0;
+>>>> +		syncobjs[i] = syncobj_create(args->device.fd_xe, 0);
+>>>> +	};
+>>>> +
+>>>> +	sync[0].handle = syncobj_create(args->device.fd_xe, 0);
+>>>> +
+>>>> +	if (bo) {
+>>>> +		for (i = 0; i < n_vmas; i++)
+>>>> +			xe_vm_bind_async(args->device.fd_xe, vm,
+>>>> bind_exec_queues[0], bo,
+>>>> +					 0, addr + i * bo_size, bo_size, sync,
+>>>> 1);
+>>>> +	} else {
+>>>> +		xe_vm_bind_userptr_async(args->device.fd_xe, vm,
+>>>> bind_exec_queues[0],
+>>>> +					 to_user_pointer(data), addr, bo_size,
+>>>> sync, 1);
+>>>> +	}
+>>>> +
+>>>> +	if (args->flags & PREFETCH)
+>>>> +		xe_vm_prefetch_async(args->device.fd_xe, vm,
+>>>> bind_exec_queues[0], 0,
+>>>> +				     addr, bo_size, sync, 1, 0);
+>>>> +
+>>>> +	if (check_rpm) {
+>>>> +		igt_assert(in_d3(args->device, args->d_state));
+>>>> +		active_time = igt_pm_get_runtime_active_time(args-
+>>>>> device.pci_xe);
+>>>> +	}
+>>>> +
+>>>> +	for (i = 0; i < args->n_execs; i++) {
+>>>> +		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+>>>> +		uint64_t batch_addr = addr + batch_offset;
+>>>> +		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+>>>> +		uint64_t sdi_addr = addr + sdi_offset;
+>>>> +		int e = i % args->n_exec_queues;
+>>>> +
+>>>> +		b = 0;
+>>>> +		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+>>>> +		data[i].batch[b++] = sdi_addr;
+>>>> +		data[i].batch[b++] = sdi_addr >> 32;
+>>>> +		data[i].batch[b++] = 0xc0ffee;
+>>>> +		data[i].batch[b++] = MI_BATCH_BUFFER_END;
+>>>> +		igt_assert(b <= ARRAY_SIZE(data[i].batch));
+>>>> +
+>>>> +		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+>>>> +		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+>>>> +		sync[1].handle = syncobjs[e];
+>>>> +
+>>>> +		exec.exec_queue_id = exec_queues[e];
+>>>> +		exec.address = batch_addr;
+>>>> +
+>>>> +		if (e != i)
+>>>> +			syncobj_reset(args->device.fd_xe, &syncobjs[e], 1);
+>>>> +
+>>>> +		xe_exec(args->device.fd_xe, &exec);
+>>>> +
+>>>> +		igt_assert(syncobj_wait(args->device.fd_xe, &syncobjs[e], 1,
+>>>> +					INT64_MAX, 0, NULL));
+>>>> +		igt_assert_eq(data[i].data, 0xc0ffee);
+>>>> +
+>>>> +		if (i == args->n_execs / 2 && args->s_state != NO_SUSPEND) {
+>>>> +			/* Until this point, only one thread runs at a given
+>>>> time. Signal
+>>>> +			 * the parent that this thread will sleep, for the
+>>>> parent to
+>>>> +			 * create another thread.
+>>>> +			 */
+>>>> +			pthread_mutex_lock(&child_ready_lock);
+>>>> +			child_ready = true;
+>>>> +			pthread_cond_signal(&child_ready_cond);
+>>>> +			pthread_mutex_unlock(&child_ready_lock);
+>>>> +
+>>>> +			/* Wait for the suspend and resume to finish */
+>>>> +			pthread_mutex_lock(&suspend_lock);
+>>>> +			pthread_cond_wait(&suspend_cond,
+>>>> &suspend_lock);
+>>>> +			pthread_mutex_unlock(&suspend_lock);
+>>>> +
+>>>> +			/* From this point, all threads will run concurrently */
+>>>> +		}
+>>>> +	}
+>>>> +
+>>>> +	igt_assert(syncobj_wait(args->device.fd_xe, &sync[0].handle, 1,
+>>>> +				INT64_MAX, 0, NULL));
+>>>> +
+>>>> +	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+>>>> +	if (n_vmas > 1)
+>>>> +		xe_vm_unbind_all_async(args->device.fd_xe, vm, 0, bo, sync,
+>>>> 1);
+>>>> +	else
+>>>> +		xe_vm_unbind_async(args->device.fd_xe, vm,
+>>>> bind_exec_queues[0], 0,
+>>>> +				   addr, bo_size, sync, 1);
+>>>> +	igt_assert(syncobj_wait(args->device.fd_xe, &sync[0].handle, 1,
+>>>> +				INT64_MAX, 0, NULL));
+>>>> +
+>>>> +	for (i = 0; i < args->n_execs; i++)
+>>>> +		igt_assert_eq(data[i].data, 0xc0ffee);
+>>>> +
+>>>> +	syncobj_destroy(args->device.fd_xe, sync[0].handle);
+>>>> +	for (i = 0; i < args->n_exec_queues; i++) {
+>>>> +		syncobj_destroy(args->device.fd_xe, syncobjs[i]);
+>>>> +		xe_exec_queue_destroy(args->device.fd_xe, exec_queues[i]);
+>>>> +		if (bind_exec_queues[i])
+>>>> +			xe_exec_queue_destroy(args->device.fd_xe,
+>>>> bind_exec_queues[i]);
+>>>> +	}
+>>>> +
+>>>> +	if (bo) {
+>>>> +		munmap(data, bo_size);
+>>>> +		gem_close(args->device.fd_xe, bo);
+>>>> +	} else {
+>>>> +		free(data);
+>>>> +	}
+>>>> +
+>>>> +	xe_vm_destroy(args->device.fd_xe, vm);
+>>>> +
+>>>> +	if (check_rpm) {
+>>>> +		igt_assert(igt_pm_get_runtime_active_time(args-
+>>>>> device.pci_xe) >
+>>>> +			   active_time);
+>>>> +		igt_assert(in_d3(args->device, args->d_state));
+>>>> +	}
+>>>> +
+>>>> +	/* Tell the parent that we are ready. This should run only when
+>>>> +the
+>>>> code
+>>>> +	 * is not supposed to suspend.
+>>>> +	 */
+>>>> +	if (args->n_execs <= 1 || args->s_state == NO_SUSPEND)  {
+>>>> +		pthread_mutex_lock(&child_ready_lock);
+>>>> +		child_ready = true;
+>>>> +		pthread_cond_signal(&child_ready_cond);
+>>>> +		pthread_mutex_unlock(&child_ready_lock);
+>>>> +	}
+>>>> +	return NULL;
+>>>> +}
+>>>> +
+>>>> +/* Do one suspend and resume cycle for all xe engines.
+>>>> + *  - Create a child_exec() thread for each xe engine. Run only one
+>> thread
+>>>> + *    at a time. The parent will wait for the child to signal it is ready
+>>>> + *    to sleep before creating a new thread.
+>>>> + *  - Put child_exec() to sleep where it expects to suspend and
+>>>> +resume
+>>>> + *  - Wait for all child_exec() threads to sleep
+>>>> + *  - Run one suspend and resume cycle
+>>>> + *  - Wake up all child_exec() threads at once. They will run concurrently.
+>>>> + *  - Wait for all child_exec() threads to complete  */ static void
+>>>> +test_exec(device_t device, int n_exec_queues, int n_execs,
+>>>> +		  enum igt_suspend_state s_state, enum igt_acpi_d_state
+>>>> d_state,
+>>>> +		  unsigned int flags)
+>>>> +{
+>>>> +	enum igt_suspend_test test = s_state == SUSPEND_STATE_DISK ?
+>>>> +				     SUSPEND_TEST_DEVICES :
+>>>> SUSPEND_TEST_NONE;
+>>>> +	struct drm_xe_engine_class_instance *eci;
+>>>> +	int active_threads = 0;
+>>>> +	pthread_t threads[65]; /* MAX_ENGINES + 1 */
+>>> Avoid using magic numbers. Better to define the max_engines as a macro
+>>> #define MAX_ENGINES 64.
+>>>
+>>> Or can we derive number of engines and assign?
+>>>
+>>>> +	child_exec_args args;
+>>> The args struct is reused for every thread.
+>>> This creates a race condition because, the first thread might not read
+>>> args.eci yet, meanwhile the parent overwrites args.eci for the next engine.
+>>> Allocate separate args for each thread.
+>>>
+>>>> +
+>>>> +	xe_for_each_engine(device.fd_xe, eci) {
+>>>> +		args.device = device;
+>>>> +		args.eci = eci;
+>>>> +		args.n_exec_queues = n_exec_queues;
+>>>> +		args.n_execs = n_execs;
+>>>> +		args.s_state = s_state;
+>>>> +		args.d_state = d_state;
+>>>> +		args.flags = flags;
+>>>> +
+>>>> +		pthread_create(&threads[active_threads], NULL, child_exec,
+>>>> &args);
+>>>> +		active_threads++;
+>>>> +
+>>>> +		pthread_mutex_lock(&child_ready_lock);
+>>>> +		while (!child_ready)
+>>> Here parent checks whether the child is ready or not. This works only
+>>> if you have ONE CHILD THREAD.
+>>> But you are creating many threads (one per engine). That means ALL
+>>> threads try to signal that they are “ready”, but they all write into
+>>> the same single flag
+>>>
+>>>> +			pthread_cond_wait(&child_ready_cond,
+>>>> &child_ready_lock);
+>>>> +		child_ready = false;
+>>>> +		pthread_mutex_unlock(&child_ready_lock);
+>>>> +	}
+>>>> +
+>>>> +	if (n_execs > 1 && s_state != NO_SUSPEND) {
+>>> Suspend only happens if n_execs > 1 - why this requirement?
+>>> In the main test, vrsr_suspend_test() calls this with n_execs = 1, so
+>>> suspend never happens in test_exec()
+>>>
+>>>> +		igt_system_suspend_autoresume(s_state, test);
+>>>> +
+>>>> +		pthread_mutex_lock(&suspend_lock);
+>>>> +		pthread_cond_broadcast(&suspend_cond);
+>>>> +		pthread_mutex_unlock(&suspend_lock);
+>>>> +	}
+>>>> +
+>>>> +	for (int i = 0; i < active_threads; i++)
+>>>> +		pthread_join(threads[i], NULL);
+>>>> +
+>>>> +	active_threads = 0;
+>>> This variable is no longer used further.
+>>>
+>>>> +}
+>>>> +
+>>>> +static uint64_t get_mods_count(char *pkg_data) {
+>>>> +	char *e;
+>>>> +	long long ret;
+>>>> +	char *s = strchr(pkg_data, ':');
+>>>> +
+>>>> +	igt_assert(s);
+>>>> +	s++;
+>>>> +	ret = strtol(s, &e, 10);
+>>>> +	igt_assert(((ret != LLONG_MIN && ret != LLONG_MAX) || errno !=
+>>>> ERANGE)
+>>>> +		   && e > s && *e == '\n' && ret >= 0);
+>>>> +
+>>>> +	return ret;
+>>>> +}
+>>>> +
+>>>> +static uint64_t read_mods(int debugfs_fd) {
+>>>> +	int ret;
+>>>> +	char buf[256];
+>>>> +	char *mods_ptr;
+>>>> +
+>>>> +	ret = igt_debugfs_simple_read(debugfs_fd, "dgfx_pkg_residencies",
+>>>> buf, sizeof(buf));
+>>>> +	igt_assert_f(ret >= 0, "Debugfs dgfx_pkg_residencies is not
+>>>> +present.\n");
+>>>> +
+>>>> +	mods_ptr = strstr(buf, "Package ModS : ");
+>>>> +	igt_skip_on_f(!mods_ptr, "Package ModS is not supported.\n");
+>>>> +
+>>>> +	return get_mods_count(mods_ptr);
+>>>> +}
+>>>> +
+>>>> +static void cleanup(device_t device) {
+>>>> +	igt_plane_set_fb(device.primary, NULL);
+>>>> +	igt_display_commit(&device.display);
+>>>> +	igt_remove_fb(device.fd_xe, &device.fb_white); }
+>>>> +
+>>>> +static void vrsr_suspend_test(device_t *device, int sysfs_fd,
+>>>> +suspend_type type) {
+>>>> +	uint64_t orig_threshold, mods_prev_value, mods_curr_value;
+>>>> +
+>>>> +	detect_primary_output(device);
+>>>> +	setup_primary(device);
+>>>> +	orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
+>>>> +	mods_prev_value = read_mods(device->debugfs_fd);
+>>>> +
+>>>> +	/* TO DO: Created fb >300MB instead making 0 threshold. */
+>>>> +	set_vram_d3cold_threshold(sysfs_fd, 0);
+>>>> +
+>>>> +	switch (type) {
+>>>> +	case SUSPEND_SYSTEM:
+>>>> +		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE,
+>>>> SUSPEND_TEST_NONE);
+>>>> +		break;
+>>>> +	}
+>>>> +
+>>>> +	mods_curr_value = read_mods(device->debugfs_fd);
+>>>> +
+>>>> +	/* Restore threshold */
+>>>> +	set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
+>>>> +	igt_assert_f(mods_curr_value > mods_prev_value,
+>>>> +		     "Mods residency is inaccurate: %" PRIu64 "\n",
+>>>> mods_curr_value);
+>>>> +
+>>>> +	cleanup(*device);
+>>> Cleanup will not happen if the test fails early.
+>>>
+>>>> +}
+>>>> +
+>>>> +static void kms_poll_state_restore(int sig) {
+>>>> +	int sysfs_fd;
+>>>> +
+>>>> +	sysfs_fd = open(KMS_HELPER, O_RDONLY);
+>>>> +
+>>>> +	if (sysfs_fd >= 0) {
+>>>> +		__igt_sysfs_set_boolean(sysfs_fd, "poll",
+>>>> kms_poll_saved_state);
+>>> This kms_poll_saved_state is never actually saved
+>>>
+>>>> +		close(sysfs_fd);
+>>>> +	}
+>>>> +}
+>>>> +
+>>>> +igt_main
+>>>> +{
+>>>> +	char buf[256];
+>>>> +	device_t device;
+>>>> +	int sysfs_fd, ret;
+>>>> +
+>>>> +	igt_fixture {
+>>>> +		memset(&device, 0, sizeof(device));
+>>>> +		device.fd_xe = drm_open_driver(DRIVER_XE |
+>>>> DRIVER_INTEL);
+>>>> +		kmstest_set_vt_graphics_mode();
+>>>> +		device.debugfs_fd = igt_debugfs_dir(device.fd_xe);
+>>>> +		igt_require_f(device.debugfs_fd != -1, "debugfs directory not
+>>>> accessible\n");
+>>>> +		igt_display_require(&device.display, device.fd_xe);
+>>>> +
+>>>> +		ret = igt_debugfs_simple_read(device.debugfs_fd,
+>>>> "vrsr_capable", buf, sizeof(buf));
+>>>> +		igt_require_f(ret >= 0, "Debugfs vrsr_capable is not
+>>>> present.\n");
+>>>> +		igt_require_f(strstr(buf, "Y"), "VRSR is not enabled.\n");
+>>>> +
+>>>> +		device.pci_xe = igt_device_get_pci_device(device.fd_xe);
+>>>> +		device.pci_root =
+>>>> igt_device_get_pci_root_port(device.fd_xe);
+>>>> +		igt_device_get_pci_slot_name(device.fd_xe,
+>>>> device.pci_slot_name);
+>>> You're getting the PCI slot name but never using it in the test.
+>>> Remove it if not needed.
+>>>
+>>> Regards,
+>>> Pranay
+>>>
+>>>> +
+>>>> +		/* Always perform initial once-basic exec checking for health
+>>>> */
+>>>> +		test_exec(device, 1, 1, NO_SUSPEND, NO_RPM, 0);
+>>>> +
+>>>> +		sysfs_fd = igt_sysfs_open(device.fd_xe);
+>>>> +		device.res = drmModeGetResources(device.fd_xe);
+>>>> +		igt_install_exit_handler(kms_poll_state_restore);
+>>>> +	}
+>>>> +
+>>>> +	igt_describe("Validated VRSR during system suspend alongside
+>>>> +active
+>>>> display flip");
+>>>> +	igt_subtest("vrsr-system-suspend")
+>>>> +		vrsr_suspend_test(&device, sysfs_fd, SUSPEND_SYSTEM);
+>>>> +
+>>>> +	igt_fixture {
+>>>> +		close(device.debugfs_fd);
+>>>> +		close(sysfs_fd);
+>>>> +		drmModeFreeResources(device.res);
+>>>> +		igt_display_fini(&device.display);
+>>>> +		drm_close_driver(device.fd_xe);
+>>>> +	}
+>>>> +
+>>>> +	igt_exit();
+>>>> +}
+>>>> diff --git a/tests/meson.build b/tests/meson.build index
+>>>> 9736f2338..6e913cb07 100644
+>>>> --- a/tests/meson.build
+>>>> +++ b/tests/meson.build
+>>>> @@ -269,6 +269,7 @@ intel_kms_progs = [
+>>>>   	'kms_pm_dc',
+>>>>   	'kms_pm_lpsp',
+>>>>   	'kms_pm_rpm',
+>>>> +        'kms_pm_vrsr',
+>>>>   	'kms_psr',
+>>>>   	'kms_psr2_sf',
+>>>>   	'kms_psr2_su',
+>>>> --
+>>>> 2.25.1
