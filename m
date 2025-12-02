@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D664D1171E
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Dec 2025 17:51:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FAEBD12668
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Dec 2025 18:09:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B85E10E69F;
-	Tue,  2 Dec 2025 17:51:33 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 997CA10E16F;
- Tue,  2 Dec 2025 17:51:32 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5581593177354943157=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9765E10E185;
+	Tue,  2 Dec 2025 18:09:03 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="curOPzUh";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1DFE510E185
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Dec 2025 18:09:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1764698943; x=1796234943;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=nteXz7Jwr8TbmjY9KKHN1rr9RXWyDngTuR55RqOudS8=;
+ b=curOPzUhV6vifsM+Xr3XuwmtB4GmrhbYqasN4KkrTDeZKAG75AXoDWVK
+ Xzkumz9RC8O1KWFKUJY5yImsXHpED9fpD3DC1LgsUf44mq3FISviVQqEG
+ GrUn+Jj3/JtQq3sCCfmAvzhyklM0yDrcp2LQpju+fo7LC+J53CX9zwh8S
+ BYnQ7oUNnPrW5X9OKkMYyafQpkwgwbFPGfJ7eYidvL+wGlItEUvpNJdvc
+ amo5k718z2bWQ2k23Ha+0LFdgvrP699HlhbSHzQejf1A7KunCXz8JKzlr
+ GguPgIVuxvuc6l/4Qqxud0Ve7hSpplKT4Qrlr4rg3e/eLCvON55mORJKY A==;
+X-CSE-ConnectionGUID: JWeIfCbcSn6yCdFmmy+Dig==
+X-CSE-MsgGUID: lenTbFiLQLWLjCEzkLTY+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="66570800"
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="66570800"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Dec 2025 10:09:02 -0800
+X-CSE-ConnectionGUID: yrjPE1C3S0ODWXMNHbtMWA==
+X-CSE-MsgGUID: Qizc9AoYRJCjzg7P9cF5vw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,243,1758610800"; d="scan'208";a="198914790"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.140])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Dec 2025 10:08:59 -0800
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Jari Tahvanainen <jari.tahvanainen@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Subject: [PATCH i-g-t v1 0/3] intel-ci: unify Xe and i915 block/test/lists
+Date: Tue,  2 Dec 2025 19:08:48 +0100
+Message-ID: <20251202180851.148444-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Madvise_feature_in_SVM_fo?=
- =?utf-8?q?r_Multi-GPU_configs?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 02 Dec 2025 17:51:32 -0000
-Message-ID: <176469789260.51117.9787015459061407002@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20251202155951.21369-1-nishit.sharma@intel.com>
-In-Reply-To: <20251202155951.21369-1-nishit.sharma@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,162 +72,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5581593177354943157==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Unify name for xe block/testlists into xe.rest-of-name
+Rename also i915.chamelium-only.testlist into main one without
+prefix and create two symlinks for it.
 
-== Series Details ==
+Cc: Ryszard Knop <ryszard.knop@intel.com>
+Cc: Jari Tahvanainen <jari.tahvanainen@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 
-Series: Madvise feature in SVM for Multi-GPU configs
-URL   : https://patchwork.freedesktop.org/series/158386/
-State : success
+Kamil Konieczny (3):
+  intel-ci: unify Xe lists naming
+  intel-ci: Add symlinks for Xe lists
+  intel-ci: unify chamelium testlist
 
-== Summary ==
+ tests/intel-ci/chamelium-only.testlist        |  70 ++++-
+ tests/intel-ci/i915.chamelium-only.testlist   |  70 +----
+ tests/intel-ci/meson.build                    |   9 +-
+ .../xe-fast-feedback-chamelium-only.testlist  |  16 +-
+ tests/intel-ci/xe-fast-feedback.testlist      | 278 +-----------------
+ tests/intel-ci/xe-sriov-vf.blocklist.txt      |  60 +---
+ tests/intel-ci/xe-sriov-vm.blocklist.txt      |  61 +---
+ tests/intel-ci/xe.chamelium-only.testlist     |   1 +
+ .../xe.fast-feedback-chamelium-only.testlist  |  15 +
+ tests/intel-ci/xe.fast-feedback.testlist      | 277 +++++++++++++++++
+ tests/intel-ci/xe.sriov-vf.blocklist.txt      |  59 ++++
+ tests/intel-ci/xe.sriov-vm.blocklist.txt      |  60 ++++
+ tests/intel/kms_test_config.json              |   6 +-
+ tests/intel/xe_test_config.json               |   6 +-
+ 14 files changed, 496 insertions(+), 492 deletions(-)
+ mode change 120000 => 100644 tests/intel-ci/chamelium-only.testlist
+ mode change 100644 => 120000 tests/intel-ci/i915.chamelium-only.testlist
+ mode change 100644 => 120000 tests/intel-ci/xe-fast-feedback-chamelium-only.testlist
+ mode change 100644 => 120000 tests/intel-ci/xe-fast-feedback.testlist
+ mode change 100644 => 120000 tests/intel-ci/xe-sriov-vf.blocklist.txt
+ mode change 100644 => 120000 tests/intel-ci/xe-sriov-vm.blocklist.txt
+ create mode 120000 tests/intel-ci/xe.chamelium-only.testlist
+ create mode 100644 tests/intel-ci/xe.fast-feedback-chamelium-only.testlist
+ create mode 100644 tests/intel-ci/xe.fast-feedback.testlist
+ create mode 100644 tests/intel-ci/xe.sriov-vf.blocklist.txt
+ create mode 100644 tests/intel-ci/xe.sriov-vm.blocklist.txt
 
-CI Bug Log - changes from IGT_8649 -> IGTPW_14144
-====================================================
+-- 
+2.52.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14144/index.html
-
-Participating hosts (40 -> 39)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14144 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-dg2-8:          [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8649/bat-dg2-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14144/bat-dg2-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8649/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14144/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-2:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8649/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14144/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-    - bat-dg2-11:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8649/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14144/bat-dg2-11/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8649 -> IGTPW_14144
-
-  CI-20190529: 20190529
-  CI_DRM_17619: f7bb20c7069861306b0e034a78dc6648d21f3993 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14144: beb3412e16ddf3273bb240eabae5459949c27a46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8649: f76e05461c8d5938856ed75ac8668640946f9ecd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14144/index.html
-
---===============5581593177354943157==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Madvise feature in SVM for Multi-GPU configs</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/158386/">https://patchwork.freedesktop.org/series/158386/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14144/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14144/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8649 -&gt; IGTPW_14144</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14144/index.html</p>
-<h2>Participating hosts (40 -&gt; 39)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14144 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8649/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14144/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8649/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14144/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8649/bat-arlh-2/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14144/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8649/bat-dg2-11/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14144/bat-dg2-11/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8649 -&gt; IGTPW_14144</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17619: f7bb20c7069861306b0e034a78dc6648d21f3993 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14144: beb3412e16ddf3273bb240eabae5459949c27a46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8649: f76e05461c8d5938856ed75ac8668640946f9ecd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5581593177354943157==--
