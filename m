@@ -4,66 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78741D12D7A
-	for <igt-dev@archiver.kernel.org>; Wed,  3 Dec 2025 16:18:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 810A2D15DB7
+	for <igt-dev@archiver.kernel.org>; Wed,  3 Dec 2025 17:26:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2DA8D10E83D;
-	Wed,  3 Dec 2025 16:18:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2C6EF10E189;
+	Wed,  3 Dec 2025 17:26:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lVcHveuy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h8aY+BT8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81B7810E83D
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Dec 2025 16:18:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 200E110E189
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Dec 2025 17:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764778711; x=1796314711;
+ t=1764782797; x=1796318797;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=eNqYYpYVpWCf6MqLCKeOmrqjTksjX1m6t2G8is0LAmY=;
- b=lVcHveuywgnMv6jXxkvHN+pH98X8ybZFYuwlqpEvuQDEYqAoRUte2QhU
- msKWz3ffJPKuwrBUeoRrkd/LYLHTufYkGcCAl4oqiOPp6if4lLsASAyvC
- tbpn7QAwdfTx0zWTJe4lg9/c/3DvmtU4BUlO1WDzfnhd4uNkNYAX/FdSI
- /4r17IpOmN5SyG3qcxUmtVQJVG75RmZywOhI+VFykSJ5Z39bKiVGaCisx
- qMvMp1Tei4VtnZBkZi5aDbgLMqvRxC8rXFyZ8VGm+fHMNLzOTwGB7Q0l+
- Pmz8ZCiBG99EGBLEu9e3e4IMT1HDjn5mDY3suLRKf4+V22f8GXpsjY0T7 A==;
-X-CSE-ConnectionGUID: 9fYEqcK1QTWVzp+a23tIOw==
-X-CSE-MsgGUID: aLrks9H4Sb+wHwLOIoPQqQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="54328634"
-X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; d="scan'208";a="54328634"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2025 08:18:31 -0800
-X-CSE-ConnectionGUID: vAR6oE2PTAStgfrkkjwnaQ==
-X-CSE-MsgGUID: ApH/ybiJTgmpwZYCxI2DWA==
+ bh=yMvu9nRgWDkNX47M7wuBkVBGag43Toz5MSU1GTqlVLw=;
+ b=h8aY+BT8ZyCr+wUXC/Wftdphg5BsZlNbLY+8Q+wvHeO3W5/97xrhSbuo
+ Pj+hCXXtEMWGnwybnAmmXRbdz0E66deeRQ97QqkAFt1mM6Q1ImKgOF9cy
+ iSZbgjikd2abDw004hgjK2gxcQjAL8+dg7Iy82XYPz0TdyfBQ/KlE6Rm3
+ /HR3SmV+v6YWB0bbN26QgwRyy9j3dU0ghVBpdc29kajrNcY4HUudZFU1f
+ DIK4szKnVU2zyNN/YSTc+oGvL4yvjRPRr6kyNTQu1w+fSaSzrI1XNsydU
+ 0/9oUZORiSRriZHc82MB/9i94B2h2B5lYVW7iElosLyAYNHZons6WYnAt g==;
+X-CSE-ConnectionGUID: GcfhHqtZTLC5J/KJcTdgvg==
+X-CSE-MsgGUID: z2vU3iN+TfCKn8Bqaag0eQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="92264218"
+X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; d="scan'208";a="92264218"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Dec 2025 09:26:36 -0800
+X-CSE-ConnectionGUID: GZ+LcwwpQlCY9qoiRHbQBg==
+X-CSE-MsgGUID: 2BDvoASnRh2oMXEmsICX6g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; d="scan'208";a="232072032"
+X-IronPort-AV: E=Sophos;i="6.20,246,1758610800"; d="scan'208";a="194404641"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Dec 2025 08:18:29 -0800
-Date: Wed, 3 Dec 2025 17:18:10 +0100
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 09:26:36 -0800
+Date: Wed, 3 Dec 2025 18:26:33 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Soham Purkait <soham.purkait@intel.com>
-Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- badal.nilawar@intel.com, anshuman.gupta@intel.com,
- lucas.demarchi@intel.com, umesh.nerlige.ramappa@intel.com,
- kamil.konieczny@intel.com
-Subject: Re: [PATCH i-g-t 2/2] tools/gputop/gputop: Enable support for
- multiple GPUs and instances
-Message-ID: <20251203161810.ghbxs2a5iquxmdss@kamilkon-DESK.igk.intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 1/7] igt: Make igt_fixture look like an iterator
+Message-ID: <20251203172633.6iv3f5tdocj4sdkt@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Soham Purkait <soham.purkait@intel.com>,
- igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- badal.nilawar@intel.com, anshuman.gupta@intel.com,
- lucas.demarchi@intel.com, umesh.nerlige.ramappa@intel.com,
- kamil.konieczny@intel.com
-References: <20251127094043.3916839-1-soham.purkait@intel.com>
- <20251127094043.3916839-3-soham.purkait@intel.com>
+ Ville Syrjala <ville.syrjala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20251120191415.4236-1-ville.syrjala@linux.intel.com>
+ <20251120191415.4236-2-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251127094043.3916839-3-soham.purkait@intel.com>
+In-Reply-To: <20251120191415.4236-2-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,67 +72,23 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Soham,
-On 2025-11-27 at 15:10:43 +0530, Soham Purkait wrote:
-> Introduce vendor-agnostic support for handling multiple GPUs and instances
-> in gputop. Improve the tool's adaptability to various GPU configurations.
+Hi Ville,
+On 2025-11-20 at 21:14:09 +0200, Ville Syrjala wrote:
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > 
-> v1:
->  - Refactor GPUTOP into a vendor-agnostic tool. (Lucas)
-> v2:
->  - Add device filter to populate the array of cards for
->    all supported drivers. (Zbigniew)
-> v3:
->  - Cosmetic changes. (Riana)
->  - Avoid three level indentation. (Riana)
-> v4:
->  - Add user message for running without root privileges. (Kamil)
+> Turn igt_fixture into igt_fixture(). This allows coccinelle
+> to parse it when given a helping hand with the
+> 'iterator name igt_fixture' directive.
 > 
-> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
-> ---
->  tools/{ => gputop}/gputop.c | 253 ++++++++++++++++++++++++++++++------
->  tools/gputop/meson.build    |   6 +
->  tools/meson.build           |   6 +-
+> Conversion done via:
+> $ find -type f -name \*.[ch] -exec sed -i 's/\([^_]\)igt_fixture/\1igt_fixture()/g' {} +
+> 
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-This still do not work without a root:
-
-$ build/tools/gputop/gputop
-No device found.
-
-$ build/tools/lsgpu
-card0                    Intel Tigerlake (Gen12)           drm:/dev/dri/card0
-└─renderD128                                               drm:/dev/dri/renderD128
-
-$ sudo build/tests/core_getversion --r basic
-IGT-Version: 2.2-NO-GIT (x86_64) (Linux: 6.14.0-36-generic x86_64)
-Using IGT_SRANDOM=1764778453 for randomisation
-Opened device: /dev/dri/card0
-Starting subtest: basic
-0: i915 v1.6 0 Intel Graphics
-Subtest basic: SUCCESS (0.000s)
-
-This looks like you made it Xe-only tools, current gputop
-works fine with i915.
+I could ack this series but before merging please add at least one,
+non-trivial patch which makes actual change with cocci.
 
 Regards,
 Kamil
 
->  3 files changed, 220 insertions(+), 45 deletions(-)
->  rename tools/{ => gputop}/gputop.c (63%)
->  create mode 100644 tools/gputop/meson.build
-> 
-> diff --git a/tools/gputop.c b/tools/gputop/gputop.c
-> similarity index 63%
-> rename from tools/gputop.c
-> rename to tools/gputop/gputop.c
-> index f577a1750..4d6c684b2 100644
-> --- a/tools/gputop.c
-> +++ b/tools/gputop/gputop.c
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: MIT
->  /*
-> - * Copyright © 2023 Intel Corporation
-> + * Copyright © 2023-2025 Intel Corporation
->   */
->  
 [cut]
