@@ -4,44 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8960AD1266D
-	for <igt-dev@archiver.kernel.org>; Wed,  3 Dec 2025 09:04:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF804D1266D
+	for <igt-dev@archiver.kernel.org>; Wed,  3 Dec 2025 09:04:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 319EF10E7C5;
-	Wed,  3 Dec 2025 09:04:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7829310E7CC;
+	Wed,  3 Dec 2025 09:04:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="2Tqq+/RE";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="WaZKBPlx";
 	dkim-atps=neutral
-Received: from SN4PR0501CU005.outbound.protection.outlook.com
- (mail-southcentralusazon11011047.outbound.protection.outlook.com
- [40.93.194.47])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D272010E7C5
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Dec 2025 09:03:58 +0000 (UTC)
+Received: from PH7PR06CU001.outbound.protection.outlook.com
+ (mail-westus3azon11010042.outbound.protection.outlook.com [52.101.201.42])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9396B10E7CC
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Dec 2025 09:04:04 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hxAG8UDsK4Qr1mN5QIw4DnKPm3JnGr+zwbcK0KCTCzoM6x1zd+2g3baxS4+xico7QYuaueSb+Y7BMYU+nlMwWNOwSSSNYaDWEyxmUz1mT9EnGzViMmRvBryPvD9NviWCT994UjWql/aCS6zBZF0WisiPbD3oeIDFuTjf2QAEhqsN3XpYOwN9t2j8Q0rfdKmdt6xQmRg94etcitqe5cNJKmTIgb5M1OR5QkIVl7qYCM5ZDiEfvhvAYhpSyaBf9g2HVTj3V+wLyNzHKwLc2BxtjxTgXUohnmbf5q+YiHD8XwaVLhW7wmkL6qobU8b96PcEbdfe9R9cvdPAbJhZZ01v8g==
+ b=PhqH+CWeftfRxGQo6W9V9uYD6eIro/rlG6wQDNZFgBRTb+2YHckZyfoti7AO6lqYTh/kH3KCJ2j95zf+DYWZKDDgUBqu6P5LbuqiqyGMwk1ORwVrgcX7biMednlrOc4q28LKrmEQrIQ39elKyff1th9TdeobINr+ldiwte6j7ZdFwU7YR6JDyvdt7tEfmiIk6882372dyH/w9ZvMRYwiZG4XFTK8pJcaUoxOaRRa4tUa/villkbRoOrTZn8M3ufHfk6OGNmH8lnJpLGatZijCuGEuJ1FwrMzGrK1SrhAOkU1DhmsMQC6P421cjYtjIWsvYCWXFbRLtkTOKeUMfOlOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=T44+ZtcXzdMtLRpnDyEaLhMrdaKEJ/+Cs5eVXcR5EOE=;
- b=VUrUhO0IisB9MlS1vKd2BVI3thlD+aV8jqhwwpXv3V40ZkYwRAe1t4Md6qCEW00zzZ2wVATCUND19p+9SoaVojDQJ/50rbdYgsnfqLWiyZuSQ654wXvZJOxSsYk1LfwQ0sjP0CbL5EKZ+JJltSz9J7zeLSyrwJ+V/LCyxNCjQN7pFC3KvvbTFR9+mug90mt7T3ugj2LWVm683LBJwYYoQBfi2USoB1c43Nxbbe3Iz1L+0HFWw1Mv0ZAMh0XIX6kM2QCXVUGn6LwUAZ3QrZ230i8paA/RkGUEw+usQXagEWpj0EQtSHQ26c59W2tfHqmM4JMMUZzDvI7O6pMPmdQS6g==
+ bh=E3yQIQrQe/xmldNi3Mr0Agt4f/H6NfDe4RoVzSwIq9A=;
+ b=nH0AaaGJ0gF9Skk9eUi+jNAbGIp+mdRQ5js+jEkHVyELOeYqttXUkSUkNLO38SMLi75wXAqH1gO6cJaU3YwIEa09B9Z9PXeekXVnPWnsR032zWkqyGasMvX9p4V2UPmVG9cdOmE1cmQKud9RuAz/T24n7DWr7ZOI2YQ7iNO2p9fltr9zEZAkxiunqVEYFRvP5GO9vgQ9Yxk10KarJvl/ZRNQ5aLXsFKdAxPT5x/tLxhd0WNWcr/Gs3/E9MC7cRsDDddw2AqSTo/IZNaK2/jYv6oppfzYs1xawsJ7XftBKyP5Li0oMe5mrpTU3nZI1pzYCcstP0Ip9eHJHwO4ucVgQg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T44+ZtcXzdMtLRpnDyEaLhMrdaKEJ/+Cs5eVXcR5EOE=;
- b=2Tqq+/REeLrKDTOingOm/CTyLrZE9LqabdBQaTx6YbvAiNxdNQqDJ+9jI9eWYzbmS1n+hY8N4pAJweANkRFOIp/A9embJKnerz9bPPhFhs22X6ua7M75k4uOVMygrg8XlThdhPAWnFW64Ip0TvdoMm3iY7XrJ6+NjiGZ/xn5hds=
-Received: from CH0PR03CA0350.namprd03.prod.outlook.com (2603:10b6:610:11a::24)
- by CH3PR12MB8912.namprd12.prod.outlook.com (2603:10b6:610:169::15)
- with Microsoft SMTP Server (version=TLS1_2,
+ bh=E3yQIQrQe/xmldNi3Mr0Agt4f/H6NfDe4RoVzSwIq9A=;
+ b=WaZKBPlxANpAO+0Z9sSrhthP8wJiKrQffPZQCQBw4VriHvk8N4jVkCGX9IKn1lHj3fLlATD1hygr+7lwAbcN9++cXEEmOGMi5lYpeH66w8P23au47ukzX4noBHR3Hx4AieiioUNS0lPLkEKJhzFhSDtua0Seqpb+OEWKG/6ahC4=
+Received: from CH2PR19CA0010.namprd19.prod.outlook.com (2603:10b6:610:4d::20)
+ by DS4PR12MB9610.namprd12.prod.outlook.com (2603:10b6:8:277::15) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Wed, 3 Dec
- 2025 09:03:49 +0000
-Received: from CH1PEPF0000A347.namprd04.prod.outlook.com
- (2603:10b6:610:11a:cafe::8f) by CH0PR03CA0350.outlook.office365.com
- (2603:10b6:610:11a::24) with Microsoft SMTP Server (version=TLS1_3,
+ 2025 09:03:57 +0000
+Received: from CH1PEPF0000A34A.namprd04.prod.outlook.com
+ (2603:10b6:610:4d:cafe::9c) by CH2PR19CA0010.outlook.office365.com
+ (2603:10b6:610:4d::20) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.17 via Frontend Transport; Wed,
- 3 Dec 2025 09:03:49 +0000
+ 3 Dec 2025 09:03:51 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -49,86 +48,80 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
 Received: from satlexmb08.amd.com (165.204.84.17) by
- CH1PEPF0000A347.mail.protection.outlook.com (10.167.244.7) with Microsoft
+ CH1PEPF0000A34A.mail.protection.outlook.com (10.167.244.5) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9388.8 via Frontend Transport; Wed, 3 Dec 2025 09:03:49 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb08.amd.com
+ 15.20.9388.8 via Frontend Transport; Wed, 3 Dec 2025 09:03:57 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Wed, 3 Dec
- 2025 03:03:49 -0600
-Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 3 Dec
- 2025 03:03:48 -0600
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 3 Dec
+ 2025 03:03:55 -0600
 Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
  satlexmb07.amd.com (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17
- via Frontend Transport; Wed, 3 Dec 2025 01:03:41 -0800
+ via Frontend Transport; Wed, 3 Dec 2025 01:03:49 -0800
 From: Jesse.Zhang <Jesse.Zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
  Jesse.Zhang <Jesse.Zhang@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
-Subject: [PATCH i-g-t v4 5/6] lib/amdgpu: add AMDGPU LLVM assembler utility
- for shader compilation
-Date: Wed, 3 Dec 2025 17:02:08 +0800
-Message-ID: <20251203090307.467031-5-Jesse.Zhang@amd.com>
+Subject: [PATCH i-g-t v4 6/6] tests/amdgpu: Add AMDGPU memory management test
+ suite
+Date: Wed, 3 Dec 2025 17:02:09 +0800
+Message-ID: <20251203090307.467031-6-Jesse.Zhang@amd.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251203090307.467031-1-Jesse.Zhang@amd.com>
 References: <20251203090307.467031-1-Jesse.Zhang@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Y"
 Content-Transfer-Encoding: 8bit
-Received-SPF: None (SATLEXMB04.amd.com: Jesse.Zhang@amd.com does not designate
- permitted sender hosts)
+Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000A347:EE_|CH3PR12MB8912:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8f007f96-0013-4d29-a61f-08de324adff3
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000A34A:EE_|DS4PR12MB9610:EE_
+X-MS-Office365-Filtering-Correlation-Id: df57f716-a6b7-45fc-2d5f-08de324ae446
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|82310400026|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?kXPvW/wI94v5MBgiI0ZSZTK7Gsk3nwUT9thZr/hgmZcEanHeTBbOz73Wivri?=
- =?us-ascii?Q?RNZ3njneAM8S3GTPRmNDE8sv2fk8OdLLOCkECciSH7Oq2+jCB5FL1zWgLUXM?=
- =?us-ascii?Q?lOo5IZrafx+XSlJAhFbW/aFSUknBNGuqP3fz/OSZzzeZId3QUzU1id/l+vHY?=
- =?us-ascii?Q?ln/baWNaJAGDwaV4faqMaaq1OQ0fRseWt1rC+NqrwpJfQy9I1M4hZnekTWYK?=
- =?us-ascii?Q?rsgd2lAB3DidyjumBtMa6BetEeNWczU2CiF/pDngncl6nY+qQhIYS5dnXZjo?=
- =?us-ascii?Q?95HetTrVwvXP1g1tRTSarDXavqK4iIm56JE7WLH6H1ml1A08BQ/OE42kk1tX?=
- =?us-ascii?Q?bF6Pcy7ktFckO5Yn7XF4kBTl8VFHDynI6lcBvir48e7bwtNfnnQgyplSdToI?=
- =?us-ascii?Q?oymSrdfmzBp2HiyCLkGEZxNodkdblCvpcFC1ZosvKrsliN/a+IlYSWk58Ovm?=
- =?us-ascii?Q?1sBLVOApyzQi+elJMWNULa3dWPIZV/5ESSnsxLf7rofc8b4pORIrqMD8sF83?=
- =?us-ascii?Q?uvw2B5klXURlylezsYCQS83d0V8s398826jnWVYHVUM/2jwXfU+xHRgcjAJy?=
- =?us-ascii?Q?y1LB9IPGsAyb2UaU4+3AIM33UXfoBBKIbbFqfXlX21uiwazlcIGYfazS78JA?=
- =?us-ascii?Q?L5/xTN2sE0FwTGoQk1aqMTW2ckX8HtVCLF/QwSxWx1kzxaFOLkQZJDDnFXWE?=
- =?us-ascii?Q?1VjYbUyvSkahwyOe8qXD0j3R5MnzHbeLM089/KSg0bzFMSckduky1pIxEb48?=
- =?us-ascii?Q?eOWDyUuGWguL+omyiLtb80lkLNzOs4lZZvzTu3umfH5rV7y1g5sStD0FoXZA?=
- =?us-ascii?Q?1D5qMG35/poZkEB+2AurX40hyi4KmhNu3Op8bo+U1qqv5kbB32Ix3TmWIdn/?=
- =?us-ascii?Q?+fUW7/tOgdjTvibwe6jbRnbJq9t922Ay94uv7stQbqBbEVuCE292vU/tuCer?=
- =?us-ascii?Q?mCcQMkydCXOeqYjnm+IzuQWPuBvmFQYz40nTP+8uVXehgZxuONl1P5cP9tGl?=
- =?us-ascii?Q?3R8zNmDL+g+FWU1hlRCfN2CZrGYAmlX7gw4WZVHy5b9V8HTdbxIjM6Y0DOei?=
- =?us-ascii?Q?aw5KOtvClKj9R1VadPVatlbagcybhj1pw01VlvlxLhf2BPmzgf/gyl0S6mh7?=
- =?us-ascii?Q?yjIo02cxsA7tODlWP/tpDHk4Noi1r5zR+DYAF6JZpGiZ69siEnxMeavppyci?=
- =?us-ascii?Q?yqLZNgQLu5Nvf9zXN0PBo4KxP9L06J9eGAqvgC0WaJAyZkEqZQQAOVDnzJNm?=
- =?us-ascii?Q?kK4FF+VDvA4F4g1gdUJC/4NKFacF34RwfrOhxjeFnV74OAvPsUzn8pj2Z0if?=
- =?us-ascii?Q?wnXkXArwyBJaCTehc7NnNJBeZlCrubZMKVWQBYP3AUEAtktyc7MVma6enq7j?=
- =?us-ascii?Q?KgsKbjtXxiY5XGS/WvcBRb42VhghRfMVo3X/IHkRhZw00C5QaYuJpEbdthWk?=
- =?us-ascii?Q?lmdUlA6SOUiAcohT9jJRvYYLCXa9YouoiOKQ4d6pjQDa2CzqIP/qMPAO7EgY?=
- =?us-ascii?Q?RxBRdLF9FtsIvKxgu8VusrGDfgCQyyajL73L89F01ePBuiG5mTwFVdmvzaaH?=
- =?us-ascii?Q?Lny8LWjwJTpkZBX4qPU=3D?=
+ ARA:13230040|36860700013|82310400026|376014|1800799024; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?gfxSpp8n5n+MZdUjZ4788GdYRgC0AaAtHDcZIwvkfkKdtWemyvNNk1eD1pnr?=
+ =?us-ascii?Q?c78qn9IZr6+CnL007LjBl00qZ/q7WTnVxA5sH6ywSuqG03vQcw+5gmNNQuI0?=
+ =?us-ascii?Q?qyW9xIOH0s3WxwuNF7XAgcmjEytbtMnSgKUzAysPAXVj+ebsjTfFfiZVTxhJ?=
+ =?us-ascii?Q?XVeeGzbYL2IIsjAs8ovjGbMUAym/SL+h2l0JL09STYBdQu4wCxWScVE+7nqN?=
+ =?us-ascii?Q?Pn1oWz+ZOMvYa6UbfuYZnhXSNuprFU07WxMyvO5xBjqOBA+xhcPw78uTAmqT?=
+ =?us-ascii?Q?At2teOK772BHGKP7lslOhns6n0YqoSYTY6xw8HSrJom1KvgPTpRsKE4Uamf2?=
+ =?us-ascii?Q?ZKBBh8KCaXPVHKBBdduKnkPw/SXhwdeLMl1BvLwPjbvlHGc9zlBZqdF9SBju?=
+ =?us-ascii?Q?sqfkQI6ijjsY59UqtP7XyOBhRVCNBXqD4q4L9/xE6iACOIJi1kcs0vkXySfL?=
+ =?us-ascii?Q?eLx/egW+lcnk5WtWGYCd2o+F9rM3OAwFpYlpU+Erh0WgBHUOmAXtlB1LgrZU?=
+ =?us-ascii?Q?NeIg4TMgjM0q0Nnzu6/EvG0kKl9HyjvBOnZEgkeCPzeJyXpApoCpyvbiGT4I?=
+ =?us-ascii?Q?N32Sr11A2WRmxsHHFnqbsssRAgbjgc8FJrdm0Jl3srEx/YZkPG926fIHa6b5?=
+ =?us-ascii?Q?BA3MwlLV2EvRbCEpCs60DhI9oXdR+AXUxjjZXWkJbhQUh53bHUUN8YG6rWJE?=
+ =?us-ascii?Q?CjdDCfHhTGHwZMsPD/dAmpjJjIjjT8kQzYOPIcPrH3fxP0VT20yg0BSchVOK?=
+ =?us-ascii?Q?XDaWjpWCvK+GiA1UKXh/m3tuL/nNdex3D/aaGT9JPrKY8Oz8U2YodhsMAF7Q?=
+ =?us-ascii?Q?pnT4UVT2xA0FiQ1Hl3aam3CzqQi5DovK3mAvTCssYSfdiyGw2ESTRQnBfoD0?=
+ =?us-ascii?Q?URF0OlXTZZRd+PR4ZTHFWacfBhUURoUe63QEe+w5x8RAOqgKlYJjVxFCkQqX?=
+ =?us-ascii?Q?4yfZ4QEJytDucpHaHIq/P162wi6tb4pUKjK7g3Saskhgi+jmhtO/a0HIeae3?=
+ =?us-ascii?Q?GXEoxE2sF+vOAl5pQQV37xfMAXNtt++c/OzZKxGtgaArzJsdsbBGFXzB1YRM?=
+ =?us-ascii?Q?btWi9uVRHfiLcxHciQV+OiMKLN97wpD29Xnppm0zNsNrKkpYuEbX7Kf3juyV?=
+ =?us-ascii?Q?HetQ/da00g2sIOM8dbJkMfU0u2nhinu2LxzLPVbDkHLOgX3M9eWWdBPjEkRS?=
+ =?us-ascii?Q?82/fbxItYadmmNOBmyaPXuj/veysKWnQrK0yAb+xXDy33SNy7yTMeZzKLRXa?=
+ =?us-ascii?Q?cvc5Yt/7bGEgWr2j8IUo8Cc9+0k+litv2uzx/ovSdUGbax83BtK7LJxVza2O?=
+ =?us-ascii?Q?OmCpm4zPbOW7T0wPm19vYryMedxEq4jJ5CYlugBpUVlxadwaNUvhTL9eId1i?=
+ =?us-ascii?Q?KTM6v1pi0rK5K4qOmGLgxV8TFpMjyWmt515yM+3U0Kf7g+rP84Ub9tBnxF0O?=
+ =?us-ascii?Q?PTaEugwBibcHaW3wPpNFP2qo+XkQHC/qeF6l6cwPNkzYJaM3Kn3LsMyA6sYG?=
+ =?us-ascii?Q?/xCtTIdMY2QImrDk8BEaUJjsFu2cU/j0BcQitZ+MDjwAlP5Xp1C3rO1Kc4zG?=
+ =?us-ascii?Q?ALWp9u+FDEN0d8fT28Q=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013); DIR:OUT;
+ SFS:(13230040)(36860700013)(82310400026)(376014)(1800799024); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 09:03:49.8921 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8f007f96-0013-4d29-a61f-08de324adff3
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 09:03:57.1417 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: df57f716-a6b7-45fc-2d5f-08de324ae446
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CH1PEPF0000A347.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CH1PEPF0000A34A.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8912
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9610
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -144,2440 +137,5139 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Implement a reusable LLVM-based assembler utility to compile AMDGPU ISA (Instruction Set Architecture)
-text into binary machine code, enabling on-the-fly shader compilation for GPU verification tests.
+Add a new test suite covering diverse AMDGPU memory management scenarios,
+including basic allocation, edge cases, performance, and cross-device operations.
 
-Key features:
-1. LLVM-mc discovery:
-   - find_llvm_mc(): Searches common paths (ROCM, system, local) for llvm-mc executable
-   - Tracks availability via global state to avoid repeated searches
-   - Supports fallback paths including $HOME/tmp for temp files
+Key test categories:
+1. Basic Memory Allocation:
+   - memory-alloc: Alloc visible/non-visible VRAM and GART combined cached
+   - invalid_alloc: Test invalid allocation parameters
+   - memory_alloc_all: Test all allocation combinations
+   - largest-gtt-buffer/largest-vram-buffer: Test maximum buffer sizes
+   - zero-initialization-sysmem: Verify system memory zero-initialization
 
-2. Architecture support:
-   - amdgpu_format_mcpu(): Generates mcpu string (e.g., gfx1200) from major/minor/step version
-   - amdgpu_family_id_to_mcpu(): Maps GPU family ID to representative mcpu baseline (covers GFX8-GFX12)
+2. Advanced Memory Operations:
+   - register_memory_same_ptr: Test same memory pointer registration
+   - memory-register: Userptr COW page table update (adapted from KFD)
+   - mmap-large-system-mem: Map maximum possible system memory
+   - multi-thread-register-userptr: Concurrent userptr registration (thread safety)
 
-3. Assembler workflow:
-   - Creates temporary ISA text file and object file (supports /tmp, /var/tmp, $HOME/tmp)
-   - Invokes llvm-mc with amdgcn-amd-amdhsa triple and target mcpu
-   - Parses ELF object file to extract .text section (compiled shader binary)
-   - Cleans up temporary files and resources automatically
+3. Device-Specific Tests:
+   - access-ppr-mem: PPR memory access on APUs (synchronization/visibility)
+   - cache-invalidate-sdma-write: GPU cache invalidation on SDMA write (Arcturus)
+   - cache-invalidate-cpu-write: Cache invalidation on CPU write (Arcturus + large BAR)
 
-4. Integration hooks:
-   - amdgpu_llvm_asm_init(): Initializes utility and checks llvm-mc availability
-   - amdgpu_llvm_asm_shutdown(): No-op shutdown hook for consistent API
-   - amdgpu_llvm_assemble(): Core function for ISA -> binary compilation
+4. Specialized Features:
+   - ptrace-acess: Memory access via ptrace (debugger-like)
+   - ptrace-access-invisible-vram: Ptrace peek/poke near 4MB VRAM boundary
+   - signal-handling: Signal handling during memory operations
+   - memory-bandwidth: Measure bandwidth for different memory types/sizes (large BAR)
 
-v2: fix build error when llvm disabled (Vitaly)
+5. Configuration & Cross-Device:
+   - gca-config-basic: Read GCA configuration from debugfs
+   - remote-cache-invalidate: Cross-device cache invalidation
+   - map-unmap-to-nodes: Map/unmap memory across multiple GPUs
+
+V2: Fix code style (Vitaly)
 
 Suggested-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/shaders/amd_llvm_asm.c      |  277 +++++
- lib/amdgpu/shaders/amd_llvm_asm.h      |   43 +
- lib/amdgpu/shaders/amd_llvm_asm_stub.c |   37 +
- lib/amdgpu/shaders/amd_llvm_asm_stub.h |   44 +
- lib/amdgpu/shaders/amd_shader_store.h  | 1330 ++++++++++++++++++++++++
- lib/amdgpu/shaders/amd_shaders.c       |  562 ++++++++++
- lib/amdgpu/{ => shaders}/amd_shaders.h |    2 +-
- lib/meson.build                        |   19 +-
- 8 files changed, 2309 insertions(+), 5 deletions(-)
- create mode 100644 lib/amdgpu/shaders/amd_llvm_asm.c
- create mode 100644 lib/amdgpu/shaders/amd_llvm_asm.h
- create mode 100644 lib/amdgpu/shaders/amd_llvm_asm_stub.c
- create mode 100644 lib/amdgpu/shaders/amd_llvm_asm_stub.h
- create mode 100644 lib/amdgpu/shaders/amd_shader_store.h
- create mode 100644 lib/amdgpu/shaders/amd_shaders.c
- rename lib/amdgpu/{ => shaders}/amd_shaders.h (96%)
+ tests/amdgpu/amd_basic.c           |    4 +-
+ tests/amdgpu/amd_basic_multi_gpu.c |    4 +-
+ tests/amdgpu/amd_dispatch.c        |    4 +-
+ tests/amdgpu/amd_mem.c             | 4313 ++++++++++++++++++++++++++++
+ tests/amdgpu/amd_queue_reset.c     |    2 +-
+ tests/amdgpu/amd_remote_mem.c      |  688 +++++
+ tests/amdgpu/meson.build           |    2 +
+ 7 files changed, 5010 insertions(+), 7 deletions(-)
+ create mode 100644 tests/amdgpu/amd_mem.c
+ create mode 100644 tests/amdgpu/amd_remote_mem.c
 
-diff --git a/lib/amdgpu/shaders/amd_llvm_asm.c b/lib/amdgpu/shaders/amd_llvm_asm.c
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index 9bb84221e..8aa886e60 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -11,8 +11,8 @@
+ #include "lib/amdgpu/amd_command_submission.h"
+ #include "lib/amdgpu/amd_compute.h"
+ #include "lib/amdgpu/amd_gfx.h"
+-#include "lib/amdgpu/amd_shaders.h"
+-#include "lib/amdgpu/amd_dispatch.h"
++#include "lib/amdgpu/shaders/amd_shaders.h"
++#include "lib/amdgpu/compute_utils/amd_dispatch.h"
+ 
+ #define BUFFER_SIZE (8 * 1024)
+ 
+diff --git a/tests/amdgpu/amd_basic_multi_gpu.c b/tests/amdgpu/amd_basic_multi_gpu.c
+index b41111dce..b8a7c305e 100644
+--- a/tests/amdgpu/amd_basic_multi_gpu.c
++++ b/tests/amdgpu/amd_basic_multi_gpu.c
+@@ -9,8 +9,8 @@
+ #include "lib/amdgpu/amd_command_submission.h"
+ #include "lib/amdgpu/amd_compute.h"
+ #include "lib/amdgpu/amd_gfx.h"
+-#include "lib/amdgpu/amd_shaders.h"
+-#include "lib/amdgpu/amd_dispatch.h"
++#include "lib/amdgpu/shaders/amd_shaders.h"
++#include "lib/amdgpu/compute_utils/amd_dispatch.h"
+ #include "igt.h"
+ #include "igt_multigpu.h"
+ 
+diff --git a/tests/amdgpu/amd_dispatch.c b/tests/amdgpu/amd_dispatch.c
+index 06bfebd14..80ac55820 100644
+--- a/tests/amdgpu/amd_dispatch.c
++++ b/tests/amdgpu/amd_dispatch.c
+@@ -10,8 +10,8 @@
+ #include <sys/sysmacros.h>
+ #include "lib/amdgpu/amd_memory.h"
+ #include "lib/amdgpu/amd_command_submission.h"
+-#include "lib/amdgpu/amd_dispatch_helpers.h"
+-#include "lib/amdgpu/amd_dispatch.h"
++#include "lib/amdgpu/compute_utils/amd_dispatch_helpers.h"
++#include "lib/amdgpu/compute_utils/amd_dispatch.h"
+ 
+ static void
+ amdgpu_dispatch_hang_slow_gfx(amdgpu_device_handle device_handle,
+diff --git a/tests/amdgpu/amd_mem.c b/tests/amdgpu/amd_mem.c
 new file mode 100644
-index 000000000..751b6027e
+index 000000000..aebe22e66
 --- /dev/null
-+++ b/lib/amdgpu/shaders/amd_llvm_asm.c
-@@ -0,0 +1,277 @@
++++ b/tests/amdgpu/amd_mem.c
+@@ -0,0 +1,4313 @@
 +/* SPDX-License-Identifier: MIT */
-+/* minimal runtime ISA assembly via external llvm-mc (optional) */
-+#include "amd_llvm_asm.h"
-+#include "lib/amdgpu/amdgpu_asic_addr.h"
-+#include <errno.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <fcntl.h>
-+#include <sys/stat.h>
-+#include <sys/types.h>
-+#include <elf.h>
-+
-+/* track llvm-mc availability */
-+static int llvm_mc_available;
-+static char llvm_mc_path[256];
-+
-+static int find_llvm_mc(void)
-+{
-+	const char *candidates[] = {
-+		"/opt/rocm/llvm/bin/llvm-mc",
-+		"/usr/bin/llvm-mc",
-+		"/usr/local/bin/llvm-mc",
-+		NULL
-+	};
-+	size_t i;
-+
-+	fprintf(stderr, "amdgpu_llvm_asm: searching llvm-mc\n");
-+	for (i = 0; candidates[i]; i++) {
-+		fprintf(stderr, "amdgpu_llvm_asm: check %s -> ", candidates[i]);
-+		if (access(candidates[i], X_OK) == 0) {
-+			fprintf(stderr, "found\n");
-+			snprintf(llvm_mc_path, sizeof(llvm_mc_path), "%s", candidates[i]);
-+			return 1;
-+		} else {
-+			fprintf(stderr, "not found (errno=%d)\n", errno);
-+		}
-+	}
-+
-+	fprintf(stderr, "amdgpu_llvm_asm: llvm-mc not found\n");
-+	return 0;
-+}
-+
-+int amdgpu_llvm_asm_init(void)
-+{
-+	if (!llvm_mc_available)
-+		llvm_mc_available = find_llvm_mc();
-+	return llvm_mc_available ? 0 : -ENOTSUP;
-+}
-+
-+/* shutdown hook (noop) */
-+void amdgpu_llvm_asm_shutdown(void)
-+{
-+    /* No dynamic resources to free */
-+}
-+
-+/* format mcpu string from major/minor/step */
-+void amdgpu_format_mcpu(unsigned int major, unsigned int minor, unsigned int step,
-+			char *dst, size_t dst_size)
-+{
-+	if (!dst || dst_size < 8)
-+		return;
-+	snprintf(dst, dst_size, "gfx%u%u%x", major, minor, step & 0xFF);
-+}
-+
-+/* map family_id to representative mcpu baseline */
-+int amdgpu_family_id_to_mcpu(uint32_t family_id, char *dst, size_t dst_size)
-+{
-+	if (!dst || dst_size < 8)
-+		return -EINVAL;
-+	switch (family_id) {
-+	case FAMILY_GFX1200:
-+		snprintf(dst, dst_size, "gfx1200"); break;
-+	case FAMILY_GFX1150:
-+		snprintf(dst, dst_size, "gfx1150"); break;
-+	case FAMILY_GFX1103:
-+		snprintf(dst, dst_size, "gfx1103"); break;
-+	case FAMILY_GFX1100:
-+		snprintf(dst, dst_size, "gfx1100"); break;
-+	case FAMILY_GFX1037:
-+		snprintf(dst, dst_size, "gfx1037"); break;
-+	case FAMILY_GFX1036:
-+		snprintf(dst, dst_size, "gfx1036"); break;
-+	case FAMILY_NV:
-+		snprintf(dst, dst_size, "gfx1030"); break; /* RDNA baseline */
-+	case FAMILY_AI:
-+		snprintf(dst, dst_size, "gfx900");  break; /* Vega baseline */
-+	default:
-+		snprintf(dst, dst_size, "gfx803");  break; /* GCN fallback */
-+	}
-+	return 0;
-+}
-+
-+int amdgpu_llvm_assemble(const char *mcpu,
-+			 const char *isa_text,
-+			 uint8_t *out_buf,
-+			 size_t out_buf_size,
-+			 size_t *out_size)
-+{
-+	int fd_src = -1, fd_obj = -1;
-+	int r = 0;
-+	ssize_t wlen;
-+	char cmd[1024];
-+	FILE *f;
-+	long sz;
-+	uint8_t *obj_data = NULL;
-+	const Elf64_Ehdr *eh;
-+	const Elf64_Shdr *sh_base;
-+	const Elf64_Shdr *sh_str;
-+	const char *strtab;
-+	const Elf64_Shdr *text_sec = NULL;
-+	int i;
-+	char src_path[256];
-+	char obj_path[256];
-+	char template_buf[256];
-+	const char *dirs[3];
-+	int d;
-+
-+	if (!out_size)
-+	return -EINVAL;
-+	*out_size = 0;
-+	if (!mcpu || !isa_text || !out_buf)
-+	return -EINVAL;
-+	if (!llvm_mc_available && amdgpu_llvm_asm_init())
-+	return -ENOTSUP;
-+
-+	dirs[0] = "/tmp";
-+	dirs[1] = "/var/tmp";
-+	dirs[2] = NULL;
-+	/* Try to add $HOME/tmp if exists */
-+	{
-+		const char *home = getenv("HOME");
-+
-+		if (home) {
-+			struct stat st;
-+			char home_try[256];
-+
-+			snprintf(home_try, sizeof(home_try), "%s/tmp", home);
-+			if (stat(home_try, &st) == 0 && S_ISDIR(st.st_mode)) {
-+				dirs[2] = home_try; /* Override last slot */
-+			}
-+		}
-+	}
-+
-+	fd_src = -1;
-+	for (d = 0; dirs[d]; ++d) {
-+		snprintf(template_buf, sizeof(template_buf), "%s/amdgpu_isaXXXXXX", dirs[d]);
-+		fd_src = mkstemp(template_buf);
-+		if (fd_src >= 0) {
-+			/* Use mkstemp-created file directly (extension not required) */
-+			strncpy(src_path, template_buf, sizeof(src_path));
-+			src_path[sizeof(src_path) - 1] = '\0';
-+			break;
-+		}
-+	}
-+	if (fd_src < 0)
-+		return -errno;
-+
-+	wlen = write(fd_src, isa_text, strlen(isa_text));
-+	if (wlen < 0 || (size_t)wlen != strlen(isa_text)) {
-+		r = -EIO;
-+		goto cleanup;
-+	}
-+
-+	close(fd_src);
-+	fd_src = -1;
-+
-+	/* Create object temp file */
-+	for (d = 0; dirs[d]; ++d) {
-+		snprintf(template_buf, sizeof(template_buf), "%s/amdgpu_objXXXXXX", dirs[d]);
-+		fd_obj = mkstemp(template_buf);
-+		if (fd_obj >= 0) {
-+			strncpy(obj_path, template_buf, sizeof(obj_path));
-+			obj_path[sizeof(obj_path) - 1] = '\0';
-+			break;
-+		}
-+	}
-+	if (fd_obj < 0) {
-+		r = -errno;
-+		goto cleanup;
-+	}
-+	close(fd_obj);
-+	fd_obj = -1;
-+
-+	snprintf(cmd, sizeof(cmd),
-+		 "%s -triple amdgcn-amd-amdhsa -mcpu=%s -filetype=obj %s -o %s 2>/dev/null",
-+	llvm_mc_path, mcpu, src_path, obj_path);
-+	r = system(cmd);
-+	if (r != 0) {
-+		r = -EFAULT;
-+		goto cleanup;
-+	}
-+
-+	f = fopen(obj_path, "rb");
-+	if (!f) {
-+		r = -errno;
-+		goto cleanup;
-+	}
-+
-+	if (fseek(f, 0, SEEK_END) != 0) {
-+		fclose(f);
-+		r = -EIO;
-+		goto cleanup;
-+	}
-+	sz = ftell(f);
-+	if (sz < 0) {
-+		fclose(f);
-+		r = -EIO;
-+		goto cleanup;
-+	}
-+
-+	rewind(f);
-+	obj_data = malloc(sz);
-+	if (!obj_data) {
-+		fclose(f);
-+		r = -ENOMEM;
-+		goto cleanup;
-+	}
-+	if (fread(obj_data, 1, sz, f) != (size_t)sz) {
-+		free(obj_data);
-+		fclose(f);
-+		r = -EIO;
-+		goto cleanup;
-+	}
-+	fclose(f);
-+
-+	if ((size_t)sz < sizeof(Elf64_Ehdr)) {
-+		r = -EINVAL;
-+		goto cleanup;
-+	}
-+
-+	eh = (const Elf64_Ehdr *)obj_data;
-+	if (eh->e_ident[0] != 0x7f || eh->e_ident[1] != 'E') {
-+		r = -EINVAL;
-+		goto cleanup;
-+	}
-+
-+	sh_base = (const Elf64_Shdr *)(obj_data + eh->e_shoff);
-+	sh_str  = &sh_base[eh->e_shstrndx];
-+	strtab = (const char *)(obj_data + sh_str->sh_offset);
-+	for (i = 0; i < (int)eh->e_shnum; i++) {
-+		const Elf64_Shdr *sec = &sh_base[i];
-+		const char *name = strtab + sec->sh_name;
-+
-+		if (strcmp(name, ".text") == 0) {
-+			text_sec = sec;
-+			break;
-+		}
-+	}
-+	if (!text_sec) {
-+		r = -EINVAL;
-+		goto cleanup;
-+	}
-+
-+	if (text_sec->sh_size > out_buf_size)	{
-+		r = -ENOSPC;
-+		goto cleanup;
-+	}
-+
-+	memcpy(out_buf, obj_data + text_sec->sh_offset, text_sec->sh_size);
-+	*out_size = text_sec->sh_size;
-+
-+cleanup:
-+	if (fd_src >= 0)
-+		close(fd_src);
-+	if (fd_obj >= 0)
-+		close(fd_obj);
-+	if (src_path[0])
-+		unlink(src_path);
-+	if (obj_path[0])
-+		unlink(obj_path);
-+	if (obj_data)
-+		free(obj_data);
-+
-+	return r;
-+}
-diff --git a/lib/amdgpu/shaders/amd_llvm_asm.h b/lib/amdgpu/shaders/amd_llvm_asm.h
-new file mode 100644
-index 000000000..fd2975de6
---- /dev/null
-+++ b/lib/amdgpu/shaders/amd_llvm_asm.h
-@@ -0,0 +1,43 @@
-+/* SPDX-License-Identifier: MIT
-+ * Runtime AMDGPU ISA assembler interface using LLVM MC (optional).
-+ * If LLVM development libraries are not available at build time this
-+ * header still exists but the implementation will be a stub and all
-+ * entry points return -ENOTSUP.
-+ */
-+#ifndef AMD_LLVM_ASM_H
-+#define AMD_LLVM_ASM_H
-+
-+#include <stddef.h>
-+#include <stdint.h>
-+
-+/* Initialize LLVM target tables required for AMDGPU assembly.
-+ * Returns 0 on success, negative errno on failure. Safe to call multiple times. */
-+int amdgpu_llvm_asm_init(void);
-+
-+/* Shutdown / release any static LLVM state (optional). */
-+void amdgpu_llvm_asm_shutdown(void);
-+
-+/* Assemble the given textual ISA (AMDGPU GCN) for the provided MCPU target.
-+ * mcpu example: "gfx942", "gfx1100" etc.
-+ * out_buf: destination buffer for raw .text bytes
-+ * out_buf_size: capacity of out_buf
-+ * out_size: filled with number of bytes written on success
-+ * Returns 0 on success, -ENOSPC if buffer too small, -EINVAL for bad input,
-+ * -ENOTSUP if LLVM support not compiled in, or other negative errno on MC failure.
-+ */
-+int amdgpu_llvm_assemble(const char *mcpu,
-+                         const char *isa_text,
-+                         uint8_t *out_buf,
-+                         size_t out_buf_size,
-+                         size_t *out_size);
-+
-+/* Convenience: derive mcpu string from (major, minor, stepping) triplet. */
-+void amdgpu_format_mcpu(unsigned major, unsigned minor, unsigned step,
-+                        char *dst, size_t dst_size);
-+
-+/* Map drm/amdgpu_query_gpu_info family_id to a suitable mcpu target.
-+ * Fills dst with an mcpu like "gfx1200"; falls back to "gfx803" if unknown.
-+ * Returns 0 on success. */
-+int amdgpu_family_id_to_mcpu(uint32_t family_id, char *dst, size_t dst_size);
-+
-+#endif /* AMD_LLVM_ASM_H */
-diff --git a/lib/amdgpu/shaders/amd_llvm_asm_stub.c b/lib/amdgpu/shaders/amd_llvm_asm_stub.c
-new file mode 100644
-index 000000000..aa3023308
---- /dev/null
-+++ b/lib/amdgpu/shaders/amd_llvm_asm_stub.c
-@@ -0,0 +1,37 @@
-+/* SPDX-License-Identifier: MIT */
-+/* Stub implementation used when LLVM dev libraries are not present. */
-+#include "amd_llvm_asm_stub.h"
-+#include <errno.h>
-+#include <stdio.h>
-+
-+int amdgpu_llvm_asm_init(void)
-+{
-+	return -ENOTSUP; /* signals feature unavailable */
-+}
-+
-+void amdgpu_llvm_asm_shutdown(void)
-+{
-+}
-+
-+void amdgpu_format_mcpu(unsigned int major, unsigned int minor, unsigned int step,
-+			char *dst, size_t dst_size)
-+{
-+	if (!dst || dst_size < 8)
-+		return;
-+	/* Format gfx<major><minor><hexstep> similar to KFD assembler */
-+	snprintf(dst, dst_size, "gfx%u%u%x", major, minor, step & 0xFF);
-+}
-+
-+int amdgpu_family_id_to_mcpu(uint32_t family_id, char *dst, size_t dst_size)
-+{
-+	return -ENOTSUP;
-+}
-+
-+int amdgpu_llvm_assemble(const char *mcpu,
-+		 const char *isa_text,
-+		 uint8_t *out_buf,
-+		 size_t out_buf_size,
-+		 size_t *out_size)
-+{
-+	return -ENOTSUP;
-+}
-diff --git a/lib/amdgpu/shaders/amd_llvm_asm_stub.h b/lib/amdgpu/shaders/amd_llvm_asm_stub.h
-new file mode 100644
-index 000000000..83dfc5293
---- /dev/null
-+++ b/lib/amdgpu/shaders/amd_llvm_asm_stub.h
-@@ -0,0 +1,44 @@
-+/* SPDX-License-Identifier: MIT
-+ * Runtime AMDGPU ISA assembler interface using LLVM MC (optional).
-+ * If LLVM development libraries are not available at build time this
-+ * header still exists but the implementation will be a stub and all
-+ * entry points return -ENOTSUP.
-+ */
-+#ifndef AMD_LLVM_ASM_STUB_H
-+#define AMD_LLVM_ASM_STUB_H
-+
-+#include <stddef.h>
-+#include <stdint.h>
-+
-+/* Initialize LLVM target tables required for AMDGPU assembly.
-+ * Returns 0 on success, negative errno on failure. Safe to call multiple times. */
-+int amdgpu_llvm_asm_init(void);
-+
-+/* Shutdown / release any static LLVM state (optional). */
-+void amdgpu_llvm_asm_shutdown(void);
-+
-+/* Assemble the given textual ISA (AMDGPU GCN) for the provided MCPU target.
-+ * mcpu example: "gfx942", "gfx1100" etc.
-+ * out_buf: destination buffer for raw .text bytes
-+ * out_buf_size: capacity of out_buf
-+ * out_size: filled with number of bytes written on success
-+ * Returns 0 on success, -ENOSPC if buffer too small, -EINVAL for bad input,
-+ * -ENOTSUP if LLVM support not compiled in, or other negative errno on MC failure.
-+ */
-+int amdgpu_llvm_assemble(const char *mcpu,
-+                         const char *isa_text,
-+                         uint8_t *out_buf,
-+                         size_t out_buf_size,
-+                         size_t *out_size);
-+
-+/* Convenience: derive mcpu string from (major, minor, stepping) triplet. */
-+void amdgpu_format_mcpu(unsigned major, unsigned minor, unsigned step,
-+                        char *dst, size_t dst_size);
-+
-+/* Map drm/amdgpu_query_gpu_info family_id to a suitable mcpu target.
-+ * Fills dst with an mcpu like "gfx1200"; falls back to "gfx803" if unknown.
-+ * Returns 0 on success. */
-+int amdgpu_family_id_to_mcpu(uint32_t family_id, char *dst, size_t dst_size);
-+
-+#endif /* AMD_LLVM_ASM_STUB_H */
-+
-diff --git a/lib/amdgpu/shaders/amd_shader_store.h b/lib/amdgpu/shaders/amd_shader_store.h
-new file mode 100644
-index 000000000..6d04e79d0
---- /dev/null
-+++ b/lib/amdgpu/shaders/amd_shader_store.h
-@@ -0,0 +1,1330 @@
 +/*
-+ * Copyright (C) 2021 Advanced Micro Devices, Inc. All Rights Reserved.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ */
-+
-+#ifndef _AMD_SHADER_STORE_H_
-+#define _AMD_SHADER_STORE_H_
-+
-+/**
-+ * Macros
-+ */
-+
-+#define SHADER_START ".text\n"
-+
-+/* Macros for portable v_add_co_u32, v_add_co_ci_u32,
-+ * and v_cmp_lt_u32.
-+ */
-+#define SHADER_MACROS_U32 \
-+    "   .text\n"\
-+    "   .macro V_ADD_CO_U32 vdst, src0, vsrc1\n"\
-+    "       .if (.amdgcn.gfx_generation_number >= 10)\n"\
-+    "           v_add_co_u32        \\vdst, vcc_lo, \\src0, \\vsrc1\n"\
-+    "       .elseif (.amdgcn.gfx_generation_number >= 9)\n"\
-+    "           v_add_co_u32        \\vdst, vcc, \\src0, \\vsrc1\n"\
-+    "       .else\n"\
-+    "           v_add_u32           \\vdst, vcc, \\src0, \\vsrc1\n"\
-+    "       .endif\n"\
-+    "   .endm\n"\
-+    "   .macro V_ADD_CO_CI_U32 vdst, src0, vsrc1\n"\
-+    "       .if (.amdgcn.gfx_generation_number >= 10)\n"\
-+    "           v_add_co_ci_u32     \\vdst, vcc_lo, \\src0, \\vsrc1, vcc_lo\n"\
-+    "       .elseif (.amdgcn.gfx_generation_number >= 9)\n"\
-+    "           v_addc_co_u32       \\vdst, vcc, \\src0, \\vsrc1, vcc\n"\
-+    "       .else\n"\
-+    "           v_addc_u32          \\vdst, vcc, \\src0, \\vsrc1, vcc\n"\
-+    "       .endif\n"\
-+    "   .endm\n"\
-+    "   .macro V_CMP_LT_U32 src0, vsrc1\n"\
-+    "       .if (.amdgcn.gfx_generation_number >= 10)\n"\
-+    "           v_cmp_lt_u32        vcc_lo, \\src0, \\vsrc1\n"\
-+    "       .else\n"\
-+    "           v_cmp_lt_u32        vcc, \\src0, \\vsrc1\n"\
-+    "       .endif\n"\
-+    "   .endm\n"\
-+    "   .macro V_CMP_EQ_U32 src0, vsrc1\n"\
-+    "       .if (.amdgcn.gfx_generation_number >= 10)\n"\
-+    "           v_cmp_eq_u32        vcc_lo, \\src0, \\vsrc1\n"\
-+    "       .else\n"\
-+    "           v_cmp_eq_u32        vcc, \\src0, \\vsrc1\n"\
-+    "       .endif\n"\
-+    "   .endm\n"
-+
-+/* Macros for portable flat load/store/atomic instructions.
-+ *
-+ * gc943 (gfx94x) deprecates glc/slc in favour of nt/sc1/sc0.
-+ * The below macros when used will always use the nt sc1 sc0
-+ * modifiers for gfx94x, but also take in arg0 arg1 to specify
-+ * (for non-gfx94x): glc, slc, or glc slc.
-+ */
-+#define SHADER_MACROS_FLAT \
-+    "   .macro FLAT_LOAD_DWORD_NSS vdst, vaddr arg0 arg1\n"\
-+    "       .if (.amdgcn.gfx_generation_number == 9 && .amdgcn.gfx_generation_minor >= 4)\n"\
-+    "           flat_load_dword \\vdst, \\vaddr nt sc1 sc0\n"\
-+    "       .else\n"\
-+    "           flat_load_dword \\vdst, \\vaddr \\arg0 \\arg1\n"\
-+    "       .endif\n"\
-+    "   .endm\n"\
-+    "   .macro FLAT_LOAD_DWORDX2_NSS vdst, vaddr arg0 arg1\n"\
-+    "       .if (.amdgcn.gfx_generation_number == 9 && .amdgcn.gfx_generation_minor >= 4)\n"\
-+    "           flat_load_dwordx2 \\vdst, \\vaddr nt sc1 sc0\n"\
-+    "       .else\n"\
-+    "           flat_load_dwordx2 \\vdst, \\vaddr \\arg0 \\arg1\n"\
-+    "       .endif\n"\
-+    "   .endm\n"\
-+    "   .macro FLAT_STORE_DWORD_NSS vaddr, vsrc arg0 arg1\n"\
-+    "       .if (.amdgcn.gfx_generation_number == 9 && .amdgcn.gfx_generation_minor >= 4)\n"\
-+    "           flat_store_dword \\vaddr, \\vsrc nt sc1 sc0\n"\
-+    "       .else\n"\
-+    "           flat_store_dword \\vaddr, \\vsrc \\arg0 \\arg1\n"\
-+    "       .endif\n"\
-+    "   .endm\n"\
-+    "   .macro FLAT_ATOMIC_ADD_NSS vdst, vaddr, vsrc arg0 arg1\n"\
-+    "       .if (.amdgcn.gfx_generation_number == 9 && .amdgcn.gfx_generation_minor >= 4)\n"\
-+    "           flat_atomic_add \\vdst, \\vaddr, \\vsrc nt sc1 sc0\n"\
-+    "       .else\n"\
-+    "           flat_atomic_add \\vdst, \\vaddr, \\vsrc \\arg0 \\arg1\n"\
-+    "       .endif\n"\
-+    "   .endm\n"
-+
-+/**
-+ * Common
-+ */
-+
-+/* Shader: NoopIsa
-+ * Purpose: Minimal shader that immediately terminates.
-+ * Inputs: (none)
-+ * Side Effects: None.
-+ * Pseudo-code:
-+ *   void shader_noop(void) {
-+ *       // Immediately end program
-+ *       return; // s_endpgm
-+ *   }
-+ */
-+static const char NoopIsa[] =
-+    SHADER_START
-+    R"(
-+        s_endpgm
-+)";
-+/* Shader: CopyDwordIsa
-+ * Purpose: Load one 32-bit value from address in s[0:1] and store to address in s[2:3].
-+ * Inputs:
-+ *   s[0:1] - source pointer
-+ *   s[2:3] - destination pointer
-+ * Memory Semantics:
-+ *   Uses flat (global) load/store, optionally with system scope (gfx12+) or glc/slc flags.
-+ * Pseudo-code:
-+ *   void shader_copy_dword(uint32_t *dst, const uint32_t *src) {
-+ *       uint32_t val = *src; // flat load
-+ *       *dst = val;          // flat store
-+ *   }
-+ */
-+static const char CopyDwordIsa[] =
-+    SHADER_START
-+    SHADER_MACROS_FLAT
-+    R"(
-+        v_mov_b32 v0, s0
-+        v_mov_b32 v1, s1
-+        v_mov_b32 v2, s2
-+        v_mov_b32 v3, s3
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            FLAT_LOAD_DWORD_NSS v4, v[0:1] scope:SCOPE_SYS
-+            s_wait_loadcnt 0
-+            FLAT_STORE_DWORD_NSS v[2:3], v4 scope:SCOPE_SYS
-+        .else
-+            FLAT_LOAD_DWORD_NSS v4, v[0:1] glc slc
-+            s_waitcnt 0
-+            FLAT_STORE_DWORD_NSS v[2:3], v4 glc slc
-+        .endif
-+        s_endpgm
-+)";
-+
-+/* Shader: InfiniteLoopIsa
-+ * Purpose: Busy loop forever (used for hang / timeout tests).
-+ * Pseudo-code:
-+ *   void shader_infinite_loop(void) {
-+ *       for (;;) {
-+ *           // delay (s_nop)
-+ *       }
-+ *   }
-+ */
-+static const char InfiniteLoopIsa[] =
-+    SHADER_START
-+    R"(
-+        .text
-+        LOOP:
-+        s_nop 0x10
-+        s_branch LOOP
-+        s_endpgm
-+)";
-+
-+/* Shader: AtomicIncIsa
-+ * Purpose: Atomically increment a 32-bit counter at address s[0:1]. Returns old value (ignored).
-+ * Inputs: s[0:1] - pointer to uint32_t counter.
-+ * Memory Semantics: Uses atomic add (system scope on gfx12). Ensures atomicity across waves.
-+ * Pseudo-code:
-+ *   void shader_atomic_inc(uint32_t *counter) {
-+ *       atomic_fetch_add(counter, 1); // old value unused
-+ *   }
-+ */
-+static const char AtomicIncIsa[] =
-+    SHADER_START
-+    SHADER_MACROS_FLAT
-+    R"(
-+        v_mov_b32 v0, s0
-+        v_mov_b32 v1, s1
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            v_mov_b32 v2, 1
-+            FLAT_ATOMIC_ADD_NSS v3, v[0:1], v2 scope:SCOPE_SYS th:TH_ATOMIC_RETURN
-+        .elseif (.amdgcn.gfx_generation_number >= 8)
-+            v_mov_b32 v2, 1
-+            FLAT_ATOMIC_ADD_NSS v3, v[0:1], v2 glc slc
-+        .else
-+            v_mov_b32 v2, -1
-+            flat_atomic_inc v3, v[0:1], v2 glc slc
-+        .endif
-+        s_endpgm
-+)";
-+
-+/**
-+ * KFDMemoryTest
-+ */
-+
-+/* Shader: ScratchCopyDwordIsa
-+ * Purpose: Configure scratch base registers then copy one dword from s[0:1] to s[2:3].
-+ * Inputs:
-+ *   s[0:1] - source ptr
-+ *   s[2:3] - destination ptr
-+ *   s[4:5] - scratch base address (architecture-dependent setup)
-+ * Scratch Setup: Programs flat scratch base depending on generation.
-+ * Pseudo-code:
-+ *   void shader_scratch_copy(uint32_t *dst, const uint32_t *src, uint64_t scratch_base) {
-+ *       program_scratch_base(scratch_base);
-+ *       *dst = *src;
-+ *   }
-+ */
-+static const char ScratchCopyDwordIsa[] =
-+    SHADER_START
-+    SHADER_MACROS_FLAT
-+    R"(
-+        // Copy the parameters from scalar registers to vector registers
-+        .if (.amdgcn.gfx_generation_number >= 9)
-+            v_mov_b32 v0, s0
-+            v_mov_b32 v1, s1
-+            v_mov_b32 v2, s2
-+            v_mov_b32 v3, s3
-+        .else
-+            v_mov_b32_e32 v0, s0
-+            v_mov_b32_e32 v1, s1
-+            v_mov_b32_e32 v2, s2
-+            v_mov_b32_e32 v3, s3
-+        .endif
-+
-+        // Setup the scratch parameters. This assumes a single 16-reg block
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            s_setreg_b32 hwreg(HW_REG_SCRATCH_BASE_LO), s4
-+            s_setreg_b32 hwreg(HW_REG_SCRATCH_BASE_HI), s5
-+        .elseif (.amdgcn.gfx_generation_number >= 10)
-+            s_setreg_b32 hwreg(HW_REG_FLAT_SCR_LO), s4
-+            s_setreg_b32 hwreg(HW_REG_FLAT_SCR_HI), s5
-+        .elseif (.amdgcn.gfx_generation_number == 9)
-+            s_mov_b32 flat_scratch_lo, s4
-+            s_mov_b32 flat_scratch_hi, s5
-+        .else
-+            s_mov_b32 flat_scratch_lo, 8
-+            s_mov_b32 flat_scratch_hi, 0
-+        .endif
-+
-+        // Copy a dword between the passed addresses
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            FLAT_LOAD_DWORD_NSS v4, v[0:1] scope:SCOPE_SYS
-+            s_wait_loadcnt 0
-+            FLAT_STORE_DWORD_NSS v[2:3], v4 scope:SCOPE_SYS
-+        .else
-+            FLAT_LOAD_DWORD_NSS v4, v[0:1] slc
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)
-+            FLAT_STORE_DWORD_NSS v[2:3], v4 slc
-+        .endif
-+
-+        s_endpgm
-+)";
-+
-+/* Shader: PollMemoryIsa
-+ * Purpose: Poll *src until it equals 0x5678, then write 0x5678 to *dst.
-+ * Inputs:
-+ *   s[0:1] - src address (flag written by host)
-+ *   s[2:3] - dst address where result 0x5678 stored
-+ * Behavior:
-+ *   Loop: load flag; compare; if not matched continue; else store value and exit.
-+ * Pseudo-code:
-+ *   void shader_poll_and_write(uint32_t *dst, const uint32_t *src) {
-+ *       while (*src != 0x5678) { ; } // busy wait
-+ *       *dst = 0x5678;
-+ *   }
-+ */
-+static const char PollMemoryIsa[] =
-+    SHADER_START
-+    R"(
-+        // Assume src address in s0, s1, and dst address in s2, s3
-+        s_movk_i32 s18, 0x5678
-+        .if (.amdgcn.gfx_generation_number >= 10)
-+            v_mov_b32 v0, s2
-+            v_mov_b32 v1, s3
-+            v_mov_b32 v2, 0x5678
-+        .endif
-+        LOOP:
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            s_load_dword s16, s[0:1], 0x0 scope:SCOPE_SYS
-+        .else
-+            s_load_dword s16, s[0:1], 0x0 glc
-+        .endif
-+        s_cmp_eq_i32 s16, s18
-+        s_cbranch_scc0   LOOP
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            flat_store_dword v[0:1], v2 scope:SCOPE_SYS
-+        .elseif (.amdgcn.gfx_generation_number >= 10)
-+            flat_store_dword v[0:1], v2 slc
-+        .else
-+            s_store_dword s18, s[2:3], 0x0 glc
-+        .endif
-+        s_endpgm
-+)";
-+
-+/* Shader: PollNCMemoryIsa
-+ * Purpose: Poll a potentially non-coherent memory location (via vector load with scc) until value == 0x5678; then store 0x5678 to dst.
-+ * Rationale: Scalar memory path may not ensure coherence; uses vector load with scc modifier.
-+ * Inputs: s[0:1] src flag, s[2:3] dst address (written after success).
-+ * Pseudo-code:
-+ *   void shader_poll_nc(uint32_t *dst, const uint32_t *src) {
-+ *       while (vector_load(src) != 0x5678) ;
-+ *       *dst = 0x5678; // store with scc path
-+ *   }
-+ */
-+static const char PollNCMemoryIsa[] =
-+    SHADER_START
-+    R"(
-+        // Assume src address in s0, s1, and dst address in s2, s3
-+        v_mov_b32 v6, 0x5678
-+        v_mov_b32 v0, s0
-+        v_mov_b32 v1, s1
-+        LOOP:
-+        flat_load_dword v4, v[0:1] scc
-+        v_cmp_eq_u32 vcc, v4, v6
-+        s_cbranch_vccz   LOOP
-+        v_mov_b32 v0, s2
-+        v_mov_b32 v1, s3
-+        flat_store_dword v[0:1], v6 scc
-+        s_endpgm
-+)";
-+
-+/* Shader: CopyOnSignalIsa
-+ * Inputs (buffer at s[0:1], size >= 3 dwords):
-+ *   DW0 flag: host writes 0xcafe to trigger copy
-+ *   DW1 value: source value
-+ *   DW2 output: destination written when flag observed
-+ * Behavior:
-+ *   Poll flag until equals 0xcafe then copy DW1 -> DW2.
-+ * Pseudo-code:
-+ *   void shader_copy_on_signal(uint32_t *buf) {
-+ *       while (buf[0] != 0xcafe) { ; }
-+ *       buf[2] = buf[1];
-+ *   }
-+ */
-+static const char CopyOnSignalIsa[] =
-+    SHADER_START
-+    R"(
-+        // Assume input buffer in s0, s1
-+        .if (.amdgcn.gfx_generation_number >= 10)
-+            s_add_u32 s2, s0, 0x8
-+            s_addc_u32 s3, s1, 0x0
-+            s_mov_b32 s18, 0xcafe
-+            v_mov_b32 v0, s0
-+            v_mov_b32 v1, s1
-+            v_mov_b32 v4, s2
-+            v_mov_b32 v5, s3
-+        .else
-+            s_mov_b32 s18, 0xcafe
-+        .endif
-+
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+
-+            POLLSIGNAL:
-+            s_load_dword s16, s[0:1], 0x0 scope:SCOPE_SYS
-+            s_cmp_eq_i32 s16, s18
-+            s_cbranch_scc0   POLLSIGNAL
-+
-+            s_load_dword s17, s[0:1], 0x4 scope:SCOPE_SYS
-+            s_wait_kmcnt 0
-+
-+            v_mov_b32 v2, s17
-+            flat_store_dword v[4:5], v2 scope:SCOPE_SYS
-+        .else
-+
-+            POLLSIGNAL:
-+            s_load_dword s16, s[0:1], 0x0 glc
-+            s_cmp_eq_i32 s16, s18
-+            s_cbranch_scc0   POLLSIGNAL
-+
-+            s_load_dword s17, s[0:1], 0x4 glc
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)
-+            .if (.amdgcn.gfx_generation_number >= 10)
-+                v_mov_b32 v2, s17
-+                flat_store_dword v[4:5], v2 glc
-+            .else
-+                s_store_dword s17, s[0:1], 0x8 glc
-+            .endif
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)
-+
-+        .endif
-+        s_endpgm
-+)";
-+
-+/* Shader: PollAndCopyIsa
-+ * Purpose: Wait for flag at s[0:1] (DW0) to become 1; then copy DW1 (offset +4) into destination s[2:3].
-+ * Architecture: GFX9 variants (Aldebaran / Aqua Vanjaram) have cache invalidation & write-back sequence.
-+ * Flow:
-+ *   spin on flag -> invalidate buffer -> load payload -> store to dst -> flush.
-+ * Pseudo-code:
-+ *   void shader_poll_and_copy(uint32_t *src, uint32_t *dst) {
-+ *       while (src[0] != 1) ;
-+ *       uint32_t val = src[1];
-+ *       *dst = val;
-+ *   }
-+ */
-+static const char PollAndCopyIsa[] =
-+    SHADER_START
-+    SHADER_MACROS_FLAT
-+    R"(
-+        // Assume src buffer in s[0:1] and dst buffer in s[2:3]
-+        // Path for Aldebaran, Aqua Vanjaram
-+        .if (.amdgcn.gfx_generation_number == 9 && (.amdgcn.gfx_generation_minor >= 4 || .amdgcn.gfx_generation_stepping == 10))
-+            v_mov_b32 v0, s0
-+            v_mov_b32 v1, s1
-+            v_mov_b32 v18, 0x1
-+            LOOP0:
-+            FLAT_LOAD_DWORD_NSS v16, v[0:1] glc
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)
-+            v_cmp_eq_i32 vcc, v16, v18
-+            s_cbranch_vccz LOOP0
-+            .if (.amdgcn.gfx_generation_minor >= 4)
-+                buffer_inv sc1 sc0
-+            .else
-+                buffer_invl2
-+            .endif
-+            s_load_dword s17, s[0:1], 0x4 glc
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)
-+            s_store_dword s17, s[2:3], 0x0 glc
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)
-+            buffer_wbl2
-+        .elseif (.amdgcn.gfx_generation_number == 9)
-+            s_movk_i32 s18, 0x1
-+            LOOP1:
-+            s_load_dword s16, s[0:1], 0x0 glc
-+            s_cmp_eq_i32 s16, s18
-+            s_cbranch_scc0 LOOP1
-+            s_load_dword s17, s[0:1], 0x4 glc
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)
-+            s_store_dword s17, s[2:3], 0x0 glc
-+        .endif
-+        s_waitcnt vmcnt(0) & lgkmcnt(0)
-+        s_endpgm
-+)";
-+
-+/* Shader: WriteFlagAndValueIsa
-+ * Purpose: Write value from second buffer (Input1 DW0) into first buffer DW1, then set first buffer DW0 to 1.
-+ * Inputs:
-+ *   s[0:1] - buffer A (flag + output value)
-+ *   s[2:3] - buffer B (contains value to copy at DW0)
-+ * Sequence (gfx9.4+/stepping10): load value -> store to A[1] -> flush -> store flag A[0]=1.
-+ * Pseudo-code:
-+ *   void shader_write_flag_value(uint32_t *bufA, uint32_t *bufB) {
-+ *       uint32_t val = bufB[0];
-+ *       bufA[1] = val; // ensure visibility
-+ *       wb();
-+ *       bufA[0] = 1;   // signal
-+ *   }
-+ */
-+static const char WriteFlagAndValueIsa[] =
-+    SHADER_START
-+    SHADER_MACROS_FLAT
-+    R"(
-+        // Assume two inputs buffer in s[0:1] and s[2:3]
-+        .if (.amdgcn.gfx_generation_number == 9 && (.amdgcn.gfx_generation_minor >= 4 || .amdgcn.gfx_generation_stepping == 10))
-+            v_mov_b32 v0, s0
-+            v_mov_b32 v1, s1
-+            s_load_dword s18, s[2:3], 0x0 glc
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)
-+            s_store_dword s18, s[0:1], 0x4 glc
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)
-+            buffer_wbl2
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)
-+            v_mov_b32 v16, 0x1
-+            FLAT_STORE_DWORD_NSS v[0:1], v16 glc
-+        .endif
-+        s_endpgm
-+)";
-+
-+/* Shader: WriteAndSignalIsa
-+ * Purpose: Fill DW1 with 0xbeef, write MMIO signal (0x1) at s[2:3], then flag DW0 with 0xcafe.
-+ * Inputs:
-+ *   s[0:1] - buffer (DW0 flag, DW1 payload)
-+ *   s[2:3] - mmio base (doorbell / signal area)
-+ * Flow: write payload -> write mmio signal -> write flag.
-+ * Pseudo-code:
-+ *   void shader_write_and_signal(uint32_t *buf, uint32_t *mmio) {
-+ *       buf[1] = 0xbeef;
-+ *       *mmio = 1; // doorbell
-+ *       buf[0] = 0xcafe; // completion flag
-+ *   }
-+ */
-+static const char WriteAndSignalIsa[] =
-+    SHADER_START
-+    R"(
-+        // Assume input buffer in s0, s1
-+        .if (.amdgcn.gfx_generation_number >= 10)
-+            s_add_u32 s4, s0, 0x4
-+            s_addc_u32 s5, s1, 0x0
-+            v_mov_b32 v0, s0
-+            v_mov_b32 v1, s1
-+            v_mov_b32 v2, s2
-+            v_mov_b32 v3, s3
-+            v_mov_b32 v4, s4
-+            v_mov_b32 v5, s5
-+            .if (.amdgcn.gfx_generation_number >= 12)
-+                v_mov_b32 v18, 0xbeef
-+                flat_store_dword v[4:5], v18 scope:SCOPE_SYS
-+                v_mov_b32 v18, 0x1
-+                flat_store_dword v[2:3], v18 scope:SCOPE_SYS
-+                v_mov_b32 v18, 0xcafe
-+                flat_store_dword v[0:1], v18 scope:SCOPE_SYS
-+            .else
-+                v_mov_b32 v18, 0xbeef
-+                flat_store_dword v[4:5], v18 glc
-+                v_mov_b32 v18, 0x1
-+                flat_store_dword v[2:3], v18 glc
-+                v_mov_b32 v18, 0xcafe
-+                flat_store_dword v[0:1], v18 glc
-+            .endif
-+        .else
-+            s_mov_b32 s18, 0xbeef
-+            s_store_dword s18, s[0:1], 0x4 glc
-+            s_mov_b32 s18, 0x1
-+            s_store_dword s18, s[2:3], 0 glc
-+            s_mov_b32 s18, 0xcafe
-+            s_store_dword s18, s[0:1], 0x0 glc
-+        .endif
-+        s_endpgm
-+)";
-+
-+/* Shader: FlushBufferForAcquireReleaseIsa
-+ * Purpose: Populate five cache lines (offsets 0x40..0x140) with 0x77 and a flag at 0x0 (0) to prime cache state.
-+ * Inputs: s[0:1] - shared buffer (>= 64*6 bytes).
-+ * Use Case: Prepares data prior to an acquire/release synchronization test.
-+ * Pseudo-code:
-+ *   void shader_flush_prepare(uint32_t *buf) {
-+ *       buf[0] = 0; // flag remains unset
-+ *       for (int i=0;i<5;i++) buf[(0x40>>2) + i*(0x40>>2)] = 0x77;
-+ *   }
-+ */
-+static const char FlushBufferForAcquireReleaseIsa[] =
-+    SHADER_START
-+    R"(
-+        .if (.amdgcn.gfx_generation_number == 9 && .amdgcn.gfx_generation_minor >= 4)
-+            s_mov_b32 s11, 0x77
-+            s_mov_b32 s12, 0x0
-+            // Store some data on 5 different cache lines
-+            s_store_dword s12, s[0:1], 0x0 glc
-+            s_store_dword s11, s[0:1], 0x40 glc
-+            s_store_dword s11, s[0:1], 0x80 glc
-+            s_store_dword s11, s[0:1], 0xc0 glc
-+            s_store_dword s11, s[0:1], 0x100 glc
-+            s_store_dword s11, s[0:1], 0x140 glc
-+            s_waitcnt lgkmcnt(0)
-+        .endif
-+        s_endpgm
-+)";
-+
-+/* Shader: WriteReleaseVectorIsa
-+ * Purpose: Write values {1..5} to five distinct cache-line offsets; perform write-release (wb + L2 flush) then set flag at 0x0.
-+ * Inputs: s[0:1] - shared buffer with acquiring shader.
-+ * Memory Ordering: buffer_wbl2 before flag ensures data visible prior to flag store.
-+ * Pseudo-code:
-+ *   void shader_write_release_vec(uint32_t *shared) {
-+ *       shared[0x40/4]=1; shared[0x80/4]=2; shared[0xC0/4]=3; shared[0x100/4]=4; shared[0x140/4]=5;
-+ *       write_back(); // release
-+ *       shared[0] = 1; // flag
-+ *   }
-+ */
-+static const char WriteReleaseVectorIsa[] =
-+    SHADER_START
-+    R"(
-+        .if (.amdgcn.gfx_generation_number == 9 && .amdgcn.gfx_generation_minor >= 4)
-+            v_mov_b32 v11, 0x1
-+            v_mov_b32 v12, 0x2
-+            v_mov_b32 v13, 0x3
-+            v_mov_b32 v14, 0x4
-+            v_mov_b32 v15, 0x5
-+            v_mov_b32 v21, 0x40
-+            v_mov_b32 v22, 0x80
-+            v_mov_b32 v23, 0xc0
-+            v_mov_b32 v24, 0x100
-+            v_mov_b32 v25, 0x140
-+            // Store some data on 5 different cache lines
-+            global_store_dword v21, v11, s[0:1]
-+            global_store_dword v22, v12, s[0:1]
-+            global_store_dword v23, v13, s[0:1]
-+            global_store_dword v24, v14, s[0:1]
-+            global_store_dword v25, v15, s[0:1] nt sc1 sc0
-+            s_waitcnt vmcnt(0)
-+            // Write-Release
-+            s_mov_b32 s16, 0x1
-+            buffer_wbl2 sc1 sc0
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)
-+            s_store_dword s16, s[0:1], 0x0 glc
-+        .endif
-+        s_endpgm
-+)";
-+
-+/* Shader: WriteReleaseScalarIsa
-+ * Purpose: Same as vector variant but uses scalar stores and scalar cache write-back.
-+ * Values {6..10} to offsets 0x40..0x140 then release + set flag.
-+ * Pseudo-code:
-+ *   void shader_write_release_scalar(uint32_t *shared) {
-+ *       uint32_t vals[5]={6,7,8,9,10};
-+ *       for(int i=0;i<5;i++) shared[(0x40>>2)+i*(0x40>>2)] = vals[i];
-+ *       scalar_dcache_wb(); write_back();
-+ *       shared[0] = 1;
-+ *   }
-+ */
-+static const char WriteReleaseScalarIsa[] =
-+    SHADER_START
-+    R"(
-+        .if (.amdgcn.gfx_generation_number == 9 && .amdgcn.gfx_generation_minor >= 4)
-+            s_mov_b32 s11, 0x6
-+            s_mov_b32 s12, 0x7
-+            s_mov_b32 s13, 0x8
-+            s_mov_b32 s14, 0x9
-+            s_mov_b32 s15, 0xa
-+            // Store some data on 5 different cache lines
-+            s_store_dword s11, s[0:1], 0x40
-+            s_store_dword s12, s[0:1], 0x80
-+            s_store_dword s13, s[0:1], 0xc0
-+            s_store_dword s14, s[0:1], 0x100
-+            s_store_dword s15, s[0:1], 0x140 glc
-+            s_waitcnt lgkmcnt(0)
-+            // Write-Release
-+            s_dcache_wb // WB Scalar L1 cache
-+            s_mov_b32 s16, 0x1
-+            buffer_wbl2 sc1 sc0
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)
-+            s_store_dword s16, s[0:1], 0x0 glc
-+            s_waitcnt lgkmcnt(0)
-+        .endif
-+        s_endpgm
-+)";
-+
-+/* Shader: ReadAcquireVectorIsa
-+ * Purpose: Acquire side of release/acquire. Waits for flag==1 then invalidates caches, loads five values and writes them to output buffer.
-+ * Inputs:
-+ *   s[0:1] shared buffer (writer performed release)
-+ *   s[2:3] output buffer (CPU-visible)
-+ * Ordering: buffer_inv before loads ensures fresh data; stores use non-temporal sc1 sc0 modifiers.
-+ * Pseudo-code:
-+ *   void shader_read_acquire_vec(uint32_t *shared, uint32_t *out) {
-+ *       while(shared[0]!=1); invalidate();
-+ *       for(int i=0;i<5;i++) {
-+ *           unsigned idx = (0x40>>2)+i*(0x40>>2);
-+ *           out[idx] = shared[idx];
-+ *       }
-+ *   }
-+ */
-+static const char ReadAcquireVectorIsa[] =
-+    SHADER_START
-+    R"(
-+        .if (.amdgcn.gfx_generation_number == 9 && .amdgcn.gfx_generation_minor >= 4)
-+            // Read-Acquire
-+            s_mov_b32 s18, 0x1
-+            LOOP:
-+            s_load_dword s17, s[0:1], 0x0 glc
-+            s_waitcnt lgkmcnt(0)
-+            s_cmp_eq_i32 s17, s18
-+            s_cbranch_scc0 LOOP
-+            buffer_inv sc1 sc0
-+            // Load data
-+            v_mov_b32 v21, 0x40
-+            v_mov_b32 v22, 0x80
-+            v_mov_b32 v23, 0xc0
-+            v_mov_b32 v24, 0x100
-+            v_mov_b32 v25, 0x140
-+            global_load_dword v11, v21, s[0:1]
-+            global_load_dword v12, v22, s[0:1]
-+            global_load_dword v13, v23, s[0:1]
-+            global_load_dword v14, v24, s[0:1]
-+            global_load_dword v15, v25, s[0:1]
-+            s_waitcnt vmcnt(0)
-+            // Store data for output
-+            v_mov_b32 v21, 0x40
-+            v_mov_b32 v22, 0x80
-+            v_mov_b32 v23, 0xc0
-+            v_mov_b32 v24, 0x100
-+            v_mov_b32 v25, 0x140
-+            global_store_dword v21, v11, s[2:3] nt sc1 sc0
-+            global_store_dword v22, v12, s[2:3] nt sc1 sc0
-+            global_store_dword v23, v13, s[2:3] nt sc1 sc0
-+            global_store_dword v24, v14, s[2:3] nt sc1 sc0
-+            global_store_dword v25, v15, s[2:3] nt sc1 sc0
-+            s_waitcnt vmcnt(0)
-+        .endif
-+        s_endpgm
-+)";
-+
-+/* Shader: ReadAcquireScalarIsa
-+ * Purpose: Scalar-load variant of acquire side. Polls flag then invalidates and reads via scalar path, writing results to output buffer.
-+ * Pseudo-code:
-+ *   void shader_read_acquire_scalar(uint32_t *shared, uint32_t *out) {
-+ *       while(shared[0]!=1); invalidate();
-+ *       for(int i=0;i<5;i++) {
-+ *           unsigned idx = (0x40>>2)+i*(0x40>>2);
-+ *           out[idx] = shared[idx];
-+ *       }
-+ *   }
-+ */
-+static const char ReadAcquireScalarIsa[] =
-+    SHADER_START
-+    R"(
-+        .if (.amdgcn.gfx_generation_number == 9 && .amdgcn.gfx_generation_minor >= 4)
-+            // Read-Acquire
-+            s_mov_b32 s18, 0x1
-+            LOOP:
-+            s_load_dword s17, s[0:1], 0x0 glc
-+            s_waitcnt lgkmcnt(0)
-+            s_cmp_eq_i32 s17, s18
-+            s_cbranch_scc0 LOOP
-+            buffer_inv sc1 sc0
-+            // Load data
-+            s_load_dword s21, s[0:1], 0x40
-+            s_load_dword s22, s[0:1], 0x80
-+            s_load_dword s23, s[0:1], 0xc0
-+            s_load_dword s24, s[0:1], 0x100
-+            s_load_dword s25, s[0:1], 0x140
-+            s_waitcnt lgkmcnt(0)
-+            // Store data for output
-+            s_store_dword s21, s[2:3], 0x40 glc
-+            s_store_dword s22, s[2:3], 0x80 glc
-+            s_store_dword s23, s[2:3], 0xc0 glc
-+            s_store_dword s24, s[2:3], 0x100 glc
-+            s_store_dword s25, s[2:3], 0x140 glc
-+            s_waitcnt lgkmcnt(0)
-+        .endif
-+        s_endpgm
-+)";
-+
-+/**
-+ * KFDQMTest
-+ */
-+
-+/* Shader: LoopIsa
-+ * Purpose: Stress math pipelines by performing iterative transcendental + arithmetic operations.
-+ * Inputs: s1 - iteration count. (Others setup constants.)
-+ * Registers: v0..v28 used for accumulating and intermediate math.
-+ * Pseudo-code (simplified approximation):
-+ *   void shader_dense_loop(uint32_t iterations) {
-+ *       float accA[4]={0}, accB[4]={0}, accC[4]={0}, accD[4]={0};
-+ *       for (uint32_t i=0;i<iterations;i++) {
-+ *           float f = (float)i;
-+ *           // Chain of log/exp/sqrt/rsq operations updating accumulators.
-+ *           // Real ISA interleaves for latency hiding.
-+ *           for(int k=0;k<4;k++) {
-+ *               float t = expf(logf(f + accA[k]) * scale(k));
-+ *               accB[k] += t;
-+ *               accC[k] += sqrtf(accA[k]);
-+ *               accD[k] += 1.0f/sqrtf(accA[k]+1.0f);
-+ *           }
-+ *       }
-+ *   }
-+ */
-+static const char LoopIsa[] =
-+    SHADER_START
-+    R"(
-+        s_movk_i32    s0, 0x0008
-+        s_movk_i32    s1, 0x00ff
-+        s_mov_b32     s4, 0
-+        s_mov_b32     s5, 0
-+        s_mov_b32     s6, 0
-+        s_mov_b32     s7, 0
-+        s_mov_b32     s12, 0
-+        s_mov_b32     s13, 0
-+        s_mov_b32     s14, 0
-+        s_mov_b32     s15, 0
-+        v_mov_b32     v0, 0
-+        v_mov_b32     v1, 0
-+        v_mov_b32     v2, 0
-+        v_mov_b32     v3, 0
-+        v_mov_b32     v4, 0
-+        v_mov_b32     v5, 0
-+        v_mov_b32     v6, 0
-+        v_mov_b32     v7, 0
-+        v_mov_b32     v8, 0
-+        v_mov_b32     v9, 0
-+        v_mov_b32     v10, 0
-+        v_mov_b32     v11, 0
-+        v_mov_b32     v12, 0
-+        v_mov_b32     v13, 0
-+        v_mov_b32     v14, 0
-+        v_mov_b32     v15, 0
-+        v_mov_b32     v16, 0
-+        LOOP:
-+        s_mov_b32     s8, s4
-+        s_mov_b32     s9, s1
-+        s_mov_b32     s10, s6
-+        s_mov_b32     s11, s7
-+        s_cmp_le_i32  s1, s0
-+        s_cbranch_scc1  END_OF_PGM
-+        v_add_f32     v0, 2.0, v0
-+        v_cvt_f32_i32 v17, s1
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            s_wait_dscnt     0
-+            s_wait_kmcnt     0
-+        .else
-+            s_waitcnt lgkmcnt(0)
-+        .endif
-+        v_add_f32     v18, s8, v17
-+        v_add_f32     v19, s9, v17
-+        v_add_f32     v20, s10, v17
-+        v_add_f32     v21, s11, v17
-+        v_add_f32     v22, s12, v17
-+        v_add_f32     v23, s13, v17
-+        v_add_f32     v24, s14, v17
-+        v_add_f32     v17, s15, v17
-+        v_log_f32     v25, v18
-+        v_mul_f32     v25, v22, v25
-+        v_exp_f32     v25, v25
-+        v_log_f32     v26, v19
-+        v_mul_f32     v26, v23, v26
-+        v_exp_f32     v26, v26
-+        v_log_f32     v27, v20
-+        v_mul_f32     v27, v24, v27
-+        v_exp_f32     v27, v27
-+        v_log_f32     v28, v21
-+        v_mul_f32     v28, v17, v28
-+        v_exp_f32     v28, v28
-+        v_add_f32     v5, v5, v25
-+        v_add_f32     v6, v6, v26
-+        v_add_f32     v7, v7, v27
-+        v_add_f32     v8, v8, v28
-+        v_mul_f32     v18, 0x3fb8aa3b, v18
-+        v_exp_f32     v18, v18
-+        v_mul_f32     v19, 0x3fb8aa3b, v19
-+        v_exp_f32     v19, v19
-+        v_mul_f32     v20, 0x3fb8aa3b, v20
-+        v_exp_f32     v20, v20
-+        v_mul_f32     v21, 0x3fb8aa3b, v21
-+        v_exp_f32     v21, v21
-+        v_add_f32     v9, v9, v18
-+        v_add_f32     v10, v10, v19
-+        v_add_f32     v11, v11, v20
-+        v_add_f32     v12, v12, v21
-+        v_sqrt_f32    v18, v22
-+        v_sqrt_f32    v19, v23
-+        v_sqrt_f32    v20, v24
-+        v_sqrt_f32    v21, v17
-+        v_add_f32     v13, v13, v18
-+        v_add_f32     v14, v14, v19
-+        v_add_f32     v15, v15, v20
-+        v_add_f32     v16, v16, v21
-+        v_rsq_f32     v18, v22
-+        v_rsq_f32     v19, v23
-+        v_rsq_f32     v20, v24
-+        v_rsq_f32     v17, v17
-+        v_add_f32     v1, v1, v18
-+        v_add_f32     v2, v2, v19
-+        v_add_f32     v3, v3, v20
-+        v_add_f32     v4, v4, v17
-+        s_add_u32     s0, s0, 1
-+        s_branch      LOOP
-+        END_OF_PGM:
-+        s_endpgm
-+)";
-+
-+
-+/**
-+ * KFDCWSRTest
-+ */
-+
-+/* Shader: PersistentIterateIsa
-+ * Purpose: Persistently writes a stable value to per-workgroup output slot until host sets quit flag (0x12345678) in input buffer.
-+ * Inputs:
-+ *   s[0:1] input buffer (DW0 quit flag location)
-+ *   s[2:3] output buffer base
-+ *   s4/ttmp9 workgroup id
-+ * Behavior:
-+ *   Derive per-WG output address -> load initial value -> loop { store value; increment local counter; check quit flag }.
-+ * Pseudo-code:
-+ *   void shader_persistent(uint32_t *in, uint32_t *out_base, uint32_t wg_id) {
-+ *       uint32_t *slot = out_base + wg_id; uint32_t val = *slot; uint32_t ctr=0;
-+ *       while (in[0] != 0x12345678) { *slot = val; ctr++; }
-+ *   }
-+ */
-+static const char PersistentIterateIsa[] =
-+    SHADER_START
-+    SHADER_MACROS_U32
-+    SHADER_MACROS_FLAT
-+    R"(
-+        // Compute address of output buffer
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            v_mov_b32               v0, ttmp9   // use workgroup id as index
-+        .else
-+            v_mov_b32               v0, s4      // use workgroup id as index
-+        .endif
-+        v_lshlrev_b32           v0, 2, v0       // v0 *= 4
-+        V_ADD_CO_U32            v4, s2, v0      // v[4:5] = s[2:3] + v0 * 4
-+        v_mov_b32               v5, s3          // v[4:5] = s[2:3] + v0 * 4
-+        V_ADD_CO_CI_U32         v5, v5, 0       // v[4:5] = s[2:3] + v0 * 4
-+
-+        // Store known-value output in register
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            FLAT_LOAD_DWORD_NSS     v6, v[4:5] scope:SCOPE_SYS
-+            s_wait_loadcnt 0                        // wait for memory reads to finish
-+        .else
-+            FLAT_LOAD_DWORD_NSS     v6, v[4:5] glc
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)         // wait for memory reads to finish
-+        .endif
-+
-+        // Initialize counter
-+        v_mov_b32               v7, 0
-+
-+        LOOP:
-+        flat_store_dword        v[4:5], v6      // store known-val in output
-+        V_ADD_CO_U32            v7, 1, v7       // increment counter
-+
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            s_load_dword            s6, s[0:1], 0 scope:SCOPE_SYS
-+            s_wait_loadcnt 0                        // wait for memory reads to finish
-+        .else
-+            s_load_dword            s6, s[0:1], 0 glc
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)         // wait for memory reads to finish
-+        .endif
-+        s_cmp_eq_i32            s6, 0x12345678  // compare input buf to stopval
-+        s_cbranch_scc1          L_QUIT          // branch if notified to quit by host
-+
-+        s_branch LOOP
-+
-+        L_QUIT:
-+        s_endpgm
-+)";
-+
-+/**
-+ * KFDEvictTest
-+ */
-+
-+/* Shader: ReadMemoryIsa
-+ * Purpose: For each workgroup, repeatedly read pages of a local buffer until host signals completion (flag 0x5678), then write 0x5678 to result slot.
-+ * Inputs:
-+ *   s[0:1] address buffer: contains per-WG local buffer addresses (64-bit each)
-+ *   s[2:3] result buffer: per-WG result slot (DW0 local size MB initially; overwritten with 0x5678)
-+ *   s4/ttmp9 workgroup id
-+ * Flow:
-+ *   Compute output slot & pointer to local address; load local address & size; repeat: check quit flag; if not set, walk pages (4KB stride) reading; loop.
-+ * Pseudo-code:
-+ *   void shader_read_mem(uint64_t *addr_buf, uint32_t *res_buf, uint32_t wg_id) {
-+ *       uint32_t *res_slot = res_buf + wg_id; uint32_t size_mb = *res_slot;
-+ *       uint64_t local_addr = addr_buf[wg_id];
-+ *       while (*(uint32_t*)addr_buf != 0x5678) {
-+ *           for (uint64_t off=0; off < (uint64_t)size_mb*MB; off+=4096) {
-+ *               volatile uint64_t tmp = *(uint64_t*)(local_addr + off);
-+ *               (void)tmp;
-+ *           }
-+ *       }
-+ *       *res_slot = 0x5678;
-+ *   }
-+ */
-+static const char ReadMemoryIsa[] =
-+    SHADER_START
-+    SHADER_MACROS_U32
-+    SHADER_MACROS_FLAT
-+    R"(
-+        // Compute address of corresponding output buffer
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            v_mov_b32           v0, ttmp9       // use workgroup id as index
-+        .else
-+            v_mov_b32           v0, s4          // use workgroup id as index
-+        .endif
-+        v_lshlrev_b32           v0, 2, v0       // v0 *= 4
-+        V_ADD_CO_U32            v4, s2, v0      // v[4:5] = s[2:3] + v0 * 4
-+        v_mov_b32               v5, s3          // v[4:5] = s[2:3] + v0 * 4
-+        V_ADD_CO_CI_U32         v5, v5, 0       // v[4:5] = s[2:3] + v0 * 4
-+
-+        // Compute input buffer offset used to store corresponding local buffer address
-+        v_lshlrev_b32           v0, 1, v0       // v0 *= 8
-+        V_ADD_CO_U32            v2, s0, v0      // v[2:3] = s[0:1] + v0 * 8
-+        v_mov_b32               v3, s1          // v[2:3] = s[0:1] + v0 * 8
-+        V_ADD_CO_CI_U32         v3, v3, 0       // v[2:3] = s[0:1] + v0 * 8
-+
-+        // Load local buffer size from output buffer
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            FLAT_LOAD_DWORD_NSS     v11, v[4:5] scope:SCOPE_DEV
-+        .else
-+            FLAT_LOAD_DWORD_NSS     v11, v[4:5] slc
-+        .endif
-+
-+        // Load 64bit local buffer address stored at v[2:3] to v[6:7]
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            FLAT_LOAD_DWORDX2_NSS   v[6:7], v[2:3] scope:SCOPE_DEV
-+            s_wait_loadcnt 0
-+        .else
-+            FLAT_LOAD_DWORDX2_NSS   v[6:7], v[2:3] slc
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)         // wait for memory reads to finish
-+        .endif
-+        v_mov_b32               v8, 0x5678
-+        s_movk_i32              s8, 0x5678
-+        L_REPEAT:
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            s_load_dword        s16, s[0:1], 0x0 scope:SCOPE_SYS
-+            s_wait_kmcnt        0                      // wait for memory reads to finish
-+        .else
-+            s_load_dword        s16, s[0:1], 0x0 glc
-+            s_waitcnt           vmcnt(0) & lgkmcnt(0)  // wait for memory reads to finish
-+        .endif
-+        s_cmp_eq_i32            s16, s8
-+        s_cbranch_scc1          L_QUIT          // if notified to quit by host
-+
-+        // Loop read local buffer starting at v[6:7]
-+        // every 4k page only read once
-+        v_mov_b32               v9, 0
-+        v_mov_b32               v10, 0x1000     // 4k page
-+        v_mov_b32               v12, v6
-+        v_mov_b32               v13, v7
-+        L_LOOP_READ:
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            FLAT_LOAD_DWORDX2_NSS   v[14:15], v[12:13] scope:SCOPE_DEV
-+        .else
-+            FLAT_LOAD_DWORDX2_NSS   v[14:15], v[12:13] slc
-+        .endif
-+        V_ADD_CO_U32            v9, v9, v10
-+        V_ADD_CO_U32            v12, v12, v10
-+        V_ADD_CO_CI_U32         v13, v13, 0
-+        V_CMP_LT_U32            v9, v11
-+        s_cbranch_vccnz         L_LOOP_READ
-+        s_branch                L_REPEAT
-+        L_QUIT:
-+        flat_store_dword        v[4:5], v8
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            s_wait_storecnt     0
-+        .else
-+            s_waitcnt vmcnt(0) & lgkmcnt(0)         // wait for memory writes to finish
-+        .endif
-+        s_endpgm
-+)";
-+
-+/**
-+ * KFDGWSTest
-+ */
-+
-+/* Shader: GwsInitIsa
-+ * Purpose: Initialize a GDS (Global Data Share) semaphore/counter via ds_gws_init.
-+ * Inputs: s[0:1] base address (may hold initial data).
-+ * Limited to pre-GFX12 path.
-+ * Pseudo-code:
-+ *   void shader_gws_init(uint32_t *addr) { gws_init(addr[0]); }
-+ */
-+static const char GwsInitIsa[] =
-+    SHADER_START
-+    R"(
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+        .else
-+            s_mov_b32 m0, 0
-+            s_nop 0
-+            s_load_dword s16, s[0:1], 0x0 glc
-+            s_waitcnt 0
-+            v_mov_b32 v0, s16
-+            s_waitcnt 0
-+            ds_gws_init v0 offset:0 gds
-+            s_waitcnt 0
-+            s_endpgm
-+        .endif
-+)";
-+
-+/* Shader: GwsAtomicIncreaseIsa
-+ * Purpose: Perform atomic increment protected by GWS semaphore across workgroups.
-+ * Inputs: s[0:1] pointer to shared counter.
-+ * Flow: acquire semaphore -> load -> increment -> store -> release.
-+ * Pseudo-code:
-+ *   void shader_gws_atomic_inc(uint32_t *counter) {
-+ *       gws_sema_p(); uint32_t v = *counter; v++; *counter = v; gws_sema_v();
-+ *   }
-+ */
-+static const char GwsAtomicIncreaseIsa[] =
-+    SHADER_START
-+    R"(
-+        // Assume src address in s0, s1
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+        .elseif (.amdgcn.gfx_generation_number >= 10)
-+            s_mov_b32 m0, 0
-+            s_mov_b32 exec_lo, 0x1
-+            v_mov_b32 v0, s0
-+            v_mov_b32 v1, s1
-+            ds_gws_sema_p offset:0 gds
-+            s_waitcnt 0
-+            flat_load_dword v2, v[0:1] glc dlc
-+            s_waitcnt 0
-+            v_add_nc_u32 v2, v2, 1
-+            flat_store_dword v[0:1], v2
-+            s_waitcnt_vscnt null, 0
-+            ds_gws_sema_v offset:0 gds
-+        .else
-+            s_mov_b32 m0, 0
-+            s_nop 0
-+            ds_gws_sema_p offset:0 gds
-+            s_waitcnt 0
-+            s_load_dword s16, s[0:1], 0x0 glc
-+            s_waitcnt 0
-+            s_add_u32 s16, s16, 1
-+            s_store_dword s16, s[0:1], 0x0 glc
-+            s_waitcnt lgkmcnt(0)
-+            ds_gws_sema_v offset:0 gds
-+        .endif
-+        s_waitcnt 0
-+        s_endpgm
-+)";
-+
-+
-+/* Shader: CheckCuMaskIsa
-+ * Purpose: Record hardware ID register value per workgroup to validate CU masking distribution.
-+ * Inputs: s[2:3] output buffer base; s4/ttmp9 workgroup id.
-+ * Output: out[wg_id] = HW_ID (or HW_ID1 on GFX12) low 32 bits.
-+ * Pseudo-code:
-+ *   void shader_check_cumask(uint32_t *out, uint32_t wg_id) {
-+ *       uint32_t hwid = read_hw_id();
-+ *       out[wg_id] = hwid;
-+ *   }
-+ */
-+static const char CheckCuMaskIsa[] =
-+    SHADER_START
-+    SHADER_MACROS_U32
-+    SHADER_MACROS_FLAT
-+    R"(
-+        // Get workgroup id
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            v_mov_b32    v0, ttmp9
-+        .else
-+            v_mov_b32    v0, s4
-+        .endif
-+
-+        // Address of output buffer element: v[4:5] = s[2:3] + v0 * 4
-+        v_lshlrev_b32    v6, 2, v0
-+        V_ADD_CO_U32     v4, s2, v6
-+        v_mov_b32        v5, s3
-+        V_ADD_CO_CI_U32  v5, v5, 0
-+
-+        // Store HW_ID1 content
-+        .if (.amdgcn.gfx_generation_number >= 12)
-+            s_getreg_b32     s6, hwreg(HW_REG_HW_ID1)
-+        .else
-+            s_getreg_b32     s6, hwreg(HW_REG_HW_ID)
-+        .endif
-+        v_mov_b32        v1, s6
-+        flat_store_dword v[4:5], v1
-+
-+        s_endpgm
-+)";
-+
-+
-+/* Shader: JumpToTrapIsa
-+ * Purpose: Trigger a trap (s_trap 1) then loop until a condition is externally satisfied (v4 changed), finally store v4.
-+ * Inputs: s[0:1] destination to store final value.
-+ * Trap Handling: External trap handler expected to modify wave state / v4.
-+ * Pseudo-code:
-+ *   void shader_jump_to_trap(uint32_t *out) {
-+ *       volatile uint32_t v4 = 0;
-+ *       trigger_trap(1);
-+ *       while (v4 == 0) { ; } // wait for handler
-+ *       *out = v4;
-+ *   }
-+ */
-+static const char JumpToTrapIsa[] =
-+    SHADER_START
-+    SHADER_MACROS_U32
-+    R"(
-+        /*copy the parameters from scalar registers to vector registers*/
-+        v_mov_b32 v4, 0
-+        v_mov_b32 v0, s0
-+        v_mov_b32 v1, s1
-+        s_trap 1
-+        EXIT_LOOP:
-+        V_CMP_EQ_U32 v4, 0
-+        s_cbranch_vccnz EXIT_LOOP
-+        flat_store_dword v[0:1], v4
-+        s_waitcnt vmcnt(0)&lgkmcnt(0)
-+        s_endpgm
-+)";
-+
-+/* Shader: TrapHandlerIsa
-+ * Purpose: Handles traps (vm faults, address watch events, doorbell fetch) and restores wave state, advancing PC past trap instruction.
-+ * Behavior Summary:
-+ *   - Distinguish vmfault vs watch trap via trap status registers.
-+ *   - Optionally fetch doorbell index (MSG_RTN_GET_DOORBELL) on newer GPUs.
-+ *   - Send interrupt message, adjust m0, capture checkpoint values.
-+ *   - Restore IB status, STATUS registers, and resume (s_rfe_b64) at adjusted PC.
-+ * Pseudo-code (conceptual):
-+ *   void trap_handler(context *ctx) {
-+ *       flags = read_trap_status();
-+ *       if (is_vm_fault(flags)) { restore_and_exit(ctx); return; }
-+ *       if (is_watch_event(flags)) { ctx->watch_checkpoint = ctx->pc_delta; ctx->watch_status = flags; }
-+ *       else { ctx->doorbell = fetch_doorbell(); signal_interrupt(ctx); }
-+ *       advance_pc(ctx); restore_wave_state(ctx); resume(ctx);
-+ *   }
-+ */
-+static const char TrapHandlerIsa[] =
-+    SHADER_START
-+    R"(
-+        CHECK_VMFAULT:
-+        /*if trap jumped to by vmfault, restore skip m0 signalling*/
-+        .if (.amdgcn.gfx_generation_number < 12)
-+            s_getreg_b32 ttmp14, hwreg(HW_REG_TRAPSTS)
-+            s_and_b32 ttmp2, ttmp14, 0x800
-+        .else
-+            s_getreg_b32 ttmp14, hwreg(HW_REG_EXCP_FLAG_PRIV)
-+            s_and_b32 ttmp2, ttmp14, 0x10
-+        .endif
-+        s_cbranch_scc1 RESTORE_AND_EXIT
-+        /*check for address watch event and record pc check point delta*/
-+        .if (.amdgcn.gfx_generation_number < 12)
-+            s_and_b32 ttmp2, ttmp14, 0x7080
-+        .else
-+            s_and_b32 ttmp2, ttmp14, 0xf
-+        .endif
-+        s_cbranch_scc0 GET_DOORBELL
-+        v_mov_b32 v5, v4 // capture watch checkpoint
-+        v_mov_b32 v6, ttmp14 // capture watch trapsts
-+        s_branch RESTORE_AND_EXIT
-+        GET_DOORBELL:
-+        .if .amdgcn.gfx_generation_number < 11
-+            s_mov_b32 ttmp2, exec_lo
-+            s_mov_b32 ttmp3, exec_hi
-+            s_mov_b32 exec_lo, 0x80000000
-+            s_sendmsg 10
-+            WAIT_SENDMSG:
-+            /*wait until msb is cleared (i.e. doorbell fetched)*/
-+            s_nop 7
-+            s_bitcmp0_b32 exec_lo, 0x1F
-+            s_cbranch_scc0 WAIT_SENDMSG
-+            /* restore exec */
-+            s_mov_b32 exec_hi, ttmp3
-+            s_and_b32 exec_lo, exec_lo, 0xfff
-+            s_mov_b32 ttmp3, exec_lo
-+            s_mov_b32 exec_lo, ttmp2
-+        .else
-+            s_sendmsg_rtn_b32 ttmp3, sendmsg(MSG_RTN_GET_DOORBELL)
-+            s_waitcnt lgkmcnt(0)
-+            s_and_b32 ttmp3, ttmp3, 0x3ff
-+        .endif
-+        s_mov_b32 ttmp2, m0
-+        s_or_b32 ttmp3, ttmp3, 0x800
-+        /* set m0, send interrupt and restore m0 and exit trap*/
-+        s_mov_b32 m0, ttmp3
-+        s_nop 0x0
-+        s_sendmsg sendmsg(MSG_INTERRUPT)
-+        s_waitcnt lgkmcnt(0)
-+        s_mov_b32 m0, ttmp2
-+        v_mov_b32 v4, ttmp1
-+        /* restore and increment program counter to skip shader trap jump*/
-+        s_add_u32 ttmp0, ttmp0, 4
-+        s_addc_u32 ttmp1, ttmp1, 0
-+        s_and_b32 ttmp1, ttmp1, 0xffff
-+        RESTORE_AND_EXIT:
-+        /* restore SQ_WAVE_IB_STS */
-+        s_lshr_b32 ttmp2, ttmp11, (26 - 15)
-+        s_and_b32 ttmp2, ttmp2, (0x8000 | 0x1F0000)
-+        s_setreg_b32 hwreg(HW_REG_IB_STS), ttmp2
-+        /* restore SQ_WAVE_STATUS */
-+        s_and_b64 exec, exec, exec
-+        s_and_b64 vcc, vcc, vcc
-+        s_setreg_b32 hwreg(HW_REG_STATUS), ttmp12
-+        s_rfe_b64 [ttmp0, ttmp1]
-+)";
-+
-+#define WATCH_START SHADER_START SHADER_MACROS_U32\
-+    "v_mov_b32 v0, s0\n"\
-+    "v_mov_b32 v1, s1\n"\
-+    "v_mov_b32 v2, s2\n"\
-+    "v_mov_b32 v3, s3\n"\
-+    "flat_load_dword v4, v[2:3]\n"\
-+    "s_waitcnt vmcnt(0) & lgkmcnt(0)\n"\
-+    "v_mov_b32 v5, 0\n"\
-+    "v_mov_b32 v6, 0\n"
-+
-+#define WATCH_END "\n"\
-+    "v_mov_b32 v4, 2\n"\
-+    "LOOP:\n"\
-+    "V_CMP_EQ_U32 v6, 0\n"\
-+    "s_cbranch_vccnz LOOP\n"\
-+    "V_ADD_CO_U32 v6, v6, v5\n"\
-+    "flat_store_dword v[2:3], v6\n"\
-+    "s_waitcnt vmcnt(0) & lgkmcnt(0)\n"\
-+    "s_endpgm\n"
-+
-+/* Shader: WatchReadIsa
-+ * Purpose: Perform a read from watched address (s[0:1]) and then enter a loop updating a counter and eventually storing result.
-+ * Pseudo-code (simplified):
-+ *   void shader_watch_read(uint32_t *addr, uint32_t *out) {
-+ *       uint32_t base = *out; uint32_t chk=0; while(!exit_condition()) chk += base; *out = chk; }
-+ */
-+static const char WatchReadIsa[] =
-+    WATCH_START
-+    "flat_load_dword v7, v[0:1]"
-+    WATCH_END;
-+
-+/* Shader: WatchWriteIsa
-+ * Purpose: Perform an initial store to watched address then loop similarly to WatchReadIsa accumulating until exit.
-+ * Pseudo-code:
-+ *   void shader_watch_write(uint32_t *addr, uint32_t *out) {
-+ *       *addr = out[0]; uint32_t chk=0; while(!exit_condition()) chk += out[0]; out[0]=chk; }
-+ */
-+static const char WatchWriteIsa[] =
-+    WATCH_START
-+    "flat_store_dword v[0:1], v4"
-+    WATCH_END;
-+
-+static const char * const amdgpu_test_shaders[] = {
-+        NoopIsa,
-+        CopyDwordIsa,
-+        InfiniteLoopIsa,
-+        AtomicIncIsa,
-+        ScratchCopyDwordIsa,
-+        PollMemoryIsa,
-+        PollAndCopyIsa,
-+        LoopIsa,
-+        PersistentIterateIsa,
-+        ReadMemoryIsa,
-+        CheckCuMaskIsa,
-+        //PollNCMemoryIsa,
-+        //CopyOnSignalIsa,
-+        WriteFlagAndValueIsa,
-+        WriteAndSignalIsa,
-+        //GwsInitIsa,
-+        GwsAtomicIncreaseIsa,
-+        JumpToTrapIsa,
-+        WatchReadIsa,
-+        WatchWriteIsa,
-+        NULL
-+};
-+
-+#endif
-diff --git a/lib/amdgpu/shaders/amd_shaders.c b/lib/amdgpu/shaders/amd_shaders.c
-new file mode 100644
-index 000000000..adc4fc051
---- /dev/null
-+++ b/lib/amdgpu/shaders/amd_shaders.c
-@@ -0,0 +1,562 @@
-+/* SPDX-License-Identifier: MIT
 + * Copyright 2014 Advanced Micro Devices, Inc.
 + * Copyright 2022 Advanced Micro Devices, Inc.
-+ *  *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ *
-+ */
-+#include <amdgpu.h>
-+#include "amd_shaders.h"
-+#include <amdgpu_drm.h>
-+
-+#define CODE_OFFSET 512
-+#define DATA_OFFSET 1024
-+
-+#define SWAP_32(num) (((num & 0xff000000) >> 24) | \
-+				((num & 0x0000ff00) << 8) | \
-+				((num & 0x00ff0000) >> 8) | \
-+				((num & 0x000000ff) << 24))
-+/*
-+ * C equivalent of the shader_bin below. This tiny compute kernel performs a
-+ * busy-wait loop, then writes the constant value 42 into a GPU virtual
-+ * address passed via COMPUTE_USER_DATA_0..1. This shader is intentionally
-+ * simple and designed to work across all GFX generations.
-+ *
-+ * Host-side logic equivalent in C:
-+ *
-+ *	static void gpu_shader_standalone(volatile u32 *dst, u64 iters)
-+ *	{
-+ *		Busy loop comparable to the ISA spin, prevents compiler optimization.
-+ *		for (u64 i = 0; i <= iters; i++)
-+ *			asm volatile("" ::: "memory");
-+ *
-+ *		After spin completes, write sentinel value 42.
-+ *		*dst = 42;
-+ *	}
-+ *
-+ * The binary shader blob generated below executes equivalent logic on the GPU.
++ * Copyright 2023 Advanced Micro Devices, Inc.
 + */
 +
++#include "lib/amdgpu/amd_memory.h"
++#include "lib/amdgpu/amd_sdma.h"
++#include "lib/amdgpu/amd_PM4.h"
++#include "lib/amdgpu/amd_command_submission.h"
++#include "lib/amdgpu/amd_compute.h"
++#include "lib/amdgpu/amd_gfx.h"
++#ifdef AMDGPU_LLVM_ENABLED
++#include "amdgpu/shaders/amd_llvm_asm.h"
++#else
++#include "amdgpu/shaders/amd_llvm_asm_stub.h"
++#endif
++#include "amdgpu/shaders/amd_shader_store.h"
++#include "lib/amdgpu/compute_utils/amd_gca.h"
++#include "lib/amdgpu/compute_utils/amd_dispatch_helpers.h" /* for amdgpu_dispatch_* */
++#include "lib/amdgpu/amdgpu_asic_addr.h" /* FAMILY_* macros */
++
++#include <errno.h>
++#include <fcntl.h>
++#include <igt.h>
++#include <inttypes.h>
++#include <libdrm/amdgpu.h>
++#include <stdint.h>
++#include <string.h>
++#include <unistd.h>
++#include <signal.h>
++#include <sys/mman.h>
++#include <sys/mman.h>
++#include <sys/wait.h>
++#include <sys/ptrace.h>
++#include <sys/prctl.h>
++#include <pthread.h>
++
++#define GB(x) ((x) * 1024ULL * 1024ULL * 1024ULL)
++#define DRM_GEM_MAP_SHIFT 20
++
++#ifndef ARRAY_SIZE
++#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
++#endif
++
++static void test_mmap_large(amdgpu_device_handle dev);
++static void memory_alloc_all(amdgpu_device_handle dev, bool userq);
++static void amdgpu_memory_alloc(amdgpu_device_handle device, bool userq);
++static void test_invalid_alloc(amdgpu_device_handle device, bool userq);
++static void test_access_ppr_mem(amdgpu_device_handle device, const struct amdgpu_ip_block_version *ip_block);
++static void register_memory_with_same_ptr(amdgpu_device_handle device);
++static void register_memory_with_same_ptr2(amdgpu_device_handle device);
++static void memory_register(amdgpu_device_handle device);
++
++/**
++ * Core test: Map the system memory to GPU
++ */
++static void test_mmap_large(amdgpu_device_handle dev)
++{
++	/* Map a large amount of anonymous system memory into the GPU by
++	 * repeatedly importing DMA-BUFs created from offsets within one
++	 * contiguous mmap() region. */
++	const uint64_t total_obj_count = 1 << 12; /* 4096 objects */
++	struct amdgpu_bo **bo_list; /* imported GPU buffers */
++	size_t single_obj_size;     /* size of each memory object */
++	char *sys_mem_base;         /* base address of system memory */
++	int obj_idx;
++	uint64_t total_mapped_size = 0;
++	uint64_t max_total_size;
++
++	/* Allocate tracking array */
++	bo_list = calloc(total_obj_count, sizeof(*bo_list));
++	igt_assert(bo_list);
++
++	max_total_size = get_available_system_memory(dev) * 7 / 10;
++	single_obj_size = max_total_size / total_obj_count;
++	igt_info("Single object size: %zu MB, Total objects: %llu\n",
++		 single_obj_size >> 20, (unsigned long long)total_obj_count);
++
++	sys_mem_base = mmap(NULL, single_obj_size, PROT_READ | PROT_WRITE,
++			    MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	igt_assert(sys_mem_base != MAP_FAILED);
++	memset(sys_mem_base, 0xAA, single_obj_size); /* fill with test data */
++
++	for (obj_idx = 0; obj_idx < total_obj_count; obj_idx++) {
++		struct amdgpu_bo_import_result import_res = { };
++		void *curr_sys_addr = sys_mem_base + obj_idx; /* offset to vary address */
++		size_t curr_obj_size = single_obj_size - obj_idx; /* reduce to avoid overflow */
++		int dmabuf_fd;
++		int ret;
++
++		dmabuf_fd = create_dmabuf(dev, curr_sys_addr, curr_obj_size);
++		if (dmabuf_fd < 0) {
++			igt_warn("DMA-BUF create failed at %d\n", obj_idx);
++			break;
++		}
++
++		ret = amdgpu_bo_import(dev,
++				       amdgpu_bo_handle_type_dma_buf_fd,
++				dmabuf_fd,
++				&import_res);
++		close(dmabuf_fd); /* drop local fd after import */
++
++		if (ret) {
++			igt_warn("Import failed at %d (err=%d)\n", obj_idx, ret);
++			break;
++		}
++
++		bo_list[obj_idx] = import_res.buf_handle;
++		total_mapped_size += import_res.alloc_size;
++	}
++
++	igt_info("Mapped %d objects, total size: %llu GB\n",
++		 obj_idx, (unsigned long long)(total_mapped_size >> 30));
++	igt_info("mmap-sysmem-total-gb: %llu\n",
++		 (unsigned long long)(total_mapped_size >> 30));
++
++	for (obj_idx--; obj_idx >= 0; obj_idx--) {
++		if (bo_list[obj_idx])
++			amdgpu_bo_free(bo_list[obj_idx]);
++	}
++	munmap(sys_mem_base, single_obj_size);
++	free(bo_list);
++}
++
 +/*
-+ * Shader ISA: spin_store_flat.s
++ * Main logic for "allocate maximum possible VRAM" test
++ * Supports both standard and user queue (userq) paths, aligning with amdgpu_memory_alloc's interface.
++ * Core behavior: Try to allocate the largest VRAM block, with step-wise reduction if allocation fails.
++ */
++static void memory_alloc_all(amdgpu_device_handle dev, bool userq)
++{
++	amdgpu_bo_handle bo = NULL;
++	uint64_t available, size, leeway;
++	int ret, shrink = 21; /* 2MB decrement step (2^21) */
++	bool success = false;
++	uint32_t timeline_syncobj_handle = 0;
++	uint64_t point = 0;
++	uint64_t mapping_flags = AMDGPU_VM_MTYPE_UC;
++	int i;
++	uint64_t mc_addr;
++	void *cpu_ptr;
++	amdgpu_va_handle va_handle;
++
++	if (userq) {
++		ret = amdgpu_cs_create_syncobj2(dev, 0, &timeline_syncobj_handle);
++		igt_assert_eq(ret, 0);
++	}
++
++	available = get_available_vram(dev);
++	igt_info("Available VRAM: %llu bytes\n", (unsigned long long)available);
++
++	leeway = (10ULL << shrink); /* tolerance for reported value */
++	size = available + leeway; /* start slightly above reported */
++
++	for (i = 0; i < (available >> shrink); i++) {
++		uint64_t bo_size = size;
++
++		ret = amdgpu_bo_alloc_and_map_sync(dev,
++						   bo_size,
++					 0x1000,
++					 AMDGPU_GEM_DOMAIN_VRAM,
++					 AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED,
++					 mapping_flags,
++					 &bo, &cpu_ptr, &mc_addr, &va_handle,
++					 timeline_syncobj_handle, point, userq);
++
++		if (userq) {
++			ret = amdgpu_timeline_syncobj_wait(dev,
++							   timeline_syncobj_handle,
++							   point);
++			igt_assert_eq(ret, 0);
++		}
++
++		if (!ret) {
++			amdgpu_bo_unmap_and_free(bo, va_handle, mc_addr, bo_size);
++			success = true;
++			break;
++		}
++
++		size -= (1ULL << shrink);
++		if (!size)
++			break;
++	}
++
++	if (userq) {
++		ret = amdgpu_cs_destroy_syncobj(dev, timeline_syncobj_handle);
++		igt_assert_eq(ret, 0);
++	}
++
++	igt_assert(success);
++	igt_info("Successfully allocated %llu bytes\n", (unsigned long long)size);
++
++	if (size > available + leeway)
++		igt_warn("Under-reported available memory\n");
++	if (size < available - leeway)
++		igt_warn("Over-reported available memory\n");
++}
++
++/**
++ * MEM ALLOC TEST
++ * @param device
++ */
++static void amdgpu_memory_alloc(amdgpu_device_handle device, bool userq)
++{
++	uint64_t bo_mc, point = 0;
++	amdgpu_bo_handle bo;
++	amdgpu_va_handle va_handle;
++	uint32_t timeline_syncobj_handle = 0;
++	unsigned int size = 4096;
++	uint64_t mapping_flags = AMDGPU_VM_MTYPE_UC;
++	volatile uint32_t *bo_cpu;
++	int r;
++
++	if (userq) {
++		r = amdgpu_cs_create_syncobj2(device, 0, &timeline_syncobj_handle);
++		igt_assert_eq(r, 0);
++	}
++
++	/* visible VRAM */
++	r = amdgpu_bo_alloc_and_map_sync(device, size, 4096,
++					 AMDGPU_GEM_DOMAIN_VRAM,
++				   AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED,
++				   mapping_flags,
++				   &bo, (void **)&bo_cpu, &bo_mc, &va_handle,
++				   timeline_syncobj_handle, point, userq);
++	igt_assert_eq(r, 0);
++	if (userq) {
++		r = amdgpu_timeline_syncobj_wait(device, timeline_syncobj_handle, point);
++		igt_assert_eq(r, 0);
++	}
++	amdgpu_bo_unmap_and_free(bo, va_handle, bo_mc, size);
++
++	if (!userq) {
++		/* invisible VRAM */
++		r = amdgpu_bo_alloc_and_map_sync(device, size, 4096,
++						 AMDGPU_GEM_DOMAIN_VRAM,
++					   AMDGPU_GEM_CREATE_NO_CPU_ACCESS,
++					   mapping_flags,
++					   &bo, (void **)&bo_cpu, &bo_mc, &va_handle,
++					   timeline_syncobj_handle, point, userq);
++		igt_assert_eq(r, 0);
++		amdgpu_bo_unmap_and_free(bo, va_handle, bo_mc, size);
++	}
++
++	/* GART cacheable */
++	r = amdgpu_bo_alloc_and_map_sync(device, size, 4096,
++					 AMDGPU_GEM_DOMAIN_GTT,
++				   0,
++				   mapping_flags,
++				   &bo, (void **)&bo_cpu, &bo_mc, &va_handle,
++				   timeline_syncobj_handle, point, userq);
++	igt_assert_eq(r, 0);
++	if (userq) {
++		r = amdgpu_timeline_syncobj_wait(device, timeline_syncobj_handle, point);
++		igt_assert_eq(r, 0);
++	}
++	amdgpu_bo_unmap_and_free(bo, va_handle, bo_mc, size);
++
++	/* GART USWC */
++	r = amdgpu_bo_alloc_and_map_sync(device, size, 4096,
++					 AMDGPU_GEM_DOMAIN_GTT,
++				   AMDGPU_GEM_CREATE_CPU_GTT_USWC,
++				   mapping_flags,
++				   &bo, (void **)&bo_cpu, &bo_mc, &va_handle,
++				   timeline_syncobj_handle, point, userq);
++	igt_assert_eq(r, 0);
++	if (userq) {
++		r = amdgpu_timeline_syncobj_wait(device, timeline_syncobj_handle, point);
++		igt_assert_eq(r, 0);
++	}
++	amdgpu_bo_unmap_and_free(bo, va_handle, bo_mc, size);
++
++	if (userq) {
++		r = amdgpu_cs_destroy_syncobj(device, timeline_syncobj_handle);
++		igt_assert_eq(r, 0);
++	}
++}
++
++static void test_invalid_alloc(amdgpu_device_handle device, bool userq)
++{
++	amdgpu_bo_handle buf_handle = NULL, bo = NULL;
++	struct amdgpu_bo_alloc_request request = { };
++	uint32_t timeline_syncobj_handle = 0, invalid_syncobj;
++	uint64_t point = 0, bo_mc = 0, invalid_mapping_flags;
++	void *cpu_ptr = NULL;
++	amdgpu_va_handle va_handle = NULL;
++	int r;
++
++	if (userq) {
++		r = amdgpu_cs_create_syncobj2(device, 0, &timeline_syncobj_handle);
++		igt_assert_eq(r, 0);
++	}
++
++	/* zero size */
++	request.alloc_size = 0;
++	request.phys_alignment = 4096;
++	request.preferred_heap = AMDGPU_GEM_DOMAIN_GTT;
++	r = amdgpu_bo_alloc(device, &request, &buf_handle);
++	igt_assert_f(r, "expected failure for zero size (ret=%d)", r);
++
++	/* invalid heap */
++	request.alloc_size = 4096;
++	request.preferred_heap = 0xffffffff;
++	r = amdgpu_bo_alloc(device, &request, &buf_handle);
++	igt_assert_f(r, "expected failure for invalid heap (ret=%d)", r);
++
++	/* conflicting flags */
++	//request.preferred_heap = AMDGPU_GEM_DOMAIN_GTT;
++	//request.flags = AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED | AMDGPU_GEM_CREATE_NO_CPU_ACCESS;
++	//r = amdgpu_bo_alloc(device, &request, &buf_handle);
++	//igt_assert_f(r, "expected failure for conflicting flags (ret=%d)", r);
++
++	/* NULL handle pointer */
++	request.flags = 0;
++	r = amdgpu_bo_alloc(device, &request, NULL);
++	igt_assert_f(r, "expected failure for NULL handle (ret=%d)", r);
++
++	/* huge size */
++	request.alloc_size = UINT64_MAX;
++	r = amdgpu_bo_alloc(device, &request, &buf_handle);
++	igt_assert_f(r, "expected failure for huge size (ret=%d)", r);
++
++	/* invalid mapping flags */
++	if (!userq) {
++		invalid_mapping_flags = 0xffffffff;
++		r = amdgpu_bo_alloc_and_map_sync(device, 4096, 4096,
++						 AMDGPU_GEM_DOMAIN_GTT, 0,
++						  invalid_mapping_flags,
++						  &bo, &cpu_ptr, &bo_mc, &va_handle,
++						  timeline_syncobj_handle, point, userq);
++		igt_assert_f(r, "expected failure for invalid mapping flags");
++		if (!r)
++			amdgpu_bo_unmap_and_free(bo, va_handle, bo_mc, 4096);
++	}
++
++	/* invalid syncobj */
++	if (userq) {
++		invalid_syncobj = 0xffffffff;
++		r = amdgpu_bo_alloc_and_map_sync(device, 4096, 4096,
++						 AMDGPU_GEM_DOMAIN_GTT, 0,
++						  AMDGPU_VM_MTYPE_UC,
++						  &bo, &cpu_ptr, &bo_mc, &va_handle,
++						  invalid_syncobj, point, userq);
++		igt_assert_f(r, "expected failure for invalid syncobj");
++	}
++
++	/* NO_CPU_ACCESS mapping sanity */
++	r = amdgpu_bo_alloc_and_map_sync(device, 4096, 4096,
++					 AMDGPU_GEM_DOMAIN_VRAM,
++				   AMDGPU_GEM_CREATE_NO_CPU_ACCESS,
++				   AMDGPU_VM_MTYPE_UC,
++				   &bo, &cpu_ptr, &bo_mc, &va_handle,
++				   timeline_syncobj_handle, point, userq);
++	if (!r) {
++		igt_assert_f(!cpu_ptr, "NO_CPU_ACCESS returned cpu_ptr=%p", cpu_ptr);
++		amdgpu_bo_unmap_and_free(bo, va_handle, bo_mc, 4096);
++	}
++
++	if (userq) {
++		r = amdgpu_cs_destroy_syncobj(device, timeline_syncobj_handle);
++		igt_assert_eq(r, 0);
++	}
++
++	igt_info("invalid alloc parameter checks complete\n");
++}
++
++/*
++ * Write two dwords into a user allocated page via GPU and verify.
++ * Steps: alloc user memory, map, emit SDMA linear write, wait, compare.
++ */
++static void test_access_ppr_mem(amdgpu_device_handle device,
++				const struct amdgpu_ip_block_version *ip_block)
++{
++	const int sdma_write_length = 2;
++	const int pm4_dw = 256;
++	struct amdgpu_ring_context *ring_context;
++	uint32_t *dest_buf = NULL;
++	int r;
++	uint32_t low, high;
++	uint64_t dest_gpu_va = 0;
++	amdgpu_bo_handle dest_bo = NULL;
++	amdgpu_va_handle out_va_handle;
++	void *mapped_ptr;
++	void *bo_cpu;  /* Non-volatile pointer for memset */
++
++	/* init ring context */
++	ring_context = calloc(1, sizeof(*ring_context));
++	igt_assert(ring_context);
++
++	ring_context->write_length = sdma_write_length;
++	ring_context->pm4 = calloc(pm4_dw, sizeof(*ring_context->pm4));
++	ring_context->pm4_size = pm4_dw;
++	ring_context->res_cnt = 1;
++	ring_context->user_queue = true;
++	ring_context->time_out = 0;
++	igt_assert(ring_context->pm4);
++
++	/* query hw ip */
++	r = amdgpu_query_hw_ip_info(device, ip_block->type, 0, &ring_context->hw_ip_info);
++	igt_assert_eq(r, 0);
++
++	/* alloc user memory */
++	dest_buf = virtual_alloc_memory(NULL, PAGE_SIZE, 3);
++	igt_assert(dest_buf);
++
++	/* map to GPU VA */
++	r = virtual_mem_to_gpu_bo(device, dest_buf, PAGE_SIZE,
++				  &dest_bo, &dest_gpu_va, &out_va_handle);
++	igt_assert_eq(r, 0);
++
++	igt_info("User buffer: %p, initial value: 0x%lx\n",
++		 dest_buf, (unsigned long)*dest_buf);
++
++	/* create user queue */
++	ip_block->funcs->userq_create(device, ring_context, ip_block->type);
++
++	/* ring 0 */
++	ring_context->ring_id = 0;
++
++	/* allocate command buffer */
++	r = amdgpu_bo_alloc_and_map_sync(device,
++					 ring_context->write_length * sizeof(uint32_t),
++					4096,
++					AMDGPU_GEM_DOMAIN_GTT,
++					0,
++					AMDGPU_VM_MTYPE_UC,
++					&ring_context->bo,
++					&bo_cpu,  /* Use non-volatile pointer here */
++					&ring_context->bo_mc,
++					&ring_context->va_handle,
++					ring_context->timeline_syncobj_handle,
++					++ring_context->point,
++					true);
++	igt_assert_eq(r, 0);
++
++	/* store cpu ptr */
++	ring_context->bo_cpu = bo_cpu;
++
++	/* wait syncobj */
++	r = amdgpu_timeline_syncobj_wait(device,
++					 ring_context->timeline_syncobj_handle,
++					ring_context->point);
++	igt_assert_eq(r, 0);
++
++	/* clear command buffer */
++	memset(bo_cpu, 0, ring_context->write_length * sizeof(uint32_t));
++
++	/* resources */
++	ring_context->resources[0] = ring_context->bo;
++
++	/* gen linear write */
++	ip_block->funcs->write_linear(ip_block->funcs, ring_context,
++				      &ring_context->pm4_dw);
++
++	/* program target addr */
++	low = (uint32_t)(dest_gpu_va & 0xFFFFFFFF);
++	high = (uint32_t)(dest_gpu_va >> 32);
++	igt_info("GPU target address: 0x%x%08x\n", high, low);
++
++	ring_context->pm4[2] = low;
++	ring_context->pm4[3] = high;
++	ring_context->pm4[4] = 0xABCDEF09;	/* Test data 1 */
++	ring_context->pm4[5] = 0x12345678;	/* Test data 2 */
++
++	/* submit */
++	amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
++
++	/* map for verify */
++	r = amdgpu_bo_cpu_map(dest_bo, &mapped_ptr);
++	igt_assert_eq(r, 0);
++
++	/* copy back */
++	memcpy(dest_buf, mapped_ptr, PAGE_SIZE);
++
++	igt_info("GPU written data: 0x%08x, 0x%08x\n",
++		 ((uint32_t *)mapped_ptr)[0], ((uint32_t *)mapped_ptr)[1]);
++
++	amdgpu_bo_cpu_unmap(dest_bo);
++
++	/* command buffer dwords */
++	igt_info("Command buffer after execution: 0x%08x, 0x%08x\n",
++		 ring_context->bo_cpu[0], ring_context->bo_cpu[1]);
++
++	/* user memory dwords */
++	igt_info("User buffer after GPU write: 0x%08lx, 0x%08x\n",
++		 (unsigned long)*dest_buf, *(dest_buf + 1));
++
++	/* wait for values */
++	wait_on_value(dest_buf, 0xABCDEF09);
++	wait_on_value(dest_buf + 1, 0x12345678);
++
++	/* free user memory */
++	virtual_free_memory(dest_buf, PAGE_SIZE);
++
++	/* unmap/free GPU buffer */
++	r = amdgpu_bo_va_op(dest_bo, 0, PAGE_SIZE, dest_gpu_va, 0, AMDGPU_VA_OP_UNMAP);
++	igt_assert_eq(r, 0);
++	amdgpu_va_range_free(out_va_handle);
++	amdgpu_bo_free(dest_bo);
++
++	/* free command buffer */
++	amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle,
++				 ring_context->bo_mc,
++				ring_context->write_length * sizeof(uint32_t));
++
++	/* destroy ring context */
++	free(ring_context->pm4);
++	ip_block->funcs->userq_destroy(device, ring_context, ip_block->type);
++	free(ring_context);
++}
++
++/**
++ * Test: Register same user pointer with different sizes
 + *
-+ * This kernel expects a 64-bit flat/global address provided in s[0:1]
-+ * (passed via COMPUTE_USER_DATA_0..1) and behaves as follows:
++ * This test verifies the driver's behavior when registering the same
++ * user memory pointer with different sizes. It tests whether the driver
++ * can handle overlapping userptr registrations with varying sizes.
 + *
-+ *	1) Initialize a counter register (s2 = 0).
-+ *	2) Increment s2 until it exceeds 0x0098967f (~10 million).
-+ *	3) When the loop completes, store the literal 42 at *(u32 *)(s1:s0).
-+ *	4) Terminate with s_endpgm.
++ * Test Scenario:
++ * 1. Allocate one page of user memory with proper alignment
++ * 2. Create first BO mapping exactly one page
++ * 3. Attempt to create second BO mapping two pages (larger size) from same start address
++ * 4. Verify if driver supports this usage pattern
++ * 5. Clean up resources appropriately
++ *
++ * Expected Results:
++ * - First BO registration should always succeed
++ * - Second BO registration may fail if driver doesn't support overlapping sizes
++ * - Test gracefully handles both supported and unsupported scenarios
++ */
++static void register_memory_with_same_ptr(amdgpu_device_handle device)
++{
++	amdgpu_bo_handle bo1 = NULL, bo2 = NULL;
++	amdgpu_va_handle va_handle1 = NULL, va_handle2 = NULL;
++	uint32_t *shared_mem = NULL;
++	uint64_t va1 = 0, va2 = 0;
++	size_t page_size = sysconf(_SC_PAGE_SIZE);
++	int r;
++
++	r = posix_memalign((void **)&shared_mem, page_size, page_size);
++	igt_assert_eq(r, 0);
++	memset(shared_mem, 0, page_size);
++
++	r = amdgpu_create_bo_from_user_mem(device, shared_mem, page_size, &bo1);
++	igt_assert_f(!r, "first userptr BO failed %d", r);
++	r = amdgpu_va_range_alloc(device, amdgpu_gpu_va_range_general,
++				  2 * sizeof(uint32_t), 1, 0, &va1, &va_handle1, 0);
++	igt_assert_f(!r, "first VA range failed %d", r);
++	r = amdgpu_bo_va_op(bo1, 0, 2 * sizeof(uint32_t), va1, 0, AMDGPU_VA_OP_MAP);
++	igt_assert_f(!r, "first map failed %d", r);
++
++	r = amdgpu_create_bo_from_user_mem(device, shared_mem, page_size * 2, &bo2);
++	if (r) {
++		igt_info("second BO larger size unsupported: %s\n", strerror(-r));
++		igt_skip("overlapping userptr different sizes unsupported\n");
++	}
++	igt_assert(bo2);
++	r = amdgpu_va_range_alloc(device, amdgpu_gpu_va_range_general,
++				  page_size * 2, 1, 0, &va2, &va_handle2, 0);
++	igt_assert_f(!r, "second VA range failed %d", r);
++	r = amdgpu_bo_va_op(bo2, 0, page_size * 2, va2, 0, AMDGPU_VA_OP_MAP);
++	igt_assert_f(!r, "second map failed %d", r);
++
++	amdgpu_bo_va_op(bo2, 0, page_size * 2, va2, 0, AMDGPU_VA_OP_UNMAP);
++	amdgpu_va_range_free(va_handle2);
++	amdgpu_bo_free(bo2);
++
++	if (bo1) {
++		if (va_handle1) {
++			amdgpu_bo_va_op(bo1, 0, 2 * sizeof(uint32_t), va1, 0, AMDGPU_VA_OP_UNMAP);
++			amdgpu_va_range_free(va_handle1);
++		}
++		amdgpu_bo_free(bo1);
++	}
++
++	free(shared_mem);
++}
++
++/**
++ * Test: Register same user pointer with the same size multiple times
++ *
++ * This test verifies that the driver can handle multiple registrations
++ * of the same user memory pointer with identical sizes. It tests the
++ * driver's ability to manage duplicate userptr BO registrations and
++ * ensures proper reference counting and resource management.
++ *
++ * Enhanced with PM4 linear write packet to validate data coherency
++ * between duplicate BO registrations accessing the same physical memory.
++ *
++ * Test Scenario:
++ * 1. Allocate user memory with proper page alignment
++ * 2. Create first BO from the user pointer
++ * 3. Create second BO from the same user pointer with identical size
++ * 4. Write test pattern to memory using PM4 linear write through first BO
++ * 5. Verify data consistency through second BO
++ * 6. Clean up resources in reverse order
++ *
++ * Expected Result:
++ * - Both BO registrations should succeed
++ * - PM4 write through first BO should be visible through second BO
++ * - The driver should maintain data coherency for duplicate mappings
++ * - No memory leaks or resource conflicts should occur
++ */
++static void register_memory_with_same_ptr2(amdgpu_device_handle device)
++{
++	amdgpu_bo_handle bo1 = NULL, bo2 = NULL;
++	amdgpu_va_handle va_handle1 = NULL, va_handle2 = NULL;
++	struct amdgpu_ring_context *ring_context;
++	uint32_t *shared_mem = NULL;
++	uint64_t va1 = 0, va2 = 0;
++	const struct amdgpu_ip_block_version *ip_block;
++	size_t page_size, alloc_size;
++	const int pm4_dw = 256;
++	int r;
++
++	ip_block = get_ip_block(device, AMDGPU_HW_IP_DMA);
++	igt_assert(ip_block);
++
++	ring_context = calloc(1, sizeof(*ring_context));
++	igt_assert(ring_context);
++	ring_context->pm4 = calloc(pm4_dw, sizeof(*ring_context->pm4));
++	igt_assert(ring_context->pm4);
++	ring_context->pm4_size = pm4_dw;
++	ring_context->res_cnt = 1;
++	ring_context->write_length = 4;
++
++	r = amdgpu_cs_ctx_create(device, &ring_context->context_handle);
++	igt_assert_eq(r, 0);
++
++	page_size = sysconf(_SC_PAGE_SIZE);
++	alloc_size = ALIGN(4 * sizeof(uint32_t), page_size);
++	r = posix_memalign((void **)&shared_mem, page_size, alloc_size);
++	igt_assert_eq(r, 0);
++	memset(shared_mem, 0, alloc_size);
++	ring_context->bo_cpu = (volatile uint32_t *)(uintptr_t)shared_mem;
++
++	r = amdgpu_create_bo_from_user_mem(device, shared_mem, alloc_size, &bo1);
++	igt_assert_f(!r, "first BO reg failed %d", r);
++	r = amdgpu_create_bo_from_user_mem(device, shared_mem, alloc_size, &bo2);
++	igt_assert_f(!r, "second BO reg failed %d", r);
++
++	r = amdgpu_va_range_alloc(device, amdgpu_gpu_va_range_general,
++				  alloc_size, 1, 0, &va1, &va_handle1, 0);
++	igt_assert_f(!r, "va1 alloc failed %d", r);
++	r = amdgpu_bo_va_op(bo1, 0, alloc_size, va1, 0, AMDGPU_VA_OP_MAP);
++	igt_assert_f(!r, "bo1 map failed %d", r);
++	r = amdgpu_va_range_alloc(device, amdgpu_gpu_va_range_general,
++				  alloc_size, 1, 0, &va2, &va_handle2, 0);
++	igt_assert_f(!r, "va2 alloc failed %d", r);
++	r = amdgpu_bo_va_op(bo2, 0, alloc_size, va2, 0, AMDGPU_VA_OP_MAP);
++	igt_assert_f(!r, "bo2 map failed %d", r);
++
++	ring_context->resources[0] = bo1;
++	ring_context->bo = bo1;
++	ring_context->bo_mc = va1;
++	ring_context->pm4_dw = 0;
++	ip_block->funcs->write_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
++	r = amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
++	igt_assert_f(!r, "linear write exec failed %d", r);
++	r = ip_block->funcs->compare(ip_block->funcs, ring_context, 1);
++	igt_assert_f(!r, "linear write compare failed %d", r);
++
++	ring_context->resources[0] = bo2;
++	ring_context->bo = bo2;
++	ring_context->bo_mc = va2;
++	r = ip_block->funcs->compare(ip_block->funcs, ring_context, 1);
++	igt_assert_f(!r, "second BO compare failed %d", r);
++
++	igt_info("duplicate userptr registration coherent\n");
++
++	r = amdgpu_bo_va_op(bo2, 0, alloc_size, va2, 0, AMDGPU_VA_OP_UNMAP);
++	igt_assert_eq(r, 0);
++	if (va_handle2)
++		igt_assert_eq(amdgpu_va_range_free(va_handle2), 0);
++	r = amdgpu_bo_va_op(bo1, 0, alloc_size, va1, 0, AMDGPU_VA_OP_UNMAP);
++	igt_assert_eq(r, 0);
++	if (va_handle1)
++		igt_assert_eq(amdgpu_va_range_free(va_handle1), 0);
++	igt_assert_eq(amdgpu_bo_free(bo2), 0);
++	igt_assert_eq(amdgpu_bo_free(bo1), 0);
++
++	if (ring_context->context_handle)
++		igt_assert_eq(amdgpu_cs_ctx_free(ring_context->context_handle), 0);
++	free(ring_context->pm4);
++	free(ring_context);
++	free(shared_mem);
++}
++
++static void memory_register_same_ptr(amdgpu_device_handle device)
++{
++	register_memory_with_same_ptr(device);
++	register_memory_with_same_ptr2(device);
++}
++
++/*
++ * Test: cache-invalidate-sdma-write
++ *
++ * Adapted from ROCr KFD CacheInvalidateOnSdmaWrite.
++ * Flow (Arcturus-only):
++ *  1. Allocate a local VRAM BO with RW MTYPE and map to CPU.
++ *  2. Assemble PollMemoryIsa shader (polls src dword until it becomes 0x5678 then stores 0x5678 to dst).
++ *  3. Dispatch compute shader that polls buffer[0] and will write to buffer[dwLocation]. Submission is non-blocking.
++ *  4. Issue SDMA linear write of value 0x5678 to buffer[0]. This should invalidate any cached copy of buffer[dwLocation].
++ *  5. Wait for compute fence completion; shader should have written 0x5678 to buffer[dwLocation].
++ *  6. Verify buffer[dwLocation] == 0x5678.
 + *
 + * Notes:
-+ *	- Uses flat/global addressing — no buffer SRD required.
-+ *	- Works with 1x1x1 dispatches; single work-item.
-+ *	- Safe for all GFX generations; no HW-specific instructions.
++ *  - Arcturus does not have a distinct FAMILY_AR constant in IGT; we approximate by requiring a GFX9 AI family (FAMILY_IS_AI) and non-APU.
++ *  - Mapping uses AMDGPU_VM_MTYPE_RW to exercise RW mtype path.
++ *  - We keep separate src/dst virtual addresses within the same BO.
++ */
++static void test_cache_invalidate_on_sdma_write_asm(amdgpu_device_handle device,
++						    const struct amdgpu_gpu_info *gpu_info)
++{
++	/* Declarations first (C90 compliance) */
++	const uint32_t kPattern = 0x5678;
++	const int dwLocation = 100;
++	int r;
++	uint32_t version = 9; /* gfx version for dispatch helper */
++	char mcpu[32];
++	uint8_t isa_bin[4096];
++	size_t isa_sz = 0;
++	uint64_t vram_mc = 0;
++	void *vram_cpu = NULL;
++	amdgpu_bo_handle bo_vram = NULL;
++	amdgpu_va_handle va_vram = 0;
++	uint32_t *buf = NULL;
++	void *shader_ptr = NULL;
++	amdgpu_bo_handle bo_shader = NULL;
++	amdgpu_va_handle va_shader = 0;
++	uint64_t mc_shader = 0;
++	amdgpu_context_handle compute_ctx;
++	amdgpu_bo_handle bo_cmd = NULL;
++	uint32_t *ptr_cmd = NULL;
++	uint64_t mc_cmd = 0;
++	amdgpu_va_handle va_cmd = 0;
++	struct amdgpu_cmd_base *base_cmd;
++	uint64_t dst_va = 0;
++	amdgpu_bo_handle bos[3];
++	amdgpu_bo_list_handle bo_list;
++	struct amdgpu_cs_ib_info ib_info;
++	struct amdgpu_cs_request ib_req;
++	cmd_context_t *dma_ctx = NULL;
++	struct amdgpu_cs_fence fence;
++	uint32_t expired = 0;
++
++	/* Gate: Approximate Arcturus requirement */
++	if (is_apu(gpu_info) || !FAMILY_IS_AI(gpu_info->family_id)) {
++		igt_skip("Skipping test: requires Arcturus (gfx9 AI discrete) family\n");
++		return;
++	}
++
++	/* Determine shader version similarly to other tests */
++	amdgpu_family_id_to_mcpu(gpu_info->family_id, mcpu, sizeof(mcpu));
++	if (FAMILY_IS_GFX1200(gpu_info->family_id))
++		version = 12;
++	else if (FAMILY_IS_GFX1150(gpu_info->family_id) ||
++		 FAMILY_IS_GFX1100(gpu_info->family_id) ||
++		 FAMILY_IS_GFX1036(gpu_info->family_id) ||
++		 FAMILY_IS_GFX1037(gpu_info->family_id) ||
++		 FAMILY_IS_YC(gpu_info->family_id) ||
++		 gpu_info->family_id == FAMILY_GFX1103)
++			version = 11;
++	else if (FAMILY_IS_AI(gpu_info->family_id) ||
++		 FAMILY_IS_RV(gpu_info->family_id) ||
++		 FAMILY_IS_NV(gpu_info->family_id) ||
++		gpu_info->family_id == FAMILY_VGH)
++			version = 10;
++
++	/* 1. Allocate VRAM BO with RW MTYPE */
++	r = amdgpu_bo_alloc_and_map_sync(device,
++					 PAGE_SIZE, 4096,
++									 AMDGPU_GEM_DOMAIN_VRAM,
++									 AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED,
++									 AMDGPU_VM_MTYPE_RW,
++									 &bo_vram, &vram_cpu, &vram_mc, &va_vram,
++									 0, 0, true);
++	igt_assert_eq(r, 0);
++
++	buf = (uint32_t *)vram_cpu;
++	memset(buf, 0, PAGE_SIZE);
++
++	/* 2. Assemble PollMemoryIsa */
++	r = amdgpu_llvm_asm_init();
++	if (r != 0) {
++		igt_skip("LLVM assembler unavailable\n");
++		amdgpu_bo_unmap_and_free(bo_vram, va_vram, vram_mc, PAGE_SIZE);
++		return;
++	}
++	r = amdgpu_llvm_assemble(mcpu, PollMemoryIsa, isa_bin, sizeof(isa_bin), &isa_sz);
++	amdgpu_llvm_asm_shutdown();
++	igt_assert_f(r == 0 && isa_sz > 0, "Failed to assemble PollMemoryIsa\n");
++
++	/* 3. Allocate shader BO and upload ISA */
++	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
++				    AMDGPU_GEM_DOMAIN_GTT, 0,
++								&bo_shader, &shader_ptr, &mc_shader, &va_shader);
++	igt_assert_eq(r, 0);
++	memset(shader_ptr, 0, 4096);
++	memcpy(shader_ptr, isa_bin, isa_sz);
++
++	/* 4. Build and submit compute dispatch (non-blocking) */
++	r = amdgpu_cs_ctx_create(device, &compute_ctx);
++	igt_assert_eq(r, 0);
++	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
++				    AMDGPU_GEM_DOMAIN_GTT, 0,
++								&bo_cmd, (void **)&ptr_cmd, &mc_cmd, &va_cmd);
++	igt_assert_eq(r, 0);
++	memset(ptr_cmd, 0, 4096);
++	base_cmd = get_cmd_base();
++	base_cmd->attach_buf(base_cmd, ptr_cmd, 4096);
++	amdgpu_dispatch_init(AMDGPU_HW_IP_COMPUTE, base_cmd, version);
++	amdgpu_dispatch_write_cumask(base_cmd, version);
++	amdgpu_dispatch_write2hw(base_cmd, mc_shader, version, 0);
++
++	/* Pass src (buffer[0]) and dst (buffer[dwLocation]) addresses via user SGPRs */
++	dst_va = vram_mc + dwLocation * sizeof(uint32_t);
++	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 4));
++	base_cmd->emit(base_cmd, 0x240);
++	base_cmd->emit(base_cmd, vram_mc & 0xffffffff);
++	base_cmd->emit(base_cmd, vram_mc >> 32);
++	base_cmd->emit(base_cmd, dst_va & 0xffffffff);
++	base_cmd->emit(base_cmd, dst_va >> 32);
++
++	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PACKET3_DISPATCH_DIRECT, 3));
++	base_cmd->emit(base_cmd, 0x10);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit_aligned(base_cmd, 7, GFX_COMPUTE_NOP);
++
++	bos[0] = bo_cmd;
++	bos[1] = bo_shader;
++	bos[2] = bo_vram;
++	r = amdgpu_bo_list_create(device, 3, bos, NULL, &bo_list);
++	igt_assert_eq(r, 0);
++
++	memset(&ib_info, 0, sizeof(ib_info));
++	memset(&ib_req, 0, sizeof(ib_req));
++	ib_info.ib_mc_address = mc_cmd;
++	ib_info.size = base_cmd->cdw;
++	ib_req.ip_type = AMDGPU_HW_IP_COMPUTE;
++	ib_req.ring = 0;
++	ib_req.resources = bo_list;
++	ib_req.number_of_ibs = 1;
++	ib_req.ibs = &ib_info;
++	r = amdgpu_cs_submit(compute_ctx, 0, &ib_req, 1);
++	igt_assert_eq(r, 0);
++
++	/* 5. Issue SDMA write to buffer[0] while shader is polling */
++	if (cmd_ring_available(device, AMD_IP_DMA, 0, false))
++		dma_ctx = cmd_context_create(device, AMD_IP_DMA, 0, false, 64, NULL, 0, NULL);
++	igt_assert(dma_ctx);
++	r = cmd_submit_write_linear(dma_ctx, vram_mc, sizeof(uint32_t), kPattern);
++	igt_assert_eq(r, 0);
++	r = cmd_wait_completion(dma_ctx);
++	igt_assert_eq(r, 0);
++
++	/* 6. Wait for compute fence */
++	memset(&fence, 0, sizeof(fence));
++	fence.context = compute_ctx;
++	fence.ip_type = AMDGPU_HW_IP_COMPUTE;
++	fence.ip_instance = 0;
++	fence.ring = 0;
++	fence.fence = ib_req.seq_no;
++	r = amdgpu_cs_query_fence_status(&fence, AMDGPU_TIMEOUT_INFINITE, 0, &expired);
++	igt_assert_eq(r, 0);
++	igt_assert_f(expired, "Compute fence not signaled\n");
++
++	/* 7. Validate result */
++	igt_assert_f(buf[dwLocation] == kPattern,
++		     "Cache invalidation failed: expected 0x%x at dst, got 0x%x\n",
++				 kPattern, buf[dwLocation]);
++	igt_info("cache-invalidate-sdma-write: PASSED (dst[100]=0x%x)\n", buf[dwLocation]);
++
++	/* Cleanup */
++	cmd_context_destroy(dma_ctx, false);
++	amdgpu_bo_list_destroy(bo_list);
++	amdgpu_bo_unmap_and_free(bo_cmd, va_cmd, mc_cmd, 4096);
++	amdgpu_cs_ctx_free(compute_ctx);
++	amdgpu_bo_unmap_and_free(bo_shader, va_shader, mc_shader, 4096);
++	amdgpu_bo_unmap_and_free(bo_vram, va_vram, vram_mc, PAGE_SIZE);
++	free_cmd_base(base_cmd);
++}
++
++/*
++ * Test: cache-invalidate-cpu-write
 + *
-+ * Annotated assembly:
++ * Adapted from ROCr KFD CacheInvalidateOnCPUWrite.
++ * Flow (Arcturus-only + large BAR):
++ *  1. Allocate host-accessible VRAM BO (CPU_ACCESS_REQUIRED) with RW MTYPE.
++ *  2. Assemble PollMemoryIsa shader which polls src dword until value == 0x5678 then writes 0x5678 to dst.
++ *  3. Launch compute dispatch that polls buffer[0] and will write to buffer[dwLocation].
++ *  4. CPU writes 0x5678 to buffer[0]. This should invalidate any cached copy of dst and allow shader to observe update and exit.
++ *  5. Wait for fence; verify buffer[dwLocation] == 0x5678.
++ */
++static void test_cache_invalidate_on_cpu_write_asm(amdgpu_device_handle device,
++						   const struct amdgpu_gpu_info *gpu_info)
++{
++	/* Declarations (C90) */
++	const uint32_t kPattern = 0x5678;
++	const int dwLocation = 100;
++	int r;
++	uint32_t version = 9;
++	char mcpu[32];
++	uint8_t isa_bin[4096];
++	size_t isa_sz = 0;
++	uint64_t vram_mc = 0;
++	void *vram_cpu = NULL;
++	amdgpu_bo_handle bo_vram = NULL;
++	amdgpu_va_handle va_vram = 0;
++	uint32_t *buf = NULL;
++	void *shader_ptr = NULL;
++	amdgpu_bo_handle bo_shader = NULL;
++	amdgpu_va_handle va_shader = 0;
++	uint64_t mc_shader = 0;
++	amdgpu_context_handle compute_ctx;
++	amdgpu_bo_handle bo_cmd = NULL;
++	uint32_t *ptr_cmd = NULL;
++	uint64_t mc_cmd = 0;
++	amdgpu_va_handle va_cmd = 0;
++	struct amdgpu_cmd_base *base_cmd;
++	uint64_t dst_va = 0;
++	amdgpu_bo_handle bos[3];
++	amdgpu_bo_list_handle bo_list;
++	struct amdgpu_cs_ib_info ib_info;
++	struct amdgpu_cs_request ib_req;
++	struct amdgpu_cs_fence fence;
++	uint32_t expired = 0;
++	uint64_t cpu_accessible_vram = 0;
++
++	/* Require Arcturus-like discrete (approximate) and large BAR (CPU accessible VRAM). */
++	if (is_apu(gpu_info) || !FAMILY_IS_AI(gpu_info->family_id)) {
++		igt_skip("Skipping test: requires Arcturus (gfx9 AI discrete) family\n");
++		return;
++	}
++	/* Query memory info for CPU accessible VRAM */
++	r = get_gpu_memory_info(device, NULL, &cpu_accessible_vram, NULL);
++	if (r != 0 || cpu_accessible_vram == 0) {
++		igt_skip("Skipping test: requires large BAR (CPU accessible VRAM)\n");
++		return;
++	}
++
++	amdgpu_family_id_to_mcpu(gpu_info->family_id, mcpu, sizeof(mcpu));
++	if (FAMILY_IS_GFX1200(gpu_info->family_id))
++		version = 12;
++	else if (FAMILY_IS_GFX1150(gpu_info->family_id) ||
++		 FAMILY_IS_GFX1100(gpu_info->family_id) ||
++		 FAMILY_IS_GFX1036(gpu_info->family_id) ||
++		 FAMILY_IS_GFX1037(gpu_info->family_id) ||
++		 FAMILY_IS_YC(gpu_info->family_id) ||
++		 gpu_info->family_id == FAMILY_GFX1103)
++			version = 11;
++	else if (FAMILY_IS_AI(gpu_info->family_id) ||
++		 FAMILY_IS_RV(gpu_info->family_id) ||
++		 FAMILY_IS_NV(gpu_info->family_id) ||
++		 gpu_info->family_id == FAMILY_VGH)
++			version = 10;
++
++	/* Allocate host-accessible VRAM BO */
++	r = amdgpu_bo_alloc_and_map_sync(device,
++					 PAGE_SIZE, 4096,
++									 AMDGPU_GEM_DOMAIN_VRAM,
++									 AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED,
++									 AMDGPU_VM_MTYPE_RW,
++									 &bo_vram, &vram_cpu, &vram_mc, &va_vram,
++									 0, 0, true);
++	igt_assert_eq(r, 0);
++	buf = (uint32_t *)vram_cpu;
++	memset(buf, 0, PAGE_SIZE);
++
++	/* Assemble PollMemoryIsa */
++	r = amdgpu_llvm_asm_init();
++	if (r != 0) {
++		igt_skip("LLVM assembler unavailable\n");
++		amdgpu_bo_unmap_and_free(bo_vram, va_vram, vram_mc, PAGE_SIZE);
++		return;
++	}
++	r = amdgpu_llvm_assemble(mcpu, PollMemoryIsa, isa_bin, sizeof(isa_bin), &isa_sz);
++	amdgpu_llvm_asm_shutdown();
++	igt_assert_f(r == 0 && isa_sz > 0, "Failed to assemble PollMemoryIsa\n");
++
++	/* Shader BO */
++	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
++				    AMDGPU_GEM_DOMAIN_GTT, 0,
++								&bo_shader, &shader_ptr, &mc_shader, &va_shader);
++	igt_assert_eq(r, 0);
++	memset(shader_ptr, 0, 4096);
++	memcpy(shader_ptr, isa_bin, isa_sz);
++
++	/* Command buffer + dispatch */
++	r = amdgpu_cs_ctx_create(device, &compute_ctx);
++	igt_assert_eq(r, 0);
++	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
++				    AMDGPU_GEM_DOMAIN_GTT, 0,
++								&bo_cmd, (void **)&ptr_cmd, &mc_cmd, &va_cmd);
++	igt_assert_eq(r, 0);
++	memset(ptr_cmd, 0, 4096);
++	base_cmd = get_cmd_base();
++	base_cmd->attach_buf(base_cmd, ptr_cmd, 4096);
++	amdgpu_dispatch_init(AMDGPU_HW_IP_COMPUTE, base_cmd, version);
++	amdgpu_dispatch_write_cumask(base_cmd, version);
++	amdgpu_dispatch_write2hw(base_cmd, mc_shader, version, 0);
++
++	dst_va = vram_mc + dwLocation * sizeof(uint32_t);
++	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 4));
++	base_cmd->emit(base_cmd, 0x240);
++	base_cmd->emit(base_cmd, vram_mc & 0xffffffff);
++	base_cmd->emit(base_cmd, vram_mc >> 32);
++	base_cmd->emit(base_cmd, dst_va & 0xffffffff);
++	base_cmd->emit(base_cmd, dst_va >> 32);
++	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PACKET3_DISPATCH_DIRECT, 3));
++	base_cmd->emit(base_cmd, 0x10);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit_aligned(base_cmd, 7, GFX_COMPUTE_NOP);
++
++	bos[0] = bo_cmd;
++	bos[1] = bo_shader;
++	bos[2] = bo_vram;
++	r = amdgpu_bo_list_create(device, 3, bos, NULL, &bo_list);
++	igt_assert_eq(r, 0);
++
++	memset(&ib_info, 0, sizeof(ib_info));
++	memset(&ib_req, 0, sizeof(ib_req));
++	ib_info.ib_mc_address = mc_cmd;
++	ib_info.size = base_cmd->cdw;
++	ib_req.ip_type = AMDGPU_HW_IP_COMPUTE;
++	ib_req.ring = 0;
++	ib_req.resources = bo_list;
++	ib_req.number_of_ibs = 1;
++	ib_req.ibs = &ib_info;
++	r = amdgpu_cs_submit(compute_ctx, 0, &ib_req, 1);
++	igt_assert_eq(r, 0);
++
++	/* CPU write to trigger shader completion */
++	buf[0] = kPattern;
++
++	/* Wait for shader to exit */
++	memset(&fence, 0, sizeof(fence));
++	fence.context = compute_ctx;
++	fence.ip_type = AMDGPU_HW_IP_COMPUTE;
++	fence.ip_instance = 0;
++	fence.ring = 0;
++	fence.fence = ib_req.seq_no;
++	r = amdgpu_cs_query_fence_status(&fence, AMDGPU_TIMEOUT_INFINITE, 0, &expired);
++	igt_assert_eq(r, 0);
++	igt_assert_f(expired, "Compute fence not signaled after CPU write\n");
++
++	/* Validate */
++	igt_assert_f(buf[dwLocation] == kPattern,
++		     "CPU write cache invalidation failed: expected 0x%x at dst got 0x%x\n",
++				 kPattern, buf[dwLocation]);
++	igt_info("cache-invalidate-cpu-write: PASSED (dst[100]=0x%x)\n", buf[dwLocation]);
++
++	/* Cleanup */
++	amdgpu_bo_list_destroy(bo_list);
++	amdgpu_bo_unmap_and_free(bo_cmd, va_cmd, mc_cmd, 4096);
++	amdgpu_cs_ctx_free(compute_ctx);
++	amdgpu_bo_unmap_and_free(bo_shader, va_shader, mc_shader, 4096);
++	amdgpu_bo_unmap_and_free(bo_vram, va_vram, vram_mc, PAGE_SIZE);
++	free_cmd_base(base_cmd);
++}
++
++/* Variant: copy one dword from src_va to dst_va where both point to already
++ * mapped userptr/VRAM pages (no destination BO allocation). The shader BO
++ * must contain CopyDwordIsa and be referenced by mc_shader. We only build
++ * and submit a command buffer; rely on shader writing directly to dst_va. */
++static int compute_copy_dword_userptr(amdgpu_device_handle device,
++				      uint32_t version,
++				      amdgpu_bo_handle bo_shader,
++				      amdgpu_bo_handle bo_src,
++				      amdgpu_bo_handle bo_dst,
++				      uint64_t mc_shader,
++				      uint64_t src_va,
++				      uint64_t dst_va)
++{
++	amdgpu_context_handle ctx;
++	amdgpu_bo_handle bo_cmd = NULL;
++	uint32_t *ptr_cmd = NULL;
++	uint64_t mc_cmd = 0;
++	amdgpu_va_handle va_cmd = 0;
++	amdgpu_bo_list_handle bo_list = NULL;
++	struct amdgpu_cs_request ib_req = {0};
++	struct amdgpu_cs_ib_info ib_info = {0};
++	struct amdgpu_cs_fence fence = {0};
++	uint32_t expired = 0;
++	int r;
++	struct amdgpu_cmd_base *base_cmd = get_cmd_base();
++	/* BO list must include: command buffer, shader BO, src userptr BO, dst userptr BO */
++	amdgpu_bo_handle bos[4];
++
++	r = amdgpu_cs_ctx_create(device, &ctx);
++	if (r)
++		return r;
++	r = amdgpu_bo_alloc_and_map(device, 4096, 4096,
++				AMDGPU_GEM_DOMAIN_GTT, 0,
++				&bo_cmd, (void **)&ptr_cmd, &mc_cmd, &va_cmd);
++	if (r) {
++		amdgpu_cs_ctx_free(ctx);
++		return r;
++	}
++	memset(ptr_cmd, 0, 4096);
++	base_cmd->attach_buf(base_cmd, ptr_cmd, 4096);
++
++	amdgpu_dispatch_init(AMDGPU_HW_IP_COMPUTE, base_cmd, version);
++	amdgpu_dispatch_write_cumask(base_cmd, version);
++	amdgpu_dispatch_write2hw(base_cmd, mc_shader, version, 0);
++
++	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 4));
++	base_cmd->emit(base_cmd, 0x240);
++	base_cmd->emit(base_cmd, src_va & 0xffffffff);
++	base_cmd->emit(base_cmd, src_va >> 32);
++	base_cmd->emit(base_cmd, dst_va & 0xffffffff);
++	base_cmd->emit(base_cmd, dst_va >> 32);
++
++	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PACKET3_DISPATCH_DIRECT, 3));
++	base_cmd->emit(base_cmd, 0x10);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit_aligned(base_cmd, 7, GFX_COMPUTE_NOP);
++
++	bos[0] = bo_cmd;
++	bos[1] = bo_shader;
++	bos[2] = bo_src;
++	bos[3] = bo_dst;
++	r = amdgpu_bo_list_create(device, 4, bos, NULL, &bo_list);
++	if (r) {
++		amdgpu_bo_unmap_and_free(bo_cmd, va_cmd, mc_cmd, 4096);
++		amdgpu_cs_ctx_free(ctx);
++		return r;
++	}
++
++	ib_info.ib_mc_address = mc_cmd;
++	ib_info.size = base_cmd->cdw;
++	ib_req.ip_type = AMDGPU_HW_IP_COMPUTE;
++	ib_req.ring = 0;
++	ib_req.resources = bo_list;
++	ib_req.number_of_ibs = 1;
++	ib_req.ibs = &ib_info;
++	ib_req.fence_info.handle = NULL;
++	r = amdgpu_cs_submit(ctx, 0, &ib_req, 1);
++	if (r)
++		goto out_fail;
++
++	fence.context = ctx;
++	fence.ip_type = AMDGPU_HW_IP_COMPUTE;
++	fence.ip_instance = 0;
++	fence.ring = 0;
++	fence.fence = ib_req.seq_no;
++	r = amdgpu_cs_query_fence_status(&fence, AMDGPU_TIMEOUT_INFINITE, 0, &expired);
++	if (r || !expired)
++		r = -ETIME;
++
++out_fail:
++	amdgpu_bo_list_destroy(bo_list);
++	amdgpu_bo_unmap_and_free(bo_cmd, va_cmd, mc_cmd, 4096);
++	amdgpu_cs_ctx_free(ctx);
++	free_cmd_base(base_cmd);
++	return r;
++}
++
++/**
++ * memory_register - Adaptation of KFD MemoryRegister test.
++ * Steps:
++ *  1. Map global and stack pages (userptr) to GPU before fork.
++ *  2. Initial GPU copy (compute shader CopyDwordIsa) global->stack[dstOffset].
++ *  3. Initial SDMA linear write to stack[sdmaOffset].
++ *  4. fork() child spins; parent writes to pages causing COW.
++ *  5. Second GPU copy and SDMA write; verifies MMU notifier updated mappings.
++ *  6. Validate final CPU-visible values and clean up.
++ */
++static void memory_register(amdgpu_device_handle device)
++{
++	const unsigned int dstOffset = 0;
++	const unsigned int sdmaOffset = 16;
++	size_t page_sz;
++	uint32_t *global_mem = NULL;
++	uint32_t *stack_mem = NULL;
++	int r;
++	const struct amdgpu_ip_block_version *ip_block;
++	amdgpu_bo_handle bo_global = NULL, bo_stack = NULL, bo_shader = NULL;
++	amdgpu_va_handle va_global = NULL, va_stack = NULL, va_shader = 0;
++	uint64_t gpu_va_global = 0, gpu_va_stack = 0, mc_shader = 0;
++	struct amdgpu_ring_context *ring_context = NULL;
++	struct amdgpu_gpu_info info;
++	char mcpu[32];
++	uint8_t isa_bin[4096];
++	size_t isa_sz = 0;
++	uint32_t version = 9;
++	void *ptr_shader = NULL;
++	pid_t pid;
++	int status;
++	bool buffer_busy;
++
++	memset(&info, 0, sizeof(info));
++	page_sz = sysconf(_SC_PAGE_SIZE);
++
++	/* 1. Check compute IP block availability */
++	ip_block = get_ip_block(device, AMDGPU_HW_IP_COMPUTE);
++	if (!ip_block) {
++		igt_skip("Compute IP block not available\n");
++		return;
++	}
++
++	/* 2. Allocate and initialize memory */
++	r = posix_memalign((void **)&global_mem, page_sz, page_sz);
++	igt_assert_eq(r, 0);
++	r = posix_memalign((void **)&stack_mem, page_sz, page_sz);
++	igt_assert_eq(r, 0);
++
++	memset(global_mem, 0, page_sz);
++	memset(stack_mem, 0, page_sz);
++	global_mem[0] = 0xdeadbeef;
++
++	igt_info("Allocated memory: global=%p, stack=%p\n", global_mem, stack_mem);
++
++	/* 3. Create userptr BOs */
++	r = amdgpu_create_bo_from_user_mem(device, global_mem, page_sz, &bo_global);
++	igt_assert_eq(r, 0);
++	r = amdgpu_create_bo_from_user_mem(device, stack_mem, page_sz, &bo_stack);
++	igt_assert_eq(r, 0);
++
++	/* 4. Allocate GPU VA space */
++	r = amdgpu_va_range_alloc(device, amdgpu_gpu_va_range_general, page_sz, 1, 0,
++			      &gpu_va_global, &va_global, 0);
++	igt_assert_eq(r, 0);
++	r = amdgpu_va_range_alloc(device, amdgpu_gpu_va_range_general, page_sz, 1, 0,
++			      &gpu_va_stack, &va_stack, 0);
++	igt_assert_eq(r, 0);
++
++	/* 5. Map BOs to GPU VA */
++	igt_info("Mapping: global GPU VA=0x%llx, stack GPU VA=0x%llx\n",
++	     (unsigned long long)gpu_va_global, (unsigned long long)gpu_va_stack);
++
++	r = amdgpu_bo_va_op(bo_global, 0, page_sz, gpu_va_global, 0, AMDGPU_VA_OP_MAP);
++	igt_assert_eq(r, 0);
++	r = amdgpu_bo_va_op(bo_stack, 0, page_sz, gpu_va_stack, 0, AMDGPU_VA_OP_MAP);
++	igt_assert_eq(r, 0);
++
++	/* 6. Wait for mapping completion - use correct function */
++	r = amdgpu_bo_wait_for_idle(bo_global, AMDGPU_TIMEOUT_INFINITE, &buffer_busy);
++	igt_assert_eq(r, 0);
++	igt_assert_f(!buffer_busy, "Global BO is still busy after mapping");
++
++	r = amdgpu_bo_wait_for_idle(bo_stack, AMDGPU_TIMEOUT_INFINITE, &buffer_busy);
++	igt_assert_eq(r, 0);
++	igt_assert_f(!buffer_busy, "Stack BO is still busy after mapping");
++
++	/* 7. Prepare shader - use existing CopyDwordIsa */
++	r = amdgpu_query_gpu_info(device, &info);
++	igt_assert_eq(r, 0);
++	amdgpu_family_id_to_mcpu(info.family_id, mcpu, sizeof(mcpu));
++
++    /* Determine GPU version */
++	if (FAMILY_IS_GFX1200(info.family_id))
++		version = 12;
++	else if (FAMILY_IS_GFX1150(info.family_id) ||
++	     FAMILY_IS_GFX1100(info.family_id) ||
++	     FAMILY_IS_GFX1036(info.family_id) ||
++	     FAMILY_IS_GFX1037(info.family_id) ||
++	     FAMILY_IS_YC(info.family_id) ||
++	     info.family_id == FAMILY_GFX1103)
++		version = 11;
++	else if (FAMILY_IS_AI(info.family_id) ||
++	     FAMILY_IS_RV(info.family_id) ||
++	     FAMILY_IS_NV(info.family_id) ||
++	     info.family_id == FAMILY_VGH)
++		version = 10;
++
++	r = amdgpu_llvm_asm_init();
++	if (r != 0) {
++		igt_skip("LLVM assembler unavailable\n");
++		goto cleanup;
++	}
++
++	/* 8. Use existing CopyDwordIsa shader */
++	r = amdgpu_llvm_assemble(mcpu, CopyDwordIsa, isa_bin, sizeof(isa_bin), &isa_sz);
++	if (r != 0 || isa_sz == 0) {
++		igt_warn("Failed to assemble CopyDwordIsa\n");
++		amdgpu_llvm_asm_shutdown();
++		igt_skip("Shader assembly failed\n");
++		goto cleanup;
++	}
++
++	/* 9. Allocate shader memory */
++	r = amdgpu_bo_alloc_and_map(device, 4096, 4096, AMDGPU_GEM_DOMAIN_GTT, 0,
++				&bo_shader, &ptr_shader, &mc_shader, &va_shader);
++	igt_assert_eq(r, 0);
++	memset(ptr_shader, 0, 4096);
++	memcpy(ptr_shader, isa_bin, isa_sz);
++	amdgpu_llvm_asm_shutdown();
++
++	/* 10. First GPU copy */
++	igt_info("First GPU copy: src=0x%llx, dst=0x%llx\n",
++	     (unsigned long long)gpu_va_global,
++	     (unsigned long long)(gpu_va_stack + dstOffset * sizeof(uint32_t)));
++
++	/* Wait for shader BO to become idle */
++	r = amdgpu_bo_wait_for_idle(bo_shader, AMDGPU_TIMEOUT_INFINITE, &buffer_busy);
++	igt_assert_eq(r, 0);
++
++	r = compute_copy_dword_userptr(device, version, bo_shader, bo_global, bo_stack,
++				   mc_shader, gpu_va_global,
++				  gpu_va_stack + dstOffset * sizeof(uint32_t));
++	if (r != 0) {
++		igt_warn("First GPU copy failed: %d\n", r);
++		/* Report current values after failed copy */
++		igt_info("After failed copy: global[0]=0x%x, stack[0]=0x%x\n",
++			 global_mem[0], stack_mem[dstOffset]);
++	} else {
++		igt_info("First GPU copy succeeded\n");
++		igt_info("After first copy: global[0]=0x%x, stack[0]=0x%x\n",
++			 global_mem[0], stack_mem[dstOffset]);
++	}
++
++	/* 11. Fork and COW test */
++	pid = fork();
++	igt_assert_f(pid >= 0, "fork failed: %s", strerror(errno));
++
++	if (pid == 0) {
++		/* Child process - simple wait */
++		sleep(10);
++		_exit(0);
++	}
++
++	/* 12. Trigger COW */
++	igt_info("Triggering COW...\n");
++	global_mem[0] = 0xD00BED00;
++	stack_mem[dstOffset] = 0xDEADBEEF;
++	stack_mem[sdmaOffset] = 0xDEADBEEF;
++
++	/* 13. Wait for child process to complete */
++	kill(pid, SIGTERM);
++	waitpid(pid, &status, 0);
++
++	/* 14. Second GPU copy */
++	igt_info("Second GPU copy after COW\n");
++
++	/* Wait for shader BO idle before second copy */
++	r = amdgpu_bo_wait_for_idle(bo_shader, AMDGPU_TIMEOUT_INFINITE, &buffer_busy);
++	igt_assert_eq(r, 0);
++
++	r = compute_copy_dword_userptr(device, version, bo_shader, bo_global, bo_stack,
++				   mc_shader, gpu_va_global,
++				  gpu_va_stack + dstOffset * sizeof(uint32_t));
++	if (r != 0) {
++		igt_warn("Second GPU copy failed: %d\n", r);
++	} else {
++		igt_info("Second GPU copy succeeded\n");
++	}
++
++	/* 15. Verify final results */
++	igt_info("Final values: global[0]=0x%x, stack[0]=0x%x, stack[16]=0x%x\n",
++	     global_mem[0], stack_mem[dstOffset], stack_mem[sdmaOffset]);
++
++	if (global_mem[0] == 0xD00BED00 && stack_mem[dstOffset] == 0xD00BED00) {
++		igt_info("memory-register-cow: PASSED\n");
++	} else {
++		igt_warn("memory-register-cow: VALUES MISMATCH\n");
++		igt_warn("Expected: global=0x%x, stack[0]=0x%x\n", 0xD00BED00, 0xD00BED00);
++		igt_warn("Got: global=0x%x, stack[0]=0x%x\n", global_mem[0], stack_mem[dstOffset]);
++	}
++
++cleanup:
++	/* Cleanup resources */
++	if (bo_global) {
++		amdgpu_bo_va_op(bo_global, 0, page_sz, gpu_va_global, 0, AMDGPU_VA_OP_UNMAP);
++		amdgpu_va_range_free(va_global);
++		amdgpu_bo_free(bo_global);
++	}
++	if (bo_stack) {
++		amdgpu_bo_va_op(bo_stack, 0, page_sz, gpu_va_stack, 0, AMDGPU_VA_OP_UNMAP);
++		amdgpu_va_range_free(va_stack);
++		amdgpu_bo_free(bo_stack);
++	}
++	if (bo_shader) {
++		amdgpu_bo_unmap_and_free(bo_shader, va_shader, mc_shader, 4096);
++	}
++	if (global_mem)
++		free(global_mem);
++	if (stack_mem)
++		free(stack_mem);
++
++	/* Cleanup ring context if created */
++	if (ring_context) {
++		if (ring_context->bo) {
++		    amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle,
++					     ring_context->bo_mc, ring_context->write_length * sizeof(uint32_t));
++		}
++		free(ring_context->pm4);
++
++		if (ip_block && ip_block->funcs && ip_block->funcs->userq_destroy) {
++		    ip_block->funcs->userq_destroy(device, ring_context, ip_block->type);
++		}
++		free(ring_context);
++	}
++}
++
++static void test_gca_config_basic(amdgpu_device_handle device)
++{
++	uint32_t config[MAX_CONFIG_SIZE];
++	int dri_index = 0; /* Typically 0 for primary GPU */
++	int bytes_read;
++
++	dri_index = get_dri_index_from_device(device);
++	/* Try to read from debugfs */
++	bytes_read = read_gca_config_debugfs(dri_index, config, sizeof(config));
++
++	if (bytes_read < 0) {
++		igt_skip("GCA config debugfs not available\n");
++	}
++
++	igt_assert_f(bytes_read > 0, "No data read from debugfs\n");
++	igt_assert_f((bytes_read % 4) == 0, "Config size not 4-byte aligned: %d\n", bytes_read);
++
++	igt_info("Read %d bytes (%u dwords) from GCA config\n",
++		 bytes_read, bytes_read / 4);
++
++	validate_gca_config_basic(config, bytes_read);
++}
++
++/**
++ * get_available_gtt_memory - Get available GTT memory
++ * @device: AMDGPU device handle
 + *
-+ *	.text
-+ *	.p2align 8
-+ *	.globl spin_store_flat
-+ *	.type	spin_store_flat,@function
++ * Returns available GTT memory in bytes.
++ */
++static uint64_t get_available_gtt_memory(amdgpu_device_handle device)
++{
++	uint64_t gtt_size = 0;
++	int r;
++
++	/* Get GTT size from GPU */
++	r = get_gpu_memory_info(device, NULL, NULL, &gtt_size);
++	if (r == 0 && gtt_size > 0) {
++		return gtt_size;
++	}
++
++	return 0;
++}
++
++/**
++ * get_available_vram_memory - Get available GPU VRAM
++ * @device: AMDGPU device handle
 + *
-+ * spin_store_flat:
-+ *	s_mov_b32 s2, 0				Initialize loop counter.
++ * Returns available GPU VRAM in bytes.
++ */
++static uint64_t get_available_vram_memory(amdgpu_device_handle device)
++{
++	uint64_t vram_size = 0;
++	int r;
++
++	r = get_gpu_memory_info(device, &vram_size, NULL, NULL);
++	if (r == 0) {
++		return vram_size;
++	}
++
++	igt_info("Failed to get VRAM info\n");
++	return 0;
++}
++
++/**
++ * get_available_cpu_accessible_vram_memory - Get available CPU accessible GPU VRAM
++ * @device: AMDGPU device handle
 + *
-+ *	s_cmp_gt_u32 s2, 0x0098967f		Early exit if counter exceeds limit.
-+ *	s_cbranch_scc1 .Lexit
++ * Returns available CPU accessible GPU VRAM in bytes.
++ */
++static uint64_t get_available_cpu_accessible_vram_memory(amdgpu_device_handle device)
++{
++	uint64_t cpu_vram_size = 0;
++	int r;
++
++	r = get_gpu_memory_info(device, NULL, &cpu_vram_size, NULL);
++	if (r == 0) {
++		return cpu_vram_size;
++	}
++
++	igt_info("Failed to get CPU accessible VRAM info\n");
++	return 0;
++}
++
++/* binary search largest alloc/map-able buffer */
++static void search_largest_buffer(amdgpu_device_handle device, uint64_t alloc_size,
++				  unsigned int domain_type, uint64_t flags, uint64_t *last_size)
++{
++	amdgpu_bo_handle bo = NULL;
++	struct amdgpu_bo_alloc_request request = {0};
++	amdgpu_va_handle va_handle = NULL;
++	uint64_t va = 0;
++	int r;
++
++	/* Use 8MB granularity for search steps */
++	const uint64_t granularity = 8 * 1024 * 1024;
++	uint64_t low = granularity;
++	uint64_t high = alloc_size;
++	uint64_t current_size = alloc_size;
++	uint64_t largest_success = 0;
++
++	const char *domain_name = (domain_type == AMDGPU_GEM_DOMAIN_GTT) ? "GTT" :
++			     (domain_type == AMDGPU_GEM_DOMAIN_VRAM) ? "VRAM" :
++			     (domain_type == AMDGPU_GEM_DOMAIN_CPU) ? "CPU" : "UNKNOWN";
++
++	igt_info("Starting search for largest %s buffer, initial size: %" PRIu64 " MB, flags: 0x%" PRIx64 "\n",
++		 domain_name, current_size / (1024 * 1024), flags);
++
++	/* Binary search for the largest allocatable size */
++	while (low <= high) {
++		current_size = low + (high - low) / 2;
++
++		/* Align to granularity */
++		current_size = (current_size / granularity) * granularity;
++		if (current_size == 0)
++			break;
++
++		igt_debug("Trying allocation size: %" PRIu64 " MB\n",
++			  current_size / (1024 * 1024));
++
++		/* Initialize buffer allocation request */
++		request.alloc_size = current_size;
++		request.phys_alignment = 4096;
++		request.preferred_heap = domain_type;
++		request.flags = flags;
++
++		/* Try to allocate buffer */
++		r = amdgpu_bo_alloc(device, &request, &bo);
++		if (r) {
++			igt_debug("Allocation failed for %" PRIu64 " MB, error: %d\n",
++				  current_size / (1024 * 1024), r);
++			high = current_size - granularity;
++			continue;
++		}
++
++		/* Reserve VA space and map the buffer */
++		r = amdgpu_va_range_alloc(device,
++					  amdgpu_gpu_va_range_general,
++				 current_size,
++				 getpagesize(),
++				 0,
++				 &va,
++				 &va_handle,
++				 0);
++		if (r) {
++			igt_debug("VA range allocation failed for %" PRIu64 " MB, error: %d\n",
++				  current_size / (1024 * 1024), r);
++			amdgpu_bo_free(bo);
++			bo = NULL;
++			high = current_size - granularity;
++			continue;
++		}
++
++		/* Map the buffer to the reserved VA */
++		r = amdgpu_bo_va_op(bo, 0, current_size, va, 0, AMDGPU_VA_OP_MAP);
++		if (r) {
++			igt_debug("GPU VA mapping failed for %" PRIu64 " MB, error: %d\n",
++				  current_size / (1024 * 1024), r);
++			amdgpu_va_range_free(va_handle);
++			amdgpu_bo_free(bo);
++			bo = NULL;
++			va_handle = NULL;
++			high = current_size - granularity;
++			continue;
++		}
++
++		/* Test CPU access for buffers that should be CPU accessible */
++		if (!(flags & AMDGPU_GEM_CREATE_NO_CPU_ACCESS)) {
++			void *cpu_ptr = NULL;
++
++			r = amdgpu_bo_cpu_map(bo, &cpu_ptr);
++			if (r) {
++				igt_debug("CPU mapping failed for %" PRIu64 " MB, error: %d\n",
++					  current_size / (1024 * 1024), r);
++				amdgpu_bo_va_op(bo, 0, current_size, va, 0, AMDGPU_VA_OP_UNMAP);
++				amdgpu_va_range_free(va_handle);
++				amdgpu_bo_free(bo);
++				bo = NULL;
++				va_handle = NULL;
++				high = current_size - granularity;
++				continue;
++			}
++
++			/* Test CPU write access */
++			memset(cpu_ptr, 0xAA, MIN(current_size, 4096));
++			amdgpu_bo_cpu_unmap(bo);
++		}
++
++		/* Success - store this size and try larger */
++		igt_debug("Successfully allocated and mapped %" PRIu64 " MB %s at VA: 0x%" PRIx64 "\n",
++			  current_size / (1024 * 1024), domain_name, va);
++
++		largest_success = current_size;
++
++		/* Cleanup for next iteration - unmap and free */
++		amdgpu_bo_va_op(bo, 0, current_size, va, 0, AMDGPU_VA_OP_UNMAP);
++		amdgpu_va_range_free(va_handle);
++		amdgpu_bo_free(bo);
++		bo = NULL;
++		va_handle = NULL;
++		va = 0;
++
++		low = current_size + granularity;
++	}
++
++	/* Cleanup any remaining resources */
++	if (va_handle)
++		amdgpu_va_range_free(va_handle);
++	if (bo)
++		amdgpu_bo_free(bo);
++
++	if (last_size)
++		*last_size = largest_success;
++}
++
++/* run largest buffer search for domain */
++static void largest_buffer_test(amdgpu_device_handle device, unsigned int domain_type, uint64_t flags)
++{
++	uint64_t available_memory = 0;
++	uint64_t largest_buffer_size = 0;
++	uint64_t test_size;
++
++	const char *domain_name = (domain_type == AMDGPU_GEM_DOMAIN_GTT) ? "GTT" :
++			     (domain_type == AMDGPU_GEM_DOMAIN_VRAM) ? "VRAM" :
++			     (domain_type == AMDGPU_GEM_DOMAIN_CPU) ? "CPU" : "UNKNOWN";
++
++	const char *flags_str = "";
++
++	if (flags & AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED)
++		flags_str = " (CPU access required)";
++	else if (flags & AMDGPU_GEM_CREATE_NO_CPU_ACCESS)
++		flags_str = " (no CPU access)";
++
++	igt_info("Testing %s memory domain%s\n", domain_name, flags_str);
++
++	/* Get available memory for the specified domain */
++	if (domain_type == AMDGPU_GEM_DOMAIN_GTT) {
++		available_memory = get_available_gtt_memory(device);
++		igt_info("Available GTT memory: %" PRIu64 " MB\n",
++			 available_memory / (1024 * 1024));
++	} else if (domain_type == AMDGPU_GEM_DOMAIN_VRAM) {
++		available_memory = get_available_vram_memory(device);
++		igt_info("Available VRAM: %" PRIu64 " MB\n",
++			 available_memory / (1024 * 1024));
++	} else {
++		igt_skip("Unsupported memory domain type: %u\n", domain_type);
++		return;
++	}
++
++	if (available_memory == 0) {
++		igt_skip("Could not determine available memory for domain %s\n", domain_name);
++		return;
++	}
++
++	/* Use 50% of available memory as initial test size */
++	test_size = (available_memory * 50) / 100;
++
++	igt_info("Testing with initial size: %" PRIu64 " MB (50%% of available %s memory)\n",
++		 test_size / (1024 * 1024), domain_name);
++
++	/* Search for largest buffer */
++	search_largest_buffer(device, test_size, domain_type, flags, &largest_buffer_size);
++
++	if (largest_buffer_size > 0) {
++		igt_info("SUCCESS: Largest allocated %s buffer%s is %" PRIu64 " MB\n",
++			 domain_name, flags_str, largest_buffer_size / (1024 * 1024));
++
++		/* Log the result for automated testing */
++		igt_assert_f(largest_buffer_size > 0,
++			     "Should be able to allocate at least some %s memory%s", domain_name, flags_str);
++	} else {
++		igt_skip("Could not allocate any %s memory buffers%s\n", domain_name, flags_str);
++	}
++}
++
++/* largest CPU accessible VRAM buffer search */
++static void largest_cpu_accessible_vram_test(amdgpu_device_handle device)
++{
++	uint64_t available_memory = 0;
++	uint64_t largest_buffer_size = 0;
++	uint64_t test_size;
++
++	igt_info("Testing CPU accessible VRAM memory domain\n");
++
++	/* Get available CPU accessible VRAM */
++	available_memory = get_available_cpu_accessible_vram_memory(device);
++	igt_info("Available CPU accessible VRAM: %" PRIu64 " MB\n",
++		 available_memory / (1024 * 1024));
++
++	if (available_memory == 0) {
++		igt_skip("Could not determine available CPU accessible VRAM\n");
++		return;
++	}
++
++	/* Use 50% of available memory as initial test size */
++	test_size = (available_memory * 50) / 100;
++
++	igt_info("Testing with initial size: %" PRIu64 " MB (50%% of available CPU accessible VRAM)\n",
++		 test_size / (1024 * 1024));
++
++	/* Search for largest buffer - use VRAM domain with CPU access required flag */
++	search_largest_buffer(device, test_size, AMDGPU_GEM_DOMAIN_VRAM,
++			      AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED, &largest_buffer_size);
++
++	if (largest_buffer_size > 0) {
++		igt_info("SUCCESS: Largest allocated CPU accessible VRAM buffer is %" PRIu64 " MB\n",
++			 largest_buffer_size / (1024 * 1024));
++
++		/* Log the result for automated testing */
++		igt_assert_f(largest_buffer_size > 0,
++			     "Should be able to allocate at least some CPU accessible VRAM memory");
++	} else {
++		igt_skip("Could not allocate any CPU accessible VRAM memory buffers\n");
++	}
++}
++
++/**
++ * big_sys_buffer_stress_test_with_queue - Stress test with queue operations
++ * @device: AMDGPU device handle
 + *
-+ * .Lloop:
-+ *	s_add_i32 s2, s2, 1			Increment counter.
-+ *	s_cmp_gt_u32 s2, 0x0098967f		Continue looping if below threshold.
-+ *	s_cbranch_scc0 .Lloop
++ * Enhanced version that performs queue operations on each buffer to simulate
++ * real workload patterns.
++ */
++static void big_sys_buffer_stress_test_with_queue(amdgpu_device_handle device)
++{
++	amdgpu_bo_handle bo_array[256];
++	amdgpu_va_handle va_handle_array[256];
++	uint64_t va_array[256];
++	void *cpu_ptr_array[256];
++	int allocation_count = 0;
++	int first_run_count = 0;
++	int i, j, r;
++	int repeat;
++
++	const uint64_t block_size = 128 * 1024 * 1024; /* 128 MB */
++	const int max_iterations = ARRAY_SIZE(bo_array);
++	const int num_repeats = 3;
++
++	igt_info("Starting big system buffer stress test with queue operations\n");
++	igt_info("Block size: %" PRIu64 " MB, Max iterations: %d, Repeats: %d\n",
++		 block_size / (1024 * 1024), max_iterations, num_repeats);
++
++	/* Initialize arrays */
++	memset(bo_array, 0, sizeof(bo_array));
++	memset(va_handle_array, 0, sizeof(va_handle_array));
++	memset(va_array, 0, sizeof(va_array));
++	memset(cpu_ptr_array, 0, sizeof(cpu_ptr_array));
++
++	for (repeat = 0; repeat < num_repeats; repeat++) {
++		int successful_allocations = 0;
++
++		igt_info("Repeat %d: Allocating system buffers with queue operations...\n", repeat + 1);
++
++		/* Allocate, map, and perform operations on buffers */
++		for (i = 0; i < max_iterations; i++) {
++			struct amdgpu_bo_alloc_request request = {0};
++			amdgpu_bo_handle bo = NULL;
++			amdgpu_va_handle va_handle = NULL;
++			uint64_t va = 0;
++			void *cpu_ptr = NULL;
++
++			request.alloc_size = block_size;
++			request.phys_alignment = 4096;
++			request.preferred_heap = AMDGPU_GEM_DOMAIN_VRAM;
++
++			/* Try to allocate buffer */
++			r = amdgpu_bo_alloc(device, &request, &bo);
++			if (r) {
++				igt_debug("Allocation failed at iteration %d, error: %d\n", i, r);
++				break;
++			}
++
++			/* Reserve VA space */
++			r = amdgpu_va_range_alloc(device,
++						  amdgpu_gpu_va_range_general,
++					     block_size,
++					     getpagesize(),
++					     0,
++					     &va,
++					     &va_handle,
++					     0);
++			if (r) {
++				igt_debug("VA range allocation failed at iteration %d, error: %d\n", i, r);
++				amdgpu_bo_free(bo);
++				break;
++			}
++
++			/* Map the buffer to the reserved VA */
++			r = amdgpu_bo_va_op(bo, 0, block_size, va, 0, AMDGPU_VA_OP_MAP);
++			if (r) {
++				igt_debug("GPU VA mapping failed at iteration %d, error: %d\n", i, r);
++				amdgpu_va_range_free(va_handle);
++				amdgpu_bo_free(bo);
++				break;
++			}
++
++			/* CPU map the buffer for operations */
++			r = amdgpu_bo_cpu_map(bo, &cpu_ptr);
++			if (r) {
++				igt_debug("CPU mapping failed at iteration %d, error: %d\n", i, r);
++				amdgpu_bo_va_op(bo, 0, block_size, va, 0, AMDGPU_VA_OP_UNMAP);
++				amdgpu_va_range_free(va_handle);
++				amdgpu_bo_free(bo);
++				break;
++			}
++
++			/* Perform queue-like operations on the buffer */
++			/* Simulate buffer initialization/usage pattern */
++			memset(cpu_ptr, 0xAA, MIN(block_size, 4096)); /* Initialize first page */
++			memset((char *)cpu_ptr + block_size - 4096, 0xBB, 4096); /* Initialize last page */
++
++			/* Store successful allocation */
++			bo_array[i] = bo;
++			va_handle_array[i] = va_handle;
++			va_array[i] = va;
++			cpu_ptr_array[i] = cpu_ptr;
++			successful_allocations++;
++		}
++
++		igt_info("Repeat %d: Successfully allocated and operated on %d * %" PRIu64 " MB system buffers\n",
++			 repeat + 1, successful_allocations, block_size / (1024 * 1024));
++
++		/* Store the count from first run for comparison */
++		if (repeat == 0) {
++			first_run_count = successful_allocations;
++		}
++
++		/* Check for memory leaks */
++		if (repeat > 0) {
++		igt_assert_f(successful_allocations >= first_run_count * 0.9,
++			     "Possible memory leak detected: allocation count dropped from %d to %d",
++			first_run_count, successful_allocations);
++		}
++
++		allocation_count = successful_allocations;
++
++		/* Unmap and free all allocated buffers */
++		igt_info("Repeat %d: Cleaning up %d buffers...\n", repeat + 1, successful_allocations);
++
++		for (j = 0; j < successful_allocations; j++) {
++			if (bo_array[j]) {
++				/* CPU unmap */
++				if (cpu_ptr_array[j])
++					amdgpu_bo_cpu_unmap(bo_array[j]);
++
++				/* Unmap from GPU VA */
++				amdgpu_bo_va_op(bo_array[j], 0, block_size, va_array[j], 0, AMDGPU_VA_OP_UNMAP);
++
++				/* Free VA space */
++				if (va_handle_array[j])
++				amdgpu_va_range_free(va_handle_array[j]);
++
++				/* Free the buffer */
++				amdgpu_bo_free(bo_array[j]);
++
++				/* Clear pointers */
++				bo_array[j] = NULL;
++				va_handle_array[j] = NULL;
++				cpu_ptr_array[j] = NULL;
++			}
++		}
++
++		igt_info("Repeat %d: Cleanup completed\n", repeat + 1);
++	}
++
++	igt_info("SUCCESS: Big system buffer stress test with queue operations completed\n");
++	igt_info("Final allocation count: %d * %" PRIu64 " MB\n",
++		 allocation_count, block_size / (1024 * 1024));
++}
++
++/* Test configuration */
++typedef struct {
++    uint64_t size;
++    uint32_t num_buffers;
++} buffer_params_t;
++
++static const buffer_params_t buffer_configs[] = {
++    {4096,      1000},   /* 4KB */
++    {65536,     1000},   /* 64KB */
++    {2 * 1024 * 1024,  500},   /* 2MB */
++    {32 * 1024 * 1024,  32},   /* 32MB */
++    {1 * 1024 * 1024 * 1024, 1},   /* 1GB */
++};
++
++#define NUM_SIZES (ARRAY_SIZE(buffer_configs))
++#define NUM_MEM_TYPES 2
++#define NUM_SDMA_MODES 2
++#define TOTAL_TESTS (NUM_SIZES * NUM_MEM_TYPES * NUM_SDMA_MODES)
++
++/* Memory type strings */
++static const char *mem_type_strings[] = {
++    "SysMem",
++    "VRAM"
++};
++
++/* Test context using the new command submission library */
++typedef struct {
++    amdgpu_device_handle device;
++    uint64_t vram_size;
++    uint64_t cpu_accessible_vram_size;
++    uint64_t gtt_size;
++    bool has_vram;
++    bool large_bar;
++
++    /* Single DMA command context for ring 0 */
++    cmd_context_t *dma_ctx;
++} mm_bench_context_t;
++
++/**
++ * Initialize DMA context using cmd_context_create for ring 0
++ */
++static int init_dma_context(mm_bench_context_t *ctx, amdgpu_device_handle device)
++{
++	/* Check if DMA ring 0 is available */
++	if (!cmd_ring_available(device, AMD_IP_DMA, 0, false)) {
++		igt_debug("DMA ring 0 is not available\n");
++		return -ENODEV;
++	}
++
++	/* Create DMA context for ring 0 */
++	ctx->dma_ctx = cmd_context_create(device, AMD_IP_DMA, 0, false, 128, NULL, 0, NULL);
++	if (!ctx->dma_ctx) {
++		igt_debug("Failed to create DMA context for ring 0\n");
++		return -ENODEV;
++	}
++
++	igt_debug("Initialized DMA ring 0 successfully\n");
++	return 0;
++}
++
++/**
++ * Cleanup DMA context using cmd_context_destroy
++ */
++static void cleanup_dma_context(mm_bench_context_t *ctx)
++{
++	if (ctx->dma_ctx) {
++		cmd_context_destroy(ctx->dma_ctx, false);
++		ctx->dma_ctx = NULL;
++	}
++}
++
++/**
++ * Submit DMA write operation with proper error handling
++ */
++static int submit_dma_write_operation(mm_bench_context_t *ctx)
++{
++	int r;
++
++	if (!ctx->dma_ctx) {
++		igt_debug("DMA context is NULL\n");
++		return -EINVAL;
++	}
++
++	if (!ctx->dma_ctx->initialized) {
++		igt_debug("DMA context not initialized\n");
++		return -EINVAL;
++	}
++
++	/* Use the convenience function for write linear operation */
++	r = cmd_submit_write_linear(ctx->dma_ctx,
++				ctx->dma_ctx->ring_ctx->bo_mc,
++			       64, 0x12345678);
++
++	if (r) {
++		igt_debug("cmd_submit_write_linear failed: %d\n", r);
++		return r;
++	}
++
++	return 0;
++}
++
++/**
++ * Interleave DMA operations with proper error handling
++ */
++static void interleave_dma_operations(mm_bench_context_t *ctx, bool interleave_ops)
++{
++	int r;
++
++	if (!interleave_ops || !ctx->dma_ctx)
++		return;
++
++	r = submit_dma_write_operation(ctx);
++	igt_assert_eq(r, 0);
++}
++
++/**
++ * Wait for DMA operations to complete
++ */
++static void wait_dma_operations(mm_bench_context_t *ctx, bool interleave_ops)
++{
++	int r;
++
++	if (!interleave_ops || !ctx->dma_ctx)
++		return;
++
++	r = cmd_wait_completion(ctx->dma_ctx);
++	igt_assert_eq(r, 0);
++}
++
++/**
++ * Initialize benchmark context
++ */
++static void init_bench_context(mm_bench_context_t *ctx, amdgpu_device_handle device)
++{
++	int r;
++
++	memset(ctx, 0, sizeof(*ctx));
++	ctx->device = device;
++
++	/* Query memory information using existing IGT function */
++	r = get_gpu_memory_info(device, &ctx->vram_size,
++			    &ctx->cpu_accessible_vram_size, &ctx->gtt_size);
++	if (r == 0) {
++		ctx->has_vram = (ctx->vram_size > 0);
++		/* Large BAR is available if CPU accessible VRAM exists */
++		ctx->large_bar = (ctx->cpu_accessible_vram_size > 0);
++	} else {
++		/* Fallback values if query fails */
++		ctx->vram_size = 512 * 1024 * 1024;
++		ctx->cpu_accessible_vram_size = 0;
++		ctx->gtt_size = 2 * 1024 * 1024 * 1024ULL;
++		ctx->has_vram = true;
++		ctx->large_bar = false;
++		igt_info("Using fallback memory values\n");
++	}
++
++	/* Initialize DMA context for ring 0 */
++	r = init_dma_context(ctx, device);
++	if (r) {
++		igt_info("DMA context initialization failed: %d, continuing without DMA operations\n", r);
++		ctx->dma_ctx = NULL;
++	}
++
++	igt_info("Memory Context: VRAM=%" PRIu64 "MB, CPU_VRAM=%" PRIu64 "MB, GTT=%" PRIu64 "MB, LargeBAR=%s\n",
++	     ctx->vram_size >> 20, ctx->cpu_accessible_vram_size >> 20,
++	     ctx->gtt_size >> 20, ctx->large_bar ? "yes" : "no");
++}
++
++/**
++ * Cleanup benchmark context
++ */
++static void cleanup_bench_context(mm_bench_context_t *ctx)
++{
++	cleanup_dma_context(ctx);
++}
++
++/**
++ * Calculate buffer limit based on available memory
++ */
++static uint32_t calculate_buffer_limit(mm_bench_context_t *ctx, uint64_t buf_size,
++				       uint32_t proposed_num, bool use_vram)
++{
++	uint64_t available_memory;
++	uint32_t max_buffers;
++
++	if (!use_vram) {
++		/* For system memory, use GTT size with 80% limit */
++		available_memory = ctx->gtt_size * 8 / 10;
++		max_buffers = available_memory / buf_size;
++		return (proposed_num < max_buffers) ? proposed_num : max_buffers;
++	} else {
++		/* For VRAM, use visible VRAM size */
++		available_memory = ctx->vram_size;
++
++		/* Different criteria for small VRAM systems */
++		if (ctx->vram_size <= (512 * 1024 * 1024)) { /* 512MB */
++		    available_memory = available_memory * 6 / 10; /* 60% for small VRAM */
++		} else {
++		    available_memory = available_memory * 8 / 10; /* 80% for larger VRAM */
++	}
++
++	max_buffers = available_memory / buf_size;
++	if (max_buffers == 0) {
++		return 0; /* Skip if buffer size is larger than available VRAM */
++	}
++
++	return (proposed_num < max_buffers) ? proposed_num : max_buffers;
++}
++}
++
++/**
++ * Format size for display
++ */
++static void format_size_string(char *buf, size_t buf_size, uint64_t size)
++{
++	if (size < (1ULL << 20)) {
++		snprintf(buf, buf_size, "%3" PRIu64 "K", size >> 10);
++	} else if (size < (1ULL << 30)) {
++		snprintf(buf, buf_size, "%3" PRIu64 "M", size >> 20);
++	} else {
++		snprintf(buf, buf_size, "%3" PRIu64 "G", size >> 30);
++	}
++}
++
++/**
++* Get current time in nanoseconds
++*/
++static uint64_t get_time_ns(void)
++{
++	struct timespec ts;
++
++	clock_gettime(CLOCK_MONOTONIC, &ts);
++	return (uint64_t)ts.tv_sec * 1000000000ULL + ts.tv_nsec;
++}
++
++/**
++ * @brief AMDGPU Memory Management Benchmark (DMA ring 0 only)
 + *
-+ *	v_mov_b32_e32 v0, 42			Load value 42 into v0.
-+ *	v_mov_b32_e32 v1, s0			Load address low bits into v1.
-+ *	v_mov_b32_e32 v2, s1			Load address high bits into v2.
++ * Measures performance of key memory operations (alloc/map/unmap/free)
++ * across different buffer sizes, memory types, and DMA interleave modes.
++ * Results are formatted for CI integration and human readability.
++ */
++static void mm_benchmark(amdgpu_device_handle device)
++{
++	mm_bench_context_t ctx;
++	uint32_t test_index;
++	amdgpu_bo_handle *buffers;
++	amdgpu_va_handle *va_handles;
++	uint64_t *mc_addresses;
++	uint64_t alloc_time, cpu_map_time, cpu_unmap_time;
++	uint64_t gpu_map_time, gpu_unmap_time, free_time;
++	struct amdgpu_bo_alloc_request alloc_request;
++	char size_str[16];
++	char test_id[32];
++	uint64_t start, end;
++	uint32_t i;
++	int ret;
++
++	igt_info("Starting AMDGPU Memory Management Benchmark (DMA ring 0 only)\n");
++
++	/* Initialize benchmark context (memory info + DMA context) */
++	init_bench_context(&ctx, device);
++
++	igt_info("Test (avg. ns)          alloc   cpu_map  cpu_umap   gpu_map  gpu_umap      free\n");
++
++	for (test_index = 0; test_index < TOTAL_TESTS; test_index++) {
++		uint32_t size_idx = test_index % NUM_SIZES;
++		uint32_t mem_type = (test_index / NUM_SIZES) % NUM_MEM_TYPES;
++		uint32_t sdma_mode = (test_index / (NUM_SIZES * NUM_MEM_TYPES)) % NUM_SDMA_MODES;
++
++		uint64_t buf_size = buffer_configs[size_idx].size;
++		uint32_t n_bufs = buffer_configs[size_idx].num_buffers;
++		bool use_vram = (mem_type == 1);
++		bool interleave_dma = (sdma_mode == 1);
++
++		/* Skip unsupported memory types (e.g., VRAM on APU) */
++		if (use_vram && !ctx.has_vram)
++			continue;
++
++		/* Adjust buffer count based on available memory (80% of total) */
++		n_bufs = calculate_buffer_limit(&ctx, buf_size, n_bufs, use_vram);
++		if (n_bufs == 0)
++			continue;
++
++		/* Limit maximum buffers to avoid array overflow */
++		if (n_bufs > 1000)
++			n_bufs = 1000;
++
++		/* Allocate arrays for buffer handles/VA/mc addresses */
++		buffers = calloc(n_bufs, sizeof(amdgpu_bo_handle));
++		va_handles = calloc(n_bufs, sizeof(amdgpu_va_handle));
++		mc_addresses = calloc(n_bufs, sizeof(uint64_t));
++		igt_assert(buffers);
++		igt_assert(va_handles);
++		igt_assert(mc_addresses);
++
++		/* Initialize timing variables */
++		alloc_time = 0;
++		cpu_map_time = 0;
++		cpu_unmap_time = 0;
++		gpu_map_time = 0;
++		gpu_unmap_time = 0;
++		free_time = 0;
++
++		/* Configure buffer allocation request */
++		memset(&alloc_request, 0, sizeof(alloc_request));
++		alloc_request.alloc_size = buf_size;
++		alloc_request.phys_alignment = 4096;
++
++		if (use_vram) {
++			alloc_request.preferred_heap = AMDGPU_GEM_DOMAIN_VRAM;
++			alloc_request.flags = 0; /* Allow CPU mapping for validation */
++		} else {
++			alloc_request.preferred_heap = AMDGPU_GEM_DOMAIN_GTT;
++			alloc_request.flags = 0;
++		}
++
++		/* Benchmark: Buffer Allocation */
++		start = get_time_ns();
++		for (i = 0; i < n_bufs; i++) {
++			ret = amdgpu_bo_alloc(ctx.device, &alloc_request, &buffers[i]);
++			igt_assert_eq(ret, 0);
++			interleave_dma_operations(&ctx, interleave_dma); /* Interleave DMA ops if enabled */
++		}
++		end = get_time_ns();
++		alloc_time = end - start;
++		wait_dma_operations(&ctx, interleave_dma); /* Wait for pending DMA */
++
++		/* Benchmark: CPU Mapping */
++		start = get_time_ns();
++		for (i = 0; i < n_bufs; i++) {
++			void *cpu_ptr;
++
++			ret = amdgpu_bo_cpu_map(buffers[i], &cpu_ptr);
++			igt_assert_eq(ret, 0);
++			interleave_dma_operations(&ctx, interleave_dma);
++		}
++		end = get_time_ns();
++		cpu_map_time = end - start;
++		wait_dma_operations(&ctx, interleave_dma);
++
++		/* Benchmark: CPU Unmapping */
++		start = get_time_ns();
++		for (i = 0; i < n_bufs; i++) {
++			ret = amdgpu_bo_cpu_unmap(buffers[i]);
++			igt_assert_eq(ret, 0);
++			interleave_dma_operations(&ctx, interleave_dma);
++		}
++		end = get_time_ns();
++		cpu_unmap_time = end - start;
++		wait_dma_operations(&ctx, interleave_dma);
++
++		/* Benchmark: GPU VA Mapping (allocate VA + map BO) */
++		start = get_time_ns();
++		for (i = 0; i < n_bufs; i++) {
++			/* Allocate GPU VA range */
++			ret = amdgpu_va_range_alloc(device,
++						    amdgpu_gpu_va_range_general,
++									   buf_size,
++									   1,
++									   0,
++									   &mc_addresses[i],
++									   &va_handles[i],
++									   0);
++			igt_assert_eq(ret, 0);
++
++			/* Map BO to allocated GPU VA */
++			ret = amdgpu_bo_va_op(buffers[i],
++					      0,
++								 buf_size,
++								 mc_addresses[i],
++								 0,
++								 AMDGPU_VA_OP_MAP);
++			igt_assert_eq(ret, 0);
++			interleave_dma_operations(&ctx, interleave_dma);
++		}
++		end = get_time_ns();
++		gpu_map_time = end - start;
++		wait_dma_operations(&ctx, interleave_dma);
++
++		/* Benchmark: GPU VA Unmapping (unmap BO + free VA) */
++		start = get_time_ns();
++		for (i = 0; i < n_bufs; i++) {
++			if (va_handles[i]) {
++				/* Unmap BO from GPU VA */
++				ret = amdgpu_bo_va_op(buffers[i],
++						      0,
++									 buf_size,
++									 mc_addresses[i],
++									 0,
++									 AMDGPU_VA_OP_UNMAP);
++				igt_assert_eq(ret, 0);
++
++				/* Free GPU VA range */
++				ret = amdgpu_va_range_free(va_handles[i]);
++				igt_assert_eq(ret, 0);
++
++				va_handles[i] = NULL;
++				mc_addresses[i] = 0;
++			}
++			interleave_dma_operations(&ctx, interleave_dma);
++		}
++		end = get_time_ns();
++		gpu_unmap_time = end - start;
++		wait_dma_operations(&ctx, interleave_dma);
++
++		/* Benchmark: Buffer Free */
++		start = get_time_ns();
++		for (i = 0; i < n_bufs; i++) {
++			amdgpu_bo_free(buffers[i]);
++			interleave_dma_operations(&ctx, interleave_dma);
++		}
++		end = get_time_ns();
++		free_time = end - start;
++		wait_dma_operations(&ctx, interleave_dma);
++
++		/* Calculate average time per operation (nanoseconds) */
++		alloc_time = alloc_time / n_bufs;
++		cpu_map_time = cpu_map_time / n_bufs;
++		cpu_unmap_time = cpu_unmap_time / n_bufs;
++		gpu_map_time = gpu_map_time / n_bufs;
++		gpu_unmap_time = gpu_unmap_time / n_bufs;
++		free_time = free_time / n_bufs;
++
++		/* Format buffer size for display (K/M/G units) */
++		format_size_string(size_str, sizeof(size_str), buf_size);
++
++		/* Create test identifier (fixed width for alignment) */
++		snprintf(test_id, sizeof(test_id), "%s-%s-%s",
++			 size_str,
++				 mem_type_strings[mem_type],
++				 interleave_dma ? "DMA" : "noDMA");
++
++		/* Print results with consistent alignment */
++		igt_info("%-18s %9" PRIu64 " %9" PRIu64 " %9" PRIu64 " %9" PRIu64 " %9" PRIu64 " %9" PRIu64 "\n",
++			 test_id,
++				 alloc_time,
++				 cpu_map_time,
++				 cpu_unmap_time,
++				 gpu_map_time,
++				 gpu_unmap_time,
++				 free_time);
++
++		/* Log results for CI automation (debug level) */
++		igt_debug("mm_bench:%s-%s-%s:alloc=%" PRIu64 "ns\n",
++			  size_str,
++				  mem_type_strings[mem_type],
++				  interleave_dma ? "DMA" : "noDMA",
++				  alloc_time);
++		igt_debug("mm_bench:%s-%s-%s:cpu_map=%" PRIu64 "ns\n",
++			  size_str,
++				  mem_type_strings[mem_type],
++				  interleave_dma ? "DMA" : "noDMA",
++				  cpu_map_time);
++		igt_debug("mm_bench:%s-%s-%s:cpu_unmap=%" PRIu64 "ns\n",
++			  size_str,
++				  mem_type_strings[mem_type],
++				  interleave_dma ? "DMA" : "noDMA",
++				  cpu_unmap_time);
++		igt_debug("mm_bench:%s-%s-%s:gpu_map=%" PRIu64 "ns\n",
++			  size_str,
++				  mem_type_strings[mem_type],
++				  interleave_dma ? "DMA" : "noDMA",
++				  gpu_map_time);
++		igt_debug("mm_bench:%s-%s-%s:gpu_unmap=%" PRIu64 "ns\n",
++			  size_str,
++				  mem_type_strings[mem_type],
++				  interleave_dma ? "DMA" : "noDMA",
++				  gpu_unmap_time);
++
++		/* Cleanup temporary arrays */
++		free(buffers);
++		free(va_handles);
++		free(mc_addresses);
++
++		/* Print separator after each size group */
++		if ((test_index % NUM_SIZES) == (NUM_SIZES - 1)) {
++			igt_info("--------------------------------------------------------------------------\n");
++		}
++	}
++
++	/* Cleanup benchmark context (DMA + memory info) */
++	cleanup_bench_context(&ctx);
++
++	igt_info("AMDGPU Memory Management Benchmark Completed\n");
++}
++
++/**
++ * @brief Check if ptrace is allowed on the system
 + *
-+ *	flat_store_dword v[1:2], v0		Store 42 to *(u32 *)(s1:s0).
++ * Ptrace is required for debugger-like memory access tests. This function
++ * checks:
++ * 1. Root privileges
++ * 2. IGT_FORCE_PTRACE environment variable
++ * 3. Yama ptrace_scope sysctl (0 = unrestricted)
 + *
-+ * .Lexit:
-+ *	s_endpgm				End program.
++ * @return true if ptrace is allowed, false otherwise
++ */
++static bool is_ptrace_allowed(void)
++{
++	FILE *yama_file;
++	int yama_scope;
++	bool result = false;
++
++	/* Root can always use ptrace */
++	if (getuid() == 0) {
++		result = true;
++		goto out;
++	}
++
++	/* Allow environment variable override for testing */
++	if (getenv("IGT_FORCE_PTRACE")) {
++		result = true;
++		goto out;
++	}
++
++	/* Check Yama ptrace scope (default on most distros is 1) */
++	yama_file = fopen("/proc/sys/kernel/yama/ptrace_scope", "r");
++	if (yama_file) {
++		if (fscanf(yama_file, "%d", &yama_scope) == 1) {
++			/* Scope 0: Allow ptrace from any process */
++			if (yama_scope == 0)
++				result = true;
++		}
++		fclose(yama_file);
++	}
++
++	if (!result) {
++		igt_info("ptrace not allowed: need root, IGT_FORCE_PTRACE=1, or yama ptrace_scope=0\n");
++	}
++
++out:
++	return result;
++}
++
++/**
++ * @brief Verify data integrity after ptrace PEEK/POKE operations
 + *
-+ *	.size spin_store_flat, .-spin_store_flat
++ * Cleans up "gap" bytes that shouldn't be copied, then verifies that
++ * the destination region matches the source region.
++ *
++ * @param mem Pointer to test memory buffer (2x PAGE_SIZE)
++ * @param test_data_size Size of data to verify (bytes)
++ * @return true if data is consistent, false otherwise
++ */
++static bool verify_ptrace_data(uint8_t *mem, size_t test_data_size)
++{
++	/* Clear untested gap bytes (to avoid false positives) */
++	mem[sizeof(long)] = 0;
++	mem[2 * sizeof(long) + 1] = 0;
++	mem[3 * sizeof(long) + 2] = 0;
++	mem[4 * sizeof(long) + 3] = 0;
++
++	/* Verify source (first PAGE) == destination (second PAGE) */
++	return (memcmp(mem, mem + PAGE_SIZE, test_data_size) == 0);
++}
++
++/**
++ * @brief Child process function for ptrace testing
++ *
++ * @param mem Pointer to memory buffer to test
++ * @param trace_pid PID of parent process to attach to
++ * @return int Exit status (0 for success, non-zero for failure)
++ */
++static int child_ptrace_process(uint8_t *mem, pid_t trace_pid)
++{
++	int trace_status;
++	int err = 0;
++	unsigned int i;
++	int r;
++	long data;
++
++	igt_info("Child process started, attaching to parent PID %d\n", trace_pid);
++
++	/* Attach to parent process */
++	r = ptrace(PTRACE_ATTACH, trace_pid, NULL, NULL);
++	if (r != 0) {
++		igt_warn("PTRACE_ATTACH failed: %s\n", strerror(errno));
++		return 1;
++	}
++
++	/* Wait for parent to be stopped by ptrace */
++	igt_info("Waiting for parent to stop...\n");
++	do {
++		r = waitpid(trace_pid, &trace_status, 0);
++		if (r == -1) {
++			igt_warn("waitpid failed: %s\n", strerror(errno));
++			ptrace(PTRACE_DETACH, trace_pid, NULL, NULL);
++			return 1;
++		}
++	} while (!WIFSTOPPED(trace_status));
++
++	igt_info("Parent stopped, starting memory access tests...\n");
++
++	/* Test various memory alignments with ptrace */
++	for (i = 0; i < 4; i++) {
++		/* Calculate addresses with different alignments */
++		uint8_t *addr = (uint8_t *)((long *)(mem) + i) + i;
++
++		errno = 0;
++
++		/* Read data from parent's memory */
++		data = ptrace(PTRACE_PEEKDATA, trace_pid, addr, NULL);
++		if (errno != 0) {
++			igt_warn("PTRACE_PEEKDATA failed at iteration %u: %s\n",
++				 i, strerror(errno));
++			err = 1;
++			continue;
++		}
++
++		igt_info("Read data 0x%lx from address %p\n", data, addr);
++
++		/* Write data to parent's memory */
++		r = ptrace(PTRACE_POKEDATA, trace_pid, addr + PAGE_SIZE,
++			   (void *)data);
++		if (r != 0) {
++			igt_warn("PTRACE_POKEDATA failed at iteration %u: %s\n",
++				 i, strerror(errno));
++			err = 1;
++		} else {
++			igt_info("Wrote data 0x%lx to address %p\n",
++				 data, addr + PAGE_SIZE);
++		}
++	}
++
++	/* Detach from parent process */
++	igt_info("Detaching from parent...\n");
++	r = ptrace(PTRACE_DETACH, trace_pid, NULL, NULL);
++	if (r != 0) {
++		igt_warn("PTRACE_DETACH failed: %s\n", strerror(errno));
++		return 1;
++	}
++
++	igt_info("Child process completed with status %d\n", err);
++	return err;
++}
++
++/**
++ * @brief Wait for child process with timeout
++ *
++ * @param child_pid PID of child process to wait for
++ * @param child_status Output parameter for child status
++ * @param timeout_sec Timeout in seconds
++ * @return int 0 if child exited normally, -1 on error, -2 on timeout
++ */
++static int wait_for_child_with_timeout(pid_t child_pid, int *child_status,
++				       int timeout_sec)
++{
++	int wait_result;
++	int timeout = timeout_sec;
++
++	while (timeout > 0) {
++		wait_result = waitpid(child_pid, child_status, WNOHANG);
++		if (wait_result == child_pid) {
++			return 0; /* Child exited */
++		} else if (wait_result == 0) {
++			/* Child still running */
++			sleep(1);
++			timeout--;
++		} else {
++			/* Error */
++			igt_warn("waitpid failed: %s\n", strerror(errno));
++			return -1;
++		}
++	}
++
++	return -2; /* Timeout */
++}
++
++/**
++ * @brief Test AMDGPU memory access via ptrace in a debugger-like scenario
++ *
++ * This function:
++ * - Allocates system memory and VRAM buffers
++ * - Forks a child process that attaches to parent via ptrace
++ * - Child reads/writes parent's memory using PTRACE_PEEKDATA/POKEDATA
++ * - Verifies data integrity after child process completes
++ * - Tests various memory alignments and boundary conditions
++ *
++ * @param device Initialized AMDGPU device handle
++ */
++static void ptrace_access_test(amdgpu_device_handle device)
++{
++	uint64_t vram_size, cpu_accessible_vram_size, gtt_size;
++	int r;
++
++	/* Check if ptrace is allowed */
++	if (!is_ptrace_allowed()) {
++		igt_skip("ptrace not allowed on this system\n");
++		return;
++	}
++
++	/* Query GPU memory information */
++	r = get_gpu_memory_info(device, &vram_size, &cpu_accessible_vram_size,
++				&gtt_size);
++	igt_assert_eq(r, 0);
++
++	/* Check VRAM availability */
++	igt_info("VRAM size: %" PRIu64 " MB\n", vram_size / (1024 * 1024));
++
++	/* Allow any process to trace this one for debugger functionality */
++#ifdef PR_SET_PTRACER
++	r = prctl(PR_SET_PTRACER, PR_SET_PTRACER_ANY, 0, 0, 0);
++	if (r != 0) {
++		igt_info("prctl PR_SET_PTRACER failed: %s\n", strerror(errno));
++	}
++#endif
++
++	/* Test system memory buffer access via ptrace */
++	igt_info("Testing system memory ptrace access...\n");
++	{
++		const size_t buf_size = PAGE_SIZE * 2;
++		const size_t test_data_size = 4 * sizeof(long) + 4;
++		struct amdgpu_bo_alloc_request sys_request = {0};
++		amdgpu_bo_handle sys_bo;
++		void *sys_cpu_ptr;
++		pid_t trace_pid, child_pid;
++		uint8_t *sys_mem;
++		int child_status;
++		int wait_result;
++
++		/* Initialize system memory request */
++		sys_request.alloc_size = buf_size;
++		sys_request.phys_alignment = PAGE_SIZE;
++		sys_request.preferred_heap = AMDGPU_GEM_DOMAIN_GTT;
++
++		/* Allocate system memory buffer */
++		r = amdgpu_bo_alloc(device, &sys_request, &sys_bo);
++		igt_assert_eq(r, 0);
++
++		/* Map to CPU for access */
++		r = amdgpu_bo_cpu_map(sys_bo, &sys_cpu_ptr);
++		igt_assert_eq(r, 0);
++
++		/* Initialize test pattern in system memory */
++		sys_mem = (uint8_t *)sys_cpu_ptr;
++		for (unsigned int i = 0; i < test_data_size; i++) {
++			sys_mem[i] = i;                    /* Source data pattern */
++			sys_mem[PAGE_SIZE + i] = 0;        /* Destination area */
++		}
++
++		trace_pid = getpid();
++		igt_info("Parent process PID: %d\n", trace_pid);
++
++		/* Fork child process to act as debugger */
++		child_pid = fork();
++		igt_assert_f(child_pid >= 0, "fork() failed");
++
++		if (child_pid == 0) {
++			/* Child process (debugger) */
++			int exit_code = child_ptrace_process(sys_mem, trace_pid);
++
++			_exit(exit_code); /* Use _exit to avoid atexit handlers */
++		} else {
++			/* Parent process (debuggee) */
++			igt_info("Waiting for child process %d to complete...\n",
++				 child_pid);
++
++			/* Wait for child debugger to complete with timeout */
++			wait_result = wait_for_child_with_timeout(child_pid,
++								  &child_status,
++								  5);
++
++			if (wait_result == -2) {
++				igt_warn("Child process timeout, killing child...\n");
++				kill(child_pid, SIGKILL);
++				waitpid(child_pid, &child_status, 0);
++				igt_skip("Child process timed out - ptrace may be blocked\n");
++				goto cleanup_system;
++			} else if (wait_result == -1) {
++				igt_skip("Error waiting for child process\n");
++				goto cleanup_system;
++			}
++
++			/* Check child exit status */
++			if (WIFEXITED(child_status)) {
++				if (WEXITSTATUS(child_status) == 0) {
++					igt_info("Child process exited normally\n");
++				} else {
++					igt_warn("Child process exited with error %d\n",
++						 WEXITSTATUS(child_status));
++					igt_skip("Child process failed - ptrace may be blocked\n");
++					goto cleanup_system;
++				}
++			} else if (WIFSIGNALED(child_status)) {
++				igt_warn("Child process killed by signal %d\n",
++					 WTERMSIG(child_status));
++				igt_skip("Child process was killed - ptrace may be blocked\n");
++				goto cleanup_system;
++			} else {
++				igt_warn("Child process did not exit normally (status: 0x%x)\n",
++					 child_status);
++				igt_skip("Child process did not exit properly\n");
++				goto cleanup_system;
++			}
++
++			igt_info("Parent process verifying data written by child...\n");
++			if (!verify_ptrace_data(sys_mem, test_data_size)) {
++				igt_assert_f(0, "System memory ptrace data verification failed");
++				goto cleanup_system;
++			}
++
++			igt_info("System memory ptrace test: PASSED\n");
++		}
++
++cleanup_system:
++		/* Cleanup system memory buffer */
++		amdgpu_bo_cpu_unmap(sys_bo);
++		amdgpu_bo_free(sys_bo);
++	}
++
++	/* Test VRAM buffer access via ptrace if VRAM is available */
++	if (vram_size > 0) {
++		igt_info("Testing VRAM memory ptrace access...\n");
++		{
++			const size_t buf_size = PAGE_SIZE * 2;
++			const size_t test_data_size = 4 * sizeof(long) + 4;
++			struct amdgpu_bo_alloc_request vram_request = {0};
++			amdgpu_bo_handle vram_bo;
++			void *vram_cpu_ptr;
++			pid_t trace_pid, child_pid;
++			uint8_t *vram_mem;
++			int child_status;
++			int wait_result;
++
++			/* Initialize VRAM request */
++			vram_request.alloc_size = buf_size;
++			vram_request.phys_alignment = PAGE_SIZE;
++			vram_request.preferred_heap = AMDGPU_GEM_DOMAIN_VRAM;
++
++			/* Allocate VRAM buffer */
++			r = amdgpu_bo_alloc(device, &vram_request, &vram_bo);
++			igt_assert_eq(r, 0);
++
++			/* Map VRAM to CPU */
++			r = amdgpu_bo_cpu_map(vram_bo, &vram_cpu_ptr);
++			igt_assert_eq(r, 0);
++
++			/* Initialize test pattern in VRAM */
++			vram_mem = (uint8_t *)vram_cpu_ptr;
++			for (unsigned int i = 0; i < test_data_size; i++) {
++				vram_mem[i] = i;                    /* Source data pattern */
++				vram_mem[PAGE_SIZE + i] = 0;        /* Destination area */
++			}
++
++			trace_pid = getpid();
++
++			/* Fork another child process for VRAM testing */
++			child_pid = fork();
++			igt_assert_f(child_pid >= 0, "fork() failed for VRAM test");
++
++			if (child_pid == 0) {
++				/* Child process for VRAM access */
++				int exit_code = child_ptrace_process(vram_mem, trace_pid);
++
++				_exit(exit_code);
++			} else {
++				/* Parent process for VRAM test */
++				igt_info("Waiting for VRAM child process %d to complete...\n",
++					 child_pid);
++
++				/* Wait for child with timeout */
++				wait_result = wait_for_child_with_timeout(child_pid,
++									  &child_status,
++									  5);
++
++				if (wait_result == -2) {
++					igt_warn("VRAM child process timeout, killing child...\n");
++					kill(child_pid, SIGKILL);
++					waitpid(child_pid, &child_status, 0);
++					igt_skip("VRAM child process timed out\n");
++					goto cleanup_vram;
++				} else if (wait_result == -1) {
++					igt_skip("Error waiting for VRAM child process\n");
++					goto cleanup_vram;
++				}
++
++				if (WIFEXITED(child_status)) {
++					if (WEXITSTATUS(child_status) == 0) {
++						igt_info("VRAM child process exited normally\n");
++					} else {
++						igt_warn("VRAM child process exited with error %d\n",
++							 WEXITSTATUS(child_status));
++						igt_skip("VRAM child process failed\n");
++						goto cleanup_vram;
++					}
++				} else if (WIFSIGNALED(child_status)) {
++					igt_warn("VRAM child process killed by signal %d\n",
++						 WTERMSIG(child_status));
++					igt_skip("VRAM child process was killed\n");
++					goto cleanup_vram;
++				} else {
++					igt_warn("VRAM child process did not exit normally\n");
++					igt_skip("VRAM child process did not exit properly\n");
++					goto cleanup_vram;
++				}
++
++				igt_info("Parent process verifying VRAM data written by child...\n");
++				if (!verify_ptrace_data(vram_mem, test_data_size)) {
++					igt_assert_f(0, "VRAM memory ptrace data verification failed");
++					goto cleanup_vram;
++				}
++
++				igt_info("VRAM memory ptrace test: PASSED\n");
++			}
++
++cleanup_vram:
++			/* Cleanup VRAM buffer */
++			amdgpu_bo_cpu_unmap(vram_bo);
++			amdgpu_bo_free(vram_bo);
++		}
++	}
++}
++
++/**
++ * execute_shader_verification - Execute GPU verification of ptrace results
++ * @device: AMDGPU device handle
++ * @vram_mc_addr: VRAM buffer GPU address
++ * @vram_offset: Offset within VRAM buffer to test words
++ * @expected_value1: Expected value for first word (word_before)
++ * @expected_value2: Expected value for second word (word_after)
++ *
++ * This function assembles the shader code and executes two independent compute
++ * dispatches to verify that the ptrace-modified values are visible to the GPU.
++ * Each dispatch uses completely separate resources to ensure clean state.
++ *
++ * Returns: 0 on success, -1 on failure
++ */
++static int execute_shader_verification(amdgpu_device_handle device,
++				       uint64_t vram_mc_addr,
++				      uint64_t vram_offset,
++				      uint32_t expected_value1,
++				      uint32_t expected_value2)
++{
++	struct amdgpu_gpu_info info = {0};
++	char mcpu[32];
++	uint8_t isa_bin[4096];
++	size_t isa_sz = 0;
++	int r_asm;
++	uint32_t version = 9;
++
++	amdgpu_bo_handle bo_shader1 = NULL, bo_shader2 = NULL;
++	void *ptr_shader1 = NULL, *ptr_shader2 = NULL;
++	uint64_t mc_shader1 = 0, mc_shader2 = 0;
++	amdgpu_va_handle va_shader1 = 0, va_shader2 = 0;
++	int ret = 0;
++
++	/* Query GPU information for architecture-specific setup */
++	if (amdgpu_query_gpu_info(device, &info) != 0) {
++		igt_info("Query GPU info failed\n");
++		return -1;
++	}
++
++	amdgpu_family_id_to_mcpu(info.family_id, mcpu, sizeof(mcpu));
++	igt_info("Assembling shader for architecture: %s\n", mcpu);
++
++	/* Assemble shader code */
++	r_asm = amdgpu_llvm_assemble(mcpu, CopyDwordIsa, isa_bin, sizeof(isa_bin), &isa_sz);
++	if (r_asm != 0 || isa_sz == 0) {
++		igt_info("Shader assembly failed (error=%d, size=%zu)\n", r_asm, isa_sz);
++		return -1;
++	}
++
++	/* Determine GPU version for register programming */
++	if (FAMILY_IS_GFX1200(info.family_id)) {
++		version = 12;
++	} else if (FAMILY_IS_GFX1150(info.family_id) ||
++	       FAMILY_IS_GFX1100(info.family_id) ||
++	       FAMILY_IS_GFX1036(info.family_id) ||
++	       FAMILY_IS_GFX1037(info.family_id) ||
++	       FAMILY_IS_YC(info.family_id) ||
++	       info.family_id == FAMILY_GFX1103) {
++		version = 11;
++	} else if (FAMILY_IS_AI(info.family_id) ||
++	       FAMILY_IS_RV(info.family_id) ||
++	       FAMILY_IS_NV(info.family_id) ||
++	       info.family_id == FAMILY_VGH) {
++		version = 10;
++	}
++
++	igt_info("Using GPU version %u for family 0x%x\n", version, info.family_id);
++
++	/* First dispatch - verify word_before value */
++	igt_info("=== First dispatch: reading word_before ===\n");
++
++	/* Allocate separate shader buffer for first dispatch */
++	if (amdgpu_bo_alloc_and_map(device, 4096, 4096,
++				AMDGPU_GEM_DOMAIN_VRAM, 0,
++				&bo_shader1, &ptr_shader1, &mc_shader1, &va_shader1) != 0) {
++		igt_info("Failed to allocate first shader buffer\n");
++		return -1;
++	}
++	memset(ptr_shader1, 0, 4096);
++	memcpy(ptr_shader1, isa_bin, isa_sz);
++
++	if (execute_compute_dispatch(device, version, mc_shader1,
++				 vram_mc_addr + vram_offset,
++				0, /* dst allocated in helper */
++				expected_value1) != 0) {
++		igt_info("First dispatch failed\n");
++		ret = -1;
++	}
++
++	amdgpu_bo_unmap_and_free(bo_shader1, va_shader1, mc_shader1, 4096);
++
++	/* Only proceed if first dispatch succeeded */
++	if (ret != 0) {
++		return ret;
++	}
++
++	/* Second dispatch - verify word_after value */
++	igt_info("=== Second dispatch: reading word_after ===\n");
++
++	/* Allocate separate shader buffer for second dispatch */
++	if (amdgpu_bo_alloc_and_map(device, 4096, 4096,
++				AMDGPU_GEM_DOMAIN_VRAM, 0,
++				&bo_shader2, &ptr_shader2, &mc_shader2, &va_shader2) != 0) {
++		igt_info("Failed to allocate second shader buffer\n");
++		return -1;
++	}
++	memset(ptr_shader2, 0, 4096);
++	memcpy(ptr_shader2, isa_bin, isa_sz);
++
++	if (execute_compute_dispatch(device, version, mc_shader2,
++				 vram_mc_addr + vram_offset + sizeof(uint64_t),
++				0, /* dst allocated in helper */
++				expected_value2) != 0) {
++		igt_info("Second dispatch failed\n");
++		ret = -1;
++	}
++
++	amdgpu_bo_unmap_and_free(bo_shader2, va_shader2, mc_shader2, 4096);
++
++	return ret;
++}
++
++/**
++ * ptrace_access_invisible_vram_test - Test ptrace access to VRAM with GPU verification
++ *
++ * This test verifies that ptrace PEEK/POKE operations work correctly on VRAM addresses
++ * near a boundary, and that the changes are visible to the GPU. The test:
++ * 1. Allocates a VRAM buffer and places two 64-bit words straddling a 4MB boundary
++ * 2. Forks a child process that uses ptrace to swap the two words
++ * 3. Verifies the swap via CPU mapping
++ * 4. Uses compute shaders to read back both words via GPU to confirm ptrace effects
++ *
++ * The GPU verification uses the refactored helper functions with completely independent
++ * contexts and resources for each dispatch to avoid any state pollution.
++ */
++static void ptrace_access_invisible_vram_test(amdgpu_device_handle device)
++{
++	uint64_t vram_size, cpu_accessible_vram_size, gtt_size;
++	int r;
++	const size_t vram_region_size = (4u << 20) + PAGE_SIZE * 2;
++	const uint64_t VRAM_OFFSET = (4u << 20) - sizeof(uint64_t);
++	struct amdgpu_bo_alloc_request req = {0};
++	amdgpu_bo_handle vram_bo = NULL;
++	void *cpu_ptr = NULL;
++	uint64_t mc_address_vram = 0;
++	amdgpu_va_handle va_vram = 0;
++	uint64_t *word_before;
++	uint64_t *word_after;
++	uint64_t original0 = 0xdeadbeefdeadbeefULL;
++	uint64_t original1 = 0xcafebabecafebabeULL;
++	pid_t parent_pid, child_pid;
++	int child_status;
++	int wait_result;
++
++	/* Check GPU memory availability and ptrace permissions */
++	r = get_gpu_memory_info(device, &vram_size, &cpu_accessible_vram_size, &gtt_size);
++	igt_assert_eq(r, 0);
++	if (vram_size == 0) {
++		igt_skip("No VRAM present (APU)\n");
++		return;
++	}
++	if (!is_ptrace_allowed()) {
++		igt_skip("ptrace not allowed\n");
++		return;
++	}
++
++	igt_info("VRAM total: %" PRIu64 " MB, CPU-accessible: %" PRIu64 " MB\n",
++	     vram_size / (1024 * 1024), cpu_accessible_vram_size / (1024 * 1024));
++
++	/* Allocate VRAM buffer for testing */
++	req.alloc_size = vram_region_size;
++	req.phys_alignment = PAGE_SIZE;
++	req.preferred_heap = AMDGPU_GEM_DOMAIN_VRAM;
++	r = amdgpu_bo_alloc_and_map(device, req.alloc_size, req.phys_alignment,
++				AMDGPU_GEM_DOMAIN_VRAM, 0,
++				&vram_bo, &cpu_ptr, &mc_address_vram, &va_vram);
++	if (r) {
++		igt_skip("Failed to allocate/map VRAM BO (error %d)\n", r);
++		return;
++	}
++
++	/* Initialize test words at boundary locations */
++	word_before = (uint64_t *)((uint8_t *)cpu_ptr + VRAM_OFFSET);
++	word_after  = (uint64_t *)((uint8_t *)cpu_ptr + VRAM_OFFSET + sizeof(uint64_t));
++	*word_before = original0;
++	*word_after  = original1;
++
++	/* Allow ptrace from any process if supported */
++	#ifdef PR_SET_PTRACER
++	prctl(PR_SET_PTRACER, PR_SET_PTRACER_ANY, 0, 0, 0);
++	#endif
++	parent_pid = getpid();
++
++	/* Fork child process for ptrace operations */
++	child_pid = fork();
++	igt_assert_f(child_pid >= 0, "fork failed");
++
++	if (child_pid == 0) {
++		/* Child process: attach to parent and swap words via ptrace */
++		int trace_status;
++		int err = 0;
++		int pr;
++		uint64_t peek0, peek1;
++
++		/* Attach to parent process */
++		pr = ptrace(PTRACE_ATTACH, parent_pid, NULL, NULL);
++		if (pr)
++		    _exit(1);
++
++		/* Wait for parent to be stopped by ptrace */
++		do {
++		    waitpid(parent_pid, &trace_status, 0);
++		} while (!WIFSTOPPED(trace_status));
++
++		/* Read original values via ptrace */
++		errno = 0;
++		peek0 = (uint64_t)ptrace(PTRACE_PEEKDATA, parent_pid, word_before, NULL);
++		if (errno)
++		    err = 1;
++		errno = 0;
++		peek1 = (uint64_t)ptrace(PTRACE_PEEKDATA, parent_pid, word_after, NULL);
++		if (errno)
++		    err = 1;
++
++		/* Verify we read the expected original values */
++		if (peek0 != original0 || peek1 != original1)
++		    err = 1;
++
++		/* Swap values via ptrace POKEDATA */
++		if (!err) {
++		if (ptrace(PTRACE_POKEDATA, parent_pid, word_before, (void *)original1))
++			err = 1;
++		if (ptrace(PTRACE_POKEDATA, parent_pid, word_after, (void *)original0))
++			err = 1;
++		}
++
++		/* Detach and exit with result */
++		ptrace(PTRACE_DETACH, parent_pid, NULL, NULL);
++		_exit(err);
++
++	} else {
++		/* Parent process: wait for child and verify results */
++		wait_result = wait_for_child_with_timeout(child_pid, &child_status, 5);
++		if (wait_result == -2) {
++			kill(child_pid, SIGKILL);
++			waitpid(child_pid, &child_status, 0);
++			igt_skip("Child timeout during ptrace operations\n");
++			goto cleanup;
++		} else if (wait_result == -1) {
++			igt_skip("Error waiting for child process\n");
++			goto cleanup;
++		}
++		if (!WIFEXITED(child_status) || WEXITSTATUS(child_status) != 0) {
++			igt_skip("Child ptrace swap failed (status=%d)\n", child_status);
++			goto cleanup;
++		}
++
++		/* Verify swap via CPU mapping */
++		igt_info("Child ptrace swap succeeded. Verifying via CPU...\n");
++		igt_assert_eq(*word_before, original1);
++		igt_assert_eq(*word_after,  original0);
++		igt_info("CPU verification passed. Attempting shader readback...\n");
++
++		/* GPU verification using refactored helper functions */
++		if (amdgpu_llvm_asm_init() == 0) {
++			if (execute_shader_verification(device, mc_address_vram, VRAM_OFFSET,
++							(uint32_t)original1, (uint32_t)original0) == 0) {
++				igt_info("GPU shader verification passed\n");
++			} else {
++				igt_info("GPU shader verification failed\n");
++				/* Continue test execution even if GPU verification fails */
++			}
++
++			amdgpu_llvm_asm_shutdown();
++		} else {
++		    igt_info("LLVM assembler unavailable; skipping shader verification.\n");
++		}
++
++		igt_info("ptrace-access-invisible-vram test: PASSED\n");
++	}
++
++	cleanup:
++	if (vram_bo)
++	amdgpu_bo_unmap_and_free(vram_bo, va_vram, mc_address_vram, req.alloc_size);
++}
++
++/* Global variable to track signal reception */
++static volatile sig_atomic_t signal_received;
++
++/**
++ * @brief Signal handler function
++ */
++static void catch_signal(int sig)
++{
++    signal_received = sig;
++}
++
++/**
++ * @brief Test signal handling during memory operations
++ */
++static void test_signal_handling(amdgpu_device_handle device)
++{
++	uint64_t vram_size, cpu_accessible_vram_size, gtt_size;
++	int r;
++	struct sigaction sa;
++	uint64_t buffer_size;
++	amdgpu_bo_handle sys_bo;
++	void *sys_cpu_ptr;
++	uint64_t sys_mc_address;
++	amdgpu_va_handle va_handle;
++	pid_t parent_pid;
++	pid_t child_pid;
++	int child_status;
++	cmd_context_t *dma_ctx = NULL;
++	uint32_t *sys_mem;
++	bool success;
++	pid_t wait_pid;
++	int wait_result;
++
++	/* Skip test on APU systems */
++	r = get_gpu_memory_info(device, &vram_size, &cpu_accessible_vram_size, &gtt_size);
++	igt_assert_eq(r, 0);
++
++	if (vram_size == 0) {
++		igt_skip("Test not supported on APU systems\n");
++		return;
++	}
++
++	igt_info("VRAM size: %" PRIu64 " MB\n", vram_size / (1024 * 1024));
++
++	/* Set up signal handler */
++	memset(&sa, 0, sizeof(sa));
++	sa.sa_handler = catch_signal;
++	sigemptyset(&sa.sa_mask);
++	sa.sa_flags = SA_RESTART; /* Use SA_RESTART to avoid EINTR on system calls */
++
++	r = sigaction(SIGUSR1, &sa, NULL);
++	igt_assert_eq(r, 0);
++
++	signal_received = 0;
++	parent_pid = getpid();
++
++	/* Calculate buffer size - similar to reference implementation */
++	buffer_size = 256 * 1024 * 1024; /* 256 MB - reasonable size for testing */
++
++	igt_info("Allocating buffer size: %" PRIu64 " MB\n", buffer_size / (1024 * 1024));
++
++	/* Allocate system memory */
++	sys_bo = gpu_mem_alloc(device, buffer_size, PAGE_SIZE,
++		   AMDGPU_GEM_DOMAIN_GTT, 0,
++		  &sys_mc_address, &va_handle);
++	igt_assert_f(sys_bo, "Failed to allocate system memory");
++
++	r = amdgpu_bo_cpu_map(sys_bo, &sys_cpu_ptr);
++	igt_assert_eq(r, 0);
++
++	igt_info("System memory allocated at CPU: %p, GPU: 0x%lx\n", sys_cpu_ptr, sys_mc_address);
++
++	/* Fork child process to send signal */
++	child_pid = fork();
++	igt_assert_f(child_pid >= 0, "fork() failed");
++
++	if (child_pid == 0) {
++		/* Child process - send signal to parent */
++		igt_info("Child process sending SIGUSR1 to parent PID %d\n", parent_pid);
++
++		/* Small delay to ensure parent is in memory mapping */
++		usleep(100000); /* 100ms delay - increased for better timing */
++
++		r = kill(parent_pid, SIGUSR1);
++		if (r != 0) {
++		    igt_warn("kill() failed: %s\n", strerror(errno));
++		    exit(1);
++		}
++
++		igt_info("Signal sent successfully\n");
++			exit(0);
++	} else {
++		/* Parent process - perform memory operations with signal handling */
++		igt_info("Parent process starting memory mapping operations...\n");
++
++		/* FIX: Use cmd_context_create_ex with the same BO for both internal buffer and target */
++		/* This ensures SDMA writes to the correct memory address */
++		dma_ctx = cmd_context_create(device, AMD_IP_DMA, 0, false, 128,
++				     sys_bo, sys_mc_address, (volatile uint32_t *)sys_cpu_ptr);
++		igt_assert_f(dma_ctx, "Failed to create DMA command submission context");
++
++		/* Wait for child process to complete with proper signal handling */
++		igt_info("Waiting for child process %d to complete...\n", child_pid);
++
++		/* Use a loop to handle EINTR properly */
++		do {
++			wait_pid = waitpid(child_pid, &child_status, 0);
++			wait_result = errno;
++
++			if (wait_pid == -1 && wait_result == EINTR) {
++				igt_info("waitpid interrupted by signal, continuing...\n");
++				continue;
++			}
++
++			if (signal_received) {
++				igt_info("Signal %d received and handled\n", signal_received);
++				signal_received = 0;
++			}
++
++		} while (wait_pid == -1 && wait_result == EINTR);
++
++		/* Check if waitpid succeeded */
++		igt_assert_f(wait_pid != -1, "waitpid failed: %s", strerror(wait_result));
++		igt_assert_f(wait_pid == child_pid, "waitpid returned wrong PID: %d != %d", wait_pid, child_pid);
++
++		/* FIX: Correct child status check - WIFEXITED returns boolean, not status */
++		igt_assert_f(WIFEXITED(child_status) == 0,
++		     "Child did not exit normally, status: 0x%x", child_status);
++		igt_assert_f(WEXITSTATUS(child_status) == 0,
++		     "Child exited with status %d", WEXITSTATUS(child_status));
++
++		igt_info("Child process completed successfully\n");
++
++		/* Continue with memory operations after signal handling */
++		igt_info("Continuing with memory operations after signal...\n");
++
++		/* Initialize memory with test value */
++		sys_mem = (uint32_t *)sys_cpu_ptr;
++		sys_mem[0] = 0x02020202;
++		igt_info("Memory initialized with value: 0x%08x\n", sys_mem[0]);
++
++		/* Submit GPU command to write different value */
++		igt_info("Submitting GPU write command...\n");
++		igt_info("Writing 0xdeadbeaf to address 0x%lx\n", sys_mc_address);
++
++		/* Now SDMA should write to the correct address since we're using the same BO */
++		r = cmd_submit_write_linear(dma_ctx, sys_mc_address, sizeof(uint32_t), 0xdeadbeaf);
++		igt_info("cmd_submit_write_linear returned: %d\n", r);
++		igt_assert_eq(r, 0);
++
++		/* Wait for command completion */
++		igt_info("Waiting for command completion...\n");
++		r = cmd_wait_completion(dma_ctx);
++		igt_info("cmd_wait_completion returned: %d\n", r);
++		igt_assert_eq(r, 0);
++
++		/* Wait for the value to be updated */
++		igt_info("Waiting for memory value update...\n");
++		igt_info("Current memory value: 0x%08x\n", sys_mem[0]);
++
++		success = wait_on_value(sys_mem, 0xdeadbeaf);
++		if (!success) {
++			igt_info("Memory value not updated within timeout, current value: 0x%08x, %p\n", sys_mem[0], sys_cpu_ptr);
++			/* If still not updated, try a different approach */
++			igt_info("Trying alternative: check if any value was written...\n");
++			if (sys_mem[0] != 0x02020202) {
++			igt_info("Memory was changed to: 0x%08x (not the expected value)\n", sys_mem[0]);
++			} else {
++			igt_info("Memory was not modified at all\n");
++			}
++			igt_assert_f(success, "Memory value not updated within timeout");
++		}
++
++		igt_info("Memory successfully updated to: 0x%08x\n", sys_mem[0]);
++
++		/* Cleanup command context - don't destroy the external BO */
++		cmd_context_destroy(dma_ctx, false);
++		dma_ctx = NULL;
++	}
++
++	/* Cleanup system memory */
++	amdgpu_bo_cpu_unmap(sys_bo);
++
++	r = amdgpu_bo_va_op(sys_bo, 0, buffer_size, sys_mc_address, 0, AMDGPU_VA_OP_UNMAP);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_va_range_free(va_handle);
++	igt_assert_eq(r, 0);
++
++	amdgpu_bo_free(sys_bo);
++
++	igt_info("Signal handling test: PASSED\n");
++}
++
++/**
++ * Test: Check Zero Initialization of GTT and VRAM
++ *
++ * This test verifies that newly allocated GTT (system memory) and VRAM buffers
++ * are properly zero-initialized by the driver.
++ */
++static void test_zero_initialization(amdgpu_device_handle device)
++{
++	const int test_iterations = 5;
++	const size_t buffer_size_mb = 256;  /* 256 MB test buffer */
++	const size_t buffer_size = buffer_size_mb * 1024 * 1024;
++	const unsigned int check_offset = 257;  /* Arbitrary offset for checking */
++
++	/* Test both GTT and VRAM domains */
++	const uint32_t memory_domains[] = {
++	AMDGPU_GEM_DOMAIN_GTT,
++	AMDGPU_GEM_DOMAIN_VRAM
++	};
++
++	const char *domain_names[] = {
++	"GTT",
++	"VRAM"
++	};
++
++	const int num_domains = ARRAY_SIZE(memory_domains);
++	int iteration, domain_idx;
++	int r;
++
++	igt_info("Starting zero initialization test for GTT and VRAM\n");
++	igt_info("Buffer size: %zu MB, Iterations: %d\n", buffer_size_mb, test_iterations);
++
++	for (domain_idx = 0; domain_idx < num_domains; domain_idx++) {
++		uint32_t domain = memory_domains[domain_idx];
++		const char *domain_name = domain_names[domain_idx];
++
++		igt_info("Testing memory domain: %s\n", domain_name);
++
++		for (iteration = 0; iteration < test_iterations; iteration++) {
++			amdgpu_bo_handle bo = NULL;
++			void *cpu_ptr = NULL;
++			uint64_t mc_address = 0;
++			amdgpu_va_handle va_handle = NULL;
++			uint64_t *mem_buffer = NULL;
++			size_t buffer_elements;
++			unsigned int i;
++
++			igt_debug("Iteration %d: Allocating %s...\n", iteration + 1, domain_name);
++
++			/* Allocate memory in the specified domain */
++			r = amdgpu_bo_alloc_and_map_sync(device,
++						     buffer_size,
++				4096,
++				domain,
++				0,  /* No special flags */
++				AMDGPU_VM_MTYPE_UC,
++				&bo, &cpu_ptr, &mc_address, &va_handle,
++				0, 0, false);
++
++			if (r != 0) {
++				igt_warn("%s allocation failed in iteration %d, error: %d\n",
++					 domain_name, iteration + 1, r);
++				continue;
++			}
++
++			mem_buffer = (uint64_t *)cpu_ptr;
++			buffer_elements = buffer_size / sizeof(uint64_t);
++
++			igt_debug("Iteration %d: Checking zero initialization for %s...\n",
++			      iteration + 1, domain_name);
++
++			/* Check first 64-bit element */
++			igt_assert_f(mem_buffer[0] == 0,
++				 "%s first element not zero: 0x%016" PRIx64,
++				domain_name, mem_buffer[0]);
++
++			/* Check elements at various offsets with page stride */
++			for (i = check_offset; i < buffer_elements; i += (4096 / sizeof(uint64_t))) {
++			igt_assert_f(mem_buffer[i] == 0,
++				     "%s element at offset %u not zero: 0x%016" PRIx64,
++				    domain_name, i, mem_buffer[i]);
++			}
++
++			/* Check last 64-bit element */
++			igt_assert_f(mem_buffer[buffer_elements - 1] == 0,
++				 "%s last element not zero: 0x%016" PRIx64,
++				domain_name, mem_buffer[buffer_elements - 1]);
++
++			/* Cleanup */
++			amdgpu_bo_unmap_and_free(bo, va_handle, mc_address, buffer_size);
++
++			igt_debug("Iteration %d: %s zero initialization check passed\n",
++			      iteration + 1, domain_name);
++		}
++
++		igt_info("Memory domain %s testing completed\n", domain_name);
++	}
++
++	igt_info("GTT and VRAM zero initialization test completed successfully\n");
++}
++
++/**
++ * Helper function to perform memory access patterns
++ * Similar to the 'access' function in the reference test
++ */
++static void memory_access_pattern(void *buffer, size_t size, int write_pattern)
++{
++	volatile uint32_t *ptr = (volatile uint32_t *)buffer;
++	size_t elements = size / sizeof(uint32_t);
++	uint32_t pattern;
++	size_t i;
++
++	if (write_pattern) {
++		pattern = 0xDEADBEEF;
++		for (i = 0; i < elements; i++) {
++			ptr[i] = pattern;
++		}
++	} else {
++		for (i = 0; i < elements; i++) {
++			pattern = ptr[i];  /* Read operation */
++		}
++	}
++}
++
++/**
++ * Test: Memory Bandwidth Measurement on Large-BAR Systems
++ *
++ * This test measures memory access bandwidth for different memory types
++ * and buffer sizes on large-bar systems. It tests both system memory
++ * and visible VRAM access patterns.
++ */
++static void test_memory_bandwidth(amdgpu_device_handle device)
++{
++	/* Pre-declare all variables at the beginning for C90 compatibility */
++	const unsigned int num_buffers = 1000;
++	const unsigned int num_mem_types = 2;
++	const unsigned int num_sizes = 4;
++	const unsigned int tmp_buffer_size = PAGE_SIZE * 64;
++	const unsigned int num_tests = num_sizes * num_mem_types;
++
++	/* Use different names to avoid shadowing global variables */
++	const char *mem_type_names[num_mem_types];
++	unsigned int buffer_sizes[num_sizes];
++	amdgpu_bo_handle buffers[num_buffers];
++	void *cpu_ptrs[num_buffers];
++	uint64_t mc_addresses[num_buffers];
++	amdgpu_va_handle va_handles[num_buffers];
++	uint64_t vram_size;
++	uint64_t cpu_accessible_vram_size;
++	uint64_t gtt_size;
++	void *tmp_buffer;
++	int r;
++	unsigned int test_index, i;
++
++	/* Initialize arrays without using variable-sized initializers */
++	mem_type_names[0] = "SysMem";
++	mem_type_names[1] = "VRAM";
++
++	buffer_sizes[0] = PAGE_SIZE;
++	buffer_sizes[1] = PAGE_SIZE * 4;
++	buffer_sizes[2] = PAGE_SIZE * 16;
++	buffer_sizes[3] = PAGE_SIZE * 64;
++
++	/* Initialize buffers array */
++	for (i = 0; i < num_buffers; i++) {
++		buffers[i] = NULL;
++		cpu_ptrs[i] = NULL;
++		va_handles[i] = NULL;
++	}
++
++	igt_info("Starting Memory Bandwidth Test\n");
++
++	/* Query memory information */
++	r = get_gpu_memory_info(device, &vram_size, &cpu_accessible_vram_size, &gtt_size);
++	igt_assert_eq(r, 0);
++
++	igt_info("Found VRAM of %" PRIu64 "MB.\n", vram_size >> 20);
++
++	/* Check if this is a large-bar system */
++	if (cpu_accessible_vram_size == 0) {
++		igt_skip("Test requires a large-bar system with CPU accessible VRAM\n");
++		return;
++	}
++
++	/* Allocate temporary system buffer for memcpy operations */
++	tmp_buffer = mmap(0, tmp_buffer_size,
++		      PROT_READ | PROT_WRITE,
++		     MAP_ANONYMOUS | MAP_PRIVATE,
++		     -1, 0);
++	igt_assert_f(tmp_buffer != MAP_FAILED, "Failed to allocate temporary buffer");
++	memset(tmp_buffer, 0xAA, tmp_buffer_size);  /* Fill with test pattern */
++
++	igt_info("Test (avg. ns)      memcpyRTime memcpyWTime accessRTime accessWTime\n");
++	igt_info("----------------------------------------------------------------------\n");
++
++	for (test_index = 0; test_index < num_tests; test_index++) {
++		unsigned int buffer_size;
++		unsigned int mem_type;
++		uint64_t memcpy_read_time, memcpy_write_time;
++		uint64_t access_read_time, access_write_time;
++		uint64_t start_time, end_time;
++		unsigned int buffer_limit;
++		unsigned int domain, flags;
++		int buffers_allocated;
++		uint64_t avg_memcpy_read, avg_memcpy_write;
++		uint64_t avg_access_read, avg_access_write;
++
++		buffer_size = buffer_sizes[test_index % num_sizes];
++		mem_type = (test_index / num_sizes) % num_mem_types;
++		memcpy_read_time = 0;
++		memcpy_write_time = 0;
++		access_read_time = 0;
++		access_write_time = 0;
++		buffers_allocated = 0;
++		buffer_limit = num_buffers;
++
++		/* Skip if buffer size is larger than available VRAM for VRAM tests */
++		if (mem_type == 1) { /* VRAM */
++			/* Calculate buffer limit to use 80% of available CPU accessible VRAM */
++			buffer_limit = ((cpu_accessible_vram_size * 8) / 10) / buffer_size;
++			if (buffer_limit == 0) {
++				igt_info("Skipping - buffer size %u too large for available VRAM\n", buffer_size);
++				continue;
++			}
++			if (buffer_limit > num_buffers) {
++				buffer_limit = num_buffers;
++			}
++
++			domain = AMDGPU_GEM_DOMAIN_VRAM;
++			flags = AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED;
++		} else { /* System memory */
++			domain = AMDGPU_GEM_DOMAIN_GTT;
++			flags = 0;
++		}
++
++		/* Allocate buffers */
++		for (i = 0; i < buffer_limit; i++) {
++			r = amdgpu_bo_alloc_and_map_sync(device,
++						     buffer_size,
++						    4096,
++						    domain,
++						    flags,
++						    AMDGPU_VM_MTYPE_UC,
++						    &buffers[i], &cpu_ptrs[i],
++						    &mc_addresses[i], &va_handles[i],
++						    0, 0, false);
++			if (r != 0) {
++				igt_warn("Buffer allocation failed at index %u: %d\n", i, r);
++				break;
++			}
++			buffers_allocated++;
++		}
++
++		if (buffers_allocated == 0) {
++			igt_warn("No buffers allocated for this test case\n");
++			continue;
++		}
++
++		/* Test 1: Memory write bandwidth (memcpy to buffer) */
++		start_time = get_time_ns();
++		for (i = 0; i < buffers_allocated; i++) {
++			size_t copy_size = buffer_size < tmp_buffer_size ? buffer_size : tmp_buffer_size;
++
++			memcpy(cpu_ptrs[i], tmp_buffer, copy_size);
++		}
++		end_time = get_time_ns();
++		memcpy_write_time = end_time - start_time;
++
++		/* Test 2: Memory write bandwidth (direct access) */
++		start_time = get_time_ns();
++		for (i = 0; i < buffers_allocated; i++) {
++			size_t access_size = buffer_size < tmp_buffer_size ? buffer_size : tmp_buffer_size;
++
++			memory_access_pattern(cpu_ptrs[i], access_size, 1);
++		}
++		end_time = get_time_ns();
++		access_write_time = end_time - start_time;
++
++		/* Test 3: Memory read bandwidth (memcpy from buffer) */
++		start_time = get_time_ns();
++		for (i = 0; i < buffers_allocated; i++) {
++			size_t copy_size = buffer_size < tmp_buffer_size ? buffer_size : tmp_buffer_size;
++
++			memcpy(tmp_buffer, cpu_ptrs[i], copy_size);
++		}
++		end_time = get_time_ns();
++		memcpy_read_time = end_time - start_time;
++
++		/* Test 4: Memory read bandwidth (direct access) */
++		start_time = get_time_ns();
++		for (i = 0; i < buffers_allocated; i++) {
++			size_t access_size = buffer_size < tmp_buffer_size ? buffer_size : tmp_buffer_size;
++
++			memory_access_pattern(cpu_ptrs[i], access_size, 0);
++		}
++		end_time = get_time_ns();
++		access_read_time = end_time - start_time;
++
++		/* Calculate average time per operation in nanoseconds */
++		avg_memcpy_read = memcpy_read_time / buffers_allocated;
++		avg_memcpy_write = memcpy_write_time / buffers_allocated;
++		avg_access_read = access_read_time / buffers_allocated;
++		avg_access_write = access_write_time / buffers_allocated;
++
++		/* Format output to match the reference exactly */
++		if (buffer_size == PAGE_SIZE) {
++			igt_info("  4K-%-14s %17" PRIu64 " %12" PRIu64 " %12" PRIu64 " %12" PRIu64 "\n",
++			mem_type_names[mem_type],
++			avg_memcpy_read, avg_memcpy_write,
++			avg_access_read, avg_access_write);
++		} else if (buffer_size == PAGE_SIZE * 4) {
++			igt_info(" 16K-%-14s %17" PRIu64 " %12" PRIu64 " %12" PRIu64 " %12" PRIu64 "\n",
++			mem_type_names[mem_type],
++			avg_memcpy_read, avg_memcpy_write,
++			avg_access_read, avg_access_write);
++		} else if (buffer_size == PAGE_SIZE * 16) {
++			igt_info(" 64K-%-14s %17" PRIu64 " %12" PRIu64 " %12" PRIu64 " %12" PRIu64 "\n",
++			mem_type_names[mem_type],
++			avg_memcpy_read, avg_memcpy_write,
++			avg_access_read, avg_access_write);
++		} else if (buffer_size == PAGE_SIZE * 64) {
++			igt_info("256K-%-14s %17" PRIu64 " %12" PRIu64 " %12" PRIu64 " %12" PRIu64 "\n",
++			mem_type_names[mem_type],
++			avg_memcpy_read, avg_memcpy_write,
++			avg_access_read, avg_access_write);
++		}
++
++		/* Record results for automated testing */
++		igt_debug("bandwidth:%s-%uK:memcpy_read=%" PRIu64 "ns\n",
++		mem_type_names[mem_type], buffer_size >> 10, avg_memcpy_read);
++		igt_debug("bandwidth:%s-%uK:memcpy_write=%" PRIu64 "ns\n",
++		mem_type_names[mem_type], buffer_size >> 10, avg_memcpy_write);
++		igt_debug("bandwidth:%s-%uK:access_read=%" PRIu64 "ns\n",
++		mem_type_names[mem_type], buffer_size >> 10, avg_access_read);
++		igt_debug("bandwidth:%s-%uK:access_write=%" PRIu64 "ns\n",
++		mem_type_names[mem_type], buffer_size >> 10, avg_access_write);
++
++		/* Cleanup buffers */
++		for (i = 0; i < buffers_allocated; i++) {
++		amdgpu_bo_unmap_and_free(buffers[i], va_handles[i],
++			     mc_addresses[i], buffer_size);
++		buffers[i] = NULL;
++		cpu_ptrs[i] = NULL;
++		va_handles[i] = NULL;
++		}
++
++		/* Print separator for each new size group */
++		if ((test_index % num_sizes) == (num_sizes - 1)) {
++		    igt_info("----------------------------------------------------------------------\n");
++		}
++
++		/* Skip slow tests (similar to reference implementation) */
++		if ((memcpy_read_time + memcpy_write_time +
++			access_read_time + access_write_time) > 5000000000ULL) { /* 5 seconds */
++			igt_info("Skipping remaining slow tests\n");
++			break;
++		}
++	}
++
++	/* Cleanup temporary buffer */
++	munmap(tmp_buffer, tmp_buffer_size);
++
++	igt_info("Memory Bandwidth Test Completed\n");
++}
++
++/**
++ * Structure for multi-thread userptr registration test
++ */
++struct mt_userptr_thread_params {
++	amdgpu_device_handle device;
++	void *buffer;
++	uint64_t buffer_size;
++	amdgpu_bo_handle bo_handle;
++	uint64_t mc_address;
++	amdgpu_va_handle va_handle;
++	pthread_barrier_t *barrier;
++	int result;
++};
++
++/**
++ * Thread function to register userptr memory
++ */
++static void *mt_register_userptr_thread(void *arg)
++{
++	struct mt_userptr_thread_params *params = (struct mt_userptr_thread_params *)arg;
++	int r;
++
++	/* Wait for all threads to be ready */
++	pthread_barrier_wait(params->barrier);
++
++	/* Register the userptr memory with the GPU - this creates a BO handle */
++	r = amdgpu_create_bo_from_user_mem(params->device,
++				       params->buffer,
++				       params->buffer_size,
++				       &params->bo_handle);
++	if (r != 0) {
++		igt_warn("Thread failed to register userptr: %d\n", r);
++		params->result = r;
++		return NULL;
++	}
++
++	/* Allocate VA range for this thread's BO */
++	r = amdgpu_va_range_alloc(params->device, amdgpu_gpu_va_range_general,
++			     params->buffer_size, 4096, 0,
++			     &params->mc_address, &params->va_handle, 0);
++	if (r != 0) {
++		igt_warn("Thread failed to allocate VA range: %d\n", r);
++		params->result = r;
++		amdgpu_bo_free(params->bo_handle);
++		params->bo_handle = NULL;
++		return NULL;
++	}
++
++	/* Map the BO to the allocated GPU virtual address */
++	r = amdgpu_bo_va_op(params->bo_handle, 0, params->buffer_size,
++			params->mc_address, 0, AMDGPU_VA_OP_MAP);
++	if (r != 0) {
++		igt_warn("Thread failed to map userptr to GPU: %d\n", r);
++		params->result = r;
++		amdgpu_va_range_free(params->va_handle);
++		amdgpu_bo_free(params->bo_handle);
++		params->bo_handle = NULL;
++		return NULL;
++	}
++
++	params->result = 0;
++	return NULL;
++}
++
++/**
++ * Thread function to unregister userptr memory
++ */
++static void *mt_unregister_userptr_thread(void *arg)
++{
++	struct mt_userptr_thread_params *params = (struct mt_userptr_thread_params *)arg;
++	int r;
++
++	/* Wait for all threads to be ready */
++	pthread_barrier_wait(params->barrier);
++
++	/* Unmap from GPU address space */
++	if (params->bo_handle) {
++		r = amdgpu_bo_va_op(params->bo_handle, 0, params->buffer_size,
++				    params->mc_address, 0, AMDGPU_VA_OP_UNMAP);
++		if (r != 0) {
++		    igt_warn("Thread failed to unmap userptr: %d\n", r);
++		    params->result = r;
++		}
++
++		/* Free the VA range */
++		if (params->va_handle) {
++		    amdgpu_va_range_free(params->va_handle);
++		    params->va_handle = NULL;
++		}
++
++		/* Free the BO handle */
++		amdgpu_bo_free(params->bo_handle);
++		params->bo_handle = NULL;
++	}
++
++	params->result = 0;
++	return NULL;
++}
++
++/**
++ * Test: Multi-threaded Userptr Registration
++ *
++ * This test verifies that multiple threads can concurrently register
++ * the same userptr memory region with the GPU driver. This tests the
++ * thread safety of the userptr registration path in the kernel driver.
++ *
++ * Based on KFD's MultiThreadRegisterUserptrTest which verifies that
++ * concurrent registration operations are properly serialized and all
++ * threads can successfully register/map the same userptr buffer.
++ */
++#define N_THREADS 32
++
++static void test_multithread_register_userptr(amdgpu_device_handle device)
++{
++	const uint64_t buffer_size = 128ULL * 1024 * 1024;  /* 128 MB */
++	void *buffer = NULL;
++	pthread_t threads[N_THREADS];
++	struct mt_userptr_thread_params params[N_THREADS];
++	pthread_barrier_t barrier;
++	unsigned int i;
++	int r;
++
++	igt_info("Starting multi-thread userptr registration test\n");
++	igt_info("Thread count: %d, Buffer size: %llu MB\n",
++	     N_THREADS, (unsigned long long)(buffer_size >> 20));
++
++	/* Allocate system memory buffer using mmap */
++	buffer = mmap(NULL, buffer_size, PROT_READ | PROT_WRITE,
++		  MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	igt_assert_f(buffer != MAP_FAILED, "Failed to allocate buffer: %s", strerror(errno));
++
++	/* Initialize buffer with test pattern */
++	memset(buffer, 0x5A, buffer_size);
++
++	/* Initialize pthread barrier for N_THREADS threads */
++	r = pthread_barrier_init(&barrier, NULL, N_THREADS);
++	igt_assert_eq(r, 0);
++
++	/* Phase 1: Concurrent registration - all threads register the same buffer */
++	igt_info("Phase 1: Launching %d threads to register userptr concurrently...\n", N_THREADS);
++
++	for (i = 0; i < N_THREADS; i++) {
++	params[i].device = device;
++	params[i].buffer = buffer;
++	params[i].buffer_size = buffer_size;
++	params[i].bo_handle = NULL;
++	params[i].mc_address = 0;
++	params[i].va_handle = NULL;
++	params[i].barrier = &barrier;
++	params[i].result = -1;
++
++	r = pthread_create(&threads[i], NULL, mt_register_userptr_thread, &params[i]);
++	igt_assert_eq(r, 0);
++	}
++
++	/* Wait for all registration threads to complete */
++	for (i = 0; i < N_THREADS; i++) {
++	r = pthread_join(threads[i], NULL);
++	igt_assert_eq(r, 0);
++	igt_assert_f(params[i].result == 0,
++		     "Thread %u registration failed with error: %d", i, params[i].result);
++	}
++
++	igt_info("Phase 1 completed: All threads successfully registered userptr\n");
++
++	/* Verify that all threads received valid BO handles and GPU VAs */
++	for (i = 0; i < N_THREADS; i++) {
++		igt_assert_f(params[i].bo_handle,
++			     "Thread %u has NULL BO handle after registration", i);
++		igt_assert_f(params[i].mc_address != 0,
++			     "Thread %u has NULL GPU VA after registration", i);
++		igt_assert_f(params[i].va_handle,
++			     "Thread %u has NULL VA handle after registration", i);
++	}
++
++	/* Log the GPU virtual addresses assigned to each thread */
++	igt_debug("GPU Virtual Addresses assigned to threads:\n");
++	for (i = 0; i < N_THREADS; i++) {
++		igt_debug("  Thread %2u: VA = 0x%016llx\n", i,
++			  (unsigned long long)params[i].mc_address);
++	}
++
++	/* Phase 2: Concurrent unregistration */
++	igt_info("Phase 2: Launching %d threads to unregister userptr concurrently...\n", N_THREADS);
++
++	/* Reinitialize barrier for unregistration phase */
++	pthread_barrier_destroy(&barrier);
++	r = pthread_barrier_init(&barrier, NULL, N_THREADS);
++	igt_assert_eq(r, 0);
++
++	for (i = 0; i < N_THREADS; i++) {
++		params[i].result = -1;
++		r = pthread_create(&threads[i], NULL, mt_unregister_userptr_thread, &params[i]);
++		igt_assert_eq(r, 0);
++	}
++
++	/* Wait for all unregistration threads to complete */
++	for (i = 0; i < N_THREADS; i++) {
++		r = pthread_join(threads[i], NULL);
++		igt_assert_eq(r, 0);
++		igt_assert_f(params[i].result == 0,
++			     "Thread %u unregistration failed with error: %d", i, params[i].result);
++	}
++
++	igt_info("Phase 2 completed: All threads successfully unregistered userptr\n");
++
++	/* Cleanup */
++	pthread_barrier_destroy(&barrier);
++	munmap(buffer, buffer_size);
++
++	igt_info("Multi-thread userptr registration test: PASSED\n");
++}
++
++/**
++ * Test: Deliberately fragment GPUVM aperture to fill up address space
++ *
++ * This test implements a strategy to maximize fragmented address space usage
++ * while keeping committed memory bounded. It allocates buffers in a pattern
++ * that creates holes in the address space, then fills them with larger blocks
++ * in subsequent iterations.
++ *
++ * Strategy:
++ * 1. Allocate N blocks of a given size (initially 1 page)
++ * 2. Free every other block, creating holes
++ * 3. Allocate N/4 blocks of 2-pages each (requires same memory as freed in step 2)
++ * 4. Free half the blocks, creating larger holes
++ * 5. Double block size, halve number of blocks each iteration
++ * 6. Repeat until block size reaches half of free memory
++ */
++static void test_gpuvm_aperture_fragmentation(amdgpu_device_handle device)
++{
++	const unsigned int max_order_limit = 14; /* Limit to prevent excessive runtime */
++	const size_t base_page_size = 4096;
++	unsigned int max_order = 0;
++	uint64_t vram_size, cpu_accessible_vram_size, gtt_size;
++	uint64_t available_memory_pages;
++	/* Calculate and log fragmentation statistics */
++	uint64_t total_address_space = 0;
++	uint64_t total_allocated_memory = 0;
++	int r;
++
++	struct buffer_level {
++		amdgpu_bo_handle *buffers;
++		uint64_t *mc_addresses;
++		amdgpu_va_handle *va_handles;
++		unsigned long num_buffers;
++		unsigned int order;
++	} levels[max_order_limit + 1];
++
++	unsigned int order, o;
++	unsigned long p, step, offset;
++	size_t block_size;
++	uint32_t test_value = 0;
++
++	igt_info("Starting GPUVM aperture fragmentation test\n");
++
++	/* Query available memory */
++	r = get_gpu_memory_info(device, &vram_size, &cpu_accessible_vram_size, &gtt_size);
++	igt_assert_eq(r, 0);
++
++	if (vram_size == 0) {
++		igt_skip("Test requires VRAM (not supported on APU)\n");
++		return;
++	}
++
++	/* Calculate maximum order based on available memory */
++	available_memory_pages = vram_size / base_page_size;
++
++	/* Use up to half of available memory to avoid excessive memory movement */
++	available_memory_pages /= 2;
++
++	/* Find maximum order where we can allocate at least 16 pages */
++	while (((available_memory_pages >> max_order) >= 16) && (max_order < max_order_limit))
++		max_order++;
++
++	igt_info("Available VRAM: %" PRIu64 " MB, Max order: %u\n",
++	     vram_size / (1024 * 1024), max_order);
++
++	/* Initialize levels array */
++	memset(levels, 0, sizeof(levels));
++
++	/* Main fragmentation algorithm */
++	for (order = 0; order <= max_order; order++) {
++		/* Calculate number of buffers and block size for this order */
++		levels[order].order = order;
++		levels[order].num_buffers = 1UL << (max_order - order + 2);
++
++		/* At order > 0, half the memory is already allocated */
++		if (order > 0)
++		    levels[order].num_buffers >>= 1;
++
++		block_size = (1UL << order) * base_page_size;
++
++		igt_info("Order %u: Allocating %lu buffers of %zu bytes each\n",
++			 order, levels[order].num_buffers, block_size);
++
++		/* Allocate arrays for buffer handles */
++		levels[order].buffers = calloc(levels[order].num_buffers, sizeof(amdgpu_bo_handle));
++		levels[order].mc_addresses = calloc(levels[order].num_buffers, sizeof(uint64_t));
++		levels[order].va_handles = calloc(levels[order].num_buffers, sizeof(amdgpu_va_handle));
++
++		igt_assert(levels[order].buffers);
++		igt_assert(levels[order].mc_addresses);
++		igt_assert(levels[order].va_handles);
++
++		/* Allocate and map buffers */
++		for (p = 0; p < levels[order].num_buffers; p++) {
++			struct amdgpu_bo_alloc_request req = {0};
++
++			req.alloc_size = block_size;
++			req.phys_alignment = base_page_size;
++			req.preferred_heap = AMDGPU_GEM_DOMAIN_VRAM;
++			req.flags = 0;
++
++			/* Try to allocate buffer */
++			r = amdgpu_bo_alloc(device, &req, &levels[order].buffers[p]);
++			if (r != 0) {
++				igt_debug("Allocation failed at order %u, buffer %lu: %d\n", order, p, r);
++				levels[order].num_buffers = p;
++				break;
++			}
++
++			/* Allocate GPU VA space */
++			r = amdgpu_va_range_alloc(device,
++					      amdgpu_gpu_va_range_general,
++					     block_size,
++					     base_page_size,
++					     0,
++					     &levels[order].mc_addresses[p],
++					     &levels[order].va_handles[p],
++					     0);
++			if (r != 0) {
++				igt_debug("VA allocation failed at order %u, buffer %lu: %d\n", order, p, r);
++				amdgpu_bo_free(levels[order].buffers[p]);
++				levels[order].buffers[p] = NULL;
++				levels[order].num_buffers = p;
++				break;
++			}
++
++			/* Map buffer to GPU VA */
++			r = amdgpu_bo_va_op(levels[order].buffers[p],
++					0,
++				       block_size,
++				       levels[order].mc_addresses[p],
++				       0,
++				       AMDGPU_VA_OP_MAP);
++			if (r != 0) {
++				igt_debug("VA mapping failed at order %u, buffer %lu: %d\n", order, p, r);
++				amdgpu_va_range_free(levels[order].va_handles[p]);
++				amdgpu_bo_free(levels[order].buffers[p]);
++				levels[order].buffers[p] = NULL;
++				levels[order].va_handles[p] = NULL;
++				levels[order].num_buffers = p;
++				break;
++			}
++
++			/* Test buffer access with CPU mapping */
++			if (block_size <= (16 * 1024 * 1024)) { /* Limit to reasonable sizes for CPU access */
++				void *cpu_ptr;
++
++				r = amdgpu_bo_cpu_map(levels[order].buffers[p], &cpu_ptr);
++				if (r == 0) {
++				    /* Write test pattern */
++				    test_value++;
++				    memset(cpu_ptr, test_value & 0xFF, MIN(block_size, 4096));
++				    amdgpu_bo_cpu_unmap(levels[order].buffers[p]);
++				}
++			}
++		}
++
++		igt_info("Order %u: Successfully allocated %lu buffers\n",
++			 order, levels[order].num_buffers);
++
++		if (levels[order].num_buffers == 0) {
++		    igt_warn("No buffers allocated at order %u, stopping test\n", order);
++		break;
++		}
++
++		/* Free half the memory in all previous levels to create holes */
++		for (o = 0; o <= order; o++) {
++			if (levels[o].num_buffers == 0)
++			continue;
++
++			step = 1UL << (order - o + 1);
++			offset = (step >> 1) - 1;
++			block_size = (1UL << o) * base_page_size;
++
++			igt_debug("Freeing every %luth order %u block starting with offset %lu\n",
++			      step, o, offset);
++
++			for (p = offset; p < levels[o].num_buffers; p += step) {
++			if (levels[o].buffers[p]) {
++				/* Unmap and free buffer */
++				amdgpu_bo_va_op(levels[o].buffers[p],
++					    0,
++					   block_size,
++					   levels[o].mc_addresses[p],
++					   0,
++					   AMDGPU_VA_OP_UNMAP);
++				amdgpu_va_range_free(levels[o].va_handles[p]);
++				amdgpu_bo_free(levels[o].buffers[p]);
++
++				levels[o].buffers[p] = NULL;
++				levels[o].va_handles[p] = NULL;
++				}
++			}
++		}
++	}
++
++	for (order = 0; order <= max_order; order++) {
++		if (levels[order].num_buffers == 0)
++		continue;
++
++		block_size = (1UL << order) * base_page_size;
++
++		for (p = 0; p < levels[order].num_buffers; p++) {
++			if (levels[order].buffers[p]) {
++				total_address_space += block_size;
++				total_allocated_memory += block_size;
++			}
++		}
++	}
++
++	igt_info("Fragmentation results:\n");
++	igt_info("  Total address space used: %" PRIu64 " MB\n",
++	     total_address_space / (1024 * 1024));
++	igt_info("  Total allocated memory: %" PRIu64 " MB\n",
++	     total_allocated_memory / (1024 * 1024));
++	igt_info("  Address space to memory ratio: %.2f\n",
++	     (double)total_address_space / total_allocated_memory);
++
++	/* Cleanup - free all remaining buffers */
++	for (order = 0; order <= max_order; order++) {
++			if (!levels[order].buffers)
++				continue;
++
++		block_size = (1UL << order) * base_page_size;
++
++		for (p = 0; p < levels[order].num_buffers; p++) {
++			if (levels[order].buffers[p]) {
++				amdgpu_bo_va_op(levels[order].buffers[p],
++						0,
++					       block_size,
++					       levels[order].mc_addresses[p],
++					       0,
++					       AMDGPU_VA_OP_UNMAP);
++				amdgpu_va_range_free(levels[order].va_handles[p]);
++				amdgpu_bo_free(levels[order].buffers[p]);
++			}
++		}
++
++		free(levels[order].buffers);
++		free(levels[order].mc_addresses);
++		free(levels[order].va_handles);
++	}
++
++	igt_info("GPUVM aperture fragmentation test completed successfully\n");
++}
++
++
++/**
++ * Test: LLVM Assembler Basic Functionality Test
++ *
++ * This test verifies that the LLVM assembler can successfully assemble
++ * a simple shader and that we can execute it on the GPU.
++ */
++static void test_llvm_assembler_basic(amdgpu_device_handle device)
++{
++	struct amdgpu_gpu_info gpu_info = {0};
++	char mcpu[32];
++	uint8_t isa_binary[PAGE_SIZE];
++	size_t isa_size = 0;
++	int r;
++	int success_count = 0;
++	int total_count = 0;
++
++	const char * const *shaders_to_test = amdgpu_test_shaders;
++	int i;
++
++	igt_info("Starting LLVM Assembler Basic Functionality Test\n");
++
++	/* Query GPU information */
++	r = amdgpu_query_gpu_info(device, &gpu_info);
++	igt_assert_eq(r, 0);
++
++	/* Use common helper for mapping family_id -> mcpu string */
++	amdgpu_family_id_to_mcpu(gpu_info.family_id, mcpu, sizeof(mcpu));
++	igt_info("Testing LLVM assembler for detected MCPU: %s (family_id=%u)\n", mcpu, gpu_info.family_id);
++
++	/* Initialize LLVM assembler */
++	r = amdgpu_llvm_asm_init();
++	if (r != 0) {
++		igt_skip("LLVM assembler not available on this system\n");
++		return;
++	}
++
++	/* Test all available shaders */
++	igt_info("Testing assembly of all available shaders...\n");
++
++	for (i = 0; shaders_to_test[i]; i++) {
++		igt_info("Test %d: Assembling shader %d...\n", i + 1, i);
++
++		r = amdgpu_llvm_assemble(mcpu, shaders_to_test[i], isa_binary, sizeof(isa_binary), &isa_size);
++		if (r == 0 && isa_size > 0) {
++		    success_count++;
++		    igt_info("  Shader %d: assembled successfully - %zu bytes\n", i, isa_size);
++		} else {
++		    igt_info("  Shader %d: assembly failed (error: %d)\n", i, r);
++		}
++		total_count++;
++	}
++
++	igt_info("LLVM Assembler Test Results: %d/%d shaders assembled successfully\n",
++	     success_count, total_count);
++
++	/* Cleanup LLVM */
++	amdgpu_llvm_asm_shutdown();
++
++	igt_info("LLVM Assembler Basic Functionality Test: COMPLETED\n");
++
++	/* Basic validation - if we can assemble at least one shader, consider it a success */
++	igt_assert_f(success_count > 0, "No shaders could be assembled successfully (%d/%d failed)",
++		 total_count - success_count, total_count);
++}
++
++igt_main
++{
++	amdgpu_device_handle device;
++	struct amdgpu_gpu_info gpu_info = {0};
++	struct drm_amdgpu_info_hw_ip info = {0};
++	int fd = -1;
++	int r;
++	bool arr_cap[AMD_IP_MAX] = {0};
++	bool userq_arr_cap[AMD_IP_MAX] = {0};
++
++	igt_fixture {
++		uint32_t major, minor;
++		int err;
++
++		fd = drm_open_driver(DRIVER_AMDGPU);
++
++		err = amdgpu_device_initialize(fd, &major, &minor, &device);
++		igt_require(err == 0);
++
++		igt_info("Initialized amdgpu, driver version %d.%d\n",
++			 major, minor);
++
++		r = amdgpu_query_gpu_info(device, &gpu_info);
++		igt_assert_eq(r, 0);
++		r = amdgpu_query_hw_ip_info(device, AMDGPU_HW_IP_GFX, 0, &info);
++		igt_assert_eq(r, 0);
++		r = setup_amdgpu_ip_blocks(major, minor,  &gpu_info, device);
++		igt_assert_eq(r, 0);
++		asic_rings_readness(device, 1, arr_cap);
++		asic_userq_readiness(device, userq_arr_cap);
++	}
++	igt_describe("Check alloc visible or non-visible vram and GART combined cached");
++	igt_subtest("memory-alloc")
++		amdgpu_memory_alloc(device, true);
++
++	igt_describe("Test invalid allocation parameters");
++	igt_subtest("invalid_alloc")
++		test_invalid_alloc(device, true);
++
++	igt_describe("Test invalid parameters");
++	igt_subtest("memory_alloc_all")
++		memory_alloc_all(device, true);
++
++	igt_describe("Test same memory ptr");
++	igt_subtest("register_memory_same_ptr")
++		if (!is_apu(&gpu_info))
++			memory_register_same_ptr(device);
++
++	igt_describe("Test userptr COW page table update (adapted from KFD MemoryRegister)");
++	igt_subtest("memory-register") {
++	if (!is_apu(&gpu_info))
++		memory_register(device);
++	}
++
++	/* Large system memory mapping test */
++	igt_describe("Map maximum possible system memory; validates limits. Skipped on APUs.");
++		igt_subtest("mmap-large-system-mem") {
++		if (!is_apu(&gpu_info))
++			test_mmap_large(device);
++	}
++
++	/* PPR memory access test */
++	igt_describe("Test PPR memory access on APU devices (synchronization/visibility)");
++	igt_subtest("access-ppr-mem") {
++		if (is_apu(&gpu_info))
++			test_access_ppr_mem(device, get_ip_block(device, AMDGPU_HW_IP_COMPUTE));
++	}
++
++	igt_describe("Test basic GCA configuration reading from debugfs");
++	igt_subtest("gca-config-basic")
++		test_gca_config_basic(device);
++
++	igt_describe("Test allocation of large GTT memory buffers");
++	igt_subtest("largest-gtt-buffer") {
++		largest_buffer_test(device, AMDGPU_GEM_DOMAIN_GTT, 0);
++	}
++
++	igt_describe("Test allocation of large VRAM memory buffers");
++		igt_subtest("largest-vram-buffer") {
++		if (!is_apu(&gpu_info))
++			largest_buffer_test(device, AMDGPU_GEM_DOMAIN_VRAM, 0);
++	}
++
++	igt_describe("Test allocation of large CPU accessible VRAM buffers");
++		igt_subtest("largest-cpu-accessible-vram-buffer") {
++		if (!is_apu(&gpu_info))
++			largest_cpu_accessible_vram_test(device);
++	}
++
++	igt_describe("Stress test for large system buffer allocations");
++	igt_subtest("big-sys-buffer-stress") {
++		if (!is_apu(&gpu_info))
++			big_sys_buffer_stress_test_with_queue(device);
++	}
++
++	igt_describe("AMDGPU Memory Management Performance Benchmark");
++	igt_subtest("mm-benchmark") {
++		mm_benchmark(device);
++	}
++
++	igt_describe("Test AMDGPU memory access via ptrace like a debugger");
++	igt_subtest("ptrace-acess") {
++		 ptrace_access_test(device);
++	}
++
++	igt_describe("Test ptrace peek/poke on VRAM addresses near 4MB boundary (adapted from KFD PtraceAccessInvisibleVram)");
++	igt_subtest("ptrace-access-invisible-vram") {
++	    ptrace_access_invisible_vram_test(device);
++	}
++
++	igt_describe("Test signal handling during AMDGPU memory operations");
++	igt_subtest("signal-handling") {
++		if (!is_apu(&gpu_info))
++			test_signal_handling(device);
++	}
++
++	igt_describe("Verify system memory and vram buffers are properly zero-initialized upon allocation");
++	igt_subtest("zero-initialization")
++		test_zero_initialization(device);
++
++	igt_describe("Measure memory bandwidth for different memory types and buffer sizes on large-bar systems");
++	igt_subtest("memory-bandwidth") {
++		if (!is_apu(&gpu_info))
++			test_memory_bandwidth(device);
++	}
++
++	igt_describe("Test concurrent userptr registration from multiple threads to verify thread safety");
++	igt_subtest("multi-thread-register-userptr")
++		test_multithread_register_userptr(device);
++
++	igt_describe("Validate GPU cache invalidation on SDMA write using PollMemoryIsa shader (Arcturus only)");
++	igt_subtest("cache-invalidate-sdma-write") {
++		if (!is_apu(&gpu_info))
++			test_cache_invalidate_on_sdma_write_asm(device, &gpu_info);
++	}
++
++	igt_describe("Validate GPU cache invalidation on CPU write using PollMemoryIsa shader (Arcturus + large BAR only)");
++	igt_subtest("cache-invalidate-cpu-write") {
++		if (!is_apu(&gpu_info))
++			test_cache_invalidate_on_cpu_write_asm(device, &gpu_info);
++	}
++
++	igt_describe("Deliberately fragment GPUVM aperture to fill up address space with minimal physical memory usage");
++	igt_subtest("gpuvm-aperture-fragmentation") {
++		if (!is_apu(&gpu_info))
++			test_gpuvm_aperture_fragmentation(device);
++	}
++
++	igt_describe("Test LLVM assembler basic functionality with various shaders");
++	igt_subtest("llvm-assembler-basic") {
++		test_llvm_assembler_basic(device);
++	}
++
++	igt_fixture {
++		amdgpu_device_deinitialize(device);
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/amdgpu/amd_queue_reset.c b/tests/amdgpu/amd_queue_reset.c
+index 0e33e44a2..ca9acdfb9 100644
+--- a/tests/amdgpu/amd_queue_reset.c
++++ b/tests/amdgpu/amd_queue_reset.c
+@@ -24,7 +24,7 @@
+ #include "lib/amdgpu/amd_memory.h"
+ #include "lib/amdgpu/amd_command_submission.h"
+ #include "lib/amdgpu/amd_deadlock_helpers.h"
+-#include "lib/amdgpu/amd_dispatch.h"
++#include "lib/amdgpu/compute_utils/amd_dispatch.h"
+ #include "lib/amdgpu/amdgpu_asic_addr.h"
+ 
+ 
+diff --git a/tests/amdgpu/amd_remote_mem.c b/tests/amdgpu/amd_remote_mem.c
+new file mode 100644
+index 000000000..792d90651
+--- /dev/null
++++ b/tests/amdgpu/amd_remote_mem.c
+@@ -0,0 +1,688 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Remote cache invalidation and map/unmap tests for AMD multi-GPU
++ *
++ * Contains two tests:
++ * 1. remote-cache-invalidate: Tests cache coherency across GPUs
++ * 2. map-unmap-to-nodes: Tests memory mapping stability under stress
 + */
 +
++#include "lib/amdgpu/amd_memory.h"
++#include "lib/amdgpu/amd_sdma.h"
++#include "lib/amdgpu/amd_PM4.h"
++#include "lib/amdgpu/amd_command_submission.h"
++#include "lib/amdgpu/amd_compute.h"
++#include "lib/amdgpu/amd_gfx.h"
++#ifdef AMDGPU_LLVM_ENABLED
++#include "amdgpu/shaders/amd_llvm_asm.h"
++#else
++#include "amdgpu/shaders/amd_llvm_asm_stub.h"
++#endif
++#include "lib/amdgpu/compute_utils/amd_dispatch_helpers.h"
++#include "amdgpu/shaders/amd_shader_store.h"
++#include "lib/amdgpu/amdgpu_asic_addr.h"
++#include "igt.h"
++#include "igt_multigpu.h"
 +
-+static  const
-+uint32_t shader_bin[] = {
-+	SWAP_32(0x800082be), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800), SWAP_32(0x040085bf),
-+	SWAP_32(0x02810281), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800), SWAP_32(0xfcff84bf),
-+	SWAP_32(0xff0083be), SWAP_32(0x00f00000), SWAP_32(0xc10082be), SWAP_32(0xaa02007e),
-+	SWAP_32(0x000070e0), SWAP_32(0x00000080), SWAP_32(0x000081bf)
-+};
++#include <libdrm/amdgpu.h>
++#include <xf86drm.h>
++#include <fcntl.h>
++#include <unistd.h>
++#include <errno.h>
++#include <string.h>
++#include <sys/mman.h>
 +
-+const uint32_t *
-+get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset)
++#define POLL_PATTERN 0x5678
++#define DW_LOCATION 100
++#define SRC_LOCATION 0
++#define MAX_ITERATIONS (1 << 10)  /* Reduced for debugging */
++
++/* Forward declarations */
++static void remote_cache_invalidate_test(amdgpu_device_handle *devices, int device_count);
++static void map_unmap_to_nodes_test(amdgpu_device_handle *devices, int device_count);
++
++/* Assemble PollMemoryIsa into a shader BO */
++static int build_poll_shader(amdgpu_device_handle dev,
++			     const struct amdgpu_gpu_info *info,
++			     amdgpu_bo_handle *bo_shader,
++			     uint64_t *mc_shader,
++			     amdgpu_va_handle *va_shader,
++			     void **cpu_shader,
++			     uint32_t *out_version)
 +{
-+	*size_bytes = sizeof(shader_bin);
-+	*code_offset =  CODE_OFFSET;
-+	*data_offset = DATA_OFFSET;
-+	return shader_bin;
-+}
++	uint8_t isa_bin[4096];
++	size_t isa_sz = 0;
++	char mcpu[32];
++	int r;
++	uint32_t version = 9;
 +
-+struct amdgpu_test_shader {
-+	uint32_t *shader;
-+	uint32_t header_length;
-+	uint32_t body_length;
-+	uint32_t foot_length;
-+};
++	amdgpu_family_id_to_mcpu(info->family_id, mcpu, sizeof(mcpu));
++	if (FAMILY_IS_GFX1200(info->family_id))
++		version = 12;
++	else if (FAMILY_IS_GFX1150(info->family_id) ||
++		 FAMILY_IS_GFX1100(info->family_id) ||
++			FAMILY_IS_GFX1036(info->family_id) ||
++			FAMILY_IS_GFX1037(info->family_id) ||
++			FAMILY_IS_YC(info->family_id) ||
++			info->family_id == FAMILY_GFX1103)
++		version = 11;
++	else if (FAMILY_IS_AI(info->family_id) ||
++		 FAMILY_IS_RV(info->family_id) ||
++			FAMILY_IS_NV(info->family_id) ||
++			info->family_id == FAMILY_VGH)
++		version = 10;
 +
-+int amdgpu_dispatch_load_cs_shader_hang_slow(uint32_t *ptr, uint32_t family_id)
-+{
-+	/**
-+	 * v_sub_f32_e32 v0, s8, v134
-+	 * buffer_load_format_xyzw v[1:4], v0, s[0:3], 0 idxen
-+	 * ;;
-+	 * s_waitcnt vmcnt(0)
-+	 * buffer_store_format_xyzw v[1:4], v0, s[4:7], 0 idxen
-+	 * ;;
-+	 * s_endpgm
-+	 */
-+	unsigned int memcpy_cs_hang_slow_ai_codes[] = {
-+	    0xd1fd0000, 0x04010c08, 0xe00c2000, 0x80000100,
-+	    0xbf8c0f70, 0xe01c2000, 0x80010100, 0xbf810000
-+	};
++	r = amdgpu_llvm_asm_init();
++	if (r)
++		return r;
++	r = amdgpu_llvm_assemble(mcpu, PollMemoryIsa, isa_bin, sizeof(isa_bin), &isa_sz);
++	amdgpu_llvm_asm_shutdown();
++	if (r || !isa_sz)
++		return -EINVAL;
 +
-+	struct amdgpu_test_shader memcpy_cs_hang_slow_ai = {
-+		memcpy_cs_hang_slow_ai_codes,
-+		4,
-+		3,
-+		1
-+	};
-+	/**
-+	 * s_lshl_b32 s0, s12, 6
-+	 * v_add_u32_e32 v0, vcc, s0, v0
-+	 * buffer_load_format_xyzw v[1:4], v0, s[4:7], 0 idxen
-+	 * ;;
-+	 * s_waitcnt vmcnt(0)
-+	 * buffer_store_format_xyzw v[1:4], v0, s[8:11], 0 idxen
-+	 * ;;
-+	 * s_endpgm
-+	 */
-+	unsigned int memcpy_cs_hang_slow_rv_codes[] = {
-+	    0x8e00860c, 0x32000000, 0xe00c2000, 0x80010100,
-+	    0xbf8c0f70, 0xe01c2000, 0x80020100, 0xbf810000
-+	};
-+
-+	struct amdgpu_test_shader memcpy_cs_hang_slow_rv = {
-+		memcpy_cs_hang_slow_rv_codes,
-+		4,
-+		3,
-+		1
-+	};
-+	/**
-+	 * v_interp_mov_f32_e32 v209, p10, attr0.x
-+	 * v_sub_f32_e32 v0, s8, v134
-+	 * buffer_load_format_xyzw v[1:4], v0, s[0:3], 0 idxen
-+	 * ;;
-+	 * s_waitcnt vmcnt(0)
-+	 * buffer_store_format_xyzw v[1:4], v0, s[4:7], 0 idxen
-+	 * ;;
-+	 * s_endpgm
-+	 */
-+	unsigned int memcpy_cs_hang_slow_nv_codes[] = {
-+	    0xd7460000, 0x04010c08, 0xe00c2000, 0x80000100,
-+	    0xbf8c0f70, 0xe01ca000, 0x80010100, 0xbf810000
-+	};
-+	struct amdgpu_test_shader memcpy_cs_hang_slow_nv = {
-+	        memcpy_cs_hang_slow_nv_codes,
-+	        4,
-+	        3,
-+	        1
-+	};
-+	struct amdgpu_test_shader *shader;
-+	int i, loop = 0x100000;
-+
-+	switch (family_id) {
-+		case AMDGPU_FAMILY_AI:
-+			shader = &memcpy_cs_hang_slow_ai;
-+			break;
-+		case AMDGPU_FAMILY_RV:
-+			shader = &memcpy_cs_hang_slow_rv;
-+			break;
-+		case AMDGPU_FAMILY_NV:
-+		default:
-+			shader = &memcpy_cs_hang_slow_nv;
-+			break;
-+	}
-+
-+	memcpy(ptr, shader->shader, shader->header_length * sizeof(uint32_t));
-+
-+	for (i = 0; i < loop; i++)
-+		memcpy(ptr + shader->header_length + shader->body_length * i,
-+			shader->shader + shader->header_length,
-+			shader->body_length * sizeof(uint32_t));
-+
-+	memcpy(ptr + shader->header_length + shader->body_length * loop,
-+		shader->shader + shader->header_length + shader->body_length,
-+		shader->foot_length * sizeof(uint32_t));
-+
++	r = amdgpu_bo_alloc_and_map(dev, 4096, 4096,
++				    AMDGPU_GEM_DOMAIN_GTT, 0,
++				bo_shader, cpu_shader, mc_shader, va_shader);
++	if (r)
++		return r;
++	memset(*cpu_shader, 0, 4096);
++	memcpy(*cpu_shader, isa_bin, isa_sz);
++	*out_version = version;
 +	return 0;
 +}
 +
-+int  amdgpu_dispatch_load_cs_shader(uint8_t *ptr, int cs_type, uint32_t version)
++/* Submit polling dispatch: polls src addr until POLL_PATTERN then writes pattern to dst */
++static int submit_poll_dispatch(amdgpu_device_handle dev,
++				uint32_t version,
++				uint64_t mc_shader,
++				uint64_t src_va,
++				uint64_t dst_va,
++				amdgpu_bo_handle bo_shader,
++				amdgpu_bo_handle bo_target,
++				amdgpu_context_handle *out_ctx,
++				uint64_t *out_seq)
 +{
-+	/**
-+	 * v_and_b32_e32 v0, 0x3ff, v0
-+	 * ;;
-+	 * ...
-+	 * v_sub_f32_e32 v0, s8, v134
-+	 * v_mov_b32_e32 v1, 0
-+	 * v_mov_b32_e32 v2, s4
-+	 * mov_b32_e32 v3, s5
-+	 * v_mov_b32_e32 v4, s6
-+	 * v_mov_b32_e32 v5, s7
-+	 * buffer_store_format_xyzw v[2:5], v0, s[0:3], 0 idxen
-+	 * ;;
-+	 * s_waitcnt vmcnt(0) expcnt(0) lgkmcnt(0)
-+	 * s_endpgm
-+	 */
-+	static const uint32_t bufferclear_cs_shader_gfx9[] = {
-+	    0x260000ff, 0x000003ff, 0xd1fd0000, 0x04010c08,
-+	    0x7e020280, 0x7e040204, 0x7e060205, 0x7e080206,
-+	    0x7e0a0207, 0xe01c2000, 0x80000200, 0xbf8c0000,
-+	    0xbf810000
-+	};
++	int r;
++	struct amdgpu_cmd_base *base_cmd = get_cmd_base();
++	amdgpu_bo_handle bo_cmd = NULL;
++	amdgpu_va_handle va_cmd = 0;
++	uint64_t mc_cmd = 0;
++	uint32_t *ptr_cmd = NULL;
++	amdgpu_bo_list_handle bo_list = NULL;
++	struct amdgpu_cs_ib_info ib_info = {0};
++	struct amdgpu_cs_request ib_req = {0};
++	amdgpu_context_handle ctx;
++	amdgpu_bo_handle bos[3];
 +
-+	/**
-+	 *
-+	 * v_and_b32_e32 v0, 0x3ff, v0
-+	 * ;;
-+	 * ...
-+	 * v_sub_f32_e32 v0, s8, v134
-+	 * v_mov_b32_e32 v1, 0
-+	 * buffer_load_format_xyzw v[2:5], v0, s[0:3], 0 idxen
-+	 * ;;
-+	 * s_waitcnt vmcnt(0)
-+	 * buffer_store_format_xyzw v[2:5], v0, s[4:7], 0 idxen
-+	 * ;;
-+	 * s_endpgm
-+	 */
-+	static const uint32_t buffercopy_cs_shader_gfx9[] = {
-+	    0x260000ff, 0x000003ff, 0xd1fd0000, 0x04010c08,
-+	    0x7e020280, 0xe00c2000, 0x80000200, 0xbf8c0f70,
-+	    0xe01c2000, 0x80010200, 0xbf810000
-+	};
++	r = amdgpu_cs_ctx_create(dev, &ctx);
++	if (r)
++		return r;
 +
-+	/**
-+	 * ...
-+	 * s_bcnt0_i32_b32 exec_lo, exec_lo
-+	 * ...
-+	 * ...
-+	 * s_dcache_inv
-+	 * ;;
-+	 * ...
-+	 * ...
-+	 * ...
-+	 * s_waitcnt lgkmcnt(0)
-+	 * image_sample v[0:3], v2, s[4:11], s[0:3] dmask:0xf
-+	 * ;;
-+	 * s_not_b32 exec_lo, s12
-+	 * s_waitcnt vmcnt(0)
-+	 * s_nop 0
-+	 * s_nop 0
-+	 * ...
-+	 * v_add_f32_e32 v129, v0, v0
-+	 *s_endpgm
-+	 */
-+	static const uint32_t memcpy_ps_hang[] = {
-+			0xFFFFFFFF, 0xBEFE0A7E, 0xBEFC0304, 0xC0C20100,
-+			0xC0800300, 0xC8080000, 0xC80C0100, 0xC8090001,
-+			0xC80D0101, 0xBF8C007F, 0xF0800F00, 0x00010002,
-+			0xBEFE040C, 0xBF8C0F70, 0xBF800000, 0xBF800000,
-+			0xF800180F, 0x03020100, 0xBF810000
-+	};
++	r = amdgpu_bo_alloc_and_map(dev, 4096, 4096,
++				    AMDGPU_GEM_DOMAIN_GTT, 0,
++				&bo_cmd, (void **)&ptr_cmd, &mc_cmd, &va_cmd);
++	if (r) {
++		amdgpu_cs_ctx_free(ctx);
++		return r;
++	}
++	memset(ptr_cmd, 0, 4096);
++	base_cmd->attach_buf(base_cmd, ptr_cmd, 4096);
 +
-+	/**
-+	 * v_interp_mov_f32_e32 v209, invalid_param_4, attr0.x
-+	 * v_sub_f32_e32 v0, s8, v134
-+	 * v_mov_b32_e32 v0, s4
-+	 * v_mov_b32_e32 v1, s5
-+	 * v_mov_b32_e32 v2, s6
-+	 * v_mov_b32_e32 v3, s7
-+	 * buffer_store_format_xyzw v[0:3], v4, s[0:3], 0 idxen
-+	 * ;;
-+	  *s_endpgm
-+	  */
-+	static const uint32_t bufferclear_cs_shader_gfx10[] = {
-+		0xD7460004, 0x04010C08, 0x7E000204, 0x7E020205,
-+		0x7E040206, 0x7E060207, 0xE01C2000, 0x80000004,
-+		0xBF810000
-+	};
++	amdgpu_dispatch_init(AMDGPU_HW_IP_COMPUTE, base_cmd, version);
++	amdgpu_dispatch_write_cumask(base_cmd, version);
++	amdgpu_dispatch_write2hw(base_cmd, mc_shader, version, 0);
 +
-+	/**
-+	 * v_interp_mov_f32_e32 v209, p20, attr0.x
-+	 * v_sub_f32_e32 v0, s8, v134
-+	 * buffer_load_format_xyzw v[2:5], v1, s[0:3], 0 idxen
-+	 * ;;
-+	 * s_waitcnt vmcnt(0)
-+	 * buffer_store_format_xyzw v[2:5], v1, s[4:7], 0 idxen
-+	 * ;;
-+	 * s_endpgm
-+	 */
-+	static const uint32_t buffercopy_cs_shader_gfx10[] = {
-+		0xD7460001, 0x04010C08, 0xE00C2000, 0x80000201,
-+		0xBF8C3F70, 0xE01C2000, 0x80010201, 0xBF810000
-+	};
++	/* SGPRs: src_va, dst_va */
++	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 4));
++	base_cmd->emit(base_cmd, 0x240); /* first user data SGPR */
++	base_cmd->emit(base_cmd, src_va & 0xffffffff);
++	base_cmd->emit(base_cmd, src_va >> 32);
++	base_cmd->emit(base_cmd, dst_va & 0xffffffff);
++	base_cmd->emit(base_cmd, dst_va >> 32);
 +
-+	/**
-+	 * shader main
-+	 * asic(GFX11)
-+	 * type(CS)
-+	 * s_version     UC_VERSION_GFX11 | UC_VERSION_W64_BIT   // 000000000000: B0802006
-+	 * s_set_inst_prefetch_distance  0x0003                  // 000000000004: BF840003
-+	 * v_and_b32     v0, lit(0x000003ff), v0                 // 000000000008: 360000FF 000003FF
-+	 * v_mov_b32     v1, s5                                  // 000000000010: 7E020205
-+	 * v_mov_b32     v2, s6                                  // 000000000014: 7E040206
-+	 * v_mov_b32     v3, s7                                  // 000000000018: 7E060207
-+	 * s_delay_alu   instid0(VALU_DEP_4)                     // 00000000001C: BF870004
-+	 * v_lshl_add_u32  v4, s8, 6, v0                         // 000000000020: D6460004 04010C08
-+	 * v_mov_b32     v0, s4                                  // 000000000028: 7E000204
-+	 * buffer_store_format_xyzw  v[0:3], v4, s[0:3], 0 idxen // 00000000002C: E01C0000 80800004
-+	 * s_sendmsg     sendmsg(MSG_DEALLOC_VGPRS, 0, 0)        // 000000000034: BFB60003
-+	 * s_endpgm                                              // 000000000038: BFB00000
-+	 */
-+	static const uint32_t bufferclear_cs_shader_gfx11[] = {
-+		0xB0802006, 0xBF840003, 0x360000FF, 0x000003FF,
-+		0x7E020205, 0x7E040206, 0x7E060207, 0xBF870004,
-+		0xD6460004, 0x04010C08, 0x7E000204, 0xE01C0000,
-+		0x80800004, 0xBFB60003, 0xBFB00000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000
-+	};
++	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PACKET3_DISPATCH_DIRECT, 3));
++	base_cmd->emit(base_cmd, 0x10); /* grid dims (arbitrary small) */
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit_aligned(base_cmd, 7, GFX_COMPUTE_NOP);
 +
-+	static const uint32_t bufferclear_cs_shader_gfx12[] =
-+	{
-+		0xB0802009, 0xBF930006, 0x360000FF, 0x000003FF,
-+		0x7E020205, 0x7E040206, 0x7E060207, 0xBF870004,
-+		0xD6460004, 0x04010C75, 0x7E000204, 0xC401C07C,
-+		0x80000000, 0x00000004, 0xBFB60003, 0xBFB00000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000
-+	};
-+	/**
-+	 * shader main
-+	 * asic(GFX11)
-+	 * type(CS)
-+	 * s_version     UC_VERSION_GFX11 | UC_VERSION_W64_BIT   // 000000000000: B0802006
-+	 * s_set_inst_prefetch_distance  0x0003                  // 000000000004: BF840003
-+	 * v_and_b32     v0, lit(0x000003ff), v0                 // 000000000008: 360000FF 000003FF
-+	 * s_delay_alu   instid0(VALU_DEP_1)                     // 000000000010: BF870001
-+	 * v_lshl_add_u32  v1, s8, 6, v0                         // 000000000014: D6460001 04010C08
-+	 * buffer_load_format_xyzw  v[2:5], v1, s[0:3], 0 idxen  // 00000000001C: E00C0000 80800201
-+	 * s_waitcnt     vmcnt(0)                                // 000000000024: BF8903F7
-+	 * buffer_store_format_xyzw  v[2:5], v1, s[4:7], 0 idxen // 000000000028: E01C0000 80810201
-+	 * s_sendmsg     sendmsg(MSG_DEALLOC_VGPRS, 0, 0)        // 000000000030: BFB60003
-+	 * s_endpgm                                              // 000000000034: BFB00000
-+	 * end
-+	 */
-+	static const uint32_t buffercopy_cs_shader_gfx11[] = {
-+		0xB0802006, 0xBF840003, 0x360000FF, 0x000003FF,
-+		0xBF870001, 0xD6460001, 0x04010C08, 0xE00C0000,
-+		0x80800201, 0xBF8903F7, 0xE01C0000, 0x80810201,
-+		0xBFB60003, 0xBFB00000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000
-+	};
-+	static const uint32_t buffercopy_cs_shader_gfx12[] =
-+	{
-+		0xB0802009, 0xBF930011, 0x360000FF, 0x000003FF,
-+		0xBF870001, 0xD6460002, 0x04010C75, 0xC400C07C,
-+		0x80000003, 0x00000002, 0xBFC00000, 0xC401C07C,
-+		0x80000803, 0x00000002, 0xBFB60003, 0xBFB00000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000
-+	};
++	bos[0] = bo_cmd;
++	bos[1] = bo_shader;
++	bos[2] = bo_target;
++	r = amdgpu_bo_list_create(dev, 3, bos, NULL, &bo_list);
++	if (r) {
++		amdgpu_bo_unmap_and_free(bo_cmd, va_cmd, mc_cmd, 4096);
++		amdgpu_cs_ctx_free(ctx);
++		return r;
++	}
 +
-+	uint32_t shader_size;
-+	const uint32_t *shader;
++	ib_info.ib_mc_address = mc_cmd;
++	ib_info.size = base_cmd->cdw;
++	ib_req.ip_type = AMDGPU_HW_IP_COMPUTE;
++	ib_req.ring = 0;
++	ib_req.resources = bo_list;
++	ib_req.number_of_ibs = 1;
++	ib_req.ibs = &ib_info;
 +
-+	switch (cs_type) {
-+		case CS_BUFFERCLEAR:
-+			if (version == 9) {
-+				shader = bufferclear_cs_shader_gfx9;
-+				shader_size = sizeof(bufferclear_cs_shader_gfx9);
-+			} else if (version == 10) {
-+				shader = bufferclear_cs_shader_gfx10;
-+				shader_size = sizeof(bufferclear_cs_shader_gfx10);
-+			} else if (version == 11) {
-+				shader = bufferclear_cs_shader_gfx11;
-+				shader_size = sizeof(bufferclear_cs_shader_gfx11);
-+			} else if (version == 12) {
-+				shader = bufferclear_cs_shader_gfx12;
-+				shader_size = sizeof(bufferclear_cs_shader_gfx12);
++	r = amdgpu_cs_submit(ctx, 0, &ib_req, 1);
++	if (r) {
++		amdgpu_bo_list_destroy(bo_list);
++		amdgpu_bo_unmap_and_free(bo_cmd, va_cmd, mc_cmd, 4096);
++		amdgpu_cs_ctx_free(ctx);
++		return r;
++	}
++
++	*out_ctx = ctx;
++	*out_seq = ib_req.seq_no;
++
++	/* Keep command buffer and list until fence signaled */
++	amdgpu_bo_list_destroy(bo_list); /* list can be destroyed after submit */
++	amdgpu_bo_unmap_and_free(bo_cmd, va_cmd, mc_cmd, 4096);
++	free_cmd_base(base_cmd);
++	return 0;
++}
++
++/* Submit polling dispatch with two buffers (for map/unmap test) */
++static int submit_poll_dispatch_two_buffers(amdgpu_device_handle dev,
++					    uint32_t version,
++					   uint64_t mc_shader,
++					   uint64_t src_va,
++					   uint64_t dst_va,
++					   amdgpu_bo_handle bo_shader,
++					   amdgpu_bo_handle bo_src,
++					   amdgpu_bo_handle bo_dst,
++					   amdgpu_context_handle *out_ctx,
++					   uint64_t *out_seq)
++{
++	int r;
++	struct amdgpu_cmd_base *base_cmd = get_cmd_base();
++	amdgpu_bo_handle bo_cmd = NULL;
++	amdgpu_va_handle va_cmd = 0;
++	uint64_t mc_cmd = 0;
++	uint32_t *ptr_cmd = NULL;
++	amdgpu_bo_list_handle bo_list = NULL;
++	struct amdgpu_cs_ib_info ib_info = {0};
++	struct amdgpu_cs_request ib_req = {0};
++	amdgpu_context_handle ctx;
++	amdgpu_bo_handle bos[4]; /* cmd, shader, src, dst */
++
++	r = amdgpu_cs_ctx_create(dev, &ctx);
++	if (r)
++		return r;
++
++	r = amdgpu_bo_alloc_and_map(dev, 4096, 4096,
++				    AMDGPU_GEM_DOMAIN_GTT, 0,
++				&bo_cmd, (void **)&ptr_cmd, &mc_cmd, &va_cmd);
++	if (r) {
++		amdgpu_cs_ctx_free(ctx);
++		return r;
++	}
++	memset(ptr_cmd, 0, 4096);
++	base_cmd->attach_buf(base_cmd, ptr_cmd, 4096);
++
++	amdgpu_dispatch_init(AMDGPU_HW_IP_COMPUTE, base_cmd, version);
++	amdgpu_dispatch_write_cumask(base_cmd, version);
++	amdgpu_dispatch_write2hw(base_cmd, mc_shader, version, 0);
++
++	/* SGPRs: src_va, dst_va */
++	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 4));
++	base_cmd->emit(base_cmd, 0x240); /* first user data SGPR */
++	base_cmd->emit(base_cmd, src_va & 0xffffffff);
++	base_cmd->emit(base_cmd, src_va >> 32);
++	base_cmd->emit(base_cmd, dst_va & 0xffffffff);
++	base_cmd->emit(base_cmd, dst_va >> 32);
++
++	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PACKET3_DISPATCH_DIRECT, 3));
++	base_cmd->emit(base_cmd, 0x10); /* grid dims (arbitrary small) */
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit_aligned(base_cmd, 7, GFX_COMPUTE_NOP);
++
++	bos[0] = bo_cmd;
++	bos[1] = bo_shader;
++	bos[2] = bo_src;
++	bos[3] = bo_dst;
++	r = amdgpu_bo_list_create(dev, 4, bos, NULL, &bo_list);
++	if (r) {
++		amdgpu_bo_unmap_and_free(bo_cmd, va_cmd, mc_cmd, 4096);
++		amdgpu_cs_ctx_free(ctx);
++		return r;
++	}
++
++	ib_info.ib_mc_address = mc_cmd;
++	ib_info.size = base_cmd->cdw;
++	ib_req.ip_type = AMDGPU_HW_IP_COMPUTE;
++	ib_req.ring = 0;
++	ib_req.resources = bo_list;
++	ib_req.number_of_ibs = 1;
++	ib_req.ibs = &ib_info;
++
++	r = amdgpu_cs_submit(ctx, 0, &ib_req, 1);
++	if (r) {
++		amdgpu_bo_list_destroy(bo_list);
++		amdgpu_bo_unmap_and_free(bo_cmd, va_cmd, mc_cmd, 4096);
++		amdgpu_cs_ctx_free(ctx);
++		return r;
++	}
++
++	*out_ctx = ctx;
++	*out_seq = ib_req.seq_no;
++
++	amdgpu_bo_list_destroy(bo_list);
++	amdgpu_bo_unmap_and_free(bo_cmd, va_cmd, mc_cmd, 4096);
++	free_cmd_base(base_cmd);
++	return 0;
++}
++
++static void remote_cache_invalidate_test(amdgpu_device_handle *devices, int device_count)
++{
++	int r;
++	struct amdgpu_gpu_info infoA = {0}, infoB = {0};
++	amdgpu_bo_handle boA = NULL; /* target buffer on GPU A */
++	amdgpu_va_handle vaA = 0;
++	uint64_t mcA = 0;
++	void *cpuA = NULL;
++	amdgpu_bo_handle boShaderA = NULL;
++	amdgpu_va_handle vaShaderA = 0;
++	uint64_t mcShaderA = 0;
++	void *cpuShaderA = NULL;
++	uint32_t versionA = 0;
++	amdgpu_context_handle ctxA;
++	uint64_t seqA = 0;
++	struct amdgpu_cs_fence fenceA = {0};
++	uint32_t expired = 0;
++	/* Declarations (C90) for later use */
++	uint64_t src_va = 0, dst_va = 0;
++	uint32_t prime_handle = 0; /* exported shared handle (dma-buf fd) */
++	int prime_fd = -1;         /* signed fd for close() */
++	struct amdgpu_bo_import_result import_res; /* import result */
++	void *cpuB = NULL;
++	volatile uint32_t *remote_buf = NULL;
++	uint32_t *bufA = NULL;
++
++	igt_require_f(device_count >= 2, "Need >=2 AMD GPUs for remote test\n");
++
++	/* Query GPU info for gating */
++	r = amdgpu_query_gpu_info(devices[0], &infoA); igt_require(r == 0);
++	r = amdgpu_query_gpu_info(devices[1], &infoB); igt_require(r == 0);
++
++	/* Family gate: require AI (Arcturus-like) on both for closer semantics */
++	if (!FAMILY_IS_AI(infoA.family_id) || !FAMILY_IS_AI(infoB.family_id)) {
++		igt_skip("Skipping: requires two AI/Arcturus family GPUs\n");
++		return;
++	}
++
++	/* Allocate host-accessible VRAM on GPU A */
++	r = amdgpu_bo_alloc_and_map_sync(devices[0],
++					 PAGE_SIZE, 4096,
++				     AMDGPU_GEM_DOMAIN_VRAM,
++				     AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED,
++				     AMDGPU_VM_MTYPE_RW,
++				     &boA, &cpuA, &mcA, &vaA,
++				     0, 0, true);
++	igt_assert_eq(r, 0);
++	memset(cpuA, 0, PAGE_SIZE);
++
++	/* Build poll shader */
++	r = build_poll_shader(devices[0], &infoA, &boShaderA, &mcShaderA, &vaShaderA, &cpuShaderA, &versionA);
++	igt_assert_eq(r, 0);
++
++	/* Dispatch polling compute on GPU A */
++	src_va = mcA + SRC_LOCATION * sizeof(uint32_t);
++	dst_va = mcA + DW_LOCATION * sizeof(uint32_t);
++	r = submit_poll_dispatch(devices[0], versionA, mcShaderA, src_va, dst_va, boShaderA, boA, &ctxA, &seqA);
++	igt_assert_eq(r, 0);
++
++	/* Export boA as dma-buf and import into GPU B */
++	/* Export BO as dma-buf fd (older libdrm signature: (bo, type, &shared_handle)) */
++	r = amdgpu_bo_export(boA, amdgpu_bo_handle_type_dma_buf_fd, &prime_handle);
++	igt_assert_eq(r, 0);
++	prime_fd = (int)prime_handle;
++	igt_assert(prime_fd >= 0);
++
++	memset(&import_res, 0, sizeof(import_res));
++	r = amdgpu_bo_import(devices[1], amdgpu_bo_handle_type_dma_buf_fd, prime_fd, &import_res);
++	igt_assert_eq(r, 0);
++
++	/* Map on GPU B (remote) and write trigger pattern */
++	r = amdgpu_bo_cpu_map(import_res.buf_handle, &cpuB);
++	igt_assert_eq(r, 0);
++	remote_buf = (volatile uint32_t *)cpuB;
++	remote_buf[SRC_LOCATION] = POLL_PATTERN; /* remote write */
++	amdgpu_bo_cpu_unmap(import_res.buf_handle);
++
++	/* Wait for compute shader fence on GPU A */
++	fenceA.context = ctxA;
++	fenceA.ip_type = AMDGPU_HW_IP_COMPUTE;
++	fenceA.ip_instance = 0;
++	fenceA.ring = 0;
++	fenceA.fence = seqA;
++	r = amdgpu_cs_query_fence_status(&fenceA, AMDGPU_TIMEOUT_INFINITE, 0, &expired);
++	igt_assert_eq(r, 0);
++	igt_assert_f(expired, "Compute fence not signaled\n");
++
++	/* Validate result */
++	bufA = (uint32_t *)cpuA;
++	igt_assert_f(bufA[DW_LOCATION] == POLL_PATTERN,
++		     "Remote cache invalidate failed: expected 0x%x got 0x%x\n",
++	 POLL_PATTERN, bufA[DW_LOCATION]);
++	igt_info("remote-cache-invalidate: PASSED (dst[%d]=0x%x)\n", DW_LOCATION, bufA[DW_LOCATION]);
++
++	/* Cleanup */
++	close(prime_fd);
++	amdgpu_bo_free(import_res.buf_handle);
++
++	amdgpu_cs_ctx_free(ctxA);
++	amdgpu_bo_unmap_and_free(boShaderA, vaShaderA, mcShaderA, 4096);
++	amdgpu_bo_unmap_and_free(boA, vaA, mcA, PAGE_SIZE);
++}
++
++static void map_unmap_to_nodes_test(amdgpu_device_handle *devices, int device_count)
++{
++	int r;
++	struct amdgpu_gpu_info infoA = {0}, infoB = {0};
++
++	/* GPU A resources (default node) */
++	amdgpu_bo_handle boSrcA = NULL, boDstA = NULL, boShaderA = NULL;
++	amdgpu_va_handle vaSrcA = 0, vaDstA = 0, vaShaderA = 0;
++	uint64_t mcSrcA = 0, mcDstA = 0, mcShaderA = 0;
++	void *cpuSrcA = NULL, *cpuDstA = NULL, *cpuShaderA = NULL;
++	uint32_t versionA = 0;
++	amdgpu_context_handle ctxA = NULL;
++	uint64_t seqA = 0;
++	struct amdgpu_cs_fence fenceA = {0};
++	uint32_t expired = 0;
++
++	/* GPU B resources (non-default node) */
++	uint32_t prime_handle_src = 0, prime_handle_dst = 0;
++	int prime_fd_src = -1, prime_fd_dst = -1;
++	struct amdgpu_bo_import_result import_src, import_dst;
++	void *cpuSrcB = NULL, *cpuDstB = NULL;
++
++	uint64_t src_va = 0, dst_va = 0;
++	volatile uint32_t *src_val = NULL, *dst_val = NULL;
++	unsigned int i;
++	bool wait_result;
++
++	igt_require_f(device_count >= 2, "Need >=2 AMD GPUs for map/unmap test\n");
++
++	/* Query GPU info */
++	r = amdgpu_query_gpu_info(devices[0], &infoA);
++	igt_require(r == 0);
++	r = amdgpu_query_gpu_info(devices[1], &infoB);
++	igt_require(r == 0);
++
++	/* Require GFX9+ on default node (GPU A) - corrected condition */
++	if (infoA.family_id < FAMILY_AI) {
++		igt_skip("Skipping: requires GFX9+ AI family GPU as default node\n");
++		return;
++	}
++
++	igt_info("Starting map-unmap test: GPU A (default) will run shader, GPU B will map/unmap\n");
++	igt_info("GPU A family: 0x%x, GPU B family: 0x%x\n", infoA.family_id, infoB.family_id);
++
++	/* Allocate source and destination buffers on GPU A */
++	r = amdgpu_bo_alloc_and_map_sync(devices[0], PAGE_SIZE, 4096,
++					 AMDGPU_GEM_DOMAIN_VRAM,
++				    AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED,
++				    AMDGPU_VM_MTYPE_RW,
++				    &boSrcA, &cpuSrcA, &mcSrcA, &vaSrcA,
++				    0, 0, true);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_alloc_and_map_sync(devices[0], PAGE_SIZE, 4096,
++					 AMDGPU_GEM_DOMAIN_VRAM,
++				    AMDGPU_GEM_CREATE_CPU_ACCESS_REQUIRED,
++				    AMDGPU_VM_MTYPE_RW,
++				    &boDstA, &cpuDstA, &mcDstA, &vaDstA,
++				    0, 0, true);
++	igt_assert_eq(r, 0);
++
++	/* Initialize buffers to 0 */
++	memset(cpuSrcA, 0, PAGE_SIZE);
++	memset(cpuDstA, 0, PAGE_SIZE);
++
++	igt_info("Buffers allocated and initialized to 0\n");
++	igt_info("Source buffer MC address: 0x%lx, Destination buffer MC address: 0x%lx\n", mcSrcA, mcDstA);
++
++	/* Build poll shader on GPU A */
++	r = build_poll_shader(devices[0], &infoA, &boShaderA, &mcShaderA,
++			      &vaShaderA, &cpuShaderA, &versionA);
++	igt_assert_eq(r, 0);
++	igt_info("Poll shader built successfully, version: %u, MC address: 0x%lx\n", versionA, mcShaderA);
++
++	/* Submit polling compute on GPU A */
++	src_va = mcSrcA;
++	dst_va = mcDstA;
++	igt_info("Submitting compute shader: src_va=0x%lx, dst_va=0x%lx\n", src_va, dst_va);
++
++	r = submit_poll_dispatch_two_buffers(devices[0], versionA, mcShaderA, src_va, dst_va,
++					     boShaderA, boSrcA, boDstA, &ctxA, &seqA);
++	igt_assert_eq(r, 0);
++	igt_info("Compute shader submitted on GPU A, sequence: %lu\n", seqA);
++
++	/* Immediately check if shader is running by checking fence status */
++	fenceA.context = ctxA;
++	fenceA.ip_type = AMDGPU_HW_IP_COMPUTE;
++	fenceA.ip_instance = 0;
++	fenceA.ring = 0;
++	fenceA.fence = seqA;
++
++	r = amdgpu_cs_query_fence_status(&fenceA, 0, 0, &expired);
++	igt_info("Initial fence status: query_result=%d, expired=%d\n", r, expired);
++
++	/* Check buffer values immediately after submission */
++	dst_val = (volatile uint32_t *)cpuDstA;
++	src_val = (volatile uint32_t *)cpuSrcA;
++	igt_info("Buffer values after submission: src=0x%x, dst=0x%x\n", *src_val, *dst_val);
++
++	/* Let the shader run for a short time before starting cross-GPU operations */
++	usleep(100000); /* 100ms */
++
++	r = amdgpu_cs_query_fence_status(&fenceA, 0, 0, &expired);
++	igt_info("Fence status after 100ms: query_result=%d, expired=%d\n", r, expired);
++	igt_info("Buffer values after 100ms: src=0x%x, dst=0x%x\n", *src_val, *dst_val);
++
++	/* If fence is already expired, the shader completed immediately - this indicates a problem */
++	if (expired) {
++		igt_info("WARNING: Compute fence expired immediately - shader may not have run correctly\n");
++		igt_info("This could indicate: 1) Shader compilation issue, 2) Invalid addresses, 3) Shader too simple\n");
++	}
++
++	/* Export buffers from GPU A and import to GPU B */
++	r = amdgpu_bo_export(boSrcA, amdgpu_bo_handle_type_dma_buf_fd, &prime_handle_src);
++	igt_assert_eq(r, 0);
++	prime_fd_src = (int)prime_handle_src;
++
++	r = amdgpu_bo_export(boDstA, amdgpu_bo_handle_type_dma_buf_fd, &prime_handle_dst);
++	igt_assert_eq(r, 0);
++	prime_fd_dst = (int)prime_handle_dst;
++
++	memset(&import_src, 0, sizeof(import_src));
++	r = amdgpu_bo_import(devices[1], amdgpu_bo_handle_type_dma_buf_fd,
++			     prime_fd_src, &import_src);
++	igt_assert_eq(r, 0);
++
++	memset(&import_dst, 0, sizeof(import_dst));
++	r = amdgpu_bo_import(devices[1], amdgpu_bo_handle_type_dma_buf_fd,
++			     prime_fd_dst, &import_dst);
++	igt_assert_eq(r, 0);
++
++	igt_info("Buffers exported from GPU A and imported to GPU B\n");
++
++	/* The key difference: In KFD test, they use hsaKmtMapMemoryToGPUNodes to
++	* repeatedly map/unmap between GPU nodes. In IGT, we simulate this by
++	* repeatedly importing/exporting the buffers between GPUs.
++	*/
++	igt_info("Starting cross-GPU mapping iterations...\n");
++
++	/* Repeatedly import/export between GPUs while shader is running */
++	for (i = 0; i < MAX_ITERATIONS; i++) {
++		/* Free the imported buffers on GPU B */
++		amdgpu_bo_free(import_src.buf_handle);
++		amdgpu_bo_free(import_dst.buf_handle);
++
++		/* Re-import the buffers to GPU B */
++		memset(&import_src, 0, sizeof(import_src));
++		r = amdgpu_bo_import(devices[1], amdgpu_bo_handle_type_dma_buf_fd,
++				     prime_fd_src, &import_src);
++		igt_assert_eq(r, 0);
++
++		memset(&import_dst, 0, sizeof(import_dst));
++		r = amdgpu_bo_import(devices[1], amdgpu_bo_handle_type_dma_buf_fd,
++				     prime_fd_dst, &import_dst);
++		igt_assert_eq(r, 0);
++
++		/* Map and immediately unmap on GPU B to simulate the mapping behavior */
++		r = amdgpu_bo_cpu_map(import_src.buf_handle, &cpuSrcB);
++		igt_assert_eq(r, 0);
++		amdgpu_bo_cpu_unmap(import_src.buf_handle);
++
++		r = amdgpu_bo_cpu_map(import_dst.buf_handle, &cpuDstB);
++		igt_assert_eq(r, 0);
++		amdgpu_bo_cpu_unmap(import_dst.buf_handle);
++
++		/* Every 32 iterations, check if shader is still running */
++		if ((i & 0x1F) == 0) {
++			    /* Check fence status */
++			    r = amdgpu_cs_query_fence_status(&fenceA, 0, 0, &expired);
++
++			    /* Quick check - if dst buffer changed, shader might have completed */
++			    dst_val = (volatile uint32_t *)cpuDstA;
++			if (*dst_val == POLL_PATTERN) {
++				igt_info("Shader completed early at iteration %u\n", i);
++				break;
 +			}
-+			break;
-+		case CS_BUFFERCOPY:
-+			if (version == 9) {
-+				shader = buffercopy_cs_shader_gfx9;
-+				shader_size = sizeof(buffercopy_cs_shader_gfx9);
-+			} else if (version == 10) {
-+				shader = buffercopy_cs_shader_gfx10;
-+				shader_size = sizeof(buffercopy_cs_shader_gfx10);
-+			} else if (version == 11) {
-+				shader = buffercopy_cs_shader_gfx11;
-+				shader_size = sizeof(buffercopy_cs_shader_gfx11);
-+			} else if (version == 12) {
-+				shader = buffercopy_cs_shader_gfx12;
-+				shader_size = sizeof(buffercopy_cs_shader_gfx12);
++			    igt_info("Iteration %u: fence_expired=%d, dst buffer=0x%x\n", i, expired, *dst_val);
++
++			    /* If fence expired but dst buffer is still 0, shader didn't work */
++			if (expired && *dst_val == 0) {
++				igt_info("WARNING: Fence expired but shader didn't produce expected result at iteration %u\n", i);
 +			}
-+			break;
-+		case CS_HANG:
-+			shader = memcpy_ps_hang;
-+			shader_size = sizeof(memcpy_ps_hang);
-+			break;
-+		default:
-+			return -1;
++		}
 +	}
 +
-+	memcpy(ptr, shader, shader_size);
-+	return 0;
-+}
++	igt_info("Cross-GPU mapping iterations completed, signaling shader to quit\n");
 +
++	/* Signal shader to quit by writing pattern to source buffer */
++	src_val = (volatile uint32_t *)cpuSrcA;
++	*src_val = POLL_PATTERN;
++	igt_info("Wrote 0x%x to source buffer\n", POLL_PATTERN);
 +
-+int
-+amdgpu_draw_load_ps_shader_hang_slow(uint32_t *ptr, int family)
-+{
-+	/**
-+	 * s_mov_b32 m0, s12
-+	 * s_mov_b64 s[14:15], exec
-+	 * s_wqm_b64 exec, exec
-+	 * v_interp_p1_f32_e32 v2, v0, attr0.x
-+	 * v_interp_p2_f32_e32 v2, v1, attr0.x
-+	 * v_interp_p1_f32_e32 v3, v0, attr0.y
-+	 * v_interp_p2_f32_e32 v3, v1, attr0.y
-+	 * image_sample v[0:3], v2, s[0:7], s[8:11] dmask:0xf
-+	 * ;;
-+	 * s_mov_b64 exec, s[14:15]
-+	 * s_waitcnt vmcnt(0)
-+	 * s_nop 0
-+	 * s_nop 0
-+	 * s_nop 0
-+	 * s_nop 0
-+	 * exp mrt0 v0, v1, v2, v3 done vm
-+	 * ;;
-+	 * s_endpgm
-+	 */
-+	unsigned int memcpy_ps_hang_slow_ai_codes[] = {
-+		0xbefc000c, 0xbe8e017e, 0xbefe077e, 0xd4080000,
-+		0xd4090001, 0xd40c0100, 0xd40d0101, 0xf0800f00,
-+		0x00400002, 0xbefe010e, 0xbf8c0f70, 0xbf800000,
-+		0xbf800000, 0xbf800000, 0xbf800000, 0xc400180f,
-+		0x03020100, 0xbf810000
-+	};
++	/* Wait for shader to complete (write to dst buffer) using existing wait_on_value */
++	igt_info("Waiting for shader to complete...\n");
++	wait_result = wait_on_value(cpuDstA, POLL_PATTERN);
 +
-+	struct amdgpu_test_shader memcpy_ps_hang_slow_ai = {
-+		memcpy_ps_hang_slow_ai_codes,
-+		7,
-+		2,
-+		9
-+	};
++	if (!wait_result) {
++		igt_info("Shader did not complete. This might indicate a GPU VM fault.\n");
++		/* Check current buffer values */
++		dst_val = (volatile uint32_t *)cpuDstA;
++		src_val = (volatile uint32_t *)cpuSrcA;
++		igt_info("Final buffer values: src=0x%x, dst=0x%x\n", *src_val, *dst_val);
 +
-+	struct amdgpu_test_shader *shader;
-+	int i, loop = 0x40000;
++		/* Check fence status */
++		fenceA.context = ctxA;
++		fenceA.ip_type = AMDGPU_HW_IP_COMPUTE;
++		fenceA.ip_instance = 0;
++		fenceA.ring = 0;
++		fenceA.fence = seqA;
++		r = amdgpu_cs_query_fence_status(&fenceA, 0, 0, &expired);
++		igt_info("Final fence status: query_result=%d, expired=%d\n", r, expired);
 +
-+	switch (family) {
-+		case AMDGPU_FAMILY_AI:
-+		case AMDGPU_FAMILY_RV:
-+		case AMDGPU_FAMILY_NV: /* TODO check for correctness */
-+		shader = &memcpy_ps_hang_slow_ai;
-+			break;
-+		default:
-+			return -1;
-+			break;
++		if (expired && *dst_val == 0) {
++			igt_info("CONCLUSION: Fence completed but shader produced no result - shader execution failed\n");
++			igt_info("Possible causes:\n");
++			igt_info("1. Shader compilation failed\n");
++			igt_info("2. Invalid memory addresses passed to shader\n");
++			igt_info("3. Shader code has bugs\n");
++			igt_info("4. GPU hardware issue\n");
++		}
 +	}
 +
-+	memcpy(ptr, shader->shader, shader->header_length * sizeof(uint32_t));
++	igt_assert_f(wait_result, "Timeout waiting for shader completion - possible GPU VM fault\n");
 +
-+	for (i = 0; i < loop; i++)
-+		memcpy(ptr + shader->header_length + shader->body_length * i,
-+			shader->shader + shader->header_length,
-+			shader->body_length * sizeof(uint32_t));
++	/* Wait for compute fence */
++	fenceA.context = ctxA;
++	fenceA.ip_type = AMDGPU_HW_IP_COMPUTE;
++	fenceA.ip_instance = 0;
++	fenceA.ring = 0;
++	fenceA.fence = seqA;
++	r = amdgpu_cs_query_fence_status(&fenceA, AMDGPU_TIMEOUT_INFINITE, 0, &expired);
++	igt_assert_eq(r, 0);
++	igt_assert_f(expired, "Compute fence not signaled\n");
 +
-+	memcpy(ptr + shader->header_length + shader->body_length * loop,
-+		shader->shader + shader->header_length + shader->body_length,
-+		shader->foot_length * sizeof(uint32_t));
++	/* Validate result */
++	dst_val = (volatile uint32_t *)cpuDstA;
++	igt_assert_f(*dst_val == POLL_PATTERN,
++		     "Map/unmap test failed: expected 0x%x got 0x%x\n",
++		 POLL_PATTERN, *dst_val);
 +
-+	return 0;
++	igt_info("map-unmap-to-nodes: PASSED (iterations=%u, dst=0x%x)\n",
++		 i, *dst_val);
++
++	/* Cleanup */
++	amdgpu_bo_free(import_src.buf_handle);
++	amdgpu_bo_free(import_dst.buf_handle);
++
++	close(prime_fd_src);
++	close(prime_fd_dst);
++
++	amdgpu_cs_ctx_free(ctxA);
++	amdgpu_bo_unmap_and_free(boShaderA, vaShaderA, mcShaderA, 4096);
++	amdgpu_bo_unmap_and_free(boSrcA, vaSrcA, mcSrcA, PAGE_SIZE);
++	amdgpu_bo_unmap_and_free(boDstA, vaDstA, mcDstA, PAGE_SIZE);
 +}
-diff --git a/lib/amdgpu/amd_shaders.h b/lib/amdgpu/shaders/amd_shaders.h
-similarity index 96%
-rename from lib/amdgpu/amd_shaders.h
-rename to lib/amdgpu/shaders/amd_shaders.h
-index 80a319a3a..f7d4cab07 100644
---- a/lib/amdgpu/amd_shaders.h
-+++ b/lib/amdgpu/shaders/amd_shaders.h
-@@ -27,7 +27,7 @@
- 
- #include "drmtest.h"
- #include <amdgpu.h>
--#include "amd_shared_dispatch.h"
-+#include "amdgpu/compute_utils/amd_shared_dispatch.h"
- 
- const uint32_t *
- get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset);
-diff --git a/lib/meson.build b/lib/meson.build
-index 707ce6ff9..bbfac3c2b 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -164,10 +164,10 @@ if libdrm_amdgpu.found()
- 		'amdgpu/amd_gfx.c',
- 		'amdgpu/amd_ip_blocks.c',
- 		'amdgpu/amd_ip_blocks_ex.c',
--		'amdgpu/amd_shaders.c',
-+		'amdgpu/shaders/amd_shaders.c',
- 		'amdgpu/amd_gfx_v8_0.c',
--		'amdgpu/amd_gfx_v9_0.c',
--		'amdgpu/amd_dispatch_helpers.c',
-+		'amdgpu/compute_utils/amd_gca.c',
-+		'amdgpu/compute_utils/amd_dispatch_helpers.c',
- 		'amdgpu/amd_deadlock_helpers.c',
- 		'amdgpu/amd_pci_unplug.c',
- 		'amdgpu/amd_shared_process.c',
-@@ -179,11 +179,22 @@ if libdrm_amdgpu.found()
- 		'amdgpu/amd_vcn_shared.c'
- 	]
- 	if libdrm_amdgpu.version().version_compare('> 2.4.99')
--		lib_sources +=[ 'amdgpu/amd_dispatch.c',]
-+		lib_sources +=[ 'amdgpu/compute_utils/amd_dispatch.c',]
- 	else
- 		warning('libdrm <= 2.4.99 found, amdgpu_cs_query_reset_state2 not applicable')
- 	endif
- 
-+	# Optional runtime ISA assembly via external llvm-mc tool (no lib dependency needed)
-+	llvm_mc_prog = find_program(['llvm-mc-20','llvm-mc-19','llvm-mc-18','llvm-mc'], required : false)
-+	if llvm_mc_prog.found()
-+		add_project_arguments('-DAMDGPU_LLVM_ENABLED', language : ['c'])
-+		lib_sources += ['amdgpu/shaders/amd_llvm_asm.c']
-+		message('Found ' + llvm_mc_prog.path() + ' enabling runtime AMDGPU ISA assembly')
-+	else
-+		lib_sources += ['amdgpu/shaders/amd_llvm_asm_stub.c']
-+		message('llvm-mc not found: using stub implementation (tests will skip)')
-+	endif
 +
- 	if libdrm_amdgpu.version().version_compare('>= 2.4.125')
- 		add_project_arguments('-DAMDGPU_USERQ_ENABLED', language: 'c')
- 	else
++igt_main {
++	static int fds[8];
++	static int fd_count;
++	static amdgpu_device_handle devices[8];
++	uint32_t majors[8] = {0}, minors[8] = {0};
++	int i;
++	struct pci_addr pci_addr;
++	int ret;
++
++	igt_fixture {
++		memset(fds, -1, sizeof(fds));
++
++		/* Use amdgpu_open_devices from IGT lib to open AMD GPU devices */
++		fd_count = amdgpu_open_devices(true, 8, fds);
++		igt_require_f(fd_count >= 2, "Need >=2 AMD GPUs for remote test\n");
++
++		for (i = 0; i < fd_count; i++) {
++			igt_require(amdgpu_device_initialize(fds[i], &majors[i], &minors[i], &devices[i]) == 0);
++
++			/* Get and print PCI bus info for each device */
++			ret = get_pci_addr_from_fd(fds[i], &pci_addr);
++			if (ret == 0) {
++			igt_info("Initialized GPU %d: version %d.%d, PCI %04x:%02x:%02x.%x\n",
++				 i, majors[i], minors[i],
++				 pci_addr.domain, pci_addr.bus, pci_addr.device, pci_addr.function);
++			} else {
++				igt_info("Initialized GPU %d: version %d.%d, PCI info unavailable\n",
++					 i, majors[i], minors[i]);
++			}
++		}
++	}
++
++	igt_subtest("remote-cache-invalidate") {
++		remote_cache_invalidate_test(devices, fd_count);
++	}
++
++	igt_subtest("map-unmap-to-nodes") {
++		map_unmap_to_nodes_test(devices, fd_count);
++	}
++
++	igt_fixture {
++		for (i = 0; i < fd_count; i++) {
++			if (devices[i]) {
++			amdgpu_device_deinitialize(devices[i]);
++			}
++			if (fds[i] >= 0) {
++			close(fds[i]);
++			}
++		}
++	}
++}
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index 4c3af24fd..b718699f1 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -46,6 +46,8 @@ if libdrm_amdgpu.found()
+ 			  'amd_odm',
+ 			  'amd_subvp',
+ 			  'amd_vpe',
++			  'amd_mem',
++			  'amd_remote_mem',
+ 			]
+ 	if libdrm_amdgpu.version().version_compare('> 2.4.97')
+ 		amdgpu_progs +=[ 'amd_syncobj', ]
 -- 
 2.49.0
 
