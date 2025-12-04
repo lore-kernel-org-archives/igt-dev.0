@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA620D2E035
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 08:03:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07518D2E036
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 08:03:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E865510EA2D;
-	Fri,  5 Dec 2025 08:03:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7094D10EA2F;
+	Fri,  5 Dec 2025 08:03:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PDqwKas7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LObsKxNL";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 378A810E232
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Dec 2025 07:34:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 405FD10E1F4
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Dec 2025 15:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764920052; x=1796456052;
+ t=1764861546; x=1796397546;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
  bh=w7sDghfmpceZBmn4JadlP/soC+WciBYErq0FMI5WCk4=;
- b=PDqwKas7KdrsK851ir5612ask7PpzWtjp48HqhJ3/Wk9C5y4Cr+3zf3x
- /Xay7JLUY2ofYdEFu1DgxD1Q4LIPQsACwscDxDMYv8va0nIMHPQy9Sz+4
- sGuw4cQrL+v4MYCsxLPJF3NBLBQzwnIsHZTO1p44jrqyPcx+fypPnxc8n
- 93IX/YU6fzeRtIZZF59m4hz7AdG1IjoCj+UxRVzmORQCI1OenMe/l5WXO
- c/8voKqiomApLZgGjvKcWK2YJLCcirx5GXYU4hk+oFmsxyXL1KhDeAYha
- w7SGtUbDvn2ZX+CMwiVHchZ5+PvKgflJOIkFKk2sD3+SXxCT22CWMmnQU w==;
-X-CSE-ConnectionGUID: Nl3SEyA4S2GkVHUFMDWTTQ==
-X-CSE-MsgGUID: i7AatcnOTBGp6QdjOOJtHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="67115885"
-X-IronPort-AV: E=Sophos;i="6.20,251,1758610800"; d="scan'208";a="67115885"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2025 23:34:11 -0800
-X-CSE-ConnectionGUID: /GF2Q6VrRiKSB+DqzHY71w==
-X-CSE-MsgGUID: f+CjVSofREGP08iRer90Zw==
+ b=LObsKxNLHeKlRQR0bhDQVhnjYfoqkUQgdKSudCHhyKBjP0VewtUywXKp
+ SB5TmPL9+q1CU9CXhbUuj+2NVzm6ep1qJP6gBDYjMFuFj7u84lXPm5b7v
+ bH9H9UhS2pMjfDhL+tIC/dMTSDspaSISKsJSPxn/AoNUsWIy5k6ZfFzRX
+ L078olf4xb3Cu02FC2GCjecDSMdIGhzq0ugiNqCmJ8kzIiCjBynyyuL69
+ uuLCMxf2RudLWtLIW2yLBpkeuOsfqNfl8g13K+gHxnhpmUeEgq/e/71XH
+ cy9c1YdrtdvtNUK3oYWr5JPu+sdo/L8RrFERaVHsgGkJXwGCEEvqYrSOu w==;
+X-CSE-ConnectionGUID: h+LkY2CMQ0OCfxUT40QRfw==
+X-CSE-MsgGUID: B1dpkCVsT3C8jFSnqC/c/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="78348785"
+X-IronPort-AV: E=Sophos;i="6.20,249,1758610800"; d="scan'208";a="78348785"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2025 07:19:05 -0800
+X-CSE-ConnectionGUID: RR+RX397Rg2bUOsxxey9Fg==
+X-CSE-MsgGUID: UYFQMPRBTE2Y09qwWbop1g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,251,1758610800"; d="scan'208";a="199664787"
+X-IronPort-AV: E=Sophos;i="6.20,249,1758610800"; d="scan'208";a="225982281"
 Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2025 23:34:09 -0800
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2025 07:19:03 -0800
 From: Moahmmed Bilal <mohammed.bilal@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jeevan.b@intel.com, kunal1.joshi@intel.com,
  Moahmmed Bilal <mohammed.bilal@intel.com>
 Subject: [PATCH i-g-t 0/2] RFC: Fix chamelium port allocation during
  igt_fixture
-Date: Fri,  5 Dec 2025 13:02:47 +0530
-Message-ID: <20251205073249.653927-1-mohammed.bilal@intel.com>
+Date: Thu,  4 Dec 2025 20:47:48 +0530
+Message-ID: <20251204151750.633993-1-mohammed.bilal@intel.com>
 X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
