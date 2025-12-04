@@ -4,59 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EF81D2A540
-	for <igt-dev@archiver.kernel.org>; Thu,  4 Dec 2025 21:14:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23976D2A532
+	for <igt-dev@archiver.kernel.org>; Thu,  4 Dec 2025 21:20:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2EFF710E1D0;
-	Thu,  4 Dec 2025 21:14:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D2DD710E223;
+	Thu,  4 Dec 2025 21:20:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YZ7czbyL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SUzOz3uX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A99310E1D0
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Dec 2025 21:14:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A9F3C10E223
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Dec 2025 21:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764882866; x=1796418866;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=0GVypKEb8HaXfHvNwqtzeK5VcnpHcwQ3TV4S8e5ZzNw=;
- b=YZ7czbyLQxQHa6SXSzddeeBd/+L/7cYx1KMr4dwH9+C4y595HuapS0w2
- EIPJZdaoeShga8vw5NN6uysAK6N17JmPKs35RciY49Cg56j7Eaidqb2X0
- l5QNfsQytHv5PKWj4k/Oewia/Sj5VJmf3AaeBBtej6j2TWW6PQOvhJBMJ
- dCRkgx5aEA0P6Zg8UA7rFb8njrAdVGwyQNoE9z74VPpWOd6DlN8kLMPt/
- VRVsWM6TKa3syv+gSoYOWjg0CTPW8TYrWk7AuwIAf5Jn22eRxAjAuJ8AQ
- lh1R/VEKFB0UOkBedUUNNkLany79tZATIDaufJaVW4JYt5TdcvzL2odQZ w==;
-X-CSE-ConnectionGUID: pc39mZxaRVKboHMnC8z05w==
-X-CSE-MsgGUID: CeAKpbcnQ5OJwbrxIAAJ2Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="66952503"
-X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="66952503"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2025 13:14:26 -0800
-X-CSE-ConnectionGUID: 3Pdp78abR0CdVW6n+3FOBA==
-X-CSE-MsgGUID: JvMr0LtsTtm5bbR4KHQPnw==
+ t=1764883213; x=1796419213;
+ h=date:from:to:cc:subject:message-id:references:
+ content-transfer-encoding:in-reply-to:mime-version;
+ bh=2NktE19TnLtrBBoAsy+vYkQT1Bfe+mTk8asDnqizhgw=;
+ b=SUzOz3uXPl3fn4n52iDKdJAgkD2adsGa6nKPtk7rrqXMAGZs93wk1rPP
+ QkgtWyCK3OKaz56c2yZ7wUVpeoE//Rsy+IFwigzTrG3wo7UY5J7OPzs54
+ B98eAH9BX4eCTeZMgiPVw91DDzdVwdSTdAh6x6d3Bgy2q2bQr1D+oDlrm
+ Qx6xukLWW9xNWmuRdTE6nwvh77rsnkwmILv6HqU/bypanndirbM4vAhIM
+ eU/QQYTpZlcltKkcoixl7myyPwFZ7erAZBjxTfGIZ9eWsHPzG8YMParHg
+ nTpJ/+oyFb6cQQHZ/TZewy+MB6f4QijixXhfFdHEUNnvkdZbbiY6HGVnM A==;
+X-CSE-ConnectionGUID: SOEHm8PBSEa9a4YlHAhYgw==
+X-CSE-MsgGUID: LyvBZZODT3Cw+cqJ/OwVlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="66876907"
+X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="66876907"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2025 13:20:13 -0800
+X-CSE-ConnectionGUID: 4XBxljpgSOWvjuCUHP2wvQ==
+X-CSE-MsgGUID: Su4CnnBLSEinMCVnf6LvBw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="199517570"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.244.32])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2025 13:14:24 -0800
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Jesse Zhang <jesse.zhang@amd.com>, Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Karthik B S <karthik.b.s@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH i-g-t] tests/amdgpu/amd_mem: fix compilation on armhf
-Date: Thu,  4 Dec 2025 22:14:20 +0100
-Message-ID: <20251204211421.145825-1-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="232433802"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2025 13:20:13 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 4 Dec 2025 13:20:11 -0800
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Thu, 4 Dec 2025 13:20:11 -0800
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.1) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 4 Dec 2025 13:20:11 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dNHj1BMdWzUwmsjIpK3pIDqyHl+KxhTsfinAKMgfcdO6hTasGv5noAgv43IjS7qJtFxq8FhBEM9E9zexl7nG4OKbC7opaFb2rT5FDqW1p/eCUci8YRI+17hkAoYk0oxgRiaGNf/5kEQQPN94x82t/02m2YzZrTBw7HZEUI99LtlUI0g5g1xoqylNjrUWT9B7/mOQ8R9tAXpoXO9fRveQXfSC0zisyJH86YzX/1qKlG0gP/wC+xqbJZjfytxY7gt1NCdbA3ku0YfEdQWuC3nBrdMsZny1o62qG66j6W6cPcGO+YKpZGdCJdYlHHHuRe8iryas9JteGEpDMmDbiwnUVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/l9m2QknUI7FKBfaQ4hY4tArB5cpcvDugbR2e6NM66U=;
+ b=seipK+MLAscYgB6XQIlwjD5UN/STt1NTMmv/2oxx29/qIet/hQuJna/wtuwY4ynJA7F1HfI1AeEawt8ZqHd4yJzTX5tzXOM0PiIhNbt9eC1F9I2c1W+x9tL0m0dX3fSW7IkRS4YH04iUoJvdQ6CKoiyUc9MHG3adFB7CWPWP7zVYrJ9hDXF99E5JwoJagn6FZVtXbYdfwdRZtOFRYZySGAVKiE536ORy4bgET2A+Iq3+iA9+vuPzaOIVCYCMmkTdut1AwSKiqo4L+1BrHMq6rZGOmNhFLpwDU42p2Yesiu9ySla8fa9Yb7ok6Upp49uX7Md6zvmxwiBSwyRCu547Fg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL3PR11MB6410.namprd11.prod.outlook.com (2603:10b6:208:3b9::15)
+ by IA1PR11MB7678.namprd11.prod.outlook.com (2603:10b6:208:3f4::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Thu, 4 Dec
+ 2025 21:20:06 +0000
+Received: from BL3PR11MB6410.namprd11.prod.outlook.com
+ ([fe80::b01a:aa33:165:efc]) by BL3PR11MB6410.namprd11.prod.outlook.com
+ ([fe80::b01a:aa33:165:efc%3]) with mapi id 15.20.9366.012; Thu, 4 Dec 2025
+ 21:20:06 +0000
+Date: Thu, 4 Dec 2025 13:20:03 -0800
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: "Summers, Stuart" <stuart.summers@intel.com>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Ch, Sai
+ Gowtham" <sai.gowtham.ch@intel.com>, "Dandamudi, Priyanka"
+ <priyanka.dandamudi@intel.com>, "kamil.konieczny@linux.intel.com"
+ <kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH v2 17/19] tests/intel/xe_exec_multi_queue: Sanity test
+ KEEP_ACTIVE flag
+Message-ID: <aTH7AzT1uEGeL9He@nvishwa1-desk>
+References: <20251121035715.767226-21-niranjana.vishwanathapura@intel.com>
+ <20251121035715.767226-38-niranjana.vishwanathapura@intel.com>
+ <dfa4a32b6459d404d4b06312ac502b9e72dcb020.camel@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <dfa4a32b6459d404d4b06312ac502b9e72dcb020.camel@intel.com>
+X-ClientProxiedBy: SJ0PR05CA0176.namprd05.prod.outlook.com
+ (2603:10b6:a03:339::31) To BL3PR11MB6410.namprd11.prod.outlook.com
+ (2603:10b6:208:3b9::15)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR11MB6410:EE_|IA1PR11MB7678:EE_
+X-MS-Office365-Filtering-Correlation-Id: 855ae26b-f09e-4331-6058-08de337ae5a8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?GQqLFxHktol1oAG715rTcZlCJ570/VRyQfvLj0Rvhz67uO3ppwV+1OELAA?=
+ =?iso-8859-1?Q?tV4y+X3Lwds6LmxFLuDxU6wFnuKaJ1Aw6/6z7XPPOX23hyOULTnbX/9GgV?=
+ =?iso-8859-1?Q?Q2RcxW0FsecROQLACaRGKmxkGJEQhgeQgSJ/8TT9cLsDSekcfsbI6H84SW?=
+ =?iso-8859-1?Q?kWyYAl9xnf9WPGDZ+kcFEztSduPAxgwZVjeipDGWKurb6Arzb08A4QCzfd?=
+ =?iso-8859-1?Q?T8lt0+zLxKrLulGO0L5hsxL5gdBHy/jKPe1hxO16bwxJoH6GmKScd+vyWr?=
+ =?iso-8859-1?Q?gAn8OVgdFxzzkesE34XQMCZLOGe0lO2hvAwMpVBeNFldwOxs0eBAcYCFHg?=
+ =?iso-8859-1?Q?YDBdJnRFUyIl7C9EmXK5B+nzAGgSWYxDiZUly3izz3i7iyveSTJwa4rQUt?=
+ =?iso-8859-1?Q?R3CO9sPaYLC3DQBOpqY04JvW4ExCCypnsHrSCxR9AfdXyLMavQMnmUPVVS?=
+ =?iso-8859-1?Q?2n4m7fZQxqwbCz7ks+MyNwLYOk4NBlLvFZ0k939zpbzSeNZDDLFEbazeUg?=
+ =?iso-8859-1?Q?xS+J+Z4BL5jskUyUO9zbvm+29dIU/OUddRihbUa8PB9mU6Oq2lqdKnz5iK?=
+ =?iso-8859-1?Q?QIT/YYMLeKc0JU44dLycaMC7fjlEbCuLc1zlfVX/uEGuVpvz5mY8NGrPX9?=
+ =?iso-8859-1?Q?8YPWnCZqibvmh1T5rGNl6yad/vbr+eGVnzUJHq1D+g8jO76rDmKuDS5k6E?=
+ =?iso-8859-1?Q?mGnreM/96L2G72m+CNeiHKZ+QEEj/vlXU4doqCp303gouTjJ66kPxhGEqD?=
+ =?iso-8859-1?Q?G9vj1fbYflQdoIftTzoubo5aKhBUZmeDAp559WwGdulA8pxQwNgS4YYCYO?=
+ =?iso-8859-1?Q?DWPSb8XAWhwyQ47ye3zVWmyTk0SjjMbkO4uaxPYt4fT9Tn44bqUbKDS8mA?=
+ =?iso-8859-1?Q?Xzb7jn+K+qigDV3N1FJjg/qqTBH1OWgOrg4q/eseb2WHRfPAMyG7Ckd3iT?=
+ =?iso-8859-1?Q?fUTXnb33s79/IGAy0zYWunSdagmWCjgkmDbUFvBq+LSuA30ns5W9t4W/Nf?=
+ =?iso-8859-1?Q?le5ZtnL25QNBQ6ngVh+bhB1fX81Jf/6EzpDjVBtidt3orcLTH4uME2MBwG?=
+ =?iso-8859-1?Q?X6ZPh9FKc+psifrk+CvIHqPngxCVFNSrCm4K21zAC5Lti9iIwLNc9Y9+NH?=
+ =?iso-8859-1?Q?jAkE8px39CYTV657O/AL1iOxs8MXdehUtgzWmIKwwPDtpYkORvGJesyQUp?=
+ =?iso-8859-1?Q?gbCOzmyyb3Av+K256e802ctgZ41moUL1rEyZZenimRrc22yNSKR+ti7QxP?=
+ =?iso-8859-1?Q?FyqLL4PA4vbeo+PNKFRczN+14tiR7LuhX97i1wyrmnQakT9epsBrCfYckk?=
+ =?iso-8859-1?Q?SnJVNMepfSytgl6WqH9RI/WXrT+pUBUBZlXqdbZ/8Wltvaf8Hc4rwD6xhN?=
+ =?iso-8859-1?Q?G7c0Ne3gzoyHy2rlfzybPfC8/fYXrQFO/YlRW9i1xnmcmMVuyp69jdDqLJ?=
+ =?iso-8859-1?Q?J5k0SGQ7VP/XRTVqMKb6UHiIc4nwX9QXphm3pEZVkK9agqduXeugQWNumR?=
+ =?iso-8859-1?Q?OKwVwIWe8ur6G53TqO2IM0?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL3PR11MB6410.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?La/16T6NBT2AJ4JZgE1lBEUDnR2sn8kQqlFpet35+qSJvcxYf4f6C41mwC?=
+ =?iso-8859-1?Q?Y1sqRd6JtoOWYayQbxoj167kOZdJ8l0zlpK+eFMHQSKtaMNqvX7L851cQa?=
+ =?iso-8859-1?Q?cXiHTf/hZ0dqminjLFgIgDpFsl+F47+dqPlySuKgr6HCn4iG2lTFg3kr1W?=
+ =?iso-8859-1?Q?9MCviuZyxxN+fFrbm/0DggbtoSy+7RQ/mjaYRj4XYzv4qXe5QnQtOOdDJl?=
+ =?iso-8859-1?Q?dCV9mwHFrTPUkoDiJ4BZDmDawL6kNtb42PvR96KokK6nPOl2q87NTQGNYj?=
+ =?iso-8859-1?Q?1RV2oR+6bGWrZETOJXV8OKl0gkf0K0+iKm6em8hGUzLzPoymT1dMy23WWo?=
+ =?iso-8859-1?Q?HDGnbYQyvaUwG5SKmCzz1BbYJkIB1+dgmevtgWRYAORC42PFSP+megwgtl?=
+ =?iso-8859-1?Q?X//MKPHeRxrvxFR43DRm6LuFH6nhZacyDAidfMJTIqrdnzr22gI0BEchoT?=
+ =?iso-8859-1?Q?py+ghYyoCNim4hOGmZr80MD4UBx5ToT+unuJPEg6mTmUzVku6T0z92Ts5F?=
+ =?iso-8859-1?Q?kBXFXw+0rqR5jBVtQ+9GBVJxb4gJxWcsL4DZrVrZTWGeAk+KvASa60WVRx?=
+ =?iso-8859-1?Q?K6Mc98dlYq+2aIGZZVOYV2GAOa2V9Hs4US49LaaNmtAQaeoboH97UyNxZ9?=
+ =?iso-8859-1?Q?znGFLvrzrLbWrqJBgvI+vhB7VJj70ayeKN8FC2omvxCptz9bg3bpvRnrwi?=
+ =?iso-8859-1?Q?lT/hK7hm/DtnIAyVCSX75+bPusfsqUFlTvrOno4dCAmeWQFIV9zwz2kY/i?=
+ =?iso-8859-1?Q?/grV2KkwG2EEAl4cNt696nSmMt6MIEw6FstkkHu+UZt7V5pU5hYkH9gZQ+?=
+ =?iso-8859-1?Q?3MzvFS+EBcZ2S/QMnUJqAtESSLUBoGy2LlbKRa7G2Jyj5M2cFUu4BdZkbV?=
+ =?iso-8859-1?Q?Ujqc+YS1zbiVZeQdMEJoXtU9UA99BtnSCPWQxw8zwSIFjvF0ESsdPZtWtj?=
+ =?iso-8859-1?Q?NwfNH+33Kx9ThTOXNmBkqf3Q/hyQxTUEwaw2lDHrmLed/uQbKJo0p7pj5H?=
+ =?iso-8859-1?Q?sEVuCqH0RWmRjAL9OfUkvZ0oEPOQlNDhP63uKA3uiQQCXriajUUTKyCMG+?=
+ =?iso-8859-1?Q?AYCPzFG9t8v5kjqysI/4Qfl/wHYvIq5n4ml5+FHW/RN6QVnY9EK08CEnyZ?=
+ =?iso-8859-1?Q?0fpaO9lcFL1WPTQSkMIbjZu7heKH27Xlz2KWn/1woJmipMPqtfyJ7XBSCG?=
+ =?iso-8859-1?Q?ymRPAGKpw0naOMr2zkRjD5kQy1QU5184Fu/klaQc/dXYJKuVKuFolPTV0e?=
+ =?iso-8859-1?Q?0I1a3Xwf+PjWx/DUoHC2kH7oz8YhdPF+eqxEyIXcz05YHJ3G9NuQG9Qd8Q?=
+ =?iso-8859-1?Q?ee1WupIJX7xdqd/ADQDz+M6SGRoq9t7+ba24+J1L4DJWMsHWeYtXHsmZyl?=
+ =?iso-8859-1?Q?0ZJBllMReMHpIrzpGab+iCw0TNEm7t3b+cLiUeFhfNYg3poCbOTdHemm69?=
+ =?iso-8859-1?Q?bnS9TbU3ERODWVl76kQ60SUw/S2sh693KBYi1k88Tj1R9tQvPxWK4WIMN+?=
+ =?iso-8859-1?Q?RXGsHb9NN+wcglo5JBmp3BVbnqgR5SmlI9PBTvHch8T8gB0L2DvI7r8bWY?=
+ =?iso-8859-1?Q?aikGqu6RTLDwfgmpX1u5/VXcRlaZqUcEODEiraWtTIq45dRrDPo3+5OQ0X?=
+ =?iso-8859-1?Q?6gR4zLCiRmKyispWpQCFyQ2DYGJM6pnden/OYEZSOcnniiAmMRewusfbJr?=
+ =?iso-8859-1?Q?+4n49/sguDu3QUjcnRU=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 855ae26b-f09e-4331-6058-08de337ae5a8
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6410.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2025 21:20:06.6537 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Y/WFbnJ7JgwIQC1lJRoYkOnnZ7QxSjIxUyURI54rkHZYpQCQ7XTebiGbUGF32FkoUWzLhKvJ7aWS22vxT4c7mlJyBW1MJSoKHJrS2IHFMi1vNgb8ua95OjrcLvWDJrYl
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7678
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,68 +185,112 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Fix two compilation errors on armhf:
+On Thu, Dec 04, 2025 at 01:10:38PM -0800, Summers, Stuart wrote:
+>On Thu, 2025-11-20 at 19:57 -0800, Niranjana Vishwanathapura wrote:
+>> Add DRM_XE_MULTI_GROUP_KEEP_ACTIVE to valid flags list.
+>> Validate that KEEP_ACTIVE is not supported in preempt mode
+>> unless fault mode is set.
+>>
+>> Signed-off-by: Niranjana Vishwanathapura
+>> <niranjana.vishwanathapura@intel.com>
+>> ---
+>>  tests/intel/xe_exec_multi_queue.c | 31
+>> +++++++++++++++++++++++++++++--
+>>  1 file changed, 29 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/tests/intel/xe_exec_multi_queue.c
+>> b/tests/intel/xe_exec_multi_queue.c
+>> index 9f7b3b4d7..288ef9ed8 100644
+>> --- a/tests/intel/xe_exec_multi_queue.c
+>> +++ b/tests/intel/xe_exec_multi_queue.c
+>> @@ -37,10 +37,12 @@
+>>  #define FAULT_MODE             (0x1 << 6)
+>>  #define SMEM                   (0x1 << 7)
+>>  #define WAIT_MODE              (0x1 << 8)
+>> +#define KEEP_ACTIVE            (0x1 << 9)
+>>  
+>>  #define MAX_INSTANCE 9
+>>  
+>> -#define XE_MULTI_GROUP_VALID_FLAGS   (DRM_XE_MULTI_GROUP_CREATE)
+>> +#define XE_MULTI_GROUP_VALID_FLAGS   (DRM_XE_MULTI_GROUP_CREATE
+>> |        \
+>> +                                     DRM_XE_MULTI_GROUP_KEEP_ACTIVE)
+>>  
+>>  #define BASE_ADDRESS   0x1a0000
+>>  
+>> @@ -81,7 +83,8 @@ __test_sanity(int fd, int gt, int class, bool
+>> preempt_mode)
+>>         if (!n)
+>>                 return;
+>>  
+>> -       vm = xe_vm_create(fd, preempt_mode ?
+>> DRM_XE_VM_CREATE_FLAG_LR_MODE : 0, 0);
+>> +       vm = xe_vm_create(fd, preempt_mode ?
+>> DRM_XE_VM_CREATE_FLAG_LR_MODE |
+>> +                         DRM_XE_VM_CREATE_FLAG_FAULT_MODE : 0, 0);
+>>  
+>>         /* Invalid flags */
+>>         while (!invalid_flag)
+>> @@ -105,6 +108,15 @@ __test_sanity(int fd, int gt, int class, bool
+>> preempt_mode)
+>>         multi_queue.base.next_extension =
+>> to_user_pointer(&multi_queue);
+>>         igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext,
+>> &val), -EINVAL);
+>>  
+>> +       /* KEEP_ACTIVE not supported in preempt mode without
+>> fault_mode */
+>> +       if (preempt_mode) {
+>> +               vm2 = xe_vm_create(fd, preempt_mode ?
+>> DRM_XE_VM_CREATE_FLAG_LR_MODE : 0, 0);
+>
+>Since we're checking preempt_mode explicitly in the if condition above,
+>do we need to keep that here?
+>
 
-../tests/amdgpu/amd_mem.c: In function â€˜ptrace_access_invisible_vram_testâ€™:
-../tests/amdgpu/amd_mem.c:3017:56: error: cast to pointer from integer of
- different size [-Werror=int-to-pointer-cast]
- 3017 |   if (ptrace(PTRACE_POKEDATA, parent_pid, word_before, (void *)original1))
-      |                                                        ^
-and same in near line 3019.
+Yah, good catch, will remove the redundant check.
 
-Also while at this, fix warnings on var prints:
+Niranjana
 
-../tests/amdgpu/amd_mem.c: In function â€˜test_signal_handlingâ€™:
-../tests/amdgpu/amd_mem.c:3143:11: warning: format â€˜%lxâ€™ expects
- argument of type â€˜long unsigned intâ€™, but argument 5 has type
- â€˜uint64_tâ€™ {aka â€˜long long unsigned intâ€™} [-Wformat=]
- 3143 |  igt_info("System memory allocated at CPU: %p, GPU: 0x%lx\n", sys_cpu_ptr, sys_mc_address);
-
-Cc: Christian KÃ¶nig <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Jesse Zhang <jesse.zhang@amd.com>
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/amdgpu/amd_mem.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/tests/amdgpu/amd_mem.c b/tests/amdgpu/amd_mem.c
-index 39abd4f66..463e1213b 100644
---- a/tests/amdgpu/amd_mem.c
-+++ b/tests/amdgpu/amd_mem.c
-@@ -3014,9 +3014,9 @@ static void ptrace_access_invisible_vram_test(amdgpu_device_handle device)
- 
- 		/* Swap values via ptrace POKEDATA */
- 		if (!err) {
--		if (ptrace(PTRACE_POKEDATA, parent_pid, word_before, (void *)original1))
-+		if (ptrace(PTRACE_POKEDATA, parent_pid, word_before, from_user_pointer(original1)))
- 			err = 1;
--		if (ptrace(PTRACE_POKEDATA, parent_pid, word_after, (void *)original0))
-+		if (ptrace(PTRACE_POKEDATA, parent_pid, word_after, from_user_pointer(original0)))
- 			err = 1;
- 		}
- 
-@@ -3140,7 +3140,7 @@ static void test_signal_handling(amdgpu_device_handle device)
- 	r = amdgpu_bo_cpu_map(sys_bo, &sys_cpu_ptr);
- 	igt_assert_eq(r, 0);
- 
--	igt_info("System memory allocated at CPU: %p, GPU: 0x%lx\n", sys_cpu_ptr, sys_mc_address);
-+	igt_info("System memory allocated at CPU: %p, GPU: 0x%" PRIx64 "\n", sys_cpu_ptr, sys_mc_address);
- 
- 	/* Fork child process to send signal */
- 	child_pid = fork();
-@@ -3213,7 +3213,7 @@ static void test_signal_handling(amdgpu_device_handle device)
- 
- 		/* Submit GPU command to write different value */
- 		igt_info("Submitting GPU write command...\n");
--		igt_info("Writing 0xdeadbeaf to address 0x%lx\n", sys_mc_address);
-+		igt_info("Writing 0xdeadbeaf to address 0x%" PRIx64 "\n", sys_mc_address);
- 
- 		/* Now SDMA should write to the correct address since we're using the same BO */
- 		r = cmd_submit_write_linear(dma_ctx, sys_mc_address, sizeof(uint32_t), 0xdeadbeaf);
--- 
-2.52.0
-
+>Functionally all looks good though.
+>
+>Thanks,
+>Stuart
+>
+>> +               multi_queue.value |= DRM_XE_MULTI_GROUP_KEEP_ACTIVE;
+>> +               igt_assert_eq(__xe_exec_queue_create(fd, vm2, 1, 1,
+>> eci, ext, &val), -EINVAL);
+>> +               multi_queue.value &= ~DRM_XE_MULTI_GROUP_KEEP_ACTIVE;
+>> +               xe_vm_destroy(fd, vm2);
+>> +       }
+>> +
+>>         /* Setting other queue properties are valid for Q0 */
+>>         multi_queue.base.next_extension = to_user_pointer(&priority);
+>>         exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
+>> @@ -205,6 +217,21 @@ __test_sanity(int fd, int gt, int class, bool
+>> preempt_mode)
+>>         igt_waitchildren();
+>>  
+>>         xe_vm_destroy(fd, vm);
+>> +
+>> +       /* Validate closing FD while keeping group active */
+>> +       fd = drm_open_driver(DRIVER_XE);
+>> +       vm = xe_vm_create(fd, preempt_mode ?
+>> DRM_XE_VM_CREATE_FLAG_LR_MODE |
+>> +                         DRM_XE_VM_CREATE_FLAG_FAULT_MODE : 0, 0);
+>> +
+>> +       multi_queue.value = DRM_XE_MULTI_GROUP_CREATE |
+>> DRM_XE_MULTI_GROUP_KEEP_ACTIVE;
+>> +       multi_queue.base.next_extension = 0;
+>> +       exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
+>> +
+>> +       multi_queue.value = exec_queues[0];
+>> +       for (i = 1; i < MAX_N_EXEC_QUEUES; i++)
+>> +               exec_queues[i] = xe_exec_queue_create(fd, vm, eci,
+>> ext);
+>> +
+>> +       drm_close_driver(fd);
+>>  }
+>>  
+>>  /**
+>
