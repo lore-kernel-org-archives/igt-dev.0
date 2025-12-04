@@ -4,58 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C084D2A54D
-	for <igt-dev@archiver.kernel.org>; Thu,  4 Dec 2025 21:36:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73F81D2A551
+	for <igt-dev@archiver.kernel.org>; Thu,  4 Dec 2025 21:42:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B2DC910E220;
-	Thu,  4 Dec 2025 21:36:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 25A3410E220;
+	Thu,  4 Dec 2025 21:42:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E6AKkhTl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Am7uLUe1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27A5510E9C2
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Dec 2025 21:36:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 883D410E220
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Dec 2025 21:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764884214; x=1796420214;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=JLCfs5RIaL+oQDUtP5wVnwa0/Ln/pESo/8COcugljkk=;
- b=E6AKkhTl776WtTjFTWWquwWLrPixX6zNFS7mHrbXhRkt7g5DPGBZDx3L
- PZUi0qg4X4xQtMHdvTt1+tGm/7V1N/UN4nvEdx0gceBAIgtrwocwqJCnw
- kg9eok5cKuACPuUrZ64FFStgIkWgnvh91IkoPV68aSIRXAG+eCdORyXS9
- kZsQf65Vf8tAItW/T4X6l+qiiJwny1/GmPy0/8IPUILUZ7GkLHlkYckNL
- WXcnUVrgVeWbIj9QTQLG4DpAKVOrLGKB5AKt2ic4ZTFONs0WWGrtE2pED
- 2goc0PBxYZHMJBrWWR12tYBuGCJAIcdqNO8pTurt2zvihoaNpWZRK3zzx g==;
-X-CSE-ConnectionGUID: W4cO4UahQd2CDSls1PdQKA==
-X-CSE-MsgGUID: 1U0GWPw+QOazhS0U3WkOFQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="77600860"
-X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="77600860"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2025 13:36:54 -0800
-X-CSE-ConnectionGUID: impnj1CPR8m2bQcPiy6rLw==
-X-CSE-MsgGUID: 0od3KPEjSkK6iL4i5DpDgw==
+ t=1764884559; x=1796420559;
+ h=date:from:to:cc:subject:message-id:references:
+ content-transfer-encoding:in-reply-to:mime-version;
+ bh=lkTaC94X5a7ike+WqYkWVZGJSbbMWVnPTOWEuw9axzo=;
+ b=Am7uLUe19kbWZbuw1Lyfoxdcuz1Vo1JaZOEeQ5uJrl0DqeFuDE7ZFuNM
+ oB3JXgEukclAcekZrCnwDj+66FpRTelKEOJt00Shumz11fJJ9oQO2VVsv
+ i1rcbNslcQ4+VjlGWSbNVWq9oxUorKXijKaJRfYe2iUaQjgeynkvUI3x3
+ PiCeMDt6vauvDxjfnkTDbZ0t1VZI8ODBEKLwv6EigrTFKNZieiSqrlOVc
+ ipR5AzrhkXyzebcexBWranV1V1HUUyid6mKhgWcTk1Qn6pO8ZKkvQIuiy
+ OTzdSSU48NnJfjiLEbZk7h5alHhSuiHEsmzpgzfoPgayTzlvBSU/LK2vM A==;
+X-CSE-ConnectionGUID: cplG0oaiS2+GmPle4VJZyQ==
+X-CSE-MsgGUID: VBOo8oEKTSWhW/jUeOrnBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="66850519"
+X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="66850519"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2025 13:42:39 -0800
+X-CSE-ConnectionGUID: qxVBol7cSuKJUnB5wt7X/Q==
+X-CSE-MsgGUID: h74Xs1gvT8GoLEFai/JoBg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="195207713"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.244.32])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2025 13:36:52 -0800
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Jari Tahvanainen <jari.tahvanainen@intel.com>,
- Karthik B S <karthik.b.s@intel.com>, Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t v2 3/3] intel-ci: unify chamelium testlist
-Date: Thu,  4 Dec 2025 22:36:32 +0100
-Message-ID: <20251204213632.155894-4-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251204213632.155894-1-kamil.konieczny@linux.intel.com>
-References: <20251204213632.155894-1-kamil.konieczny@linux.intel.com>
-MIME-Version: 1.0
+X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="226060477"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2025 13:42:39 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 4 Dec 2025 13:42:38 -0800
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Thu, 4 Dec 2025 13:42:38 -0800
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.32) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 4 Dec 2025 13:42:36 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JmTdTmtWDIraZptPlo0NFdfWNn9J4NKs+uuA2Fkgt2ayme1FYotbNZm+5AmezxRSrnwLPxM92plRsZtM1lIfA/NOCiCP//7WiVS0JnutHcKZYDLZGQagimoQk52ZPJb3+gD/3X9kXuF1MQzyXRrNqBPz44DaKTjRsgKzPKhrbu7kXG0D9aOvzn6GQabeheeAkhV75K6j56dSwMRXqHlv0JFCDwIBCmXptVc0r1+d4R6lcupxRMlL8dYdWHMTpviLs5RgmRtLcVT+hvqOphgzrm35DIRY0HYZXXEF8k6E1+wXjMnkeNu5kOdRo6kTKFKHOOB+O8dUwCcORDIRvnbn2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RSQ/cCnl4XY3MeVcEhd3Mgn1qkyPNnDbeWiBdkDUlQM=;
+ b=obEKvg6CWTDKHYb2S/GPJbVMHQHvbtovUrIGAd1QiuG22ANC98WX0YJ49/UPcDkmGi5Rep7auNcQwHDGnKzY1dcJvf0lijrWX+YMqcEjH52RSfzQ18a7zToV20MNa5drHMyV1f7M4nItpSvDdku20/huNqaLw4oPcO9AtZmazSyk91fNtR1ky9QhfBDhxkN5pyoqVBbw14vBfUD46soeSDLCA6K7lutLe3AilmSn7H4GP42JG1c5ktTsw+MwA3ZFGq8yqPo5IoieW+uCAVRh+Zt3BlrLebQ3dRb6HZXno27JURtrDfw2gvnXD6SnlEKtspobyoriTTJGj2gjoIobSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL3PR11MB6410.namprd11.prod.outlook.com (2603:10b6:208:3b9::15)
+ by SN7PR11MB8068.namprd11.prod.outlook.com (2603:10b6:806:2e9::10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Thu, 4 Dec
+ 2025 21:42:34 +0000
+Received: from BL3PR11MB6410.namprd11.prod.outlook.com
+ ([fe80::b01a:aa33:165:efc]) by BL3PR11MB6410.namprd11.prod.outlook.com
+ ([fe80::b01a:aa33:165:efc%3]) with mapi id 15.20.9366.012; Thu, 4 Dec 2025
+ 21:42:34 +0000
+Date: Thu, 4 Dec 2025 13:42:31 -0800
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: "Summers, Stuart" <stuart.summers@intel.com>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Ch, Sai
+ Gowtham" <sai.gowtham.ch@intel.com>, "Dandamudi, Priyanka"
+ <priyanka.dandamudi@intel.com>, "kamil.konieczny@linux.intel.com"
+ <kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH v2 14/19] lib/xe/xe_spin: Add switch point for
+ preemptible spinner
+Message-ID: <aTIAR9boDHPtzkGg@nvishwa1-desk>
+References: <20251121035715.767226-21-niranjana.vishwanathapura@intel.com>
+ <20251121035715.767226-35-niranjana.vishwanathapura@intel.com>
+ <8cb0874f3e5bac4a8226b8d6cae25c21fd4acfd6.camel@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <8cb0874f3e5bac4a8226b8d6cae25c21fd4acfd6.camel@intel.com>
+X-ClientProxiedBy: SJ0PR03CA0032.namprd03.prod.outlook.com
+ (2603:10b6:a03:33e::7) To BL3PR11MB6410.namprd11.prod.outlook.com
+ (2603:10b6:208:3b9::15)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR11MB6410:EE_|SN7PR11MB8068:EE_
+X-MS-Office365-Filtering-Correlation-Id: 04b77d81-9d1f-41d5-96ec-08de337e08a3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?yNqrhdvpkRu1L1l5NzrFMLWzYI8AKf5sa4E/aB8P72JlAJIfR5zFuIL413?=
+ =?iso-8859-1?Q?i+UOId7T6/WJxFzAriIsYQUH2lbgVxrrBcCtN3Fvx0eZ8i9Wiiwb85x+mP?=
+ =?iso-8859-1?Q?taSsPYQ7blrTc2yJ4zn/GqL2TRa6wLRBd7DQfsVAqsSWeO5jDKPcZpSH/h?=
+ =?iso-8859-1?Q?uvQI2ZvIe/reCZki9eVADfRo7UwrSfzEyCK9cPGv8OdA9Dga9U7h+xjgqK?=
+ =?iso-8859-1?Q?Q8ODaVzaLbxwfmsLOZcd7kLfecP4rQjmnBYVx3GCqFPSCEPkZc/wQQg/Hr?=
+ =?iso-8859-1?Q?p26WJTpAFBle7j1UJuKMFs8lVNjiskhXb4C91lVMrej3RkNVpC3CmNRZlD?=
+ =?iso-8859-1?Q?wTq+xTZFWHgPY2wEa7WHkNGGKAb6AmuEMiv1yIn6fZBC8Xy6QI6vEfCEDv?=
+ =?iso-8859-1?Q?Wn0FKEk0Eks9syVlnLOz79rWh0uAf2w+b7vwU8KaIGWp+YdHGoYi0Cvlpv?=
+ =?iso-8859-1?Q?XxKyWLd41t//X16H6gUy5rmBE1fB9Zuc5HjCMDn4lVz+25B99FrHBw8DRP?=
+ =?iso-8859-1?Q?Wu2N9462/mNgLRGFzz4qP7EWDM/GWC0lW7N1ISjQ+cOmyCnk7iFTXl8xc7?=
+ =?iso-8859-1?Q?555AijV0lFiClrpi1t15tXRskjsNioTxeL4wJmgqcgZr81/TomaOG6hRas?=
+ =?iso-8859-1?Q?E/80A2XRs3ygtY4LXm+gT6CTNH3vo6/4f2E+4xmy8FP1jbXMOknoR+lVYV?=
+ =?iso-8859-1?Q?Y18swKFbjvqiR3bOeLj8LbGu/ldS59wah6VJn5OArLPmN7Ga1/Ga74L/XY?=
+ =?iso-8859-1?Q?F8Ie56u17Pbgd8nnwpIP2fbeLfkU1p5vMfNCRpqhwevMt2Mq0hxPlWhlIP?=
+ =?iso-8859-1?Q?ccT7mCnwyi8EnWH0Tb/EF7zwSrQAzP3sI2jo5eMzrX3jXVI0eh/RHOhLuI?=
+ =?iso-8859-1?Q?wrt0EBjf7qh0sjfTBfGwKNVDD8mdpc3YDVukpur60VeEEt39rwYo7qv2e+?=
+ =?iso-8859-1?Q?LnV/QAgCGlzS/jl1Oz7yFqpkoniZzV7mLah142aqh+895eC5/D91bosLzM?=
+ =?iso-8859-1?Q?Lx20XIdqEUfhi05nyVFucQ3A7QGEqrRv2k4twACbkylfTOeSirSCmZuOzb?=
+ =?iso-8859-1?Q?NPVL1H4iy5UkBWGDp4FT3n/dk5mVMnM4OS2Z1UDj4n0SPoPzWxfcgR1lyT?=
+ =?iso-8859-1?Q?iuhAw/6gZcAudX1jqpqwQbbjw36LirQRN8YtOuwLQaykHTeqjji31+w3rB?=
+ =?iso-8859-1?Q?cxmSU5JBBMM3d6o/yWe9McARrg3Eg9ft+1srxrneZbLpHWY7G7i0h55kRC?=
+ =?iso-8859-1?Q?AJsClub6LB0X5pVmkeZL+9S9o0Z8HP+lm4TP5sAhkExqYbTsJO84fUkpdl?=
+ =?iso-8859-1?Q?cKIsxdlXQJ/ic6eLa+kHk0DTTOOyRmafrXni3bnvsSW6OuAUNY+GXmurRg?=
+ =?iso-8859-1?Q?AJc/NV0Rl4xNpagAhFxjgcXdz2Qc1nZxC3XMZAOAtkukjJMrBG8Mrbz6TJ?=
+ =?iso-8859-1?Q?cCzvVfdJZUi9tFXJf9KJ603sQ0cIzLwm2oH0YiaIRL3tk5fmKVD2SlaObC?=
+ =?iso-8859-1?Q?HHduurWJgKCGH6+IVcpR2E?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL3PR11MB6410.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?4jVRkmu/mTI0XbARJMwFDH6GyaITPlIAgM9i6GiyllyCNzTaMnAay624Qh?=
+ =?iso-8859-1?Q?STQhyJStccneOqzy7fh8UPiRU7BVUg3cocuvP9KZhL5ByedCQOt52UIb9f?=
+ =?iso-8859-1?Q?xNSWD4upbWrvOjssvQmcjCuPEP99uh4QtkXILAwjfl8rJdhmUzFTn4uOPf?=
+ =?iso-8859-1?Q?id89cQdKmzDI4RXJKByRtoKlZLnLx4siSQjKSEbR7bKVNoHTBV2BXYqYSr?=
+ =?iso-8859-1?Q?DBqvsvdIwIrLyBFNLltLiCMDOkSHfCvpDLzKDwNdmM0l6eJ+Q3l/JTNHUi?=
+ =?iso-8859-1?Q?OcWdfTL1hKzhT+8pxLcTytsz0Hv5D+bLv9sq1o1RfmhmkP/BkJLie4JZmF?=
+ =?iso-8859-1?Q?N1LtnUJDbltJ1cBtRjZbjkvsZkGkDRXjAXtVGVkLTdNjUGmaKtZ0RkKk5f?=
+ =?iso-8859-1?Q?SmoZoj0QvsrowVAh/Ua0sRJvw99QPXNRamC1Z4yey8eVMJWn91UKc/iBA0?=
+ =?iso-8859-1?Q?QNHVeKre1afku7V81+w3MyRP+9EaoFiS73HswUOui4UFR4AwvuiA/JZABy?=
+ =?iso-8859-1?Q?q1XzV4RHj8j40X0R448b0EyZrE3y5rhBloAQOam1HCBzIE92Waf8C6CwtU?=
+ =?iso-8859-1?Q?/Rrj6vvjEyTzS4cWjbaXUwD4uJYou1iaB89MeHzEODRdEYr5YMq9JOZS0h?=
+ =?iso-8859-1?Q?mlcJ2FTffLaADvscGqfpJUXA5dcsbZAvM4vsSRaqQO/CgKXjMM8qJVqTLo?=
+ =?iso-8859-1?Q?X83TBwe044LS922jChEXMCaCK3QBuGdiXQgBXhvgjRLAPwBydv2CvFU4YS?=
+ =?iso-8859-1?Q?f13y1BZvCwYAgeNRWEZLbGx085SHi/pGIYRdT+B7BbKi6dBhCKyDIegI4P?=
+ =?iso-8859-1?Q?4V61FD0PBCpgOMRbQehX+qQ+3Ti9vOtarLyLFqUFGuady11embV99VPeB0?=
+ =?iso-8859-1?Q?wJU/tRE7E1DK9FYZY+uX0OQk9VlPs7anu5OLkb8NX+D4hU7f2sRRIotCSp?=
+ =?iso-8859-1?Q?eeQIeNrecIuEBqGEI4zjh71d82kEep5fCRvyXt8eWow8ggyg2ahmkysyVS?=
+ =?iso-8859-1?Q?pMilfm5QwBEtbRkRw7nxybFQT/SvmG7ypv9GwEcVqXf84IOkUi36/SfKhP?=
+ =?iso-8859-1?Q?t5k38DzfXuLpnAdMB5FMxgzmCI+buZTm1MmLOP5cD5UA+3c5DSYOqyG2QJ?=
+ =?iso-8859-1?Q?Urt4zzVq/Q1p7+UGaqDlYnVo70P8KCAIonzYaox3XzLdAQOP8H7QFBUO0i?=
+ =?iso-8859-1?Q?brB6nleTB7BS4NXgtESO0ZKPenFBTfOTx2Y2+p837kaxuujYCcwmkF88lx?=
+ =?iso-8859-1?Q?nLuBExuDGWkqXcYYDZjOy7fSw8VYShw7ztwNh9Gu7BHe1aSFfvuM55SpPI?=
+ =?iso-8859-1?Q?g378ECHqq2v3ejQqE3APw2BK3xuyfr2qakl/oAcD1XuO+47cH5o0fQsFjW?=
+ =?iso-8859-1?Q?vE79t0+T5Db7+EOwepxkRDZe97Oe95ltj8gOiXkYarM0QJqCnIZFR5uCK/?=
+ =?iso-8859-1?Q?5UcuNRVJgAJZFLXW1CYBLvf2dFCc9s4kO2vDbrOs+6Xv6uNh5UMllGrM1l?=
+ =?iso-8859-1?Q?cc5fWtJYV39kZbby4NEut3zc088C5hVhevdr0UhmLaWxNdzaZHl+hWcNjN?=
+ =?iso-8859-1?Q?DbXbODo6BDHlYslpGWixt6xxK6Vg5EBmFzE8cF53EqaaumsbJOEZjREsGg?=
+ =?iso-8859-1?Q?/aS3qndTbPsZymzgWXigQ52k3Fh0p+JLy5dJeeBQ8OmJ8sOPeSUbkikZPN?=
+ =?iso-8859-1?Q?WqfnzEj6s/5lkEW3XoM=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04b77d81-9d1f-41d5-96ec-08de337e08a3
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6410.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2025 21:42:33.8785 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KNO38aU3uw9bojyrs1/KFjlvNgxqVxnLaLLz+yo3RrzPqihn9BXLt+JBI1ErzimVMR1YVgMIkOCTSbhanIUY41oeDM2zmVZNMipm+UCNY/iZRzrED8SYoW9HuYbf9FcV
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB8068
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,227 +185,143 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Both i915 and Xe use the same testlist, so make it uniform and
-move it to one chamelium-only.testlist file. Add also symlinks
-for it to make CI change easier.
+On Thu, Dec 04, 2025 at 01:03:25PM -0800, Summers, Stuart wrote:
+>On Thu, 2025-11-20 at 19:57 -0800, Niranjana Vishwanathapura wrote:
+>> When 'preempt' option is specified, insert a MI_SEMAPHORE_WAIT
+>> command in the spinner batch buffer. This provides the switch
+>> point for preemption to happen in multi queue mode.
+>> Allow user to control preempt wait condition.
+>>
+>> Signed-off-by: Niranjana Vishwanathapura
+>> <niranjana.vishwanathapura@intel.com>
+>> ---
+>>  include/intel_gpu_commands.h |  1 +
+>>  lib/xe/xe_spin.c             | 41
+>> ++++++++++++++++++++++++++++++++++++
+>>  lib/xe/xe_spin.h             |  3 +++
+>>  3 files changed, 45 insertions(+)
+>>
+>> diff --git a/include/intel_gpu_commands.h
+>> b/include/intel_gpu_commands.h
+>> index cd281ba89..5158bb0ea 100644
+>> --- a/include/intel_gpu_commands.h
+>> +++ b/include/intel_gpu_commands.h
+>> @@ -123,6 +123,7 @@
+>>  #define MI_SEMAPHORE_WAIT      MI_INSTR(0x1c, 2) /* GEN8+ */
+>>  #define MI_SEMAPHORE_WAIT_TOKEN        MI_INSTR(0x1c, 3) /* GEN12+
+>> */
+>>  #define   MI_SEMAPHORE_POLL            (1 << 15)
+>> +#define   MI_SEMAPHORE_QUEUE_SWITCH_MODE       (1 << 11)
+>>  #define   MI_SEMAPHORE_SAD_GT_SDD      (0 << 12)
+>>  #define   MI_SEMAPHORE_SAD_GTE_SDD     (1 << 12)
+>>  #define   MI_SEMAPHORE_SAD_LT_SDD      (2 << 12)
+>> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+>> index 72b13ef42..174c5f7ec 100644
+>> --- a/lib/xe/xe_spin.c
+>> +++ b/lib/xe/xe_spin.c
+>> @@ -57,6 +57,7 @@ void xe_spin_init(struct xe_spin *spin, struct
+>> xe_spin_opts *opts)
+>>  
+>>         spin->start = 0;
+>>         spin->end = 0xffffffff;
+>> +       spin->wait_cond = 0;
+>>         spin->ticks_delta = 0;
+>>  
+>>         if (opts->ctx_ticks) {
+>> @@ -167,6 +168,24 @@ void xe_spin_init(struct xe_spin *spin, struct
+>> xe_spin_opts *opts)
+>>                                    opts->mem_copy->dst->mocs_index;
+>>         }
+>>  
+>> +       /*
+>> +        * Insert a MI_SEMAPHORE_WAIT_CMD instruction with condition
+>> controlled
+>> +        * by the user. It also acts as a queue switch point in multi
+>> queue mode.
+>> +        */
+>> +       if (opts->preempt) {
+>> +               uint64_t wait_addr = opts->addr + offsetof(struct
+>> xe_spin, wait_cond);
+>> +
+>> +               spin->batch[b++] = MI_SEMAPHORE_WAIT_CMD |
+>> +                               MI_SEMAPHORE_POLL |
+>> +                               MI_SEMAPHORE_QUEUE_SWITCH_MODE |
+>> +                               MI_SEMAPHORE_SAD_EQ_SDD |
+>> +                               3;
+>> +               spin->batch[b++] = 0;
+>
+>Should this be set to spin->wait_cond in case we ever want to change
+>the default value here?
+>
 
-Cc: Ryszard Knop <ryszard.knop@intel.com>
-Cc: Jari Tahvanainen <jari.tahvanainen@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-Reviewed-by: Ryszard Knop <ryszard.knop@intel.com>
----
- tests/intel-ci/chamelium-only.testlist      | 70 ++++++++++++++++++++-
- tests/intel-ci/i915.chamelium-only.testlist | 70 +--------------------
- tests/intel-ci/meson.build                  |  1 -
- tests/intel-ci/xe.chamelium-only.testlist   |  1 +
- tests/intel/kms_test_config.json            |  2 +-
- 5 files changed, 72 insertions(+), 72 deletions(-)
- mode change 120000 => 100644 tests/intel-ci/chamelium-only.testlist
- mode change 100644 => 120000 tests/intel-ci/i915.chamelium-only.testlist
- create mode 120000 tests/intel-ci/xe.chamelium-only.testlist
+wait_cond is already part of wait_addr. So, user can control the
+wait using xe_spin_preempt_wait()/nowait() functions below.
 
-diff --git a/tests/intel-ci/chamelium-only.testlist b/tests/intel-ci/chamelium-only.testlist
-deleted file mode 120000
-index 3715a9469..000000000
---- a/tests/intel-ci/chamelium-only.testlist
-+++ /dev/null
-@@ -1 +0,0 @@
--i915.chamelium-only.testlist
-\ No newline at end of file
-diff --git a/tests/intel-ci/chamelium-only.testlist b/tests/intel-ci/chamelium-only.testlist
-new file mode 100644
-index 000000000..99d2f2409
---- /dev/null
-+++ b/tests/intel-ci/chamelium-only.testlist
-@@ -0,0 +1,69 @@
-+igt@kms_feature_discovery@chamelium
-+igt@kms_chamelium_audio@dp-audio
-+igt@kms_chamelium_audio@dp-audio-edid
-+igt@kms_chamelium_color@ctm-0-25
-+igt@kms_chamelium_color@ctm-0-50
-+igt@kms_chamelium_color@ctm-0-75
-+igt@kms_chamelium_color@ctm-blue-to-red
-+igt@kms_chamelium_color@ctm-green-to-red
-+igt@kms_chamelium_color@ctm-limited-range
-+igt@kms_chamelium_color@ctm-max
-+igt@kms_chamelium_color@ctm-negative
-+igt@kms_chamelium_color@ctm-red-to-blue
-+igt@kms_chamelium_color@degamma
-+igt@kms_chamelium_color@gamma
-+igt@kms_chamelium_edid@dp-edid-change-during-suspend
-+igt@kms_chamelium_edid@dp-edid-read
-+igt@kms_chamelium_edid@dp-edid-resolution-list
-+igt@kms_chamelium_edid@dp-edid-stress-resolution-4k
-+igt@kms_chamelium_edid@dp-edid-stress-resolution-non-4k
-+igt@kms_chamelium_edid@dp-mode-timings
-+igt@kms_chamelium_edid@hdmi-edid-change-during-suspend
-+igt@kms_chamelium_edid@hdmi-edid-read
-+# Chamelium v1 board HDMI receiver supports max 4k@30 resolution 
-+# removed test as its having a mode 4k@60 resulting 
-+# TMDS config errors on v1 board
-+#igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k
-+igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k
-+igt@kms_chamelium_edid@hdmi-mode-timings
-+igt@kms_chamelium_edid@vga-edid-read
-+igt@kms_chamelium_frames@dp-crc-fast
-+igt@kms_chamelium_frames@dp-crc-multiple
-+igt@kms_chamelium_frames@dp-crc-single
-+igt@kms_chamelium_frames@dp-frame-dump
-+igt@kms_chamelium_frames@hdmi-aspect-ratio
-+igt@kms_chamelium_frames@hdmi-cmp-planar-formats
-+igt@kms_chamelium_frames@hdmi-crc-fast
-+igt@kms_chamelium_frames@hdmi-crc-multiple
-+igt@kms_chamelium_frames@hdmi-crc-nonplanar-formats
-+igt@kms_chamelium_frames@hdmi-crc-single
-+igt@kms_chamelium_frames@hdmi-frame-dump
-+igt@kms_chamelium_frames@vga-frame-dump
-+igt@kms_chamelium_hpd@common-hpd-after-suspend
-+igt@kms_chamelium_hpd@dp-hpd
-+igt@kms_chamelium_hpd@dp-hpd-after-suspend
-+igt@kms_chamelium_hpd@dp-hpd-enable-disable-mode
-+igt@kms_chamelium_hpd@dp-hpd-fast
-+igt@kms_chamelium_hpd@dp-hpd-for-each-pipe
-+igt@kms_chamelium_hpd@dp-hpd-storm
-+igt@kms_chamelium_hpd@dp-hpd-storm-disable
-+igt@kms_chamelium_hpd@dp-hpd-with-enabled-mode
-+igt@kms_chamelium_hpd@hdmi-hpd
-+igt@kms_chamelium_hpd@hdmi-hpd-after-suspend
-+igt@kms_chamelium_hpd@hdmi-hpd-enable-disable-mode
-+igt@kms_chamelium_hpd@hdmi-hpd-fast
-+igt@kms_chamelium_hpd@hdmi-hpd-for-each-pipe
-+igt@kms_chamelium_hpd@hdmi-hpd-storm
-+igt@kms_chamelium_hpd@hdmi-hpd-storm-disable
-+igt@kms_chamelium_hpd@hdmi-hpd-with-enabled-mode
-+igt@kms_chamelium_audio@hdmi-audio
-+igt@kms_chamelium_audio@hdmi-audio-edid
-+igt@kms_chamelium_hpd@vga-hpd
-+igt@kms_chamelium_hpd@vga-hpd-after-suspend
-+igt@kms_chamelium_hpd@vga-hpd-enable-disable-mode
-+igt@kms_chamelium_hpd@vga-hpd-fast
-+igt@kms_chamelium_hpd@vga-hpd-for-each-pipe
-+igt@kms_chamelium_hpd@vga-hpd-with-enabled-mode
-+igt@kms_chamelium_hpd@vga-hpd-without-ddc
-+igt@kms_chamelium_sharpness_filter@filter-basic
-+igt@kms_tiled_display@basic-test-pattern-with-chamelium
-diff --git a/tests/intel-ci/i915.chamelium-only.testlist b/tests/intel-ci/i915.chamelium-only.testlist
-deleted file mode 100644
-index 99d2f2409..000000000
---- a/tests/intel-ci/i915.chamelium-only.testlist
-+++ /dev/null
-@@ -1,69 +0,0 @@
--igt@kms_feature_discovery@chamelium
--igt@kms_chamelium_audio@dp-audio
--igt@kms_chamelium_audio@dp-audio-edid
--igt@kms_chamelium_color@ctm-0-25
--igt@kms_chamelium_color@ctm-0-50
--igt@kms_chamelium_color@ctm-0-75
--igt@kms_chamelium_color@ctm-blue-to-red
--igt@kms_chamelium_color@ctm-green-to-red
--igt@kms_chamelium_color@ctm-limited-range
--igt@kms_chamelium_color@ctm-max
--igt@kms_chamelium_color@ctm-negative
--igt@kms_chamelium_color@ctm-red-to-blue
--igt@kms_chamelium_color@degamma
--igt@kms_chamelium_color@gamma
--igt@kms_chamelium_edid@dp-edid-change-during-suspend
--igt@kms_chamelium_edid@dp-edid-read
--igt@kms_chamelium_edid@dp-edid-resolution-list
--igt@kms_chamelium_edid@dp-edid-stress-resolution-4k
--igt@kms_chamelium_edid@dp-edid-stress-resolution-non-4k
--igt@kms_chamelium_edid@dp-mode-timings
--igt@kms_chamelium_edid@hdmi-edid-change-during-suspend
--igt@kms_chamelium_edid@hdmi-edid-read
--# Chamelium v1 board HDMI receiver supports max 4k@30 resolution 
--# removed test as its having a mode 4k@60 resulting 
--# TMDS config errors on v1 board
--#igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k
--igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k
--igt@kms_chamelium_edid@hdmi-mode-timings
--igt@kms_chamelium_edid@vga-edid-read
--igt@kms_chamelium_frames@dp-crc-fast
--igt@kms_chamelium_frames@dp-crc-multiple
--igt@kms_chamelium_frames@dp-crc-single
--igt@kms_chamelium_frames@dp-frame-dump
--igt@kms_chamelium_frames@hdmi-aspect-ratio
--igt@kms_chamelium_frames@hdmi-cmp-planar-formats
--igt@kms_chamelium_frames@hdmi-crc-fast
--igt@kms_chamelium_frames@hdmi-crc-multiple
--igt@kms_chamelium_frames@hdmi-crc-nonplanar-formats
--igt@kms_chamelium_frames@hdmi-crc-single
--igt@kms_chamelium_frames@hdmi-frame-dump
--igt@kms_chamelium_frames@vga-frame-dump
--igt@kms_chamelium_hpd@common-hpd-after-suspend
--igt@kms_chamelium_hpd@dp-hpd
--igt@kms_chamelium_hpd@dp-hpd-after-suspend
--igt@kms_chamelium_hpd@dp-hpd-enable-disable-mode
--igt@kms_chamelium_hpd@dp-hpd-fast
--igt@kms_chamelium_hpd@dp-hpd-for-each-pipe
--igt@kms_chamelium_hpd@dp-hpd-storm
--igt@kms_chamelium_hpd@dp-hpd-storm-disable
--igt@kms_chamelium_hpd@dp-hpd-with-enabled-mode
--igt@kms_chamelium_hpd@hdmi-hpd
--igt@kms_chamelium_hpd@hdmi-hpd-after-suspend
--igt@kms_chamelium_hpd@hdmi-hpd-enable-disable-mode
--igt@kms_chamelium_hpd@hdmi-hpd-fast
--igt@kms_chamelium_hpd@hdmi-hpd-for-each-pipe
--igt@kms_chamelium_hpd@hdmi-hpd-storm
--igt@kms_chamelium_hpd@hdmi-hpd-storm-disable
--igt@kms_chamelium_hpd@hdmi-hpd-with-enabled-mode
--igt@kms_chamelium_audio@hdmi-audio
--igt@kms_chamelium_audio@hdmi-audio-edid
--igt@kms_chamelium_hpd@vga-hpd
--igt@kms_chamelium_hpd@vga-hpd-after-suspend
--igt@kms_chamelium_hpd@vga-hpd-enable-disable-mode
--igt@kms_chamelium_hpd@vga-hpd-fast
--igt@kms_chamelium_hpd@vga-hpd-for-each-pipe
--igt@kms_chamelium_hpd@vga-hpd-with-enabled-mode
--igt@kms_chamelium_hpd@vga-hpd-without-ddc
--igt@kms_chamelium_sharpness_filter@filter-basic
--igt@kms_tiled_display@basic-test-pattern-with-chamelium
-diff --git a/tests/intel-ci/i915.chamelium-only.testlist b/tests/intel-ci/i915.chamelium-only.testlist
-new file mode 120000
-index 000000000..d7c492973
---- /dev/null
-+++ b/tests/intel-ci/i915.chamelium-only.testlist
-@@ -0,0 +1 @@
-+chamelium-only.testlist
-\ No newline at end of file
-diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
-index 05ee4f73a..baca20ba1 100644
---- a/tests/intel-ci/meson.build
-+++ b/tests/intel-ci/meson.build
-@@ -9,7 +9,6 @@ intelci_files = [
-   'fast-feedback-chamelium-only.testlist',
-   'i915.blocklist.txt',
-   'i915.blocklist-pre-merge.txt',
--  'i915.chamelium-only.testlist',
-   'i915.fast-feedback.testlist',
-   'i915.fast-feedback-chamelium-only.testlist',
-   'meta.testlist',
-diff --git a/tests/intel-ci/xe.chamelium-only.testlist b/tests/intel-ci/xe.chamelium-only.testlist
-new file mode 120000
-index 000000000..d7c492973
---- /dev/null
-+++ b/tests/intel-ci/xe.chamelium-only.testlist
-@@ -0,0 +1 @@
-+chamelium-only.testlist
-\ No newline at end of file
-diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
-index 559d46b4d..5645de181 100644
---- a/tests/intel/kms_test_config.json
-+++ b/tests/intel/kms_test_config.json
-@@ -15,7 +15,7 @@
-                     "include": [
-                         { "i915 BAT": "../intel-ci/i915.fast-feedback.testlist" },
-                         { "i915 BAT chamelium": "../intel-ci/i915.fast-feedback-chamelium-only.testlist" },
--                        { "i915 chamelium": "../intel-ci/i915.chamelium-only.testlist" },
-+                        { "i915 chamelium": "../intel-ci/chamelium-only.testlist" },
- 
-                         { "Xe BAT": "../intel-ci/xe.fast-feedback.testlist" },
-                         { "Xe BAT chamelium": "../intel-ci/xe.fast-feedback-chamelium-only.testlist" }
--- 
-2.52.0
+Niranjana
 
+>Otherwise generally this is a great addition to the spinner toolkit:
+>Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+>
+>> +               spin->batch[b++] = wait_addr;
+>> +               spin->batch[b++] = wait_addr >> 32;
+>> +               spin->batch[b++] = 0;
+>> +       }
+>> +
+>>         spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE |
+>> 2;
+>>         spin->batch[b++] = 0;
+>>         spin->batch[b++] = end_addr;
+>> @@ -207,6 +226,28 @@ void xe_spin_end(struct xe_spin *spin)
+>>         WRITE_ONCE(spin->end, 0);
+>>  }
+>>  
+>> +/**
+>> + * xe_spin_preempt_wait:
+>> + * @spin: pointer to spinner mapped bo
+>> + *
+>> + * Make the spinner wait on the preemption semaphore.
+>> + */
+>> +void xe_spin_preempt_wait(struct xe_spin *spin)
+>> +{
+>> +       spin->wait_cond = 1;
+>> +}
+>> +
+>> +/**
+>> + * xe_spin_preempt_nowait:
+>> + * @spin: pointer to spinner mapped bo
+>> + *
+>> + * Make the spinner do not wait on the preemption semaphore.
+>> + */
+>> +void xe_spin_preempt_nowait(struct xe_spin *spin)
+>> +{
+>> +       spin->wait_cond = 0;
+>> +}
+>> +
+>>  /**
+>>   * xe_spin_create:
+>>   * @opt: controlling options such as allocator handle, exec_queue,
+>> vm etc
+>> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+>> index c2199d0aa..eaf2a409e 100644
+>> --- a/lib/xe/xe_spin.h
+>> +++ b/lib/xe/xe_spin.h
+>> @@ -64,6 +64,7 @@ struct xe_spin {
+>>         uint64_t pad;
+>>         uint32_t start;
+>>         uint32_t end;
+>> +       uint32_t wait_cond;
+>>         uint32_t ticks_delta;
+>>         uint64_t exec_sync;
+>>         uint32_t timestamp;
+>> @@ -76,6 +77,8 @@ void xe_spin_init(struct xe_spin *spin, struct
+>> xe_spin_opts *opts);
+>>  bool xe_spin_started(struct xe_spin *spin);
+>>  void xe_spin_wait_started(struct xe_spin *spin);
+>>  void xe_spin_end(struct xe_spin *spin);
+>> +void xe_spin_preempt_wait(struct xe_spin *spin);
+>> +void xe_spin_preempt_nowait(struct xe_spin *spin);
+>>  
+>>  /*
+>>   * xe_cork: higher level API that simplifies exec'ing an xe_spin by
+>> taking care
+>
