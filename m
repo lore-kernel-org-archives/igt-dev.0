@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7CF8D2A54D
-	for <igt-dev@archiver.kernel.org>; Thu,  4 Dec 2025 21:36:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C084D2A54D
+	for <igt-dev@archiver.kernel.org>; Thu,  4 Dec 2025 21:36:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6E72510E227;
-	Thu,  4 Dec 2025 21:36:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B2DC910E220;
+	Thu,  4 Dec 2025 21:36:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="in1mivS8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E6AKkhTl";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7604E10E227
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Dec 2025 21:36:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27A5510E9C2
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Dec 2025 21:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764884209; x=1796420209;
+ t=1764884214; x=1796420214;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=vgjHaO+E7hGiipnoyNIb/SwUyC2AovMa/RwMNQGTFVs=;
- b=in1mivS8UQAxdKLrUxNCIrYDD8YNDLFbtond/IdH4rsuMvZvZBq+sD5Q
- By8zlkC5QYPtW4Af1pO1nR0VbR8v7F4sJiwZ1KIusAGEC7ZA2ybrGLJSW
- Zgbr2Na55wClOYhjiduuuf3FvKjlG/Lx9tRLTyGUPOwe9/FdMfDKeNSez
- vhy8AEg4Dz28iKRBWOD+WUjVN1IPkYyJrhyJ0cJUL5ZGjYgWd7p/qyOKo
- EWJLUhUy43dWnpirzW04+zNFQTO/HhQPAu2mYvH+goEyg3Jq0aWKtqHc0
- OF/Fo86HkmH0ovqppzmhgWgCwmimgEJWgrXqdlgkrzbN1SqjtNnk2+ojX Q==;
-X-CSE-ConnectionGUID: iCSzHs70TlqOpuK9jMWzqg==
-X-CSE-MsgGUID: D6V4FIfeTaan84MuSOVdzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="77600849"
-X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="77600849"
+ bh=JLCfs5RIaL+oQDUtP5wVnwa0/Ln/pESo/8COcugljkk=;
+ b=E6AKkhTl776WtTjFTWWquwWLrPixX6zNFS7mHrbXhRkt7g5DPGBZDx3L
+ PZUi0qg4X4xQtMHdvTt1+tGm/7V1N/UN4nvEdx0gceBAIgtrwocwqJCnw
+ kg9eok5cKuACPuUrZ64FFStgIkWgnvh91IkoPV68aSIRXAG+eCdORyXS9
+ kZsQf65Vf8tAItW/T4X6l+qiiJwny1/GmPy0/8IPUILUZ7GkLHlkYckNL
+ WXcnUVrgVeWbIj9QTQLG4DpAKVOrLGKB5AKt2ic4ZTFONs0WWGrtE2pED
+ 2goc0PBxYZHMJBrWWR12tYBuGCJAIcdqNO8pTurt2zvihoaNpWZRK3zzx g==;
+X-CSE-ConnectionGUID: W4cO4UahQd2CDSls1PdQKA==
+X-CSE-MsgGUID: 1U0GWPw+QOazhS0U3WkOFQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="77600860"
+X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="77600860"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2025 13:36:49 -0800
-X-CSE-ConnectionGUID: rF4W9BbGQOKH/EsNfmGMfg==
-X-CSE-MsgGUID: 4JfI1OMURfG8cb+THcBSpw==
+ 04 Dec 2025 13:36:54 -0800
+X-CSE-ConnectionGUID: impnj1CPR8m2bQcPiy6rLw==
+X-CSE-MsgGUID: 0od3KPEjSkK6iL4i5DpDgw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="195207691"
+X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="195207713"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.244.32])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2025 13:36:48 -0800
+ 04 Dec 2025 13:36:52 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>
-Subject: [PATCH i-g-t v2 2/3] intel-ci: Add symlinks for Xe lists
-Date: Thu,  4 Dec 2025 22:36:31 +0100
-Message-ID: <20251204213632.155894-3-kamil.konieczny@linux.intel.com>
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Jari Tahvanainen <jari.tahvanainen@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>, Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t v2 3/3] intel-ci: unify chamelium testlist
+Date: Thu,  4 Dec 2025 22:36:32 +0100
+Message-ID: <20251204213632.155894-4-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251204213632.155894-1-kamil.konieczny@linux.intel.com>
 References: <20251204213632.155894-1-kamil.konieczny@linux.intel.com>
@@ -69,81 +71,227 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add symlinks to recently removed Xe lists so Ci will have time
-for changing its flow.
-
-v2: add symlinks to meson (Ryszard)
+Both i915 and Xe use the same testlist, so make it uniform and
+move it to one chamelium-only.testlist file. Add also symlinks
+for it to make CI change easier.
 
 Cc: Ryszard Knop <ryszard.knop@intel.com>
+Cc: Jari Tahvanainen <jari.tahvanainen@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+Reviewed-by: Ryszard Knop <ryszard.knop@intel.com>
 ---
- tests/intel-ci/meson.build                              | 4 ++++
- tests/intel-ci/xe-fast-feedback-chamelium-only.testlist | 1 +
- tests/intel-ci/xe-fast-feedback.testlist                | 1 +
- tests/intel-ci/xe-sriov-vf.blocklist.txt                | 1 +
- tests/intel-ci/xe-sriov-vm.blocklist.txt                | 1 +
- 5 files changed, 8 insertions(+)
- create mode 120000 tests/intel-ci/xe-fast-feedback-chamelium-only.testlist
- create mode 120000 tests/intel-ci/xe-fast-feedback.testlist
- create mode 120000 tests/intel-ci/xe-sriov-vf.blocklist.txt
- create mode 120000 tests/intel-ci/xe-sriov-vm.blocklist.txt
+ tests/intel-ci/chamelium-only.testlist      | 70 ++++++++++++++++++++-
+ tests/intel-ci/i915.chamelium-only.testlist | 70 +--------------------
+ tests/intel-ci/meson.build                  |  1 -
+ tests/intel-ci/xe.chamelium-only.testlist   |  1 +
+ tests/intel/kms_test_config.json            |  2 +-
+ 5 files changed, 72 insertions(+), 72 deletions(-)
+ mode change 120000 => 100644 tests/intel-ci/chamelium-only.testlist
+ mode change 100644 => 120000 tests/intel-ci/i915.chamelium-only.testlist
+ create mode 120000 tests/intel-ci/xe.chamelium-only.testlist
 
+diff --git a/tests/intel-ci/chamelium-only.testlist b/tests/intel-ci/chamelium-only.testlist
+deleted file mode 120000
+index 3715a9469..000000000
+--- a/tests/intel-ci/chamelium-only.testlist
++++ /dev/null
+@@ -1 +0,0 @@
+-i915.chamelium-only.testlist
+\ No newline at end of file
+diff --git a/tests/intel-ci/chamelium-only.testlist b/tests/intel-ci/chamelium-only.testlist
+new file mode 100644
+index 000000000..99d2f2409
+--- /dev/null
++++ b/tests/intel-ci/chamelium-only.testlist
+@@ -0,0 +1,69 @@
++igt@kms_feature_discovery@chamelium
++igt@kms_chamelium_audio@dp-audio
++igt@kms_chamelium_audio@dp-audio-edid
++igt@kms_chamelium_color@ctm-0-25
++igt@kms_chamelium_color@ctm-0-50
++igt@kms_chamelium_color@ctm-0-75
++igt@kms_chamelium_color@ctm-blue-to-red
++igt@kms_chamelium_color@ctm-green-to-red
++igt@kms_chamelium_color@ctm-limited-range
++igt@kms_chamelium_color@ctm-max
++igt@kms_chamelium_color@ctm-negative
++igt@kms_chamelium_color@ctm-red-to-blue
++igt@kms_chamelium_color@degamma
++igt@kms_chamelium_color@gamma
++igt@kms_chamelium_edid@dp-edid-change-during-suspend
++igt@kms_chamelium_edid@dp-edid-read
++igt@kms_chamelium_edid@dp-edid-resolution-list
++igt@kms_chamelium_edid@dp-edid-stress-resolution-4k
++igt@kms_chamelium_edid@dp-edid-stress-resolution-non-4k
++igt@kms_chamelium_edid@dp-mode-timings
++igt@kms_chamelium_edid@hdmi-edid-change-during-suspend
++igt@kms_chamelium_edid@hdmi-edid-read
++# Chamelium v1 board HDMI receiver supports max 4k@30 resolution 
++# removed test as its having a mode 4k@60 resulting 
++# TMDS config errors on v1 board
++#igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k
++igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k
++igt@kms_chamelium_edid@hdmi-mode-timings
++igt@kms_chamelium_edid@vga-edid-read
++igt@kms_chamelium_frames@dp-crc-fast
++igt@kms_chamelium_frames@dp-crc-multiple
++igt@kms_chamelium_frames@dp-crc-single
++igt@kms_chamelium_frames@dp-frame-dump
++igt@kms_chamelium_frames@hdmi-aspect-ratio
++igt@kms_chamelium_frames@hdmi-cmp-planar-formats
++igt@kms_chamelium_frames@hdmi-crc-fast
++igt@kms_chamelium_frames@hdmi-crc-multiple
++igt@kms_chamelium_frames@hdmi-crc-nonplanar-formats
++igt@kms_chamelium_frames@hdmi-crc-single
++igt@kms_chamelium_frames@hdmi-frame-dump
++igt@kms_chamelium_frames@vga-frame-dump
++igt@kms_chamelium_hpd@common-hpd-after-suspend
++igt@kms_chamelium_hpd@dp-hpd
++igt@kms_chamelium_hpd@dp-hpd-after-suspend
++igt@kms_chamelium_hpd@dp-hpd-enable-disable-mode
++igt@kms_chamelium_hpd@dp-hpd-fast
++igt@kms_chamelium_hpd@dp-hpd-for-each-pipe
++igt@kms_chamelium_hpd@dp-hpd-storm
++igt@kms_chamelium_hpd@dp-hpd-storm-disable
++igt@kms_chamelium_hpd@dp-hpd-with-enabled-mode
++igt@kms_chamelium_hpd@hdmi-hpd
++igt@kms_chamelium_hpd@hdmi-hpd-after-suspend
++igt@kms_chamelium_hpd@hdmi-hpd-enable-disable-mode
++igt@kms_chamelium_hpd@hdmi-hpd-fast
++igt@kms_chamelium_hpd@hdmi-hpd-for-each-pipe
++igt@kms_chamelium_hpd@hdmi-hpd-storm
++igt@kms_chamelium_hpd@hdmi-hpd-storm-disable
++igt@kms_chamelium_hpd@hdmi-hpd-with-enabled-mode
++igt@kms_chamelium_audio@hdmi-audio
++igt@kms_chamelium_audio@hdmi-audio-edid
++igt@kms_chamelium_hpd@vga-hpd
++igt@kms_chamelium_hpd@vga-hpd-after-suspend
++igt@kms_chamelium_hpd@vga-hpd-enable-disable-mode
++igt@kms_chamelium_hpd@vga-hpd-fast
++igt@kms_chamelium_hpd@vga-hpd-for-each-pipe
++igt@kms_chamelium_hpd@vga-hpd-with-enabled-mode
++igt@kms_chamelium_hpd@vga-hpd-without-ddc
++igt@kms_chamelium_sharpness_filter@filter-basic
++igt@kms_tiled_display@basic-test-pattern-with-chamelium
+diff --git a/tests/intel-ci/i915.chamelium-only.testlist b/tests/intel-ci/i915.chamelium-only.testlist
+deleted file mode 100644
+index 99d2f2409..000000000
+--- a/tests/intel-ci/i915.chamelium-only.testlist
++++ /dev/null
+@@ -1,69 +0,0 @@
+-igt@kms_feature_discovery@chamelium
+-igt@kms_chamelium_audio@dp-audio
+-igt@kms_chamelium_audio@dp-audio-edid
+-igt@kms_chamelium_color@ctm-0-25
+-igt@kms_chamelium_color@ctm-0-50
+-igt@kms_chamelium_color@ctm-0-75
+-igt@kms_chamelium_color@ctm-blue-to-red
+-igt@kms_chamelium_color@ctm-green-to-red
+-igt@kms_chamelium_color@ctm-limited-range
+-igt@kms_chamelium_color@ctm-max
+-igt@kms_chamelium_color@ctm-negative
+-igt@kms_chamelium_color@ctm-red-to-blue
+-igt@kms_chamelium_color@degamma
+-igt@kms_chamelium_color@gamma
+-igt@kms_chamelium_edid@dp-edid-change-during-suspend
+-igt@kms_chamelium_edid@dp-edid-read
+-igt@kms_chamelium_edid@dp-edid-resolution-list
+-igt@kms_chamelium_edid@dp-edid-stress-resolution-4k
+-igt@kms_chamelium_edid@dp-edid-stress-resolution-non-4k
+-igt@kms_chamelium_edid@dp-mode-timings
+-igt@kms_chamelium_edid@hdmi-edid-change-during-suspend
+-igt@kms_chamelium_edid@hdmi-edid-read
+-# Chamelium v1 board HDMI receiver supports max 4k@30 resolution 
+-# removed test as its having a mode 4k@60 resulting 
+-# TMDS config errors on v1 board
+-#igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k
+-igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k
+-igt@kms_chamelium_edid@hdmi-mode-timings
+-igt@kms_chamelium_edid@vga-edid-read
+-igt@kms_chamelium_frames@dp-crc-fast
+-igt@kms_chamelium_frames@dp-crc-multiple
+-igt@kms_chamelium_frames@dp-crc-single
+-igt@kms_chamelium_frames@dp-frame-dump
+-igt@kms_chamelium_frames@hdmi-aspect-ratio
+-igt@kms_chamelium_frames@hdmi-cmp-planar-formats
+-igt@kms_chamelium_frames@hdmi-crc-fast
+-igt@kms_chamelium_frames@hdmi-crc-multiple
+-igt@kms_chamelium_frames@hdmi-crc-nonplanar-formats
+-igt@kms_chamelium_frames@hdmi-crc-single
+-igt@kms_chamelium_frames@hdmi-frame-dump
+-igt@kms_chamelium_frames@vga-frame-dump
+-igt@kms_chamelium_hpd@common-hpd-after-suspend
+-igt@kms_chamelium_hpd@dp-hpd
+-igt@kms_chamelium_hpd@dp-hpd-after-suspend
+-igt@kms_chamelium_hpd@dp-hpd-enable-disable-mode
+-igt@kms_chamelium_hpd@dp-hpd-fast
+-igt@kms_chamelium_hpd@dp-hpd-for-each-pipe
+-igt@kms_chamelium_hpd@dp-hpd-storm
+-igt@kms_chamelium_hpd@dp-hpd-storm-disable
+-igt@kms_chamelium_hpd@dp-hpd-with-enabled-mode
+-igt@kms_chamelium_hpd@hdmi-hpd
+-igt@kms_chamelium_hpd@hdmi-hpd-after-suspend
+-igt@kms_chamelium_hpd@hdmi-hpd-enable-disable-mode
+-igt@kms_chamelium_hpd@hdmi-hpd-fast
+-igt@kms_chamelium_hpd@hdmi-hpd-for-each-pipe
+-igt@kms_chamelium_hpd@hdmi-hpd-storm
+-igt@kms_chamelium_hpd@hdmi-hpd-storm-disable
+-igt@kms_chamelium_hpd@hdmi-hpd-with-enabled-mode
+-igt@kms_chamelium_audio@hdmi-audio
+-igt@kms_chamelium_audio@hdmi-audio-edid
+-igt@kms_chamelium_hpd@vga-hpd
+-igt@kms_chamelium_hpd@vga-hpd-after-suspend
+-igt@kms_chamelium_hpd@vga-hpd-enable-disable-mode
+-igt@kms_chamelium_hpd@vga-hpd-fast
+-igt@kms_chamelium_hpd@vga-hpd-for-each-pipe
+-igt@kms_chamelium_hpd@vga-hpd-with-enabled-mode
+-igt@kms_chamelium_hpd@vga-hpd-without-ddc
+-igt@kms_chamelium_sharpness_filter@filter-basic
+-igt@kms_tiled_display@basic-test-pattern-with-chamelium
+diff --git a/tests/intel-ci/i915.chamelium-only.testlist b/tests/intel-ci/i915.chamelium-only.testlist
+new file mode 120000
+index 000000000..d7c492973
+--- /dev/null
++++ b/tests/intel-ci/i915.chamelium-only.testlist
+@@ -0,0 +1 @@
++chamelium-only.testlist
+\ No newline at end of file
 diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
-index 917f18bfe..05ee4f73a 100644
+index 05ee4f73a..baca20ba1 100644
 --- a/tests/intel-ci/meson.build
 +++ b/tests/intel-ci/meson.build
-@@ -19,7 +19,9 @@ intelci_files = [
-   'xe.bmg.eudebug.blocklist.txt',
-   'xe.eudebug.blocklist.txt',
-   'xe.fast-feedback.testlist',
-+  'xe-fast-feedback.testlist',
-   'xe.fast-feedback-chamelium-only.testlist',
-+  'xe-fast-feedback-chamelium-only.testlist',
-   'xe.lnl.core.blocklist.txt',
-   'xe.lnl.display.blocklist.txt',
-   'xe.lnl.eudebug.blocklist.txt',
-@@ -27,7 +29,9 @@ intelci_files = [
-   'xe.ptl.core.blocklist.txt',
-   'xe.ptl.display.blocklist.txt',
-   'xe.sriov-vf.blocklist.txt',
-+  'xe-sriov-vf.blocklist.txt',
-   'xe.sriov-vm.blocklist.txt',
-+  'xe-sriov-vm.blocklist.txt',
- ]
+@@ -9,7 +9,6 @@ intelci_files = [
+   'fast-feedback-chamelium-only.testlist',
+   'i915.blocklist.txt',
+   'i915.blocklist-pre-merge.txt',
+-  'i915.chamelium-only.testlist',
+   'i915.fast-feedback.testlist',
+   'i915.fast-feedback-chamelium-only.testlist',
+   'meta.testlist',
+diff --git a/tests/intel-ci/xe.chamelium-only.testlist b/tests/intel-ci/xe.chamelium-only.testlist
+new file mode 120000
+index 000000000..d7c492973
+--- /dev/null
++++ b/tests/intel-ci/xe.chamelium-only.testlist
+@@ -0,0 +1 @@
++chamelium-only.testlist
+\ No newline at end of file
+diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
+index 559d46b4d..5645de181 100644
+--- a/tests/intel/kms_test_config.json
++++ b/tests/intel/kms_test_config.json
+@@ -15,7 +15,7 @@
+                     "include": [
+                         { "i915 BAT": "../intel-ci/i915.fast-feedback.testlist" },
+                         { "i915 BAT chamelium": "../intel-ci/i915.fast-feedback-chamelium-only.testlist" },
+-                        { "i915 chamelium": "../intel-ci/i915.chamelium-only.testlist" },
++                        { "i915 chamelium": "../intel-ci/chamelium-only.testlist" },
  
- if meson.version().version_compare('<1.3.0')
-diff --git a/tests/intel-ci/xe-fast-feedback-chamelium-only.testlist b/tests/intel-ci/xe-fast-feedback-chamelium-only.testlist
-new file mode 120000
-index 000000000..5590bb122
---- /dev/null
-+++ b/tests/intel-ci/xe-fast-feedback-chamelium-only.testlist
-@@ -0,0 +1 @@
-+xe.fast-feedback-chamelium-only.testlist
-\ No newline at end of file
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-new file mode 120000
-index 000000000..18f0b3b89
---- /dev/null
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -0,0 +1 @@
-+xe.fast-feedback.testlist
-\ No newline at end of file
-diff --git a/tests/intel-ci/xe-sriov-vf.blocklist.txt b/tests/intel-ci/xe-sriov-vf.blocklist.txt
-new file mode 120000
-index 000000000..207e941e7
---- /dev/null
-+++ b/tests/intel-ci/xe-sriov-vf.blocklist.txt
-@@ -0,0 +1 @@
-+xe.sriov-vf.blocklist.txt
-\ No newline at end of file
-diff --git a/tests/intel-ci/xe-sriov-vm.blocklist.txt b/tests/intel-ci/xe-sriov-vm.blocklist.txt
-new file mode 120000
-index 000000000..d07d2b330
---- /dev/null
-+++ b/tests/intel-ci/xe-sriov-vm.blocklist.txt
-@@ -0,0 +1 @@
-+xe.sriov-vm.blocklist.txt
-\ No newline at end of file
+                         { "Xe BAT": "../intel-ci/xe.fast-feedback.testlist" },
+                         { "Xe BAT chamelium": "../intel-ci/xe.fast-feedback-chamelium-only.testlist" }
 -- 
 2.52.0
 
