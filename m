@@ -4,56 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E70ED1D89D
-	for <igt-dev@archiver.kernel.org>; Thu,  4 Dec 2025 09:30:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D77D4D1D89E
+	for <igt-dev@archiver.kernel.org>; Thu,  4 Dec 2025 09:34:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A6A3810E8EF;
-	Thu,  4 Dec 2025 09:30:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 74AF610E8F4;
+	Thu,  4 Dec 2025 09:34:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mpVjO2nz";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="Sb5N4Pn8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A9AF310E8EF
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Dec 2025 09:30:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764840646; x=1796376646;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=23CbZfsxosCHS82rIBNzfiisW2AwFov4oWDWYLFtTRQ=;
- b=mpVjO2nzeyPjpgz41QWY00Ptk4+DWa4ApAN1Yg356ICz0gKyhg8i6NBq
- JY6pjqrWvAYXjNMxv2zjHU402ciY/5QGLRzPbUI6h3/f2mp7Tn6/74l8j
- mCyzwX1pJSPK5H0HUgQS4ynbACVFyMYZLKDb3KJL1soWQJn15bK0nNeLH
- RYO4uFerHoTtt+3/yiWFgvkMA34+MP7hTkMCYr8I9vFp5CYkThNnKK3O6
- dFxyy2UfEFNTg392ERVKUqR5QsYZ58ywLv1em2u948TEzAkSym9J1r53u
- bLcOA/mg0GvtvccmuiaI7zDnNhoKbG0s3MmxoDE7mCMQ7ApCO0b0I/ki1 w==;
-X-CSE-ConnectionGUID: Uk55+vMjTd2+FKl/HfxxPg==
-X-CSE-MsgGUID: k8HmdZqwTJeAa69MRkNzfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="70705521"
-X-IronPort-AV: E=Sophos;i="6.20,248,1758610800"; d="scan'208";a="70705521"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2025 01:30:22 -0800
-X-CSE-ConnectionGUID: McnydQSXTE+B8RP07CmW8w==
-X-CSE-MsgGUID: 4/bzla0sSUavJF+ZJgkIBA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,248,1758610800"; d="scan'208";a="200067855"
-Received: from dg2adlp-alder-lake-client-platform.iind.intel.com
- ([10.223.55.76])
- by orviesa005.jf.intel.com with ESMTP; 04 Dec 2025 01:30:21 -0800
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com,
-	Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t] tests/intel/kms_pm_rpm: Add test to validate G7
- residency
-Date: Thu,  4 Dec 2025 14:55:48 +0530
-Message-Id: <20251204092548.60528-1-mohammed.thasleem@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251125134233.33376-1-mohammed.thasleem@intel>
-References: <20251125134233.33376-1-mohammed.thasleem@intel>
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com
+ [209.85.216.53])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D74B10E8F4
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Dec 2025 09:34:15 +0000 (UTC)
+Received: by mail-pj1-f53.google.com with SMTP id
+ 98e67ed59e1d1-3410c86070dso522240a91.1
+ for <igt-dev@lists.freedesktop.org>; Thu, 04 Dec 2025 01:34:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1764840855; x=1765445655; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=/jCKR+opv97LEa75JF+A+ZsKPWqn4TfHYfEHyrbZ8+k=;
+ b=Sb5N4Pn8IhpvIj0NZRZMUBvznbcAelpMohwaaShdxuZmv+4TEVw8GCAsboFkYNvmX5
+ Xcf+u6f6b72MXwZ8kXkAhjxtSevryDegBa1XLMH7PjuR6+DcV+3goXNZrRpINMZl4EFO
+ 1xtWcwsyqwH/EVsfIYmFDsnpM2CucPMInUGfRLVmOH+JTd7jt5GJsbRXuUsAPvw1kouU
+ 3AiFKaYd3/4h7Eik/6SM/N3nsZNDm71xhag2kGZa5sNl3Q8/OYCW6G7yV6CBNtmtU7h1
+ P4E4DZpu8tXy/FFOAJyzfFgJxQL1bjBJFEOqkoeU0jYAxxw/50+a2gcSkKS8FFJ3C/fZ
+ /frg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1764840855; x=1765445655;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=/jCKR+opv97LEa75JF+A+ZsKPWqn4TfHYfEHyrbZ8+k=;
+ b=wuv1nHuiEdaUfZhP5X0H0wws1fssTmIRYJc0FoCvC0DFV2+SnEuqkN11daVN3Wr58Y
+ 0WppZ1dZhRJ2fetLgO2n27nDWXZQx8ft02Bl7pjxKG1QzHHSyjxONobukyHzGvJQX+Fg
+ CWRGBEgprWS2XR5WiT6a5OWUluhqQ5oluw8UlrWo67/L/qSNuD6eQBY2tlmbddHnMJMo
+ xPNiZZxXZwk2rv0rB2ErruDm58J6OhA4uCUKMavpqjEpKMq8TZDBfT+8afVgIiJtKipF
+ Ys6ifZFqi0k/eFtFnbBd2tg07BKI5Qu8XFhlFxF/u0ioHw0ddu7fjTyAxc5HiiGcs0D3
+ AdUg==
+X-Gm-Message-State: AOJu0YwWdO/Rf/O65okrvFG9yVRwip8USn+2LLwtiwmUK+DaeRSnJ0lv
+ oadg6pRhCOvv+2SDrXG3wlUeNmAv7dZbp7R5cMTzwKDZZknRR9cuEC2dNwUOk1pvbAZkmMJllrM
+ 85xxIy4iMo+f36PIad6ZecgRPs8sfXpM=
+X-Gm-Gg: ASbGncsgnOce+QsDlqDWqsUgEI2uyVNqOBKnjzkNVWCrGYubTcBGKnwSR3gHQ2gnZ+P
+ OszBkvLXZcWkOaoR7k5Kd9PYq4DK23DvnR+SBUmgHSLVxnbJpyqMYyojFBw0AX/3ehdM0xaIouS
+ K02xJcHKEhDdxcUvhbOKBf0sYHNxzw2tdntsqG/rh+PzkyU9z6M89Q2RBPNq6Knl8FtMxpsGG2Z
+ TFvz2CH3aYEHM+YUKUM5BkLrrMj46VtHeMiqZpAHsTPAM6k47khSU2FeAGr6NqUje0ixvUHVv7x
+ SepQHjQWHHg8kBS7oOifPPculRgpGw==
+X-Google-Smtp-Source: AGHT+IGfvFnuHvAsQYBWg2++BxCHH1IwOhBV+83v1C51/6piERfbf/QVs+EHZPFetEhM63qF5uc3agukCNl5DgaVX7w=
+X-Received: by 2002:a17:90b:2f08:b0:335:2823:3683 with SMTP id
+ 98e67ed59e1d1-349125be1e3mr5064811a91.9.1764840854777; Thu, 04 Dec 2025
+ 01:34:14 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251127140800.1379905-1-chaitanya.kumar.borah@intel.com>
+In-Reply-To: <20251127140800.1379905-1-chaitanya.kumar.borah@intel.com>
+From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
+Date: Thu, 4 Dec 2025 11:34:03 +0200
+X-Gm-Features: AWmQ_bnBXYoHPH2tCvv3KYjG5De-hcQ8INVMKtHSFmvDkgideMEErh4eXS2DPWg
+Message-ID: <CAJ=qYWR0y0UR1_dw8CiUhs6GAcPYv8A48NXKd0n5E9Rhr924Qw@mail.gmail.com>
+Subject: Re: [PATCH i-g-t v2] tests/kms_plane_cursor: Use additional FB for
+ reference image
+To: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Cc: igt-dev@lists.freedesktop.org, swati2.sharma@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,214 +83,128 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This test validates the dgfx Package G7 residency.
+look ok to me.
 
-v2: Move igt display reset outside loop. (Jeevan)
-    Add G7 residency check before test execution. (Jeevan)
-    Add 4k@144hz supported mode for G7 validation.
-v3: Rename set_output function name. (Kunal)
-    Move all calling functions from igt subset to test_package_g7. (Kunal)
-v4: Move mode detection logic in to is_preferred_mode_present. (Kunal)
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/intel/kms_pm_rpm.c | 148 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 147 insertions(+), 1 deletion(-)
-
-diff --git a/tests/intel/kms_pm_rpm.c b/tests/intel/kms_pm_rpm.c
-index 1610404ff..431870cac 100644
---- a/tests/intel/kms_pm_rpm.c
-+++ b/tests/intel/kms_pm_rpm.c
-@@ -131,6 +131,9 @@
-  *
-  * SUBTEST: system-suspend-idle
-  * Description: Validate suspend-to-idle (S0ix) functionality.
-+ *
-+ * SUBTEST: package-g7
-+ * Description: Validate the package-g7 residency.
-  */
- 
- #define MSR_PC8_RES	0x630
-@@ -146,6 +149,8 @@
- #define STRIDE (WIDTH)
- #define SIZE (HEIGHT * STRIDE)
- 
-+#define G7_RES_TIMEOUT 30000
-+
- enum pc8_status {
- 	PC8_ENABLED,
- 	PC8_DISABLED
-@@ -163,6 +168,14 @@ enum plane_type {
- 	PLANE_CURSOR,
- };
- 
-+static const struct {
-+	int w, h, hz;
-+	const char *name;
-+} prefers_mode[] = {
-+	{7680, 4320, 60,  "8K@60"},
-+	{3840, 2160, 144, "4K@144"},
-+};
-+
- /* Wait flags */
- #define DONT_WAIT	0
- #define WAIT_STATUS	1
-@@ -181,7 +194,10 @@ struct mode_set_data {
- 	drmModeConnectorPtr connectors[MAX_CONNECTORS];
- 	drmModePropertyBlobPtr edids[MAX_CONNECTORS];
- 	igt_display_t display;
--
-+	igt_output_t *output;
-+	drmModeModeInfo *mode;
-+	igt_plane_t *primary;
-+	struct igt_fb fb_white;
- 	uint32_t devid;
- 	int fw_fd;
- };
-@@ -1576,6 +1592,134 @@ static void pm_test_caching(void)
- 	gem_close(drm_fd, handle);
- }
- 
-+static bool is_preferred_mode_present(igt_output_t *output, enum pipe pipe,
-+				      igt_display_t *display)
-+{
-+	drmModeModeInfo *mode = NULL;
-+
-+	for (int i = 0; i < output->config.connector->count_modes; i++) {
-+		mode = &output->config.connector->modes[i];
-+
-+		for (int j = 0; j < ARRAY_SIZE(prefers_mode); j++) {
-+			if (mode->hdisplay == prefers_mode[j].w &&
-+				mode->vdisplay == prefers_mode[j].h &&
-+				mode->vrefresh == prefers_mode[j].hz) {
-+
-+				igt_output_override_mode(output, mode);
-+				ms_data.output = output;
-+				ms_data.mode = igt_output_get_mode(output);
-+				ms_data.primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+				return true;
-+			}
-+		}
-+	}
-+
-+	return false;
-+}
-+
-+static void set_prefered_mode(void)
-+{
-+	enum pipe pipe;
-+	igt_output_t *output;
-+	bool mode_found = false;
-+	igt_display_t *display = &ms_data.display;
-+
-+	igt_display_reset(display);
-+
-+	for_each_pipe_with_valid_output(display, pipe, output) {
-+
-+		igt_output_set_pipe(output, pipe);
-+
-+		if (!intel_pipe_output_combo_valid(display))
-+			continue;
-+
-+		if (is_preferred_mode_present(output, pipe, display)) {
-+			mode_found = true;
-+			break;
-+		}
-+	}
-+
-+	igt_require_f(mode_found, "Not found any 8K@60Hz or 4k@144hz mode on any connected output\n");
-+}
-+
-+static void setup_output_fb(void)
-+{
-+	igt_plane_set_fb(ms_data.primary, NULL);
-+	igt_create_color_fb(drm_fd,
-+			    ms_data.mode->hdisplay, ms_data.mode->vdisplay,
-+			    DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR,
-+			    1.0, 1.0, 1.0,
-+			    &ms_data.fb_white);
-+	igt_plane_set_fb(ms_data.primary, &ms_data.fb_white);
-+
-+	igt_display_commit(&ms_data.display);
-+}
-+
-+static void has_g7_support(void)
-+{
-+	char buf[256];
-+
-+	igt_require_f(igt_debugfs_simple_read(debugfs, "dgfx_pkg_residencies", buf, sizeof(buf)) >= 0 &&
-+		      strstr(buf, "Package G7"), "Package G7 is not supported\n");
-+}
-+
-+static uint64_t get_pkg_count(char *pkg_data)
-+{
-+	char *e;
-+	long long ret;
-+	char *s = strchr(pkg_data, ':');
-+
-+	igt_assert(s);
-+	s++;
-+	ret = strtol(s, &e, 10);
-+	igt_assert(((ret != LLONG_MIN && ret != LLONG_MAX) || errno != ERANGE) && e > s && *e == '\n' && ret >= 0);
-+
-+	return ret;
-+}
-+
-+static uint64_t read_g7(void)
-+{
-+	char buf[256];
-+	int ret;
-+	char *str;
-+
-+	ret = igt_debugfs_simple_read(debugfs, "dgfx_pkg_residencies", buf, sizeof(buf));
-+	igt_assert_f(ret >= 0, "Debugfs dgfx_pkg_residencies file not present.\n");
-+
-+	str = strstr(buf, "Package G7");
-+	igt_skip_on_f(!str, "Package G7 is not supported.\n");
-+
-+	return get_pkg_count(str);
-+}
-+
-+static void test_g7(void)
-+{
-+	uint64_t prev_count = 0;
-+
-+	prev_count = read_g7();
-+	/* 30 sec timeout, based on trial statistics, is safe for G7 entry. */
-+	igt_assert_f(igt_wait(read_g7() > prev_count, G7_RES_TIMEOUT, 100),
-+		     "Package G7 residency is not achived\n");
-+}
-+
-+static void cleanup(void)
-+{
-+	igt_plane_set_fb(ms_data.primary, NULL);
-+	igt_output_override_mode(ms_data.output, NULL);
-+	igt_remove_fb(drm_fd, &ms_data.fb_white);
-+}
-+
-+static void test_package_g7(void)
-+{
-+	has_g7_support();
-+	set_prefered_mode();
-+	setup_output_fb();
-+	test_g7();
-+	cleanup();
-+}
-+
- int rounds = 10;
- bool stay = false;
- 
-@@ -1703,6 +1847,8 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		gem_require_mappable_ggtt(drm_fd);
- 		pm_test_caching();
- 	}
-+	igt_subtest("package-g7")
-+		test_package_g7();
- 
- 	igt_fixture {
- 		teardown_environment();
--- 
-2.43.0
-
+On Thu, Nov 27, 2025 at 4:24=E2=80=AFPM Chaitanya Kumar Borah
+<chaitanya.kumar.borah@intel.com> wrote:
+>
+> Painting directly on the FB currently being scanned out ends up
+> modifying the frontbuffer. Since the FB isn=E2=80=99t marked dirty, those
+> updates never reach the actual buffer, leading to stale or incorrect
+> reference images during testing.
+>
+> To avoid this, create a reference framebuffer in addition to the one
+> created for the primary plane and  alternately flip
+> between them while collecting crcs for the reference image and output
+> image respectively.
+>
+> While at it, remove draw_color as it is no longer used.
+>
+> v2:
+>  - Simplify implementation to use a single ref_fb instead of two
+>  - Remove draw_color()
+>  - Remove redundant commit
+>
+> Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+> ---
+>  tests/kms_plane_cursor.c | 23 ++++++++++-------------
+>  1 file changed, 10 insertions(+), 13 deletions(-)
+>
+> diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+> index 9fa36bfd4..258b22b1a 100644
+> --- a/tests/kms_plane_cursor.c
+> +++ b/tests/kms_plane_cursor.c
+> @@ -78,6 +78,7 @@ typedef struct data {
+>         igt_pipe_t *pipe;
+>         igt_pipe_crc_t *pipe_crc;
+>         drmModeModeInfo *mode;
+> +       igt_fb_t ref_fb;
+>         igt_fb_t pfb;
+>         igt_fb_t ofb;
+>         igt_fb_t cfb;
+> @@ -129,16 +130,6 @@ static void test_fini(data_t *data)
+>         igt_display_commit2(&data->display, COMMIT_ATOMIC);
+>  }
+>
+> -/* Fills a FB with the solid color given. */
+> -static void draw_color(igt_fb_t *fb, double r, double g, double b)
+> -{
+> -       cairo_t *cr =3D igt_get_cairo_ctx(fb->fd, fb);
+> -
+> -       cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
+> -       igt_paint_color(cr, 0, 0, fb->width, fb->height, r, g, b);
+> -       igt_put_cairo_ctx(cr);
+> -}
+> -
+>  /*
+>   * Draws white and gray (if overlay FB is given) on the primary FB.
+>   * Draws a magenta square where the cursor should be over top both plane=
+s.
+> @@ -152,6 +143,7 @@ static void test_cursor_pos(data_t *data, int x, int =
+y, unsigned int flags)
+>  {
+>         igt_crc_t ref_crc, test_crc;
+>         cairo_t *cr;
+> +       igt_fb_t *ref_fb =3D &data->ref_fb;
+>         igt_fb_t *pfb =3D &data->pfb;
+>         igt_fb_t *ofb =3D &data->ofb;
+>         igt_fb_t *cfb =3D &data->cfb;
+> @@ -159,8 +151,8 @@ static void test_cursor_pos(data_t *data, int x, int =
+y, unsigned int flags)
+>         int ch =3D cfb->height;
+>         const rect_t *or =3D &data->or;
+>
+> -       cr =3D igt_get_cairo_ctx(pfb->fd, pfb);
+> -       igt_paint_color(cr, 0, 0, pfb->width, pfb->height, 1.0, 1.0, 1.0)=
+;
+> +       cr =3D igt_get_cairo_ctx(ref_fb->fd, ref_fb);
+> +       igt_paint_color(cr, 0, 0, ref_fb->width, ref_fb->height, 1.0, 1.0=
+, 1.0);
+>
+>         if (flags & TEST_OVERLAY)
+>                 igt_paint_color(cr, or->x, or->y, or->w, or->h, 0.5, 0.5,=
+ 0.5);
+> @@ -168,6 +160,7 @@ static void test_cursor_pos(data_t *data, int x, int =
+y, unsigned int flags)
+>         igt_paint_color(cr, x, y, cw, ch, 1.0, 0.0, 1.0);
+>         igt_put_cairo_ctx(cr);
+>
+> +       igt_plane_set_fb(data->primary, ref_fb);
+>         if (flags & TEST_OVERLAY)
+>                 igt_plane_set_fb(data->overlay, NULL);
+>         igt_plane_set_fb(data->cursor, NULL);
+> @@ -176,7 +169,7 @@ static void test_cursor_pos(data_t *data, int x, int =
+y, unsigned int flags)
+>         igt_pipe_crc_start(data->pipe_crc);
+>         igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &ref_crc);
+>
+> -       draw_color(pfb, 1.0, 1.0, 1.0);
+> +       igt_plane_set_fb(data->primary, pfb);
+>
+>         if (flags & TEST_OVERLAY) {
+>                 igt_plane_set_fb(data->overlay, ofb);
+> @@ -249,6 +242,7 @@ static void test_cleanup(data_t *data)
+>         igt_remove_fb(data->drm_fd, &data->cfb);
+>         igt_remove_fb(data->drm_fd, &data->ofb);
+>         igt_remove_fb(data->drm_fd, &data->pfb);
+> +       igt_remove_fb(data->drm_fd, &data->ref_fb);
+>  }
+>
+>  static void test_cursor(data_t *data, int size, unsigned int flags)
+> @@ -263,6 +257,9 @@ static void test_cursor(data_t *data, int size, unsig=
+ned int flags)
+>
+>         test_cleanup(data);
+>
+> +       igt_create_fb(data->drm_fd, sw, sh, DRM_FORMAT_XRGB8888,
+> +                     DRM_FORMAT_MOD_LINEAR, &data->ref_fb);
+> +
+>         igt_create_color_fb(data->drm_fd, sw, sh, DRM_FORMAT_XRGB8888,
+>                             DRM_FORMAT_MOD_LINEAR, 1.0, 1.0, 1.0, &data->=
+pfb);
+>
+> --
+> 2.25.1
+>
