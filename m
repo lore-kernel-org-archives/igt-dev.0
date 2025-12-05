@@ -4,58 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93B5BD33987
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 15:55:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE2E6D33992
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 17:03:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4296B10EB5E;
-	Fri,  5 Dec 2025 15:55:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8646610EB6C;
+	Fri,  5 Dec 2025 17:03:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XkYJKlW0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lgVWnYea";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F16A10EB60
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Dec 2025 15:55:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE92B10EB6C
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Dec 2025 17:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764950105; x=1796486105;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=a2Madn4xkFlwxwMMG9kkYtNwKSOuo5rbv5I02OiB6qw=;
- b=XkYJKlW0wvITWRDKQdjSvrmGKiQDmSm2RRgrgKPTY+wVOH86cHQ1wwi6
- cOOk+jIHOjYzQquvezS5vViRL661mz4oAiBUk9jvOOJa+w+fCoHCTq6Ad
- UpI56Vx6EDlRsGtac+eT3IVrRJgIvlx1RpbQtvO7/EUjeIw6GCFTQS5bu
- /q/d4lBKyPU4dYVa/aD/VyLAsyzOcIxhAEuJBIVmeQfYFu6Ln6E+ZPhxy
- ta3gAU1GIHiasKjNdV7rZuyS0OAJX24xmMbB4un3VjXMrRUfGPoSY875c
- EtFOLIXoJVW/X+GRtKbJ5pAygCgWAI3mYF/dZqNk0CajUtQ8ztRUqFqcX A==;
-X-CSE-ConnectionGUID: 6b0ddJC7SbiVbcdUdIaT/Q==
-X-CSE-MsgGUID: Tv/UhoibS8ymRuCUhRne6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="67026571"
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="67026571"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2025 07:55:04 -0800
-X-CSE-ConnectionGUID: wj1ayhpBQwqqHVNXioyG8w==
-X-CSE-MsgGUID: jFHmtm6ySJao9d38bQaJ0w==
+ t=1764954201; x=1796490201;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=QJtDXxHW6Afsq7RjEgqpWuwoo3xfZiOfDXMnmn3NFpw=;
+ b=lgVWnYeaXEnKs81on+iXWLSPpDfZ7KJAAtHCQCuFxiRH4DKccTJ1C1Ge
+ QsaF2cjP5Rgk2wM7Vxo6idT/Z8tca5331UlOleJMSxa3jjGqvPjPVO0LO
+ xzqr4qAn0EbyAlf1hmrENjSv1k3Q+RYM2OHFlj7dn2tg4JLS3jiH9wb2b
+ LO1Bm6jZXteGzuBya8uxEv5OYtH5VtRn1VsaxOC7Mox5WwEXQcRfSY8HH
+ tFrvHiiIBbvgWeZEKYKXKfMBTfxcahtuTdaHy/Y9bmUK1hIpM+sZMf9W1
+ X3XpTTEGcNfV0lNatF6GavmvV2FkAhHTmbDAu4xOneiy48wCnXVQJMBh/ A==;
+X-CSE-ConnectionGUID: 0ydMagazTxCWfFt3YqL2lA==
+X-CSE-MsgGUID: UWJmBlW7RJCrPxwrVxxe5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="66875011"
+X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="66875011"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Dec 2025 09:03:21 -0800
+X-CSE-ConnectionGUID: r/hB/mLtSIChN6XFVaJs3w==
+X-CSE-MsgGUID: WDv5nHZDRK+igPWStH8KCQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="226324441"
-Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2025 07:55:02 -0800
-From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- badal.nilawar@intel.com
-Cc: anshuman.gupta@intel.com, soham.purkait@intel.com,
- umesh.nerlige.ramappa@intel.com, kamil.konieczny@intel.com
-Subject: [PATCH i-g-t v2 3/3] tests/intel/xe_pmu: Refine engine activity
- accuracy test
-Date: Fri,  5 Dec 2025 21:14:17 +0530
-Message-Id: <20251205154417.3963533-4-soham.purkait@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251205154417.3963533-1-soham.purkait@intel.com>
-References: <20251205154417.3963533-1-soham.purkait@intel.com>
+X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="218684754"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 09:03:18 -0800
+Date: Fri, 5 Dec 2025 18:02:57 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Soham Purkait <soham.purkait@intel.com>
+Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
+ badal.nilawar@intel.com, anshuman.gupta@intel.com,
+ lucas.demarchi@intel.com, umesh.nerlige.ramappa@intel.com,
+ kamil.konieczny@intel.com
+Subject: Re: [PATCH i-g-t 2/2] tools/gputop/gputop: Enable support for
+ multiple GPUs and instances
+Message-ID: <20251205170257.ziuhcoetjvxnr5xa@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Soham Purkait <soham.purkait@intel.com>,
+ igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
+ badal.nilawar@intel.com, anshuman.gupta@intel.com,
+ lucas.demarchi@intel.com, umesh.nerlige.ramappa@intel.com,
+ kamil.konieczny@intel.com
+References: <20251127094043.3916839-1-soham.purkait@intel.com>
+ <20251127094043.3916839-3-soham.purkait@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251127094043.3916839-3-soham.purkait@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,84 +79,117 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Creating a new spinner during each pass was introducing unnecessary
-overhead, which could distort timing-sensitive measurements
-and increase error rates. The cumulative cost of repeated spinner
-initialization was impacting test accuracy and efficiency.
+Hi Soham,
+On 2025-11-27 at 15:10:43 +0530, Soham Purkait wrote:
+> Introduce vendor-agnostic support for handling multiple GPUs and instances
+> in gputop. Improve the tool's adaptability to various GPU configurations.
+> 
+> v1:
+>  - Refactor GPUTOP into a vendor-agnostic tool. (Lucas)
+> v2:
+>  - Add device filter to populate the array of cards for
+>    all supported drivers. (Zbigniew)
+> v3:
+>  - Cosmetic changes. (Riana)
+>  - Avoid three level indentation. (Riana)
+> v4:
+>  - Add user message for running without root privileges. (Kamil)
+> 
+> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+> ---
+>  tools/{ => gputop}/gputop.c | 253 ++++++++++++++++++++++++++++++------
+>  tools/gputop/meson.build    |   6 +
+>  tools/meson.build           |   6 +-
+>  3 files changed, 220 insertions(+), 45 deletions(-)
+>  rename tools/{ => gputop}/gputop.c (63%)
+>  create mode 100644 tools/gputop/meson.build
+> 
+> diff --git a/tools/gputop.c b/tools/gputop/gputop.c
+> similarity index 63%
+> rename from tools/gputop.c
+> rename to tools/gputop/gputop.c
+> index f577a1750..4d6c684b2 100644
+> --- a/tools/gputop.c
+> +++ b/tools/gputop/gputop.c
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: MIT
+>  /*
+> - * Copyright © 2023 Intel Corporation
+> + * Copyright © 2023-2025 Intel Corporation
+>   */
+>  
+>  #include <assert.h>
+> @@ -14,66 +14,149 @@
+>  #include <math.h>
+>  #include <poll.h>
+>  #include <signal.h>
+> +#include <stdbool.h>
+>  #include <stdint.h>
+>  #include <stdio.h>
+>  #include <stdlib.h>
+>  #include <string.h>
+>  #include <sys/ioctl.h>
+>  #include <sys/stat.h>
+> +#include <sys/sysmacros.h>
+>  #include <sys/types.h>
+> -#include <unistd.h>
+>  #include <termios.h>
+> -#include <sys/sysmacros.h>
+> -#include <stdbool.h>
+> +#include <unistd.h>
+>  
+> +#include "drmtest.h"
 
-To address this, a single spinner instance is now reused and properly
-ended and reset between iterations. This approach reduces the overhead
-associated with repeated spinner creation, saving time across multiple
-passes by eliminating the cumulative time spent on spinner
-initialization (creation time × number of passes). As the spinner's active
-duration more accurately reflects actual engine busyness, this leads to
-more precise measurements of the percentage of engine busyness in terms
-of spinner running time.
+This tool should not use drmtest if possible. The main reason it
+is a tool not a test, and drmtest is mainly for testing.
 
-With this change, the engine-activity-accuracy test results clearly show
-an improvement in error reduction ranging from 98.97% to 99.53%.
+Let me explain how it should work in pseudocode:
 
-v1:
- - Add how this patch improves the engine activity accuracy test. (Lucas)
- - Show the numbers with the said improvement. (Lucas)
+for each g in gpu_set
+	p = get_plugin(g)
+	if p and plugin_supports_gpu(p, g) and could_display(p, g)
+		display_workload_by_plugin(p, g)
+	else
+		display_using_old_gputop_method(g)
+	fi
 
-v2:
- - Add an overview of the issue. (Riana)
- - Add the links in Closes. (Riana)
- - Add improvement in percentage. (Kamil)
+This way you do not need to implement plugin for i915 as it will
+just work by fall through. Plugin could just extend printed info
+when someone calls it with root/sudo or group or with added
+capabilities.
 
-Fixes: 477154cbad2c ("tests/intel/xe_pmu: Add tests to validate engine activity accuracy")
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6251
-Signed-off-by: Soham Purkait <soham.purkait@intel.com>
----
- tests/intel/xe_pmu.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+If this is hard, you could also consider creating new tool, for
+example ngputop (n = new). In new tool you could make new
+assumptions and ignore GPUs for which there is no plugin, also
+demand having root or capabilities.
 
-diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index 6e91b752a..7a110c87f 100644
---- a/tests/intel/xe_pmu.c
-+++ b/tests/intel/xe_pmu.c
-@@ -534,6 +534,10 @@ static void accuracy(int fd, struct drm_xe_engine_class_instance *eci,
- 		intel_allocator_init();
- 		ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
- 
-+		spin = igt_spin_new(fd, .ahnd = ahnd, .vm = vm, .hwe = eci);
-+		xe_spin_end(spin->xe_spin);
-+		xe_spin_sync_wait(fd, spin);
-+
- 		for (int pass = 0; pass < ARRAY_SIZE(timeout); pass++) {
- 			unsigned int target_idle_us = idle_us;
- 			struct timespec start = { };
-@@ -552,10 +556,10 @@ static void accuracy(int fd, struct drm_xe_engine_class_instance *eci,
- 				igt_measured_usleep(target_idle_us);
- 
- 				/* start spinner */
--				spin = igt_spin_new(fd, .ahnd = ahnd, .vm = vm, .hwe = eci);
-+				xe_spin_reset(fd, spin);
- 				loop_idle_ns = igt_nsec_elapsed(&start);
- 				igt_measured_usleep(active_us);
--				igt_spin_free(fd, spin);
-+				xe_spin_end(spin->xe_spin);
- 
- 				now = igt_nsec_elapsed(&start);
- 				loop_active_ns = now - loop_idle_ns;
-@@ -590,6 +594,7 @@ static void accuracy(int fd, struct drm_xe_engine_class_instance *eci,
- 				      sizeof(expected));
- 		}
- 
-+		igt_spin_free(fd, spin);
- 		xe_vm_destroy(fd, vm);
- 		put_ahnd(ahnd);
- 	}
-@@ -622,7 +627,7 @@ static void accuracy(int fd, struct drm_xe_engine_class_instance *eci,
- 	igt_info("error=%.2f%% (%.2f%% vs %.2f%%)\n",
- 		 (engine_activity - expected) * 100, 100 * engine_activity, 100 * expected);
- 
--	assert_within(100.0 * engine_activity, 100.0 * expected, 3);
-+	assert_within(100.0 * engine_activity, 100.0 * expected, 2);
- }
- 
- static void engine_activity_all_fn(int fd, struct drm_xe_engine_class_instance *eci, int num_fns)
--- 
-2.34.1
+Regards,
+Kamil
 
+>  #include "igt_core.h"
+>  #include "igt_drm_clients.h"
+>  #include "igt_drm_fdinfo.h"
+> +#include "igt_perf.h"
+>  #include "igt_profiling.h"
+> -#include "drmtest.h"
+> +#include "xe_gputop.h"
+> +#include "xe/xe_query.h"
+> +
+> +/**
+> + * Supported Drivers
+> + *
+> + * Adhere to the following requirements when implementing support for the
+> + * new driver:
+> + * @drivers: Update drivers[] with driver string.
+> + * @sizeof_gputop_obj: Update this function as per new driver support included.
+> + * @operations: Update the respective operations of the new driver:
+> + * gputop_init,
+> + * discover_engines,
+> + * pmu_init,
+> + * pmu_sample,
+> + * print_engines,
+> + * clean_up
+> + * @per_driver_contexts: Update per_driver_contexts[] array of type "struct gputop_driver" with the
+> + * initial values.
+> + */
+[cut]
