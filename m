@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C24E8D37496
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 19:46:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10413D37492
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 19:46:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 721AD10EBA3;
-	Fri,  5 Dec 2025 19:46:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B15D610EBA7;
+	Fri,  5 Dec 2025 19:46:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Lz5v6FBs";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Cfwt9Hjw";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C903110EBA3
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Dec 2025 19:46:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 920EB10EBA7
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Dec 2025 19:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764963983; x=1796499983;
+ t=1764963984; x=1796499984;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=cAYRYZSZrLziWcK3R5P80Dpqv2rFWU0PPAxXQzx4X6o=;
- b=Lz5v6FBs84zgIPXkW6+V/4CUl81SuGyg/MltEpd+hu8S9nyhyw+rbZWR
- 9aZ/q44EZ1Djiq2BpAsXcrPx3NrVS9j/4/UIaUSQi0RsB1fk3nfTGNBAx
- m27yfXTOf4ypEJTZfzMjfPSYqSXgwNGsqz+5sPKlfK0EjmCdiJkYsSNj1
- yrgmWSjxv2QLfbJuJMcijVEg7Xvar1NNeHH2q8qDeH2RzqPoBVCaGC9Kk
- 4VvbMvfam40SGXJ9NxkLP3WeIXw4wLYZ4zQOjVUwr+i3Be75Bn2pZsp8k
- PSad6z0OjNLvdtRcKilNW8IYy4g5wbh24bpNvXYbYtA1vfi2PVRMu8YNX A==;
-X-CSE-ConnectionGUID: NYElnWo+RkW9lqE52fXavQ==
-X-CSE-MsgGUID: uU7ApTDZSOur+sl2sU9/uA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="84606656"
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="84606656"
+ bh=5ugRf7heHmlYEZsShwvKAuNjeSfkTn8DO+XdkowQVUI=;
+ b=Cfwt9HjwV2W8CEZbRPaNWfCNERb8jpv2blUTcvRMdJXkcArRZw94daxy
+ X0dafRLpMLl7U3AyJSSkaoArMkVeArgUrEbF1On0WFbeKwj0yMDdT+UL8
+ rkVaCCV283zbnz0Ny2jeGqh/nabduUXCe38ZrFFuiMxLL55IqqprYeed2
+ GFZaJqGafk7FiOb2kwEj0Ae3a5zi7OnNwMDtWITZ0xmreVZe/42Yjc1do
+ 7o7CpmVOH0e8FCfq1MPYdMXXM/Qo9vPnTc3hbRDZ0dS2GthZdcSSKPoRT
+ cL002SE/2cepUz8rCnYmv6tK54527ypplgNLDvymDl0CeyKSRwd5FSX8O A==;
+X-CSE-ConnectionGUID: Z641T98SRGqUZSxVFDBHlQ==
+X-CSE-MsgGUID: X/J4GU4GQFqagiJue23w8w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="84606658"
+X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="84606658"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2025 11:46:23 -0800
-X-CSE-ConnectionGUID: rOM9Mbg4QCeFGYKgBv9vrQ==
-X-CSE-MsgGUID: Pi+nVePJRbqyvO2k3k/Mmw==
+ 05 Dec 2025 11:46:24 -0800
+X-CSE-ConnectionGUID: Cqb+Jr4wQSCYmNOtg/u/yw==
+X-CSE-MsgGUID: 5L8cNKnmQ9e/QuVQU0j04A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="195624878"
+X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="195624883"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 11:46:21 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 11:46:22 -0800
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	alex.hung@amd.com
 Cc: chaitanya.kumar.borah@intel.com,
 	Swati Sharma <swati2.sharma@intel.com>
 Subject: [PATCH i-g-t,
- v5 04/13] tests/kms_color_helper: Add helper to convert coefficients
- to drm_color_lut32
-Date: Sat,  6 Dec 2025 01:23:03 +0530
-Message-Id: <20251205195312.1234330-5-swati2.sharma@intel.com>
+ v5 05/13] tests/kms_color: Add helper to prepare LUT data for colorops
+Date: Sat,  6 Dec 2025 01:23:04 +0530
+Message-Id: <20251205195312.1234330-6-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251205195312.1234330-1-swati2.sharma@intel.com>
 References: <20251205195312.1234330-1-swati2.sharma@intel.com>
@@ -71,93 +70,82 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add coeffs_to_lut32() to generate 32-bit color LUT entries from gamma
-coefficients. This complements coeffs_to_lut(), which handles 16-bit
-entries, and is required for validating color pipelines that use
-drm_color_lut32.
+Introduce prepare_lut_data(), a utility to populate LUT data for
+KMS_COLOROP_CUSTOM_LUT1D colorops based on the LUT type.
 
-The helper also applies color depth masking for CRC consistency across
-different bit depths.
+This function generates the appropriate LUT using existing helper
+tables and converts coefficients into drm_color_lut32 entries for
+driver consumption.
+
+Marked __maybe_unused until integrated with color pipeline setup.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_color_helper.c | 47 ++++++++++++++++++++++++++++++++++++++++
- tests/kms_color_helper.h |  4 ++++
- 2 files changed, 51 insertions(+)
+ tests/kms_color.c        | 38 ++++++++++++++++++++++++++++++++++++++
+ tests/kms_color_helper.h |  1 +
+ 2 files changed, 39 insertions(+)
 
-diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
-index 143dff43e..fceac45bb 100644
---- a/tests/kms_color_helper.c
-+++ b/tests/kms_color_helper.c
-@@ -218,6 +218,53 @@ struct drm_color_lut *coeffs_to_lut(data_t *data,
- 	return lut;
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index c424083b7..56d2b282b 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -724,6 +724,44 @@ static void test_pipe_limited_range_ctm(data_t *data,
  }
+ #endif
  
-+struct drm_color_lut32 *coeffs_to_lut32(data_t *data,
-+				        const gamma_lut_t *gamma,
-+				        uint32_t color_depth,
-+				        int off)
++__maybe_unused
++static void prepare_lut_data(data_t *data, kms_colorop_t *colorops[])
 +{
-+	struct drm_color_lut32 *lut;
-+	int i, lut_size = gamma->size;
-+	uint64_t max_value = (1ULL << 32) - 1;
-+	uint32_t mask;
++	int i;
 +
-+	if (is_intel_device(data->drm_fd))
-+		mask = ((1ULL << color_depth) - 1) << (32 - color_depth);
-+	else
-+		mask = max_value;
++	for (i = 0; colorops[i]; i++) {
++		if (colorops[i]->type == KMS_COLOROP_CUSTOM_LUT1D) {
++			unsigned int size;
++			gamma_lut_t *lut;
++			struct drm_color_lut32 *lut_32;
 +
-+	lut = malloc(sizeof(struct drm_color_lut32) * lut_size);
++			size = igt_colorop_get_prop(&data->display, colorops[i]->colorop, IGT_COLOROP_SIZE);
++			igt_assert_f(size <= MAX_COLOR_LUT_ENTRIES,
++				"LUT size %u exceeds max %u\n", size, MAX_COLOR_LUT_ENTRIES);
 +
-+	if (IS_CHERRYVIEW(data->devid))
-+		lut_size -= 1;
-+	for (i = 0; i < lut_size; i++) {
-+		uint32_t r = gamma->coeffs[i].r * max_value;
-+		uint32_t g = gamma->coeffs[i].g * max_value;
-+		uint32_t b = gamma->coeffs[i].b * max_value;
++			switch (colorops[i]->lut_type) {
++			case KMS_COLOROP_LUT1D_ZERO:
++				lut = generate_table(size, 0.0);
++				break;
++			case KMS_COLOROP_LUT1D_LINEAR:
++				lut = generate_table(size, 1.0);
++				break;
++			case KMS_COLOROP_LUT1D_MAX:
++			default:
++				lut = generate_table_max(size);
++			}
 +
-+		/*
-+		 * Hardware might encode colors on a different number of bits
-+		 * than what is in our framebuffer (10 or 12bits for example).
-+		 * Mask the lower bits not provided by the framebuffer so we
-+		 * can do CRC comparisons.
-+		 */
-+		r &= mask;
-+		g &= mask;
-+		b &= mask;
++			lut_32 = coeffs_to_lut32(data, lut, 32, 0);
++			igt_assert(lut_32);
++			colorops[i]->lut1d = calloc(1, sizeof(struct igt_1dlut));
++			igt_assert(colorops[i]->lut1d);
 +
-+		lut[i].red = r;
-+		lut[i].green = g;
-+		lut[i].blue = b;
++			memcpy(colorops[i]->lut1d->lut, lut_32, size * sizeof(struct drm_color_lut32));
++			free_lut(lut);
++		}
 +	}
-+
-+	if (IS_CHERRYVIEW(data->devid))
-+		lut[lut_size].red =
-+			lut[lut_size].green =
-+			lut[lut_size].blue = lut[lut_size - 1].red;
-+
-+	return lut;
 +}
 +
- void set_degamma(data_t *data,
- 		 igt_pipe_t *pipe,
- 		 const gamma_lut_t *gamma)
+ static void
+ prep_pipe(data_t *data, enum pipe p)
+ {
 diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
-index 23463b944..8acc7722e 100644
+index 8acc7722e..c1b5bd5eb 100644
 --- a/tests/kms_color_helper.h
 +++ b/tests/kms_color_helper.h
-@@ -89,6 +89,10 @@ struct drm_color_lut *coeffs_to_lut(data_t *data,
- 				    const gamma_lut_t *gamma,
- 				    uint32_t color_depth,
- 				    int off);
-+struct drm_color_lut32 *coeffs_to_lut32(data_t *data,
-+					const gamma_lut_t *gamma,
-+					uint32_t color_depth,
-+					int off);
- void set_degamma(data_t *data,
- 		 igt_pipe_t *pipe,
- 		 const gamma_lut_t *gamma);
+@@ -38,6 +38,7 @@
+ #include "igt.h"
+ #include "igt_edid.h"
+ 
++#include "kms_colorop_helper.h"
+ 
+ /* Internal */
+ typedef struct {
 -- 
 2.25.1
 
