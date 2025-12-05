@@ -4,171 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBC91D2CDF2
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 01:58:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D7EBD2CDFE
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 02:44:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9FBEB10E9F3;
-	Fri,  5 Dec 2025 01:58:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 907ED10E9F6;
+	Fri,  5 Dec 2025 02:44:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H/3/jb+n";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jKlooO9H";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BC0BA10E9F3
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Dec 2025 01:58:33 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F8EE10E9F6
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Dec 2025 02:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764899914; x=1796435914;
- h=date:from:to:cc:subject:message-id:references:
- content-transfer-encoding:in-reply-to:mime-version;
- bh=NNwC3FyDHGvjVl5gYk1E4ZYNBgB+lqYYmLjsgsC0h28=;
- b=H/3/jb+nQu1cnu2zw8lO2FGN9/t2OFOsf3i1K/dAOCNN9zVl6TM24HsW
- LL3ehqxTfhza4tDFYS+28nAv2P+IZokdfAmrVGqBTDmooquZD5LPiRrbi
- CIBVcAlRK7S7FrkoySccajSK3GDp52InUqRdKS3eKTTW5yu2uUgflQuSo
- UEEqrVSmeXD60qnVUzIzZol85ZH3SC1lgdlKC4LLPQ28DUZZXKAtVWtAF
- JlLKN60I69s0RNaVmT1LxJXNnJZ36Jm3m2aXaPoOWX7jp/La0he4wP7H8
- wqSqSPVT/7GHnaICeMbEHnxVeYlx0s/LBNGKJT14RRgNAxSOm81GWblvb A==;
-X-CSE-ConnectionGUID: 2hGKlWOETtW/smObu7dlxg==
-X-CSE-MsgGUID: mkOh1puIT1ODrghKf+SQdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="66969424"
-X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="66969424"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2025 17:58:33 -0800
-X-CSE-ConnectionGUID: VZubwiHlQlmMQiWxUama9g==
-X-CSE-MsgGUID: fMqzKXrhTLSNE5tmBrXDCw==
+ t=1764902664; x=1796438664;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version;
+ bh=zZ3WGdZfGl49cPlGL8rEdBaikiLWJ7Ny4tzXjx+0kL0=;
+ b=jKlooO9HMF7CI5oUBO6mXWvai55mDxxrWbKMJMDRmX+MR6fMTUznuJ5b
+ Gvb29NvLzQDBDUwkhN3uzA5S1WGNZXgAEIeb75WIFLZfSig7kj2z7MU+3
+ +4bVQ/rYPjH+Pdka1Vmu38pfpjSifcxgLIriM8CDSJN4vg5O0yMgYQPx+
+ B7q4ALe7vWBOmY8CxIsIiIYjNGv536jjHAp8Ej/wzHeDRNd1iKfWNfuy0
+ ftv2vEOz+Qj9Pck2VL+ZJRck1JjQMV38dFytDcsUZlKWdho0FRdTgbXnF
+ i+TQ25CTckLKuNYXuX6zILfDiRSE/pcGZVGw+0JujnO6/YY3DBsfuSvb3 Q==;
+X-CSE-ConnectionGUID: NCj2j2CCTfS7cc0BzScZPQ==
+X-CSE-MsgGUID: KYO+cy+LTBONF6DQKT8bsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="89585390"
+X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="89585390"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2025 18:44:24 -0800
+X-CSE-ConnectionGUID: w/npY0uIQCCpOVy7mS5qbQ==
+X-CSE-MsgGUID: d3pHdLEuS8GJRHi+eQgAbw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="199583744"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2025 17:58:33 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 4 Dec 2025 17:58:32 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Thu, 4 Dec 2025 17:58:32 -0800
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.24) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 4 Dec 2025 17:58:32 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XRVc8fMKcuRt8RP1XV0WNfeICVUw3Ek/sT0aUZWwNLUz43wV2p90LH9puoS/RQWRMOANIV84fpXInlnWiwiS4BomHOZ/GXqn1e/Viz27smvRSdHapi/Udz68ZS+c71dEuej5p5q2TgJvL2KyfC06u135qA3TInp3ig9EQeu/QLD4lEkZB57JvJFH9zrq1s7YN14G7zjg8eWGi1H1HrjP2wgN2s/HBdtm1PC5r7pKV3UFwJ/5i0aOGncg2fG8nlg1F1+JQwT6+NuB+5h0yFXlB3kPqt6MF+ylgaraN4+UX+ruRn2DkQBM9vWyrvC/qgOIhPRTpC3dhacVu4k2zMiGHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HMLzizDjMtER8Qzk1pVidApkVdV1h+egXbubMrR9wIM=;
- b=al/1+cyUnfwkLdVrljvopZBaZzIABSPqlCDoYoRslO9jg+Q8OGKpCQy56iOVCuP4IlaNfyhhAQR/XHC/FoeWoW3c+h2r9d9BuXDRnvm1C31QbivaWaIDcAZqHguqfxvYigfPUYu86gI0tDW2enu1yIZhC720j3jFIQZZxMJBOrAusi3vd20eOeDZv9xGhfAPoN6oMLTVvUCrRiuF2FTXmnsQkLVRCtZqKdh/0JXJjrIfX5uelbiW5B00YjJu3Sy0zieDocN+MXRvcq74ZBf9e/zCpzdldjDWEYWY4xJb+Zx/JLTOl+JYY+UnpwmmCvNKQ0Giz6Ahzt89XqG6KQ4N7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL3PR11MB6410.namprd11.prod.outlook.com (2603:10b6:208:3b9::15)
- by DS0PR11MB8717.namprd11.prod.outlook.com (2603:10b6:8:1ab::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Fri, 5 Dec
- 2025 01:58:31 +0000
-Received: from BL3PR11MB6410.namprd11.prod.outlook.com
- ([fe80::b01a:aa33:165:efc]) by BL3PR11MB6410.namprd11.prod.outlook.com
- ([fe80::b01a:aa33:165:efc%3]) with mapi id 15.20.9366.012; Fri, 5 Dec 2025
- 01:58:30 +0000
-Date: Thu, 4 Dec 2025 17:58:27 -0800
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-To: "Summers, Stuart" <stuart.summers@intel.com>
-CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Ch, Sai
- Gowtham" <sai.gowtham.ch@intel.com>, "Dandamudi, Priyanka"
- <priyanka.dandamudi@intel.com>, "kamil.konieczny@linux.intel.com"
- <kamil.konieczny@linux.intel.com>
-Subject: Re: [PATCH v2 09/19] lib/xe: Add exec_queue set_property ioctl support
-Message-ID: <aTI8Q4YonVnFB100@nvishwa1-desk>
-References: <20251121035715.767226-21-niranjana.vishwanathapura@intel.com>
- <20251121035715.767226-30-niranjana.vishwanathapura@intel.com>
- <4793ae1b81f967de1425ebdcb06962e8dc9df651.camel@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4793ae1b81f967de1425ebdcb06962e8dc9df651.camel@intel.com>
-X-ClientProxiedBy: SJ0PR03CA0332.namprd03.prod.outlook.com
- (2603:10b6:a03:39c::7) To BL3PR11MB6410.namprd11.prod.outlook.com
- (2603:10b6:208:3b9::15)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR11MB6410:EE_|DS0PR11MB8717:EE_
-X-MS-Office365-Filtering-Correlation-Id: 466f7e52-0b1c-4d52-7b15-08de33a1c9da
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?layURE8RB5YhY/MaRLWjTzRQ8JtXI8DSZ+TABuHl04f3kvvXsbHMBfbqhq?=
- =?iso-8859-1?Q?I7wgyCzLhfFWSqoiYfmrmqrWmPr3W2oMmq/ZhUf3PMMAljtFpQFkexbr09?=
- =?iso-8859-1?Q?Yb4NY45bTi/NV/O4jHlhl8ELpxupa3yup0WJiHftVwHbkaf6mmckzICrbH?=
- =?iso-8859-1?Q?h4t5Mi6udBIZrynCVtea+oBKT4UWuABx/PnAz6ctZlHBqPq+mmS7PlnM9t?=
- =?iso-8859-1?Q?FZq+sir233bfdCQwx/y9IalrIMvAAZboHeyf7mWk4SOW+L+fTh4dkKp+X7?=
- =?iso-8859-1?Q?XcfpVucQtzwQKG7gcHvTT6+wovx63+LAAdYq2Y9UuLlyEcZctKKHxI13Su?=
- =?iso-8859-1?Q?hjVRNihWRiHGJKV0bWopqbU13WI442yvcZPw4UfYPLHr2XIrP4uSTGvD5y?=
- =?iso-8859-1?Q?kbi3IAZlgyELBpHy3iaeAEThYYTEVAhNH3+O305PBvVh9G3IxH+mImGA2F?=
- =?iso-8859-1?Q?QQVgRwpZ26nFSKeOXxE839AQY23cW1LNaBB0P19aQS1+TDoulIGDSrwh0V?=
- =?iso-8859-1?Q?RU4g0p4n/awd7sMSqUe8XusJh77laPnky95NBcP/tEt6H0RK/DbdwPxeLB?=
- =?iso-8859-1?Q?IQUGYHKKZQtHDwngXwccEsxvuJcKOK44hwswxkTbCjoIColkSLKDbhr+rU?=
- =?iso-8859-1?Q?ab6nclspkQ8xkMgDtXKlIhbw8r+5cmxDc16teQB5fRPRmcx2GAwtf9RU95?=
- =?iso-8859-1?Q?LFdylte8qb8i5su7Gp5NqgIt+2x7IWY8/oAQpEsXwwyN16sisUOIcMxk5v?=
- =?iso-8859-1?Q?3gyYd/m2pQAY/HuA9D39j+jnb+EmRn38D0DyzFiHgXkuMIg6bNvX2IJPFr?=
- =?iso-8859-1?Q?8i9FTHd/ST0bY5ee850BDcMlIIPtp2wWIVH28nfcZIXgjqHUFtMwwsPy3p?=
- =?iso-8859-1?Q?92FRjS/hijV8LT3yx/Duw+Lj8qtAp9x7j6dc0wNwzBSxeuBfC50a0uPgww?=
- =?iso-8859-1?Q?HoqI3fX/wix5J5oCSVCLB4SJJfz5WIDfdRMjke6QLdbJj7JAshsa1fXaH3?=
- =?iso-8859-1?Q?IMvDY15Vy5du2BNaUoJScNW2pTHf8Vf5QCRnMNGuMjTy7yerlNNxjZyarV?=
- =?iso-8859-1?Q?YQCs84zKUFN/vdG3GU1pL06VDTzF9dOeI/M8BCZIEfLZ05N9k0/GUrgSOR?=
- =?iso-8859-1?Q?j1WukLg7MGtwcq8rcWCSQo/ULHRGtUo4NG1VijACUt4DIekVgp17PT/1CG?=
- =?iso-8859-1?Q?ngPg13y5OF6Qr9A5y7ksc+2DT1n8MshX4thHreQtCSW9m7pyQ+ogbR+rWj?=
- =?iso-8859-1?Q?lSHMF6va317CAeZw6cmCYjfzWI72XaCrs+LKt01oI+oFi1O4/CHeAyrDsJ?=
- =?iso-8859-1?Q?hgho+hQzrL3VyoNMmTzy6zkDiI+MVTqaJxEf+NliRP8TQ7G4XCWXxaG7LA?=
- =?iso-8859-1?Q?/4e50vrrbQsMdlgrt6juLt1NJQn0RDmf9RXgOrrPZA998Luk+1YyC8b92A?=
- =?iso-8859-1?Q?Zf9eLjq8W/saaBrKQ11CsUssIvroz8Cl1HJvaUk0OUOtZbhsWuNfB1qjGd?=
- =?iso-8859-1?Q?dIicKvpogmVoBFV3e1OMtY?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL3PR11MB6410.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?7Z9tcZM+U8q/PDKP44yBPnME3EH4A3pWCnre+2VkfGJH5UsfMu82IFIixs?=
- =?iso-8859-1?Q?LAeultdL9KnAkN5nkIPDqnMiSxnQYfstW9SEOrJdcQ+U4LVXD7FHxtmBdy?=
- =?iso-8859-1?Q?r5ePCqGGQvgSOX1+vudQkgngm7uuWDSyqeAuMAQg64HsrtHsEW1JJxAARR?=
- =?iso-8859-1?Q?0nd6sr8EG5OjV+vKGVko38jyx9wr2xFriDjksObYjTsedYTSkMKSJrQ7o6?=
- =?iso-8859-1?Q?IltZ4CxHnA9gR94jrXQKRDuK5ro+8k/uARRkY30ikWRhsCm5XwNaaN1Vfr?=
- =?iso-8859-1?Q?iRJHckZfD1r5WPddJnI1t+DBM4elSeUsyvhOTkqnLBiXiXk5LOkt+B6Njf?=
- =?iso-8859-1?Q?UYL5tMFcjyv7GEyKz10gVckzLel3UcX0kICX968rcfpQxnhvDksNq/5PNj?=
- =?iso-8859-1?Q?ssbXyjx1yzNteqCFXVyRVNQ4+2VnYah/mn12wLfuhNeJM36uMkRBdBgLAk?=
- =?iso-8859-1?Q?/sd8H3INgK9G34LaX52xOoMs82Fsx5UUsBtWSt+ls0C1JHUo7s+mV6mQb5?=
- =?iso-8859-1?Q?fG4hv7HAH6s+nSgnC0mlD51ngc/8LiZgBuTm0268ZuThIktsaQSMper428?=
- =?iso-8859-1?Q?6GsecdejXFCZDLxJO26amEyb7VRAWol63zvmhx+K+eWfmIdUEsbuPreFtb?=
- =?iso-8859-1?Q?+zBoIc7YxkONgzqSRmY7mTVfFQK+0A3NE/4IaO/QipU1FuakYNDyusv8rs?=
- =?iso-8859-1?Q?ir0pH7KXDJSSlxB465SzVy7xzENI8aq18+7jJvDrpoKbolud2lGVFTL6Qx?=
- =?iso-8859-1?Q?FTSBPuykO4C6GsRx0VwyNtfmnc+l/TsxciIpBtxQv0o0BGSQur5+bJs+C+?=
- =?iso-8859-1?Q?94xVtjPAI8k6VPArYsqFYP5yt90UOZajPKlT5ypSkIYNfTCo9pZPgnoDRh?=
- =?iso-8859-1?Q?6KnSP6DTrP1Kg0hOXzep44W3xw1onbLjIHRJxF8sAhvD6cFPDiK/yv/4Tg?=
- =?iso-8859-1?Q?fH0RFuFcvCEqW1WIhUhikS6jIO9Vg720bIkW/tMP13K8i9EPju8fqO9qJW?=
- =?iso-8859-1?Q?mEQZqw58/+d+vjLykZakX6O3OQt0k1xOs17lQc1Efmvusiv5IFf2HWk71I?=
- =?iso-8859-1?Q?1Z9PHUhGG3EjLny2FISIioz7QVmLGQf6WpaaY+1pJaQ/Yu1ZxOB2p+yjuo?=
- =?iso-8859-1?Q?1tS7pffpPKXh9AKT0xlj7sqNiduy9+QmgKshm1KQkswFuEGxCPpjQJg8OR?=
- =?iso-8859-1?Q?kA3U0UM4M3VMgabuL0T5diVuo+cMcXXeA2Lu5Ld5Nlz71iFpu80jNqiGG6?=
- =?iso-8859-1?Q?hU0Fhhb6/HKriKwFXg+w/D4qYgU3UCtkRkmAXo4XPPTrsNi3VZgSVmjFt5?=
- =?iso-8859-1?Q?sW2MoSXbMrII+6hevqjM3AGL76Vk/5XI40lrrux7V7wrSOZq7XmGnUCc5l?=
- =?iso-8859-1?Q?5pc1ECAvx9adNw4Arg6fAUEnkxB2aCk04YyTIbLZN2G/0mvmZb4aEF0qIF?=
- =?iso-8859-1?Q?GmOeb/BvW6zh7zKPIxpIRIO0dcgBmsGFwBl8XlGWOh5g+Wuegt9NPhJMjT?=
- =?iso-8859-1?Q?2U7fbp/ColRmHngGzwXARsHwZeBc84dA6hyrp3PV/7db7PtDzG35boH2Mc?=
- =?iso-8859-1?Q?g6wBgtIo1LXGdBRupnBFCOST1frZSg6BwSJY4i+EhFJRk5wONHnstMFm3k?=
- =?iso-8859-1?Q?fwNkTMISxsVLgADQTcxCotj7FVOpf1i3L+HQUFer10gQwCyHc2Bd3/KMQD?=
- =?iso-8859-1?Q?duJx6p7Ce+K3Cz39JNY=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 466f7e52-0b1c-4d52-7b15-08de33a1c9da
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6410.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2025 01:58:30.4864 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jvMidS8FdeJNtPp2yR+/UNd9phMltzzlfh0tbj7q7G5K0VEK9iksgrJlXVb9ZiWVvXDtJqem5ZtnEzZv68/LSCXzEow9KKDSYoUiH8uw0uiGbOU8Ha9l0XYSQqyVJxYx
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8717
-X-OriginatorOrg: intel.com
+X-IronPort-AV: E=Sophos;i="6.20,250,1758610800"; d="scan'208";a="225824289"
+Received: from christyh-mobl2.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
+ ([10.125.48.81])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2025 18:44:24 -0800
+Date: Thu, 04 Dec 2025 18:44:23 -0800
+Message-ID: <87pl8tprzs.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t 1/4] drm-uapi/xe: Sync with
+ DRM_XE_OA_CAPS_OA_UNIT_GT_ID definition
+In-Reply-To: <aTIxXnBjmxGzvj0d@soc-5CG1426VCC.clients.intel.com>
+References: <20251205000528.720706-1-ashutosh.dixit@intel.com>
+ <20251205000528.720706-2-ashutosh.dixit@intel.com>
+ <aTIxXnBjmxGzvj0d@soc-5CG1426VCC.clients.intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -184,94 +73,176 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Dec 04, 2025 at 11:24:01AM -0800, Summers, Stuart wrote:
->On Thu, 2025-11-20 at 19:57 -0800, Niranjana Vishwanathapura wrote:
->> Add infrastructure to support xe_exec_queue_set_property_ioctl()
->>
->> Signed-off-by: Pallavi Mishra <pallavi.mishra@intel.com>
->> Signed-off-by: Niranjana Vishwanathapura
->> <niranjana.vishwanathapura@intel.com>
->> ---
->>  lib/xe/xe_ioctl.c | 27 +++++++++++++++++++++++++++
->>  lib/xe/xe_ioctl.h |  4 ++++
->>  2 files changed, 31 insertions(+)
->>
->> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
->> index 39c4667a1..319853da0 100644
->> --- a/lib/xe/xe_ioctl.c
->> +++ b/lib/xe/xe_ioctl.c
->> @@ -503,6 +503,33 @@ uint32_t xe_exec_queue_create_class(int fd,
->> uint32_t vm, uint16_t class)
->>         return create.exec_queue_id;
->>  }
->>  
->> +int __xe_exec_queue_set_property(int fd, uint32_t exec_queue,
->> uint32_t property,
->> +                                uint64_t value)
->> +{
->> +       struct drm_xe_exec_queue_set_property xe_priority = {
->> +               .property = property,
->> +               .exec_queue_id = exec_queue,
->> +               .value  = value,
->> +       };
->> +       int err;
->> +
->> +       err = igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_SET_PROPERTY,
->> &xe_priority);
->> +       if (err) {
->> +               err = -errno;
->> +               igt_assume(err);
->> +               errno = 0;
->> +               return err;
->> +       }
->> +
->> +       return 0;
->> +}
->> +
->> +void xe_exec_queue_set_property(int fd, uint32_t exec_queue,
->> uint32_t property,
->> +                               uint64_t value)
->> +{
->> +       igt_assert_eq(__xe_exec_queue_set_property(fd, exec_queue,
->> property, value), 0);
->> +}
->> +
->>  void xe_exec_queue_destroy(int fd, uint32_t exec_queue)
->>  {
->>         struct drm_xe_exec_queue_destroy destroy = {
->> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
->> index ae8a23a54..a7fd43c9e 100644
->> --- a/lib/xe/xe_ioctl.h
->> +++ b/lib/xe/xe_ioctl.h
->> @@ -83,6 +83,10 @@ uint32_t xe_exec_queue_create(int fd, uint32_t vm,
->>                           uint64_t ext);
->>  uint32_t xe_bind_exec_queue_create(int fd, uint32_t vm, uint64_t
->> ext);
->>  uint32_t xe_exec_queue_create_class(int fd, uint32_t vm, uint16_t
->> class);
->> +int __xe_exec_queue_set_property(int fd, uint32_t exec_queue,
->> uint32_t property,
->
->I might have missed it, but why are we exposing this one? I don't see
->that we use the internal function anywhere, just the wrapper below that
->has the assert.
+On Thu, 04 Dec 2025 17:11:58 -0800, Umesh Nerlige Ramappa wrote:
 >
 
-These are library routines and it looks customary to add
-both of these functions (one that asserts and one that doesn't)
-in the library irrespective of tests use it or not currently.
-And this patch is for the library update only.
+Hi Umesh,
 
-Niranjana
+> On Thu, Dec 04, 2025 at 04:05:25PM -0800, Ashutosh Dixit wrote:
+> > Align with kernel commit 16e076b03658 ("drm/xe/oa/uapi: Add gt_id to struct
+> > drm_xe_oa_unit") to bring in DRM_XE_OA_CAPS_OA_UNIT_GT_ID definition.
+> >
+> > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>
+> Is the intention also to bring non-OA changes in this commit?
 
->Thanks,
->Stuart
->
->> +                                uint64_t value);
->> +void xe_exec_queue_set_property(int fd, uint32_t exec_queue,
->> uint32_t property,
->> +                               uint64_t value);
->>  void xe_exec_queue_destroy(int fd, uint32_t exec_queue);
->>  uint64_t xe_bo_mmap_offset(int fd, uint32_t bo);
->>  void *xe_bo_map(int fd, uint32_t bo, size_t size);
->
+It's just a sync with kernel xe_drm.h at the commit (latest one) mentioned
+above. So yes it will pull in all the changes till that commit.
+
+> Then you may want to change the commit message to sync header file or
+> something.
+
+It already says sync. Otherwise I just titled the commit as the last change
+that went into the header file. I think anything is ok, but if you or
+anyone else has any suggestions, I will change the title to that one.
+
+Also, if anyone else merges their changes to the header file first (I have
+seen several pending merges on the mail list), this commit will change. But
+it will always be a sync with the kernel header at the mentioned commit.
+
+Thanks.
+--
+Ashutosh
+
+
+> > ---
+> > include/drm-uapi/xe_drm.h | 55 ++++++++++++++++++++++++++++++++++++---
+> > 1 file changed, 51 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> > index 89ab549354..62e3221f59 100644
+> > --- a/include/drm-uapi/xe_drm.h
+> > +++ b/include/drm-uapi/xe_drm.h
+> > @@ -210,8 +210,12 @@ struct drm_xe_ext_set_property {
+> >	/** @pad: MBZ */
+> >	__u32 pad;
+> >
+> > -	/** @value: property value */
+> > -	__u64 value;
+> > +	union {
+> > +		/** @value: property value */
+> > +		__u64 value;
+> > +		/** @ptr: pointer to user value */
+> > +		__u64 ptr;
+> > +	};
+> >
+> >	/** @reserved: Reserved */
+> >	__u64 reserved[2];
+> > @@ -403,6 +407,9 @@ struct drm_xe_query_mem_regions {
+> >  *      has low latency hint support
+> >  *    - %DRM_XE_QUERY_CONFIG_FLAG_HAS_CPU_ADDR_MIRROR - Flag is set if the
+> >  *      device has CPU address mirroring support
+> > + *    - %DRM_XE_QUERY_CONFIG_FLAG_HAS_NO_COMPRESSION_HINT - Flag is set if the
+> > + *      device supports the userspace hint %DRM_XE_GEM_CREATE_FLAG_NO_COMPRESSION.
+> > + *      This is exposed only on Xe2+.
+> >  *  - %DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT - Minimal memory alignment
+> >  *    required by this device, typically SZ_4K or SZ_64K
+> >  *  - %DRM_XE_QUERY_CONFIG_VA_BITS - Maximum bits of a virtual address
+> > @@ -421,6 +428,7 @@ struct drm_xe_query_config {
+> >	#define DRM_XE_QUERY_CONFIG_FLAG_HAS_VRAM	(1 << 0)
+> >	#define DRM_XE_QUERY_CONFIG_FLAG_HAS_LOW_LATENCY	(1 << 1)
+> >	#define DRM_XE_QUERY_CONFIG_FLAG_HAS_CPU_ADDR_MIRROR	(1 << 2)
+> > +	#define DRM_XE_QUERY_CONFIG_FLAG_HAS_NO_COMPRESSION_HINT (1 << 3)
+> > #define DRM_XE_QUERY_CONFIG_MIN_ALIGNMENT		2
+> > #define DRM_XE_QUERY_CONFIG_VA_BITS			3
+> > #define DRM_XE_QUERY_CONFIG_MAX_EXEC_QUEUE_PRIORITY	4
+> > @@ -771,7 +779,11 @@ struct drm_xe_device_query {
+> >  *    until the object is either bound to a virtual memory region via
+> >  *    VM_BIND or accessed by the CPU. As a result, no backing memory is
+> >  *    reserved at the time of GEM object creation.
+> > - *  - %DRM_XE_GEM_CREATE_FLAG_SCANOUT
+> > + *  - %DRM_XE_GEM_CREATE_FLAG_SCANOUT - Indicates that the GEM object is
+> > + *    intended for scanout via the display engine. When set, kernel ensures
+> > + *    that the allocation is placed in a memory region compatible with the
+> > + *    display engine requirements. This may impose restrictions on tiling,
+> > + *    alignment, and memory placement to guarantee proper display functionality.
+> >  *  - %DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM - When using VRAM as a
+> >  *    possible placement, ensure that the corresponding VRAM allocation
+> >  *    will always use the CPU accessible part of VRAM. This is important
+> > @@ -787,6 +799,17 @@ struct drm_xe_device_query {
+> >  *    need to use VRAM for display surfaces, therefore the kernel requires
+> >  *    setting this flag for such objects, otherwise an error is thrown on
+> >  *    small-bar systems.
+> > + *  - %DRM_XE_GEM_CREATE_FLAG_NO_COMPRESSION - Allows userspace to
+> > + *    hint that compression (CCS) should be disabled for the buffer being
+> > + *    created. This can avoid unnecessary memory operations and CCS state
+> > + *    management.
+> > + *    On pre-Xe2 platforms, this flag is currently rejected as compression
+> > + *    control is not supported via PAT index. On Xe2+ platforms, compression
+> > + *    is controlled via PAT entries. If this flag is set, the driver will reject
+> > + *    any VM bind that requests a PAT index enabling compression for this BO.
+> > + *    Note: On dGPU platforms, there is currently no change in behavior with
+> > + *    this flag, but future improvements may leverage it. The current benefit is
+> > + *    primarily applicable to iGPU platforms.
+> >  *
+> >  * @cpu_caching supports the following values:
+> >  *  - %DRM_XE_GEM_CPU_CACHING_WB - Allocate the pages with write-back
+> > @@ -833,6 +856,7 @@ struct drm_xe_gem_create {
+> > #define DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING		(1 << 0)
+> > #define DRM_XE_GEM_CREATE_FLAG_SCANOUT			(1 << 1)
+> > #define DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM	(1 << 2)
+> > +#define DRM_XE_GEM_CREATE_FLAG_NO_COMPRESSION		(1 << 3)
+> >	/**
+> >	 * @flags: Flags, currently a mask of memory instances of where BO can
+> >	 * be placed
+> > @@ -1013,6 +1037,20 @@ struct drm_xe_vm_destroy {
+> >  *    valid on VMs with DRM_XE_VM_CREATE_FLAG_FAULT_MODE set. The CPU address
+> >  *    mirror flag are only valid for DRM_XE_VM_BIND_OP_MAP operations, the BO
+> >  *    handle MBZ, and the BO offset MBZ.
+> > + *  - %DRM_XE_VM_BIND_FLAG_MADVISE_AUTORESET - Can be used in combination with
+> > + *    %DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR to reset madvises when the underlying
+> > + *    CPU address space range is unmapped (typically with munmap(2) or brk(2)).
+> > + *    The madvise values set with &DRM_IOCTL_XE_MADVISE are reset to the values
+> > + *    that were present immediately after the &DRM_IOCTL_XE_VM_BIND.
+> > + *    The reset GPU virtual address range is the intersection of the range bound
+> > + *    using &DRM_IOCTL_XE_VM_BIND and the virtual CPU address space range
+> > + *    unmapped.
+> > + *    This functionality is present to mimic the behaviour of CPU address space
+> > + *    madvises set using madvise(2), which are typically reset on unmap.
+> > + *    Note: free(3) may or may not call munmap(2) and/or brk(2), and may thus
+> > + *    not invoke autoreset. Neither will stack variables going out of scope.
+> > + *    Therefore it's recommended to always explicitly reset the madvises when
+> > + *    freeing the memory backing a region used in a &DRM_IOCTL_XE_MADVISE call.
+> >  *
+> >  * The @prefetch_mem_region_instance for %DRM_XE_VM_BIND_OP_PREFETCH can also be:
+> >  *  - %DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC, which ensures prefetching occurs in
+> > @@ -1119,6 +1157,7 @@ struct drm_xe_vm_bind_op {
+> > #define DRM_XE_VM_BIND_FLAG_DUMPABLE	(1 << 3)
+> > #define DRM_XE_VM_BIND_FLAG_CHECK_PXP	(1 << 4)
+> > #define DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR	(1 << 5)
+> > +#define DRM_XE_VM_BIND_FLAG_MADVISE_AUTORESET	(1 << 6)
+> >	/** @flags: Bind flags */
+> >	__u32 flags;
+> >
+> > @@ -1273,6 +1312,7 @@ struct drm_xe_exec_queue_create {
+> > #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY		0
+> > #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE		1
+> > #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PXP_TYPE		2
+> > +#define   DRM_XE_EXEC_QUEUE_SET_HANG_REPLAY_STATE		3
+> >	/** @extensions: Pointer to the first extension struct, if any */
+> >	__u64 extensions;
+> >
+> > @@ -1657,12 +1697,19 @@ struct drm_xe_oa_unit {
+> > #define DRM_XE_OA_CAPS_OA_BUFFER_SIZE	(1 << 2)
+> > #define DRM_XE_OA_CAPS_WAIT_NUM_REPORTS	(1 << 3)
+> > #define DRM_XE_OA_CAPS_OAM		(1 << 4)
+> > +#define DRM_XE_OA_CAPS_OA_UNIT_GT_ID	(1 << 5)
+> >
+> >	/** @oa_timestamp_freq: OA timestamp freq */
+> >	__u64 oa_timestamp_freq;
+> >
+> > +	/** @gt_id: gt id for this OA unit */
+> > +	__u16 gt_id;
+> > +
+> > +	/** @reserved1: MBZ */
+> > +	__u16 reserved1[3];
+> > +
+> >	/** @reserved: MBZ */
+> > -	__u64 reserved[4];
+> > +	__u64 reserved[3];
+> >
+> >	/** @num_engines: number of engines in @eci array */
+> >	__u64 num_engines;
+> > --
+> > 2.48.1
+> >
