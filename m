@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 983F6D2E022
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 08:03:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65641D2E034
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 08:03:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B1EB210E862;
-	Fri,  5 Dec 2025 08:03:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3906610EA2C;
+	Fri,  5 Dec 2025 08:03:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VQOXj7hA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Bi6g7OtH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 833B910E946
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Dec 2025 15:19:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A284D10E232
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Dec 2025 07:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764861558; x=1796397558;
+ t=1764920053; x=1796456053;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
  bh=gjoxpyjYZe4EkTx9E+8u806r9IR+IM6ypLod0al+5mI=;
- b=VQOXj7hAbeIWOIPnlNDbVCk8grHQSNtprNE1LA5g1c+zSF75NzPMU/f6
- OaHtmv5MdDY94QzDi974zAsfhYOfA3ZWRT7uZdo5gRzhVOxXJz7r0TAfd
- /5i5GEMQcMmjeOUyP4AJmwZK5dxxAhex1JoI9xYg//r59u0qN4IPuh41k
- FIN9sU62iYeKIidwZPPhH4B2XeAGe0yqzw+vElrjc+F/nLqc6KrBSyLzr
- LeS5ioWOuSH3QrOWt0ni5yCpEwqT2Xa2+Pl4whE8IQKfcdm8XMU/Rdjg2
- dbQeUnln2niAA5mI2R5NU+dkEHU3GEtii7+Jo2nSr4bYNGzITc5lqFr3H g==;
-X-CSE-ConnectionGUID: JYGZH59hSJ+8XEy+Sw4hzg==
-X-CSE-MsgGUID: L5tA3jx9RoGZMZpZF6pq0A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="78348802"
-X-IronPort-AV: E=Sophos;i="6.20,249,1758610800"; d="scan'208";a="78348802"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2025 07:19:18 -0800
-X-CSE-ConnectionGUID: s9L65NP1RMi7IjIPTi8tuw==
-X-CSE-MsgGUID: L0iKgXV3RQmlTURZh1tEXg==
+ b=Bi6g7OtH4+qHonow0lBMiANGxuOfi1mCQh1/WemQd/MTQ6xT8mZkBwpV
+ j+KIwbBvIRAFs9vZuTkr0/3TzM0LfK6sR2NLugVd9LmSJmNnam/S4xWGl
+ vRwp59vv7CzLIbeIHnMwVib2hDhKsbPlfOZjN2xd7oGk0MsAW6XA+Zqk+
+ M0LIm4gwOlpL+gzEV8yaCTqyPSxfsuG3S0Bby2RYiInznuyWMDIY7M5vA
+ b6SUs7nkLN/YcWmUX9nWEaxRJe4ZyNuiwR9R+fEMXQrSMzrDm2NB8V7J5
+ Muf9ndN0lEOiCocyXj/kTru00rp1eznG6SA4aynDYgckBqeyZipyS/2tT g==;
+X-CSE-ConnectionGUID: FrmT0g+xQl6SgcUdGUeWHQ==
+X-CSE-MsgGUID: m16TYzs7SWGCuwy3iIVdAw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="67115886"
+X-IronPort-AV: E=Sophos;i="6.20,251,1758610800"; d="scan'208";a="67115886"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2025 23:34:13 -0800
+X-CSE-ConnectionGUID: oT7Ds3MOSYiSm9e+8EcbjQ==
+X-CSE-MsgGUID: jw02RcrJTwOWFBxNaPm0DA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,249,1758610800"; d="scan'208";a="225982379"
+X-IronPort-AV: E=Sophos;i="6.20,251,1758610800"; d="scan'208";a="199664801"
 Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2025 07:19:15 -0800
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2025 23:34:11 -0800
 From: Moahmmed Bilal <mohammed.bilal@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jeevan.b@intel.com, kunal1.joshi@intel.com,
  Mohammed Bilal <mohammed.bilal@intel.com>
 Subject: [PATCH i-g-t 1/2] RFC: chamelium/kms_chamelium_hpd: add helper
  function to select connector port
-Date: Thu,  4 Dec 2025 20:47:49 +0530
-Message-ID: <20251204151750.633993-2-mohammed.bilal@intel.com>
+Date: Fri,  5 Dec 2025 13:02:48 +0530
+Message-ID: <20251205073249.653927-2-mohammed.bilal@intel.com>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251204151750.633993-1-mohammed.bilal@intel.com>
-References: <20251204151750.633993-1-mohammed.bilal@intel.com>
+In-Reply-To: <20251205073249.653927-1-mohammed.bilal@intel.com>
+References: <20251205073249.653927-1-mohammed.bilal@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Fri, 05 Dec 2025 08:03:06 +0000
