@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0063D37492
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 19:46:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE688D37493
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 19:46:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A435E10EBA3;
-	Fri,  5 Dec 2025 19:46:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8FF0110EBA7;
+	Fri,  5 Dec 2025 19:46:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QWuxM7KR";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Nd4awPtH";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 18FB010EBA9
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Dec 2025 19:46:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4D3F10EBA9
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Dec 2025 19:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764963988; x=1796499988;
+ t=1764963990; x=1796499990;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=S6mfoP47hz9Ginc06aMVITmkEzvmTjWvcnpdZT1JlUg=;
- b=QWuxM7KRn2Qr34CTfyXroKIC7tVdmfS1XtGfMDrV+PSi8Jq9jXSMCvF2
- hHqqf3w4YUr7iaefsokMN0C6geuK4bu5QcNrmlA1LtY5msfm9XyhzvCOK
- ctEgdgHztrkXI9kDbVakej8AJR0lpK3XFYn8+ec9NflEsuV/jGwQVd0SK
- v9Mz1ln+Zrp5FMVdeCvePRImby8Fy8xthbYRhuRL9HKDtShWYUg9Z1p7N
- 2kCkw+V67ATsXumu+yMgiZyRyJfk1hi/jLqRgCuBN8P7Xca/NAPwVPQMy
- 3SA9+hpJg3hwi6FvER5P6GS0CEzmB6vgUvSSvAmfPRC0ytFtz/e4o7/aj w==;
-X-CSE-ConnectionGUID: YgF+Gj57R2aLCoSDXUTY8w==
-X-CSE-MsgGUID: uu6aUdFTTeyLrrfZXw5Lzw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="84606663"
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="84606663"
+ bh=O5vVjEl9H0uCM8i8DFiSu+L1Jiu00zR3a7unr77Albk=;
+ b=Nd4awPtHhTWW3ztc1Y1XeplavGlzl23JZTqUd1vIAYoDQn9GqCjC3/WX
+ nB18DGniuzByR0M15dINR/I+8RM210hcHA4Vtj77WuepkCgpOZnK8Dbnt
+ IEguWjfs9/XAe38dl/KIyh/VK/BpbgbjNTZrdvz3RbuJpsC1vXdnH9+GR
+ vu0wia9hGfH/aw8fBmk8ZHhHuw6MsuqEeTfPveZblekollihuEFq6Z9Rj
+ Uci62sIli5Rcfj0yI//ZzVlxxFROdt1jVx8MQA5CjP2JGhs59NciM9MPz
+ e9Alne6WQyrGz2wnQuDLzHjUIQPi1JffkXmmh9rvDGCUThD4oSHStMtm6 A==;
+X-CSE-ConnectionGUID: x6w9GWy9RmijCKLqd+zdNg==
+X-CSE-MsgGUID: 2d/mcyrRQiOEAKtW3PPGbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="84606665"
+X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="84606665"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2025 11:46:28 -0800
-X-CSE-ConnectionGUID: REX8RBuHQtOKBNWO9WbwIQ==
-X-CSE-MsgGUID: 5g7/wDQXTy23Om8zFLkX3Q==
+ 05 Dec 2025 11:46:30 -0800
+X-CSE-ConnectionGUID: R2l7ezJGSyOuqLJJpuf+uw==
+X-CSE-MsgGUID: qiVqiLS+Q6+22o19z9XzEg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="195624891"
+X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="195624894"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 11:46:26 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 11:46:28 -0800
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	alex.hung@amd.com
 Cc: chaitanya.kumar.borah@intel.com,
 	Swati Sharma <swati2.sharma@intel.com>
 Subject: [PATCH i-g-t,
- v5 07/13] tests/kms_color: Add helper to check if pipeline contains
- only CTM colorop
-Date: Sat,  6 Dec 2025 01:23:06 +0530
-Message-Id: <20251205195312.1234330-8-swati2.sharma@intel.com>
+ v5 08/13] tests/kms_color: Add test_plane_colorops() helper to
+ validate plane color operations
+Date: Sat,  6 Dec 2025 01:23:07 +0530
+Message-Id: <20251205195312.1234330-9-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251205195312.1234330-1-swati2.sharma@intel.com>
 References: <20251205195312.1234330-1-swati2.sharma@intel.com>
@@ -71,35 +71,99 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add ctm_colorop_only() to determine if colorop in pipeline is
-of type KMS_COLOROP_CTM_3X4.
+Add test_plane_colorops() as a __maybe_unused static helper to
+validate color operations applied on a plane. The helper sets up a
+framebuffer, disables pipe color properties, applies the provided
+color pipeline, and compares CRCs between expected and transformed
+frames to verify correctness.
 
-__maybe_unused prevents compiler warnings when the helper
-is not referenced, while keeping it available for future use in
-color pipeline validation.
+It uses prepare_lut_data(), ctm_colorop_only(), and
+clear_lut_data() for LUT setup, CTM-only handling, and cleanup.
+__maybe_unused avoids compilation warnings when unused.
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_color.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tests/kms_color.c | 72 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 72 insertions(+)
 
 diff --git a/tests/kms_color.c b/tests/kms_color.c
-index f8d74a92c..7c113de85 100644
+index 7c113de85..576fd5329 100644
 --- a/tests/kms_color.c
 +++ b/tests/kms_color.c
-@@ -773,6 +773,17 @@ static void prepare_lut_data(data_t *data, kms_colorop_t *colorops[])
- 	}
+@@ -784,6 +784,78 @@ static bool ctm_colorop_only(kms_colorop_t *colorops[])
+ 	return true;
  }
  
 +__maybe_unused
-+static bool ctm_colorop_only(kms_colorop_t *colorops[])
++static bool test_plane_colorops(data_t *data,
++				const color_t *fb_colors,
++				const color_t *exp_colors,
++				kms_colorop_t *colorops[])
 +{
-+	int i;
++	igt_plane_t *plane = data->primary;
++	igt_output_t *output = data->output;
++	igt_display_t *display = &data->display;
++	drmModeModeInfo *mode = data->mode;
++	igt_colorop_t *color_pipeline = get_color_pipeline(display, plane, colorops);
++	igt_crc_t crc_gamma, crc_fullcolors;
++	struct igt_fb fb;
++	bool ret;
 +
-+	for (i = 0; colorops[i]; i++)
-+		if (colorops[i]->type != KMS_COLOROP_CTM_3X4)
-+			return false;
-+	return true;
++	igt_output_set_pipe(output, plane->pipe->pipe);
++	mode = igt_output_get_mode(output);
++
++	/* Create a framebuffer at the size of the output. */
++	igt_assert(igt_create_fb(data->drm_fd,
++			      mode->hdisplay,
++			      mode->vdisplay,
++			      DRM_FORMAT_XRGB8888,
++			      DRM_FORMAT_MOD_LINEAR,
++			      &fb));
++	igt_plane_set_fb(plane, &fb);
++
++	/* Disable Pipe color props. */
++	disable_ctm(plane->pipe);
++	disable_degamma(plane->pipe);
++	disable_gamma(plane->pipe);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++
++	set_color_pipeline_bypass(plane);
++	paint_rectangles(data, mode, exp_colors, &fb);
++	igt_plane_set_fb(plane, &fb);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++	igt_wait_for_vblank(data->drm_fd,
++		display->pipes[plane->pipe->pipe].crtc_offset);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_fullcolors);
++
++	/*
++	 * Draw gradient colors with LUT to remap all
++	 * values to max red/green/blue.
++	 */
++	prepare_lut_data(data, colorops);
++	set_color_pipeline(display, plane, colorops, color_pipeline);
++	if (ctm_colorop_only(colorops))
++		paint_rectangles(data, mode, fb_colors, &fb);
++	else
++		paint_gradient_rectangles(data, mode, fb_colors, &fb);
++	igt_plane_set_fb(plane, &fb);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++	igt_wait_for_vblank(data->drm_fd,
++			display->pipes[plane->pipe->pipe].crtc_offset);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_gamma);
++
++	/*
++	 * Verify that the CRC of the software computed output is
++	 * equal to the CRC of the gamma LUT transformation output.
++	 */
++	ret = igt_check_crc_equal(&crc_gamma, &crc_fullcolors);
++
++	clear_lut_data(colorops);
++	clear_color_pipeline(display, plane, colorops, color_pipeline);
++	igt_plane_set_fb(plane, NULL);
++	igt_output_set_pipe(output, PIPE_NONE);
++	igt_display_commit2(display, COMMIT_ATOMIC);
++
++	return ret;
 +}
 +
  static void
