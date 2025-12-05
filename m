@@ -4,194 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E815D339AC
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 18:13:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E32AD339A2
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 18:23:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D1A5C10E267;
-	Fri,  5 Dec 2025 18:13:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A22CA10EBA8;
+	Fri,  5 Dec 2025 18:23:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fF+ym/RA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kT2KV3MP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E7A1E10E267
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Dec 2025 18:13:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CCB7910EB9F
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Dec 2025 18:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764958411; x=1796494411;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-id:content-transfer-encoding: mime-version;
- bh=adyZ1zpXsJUeCnToJUKOruzo3bvDygnGEQfCso28+5U=;
- b=fF+ym/RABjmPHJunfRg8TGQvvZDVYCtBz/3GsuaqT8ZtUWGv9dtXmojx
- rEpzp9LnNaGrUw9RkUUHaZMdpH3+hPmHmjM3y/TcE4xMXIwRTcqFW5fSv
- wg7VxZfE1+XASxebf/j3SEnBZPbojp0jHVZ1w/8tFoGD3dvj35cp1Y2sq
- MBB4SIq+JnP0WS4TGICLw0uc98wqllfvRMfLDZwD2Xs6QXQvC07rV5XFV
- FdNWJ8NPjSDJ3sjRFfMLk4HnhMwK8XyYhkJJmA9AExzJQVJRcQa5LtJXn
- JWszR5vsXq0b2jLxuBoEgZGb4zRY2TqtnkU4HuYveoQ7aTAFKWMOxJ5Pu g==;
-X-CSE-ConnectionGUID: njslIJ5wQwS+pSFofBO2MA==
-X-CSE-MsgGUID: WS0Tg8UpT9el6LfjctX7Og==
-X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="77319368"
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="77319368"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2025 10:13:30 -0800
-X-CSE-ConnectionGUID: 6xQxULtbSBazlbAzQw98ZQ==
-X-CSE-MsgGUID: o9RNBdMqSFOAQYSGlV+iXQ==
+ t=1764959030; x=1796495030;
+ h=date:from:to:cc:subject:message-id:references:
+ content-transfer-encoding:in-reply-to:mime-version;
+ bh=gr7Dr1jow30VjOUyQY9poyeve1i4MjtCrgknzZaLn7g=;
+ b=kT2KV3MPapGn2B8Nuj2JbGD4TrgAis9TyA0V3QsnMM0LljJCXnktwXeQ
+ WQVYq2aK1BfHHpGaD8CrGYq40n7nXzhymNg7yZOYnVXRIt2lCgV/UvS5U
+ duFaW6NhoHsjCGYf3V8h9CMXaJaNCwysDJi4l5tihXrGIhsJtKC8pVxsK
+ TWEGUNH/Sc8T4/sBpzDmk7/x94KouXIrOBxNVjm9WbcOcCCaDGQgtZBHP
+ yZDKlWdGMQEYnJhoZO2z+aGlG+4lrV1fhI+TFUjESEkPlJLyfnFrx4pCY
+ tyofpRGLPlJgcsldqxI+MXWemkUVNLOvwmFwwVYQ9tNmjTcmfmjNn7a8w w==;
+X-CSE-ConnectionGUID: GDM2UdE8SFiESdN9FUs5bg==
+X-CSE-MsgGUID: zuOv95pOQe+pbYfpfXVO8A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="70847457"
+X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="70847457"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Dec 2025 10:23:50 -0800
+X-CSE-ConnectionGUID: yQIsJwEnR3K3mTvAFos4Kg==
+X-CSE-MsgGUID: SXkqJ5jBQSSkwGVOXmByeg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="218696785"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2025 10:13:30 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="226362895"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Dec 2025 10:23:49 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 5 Dec 2025 10:13:29 -0800
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.2.2562.29; Fri, 5 Dec 2025 10:23:48 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Fri, 5 Dec 2025 10:13:29 -0800
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.26) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.29 via Frontend Transport; Fri, 5 Dec 2025 10:23:48 -0800
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.58) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 5 Dec 2025 10:13:29 -0800
+ 15.2.2562.29; Fri, 5 Dec 2025 10:23:48 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UNAVWm1Q8PszXvJMViFUdoXuVJRfqiqPdc12dazMLrbIAPpgpWftUO/3DZ4QYNhI2vOzZZuLkFCSaTxeynD6bHQVOAtEtxRzHEwmwIrcbx6lzeWJ/mqnlo8iLBa63e4cUvr/vumO0/uKwdYdbdpviE19fDVXMrzyRR97Fre9U5/LuwDAZt3F2eFnx6GD1vzpCRz7GrM4oQ/3UulVyehTZeNwQi/KVrVb6DcjyTnOG0V/EzOB3FmUvjSBh9T8M74iaoWZYJ+sR6WpwhwwKAxN6WiwGH4G5ZwhXq0GO6UqZaGTQGwV15vn+i+HdjLFtHevGbDkS2SC+5CAAPDJMKfVGA==
+ b=CkaOKaaPu6q4hhUV8tFPDndzTwv0HYecm6Nv/SnISD8hHacM/mbaBqEq9/OLNQG3NpzCPRnoF4EOONee3SoS3clJtSpRn0Rk1RxH2V0Yu4RcOG1vMOusWqkCJOCRpEUiQAsvGbbyP2lsLj89sDuRRlT9EUBr3Up4gwtkNrPHSLihpSqORUjY4XEBVy/2Up0sXPnpdj1wMNhviIT2Z94fHOmXcApBsE7JyOnD35f6DV9Tlh75Bbv9qwJjmKZv+fwchr+Udm2+6LP/vbztM+xjff+CXA63AQGSyaIVgHjhWU7+WliwKphmcsTlScX8mHPO3tfCt0kS2y7BAQuJP++a2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=adyZ1zpXsJUeCnToJUKOruzo3bvDygnGEQfCso28+5U=;
- b=ttX3yPN0gwlZJSQrE26RjI1fcxP+zOgG1DiusGn3fkyfJaDEENs/PW+eR0hucFsHilCw+njCPR7k470AHWpeLyOdCeQS4FxWLKfZO0u3BbFGmccTShrSFbuJJEJwZkYePLp8DasP/LxGrZFPL1apRfsjiCA2M5wl+OGkK3rVCRRavF3p8RWZtAZhZLh4Bbm7Tvj7tFkysejioQD+e1TvOzjDwuTvWGCVeAt+kJBxHDP3gdxDSbL13zvrdlMeeBAJTwQrZot0OimptKBOSCU46+ZNsOGnklXG/ekfWMz1hFIJrnBEsYrfR61zs31titQt6IaIUHYKo0sjZ9TvPIPBQg==
+ bh=VI4cgeoKUQPB3vyL8e5C6vE+4fMJmNuzx2cHF4Gdeco=;
+ b=i6wkS9MVoMuXwSiFBsQI+M2kdoj9VuVgDVCzdpwmYIKgl5LYc/afoeDfABOj2U51bhN1m4UiruoF/dUH85lLD9Id3khyt4JrOhHkKHoD0eC6L8pQAUdh6x3quas/xRe6Dkfu8aQiZ1c1IAEKLRnO1I2BPX+LA4Fsd/5hdiNxegxzl1VAjfprRJh0T+exyq+svoO2MsLECEy6AKNqUyHD8dJMU7+xMttIG4XkyFTjs8b1ijbbqJlYJmXHFn79DF5NHKn/Ng6WCfQOrRx6rQ7BMq/da93WoqllRareuPTqjcSbAAIO3HTy64fXGA6yHYlKXc06cMqg+vrq9FRfa7Zx3Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from DM8PR11MB5573.namprd11.prod.outlook.com (2603:10b6:8:3b::7) by
- CY8PR11MB7847.namprd11.prod.outlook.com (2603:10b6:930:7c::5) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9388.12; Fri, 5 Dec 2025 18:13:26 +0000
-Received: from DM8PR11MB5573.namprd11.prod.outlook.com
- ([fe80::6a14:6aa3:4339:4415]) by DM8PR11MB5573.namprd11.prod.outlook.com
- ([fe80::6a14:6aa3:4339:4415%4]) with mapi id 15.20.9388.011; Fri, 5 Dec 2025
- 18:13:26 +0000
-From: "Summers, Stuart" <stuart.summers@intel.com>
-To: "Vishwanathapura, Niranjana" <niranjana.vishwanathapura@intel.com>
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL3PR11MB6410.namprd11.prod.outlook.com (2603:10b6:208:3b9::15)
+ by LV3PR11MB8553.namprd11.prod.outlook.com (2603:10b6:408:1b8::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.12; Fri, 5 Dec
+ 2025 18:23:45 +0000
+Received: from BL3PR11MB6410.namprd11.prod.outlook.com
+ ([fe80::b01a:aa33:165:efc]) by BL3PR11MB6410.namprd11.prod.outlook.com
+ ([fe80::b01a:aa33:165:efc%3]) with mapi id 15.20.9388.011; Fri, 5 Dec 2025
+ 18:23:45 +0000
+Date: Fri, 5 Dec 2025 10:23:42 -0800
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: "Summers, Stuart" <stuart.summers@intel.com>
 CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Ch, Sai
  Gowtham" <sai.gowtham.ch@intel.com>, "Dandamudi, Priyanka"
  <priyanka.dandamudi@intel.com>, "kamil.konieczny@linux.intel.com"
  <kamil.konieczny@linux.intel.com>
-Subject: Re: [PATCH v2 12/19] tests/intel/xe_exec_multi_queue: Add fault mode
+Subject: Re: [PATCH v2 15/19] tests/intel/xe_exec_multi_queue: Add priority
  test
-Thread-Topic: [PATCH v2 12/19] tests/intel/xe_exec_multi_queue: Add fault mode
- test
-Thread-Index: AQHcWpr/am1+v01wQk24qso2BepcNbUSDHKAgAApAICAATsJgA==
-Date: Fri, 5 Dec 2025 18:13:26 +0000
-Message-ID: <850bb08bb638a1cb325add59800ac68e7e930a38.camel@intel.com>
+Message-ID: <aTMjLp4-8XVPRsw3@nvishwa1-desk>
 References: <20251121035715.767226-21-niranjana.vishwanathapura@intel.com>
- <20251121035715.767226-33-niranjana.vishwanathapura@intel.com>
- <b3859a79cb9f643b1978d05aee064fc936384c79.camel@intel.com>
- <aTIYfxGicqGty9rA@nvishwa1-desk>
-In-Reply-To: <aTIYfxGicqGty9rA@nvishwa1-desk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.44.4-0ubuntu2 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM8PR11MB5573:EE_|CY8PR11MB7847:EE_
-x-ms-office365-filtering-correlation-id: e590d1d8-3136-4540-0856-08de3429fc87
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|376014|1800799024|366016|38070700021;
-x-microsoft-antispam-message-info: =?utf-8?B?dzlrYVFCNEFHRDZ4NWpsU1BCNjdoanhtQUE4ZkJKOVQwWTJiZzl1Z0lTY3NM?=
- =?utf-8?B?OVVkaUQwQ1lqK0Q2Vnh2eTl0THkwY3FENWJpRGxkd2RweGdzc1orWTAwWnh3?=
- =?utf-8?B?Q2tiaFNRVlJWckpGWnRVZDZyV04ycW5oVTlNTHRNbmo1SzY1V0xUZU52bElV?=
- =?utf-8?B?ZHFZc3Z2UnRuYUs3dk9icUtXMmhkblBiOGQzeDJHT3E1N0tjU2pSMHpQVEpD?=
- =?utf-8?B?dzRjNUZiRkN4bHYyMWFTNUpzQlZScllZUG9yMnZJN3l3WGlUb0N0VXloMUg5?=
- =?utf-8?B?eit1MjNWYUY3aXZwRlUxWENhU2k2TTFEb2tEYWVSTnNSNi94eERYRm94WGxT?=
- =?utf-8?B?a1ZrYUsxZ3pQMXdnNGlmL3RxTVBXY3FqelkybzNET3kwcmNXeEp0L2tVU1Bj?=
- =?utf-8?B?Nm82cUVzcGNRcHo2Q2hURkZXSHdrdGJKR1FsRlNWbW96S1RIVWxzdXUxQ0xq?=
- =?utf-8?B?KytmbVYycTZWa1h5eUlQclo4VnVHd0pVVlc1OVdKem14eE9lN0tibyt0MDNy?=
- =?utf-8?B?bmg3Q3p0QkZKWDJVaUpMQUpQRDB5WmpMeURzV1pCU2t5ZjQ0YkZvVlBqQlJV?=
- =?utf-8?B?U1Y0VEJ3TWNCUzByQ0xQcGxzM1ArclRGclduekdOYkZaV0dyWWxJdTVlVVVN?=
- =?utf-8?B?SHdzUGt2cGx3MGd0N2lXYzZHUTRwTEJmSWV5WVM2QjRIV3ZkeGNEckdtYzJZ?=
- =?utf-8?B?MjZOb1FJaGtWUXN1aks5bTV2ZE9pU0JOeGlVNFUyNld6WXQzWDdwSFBEbjQx?=
- =?utf-8?B?SjNDczBRNTVpdjZGRlAvZGlxbC84aFRtM2RUb2pka2VyM3h3STFCdms4WGxP?=
- =?utf-8?B?Y1k5N0FONldydjU5THNJSHQxN0d0MXljYUo2My9neGFZamNTaW9XNFIwVlFB?=
- =?utf-8?B?OTFBWXZZRjIyWmNiN05hU2huUUZ2TXRRVmxydzBmTU1pRVBZSG0rS1RWTHlW?=
- =?utf-8?B?YkkzMDZlSWQ0eFFOcDRKTGxvZWN1c0dFdlJDazNBbjdJZWZJSWFEMnVjdVNV?=
- =?utf-8?B?WkZGVDA0S2dQbmNXY1NjcUkwWnVjL3ZoWUM5MU9BaHF4dm16WFNQODdVUEFj?=
- =?utf-8?B?TmJwSWFoeTMzencrWjh0bHVrMVpHR2thRVZKRFVvcGpnYWhzS0ZucE82UTRK?=
- =?utf-8?B?djByQVI2UjRYMEtvSEw3UWp2cXZId2U1bUNVcDRCOVRNaVR4WGFsZUk4Um82?=
- =?utf-8?B?Z3IyMFpKWGM1VnVEVDAza2hUMXFUbi83TVBLTjgrNjR4RDBIaDFGWFdMcDRP?=
- =?utf-8?B?UWVrMjhaRzZaTDYxeHk3b1N2dVVQN0x1MlNGVHJkbXhRZU5yRDIvWXBDdVM4?=
- =?utf-8?B?SVlPVndBMjBUZzNjeFNxTXQvN01wdjUvN3ZZWElqTzRyY3BTS1B4ZGdyeS9L?=
- =?utf-8?B?c0J0dnkzclVtaUhNdVlsZ2h1TVVWVktVbDd4Uk40VE1QRUh3UHBiVUE4RWFt?=
- =?utf-8?B?Snk4U3RXaHVadFk5RWNUSlRRWnNHb0d6TGx4cUtwZUEyZUFWdTBrU3RTS09z?=
- =?utf-8?B?Vm9SYTNNOVRTR3hHNHUyL0dCME5FZGFHSDRVeVduY0ZUYlEyb3lQM29KVUUz?=
- =?utf-8?B?SHN2YUo3K091WHRNQTAxT3VrblpaOTc1dkQ0SThXZkEvQUFCQnRNalJOVUJ4?=
- =?utf-8?B?aFpnQTNMSmkvWkxpWUdLblRGN0xqbFUrSmR5TjNVemNXVDFyV0JPaDRjcXRt?=
- =?utf-8?B?QXgwd0pVQW96eXpFY3oxZDAwcUhCc3lrM3ZZMUlEeUpFS1Yxd3UxdERoQVlU?=
- =?utf-8?B?R08zL1JiN2Z0QnhQaFN6U3E5N2JDK3hCSjdmbWlwWDNYNFV5NW55TGFZSkx4?=
- =?utf-8?B?ZlBXOCsyL3M4MFMwVHE4aStINldvSmFvRzFoWFd3NDcrRGtHSUlSODNpc3Nn?=
- =?utf-8?B?dXNrTW9QQUgrY1BYSllOKzNxRnpKM2Q5K0tPQU84cUFpTEU1aGZNZlVBb3Zr?=
- =?utf-8?B?cDlHYlNnamM5TmYvTUNPRkJKQWJVSGtDN3hSeXl5UUVkeWt4a1RwaW1HajJB?=
- =?utf-8?B?TUROYU05ZXFoem5Pa3A2RDBkeDB2dThOanlNVVg2QlorZk04UDRuUFozczFJ?=
- =?utf-8?Q?0p389Q?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM8PR11MB5573.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(38070700021); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NXBQU1k5SHZTQmg0WC8xbTlldHRlb0NteGdGRFJScWo5Z0pnMmtCSVV5SS82?=
- =?utf-8?B?Wi9UcXhvTWlVcnNYZEQyNzd1YUxPZnp1dEJ3dUU4amZXdFJhNlBMRklFekM4?=
- =?utf-8?B?eHZwb01oYzlXckxNdWtFRWpCVnNXZ1NwSng0MVo0Y2lVT3BBc2w1S3VRNmJz?=
- =?utf-8?B?aEF4WW54UVNqTnplNGptRTgyMWpOVHZ2b1pZVVZyZlVaUU83Y0ljOHdwek40?=
- =?utf-8?B?ZlBSb2hYN2dtR0U3R2RaYk9TWkQ3MEpGUHpWaHB6Mk9ZdGNHM0tKSXdqRFpV?=
- =?utf-8?B?eUJueFc1RC9LeHRyd2w3M1pOSXRXREk3T3FKUWVZQTRpVjlkZitRZWk5cDE0?=
- =?utf-8?B?aC9qblM1NzFpVkliTlhNMGFhZ2VXWWRjOXpyMnlOQ284L3dhZURTWHQzSVZY?=
- =?utf-8?B?Q3pxWmNsY1Voa3BwVHBBaEhIajhkQWpod2V1cmdIRER0V1lSLzcvYmNQSUFR?=
- =?utf-8?B?Y3pkUUNYL09mZVVQbUNxcDM1eGJyWVZvdkNZM2NmLy90cHVXM1BHTUtBMEIw?=
- =?utf-8?B?WWpqV1c4NEZPVlJYTTBWcXBOWDl0WFdJdDBBdXNtV29MZEgwMWdLN3Q3OUlR?=
- =?utf-8?B?QjQzQ1BJQVJUVmNPMjd5bXB4VGI3Z1FnUEI3QW5jUlZJSGlxUjdwelYyZDNR?=
- =?utf-8?B?bGMwMjQwUE92QlNwdzl6bnVhVThhYU4vYTRsTm5heVNHcEhCU2x5UTVqNm9X?=
- =?utf-8?B?cThFdmgxcVh6UFFiQS8vRGVzNkRvSlY3cG52QVFDS2NRdXovK1hnZld4SW8v?=
- =?utf-8?B?OHpNTUxVOGVxeGZBWHo0bldtWHhjalhkYjRYQ1JTZGJORFpkQWFCM05uVzJI?=
- =?utf-8?B?QmVRUWlUZ0VtVDd3Q3kxNFVkREdoT28rWHI5MEkxMzI1MXZYL0NhWlg4VkJR?=
- =?utf-8?B?eExQaU5oUHd4aFdFemVLb0N1Y2NBV1V2S25lcFlOSnRJWjNJS3p5bTVGU080?=
- =?utf-8?B?SURxVjA4OHhrNW1oU0xFUDluSDhTMVFxWHhPalM3Z214Mm9Sc0JBT24wUVpM?=
- =?utf-8?B?UVdzdE5qbDgyVHBZMStpMElEbXhyaDJyb2FnajBFbjhxVmxiNkJuNU1wWU1E?=
- =?utf-8?B?alJxU2NwYnFzazlRanFXWk1yamNKS1JPcTFnTkhwV1VhZ1dHenUrYW1IaW1z?=
- =?utf-8?B?cG5GM2E3cHRMQlJLN3JVTzE4amhIdkR2UnE4RGp4c09lUy9kUFprd3ArMC9y?=
- =?utf-8?B?L1pIVzE3dmdEZ2Fad20yV1lPdjZPU2g1U1B5RVN4QnIxR1FqQVhzYXZaTUxr?=
- =?utf-8?B?MW54ajR1VDFsMGxZY3ZnOW4vKzdOcm1oVzBWRjlBdmVldGhNOC90KzdCdFIz?=
- =?utf-8?B?RU1wemc3WDBXK2xheEJIT3N2RFBzazVCMTVMemRvYUZwU1JTV0FLdC9zb1JC?=
- =?utf-8?B?UUtPdGprcG4wUDZYVW9nV0lZNCtnYmxPdHptcFBzeUNHM3UvY1FKNUV4cXk0?=
- =?utf-8?B?V09qRWlncVZQeWJwUmVoRFJJem56TGVHbndjeExKU29kNmU1T3owSlNTSThJ?=
- =?utf-8?B?SVl1THVqTURIcm9HL3JSNlJaYlJ0c1RjZzRkUFNFZzQ0b2taYkxVNytlWEZF?=
- =?utf-8?B?RUxaOGFjT2RkOXNSVXA5NHFrdE5WeS95TVdTUERyL2g0cmpWY0tqdTVlZ1dq?=
- =?utf-8?B?YUxlbXo1ancydllOZEw0SU1UYWJVRHFtamlnY0crTXZHSm5VVWRxeXBTYTJ6?=
- =?utf-8?B?WXpJaFhEdis3dVBMZjlibEIwUHVvU1dHV0VaanBDWHRUbUNsSm5lTjAzOXNW?=
- =?utf-8?B?dHJTcXhFTnNEdHdrZjM2dHdaZlUxVmtvaUlMNmtzRW10aGhvajNESkg1ZmhZ?=
- =?utf-8?B?SWlXSUdyaFROUEtZR2hIZWdpQUpYdWxQdHpTNGhOUU1MREZwVnBNRHo5R2dh?=
- =?utf-8?B?bUg5bk1uRGsrR0gxWVJhTU1POUF1cjNOQ2ZXZGNsVmtxOEZQZ3NUcXh3UGI0?=
- =?utf-8?B?UDREVFRReVFIRVM1ejluaDg4WCs1cUIvRFh5V3luWVRIeG8rdVJTQmtEd3pz?=
- =?utf-8?B?T3lqMy9IV2kyanowV2ZLV0xHY3ptbkNUeEpwcFhVR3RCOVUzUGozVWM2SkJT?=
- =?utf-8?B?VTduRFpGVlN6TjB4cmVISm9CdzVpY0lwODc4RlZwSFZGcG9XcmJ6QkpNMUJz?=
- =?utf-8?B?cU9xQmlHc3ZLa3JaNmlUUEFWQkJmUHZqb1hDRHZDRHgyU0Ntb1NiUS85RTN4?=
- =?utf-8?B?S3c9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <94C8199C5FCB284B905CE50FCBD83CDA@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ <20251121035715.767226-36-niranjana.vishwanathapura@intel.com>
+ <e3376cc2c2febb2800cb4e9f03e81eb464762e4f.camel@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e3376cc2c2febb2800cb4e9f03e81eb464762e4f.camel@intel.com>
+X-ClientProxiedBy: SJ0PR03CA0209.namprd03.prod.outlook.com
+ (2603:10b6:a03:2ef::34) To BL3PR11MB6410.namprd11.prod.outlook.com
+ (2603:10b6:208:3b9::15)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR11MB6410:EE_|LV3PR11MB8553:EE_
+X-MS-Office365-Filtering-Correlation-Id: 137b8d87-0e60-4480-8b2f-08de342b6d1a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?5R6xsSoWK1yT2Ffqtnz37efzmkEbyyHXBB+KQ+gnxfidT4oqmRQ9I5BzE0?=
+ =?iso-8859-1?Q?eZD4T66PflW0ozYBuEqUE/7DFhvJ6YNiPxF3cdzL/aEZ2x7QL0jY0jWKzo?=
+ =?iso-8859-1?Q?PIxFXbBGJ1AKr0v05WE6d0uTP3Df9axXDx4RJFwny/3fHswSo5LmONkI+j?=
+ =?iso-8859-1?Q?NWYmvFI2QQ/VB3DOXhic0/DLerGk86eOl6NJESbkieOY1S2sVhlVdd/uW6?=
+ =?iso-8859-1?Q?cuO/wNnhABruLP7M6SEeEH0Fry0+m+uot3itSQr9VU1M8L6Af9qs1bdG4y?=
+ =?iso-8859-1?Q?DhbHRV0X6li3LYiM/noUaZ6bX3j8gLPK73Yif3GGOnBJp223UlIcChDk2s?=
+ =?iso-8859-1?Q?cpBhj45JbYKCmYb2pXcKD0NlrT76krjpKv9Wv3qBd1F2FtnANJ6fuo2JDs?=
+ =?iso-8859-1?Q?/dXB7qvidOF0RbNZDl4vrM+X0bGurdKag+PD725NNhvGXgDbOeJqXPyzpQ?=
+ =?iso-8859-1?Q?Wt7SnqmA2JVk21Fnwk6deHYKXy3GY27rer6quKAUKJdo9FIN72Z26LZIGI?=
+ =?iso-8859-1?Q?wMRBKMLzaPzV96yS4hbTpeVVOyVJH1ZVAwiou7X58OqE1TDDSyNB2NgZS+?=
+ =?iso-8859-1?Q?8nCe1HO0vjOcMj8bXOvuOQyHYp402rqiQfihDy9qOPI+ENDyzZuIj3Th+h?=
+ =?iso-8859-1?Q?nX6OerqKCA+P45DxsgvkGDjO/h5esQY8y0ujOFl7LNiMHgjKpZAYjrFSqn?=
+ =?iso-8859-1?Q?ZZYuP3jqvAsJfoQr0b2ZjMIqSl/QFxYQbS/UAkvDGqVOf9LI9iv+OM87rL?=
+ =?iso-8859-1?Q?yI75cwKP6hgSVtJkKOOjxKFeOyVv9SdY/dEri8AqVy+YQW+gpt4GeHB+lT?=
+ =?iso-8859-1?Q?pD+tHzyf4vYXgHxmYF17iAWSKl6co/WlidSS/DGEYAONIjDqejzzqEcKUE?=
+ =?iso-8859-1?Q?T9v6jvxtjmjHy/cCeBNovov1z+x58FK0wTOY7/oA9b1jTVO5p0nb8J7lok?=
+ =?iso-8859-1?Q?zEg6QGIFEAUoF43JyJcixKJOf8J+PR43zBuByQCqWyLE1eC7Gvr4zHhusU?=
+ =?iso-8859-1?Q?chMeASMqanS9M6w1AxyQT+7L9wokxPh711bV/Q+4DK0Ofm9HBuSEoibHOX?=
+ =?iso-8859-1?Q?ep1zhziu7uzjaw+8eZnqctf3CGJjb+XwQ2ZkJ9AL8rBWddLKFAFJfh+gmv?=
+ =?iso-8859-1?Q?shonMnfZj3C2zczuypBYpfBn9OaIaDttVnBqVcz/X2aKLiEDXd7GvTStnm?=
+ =?iso-8859-1?Q?G2HzClh7gC70cG8zMFizLzIPdNKM39uL5Lk7fswRK6kZ1c9+3oI2fr/MH+?=
+ =?iso-8859-1?Q?gkRgZVQ3CJ4N/+F3hlqAS5O2ZNrIGqwnlK8kpEUK1wBpxF/BgcaXO5QfLm?=
+ =?iso-8859-1?Q?3d4RxZGH3S1sd3ZWZ/2LnAfGs50c6utwpgZnQefufLwLjYdCvD3GvbyFdI?=
+ =?iso-8859-1?Q?ujV+ek+4zE0Pz6y8moIYLox9FG7xO8/yvaf5dvyWW9XdZxPZhb2OPvJdhM?=
+ =?iso-8859-1?Q?xd3aGjj7tvppad0r/tedkJSmrGXWYzDuQHIlRTHeibqSKbbOpJ0xO/dIrQ?=
+ =?iso-8859-1?Q?Smy3E4EuGPuaJkS9DXfJ8f?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL3PR11MB6410.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?/clcj1fkjMO7VW++8lCHJevd4rC+l2DzKrzmHtANPejcLzX80ESD5jt5sB?=
+ =?iso-8859-1?Q?U+q0d027CZBRWUJuQIct2Ue+WkUNYOtXgFAR8KBLiGfc5WQcT1f6x+TKKD?=
+ =?iso-8859-1?Q?ckHZy1Ssw5+Tt/UMdHk4+NLWEiZqn3gjl8KTaT0Ik1d9CE0yCfzzKhC8Ot?=
+ =?iso-8859-1?Q?KRmqR3tNkou9TU3yPpxX/VNjqJ9mZ4gJe4869vWrtc3bES6lVtbH9Pj6Gr?=
+ =?iso-8859-1?Q?YGVA6s4NoMx33VnCCKOALeRynrE6Ea5Bm2whvE73btsg/7+33joQgZH0HC?=
+ =?iso-8859-1?Q?mpu6QvQpTP2USJ4SGDCUTu/KEdtfNQZ4qwIWAN0fHy18El1Xpzr+hwTkIr?=
+ =?iso-8859-1?Q?e1d1RCFWUH62Gn/C6CSU9uWhbptQz4+qD7G1cC1Phf7CU4yw6X7PRuGOGN?=
+ =?iso-8859-1?Q?VG65S+L7FFqcRwLrW2XTVX80XyxGpkiv0a2ntcziGF3wul3MMUwkaFOoDb?=
+ =?iso-8859-1?Q?qJKPyJ/9vEuhFcZkf8ay74p7bVMHS+n1SuKB06OBy7ozurCoZD2m5D5VUK?=
+ =?iso-8859-1?Q?rCTYtW+7VUgGnaco6SyWUIN6efncNyfzfOm/FfoaleGp1zSTIeRk5DmANZ?=
+ =?iso-8859-1?Q?5opb61Gy2jWAgGlfNPPIP+wOMQ0QhmyphGNoFHZEIKgAxpyt85zJRYKU1h?=
+ =?iso-8859-1?Q?brey2qx8/LdNIfLvKcXF5bYcFVD1CURlcNBLtHRV+ijcVAzJV2b8BUtguC?=
+ =?iso-8859-1?Q?q20Qf0PIB21f9aPVS56UGKBNaJgwed+OAneyKqB2X+Rv3geAs0peN2iMPh?=
+ =?iso-8859-1?Q?L7UotWvOfBD4kJeIxtK25vesZeo6jNBGxYIEnCVe/6THOLCxLKmuv1JCcE?=
+ =?iso-8859-1?Q?/obr3mWiN3GVWIVVglGgAX0ztDk2Ne5Qx26tyUkn5CiagR4vMB/SP/QYEX?=
+ =?iso-8859-1?Q?9LUW1xziAL4gPEnP5G4eubawxcqdQ+29PMsjAOBeVk4nPW1rQrC0pfAk2L?=
+ =?iso-8859-1?Q?/yK/YN+OT228xEUVYFYOxxAw+xcHng9XK0wH27VbgCaGQUi3Hb6uOim3W0?=
+ =?iso-8859-1?Q?EEcmITRA7Vvc6M9wW4hDIqlybT8hu7Lrdq4J12tyEM8cOBpxvnxDf1Pc4h?=
+ =?iso-8859-1?Q?gkq3tpnquTX5X+byI5nkF7JR71lIhqSorLzVccsV85BV8DBdyH5SubGcf3?=
+ =?iso-8859-1?Q?dPgHkb6UhBCIB54XgGp9PrWAxekVSUuyzFlS8setCoOk7vCWuUkJdwSs5Y?=
+ =?iso-8859-1?Q?uEZfjkamkmGrrif19nyFvbQIInCRnb/hoeLqaQKR7wSoDHpVzFToGVimbP?=
+ =?iso-8859-1?Q?kxfdRctRgKSdzBcx13h++gi6GtCWja2E9bY6qXM4pW99XBtS3zr6vuth50?=
+ =?iso-8859-1?Q?R3yvDKcehpPs82sJpxlclCNH1cKsB5Sk4aHxhrDcjuvBoNKvnFpVX43ZSV?=
+ =?iso-8859-1?Q?umOvyXD8mXZdHXERWGeBS+IuC3Qp60Ak+7ufExcFD/3rnujer2IOI5Xxk+?=
+ =?iso-8859-1?Q?CXRlGTbWLm3G44SLdl6kGlbEw698kDB8a36DSHZrnVhkLeMdZQZwKoaQQ+?=
+ =?iso-8859-1?Q?UGjTvuuIfYCwLf5VTIUl+ZF2tnINedIQaww8qrUfKV3zbSx7c4w5zUD70e?=
+ =?iso-8859-1?Q?V5V9FhUxcIZDls0Tevy+z/GW72MdSG07/xLeTIwiHd9Km5zyeWNUUdMCPz?=
+ =?iso-8859-1?Q?ODxzuBoDF+SuPPqX7gcn2HbPg2c6TB+PFcnp6mR0YaAfHajgyEmv/aiBL2?=
+ =?iso-8859-1?Q?1BWDAQI3ZDrxH/tCfRo=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 137b8d87-0e60-4480-8b2f-08de342b6d1a
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6410.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5573.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e590d1d8-3136-4540-0856-08de3429fc87
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Dec 2025 18:13:26.7516 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: sacqp37JOu11fQrTYVgTOvf3sXgCY7ZFBOEPlWSjTaJVkXAOyLl/OWfnSZ8DZZcLZ1EJqdkXtPepZkYjsOeqIjCTnXzGsUi11jMz51m9rWE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7847
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2025 18:23:45.3475 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qt/hZX14mj4gkVH68igMTMEOQ+xL+FFuIOev2fNmXJAC/O1EMozYFabCF8zeZJu3pAy8ywe8KJkTiOb4aImvTo1DO/FPFr+h9hICs7MZ6lIuzD8r0FpPs8YMmeOr+t0e
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8553
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -208,95 +185,391 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-T24gVGh1LCAyMDI1LTEyLTA0IGF0IDE1OjI1IC0wODAwLCBOaXJhbmphbmEgVmlzaHdhbmF0aGFw
-dXJhIHdyb3RlOgo+IE9uIFRodSwgRGVjIDA0LCAyMDI1IGF0IDEyOjU5OjA5UE0gLTA4MDAsIFN1
-bW1lcnMsIFN0dWFydCB3cm90ZToKPiA+IE9uIFRodSwgMjAyNS0xMS0yMCBhdCAxOTo1NyAtMDgw
-MCwgTmlyYW5qYW5hIFZpc2h3YW5hdGhhcHVyYSB3cm90ZToKPiA+ID4gRnJvbTogTmFrc2h0cmEg
-R295YWwgPG5ha3NodHJhLmdveWFsQGludGVsLmNvbT4KPiA+ID4gCj4gPiA+IFRlc3QgbXVsdGlx
-IGZ1bmN0aW9uYWxpdHkgd2l0aCBmYXVsdCBtb2RlLiBBZGRpbmcgYSBmbGFnIGNoZWNrCj4gPiA+
-IGZvcgo+ID4gPiB4ZV92bV9jcmVhdGUgZm9yIGZhdWx0IG1vZGUgdGVzdCBjYXNlcy4KPiA+ID4g
-Cj4gPiA+IFNpZ25lZC1vZmYtYnk6IE5ha3NodHJhIEdveWFsIDxuYWtzaHRyYS5nb3lhbEBpbnRl
-bC5jb20+Cj4gPiA+IFNpZ25lZC1vZmYtYnk6IE5pcmFuamFuYSBWaXNod2FuYXRoYXB1cmEKPiA+
-ID4gPG5pcmFuamFuYS52aXNod2FuYXRoYXB1cmFAaW50ZWwuY29tPgo+ID4gPiAtLS0KPiA+ID4g
-wqB0ZXN0cy9pbnRlbC94ZV9leGVjX211bHRpX3F1ZXVlLmMgfCAyMSArKysrKysrKysrKysrKysr
-KysrKy0KPiA+ID4gwqAxIGZpbGUgY2hhbmdlZCwgMjAgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlv
-bigtKQo+ID4gPiAKPiA+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ludGVsL3hlX2V4ZWNfbXVsdGlf
-cXVldWUuYwo+ID4gPiBiL3Rlc3RzL2ludGVsL3hlX2V4ZWNfbXVsdGlfcXVldWUuYwo+ID4gPiBp
-bmRleCBhYTg2ZjhhMzguLmRhODExN2Q1NyAxMDA2NDQKPiA+ID4gLS0tIGEvdGVzdHMvaW50ZWwv
-eGVfZXhlY19tdWx0aV9xdWV1ZS5jCj4gPiA+ICsrKyBiL3Rlc3RzL2ludGVsL3hlX2V4ZWNfbXVs
-dGlfcXVldWUuYwo+ID4gPiBAQCAtMzEsNiArMzEsNyBAQAo+ID4gPiDCoCNkZWZpbmUgUFJFRU1Q
-VF9NT0RFwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCgweDEgPDwgMykKPiA+ID4gwqAjZGVmaW5lIERZ
-Tl9QUklPUklUWcKgwqDCoMKgwqDCoMKgwqDCoMKgwqAoMHgxIDw8IDQpCj4gPiA+IMKgI2RlZmlu
-ZSBJTlZBTElEQVRFwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAoMHgxIDw8IDUpCj4gPiA+ICsj
-ZGVmaW5lIEZBVUxUX01PREXCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCgweDEgPDwgNikKPiA+
-ID4gwqAKPiA+ID4gwqAjZGVmaW5lIE1BWF9JTlNUQU5DRSA5Cj4gPiA+IMKgCj4gPiA+IEBAIC0y
-NDQsNyArMjQ1LDEyIEBAIHRlc3RfcHJlZW1wdF9tb2RlKGludCBmZCwgc3RydWN0Cj4gPiA+IGRy
-bV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuY2UgKmVjaSwgaW50IG51bV9wbGFjCj4gPiA+IMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX1hF
-KTsKPiA+ID4gwqAKPiA+ID4gwqDCoMKgwqDCoMKgwqDCoGlndF9hc3NlcnQobl9leGVjX3F1ZXVl
-cyA8PSBNQVhfTl9FWEVDX1FVRVVFUyk7Cj4gPiA+IC3CoMKgwqDCoMKgwqDCoHZtID0geGVfdm1f
-Y3JlYXRlKGZkLCBEUk1fWEVfVk1fQ1JFQVRFX0ZMQUdfTFJfTU9ERSwgMCk7Cj4gPiA+ICvCoMKg
-wqDCoMKgwqDCoGlmIChmbGFncyAmIEZBVUxUX01PREUpCj4gPiA+ICvCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqB2bSA9IHhlX3ZtX2NyZWF0ZShmZCwKPiA+ID4gRFJNX1hFX1ZNX0NSRUFU
-RV9GTEFHX0xSX01PREUgfAo+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoAo+ID4gPiBEUk1fWEVfVk1fQ1JFQVRFX0ZM
-QUdfRkFVTFRfTU9ERSwKPiA+IAo+ID4gRG9lcyBpdCBtYWtlIHNlbnNlIHRvIHRlc3Qgb25seSBm
-YXVsdCBtb2RlIChzZXBhcmF0ZWx5IGZyb20gb25seSBMUgo+ID4gYW5kCj4gPiBMUitGQVVMVCkg
-aWYgd2UgZXZlbnR1YWxseSBwbGFuIHRvIGRyb3AgdGhlIExSIG1vZGUgc3VwcG9ydD8gV2UKPiA+
-IGhhdmUKPiA+IHRoaXMgY2FzZSBjb3ZlcmVkIGluIG90aGVyIHRlc3RzIGFzIHdlbGwuCj4gPiAK
-PiAKPiBGQVVMVCBtb2RlIGlzIG9ubHkgc3VwcG9ydGVkIGFsb25nIHdpdGggTFIgbW9kZS4gU28s
-IEZBVUxUIG9ubHkgbW9kZQo+IGlzCj4gc3VwcG9ydGVkLiBMUiBvbmx5IG1vZGUgaXMgc3VwcG9y
-dGVkLCBidXQgS0VFUF9BQ1RJVkUgZmxhZyBpcyBub3QKPiBzdXBwb3J0ZWQKPiBpbiB0aGF0IG1v
-ZGUuIFNvLCBJIHRoaW5rIHdlIGFyZSBnb29kIGhlcmUuCgpNYWtlcyBzZW5zZSwgdGhhbmtzLgoK
-UmV2aWV3ZWQtYnk6IFN0dWFydCBTdW1tZXJzIDxzdHVhcnQuc3VtbWVyc0BpbnRlbC5jb20+Cgo+
-IAo+IE5pcmFuamFuYQo+IAo+ID4gVGhhbmtzLAo+ID4gU3R1YXJ0Cj4gPiAKPiA+ID4gMCk7Cj4g
-PiA+ICvCoMKgwqDCoMKgwqDCoGVsc2UKPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoHZtID0geGVfdm1fY3JlYXRlKGZkLAo+ID4gPiBEUk1fWEVfVk1fQ1JFQVRFX0ZMQUdfTFJf
-TU9ERSwKPiA+ID4gMCk7Cj4gPiA+ICsKPiA+ID4gwqDCoMKgwqDCoMKgwqDCoGJvX3NpemUgPSB4
-ZV9iYl9zaXplKGZkLCBzaXplb2YoKmRhdGEpICogbl9leGVjcyk7Cj4gPiA+IMKgCj4gPiA+IMKg
-wqDCoMKgwqDCoMKgwqBpZiAoZmxhZ3MgJiBVU0VSUFRSKSB7Cj4gPiA+IEBAIC01ODMsNiArNTg5
-LDEyIEBAIHRlc3RfbGVnYWN5X21vZGUoaW50IGZkLCBzdHJ1Y3QKPiA+ID4gZHJtX3hlX2VuZ2lu
-ZV9jbGFzc19pbnN0YW5jZSAqZWNpLCBpbnQgbnVtX3BsYWNlCj4gPiA+IMKgICogQHByZWVtcHQt
-bW9kZS1wcmlvcml0eTrCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBw
-cmVlbXB0LW1vZGUKPiA+ID4gcHJpb3JpdHkKPiA+ID4gwqAgKiBAcHJlZW1wdC1tb2RlLWNsb3Nl
-LWZkOsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByZWVtcHQtbW9k
-ZQo+ID4gPiBjbG9zZSBmZAo+ID4gPiB3aXRob3V0IGRlc3Ryb3lpbmcgZXhlYyBxdWV1ZXMKPiA+
-ID4gwqAgKiBAcHJlZW1wdC1tb2RlLWR5bi1wcmlvcml0eTrCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgcHJlZW1wdC1tb2RlCj4gPiA+IGR5bmFtaWMKPiA+ID4gcHJpb3JpdHkKPiA+
-ID4gKyAqIEBwcmVlbXB0LW1vZGUtZmF1bHQtYmFzaWM6wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgcHJlZW1wdC1tb2RlLQo+ID4gPiBmYXVsdC0KPiA+ID4gbW9kZSBiYXNpYwo+
-ID4gPiArICogQHByZWVtcHQtbW9kZS1mYXVsdC11c2VycHRyOsKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByZWVtcHQtCj4gPiA+IG1vZGUtCj4gPiA+IGZh
-dWx0LW1vZGUgdXNlcnB0cgo+ID4gPiArICogQHByZWVtcHQtbW9kZS1mYXVsdC11c2VycHRyLWlu
-dmFsaWRhdGU6wqDCoMKgwqDCoHByZWVtcHQtbW9kZS0KPiA+ID4gZmF1bHQtCj4gPiA+IG1vZGUg
-dXNlcnB0ciBpbnZhbGlkYXRlCj4gPiA+ICsgKiBAcHJlZW1wdC1tb2RlLWZhdWx0LXByaW9yaXR5
-OsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByZWVtcHQtbW9kZS0KPiA+ID4gZmF1bHQt
-Cj4gPiA+IG1vZGUgcHJpb3JpdHkKPiA+ID4gKyAqIEBwcmVlbXB0LW1vZGUtZmF1bHQtY2xvc2Ut
-ZmQ6wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJlZW1wdC1tb2RlLQo+ID4gPiBmYXVs
-dC0KPiA+ID4gbW9kZSBjbG9zZSBmZAo+ID4gPiArICogQHByZWVtcHQtbW9kZS1mYXVsdC1keW4t
-cHJpb3JpdHk6wqDCoMKgwqDCoMKgwqDCoMKgwqDCoHByZWVtcHQtbW9kZS0KPiA+ID4gZmF1bHQt
-Cj4gPiA+IG1vZGUgZHluYW1pYyBwcmlvcml0eQo+ID4gPiDCoCAqLwo+ID4gPiDCoHN0YXRpYyB2
-b2lkCj4gPiA+IMKgdGVzdF9leGVjKGludCBmZCwgc3RydWN0IGRybV94ZV9lbmdpbmVfY2xhc3Nf
-aW5zdGFuY2UgKmVjaSwgaW50Cj4gPiA+IG51bV9wbGFjZW1lbnQsCj4gPiA+IEBAIC02MzcsNiAr
-NjQ5LDEzIEBAIGlndF9tYWluCj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-eyAicHJlZW1wdC1tb2RlLXByaW9yaXR5IiwgUFJFRU1QVF9NT0RFIHwKPiA+ID4gUFJJT1JJVFkg
-fSwKPiA+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB7ICJwcmVlbXB0LW1vZGUt
-Y2xvc2UtZmQiLCBQUkVFTVBUX01PREUgfAo+ID4gPiBDTE9TRV9GRCB9LAo+ID4gPiDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHsgInByZWVtcHQtbW9kZS1keW4tcHJpb3JpdHkiLCBQ
-UkVFTVBUX01PREUgfAo+ID4gPiBEWU5fUFJJT1JJVFkgfSwKPiA+ID4gK8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoHsgInByZWVtcHQtbW9kZS1mYXVsdC1iYXNpYyIsIFBSRUVNUFRfTU9E
-RSB8Cj4gPiA+IEZBVUxUX01PREUgfSwKPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoHsgInByZWVtcHQtbW9kZS1mYXVsdC11c2VycHRyIiwgUFJFRU1QVF9NT0RFIHwKPiA+ID4g
-RkFVTFRfTU9ERSB8IFVTRVJQVFIgfSwKPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoHsgInByZWVtcHQtbW9kZS1mYXVsdC11c2VycHRyLWludmFsaWRhdGUiLAo+ID4gPiBQUkVF
-TVBUX01PREUgfCBGQVVMVF9NT0RFIHwKPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqBVU0VSUFRSIHwgSU5WQUxJREFURSB9LAo+ID4gPiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgeyAicHJlZW1wdC1tb2RlLWZhdWx0LXByaW9yaXR5Iiwg
-UFJFRU1QVF9NT0RFIHwKPiA+ID4gRkFVTFRfTU9ERSB8IFBSSU9SSVRZIH0sCj4gPiA+ICvCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB7ICJwcmVlbXB0LW1vZGUtZmF1bHQtY2xvc2UtZmQi
-LCBQUkVFTVBUX01PREUgfAo+ID4gPiBGQVVMVF9NT0RFIHwgQ0xPU0VfRkQgfSwKPiA+ID4gK8Kg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHsgInByZWVtcHQtbW9kZS1mYXVsdC1keW4tcHJp
-b3JpdHkiLCBQUkVFTVBUX01PREUKPiA+ID4gfAo+ID4gPiBGQVVMVF9NT0RFIHwgRFlOX1BSSU9S
-SVRZIH0sCj4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgeyBOVUxMIH0sCj4g
-PiA+IMKgwqDCoMKgwqDCoMKgwqB9Owo+ID4gPiDCoMKgwqDCoMKgwqDCoMKgaW50IGZkLCBndCwg
-Y2xhc3M7Cj4gPiAKCg==
+On Thu, Dec 04, 2025 at 01:53:26PM -0800, Summers, Stuart wrote:
+>On Thu, 2025-11-20 at 19:57 -0800, Niranjana Vishwanathapura wrote:
+>> Validate intra queue group priority setting.
+>> Validate that a higher priority queue in a queue group
+>> can preempt the lower priority queue of the group.
+>>
+>> During a queue switch, the currently running queue is
+>> always switched out without regard to its priority.
+>> The priority is only a factor in determining which
+>> other queue of the group will be scheduled in.
+>>
+>> v2: Macro and variable rename (priyanka)
+>>     Remove simulation related code (Priyanka)
+>>     Remove hardcoding of number of bits.
+>>     Use BASE_ADDRESS macro for address (Sai)
+>>
+>> Signed-off-by: Niranjana Vishwanathapura
+>> <niranjana.vishwanathapura@intel.com>
+>> Signed-off-by: Xin Wang <x.wang@intel.com>
+>> ---
+>>  tests/intel/xe_exec_multi_queue.c | 203
+>> ++++++++++++++++++++++++++++++
+>>  1 file changed, 203 insertions(+)
+>>
+>> diff --git a/tests/intel/xe_exec_multi_queue.c
+>> b/tests/intel/xe_exec_multi_queue.c
+>> index df65ccafb..06e898a47 100644
+>> --- a/tests/intel/xe_exec_multi_queue.c
+>> +++ b/tests/intel/xe_exec_multi_queue.c
+>> @@ -13,15 +13,18 @@
+>>  
+>>  #include "igt.h"
+>>  #include "xe_drm.h"
+>> +#include "igt_core.h"
+>>  #include "lib/igt_syncobj.h"
+>>  
+>>  #include "xe/xe_ioctl.h"
+>>  #include "xe/xe_query.h"
+>> +#include "xe/xe_spin.h"
+>>  
+>>  #define XE_EXEC_QUEUE_PRIORITY_LOW     0
+>>  #define XE_EXEC_QUEUE_PRIORITY_NORMAL  1
+>>  #define XE_EXEC_QUEUE_PRIORITY_HIGH    2
+>>  #define XE_EXEC_QUEUE_NUM_PRIORITIES   3
+>> +#define XE_EXEC_QUEUE_PRIORITY_N       (XE_EXEC_QUEUE_NUM_PRIORITIES
+>> * 2 + 1)
+>>  
+>>  #define MAX_N_EXEC_QUEUES      64
+>>  
+>> @@ -33,6 +36,7 @@
+>>  #define INVALIDATE             (0x1 << 5)
+>>  #define FAULT_MODE             (0x1 << 6)
+>>  #define SMEM                   (0x1 << 7)
+>> +#define WAIT_MODE              (0x1 << 8)
+>>  
+>>  #define MAX_INSTANCE 9
+>>  
+>> @@ -212,6 +216,201 @@ test_sanity(int fd, int gt, int class)
+>>         __test_sanity(fd, gt, class, true);
+>>  }
+>>  
+>> +static void
+>> +__test_priority(int fd, struct drm_xe_engine_class_instance *eci,
+>> +               unsigned int flags)
+>> +{
+>> +#define USER_FENCE_VALUE       0xdeadbeefdeadbeefull
+>> +       struct drm_xe_sync sync = {
+>> +               .type = DRM_XE_SYNC_TYPE_USER_FENCE,
+>> +               .flags = DRM_XE_SYNC_FLAG_SIGNAL,
+>> +               .timeline_value = USER_FENCE_VALUE,
+>> +       };
+>> +       struct drm_xe_exec exec = {
+>> +               .num_batch_buffer = 1,
+>> +               .num_syncs = 1,
+>> +               .syncs = to_user_pointer(&sync),
+>> +       };
+>> +       uint64_t vm_sync = 0, addr = BASE_ADDRESS;
+>> +       uint32_t exec_queues[XE_EXEC_QUEUE_PRIORITY_N];
+>> +       struct xe_spin *spin[XE_EXEC_QUEUE_PRIORITY_N];
+>> +       uint32_t vm, num_queues, num_queue_priorities, bo = 0;
+>> +       uint32_t start_order[XE_EXEC_QUEUE_PRIORITY_N] = { 0 };
+>> +       int64_t fence_timeout = NSEC_PER_SEC;
+>> +       size_t bo_size;
+>> +       /*
+>> +        * Q1 - Q6 are used for the priority test.
+>> +        * Q Priority = id % 3
+>> +        *      QID     Q1 Q2 Q3 Q4 Q5 Q6
+>> +        * Priority      1  2  0  1  2  0
+>> +        * The Priority 1 and 0 are the same priority so hw should
+>> pick Q with priority: Q2, Q5, Q1, Q3, Q4, Q6
+>
+>I think we should reword this to something like:
+>Hardware treats priority 0 and 1 the same, so hw should pick Q with
+>priority...
+
+Ok, will update.
+
+>
+>> +        */
+>> +       int expect_order[] = {0,2,5,1,3,4,6};
+>> +       uint32_t already_in_order = 0;          // bitmask to record
+>> Q started info
+>> +       struct drm_xe_ext_set_property multi_queue = {
+>> +               .base.name =
+>> DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+>> +               .property =
+>> DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
+>> +               .value = DRM_XE_MULTI_GROUP_CREATE,
+>> +       };
+>> +       uint64_t ext = to_user_pointer(&multi_queue);
+>> +       int i, j, sleep_duration = 1;
+>> +       void *bo_map;
+>> +
+>> +       num_queue_priorities = XE_EXEC_QUEUE_NUM_PRIORITIES;
+>> +       num_queues = num_queue_priorities * 2 + 1;
+>> +       igt_assert(num_queues <= XE_EXEC_QUEUE_PRIORITY_N);
+>> +       igt_assert(num_queues <= sizeof(uint32_t) * 8);
+>> +
+>> +       igt_debug("%s flags 0x%x eci %d:%d:%d\n", __func__, flags,
+>> eci[0].gt_id,
+>> +                eci[0].engine_class, eci[0].engine_instance);
+>> +
+>> +       vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+>> +       bo_size = xe_bb_size(fd, sizeof(*spin[0]) * num_queues);
+>> +
+>> +       bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd,
+>> eci[0].gt_id),
+>> +                         DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+>> +       bo_map = xe_bo_map(fd, bo, bo_size);
+>> +       for (i = 0; i < num_queues; i++)
+>> +               spin[i] = bo_map + i * sizeof(*spin[0]);
+>> +
+>> +       /* Use the default priority for Q0 because we are explicitly
+>> waiting for it below */
+>> +       exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
+>> +       multi_queue.value = exec_queues[0];
+>> +
+>> +       if (flags & DYN_PRIORITY) {
+>> +               for (i = 1; i < num_queues; i++)
+>> +                       exec_queues[i] = xe_exec_queue_create(fd, vm,
+>> eci, ext);
+>> +       } else {
+>> +               struct drm_xe_ext_set_property mq_priority = {
+>> +                       .base.name =
+>> DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+>> +                       .property =
+>> DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY,
+>> +               };
+>> +
+>> +               multi_queue.base.next_extension =
+>> to_user_pointer(&mq_priority);
+>> +
+>> +               /* Create secondary queues with increasing order of
+>> priority */
+>> +               for (i = 1; i < num_queues; i++) {
+>> +                       mq_priority.value = i % num_queue_priorities;
+>> +                       exec_queues[i] = xe_exec_queue_create(fd, vm,
+>> eci, ext);
+>> +               }
+>> +       }
+>> +
+>> +       sync.addr = to_user_pointer(&vm_sync);
+>> +       xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, &sync, 1);
+>> +
+>> +       xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0,
+>> fence_timeout);
+>> +       vm_sync = 0;
+>> +
+>> +       for (i = 0; i < num_queues; i++) {
+>> +               uint64_t spin_addr = addr + i * sizeof(struct
+>> xe_spin);
+>> +
+>> +               xe_spin_init_opts(spin[i], .addr = spin_addr,
+>> .preempt = true);
+>> +               sync.addr = spin_addr + (char *)&spin[i]->exec_sync -
+>> (char *)spin[i];
+>> +               exec.exec_queue_id = exec_queues[i];
+>> +               exec.address = spin_addr;
+>> +               xe_exec(fd, &exec);
+>> +
+>> +               /* Wait for job on Q0 to start, allow other queues to
+>> run to completion */
+>
+>So in this case we aren't waiting for anything with the other queues,
+>only Q0. We don't know if the other queues are sitting waiting for Q0
+>to end (or the semaphore to clear) or not. Maybe:
+>/* Wait for job on Q0 to start, other queues block behind Q0 */
+>
+
+Ok, will update.
+
+>> +               if (!i)
+>> +                       xe_spin_wait_started(spin[i]);
+>> +       }
+>> +
+>> +       sleep(sleep_duration);
+>> +
+>> +       /*
+>> +        * Expect the job on other queue to not get scheduled while
+>> the spinner
+>> +        * on q0 is not waiting on preempt condition.
+>> +        */
+>> +       for (i = 1; i < num_queues; i++)
+>> +               igt_assert(!xe_spin_started(spin[i]));
+>> +
+>> +       if (flags & DYN_PRIORITY) {
+>> +               /* Assign increasing order of priority for secondary
+>> queues */
+>> +               for (i = 1; i < num_queues; i++)
+>> +                       xe_exec_queue_set_property(fd,
+>> exec_queues[i],
+>> +                                                 
+>> DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY,
+>> +                                                  i %
+>> num_queue_priorities);
+>> +
+>> +               /* Wait for priorities to take effect */
+>> +               sleep(sleep_duration);
+>
+>I'd really rather have a way to determine these are set
+>programmatically... What if we moved this whole if condition up above
+>the xe_exec call to ensure the H2G ordering of the priority set
+>followed by the exec?
+>
+
+No, the idea here is to dynamically change the priority. i.e,
+after the job has been submitted to the HW.
+
+>> +       }
+>> +
+>> +       /*
+>> +        * Trigger a queue switch by making the spinner on q0 to wait
+>> on preempt
+>> +        * condition, allowing job on q1 to get scheduled and finish.
+>> When we end
+>> +        * the spin[0], it triggers the CFEG to perform a queue
+>> priority arbitration
+>> +        * rather than a full context switch out. Consequently, in
+>> both semaphore
+>> +        * (WAIT_MODE) and non-semaphore scenarios, a priority check
+>> will occur.
+>> +        */
+>
+>The CFEG arbitration points:
+>Semaphore wait successful/unsuccessful
+> - covered here
+>
+>Head == Tail
+> - covered here in the spin_end below
+>
+>Thread group end met in the walker
+> - expected to be covered by compute tests
+>   - of course the compute UMD tests should support these checks
+>   - I don't see us doing anything here in IGT though. Should we?
+>
+>pipecontrol/barrier with queue drain mode set
+> - UMD is testing this I believe, but should we do that here also?
+>
+
+Yah, the idea here is to cover the arbitration cases that IGT
+can easily test for. Will leave UMD validation to cover the rest.
+
+>> +       if (flags & WAIT_MODE)
+>> +               xe_spin_preempt_wait(spin[0]);
+>> +       else
+>> +               xe_spin_end(spin[0]);
+>
+>Do we want to wait for the spin end to take place before jumping to the
+>next sequence in the test?
+>
+
+There is no added benefit in that.
+
+>> +
+>> +       /* Wait for jobs to get scheduled */
+>> +       i = 1;
+>> +       while (i < num_queues) {
+>> +               for (j = 1; j < num_queues; j++) {
+>> +                       if (xe_spin_started(spin[j]) &&
+>> ((already_in_order & (1 << j)) == 0)) {
+>> +                               start_order[i] = j;
+>> +                               xe_spin_end(spin[j]);
+>> +                               xe_wait_ufence(fd, &spin[j]-
+>> >exec_sync, USER_FENCE_VALUE,
+>> +                                              exec_queues[j],
+>> fence_timeout);
+>> +                               already_in_order |= (1 << j);
+>> +                               i++;
+>> +                       }
+>> +               }
+>> +       }
+>> +
+>> +       /* While ending spinner on q0, bring it out of preempt wait
+>> */
+>> +       if (flags & WAIT_MODE) {
+>> +               xe_spin_end(spin[0]);
+>> +               xe_spin_preempt_nowait(spin[0]);
+>> +       }
+>> +       xe_wait_ufence(fd, &spin[0]->exec_sync, USER_FENCE_VALUE,
+>> exec_queues[0], fence_timeout);
+>> +
+>> +       igt_debug("Order\t Actual\t Expect\n");
+>> +       for (i = 1, j = 0; i < num_queues; i++) {
+>> +               igt_debug("  %d\t  Q%d(%d)\t  Q%d(%d)\n",i,
+>> start_order[i], start_order[i] % num_queue_priorities,
+>> +                         expect_order[i], expect_order[i] %
+>> num_queue_priorities);
+>> +
+>> +               /* The priority 0, 1 are the same, so we can skip the
+>> comparison */
+>> +               if (expect_order[i] % num_queue_priorities <
+>> XE_EXEC_QUEUE_PRIORITY_HIGH &&
+>> +                   start_order[i] % num_queue_priorities <
+>> XE_EXEC_QUEUE_PRIORITY_HIGH)
+>> +                       continue;
+>
+>The downside to this approach is if we get some future hardware that
+>has more than two priorities where more than two of these are the same,
+>we'll need to rework this.
+>
+
+I think it should be one off thing and we shouldn't complicate the
+design for that.
+
+>> +
+>> +               if (start_order[i] % num_queue_priorities !=
+>> expect_order[i] % num_queue_priorities)
+>> +                       j++;
+>
+>Instead of calling this 'j' can we use 'num_out_of_order' or something
+>to be more specific?
+>
+
+Hmm...we already have 'j' which we can use. Let me added a comment
+here so that it becomes more readable.
+
+Niranjana
+
+>Thanks,
+>Stuart
+>
+>> +       }
+>> +       igt_assert(j == 0);
+>> +
+>> +       sync.addr = to_user_pointer(&vm_sync);
+>> +       xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, &sync, 1);
+>> +       xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0,
+>> fence_timeout);
+>> +
+>> +       for (i = 0; i < num_queues; i++)
+>> +               xe_exec_queue_destroy(fd, exec_queues[i]);
+>> +
+>> +       munmap(bo_map, bo_size);
+>> +       gem_close(fd, bo);
+>> +
+>> +       xe_vm_destroy(fd, vm);
+>> +}
+>> +
+>> +/**
+>> + * SUBTEST: priority
+>> + * Description: Validate queue priority setting
+>> + * Test category: functionality test
+>> + */
+>> +static void
+>> +test_priority(int fd, struct drm_xe_engine_class_instance *eci)
+>> +{
+>> +       __test_priority(fd, eci, 0);
+>> +       __test_priority(fd, eci, WAIT_MODE);
+>> +       __test_priority(fd, eci, DYN_PRIORITY);
+>> +       __test_priority(fd, eci, DYN_PRIORITY | WAIT_MODE);
+>> +}
+>> +
+>>  static void
+>>  test_preempt_mode(int fd, struct drm_xe_engine_class_instance *eci,
+>> int num_placement,
+>>                   int n_exec_queues, int n_execs, unsigned int flags)
+>> @@ -707,6 +906,10 @@ igt_main
+>>                         xe_for_each_multi_queue_engine_class(class)
+>>                                 test_exec_virtual(fd, gt, class);
+>>  
+>> +       igt_subtest_f("priority")
+>> +               xe_for_each_multi_queue_engine(fd, hwe)
+>> +                       test_priority(fd, hwe);
+>> +
+>>         for (const struct section *s = sections; s->name; s++) {
+>>                 igt_subtest_f("one-queue-%s", s->name)
+>>                         xe_for_each_multi_queue_engine(fd, hwe)
+>
