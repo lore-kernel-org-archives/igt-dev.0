@@ -4,69 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8AD3D3399E
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 17:16:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F849D339A2
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 17:39:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9823910EB6F;
-	Fri,  5 Dec 2025 17:16:46 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TASYtzeE";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BCDD210EB6F
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Dec 2025 17:16:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764955006; x=1796491006;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=nsIA6lkOiTv40Vp/p+TVBbfGm5LIf3rKHHQuGWGq+aU=;
- b=TASYtzeEwqy16UQmQtK8e0HN55eEYDmZaUuV9UMrm6R/vYo8OctYzsYI
- ZWCY6AIdsvNifz/Nkav2yg85R2Mv64wMBKGtdICp9Q5y36J+F764R6bcx
- qzaq+nq76byxvl+d13r7IWBXtQ09en2wfkYl4FclADx9vOVKDIQa/kH7Z
- vjvod06lhb4US8999wVWE8+WhAo77iYTGaeIYs7AYdW5v8+GNLS+v56IU
- lQJH6CkHYrMuZ8ul0fx97nTSY3sHN4FQErTh2trjhE8yKHQN7ZcZWEkIL
- o2YnTHCC4Oss4CTwrPLJR54/+aa8vtXTzB+kvjaWvGkiXKPpV4P2Dacwk A==;
-X-CSE-ConnectionGUID: +xNpwIXrS0KvWGchJMk12A==
-X-CSE-MsgGUID: 1WjM9t/OQQa88oRv8eanWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11633"; a="70610715"
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="70610715"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Dec 2025 09:16:45 -0800
-X-CSE-ConnectionGUID: SAZ1DfCgSGShP3/AzqWiww==
-X-CSE-MsgGUID: zb/eIGHRQ02DZ38/Fs9Tgg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,252,1758610800"; d="scan'208";a="199521562"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2025 09:16:44 -0800
-Date: Fri, 5 Dec 2025 18:16:40 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Wang, X" <x.wang@intel.com>
-Cc: "Vivekanandan, Balasubramani" <balasubramani.vivekanandan@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
- "Dugast, Francois" <francois.dugast@intel.com>
-Subject: Re: [PATCH 2/2] lib/xe_spin: Fix mocs index field in mem_copy for
- Xe2 platforms
-Message-ID: <20251205171640.4sf52txxuzncsr4x@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Wang, X" <x.wang@intel.com>,
- "Vivekanandan, Balasubramani" <balasubramani.vivekanandan@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
- "Dugast, Francois" <francois.dugast@intel.com>
-References: <20251118142522.3957318-4-balasubramani.vivekanandan@intel.com>
- <20251118142522.3957318-6-balasubramani.vivekanandan@intel.com>
- <SA3PR11MB8046AA5502D6CCE3930773A986D6A@SA3PR11MB8046.namprd11.prod.outlook.com>
- <aR2-bUaoRjDBsO93@bvivekan-mobl1>
- <SA3PR11MB80464E069FB8D679B69877E186D7A@SA3PR11MB8046.namprd11.prod.outlook.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3A73A10EB73;
+	Fri,  5 Dec 2025 17:39:55 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3FBDE10EB71;
+ Fri,  5 Dec 2025 17:39:54 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4152754334049373707=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <SA3PR11MB80464E069FB8D679B69877E186D7A@SA3PR11MB8046.namprd11.prod.outlook.com>
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/kms=5Fbw=3A_Correct?=
+ =?utf-8?q?_skip_message_for_mx_pipe_count?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Alex Hung" <alex.hung@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 05 Dec 2025 17:39:54 -0000
+Message-ID: <176495639425.62152.6206998132176317446@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20251204182034.307117-1-alex.hung@amd.com>
+In-Reply-To: <20251204182034.307117-1-alex.hung@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,138 +37,300 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Wang,,
-On 2025-11-19 at 16:39:26 +0000, Wang, X wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Vivekanandan, Balasubramani
-> > <balasubramani.vivekanandan@intel.com>
-> > Sent: Wednesday, November 19, 2025 04:56
-> > To: Wang, X <x.wang@intel.com>; igt-dev@lists.freedesktop.org
-> > Cc: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>; Dugast,
-> > Francois <francois.dugast@intel.com>
-> > Subject: Re: [PATCH 2/2] lib/xe_spin: Fix mocs index field in mem_copy for Xe2
-> > platforms
-> > 
-> > On 18.11.2025 23:24, Wang, X wrote:
-> > >
-> > >
-> > > > -----Original Message-----
-> > > > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> > > > Balasubramani Vivekanandan
-> > > > Sent: Tuesday, November 18, 2025 06:25
-> > > > To: igt-dev@lists.freedesktop.org
-> > > > Cc: Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>; Dugast,
-> > > > Francois <francois.dugast@intel.com>; Vivekanandan, Balasubramani
-> > > > <balasubramani.vivekanandan@intel.com>
-> > > > Subject: [PATCH 2/2] lib/xe_spin: Fix mocs index field in mem_copy
-> > > > for Xe2 platforms
-> > > >
-> > > > The source and destination mocs index fields has changed in the
-> > > > MEM_COPY instruction in platforms after Xe2. So we need to check for
-> > > > the IP version before placing the mocs index in the instruction.
-> > > >
-> > > > Signed-off-by: Balasubramani Vivekanandan
-> > > > <balasubramani.vivekanandan@intel.com>
-> > > > ---
-> > > >  lib/intel_blt.h  |  4 +++-
-> > > >  lib/xe/xe_spin.c | 11 +++++++++--
-> > > >  2 files changed, 12 insertions(+), 3 deletions(-)
-> > > >
-> > > > diff --git a/lib/intel_blt.h b/lib/intel_blt.h index
-> > > > 54a096c03..2fae045bc
-> > > > 100644
-> > > > --- a/lib/intel_blt.h
-> > > > +++ b/lib/intel_blt.h
-> > > > @@ -53,7 +53,9 @@
-> > > >  #include "intel_cmds_info.h"
-> > > >
-> > > >  #define CCS_RATIO(fd) (intel_gen(intel_get_drm_devid(fd)) >= 20 ? 512 :
-> > > > 256)
-> > > > -#define XE2_MEM_COPY_MOCS_SHIFT                     25
-> > > > +#define GEN12_MEM_COPY_MOCS_SHIFT		25
-> > > > +#define XE2_MEM_COPY_SRC_MOCS_SHIFT		28
-> > > > +#define XE2_MEM_COPY_DST_MOCS_SHIFT		3
-> > > >
-> > > >  enum blt_color_depth {
-> > > >  	CD_8bit,
-> > > > diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c index
-> > > > 72b13ef42..1b12ce991
-> > > > 100644
-> > > > --- a/lib/xe/xe_spin.c
-> > > > +++ b/lib/xe/xe_spin.c
-> > > > @@ -54,6 +54,7 @@ void xe_spin_init(struct xe_spin *spin, struct
-> > > > xe_spin_opts *opts)
-> > > >  	uint64_t pad_addr = opts->addr + offsetof(struct xe_spin, pad);
-> > > >  	uint64_t timestamp_addr = opts->addr + offsetof(struct xe_spin,
-> > > > timestamp);
-> > > >  	int b = 0;
-> > > > +	uint32_t devid;
-> > > >
-> > > >  	spin->start = 0;
-> > > >  	spin->end = 0xffffffff;
-> > > > @@ -163,8 +164,14 @@ void xe_spin_init(struct xe_spin *spin, struct
-> > > > xe_spin_opts *opts)
-> > > >  		spin->batch[b++] = opts->mem_copy->src_offset << 32;
-> > > >  		spin->batch[b++] = opts->mem_copy->dst_offset;
-> > > >  		spin->batch[b++] = opts->mem_copy->dst_offset << 32;
-> > > > -		spin->batch[b++] = opts->mem_copy->src->mocs_index <<
-> > > > XE2_MEM_COPY_MOCS_SHIFT |
-> > > > -				   opts->mem_copy->dst->mocs_index;
-> > > > +
-> > > > +		devid = intel_get_drm_devid(opts->mem_copy->fd);
-> > > > +		if (intel_graphics_ver(devid) >= IP_VER(20, 0))
-> > >
-> > > NIT: could we use the existing helper intel_gen() ?
-> > >  if (intel_gen(intel_get_drm_devid(opts->mem_copy->fd)) >= 20)
-> > 
-> > Both intel_gen() and intel_graphics_ver() are both checking for graphics_ver.
-> > intel_gen() was created for legacy platforms where the graphics IPs where
-> > identified by a generation.
-> > Modern platforms has a separate version for each of its IPs like GT, Media,
-> > Display. So I would suggest in any future code, we check for the IP_VER
-> > instead of generation.
-> > 
-> 
-> I don't think that distinction is quite right. intel_gen() is intended for scenarios where we only need to check the major IP version—like in this case, where we simply need to identify Xe2+ platforms. intel_graphics_ver()
->  combines the major and minor versions, so it is generally used when we need to check for a specific device revision. Both APIs are valid for use on legacy and post-Xe2 platforms, depending on the granularity required.
-> 
-> Xin
+--===============4152754334049373707==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I agree with this but imho is is not a blocker, as there are
-many other places to change where IP_VER(V, 0) is used.
+== Series Details ==
 
-I will merge it now and leave fixes for later.
+Series: tests/kms_bw: Correct skip message for mx pipe count
+URL   : https://patchwork.freedesktop.org/series/158513/
+State : failure
 
-Regards,
-Kamil
+== Summary ==
 
-PS. Bala, please look into failures and reply with Cc to our CI.
+CI Bug Log - changes from IGT_8656 -> IGTPW_14160
+====================================================
 
-> 
-> > Regards,
-> > Bala
-> > 
-> > >
-> > > - Xin
-> > >
-> > > > +			spin->batch[b++] = opts->mem_copy->src-
-> > > > >mocs_index << XE2_MEM_COPY_SRC_MOCS_SHIFT |
-> > > > +					   opts->mem_copy->dst->mocs_index
-> > > > << XE2_MEM_COPY_DST_MOCS_SHIFT;
-> > > > +		else
-> > > > +			spin->batch[b++] = opts->mem_copy->src-
-> > > > >mocs_index << GEN12_MEM_COPY_MOCS_SHIFT |
-> > > > +					   opts->mem_copy->dst-
-> > > > >mocs_index;
-> > > >  	}
-> > > >
-> > > >  	spin->batch[b++] = MI_COND_BATCH_BUFFER_END |
-> > MI_DO_COMPARE | 2;
-> > > > --
-> > > > 2.43.0
-> > >
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_14160 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_14160, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_14160:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-dg2-8:          [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8656/bat-dg2-8/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/bat-dg2-8/igt@i915_pm_rpm@module-reload.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between IGT_8656 and IGTPW_14160:
+
+### New IGT tests (5) ###
+
+  * igt@i915_selftest@basic-eu-total:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@i915_selftest@basic-llseek-bad:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@i915_selftest@hwmon-write:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@i915_selftest@parallel-random-engines:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@i915_selftest@second-client:
+    - Statuses :
+    - Exec time: [None] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14160 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8656/bat-mtlp-8/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@requests:
+    - bat-atsm-1:         [PASS][5] -> [INCOMPLETE][6] ([i915#14564])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8656/bat-atsm-1/igt@i915_selftest@live@requests.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/bat-atsm-1/igt@i915_selftest@live@requests.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-jsl-1:          [DMESG-FAIL][7] -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8656/bat-jsl-1/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/bat-jsl-1/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [DMESG-FAIL][9] ([i915#12061]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8656/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-9:         [DMESG-FAIL][11] ([i915#12061]) -> [PASS][12] +1 other test pass
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8656/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-atsm-1:         [DMESG-FAIL][13] ([i915#12061] / [i915#13929]) -> [INCOMPLETE][14] ([i915#15157])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8656/bat-atsm-1/igt@i915_selftest@live.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/bat-atsm-1/igt@i915_selftest@live.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
+  [i915#14564]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14564
+  [i915#15157]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15157
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8656 -> IGTPW_14160
+  * Linux: CI_DRM_17640 -> CI_DRM_17641
+
+  CI-20190529: 20190529
+  CI_DRM_17640: a36e2c7fed2132052900236e8c7aa563d339baaf @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_17641: abc20a831a03dc608256340159c23e01ee6b6ead @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14160: 9f336490af536ee623b8ed8f26bca82d94bc816f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8656: 1fa8aeb0848614e6204602c5fe2949e049f087c9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/index.html
+
+--===============4152754334049373707==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_bw: Correct skip message for mx pipe count</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/158513/">https://patchwork.freedesktop.org/series/158513/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8656 -&gt; IGTPW_14160</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_14160 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_14160, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/index.html</p>
+<h2>Participating hosts (45 -&gt; 44)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_14160:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8656/bat-dg2-8/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/bat-dg2-8/igt@i915_pm_rpm@module-reload.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between IGT_8656 and IGTPW_14160:</p>
+<h3>New IGT tests (5)</h3>
+<ul>
+<li>
+<p>igt@i915_selftest@basic-eu-total:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@basic-llseek-bad:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@hwmon-write:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@parallel-random-engines:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@second-client:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14160 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8656/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8656/bat-atsm-1/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/bat-atsm-1/igt@i915_selftest@live@requests.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14564">i915#14564</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-jsl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8656/bat-jsl-1/igt@i915_selftest@live.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/bat-jsl-1/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8656/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8656/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8656/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14160/bat-atsm-1/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15157">i915#15157</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8656 -&gt; IGTPW_14160</li>
+<li>Linux: CI_DRM_17640 -&gt; CI_DRM_17641</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17640: a36e2c7fed2132052900236e8c7aa563d339baaf @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_17641: abc20a831a03dc608256340159c23e01ee6b6ead @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14160: 9f336490af536ee623b8ed8f26bca82d94bc816f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8656: 1fa8aeb0848614e6204602c5fe2949e049f087c9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4152754334049373707==--
