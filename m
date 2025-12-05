@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40402D2E032
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 08:03:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42314D2E022
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Dec 2025 08:03:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 852CF10EA30;
-	Fri,  5 Dec 2025 08:03:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ECE7510EA32;
+	Fri,  5 Dec 2025 08:03:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CoKDOeJS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Pq/PbAxU";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EDA4F10EA2C
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Dec 2025 07:47:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B58010E232
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Dec 2025 07:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1764920834; x=1796456834;
+ t=1764920055; x=1796456055;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
  bh=2w15TvsCdR/TG3Zv6++X7MXmU18FJm6+VaxTulbHP7o=;
- b=CoKDOeJS41rMk9zgP1WXiMlBm5GD05wra/6A+cxPxeP53+L4x84HyxSh
- UbVNSXNfzqUW/JE4k1W+blFkzzBMfyo/4fsStisJUBG2y77PUEUZpe3dV
- zFz5zhmZVMWh6l8gv2FBZ9fGz6Tzm8mZsARyB2I50Riu8Lg1XpYAKQ4Ku
- P4wxWNDrK56LzTL6pioKoEA/3XSG5qLMamxUUZEc5V6WaeXI2aNNn6PXA
- YzMnRrkmIjT/coJ+ovFdErG3hL92pZ/XkHutC8CB8MkMsGDQsK2IzMK4g
- 7Qct2hIkzdLeo6TV/wJBz8RvFYTFZ1MNU8cOC5bh9Y883EHEbq5u8mq7t Q==;
-X-CSE-ConnectionGUID: h4QnSYLCTx++bRERiu3dEA==
-X-CSE-MsgGUID: na7aBL3/RCiQ7D0k+0SX2Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="67116804"
-X-IronPort-AV: E=Sophos;i="6.20,251,1758610800"; d="scan'208";a="67116804"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ b=Pq/PbAxUwsKqpev7dQr8llNFCOMUmqjLFZQnhH04lMwGPuA5yiguG5Sl
+ NDhWbEgq59VWBW4zebdpx5sSEXmy6kQnVVoZ1FIxrdNbT6RQt0hinPwrh
+ uPlYjtyfHumAUKfSbLJBrMYTm1kFYqw+aucb8UWtzEdGedSpRo39Rn53k
+ mXlxMK/wTzoHE9wuTdxZhOJPfGmN4u28npwAnGZVgFFDjZMWCi9XF8l5U
+ Cm80iKtb7GIfcR0Uu+W2txXCiC/w96humun45V06uqWsWgq4/otI7jPbk
+ Gcj51Bne3Q+qJJSqc2dHSdl6jr2liKAgi8kWEVHjFaksd1NLvE27oR/a7 g==;
+X-CSE-ConnectionGUID: NTEfnI+eS2ivPbvZfOsKTQ==
+X-CSE-MsgGUID: p2bKFu6rRemIYBge+sg4bA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11632"; a="67115888"
+X-IronPort-AV: E=Sophos;i="6.20,251,1758610800"; d="scan'208";a="67115888"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Dec 2025 23:47:13 -0800
-X-CSE-ConnectionGUID: iKNWxhr/Qli6uzlZ4uf0Vw==
-X-CSE-MsgGUID: f1TdrrTqTw2OMcisbAf9Ug==
+ 04 Dec 2025 23:34:15 -0800
+X-CSE-ConnectionGUID: a9T+hW5FStuj8RlzPQjBQw==
+X-CSE-MsgGUID: m4Vq5uSTQoCQddq4xEspMA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,251,1758610800"; d="scan'208";a="195321895"
+X-IronPort-AV: E=Sophos;i="6.20,251,1758610800"; d="scan'208";a="199664825"
 Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
- by orviesa008.jf.intel.com with ESMTP; 04 Dec 2025 23:47:12 -0800
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Dec 2025 23:34:12 -0800
 From: Moahmmed Bilal <mohammed.bilal@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jeevan.b@intel.com, kunal1.joshi@intel.com,
  Mohammed Bilal <mohammed.bilal@intel.com>
 Subject: [PATCH i-g-t 2/2] RFC: chamelium/kms_chamelium_hpd: use helper
  function for connector lookup in DP/HDMI/VGA tests
-Date: Fri,  5 Dec 2025 13:16:02 +0530
-Message-ID: <20251205074602.658783-3-mohammed.bilal@intel.com>
+Date: Fri,  5 Dec 2025 13:02:49 +0530
+Message-ID: <20251205073249.653927-3-mohammed.bilal@intel.com>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251205074602.658783-1-mohammed.bilal@intel.com>
-References: <20251205074602.658783-1-mohammed.bilal@intel.com>
+In-Reply-To: <20251205073249.653927-1-mohammed.bilal@intel.com>
+References: <20251205073249.653927-1-mohammed.bilal@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Fri, 05 Dec 2025 08:03:06 +0000
