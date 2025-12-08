@@ -4,56 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF927D3ABEF
-	for <igt-dev@archiver.kernel.org>; Mon,  8 Dec 2025 08:33:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94974D3B7DD
+	for <igt-dev@archiver.kernel.org>; Mon,  8 Dec 2025 08:39:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AB19310E11A;
-	Mon,  8 Dec 2025 08:33:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3D6F910E11A;
+	Mon,  8 Dec 2025 08:39:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gqRvMSZV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DNzC4Vph";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7305510E3D3
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Dec 2025 08:33:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C4D810E11A
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Dec 2025 08:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765182838; x=1796718838;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=FlkNva0tVLh6feArlLe1az4pCMC/eWSgr8+izce1p+8=;
- b=gqRvMSZVcKWfAX4AAROGbjqSHwlESgPiMDodxWC5S7i5mbcfoDpK2W5v
- G8PAzhBMPQO27gfALial206QM4MqGdufNc15Tj5ZtN0b4IAAj04V40IEX
- uim/pS/lOmpUftAlbUL5DB+BsIJaeemNCD3xnTKMF31JBm+qt+89v1GC1
- cam7KXM+14Ez561yGAzhtr9Nj6SXiynucCFjb5Aoo4qn7T5uaEj+kQ01M
- cinZAHMLakNbvvrN2sA6BvykThX6y4GRWraP+0M58DyT85+OvF2xfw9Ud
- xCtFZYrXpok2A4npC9nOTEX5t145eRO/7n8yYJs5nO2G2lmg/pD3PWJc+ Q==;
-X-CSE-ConnectionGUID: VtVXZRDzQzSMDLp7SyWTKg==
-X-CSE-MsgGUID: XzbTP7HtRC++WoP/X/0GJA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="78236184"
-X-IronPort-AV: E=Sophos;i="6.20,258,1758610800"; d="scan'208";a="78236184"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Dec 2025 00:33:57 -0800
-X-CSE-ConnectionGUID: e1rps3AESYe2dj2WrH8I4A==
-X-CSE-MsgGUID: SCEs9L+sTDKF/dRm56gj5Q==
+ t=1765183184; x=1796719184;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=InR5ILWaCcnQpU0wPYjrHqZsY2u8tpNN292ebLqz+LA=;
+ b=DNzC4Vphm1wYxLvfTpIT0zpgWPNcXBFMlnT7Q5qbTmDlaU9mbCe5qm1N
+ N37zdmrLB02zmMftX+GG4VeAl2/pO8Wgd4+yjXqOPtU45Ls9lzI2s+qAU
+ I4ZpWJ00vD2B3T2qozpj0xKeQOT6odqw3jpL9C5MometenjxcNixn/rnZ
+ OidzutdJ5pybd+sjxortFYgQ4s6S78ZZfjjGp5w9A9fw+jd9jUGDKsZCh
+ xLC9xDA/ngNrmG+SjD460ctUayEw7lhUus6iGdLiZk52ds8Ta7GyTCdXB
+ onXBzlCKZjNPrPwDGNh0kXpNIN2ZWpLzRTmss+MUr6hpduyV0mZeyYPzJ A==;
+X-CSE-ConnectionGUID: 69QQnskWTkG8woYYUi3VLQ==
+X-CSE-MsgGUID: G+f4KCsmQ0K4IBTCvu0NSw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="77804405"
+X-IronPort-AV: E=Sophos;i="6.20,258,1758610800"; d="scan'208";a="77804405"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Dec 2025 00:39:44 -0800
+X-CSE-ConnectionGUID: 2eww8LiZSJuS81dZ1VLHzw==
+X-CSE-MsgGUID: enb1QRQMTlOUzRZX5X7RZw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,258,1758610800"; d="scan'208";a="219224797"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by fmviesa002.fm.intel.com with ESMTP; 08 Dec 2025 00:33:49 -0800
-From: Pranay Samala <pranay.samala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
- pranay.samala@intel.com, Adith Narein T <adith.narein.t@intel.com>
-Subject: [PATCH i-g-t v4 4/4] tools/displaytop: Add ftrace support to Display
- Top
-Date: Mon,  8 Dec 2025 14:12:02 +0530
-Message-Id: <20251208084202.257512-5-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251208084202.257512-1-pranay.samala@intel.com>
-References: <20251208084202.257512-1-pranay.samala@intel.com>
+X-IronPort-AV: E=Sophos;i="6.20,258,1758610800"; d="scan'208";a="195783465"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Dec 2025 00:39:44 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Mon, 8 Dec 2025 00:39:43 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Mon, 8 Dec 2025 00:39:43 -0800
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.17) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Mon, 8 Dec 2025 00:39:42 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jGtdXDLj2nTtXSeRcCgN6FKTUwqOgRuK9pX8ssAP7R3GpHuwBaIbjy0gDLO/foYwMTI0Eq0NO/3lGC4ej6RS8o/dl8ZRJo+K798jw2FysQAys/UrLzYyCI+PH7YL15Y8leKFbniwbAfUOokULFkeknMlZXGU7JTCm4zDZSb1NGEPYcw+5ePcJ9AElT0GqvUMK8BvAAsx15uPVOj1DwuARro57vsgETS8++fetvDoC3h8kmzAwynRgMcBsfW/ZrRNnvIyei3nehhTnCvPUFNy9eWNL/epk4PuS5MAn8yWOP/QKsWH9kS4erVOZlU4RGmCk1knTcXqkcbnUIZr+gm8WA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LVsp007ampsfpVjcnXCp7qzK0IzIgTfcOUiTm/ROI9s=;
+ b=iiySb5SkUHbHhl238j5cPPswbSogmL2WKAaYWy6frfHBcN+Ga7QGYOxKxg2VaGjne71cOfo6kDz5HUgiRQiRKlmEMU2NZYl45NlqfsXWOAf1VYTb/7bq9YsO4vW4u1kxD5G74fxff2+74ojKwAeFe16AuKWHIStDvjCw0RkmYpxON3haFus2nes40Lj6Cl2DiE+Z4eXqdnVSypeMMJGVQb9E0F6YNIiBAWgNB4VrBxVEOX9RVe+aIgFr/P2SPhcta8FKI9Fw1wGJeABa5196lsA/wF6X4cNxHTb8uTqTgEeK4+Y9nluZbM0RVzAKA91HDB6ottsxWNTCgSaDom4RJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH0PR11MB5690.namprd11.prod.outlook.com (2603:10b6:610:ed::9)
+ by CY8PR11MB6844.namprd11.prod.outlook.com (2603:10b6:930:5f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.14; Mon, 8 Dec
+ 2025 08:39:35 +0000
+Received: from CH0PR11MB5690.namprd11.prod.outlook.com
+ ([fe80::6b98:f467:da49:e062]) by CH0PR11MB5690.namprd11.prod.outlook.com
+ ([fe80::6b98:f467:da49:e062%4]) with mapi id 15.20.9388.013; Mon, 8 Dec 2025
+ 08:39:35 +0000
+Message-ID: <ee4a7c8a-c6c7-4e99-9822-273cd590eaa3@intel.com>
+Date: Mon, 8 Dec 2025 14:09:28 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v1] tests/kms_prime: Fix display pattern for xe
+ discrete modeset
+To: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+CC: <kunal1.joshi@intel.com>
+References: <20251205085944.1037410-1-santhosh.reddy.guddati@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20251205085944.1037410-1-santhosh.reddy.guddati@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5P287CA0135.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d2::11) To CH0PR11MB5690.namprd11.prod.outlook.com
+ (2603:10b6:610:ed::9)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=yes
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|CY8PR11MB6844:EE_
+X-MS-Office365-Filtering-Correlation-Id: 362f8811-364e-4650-7668-08de363550b5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0; ARA:13230040|1800799024|366016|376014|42112799006;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UnlHS0tweGgxbkM4UHBRZTR6NXdEdVduT0FCanQ4SXdMRERZOGE5UFZDYVlN?=
+ =?utf-8?B?V1RJZmVSekhZWElSY3hTK1lZQ2RLbVlIejNKaWZNeERWak1aaWx3bDBqQThn?=
+ =?utf-8?B?amsxTkNVVVdjRXZxZ2tUbUVWK0UxTmtTSGRwbVUzby9tTHZNRkRYMG9LREhF?=
+ =?utf-8?B?bVorcDI1aDNBWUJDbzdPQ0tpOEJaZ3FLZVBWZFZESm9QemRFZzA0cWVGZi9s?=
+ =?utf-8?B?OGczMXozdHFBQktDTUJPYUxWdmVhckMzMHN2UkZNL3NDOGFlY0FjZ2JWQ2Zw?=
+ =?utf-8?B?bDd1YU40Z1VpWWZHQlBNZFpyeDdSeE9jMUN1OTZVZ2RtOTVhb2xMNndqYTg2?=
+ =?utf-8?B?SjNOTFJxbFNxaGVxeU1lbkhuUU56RjRqZ0JjMUV2ajZvVE1SWDZxclRtM1li?=
+ =?utf-8?B?SkV2YUxIVndIV0l0ZWdaMVhFcldZSmZGT1pCSWZ2dForcmNZYWxhT0RzUWZm?=
+ =?utf-8?B?Zkk0aHoya1F3aHE3WFZBcXRIeWFKV0ZwZVY4WVNZOFl6UEM0U0s0Y24xU2FM?=
+ =?utf-8?B?OEhDVzZlWk8ycGFBdHg4a0xCR3JtaWxuU1V3a2tmbmNvKy84eUM5TDRTbzBD?=
+ =?utf-8?B?UnBQTEVzL0N5aTVnZS9yMWlEOVQzYktnVnAxVUkzT3ZCbkM0c25BYjNienVP?=
+ =?utf-8?B?akwwL0MyeVM1NDUrcVdQc0c1bHdtRzN2V1lHaDR4YkJOVjJmMGY3ZjNlTk5E?=
+ =?utf-8?B?bGVPa2hObFN6Y28xWGVqQVdUcnVkRGl1cGNDRE5aSEdWNmRKM1EzVTZ6QmN2?=
+ =?utf-8?B?Z0ZWU3dWQlMycE9GbHZYYmN1bC9TdTVtME5NMVlNSEsxZ3JJSHJrWkFRUWk4?=
+ =?utf-8?B?M3NmSTJHZ2hUVVRzaGQwWUpUdUxjMGhWaEo2TGJmY20yUkhoS0lpYnBGK2Q0?=
+ =?utf-8?B?S1FBanRCZjY2WkkxTTY3NGFyVEFXbjVSa04vSlBRTXRJMlNuS0NJKzhwSWx2?=
+ =?utf-8?B?cUt3cHBkUDYvR3J0cnQ1UGp2aEQ0YXhFYXhSRkUvOFlpM1gwZkVRcE9sZHhn?=
+ =?utf-8?B?TjRFSVU3UEJLOWlzcDhCOG1mZFpGOTdsc2FHclcwdkhOWjJoalZ0NHl6MGt6?=
+ =?utf-8?B?QVcvdVcyU3QrZ25OYm9lN3BGOUovcE1zdjZrOWFVbVV0cmo2QmZBR3o1OHE4?=
+ =?utf-8?B?VUZyUWJRUVZsY2RXa1Vad0V6V0RyWTE3V09qaFJtUXN2Y05kakFRZVlkSHU4?=
+ =?utf-8?B?YnZDUWsyZUZFV2NxamlGbFlwK052ckxxMHl1bnlkMlB0cTVTSWhwSkxvcUQw?=
+ =?utf-8?B?S1NSNEhvYzNUTTlhbWR0U0VSZWdGOThPaUFBWGZkZVJJYWlGaFh3OXVscFJv?=
+ =?utf-8?B?aUpoY2ZsbWo5aVNVeWZRbzdwNmFTMWhVS1F1RjJUK0p0WG1kU2g4VklUTjVL?=
+ =?utf-8?B?K1YvYktkL3BPZEdObi8xa1N3WkxYK1kzQStoOE10WXpSUGY5d2dsYzZrTEV1?=
+ =?utf-8?B?cEUrSklZMDhmNEprMUlDbHpkV0s3dmh1cFpYTFZjd0xoc2hrS01MTnAwcWRR?=
+ =?utf-8?B?T0RVUmNrMGR4TTNOVW1GeUZsejRwbFNBbVVxTlp4MC9sMjF2Q3FYZGZlSWdD?=
+ =?utf-8?B?RjdlNitSQ1AzWmd3N1R6SjRxMUtXR25yZGptWnZBTHRXZVd2K3BGVnc4QSs2?=
+ =?utf-8?B?YWVZRGRsYTl0MkNoMXNINWRmbGxNV2o3ZW1CME1FN3hoWjJ1VXJiOUkxRGN6?=
+ =?utf-8?B?UnVHMDRoYjVsdDhIa2hBM3hwVGlvVE1aT2xpT3dHVEtldWVQYXFnZjR0S1p0?=
+ =?utf-8?B?MndQM3labHN4UTZjNkJVbk95LzJsZkFuL1dDdGVtT0Q2MnoxUnFCaXFZY3hJ?=
+ =?utf-8?B?QlFndUg1ak1aOWUrWEVGUm5hUnJUMEJmdko5aGllOU5NRG43UDExMUJjV29k?=
+ =?utf-8?B?YUVQd1UwTWNCWHB0REVqS0dia1ZEalpDenNZSnBTcmFXckVsMHc0dHBKM3pE?=
+ =?utf-8?Q?0+CZVCdHZT6MhwWUuB9BCbHdAnnOjCIe?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH0PR11MB5690.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(42112799006); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RHRHcDllVHFLN2hJQnNNYjFaVmppTzNLMHl1bzlVMEptY3oyVDhHTmswN1BF?=
+ =?utf-8?B?OFF4dGpSSFZMc25BYjREcjZlaSs5SzhOL3FWZXNCblMwLzhGcC9zUnVIZjgx?=
+ =?utf-8?B?L1VDSWlCTDlKdzNDR3hodmI5NDRwZU5FbmN4TnpsNlhvaVNxQTQvQUhRNU5l?=
+ =?utf-8?B?dFd2U3M2OGRHY2xjMlQ4T3ZmanlMb0N6SURGemJFMGpqNWsyYmU2OHNCTVg5?=
+ =?utf-8?B?UHIyc3lhamtWTUNKdFdyRVlLNXhTQXM5RU5IZ3RFanhUbFdTb0NTTkJJVW02?=
+ =?utf-8?B?QVBTMkFHQVVPelV3eE9ZNi9RUkU2cFpmc2J5UStERXFsdE83aitSVG04ZzMv?=
+ =?utf-8?B?TkhrNXJRRWVKeDh5SFROQ21Zd21GZTA2elVLUUg2cURSUUNWM2R4LytTUXAx?=
+ =?utf-8?B?ZGNwK2J4VjdFM1dDZ281ckp3ZXZHRUIrVVB4akxPaEVyencvbm14aTYwWlph?=
+ =?utf-8?B?M05xb3lyeklzOE0yVTNUZFB0b08wMGl1QTJkS2ZqWlJ3S1h6YWEybExLWlFD?=
+ =?utf-8?B?bmYvMHBTRHpLdU9SV1IwRHhoZGxRdlZwWG83eGFhbmhIMDRwM2FZdWVPVDZy?=
+ =?utf-8?B?a0c0NjZIYm83YlJaT3hWeFQvOW1PVVFobnJCVHI0RkdYVThhNnhXaEN2aE9O?=
+ =?utf-8?B?UHFmK2x0Mjl6T1NFSFl1eERTa0daWDl2WXpZMjVkVU4wcXh6aldwSlBQSGg2?=
+ =?utf-8?B?WXQvZ3puOHFoNGxqRlRSZUtBZWtqU2ZFY1JxTGVFdHRpUHNSTytFYTV0cVQx?=
+ =?utf-8?B?RzI2aExNUzNxWEpidkZwM2l4UkF0TDZ1OW5WbFFDWlVnQ00wOUJZeXVlTG1Y?=
+ =?utf-8?B?VmZ5eUNLOXFJN0tFZWZ3cTEvYXJHTXgvVUhtRnluMzRJSFVNV3VsZ1ZhcnpJ?=
+ =?utf-8?B?bUdubldoajFabkVmYWNXOEdEMmk3U1dPaEhyQjRCRWw0Q21ocnFEQm5VcWMr?=
+ =?utf-8?B?YmhHV3dUbWFhOFh0anY1bXE3REVuUHhJM1M4aW1mMk1hWm9sZlY3SXd1Z2x1?=
+ =?utf-8?B?UXE1MkxZVkgxcm0zcnh5RzVKbTJJVjY0bjhBQU1WWlh6V3JkV0NBS2VRd1Ez?=
+ =?utf-8?B?VytPUTNPUDJBQzBGNTBFRm1JKzlCUkpPSHhlemcvWmVLcURtTHVUamtiRXVr?=
+ =?utf-8?B?VWp5eEU3S1R1RkFBT3VOYmV4N1FKMDFFZ09hZEVMQTU5VldaWEhYK29yRy9S?=
+ =?utf-8?B?eWFBc3BxdHlOVVZ4Mzk2TlZZcktlWFpwWUJtd093YVdCWmpuRmROeWt0T3RQ?=
+ =?utf-8?B?Y1dQOWx4WnNnbGduNlF3WkkrY2lZS0FYTlIrOVBqcVovWUhVT3dDcGxnRWhE?=
+ =?utf-8?B?a2l5NFpBdXFwMU50WDNBNnNsYkR0TVpkRFdDU2syZDdGaStLN25aOGkycnhB?=
+ =?utf-8?B?OWM3VUM1clV0RWpib3FIa21ndzk4RmJ6NSs1Q0lkbThFZU5YemMxT0lqMTlS?=
+ =?utf-8?B?UjVrM1BnbE9qdDJQL3kwMHZveDZDTzByRnVNVTRsbDB5MUpFeGhNYjdKSFpQ?=
+ =?utf-8?B?YjFXWmNtbytjMzF0V2liY3dGblRvRnVpbXA4S3Bzd1FLY0F5SVliR2xnTXRx?=
+ =?utf-8?B?R2hILzZ3VjJrSG1EQzBuTHNFeTN2ZnFmR3hFaXNRcW10Y0l4WnlVNXJYcW5a?=
+ =?utf-8?B?anlzcUhnN2Jvb3BER3dUVmhSNE9YVnhMK3lkMk1tMnZjeXhYNXZ5c05KU1lt?=
+ =?utf-8?B?TU8xTXpGYVB3NUJHUXdFK3U3QkM2dEFhSkpxaE1odXB6OVZER21vTnVzM1pO?=
+ =?utf-8?B?bTFWOGpPRktCSDRZUXdEeHlJOUZQZEErRXUxNktnSjFFcnZrSXFFZnlPWTJL?=
+ =?utf-8?B?QnI0Y1VkOUJZSXpzWDFvNGhoWUJGcGtDckFnci9tTCtJcWV3ZEQwelNZajA4?=
+ =?utf-8?B?bXZCZmJQUjEzTThKWmgvMVRQL24vQmRaT0xtb2phRldZRHplRXJrRWwrNnZF?=
+ =?utf-8?B?OU9wRkN6Y05hem5xSm9CVTNjb2ZkdjNHRk1YRytoR1QxYUdsVHZlSTc3MitZ?=
+ =?utf-8?B?dXd1SHFJV01KS20wcmVoK3lnS1BDalg2QkdVMnJpTGk1VitMSmFzQkJmTTdW?=
+ =?utf-8?B?djZsOHVvNUZGZXBTZHpUZ0ljUFZxNTFJNExhR1FQbmZZcHlLQ01GT0owRTYy?=
+ =?utf-8?Q?q1QEBzVssJbbyrWv+AFZ/01t1?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 362f8811-364e-4650-7668-08de363550b5
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5690.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2025 08:39:35.1538 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VLa8st3kWbe2VULbHMN6HiJe7YonmODI4iHkRpVlICE6j68PXjNhofX4fA6PsqaaLbDFtvVN9Lbz/N9Wmr5iEw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB6844
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,870 +196,35 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Adith Narein T <adith.narein.t@intel.com>
+Hi Santhosh,
 
-This patch adds support for live tracing using ftrace in the DisplayTop
-tool. It enables real-time monitoring with options for filtering, dumping,
-and clearing the trace data.
+On 12/5/2025 2:29 PM, Santhosh Reddy Guddati wrote:
+> Keep igt_create_pattern_fb() call in test_basic_modeset() XE discrete
+> path to properly draw pattern into the framebuffer. The fb remains empty
+> and pattern is not displayed on screen during modeset on discrete Gpus.
+>
+> Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+> ---
+>   tests/kms_prime.c | 3 +++
+>   1 file changed, 3 insertions(+)
+>
+> diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+> index aa3cc386c..4e486a1b0 100644
+> --- a/tests/kms_prime.c
+> +++ b/tests/kms_prime.c
+> @@ -491,6 +491,9 @@ static void test_basic_modeset(int drm_fd)
+>   				  DRM_MODE_FB_MODIFIERS, &fb.fb_id);
+>   		igt_assert_eq(ret, 0);
+>   
+> +		igt_create_pattern_fb(drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
+> +				      DRM_FORMAT_MOD_LINEAR, &fb);
+> +
 
-Key features introduced:
+This would be overwriting the fb created previously using the 
+'__kms_addfb'. Could/should the 'igt_create_pattern_fb' replace that call?
 
-- Live ftrace output visualization within the terminal UI
-- Filter trace logs by register address for focused debugging
-- Dump current trace buffer to a file for offline analysis
-- Clear trace buffer on demand via the UI
-
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
-Signed-off-by: Adith Narein T <adith.narein.t@intel.com>
-Co-authored-by: Pranay Samala <pranay.samala@intel.com>
----
- tools/displaytop/README.md                    |   2 +
- tools/displaytop/include/data.h               |   1 +
- tools/displaytop/include/display.h            |   5 +
- tools/displaytop/include/populate.h           |   1 +
- tools/displaytop/include/utils.h              |   5 +-
- tools/displaytop/meson.build                  |  39 ++-
- tools/displaytop/src/display_dump_tracing.c   | 113 +++++++
- tools/displaytop/src/display_filter_tracing.c | 285 ++++++++++++++++++
- tools/displaytop/src/display_ftrace.c         |  77 +++++
- tools/displaytop/src/display_live_tracing.c   |  95 ++++++
- tools/displaytop/src/populate.c               |   1 +
- tools/displaytop/src/populate_ftrace.c        |  36 +++
- tools/displaytop/src/utils_trace.c            |  41 +++
- 13 files changed, 696 insertions(+), 5 deletions(-)
- create mode 100644 tools/displaytop/src/display_dump_tracing.c
- create mode 100644 tools/displaytop/src/display_filter_tracing.c
- create mode 100644 tools/displaytop/src/display_ftrace.c
- create mode 100644 tools/displaytop/src/display_live_tracing.c
- create mode 100644 tools/displaytop/src/populate_ftrace.c
- create mode 100644 tools/displaytop/src/utils_trace.c
-
-diff --git a/tools/displaytop/README.md b/tools/displaytop/README.md
-index dc5ffb46c..76a9b0fe9 100644
---- a/tools/displaytop/README.md
-+++ b/tools/displaytop/README.md
-@@ -9,6 +9,8 @@ A terminal-based tool for monitoring and debugging the display pipeline.
- - Real-time display Configuration
- - view Live Display Debugfs in a terminal ui
- - Read & view DPCD register value & bitfield information
-+- Formatted Live trace using Ftrace
-+- filter the formatted ftrace by register address/range
- 
- ---
- 
-diff --git a/tools/displaytop/include/data.h b/tools/displaytop/include/data.h
-index ae24f2f0a..b95a1eed1 100644
---- a/tools/displaytop/include/data.h
-+++ b/tools/displaytop/include/data.h
-@@ -26,5 +26,6 @@ struct DP_mapping {
- 
- struct DP_mapping **get_dp_mapping_storage(void);
- int *get_dp_mapping_count_ptr(void);
-+#define TRACE_PATH "/sys/kernel/debug/tracing/trace"
- 
- #endif
-diff --git a/tools/displaytop/include/display.h b/tools/displaytop/include/display.h
-index db76f997c..7973cf139 100644
---- a/tools/displaytop/include/display.h
-+++ b/tools/displaytop/include/display.h
-@@ -23,5 +23,10 @@ void display_framebuffer(WINDOW *pad, struct node *node, int *content_line);
- void display_summary(WINDOW *pad, struct node *node, int *content_line);
- void display_debugfs_file(WINDOW *pad, struct node *node, int *content_line);
- void display_dpcd(WINDOW *pad, struct node *node, int *content_line);
-+void display_ftrace_options(WINDOW *pad, struct node *node, int *content_line);
-+void display_live_tracing(WINDOW *pad, struct node *node, int *content_line);
-+void display_dump_tracing(WINDOW *pad, struct node *node, int *content_line);
-+void display_filter_tracing(WINDOW *pad, struct node *node, int *content_line);
-+void display_clear_ftrace(WINDOW *pad, struct node *node, int *content_line);
- 
- #endif
-diff --git a/tools/displaytop/include/populate.h b/tools/displaytop/include/populate.h
-index b2efadc59..cb87a7593 100644
---- a/tools/displaytop/include/populate.h
-+++ b/tools/displaytop/include/populate.h
-@@ -15,5 +15,6 @@ void populate_data(void);
- void initialize_display_config(void);
- void initialize_display_debugfs(void);
- void initialize_DPCD(void);
-+void initialize_ftrace(void);
- 
- #endif
-diff --git a/tools/displaytop/include/utils.h b/tools/displaytop/include/utils.h
-index a8a9a1b73..b5b9e1ae5 100644
---- a/tools/displaytop/include/utils.h
-+++ b/tools/displaytop/include/utils.h
-@@ -101,5 +101,8 @@ char *find_debugfs_dir(int drm_fd);
- int read_dpcd_registers(const char *aux_path, unsigned char *buffer, size_t size, uint64_t offset);
- 
- uint64_t parse_hex_address(const char *hex_str);
--
-+/* utils_trace.c */
-+void free_cache(void);
-+int clear_ftrace(void);
-+void ensure_tracing_on(void);
- #endif
-diff --git a/tools/displaytop/meson.build b/tools/displaytop/meson.build
-index 43599a1a6..8531ec976 100644
---- a/tools/displaytop/meson.build
-+++ b/tools/displaytop/meson.build
-@@ -21,12 +21,28 @@ form_dep    = dependency('form', required: false)
- panel_dep   = dependency('panel', required: false)
- cjson_dep   = cc.find_library('cjson', required: false)
- 
--have_displaytop = ncurses_dep.found() and menu_dep.found() and form_dep.found() and panel_dep.found() and cjson_dep.found()
-+deps = {
-+  'ncurses' : ncurses_dep,
-+  'menu'    : menu_dep,
-+  'form'    : form_dep,
-+  'panel'   : panel_dep,
-+  'cjson'   : cjson_dep,
-+}
-+
-+# Detect missing deps
-+missing = []
-+foreach name, dep : deps
-+  if not dep.found()
-+    missing += name
-+  endif
-+endforeach
-+
-+have_displaytop = missing.length() == 0
- 
- if have_displaytop
-   message('All dependencies found. Building displaytop.')
- 
--  deps = [
-+  full_deps = [
-     libdrm_dep,
-     ncurses_dep,
-     menu_dep,
-@@ -64,6 +80,12 @@ if have_displaytop
-     'src/display_DPCD.c',
-     'src/populate_DPCD.c',
-     'src/utils_registers.c',
-+    'src/utils_trace.c',
-+    'src/populate_ftrace.c',
-+    'src/display_ftrace.c',
-+    'src/display_live_tracing.c',
-+    'src/display_dump_tracing.c',
-+    'src/display_filter_tracing.c',
-   )
- 
-    executable(
-@@ -72,9 +94,18 @@ if have_displaytop
-      install: false,
-      c_args: cflags,
-      include_directories: inc_dirs,
--     dependencies: deps,
-+     dependencies: full_deps,
-      )
- 
- else
--  message('Skipping displaytop: missing required optional dependencies.')
-+  message('DisplayTop will not build: missing deps -> '+' '.join(missing) + '. ')
-+  custom_target(
-+    'displaytop-warning',
-+    output : 'dummy',
-+    command : [
-+      'sh', '-c',
-+      'echo "Skipping displaytop: missing dependencies: '+' '.join(missing) + '"'
-+    ],
-+    build_by_default: true
-+  )
- endif
-diff --git a/tools/displaytop/src/display_dump_tracing.c b/tools/displaytop/src/display_dump_tracing.c
-new file mode 100644
-index 000000000..1a51f5eb6
---- /dev/null
-+++ b/tools/displaytop/src/display_dump_tracing.c
-@@ -0,0 +1,113 @@
-+// SPDX-License-Identifier: MIT
-+/* Copyright © 2025 Intel Corporation */
-+
-+#include "display.h"
-+#include "utils.h"
-+#include "igt_core.h"
-+
-+void display_dump_tracing(WINDOW *pad, struct node *node, int *content_line)
-+{
-+	int line = 0;
-+	FILE *trace_fp = NULL, *dump_fp = NULL;
-+	char buffer[512];
-+	time_t now;
-+	struct tm *t = NULL;
-+	char dump_file_path[256];
-+	int width, col_widths[6];
-+	int total_count = 0;
-+	WINDOW *progress_win = NULL;
-+	size_t log_count = 0;
-+	int current_count = 0;
-+
-+	now = time(NULL);
-+	t = localtime(&now);
-+	igt_info("Dumping trace logs for node: %s", node->name);
-+	snprintf(dump_file_path, sizeof(dump_file_path), DUMP_DIR "/Ftrace_dump_");
-+	strftime(dump_file_path + strlen(dump_file_path),
-+		 sizeof(dump_file_path) - strlen(dump_file_path),
-+		 "%Y-%m-%d-%H.%M.%S.txt", t);
-+
-+	ensure_tracing_on();
-+	ensure_dump_directory();
-+
-+	trace_fp = fopen(TRACE_PATH, "r");
-+	if (!trace_fp) {
-+		igt_debug("Error opening trace file: %s", strerror(errno));
-+		*content_line = line;
-+		return;
-+	}
-+
-+	dump_fp = fopen(dump_file_path, "w");
-+	if (!dump_fp) {
-+		igt_debug("Error creating dump file: %s", strerror(errno));
-+		fclose(trace_fp);
-+		*content_line = line;
-+		return;
-+	}
-+	chmod(dump_file_path, 0777);
-+
-+	width = getmaxx(pad) - 8;
-+
-+	col_widths[0] = width * 0.10f;
-+	col_widths[1] = width * 0.05f;
-+	col_widths[2] = width * 0.10f;
-+	col_widths[3] = width * 0.08f;
-+	col_widths[4] = width * 0.10f;
-+	col_widths[5] = width * 0.25f;
-+
-+	wclear(pad);
-+	wattron(pad, A_BOLD);
-+	mvwprintw(pad, line++, 1, "Ftrace Formatted & Dumped!");
-+	wattroff(pad, A_BOLD);
-+
-+	while (fgets(buffer, sizeof(buffer), trace_fp)) {
-+		if (strstr(buffer, "i915_reg_rw"))
-+			total_count++;
-+	}
-+	rewind(trace_fp);
-+
-+	progress_win = newwin(getmaxy(stdscr), getmaxx(stdscr), 0, 0);
-+	wbkgd(progress_win, COLOR_PAIR(6));
-+	wclear(progress_win);
-+	box(progress_win, 0, 0);
-+	print_bold_text(progress_win, 8, 2, "DUMPING IS IN PROGRESS :)");
-+	wrefresh(progress_win);
-+
-+	while (fgets(buffer, sizeof(buffer), trace_fp)) {
-+		char process[32], op[8];
-+		int pid, cpu, reg, val1, val2, len;
-+		double timestamp;
-+		char value_str[64];
-+
-+		if (!strstr(buffer, "i915_reg_rw"))
-+			continue;
-+
-+		if (sscanf(buffer, "%31[^-]-%d  [%d] %*s %lf: i915_reg_rw: %7s reg=0x%x, len=%d, val=(0x%x, 0x%x)",
-+			   process, &pid, &cpu, &timestamp, op, &reg, &len, &val1, &val2) == 9) {
-+			strip_whitespace(process);
-+			strip_whitespace(op);
-+
-+			snprintf(value_str, sizeof(value_str), "(0x%X, 0x%X)", val1, val2);
-+
-+			fprintf(dump_fp, "| %-*s | %-*d | %-*.6f | %-*s | 0x%-*X | %-*s |\n",
-+				col_widths[0], process,
-+				col_widths[1], cpu,
-+				col_widths[2], timestamp,
-+				col_widths[3], op,
-+				col_widths[4] - 2, reg,
-+				col_widths[5], value_str);
-+
-+			log_count++;
-+			current_count++;
-+			render_progress_bar(progress_win, log_count, total_count);
-+		}
-+	}
-+
-+	mvwprintw(pad, line + 2, 1, "Dump saved to: %s", dump_file_path);
-+	*content_line = line;
-+
-+	fclose(trace_fp);
-+	fclose(dump_fp);
-+
-+	delwin(progress_win);
-+}
-diff --git a/tools/displaytop/src/display_filter_tracing.c b/tools/displaytop/src/display_filter_tracing.c
-new file mode 100644
-index 000000000..2b446450d
---- /dev/null
-+++ b/tools/displaytop/src/display_filter_tracing.c
-@@ -0,0 +1,285 @@
-+// SPDX-License-Identifier: MIT
-+/* Copyright © 2025 Intel Corporation */
-+
-+#include <form.h>
-+
-+#include "display.h"
-+#include "utils.h"
-+#include "igt_core.h"
-+
-+static char *get_range_input(void)
-+{
-+	int rows, cols;
-+	WINDOW *overlay;
-+	FIELD * fields[2];
-+	FORM *form;
-+	char *input_buffer;
-+	int ch, pos;
-+
-+	rows = 0;
-+	cols = 0;
-+	overlay = NULL;
-+	fields[0] = NULL;
-+	fields[1] = NULL;
-+	form = NULL;
-+	input_buffer = NULL;
-+	ch = 0;
-+	pos = 0;
-+
-+	wclear(stdscr);
-+	wrefresh(stdscr);
-+	getmaxyx(stdscr, rows, cols);
-+	overlay = newwin(rows, cols, 0, 0);
-+	wbkgd(overlay, COLOR_PAIR(6));
-+	keypad(overlay, TRUE);
-+	box(overlay, 0, 0);
-+	wrefresh(overlay);
-+
-+	print_bold_text(overlay, 1, 1, "Trace Log Filtering - Instructions");
-+	mvwprintw(overlay, 3, 2, "1. Enter a single register address (e.g., 0x40000)");
-+	mvwprintw(overlay, 4, 2, "2. Enter an address range (e.g., 0x40000-0x40400)");
-+	mvwprintw(overlay, 5, 2, "3. Press ENTER to apply filter, ESC to exit.");
-+	mvwhline(overlay, 6, 1, 0, cols - 2);
-+
-+	fields[0] = new_field(1, cols - 4, 1, 1, 0, 0);
-+	fields[1] = NULL;
-+
-+	set_field_back(fields[0], A_UNDERLINE);
-+	field_opts_off(fields[0], O_AUTOSKIP);
-+
-+	form = new_form(fields);
-+	set_form_win(form, overlay);
-+	set_form_sub(form, derwin(overlay, 3, cols - 2, 7, 1));
-+
-+	wbkgd(form_sub(form), COLOR_PAIR(7));
-+	box(form_sub(form), 0, 0);
-+	post_form(form);
-+	wrefresh(overlay);
-+
-+	input_buffer = malloc(256);
-+	if (!input_buffer) {
-+		igt_debug("Memory allocation failed for input buffer\n");
-+		return NULL;
-+	}
-+	memset(input_buffer, 0, 256);
-+	pos = 0;
-+
-+	while ((ch = getch()) != 27) {
-+		switch (ch) {
-+		case KEY_BACKSPACE:
-+		case 127:
-+		case 8:
-+			if (pos > 0) {
-+				pos--;
-+				input_buffer[pos] = '\0';
-+				form_driver(form, REQ_DEL_PREV);
-+			}
-+			break;
-+		case '\n':
-+			if (pos > 0) {
-+				unpost_form(form);
-+				free_form(form);
-+				free_field(fields[0]);
-+				wclear(overlay);
-+				wrefresh(overlay);
-+				delwin(overlay);
-+				return input_buffer;
-+			}
-+			break;
-+		default:
-+			if (pos < 255) {
-+				input_buffer[pos++] = ch;
-+				input_buffer[pos] = '\0';
-+				form_driver(form, ch);
-+			}
-+			break;
-+		}
-+		wrefresh(overlay);
-+	}
-+
-+	if (form)
-+		unpost_form(form), free_form(form);
-+	if (fields[0])
-+		free_field(fields[0]);
-+	if (overlay)
-+		wclear(overlay), wrefresh(overlay), delwin(overlay);
-+	if (input_buffer)
-+		free(input_buffer);
-+
-+	return NULL;
-+}
-+
-+void display_filter_tracing(WINDOW *pad, struct node *node, int *content_line)
-+{
-+	int line = 0;
-+	char buffer[512];
-+	size_t log_count = 0;
-+	time_t now = time(NULL);
-+	uint32_t start_addr = 0, end_addr = 0;
-+	FILE *trace_fp = NULL;
-+	FILE *dump_fp = NULL;
-+	char dump_file_path[256];
-+	char *input_buffer = NULL;
-+	int width = getmaxx(pad) - 9;
-+	int col_widths[6];
-+	int total_count = 0;
-+	int current_count = 0;
-+	WINDOW *progress_win = NULL;
-+	struct tm *t = NULL;
-+
-+	col_widths[0] = width * 0.12f;
-+	col_widths[1] = width * 0.06f;
-+	col_widths[2] = width * 0.13f;
-+	col_widths[3] = width * 0.10f;
-+	col_widths[4] = width * 0.15f;
-+	col_widths[5] = width * 0.44f;
-+
-+	t = localtime(&now);
-+	ensure_dump_directory();
-+	strftime(dump_file_path, sizeof(dump_file_path),
-+		 DUMP_DIR "/filtered_trace_dump_%Y-%m-%d_%H.%M.%S.txt", t);
-+
-+	*content_line = line;
-+	line = 3;
-+
-+	ensure_tracing_on();
-+
-+	print_bold_text(pad, line++, 1, "%s", node->name);
-+	line++;
-+
-+	input_buffer = get_range_input();
-+	if (!input_buffer || strlen(input_buffer) == 0) {
-+		igt_debug("Failed to get range input\n");
-+		free(input_buffer);
-+		return;
-+	}
-+
-+	if (strchr(input_buffer, '-')) {
-+		if (sscanf(input_buffer, "0x%x-0x%x", &start_addr, &end_addr) != 2) {
-+			print_bold_text(pad, line++, 2,
-+					"Error: Invalid address range! Please retry.");
-+			free(input_buffer);
-+			return;
-+		}
-+		if (start_addr > end_addr) {
-+			print_bold_text(pad, line++, 2,
-+					"Error: Invalid range! Please retry.");
-+			free(input_buffer);
-+			return;
-+		}
-+	} else {
-+		if (sscanf(input_buffer, "0x%x", &start_addr) != 1) {
-+			print_bold_text(pad, line++, 2, "Error: Invalid address! Please retry.");
-+			free(input_buffer);
-+			return;
-+		}
-+		end_addr = start_addr;
-+	}
-+
-+	trace_fp = fopen(TRACE_PATH, "r");
-+	if (!trace_fp) {
-+		igt_debug("Error opening trace file\n");
-+		goto cleanup;
-+	}
-+
-+	dump_fp = fopen(dump_file_path, "w");
-+	if (!dump_fp) {
-+		igt_debug("Error creating dump file\n");
-+		goto cleanup;
-+	}
-+
-+	wclear(pad);
-+	wattron(pad, A_BOLD);
-+	mvwprintw(pad, line++, 1, "| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |",
-+		  col_widths[0], "Process",
-+		  col_widths[1], "CPU",
-+		  col_widths[2], "Timestamp",
-+		  col_widths[3], "R/W",
-+		  col_widths[4], "Reg",
-+		  col_widths[5], "Value");
-+	wattroff(pad, A_BOLD);
-+
-+	while (fgets(buffer, sizeof(buffer), trace_fp)) {
-+		if (strstr(buffer, "i915_reg_rw"))
-+			total_count++;
-+	}
-+	rewind(trace_fp);
-+
-+	progress_win = newwin(getmaxy(stdscr), getmaxx(stdscr), 0, 0);
-+	wbkgd(progress_win, COLOR_PAIR(6));
-+	wclear(progress_win);
-+	box(progress_win, 0, 0);
-+	print_bold_text(progress_win, 8, 2, "FILTERING IS IN PROGRESS :)");
-+	wrefresh(progress_win);
-+
-+	while (fgets(buffer, sizeof(buffer), trace_fp)) {
-+		uint32_t reg;
-+		double timestamp;
-+		char value_str[64];
-+		char process[32], op[8];
-+		int pid, cpu, val1, val2, len;
-+
-+		if (!strstr(buffer, "i915_reg_rw"))
-+			continue;
-+
-+		if (sscanf(buffer, "%31[^-]-%d  [%d] %*s %lf: i915_reg_rw: %7s "
-+			   "reg=0x%x, len=%d, val=(0x%x, 0x%x)",
-+			   process, &pid, &cpu, &timestamp, op, &reg, &len, &val1, &val2) == 9) {
-+			strip_whitespace(process);
-+			strip_whitespace(op);
-+
-+			snprintf(value_str, sizeof(value_str), "(0x%X, 0x%X)", val1, val2);
-+
-+			if (reg >= start_addr && reg <= end_addr) {
-+				log_count++;
-+
-+				mvwprintw(pad, line++, 1,
-+					  "| %-*s | %-*d | %-*.2f | %-*s | 0x%-*X | %-*s |",
-+					  col_widths[0], process,
-+					  col_widths[1], cpu,
-+					  col_widths[2], timestamp,
-+					  col_widths[3], op,
-+					  col_widths[4] - 2, reg,
-+					  col_widths[5], value_str);
-+
-+				fprintf(dump_fp, "| %-*s | %-*d | %-*.2f | %-*s | 0x%-*X | %-*s |\n",
-+					col_widths[0], process,
-+					col_widths[1], cpu,
-+					col_widths[2], timestamp,
-+					col_widths[3], op,
-+					col_widths[4] - 2, reg,
-+					col_widths[5], value_str);
-+			}
-+
-+			if (line >= getmaxy(pad) - 2) {
-+				wscrl(pad, 1);
-+				line--;
-+			}
-+
-+			current_count++;
-+			render_progress_bar(progress_win, current_count, total_count);
-+		}
-+	}
-+
-+	wattron(pad, A_BOLD | COLOR_PAIR(2));
-+	mvwprintw(pad, 1, 1, "Filtered range: 0x%X - 0x%X, Hits: %zu",
-+		  start_addr, end_addr, log_count);
-+	wattroff(pad, A_BOLD | COLOR_PAIR(2));
-+
-+	if (log_count == 0) {
-+		remove(dump_file_path);
-+		mvwprintw(pad, line + 2, 1, "No matching logs found. Dump file not created.");
-+	} else {
-+		mvwprintw(pad, line + 2, 1, "Dump saved to: %s", dump_file_path);
-+	}
-+
-+	*content_line = line;
-+
-+cleanup:
-+	if (trace_fp)
-+		fclose(trace_fp);
-+	if (dump_fp)
-+		fclose(dump_fp);
-+	if (input_buffer)
-+		free(input_buffer);
-+}
-diff --git a/tools/displaytop/src/display_ftrace.c b/tools/displaytop/src/display_ftrace.c
-new file mode 100644
-index 000000000..99bd78c20
---- /dev/null
-+++ b/tools/displaytop/src/display_ftrace.c
-@@ -0,0 +1,77 @@
-+// SPDX-License-Identifier: MIT
-+/* Copyright © 2025 Intel Corporation */
-+
-+#include "node.h"
-+#include "utils.h"
-+#include "display.h"
-+
-+void display_ftrace_options(WINDOW *pad, struct node *node, int *content_line)
-+{
-+	int line = 0;
-+	int size = getmaxx(pad) - 2;
-+
-+	print_bold_text(pad, line++, 1, "%s Menu", node->name);
-+	line++;
-+
-+	print_bold_text(pad, line++, 1, "1. Live Tracing");
-+	wattron(pad, A_DIM);
-+	print_wrapped_text(pad, &line, 1, size, "Formats and displays the LAST 1000 lines of "
-+			   "the ftrace logs, refresh (key r) to see the changes updated", false);
-+	wattroff(pad, A_DIM);
-+	line++;
-+
-+	print_bold_text(pad, line++, 1, "2. Dump Tracing");
-+	wattron(pad, A_DIM);
-+	print_wrapped_text(pad, &line, 1, size, "Formats and displays the FIRST 1000 lines but "
-+			   "also dumps the entire formatted ", false);
-+	wattroff(pad, A_DIM);
-+	line++;
-+
-+	print_bold_text(pad, line++, 1, "3. Register Range Tracing");
-+	wattron(pad, A_DIM);
-+	print_wrapped_text(pad, &line, 1, size, "Filters & formats your desired register range, "
-+			   "displays the first 1000 lines in Display Top. FILTERED RESULTS ARE "
-+			   "DUMPED BY DEFAULT", false);
-+	wattroff(pad, A_DIM);
-+	line++;
-+
-+	print_bold_text(pad, line++, 1, "4. Clear Ftrace");
-+	wattron(pad, A_DIM);
-+	print_wrapped_text(pad, &line, 1, size, "Clears the ftrace buffer", false);
-+	wattroff(pad, A_DIM);
-+	line++;
-+
-+	*content_line = line;
-+}
-+
-+/**
-+ * @brief Clears the Ftrace buffer and updates the display with the result.
-+ *
-+ * This function is responsible for clearing the Ftrace buffer by calling
-+ * the `clear_ftrace` function. It updates the provided `pad` window with
-+ * messages indicating the success or failure of the operation. The number
-+ * of lines written to the `pad` is updated in the `content_line` parameter.
-+ *
-+ * @param pad A pointer to the `WINDOW` object where the messages will be displayed.
-+ * @param node A pointer to a `node` object (currently unused in this function).
-+ * @param content_line A pointer to an integer that will be updated with the
-+ *                     number of lines written to the `pad`.
-+ */
-+void display_clear_ftrace(WINDOW *pad, struct node *node, int *content_line)
-+{
-+	int line = 0;
-+	int status;
-+
-+	print_bold_text(pad, line++, 1, "%s Menu", node->name);
-+
-+	line++;
-+	status = clear_ftrace();
-+	if (status == 0)
-+		print_green_text(pad, line++, 2, "Ftrace cleared successfully.");
-+	else
-+		print_red_text(pad, line++, 2, "Failed to clear Ftrace.");
-+	line++;
-+
-+	wrefresh(pad);
-+	*content_line = line;
-+}
-diff --git a/tools/displaytop/src/display_live_tracing.c b/tools/displaytop/src/display_live_tracing.c
-new file mode 100644
-index 000000000..66b7e353f
---- /dev/null
-+++ b/tools/displaytop/src/display_live_tracing.c
-@@ -0,0 +1,95 @@
-+// SPDX-License-Identifier: MIT
-+/* Copyright © 2025 Intel Corporation */
-+
-+#include "display.h"
-+#include "igt_core.h"
-+
-+void display_live_tracing(WINDOW *pad, struct node *node, int *content_line)
-+{
-+	int line = 0;
-+	FILE *trace;
-+	char buffer[256];
-+	int width;
-+	int col_widths[6];
-+	char *log_lines[1000];
-+	size_t log_count = 0;
-+
-+	print_bold_text(pad, line++, 1, "%s", node->name);
-+	line++;
-+
-+	trace = popen("cat /sys/kernel/debug/tracing/trace", "r");
-+	if (!trace) {
-+		igt_debug("Failed to open trace file\n");
-+		*content_line = line;
-+		return;
-+	}
-+
-+	width = getmaxx(pad) - 2 - 6;
-+
-+	col_widths[0] = (int)(width * 0.10f) - 2;
-+	col_widths[1] = (int)(width * 0.05f) - 2;
-+	col_widths[2] = (int)(width * 0.12f) - 2;
-+	col_widths[3] = (int)(width * 0.06f) - 2;
-+	col_widths[4] = (int)(width * 0.10f) - 2;
-+	col_widths[5] = (int)(width * 0.40f) - 2;
-+
-+	while (fgets(buffer, sizeof(buffer), trace)) {
-+		char process[32], op[8], value_str[64];
-+		double timestamp;
-+		int pid, cpu, reg, val1, val2, len;
-+		char *log_line;
-+
-+		if (!strstr(buffer, "i915_reg_rw"))
-+			continue;
-+
-+		if (sscanf(buffer, "%31[^-]-%d  [%d] %*[^0-9] %lf: i915_reg_rw: %7s reg=0x%x,"
-+			   "len=%d, val=(0x%x, 0x%x)", process, &pid, &cpu, &timestamp, op,
-+			   &reg, &len, &val1, &val2) == 9) {
-+			strip_whitespace(process);
-+			strip_whitespace(op);
-+
-+			snprintf(value_str, sizeof(value_str), "(0x%X, 0x%X)", val1, val2);
-+
-+			log_line = malloc(1024);
-+			snprintf(log_line, 1024, "| %-*s | %-*d | %-*.6f | %-*s | 0x%-*X | %-*s |",
-+				 col_widths[0], process,
-+				 col_widths[1], cpu,
-+				 col_widths[2], timestamp,
-+				 col_widths[3], op,
-+				 col_widths[4] - 2, reg,
-+				 col_widths[5], value_str);
-+
-+			if (log_count < 1000) {
-+				log_lines[log_count++] = log_line;
-+			} else {
-+				free(log_lines[0]);
-+				memmove(log_lines, log_lines + 1, (999) * sizeof(char *));
-+				log_lines[999] = log_line;
-+			}
-+		}
-+	}
-+
-+	wclear(pad);
-+	line = 0;
-+
-+	wattron(pad, A_BOLD);
-+	mvwprintw(pad, line++, 1, "| %-*s | %-*s | %-*s | %-*s | %-*s | %-*s |",
-+		  col_widths[0], "Process",
-+		  col_widths[1], "CPU",
-+		  col_widths[2], "Timestamp",
-+		  col_widths[3], "Op",
-+		  col_widths[4], "Reg",
-+		  col_widths[5], "Value");
-+	wattroff(pad, A_BOLD);
-+
-+	for (size_t i = 0; i < log_count; i++)
-+		mvwprintw(pad, line++, 1, "%s", log_lines[i]);
-+
-+	wrefresh(pad);
-+
-+	for (size_t i = 0; i < log_count; i++)
-+		free(log_lines[i]);
-+
-+	pclose(trace);
-+	*content_line = line;
-+}
-diff --git a/tools/displaytop/src/populate.c b/tools/displaytop/src/populate.c
-index 30e81c558..a5fd7829b 100644
---- a/tools/displaytop/src/populate.c
-+++ b/tools/displaytop/src/populate.c
-@@ -10,4 +10,5 @@ void populate_data(void)
- 	initialize_display_config();
- 	initialize_display_debugfs();
- 	initialize_DPCD();
-+	initialize_ftrace();
- }
-diff --git a/tools/displaytop/src/populate_ftrace.c b/tools/displaytop/src/populate_ftrace.c
-new file mode 100644
-index 000000000..5f8d18b07
---- /dev/null
-+++ b/tools/displaytop/src/populate_ftrace.c
-@@ -0,0 +1,36 @@
-+// SPDX-License-Identifier: MIT
-+/* Copyright © 2025 Intel Corporation */
-+
-+#include "data.h"
-+#include "display.h"
-+#include "populate.h"
-+#include "igt_core.h"
-+
-+void initialize_ftrace(void)
-+{
-+	struct node *ftrace;
-+	struct node *live_tracing;
-+	struct node *dump_tracing;
-+	struct node *filter_tracing;
-+	struct node *clear_ftrace;
-+
-+	ftrace = create_node("Ftrace", display_ftrace_options, root);
-+	igt_assert_f(ftrace, "Failed to create Ftrace node\n");
-+
-+	live_tracing = create_node("Live Tracing", display_live_tracing, ftrace);
-+	igt_assert_f(live_tracing, "Failed to create Live Tracing node\n");
-+	add_child(ftrace, live_tracing);
-+
-+	dump_tracing = create_node("Dump Tracing", display_dump_tracing, ftrace);
-+	igt_assert_f(dump_tracing, "Failed to create Dump Tracing node\n");
-+	add_child(ftrace, dump_tracing);
-+
-+	filter_tracing = create_node("Filter Tracing", display_filter_tracing, ftrace);
-+	igt_assert_f(filter_tracing, "Failed to create Register Range Tracing ndoe\n");
-+	add_child(ftrace, filter_tracing);
-+
-+	clear_ftrace = create_node("Clear Ftrace", display_clear_ftrace, ftrace);
-+	igt_assert_f(clear_ftrace, "Failed to create Clear Ftrace node\n");
-+	add_child(ftrace, clear_ftrace);
-+	add_child(root, ftrace);
-+}
-diff --git a/tools/displaytop/src/utils_trace.c b/tools/displaytop/src/utils_trace.c
-new file mode 100644
-index 000000000..38aa842b2
---- /dev/null
-+++ b/tools/displaytop/src/utils_trace.c
-@@ -0,0 +1,41 @@
-+// SPDX-License-Identifier: MIT
-+/* Copyright © 2025 Intel Corporation */
-+
-+#include "utils.h"
-+#include "display.h"
-+#include "igt_core.h"
-+
-+void ensure_tracing_on(void)
-+{
-+	FILE *fp;
-+
-+	fp = fopen("/sys/kernel/debug/tracing/events/i915/i915_reg_rw/enable", "w");
-+	if (!fp || fprintf(fp, "1") < 0 || fclose(fp) != 0)
-+		igt_debug("Error enabling i915_reg_rw event\n");
-+
-+	fp = fopen("/sys/kernel/debug/tracing/current_tracer", "w");
-+	if (!fp || fprintf(fp, "nop") < 0 || fclose(fp) != 0)
-+		igt_debug("Error setting current tracer to nop\n");
-+
-+	fp = fopen("/sys/kernel/debug/tracing/tracing_on", "w");
-+	if (!fp || fprintf(fp, "1") < 0 || fclose(fp) != 0)
-+		igt_debug("Error enabling tracing\n");
-+
-+	igt_info("Tracing enabled\n");
-+}
-+
-+int clear_ftrace(void)
-+{
-+	FILE *fp;
-+
-+	fp = NULL;
-+
-+	fp = fopen(TRACE_PATH, "w");
-+	if (!fp || fprintf(fp, " ") < 0 || fclose(fp) != 0) {
-+		igt_debug("Error clearing trace\n");
-+		return -1;
-+	}
-+
-+	igt_info("Trace cleared\n");
-+	return 0;
-+}
--- 
-2.34.1
-
+Regards,
+Karthik.B.S
+>   		set_fb(&fb, &display, output);
+>   		gem_close(drm_fd, bo);
+>   
