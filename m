@@ -4,62 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A94FD3B7F2
-	for <igt-dev@archiver.kernel.org>; Mon,  8 Dec 2025 14:20:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9CDED3B7F2
+	for <igt-dev@archiver.kernel.org>; Mon,  8 Dec 2025 15:11:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CE00210E139;
-	Mon,  8 Dec 2025 14:20:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6373310E139;
+	Mon,  8 Dec 2025 15:11:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MzWtXnNX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="huAaXic5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 77ACA10E3BD
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Dec 2025 14:20:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43D2E10E139
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Dec 2025 15:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765203648; x=1796739648;
+ t=1765206674; x=1796742674;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=Yf0biPvycvbpYMnYlHu+mp4lJay4dN4OPs7+rvz/9ho=;
- b=MzWtXnNXoYhqMLzFyWw9pPBgMOSUuQ1LcF390jPqaOtzg0cJBQih6xDm
- 0lqU1ffKNDWIEWDEn/53HknrUekwVLrsASdSVDV1XliNoklQvfGWk6rKq
- 7dtBn4zapSnxCCMfXMt3Xm3QksiAGYyVHiDz8VpWPxYE5jsCb5IJOMAKc
- Q+OuAFB+S1L4/yI5cGRLhgV/JpfJ/Ljr/h42cKtkIkMhxgyUqPtNeLe5X
- av7wXhDccDCOa3TvMg4Qsn26zpEZeKfFBriWA4JFbay+ZDKczOzoMYYb2
- 1gOn3DZx8t9D5FnUk1DXA8K/6uwBzAi2RS5BPGqVMIsiuZGJW8eXV3LeP g==;
-X-CSE-ConnectionGUID: yx8hV7QsT2iNmMGZblX/UQ==
-X-CSE-MsgGUID: ueSPxa2dTY2E0WPJHcig6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11635"; a="67106373"
-X-IronPort-AV: E=Sophos;i="6.20,258,1758610800"; d="scan'208";a="67106373"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Dec 2025 06:20:48 -0800
-X-CSE-ConnectionGUID: si1z6gGqTvaJoAgfGypixQ==
-X-CSE-MsgGUID: 3sYLpjZtTW6eTtGIDj+8CA==
+ bh=k48ocUE1F8x8f52/SfIGFUu5b1z8J63ECcUIqjfgszU=;
+ b=huAaXic5fRmPKlFshWUpJr1yYHKzdOflvY+CbQJO89ud5VYhkU2dqryv
+ gKUBUXt1iAZGeOofjjanS5TChuztL6GxogTYmsO7AJNK42qbtmjvvBuak
+ 1iZY5BsgRB2S7ciMnLOk7lmjz8KlUkRUevisuhuF4bYvJ8SzYcNG6BhTH
+ U2RkuMAXZI3cNRQDmc876f62RdbdUvxuekzWkRi1fV0VjxeNi9U/ZFoYS
+ ByIhcSY3quaZJC9OKuJV6uo/9Dw60UTLuPjEwzeGI1CYgNwIrJ6iaf6VM
+ LK3YVMRYnDqlgqn665fGVBl1GB5Y1Jge0NU9ahCgXeagKSm1yqhdT6VjS Q==;
+X-CSE-ConnectionGUID: MQI0rKHKRM2LMOPPX2fUdg==
+X-CSE-MsgGUID: +uzat8PwQa+KqwPfJgSxgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11636"; a="70767726"
+X-IronPort-AV: E=Sophos;i="6.20,259,1758610800"; d="scan'208";a="70767726"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Dec 2025 07:11:13 -0800
+X-CSE-ConnectionGUID: jwkyYrigT6ywYzZ5RzfUfA==
+X-CSE-MsgGUID: ZLGihr1MSI+yvjFTdkoy/A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,258,1758610800"; d="scan'208";a="195960470"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 06:20:45 -0800
-Date: Mon, 8 Dec 2025 15:20:40 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Soham Purkait <soham.purkait@intel.com>
-Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- badal.nilawar@intel.com, anshuman.gupta@intel.com,
- umesh.nerlige.ramappa@intel.com, kamil.konieczny@intel.com
-Subject: Re: [PATCH i-g-t v2 2/3] lib/xe/xe_spin: Export xe_spin_sync_wait
-Message-ID: <20251208142040.62hhdrowuapckz65@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Soham Purkait <soham.purkait@intel.com>,
- igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- badal.nilawar@intel.com, anshuman.gupta@intel.com,
- umesh.nerlige.ramappa@intel.com, kamil.konieczny@intel.com
-References: <20251205154417.3963533-1-soham.purkait@intel.com>
- <20251205154417.3963533-3-soham.purkait@intel.com>
+X-IronPort-AV: E=Sophos;i="6.20,259,1758610800"; d="scan'208";a="195568302"
+Received: from black.igk.intel.com ([10.91.253.5])
+ by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Dec 2025 07:11:10 -0800
+Date: Mon, 8 Dec 2025 16:11:07 +0100
+From: Raag Jadav <raag.jadav@intel.com>
+To: Sk Anirban <sk.anirban@intel.com>
+Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
+ badal.nilawar@intel.com, riana.tauro@intel.com,
+ karthik.poosa@intel.com, soham.purkait@intel.com,
+ mallesh.koujalagi@intel.com, vinay.belgaumkar@intel.com
+Subject: Re: [PATCH v2 1/2] tests/intel/xe_gt_freq: Modify test to support
+ new throttle reasons sysfs
+Message-ID: <aTbqi7ZQO0IZjXdE@black.igk.intel.com>
+References: <20251204062428.401397-4-sk.anirban@intel.com>
+ <20251204062428.401397-5-sk.anirban@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251205154417.3963533-3-soham.purkait@intel.com>
+In-Reply-To: <20251204062428.401397-5-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,69 +72,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Soham,
-On 2025-12-05 at 21:14:16 +0530, Soham Purkait wrote:
-> Make function xe_spin_sync_wait() public
-> Which waits for the spin batch associated with the
-> given igt_spin object to complete by waiting
-> on its syncobj after spin end is executed.
-> 
-> v1:
->  - Add simple commit message. (Kamil)
-> v2:
->  - Add fd description for xe_spin_sync_wait. (Kamil)
->  - Add improved documentation for xe_spin_sync_wait. (Kamil)
-> 
-> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+On Thu, Dec 04, 2025 at 11:54:30AM +0530, Sk Anirban wrote:
+> Change throttle_basic_api to read the new atomic reasons attribute
+> instead of checking status and individual reason files separately.
+> This validates the kernel's TOCTOU-free throttling interface.
 
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+...
 
-Regards,
-Kamil
+> +	char *throttle_reasons;
+> +	int sysfs_fd;
+> +
+> +	sysfs_fd = xe_sysfs_gt_open(fd, gt_id);
 
-> ---
->  lib/xe/xe_spin.c | 14 +++++++++++++-
->  lib/xe/xe_spin.h |  1 +
->  2 files changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index f3866cca1..e307c9fe5 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -303,7 +303,19 @@ xe_spin_create(int fd, const struct igt_spin_factory *opt)
->  	return spin;
+This is actually gt_open so let's use gt_fd for consistency.
+
+> +	igt_assert_lte(0, sysfs_fd);
+> +
+> +	throttle_reasons = igt_sysfs_get(sysfs_fd, "freq0/throttle/reasons");
+> +	igt_assert(throttle_reasons);
+> +
+> +	igt_debug("gt%d/freq0/throttle/reasons: %s\n", gt_id, throttle_reasons);
+> +
+> +	if (strcmp(throttle_reasons, "none"))
+> +		igt_info("GT %d is being throttled due to reasons: %s\n", gt_id, throttle_reasons);
+
+I'm wondering if we should print the results explicitly and drop the
+duplicate igt_debug() above? I'll let you decide which message to use :)
+
+Raag
+
+> +	free(throttle_reasons);
+> +	close(sysfs_fd);
 >  }
 >  
-> -static void xe_spin_sync_wait(int fd, struct igt_spin *spin)
-> +/**
-> + * xe_spin_sync_wait - Wait for a GPU spin workload to complete
-> + * @fd: File descriptor for the DRM device
-> + * @spin: Pointer to an igt_spin structure representing the spin workload
-> + *
-> + * This function blocks until the GPU spin operation associated with the
-> + * given `igt_spin` object has finished, ensuring that the function does
-> + * not return until the workload completes.
-> + * If the wait fails, `igt_assert()` will trigger an assertion failure.
-> + *
-> + * This function does not return a value. It aborts on failure.
-> + */
-> +void xe_spin_sync_wait(int fd, struct igt_spin *spin)
->  {
->  	igt_assert(syncobj_wait(fd, &spin->syncobj, 1, INT64_MAX, 0, NULL));
->  }
-> diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-> index af32ab563..1cd578e2d 100644
-> --- a/lib/xe/xe_spin.h
-> +++ b/lib/xe/xe_spin.h
-> @@ -77,6 +77,7 @@ void xe_spin_reset(int fd, igt_spin_t *spin);
->  bool xe_spin_started(struct xe_spin *spin);
->  void xe_spin_wait_started(struct xe_spin *spin);
->  void xe_spin_end(struct xe_spin *spin);
-> +void xe_spin_sync_wait(int fd, struct igt_spin *spin);
->  
->  /*
->   * xe_cork: higher level API that simplifies exec'ing an xe_spin by taking care
+>  /**
 > -- 
-> 2.34.1
+> 2.43.0
 > 
