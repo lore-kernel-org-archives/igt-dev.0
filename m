@@ -4,60 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 842B1D3B7EA
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Dec 2025 13:13:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB9ADD3B7EA
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Dec 2025 13:35:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2EDA110E54D;
-	Tue,  9 Dec 2025 13:13:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 40C0410E59D;
+	Tue,  9 Dec 2025 13:35:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YP1k/Ujc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jxtzu74J";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D69E10E54D
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Dec 2025 13:13:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AAE6510E59D
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Dec 2025 13:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765285994; x=1796821994;
+ t=1765287325; x=1796823325;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=qcgc9pat9ju5vTQyIFRR/ZMFpbBLg6bRfvbCjMpeeg4=;
- b=YP1k/Ujcj/FEr0ie3XfalCNX58WPSolkGFSKiL9J3n4s0uaiX8FMplCz
- 2M+qHl5oK1KEVDWTHNY72JZ3dB6OgvP3Ugg3Z6mN7KRmPQokf+reBbbMd
- mUPGRezOqZhfjdwuiQOUDNKLfx76hUN8YOGwGinDPsvNbOgUMLmLXNwAD
- L/MfYBG/QHdAwpC2D+iobgEuQePXtxaTPhEx2UhsxO/E1iWUC+aH16sSo
- eYSqnrJzdvktWk4s27UEDQoiR5pFyKXxgSFBRyMCMKZSbPyGFudhd0R6W
- iUsoFrG6AgaQDfE0o7ZZ2GWAi4fRQTUwIzOX2XBO1WEd9y+kdiKZljBit g==;
-X-CSE-ConnectionGUID: Wh/HarbrT9yz4i9ic0HrXw==
-X-CSE-MsgGUID: gLuZ1+X2QJurY1MHEiRWEA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="67408259"
-X-IronPort-AV: E=Sophos;i="6.20,261,1758610800"; d="scan'208";a="67408259"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2025 05:13:14 -0800
-X-CSE-ConnectionGUID: PUiHsdXJRj6zFXYUJVim4g==
-X-CSE-MsgGUID: IEUq6m7kQ8mhLPedlEKeBw==
+ mime-version:in-reply-to;
+ bh=VoV1HFseOCyeKHsXEH4BVIvVJXiDoIE2/4tBvCzeJy8=;
+ b=Jxtzu74JWFnYEjy15YgwrudzKpHCAv7ivXnD48S8f4SPZTG+3fSDP7f7
+ QZLYlZ0Q46xG95+Sj2faM5v8fuSZeT3ifYZvPoeWMU7LpEPp+qlfPhTaE
+ fanSfVNl50NbtKG7lbZkMEIkOwj21/9+pBPNDwhkXUuu5Q9E8mFa5bpKS
+ biQVywRNSRnZdTV1q2d1z1zYRHPt9QcBormvSCe/M1jN1oFMu3RDRKAhZ
+ OEFdcfljYeA1KgTV9o5wABJewLr4tNF7YsKnaO5Nfe3akMu9xmwe5ufKz
+ pTobCc5zHZkiPhG/uMaIZ2aZJ82Zy1scYgDtgO2lUNji+9k/vscee8MKu A==;
+X-CSE-ConnectionGUID: J1bY2vdtQNeEIdwn7kvZVw==
+X-CSE-MsgGUID: HfnoyWGBS1iNFakLcaet6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="67135495"
+X-IronPort-AV: E=Sophos;i="6.20,261,1758610800"; d="scan'208";a="67135495"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Dec 2025 05:35:25 -0800
+X-CSE-ConnectionGUID: h9J3Iz/8RtWiW2n/ctBKQA==
+X-CSE-MsgGUID: +R1hKATiR/aIfsvZFWMx7A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,261,1758610800"; d="scan'208";a="200655839"
+X-IronPort-AV: E=Sophos;i="6.20,261,1758610800"; d="scan'208";a="196683705"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2025 05:13:13 -0800
-Date: Tue, 9 Dec 2025 14:12:55 +0100
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2025 05:35:24 -0800
+Date: Tue, 9 Dec 2025 14:35:22 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Swati Sharma <swati2.sharma@intel.com>
 Cc: igt-dev@lists.freedesktop.org, chaitanya.kumar.borah@intel.com
-Subject: Re: [PATCH i-g-t 1/3] lib/igt_hdr: Move HDR helpers from kms_hdr
- into shared library
-Message-ID: <20251209131255.buigwv6vktpn5t3a@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH i-g-t 2/3] tests/intel/kms_frontbuffer_tracking: Add HDR
+ feature support
+Message-ID: <20251209133522.pwc6djxzvwefu2uf@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Swati Sharma <swati2.sharma@intel.com>,
  igt-dev@lists.freedesktop.org, chaitanya.kumar.borah@intel.com
 References: <20251203090836.1164827-1-swati2.sharma@intel.com>
- <20251203090836.1164827-2-swati2.sharma@intel.com>
+ <20251203090836.1164827-3-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251203090836.1164827-2-swati2.sharma@intel.com>
+In-Reply-To: <20251203090836.1164827-3-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,53 +73,78 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Swati,
-On 2025-12-03 at 14:38:34 +0530, Swati Sharma wrote:
-> Introduce lib/igt_hdr.{c,h} containing metadata fill helpers, EOTF enums,
-> ST2084 construction, and blob programming utilities. This allows
-> kms_hdr and upcoming tests (e.g., HDR support in kms_frontbuffer_tracking)
-> to share common HDR code.
+On 2025-12-03 at 14:38:35 +0530, Swati Sharma wrote:
+> Add FEATURE_HDR and extend feature_str() to cover all feature mask
+> combinations.
 > 
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->  lib/igt_hdr.c   | 200 ++++++++++++++++++++++++++++++++
->  lib/igt_hdr.h   |  33 ++++++
->  lib/meson.build |   1 +
->  tests/kms_hdr.c | 298 ++++++++----------------------------------------
->  4 files changed, 284 insertions(+), 248 deletions(-)
->  create mode 100644 lib/igt_hdr.c
->  create mode 100644 lib/igt_hdr.h
+>  tests/intel/kms_frontbuffer_tracking.c | 35 ++++++++++++++++++++++----
+>  1 file changed, 30 insertions(+), 5 deletions(-)
 > 
-> diff --git a/lib/igt_hdr.c b/lib/igt_hdr.c
-> new file mode 100644
-> index 000000000..263d251ce
-> --- /dev/null
-> +++ b/lib/igt_hdr.c
-> @@ -0,0 +1,200 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2025 Intel Corporation
-> + */
-> +
-> +#include "igt.h"
-> +#include "igt_hdr.h"
-> +#include <fcntl.h>
-> +#include <termios.h>
-> +#include <unistd.h>
+> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+> index 0f162d9a5..eda97f7df 100644
+> --- a/tests/intel/kms_frontbuffer_tracking.c
+> +++ b/tests/intel/kms_frontbuffer_tracking.c
+> @@ -855,8 +855,9 @@ struct test_mode {
+>  		FEATURE_FBC   = 1,
+>  		FEATURE_PSR   = 2,
+>  		FEATURE_DRRS  = 4,
+> -		FEATURE_COUNT = 8,
+> -		FEATURE_DEFAULT = 8,
+> +		FEATURE_HDR   = 8,
+> +		FEATURE_COUNT = 16,
+> +		FEATURE_DEFAULT = 16,
+>  	} feature;
+>  
+>  	/* Possible pixel formats. We just use FORMAT_DEFAULT for most tests and
+> @@ -3987,12 +3988,36 @@ static const char *feature_str(int feature)
+>  		return "fbc";
+>  	case FEATURE_PSR:
+>  		return "psr";
+> -	case FEATURE_FBC | FEATURE_PSR:
+> -		return "fbcpsr";
+>  	case FEATURE_DRRS:
+>  		return "drrs";
+> +	case FEATURE_HDR:
+> +		return "hdr";
+> +	case FEATURE_FBC | FEATURE_PSR:
+> +		return "fbcpsr";
 
-Add newline.
-
-Here place igt headers in alphabetical order.
-
-> +#include "igt_edid.h"
+Can it be splitted by '-'? imho better: "fbc-psr".
+Same comment to all or-ed strings below.
 
 Regards,
 Kamil
 
+>  	case FEATURE_FBC | FEATURE_DRRS:
+> -		return "fbcdrrs";
+> +	        return "fbcdrrs";
+> +	case FEATURE_FBC | FEATURE_HDR:
+> +	        return "fbchdr";
 > +
-> +/* HDR EDID parsing. */
-> +#define CTA_EXTENSION_VERSION		0x03
-> +#define HDR_STATIC_METADATA_BLOCK       0x06
-> +#define USE_EXTENDED_TAG		0x07
+> +	case FEATURE_PSR | FEATURE_DRRS:
+> +		return "psrdrrs";
+> +	case FEATURE_PSR | FEATURE_HDR:
+> +	        return "hdrpsr";
+> +	case FEATURE_DRRS | FEATURE_HDR:
+> +	        return "hdrdrrs";
 > +
-[cut]
-
+> +	case FEATURE_FBC | FEATURE_PSR | FEATURE_DRRS:
+> +		return "fbcpsrdrrs";
+> +	case FEATURE_FBC | FEATURE_PSR | FEATURE_HDR:
+> +		return "hdrfbcpsr";
+> +	case FEATURE_FBC | FEATURE_DRRS | FEATURE_HDR:
+> +		return "hdrfbcdrrs";
+> +	case FEATURE_PSR | FEATURE_DRRS | FEATURE_HDR:
+> +		return "hdrpsrdrrs";
+> +
+> +	case FEATURE_FBC | FEATURE_PSR | FEATURE_DRRS | FEATURE_HDR:
+> +		return "hdrfbcpsrdrrs";
+> +
+>  	default:
+>  		igt_assert(false);
+>  	}
+> -- 
+> 2.25.1
+> 
