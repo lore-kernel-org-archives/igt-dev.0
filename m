@@ -4,55 +4,192 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BB37D1CDC6
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Dec 2025 15:25:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78851D3B981
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Dec 2025 16:41:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EDF0510E1F1;
-	Tue,  9 Dec 2025 15:25:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1F2D910E200;
+	Tue,  9 Dec 2025 16:41:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dOu2OjOf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cL4NFUTn";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D1CE10E1F1
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Dec 2025 15:25:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 472E010E200
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Dec 2025 16:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765293922; x=1796829922;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=m73HAvdWzGmNFBN422RCY/o32jsw0G539yvInA5mfF4=;
- b=dOu2OjOfR9vUtuOlayvHcYdS5ZPrbPUIHRUQc+YzNc4wbeMsY+7Dek8k
- l7X5ys52ggbgj8Z7emF7WXnWTZ94P94hfntQ3sr7BW1uT7XHPJKlRtBnR
- 6qUluszlTt3Juh87K6H4u8jT+J5S71gZvNYxkBtkII3itUxlLkOaAQyfe
- Ful6lZonGdggyD8nIw9NfvLKIMUaxTsrZftKKthHBjX/DUJeh/Qh8Hxyp
- ovDbY7PQYbFoTgPqkNJKGdjmysDS10cKQFflfcgzFfiMXzA67h+UkZN1Q
- Jo4A2jE0e7R0HbGKct1z+DNbDaT2pobJCDq+7/8jKud9AdxbczQ4IbC1R w==;
-X-CSE-ConnectionGUID: ZcWchFUFSHuVyAs9O8nIpA==
-X-CSE-MsgGUID: GaZArsIBQQCYRaLNQlZq+g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="78718595"
-X-IronPort-AV: E=Sophos;i="6.20,261,1758610800"; d="scan'208";a="78718595"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2025 07:25:22 -0800
-X-CSE-ConnectionGUID: RidgWe8IQGmJNxfGIwxdoQ==
-X-CSE-MsgGUID: 8al4f0GYRfawlkYQh3vekw==
+ t=1765298510; x=1796834510;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=WF//6+cMOD/zYpd4rj8wcYgu3KQ4LJdrqtY3QrZS6RE=;
+ b=cL4NFUTn97plsx1ZLp50frkus18BSt+eyx++nHHTGzr7o117OcNSAvrS
+ PM2NcqF6rpzUHJPOZtnite+87R0YfrVPihXtwvMKi6auq2kecGIobuXXa
+ 4OiVxeTv9Sbuh6nt5rHvOKQ5Yai5AW9Vle3UUPwwmghN35eTGToiRKZyN
+ ph2++suv6W7XEfNKbf1BSRDAHDXvx9bsycf6WQRKbOa/mi0Dw85cvuLKq
+ jbonrVCIEDI8fGD5Xk1CTrUeh4OkUbE+NBibm7NAsONKXAqGC8BJN3+2m
+ s9KrDGNplBt4V4E6HkSfr9TUIDTdbyt0JoSx84M+jlhBuWmBbB4BEjDy8 A==;
+X-CSE-ConnectionGUID: YYBG9tZbRRulhvkD8nXhZA==
+X-CSE-MsgGUID: Hj5RloQ1T/yng7+klAmm/w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="78623328"
+X-IronPort-AV: E=Sophos;i="6.20,261,1758610800"; d="scan'208";a="78623328"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Dec 2025 08:41:50 -0800
+X-CSE-ConnectionGUID: LGbXNnSXSRynxw7KHp2zUQ==
+X-CSE-MsgGUID: l8EJjflmR0qFklesE4+bzw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,261,1758610800"; d="scan'208";a="197027766"
-Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
- by fmviesa010.fm.intel.com with ESMTP; 09 Dec 2025 07:25:20 -0800
-From: Mohammed Bilal <mohammed.bilal@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jeevan.b@intel.com, kunal1.joshi@intel.com, sameer.lattannavar@intel.com,
- karthik.b.s@intel.com, Mohammed Bilal <mohammed.bilal@intel.com>
-Subject: [PATCH i-g-t v3 2/2] tests/chamelium/kms_chamelium_hpd: use helper
- function for connector lookup in DP/HDMI/VGA tests
-Date: Tue,  9 Dec 2025 20:53:59 +0530
-Message-ID: <20251209152359.907648-3-mohammed.bilal@intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251209152359.907648-1-mohammed.bilal@intel.com>
-References: <20251209152359.907648-1-mohammed.bilal@intel.com>
+X-IronPort-AV: E=Sophos;i="6.20,261,1758610800"; d="scan'208";a="200749925"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Dec 2025 08:41:50 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Tue, 9 Dec 2025 08:41:49 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Tue, 9 Dec 2025 08:41:49 -0800
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.35) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Tue, 9 Dec 2025 08:41:48 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=a6MDFTE7kbpff6+HvV5vtClcSiof+XUMPrhC3kougYiCPtIiYNiD4vNqazQJqmQferKI8pOVOXI6PNz0lc7Es6nVg1wDB99ZRiZUQabtvOvHkLiw7VOseQP2Pj4lw0aebYyCgvyEs1qBoAcrX8MKmCYJr+kzXrzvrLCauV0JV9OYaLdRqK6UVygkgXSsbwPvNH2xodDipNhTXcR8PInRzdP9HR7RgvaP4AYJbZ/j/RKM4oYj9Ho3iR6MsYpjQa6WeOKfo8eQbfysO/LomMT2cLE3LgR83pkPvbjcgWw9+d5fChjq3YkEWdPkLNCm24Hq7bk+d7kZUQorU0mUd6p3Cw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WF//6+cMOD/zYpd4rj8wcYgu3KQ4LJdrqtY3QrZS6RE=;
+ b=LD3/xQWn4vKYjLlR8T0zT2b94X8wpRwdYJesin4BVZ8/CL//wucJXwV9zMBxDPL8SQRnQHMKBlp+tiLpDEC8szNwneiAxgczK9tDBZUIe86VvH+nXX+LzZ4mULs3vGnb6NPm6nj4kkYLSBg1hWaqHMPhgLo+Xn6sumqPcTSRSLKiu59rCF/gSPdCR0/uCgRdKTkJz35/wPy63uAFGx51dvldfIAC/yE34eQXa6xPCrfZy8ZIPk+BMoi89HGJF7jNiBxRA2phG5cYjFFONFUL3qaBHipvLl1T7xoACYgMAn/GCGQrfBxS7vlY/HpJcrafWncWCZkiqusNUoBEp0ueaw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SA3PR11MB8046.namprd11.prod.outlook.com (2603:10b6:806:2fb::22)
+ by DS4PPF7CCC4B437.namprd11.prod.outlook.com (2603:10b6:f:fc02::34)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.14; Tue, 9 Dec
+ 2025 16:41:41 +0000
+Received: from SA3PR11MB8046.namprd11.prod.outlook.com
+ ([fe80::f04:d46a:1742:5c3c]) by SA3PR11MB8046.namprd11.prod.outlook.com
+ ([fe80::f04:d46a:1742:5c3c%4]) with mapi id 15.20.9412.005; Tue, 9 Dec 2025
+ 16:41:41 +0000
+From: "Wang, X" <x.wang@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+CC: "Lin, Shuicheng" <shuicheng.lin@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Zuo, Alex"
+ <alex.zuo@intel.com>, "Auld, Matthew" <matthew.auld@intel.com>
+Subject: RE: [PATCH v2 1/2] lib/intel_pat: read Xe PAT config from debugfs
+Thread-Topic: [PATCH v2 1/2] lib/intel_pat: read Xe PAT config from debugfs
+Thread-Index: AQHcZk12DP1gj+Iwm0q7q7D9jj3tG7UU9UaAgAMfegCAAP1bgIAAdDHA
+Date: Tue, 9 Dec 2025 16:41:40 +0000
+Message-ID: <SA3PR11MB8046486CA4F8675BB9FB4AAC86A3A@SA3PR11MB8046.namprd11.prod.outlook.com>
+References: <20251113070502.2148615-1-x.wang@intel.com>
+ <20251206011241.67825-1-x.wang@intel.com>
+ <DM4PR11MB5456EEADACFB56E39B95FB96EAA4A@DM4PR11MB5456.namprd11.prod.outlook.com>
+ <SA3PR11MB80463A3571A8C5085CBDA03686A2A@SA3PR11MB8046.namprd11.prod.outlook.com>
+ <20251209093655.yjoif6mfcfijzp3u@kamilkon-DESK.igk.intel.com>
+In-Reply-To: <20251209093655.yjoif6mfcfijzp3u@kamilkon-DESK.igk.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA3PR11MB8046:EE_|DS4PPF7CCC4B437:EE_
+x-ms-office365-filtering-correlation-id: 7527455e-4848-4a6b-edef-08de3741d4bd
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|1800799024|366016|376014|42112799006|38070700021; 
+x-microsoft-antispam-message-info: =?utf-8?B?ckJnUlFhaFV5U05iZ3puTGJPYlRHbWdPb0VZZmkwZmpPRUkyUWRzamZqTlJK?=
+ =?utf-8?B?YWVoaG5obmVtd0wrNXptR0RrV2RGamxpMlNsTnVIMHdoQTkwTTRadnVnak0x?=
+ =?utf-8?B?Q1NjOXpISSs5cy9CSGRidTh6MGpoeGc4V09kNkpZRitGK2pPWVN1Uk1hQmto?=
+ =?utf-8?B?bnBkNzBMekNzdWxLaDlsTU1pWVB1WnpNa1BOdWNLTHRzOE1Ybkxad3hCcUVk?=
+ =?utf-8?B?MkV1cEhWMW0wQ3FFYjV5d01PYW8wdXIyZm1pc3J6bzNKME00RXhVN1FUUVFy?=
+ =?utf-8?B?cFRzbHFnWFJCWjM3SVJYSGZNbzdvUDNnbkw0a3pmam4yQUlQclk2c09rbWhQ?=
+ =?utf-8?B?ZDNIV2JPaFlHZ3ZrZndIVGhNcEp2QThhWWhpcVdKQzVMVHJQNjFQZmdXMDhE?=
+ =?utf-8?B?WVE2Q2swQTFrU3g0WGZSNDFoWUorOGhQYVNiMEV1ZnNWUTV0ZDh4SHpscHJi?=
+ =?utf-8?B?UVJGQjZMeEpPb2c2eHRZdENCd245UFVzeiszd1lkd3AveVUzQkFIaS83ZDZK?=
+ =?utf-8?B?b0h2TzRHY3Y1Skd0UjdDejNKb09kQ2tlVDg4aXhDcE41cHFvdWFteWF5OHhi?=
+ =?utf-8?B?eVZ2cWUrRWppMlN2SWpVbm4vM0Z4MFV3NmtVUy95WmJhV1FFSUJhNEVDQ2NV?=
+ =?utf-8?B?ejZhVENZc2lQTnJNQk96a25PQTBMRkVMOXdXdmcvd3lJRDRmR0JNZEhxQlVk?=
+ =?utf-8?B?c3czOTdtQ1ZGL0JqdjFnZ1F6blNnTFpHbVR6R1hwWHB6a3U4c1BkRUQ5ZmZB?=
+ =?utf-8?B?WU1Jbm83a0d2SGo2OUZqYXQ5MThFRUtoZXZEbUdqZzY1RUZQRk9HMkJMemZN?=
+ =?utf-8?B?dWNuNEtXWStvUW8vSWtIYTVLTldaT0laYWh6TzlwSU5oQkhFSmRMMWczYjdG?=
+ =?utf-8?B?UzU4WTFOZHNPalBBWWo0Q2ZyTUVqUkJNUncwM1FmdnlORjJnM3V3K0x4anIw?=
+ =?utf-8?B?bmxvZFRFMGo5YjJ0d09DNnNUVkxaUjVHSEo1blFnVmZTdGxLS3dOL3FueDdo?=
+ =?utf-8?B?bmJnK2pEZkV4OThYaHhCNUlLR2VOZjZzZncvMzAzNldPOGZOVWtyai80YnRn?=
+ =?utf-8?B?a1hrNXBnQkl3cHByNFBYcHU2R3lyTk9pTmJxK1Rjc2l4R0xHbE8rT25haTN2?=
+ =?utf-8?B?UjhWMEU2NE56SW16RlF6Q3Q0aWF5ZTJ2Q3FyUDM1T1gzSXJxQm41WnlYRWM5?=
+ =?utf-8?B?N3hJSzJzZkpoMEtJMmlRWkhYV09obndkR1k4MTM4TGtDM3NKbkpPSXh4OVhT?=
+ =?utf-8?B?MHlkRU14V2dBV1h5cHBlZTFSZWtQaGwxNjd5YVI5anNWam9vNUIramZFeGoz?=
+ =?utf-8?B?a3JwQUdHaW1SdXNFZHNOWmxrYzZobGp3aUowK0l4RzlqN2RHVFJIWWlGeVdW?=
+ =?utf-8?B?Q0I3dUlPN2hMRUlVcW9sSklZN1NXdUJXODFocnpDT29YTVQ2cTZ1SGZsNDZL?=
+ =?utf-8?B?c1UrTlRSbVF5REdJOFNId0pqL2JyaWdWRmVCV0o2eWNJUlJDMk4xSERPUlNy?=
+ =?utf-8?B?QlJ4cmkvUi9JOFl3QXlnTVJXM0xXY0ozSCt2WHhNQ0Q4ZlFKSVlMb0RxRUcx?=
+ =?utf-8?B?c3JWS0FSTk5oSmJKckN5aEY3YnpTUFNLQ0Jld3VaczJiTm52c0lvdTJjMUdT?=
+ =?utf-8?B?aUFRaEtFRy9xZS82dkRzKzllS1g4Z0xETVFuQmZMczJIZUFxU24vN0g0djcy?=
+ =?utf-8?B?VEhCc0REQ3c1amRaejNzNzZSd0IyTytxL3VVQnpwSktDWllaMFBuOVI4eWNQ?=
+ =?utf-8?B?R2d1aVVnQXJRbjRsUFlOMDRWc1NlOW01MHZSdVBwQ1o1Y01wcTE4WHd4NmpI?=
+ =?utf-8?B?dkxqbXBxbVpxR3IzbHh3Q2c4UDF5YnpOamR6RmowRzVaTkhoQm9WVGY4OWtS?=
+ =?utf-8?B?Y3VsdTNGRXc5NThOSjdieXQ5TUIrd01rb1NQaXFhQTcvbUZoMlZRWFFlMk16?=
+ =?utf-8?B?NDRKTUJoeisyU2hmbE9VaEdIUnNZN3BMRzNHalRHcko2OW9DTXczWVdvMDQ5?=
+ =?utf-8?B?SnFMOVBBVWsyTUdZZXdrVVYrUi9vRWdSVVh2Qlc1ZzJsQ25jQzRycWRDY3BP?=
+ =?utf-8?Q?1OsEtq?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA3PR11MB8046.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(42112799006)(38070700021); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?U1JPdmlQSUE4UkVLaTNJWHZzRGlqRWp4ajQzN0E2QnptblJmWTE3ekk0cC93?=
+ =?utf-8?B?S2E5d2I2L2JteXZCVVhnMHJXd1N0R0IwbUVjQjVPQ2xoMWRNbDJVSkV1eW50?=
+ =?utf-8?B?M0ZML08vdWxoMUs0Rm85ZHI0YU1yTkpIVUdLZ3k4eVNhbGdFTHNMWXdMVXZW?=
+ =?utf-8?B?M3VwMjNqalFtU0s3RSsrNmtCdXI0WENRS1VGRzJvRGdVUlZvaGppdkEzZDZE?=
+ =?utf-8?B?dW51UldvVWZkMitUbkxuSURuQlYwbzZ4MTdwcHozV090eUd3YWpwakxGWVJ5?=
+ =?utf-8?B?cVVMdUxKbW1Ia3lJS0FoZVdpRnBWcTRqWHFYb2pLRDM1a0pBTUl3d0NOVlNX?=
+ =?utf-8?B?TE1Ra0p5aVBJbS9sTi9maGE2bTd1d3JSNE01UENEK2xYQ1g5d2YxMUFVbVFa?=
+ =?utf-8?B?WXo4RzFuZTZYSkZ5SGlNSXovZlRsc1pFNjNpOTExb2NPRStvRVBDVnNHemVq?=
+ =?utf-8?B?eE5YYXphVzFyNnlrZy84eDF3RVR3NEJGVGxNNmNyZnpVOTRubjE4bXJrcTI0?=
+ =?utf-8?B?SDBLYTAra2RCc1NCaktKTGJLL2lLZ2FHMmxTR2xaZTJTK2p5Um1oOUxSM2xv?=
+ =?utf-8?B?bGx5bG5UbW9DV3d4c0lPQ1Nhb3pya0NHVkp0T0NqZXVMTUM0U0ZuYWZBbU1j?=
+ =?utf-8?B?N1FaVk5QcHNEUDYzNk1ySnk2Qi96OXkwUHFrTnJRU1pmMUZKS3JLc0NSRkFq?=
+ =?utf-8?B?Wm4zL0wvRFk4NHVtZ3hSeTg4L2JwamV1VzNpb0hFRWFBZlQvYUU3VGhGd2Q1?=
+ =?utf-8?B?bW1rd3Qxelg0RThRVmFMblFFTkkrTHl6eEt2Ly96TXJybW1iWDRqL3lNdW5y?=
+ =?utf-8?B?VzNhT3Jiam10a3JVR2ZsUVlhYnQ1M1JxV2pZTDYwcVB0V2tmL0NJWjIzNGRt?=
+ =?utf-8?B?d3VBK0pLRnZaTzQvZ3pIQnFlTGFac1JXcDhnUzF5UENXcUx6N2Y4STljbjhT?=
+ =?utf-8?B?OGhwNlUzL3h1QlJvZTRLRzNqQ2E4RkRjejQ3VzZKMldhUEhpZWVpN0ZDcHJy?=
+ =?utf-8?B?ZU1QdEp4eFcxT3Y1REhsbjIxeEQxTmV5b1dyTWlwQkZ3RGpoQWNrY0o0a2ZK?=
+ =?utf-8?B?d0UyQXd6NGwvZXFlVWp0eVVja3RMcnFXNENDcCtGWk4yMUtZU1JHZEx5NXQr?=
+ =?utf-8?B?TkVUV3JaamExdEw0VzR2dDY2QXd0MzlBVEtGcUtUUnA1OWZnZXRJbzN0Zmls?=
+ =?utf-8?B?Y2xxTlVoc2IySEQ1aHFMcGhiRk80YUhMaWRJQytXYytwTzZGaFRBNnBYc2li?=
+ =?utf-8?B?Rmc4b3pMNTZaczUvUFI5VUtjRHpzcmJmS05XS3RLcjgxRzZMZjRRcm4xdlky?=
+ =?utf-8?B?emR0MHRpWDNtL0tsL3pwdFViMGpBRllFQjRrd0FySDNtays2S3A0TUpac0pz?=
+ =?utf-8?B?bFlZQmwxZU9tSlRKUWFEMmtkSUN4N1hmRHlxQXpUQldlQ1Q1WUVZNCtTTG5F?=
+ =?utf-8?B?M01XRTNuSVdGVXQzQm5SR3crLy95d25xNWhES3pKTjhIRUR6YmNZdUhrZGoy?=
+ =?utf-8?B?aTUyMTRRUVdDNUhWZ0dVR2hEUllaQnFUTmk3bGdRMkVsM05xcEhKZjFCMmV4?=
+ =?utf-8?B?Tk9PZlEvTC9wcFJQaysxclpvbGZCZCt0QVRhQ1ppa2lQVXBJNUd6SVMzTXFp?=
+ =?utf-8?B?TllxTTJFNTllVjF0ajBlblJtQ1RlV1dxV1dEbTh5WkdUb0tOM2VpS05OcXRD?=
+ =?utf-8?B?N1Y5M3J3eGRVUjFMMDNnUTNWVC9vSVpBaWEvNEhzTTFYZnFHNkErQnlJTk5m?=
+ =?utf-8?B?L0E5U1lJK1FTbnNSYnhzc2p5ekRsMk41c2M5dmRMQWVWMzV0TVIrY0thQXVI?=
+ =?utf-8?B?NVRkVHBPREZ1QzBFeDgyVUppRUxzVnVUbjBEQ0k4d3d5VG4wd1ROTnVmOXdS?=
+ =?utf-8?B?WVRacHd3UG5HRjJib0NHUGVmdURpRm9nL2gyUDF6OVRCU1YwS0VNSWE0YURt?=
+ =?utf-8?B?T05PTjRHYjJlTkVHTUU0VlErSzQ2eUlqS3hybVJCWjNoSEN4MGR1S2t6OWs4?=
+ =?utf-8?B?UUlCempDUWM5V1VVcXhFT2R1NjVjU2NraTBVSGtQUDFWZmo4Wit2MUozNVZG?=
+ =?utf-8?B?Z0xhcEZ6YTVCOFk1K09iNlNMMFdJVVo3ZTJoL1VWV2FrWEM5VU9UMVhhMFYx?=
+ =?utf-8?Q?F5X4=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR11MB8046.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7527455e-4848-4a6b-edef-08de3741d4bd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Dec 2025 16:41:40.8348 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Nw7fFJB1Ay64T3t1VnN1si/B4FFC/EFsPXJNoZPeFtWyh2O2qJjeWvr25VCxpB2y9olcuGAIHrmEo5Zv04UzrA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF7CCC4B437
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,298 +205,180 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Replace the old connector_subtest() + per-connector igt_fixture blocks
-with a unified CONNECTOR_TEST() helper based on get_port(). The previous
-fixtures were always executed even when running other subtests, causing
-false failures when HDMI/VGA/DP connectors were not present.
-
-Using CONNECTOR_TEST() makes each subtest perform its own connector
-lookup and skip cleanly if unavailable, while removing repeated
-boilerplate across DP/HDMI/VGA hotplug tests.
-
-Signed-off-by: Mohammed Bilal <mohammed.bilal@intel.com>
----
- tests/chamelium/kms_chamelium_hpd.c | 240 +++++++++++-----------------
- 1 file changed, 97 insertions(+), 143 deletions(-)
-
-diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
-index 161f494e9..198ec6039 100644
---- a/tests/chamelium/kms_chamelium_hpd.c
-+++ b/tests/chamelium/kms_chamelium_hpd.c
-@@ -463,157 +463,114 @@ IGT_TEST_DESCRIPTION("Testing HPD with a Chamelium board");
- igt_main
- {
- 	chamelium_data_t data;
--	struct chamelium_port *port;
--	int p;
- 
- 	igt_fixture {
- 		chamelium_init_test(&data);
- 	}
- 
- 	igt_describe("DisplayPort tests");
--	igt_subtest_group {
--		igt_fixture {
--			chamelium_require_connector_present(
--				data.ports, DRM_MODE_CONNECTOR_DisplayPort,
--				data.port_count, 1);
--		}
- 
--		igt_describe(test_basic_hotplug_desc);
--		connector_subtest("dp-hpd", DisplayPort)
--			test_hotplug(&data, port, HPD_TOGGLE_COUNT_DP_HDMI,
--				     TEST_MODESET_OFF);
--
--		igt_describe(test_basic_hotplug_desc);
--		connector_subtest("dp-hpd-fast", DisplayPort) test_hotplug(
--			&data, port, HPD_TOGGLE_COUNT_FAST, TEST_MODESET_OFF);
--
--		igt_describe(test_basic_hotplug_desc);
--		connector_subtest("dp-hpd-enable-disable-mode", DisplayPort)
--			test_hotplug(&data, port, HPD_TOGGLE_COUNT_FAST,
--				     TEST_MODESET_ON_OFF);
--
--		igt_describe(test_basic_hotplug_desc);
--		connector_subtest("dp-hpd-with-enabled-mode", DisplayPort)
--			test_hotplug(&data, port, HPD_TOGGLE_COUNT_FAST,
--				     TEST_MODESET_ON);
--
--		igt_describe(test_hotplug_for_each_pipe_desc);
--		connector_subtest("dp-hpd-for-each-pipe", DisplayPort)
--			test_hotplug_for_each_pipe(&data, port);
--
--		igt_describe(test_suspend_resume_hpd_desc);
--		connector_subtest("dp-hpd-after-suspend", DisplayPort)
--			test_suspend_resume_hpd(&data, port, SUSPEND_STATE_MEM,
--						SUSPEND_TEST_NONE);
--
--		igt_describe(test_suspend_resume_hpd_desc);
--		connector_subtest("dp-hpd-after-hibernate", DisplayPort)
--			test_suspend_resume_hpd(&data, port, SUSPEND_STATE_DISK,
--						SUSPEND_TEST_DEVICES);
--
--		igt_describe(test_hpd_storm_detect_desc);
--		connector_subtest("dp-hpd-storm", DisplayPort)
--			test_hpd_storm_detect(&data, port,
--					      HPD_STORM_PULSE_INTERVAL_DP);
--
--		igt_describe(test_hpd_storm_disable_desc);
--		connector_subtest("dp-hpd-storm-disable", DisplayPort)
--			test_hpd_storm_disable(&data, port,
--					       HPD_STORM_PULSE_INTERVAL_DP);
--	}
-+	igt_describe(test_basic_hotplug_desc);
-+	CONNECTOR_TEST("dp-hpd", DisplayPort, test_hotplug,
-+		       HPD_TOGGLE_COUNT_DP_HDMI, TEST_MODESET_OFF);
-+
-+	igt_describe(test_basic_hotplug_desc);
-+	CONNECTOR_TEST("dp-hpd-fast", DisplayPort, test_hotplug,
-+		       HPD_TOGGLE_COUNT_FAST, TEST_MODESET_OFF);
-+
-+	igt_describe(test_basic_hotplug_desc);
-+	CONNECTOR_TEST("dp-hpd-enable-disable-mode", DisplayPort, test_hotplug,
-+		       HPD_TOGGLE_COUNT_FAST, TEST_MODESET_ON_OFF);
-+
-+	igt_describe(test_basic_hotplug_desc);
-+	CONNECTOR_TEST("dp-hpd-with-enabled-mode", DisplayPort, test_hotplug,
-+		       HPD_TOGGLE_COUNT_FAST, TEST_MODESET_ON);
-+
-+	igt_describe(test_hotplug_for_each_pipe_desc);
-+	CONNECTOR_TEST("dp-hpd-for-each-pipe", DisplayPort, test_hotplug_for_each_pipe);
-+
-+	igt_describe(test_suspend_resume_hpd_desc);
-+	CONNECTOR_TEST("dp-hpd-after-suspend", DisplayPort, test_suspend_resume_hpd,
-+		       SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
-+
-+	igt_describe(test_suspend_resume_hpd_desc);
-+	CONNECTOR_TEST("dp-hpd-after-hibernate", DisplayPort, test_suspend_resume_hpd,
-+		       SUSPEND_STATE_DISK, SUSPEND_TEST_DEVICES);
-+
-+	igt_describe(test_hpd_storm_detect_desc);
-+	CONNECTOR_TEST("dp-hpd-storm", DisplayPort, test_hpd_storm_detect,
-+		       HPD_STORM_PULSE_INTERVAL_DP);
-+
-+	igt_describe(test_hpd_storm_disable_desc);
-+	CONNECTOR_TEST("dp-hpd-storm-disable", DisplayPort, test_hpd_storm_disable,
-+		       HPD_STORM_PULSE_INTERVAL_DP);
- 
- 	igt_describe("HDMI tests");
--	igt_subtest_group {
--		igt_fixture {
--			chamelium_require_connector_present(
--				data.ports, DRM_MODE_CONNECTOR_HDMIA,
--				data.port_count, 1);
--		}
- 
--		igt_describe(test_basic_hotplug_desc);
--		connector_subtest("hdmi-hpd", HDMIA)
--			test_hotplug(&data, port, HPD_TOGGLE_COUNT_DP_HDMI,
--				     TEST_MODESET_OFF);
--
--		igt_describe(test_basic_hotplug_desc);
--		connector_subtest("hdmi-hpd-fast", HDMIA) test_hotplug(
--			&data, port, HPD_TOGGLE_COUNT_FAST, TEST_MODESET_OFF);
--
--		igt_describe(test_basic_hotplug_desc);
--		connector_subtest("hdmi-hpd-enable-disable-mode", HDMIA)
--			test_hotplug(&data, port, HPD_TOGGLE_COUNT_FAST,
--				     TEST_MODESET_ON_OFF);
--
--		igt_describe(test_basic_hotplug_desc);
--		connector_subtest("hdmi-hpd-with-enabled-mode", HDMIA)
--			test_hotplug(&data, port, HPD_TOGGLE_COUNT_FAST,
--				     TEST_MODESET_ON);
--
--		igt_describe(test_hotplug_for_each_pipe_desc);
--		connector_subtest("hdmi-hpd-for-each-pipe", HDMIA)
--			test_hotplug_for_each_pipe(&data, port);
--
--		igt_describe(test_suspend_resume_hpd_desc);
--		connector_subtest("hdmi-hpd-after-suspend", HDMIA)
--			test_suspend_resume_hpd(&data, port, SUSPEND_STATE_MEM,
--						SUSPEND_TEST_NONE);
--
--		igt_describe(test_suspend_resume_hpd_desc);
--		connector_subtest("hdmi-hpd-after-hibernate", HDMIA)
--			test_suspend_resume_hpd(&data, port, SUSPEND_STATE_DISK,
--						SUSPEND_TEST_DEVICES);
--
--		igt_describe(test_hpd_storm_detect_desc);
--		connector_subtest("hdmi-hpd-storm", HDMIA)
--			test_hpd_storm_detect(&data, port,
--					      HPD_STORM_PULSE_INTERVAL_HDMI);
--
--		igt_describe(test_hpd_storm_disable_desc);
--		connector_subtest("hdmi-hpd-storm-disable", HDMIA)
--			test_hpd_storm_disable(&data, port,
--					       HPD_STORM_PULSE_INTERVAL_HDMI);
--	}
-+	igt_describe(test_basic_hotplug_desc);
-+	CONNECTOR_TEST("hdmi-hpd", HDMIA, test_hotplug,
-+		       HPD_TOGGLE_COUNT_DP_HDMI, TEST_MODESET_OFF);
-+
-+	igt_describe(test_basic_hotplug_desc);
-+	CONNECTOR_TEST("hdmi-hpd-fast", HDMIA, test_hotplug,
-+		       HPD_TOGGLE_COUNT_FAST, TEST_MODESET_OFF);
-+
-+	igt_describe(test_basic_hotplug_desc);
-+	CONNECTOR_TEST("hdmi-hpd-enable-disable-mode", HDMIA, test_hotplug,
-+		       HPD_TOGGLE_COUNT_FAST, TEST_MODESET_ON_OFF);
-+
-+	igt_describe(test_basic_hotplug_desc);
-+	CONNECTOR_TEST("hdmi-hpd-with-enabled-mode", HDMIA, test_hotplug,
-+		       HPD_TOGGLE_COUNT_FAST, TEST_MODESET_ON);
-+
-+	igt_describe(test_hotplug_for_each_pipe_desc);
-+	CONNECTOR_TEST("hdmi-hpd-for-each-pipe", HDMIA, test_hotplug_for_each_pipe);
-+
-+	igt_describe(test_suspend_resume_hpd_desc);
-+	CONNECTOR_TEST("hdmi-hpd-after-suspend", HDMIA, test_suspend_resume_hpd,
-+		       SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
-+
-+	igt_describe(test_suspend_resume_hpd_desc);
-+	CONNECTOR_TEST("hdmi-hpd-after-hibernate", HDMIA, test_suspend_resume_hpd,
-+		       SUSPEND_STATE_DISK, SUSPEND_TEST_DEVICES);
-+
-+	igt_describe(test_hpd_storm_detect_desc);
-+	CONNECTOR_TEST("hdmi-hpd-storm", HDMIA, test_hpd_storm_detect,
-+		       HPD_STORM_PULSE_INTERVAL_HDMI);
-+
-+	igt_describe(test_hpd_storm_disable_desc);
-+	CONNECTOR_TEST("hdmi-hpd-storm-disable", HDMIA, test_hpd_storm_disable,
-+		       HPD_STORM_PULSE_INTERVAL_HDMI);
- 
- 	igt_describe("VGA tests");
--	igt_subtest_group {
--		igt_fixture {
--			chamelium_require_connector_present(
--				data.ports, DRM_MODE_CONNECTOR_VGA,
--				data.port_count, 1);
--		}
- 
--		igt_describe(test_basic_hotplug_desc);
--		connector_subtest("vga-hpd", VGA) test_hotplug(
--			&data, port, HPD_TOGGLE_COUNT_VGA, TEST_MODESET_OFF);
--
--		igt_describe(test_basic_hotplug_desc);
--		connector_subtest("vga-hpd-fast", VGA) test_hotplug(
--			&data, port, HPD_TOGGLE_COUNT_FAST, TEST_MODESET_OFF);
--
--		igt_describe(test_basic_hotplug_desc);
--		connector_subtest("vga-hpd-enable-disable-mode", VGA)
--			test_hotplug(&data, port, HPD_TOGGLE_COUNT_FAST,
--				     TEST_MODESET_ON_OFF);
--
--		igt_describe(test_basic_hotplug_desc);
--		connector_subtest("vga-hpd-with-enabled-mode", VGA)
--			test_hotplug(&data, port, HPD_TOGGLE_COUNT_FAST,
--				     TEST_MODESET_ON);
--
--		igt_describe(test_suspend_resume_hpd_desc);
--		connector_subtest("vga-hpd-after-suspend", VGA)
--			test_suspend_resume_hpd(&data, port, SUSPEND_STATE_MEM,
--						SUSPEND_TEST_NONE);
--
--		igt_describe(test_suspend_resume_hpd_desc);
--		connector_subtest("vga-hpd-after-hibernate", VGA)
--			test_suspend_resume_hpd(&data, port, SUSPEND_STATE_DISK,
--						SUSPEND_TEST_DEVICES);
--
--		igt_describe(test_hpd_without_ddc_desc);
--		connector_subtest("vga-hpd-without-ddc", VGA)
--			test_hpd_without_ddc(&data, port);
--	}
-+	igt_describe(test_basic_hotplug_desc);
-+	CONNECTOR_TEST("vga-hpd", VGA, test_hotplug, HPD_TOGGLE_COUNT_VGA, TEST_MODESET_OFF);
-+
-+	igt_describe(test_basic_hotplug_desc);
-+	CONNECTOR_TEST("vga-hpd-fast", VGA, test_hotplug, HPD_TOGGLE_COUNT_FAST, TEST_MODESET_OFF);
-+
-+	igt_describe(test_basic_hotplug_desc);
-+	CONNECTOR_TEST("vga-hpd-enable-disable-mode", VGA,
-+		       test_hotplug, HPD_TOGGLE_COUNT_FAST, TEST_MODESET_ON_OFF);
-+
-+	igt_describe(test_basic_hotplug_desc);
-+	CONNECTOR_TEST("vga-hpd-with-enabled-mode", VGA,
-+		       test_hotplug, HPD_TOGGLE_COUNT_FAST, TEST_MODESET_ON);
-+
-+	igt_describe(test_suspend_resume_hpd_desc);
-+	CONNECTOR_TEST("vga-hpd-after-suspend", VGA,
-+		       test_suspend_resume_hpd, SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
-+
-+	igt_describe(test_suspend_resume_hpd_desc);
-+	CONNECTOR_TEST("vga-hpd-after-hibernate", VGA,
-+		       test_suspend_resume_hpd, SUSPEND_STATE_DISK, SUSPEND_TEST_DEVICES);
-+
-+	igt_describe(test_hpd_without_ddc_desc);
-+	CONNECTOR_TEST("vga-hpd-without-ddc", VGA, test_hpd_without_ddc);
-+
-+	igt_describe(test_hotplug_for_each_pipe_desc);
-+	CONNECTOR_TEST("vga-hpd-for-each-pipe", VGA, test_hotplug_for_each_pipe);
- 
- 	igt_describe("Tests that operate on all connectors");
- 	igt_subtest_group {
-@@ -623,7 +580,8 @@ igt_main
- 
- 		igt_describe(test_suspend_resume_hpd_common_desc);
- 		igt_subtest("common-hpd-after-suspend")
--			test_suspend_resume_hpd_common(&data, SUSPEND_STATE_MEM,
-+			test_suspend_resume_hpd_common(&data,
-+						       SUSPEND_STATE_MEM,
- 						       SUSPEND_TEST_NONE);
- 
- 		igt_describe(test_suspend_resume_hpd_common_desc);
-@@ -633,10 +591,6 @@ igt_main
- 						       SUSPEND_TEST_DEVICES);
- 	}
- 
--	igt_describe(test_hotplug_for_each_pipe_desc);
--	connector_subtest("vga-hpd-for-each-pipe", VGA)
--		test_hotplug_for_each_pipe(&data, port);
--
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
--- 
-2.48.1
-
+DQpIaSBLYW1pbCwNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS2FtaWwg
+S29uaWVjem55IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTZW50OiBUdWVz
+ZGF5LCBEZWNlbWJlciA5LCAyMDI1IDAxOjM3DQo+IFRvOiBXYW5nLCBYIDx4LndhbmdAaW50ZWwu
+Y29tPg0KPiBDYzogTGluLCBTaHVpY2hlbmcgPHNodWljaGVuZy5saW5AaW50ZWwuY29tPjsgaWd0
+LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7DQo+IFp1bywgQWxleCA8YWxleC56dW9AaW50ZWwu
+Y29tPjsgQXVsZCwgTWF0dGhldyA8bWF0dGhldy5hdWxkQGludGVsLmNvbT4NCj4gU3ViamVjdDog
+UmU6IFtQQVRDSCB2MiAxLzJdIGxpYi9pbnRlbF9wYXQ6IHJlYWQgWGUgUEFUIGNvbmZpZyBmcm9t
+IGRlYnVnZnMNCj4gDQo+IEhpIFdhbmcsLA0KPiBPbiAyMDI1LTEyLTA4IGF0IDE4OjM3OjUyICsw
+MDAwLCBXYW5nLCBYIHdyb3RlOg0KPiA+DQo+ID4NCj4gPiA+IC0tLS0tT3JpZ2luYWwgTWVzc2Fn
+ZS0tLS0tDQo+ID4gPiBGcm9tOiBMaW4sIFNodWljaGVuZyA8c2h1aWNoZW5nLmxpbkBpbnRlbC5j
+b20+DQo+ID4gPiBTZW50OiBTYXR1cmRheSwgRGVjZW1iZXIgNiwgMjAyNSAxMDo0OQ0KPiA+ID4g
+VG86IFdhbmcsIFggPHgud2FuZ0BpbnRlbC5jb20+OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
+Lm9yZw0KPiA+ID4gQ2M6IFp1bywgQWxleCA8YWxleC56dW9AaW50ZWwuY29tPjsgQXVsZCwgTWF0
+dGhldw0KPiA+ID4gPG1hdHRoZXcuYXVsZEBpbnRlbC5jb20+DQo+ID4gPiBTdWJqZWN0OiBSRTog
+W1BBVENIIHYyIDEvMl0gbGliL2ludGVsX3BhdDogcmVhZCBYZSBQQVQgY29uZmlnIGZyb20NCj4g
+PiA+IGRlYnVnZnMNCj4gPiA+DQo+ID4gPiBPbiBGcmksIERlYyA1LCAyMDI1IDU6MTMgUE0gWCBX
+YW5nIHdyb3RlOg0KPiA+ID4gPiBQYXJzZSB0aGUgUEFUIHNvZnR3YXJlIGNvbmZpZ3VyYXRpb24g
+ZnJvbSBndDAvcGF0X3N3X2NvbmZpZw0KPiA+ID4gPiBpbnN0ZWFkIG9mIHJlbHlpbmcgb24gaGFy
+ZC1jb2RlZCBpbmRpY2VzLg0KPiA+ID4NCj4gPiA+IFNvIHRoZSBsaWIgaXMgbm90IGNvbXBhdGli
+bGUgd2l0aCBwcmV2aW91cyBrZXJuZWwgdGhhdCBkb2Vzbid0IGhhdmUgc3cNCj4gY29uZmlnLg0K
+PiA+ID4gU2hvdWxkIHdlIGtlZXAgdGhlIGhhcmQtY29kZSBhcyBmYWxsIGJhY2s/DQo+ID4NCj4g
+PiBUaGUgc2Vjb25kIHBhdGNoIGFsc28gZGVwZW5kcyBvbiBndDAvcGF0X3N3X2NvbmZpZyAuIElm
+IHdlIHJldGFpbiB0aGUNCj4gPiBoYXJkLWNvZGVkIHZhbHVlcywgd2Ugd291bGQgbmVlZCB0byBk
+dXBsaWNhdGUgdGhlbSBpbiB0aGUgc2Vjb25kIHBhdGNoDQo+ID4gYXMgd2VsbCwgd2hpY2ggd291
+bGQgbWFrZSB0aGUgY29kZSBxdWl0ZSBtZXNzeS4gRG8gd2UgcmVhbGx5IHdhbnQgdG8gZ28NCj4g
+ZG93biB0aGF0IHBhdGg/DQo+ID4NCj4gPiBJbiB0aGUgY3VycmVudCBpbXBsZW1lbnRhdGlvbiwg
+SSd2ZSBhZGRlZCBpZ3RfcmVxdWlyZShyZXQgPiAwKTsgc28NCj4gPiB0aGF0IGlmIHRoZSBrZXJu
+ZWwNCj4gDQo+IFBsZWFzZSB1c2UgaWd0X3JlcXVpcmVfZihyZXQgPiAwLCAiZXhwbGFuYXRpb24g
+b2Ygc2tpcFxuIik7DQo+IA0KPiBzbyBsYXRlciBvbiBpdCB3aWxsIGJlIGVhc3kgdG8gc3BvdCB3
+aHkgdGVzdCBza2lwcGVkLg0KDQpUaGFua3MgZm9yIHBvaW50aW5nIHRoaXMgb3V0LCBJIHdpbGwg
+Y2hhbmdlIHRoaXMgcGFydCBpbiBuZXh0IHZlcnNpb24uDQo+IA0KPiA+IGRvZXMgbm90IHN1cHBv
+cnQgdGhpcyBkZWJ1Z2ZzLCBJR1Qgd2lsbCByZXBvcnQgYW4gZXJyb3IgbWVzc2FnZSB0bw0KPiA+
+IGluZm9ybSB0aGUgdXNlciB0aGF0IHRoZSBrZXJuZWwgaXMgbm90IGNvbXBhdGlibGUuDQo+ID4N
+Cj4gPiA+DQo+ID4gPiA+DQo+ID4gPiA+IEV4cG9zZSB4ZV9nZXRfcGF0X2VudHJpZXMoKSBzbyB0
+ZXN0cyBjYW4gZ3JhYiB0aGUgUEFUIHRhYmxlLg0KPiA+ID4gPg0KPiA+ID4gPiBDQzogTWF0dGhl
+dyBBdWxkIDxtYXR0aGV3LmF1bGRAaW50ZWwuY29tPg0KPiA+ID4gPiBTaWduZWQtb2ZmLWJ5OiBY
+aW4gV2FuZyA8eC53YW5nQGludGVsLmNvbT4NCj4gPiA+ID4gLS0tDQo+ID4gPiA+ICBsaWIvaW50
+ZWxfcGF0LmMgfCAxMjYNCj4gPiA+ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKy0NCj4gPiA+ID4gLS0tLS0NCj4gPiA+ID4gIGxpYi9pbnRlbF9wYXQuaCB8ICAgOSAr
+KysrDQo+ID4gPiA+ICAyIGZpbGVzIGNoYW5nZWQsIDEyMCBpbnNlcnRpb25zKCspLCAxNSBkZWxl
+dGlvbnMoLSkNCj4gPiA+ID4NCj4gPiA+ID4gZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9wYXQuYyBi
+L2xpYi9pbnRlbF9wYXQuYyBpbmRleA0KPiA+ID4gPiBlMzU4ODExMGEuLjJkMjA0ZTY1Mg0KPiA+
+ID4gPiAxMDA2NDQNCj4gPiA+ID4gLS0tIGEvbGliL2ludGVsX3BhdC5jDQo+ID4gPiA+ICsrKyBi
+L2xpYi9pbnRlbF9wYXQuYw0KPiA+ID4gPiBAQCAtNiw2ICs2LDcgQEANCj4gPiA+ID4gICNpbmNs
+dWRlICJpbnRlbF9wYXQuaCINCj4gPiA+ID4NCj4gPiA+ID4gICNpbmNsdWRlICJpZ3QuaCINCj4g
+PiA+ID4gKyNpbmNsdWRlICJpZ3RfY29yZS5oIg0KPiANCj4gQm90aCBvZiB0aGlzIHNob3VsZCBi
+ZSBiZWZvcmUgImludGVsX3BhdC5oIiwga2VlcCBpdCBpbiBhbHBoYWJldGljYWwgb3JkZXIuDQpP
+Sw0KPiANCj4gPiA+ID4NCj4gPiA+ID4gIHN0cnVjdCBpbnRlbF9wYXRfY2FjaGUgew0KPiA+ID4g
+PiAgCXVpbnQ4X3QgdWM7IC8qIFVDICsgQ09IX05PTkUgKi8NCj4gPiA+ID4gQEAgLTEzLDI3ICsx
+NCwxMTIgQEAgc3RydWN0IGludGVsX3BhdF9jYWNoZSB7DQo+ID4gPiA+ICAJdWludDhfdCB3Yjsg
+LyogV0IgKyBDT0hfQVRfTEVBU1RfMVdBWSAqLw0KPiA+ID4gPiAgCXVpbnQ4X3QgdWNfY29tcDsg
+LyogVUMgKyBDT0hfTk9ORSArIENPTVBSRVNTSU9OLCBYRTIgYW5kDQo+ID4gPiBsYXRlciovDQo+
+ID4gPiA+ICAJdWludDhfdCBtYXhfaW5kZXg7DQo+ID4gPiA+ICsJc3RydWN0IHhlX3BhdF9lbnRy
+eSBlbnRyaWVzW1hFX1BBVF9NQVhfRU5UUklFU107DQo+ID4gPiA+ICsJdWludDMyX3QgcGF0X21v
+ZGU7DQo+ID4gPiA+ICsJdWludDMyX3QgcGF0X2F0czsNCj4gPiA+ID4gIH07DQo+ID4gPiA+DQo+
+ID4gPiA+ICsvKioNCj4gPiA+ID4gKyAqIHhlX2dldF9wYXRfc3dfY29uZmlnIC0gSGVscGVyIHRv
+IHJlYWQgUEFUIChQYWdlIEF0dHJpYnV0ZQ0KPiA+ID4gPiArVGFibGUpIHNvZnR3YXJlIGNvbmZp
+Z3VyYXRpb24NCj4gPiA+ID4gKyAqIGZyb20gZGVidWdmcw0KPiA+ID4gPiArICoNCj4gPiA+ID4g
+KyAqIEBkcm1fZmQ6IERSTSBkZXZpY2UgZmQgdG8gdXNlIHdpdGggaWd0X2RlYnVnZnNfb3Blbg0K
+PiA+ID4gPiArICogQHhlX3BhdF9jYWNoZTogUG9pbnRlciB0byBhIHN0cnVjdCB0aGF0IHdpbGwg
+cmVjZWl2ZSB0aGUNCj4gPiA+ID4gK3BhcnNlZCBQQVQgY29uZmlndXJhdGlvbg0KPiA+ID4gPiAr
+ICoNCj4gPiA+ID4gKyAqIFJldHVybnM6IFRoZSBudW1iZXIgb2YgUEFUIGVudHJpZXMgc3VjY2Vz
+c2Z1bGx5IHJlYWQgb24NCj4gPiA+ID4gK3N1Y2Nlc3MsIG9yIGENCj4gPiA+ID4gbmVnYXRpdmUg
+ZXJyb3INCj4gPiA+ID4gKyAqICAgICAgICAgIGNvZGUgb24gZmFpbHVyZSAoLUVOT0VOVCBpZiBk
+ZWJ1Z2ZzIGlzIG1pc3NpbmcsIC1lcnJubyBvdGhlcndpc2UpDQo+ID4gPiA+ICsgKi8NCj4gPiA+
+ID4gK3N0YXRpYyBpbnQzMl90IHhlX2dldF9wYXRfc3dfY29uZmlnKGludCBkcm1fZmQsIHN0cnVj
+dA0KPiA+ID4gPiAraW50ZWxfcGF0X2NhY2hlDQo+ID4gPiA+ICsqeGVfcGF0X2NhY2hlKSB7DQo+
+ID4gPiA+ICsJY2hhciAqbGluZSA9IE5VTEw7DQo+ID4gPiA+ICsJc2l6ZV90IGxpbmVfbGVuID0g
+MDsNCj4gPiA+ID4gKwlzc2l6ZV90IG5yZWFkOw0KPiA+ID4gPiArCWludDMyX3QgcGFyc2VkID0g
+MDsNCj4gPiA+ID4gKwlpbnQgZGJnZnNfZmQ7DQo+ID4gPiA+ICsJRklMRSAqZGJnZnNfZmlsZSA9
+IE5VTEw7DQo+ID4gPiA+ICsNCj4gPiA+ID4gKwlkYmdmc19mZCA9IGlndF9kZWJ1Z2ZzX29wZW4o
+ZHJtX2ZkLCAiZ3QwL3BhdF9zd19jb25maWciLA0KPiA+ID4gPiBPX1JET05MWSk7DQo+ID4gPiA+
+ICsJaWYgKGRiZ2ZzX2ZkIDwgMCkNCj4gPiA+ID4gKwkJcmV0dXJuIC1FTk9FTlQ7DQo+ID4gPiA+
+ICsJZGJnZnNfZmlsZSA9IGZkb3BlbihkYmdmc19mZCwgInIiKTsNCj4gPiA+ID4gKwlpZiAoIWRi
+Z2ZzX2ZpbGUpIHsNCj4gPiA+ID4gKwkJY2xvc2UoZGJnZnNfZmQpOw0KPiA+ID4gPiArCQlyZXR1
+cm4gLWVycm5vOw0KPiA+ID4gPiArCX0NCj4gPiA+ID4gKw0KPiA+ID4gPiArCW1lbXNldCh4ZV9w
+YXRfY2FjaGUsIDAsIHNpemVvZigqeGVfcGF0X2NhY2hlKSk7DQo+ID4gPiA+ICsJd2hpbGUgKChu
+cmVhZCA9IGdldGxpbmUoJmxpbmUsICZsaW5lX2xlbiwgZGJnZnNfZmlsZSkpICE9IC0xKSB7DQo+
+ID4gPiA+ICsJCXVpbnQzMl90IHZhbHVlID0gMDsNCj4gPiA+ID4gKwkJY2hhciAqcCA9IE5VTEw7
+DQo+ID4gPiA+ICsNCj4gPiA+ID4gKwkJLyogRXhwZWN0IHBhdHRlcm5zIGxpa2U6IFBBVFsgMF0g
+PSBbIDAsIDAsIDAsIDAsIDAgXSAgKCAgICAgMHgwKSAqLw0KPiA+ID4gPiArCQlpZiAoc3RybmNt
+cChsaW5lLCAiUEFUWyIsIDQpID09IDApIHsNCj4gPiA+ID4gKwkJCWJvb2wgaXNfcmVzZXJ2ZWQ7
+DQo+ID4gPiA+ICsJCQlwID0gc3Ryc3RyKGxpbmUsICIoIik7DQo+ID4gPiA+ICsJCQlpZiAocCAm
+JiBzc2NhbmYocCwgIigleCIsICZ2YWx1ZSkgPT0gMSkgew0KPiA+ID4gPiArCQkJCWlmIChwYXJz
+ZWQgPCBYRV9QQVRfTUFYX0VOVFJJRVMpIHsNCj4gPiA+ID4gKwkJCQkJaXNfcmVzZXJ2ZWQgPSBz
+dHJjaHIobGluZSwgJyonKSAhPSBOVUxMOw0KPiA+ID4gPiArCQkJCQl4ZV9wYXRfY2FjaGUtPmVu
+dHJpZXNbcGFyc2VkXS5wYXQgPQ0KPiA+ID4gPiB2YWx1ZTsNCj4gPiA+ID4gKwkJCQkJeGVfcGF0
+X2NhY2hlLT5lbnRyaWVzW3BhcnNlZF0ucnN2ZCA9DQo+ID4gPiA+IGlzX3Jlc2VydmVkOw0KPiA+
+ID4gPiArCQkJCQl4ZV9wYXRfY2FjaGUtPm1heF9pbmRleCA9IHBhcnNlZDsNCj4gPiA+ID4gKwkJ
+CQkJcGFyc2VkKys7DQo+ID4gPiA+ICsNCj4gPiA+ID4gKwkJCQkJaWd0X2RlYnVnKCJQYXJzZWQg
+UEFUIGVudHJ5ICVkOg0KPiA+ID4gPiAweCUwOHglc1xuIiwNCj4gPiA+ID4gKwkJCQkJCSAgcGFy
+c2VkIC0gMSwgdmFsdWUsDQo+ID4gPiA+ICsJCQkJCQkgIGlzX3Jlc2VydmVkID8gIiAocmVzZXJ2
+ZWQpIiA6DQo+ID4gPiA+ICIiKTsNCj4gPiA+ID4gKwkJCQl9IGVsc2Ugew0KPiA+ID4gPiArCQkJ
+CQlpZ3Rfd2FybigiVG9vIG1hbnkgUEFUIGVudHJpZXMsIGxpbmUNCj4gPiA+ID4gaWdub3JlZDog
+JXNcbiIsIGxpbmUpOw0KPiA+ID4gPiArCQkJCX0NCj4gPiA+ID4gKwkJCX0gZWxzZSB7DQo+ID4g
+PiA+ICsJCQkJaWd0X3dhcm4oIkZhaWxlZCB0byBwYXJzZSBQQVQgZW50cnkNCj4gPiA+ID4gbGlu
+ZTogJXNcbiIsIGxpbmUpOw0KPiA+ID4gPiArCQkJfQ0KPiA+ID4gPiArCQl9IGVsc2UgaWYgKHN0
+cm5jbXAobGluZSwgIlBBVF9NT0RFIiwgOCkgPT0gMCkgew0KPiA+ID4gPiArCQkJcCA9IHN0cnN0
+cihsaW5lLCAiKCIpOw0KPiA+ID4gPiArCQkJaWYgKHAgJiYgc3NjYW5mKHAsICIoJXgiLCAmdmFs
+dWUpID09IDEpDQo+ID4gPiA+ICsJCQkJeGVfcGF0X2NhY2hlLT5wYXRfbW9kZSA9IHZhbHVlOw0K
+PiA+ID4gPiArCQl9IGVsc2UgaWYgKHN0cm5jbXAobGluZSwgIlBBVF9BVFMiLCA3KSA9PSAwKSB7
+DQo+ID4gPiA+ICsJCQlwID0gc3Ryc3RyKGxpbmUsICIoIik7DQo+ID4gPiA+ICsJCQlpZiAocCAm
+JiBzc2NhbmYocCwgIigleCIsICZ2YWx1ZSkgPT0gMSkNCj4gPiA+ID4gKwkJCQl4ZV9wYXRfY2Fj
+aGUtPnBhdF9hdHMgPSB2YWx1ZTsNCj4gPiA+ID4gKwkJfSBlbHNlIGlmIChzdHJuY21wKGxpbmUs
+ICJJRFhbWEVfQ0FDSEVfTk9ORV0iLCAxOCkgPT0gMCkgew0KPiA+ID4gPiArCQkJcCA9IHN0cnN0
+cihsaW5lLCAiPSIpOw0KPiA+ID4gPiArCQkJaWYgKHAgJiYgc3NjYW5mKHAsICI9ICVkIiwgJnZh
+bHVlKSA9PSAxKQ0KPiA+ID4gPiArCQkJCXhlX3BhdF9jYWNoZS0+dWMgPSB2YWx1ZTsNCj4gPiA+
+ID4gKwkJfSBlbHNlIGlmIChzdHJuY21wKGxpbmUsICJJRFhbWEVfQ0FDSEVfV1RdIiwgMTYpID09
+IDApIHsNCj4gPiA+ID4gKwkJCXAgPSBzdHJzdHIobGluZSwgIj0iKTsNCj4gPiA+ID4gKwkJCWlm
+IChwICYmIHNzY2FuZihwLCAiPSAlZCIsICZ2YWx1ZSkgPT0gMSkNCj4gPiA+ID4gKwkJCQl4ZV9w
+YXRfY2FjaGUtPnd0ID0gdmFsdWU7DQo+ID4gPiA+ICsJCX0gZWxzZSBpZiAoc3RybmNtcChsaW5l
+LCAiSURYW1hFX0NBQ0hFX1dCXSIsIDE2KSA9PSAwKSB7DQo+ID4gPiA+ICsJCQlwID0gc3Ryc3Ry
+KGxpbmUsICI9Iik7DQo+ID4gPiA+ICsJCQlpZiAocCAmJiBzc2NhbmYocCwgIj0gJWQiLCAmdmFs
+dWUpID09IDEpDQo+ID4gPiA+ICsJCQkJeGVfcGF0X2NhY2hlLT53YiA9IHZhbHVlOw0KPiA+ID4g
+PiArCQl9IGVsc2UgaWYgKHN0cm5jbXAobGluZSwNCj4gPiA+ID4gIklEWFtYRV9DQUNIRV9OT05F
+X0NPTVBSRVNTSU9OXSIsIDI4KSA9PSAwKSB7DQo+ID4gPiA+ICsJCQlwID0gc3Ryc3RyKGxpbmUs
+ICI9Iik7DQo+ID4gPiA+ICsJCQlpZiAocCAmJiBzc2NhbmYocCwgIj0gJWQiLCAmdmFsdWUpID09
+IDEpDQo+ID4gPiA+ICsJCQkJeGVfcGF0X2NhY2hlLT51Y19jb21wID0gdmFsdWU7DQo+ID4gPiA+
+ICsJCX0NCj4gPiA+DQo+ID4gPiBXaGF0IHdpbGwgZmFsbCBpbnRvIHRoZSBlbHNlIGhlcmU/DQo+
+ID4gPg0KPiA+ID4gU2h1aWNoZW5nDQo+ID4gPg0KPiA+ID4gPiArCX0NCj4gPiA+ID4gKw0KPiA+
+ID4gPiArCWZyZWUobGluZSk7DQo+ID4gPiA+ICsJZmNsb3NlKGRiZ2ZzX2ZpbGUpOw0KPiA+ID4g
+PiArDQo+ID4gPiA+ICsJcmV0dXJuIHBhcnNlZDsNCj4gPiA+ID4gK30NCj4gPiA+ID4gKw0KPiA+
+ID4gPiAgc3RhdGljIHZvaWQgaW50ZWxfZ2V0X3BhdF9pZHgoaW50IGZkLCBzdHJ1Y3QgaW50ZWxf
+cGF0X2NhY2hlICpwYXQpICB7DQo+ID4gPiA+ICAJdWludDE2X3QgZGV2X2lkID0gaW50ZWxfZ2V0
+X2RybV9kZXZpZChmZCk7DQo+ID4gPiA+DQo+ID4gPiA+IC0JaWYgKGludGVsX2dyYXBoaWNzX3Zl
+cihkZXZfaWQpID09IElQX1ZFUigzNSwgMTEpKSB7DQo+ID4gPiA+IC0JCXBhdC0+dWMgPSAzOw0K
+PiA+ID4gPiAtCQlwYXQtPndiID0gMjsNCj4gPiA+ID4gLQkJcGF0LT5tYXhfaW5kZXggPSAzMTsN
+Cj4gPiA+ID4gLQl9IGVsc2UgaWYgKGludGVsX2dldF9kZXZpY2VfaW5mbyhkZXZfaWQpLT5ncmFw
+aGljc192ZXIgPT0gMzAgfHwNCj4gPiA+ID4gLQkJICAgaW50ZWxfZ2V0X2RldmljZV9pbmZvKGRl
+dl9pZCktPmdyYXBoaWNzX3ZlciA9PSAyMCkgew0KPiA+ID4gPiAtCQlwYXQtPnVjID0gMzsNCj4g
+PiA+ID4gLQkJcGF0LT53dCA9IDE1OyAvKiBDb21wcmVzc2VkICsgV0ItdHJhbnNpZW50ICovDQo+
+ID4gPiA+IC0JCXBhdC0+d2IgPSAyOw0KPiA+ID4gPiAtCQlwYXQtPnVjX2NvbXAgPSAxMjsgLyog
+Q29tcHJlc3NlZCArIFVDLCBYRTIgYW5kIGxhdGVyICovDQo+ID4gPiA+IC0JCXBhdC0+bWF4X2lu
+ZGV4ID0gMzE7DQo+ID4gPiA+IC0NCj4gPiA+ID4gLQkJLyogV2FfMTYwMjM1ODgzNDA6IENMT1Mz
+IGVudHJpZXMgYXQgZW5kIG9mIHRhYmxlIGFyZQ0KPiA+ID4gPiB1bnVzYWJsZSAqLw0KPiA+ID4g
+PiAtCQlpZiAoaW50ZWxfZ3JhcGhpY3NfdmVyKGRldl9pZCkgPT0gSVBfVkVSKDIwLCAxKSkNCj4g
+PiA+ID4gLQkJCXBhdC0+bWF4X2luZGV4IC09IDQ7DQo+ID4gPiA+ICsJaWYgKGludGVsX2dlbihk
+ZXZfaWQpID49IDIwKSB7DQo+ID4gPiA+ICsJCS8qIENhY2hlIHBhcnNlZCBQQVQgY29uZmlnIHBl
+ciBkZXZpY2UgdG8gYXZvaWQgcmUtcmVhZGluZw0KPiA+ID4gPiBkZWJ1Z2ZzIG9uIGV2ZXJ5IGNh
+bGwgKi8NCj4gPiA+ID4gKwkJc3RhdGljIF9fdGhyZWFkIHN0cnVjdCBpbnRlbF9wYXRfY2FjaGUg
+aW50ZWxfcGF0X2NhY2hlOw0KPiA+ID4gPiArCQlzdGF0aWMgX190aHJlYWQgdWludDE2X3QgY2Fj
+aGVkX2RldmlkOw0KPiA+ID4gPiArCQlpZiAoY2FjaGVkX2RldmlkICE9IGRldl9pZCkgew0KPiA+
+ID4gPiArCQkJaW50IHJldCA9IHhlX2dldF9wYXRfc3dfY29uZmlnKGZkLCAmaW50ZWxfcGF0X2Nh
+Y2hlKTsNCj4gPiA+ID4gKwkJCWlndF9yZXF1aXJlKHJldCA+IDApOw0KPiA+ID4gPiArCQkJY2Fj
+aGVkX2RldmlkID0gZGV2X2lkOw0KPiA+ID4gPiArCQl9DQo+ID4gPiA+ICsJCSpwYXQgPSBpbnRl
+bF9wYXRfY2FjaGU7DQo+ID4gPiA+ICAJfSBlbHNlIGlmIChJU19NRVRFT1JMQUtFKGRldl9pZCkp
+IHsNCj4gPiA+ID4gIAkJcGF0LT51YyA9IDI7DQo+ID4gPiA+ICAJCXBhdC0+d3QgPSAxOw0KPiA+
+ID4gPiBAQCAtOTYsMyArMTgyLDEzIEBAIHVpbnQ4X3QgaW50ZWxfZ2V0X3BhdF9pZHhfd2IoaW50
+IGZkKQ0KPiA+ID4gPiAgCWludGVsX2dldF9wYXRfaWR4KGZkLCAmcGF0KTsNCj4gPiA+ID4gIAly
+ZXR1cm4gcGF0LndiOw0KPiA+ID4gPiAgfQ0KPiA+ID4gPiArDQo+ID4gPiA+ICt1aW50OF90IHhl
+X2dldF9wYXRfZW50cmllcyhpbnQgZmQsIHN0cnVjdCB4ZV9wYXRfZW50cnkgKnhlX3BhdF90YWJs
+ZSkgew0KPiA+ID4gPiArCXN0cnVjdCBpbnRlbF9wYXRfY2FjaGUgcGF0ID0ge307DQo+ID4gPiA+
+ICsJaW50ZWxfZ2V0X3BhdF9pZHgoZmQsICZwYXQpOw0KPiA+ID4gPiArDQo+ID4gPiA+ICsJbWVt
+Y3B5KHhlX3BhdF90YWJsZSwgcGF0LmVudHJpZXMsIChwYXQubWF4X2luZGV4ICsgMSkgKg0KPiA+
+ID4gPiArc2l6ZW9mKHN0cnVjdCB4ZV9wYXRfZW50cnkpKTsNCj4gPiA+ID4gKw0KPiA+ID4gPiAr
+CXJldHVybiBwYXQubWF4X2luZGV4ICsgMTsNCj4gPiA+ID4gK30NCj4gPiA+ID4gZGlmZiAtLWdp
+dCBhL2xpYi9pbnRlbF9wYXQuaCBiL2xpYi9pbnRlbF9wYXQuaCBpbmRleA0KPiA+ID4gPiBlYjQ4
+Y2JjNjUuLjFkNmM0ZjFhZA0KPiA+ID4gPiAxMDA2NDQNCj4gPiA+ID4gLS0tIGEvbGliL2ludGVs
+X3BhdC5oDQo+ID4gPiA+ICsrKyBiL2xpYi9pbnRlbF9wYXQuaA0KPiA+ID4gPiBAQCAtNiw5ICs2
+LDE2IEBADQo+ID4gPiA+ICAjaWZuZGVmIElOVEVMX1BBVF9IDQo+ID4gPiA+ICAjZGVmaW5lIElO
+VEVMX1BBVF9IDQo+ID4gPiA+DQo+ID4gPiA+ICsjaW5jbHVkZSA8c3RkYm9vbC5oPg0KPiA+ID4g
+PiAgI2luY2x1ZGUgPHN0ZGludC5oPg0KPiA+ID4gPg0KPiA+ID4gPiAgI2RlZmluZSBERUZBVUxU
+X1BBVF9JTkRFWCAoKHVpbnQ4X3QpLTEpIC8qIGlndC1jb3JlIGNhbiBwaWNrIDF3YXkNCj4gPiA+
+ID4gb3IgYmV0dGVyICovDQo+ID4gPiA+ICsjZGVmaW5lIFhFX1BBVF9NQVhfRU5UUklFUyAzMg0K
+PiANCj4gTG9va3MgYSBsaXR0bGUgdG8gc21hbGw/DQpBY2NvcmRpbmcgdG8gdGhlIGJzcGVjLCBY
+ZTIvMyBwbGF0Zm9ybXMgYXJlIGxpbWl0ZWQgdG8gMzIgUEFUIGVudHJpZXMuIElmIGZ1dHVyZSBw
+bGF0Zm9ybXMgcmVxdWlyZSBtb3JlLCB3ZSBjYW4gaW5jcmVhc2UgdGhlIGxpbWl0IHRvIDY0IG9y
+IGhpZ2hlciBhcyBuZWVkZWQuDQoNClhpbg0KPiANCj4gUmVnYXJkcywNCj4gS2FtaWwNCj4gDQo+
+ID4gPiA+ICsNCj4gPiA+ID4gK3N0cnVjdCB4ZV9wYXRfZW50cnkgew0KPiA+ID4gPiArCXVpbnQz
+Ml90IHBhdDsNCj4gPiA+ID4gKwlib29sIHJzdmQ7DQo+ID4gPiA+ICt9Ow0KPiA+ID4gPg0KPiA+
+ID4gPiAgdWludDhfdCBpbnRlbF9nZXRfbWF4X3BhdF9pbmRleChpbnQgZmQpOw0KPiA+ID4gPg0K
+PiA+ID4gPiBAQCAtMTgsNCArMjUsNiBAQCB1aW50OF90IGludGVsX2dldF9wYXRfaWR4X3diKGlu
+dCBmZCk7DQo+ID4gPiA+DQo+ID4gPiA+ICB1aW50OF90IGludGVsX2dldF9wYXRfaWR4X3VjX2Nv
+bXAoaW50IGZkKTsNCj4gPiA+ID4NCj4gPiA+ID4gK3VpbnQ4X3QgeGVfZ2V0X3BhdF9lbnRyaWVz
+KGludCBmZCwgc3RydWN0IHhlX3BhdF9lbnRyeQ0KPiA+ID4gPiArKnhlX3BhdF90YWJsZSk7DQo+
+ID4gPiA+ICsNCj4gPiA+ID4gICNlbmRpZiAvKiBJTlRFTF9QQVRfSCAqLw0KPiA+ID4gPiAtLQ0K
+PiA+ID4gPiAyLjQzLjANCj4gPg0K
