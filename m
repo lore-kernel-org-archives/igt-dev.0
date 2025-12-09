@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4565DD3B7FB
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Dec 2025 03:22:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31FF5D3B7FC
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Dec 2025 03:22:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DEEFD10E37F;
-	Tue,  9 Dec 2025 03:22:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D749D10E47E;
+	Tue,  9 Dec 2025 03:22:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YKpX+zZm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RQVohUjx";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E72D910E37F
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Dec 2025 03:22:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F96610E37F
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Dec 2025 03:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765250543; x=1796786543;
+ t=1765250545; x=1796786545;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=eHSUQWc52PhNUyTWR1VSnm3BVrZulSYgzNYV7PTd7FM=;
- b=YKpX+zZmf5JNoYauxBaQy+YAQc7etbe0WH+J2YqzLcnAaSRZMmgYNeBd
- y3B6gTUl1HbAZ8+F4W0HvyAaaSW7d1hiKiZuTDtTB+0giDn/HV6xQRAVz
- xJEDneq9ZbvyYwVSXVaq75w6XE8TMPGe0LKkhn1y7Z1O95B24HpwHzl87
- 7ncKweqzSVpwidLe13/+uwlu2HvU4TadLs16d9WF7fjf5bYJGScZQVLFr
- 1r72orzvyCGRZThhKqPj8NI2w9eMJgpJL+3rWUpmVrJuuFXUTePrFGngm
- MEBSHziD0BgQXh3nwRRl9LUKFJiOX/CLjq5yJHJp+LZLIKp47WW9AD8dW Q==;
-X-CSE-ConnectionGUID: tAEswf/5RcCRhnx2z/J1jQ==
-X-CSE-MsgGUID: P0UA+cv+QZG81lfKHk5tMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11636"; a="67164316"
-X-IronPort-AV: E=Sophos;i="6.20,260,1758610800"; d="scan'208";a="67164316"
+ bh=xSnWG7wtxwXMY4CMCJoqZko7l5bSqMamlpBbrsAtIuo=;
+ b=RQVohUjxAqLETMdmLmik6S8fTMAf7or8IuZ6S3x2Tx4JPL9iz0vXfkxL
+ eVsU4lZR+cMFM0djQTQV7cyB3etvJH4Q88JXqWOv5yEAODTzwlvbNVg3+
+ WWZN1jTQfDuJK2nP0rVxAXEUcvhuXuqijyw7PCnBZ0OU5C5QSb579ItND
+ ufYZs+B37To/4odLEyaoX3/8PlqrEpboAcA2N+TY34WRxh3gZ4I1/MgIE
+ aWIy2COUwYs21XjtgsUjtkwwba3Hev5UGH2xLXUq+PwLdcx55rUC7hnBA
+ ai0kxmHEu5oaTa0/Vq1J941qkHam3T+RcJP2Y1L+Z3LxBayAPjQ/7kh8A Q==;
+X-CSE-ConnectionGUID: GXEqRxRIQ8aC6Gsnj3wHhA==
+X-CSE-MsgGUID: jg3giTTZSF6Vs8DhVv5zYA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11636"; a="67164324"
+X-IronPort-AV: E=Sophos;i="6.20,260,1758610800"; d="scan'208";a="67164324"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Dec 2025 19:22:22 -0800
-X-CSE-ConnectionGUID: 54adnXVAQnmojJXo1IEPDQ==
-X-CSE-MsgGUID: TpPg2FivTy2Bn1HlgFSlIA==
+ 08 Dec 2025 19:22:24 -0800
+X-CSE-ConnectionGUID: qXiuRkUkQuC7SbpeRGJ9uQ==
+X-CSE-MsgGUID: Si7YTBNKRTmbmN8NjcHNJw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,260,1758610800"; d="scan'208";a="196570891"
+X-IronPort-AV: E=Sophos;i="6.20,260,1758610800"; d="scan'208";a="196570909"
 Received: from nvishwa1-desk.sc.intel.com ([172.25.29.139])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  08 Dec 2025 19:22:21 -0800
@@ -45,14 +45,14 @@ From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: sai.gowtham.ch@intel.com, priyanka.dandamudi@intel.com,
  kamil.konieczny@linux.intel.com, stuart.summers@intel.com
-Subject: [PATCH v3 01/18] drm-uapi/xe: Sync with Multi-Queue uapi
-Date: Mon,  8 Dec 2025 19:22:07 -0800
-Message-ID: <20251209032208.1540217-21-niranjana.vishwanathapura@intel.com>
+Subject: [PATCH v3 07/18] tests/intel/xe_exec_multi_queue: Add multiple
+ placement test
+Date: Mon,  8 Dec 2025 19:22:13 -0800
+Message-ID: <20251209032208.1540217-27-niranjana.vishwanathapura@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251209032208.1540217-20-niranjana.vishwanathapura@intel.com>
 References: <20251209032208.1540217-20-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,100 +69,62 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Sync kernel header to get Multi-Queue uapi definitions.
+Validate using virtual exec queues with multiple placements.
 
-v3: uapi change as per kernel rebase,
-    properly import kernel uapi documentation changes (Stuart)
+v2: Run test even with single engine instance
 
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+Reviewed-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 44 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ tests/intel/xe_exec_multi_queue.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 89ab54935..614522dce 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -106,6 +106,7 @@ extern "C" {
- #define DRM_XE_OBSERVATION		0x0b
- #define DRM_XE_MADVISE			0x0c
- #define DRM_XE_VM_QUERY_MEM_RANGE_ATTRS	0x0d
-+#define DRM_XE_EXEC_QUEUE_SET_PROPERTY	0x0e
- 
- /* Must be kept compact -- no holes */
- 
-@@ -123,6 +124,7 @@ extern "C" {
- #define DRM_IOCTL_XE_OBSERVATION		DRM_IOW(DRM_COMMAND_BASE + DRM_XE_OBSERVATION, struct drm_xe_observation_param)
- #define DRM_IOCTL_XE_MADVISE			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_MADVISE, struct drm_xe_madvise)
- #define DRM_IOCTL_XE_VM_QUERY_MEM_RANGE_ATTRS	DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_VM_QUERY_MEM_RANGE_ATTRS, struct drm_xe_vm_query_mem_range_attr)
-+#define DRM_IOCTL_XE_EXEC_QUEUE_SET_PROPERTY	DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_SET_PROPERTY, struct drm_xe_exec_queue_set_property)
- 
- /**
-  * DOC: Xe IOCTL Extensions
-@@ -1233,6 +1235,20 @@ struct drm_xe_vm_bind {
-  *    Given that going into a power-saving state kills PXP HWDRM sessions,
-  *    runtime PM will be blocked while queues of this type are alive.
-  *    All PXP queues will be killed if a PXP invalidation event occurs.
-+ *  - %DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP - Create a multi-queue group
-+ *    or add secondary queues to a multi-queue group.
-+ *    If the extension's 'value' field has %DRM_XE_MULTI_GROUP_CREATE flag set,
-+ *    then a new multi-queue group is created with this queue as the primary queue
-+ *    (Q0). Otherwise, the queue gets added to the multi-queue group whose primary
-+ *    queue's exec_queue_id is specified in the lower 32 bits of the 'value' field.
-+ *    If the extension's 'value' field has %DRM_XE_MULTI_GROUP_KEEP_ACTIVE flag
-+ *    set, then the multi-queue group is kept active after the primary queue is
-+ *    destroyed.
-+ *    All the other non-relevant bits of extension's 'value' field while adding the
-+ *    primary or the secondary queues of the group must be set to 0.
-+ *  - %DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY - Set the queue
-+ *    priority within the multi-queue group. Current valid priority values are 0–2
-+ *    (default is 1), with higher values indicating higher priority.
-  *
-  * The example below shows how to use @drm_xe_exec_queue_create to create
-  * a simple exec_queue (no parallel submission) of class
-@@ -1273,6 +1289,10 @@ struct drm_xe_exec_queue_create {
- #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY		0
- #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE		1
- #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PXP_TYPE		2
-+#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP		4
-+#define     DRM_XE_MULTI_GROUP_CREATE				(1ull << 63)
-+#define     DRM_XE_MULTI_GROUP_KEEP_ACTIVE			(1ull << 62)
-+#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY	5
- 	/** @extensions: Pointer to the first extension struct, if any */
- 	__u64 extensions;
- 
-@@ -2254,6 +2274,30 @@ struct drm_xe_vm_query_mem_range_attr {
- 
- };
+diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
+index 6c1b6616f..4acf5a47f 100644
+--- a/tests/intel/xe_exec_multi_queue.c
++++ b/tests/intel/xe_exec_multi_queue.c
+@@ -397,6 +397,29 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci, int num_placement,
+ 	test_legacy_mode(fd, eci, num_placement, n_exec_queues, n_execs, flags);
+ }
  
 +/**
-+ * struct drm_xe_exec_queue_set_property - exec queue set property
-+ *
-+ * Sets execution queue properties dynamically.
-+ * Currently only %DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY
-+ * property can be dynamically set.
++ * SUBTEST: virtual
++ * Description: Validate virtual queues with multiple placements
++ * Test category: functionality test
 + */
-+struct drm_xe_exec_queue_set_property {
-+	/** @extensions: Pointer to the first extension struct, if any */
-+	__u64 extensions;
++static void
++test_exec_virtual(int fd, int gt, int class)
++{
++	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
++	struct drm_xe_engine_class_instance *hwe;
++	int n = 0;
 +
-+	/** @exec_queue_id: Exec queue ID */
-+	__u32 exec_queue_id;
++	xe_for_each_engine(fd, hwe) {
++		if (hwe->engine_class != class || hwe->gt_id != gt)
++			continue;
 +
-+	/** @property: property to set */
-+	__u32 property;
++		eci[n++] = *hwe;
++	}
++	igt_assert(n);
 +
-+	/** @value: property value */
-+	__u64 value;
++	test_exec(fd, eci, n, n, n, 0);
++}
 +
-+	/** @reserved: Reserved */
-+	__u64 reserved[2];
-+};
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -422,6 +445,11 @@ igt_main
+ 			xe_for_each_multi_queue_engine_class(class)
+ 				test_sanity(fd, gt, class);
+ 
++	igt_subtest_f("virtual")
++		xe_for_each_gt(fd, gt)
++			xe_for_each_multi_queue_engine_class(class)
++				test_exec_virtual(fd, gt, class);
 +
- #if defined(__cplusplus)
- }
- #endif
+ 	for (const struct section *s = sections; s->name; s++) {
+ 		igt_subtest_f("one-queue-%s", s->name)
+ 			xe_for_each_multi_queue_engine(fd, hwe)
 -- 
 2.43.0
 
