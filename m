@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BDE6D3B9B6
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Dec 2025 00:39:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6517D3B9B7
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Dec 2025 00:39:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EC26D10E669;
-	Wed, 10 Dec 2025 00:39:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 847CD10E662;
+	Wed, 10 Dec 2025 00:39:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LJ+6NZt6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RyhLi+oG";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E582810E641
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 00:39:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B86E10E625
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 00:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765327186; x=1796863186;
+ t=1765327185; x=1796863185;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=1MpLR0/ELYpLuepG/TUwUXnoADdfz/MaJ6Vmy6zML8Y=;
- b=LJ+6NZt6sJRaj6EYageI/LFYKruZJCv258jeofVG1j0Hhl8XwhFiZAU7
- 7WVgdtprGyP9fVGXae54e0JmMtgUlH/rwnLmh5Tf1F31x8F4PBd3wD6UL
- s2noJWAwvqXG7Gyzxgi5++p5QlyXYOjREzS1oUW14GBbI1O2fNbfO1Sp9
- Tp03fQ5yJckxmXZB+2cJUnu2RIJcb7y7oQ8jx6CIHsQGKlgf+M1ugjSsZ
- GVdcU+f9TzzxVswob6rdNlwqSOP/1vUF5WHnW1r7EG522fq51+5lmjInx
- tc1k1gBJi7ZrSU3O1+mSPQHKlGiG19UiMbSFOM8sLGK3ZuCZTNPddo9Zh Q==;
-X-CSE-ConnectionGUID: niAhwbTkT7OJGvEGQ8Itgg==
-X-CSE-MsgGUID: v3YzGfgjRKGclmYj1bG63w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="67180411"
-X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; d="scan'208";a="67180411"
+ bh=tj0b+B7g6Yeia2V0MOrAkOPgcJXNYKxC/bCwJzBIBwY=;
+ b=RyhLi+oGeDB92YePl0sf8vdk2Joj4Id3DmP/1uYpBkOZSZFhXlgjcaTg
+ 0br8kpwN5XYnjHv6Q6t+bO74fMhT1LfiKvNJMh0x2YZez2ZX2twRIBMjc
+ YX5iZElTkGSA5FvhR6bRarh+wRVIDQHQUb65cJdwtHNee3C9rEuABiBqd
+ Cmo+OL+kJA6Al6cbNOalpeASgGFiVftSdjrb5PysBAp31TrtydV6gfQln
+ RZ+tzY/SF1Fp0WPFYfwJsPa2Bnk2ngVYcoxH/ODPzzjYRDaU+C4xer0DT
+ WexJRlqgqpTRA9tj/SR0hgvb0e5R48y0kZ+3RVXcmvwz9Eck9J52SI1FY Q==;
+X-CSE-ConnectionGUID: gcAmOXVpQPmWWqVQR43nHw==
+X-CSE-MsgGUID: 5w08CuLUQ9WgnPrPhRq9YQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="67180399"
+X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; d="scan'208";a="67180399"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2025 16:39:46 -0800
-X-CSE-ConnectionGUID: NkOYIDksQPe++bsHmAHzZQ==
-X-CSE-MsgGUID: RZSyjFu/SQ2SiJIoxR+d4A==
+ 09 Dec 2025 16:39:44 -0800
+X-CSE-ConnectionGUID: VBaAz9w7QKifY3+JvjCGkQ==
+X-CSE-MsgGUID: 7TEe5agXT7ejy0ReuqhuXw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; d="scan'208";a="196421641"
+X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; d="scan'208";a="196421609"
 Received: from nvishwa1-desk.sc.intel.com ([172.25.29.139])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2025 16:39:46 -0800
+ 09 Dec 2025 16:39:44 -0800
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: sai.gowtham.ch@intel.com, priyanka.dandamudi@intel.com,
  kamil.konieczny@linux.intel.com, stuart.summers@intel.com
-Subject: [PATCH v4 15/18] tests/intel/xe_exec_multi_queue: Add priority test
-Date: Tue,  9 Dec 2025 16:39:50 -0800
-Message-ID: <20251210003936.1613078-35-niranjana.vishwanathapura@intel.com>
+Subject: [PATCH v4 05/18] tests/intel/xe_exec_multi_queue: Validate queue
+ priority setting
+Date: Tue,  9 Dec 2025 16:39:40 -0800
+Message-ID: <20251210003936.1613078-25-niranjana.vishwanathapura@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251210003936.1613078-20-niranjana.vishwanathapura@intel.com>
 References: <20251210003936.1613078-20-niranjana.vishwanathapura@intel.com>
@@ -68,275 +69,150 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Validate intra queue group priority setting.
-Validate that a higher priority queue in a queue group
-can preempt the lower priority queue of the group.
+Validate setting priority of queues within the multi queue
+group.
 
-During a queue switch, the currently running queue is
-always switched out without regard to its priority.
-The priority is only a factor in determining which
-other queue of the group will be scheduled in.
-
-v2: Macro and variable rename (priyanka)
-    Remove simulation related code (Priyanka)
-    Remove hardcoding of number of bits.
-    Use BASE_ADDRESS macro for address (Sai)
-v3: Update comments (Stuart)
+v2: Add and use XE_EXEC_QUEUE_NUM_PRIORITIES (priyanka)
 
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Signed-off-by: Xin Wang <x.wang@intel.com>
 Reviewed-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
 ---
- tests/intel/xe_exec_multi_queue.c | 206 ++++++++++++++++++++++++++++++
- 1 file changed, 206 insertions(+)
+ tests/intel/xe_exec_multi_queue.c | 67 +++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
 diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
-index e54b39d1d..412b3f417 100644
+index 6082d0488..561c1a2c9 100644
 --- a/tests/intel/xe_exec_multi_queue.c
 +++ b/tests/intel/xe_exec_multi_queue.c
-@@ -13,15 +13,18 @@
- 
- #include "igt.h"
- #include "xe_drm.h"
-+#include "igt_core.h"
- #include "lib/igt_syncobj.h"
- 
+@@ -18,9 +18,15 @@
  #include "xe/xe_ioctl.h"
  #include "xe/xe_query.h"
-+#include "xe/xe_spin.h"
  
- #define XE_EXEC_QUEUE_PRIORITY_LOW	0
- #define XE_EXEC_QUEUE_PRIORITY_NORMAL	1
- #define XE_EXEC_QUEUE_PRIORITY_HIGH	2
- #define XE_EXEC_QUEUE_NUM_PRIORITIES	3
-+#define XE_EXEC_QUEUE_PRIORITY_N	(XE_EXEC_QUEUE_NUM_PRIORITIES * 2 + 1)
- 
++#define XE_EXEC_QUEUE_PRIORITY_LOW	0
++#define XE_EXEC_QUEUE_PRIORITY_NORMAL	1
++#define XE_EXEC_QUEUE_PRIORITY_HIGH	2
++#define XE_EXEC_QUEUE_NUM_PRIORITIES	3
++
  #define MAX_N_EXEC_QUEUES	64
  
-@@ -33,6 +36,7 @@
- #define INVALIDATE		(0x1 << 5)
- #define FAULT_MODE		(0x1 << 6)
- #define SMEM			(0x1 << 7)
-+#define WAIT_MODE		(0x1 << 8)
+ #define USERPTR			(0x1 << 0)
++#define PRIORITY		(0x1 << 1)
  
  #define MAX_INSTANCE 9
  
-@@ -226,6 +230,204 @@ test_sanity(int fd, int gt, int class)
- 	__test_sanity(fd, gt, class, true);
- }
- 
-+static void
-+__test_priority(int fd, struct drm_xe_engine_class_instance *eci,
-+		unsigned int flags)
-+{
-+#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
-+	struct drm_xe_sync sync = {
-+		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		.timeline_value = USER_FENCE_VALUE,
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(&sync),
-+	};
-+	uint64_t vm_sync = 0, addr = BASE_ADDRESS;
-+	uint32_t exec_queues[XE_EXEC_QUEUE_PRIORITY_N];
-+	struct xe_spin *spin[XE_EXEC_QUEUE_PRIORITY_N];
-+	uint32_t vm, num_queues, num_queue_priorities, bo = 0;
-+	uint32_t start_order[XE_EXEC_QUEUE_PRIORITY_N] = { 0 };
-+	int64_t fence_timeout = NSEC_PER_SEC;
-+	size_t bo_size;
-+	/*
-+	 * Q1 - Q6 are used for the priority test.
-+	 * Q Priority = id % 3
-+	 * 	QID	Q1 Q2 Q3 Q4 Q5 Q6
-+	 * Priority	 1  2  0  1  2  0
-+	 * The HW treats priority 1 and 0 the same, so it should
-+	 * pick Q with priority: Q2, Q5, Q1, Q3, Q4, Q6.
-+	 */
-+	int expect_order[] = {0,2,5,1,3,4,6};
-+	uint32_t already_in_order = 0;		// bitmask to record Q started info
-+	struct drm_xe_ext_set_property multi_queue = {
+@@ -37,6 +43,15 @@ __test_sanity(int fd, int gt, int class)
+ 		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
+ 		.value = DRM_XE_MULTI_GROUP_CREATE,
+ 	};
++	struct drm_xe_ext_set_property mq_priority = {
 +		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
-+		.value = DRM_XE_MULTI_GROUP_CREATE,
++		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY,
 +	};
-+	uint64_t ext = to_user_pointer(&multi_queue);
-+	int i, j, sleep_duration = 1;
-+	void *bo_map;
++	struct drm_xe_ext_set_property priority = {
++		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
++		.value = XE_EXEC_QUEUE_PRIORITY_NORMAL,
++	};
+ 	struct drm_xe_engine_class_instance vm_bind_eci = {
+ 		.engine_class = DRM_XE_ENGINE_CLASS_VM_BIND,
+ 	};
+@@ -91,6 +106,11 @@ __test_sanity(int fd, int gt, int class)
+ 	multi_queue.base.next_extension = to_user_pointer(&multi_queue);
+ 	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
+ 
++	/* Setting other queue properties are valid for Q0 */
++	multi_queue.base.next_extension = to_user_pointer(&priority);
++	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
++	xe_exec_queue_destroy(fd, exec_queues[0]);
 +
-+	num_queue_priorities = XE_EXEC_QUEUE_NUM_PRIORITIES;
-+	num_queues = num_queue_priorities * 2 + 1;
-+	igt_assert(num_queues <= XE_EXEC_QUEUE_PRIORITY_N);
-+	igt_assert(num_queues <= sizeof(uint32_t) * 8);
+ 	/* Adding queues to group after primary is destroyed is invalid */
+ 	multi_queue.base.next_extension = 0;
+ 	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
+@@ -119,6 +139,11 @@ __test_sanity(int fd, int gt, int class)
+ 	if (n > 1)
+ 		igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, n, eci, ext, &val), -EINVAL);
+ 
++	/* Setting properties (other than MULTI_QUEUE_PRIORITY) is invalid for secondary queues */
++	multi_queue.base.next_extension = to_user_pointer(&priority);
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
 +
-+	igt_debug("%s flags 0x%x eci %d:%d:%d\n", __func__, flags, eci[0].gt_id,
-+		 eci[0].engine_class, eci[0].engine_instance);
++	multi_queue.base.next_extension = 0;
+ 	for (i = 1; i < MAX_N_EXEC_QUEUES; i++)
+ 		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
+ 
+@@ -149,6 +174,37 @@ __test_sanity(int fd, int gt, int class)
+ 			xe_exec_queue_destroy(fd, exec_queues[i]);
+ 	}
+ 
++	/* MQ priority is not valid for regular queues */
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci,
++					     to_user_pointer(&mq_priority), &val), -EINVAL);
 +
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-+	bo_size = xe_bb_size(fd, sizeof(*spin[0]) * num_queues);
++	/* MQ priority validation */
++	multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
++	multi_queue.base.next_extension = to_user_pointer(&mq_priority);
++	mq_priority.value = XE_EXEC_QUEUE_NUM_PRIORITIES;
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
 +
-+	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci[0].gt_id),
-+			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	bo_map = xe_bo_map(fd, bo, bo_size);
-+	for (i = 0; i < num_queues; i++)
-+		spin[i] = bo_map + i * sizeof(*spin[0]);
-+
-+	/* Use the default priority for Q0 because we are explicitly waiting for it below */
++	mq_priority.value = XE_EXEC_QUEUE_PRIORITY_HIGH;
 +	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
 +	multi_queue.value = exec_queues[0];
++	exec_queues[1] = xe_exec_queue_create(fd, vm, eci, ext);
++	xe_exec_queue_destroy(fd, exec_queues[1]);
++	xe_exec_queue_destroy(fd, exec_queues[0]);
 +
-+	if (flags & DYN_PRIORITY) {
-+		for (i = 1; i < num_queues; i++)
-+			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
-+	} else {
++	igt_fork(child, 1) {
++		igt_drop_root();
++
++		/* Tests MULTI_QUEUE_PRIORITY property by dropping root permissions */
++		multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
++		mq_priority.value = XE_EXEC_QUEUE_PRIORITY_HIGH;
++		exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
++		multi_queue.value = exec_queues[0];
++		exec_queues[1] = xe_exec_queue_create(fd, vm, eci, ext);
++		xe_exec_queue_destroy(fd, exec_queues[1]);
++		xe_exec_queue_destroy(fd, exec_queues[0]);
++	}
++	igt_waitchildren();
++
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
+@@ -211,8 +267,17 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
+ 			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+ 			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
+ 		};
 +		struct drm_xe_ext_set_property mq_priority = {
 +			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
 +			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY,
 +		};
-+
-+		multi_queue.base.next_extension = to_user_pointer(&mq_priority);
-+
-+		/* Create secondary queues with increasing order of priority */
-+		for (i = 1; i < num_queues; i++) {
-+			mq_priority.value = i % num_queue_priorities;
-+			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
-+		}
-+	}
-+
-+	sync.addr = to_user_pointer(&vm_sync);
-+	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, &sync, 1);
-+
-+	xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, fence_timeout);
-+	vm_sync = 0;
-+
-+	for (i = 0; i < num_queues; i++) {
-+		uint64_t spin_addr = addr + i * sizeof(struct xe_spin);
-+
-+		xe_spin_init_opts(spin[i], .addr = spin_addr, .preempt = true);
-+		sync.addr = spin_addr + (char *)&spin[i]->exec_sync - (char *)spin[i];
-+		exec.exec_queue_id = exec_queues[i];
-+		exec.address = spin_addr;
-+		xe_exec(fd, &exec);
-+
-+		/* Wait for job on Q0 to start, other queues block behind Q0 */
-+		if (!i)
-+			xe_spin_wait_started(spin[i]);
-+	}
-+
-+	sleep(sleep_duration);
-+
-+	/*
-+	 * Expect the job on other queue to not get scheduled while the spinner
-+	 * on q0 is not waiting on preempt condition.
-+	 */
-+	for (i = 1; i < num_queues; i++)
-+		igt_assert(!xe_spin_started(spin[i]));
-+
-+	if (flags & DYN_PRIORITY) {
-+		/* Assign increasing order of priority for secondary queues */
-+		for (i = 1; i < num_queues; i++)
-+			xe_exec_queue_set_property(fd, exec_queues[i],
-+						   DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY,
-+						   i % num_queue_priorities);
-+
-+		/* Wait for priorities to take effect */
-+		sleep(sleep_duration);
-+	}
-+
-+	/*
-+	 * Trigger a queue switch by making the spinner on q0 to wait on preempt
-+	 * condition, allowing job on q1 to get scheduled and finish. When we end
-+	 * the spin[0], it triggers the CFEG to perform a queue priority arbitration
-+	 * rather than a full context switch out. Consequently, in both semaphore
-+	 * (WAIT_MODE) and non-semaphore scenarios, a priority check will occur.
-+	 */
-+	if (flags & WAIT_MODE)
-+		xe_spin_preempt_wait(spin[0]);
-+	else
-+		xe_spin_end(spin[0]);
-+
-+	/* Wait for jobs to get scheduled */
-+	i = 1;
-+	while (i < num_queues) {
-+		for (j = 1; j < num_queues; j++) {
-+			if (xe_spin_started(spin[j]) && ((already_in_order & (1 << j)) == 0)) {
-+				start_order[i] = j;
-+				xe_spin_end(spin[j]);
-+				xe_wait_ufence(fd, &spin[j]->exec_sync, USER_FENCE_VALUE,
-+					       exec_queues[j], fence_timeout);
-+				already_in_order |= (1 << j);
-+				i++;
-+			}
-+		}
-+	}
-+
-+	/* While ending spinner on q0, bring it out of preempt wait */
-+	if (flags & WAIT_MODE) {
-+		xe_spin_end(spin[0]);
-+		xe_spin_preempt_nowait(spin[0]);
-+	}
-+	xe_wait_ufence(fd, &spin[0]->exec_sync, USER_FENCE_VALUE, exec_queues[0], fence_timeout);
-+
-+	igt_debug("Order\t Actual\t Expect\n");
-+	for (i = 1, j = 0; i < num_queues; i++) {
-+		igt_debug("  %d\t  Q%d(%d)\t  Q%d(%d)\n",i, start_order[i], start_order[i] % num_queue_priorities,
-+                         expect_order[i], expect_order[i] % num_queue_priorities);
-+
-+		/* The priority 0, 1 are the same, so we can skip the comparison */
-+		if (expect_order[i] % num_queue_priorities < XE_EXEC_QUEUE_PRIORITY_HIGH &&
-+		    start_order[i] % num_queue_priorities < XE_EXEC_QUEUE_PRIORITY_HIGH)
-+			continue;
-+
-+		if (start_order[i] % num_queue_priorities != expect_order[i] % num_queue_priorities)
-+			j++;
-+	}
-+
-+	/* There should be no out of order execution */
-+	igt_assert(j == 0);
-+
-+	sync.addr = to_user_pointer(&vm_sync);
-+	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, &sync, 1);
-+	xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, fence_timeout);
-+
-+	for (i = 0; i < num_queues; i++)
-+		xe_exec_queue_destroy(fd, exec_queues[i]);
-+
-+	munmap(bo_map, bo_size);
-+	gem_close(fd, bo);
-+
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+/**
-+ * SUBTEST: priority
-+ * Description: Validate queue priority setting
-+ * Test category: functionality test
-+ */
-+static void
-+test_priority(int fd, struct drm_xe_engine_class_instance *eci)
-+{
-+	__test_priority(fd, eci, 0);
-+	__test_priority(fd, eci, WAIT_MODE);
-+	__test_priority(fd, eci, DYN_PRIORITY);
-+	__test_priority(fd, eci, DYN_PRIORITY | WAIT_MODE);
-+}
-+
- static void
- test_preempt_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_placement,
- 		  int n_exec_queues, int n_execs, unsigned int flags)
-@@ -721,6 +923,10 @@ int igt_main()
- 			xe_for_each_multi_queue_engine_class(class)
- 				test_exec_virtual(fd, gt, class);
+ 		uint64_t ext = to_user_pointer(&multi_queue);
  
-+	igt_subtest_f("priority")
-+		xe_for_each_multi_queue_engine(fd, hwe)
-+			test_priority(fd, hwe);
++		if (flags & PRIORITY) {
++			multi_queue.base.next_extension = to_user_pointer(&mq_priority);
++			mq_priority.value = XE_EXEC_QUEUE_PRIORITY_NORMAL + (rand() % 2);
++		}
 +
- 	for (const struct section *s = sections; s->name; s++) {
- 		igt_subtest_f("one-queue-%s", s->name)
- 			xe_for_each_multi_queue_engine(fd, hwe)
+ 		multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
+ 		igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, num_placement, eci,
+ 						     ext, &exec_queues[i]), 0);
+@@ -313,6 +378,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
+  *
+  * @basic:					basic
+  * @userptr:					userptr
++ * @priority:					priority
+  */
+ static void
+ test_exec(int fd, struct drm_xe_engine_class_instance *eci, int num_placement,
+@@ -330,6 +396,7 @@ int igt_main()
+ 	} sections[] = {
+ 		{ "basic", 0 },
+ 		{ "userptr", USERPTR },
++		{ "priority", PRIORITY },
+ 		{ NULL },
+ 	};
+ 	int fd, gt, class;
 -- 
 2.43.0
 
