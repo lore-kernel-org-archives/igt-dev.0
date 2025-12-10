@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55250D3C92C
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Dec 2025 16:32:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82BFBD3C928
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Dec 2025 16:41:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A68CF10E276;
-	Wed, 10 Dec 2025 16:32:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 36E1310E785;
+	Wed, 10 Dec 2025 16:41:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mQR3r279";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g0ZQ6UEw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA72810E785
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 16:32:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE59D10E77B
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 16:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765384333; x=1796920333;
+ t=1765384870; x=1796920870;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=xW4RD9hNngP1mVfpQyXP4Akdr2GLQJK0+jHsCDF3ZkQ=;
- b=mQR3r279g2aonwAuOSdziJ93rFbJDxckODhoX0S3UpkxngGIMNVeWtej
- DsTlqqB7k2oZ7jPHtIM7gBqXCj/eiJoeT3XsdsCkKYpwo3rPjSMnooGkw
- Q98VKOGBn5IVQO3Rm9aW5e8wRIRev/T5FgH8C1X180cHxq0pSrLSPYpTI
- ZEpEqFzJtQnZTRXurNT//jrUQQ3W2DP+RjrHR66Fn3kC4TZkI8/882iBd
- vt6pJa960pDOUIRb69rkWhwoy95I+MTnknn/RSs4FBSExuzVhjGWab+It
- KibIsz0+BrgSNdcQD4snRUkPlEwT8oG/X5k5mykG2XtydSiVYlrRs7orN A==;
-X-CSE-ConnectionGUID: nU7fYScbTVmCozEm3O+0OQ==
-X-CSE-MsgGUID: nnVUlSkqSRqQ6HG2J2Rf9A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="67316768"
-X-IronPort-AV: E=Sophos;i="6.20,264,1758610800"; d="scan'208";a="67316768"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2025 08:32:12 -0800
-X-CSE-ConnectionGUID: ZkQSpMH2Ru+r7OY1zVrlWw==
-X-CSE-MsgGUID: 3cdmtAILSsaURK/dQTkLgw==
+ bh=LdSQuJm7D4lS4DjBoPCioD3JIEG1aVTtns5j5UFZcoU=;
+ b=g0ZQ6UEw1Q5fDbKT10fnR7PMIVhub94SZlt1IYdnmlrwsXySACu0/AwK
+ A1xsdh54MUfueKCVc+YTNCK3KiZhWSz2iDUzHqfL+IZXwB7LsaGPhdmbx
+ YXjapRlxU8j2is/4tjkNgZhgeq+tCb4Frw0CZr5TQUYCni3GQLKVAItaJ
+ huECMbXjODwO28Nns6O6wuN4YURzExeirljDtGyJzoyOcMVXMBAQuuGLi
+ AOaV1vj1h8ZgghzgJUTvSEfm95AMcYculhQCF3aHEubna0DTAfRQARmKv
+ zByLXtTeUfOTcB7dsn/PtGvlTir541SfAqdrE/skj99R++jpuXMSc6HKB A==;
+X-CSE-ConnectionGUID: O19Gi2dyT16wqfyTxV6/Og==
+X-CSE-MsgGUID: 6Il5VdFIQUiyOm4my9Golw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="77976909"
+X-IronPort-AV: E=Sophos;i="6.20,264,1758610800"; d="scan'208";a="77976909"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Dec 2025 08:41:10 -0800
+X-CSE-ConnectionGUID: i7XwkWArTMGYi6PrTiVmlg==
+X-CSE-MsgGUID: OtGT2XutR+SctSYrFkgAXw==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,264,1758610800"; d="scan'208";a="197351883"
 Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.244.39])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2025 08:32:10 -0800
-Date: Wed, 10 Dec 2025 17:32:08 +0100
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Dec 2025 08:41:09 -0800
+Date: Wed, 10 Dec 2025 17:41:07 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Francois Dugast <francois.dugast@intel.com>
 Cc: igt-dev@lists.freedesktop.org, Matthew Brost <matthew.brost@intel.com>
 Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe_exec_system_allocator: Add new
  SVM compute tests
-Message-ID: <olcukudmlfseou22tbkp5bpgjbnj2lrowf4t2rxnwm5o2rktl6@67ib5cr4habv>
+Message-ID: <mey3oehlsrzsteourc4m2uk7g7rynk64glwngl623xgd33v6ga@gdhmyrplssu4>
 References: <20251204113726.567142-1-francois.dugast@intel.com>
  <20251204113726.567142-3-francois.dugast@intel.com>
 MIME-Version: 1.0
@@ -129,6 +130,22 @@ On Thu, Dec 04, 2025 at 12:35:59PM +0100, Francois Dugast wrote:
 >  	igt_assert(compute_input);
 >  
 > +	env.array_size = (flags & TOUCH_ONCE) ? 1 : aligned_size / sizeof(float);
+
+How this corresponds to establishing input/output size in the pipeline
+creation? I see there's:
+
+	bo_dict[4].size = size_input(execenv.array_size);
+
+where execenv.array_size even if assigned and is equal to 1:
+
+	if (user && user->array_size)
+		execenv->array_size = user->array_size;
+
+is altered by size_input() -> return MAX(sizeof(float) * work_size, 0x10000);
+
+--
+Zbigniew
+
 > +	env.skip_results_check = (flags & ACCESS_DEVICE_HOST) ? false : true;
 > +	env.input_addr = to_user_pointer(compute_input);
 > +	env.vm = vm;
@@ -161,16 +178,6 @@ On Thu, Dec 04, 2025 at 12:35:59PM +0100, Francois Dugast wrote:
 >  		xe_for_each_engine(fd, hwe)
 > -			test_compute(fd, hwe, SZ_2M);
 > +			test_compute(fd, hwe, SZ_2M, 0);
-
-Iteration over each engine here doesn't makes sense, eci is not used
-in the test_compute function (it calls run_intel_compute_kernel()
-which in turn passes NULL). If you want to execute on more than
-single ccs you should pick eci which matches COMPUTE class and
-call __run_intel_compute_kernel() directly.
-
---
-Zbigniew
-
 > +
 > +	for (const struct section *s = csections; s->name; s++) {
 > +		igt_subtest_f("eu-fault-4k-%s", s->name)
