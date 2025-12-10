@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8250DD3B9B5
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4B90D3B9B6
 	for <igt-dev@archiver.kernel.org>; Wed, 10 Dec 2025 00:39:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 376F010E625;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6318D10E646;
 	Wed, 10 Dec 2025 00:39:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KsWaA3R9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VyGmHEjv";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1620010E625
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 00:39:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA48010E625
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 00:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1765327184; x=1796863184;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=1RxhQMMaRZx+q5xzjzZGRZ2RiFTaBpey4aID55mpnSU=;
- b=KsWaA3R9/QIpa2ueLXSLWGmgO/dHFOAYT5OjU/h72mU+Je9hjK40u9iD
- Z9fO/TtdQT/6l+GvHY7tGPntThntWKg9z7KK2aOdv9E603faIiBPa8pVh
- J+Fc+MLAZtto3gFWfoXsVM6s+3ujnjsmOgEvOVoi2YHV1mySsw6ndyzer
- Ux6oriFTDSRvZITMGTNvr6vSrQITzwy7fPEsHj7fNv5u691y9US+eBkiD
- LJST4QO1l1XM3U/y8bqK7Oy5DHhM3bs1WU2b8DLF30tiOxSMcRshYaaMY
- o1tiMXl9vO1dHiueEg58VBmttA8y0IQ3SoUee4vWy0T9zIu8zKKKTcFWM g==;
-X-CSE-ConnectionGUID: EQ2CBgnnQWymijdgPKK2Cw==
-X-CSE-MsgGUID: YCuimzJoRg+EABzb0ZHkvw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="67180396"
-X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; d="scan'208";a="67180396"
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=IZS4OjFL/LQm2D8n0RGYSHBsDAfSPwBBJw5w1Ktz2L8=;
+ b=VyGmHEjvLgXRoMFrFzKSRrQhq0XzX5cIMk6MQHAzJ/0nl6t1RWQ4Ysao
+ 9HhJdW7WuzX8aco3U83zsqMmNBP4hW6IZ2ByMNqt+KU+/MhT80WuY/AS8
+ 3aOTuWeK9lLbNCWQGyfyWfmKhA1nyStrrN30rOr0UVvUTecMRwr0f5PGa
+ aoctyH+SqVLszfRx/yuP43x1Fah0FZwdl3exUcAFtG28X1xPm0Tjf2YYo
+ uxsbuH4KrTI15O+hV4sgV99woZN1HTajwoXgMygQAYpjkYVW9SGmmJFFq
+ sSqom6tfEFV1l/WLeIiXkQjFroICRWJdGdoC+1/2dx9937/JyLwkfC1gl A==;
+X-CSE-ConnectionGUID: wX88Ni8cSYaMYrsgAOqxLQ==
+X-CSE-MsgGUID: NWp4oVPkThe1CqpDLKgImw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="67180393"
+X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; d="scan'208";a="67180393"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  09 Dec 2025 16:39:44 -0800
-X-CSE-ConnectionGUID: aabElKLCRp6sOdSADrgrOA==
-X-CSE-MsgGUID: a0Sh1xkRQw293ssOJcybjg==
+X-CSE-ConnectionGUID: 3sgwHxAFQsaM3+SSWVgABA==
+X-CSE-MsgGUID: FnBaL8GETaCQcC1zBab87w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; d="scan'208";a="196421603"
+X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; d="scan'208";a="196421594"
 Received: from nvishwa1-desk.sc.intel.com ([172.25.29.139])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  09 Dec 2025 16:39:44 -0800
@@ -45,15 +45,11 @@ From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: sai.gowtham.ch@intel.com, priyanka.dandamudi@intel.com,
  kamil.konieczny@linux.intel.com, stuart.summers@intel.com
-Subject: [PATCH v4 03/18] tests/intel/xe_exec_multi_queue: Add
- xe_exec_multi_queue test
-Date: Tue,  9 Dec 2025 16:39:38 -0800
-Message-ID: <20251210003936.1613078-23-niranjana.vishwanathapura@intel.com>
+Subject: [PATCH v4 00/18] Multi Queue feature validation support
+Date: Tue,  9 Dec 2025 16:39:35 -0800
+Message-ID: <20251210003936.1613078-20-niranjana.vishwanathapura@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251210003936.1613078-20-niranjana.vishwanathapura@intel.com>
-References: <20251210003936.1613078-20-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,214 +66,76 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add sanity test for the multi queue feature.
+Multi Queue is a new mode of execution supported by the compute and
+blitter copy command streamers (CCS and BCS, respectively). It is an
+enhancement of the existing hardware architecture and leverages the
+same submission model. It enables support for efficient, parallel
+execution of multiple queues within a single context.
 
-v2: Validate that queues are not vm_bind queues
+Add validation support for multi-queue feature.
+
+This requires XeKMD multi-queue support posted here,
+https://patchwork.freedesktop.org/series/156865/
+
+Changes in v2:
+- Update xe_exec_queue_property@invalid-property test
+- Use macro instead of hardcoding
+- Use proper macro and variable names
+- Remove simulation related code
+- Ensure virtual test runs with single engine instance
+
+Changes in v3:
+- Import kernel uapi changes
+- Remove below patch which is no longer needed
+  'tests/intel/xe_exec_queue_property: Update invalid-property test'
+- Remove redundant preempt_mode check
+- Comments update, minor code refactor
+
+Changes in v4:
+- Minor rebase related changes
 
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 Reviewed-by: Stuart Summers <stuart.summers@intel.com>
----
- tests/intel/xe_exec_multi_queue.c | 177 ++++++++++++++++++++++++++++++
- tests/meson.build                 |   1 +
- 2 files changed, 178 insertions(+)
+
+Nakshtra Goyal (1):
+  tests/intel/xe_exec_multi_queue: Add fault mode test
+
+Niranjana Vishwanathapura (15):
+  drm-uapi/xe: Sync with Multi-Queue uapi
+  tests/intel/xe_exec_multi_queue: Add xe_exec_multi_queue test
+  tests/intel/xe_exec_multi_queue: Validate exec submissions
+  tests/intel/xe_exec_multi_queue: Validate queue priority setting
+  tests/intel/xe_exec_multi_queue: Add close-fd tests
+  tests/intel/xe_exec_multi_queue: Add multiple placement test
+  tests/intel/xe_exec_multi_queue: Add preempt mode test
+  lib/xe: Add exec_queue set_property ioctl support
+  tests/intel/xe_exec_multi_queue: Add dynamic priority test
+  tests/intel/xe_exec_multi_queue: Add userptr invalidation tests
+  lib/xe/xe_spin: Add switch point for preemptible spinner
+  tests/intel/xe_exec_multi_queue: Add priority test
+  tests/intel/xe_exec_multi_queue: Add submission sanity test
+  tests/intel/xe_exec_multi_queue: Sanity test KEEP_ACTIVE flag
+  tests/intel/xe_exec_multi_queue: Keep group active in exec-sanity
+
+Nishit Sharma (1):
+  lib/xe: Add multi-queue helper routines
+
+Priyanka Dandamudi (1):
+  tests/intel/xe_exec_multi_queue: Add multi queues with SMEM
+
+ include/drm-uapi/xe_drm.h         |   44 ++
+ include/intel_gpu_commands.h      |    1 +
+ lib/xe/xe_ioctl.c                 |   27 +
+ lib/xe/xe_ioctl.h                 |    4 +
+ lib/xe/xe_query.c                 |   22 +
+ lib/xe/xe_query.h                 |    8 +
+ lib/xe/xe_spin.c                  |   41 ++
+ lib/xe/xe_spin.h                  |    3 +
+ tests/intel/xe_exec_multi_queue.c | 1145 +++++++++++++++++++++++++++++
+ tests/meson.build                 |    1 +
+ 10 files changed, 1296 insertions(+)
  create mode 100644 tests/intel/xe_exec_multi_queue.c
 
-diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
-new file mode 100644
-index 000000000..710213258
---- /dev/null
-+++ b/tests/intel/xe_exec_multi_queue.c
-@@ -0,0 +1,177 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2025 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: Basic tests for exec functionality with multi-queue feature
-+ * Category: Hardware building block
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-+ * Functionality: multi-queue
-+ */
-+
-+#include "igt.h"
-+#include "xe_drm.h"
-+
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+
-+#define MAX_N_EXEC_QUEUES	64
-+
-+#define MAX_INSTANCE 9
-+
-+#define XE_MULTI_GROUP_VALID_FLAGS   (DRM_XE_MULTI_GROUP_CREATE)
-+
-+static void
-+__test_sanity(int fd, int gt, int class)
-+{
-+	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
-+	struct drm_xe_ext_set_property multi_queue = {
-+		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
-+		.value = DRM_XE_MULTI_GROUP_CREATE,
-+	};
-+	struct drm_xe_engine_class_instance vm_bind_eci = {
-+		.engine_class = DRM_XE_ENGINE_CLASS_VM_BIND,
-+	};
-+	uint64_t invalid_flag = 0, ext = to_user_pointer(&multi_queue);
-+	struct drm_xe_engine_class_instance eci[MAX_INSTANCE];
-+	struct drm_xe_engine_class_instance *hwe;
-+	uint32_t vm, vm2, val;
-+	int i, n = 0;
-+
-+	xe_for_each_engine(fd, hwe) {
-+		if (hwe->engine_class != class || hwe->gt_id != gt)
-+			continue;
-+
-+		eci[n++] = *hwe;
-+	}
-+
-+	if (!n)
-+		return;
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+
-+	/* Invalid flags */
-+	while (!invalid_flag)
-+		invalid_flag = (1ull << (rand() % 63)) & ~XE_MULTI_GROUP_VALID_FLAGS;
-+	multi_queue.value |= invalid_flag;
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
-+	multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
-+
-+	/* Queues can't be a vm_bind queues */
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, &vm_bind_eci, ext, &val), -EINVAL);
-+	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, 0);
-+	multi_queue.value = exec_queues[0];
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, &vm_bind_eci, ext, &val), -EINVAL);
-+	xe_exec_queue_destroy(fd, exec_queues[0]);
-+	exec_queues[0] = xe_bind_exec_queue_create(fd, vm, 0);
-+	multi_queue.value = exec_queues[0];
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
-+	xe_exec_queue_destroy(fd, exec_queues[0]);
-+
-+	/* Q0 can't be a regular queue */
-+	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, 0);
-+	multi_queue.value = exec_queues[0];
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
-+	xe_exec_queue_destroy(fd, exec_queues[0]);
-+
-+	/* Multi-Queue can't be a parallel queue */
-+	multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
-+	if (n > 1)
-+		igt_assert_eq(__xe_exec_queue_create(fd, vm, 2, 1, eci, ext, &val), -EINVAL);
-+
-+	/* Specifying multiple MULTI_GROUP property is invalid */
-+	multi_queue.base.next_extension = to_user_pointer(&multi_queue);
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
-+
-+	/* Adding queues to group after primary is destroyed is invalid */
-+	multi_queue.base.next_extension = 0;
-+	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
-+	xe_exec_queue_destroy(fd, exec_queues[0]);
-+	multi_queue.value = exec_queues[0];
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -ENOENT);
-+
-+	multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
-+	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
-+
-+	/* Upper 32 bits must be 0 while adding secondary queues */
-+	multi_queue.value = exec_queues[0] | (1ull << (32 + (rand() % 32)));
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
-+
-+	/* Invalid Q0 */
-+	multi_queue.value = exec_queues[0] + 1;
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -ENOENT);
-+
-+	/* Queues in a queue group must share the same address space (vm) */
-+	multi_queue.value = exec_queues[0];
-+	vm2 = xe_vm_create(fd, 0, 0);
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm2, 1, 1, eci, ext, &val), -EINVAL);
-+	xe_vm_destroy(fd, vm2);
-+
-+	/* Secondary queues must map to same engine instances as primary queue */
-+	if (n > 1)
-+		igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, n, eci, ext, &val), -EINVAL);
-+
-+	for (i = 1; i < MAX_N_EXEC_QUEUES; i++)
-+		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
-+
-+	/* Queue group limit check */
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
-+
-+	/* Secondary queues can't be replaced once successfully created */
-+	xe_exec_queue_destroy(fd, exec_queues[1]);
-+	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
-+
-+	/* Primary queue can be destroyed before all secondary queues are destroyed */
-+	xe_exec_queue_destroy(fd, exec_queues[0]);
-+
-+	for (i = 2; i < MAX_N_EXEC_QUEUES; i++)
-+		xe_exec_queue_destroy(fd, exec_queues[i]);
-+
-+	/* Validate with multiple num_placements */
-+	if (n > 1) {
-+		multi_queue.value = DRM_XE_MULTI_GROUP_CREATE;
-+		multi_queue.base.next_extension = 0;
-+		igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, n, eci, ext, &exec_queues[0]), 0);
-+
-+		multi_queue.value = exec_queues[0];
-+		for (i = 1; i < MAX_N_EXEC_QUEUES; i++)
-+			igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, n, eci, ext, &exec_queues[i]), 0);
-+
-+		for (i = 0; i < MAX_N_EXEC_QUEUES; i++)
-+			xe_exec_queue_destroy(fd, exec_queues[i]);
-+	}
-+
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+/**
-+ * SUBTEST: sanity
-+ * Description: Run sanity test
-+ * Test category: functionality test
-+ */
-+static void
-+test_sanity(int fd, int gt, int class)
-+{
-+	__test_sanity(fd, gt, class);
-+}
-+
-+int igt_main()
-+{
-+	int fd, gt, class;
-+
-+	igt_fixture() {
-+		fd = drm_open_driver(DRIVER_XE);
-+		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
-+	}
-+
-+	igt_subtest_f("sanity")
-+		xe_for_each_gt(fd, gt)
-+			xe_for_each_multi_queue_engine_class(class)
-+				test_sanity(fd, gt, class);
-+
-+	igt_fixture()
-+		drm_close_driver(fd);
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index c505ce5cc..884707025 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -298,6 +298,7 @@ intel_xe_progs = [
- 	'xe_exec_compute_mode',
- 	'xe_exec_fault_mode',
- 	'xe_exec_mix_modes',
-+	'xe_exec_multi_queue',
- 	'xe_exec_queue_property',
- 	'xe_exec_reset',
- 	'xe_exec_sip',
 -- 
 2.43.0
 
