@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5808ED3B9A9
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Dec 2025 09:39:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BDDDD2CE17
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Dec 2025 09:39:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 15F4010E6B6;
-	Wed, 10 Dec 2025 09:39:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 192DF10E6C9;
+	Wed, 10 Dec 2025 09:39:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jr3UGnOe";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="auIkSGnd";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7EE1C10E6B6
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 09:39:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 72FAF10E6C7
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 09:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765359564; x=1796895564;
+ t=1765359571; x=1796895571;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=hgUXN+QPtvD9TkGunbEJlMOpTgNhaX2DspMwuCEFJc4=;
- b=Jr3UGnOeh6iV9PqE0oiadPhL+9FdIbiviCqY6WgTp4mM8OeZnV3DUpLN
- 2ro7M+0eF0zHsxSgKuD11v66yPS+PzKuedX8B+NA7uxgIjHJuhjskfn+m
- gp4klHMUQ86k2wm+71iKXxrWScTrVgtcZFeCaiP8EeZli4r8RBVhA8hhv
- lJMdF1kIC523pbWFdao5OmOvRQy9OBo+5aBABajHzne2xbd+jmlX2Vfbw
- qTHZ0PL832DATTedRUnDT52hx/UUqTdbBijTNYYPdLUk6SDl4B7eracIh
- J9fdvvEnJle0AxTcKULBv4dTOL3j60dBkvtCJkA+O2Ey6S6fYHl3YMvgr g==;
-X-CSE-ConnectionGUID: yKU+KP67TzeRVdOKyps5Jw==
-X-CSE-MsgGUID: JEgA88xoSd6FbBfwi2pZBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="77943243"
-X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="77943243"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2025 01:39:24 -0800
-X-CSE-ConnectionGUID: KiyolDi+TCy5LRi8up+wXQ==
-X-CSE-MsgGUID: DzQwaeKaRGSEu7u1q4nyKQ==
+ bh=Dt0lPlw/TE/mQD9IG+31EzwL4ZC9UpShyTxBqydid9M=;
+ b=auIkSGndVwwOAp/ZKp5BkeMCjDdZIBkC2kgNztO2Y01gU2maMDnDxT42
+ E9DFbAODCcyC8hkQCnbDreaXaP4FPrIFSecGx3DrWJCT6u+hwyLhnvpKi
+ rbV4QgFMfidLHJ+eylCxNSS7ryndGnkbwoWt/Y3D3EfL7fyQHw0kklbIc
+ KMXWo+b5h9uuDRUNdJCXoH/9LWooQZLGuKUO8yaHqxFs+5cLOJK55/bNS
+ eg4ULVZBaS8ZE/4CJpL8N8yB8oU7YPvH/Sni0AN0c9n+7HxmuPsWjCCPR
+ 6ezX4MM4SeBPuH47ma0eEI4pSg61BcCpLhsD+F8SqmajLL4+ah0NJdUO+ Q==;
+X-CSE-ConnectionGUID: DBfx0Q4DT168SXiYQDkpIg==
+X-CSE-MsgGUID: 5YQzySGzSD+ZQ/h5vfn5vw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="92804434"
+X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="92804434"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Dec 2025 01:39:31 -0800
+X-CSE-ConnectionGUID: 7idy6v0zTD215IPHz6ca5Q==
+X-CSE-MsgGUID: bnVwSTRPQ7io7skW+UWYEA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="233865784"
+X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="196469685"
 Received: from dalessan-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.244.21])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Dec 2025 01:39:22 -0800
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Dec 2025 01:39:30 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 04/10] lib/kms: Introduce igt_crtc_for_pipe()
-Date: Wed, 10 Dec 2025 11:38:57 +0200
-Message-ID: <20251210093903.15934-5-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 06/10] lib/kms: Remove tall tales about 'pipe' in
+ DRM_IOCTL_WAIT_VBLANK
+Date: Wed, 10 Dec 2025 11:38:59 +0200
+Message-ID: <20251210093903.15934-7-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251210093903.15934-1-ville.syrjala@linux.intel.com>
 References: <20251210093903.15934-1-ville.syrjala@linux.intel.com>
@@ -71,64 +72,37 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Start weaning everyone off from poking inside display->pipes[]
-by hand. Introduce igt_crtc_for_pipe() as the preferred method
-for getting the correct crtc.
-
-Done by hand because this needs to be used in a few messy macros
-that cocci doesn't like.
+The igt_wait_for_vblank_count() docs are talking nonsense about
+DRM_IOCTL_WAIT_VBLANK taking some kind of 'pipe' parameter.
+What it actually takes is the original (short-sighted)
+DRM_VBLANK_SECONDARY flag, and the later extension in the
+form of DRM_VBLANK_HIGH_CRTC_MASK.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_kms.h | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ lib/igt_kms.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 6e7cf112b1e2..5bb5c2cac19c 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -578,6 +578,11 @@ void igt_display_require_output(igt_display_t *display);
- void igt_display_require_output_on_pipe(igt_display_t *display, enum pipe pipe);
- int igt_display_n_crtcs(igt_display_t *display);
- 
-+static inline igt_pipe_t *igt_crtc_for_pipe(igt_display_t *display, enum pipe pipe)
-+{
-+	return &display->pipes[pipe];
-+}
-+
- const char *igt_output_name(igt_output_t *output);
- drmModeModeInfo *igt_output_get_mode(igt_output_t *output);
- drmModeModeInfo *igt_output_get_highres_mode(igt_output_t *output);
-@@ -726,7 +731,7 @@ static inline bool igt_output_is_connected(igt_output_t *output)
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 951144bae955..3e7543ae1d88 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -5827,15 +5827,6 @@ static int __igt_vblank_wait(int drm_fd, int crtc_offset, int count)
+  * @count: Number of vblanks to wait on
+  *
+  * Waits for a given number of vertical blank intervals
+- *
+- * In DRM, 'Pipe', as understood by DRM_IOCTL_WAIT_VBLANK,
+- * is actually an offset of crtc in drmModeRes.crtcs
+- * and it has nothing to do with a hardware concept of a pipe.
+- * They can match but don't have to in case of DRM lease or
+- * non-contiguous pipes.
+- *
+- * To make thing clear we are calling DRM_IOCTL_WAIT_VBLANK's 'pipe'
+- * a crtc_offset.
   */
- #define for_each_pipe(display, pipe) \
- 	for_each_pipe_static(pipe) \
--		for_each_if((display)->pipes[(pipe)].valid)
-+		for_each_if(igt_crtc_for_pipe((display), (pipe))->valid)
- 
- /**
-  * for_each_pipe_with_valid_output:
-@@ -745,7 +750,7 @@ static inline bool igt_output_is_connected(igt_output_t *output)
- 	for (int con__ = (pipe) = 0; \
- 	     assert(igt_can_fail()), (pipe) < igt_display_n_crtcs(display) && con__ < (display)->n_outputs; \
- 	     con__ = (con__ + 1 < (display)->n_outputs) ? con__ + 1 : (pipe = pipe + 1, 0)) \
--		 for_each_if((display)->pipes[pipe].valid) \
-+		for_each_if(igt_crtc_for_pipe((display), (pipe))->valid) \
- 			for_each_if ((((output) = &(display)->outputs[con__]), \
- 						igt_pipe_connector_valid((pipe), (output))))
- 
-@@ -793,8 +798,9 @@ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
-  * If there are no valid planes for this pipe, nothing happens.
-  */
- #define for_each_plane_on_pipe(display, pipe, plane)			\
--	for (int j__ = 0; assert(igt_can_fail()), (plane) = &(display)->pipes[(pipe)].planes[j__], \
--		     j__ < (display)->pipes[(pipe)].n_planes; j__++)
-+	for (int j__ = 0; assert(igt_can_fail()), \
-+		     (plane) = &igt_crtc_for_pipe((display), (pipe))->planes[j__], \
-+		     j__ < igt_crtc_for_pipe((display), (pipe))->n_planes; j__++)
- 
- /**
-  * for_each_connector_mode:
+ void igt_wait_for_vblank_count(int drm_fd, int crtc_offset, int count)
+ {
 -- 
 2.51.2
 
