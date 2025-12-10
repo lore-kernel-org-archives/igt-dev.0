@@ -4,53 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BB5FD2CE17
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Dec 2025 05:26:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A60FD3B9A9
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Dec 2025 05:26:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4394C10E09D;
-	Wed, 10 Dec 2025 05:26:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4DB2510E218;
+	Wed, 10 Dec 2025 05:26:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P2pbtuDP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nwDOJIiB";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A25FA10E09D
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 05:26:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C55B10E218
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 05:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765344403; x=1796880403;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=h1k5i2FMkaoVDtOTHLJ0P+qat36XSVwOHmfScdt//wc=;
- b=P2pbtuDPSQEvxmQle0lFixEqhU/4FKi41TvQpczhXqwF38vp0fZAkte/
- /h3qlScpp9/lAyyzpKorwceqAihAf5eY0tDzzK6w5VJIJuT8QcMrBNMec
- 8ncQIh3hAdPBcLivI4w9wnLYeGMQLBDVcHXMxi9AddDbWc93h+Zz7A13u
- +TaZKIyMjkAkOzYZmnfQsSnuagkhOAUc1ThKqbStvJ8iSqWiI52jQERDy
- w5oQwtjGW5InvxoX5uR1XRJC+TJD4G0nxgxHPvOTTRWCNbJCotjs72jDe
- rwGfnIKDutLgkfCcJwB9aceZ0qVAgaKenFh9ROAClJ+g50KhN47EBJq9y Q==;
-X-CSE-ConnectionGUID: YHZEOdR7RxK+n9WRZp+haA==
-X-CSE-MsgGUID: 5qvS8/0TQKGa3IJxJ3stPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="92785545"
-X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="92785545"
+ t=1765344406; x=1796880406;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=BBCQzQkU9ZhE2wRLBq27TVXlwkTMDYZ38+ebzbDyvoM=;
+ b=nwDOJIiBhgOC8LGlTflOuFTGYe5j1ez527aaucC+FnzuSjkVmcl+20d3
+ 00MmnsLZ74IdF7TAzEV7q+grt67bD2DX9FMm/UHoW6kVCYJyZiP2fvW3w
+ PHnPKySw+EM4sdn8AOhAtkoRlX/7BOq3ZC6YFsNhWhczDjEbk662asvEL
+ l0LkuiWqic0rkB4+OhcX+K5w7fMm1xwSVQjDoF4j7sJ43z+crAlGUDOkr
+ BMo/zVLTdZ7xjZx75DfhPgpv/lTjGH+XAGlzOcxKjxuI2HYsKmO5ot0d0
+ /t5uJyouYEouKvPuby7ujoEy1KyfqIrU7JT5QLr/dfJJmcoLsyam3brSz w==;
+X-CSE-ConnectionGUID: SJ7wBMCxT/CyLCs/6d19ig==
+X-CSE-MsgGUID: gDsdZCTTSqyrnIe/QTjWGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="92785550"
+X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="92785550"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2025 21:26:43 -0800
-X-CSE-ConnectionGUID: eH57F2g/QASunzSmS4F/hw==
-X-CSE-MsgGUID: 84dqCfkBR4SOWL1NNRqvhg==
+ 09 Dec 2025 21:26:46 -0800
+X-CSE-ConnectionGUID: yQPBeKkzRm2eXhKgDG1Sug==
+X-CSE-MsgGUID: tBUvDLT9QSesYRrRZQh//g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="201348313"
+X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="201348329"
 Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2025 21:26:41 -0800
+ 09 Dec 2025 21:26:43 -0800
 From: Sk Anirban <sk.anirban@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
  karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
  mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
-Subject: [PATCH v3 0/2] tests/intel/xe_gt_freq: Modify test to support new
+Subject: [PATCH v3 1/2] tests/intel/xe_gt_freq: Modify test to support new
  throttle reasons sysfs
-Date: Wed, 10 Dec 2025 10:49:23 +0530
-Message-ID: <20251210051922.1186869-4-sk.anirban@intel.com>
+Date: Wed, 10 Dec 2025 10:49:24 +0530
+Message-ID: <20251210051922.1186869-5-sk.anirban@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251210051922.1186869-4-sk.anirban@intel.com>
+References: <20251210051922.1186869-4-sk.anirban@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -72,15 +74,80 @@ Change throttle_basic_api to read the new atomic reasons attribute
 instead of checking status and individual reason files separately.
 This validates the kernel's TOCTOU-free throttling interface.
 
-Sk Anirban (2):
-  tests/intel/xe_gt_freq: Modify test to support new throttle reasons
-    sysfs
-  HAX: Add throttle_basic_api test to fast feedback list
+v2: Update buffer size (Raag)
+    Cosmetic changes (Raag)
+v3: Update fd name (Raag)
+    Modify output (Raag)
 
- tests/intel-ci/xe.fast-feedback.testlist |  1 +
- tests/intel/xe_gt_freq.c                 | 44 ++++++------------------
- 2 files changed, 12 insertions(+), 33 deletions(-)
+Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+---
+ tests/intel/xe_gt_freq.c | 44 ++++++++++------------------------------
+ 1 file changed, 11 insertions(+), 33 deletions(-)
 
+diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
+index c02d6189a..e8586aaf9 100644
+--- a/tests/intel/xe_gt_freq.c
++++ b/tests/intel/xe_gt_freq.c
+@@ -47,48 +47,26 @@ static bool within_expected_range(uint32_t freq, uint32_t val)
+ 		(freq >= val - FREQ_UNIT_MHZ);
+ }
+ 
+-static uint32_t get_throttle(int fd, int gt_id, const char *throttle_file)
++/**
++ * SUBTEST: throttle_basic_api
++ * Description: Test basic throttle API
++ */
++
++static void test_throttle_basic_api(int fd, int gt_id)
+ {
+-	uint32_t val;
+-	char throttle_attr[40];
++	char *throttle_reasons;
+ 	int gt_fd;
+ 
+-	snprintf(throttle_attr, sizeof(throttle_attr),
+-		 "freq0/throttle/%s", throttle_file);
+ 	gt_fd = xe_sysfs_gt_open(fd, gt_id);
+ 	igt_assert_lte(0, gt_fd);
+ 
+-	igt_sysfs_scanf(gt_fd, throttle_attr, "%u", &val);
++	throttle_reasons = igt_sysfs_get(gt_fd, "freq0/throttle/reasons");
++	igt_assert(throttle_reasons);
+ 
+-	igt_debug("gt%d/freq0/throttle/%s: %u\n", gt_id, throttle_file, val);
++	igt_info("GT %d throttle reason(s): %s\n", gt_id, throttle_reasons);
+ 
++	free(throttle_reasons);
+ 	close(gt_fd);
+-	return val;
+-}
+-
+-/**
+- * SUBTEST: throttle_basic_api
+- * Description: Test basic throttle API
+- */
+-
+-static void test_throttle_basic_api(int fd, int gt_id)
+-{
+-	uint32_t status, reasons;
+-
+-	status = get_throttle(fd, gt_id, "status");
+-	reasons = get_throttle(fd, gt_id, "reason_pl1");
+-	reasons |= get_throttle(fd, gt_id, "reason_pl2");
+-	reasons |= get_throttle(fd, gt_id, "reason_pl4");
+-	reasons |= get_throttle(fd, gt_id, "reason_prochot");
+-	reasons |= get_throttle(fd, gt_id, "reason_ratl");
+-	reasons |= get_throttle(fd, gt_id, "reason_thermal");
+-	reasons |= get_throttle(fd, gt_id, "reason_vr_tdc");
+-	reasons |= get_throttle(fd, gt_id, "reason_vr_thermalert");
+-
+-	if (status)
+-		igt_assert(reasons);
+-	else
+-		igt_assert(!reasons);
+ }
+ 
+ /**
 -- 
 2.43.0
 
