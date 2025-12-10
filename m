@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45F05D2CE17
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Dec 2025 05:24:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BB5FD2CE17
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Dec 2025 05:26:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D0BA510E09D;
-	Wed, 10 Dec 2025 05:24:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4394C10E09D;
+	Wed, 10 Dec 2025 05:26:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XE2m4dGA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P2pbtuDP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7943510E09D
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 05:24:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A25FA10E09D
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 05:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765344266; x=1796880266;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=EoP9XuMnjFobOuxnFpI2cPNF932nB4iiejPyLeX0ZPk=;
- b=XE2m4dGAGnKLKpLEf3ohAovuokFoD0rLdt9eEss6j1KydQ33QGD7QvZN
- F8sQ05DdesoXu7drrY56SmozyLqjH+cC0doaMgEPl6NnNJNv7jnUCxFmc
- mV1tifRa4QEt+Y1dUr2q8gcK5TegzsRygQDmxjKpa1bTJu1seGU0YnPPq
- MxUPee/8+VJ5NNqqG4oRKSM7HNzgBu9CaYtxzY9dYLM/JdNZZvxvHeb1P
- X3emN4qt0osYjy4VVbNou/Pj4+EyNicsIZ9m1+OL7tKAvLbnKjujzSkIk
- Ecq7rQM2Pdvgd2Nft/nwSvCNT9M89/EXgu8lHwsLc9uTATbZMb7OHCjdL A==;
-X-CSE-ConnectionGUID: 7vPENMMrQP+67RQnzTmEKw==
-X-CSE-MsgGUID: bKU+lIEBQ/GOmYnNoCRnIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="71172945"
-X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="71172945"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2025 21:24:25 -0800
-X-CSE-ConnectionGUID: P1QEDUN1RA+4PSUDUF7nzw==
-X-CSE-MsgGUID: 1enNA050St+qyZOM9dK2AA==
+ t=1765344403; x=1796880403;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=h1k5i2FMkaoVDtOTHLJ0P+qat36XSVwOHmfScdt//wc=;
+ b=P2pbtuDPSQEvxmQle0lFixEqhU/4FKi41TvQpczhXqwF38vp0fZAkte/
+ /h3qlScpp9/lAyyzpKorwceqAihAf5eY0tDzzK6w5VJIJuT8QcMrBNMec
+ 8ncQIh3hAdPBcLivI4w9wnLYeGMQLBDVcHXMxi9AddDbWc93h+Zz7A13u
+ +TaZKIyMjkAkOzYZmnfQsSnuagkhOAUc1ThKqbStvJ8iSqWiI52jQERDy
+ w5oQwtjGW5InvxoX5uR1XRJC+TJD4G0nxgxHPvOTTRWCNbJCotjs72jDe
+ rwGfnIKDutLgkfCcJwB9aceZ0qVAgaKenFh9ROAClJ+g50KhN47EBJq9y Q==;
+X-CSE-ConnectionGUID: YHZEOdR7RxK+n9WRZp+haA==
+X-CSE-MsgGUID: 5qvS8/0TQKGa3IJxJ3stPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="92785545"
+X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="92785545"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Dec 2025 21:26:43 -0800
+X-CSE-ConnectionGUID: eH57F2g/QASunzSmS4F/hw==
+X-CSE-MsgGUID: 84dqCfkBR4SOWL1NNRqvhg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="227461494"
-Received: from dut6304bmgfrd.fm.intel.com ([10.36.21.69])
- by fmviesa001.fm.intel.com with ESMTP; 09 Dec 2025 21:24:25 -0800
-From: Xin Wang <x.wang@intel.com>
+X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="201348313"
+Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Dec 2025 21:26:41 -0800
+From: Sk Anirban <sk.anirban@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: alex.zuo@intel.com, Xin Wang <x.wang@intel.com>,
- Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH v3 2/2] tests/intel/xe_pat: sync with Xe PAT debugfs parser
-Date: Wed, 10 Dec 2025 05:24:22 +0000
-Message-ID: <20251210052422.149552-1-x.wang@intel.com>
+Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
+ karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
+ mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
+Subject: [PATCH v3 0/2] tests/intel/xe_gt_freq: Modify test to support new
+ throttle reasons sysfs
+Date: Wed, 10 Dec 2025 10:49:23 +0530
+Message-ID: <20251210051922.1186869-4-sk.anirban@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251206011241.67825-2-x.wang@intel.com>
-References: <20251206011241.67825-2-x.wang@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,81 +68,19 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Pull in the Xe PAT table parsed by lib/intel_pat so Xe2+ tests use
-the driver-provided entries instead of hard-coded reservations.
+Change throttle_basic_api to read the new atomic reasons attribute
+instead of checking status and individual reason files separately.
+This validates the kernel's TOCTOU-free throttling interface.
 
-CC: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Xin Wang <x.wang@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
----
- tests/intel/xe_pat.c | 38 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 36 insertions(+), 2 deletions(-)
+Sk Anirban (2):
+  tests/intel/xe_gt_freq: Modify test to support new throttle reasons
+    sysfs
+  HAX: Add throttle_basic_api test to fast feedback list
 
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index 59dfb6b11..82891b6f7 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -77,6 +77,18 @@ static void userptr_coh_none(int fd)
- 	xe_vm_destroy(fd, vm);
- }
- 
-+#define BITS_TO(n)		(n >= sizeof(long) * 8 ? ~0 : (1UL << (n)) - 1)
-+#define BITMASK(high, low)	(uint32_t)(BITS_TO(high+1) & ~BITS_TO(low))
-+#define FIELD_GET(val, high, low)	(((val) & (BITMASK(high, low))) >> (low))
-+#define FIELD_GET_BIT(val, n)		FIELD_GET(val, n, n)
-+
-+#define XE_NO_PROMOTE(val)	FIELD_GET_BIT(val, 10)
-+#define XE_COMP_EN(val)		FIELD_GET_BIT(val, 9)
-+#define XE_L3_CLOS(val)		FIELD_GET(val, 7, 6)
-+#define XE_L3_POLICY(val)	FIELD_GET(val, 5, 4)
-+#define XE_L4_POLICY(val)	FIELD_GET(val, 3, 2)
-+#define XE_COH_MODE(val)	FIELD_GET(val, 1, 0)
-+
- /**
-  * SUBTEST: pat-index-all
-  * Test category: functionality test
-@@ -86,6 +98,7 @@ static void pat_index_all(int fd)
- {
- 	uint16_t dev_id = intel_get_drm_devid(fd);
- 	size_t size = xe_get_default_alignment(fd);
-+	struct xe_pat_entry xe_pat_table[XE_PAT_MAX_ENTRIES] = {0};
- 	uint32_t vm, bo;
- 	uint8_t pat_index;
- 
-@@ -114,10 +127,31 @@ static void pat_index_all(int fd)
- 
- 	igt_assert(intel_get_max_pat_index(fd));
- 
-+	if (intel_graphics_ver(dev_id) >= IP_VER(20, 0)) {
-+		/* Get the Xe PAT entries from debugfs */
-+		uint8_t pat_entries = xe_get_pat_entries(fd, xe_pat_table);
-+
-+		for (int i = 0; i < pat_entries; i++) {
-+			uint32_t pat = xe_pat_table[i].pat;
-+			igt_debug("PAT[%2d] = [ %u, %u, %u, %u, %u, %u]  (%#8x)%s\n", i,
-+				  XE_NO_PROMOTE(pat),
-+				  XE_COMP_EN(pat),
-+				  XE_L3_CLOS(pat),
-+				  XE_L3_POLICY(pat),
-+				  XE_L4_POLICY(pat),
-+				  XE_COH_MODE(pat),
-+				  pat,
-+				  xe_pat_table[i].rsvd ? " *" : "");
-+		}
-+	}
-+
- 	for (pat_index = 0; pat_index <= intel_get_max_pat_index(fd);
- 	     pat_index++) {
--		if (intel_get_device_info(dev_id)->graphics_ver >= 20 &&
--		    pat_index >= 16 && pat_index <= 19) { /* hw reserved */
-+
-+		bool hw_reserved = intel_graphics_ver(dev_id) >= IP_VER(20, 0) ?
-+			      xe_pat_table[pat_index].rsvd : false;
-+
-+		if (hw_reserved) {
- 			igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
- 						   size, DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
- 						   pat_index, 0),
+ tests/intel-ci/xe.fast-feedback.testlist |  1 +
+ tests/intel/xe_gt_freq.c                 | 44 ++++++------------------
+ 2 files changed, 12 insertions(+), 33 deletions(-)
+
 -- 
 2.43.0
 
