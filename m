@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37C09D3B9BA
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69060D3B9BE
 	for <igt-dev@archiver.kernel.org>; Wed, 10 Dec 2025 00:39:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 967CA10E650;
+	by gabe.freedesktop.org (Postfix) with ESMTP id A7BA510E64A;
 	Wed, 10 Dec 2025 00:39:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PvlMj5wr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XOzT6QTC";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 10E0B10E651
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 00:39:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E32C10E641
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 00:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1765327186; x=1796863186;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=25pSyM/P5g9W/5DL6JS5IyTuXDtEFhveWJd4G92TLyM=;
- b=PvlMj5wrm+QKK7nkSCoWJjBmyoI6oi9fg8SYXWwZdtUUvy+is3y13DdX
- NqzLxtYKNmAGrRWqLgJ4RGAGyFdiqlE9DRhX/Kp67tUFh1fZx/f1iCEuo
- rJ0xuGd8afivtgACvf96t6MjALJxCLmD8KVPz0uVL7unOA8sFz/YFhaj5
- KpfyZDC6u8cjYQS0KevmnyiLjRTi/UC/e6K7BsJEowoQmVlkEYFQ0rUfH
- FsweMLYTQ/ET6Usu/AJ8kyJ9I1P25lqbDDJjM2YntN7WIKHBt1LHLj3Ns
- 1geyZ1GnBrjXdITIEjJ3db7gZmRjYdDA1W2K76AQ+tq+vaLL54zF12kob A==;
-X-CSE-ConnectionGUID: Qb+dxa08QpGDMY8/9l8svA==
-X-CSE-MsgGUID: nRTZn5+0RwOo1NaqKf/vCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="67180412"
-X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; d="scan'208";a="67180412"
+ bh=eP4GLa0Ac47N/MPPQLnf2UvdVcZh4m0Ft6JSOC3iV7k=;
+ b=XOzT6QTCdBqXyKxQ3/M2j2anYoPNgs6Qg4EQDyDH5yr09m6zK5QoCiBH
+ gXKj+Wla6sWpFWnf617S1FpwStmwb/GUJOezQgjxO4OVSHcgUeg06DIpA
+ LlrC860dMB6OM6GT9hwkPA4smzb3MqCx3QPVYwAeHCJfm/J4ZoThw4OD2
+ eqHjqNlhgqk6rTiXx2kZFtteKs3xD22vP+LIN1P+CttDg3Z80WAggKtTm
+ /70JEF/ZdNlpjinS2TAZywasTyWZEaaLlez56IXTWAlFwyaZjCdA7ioAT
+ U7sPIUvmvCmVOVs79zlZ2KzWHDxiF4p3yTjcMzScRYYnO4mV/2Cudhr8F A==;
+X-CSE-ConnectionGUID: qG7rfJXwTkeDXadoBP/Oxg==
+X-CSE-MsgGUID: GQtv2rZ8RWGDbSDp3PsfsA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="67180408"
+X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; d="scan'208";a="67180408"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  09 Dec 2025 16:39:46 -0800
-X-CSE-ConnectionGUID: HDns5qqxQDOyL07BgKlw5A==
-X-CSE-MsgGUID: Z7WT1mIyTBqwn1Ym4YZvhg==
+X-CSE-ConnectionGUID: pd6FsxvGTaSU2J7RDNgHOg==
+X-CSE-MsgGUID: Bxz9wFq6Rri/BsXWRzRDBQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; d="scan'208";a="196421644"
+X-IronPort-AV: E=Sophos;i="6.20,262,1758610800"; d="scan'208";a="196421635"
 Received: from nvishwa1-desk.sc.intel.com ([172.25.29.139])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  09 Dec 2025 16:39:46 -0800
@@ -45,10 +45,10 @@ From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: sai.gowtham.ch@intel.com, priyanka.dandamudi@intel.com,
  kamil.konieczny@linux.intel.com, stuart.summers@intel.com
-Subject: [PATCH v4 16/18] tests/intel/xe_exec_multi_queue: Add submission
- sanity test
-Date: Tue,  9 Dec 2025 16:39:51 -0800
-Message-ID: <20251210003936.1613078-36-niranjana.vishwanathapura@intel.com>
+Subject: [PATCH v4 13/18] tests/intel/xe_exec_multi_queue: Add multi queues
+ with SMEM
+Date: Tue,  9 Dec 2025 16:39:48 -0800
+Message-ID: <20251210003936.1613078-33-niranjana.vishwanathapura@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251210003936.1613078-20-niranjana.vishwanathapura@intel.com>
 References: <20251210003936.1613078-20-niranjana.vishwanathapura@intel.com>
@@ -69,183 +69,132 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add sanity test involving exec submissions in multi queue group.
+From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-v2: Remove simulation related code (Priyanka)
-    Use BASE_ADDRESS macro for address (Sai)
-v3: Remove hardcoding (Stuart)
+Extend multi queue tests with SMEM.
 
+Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Reviewed-by: Nakshtra Goyal <nakshtra.goyal@intel.com>
 Reviewed-by: Stuart Summers <stuart.summers@intel.com>
 ---
- tests/intel/xe_exec_multi_queue.c | 139 ++++++++++++++++++++++++++++++
- 1 file changed, 139 insertions(+)
+ tests/intel/xe_exec_multi_queue.c | 40 +++++++++++++++++++++++++++----
+ 1 file changed, 36 insertions(+), 4 deletions(-)
 
 diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
-index 412b3f417..414d3fea7 100644
+index 8cd16a64f..e54b39d1d 100644
 --- a/tests/intel/xe_exec_multi_queue.c
 +++ b/tests/intel/xe_exec_multi_queue.c
-@@ -44,6 +44,9 @@
+@@ -32,6 +32,7 @@
+ #define DYN_PRIORITY		(0x1 << 4)
+ #define INVALIDATE		(0x1 << 5)
+ #define FAULT_MODE		(0x1 << 6)
++#define SMEM			(0x1 << 7)
  
- #define BASE_ADDRESS	0x1a0000
+ #define MAX_INSTANCE 9
  
-+/* Number of queues in exec sanity tests */
-+#define NUM_QUEUES		2
-+
+@@ -280,8 +281,11 @@ test_preempt_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_plac
+ 		}
+ 		memset(data, 0, bo_size);
+ 	} else {
+-		bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci[0].gt_id),
+-				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++		if (flags & SMEM)
++			bo = xe_bo_create(fd, vm, bo_size, system_memory(fd), 0);
++		else
++			bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci[0].gt_id),
++					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+ 		data = xe_bo_map(fd, bo, bo_size);
+ 	}
+ 
+@@ -442,8 +446,11 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
+ 		}
+ 		memset(data, 0, bo_size);
+ 	} else {
+-		bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci[0].gt_id),
+-				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++		if (flags & SMEM)
++			bo = xe_bo_create(fd, vm, bo_size, system_memory(fd), 0);
++		else
++			bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci[0].gt_id),
++					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+ 		data = xe_bo_map(fd, bo, bo_size);
+ 	}
+ 
+@@ -592,23 +599,36 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
+  * arg[1]:
+  *
+  * @basic:					basic
++ * @basic-smem:					basic smem
+  * @userptr:					userptr
+  * @userptr-invalidate:				userptr invalidate
+  * @priority:					priority
+  * @close-fd:					close fd without destroying exec queues
+  * @dyn-priority:				dynamic priority
+  * @preempt-mode-basic:				preempt-mode basic
++ * @priority-smem:				priority smem
++ * @close-fd-smem:				close fd without destroying exec queues smem
++ * @dyn-priority-smem:				dynamic priority smem
++ * @preempt-mode-basic-smem:			preempt-mode basic smem
+  * @preempt-mode-userptr:			preempt-mode userptr
+  * @preempt-mode-userptr-invalidate:		preempt-mode userptr invalidate
+  * @preempt-mode-priority:			preempt-mode priority
+  * @preempt-mode-close-fd:			preempt-mode close fd without destroying exec queues
+  * @preempt-mode-dyn-priority:			preempt-mode dynamic priority
+  * @preempt-mode-fault-basic:			preempt-mode-fault-mode basic
++ * @preempt-mode-priority-smem:			preempt-mode priority smem
++ * @preempt-mode-close-fd-smem:			preempt-mode close fd without destroying exec queues smem
++ * @preempt-mode-dyn-priority-smem:		preempt-mode dynamic priority smem
++ * @preempt-mode-fault-basic-smem:		preempt-mode-fault-mode basic smem
+  * @preempt-mode-fault-userptr:			preempt-mode-fault-mode userptr
+  * @preempt-mode-fault-userptr-invalidate:	preempt-mode-fault-mode userptr invalidate
+  * @preempt-mode-fault-priority:		preempt-mode-fault-mode priority
+  * @preempt-mode-fault-close-fd:		preempt-mode-fault-mode close fd
+  * @preempt-mode-fault-dyn-priority:		preempt-mode-fault-mode dynamic priority
++ * @preempt-mode-fault-priority-smem:		preempt-mode-fault-mode priority smem
++ * @preempt-mode-fault-close-fd-smem:		preempt-mode-fault-mode close fd smem
++ * @preempt-mode-fault-dyn-priority-smem:	preempt-mode-fault-mode dynamic priority smem
++ *
+  */
  static void
- __test_sanity(int fd, int gt, int class, bool preempt_mode)
- {
-@@ -230,6 +233,138 @@ test_sanity(int fd, int gt, int class)
- 	__test_sanity(fd, gt, class, true);
- }
- 
-+static void
-+__test_exec_sanity(int fd, struct drm_xe_engine_class_instance *eci, unsigned int flags)
-+{
-+#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
-+	struct drm_xe_sync sync = { };
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(&sync),
-+	};
-+	uint64_t vm_sync = 0, addr[NUM_QUEUES];
-+	uint32_t vm, exec_queues[NUM_QUEUES], bo[NUM_QUEUES];
-+	int64_t fence_timeout = NSEC_PER_SEC;
-+	struct xe_spin *spin[NUM_QUEUES];
-+	size_t bo_size;
-+	struct drm_xe_ext_set_property multi_queue = {
-+		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
-+		.value = DRM_XE_MULTI_GROUP_CREATE,
-+	};
-+	uint64_t ext = to_user_pointer(&multi_queue);
-+	bool preempt_mode = flags & PREEMPT_MODE;
-+	int i;
-+
-+	sync.flags = DRM_XE_SYNC_FLAG_SIGNAL;
-+	if (preempt_mode) {
-+		sync.type = DRM_XE_SYNC_TYPE_USER_FENCE;
-+		sync.timeline_value = USER_FENCE_VALUE;
-+	} else {
-+		sync.type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-+		sync.handle = syncobj_create(fd, 0);
-+	}
-+
-+	vm = xe_vm_create(fd, preempt_mode ? DRM_XE_VM_CREATE_FLAG_LR_MODE : 0, 0);
-+	bo_size = xe_bb_size(fd, sizeof(struct xe_spin));
-+
-+	for (i = 0; i < NUM_QUEUES; i++) {
-+		bo[i] = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci[0].gt_id),
-+				     DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+		spin[i] = xe_bo_map(fd, bo[i], bo_size);
-+		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
-+		if (i == 0)
-+			multi_queue.value = exec_queues[i];
-+
-+		addr[i] = BASE_ADDRESS + i * bo_size;
-+	}
-+
-+	if (preempt_mode)
-+		sync.addr = to_user_pointer(&vm_sync);
-+
-+	for (i = 0; i < NUM_QUEUES; i++) {
-+		xe_vm_bind_async(fd, vm, 0, bo[i], 0, addr[i], bo_size, &sync, 1);
-+		if (preempt_mode) {
-+			xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, fence_timeout);
-+			vm_sync = 0;
-+		} else {
-+			igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
-+			syncobj_reset(fd, &sync.handle, 1);
-+		}
-+	}
-+
-+	/* Validate job submission on secondary queue before primary queue */
-+	for (i = NUM_QUEUES - 1; i >= 0; i--) {
-+		xe_spin_init_opts(spin[i], .addr = addr[i]);
-+		if (preempt_mode)
-+			sync.addr = addr[i] + (char *)&spin[i]->exec_sync - (char *)spin[i];
-+
-+		exec.exec_queue_id = exec_queues[i];
-+		exec.address = addr[i];
-+		xe_exec(fd, &exec);
-+		xe_spin_wait_started(spin[i]);
-+		xe_spin_end(spin[i]);
-+		if (preempt_mode) {
-+			xe_wait_ufence(fd, &spin[i]->exec_sync, USER_FENCE_VALUE, exec_queues[i], fence_timeout);
-+		} else {
-+			igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
-+			syncobj_reset(fd, &sync.handle, 1);
-+		}
-+	}
-+
-+	/* Destroy primary queue */
-+	xe_exec_queue_destroy(fd, exec_queues[0]);
-+
-+	/* Validate submission on secondary queues fail after destroying the primary */
-+	xe_spin_init_opts(spin[1], .addr = addr[1]);
-+	if (preempt_mode)
-+		sync.addr = addr[1] + (char *)&spin[1]->exec_sync - (char *)spin[1];
-+
-+	exec.exec_queue_id = exec_queues[1];
-+	exec.address = addr[1];
-+	igt_assert_eq(__xe_exec(fd, &exec), -ECANCELED);
-+
-+	if (preempt_mode)
-+		sync.addr = to_user_pointer(&vm_sync);
-+
-+	for (i = 0; i < NUM_QUEUES; i++) {
-+		xe_vm_unbind_async(fd, vm, 0, 0, addr[i], bo_size, &sync, 1);
-+		if (preempt_mode) {
-+			xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, fence_timeout);
-+			vm_sync = 0;
-+		} else {
-+			igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
-+			syncobj_reset(fd, &sync.handle, 1);
-+		}
-+	}
-+
-+	/* Destroy secondary queue */
-+	xe_exec_queue_destroy(fd, exec_queues[1]);
-+
-+	for (i = 0; i < NUM_QUEUES; i++) {
-+		munmap(spin[i], bo_size);
-+		gem_close(fd, bo[i]);
-+	}
-+
-+	if (!preempt_mode)
-+		syncobj_destroy(fd, sync.handle);
-+
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+/**
-+ * SUBTEST: exec-sanity
-+ * Description: Run exec submission sanity tests
-+ * Test category: functionality test
-+ */
-+static void
-+test_exec_sanity(int fd, struct drm_xe_engine_class_instance *eci)
-+{
-+	__test_exec_sanity(fd, eci, 0);
-+	__test_exec_sanity(fd, eci, PREEMPT_MODE);
-+}
-+
- static void
- __test_priority(int fd, struct drm_xe_engine_class_instance *eci,
- 		unsigned int flags)
-@@ -918,6 +1053,10 @@ int igt_main()
- 			xe_for_each_multi_queue_engine_class(class)
- 				test_sanity(fd, gt, class);
- 
-+	igt_subtest_f("exec-sanity")
-+		xe_for_each_multi_queue_engine(fd, hwe)
-+			test_exec_sanity(fd, hwe);
-+
- 	igt_subtest_f("virtual")
- 		xe_for_each_gt(fd, gt)
- 			xe_for_each_multi_queue_engine_class(class)
+ test_exec(int fd, struct drm_xe_engine_class_instance *eci, int num_placement,
+@@ -652,24 +672,36 @@ int igt_main()
+ 		unsigned int flags;
+ 	} sections[] = {
+ 		{ "basic", 0 },
++		{ "basic-smem", SMEM },
+ 		{ "userptr", USERPTR },
+ 		{ "userptr-invalidate", USERPTR | INVALIDATE },
+ 		{ "priority", PRIORITY },
++		{ "priority-smem", PRIORITY | SMEM },
+ 		{ "close-fd", CLOSE_FD },
++		{ "close-fd-smem", CLOSE_FD | SMEM },
+ 		{ "dyn-priority", DYN_PRIORITY },
++		{ "dyn-priority-smem", DYN_PRIORITY | SMEM },
+ 		{ "preempt-mode-basic", PREEMPT_MODE },
++		{ "preempt-mode-basic-smem", PREEMPT_MODE | SMEM },
+ 		{ "preempt-mode-userptr", PREEMPT_MODE | USERPTR },
+ 		{ "preempt-mode-userptr-invalidate", PREEMPT_MODE | USERPTR | INVALIDATE },
+ 		{ "preempt-mode-priority", PREEMPT_MODE | PRIORITY },
++		{ "preempt-mode-priority-smem", PREEMPT_MODE | PRIORITY | SMEM },
+ 		{ "preempt-mode-close-fd", PREEMPT_MODE | CLOSE_FD },
++		{ "preempt-mode-close-fd-smem", PREEMPT_MODE | CLOSE_FD | SMEM },
+ 		{ "preempt-mode-dyn-priority", PREEMPT_MODE | DYN_PRIORITY },
++		{ "preempt-mode-dyn-priority-smem", PREEMPT_MODE | DYN_PRIORITY | SMEM },
+ 		{ "preempt-mode-fault-basic", PREEMPT_MODE | FAULT_MODE },
++		{ "preempt-mode-fault-basic-smem", PREEMPT_MODE | FAULT_MODE | SMEM },
+ 		{ "preempt-mode-fault-userptr", PREEMPT_MODE | FAULT_MODE | USERPTR },
+ 		{ "preempt-mode-fault-userptr-invalidate", PREEMPT_MODE | FAULT_MODE |
+ 			USERPTR | INVALIDATE },
+ 		{ "preempt-mode-fault-priority", PREEMPT_MODE | FAULT_MODE | PRIORITY },
++		{ "preempt-mode-fault-priority-smem", PREEMPT_MODE | FAULT_MODE | PRIORITY | SMEM },
+ 		{ "preempt-mode-fault-close-fd", PREEMPT_MODE | FAULT_MODE | CLOSE_FD },
++		{ "preempt-mode-fault-close-fd-smem", PREEMPT_MODE | FAULT_MODE | CLOSE_FD | SMEM },
+ 		{ "preempt-mode-fault-dyn-priority", PREEMPT_MODE | FAULT_MODE | DYN_PRIORITY },
++		{ "preempt-mode-fault-dyn-priority-smem", PREEMPT_MODE | FAULT_MODE | DYN_PRIORITY | SMEM },
+ 		{ NULL },
+ 	};
+ 	int fd, gt, class;
 -- 
 2.43.0
 
