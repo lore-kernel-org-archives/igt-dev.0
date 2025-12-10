@@ -4,56 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C86C5D2CE17
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Dec 2025 05:23:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45F05D2CE17
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Dec 2025 05:24:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4FDEF10E661;
-	Wed, 10 Dec 2025 05:23:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D0BA510E09D;
+	Wed, 10 Dec 2025 05:24:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jSCTaKJ+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XE2m4dGA";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A00B10E664
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 05:23:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7943510E09D
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 05:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765344211; x=1796880211;
+ t=1765344266; x=1796880266;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=FvF5Rrl/A2BtlrT4ulFgDY2rxj93f49LT11ijd/ZVhw=;
- b=jSCTaKJ+mG0w5/5W8TSQ7IhnOPIKf1DprPiKprjWTZJt/VuZ5kSBvjPr
- E3E0NQSaMpk55Jq7sKraGduoNeMnDM2AlscGhKBGEkTVmdUxyMu6HRT3K
- 9a44N3L6DyRCPj8lB1fGh9OH1H26TXGoV9E70/m4bmp8Zal1XfoQ0C25/
- hwvABVVjmJnfpcDba4sQEE2Fysg9s8SzQw8ljWnkw5OnrwtM2xoysgQzE
- 5acHk88lkrbgp9bOeCQcI1RiRY26FUGL1pwpwARk8AZJtDqzntNko7GgW
- 9OLHkRDJdaIIkdD6YX9FdlsWD51ufEsDrJhi1CjhNGueDOKagZiFkXV3A A==;
-X-CSE-ConnectionGUID: v/kmF6frQBqEAuOVYQjLHg==
-X-CSE-MsgGUID: ICtRBoHERsKXsVSEgpaEtw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="84915591"
-X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="84915591"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Dec 2025 21:23:29 -0800
-X-CSE-ConnectionGUID: z667AfDGSdODS8KP4qnhZQ==
-X-CSE-MsgGUID: 3Iinv4myTl6vbu7zcKbjvQ==
+ bh=EoP9XuMnjFobOuxnFpI2cPNF932nB4iiejPyLeX0ZPk=;
+ b=XE2m4dGAGnKLKpLEf3ohAovuokFoD0rLdt9eEss6j1KydQ33QGD7QvZN
+ F8sQ05DdesoXu7drrY56SmozyLqjH+cC0doaMgEPl6NnNJNv7jnUCxFmc
+ mV1tifRa4QEt+Y1dUr2q8gcK5TegzsRygQDmxjKpa1bTJu1seGU0YnPPq
+ MxUPee/8+VJ5NNqqG4oRKSM7HNzgBu9CaYtxzY9dYLM/JdNZZvxvHeb1P
+ X3emN4qt0osYjy4VVbNou/Pj4+EyNicsIZ9m1+OL7tKAvLbnKjujzSkIk
+ Ecq7rQM2Pdvgd2Nft/nwSvCNT9M89/EXgu8lHwsLc9uTATbZMb7OHCjdL A==;
+X-CSE-ConnectionGUID: 7vPENMMrQP+67RQnzTmEKw==
+X-CSE-MsgGUID: bKU+lIEBQ/GOmYnNoCRnIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11637"; a="71172945"
+X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="71172945"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Dec 2025 21:24:25 -0800
+X-CSE-ConnectionGUID: P1QEDUN1RA+4PSUDUF7nzw==
+X-CSE-MsgGUID: 1enNA050St+qyZOM9dK2AA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="195494206"
+X-IronPort-AV: E=Sophos;i="6.20,263,1758610800"; d="scan'208";a="227461494"
 Received: from dut6304bmgfrd.fm.intel.com ([10.36.21.69])
- by orviesa006.jf.intel.com with ESMTP; 09 Dec 2025 21:23:29 -0800
+ by fmviesa001.fm.intel.com with ESMTP; 09 Dec 2025 21:24:25 -0800
 From: Xin Wang <x.wang@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: alex.zuo@intel.com, Xin Wang <x.wang@intel.com>,
- Shuicheng Lin <shuicheng.lin@intel.com>,
- Kamil Konieczny <kamil.konieczny@intel.com>,
  Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH v3 1/2] lib/intel_pat: read Xe PAT config from debugfs
-Date: Wed, 10 Dec 2025 05:23:25 +0000
-Message-ID: <20251210052327.149365-1-x.wang@intel.com>
+Subject: [PATCH v3 2/2] tests/intel/xe_pat: sync with Xe PAT debugfs parser
+Date: Wed, 10 Dec 2025 05:24:22 +0000
+Message-ID: <20251210052422.149552-1-x.wang@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251206011241.67825-1-x.wang@intel.com>
-References: <20251206011241.67825-1-x.wang@intel.com>
+In-Reply-To: <20251206011241.67825-2-x.wang@intel.com>
+References: <20251206011241.67825-2-x.wang@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,208 +67,81 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Parse the PAT software configuration from gt0/pat_sw_config instead
-of relying on hard-coded indices.
+Pull in the Xe PAT table parsed by lib/intel_pat so Xe2+ tests use
+the driver-provided entries instead of hard-coded reservations.
 
-Expose xe_get_pat_entries() so tests can grab the PAT table.
-
-V2: (Kamil)
-- Show a detailed skip info when opening the debugfs file fails.
-
-CC: Shuicheng Lin <shuicheng.lin@intel.com>
-CC: Kamil Konieczny <kamil.konieczny@intel.com>
 CC: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Xin Wang <x.wang@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 ---
- lib/intel_pat.c | 127 ++++++++++++++++++++++++++++++++++++++++++------
- lib/intel_pat.h |   9 ++++
- 2 files changed, 120 insertions(+), 16 deletions(-)
+ tests/intel/xe_pat.c | 38 ++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/lib/intel_pat.c b/lib/intel_pat.c
-index e3588110a..4aee16f39 100644
---- a/lib/intel_pat.c
-+++ b/lib/intel_pat.c
-@@ -3,9 +3,9 @@
-  * Copyright © 2023 Intel Corporation
-  */
+diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+index 59dfb6b11..82891b6f7 100644
+--- a/tests/intel/xe_pat.c
++++ b/tests/intel/xe_pat.c
+@@ -77,6 +77,18 @@ static void userptr_coh_none(int fd)
+ 	xe_vm_destroy(fd, vm);
+ }
  
-+#include "igt.h"
- #include "intel_pat.h"
- 
--#include "igt.h"
- 
- struct intel_pat_cache {
- 	uint8_t uc; /* UC + COH_NONE */
-@@ -13,27 +13,112 @@ struct intel_pat_cache {
- 	uint8_t wb; /* WB + COH_AT_LEAST_1WAY */
- 	uint8_t uc_comp; /* UC + COH_NONE + COMPRESSION, XE2 and later*/
- 	uint8_t max_index;
-+	struct xe_pat_entry entries[XE_PAT_MAX_ENTRIES];
-+	uint32_t pat_mode;
-+	uint32_t pat_ats;
- };
- 
-+/**
-+ * xe_get_pat_sw_config - Helper to read PAT (Page Attribute Table) software configuration
-+ * from debugfs
-+ *
-+ * @drm_fd: DRM device fd to use with igt_debugfs_open
-+ * @xe_pat_cache: Pointer to a struct that will receive the parsed PAT configuration
-+ *
-+ * Returns: The number of PAT entries successfully read on success, or a negative error
-+ *          code on failure (-ENOENT if debugfs is missing, -errno otherwise)
-+ */
-+static int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache)
-+{
-+	char *line = NULL;
-+	size_t line_len = 0;
-+	ssize_t nread;
-+	int32_t parsed = 0;
-+	int dbgfs_fd;
-+	FILE *dbgfs_file = NULL;
++#define BITS_TO(n)		(n >= sizeof(long) * 8 ? ~0 : (1UL << (n)) - 1)
++#define BITMASK(high, low)	(uint32_t)(BITS_TO(high+1) & ~BITS_TO(low))
++#define FIELD_GET(val, high, low)	(((val) & (BITMASK(high, low))) >> (low))
++#define FIELD_GET_BIT(val, n)		FIELD_GET(val, n, n)
 +
-+	dbgfs_fd = igt_debugfs_open(drm_fd, "gt0/pat_sw_config", O_RDONLY);
-+	if (dbgfs_fd < 0)
-+		return -ENOENT;
-+	dbgfs_file = fdopen(dbgfs_fd, "r");
-+	if (!dbgfs_file) {
-+		close(dbgfs_fd);
-+		return -errno;
-+	}
++#define XE_NO_PROMOTE(val)	FIELD_GET_BIT(val, 10)
++#define XE_COMP_EN(val)		FIELD_GET_BIT(val, 9)
++#define XE_L3_CLOS(val)		FIELD_GET(val, 7, 6)
++#define XE_L3_POLICY(val)	FIELD_GET(val, 5, 4)
++#define XE_L4_POLICY(val)	FIELD_GET(val, 3, 2)
++#define XE_COH_MODE(val)	FIELD_GET(val, 1, 0)
 +
-+	memset(xe_pat_cache, 0, sizeof(*xe_pat_cache));
-+	while ((nread = getline(&line, &line_len, dbgfs_file)) != -1) {
-+		uint32_t value = 0;
-+		char *p = NULL;
-+
-+		/* Expect patterns like: PAT[ 0] = [ 0, 0, 0, 0, 0 ]  (     0x0) */
-+		if (strncmp(line, "PAT[", 4) == 0) {
-+			bool is_reserved;
-+			p = strstr(line, "(");
-+			if (p && sscanf(p, "(%x", &value) == 1) {
-+				if (parsed < XE_PAT_MAX_ENTRIES) {
-+					is_reserved = strchr(line, '*') != NULL;
-+					xe_pat_cache->entries[parsed].pat = value;
-+					xe_pat_cache->entries[parsed].rsvd = is_reserved;
-+					xe_pat_cache->max_index = parsed;
-+					parsed++;
-+
-+					igt_debug("Parsed PAT entry %d: 0x%08x%s\n",
-+						  parsed - 1, value,
-+						  is_reserved ? " (reserved)" : "");
-+				} else {
-+					igt_warn("Too many PAT entries, line ignored: %s\n", line);
-+				}
-+			} else {
-+				igt_warn("Failed to parse PAT entry line: %s\n", line);
-+			}
-+		} else if (strncmp(line, "PAT_MODE", 8) == 0) {
-+			p = strstr(line, "(");
-+			if (p && sscanf(p, "(%x", &value) == 1)
-+				xe_pat_cache->pat_mode = value;
-+		} else if (strncmp(line, "PAT_ATS", 7) == 0) {
-+			p = strstr(line, "(");
-+			if (p && sscanf(p, "(%x", &value) == 1)
-+				xe_pat_cache->pat_ats = value;
-+		} else if (strncmp(line, "IDX[XE_CACHE_NONE]", 18) == 0) {
-+			p = strstr(line, "=");
-+			if (p && sscanf(p, "= %d", &value) == 1)
-+				xe_pat_cache->uc = value;
-+		} else if (strncmp(line, "IDX[XE_CACHE_WT]", 16) == 0) {
-+			p = strstr(line, "=");
-+			if (p && sscanf(p, "= %d", &value) == 1)
-+				xe_pat_cache->wt = value;
-+		} else if (strncmp(line, "IDX[XE_CACHE_WB]", 16) == 0) {
-+			p = strstr(line, "=");
-+			if (p && sscanf(p, "= %d", &value) == 1)
-+				xe_pat_cache->wb = value;
-+		} else if (strncmp(line, "IDX[XE_CACHE_NONE_COMPRESSION]", 28) == 0) {
-+			p = strstr(line, "=");
-+			if (p && sscanf(p, "= %d", &value) == 1)
-+				xe_pat_cache->uc_comp = value;
-+		}
-+	}
-+
-+	free(line);
-+	fclose(dbgfs_file);
-+
-+	return parsed;
-+}
-+
- static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
+ /**
+  * SUBTEST: pat-index-all
+  * Test category: functionality test
+@@ -86,6 +98,7 @@ static void pat_index_all(int fd)
  {
  	uint16_t dev_id = intel_get_drm_devid(fd);
+ 	size_t size = xe_get_default_alignment(fd);
++	struct xe_pat_entry xe_pat_table[XE_PAT_MAX_ENTRIES] = {0};
+ 	uint32_t vm, bo;
+ 	uint8_t pat_index;
  
--	if (intel_graphics_ver(dev_id) == IP_VER(35, 11)) {
--		pat->uc = 3;
--		pat->wb = 2;
--		pat->max_index = 31;
--	} else if (intel_get_device_info(dev_id)->graphics_ver == 30 ||
--		   intel_get_device_info(dev_id)->graphics_ver == 20) {
--		pat->uc = 3;
--		pat->wt = 15; /* Compressed + WB-transient */
--		pat->wb = 2;
--		pat->uc_comp = 12; /* Compressed + UC, XE2 and later */
--		pat->max_index = 31;
--
--		/* Wa_16023588340: CLOS3 entries at end of table are unusable */
--		if (intel_graphics_ver(dev_id) == IP_VER(20, 1))
--			pat->max_index -= 4;
+@@ -114,10 +127,31 @@ static void pat_index_all(int fd)
+ 
+ 	igt_assert(intel_get_max_pat_index(fd));
+ 
 +	if (intel_graphics_ver(dev_id) >= IP_VER(20, 0)) {
-+		/* Cache parsed PAT config per device to avoid re-reading debugfs on every call */
-+		static __thread struct intel_pat_cache intel_pat_cache;
-+		static __thread uint16_t cached_devid;
-+		if (cached_devid != dev_id) {
-+			int ret = xe_get_pat_sw_config(fd, &intel_pat_cache);
-+			igt_require_f(ret > 0, "Unable to open the pat_sw_config file in debugfs.\n");
-+			cached_devid = dev_id;
++		/* Get the Xe PAT entries from debugfs */
++		uint8_t pat_entries = xe_get_pat_entries(fd, xe_pat_table);
++
++		for (int i = 0; i < pat_entries; i++) {
++			uint32_t pat = xe_pat_table[i].pat;
++			igt_debug("PAT[%2d] = [ %u, %u, %u, %u, %u, %u]  (%#8x)%s\n", i,
++				  XE_NO_PROMOTE(pat),
++				  XE_COMP_EN(pat),
++				  XE_L3_CLOS(pat),
++				  XE_L3_POLICY(pat),
++				  XE_L4_POLICY(pat),
++				  XE_COH_MODE(pat),
++				  pat,
++				  xe_pat_table[i].rsvd ? " *" : "");
 +		}
-+		*pat = intel_pat_cache;
- 	} else if (IS_METEORLAKE(dev_id)) {
- 		pat->uc = 2;
- 		pat->wt = 1;
-@@ -96,3 +181,13 @@ uint8_t intel_get_pat_idx_wb(int fd)
- 	intel_get_pat_idx(fd, &pat);
- 	return pat.wb;
- }
++	}
 +
-+uint8_t xe_get_pat_entries(int fd, struct xe_pat_entry *xe_pat_table)
-+{
-+	struct intel_pat_cache pat = {};
-+	intel_get_pat_idx(fd, &pat);
+ 	for (pat_index = 0; pat_index <= intel_get_max_pat_index(fd);
+ 	     pat_index++) {
+-		if (intel_get_device_info(dev_id)->graphics_ver >= 20 &&
+-		    pat_index >= 16 && pat_index <= 19) { /* hw reserved */
 +
-+	memcpy(xe_pat_table, pat.entries, (pat.max_index + 1) * sizeof(struct xe_pat_entry));
++		bool hw_reserved = intel_graphics_ver(dev_id) >= IP_VER(20, 0) ?
++			      xe_pat_table[pat_index].rsvd : false;
 +
-+	return pat.max_index + 1;
-+}
-diff --git a/lib/intel_pat.h b/lib/intel_pat.h
-index eb48cbc65..1d6c4f1ad 100644
---- a/lib/intel_pat.h
-+++ b/lib/intel_pat.h
-@@ -6,9 +6,16 @@
- #ifndef INTEL_PAT_H
- #define INTEL_PAT_H
- 
-+#include <stdbool.h>
- #include <stdint.h>
- 
- #define DEFAULT_PAT_INDEX ((uint8_t)-1) /* igt-core can pick 1way or better */
-+#define XE_PAT_MAX_ENTRIES 32
-+
-+struct xe_pat_entry {
-+	uint32_t pat;
-+	bool rsvd;
-+};
- 
- uint8_t intel_get_max_pat_index(int fd);
- 
-@@ -18,4 +25,6 @@ uint8_t intel_get_pat_idx_wb(int fd);
- 
- uint8_t intel_get_pat_idx_uc_comp(int fd);
- 
-+uint8_t xe_get_pat_entries(int fd, struct xe_pat_entry *xe_pat_table);
-+
- #endif /* INTEL_PAT_H */
++		if (hw_reserved) {
+ 			igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x40000,
+ 						   size, DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
+ 						   pat_index, 0),
 -- 
 2.43.0
 
