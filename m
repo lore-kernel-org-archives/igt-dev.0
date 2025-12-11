@@ -4,41 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFDF9D3E79C
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Dec 2025 07:28:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AFA4D3E79D
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Dec 2025 07:31:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9E73A10E6DE;
-	Thu, 11 Dec 2025 07:28:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A592310E6DE;
+	Thu, 11 Dec 2025 07:31:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="T1ofnjy8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HOBIdn4N";
 	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D49710E6DE
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Dec 2025 07:28:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
- Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=bz5JP+nZXo1btXsM1NOtLrTqt/BM2xYBgREdECVqWLg=; b=T1ofnjy8ZE2RGoDNEdO9H9heuV
- e2d4Pa8OOBNO4dIjKQlBGG3D163V5ae5lTLJoyV5syMun6sgNQSdcps0W8Xr0bW9HLB56LWal8nbP
- e8JBlz4UJvo+dgz325gM2208he6epKabhAa2q9M8cCrAd3Kkkb5+WhBoco/Bvaxf4HpsVirP1RLDr
- CNsREr7Ln8WSLVeMaOrCvIQlIVV3gbktCt0FwkaV1zP48yd7vNOUgznsN4aT+skQ2L5BvqCR/AcLB
- EzKBLSV21N7HlQr20De7DxcJvwurPVKDtX00HdVq5Lo6GmzvkSSoRst40tmNM1zVqZPFBXJZ3PluM
- MDb3UnRQ==;
-Received: from [86.33.28.86] (helo=localhost)
- by fanzine2.igalia.com with utf8esmtpsa 
- (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1vTb6M-00BOTo-8p; Thu, 11 Dec 2025 08:28:38 +0100
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B39D710E6DE
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Dec 2025 07:31:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1765438289; x=1796974289;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=cP8BxuhLgVuR6dhHm3DF2TKNFqoL937dBQr4TCdN8+4=;
+ b=HOBIdn4NWz1Tkl16amyBbTOeYZjdVGtrq5gjudyAG9EMI5cQh64Ozpgz
+ DyyIcDDYWwlaT3GlWwRfg3++/4DJjdppjlqpHNhJU1kDPqeU/nWcmz6vU
+ s5U65Bdf0xpjV3XdCXRzmtVtYneTRhn2cYXIPq4poOfy3P+RZjFZ2ZZNB
+ TKd0bfi7QYjtGwWAzBwU5p1NDyvMSfUTeS+Ru2hP6ihwKSmDi0QmEI2+j
+ NsxjCGMMv/0seOWHLoEzBSCcjqG+tkId8m5gSNKItFQ1APb08GMlG3Xsd
+ oVB0TZ8Q3nkxPgJlnVciFR7Nekamcb9usKHlzlfiquNxzylfEyGLHNURa g==;
+X-CSE-ConnectionGUID: yoqO3kz7Q/KCM98be63SSg==
+X-CSE-MsgGUID: 862hHQIjTaSwFHpITFf1cg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="78528870"
+X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="78528870"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Dec 2025 23:31:29 -0800
+X-CSE-ConnectionGUID: VLUnuIT7SZ6g9+lf1aqMYQ==
+X-CSE-MsgGUID: xu973zdmT7+5UPqQzDI2gA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; d="scan'208";a="201824626"
+Received: from dut6304bmgfrd.fm.intel.com ([10.36.21.69])
+ by orviesa005.jf.intel.com with ESMTP; 10 Dec 2025 23:31:29 -0800
+From: Xin Wang <x.wang@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: [PATCH i-g-t] kms_flip_tiling test run
-Date: Thu, 11 Dec 2025 08:28:34 +0100
-Message-ID: <20251211072834.17825-1-tvrtko.ursulin@igalia.com>
-X-Mailer: git-send-email 2.52.0
+Cc: alex.zuo@intel.com,
+	Xin Wang <x.wang@intel.com>
+Subject: [PATCH v4 0/2] tests/intel/xe_pat: add helper funtion to read PAT
+ table
+Date: Thu, 11 Dec 2025 07:31:23 +0000
+Message-ID: <20251211073127.178934-1-x.wang@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -56,190 +66,19 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Flip tiling test-with target
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
----
- tests/intel-ci/i915.fast-feedback.testlist | 171 +--------------------
- 1 file changed, 1 insertion(+), 170 deletions(-)
 
-diff --git a/tests/intel-ci/i915.fast-feedback.testlist b/tests/intel-ci/i915.fast-feedback.testlist
-index 2799bbaa5870..6fbf8c517c9d 100644
---- a/tests/intel-ci/i915.fast-feedback.testlist
-+++ b/tests/intel-ci/i915.fast-feedback.testlist
-@@ -1,171 +1,2 @@
--# Try to load the driver if it's not available yet.
- igt@i915_module_load@load
--
--# Keep alphabetically sorted by default
--igt@core_auth@basic-auth
--igt@core_debugfs@read-all-entries
--igt@core_sysfs@read-all-entries
--igt@fbdev@eof
--igt@fbdev@info
--igt@fbdev@nullptr
--igt@fbdev@read
--igt@fbdev@write
--igt@gem_basic@bad-close
--igt@gem_basic@create-close
--igt@gem_basic@create-fd-close
--igt@gem_busy@busy@all-engines
--igt@gem_close_race@basic-process
--igt@gem_close_race@basic-threads
--igt@gem_ctx_create@basic
--igt@gem_ctx_create@basic-files
--igt@gem_ctx_exec@basic
--igt@gem_exec_basic@basic
--igt@gem_exec_create@basic
--igt@gem_exec_fence@basic-busy
--igt@gem_exec_fence@basic-wait
--igt@gem_exec_fence@basic-await
--igt@gem_exec_fence@nb-await
--igt@gem_exec_gttfill@basic
--igt@gem_exec_parallel@engines
--igt@gem_exec_store@basic
--igt@gem_flink_basic@bad-flink
--igt@gem_flink_basic@bad-open
--igt@gem_flink_basic@basic
--igt@gem_flink_basic@double-flink
--igt@gem_flink_basic@flink-lifetime
--igt@gem_huc_copy@huc-copy
--igt@gem_linear_blits@basic
--igt@gem_mmap@basic
--igt@gem_mmap_gtt@basic
--igt@gem_render_linear_blits@basic
--igt@gem_render_tiled_blits@basic
--igt@gem_ringfill@basic-all
--igt@gem_softpin@allocator-basic
--igt@gem_softpin@allocator-basic-reserve
--igt@gem_softpin@safe-alignment
--igt@gem_sync@basic-all
--igt@gem_sync@basic-each
--igt@gem_tiled_blits@basic
--igt@gem_tiled_fence_blits@basic
--igt@gem_tiled_pread_basic
--igt@gem_wait@busy@all-engines
--igt@gem_wait@wait@all-engines
--igt@i915_getparams_basic@basic-eu-total
--igt@i915_getparams_basic@basic-subslice-total
--igt@i915_hangman@error-state-basic
--igt@i915_pciid
--igt@intel_hwmon
--igt@kms_addfb_basic@addfb25-4-tiled
--igt@kms_addfb_basic@addfb25-bad-modifier
--igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
--igt@kms_addfb_basic@addfb25-modifier-no-flag
--igt@kms_addfb_basic@addfb25-x-tiled-legacy
--igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
--igt@kms_addfb_basic@addfb25-yf-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
--igt@kms_addfb_basic@bad-pitch-0
--igt@kms_addfb_basic@bad-pitch-1024
--igt@kms_addfb_basic@bad-pitch-128
--igt@kms_addfb_basic@bad-pitch-256
--igt@kms_addfb_basic@bad-pitch-32
--igt@kms_addfb_basic@bad-pitch-63
--igt@kms_addfb_basic@bad-pitch-65536
--igt@kms_addfb_basic@bad-pitch-999
--igt@kms_addfb_basic@basic
--igt@kms_addfb_basic@basic-x-tiled-legacy
--igt@kms_addfb_basic@basic-y-tiled-legacy
--igt@kms_addfb_basic@bo-too-small
--igt@kms_addfb_basic@bo-too-small-due-to-tiling
--igt@kms_addfb_basic@clobberred-modifier
--igt@kms_addfb_basic@framebuffer-vs-set-tiling
--igt@kms_addfb_basic@invalid-get-prop
--igt@kms_addfb_basic@invalid-get-prop-any
--igt@kms_addfb_basic@invalid-set-prop
--igt@kms_addfb_basic@invalid-set-prop-any
--igt@kms_addfb_basic@no-handle
--igt@kms_addfb_basic@size-max
--igt@kms_addfb_basic@small-bo
--igt@kms_addfb_basic@tile-pitch-mismatch
--igt@kms_addfb_basic@too-high
--igt@kms_addfb_basic@too-wide
--igt@kms_addfb_basic@unused-handle
--igt@kms_addfb_basic@unused-modifier
--igt@kms_addfb_basic@unused-offsets
--igt@kms_addfb_basic@unused-pitches
--igt@kms_busy@basic
--igt@kms_prop_blob@basic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
--igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
--igt@kms_dsc@dsc-basic
--igt@kms_flip@basic-flip-vs-dpms
--igt@kms_flip@basic-flip-vs-modeset
--igt@kms_flip@basic-flip-vs-wf_vblank
--igt@kms_flip@basic-plain-flip
--igt@kms_force_connector_basic@force-connector-state
--igt@kms_force_connector_basic@force-edid
--igt@kms_force_connector_basic@force-load-detect
--igt@kms_force_connector_basic@prune-stale-modes
--igt@kms_frontbuffer_tracking@basic
--igt@kms_hdmi_inject@inject-audio
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
--igt@kms_pipe_crc_basic@hang-read-crc
--igt@kms_pipe_crc_basic@nonblocking-crc
--igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
--igt@kms_pipe_crc_basic@read-crc
--igt@kms_pipe_crc_basic@read-crc-frame-sequence
--igt@kms_pm_backlight@basic-brightness
--igt@kms_pm_rpm@basic-pci-d3-state
--igt@kms_pm_rpm@basic-rte
--igt@kms_psr@psr-primary-page-flip
--igt@kms_psr@psr-cursor-plane-move
--igt@kms_psr@psr-sprite-plane-onoff
--igt@kms_psr@psr-primary-mmap-gtt
--igt@kms_setmode@basic-clone-single-crtc
--igt@i915_pm_rps@basic-api
--igt@prime_self_import@basic-llseek-bad
--igt@prime_self_import@basic-llseek-size
--igt@prime_self_import@basic-with_fd_dup
--igt@prime_self_import@basic-with_one_bo
--igt@prime_self_import@basic-with_one_bo_two_files
--igt@prime_self_import@basic-with_two_bos
--igt@prime_vgem@basic-fence-flip
--igt@prime_vgem@basic-fence-mmap
--igt@prime_vgem@basic-fence-read
--igt@prime_vgem@basic-gtt
--igt@prime_vgem@basic-read
--igt@prime_vgem@basic-write
--igt@vgem_basic@setversion
--igt@vgem_basic@create
--igt@vgem_basic@debugfs
--igt@vgem_basic@dmabuf-export
--igt@vgem_basic@dmabuf-fence
--igt@vgem_basic@dmabuf-fence-before
--igt@vgem_basic@dmabuf-mmap
--igt@vgem_basic@mmap
--igt@vgem_basic@second-client
--igt@vgem_basic@sysfs
--
--# All tests that do module unloading and reloading are executed last.
--# They will sometimes reveal issues of earlier tests leaving the
--# driver in a broken state that is not otherwise noticed in that test.
--
--igt@core_hotunplug@unbind-rebind
--igt@vgem_basic@unload
--igt@i915_module_load@reload
--igt@gem_lmem_swapping@basic
--igt@gem_lmem_swapping@parallel-random-engines
--igt@gem_lmem_swapping@random-engines
--igt@gem_lmem_swapping@verify-random
--igt@i915_pm_rpm@module-reload
--
--# Kernel selftests
--igt@i915_selftest@live
--igt@dmabuf@all-tests
-+igt@kms_flip_tiling@flip-change-tiling
+Xin Wang (2):
+  lib/intel_pat: read Xe PAT config from debugfs
+  tests/intel/xe_pat: sync with Xe PAT debugfs parser
+
+ lib/intel_pat.c      | 113 ++++++++++++++++++++++++++++++++++---------
+ lib/intel_pat.h      |  20 ++++++++
+ lib/xe/xe_query.c    |   4 ++
+ lib/xe/xe_query.h    |   4 ++
+ tests/intel/xe_pat.c |  38 ++++++++++++++-
+ 5 files changed, 154 insertions(+), 25 deletions(-)
+
 -- 
-2.52.0
+2.43.0
 
