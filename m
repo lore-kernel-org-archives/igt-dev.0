@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE975D41D5A
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Dec 2025 15:46:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69C2DD41D64
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Dec 2025 16:10:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 56EB810E2D1;
-	Thu, 11 Dec 2025 15:46:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0BFE110E06B;
+	Thu, 11 Dec 2025 16:10:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fFmWbemu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WAilcoRg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 95F4110E2D1
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Dec 2025 15:45:59 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB3BC10E06B
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Dec 2025 16:10:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765467959; x=1797003959;
+ t=1765469434; x=1797005434;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=PzNtMa0DCphoVsqlNe2R8z14YLLCqJZBqy2OaCpNYUY=;
- b=fFmWbemuFXKc1X2zIfoc8Tk6RGfK3eYEYItsJrzS4aVjdN+R0Rtc11p8
- HQwChLRBNJYlZ1x91J4SEalk2rh4/OV4v9lOCSvgAM3trmkCqHjcsVvQR
- Z9JPSalzL1kCXXI3o4r3SlIkCY04GUGhZmLdGm9NnceWHxP2dglDjGgDO
- TOR+W4ct7R/Jv8SZ7HeYIum7ubOYjVR23ovs+tQyWeS50fCaTTeRPU0CR
- U1Fz10YftioFMUrtOl5g/UeSlqx7Yh046Oa1zphTOE709M94qmOsZeRpo
- lGrzzutjFqIYOK7UfRaOgkrP3mZVR0nFZ7fOL14GUcKIttctktDuLY9/1 Q==;
-X-CSE-ConnectionGUID: 1CHxUv5hQ2KdyfdnzbjAKA==
-X-CSE-MsgGUID: wENpiRn4SySwv4VhEyZGLg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="90101017"
-X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; d="scan'208";a="90101017"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2025 07:45:59 -0800
-X-CSE-ConnectionGUID: zuVFuKOqRLGkRoZPB6KdyA==
-X-CSE-MsgGUID: bR6VH4knR0K2WiNDXue6Iw==
+ mime-version:in-reply-to;
+ bh=S6THRlV/DiLkijrwtA4k8yele65ZbiP8huJDANYQh0w=;
+ b=WAilcoRgsjUL9CB0dt6ksN8TQLLOWJ2NDY/WDoBfOFDZJkVFlUzpLYLh
+ XwZ2p6/GKSkwv1z6lxwF1Y22dPDvQrbb1Xley6rpBj93CMLjdp53intrv
+ eAyfjtNV7RsI7/Bcu7D0jWusILnF09fdupP8STYGiIBAV7hWa6O1d2AYP
+ gAidPC1cbiS3JlnAMEa/SqZpYJVhn/JsdOEXj7FC93tDjqA4T5Y/dm+yn
+ 1qZc8OH+QB4BrPzE3YX45lcjArpmmeA2WxBy+NUICXbpGRlBE/Vt/6O1G
+ qGgkFdiSmeAUmDgkeMZenXMN/4JiZDCHGPwG2uEjWajkGkoSP0ovZBoSR A==;
+X-CSE-ConnectionGUID: ieaaclhiSj+QOa/mKEfvGA==
+X-CSE-MsgGUID: fsWPF+chSyiFwZVRRB6kkg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="71320944"
+X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; d="scan'208";a="71320944"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Dec 2025 08:10:33 -0800
+X-CSE-ConnectionGUID: 0/mPG5uyQN6ltI3K6kCs8A==
+X-CSE-MsgGUID: rMKwIooQQv+tgR5wMfon2g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; d="scan'208";a="196730039"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 07:45:58 -0800
-Date: Thu, 11 Dec 2025 16:45:38 +0100
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2025 08:10:31 -0800
+Date: Thu, 11 Dec 2025 17:10:29 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Pawel Sikora <pawel.sikora@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v1 1/1] docs: fix intel-specific descriptions
-Message-ID: <20251211154538.r73hz4egltobv3zm@kamilkon-DESK.igk.intel.com>
+To: S Sebinraj <s.sebinraj@intel.com>
+Cc: igt-dev@lists.freedesktop.org, jeevaka.badrappan@intel.com,
+ zbigniew.kempczynski@intel.com, kamil.konieczny@intel.com
+Subject: Re: [PATCH i-g-t] lib/intel_allocator: Fix Tile-4 format tests crash
+ by initializing maps before SysV IPC check
+Message-ID: <20251211161029.yqw2g5xbtopease4@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Pawel Sikora <pawel.sikora@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20251211151903.323890-1-pawel.sikora@intel.com>
- <20251211151903.323890-2-pawel.sikora@intel.com>
+ S Sebinraj <s.sebinraj@intel.com>, igt-dev@lists.freedesktop.org,
+ jeevaka.badrappan@intel.com, zbigniew.kempczynski@intel.com,
+ kamil.konieczny@intel.com
+References: <20251211095233.1172089-1-s.sebinraj@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251211151903.323890-2-pawel.sikora@intel.com>
+In-Reply-To: <20251211095233.1172089-1-s.sebinraj@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,104 +72,95 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Pawel,
-On 2025-12-11 at 16:19:02 +0100, Pawel Sikora wrote:
-> While it is true that the main focus of IGT was on Intel GPUs,
-> this is no longer the case and the documentation should reflect
-> this change and present the current state where no specific
-> platform is the center of interest.
+Hi S,
+On 2025-12-11 at 15:22:33 +0530, S Sebinraj wrote:
+
+imho subject could be shorter, for example:
+
+[PATCH i-g-t] lib/intel_allocator: Initialize maps before SysV IPC check
+
+> The allocator was incorrectly gating essential map initialization behind
+> the SysV IPC availability check. This caused crashes in tests using tiled
+> formats like Tile-4 on systems where sysvipc is not accessible.
 > 
-> Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
-> ---
->  docs/faq.md       | 14 ++++++++++----
->  docs/platforms.md | 20 ++++++++++++--------
->  2 files changed, 22 insertions(+), 12 deletions(-)
+> Root Cause:
+> -----------
+> Tile-4 (and other tiled formats) require GPU blitter operations to convert
+> between tiled and linear layouts for Cairo drawing. This conversion path
+> needs the allocator to provide GPU virtual addresses for blitter commands.
 > 
-> diff --git a/docs/faq.md b/docs/faq.md
-> index 48e754c56..239d57012 100644
-> --- a/docs/faq.md
-> +++ b/docs/faq.md
-> @@ -6,8 +6,9 @@ This FAQ covers common questions about using, building, and contributing to
->  ### What is IGT GPU Tools?
->  
->  IGT GPU Tools is a collection of low-level tests and utilities used to validate and
-> -debug Linux DRM (Direct Rendering Manager) graphics drivers. It focuses primarily on
-> -Intel GPUs but supports other platforms in varying degrees.
-> +debug Linux DRM (Direct Rendering Manager) graphics drivers. It focuses primarily
-> +on display testing. It supports GPU-specific testing for Intel and AMD.
-> +Other platforms are supported in varying degrees.
->  
->  ### How do I build IGT?
->  
-> @@ -52,11 +53,16 @@ or decode state.
->  
->  ### What platforms are supported?
->  
-> -IGT primarily targets Intel GPUs (Gen9+), but partial support exists for:
-> +IGT primarily targets platforms:/
->  
+> Linear formats bypass this entirely - Cairo can write directly to CPU-mapped
+> memory without GPU operations, so the allocator is never accessed and the
+> bug remains hidden.
+> 
+> intel_allocator_init() checked system_supports_sysvipc() and returned
+> early if the check failed, leaving ctx_map and vm_map uninitialized
+> when Tile-4 tests triggered blitter operations, the allocator
+> tried to search these NULL maps causing SIGSEGV.
+> 
+> Call stack at crash:
+>   - igt_get_cairo_surface(tile4_fb)
+>     - blitcopy(tile4 -> linear)
+>       - intel_allocator_open()
+>        - allocator_find()
+>           - igt_map_search(NULL ctx_map) -> SIGSEGV
+> 
+> Solution:
+> ---------
+> Initialize allocator maps (handles, ctx_map, vm_map, ahnd_map)
+> unconditionally as they are required for single-process GPU operations,
+> not just multi-process IPC scenarios.
+> 
+> Impact:
+> - Tile-4 and tiled format tests
+> 
+> Tested with kms_plane_lowres --run-subtest tiling-4 on PTL/ADL.
+> 
 
-As you removed Intel from above line, imho please add it here:
+And here add fixes tag:
 
- - Intel (i915 and xe)
+Fixes: e21d1be9fa84 ("lib/intel_allocator: Add SYSVIPC support check")
+> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
 
-With above fixed this is
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+No need for resend, it could be corrected at merge.
 
 Regards,
 Kamil
 
->  - AMD (amdgpu)
->  - NVIDIA (nouveau)
-> -- Virtual GPUs (e.g., virtio-gpu in QEMU/KVM/AVD)
-> +- Broadcom (v3d and vc4)
-> +- Qualcomm (msm)
-> +- Arm (Panfrost)
-> +- Panthor
-> +- Virtual GPUs (e.g., virtio_gpu in QEMU/KVM/AVD or vmwgfx)
-> +- Virtual display (vkms)
+> ---
+>  lib/intel_allocator.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/lib/intel_allocator.c b/lib/intel_allocator.c
+> index fddd0f3b3..55728057a 100644
+> --- a/lib/intel_allocator.c
+> +++ b/lib/intel_allocator.c
+> @@ -1703,12 +1703,6 @@ void intel_allocator_init(void)
+>  	__free_maps(vm_map, false);
+>  	__free_ahnd_map();
 >  
->  Hardware coverage may vary by test.
+> -	if (!system_supports_sysvipc()) {
+> -		alloc_debug("System doesn't support SysV IPC\n");
+> -		channel = NULL;
+> -		return;
+> -	}
+> -
+>  	atomic_init(&next_handle, 1);
+>  	handles = igt_map_create(hash_handles, equal_handles);
+>  	ctx_map = igt_map_create(hash_instance, equal_ctx);
+> @@ -1717,6 +1711,12 @@ void intel_allocator_init(void)
+>  	ahnd_map = igt_map_create(igt_map_hash_64, igt_map_equal_64);
+>  	igt_assert(handles && ctx_map && vm_map && ahnd_map);
 >  
-> diff --git a/docs/platforms.md b/docs/platforms.md
-> index e6882feec..b788a92c1 100644
-> --- a/docs/platforms.md
-> +++ b/docs/platforms.md
-> @@ -2,9 +2,9 @@
+> +	if (!system_supports_sysvipc()) {
+> +		alloc_debug("System doesn't support SysV IPC\n");
+> +		channel = NULL;
+> +		return;
+> +	}
+> +
+>  	channel = intel_allocator_get_msgchannel(CHANNEL_SYSVIPC_MSGQUEUE);
+>  }
 >  
->  ## :material-chip: Hardware
->  
-> -**IGT GPU Tools** is designed to validate few DRM drivers across a variety of Intel
-> -and non-Intel platforms. While virtual environments help with development, real hardware
-> -is recommended for full test coverage, performance metrics, and regression tracking.
-> +**IGT GPU Tools** is designed to validate few DRM drivers across a variety of platforms.
-> +While virtual environments help with development, real hardware is recommended for full
-> +test coverage, performance metrics, and regression tracking.
->  
->  ### :material-lightbulb-outline: General Guidelines
->  
-> @@ -27,12 +27,16 @@ testing but may not support new test features.*
->  
->  ### Non-Intel GPU Support
->  
-> -Although IGT is Intel-focused, basic support exists for other platforms:
-> +Basic support exists for other platforms:
->  
-> -- **AMD (AMDGPU):** Some display and KMS tests run; feature support may vary.
-> -- **NVIDIA (nouveau):** Partial functionality; manual testing encouraged.
-> -- **VirtIO-GPU / QEMU / GVT-g:** Useful for automation and limited pipeline testing.
-> -- **ARM SoCs (e.g., Mali, Vivante):** Experimental – not all tests apply.
-> +- AMD (amdgpu)
-> +- NVIDIA (nouveau)
-> +- Broadcom (v3d and vc4)
-> +- Qualcomm (msm)
-> +- Arm (Panfrost)
-> +- Panthor
-> +- Virtual GPUs (e.g., virtio_gpu in QEMU/KVM/AVD or vmwgfx)
-> +- Virtual display (vkms)
->  
->  :material-account-group-outline: Community contributions are welcome to expand non-Intel
->  support!
 > -- 
-> 2.51.0
+> 2.43.0
 > 
