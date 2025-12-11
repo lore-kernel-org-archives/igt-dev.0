@@ -4,17 +4,17 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1552D41C01
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D53F2D3E79D
 	for <igt-dev@archiver.kernel.org>; Thu, 11 Dec 2025 08:01:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5652510E75A;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6B6A810E760;
 	Thu, 11 Dec 2025 08:01:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="sa4NPjm5";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="DOadAfvZ";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67B8D10E262
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 14:46:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D39C310E730
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Dec 2025 07:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
@@ -22,22 +22,22 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
  In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=vNhcePqzL8N+kXHS8b7LsOEPRRbjWRfD0QcNJ/8u6Wg=; b=sa4NPjm5UOShcZOIhbOCT/sLYE
- qgOx534sfjWhHGSUkLzAnrC7zDTKCxees9BmIwbDnRevuH8Qg0jdkhxzNcye66qcFL9XmdW3ca8Fs
- F6Xl8EbZ8AhWmx1i7T8KxxGWiwp52HORIEGMsumQAqJQikezo+013BwqyyKwX/IO8YvG3btCqIejh
- etZ3/A8QQMsN61wsKwJvS+SQohTK+eslwJcApLpePYdVWHk8aHFo1dUAJ7nEhxOazbQohD8oWoJPa
- VgLC1Ov+jjGnaBLtYiv4qPspdBgO9XhAKjuwT/SIgx/XbwPGUOQxuEX/LYA15KkYX0uO9L2Jua8ca
- tTuKke/Q==;
+ bh=vNhcePqzL8N+kXHS8b7LsOEPRRbjWRfD0QcNJ/8u6Wg=; b=DOadAfvZuwKTyaP3b4pA0l8zUo
+ uwWqRGLsYE0iUL97KuJiqvpyneOZhMfZmB+Ix540PzPr0qdNt7Y21KhUAcgboI3dhIhu5vvFTxZ1/
+ KuOKlG8b4Ax+Jg8vWmNcZIN1dIFhyDIyxOQIzokITwCwb+XAf69yt+ZC6Aa3+K/Npo0N4qmXQgWKI
+ SrN16hXzknRqpHg78UORgiqovoD763R4Dk0djZ9EhyuqIEYzyOUSYf8gb09hvsQqvOWOPzza0OaZn
+ 8CIkB4f2eBdBKKbFaIffMHxoC5dgeEEElPEbzg6N5UxVkH2tKVEXoCwMGBGUSmAEJTuDc+kjRlKov
+ GNLLKDAw==;
 Received: from [86.33.28.86] (helo=localhost)
  by fanzine2.igalia.com with utf8esmtpsa 
  (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1vTLSp-00B0jr-Lf
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Dec 2025 15:46:47 +0100
+ id 1vTapK-00BODo-2R
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Dec 2025 08:11:02 +0100
 From: Tvrtko Ursulin <tursulin@igalia.com>
 To: igt-dev@lists.freedesktop.org
 Subject: [CI] kms_flip_tiling test run
-Date: Wed, 10 Dec 2025 15:46:46 +0100
-Message-ID: <20251210144646.13738-1-tursulin@igalia.com>
+Date: Thu, 11 Dec 2025 08:11:00 +0100
+Message-ID: <20251211071100.17632-1-tursulin@igalia.com>
 X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
