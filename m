@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 634DAD41D74
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Dec 2025 00:51:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7260D43361
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Dec 2025 01:11:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D44C610E05A;
-	Fri, 12 Dec 2025 00:51:47 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BAEC10E05A;
- Fri, 12 Dec 2025 00:51:46 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4314612811949762338=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 522CF10E314;
+	Fri, 12 Dec 2025 01:11:24 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LVru42JS";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2451710E12A
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Dec 2025 01:11:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1765501883; x=1797037883;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=K8gB2AggHiYI6kWrZ6JwUywIQJOWWcRHBHH9O0quo5Q=;
+ b=LVru42JSZPZx5Uo0wUetENDfc/B6Yaef1J14jq+g4Q9Z+3ri3YOrjB2F
+ 7NzUBZ8TXQIV2r06Y566mxERhVI1vcTSzkln1ET1Tr/c6+kYZprZue0NW
+ e3ldvGBL9axBU6YlkycSSag+hs/DLtdA5Zb345LeLqTZ2ROrzqosjavzY
+ U4AEyG9Za+sTOasHi0FW5bAVyZhX3UKNGZEtWvJgRMfsw6ROcgGWotPXa
+ L3p6bWwXl1GYb/7CKdVvwXmpKzKbJVWSZspOHEy0KFcvQ0H1xEau7CYMi
+ FXOlUTYRDElVkY1JoissOrkuLQsQo78ebQUwpOuXOBHq+K3X6k940nX1V A==;
+X-CSE-ConnectionGUID: cavB+gA4ReeRXoqT/nFdug==
+X-CSE-MsgGUID: AWn9/oYSSpOZzajx8WW/dg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="71118037"
+X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; d="scan'208";a="71118037"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Dec 2025 17:11:22 -0800
+X-CSE-ConnectionGUID: wjS6c5xjT0i+XU5izNCg8Q==
+X-CSE-MsgGUID: y4N1L/TPS+i3sSah/GRgCw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; d="scan'208";a="196031205"
+Received: from nvishwa1-desk.sc.intel.com ([172.25.29.139])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Dec 2025 17:11:22 -0800
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: sai.gowtham.ch@intel.com, priyanka.dandamudi@intel.com,
+ kamil.konieczny@linux.intel.com, stuart.summers@intel.com
+Subject: [PATCH v5 02/18] lib/xe: Add multi-queue helper routines
+Date: Thu, 11 Dec 2025 17:11:14 -0800
+Message-ID: <20251212011115.1685703-22-niranjana.vishwanathapura@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251212011115.1685703-20-niranjana.vishwanathapura@intel.com>
+References: <20251212011115.1685703-20-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fpat=3A_a?=
- =?utf-8?q?dd_helper_funtion_to_read_PAT_table_=28rev9=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Xin Wang" <x.wang@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 12 Dec 2025 00:51:46 -0000
-Message-ID: <176550070659.79348.13924167262537296407@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20251211193030.187174-1-x.wang@intel.com>
-In-Reply-To: <20251211193030.187174-1-x.wang@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,199 +65,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4314612811949762338==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-== Series Details ==
+Add xe_engine_class_supports_multi_queue() function to determine if an
+engine class supports multi-queue operations.
+Add xe_for_each_multi_queue_engine() helper macro for iterating over
+engines that support multi-queue.
 
-Series: tests/intel/xe_pat: add helper funtion to read PAT table (rev9)
-URL   : https://patchwork.freedesktop.org/series/157481/
-State : failure
+Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+---
+ lib/xe/xe_query.c | 22 ++++++++++++++++++++++
+ lib/xe/xe_query.h |  8 ++++++++
+ 2 files changed, 30 insertions(+)
 
-== Summary ==
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 38f8f5595..981d76948 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -133,6 +133,28 @@ static uint32_t __mem_default_alignment(struct drm_xe_query_mem_regions *mem_reg
+ 	return alignment;
+ }
+ 
++/**
++ * xe_engine_class_supports_multi_queue:
++ * @engine_class: engine class
++ *
++ * Returns true if multi queue supported by engine class or false.
++ */
++bool xe_engine_class_supports_multi_queue(uint32_t engine_class)
++{
++	switch (engine_class) {
++		case DRM_XE_ENGINE_CLASS_COPY:
++		case DRM_XE_ENGINE_CLASS_COMPUTE:
++			return true;
++		case DRM_XE_ENGINE_CLASS_RENDER:
++		case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
++		case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
++			return false;
++		default:
++			igt_warn("Engine class 0x%x unknown\n", engine_class);
++			return false;
++	}
++}
++
+ /**
+  * xe_engine_class_string:
+  * @engine_class: engine class
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index 8c57bb21d..d7a9f95f9 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -94,6 +94,13 @@ struct xe_device {
+ 	for (uint64_t igt_unique(__i) = 0; igt_unique(__i) < igt_fls(__memreg); igt_unique(__i)++) \
+ 		for_if(__r = (__memreg & (1ull << igt_unique(__i))))
+ 
++#define xe_for_each_multi_queue_engine(__fd, __hwe)	\
++	xe_for_each_engine(__fd, __hwe)			\
++		for_if(xe_engine_class_supports_multi_queue((__hwe)->engine_class))
++#define xe_for_each_multi_queue_engine_class(__class)			\
++	xe_for_each_engine_class(__class)				\
++		for_if(xe_engine_class_supports_multi_queue(__class))
++
+ #define XE_IS_CLASS_SYSMEM(__region) ((__region)->mem_class == DRM_XE_MEM_REGION_CLASS_SYSMEM)
+ #define XE_IS_CLASS_VRAM(__region) ((__region)->mem_class == DRM_XE_MEM_REGION_CLASS_VRAM)
+ 
+@@ -137,6 +144,7 @@ uint32_t xe_get_default_alignment(int fd);
+ uint32_t xe_va_bits(int fd);
+ uint16_t xe_dev_id(int fd);
+ int xe_supports_faults(int fd);
++bool xe_engine_class_supports_multi_queue(uint32_t engine_class);
+ const char *xe_engine_class_string(uint32_t engine_class);
+ const char *xe_engine_class_short_string(uint32_t engine_class);
+ bool xe_has_engine_class(int fd, uint16_t engine_class);
+-- 
+2.43.0
 
-CI Bug Log - changes from IGT_8664 -> IGTPW_14196
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_14196 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_14196, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14196/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-glk-j4005 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_14196:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-twl-1:          [PASS][1] -> [DMESG-WARN][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-twl-1/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14196/bat-twl-1/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_busy@basic@flip:
-    - bat-arlh-3:         [PASS][3] -> [DMESG-WARN][4] +1 other test dmesg-warn
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-arlh-3/igt@kms_busy@basic@flip.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14196/bat-arlh-3/igt@kms_busy@basic@flip.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14196 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-mtlp-8/igt@i915_selftest@live.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14196/bat-mtlp-8/igt@i915_selftest@live.html
-    - bat-twl-1:          [PASS][7] -> [DMESG-WARN][8] ([i915#14872])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-twl-1/igt@i915_selftest@live.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14196/bat-twl-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-9:         [PASS][9] -> [DMESG-FAIL][10] ([i915#12061]) +1 other test dmesg-fail
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14196/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#14872]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14872
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8664 -> IGTPW_14196
-  * Linux: CI_DRM_17659 -> CI_DRM_17665
-
-  CI-20190529: 20190529
-  CI_DRM_17659: 3adb3f4aa5a8563ee9c1f6e137827b740e3ab40b @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_17665: d8f645c04dad21f981669f0b65191cac664735f9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14196: a9daa9c2e464b008e4342020b887628fb4ad3f79 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8664: 28cc709ad89c0ef569569f19f4772d4cca354963 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14196/index.html
-
---===============4314612811949762338==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_pat: add helper funtion to read PAT table (rev9)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/157481/">https://patchwork.freedesktop.org/series/157481/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14196/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14196/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8664 -&gt; IGTPW_14196</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_14196 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_14196, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14196/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-glk-j4005 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_14196:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-twl-1/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14196/bat-twl-1/igt@i915_selftest@live@workarounds.html">DMESG-WARN</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-arlh-3/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14196/bat-arlh-3/igt@kms_busy@basic@flip.html">DMESG-WARN</a> +1 other test dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14196 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14196/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-twl-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14196/bat-twl-1/igt@i915_selftest@live.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14872">i915#14872</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14196/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8664 -&gt; IGTPW_14196</li>
-<li>Linux: CI_DRM_17659 -&gt; CI_DRM_17665</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17659: 3adb3f4aa5a8563ee9c1f6e137827b740e3ab40b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_17665: d8f645c04dad21f981669f0b65191cac664735f9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14196: a9daa9c2e464b008e4342020b887628fb4ad3f79 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8664: 28cc709ad89c0ef569569f19f4772d4cca354963 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4314612811949762338==--
