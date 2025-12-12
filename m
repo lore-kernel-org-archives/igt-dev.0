@@ -4,56 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54A95D4336B
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Dec 2025 05:56:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0A36D4336E
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Dec 2025 06:46:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BB6DE10E32F;
-	Fri, 12 Dec 2025 05:56:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 44F5C10E073;
+	Fri, 12 Dec 2025 06:46:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GcPv4+Y1";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="bsAJyd6d";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7796610E32A
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Dec 2025 05:56:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765519015; x=1797055015;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=o+KVx/LT9DehsQlHWPB5n0AB5KyDpC9hVfH3Spylm7c=;
- b=GcPv4+Y1G+MjA/Mgkcl8a63Ia2SKvFAZ3ZB9p9DIdsSKQ4h/8wQkRpUJ
- LnOY8TFIyz9AGxEJe2xfbTskWeRDRecVqmrx5Nr2Hg58zQLccdz5F+p1A
- aEArM3EAEnQHPD4OnvIt2OwGn4KVHH+o1zBmI6k/jYS4OyPtN6T+8WG5y
- g9l5TmQBs/c743cNkZHAZgQOZhyjgvTgNK12cuB0TSBqn4tsmmVrkNgjp
- vmAUE+SC2MDfvca0shZsXB/IO81v4LoO0H9yXOVFGyuNZ8mN0uAE6KdIz
- 7jekknyKNC6o8SeuyH0rnXvwjoIj6NTYSIrSzuDI4MyQp9gavd859nFJK g==;
-X-CSE-ConnectionGUID: HpYBZE3YQ1qxMw8FjW5How==
-X-CSE-MsgGUID: GqDxpjgQQQq6SdPHYYAngw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="78972131"
-X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; d="scan'208";a="78972131"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2025 21:56:54 -0800
-X-CSE-ConnectionGUID: jz7BywMySZCkgq1uej8GUw==
-X-CSE-MsgGUID: iVezqBDwSRiQYZVi9EnfJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; d="scan'208";a="228058548"
-Received: from karthik-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.238.68])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2025 21:56:53 -0800
-From: Karthik B S <karthik.b.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com, santhosh.reddy.guddati@intel.com,
- Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t v3 1/2] Revert "tests/intel/kms_joiner: Cleanup
- igt_require checks"
-Date: Fri, 12 Dec 2025 11:27:15 +0530
-Message-ID: <20251212055717.2870018-2-karthik.b.s@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251212055717.2870018-1-karthik.b.s@intel.com>
-References: <20251212055717.2870018-1-karthik.b.s@intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D63AC10E073
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Dec 2025 06:46:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+ References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=XALcMix9l6zvV72v8LF9RIH1JKAFmA7cOmqsf4TNg+0=; b=bsAJyd6diopkaVDr9CnakVEQNU
+ oPgaqQamMyu2VnBVGYMQTEBNbgeyvEZIn4udKC7RphLNxoFdU4mK1Abllgwdr/82odQ4ZGtedwgNt
+ 4GvA5PwIfSLgeH85bQrJmxcdwSSz6wziqbzkLbw2b/OkEWDD0WgZfBtwuGME5WTuYEsARUWTnek5v
+ +REUGRw5dAhpuXATTEcXyveZraShvJhm/rVrZi2Q36tjiGNEB5zSGYYYbKzyJ+CXku7go02Qg0+Gf
+ WWRWSbF6Ho3YvPqmHV5gxiTOvxlaj8sfr5qxIWGl0hf1VDgn7zKaeW8aF/12fA+q/9bXpFjDd1Pz0
+ 2jOPiggA==;
+Received: from [86.33.28.86] (helo=[192.168.1.83])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1vTwuf-00Btzc-De; Fri, 12 Dec 2025 07:46:01 +0100
+Message-ID: <2d907be1-aefe-4554-87b5-0a2e5487b29e@igalia.com>
+Date: Fri, 12 Dec 2025 07:46:00 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] kms_flip_tiling test run
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+References: <20251211071414.17684-1-tursulin@igalia.com>
+ <20251211163351.yiwxbgxoskz23zc5@kamilkon-DESK.igk.intel.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tursulin@igalia.com>
+In-Reply-To: <20251211163351.yiwxbgxoskz23zc5@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,289 +61,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This reverts commit 3f90f16d1233a9d7ea75e41c83aaa0e34750764f.
 
-v3: Rebased.
+On 11/12/2025 17:33, Kamil Konieczny wrote:
+> Hi Tvrtko,
+> On 2025-12-11 at 08:14:14 +0100, Tvrtko Ursulin wrote:
+>> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>>
+>> Flip tiling test-with target
+>>
+>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>> ---
+>>   tests/intel-ci/i915.fast-feedback.testlist | 171 +--------------------
+>>   1 file changed, 1 insertion(+), 170 deletions(-)
+>>
+> This looks like something for IGT trybot?
+> Or do you want bigger sample?
 
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/intel/kms_joiner.c | 223 ++++++++++++++++++++-------------------
- 1 file changed, 117 insertions(+), 106 deletions(-)
+No sorry, it is a simple test for AuxCCS on Alderlake to be used as a 
+Test-with: target soon. I just forgot about trybot since xe does not 
+have it and the AuxCCS story is relevant to xe, even though this I will 
+be testing with i915. Confusing I know. Plus I messed up sending from 
+wrong email and was wondering my my messages are not coming through. 
+When I figured it out I guess someone release the wrong ones from the 
+moderated queue and then I made a proper mess. Sorry again.
 
-diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
-index bf77f6626..f8e684b47 100644
---- a/tests/intel/kms_joiner.c
-+++ b/tests/intel/kms_joiner.c
-@@ -627,151 +627,162 @@ int igt_main()
- 		}
- 	}
- 
--	igt_subtest_group() {
--		igt_fixture() {
--			igt_require(data.big_joiner_output_count > 0);
--			igt_require(data.n_pipes > 1);
--		}
- 
--		igt_describe("Verify the basic modeset on big joiner mode on all pipes");
--		igt_subtest_with_dynamic("basic-big-joiner") {
-+	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
-+	igt_subtest_with_dynamic("basic-big-joiner") {
-+			igt_require_f(data.big_joiner_output_count > 0,
-+				      "No bigjoiner output found\n");
-+			igt_require_f(data.n_pipes > 1,
-+				      "Minimum 2 pipes required\n");
- 			igt_dynamic_f("single-joiner")
- 				test_single_joiner(&data, data.big_joiner_output_count, false);
- 			if (data.big_joiner_output_count > 1)
- 				igt_dynamic_f("multi-joiner")
- 					test_multi_joiner(&data, data.big_joiner_output_count, false);
--		}
--
--		igt_describe("Verify if the modeset on the adjoining pipe is rejected "
--			     "when the pipe is active with a big joiner modeset");
--		igt_subtest_with_dynamic("invalid-modeset-big-joiner") {
--			if (data.big_joiner_output_count >= 1)
--				igt_dynamic_f("big_joiner_on_last_pipe")
--					test_joiner_on_last_pipe(&data, false);
--			if (data.big_joiner_output_count > 1)
--				igt_dynamic_f("invalid_combinations")
--					test_invalid_modeset_two_joiner(&data, false, false);
--			if (data.mixed_output_count)
--				igt_dynamic_f("mixed_output")
--					test_invalid_modeset_two_joiner(&data, true, false);
--		}
- 	}
- 
--	igt_subtest_group() {
--		igt_fixture() {
--			igt_require(data.non_big_joiner_output_count > 0);
--			igt_require(data.n_pipes > 1);
--		}
--
--		igt_describe("Verify the basic modeset on force big joiner mode on all pipes");
--		igt_subtest_with_dynamic("basic-force-big-joiner") {
--			igt_dynamic_f("single") {
--				enable_force_joiner_on_all_non_big_joiner_outputs(&data);
--				test_single_joiner(&data, data.non_big_joiner_output_count, true);
--				igt_reset_connectors();
--			}
--
--			if (data.non_big_joiner_output_count > 1) {
--				igt_dynamic_f("multi") {
--					enable_force_joiner_on_all_non_big_joiner_outputs(&data);
--					test_multi_joiner(&data, data.non_big_joiner_output_count, true);
--					igt_reset_connectors();
--				}
--			}
--		}
--
--		igt_subtest_with_dynamic("invalid-modeset-force-big-joiner") {
--			if (data.non_big_joiner_output_count >= 1) {
--				igt_dynamic_f("big_joiner_on_last_pipe") {
--					enable_force_joiner_on_all_non_big_joiner_outputs(&data);
--					test_joiner_on_last_pipe(&data, true);
--					igt_reset_connectors();
--				}
--			}
-+	igt_describe("Verify the basic modeset on ultra joiner mode on all pipes");
-+	igt_subtest_with_dynamic("basic-ultra-joiner") {
-+			igt_require_f(data.ultra_joiner_output_count > 0,
-+				      "No ultrajoiner output found\n");
-+			igt_require_f(data.n_pipes > 3,
-+				      "Minimum 4 pipes required\n");
-+			igt_dynamic_f("single-joiner")
-+				test_ultra_joiner(&data, false, false, false);
-+	}
- 
--			if (data.non_big_joiner_output_count > 1) {
--				igt_dynamic_f("invalid_combinations") {
--					enable_force_joiner_on_all_non_big_joiner_outputs(&data);
--					test_invalid_modeset_two_joiner(&data, false, true);
--					igt_reset_connectors();
--				}
--			}
--		}
-+	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
-+		     "when the pipe is active with a big joiner modeset");
-+	igt_subtest_with_dynamic("invalid-modeset-big-joiner") {
-+		igt_require_f(data.big_joiner_output_count > 0, "Non big joiner output not found\n");
-+		igt_require_f(data.n_pipes > 1, "Minimum of 2 pipes are required\n");
-+		if (data.big_joiner_output_count >= 1)
-+			igt_dynamic_f("big_joiner_on_last_pipe")
-+				test_joiner_on_last_pipe(&data, false);
-+		if (data.big_joiner_output_count > 1)
-+			igt_dynamic_f("invalid_combinations")
-+				test_invalid_modeset_two_joiner(&data, false, false);
-+		if (data.mixed_output_count)
-+			igt_dynamic_f("mixed_output")
-+				test_invalid_modeset_two_joiner(&data, true, false);
- 	}
- 
--	igt_subtest_group() {
--		igt_fixture() {
--			igt_require(data.ultra_joiner_output_count > 0);
--			igt_require(data.n_pipes > 3);
-+	igt_describe("Verify if the modeset on the other pipes are rejected "
-+		     "when the pipe A is active with a ultra joiner modeset");
-+	igt_subtest_with_dynamic("invalid-modeset-ultra-joiner") {
-+		igt_require_f(data.ultra_joiner_output_count > 0, "Ultra joiner output not found\n");
-+		igt_require_f(data.n_pipes > 3, "Minimum of 4 pipes are required\n");
-+
-+		igt_dynamic_f("ultra_joiner_on_invalid_pipe")
-+			test_ultra_joiner(&data, true, false, false);
-+		if (data.non_ultra_joiner_output_count > 0) {
-+			igt_dynamic_f("2x")
-+				test_ultra_joiner(&data, false, true, false);
- 		}
-+	}
- 
--		igt_describe("Verify the basic modeset on ultra joiner mode on all pipes");
--		igt_subtest_with_dynamic("basic-ultra-joiner") {
--			igt_dynamic_f("single-joiner")
--				test_ultra_joiner(&data, false, false, false);
-+	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
-+	igt_subtest_with_dynamic("basic-force-big-joiner") {
-+		igt_require_f(data.non_big_joiner_output_count > 0,
-+			      "No non big joiner output found\n");
-+		igt_require_f(data.n_pipes > 1,
-+			      "Minimum 2 pipes required\n");
-+		igt_dynamic_f("single") {
-+			enable_force_joiner_on_all_non_big_joiner_outputs(&data);
-+			test_single_joiner(&data, data.non_big_joiner_output_count, true);
-+			igt_reset_connectors();
- 		}
- 
--		igt_describe("Verify if the modeset on the other pipes are rejected "
--			     "when the pipe A is active with a ultra joiner modeset");
--		igt_subtest_with_dynamic("invalid-modeset-ultra-joiner") {
--			igt_dynamic_f("ultra_joiner_on_invalid_pipe")
--				test_ultra_joiner(&data, true, false, false);
--			if (data.non_ultra_joiner_output_count > 0) {
--				igt_dynamic_f("2x")
--					test_ultra_joiner(&data, false, true, false);
-+		if (data.non_big_joiner_output_count > 1) {
-+			igt_dynamic_f("multi") {
-+				enable_force_joiner_on_all_non_big_joiner_outputs(&data);
-+				test_multi_joiner(&data, data.non_big_joiner_output_count, true);
-+				igt_reset_connectors();
- 			}
- 		}
- 	}
- 
--	igt_subtest_group() {
--		igt_fixture() {
--			igt_require(ultra_joiner_supported);
--			igt_require(data.non_ultra_joiner_output_count > 0);
--			igt_require(data.n_pipes > 3);
--		}
--
--		igt_describe("Verify the basic modeset on force ultra joiner mode on all pipes");
--		igt_subtest_with_dynamic("basic-force-ultra-joiner") {
--			igt_dynamic_f("single") {
--				enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
--				test_ultra_joiner(&data, false, false, true);
-+	igt_subtest_with_dynamic("invalid-modeset-force-big-joiner") {
-+		igt_require_f(data.non_big_joiner_output_count > 0,
-+			      "Non big joiner output not found\n");
-+		igt_require_f(data.n_pipes > 1,
-+			      "Minimum of 2 pipes are required\n");
-+		if (data.non_big_joiner_output_count >= 1) {
-+			igt_dynamic_f("big_joiner_on_last_pipe") {
-+				enable_force_joiner_on_all_non_big_joiner_outputs(&data);
-+				test_joiner_on_last_pipe(&data, true);
- 				igt_reset_connectors();
- 			}
- 		}
- 
--		igt_subtest_with_dynamic("invalid-modeset-force-ultra-joiner") {
--			igt_dynamic_f("ultra_joiner_on_invalid_pipe") {
--				enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
--				test_ultra_joiner(&data, true, false, true);
-+		if (data.non_big_joiner_output_count > 1) {
-+			igt_dynamic_f("invalid_combinations") {
-+				enable_force_joiner_on_all_non_big_joiner_outputs(&data);
-+				test_invalid_modeset_two_joiner(&data, false, true);
- 				igt_reset_connectors();
- 			}
-+		}
-+	}
- 
--			if (data.non_ultra_joiner_output_count >= 1 && data.output_count > 1) {
--				igt_dynamic_f("2x") {
--					enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
--					test_ultra_joiner(&data, false, true, true);
--					igt_reset_connectors();
--				}
--			}
-+	igt_describe("Verify the basic modeset on ultra joiner mode on all pipes");
-+	igt_subtest_with_dynamic("basic-force-ultra-joiner") {
-+		igt_require_f(ultra_joiner_supported,
-+			      "Ultra joiner not supported on this platform\n");
-+		igt_require_f(data.non_ultra_joiner_output_count > 0,
-+			      "No non ultra joiner output found\n");
-+		igt_require_f(data.n_pipes > 3,
-+			      "Minimum 4 pipes required\n");
-+		igt_dynamic_f("single") {
-+			enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
-+			test_ultra_joiner(&data, false, false, true);
-+			igt_reset_connectors();
- 		}
- 	}
- 
- 	igt_describe("Verify modeset switch between ultra joiner and big joiner");
- 	igt_subtest_with_dynamic("switch-modeset-ultra-joiner-big-joiner") {
--		igt_require(ultra_joiner_supported);
--		igt_require(data.ultra_joiner_output_count > 0 ||
--			    data.non_ultra_joiner_output_count > 0);
--		igt_require(data.n_pipes > 3);
-+		igt_require_f(ultra_joiner_supported,
-+			      "Ultra joiner not supported on this platform\n");
-+		igt_require_f(data.ultra_joiner_output_count > 0 ||
-+			      data.non_ultra_joiner_output_count > 0,
-+				  "No ultra joiner or force ultra joiner output found\n");
-+		igt_require_f(data.n_pipes > 3,
-+			      "Minimum 4 pipes required\n");
- 
- 		for_each_connected_output(&data.display, output)
- 			switch_modeset_ultra_joiner_big_joiner(&data, output);
- 	}
- 
-+	igt_subtest_with_dynamic("invalid-modeset-force-ultra-joiner") {
-+		igt_require_f(ultra_joiner_supported,
-+			      "Ultra joiner not supported on this platform\n");
-+		igt_require_f(data.non_ultra_joiner_output_count > 0,
-+			      "Non ultra joiner output not found\n");
-+		igt_require_f(data.n_pipes > 3,
-+			      "Minimum of 3 pipes are required\n");
-+
-+		igt_dynamic_f("ultra_joiner_on_invalid_pipe") {
-+			enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
-+			test_ultra_joiner(&data, true, false, true);
-+			igt_reset_connectors();
-+		}
-+
-+		if (data.non_ultra_joiner_output_count >= 1 && data.output_count > 1) {
-+			igt_dynamic_f("2x") {
-+				enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
-+				test_ultra_joiner(&data, false, true, true);
-+				igt_reset_connectors();
-+			}
-+		}
-+	}
-+
- 	igt_describe("Verify the basic modeset on the maximum non-joiner mode across "
- 		     "all pipes");
- 	igt_subtest_with_dynamic("basic-max-non-joiner") {
--		igt_require(data.n_pipes >= 1);
--		igt_require(data.non_joiner_output_count  > 0);
-+		igt_require_f(data.n_pipes >= 1,
-+			      "At least one pipe is required.\n");
-+		igt_require_f(data.non_joiner_output_count  > 0,
-+			      "No suitable non-joiner mode found\n");
- 			test_basic_max_non_joiner(&data);
- 	}
- 
--- 
-2.43.0
+Regards,
+
+Tvrtko
+>> diff --git a/tests/intel-ci/i915.fast-feedback.testlist b/tests/intel-ci/i915.fast-feedback.testlist
+>> index 2799bbaa5870..6fbf8c517c9d 100644
+>> --- a/tests/intel-ci/i915.fast-feedback.testlist
+>> +++ b/tests/intel-ci/i915.fast-feedback.testlist
+>> @@ -1,171 +1,2 @@
+>> -# Try to load the driver if it's not available yet.
+>>   igt@i915_module_load@load
+>> -
+>> -# Keep alphabetically sorted by default
+>> -igt@core_auth@basic-auth
+> [cut]
+>> -igt@dmabuf@all-tests
+>> +igt@kms_flip_tiling@flip-change-tiling
+>> -- 
+>> 2.52.0
+>>
 
