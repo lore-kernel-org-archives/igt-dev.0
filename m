@@ -4,59 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6292CD4921F
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Dec 2025 12:26:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D038ED4921F
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Dec 2025 12:32:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EED4F10E348;
-	Fri, 12 Dec 2025 12:26:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 57C5F10E348;
+	Fri, 12 Dec 2025 12:32:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VOMgKhzl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nRgM8zrH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E2C410E347
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Dec 2025 12:26:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E7E410E348
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Dec 2025 12:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765542396; x=1797078396;
+ t=1765542741; x=1797078741;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=Wceiimm3Gq4sjANsh8ghRRypeZ3XTM1GnGhm1dmrzhg=;
- b=VOMgKhzlHCuioSjZtleA48XJ1ejE/ERqG6HvxNwL3h31Gb6XGNwOk5l8
- EyTqN5Y9e4ENzg2JWeqf3PM6VMlORmhxqv3l8JAnaaZBjRH1LsDsV8nkl
- 2X/o9cTFMfnhiO67+BG0m/7VtvbOrfPSqWzi/9r5nk0gxL6IVv/XsYbGW
- XQSeYg0VrH+yc73ZND40o7owscDo92+JkWoUfBToIIVRu/bTQs4i+NOlo
- 82RjkWT1fNNxMQnceUcUiDXkG/wQ6sFPvp0dz7Lsn9fE3aSa7cLBZWdSw
- q9j4e6ec5oxRC5jPzTmx9wQi0N7q8Qn9r5tkt+sLteMjqPgdAT5k18QOl Q==;
-X-CSE-ConnectionGUID: WY+m1HTEQo+Tg5HcwjhZKg==
-X-CSE-MsgGUID: 7rn0Rl9ASp+l5V5eF7iMaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="78916167"
-X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; d="scan'208";a="78916167"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2025 04:26:36 -0800
-X-CSE-ConnectionGUID: y9s4eC7ZR0CcN+FqWQEBWQ==
-X-CSE-MsgGUID: w87N78nWSZin+/mudrR++w==
+ mime-version:in-reply-to;
+ bh=gtWKefLZN3kpeVK3rLkiBtkxg8AOk1RFWZnin8sLfpc=;
+ b=nRgM8zrHDp8mEQwd2AsuOgRqgex4m1g/LWzDPiHPkt8AIWwO9EWPVEMH
+ mKA99s/uxAuxuPhvXJHo5RpZzH46v4DdGxky5doJ5/ZALlYDueTZu3eWs
+ KIocwxlh3DL+UOo1Vl765z4IWIlTnvznzRBFPzzGh/2NQ1bAyNejtbLK5
+ nywv7zPyiO72Ifurz6xAbsHTzunoqvJOkcI965VKaTvU7bo18Tb1/w+BK
+ XcwnWb5UrzBoemCeSS/j7wblZ59G6nbXLVshLKLuUuu8A3CDkf/dMvmmQ
+ C2et6SjQX8T5WvQJDSxrZGjPb5s+1YMS5KMS+rob+30yyumRHl5jUz9dg Q==;
+X-CSE-ConnectionGUID: SoqiIHuLQNGcvhF8iejPFg==
+X-CSE-MsgGUID: XZIMJl7bThqoCe7lOztxzA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="78248851"
+X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; d="scan'208";a="78248851"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Dec 2025 04:32:21 -0800
+X-CSE-ConnectionGUID: AhOkGaItTWWHhT6fAW4Gnw==
+X-CSE-MsgGUID: jvDdR453TV6ST1vVx8a6mw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; d="scan'208";a="196982056"
+X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; d="scan'208";a="197076420"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 04:26:35 -0800
-Date: Fri, 12 Dec 2025 13:26:18 +0100
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 04:32:20 -0800
+Date: Fri, 12 Dec 2025 13:32:16 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Pawel Sikora <pawel.sikora@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v4 1/1] docs: fix intel-specific descriptions
-Message-ID: <20251212122618.hnrwb7stj4f5ya6c@kamilkon-DESK.igk.intel.com>
+To: Karthik B S <karthik.b.s@intel.com>
+Cc: igt-dev@lists.freedesktop.org, santhosh.reddy.guddati@intel.com,
+ Jeevan B <jeevan.b@intel.com>
+Subject: Re: [PATCH i-g-t v3 2/2] tests/intel/kms_joiner: Add function for
+ pretest checks
+Message-ID: <20251212123216.ewyroutl4gx4wrcl@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Pawel Sikora <pawel.sikora@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20251212110301.342433-1-pawel.sikora@intel.com>
- <20251212110301.342433-2-pawel.sikora@intel.com>
+ Karthik B S <karthik.b.s@intel.com>, igt-dev@lists.freedesktop.org,
+ santhosh.reddy.guddati@intel.com, Jeevan B <jeevan.b@intel.com>
+References: <20251212055717.2870018-1-karthik.b.s@intel.com>
+ <20251212055717.2870018-3-karthik.b.s@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251212110301.342433-2-pawel.sikora@intel.com>
+In-Reply-To: <20251212055717.2870018-3-karthik.b.s@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,134 +73,226 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Pawel,
-On 2025-12-12 at 12:03:00 +0100, Pawel Sikora wrote:
-> While it is true that the main focus of IGT was on Intel GPUs,
-> this is no longer the case and the documentation should reflect
-> this change and present the current state where no specific
-> platform is the center of interest.
+Hi Karthik,
+On 2025-12-12 at 11:27:16 +0530, Karthik B S wrote:
+> Move igt_require checks in individual subtests to a function which is
+> called from all subtests to avoid code duplication.
 > 
-> Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
+> v2: Use enum for various joiner modes (Santhosh)
+> 
+> v3: Split the function for big and ultra joiner (Kamil)
+>     Use igt_require_f (Kamil)
+>     Minor Styling cleanups
+> 
 
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
++cc Jeevan B <jeevan.b@intel.com>
+
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>  tests/intel/kms_joiner.c | 98 +++++++++++++++++++++-------------------
+>  1 file changed, 52 insertions(+), 46 deletions(-)
+> 
+> diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
+> index f8e684b47..ed82f4789 100644
+> --- a/tests/intel/kms_joiner.c
+> +++ b/tests/intel/kms_joiner.c
+> @@ -101,10 +101,16 @@ typedef struct {
+>  	igt_output_t *non_joiner_output[IGT_MAX_PIPES];
+>  	enum pipe pipe_seq[IGT_MAX_PIPES];
+>  	igt_display_t display;
+> +	bool ultra_joiner_supported;
+>  } data_t;
+>  
+>  static int max_dotclock;
+>  
+> +enum force_mode {
+> +	FORCE_ENABLE = 0,
+> +	FORCE_DISABLE
+> +};
+> +
+>  static void enable_force_joiner_on_all_non_big_joiner_outputs(data_t *data)
+>  {
+>  	bool status;
+> @@ -179,6 +185,32 @@ static void set_joiner_mode(data_t *data, igt_output_t *output, drmModeModeInfo
+>  	igt_remove_fb(data->drm_fd, &fb);
+>  }
+>  
+> +static void require_ultra_joiner(data_t *data, enum force_mode mode)
+> +{
+> +	igt_require_f(data->ultra_joiner_supported,
+> +		      "Ultra joiner not supported on this platform\n");
+> +	igt_require_f(data->n_pipes >= 4, "Minimum 4 pipes required\n");
+> +
+> +	if (mode == FORCE_ENABLE)
+> +		igt_require_f(data->non_ultra_joiner_output_count > 0,
+> +			      "No non ultra joiner output found\n");
+> +	else
+> +		igt_require_f(data->ultra_joiner_output_count > 0,
+> +			      "No ultra joiner output found\n");
+> +}
+> +
+> +static void require_big_joiner(data_t *data, enum force_mode mode)
+> +{
+> +	igt_require_f(data->n_pipes >= 2, "Minimum 2 pipes required\n");
+> +
+> +	if (mode == FORCE_ENABLE)
+> +		igt_require_f(data->non_ultra_joiner_output_count > 0,
+
+Should this be:
+		igt_require_f(data->non_big_joiner_output_count > 0,
 
 Regards,
 Kamil
 
-> ---
->  docs/faq.md       | 15 +++++++++++----
->  docs/platforms.md | 34 ++++++++++++++++++++--------------
->  2 files changed, 31 insertions(+), 18 deletions(-)
-> 
-> diff --git a/docs/faq.md b/docs/faq.md
-> index 48e754c56..b139c8443 100644
-> --- a/docs/faq.md
-> +++ b/docs/faq.md
-> @@ -6,8 +6,9 @@ This FAQ covers common questions about using, building, and contributing to
->  ### What is IGT GPU Tools?
->  
->  IGT GPU Tools is a collection of low-level tests and utilities used to validate and
-> -debug Linux DRM (Direct Rendering Manager) graphics drivers. It focuses primarily on
-> -Intel GPUs but supports other platforms in varying degrees.
-> +debug Linux DRM (Direct Rendering Manager) graphics drivers. It focuses primarily
-> +on display testing. It supports GPU-specific testing for Intel and AMD.
-> +Other platforms are supported in varying degrees.
->  
->  ### How do I build IGT?
->  
-> @@ -52,11 +53,17 @@ or decode state.
->  
->  ### What platforms are supported?
->  
-> -IGT primarily targets Intel GPUs (Gen9+), but partial support exists for:
-> +IGT primarily targets platforms:
->  
-> +- Intel (i915 and xe)
->  - AMD (amdgpu)
->  - NVIDIA (nouveau)
-> -- Virtual GPUs (e.g., virtio-gpu in QEMU/KVM/AVD)
-> +- Broadcom (v3d and vc4)
-> +- Qualcomm (msm)
-> +- Arm (Panfrost)
-> +- Panthor
-> +- Virtual GPUs (e.g., virtio_gpu in QEMU/KVM/AVD or vmwgfx)
-> +- Virtual display (vkms)
->  
->  Hardware coverage may vary by test.
->  
-> diff --git a/docs/platforms.md b/docs/platforms.md
-> index e6882feec..214f53c1d 100644
-> --- a/docs/platforms.md
-> +++ b/docs/platforms.md
-> @@ -2,9 +2,9 @@
->  
->  ## :material-chip: Hardware
->  
-> -**IGT GPU Tools** is designed to validate few DRM drivers across a variety of Intel
-> -and non-Intel platforms. While virtual environments help with development, real hardware
-> -is recommended for full test coverage, performance metrics, and regression tracking.
-> +**IGT GPU Tools** is designed to validate few DRM drivers across a variety of platforms.
-> +While virtual environments help with development, real hardware is recommended for full
-> +test coverage, performance metrics, and regression tracking.
->  
->  ### :material-lightbulb-outline: General Guidelines
->  
-> @@ -12,7 +12,21 @@ is recommended for full test coverage, performance metrics, and regression track
->  - Prefer **dedicated test systems** for kernel and firmware flexibility.
->  - Ensure **reliable cooling** to avoid throttling during performance tests.
->  
-> -### Intel
-> +### Supported GPUs
+> +			      "No non big joiner output found\n");
+> +	else
+> +		igt_require_f(data->big_joiner_output_count > 0,
+> +			      "No big joiner output found\n");
+> +}
 > +
-> +Support exists for the following platforms:
-> +
-> +- Intel (i915 and xe)
-> +- AMD (amdgpu)
-> +- NVIDIA (nouveau)
-> +- Broadcom (v3d and vc4)
-> +- Qualcomm (msm)
-> +- Arm (Panfrost)
-> +- Panthor
-> +- Virtual GPUs (e.g., virtio_gpu in QEMU/KVM/AVD or vmwgfx)
-> +- Virtual display (vkms)
-> +
-> +#### Intel
+>  static void switch_modeset_ultra_joiner_big_joiner(data_t *data, igt_output_t *output)
+>  {
+>  	drmModeModeInfo bj_mode;
+> @@ -554,7 +586,7 @@ int igt_main()
+>  	data_t data;
 >  
->  | GPU Generation | Example Platform / CPU      | Notes                                        |
->  |-||-|
-> @@ -25,14 +39,6 @@ is recommended for full test coverage, performance metrics, and regression track
->  :material-information-outline: *Older GPUs (Gen7/Gen8) are still useful for regression
->  testing but may not support new test features.*
+>  	igt_fixture() {
+> -		ultra_joiner_supported = false;
+> +		data.ultra_joiner_supported = false;
+>  		data.big_joiner_output_count = 0;
+>  		data.ultra_joiner_output_count = 0;
+>  		data.non_big_joiner_output_count = 0;
+> @@ -574,7 +606,7 @@ int igt_main()
+>  		is_dgfx = is_xe_device(data.drm_fd) ? xe_has_vram(data.drm_fd) : gem_has_lmem(data.drm_fd);
+>  		display_ver = intel_display_ver(intel_get_drm_devid(data.drm_fd));
+>  		if (is_dgfx && display_ver == 14)
+> -			ultra_joiner_supported = true;
+> +			data.ultra_joiner_supported = true;
 >  
-> -### Non-Intel GPU Support
+>  		for_each_connected_output(&data.display, output) {
+>  			bool ultrajoiner_found = false, bigjoiner_found = false, force_joiner_supported = false;
+> @@ -630,32 +662,25 @@ int igt_main()
+>  
+>  	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
+>  	igt_subtest_with_dynamic("basic-big-joiner") {
+> -			igt_require_f(data.big_joiner_output_count > 0,
+> -				      "No bigjoiner output found\n");
+> -			igt_require_f(data.n_pipes > 1,
+> -				      "Minimum 2 pipes required\n");
+> -			igt_dynamic_f("single-joiner")
+> -				test_single_joiner(&data, data.big_joiner_output_count, false);
+> -			if (data.big_joiner_output_count > 1)
+> -				igt_dynamic_f("multi-joiner")
+> -					test_multi_joiner(&data, data.big_joiner_output_count, false);
+> +		require_big_joiner(&data, FORCE_DISABLE);
+> +		igt_dynamic_f("single-joiner")
+> +			test_single_joiner(&data, data.big_joiner_output_count, false);
+> +		if (data.big_joiner_output_count > 1)
+> +			igt_dynamic_f("multi-joiner")
+> +				test_multi_joiner(&data, data.big_joiner_output_count, false);
+>  	}
+>  
+>  	igt_describe("Verify the basic modeset on ultra joiner mode on all pipes");
+>  	igt_subtest_with_dynamic("basic-ultra-joiner") {
+> -			igt_require_f(data.ultra_joiner_output_count > 0,
+> -				      "No ultrajoiner output found\n");
+> -			igt_require_f(data.n_pipes > 3,
+> -				      "Minimum 4 pipes required\n");
+> -			igt_dynamic_f("single-joiner")
+> -				test_ultra_joiner(&data, false, false, false);
+> +		require_big_joiner(&data, FORCE_DISABLE);
+> +		igt_dynamic_f("single-joiner")
+> +			test_ultra_joiner(&data, false, false, false);
+>  	}
+>  
+>  	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
+>  		     "when the pipe is active with a big joiner modeset");
+>  	igt_subtest_with_dynamic("invalid-modeset-big-joiner") {
+> -		igt_require_f(data.big_joiner_output_count > 0, "Non big joiner output not found\n");
+> -		igt_require_f(data.n_pipes > 1, "Minimum of 2 pipes are required\n");
+> +		require_big_joiner(&data, FORCE_DISABLE);
+>  		if (data.big_joiner_output_count >= 1)
+>  			igt_dynamic_f("big_joiner_on_last_pipe")
+>  				test_joiner_on_last_pipe(&data, false);
+> @@ -670,9 +695,7 @@ int igt_main()
+>  	igt_describe("Verify if the modeset on the other pipes are rejected "
+>  		     "when the pipe A is active with a ultra joiner modeset");
+>  	igt_subtest_with_dynamic("invalid-modeset-ultra-joiner") {
+> -		igt_require_f(data.ultra_joiner_output_count > 0, "Ultra joiner output not found\n");
+> -		igt_require_f(data.n_pipes > 3, "Minimum of 4 pipes are required\n");
 > -
-> -Although IGT is Intel-focused, basic support exists for other platforms:
+> +		require_ultra_joiner(&data, FORCE_DISABLE);
+>  		igt_dynamic_f("ultra_joiner_on_invalid_pipe")
+>  			test_ultra_joiner(&data, true, false, false);
+>  		if (data.non_ultra_joiner_output_count > 0) {
+> @@ -681,12 +704,9 @@ int igt_main()
+>  		}
+>  	}
+>  
+> -	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
+> +	igt_describe("Verify the basic modeset on force big joiner mode on all pipes");
+>  	igt_subtest_with_dynamic("basic-force-big-joiner") {
+> -		igt_require_f(data.non_big_joiner_output_count > 0,
+> -			      "No non big joiner output found\n");
+> -		igt_require_f(data.n_pipes > 1,
+> -			      "Minimum 2 pipes required\n");
+> +		require_big_joiner(&data, FORCE_ENABLE);
+>  		igt_dynamic_f("single") {
+>  			enable_force_joiner_on_all_non_big_joiner_outputs(&data);
+>  			test_single_joiner(&data, data.non_big_joiner_output_count, true);
+> @@ -703,10 +723,7 @@ int igt_main()
+>  	}
+>  
+>  	igt_subtest_with_dynamic("invalid-modeset-force-big-joiner") {
+> -		igt_require_f(data.non_big_joiner_output_count > 0,
+> -			      "Non big joiner output not found\n");
+> -		igt_require_f(data.n_pipes > 1,
+> -			      "Minimum of 2 pipes are required\n");
+> +		require_big_joiner(&data, FORCE_ENABLE);
+>  		if (data.non_big_joiner_output_count >= 1) {
+>  			igt_dynamic_f("big_joiner_on_last_pipe") {
+>  				enable_force_joiner_on_all_non_big_joiner_outputs(&data);
+> @@ -724,14 +741,9 @@ int igt_main()
+>  		}
+>  	}
+>  
+> -	igt_describe("Verify the basic modeset on ultra joiner mode on all pipes");
+> +	igt_describe("Verify the basic modeset on force ultra joiner mode on all pipes");
+>  	igt_subtest_with_dynamic("basic-force-ultra-joiner") {
+> -		igt_require_f(ultra_joiner_supported,
+> -			      "Ultra joiner not supported on this platform\n");
+> -		igt_require_f(data.non_ultra_joiner_output_count > 0,
+> -			      "No non ultra joiner output found\n");
+> -		igt_require_f(data.n_pipes > 3,
+> -			      "Minimum 4 pipes required\n");
+> +		require_ultra_joiner(&data, FORCE_ENABLE);
+>  		igt_dynamic_f("single") {
+>  			enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
+>  			test_ultra_joiner(&data, false, false, true);
+> @@ -745,7 +757,7 @@ int igt_main()
+>  			      "Ultra joiner not supported on this platform\n");
+>  		igt_require_f(data.ultra_joiner_output_count > 0 ||
+>  			      data.non_ultra_joiner_output_count > 0,
+> -				  "No ultra joiner or force ultra joiner output found\n");
+> +			      "No ultra joiner or force ultra joiner output found\n");
+>  		igt_require_f(data.n_pipes > 3,
+>  			      "Minimum 4 pipes required\n");
+>  
+> @@ -754,13 +766,7 @@ int igt_main()
+>  	}
+>  
+>  	igt_subtest_with_dynamic("invalid-modeset-force-ultra-joiner") {
+> -		igt_require_f(ultra_joiner_supported,
+> -			      "Ultra joiner not supported on this platform\n");
+> -		igt_require_f(data.non_ultra_joiner_output_count > 0,
+> -			      "Non ultra joiner output not found\n");
+> -		igt_require_f(data.n_pipes > 3,
+> -			      "Minimum of 3 pipes are required\n");
 > -
-> -- **AMD (AMDGPU):** Some display and KMS tests run; feature support may vary.
-> -- **NVIDIA (nouveau):** Partial functionality; manual testing encouraged.
-> -- **VirtIO-GPU / QEMU / GVT-g:** Useful for automation and limited pipeline testing.
-> -- **ARM SoCs (e.g., Mali, Vivante):** Experimental – not all tests apply.
->  
->  :material-account-group-outline: Community contributions are welcome to expand non-Intel
->  support!
-> @@ -48,14 +54,14 @@ IGT supports two major Intel GPU drivers in the kernel:
->  Here are some basic information, for more please visit an official
->  [Intel Graphics for Linux - Documentation](https://drm.pages.freedesktop.org/intel-docs/)
->  
-> -#### :material-chip: `i915` Driver
-> +##### :material-chip: `i915` Driver
->  
->  - Supports older Intel platforms (Gen9–Gen12).
->  - Mature, well-tested, and fully integrated into kernel and userspace stacks.
->  - Tests targeting `i915` must include proper documentation (using `igt_describe`) and
->    follow test plan validation rules.
->  
-> -#### :material-flash: `Xe` Driver
-> +##### :material-flash: `Xe` Driver
->  
->  - Next-generation Intel GPU driver for **DG2 (Arc)** and newer architectures.
->  - Designed to replace `i915` for future platforms.
+> +		require_ultra_joiner(&data, FORCE_ENABLE);
+>  		igt_dynamic_f("ultra_joiner_on_invalid_pipe") {
+>  			enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
+>  			test_ultra_joiner(&data, true, false, true);
 > -- 
-> 2.51.0
+> 2.43.0
 > 
