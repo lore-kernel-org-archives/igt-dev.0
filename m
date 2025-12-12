@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CFDFD41D74
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Dec 2025 03:19:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 327C3D4336B
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Dec 2025 05:56:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B4A8A10E2F6;
-	Fri, 12 Dec 2025 03:19:51 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E8BBD10E2F6;
- Fri, 12 Dec 2025 03:19:50 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4915580182252569095=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9941710E32E;
+	Fri, 12 Dec 2025 05:56:54 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bderQhS1";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7076510E32A
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Dec 2025 05:56:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1765519014; x=1797055014;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=bvE+6VpfLwbXRIDgR+yyORo2W+OiF1wcGNXgTV+5HvE=;
+ b=bderQhS1sxRKUCUcbPCoxCp8u9O6G2n2B4icpHpobFV7289iv73C40iT
+ HBKfPjUI09bXyXuboUNNxDrC2k91Kej8e1m334f48H6llMvCC6XyNwBZA
+ E1Jb0St0mxqs5c22Akmk0juwIgHGdy1xY+nEDaJ+26SFnofEOgYDxQoWc
+ /RH3LjKfgVecDhcy+ynqJ/plW0cqO6ll8qIXUt6dkzEYakRHa8DfMEuBO
+ TQ3w/5p9V3N4LzSEXEKtWx2PRcCLp2WIWYUaejpPm/mNKXNDrPXCjNXI1
+ 62oAqZle4nq+zFziSWLRFqyopcQXsLjCCnVVNgfZqEXle5ejPu7mIMqxc Q==;
+X-CSE-ConnectionGUID: T7KWRg9nT8+DQtPdvmBYQw==
+X-CSE-MsgGUID: smSsHAn1RbyD8k9OpUXzDQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="78972125"
+X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; d="scan'208";a="78972125"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Dec 2025 21:56:53 -0800
+X-CSE-ConnectionGUID: Sh0yIZ1MQ4CfHZO2Z16pIQ==
+X-CSE-MsgGUID: DvUQlzzUSBmZ1a8driT1+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; d="scan'208";a="228058540"
+Received: from karthik-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.238.68])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Dec 2025 21:56:51 -0800
+From: Karthik B S <karthik.b.s@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@linux.intel.com, santhosh.reddy.guddati@intel.com,
+ Karthik B S <karthik.b.s@intel.com>
+Subject: [PATCH i-g-t v3 0/2] tests/intel/kms_joiner: Add function for pretest
+ checks
+Date: Fri, 12 Dec 2025 11:27:14 +0530
+Message-ID: <20251212055717.2870018-1-karthik.b.s@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Multi_Queue_feature_validat?=
- =?utf-8?q?ion_support_=28rev6=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Niranjana Vishwanathapura" <niranjana.vishwanathapura@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 12 Dec 2025 03:19:50 -0000
-Message-ID: <176550959094.79502.10258412068345444731@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20251212011115.1685703-20-niranjana.vishwanathapura@intel.com>
-In-Reply-To: <20251212011115.1685703-20-niranjana.vishwanathapura@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,129 +64,26 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4915580182252569095==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Revert the patch which was added to cleanup the igt_require checks by
+adding them to subtest groups as this can lead to spurious skips and
+corresponding noise in logs.
 
-== Series Details ==
+After the revert, add the clean up patch which moves the igt_require
+checks in invidual subtests to a function which is called from all the
+subtests to avoid code duplication.
 
-Series: Multi Queue feature validation support (rev6)
-URL   : https://patchwork.freedesktop.org/series/156866/
-State : success
+Signed-off-by: Karthik B S <karthik.b.s@intel.com>
 
-== Summary ==
+Karthik B S (2):
+  Revert "tests/intel/kms_joiner: Cleanup igt_require checks"
+  tests/intel/kms_joiner: Add function for pretest checks
 
-CI Bug Log - changes from XEIGT_8664_BAT -> XEIGTPW_14197_BAT
-====================================================
+ tests/intel/kms_joiner.c | 243 +++++++++++++++++++++------------------
+ 1 file changed, 130 insertions(+), 113 deletions(-)
 
-Summary
--------
+-- 
+2.43.0
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (12 -> 12)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14197_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_waitfence@reltime:
-    - bat-dg2-oem2:       [FAIL][1] ([Intel XE#6520]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8664/bat-dg2-oem2/igt@xe_waitfence@reltime.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14197/bat-dg2-oem2/igt@xe_waitfence@reltime.html
-
-  
-  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
-
-
-Build changes
--------------
-
-  * IGT: IGT_8664 -> IGTPW_14197
-  * Linux: xe-4220-3adb3f4aa5a8563ee9c1f6e137827b740e3ab40b -> xe-4227-ec8524448c80e2fd0345eddbc9a75237b77c314d
-
-  IGTPW_14197: 4cefb952ea302051bb61c4d36e8ddf6146864fc2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8664: 28cc709ad89c0ef569569f19f4772d4cca354963 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-4220-3adb3f4aa5a8563ee9c1f6e137827b740e3ab40b: 3adb3f4aa5a8563ee9c1f6e137827b740e3ab40b
-  xe-4227-ec8524448c80e2fd0345eddbc9a75237b77c314d: ec8524448c80e2fd0345eddbc9a75237b77c314d
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14197/index.html
-
---===============4915580182252569095==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Multi Queue feature validation support (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/156866/">https://patchwork.freedesktop.org/series/156866/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14197/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14197/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8664_BAT -&gt; XEIGTPW_14197_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 12)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14197_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_waitfence@reltime:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8664/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14197/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8664 -&gt; IGTPW_14197</li>
-<li>Linux: xe-4220-3adb3f4aa5a8563ee9c1f6e137827b740e3ab40b -&gt; xe-4227-ec8524448c80e2fd0345eddbc9a75237b77c314d</li>
-</ul>
-<p>IGTPW_14197: 4cefb952ea302051bb61c4d36e8ddf6146864fc2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8664: 28cc709ad89c0ef569569f19f4772d4cca354963 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-4220-3adb3f4aa5a8563ee9c1f6e137827b740e3ab40b: 3adb3f4aa5a8563ee9c1f6e137827b740e3ab40b<br />
-  xe-4227-ec8524448c80e2fd0345eddbc9a75237b77c314d: ec8524448c80e2fd0345eddbc9a75237b77c314d</p>
-
-</body>
-</html>
-
---===============4915580182252569095==--
