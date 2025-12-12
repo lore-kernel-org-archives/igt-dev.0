@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F17BD59D79
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Dec 2025 16:58:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1303D59D79
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Dec 2025 16:58:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3071A10E0A7;
-	Fri, 12 Dec 2025 16:58:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 73E0010E08F;
+	Fri, 12 Dec 2025 16:58:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fVf9AnDl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LOXQFhJy";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ABB7810E0A7
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Dec 2025 16:58:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AFEF110E08F
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Dec 2025 16:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765558726; x=1797094726;
+ t=1765558730; x=1797094730;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=iugp6Yp97exsO6yyobF9W7yLIp7ZxrQV4iqUfNBxBwE=;
- b=fVf9AnDlxIIk7mm+d8gTzKCAdwbXYrTj7Y5ApE1zZyl2whSVbCyVtjiT
- hQucqeSl6V4AA6t9isxo7byHbK2xLTynpgZWUio2fOarJNRS6TfYU1Zov
- C49qITfFXt6eBTn+9fnbveaV+l1Egha5RntmTblnAEaxdPIiDrountcyz
- OzoxkZARfnCjbVlL/Jhj+I8SFTaLb0S+nY10E+HliFRfd742z8f/JUcFd
- bcth8iwb8kNfXNN3pFneep9jUHheKV0HJTpAXKCA7OhGi0OEhJT00bPd8
- ReMVjPIxhTTITiK1gAhDn+JT9dn108wl5azWaEBjUm7Hqsg5ITtZI82RJ w==;
-X-CSE-ConnectionGUID: xCJhnO98S9WsMtK6r6rrdg==
-X-CSE-MsgGUID: fhlR5hf6Qp2RzbyaiQKnOQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11640"; a="67314756"
-X-IronPort-AV: E=Sophos;i="6.21,144,1763452800"; d="scan'208";a="67314756"
+ bh=DRMNvGV0NZt/J+wQrcrULAGJhxRk0c7ZjA3SlODnGH0=;
+ b=LOXQFhJy3tH9myI+xxF19LiRwmSVVP3B4MtZ8zMiLuP2ewyQxcQQ7/gT
+ WOJlpdg3ArnlxZEtgKzJIjZ2g98A15eAf5cOMLrH0oJwbzAiUCr3JCU+h
+ vNQh+c9wfWb6FjSdRQnILw2/phrSmPkc4bzAY6NQkdGDsyYrxCZdPvdqG
+ rDh1GxAEuVGl5uTDTyHvE3i8BoDsPzdcCJwN+AbteHcCOJKwWAzZlTKx1
+ MTZbAsopJVraRGjbRxCPBgnTX+V95luoqykWOoD+qf83bjDDPyZcTEfa5
+ WxNcy16CByiUAHxfvNDbFwfFJyDq/bzRI9/HWxoWiP1bv74dZapAYmP9M A==;
+X-CSE-ConnectionGUID: ITo/XvNcTRKAsuEo08GkDQ==
+X-CSE-MsgGUID: otzK4eP1SvOcVwaqxAP5XQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11640"; a="67314760"
+X-IronPort-AV: E=Sophos;i="6.21,144,1763452800"; d="scan'208";a="67314760"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2025 08:58:46 -0800
-X-CSE-ConnectionGUID: 5YZ4+91wQmmgYfj3fvbACQ==
-X-CSE-MsgGUID: meo656O1SoqsYgirreUINA==
+ 12 Dec 2025 08:58:50 -0800
+X-CSE-ConnectionGUID: WupI/1yXQzSS1goL1uwa2w==
+X-CSE-MsgGUID: w0f2fW0dRvazau/2kcBPQg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,144,1763452800"; d="scan'208";a="228192803"
+X-IronPort-AV: E=Sophos;i="6.21,144,1763452800"; d="scan'208";a="228192815"
 Received: from sinjan-super-server.iind.intel.com ([10.190.239.39])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2025 08:58:43 -0800
+ 12 Dec 2025 08:58:47 -0800
 From: Karthik Poosa <karthik.poosa@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
  rodrigo.vivi@intel.com, kamil.konieczny@linux.intel.com,
  Karthik Poosa <karthik.poosa@intel.com>
-Subject: [PATCH i-g-t v7 1/2] lib/igt_device: Add API to get pci device
- upstream port
-Date: Fri, 12 Dec 2025 22:28:29 +0530
-Message-Id: <20251212165830.28286-2-karthik.poosa@intel.com>
+Subject: [PATCH i-g-t v7 2/2] tests/intel/xe_pm_residency: Add subtest for
+ ASPM Link state residency
+Date: Fri, 12 Dec 2025 22:28:30 +0530
+Message-Id: <20251212165830.28286-3-karthik.poosa@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251212165830.28286-1-karthik.poosa@intel.com>
 References: <20251212165830.28286-1-karthik.poosa@intel.com>
@@ -70,107 +70,265 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add API igt_device_get_pci_usp() to get pci device's upstream port.
-This API returns struct pci_device* of the upstream port that is closest
-to the root port within the device's hierarchy.
+Add subtest aspm_link_residency to verify PCIe ASPM.
+Active State Power Management (ASPM) is a power management mechanism
+for PCI Express (PCIe) devices that aims to save power while the devices
+are in a fully active state.
+This test uses link state counters from debugfs - dgfx_pcie_link_residencies
+to verify this.
 
-v2: Avoid igt_require in igt_device_get_pci_usp(). (Kamil)
+v2:
+ - Add dedicated function to get pcie endpoint upstream port. (Badal)
+ - Read residency counter as unsigned long long int instead of
+   unsigned long int.
+ - Print residency counter before sleep also.
+ - Don't assert if sysfs not corresponding to aspm_link_state
+   is not present. (Badal)
+ - Run workload before validation of aspm link residency. (Anshuman)
 
-v3: Rename igt_device_get_pci_usp() to igt_device_get_pci_upstream_port(). (Kamil)
+v3:
+ - Move igt_device_get_pci_usp to separate patch. (Kamil)
+ - Move reading of residency to separate function. (Badal)
 
-v4: Use device type from pci express capability of pci config space
-    to identify upstream port. (Badal)
+v4:
+ - Add description about PCIe ASPM in commit message and code. (Kamil)
+ - Add a NULL check for the return value of igt_device_get_pci_usp().
+ - Resolve compilation warnings about using variable as format string
+   to sscanf.
+
+v5:
+ - Use igt_device_get_pci_upstream_port() which is the renamed version
+   of igt_device_get_pci_usp().
+
+v6:
+ - Refactor and enhance readability. (Badal)
+ - Move save and restore of link states to separate functions. (Badal)
 
 Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/igt_device.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- lib/igt_device.h |  1 +
- lib/igt_pci.h    |  2 ++
- 3 files changed, 45 insertions(+)
+ tests/intel/xe_pm_residency.c | 178 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 178 insertions(+)
+ mode change 100644 => 100755 tests/intel/xe_pm_residency.c
 
-diff --git a/lib/igt_device.c b/lib/igt_device.c
-index c24f6a58d..fda261d8b 100644
---- a/lib/igt_device.c
-+++ b/lib/igt_device.c
-@@ -32,6 +32,7 @@
- #include "igt.h"
- #include "igt_device.h"
- #include "igt_sysfs.h"
-+#include "igt_pci.h"
- 
- int __igt_device_set_master(int fd)
- {
-@@ -308,3 +309,44 @@ void igt_device_get_pci_slot_name(int fd, char *pci_slot_name)
- 	snprintf(pci_slot_name, NAME_MAX, "%04x:%02x:%02x.%01x",
- 		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
- }
-+
-+/**
-+ * igt_device_get_pci_upstream_port:
-+ * @fd: fd of the GPU endpoint.
-+ *
-+ * Looks up for the pci device's upstream port using libpciaccess.
-+ *
-+ * Returns:
-+ * The pci_device of upstream port of the device referenced by fd, NULL on any failures.
-+ */
-+struct pci_device *
-+igt_device_get_pci_upstream_port(int fd)
-+{
-+	struct pci_device *pci_dev = NULL;
-+	uint8_t device_type = 0;
-+	int offset = 0;
-+
-+	pci_dev = __igt_device_get_pci_device(fd, 0);
-+	if(!pci_dev) {
-+		igt_warn("Couldn't get pci device for fg %d\n", fd);
-+		return NULL;
-+	}
-+
-+	pci_dev = pci_device_get_parent_bridge(pci_dev);
-+	while (pci_dev) {
-+		igt_debug("PCI device %04x:%02x:%02x.%01x\n",  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-+
-+		offset = find_pci_cap_offset(pci_dev, PCI_EXPRESS_CAP_ID);
-+		if (offset <= 0) {
-+			igt_warn("PCI Express Capability not found\n");
-+			return NULL;
-+		}
-+		igt_assert(!pci_device_cfg_read_u8(pci_dev, &device_type, offset + PCI_DEVICE_TYPE_OFFSET));
-+		if((device_type >> 4) == PCI_DEVICE_TYPE_UPSTREAM_PORT)
-+			return pci_dev;
-+
-+		pci_dev = pci_device_get_parent_bridge(pci_dev);
-+	}
-+
-+	return pci_dev;
-+}
-diff --git a/lib/igt_device.h b/lib/igt_device.h
-index dad7bb047..781a72235 100644
---- a/lib/igt_device.h
-+++ b/lib/igt_device.h
-@@ -35,6 +35,7 @@ int igt_device_get_card_index(int fd);
- struct pci_device *igt_device_get_pci_device(int fd);
- struct pci_device *__igt_device_get_pci_device(int fd, unsigned int vf_id);
- struct pci_device *igt_device_get_pci_root_port(int fd);
-+struct pci_device *igt_device_get_pci_upstream_port(int fd);
- 
- void igt_device_get_pci_slot_name(int fd, char *pci_slot_name);
- #endif /* __IGT_DEVICE_H__ */
-diff --git a/lib/igt_pci.h b/lib/igt_pci.h
-index 92b9cc392..84355e9dd 100644
---- a/lib/igt_pci.h
-+++ b/lib/igt_pci.h
-@@ -20,6 +20,8 @@ enum pci_cap_id {
- 	PCI_EXPRESS_CAP_ID = 0x10
+diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+old mode 100644
+new mode 100755
+index d33a87b13..95feb6eb0
+--- a/tests/intel/xe_pm_residency.c
++++ b/tests/intel/xe_pm_residency.c
+@@ -37,6 +37,27 @@ enum test_type {
+ 	TEST_IDLE,
  };
  
-+#define PCI_DEVICE_TYPE_OFFSET 0x2
-+#define PCI_DEVICE_TYPE_UPSTREAM_PORT	0x5
- #define PCI_SLOT_CAP_OFFSET 0x14
- #define  PCI_SLOT_PWR_CTRL_PRESENT (1 << 1)
++enum link_state_index {
++	LINK_STATE_ASPM,
++	LINK_STATE_ASPM_L1_1,
++	LINK_STATE_ASPM_L1_2,
++	LINK_STATE_PCIPM_L1_1,
++	LINK_STATE_PCIPM_L1_2,
++	MAX_LINK_STATES,
++};
++
++struct link_state_info {
++	const char *filename;
++	char state;
++	const char *parse_str;
++} link_state_sysfs [] = {
++	{ "l1_aspm", 0, "PCIE LINK L1 RESIDENCY : "},
++	{ "l1_1_aspm", 0, "NULL"},
++	{ "l1_2_aspm", 0, "PCIE LINK L1.2 RESIDENCY : "},
++	{ "l1_1_pcipm", 0, NULL},
++	{ "l1_2_pcipm", 0, NULL},
++};
++
+ /**
+  * SUBTEST: gt-c6-on-idle
+  * Description: Validate GT C6 state on idle
+@@ -64,6 +85,10 @@ enum test_type {
+  * SUBTEST: cpg-gt-toggle
+  * Description: Toggle GT coarse power gating states by acquiring/releasing
+  *		forcewake.
++ *
++ * SUBTEST: aspm_link_residency
++ * Description: Check for PCIe ASPM (Active State Power Management) link states
++ * entry while device is in D0.
+  */
+ IGT_TEST_DESCRIPTION("Tests for gtidle properties");
  
+@@ -255,6 +280,24 @@ static void idle_residency_on_exec(int fd, struct drm_xe_engine_class_instance *
+ 	munmap(done, 4096);
+ }
+ 
++static void do_exec(int fd, struct drm_xe_engine_class_instance *hwe)
++{
++	unsigned long *done;
++
++	igt_info("Running on %s:%d\n",
++		 xe_engine_class_string(hwe->engine_class), hwe->engine_instance);
++	done = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
++	igt_assert(done != MAP_FAILED);
++	memset(done, 0, 4096);
++
++	igt_fork(child, 1)
++		exec_load(fd, hwe, done);
++
++	*done = 1;
++	igt_waitchildren();
++	munmap(done, 4096);
++}
++
+ static void measure_power(struct igt_power *gpu, double *power)
+ {
+ 	struct power_sample power_sample[2];
+@@ -370,6 +413,127 @@ static void cpg_gt_toggle(int fd)
+ 		powergate_status(fd, gt, "down");
+ }
+ 
++static uint64_t get_link_state_residency(int fd_xe, const char *parse_str)
++{
++	int fd_debugfs_dir = 0;
++	int ret = 0;
++	char *ptr = NULL;
++	char path[256] = {0}, buf[1024] = {0};
++	uint64_t residency = 0;
++
++	fd_debugfs_dir = igt_debugfs_dir(fd_xe);
++	igt_assert(fd_debugfs_dir >= 0);
++
++	ret = igt_debugfs_simple_read(fd_debugfs_dir, "dgfx_pcie_link_residencies" , buf, sizeof(buf));
++	igt_assert_f(ret >= 0, "cannot read link residency file\n");
++	ptr = strstr(buf, parse_str);
++	igt_assert_f((ptr != NULL), "cannot find residency string %s\n", parse_str);
++	if (ptr != NULL) {
++		sprintf(path, "%s%%llu", parse_str);
++		igt_debug("searching for-%s\n", parse_str);
++		sscanf(ptr + strlen(parse_str), "%lu", &residency);
++		igt_info("Link residency %"PRIu64"\n", residency);
++	}
++	close(fd_debugfs_dir);
++	return residency;
++}
++
++static void save_and_disable_link_states(int fd_pci_usp)
++{
++	int i = 0;
++	int ret = 0;
++	char path[256] = {0};
++
++	for (i = 0 ; i < MAX_LINK_STATES ; i++) {
++		sprintf(path, "%s", link_state_sysfs[i].filename);
++		if (faccessat(fd_pci_usp, path, R_OK, 0)) {
++			igt_debug("%s not present to save\n", path);
++			continue;
++		}
++		ret = igt_sysfs_scanf(fd_pci_usp, path, "%c", &link_state_sysfs[i].state);
++		igt_assert_lt(0, ret);
++		igt_debug("saved %s = %c\n", link_state_sysfs[i].filename , link_state_sysfs[i].state);
++
++		ret = igt_sysfs_printf(fd_pci_usp, path, "%c", '0');
++		igt_assert_lt(0, ret);
++	}
++}
++
++static void restore_link_states(int fd_pci_usp)
++{
++	int i = 0;
++	int ret = 0;
++	char path[256] = {0};
++
++	/* Restore saved states of L1 sysfs entries. */
++	for (i = 0 ; i < MAX_LINK_STATES ; i++) {
++		sprintf(path, "%s", link_state_sysfs[i].filename);
++		if (faccessat(fd_pci_usp, path, R_OK, 0)) {
++			igt_debug("%s not present to restore\n", path);
++			continue;
++		}
++		ret = igt_sysfs_printf(fd_pci_usp, path, "%c", link_state_sysfs[i].state);
++		igt_assert_lt(0, ret);
++		igt_debug("restored %s to %c\n", link_state_sysfs[i].filename , link_state_sysfs[i].state);
++	}
++}
++
++static void test_aspm_link_residency(int fd_xe, uint8_t aspm_link_state)
++{
++	struct pci_device *pci_dev;
++	int fd_pci_usp = 0;
++	char name[PATH_MAX];
++	int ret = 0;
++	char path[256] = {0};
++	uint64_t residency_pre = 0, residency_post = 0;
++
++	igt_assert(aspm_link_state <= LINK_STATE_ASPM_L1_2);
++
++	/* Get upstream port pci_dev */
++	pci_dev = igt_device_get_pci_upstream_port(fd_xe);
++	igt_assert_f(pci_dev != NULL, "Couldn't get pci device of upstream port\n");
++	igt_debug("Upstream port PCI device: %04x:%02x:%02x.%01x\n", pci_dev->domain,
++		  pci_dev->bus, pci_dev->dev, pci_dev->func);
++
++	snprintf(name, sizeof(name), "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/link",
++		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
++	fd_pci_usp = open(name, O_DIRECTORY);
++	igt_assert_f((fd_pci_usp >= 0), "Can't open link directory upstream port %s, ret %d\n", name, fd_pci_usp);
++
++	/* Disable runtime PM as link ASPM entry happens during device is in D0 only. */
++	igt_assert(igt_setup_runtime_pm(fd_xe));
++	igt_disable_runtime_pm();
++
++	/* Check if ASPM sysfs is present. */
++	sprintf(path, "%s", link_state_sysfs[aspm_link_state].filename);
++	igt_require_f(!faccessat(fd_pci_usp, path, R_OK, 0), "%s is not present\n", path);
++	ret = igt_sysfs_scanf(fd_pci_usp, path, "%c", &link_state_sysfs[aspm_link_state].state);
++	igt_assert_f((ret > 0), "couldn't read residency for %s", path);
++
++	/* Save current state of all available link sysfs entries and disable all link states. */
++	save_and_disable_link_states(fd_pci_usp);
++
++	/* Enable only the ASPM link state needed for test. */
++	igt_debug("Enabling %s\n", link_state_sysfs[aspm_link_state].filename);
++	sprintf(path, "%s", link_state_sysfs[aspm_link_state].filename);
++	ret = igt_sysfs_printf(fd_pci_usp, path, "%c", '1');
++
++	/* Read link state residencies before and after idle wait time. */
++	residency_pre = get_link_state_residency(fd_xe, link_state_sysfs[aspm_link_state].parse_str);
++	igt_info("Waiting for link to enter idle....\n");
++	sleep(5);
++	residency_post = get_link_state_residency(fd_xe, link_state_sysfs[aspm_link_state].parse_str);
++
++	/* Restore saved link states. */
++	restore_link_states(fd_pci_usp);
++
++	igt_restore_runtime_pm();
++	close(fd_pci_usp);
++	close(fd_xe);
++
++	igt_assert_f(residency_post > residency_pre, "ASPM entry failed, pre %"PRIu64", post %"PRIu64"\n",
++		     residency_pre, residency_post);
++}
+ int igt_main()
+ {
+ 	uint32_t d3cold_allowed;
+@@ -444,6 +608,20 @@ int igt_main()
+ 		cpg_gt_toggle(fd);
+ 	}
+ 
++	igt_describe("ASPM Link residency validation");
++	igt_subtest_with_dynamic("aspm_link_residency") {
++		xe_for_each_gt(fd, gt) {
++			xe_for_each_engine(fd, hwe) {
++				if (gt == hwe->gt_id && !hwe->engine_instance) {
++					igt_dynamic_f("gt%u-engine-%s", gt,
++						      xe_engine_class_string(hwe->engine_class))
++						do_exec(fd, hwe);
++				}
++			}
++		}
++		test_aspm_link_residency(fd, LINK_STATE_ASPM);
++	}
++
+ 	igt_fixture() {
+ 		close(fd);
+ 	}
 -- 
 2.25.1
 
