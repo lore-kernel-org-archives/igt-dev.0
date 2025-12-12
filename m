@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD197D43371
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Dec 2025 07:36:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B27DBD43370
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Dec 2025 07:54:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 82B3610E32F;
-	Fri, 12 Dec 2025 07:36:37 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jnlxzDN9";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD93510E32F
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Dec 2025 07:36:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765524995; x=1797060995;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=0OPWnCjCPplBVYfLVbC24JnqhrLqnbY2FAhMKQ8K2eE=;
- b=jnlxzDN9AF35Hel9hMKRRkJ0u3qePdIYczT8MDiRZPUEgtvq0m9cZeRA
- 9QeIKVyHX+IfT2lf1JcoX7/z20CzrtYx9tSkawi6REFpeWpf2Ib5nNQ8v
- cKo+8XCpjUJ5U40MyrEpJMFhsiPDvJ+GFiaUt30/p4abbklVErZO43z0s
- MvceKM9JnZbycKr8lX/Hz1zeucMn83pm/gRUKCoU9G9iz/46OzyAa3mRr
- qirjGuYBr2YIfS35WKr9+IUEmXGkHcdkMdsm/kowUFX0IDof0QtmNTAJr
- XdqNK2r7kyJEoLUpFF7mOXLtnAfQgB63fhtU/fwxL5OpCxlE5i2rdAFEz w==;
-X-CSE-ConnectionGUID: 0FLyVo4ISZ6kpenzIDFcUA==
-X-CSE-MsgGUID: U1NlV4v9QDywMoDoozOD1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="90164628"
-X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; d="scan'208";a="90164628"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2025 23:36:35 -0800
-X-CSE-ConnectionGUID: srmhIe9UTR2rg/cwqF0qOQ==
-X-CSE-MsgGUID: rHjfy3RrRcae9cXbEU0K2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; d="scan'208";a="197069119"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.95])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2025 23:36:35 -0800
-From: Pawel Sikora <pawel.sikora@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v2 1/1] docs: fix intel-specific descriptions
-Date: Fri, 12 Dec 2025 08:36:23 +0100
-Message-ID: <20251212073623.337981-2-pawel.sikora@intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251212073623.337981-1-pawel.sikora@intel.com>
-References: <20251212073623.337981-1-pawel.sikora@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 592DF10E0A2;
+	Fri, 12 Dec 2025 07:54:36 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2BDA810E0A2;
+ Fri, 12 Dec 2025 07:54:35 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7528786949148366594=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fjoiner?=
+ =?utf-8?q?=3A_Add_function_for_pretest_checks_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Karthik B S" <karthik.b.s@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 12 Dec 2025 07:54:35 -0000
+Message-ID: <176552607517.79722.17794040157874727880@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20251212055717.2870018-1-karthik.b.s@intel.com>
+In-Reply-To: <20251212055717.2870018-1-karthik.b.s@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,98 +37,164 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-While it is true that the main focus of IGT was on Intel GPUs,
-this is no longer the case and the documentation should reflect
-this change and present the current state where no specific
-platform is the center of interest.
+--===============7528786949148366594==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
----
- docs/faq.md       | 15 +++++++++++----
- docs/platforms.md | 23 ++++++++++++++---------
- 2 files changed, 25 insertions(+), 13 deletions(-)
+== Series Details ==
 
-diff --git a/docs/faq.md b/docs/faq.md
-index 48e754c56..b139c8443 100644
---- a/docs/faq.md
-+++ b/docs/faq.md
-@@ -6,8 +6,9 @@ This FAQ covers common questions about using, building, and contributing to
- ### What is IGT GPU Tools?
- 
- IGT GPU Tools is a collection of low-level tests and utilities used to validate and
--debug Linux DRM (Direct Rendering Manager) graphics drivers. It focuses primarily on
--Intel GPUs but supports other platforms in varying degrees.
-+debug Linux DRM (Direct Rendering Manager) graphics drivers. It focuses primarily
-+on display testing. It supports GPU-specific testing for Intel and AMD.
-+Other platforms are supported in varying degrees.
- 
- ### How do I build IGT?
- 
-@@ -52,11 +53,17 @@ or decode state.
- 
- ### What platforms are supported?
- 
--IGT primarily targets Intel GPUs (Gen9+), but partial support exists for:
-+IGT primarily targets platforms:
- 
-+- Intel (i915 and xe)
- - AMD (amdgpu)
- - NVIDIA (nouveau)
--- Virtual GPUs (e.g., virtio-gpu in QEMU/KVM/AVD)
-+- Broadcom (v3d and vc4)
-+- Qualcomm (msm)
-+- Arm (Panfrost)
-+- Panthor
-+- Virtual GPUs (e.g., virtio_gpu in QEMU/KVM/AVD or vmwgfx)
-+- Virtual display (vkms)
- 
- Hardware coverage may vary by test.
- 
-diff --git a/docs/platforms.md b/docs/platforms.md
-index e6882feec..ab7d49770 100644
---- a/docs/platforms.md
-+++ b/docs/platforms.md
-@@ -2,9 +2,9 @@
- 
- ## :material-chip: Hardware
- 
--**IGT GPU Tools** is designed to validate few DRM drivers across a variety of Intel
--and non-Intel platforms. While virtual environments help with development, real hardware
--is recommended for full test coverage, performance metrics, and regression tracking.
-+**IGT GPU Tools** is designed to validate few DRM drivers across a variety of platforms.
-+While virtual environments help with development, real hardware is recommended for full
-+test coverage, performance metrics, and regression tracking.
- 
- ### :material-lightbulb-outline: General Guidelines
- 
-@@ -27,12 +27,17 @@ testing but may not support new test features.*
- 
- ### Non-Intel GPU Support
- 
--Although IGT is Intel-focused, basic support exists for other platforms:
--
--- **AMD (AMDGPU):** Some display and KMS tests run; feature support may vary.
--- **NVIDIA (nouveau):** Partial functionality; manual testing encouraged.
--- **VirtIO-GPU / QEMU / GVT-g:** Useful for automation and limited pipeline testing.
--- **ARM SoCs (e.g., Mali, Vivante):** Experimental – not all tests apply.
-+Basic support exists for other platforms:
-+
-+- Intel (i915 and xe)
-+- AMD (amdgpu)
-+- NVIDIA (nouveau)
-+- Broadcom (v3d and vc4)
-+- Qualcomm (msm)
-+- Arm (Panfrost)
-+- Panthor
-+- Virtual GPUs (e.g., virtio_gpu in QEMU/KVM/AVD or vmwgfx)
-+- Virtual display (vkms)
- 
- :material-account-group-outline: Community contributions are welcome to expand non-Intel
- support!
--- 
-2.51.0
+Series: tests/intel/kms_joiner: Add function for pretest checks (rev3)
+URL   : https://patchwork.freedesktop.org/series/158147/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from IGT_8664 -> IGTPW_14198
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14198/index.html
+
+Participating hosts (42 -> 41)
+------------------------------
+
+  Missing    (1): bat-dg2-13 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14198 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-9:          [DMESG-FAIL][1] ([i915#12061]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14198/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-atsm-1:         [DMESG-FAIL][3] ([i915#12061] / [i915#14204]) -> [DMESG-FAIL][4] ([i915#12061] / [i915#13929])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-atsm-1/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14198/bat-atsm-1/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@mman:
+    - bat-atsm-1:         [DMESG-FAIL][5] ([i915#14204]) -> [DMESG-FAIL][6] ([i915#13929])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-atsm-1/igt@i915_selftest@live@mman.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14198/bat-atsm-1/igt@i915_selftest@live@mman.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
+  [i915#14204]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8664 -> IGTPW_14198
+  * Linux: CI_DRM_17659 -> CI_DRM_17666
+
+  CI-20190529: 20190529
+  CI_DRM_17659: 3adb3f4aa5a8563ee9c1f6e137827b740e3ab40b @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_17666: ec8524448c80e2fd0345eddbc9a75237b77c314d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14198: 2fc0d89467a9f9e4b0e2f310266cef570053129b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8664: 28cc709ad89c0ef569569f19f4772d4cca354963 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14198/index.html
+
+--===============7528786949148366594==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_joiner: Add function for pretest checks (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/158147/">https://patchwork.freedesktop.org/series/158147/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14198/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14198/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8664 -&gt; IGTPW_14198</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14198/index.html</p>
+<h2>Participating hosts (42 -&gt; 41)</h2>
+<p>Missing    (1): bat-dg2-13 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14198 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14198/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14198/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8664/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14198/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8664 -&gt; IGTPW_14198</li>
+<li>Linux: CI_DRM_17659 -&gt; CI_DRM_17666</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17659: 3adb3f4aa5a8563ee9c1f6e137827b740e3ab40b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_17666: ec8524448c80e2fd0345eddbc9a75237b77c314d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14198: 2fc0d89467a9f9e4b0e2f310266cef570053129b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8664: 28cc709ad89c0ef569569f19f4772d4cca354963 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7528786949148366594==--
