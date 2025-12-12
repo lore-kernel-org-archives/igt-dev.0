@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8B6BD4336A
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Dec 2025 09:14:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81F0CD44145
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Dec 2025 09:16:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4550710E5A4;
-	Fri, 12 Dec 2025 09:14:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 35A1610E55F;
+	Fri, 12 Dec 2025 09:16:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JbsWGpD0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZmxhqfDG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D27C710E5A4
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Dec 2025 09:14:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5A7FD10E55F
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Dec 2025 09:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765530869; x=1797066869;
+ t=1765530981; x=1797066981;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=pizRw5kOlRLloQx9Z6HKJlGboAVCCiCftQzXmyJGQag=;
- b=JbsWGpD0svcelFL6G+gmupWQq+GSGV9KT+wKRR1fzdy8tP7tAKCZzEIY
- 9x4g4vo1FISuOlgw6YNYbD9qTgSZ7xzq9KTDE6zikqeEF/wRbGClPXSzi
- jRAJad2lgUtVliNfMRo4JO3sBm89t31isW/OL6PyHX+HZ/6vBtsRklT+1
- 7+hIr9hOHQ9g2SvyXPIuK32DOqkOAYOp6s8yOq2Y0pWZY57fmUAYZmeyS
- 3pf2M4w1a2aPI1a3Ldm1s9zSfOh76dmboPvVlndsOtHBOP4UvfkcTa3Ep
- S7rB2SStQ/ORdSgZv03CBS6GwVLbcptdTKlzQdfC/c3xZt83+YYd16rWa g==;
-X-CSE-ConnectionGUID: 4TK40gQQT+a8zzihnSEyFQ==
-X-CSE-MsgGUID: OmOjtqYORI61o+vHEoJXDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="90171969"
-X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; d="scan'208";a="90171969"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2025 01:14:29 -0800
-X-CSE-ConnectionGUID: 3wL070mUSwOTUVu6Nal4Mg==
-X-CSE-MsgGUID: 3eayxfRxQQW2rRPH8me43Q==
+ bh=RF9Qcu1ksJpn33nxxOaJE0YzQcRpzjbinp+GZaG/btk=;
+ b=ZmxhqfDGbZF4DUztuZBDUio/9hZQad1xYo5XVhXSfzsNQkwTIsQ93GMC
+ 4R4x2eO9nRizc+uumBdZC+X0AVXECRKvwg59Ht09UtBdzr03wASRInQzt
+ GDatvb/eJ2UWqjsHD2eDiSrMyI/7+yc5TaO/+ym7+q832lMCYMT6FWf7D
+ eHHJ/ARBwt8XGw6OSLB0R3LcXaYmqwxOiguGEtMROgD17Sc3UaRImjP9n
+ yMkRD+B7IlzvLDVmw4m4rlCScSFtaOMajcED/4UZ4YqFaXza0VzrsZzsi
+ VjQZQoZQC91HFk1VJiXGgYsj8CB4mwUCkT5yglHMlusWHcjntpMTv/pRx A==;
+X-CSE-ConnectionGUID: xJMq2wpeQI+uR+qx31PsFw==
+X-CSE-MsgGUID: Vr7l09KTT9OiXzErivI43g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="67559659"
+X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; d="scan'208";a="67559659"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Dec 2025 01:16:21 -0800
+X-CSE-ConnectionGUID: 3L/HnLsEQ5yyxwGXZLzDWA==
+X-CSE-MsgGUID: mS9m3AalTf+VehD/TBgw5w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; d="scan'208";a="220414305"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Dec 2025 01:14:28 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.21,143,1763452800"; d="scan'208";a="201456410"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Dec 2025 01:16:21 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 12 Dec 2025 01:14:27 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ 15.2.2562.29; Fri, 12 Dec 2025 01:16:20 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Fri, 12 Dec 2025 01:14:27 -0800
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.5) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ 15.2.2562.29 via Frontend Transport; Fri, 12 Dec 2025 01:16:20 -0800
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.71) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 12 Dec 2025 01:14:27 -0800
+ 15.2.2562.29; Fri, 12 Dec 2025 01:16:19 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=P5cnmZ3MI9zg5s6Pg/ldT41/1j2dlN9qd9kyeLoqrPXHYF8nXnAt2OmQzI5mQM3yEOxLoZ057rcBPGfcJDgvv23msdg4/lH2i0HumwqRJmXSywEHC/dUn+IK5OcH7Isg0SzB8Er2rLZc/PWJCItu+cv6px16r7p014C+Rqid9zP6ZUo83sfwGo33ZFMGdSjvAAotQtp4DUJIILU1KTx2YEf/NDTAn+SxRDZmPJpyBZ7t4o1xtuU2xlyCbk+7wq3cSKFdkmPlADKg+WqbGhDTzq9u70L2l68LPbH/Blmc/3+qFHT8DAJDRXX6B45QDqv0VK7MzuJszgXZ/L5iOUgsVw==
+ b=K1qIn+elOLJccU1nNQxyoSHnVlHHAtfb/QGfv/ZS1IcU5Ag2BaGQv+5eI8poPwTWa4UXcSq16ztErUst8Nh2L/24EzDlTu+d/IK/EqCmP5OKibnpXouAeERfy2329xvWL3Fhy3Jh/cDS83SfQgK4dS77C/tVgJfsn0XQpXAeDlKJdvZJZ/NgxNV8MqkHhBveockjsmg5sYYTBDstlL7ySGnbsZ6q83E7QE27JVV/Mt8QOBdyXe7Ook0dzKNwIXA69B+AzS24qcRsOeBw1WWE8lACQkAPmNHW5tOMYgsjmdV9M2ybj0L3JgJzs9T3V52kJHaJ0jrCJbuwXXwukUCtDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5L8hq++saPui1H79d0+0tCildwKMcAwfUal6G86WMcU=;
- b=v1yn7cYwO2cO+dr6E9H0gGTsvxRTLqyfD39iZ0pMu24gbW2nhoHBBEvbiDSZeW+nXVqoHXTHTUpF6XDzVc+64ZzPTAQM4fXg0dwKel8u6ZYjZCN0LzDW/fmQ99UE8Dt/5YT2OI7hkMYAxPa2JfvY9Bhk16XArfS/IFBDJYnWo/sKB5sUHmInXGN3JIKjt63iY1lyHOk52Xq25nln9plLC1xGwsZYjJGsgacbGI0kL02jPPnlt6V7hxSz8Vsw15VLEPoolP/qt5J3GgeU7+OyRW8KJ+0xSGHDJZ1zzJhTZkDZA3fqLOI2FOpSbSJYLP50ISXyNCzo7TCi07p9EgxC8w==
+ bh=V+ujR/heDZIRsPdTZB59r30774mV63xYsQ9eJWX0n7Y=;
+ b=oW9qVknnkee19forIFJYlzQVcsAku5S6632HeyQ7KxUsuUd49FoTr5BI/9bp2QaOcZSwz4O0xPzjFTCqYXgKSeyYTpzH89qQW8571Y2wNnLJ8Joa55tFpMlgVOJxDOh6uwj3CAB6sGsMOEfCSYJv6eQOwUK4GEagrGFOX0YhK5oCMq4H4GKcjqNReRiPdTwPKYDVC4aqgNDA714uU6kmdrY6KNBFaTU4NNhvc0eFC4x+wfsGAUJdcqQbxrqx3pMEoAfUu0kzfwjZON2B/yJBmlpETdWSwmLWNrAdw/34L1zXY8ZU3xcVVeusxQPuCZL2jI+JVRc0O/dixNEircnNJg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from DM4PR11MB6312.namprd11.prod.outlook.com (2603:10b6:8:a5::11) by
- SA3PR11MB7488.namprd11.prod.outlook.com (2603:10b6:806:313::12) with
+ IA4PR11MB9011.namprd11.prod.outlook.com (2603:10b6:208:56b::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.10; Fri, 12 Dec
- 2025 09:14:21 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.14; Fri, 12 Dec
+ 2025 09:16:17 +0000
 Received: from DM4PR11MB6312.namprd11.prod.outlook.com
  ([fe80::faad:f9ae:2b45:e9ba]) by DM4PR11MB6312.namprd11.prod.outlook.com
  ([fe80::faad:f9ae:2b45:e9ba%4]) with mapi id 15.20.9412.011; Fri, 12 Dec 2025
- 09:14:20 +0000
+ 09:16:17 +0000
 From: "B, Jeevan" <jeevan.b@intel.com>
-To: "B, Jeevan" <jeevan.b@intel.com>, "B S, Karthik" <karthik.b.s@intel.com>, 
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "B S, Karthik" <karthik.b.s@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>
-Subject: RE: [PATCH i-g-t 1/4] lib/igt_fb: Add wrappers for painting test
- patterns to framebuffers
-Thread-Topic: [PATCH i-g-t 1/4] lib/igt_fb: Add wrappers for painting test
- patterns to framebuffers
-Thread-Index: AQHcaYRkBM3oL/3wnEKKtEV2QbP80bUaOHcAgAODtXA=
-Date: Fri, 12 Dec 2025 09:14:20 +0000
-Message-ID: <DM4PR11MB6312A8D055114CD8EE0FAED790AEA@DM4PR11MB6312.namprd11.prod.outlook.com>
-References: <20251210032349.2781106-1-karthik.b.s@intel.com>
- <20251210032349.2781106-2-karthik.b.s@intel.com>
- <DM4PR11MB63125FA2DDF7E617D94ED2E490A0A@DM4PR11MB6312.namprd11.prod.outlook.com>
-In-Reply-To: <DM4PR11MB63125FA2DDF7E617D94ED2E490A0A@DM4PR11MB6312.namprd11.prod.outlook.com>
+To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+CC: "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>,
+ "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>, "B S, Karthik"
+ <karthik.b.s@intel.com>
+Subject: RE: [PATCH i-g-t v3 2/2] tests/intel/kms_joiner: Add function for
+ pretest checks
+Thread-Topic: [PATCH i-g-t v3 2/2] tests/intel/kms_joiner: Add function for
+ pretest checks
+Thread-Index: AQHcaywscwtTAGunJ0qJXzBopUE2NrUduT+g
+Date: Fri, 12 Dec 2025 09:16:17 +0000
+Message-ID: <DM4PR11MB63128682A13F5ECAEC3F4D1890AEA@DM4PR11MB6312.namprd11.prod.outlook.com>
+References: <20251212055717.2870018-1-karthik.b.s@intel.com>
+ <20251212055717.2870018-3-karthik.b.s@intel.com>
+In-Reply-To: <20251212055717.2870018-3-karthik.b.s@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -95,82 +95,82 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR11MB6312:EE_|SA3PR11MB7488:EE_
-x-ms-office365-filtering-correlation-id: fd489fe0-6428-4a91-6539-08de395ed5ad
+x-ms-traffictypediagnostic: DM4PR11MB6312:EE_|IA4PR11MB9011:EE_
+x-ms-office365-filtering-correlation-id: 9284f4d6-b03c-468b-12eb-08de395f1b1c
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|376014|366016|7053199007|38070700021; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?AONIMnoUZV0+8KLwr+94Ub6B++BH/HbhQYscSntWAdNKn2pLhRzSaCs1+bJF?=
- =?us-ascii?Q?PlB4Mgtn8EW/u/uhPXng2SUzIz648dPcIN2sHYG9Rj7s0Mnr3G+R+h2OeK5o?=
- =?us-ascii?Q?MX3gpkCFkgQgx7215muXPApEzQyWIsOaIfFXtpT7IgsPo4fdck4dBb2fT7R4?=
- =?us-ascii?Q?tIB8J/ckWC5hXgzh7Yngx5sURBofMqY3y8gB/o6fr9MODj4Tbasrb5QKM0fw?=
- =?us-ascii?Q?ObJgDlXCyryQDyTRQHTEr6g//090m7gmtICtMKtATm05TwETifPiVWut3hse?=
- =?us-ascii?Q?WKSQnTDzIB8FcHJoLPOhjko9zpTES+o+y0+d80Hw1+Tp1amsIGCyVA9YL/dy?=
- =?us-ascii?Q?4dmpnrzjp05TkpZ1hqaWDf/NZL6eFLGBQ1ykwsReXqPkFsHkqKLwmGFLrlkm?=
- =?us-ascii?Q?hHLU/jyXmDSRmKvOdNz1TW5CRyA/bPLTlEVtT6ewVpeAqq8tDO4RsmdpyqJ/?=
- =?us-ascii?Q?CKOrDzFZjg3ehV0gfZyGSWVQpbHZELn1Ju/z9U/SCt1+p1coMBROqD6pjDK5?=
- =?us-ascii?Q?zaMpeDouFpXZDgFxITkQ6HW1Mb5IbJHY6uGWyFPjveHk/4agTkqDIC/V6sz9?=
- =?us-ascii?Q?JSrDIQ+JlGg9uY8RWFbPr/6VAyxb5Y7Rfs0gWj3gEOQxPZKgDilZO4hskIE3?=
- =?us-ascii?Q?7dG5X2+ai4/rfDqL7cVpXA0Hz56j18/7xXzlpNwgwf+EyoMCDQSC36zcNnQw?=
- =?us-ascii?Q?lHzSX8spy+NxHpIt028jkGsWahIxNgczWQ+eODFoDvvNlERYe8VJ5z1ZbqQ4?=
- =?us-ascii?Q?eEyd6VaXx2JTIB8Cq9kcn3Qa7VJmpFxR0xsTvBuU0ssxwJFBqkFMtNrlY/+n?=
- =?us-ascii?Q?ECaKOKqrUlxbIbvXqd0JrkqioL4ChgFdKLR77jFUTqHDSZwi8H/QI120TeZ0?=
- =?us-ascii?Q?feODhLpTH85nVBpFL4x+lPJ+bB52W/BMoUEmFjJlLmJLbBgvv6XBvKDiixNo?=
- =?us-ascii?Q?GOfBUdNJlvGzxygaK7v27DwoHHdJC2o0ZC/M9qfRXY4gbTh4JuRiiiZspojl?=
- =?us-ascii?Q?bShZlcnuhu50G/5Vcw4JsmviaeqCMzscTnQk+ONjabTjyk3sgsrGuUl//3YB?=
- =?us-ascii?Q?/d/VhnPmoVE6qUsGMQ8NItC8oY42ZbKBHdCW75w6VWHZ4XAaNDt+dHgtCFLR?=
- =?us-ascii?Q?hmAy4+uuQKs23x5OJgAQ5RBcNHRYzQnv4ih6XjbKVdnWagpWUft8hqsxUrVL?=
- =?us-ascii?Q?de4vBtkGi6eKbszLT5uzLwuOUF997vVIIK5bSbD6P4aQqR+SFj47cIDVTWUQ?=
- =?us-ascii?Q?Kt0OKnwd0SaiOOgj3W2vqEp5FuvPB3aN6TZV1ZB7AvAE8FOsiVrpbYbKozJU?=
- =?us-ascii?Q?0sjQMtFEU6zYmsL9WothnnSyyb7+m6PRAx27fTWMigCwP5zsoxkbDKAgBzfN?=
- =?us-ascii?Q?/J9DTsJND6e6VLDnbQZrbk1mjEtLXDteScTWJU8aZiPzCD6omv3avNjdnX4X?=
- =?us-ascii?Q?00lzfvrHhknoWPygrBrGwVbPMTRsddyDyFKAVmxeiGFQCpnC9V7UOMRh0jUT?=
- =?us-ascii?Q?jzitKYNYFKTOUoS504N6XJDC5ERsmRrJC0LE?=
+ ARA:13230040|1800799024|366016|376014|38070700021|7053199007; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?ykTFbKQkoKwwkhFIt9ljkd3ZBmbDXSh0ix4jJ+kwFGa1xqrmr8YA3rlJl4Hr?=
+ =?us-ascii?Q?QGwkxMgdBHdA7p1voxyC08zXTniV3XlJIAM9E0/DYPw3jK2+77sL6UPx3iVS?=
+ =?us-ascii?Q?byohJ0t//d2+JNTu79V4pLlNKJ7e+V4HNCC+yTXHucL5PZxXpE7NM3EgNsBq?=
+ =?us-ascii?Q?J7CEB+aYZcpfg2FUhnEwqe8bD2AzRkYacoS7R6fpzjwWBuRbA/rEN5kIb4ax?=
+ =?us-ascii?Q?d2u7hYOqwxQrqFB+bEKUhTof0rFStXj//8nSkTPCj65ITDaiM6cjCvH3SZmR?=
+ =?us-ascii?Q?HO7ACLz/8KGIMgU+BcHVPYuARrsUCPNqDaHoOcnTjgKSHeTn4mVU7EW1gnEG?=
+ =?us-ascii?Q?pnMQO9ZgwHRL6sAHO3+mdzI0rpl8SQqJEnPKQi8f2sShJt+A1Lkg9tDUtWTi?=
+ =?us-ascii?Q?CTM9UKHgBv5ng6HS6wahwMqFNAj7swc0tMwt7ljswMDNVkC31/rvfUXSSHwd?=
+ =?us-ascii?Q?uhjjRatZR/TdPiQ/rGRfKKV9ubeBM7wIG8737ZFj4Yrt5jGONOOaAARfLX/W?=
+ =?us-ascii?Q?xq2WHkr2G85+6XxwDFnEdBFQu12sMrSpz3l2VjRmNbUOfkRoRJNF2LPyF3pX?=
+ =?us-ascii?Q?HWM00ONsp43sMHHCwyTOb2g87m+VVgIt1ObRZMK0Mbo80Oc3vy3s5jM+RKTK?=
+ =?us-ascii?Q?kbf3buxtyUxZxzTIdgyVc/tc6qwPT3+DW1qwbr4Cz0ot5iKsbZ6Pfl6wQvu4?=
+ =?us-ascii?Q?R1BlkKh+EoejCT2gkWxmhGXzmO2tUcldd6DtzEEYp8k6zGaDkH/m3+KUY64u?=
+ =?us-ascii?Q?cGhjkGVSo4tcB0XjexEH80wLPLsWn6qAu1j3o08Cd8I0IzOqqtA66fAsQwpU?=
+ =?us-ascii?Q?v8I8lTOuNCDbCXMX/i2GqXKbv1LJKogTmjmqJ2SF9fca43NIh2zEnN00H5G3?=
+ =?us-ascii?Q?hXBO2/cQPQmmdU1M/QPkJqNT8+0dra75HOrujA6ADBgbbmJbU02aFwEZrao3?=
+ =?us-ascii?Q?yuT/GqDEuRFHpHn+UY5PjvhBIAxA32U2kCuKItOIGlCu+6/dYG2UyMd10Fy/?=
+ =?us-ascii?Q?bT38JsA7y3INFleP5c5aPU8NoVTIiThqDQvN8oM+8vVJE4kgmda0tdTPFyPn?=
+ =?us-ascii?Q?YewgnQlqMx2Qd9iCn3x9w5wN3TvcCLdt/FD1++qjYQMy/ufUllTf1jDjblf1?=
+ =?us-ascii?Q?NeDwuA1ryIgrEv7ztmQI2bYi7vY77mMFY3m3jScBTjNR2X8I/6dqmTYqBOxt?=
+ =?us-ascii?Q?tzK6jndN9xior6YkLoIQP6QUx39uE+8tJNymsxGb7SU1+lnZUt9Uw0anQZMp?=
+ =?us-ascii?Q?8S07nvpRjJPRRWOWOtHUzSBqyoTgaWgnR2cDa7oDtCjXbFrhlBGnE4B4TzAM?=
+ =?us-ascii?Q?rhminscQACbm7S42pEsXTOvhlP8M2MgGp3GAI7lV1PVPpcA18Mm4254FxFU2?=
+ =?us-ascii?Q?4CQO+WrrUa8EmCIfBiHjBVZjd5Ll1usn4S0W7Ej+YqI2s6qNe7yeZubUa7UP?=
+ =?us-ascii?Q?DHmqlJZGOc2BKDy5hP4WO/BP3lDFYKPgSzbcMMCthJMORaACNdHVXmwOCIS/?=
+ =?us-ascii?Q?LQ5Zl3waysH4N7SG5/PH+VPKXpvEK8TwhqQW?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM4PR11MB6312.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(7053199007)(38070700021); DIR:OUT;
+ SFS:(13230040)(1800799024)(366016)(376014)(38070700021)(7053199007); DIR:OUT;
  SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?+5x2EnadPD2plDRIbwJ5VzRNliFVWTkHXqt5uo6RdZ6kOTQ9g7a+Zk6ft9TM?=
- =?us-ascii?Q?9wMcasL6BvqFDgHyXVI2IUAbWHAndYfQNCNZRamAkaA82AcPZGKjQ4n0er9C?=
- =?us-ascii?Q?OCxIBWZ6EhZCaADKEuB0J5cRZAe5/Phc1sbtfjIiM1WtHS3cYEydqdtrxqVD?=
- =?us-ascii?Q?sUb1WLYpDYbSVxgawgbJbJm/iiSRHggaGXLOYwXnzWHrYgg5bZLomq13zlHr?=
- =?us-ascii?Q?QQJFRlA1R4Bg2RjzUisd/kyhvWrb53j+Bi4duUQrybwj8/tZOLeJJzBEKr7r?=
- =?us-ascii?Q?B+eGJ2+opLV0eVK2VcOh0v12KHFnGR+i0vEuEVC9chcyOb2pgT3ZiWiEQhkd?=
- =?us-ascii?Q?bcinzVzhdUWJ9Wyav4MBDKhVXoWLw7aXngc34nfkJkI/uRXdmF8BSquef06c?=
- =?us-ascii?Q?7X1CwckFI7HlzaY2VoZ82u7dYhs6qPoz+9aVo31/NnCefAl8ZVYyxz27AWNL?=
- =?us-ascii?Q?4igOYody1zBuTzfKxXvVcQF0oMZaohDkvWjiNYFIv5Wu9jdZkFhDRu4X4iE2?=
- =?us-ascii?Q?64lbgJBCUEV+ryjpdT4Gi/dB8wYKQB3B0kK2/6B86MF51meGghJOpBPcdNgC?=
- =?us-ascii?Q?1ag2ysv0uKmE2oun/ZbVN+TmBtePKGWxY21+jCkltbzgxnd/4hpP1Q8b0S01?=
- =?us-ascii?Q?y044m0zlM2rrquBX5Fc8HcBxiusmvfDY9Hx2AHB9k0yT50xbAmauEhuzWyTf?=
- =?us-ascii?Q?3D0BL2uEuSsfxRxB46lwuymX4OILLxd4pq6B48l+wCtGB76PkyMY9MILzBbe?=
- =?us-ascii?Q?G+Wi+j13wqYKiapVrbPE6lN45oSC5XamcSn6I6Q9d3C8OepZpVtwckwBXuiX?=
- =?us-ascii?Q?088hZ5If4J3hmtcxpMe5eXBZbOVJJe6kYevCkxI0Lhs602L71rxtFzj3sDT1?=
- =?us-ascii?Q?GZq1gS3FKFTeIMyKWxuiNEeu8c+WO2vHI7132QTh7KFV7CDBMK7e51jBERAg?=
- =?us-ascii?Q?lW5upwtql3CiWe9eYlQsTMMw2gtEkczcxFfM18B5xNUHrG62BL02G0YOjiKx?=
- =?us-ascii?Q?J0CLWy/MclCBcMfq9mXIc4qiMFp0HBKa5EWusSx3u9TS5dw1rL7LmUT3y+5t?=
- =?us-ascii?Q?856rOafCgYL7TMASyN+t2/5eqVuAZQNUul8HhHnfNfqpraT53QySOhAS+mb2?=
- =?us-ascii?Q?PLRm1DvmY202LVoN1WkZKKEI7Oiin/6bSXVpyc0bcJx8bbiCTHRvjuQlMaiw?=
- =?us-ascii?Q?v/k9n3jDWD2Bv3Po8xA2G12Qhsqkrs199RjjD5KdBJYHwCnn9qNMAsJE0sXZ?=
- =?us-ascii?Q?t7D6vgYrF7ELP8wYhwKeL30Qj2vhUgUCBU7K44JRuUmu8bKsX/D9dN/0rcPy?=
- =?us-ascii?Q?yCfYUYD4GrkBSZVfByd7V++XgQa4+fAokriww7MdmIL3IDTJSQercIXpdQ57?=
- =?us-ascii?Q?QqHdNXX0ReMZwbBrC6897J6y7JXdNwQULvUih66q+jvrJiWE4IdENgo8zF6U?=
- =?us-ascii?Q?YoDl78AYXZFwZgBypwuExgZBTealf++8KLN6qJi3HNub9/8C9h60xLdCCSO6?=
- =?us-ascii?Q?pIZTsn8ocyqMhcWwH020wSTrvnQICR6MobKZCBpZgglH4w1VUlVrdIFwNE8b?=
- =?us-ascii?Q?ttuSFE2H63B772Lyzsg=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?XU+Qgvi0CASzVWJy7jPf/+E8HDyKUaxHEiz5lo8qiZBgB83M3+rlceGyrMDm?=
+ =?us-ascii?Q?3yUo+ZDcalCMy5vwiT0Cl0O94C3HBVmKeqTyWxI10WmJDt0r5laIRVelV/Ql?=
+ =?us-ascii?Q?W/P82vLZQnArYxJxc1mFCVL8B/igigK5HJoLjcIf/jCVDfb+9gOf4DjqpSZ+?=
+ =?us-ascii?Q?Sa2QI8LBR9qaa+5RMltTE/PsjzKoJFLIv/0wDFohz7pmdV0kacvHtAOqYoeQ?=
+ =?us-ascii?Q?XvHopgC9NPqOt0Ge44XTi9qt+wepYiBj1WvZkfIzMDIRo4YzfBkvpXKxKA4I?=
+ =?us-ascii?Q?Y2vBJkfIAugGOQypi724Ibj0JtUgxOQEx1e5HLOLRGtqZpAxoHGDEx9ebyp+?=
+ =?us-ascii?Q?KOQ0rcZoU6CCV5VGYXphypiqW3MXBBTKtq5OV1JBgp10RE7F7ZcpvYwslltF?=
+ =?us-ascii?Q?P2rIOgrxNis1VIJ9Z7wLM/ddQlxDgUDXHRXzM/p4OoQr/iMRfR9QODlMvMdY?=
+ =?us-ascii?Q?TAeQIRAA+qtBZNqUsF2p6tZ4yVjA0Uow9Wl4UbkWRqP+UBwdUn/KVu/6YMEr?=
+ =?us-ascii?Q?HHXAEBjninCRfd2oRsfmLqr9LYmxupNceFiDpeP2u2mrIiUVqf6S/qIApeij?=
+ =?us-ascii?Q?/2zROabi5s+nw+PhJEEcTa/aFAJXglz638pap9Av0kBpTep8hfunNxBBIdrx?=
+ =?us-ascii?Q?M1ZztcCT9HHlAyAat5xLTIiDinoqgGj6WSWDel2MxO8LNu0txwUZ1SZIjBb4?=
+ =?us-ascii?Q?1CRUFnmngJHco+PhrIJNyrGRQkbsq0K0SvijQVegMJBKW1hS+OPVhK8HkQXp?=
+ =?us-ascii?Q?llpIr7tLvveH3UCOd+ze1i5ewlw7cKhdVwFeF5JPzAnytks5EPKRUzxL/EkK?=
+ =?us-ascii?Q?ZAjZXj+zqB1rrpgkYiVAgNdXGS56DWSPovU1VTg5XceTL/Ujnm6Sgq5WdsAJ?=
+ =?us-ascii?Q?bSAzJCBwfiVvb1qjoxb+P+FmV9HTGj4y44QLZwK1/YR6O4zVz72FUmAaH8Js?=
+ =?us-ascii?Q?7XA4fzLyM3mjgCGmmk5OeDFpNfEAXBy7VSpLK3XCitLMFYiAYIMENxb/HiGl?=
+ =?us-ascii?Q?k7p3V57pYIiUHqsPXy9LXzWMGVRN4GYGM/1G1l2JvqWvriEe/IstGYLQ+V4Z?=
+ =?us-ascii?Q?VXvW/LHrWLuOer1nn37iwZbVny/S7NJwJC6RK+kEUT5Xc1R8b/2F9Yod/jR7?=
+ =?us-ascii?Q?G9wFmoUCAjquWNC+cvjoxcwFXI14Lz8W7Ir08Hw/G26R+nM6v7veP8th51yw?=
+ =?us-ascii?Q?2e9khUaLTLEu2nTPXgGQpaANclcmqNIKvBQ0hUYtTgTsKYVxGYHBxOfju64J?=
+ =?us-ascii?Q?vNyGUYNn7s2XOTu5tscN+gb59aiLqn2LjW2OROZVhFEj0ajzmj09MJoSv+Zn?=
+ =?us-ascii?Q?zuQA0PcowMrqXT+9cXlw5MzaXelar3SsX5WXzIwPghW5k+KDsesZpjT51xnO?=
+ =?us-ascii?Q?lRgs5Hhcn0H5H1GN9XZqvqA0uqR2txf1gOs+3bUEAKXlO6tVC6/ipnFs3/W4?=
+ =?us-ascii?Q?WsBKeregCp29b/o9052VPMEb7SnY+9GNBre5/wTYreZ4bK/6RfgM++rQM31z?=
+ =?us-ascii?Q?R4jia+DBPn/bicmLEDxW/+v/b1VDlqb6USdGttTHXr6oPFiuOLu4otlcEIoy?=
+ =?us-ascii?Q?4ORWKOTUZjjP0ZHpTfY=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6312.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd489fe0-6428-4a91-6539-08de395ed5ad
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Dec 2025 09:14:20.7223 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9284f4d6-b03c-468b-12eb-08de395f1b1c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Dec 2025 09:16:17.2375 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 6Cstlg73eiZv1gbGdnx2X2ptc+sa0aHMwhrZYogtGSlgiCJaM1EqpuyjO29rRMzIPAtvlAZ4Y/+RrM82XabYSQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7488
+X-MS-Exchange-CrossTenant-userprincipalname: c3QmMPIsydUOTlun6BQOXLWWtiIrDVJ+0VAgiDOWECCCM0EYszwZLHc6bBxVkrsl43ilqWHh8w91jwX/BX2F6A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB9011
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -187,132 +187,250 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-With the suggested change.=20
-
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
-
 > -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of B, Jee=
-van
-> Sent: Wednesday, December 10, 2025 9:05 AM
-> To: B S, Karthik <karthik.b.s@intel.com>; igt-dev@lists.freedesktop.org
-> Cc: B S, Karthik <karthik.b.s@intel.com>; Kamil Konieczny
-> <kamil.konieczny@linux.intel.com>
-> Subject: RE: [PATCH i-g-t 1/4] lib/igt_fb: Add wrappers for painting test=
- patterns
-> to framebuffers
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Karthi=
+k B S
+> Sent: Friday, December 12, 2025 11:27 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: kamil.konieczny@linux.intel.com; Reddy Guddati, Santhosh
+> <santhosh.reddy.guddati@intel.com>; B S, Karthik <karthik.b.s@intel.com>
+> Subject: [PATCH i-g-t v3 2/2] tests/intel/kms_joiner: Add function for pr=
+etest
+> checks
 >=20
-> > -----Original Message-----
-> > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> > Karthik B S
-> > Sent: Wednesday, December 10, 2025 8:54 AM
-> > To: igt-dev@lists.freedesktop.org
-> > Cc: B S, Karthik <karthik.b.s@intel.com>; Kamil Konieczny
-> > <kamil.konieczny@linux.intel.com>
-> > Subject: [PATCH i-g-t 1/4] lib/igt_fb: Add wrappers for painting test
-> > patterns to framebuffers
-> >
-> > Several tests manually create a cairo context, optionally fill a
-> > background color, paint the standard IGT test pattern, and then
-> > destroy the context. Add helper functions to wrap the igt cairo paint
-> > functions which can be used in test binaries to avoid code duplication =
-and
-> improve readability.
-> >
-> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> > ---
-> >  lib/igt_fb.c | 38 +++++++++++++++++++++++++++++---------
-> >  lib/igt_fb.h |  3 +++
-> >  2 files changed, 32 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c index 0a8299d26..ef16fafb9
-> > 100644
-> > --- a/lib/igt_fb.c
-> > +++ b/lib/igt_fb.c
-> > @@ -2017,6 +2017,33 @@ void igt_paint_test_pattern(cairo_t *cr, int
-> > width, int height)
-> >  	igt_assert(!cairo_status(cr));
-> >  }
-> >
-> Please add documentation comments for all functions.
-> Apart from that patch looks good to me.
-> > +static void paint_test_pattern_fb_common(int fd, struct igt_fb *fb,
-> > +					 bool fill_bg,
-> > +					 double r, double g, double b)
-> > +{
-> > +	cairo_t *cr;
-> > +
-> > +	cr =3D igt_get_cairo_ctx(fd, fb);
-> > +
-> > +	if (fill_bg)
-> > +		igt_paint_color(cr, 0, 0, fb->width, fb->height, r, g, b);
-> > +
-> > +	igt_paint_test_pattern(cr, fb->width, fb->height);
-> > +
-> > +	igt_put_cairo_ctx(cr);
-> > +}
-> > +
-> > +void igt_paint_test_pattern_fb(int fd, struct igt_fb *fb) {
-> > +	paint_test_pattern_fb_common(fd, fb, false, 0, 0, 0); }
-> > +
-> > +void igt_paint_test_pattern_color_fb(int fd, struct igt_fb *fb,
-> > +				     double r, double g, double b) {
-> > +	paint_test_pattern_fb_common(fd, fb, true, r, g, b); }
-> > +
-> >  static cairo_status_t
-> >  stdio_read_func(void *closure, unsigned char* data, unsigned int
-> > size)  { @@
-> > -2277,14 +2304,11 @@ unsigned int igt_create_pattern_fb(int fd, int
-> > width, int height,
-> >  				   struct igt_fb *fb /* out */)
-> >  {
-> >  	unsigned int fb_id;
-> > -	cairo_t *cr;
-> >
-> >  	fb_id =3D igt_create_fb(fd, width, height, format, modifier, fb);
-> >  	igt_assert(fb_id);
-> >
-> > -	cr =3D igt_get_cairo_ctx(fd, fb);
-> > -	igt_paint_test_pattern(cr, width, height);
-> > -	igt_put_cairo_ctx(cr);
-> > +	igt_paint_test_pattern_fb(fd, fb);
-> >
-> >  	return fb_id;
-> >  }
-> > @@ -2319,15 +2343,11 @@ unsigned int igt_create_color_pattern_fb(int
-> > fd, int width, int height,
-> >  					 struct igt_fb *fb /* out */)
-> >  {
-> >  	unsigned int fb_id;
-> > -	cairo_t *cr;
-> >
-> >  	fb_id =3D igt_create_fb(fd, width, height, format, modifier, fb);
-> >  	igt_assert(fb_id);
-> >
-> > -	cr =3D igt_get_cairo_ctx(fd, fb);
-> > -	igt_paint_color(cr, 0, 0, width, height, r, g, b);
-> > -	igt_paint_test_pattern(cr, width, height);
-> > -	igt_put_cairo_ctx(cr);
-> > +	igt_paint_test_pattern_color_fb(fd, fb, r, g, b);
-> >
-> >  	return fb_id;
-> >  }
-> > diff --git a/lib/igt_fb.h b/lib/igt_fb.h index ac0e0909e..8e5907dab
-> > 100644
-> > --- a/lib/igt_fb.h
-> > +++ b/lib/igt_fb.h
-> > @@ -210,6 +210,9 @@ void igt_paint_color_gradient_range(cairo_t *cr,
-> > int x, int y, int w, int h,
-> >  				    double sr, double sg, double sb,
-> >  				    double er, double eg, double eb);  void
-> > igt_paint_test_pattern(cairo_t *cr, int width, int height);
-> > +void igt_paint_test_pattern_fb(int fd, struct igt_fb *fb); void
-> > +igt_paint_test_pattern_color_fb(int fd, struct igt_fb *fb,
-> > +				     double r, double g, double b);
-> >  void igt_paint_image(cairo_t *cr, const char *filename,
-> >  			 int dst_x, int dst_y, int dst_width, int dst_height);  int
-> > igt_cairo_printf_line(cairo_t *cr, enum igt_text_align align,
-> > --
-> > 2.43.0
+> Move igt_require checks in individual subtests to a function which is cal=
+led from
+> all subtests to avoid code duplication.
+>=20
+> v2: Use enum for various joiner modes (Santhosh)
+>=20
+> v3: Split the function for big and ultra joiner (Kamil)
+>     Use igt_require_f (Kamil)
+>     Minor Styling cleanups
+>=20
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>  tests/intel/kms_joiner.c | 98 +++++++++++++++++++++-------------------
+>  1 file changed, 52 insertions(+), 46 deletions(-)
+>=20
+> diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c index
+> f8e684b47..ed82f4789 100644
+> --- a/tests/intel/kms_joiner.c
+> +++ b/tests/intel/kms_joiner.c
+> @@ -101,10 +101,16 @@ typedef struct {
+>  	igt_output_t *non_joiner_output[IGT_MAX_PIPES];
+>  	enum pipe pipe_seq[IGT_MAX_PIPES];
+>  	igt_display_t display;
+> +	bool ultra_joiner_supported;
+>  } data_t;
+>=20
+>  static int max_dotclock;
+>=20
+> +enum force_mode {
+> +	FORCE_ENABLE =3D 0,
+> +	FORCE_DISABLE
+> +};
+> +
+I think these supporting function should be added in joiner helper file.=20
+
+-BR Jeevan B
+>  static void enable_force_joiner_on_all_non_big_joiner_outputs(data_t *da=
+ta)  {
+>  	bool status;
+> @@ -179,6 +185,32 @@ static void set_joiner_mode(data_t *data, igt_output=
+_t
+> *output, drmModeModeInfo
+>  	igt_remove_fb(data->drm_fd, &fb);
+>  }
+>=20
+> +static void require_ultra_joiner(data_t *data, enum force_mode mode) {
+> +	igt_require_f(data->ultra_joiner_supported,
+> +		      "Ultra joiner not supported on this platform\n");
+> +	igt_require_f(data->n_pipes >=3D 4, "Minimum 4 pipes required\n");
+> +
+> +	if (mode =3D=3D FORCE_ENABLE)
+> +		igt_require_f(data->non_ultra_joiner_output_count > 0,
+> +			      "No non ultra joiner output found\n");
+> +	else
+> +		igt_require_f(data->ultra_joiner_output_count > 0,
+> +			      "No ultra joiner output found\n"); }
+> +
+> +static void require_big_joiner(data_t *data, enum force_mode mode) {
+> +	igt_require_f(data->n_pipes >=3D 2, "Minimum 2 pipes required\n");
+> +
+> +	if (mode =3D=3D FORCE_ENABLE)
+> +		igt_require_f(data->non_ultra_joiner_output_count > 0,
+> +			      "No non big joiner output found\n");
+> +	else
+> +		igt_require_f(data->big_joiner_output_count > 0,
+> +			      "No big joiner output found\n"); }
+> +
+>  static void switch_modeset_ultra_joiner_big_joiner(data_t *data, igt_out=
+put_t
+> *output)  {
+>  	drmModeModeInfo bj_mode;
+> @@ -554,7 +586,7 @@ int igt_main()
+>  	data_t data;
+>=20
+>  	igt_fixture() {
+> -		ultra_joiner_supported =3D false;
+> +		data.ultra_joiner_supported =3D false;
+>  		data.big_joiner_output_count =3D 0;
+>  		data.ultra_joiner_output_count =3D 0;
+>  		data.non_big_joiner_output_count =3D 0; @@ -574,7 +606,7 @@
+> int igt_main()
+>  		is_dgfx =3D is_xe_device(data.drm_fd) ?
+> xe_has_vram(data.drm_fd) : gem_has_lmem(data.drm_fd);
+>  		display_ver =3D
+> intel_display_ver(intel_get_drm_devid(data.drm_fd));
+>  		if (is_dgfx && display_ver =3D=3D 14)
+> -			ultra_joiner_supported =3D true;
+> +			data.ultra_joiner_supported =3D true;
+>=20
+>  		for_each_connected_output(&data.display, output) {
+>  			bool ultrajoiner_found =3D false, bigjoiner_found =3D false,
+> force_joiner_supported =3D false; @@ -630,32 +662,25 @@ int igt_main()
+>=20
+>  	igt_describe("Verify the basic modeset on big joiner mode on all pipes"=
+);
+>  	igt_subtest_with_dynamic("basic-big-joiner") {
+> -			igt_require_f(data.big_joiner_output_count > 0,
+> -				      "No bigjoiner output found\n");
+> -			igt_require_f(data.n_pipes > 1,
+> -				      "Minimum 2 pipes required\n");
+> -			igt_dynamic_f("single-joiner")
+> -				test_single_joiner(&data,
+> data.big_joiner_output_count, false);
+> -			if (data.big_joiner_output_count > 1)
+> -				igt_dynamic_f("multi-joiner")
+> -					test_multi_joiner(&data,
+> data.big_joiner_output_count, false);
+> +		require_big_joiner(&data, FORCE_DISABLE);
+> +		igt_dynamic_f("single-joiner")
+> +			test_single_joiner(&data, data.big_joiner_output_count,
+> false);
+> +		if (data.big_joiner_output_count > 1)
+> +			igt_dynamic_f("multi-joiner")
+> +				test_multi_joiner(&data,
+> data.big_joiner_output_count, false);
+>  	}
+>=20
+>  	igt_describe("Verify the basic modeset on ultra joiner mode on all
+> pipes");
+>  	igt_subtest_with_dynamic("basic-ultra-joiner") {
+> -			igt_require_f(data.ultra_joiner_output_count > 0,
+> -				      "No ultrajoiner output found\n");
+> -			igt_require_f(data.n_pipes > 3,
+> -				      "Minimum 4 pipes required\n");
+> -			igt_dynamic_f("single-joiner")
+> -				test_ultra_joiner(&data, false, false, false);
+> +		require_big_joiner(&data, FORCE_DISABLE);
+> +		igt_dynamic_f("single-joiner")
+> +			test_ultra_joiner(&data, false, false, false);
+>  	}
+>=20
+>  	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
+>  		     "when the pipe is active with a big joiner modeset");
+>  	igt_subtest_with_dynamic("invalid-modeset-big-joiner") {
+> -		igt_require_f(data.big_joiner_output_count > 0, "Non big joiner
+> output not found\n");
+> -		igt_require_f(data.n_pipes > 1, "Minimum of 2 pipes are
+> required\n");
+> +		require_big_joiner(&data, FORCE_DISABLE);
+>  		if (data.big_joiner_output_count >=3D 1)
+>  			igt_dynamic_f("big_joiner_on_last_pipe")
+>  				test_joiner_on_last_pipe(&data, false); @@ -
+> 670,9 +695,7 @@ int igt_main()
+>  	igt_describe("Verify if the modeset on the other pipes are rejected "
+>  		     "when the pipe A is active with a ultra joiner modeset");
+>  	igt_subtest_with_dynamic("invalid-modeset-ultra-joiner") {
+> -		igt_require_f(data.ultra_joiner_output_count > 0, "Ultra joiner
+> output not found\n");
+> -		igt_require_f(data.n_pipes > 3, "Minimum of 4 pipes are
+> required\n");
+> -
+> +		require_ultra_joiner(&data, FORCE_DISABLE);
+>  		igt_dynamic_f("ultra_joiner_on_invalid_pipe")
+>  			test_ultra_joiner(&data, true, false, false);
+>  		if (data.non_ultra_joiner_output_count > 0) { @@ -681,12
+> +704,9 @@ int igt_main()
+>  		}
+>  	}
+>=20
+> -	igt_describe("Verify the basic modeset on big joiner mode on all pipes"=
+);
+> +	igt_describe("Verify the basic modeset on force big joiner mode on all
+> +pipes");
+>  	igt_subtest_with_dynamic("basic-force-big-joiner") {
+> -		igt_require_f(data.non_big_joiner_output_count > 0,
+> -			      "No non big joiner output found\n");
+> -		igt_require_f(data.n_pipes > 1,
+> -			      "Minimum 2 pipes required\n");
+> +		require_big_joiner(&data, FORCE_ENABLE);
+>  		igt_dynamic_f("single") {
+>=20
+> 	enable_force_joiner_on_all_non_big_joiner_outputs(&data);
+>  			test_single_joiner(&data,
+> data.non_big_joiner_output_count, true); @@ -703,10 +723,7 @@ int igt_mai=
+n()
+>  	}
+>=20
+>  	igt_subtest_with_dynamic("invalid-modeset-force-big-joiner") {
+> -		igt_require_f(data.non_big_joiner_output_count > 0,
+> -			      "Non big joiner output not found\n");
+> -		igt_require_f(data.n_pipes > 1,
+> -			      "Minimum of 2 pipes are required\n");
+> +		require_big_joiner(&data, FORCE_ENABLE);
+>  		if (data.non_big_joiner_output_count >=3D 1) {
+>  			igt_dynamic_f("big_joiner_on_last_pipe") {
+>=20
+> 	enable_force_joiner_on_all_non_big_joiner_outputs(&data);
+> @@ -724,14 +741,9 @@ int igt_main()
+>  		}
+>  	}
+>=20
+> -	igt_describe("Verify the basic modeset on ultra joiner mode on all
+> pipes");
+> +	igt_describe("Verify the basic modeset on force ultra joiner mode on
+> +all pipes");
+>  	igt_subtest_with_dynamic("basic-force-ultra-joiner") {
+> -		igt_require_f(ultra_joiner_supported,
+> -			      "Ultra joiner not supported on this platform\n");
+> -		igt_require_f(data.non_ultra_joiner_output_count > 0,
+> -			      "No non ultra joiner output found\n");
+> -		igt_require_f(data.n_pipes > 3,
+> -			      "Minimum 4 pipes required\n");
+> +		require_ultra_joiner(&data, FORCE_ENABLE);
+>  		igt_dynamic_f("single") {
+>=20
+> 	enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
+>  			test_ultra_joiner(&data, false, false, true); @@ -745,7
+> +757,7 @@ int igt_main()
+>  			      "Ultra joiner not supported on this platform\n");
+>  		igt_require_f(data.ultra_joiner_output_count > 0 ||
+>  			      data.non_ultra_joiner_output_count > 0,
+> -				  "No ultra joiner or force ultra joiner output
+> found\n");
+> +			      "No ultra joiner or force ultra joiner output found\n");
+>  		igt_require_f(data.n_pipes > 3,
+>  			      "Minimum 4 pipes required\n");
+>=20
+> @@ -754,13 +766,7 @@ int igt_main()
+>  	}
+>=20
+>  	igt_subtest_with_dynamic("invalid-modeset-force-ultra-joiner") {
+> -		igt_require_f(ultra_joiner_supported,
+> -			      "Ultra joiner not supported on this platform\n");
+> -		igt_require_f(data.non_ultra_joiner_output_count > 0,
+> -			      "Non ultra joiner output not found\n");
+> -		igt_require_f(data.n_pipes > 3,
+> -			      "Minimum of 3 pipes are required\n");
+> -
+> +		require_ultra_joiner(&data, FORCE_ENABLE);
+>  		igt_dynamic_f("ultra_joiner_on_invalid_pipe") {
+>=20
+> 	enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
+>  			test_ultra_joiner(&data, true, false, true);
+> --
+> 2.43.0
 
