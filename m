@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 775C5D43367
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F663D43368
 	for <igt-dev@archiver.kernel.org>; Fri, 12 Dec 2025 01:11:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 09C7910E31F;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0911F10E12A;
 	Fri, 12 Dec 2025 01:11:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VrxDuMop";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aBmRxfN7";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 985B410E12A
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Dec 2025 01:11:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 352F510E12A
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Dec 2025 01:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765501883; x=1797037883;
+ t=1765501884; x=1797037884;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=z57IQ7ENC48jQ0tA9AkBe2r0kfWf0CKRURQgML/Rpro=;
- b=VrxDuMop10E5mrf2cW0/nRC8jRm5f5E0p/72fkVyfqO0eKVJIyGxAOo9
- kk0AvRhaK9MqoEUTu+HsxMcV1++KJrnmjMVa0E5dDaRKVVfwq8CPlDPVo
- xJ16oDBW4XIVBc0SLwWg+wda5DOxVlxo/gSb3rHnTY5aOEa2MM9ZwTEAD
- 1/LHY1ruYSiZFJa2q8CqoHqPGO4Kj/aqqDE4uEWYv5iQ8cz2Nqx3KKy+i
- ed7lSwwDTolL1sY+YoXhweeyVNushm5MtEc9ItyRYDqIuNFMlJWXhKRsd
- MyIdJB+1hC09pNQXkGP8GIfPIadmNl2+yyQj5XDNSlQdb9iHNgS+RqxMp w==;
-X-CSE-ConnectionGUID: HSTGFMJtSbGVkgMAA4invQ==
-X-CSE-MsgGUID: M/eAfe69SsOyGLYusU1tVA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="71118041"
-X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; d="scan'208";a="71118041"
+ bh=AaB9o4IcS6lrVCGkRf3kg140iC+jFVavpYBhhwbDuzw=;
+ b=aBmRxfN77yHupKk3eoB4b7H2pwd7icPAfWVeVXk/zRtdQoMiy4eJoDps
+ DCuvUDg6ah3nxFho7hddGF+fI964a7LogbFENg8nUoOQVwSSD2QeD0pjh
+ +Rx0U3TZrDTREnC+AUCISqydr1Z8CjCHRv7vDCln0Xp6pPRbsrsI0DoNs
+ nVz/nKDreymRxOCcnQotAGMxdYiFMD2tjyaavIPWuRRSW0vBYxukAHN6g
+ F+v+pS+eb+Z6sOBWCAH7LjZwyZcsUhH/VA0wr8tqDaIHx1Hjl/W1dcfVl
+ UN1zoxKZ5wQOGDq3SaK4y0eS69bt7mW3imscqRklsA0E5rqYgC40C676F Q==;
+X-CSE-ConnectionGUID: HC31y1WwTV2+uhYfIeT4vg==
+X-CSE-MsgGUID: /G2tYGnjSMu5jCsMIKiLtw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11639"; a="71118047"
+X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; d="scan'208";a="71118047"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2025 17:11:23 -0800
-X-CSE-ConnectionGUID: OX+wB1VETJOhM0R7jv3wjw==
-X-CSE-MsgGUID: g/1ZeoKWSr2x9yZTAC/wGw==
+ 11 Dec 2025 17:11:24 -0800
+X-CSE-ConnectionGUID: 2GDe7jCgR4OSkfh+Wrm6oQ==
+X-CSE-MsgGUID: GXYTtQpYSNSPjrntW/3DgA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; d="scan'208";a="196031225"
+X-IronPort-AV: E=Sophos;i="6.21,141,1763452800"; d="scan'208";a="196031242"
 Received: from nvishwa1-desk.sc.intel.com ([172.25.29.139])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Dec 2025 17:11:23 -0800
+ 11 Dec 2025 17:11:24 -0800
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: sai.gowtham.ch@intel.com, priyanka.dandamudi@intel.com,
  kamil.konieczny@linux.intel.com, stuart.summers@intel.com
-Subject: [PATCH v5 06/18] tests/intel/xe_exec_multi_queue: Add close-fd tests
-Date: Thu, 11 Dec 2025 17:11:18 -0800
-Message-ID: <20251212011115.1685703-26-niranjana.vishwanathapura@intel.com>
+Subject: [PATCH v5 11/18] tests/intel/xe_exec_multi_queue: Add userptr
+ invalidation tests
+Date: Thu, 11 Dec 2025 17:11:23 -0800
+Message-ID: <20251212011115.1685703-31-niranjana.vishwanathapura@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251212011115.1685703-20-niranjana.vishwanathapura@intel.com>
 References: <20251212011115.1685703-20-niranjana.vishwanathapura@intel.com>
@@ -68,76 +69,208 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Validate closing the file handle without destroying exec queues.
+Add validation support for userptr invalidation. For normal tests,
+userptr invalidation will happen after all the gpu jobs using that
+userptr are complete. For preempt mode tests, userptr invalidation
+suspends the execution queue and resumes it after invalidation is
+complete.
+
+v3: Minor code refactor
 
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Reviewed-by: Nakshtra Goyal <nakshtra.goyal@intel.com>
 Reviewed-by: Stuart Summers <stuart.summers@intel.com>
 ---
- tests/intel/xe_exec_multi_queue.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ tests/intel/xe_exec_multi_queue.c | 95 +++++++++++++++++++++++++------
+ 1 file changed, 78 insertions(+), 17 deletions(-)
 
 diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
-index 561c1a2c9..972e1ceec 100644
+index 459c44d31..235fa0594 100644
 --- a/tests/intel/xe_exec_multi_queue.c
 +++ b/tests/intel/xe_exec_multi_queue.c
-@@ -27,6 +27,7 @@
- 
- #define USERPTR			(0x1 << 0)
- #define PRIORITY		(0x1 << 1)
-+#define CLOSE_FD		(0x1 << 2)
+@@ -30,6 +30,7 @@
+ #define CLOSE_FD		(0x1 << 2)
+ #define PREEMPT_MODE		(0x1 << 3)
+ #define DYN_PRIORITY		(0x1 << 4)
++#define INVALIDATE		(0x1 << 5)
  
  #define MAX_INSTANCE 9
  
-@@ -247,6 +248,9 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
- 	} *data;
- 	int i, b;
- 
-+	if (flags & CLOSE_FD)
-+		fd = drm_open_driver(DRIVER_XE);
-+
- 	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
- 	vm = xe_vm_create(fd, 0, 0);
+@@ -261,9 +262,16 @@ test_preempt_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_plac
  	bo_size = xe_bb_size(fd, sizeof(*data) * n_execs);
-@@ -335,7 +339,8 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
+ 
+ 	if (flags & USERPTR) {
+-		data = aligned_alloc(xe_get_default_alignment(fd), bo_size);
+-		igt_assert(data);
+-
++#define	MAP_ADDRESS	0x00007fadeadbe000
++		if (flags & INVALIDATE) {
++			data = mmap((void *)MAP_ADDRESS, bo_size, PROT_READ |
++				    PROT_WRITE, MAP_SHARED | MAP_FIXED |
++				    MAP_ANONYMOUS, -1, 0);
++			igt_assert(data != MAP_FAILED);
++		} else {
++			data = aligned_alloc(xe_get_default_alignment(fd), bo_size);
++			igt_assert(data);
++		}
+ 		memset(data, 0, bo_size);
+ 	} else {
+ 		bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci[0].gt_id),
+@@ -328,18 +336,40 @@ test_preempt_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_plac
+ 						   XE_EXEC_QUEUE_PRIORITY_NORMAL + (rand() % 2));
+ 
+ 		xe_exec(fd, &exec);
++
++		if (flags & INVALIDATE) {
++			/*
++			 * Wait for exec completion and check data as userptr will
++			 * likely change to different physical memory on next mmap
++			 * call triggering an invalidate.
++			 */
++			xe_wait_ufence(fd, &data[i].exec_sync,
++				       USER_FENCE_VALUE, exec_queues[e],
++				       fence_timeout);
++			igt_assert_eq(data[i].data, 0xc0ffee);
++
++			if (i) {
++				data = mmap((void *)MAP_ADDRESS, bo_size, PROT_READ |
++					    PROT_WRITE, MAP_SHARED | MAP_FIXED |
++					    MAP_ANONYMOUS, -1, 0);
++				igt_assert(data != MAP_FAILED);
++			}
++
++		}
+ 	}
+ 
+-	for (i = 0; i < n_execs; i++)
+-		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+-			       exec_queues[i % n_exec_queues], fence_timeout);
++	if (!(flags & INVALIDATE))
++		for (i = 0; i < n_execs; i++)
++			xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
++				       exec_queues[i % n_exec_queues], fence_timeout);
+ 
+ 	sync.addr = to_user_pointer(&vm_sync);
+ 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, &sync, 1);
+ 	xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, fence_timeout);
+ 
+-	for (i = 0; i < n_execs; i++)
+-		igt_assert_eq(data[i].data, 0xc0ffee);
++	if (!(flags & INVALIDATE))
++		for (i = 0; i < n_execs; i++)
++			igt_assert_eq(data[i].data, 0xc0ffee);
+ 
+ 	if (!(flags & CLOSE_FD))
+ 		for (i = 0; i < n_exec_queues; i++)
+@@ -348,7 +378,7 @@ test_preempt_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_plac
+ 	if (bo) {
+ 		munmap(data, bo_size);
+ 		gem_close(fd, bo);
+-	} else {
++	} else if (!(flags & INVALIDATE)) {
+ 		free(data);
+ 	}
+ 
+@@ -394,9 +424,16 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
+ 	bo_size = xe_bb_size(fd, sizeof(*data) * n_execs);
+ 
+ 	if (flags & USERPTR) {
+-		data = aligned_alloc(xe_get_default_alignment(fd), bo_size);
+-		igt_assert(data);
+-
++#define	MAP_ADDRESS	0x00007fadeadbe000
++		if (flags & INVALIDATE) {
++			data = mmap((void *)MAP_ADDRESS, bo_size, PROT_READ |
++				    PROT_WRITE, MAP_SHARED | MAP_FIXED |
++				    MAP_ANONYMOUS, -1, 0);
++			igt_assert(data != MAP_FAILED);
++		} else {
++			data = aligned_alloc(xe_get_default_alignment(fd), bo_size);
++			igt_assert(data);
++		}
+ 		memset(data, 0, bo_size);
+ 	} else {
+ 		bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, eci[0].gt_id),
+@@ -466,10 +503,29 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
+ 						   XE_EXEC_QUEUE_PRIORITY_NORMAL + (rand() % 2));
+ 
+ 		xe_exec(fd, &exec);
++
++		if (flags & INVALIDATE) {
++			/*
++			 * Wait for exec completion and check data as userptr will
++			 * likely change to different physical memory on next mmap
++			 * call triggering an invalidate.
++			 */
++			igt_assert(syncobj_wait(fd, &syncobjs[e], 1,
++						INT64_MAX, 0, NULL));
++			igt_assert_eq(data[i].data, 0xc0ffee);
++
++			if (i) {
++				data = mmap((void *)MAP_ADDRESS, bo_size, PROT_READ |
++					    PROT_WRITE, MAP_SHARED | MAP_FIXED |
++					    MAP_ANONYMOUS, -1, 0);
++				igt_assert(data != MAP_FAILED);
++			}
++		}
+ 	}
+ 
+-	for (i = 0; i < n_exec_queues && i < n_execs; i++)
+-		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0, NULL));
++	if (!(flags & INVALIDATE))
++		for (i = 0; i < n_exec_queues && i < n_execs; i++)
++			igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0, NULL));
+ 
+ 	igt_assert(syncobj_wait(fd, &bind_syncobj, 1, INT64_MAX, 0, NULL));
+ 	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+@@ -477,8 +533,9 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
+ 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+ 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1,	INT64_MAX, 0, NULL));
+ 
+-	for (i = 0; i < n_execs; i++)
+-		igt_assert_eq(data[i].data, 0xc0ffee);
++	if (!(flags & INVALIDATE))
++		for (i = 0; i < n_execs; i++)
++			igt_assert_eq(data[i].data, 0xc0ffee);
  
  	for (i = 0; i < n_exec_queues; i++) {
  		syncobj_destroy(fd, syncobjs[i]);
--		xe_exec_queue_destroy(fd, exec_queues[i]);
-+		if (!(flags & CLOSE_FD))
-+			xe_exec_queue_destroy(fd, exec_queues[i]);
- 	}
- 
+@@ -489,7 +546,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
  	if (bo) {
-@@ -346,7 +351,11 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
+ 		munmap(data, bo_size);
+ 		gem_close(fd, bo);
+-	} else {
++	} else if (!(flags & INVALIDATE)) {
+ 		free(data);
  	}
  
- 	syncobj_destroy(fd, bind_syncobj);
--	xe_vm_destroy(fd, vm);
-+
-+	if (!(flags & CLOSE_FD))
-+		xe_vm_destroy(fd, vm);
-+	else
-+		drm_close_driver(fd);
- }
- 
- /**
-@@ -379,6 +388,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
+@@ -530,11 +587,13 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci, int num_place
+  *
   * @basic:					basic
   * @userptr:					userptr
++ * @userptr-invalidate:				userptr invalidate
   * @priority:					priority
-+ * @close-fd:					close fd without destroying exec queues
-  */
- static void
- test_exec(int fd, struct drm_xe_engine_class_instance *eci, int num_placement,
-@@ -397,6 +407,7 @@ int igt_main()
+  * @close-fd:					close fd without destroying exec queues
+  * @dyn-priority:				dynamic priority
+  * @preempt-mode-basic:				preempt-mode basic
+  * @preempt-mode-userptr:			preempt-mode userptr
++ * @preempt-mode-userptr-invalidate:		preempt-mode userptr invalidate
+  * @preempt-mode-priority:			preempt-mode priority
+  * @preempt-mode-close-fd:			preempt-mode close fd without destroying exec queues
+  * @preempt-mode-dyn-priority:			preempt-mode dynamic priority
+@@ -582,11 +641,13 @@ int igt_main()
+ 	} sections[] = {
  		{ "basic", 0 },
  		{ "userptr", USERPTR },
++		{ "userptr-invalidate", USERPTR | INVALIDATE },
  		{ "priority", PRIORITY },
-+		{ "close-fd", CLOSE_FD },
- 		{ NULL },
- 	};
- 	int fd, gt, class;
+ 		{ "close-fd", CLOSE_FD },
+ 		{ "dyn-priority", DYN_PRIORITY },
+ 		{ "preempt-mode-basic", PREEMPT_MODE },
+ 		{ "preempt-mode-userptr", PREEMPT_MODE | USERPTR },
++		{ "preempt-mode-userptr-invalidate", PREEMPT_MODE | USERPTR | INVALIDATE },
+ 		{ "preempt-mode-priority", PREEMPT_MODE | PRIORITY },
+ 		{ "preempt-mode-close-fd", PREEMPT_MODE | CLOSE_FD },
+ 		{ "preempt-mode-dyn-priority", PREEMPT_MODE | DYN_PRIORITY },
 -- 
 2.43.0
 
