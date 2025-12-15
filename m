@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA5A4D59D99
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Dec 2025 10:11:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E82AD41D74
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Dec 2025 10:12:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 69A7A10E3D8;
-	Mon, 15 Dec 2025 10:11:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E0DE510E282;
+	Mon, 15 Dec 2025 10:12:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NYOtujoE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ealZJidj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 595EF10E3D8;
- Mon, 15 Dec 2025 10:11:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4CDB910E282;
+ Mon, 15 Dec 2025 10:12:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765793494; x=1797329494;
+ t=1765793541; x=1797329541;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=aamP09PMLSvZZ2tMNMEKNal9cW6dtPHfnATUrrWApKk=;
- b=NYOtujoE2k5IT2uZ9mMpIPIGvRiBN/MAA/pcFOEQeTG9enOQPupcYfDr
- x95QLaMOFMQjaVZZW1ArGIi0jVOrcuplxNVK/Efqgb2Gl88UXb21GrkiV
- oUNoZbsFLD8qMf+GohF+hX1xeTc9l313kriEskRcVJUXuLX/IBJY1eEPf
- Ye7WkwiMzzJZT2ekIs0CbWwAmjJ9WmTkyIpCErwxw1idtu5fFyFL5gho4
- NV2fG+rASmeMJ76vo0A175hbF6c3OduYEoPd1/Heg0tk7YK22CVexX6Ip
- U6FM3FvGUrX3hlKLGfyhxapWGWwueuI+//Jr+A+haTO5zj7K60wq3iDOz g==;
-X-CSE-ConnectionGUID: jzTSWgEUTwOStPKwsND7pA==
-X-CSE-MsgGUID: aLP6TQHYRDuV48M3Ci0ZYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11642"; a="67444795"
-X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; d="scan'208";a="67444795"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Dec 2025 02:11:33 -0800
-X-CSE-ConnectionGUID: YrABvMhzRhmYZmaJbfacdA==
-X-CSE-MsgGUID: pVA6kpCCRh+XbfGTJmi9BA==
+ bh=Him7Te2D+GOui7Y70LtXKD0hJXudmPfgY4Uc+BUzRqY=;
+ b=ealZJidjGQ+5lTtQFF/lu+qpVfkLs6uCTkU7NLoYBjGSrXXSwc/D/Z2y
+ OZJm6Flvy9EpTdf4u0l8sC9vh4I4zU+83/3wU6v7CE8AhZHiOQyUE6qrJ
+ Hy0If0s2Y3dcdrsBbvqclFhxpzJCVB1Hh5Y0xfbhJLULkDcluc7FqprGR
+ /e6jl0fpsMpYwX9RuSngRHyewGHTJ8ZKpuNpUaUf/dBo7YCUy2MS0eNzH
+ 58KNJlU9zOdxq4nDv/UjsrlKIBQLK508HMLu57vt++PYRR+o5mwMrRdnw
+ tbffHAVaacz6Y0r/EoO4OsDpFftZlqMdncGRrgpvIcXsbnMdZW51jrchz A==;
+X-CSE-ConnectionGUID: kfQc21+LRKGWxWXSkxADNg==
+X-CSE-MsgGUID: e3u62J5jSbya3LWkmQS4qg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11642"; a="85283211"
+X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; d="scan'208";a="85283211"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Dec 2025 02:12:18 -0800
+X-CSE-ConnectionGUID: XFEiBR4zTwmyByGeuEP2Pg==
+X-CSE-MsgGUID: 8UGArVf5RSCBSx4FYtqqVw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; d="scan'208";a="228334326"
+X-IronPort-AV: E=Sophos;i="6.21,150,1763452800"; d="scan'208";a="197445251"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 02:11:33 -0800
-Date: Mon, 15 Dec 2025 11:11:14 +0100
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2025 02:12:17 -0800
+Date: Mon, 15 Dec 2025 11:12:14 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbA==?= =?utf-8?Q?=3A?= failure for
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw=?= =?utf-8?Q?=3A?= failure for
  intel-ci: remove few i915 symlinks
-Message-ID: <20251215101114.25pjjqnccrdahok3@kamilkon-DESK.igk.intel.com>
+Message-ID: <20251215101214.52bnibgzn6rjyfdj@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
 References: <20251212141808.65453-1-kamil.konieczny@linux.intel.com>
- <176560435936.82897.560243205588258657@a3b018990fe9>
+ <176563892005.84868.16720151137580063928@a3b018990fe9>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <176560435936.82897.560243205588258657@a3b018990fe9>
+In-Reply-To: <176563892005.84868.16720151137580063928@a3b018990fe9>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,7 +72,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi igt-dev,
-On 2025-12-13 at 05:39:19 -0000, Patchwork wrote:
+On 2025-12-13 at 15:15:20 -0000, Patchwork wrote:
 > == Series Details ==
 > 
 > Series: intel-ci: remove few i915 symlinks
@@ -81,7 +81,7 @@ On 2025-12-13 at 05:39:19 -0000, Patchwork wrote:
 > 
 > == Summary ==
 > 
-> CI Bug Log - changes from IGT_8665_full -> IGTPW_14203_full
+> CI Bug Log - changes from XEIGT_8665_FULL -> XEIGTPW_14203_FULL
 > ====================================================
 > 
 > Summary
@@ -89,47 +89,69 @@ On 2025-12-13 at 05:39:19 -0000, Patchwork wrote:
 > 
 >   **FAILURE**
 > 
->   Serious unknown changes coming with IGTPW_14203_full absolutely need to be
+>   Serious unknown changes coming with XEIGTPW_14203_FULL absolutely need to be
 >   verified manually.
 >   
 >   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_14203_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   introduced in XEIGTPW_14203_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
 >   to document this new failure mode, which will reduce false positives in CI.
 > 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14203/index.html
+>   
 > 
-> Participating hosts (11 -> 9)
+> Participating hosts (2 -> 2)
 > ------------------------------
 > 
->   Missing    (2): shard-dg2-set2 shard-glk-0 
+>   No changes in participating hosts
 > 
 > Possible new issues
 > -------------------
 > 
->   Here are the unknown changes that may have been introduced in IGTPW_14203_full:
+>   Here are the unknown changes that may have been introduced in XEIGTPW_14203_FULL:
 > 
 > ### IGT changes ###
 > 
 > #### Possible regressions ####
 > 
->   * igt@kms_cursor_legacy@cursor-vs-flip-atomic-transitions:
->     - shard-tglu-1:       NOTRUN -> [FAIL][1]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14203/shard-tglu-1/igt@kms_cursor_legacy@cursor-vs-flip-atomic-transitions.html
+>   * igt@xe_exec_multi_queue@few-execs-preempt-mode-priority:
+>     - shard-bmg:          NOTRUN -> [SKIP][1] +7 other tests skip
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14203/shard-bmg-3/igt@xe_exec_multi_queue@few-execs-preempt-mode-priority.html
 > 
->   * igt@kms_flip@flip-vs-wf_vblank-interruptible@a-hdmi-a3:
->     - shard-dg1:          NOTRUN -> [FAIL][2]
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14203/shard-dg1-13/igt@kms_flip@flip-vs-wf_vblank-interruptible@a-hdmi-a3.html
+>   * igt@xe_exec_multi_queue@one-queue-preempt-mode-basic:
+>     - shard-lnl:          NOTRUN -> [SKIP][2] +2 other tests skip
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14203/shard-lnl-4/igt@xe_exec_multi_queue@one-queue-preempt-mode-basic.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@xe_exec_multi_queue@two-queues-basic-smem:
+>     - shard-bmg:          [SKIP][3] ([Intel XE#6703]) -> [SKIP][4] +3 other tests skip
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8665/shard-bmg-2/igt@xe_exec_multi_queue@two-queues-basic-smem.html
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14203/shard-bmg-4/igt@xe_exec_multi_queue@two-queues-basic-smem.html
 > 
 
-Unrelated, no need for respin.
+Unrelated,
 
 Regards,
 Kamil
 
 >   
+> New tests
+> ---------
+> 
+>   New tests have been introduced between XEIGT_8665_FULL and XEIGTPW_14203_FULL:
+> 
+> ### New IGT tests (1) ###
+> 
+>   * igt@kms_chamelium_frames:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   
+> 
 > Known issues
 > ------------
 > 
->   Here are the changes found in IGTPW_14203_full that come from known issues:
+>   Here are the changes found in XEIGTPW_14203_FULL that come from known issues:
 > 
 > ### IGT changes ###
+> 
