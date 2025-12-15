@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9EEAD5B878
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Dec 2025 23:09:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AB23D5B876
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Dec 2025 23:09:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 661BA10E3B6;
+	by gabe.freedesktop.org (Postfix) with ESMTP id AAA8F10E59B;
 	Mon, 15 Dec 2025 23:09:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T9vL8+Y4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FZa0k7PK";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB49110E3B6
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB2DE10E3B6
  for <igt-dev@lists.freedesktop.org>; Mon, 15 Dec 2025 23:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765840147; x=1797376147;
+ t=1765840148; x=1797376148;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=uhX/Lh2mFXQuAuCEpC9AE8/zMudCVZrP1As7ZDlCvhE=;
- b=T9vL8+Y43W+XCk8sAdcdeER/p7+E/zP+ptNPrQRctVs5H10I12FZbkS/
- GljcpgL0vIbUquPcfQBvu+qC2WSdOnu0bu2LbPeRzi1PUbmIRxHXtIJW4
- fUTVzzdCE54hJJjwhgaJDcaPoUQT3GelP6l8DfgZqQlyD3XJrutzsj2Jc
- F07iNi4hcA+ETFiowYhS6KGad+5CFH3UfQVWb+DPNSP79qMMVZJuv8RWC
- GoIzuckF6ROi5NT4oCzja2aJjqPsTahHQXqk//s/o3cPikCRMy2+nhsO2
- J9DXyGaV49sktWwUUzTjOEsDBEmgjFfhb+VzErYpr4/uRJ6YAE4PZ3qgZ Q==;
-X-CSE-ConnectionGUID: xkHyGzCaQAqWvE9v4U2wXA==
-X-CSE-MsgGUID: +iCq1DldTCCvmGZA0u6e1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="66939537"
-X-IronPort-AV: E=Sophos;i="6.21,151,1763452800"; d="scan'208";a="66939537"
+ bh=NvRrHUIAM8IKdbu7zXaYxIG/z+wjDRQYjPfy2hGKN5c=;
+ b=FZa0k7PKLBKmodwLaL4UR3kgKwcfKvKmpS+49HyAEwM25tAHabdH9m0E
+ v5Va38MHY+7huWeSikrXhfg0oI7//BwyuY+p5nAs5TLMGvCyW8FWFJVuP
+ D6rNZwF35VBbLcp5JO4EnBM5C2Bbu7ZcpnIyV4s2bvE5N/jTJWbmGtW5U
+ r8EPUw0upN9tDFs+Lv6RLUfHoJbQDma9gm9C/oC+y8pbXr3+cG15dKGpY
+ vFbTzarB7plTavRe5PXB/mRf9pm73sMpY4R3LsNgQ8AFmcuHK0WC+Db5R
+ 0UG3J16vJf1spqpctiTMSp21pOIndZpiURJf8VLyIjyCC9LqehTqtwgGv A==;
+X-CSE-ConnectionGUID: mFNsLYLpQLW2sacRvutsng==
+X-CSE-MsgGUID: 7BSso5XhQPe7u13umASNlg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="66939538"
+X-IronPort-AV: E=Sophos;i="6.21,151,1763452800"; d="scan'208";a="66939538"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  15 Dec 2025 15:09:07 -0800
-X-CSE-ConnectionGUID: huvTJ2OuQzWaBigOWxh0Sg==
-X-CSE-MsgGUID: QJnj7WrgRmiL3W/A0Se9AA==
+X-CSE-ConnectionGUID: p4txDMujSf+JmEWw2qm8bQ==
+X-CSE-MsgGUID: 3YT8HN1UQC+LSsHen3BPoQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,151,1763452800"; d="scan'208";a="202259585"
+X-IronPort-AV: E=Sophos;i="6.21,151,1763452800"; d="scan'208";a="202259587"
 Received: from dut4086lnl.fm.intel.com ([10.105.10.207])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  15 Dec 2025 15:09:07 -0800
@@ -47,10 +47,10 @@ Cc: saurabhg.gupta@intel.com, alex.zuo@intel.com, jonathan.cavitt@intel.com,
  joonas.lahtinen@linux.intel.com, matthew.brost@intel.com,
  jianxun.zhang@intel.com, stuart.summers@intel.com, shuicheng.lin@intel.com,
  ivan.briano@intel.com, nishit.sharma@intel.com
-Subject: [PATCH v6 3/4] tests/intel/xe_vm: Add DRM_IOCTL_XE_VM_GET_PROPERTY
- validation tests
-Date: Mon, 15 Dec 2025 23:09:09 +0000
-Message-ID: <20251215230905.164341-9-jonathan.cavitt@intel.com>
+Subject: [PATCH v6 4/4] tests/intel/xe_vm: Test DRM_IOCTL_XE_VM_GET_PROPERTY
+ fault reporting
+Date: Mon, 15 Dec 2025 23:09:10 +0000
+Message-ID: <20251215230905.164341-10-jonathan.cavitt@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251215230905.164341-6-jonathan.cavitt@intel.com>
 References: <20251215230905.164341-6-jonathan.cavitt@intel.com>
@@ -71,124 +71,200 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add tests to xe_vm that exercise the new DRM_IOCTL_XE_VM_GET_PROPERTY
-ioctl.  Specifically, add input validation tests that exercise the
-return values for improperly formatted ioctl structures.
+Add a test to xe_vm that determines if pagefaults are correctly tracked
+and reported by the DRM_IOCTL_XE_VM_GET_PROPERTY.
 
 v2:
-- Make vm creation consistent between patches (jcavitt)
+- s/pageproperty/pagefaults
 
 Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Suggested-by: Jianxun Zhang <jianxun.zhang@intel.com>
+Suggested-by: Stuart Summers <stuart.summers@intel.com>
 ---
- tests/intel/xe_vm.c | 81 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
+ tests/intel/xe_vm.c | 156 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 156 insertions(+)
 
 diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index ccff8f8046..778d9ac86d 100644
+index 778d9ac86d..c7dc0c459c 100644
 --- a/tests/intel/xe_vm.c
 +++ b/tests/intel/xe_vm.c
-@@ -2450,6 +2450,71 @@ static void test_oom(int fd)
- 	}
+@@ -2466,6 +2466,10 @@ static void test_oom(int fd)
+  * SUBTEST: vm-get-property-invalid-property
+  * Functionality: ioctl_input_validation
+  * Description: Check query with invalid property returns expected error code
++ *
++ * SUBTEST: vm-get-property-exercise
++ * Functionality: drm_xe_vm_get_property
++ * Description: Check query correctly reports pagefaults on vm
+  */
+ static void get_property_invalid_reserved(int fd, uint32_t vm)
+ {
+@@ -2506,6 +2510,157 @@ static void get_property_invalid_property(int fd, uint32_t vm)
+ 	do_ioctl_err(fd, DRM_IOCTL_XE_VM_GET_PROPERTY, &query, EINVAL);
  }
  
-+/**
-+ * SUBTEST: vm-get-property-invalid-reserved
-+ * Functionality: ioctl_input_validation
-+ * Description: Check query with invalid reserved returns expected error code
-+ *
-+ * SUBTEST: vm-get-property-invalid-vm-id
-+ * Functionality: ioctl_input_validation
-+ * Description: Check query with invalid vm_id returns expected error code
-+ *
-+ * SUBTEST: vm-get-property-invalid-size
-+ * Functionality: ioctl_input_validation
-+ * Description: Check query with invalid size return expected error code
-+ *
-+ * SUBTEST: vm-get-property-invalid-property
-+ * Functionality: ioctl_input_validation
-+ * Description: Check query with invalid property returns expected error code
-+ */
-+static void get_property_invalid_reserved(int fd, uint32_t vm)
++static void
++gen_pf(int fd, uint32_t vm, struct drm_xe_engine_class_instance *eci)
 +{
-+	struct drm_xe_vm_get_property query = {
-+		.reserved[0] = 0xdeadbeef,
++	int n_exec_queues = 2;
++	int n_execs = 2;
++	uint64_t addr = 0x1a0000;
++	struct drm_xe_sync sync[2] = {
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 2,
++		.syncs = to_user_pointer(sync),
++	};
++	uint32_t exec_queues[2];
++	uint32_t syncobjs[2];
++	size_t bo_size;
++	uint32_t bo = 0;
++	struct {
++		struct xe_spin spin;
++		uint32_t batch[16];
++		uint64_t pad;
++		uint32_t data;
++	} *data;
++	struct xe_spin_opts spin_opts = { .preempt = false };
++	int i, b;
++
++	bo_size = sizeof(*data) * n_execs;
++	bo_size = xe_bb_size(fd, bo_size);
++
++	bo = xe_bo_create(fd, vm, bo_size,
++			  vram_if_possible(fd, eci->gt_id),
++			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	data = xe_bo_map(fd, bo, bo_size);
++
++	for (i = 0; i < n_exec_queues; i++) {
++		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
++		syncobjs[i] = syncobj_create(fd, 0);
 +	};
 +
-+	do_ioctl_err(fd, DRM_IOCTL_XE_VM_GET_PROPERTY, &query, EINVAL);
-+}
++	sync[0].handle = syncobj_create(fd, 0);
++	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
 +
-+static void get_property_invalid_vm_id(int fd, uint32_t vm)
-+{
-+	struct drm_xe_vm_get_property query = {
-+		.vm_id = 0xdeadbeef,
-+	};
++	for (i = 0; i < n_execs; i++) {
++		uint64_t base_addr = !i ? addr + bo_size * 128 : addr;
++		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
++		uint64_t batch_addr = base_addr + batch_offset;
++		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
++		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
++		uint64_t sdi_addr = base_addr + sdi_offset;
++		uint64_t exec_addr;
++		int e = i % n_exec_queues;
 +
-+	do_ioctl_err(fd, DRM_IOCTL_XE_VM_GET_PROPERTY, &query, ENOENT);
-+}
++		if (!i) {
++			spin_opts.addr = base_addr + spin_offset;
++			xe_spin_init(&data[i].spin, &spin_opts);
++			exec_addr = spin_opts.addr;
++		} else {
++			b = 0;
++			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++			data[i].batch[b++] = sdi_addr;
++			data[i].batch[b++] = sdi_addr >> 32;
++			data[i].batch[b++] = 0xc0ffee;
++			data[i].batch[b++] = MI_BATCH_BUFFER_END;
++			igt_assert(b <= ARRAY_SIZE(data[i].batch));
 +
-+static void get_property_invalid_size(int fd, uint32_t vm)
-+{
-+	struct drm_xe_vm_get_property query = {
-+		.vm_id = vm,
-+		.property = DRM_XE_VM_GET_PROPERTY_FAULTS,
-+		.size = -1,
-+	};
++			exec_addr = batch_addr;
++		}
 +
-+	do_ioctl_err(fd, DRM_IOCTL_XE_VM_GET_PROPERTY, &query, EINVAL);
-+}
++		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
++		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++		sync[1].handle = syncobjs[e];
 +
-+static void get_property_invalid_property(int fd, uint32_t vm)
-+{
-+	struct drm_xe_vm_get_property query = {
-+		.vm_id = vm,
-+		.property = 0xdeadbeef,
-+	};
-+
-+	do_ioctl_err(fd, DRM_IOCTL_XE_VM_GET_PROPERTY, &query, EINVAL);
-+}
-+
-+static void test_get_property(int fd, void (*func)(int fd, uint32_t vm))
-+{
-+	uint32_t vm;
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	func(fd, vm);
-+	xe_vm_destroy(fd, vm);
-+}
-+
- int igt_main()
- {
- 	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
-@@ -2562,6 +2627,17 @@ int igt_main()
-                 { }
-         };
- 
-+	const struct vm_get_property {
-+		const char *name;
-+		void (*test)(int fd, uint32_t vm);
-+	} xe_vm_get_property_tests[] = {
-+		{ "invalid-reserved", get_property_invalid_reserved },
-+		{ "invalid-vm-id", get_property_invalid_vm_id },
-+		{ "invalid-size", get_property_invalid_size },
-+		{ "invalid-property", get_property_invalid_property },
-+		{ }
-+	};
-+
- 	igt_fixture() {
- 		fd = drm_open_driver(DRIVER_XE);
- 
-@@ -2850,6 +2926,11 @@ int igt_main()
- 		test_oom(fd);
- 	}
- 
-+	for (const struct vm_get_property *f = xe_vm_get_property_tests; f->name; f++) {
-+		igt_subtest_f("vm-get-property-%s", f->name)
-+			test_get_property(fd, f->test);
++		exec.exec_queue_id = exec_queues[e];
++		exec.address = exec_addr;
++		if (e != i)
++			 syncobj_reset(fd, &syncobjs[e], 1);
++		xe_exec(fd, &exec);
 +	}
 +
- 	igt_fixture()
- 		drm_close_driver(fd);
- }
++	for (i = 0; i < n_exec_queues && n_execs; i++)
++		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
++					NULL));
++	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
++
++	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
++	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
++
++	syncobj_destroy(fd, sync[0].handle);
++	for (i = 0; i < n_exec_queues; i++) {
++		syncobj_destroy(fd, syncobjs[i]);
++		xe_exec_queue_destroy(fd, exec_queues[i]);
++	}
++
++	munmap(data, bo_size);
++	gem_close(fd, bo);
++}
++
++static void print_pf(struct xe_vm_fault *fault)
++{
++	igt_debug("FAULT:\n");
++	igt_debug("address = 0x%08x%08x\n",
++		  upper_32_bits(fault->address),
++		  lower_32_bits(fault->address));
++	igt_debug("address precision = %u\n", fault->address_precision);
++	igt_debug("access type = %u\n", fault->access_type);
++	igt_debug("fault type = %u\n", fault->fault_type);
++	igt_debug("fault level = %u\n", fault->fault_level);
++	igt_debug("\n");
++}
++
++static void get_property_exercise(int fd, uint32_t vm)
++{
++	struct drm_xe_engine_class_instance *hwe;
++	struct xe_vm_fault *faults, f0, f;
++	struct drm_xe_vm_get_property query = {
++		.vm_id = vm,
++		.property = DRM_XE_VM_GET_PROPERTY_FAULTS
++	};
++	int i, fault_count;
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_GET_PROPERTY, &query), 0);
++
++	igt_assert_eq(query.size, 0);
++
++	xe_for_each_engine(fd, hwe)
++		gen_pf(fd, vm, hwe);
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_GET_PROPERTY, &query), 0);
++	igt_assert_lt(0, query.size);
++
++	faults = malloc(query.size);
++	igt_assert(faults);
++
++	query.data = to_user_pointer(faults);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_GET_PROPERTY, &query), 0);
++
++	fault_count = query.size / sizeof(struct xe_vm_fault);
++	f0 = faults[0];
++	for (i = 0; i < fault_count; i++) {
++		f = faults[i];
++		print_pf(&f);
++		igt_assert_eq(f.address, f0.address);
++		igt_assert_eq(f.access_type, f0.access_type);
++		igt_assert_eq(f.fault_type, f0.fault_type);
++	}
++	free(faults);
++}
++
+ static void test_get_property(int fd, void (*func)(int fd, uint32_t vm))
+ {
+ 	uint32_t vm;
+@@ -2635,6 +2790,7 @@ int igt_main()
+ 		{ "invalid-vm-id", get_property_invalid_vm_id },
+ 		{ "invalid-size", get_property_invalid_size },
+ 		{ "invalid-property", get_property_invalid_property },
++		{ "exercise", get_property_exercise },
+ 		{ }
+ 	};
+ 
 -- 
 2.43.0
 
