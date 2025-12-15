@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 186B1D5B87A
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Dec 2025 23:09:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0BADD5B87A
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Dec 2025 23:48:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AF9D010E59E;
-	Mon, 15 Dec 2025 23:09:10 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LgiBLKg6";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5758210E59B
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Dec 2025 23:09:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765840148; x=1797376148;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=4b+Ik7G+FpOViVhnkUPp4Un77pYHRCcgXjvJ6bITaqg=;
- b=LgiBLKg6vBrb2hDUppDt112gqzpVIlQPaNhxHAoTt1vAc7tv6k11FnlU
- EfP8yu+H49UYlWs5hj+qDID0ao/gft0d10+b8d3zDd+cmQvi/tv3CRxsO
- n2LcyQIhllwYUpwQkO+PEtdy0QjDluJAT6i+oA6ohnhfPxxRIyP2+bVxL
- AAtmnk/Wqc8ADUGE3DhEtJUH4gGGg36aZrFDtwPN15QfSNydejsnA6qEo
- GPfb+nvRJzgyJuxbaO/0+OAnyshOFAwrMuYI83KiXnIRtgYOWA3Pg6u4q
- NkDulGt3aMH2RMD3Xedva6gLbyUSV0zNEeQam0Fo7xjgFtVCnMUkUoQTM w==;
-X-CSE-ConnectionGUID: UKYtG7rhR+epDYjPGWj1vg==
-X-CSE-MsgGUID: FZEFXrCNSCe3qv6lXkuQ4w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="66939536"
-X-IronPort-AV: E=Sophos;i="6.21,151,1763452800"; d="scan'208";a="66939536"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Dec 2025 15:09:07 -0800
-X-CSE-ConnectionGUID: oGWp76TuSmmtV/7MttzqIQ==
-X-CSE-MsgGUID: hMMG2AkoSjmXqAMM8jdHjg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,151,1763452800"; d="scan'208";a="202259582"
-Received: from dut4086lnl.fm.intel.com ([10.105.10.207])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Dec 2025 15:09:07 -0800
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: saurabhg.gupta@intel.com, alex.zuo@intel.com, jonathan.cavitt@intel.com,
- joonas.lahtinen@linux.intel.com, matthew.brost@intel.com,
- jianxun.zhang@intel.com, stuart.summers@intel.com, shuicheng.lin@intel.com,
- ivan.briano@intel.com, nishit.sharma@intel.com
-Subject: [PATCH v6 2/4] lib/xe/xe_ioctl: Add xe_vm_get_property helper function
-Date: Mon, 15 Dec 2025 23:09:08 +0000
-Message-ID: <20251215230905.164341-8-jonathan.cavitt@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251215230905.164341-6-jonathan.cavitt@intel.com>
-References: <20251215230905.164341-6-jonathan.cavitt@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3DF6910E4CB;
+	Mon, 15 Dec 2025 23:48:55 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 842EA10E04E;
+ Mon, 15 Dec 2025 23:48:54 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5173134527949204484=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_Fix_chamelium_port_alloca?=
+ =?utf-8?q?tion_during_igt=5Ffixture_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Bilal" <mohammed.bilal@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 15 Dec 2025 23:48:54 -0000
+Message-ID: <176584253439.91565.2638881686819539055@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20251215150717.1190726-1-mohammed.bilal@intel.com>
+In-Reply-To: <20251215150717.1190726-1-mohammed.bilal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,49 +37,176 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a helper function, xe_vm_get_property, that calls the
-drm_xe_vm_get_property ioctl.  Since the ioctl behaves similarly to an
-xe_query in that it needs to be called once to get the size of the
-return data and again to save the data, the helper function takes the
-ioctl structure as a parameter.
+--===============5173134527949204484==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
----
- lib/xe/xe_ioctl.c | 5 +++++
- lib/xe/xe_ioctl.h | 1 +
- 2 files changed, 6 insertions(+)
+== Series Details ==
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 319853da0e..f8a6c0497b 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -332,6 +332,11 @@ void xe_vm_unbind_sync(int fd, uint32_t vm, uint64_t offset,
- 	__xe_vm_bind_sync(fd, vm, 0, offset, addr, size, DRM_XE_VM_BIND_OP_UNMAP);
- }
- 
-+void xe_vm_get_property(int fd, uint32_t vm, struct drm_xe_vm_get_property *query)
-+{
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_GET_PROPERTY, query), 0);
-+}
-+
- void xe_vm_destroy(int fd, uint32_t vm)
- {
- 	struct drm_xe_vm_destroy destroy = {
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index a7fd43c9e9..78d070dea8 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -65,6 +65,7 @@ void xe_vm_bind_array(int fd, uint32_t vm, uint32_t exec_queue,
- void xe_vm_unbind_all_async(int fd, uint32_t vm, uint32_t exec_queue,
- 			    uint32_t bo, struct drm_xe_sync *sync,
- 			    uint32_t num_syncs);
-+void xe_vm_get_property(int fd, uint32_t vm, struct drm_xe_vm_get_property *query);
- void xe_vm_destroy(int fd, uint32_t vm);
- uint32_t __xe_bo_create(int fd, uint32_t vm, uint64_t size, uint32_t placement,
- 			uint32_t flags, void *ext, uint32_t *handle);
--- 
-2.43.0
+Series: Fix chamelium port allocation during igt_fixture (rev2)
+URL   : https://patchwork.freedesktop.org/series/158705/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from IGT_8666 -> IGTPW_14212
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_14212 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_14212, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14212/index.html
+
+Participating hosts (43 -> 40)
+------------------------------
+
+  Missing    (3): fi-kbl-7567u bat-dg2-13 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_14212:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@vgem_basic@unload:
+    - fi-skl-6600u:       [PASS][1] -> [DMESG-WARN][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8666/fi-skl-6600u/igt@vgem_basic@unload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14212/fi-skl-6600u/igt@vgem_basic@unload.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14212 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8666/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14212/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+    - bat-arls-5:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8666/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14212/bat-arls-5/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-9:         [PASS][7] -> [DMESG-FAIL][8] ([i915#12061]) +1 other test dmesg-fail
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8666/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14212/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8666 -> IGTPW_14212
+  * Linux: CI_DRM_17678 -> CI_DRM_17689
+
+  CI-20190529: 20190529
+  CI_DRM_17678: c4e22b127f18ea8765c4fabc251d019dd3aa41a4 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_17689: 5dd9dbd1824c3a520036488257ff25a6495ac1fe @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14212: 5c9ae39b3fb8a04ef7402a8f9898d4f2ca7c2b43 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8666: 8666
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14212/index.html
+
+--===============5173134527949204484==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Fix chamelium port allocation during igt_fixture (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/158705/">https://patchwork.freedesktop.org/series/158705/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14212/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14212/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8666 -&gt; IGTPW_14212</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_14212 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_14212, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14212/index.html</p>
+<h2>Participating hosts (43 -&gt; 40)</h2>
+<p>Missing    (3): fi-kbl-7567u bat-dg2-13 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_14212:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@vgem_basic@unload:<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8666/fi-skl-6600u/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14212/fi-skl-6600u/igt@vgem_basic@unload.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14212 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8666/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14212/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8666/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14212/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8666/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14212/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8666 -&gt; IGTPW_14212</li>
+<li>Linux: CI_DRM_17678 -&gt; CI_DRM_17689</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17678: c4e22b127f18ea8765c4fabc251d019dd3aa41a4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_17689: 5dd9dbd1824c3a520036488257ff25a6495ac1fe @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14212: 5c9ae39b3fb8a04ef7402a8f9898d4f2ca7c2b43 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8666: 8666</p>
+
+</body>
+</html>
+
+--===============5173134527949204484==--
