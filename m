@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01CD9D609D2
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Dec 2025 17:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17550D609D2
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Dec 2025 17:36:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8DDC410E137;
-	Tue, 16 Dec 2025 17:29:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BDF4410E81A;
+	Tue, 16 Dec 2025 17:36:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LUYwQTcc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nKxEklSE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A43B10E137
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Dec 2025 17:29:53 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA0B710E81A
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Dec 2025 17:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765906193; x=1797442193;
+ t=1765906617; x=1797442617;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=patzb3ZxhzV1F9H9o9qqywXmW72RAZDx6ivJZ980ADM=;
- b=LUYwQTccCPlgGZ3bvJJsnErwZ6J3b61zDUSh4GY8eEXS25Qhqg9mvWRj
- TLthayHlWr1zSgd504mYrPgaccz1grGVRlQfVlmf+t2glPxPTdlVibdgr
- RvA9Od17E4EFYczTYZHBVk5h/Nxu1+NnPWR61lOCkqX0C4v6vO+/vbBmE
- hswBMosb0mt+Hp8kVXHqrVYIHMW8wD1JYATpeX2TPOSu2lYSQPSNmGYT9
- 906ayJENHpD0xP77Tgb0oOh48CnvX0vpdK+rcr+9g0A/6YTJm5AU+hNor
- feCCyNEvWgA2DtEbpcyZmrA57fCJvQyp0JK5hN7l30UsG1GMzs23mvp8R A==;
-X-CSE-ConnectionGUID: gwpWqyqiSb6spXE1z5oiIg==
-X-CSE-MsgGUID: sg3rqd2jQUSe0xyrBMbbUA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="67870321"
-X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; d="scan'208";a="67870321"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2025 09:29:52 -0800
-X-CSE-ConnectionGUID: hg1D9WigRgC6Ngwfu3FqMA==
-X-CSE-MsgGUID: KmmD9/lPREW4Yl0oWH2PcA==
+ bh=pbn04uWQoic6GjWC15yC01VdiuDyybqar2RjYhTLyLU=;
+ b=nKxEklSEuDGIG6s3xllpkpwkfZ/YTPDrA0wR8tux9kBn9FkOnuA3aENi
+ 4XZZTRcmcO/xqKATMg33xocsldvfIKnfULHiOErWQQb+AZ52SvPvpq6Qh
+ BkD1KsHPdIwuifiWUPI39nix1FHOBvH5iax/tsQjpyxzk/Ccx/LAdNUyE
+ jHefjumq9wHwZVtwxPO6y5r9+2P0LKFqfgxbDV9eWBpGVBDdMYVAmpVkd
+ JFiDVD9KFuWmtzj7CN9V54zE2NWH3rKTDVRWcSxtC9lWNlfNCgk/hVWJ8
+ bpPQK7x+76R5yA51C8tX13296klc4SGpL0C8wJG8Sh3r9Euxu+J0hIY8e Q==;
+X-CSE-ConnectionGUID: hIO62CkaSjujwMNYSBFMuA==
+X-CSE-MsgGUID: Ik20rIKOT4KsbrVuiJ/zyg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="67791755"
+X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; d="scan'208";a="67791755"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Dec 2025 09:36:56 -0800
+X-CSE-ConnectionGUID: yTzXwmmxR0W2WvJ1Dx2/Yw==
+X-CSE-MsgGUID: RwO0wL/2QpSYouwnDh7YeA==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; d="scan'208";a="198129521"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 09:29:52 -0800
-Date: Tue, 16 Dec 2025 18:29:37 +0100
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 09:36:55 -0800
+Date: Tue, 16 Dec 2025 18:36:53 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Krzysztof Karas <krzysztof.karas@intel.com>
-Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] tools/intel_gpu_top: prevent losing original
- pointer on realloc failure
-Message-ID: <20251216172937.sa2cwvs6u6edovjq@kamilkon-DESK.igk.intel.com>
+To: Mohammed Bilal <mohammed.bilal@intel.com>
+Cc: igt-dev@lists.freedesktop.org, sameer.lattannavar@intel.com,
+ karthik.b.s@intel.com
+Subject: Re: [PATCH i-g-t] tests/intel-ci/chamelium-only.testlist: Enable
+ additional Chamelium tests
+Message-ID: <20251216173653.knmo2oyysxzu2ohk@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <dda88be9f499aec000d32ea52b4baf18751d9de5.1765809053.git.sebastian.brzezinka@intel.com>
- <6b6nme2rzjkprk2sdnqfxtlatr3eefnwqrmj7xcutuhax5irkq@tys5xjkii4m5>
+ Mohammed Bilal <mohammed.bilal@intel.com>,
+ igt-dev@lists.freedesktop.org, sameer.lattannavar@intel.com,
+ karthik.b.s@intel.com
+References: <20251216091433.1245664-1-mohammed.bilal@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <6b6nme2rzjkprk2sdnqfxtlatr3eefnwqrmj7xcutuhax5irkq@tys5xjkii4m5>
+In-Reply-To: <20251216091433.1245664-1-mohammed.bilal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,66 +73,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Krzysztof,
-On 2025-12-16 at 07:18:16 +0000, Krzysztof Karas wrote:
-> Hi Sebastian,
-> 
-> > Previously, realloc was called directly on engines after incrementing
-> > num_engines. If realloc failed, it would return NULL and overwrite the
-> > original pointer, causing a memory leak and leaving engines inaccessible.
-> > This patch uses a temporary pointer for realloc and only updates engines
-> > after a successful allocation, ensuring the original pointer is preserved
-> > on failure and preventing data loss.
-> > 
-> > Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-> > ---
-> >  tools/intel_gpu_top.c | 10 ++++++----
-> >  1 file changed, 6 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-> > index 1bd88ba7c..1d0d11585 100644
-> > --- a/tools/intel_gpu_top.c
-> > +++ b/tools/intel_gpu_top.c
-> > @@ -378,6 +378,7 @@ static struct engines *discover_engines(char *device)
-> >  	while ((dent = readdir(d)) != NULL) {
-> >  		const char *endswith = "-busy";
-> >  		const unsigned int endlen = strlen(endswith);
-> > +		struct engines *engines_tmp;
-> >  		struct engine *engine =
-> >  				engine_ptr(engines, engines->num_engines);
-> >  		char buf[256];
-> > @@ -444,14 +445,15 @@ static struct engines *discover_engines(char *device)
-> >  			break;
-> >  		}
-> >  
-> > -		engines->num_engines++;
-> > -		engines = realloc(engines, sizeof(struct engines) +
-> > -				  engines->num_engines * sizeof(struct engine));
-> > -		if (!engines) {
-> > +		engines_tmp = realloc(engines, sizeof(struct engines) +
-> > +				  (engines->num_engines + 1) * sizeof(struct engine));
-> > +		if (!engines_tmp) {
-> >  			ret = errno;
-> >  			break;
-> >  		}
-> >  
-> > +		engines = engines_tmp;
-> > +		engines->num_engines++;
-> >  		ret = 0;
-> >  	}
-> >  
-> > -- 
-> > 2.51.2
-> > 
-> 
-> Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-> -- 
-> Best Regards,
-> Krzysztof
+Hi Mohammed,
+On 2025-12-16 at 14:44:33 +0530, Mohammed Bilal wrote:
 
-Thank you all, I merged this. Sebastian, please reply to CI
-failures with Cc to Ci team.
+please simplify subject, just write:
+
+[PATCH i-g-t] intel-ci: Enable additional Chamelium tests
+
+> Enable additional Chamelium tests, including hibernate-related
+> subtests and random plane comparison tests.
+> 
+> Signed-off-by: Mohammed Bilal <mohammed.bilal@intel.com>
+> ---
+>  tests/intel-ci/chamelium-only.testlist | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/tests/intel-ci/chamelium-only.testlist b/tests/intel-ci/chamelium-only.testlist
+> index 99d2f2409..50cba517a 100644
+> --- a/tests/intel-ci/chamelium-only.testlist
+> +++ b/tests/intel-ci/chamelium-only.testlist
+> @@ -67,3 +67,10 @@ igt@kms_chamelium_hpd@vga-hpd-with-enabled-mode
+>  igt@kms_chamelium_hpd@vga-hpd-without-ddc
+>  igt@kms_chamelium_sharpness_filter@filter-basic
+>  igt@kms_tiled_display@basic-test-pattern-with-chamelium
+> +igt@kms_chamelium_edid@dp-edid-change-during-hibernate
+> +igt@kms_chamelium_edid@hdmi-edid-change-during-hibernate
+> +igt@kms_chamelium_frames@hdmi-cmp-planes-random
+> +igt@kms_chamelium_frames@hdmi-crc-planes-random
+> +igt@kms_chamelium_hpd@common-hpd-after-hibernate
+> +igt@kms_chamelium_hpd@dp-hpd-after-hibernate
+> +igt@kms_chamelium_hpd@hdmi-hpd-after-hibernate
+
+Instead of adding it at end, please keep this list sorted
+alphabetically.
 
 Regards,
 Kamil
 
+> -- 
+> 2.48.1
+> 
