@@ -4,50 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE85DD5C0F2
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Dec 2025 08:52:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72A0AD5C0F2
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Dec 2025 08:52:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 618C410E793;
-	Tue, 16 Dec 2025 08:52:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2E38F10E735;
+	Tue, 16 Dec 2025 08:52:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="noMz2hdn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IwDEwvSG";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0111710E771
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Dec 2025 08:52:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5812D10E789
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Dec 2025 08:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765875143; x=1797411143;
+ t=1765875145; x=1797411145;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=iX2mLhAcYbnsEmkKPL9dTmCyqnEJvbE48kizbSqmnqY=;
- b=noMz2hdnQoC895KX6sHmWEA3/dEpt9lq6tL6lzmWosqr27ITvhwnbSvB
- FaDiRWvMDeZZEoklOxfD2YXPe/QuTMSI7UBP6JbLRv/A98b4CoOx+ARy/
- xMfv6aU9mi40bffkngaVSkMWhpOqRVcGSpnvUZTpETUfdzSgoee4ZlCW5
- d3EfrDqAIyaIcLDJV42wZy50ooi6diHMEZqYGxoUcmIU1l3w0Vh7uZsHh
- 0FQOr6PF0Qho7lGWRIgrYcjxkwTnSrZrLrSlUbl5RYbeMEsvspMPyCBmD
- rDU3V9q+V3i/oEcTrI9vOAXuEHPuEbv6eckQ5/tPqxZklQbLrMhbyCMYf w==;
-X-CSE-ConnectionGUID: aT2f/DKoRueM/G5KjYyrKQ==
-X-CSE-MsgGUID: uQJ8Z8kQRA6n6mcLo3ErRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="67670050"
-X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; d="scan'208";a="67670050"
+ bh=EIgp3aQmeWjtOdsOt/GOvsDQ0XtCaLg8z+NOYhk31JI=;
+ b=IwDEwvSG/rCcLjjj7wHv2CGiAjXZPzDDqYxzfahKQBNJqxly6l4vPPMn
+ JBgWDS1aB/dHLm9IoXuli5zm+gKUXZxG/Te+oNDeFf7+KPmFtibCTrJpg
+ VJW5bZu3du+GLCW95UPZXYWqPCsgi9OipVvN3vQ4y6YuI1oP9j6EaKAOl
+ j/FDKe3qtcdnGTrVnuoD7rYnnaaO1jmW62CFCvPXUhQX1ZzTEEjir9pwd
+ XAqDnC/uGGyHjAAHsyrVx3h6v5bG0Y7luRBoqqzY1/YfsLSZoAoUwpi8L
+ Ori3+vtZVHv2/yWC1/1xequdx6piCWLv8ugZQlVRPiahWyyk327fE8ZHk w==;
+X-CSE-ConnectionGUID: yMFawBGKT26XyRNzYti5xQ==
+X-CSE-MsgGUID: YEKLlgo0QnaIECamGb6ZRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="67670059"
+X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; d="scan'208";a="67670059"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2025 00:52:23 -0800
-X-CSE-ConnectionGUID: IfigwMf4QhGYVEXdjvJnOw==
-X-CSE-MsgGUID: pZAFFwkHTkiRmguOLXIkOw==
+ 16 Dec 2025 00:52:25 -0800
+X-CSE-ConnectionGUID: ABZC3PRBSDe9IRJvWLab+g==
+X-CSE-MsgGUID: XrLWXZ4jRc+6aFfqHDgG/w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; d="scan'208";a="197710627"
+X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; d="scan'208";a="197710631"
 Received: from karthik-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.238.68])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2025 00:52:21 -0800
+ 16 Dec 2025 00:52:23 -0800
 From: Karthik B S <karthik.b.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@linux.intel.com, jeevan.b@intel.com,
- Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t v3 3/4] tests/kms_hdr: Use lib function to paint fb
-Date: Tue, 16 Dec 2025 14:22:41 +0530
-Message-ID: <20251216085242.2916476-4-karthik.b.s@intel.com>
+ Karthik B S <karthik.b.s@intel.com>, Stylon Wang <stylon.wang@amd.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>
+Subject: [PATCH i-g-t v3 4/4] tests/amdgpu/amd_assr: Use lib function to paint
+ fb
+Date: Tue, 16 Dec 2025 14:22:42 +0530
+Message-ID: <20251216085242.2916476-5-karthik.b.s@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251216085242.2916476-1-karthik.b.s@intel.com>
 References: <20251216085242.2916476-1-karthik.b.s@intel.com>
@@ -68,33 +70,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the lib function igt_paint_test_pattern_color_fb to paint the fb
-instead of doing it locally in the test binary.
+Use the lib function igt_paint_test_pattern_fb to paint the fb instead of
+doing it locally in the test binary.
 
+Cc: Stylon Wang <stylon.wang@amd.com>
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
 Signed-off-by: Karthik B S <karthik.b.s@intel.com>
 Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_hdr.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ tests/amdgpu/amd_assr.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index ab0ec47cb..a5912501a 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -146,12 +146,7 @@ static void test_cycle_flags(data_t *data, uint32_t test_flags)
- /* Fills the FB with a test HDR pattern. */
- static void draw_hdr_pattern(igt_fb_t *fb)
- {
--	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
--
--	igt_paint_color(cr, 0, 0, fb->width, fb->height, 1.0, 1.0, 1.0);
--	igt_paint_test_pattern(cr, fb->width, fb->height);
--
--	igt_put_cairo_ctx(cr);
-+	igt_paint_test_pattern_color_fb(fb->fd, fb, 1.0, 1.0, 1.0);
- }
+diff --git a/tests/amdgpu/amd_assr.c b/tests/amdgpu/amd_assr.c
+index 8a42baa0b..95c1e3061 100644
+--- a/tests/amdgpu/amd_assr.c
++++ b/tests/amdgpu/amd_assr.c
+@@ -163,7 +163,6 @@ static void present_visual_pattern(data_t *data, igt_output_t *output)
+ 	igt_pipe_t *pipe;
+ 	drmModeModeInfo *mode;
+ 	igt_fb_t fb;
+-	cairo_t *cr;
  
- /* Converts a double to 861-G spec FP format. */
+ 	mode = igt_output_get_mode(output);
+ 	igt_assert(mode);
+@@ -175,10 +174,8 @@ static void present_visual_pattern(data_t *data, igt_output_t *output)
+ 
+ 	igt_create_fb(data->fd, mode->hdisplay, mode->vdisplay,
+ 			DRM_FORMAT_XRGB8888, 0, &fb);
+-	cr = igt_get_cairo_ctx(fb.fd, &fb);
+-	igt_paint_test_pattern(cr, fb.width, fb.height);
+ 
+-	igt_put_cairo_ctx(cr);
++	igt_paint_test_pattern_fb(data->fd, &fb);
+ 
+ 	igt_plane_set_fb(primary, &fb);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
 -- 
 2.43.0
 
