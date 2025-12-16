@@ -4,55 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90846D5C0CD
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Dec 2025 08:10:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AF6CD5C0D1
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Dec 2025 08:10:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1D02E10E743;
+	by gabe.freedesktop.org (Postfix) with ESMTP id B39D310E759;
 	Tue, 16 Dec 2025 08:10:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i6ve0zhy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ud6kaAe4";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0242910E743
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA59B10E726
  for <igt-dev@lists.freedesktop.org>; Tue, 16 Dec 2025 08:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765872607; x=1797408607;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=g/ky/X3zAb5i9ctdMqxEPg1N+PdDSRzCINhCaWb1EuI=;
- b=i6ve0zhy7XVsJedop7oT19WfDdae3lscg8lKOyAyy1Z9HHhc5etpHAX2
- NWOUkJSh5h8qgxw+5NnKMUeXLZ/2JGrc0R8ObvOgtgVQHC8zETEtiaKRZ
- 6rdQdoo0+eHpLgxbUYA5RL8lMqteApRH7eAbemAAPJWTqFV0AIqirI2e6
- +udL5p4mhi6q6GAtz9uK6tTmt4lV2mTlA1e71tIWQxs1Z+OQEbCR8386c
- 0HnX6VteGAT9oyzElIq7YLAblIqm8yGau7mu6OT2CcH2k26mtgpVGa60x
- KtGjMhA3ix+vfetiJTaeMnVqG/iJdDB+FUqMYonodgpuZUt4+RXWGstYO w==;
-X-CSE-ConnectionGUID: 2S9Q3CzHTaCY0/LF5XZZrA==
-X-CSE-MsgGUID: T/MAfnaLSTSYb08uv664Xw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="66773072"
-X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; d="scan'208";a="66773072"
+ t=1765872606; x=1797408606;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=BcTBowFkU0v9k+WhCwixsxAbA0jkQ1IBXaFkpyIl/Jc=;
+ b=Ud6kaAe4aS2h+xrY9Dii/Ce9gSqekyhc6X/TqQD5KS0ZMCoiVP4nx4xe
+ qKg8z2mTSuPZF6Kms40yGG3Fm5EnQnjBucOK2lU9a9C4eZJQ7TaIGxbic
+ zJlHAY8mHfc7/7hc46UK7RmrLdZ2InWtpL1yb/+8JJxF+rf6loaT9WlIr
+ v5/9CsoO1PKIb8Ce/vxBrUcJpHrghWK20YSb5DCjy57wvJHHnSyyLbXR6
+ vUQVyiT7u+R9E+lquc5JXom8uj4ruWXfP4BiDnJw49cnpBRUGI6w3iylt
+ zpkuUe25kj/lRySq4R1xvqDcIjHsKfWBBKnY+BG5NbXLQiP1CW16NBGuL Q==;
+X-CSE-ConnectionGUID: OoCnHh1RTRmGyJb7GksegA==
+X-CSE-MsgGUID: TFQTF72BS+KRDf1u4FsyJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="66773060"
+X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; d="scan'208";a="66773060"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2025 00:10:04 -0800
-X-CSE-ConnectionGUID: Lo8BAAx4RumZtFtqG1HjIg==
-X-CSE-MsgGUID: wwqO5TjgS9yXkDf0gfmYYw==
+ 16 Dec 2025 00:10:00 -0800
+X-CSE-ConnectionGUID: E+TNzDcjTAy1kIvSz5BwGQ==
+X-CSE-MsgGUID: m33ipOl9RlawnoHX2mEtpQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; d="scan'208";a="198443649"
+X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; d="scan'208";a="198443630"
 Received: from sinjan-super-server.iind.intel.com ([10.190.239.39])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2025 00:10:02 -0800
+ 16 Dec 2025 00:09:58 -0800
 From: Karthik Poosa <karthik.poosa@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
  rodrigo.vivi@intel.com, kamil.konieczny@linux.intel.com,
  Karthik Poosa <karthik.poosa@intel.com>
-Subject: [PATCH i-g-t v8 1/2] lib/igt_device: Add API to get pci device
- upstream port
-Date: Tue, 16 Dec 2025 13:39:50 +0530
-Message-Id: <20251216080951.199893-2-karthik.poosa@intel.com>
+Subject: [PATCH i-g-t v8 0/2] tests/intel/xe_pm_residency: Add ASPM Link
+ residency test
+Date: Tue, 16 Dec 2025 13:39:49 +0530
+Message-Id: <20251216080951.199893-1-karthik.poosa@intel.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251216080951.199893-1-karthik.poosa@intel.com>
-References: <20251216080951.199893-1-karthik.poosa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,109 +68,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add API igt_device_get_pci_upstream_port() to get pci device's upstream port.
-This API returns struct pci_device* of the upstream port that is closest
-to the root port within the device's hierarchy.
+Add subtest aspm_link_residency to xe_pm_residency test to check ASPM Link state residency.
+This uses the debugfs /sys/kernel/debug/dri/0/dgfx_pcie_link_residencies to read the
+residency counters.
+Add an API igt_device_get_pci_usp() to get pcie device's upstream port.
 
-v2: Avoid igt_require in igt_device_get_pci_usp(). (Kamil)
+v2:
+ - Avoid using igt_require() in igt_device_get_pci_device. (Kamil)
+ - Add description about PCIe ASPM in commit message and code. (Kamil)
+ - Resolve couple of compilation warnings about using variable as format string to sscanf.
 
-v3: Rename igt_device_get_pci_usp() to igt_device_get_pci_upstream_port(). (Kamil)
+v3:
+ - Rename igt_device_get_pci_usp() to igt_device_get_pci_upstream_port(). (Kamil)
 
-v4: Use device type from pci express capability of pci config space
-    to identify upstream port. (Badal)
+v4:
+ - Refactor and enhance readability. (Badal)
+ - Move save and restore of link states to separate functions. (Badal)
 
 v5:
+ - Use device type from pci express capability of pci config space to
+   identify upstream port. (Badal) 
+
+v6:
  - Search for upstream port only two levels up of the endpoint as we want to
    verify ASPM only on PCIe link on which GPU card is present.
+ - Skip test for integrated platforms.
 
-Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
----
- lib/igt_device.c | 41 +++++++++++++++++++++++++++++++++++++++++
- lib/igt_device.h |  1 +
- lib/igt_pci.h    |  2 ++
- 3 files changed, 44 insertions(+)
 
-diff --git a/lib/igt_device.c b/lib/igt_device.c
-index c24f6a58d..d6c3f924d 100644
---- a/lib/igt_device.c
-+++ b/lib/igt_device.c
-@@ -32,6 +32,7 @@
- #include "igt.h"
- #include "igt_device.h"
- #include "igt_sysfs.h"
-+#include "igt_pci.h"
- 
- int __igt_device_set_master(int fd)
- {
-@@ -308,3 +309,43 @@ void igt_device_get_pci_slot_name(int fd, char *pci_slot_name)
- 	snprintf(pci_slot_name, NAME_MAX, "%04x:%02x:%02x.%01x",
- 		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
- }
-+
-+/**
-+ * igt_device_get_pci_upstream_port:
-+ * @fd: fd of the GPU endpoint.
-+ *
-+ * Looks up for the pci device's upstream port using libpciaccess.
-+ *
-+ * Returns:
-+ * The pci_device of upstream port of the device referenced by fd, NULL on any failures.
-+ */
-+struct pci_device *
-+igt_device_get_pci_upstream_port(int fd)
-+{
-+	struct pci_device *pci_dev = NULL;
-+	uint8_t device_type = 0;
-+	int offset = 0;
-+	int level = 0;
-+
-+	pci_dev = __igt_device_get_pci_device(fd, 0);
-+	if(!pci_dev) {
-+		igt_warn("Couldn't get pci device for fd %d\n", fd);
-+		return NULL;
-+	}
-+
-+	for(pci_dev = pci_device_get_parent_bridge(pci_dev); (pci_dev && (level < 2));
-+	    pci_dev = pci_device_get_parent_bridge(pci_dev), level++) {
-+
-+		igt_debug("PCI device %04x:%02x:%02x.%01x\n",  pci_dev->domain, pci_dev->bus,
-+			  pci_dev->dev, pci_dev->func);
-+		offset = find_pci_cap_offset(pci_dev, PCI_EXPRESS_CAP_ID);
-+		if (offset <= 0) {
-+			igt_warn("PCI Express Capability not found\n");
-+			return NULL;
-+		}
-+		igt_assert(!pci_device_cfg_read_u8(pci_dev, &device_type, offset + PCI_DEVICE_TYPE_OFFSET));
-+		if ((device_type >> 4) == PCI_DEVICE_TYPE_UPSTREAM_PORT)
-+			return pci_dev;
-+	}
-+	return NULL;
-+}
-diff --git a/lib/igt_device.h b/lib/igt_device.h
-index dad7bb047..781a72235 100644
---- a/lib/igt_device.h
-+++ b/lib/igt_device.h
-@@ -35,6 +35,7 @@ int igt_device_get_card_index(int fd);
- struct pci_device *igt_device_get_pci_device(int fd);
- struct pci_device *__igt_device_get_pci_device(int fd, unsigned int vf_id);
- struct pci_device *igt_device_get_pci_root_port(int fd);
-+struct pci_device *igt_device_get_pci_upstream_port(int fd);
- 
- void igt_device_get_pci_slot_name(int fd, char *pci_slot_name);
- #endif /* __IGT_DEVICE_H__ */
-diff --git a/lib/igt_pci.h b/lib/igt_pci.h
-index 92b9cc392..84355e9dd 100644
---- a/lib/igt_pci.h
-+++ b/lib/igt_pci.h
-@@ -20,6 +20,8 @@ enum pci_cap_id {
- 	PCI_EXPRESS_CAP_ID = 0x10
- };
- 
-+#define PCI_DEVICE_TYPE_OFFSET 0x2
-+#define PCI_DEVICE_TYPE_UPSTREAM_PORT	0x5
- #define PCI_SLOT_CAP_OFFSET 0x14
- #define  PCI_SLOT_PWR_CTRL_PRESENT (1 << 1)
- 
+Karthik Poosa (2):
+  lib/igt_device: Add API to get pci device upstream port
+  tests/intel/xe_pm_residency: Add subtest for ASPM Link state residency
+
+ lib/igt_device.c              |  41 ++++++++
+ lib/igt_device.h              |   1 +
+ lib/igt_pci.h                 |   2 +
+ tests/intel/xe_pm_residency.c | 179 ++++++++++++++++++++++++++++++++++
+ 4 files changed, 223 insertions(+)
+ mode change 100644 => 100755 tests/intel/xe_pm_residency.c
+
 -- 
 2.25.1
 
