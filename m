@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F9FFD5C0F2
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Dec 2025 08:52:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE85DD5C0F2
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Dec 2025 08:52:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2B3B910E771;
-	Tue, 16 Dec 2025 08:52:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 618C410E793;
+	Tue, 16 Dec 2025 08:52:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e9ChQWq/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="noMz2hdn";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4679510E771
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Dec 2025 08:52:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0111710E771
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Dec 2025 08:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765875141; x=1797411141;
+ t=1765875143; x=1797411143;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Rhx4u+AA9sQVrJG9ZRcUQqprogICaWaa5tc/8nKvD2g=;
- b=e9ChQWq/MS528gpnMZqxNs1bWnd3oghQRMbauol0l6sf/qwoZc4nkAwp
- 7BhvdcwhrSvDaGvaLhKPfATLUWIFXzMPikjW6k4NWVWKK4nUdbmDYUURy
- 5Qr3OEDfHClSPW2+PpvmW5JaBCO2DGRjW/65cuE2t086ai9xM6T4R4nSk
- TumGPt+3vpX/TSdKvuWK/GdHCZwOkpfbxa6dCLqFCg0qO2XytVqr3QwIv
- fLj/bZmbjY6z0El4IH4GynDwAzrZUWwkrkeSwm85yGHpHLY0b06a4ocLe
- //6ZCvt92SsIBPJ1q98Fef+objMXX2UskMyOtI3d2iKELQZL4FjaYoWVk Q==;
-X-CSE-ConnectionGUID: eDBN75fcS8SJ/2cfku4REQ==
-X-CSE-MsgGUID: Bs1JKpSqRZCEVU9mDQeI+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="67670041"
-X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; d="scan'208";a="67670041"
+ bh=iX2mLhAcYbnsEmkKPL9dTmCyqnEJvbE48kizbSqmnqY=;
+ b=noMz2hdnQoC895KX6sHmWEA3/dEpt9lq6tL6lzmWosqr27ITvhwnbSvB
+ FaDiRWvMDeZZEoklOxfD2YXPe/QuTMSI7UBP6JbLRv/A98b4CoOx+ARy/
+ xMfv6aU9mi40bffkngaVSkMWhpOqRVcGSpnvUZTpETUfdzSgoee4ZlCW5
+ d3EfrDqAIyaIcLDJV42wZy50ooi6diHMEZqYGxoUcmIU1l3w0Vh7uZsHh
+ 0FQOr6PF0Qho7lGWRIgrYcjxkwTnSrZrLrSlUbl5RYbeMEsvspMPyCBmD
+ rDU3V9q+V3i/oEcTrI9vOAXuEHPuEbv6eckQ5/tPqxZklQbLrMhbyCMYf w==;
+X-CSE-ConnectionGUID: aT2f/DKoRueM/G5KjYyrKQ==
+X-CSE-MsgGUID: uQJ8Z8kQRA6n6mcLo3ErRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11643"; a="67670050"
+X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; d="scan'208";a="67670050"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2025 00:52:21 -0800
-X-CSE-ConnectionGUID: Tdt45CfLQHKo8dyw8fRSlg==
-X-CSE-MsgGUID: F3B02nM5SbOMKuOTHX3gfg==
+ 16 Dec 2025 00:52:23 -0800
+X-CSE-ConnectionGUID: IfigwMf4QhGYVEXdjvJnOw==
+X-CSE-MsgGUID: pZAFFwkHTkiRmguOLXIkOw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; d="scan'208";a="197710619"
+X-IronPort-AV: E=Sophos;i="6.21,152,1763452800"; d="scan'208";a="197710627"
 Received: from karthik-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.238.68])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2025 00:52:19 -0800
+ 16 Dec 2025 00:52:21 -0800
 From: Karthik B S <karthik.b.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@linux.intel.com, jeevan.b@intel.com,
  Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t v3 2/4] tests/intel/kms_mmap_write_crc: Use lib function
- to paint fb
-Date: Tue, 16 Dec 2025 14:22:40 +0530
-Message-ID: <20251216085242.2916476-3-karthik.b.s@intel.com>
+Subject: [PATCH i-g-t v3 3/4] tests/kms_hdr: Use lib function to paint fb
+Date: Tue, 16 Dec 2025 14:22:41 +0530
+Message-ID: <20251216085242.2916476-4-karthik.b.s@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251216085242.2916476-1-karthik.b.s@intel.com>
 References: <20251216085242.2916476-1-karthik.b.s@intel.com>
@@ -69,49 +68,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the lib function igt_paint_test_pattern_fb to paint the fb
+Use the lib function igt_paint_test_pattern_color_fb to paint the fb
 instead of doing it locally in the test binary.
 
 Signed-off-by: Karthik B S <karthik.b.s@intel.com>
 Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/intel/kms_mmap_write_crc.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ tests/kms_hdr.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/tests/intel/kms_mmap_write_crc.c b/tests/intel/kms_mmap_write_crc.c
-index ad3dd1b20..ccde47c2f 100644
---- a/tests/intel/kms_mmap_write_crc.c
-+++ b/tests/intel/kms_mmap_write_crc.c
-@@ -91,7 +91,6 @@ static void test(data_t *data)
- 	igt_output_t *output = data->output;
- 	struct igt_fb *fb = &data->fb[1];
- 	drmModeModeInfo *mode;
--	cairo_t *cr;
- 	char *ptr;
- 	void *buf;
- 	igt_crc_t crc;
-@@ -104,9 +103,7 @@ static void test(data_t *data)
- 
- 	ptr = dmabuf_mmap_framebuffer(data->drm_fd, fb);
- 
--	cr = igt_get_cairo_ctx(data->drm_fd, fb);
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index ab0ec47cb..a5912501a 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -146,12 +146,7 @@ static void test_cycle_flags(data_t *data, uint32_t test_flags)
+ /* Fills the FB with a test HDR pattern. */
+ static void draw_hdr_pattern(igt_fb_t *fb)
+ {
+-	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
+-
+-	igt_paint_color(cr, 0, 0, fb->width, fb->height, 1.0, 1.0, 1.0);
 -	igt_paint_test_pattern(cr, fb->width, fb->height);
+-
 -	igt_put_cairo_ctx(cr);
-+	igt_paint_test_pattern_fb(data->drm_fd, fb);
++	igt_paint_test_pattern_color_fb(fb->fd, fb, 1.0, 1.0, 1.0);
+ }
  
- 	/* flip to it to make it UC/WC and fully flushed */
- 	igt_plane_set_fb(data->primary, fb);
-@@ -151,9 +148,7 @@ static void test(data_t *data)
- 
- 	/* start over, writing non-white to the fb again and flip to it to make it
- 	 * fully flushed */
--	cr = igt_get_cairo_ctx(data->drm_fd, fb);
--	igt_paint_test_pattern(cr, fb->width, fb->height);
--	igt_put_cairo_ctx(cr);
-+	igt_paint_test_pattern_fb(data->drm_fd, fb);
- 
- 	igt_plane_set_fb(data->primary, fb);
- 	igt_display_commit(display);
+ /* Converts a double to 861-G spec FP format. */
 -- 
 2.43.0
 
