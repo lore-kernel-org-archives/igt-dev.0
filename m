@@ -4,53 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCB86D609D7
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Dec 2025 18:45:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 703C9D5E13D
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Dec 2025 18:45:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 75C4A10E049;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7AB2610E2DD;
 	Tue, 16 Dec 2025 18:45:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JcJF+nhg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h4vn0z7u";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD6DA10E2DD
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Dec 2025 18:45:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA97210E2DD
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Dec 2025 18:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765910712; x=1797446712;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=lUUiXNIfPAtfrrY+JeYqvlaKO3iC3f96EK9vGMQadC0=;
- b=JcJF+nhgAmZMnSnmuE2/U2B/H+CxMqElla+Gnk+/Axam7QeV+Tk3StgD
- Drt9e/uyWH8Y0PC3/W30wYXdj/cALs0ocdOT5o6X42KJF2kifgYFWvNFQ
- QaBtX0WYXJolaFW2depT1q/o8FzTrC1k5PZUzVsvt9+5GbSGVx3dgyD15
- G9+OjFQT/9CDICBFFZMVuN4aKHHLFT1qoQYU4oQagIc7dutG1xqwz4T+H
- Rw2Ytgbdtj8zS45gsg4a0TykyKKMhHIsoiBDzsfy4eEU1mFqUSf2kDF26
- O3080i/WK5ifpiCka/VDgVhmrVgD5KKH9OA8mk1V3raQdf1r5evwpzCkS A==;
-X-CSE-ConnectionGUID: qKcEvfEIRFGGO1WY8ObFVQ==
-X-CSE-MsgGUID: +wlCuFiEQXG0eP+ac1RcwQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="70416023"
-X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; d="scan'208";a="70416023"
+ t=1765910711; x=1797446711;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=IiKet71Q3N/1GAN6FfIpdvb95ZQR6Nt/utUmoNZvG00=;
+ b=h4vn0z7uC4TV+pwaL3YBZcgEYZ3DR+aVL2Vi0O2OPloEoJo5ePTjZ3aS
+ 7iMbahcpfoHj9Fb1/sAQw6ot1ZgdDQjvOwOrTLT8m+aHBF7DQtvNGpIdb
+ v9sIVK9Jwd/MHKqU2lO1g71/DiSyrbnxJD/Np73UzIhPHOqCS7gM9N2Jp
+ GWqkNjIvEaZgoprTNYda8FZ+pVzWvOrAr3MjloaGEKt2ghlN9zP1ruC7R
+ PsjDCAWAayTJHxhmKAXLAduSJKHCkGk4sNKJYVdJzH+Vv96iVNRXzcnr4
+ gz8sXpUlav/4H/uFcwfvLD1WT+Otg+s7JvZTgqZREemPB7iqY02BwlEFS A==;
+X-CSE-ConnectionGUID: OckGiu8FQCybEAviPlIYPw==
+X-CSE-MsgGUID: Zg6DgIZmTfeuvm5hSFF/cQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="70416019"
+X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; d="scan'208";a="70416019"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2025 10:45:11 -0800
-X-CSE-ConnectionGUID: C4B0m9Q0TPCgFVFefmUxUw==
-X-CSE-MsgGUID: 3vJSTxMCQ0OBfpfnAiYvKA==
+ 16 Dec 2025 10:45:10 -0800
+X-CSE-ConnectionGUID: 8qj3DjlRSLitDYfzqjLO3w==
+X-CSE-MsgGUID: HabGC3ZDQa2IDMxcfUQX1Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; d="scan'208";a="198148599"
+X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; d="scan'208";a="198148594"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 10:45:11 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 10:45:09 -0800
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
-Subject: [PATCH i-g-t 1/7] tests/intel/kms_big_fb: NVL supports horizontal
- flip with linear surfaces
-Date: Wed, 17 Dec 2025 00:22:09 +0530
-Message-Id: <20251216185215.1281390-2-swati2.sharma@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 0/7] Add NVL display related test updates
+Date: Wed, 17 Dec 2025 00:22:08 +0530
+Message-Id: <20251216185215.1281390-1-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251216185215.1281390-1-swati2.sharma@intel.com>
-References: <20251216185215.1281390-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,72 +65,35 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
+This patch series adds NVL display related test updates.
 
-Starting NVL (display version 35), horizontal flip is supported with
-linear surfaces, thus don't skip that case.
+Heikkila, Juha-pekka (2):
+  tests/intel/kms_flip_scaled_crc: add flip to reflect-x tests
+  tests/kms_plane: add test and limitations for odd height planar tests
 
-Signed-off-by: Sai Teja Pottumuttu <sai.teja.pottumuttu@intel.com>
----
- tests/intel/kms_big_fb.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+Nemesa Garg (1):
+  tests/kms_plane: Modify the condition for odd pan
 
-diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
-index 686c6772e..2e30dff4a 100644
---- a/tests/intel/kms_big_fb.c
-+++ b/tests/intel/kms_big_fb.c
-@@ -82,23 +82,24 @@
-  *              of %arg[1] modifier with max hardware stride length, %arg[2]-bpp,
-  *              and %arg[3]-rotation
-  *
-+ * SUBTEST: %s-max-hw-stride-%dbpp-rotate-%d-hflip
-+ * Description: Test maximum hardware supported stride length for given combination
-+ *              of %arg[1] modifier with max hardware stride length, %arg[2]-bpp,
-+ *              and %arg[3]-rotation with H-flip mode
-+ *
-  * arg[1]:
-  *
-  * @4-tiled:            TILE-4 modifier
-  * @x-tiled:            TILE-X modifier
-  * @y-tiled:            TILE-Y modifier
-  * @yf-tiled:           TILE-YF modifier
-+ * @linear:             LINEAR modifier
-  *
-  * arg[2].values:       32, 64
-  * arg[3].values:       0, 180
-  */
- 
- /**
-- * SUBTEST: %s-max-hw-stride-%dbpp-rotate-%d-hflip
-- * Description: Test maximum hardware supported stride length for given combination
-- *              of %arg[1] modifier with max hardware stride length, %arg[2]-bpp,
-- *              and %arg[3]-rotation with H-flip mode
-- *
-  * SUBTEST: %s-max-hw-stride-%dbpp-rotate-%d-%s
-  * Description: Test maximum hardware supported stride length for given combination
-  *              of %arg[1] modifier with max hardware stride length, %arg[2]-bpp,
-@@ -1103,15 +1104,18 @@ int igt_main()
- 				for (int k = 0; k < ARRAY_SIZE(rotations); k++) {
- 					data.rotation = rotations[k].rotation | fliptab[l].flip;
- 
--					// this combination will never happen.
--					if (igt_rotation_90_or_270(data.rotation) ||
--					    (fliptab[l].flip == IGT_REFLECT_X && modifiers[i].modifier == DRM_FORMAT_MOD_LINEAR))
-+					if (igt_rotation_90_or_270(data.rotation))
- 						continue;
- 
- 					igt_describe("test maximum hardware supported stride length for given bpp and modifiers.");
- 					igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%d%s", modifiers[i].name,
- 						formats[j].bpp, rotations[k].angle, fliptab[l].flipname) {
- 						igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 5);
-+
-+						if(fliptab[l].flip == IGT_REFLECT_X &&
-+						   modifiers[i].modifier == DRM_FORMAT_MOD_LINEAR)
-+							igt_require(intel_display_ver(data.devid) >= 35);
-+
- 						data.max_hw_fb_width = min(data.hw_stride / (formats[j].bpp >> 3), data.max_fb_width);
- 
- 						test_scanout(&data);
+Pranay Samala (1):
+  tests/intel/kms_frontbuffer_tracking: Add FBC support to FP16 formats
+
+Sai Teja Pottumuttu (1):
+  tests/intel/kms_big_fb: NVL supports horizontal flip with linear
+    surfaces
+
+Swati Sharma (2):
+  intel-ci: Add NVL display blocklist
+  tests/intel/kms_test_config: Add NVL display blocklist entry
+
+ tests/intel-ci/xe.nvl.display.blocklist.txt | 128 ++++++++++++++++
+ tests/intel/kms_big_fb.c                    |  20 ++-
+ tests/intel/kms_flip_scaled_crc.c           | 158 ++++++++++++++++++++
+ tests/intel/kms_frontbuffer_tracking.c      |  58 ++++++-
+ tests/intel/kms_test_config.json            |   1 +
+ tests/kms_plane.c                           |  73 ++++++++-
+ 6 files changed, 420 insertions(+), 18 deletions(-)
+ create mode 100644 tests/intel-ci/xe.nvl.display.blocklist.txt
+
 -- 
 2.25.1
 
