@@ -4,27 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 681ECD609D2
-	for <igt-dev@archiver.kernel.org>; Tue, 16 Dec 2025 17:20:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01CD9D609D2
+	for <igt-dev@archiver.kernel.org>; Tue, 16 Dec 2025 17:29:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 09F8E10E239;
-	Tue, 16 Dec 2025 17:20:27 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C571410E239;
- Tue, 16 Dec 2025 17:20:25 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6325716462118562044=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8DDC410E137;
+	Tue, 16 Dec 2025 17:29:53 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LUYwQTcc";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A43B10E137
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Dec 2025 17:29:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1765906193; x=1797442193;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=patzb3ZxhzV1F9H9o9qqywXmW72RAZDx6ivJZ980ADM=;
+ b=LUYwQTccCPlgGZ3bvJJsnErwZ6J3b61zDUSh4GY8eEXS25Qhqg9mvWRj
+ TLthayHlWr1zSgd504mYrPgaccz1grGVRlQfVlmf+t2glPxPTdlVibdgr
+ RvA9Od17E4EFYczTYZHBVk5h/Nxu1+NnPWR61lOCkqX0C4v6vO+/vbBmE
+ hswBMosb0mt+Hp8kVXHqrVYIHMW8wD1JYATpeX2TPOSu2lYSQPSNmGYT9
+ 906ayJENHpD0xP77Tgb0oOh48CnvX0vpdK+rcr+9g0A/6YTJm5AU+hNor
+ feCCyNEvWgA2DtEbpcyZmrA57fCJvQyp0JK5hN7l30UsG1GMzs23mvp8R A==;
+X-CSE-ConnectionGUID: gwpWqyqiSb6spXE1z5oiIg==
+X-CSE-MsgGUID: sg3rqd2jQUSe0xyrBMbbUA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="67870321"
+X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; d="scan'208";a="67870321"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Dec 2025 09:29:52 -0800
+X-CSE-ConnectionGUID: hg1D9WigRgC6Ngwfu3FqMA==
+X-CSE-MsgGUID: KmmD9/lPREW4Yl0oWH2PcA==
+X-ExtLoop1: 1
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 09:29:52 -0800
+Date: Tue, 16 Dec 2025 18:29:37 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Krzysztof Karas <krzysztof.karas@intel.com>
+Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] tools/intel_gpu_top: prevent losing original
+ pointer on realloc failure
+Message-ID: <20251216172937.sa2cwvs6u6edovjq@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <dda88be9f499aec000d32ea52b4baf18751d9de5.1765809053.git.sebastian.brzezinka@intel.com>
+ <6b6nme2rzjkprk2sdnqfxtlatr3eefnwqrmj7xcutuhax5irkq@tys5xjkii4m5>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel-ci/chamelium-?=
- =?utf-8?q?only=2Etestlist=3A_Enable_additional_Chamelium_tests?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Bilal" <mohammed.bilal@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 16 Dec 2025 17:20:25 -0000
-Message-ID: <176590562579.94731.12006992881393528543@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20251216091433.1245664-1-mohammed.bilal@intel.com>
-In-Reply-To: <20251216091433.1245664-1-mohammed.bilal@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <6b6nme2rzjkprk2sdnqfxtlatr3eefnwqrmj7xcutuhax5irkq@tys5xjkii4m5>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,165 +70,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6325716462118562044==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Krzysztof,
+On 2025-12-16 at 07:18:16 +0000, Krzysztof Karas wrote:
+> Hi Sebastian,
+> 
+> > Previously, realloc was called directly on engines after incrementing
+> > num_engines. If realloc failed, it would return NULL and overwrite the
+> > original pointer, causing a memory leak and leaving engines inaccessible.
+> > This patch uses a temporary pointer for realloc and only updates engines
+> > after a successful allocation, ensuring the original pointer is preserved
+> > on failure and preventing data loss.
+> > 
+> > Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+> > ---
+> >  tools/intel_gpu_top.c | 10 ++++++----
+> >  1 file changed, 6 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> > index 1bd88ba7c..1d0d11585 100644
+> > --- a/tools/intel_gpu_top.c
+> > +++ b/tools/intel_gpu_top.c
+> > @@ -378,6 +378,7 @@ static struct engines *discover_engines(char *device)
+> >  	while ((dent = readdir(d)) != NULL) {
+> >  		const char *endswith = "-busy";
+> >  		const unsigned int endlen = strlen(endswith);
+> > +		struct engines *engines_tmp;
+> >  		struct engine *engine =
+> >  				engine_ptr(engines, engines->num_engines);
+> >  		char buf[256];
+> > @@ -444,14 +445,15 @@ static struct engines *discover_engines(char *device)
+> >  			break;
+> >  		}
+> >  
+> > -		engines->num_engines++;
+> > -		engines = realloc(engines, sizeof(struct engines) +
+> > -				  engines->num_engines * sizeof(struct engine));
+> > -		if (!engines) {
+> > +		engines_tmp = realloc(engines, sizeof(struct engines) +
+> > +				  (engines->num_engines + 1) * sizeof(struct engine));
+> > +		if (!engines_tmp) {
+> >  			ret = errno;
+> >  			break;
+> >  		}
+> >  
+> > +		engines = engines_tmp;
+> > +		engines->num_engines++;
+> >  		ret = 0;
+> >  	}
+> >  
+> > -- 
+> > 2.51.2
+> > 
+> 
+> Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+> -- 
+> Best Regards,
+> Krzysztof
 
-== Series Details ==
+Thank you all, I merged this. Sebastian, please reply to CI
+failures with Cc to Ci team.
 
-Series: tests/intel-ci/chamelium-only.testlist: Enable additional Chamelium tests
-URL   : https://patchwork.freedesktop.org/series/159091/
-State : success
+Regards,
+Kamil
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8667 -> IGTPW_14219
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14219/index.html
-
-Participating hosts (43 -> 40)
-------------------------------
-
-  Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14219 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@guc_multi_lrc:
-    - fi-kbl-7567u:       [DMESG-WARN][1] ([i915#13735]) -> [PASS][2] +8 other tests pass
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8667/fi-kbl-7567u/igt@i915_selftest@live@guc_multi_lrc.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14219/fi-kbl-7567u/igt@i915_selftest@live@guc_multi_lrc.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live:
-    - bat-atsm-1:         [DMESG-FAIL][3] ([i915#12061] / [i915#13929]) -> [DMESG-FAIL][4] ([i915#12061] / [i915#14204])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8667/bat-atsm-1/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14219/bat-atsm-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@mman:
-    - bat-atsm-1:         [DMESG-FAIL][5] ([i915#13929]) -> [DMESG-FAIL][6] ([i915#14204])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8667/bat-atsm-1/igt@i915_selftest@live@mman.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14219/bat-atsm-1/igt@i915_selftest@live@mman.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
-  [i915#14204]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8667 -> IGTPW_14219
-  * Linux: CI_DRM_17691 -> CI_DRM_17692
-
-  CI-20190529: 20190529
-  CI_DRM_17691: 4bae139bb961fd9df698b3bf15bf39f9bf9800a1 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_17692: 2dc4a4ece453df925f995df5eac747a29081c180 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14219: 091a3bbd2854a9b3c764fa66af243404e721e058 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8667: 2d7ec9a36c550c48af4bdd6e748f6753369ab8ff @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14219/index.html
-
---===============6325716462118562044==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel-ci/chamelium-only.testlist: Enable additional Chamelium tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159091/">https://patchwork.freedesktop.org/series/159091/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14219/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14219/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8667 -&gt; IGTPW_14219</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14219/index.html</p>
-<h2>Participating hosts (43 -&gt; 40)</h2>
-<p>Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14219 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@guc_multi_lrc:<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8667/fi-kbl-7567u/igt@i915_selftest@live@guc_multi_lrc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14219/fi-kbl-7567u/igt@i915_selftest@live@guc_multi_lrc.html">PASS</a> +8 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8667/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14219/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@mman:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8667/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14219/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8667 -&gt; IGTPW_14219</li>
-<li>Linux: CI_DRM_17691 -&gt; CI_DRM_17692</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17691: 4bae139bb961fd9df698b3bf15bf39f9bf9800a1 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_17692: 2dc4a4ece453df925f995df5eac747a29081c180 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14219: 091a3bbd2854a9b3c764fa66af243404e721e058 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8667: 2d7ec9a36c550c48af4bdd6e748f6753369ab8ff @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6325716462118562044==--
