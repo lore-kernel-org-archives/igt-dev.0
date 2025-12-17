@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 524AAD5C0C9
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Dec 2025 04:35:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9EE7D64077
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Dec 2025 06:19:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6DA9110EAF7;
-	Wed, 17 Dec 2025 04:35:13 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Fcs+9bjI";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7CE810EAE1
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Dec 2025 04:35:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765946113; x=1797482113;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=mO9PG9Pvdyj4reKiMgRhpI3EeaHwdkOyGqkC0XLB9pY=;
- b=Fcs+9bjIEz/R7balSQ+PTVO0NNWclmJkrDS+fihbl0zf7oD/ulFSnnJU
- BjgmEShkGnZh+VJTmeKQ3XpLpJBjlrnIi/HTSlpe0tBNaU9p+eAhkLX5z
- QUXCkBKs2nbgUPPGYvCDhz955jBviI3gSuWlRz62DUZsHK1OfCKNu+zPJ
- y/dhZt6EeRxSWUkpTZK87O8Ck9H8fqrPQWjHJFJZ+0Y38FE1Ssrw20SJU
- rUWM+chxXSaSKcnRV7T8h50j7nYlr9B2q4AOm58UXb7zxC+FeCZIPNBQm
- vvu451aoey0GIY3Sg97rFf2Z9MTfrfLyZ25vpChDrMF4baKSYNNc5RXKd w==;
-X-CSE-ConnectionGUID: KG55dYrATe+fPQcxY85qMw==
-X-CSE-MsgGUID: WNr6ixc4SJiXVCrcwze0IQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="85291437"
-X-IronPort-AV: E=Sophos;i="6.21,154,1763452800"; d="scan'208";a="85291437"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Dec 2025 20:35:13 -0800
-X-CSE-ConnectionGUID: GH4maJ8tS8S5V4vOewLXIg==
-X-CSE-MsgGUID: 4XNczq35R2mxpz9OQ4pE+g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,154,1763452800"; d="scan'208";a="198196638"
-Received: from dut6304bmgfrd.fm.intel.com ([10.36.21.42])
- by orviesa007.jf.intel.com with ESMTP; 16 Dec 2025 20:35:11 -0800
-From: Xin Wang <x.wang@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: alex.zuo@intel.com, shuicheng.lin@intel.com, stuart.summers@intel.com,
- kamil.konieczny@intel.com, matthew.d.roper@intel.com,
- ravi.kumar.vodapalli@intel.com, Xin Wang <x.wang@intel.com>
-Subject: [PATCH v9 2/2] lib/intel_device_info: Query runtime xe device
- graphics versions
-Date: Wed, 17 Dec 2025 04:34:50 +0000
-Message-ID: <20251217043450.241761-3-x.wang@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251217043450.241761-1-x.wang@intel.com>
-References: <20251217043450.241761-1-x.wang@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B7FA10EB5A;
+	Wed, 17 Dec 2025 06:19:21 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7BF8210EB58;
+ Wed, 17 Dec 2025 06:19:19 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6749322363297193710=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib/intel=5Fdevice=5Finfo?=
+ =?utf-8?q?=3A_get_the_xe_=2Egraphics=5Frel_from_GMD=5FID?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Xin Wang" <x.wang@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 17 Dec 2025 06:19:19 -0000
+Message-ID: <176595235950.96412.11227283424527286510@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20251217043450.241761-1-x.wang@intel.com>
+In-Reply-To: <20251217043450.241761-1-x.wang@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,108 +37,179 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-For platforms with graphics_ver >= 20, query the runtime xe device ver
-instead of relying solely on hardcoded values from the PCI device table.
-This enables accurate IP minor version (graphics_rel) detection for
-platforms like Xe2 where different steppings have different IP versions.
+--===============6749322363297193710==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Implementation details:
-- Use weak symbol linkage for xe_ipver_cache_lookup() to handle static
-  library compilation (libigt_chipset.a, libigt_device_scan.a) without
-  xe_query.c dependencies which are used for i915 tools (i915_perf and
-  intel_gpu_top)
-- Provide a weak stub that returns NULL when xe_query is not linked
-- For Gen20+ platforms, prefer runtime xe device versions over static data
-- Fall back to PCI table if xe device info is unavailable
-- Reset cache on query failure to allow retry
+== Series Details ==
 
-Remove hardcoded graphics_rel from static table entries for xe devices
-as they will be populated at runtime from GMD_ID.
+Series: lib/intel_device_info: get the xe .graphics_rel from GMD_ID
+URL   : https://patchwork.freedesktop.org/series/159129/
+State : success
 
-This unifies device info handling between i915 and xe drivers, enabling:
-- Platform-specific workarounds based on accurate IP versions
-- Consistent device info API across both drivers
+== Summary ==
 
-Signed-off-by: Xin Wang <x.wang@intel.com>
----
- lib/intel_device_info.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+CI Bug Log - changes from IGT_8669 -> IGTPW_14223
+====================================================
 
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index 20147479a..3bc20ab68 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -3,6 +3,16 @@
- #include "i915_pciids_local.h"
- 
- #include <strings.h> /* ffs() */
-+#include <stddef.h>
-+#include <string.h>
-+
-+/* Weak symbol stub - will be overridden if xe_query.c is linked */
-+struct xe_device_ipver *xe_ipver_cache_lookup(uint32_t devid) __attribute__((weak));
-+
-+struct xe_device_ipver *xe_ipver_cache_lookup(uint32_t devid)
-+{
-+	return NULL;
-+}
- 
- static const struct intel_device_info intel_generic_info = {
- 	.graphics_ver = 0,
-@@ -505,7 +515,6 @@ static const struct intel_device_info intel_pontevecchio_info = {
- 
- static const struct intel_device_info intel_lunarlake_info = {
- 	.graphics_ver = 20,
--	.graphics_rel = 4,
- 	.display_ver = 20,
- 	.has_4tile = true,
- 	.has_flatccs = true,
-@@ -517,7 +526,6 @@ static const struct intel_device_info intel_lunarlake_info = {
- 
- static const struct intel_device_info intel_battlemage_info = {
- 	.graphics_ver = 20,
--	.graphics_rel = 1,
- 	.display_ver = 14,
- 	.has_4tile = true,
- 	.has_flatccs = true,
-@@ -529,7 +537,6 @@ static const struct intel_device_info intel_battlemage_info = {
- 
- static const struct intel_device_info intel_pantherlake_info = {
- 	.graphics_ver = 30,
--	.graphics_rel = 0,
- 	.display_ver = 30,
- 	.has_4tile = true,
- 	.has_flatccs = true,
-@@ -700,6 +707,8 @@ const struct intel_device_info *intel_get_device_info(uint16_t devid)
- {
- 	static __thread const struct intel_device_info *cache = &intel_generic_info;
- 	static __thread uint16_t cached_devid;
-+	static __thread struct intel_device_info xe_dev_info;
-+	struct xe_device_ipver *ipver;
- 	int i;
- 
- 	if (cached_devid == devid)
-@@ -714,6 +723,17 @@ const struct intel_device_info *intel_get_device_info(uint16_t devid)
- 	cached_devid = devid;
- 	cache = (void *)intel_device_match[i].match_data;
- 
-+	if (cache->graphics_ver >= 20) {
-+		ipver = xe_ipver_cache_lookup(devid);
-+		if (ipver && ipver->devid == devid) {
-+			memcpy(&xe_dev_info, cache, sizeof(struct intel_device_info));
-+			xe_dev_info.graphics_ver = ipver->graphics_ver;
-+			xe_dev_info.graphics_rel = ipver->graphics_rel;
-+			cache = &xe_dev_info;
-+		} else {
-+			cached_devid = 0;
-+		}
-+	}
- out:
- 	return cache;
- }
--- 
-2.43.0
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14223/index.html
+
+Participating hosts (43 -> 41)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14223 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-9:          [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8669/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14223/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+    - bat-arls-6:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8669/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14223/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8669/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14223/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-atsm-1:         [DMESG-FAIL][7] ([i915#12061] / [i915#13929]) -> [DMESG-FAIL][8] ([i915#12061] / [i915#14204])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8669/bat-atsm-1/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14223/bat-atsm-1/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@mman:
+    - bat-atsm-1:         [DMESG-FAIL][9] ([i915#13929]) -> [DMESG-FAIL][10] ([i915#14204])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8669/bat-atsm-1/igt@i915_selftest@live@mman.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14223/bat-atsm-1/igt@i915_selftest@live@mman.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#13929]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929
+  [i915#14204]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8669 -> IGTPW_14223
+
+  CI-20190529: 20190529
+  CI_DRM_17694: 2eb2f8746a879f1c0e4c56b715c179424dafd8e0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14223: c23ec52d672381d45e8dae9656724e494ce9b212 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8669: 319db2ffba419f9711acc72895f065a818905efa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14223/index.html
+
+--===============6749322363297193710==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/intel_device_info: get the xe .graphics_rel from GMD_ID</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159129/">https://patchwork.freedesktop.org/series/159129/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14223/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14223/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8669 -&gt; IGTPW_14223</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14223/index.html</p>
+<h2>Participating hosts (43 -&gt; 41)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14223 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8669/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14223/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8669/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14223/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8669/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14223/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8669/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14223/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@mman:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8669/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13929">i915#13929</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14223/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8669 -&gt; IGTPW_14223</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17694: 2eb2f8746a879f1c0e4c56b715c179424dafd8e0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14223: c23ec52d672381d45e8dae9656724e494ce9b212 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8669: 319db2ffba419f9711acc72895f065a818905efa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============6749322363297193710==--
