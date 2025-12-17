@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 042C1D65C70
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Dec 2025 15:38:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3985D65C70
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Dec 2025 15:38:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9E10110EBD7;
-	Wed, 17 Dec 2025 15:38:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 867FC10E8CA;
+	Wed, 17 Dec 2025 15:38:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jxqKwYKb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lC6HIt4z";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5926410EBD7
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Dec 2025 15:38:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 402E010E8CA
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Dec 2025 15:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1765985918; x=1797521918;
+ t=1765985922; x=1797521922;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=NGSwAp/zEqDkMN6lgdbIcEXwiohMm/AlZ4b+rlnqhKQ=;
- b=jxqKwYKbZuwBJrV3A2JZlCvfXZlsLwMZY4ZxU4eaXDCKLcf9kMYHy92M
- ZfqBXjOV/a309nHh5ZROlYQW5HuG7tqWhYqv3PlK5tieHns5cOnqyDYUe
- z0ngRAWfibuQFZiXhwbK/gxdJk8MnNhVQJL0Ib2UrsHFQ5IdnnR5era41
- HH1vAmj7PIponyyO/iUIhaxRp2FFO428Db7YoAyWmHwp/p3P6rwywFqe6
- PYrIMQSIKFlLLQttNVPgYr0aiEue8HkUkPaOyTvlZh+7YGFIxTGxO2yao
- XXopU0G1cakGH5Ap4MDRAqdzNiUPD32IWdRH0ntqeEGZEQcdcrw0yLYQY w==;
-X-CSE-ConnectionGUID: 5Kp2MgpbQ+GrSZGsA4mw3A==
-X-CSE-MsgGUID: R8Eowj3eT/e/wHAoJFr2Qw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="78235690"
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="78235690"
+ bh=/wvHR0C2rgigmVqg7KziXpJSc2NeqY6/yJI57/TViYw=;
+ b=lC6HIt4zdJq+noY4CqcQEyieYi+MADX72ZvZI/kNb6Qpw4Px1khi/S+M
+ hSIqTeKs8SmBAYoCZ7Gt5eSGbHEkb60xEZP7xzCZK78/4DJB/xijjyDy5
+ /VlRHdJ1W98uY5wZDkDWHDb0+BfA5QnmPVhIKM6QOyZqRx77zmOf/e5JZ
+ z5VNY+nu9YmoDdCgLL3YIIOHfKk4kcbH9Kcg6c/7HVhCit6csXeRf/L+7
+ QR5WYfRjOt346vF8+ppEUJritxM4tzpTik9pcW8U6POzjRnp+l1kPRuMz
+ JfUkUAYKlPokBxXGMbmn/ok6SCtqIej6HIgGnqbw6LroNn2kf5fr6iuxa A==;
+X-CSE-ConnectionGUID: ZMmulw0OQMOXhAq50tInzw==
+X-CSE-MsgGUID: 6PJ3XwJJR6ul3ZjDLoUvyA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="78235693"
+X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="78235693"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2025 07:38:37 -0800
-X-CSE-ConnectionGUID: BDicaqJGTcOm0mKEkvM/3Q==
-X-CSE-MsgGUID: OCWBj6B9QY+DEV7WD5AssQ==
+ 17 Dec 2025 07:38:41 -0800
+X-CSE-ConnectionGUID: XreytruyRneIwedbe1+3Jg==
+X-CSE-MsgGUID: B45HKd5RTwOcNSFHwHTP+A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="229013555"
+X-IronPort-AV: E=Sophos;i="6.21,156,1763452800"; d="scan'208";a="229013557"
 Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.245.196])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Dec 2025 07:38:36 -0800
+ 17 Dec 2025 07:38:40 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 10/11] lib/kms: Extract plane_type_index()
-Date: Wed, 17 Dec 2025 17:37:56 +0200
-Message-ID: <20251217153758.9369-11-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 11/11] lib/kms: Streamline plane index handling further
+Date: Wed, 17 Dec 2025 17:37:57 +0200
+Message-ID: <20251217153758.9369-12-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251217153758.9369-1-ville.syrjala@linux.intel.com>
 References: <20251217153758.9369-1-ville.syrjala@linux.intel.com>
@@ -71,67 +71,88 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Extract the duplicated plane_type->index stuff into a helper.
+Eliminate some redundant plane type checks and just rely
+on plane_type_index() knowing what it's doing.
+
+We do need to keep one plane type check to determing
+what to do with pipe->num_primary_plane and
+pipe->has_cursor_plane. But it's a bit more obvious
+what's happening there now that index stuff isn't mixed in.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_kms.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ lib/igt_kms.c | 43 +++++++++++++++++++------------------------
+ 1 file changed, 19 insertions(+), 24 deletions(-)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 69a430f01e21..4f30732bf1bb 100644
+index 4f30732bf1bb..04a86f235471 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -3055,6 +3055,18 @@ void igt_display_reset_outputs(igt_display_t *display)
- 	drmModeFreeResources(resources);
- }
- 
-+static int plane_type_index(igt_crtc_t *crtc, int type)
-+{
-+	switch (type) {
-+	case DRM_PLANE_TYPE_PRIMARY:
-+		return 0;
-+	case DRM_PLANE_TYPE_CURSOR:
-+		return crtc->n_planes - 1;
-+	default:
-+		return -1;
-+	}
-+}
-+
- static void igt_crtc_plane_init(igt_display_t *display,
- 				igt_crtc_t *pipe,
- 				drmModeRes *resources,
-@@ -3063,15 +3075,11 @@ static void igt_crtc_plane_init(igt_display_t *display,
+@@ -3075,24 +3075,26 @@ static void igt_crtc_plane_init(igt_display_t *display,
  	drmModePlane *drm_plane = global_plane->drm_plane;
  	int type = global_plane->type;
  	igt_plane_t *plane;
--	int index;
--
--	if (type == DRM_PLANE_TYPE_PRIMARY && pipe->planes[0].index < 0) {
--		index = 0;
-+	int index = plane_type_index(pipe, type);
+-	int index = plane_type_index(pipe, type);
++	int index;
  
-+	if (type == DRM_PLANE_TYPE_PRIMARY && pipe->planes[index].index < 0) {
+-	if (type == DRM_PLANE_TYPE_PRIMARY && pipe->planes[index].index < 0) {
++	switch (type) {
++	case DRM_PLANE_TYPE_PRIMARY:
  		pipe->num_primary_planes++;
--	} else if (type == DRM_PLANE_TYPE_CURSOR && pipe->planes[pipe->n_planes - 1].index < 0) {
--		index = pipe->n_planes - 1;
--
-+	} else if (type == DRM_PLANE_TYPE_CURSOR && pipe->planes[index].index < 0) {
+-	} else if (type == DRM_PLANE_TYPE_CURSOR && pipe->planes[index].index < 0) {
++		break;
++	case DRM_PLANE_TYPE_CURSOR:
  		display->has_cursor_plane = true;
- 	} else {
+-	} else {
++		break;
++	default:
++		break;
++	}
++
++	index = plane_type_index(pipe, type);
++
++	if (index < 0 || pipe->planes[index].index >= 0) {
  		for (index = 1; index < pipe->n_planes; index++) {
-@@ -3572,10 +3580,8 @@ igt_plane_t *igt_pipe_get_plane_type(igt_crtc_t *pipe, int plane_type)
+ 			if (pipe->planes[index].index < 0)
+ 				break;
+ 		}
+-
+-		/*
+-		 * Increment num_primary_planes for any extra
+-		 * primary plane found.
+-		 */
+-		if (type == DRM_PLANE_TYPE_PRIMARY)
+-			pipe->num_primary_planes++;
+ 	}
  
- 	switch(plane_type) {
- 	case DRM_PLANE_TYPE_CURSOR:
--		plane_idx = pipe->n_planes - 1;
+ 	igt_assert_lt(index, pipe->n_planes);
+@@ -3576,20 +3578,13 @@ static igt_plane_t *igt_pipe_get_plane(igt_crtc_t *pipe, int plane_idx)
+  */
+ igt_plane_t *igt_pipe_get_plane_type(igt_crtc_t *pipe, int plane_type)
+ {
+-	int i, plane_idx = -1;
++	int plane_idx = plane_type_index(pipe, plane_type);
+ 
+-	switch(plane_type) {
+-	case DRM_PLANE_TYPE_CURSOR:
+-	case DRM_PLANE_TYPE_PRIMARY:
+-		plane_idx = plane_type_index(pipe, plane_type);
 -		break;
- 	case DRM_PLANE_TYPE_PRIMARY:
--		plane_idx = 0;
-+		plane_idx = plane_type_index(pipe, plane_type);
- 		break;
- 	case DRM_PLANE_TYPE_OVERLAY:
- 		for(i = 0; i < pipe->n_planes; i++)
+-	case DRM_PLANE_TYPE_OVERLAY:
+-		for(i = 0; i < pipe->n_planes; i++)
+-			if (pipe->planes[i].type == DRM_PLANE_TYPE_OVERLAY)
+-			    plane_idx = i;
+-		break;
+-	default:
+-		break;
++	if (plane_idx < 0) {
++		for (plane_idx = 0; plane_idx < pipe->n_planes; plane_idx++) {
++			if (pipe->planes[plane_idx].type == plane_type)
++				break;
++		}
+ 	}
+ 
+ 	igt_require_f(plane_idx >= 0 && plane_idx < pipe->n_planes,
 -- 
 2.51.2
 
