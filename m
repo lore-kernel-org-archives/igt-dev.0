@@ -4,74 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DE4AD6ACFB
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 13:14:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E9F9D6ACFB
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 13:16:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BF3EB10E108;
-	Thu, 18 Dec 2025 13:14:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 343A610E404;
+	Thu, 18 Dec 2025 13:16:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mBKp/nJ+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CHCEobQ/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5BE7810E108
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 13:14:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B990410E108;
+ Thu, 18 Dec 2025 13:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766063674; x=1797599674;
+ t=1766063806; x=1797599806;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=kHBMsGhXgwuzUIJUHOv2Vm1ODSd3IP/61xuCrKPTvkw=;
- b=mBKp/nJ+KkqUxo9P/k4nJqfmWp9eZQ9rCufaSCM/AXkCwC3+u9yD+qHt
- pVaTR79BiRDjlFMQZhHvqXUGR2GZplLfwCh3cBfcUYSWhB0m6RDHxpmKT
- 7ElqhPmVP/u4u+QyPQQUBzTuIqFIg+0qOoHcO1U+BSCXPvZgjfVxgTKXq
- QRvS/M2JG4CJWJ2J9JHG4hRdxADMNotNIeJui2b7eMa/qSjY958Cr65EG
- 3pQ7mNJujm7iaN3MRbOcTBTx8e8YqTIMnbcyVEvZhsXKtVFiywn5JTNxG
- HK/V6pDbHIwuy+2+G0HwWTz0Jcjn+wJe/7vuNhWQA2+8/meiMJgJFs48w Q==;
-X-CSE-ConnectionGUID: eLKSy/CBQROvVAyXtpbqpw==
-X-CSE-MsgGUID: 1Meh0AbOTamyaIYJD/d9Rw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="67011192"
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="67011192"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2025 05:14:34 -0800
-X-CSE-ConnectionGUID: 89YR2N5DRZCTnJp+I2hDvQ==
-X-CSE-MsgGUID: sShWjirZSK+q2cFM2Ec8Eg==
+ mime-version:in-reply-to;
+ bh=QB0U6Y2y98pXWOupKRUrIDOaYN0SuswuJQLfZWWEXIw=;
+ b=CHCEobQ/mA2uBA6jw7gvfzT/QBpUlfWuLsaBaxfGJznUF8vnMJkjXIlM
+ NtYhA+154r8kxO6yLZfNY+eo1YtzHUiNxdNYGSshyxj6nlrkNlbloax/5
+ 8rzh7xcNE13vUOuUr2GjRMMtOid1YmLn1uFjZflmCUPBz+h3GpIEPGd17
+ 7T3rWNkhDAR+gzMeB6ohtZlCCdtx02WPG6TE8SJm+ESAGdXk1Gp/6wyBf
+ bFkk2Ia+lHo6Zf1Kc6ZBVQTQLE5+NAvjzL4rb7Mqq9puW0Qb+csbHjF5D
+ Xl5Y+n46N9x9qKUGrNShJjL5AfK4WmjgAMrp2wq9v+MEwGwBFQZ0xiBw6 g==;
+X-CSE-ConnectionGUID: x4svGcCeS0i5vvaqIMqVhg==
+X-CSE-MsgGUID: BHCK7YFTQNqgcJ7PB0ZmtA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="78331383"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="78331383"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2025 05:16:45 -0800
+X-CSE-ConnectionGUID: U0S4wP/mSr+iuyavo/Hrxg==
+X-CSE-MsgGUID: pcY+gnZcR/GNWmQjchj25g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="198578510"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="198481888"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 05:14:32 -0800
-Date: Thu, 18 Dec 2025 14:14:16 +0100
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 05:16:44 -0800
+Date: Thu, 18 Dec 2025 14:16:41 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Daniel Almeida <daniel.almeida@collabora.com>, kernel@collabora.com
-Subject: Re: [PATCH i-g-t v3 2/2] tests/panthor: Add VM_BIND tests for
- partial huge page unmaps
-Message-ID: <20251218131416.45pl6ttww6grqrmz@kamilkon-DESK.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
+ I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbA==?= =?utf-8?Q?=3A?= failure for
+ Panthor tests for huge partial unmaps (rev3)
+Message-ID: <20251218131641.c2korjvhkwixnwnl@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
  igt-dev@lists.freedesktop.org,
- Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Steven Price <steven.price@arm.com>,
- Liviu Dudau <liviu.dudau@arm.com>,
- Daniel Almeida <daniel.almeida@collabora.com>, kernel@collabora.com
+ =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
+ I915-ci-infra@lists.freedesktop.org
 References: <20251217215909.710730-1-adrian.larumbe@collabora.com>
- <20251217215909.710730-3-adrian.larumbe@collabora.com>
+ <176602982520.98733.18404471541099896986@a3b018990fe9>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251217215909.710730-3-adrian.larumbe@collabora.com>
+In-Reply-To: <176602982520.98733.18404471541099896986@a3b018990fe9>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,231 +74,225 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Adrián,
-On 2025-12-17 at 21:58:57 +0000, Adrián Larumbe wrote:
-> Kernel commit 33729a5fc0ca ("iommu/io-pgtable-arm: Remove split on unmap
-> behavior") made it illegal to perform partial unmaps of memory regions
-> backed by huge (> 2MiB) pages. A workaround was written specifically for
-> Panthor, but in order to test it, multiple scenarios and corner cases
-> had to be considered.
+Hi igt-dev,
+On 2025-12-18 at 03:50:25 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
-> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+> Series: Panthor tests for huge partial unmaps (rev3)
+> URL   : https://patchwork.freedesktop.org/series/158975/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_17699_full -> IGTPW_14232_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_14232_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_14232_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14232/index.html
+> 
+> Participating hosts (9 -> 9)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_14232_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_flip@dpms-off-confusion-interruptible@a-hdmi-a1:
+>     - shard-tglu:         [PASS][1] -> [DMESG-FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17699/shard-tglu-7/igt@kms_flip@dpms-off-confusion-interruptible@a-hdmi-a1.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14232/shard-tglu-5/igt@kms_flip@dpms-off-confusion-interruptible@a-hdmi-a1.html
+> 
+>   * igt@kms_flip@dpms-off-confusion-interruptible@b-hdmi-a1:
+>     - shard-tglu:         [PASS][3] -> [ABORT][4] +1 other test abort
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17699/shard-tglu-7/igt@kms_flip@dpms-off-confusion-interruptible@b-hdmi-a1.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14232/shard-tglu-5/igt@kms_flip@dpms-off-confusion-interruptible@b-hdmi-a1.html
+> 
+>   * igt@kms_joiner@basic-big-joiner:
+>     - shard-tglu:         NOTRUN -> [SKIP][5]
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14232/shard-tglu-2/igt@kms_joiner@basic-big-joiner.html
+> 
+>   * igt@sysfs_timeslice_duration@timeout@vecs0:
+>     - shard-mtlp:         [PASS][6] -> [ABORT][7]
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17699/shard-mtlp-2/igt@sysfs_timeslice_duration@timeout@vecs0.html
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14232/shard-mtlp-3/igt@sysfs_timeslice_duration@timeout@vecs0.html
 
-Thank you all, I already merged it with an additional fix to
-subtest name.
-
-https://patchwork.freedesktop.org/series/159211/
+Unrelated, changes were in non-Intel Panthor tests.
 
 Regards,
 Kamil
 
-> ---
->  tests/panthor/panthor_vm.c | 191 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 191 insertions(+)
 > 
-> diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
-> index f91bcaaa0d3a..2ac867c75181 100644
-> --- a/tests/panthor/panthor_vm.c
-> +++ b/tests/panthor/panthor_vm.c
-> @@ -78,6 +78,197 @@ int igt_main() {
->  		igt_panthor_vm_destroy(fd, vm_id, 0);
->  	}
->  
-> +	igt_describe("Requested unmapping is identical to existing huge page mapping");
-> +	igt_subtest("vm_unbind_identical_hugepage_single") {
-> +		uint32_t vm_id;
-> +		struct panthor_bo bo;
-> +		uint64_t bo_size = SZ_2M;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert(vm_id != 0);
-> +
-> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, bo.handle, 0x200000, bo_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
-> +
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x200000, bo_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_describe("Requested unmapping is identical to existing huge page mapping, but only a subset of the object's pages are mapped in the VM");
-> +	igt_subtest("vm_unbind_identical_hugepage_single") {
-> +		uint32_t vm_id;
-> +		struct panthor_bo bo;
-> +		uint64_t bo_size = SZ_4M;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert(vm_id != 0);
-> +
-> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, bo.handle, 0x200000, bo_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
-> +
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x200000, bo_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_describe("Requested unmapping is identical to existing multiple huge page mapping");
-> +	igt_subtest("vm_unbind_identical_hugepage_multiple") {
-> +		uint32_t vm_id;
-> +		struct panthor_bo bo;
-> +		uint64_t bo_size = SZ_1M * 6;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert(vm_id != 0);
-> +
-> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, bo.handle, 0x200000, bo_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
-> +
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x200000, bo_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_describe("Requested unmapping is identical to existing huge page mapping, but only part of the BO is mapped");
-> +	igt_subtest("vm_unbind_identical_hugepage_offset") {
-> +		uint32_t vm_id;
-> +		struct panthor_bo bo;
-> +		uint64_t bo_size = SZ_1M * 6;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert(vm_id != 0);
-> +
-> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-> +		igt_panthor_vm_bind_offset(fd, vm_id, bo.handle, 0x200000,
-> +					   SZ_4M, SZ_2M, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
-> +
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x200000, bo_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_describe("Requested unmapping is left aligned subset of an existing huge page mapping");
-> +	igt_subtest("vm_unbind_hugepage_leftaligned") {
-> +		uint32_t vm_id;
-> +		struct panthor_bo bo;
-> +		uint64_t bo_size = SZ_4M;
-> +		uint64_t unmap_size = SZ_8K;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert(vm_id != 0);
-> +
-> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, bo.handle, 0x200000, bo_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
-> +
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x200000, unmap_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_describe("Requested unmapping is right aligned subset of an existing huge page mapping");
-> +	igt_subtest("vm_unbind_hugepage_rightaligned") {
-> +		uint32_t vm_id;
-> +		struct panthor_bo bo;
-> +		uint64_t bo_size = SZ_4M;
-> +		uint64_t unmap_size = SZ_8K;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert(vm_id != 0);
-> +
-> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, bo.handle, 0x200000, bo_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
-> +
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x200000 + bo_size - unmap_size, unmap_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_describe("Requested unmapping is a superset of existing huge page mapping");
-> +	igt_subtest("vm_unbind_hugepage_superset") {
-> +		uint32_t vm_id;
-> +		struct panthor_bo bo;
-> +		uint64_t bo_size = SZ_2M;
-> +		uint64_t unmap_size = SZ_1M * 5;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert(vm_id != 0);
-> +
-> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, bo.handle, 0x200000, bo_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
-> +
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x100000, unmap_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_describe("Requested unmapping is a subset of an existing mapping");
-> +	igt_subtest("vm_unbind_hugepage_subset") {
-> +		uint32_t vm_id;
-> +		struct panthor_bo bo;
-> +		uint64_t bo_size = SZ_4M;
-> +		uint64_t unmap_size = SZ_8K;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert(vm_id != 0);
-> +
-> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, bo.handle, 0x200000, bo_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
-> +
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x200000 + SZ_1M, unmap_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x200000 + SZ_2M + SZ_4K, unmap_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
-> +	igt_describe("Perform successive unmaps over the remnants of an original multi huge page mapping");
-> +	igt_subtest("vm_unbind_hugepage_successive") {
-> +		uint32_t vm_id;
-> +		struct panthor_bo bo;
-> +		uint64_t bo_size = SZ_1M * 6;
-> +
-> +		igt_panthor_vm_create(fd, &vm_id, 0);
-> +		igt_assert(vm_id != 0);
-> +
-> +		igt_panthor_bo_create(fd, &bo, bo_size, 0, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, bo.handle, 0x200000, bo_size,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
-> +
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x3fc000, 0x208000,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x3fc000, 0x208000,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x200000, 0x4000,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x401000, 0x4000,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x4fb000, 0xA000,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x3fb000, 0xA000,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x3fc000, 0x4000,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +		igt_panthor_vm_bind(fd, vm_id, 0, 0x200000, 0x1000,
-> +				    DRM_PANTHOR_VM_BIND_OP_TYPE_UNMAP, 0);
-> +
-> +		igt_panthor_vm_destroy(fd, vm_id, 0);
-> +	}
-> +
->  	igt_fixture() {
->  		drm_close_driver(fd);
->  	}
-> -- 
-> 2.51.2
+>   
+> New tests
+> ---------
 > 
+>   New tests have been introduced between CI_DRM_17699_full and IGTPW_14232_full:
+> 
+> ### New IGT tests (35) ###
+> 
+>   * igt@kms_flip@basic-write-read-noreloc:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@kms_flip@busy-check-all:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@kms_flip@display-4x:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@kms_flip@fbc-1p-offscreen-pri-shrfb-draw-mmap-wc:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@kms_flip@lease-uevent:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@kms_flip@multi-wait-submitted:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@kms_flip@plane-panning-bottom-right-suspend:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@kms_flip@preservation:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@kms_flip@psr-1p-primscrn-pri-shrfb-draw-pwrite:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@kms_flip@stress-xrgb8888-xtiled:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@kms_flip@stress-xrgb8888-xtiled@b-hdmi-a1:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@kms_flip@yf-tiled-max-hw-stride-32bpp-rotate-180:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@atomic-fastset:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@basic-blt:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@basic-crc-vgem:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@cursor-alpha-transparent:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@cursor-rapid-movement-128x128:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@destroy-bb:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@double-destroy:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@fbc-1p-indfb-fliptrack-mmap-gtt:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@fbcpsr-2p-scndscrn-pri-indfb-draw-blt:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@invalid-set-prop:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@invalid-transfer-non-existent-point:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@plane-position-covered:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@pr-cursor-mmap-cpu:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@psr-2p-scndscrn-pri-shrfb-draw-blt:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@psr-cursor-render:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@psr-rgb101010-draw-render:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@secure-non-master:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@single-wait-all-for-submit-signaled:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@single-wait-for-submit-submitted:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@sync_merge_invalid:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@system-suspend-execbuf:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@unprivileged-single-ctx-counters:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@sysfs_timeslice_duration@x-tiled-addfb:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   
+> 
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_14232_full that come from known issues:
+> 
+...cut...
