@@ -4,49 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CA73D6D22D
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 14:50:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9C23D6D22E
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 14:54:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AB1C810E12E;
-	Thu, 18 Dec 2025 14:50:24 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="XJUQYppu";
-	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B40110E12E
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 14:50:22 +0000 (UTC)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 460391A22AC
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 14:50:21 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 1520D606B6;
- Thu, 18 Dec 2025 14:50:21 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id ED2D5102F0B2B; Thu, 18 Dec 2025 15:50:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1766069416; h=from:subject:date:message-id:to:cc:mime-version:content-type:
- content-transfer-encoding:content-language:in-reply-to:references;
- bh=TfYsB+tQoe8e9yNbpaFkgwdp0HLL0b2xG//k0j07p/g=;
- b=XJUQYppuNbe+yKIMLk1UUtznqit06Bk2eTDVrbak/eAxw0GAFntqGANcwLKZtqJwoDR8Aw
- SFdkwi0TAoGDl/eaFa1N8sPzZoDYD3PH6M7w9Oeg3O/8ZqRyPH0SzvZiCWhDJg0x4KLcif
- wvMhwMemVS1EJ/Ktm6HE6aAjY5J48SJK2Ht1tpfd76ApLIndrhcGuqfo33vWLvP7zrIEpu
- fBBmtEL8IKJnDqDSWZ7GJ1dHmAI1sU2WqNlMG23bX2Ly0NBCy195pIxqP+tnOroY6luEao
- BL8jQgP5J2DuS9ezmtJhItbVNm9wFY2bQgJGvPBH6hnr/Dov1sFw7+2lao4Ytw==
-Message-ID: <4114fcac-ad4a-4028-a01e-d3d33c45c67c@bootlin.com>
-Date: Thu, 18 Dec 2025 15:50:25 +0100
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4E13110EA07;
+	Thu, 18 Dec 2025 14:54:53 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2FC6310EA15;
+ Thu, 18 Dec 2025 14:54:52 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2440296226998630427=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4 00/46] Unigraf integration
-To: igt-dev@lists.freedesktop.org
-Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com,
- khaled.almahallawy@intel.com
-References: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_lig/igt=5Ffb=3A_fix_x-til?=
+ =?utf-8?q?ed_framebuffers_on_intel_xe_driver?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 18 Dec 2025 14:54:52 -0000
+Message-ID: <176606969217.101777.10904510759479802324@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20251218091326.341270-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20251218091326.341270-1-juhapekka.heikkila@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,166 +37,247 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi everyone,
+--===============2440296226998630427==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Small ping on this series, I understand this is a big series, so if you 
-think this is useful I can try to split it in multiple sub-series and 
-resend them.
+== Series Details ==
 
-Thanks a lot,
-Louis Chauvet
+Series: lig/igt_fb: fix x-tiled framebuffers on intel xe driver
+URL   : https://patchwork.freedesktop.org/series/159198/
+State : failure
 
-On 11/10/25 14:39, Louis Chauvet wrote:
-> Hi everyone,
-> 
-> I am excited to share I currently have access to a Unigraf device,
-> which I believe could significantly enhance the capabilities within IGT.
-> This device has the potential to enable testing of low-level hardware
-> features that are currently not covered. Specifically, Unigraf devices can
-> assist in testing link training, signal integrity, HDCP, DSC, and more.
-> 
-> It's important to note that the Unigraf SDK is not open-source, and the
-> communication protocol with the device is proprietary. As a result, I have
-> utilized the libTSI.so library, which can be downloaded from [1]. In this
-> RFC, I have not used the official TSI_types.h header because it was
-> incompatible with C, so I hardcoded some necessary values. The next
-> iteration will use the official TSI_types.h (they plan to fix it for the
-> next release).
-> 
-> This RFC is intentionally concise to gather initial feedback from the
-> community regarding the integration of a proprietary device into the test
-> suite. I plan to expand on this work by adding more features and pushing
-> the developments upstream.
-> 
-> I have also started to work on MST testing (hotplug, link training,
-> bandwith limitation), but I have a big issue: connector detection is very
-> strange when changing MST configurat (MST->SST, sink count...).
-> 
-> If I use the Unigraf GUI or my own C script outside IGT, everything seems
-> fine: `watch -n0 modetest -c` update connector status almost immediatly
-> after a HDP pulse, never hang and always have the correct result.
-> 
-> But if I do the same in IGT (same script in igt_main), igt have too
-> much/not all connectors, and some of them are broken (no EDID property
-> for example). I tried to run `watch -n0 modetest -c` in parallel, but
-> modetest can:
-> - hang
-> - only update once igt test is finished.
-> 
-> Do you have any hint about something I missed in IGT to properly enumerate
-> connectors? I tried close/open the DRM device, added a lot of delay
-> everywhere, emulate plug/unplug... I used kms_wait_for_new_connectors (in
-> this series) and for_each_connected_output to get list the connectors.
-> 
-> Looking forward to your thoughts and suggestions!
-> 
-> Thanks,
-> Louis Chauvet
-> 
-> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> ---
-> Changes in v4:
-> - Rebased on master
-> - Fixed multiple unigraf callbacks
-> - Created link training tests
-> - Link to v3: https://lore.kernel.org/r/20250823-unigraf-integration-v3-0-cdc36d5fab4c@bootlin.com
-> 
-> Changes in v3:
-> - Rebased on master
-> - Added support for MST
-> - Repair autodetection and CRC usage
-> - Link to v2: https://lore.kernel.org/r/20250717-unigraf-integration-v2-0-77dc329e584c@bootlin.com
-> 
-> Changes in v2:
-> - Splitted in many commits
-> - Add CRC support
-> - Link to v1: https://lore.kernel.org/r/20250517-unigraf-integration-v1-1-044acd2133dd@bootlin.com
-> 
-> ---
-> Louis Chauvet (46):
->        lib/igt_kms: Add a detect timeout value
->        lib/igt_kms: Add helper to wait for a specific status on a connector
->        lib/igt_kms: Add function to list connected connectors
->        lib/igt_kms: Add helper to obtain a connector by its name or MST path
->        lib/igt_kms: Add helper to wait for new connectors
->        lib/igt_kms: Add helper to get a pipe from a connector
->        lib/igt_kms: Expose dump_connector_attrs
->        lib/igt_kms: Expose reset_connectors_at_exit
->        lib/igt_kms: Expose connector_attr_set and igt_connector_attr_set
->        lib/igt_debugfs: Move debugfs helpers to the proper location
->        lib/igt_debugfs: Add const when make sense
->        lib/igt_amd: Add const when make sense
->        lib/igt_kms: Add const when make sense
->        lib/monitor_edids: Add helper functions for using monitor_edid objects
->        lib/monitor_edids: Add helper to get an EDID by its name
->        lib/monitor_edids: Add helper to print all available EDID names
->        lib/unigraf: Add used defines for TSI_Types
->        lib/unigraf: Add TSI.h
->        lib/unigraf: Initial Unigraf support
->        lib/igt_kms: Automatically connect unigraf on display require
->        lib/unigraf: Introduce device configuration
->        lib/unigraf: Introduce role configuration
->        lib/unigraf: Introduce input configuration
->        lib/unigraf: Add reset function
->        lib/unigraf: Add unigraf assert and deassert helpers
->        lib/unigraf: Add plug/unplug helpers
->        lib/unigraf: Allows sst/mst configuration
->        lib/unigraf: Add helpers to read and write edid
->        lib/unigraf: Add connector configuration
->        tests/unigraf: Add basic unigraf tests
->        lib/unigraf: Add unigraf CRC capture
->        lib/unigraf: Add configuration for CRC usage
->        lib/unigraf: add unigraf_get_connector_by_stream
->        lib/unigraf: Add helper to check timings received by unigraf
->        lib/igt_pipe_crc: Add ungiraf crc calculation
->        lib/unigraf: Add lane count configuration
->        docs/unigraf: Add unigraf documentation
->        lib/unigraf: Add helpers to set maximum link rate
->        lib/i915/dp: Move DP-related function for i915 to proper folder
->        lib/i915/dp: Rename functions to avoid confusion
->        lib/i915/dp: Add helper to get maximum supported rate
->        lib/igt_dp: Create generic helpers for DP information
->        lib/igt_kms: Add asserts to avoid null pointer dereference
->        lib/igt_kms: Add helper to get a pipe from an output
->        lib/unigraf: Add helpers to get the current LT status
->        tests/unigraf/unigraf_lt: Add test for link training
-> 
->   docs/unigraf.txt                         |  81 +++
->   lib/i915/i915_dp.c                       | 354 +++++++++++++
->   lib/i915/i915_dp.h                       |  23 +
->   lib/igt_amd.c                            |   2 +-
->   lib/igt_amd.h                            |   2 +-
->   lib/igt_core.c                           |   4 +
->   lib/igt_debugfs.c                        |  96 +++-
->   lib/igt_debugfs.h                        |  15 +-
->   lib/igt_dp.c                             | 101 ++++
->   lib/igt_dp.h                             |  89 ++++
->   lib/igt_kms.c                            | 825 ++++++++++++++++---------------
->   lib/igt_kms.h                            |  58 ++-
->   lib/igt_pipe_crc.c                       |  28 ++
->   lib/meson.build                          |  12 +
->   lib/monitor_edids/dp_edids.h             |   3 +
->   lib/monitor_edids/hdmi_edids.h           |   3 +
->   lib/monitor_edids/monitor_edids_helper.c | 126 +++++
->   lib/monitor_edids/monitor_edids_helper.h |  10 +-
->   lib/unigraf/TSI.h                        | 226 +++++++++
->   lib/unigraf/TSI_types.h                  | 117 +++++
->   lib/unigraf/unigraf.c                    | 758 ++++++++++++++++++++++++++++
->   lib/unigraf/unigraf.h                    | 257 ++++++++++
->   meson.build                              |  14 +
->   tests/intel/kms_dp_link_training.c       |  19 +-
->   tests/intel/kms_dp_linktrain_fallback.c  |  57 +--
->   tests/meson.build                        |   4 +
->   tests/unigraf/meson.build                |  13 +
->   tests/unigraf/unigraf_connectivity.c     | 123 +++++
->   tests/unigraf/unigraf_lt.c               | 178 +++++++
->   29 files changed, 3130 insertions(+), 468 deletions(-)
-> ---
-> base-commit: bfab3ea5fab190f4ebf083db4dfe703f6d4f40c6
-> change-id: 20250425-unigraf-integration-11ed330755d5
-> 
-> Best regards,
+== Summary ==
 
+CI Bug Log - changes from IGT_8673 -> IGTPW_14234
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_14234 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_14234, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/index.html
+
+Participating hosts (43 -> 41)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_14234:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_softpin@safe-alignment:
+    - fi-hsw-4770:        [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/fi-hsw-4770/igt@gem_softpin@safe-alignment.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/fi-hsw-4770/igt@gem_softpin@safe-alignment.html
+
+  * igt@kms_flip@basic-flip-vs-dpms@c-dp1:
+    - bat-adlp-9:         [PASS][3] -> [FAIL][4] +2 other tests fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-adlp-9/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-adlp-9/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14234 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@info:
+    - fi-hsw-4770:        [PASS][5] -> [SKIP][6] ([i915#1849] / [i915#2582])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/fi-hsw-4770/igt@fbdev@info.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/fi-hsw-4770/igt@fbdev@info.html
+
+  * igt@fbdev@nullptr:
+    - fi-hsw-4770:        [PASS][7] -> [SKIP][8] ([i915#2582]) +3 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/fi-hsw-4770/igt@fbdev@nullptr.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/fi-hsw-4770/igt@fbdev@nullptr.html
+
+  * igt@i915_selftest@live:
+    - bat-twl-1:          [PASS][9] -> [ABORT][10] ([i915#14365]) +1 other test abort
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-twl-1/igt@i915_selftest@live.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-twl-1/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-9:          [PASS][11] -> [DMESG-FAIL][12] ([i915#12061]) +1 other test dmesg-fail
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+    - bat-dg2-14:         [PASS][13] -> [DMESG-FAIL][14] ([i915#12061]) +1 other test dmesg-fail
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [DMESG-FAIL][15] ([i915#12061]) -> [PASS][16] +1 other test pass
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-mtlp-8/igt@i915_selftest@live.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-6:         [DMESG-FAIL][17] ([i915#12061]) -> [PASS][18] +1 other test pass
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#14365]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14365
+  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
+  [i915#2582]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8673 -> IGTPW_14234
+
+  CI-20190529: 20190529
+  CI_DRM_17704: 31985bb0a701138a06a5eb0b175b2a5c850cc4ee @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14234: 14234
+  IGT_8673: 8673
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/index.html
+
+--===============2440296226998630427==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lig/igt_fb: fix x-tiled framebuffers on intel xe driver</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159198/">https://patchwork.freedesktop.org/series/159198/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8673 -&gt; IGTPW_14234</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_14234 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_14234, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/index.html</p>
+<h2>Participating hosts (43 -&gt; 41)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_14234:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@gem_softpin@safe-alignment:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/fi-hsw-4770/igt@gem_softpin@safe-alignment.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/fi-hsw-4770/igt@gem_softpin@safe-alignment.html">FAIL</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@c-dp1:</p>
+<ul>
+<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-adlp-9/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-adlp-9/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html">FAIL</a> +2 other tests fail</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14234 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@info:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/fi-hsw-4770/igt@fbdev@info.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/fi-hsw-4770/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582">i915#2582</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@fbdev@nullptr:</p>
+<ul>
+<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/fi-hsw-4770/igt@fbdev@nullptr.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/fi-hsw-4770/igt@fbdev@nullptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582">i915#2582</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-twl-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-twl-1/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14365">i915#14365</a>) +1 other test abort</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8673 -&gt; IGTPW_14234</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17704: 31985bb0a701138a06a5eb0b175b2a5c850cc4ee @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14234: 14234<br />
+  IGT_8673: 8673</p>
+
+</body>
+</html>
+
+--===============2440296226998630427==--
