@@ -4,70 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83A07D6ACD5
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 09:13:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B00CCD68BF6
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 09:16:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3083D10E946;
-	Thu, 18 Dec 2025 09:13:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6043D10E941;
+	Thu, 18 Dec 2025 09:16:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="W8V5DJM+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OomlsEh0";
 	dkim-atps=neutral
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com
- [209.85.214.169])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82B2610E946
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 09:13:50 +0000 (UTC)
-Received: by mail-pl1-f169.google.com with SMTP id
- d9443c01a7336-2a099233e8dso3766755ad.3
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 01:13:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1766049230; x=1766654030; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=2dEeI3DOwzwXZevZyuUqnWqk2MT2oHGKx+XjTrif/1s=;
- b=W8V5DJM+Yjb+a3FX89zq66kRJi8vGkaU6UjwERcpt9eLG05g2YUO9wOZ+K3TGOBePU
- gcZ8NMIgmwYUfpcWkoDwW/5rMq00pTLK+QyU6tSDyXeTffdn9eOh0mJ8TG91wknYAi8F
- tunA8E3tNiZK20JaokG3XmDgJsYBuEF1dV9SWKHGstrkIWPthK23g55ZdTYkSRkVsvEi
- jceI4m32OAAdxgZy7ebICtRFi5Iu3T35b8xh+LF7aubKy+OwLmySBUmUo5iI9lDkhSzp
- Ye05NhQ4sB3wNXgDeZTS6Pilg9cCyuxM0OiUgO51hUD/Iq9V54voy/L7OBNo+w2ryWqf
- gzhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1766049230; x=1766654030;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2dEeI3DOwzwXZevZyuUqnWqk2MT2oHGKx+XjTrif/1s=;
- b=hQR6q1b5pJmwGgeuUX9hCJbUvKYeFAOad+dmGzVeT5pGabtUib3pht7sD8Yfb/oQ8v
- afIwSYSQEQIzCxFjnM5QI8DEjJilUavdnqY+fKriqqFd9a3UnbvV2YScLxh7Ufp2BhR4
- 7EntIExQ6NcdE1bFShIThULoBpPPNEVENbPQBbWxW2W39o9YcEyy09IEi09BhENniem2
- vjokmQ58GPzTHxIYlsqKguTUtm//N0foS3FG3PMxTpGyzxHuEuezxT1p+AfSKt8dd270
- QsFKdkzD5It7acKf0Drue1yRvhfT5OL2LxiCd0akczLAIijDspnWmRJH+Lh92+tM5FK/
- xMog==
-X-Gm-Message-State: AOJu0YyVpwwKbxPgRS6JVrESV818VvJGTrs5ZoyBh40URsYWIpLAL0DX
- /m9uLR/+DPMf3tGY/zyP+MLNTS6JuY1i7Hjne0kEz9CSVLp3/kiRO6b6IFqPiBaj
-X-Gm-Gg: AY/fxX5ATC1VUGkhRy2CGLzz7RJhe2M6sEOnD5Z14f7sDs6nto/NUxr1iL1XEtMP1r0
- +J//p71p7cYPbjxpOYJsimkr9kfcutpwBP+jr2qBZ9n2rcOrZVOvI7eLycY8CCd04fWWg9woOla
- /lYhWlYlaNRQy5eBdLwfAK06nX6I+MlX9fQ0O11E18rsVCksiApHn7u/w//15xfVXr3ariJcVyi
- dc5S+7HsssMNWHnVKS/yby9bN3MpugFzjUPUbFkk8Lo8TwuPPdABukbxSrlS4HOfq/MpnqBYwSp
- wspIrubgrviX4iFk6kIpUaluteTgIFfh8sf+kjeSJGNj4VgQ2AgC8A4e9y4bmwoNovb/epQ/fCC
- R2rWFJZ1nM1p1cfSzwGhLbb0hLQ5XrISje/sOPahkVBf5VmM1iE9WMSZhDrBm2DlpNhY1T54Yks
- Z9KRCjfWidZ2Rsh85rss4iTRd4J4ilJ0U1crEidhiGCVH1LtQ=
-X-Google-Smtp-Source: AGHT+IHP+dvDMvMfm2hA9vEhpx+RNVdDtqGUcidPcCUaib0rpQoRNV+ElgXS4/wZ64mvsJQHepngLw==
-X-Received: by 2002:a05:7023:a85:b0:11b:99a2:9082 with SMTP id
- a92af1059eb24-11f349c1eabmr15089887c88.15.1766049229549; 
- Thu, 18 Dec 2025 01:13:49 -0800 (PST)
-Received: from localhost ([192.55.54.45]) by smtp.gmail.com with ESMTPSA id
- a92af1059eb24-12061f5412esm6372417c88.6.2025.12.18.01.13.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Dec 2025 01:13:49 -0800 (PST)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t] lig/igt_fb: fix x-tiled framebuffers on intel xe driver
-Date: Thu, 18 Dec 2025 11:13:26 +0200
-Message-ID: <20251218091326.341270-1-juhapekka.heikkila@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2CCB710E941
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 09:16:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1766049382; x=1797585382;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=1tQ1zFQ0YCp3CgpKlP1HCNbD5BVDB6IqEWxMwK274dk=;
+ b=OomlsEh0FNyQVnOl1n+BGIqypU0rVunswHYtiGRTb7WzjP3CGXcj9f/M
+ 74sIBmXqgbrUiXGR716fe5f3az/07x7yG88Y6V3shJOEUF4v8kM3Ve885
+ /B++AKUYgHs8oEpfPL7LVCkMKNFfgQfJZjWymxUwnAWV1jWwQfTLL5s1k
+ I+p6ZdabRbBJpvb2Xe3KpGuqPsEgE8gX5TtDlcQEAMbX2jiSAwAVWamQG
+ Ya+Ztyv6waSfL+wB1wxZTM+c2yb7xQ0CHYqpFP11Is8CG86xrA39rZ0Ew
+ WCtpcS+NWo1VoA+U970nN+q0iMOJUmLrpZKI892ISARL/KHKft/YdfOEi Q==;
+X-CSE-ConnectionGUID: MvaHOHMQRPKi3epQZ7dlRA==
+X-CSE-MsgGUID: utVxdqLuSteTvEgxNfQG4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="67750994"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="67750994"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2025 01:16:21 -0800
+X-CSE-ConnectionGUID: NH66pFlTSE+TDZ/5DwBohA==
+X-CSE-MsgGUID: tbC/0AkHTW+JcFgWLUaYrg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="198542323"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.58])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2025 01:16:19 -0800
+Date: Thu, 18 Dec 2025 10:16:16 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Wang, X" <x.wang@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>, igt-dev@lists.freedesktop.org, 
+ alex.zuo@intel.com, shuicheng.lin@intel.com, stuart.summers@intel.com, 
+ kamil.konieczny@intel.com, ravi.kumar.vodapalli@intel.com, 
+ Matthew Auld <matthew.auld@intel.com>
+Subject: Re: [PATCH v6 1/2] lib/intel_pat: read Xe PAT config from debugfs
+Message-ID: <zdagolp4fkoklgy3uq5h25f33t3hmhfkb63d55wpycdvoxcqc7@ikyi44pkfsgg>
+References: <20251217080732.266257-1-x.wang@intel.com>
+ <20251217080732.266257-2-x.wang@intel.com>
+ <20251217191535.GB1180203@mdroper-desk1.amr.corp.intel.com>
+ <ec15d0f9-149b-45fb-b499-420d76f1f258@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ec15d0f9-149b-45fb-b499-420d76f1f258@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,27 +74,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On igfx x-tile was not utilizing blitter on Intel Xe driver
-causing crc mismatches. Here fixed that.
+On Wed, Dec 17, 2025 at 06:43:42PM -0800, Wang, X wrote:
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- lib/igt_fb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+<cut>
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 0a8299d26..28b1db921 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2643,7 +2643,7 @@ static bool use_blitter(const struct igt_fb *fb)
- 	       fb->modifier == I915_FORMAT_MOD_Y_TILED ||
- 	       fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
- 	       (is_i915_device(fb->fd) && !gem_has_mappable_ggtt(fb->fd)) ||
--	       (is_xe_device(fb->fd) && xe_has_vram(fb->fd));
-+	       is_xe_device(fb->fd);
- }
- 
- static void init_buf_ccs(struct intel_buf *buf, int ccs_idx,
--- 
-2.43.0
+> 
+> > > +	static __thread struct intel_pat_cache cached_pat;
+> > > +
+> > > +	/* Return cached value if already read for this thread */
+> > > +	if (cached_pat.max_index != 0) {
+> > > +		*xe_pat_cache = cached_pat;
+> > > +		return cached_pat.max_index + 1;
+> > > +	}
+> > I'm not sure we really need to worry about caching the results here.  Is
+> > this getting re-called repeatedly in a single test to the point where
+> > it's creating a real performance problem for our tests?  If not, we can
+> > probably just keep it simple and re-read the debugfs if this function
+> > gets called multiple times.
+> The main reason for caching in xe_get_pat_sw_config() is not performance,
+> but
+> correctness in the presence of privilege changes. In
+> 
+> igt@xe_oa@unprivileged-single-ctx-counters
+> igt@xe_oa@mmio-triggered-reports
+> igt@xe_oa@mmio-triggered-reports-read
+> 
+> these tests drop root privileges mid-run; after that, accessing debugfs can
+> legitimately fail, and without caching the PAT layout we can end up
+> re-parsing
+> (or failing to parse) the table later in the same test run even though it
+> was
+> available earlier.
+
+Using static in library code also generates the problem using in
+multigpu scenarios. If you need to cache the result, do this before
+dropping root privileges. IMO xe_get_pat_sw_config() should assert
+if it can't get the PAT table. So whole responsibility of handling
+this will be on the test owner, who will have no other choice than
+caching the result before dropping privileges.
+
+--
+Zbigniew
 
