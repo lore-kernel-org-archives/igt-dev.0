@@ -4,53 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 544DAD6ACFF
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 12:57:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85A32D6ACFB
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 12:59:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CE86D10E401;
-	Thu, 18 Dec 2025 12:57:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 371F410E403;
+	Thu, 18 Dec 2025 12:59:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EXHrNgpk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="D2VtaiLH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CCAB810E401
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 12:57:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C403C10E401
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 12:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766062632; x=1797598632;
+ t=1766062756; x=1797598756;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=dhE4Povlzor4H5LvwI6QWYldBwRKV1j8sgMvJOeiKrQ=;
- b=EXHrNgpkEAHekJ+MsL0TIA8kBxFXzwihgs+llNbh3YcNtwD52AIq1FxR
- UQ70OuWRMji3CJqqWqexZlANT3/x9Ap0Qk+W5MxlcWEcpi6kW91lctPS4
- oeAb7QO2ZT2BuxcN3142kDdMip33RUUuGJXQvTVaj/0AchrLopohC4aS8
- zSAmY4asUbfyixjLGaQOqLZmZ66BRsT0RT/38JITQ3xVkaEXSNiHFShLi
- Vg1ATTukzQ1YzPJn7xeiSUJpBRiDB6FTyHkmJJR3dj6L+VXL8dRv55sxn
- ROY0jYAxzWZnRPoF0+0uyoMSBw7Dtmtt+iKOeTRazL+njMFnyb/8sJrCv w==;
-X-CSE-ConnectionGUID: ZUR4a5wkQBaS4YwoZRIT6Q==
-X-CSE-MsgGUID: //TQWSfwTa214dvjqA/a+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="78329218"
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="78329218"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2025 04:57:12 -0800
-X-CSE-ConnectionGUID: O4xrNbN/SbWlKDADVvILiw==
-X-CSE-MsgGUID: ub5BdEtwRumMuXlT5SceZA==
+ bh=xc8BdS4nZBdRR3myqfwF8TzRp2M2cDIjh42xLUHZ0Ro=;
+ b=D2VtaiLHcJmIdCSzd4alKs8A/Tm8dXRneOdp8hfIQ/D23g7O9uscrZwQ
+ liQZ44jz0fo6U+5FCL+JW/wobX3SG4sx9DSKeCb0W5xgSwrteEPuiu8VA
+ mCCbOfbTal5vyIqCV585C/XyPQc1uES8LXMIWmGQ1OW1VGKa+ugKqeMRt
+ TKm0Dy8lgo7p9A/Oy5FK6syUAcZGBnP4/PJENfmLZESVm+wAHwps4Mh0b
+ 8QnbH1Ixf+Cr+khopaAGPmfGuMOyRUhGAq6IKQRiO89Urk5Mpc8osxKAS
+ Qa3vqueQvYkMunJyDHwhI7L/k3Efx7xKvTXWhA4nmvOKA0DpUZ/Md+DGM w==;
+X-CSE-ConnectionGUID: Bbw5rubRT3+oaf4eOglu9Q==
+X-CSE-MsgGUID: qtdW/OvUQomr/BiM9C3tGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="90672315"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="90672315"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2025 04:59:16 -0800
+X-CSE-ConnectionGUID: 6RQqRq8mSm2mR2EqndSyOw==
+X-CSE-MsgGUID: 560ARiFMTPGF7OCF1OmJFQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="198478227"
-Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.111])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 04:57:09 -0800
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="198637696"
+Received: from fpallare-mobl4.ger.corp.intel.com (HELO fdugast-desk.home)
+ ([10.245.244.48])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2025 04:59:14 -0800
+From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- =?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t] tests/panthor/panthor_vm: Fix subtest name
-Date: Thu, 18 Dec 2025 13:57:03 +0100
-Message-ID: <20251218125703.52741-1-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
+Cc: Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH i-g-t, v4 0/3] Enhance SVM compute tests
+Date: Thu, 18 Dec 2025 13:56:04 +0100
+Message-ID: <20251218125906.124925-1-francois.dugast@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -69,38 +67,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-All subtests name should be uniqe and unfortunatly last commit
-created two with the same name:
+Add new tests used for SVM performance profiling.
 
-grep -n igt_subtest tests/panthor/panthor_vm.c
-[cut]
-82:     igt_subtest("vm_unbind_identical_hugepage_single") {
-101:    igt_subtest("vm_unbind_identical_hugepage_single") {
+v4:
+- Correct size in xe_exec_system_allocator and remove unused variable (Zbigniew Kempczyński)
 
-Fix this and rename second one into vm_unbind_identical_hugepage_single_partial
+v3:
+- Keep existing semantics of array_size (Zbigniew Kempczyński)
 
-Cc: "Adrián Larumbe" <adrian.larumbe@collabora.com>
-Cc: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
-Fixes: 83bb1884b7ab ("panthor: Allow specifying offset when mapping a BO against a VM")
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/panthor/panthor_vm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v2:
+- Add first patch to differentiate array_size and loop_count
+- Drop aligned_size as it is unused later, the test is always called with a size
+- Remove the drm_xe_engine_class_instance argument as it was unused (Zbigniew Kempczyński)
 
-diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
-index 2ac867c75..76a669843 100644
---- a/tests/panthor/panthor_vm.c
-+++ b/tests/panthor/panthor_vm.c
-@@ -98,7 +98,7 @@ int igt_main() {
- 	}
- 
- 	igt_describe("Requested unmapping is identical to existing huge page mapping, but only a subset of the object's pages are mapped in the VM");
--	igt_subtest("vm_unbind_identical_hugepage_single") {
-+	igt_subtest("vm_unbind_identical_hugepage_single_partial") {
- 		uint32_t vm_id;
- 		struct panthor_bo bo;
- 		uint64_t bo_size = SZ_4M;
+Francois Dugast (3):
+  tests/intel/xe_exec_system_allocator: Cleanup compute test
+  lib/intel_compute: Allow user to override compute kernel loop_count
+  tests/intel/xe_exec_system_allocator: Add new SVM compute tests
+
+ lib/intel_compute.c                    | 36 ++++++++------
+ lib/intel_compute.h                    |  2 +
+ tests/intel/xe_exec_system_allocator.c | 65 ++++++++++++++++++++------
+ 3 files changed, 74 insertions(+), 29 deletions(-)
+
 -- 
-2.52.0
+2.43.0
 
