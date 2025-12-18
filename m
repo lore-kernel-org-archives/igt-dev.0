@@ -4,61 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E96BD6ACF5
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 13:19:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50201D6ACF5
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 13:21:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BCC4510E282;
-	Thu, 18 Dec 2025 13:19:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E7AE110E282;
+	Thu, 18 Dec 2025 13:21:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ksBZd2Pl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JvSFLk/J";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A68110E282
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 13:19:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D1F610E282
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 13:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766063978; x=1797599978;
+ t=1766064085; x=1797600085;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=CjNJPyqINaifn7eIshwNvfMuHtH0l2GdcRJS+ihe1EY=;
- b=ksBZd2PlAe1gmyOyCIpk2tz1b2tM1kBMiL0ZfMYNV7p/K22rAbhpsCgg
- I1Vj5cB3g7ZFsHeJJ85d15cFToco4JJL4j9kGL1CbffaPcezJOKwD76UM
- wpprGPchSEoWmRZRcqmq9tK7IRquLwcIDUruOYYejbYPX8w6fWtxL5Euf
- nPQ959oAC2G/+pKtjl3bOsC9qkjJ06jRmzKXHuVQaqtwxWotv0Nr1abmJ
- ZAxsl4XTeg4/6ZgevKwm8ZZ3kKBVxg4JM3FPlv4w5jB0NyEhaAK9iCbvD
- HFvCnUbSJFnGpjYL6MoxAYgk7kQ+lQlgjLzIilhf6NYZt37dcart92d36 Q==;
-X-CSE-ConnectionGUID: lZfVfUyfTg+tB8x6ecv0RQ==
-X-CSE-MsgGUID: nMZu0QkHReyV8kstHRwN8w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="79139174"
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="79139174"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2025 05:19:38 -0800
-X-CSE-ConnectionGUID: nRBAmTHcQiGdSAspn0U4ig==
-X-CSE-MsgGUID: yLbql58cQxiUKQNzu/I72w==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=ifMh1mPHKNvdNUGZ7Ss/8fLgTxrpZwk3KXnp62P+Ikg=;
+ b=JvSFLk/JYmm9SRLl43E9ZbhiBegyTkbC7ror2pBuaZKsVDt9AFyTSU9y
+ Ngjdi+BfzYDQphffxssEb/tZDf5arRONFVyQxnQYDV9V9kuwWJOGIEKO2
+ tDW+E3zHIvgfgJKpG+NtTa2o0u/eJMbeB364BBFp5XQriDX04GIBOI2Vt
+ FUE7wVNdO1rIPDHoeLooxumIrgDhQ7tWVYfy/vGUhvmqTsPQAyQs3GQgI
+ tBxVgQeZk9D9d3h0goZsNzHI926CUv+zn4HB2UaPte4UOZDFp5kMdQTDr
+ V84zg6sy9MQ8TyJ5lzvTDye64ZcESWezW7wlQ780f2B0NyHSNmISl00+b w==;
+X-CSE-ConnectionGUID: hLEtbnwVRYi02ILs/Ltiqw==
+X-CSE-MsgGUID: NJWBVfMCQWGvEXESpwl8jw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="67767680"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="67767680"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2025 05:21:25 -0800
+X-CSE-ConnectionGUID: hJ6mxhN1TLioqIBnhUWpXA==
+X-CSE-MsgGUID: 3kh2G2WJQOe2m/ddnM+RgQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="198348443"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="199410688"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 05:19:36 -0800
-Date: Thu, 18 Dec 2025 14:19:33 +0100
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 05:21:23 -0800
+Date: Thu, 18 Dec 2025 14:21:21 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Piotr Rudnicki <piotr.rudnicki@intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 Cc: igt-dev@lists.freedesktop.org,
- Himanshu Girotra <himanshu.girotra@intel.com>,
- Kamil Konieczny <kamil.konieczny@intel.com>
-Subject: Re: [PATCH v2 1/1] intel-ci: add eudebug tests to multigpu blocklist
-Message-ID: <20251218131933.gsa6lbu57ne6avkd@kamilkon-DESK.igk.intel.com>
+ =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>
+Subject: Re: [PATCH i-g-t] tests/panthor/panthor_vm: Fix subtest name
+Message-ID: <20251218132121.4lwwjhqvqv6v2b5p@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Piotr Rudnicki <piotr.rudnicki@intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  igt-dev@lists.freedesktop.org,
- Himanshu Girotra <himanshu.girotra@intel.com>,
- Kamil Konieczny <kamil.konieczny@intel.com>
-References: <20251218121308.2991594-2-piotr.rudnicki@intel.com>
+ =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>
+References: <20251218125703.52741-1-kamil.konieczny@linux.intel.com>
+ <jjdxqptsd6jsqjidydryaz4vdifnmybch4knepru3elycpsepe@cqqvjo5epari>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251218121308.2991594-2-piotr.rudnicki@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <jjdxqptsd6jsqjidydryaz4vdifnmybch4knepru3elycpsepe@cqqvjo5epari>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,38 +76,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Piotr,
-On 2025-12-18 at 13:13:09 +0100, Piotr Rudnicki wrote:
-> Add eudebug tests to multigpu blocklist, as they are not yet supported
-> on Xe multigpu setups.
+Hi Zbigniew,
+On 2025-12-18 at 13:59:34 +0100, Zbigniew Kempczyński wrote:
+> On Thu, Dec 18, 2025 at 01:57:03PM +0100, Kamil Konieczny wrote:
+> > All subtests name should be uniqe and unfortunatly last commit
 > 
-> Cc: Himanshu Girotra <himanshu.girotra@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@intel.com>
-> Signed-off-by: Piotr Rudnicki <piotr.rudnicki@intel.com>
+> s/unfortunatly/unfortunately/
+> 
+> with this:
+> 
+> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> 
 
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Thank you, I already merged it.
 
 Regards,
 Kamil
 
-> ---
-> V1 -> V2: Separate the eudebug blocklist entry.
+> --
+> Zbigniew
 > 
->  tests/intel-ci/xe.multigpu.blocklist.txt | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/tests/intel-ci/xe.multigpu.blocklist.txt b/tests/intel-ci/xe.multigpu.blocklist.txt
-> index 387c3413e..5affcc8fa 100644
-> --- a/tests/intel-ci/xe.multigpu.blocklist.txt
-> +++ b/tests/intel-ci/xe.multigpu.blocklist.txt
-> @@ -3,3 +3,6 @@
->  #####################################################
->  igt@(?!.*xe.*multigpu.*|xe_peer2peer.*).*
->  #####################################################
-> +# Kernel support not available
-> +#####################################################
-> +igt@xe_eudebug@multigpu-basic-client*
-> -- 
-> 2.43.0
-> 
+> > created two with the same name:
+> > 
+> > grep -n igt_subtest tests/panthor/panthor_vm.c
+> > [cut]
+> > 82:     igt_subtest("vm_unbind_identical_hugepage_single") {
+> > 101:    igt_subtest("vm_unbind_identical_hugepage_single") {
+> > 
+> > Fix this and rename second one into vm_unbind_identical_hugepage_single_partial
+> > 
+> > Cc: "Adrián Larumbe" <adrian.larumbe@collabora.com>
+> > Cc: Boris Brezillon <boris.brezillon@collabora.com>
+> > Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+> > Fixes: 83bb1884b7ab ("panthor: Allow specifying offset when mapping a BO against a VM")
+> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > ---
+> >  tests/panthor/panthor_vm.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
+> > index 2ac867c75..76a669843 100644
+> > --- a/tests/panthor/panthor_vm.c
+> > +++ b/tests/panthor/panthor_vm.c
+> > @@ -98,7 +98,7 @@ int igt_main() {
+> >  	}
+> >  
+> >  	igt_describe("Requested unmapping is identical to existing huge page mapping, but only a subset of the object's pages are mapped in the VM");
+> > -	igt_subtest("vm_unbind_identical_hugepage_single") {
+> > +	igt_subtest("vm_unbind_identical_hugepage_single_partial") {
+> >  		uint32_t vm_id;
+> >  		struct panthor_bo bo;
+> >  		uint64_t bo_size = SZ_4M;
+> > -- 
+> > 2.52.0
+> > 
