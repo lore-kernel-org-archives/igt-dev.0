@@ -4,61 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DFE0D6ACFE
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 12:59:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C261BD6ACFE
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 12:59:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 407ED10E41D;
-	Thu, 18 Dec 2025 12:59:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6B86F10E424;
+	Thu, 18 Dec 2025 12:59:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WWZnm/du";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UjaebvuP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0AF6510E41D
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 12:59:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 318C410E401
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 12:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766062760; x=1797598760;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=6p87nYknT129WTFODWsGZwrlXiq8USn5mRxcROZBuzk=;
- b=WWZnm/du7PnsgMW/+VTamcly8W3FArq4N5SfQ9d3jA+xKy5C/n/KON8h
- C+U2cit4aCspVC2Czfm0JSIMPipx/PRX2c7KefvtZnT9FUHwZmvL0uObY
- 0esn8RaSvnijgQubw0+VZxuKlemg3I8wO/M6DMMlI8A8NXY4V70J2pBe1
- yOzV/a+5wFYxlFv4jAAueaAern8KOjcJtyR+c3TWl+Lo/vp3JYkA/6Xso
- 0D6MeuS8WzufvwTcr0gx7IV1cdgoqlouO38fdvRXK/BJX8mnju3I/bycU
- RSSV1ZrAR9UVwaOP+T48M1TIQngRWEF9/yNoZkH6302ceV35RhzhMDRJr Q==;
-X-CSE-ConnectionGUID: M21bP2IHRxatAiHRXeZ8Kw==
-X-CSE-MsgGUID: 3oFPd+kURMa+vE4o7wf+nw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="90672321"
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="90672321"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2025 04:59:20 -0800
-X-CSE-ConnectionGUID: Cnuzt5IiTjqDyI6SSoMD9Q==
-X-CSE-MsgGUID: BcZI35hoTOasGT4fj7kzZg==
+ t=1766062778; x=1797598778;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=qYX4v9Ncwoo82epi99xAbTMeaF/5rucLFyw+uNRCAT4=;
+ b=UjaebvuPtaPg99Y/lqRam8rFU4GRwEAtwvzZaDZUnkvWnuFscu4ZLqUb
+ fo4MGVZDQ+gL+qCGunHCTJeYWnj4IgNAH0CtVvEZYUez5QALQg9ZdKrfQ
+ qTJ0TKN3Ym/kqOMIFZI+txkQQrYLlQ2/PFb2mK3nkeBQAgszAXHDC02g5
+ S1ExPxy5JQxIB5eDa8lvReDIUQEiwJnYMnxZug4HIwsmBlgHEWi6BLq6K
+ NIzpYolaiC3YEXDwb23qjcETRgIyjK6oHYDkvDn0tQqHNbHHZ7ynWP2rT
+ ha0ImFSqB0qBDjrzWqzOi3zihchfzf83ad1qJwk2aMBG1m6YrfeSEd+qX A==;
+X-CSE-ConnectionGUID: MsK3rlI+S1yLRqvx8HVwCA==
+X-CSE-MsgGUID: snZqIqDlRym9umjXhgMBBA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="67009969"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="67009969"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2025 04:59:38 -0800
+X-CSE-ConnectionGUID: OkbMoBukQUiV2iIW2KmYMw==
+X-CSE-MsgGUID: XBiaOXQkQPGXz812xugShA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="198637743"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO fdugast-desk.home)
- ([10.245.244.48])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2025 04:59:18 -0800
-From: Francois Dugast <francois.dugast@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Francois Dugast <francois.dugast@intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Nishit Sharma <nishit.sharma@intel.com>
-Subject: [PATCH i-g-t,
- v4 3/3] tests/intel/xe_exec_system_allocator: Add new SVM compute
- tests
-Date: Thu, 18 Dec 2025 13:56:07 +0100
-Message-ID: <20251218125906.124925-4-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251218125906.124925-1-francois.dugast@intel.com>
-References: <20251218125906.124925-1-francois.dugast@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="198574208"
+Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.118])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2025 04:59:36 -0800
+Date: Thu, 18 Dec 2025 13:59:34 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, 
+ =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>
+Subject: Re: [PATCH i-g-t] tests/panthor/panthor_vm: Fix subtest name
+Message-ID: <jjdxqptsd6jsqjidydryaz4vdifnmybch4knepru3elycpsepe@cqqvjo5epari>
+References: <20251218125703.52741-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251218125703.52741-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,111 +71,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-These new tests allow triggering GPU page faults from the context of
-execution units. They can be used to create single page faults or page
-fault floods, of various sizes. This is helpful for debugging and for
-performance profiling.
+On Thu, Dec 18, 2025 at 01:57:03PM +0100, Kamil Konieczny wrote:
+> All subtests name should be uniqe and unfortunatly last commit
 
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Acked-by: Nishit Sharma <nishit.sharma@intel.com>
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
----
- tests/intel/xe_exec_system_allocator.c | 52 +++++++++++++++++++++++---
- 1 file changed, 47 insertions(+), 5 deletions(-)
+s/unfortunatly/unfortunately/
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index b1555afbe..66d68f054 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -2172,13 +2172,36 @@ processes(int fd, int n_exec_queues, int n_execs, size_t bo_size,
- 	munmap(pdata, sizeof(*pdata));
- }
- 
-+/* compute flags */
-+#define TOUCH_ONCE		(0x1 << 0)
-+#define ACCESS_DEVICE_HOST	(0x1 << 1)
-+
- /**
-  * SUBTEST: compute
-  * Description: Run a simple compute kernel with the system allocator
-  * Test category: functionality test
-+ *
-+ * SUBTEST: eu-fault-4k-%s
-+ * Description: Run a simple compute kernel %arg[1] on a 4KB malloc'ed buffer
-+ * Test category: performance test
-+ *
-+ * SUBTEST: eu-fault-64k-%s
-+ * Description: Run a simple compute kernel %arg[1] on a 64KB malloc'ed buffer
-+ * Test category: performance test
-+ *
-+ * SUBTEST: eu-fault-2m-%s
-+ * Description: Run a simple compute kernel %arg[1] on a 2MB malloc'ed buffer
-+ * Test category: performance test
-+ *
-+ * arg[1]:
-+ *
-+ * @once-device:				touch the buffer only once, from the device
-+ * @once-device-host:				touch the buffer only once, from the device then from the host
-+ * @range-device:				touch the whole buffer, from the device
-+ * @range-device-host:				touch the whole buffer, from the device then from the host
-  */
- static void
--test_compute(int fd, size_t size)
-+test_compute(int fd, size_t size, unsigned int flags)
- {
- 	struct drm_xe_sync sync = {
- 		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-@@ -2207,11 +2230,14 @@ test_compute(int fd, size_t size)
- 	compute_input = aligned_alloc(SZ_2M, size);
- 	igt_assert(compute_input);
- 
--	for (i = 0; i < env.array_size; i++)
--		compute_input[i] = rand() / (float)RAND_MAX;
--
-+	env.loop_count = (flags & TOUCH_ONCE) ? 1 : env.array_size;
-+	env.skip_results_check = !(flags & ACCESS_DEVICE_HOST);
- 	env.input_addr = to_user_pointer(compute_input);
- 	env.vm = vm;
-+
-+	for (i = 0; i < env.loop_count; i++)
-+		compute_input[i] = rand() / (float)RAND_MAX;
-+
- 	run_intel_compute_kernel(fd, &env, EXECENV_PREF_SYSTEM);
- 
- 	free(compute_input);
-@@ -2363,6 +2389,13 @@ int igt_main()
- 		  MADVISE_OP | PREFETCH | PREFETCH_SAME_ATTR | ATOMIC_BATCH },
- 		{ NULL },
- 	};
-+	const struct section csections[] = {
-+		{ "once-device", TOUCH_ONCE },
-+		{ "once-device-host", TOUCH_ONCE | ACCESS_DEVICE_HOST },
-+		{ "range-device", 0 },
-+		{ "range-device-host", ACCESS_DEVICE_HOST },
-+		{ NULL },
-+	};
- 
- 	const struct section intel_get_pat_idx_functions[] = {
- 		{ "madvise-pat-idx-wb-single-vma", MADVISE_OP | MADVISE_PAT_INDEX,
-@@ -2605,7 +2638,16 @@ int igt_main()
- 	}
- 
- 	igt_subtest("compute")
--		test_compute(fd, SZ_2M);
-+		test_compute(fd, SZ_2M, 0);
-+
-+	for (const struct section *s = csections; s->name; s++) {
-+		igt_subtest_f("eu-fault-4k-%s", s->name)
-+			test_compute(fd, SZ_4K, s->flags);
-+		igt_subtest_f("eu-fault-64k-%s", s->name)
-+			test_compute(fd, SZ_64K, s->flags);
-+		igt_subtest_f("eu-fault-2m-%s", s->name)
-+			test_compute(fd, SZ_2M, s->flags);
-+	}
- 
- 	igt_fixture() {
- 		xe_device_put(fd);
--- 
-2.43.0
+with this:
 
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+--
+Zbigniew
+
+> created two with the same name:
+> 
+> grep -n igt_subtest tests/panthor/panthor_vm.c
+> [cut]
+> 82:     igt_subtest("vm_unbind_identical_hugepage_single") {
+> 101:    igt_subtest("vm_unbind_identical_hugepage_single") {
+> 
+> Fix this and rename second one into vm_unbind_identical_hugepage_single_partial
+> 
+> Cc: "Adrián Larumbe" <adrian.larumbe@collabora.com>
+> Cc: Boris Brezillon <boris.brezillon@collabora.com>
+> Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+> Fixes: 83bb1884b7ab ("panthor: Allow specifying offset when mapping a BO against a VM")
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/panthor/panthor_vm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
+> index 2ac867c75..76a669843 100644
+> --- a/tests/panthor/panthor_vm.c
+> +++ b/tests/panthor/panthor_vm.c
+> @@ -98,7 +98,7 @@ int igt_main() {
+>  	}
+>  
+>  	igt_describe("Requested unmapping is identical to existing huge page mapping, but only a subset of the object's pages are mapped in the VM");
+> -	igt_subtest("vm_unbind_identical_hugepage_single") {
+> +	igt_subtest("vm_unbind_identical_hugepage_single_partial") {
+>  		uint32_t vm_id;
+>  		struct panthor_bo bo;
+>  		uint64_t bo_size = SZ_4M;
+> -- 
+> 2.52.0
+> 
