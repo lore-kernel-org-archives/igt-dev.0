@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CD02D6E2DC
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 19:38:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E38FD6E2DC
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 19:38:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E5FFC10E48C;
-	Thu, 18 Dec 2025 19:38:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 215CB10E48C;
+	Thu, 18 Dec 2025 19:38:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JVs2dvts";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JEoU1QI7";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E51810E466
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 19:38:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 02BD610EAD6
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 19:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766086685; x=1797622685;
+ t=1766086688; x=1797622688;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=KlN7RMfaAQEOW5srsLLQddcJUsE+sS/1SgtI5YwLw1Q=;
- b=JVs2dvtsiQvApI/WNdTz02HdCh32gLBcYcG93MZXx/nVdv9Fe99ybysW
- DRgHzv+m3N78AFFo9nR0eEsRjlychJ/r8gu5eCZpZtcDlqio8d841eNwG
- U7Octl2sKJdwE4R8guHE/SRQNBcqRNINcodP2YWQdqRncJf6foUmtECqO
- WoN99RJ3XlgKlo8EDdjNzSMIzb6FGd/rzWnKzc/fZCngQnUIRYUhpq9DE
- 3Csre5Uy2hP6tGGP0T4Lij1k7ynKiHpqrUnh8D/HogIweKJCZ9ah6/bvF
- TH3lDyD6YrEYxQDqWnAf72mHEI12tqBZzednLnl+haK13IBlgzdDe+509 A==;
-X-CSE-ConnectionGUID: ncTD/qM3S1C41nEPFW0zZA==
-X-CSE-MsgGUID: dsoiFsL/RDedwu83XzzYrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="67244715"
-X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; d="scan'208";a="67244715"
+ bh=Ecb12DPnUtaAQ6yaszN8sMmnlk1VyAFAbqwG9Q46o8k=;
+ b=JEoU1QI76hIKIkr3+Z0TG2VfRcULp9EwiEhmXIh3XwndaG4/TllvwAUx
+ bwTSgQBLPi57Brbb1cR6cX4qm/Ul1G9ovg2GNF5wShJBfKzn9yqre/fdY
+ 7Z/s12ZhWpnqFoRAp9PHt/9QptFXMYxnLIfRfwGzGCt32ncSnJpoCGxm1
+ P1DFvYRuB+DHoRQ8C4chSI+7jfkKPm1884NN2CfdYFHjNXcG3o7T11M6J
+ Ac6MuuVtMaiW7YDfqOIZoxR+zNd/maigVvgZhLpt7kt+5AFNQU6wohiwi
+ +O8jHgthzho3q/0zFhl6QTS9ffXt7PKAOCeIcDIxBjklpwcbdUpp0xXf3 A==;
+X-CSE-ConnectionGUID: 9DFp3+r+ThWtzyWIPzF97w==
+X-CSE-MsgGUID: vyT+lWLYSAypUgy4TAL6Pg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="67244716"
+X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; d="scan'208";a="67244716"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2025 11:38:05 -0800
-X-CSE-ConnectionGUID: W8+gOqc6SxCYU4tMhPb5Nw==
-X-CSE-MsgGUID: DJvbhleAQXaqiib5tmq3Zg==
+ 18 Dec 2025 11:38:07 -0800
+X-CSE-ConnectionGUID: A8XmHU83RzqIiD8bi+O1cA==
+X-CSE-MsgGUID: OM/65mqcSZeHOIe9QgKFMg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; d="scan'208";a="198680617"
+X-IronPort-AV: E=Sophos;i="6.21,159,1763452800"; d="scan'208";a="198680624"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 11:38:03 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Dec 2025 11:38:05 -0800
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: chaitanya.kumar.borah@intel.com,
 	Swati Sharma <swati2.sharma@intel.com>
 Subject: [PATCH i-g-t,
- v6 2/8] tests/kms_colorop_helper: Add helpers to clear colorops data
-Date: Fri, 19 Dec 2025 01:14:56 +0530
-Message-Id: <20251218194502.1306975-3-swati2.sharma@intel.com>
+ v6 3/8] tests/kms_color: Add helper to check if pipeline contains CTM
+ colorop
+Date: Fri, 19 Dec 2025 01:14:57 +0530
+Message-Id: <20251218194502.1306975-4-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251218194502.1306975-1-swati2.sharma@intel.com>
 References: <20251218194502.1306975-1-swati2.sharma@intel.com>
@@ -69,70 +70,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add new helper function `clear_colorops()` to reset color operations
-to their default/bypass state. These functions:
- - Set the colorop to bypass mode.
- - Clear associated data blobs for CTM, LUT1D, LUT3D.
- - Reset multiplier values where applicable.
+Add ctm_colorop_only() to determine if colorop in pipeline is
+of type KMS_COLOROP_CTM_3X4. This allows CTM-only tests to use
+solid rectangle patterns instead of gradients.
 
-v2: -make internal helper static (Chaitanya)
-    -rename func() to clear_colorops() (Chaitanya)
+__maybe_unused prevents compiler warnings.
+
+v2: -improve commit message (Chaitanya)
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 ---
- tests/kms_colorop_helper.c | 30 ++++++++++++++++++++++++++++++
- tests/kms_colorop_helper.h |  1 +
- 2 files changed, 31 insertions(+)
+ tests/kms_color.c        | 11 +++++++++++
+ tests/kms_color_helper.h |  1 +
+ 2 files changed, 12 insertions(+)
 
-diff --git a/tests/kms_colorop_helper.c b/tests/kms_colorop_helper.c
-index 6869590f3..da95ec72d 100644
---- a/tests/kms_colorop_helper.c
-+++ b/tests/kms_colorop_helper.c
-@@ -400,3 +400,33 @@ void set_color_pipeline_bypass(igt_plane_t *plane)
- {
- 	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index b3f3a34a5..cfc71f092 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -719,6 +719,17 @@ static void test_pipe_limited_range_ctm(data_t *data,
  }
-+
-+static void clear_colorop(igt_display_t *display, kms_colorop_t *colorop)
-+{
-+	igt_assert(colorop->colorop);
-+	igt_colorop_set_prop_value(colorop->colorop, IGT_COLOROP_BYPASS, 1);
-+
-+	switch (colorop->type) {
-+	case KMS_COLOROP_CTM_3X4:
-+	case KMS_COLOROP_CUSTOM_LUT1D:
-+	case KMS_COLOROP_LUT3D:
-+		igt_colorop_replace_prop_blob(colorop->colorop, IGT_COLOROP_DATA, NULL, 0);
-+		break;
-+	case KMS_COLOROP_MULTIPLIER:
-+		igt_colorop_set_prop_value(colorop->colorop, IGT_COLOROP_MULTIPLIER, 1);
-+		break;
-+	case KMS_COLOROP_ENUMERATED_LUT1D:
-+	default:
-+		return;
-+	}
-+}
-+
-+void clear_colorops(igt_display_t *display,
-+		    igt_plane_t *plane,
-+		    kms_colorop_t *colorops[])
+ #endif
+ 
++__maybe_unused
++static bool ctm_colorop_only(kms_colorop_t *colorops[])
 +{
 +	int i;
 +
-+	for(i = 0; colorops[i]; i++)
-+		clear_colorop(display, colorops[i]);
++	for (i = 0; colorops[i]; i++)
++		if (colorops[i]->type != KMS_COLOROP_CTM_3X4)
++			return false;
++	return true;
 +}
-diff --git a/tests/kms_colorop_helper.h b/tests/kms_colorop_helper.h
-index b807f122d..bdc812baa 100644
---- a/tests/kms_colorop_helper.h
-+++ b/tests/kms_colorop_helper.h
-@@ -102,5 +102,6 @@ void set_color_pipeline(igt_display_t *display,
- 			kms_colorop_t *colorops[],
- 			igt_colorop_t *color_pipeline);
- void set_color_pipeline_bypass(igt_plane_t *plane);
-+void clear_colorops(igt_display_t *display, igt_plane_t *plane, kms_colorop_t *colorops[]);
++
+ static void
+ prep_pipe(data_t *data, enum pipe p)
+ {
+diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
+index 23463b944..029998d87 100644
+--- a/tests/kms_color_helper.h
++++ b/tests/kms_color_helper.h
+@@ -38,6 +38,7 @@
+ #include "igt.h"
+ #include "igt_edid.h"
  
- #endif /* __KMS_COLOROP_HELPER_H__ */
++#include "kms_colorop_helper.h"
+ 
+ /* Internal */
+ typedef struct {
 -- 
 2.25.1
 
