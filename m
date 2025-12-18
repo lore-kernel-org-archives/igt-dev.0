@@ -4,27 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9C23D6D22E
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 14:54:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F38E3D6D230
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 15:09:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4E13110EA07;
-	Thu, 18 Dec 2025 14:54:53 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2FC6310EA15;
- Thu, 18 Dec 2025 14:54:52 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2440296226998630427=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 91C9C10EA4A;
+	Thu, 18 Dec 2025 15:09:50 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c3mcqFM/";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98CD410EA28;
+ Thu, 18 Dec 2025 15:09:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1766070588; x=1797606588;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=Xwq22S4A23SN6OvPG6NywgAlxwX9e2Byb4LgjMfXp5s=;
+ b=c3mcqFM/7K6WvsOWhV9IyfSg5EpTL4Clqd8sHxaehDyZXvEvbN1xcLaT
+ BOy/ZMNmyA5wrPUFRSlsrvgF28KnjSV7kPCkqRB+xodS9GXMSECHe4XSO
+ D4vY7AiraYVPwAqS0aLHHZLWraFWBIOl4MoixXaH7wqOZ4wshjnRbCFgd
+ TMAP9HYTLlWWkTdcA2rad+THqNlhP3wkzsGOgPdSRlwLYVktV8Wa5Gt5V
+ 6SM4/MRL+CQsO51ycVM6Sbn0kYuEc/e52BjDq/7D0iKkKfN6m4uNjYeem
+ MECNB8F8FdUUXM8MBC4ty7HQiw4cE1ujYF6Sl4akxq2C5s5xEZGKflMPB Q==;
+X-CSE-ConnectionGUID: Xvc2KCEQRgiSSkGI4mi4xg==
+X-CSE-MsgGUID: a1qRT/91RYmKngFBLS24Xg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="79395898"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="79395898"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2025 07:09:48 -0800
+X-CSE-ConnectionGUID: P3+3reLyRQi2ev0K7jhVlg==
+X-CSE-MsgGUID: mChjOnEMQj2SwOqaHmNFlA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="199079714"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.252])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2025 07:09:46 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ intel-gfx@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] tests/intel/gem_lmem_swapping: Avoid false failures
+ from oom-killer
+Date: Thu, 18 Dec 2025 16:09:43 +0100
+Message-ID: <2277720.NgBsaNRSFp@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20251218142125.i75a6km3wm7nxjsc@kamilkon-DESK.igk.intel.com>
+References: <20251217145110.131121-2-janusz.krzysztofik@linux.intel.com>
+ <20251218142125.i75a6km3wm7nxjsc@kamilkon-DESK.igk.intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_lig/igt=5Ffb=3A_fix_x-til?=
- =?utf-8?q?ed_framebuffers_on_intel_xe_driver?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 18 Dec 2025 14:54:52 -0000
-Message-ID: <176606969217.101777.10904510759479802324@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20251218091326.341270-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20251218091326.341270-1-juhapekka.heikkila@gmail.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,247 +73,142 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2440296226998630427==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Kamil,
 
-== Series Details ==
+Thank you for looking at this.
 
-Series: lig/igt_fb: fix x-tiled framebuffers on intel xe driver
-URL   : https://patchwork.freedesktop.org/series/159198/
-State : failure
+On Thursday, 18 December 2025 15:21:25 CET Kamil Konieczny wrote:
+> Hi Janusz,
+> On 2025-12-17 at 15:50:30 +0100, Janusz Krzysztofik wrote:
+> > The smem-oom subtest can expectedly result in oom-killer being triggered,
+> > which then dumps a call trace from a process that triggered it.  If that
+> > happens to be a process that executes drm or i915 functions then the call
+> > trace dump contains lines recognized by igt_runner running in piglit mode
+> > as potential warnings.  If severity of the call trace dump messages is
+> > NOTICE or higher, which isn't unlikely, then a dmesg-warn result is
+> > reported despite successful completion of the subtest.
+> > 
+> > Fortunately, severity of those call trace dump messages depends on kernel
+> > default log level which can be controlled from user space over sysctl.
+> > 
+> > To avoid false failure reports, relax kernel default log level to INFO so
+> > those log lines are ignored by igt_runner in piglit mode at an expense of
+> > call traces from real issues potentially detected by the subtest not
+> > contributing to the igt_runner reported result.  Since those call traces
+> > are still available to developers, only submitted with reduced severity,
+> > that shouldn't hurt as long as the igt_runner still abandons further
+> > execution and reports an abort result on a kernel taint.
+> > 
+> > Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5493
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > ---
+> >  tests/intel/gem_lmem_swapping.c | 40 ++++++++++++++++++++++++++++++++-
+> >  1 file changed, 39 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+> > index adae26716c..ab951a7414 100644
+> > --- a/tests/intel/gem_lmem_swapping.c
+> > +++ b/tests/intel/gem_lmem_swapping.c
+> > @@ -804,8 +804,9 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
+> >  		{ "parallel-random-verify-ccs", TEST_PARALLEL | TEST_RANDOM | TEST_CCS },
+> >  		{ }
+> >  	};
+> > +	int i915 = -1, console_log_level, default_log_level;
+> >  	const intel_ctx_t *ctx;
+> > -	int i915 = -1;
+> > +	FILE *printk;
+> 
+> 	FILE *printk = NULL;
+> 
+> For a reason see below.
+> 
+> >  
+> >  	igt_fixture() {
+> >  		struct intel_execution_engine2 *e;
+> > @@ -860,11 +861,48 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
+> >  			test_evict(i915, ctx, region, test->flags);
+> >  	}
+> >  
+> > +	/*
+> > +	 * The smem-oom subtest can result in oom-killer being triggered, which
+> > +	 * then dumps a call trace from a process that triggered it.  If that
+> > +	 * happens to be a process that executes drm or i915 functions then the
+> > +	 * call trace dump contains lines recognized by igt_runner as warnings
+> > +	 * and a dmesg-warn result is reported.  To avoid false failure reports,
+> > +	 * relax kernel default log level to INFO for those lines to be ignored
+> > +	 * by igt_runner in piglit mode, at an expense of call traces from
+> > +	 * potential real issues not contributing to the igt_runner reported
+> > +	 * result.  Since those call traces are still available to developers,
+> > +	 * only displayed with relaxed severity, that shouldn't hurt as long as
+> > +	 * igt_runner still abandons further execution and reports an abort
+> > +	 * result on a kernel taint.
+> > +	 */
+> > +	igt_fixture() {
+> > +		printk = fopen("/proc/sys/kernel/printk", "r+");
+> > +		if (igt_debug_on(!printk))
+> > +			break;
+> > +
+> > +		if (!igt_debug_on(fscanf(printk, "%d %d",
+> > +					 &console_log_level, &default_log_level) != 2) &&
+> > +		    default_log_level < 6) {
+> > +			rewind(printk);
+> > +			igt_debug_on(fprintf(printk, "%d 6", console_log_level) != 3);
+> > +		} else {
+> > +			fclose(printk);
+> > +			printk = NULL;
+> > +		}
+> > +	}
+> > +
+> 
+> Looks good but please move it inside subtest smem-oom,
+> so it will affect only it. Cleanup should be done in final fixup
+> so that code is ok.
 
-== Summary ==
+The only way I can imagine other subtests affected is if someone adds a 
+new subtest below without taking care of splitting the loglevel cleanup 
+out of the final igt_fixture() into a separate one, placed right after 
+the "smem_oom" subtest and before any other future subtests.  But we can 
+take care now, either by already splitting it into two consecutive 
+igt_fixture sections, or by adding a reminder to do that before adding 
+new subtests in between.  I think that would be more clear then hiding 
+the loglevel setup steps inside the test_smem_oom().  Moreover, your 
+approach doesn't address potential cases of running more than one 
+subtest in a single invocation of the test, which is perfectly possible 
+when igt_runner is used with --multiple-mode option or in manual runs.
 
-CI Bug Log - changes from IGT_8673 -> IGTPW_14234
-====================================================
+As additional benefits, we neither have to pass extra arguments to the 
+test_smem_oom(), nor have to take care for the loglevel setup being 
+processed only once in case more than one LMEM region exists and 
+test_smmem_oom() is called several times.
 
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_14234 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_14234, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/index.html
-
-Participating hosts (43 -> 41)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_14234:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@gem_softpin@safe-alignment:
-    - fi-hsw-4770:        [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/fi-hsw-4770/igt@gem_softpin@safe-alignment.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/fi-hsw-4770/igt@gem_softpin@safe-alignment.html
-
-  * igt@kms_flip@basic-flip-vs-dpms@c-dp1:
-    - bat-adlp-9:         [PASS][3] -> [FAIL][4] +2 other tests fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-adlp-9/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-adlp-9/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14234 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@fbdev@info:
-    - fi-hsw-4770:        [PASS][5] -> [SKIP][6] ([i915#1849] / [i915#2582])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/fi-hsw-4770/igt@fbdev@info.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/fi-hsw-4770/igt@fbdev@info.html
-
-  * igt@fbdev@nullptr:
-    - fi-hsw-4770:        [PASS][7] -> [SKIP][8] ([i915#2582]) +3 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/fi-hsw-4770/igt@fbdev@nullptr.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/fi-hsw-4770/igt@fbdev@nullptr.html
-
-  * igt@i915_selftest@live:
-    - bat-twl-1:          [PASS][9] -> [ABORT][10] ([i915#14365]) +1 other test abort
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-twl-1/igt@i915_selftest@live.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-twl-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-9:          [PASS][11] -> [DMESG-FAIL][12] ([i915#12061]) +1 other test dmesg-fail
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-    - bat-dg2-14:         [PASS][13] -> [DMESG-FAIL][14] ([i915#12061]) +1 other test dmesg-fail
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [DMESG-FAIL][15] ([i915#12061]) -> [PASS][16] +1 other test pass
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-mtlp-8/igt@i915_selftest@live.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-mtlp-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-6:         [DMESG-FAIL][17] ([i915#12061]) -> [PASS][18] +1 other test pass
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-arls-6/igt@i915_selftest@live@workarounds.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-arls-6/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#14365]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14365
-  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
-  [i915#2582]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8673 -> IGTPW_14234
-
-  CI-20190529: 20190529
-  CI_DRM_17704: 31985bb0a701138a06a5eb0b175b2a5c850cc4ee @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14234: 14234
-  IGT_8673: 8673
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/index.html
-
---===============2440296226998630427==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Thanks,
+Janusz
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+> 
+> Regards,
+> Kamil
+> 
+> >  	igt_describe("Exercise local memory swapping during exhausting system memory");
+> >  	dynamic_lmem_subtest(region, regions, "smem-oom")
+> >  		test_smem_oom(i915, ctx, region);
+> >  
+> >  	igt_fixture() {
+> > +		if (printk) {
+> > +			rewind(printk);
+> > +			igt_debug_on(fprintf(printk, "%d %d",
+> > +					     console_log_level, default_log_level) != 3);
+> > +			fclose(printk);
+> > +		}
+> > +
+> >  		intel_allocator_multiprocess_stop();
+> >  		intel_ctx_destroy(i915, ctx);
+> >  		free(regions);
+> 
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lig/igt_fb: fix x-tiled framebuffers on intel xe driver</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159198/">https://patchwork.freedesktop.org/series/159198/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/index.html</a></td></tr>
-
-</table>
 
 
-    <h1>CI Bug Log - changes from IGT_8673 -&gt; IGTPW_14234</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_14234 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_14234, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/index.html</p>
-<h2>Participating hosts (43 -&gt; 41)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_14234:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@gem_softpin@safe-alignment:</p>
-<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/fi-hsw-4770/igt@gem_softpin@safe-alignment.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/fi-hsw-4770/igt@gem_softpin@safe-alignment.html">FAIL</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@c-dp1:</p>
-<ul>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-adlp-9/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-adlp-9/igt@kms_flip@basic-flip-vs-dpms@c-dp1.html">FAIL</a> +2 other tests fail</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14234 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@fbdev@info:</p>
-<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/fi-hsw-4770/igt@fbdev@info.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/fi-hsw-4770/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582">i915#2582</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@nullptr:</p>
-<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/fi-hsw-4770/igt@fbdev@nullptr.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/fi-hsw-4770/igt@fbdev@nullptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582">i915#2582</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-twl-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-twl-1/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14365">i915#14365</a>) +1 other test abort</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8673/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14234/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8673 -&gt; IGTPW_14234</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17704: 31985bb0a701138a06a5eb0b175b2a5c850cc4ee @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14234: 14234<br />
-  IGT_8673: 8673</p>
-
-</body>
-</html>
-
---===============2440296226998630427==--
