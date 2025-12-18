@@ -4,55 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26B17D68BF6
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 09:51:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B263CD68BF6
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 09:53:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C545110E974;
-	Thu, 18 Dec 2025 09:51:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5FABC10E974;
+	Thu, 18 Dec 2025 09:53:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aLeMID4s";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WaPrH8hu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1453E10E974
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 09:51:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CBE6D10E974;
+ Thu, 18 Dec 2025 09:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766051462; x=1797587462;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Fr6yE9jweWleF9kZoA+R16tsqU2HWqMmEhkt7c4+RvE=;
- b=aLeMID4s5HM2nA6TPr4eD2DUh/Ud1pRa7OVG9Ll8u4vTf3i23cF9zr1w
- gP2i3dpmFEoikGjURJKM5F6FvoGjoa08I/uwMUBMJdnQEQCx1iLAV0aIQ
- qZCBpdugpvHD4Y4OyuOHWrXgHVzZI1Lst8fC9uqAax6X5wMn3HdErBwIn
- JxVJTCDOjC/D94XDEs4DLAQxn4yVrOiyw9IgE/xBN7+dEXJ5KWCHaqolO
- 6TUhJ4oB/7KXtRdEa/G+he3d/BC7rRa3H3AL4stW1K6rUaOX/O5wHSwOI
- GGeA/hBAir6oVArn5/bjVFcgNDWcRKaujN20sXET8i2HBHI42ktIAN5hX A==;
-X-CSE-ConnectionGUID: 4Aly8RkvRh22Hyfy8Exjpg==
-X-CSE-MsgGUID: ji1szQg2QwWkNNb0lnFNKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="66997051"
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="66997051"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2025 01:51:02 -0800
-X-CSE-ConnectionGUID: p58QsgoWRkSYY1RLmTcLBg==
-X-CSE-MsgGUID: EqnV59rOSmeRBdCw5JDyEg==
+ t=1766051635; x=1797587635;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=TzQk2SRt8mzzzoPdHN623ok2wlK7+T5QpSYJLEsBe6Q=;
+ b=WaPrH8huHgdnvLNVP17p8Wrhc0AEGuTDYSlb5wh0m3safEmeqgRTB+CQ
+ aVs687L0qiTdAn2USqocsvt80yeY/NiyPNrCQ/nVOw7puvcYk/P+ejw1A
+ OdK2mZRKgrxMsxlTMRv4YFdvopIDn38apcJZULRZEoCAZBSxwko3WsnWJ
+ kae9AaFV+o0oyTgjR4YEuqd8MiFtzobXixk+B8nBMSu9bk3yHhfZJ2yiC
+ WUSUzbMFSmCrUzyH2aPW8OJeWD9SnXDFvPTD6Bm4vTfTAaa0b1F8Al+qX
+ mVUSxLjJX2bzgFYrmYA7Dokl/ji2ieXTZ58KhuR8xMfndE5ajRhx6QdJT A==;
+X-CSE-ConnectionGUID: yUP663/gTD6MD/tPhVRS+Q==
+X-CSE-MsgGUID: SF9IZYKZSuSTe9ZZtbWzHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="78713764"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="78713764"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2025 01:53:55 -0800
+X-CSE-ConnectionGUID: WwwnToj8RdSxy8MDb3E9rg==
+X-CSE-MsgGUID: q1FQxws7Ry6VeiMYLKN+Bw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="199015298"
-Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
- by fmviesa009.fm.intel.com with ESMTP; 18 Dec 2025 01:50:59 -0800
-From: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, vinay.belgaumkar@intel.com,
- badal.nilawar@intel.com, riana.tauro@intel.com, karthik.poosa@intel.com,
- sk.anirban@intel.com, raag.jadav@intel.com,
- Mallesh Koujalagi <mallesh.koujalagi@intel.com>
-Subject: [v2 i-g-t] tests/i915_pm_rps: Improve error reporting for sysfs write
- failures
-Date: Thu, 18 Dec 2025 15:20:00 +0530
-Message-ID: <20251218095000.1232961-2-mallesh.koujalagi@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="203441441"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.252])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2025 01:53:54 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: I915-ci-infra@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: =?UTF-8?B?4pyX?= i915.CI.Full: failure for
+ tests/intel/gem_lmem_swapping: Avoid false failures from oom-killer
+Date: Thu, 18 Dec 2025 10:53:51 +0100
+Message-ID: <6112761.MhkbZ0Pkbq@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <176601860648.97606.18400949079259535367@a3b018990fe9>
+References: <20251217145110.131121-2-janusz.krzysztofik@linux.intel.com>
+ <176601860648.97606.18400949079259535367@a3b018990fe9>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,82 +71,65 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce dump_failure_stats() to provide detailed error logging when
-writing to RPS sysfs frequency files fails. The function reports:
- - Which frequency file (min/max/boost) failed to write
- - The attempted frequency value in MHz
- - errno with human-readable description
+Hi I915-ci-infra@lists.freedesktop.org,
 
-The filename lookup is encapsulated within the error reporting function,
-keeping call sites simple and only performing the lookup on actual failures
+On Thursday, 18 December 2025 01:43:26 CET Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/intel/gem_lmem_swapping: Avoid false failures from oom-killer
+> URL   : https://patchwork.freedesktop.org/series/159160/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from IGT_8670_full -> IGTPW_14228_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_14228_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_14228_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14228/index.html
+> 
+> Participating hosts (9 -> 9)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_14228_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_exec_big@single:
+>     - shard-mtlp:         [PASS][1] -> [DMESG-FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8670/shard-mtlp-3/igt@gem_exec_big@single.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14228/shard-mtlp-4/igt@gem_exec_big@single.html
 
-v2: Print current state of all RPS frequency files. (Anirban)
-  - Original/default values with CHANGED markers for modified entries
+The change under this pre-merge testing modifies only gem_lmem_swapping, not 
+other tests.  The above failure is not related.  Please update filters and re-
+report.
 
-Signed-off-by: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
----
- tests/intel/i915_pm_rps.c | 41 +++++++++++++++++++++++++++++++++------
- 1 file changed, 35 insertions(+), 6 deletions(-)
+Thanks,
+Janusz
 
-diff --git a/tests/intel/i915_pm_rps.c b/tests/intel/i915_pm_rps.c
-index f97a716be..fc5ca31df 100644
---- a/tests/intel/i915_pm_rps.c
-+++ b/tests/intel/i915_pm_rps.c
-@@ -201,6 +201,39 @@ static void wait_freq_settle(int gt_id)
- 	}
- }
- 
-+static void dump_failure_stats(int gt_id, FILE *filp, int val)
-+{
-+	int freqs[NUMFREQ];
-+	const char *filename = "unknown";
-+
-+	/* Find which file name this is */
-+	for (int i = 0; i < NUMFREQ; i++) {
-+		if (sysfs_files[gt_id][i].filp == filp) {
-+			filename = sysfs_files[gt_id][i].name;
-+			break;
-+		}
-+	}
-+	igt_warn("========================================\n");
-+	igt_warn("GT%d: Write failed to rps_%s_freq_mhz\n", gt_id, filename);
-+	igt_warn("  Attempted value: %d MHz\n", val);
-+	igt_warn("  errno: %d (%s)\n", errno, strerror(errno));
-+	igt_warn("----------------------------------------\n");
-+
-+	read_freqs(freqs, gt_id);
-+	igt_warn("Current sysfs values:\n");
-+	for (int i = 0; i < NUMFREQ; i++) {
-+		igt_warn("  rps_%s_freq_mhz = %d MHz\n",
-+			 sysfs_files[gt_id][i].name, freqs[i]);
-+	}
-+	igt_warn("Original/Default values:\n");
-+	for (int i = 0; i < NUMFREQ; i++) {
-+		igt_warn("  rps_%s_freq_mhz = %d MHz%s\n",
-+			 sysfs_files[gt_id][i].name, origfreqs[gt_id][i],
-+			 (freqs[i] != origfreqs[gt_id][i]) ? " (CHANGED)" : "");
-+	}
-+	igt_warn("========================================\n");
-+}
-+
- static int do_writeval(FILE *filp, int val, int lerrno, bool readback_check, int gt_id)
- {
- 	int ret, orig;
-@@ -215,12 +248,8 @@ static int do_writeval(FILE *filp, int val, int lerrno, bool readback_check, int
- 		if (readback_check)
- 			igt_assert_eq(readval(filp), orig);
- 	} else {
--		if (ret < 0) {
--			int freqs[NUMFREQ];
--
--			read_freqs(freqs, gt_id);
--			dump(freqs, gt_id);
--		}
-+		if (ret < 0)
-+			dump_failure_stats(gt_id, filp, val);
- 		/* Expecting no error */
- 		igt_assert_lt(0, ret);
- 		wait_freq_settle(gt_id);
--- 
-2.43.0
+> 
+>   
+> Known issues
+> ------------
+...
+
+
 
