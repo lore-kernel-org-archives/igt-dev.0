@@ -4,54 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E5E0D6ACE5
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 10:49:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AB9AD6ACE6
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 10:49:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DE5F110ED46;
-	Thu, 18 Dec 2025 10:49:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DB69210EE16;
+	Thu, 18 Dec 2025 10:49:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KVfDNOno";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CMGXb507";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA56910EE17
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 10:49:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6454F10EE16
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 10:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766054964; x=1797590964;
+ t=1766054967; x=1797590967;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=yxr6BqYmouBeE3xSUcn3pHrTkhx1FMNatAG415VMjLQ=;
- b=KVfDNOno/p2A8erea5SRlXJ+/tTvhVN3o2rP2HZcpfS5d8m/FldRosIt
- XuzMRuiajM5R7Zeh2qGbDlkaLeo1mEJZ6d4Og8P4wXXY+jJgAJDHeJH4p
- BehwzM6wfDZKalv57KmSIYJWVcLJb9MJSlKBhGMsb2swYggWvXgnxc7Gr
- vAkhaWAdMWi+bHhNieilYVZgbs/cx1u97ti/sFU0QeAYobf45+GFhHqvr
- Zgd0IeS9VWUzZ6RkK9gE/FmtBj14IEYKaLXeMgRGJ4wYKBc3WRPYL6Ppe
- P4j/toySHVqSiDQQh0j8bbDTyjsl/My0zXDjhQYK2u10OR7kWcXyphyHq w==;
-X-CSE-ConnectionGUID: X9w7b9VLR7+fd8UNOkV8PQ==
-X-CSE-MsgGUID: wnwsORvcTEyjSNj4Kgj5Wg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="67896855"
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="67896855"
+ bh=tfHF1ZmLP1W3eGR7UKVdmsaSt6YhOpnTQdrGd6W7A9k=;
+ b=CMGXb507FxE+/Is7TRaXn0FX1zH4qTwZW/33kCReoltct5GFnG2cjGze
+ a6wKakBq8x29DVw/AvcyVW9ahSO4Sy2Njo6ZSwY+yxXuGwrNBquhm98UV
+ XPsCyHGQ+TQnGdjRffFAUSoggDEF03rHfTB9zuB7/ibdyWwzsGjfdOapk
+ x8hsH8l9FGf35tOds0fL3qXb0RTtIaFoLGJn4dnvkzEMpflwIOnXakkuA
+ Bij71iVBbYbcq51+wX4AUO+H0PpMtozuRapKbFuc2YPLmXhgmR+b586/u
+ q62ynagiieqQJKzaMTyHuKRk5psgNKxijxqq2XdmdK68P8tBIW3hn0LzB w==;
+X-CSE-ConnectionGUID: vBSuRB6pTkelR6JWc84x7w==
+X-CSE-MsgGUID: NTACAJrVQOK1G5T75HMIVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="67896860"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="67896860"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2025 02:49:24 -0800
-X-CSE-ConnectionGUID: IOUY8W7nTieXwdTTqihrMw==
-X-CSE-MsgGUID: GjE240PrT8i9jafrosSxhA==
+ 18 Dec 2025 02:49:27 -0800
+X-CSE-ConnectionGUID: 4k26o9GMRYqX/yJYTdFLxg==
+X-CSE-MsgGUID: RfwMUziQTnONUfRvaSU6Bg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="199026105"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="199026125"
 Received: from fpallare-mobl4.ger.corp.intel.com (HELO fdugast-desk.home)
  ([10.245.244.48])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2025 02:49:22 -0800
+ 18 Dec 2025 02:49:25 -0800
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Francois Dugast <francois.dugast@intel.com>,
- Nishit Sharma <nishit.sharma@intel.com>,
  =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Matthew Brost <matthew.brost@intel.com>
+ Matthew Brost <matthew.brost@intel.com>,
+ Nishit Sharma <nishit.sharma@intel.com>
 Subject: [PATCH i-g-t,
- v3 1/3] tests/intel/xe_exec_system_allocator: Cleanup compute test
-Date: Thu, 18 Dec 2025 11:47:20 +0100
-Message-ID: <20251218104907.117812-2-francois.dugast@intel.com>
+ v3 3/3] tests/intel/xe_exec_system_allocator: Add new SVM compute
+ tests
+Date: Thu, 18 Dec 2025 11:47:22 +0100
+Message-ID: <20251218104907.117812-4-francois.dugast@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251218104907.117812-1-francois.dugast@intel.com>
 References: <20251218104907.117812-1-francois.dugast@intel.com>
@@ -73,71 +74,116 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Cleanup the test that uses lib/intel_compute and SVM to execute a compute
-kernel on arrays allocated on host, in preparation to add more tests.
-Remove the result check as this is already done in lib/intel_compute.
-Remove output to simplify the test as it did not add value.
-Remove the drm_xe_engine_class_instance argument as it was unused.
+These new tests allow triggering GPU page faults from the context of
+execution units. They can be used to create single page faults or page
+fault floods, of various sizes. This is helpful for debugging and for
+performance profiling.
 
-Cc: Nishit Sharma <nishit.sharma@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Matthew Brost <matthew.brost@intel.com>
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+Acked-by: Nishit Sharma <nishit.sharma@intel.com>
 ---
- tests/intel/xe_exec_system_allocator.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ tests/intel/xe_exec_system_allocator.c | 53 +++++++++++++++++++++++---
+ 1 file changed, 48 insertions(+), 5 deletions(-)
 
 diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index ffa4ec3f5..2ca85c95c 100644
+index e66fa4203..25fca9ba6 100644
 --- a/tests/intel/xe_exec_system_allocator.c
 +++ b/tests/intel/xe_exec_system_allocator.c
-@@ -2178,7 +2178,7 @@ processes(int fd, int n_exec_queues, int n_execs, size_t bo_size,
+@@ -2172,13 +2172,36 @@ processes(int fd, int n_exec_queues, int n_execs, size_t bo_size,
+ 	munmap(pdata, sizeof(*pdata));
+ }
+ 
++/* compute flags */
++#define TOUCH_ONCE		(0x1 << 0)
++#define ACCESS_DEVICE_HOST	(0x1 << 1)
++
+ /**
+  * SUBTEST: compute
+  * Description: Run a simple compute kernel with the system allocator
   * Test category: functionality test
++ *
++ * SUBTEST: eu-fault-4k-%s
++ * Description: Run a simple compute kernel %arg[1] on a 4KB malloc'ed buffer
++ * Test category: performance test
++ *
++ * SUBTEST: eu-fault-64k-%s
++ * Description: Run a simple compute kernel %arg[1] on a 64KB malloc'ed buffer
++ * Test category: performance test
++ *
++ * SUBTEST: eu-fault-2m-%s
++ * Description: Run a simple compute kernel %arg[1] on a 2MB malloc'ed buffer
++ * Test category: performance test
++ *
++ * arg[1]:
++ *
++ * @once-device:				touch the buffer only once, from the device
++ * @once-device-host:				touch the buffer only once, from the device then from the host
++ * @range-device:				touch the whole buffer, from the device
++ * @range-device-host:				touch the whole buffer, from the device then from the host
   */
  static void
--test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size)
-+test_compute(int fd, size_t size)
+-test_compute(int fd, size_t size)
++test_compute(int fd, size_t size, unsigned int flags)
  {
  	struct drm_xe_sync sync = {
  		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-@@ -2192,7 +2192,7 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size)
- 	struct user_execenv env = {
- 		.array_size = size / sizeof(float),
+@@ -2194,6 +2217,7 @@ test_compute(int fd, size_t size)
  	};
--	float *compute_input, *compute_output;
-+	float *compute_input;
+ 	float *compute_input;
  	int i;
++	unsigned int loop_count;
  
  	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE | DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-@@ -2203,21 +2203,14 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size)
- 
- 	compute_input = aligned_alloc(SZ_2M, size);
+ 	bo_sync = aligned_alloc(xe_get_default_alignment(fd), sizeof(*bo_sync));
+@@ -2204,11 +2228,14 @@ test_compute(int fd, size_t size)
+ 	compute_input = aligned_alloc(SZ_2M, env.array_size * sizeof(float));
  	igt_assert(compute_input);
--	compute_output = aligned_alloc(SZ_2M, size);
--	igt_assert(compute_output);
- 
- 	for (i = 0; i < env.array_size; i++)
- 		compute_input[i] = rand() / (float)RAND_MAX;
- 
- 	env.input_addr = to_user_pointer(compute_input);
--	env.output_addr = to_user_pointer(compute_output);
- 	env.vm = vm;
- 	run_intel_compute_kernel(fd, &env, EXECENV_PREF_SYSTEM);
  
 -	for (i = 0; i < env.array_size; i++)
--		igt_assert_eq_double(compute_input[i] * compute_input[i], compute_output[i]);
+-		compute_input[i] = rand() / (float)RAND_MAX;
 -
--	free(compute_output);
++	env.loop_count = (flags & TOUCH_ONCE) ? 1 : env.array_size / sizeof(float);
++	env.skip_results_check = !(flags & ACCESS_DEVICE_HOST);
+ 	env.input_addr = to_user_pointer(compute_input);
+ 	env.vm = vm;
++
++	for (i = 0; i < env.loop_count; i++)
++		compute_input[i] = rand() / (float)RAND_MAX;
++
+ 	run_intel_compute_kernel(fd, &env, EXECENV_PREF_SYSTEM);
+ 
  	free(compute_input);
- 	unbind_system_allocator();
- 	xe_vm_destroy(fd, vm);
-@@ -2609,8 +2602,7 @@ int igt_main()
+@@ -2360,6 +2387,13 @@ int igt_main()
+ 		  MADVISE_OP | PREFETCH | PREFETCH_SAME_ATTR | ATOMIC_BATCH },
+ 		{ NULL },
+ 	};
++	const struct section csections[] = {
++		{ "once-device", TOUCH_ONCE },
++		{ "once-device-host", TOUCH_ONCE | ACCESS_DEVICE_HOST },
++		{ "range-device", 0 },
++		{ "range-device-host", ACCESS_DEVICE_HOST },
++		{ NULL },
++	};
+ 
+ 	const struct section intel_get_pat_idx_functions[] = {
+ 		{ "madvise-pat-idx-wb-single-vma", MADVISE_OP | MADVISE_PAT_INDEX,
+@@ -2602,7 +2636,16 @@ int igt_main()
  	}
  
  	igt_subtest("compute")
--		xe_for_each_engine(fd, hwe)
--			test_compute(fd, hwe, SZ_2M);
-+		test_compute(fd, SZ_2M);
+-		test_compute(fd, SZ_2M);
++		test_compute(fd, SZ_2M, 0);
++
++	for (const struct section *s = csections; s->name; s++) {
++		igt_subtest_f("eu-fault-4k-%s", s->name)
++			test_compute(fd, SZ_4K, s->flags);
++		igt_subtest_f("eu-fault-64k-%s", s->name)
++			test_compute(fd, SZ_64K, s->flags);
++		igt_subtest_f("eu-fault-2m-%s", s->name)
++			test_compute(fd, SZ_2M, s->flags);
++	}
  
  	igt_fixture() {
  		xe_device_put(fd);
