@@ -4,53 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89DCED6ACFF
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 12:59:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DFE0D6ACFE
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 12:59:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3B09510E41F;
-	Thu, 18 Dec 2025 12:59:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 407ED10E41D;
+	Thu, 18 Dec 2025 12:59:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OxOzUKff";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WWZnm/du";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E95610E41D
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 12:59:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0AF6510E41D
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 12:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766062759; x=1797598759;
+ t=1766062760; x=1797598760;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=GKpLvi8RntJdbz8Es6qXMYnAMjwXHzmKPD3mpamVRqY=;
- b=OxOzUKffp0FmpUMKS54vimhXptmKxhZNgnIBYGjOXb1jgN/EpBDT19l0
- zh8qhm6uXRxOPa/cCeuJirrMYrM4rifIc2I816HLiYbKZrLau6QL95iR+
- 4La4nWP0+u+oDQBW0R9cEKsKDmOQIjlfctgiULIIW0EGXgCMBctpLp7DC
- CSYy9jJv5Kpq1/RAGntr6TdFPu3VgAa9w6ztOf3WPcr+5XP+DXplZSbUV
- x64NHodaP8+zteSRcya/WJfK3cDVN+1663AcvQBtkSIIlWu31zWJ8mxFB
- JsHO5ne112jkjerW7t80iWq1XVpkVx2fkiMySkhQWiW6RBjvk8L73nDNg w==;
-X-CSE-ConnectionGUID: KY6YuIlHRBO7fZMkmW11Tw==
-X-CSE-MsgGUID: YjseY0+nRdKeVF64SVz5jw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="90672319"
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="90672319"
+ bh=6p87nYknT129WTFODWsGZwrlXiq8USn5mRxcROZBuzk=;
+ b=WWZnm/du7PnsgMW/+VTamcly8W3FArq4N5SfQ9d3jA+xKy5C/n/KON8h
+ C+U2cit4aCspVC2Czfm0JSIMPipx/PRX2c7KefvtZnT9FUHwZmvL0uObY
+ 0esn8RaSvnijgQubw0+VZxuKlemg3I8wO/M6DMMlI8A8NXY4V70J2pBe1
+ yOzV/a+5wFYxlFv4jAAueaAern8KOjcJtyR+c3TWl+Lo/vp3JYkA/6Xso
+ 0D6MeuS8WzufvwTcr0gx7IV1cdgoqlouO38fdvRXK/BJX8mnju3I/bycU
+ RSSV1ZrAR9UVwaOP+T48M1TIQngRWEF9/yNoZkH6302ceV35RhzhMDRJr Q==;
+X-CSE-ConnectionGUID: M21bP2IHRxatAiHRXeZ8Kw==
+X-CSE-MsgGUID: 3oFPd+kURMa+vE4o7wf+nw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="90672321"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="90672321"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2025 04:59:18 -0800
-X-CSE-ConnectionGUID: t5AEclT8R1K/SwmT1T9XYw==
-X-CSE-MsgGUID: 07eax3mSS8O35QA0o6aQPQ==
+ 18 Dec 2025 04:59:20 -0800
+X-CSE-ConnectionGUID: Cnuzt5IiTjqDyI6SSoMD9Q==
+X-CSE-MsgGUID: BcZI35hoTOasGT4fj7kzZg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="198637733"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="198637743"
 Received: from fpallare-mobl4.ger.corp.intel.com (HELO fdugast-desk.home)
  ([10.245.244.48])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2025 04:59:17 -0800
+ 18 Dec 2025 04:59:18 -0800
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Francois Dugast <francois.dugast@intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Nishit Sharma <nishit.sharma@intel.com>
 Subject: [PATCH i-g-t,
- v4 2/3] lib/intel_compute: Allow user to override compute kernel
- loop_count
-Date: Thu, 18 Dec 2025 13:56:06 +0100
-Message-ID: <20251218125906.124925-3-francois.dugast@intel.com>
+ v4 3/3] tests/intel/xe_exec_system_allocator: Add new SVM compute
+ tests
+Date: Thu, 18 Dec 2025 13:56:07 +0100
+Message-ID: <20251218125906.124925-4-francois.dugast@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251218125906.124925-1-francois.dugast@intel.com>
 References: <20251218125906.124925-1-francois.dugast@intel.com>
@@ -72,206 +74,111 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-array_size and loop_count continue to have the same value by default but
-by differentiating those two variables, the user has more control over
-the execution of the compute kernel: the loop count can now be different
-from the array size.
-
-Also, add a comment in xe_exec_system_allocator to clarify semantics of
-size and env.array_size.
+These new tests allow triggering GPU page faults from the context of
+execution units. They can be used to create single page faults or page
+fault floods, of various sizes. This is helpful for debugging and for
+performance profiling.
 
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Acked-by: Nishit Sharma <nishit.sharma@intel.com>
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
 ---
- lib/intel_compute.c                    | 36 +++++++++++++++-----------
- lib/intel_compute.h                    |  2 ++
- tests/intel/xe_exec_system_allocator.c |  3 +++
- 3 files changed, 26 insertions(+), 15 deletions(-)
+ tests/intel/xe_exec_system_allocator.c | 52 +++++++++++++++++++++++---
+ 1 file changed, 47 insertions(+), 5 deletions(-)
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index e112e57b5..20ee44521 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -94,6 +94,7 @@ struct bo_execenv {
- 	uint32_t vm;
- 	uint32_t exec_queue;
- 	uint32_t array_size;
-+	unsigned int loop_count;
- 
- 	/* Xe user-fence */
- 	uint32_t bo;
-@@ -137,7 +138,7 @@ static float *get_input_data(const struct bo_execenv *execenv,
- 		input_data = from_user_pointer(user->input_addr);
- 	} else {
- 		input_data = (float *) data;
--		bo_randomize(input_data, execenv->array_size);
-+		bo_randomize(input_data, execenv->loop_count);
- 	}
- 
- 	return input_data;
-@@ -181,6 +182,11 @@ static void bo_execenv_create(int fd, struct bo_execenv *execenv,
- 		else
- 			execenv->array_size = SIZE_DATA;
- 
-+		if (user && user->loop_count)
-+			execenv->loop_count = user->loop_count;
-+		else
-+			execenv->loop_count = execenv->array_size;
-+
- 		if (eci) {
- 			execenv->exec_queue = xe_exec_queue_create(fd, execenv->vm,
- 								   eci, 0);
-@@ -864,7 +870,7 @@ static void compute_exec(int fd, const unsigned char *kernel,
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
- 	create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr,
--			     IS_DG1(devid) ? 0x200 : 0x40, execenv.array_size);
-+			     IS_DG1(devid) ? 0x200 : 0x40, execenv.loop_count);
- 
- 	input_data = get_input_data(&execenv, user, bo_dict[4].data);
- 	output_data = get_output_data(&execenv, user, bo_dict[5].data);
-@@ -885,7 +891,7 @@ static void compute_exec(int fd, const unsigned char *kernel,
- 	bo_execenv_exec(&execenv, ADDR_BATCH);
- 
- 	if (!user || (user && !user->skip_results_check))
--		bo_check_square(input_data, output_data, execenv.array_size);
-+		bo_check_square(input_data, output_data, execenv.loop_count);
- 
- 	bo_execenv_unbind(&execenv, bo_dict, entries);
- 	bo_execenv_destroy(&execenv);
-@@ -1152,7 +1158,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	xehp_create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
- 	xehp_create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr,
--				  execenv.array_size);
-+				  execenv.loop_count);
- 	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
- 
- 	input_data = get_input_data(&execenv, user, bo_dict[4].data);
-@@ -1170,7 +1176,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
- 	bo_execenv_exec(&execenv, ADDR_BATCH);
- 
- 	if (!user || (user && !user->skip_results_check))
--		bo_check_square(input_data, output_data, execenv.array_size);
-+		bo_check_square(input_data, output_data, execenv.loop_count);
- 
- 	bo_execenv_unbind(&execenv, bo_dict, entries);
- 	bo_execenv_destroy(&execenv);
-@@ -1365,7 +1371,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
- 
- 	memcpy(bo_dict[0].data, kernel, size);
- 	xehpc_create_indirect_data(bo_dict[1].data, bind_input_addr, bind_output_addr,
--				   execenv.array_size);
-+				   execenv.loop_count);
- 
- 	input_data = get_input_data(&execenv, user, bo_dict[2].data);
- 	output_data = get_output_data(&execenv, user, bo_dict[3].data);
-@@ -1382,7 +1388,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
- 	bo_execenv_exec(&execenv, ADDR_BATCH);
- 
- 	if (!user || (user && !user->skip_results_check))
--		bo_check_square(input_data, output_data, execenv.array_size);
-+		bo_check_square(input_data, output_data, execenv.loop_count);
- 
- 	bo_execenv_unbind(&execenv, bo_dict, entries);
- 	bo_execenv_destroy(&execenv);
-@@ -1762,7 +1768,7 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	xehp_create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
- 	xelpg_create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr,
--				   execenv.array_size);
-+				   execenv.loop_count);
- 	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
- 
- 	input_data = get_input_data(&execenv, user, bo_dict[4].data);
-@@ -1780,7 +1786,7 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
- 	bo_execenv_exec(&execenv, ADDR_BATCH);
- 
- 	if (!user || (user && !user->skip_results_check))
--		bo_check_square(input_data, output_data, execenv.array_size);
-+		bo_check_square(input_data, output_data, execenv.loop_count);
- 
- 	bo_execenv_unbind(&execenv, bo_dict, entries);
- 	bo_execenv_destroy(&execenv);
-@@ -1850,7 +1856,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	xehp_create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
- 	xelpg_create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr,
--				   execenv.array_size);
-+				   execenv.loop_count);
- 	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
- 
- 	input_data = get_input_data(&execenv, user, bo_dict[4].data);
-@@ -1881,7 +1887,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
- 	}
- 
- 	if (!user || (user && !user->skip_results_check))
--		bo_check_square(input_data, output_data, execenv.array_size);
-+		bo_check_square(input_data, output_data, execenv.loop_count);
- 
- 	bo_execenv_unbind(&execenv, bo_dict, entries);
- 	bo_execenv_destroy(&execenv);
-@@ -2205,21 +2211,21 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 	output_short = (float *) bo_dict_short[5].data;
- 	post_data = (uint64_t *) bo_dict_long[8].data;
- 
--	bo_randomize(input_short, SIZE_DATA);
-+	bo_randomize(input_short, execenv_short.loop_count);
- 
- 	xe2lpg_compute_exec_compute(fd,
- 				    bo_dict_long[8].data, ADDR_GENERAL_STATE_BASE,
- 				    ADDR_SURFACE_STATE_BASE, ADDR_DYNAMIC_STATE_BASE,
- 				    ADDR_INSTRUCTION_STATE_BASE, XE2_ADDR_STATE_CONTEXT_DATA_BASE,
- 				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP,
--				    threadgroup_preemption, SIZE_DATA);
-+				    threadgroup_preemption, execenv_long.array_size);
- 
- 	xe2lpg_compute_exec_compute(fd,
- 				    bo_dict_short[8].data, ADDR_GENERAL_STATE_BASE,
- 				    ADDR_SURFACE_STATE_BASE, ADDR_DYNAMIC_STATE_BASE,
- 				    ADDR_INSTRUCTION_STATE_BASE, XE2_ADDR_STATE_CONTEXT_DATA_BASE,
- 				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP,
--				    false, SIZE_DATA);
-+				    false, execenv_short.array_size);
- 
- 	bo_execenv_exec_async(&execenv_long, ADDR_BATCH);
- 
-@@ -2232,7 +2238,7 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 	 * square) must complete first and long job must be still active.
- 	 */
- 	bo_execenv_exec(&execenv_short, ADDR_BATCH);
--	bo_check_square(input_short, output_short, SIZE_DATA);
-+	bo_check_square(input_short, output_short, execenv_short.loop_count);
- 
- 	/*
- 	 * Catch command level preemption instead TG preemption. For TG and WMTP
-diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-index 8a3d7b450..28c1efd55 100644
---- a/lib/intel_compute.h
-+++ b/lib/intel_compute.h
-@@ -63,6 +63,8 @@ struct user_execenv {
- 	uint64_t input_addr;
- 	/** @output_addr: override default address of the output array if provided */
- 	uint64_t output_addr;
-+	/** @loop_count: override default loop count if provided */
-+	unsigned int loop_count;
- 	/** @loop_kernel_duration: duration till kernel should execute in gpu **/
- 	uint64_t loop_kernel_duration;
- };
 diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 2ca85c95c..b1555afbe 100644
+index b1555afbe..66d68f054 100644
 --- a/tests/intel/xe_exec_system_allocator.c
 +++ b/tests/intel/xe_exec_system_allocator.c
-@@ -2190,6 +2190,9 @@ test_compute(int fd, size_t size)
- 	} *bo_sync;
- 	uint32_t vm;
- 	struct user_execenv env = {
-+		/*
-+		 * size is the number of bytes of the array, array_size is its number of elements.
-+		 */
- 		.array_size = size / sizeof(float),
+@@ -2172,13 +2172,36 @@ processes(int fd, int n_exec_queues, int n_execs, size_t bo_size,
+ 	munmap(pdata, sizeof(*pdata));
+ }
+ 
++/* compute flags */
++#define TOUCH_ONCE		(0x1 << 0)
++#define ACCESS_DEVICE_HOST	(0x1 << 1)
++
+ /**
+  * SUBTEST: compute
+  * Description: Run a simple compute kernel with the system allocator
+  * Test category: functionality test
++ *
++ * SUBTEST: eu-fault-4k-%s
++ * Description: Run a simple compute kernel %arg[1] on a 4KB malloc'ed buffer
++ * Test category: performance test
++ *
++ * SUBTEST: eu-fault-64k-%s
++ * Description: Run a simple compute kernel %arg[1] on a 64KB malloc'ed buffer
++ * Test category: performance test
++ *
++ * SUBTEST: eu-fault-2m-%s
++ * Description: Run a simple compute kernel %arg[1] on a 2MB malloc'ed buffer
++ * Test category: performance test
++ *
++ * arg[1]:
++ *
++ * @once-device:				touch the buffer only once, from the device
++ * @once-device-host:				touch the buffer only once, from the device then from the host
++ * @range-device:				touch the whole buffer, from the device
++ * @range-device-host:				touch the whole buffer, from the device then from the host
+  */
+ static void
+-test_compute(int fd, size_t size)
++test_compute(int fd, size_t size, unsigned int flags)
+ {
+ 	struct drm_xe_sync sync = {
+ 		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+@@ -2207,11 +2230,14 @@ test_compute(int fd, size_t size)
+ 	compute_input = aligned_alloc(SZ_2M, size);
+ 	igt_assert(compute_input);
+ 
+-	for (i = 0; i < env.array_size; i++)
+-		compute_input[i] = rand() / (float)RAND_MAX;
+-
++	env.loop_count = (flags & TOUCH_ONCE) ? 1 : env.array_size;
++	env.skip_results_check = !(flags & ACCESS_DEVICE_HOST);
+ 	env.input_addr = to_user_pointer(compute_input);
+ 	env.vm = vm;
++
++	for (i = 0; i < env.loop_count; i++)
++		compute_input[i] = rand() / (float)RAND_MAX;
++
+ 	run_intel_compute_kernel(fd, &env, EXECENV_PREF_SYSTEM);
+ 
+ 	free(compute_input);
+@@ -2363,6 +2389,13 @@ int igt_main()
+ 		  MADVISE_OP | PREFETCH | PREFETCH_SAME_ATTR | ATOMIC_BATCH },
+ 		{ NULL },
  	};
- 	float *compute_input;
++	const struct section csections[] = {
++		{ "once-device", TOUCH_ONCE },
++		{ "once-device-host", TOUCH_ONCE | ACCESS_DEVICE_HOST },
++		{ "range-device", 0 },
++		{ "range-device-host", ACCESS_DEVICE_HOST },
++		{ NULL },
++	};
+ 
+ 	const struct section intel_get_pat_idx_functions[] = {
+ 		{ "madvise-pat-idx-wb-single-vma", MADVISE_OP | MADVISE_PAT_INDEX,
+@@ -2605,7 +2638,16 @@ int igt_main()
+ 	}
+ 
+ 	igt_subtest("compute")
+-		test_compute(fd, SZ_2M);
++		test_compute(fd, SZ_2M, 0);
++
++	for (const struct section *s = csections; s->name; s++) {
++		igt_subtest_f("eu-fault-4k-%s", s->name)
++			test_compute(fd, SZ_4K, s->flags);
++		igt_subtest_f("eu-fault-64k-%s", s->name)
++			test_compute(fd, SZ_64K, s->flags);
++		igt_subtest_f("eu-fault-2m-%s", s->name)
++			test_compute(fd, SZ_2M, s->flags);
++	}
+ 
+ 	igt_fixture() {
+ 		xe_device_put(fd);
 -- 
 2.43.0
 
