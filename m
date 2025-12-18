@@ -4,56 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34B2FD6ACE5
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 10:49:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 696A1D6ACE2
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 11:04:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D7C5010EE18;
-	Thu, 18 Dec 2025 10:49:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1FA1B10ED92;
+	Thu, 18 Dec 2025 11:04:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BJK24PiO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MXTki4nq";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E9FC10E3C7
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 10:49:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D53910ED92
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 11:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766054965; x=1797590965;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=03IBLF98PptQP6kDeCo7CicuxHKt+LgiIgGN/Edvw54=;
- b=BJK24PiOigTd+jysjZ8WARbTaqo2Bn2dgh7lfKADmG0CeEVTj2J9EuEA
- W5cTr5R+DiFJCs/TaondfWan+bZ+/1EH/+kJFCChUurue7BJSiHjz5HCj
- /aqfSikw+UCaxjkkfM9/oZQUzn5O9qgO9kNrg35ObfS249glbupXwjFJ/
- diuQt2CkL9HkHy6GO4ngAptOTo0ICUA2ksp3y8EUlFLPja+qoiZzcH9NN
- WqrmS3a0Ml0Cdhjtxb/fa3VKOaqiDz94y8Q0UMA1+Gb/P//g6KiMgY6cf
- mulMm6DHi6Mknt29cKa+/u9QTh3qNUkW9V2A15Z5aWTd+idINX+BELXX3 A==;
-X-CSE-ConnectionGUID: VSjpVljGRVC2/jLEPci9xQ==
-X-CSE-MsgGUID: CiFBctCUQWKDP6ImPulkXA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="67896859"
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="67896859"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2025 02:49:25 -0800
-X-CSE-ConnectionGUID: xizkYAYxSxqjuYm/ZdiCOw==
-X-CSE-MsgGUID: 6TAmJMwJSd20IvTuR7GGPQ==
+ t=1766055848; x=1797591848;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=KkG6b+3OLi0BzxGxJhWhc42/xKtxGwDVqDBUaBdNMjI=;
+ b=MXTki4nq4nN/wmG/BVEKZTliQLzLLruxYr2Rt4NSF9Gv0ZMnK6Q860Is
+ OMaBO+qw7CziuxpyGjztkxtvHTYYzsWEjv7aa6vcSEwfu+nQgYL9F7cLu
+ kW7JsPcAO7MzNhmbneSSfZUkXtazf82kqRbKbEnng6L0FCtWy2wQkLjSV
+ 2PHI+PtBOZ4eGlmfzSRQ5c8GaBHdkhB5lhvUtQG8AV8pL3AzoIhl/045E
+ JBlbIn0fj/5G1TN4Hnkq+SSV7iKXAO3hkq/W+WDb51fqgqNFWGKyrFHfv
+ cRFkgKjjCn91kGG3Ndyx/zC+kUnv16UNa5iQZocGso3dcvcT63B+nhlLl g==;
+X-CSE-ConnectionGUID: Ra5DBmePT2Cb5h73EFhy+g==
+X-CSE-MsgGUID: X/PFiG2JQFCR3ehfcU7EQw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="78644412"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="78644412"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2025 03:04:08 -0800
+X-CSE-ConnectionGUID: xRO9h42PR5qXZLbnNqPoXA==
+X-CSE-MsgGUID: 9xXd4QeDS2CZ3L8J73xa7g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="199026119"
-Received: from fpallare-mobl4.ger.corp.intel.com (HELO fdugast-desk.home)
- ([10.245.244.48])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2025 02:49:24 -0800
-From: Francois Dugast <francois.dugast@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="198323088"
+Received: from intel-s2600wft.iind.intel.com ([10.223.26.143])
+ by orviesa009.jf.intel.com with ESMTP; 18 Dec 2025 03:04:06 -0800
+From: S Sebinraj <s.sebinraj@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Francois Dugast <francois.dugast@intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t,
- v3 2/3] lib/intel_compute: Allow user to override compute kernel
- loop_count
-Date: Thu, 18 Dec 2025 11:47:21 +0100
-Message-ID: <20251218104907.117812-3-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251218104907.117812-1-francois.dugast@intel.com>
-References: <20251218104907.117812-1-francois.dugast@intel.com>
+Cc: jeevaka.badrappan@intel.com, krzysztof.karas@intel.com,
+ kamil.konieczny@intel.com, S Sebinraj <s.sebinraj@intel.com>
+Subject: [PATCH i-g-t v4] tools/gputop: Add GPU frequencies to the client
+ headers
+Date: Thu, 18 Dec 2025 16:13:03 +0530
+Message-Id: <20251218104303.2268868-1-s.sebinraj@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -72,214 +67,208 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-array_size and loop_count continue to have the same value by default but
-by differentiating those two variables, the user has more control over
-the execution of the compute kernel: the loop count can now be different
-from the array size.
+Enhance gputop to display GPU frequency information (current/actual)
+for each GT in the client header line alongside the DRM minor number.
 
-Also, align use of env.array_size in xe_exec_system_allocator with the
-semantics used in lib/intel_compute.
+Key changes:
+- Add get_gt_frequencies() function to read GT frequency values
+- Support both i915 and Xe drivers using appropriate sysfs paths
+- Display format: "DRM minor X  Freq(cur/act) GT0-freq/freq GT1-freq/freq"
+- Use IGT API functions (xe_sysfs_gt_path, igt_sysfs_gt_path) for
+  driver-agnostic sysfs access
 
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+The frequency information helps users monitor GPU performance states
+in real-time while observing client workload utilization.
+
+Example output:
+  DRM minor 0          Freq(cur/act) GT0-1800/1800 GT1-400/400
+  DRM minor 128        Freq(cur/act) GT0-400/400 GT1-400/400
+
+v2:
+- To use macro to suffix strings
+- To skip failure loops
+
+v3:
+- To keep error logs
+
+v4:
+- Removed RFC from Subject 
+
+Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
+Tested-by: Karas Krzysztof <krzysztof.karas@intel.com>
+Reviewed-by: Karas Krzysztof <krzysztof.karas@intel.com>
 ---
- lib/intel_compute.c                    | 36 +++++++++++++++-----------
- lib/intel_compute.h                    |  2 ++
- tests/intel/xe_exec_system_allocator.c |  4 +--
- 3 files changed, 25 insertions(+), 17 deletions(-)
+ tools/gputop.c    | 119 +++++++++++++++++++++++++++++++++++++++++++++-
+ tools/meson.build |   2 +-
+ 2 files changed, 119 insertions(+), 2 deletions(-)
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index e112e57b5..20ee44521 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -94,6 +94,7 @@ struct bo_execenv {
- 	uint32_t vm;
- 	uint32_t exec_queue;
- 	uint32_t array_size;
-+	unsigned int loop_count;
+diff --git a/tools/gputop.c b/tools/gputop.c
+index f577a1750..d6b61a563 100644
+--- a/tools/gputop.c
++++ b/tools/gputop.c
+@@ -30,13 +30,20 @@
+ #include "igt_drm_clients.h"
+ #include "igt_drm_fdinfo.h"
+ #include "igt_profiling.h"
++#include "igt_sysfs.h"
+ #include "drmtest.h"
++#include "xe/xe_gt.h"
  
- 	/* Xe user-fence */
- 	uint32_t bo;
-@@ -137,7 +138,7 @@ static float *get_input_data(const struct bo_execenv *execenv,
- 		input_data = from_user_pointer(user->input_addr);
- 	} else {
- 		input_data = (float *) data;
--		bo_randomize(input_data, execenv->array_size);
-+		bo_randomize(input_data, execenv->loop_count);
- 	}
- 
- 	return input_data;
-@@ -181,6 +182,11 @@ static void bo_execenv_create(int fd, struct bo_execenv *execenv,
- 		else
- 			execenv->array_size = SIZE_DATA;
- 
-+		if (user && user->loop_count)
-+			execenv->loop_count = user->loop_count;
-+		else
-+			execenv->loop_count = execenv->array_size;
-+
- 		if (eci) {
- 			execenv->exec_queue = xe_exec_queue_create(fd, execenv->vm,
- 								   eci, 0);
-@@ -864,7 +870,7 @@ static void compute_exec(int fd, const unsigned char *kernel,
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
- 	create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr,
--			     IS_DG1(devid) ? 0x200 : 0x40, execenv.array_size);
-+			     IS_DG1(devid) ? 0x200 : 0x40, execenv.loop_count);
- 
- 	input_data = get_input_data(&execenv, user, bo_dict[4].data);
- 	output_data = get_output_data(&execenv, user, bo_dict[5].data);
-@@ -885,7 +891,7 @@ static void compute_exec(int fd, const unsigned char *kernel,
- 	bo_execenv_exec(&execenv, ADDR_BATCH);
- 
- 	if (!user || (user && !user->skip_results_check))
--		bo_check_square(input_data, output_data, execenv.array_size);
-+		bo_check_square(input_data, output_data, execenv.loop_count);
- 
- 	bo_execenv_unbind(&execenv, bo_dict, entries);
- 	bo_execenv_destroy(&execenv);
-@@ -1152,7 +1158,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	xehp_create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
- 	xehp_create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr,
--				  execenv.array_size);
-+				  execenv.loop_count);
- 	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
- 
- 	input_data = get_input_data(&execenv, user, bo_dict[4].data);
-@@ -1170,7 +1176,7 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
- 	bo_execenv_exec(&execenv, ADDR_BATCH);
- 
- 	if (!user || (user && !user->skip_results_check))
--		bo_check_square(input_data, output_data, execenv.array_size);
-+		bo_check_square(input_data, output_data, execenv.loop_count);
- 
- 	bo_execenv_unbind(&execenv, bo_dict, entries);
- 	bo_execenv_destroy(&execenv);
-@@ -1365,7 +1371,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
- 
- 	memcpy(bo_dict[0].data, kernel, size);
- 	xehpc_create_indirect_data(bo_dict[1].data, bind_input_addr, bind_output_addr,
--				   execenv.array_size);
-+				   execenv.loop_count);
- 
- 	input_data = get_input_data(&execenv, user, bo_dict[2].data);
- 	output_data = get_output_data(&execenv, user, bo_dict[3].data);
-@@ -1382,7 +1388,7 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
- 	bo_execenv_exec(&execenv, ADDR_BATCH);
- 
- 	if (!user || (user && !user->skip_results_check))
--		bo_check_square(input_data, output_data, execenv.array_size);
-+		bo_check_square(input_data, output_data, execenv.loop_count);
- 
- 	bo_execenv_unbind(&execenv, bo_dict, entries);
- 	bo_execenv_destroy(&execenv);
-@@ -1762,7 +1768,7 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	xehp_create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
- 	xelpg_create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr,
--				   execenv.array_size);
-+				   execenv.loop_count);
- 	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
- 
- 	input_data = get_input_data(&execenv, user, bo_dict[4].data);
-@@ -1780,7 +1786,7 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
- 	bo_execenv_exec(&execenv, ADDR_BATCH);
- 
- 	if (!user || (user && !user->skip_results_check))
--		bo_check_square(input_data, output_data, execenv.array_size);
-+		bo_check_square(input_data, output_data, execenv.loop_count);
- 
- 	bo_execenv_unbind(&execenv, bo_dict, entries);
- 	bo_execenv_destroy(&execenv);
-@@ -1850,7 +1856,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
- 	create_dynamic_state(bo_dict[1].data, OFFSET_KERNEL);
- 	xehp_create_surface_state(bo_dict[2].data, bind_input_addr, bind_output_addr);
- 	xelpg_create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr,
--				   execenv.array_size);
-+				   execenv.loop_count);
- 	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
- 
- 	input_data = get_input_data(&execenv, user, bo_dict[4].data);
-@@ -1881,7 +1887,7 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
- 	}
- 
- 	if (!user || (user && !user->skip_results_check))
--		bo_check_square(input_data, output_data, execenv.array_size);
-+		bo_check_square(input_data, output_data, execenv.loop_count);
- 
- 	bo_execenv_unbind(&execenv, bo_dict, entries);
- 	bo_execenv_destroy(&execenv);
-@@ -2205,21 +2211,21 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 	output_short = (float *) bo_dict_short[5].data;
- 	post_data = (uint64_t *) bo_dict_long[8].data;
- 
--	bo_randomize(input_short, SIZE_DATA);
-+	bo_randomize(input_short, execenv_short.loop_count);
- 
- 	xe2lpg_compute_exec_compute(fd,
- 				    bo_dict_long[8].data, ADDR_GENERAL_STATE_BASE,
- 				    ADDR_SURFACE_STATE_BASE, ADDR_DYNAMIC_STATE_BASE,
- 				    ADDR_INSTRUCTION_STATE_BASE, XE2_ADDR_STATE_CONTEXT_DATA_BASE,
- 				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP,
--				    threadgroup_preemption, SIZE_DATA);
-+				    threadgroup_preemption, execenv_long.array_size);
- 
- 	xe2lpg_compute_exec_compute(fd,
- 				    bo_dict_short[8].data, ADDR_GENERAL_STATE_BASE,
- 				    ADDR_SURFACE_STATE_BASE, ADDR_DYNAMIC_STATE_BASE,
- 				    ADDR_INSTRUCTION_STATE_BASE, XE2_ADDR_STATE_CONTEXT_DATA_BASE,
- 				    OFFSET_INDIRECT_DATA_START, OFFSET_KERNEL, OFFSET_STATE_SIP,
--				    false, SIZE_DATA);
-+				    false, execenv_short.array_size);
- 
- 	bo_execenv_exec_async(&execenv_long, ADDR_BATCH);
- 
-@@ -2232,7 +2238,7 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
- 	 * square) must complete first and long job must be still active.
- 	 */
- 	bo_execenv_exec(&execenv_short, ADDR_BATCH);
--	bo_check_square(input_short, output_short, SIZE_DATA);
-+	bo_check_square(input_short, output_short, execenv_short.loop_count);
- 
- 	/*
- 	 * Catch command level preemption instead TG preemption. For TG and WMTP
-diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-index 8a3d7b450..28c1efd55 100644
---- a/lib/intel_compute.h
-+++ b/lib/intel_compute.h
-@@ -63,6 +63,8 @@ struct user_execenv {
- 	uint64_t input_addr;
- 	/** @output_addr: override default address of the output array if provided */
- 	uint64_t output_addr;
-+	/** @loop_count: override default loop count if provided */
-+	unsigned int loop_count;
- 	/** @loop_kernel_duration: duration till kernel should execute in gpu **/
- 	uint64_t loop_kernel_duration;
+ enum utilization_type {
+ 	UTILIZATION_TYPE_ENGINE_TIME,
+ 	UTILIZATION_TYPE_TOTAL_CYCLES,
  };
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 2ca85c95c..e66fa4203 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -2190,7 +2190,7 @@ test_compute(int fd, size_t size)
- 	} *bo_sync;
- 	uint32_t vm;
- 	struct user_execenv env = {
--		.array_size = size / sizeof(float),
-+		.array_size = size,
- 	};
- 	float *compute_input;
- 	int i;
-@@ -2201,7 +2201,7 @@ test_compute(int fd, size_t size)
- 	bind_system_allocator(&sync, 1);
- 	xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, 0, FIVE_SEC);
  
--	compute_input = aligned_alloc(SZ_2M, size);
-+	compute_input = aligned_alloc(SZ_2M, env.array_size * sizeof(float));
- 	igt_assert(compute_input);
++#define XE_FREQ_CUR_SUFFIX "/freq0/cur_freq"
++#define XE_FREQ_ACT_SUFFIX "/freq0/act_freq"
++#define I915_FREQ_CUR_SUFFIX "/rps_cur_freq_mhz"
++#define I915_FREQ_ACT_SUFFIX "/rps_act_freq_mhz"
++
+ static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
  
- 	for (i = 0; i < env.array_size; i++)
+ #define ANSI_HEADER "\033[7m"
+@@ -76,17 +83,127 @@ static void print_percentage_bar(double percent, int max_len)
+ 	putchar('|');
+ }
+ 
++static char *get_gt_frequencies(void)
++{
++	char freq_str[512] = "";
++	char gt_info[64];
++	int fd = -1;
++	int num_gts = 0;
++	int gt;
++	bool is_xe = false;
++	bool first = true;
++
++	fd = __drm_open_driver(DRIVER_INTEL | DRIVER_XE);
++	if (fd < 0) {
++		fprintf(stderr, "Failed to open DRM device\n");
++		return NULL;
++	}
++
++	/* Detect driver type and get GT count */
++	is_xe = is_xe_device(fd);
++	if (is_xe)
++		num_gts = xe_number_gt(fd);
++	else
++		num_gts = igt_sysfs_get_num_gt(fd);
++
++	if (num_gts <= 0) {
++		fprintf(stderr, "Failed to get GT count\n");
++		close(fd);
++		return NULL;
++	}
++
++	/* Read frequencies for each GT */
++	for (gt = 0; gt < num_gts; gt++) {
++		char gt_path[96];
++		char freq_path[128];
++		char freq_buf[32];
++		char *path_ptr;
++		unsigned int cur_freq = 0, act_freq = 0;
++		FILE *fp;
++
++		/* Get GT-specific sysfs path */
++		if (is_xe)
++			path_ptr = xe_sysfs_gt_path(fd, gt, gt_path, sizeof(gt_path));
++		else
++			path_ptr = igt_sysfs_gt_path(fd, gt, gt_path, sizeof(gt_path));
++
++		if (!path_ptr) {
++			fprintf(stderr, "Failed to get sysfs path for GT%d\n", gt);
++			continue;
++		}
++
++		/* Read current/requested frequency */
++		if (is_xe)
++			snprintf(freq_path, sizeof(freq_path), "%s%s", gt_path, XE_FREQ_CUR_SUFFIX);
++		else
++			snprintf(freq_path, sizeof(freq_path), "%s%s", gt_path, I915_FREQ_CUR_SUFFIX);
++
++		fp = fopen(freq_path, "r");
++		if (fp) {
++			if (fgets(freq_buf, sizeof(freq_buf), fp))
++				cur_freq = atoi(freq_buf);
++			fclose(fp);
++		} else {
++			fprintf(stderr, "Failed to open %s\n", freq_path);
++			continue;
++		}
++
++		/* Read actual frequency */
++		if (is_xe)
++			snprintf(freq_path, sizeof(freq_path), "%s%s", gt_path, XE_FREQ_ACT_SUFFIX);
++		else
++			snprintf(freq_path, sizeof(freq_path), "%s%s", gt_path, I915_FREQ_ACT_SUFFIX);
++
++		fp = fopen(freq_path, "r");
++		if (fp) {
++			if (fgets(freq_buf, sizeof(freq_buf), fp))
++				act_freq = atoi(freq_buf);
++			fclose(fp);
++		} else {
++			fprintf(stderr, "Failed to open %s\n", freq_path);
++			continue;
++		}
++
++		/* Append to frequency string */
++		if (!first)
++			strcat(freq_str, " ");
++		else
++			first = false;
++
++		snprintf(gt_info, sizeof(gt_info), "GT%d-%u/%u", gt, cur_freq, act_freq);
++		strcat(freq_str, gt_info);
++	}
++
++	close(fd);
++
++	if (strlen(freq_str) > 0)
++		return strdup(freq_str);
++
++	return NULL;
++}
++
+ static int
+ print_client_header(struct igt_drm_client *c, int lines, int con_w, int con_h,
+ 		    int *engine_w)
+ {
+ 	int ret, len;
++	char *freq_info = NULL;
+ 
+ 	if (lines++ >= con_h)
+ 		return lines;
+ 
+ 	printf(ANSI_HEADER);
+-	ret = printf("DRM minor %u", c->drm_minor);
++
++	/* Get frequency information */
++	freq_info = get_gt_frequencies();
++
++	if (freq_info) {
++		ret = printf("DRM minor %u          Freq(cur/act) %s", c->drm_minor, freq_info);
++		free(freq_info);
++	} else {
++		ret = printf("DRM minor %u", c->drm_minor);
++	}
++
+ 	n_spaces(con_w - ret);
+ 
+ 	if (lines++ >= con_h)
+diff --git a/tools/meson.build b/tools/meson.build
+index 8185ba160..d3261d429 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -73,7 +73,7 @@ endif
+ executable('gputop', 'gputop.c',
+            install : true,
+            install_rpath : bindir_rpathdir,
+-           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math])
++           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,tool_deps,math])
+ 
+ intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
+ executable('intel_l3_parity', sources : intel_l3_parity_src,
 -- 
 2.43.0
 
