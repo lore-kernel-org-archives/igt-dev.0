@@ -4,56 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FCE6D6ACE7
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 11:33:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 469E7D6ACED
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Dec 2025 11:37:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 54D0410E3CA;
-	Thu, 18 Dec 2025 11:33:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E7CB010E3CA;
+	Thu, 18 Dec 2025 11:37:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X61Jm/V+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MHHfK6xf";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E1F8610E3CA
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 11:33:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 92A6110E3CA
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Dec 2025 11:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766057591; x=1797593591;
+ t=1766057854; x=1797593854;
  h=from:to:subject:in-reply-to:references:date:message-id:
  mime-version:content-transfer-encoding;
- bh=HzYVBtZr0oJYPSDU5NdOVhGuffH9M91Meb9S0du2140=;
- b=X61Jm/V++IW4+aJcjWe+U3bnskHDOBE1C0QFnWIkx5Zk0YPc+Ji4K5I1
- QBv9Yf16kEXDVnzhoRZ4a7GamtU7jXJiTsHxX0i/r0s3VoTUvtWRXFBHf
- cwcri16mDBmE2qG+Oc9ouhoJxe+spE3r0wF8E5SXNbnMgwvcFra226DLS
- DNFOJLhXtHzU+8XbYLafa1/xKsjve5COmkU8LVC7En5wcaVc01cDkPMms
- ySJbcniYKL7gCRM8X0zSbYW/rLJZE1u0rYsK86FFZxSnhu7crWkxP9fSg
- wkYv8hma9DtAoutOBqB1hgZdIXycfjNuhmvUn6C2W07mhj3GiOpS8zk7f Q==;
-X-CSE-ConnectionGUID: lPCmvCSgQYqCMcyR872byA==
-X-CSE-MsgGUID: acqnPz2oTG6y3NvN5ER6zw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="79131802"
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="79131802"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2025 03:33:11 -0800
-X-CSE-ConnectionGUID: /9YeBxWoQFCcHGybk17WKg==
-X-CSE-MsgGUID: Tca3mHM0QuGcajpF77SD5A==
+ bh=7mJZ6qLvPNpOaXJfYWBEkVe0cdUafpbRpmcumi6rh7Q=;
+ b=MHHfK6xfarGKP3i6hJpWSuCd/Xh/IYRz3FNJrBTmpS2V/tlPq2jPCeBI
+ A2pcX0kwjqdlhKjTk+7oLI0VqNJo/ebUQtc4BefaUJeDKqGGFuxIDY7iU
+ OKBYKXb0XBWPWCKmUpR/tEr86gtDoVMLk/prr5Ufnr+FOrEG1RJqHRLfi
+ 4HASQzy8mmaJNOkxkQEmp0QEaclcBidrY+1f3bngTzHOH+DLLKWo2RCDm
+ PEejHWuhZJ5BNlfN1NuHFR7edEAuuyL33u8GKAwCO/Lo/fglxbfMIsfEP
+ BZXeCsGYSX9YdCXT3+3CIr3UKrQ7rb2lgeNH3lrizfzp7+3R/wEA9RGGO w==;
+X-CSE-ConnectionGUID: xX5+J4f4SIK4nwHzJ+AVZg==
+X-CSE-MsgGUID: P7WZAwL1QhOY5MSyZgJZMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11645"; a="71640199"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="71640199"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2025 03:37:34 -0800
+X-CSE-ConnectionGUID: b7SDdHAKSMK7uruJMYeENw==
+X-CSE-MsgGUID: /Fjl1ZwGS8C6A5Y6WVXrpA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="199037267"
+X-IronPort-AV: E=Sophos;i="6.21,158,1763452800"; d="scan'208";a="229622224"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.247])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Dec 2025 03:33:09 -0800
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Dec 2025 03:37:32 -0800
 From: Jani Nikula <jani.nikula@intel.com>
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 04/11] lib/kms: Get rid of the 'p' plane index
- variable
-In-Reply-To: <20251217153758.9369-5-ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t 06/11] lib/kms: Nuke pipe->plane_primary
+In-Reply-To: <20251217153758.9369-7-ville.syrjala@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 References: <20251217153758.9369-1-ville.syrjala@linux.intel.com>
- <20251217153758.9369-5-ville.syrjala@linux.intel.com>
-Date: Thu, 18 Dec 2025 13:33:05 +0200
-Message-ID: <16cd726af59d0fedde098041a817c650ed15d162@intel.com>
+ <20251217153758.9369-7-ville.syrjala@linux.intel.com>
+Date: Thu, 18 Dec 2025 13:37:28 +0200
+Message-ID: <48d127a066e9d48da70b7d6d15f90f81183caf97@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -75,129 +74,119 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 On Wed, 17 Dec 2025, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
 > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >
-> The 'p' thing used to track the next free plane slot is annoying.
-> Get rid of it by just initializing the plane indexes to -1 to
-> indicate a free slot at the start, and then do a straightforward
-> search for the next free slot. And for good measure make sure all
-> the -1's have disappeared at the end.
+> Get rid of of the redundant pipe->plane_primary. It'll
+> always be 0 after we've found the plane. And before we've
+> found the plane we can just check for 'pipe->planes[0].index < 0'.
 >
 > Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+
 > ---
->  lib/igt_kms.c | 45 ++++++++++++++++++++++++++-------------------
->  1 file changed, 26 insertions(+), 19 deletions(-)
+>  lib/igt_kms.c | 31 +++++++++----------------------
+>  lib/igt_kms.h |  1 -
+>  2 files changed, 9 insertions(+), 23 deletions(-)
 >
 > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 72c91fb5da76..5679643e167a 100644
+> index 233f326d487f..5bb8da1ec2c5 100644
 > --- a/lib/igt_kms.c
 > +++ b/lib/igt_kms.c
-> @@ -3057,7 +3057,7 @@ static void igt_crtc_init(igt_display_t *display,
->  {
->  	igt_crtc_t *pipe =3D igt_crtc_for_pipe(display, i);
+> @@ -3022,29 +3022,24 @@ void igt_display_reset_outputs(igt_display_t *dis=
+play)
+>  		output =3D igt_get_single_output_for_pipe(display, i);
+>=20=20
+>  		if (pipe->num_primary_planes > 1) {
+> -			igt_plane_t *primary =3D
+> -				&pipe->planes[pipe->plane_primary];
+> +			igt_plane_t *primary =3D &pipe->planes[0];
+>  			igt_plane_t *assigned_primary =3D
+>  				igt_get_assigned_primary(output, pipe);
+>  			int assigned_primary_index =3D assigned_primary->index;
+>=20=20
+>  			/*
+>  			 * If the driver-assigned primary plane isn't at
+> -			 * the pipe->plane_primary index, swap it with
+> -			 * the plane that's currently at the
+> -			 * plane_primary index and update plane->index
+> -			 * accordingly.
+> +			 * index 0, swap it with the plane that's currently
+> +			 * at index 0 and update the indexes accordingly.
+>  			 *
+> -			 * This way, we can preserve pipe->plane_primary
+> -			 * as 0 so that tests that assume
+> -			 * pipe->plane_primary is always 0 won't break.
+> +			 * This way, the primary plane is always at index 0.
+>  			 */
+> -			if (assigned_primary_index !=3D pipe->plane_primary) {
+> -				assigned_primary->index =3D pipe->plane_primary;
+> +			if (assigned_primary_index !=3D 0) {
+> +				assigned_primary->index =3D 0;
+>  				primary->index =3D assigned_primary_index;
+>=20=20
+>  				igt_swap(pipe->planes[assigned_primary_index],
+> -					 pipe->planes[pipe->plane_primary]);
+> +					 pipe->planes[0]);
+>  			}
+>  		}
+>  	}
+> @@ -3062,10 +3057,9 @@ static void igt_crtc_plane_init(igt_display_t *dis=
+play,
 >  	igt_plane_t *plane;
-> -	int p =3D 1, crtc_mask =3D 0;
-> +	int crtc_mask =3D 0;
->  	int j, type;
+>  	int index;
+>=20=20
+> -	if (type =3D=3D DRM_PLANE_TYPE_PRIMARY && pipe->plane_primary =3D=3D -1=
+) {
+> +	if (type =3D=3D DRM_PLANE_TYPE_PRIMARY && pipe->planes[0].index < 0) {
+>  		index =3D 0;
+>=20=20
+> -		pipe->plane_primary =3D index;
+>  		pipe->num_primary_planes++;
+>  	} else if (type =3D=3D DRM_PLANE_TYPE_CURSOR && pipe->plane_cursor =3D=
+=3D -1) {
+>  		index =3D pipe->n_planes - 1;
+> @@ -3120,7 +3114,6 @@ static void igt_crtc_init(igt_display_t *display,
 >=20=20
 >  	pipe->display =3D display;
-> @@ -3082,13 +3082,16 @@ static void igt_crtc_init(igt_display_t *display,
+>  	pipe->plane_cursor =3D -1;
+> -	pipe->plane_primary =3D -1;
+>  	pipe->planes =3D NULL;
+>  	pipe->num_primary_planes =3D 0;
 >=20=20
->  	igt_assert_lt(0, pipe->n_planes);
->  	pipe->planes =3D calloc(pipe->n_planes, sizeof(igt_plane_t));
-> -	igt_assert_f(pipe->planes, "Failed to allocate memory for %d planes\n",
-> -		     pipe->n_planes);
-> +	igt_assert_f(pipe->planes, "Failed to allocate memory for %d planes\n",=
- pipe->n_planes);
-> +
-> +	for (j =3D 0 ; j < pipe->n_planes; j++)
-
-There's a superfluous space here too.
-
-> +		pipe->planes[j].index =3D -1;
+> @@ -3156,12 +3149,6 @@ static void igt_crtc_init(igt_display_t *display,
+>  		igt_crtc_plane_init(display, pipe, resources, global_plane);
+>  	}
 >=20=20
->  	/* add the planes that can be used with that pipe */
->  	for (j =3D 0; j < display->n_planes; j++) {
->  		igt_plane_t *global_plane =3D &display->planes[j];
->  		drmModePlane *drm_plane =3D global_plane->drm_plane;
-> +		int index;
->=20=20
->  		if (!(drm_plane->possible_crtcs & crtc_mask))
->  			continue;
-> @@ -3096,29 +3099,36 @@ static void igt_crtc_init(igt_display_t *display,
->  		type =3D global_plane->type;
->=20=20
->  		if (type =3D=3D DRM_PLANE_TYPE_PRIMARY && pipe->plane_primary =3D=3D -=
-1) {
-> -			plane =3D &pipe->planes[0];
-> -			plane->index =3D 0;
-> -			pipe->plane_primary =3D 0;
-> +			index =3D 0;
-> +
-> +			pipe->plane_primary =3D index;
->  			pipe->num_primary_planes++;
->  		} else if (type =3D=3D DRM_PLANE_TYPE_CURSOR && pipe->plane_cursor =3D=
-=3D -1) {
-> -			plane =3D &pipe->planes[pipe->n_planes - 1];
-> -			plane->index =3D pipe->n_planes - 1;
-> -			pipe->plane_cursor =3D pipe->n_planes - 1;
-> +			index =3D pipe->n_planes - 1;
-> +
-> +			pipe->plane_cursor =3D index;
->  			display->has_cursor_plane =3D true;
->  		} else {
-> +			for (index =3D 1 ; index < pipe->n_planes; index++) {
-> +				if (pipe->planes[index].index < 0)
-> +					break;
-> +			}
-> +
->  			/*
->  			 * Increment num_primary_planes for any extra
->  			 * primary plane found.
->  			 */
->  			if (type =3D=3D DRM_PLANE_TYPE_PRIMARY)
->  				pipe->num_primary_planes++;
+> -	/*
+> -	 * At the bare minimum, we should expect to have a primary
+> -	 * plane, and it must be in slot 0.
+> -	 */
+> -	igt_assert_eq(pipe->plane_primary, 0);
 > -
-> -			plane =3D &pipe->planes[p];
-> -			plane->index =3D p++;
->  		}
->=20=20
-> -		igt_assert_f(plane->index < pipe->n_planes,
-> -			     "n_planes < plane->index failed\n");
-> +		igt_assert_lt(index, pipe->n_planes);
-> +
-> +		plane =3D &pipe->planes[index];
-> +
-> +		igt_assert_lt(plane->index, 0);
-> +
-> +		plane->index =3D index;
->  		plane->type =3D type;
->  		plane->pipe =3D pipe;
->  		plane->drm_plane =3D drm_plane;
-> @@ -3143,11 +3153,8 @@ static void igt_crtc_init(igt_display_t *display,
->  	 */
->  	igt_assert_eq(pipe->plane_primary, 0);
->=20=20
-> -	/* Check that we filled every slot exactly once */
-> -	if (display->has_cursor_plane)
-> -		igt_assert_eq(p, pipe->n_planes - 1);
-> -	else
-> -		igt_assert_eq(p, pipe->n_planes);
-> +	for (j =3D 0; j < pipe->n_planes; j++)
-> +		igt_assert_lt(0, pipe->planes[j].index);
-
-This assert fails for the primary plane, no?
-
-I think this should be igt_assert_lte(0, pipe->planes[j].index); as 0 is
-allowed.
-
-Other than that, LGTM.
-
-BR,
-Jani.
-
-
+>  	for (j =3D 0; j < pipe->n_planes; j++)
+>  		igt_assert_lt(0, pipe->planes[j].index);
 >  }
+> @@ -3582,7 +3569,7 @@ igt_plane_t *igt_pipe_get_plane_type(igt_crtc_t *pi=
+pe, int plane_type)
+>  		plane_idx =3D pipe->plane_cursor;
+>  		break;
+>  	case DRM_PLANE_TYPE_PRIMARY:
+> -		plane_idx =3D pipe->plane_primary;
+> +		plane_idx =3D 0;
+>  		break;
+>  	case DRM_PLANE_TYPE_OVERLAY:
+>  		for(i =3D 0; i < pipe->n_planes; i++)
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index b00884640e16..810eb7497834 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -490,7 +490,6 @@ struct igt_crtc {
+>  	int n_planes;
+>  	int num_primary_planes;
+>  	int plane_cursor;
+> -	int plane_primary;
+>  	igt_plane_t *planes;
 >=20=20
->  /**
+>  	uint64_t changed;
 
 --=20
 Jani Nikula, Intel
