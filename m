@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15F63E6688C
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Dec 2025 20:34:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB4A3E66884
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Dec 2025 20:34:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BA13110F0AA;
-	Fri, 19 Dec 2025 20:34:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8BC0D10F0AA;
+	Fri, 19 Dec 2025 20:34:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TQqhQXU2";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dt3nAfKq";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C93610F0AA
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Dec 2025 20:33:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 169AE10F0AC
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Dec 2025 20:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766176439; x=1797712439;
+ t=1766176443; x=1797712443;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Kvv9ei3DQNJhk9pAViQ5tl1WFdROKVyhVwSw7H19KCo=;
- b=TQqhQXU2H4CvRHWu+sxK3d30sRbDfzVOgIIcWLYUadDU3j/DhOIwhodH
- sTeIMyWEHXRcv28KscRgSQbWQox57ctyxra7HRRy7LB3rkLZJgYx/12Yw
- lcTEg7VfCDho5cqeUE7kEsOza2JgrbXUN+6TR2YtnhbLf1MiQIXPhnXyJ
- 83E66nHBkmybBAMIdLigH4xnRff1xoAuCqCX6aFtYJO6w39XBcZyZTpwk
- 91cCwWwT6ZADnG/clHPpxjU6oRBSV9S7cZI1zlZtR16DsRhJtFLi+6u7G
- sd47Oy6IBCHqrcfEDBbiIRkgA3Vvsixub3i7QeI/9fGhJLgS67SP5rIDb A==;
-X-CSE-ConnectionGUID: qa3p87T1QXSYICwSBuRQPQ==
-X-CSE-MsgGUID: 1+Sbf5TuQbGLdif9c7DW/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11647"; a="68034138"
-X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; d="scan'208";a="68034138"
+ bh=irlA9ueY4VSp1sNTiZig4leGT0WSJzL3/B0Mgx+cd5A=;
+ b=dt3nAfKqJMyMhf75WZtH7XcM0hk2pHz0pZvoleeQzPbNDBKPxBJc971D
+ 6/71e72GXCfKhzBcYxpNeZ5NGeg+/G5AaIIJ3YICrY6zRYO2mwHaUrQqc
+ BcVdGjdTYNA24b7OJi799v2TlSB4nb9VSDK6Q0euiGlK6JHY4d/McJq5I
+ h7n52wx64bxOmGV+4WRc7teWuuGioODYIW7IbI45LF3MMEqzfhzQvED1A
+ +o+pQj8jeeocUB1uKA0dV0o/qraWkZY01Iwd8Al96cjWvLX7+4PkaAdm7
+ 9h+LfnsTOf8MJLB97/TH7i8ISxGMq8FCJafeRJdeyns5E0WnOCINAAbSY g==;
+X-CSE-ConnectionGUID: NtjfMJkgRqO26JCigf1+4g==
+X-CSE-MsgGUID: S7DN01yvRvKi8QXSPd3vlQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11647"; a="68034139"
+X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; d="scan'208";a="68034139"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2025 12:33:59 -0800
-X-CSE-ConnectionGUID: l4Awd9QITfyshttwJbf5Mg==
-X-CSE-MsgGUID: LAOxl3DTTEO5rf32Ciz+jQ==
+ 19 Dec 2025 12:34:03 -0800
+X-CSE-ConnectionGUID: 8YXcy4GvRWugMZ9xLu3lXQ==
+X-CSE-MsgGUID: oQjs8vboSNyEEA/+n088iQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; d="scan'208";a="222367575"
+X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; d="scan'208";a="222367582"
 Received: from jjgreens-desk21.amr.corp.intel.com (HELO localhost)
  ([10.124.220.15])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2025 12:33:58 -0800
+ 19 Dec 2025 12:34:02 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH i-g-t v2 07/11] lib/kms: Nuke pipe->plane_cursor
-Date: Fri, 19 Dec 2025 22:33:23 +0200
-Message-ID: <20251219203327.16573-8-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2 08/11] lib/kms: Use '{old,
+ new}_primary' variable names in plane swapping
+Date: Fri, 19 Dec 2025 22:33:24 +0200
+Message-ID: <20251219203327.16573-9-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251219203327.16573-1-ville.syrjala@linux.intel.com>
 References: <20251219203327.16573-1-ville.syrjala@linux.intel.com>
@@ -73,63 +74,49 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Get rid of of the redundant pipe->plane_cursor. It'll
-always be 'pipe->n_planes-1' after we've found the plane.
-And before we've found the plane we can just check for
-'pipe->planes[pipe->n_planes-1].index < 0'.
+Make the primary plane swapping a bit less confusing by
+renaming the variables to '{old,new}_primary'
 
 Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_kms.c | 6 ++----
- lib/igt_kms.h | 1 -
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ lib/igt_kms.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 4af517a991f8..2b805261e4ef 100644
+index 2b805261e4ef..418fbb104a89 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -3061,10 +3061,9 @@ static void igt_crtc_plane_init(igt_display_t *display,
- 		index = 0;
+@@ -3022,10 +3022,10 @@ void igt_display_reset_outputs(igt_display_t *display)
+ 		output = igt_get_single_output_for_pipe(display, i);
  
- 		pipe->num_primary_planes++;
--	} else if (type == DRM_PLANE_TYPE_CURSOR && pipe->plane_cursor == -1) {
-+	} else if (type == DRM_PLANE_TYPE_CURSOR && pipe->planes[pipe->n_planes - 1].index < 0) {
- 		index = pipe->n_planes - 1;
+ 		if (pipe->num_primary_planes > 1) {
+-			igt_plane_t *primary = &pipe->planes[0];
+-			igt_plane_t *assigned_primary =
++			igt_plane_t *old_primary = &pipe->planes[0];
++			igt_plane_t *new_primary =
+ 				igt_get_assigned_primary(output, pipe);
+-			int assigned_primary_index = assigned_primary->index;
++			int new_primary_index = new_primary->index;
  
--		pipe->plane_cursor = index;
- 		display->has_cursor_plane = true;
- 	} else {
- 		for (index = 1; index < pipe->n_planes; index++) {
-@@ -3113,7 +3112,6 @@ static void igt_crtc_init(igt_display_t *display,
- 	int j;
+ 			/*
+ 			 * If the driver-assigned primary plane isn't at
+@@ -3034,11 +3034,11 @@ void igt_display_reset_outputs(igt_display_t *display)
+ 			 *
+ 			 * This way, the primary plane is always at index 0.
+ 			 */
+-			if (assigned_primary_index != 0) {
+-				assigned_primary->index = 0;
+-				primary->index = assigned_primary_index;
++			if (new_primary_index != 0) {
++				new_primary->index = 0;
++				old_primary->index = new_primary_index;
  
- 	pipe->display = display;
--	pipe->plane_cursor = -1;
- 	pipe->planes = NULL;
- 	pipe->num_primary_planes = 0;
- 
-@@ -3567,7 +3565,7 @@ igt_plane_t *igt_pipe_get_plane_type(igt_crtc_t *pipe, int plane_type)
- 
- 	switch(plane_type) {
- 	case DRM_PLANE_TYPE_CURSOR:
--		plane_idx = pipe->plane_cursor;
-+		plane_idx = pipe->n_planes - 1;
- 		break;
- 	case DRM_PLANE_TYPE_PRIMARY:
- 		plane_idx = 0;
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 810eb7497834..4a814f0e9962 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -489,7 +489,6 @@ struct igt_crtc {
- 
- 	int n_planes;
- 	int num_primary_planes;
--	int plane_cursor;
- 	igt_plane_t *planes;
- 
- 	uint64_t changed;
+-				igt_swap(pipe->planes[assigned_primary_index],
++				igt_swap(pipe->planes[new_primary_index],
+ 					 pipe->planes[0]);
+ 			}
+ 		}
 -- 
 2.51.2
 
