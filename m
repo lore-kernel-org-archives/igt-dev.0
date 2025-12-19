@@ -4,54 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB9B8D767F5
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Dec 2025 12:02:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CE1FD767FC
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Dec 2025 12:08:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 802FC10EF24;
-	Fri, 19 Dec 2025 12:02:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1C94610EF24;
+	Fri, 19 Dec 2025 12:08:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bWCOZ+qw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a8OM0TqK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7AB3810EF7C
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Dec 2025 12:02:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1EC3210EF24
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Dec 2025 12:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766145727; x=1797681727;
- h=from:to:subject:date:message-id:in-reply-to:references:
+ t=1766146097; x=1797682097;
+ h=from:to:subject:in-reply-to:references:date:message-id:
  mime-version:content-transfer-encoding;
- bh=nWR5Kcuyn0uvx+hNJKygMxnJg4pUXB4Esk4PaQZUYD0=;
- b=bWCOZ+qw5mv+F9rkk6zcHZlfJKDkVV8A/gNOzm0gPPpbutNdvdqtIct6
- TfBk97Qh8INl8M5zqoG4LL9/Gxnf1NrWBvr8LCADbzZkLc87oQ6Gxz+/b
- Xo9RWMvNM8qkqx0i49xk3c7dqVijuHHhUCeqY9qQ2d8+t0S5HDGNPG736
- GEJly3tXwY1Uq7qhDP1wBoT7J4uK7crQ1C2vyhTyLN3s2Ri3w6s/NOon0
- vym4lynRrAc6IjzU5Zg4Wupn4GAYCjMgxk/Ik5QwW3lSIv2If7M3MIn1f
- lYSQdOuuI1lSxWx2+SNpLr4XdcJfZL8Bu49r/ZMad8K1AR+P+puCUow0d Q==;
-X-CSE-ConnectionGUID: uQ2Ac4xGQtWrAaCBv8+4Wg==
-X-CSE-MsgGUID: nO/tsYcTS6mDWvZdKeA9Zg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="79473874"
-X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="79473874"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2025 04:02:06 -0800
-X-CSE-ConnectionGUID: bB4urpuqQZ2Daw1SwSM62Q==
-X-CSE-MsgGUID: 1vDpWObBRx2Hy3HqImVwtg==
+ bh=PdPtCiDM3Eb8RO8O+1ZmbQyVhULwvka2JyX+NW2cQmU=;
+ b=a8OM0TqKeOEYGaCJ31OFF4j2u0JaI0Qs/sE1JETUi4oo/4BOryXxeAh/
+ 3siQSce8+bORRiXFFZKHi80M+TwYYOMYMKdGHUlugfZ2EXKqZT3EBVyCE
+ Itsvo7+zH3TIokMg7hmm06E3BSw8wUllHELPyCUTLnE2HaWOadS9wZRuK
+ 9cdNUKjATZPdTddAoToZXx8HCiEGIHulKtabQQi8lbjFLbA/+EVugZKvS
+ kKX0wt30a3Pte4bbP+EShEBTWb9fBo2Sm88OZAeoxpQGOXSpNK78ec030
+ +KO0AowrE1u+N8LW7IAO+0kPERgdCOdkrJ5b4vYLGq1kTwTu8TLNlhQtN Q==;
+X-CSE-ConnectionGUID: 0NsNW79+RTKrDfvX6/LpyA==
+X-CSE-MsgGUID: OEjL9R1vQLOFHZSRrD/bBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="78740806"
+X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="78740806"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Dec 2025 04:08:17 -0800
+X-CSE-ConnectionGUID: jYED//BuTtS4oIhS5hmjjQ==
+X-CSE-MsgGUID: Udkh4CaKSaqkqJ2Op1QD9Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="203746988"
-Received: from priyanka.iind.intel.com ([10.190.216.153])
- by fmviesa004.fm.intel.com with ESMTP; 19 Dec 2025 04:02:05 -0800
-From: priyanka.dandamudi@intel.com
-To: priyanka.dandamudi@intel.com, niranjana.vishwanathapura@intel.com,
+X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="199103296"
+Received: from mwiniars-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.34])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Dec 2025 04:08:15 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 6/7] tests/intel/xe_exec_threads: Add multi queue basic
- test
-Date: Fri, 19 Dec 2025 17:31:53 +0530
-Message-ID: <20251219120154.695287-7-priyanka.dandamudi@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251219120154.695287-1-priyanka.dandamudi@intel.com>
-References: <20251219120154.695287-1-priyanka.dandamudi@intel.com>
+Subject: Re: [PATCH i-g-t 10/11] lib/kms: Extract plane_type_index()
+In-Reply-To: <20251217153758.9369-11-ville.syrjala@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20251217153758.9369-1-ville.syrjala@linux.intel.com>
+ <20251217153758.9369-11-ville.syrjala@linux.intel.com>
+Date: Fri, 19 Dec 2025 14:08:12 +0200
+Message-ID: <d75a4fdfa64ee88cb899c2aea556eb70c3418c0c@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,111 +71,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+On Wed, 17 Dec 2025, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>
+> Extract the duplicated plane_type->index stuff into a helper.
+>
+> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 
-Check multi queue functionality in parallel execution scenario.
-Changed naming for multi queue and assign exec_queue create
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
----
- tests/intel/xe_exec_threads.c | 39 +++++++++++++++++++++++++++++++----
- 1 file changed, 35 insertions(+), 4 deletions(-)
+> ---
+>  lib/igt_kms.c | 26 ++++++++++++++++----------
+>  1 file changed, 16 insertions(+), 10 deletions(-)
+>
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 69a430f01e21..4f30732bf1bb 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -3055,6 +3055,18 @@ void igt_display_reset_outputs(igt_display_t *disp=
+lay)
+>  	drmModeFreeResources(resources);
+>  }
+>=20=20
+> +static int plane_type_index(igt_crtc_t *crtc, int type)
+> +{
+> +	switch (type) {
+> +	case DRM_PLANE_TYPE_PRIMARY:
+> +		return 0;
+> +	case DRM_PLANE_TYPE_CURSOR:
+> +		return crtc->n_planes - 1;
+> +	default:
+> +		return -1;
+> +	}
+> +}
+> +
+>  static void igt_crtc_plane_init(igt_display_t *display,
+>  				igt_crtc_t *pipe,
+>  				drmModeRes *resources,
+> @@ -3063,15 +3075,11 @@ static void igt_crtc_plane_init(igt_display_t *di=
+splay,
+>  	drmModePlane *drm_plane =3D global_plane->drm_plane;
+>  	int type =3D global_plane->type;
+>  	igt_plane_t *plane;
+> -	int index;
+> -
+> -	if (type =3D=3D DRM_PLANE_TYPE_PRIMARY && pipe->planes[0].index < 0) {
+> -		index =3D 0;
+> +	int index =3D plane_type_index(pipe, type);
+>=20=20
+> +	if (type =3D=3D DRM_PLANE_TYPE_PRIMARY && pipe->planes[index].index < 0=
+) {
+>  		pipe->num_primary_planes++;
+> -	} else if (type =3D=3D DRM_PLANE_TYPE_CURSOR && pipe->planes[pipe->n_pl=
+anes - 1].index < 0) {
+> -		index =3D pipe->n_planes - 1;
+> -
+> +	} else if (type =3D=3D DRM_PLANE_TYPE_CURSOR && pipe->planes[index].ind=
+ex < 0) {
+>  		display->has_cursor_plane =3D true;
+>  	} else {
+>  		for (index =3D 1; index < pipe->n_planes; index++) {
+> @@ -3572,10 +3580,8 @@ igt_plane_t *igt_pipe_get_plane_type(igt_crtc_t *p=
+ipe, int plane_type)
+>=20=20
+>  	switch(plane_type) {
+>  	case DRM_PLANE_TYPE_CURSOR:
+> -		plane_idx =3D pipe->n_planes - 1;
+> -		break;
+>  	case DRM_PLANE_TYPE_PRIMARY:
+> -		plane_idx =3D 0;
+> +		plane_idx =3D plane_type_index(pipe, plane_type);
+>  		break;
+>  	case DRM_PLANE_TYPE_OVERLAY:
+>  		for(i =3D 0; i < pipe->n_planes; i++)
 
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index e8d56a3ef..4bf1cd1b1 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
-@@ -41,6 +41,7 @@
- #define REBIND_ERROR	(0x1 << 12)
- #define BIND_EXEC_QUEUE	(0x1 << 13)
- #define MANY_QUEUES	(0x1 << 14)
-+#define MULTI_QUEUE		(0x1 << 15)
- 
- pthread_barrier_t barrier;
- 
-@@ -540,8 +541,22 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 
- 	memset(sync_all, 0, sizeof(sync_all));
- 	for (i = 0; i < n_exec_queues; i++) {
--		if (!(flags & MANY_QUEUES))
--			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
-+		if (flags & MULTI_QUEUE) {
-+			struct drm_xe_ext_set_property multi_queue = {
-+				.base.next_extension = 0,
-+				.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+				.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
-+			};
-+
-+			uint64_t ext = to_user_pointer(&multi_queue);
-+
-+			multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
-+			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
-+		} else {
-+			if (!(flags & MANY_QUEUES))
-+				exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
-+		}
-+
- 		if (flags & BIND_EXEC_QUEUE)
- 			bind_exec_queues[i] = xe_bind_exec_queue_create(fd, vm,
- 									0);
-@@ -979,6 +994,8 @@ static void *thread(void *data)
-  *	balancer mixed fd userptr invalidate
-  * @bal-mixed-fd-userptr-invalidate-race:
-  *	balancer mixed fd userptr invalidate race
-+ * @multi-queue-shared-vm-basic:
-+ *	multi-queue shared vm basic test
-  */
- 
- static void threads(int fd, int flags)
-@@ -996,8 +1013,11 @@ static void threads(int fd, int flags)
- 	int n_threads = 0;
- 	int gt;
- 
--	xe_for_each_engine(fd, hwe)
-+	xe_for_each_engine(fd, hwe) {
-+		if ((flags & MULTI_QUEUE) && !xe_engine_class_supports_multi_queue(hwe->engine_class))
-+			continue;
- 		++n_engines;
-+	}
- 
- 	if (flags & BALANCER) {
- 		xe_for_each_gt(fd, gt)
-@@ -1023,6 +1043,8 @@ static void threads(int fd, int flags)
- 	}
- 
- 	xe_for_each_engine(fd, hwe) {
-+		if ((flags & MULTI_QUEUE) && !xe_engine_class_supports_multi_queue(hwe->engine_class))
-+			continue;
- 		threads_data[i].mutex = &mutex;
- 		threads_data[i].cond = &cond;
- #define ADDRESS_SHIFT	39
-@@ -1277,6 +1299,7 @@ int igt_main()
- 			FD | USERPTR | INVALIDATE },
- 		{ "bal-mixed-fd-userptr-invalidate-race", BALANCER |
- 			MIXED_MODE | FD | USERPTR | INVALIDATE | RACE },
-+		{ "multi-queue-shared-vm-basic", MULTI_QUEUE | SHARED_VM },
- 		{ NULL },
- 	};
- 	int fd;
-@@ -1285,8 +1308,16 @@ int igt_main()
- 		fd = drm_open_driver(DRIVER_XE);
- 
- 	for (const struct section *s = sections; s->name; s++) {
--		igt_subtest_f("threads-%s", s->name)
-+		igt_subtest_f("threads-%s", s->name) {
-+			if (s->flags & MULTI_QUEUE) {
-+				igt_skip_on_f(!(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0)),
-+						"multi_queue is supported on graphics version 35 and above");
-+				/* Balancer can't be set with multi-queue at the same time */
-+				igt_assert(!(s->flags & BALANCER));
-+			}
-+
- 			threads(fd, s->flags);
-+		}
- 	}
- 
- 	igt_fixture()
--- 
-2.43.0
-
+--=20
+Jani Nikula, Intel
