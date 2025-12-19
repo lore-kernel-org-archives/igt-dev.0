@@ -4,58 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2FF7D767F5
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Dec 2025 12:00:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F303D767F5
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Dec 2025 12:01:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5921010EF69;
-	Fri, 19 Dec 2025 12:00:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 022EC10EF74;
+	Fri, 19 Dec 2025 12:01:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YgHtk5A5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aTtEcyqO";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4326610EF69
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Dec 2025 12:00:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E10C510EF6C
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Dec 2025 12:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766145623; x=1797681623;
- h=from:to:subject:in-reply-to:references:date:message-id:
- mime-version:content-transfer-encoding;
- bh=JX0suZUXJQHphiLiY6DtwYzDlAHHb1iv1CcGFAXT94M=;
- b=YgHtk5A5Kx36wC66qPBfC2VGpKASeS/o1GteTdPHWIwVpPWQBx+iDI/j
- Cwc3V5k+YliDqwAW7FNeWIMhApT7jCSb4OqrSzUcYynFjTtrg0PCCOROg
- bORyGthCV7d9kxCq8mWCjooNwp9ALEHf/jAa/SEqfu3+TlOagNzldpv9z
- R0nvi85PKOGR2t15xSdd/7GQKzy9guLDtKF5l3YXdeoqbA3GY3OhrG+AA
- JoA+Atm0fCgmhA+0Jc+inucffgvNX8J1/sF/4hnn7XsIyPn+Pox7uZckX
- +DylqNdGo9j+CworyfNcyF4p002EMgcuvGwBpgEyAalRdq8RMD55u0hLD g==;
-X-CSE-ConnectionGUID: 2KL49luUSM6XJLItddv2xw==
-X-CSE-MsgGUID: TMlxAzgxSLSqs+wB2HvcBQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="79473762"
-X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="79473762"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ t=1766145717; x=1797681717;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=4U8RCp0yfA5O/fWsYaLHM+kOHc1LuYYD+xvy3XzzIX4=;
+ b=aTtEcyqOAW+b78UiqUq7dObQrHI3aQ1CAYkQTpY+e+nr2/FvKgW84QrD
+ pT5NOtp+r8K8jN3difr5DnN1xHlMz15bZq5L3Y72gzw4FI2knlPtYg3ud
+ KDe4pIhlnRy8zYL1dwkAYMJUz77lgvHjuLyPFc6UrKXa+wWZO0tS2biQY
+ bLGeMfjbSSbHKfL14lTrlCL32JHbfxKSTxvjmF/ahMej447K7AQVE/+c2
+ +QuoyfW6/uYhGph/8YLQaBc89SecxEOVL53nrqASrjMFcoFB1Afq8YTOH
+ Y2dRoWpDkfuKHiJL/7mt8i+1grNqmJepPbWj9EM/eF/psiyvb+nSsua/5 Q==;
+X-CSE-ConnectionGUID: 2FkQghrxT6K93k7XEEDE2g==
+X-CSE-MsgGUID: KlU+qRBFQ5e6Z7uq4qnB/Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="79473861"
+X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="79473861"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2025 04:00:23 -0800
-X-CSE-ConnectionGUID: eoX9sNE1Qbi8Cnlkg9PVog==
-X-CSE-MsgGUID: 1UmgWPlsQ4C+CyL0pQT2vA==
+ 19 Dec 2025 04:01:57 -0800
+X-CSE-ConnectionGUID: Qr8YpsGaQRSQ3GuWXVjV5w==
+X-CSE-MsgGUID: 5sRqQqyMQEeqMyqsh7/ipA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="203243320"
-Received: from mwiniars-mobl.ger.corp.intel.com (HELO localhost)
- ([10.245.246.34])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2025 04:00:21 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="203746948"
+Received: from priyanka.iind.intel.com ([10.190.216.153])
+ by fmviesa004.fm.intel.com with ESMTP; 19 Dec 2025 04:01:55 -0800
+From: priyanka.dandamudi@intel.com
+To: priyanka.dandamudi@intel.com, niranjana.vishwanathapura@intel.com,
  igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 09/11] lib/kms: Pimp the priamry plane swapping
-In-Reply-To: <20251217153758.9369-10-ville.syrjala@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20251217153758.9369-1-ville.syrjala@linux.intel.com>
- <20251217153758.9369-10-ville.syrjala@linux.intel.com>
-Date: Fri, 19 Dec 2025 14:00:18 +0200
-Message-ID: <cd18fda8f7ff8c322899d9d8b7eda049c635fb8d@intel.com>
+Subject: [PATCH i-g-t 0/7] Extend multi queue feature validation support
+Date: Fri, 19 Dec 2025 17:31:47 +0530
+Message-ID: <20251219120154.695287-1-priyanka.dandamudi@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,71 +64,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, 17 Dec 2025, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
-> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
->
-> Do the primary plane swap a bit more cleanly with a pair of
-> igt_swap()s. And while at it sprinkle some asserts around
-> to make sure we didn't screw anything up.
->
-> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Subject, *primary
+Add multi queue validation support to other tests.
 
-> ---
->  lib/igt_kms.c | 20 ++++++++++++++------
->  1 file changed, 14 insertions(+), 6 deletions(-)
->
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index ef3215332e29..69a430f01e21 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -3025,7 +3025,6 @@ void igt_display_reset_outputs(igt_display_t *displ=
-ay)
->  			igt_plane_t *old_primary =3D &pipe->planes[0];
->  			igt_plane_t *new_primary =3D
->  				igt_get_assigned_primary(output, pipe);
-> -			int new_primary_index =3D new_primary->index;
->=20=20
->  			/*
->  			 * If the driver-assigned primary plane isn't at
-> @@ -3034,12 +3033,21 @@ void igt_display_reset_outputs(igt_display_t *dis=
-play)
->  			 *
->  			 * This way, the primary plane is always at index 0.
->  			 */
-> -			if (new_primary_index !=3D 0) {
-> -				new_primary->index =3D 0;
-> -				old_primary->index =3D new_primary_index;
-> +			if (new_primary->index !=3D 0) {
-> +				igt_assert(old_primary !=3D new_primary);
->=20=20
-> -				igt_swap(pipe->planes[new_primary_index],
-> -					 pipe->planes[0]);
-> +				igt_assert_eq(old_primary->index, 0);
-> +				igt_assert_neq(new_primary->index, 0);
+xe_exec_fault_mode
+xe_exec_reset
+xe_evict
+xe_exec_threads
 
-Nitpick, this is redundant as we're in new_primary->index !=3D 0 branch,
-but then again it's symmetric with the post-swap checks. *shrug*.
+Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Anyway I'm glad the asserts are there, because the swaps on *&foo are a
-bit hard for the reader.
+Apoorva Singh (1):
+  tests/intel/xe_exec_reset: Add multi queue subtests
 
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Janga Rahul Kumar (3):
+  tests/intel/xe_exec_fault_mode: Add multi queue test support
+  tests/intel/xe_exec_threads: Add multi queue basic test
+  tests/intel/xe_exec_threads: Extend multi queue testing
 
-> +
-> +				igt_swap(*old_primary, *new_primary);
-> +				igt_swap(old_primary->index, new_primary->index);
-> +
-> +				igt_assert_neq(old_primary->index, 0);
-> +				igt_assert_eq(new_primary->index, 0);
-> +			} else {
-> +				igt_assert(old_primary =3D=3D new_primary);
-> +
-> +				igt_assert_eq(old_primary->index, 0);
->  			}
->  		}
->  	}
+Priyanka Dandamudi (3):
+  tests/intel/xe_evict: Add basic multi queue test
+  tests/intel/xe_evict: Add priority for multi queue
+  tests/intel/xe_evict: Enhance testing of multi queue functionality
 
---=20
-Jani Nikula, Intel
+ lib/xe/xe_legacy.c               |  38 +++++-
+ tests/intel/xe_evict.c           | 221 +++++++++++++++++++++++++------
+ tests/intel/xe_exec_fault_mode.c | 140 +++++++++++++++++---
+ tests/intel/xe_exec_reset.c      | 197 ++++++++++++++++++++++++++-
+ tests/intel/xe_exec_threads.c    | 202 +++++++++++++++++++++++++++-
+ 5 files changed, 725 insertions(+), 73 deletions(-)
+
+-- 
+2.43.0
+
