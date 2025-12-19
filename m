@@ -4,61 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8889CD74976
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Dec 2025 09:58:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66709D74970
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Dec 2025 10:03:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3479110E0ED;
-	Fri, 19 Dec 2025 09:58:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1D6DE10E612;
+	Fri, 19 Dec 2025 10:03:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ONVuXXGX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KVut7DbI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8DBBD10E0ED;
- Fri, 19 Dec 2025 09:58:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7568F10E1C3;
+ Fri, 19 Dec 2025 10:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766138326; x=1797674326;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=QnDVRNyGuSx62w2rl0lPkZ7ss6+2KTsnlRoyrgFGfKs=;
- b=ONVuXXGXSHotb1aqovyeY8XUEtS6h37rrjV2YOIQMDq9mtbTfafUMWjz
- OMYzdgF7vV548tYEVl6GTR8eglg1hLA7SZf5msq7JXtjKHjm25a7rRlZp
- MQAPxkORg+FjEd3ErK/+YJG9qOhzEPpDRPo3iVzGUIbva3d4xoLjLC1TK
- zBFUrp3p945M1sBjqALF/KZHSce8G1AKUAt97NvuDx4LGVogfYPiA1UBT
- SpvTmqMHBDt0gOWE5J7IMFL31Ga0a6KJ9tiDVfM0M0JxNhueAA2unQjoR
- FjGt+d8gTiBl7lDuqLTLVBsnGOL4DQWA9PwejCOWFmbeqMR0D/T2/Oii8 w==;
-X-CSE-ConnectionGUID: 2uGwZSqgSaSvZrLEZrobiQ==
-X-CSE-MsgGUID: Elua11qJTdmYDUg987HLWw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="71945175"
-X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="71945175"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2025 01:58:45 -0800
-X-CSE-ConnectionGUID: RynNR7ZHSYWemGJugochjw==
-X-CSE-MsgGUID: GDFTkDU7RDqd2/Z+JnqnLA==
+ t=1766138617; x=1797674617;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=+lRbaVlLQIPnqlNtiVoXdIsrrtEEawslsLc6qNpw6GI=;
+ b=KVut7DbI1E0ERbMPWafCcx6YqiGhVn4yGDr8eQlp7/456GeT4cdkw6Ri
+ +do7QWrvb5nEct4d+FzGb6iXo5KJRDh8EMHxK4Id72Z+CoTONzLiADMRZ
+ Ug+CpnQ2Z7YIjTJOdDGh9S/zNCwV3HRxMiMuQlAZa0P/XNw1lWzh66ixp
+ OhsKmvSKEXgzzLuOKM5jsCS9ONWbWsul4VxryH/RZ0cxvQsZ/lP2eJAhg
+ 9cfzC8BnFLmuVZYXyzojI04Kzd9bpxfiq44zhmPTGkgTmIrPwtgY2Vk3Y
+ WKQ0nQGNxeKPAKS5Gq6gj8dMJKX9BJdooBUxVlspFb1Evr6SNgDdRpeYY A==;
+X-CSE-ConnectionGUID: /ohFl6DtRHyX42Agu3BBog==
+X-CSE-MsgGUID: 8yuxrsHPStO/htbHM/wqXQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="79556242"
+X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="79556242"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Dec 2025 02:02:47 -0800
+X-CSE-ConnectionGUID: In5Gc9txSaC22FBQtbVnag==
+X-CSE-MsgGUID: 6n4Z+kOyRj2aylBsJ6IXdw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="197973411"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2025 01:58:44 -0800
-Date: Fri, 19 Dec 2025 10:58:25 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.36])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Dec 2025 02:02:44 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
- I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw=?= =?utf-8?Q?=3A?= failure for
- Panthor tests for huge partial unmaps (rev3)
-Message-ID: <20251219095825.fforpargciom3gtv@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
- I915-ci-infra@lists.freedesktop.org
-References: <20251217215909.710730-1-adrian.larumbe@collabora.com>
- <176609732861.103426.8321424318566734317@a3b018990fe9>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ intel-gfx@lists.freedesktop.org,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t v2] tests/intel/gem_lmem_swapping: Avoid false failures
+ from oom-killer
+Date: Fri, 19 Dec 2025 11:01:12 +0100
+Message-ID: <20251219100218.334117-2-janusz.krzysztofik@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <176609732861.103426.8321424318566734317@a3b018990fe9>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,79 +71,97 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2025-12-18 at 22:35:28 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: Panthor tests for huge partial unmaps (rev3)
-> URL   : https://patchwork.freedesktop.org/series/158975/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_8670_FULL -> XEIGTPW_14232_FULL
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_14232_FULL absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_14232_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (2 -> 2)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_14232_FULL:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@core_getversion@basic:
->     - shard-bmg:          [PASS][1] -> [FAIL][2]
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8670/shard-bmg-1/igt@core_getversion@basic.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14232/shard-bmg-5/igt@core_getversion@basic.html
-> 
->   * igt@core_setmaster@master-drop-set-root:
->     - shard-bmg:          NOTRUN -> [FAIL][3]
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14232/shard-bmg-2/igt@core_setmaster@master-drop-set-root.html
-> 
->   * igt@xe_exec_system_allocator@threads-shared-vm-shared-alloc-many-stride-malloc-race:
->     - shard-bmg:          NOTRUN -> [DMESG-FAIL][4]
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14232/shard-bmg-2/igt@xe_exec_system_allocator@threads-shared-vm-shared-alloc-many-stride-malloc-race.html
-> 
->   
-> #### Warnings ####
-> 
->   * igt@kms_joiner@basic-ultra-joiner:
->     - shard-bmg:          [SKIP][5] ([Intel XE#6703]) -> [SKIP][6]
->    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8670/shard-bmg-5/igt@kms_joiner@basic-ultra-joiner.html
->    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14232/shard-bmg-2/igt@kms_joiner@basic-ultra-joiner.html
-> 
+The smem-oom subtest can expectedly result in oom-killer being triggered,
+which then dumps a call trace from a process that triggered it.  If that
+happens to be a process that executes drm or i915 functions then the call
+trace dump contains lines recognized by igt_runner running in piglit mode
+as potential warnings.  If severity of the call trace dump messages is
+NOTICE or higher, which isn't unlikely, then a dmesg-warn result is
+reported despite successful completion of the subtest.
 
-Unrelated to non-Intel change,
+Fortunately, severity of those call trace dump messages depends on kernel
+default log level which can be controlled from user space over sysctl.
 
-Regards,
-Kamil
+To avoid false failure reports, relax kernel default log level to INFO so
+those log lines are ignored by igt_runner in piglit mode at an expense of
+call traces from real issues potentially detected by the subtest not
+contributing to the igt_runner reported result.  Since those call traces
+are still available to developers, only submitted with reduced severity,
+that shouldn't hurt as long as the igt_runner still abandons further
+execution and reports an abort result on a kernel taint.
 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_14232_FULL that come from known issues:
-> 
-> ### IGT changes ###
-...cut...
+v2: Move default log level setup inside subtest smem-oom (Kamil),
+  - move cleanup there as well.
+
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5493
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ tests/intel/gem_lmem_swapping.c | 51 +++++++++++++++++++++++++++++++--
+ 1 file changed, 49 insertions(+), 2 deletions(-)
+
+diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+index adae26716c..a8ffae19f1 100644
+--- a/tests/intel/gem_lmem_swapping.c
++++ b/tests/intel/gem_lmem_swapping.c
+@@ -861,8 +861,55 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	}
+ 
+ 	igt_describe("Exercise local memory swapping during exhausting system memory");
+-	dynamic_lmem_subtest(region, regions, "smem-oom")
+-		test_smem_oom(i915, ctx, region);
++	igt_subtest_with_dynamic("smem-oom") {
++		/*
++		 * This subtest can result in oom-killer being triggered, which
++		 * then dumps a call trace from a process that triggered it.
++		 * If that happens to be a process that executes drm or i915
++		 * functions then the call trace dump contains lines recognized
++		 * by igt_runner as warnings and a dmesg-warn result is
++		 * reported.  To avoid false failure reports, relax kernel
++		 * default log level to INFO for those lines to be ignored by
++		 * igt_runner in piglit mode, at an expense of call traces from
++		 * potential real issues not contributing to the igt_runner
++		 * reported result.  Since those call traces are still available
++		 * to developers, only displayed with relaxed severity, that
++		 * shouldn't hurt as long as igt_runner still abandons further
++		 * execution and reports an abort result on a kernel taint.
++		 */
++		FILE *printk = fopen("/proc/sys/kernel/printk", "r+");
++		int console_log_level, default_log_level;
++		unsigned int i;
++
++		if (!igt_debug_on(!printk)) {
++			if (!igt_debug_on(fscanf(printk, "%d %d",
++						 &console_log_level,
++						 &default_log_level) != 2) &&
++			    default_log_level < 6) {
++				rewind(printk);
++				igt_debug_on(fprintf(printk, "%d 6",
++						     console_log_level) != 3);
++			} else {
++				fclose(printk);
++				printk = NULL;
++			}
++		}
++
++		for (i = 0; i < regions->num_regions; i++) {
++			region = &regions->regions[i];
++			if (region->region.memory_class == I915_MEMORY_CLASS_DEVICE)
++				igt_dynamic_f("lmem%u", region->region.memory_instance)
++					test_smem_oom(i915, ctx, region);
++		}
++
++		if (printk) {
++			rewind(printk);
++			igt_debug_on(fprintf(printk, "%d %d",
++					     console_log_level,
++					     default_log_level) != 3);
++			fclose(printk);
++		}
++	}
+ 
+ 	igt_fixture() {
+ 		intel_allocator_multiprocess_stop();
+-- 
+2.52.0
+
