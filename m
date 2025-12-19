@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA121E66884
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Dec 2025 20:33:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0DF3E66884
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Dec 2025 20:33:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6F7C910F0AA;
-	Fri, 19 Dec 2025 20:33:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7616C10F0AA;
+	Fri, 19 Dec 2025 20:33:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RuecVBYm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gufUD2rM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C54310F0AA
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Dec 2025 20:33:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DD43910F0AB
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Dec 2025 20:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766176427; x=1797712427;
+ t=1766176432; x=1797712432;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0YZ87jliDcoR4WRXk71QXZywhYnkV5KZ6tY8CKokz0c=;
- b=RuecVBYmG521ACadAgJJMDAmfjlwT0FvRsELWltXBcEhBI9AtiRatr3u
- Y9ou2YEk5eIY1pITVIN4XQfJejcgZqnjejnIXd8h+qrzbK1lE3+cDJOpg
- ooIyWDziJY6QB5XmRP3geKO8w8mE0vcJPB4C68ogV1V0Noa5F/cUsUXiw
- xxomUmNPPc4JUk43b21rjN5g+ANH5qYNuD6Stfd9T9IVf56wGwiGI6hyA
- jPLYz5fuE4w+5umyY7dOG2qprYLz9bb9X2Skw063MUmYIlyBd/8zMRmjO
- WLi99cZ4l6sQ9xmcrWkr6mVRE8BfS7CFINdWmi6syurpnukAG5e5g/ejR Q==;
-X-CSE-ConnectionGUID: cOxoqIRTTC+OoHOtJ4zGsQ==
-X-CSE-MsgGUID: 2CeLq/l1QdGSMeOqG5iPUA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11647"; a="93613473"
-X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; d="scan'208";a="93613473"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2025 12:33:47 -0800
-X-CSE-ConnectionGUID: Kq8bsHD5S7qhT9Nersz26A==
-X-CSE-MsgGUID: c02oucRkSzaEoVU0dW15hw==
+ bh=UH8Yhi/liU2/fe4WrCn12MbBeK3mqeqAulIAODtc5sk=;
+ b=gufUD2rM91jHWHyez/Rxn5IURzcXunk9YkhTbBXwmOCQKchMIW4rCaaq
+ pcxq/yR1GKWFX+bh7TL0EZAmPfPk8cqD70+D6MacPBiL3uKRKzHkHAToY
+ mghf5WFYCP+YyIVL+RqHxQ3PljprLChQFCcXzjhlDFxQ07t7aeOtGUMLS
+ F5wEXHZLrBMeDiK4xiifPPyEwKmkAw6UA0G5CHP65B2K0x1i/9/u1Rox8
+ cnXKHSRi//KBS2ajV9C/KcHmRaJ/2/V8B/13ri+LdY0FHAnbuCpxx1jhi
+ 54D0i7z4IyeTcKN+9Qg4n6sUdeWCB1rKgkJ5jDbMSS1FoITwOdkyryOtr A==;
+X-CSE-ConnectionGUID: is4ep2brS/uW+vc6gz89Bw==
+X-CSE-MsgGUID: 4SYss2SwR8qi+hWt54/fTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11647"; a="68034132"
+X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; d="scan'208";a="68034132"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Dec 2025 12:33:51 -0800
+X-CSE-ConnectionGUID: rgY5I/mxReKrg/A5AiPiaQ==
+X-CSE-MsgGUID: uWERnBAITcCP5j+lqGosoA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; d="scan'208";a="199434318"
+X-IronPort-AV: E=Sophos;i="6.21,162,1763452800"; d="scan'208";a="222367553"
 Received: from jjgreens-desk21.amr.corp.intel.com (HELO localhost)
  ([10.124.220.15])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2025 12:33:46 -0800
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Dec 2025 12:33:50 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH i-g-t v2 04/11] lib/kms: Get rid of the 'p' plane index
- variable
-Date: Fri, 19 Dec 2025 22:33:20 +0200
-Message-ID: <20251219203327.16573-5-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2 05/11] lib/kms: Extract igt_crtc_plane_init()
+Date: Fri, 19 Dec 2025 22:33:21 +0200
+Message-ID: <20251219203327.16573-6-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251219203327.16573-1-ville.syrjala@linux.intel.com>
 References: <20251219203327.16573-1-ville.syrjala@linux.intel.com>
@@ -74,111 +73,158 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-The 'p' thing used to track the next free plane slot is annoying.
-Get rid of it by just initializing the plane indexes to -1 to
-indicate a free slot at the start, and then do a straightforward
-search for the next free slot. And for good measure make sure all
-the -1's have disappeared at the end.
+Coccinelle tends to hit some kind of pathological performance
+problem with igt_display_require(). Carving it up seems to help
+a bit, so extract the plane init loop into a separate function.
 
-v2: Remove spurious whitespace (Jani)
-    Fix the post init plane->index assert (Jani/CI)
+v2: Rebase due to spurious whitespace removal
 
 Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_kms.c | 42 +++++++++++++++++++++++++-----------------
- 1 file changed, 25 insertions(+), 17 deletions(-)
+ lib/igt_kms.c | 113 +++++++++++++++++++++++++++-----------------------
+ 1 file changed, 61 insertions(+), 52 deletions(-)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 72c91fb5da76..803a1e926b10 100644
+index 803a1e926b10..6e9eb53a0c13 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -3057,7 +3057,7 @@ static void igt_crtc_init(igt_display_t *display,
+@@ -3052,13 +3052,71 @@ void igt_display_reset_outputs(igt_display_t *display)
+ 	drmModeFreeResources(resources);
+ }
+ 
++static void igt_crtc_plane_init(igt_display_t *display,
++				igt_crtc_t *pipe,
++				drmModeRes *resources,
++				igt_plane_t *global_plane)
++{
++	drmModePlane *drm_plane = global_plane->drm_plane;
++	int type = global_plane->type;
++	igt_plane_t *plane;
++	int index;
++
++	if (type == DRM_PLANE_TYPE_PRIMARY && pipe->plane_primary == -1) {
++		index = 0;
++
++		pipe->plane_primary = index;
++		pipe->num_primary_planes++;
++	} else if (type == DRM_PLANE_TYPE_CURSOR && pipe->plane_cursor == -1) {
++		index = pipe->n_planes - 1;
++
++		pipe->plane_cursor = index;
++		display->has_cursor_plane = true;
++	} else {
++		for (index = 1; index < pipe->n_planes; index++) {
++			if (pipe->planes[index].index < 0)
++				break;
++		}
++
++		/*
++		 * Increment num_primary_planes for any extra
++		 * primary plane found.
++		 */
++		if (type == DRM_PLANE_TYPE_PRIMARY)
++			pipe->num_primary_planes++;
++	}
++
++	igt_assert_lt(index, pipe->n_planes);
++
++	plane = &pipe->planes[index];
++
++	igt_assert_lt(plane->index, 0);
++
++	plane->index = index;
++	plane->type = type;
++	plane->pipe = pipe;
++	plane->drm_plane = drm_plane;
++	plane->values[IGT_PLANE_IN_FENCE_FD] = ~0ULL;
++	plane->ref = global_plane;
++
++	/*
++	 * HACK: point the global plane to the first pipe that
++	 * it can go on.
++	 */
++	if (!global_plane->ref)
++		igt_plane_set_pipe(plane, pipe);
++
++	igt_fill_plane_props(display, plane, IGT_NUM_PLANE_PROPS, igt_plane_prop_names);
++
++	igt_fill_plane_format_mod(display, plane);
++}
++
+ static void igt_crtc_init(igt_display_t *display,
+ 			  drmModeRes *resources, int i)
  {
  	igt_crtc_t *pipe = igt_crtc_for_pipe(display, i);
- 	igt_plane_t *plane;
--	int p = 1, crtc_mask = 0;
-+	int crtc_mask = 0;
- 	int j, type;
+-	igt_plane_t *plane;
+ 	int crtc_mask = 0;
+-	int j, type;
++	int j;
  
  	pipe->display = display;
-@@ -3085,10 +3085,14 @@ static void igt_crtc_init(igt_display_t *display,
- 	igt_assert_f(pipe->planes, "Failed to allocate memory for %d planes\n",
- 		     pipe->n_planes);
- 
-+	for (j = 0; j < pipe->n_planes; j++)
-+		pipe->planes[j].index = -1;
-+
- 	/* add the planes that can be used with that pipe */
+ 	pipe->plane_cursor = -1;
+@@ -3092,60 +3150,11 @@ static void igt_crtc_init(igt_display_t *display,
  	for (j = 0; j < display->n_planes; j++) {
  		igt_plane_t *global_plane = &display->planes[j];
  		drmModePlane *drm_plane = global_plane->drm_plane;
-+		int index;
+-		int index;
  
  		if (!(drm_plane->possible_crtcs & crtc_mask))
  			continue;
-@@ -3096,29 +3100,36 @@ static void igt_crtc_init(igt_display_t *display,
- 		type = global_plane->type;
  
- 		if (type == DRM_PLANE_TYPE_PRIMARY && pipe->plane_primary == -1) {
--			plane = &pipe->planes[0];
--			plane->index = 0;
--			pipe->plane_primary = 0;
-+			index = 0;
-+
-+			pipe->plane_primary = index;
- 			pipe->num_primary_planes++;
- 		} else if (type == DRM_PLANE_TYPE_CURSOR && pipe->plane_cursor == -1) {
--			plane = &pipe->planes[pipe->n_planes - 1];
--			plane->index = pipe->n_planes - 1;
--			pipe->plane_cursor = pipe->n_planes - 1;
-+			index = pipe->n_planes - 1;
-+
-+			pipe->plane_cursor = index;
- 			display->has_cursor_plane = true;
- 		} else {
-+			for (index = 1; index < pipe->n_planes; index++) {
-+				if (pipe->planes[index].index < 0)
-+					break;
-+			}
-+
- 			/*
- 			 * Increment num_primary_planes for any extra
- 			 * primary plane found.
- 			 */
- 			if (type == DRM_PLANE_TYPE_PRIMARY)
- 				pipe->num_primary_planes++;
+-		type = global_plane->type;
 -
--			plane = &pipe->planes[p];
--			plane->index = p++;
- 		}
+-		if (type == DRM_PLANE_TYPE_PRIMARY && pipe->plane_primary == -1) {
+-			index = 0;
+-
+-			pipe->plane_primary = index;
+-			pipe->num_primary_planes++;
+-		} else if (type == DRM_PLANE_TYPE_CURSOR && pipe->plane_cursor == -1) {
+-			index = pipe->n_planes - 1;
+-
+-			pipe->plane_cursor = index;
+-			display->has_cursor_plane = true;
+-		} else {
+-			for (index = 1; index < pipe->n_planes; index++) {
+-				if (pipe->planes[index].index < 0)
+-					break;
+-			}
+-
+-			/*
+-			 * Increment num_primary_planes for any extra
+-			 * primary plane found.
+-			 */
+-			if (type == DRM_PLANE_TYPE_PRIMARY)
+-				pipe->num_primary_planes++;
+-		}
+-
+-		igt_assert_lt(index, pipe->n_planes);
+-
+-		plane = &pipe->planes[index];
+-
+-		igt_assert_lt(plane->index, 0);
+-
+-		plane->index = index;
+-		plane->type = type;
+-		plane->pipe = pipe;
+-		plane->drm_plane = drm_plane;
+-		plane->values[IGT_PLANE_IN_FENCE_FD] = ~0ULL;
+-		plane->ref = global_plane;
+-
+-		/*
+-		 * HACK: point the global plane to the first pipe that
+-		 * it can go on.
+-		 */
+-		if (!global_plane->ref)
+-			igt_plane_set_pipe(plane, pipe);
+-
+-		igt_fill_plane_props(display, plane, IGT_NUM_PLANE_PROPS, igt_plane_prop_names);
+-
+-		igt_fill_plane_format_mod(display, plane);
++		igt_crtc_plane_init(display, pipe, resources, global_plane);
+ 	}
  
--		igt_assert_f(plane->index < pipe->n_planes,
--			     "n_planes < plane->index failed\n");
-+		igt_assert_lt(index, pipe->n_planes);
-+
-+		plane = &pipe->planes[index];
-+
-+		igt_assert_lt(plane->index, 0);
-+
-+		plane->index = index;
- 		plane->type = type;
- 		plane->pipe = pipe;
- 		plane->drm_plane = drm_plane;
-@@ -3143,11 +3154,8 @@ static void igt_crtc_init(igt_display_t *display,
- 	 */
- 	igt_assert_eq(pipe->plane_primary, 0);
- 
--	/* Check that we filled every slot exactly once */
--	if (display->has_cursor_plane)
--		igt_assert_eq(p, pipe->n_planes - 1);
--	else
--		igt_assert_eq(p, pipe->n_planes);
-+	for (j = 0; j < pipe->n_planes; j++)
-+		igt_assert_lte(0, pipe->planes[j].index);
- }
- 
- /**
+ 	/*
 -- 
 2.51.2
 
