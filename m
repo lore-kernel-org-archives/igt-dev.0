@@ -4,49 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F4DAD767FC
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Dec 2025 12:02:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FCC0D767FE
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Dec 2025 12:02:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EA57010EF69;
-	Fri, 19 Dec 2025 12:02:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 472DE10EF80;
+	Fri, 19 Dec 2025 12:02:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fGQfn8u+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G/orXPsW";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2742310EF8C
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Dec 2025 12:02:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E7F0B10EF78
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Dec 2025 12:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766145723; x=1797681723;
+ t=1766145725; x=1797681725;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=OkuZ+41cy+zxZmBlT7YAwFjV/otXmwOj/iqJ5eBf8+c=;
- b=fGQfn8u+BjA1W5a/MVTK/xLlP8RIF+AGDfqR4M8cAnr9XIvme4ZxUtA0
- YWo75z6TwtAHL1cTDUffKa+fRSiYtXFOC2G3FEJnB6qbm1XsYsM0l5iZz
- jM6+5aUG+rNwXBxsT0P6vyJQwOG/+ABL4y97kLxclmC15ml/hN8AAdLCi
- D3LY9lnzjLm1UmLYAOyNxDseFACG7LBc9U8ii5jDjW/NHMUfwhaBSWGrD
- ihhkgxkvD5phIqxKII5JmNTPSy776ei3r2mjFTtslrbPVnxqohmcECiR5
- A+JaveSG6PKip8griQg0PCKKG86+76s94fOgUsoe0yLNtVjFn/GppZRH4 Q==;
-X-CSE-ConnectionGUID: OfJRyg9SS6G6MKb5Ljzk1w==
-X-CSE-MsgGUID: qF1B/KP2Te+IX74vPwSQeQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="79473869"
-X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="79473869"
+ bh=w7ZH4Adoc7pjL8EXc+Wp0UOEIwQx0d+SdRtBHTuBZWM=;
+ b=G/orXPsW58uITxAGmJq5EUVhTdVo06nC+wOtIHu6uaUuci1BYEB1uaXo
+ W/QTg6zuRvELGupmkwAdodiY+Fk2OYAQDH79bJ7CH87DKUrNM+mzWfwXa
+ pT3evDFhEU/+p7EWXvmLNfinYfcYChOFdp5er5wQQXp+Tuv5SHPwFD0S4
+ Bw3Nm7hfy9w/ZnY1Jp3hW5KKKBH1WTHaN3uMJXQUdJZvkjKiJHRHgO9Ad
+ e+JM4VHDY/aC5PhvVqIRSeTmSePGRSsTkQufZvSkZT8rXUqrcK4GSBnYx
+ uAoUoa1spWmLRQ2h7AWPfxRdFP6ilX3K4shwAvi9JAcoVIBsjxeVau/D1 A==;
+X-CSE-ConnectionGUID: rQhDWKDcSqCYKPjfwS6e3Q==
+X-CSE-MsgGUID: fboTLTiDQsa1gpPKt7HK6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11646"; a="79473872"
+X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="79473872"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Dec 2025 04:02:03 -0800
-X-CSE-ConnectionGUID: 1DwicRTURiKe9QK3Z2dbcA==
-X-CSE-MsgGUID: nT2IGvUPTC2PyHjRqosVvg==
+ 19 Dec 2025 04:02:05 -0800
+X-CSE-ConnectionGUID: 3/l9CKUDQqWYmfTire1Q3Q==
+X-CSE-MsgGUID: 5zCr+nRCQQ62o5Eb78lprw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="203746976"
+X-IronPort-AV: E=Sophos;i="6.21,161,1763452800"; d="scan'208";a="203746984"
 Received: from priyanka.iind.intel.com ([10.190.216.153])
- by fmviesa004.fm.intel.com with ESMTP; 19 Dec 2025 04:02:01 -0800
+ by fmviesa004.fm.intel.com with ESMTP; 19 Dec 2025 04:02:03 -0800
 From: priyanka.dandamudi@intel.com
 To: priyanka.dandamudi@intel.com, niranjana.vishwanathapura@intel.com,
  igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 4/7] tests/intel/xe_evict: Enhance testing of multi
- queue functionality
-Date: Fri, 19 Dec 2025 17:31:51 +0530
-Message-ID: <20251219120154.695287-5-priyanka.dandamudi@intel.com>
+Subject: [PATCH i-g-t 5/7] tests/intel/xe_exec_reset: Add multi queue subtests
+Date: Fri, 19 Dec 2025 17:31:52 +0530
+Message-ID: <20251219120154.695287-6-priyanka.dandamudi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251219120154.695287-1-priyanka.dandamudi@intel.com>
 References: <20251219120154.695287-1-priyanka.dandamudi@intel.com>
@@ -67,325 +66,384 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+From: Apoorva Singh <apoorva.singh@intel.com>
 
-Extend testing of multi queue functionality with flags
-like EXTERNAL_OBJ, THREADED, MIXED_THREADS and COMPUTE_THREAD.
-Rename multiq to multi queue across for better readability.
+Add multi queue subtests with gt reset, engine reset,
+close fd, close-execqueues, cat-error.
 
+Signed-off-by: Apoorva Singh <apoorva.singh@intel.com>
+Signed-off-by: Fei Yang <fei.yang@intel.com>
+Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Signed-off-by: Daniel Charles <daniel.charles@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_evict.c | 159 ++++++++++++++++++++++++++++++-----------
- 1 file changed, 119 insertions(+), 40 deletions(-)
+ lib/xe/xe_legacy.c          |  38 +++++--
+ tests/intel/xe_exec_reset.c | 197 ++++++++++++++++++++++++++++++++++--
+ 2 files changed, 222 insertions(+), 13 deletions(-)
 
-diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
-index 35192aad0..26b6091a9 100644
---- a/tests/intel/xe_evict.c
-+++ b/tests/intel/xe_evict.c
-@@ -7,8 +7,7 @@
-  * TEST: Check VMA eviction
-  * Category: Core
-  * Mega feature: General Core features
-- * Sub-category: VMA
-- * Functionality: eviction
-+ * Sub-category: Memory management tests
-  * GPU requirements: GPU needs to have dedicated VRAM
-  */
+diff --git a/lib/xe/xe_legacy.c b/lib/xe/xe_legacy.c
+index 084445305..6572617fd 100644
+--- a/lib/xe/xe_legacy.c
++++ b/lib/xe/xe_legacy.c
+@@ -26,6 +26,10 @@
+ #define GT_RESET			(0x1 << 0)
+ #define MAX_N_EXECQUEUES		16
  
-@@ -84,12 +83,12 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
- 			exec_queues[i] = xe_exec_queue_create(fd, i & 1 ? vm2 : vm ,
- 						      eci, 0);
- 		else if (flags & MULTI_QUEUE) {
--			struct drm_xe_ext_set_property multiq = {
-+			struct drm_xe_ext_set_property multi_queue = {
- 				.base.next_extension = 0,
- 				.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
- 				.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
- 			};
--			uint64_t ext = to_user_pointer(&multiq);
-+			uint64_t ext = to_user_pointer(&multi_queue);
- 
- 			if (flags & PRIORITY) {
- 				struct drm_xe_ext_set_property mq_priority = {
-@@ -97,10 +96,10 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
- 					.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
- 					.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY,
- 				};
--				multiq.base.next_extension = to_user_pointer(&mq_priority);
-+				multi_queue.base.next_extension = to_user_pointer(&mq_priority);
- 				mq_priority.value = XE_EXEC_QUEUE_PRIORITY_NORMAL + (rand() % 2);
- 			}
--			multiq.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
-+			multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
- 			igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci,
- 							     ext, &exec_queues[i]), 0);
- 		} else
-@@ -553,14 +552,13 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
- 
- /**
-  * SUBTEST: evict-%s
-+ * Functionality: eviction
-  * Description:  %arg[1] evict test.
-  * Test category: functionality test
-  *
-  * arg[1]:
-  *
-  * @small:			small
-- * @small-multiqueue:		small multi queue
-- * @small-multiqueue-priority:	small multi queue priority
-  * @small-external:		small external
-  * @small-multi-vm:		small multi VM
-  * @beng-small:			small bind exec_queue
-@@ -569,6 +567,7 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
-  */
- /**
-  * SUBTEST: evict-%s
-+ * Functionality: eviction
-  * Description:  %arg[1] evict test.
-  * Test category: stress test
-  *
-@@ -584,15 +583,13 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
- /**
-  *
-  * SUBTEST: evict-%s
-+ * Functionality: compute VM eviction
-  * Description:  %arg[1] evict test.
-- * Feature: compute machine
-  * Test category: functionality test
-  *
-  * arg[1]:
-  *
-  * @small-cm:			small compute machine
-- * @small-multiqueue-cm:	small multi queue compute machine
-- * @small-multiqueue-priority-cm:	small multi queue priority compute machine
-  * @small-external-cm:		small external compute machine
-  * @small-multi-vm-cm:		small multi VM compute machine
-  * @beng-small-cm:		small bind exec_queue compute machine
-@@ -601,8 +598,8 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
-  */
- /**
-  * SUBTEST: evict-%s
-+ * Functionality: compute VM eviction
-  * Description:  %arg[1] evict test.
-- * Feature: compute machine
-  * Test category: stress test
-  *
-  * arg[1]:
-@@ -617,27 +614,8 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
- /**
-  *
-  * SUBTEST: evict-%s
-+ * Functionality: mixed threads eviction
-  * Description:  %arg[1] evict test.
-- * Feature: mixted threads
-- * Test category: functionality test
-- *
-- * arg[1]:
-- *
-- * @mixed-threads-small:	mixed threads small
-- * @mixed-many-threads-small:	mixed many threads small
-- * @mixed-threads-small-multi-vm:
-- * 				mixed threads small multi vm
-- * @beng-mixed-threads-small:	bind exec_queue mixed threads small
-- * @beng-mixed-many-threads-small:
-- *				bind exec_queue mixed many threads small
-- * @beng-mixed-threads-small-multi-vm:
-- *				bind exec_queue mixed threads small multi vm
-- */
--/**
-- *
-- * SUBTEST: evict-%s
-- * Description:  %arg[1] evict test.
-- * Feature: mixted threads
-  * Test category: stress test
-  *
-  * arg[1]:
-@@ -655,8 +633,8 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
- /**
-  *
-  * SUBTEST: evict-%s
-+ * Functionality: compute mode threads eviction
-  * Description:  %arg[1] evict test.
-- * Feature: compute mode threads
-  * Test category: functionality test
-  *
-  * arg[1]:
-@@ -669,8 +647,8 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
- /**
-  *
-  * SUBTEST: evict-%s
-+ * Functionality: compute mode threads eviction
-  * Description:  %arg[1] evict test.
-- * Feature: compute mode threads
-  * Test category: stress test
-  *
-  * arg[1]:
-@@ -680,11 +658,31 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
-  * @beng-cm-threads-large-multi-vm:
-  *				bind exec_queue compute mode threads large multi vm
-  */
++#define MULTI_QUEUE                     (0x1 << 20)
++#define ENGINE_RESET                    (0x1 << 21)
++#define FAULT_ON_SECONDARY_QUEUE	(0x1 << 22)
 +
  /**
-  *
-  * SUBTEST: evict-%s
-+ * Functionality: mixted threads eviction
-+ * Description:  %arg[1] evict test.
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @mixed-threads-small:       mixed threads small
-+ * @mixed-many-threads-small:  mixed many threads small
-+ * @mixed-threads-small-multi-vm:
-+ *                             mixed threads small multi vm
-+ * @beng-mixed-threads-small:  bind exec_queue mixed threads small
-+ * @beng-mixed-many-threads-small:
-+ *                             bind exec_queue mixed many threads small
-+ * @beng-mixed-threads-small-multi-vm:
-+ *                             bind exec_queue mixed threads small multi vm
-+*/
-+/**
-+ *
-+ * SUBTEST: evict-%s
-+ * Functionality: threads eviction
-  * Description:  %arg[1] evict test.
-- * Feature: threads
-  * Test category: functionality test
-  *
-  * arg[1]:
-@@ -699,8 +697,8 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
- /**
-  *
-  * SUBTEST: evict-%s
-+ * Functionality: threads eviction
-  * Description:  %arg[1] evict test.
-- * Feature: threads
-  * Test category: stress test
-  *
-  * arg[1]:
-@@ -712,6 +710,79 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
-  * @beng-threads-large:		bind exec_queue threads large
-  *
-  */
-+/**
-+ *
-+ * SUBTEST: evict-%s
-+ * Mega feature: MultiQ
-+ * Sub-category: MultiQ tests
-+ * Functionality: threads eviction
-+ * Description:  %arg[1] evict test.
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @threads-small-multi-queue:	threads small multi queue
-+ *
-+ */
-+/**
-+ *
-+ * SUBTEST: evict-%s
-+ * Mega feature: MultiQ
-+ * Sub-category: MultiQ tests
-+ * Functionality: compute mode threads eviction
-+ * Description:  %arg[1] evict test.
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ * @cm-threads-small-multi-queue:
-+ * 				compute mode threads small multi queue
-+ */
-+/**
-+ * SUBTEST: evict-%s
-+ * Mega feature: MultiQ
-+ * Sub-category: MultiQ tests
-+ * Functionality: eviction
-+ * Description:  %arg[1] evict test.
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @small-multi-queue:		small multi queue
-+ * @small-multi-queue-priority:
-+ * 				small multi queue priority
-+ * @small-external-multi-queue: small external multi queue
-+ */
-+/**
-+ *
-+ * SUBTEST: evict-%s
-+ * Mega feature: MultiQ
-+ * Sub-category: MultiQ tests
-+ * Functionality: mixed threads eviction
-+ * Description:  %arg[1] evict test.
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @mixed-threads-small-multi-queue:
-+ * 				mixed threads small multi queue
-+ */
-+/**
-+ *
-+ * SUBTEST: evict-%s
-+ * Mega feature: MultiQ
-+ * Sub-category: MultiQ tests
-+ * Functionality: compute VM eviction
-+ * Description:  %arg[1] evict test.
-+ * Test category: functionality test
-+ *
-+ * arg[1]:
-+ *
-+ * @small-multi-queue-cm:	small multi queue compute machine
-+ * @small-multi-queue-priority-cm:
-+ * 				small multi queue priority compute machine
-+ * @small-external-multi-queue-cm:
-+ * 				small external compute machine multi queue
-+ */
+  * xe_legacy_test_mode:
+  * @fd: file descriptor
+@@ -69,11 +73,18 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 		.ctx_ticks = flags & LONG_SPIN ?
+ 			xe_spin_nsec_to_ticks(fd, 0, THREE_SEC) : 0,
+ 	};
+-	int i, b;
++	int i, b, hang_exec_queue = n_exec_queues / 2;
++	int fault_position = 0;
+ 	int extra_execs = (flags & LONG_SPIN_REUSE_QUEUE) ? n_exec_queues : 0;
  
- /*
-  * Table driven test that attempts to cover all possible scenarios of eviction
-@@ -735,9 +806,10 @@ int igt_main()
- 		unsigned int flags;
- 	} sections[] = {
- 		{ "small", 16, 448, 1, 128, 0 },
--		{ "small-multiqueue", 16, 448, 1, 128, MULTI_QUEUE },
--		{ "small-multiqueue-priority", 16, 448, 1, 128, MULTI_QUEUE | PRIORITY},
-+		{ "small-multi-queue", 16, 448, 1, 128, MULTI_QUEUE },
-+		{ "small-multi-queue-priority", 16, 448, 1, 128, MULTI_QUEUE | PRIORITY },
- 		{ "small-external", 16, 448, 1, 128, EXTERNAL_OBJ },
-+		{ "small-external-multi-queue", 16, 448, 1, 128, EXTERNAL_OBJ | MULTI_QUEUE },
- 		{ "small-multi-vm", 16, 256, 1, 128, MULTI_VM },
- 		{ "large", 4, 16, 1, 4, 0 },
- 		{ "large-external", 4, 16, 1, 4, EXTERNAL_OBJ },
-@@ -762,9 +834,10 @@ int igt_main()
- 		unsigned int flags;
- 	} sections_cm[] = {
- 		{ "small-cm", 16, 448, 1, 128, 0 },
--		{ "small-multiqueue-cm", 16, 448, 1, 128, MULTI_QUEUE },
--		{ "small-multiqueue-priority-cm", 16, 448, 1, 128, MULTI_QUEUE | PRIORITY},
-+		{ "small-multi-queue-cm", 16, 448, 1, 128, MULTI_QUEUE },
-+		{ "small-multi-queue-priority-cm", 16, 448, 1, 128, MULTI_QUEUE | PRIORITY },
- 		{ "small-external-cm", 16, 448, 1, 128, EXTERNAL_OBJ },
-+		{ "small-external-multi-queue-cm", 16, 448, 1, 128, EXTERNAL_OBJ | MULTI_QUEUE },
- 		{ "small-multi-vm-cm", 16, 256, 1, 128, MULTI_VM },
- 		{ "large-cm", 4, 16, 1, 4, 0 },
- 		{ "large-external-cm", 4, 16, 1, 4, EXTERNAL_OBJ },
-@@ -792,10 +865,16 @@ int igt_main()
- 	} sections_threads[] = {
- 		{ "threads-small", 2, 16, 128, 1, 128,
- 			THREADED },
-+		{ "threads-small-multi-queue", 2, 16, 128, 1, 128,
-+			THREADED | MULTI_QUEUE },
- 		{ "cm-threads-small", 2, 16, 128, 1, 128,
- 			COMPUTE_THREAD | THREADED },
-+		{ "cm-threads-small-multi-queue", 2, 16, 128, 1, 128,
-+			COMPUTE_THREAD | THREADED | MULTI_QUEUE },
- 		{ "mixed-threads-small", 2, 16, 128, 1, 128,
- 			MIXED_THREADS | THREADED },
-+		{ "mixed-threads-small-multi-queue", 2, 16, 128, 1, 128,
-+			MIXED_THREADS | THREADED | MULTI_QUEUE },
- 		{ "mixed-many-threads-small", 3, 16, 128, 1, 128,
- 			THREADED },
- 		{ "threads-large", 2, 2, 16, 3, 32,
+ 	igt_assert_lte(n_exec_queues, MAX_N_EXECQUEUES);
+ 
++	igt_assert_f(!(flags & FAULT_ON_SECONDARY_QUEUE) || (flags & MULTI_QUEUE),
++		     "FAULT_ON_SECONDARY_QUEUE requires MULTI_QUEUE to be set");
++
++	if ((flags & FAULT_ON_SECONDARY_QUEUE) && (flags & CAT_ERROR))
++		fault_position = 1; /* index that complies with index % n_exec_queues != 0 */
++
+ 	if (flags & COMPRESSION)
+ 		igt_require(intel_gen(intel_get_drm_devid(fd)) >= 20);
+ 
+@@ -101,7 +112,20 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 	data = xe_bo_map(fd, bo, bo_size);
+ 
+ 	for (i = 0; i < n_exec_queues; i++) {
+-		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
++		if (flags & MULTI_QUEUE) {
++			struct drm_xe_ext_set_property multi_queue = {
++				.base.next_extension = 0,
++				.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++				.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
++			};
++
++			uint64_t ext = to_user_pointer(&multi_queue);
++
++			multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
++			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
++		} else {
++			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
++		}
+ 		syncobjs[i] = syncobj_create(fd, 0);
+ 	}
+ 
+@@ -123,7 +147,7 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 	}
+ 
+ 	for (i = 0; i < n_execs; i++) {
+-		u64 base_addr = (!use_capture_mode && (flags & CAT_ERROR) && !i)
++		u64 base_addr = (!use_capture_mode && (flags & CAT_ERROR) && i == fault_position)
+ 			? (addr + bo_size * 128) : addr;
+ 		u64 batch_offset = (char *)&data[i].batch - (char *)data;
+ 		u64 batch_addr = base_addr + batch_offset;
+@@ -133,7 +157,8 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 		u64 exec_addr;
+ 		int e = i % n_exec_queues;
+ 
+-		if (!i || flags & CANCEL ||
++		if ((flags & ENGINE_RESET && e == hang_exec_queue) ||
++		    !i || flags & CANCEL ||
+ 		    (flags & LONG_SPIN && i < n_exec_queues)) {
+ 			spin_opts.addr = base_addr + spin_offset;
+ 			xe_spin_init(&data[i].spin, &spin_opts);
+@@ -157,7 +182,7 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 		exec.exec_queue_id = exec_queues[e];
+ 		exec.address = exec_addr;
+ 
+-		if (e != i)
++		if (e != i && !(flags & ENGINE_RESET))
+ 			syncobj_reset(fd, &syncobjs[e], 1);
+ 
+ 		xe_exec(fd, &exec);
+@@ -224,7 +249,8 @@ xe_legacy_test_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+ 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+ 
+-	if (!use_capture_mode && !(flags & (GT_RESET | CANCEL | COMPRESSION))) {
++	if (!use_capture_mode &&
++	    !(flags & (GT_RESET | ENGINE_RESET | CAT_ERROR | CANCEL | COMPRESSION))) {
+ 		for (i = flags & LONG_SPIN ? n_exec_queues : 1;
+ 		     i < n_execs + extra_execs; i++)
+ 			igt_assert_eq(data[i].data, 0xc0ffee);
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 7aaee31dd..fe496a538 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -125,6 +125,10 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci,
+ #define SYSTEM				(0x1 << 12)
+ #define COMPRESSION			(0x1 << 13)
+ 
++#define MULTI_QUEUE			(0x1 << 20)
++#define ENGINE_RESET			(0x1 << 21)
++#define FAULT_ON_SECONDARY_QUEUE	(0x1 << 22)
++
+ /**
+  * SUBTEST: %s-cat-error
+  * Description: Test %arg[1] cat error
+@@ -355,6 +359,68 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+  * Description: Test compute mode close exec_queues close fd
+  */
+ 
++/**
++ * SUBTEST: multi-queue-cat-error
++ * Mega feature: MultiQ
++ * Sub-category: MultiQ tests
++ * Description: Test cat error with multi_queue
++ *
++ * SUBTEST: multi-queue-cat-error-on-secondary
++ * Mega feature: MultiQ
++ * Sub-category: MultiQ tests
++ * Description: Test cat error on secondary queue with multi_queue
++ *
++ * SUBTEST: multi-queue-gt-reset
++ * Mega feature: MultiQ
++ * Sub-category: MultiQ tests
++ * Description: Test GT reset with multi_queue
++ *
++ * SUBTEST: multi-queue-engine-reset
++ * Mega feature: MultiQ
++ * Sub-category: MultiQ tests
++ * Description: Test engine reset with multi_queue
++ *
++ * SUBTEST: multi-queue-close-fd
++ * Mega feature: MultiQ
++ * Sub-category: MultiQ tests
++ * Description: Test close fd with multi_queue
++ *
++ * SUBTEST: multi-queue-close-execqueues
++ * Mega feature: MultiQ
++ * Sub-category: MultiQ tests
++ * Description: Test close execqueues with multi_queue
++ *
++ * SUBTEST: cm-multi-queue-cat-error
++ * Mega feature: MultiQ
++ * Sub-category: MultiQ tests
++ * Description: Test compute mode cat error with multi_queue
++ *
++ * SUBTEST: cm-multi-queue-cat-error-on-secondary
++ * Mega feature: MultiQ
++ * Sub-category: MultiQ tests
++ * Description: Test compute mode cat error with multi_queue
++ *
++ * SUBTEST: cm-multi-queue-gt-reset
++ * Mega feature: MultiQ
++ * Sub-category: MultiQ tests
++ * Description: Test compute mode GT reset with multi_queue
++ *
++ * SUBTEST: cm-multi-queue-engine-reset
++ * Mega feature: MultiQ
++ * Sub-category: MultiQ tests
++ * Description: Test compute mode engine reset with multi_queue
++ *
++ * SUBTEST: cm-multi-queue-close-fd
++ * Mega feature: MultiQ
++ * Sub-category: MultiQ tests
++ * Description: Test compute mode close fd with multi_queue
++ *
++ * SUBTEST: cm-multi-queue-close-execqueues
++ * Mega feature: MultiQ
++ * Sub-category: MultiQ tests
++ * Description: Test compute mode close execqueues with multi_queue
++ */
++
+ static void
+ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 		  int n_exec_queues, int n_execs, unsigned int flags)
+@@ -383,10 +449,17 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 		uint32_t data;
+ 	} *data;
+ 	struct xe_spin_opts spin_opts = { .preempt = flags & PREEMPT };
+-	int i, b;
++	int i, b, hang_exec_queue = n_exec_queues / 2;
++	int fault_position = 0;
+ 
+ 	igt_assert_lte(n_exec_queues, MAX_N_EXECQUEUES);
+ 
++	igt_assert_f(!(flags & FAULT_ON_SECONDARY_QUEUE) || (flags & MULTI_QUEUE),
++		     "FAULT_ON_SECONDARY_QUEUE requires MULTI_QUEUE to be set");
++
++	if ((flags & FAULT_ON_SECONDARY_QUEUE) && (flags & CAT_ERROR))
++		fault_position = 1; /* index that complies with index % n_exec_queues != 0 */
++
+ 	if (flags & CLOSE_FD)
+ 		fd = drm_open_driver(DRIVER_XE);
+ 
+@@ -401,7 +474,20 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 	memset(data, 0, bo_size);
+ 
+ 	for (i = 0; i < n_exec_queues; i++) {
+-		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
++		if (flags & MULTI_QUEUE) {
++			struct drm_xe_ext_set_property multi_queue = {
++				.base.next_extension = 0,
++				.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++				.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
++			};
++
++			uint64_t ext = to_user_pointer(&multi_queue);
++
++			multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
++			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
++		} else {
++			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
++		}
+ 	};
+ 
+ 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+@@ -411,7 +497,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 	data[0].vm_sync = 0;
+ 
+ 	for (i = 0; i < n_execs; i++) {
+-		uint64_t base_addr = flags & CAT_ERROR && !i ?
++		uint64_t base_addr = flags & CAT_ERROR && i == fault_position ?
+ 			addr + bo_size * 128 : addr;
+ 		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+ 		uint64_t batch_addr = base_addr + batch_offset;
+@@ -421,7 +507,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 		uint64_t exec_addr;
+ 		int e = i % n_exec_queues;
+ 
+-		if (!i || flags & CANCEL) {
++		if ((flags & ENGINE_RESET && e == hang_exec_queue) || !i || flags & CANCEL) {
+ 			spin_opts.addr = base_addr + spin_offset;
+ 			xe_spin_init(&data[i].spin, &spin_opts);
+ 			exec_addr = spin_opts.addr;
+@@ -466,8 +552,14 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 		int err;
+ 
+ 		err = __xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+-				       exec_queues[i % n_exec_queues], &timeout);
+-		if (flags & GT_RESET || flags & CAT_ERROR)
++				exec_queues[i % n_exec_queues], &timeout);
++		if (flags & FAULT_ON_SECONDARY_QUEUE) {
++			/* exec may result on -ETIME for fault on secondary queue */
++			igt_assert(err == -ETIME || err == -EIO || !err);
++			if (err == -ETIME)
++			 /* no need to continue checking once -ETIME happened*/
++				break;
++		} else if (flags & GT_RESET || flags & CAT_ERROR)
+ 			/* exec races with reset: may return -EIO or complete */
+ 			igt_assert(err == -EIO || !err);
+ 		else
+@@ -478,7 +570,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+ 	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, 3 * NSEC_PER_SEC);
+ 
+-	if (!(flags & (GT_RESET | CANCEL))) {
++	if (!(flags & (GT_RESET | CANCEL | ENGINE_RESET | CAT_ERROR))) {
+ 		for (i = 1; i < n_execs; i++)
+ 			igt_assert_eq(data[i].data, 0xc0ffee);
+ 	}
+@@ -979,6 +1071,97 @@ int igt_main()
+ 		xe_for_each_gt(fd, gt)
+ 			gt_mocs_reset(fd, gt);
+ 
++	igt_subtest("multi-queue-cat-error") {
++		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		xe_for_each_multi_queue_engine(fd, hwe)
++			xe_legacy_test_mode(fd, hwe, 16, 256, CAT_ERROR |
++					    MULTI_QUEUE, LEGACY_MODE_ADDR,
++					    false);
++	}
++
++	igt_subtest("multi-queue-cat-error-on-secondary") {
++		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		xe_for_each_multi_queue_engine(fd, hwe)
++			xe_legacy_test_mode(fd, hwe, 16, 256, CAT_ERROR |
++					    MULTI_QUEUE | FAULT_ON_SECONDARY_QUEUE, LEGACY_MODE_ADDR,
++					    false);
++	}
++
++	igt_subtest("multi-queue-gt-reset") {
++		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		xe_for_each_multi_queue_engine(fd, hwe)
++			xe_legacy_test_mode(fd, hwe, 16, 256, GT_RESET |
++					    MULTI_QUEUE, LEGACY_MODE_ADDR,
++					    false);
++	}
++
++	igt_subtest("multi-queue-engine-reset") {
++		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		xe_for_each_multi_queue_engine(fd, hwe)
++			xe_legacy_test_mode(fd, hwe, 16, 256, ENGINE_RESET |
++					    MULTI_QUEUE, LEGACY_MODE_ADDR,
++					    false);
++	}
++
++	igt_subtest("multi-queue-close-fd") {
++		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		xe_for_each_multi_queue_engine(fd, hwe)
++			xe_legacy_test_mode(-1, hwe, 16, 256, CLOSE_FD |
++					    MULTI_QUEUE, LEGACY_MODE_ADDR,
++					    false);
++	}
++
++	igt_subtest("multi-queue-close-execqueues") {
++		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		xe_for_each_multi_queue_engine(fd, hwe)
++			xe_legacy_test_mode(-1, hwe, 16, 256, CLOSE_EXEC_QUEUES | CLOSE_FD |
++					    MULTI_QUEUE, LEGACY_MODE_ADDR,
++					    false);
++	}
++
++
++	igt_subtest("cm-multi-queue-cat-error") {
++		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		xe_for_each_multi_queue_engine(fd, hwe)
++			test_compute_mode(fd, hwe, 16, 256, CAT_ERROR |
++					  MULTI_QUEUE);
++	}
++
++	igt_subtest("cm-multi-queue-cat-error-on-secondary") {
++		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		xe_for_each_multi_queue_engine(fd, hwe)
++			test_compute_mode(fd, hwe, 16, 256, CAT_ERROR |
++					  MULTI_QUEUE | FAULT_ON_SECONDARY_QUEUE);
++	}
++
++	igt_subtest("cm-multi-queue-gt-reset") {
++		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		xe_for_each_multi_queue_engine(fd, hwe)
++			test_compute_mode(fd, hwe, 16, 256, GT_RESET |
++					  MULTI_QUEUE);
++	}
++
++	igt_subtest("cm-multi-queue-engine-reset") {
++		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		xe_for_each_multi_queue_engine(fd, hwe)
++			test_compute_mode(fd, hwe, 16, 256, ENGINE_RESET |
++					  MULTI_QUEUE);
++	}
++
++	igt_subtest("cm-multi-queue-close-fd") {
++		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		xe_for_each_multi_queue_engine(fd, hwe)
++			test_compute_mode(-1, hwe, 16, 256, CLOSE_FD |
++					  MULTI_QUEUE);
++	}
++
++	igt_subtest("cm-multi-queue-close-execqueues") {
++		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
++		xe_for_each_multi_queue_engine(fd, hwe)
++			test_compute_mode(-1, hwe, 16, 256, CLOSE_EXEC_QUEUES | CLOSE_FD |
++					  MULTI_QUEUE);
++	}
++
+ 	igt_fixture()
+ 		drm_close_driver(fd);
+ }
 -- 
 2.43.0
 
