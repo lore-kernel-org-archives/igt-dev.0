@@ -4,189 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A23CE67495
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Dec 2025 04:45:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 361EBE6748D
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Dec 2025 11:20:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9FCC110E383;
-	Mon, 22 Dec 2025 04:45:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BA77D10E06D;
+	Mon, 22 Dec 2025 11:20:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FAV69zL2";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="O6/A1VgD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D64B10E383
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Dec 2025 04:45:13 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A13AC10E06D
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Dec 2025 11:20:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1766378713; x=1797914713;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=kevbGQXnP/MRnioLDSTZ2JLKdtLFGt5+irqHuMW7uDg=;
- b=FAV69zL2CZKEaLaQk2juLVYbJhbqjECosTXOsnNuC2JEMAV+zvQoRoPD
- kSoYHUxumf9ap2Fpyk2djpOcLYgw7qeoGHRyOTlq95JaoZ9QmlRUx5xce
- mInE1QKmwyFOlWA5bU4mtma2TQ5XminE2iHRwUJLtaL8T2wr0wZqAAb5I
- EXRYw8gJlCaiCo6B29cp0XAH81wnCN9ZEuXO6fl3n27cbvguGSGWAMzn8
- TJ2JNKtnd2iPJMuWWoCtZO9HMe5Ic2YRlj4fjaoGwmlVNxFLEWfAM3FBK
- 6aTeYDZ/YzORgUbi1G+MAGVRIjt2XFn4m1fBIWuJ+9CazncXk9smA+DEu w==;
-X-CSE-ConnectionGUID: hJmAznKOS8GCGi5GCOtKdw==
-X-CSE-MsgGUID: be3KJYtiQKqvKezEC3bpgg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11649"; a="70811768"
-X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; d="scan'208";a="70811768"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Dec 2025 20:45:12 -0800
-X-CSE-ConnectionGUID: dKcU1tTBTgCrziScRXmy0Q==
-X-CSE-MsgGUID: XIDtrcsSTAe2c3PykA199Q==
+ t=1766402402; x=1797938402;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=zjp58jf6xw+l7m0+Cvrd8wG6SbuENqJTeiPeoY3e/Fo=;
+ b=O6/A1VgDWdbFblw1itVHsF9BtKgRMfz9uEaI5IsGmhTp4ftK2hFuiyhv
+ pWT1W5BLqOOSLw8VJnsRomO1/V+gdibSQ0C0LZP8R30LiPBch99P15Rm5
+ +ShktG+5yZg70dx4Ent+uLK3vq6ztZksJUBsCK2r7+R2Q2iA8eaw7tRdc
+ 6VbeuudNo25n8BbeBbYmFm50prTpg9mCX+xmxxhE5RQOBNPH4YrW0b8xT
+ D5c3/2aKNAQWQENfxXNzSLYt9Njz3E61QWTfQ/S/pKaxxaoytlalfPLfM
+ FRlmCON4N31xOmMvUcYvYIZVzXthiwdZRfSjQGulvQtdVe/Agi/xwYISd A==;
+X-CSE-ConnectionGUID: Egxot8BLTaKzTno1Q9rZJA==
+X-CSE-MsgGUID: Qr3tOCUARP6Umhl2SkZ7fQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11649"; a="68410265"
+X-IronPort-AV: E=Sophos;i="6.21,168,1763452800"; d="scan'208";a="68410265"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Dec 2025 03:20:01 -0800
+X-CSE-ConnectionGUID: VHl0+mTuR5+TgtvN5lIgbQ==
+X-CSE-MsgGUID: VlehymwsTCKqkEgji4W75g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; d="scan'208";a="199455499"
+X-IronPort-AV: E=Sophos;i="6.21,168,1763452800"; d="scan'208";a="204030473"
 Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Dec 2025 20:45:12 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Dec 2025 03:20:01 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
  fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Sun, 21 Dec 2025 20:45:11 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.2.2562.29; Mon, 22 Dec 2025 03:20:00 -0800
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Sun, 21 Dec 2025 20:45:11 -0800
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.68) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ 15.2.2562.29 via Frontend Transport; Mon, 22 Dec 2025 03:20:00 -0800
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.8) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Sun, 21 Dec 2025 20:45:10 -0800
+ 15.2.2562.29; Mon, 22 Dec 2025 03:20:00 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lcep0mYP/3LFYtgFNA9Gzwa8IGRho1IOHOqqp1YKb1948UjzlOt+hIH81y7hVdDAdeh2yEZ6Vb7h5euY6uI5iinN9k9zayMPQK+DaGqvCqKrfvBy7N5Y/GaPOYut/T0J0YjlHGrAaP5P7j5JtulvyPNZETCfjjd+iqxEWiAueHGC8/jmzghJZZPmorwkK0WoVzg8RtF6E5O4DvZWVmTzWx7XJwKpV1fH2ADryDRzH0vH+aaZNr98j4nNUwGhRezcgGhFWZdXd+cwwCnHaEA7KR8jROoaeiVZZHriHFAEuNReZJAqf9RxXc7LXjvpvtgfRQVoCwmot/8RS1IV5xRv8A==
+ b=ltmj/9sPNe2OTVU7RUyP3Sv5KN7BHKmVVWIhY6ocL1fieAWpECQxRVt5uFM0G743x4rhpYd24Knu26xCoWSFV+3DtUA3Obdti2ah3oEp0HAysZyM9DuBCeH1cYpY9AiY5tC/U4USLtYkT+ixwSVelok1TIjG5Xayuhf7sblg8/tCU0X2SwMMTBIm5uFSr94P7jR6GLJ4A/s2k7ciog2LoJnPzBETZCyFexmy/+KYDMXiz9pEmerKlyYIyNTj3PpyQGXtxZSkhWAuX2o4wKqXvwq+La2ygr3r2JJ5BrpOS2ixEatJmtg/0kNEp7r563cjAgKgAgVlpKbx21DP9ZknXg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6Li1BjNSeLYW2AZw8gSk85y08r5Kq2/5D3vEbxVD848=;
- b=FpO6xZKaY8gtVVZ4E6+iie/L7TL2c2UVp7BIETEy2cog/n1biiDbuZbiUjGIhyjrJ/0Wx23PXsHM9jFGrj6SDYk+7JHtwe1WeOZHp/O9qjAMIUTC5vACX5htMSq9I33JLy9k7wLSJZ47q0Tt6CHFf2mMDUCsTfUi28fKch9Pby1d4z1sidKYDZWx98HWB6OGaekKmdtRsWeoG8yYhyGW6TOLHoQnvQdHG322Cx2hxow/nPhyNBRkB65h14DHq/gq2uHmpqlMzgVgL0Ad8MSlxDDu+qNViSFNWbV3ikRHwag8XlbSM66ohODwuYZN183uazBbr/rIvAqo6WeSZG9k9g==
+ bh=Ys5/c6SITgp9vJVqxKQc1ejHkBBi68yfFhQ4NKt51/w=;
+ b=EgCaaAG9ZvsGLRhpjvQSw+BHqkELQlUJBfxg74moPB9p2bQHsrnn+/4GFN6vW5rd0eoLlLF2+Wwm8RXzwB6sqFDuQacrgmRqxpX6qtrNcwD9lQ97G6osSeweWN/zI4mQjpi3BClupj8UZohMdLBktecyUaXXhw+sfQhNU4/vla5mQhtC6pmokTlAv7JKWyrHRCSLzN3E5USsA3E7RNFvT7Sx0c25FqBAwx5U2xHmWOusYoELOI4SyzD9XCuwUtVx6AmLGdHFwrvYR/L7oSt4OCnSzDu2EeXDKlSb2YZOdnIHYLyEQwCtDgxOdxETITigJvvB5j2DdRLrCdaOPB73nw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV3PR11MB8695.namprd11.prod.outlook.com (2603:10b6:408:211::15)
- by DS7PR11MB6270.namprd11.prod.outlook.com (2603:10b6:8:96::12) with
+Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
+ by IA3PR11MB9351.namprd11.prod.outlook.com (2603:10b6:208:57c::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.11; Mon, 22 Dec
- 2025 04:45:04 +0000
-Received: from LV3PR11MB8695.namprd11.prod.outlook.com
- ([fe80::4858:d790:3ac6:8541]) by LV3PR11MB8695.namprd11.prod.outlook.com
- ([fe80::4858:d790:3ac6:8541%2]) with mapi id 15.20.9434.009; Mon, 22 Dec 2025
- 04:45:03 +0000
-Message-ID: <c0cc8610-191c-478f-8eab-da22a1272a1a@intel.com>
-Date: Mon, 22 Dec 2025 10:14:59 +0530
+ 2025 11:19:58 +0000
+Received: from DM4PR11MB5341.namprd11.prod.outlook.com
+ ([fe80::397:7566:d626:e839]) by DM4PR11MB5341.namprd11.prod.outlook.com
+ ([fe80::397:7566:d626:e839%7]) with mapi id 15.20.9434.009; Mon, 22 Dec 2025
+ 11:19:58 +0000
+Message-ID: <2f74d23f-17ac-487b-ab96-1432eaf4c314@intel.com>
+Date: Mon, 22 Dec 2025 16:49:51 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tools/gen_xe_vf_migration_bpftrace.py: Add bpftrace
- generator for Xe VF migration tracing
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>
-CC: Adam Miszczak <adam.miszczak@linux.intel.com>, Jakub Kolakowski
- <jakub1.kolakowski@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Lukasz Laguna <lukasz.laguna@intel.com>,
- =?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>
-References: <20251219170958.881880-1-marcin.bernatowicz@linux.intel.com>
+Subject: Re: [PATCH i-g-t, v4 1/4] lib/igt_kms: Add igt_get_joined_pipes_name()
+To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20250905210816.319104-1-swati2.sharma@intel.com>
+ <20250905210816.319104-2-swati2.sharma@intel.com>
 Content-Language: en-US
-From: "K V P, Satyanarayana" <satyanarayana.k.v.p@intel.com>
-In-Reply-To: <20251219170958.881880-1-marcin.bernatowicz@linux.intel.com>
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <20250905210816.319104-2-swati2.sharma@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0117.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1d0::9) To LV3PR11MB8695.namprd11.prod.outlook.com
- (2603:10b6:408:211::15)
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5P287CA0218.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b4::17) To DM4PR11MB5341.namprd11.prod.outlook.com
+ (2603:10b6:5:390::22)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR11MB8695:EE_|DS7PR11MB6270:EE_
-X-MS-Office365-Filtering-Correlation-Id: 466822f5-61c3-433f-baf5-08de4114df0e
+X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|IA3PR11MB9351:EE_
+X-MS-Office365-Filtering-Correlation-Id: 013fd9cb-bda9-447f-5605-08de414c0a2a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?QzBRTGI0d1ZBb1hNclhRVndiRkNxYlo0a1I0TXhpWXhLeGZiNHk4SDBzUGdo?=
- =?utf-8?B?K1dwVWI0WkZJU1dGUEtNeUtpZ0ozM2hvOXFCTVF3L25jbTZxdkM1eEdiaSt0?=
- =?utf-8?B?aDM3c1RaL1VLY3pBMVFOZCthak5oTTF3cGRuVGFpMjRXQWdzRHNuRVhMRGxQ?=
- =?utf-8?B?ZDZMZnR5L01FMkdTODI2YU9FbERGQzdDa3ByMGxoNHdrM0J1SjFUTnhTQ2Yy?=
- =?utf-8?B?OWtzT1A2NzJ5aURhRHNOTjZpUWZEbStyZFE3b1d2S2FTeXh4TkVCMG16NkVE?=
- =?utf-8?B?ZzRESnc3Y3g5cW4xZW9menJNUi9sa2J0SUh4ODFEKy8xMGZKWVhjaHFHeGRr?=
- =?utf-8?B?V3hpUlB4aEN5REJscWw3alZGK3ZXanhmcDF2WStBTDVTcGxJVzZxeCtTdUFK?=
- =?utf-8?B?YUphYm1KWkltc1NyR1NyMEtOak1IcldxTXRUNjR4RFViVzREbmwrM0xtbmY1?=
- =?utf-8?B?bmpVSWt0TlZzOUtEUFFrKy9QNWFiVTQ0SlBXRVJQbWhRUXlvMXdZaGNSMzZx?=
- =?utf-8?B?SGVwQ2hZK0dJRmFLeC9pdUFxemhEdkRMZ0w5bDlOVkhzNlp2V2ZIa293M0VK?=
- =?utf-8?B?SnFoS1BycGZNMXJseVYzcjdrL0tFWjRsNnZ5Tk1hbXNzcTFlbnd4bUJPakZz?=
- =?utf-8?B?aXAxRTcyVFhtM2VNUUpkZlFEVmt4Z3NsNDFXSXhrZ09kWG1SWDZkUlJ4YUVS?=
- =?utf-8?B?ZHF6ZEZhbERETHJFY2RtUURqM1hnN3hlSTR4cXN5MG5BbkdqMmpRWnZGenh2?=
- =?utf-8?B?VjR0N0xMT1BtZklKUDBYai84a1hXMzNiNWNQWXdENm1McTdpM3Iwc1doNzlu?=
- =?utf-8?B?WGxOcERsS3FMNGJPS2hhUGU0L3lpcGpScW1TQWpGOExXVGF5L1BHZmRSRnF1?=
- =?utf-8?B?UUpveFU5dFlsZWFvakd4M1VzNm8xVzMyaEczZE5ZaWYrT0RrQ3ZVNU5NV2ts?=
- =?utf-8?B?NkFPakRsYURJK1dPZzgxbWtyL29YTlJRdGtBQ0ZxYmwzMjZmTXo0eW9jL01x?=
- =?utf-8?B?V3lvd0t2MnB2UDNLcmUwYndERFRMWEVHemNzSHNnZFA4c1NqUGdOUXVFTno0?=
- =?utf-8?B?dkkxOUYya1hsdnhrdWJpSUU1TE5MbjA0U0Q3d1oranZZQ09zZVU0NzNTYjNO?=
- =?utf-8?B?Q09zZ2FoUnV5ekQ2eFNJV1JkditYOEVpM2s0ZDRMZUhqNjNiYmV5eVhZSk9i?=
- =?utf-8?B?ZTF2cm5lRnBFU2ZocWJKbDY0UW92dkVUVWpla3haQzdpWVV6aWYwRHB4eFpE?=
- =?utf-8?B?dEdPS1NORXpabVNza2ZQUmN0ZFJ0aVY1NVNoM1VITnpDTVZlWEF3UVdLWXlZ?=
- =?utf-8?B?blBVWHltN2RyNS9JTDVSbVBmcHl0WlZINlZRUFNNaVZEL2xLN0E2VWVqMXdP?=
- =?utf-8?B?bFM4ekdoUmpzYStUU3lCek9UeUpMUUNldEpUSi9MZmsyQXB4b25JQ3p2VUVV?=
- =?utf-8?B?dDBmT1g2aXlZd0JMS2N3dWQzM3hXejhxWDlxRER2eEVxNUcxbFgvRkRLVlhk?=
- =?utf-8?B?eWd3TUxrQXBkVVRzdmg0U2FGWEF4Rm5vRWdpWXdCc0IvSFk4clhJeExUaW56?=
- =?utf-8?B?L2c0L0hGZ2xjdGpOaUZJQjdXQWJ1TkZiL3k5Kzh2WkozOGl4TENrdUZiTkwz?=
- =?utf-8?B?K1FJQWNSZkNYdFdEVS9vSUFybkI2eCtSL0Nia20vei9FNk9Fb2VIUlZMdHRJ?=
- =?utf-8?B?eTFrMUtjY2VSL0Z3MC9ETjBOd2pENHhveXVHNDJ5aUJqY0dtYmYyTTZDNHcw?=
- =?utf-8?B?RStaa0QrZDEzeGxvTkwwUis1Q2l3K0NhZm1Nemg1WDdzYVp6QmFHbHdRSDJ2?=
- =?utf-8?B?TE9zd3cvSUhIL09OdkRCNmlPYko3M3JaLzNHWFJOZWltUkgremJnOUNmTXdO?=
- =?utf-8?B?SDdSNzQxVWRKbUNGVDdhc0tuTDh0Qm84aTJpbVBEQnA4RlY2WTN6TlJqYnA3?=
- =?utf-8?Q?MdcpNRe6sAZMVB64+D0bC/p9/i0Egdj6?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UG9CU2dpUjhGRk8wb0pWSUpWa2JiTDdUKzhtR0gxdkpXejhwWEhOUjVrZ3Ar?=
+ =?utf-8?B?c0FPRFNPSDdLLzJnRDJoODFtekhzM3Y2eXdoZ21aOE9lZW5aLytMSk1jSitz?=
+ =?utf-8?B?TFRJZVdEVUZVajJ5a2VQOVpGS25LcWZTVm9nUmVwUjV3TjBRTHJuVHZvUmNL?=
+ =?utf-8?B?TEtVQTRxNVcxK3h6aS9WNjlIQ004TmN2aEliZTllaFlDdjZhTWl4WndwL0dm?=
+ =?utf-8?B?aWs1aGxvb0tRSmtlTTV4c1A4bkNOVTBUR0Z1aGFFZ0NBOUtaanRYK044bmYy?=
+ =?utf-8?B?QW1KRUpLUDRUQk1oVVhCeG5Hcnc3OGNKMFNBcGE4TnB4OVpJSWJlaWR4SWJ5?=
+ =?utf-8?B?OW1xSEhqbWNwbVFCVW5ySFVxaEN2b1RBVENNNGIwRlROOWJxcFY1T0JVdjhn?=
+ =?utf-8?B?RzdUaEVXOGVneC8xajhSMWJJMlJoYVgvQjliVGtwUUN1dHFSRVZuUk1PUVVp?=
+ =?utf-8?B?cVY2bndxUFNxRWxUNENTTWVta2d6UTJVZVdkdkpuM0VuTmZZUHVVRU1TTThq?=
+ =?utf-8?B?SUhEdzJvUWtEejZieWVQZ05kWEM4ZVVTVkxCUVk0SmViMDV4dEZCT3VtMVUr?=
+ =?utf-8?B?L1F5bzFIUFY4R1UzZmJXKzl3SndzY0JkN2JxZ1hDc1VKYzQ2bzlzejhUdEQr?=
+ =?utf-8?B?SkZERHJSTjVUaHlvYTRxa2N3a2MrbWl0N0dyV1A0RmdUMlUvRkUzaUhFOHNP?=
+ =?utf-8?B?SnZWL24ycDRkZEl6VVFiaitxWjVPTkEzZGhKK0gwU1JtdEI5TzFiVUg1bk9L?=
+ =?utf-8?B?RFlFR3NBVUZVdWpIVzlNRjk2Z0hORGsxZVdTbzFhWmw1VlRiS3BmUWlzWjFF?=
+ =?utf-8?B?TTgxdncvaDQ1UEZHbitUOVRGSHpTamJNM3cxcytuaHNKQUNZcGxlSlVza3cr?=
+ =?utf-8?B?WlVodm1IbzRheGFvdkQzL3RGNnR0QU1UcnRUNDkyQm1PcFlPSjFSRjR6Vkhs?=
+ =?utf-8?B?OGpGN2JmZWlPeUx4M2FrUm5mbXRQN3hsNGZnL2NPUjZJMkRJay9SMTNseU9W?=
+ =?utf-8?B?SGplZmE3dlhScndVK3RVLzViNWNsbTIxZVdrOGUvOU5BVWlsQithTFkybEJ0?=
+ =?utf-8?B?akRRVDFRYVVldy9TK1RPRGcvZkJDRC9YOFhkQ3J3Q3JXLzVtdUV6dlowYWEw?=
+ =?utf-8?B?K1FiUFdMSkZsSWxubm8wcUM1cTl4eTc5K0lqdjF0RjZpRzV2RGxYbEhzcGdr?=
+ =?utf-8?B?S0pqTWVhRmJmMURvVjFqYXNPcHhMOG9aYklqTFVPRVE4eUVZUGV0bjlod2la?=
+ =?utf-8?B?djFESVpRMVNRVXB5bWZwYmpDNlhvWFZ0L0ZMbmZKUDhSelc4cCtDNENqa2V4?=
+ =?utf-8?B?L1UvbkRMYStGTE03cGt0MUdDUDAzWHVEWE1hYzJQUnhITUsrdEd3K0tadXlN?=
+ =?utf-8?B?VEd4bE1sZHRHaklWQ0dNK1psdEJNTUJRSG02Tjg2VzV6alNNbllqMDFWd0tJ?=
+ =?utf-8?B?cENUTEJVcktGV29MQ2hsTWlCSUQ4TDZNdkZ2dkhFNms5MTh0UlBmRVhnRXRz?=
+ =?utf-8?B?bU1GdzRPU2Q2NlB0VEZNVlAxSGlORnpvMFJZd3JWZFVaZHBjU2RCVEdLUm1T?=
+ =?utf-8?B?WjZZR0VLS3ZsVjZSSDFHNmZSYStFSTZWenhwcHpjK1UvaWtiOG9hOTQrYlVy?=
+ =?utf-8?B?ZS9NMVdXZFBIbHdpaHlIcjZ5dHZFQlpTcmdSRStxMzRtODc3aGdqTWlsM0tm?=
+ =?utf-8?B?WlBCT0xpYlJ6RTUyMGQ4YzlSQWlibUFwVng5MUJ3RkxTdGhxcmFOZkNEMjlE?=
+ =?utf-8?B?eHpUYmR1ajFVdXpudjMxSU5lQzN5bjV0NmdSUEdWamh6NEF2VTRWbU1BNGhZ?=
+ =?utf-8?B?Uk9aME5lR3JYRUE2UEJkRTJBMHVIYTBNcHZkS1lOMGV5N3AvN0lpNVFrWklm?=
+ =?utf-8?B?NXJncXBwZVpPMWpSdGhOUDc2R3YwcE1QeE13NWFYa3FxQko5RDkzSkJVbWh2?=
+ =?utf-8?Q?ehL1FLTYUWBEuY4ABmlhsyfv3jiqQGk7?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:LV3PR11MB8695.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024)(7053199007); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB5341.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZlBJcHdKZTdSRzZjNlp5YTJhWkw0azFpQitlV2FuR1ZHNHFkY3BvUjl6SEY4?=
- =?utf-8?B?VDJNWlh0MG15SmpxczZxS3dJd1dhL2xNdm1zZ1R4QmtiWEZqOTg4TTBMVVVC?=
- =?utf-8?B?azZzQzN1eGlMM2JtTi9yOWM2bE9EWktCTWtzVS9kbXA0S0c4aGM2RzkvMXJH?=
- =?utf-8?B?VW9yNE9VdnVIeXk3Vi9WNEVoQVROUk9kV2FZeHNoalFkeWYzK0wwdFJuMEJr?=
- =?utf-8?B?emNFUW5SVG9Fc21kNlUyOU9aTm1hRmwwS3d1UjAvcmhaemx0N3lWOVZiK3Y5?=
- =?utf-8?B?Y1J3QzJ6YStJQUNyd3RqVnJ0dDdsak9WR3ZLcmV2RThhRDd1N3Z6eXQvUEFJ?=
- =?utf-8?B?QWFKcGdNOG01dG5GcmRxcWtEemx3cDZMVVNFZ3JNQmYzYlBKQ1N4M3JDT2d2?=
- =?utf-8?B?UzYvZkIrelc1dFlrdDVJcDAvWHI2Tlp5NDlQMGcvS3FLbklWNGNaMVFZbTlI?=
- =?utf-8?B?STVCWmhlLyswKzhzL2JUcTlPRURKL3dTMHZaRWsvYWdqQkhLUnBvbVp0clVG?=
- =?utf-8?B?WlovRS9lVEhGcXNmVWdVSDgrOWxSNXVKVVNMNmM5WEJHd2N0bkM5MkdIdEo0?=
- =?utf-8?B?RlEvVnlLRWtGWDJoSnN0VUYrZDhXRlJwSlVSeDRqOCt4Tkl4eHRvUjhKR3dm?=
- =?utf-8?B?WGt5K0U1SENrMDNqTW1aL0tHV1I2SXhaNzF0ek9SNFR0eXBpTFQySjZPRDdM?=
- =?utf-8?B?MXpTUlplTGNnVjhtMkx0dFZrOGRwQzJuWVNramxBRUZ2RC9PUnhMTzJ2NEJl?=
- =?utf-8?B?Y3hqUWJTc090K0w0M09Ic2gwb2wyTy9IVGw4NC9VNlNRRDRvQ3BSNEl0bm1W?=
- =?utf-8?B?WlFXa0ZGU1Y4am92RzNpRjdnK2gwQXZoOHlMdC83N0JTRGpIaGw0TnVQbC9N?=
- =?utf-8?B?S0RNVU15RE1zeExsVmI3aERqNG0xUWpUVDZIRitXVFFaSkx2MCtlMnhBbUNE?=
- =?utf-8?B?M0MvY2xRQW9tMjBEY3p3dE45V1FSa1hJeDRCck9lTWRYRDF5bUtzb0hrUHZF?=
- =?utf-8?B?Y2IxbjNoWU9YVHc3SndDTW45SENlV1hlMGNiU2tHSXdYUzZ2VnBBb3lYMHFz?=
- =?utf-8?B?emF5WmNCTUlRWTRORnd1MzIvOWxTdEV4UUNVdGk5MEcweVNuREM4Mm1LUGc4?=
- =?utf-8?B?ZHh2U1FScDBFdWY0WXk3YWdIWjY4VXY2OUdaVlRnK2NJS2oxeEIvWkN4Sk1u?=
- =?utf-8?B?RGdJMm82ckVMblNtcTdGSzE5Y25JL3V3Q3Z3UEI1d2ZncGtRZ29EMEMvU24w?=
- =?utf-8?B?emtyY3ZaSktQTTVLbEthQzQ5M2ZtOGNib2g5b2tRcUZORjVMVGZJY2o2S3Fx?=
- =?utf-8?B?YnFZQitMdnppOXduZjFpYXZVYlRaSkhMK1JJdUtlVllCVUg1cytaeGRIU0VN?=
- =?utf-8?B?Wjc0MDN5MlFGR2I4UnlsUGEwM3NXOHJqVytjdHl3TitLOFgxMHM3bGY1SUZF?=
- =?utf-8?B?bDBzNTYvSjB2SWtWbUYvZTg5ZmV4S0xoY3k4SkhGcVVFRE1XQnl1ZjE2YmRp?=
- =?utf-8?B?dmVOUkc1T1Y4MHhsY3ZlVzhVcXFBYVZtajkyZThPclNROHVqek9zeHdlRnlX?=
- =?utf-8?B?M2FyTS9VaG1nRmRHUGRocnYzeEt5WVZ3OHVjK1VoOWRWZEEySVVFOURPbU5H?=
- =?utf-8?B?Uy9MdHNsTWxzb3gxNkpvdzMwdWlhQWlIU0xrMGZxZUF4azNpbkozRHdweDhk?=
- =?utf-8?B?NGtlNVhQbjFDRTljWGV1R240MGJYaVFFVkpHM0JXVnBjS2g4L0g1cjdoc2ZT?=
- =?utf-8?B?Q1VhUnY0RXFFYUlWa1lmWjYxSGNKcFBaSW5mYmxMdEVkTEJIWGoreXJ6QkRu?=
- =?utf-8?B?Ui9vVHpKUDhnR0FQVXJmSWliUzhGd05USGRnSmkwVXc5enYwRmRmRXhLMFRP?=
- =?utf-8?B?aktyU0JaaFNvTlA4M0VhNnlmYjlGU1B6YlhVVG12V2NYb2VlK0RkSHZXangv?=
- =?utf-8?B?bXhjZmJ4L2M2Ty9taFh1WDQzS1FROE5XTlZBaWRMenA3TUVEZ3JXT0M2dEJD?=
- =?utf-8?B?a2FTU25QcEM4ei9BV242amw1VjN0ZEFIOXpDS3F1bERXUmptY2tYTW8xNFFD?=
- =?utf-8?B?bFVtM1RPd2MvOXo4bTk4TjJ3em9XOTk1c3ZkNGxRaGNHZFpKOEVBS3hCaFo1?=
- =?utf-8?B?M0dYYlFsT3RNT1FIYTRHc2dWMTRzbHpaeHM2bms0N1Y1bmVQL1RKQ25ydUFa?=
- =?utf-8?B?KzkyN3FOU0o2QnNOc1FiYmY0TXNOYzhnM1ZZbUJjWXBPRXFGcVl1dnZjMkZ5?=
- =?utf-8?B?Vi91VXRTQk82VVdxS0xqSzNFVFFOL2E1T0d3RXZKOW94VElkcXNkS2xvendF?=
- =?utf-8?B?YVhkYVFJNzFUMHhZMFB1cmxYNmRYQTZuaWViT2ZWODJXOHM3bGIrbk9nSG5P?=
- =?utf-8?Q?WROCkxqv2/3BBaJE=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 466822f5-61c3-433f-baf5-08de4114df0e
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8695.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bHViWmoza0VHaEFIdFMyeEpnd3hOcXkxL3hpODFrTEtEcmsrOVVmYUs2bzkr?=
+ =?utf-8?B?Y1l3UmttSkNxUkZCVWhER0UvWTF3eHFaTklJYjRUcTNnWW14VE90MlZSOFYy?=
+ =?utf-8?B?ZnlISWhUZ0ZnSzNheHpiMWNHL0pLUUhtRG94RU5HQndXeGJacHF4NytXSjJm?=
+ =?utf-8?B?TmJ1bjNtakRPRVZvSXNnZjJaWjlKWG40WUUwRjRKVGI4TUFiK2N3dzRicnhs?=
+ =?utf-8?B?czEzRkZZK005UG1XMXNPYzluOGpxRTM1dUUzSmg1Vy9VRDF0RVNPMTlMamxh?=
+ =?utf-8?B?QS94bTZoaTVOSzZBbWdMYUtBcWlCa2Z2dXZCM1lLL0JZMjc2QW01Sm5SZDJJ?=
+ =?utf-8?B?TE93UUdPOTZBdlhBT0JhMzBXcTZyMDBiblI1U2xjc1ZZQXBJQWtINWovKytY?=
+ =?utf-8?B?N2lBa3pRYTZISHliRXFzSWE1alV1UTh5Y3RQcTVWT0VUUnR3cktIcDBiUllY?=
+ =?utf-8?B?eklhbVFqdVlYaWR5MGl1NkxBUG14TGVpOGF1RXNMR01RTGdqWVZqcW9ZZ1NG?=
+ =?utf-8?B?ZGJvZEpuNEVxQ3pTZUpxRmVqcEtDUmVsUUdySzliY0pqV2hrMG9pT2NHWHEw?=
+ =?utf-8?B?bllLZmJxTUdTN3g3TlY5cSsvS2RCQ3ZIYzBMRU1xWVlIL1hWSGRDcVVhYmlp?=
+ =?utf-8?B?V1RpVTNIZVdpc2hwdy9pMmlqeEJXallvSFkrYXpLNWNxTVJBZDF0K3NWT0d3?=
+ =?utf-8?B?WFBwK0MxMmF0SVQ4RVNreUpUaVFuZHRaWTlyYTh4amh4M25BdVhWL2h6eG8v?=
+ =?utf-8?B?cnl3dEF0SHg4azZJejM1R1hCaUM2QXo4TTlvUlJmNVc2aXZnNSszRzVnbW96?=
+ =?utf-8?B?cUZuUmJPT2ZhNS9wUUYvM2V6WmpLSlFIeWFrNzJSZ1ZpVnRLM05DUUxGNWF1?=
+ =?utf-8?B?ZmhxUWJrZXJ3ME1CK1dYa2J4VEVMN2tnRlhjMkFGZUNCRzMzRGZvVVAxOFAw?=
+ =?utf-8?B?b2NMNXppWkthMDlQR0wrTm12UnBtRHk1akZWWkJ1T291cGQ0elhzSnM3Ryt2?=
+ =?utf-8?B?U1RmejkyMlZWcHRkeEc1ZEsxWDltT0F1am13ZWlyL1V0YjVtektsdWRNTnll?=
+ =?utf-8?B?aEJjR0hYYnoxWXVZczB5a1F1Q1hweUhiV1p5Z29MRUZFbllVRk53UE5OK2xI?=
+ =?utf-8?B?QnpnVjNMVWpVSEh6STVxMWhWT3RJaGVDdFBDU09LTWtrSmZOcnU1SmRGN0VT?=
+ =?utf-8?B?QkI2ZnVoNzkyWE1xRU9QNDcxcG1ZTE50NVppUmZzUjQ1V1c2S3c0WiszZzYr?=
+ =?utf-8?B?RTQySUdmV3ZoNDZDOEUvMkRzUmQ4WWlHak4rRzZYSGcyZVFhOUMzTWt0TWNG?=
+ =?utf-8?B?WW1JbThETGNJcExWRzBxMk1jVTZGQnpzUEdYNnVBRVNNcFppUHhnL2JUdW1F?=
+ =?utf-8?B?blBCQ2RxM0RrQStjbWhIaFZGTUVNdXVtd1FTbW9RM204bXNQWHN5eTErWjE2?=
+ =?utf-8?B?aGpaKzd5aEQwV2Z1M2tLVHJTWlRQWjlRN0d0VFlnRFV2aitlcUFibllFemlq?=
+ =?utf-8?B?ZU5vNThCM1pYZUZDOER0aDN0d2NROGZFSjVGc1VDUHZCblhNdmE2eUtaUHo0?=
+ =?utf-8?B?RnM1dzFDRDNHWGdEczR1M3dQV3BKcExZb0NhVXBwbzN1UDFLZEpCd2J4TWJt?=
+ =?utf-8?B?YU1kSjFrSEJTSjZmcitFUitXUlRTdTM4VzlybzNISGk5K2pOL1RNeGJhTGx0?=
+ =?utf-8?B?RGt0bDhRcTE3UGtGM0pCUlZOeU10R2xpczBjTytOeENXMURRcy8zbm8xeURp?=
+ =?utf-8?B?Z3ZaSGoyLzA0NmNCZk9yUll2N0FCL1dqcTdNS1o4MUMrYlpMNmlBZVBQUVZh?=
+ =?utf-8?B?QWZmRkJkcjMvT0xzVXdyd09UTHovN3BhQmxyR0FpSG5LeXd5Q21laHRnL1hh?=
+ =?utf-8?B?QzdtTkJ6OUJNR2NDZVl3bnVmaUd2R2h4ZnMxQWhrckE2U2ttZGg3a2cyWjl2?=
+ =?utf-8?B?VUo4eStRWVNUVzd6TG91bkRxelh0bEU4T3Z3YmltS0pVc3RGQXlTUVJlMk50?=
+ =?utf-8?B?MTVFZjhlMDFTRDcyMGdya1hHTjVaTkNtMjNYOWtpYWhzMy9iWTJYTXJ2eVhT?=
+ =?utf-8?B?L1A4ZWhXOWZZUHFQbDdLMEJMNU4vbmlYNlU4dHpFNE9lWHJRM2svL2swajhF?=
+ =?utf-8?B?eVh6SmFYditYUURTbXIzNzJ1RG1XcnZ2c0EvTklNUkRzTnlRNks5VHNBUng3?=
+ =?utf-8?B?N2QrckxFOExVbE1HZkVSejdZS2RWQ28vRDMwNmFTcWIxaGpIQVpZUHRrTFJS?=
+ =?utf-8?B?T1pVYjdGN0JZK2QrSzd2TTBiR1lablZlbHp6SEVQMno2cEdUdW9CbVhPSitH?=
+ =?utf-8?B?UzUrYk8wbzB5c2phaVYzSnFjN2xIc25YNEZWVzVPSFJoeFAxUVFHMDFhV1ZT?=
+ =?utf-8?Q?tmmWBm0HLnbk+uvA=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 013fd9cb-bda9-447f-5605-08de414c0a2a
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Dec 2025 04:45:03.4703 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Dec 2025 11:19:58.7016 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: k0lV9DpJR9nMLg1g8pf1fgkE9gWmchDGZm/6iWphHz4AumSztGolazzxbyloxIvlO5m0i6PUpDjZtCONEYLg0CFULuXjWytmLGIGTDVTjUw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6270
+X-MS-Exchange-CrossTenant-UserPrincipalName: eI/jsiapp2ZCR+QafqMx1TvXNqzBnbsBF9vNk55jAVh2mGoRkSVhkFPXf0H8xHQQGDRMiayXmN7+Z2L2AKAfwiLUr3POznq0eK+6uLdtj1s=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9351
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -204,1476 +199,65 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 19-Dec-25 10:39 PM, Marcin Bernatowicz wrote:
-> Add a Python script that generates a bpftrace program for tracing
-> Xe SR-IOV VF migration (save/restore) activity.
+On 9/6/2025 2:38 AM, Swati Sharma wrote:
+> Add function to transform the enum into a string.
 >
-> The tool emits a complete bpftrace script to stdout and is intended
-> to be used by piping its output to bpftrace, e.g.:
+> v2: -Improved func() doc (Jeevan)
 >
->      ./gen_xe_vf_migration_bpftrace.py | bpftrace -
->
-> It focuses on migration-related events and metrics useful for
-> analyzing VF save/restore flow, latency, and data transfer behavior.
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 
-Try to add sample output in the commit message and explain what each 
-filed corresponds to.
+LGTM.
 
--Satya.
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Michał Winiarski <michal.winiarski@intel.com>
-> Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+
 > ---
->   tools/gen_xe_vf_migration_bpftrace.py | 1438 +++++++++++++++++++++++++
->   1 file changed, 1438 insertions(+)
->   create mode 100755 tools/gen_xe_vf_migration_bpftrace.py
+>   lib/igt_kms.c | 22 ++++++++++++++++++++++
+>   lib/igt_kms.h |  1 +
+>   2 files changed, 23 insertions(+)
 >
-> diff --git a/tools/gen_xe_vf_migration_bpftrace.py b/tools/gen_xe_vf_migration_bpftrace.py
-> new file mode 100755
-> index 000000000..8397dc3f4
-> --- /dev/null
-> +++ b/tools/gen_xe_vf_migration_bpftrace.py
-> @@ -0,0 +1,1438 @@
-> +#!/usr/bin/env python3
-> +# SPDX-License-Identifier: MIT
-> +#
-> +# Copyright(c) 2025 Intel Corporation. All rights reserved.
-> +#
-> +"""
-> +Generator for Xe VF migration bpftrace scripts.
-> +
-> +Generates a bpftrace script for observing Intel Xe SR-IOV VF activity,
-> +focused on migration (save/restore).
-> +
-> +Events (--events / --omit-events) filter bpftrace probe specs (kprobe/kretprobe)
-> +using glob patterns.
-> +Defaults: --events='*' --omit-events='*:xe_sriov_vfio_data_*'.
-> +
-> +Metrics (--metrics / --omit-metrics) filter map names using glob patterns.
-> +Default: all metrics enabled.
-> +
-> +Tracing is organized into blocks, each combining related probes and
-> +metric producers (e.g. VFIO save/restore, Xe restore paths).
-> +A block is generated if it provides any enabled metric
-> +or any of its probes are enabled.
-> +
-> +If no output file is given, the script is written to stdout (pipe directly into bpftrace).
-> +"""
-> +
-> +from __future__ import annotations
-> +
-> +import argparse
-> +import sys
-> +from dataclasses import dataclass
-> +from fnmatch import fnmatch
-> +from textwrap import dedent
-> +from typing import Callable, List, Set, Dict
-> +
-> +NameFilter = Callable[[str], bool]
-> +BlockGen = Callable[[NameFilter, NameFilter], str]
-> +
-> +def parse_patterns(csv: str | None) -> List[str] | None:
-> +    """
-> +    Parse a comma-separated list of glob patterns.
-> +
-> +    Returns a list of non-empty, stripped patterns, or None if the input
-> +    is None.
-> +    """
-> +    if csv is None:
-> +        return None
-> +    pats = [p.strip() for p in csv.split(",")]
-> +    pats = [p for p in pats if p]
-> +    return pats
-> +
-> +
-> +def make_name_filter(patterns: List[str] | None,
-> +                     default_patterns: List[str] | None) -> NameFilter:
-> +    """
-> +    Return predicate(name)->bool based on glob patterns.
-> +    If patterns is None, use default_patterns.
-> +    If final list empty -> always False.
-> +    """
-> +    pats = patterns if patterns is not None else default_patterns
-> +    if not pats:
-> +        return lambda _name: False
-> +    return lambda name: any(fnmatch(name, pat) for pat in pats)
-> +
-> +
-> +def make_name_filter_with_omit(include_pats: List[str] | None,
-> +                               default_include: List[str] | None,
-> +                               omit_pats: List[str] | None) -> NameFilter:
-> +    """
-> +    Create a name filter with optional exclusion patterns.
-> +
-> +    The returned predicate accepts names that match the include patterns
-> +    (or default include patterns) and do not match any of the omit patterns.
-> +    """
-> +    inc = make_name_filter(include_pats, default_include)
-> +    if not omit_pats:
-> +        return inc
-> +    return lambda name: inc(name) and not any(fnmatch(name, pat) for pat in omit_pats)
-> +
-> +
-> +@dataclass(frozen=True)
-> +class Block:
-> +    """
-> +    Logical tracing block used to generate a portion of a bpftrace script.
-> +
-> +    A block groups related probes and metric producers and may depend on
-> +    other blocks. The generator function emits bpftrace code based on
-> +    probe and metric enablement predicates.
-> +    """
-> +
-> +    name: str
-> +    probes: List[str]                 # Probe specs (kprobe/kretprobe)
-> +    provides: Set[str]                # Metric/map names produced by this block
-> +    requires: Set[str]                # Names of other blocks required by this block
-> +    gen: BlockGen                     # gen(probe_enabled, metric_enabled) -> bpftrace text
-> +    needs_packet_structs: bool = False
-> +
-> +
-> +
-> +@dataclass(frozen=True)
-> +class MetricDef:
-> +    """
-> +    Definition of a generated metric.
-> +
-> +    Describes the metric name and a short human-readable description
-> +    used for discovery and listing.
-> +    """
-> +
-> +    name: str
-> +    desc: str
-> +
-> +
-> +METRIC_DEFS: List[MetricDef] = [
-> +    # ------------------------------------------------------------------
-> +    # VFIO
-> +    # ------------------------------------------------------------------
-> +    MetricDef(
-> +        name="vfio_stop_copy_dur_us",
-> +        desc="Stop-copy phase duration per VF and save_id (microseconds).",
-> +    ),
-> +    MetricDef(
-> +        name="vfio_stop_copy_dur_hist",
-> +        desc="Histogram of stop-copy phase duration per VF (microseconds).",
-> +    ),
-> +    MetricDef(
-> +        name="vfio_stop_copy_size",
-> +        desc="Histogram of data size returned by stop-copy operation per VF (bytes).",
-> +    ),
-> +    MetricDef(
-> +        name="vfio_resume_data_dur_us",
-> +        desc="Resume-data phase duration per VF and restore_id (microseconds).",
-> +    ),
-> +    MetricDef(
-> +        name="vfio_resume_data_dur_hist",
-> +        desc="Histogram of resume-data phase duration per VF (microseconds).",
-> +    ),
-> +    MetricDef(
-> +        name="vfio_suspend_dur_hist",
-> +        desc="Histogram of VF suspend operation duration per VF (microseconds).",
-> +    ),
-> +    MetricDef(
-> +        name="vfio_resume_dur_hist",
-> +        desc="Histogram of VF resume operation duration per VF (microseconds).",
-> +    ),
-> +    MetricDef(
-> +        name="vfio_flr_wait_dur_hist",
-> +        desc="Histogram of time spent waiting for FLR completion per VF (microseconds).",
-> +    ),
-> +    MetricDef(
-> +        name="vfio_read_bytes",
-> +        desc="Total bytes read from VFIO migration stream per VF and save_id.",
-> +    ),
-> +    MetricDef(
-> +        name="vfio_read_chunk_size",
-> +        desc="Histogram of VFIO read chunk sizes per VF and save_id (bytes).",
-> +    ),
-> +    MetricDef(
-> +        name="vfio_read_chunk_dur_us",
-> +        desc="Histogram of VFIO read chunk durations per VF and save_id (microseconds).",
-> +    ),
-> +    MetricDef(
-> +        name="vfio_write_bytes",
-> +        desc="Total bytes written to VFIO migration stream per VF and restore_id.",
-> +    ),
-> +    MetricDef(
-> +        name="vfio_write_chunk_size",
-> +        desc="Histogram of VFIO write chunk sizes per VF and restore_id (bytes).",
-> +    ),
-> +    MetricDef(
-> +        name="vfio_write_chunk_dur_us",
-> +        desc="Histogram of VFIO write chunk durations per VF and restore_id (microseconds).",
-> +    ),
-> +
-> +    MetricDef(
-> +        name="vfio_error_count",
-> +        desc="Count of VFIO migration-related errors per VF.",
-> +    ),
-> +    # ------------------------------------------------------------------
-> +    # Xe
-> +    # ------------------------------------------------------------------
-> +    MetricDef(
-> +        name="xe_save_start_ts",
-> +        desc="Timestamp of Xe VF save start per VF and save_id (nanoseconds).",
-> +    ),
-> +    MetricDef(
-> +        name="xe_save_end_ts",
-> +        desc="Timestamp of Xe VF save end per VF and save_id (nanoseconds).",
-> +    ),
-> +    MetricDef(
-> +        name="xe_save_dur_us",
-> +        desc="Total Xe VF save duration per VF and save_id (microseconds).",
-> +    ),
-> +    MetricDef(
-> +        name="xe_save_produce_bytes",
-> +        desc="Total bytes produced during Xe VF save per VF, save_id, tile, GT, and packet type.",
-> +    ),
-> +    MetricDef(
-> +        name="xe_save_produce_first_ts",
-> +        desc=("Timestamp of first produced save packet per VF, save_id, "
-> +              "tile, GT, and packet type (nanoseconds)."),
-> +    ),
-> +    MetricDef(
-> +        name="xe_save_produce_last_ts",
-> +        desc=("Timestamp of last produced save packet per VF, save_id, "
-> +              "tile, GT, and packet type (nanoseconds)."),
-> +    ),
-> +    MetricDef(
-> +        name="xe_save_produce_pkt_dur_us",
-> +        desc=("Histogram of Xe save packet production duration per VF, "
-> +              "save_id, and packet type (microseconds)."),
-> +    ),
-> +    MetricDef(
-> +        name="xe_save_produce_pkt_size",
-> +        desc="Histogram of Xe save packet sizes per VF, save_id, and packet type (bytes).",
-> +    ),
-> +    MetricDef(
-> +        name="xe_restore_start_ts",
-> +        desc="Timestamp of Xe VF restore start per VF and restore_id (nanoseconds).",
-> +    ),
-> +    MetricDef(
-> +        name="xe_restore_end_ts",
-> +        desc="Timestamp of Xe VF restore end per VF and restore_id (nanoseconds).",
-> +    ),
-> +    MetricDef(
-> +        name="xe_restore_dur_us",
-> +        desc="Total Xe VF restore duration per VF and restore_id (microseconds).",
-> +    ),
-> +    MetricDef(
-> +        name="xe_restore_bytes",
-> +        desc=("Total bytes restored during Xe VF restore per VF, restore_id, "
-> +              "tile, GT, and packet type."),
-> +    ),
-> +    MetricDef(
-> +        name="xe_restore_first_ts",
-> +        desc=("Timestamp of first restored packet per VF, restore_id, tile, "
-> +              "GT, and packet type (nanoseconds)."),
-> +    ),
-> +    MetricDef(
-> +        name="xe_restore_last_ts",
-> +        desc=("Timestamp of last restored packet per VF, restore_id, tile, "
-> +              "GT, and packet type (nanoseconds)."),
-> +    ),
-> +    MetricDef(
-> +        name="xe_restore_pkt_dur_us",
-> +        desc=("Histogram of Xe restore packet processing duration per VF, "
-> +              "restore_id, and packet type (microseconds)."),
-> +    ),
-> +    MetricDef(
-> +        name="xe_restore_pkt_size",
-> +        desc="Histogram of Xe restore packet sizes per VF, restore_id, and packet type (bytes).",
-> +    ),
-> +]
-> +
-> +ALL_METRICS = [m.name for m in METRIC_DEFS]
-> +
-> +def gen_preamble() -> str:
-> +    return dedent("""\
-> +        #!/usr/bin/env bpftrace
-> +        /* Auto-generated by gen_xe_vf_migration_bpftrace.py */
-> +    """)
-> +
-> +
-> +def gen_packet_structs_header() -> str:
-> +    return dedent("""\
-> +        /* Minimal subset of structs we need for packet decode */
-> +        enum xe_sriov_packet_type {
-> +            XE_SRIOV_PACKET_TYPE_DESCRIPTOR = 1,
-> +            XE_SRIOV_PACKET_TYPE_TRAILER,
-> +            XE_SRIOV_PACKET_TYPE_GGTT,
-> +            XE_SRIOV_PACKET_TYPE_MMIO,
-> +            XE_SRIOV_PACKET_TYPE_GUC,
-> +            XE_SRIOV_PACKET_TYPE_VRAM,
-> +        };
-> +
-> +        struct xe_sriov_packet_hdr {
-> +            unsigned char       version;
-> +            unsigned char       type;
-> +            unsigned char       tile_id;
-> +            unsigned char       gt_id;
-> +            unsigned int        flags;
-> +            unsigned long long  offset;
-> +            unsigned long long  size;
-> +        };
-> +
-> +        struct xe_sriov_packet {
-> +            void                *xe;
-> +            void                *vaddr;
-> +            unsigned long       remaining;
-> +            unsigned long       hdr_remaining;
-> +            void                *bo;
-> +            struct xe_sriov_packet_hdr hdr;
-> +        };
-> +
-> +    """)
-> +
-> +
-> +def gen_begin() -> str:
-> +    """Generate the BEGIN block."""
-> +    return dedent(r"""
-> +        BEGIN
-> +        {
-> +            printf("Tracing VF events ... Hit Ctrl-C to end.\n");
-> +        }
-> +
-> +    """)
-> +
-> +
-> +# -----------------------------------------------------------------------------
-> +# Block generators
-> +# -----------------------------------------------------------------------------
-> +
-> +def gen_vfio_stop_copy_phase(probe_enabled, metric_enabled) -> str:
-> +    p_enter = "kprobe:xe_sriov_vfio_stop_copy_enter"
-> +    p_exit  = "kretprobe:xe_sriov_vfio_stop_copy_exit"
-> +
-> +    ev_enter = (
-> +        f'            printf("ts=%llu ev={p_enter} vf=%u save_id=%d\\n", nsecs, $vfid, $vfio_sid);'
-> +        if probe_enabled(p_enter) else ""
-> +    )
-> +
-> +    if probe_enabled(p_exit):
-> +        if metric_enabled("vfio_read_bytes"):
-> +            ev_exit = (
-> +                "            $rb = @vfio_read_bytes[$vfid,$vfio_sid];\n"
-> +                f'            printf("ts=%llu ev={p_exit} vf=%u save_id=%d ret=%d vfio_read_bytes=%llu dur_us=%llu\\n", '
-> +                "nsecs, $vfid, $vfio_sid, $ret, $rb, $dur_us);"
-> +            )
-> +        else:
-> +            ev_exit = (
-> +                f'            printf("ts=%llu ev={p_exit} vf=%u save_id=%d ret=%d dur_us=%llu\\n", '
-> +                "nsecs, $vfid, $vfio_sid, $ret, $dur_us);"
-> +            )
-> +    else:
-> +        ev_exit = ""
-> +
-> +    return dedent(f"""\
-> +        kprobe:xe_sriov_vfio_stop_copy_enter
-> +        {{
-> +            $vfid = (uint32)arg1;
-> +            @vfio_stop_copy_start[$vfid] = nsecs;
-> +            @vfio_stop_copy_vfid[tid]    = $vfid;
-> +
-> +            /* VFIO save epoch delimiter */
-> +            @vfio_save_id[$vfid] += 1;
-> +            $vfio_sid = @vfio_save_id[$vfid];
-> +{ev_enter}
-> +        }}
-> +
-> +        kretprobe:xe_sriov_vfio_stop_copy_exit
-> +        /@vfio_stop_copy_vfid[tid]/
-> +        {{
-> +            $vfid = @vfio_stop_copy_vfid[tid];
-> +            delete(@vfio_stop_copy_vfid[tid]);
-> +
-> +            $ret = (int32)retval;
-> +
-> +            $start = @vfio_stop_copy_start[$vfid];
-> +            $vfio_sid = @vfio_save_id[$vfid];
-> +            if ($start) {{
-> +                $dur_us = (nsecs - $start) / 1000;
-> +                @vfio_stop_copy_dur_us[$vfid,$vfio_sid] = $dur_us;
-> +                @vfio_stop_copy_dur_hist[$vfid] = hist($dur_us);
-> +                delete(@vfio_stop_copy_start[$vfid]);
-> +            }}
-> +{ev_exit}
-> +        }}
-> +
-> +    """)
-> +
-> +
-> +def gen_vfio_resume_data_phase(probe_enabled, metric_enabled) -> str:
-> +    p_enter = "kprobe:xe_sriov_vfio_resume_data_enter"
-> +    p_exit  = "kretprobe:xe_sriov_vfio_resume_data_exit"
-> +
-> +    ev_enter = (
-> +        f'            printf("ts=%llu ev={p_enter} vf=%u restore_id=%d\\n", nsecs, $vfid, $vfio_rid);'
-> +        if probe_enabled(p_enter) else ""
-> +    )
-> +
-> +    if probe_enabled(p_exit):
-> +        if metric_enabled("vfio_write_bytes"):
-> +            ev_exit = (
-> +                "            $wb = @vfio_write_bytes[$vfid,$vfio_rid];\n"
-> +                f'            printf("ts=%llu ev={p_exit} vf=%u restore_id=%d ret=%d vfio_write_bytes=%llu dur_us=%llu\\n", '
-> +                "nsecs, $vfid, $vfio_rid, $ret, $wb, $dur_us);"
-> +            )
-> +        else:
-> +            ev_exit = (
-> +                f'            printf("ts=%llu ev={p_exit} vf=%u restore_id=%d ret=%d dur_us=%llu\\n", '
-> +                "nsecs, $vfid, $vfio_rid, $ret, $dur_us);"
-> +            )
-> +    else:
-> +        ev_exit = ""
-> +
-> +    return dedent(f"""\
-> +        kprobe:xe_sriov_vfio_resume_data_enter
-> +        {{
-> +            $vfid = (uint32)arg1;
-> +            @vfio_resume_data_start[$vfid] = nsecs;
-> +            @vfio_resume_data_vfid[tid]    = $vfid;
-> +
-> +            /* VFIO restore epoch delimiter */
-> +            @vfio_restore_id[$vfid] += 1;
-> +            $vfio_rid = @vfio_restore_id[$vfid];
-> +{ev_enter}
-> +        }}
-> +
-> +        kretprobe:xe_sriov_vfio_resume_data_exit
-> +        /@vfio_resume_data_vfid[tid]/
-> +        {{
-> +            $vfid = @vfio_resume_data_vfid[tid];
-> +            delete(@vfio_resume_data_vfid[tid]);
-> +
-> +            $ret  = (int32)retval;
-> +            $start = @vfio_resume_data_start[$vfid];
-> +            $vfio_rid = @vfio_restore_id[$vfid];
-> +            if ($start) {{
-> +                $dur_us = (nsecs - $start) / 1000;
-> +                @vfio_resume_data_dur_us[$vfid,$vfio_rid] = $dur_us;
-> +                @vfio_resume_data_dur_hist[$vfid] = hist($dur_us);
-> +                delete(@vfio_resume_data_start[$vfid]);
-> +            }}
-> +{ev_exit}
-> +        }}
-> +
-> +    """)
-> +
-> +
-> +def gen_vfio_suspend_phase(probe_enabled, metric_enabled) -> str:
-> +    p_enter = "kprobe:xe_sriov_vfio_suspend_device"
-> +    p_exit  = "kretprobe:xe_sriov_vfio_suspend_device"
-> +
-> +    want_hist = metric_enabled("vfio_suspend_dur_hist")
-> +
-> +    ev_enter = (
-> +        f'            printf("ts=%llu ev={p_enter} vf=%u\\n", nsecs, $vfid);'
-> +        if probe_enabled(p_enter) else ""
-> +    )
-> +    ev_exit = (
-> +        f'            printf("ts=%llu ev={p_exit} vf=%u ret=%d dur_us=%llu\\n", nsecs, $vfid, $ret, $dur_us);'
-> +        if probe_enabled(p_exit) else ""
-> +    )
-> +
-> +    store = "            @vfio_suspend_dur_hist[$vfid] = hist($dur_us);" if want_hist else ""
-> +
-> +    return dedent(f"""\
-> +        kprobe:xe_sriov_vfio_suspend_device
-> +        {{
-> +            $vfid = (uint32)arg1;
-> +            @vfio_suspend_start[$vfid] = nsecs;
-> +            @vfio_suspend_vfid[tid]    = $vfid;
-> +{ev_enter}
-> +        }}
-> +
-> +        kretprobe:xe_sriov_vfio_suspend_device
-> +        /@vfio_suspend_vfid[tid]/
-> +        {{
-> +            $vfid = @vfio_suspend_vfid[tid];
-> +            delete(@vfio_suspend_vfid[tid]);
-> +
-> +            $ret  = (int32)retval;
-> +            $start = @vfio_suspend_start[$vfid];
-> +
-> +            $dur_us = 0;
-> +            if ($start) {{
-> +                $dur_us = (nsecs - $start) / 1000;
-> +{store if store else ""}
-> +                delete(@vfio_suspend_start[$vfid]);
-> +            }}
-> +{ev_exit}
-> +        }}
-> +
-> +    """)
-> +
-> +
-> +def gen_vfio_resume_phase(probe_enabled, metric_enabled) -> str:
-> +    p_enter = "kprobe:xe_sriov_vfio_resume_device"
-> +    p_exit  = "kretprobe:xe_sriov_vfio_resume_device"
-> +
-> +    want_hist = metric_enabled("vfio_resume_dur_hist")
-> +
-> +    ev_enter = (
-> +        f'            printf("ts=%llu ev={p_enter} vf=%u\\n", nsecs, $vfid);'
-> +        if probe_enabled(p_enter) else ""
-> +    )
-> +    ev_exit = (
-> +        f'            printf("ts=%llu ev={p_exit} vf=%u ret=%d dur_us=%llu\\n", nsecs, $vfid, $ret, $dur_us);'
-> +        if probe_enabled(p_exit) else ""
-> +    )
-> +
-> +    store = "            @vfio_resume_dur_hist[$vfid] = hist($dur_us);" if want_hist else ""
-> +
-> +    return dedent(f"""\
-> +        kprobe:xe_sriov_vfio_resume_device
-> +        {{
-> +            $vfid = (uint32)arg1;
-> +            @vfio_resume_start[$vfid] = nsecs;
-> +            @vfio_resume_vfid[tid]    = $vfid;
-> +{ev_enter}
-> +        }}
-> +
-> +        kretprobe:xe_sriov_vfio_resume_device
-> +        /@vfio_resume_vfid[tid]/
-> +        {{
-> +            $vfid = @vfio_resume_vfid[tid];
-> +            delete(@vfio_resume_vfid[tid]);
-> +
-> +            $ret  = (int32)retval;
-> +            $start = @vfio_resume_start[$vfid];
-> +
-> +            $dur_us = 0;
-> +            if ($start) {{
-> +                $dur_us = (nsecs - $start) / 1000;
-> +{store if store else ""}
-> +                delete(@vfio_resume_start[$vfid]);
-> +            }}
-> +{ev_exit}
-> +        }}
-> +
-> +    """)
-> +
-> +
-> +def gen_vfio_flr_wait_phase(probe_enabled, metric_enabled) -> str:
-> +    p_enter = "kprobe:xe_sriov_vfio_wait_flr_done"
-> +    p_exit  = "kretprobe:xe_sriov_vfio_wait_flr_done"
-> +
-> +    want_hist = metric_enabled("vfio_flr_wait_dur_hist")
-> +
-> +    ev_enter = (
-> +        f'            printf("ts=%llu ev={p_enter} vf=%u\\n", nsecs, $vfid);'
-> +        if probe_enabled(p_enter) else ""
-> +    )
-> +    ev_exit = (
-> +        f'            printf("ts=%llu ev={p_exit} vf=%u ret=%d dur_us=%llu\\n", nsecs, $vfid, $ret, $dur_us);'
-> +        if probe_enabled(p_exit) else ""
-> +    )
-> +
-> +    store = "            @vfio_flr_wait_dur_hist[$vfid] = hist($dur_us);" if want_hist else ""
-> +
-> +    return dedent(f"""\
-> +        kprobe:xe_sriov_vfio_wait_flr_done
-> +        {{
-> +            $vfid = (uint32)arg1;
-> +            @vfio_flr_wait_start[$vfid] = nsecs;
-> +            @vfio_flr_wait_vfid[tid]    = $vfid;
-> +{ev_enter}
-> +        }}
-> +
-> +        kretprobe:xe_sriov_vfio_wait_flr_done
-> +        /@vfio_flr_wait_vfid[tid]/
-> +        {{
-> +            $vfid = @vfio_flr_wait_vfid[tid];
-> +            delete(@vfio_flr_wait_vfid[tid]);
-> +
-> +            $ret  = (int32)retval;
-> +            $start = @vfio_flr_wait_start[$vfid];
-> +
-> +            $dur_us = 0;
-> +            if ($start) {{
-> +                $dur_us = (nsecs - $start) / 1000;
-> +{store if store else ""}
-> +                delete(@vfio_flr_wait_start[$vfid]);
-> +            }}
-> +{ev_exit}
-> +        }}
-> +
-> +    """)
-> +
-> +
-> +def gen_vfio_stop_copy_size(probe_enabled, metric_enabled) -> str:
-> +    p_exit = "kretprobe:xe_sriov_vfio_stop_copy_size"
-> +    want_hist = metric_enabled("vfio_stop_copy_size")
-> +
-> +    ev = (
-> +        f'            printf("ts=%llu ev={p_exit} vf=%u size=%lld dur_us=%llu\\n", nsecs, $vfid, $size, $dur_us);'
-> +        if probe_enabled(p_exit) else ""
-> +    )
-> +
-> +    store = "            @vfio_stop_copy_size[$vfid] = hist($size);" if want_hist else ""
-> +
-> +    return dedent(f"""\
-> +        kprobe:xe_sriov_vfio_stop_copy_size
-> +        {{
-> +            $vfid = (uint32)arg1;
-> +            @vfio_stop_copy_size_start[$vfid] = nsecs;
-> +            @vfio_stop_copy_size_vfid[tid]    = $vfid;
-> +        }}
-> +
-> +        kretprobe:xe_sriov_vfio_stop_copy_size
-> +        /@vfio_stop_copy_size_vfid[tid]/
-> +        {{
-> +            $vfid = @vfio_stop_copy_size_vfid[tid];
-> +            delete(@vfio_stop_copy_size_vfid[tid]);
-> +            $start = @vfio_stop_copy_size_start[$vfid];
-> +            delete(@vfio_stop_copy_size_start[$vfid]);
-> +
-> +            $dur_us = (nsecs - $start) / 1000;
-> +            $size   = (int64)retval;
-> +{store if store else ""}
-> +{ev}
-> +        }}
-> +
-> +    """)
-> +
-> +
-> +def gen_vfio_read_write(probe_enabled, metric_enabled) -> str:
-> +    p_r_exit = "kretprobe:xe_sriov_vfio_data_read"
-> +    p_w_exit = "kretprobe:xe_sriov_vfio_data_write"
-> +
-> +    want_read_bytes      = metric_enabled("vfio_read_bytes")
-> +    want_read_chunk_size = metric_enabled("vfio_read_chunk_size")
-> +    want_read_chunk_dur  = metric_enabled("vfio_read_chunk_dur_us")
-> +
-> +    want_write_bytes      = metric_enabled("vfio_write_bytes")
-> +    want_write_chunk_size = metric_enabled("vfio_write_chunk_size")
-> +    want_write_chunk_dur  = metric_enabled("vfio_write_chunk_dur_us")
-> +
-> +    ev_read = (
-> +        f'            printf("ts=%llu ev={p_r_exit} vf=%u save_id=%u bytes=%llu dur_us=%llu\\n", '
-> +        "nsecs, $vfid, $sid, $len, $dur_us);"
-> +        if probe_enabled(p_r_exit) else ""
-> +    )
-> +    ev_write = (
-> +        f'            printf("ts=%llu ev={p_w_exit} vf=%u restore_id=%u bytes=%llu dur_us=%llu\\n", '
-> +        "nsecs, $vfid, $rid, $len, $dur_us);"
-> +        if probe_enabled(p_w_exit) else ""
-> +    )
-> +
-> +    read_updates = []
-> +    if want_read_bytes:
-> +        read_updates.append("            @vfio_read_bytes[$vfid,$sid] += $len;")
-> +    if want_read_chunk_size:
-> +        read_updates.append("            @vfio_read_chunk_size[$vfid,$sid] = hist($len);")
-> +    if want_read_chunk_dur:
-> +        read_updates.append("            @vfio_read_chunk_dur_us[$vfid,$sid] = hist($dur_us);")
-> +    read_upd = "\n".join(read_updates)
-> +
-> +    write_updates = []
-> +    if want_write_bytes:
-> +        write_updates.append("            @vfio_write_bytes[$vfid,$rid] += $len;")
-> +    if want_write_chunk_size:
-> +        write_updates.append("            @vfio_write_chunk_size[$vfid,$rid] = hist($len);")
-> +    if want_write_chunk_dur:
-> +        write_updates.append("            @vfio_write_chunk_dur_us[$vfid,$rid] = hist($dur_us);")
-> +    write_upd = "\n".join(write_updates)
-> +
-> +    return dedent(f"""\
-> +        kprobe:xe_sriov_vfio_data_read
-> +        {{
-> +            @xe_sriov_vfio_data_read_vfid[tid]   = (uint32)arg1;
-> +            @xe_sriov_vfio_data_read_len[tid]    = (uint64)arg3;  /* xe, vfid, buf, len */
-> +            @xe_sriov_vfio_data_read_start[tid]  = nsecs;
-> +        }}
-> +
-> +        kretprobe:xe_sriov_vfio_data_read
-> +        /@xe_sriov_vfio_data_read_start[tid]/
-> +        {{
-> +            $vfid = @xe_sriov_vfio_data_read_vfid[tid];
-> +            delete(@xe_sriov_vfio_data_read_vfid[tid]);
-> +            $len = @xe_sriov_vfio_data_read_len[tid];
-> +            delete(@xe_sriov_vfio_data_read_len[tid]);
-> +
-> +            $sid = @vfio_save_id[$vfid];
-> +
-> +            $start = @xe_sriov_vfio_data_read_start[tid];
-> +            $dur_us = (nsecs - $start) / 1000;
-> +            delete(@xe_sriov_vfio_data_read_start[tid]);
-> +
-> +{read_upd if read_upd else ""}
-> +{ev_read}
-> +        }}
-> +
-> +        kprobe:xe_sriov_vfio_data_write
-> +        {{
-> +            @xe_sriov_vfio_data_write_vfid[tid]  = (uint32)arg1;
-> +            @xe_sriov_vfio_data_write_len[tid]   = (uint64)arg3;  /* xe, vfid, buf, len */
-> +            @xe_sriov_vfio_data_write_start[tid] = nsecs;
-> +        }}
-> +
-> +        kretprobe:xe_sriov_vfio_data_write
-> +        /@xe_sriov_vfio_data_write_start[tid]/
-> +        {{
-> +            $vfid = @xe_sriov_vfio_data_write_vfid[tid];
-> +            delete(@xe_sriov_vfio_data_write_vfid[tid]);
-> +            $len = @xe_sriov_vfio_data_write_len[tid];
-> +            delete(@xe_sriov_vfio_data_write_len[tid]);
-> +
-> +            $rid = @vfio_restore_id[$vfid];
-> +
-> +            $start = @xe_sriov_vfio_data_write_start[tid];
-> +            $dur_us = (nsecs - $start) / 1000;
-> +            delete(@xe_sriov_vfio_data_write_start[tid]);
-> +
-> +{write_upd if write_upd else ""}
-> +{ev_write}
-> +        }}
-> +
-> +    """)
-> +
-> +
-> +def gen_vfio_error(probe_enabled, metric_enabled) -> str:
-> +    p = "kprobe:xe_sriov_vfio_error"
-> +    want_count = metric_enabled("vfio_error_count")
-> +
-> +    ev = (
-> +        f'            printf("ts=%llu ev={p} vf=%u\\n", nsecs, $vfid);'
-> +        if probe_enabled(p) else ""
-> +    )
-> +
-> +    store = "            @vfio_error_count[$vfid] = count();" if want_count else ""
-> +
-> +    return dedent(f"""\
-> +        kprobe:xe_sriov_vfio_error
-> +        {{
-> +            $vfid = (uint32)arg1;
-> +{store if store else ""}
-> +{ev}
-> +        }}
-> +
-> +    """)
-> +
-> +
-> +def gen_xe_control_save_restore(probe_enabled, metric_enabled) -> str:
-> +    p_save_start = "kprobe:xe_sriov_pf_control_trigger_save_vf"
-> +    p_save_end   = "kretprobe:xe_sriov_pf_control_finish_save_vf"
-> +    p_rest_start = "kprobe:xe_sriov_pf_control_trigger_restore_vf"
-> +    p_rest_end   = "kretprobe:xe_sriov_pf_control_finish_restore_vf"
-> +
-> +    want_save_start = metric_enabled("xe_save_start_ts")
-> +    want_save_end   = metric_enabled("xe_save_end_ts")
-> +    want_save_dur   = metric_enabled("xe_save_dur_us")
-> +
-> +    want_rest_start = metric_enabled("xe_restore_start_ts")
-> +    want_rest_end   = metric_enabled("xe_restore_end_ts")
-> +    want_rest_dur   = metric_enabled("xe_restore_dur_us")
-> +
-> +    # We must record start_ts if either:
-> +    # - user wants it as a metric, OR
-> +    # - user wants duration metric, OR
-> +    # - user wants an end event that prints dur_us (needs start_ts).
-> +    need_save_start_ts_for_window = want_save_start or want_save_dur or probe_enabled(p_save_end)
-> +    need_rest_start_ts_for_window = want_rest_start or want_rest_dur or probe_enabled(p_rest_end)
-> +
-> +    ev_save_start = (
-> +        f'            printf("ts=%llu ev={p_save_start} vf=%u save_id=%u\\n", nsecs, $vfid, $sid);'
-> +        if probe_enabled(p_save_start) else ""
-> +    )
-> +    ev_save_end = (
-> +        f'            printf("ts=%llu ev={p_save_end} vf=%u save_id=%u ret=%d dur_us=%llu\\n", nsecs, $vfid, $sid, $ret, $dur_us);'
-> +        if probe_enabled(p_save_end) else ""
-> +    )
-> +    ev_rest_start = (
-> +        f'            printf("ts=%llu ev={p_rest_start} vf=%u restore_id=%u\\n", nsecs, $vfid, $rid);'
-> +        if probe_enabled(p_rest_start) else ""
-> +    )
-> +    ev_rest_end = (
-> +        f'            printf("ts=%llu ev={p_rest_end} vf=%u restore_id=%u ret=%d dur_us=%llu\\n", nsecs, $vfid, $rid, $ret, $dur_us);'
-> +        if probe_enabled(p_rest_end) else ""
-> +    )
-> +
-> +    save_start_store = "            @xe_save_start_ts[$vfid,$sid] = nsecs;" if (need_save_start_ts_for_window and want_save_start) else ""
-> +
-> +    if need_save_start_ts_for_window and not want_save_start:
-> +        save_start_store = "            @xe_save_start_ts[$vfid,$sid] = nsecs;"
-> +
-> +    rest_start_store = "            @xe_restore_start_ts[$vfid,$rid] = nsecs;" if (need_rest_start_ts_for_window and want_rest_start) else ""
-> +    if need_rest_start_ts_for_window and not want_rest_start:
-> +        rest_start_store = "            @xe_restore_start_ts[$vfid,$rid] = nsecs;"
-> +
-> +    save_end_store_lines = []
-> +    if want_save_end:
-> +        save_end_store_lines.append("            @xe_save_end_ts[$vfid,$sid] = nsecs;")
-> +    if want_save_dur:
-> +        save_end_store_lines.append("            @xe_save_dur_us[$vfid,$sid] = $dur_us;")
-> +    save_end_store = "\n".join(save_end_store_lines)
-> +
-> +    rest_end_store_lines = []
-> +    if want_rest_end:
-> +        rest_end_store_lines.append("            @xe_restore_end_ts[$vfid,$rid] = nsecs;")
-> +    if want_rest_dur:
-> +        rest_end_store_lines.append("            @xe_restore_dur_us[$vfid,$rid] = $dur_us;")
-> +    rest_end_store = "\n".join(rest_end_store_lines)
-> +
-> +    return dedent(f"""\
-> +        kprobe:xe_sriov_pf_control_trigger_save_vf
-> +        {{
-> +            $vfid = (uint32)arg1;
-> +            @xe_save_id[$vfid] += 1;
-> +            $sid  = @xe_save_id[$vfid];
-> +{save_start_store if save_start_store else ""}
-> +{ev_save_start}
-> +        }}
-> +
-> +        kprobe:xe_sriov_pf_control_finish_save_vf
-> +        {{
-> +            @xe_finish_save_vfid[tid] = (uint32)arg1;
-> +        }}
-> +
-> +        kretprobe:xe_sriov_pf_control_finish_save_vf
-> +        /@xe_finish_save_vfid[tid]/
-> +        {{
-> +            $vfid = @xe_finish_save_vfid[tid];
-> +            delete(@xe_finish_save_vfid[tid]);
-> +
-> +            $ret = (int32)retval;
-> +
-> +            $sid = @xe_save_id[$vfid];
-> +
-> +            $dur_us = 0;
-> +            $start = @xe_save_start_ts[$vfid,$sid];
-> +            if ($start) {{
-> +                $dur_us = (nsecs - $start) / 1000;
-> +            }}
-> +
-> +{save_end_store if save_end_store else ""}
-> +{ev_save_end}
-> +        }}
-> +
-> +        kprobe:xe_sriov_pf_control_trigger_restore_vf
-> +        {{
-> +            $vfid = (uint32)arg1;
-> +            @xe_restore_id[$vfid] += 1;
-> +            $rid  = @xe_restore_id[$vfid];
-> +{rest_start_store if rest_start_store else ""}
-> +{ev_rest_start}
-> +        }}
-> +
-> +        kprobe:xe_sriov_pf_control_finish_restore_vf
-> +        {{
-> +            @xe_finish_restore_vfid[tid] = (uint32)arg1;
-> +        }}
-> +
-> +        kretprobe:xe_sriov_pf_control_finish_restore_vf
-> +        /@xe_finish_restore_vfid[tid]/
-> +        {{
-> +            $vfid = @xe_finish_restore_vfid[tid];
-> +            delete(@xe_finish_restore_vfid[tid]);
-> +
-> +            $ret = (int32)retval;
-> +
-> +            $rid = @xe_restore_id[$vfid];
-> +
-> +            $dur_us = 0;
-> +            $start = @xe_restore_start_ts[$vfid,$rid];
-> +            if ($start) {{
-> +                $dur_us = (nsecs - $start) / 1000;
-> +            }}
-> +
-> +{rest_end_store if rest_end_store else ""}
-> +{ev_rest_end}
-> +        }}
-> +
-> +        """)
-> +
-> +
-> +def gen_xe_restore_packets(probe_enabled, metric_enabled) -> str:
-> +    want_bytes    = metric_enabled("xe_restore_bytes")
-> +    want_first_ts = metric_enabled("xe_restore_first_ts")
-> +    want_last_ts  = metric_enabled("xe_restore_last_ts")
-> +    want_pkt_dur  = metric_enabled("xe_restore_pkt_dur_us")
-> +    want_pkt_size = metric_enabled("xe_restore_pkt_size")
-> +
-> +    def one(pfx: str, probe: str) -> str:
-> +        p_exit = f"kretprobe:{probe}"
-> +
-> +        ev_print = (
-> +            f'                    printf("ts=%llu ev={p_exit} vf=%u restore_id=%u pkt_type=%u tile=%u gt=%u offset=%llu size=%llu dur_us=%llu\\n", '
-> +            "nsecs, $vfid, $rid, $type, $tile, $gtid, $off, $size, $dur_us);"
-> +            if probe_enabled(p_exit) else ""
-> +        )
-> +
-> +        store_lines: List[str] = []
-> +
-> +        if want_bytes:
-> +            store_lines.append("                        @xe_restore_bytes[$vfid, $rid, $tile, $gtid, $type] += $size;")
-> +
-> +        if want_first_ts:
-> +            store_lines.append(
-> +                "                        if (@xe_restore_first_ts[$vfid, $rid, $tile, $gtid, $type] == 0) {"
-> +                " @xe_restore_first_ts[$vfid, $rid, $tile, $gtid, $type] = nsecs; }"
-> +            )
-> +
-> +        if want_last_ts:
-> +            store_lines.append("                        @xe_restore_last_ts[$vfid, $rid, $tile, $gtid, $type] = nsecs;")
-> +
-> +        if want_pkt_dur:
-> +            store_lines.append("                        if ($dur_us > 0) { @xe_restore_pkt_dur_us[$vfid, $rid, $type] = hist($dur_us); }")
-> +
-> +        if want_pkt_size:
-> +            store_lines.append("                        @xe_restore_pkt_size[$vfid, $rid, $type] = hist($size);")
-> +
-> +        store = "\n".join(store_lines)
-> +
-> +        return dedent(f"""\
-> +            kprobe:{probe}
-> +            {{
-> +                @{pfx}_restore_vfid[tid]       = (uint32)arg1;
-> +                @{pfx}_restore_pkt[tid]        = (uint64)arg2;
-> +                @{pfx}_restore_call_start[tid] = nsecs;
-> +            }}
-> +
-> +            kretprobe:{probe}
-> +            /@{pfx}_restore_call_start[tid]/
-> +            {{
-> +                $vfid     = @{pfx}_restore_vfid[tid];
-> +                $pkt_addr = @{pfx}_restore_pkt[tid];
-> +                $ret32    = (int32)retval;
-> +
-> +                delete(@{pfx}_restore_vfid[tid]);
-> +                delete(@{pfx}_restore_pkt[tid]);
-> +
-> +                $start  = @{pfx}_restore_call_start[tid];
-> +                $dur_us = (nsecs - $start) / 1000;
-> +                delete(@{pfx}_restore_call_start[tid]);
-> +
-> +                if ($pkt_addr != 0 && $ret32 == 0) {{
-> +                    $pkt   = (struct xe_sriov_packet *)$pkt_addr;
-> +                    $type  = $pkt->hdr.type;
-> +                    $tile  = $pkt->hdr.tile_id;
-> +                    $gtid  = $pkt->hdr.gt_id;
-> +                    $off   = $pkt->hdr.offset;
-> +                    $size  = $pkt->hdr.size;
-> +
-> +                    $rid = @xe_restore_id[$vfid];
-> +
-> +{ev_print}
-> +                    if ($rid > 0) {{
-> +{store if store else ""}
-> +                    }}
-> +                }}
-> +            }}
-> +
-> +        """)
-> +
-> +    return (
-> +        one("vram", "xe_gt_sriov_pf_migration_vram_restore")
-> +        + one("ggtt", "xe_gt_sriov_pf_migration_ggtt_restore")
-> +        + one("guc",  "xe_gt_sriov_pf_migration_guc_restore")
-> +        + one("mmio", "xe_gt_sriov_pf_migration_mmio_restore")
-> +    )
-> +
-> +
-> +def gen_xe_save_packets(probe_enabled, metric_enabled) -> str:
-> +    p_exit = "kretprobe:xe_gt_sriov_pf_migration_save_produce"
-> +
-> +    want_bytes    = metric_enabled("xe_save_produce_bytes")
-> +    want_first_ts = metric_enabled("xe_save_produce_first_ts")
-> +    want_last_ts  = metric_enabled("xe_save_produce_last_ts")
-> +    want_pkt_dur  = metric_enabled("xe_save_produce_pkt_dur_us")
-> +    want_pkt_size = metric_enabled("xe_save_produce_pkt_size")
-> +
-> +    ev_pkt_save = (
-> +        '                $probe = "kretprobe:xe_gt_sriov_pf_migration_save_produce";\n'
-> +        '                printf("ts=%llu ev=%s vf=%u save_id=%u pkt_type=%u tile=%u gt=%u offset=%llu size=%llu dur_us=%llu\\n",\n'
-> +        '                       nsecs, $probe, $vfid, $sid, $type, $tile, $gtid, $offset, $size, $dur_us);'
-> +        if probe_enabled(p_exit) else ""
-> +    )
-> +
-> +    store_lines = []
-> +    if want_bytes:
-> +        store_lines.append("                    @xe_save_produce_bytes[$vfid, $sid, $tile, $gtid, $type] += $size;")
-> +    if want_first_ts:
-> +        store_lines.append(
-> +            "                    if (@xe_save_produce_first_ts[$vfid, $sid, $tile, $gtid, $type] == 0) {"
-> +            " @xe_save_produce_first_ts[$vfid, $sid, $tile, $gtid, $type] = $start; }"
-> +        )
-> +    if want_last_ts:
-> +        store_lines.append("                    @xe_save_produce_last_ts[$vfid, $sid, $tile, $gtid, $type] = nsecs;")
-> +    if want_pkt_dur:
-> +        store_lines.append("                    if ($dur_us > 0) { @xe_save_produce_pkt_dur_us[$vfid, $sid, $type] = hist($dur_us); }")
-> +    if want_pkt_size:
-> +        store_lines.append("                    @xe_save_produce_pkt_size[$vfid, $sid, $type] = hist($size);")
-> +    store = "\n".join(store_lines)
-> +
-> +    return dedent(f"""\
-> +        kprobe:xe_gt_sriov_pf_migration_ggtt_save
-> +        {{
-> +            $vfid = (uint32)arg1;
-> +            @save_start[tid, XE_SRIOV_PACKET_TYPE_GGTT] = nsecs;
-> +        }}
-> +
-> +        kprobe:xe_gt_sriov_pf_migration_mmio_save
-> +        {{
-> +            $vfid = (uint32)arg1;
-> +            @save_start[tid, XE_SRIOV_PACKET_TYPE_MMIO] = nsecs;
-> +        }}
-> +
-> +        kprobe:xe_gt_sriov_pf_migration_guc_save
-> +        {{
-> +            $vfid = (uint32)arg1;
-> +            @save_start[tid, XE_SRIOV_PACKET_TYPE_GUC] = nsecs;
-> +        }}
-> +
-> +        kprobe:xe_gt_sriov_pf_migration_vram_save
-> +        {{
-> +            $vfid = (uint32)arg1;
-> +            @save_start[tid, XE_SRIOV_PACKET_TYPE_VRAM] = nsecs;
-> +        }}
-> +
-> +        kprobe:xe_gt_sriov_pf_migration_save_produce
-> +        {{
-> +            @cur_vfid[tid]    = (uint64)arg1;
-> +            @cur_pkt_ptr[tid] = (uint64)arg2;
-> +        }}
-> +
-> +        kretprobe:xe_gt_sriov_pf_migration_save_produce
-> +        /@cur_pkt_ptr[tid]/
-> +        {{
-> +            $ret32    = (int32)retval;
-> +            $pkt_addr = @cur_pkt_ptr[tid];
-> +            $vfid64   = @cur_vfid[tid];
-> +
-> +            delete(@cur_pkt_ptr[tid]);
-> +            delete(@cur_vfid[tid]);
-> +
-> +            if ($pkt_addr != 0 && $ret32 == 0) {{
-> +                $pkt  = (struct xe_sriov_packet *)$pkt_addr;
-> +                $vfid = (uint32)$vfid64;
-> +
-> +                $type   = $pkt->hdr.type;
-> +                $tile   = $pkt->hdr.tile_id;
-> +                $gtid   = $pkt->hdr.gt_id;
-> +                $offset = $pkt->hdr.offset;
-> +                $size   = $pkt->hdr.size;
-> +
-> +                $start = @save_start[tid, $type];
-> +                if ($start) {{
-> +                    $dur_us = (nsecs - $start) / 1000;
-> +                    delete(@save_start[tid, $type]);
-> +                }} else {{
-> +                    $dur_us = 0;
-> +                }}
-> +
-> +                $sid = @xe_save_id[$vfid];
-> +
-> +{ev_pkt_save}
-> +                if ($sid > 0) {{
-> +{store if store else ""}
-> +                }}
-> +            }}
-> +        }}
-> +
-> +        """)
-> +
-> +
-> +def gen_end_block(metric_enabled: Callable[[str], bool]) -> str:
-> +    def emit_metric_lines(metric: str) -> str:
-> +        return f"    print(@{metric});\n    clear(@{metric});\n"
-> +
-> +    sections = [
-> +        ("VFIO stop-copy duration per vf,save_id", [
-> +            "vfio_stop_copy_dur_us",
-> +            "vfio_stop_copy_dur_hist",
-> +            "vfio_stop_copy_size",
-> +        ]),
-> +        ("VFIO resume-data duration per vf,restore_id", [
-> +            "vfio_resume_data_dur_us",
-> +            "vfio_resume_data_dur_hist",
-> +        ]),
-> +        ("VFIO suspend/resume per vf (us)", [
-> +            "vfio_suspend_dur_hist",
-> +            "vfio_resume_dur_hist",
-> +        ]),
-> +        ("VFIO wait FLR durations per vf (us)", [
-> +            "vfio_flr_wait_dur_hist",
-> +        ]),
-> +        ("VFIO migration data per vf,save_id/restore_id", [
-> +            "vfio_read_bytes",
-> +            "vfio_read_chunk_size",
-> +            "vfio_read_chunk_dur_us",
-> +            "vfio_write_bytes",
-> +            "vfio_write_chunk_size",
-> +            "vfio_write_chunk_dur_us",
-> +        ]),
-> +        ("VFIO error count per vf", [
-> +            "vfio_error_count",
-> +        ]),
-> +        ("Xe save duration per vf,save_id", [
-> +            "xe_save_dur_us",
-> +            "xe_save_start_ts",
-> +            "xe_save_end_ts",
-> +        ]),
-> +        ("Xe save bytes per vf,save_id,tile,gt,type", [
-> +            "xe_save_produce_bytes",
-> +        ]),
-> +        ("Xe save first_ts per vf,save_id,tile,gt,type (ns)", [
-> +            "xe_save_produce_first_ts",
-> +        ]),
-> +        ("Xe save last_ts per vf,save_id,tile,gt,type (ns)", [
-> +            "xe_save_produce_last_ts",
-> +        ]),
-> +        ("Xe save produce packet durations per vf,save_id,type", [
-> +            "xe_save_produce_pkt_dur_us",
-> +        ]),
-> +        ("Xe save packet size per vf,save_id,type", [
-> +            "xe_save_produce_pkt_size",
-> +        ]),
-> +        ("Xe restore duration per vf,restore_id", [
-> +            "xe_restore_dur_us",
-> +            "xe_restore_start_ts",
-> +            "xe_restore_end_ts",
-> +        ]),
-> +        ("Xe restore packet per vf,restore_id,tile,gt,type", [
-> +            "xe_restore_bytes",
-> +        ]),
-> +        ("Xe restore packet first_ts per vf,restore_id,tile,gt,type (ns)", [
-> +            "xe_restore_first_ts",
-> +        ]),
-> +        ("Xe restore packet last_ts per vf,restore_id,tile,gt,type (ns)", [
-> +            "xe_restore_last_ts",
-> +        ]),
-> +        ("Xe restore packet duration per vf,restore_id,type", [
-> +            "xe_restore_pkt_dur_us",
-> +        ]),
-> +        ("Xe restore packet size per vf,restore_id,type", [
-> +            "xe_restore_pkt_size",
-> +        ]),
-> +    ]
-> +
-> +    out = "END\n{\n"
-> +    for title, metrics in sections:
-> +        enabled = [m for m in metrics if metric_enabled(m)]
-> +        if not enabled:
-> +            continue
-> +        out += f'    printf("\\n=== {title} ===\\n");\n'
-> +        for m in enabled:
-> +            out += emit_metric_lines(m)
-> +        out += "\n"
-> +    out += "}\n"
-> +
-> +    return out
-> +
-> +
-> +# -----------------------------------------------------------------------------
-> +# Block registry
-> +# -----------------------------------------------------------------------------
-> +def build_blocks() -> List[Block]:
-> +    """
-> +    Build and return the registry of available tracing blocks.
-> +
-> +    Each block defines its probe set, provided metrics, dependencies, and
-> +    a generator function that emits the corresponding bpftrace code.
-> +    """
-> +    return [
-> +        Block(
-> +            name="vfio_stop_copy_phase",
-> +            probes=["kprobe:xe_sriov_vfio_stop_copy_enter",
-> +                    "kretprobe:xe_sriov_vfio_stop_copy_exit"],
-> +            provides={"vfio_stop_copy_dur_us", "vfio_stop_copy_dur_hist"},
-> +            requires=set(),
-> +            gen=gen_vfio_stop_copy_phase,
-> +        ),
-> +        Block(
-> +            name="vfio_resume_data_phase",
-> +            probes=["kprobe:xe_sriov_vfio_resume_data_enter",
-> +                    "kretprobe:xe_sriov_vfio_resume_data_exit"],
-> +            provides={"vfio_resume_data_dur_us", "vfio_resume_data_dur_hist"},
-> +            requires=set(),
-> +            gen=gen_vfio_resume_data_phase,
-> +        ),
-> +        Block(
-> +            name="vfio_suspend_phase",
-> +            probes=["kprobe:xe_sriov_vfio_suspend_device",
-> +                    "kretprobe:xe_sriov_vfio_suspend_device"],
-> +            provides={"vfio_suspend_dur_hist"},
-> +            requires=set(),
-> +            gen=gen_vfio_suspend_phase,
-> +        ),
-> +        Block(
-> +            name="vfio_resume_phase",
-> +            probes=["kprobe:xe_sriov_vfio_resume_device",
-> +                    "kretprobe:xe_sriov_vfio_resume_device"],
-> +            provides={"vfio_resume_dur_hist"},
-> +            requires=set(),
-> +            gen=gen_vfio_resume_phase,
-> +        ),
-> +        Block(
-> +            name="vfio_flr_wait_phase",
-> +            probes=["kprobe:xe_sriov_vfio_wait_flr_done",
-> +                    "kretprobe:xe_sriov_vfio_wait_flr_done"],
-> +            provides={"vfio_flr_wait_dur_hist"},
-> +            requires=set(),
-> +            gen=gen_vfio_flr_wait_phase,
-> +        ),
-> +        Block(
-> +            name="vfio_stop_copy_size",
-> +            probes=["kprobe:xe_sriov_vfio_stop_copy_size",
-> +                    "kretprobe:xe_sriov_vfio_stop_copy_size"],
-> +            provides={"vfio_stop_copy_size"},
-> +            requires=set(),
-> +            gen=gen_vfio_stop_copy_size,
-> +        ),
-> +        Block(
-> +            name="vfio_read_write",
-> +            probes=[
-> +                "kprobe:xe_sriov_vfio_data_read",
-> +                "kretprobe:xe_sriov_vfio_data_read",
-> +                "kprobe:xe_sriov_vfio_data_write",
-> +                "kretprobe:xe_sriov_vfio_data_write",
-> +            ],
-> +            provides={
-> +                "vfio_read_bytes", "vfio_read_chunk_size", "vfio_read_chunk_dur_us",
-> +                "vfio_write_bytes", "vfio_write_chunk_size", "vfio_write_chunk_dur_us",
-> +            },
-> +            requires={"vfio_stop_copy_phase", "vfio_resume_data_phase"},
-> +            gen=gen_vfio_read_write,
-> +        ),
-> +        Block(
-> +            name="vfio_error",
-> +            probes=["kprobe:xe_sriov_vfio_error"],
-> +            provides={"vfio_error_count"},
-> +            requires=set(),
-> +            gen=gen_vfio_error,
-> +        ),
-> +        Block(
-> +            name="xe_control_save_restore",
-> +            probes=[
-> +                "kprobe:xe_sriov_pf_control_trigger_save_vf",
-> +                "kprobe:xe_sriov_pf_control_finish_save_vf",
-> +                "kprobe:xe_sriov_pf_control_trigger_restore_vf",
-> +                "kprobe:xe_sriov_pf_control_finish_restore_vf",
-> +            ],
-> +            provides={"xe_save_start_ts", "xe_save_end_ts", "xe_save_dur_us",
-> +                      "xe_restore_start_ts", "xe_restore_end_ts", "xe_restore_dur_us"},
-> +            requires=set(),
-> +            gen=gen_xe_control_save_restore,
-> +        ),
-> +        Block(
-> +            name="xe_restore_packets",
-> +            probes=[
-> +                "kprobe:xe_gt_sriov_pf_migration_vram_restore",
-> +                "kretprobe:xe_gt_sriov_pf_migration_vram_restore",
-> +                "kprobe:xe_gt_sriov_pf_migration_ggtt_restore",
-> +                "kretprobe:xe_gt_sriov_pf_migration_ggtt_restore",
-> +                "kprobe:xe_gt_sriov_pf_migration_guc_restore",
-> +                "kretprobe:xe_gt_sriov_pf_migration_guc_restore",
-> +                "kprobe:xe_gt_sriov_pf_migration_mmio_restore",
-> +                "kretprobe:xe_gt_sriov_pf_migration_mmio_restore",
-> +            ],
-> +            provides={"xe_restore_bytes", "xe_restore_first_ts", "xe_restore_last_ts",
-> +                      "xe_restore_pkt_dur_us", "xe_restore_pkt_size"},
-> +            requires=set(),
-> +            gen=gen_xe_restore_packets,
-> +            needs_packet_structs=True,
-> +        ),
-> +        Block(
-> +            name="xe_save_packets",
-> +            probes=[
-> +                "kprobe:xe_gt_sriov_pf_migration_ggtt_save",
-> +                "kprobe:xe_gt_sriov_pf_migration_mmio_save",
-> +                "kprobe:xe_gt_sriov_pf_migration_guc_save",
-> +                "kprobe:xe_gt_sriov_pf_migration_vram_save",
-> +                "kprobe:xe_gt_sriov_pf_migration_save_produce",
-> +                "kretprobe:xe_gt_sriov_pf_migration_save_produce",
-> +            ],
-> +            provides={"xe_save_produce_bytes", "xe_save_produce_first_ts",
-> +                      "xe_save_produce_last_ts", "xe_save_produce_pkt_dur_us",
-> +                      "xe_save_produce_pkt_size"},
-> +            requires=set(),
-> +            gen=gen_xe_save_packets,
-> +            needs_packet_structs=True,
-> +        ),
-> +    ]
-> +
-> +
-> +def invert_metric_sources(blocks: List[Block]) -> Dict[str, List[str]]:
-> +    """Build metric->providers mapping from block registry."""
-> +    metric_src: Dict[str, List[str]] = {m: [] for m in ALL_METRICS}
-> +    for b in blocks:
-> +        for m in b.provides:
-> +            if m in metric_src:
-> +                metric_src[m].append(b.name)
-> +    return metric_src
-> +
-> +
-> +def select_blocks(blocks: List[Block],
-> +                  metric_enabled: NameFilter,
-> +                  probe_enabled: NameFilter) -> List[Block]:
-> +    """Select blocks based on enabled metrics/probes and dependency closure."""
-> +    enabled_metrics = {m for m in ALL_METRICS if metric_enabled(m)}
-> +    by_name: Dict[str, Block] = {b.name: b for b in blocks}
-> +
-> +    selected: Set[str] = set()
-> +
-> +    for b in blocks:
-> +        if b.provides & enabled_metrics:
-> +            selected.add(b.name)
-> +        elif any(probe_enabled(p) for p in b.probes):
-> +            selected.add(b.name)
-> +
-> +    # dependency closure
-> +    changed = True
-> +    while changed:
-> +        changed = False
-> +        for name in list(selected):
-> +            b = by_name.get(name)
-> +            if not b:
-> +                continue
-> +            for dep in b.requires:
-> +                if dep not in selected:
-> +                    selected.add(dep)
-> +                    changed = True
-> +
-> +    return [b for b in blocks if b.name in selected]
-> +
-> +
-> +def build_arg_parser() -> argparse.ArgumentParser:
-> +    """Create the command-line argument parser."""
-> +    ap = argparse.ArgumentParser(description="Generate Xe VF events bpftrace script")
-> +    ap.add_argument("output", nargs="?", help="output .bt file; if omitted, write to stdout")
-> +
-> +    ap.add_argument("--events",
-> +                    default="*",
-> +                    help="Comma-separated event globs. Default: '*'")
-> +    ap.add_argument("--omit-events",
-> +                    default="*:xe_sriov_vfio_data_*",
-> +                    help="Comma-separated event globs to exclude (applied after --events). "
-> +                         "Default: '*:xe_sriov_vfio_data_*'")
-> +
-> +    ap.add_argument("--metrics",
-> +                    help="Comma-separated metric globs, e.g. 'vfio_*,xe_*' or '*'. Default: '*'.")
-> +    ap.add_argument("--omit-metrics",
-> +                    help="Comma-separated metric globs to exclude (applied after --metrics). "
-> +                         "Example: --metrics='*' --omit-metrics='*_pkt_size'")
-> +
-> +    ap.add_argument("--list-events", action="store_true",
-> +                    help="List available probe specs and exit.")
-> +    ap.add_argument("--list-metrics", action="store_true",
-> +                    help="List available metric names and exit.")
-> +    ap.add_argument("--list-blocks", action="store_true", help="List available blocks and exit.")
-> +    ap.add_argument("--list-probes", action="store_true", help="List probes per block and exit.")
-> +    ap.add_argument("--list-metric-sources", action="store_true",
-> +                    help="List which block(s) provide each metric.")
-> +
-> +    return ap
-> +
-> +
-> +def handle_list_modes(
-> +    args: argparse.Namespace,
-> +    blocks: List[Block],
-> +    metric_src: Dict[str, List[str]],
-> +) -> int | None:
-> +    """Handle --list-* modes. Returns exit code, or None if not in list-mode."""
-> +    if args.list_events:
-> +        all_probes = sorted({p for blk in blocks for p in blk.probes})
-> +        print("\n".join(all_probes))
-> +        return 0
-> +
-> +    if args.list_metrics:
-> +        for metric in METRIC_DEFS:
-> +            print(f"{metric.name}\n  {metric.desc}")
-> +        return 0
-> +
-> +    if args.list_blocks:
-> +        for blk in blocks:
-> +            print(blk.name)
-> +        return 0
-> +
-> +    if args.list_probes:
-> +        for blk in blocks:
-> +            print(f"{blk.name}:")
-> +            for probe in blk.probes:
-> +                print(f"  {probe}")
-> +        return 0
-> +
-> +    if args.list_metric_sources:
-> +        for metric in ALL_METRICS:
-> +            src = metric_src.get(metric, [])
-> +            src_s = ", ".join(src) if src else "(none)"
-> +            print(f"{metric}: {src_s}")
-> +        return 0
-> +
-> +    return None
-> +
-> +
-> +def build_filters(args: argparse.Namespace) -> tuple[NameFilter, NameFilter]:
-> +    """Create probe_enabled and metric_enabled filters from CLI args."""
-> +    probe_patterns = parse_patterns(args.events)
-> +    omit_probe_patterns = parse_patterns(args.omit_events)
-> +    probe_enabled = make_name_filter_with_omit(
-> +        probe_patterns,
-> +        default_include=['*'],
-> +        omit_pats=omit_probe_patterns,
-> +    )
-> +
-> +    metric_patterns = parse_patterns(args.metrics)
-> +    omit_metric_patterns = parse_patterns(args.omit_metrics)
-> +    metric_enabled = make_name_filter_with_omit(
-> +        metric_patterns,
-> +        default_include=['*'],
-> +        omit_pats=omit_metric_patterns,
-> +    )
-> +
-> +    return probe_enabled, metric_enabled
-> +
-> +
-> +def write_output(text: str, output_path: str | None) -> None:
-> +    """Write generated output to a file or stdout."""
-> +    if output_path:
-> +        with open(output_path, "w", encoding="utf-8") as out:
-> +            out.write(text)
-> +        return
-> +    sys.stdout.write(text)
-> +
-> +
-> +def main(argv=None) -> int:
-> +    """Program entry point."""
-> +    parser = build_arg_parser()
-> +    args = parser.parse_args(argv)
-> +
-> +    blocks = build_blocks()
-> +    metric_src = invert_metric_sources(blocks)
-> +
-> +    list_rc = handle_list_modes(args, blocks, metric_src)
-> +    if list_rc is not None:
-> +        return list_rc
-> +
-> +    probe_enabled, metric_enabled = build_filters(args)
-> +
-> +    selected_blocks = select_blocks(blocks, metric_enabled, probe_enabled)
-> +    need_pkt_structs = any(b.needs_packet_structs for b in selected_blocks)
-> +
-> +    parts: List[str] = [gen_preamble()]
-> +    if need_pkt_structs:
-> +        parts.append(gen_packet_structs_header())
-> +    parts.append(gen_begin())
-> +
-> +    for b in selected_blocks:
-> +        parts.append(b.gen(probe_enabled, metric_enabled))
-> +
-> +    parts.append(gen_end_block(metric_enabled))
-> +
-> +    write_output("".join(parts), args.output)
-> +    return 0
-> +
-> +
-> +if __name__ == "__main__":
-> +    raise SystemExit(main())
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index d240c7ac5..1d059a8bf 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -1801,6 +1801,28 @@ bool kmstest_force_connector_joiner(int drm_fd, drmModeConnector *connector, int
+>   	return true;
+>   }
+>   
+> +/**
+> + * igt_get_joined_pipes_name:
+> + * @val: forced value
+> + *
+> + * Returns: A joined_pipes enum value into a readable string.
+> + */
+> +const char *igt_get_joined_pipes_name(enum joined_pipes val)
+> +{
+> +	switch (val) {
+> +	case JOINED_PIPES_DEFAULT:
+> +		return "";
+> +	case JOINED_PIPES_NONE:
+> +		return "-none";
+> +	case JOINED_PIPES_BIG_JOINER:
+> +		return "-bigjoiner";
+> +	case JOINED_PIPES_ULTRA_JOINER:
+> +		return "-ultrajoiner";
+> +	default:
+> +		igt_assert(false);
+> +	}
+> +}
+> +
+>   /**
+>    * kmstest_force_edid:
+>    * @drm_fd: drm file descriptor
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 6ef6871d5..b52429bdc 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -1286,6 +1286,7 @@ void igt_set_link_params(int drm_fd, igt_output_t *output,
+>   int igt_backlight_read(int *result, const char *fname, igt_backlight_context_t *context);
+>   int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *context);
+>   uint32_t igt_get_connected_output_count(igt_display_t *display);
+> +const char *igt_get_joined_pipes_name(enum joined_pipes val);
+>   
+>   drmModePropertyBlobRes *igt_get_writeback_formats_blob(igt_output_t *output);
+>   
