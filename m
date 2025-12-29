@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3261ED3B7E5
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Dec 2025 11:18:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 370F8E8FDB1
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Dec 2025 11:18:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D436310E1BD;
-	Mon, 29 Dec 2025 11:18:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D7ABA10E3E4;
+	Mon, 29 Dec 2025 11:18:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WVesWPns";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SuhqiOLN";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A2A210E1BD
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Dec 2025 11:18:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BCDA10E1C3
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Dec 2025 11:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767007091; x=1798543091;
+ t=1767007095; x=1798543095;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=vZUYQ04rVPVQkYjuVAlj+TRY246+b3bgOqSSKE2tPHw=;
- b=WVesWPnssB27aqMmH3Rt3VpF5WEWoySBdDjRMbcUQcFcrLUay7+yPZOi
- xwq1Cn6tN+H1obzPRncaGomAIGaIUOH1XpzL+nRzSOcvwwHeo5YufPOsI
- wp6N8YqpJrEgX7/URsdhcGSDhOpSkL4f4pBFbqDTWHtHFPjLwhlV3pgwX
- J/y/37rAO2uCjnvygRMU9mEWU+Tlin7Yftzf73eS+yh4lokBafvTvH3oP
- UMN8GSEKI8B09J9qgQUatTrWOxZvYYEXSPgY/ehekvZU9EK5WoL5BzBjr
- tu56cMjU7DAfEkh5aT3KiKV+oiIwoYziLPDYQuqH7XVM6I+evdAffNIDE Q==;
-X-CSE-ConnectionGUID: SEhRnQNGQNy3Jj+XtcOYIw==
-X-CSE-MsgGUID: m96Wrt76QdSeIgmtc3dqvw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11655"; a="68689072"
-X-IronPort-AV: E=Sophos;i="6.21,185,1763452800"; d="scan'208";a="68689072"
+ bh=oOerDXIESYtU8yK6gN0eM0ZtQC3+donO/evR4z416n8=;
+ b=SuhqiOLNh/Nil2t2uk6UL8HrfzGjMl3fdWlR0Hgad7SIgvHVVXK9ODBC
+ ARY+OSFnod5amFBdammTXV1ym2TObFFbn08mz8LZdqhomtxR5yu1SJnT5
+ lPUWQss4OwPLRzvYXwbCUNM4REYmQOtzbo38WQB9/vVhAhh2GtdAiAo3g
+ d8fjH6a508ghUaf1pP6IHAH3wxcw8f6k3LcGupIOmPhBR2YJ9KlJNnke0
+ 4RjnxlvYX3kiG0eRetKVlzgyBF038g5jmhgz6Gijw+4/nRwbOqz5IWPu1
+ xOQyRTbRxsFrSJ8r8qom5/MMw8Lsrhegpro/oQ4czBTMxpvqAsRwcNfaM Q==;
+X-CSE-ConnectionGUID: rqL0xqq7QfOafbNpzuOnoA==
+X-CSE-MsgGUID: 985dv0ZxTnWER/4+78latw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11655"; a="68689074"
+X-IronPort-AV: E=Sophos;i="6.21,185,1763452800"; d="scan'208";a="68689074"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Dec 2025 03:18:11 -0800
-X-CSE-ConnectionGUID: 7DAlCa4sROioiRPCUrB+vA==
-X-CSE-MsgGUID: TspCJkczQcGacrqLDC8dBg==
+ 29 Dec 2025 03:18:15 -0800
+X-CSE-ConnectionGUID: lwkUkbN1QEataoNf2bQpXw==
+X-CSE-MsgGUID: LZFNc2UsQ0OZNx0BPovvjA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,185,1763452800"; d="scan'208";a="205374207"
+X-IronPort-AV: E=Sophos;i="6.21,185,1763452800"; d="scan'208";a="205374219"
 Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.245.9])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Dec 2025 03:18:10 -0800
+ 29 Dec 2025 03:18:13 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t 2/5] lib/intel_compute: Add loop_kernel_duration support
+Subject: [PATCH i-g-t 3/5] lib/intel_compute: Add loop and loop-count shaders
  for xe3p
-Date: Mon, 29 Dec 2025 12:17:51 +0100
-Message-ID: <20251229111748.375729-9-zbigniew.kempczynski@intel.com>
+Date: Mon, 29 Dec 2025 12:17:52 +0100
+Message-ID: <20251229111748.375729-10-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251229111748.375729-7-zbigniew.kempczynski@intel.com>
 References: <20251229111748.375729-7-zbigniew.kempczynski@intel.com>
@@ -72,51 +71,121 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+Upcoming changes for WMTP and TG preemption require loop and
+loop-count shaders. Introduce them in separate patch for easier
+review even if they are not directly used yet.
 
-Xe3p is missing loop_kernel_duration. Port the implementation from
-xe2lpg_compute_exec(). It stops failing "xe_compute@loop-duration-2s"
-for xe3p platform.
-
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/intel_compute.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ lib/intel_compute_krn_loop.h       | 36 ++++++++++++++++++++++++++++++
+ lib/intel_compute_krn_loop_count.h | 34 ++++++++++++++++++++++++++++
+ lib/intel_compute_square_kernels.c |  4 ++++
+ 3 files changed, 74 insertions(+)
 
-diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index ad3afa01b9..60fa4de5ba 100644
---- a/lib/intel_compute.c
-+++ b/lib/intel_compute.c
-@@ -2088,6 +2088,7 @@ static void xe3p_compute_exec(int fd, const unsigned char *kernel,
- 	float *input_data, *output_data;
- 	uint64_t indirect_addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START;
- 	int entries = ARRAY_SIZE(bo_dict);
-+	int64_t timeout_one_ns = 1;
+diff --git a/lib/intel_compute_krn_loop.h b/lib/intel_compute_krn_loop.h
+index 3a52691cde..1f92ed33f2 100644
+--- a/lib/intel_compute_krn_loop.h
++++ b/lib/intel_compute_krn_loop.h
+@@ -80,4 +80,40 @@ static const unsigned char xe3lpg_kernel_loop_bin[] = {
+ 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+ };
  
- 	bo_execenv_create(fd, &execenv, eci, user);
++/*
++ * Opencl code is in opencl/loop_noopt.cl
++ *
++ * To work properly it requires to use uncached reads, so ocloc has to
++ * be called with: -options " -igc_opts 'LscLoadCacheControlOverride=1'" arg
++ *
++ * To reuse compute pipeline for xe3p loop.cl can't be used but loop_noopt.cl.
++ * For loop.cl IGC optimizer notices output is not used and gets it rid of.
++ * Artificial write to output[0] prevents compiler from doing that.
++ * Starting offset should be shifted according to .ze_info section.
++ */
++static const unsigned char xe3p_kernel_loop_bin[] = {
++	0x61, 0x00, 0x00, 0x80, 0x30, 0x43, 0x61, 0x60, 0x00, 0x00, 0x00, 0x00,
++	0x00, 0x00, 0x00, 0x00, 0x33, 0x22, 0x01, 0x80, 0x06, 0x18, 0x00, 0x05,
++	0x0c, 0x04, 0x28, 0xf0, 0x00, 0x00, 0x00, 0x96, 0x61, 0x80, 0x10, 0x28,
++	0x02, 0x00, 0x00, 0x00, 0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
++	0x00, 0x80, 0x00, 0x02, 0xc0, 0x04, 0x00, 0x40, 0x61, 0x09, 0x14, 0x00,
++	0x60, 0x01, 0x05, 0x07, 0x04, 0x01, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
++	0x01, 0x82, 0x8c, 0x34, 0x00, 0x00, 0x00, 0x00, 0x41, 0x61, 0x01, 0x80,
++	0x60, 0x06, 0x05, 0x03, 0x54, 0x05, 0x00, 0x06, 0x14, 0x02, 0x10, 0x00,
++	0x61, 0x00, 0x84, 0x68, 0x06, 0x05, 0x00, 0x00, 0x33, 0x23, 0x03, 0x80,
++	0x02, 0x00, 0x00, 0x04, 0x0c, 0x06, 0x02, 0xf0, 0x00, 0x00, 0x00, 0x94,
++	0x70, 0x83, 0x14, 0x80, 0x60, 0x86, 0x01, 0x00, 0x04, 0x04, 0x00, 0x16,
++	0x34, 0x12, 0x34, 0x12, 0x20, 0x00, 0x00, 0x94, 0x00, 0x40, 0x00, 0x00,
++	0x00, 0x00, 0x00, 0x00, 0xd8, 0xff, 0xff, 0xff, 0x61, 0x00, 0x84, 0x68,
++	0x0b, 0x05, 0x06, 0x00, 0x52, 0x00, 0xb8, 0x28, 0x09, 0x03, 0x04, 0x07,
++	0x61, 0x1a, 0x10, 0x00, 0xa0, 0x0a, 0x06, 0x0c, 0x04, 0x0b, 0x00, 0x00,
++	0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x02, 0xa0, 0x0a, 0x06, 0x0e,
++	0x04, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x00,
++	0xa0, 0x0a, 0x16, 0x0c, 0x14, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	0x61, 0x12, 0x10, 0x02, 0x20, 0x02, 0x16, 0x0e, 0x14, 0x0b, 0x00, 0x00,
++	0x00, 0x00, 0x00, 0x00, 0x33, 0x24, 0x15, 0x00, 0x00, 0x00, 0x00, 0x00,
++	0x24, 0x0c, 0x00, 0xf0, 0x14, 0x09, 0x04, 0x90, 0x33, 0xc5, 0x00, 0x80,
++	0x01, 0x00, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x00,
++};
++
+ #endif /* __INTEL_COMPUTE_KRN_LOOP_H__ */
+diff --git a/lib/intel_compute_krn_loop_count.h b/lib/intel_compute_krn_loop_count.h
+index ecad7fe256..7b4542cda7 100644
+--- a/lib/intel_compute_krn_loop_count.h
++++ b/lib/intel_compute_krn_loop_count.h
+@@ -90,4 +90,38 @@ static const unsigned char xe3lpg_kernel_count_bin[] = {
+ 	0x04, 0x00, 0x00, 0x00, 0x0c, 0x12, 0x20, 0x30, 0x00, 0x00, 0x00, 0x00,
+ };
  
-@@ -2114,7 +2115,18 @@ static void xe3p_compute_exec(int fd, const unsigned char *kernel,
- 				  ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
- 				  ADDR_STATE_CONTEXT_DATA_BASE, false);
- 
--	bo_execenv_exec(&execenv, ADDR_BATCH);
-+	if (user && user->loop_kernel_duration) {
-+		bo_execenv_exec_async(&execenv, ADDR_BATCH);
-+		igt_measured_usleep(user->loop_kernel_duration);
-+		/* Check that the loop kernel has not completed yet */
-+		igt_assert_neq(0, __xe_wait_ufence(fd, &execenv.bo_sync->sync, USER_FENCE_VALUE,
-+						   execenv.exec_queue, &timeout_one_ns));
-+		((int *)bo_dict[2].data)[0] = MAGIC_LOOP_STOP;
-+		bo_execenv_sync(&execenv);
-+		user->skip_results_check = 1;
-+	} else {
-+		bo_execenv_exec(&execenv, ADDR_BATCH);
-+	}
- 
- 	if (!user || (user && !user->skip_results_check))
- 		bo_check_square(input_data, output_data, execenv.array_size);
++static const unsigned char xe3p_kernel_count_bin[] = {
++	0x61, 0x00, 0x00, 0x80, 0x30, 0x43, 0x61, 0x60, 0x00, 0x00, 0x00, 0x00,
++	0x00, 0x00, 0x00, 0x00, 0x33, 0x22, 0x01, 0x80, 0x06, 0x18, 0x00, 0x05,
++	0x0c, 0x04, 0x28, 0xf0, 0x00, 0x00, 0x00, 0x96, 0x61, 0x80, 0x10, 0x28,
++	0x02, 0x00, 0x00, 0x00, 0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
++	0x00, 0x80, 0x00, 0x02, 0xc0, 0x04, 0x00, 0x40, 0x41, 0x22, 0x17, 0x00,
++	0x60, 0x06, 0x01, 0x20, 0x14, 0x02, 0x00, 0x06, 0x54, 0x05, 0x10, 0x00,
++	0x61, 0x00, 0x14, 0x00, 0x10, 0x01, 0x06, 0x13, 0x04, 0x01, 0x10, 0x00,
++	0x00, 0x00, 0x00, 0x00, 0x70, 0x00, 0x14, 0x80, 0x60, 0x86, 0x01, 0x00,
++	0x44, 0x05, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00, 0x40, 0x1a, 0x14, 0x00,
++	0x60, 0x06, 0x05, 0x06, 0x00, 0x20, 0x10, 0x01, 0x04, 0x13, 0x00, 0x00,
++	0x20, 0x00, 0x00, 0x84, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	0xe8, 0x00, 0x00, 0x00, 0x61, 0x81, 0x84, 0xa0, 0x03, 0x00, 0x00, 0x00,
++	0x61, 0x00, 0x84, 0x68, 0x08, 0x05, 0x00, 0x00, 0x33, 0x24, 0x03, 0x80,
++	0x02, 0x00, 0x00, 0x04, 0x0c, 0x08, 0x02, 0xf0, 0x00, 0x00, 0x00, 0x94,
++	0x70, 0x84, 0x94, 0x80, 0x60, 0x86, 0x01, 0x00, 0x04, 0x04, 0x00, 0x16,
++	0x34, 0x12, 0x34, 0x12, 0x20, 0x00, 0x80, 0x84, 0x00, 0x40, 0x00, 0x00,
++	0x00, 0x00, 0x00, 0x00, 0xa8, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0x68,
++	0x0a, 0x05, 0x06, 0x00, 0x40, 0x00, 0x84, 0x68, 0x03, 0x03, 0x10, 0x00,
++	0x33, 0x45, 0x03, 0x80, 0x02, 0x00, 0x00, 0x09, 0x0c, 0x0a, 0x02, 0xf0,
++	0x00, 0x00, 0x00, 0x94, 0x61, 0xa3, 0x10, 0x00, 0xa0, 0x0a, 0x06, 0x0d,
++	0x04, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x02,
++	0xa0, 0x0a, 0x06, 0x0f, 0x04, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	0x61, 0x00, 0x10, 0x00, 0xa0, 0x0a, 0x16, 0x0d, 0x14, 0x0a, 0x00, 0x00,
++	0x00, 0x00, 0x00, 0x00, 0x61, 0x12, 0x10, 0x02, 0x20, 0x02, 0x16, 0x0f,
++	0x14, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x70, 0x1a, 0x54, 0x80,
++	0x20, 0x02, 0x01, 0x00, 0x04, 0x03, 0x00, 0x52, 0x44, 0x05, 0x10, 0x00,
++	0x52, 0x85, 0xb8, 0x28, 0x0b, 0x09, 0x04, 0x06, 0x33, 0x23, 0x15, 0x00,
++	0x00, 0x00, 0x00, 0x00, 0x24, 0x0d, 0x00, 0xf0, 0x14, 0x0b, 0x04, 0x90,
++	0x20, 0x00, 0x40, 0x84, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++	0x40, 0xff, 0xff, 0xff, 0x33, 0xc6, 0x00, 0x80, 0x01, 0x00, 0x00, 0x00,
++	0x0c, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
++};
++
+ #endif /* __INTEL_COMPUTE_KRN_LOOP_COUNT_H__ */
+diff --git a/lib/intel_compute_square_kernels.c b/lib/intel_compute_square_kernels.c
+index 4d69f270e9..155a3f0df4 100644
+--- a/lib/intel_compute_square_kernels.c
++++ b/lib/intel_compute_square_kernels.c
+@@ -90,6 +90,10 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
+ 		.ip_ver = IP_VER(35, 11),
+ 		.size = sizeof(xe3p_kernel_square_bin),
+ 		.kernel = xe3p_kernel_square_bin,
++		.long_kernel = xe3p_kernel_count_bin,
++		.long_kernel_size = sizeof(xe3p_kernel_count_bin),
++		.loop_kernel = xe3p_kernel_loop_bin,
++		.loop_kernel_size = sizeof(xe3p_kernel_loop_bin),
+ 	},
+ 	{}
+ };
 -- 
 2.43.0
 
