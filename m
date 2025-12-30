@@ -4,69 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C5F8E94120
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Dec 2025 09:15:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 079A2E9413E
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Dec 2025 09:25:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BD00A10E162;
-	Tue, 30 Dec 2025 09:15:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AAD6B10E62B;
+	Tue, 30 Dec 2025 09:25:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MDk2SiWn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y2EzYr8Q";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D729D10E162
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Dec 2025 09:15:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 451CC10E62B
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Dec 2025 09:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767086147; x=1798622147;
+ t=1767086725; x=1798622725;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=JHiOxJZ6TY/wnZom6rr+ocjMyGImul4mXRl2CUOcTZI=;
- b=MDk2SiWnMmRb4nhFq33KV//Wd1AicJotEwxa9OyJlGJ8QjX1pJviZT+f
- gtGiLqzDTiFdsGRhgghYGPlyDYRLwwzbOWxO/f++g3s2X/TgVZX3dr9Ja
- tcegEx0B4bwrrESth9ZfPOt3D3A+zS573ZA8cYhQoGrQqkNJ8NgEqQNMa
- 2N6Kp/76GeQQ3/2QKIpd5eQ8DhEznqnLydMRfKHYYOrwqJ6+gKO3tuscd
- lAACPg1m3eI99laFMXgyUSVp4bu5Ckr4CYf1zZ6pkQHYV3R90pxbjsPgz
- j0cA/OY5/KBzvPEHZb6Mdb25Hjspz4ivO3YmV6r16US4JIr9fXQTebRrQ w==;
-X-CSE-ConnectionGUID: nleRkq2qTtOgfecJMTTwaA==
-X-CSE-MsgGUID: GL+SLR1lRw+RJ6sWLVYgJg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11656"; a="68653175"
-X-IronPort-AV: E=Sophos;i="6.21,188,1763452800"; d="scan'208";a="68653175"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Dec 2025 01:15:46 -0800
-X-CSE-ConnectionGUID: oR02GdiCR2a820lrXvE6Jw==
-X-CSE-MsgGUID: BA/xVzCmQ0ulFnFwbAwi9Q==
+ mime-version:in-reply-to;
+ bh=d54IKCGRfcNCZvqSy/cf8gkBpnvQYFo4+FQPmnGnhkE=;
+ b=Y2EzYr8Qq33Mg4ojFRB/M+FnM2oI5OQyafT7IJ7j+Lrq+xeuDc6g3k/x
+ x2xzbOdQplFe2MV+xaT2Aozj39z6bKWzwsWrqc48otJ/znyDjHJ1IMbzH
+ Mzh4B6pO3eYyfPpM0ytNXiTZ0MFjfVFYfck2/2BCgnW2vQKmNELia9kfV
+ lTbEFxkn5jSK1Q4fHDQOyyUtKGepMZsgSd063BMMflg0HEg8xFmU5msFc
+ 4iisUEWjmpDRGjf3K59VIdT5UNm3Q3Py0AnkiSRtf2nbenxlt72JNe/eH
+ UdyPxShjGzwKkEVwqvsKrniAFzCD8PVOC8AAzIfA9did6Mp67N2laBdC3 Q==;
+X-CSE-ConnectionGUID: 4elW2Sn4TzO4byvZ/ds8KQ==
+X-CSE-MsgGUID: o6i+s86EQ3CKEIts1NWtOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11656"; a="67874795"
+X-IronPort-AV: E=Sophos;i="6.21,188,1763452800"; d="scan'208";a="67874795"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Dec 2025 01:25:25 -0800
+X-CSE-ConnectionGUID: tvbrhyVuSLKUJn9fcPWgYg==
+X-CSE-MsgGUID: 8vRwkCksTAyzscbq/MkaZA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,188,1763452800"; d="scan'208";a="201061899"
+X-IronPort-AV: E=Sophos;i="6.21,188,1763452800"; d="scan'208";a="201183534"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2025 01:15:45 -0800
-Date: Tue, 30 Dec 2025 10:15:30 +0100
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2025 01:25:24 -0800
+Date: Tue, 30 Dec 2025 10:25:21 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- =?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
- Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Subject: Re: [PATCH i-g-t] tools/gen_xe_vf_migration_bpftrace.py: Add
- bpftrace generator for Xe VF migration tracing
-Message-ID: <20251230091530.7vdxlatxe42fwt2j@kamilkon-DESK.igk.intel.com>
+To: Jitta Vignan <jvignan@qti.qualcomm.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH] tests/msm: add MSM buffer object allocation tests
+Message-ID: <20251230092521.tzroz3z5omiwmloj@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- =?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
- Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-References: <20251219170958.881880-1-marcin.bernatowicz@linux.intel.com>
+ Jitta Vignan <jvignan@qti.qualcomm.com>,
+ igt-dev@lists.freedesktop.org
+References: <20251224102544.347540-1-jvignan@qti.qualcomm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251219170958.881880-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20251224102544.347540-1-jvignan@qti.qualcomm.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,73 +70,146 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Marcin,
-On 2025-12-19 at 18:09:58 +0100, Marcin Bernatowicz wrote:
-> Add a Python script that generates a bpftrace program for tracing
-> Xe SR-IOV VF migration (save/restore) activity.
+Hi Jitta,
+On 2025-12-24 at 15:55:44 +0530, Jitta Vignan wrote:
+> This patch adds comprehensive test coverage for MSM buffer object
+> allocation using the DRM_IOCTL_MSM_GEM_NEW ioctl.
 > 
-> The tool emits a complete bpftrace script to stdout and is intended
-> to be used by piping its output to bpftrace, e.g.:
+> Test coverage includes:
 > 
->     ./gen_xe_vf_migration_bpftrace.py | bpftrace -
-
-imho it could be shorter name like:
-
-gen_xe_sriov_bpftrace.py
-
-Later on if you want to add other target you could extend it.
-
+> - Basic buffer allocation
+> - Different cache modes (cached, write-combine, uncached)
+> - Negative tests (zero size, invalid flags)
+> - Unaligned size allocation
 > 
-> It focuses on migration-related events and metrics useful for
-> analyzing VF save/restore flow, latency, and data transfer behavior.
-> 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Michał Winiarski <michal.winiarski@intel.com>
-> Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-> ---
->  tools/gen_xe_vf_migration_bpftrace.py | 1438 +++++++++++++++++++++++++
->  1 file changed, 1438 insertions(+)
->  create mode 100755 tools/gen_xe_vf_migration_bpftrace.py
-> 
-> diff --git a/tools/gen_xe_vf_migration_bpftrace.py b/tools/gen_xe_vf_migration_bpftrace.py
-> new file mode 100755
-> index 000000000..8397dc3f4
-> --- /dev/null
-> +++ b/tools/gen_xe_vf_migration_bpftrace.py
-> @@ -0,0 +1,1438 @@
-> +#!/usr/bin/env python3
-> +# SPDX-License-Identifier: MIT
-> +#
-> +# Copyright(c) 2025 Intel Corporation. All rights reserved.
-> +#
-> +"""
-> +Generator for Xe VF migration bpftrace scripts.
-> +
-> +Generates a bpftrace script for observing Intel Xe SR-IOV VF activity,
-> +focused on migration (save/restore).
-> +
-> +Events (--events / --omit-events) filter bpftrace probe specs (kprobe/kretprobe)
-> +using glob patterns.
-> +Defaults: --events='*' --omit-events='*:xe_sriov_vfio_data_*'.
-> +
-> +Metrics (--metrics / --omit-metrics) filter map names using glob patterns.
-> +Default: all metrics enabled.
-> +
-> +Tracing is organized into blocks, each combining related probes and
-> +metric producers (e.g. VFIO save/restore, Xe restore paths).
-> +A block is generated if it provides any enabled metric
-> +or any of its probes are enabled.
-> +
-> +If no output file is given, the script is written to stdout (pipe directly into bpftrace).
-
-Please add here an example of usage.
+> Signed-off-by: Jitta Vignan <jvignan@qti.qualcomm.com>
 
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
+> ---
+>  tests/msm/meson.build |  1 +
+>  tests/msm/msm_bo.c    | 99 +++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 100 insertions(+)
+>  create mode 100644 tests/msm/msm_bo.c
+> 
+> diff --git a/tests/msm/meson.build b/tests/msm/meson.build
+> index 74169b5b2..2ba5b4db2 100644
+> --- a/tests/msm/meson.build
+> +++ b/tests/msm/meson.build
+> @@ -1,4 +1,5 @@
+>  msm_progs = [
+> +	'msm_bo',
+>  	'msm_mapping',
+>  	'msm_recovery',
+>  	'msm_shrink',
+> diff --git a/tests/msm/msm_bo.c b/tests/msm/msm_bo.c
+> new file mode 100644
+> index 000000000..131b43bfa
+> --- /dev/null
+> +++ b/tests/msm/msm_bo.c
+> @@ -0,0 +1,99 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+> + */
+> +
+> +#include <errno.h>
+> +
+> +#include "igt.h"
+> +#include "igt_msm.h"
+> +
+> +/*
+> + * Tests for MSM buffer object allocation
+> + * Tests DRM_IOCTL_MSM_GEM_NEW functionality
+> + */
+> +
+> +#define DEFAULT_BUFFER_SIZE 4096
+> +
+> +int igt_main()
+> +{
+> +	struct msm_device *dev = NULL;
+> +
+> +	igt_fixture() {
+> +		dev = igt_msm_dev_open();
+> +	}
+> +
+> +	/* Buffer Allocation Tests */
+> +	igt_describe("Test basic buffer object allocation");
+> +	igt_subtest("bo-alloc-basic") {
+> +		struct msm_bo *bo;
+> +
+> +		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, 0);
+> +		igt_assert_f(bo, "Failed to allocate buffer object\n");
+> +		igt_assert_f(bo->handle != 0, "Buffer object handle is 0\n");
+> +		igt_assert_f(bo->size == DEFAULT_BUFFER_SIZE,
+> +			     "Buffer size mismatch: expected %d, got %u\n",
+> +			     (unsigned int)DEFAULT_BUFFER_SIZE, (unsigned int)bo->size);
+> +
+> +		igt_msm_bo_free(bo);
+> +	}
+> +
+> +	igt_describe("Test write-combine buffer object allocation");
+> +	igt_subtest("bo-alloc-writecombine") {
+> +		struct msm_bo *bo;
+> +
+> +		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
+> +		igt_assert_f(bo, "Failed to allocate WC buffer object\n");
+> +		igt_assert_f(bo->handle != 0, "Buffer object handle is 0\n");
+> +
+> +		igt_msm_bo_free(bo);
+> +	}
+> +
+> +	igt_describe("Test uncached buffer object allocation");
+> +	igt_subtest("bo-alloc-uncached") {
+> +		struct msm_bo *bo;
+> +
+> +		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_UNCACHED);
+> +		igt_assert_f(bo, "Failed to allocate uncached buffer object\n");
+> +		igt_assert_f(bo->handle != 0, "Buffer object handle is 0\n");
+> +
+> +		igt_msm_bo_free(bo);
+> +	}
+> +
+> +	igt_describe("Test allocation with zero size (should fail)");
+> +	igt_subtest("bo-alloc-zero-size") {
+> +		struct drm_msm_gem_new req = { 0 };
+> +
+> +		req.size = 0;
+> +
+> +		igt_assert_eq(igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_NEW, &req), -1);
+> +		igt_assert_eq(errno, EINVAL);
+> +	}
+> +
+> +	igt_describe("Test allocation with invalid flags (should fail)");
+> +	igt_subtest("bo-alloc-invalid-flags") {
+> +		struct drm_msm_gem_new req = { 0 };
+> +
+> +		req.size = DEFAULT_BUFFER_SIZE;
+> +		req.flags = ~0; /* Invalid flags */
+> +
+> +		igt_assert_eq(igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_NEW, &req), -1);
+> +		igt_assert_eq(errno, EINVAL);
+> +	}
+> +
+> +	igt_describe("Test allocation with unaligned size");
+> +	igt_subtest("bo-alloc-unaligned-size") {
+> +		struct msm_bo *bo;
+> +		size_t size = DEFAULT_BUFFER_SIZE - 3; /* Unaligned size */
+> +
+> +		bo = igt_msm_bo_new(dev, size, 0);
+> +		igt_assert_f(bo, "Failed to allocate buffer with unaligned size\n");
+> +		igt_assert_f(bo->handle != 0, "Buffer object handle is 0\n");
+> +
+> +		igt_msm_bo_free(bo);
+> +	}
+> +
+> +	igt_fixture() {
+> +		igt_msm_dev_close(dev);
+> +	}
+> +}
+> -- 
+> 2.34.1
+> 
