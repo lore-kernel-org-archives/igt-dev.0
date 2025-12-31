@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD8A4EEB570
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D5D7EE645E
 	for <igt-dev@archiver.kernel.org>; Wed, 31 Dec 2025 20:20:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4940410E8D3;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 47CBB10E7E6;
 	Wed, 31 Dec 2025 20:20:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NZHF1EWl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="av8NM4e/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5805510E412
- for <igt-dev@lists.freedesktop.org>; Wed, 31 Dec 2025 20:20:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B2D0610E073
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 Dec 2025 20:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1767212413; x=1798748413;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=GWNiPPa5iUvLbcB/KqIgZRVqVrhCx5FzQF7wg17m968=;
- b=NZHF1EWlyBqfgOfDXpr1tWfKZVpVSGAZr58mH8+rMakSn6HWWOeAP8H5
- WaQaM7BRpYGsyCKhLb5n/8TPA/aeEcshqSAgNji2DhXapB2dXzOUVQqDR
- hHkMk41Xx7n54DIaVYaZUBN2Ro1vMEUBUzSwjh4JV0L8Qq/A3gDx3Axsj
- y7nB9MYGC25U3vmRKHWV1N+ozmHXPxOfmu0LCBrEjV7dyOFIACwO/kx5y
- CDCUXZ4eHeC8PsEJ0lj/oPVqGEEeC+9qqcHsiqFwXBpao9qPacC+bWO2m
- l5RUE5dSZdR6DYU/2TSEth0mkcEdIQeAVEBsr7HWpm9l13qgVuD31K2zV w==;
-X-CSE-ConnectionGUID: ORX9TgHpRnK7LytrOyQ3iQ==
-X-CSE-MsgGUID: jLsB+UReQoKQAGkvH89rHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11658"; a="68844913"
-X-IronPort-AV: E=Sophos;i="6.21,193,1763452800"; d="scan'208";a="68844913"
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=h6QO96+P/peITFuZcIg1hmfeoiEJQranLhP5dPGBQrE=;
+ b=av8NM4e/r2pXd7lOKg7AJORBo/BlnNG/tEcdeMbnUPJQK3nw5/nexYLC
+ UeCy5EkZtLtgZCP4J7xN5eObnHzScO5lihrTQJl4aNY2jVPCpVFjgGZrz
+ nxK7AxWmAz8MKP1SLZT86IVMuXGox33v5rtWUDwtHNyavDNgkrecc3EYF
+ aAR6+/FQ9vSzb8wcG0NYAkrdf3b9rTHRZ+7OZhw79otkOpNg80YcdggyS
+ 3J7ufKHI9S+OkXda9PUuzqz+Idn7qr47Oq6rP+gIekMXkQbeIMGFCpD6t
+ ABnCdqb21wg8VmgK0WPj33sHB1BY2iXT0GVgEEv2eh7duBYc3wy46gkZ4 Q==;
+X-CSE-ConnectionGUID: dtlKQYvCTU6N1Lp1VTLz8A==
+X-CSE-MsgGUID: kHh8+ZLuSmW0xHpQfQlPGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11658"; a="68844908"
+X-IronPort-AV: E=Sophos;i="6.21,193,1763452800"; d="scan'208";a="68844908"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Dec 2025 12:20:13 -0800
-X-CSE-ConnectionGUID: ArFHdotSQ8C8V30hatvUPQ==
-X-CSE-MsgGUID: 0knneL4rSASMYV4+SFdtnw==
+ 31 Dec 2025 12:20:12 -0800
+X-CSE-ConnectionGUID: DRVqbABIRVCdg5H3qwFFWw==
+X-CSE-MsgGUID: 00vUMHd0TCW+BYc4VflieA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,193,1763452800"; d="scan'208";a="224998665"
+X-IronPort-AV: E=Sophos;i="6.21,193,1763452800"; d="scan'208";a="224998650"
 Received: from dut6304bmgfrd.fm.intel.com ([10.36.21.42])
  by fmviesa002.fm.intel.com with ESMTP; 31 Dec 2025 12:20:12 -0800
 From: Xin Wang <x.wang@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Xin Wang <x.wang@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>
-Subject: [PATCH v10 5/5] intel-ci: add xe_pat pat-sanity
-Date: Wed, 31 Dec 2025 20:20:10 +0000
-Message-ID: <20251231202010.115619-6-x.wang@intel.com>
+Cc: Xin Wang <x.wang@intel.com>
+Subject: [PATCH v10 0/5] tests/intel/xe_pat: add helper funtion to read PAT
+ table
+Date: Wed, 31 Dec 2025 20:20:05 +0000
+Message-ID: <20251231202010.115619-1-x.wang@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251231202010.115619-1-x.wang@intel.com>
-References: <20251231202010.115619-1-x.wang@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,27 +66,20 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add the new igt@xe_pat@pat-sanity subtest to the Xe fast-feedback
-testlist so PAT configuration sanity checks are exercised in CI.
+Xin Wang (5):
+  lib/intel_pat: add pat_sw_config debugfs parser
+  include/linux_scaffold: add FIELD_GET() bitfield helper
+  tests/xe_pat: add pat-sanity subtest for debugfs vs getters
+  tests/xe_pat: use debugfs reserved flags
+  intel-ci: add xe_pat pat-sanity
 
-Signed-off-by: Xin Wang <x.wang@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
----
- tests/intel-ci/xe.fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux_scaffold.h                 |  6 ++
+ lib/intel_pat.c                          | 94 ++++++++++++++++++++++--
+ lib/intel_pat.h                          | 20 +++++
+ tests/intel-ci/xe.fast-feedback.testlist |  1 +
+ tests/intel/xe_pat.c                     | 88 +++++++++++++++++++++-
+ 5 files changed, 198 insertions(+), 11 deletions(-)
 
-diff --git a/tests/intel-ci/xe.fast-feedback.testlist b/tests/intel-ci/xe.fast-feedback.testlist
-index 15fce6a42..acff025fa 100644
---- a/tests/intel-ci/xe.fast-feedback.testlist
-+++ b/tests/intel-ci/xe.fast-feedback.testlist
-@@ -202,6 +202,7 @@ igt@xe_vm@munmap-style-unbind-userptr-end
- igt@xe_vm@munmap-style-unbind-userptr-front
- igt@xe_vm@munmap-style-unbind-userptr-inval-end
- igt@xe_vm@munmap-style-unbind-userptr-inval-front
-+igt@xe_pat@pat-sanity
- igt@xe_pat@userptr-coh-none
- igt@xe_pat@prime-self-import-coh
- igt@xe_pat@prime-external-import-coh
 -- 
 2.43.0
 
