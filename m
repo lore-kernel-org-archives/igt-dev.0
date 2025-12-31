@@ -4,187 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B67AFEE645A
-	for <igt-dev@archiver.kernel.org>; Wed, 31 Dec 2025 16:56:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F0B5EE645F
+	for <igt-dev@archiver.kernel.org>; Wed, 31 Dec 2025 17:00:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 174BB10E1ED;
-	Wed, 31 Dec 2025 16:56:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8B81110E04C;
+	Wed, 31 Dec 2025 17:00:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZuwkxWkX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EFAq3iWF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 246EF10E1ED
- for <igt-dev@lists.freedesktop.org>; Wed, 31 Dec 2025 16:56:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F3C410E04C
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 Dec 2025 17:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767200214; x=1798736214;
+ t=1767200446; x=1798736446;
  h=date:from:to:cc:subject:message-id:references:
- content-transfer-encoding:in-reply-to:mime-version;
- bh=V65Qo1q5Mq+tvc+PCQg/PlqwvBU3upiStLBM2Q8tv4s=;
- b=ZuwkxWkX6nCSAu9m2PpwhSLz1RvGaZEHfie/amZiv/Y01IC/2o/7x1PJ
- ofjcsbm6dNaUtjw4F6OARAcmaaGJMG8/N+jC/b684a+dEwW6i9Q59zi/x
- +KNNseIB5oA5vbfRsafN50guA17IiC7qSiAqG1rLIHLmVhjgcDybcrFVq
- rHACEJz8P9qzb5Y2zkIE+lFB+kO/uajb3vj6rN8Vgh0L661HeEiUGk8tU
- ZTD7TIsVvxWSnlmMs1BRKDM2sr6DySLu5XTdYUW2QTa6cpJxJ1kNlFA7M
- 9Fw+Q4DWhjXt0fng6C6sRmdmBATLchg/zKwVIbaUQa3g0LHJQ44OE2QrN A==;
-X-CSE-ConnectionGUID: rQ6+c8apTdC5V15qJS4WRQ==
-X-CSE-MsgGUID: ti7U81I7SY+zso2bTHH7NA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11658"; a="68669395"
-X-IronPort-AV: E=Sophos;i="6.21,192,1763452800"; d="scan'208";a="68669395"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Dec 2025 08:56:54 -0800
-X-CSE-ConnectionGUID: 9zSjZOEPQ1yfjXffiUlj4A==
-X-CSE-MsgGUID: E0SBn9RPS5uqpsvv6Jal0A==
+ in-reply-to:mime-version;
+ bh=qEBMYSeDlbX4eQas8k5R9uwfW82Z/KmVMuxt2wNFTNs=;
+ b=EFAq3iWF2Mpp+gPXxOpfhsoQtJigZTndH/PkJe8dveFT/Ny1Fy81JgiY
+ AYVMJ2ySXftfWo6aNXroYcQEqlzMlxoIuDCdEEhObyLbCS5KoJnbKmA/6
+ 0A2fs+UJQMy7YimX0m352iBE3Z+3DIDtE4frJNPzKDcQBcl52Sc2LoeNK
+ mhV6k9vc/GtM04qhXFQIPUbOpEgr40CipalLFpDjTi5fivDXaTH8hFv8o
+ 1pDFQidZ3ET1dDDJ5f3U+jUJGvVI4yaf94UNlsYwl3Q65MtCw0AFjDHv4
+ I/44NH1oWy+Ph+5FqiKpv3VaWXue7VCGLaHC5BLBcW9nQo+XO1jWeXF0L g==;
+X-CSE-ConnectionGUID: Fa8zohy6ThmBrxzqw9QNlA==
+X-CSE-MsgGUID: wLvOgaynRPi9P6cSdrengg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11658"; a="94233276"
+X-IronPort-AV: E=Sophos;i="6.21,192,1763452800"; d="scan'208";a="94233276"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Dec 2025 09:00:45 -0800
+X-CSE-ConnectionGUID: FmpPiNz8TxCByZ/vG8bt1w==
+X-CSE-MsgGUID: 6eEuAkbtQH2bVBq0Z79Jcg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,192,1763452800"; d="scan'208";a="201477167"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Dec 2025 08:56:54 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.21,192,1763452800"; d="scan'208";a="201232793"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+ by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Dec 2025 09:00:45 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 31 Dec 2025 08:56:53 -0800
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.2.2562.29; Wed, 31 Dec 2025 09:00:44 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Wed, 31 Dec 2025 08:56:53 -0800
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.46)
- by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.29 via Frontend Transport; Wed, 31 Dec 2025 09:00:44 -0800
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.55) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 31 Dec 2025 08:56:53 -0800
+ 15.2.2562.29; Wed, 31 Dec 2025 09:00:44 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JfGXXUKD8F+uDeU7pDS0IWalEulEn33SMhREVhEVzbsiDpab1IJpgisI3zgi4AJmaUUavAvI0UueX/yROwvtmeN8XHFeW3PY/zEPMW0HrsPWHxaDGJQQCubSa4AO+844m4ApbcZUIPwNHtAYnCfIyEyYPkuJGKBrlFLgc0tZFiokkunCpOP/+KQiUzPguqjobGmquottBsxhyp3YUL15d6fSRyTt3cnAvty+NtvwFghpZk9P4zKqbxwKXmWyNhIqtATZRXIunZ6Gra9qdM/C1bNwhkF+WtLxoMmtxBpDswD8oGmkve8csgLKZ7/Li1Jfp0b8eZ8ljAYWkgoU54eNmg==
+ b=WEnkA4ZQBsp4e2l9/WqxJG1Xffux8vSOVlrKo3OHr6XHy7bC2NtkAB2xonCJ5TCXjPbt3J+cK7haURcbolRP7AGm4W/oLjCyqULNGSg6c4CxHtI47xLlyUH2vTXsnuCK+vPI2svsQ373Ssy910Aj5IaQNN3lbwjlensO/QDYEHZHw5wEqf84OSPzKvVRZQavDz7QkTiajgHotttd66qhN0A9tIm5oP9xm6jc6inciiy+In5QlWs2DfmoHWYfKk1rLvlxNLhSg3JIfDGqQwf4DVbuEkZfmUItIW6mx1Pz/CqfmO9wb5HPyiNwUkSIvWFpk3QrfNKBDJSaazwm95EiDw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZT0/ZMQzWs2vWipfyi+cVnemUB3RqdtzHWP7KUPd9pw=;
- b=qJNDuR4dsrF0xkXGe3cFYOCZx8UGNapMWf0XU6fWn7KfLXnmnGYl9hRX1G+dLrizkNkUnxDOTvK8fXqHSaQehhRQdJFvn7EkJrLsLTDSsj9tQUR1vDLITwKhsKi2b9+3KDvhFGpHNtCdBqvccCocI9AXCZ+l+nhfyyT/x32bpQpH8lp8SonEfc2KYTLepTaFGVG0AmnDUdtKuChjNZZYwqMSnBLm+wQ/5ItC0c4S/rPn4TM0iM6TaF03BfaXK86rXtgfoSjJpDtZP+4p6xbPGBAr9PfpTFlOHIuWFVV6RunSHKTKQexptfnM8zYXC4Yb1Ih2NERnPdqRXOC04i3Tnw==
+ bh=KTZDJ02t/LSN0gpMIipyBP/Hz7YNs3bPldMR7t+wIg4=;
+ b=G85chMbJgrXUZ0nRumUwDdi2Od2aqzEZEDPp7GzbBpwK+BKz47T1fo8zOpbTTmUqcSH2FkaE5S8ODA7crzAukn8rPR9lAmBYvVv77X71SpesXJbQCb5A/Gi8nSyE5xJRgiDiPDv6zj21cztu1EZzZkPCdg8r8NvlMRwHiq1wr/M0o80s047Y3GxNFmMrYgpynlwWgWC6uPF/s+t/+oDZRoGn+Xr3PtwFKtTGOmfl/PDOmCean78uYLWDxklU8a9hWCQBqjF/I6iBdXY753vKIt0zNPGkw8fVoy6MkZUgK/Cfwdl6K9DhHLTgB/cAWyS7VpIqkc6C5TCzAp1YGR8sLQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DS0PR11MB8182.namprd11.prod.outlook.com (2603:10b6:8:163::17)
- by CY8PR11MB7084.namprd11.prod.outlook.com (2603:10b6:930:50::5) with
+ by MN0PR11MB6184.namprd11.prod.outlook.com (2603:10b6:208:3c4::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Wed, 31 Dec
- 2025 16:56:48 +0000
+ 2025 17:00:42 +0000
 Received: from DS0PR11MB8182.namprd11.prod.outlook.com
  ([fe80::7b65:81e6:c6c4:449e]) by DS0PR11MB8182.namprd11.prod.outlook.com
  ([fe80::7b65:81e6:c6c4:449e%4]) with mapi id 15.20.9456.013; Wed, 31 Dec 2025
- 16:56:48 +0000
-Date: Wed, 31 Dec 2025 08:56:45 -0800
+ 17:00:40 +0000
+Date: Wed, 31 Dec 2025 09:00:37 -0800
 From: Matt Roper <matthew.d.roper@intel.com>
 To: Xin Wang <x.wang@intel.com>
 CC: <igt-dev@lists.freedesktop.org>, <alex.zuo@intel.com>,
  <shuicheng.lin@intel.com>, <stuart.summers@intel.com>,
  <kamil.konieczny@intel.com>, <ravi.kumar.vodapalli@intel.com>,
- <zbigniew.kempczynski@intel.com>, Matthew Auld <matthew.auld@intel.com>
-Subject: Re: [PATCH v9 1/5] lib/intel_pat: add pat_sw_config debugfs parser
-Message-ID: <20251231165645.GY4164497@mdroper-desk1.amr.corp.intel.com>
+ <zbigniew.kempczynski@intel.com>
+Subject: Re: [PATCH v9 2/5] include/linux_scaffold: add FIELD_GET() bitfield
+ helper
+Message-ID: <20251231170037.GZ4164497@mdroper-desk1.amr.corp.intel.com>
 References: <20251231055525.51524-1-x.wang@intel.com>
- <20251231055525.51524-2-x.wang@intel.com>
-Content-Type: text/plain; charset="utf-8"
+ <20251231055525.51524-3-x.wang@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251231055525.51524-2-x.wang@intel.com>
-X-ClientProxiedBy: SJ0PR03CA0123.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::8) To DS0PR11MB8182.namprd11.prod.outlook.com
+In-Reply-To: <20251231055525.51524-3-x.wang@intel.com>
+X-ClientProxiedBy: BY5PR17CA0005.namprd17.prod.outlook.com
+ (2603:10b6:a03:1b8::18) To DS0PR11MB8182.namprd11.prod.outlook.com
  (2603:10b6:8:163::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|CY8PR11MB7084:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6333d89f-edac-4d7f-bfa9-08de488d9684
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|MN0PR11MB6184:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9674753b-f379-42dd-b4ec-08de488e20cf
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?YlJNY0FnYkhoYmJIaFF1ckNCZGlacDR5THE2OTJKaWVSaGV0VktNTEpDQzhl?=
- =?utf-8?B?QzNVdVd6MXhRamtPSERuVDVlaU1DK2pjSTVPK2liSU1JRzVNWmVNMSs5ZU1y?=
- =?utf-8?B?clZLYXVtampldnBTVEtWWWlaNEVFM2FNUDJXbG96eFFWWjVENzZ2SlNRYVQ0?=
- =?utf-8?B?czY2bFhORld1cEthV1k1QVpFWU50V3N3NlFHOGRNNDlEVHkwQWdUSG9MNkc5?=
- =?utf-8?B?U1pwbFgwS1E3T1dQRFRYc3VGNFVHaVozN1MwQWlrTVA2eDlJYVVaRVVVSDRj?=
- =?utf-8?B?citYNWl6S3lwMEVpbHNYT3AvNml2N2NHSnpZcDlwQVBTUGlkbTgweE5yNmhi?=
- =?utf-8?B?WERkdXBYZThhTW5pMFFsYzdlM1FDcnNnWGJvalZJd3BLSndoWitYRWkyUGlH?=
- =?utf-8?B?a0NuSWt1anJ2b0htRWRPeDZLTHcvSFo2a0pWei9mZHRvclFrNjZsaEp2am9v?=
- =?utf-8?B?Z3REZkVGejY4WDY0d1JlWTNDSnJNWjVWNW1DSDNNQmtDUG9GaDlONTRUMSs3?=
- =?utf-8?B?OFlkTHNMSXpaTm5JVHlHeXZVOGFvY1NBU2hiVFNVVGgrakJMM0ZhTzlnYUZK?=
- =?utf-8?B?TmZoaFpaL25WeDJMZjVRbXVYaTVyUTN5enhJNi84WWR4cmR4a20xSW5ldk1Q?=
- =?utf-8?B?TTUvSDFmWHZOL3M0enJZT3VKT2lwQ2ZJLzhVYWU2WWxoT1NmQ2xzbEdGYTNE?=
- =?utf-8?B?Z1VRRXZ5MU9PNXNKQUZKREpJNzF5SmlZN2dmU1VDVC9xRDZiME5TNXNLWS94?=
- =?utf-8?B?KzNLeWNKZ0dqN2szZ0R1QkI5dmthUXRlZFQzMUNnTS9vZFIzN3crM1A4ZFZj?=
- =?utf-8?B?WlV3QS81NUdLajUxbEJFNGxHbnB0TS9qcFlUaGJEUXEzalpWY0czYVJJTVhy?=
- =?utf-8?B?KzNnR3pWZEREM0UvMG5pbGZ2UnVLK3FPK0NablFZcFZHZWJhWFJGOUpUTDlZ?=
- =?utf-8?B?MmhFMjUwci9qcHB0LzRvNHhzbUNzREo4SHZ0UnhwN2drRHhUeDhPSUNXSjdD?=
- =?utf-8?B?SUFrdjF2QmFqNDFZUFBlTTNNUUl0eEdKQnpFckxvWjQrV1kwekIzdlZUV0Fw?=
- =?utf-8?B?SmRtMFlQb1dwclFTbjB4UUhXeG8va3hxU3FpRFZKd2RrYTg5NXJObzNGeDE0?=
- =?utf-8?B?NlpodUlLLy9oU2FXQjIyYUwyTXZQaHhEcG1LR0t4V0pJL2l6Y1RrUUtvSCta?=
- =?utf-8?B?R25EUTlFcDVranlNWUkxczF3QkNvbTVvRXBoUDRidWFhK05lK1ZudWV3WEJI?=
- =?utf-8?B?NkZGclpBMWpWWnRqYVBaK1hzWitmRW1hOTdUR3YyYU45MGFUYVdmcGNMbmZz?=
- =?utf-8?B?MTlkdk5tUjJPUUQvT2Q0UllPa1kwaTJWK0RDdU53eDkyckxjTFBQd0FzbEJ6?=
- =?utf-8?B?ZVc0RUJ0WnZxSUdGU3dYNlFoNFBGa1pZZDVPRTEyNm5TWXA5eTIwS2RaLzVr?=
- =?utf-8?B?ZW5QdEhtVzRXdHRNWlJPVnJIY2JJM3orWXIvc1JvQVdZdm4zMk9BVDhXWjg5?=
- =?utf-8?B?Nk56VTBiWDl0N3pWdXRpYkNFclgxWVRGZm1kVERyOXYwR3gzZWg4cU1hVkNh?=
- =?utf-8?B?TzE4U2lZK3ZYMkdTSnlQVG42R0NQVXpEcEJLUVJRaVY0VDM3enNjenhtaVVz?=
- =?utf-8?B?UnhHK1VXUmhLYUdFRUdjNXlKUlA1QzdmMXpIUDIxTnRNM0ltK2ptWDNSQ1hD?=
- =?utf-8?B?UHk4VGJyaTgrVlBESGM4VkNDdE5aWUU4YnVSQXQvRFJxdG5vNUk5TU5tcjEw?=
- =?utf-8?B?aDloNkhrck5JSXdwc2lHZXRXVjZjR1hYRHBsOVl3N25YenhqUXh1SnNvMUlu?=
- =?utf-8?B?bm5wMzduc0pnV2tkVHNJNVczdVNDYXNYR3loYlpnYkl1a2U1WTFOV1BTaGlO?=
- =?utf-8?B?NHhwYjJNUDYxanRobDhBY25ETGx3SkY3bWc4S1p5cmc4eG52NGNzOTNYdVBu?=
- =?utf-8?Q?8OWHQEIRrbvuhklUS+MbXiRFvu+nn0DW?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?OK6qD/DKxvBw1udn3EvHdpajltwGpnh9nfbUD/RCOE1BDfWuTa79v8pU5gK1?=
+ =?us-ascii?Q?Pj0NUhr2x7+a/atriaNKNGnVw4IsUxBnMLkNBvXfCOacmzB18qnedNxyA17g?=
+ =?us-ascii?Q?Q34iMqohGGUX0SccvQdux0lECdhA4yb6Ge30YIupFLr709PRUSPmCX18hHsq?=
+ =?us-ascii?Q?i8YpU1Oqn6MQLBA7n5TzLGxGEs7Lx+2X/e+XuStsT8THbdDPYAeWWJqlqofK?=
+ =?us-ascii?Q?6tDbH5GdfBiKXjUUJEd0KtpRAa9hl4tpN/uPHlas6E7paO/pkGphq0iMLZw+?=
+ =?us-ascii?Q?UqK9HMKw1bOtZitZtg+hdTGilJvbSKEbUgSRI96p60bsuJS/LUEoXJJZWNRJ?=
+ =?us-ascii?Q?KAeWadZ0wZjmPvluAaKaALbwhvFad14WYQ88mKF0tRnEINlfpG8tsN0LzrEz?=
+ =?us-ascii?Q?b/9Yh2UyBS43dOEi2oCyvAtnBFUqLPfVHhVpJmrVSAQAywP4XZxggzxpUwrb?=
+ =?us-ascii?Q?EfEcnPQZvBskXkjlfStoBEtuHxtiTHei2/ychOlggkSwQh+JIbuCk9oaCOEu?=
+ =?us-ascii?Q?pivebdNasQlz/+dR4ruci/8oQJkhPcm5aVdugT7JGZ5Yi8nwoz5Fjss/coE7?=
+ =?us-ascii?Q?sqkf3sUPA9jjfv+Kkeykqaaf+fbBkz5R2FrXTWh1yyazoXJofsRwk6rUMwL9?=
+ =?us-ascii?Q?olv4D0x0o7EjdlJ5yoqKKTzi4gCyWiJdGZyZGpHRVSPc0TiZPrcqRmHDko4f?=
+ =?us-ascii?Q?FQUTP7fw/eAGV9S6rFFVevV9fSh7O6WCi4MeJkgPyLMukepdxNcaJkhjdszt?=
+ =?us-ascii?Q?FKxoCbCPdvFRGTVsV+5Ccv2T/pwRACu/H0bS6JxKXS16fO5QYawMoa91F4kP?=
+ =?us-ascii?Q?418GZ35HArISx6CaayshoKtqxlMnAqDoBL0AW5225Bri9TLSd+3f9uL2f3iA?=
+ =?us-ascii?Q?oRFgwibMnPKeMsUFp1E+evRWGwOC0B9f5e1Z1n+hDnH7pHE4xG1TRESDbFjL?=
+ =?us-ascii?Q?NH2HO6vUCIFZ1ABC55iNnIKmVZug+KSl/hZqL0pGzVPNkLeEoVl8U/x+KhOr?=
+ =?us-ascii?Q?Ja3IQ4cEfqQtr/SOdEBWIdqpf2RF3vEBaCBuHQl+Sy2iihXrqnBOsDXDdexA?=
+ =?us-ascii?Q?yBBYgnInRxZbvSYLyVE7GdgGCy+4EGD1jgnBV8aX65IdUiS2zmhq+jYB5lP7?=
+ =?us-ascii?Q?fBEyGpxqgLexpC9b9ox13U8Sp/2jKc65wEItzSn853J/Gh0VCie7wxEsA47c?=
+ =?us-ascii?Q?VJsU8EKjBKFSNqcigEY5QS6V2noQ1PcGLQ5KB89jMWFcJRMV7dk3IE5RWDXW?=
+ =?us-ascii?Q?jWO7E18VUebNUptzdQNWp3R1ClF7YMIO0sD0mmpUAoYzxsVryGUCrL4sKqdl?=
+ =?us-ascii?Q?O0bvxCwQv0VRCC6kVTiO5y+juD5cS6SDXKe5u3JUxs/4Ke7KDVPneEHNvVmE?=
+ =?us-ascii?Q?oVxnPFbx0me2BSmsT1PmUsfCE8mZ9TkNtKD9X1efHQUwCkcpWRfufJNOaDhB?=
+ =?us-ascii?Q?Dv1cFKj5OEKJIXcf6F66GtoYf8ckkvLy?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB8182.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bEhIRnZjRjFkc3NpSllUQXhvSU8xTGx3b1U1Sm9KOXU1N3kxamYwR0EyQmxq?=
- =?utf-8?B?S3BLajY4N1A4Z0hXcnoxbzlkK2VORFJ5d2FXamltVTBZNmljbHF0ZmRTL0xX?=
- =?utf-8?B?d0o5K21DbXlodDZZSWVrWGtxZ0hDMmY0b05FcnVKV0tOYnFBZ1MwY2hFQlVG?=
- =?utf-8?B?U24yT09KR3JvOC9iSHpmSzN1c2JONzhxT0lXRWt6MWwyOVdGZzNIWXdxcGtu?=
- =?utf-8?B?cldIcDNPeHRSdW9qeVg0NkRDRGZ3V0NYT2Rya1RSbVNMcXVZcUkxQjFxdVJB?=
- =?utf-8?B?T25IOXNjOXZDOEZZa2crR3F1aUxEbkZpRFAzNmdaeXdYazlXWG5pK043WStV?=
- =?utf-8?B?a0ZNV1ozamNUaGxYa0R2aWNDdlNzY3BPM2lJcDRVTFRIVStGdVMzdGtVZVdP?=
- =?utf-8?B?K0lPVXdIOTZHL1NQeUIybDBKMTFCWWNRaXdiYXlWbmNjekRWUTlMQjFKa0Yr?=
- =?utf-8?B?YTVGNkJ2Smc5VmVIUHd4ZVpRL2p4Sm01MHNmbGdmaGNhL0VpcE9UYytQeExL?=
- =?utf-8?B?c05SWDlQQjJXRThvS2E4N2pzNUtyZ1RiMFY3NU56TnRmMW5yNU56UHhMaDdP?=
- =?utf-8?B?d2NidGR5RmFaS3ZTd2xQWUp6ajR1MmhCMTlFa2xVblNFL0xtdkZRQzFOdCtU?=
- =?utf-8?B?ZGowMGZ4M2N6Q0pYNGFsU3hKVXpVcnQ2THhxVjhUNmwzUGZqNHVyU3NRVUI2?=
- =?utf-8?B?ZFRHdG9vdW5ZNGc5UmpJRjR2Qys3c2ZXT2ROc3c3Z1lxc1gvNjFSRXZYQ21s?=
- =?utf-8?B?RUpOOFQ0bnhZem9hSkZRZjJ2c0VIYWNXdFJwdUc5L1VuTXpBR0JrbGo5YUgv?=
- =?utf-8?B?eFlXVmpDMG9mZzkyWWFrM3NEcm02MnJ2T21QUk1CK3lzNW4zeEczSEEzNXJa?=
- =?utf-8?B?eFdydFU3bkl4U0JkTlNlSk5qNzc5V1Voc2hLUkZSZjh2Vlk4eHdKVkd0T2Ix?=
- =?utf-8?B?cU5DcXdLbk9BWk5aMlhTTG1lclQzWUpkTWtYMC94VFd0aVAzb3VPcHF3dEFG?=
- =?utf-8?B?Zyt0MWdlME4ydy9BRFJrWUNWTXprNXVidm1nNzdHVnl0MnBPbWZkQ0FzeCtj?=
- =?utf-8?B?b3o1UnB5TC81ZU55b2FtY1ZjU0VCVkRwbmZJV2FHRVZjM3BMd2MrN3BrcFBC?=
- =?utf-8?B?NGZMSTIydHN1SjdQRHNoNzcxU3UxUmlJUDF2RDcwRzBJZ3QvYzEyVGRQczdr?=
- =?utf-8?B?eCt5c2JYeGxLZktRVjI2dmVMRmV4ZnEyb09QNjQvdncvdTVGMUk0cDlUZHNZ?=
- =?utf-8?B?Z1ZYSU9YaDdLeWp3UERyTm52NXJoUk9rNDUzSk5FY29FMUo4K3k4TStmcFFs?=
- =?utf-8?B?d2k2eGVvakVJWmZFTmJGblRPMWU5TXJNM3MxOWRHRmM0VDNwcEdja04weGpS?=
- =?utf-8?B?SVE2S3ZMWUhvcFVvTXgyeFN0eXhTaHpuQkZQNVhWbTRnUUhjZmFwaVcyMnZP?=
- =?utf-8?B?SW9wSkFSWjJsczBJbVA1aVhQOVJHOXc1Zm1QYkE3OFZaaitYUzlERWxubUk3?=
- =?utf-8?B?L200ek9DVjdVL0FCQ3llekxGRG1ZeG9md3hyOURBVHZVR3lMTDR2d0lCdlNZ?=
- =?utf-8?B?OEcwa2ZPaW5ZbUNVRE44Nk02VHJDTFhFV2x3Mk8zN1FVMGhjbFVBYXZsL253?=
- =?utf-8?B?RmVZbG1uQm1yUTAxQ0ZRbzdMdmNXcWF0bjcwb2o3dHo3VUtuMFdIbFhNY1Rs?=
- =?utf-8?B?dStHWUdzTTdUeHFva09BbGJXUk5neVFJczBKK2hJRk9yVUpYZUYrSElKYnlL?=
- =?utf-8?B?U292YWM2SXVWaVBBUEZjaC9JSXBvaThFb2tjc3pFdUd0MVpTYUtYVk1ScEhH?=
- =?utf-8?B?NWo5UG80bk80dlhEQThndDJETGNIRkduV0U0ZE8zaWdVN2JjT1ByMTY0Tkg1?=
- =?utf-8?B?dlJ0SUpnMzZTWWFicWFHK0JIM2JLSlY3enpqT1I1ZTdvYXM2RlE4cXpIWTdK?=
- =?utf-8?B?Qno1RFlBTmFua1BFdmhGR0VCM1dlV2tHaGdiSEtMODRkdEJ2ZmtnenVrNjRG?=
- =?utf-8?B?VmNqRGFHYWc1MXgxNmF2SHAzdVZXaTNWZE1tUmVXeWk1QndnRUl3bGp6RWFD?=
- =?utf-8?B?RWNKSGJjV090aTZxV1hvcDZzNUMrUXFHOC9CS0xUUkRNL21jVVJ2SkxQLzY3?=
- =?utf-8?B?alE4b1VyckhkTG9OVXJyNWJscnBXTm5YQUxSVzhpZDIwN0FZeXpOcXVISVU3?=
- =?utf-8?B?VWNkbVYwb1F4b2dKNEY0MFVBOHljbGE0ZzVpV2Z1cndsRnlET1pXWEVUU2ZY?=
- =?utf-8?B?TVI5YzZ4NkJjUlQ1SDM2bGxKeklndzJCQkhSK015aEo5OFlTdExpTXE3dzZL?=
- =?utf-8?B?eVNvTmdPYXMzcnhCSG5KR2NxTFd5VVVEQzBQaHI1c2pIdHhDaG9oZ05wMTdi?=
- =?utf-8?Q?0HijJhE5an7FwtYM=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6333d89f-edac-4d7f-bfa9-08de488d9684
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?rZ0bCgHCcvBabRzfgmZ4iFbYa1tnXS25UDeIulLWUc3Y9D4DM1+X8b4Xrpic?=
+ =?us-ascii?Q?uM6lr5aTmGO76Xu3mNv7KIhAQGukT9qBUBxG64Bml+qZk+e3opVLIZqDi7AC?=
+ =?us-ascii?Q?QA2MBYPtRe8OWh5uxDzG/A07Sk2fF/Zps5u8tkNGDtxSQ/ybAGtr104OaR+W?=
+ =?us-ascii?Q?qcfaE2A5ftQuEPr+aEaKzSFqu4bl7aPkyygdStoqH87dHruIYQZpQP3gerRc?=
+ =?us-ascii?Q?rV+SQXdEf7M3O8DBspEG1uPfxncCVBgB1U1vGVL//St8+sFwz8JvOdGZdX9s?=
+ =?us-ascii?Q?F0ryHjsu1urokHmEEtKV7W0XAlln2ngwpdoVWFrVuRaARBUMA5bLD6rj2I21?=
+ =?us-ascii?Q?4iDsjdAfFx3aA2mXvK2G8ZsLiWhqTmsg8xHMImqJ+WFkm/kyf6jGLM2mAHuT?=
+ =?us-ascii?Q?6k0ZAEZkEl/pKXA9Nl9U94dKJWziSZP0nFJa3v2dVwpvj77fAhXr1/Tmm3ER?=
+ =?us-ascii?Q?dWfcSjlK580HYFroiC1Qw2IaRdWFnJXyJES+z030FPc9F9p/XwIcw5TD6LkT?=
+ =?us-ascii?Q?h93wYr2FTCY7BXj7XL0dTS6lJRwpAPQJWf5fK+Z6uTqyOBoj9kzIqtfzsNri?=
+ =?us-ascii?Q?BglBfKmO2w20xIAOqENNn2uodj1prJv52It/rtDoko5VJgn6qTuU1Ol3w+u2?=
+ =?us-ascii?Q?hgq2uB3CRVJftOWGa7h0k8FMim86n8umJ0cxrzKCxNpoDcq0Jn/K4p6WIdzS?=
+ =?us-ascii?Q?tlsue5+8OLINBG3+Mcq9nZ+pLRQprAvkwK9m1/ixa0BHYUXcPAMMCWBP/HgR?=
+ =?us-ascii?Q?oGfmXdzD4L3sb+yX9FSC3hcPYBm6y6aNbR1Oaerz8CJf9VQ7vHynfw2wPz7s?=
+ =?us-ascii?Q?njElwUHO1C8AMuRsIbtZTmNrrgn0Okp72mTUzVWob5wcIBD7vLppy8kEKxl2?=
+ =?us-ascii?Q?sQkcqTv1IKPn2eBbw2Xd4+m6zl/Lth6B8Hp5AWyg5HfnIzSUbrjEKj81HasG?=
+ =?us-ascii?Q?hQ1FOjjn9TEeFO6jrPVLpXKsJBsZSWHeUxZPDoDfJ8G4FT6VBZzEjvEch2hz?=
+ =?us-ascii?Q?kyKHZ2EjH+OTwOhavolEkTEaltYV1HPl8DgK56ea9xGGGT+ZvLVhTXsaTRYA?=
+ =?us-ascii?Q?JdAjONg8+yKk0SrYOGrpojL/hkJv4v89QV7RsQdqQ0JXKYdfkDtTw3O8vr+K?=
+ =?us-ascii?Q?W63zt7JE2RMVMjn4As7l63U5mU0z49BUTGGhpX77AKDuprE6tq67LmYRJDrz?=
+ =?us-ascii?Q?jHHYnHJJUBKdDa3qbzUnharIkMn8X+NVd3CzfMYIy78U9HOoH2IAogFJgq7w?=
+ =?us-ascii?Q?QYMa+meaJzCNxq2Re3W8zEGUWqiFLRX9x4wgptRAWvda+w98gBwfaUl0nyoR?=
+ =?us-ascii?Q?e0KlCY5Ftf8ajclMM7HF2vZhF5MO4mI10FbFRtWkbg0xee+gQg44dX+i2k5d?=
+ =?us-ascii?Q?Wi3N7wJGeo5xFqUEx+5kcbUC8o7ZTlgxYe3S+awMjMXrmV5rNeGYk0MllITW?=
+ =?us-ascii?Q?Sga+Y2CIVPGjXK+NjdhegVz2lYxXJmWygFBMtBt7D/oq6oHsfBhOnZmuK5YB?=
+ =?us-ascii?Q?OG6FTUJ3Q7YJHxLr5JK7KnceHwFZ+vU3EoWEkq0i+AcqqRKbDKOpOe69Ygzk?=
+ =?us-ascii?Q?GEJ5nLS8NtxUBvBMwPsIDDr2xAg70U6J5kbCFvW/OKkJOI7KMgti0xdtW1/D?=
+ =?us-ascii?Q?5OHsh85AFwcOvY2y6XsprQI3gzfgNFxP8RZxG4nUmc40ExnFzztXR50dakAI?=
+ =?us-ascii?Q?DyQHVPsuOYlAvd//j6ex/PjE3QC0ywLxFFgUJcplyIsR5DbH6KgQ4SQvAEdz?=
+ =?us-ascii?Q?AWLZ86udELfKcmk7DhbinsAzL22XQyc=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9674753b-f379-42dd-b4ec-08de488e20cf
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8182.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Dec 2025 16:56:48.7890 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Dec 2025 17:00:40.8467 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: w3wewTkKMLqWfamgv9hLO6ilymgPke23X2ywaPu+hqunYPnf9ec7wQJ2xbXXivWdKj36pL8JbDZ9yUN/1+5ehqhSex+DUFV6l+RgwhQNhBg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7084
+X-MS-Exchange-CrossTenant-UserPrincipalName: ouL3QCGy5akNw/t9zdCx2NK8txmXDpi1H1CF7K5qQ2tMexWoUro3nQXQxwdRW3KHj5DAU4aPv6muBYjuRRLQgTYsbtP7h8x5+8mUjOp0Edw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6184
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -201,208 +183,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Dec 31, 2025 at 05:55:21AM +0000, Xin Wang wrote:
-> Add xe_get_pat_sw_config() to parse the Xe PAT software configuration
-> from debugfs (gt0/pat_sw_config). This is intended for test-only use
-> to validate the kernel-exposed PAT layout against IGT's predefined
-> UC/WT/WB/UC_COMP mapping.
+On Wed, Dec 31, 2025 at 05:55:22AM +0000, Xin Wang wrote:
+> Add __bf_shf() and FIELD_GET() so code can extract bitfields from
+> registers using a mask, matching the common Linux FIELD_GET()
+> semantics without pulling in kernel headers.
 > 
-> The intel_get_pat_idx_*() helpers continue to use a predefined per-devid
-> mapping, keeping them usable from unprivileged users. This avoids
-> introducing a debugfs dependency in the common library path while still
-> allowing tests to detect PAT table drift as new platforms are added.
-> 
-> V2: (Kamil)
-> - Show a detailed skip info when opening the debugfs file fails.
-> V3:
-> - Save the Xe PAT software configuration into the xe_dev structure
->   to prevent scenarios where certain test cases drop root privileges
->   after execution begins, which could block access to debugfs.
-> V4:
-> - Cache the parsed PAT table the first time we read pat_sw_config
->   and reuse it for subsequent calls. This avoids repeated debugfs
->   opens (and failures) in tests that drop root between steps, while
->   still returning the correct PAT layout.
-> V5:
-> - Make PAT debugfs parsing lazy: avoid requiring debugfs from
->   xe_device_get(), so tests that don't need PAT won't be skipped.
-> - If PAT info isn't available at device init, keep pat_sw_config empty
->   and only require debugfs when PAT indices are requested.
-> - Add xe_get_pat_entries() helper to expose the parsed PAT entry table.
-> V6:
-> - code optimization
-> V7:
-> - Keep intel_get_pat_*() usable for unprivileged users by switching back
-> to the predefined per-devid UC/WT/WB/UC_COMP mapping (no debugfs required).
-> - Stop reading pat_sw_config from the common device setup path: remove the
-> PAT debugfs fetch from xe_device_get() (and drop the cached field in the
-> xe device struct), avoiding a global debugfs dependency in lib code paths.
-> - Treat PAT parsing as test-only plumbing: make xe_get_pat_sw_config()
-> explicitly root-gated.
-> V8:(Matt Roper)
-> - Return the correct error code when reading pat_sw_config fails.
-> 
-> CC: Shuicheng Lin <shuicheng.lin@intel.com>
-> CC: Kamil Konieczny <kamil.konieczny@intel.com>
-> CC: Matt Roper <matthew.d.roper@intel.com>
-> CC: Matthew Auld <matthew.auld@intel.com>
-> CC: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Signed-off-by: Xin Wang <x.wang@intel.com>
-
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-
 > ---
->  lib/intel_pat.c | 94 ++++++++++++++++++++++++++++++++++++++++++++-----
->  lib/intel_pat.h | 20 +++++++++++
->  2 files changed, 106 insertions(+), 8 deletions(-)
+>  include/linux_scaffold.h | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/lib/intel_pat.c b/lib/intel_pat.c
-> index e3588110a..127f2160a 100644
-> --- a/lib/intel_pat.c
-> +++ b/lib/intel_pat.c
-> @@ -3,17 +3,95 @@
->   * Copyright © 2023 Intel Corporation
->   */
+> diff --git a/include/linux_scaffold.h b/include/linux_scaffold.h
+> index f6620ad0a..bd69c1ed2 100644
+> --- a/include/linux_scaffold.h
+> +++ b/include/linux_scaffold.h
+> @@ -51,4 +51,9 @@ static inline s64 sign_extend64(u64 value, int index)
+>  #define BITS_PER_LONG BITS_PER_TYPE(long)
+>  #define BITS_PER_LONG_LONG BITS_PER_TYPE(long long)
 >  
-> +#include "igt.h"
->  #include "intel_pat.h"
->  
-> -#include "igt.h"
-> +/**
-> + * xe_get_pat_sw_config - Helper to read PAT (Page Attribute Table) software configuration
-> + * from debugfs
-> + *
-> + * @drm_fd: DRM device fd to use with igt_debugfs_open
-> + * @xe_pat_cache: Pointer to a struct that will receive the parsed PAT configuration
-> + *
-> + * Returns: The number of PAT entries successfully read on success, or a negative error
-> + *          code on failure
-> + */
-> +int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache)
-> +{
-> +	char *line = NULL;
-> +	size_t line_len = 0;
-> +	ssize_t nread;
-> +	int32_t parsed = 0;
-> +	int dbgfs_fd;
-> +	FILE *dbgfs_file = NULL;
+> +#define __bf_shf(x) (__builtin_ffsll(x) - 1)
+
+Since this is userspace code, shouldn't we just use ffsll() from libc
+rather than going directly to the gcc builtin?
+
+
+Matt
+
 > +
-> +	dbgfs_fd = igt_debugfs_open(drm_fd, "gt0/pat_sw_config", O_RDONLY);
-> +	if (dbgfs_fd < 0)
-> +		return dbgfs_fd;
-> +	dbgfs_file = fdopen(dbgfs_fd, "r");
-> +	if (!dbgfs_file) {
-> +		close(dbgfs_fd);
-> +		return -errno;
-> +	}
->  
-> -struct intel_pat_cache {
-> -	uint8_t uc; /* UC + COH_NONE */
-> -	uint8_t wt; /* WT + COH_NONE */
-> -	uint8_t wb; /* WB + COH_AT_LEAST_1WAY */
-> -	uint8_t uc_comp; /* UC + COH_NONE + COMPRESSION, XE2 and later*/
-> -	uint8_t max_index;
-> -};
-> +	memset(xe_pat_cache, 0, sizeof(*xe_pat_cache));
-> +	while ((nread = getline(&line, &line_len, dbgfs_file)) != -1) {
-> +		uint32_t value = 0;
-> +		char *p = NULL;
+> +#define FIELD_GET(mask, reg) \
+> +	(typeof(mask))(((reg) & (mask)) >> __bf_shf(mask))
 > +
-> +		/* Expect patterns like: PAT[ 0] = [ 0, 0, 0, 0, 0 ]  (     0x0) */
-> +		if (strncmp(line, "PAT[", 4) == 0) {
-> +			bool is_reserved;
-> +			p = strstr(line, "(");
-> +			if (p && sscanf(p, "(%x", &value) == 1) {
-> +				if (parsed < XE_PAT_MAX_ENTRIES) {
-> +					is_reserved = strchr(line, '*') != NULL;
-> +					xe_pat_cache->entries[parsed].pat = value;
-> +					xe_pat_cache->entries[parsed].rsvd = is_reserved;
-> +					xe_pat_cache->max_index = parsed;
-> +					parsed++;
-> +
-> +					igt_debug("Parsed PAT entry %d: 0x%08x%s\n",
-> +						  parsed - 1, value,
-> +						  is_reserved ? " (reserved)" : "");
-> +				} else {
-> +					igt_warn("Too many PAT entries, line ignored: %s\n", line);
-> +				}
-> +			} else {
-> +				igt_warn("Failed to parse PAT entry line: %s\n", line);
-> +			}
-> +		} else if (strncmp(line, "PAT_MODE", 8) == 0) {
-> +			p = strstr(line, "(");
-> +			if (p && sscanf(p, "(%x", &value) == 1)
-> +				xe_pat_cache->pat_mode = value;
-> +		} else if (strncmp(line, "PAT_ATS", 7) == 0) {
-> +			p = strstr(line, "(");
-> +			if (p && sscanf(p, "(%x", &value) == 1)
-> +				xe_pat_cache->pat_ats = value;
-> +		} else if (strncmp(line, "IDX[XE_CACHE_NONE]", 18) == 0) {
-> +			p = strstr(line, "=");
-> +			if (p && sscanf(p, "= %d", &value) == 1)
-> +				xe_pat_cache->uc = value;
-> +		} else if (strncmp(line, "IDX[XE_CACHE_WT]", 16) == 0) {
-> +			p = strstr(line, "=");
-> +			if (p && sscanf(p, "= %d", &value) == 1)
-> +				xe_pat_cache->wt = value;
-> +		} else if (strncmp(line, "IDX[XE_CACHE_WB]", 16) == 0) {
-> +			p = strstr(line, "=");
-> +			if (p && sscanf(p, "= %d", &value) == 1)
-> +				xe_pat_cache->wb = value;
-> +		} else if (strncmp(line, "IDX[XE_CACHE_NONE_COMPRESSION]", 28) == 0) {
-> +			p = strstr(line, "=");
-> +			if (p && sscanf(p, "= %d", &value) == 1)
-> +				xe_pat_cache->uc_comp = value;
-> +		}
-> +	}
-> +
-> +	free(line);
-> +	fclose(dbgfs_file);
-> +
-> +	return parsed;
-> +}
->  
->  static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
->  {
-> diff --git a/lib/intel_pat.h b/lib/intel_pat.h
-> index eb48cbc65..e9ade2e2e 100644
-> --- a/lib/intel_pat.h
-> +++ b/lib/intel_pat.h
-> @@ -6,9 +6,27 @@
->  #ifndef INTEL_PAT_H
->  #define INTEL_PAT_H
->  
-> +#include <stdbool.h>
->  #include <stdint.h>
->  
->  #define DEFAULT_PAT_INDEX ((uint8_t)-1) /* igt-core can pick 1way or better */
-> +#define XE_PAT_MAX_ENTRIES 32
-> +
-> +struct xe_pat_entry {
-> +	uint32_t pat;
-> +	bool rsvd;
-> +};
-> +
-> +struct intel_pat_cache {
-> +	uint8_t uc; /* UC + COH_NONE */
-> +	uint8_t wt; /* WT + COH_NONE */
-> +	uint8_t wb; /* WB + COH_AT_LEAST_1WAY */
-> +	uint8_t uc_comp; /* UC + COH_NONE + COMPRESSION, XE2 and later*/
-> +	uint8_t max_index;
-> +	struct xe_pat_entry entries[XE_PAT_MAX_ENTRIES];
-> +	uint32_t pat_mode;
-> +	uint32_t pat_ats;
-> +};
->  
->  uint8_t intel_get_max_pat_index(int fd);
->  
-> @@ -18,4 +36,6 @@ uint8_t intel_get_pat_idx_wb(int fd);
->  
->  uint8_t intel_get_pat_idx_uc_comp(int fd);
->  
-> +int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache);
-> +
->  #endif /* INTEL_PAT_H */
+>  #endif /* _INTEL_GPU_COMMANDS_SCAFFOLD_H_ */
 > -- 
 > 2.43.0
 > 
