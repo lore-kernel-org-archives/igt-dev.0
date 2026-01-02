@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A0FCFA3728
-	for <igt-dev@archiver.kernel.org>; Fri,  2 Jan 2026 06:10:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 703A0EEB57A
+	for <igt-dev@archiver.kernel.org>; Fri,  2 Jan 2026 07:10:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 180B310E03F;
-	Fri,  2 Jan 2026 06:10:46 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IvzbS2UW";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 30B6D10E03F
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Jan 2026 06:10:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767334245; x=1798870245;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=N7K/IqP2uyNA0gtdwYG5eF2q8Izmhx6rrs93o9fsbFU=;
- b=IvzbS2UWh6r+uHvEasyHUitdNsGzM8H1dcCJCd9LT8z3OtabaDByZOTa
- atORkijwqagoBeZMz6YRXm/TBvUpZZrHERVLhTPDZVZXMskAHDH4EW+s5
- WOHG9J57j1cOiKu4aaSdm9uAWFehY/IPk02JxaVZQeGQhC4mN3YfF671Z
- 8vRhPBUdeXR/q3gHm2pXgHqW20gdC3QlJaLjojvh4bMiheZ6JBHgG81Ds
- TtWU+M4jBkYfafYM5hdCReIa+xelLfJat4XEPm+AMDtP/Wxg9AASqUc4d
- rkK1j0zA2zq2ixK742W3/tu1GQVqvZ84yDVCBunEHR6yqAjhbCCyvxB18 g==;
-X-CSE-ConnectionGUID: nhx571JVR4StfdbtXVQl0g==
-X-CSE-MsgGUID: pCztA7hlRUqAJ3t9ZnSHjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11658"; a="72684677"
-X-IronPort-AV: E=Sophos;i="6.21,196,1763452800"; d="scan'208";a="72684677"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jan 2026 22:10:45 -0800
-X-CSE-ConnectionGUID: BrxIWap+R0KxWkzGRnTbKw==
-X-CSE-MsgGUID: AlB8cEe+RmaOufQgp9A2pg==
-X-ExtLoop1: 1
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jan 2026 22:10:43 -0800
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, suraj.kandpal@intel.com,
- mohammed.thasleem@intel.com, kamil.konieczny@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v7 6/6] tools/intel_hdcp: Implement timer to the video
- playback
-Date: Fri,  2 Jan 2026 11:38:35 +0530
-Message-Id: <20260102060835.89725-7-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260102060835.89725-1-santhosh.reddy.guddati@intel.com>
-References: <20260102060835.89725-1-santhosh.reddy.guddati@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1CF0D10E055;
+	Fri,  2 Jan 2026 07:10:13 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C951310E055;
+ Fri,  2 Jan 2026 07:10:11 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0906303736280695718=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Introduce_intel=5Fhdcp_tool?=
+ =?utf-8?q?_=28rev5=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 02 Jan 2026 07:10:11 -0000
+Message-ID: <176733781182.123048.10459697187305289478@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260102060835.89725-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20260102060835.89725-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,80 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce a timer to the video playback UI to indicate the current
-playback session and duration of the HDCP session with type that has
-been running.
-This keeps the timer align with the active HDCP state and reset upon
-switching modes.
+--===============0906303736280695718==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tools/intel_hdcp.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+== Series Details ==
 
-diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c
-index a04f85362..6aecd27eb 100644
---- a/tools/intel_hdcp.c
-+++ b/tools/intel_hdcp.c
-@@ -409,9 +409,15 @@ static void *video_player_thread(void *arg)
- 	const char *hdcp_str;
- 	double bg_r = 0.0, bg_g = 0.0, bg_b = 0.0;
- 	cairo_text_extents_t ext;
-+	char timer_str[32];
-+	time_t current_time, elapsed;
-+	int minutes, seconds;
- 
- 	data_t *data = (data_t *)arg;
- 	enum hdcp_type cur_type = data->hdcp_type;
-+	enum hdcp_type prev_type = cur_type;
-+
-+	data->video_start_time = time(NULL);
- 
- 	igt_create_color_fb(data->fd, data->width, data->height, DRM_FORMAT_XRGB8888,
- 			    DRM_FORMAT_MOD_LINEAR, 0.0, 0.0, 0.0, &fb);
-@@ -421,6 +427,12 @@ static void *video_player_thread(void *arg)
- 
- 		cur_type = data->hdcp_type;
- 
-+		/* Reset timer if HDCP type changed */
-+		if (cur_type != prev_type) {
-+			data->video_start_time = time(NULL);
-+			prev_type = cur_type;
-+		}
-+
- 		switch (cur_type) {
- 		case HDCP_TYPE_1_4:
- 			bg_r = 0.0; bg_g = 0.7; bg_b = 0.0;
-@@ -473,6 +485,18 @@ static void *video_player_thread(void *arg)
- 		cairo_move_to(cr, x, y);
- 		cairo_show_text(cr, hdcp_str);
- 
-+		/* Add timer in bottom-right corner */
-+		current_time = time(NULL);
-+		elapsed = current_time - data->video_start_time;
-+		minutes = elapsed / 60;
-+		seconds = elapsed % 60;
-+		snprintf(timer_str, sizeof(timer_str), "%02d:%02d", minutes, seconds);
-+
-+		cairo_set_font_size(cr, font_size / 2.0);
-+		cairo_text_extents(cr, timer_str, &ext);
-+		cairo_move_to(cr, data->width - ext.width - 20, data->height - 20);
-+		cairo_show_text(cr, timer_str);
-+
- 		cairo_destroy(cr);
- 
- 		primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
-@@ -495,6 +519,7 @@ static void start_video_player(data_t *data)
- 		return;
- 
- 	data->video_running = true;
-+	data->video_start_time = time(NULL);
- 	if (pthread_create(&data->video_tid, NULL, video_player_thread, data) != 0) {
- 		fprintf(stderr, "Failed to create video player thread\n");
- 		data->video_running = false;
--- 
-2.34.1
+Series: Introduce intel_hdcp tool (rev5)
+URL   : https://patchwork.freedesktop.org/series/149007/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8681_BAT -> XEIGTPW_14277_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 11)
+------------------------------
+
+  Missing    (1): bat-bmg-1 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14277_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_waitfence@reltime:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#6520])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8681/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14277/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+
+  
+  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8681 -> IGTPW_14277
+  * Linux: xe-4315-633f3e5eab13c5bc2d760d1f3db65eb346d9babb -> xe-4320-3cd2a95092b58e0ccba8c222fb6331c83f696582
+
+  IGTPW_14277: 14277
+  IGT_8681: c49f35440873244aa86e778007ed2dcbe5bf0ecb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4315-633f3e5eab13c5bc2d760d1f3db65eb346d9babb: 633f3e5eab13c5bc2d760d1f3db65eb346d9babb
+  xe-4320-3cd2a95092b58e0ccba8c222fb6331c83f696582: 3cd2a95092b58e0ccba8c222fb6331c83f696582
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14277/index.html
+
+--===============0906303736280695718==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Introduce intel_hdcp tool (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/149007/">https://patchwork.freedesktop.org/series/149007/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14277/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14277/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8681_BAT -&gt; XEIGTPW_14277_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 11)</h2>
+<p>Missing    (1): bat-bmg-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14277_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_waitfence@reltime:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8681/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14277/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8681 -&gt; IGTPW_14277</li>
+<li>Linux: xe-4315-633f3e5eab13c5bc2d760d1f3db65eb346d9babb -&gt; xe-4320-3cd2a95092b58e0ccba8c222fb6331c83f696582</li>
+</ul>
+<p>IGTPW_14277: 14277<br />
+  IGT_8681: c49f35440873244aa86e778007ed2dcbe5bf0ecb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4315-633f3e5eab13c5bc2d760d1f3db65eb346d9babb: 633f3e5eab13c5bc2d760d1f3db65eb346d9babb<br />
+  xe-4320-3cd2a95092b58e0ccba8c222fb6331c83f696582: 3cd2a95092b58e0ccba8c222fb6331c83f696582</p>
+
+</body>
+</html>
+
+--===============0906303736280695718==--
