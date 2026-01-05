@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0F7DC2A07D
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Jan 2026 04:00:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0E32C2A07F
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Jan 2026 04:00:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D558810E353;
-	Mon,  5 Jan 2026 04:00:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8633C10E360;
+	Mon,  5 Jan 2026 04:00:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xgj/qxLx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Uepx3n80";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D1DBE10E232
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E60610E232
  for <igt-dev@lists.freedesktop.org>; Mon,  5 Jan 2026 04:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767585603; x=1799121603;
+ t=1767585602; x=1799121602;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=JPK3to+Cy5FdE1yjolpjd3U1S9pjGX8BilZ45v5lMLY=;
- b=Xgj/qxLx54msy8GuQznuqlCXdU3uv0M1EuREL+ksnSrd83ZPa9pWsgsV
- ZTMDHQo/xE4SUCAoejmwsS8ksZHBzQXeOjVIwpI9PwzE9CaQDCyDYJs08
- w3c97Z9tJwbrvfaAQKmEEfvC/t15m0QOCR+gz1h8G4vtjKO0XJtKP6wyQ
- vFoI4Nhsyb/sfuXDv6m4FjL2ORz/Z5mK571WMMokBxPtJtE22eWWigXZF
- 4om/Mw6VmEgnZH7hOLS0Uo4BNB4LaVft2JS7a28IHOSMaOfnWftxfTRHf
- ad+eeP0d/zYSB6VPSzATAToithZ3OO+LtNuvl67+J6llO4z0Z3RuudyEp g==;
-X-CSE-ConnectionGUID: clNtDVfpRL+1qDkKdeHFEQ==
-X-CSE-MsgGUID: lw0GIKLHSEKabdIFDJwiVQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11661"; a="69024121"
-X-IronPort-AV: E=Sophos;i="6.21,202,1763452800"; d="scan'208";a="69024121"
+ bh=4bnbNQeb243xOE7ggjuvIwN30G5M5AbYfaVMgVFH0IA=;
+ b=Uepx3n80KNDFEeJnUMlk+cFsMbbLoMNlvPX+pfvPDHg5zgtdcCmeqJaD
+ vO6aEUuXcnKP6sobGtJWFuYd5zmTABoEcL8ZVPgtM7uXPE4wN0T+Cek+7
+ Fzed+BiNQn2HgXKTw8ajeGu4UScT5bbJAOCoaGrQSdfze2t2H6EYht96T
+ ODi4AglO4RdbtzED1J7OqUtC6c6LwyzK/CQicQiNN0VOXZF8MsrXW0LGG
+ 1GFRVQ3FBJZKE4+qdAhow2LZ/GGQeKxdj0u36gbc3HCxbJeN40w1dyBRL
+ i236f7TwSCjxExLz7TqAxVFvHkp4S2JaBrMv5yzB7/UK+juyqAk7I/6B3 g==;
+X-CSE-ConnectionGUID: 8q0XCQoAR8+RTnhKlRcEqA==
+X-CSE-MsgGUID: uWNsA39nQ+2TkA7c7EYqKQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11661"; a="69024118"
+X-IronPort-AV: E=Sophos;i="6.21,202,1763452800"; d="scan'208";a="69024118"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  04 Jan 2026 20:00:02 -0800
-X-CSE-ConnectionGUID: VbmbNnYPR0mAdYwZOSngiQ==
-X-CSE-MsgGUID: jh20IQWrQhyqnM5UFC9s4A==
+X-CSE-ConnectionGUID: 2E68sFHDTFqvgjTBVpA3uQ==
+X-CSE-MsgGUID: P3AUWUEVTfqysiYuwpiaxA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,202,1763452800"; d="scan'208";a="202335552"
+X-IronPort-AV: E=Sophos;i="6.21,202,1763452800"; d="scan'208";a="202335537"
 Received: from dut7069bmgfrd.fm.intel.com (HELO DUT7069BMGFRD..) ([10.1.84.79])
  by orviesa008.jf.intel.com with ESMTP; 04 Jan 2026 20:00:02 -0800
 From: nishit.sharma@intel.com
 To: igt-dev@lists.freedesktop.org,
 	pravalika.gurram@intel.com
-Subject: [PATCH i-g-t v13 09/11] tests/intel/xe_multigpu_svm: Add SVM
- multi-GPU simultaneous access test
-Date: Mon,  5 Jan 2026 03:59:58 +0000
-Message-ID: <20260105040000.181183-10-nishit.sharma@intel.com>
+Subject: [PATCH i-g-t v13 07/11] tests/intel/xe_multigpu_svm: Add SVM
+ multi-GPU performance test
+Date: Mon,  5 Jan 2026 03:59:56 +0000
+Message-ID: <20260105040000.181183-8-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260105040000.181183-1-nishit.sharma@intel.com>
 References: <20260105040000.181183-1-nishit.sharma@intel.com>
@@ -70,100 +70,193 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Nishit Sharma <nishit.sharma@intel.com>
 
-This test launches atomic increment workloads on two GPUs in parallel,
-both accessing the same SVM buffer. It verifies that concurrent atomic
-operations from multiple GPUs produce the expected result, ensuring data
-integrity and the absence of race conditions in a
-multi-GPU SVM environment.
+This test measures latency and bandwidth for buffer access from each GPU
+and the CPU in a multi-GPU SVM environment. It compares performance for
+local versus remote access using madvise and prefetch to control buffer
+placement
 
 Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
 Reviewed-by: Pravalika Gurram <pravalika.gurram@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Acked-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 ---
- tests/intel/xe_multigpu_svm.c | 193 ++++++++++++++++++++++++++++++++++
- 1 file changed, 193 insertions(+)
+ tests/intel/xe_multigpu_svm.c | 246 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 244 insertions(+), 2 deletions(-)
 
 diff --git a/tests/intel/xe_multigpu_svm.c b/tests/intel/xe_multigpu_svm.c
-index f0a9a8f3c..08414ace5 100644
+index 288d23c3b..903ac636b 100644
 --- a/tests/intel/xe_multigpu_svm.c
 +++ b/tests/intel/xe_multigpu_svm.c
-@@ -13,6 +13,7 @@
+@@ -13,6 +13,8 @@
  #include "intel_mocs.h"
  #include "intel_reg.h"
  
-+#include "intel_gpu_commands.h"
- #include "time.h"
- 
- #include "xe/xe_gt.h"
-@@ -101,6 +102,17 @@
-  *	Test cross-GPU memory access with prefetch to verify page fault
-  *	suppression when memory is pre-migrated to target GPU's VRAM
++#include "time.h"
++
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ #include "xe/xe_util.h"
+@@ -67,6 +69,26 @@
+  *	Test concurrent write race conditions with prefetch to verify coherency
+  *	behavior and memory migration when multiple GPUs compete for same location
   *
-+ * SUBTEST: mgpu-concurrent-access-basic
++ * SUBTEST: mgpu-latency-basic
 + * Description:
-+ *	Test concurrent atomic memory operations where multiple GPUs
-+ *	simultaneously access and modify the same memory location without
-+ *	prefetch to validate cross-GPU coherency and synchronization
++ *	Measure basic cross-GPU memory access latency where one GPU writes
++ *	and another GPU reads without prefetch to evaluate remote access overhead
 + *
-+ * SUBTEST: mgpu-concurrent-access-prefetch
++ * SUBTEST: mgpu-latency-prefetch
 + * Description:
-+ *	Test concurrent atomic memory operations with prefetch where
-+ *	multiple GPUs simultaneously access shared memory to validate
-+ *	coherency with memory migration and local VRAM access
++ *	Measure cross-GPU memory access latency with explicit prefetch to
++ *	evaluate memory migration overhead and local access performance
++ *
++ * SUBTEST: mgpu-latency-copy-basic
++ * Description:
++ *	Measure latency of cross-GPU memory copy operations where one GPU
++ *	copies data from another GPU's memory without prefetch
++ *
++ * SUBTEST: mgpu-latency-copy-prefetch
++ * Description:
++ *	Measure latency of cross-GPU memory copy operations with prefetch
++ *	to evaluate copy performance with memory migration to local VRAM
++ *
   */
  
  #define MAX_XE_REGIONS	8
-@@ -112,6 +124,7 @@
- #define COPY_SIZE SZ_64M
- #define	ATOMIC_OP_VAL	56
- #define BATCH_VALUE	60
-+#define NUM_ITER	200
- 
- #define MULTIGPU_PREFETCH		BIT(1)
- #define MULTIGPU_XGPU_ACCESS		BIT(2)
-@@ -121,6 +134,7 @@
- #define MULTIGPU_PERF_OP		BIT(6)
- #define MULTIGPU_PERF_REM_COPY		BIT(7)
- #define MULTIGPU_PFAULT_OP		BIT(8)
-+#define MULTIGPU_CONC_ACCESS		BIT(9)
+@@ -84,6 +106,8 @@
+ #define MULTIGPU_ATOMIC_OP		BIT(3)
+ #define MULTIGPU_COH_OP			BIT(4)
+ #define MULTIGPU_COH_FAIL		BIT(5)
++#define MULTIGPU_PERF_OP		BIT(6)
++#define MULTIGPU_PERF_REM_COPY		BIT(7)
  
  #define INIT	2
  #define STORE	3
-@@ -181,6 +195,11 @@ static void gpu_fault_test_wrapper(struct xe_svm_gpu_info *src,
- 				   struct drm_xe_engine_class_instance *eci,
- 				   unsigned int flags);
+@@ -134,6 +158,11 @@ static void gpu_coherecy_test_wrapper(struct xe_svm_gpu_info *src,
+ 				      struct drm_xe_engine_class_instance *eci,
+ 				      unsigned int flags);
  
-+static void gpu_simult_test_wrapper(struct xe_svm_gpu_info *src,
-+				    struct xe_svm_gpu_info *dst,
-+				    struct drm_xe_engine_class_instance *eci,
-+				    unsigned int flags);
++static void gpu_latency_test_wrapper(struct xe_svm_gpu_info *src,
++				     struct xe_svm_gpu_info *dst,
++				     struct drm_xe_engine_class_instance *eci,
++				     unsigned int flags);
 +
  static void
  create_vm_and_queue(struct xe_svm_gpu_info *gpu, struct drm_xe_engine_class_instance *eci,
  		    uint32_t *vm, uint32_t *exec_queue)
-@@ -1057,6 +1076,164 @@ pagefault_test_multigpu(struct xe_svm_gpu_info *gpu1,
+@@ -223,6 +252,11 @@ static void for_each_gpu_pair(int num_gpus, struct xe_svm_gpu_info *gpus,
+ 
+ static void open_pagemaps(int fd, struct xe_svm_gpu_info *info);
+ 
++static double time_diff(struct timespec *start, struct timespec *end)
++{
++	return (end->tv_sec - start->tv_sec) + (end->tv_nsec - start->tv_nsec) / 1e9;
++}
++
+ static void
+ atomic_batch_init(int fd, uint32_t vm, uint64_t src_addr,
+ 		  uint32_t *bo, uint64_t *addr)
+@@ -379,12 +413,46 @@ mgpu_check_fault_support(struct xe_svm_gpu_info *gpu1,
+ 	return ret;
+ }
+ 
++static void
++store_dword_batch_init_1k(int fd, uint32_t vm, uint64_t src_addr,
++			  uint32_t *bo, uint64_t *addr, int value)
++{
++	int max_cmds = (4096 - sizeof(uint32_t)) / 16;
++	uint32_t batch_bo_size = BATCH_SIZE(fd);
++	uint32_t batch_bo;
++	uint64_t batch_addr;
++	void *batch;
++	uint32_t *cmd;
++	int i = 0;
++
++	batch_bo = xe_bo_create(fd, vm, batch_bo_size, vram_if_possible(fd, 0), 0);
++	batch = xe_bo_map(fd, batch_bo, batch_bo_size);
++	cmd = (uint32_t *)batch;
++
++	for (int j = 0; j < max_cmds; j++) {
++		uint64_t offset = src_addr + j * 4;
++
++		cmd[i++] = MI_STORE_DWORD_IMM_GEN4;
++		cmd[i++] = offset;
++		cmd[i++] = offset >> 32;
++		cmd[i++] = value;
++	}
++	cmd[i++] = MI_BATCH_BUFFER_END;
++
++	batch_addr = to_user_pointer(batch);
++
++	xe_vm_bind_lr_sync(fd, vm, batch_bo, 0, batch_addr, batch_bo_size, 0);
++	*bo = batch_bo;
++	*addr = batch_addr;
++}
++
+ static void
+ gpu_madvise_exec_sync(struct xe_svm_gpu_info *gpu, uint32_t vm, uint32_t exec_queue,
+ 		      uint64_t dst_addr, uint64_t *batch_addr, unsigned int flags,
+-		      void *perf)
++		      double *perf)
+ {
+ 	struct drm_xe_sync sync = {};
++	struct timespec t_start, t_end;
+ 	uint64_t *sync_addr;
+ 
+ 	xe_multigpu_madvise(gpu->fd, vm, dst_addr, SZ_4K, 0,
+@@ -401,10 +469,19 @@ gpu_madvise_exec_sync(struct xe_svm_gpu_info *gpu, uint32_t vm, uint32_t exec_qu
+ 	sync.timeline_value = EXEC_SYNC_VAL;
+ 	WRITE_ONCE(*sync_addr, 0);
+ 
++	if (flags & MULTIGPU_PERF_OP)
++		clock_gettime(CLOCK_MONOTONIC, &t_start);
++
+ 	xe_exec_sync(gpu->fd, exec_queue, *batch_addr, &sync, 1);
+ 	if (READ_ONCE(*sync_addr) != EXEC_SYNC_VAL)
+ 		xe_wait_ufence(gpu->fd, (uint64_t *)sync_addr, EXEC_SYNC_VAL, exec_queue,
+ 			       NSEC_PER_SEC * 10);
++
++	if (flags & MULTIGPU_PERF_OP) {
++		clock_gettime(CLOCK_MONOTONIC, &t_end);
++		if (perf)
++			*perf = time_diff(&t_start, &t_end);
++	}
+ }
+ 
+ static void
+@@ -421,7 +498,12 @@ gpu_batch_create(struct xe_svm_gpu_info *gpu, uint32_t vm, uint32_t exec_queue,
+ 		batch_init(gpu->fd, vm, src_addr, dst_addr, SZ_4K, batch_bo, batch_addr);
+ 		break;
+ 	case DWORD:
+-		store_dword_batch_init(gpu->fd, vm, src_addr, batch_bo, batch_addr, BATCH_VALUE);
++		if (flags & MULTIGPU_PERF_OP) {
++			store_dword_batch_init_1k(gpu->fd, vm, src_addr, batch_bo,
++						  batch_addr, BATCH_VALUE);
++		} else
++			store_dword_batch_init(gpu->fd, vm, src_addr, batch_bo,
++					       batch_addr, BATCH_VALUE);
+ 		break;
+ 	default:
+ 		igt_assert(!"Unknown batch op_type");
+@@ -708,6 +790,146 @@ coherency_test_multigpu(struct xe_svm_gpu_info *gpu1,
  	cleanup_vm_and_queue(gpu2, vm[1], exec_queue[1]);
  }
  
 +static void
-+multigpu_access_test(struct xe_svm_gpu_info *gpu1,
-+		     struct xe_svm_gpu_info *gpu2,
-+		     struct drm_xe_engine_class_instance *eci,
-+		     unsigned int flags)
++latency_test_multigpu(struct xe_svm_gpu_info *gpu1,
++		      struct xe_svm_gpu_info *gpu2,
++		      struct drm_xe_engine_class_instance *eci,
++		      unsigned int flags)
 +{
 +	uint64_t addr;
 +	uint32_t vm[2];
 +	uint32_t exec_queue[2];
 +	uint32_t batch_bo[2];
-+	struct test_exec_data *data;
++	uint8_t *copy_dst;
 +	uint64_t batch_addr[2];
-+	struct drm_xe_sync sync[2] = {};
-+	uint64_t *sync_addr[2];
-+	uint32_t verify_batch_bo;
-+	uint64_t verify_batch_addr;
-+	uint64_t *verify_result;
++	struct test_exec_data *data;
++	double gpu1_latency, gpu2_latency;
++	double gpu1_bw, gpu2_bw;
 +	uint32_t final_value;
-+	uint64_t final_timeline;
 +
 +	/* Skip if either GPU doesn't support faults */
 +	if (mgpu_check_fault_support(gpu1, gpu2))
@@ -177,127 +270,112 @@ index f0a9a8f3c..08414ace5 100644
 +	data[0].vm_sync = 0;
 +	addr = to_user_pointer(data);
 +
-+	WRITE_ONCE(*(uint64_t *)addr, 0);
++	copy_dst = aligned_alloc(SZ_2M, SZ_4K);
++	igt_assert(copy_dst);
 +
-+	/* GPU1: Atomic Batch create */
++	/* GPU1: Creating batch with predefined value */
 +	gpu_batch_create(gpu1, vm[0], exec_queue[0], addr, 0,
-+			 &batch_bo[0], &batch_addr[0], flags, ATOMIC);
-+	/* GPU2: Atomic Batch create */
-+	gpu_batch_create(gpu2, vm[1], exec_queue[1], addr, 0,
-+			 &batch_bo[1], &batch_addr[1], flags, ATOMIC);
++			 &batch_bo[0], &batch_addr[0], flags, DWORD);
 +
-+	/* gpu_madvise_sync calls xe_exec() also, here intention is different */
-+	xe_multigpu_madvise(gpu1->fd, vm[0], addr, SZ_4K, 0,
-+			    DRM_XE_MEM_RANGE_ATTR_ATOMIC,
-+			    DRM_XE_ATOMIC_GLOBAL, 0, 0, exec_queue[0]);
++	/*GPU1: Madvise and Prefetch Ops */
++	gpu_madvise_exec_sync(gpu1, vm[0], exec_queue[0], addr, &batch_addr[0],
++			      flags, &gpu1_latency);
 +
-+	xe_multigpu_madvise(gpu1->fd, vm[0], addr, SZ_4K, 0,
-+			    DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
-+			    gpu1->fd, 0, gpu1->vram_regions[0], exec_queue[0]);
++	gpu1_bw = (SZ_1K / (gpu1_latency / 1e9)) / (1024.0 * 1024.0); //Written 1k
 +
-+	xe_multigpu_madvise(gpu2->fd, vm[1], addr, SZ_4K, 0,
-+			    DRM_XE_MEM_RANGE_ATTR_ATOMIC,
-+			    DRM_XE_ATOMIC_GLOBAL, 0, 0, exec_queue[1]);
++	igt_info("GPU1 write with %s: Latency %.3f us, Bandwidth %.2f MB/s\n",
++		 (flags & MULTIGPU_PREFETCH) ? "prefetch" : "noprefetch",
++		 gpu1_latency / 1000.0, gpu1_bw);
 +
-+	xe_multigpu_madvise(gpu2->fd, vm[1], addr, SZ_4K, 0,
-+			    DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
-+			    gpu2->fd, 0, gpu2->vram_regions[0], exec_queue[1]);
++	/* Validate GPU1 performance */
++	if (flags & MULTIGPU_PREFETCH) {
++		if (gpu1_latency / 1000.0 > 5.0)
++			igt_warn("GPU1 write with prefetch slower than expected (%.3f us > 5us)\n",
++				 gpu1_latency / 1000.0);
++	}
 +
-+	setup_sync(&sync[0], &sync_addr[0], BIND_SYNC_VAL);
-+	setup_sync(&sync[1], &sync_addr[1], BIND_SYNC_VAL);
++	if (flags & MULTIGPU_PERF_REM_COPY) {
++		/*GPU2: Copy data from addr (written by GPU1) to its own buffer (copy_dst) */
++		gpu_batch_create(gpu2, vm[1], exec_queue[1], addr, to_user_pointer(copy_dst),
++				 &batch_bo[1], &batch_addr[1], flags, INIT);
 +
-+	xe_multigpu_prefetch(gpu1->fd, vm[0], addr, SZ_4K, &sync[0],
-+			     sync_addr[0], exec_queue[0], flags);
++		/*GPU2: Madvise and Prefetch Ops */
++		gpu_madvise_exec_sync(gpu2, vm[1], exec_queue[1], to_user_pointer(copy_dst),
++				      &batch_addr[1], flags, &gpu2_latency);
 +
-+	xe_multigpu_prefetch(gpu2->fd, vm[1], addr, SZ_4K, &sync[1],
-+			     sync_addr[1], exec_queue[1], flags);
++		gpu2_bw = (SZ_1K / (gpu2_latency / 1e9)) / (1024.0 * 1024.0);
++		final_value = *(uint32_t *)copy_dst;
++		igt_assert_eq(final_value, BATCH_VALUE);
++	} else {
++		/* GPU1 --> Creating batch with value and executing STORE op */
++		gpu_batch_create(gpu1, vm[0], exec_queue[0], addr, 0,
++				 &batch_bo[0], &batch_addr[0], flags, DWORD);
 +
-+	free(sync_addr[0]);
-+	free(sync_addr[1]);
++		/*GPU1: Madvise and Prefetch Ops */
++		gpu_madvise_exec_sync(gpu1, vm[0], exec_queue[0], addr, &batch_addr[0],
++				      flags, &gpu1_latency);
 +
-+	igt_info("Starting %d concurrent atomic increment iterations\n", NUM_ITER);
-+	for (int i = 0; i < NUM_ITER; i++) {
-+		bool last = (i == NUM_ITER - 1);
++		/*GPU2: Copy data from addr (written by GPU1) to its own buffer (copy_dst) */
++		gpu_batch_create(gpu2, vm[1], exec_queue[1], addr, to_user_pointer(copy_dst),
++				 &batch_bo[1], &batch_addr[1], flags, INIT);
 +
-+		if (last) {
-+			sync_addr[0] = (void *)((char *)batch_addr[0] + SZ_4K);
-+			sync[0].flags = DRM_XE_SYNC_FLAG_SIGNAL;
-+			sync[0].type = DRM_XE_SYNC_TYPE_USER_FENCE;
-+			sync[0].addr = to_user_pointer((uint64_t *)sync_addr[0]);
-+			sync[0].timeline_value = EXEC_SYNC_VAL + i;
-+			WRITE_ONCE(*sync_addr[0], 0);
++		/*GPU2: Madvise and Prefetch Ops */
++		gpu_madvise_exec_sync(gpu2, vm[1], exec_queue[1], to_user_pointer(copy_dst),
++				      &batch_addr[1], flags, &gpu2_latency);
 +
-+			sync_addr[1] = (void *)((char *)batch_addr[1] + SZ_4K);
-+			sync[1].flags = DRM_XE_SYNC_FLAG_SIGNAL;
-+			sync[1].type = DRM_XE_SYNC_TYPE_USER_FENCE;
-+			sync[1].addr = to_user_pointer((uint64_t *)sync_addr[1]);
-+			sync[1].timeline_value = EXEC_SYNC_VAL + i;
-+			WRITE_ONCE(*sync_addr[1], 0);
++		gpu2_latency += gpu1_latency;
++		gpu2_bw = (SZ_1K / (gpu2_latency / 1e9)) / (1024.0 * 1024.0);
++		final_value = READ_ONCE(*(uint32_t *)copy_dst);
++		igt_assert_eq(final_value, BATCH_VALUE);
++	}
++
++	igt_info("GPU2 %s copy: Latency %.3f us, Bandwidth %.2f MB/s\n",
++		 (flags & MULTIGPU_PERF_REM_COPY) ? "remote" : "local",
++		 gpu2_latency / 1000.0, gpu2_bw);
++
++	/* Validate GPU2 performance based on scenario */
++	if (flags & MULTIGPU_PERF_REM_COPY) {
++		if (flags & MULTIGPU_PREFETCH) {
++			/* Remote copy with prefetch: expect 0.2-1us */
++			if (gpu2_latency / 1000.0 > 1.0)
++				igt_warn("GPU2 remote copy with prefetch slower than expected (%.3f us > 1us)\n",
++					 gpu2_latency / 1000.0);
++		} else {
++			/* Remote copy without prefetch: expect 1-4us */
++			if (gpu2_latency / 1000.0 > 10.0)
++				igt_warn("GPU2 P2P remote copy is very slow (%.3f us > 10us)\n",
++					 gpu2_latency / 1000.0);
 +		}
-+
-+		/* === CONCURRENT EXECUTION: Launch both GPUs simultaneously === */
-+		xe_exec_sync(gpu1->fd, exec_queue[0], batch_addr[0],
-+			     last ? &sync[0] : NULL, last ? 1 : 0);
-+
-+		xe_exec_sync(gpu2->fd, exec_queue[1], batch_addr[1],
-+			     last ? &sync[1] : NULL, last ? 1 : 0);
++	} else {
++		if (flags & MULTIGPU_PREFETCH) {
++			/* Local write with prefetch: expect 0.1-0.5us */
++			if (gpu2_latency / 1000.0 > 1.0)
++				igt_warn("GPU2 local write with prefetch slower than expected (%.3f us > 1us)\n",
++					 gpu2_latency / 1000.0);
++		}
 +	}
 +
-+	 /* NOW wait only for the last operations to complete */
-+	final_timeline = EXEC_SYNC_VAL + NUM_ITER - 1;
-+	if (NUM_ITER > 0) {
-+		if (READ_ONCE(*sync_addr[0]) != final_timeline)
-+			xe_wait_ufence(gpu1->fd, (uint64_t *)sync_addr[0], final_timeline,
-+				       exec_queue[0], NSEC_PER_SEC * 30);
++	/* Bandwidth comparison */
++	if (gpu2_bw > gpu1_bw)
++		igt_info("GPU2 has %.2fx better bandwidth than GPU1\n", gpu2_bw / gpu1_bw);
++	else
++		igt_info("GPU1 has %.2fx better bandwidth than GPU2\n", gpu1_bw / gpu2_bw);
 +
-+		if (READ_ONCE(*sync_addr[1]) != final_timeline)
-+			xe_wait_ufence(gpu2->fd, (uint64_t *)sync_addr[1], final_timeline,
-+				       exec_queue[1], NSEC_PER_SEC * 30);
++	/* Overall prefetch effectiveness check */
++	if (flags & MULTIGPU_PREFETCH) {
++		if ((gpu1_latency / 1000.0) < 5.0 && (gpu2_latency / 1000.0) < 5.0)
++			igt_info("Prefetch providing expected performance benefit\n");
++		else
++			igt_warn("Prefetch not providing expected performance benefit\n");
 +	}
-+
-+	igt_info("Both GPUs completed execution %u\n", READ_ONCE(*(uint32_t *)addr));
-+
-+	/* === Verification using GPU read (not CPU) === */
-+	verify_result = aligned_alloc(SZ_2M, SZ_4K);
-+	igt_assert(verify_result);
-+	memset(verify_result, 0xDE, SZ_4K);
-+
-+	/* Use GPU1 to read final value */
-+	gpu_batch_create(gpu1, vm[0], exec_queue[0], addr, to_user_pointer(verify_result),
-+			 &verify_batch_bo, &verify_batch_addr, flags, INIT);
-+
-+	sync_addr[0] = (void *)((char *)verify_batch_addr + SZ_4K);
-+	sync[0].addr = to_user_pointer((uint64_t *)sync_addr[0]);
-+	sync[0].timeline_value = EXEC_SYNC_VAL;
-+	sync[0].flags = DRM_XE_SYNC_FLAG_SIGNAL;
-+	sync[0].type = DRM_XE_SYNC_TYPE_USER_FENCE;
-+	WRITE_ONCE(*sync_addr[0], 0);
-+
-+	xe_exec_sync(gpu1->fd, exec_queue[0], verify_batch_addr, &sync[0], 1);
-+	if (READ_ONCE(*sync_addr[0]) != EXEC_SYNC_VAL)
-+		xe_wait_ufence(gpu1->fd, (uint64_t *)sync_addr[0], EXEC_SYNC_VAL,
-+			       exec_queue[0], NSEC_PER_SEC * 10);
-+
-+	/* NOW CPU can read verify_result */
-+	final_value = READ_ONCE(*(uint32_t *)verify_result);
-+
-+	igt_info("GPU verification batch copied value: %u\n", final_value);
-+	igt_info("CPU direct read shows: %u\n", (unsigned int)*(uint64_t *)addr);
-+
-+	/* Expected: 0 + (NUM_ITER * 2 GPUs) = 400 */
-+	igt_assert_f((final_value == 2 * NUM_ITER),
-+		     "Expected %u value, got %u\n",
-+		     2 * NUM_ITER, final_value);
-+
-+	munmap((void *)verify_batch_addr, BATCH_SIZE(gpu1->fd));
-+	batch_fini(gpu1->fd, vm[0], verify_batch_bo, verify_batch_addr);
-+	free(verify_result);
 +
 +	munmap((void *)batch_addr[0], BATCH_SIZE(gpu1->fd));
 +	munmap((void *)batch_addr[1], BATCH_SIZE(gpu2->fd));
++
 +	batch_fini(gpu1->fd, vm[0], batch_bo[0], batch_addr[0]);
 +	batch_fini(gpu2->fd, vm[1], batch_bo[1], batch_addr[1]);
 +	free(data);
++	free(copy_dst);
 +
 +	cleanup_vm_and_queue(gpu1, vm[0], exec_queue[0]);
 +	cleanup_vm_and_queue(gpu2, vm[1], exec_queue[1]);
@@ -306,40 +384,44 @@ index f0a9a8f3c..08414ace5 100644
  static void
  gpu_mem_access_wrapper(struct xe_svm_gpu_info *src,
  		       struct xe_svm_gpu_info *dst,
-@@ -1117,6 +1294,18 @@ gpu_fault_test_wrapper(struct xe_svm_gpu_info *src,
- 	pagefault_test_multigpu(src, dst, eci, flags);
+@@ -744,6 +966,18 @@ gpu_coherecy_test_wrapper(struct xe_svm_gpu_info *src,
+ 	coherency_test_multigpu(src, dst, eci, flags);
  }
  
 +static void
-+gpu_simult_test_wrapper(struct xe_svm_gpu_info *src,
-+			struct xe_svm_gpu_info *dst,
-+			struct drm_xe_engine_class_instance *eci,
-+			unsigned int flags)
++gpu_latency_test_wrapper(struct xe_svm_gpu_info *src,
++			 struct xe_svm_gpu_info *dst,
++			 struct drm_xe_engine_class_instance *eci,
++			 unsigned int flags)
 +{
 +	igt_assert(src);
 +	igt_assert(dst);
 +
-+	multigpu_access_test(src, dst, eci, flags);
++	latency_test_multigpu(src, dst, eci, flags);
 +}
 +
  static void
  test_mgpu_exec(int gpu_cnt, struct xe_svm_gpu_info *gpus,
  	       struct drm_xe_engine_class_instance *eci,
-@@ -1132,6 +1321,8 @@ test_mgpu_exec(int gpu_cnt, struct xe_svm_gpu_info *gpus,
- 		for_each_gpu_pair(gpu_cnt, gpus, eci, gpu_latency_test_wrapper, flags);
- 	if (flags & MULTIGPU_PFAULT_OP)
- 		for_each_gpu_pair(gpu_cnt, gpus, eci, gpu_fault_test_wrapper, flags);
-+	if (flags & MULTIGPU_CONC_ACCESS)
-+		for_each_gpu_pair(gpu_cnt, gpus, eci, gpu_simult_test_wrapper, flags);
+@@ -755,6 +989,8 @@ test_mgpu_exec(int gpu_cnt, struct xe_svm_gpu_info *gpus,
+ 		for_each_gpu_pair(gpu_cnt, gpus, eci, gpu_atomic_inc_wrapper, flags);
+ 	if (flags & MULTIGPU_COH_OP)
+ 		for_each_gpu_pair(gpu_cnt, gpus, eci, gpu_coherecy_test_wrapper, flags);
++	if (flags & MULTIGPU_PERF_OP)
++		for_each_gpu_pair(gpu_cnt, gpus, eci, gpu_latency_test_wrapper, flags);
  }
  
  struct section {
-@@ -1169,6 +1360,8 @@ int igt_main()
- 		  MULTIGPU_PREFETCH | MULTIGPU_PERF_OP | MULTIGPU_PERF_REM_COPY },
- 		{ "pagefault-basic", MULTIGPU_PFAULT_OP },
- 		{ "pagefault-prefetch", MULTIGPU_PREFETCH | MULTIGPU_PFAULT_OP },
-+		{ "concurrent-access-basic", MULTIGPU_CONC_ACCESS },
-+		{ "concurrent-access-prefetch", MULTIGPU_PREFETCH | MULTIGPU_CONC_ACCESS },
+@@ -784,6 +1020,12 @@ int igt_main()
+ 		{ "coherency-prefetch", MULTIGPU_PREFETCH | MULTIGPU_COH_OP },
+ 		{ "coherency-fail-prefetch",
+ 		  MULTIGPU_PREFETCH | MULTIGPU_COH_OP | MULTIGPU_COH_FAIL},
++		{ "latency-basic", MULTIGPU_PERF_OP },
++		{ "latency-copy-basic",
++		  MULTIGPU_PERF_OP | MULTIGPU_PERF_REM_COPY },
++		{ "latency-prefetch", MULTIGPU_PREFETCH | MULTIGPU_PERF_OP },
++		{ "latency-copy-prefetch",
++		  MULTIGPU_PREFETCH | MULTIGPU_PERF_OP | MULTIGPU_PERF_REM_COPY },
  		{ NULL },
  	};
  
