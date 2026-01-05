@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1446CC2A062
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Jan 2026 04:00:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C5E1C2A072
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Jan 2026 04:00:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 87BF410E267;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9304810E289;
 	Mon,  5 Jan 2026 04:00:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f1tCoErt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aBJxCoP9";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC44E10E1FF
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E5ACB10E232
  for <igt-dev@lists.freedesktop.org>; Mon,  5 Jan 2026 04:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1767585602; x=1799121602;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=XDjA1cylAiD+p4vWkHLcoc0vNSLVjGoTaP8Gj/P9gB0=;
- b=f1tCoErt7F0M5yhl1FFMkXQrUQrps5T320jnxPCZ9tcaOG/co/2HIzBv
- h1pb8DDA+gE4ozccY0x1fkLT6HV3PfFItX1CXqm7COfiG534Out3foKzc
- p68R/0corniTPJVZcQF0WR1/y1wtFeZc2y8MdUfYEMZZ1/DF8J0LHscSz
- ex0jAmr12C86B/6lWEsjXnHPRRTbF8bMNWy9DQxhXKoiE720G1jBrhQd+
- Twg5muLT3zGl7lSxQcPBmV3Tc9bvYnLeKozaMXN8m8Wt/yOkLlLcq5r+B
- pU0/1tcCwOoCnpeUertnrvAYqum6fTWRgnjOpv/QkNZ8IYzbz0oVg088j Q==;
-X-CSE-ConnectionGUID: 6XCHXgi3SlmSJCivUTjBEg==
-X-CSE-MsgGUID: fYV2qKZ5RxKfyJO7AtgKWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11661"; a="69024111"
-X-IronPort-AV: E=Sophos;i="6.21,202,1763452800"; d="scan'208";a="69024111"
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=ZBfkx3WRpO1wbIyjyTh+YeMUsHwklSZwKWrh2D9sSzU=;
+ b=aBJxCoP9fk7mG2Lya8/zYr1YlP3ut1z6+kwsHnTv3PUYFOtpkZxKbkzt
+ yeiEdT/Qq1eMMDZfZFCC/LIJp0yRB79BNmuJ3jpdm05Ut5VoEr5OCLX8J
+ MMTNwc5HQ9nWP37PG1D4KHcIPvEj/2gJVNSowL+blwUd2NWCz3ZnfkEaQ
+ aJFhfjFYBQMjJLIajdgrgiuAPgInys2pOmMQV6fkjI8sGHnHxW3Y3NsIg
+ wSpeZtZsZoECOBIa24XMZIK2ttcgYcVSGX6ii/sg0WcMUSVNpLk/6kHbg
+ sInTytdY9PRcs0FdkMMuK3eUFOwwsYg3c5I9tlu/d09L6J9NhuGEMTmyr Q==;
+X-CSE-ConnectionGUID: WDF17qCCQDSQnqBgyX+sPQ==
+X-CSE-MsgGUID: C4GkQ4ETT/i6pWTc4sDRlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11661"; a="69024112"
+X-IronPort-AV: E=Sophos;i="6.21,202,1763452800"; d="scan'208";a="69024112"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  04 Jan 2026 20:00:01 -0800
-X-CSE-ConnectionGUID: sddzoy15Ri6Mod9al8LmtQ==
-X-CSE-MsgGUID: rEtELahQS/KWPuWDGLa59g==
+X-CSE-ConnectionGUID: fJDKy06KTUGDGN8yCiFqHA==
+X-CSE-MsgGUID: Rwmfnxp0Rwq9wfwuedj6tA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,202,1763452800"; d="scan'208";a="202335500"
+X-IronPort-AV: E=Sophos;i="6.21,202,1763452800"; d="scan'208";a="202335503"
 Received: from dut7069bmgfrd.fm.intel.com (HELO DUT7069BMGFRD..) ([10.1.84.79])
  by orviesa008.jf.intel.com with ESMTP; 04 Jan 2026 20:00:01 -0800
 From: nishit.sharma@intel.com
 To: igt-dev@lists.freedesktop.org,
 	pravalika.gurram@intel.com
-Subject: [PATCH i-g-t v13 00/11] Madvise feature in SVM for Multi-GPU configs
-Date: Mon,  5 Jan 2026 03:59:49 +0000
-Message-ID: <20260105040000.181183-1-nishit.sharma@intel.com>
+Subject: [PATCH i-g-t v13 01/11] drm-uapi/xe: Sync with madvise interface
+Date: Mon,  5 Jan 2026 03:59:50 +0000
+Message-ID: <20260105040000.181183-2-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20260105040000.181183-1-nishit.sharma@intel.com>
+References: <20260105040000.181183-1-nishit.sharma@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,78 +69,76 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Nishit Sharma <nishit.sharma@intel.com>
 
-This patch series adds comprehensive SVM multi-GPU IGT test coverage for
-madvise and prefetch functionality.
+Align with kernel commit dff547e137be2 ("drm/xe/uapi: Extend the madvise
+functionality"). This is to bring in madvise interface changes from KMD.
 
-ver2:
-- Test name changed in commits
-- In patchwork v1 patch is missing due to last patch was not sent
+Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+---
+ include/drm-uapi/xe_drm.h | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
-ver3:
-- In patch-7 tags were added and it was not sent on patchwork
-
-ver4:
-- In patch file was added which is not available in source which caused
-  CI build failure.
-
-ver5:
-- Added subtest function wrappers
-- Subtests executing for all GPUs enumerated
-
-ver7:
-- Optimized function calling which are frequenctly called
-- Incorporated review comments (Thomas Hellstrom)
-
-ver8:
-- Incorporated review comments (Thomas Hellstrom)
-- Seperated madvise and lr_sync patches
-- merged added 0 as instance parameter in xe_vm_madvise() call in
-  xe_exec_system_allocator with xe_vm_madvise lib changes
-- Subtests declared in const struct section[] and optimized
-- All subtests executed with and without prefetch
-
-ver9:
-- Incorporated review comments (Pravalika, Thomas)
-- Optimized code. Multiple same function called put in single function
-- Added READ_ONCE/WRITE_once instead dereferecing.
-
-ver10:
-- Incorporated review comments (Thomas)
-
-ver11:
-- Incorporated review comments (Thomas)
-- For conflict madvise case instead assertion added conditon
-
-ver12:
-- Incorporated review comments (Thomas)
-
-ver13:
-- Created seprate commit for drm/xe/uapi aligned with KMD
-
-Nishit Sharma (11):
-  drm-uapi/xe: Sync with madvise interface
-  lib/xe: Add instance parameter to xe_vm_madvise
-  lib/xe: Add synchronous helpers for VM bind/unbind operations
-  tests/intel/xe_multigpu_svm: Add SVM multi-GPU xGPU memory access test
-  tests/intel/xe_multigpu_svm: Add SVM multi-GPU atomic operations
-  tests/intel/xe_multigpu_svm: Add SVM multi-GPU coherency test
-  tests/intel/xe_multigpu_svm: Add SVM multi-GPU performance test
-  tests/intel/xe_multigpu_svm: Add SVM multi-GPU fault handling test
-  tests/intel/xe_multigpu_svm: Add SVM multi-GPU simultaneous access
-    test
-  tests/intel/xe_multigpu_svm: Add SVM multi-GPU conflicting madvise
-    test
-  tests/intel/xe_multigpu_svm: Add SVM multi-GPU migration test
-
- include/drm-uapi/xe_drm.h              |   26 +-
- lib/xe/xe_ioctl.c                      |   52 +-
- lib/xe/xe_ioctl.h                      |    9 +-
- tests/intel/xe_exec_system_allocator.c |    8 +-
- tests/intel/xe_multigpu_svm.c          | 1550 ++++++++++++++++++++++++
- tests/meson.build                      |    3 +-
- 6 files changed, 1630 insertions(+), 18 deletions(-)
- create mode 100644 tests/intel/xe_multigpu_svm.c
-
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index f8b228350..bb69f9b30 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -3,8 +3,8 @@
+  * Copyright © 2023 Intel Corporation
+  */
+ 
+-#ifndef _XE_DRM_H_
+-#define _XE_DRM_H_
++#ifndef _UAPI_XE_DRM_H_
++#define _UAPI_XE_DRM_H_
+ 
+ #include "drm.h"
+ 
+@@ -142,7 +142,7 @@ extern "C" {
+  * redefine the interface more easily than an ever growing struct of
+  * increasing complexity, and for large parts of that interface to be
+  * entirely optional. The downside is more pointer chasing; chasing across
+- * the boundary with pointers encapsulated inside u64.
++ * the __user boundary with pointers encapsulated inside u64.
+  *
+  * Example chaining:
+  *
+@@ -2123,7 +2123,13 @@ struct drm_xe_madvise {
+ 		struct {
+ #define DRM_XE_PREFERRED_LOC_DEFAULT_DEVICE	0
+ #define DRM_XE_PREFERRED_LOC_DEFAULT_SYSTEM	-1
+-			/** @preferred_mem_loc.devmem_fd: fd for preferred loc */
++			/**
++			 * @preferred_mem_loc.devmem_fd:
++			 * Device file-descriptor of the device where the
++			 * preferred memory is located, or one of the
++			 * above special values. Please also see
++			 * @preferred_mem_loc.region_instance below.
++			 */
+ 			__u32 devmem_fd;
+ 
+ #define DRM_XE_MIGRATE_ALL_PAGES		0
+@@ -2131,8 +2137,14 @@ struct drm_xe_madvise {
+ 			/** @preferred_mem_loc.migration_policy: Page migration policy */
+ 			__u16 migration_policy;
+ 
+-			/** @preferred_mem_loc.pad : MBZ */
+-			__u16 pad;
++			/**
++			 * @preferred_mem_loc.region_instance : Region instance.
++			 * MBZ if @devmem_fd <= &DRM_XE_PREFERRED_LOC_DEFAULT_DEVICE.
++			 * Otherwise should point to the desired device
++			 * VRAM instance of the device indicated by
++			 * @preferred_mem_loc.devmem_fd.
++			 */
++			__u16 region_instance;
+ 
+ 			/** @preferred_mem_loc.reserved : Reserved */
+ 			__u64 reserved;
+@@ -2353,4 +2365,4 @@ struct drm_xe_exec_queue_set_property {
+ }
+ #endif
+ 
+-#endif /* _XE_DRM_H_ */
++#endif /* _UAPI_XE_DRM_H_ */
 -- 
 2.48.1
 
