@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28961C79F9D
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Jan 2026 14:20:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 327AAC79F9D
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Jan 2026 14:34:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D2D5F10E402;
-	Mon,  5 Jan 2026 14:20:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D242B10E3FE;
+	Mon,  5 Jan 2026 14:34:21 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0EF1110E3F9;
- Mon,  5 Jan 2026 14:20:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B9AD410E3FE;
+ Mon,  5 Jan 2026 14:34:19 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============5196710752222175238=="
+ boundary="===============7524461980018952261=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_intel-ci=3A_Update_LNL/BM?=
- =?utf-8?q?G_display_blocklist_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_intel-ci=3A_Update_LNL/PTL_?=
+ =?utf-8?q?display_blocklist?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "B, Jeevan" <jeevan.b@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 05 Jan 2026 14:20:50 -0000
-Message-ID: <176762285005.126412.15826542780396988417@a3b018990fe9>
+Date: Mon, 05 Jan 2026 14:34:19 -0000
+Message-ID: <176762365975.126411.7769991403777419588@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260105082048.27590-1-jeevan.b@intel.com>
-In-Reply-To: <20260105082048.27590-1-jeevan.b@intel.com>
+References: <20260105084103.27898-1-jeevan.b@intel.com>
+In-Reply-To: <20260105084103.27898-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5196710752222175238==
+--===============7524461980018952261==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: intel-ci: Update LNL/BMG display blocklist (rev3)
-URL   : https://patchwork.freedesktop.org/series/159623/
+Series: intel-ci: Update LNL/PTL display blocklist
+URL   : https://patchwork.freedesktop.org/series/159632/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8683 -> IGTPW_14283
+CI Bug Log - changes from XEIGT_8683_BAT -> XEIGTPW_14284_BAT
 ====================================================
 
 Summary
@@ -64,61 +64,50 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14283/index.html
+  
 
-Participating hosts (44 -> 42)
+Participating hosts (11 -> 11)
 ------------------------------
 
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
+  No changes in participating hosts
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_14283 that come from known issues:
+  Here are the changes found in XEIGTPW_14284_BAT that come from known issues:
 
 ### IGT changes ###
 
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8683/bat-mtlp-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14283/bat-mtlp-8/igt@i915_selftest@live.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-tgl-1115g4:      [PASS][3] -> [FAIL][4] ([i915#14867])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8683/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14283/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-
-  
 #### Possible fixes ####
 
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-9:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8683/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14283/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+  * igt@kms_force_connector_basic@force-edid:
+    - bat-ptl-1:          [SKIP][1] -> [PASS][2] +3 other tests pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8683/bat-ptl-1/igt@kms_force_connector_basic@force-edid.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14284/bat-ptl-1/igt@kms_force_connector_basic@force-edid.html
+
+  * igt@xe_waitfence@reltime:
+    - bat-dg2-oem2:       [FAIL][3] ([Intel XE#6520]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8683/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14284/bat-dg2-oem2/igt@xe_waitfence@reltime.html
 
   
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#14867]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14867
+  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8683 -> IGTPW_14283
+  * IGT: IGT_8683 -> IGTPW_14284
 
-  CI-20190529: 20190529
-  CI_DRM_17766: f5136cded03e959ebb00a1160e5f00973c38007e @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14283: 14283
+  IGTPW_14284: 14284
   IGT_8683: 8683
+  xe-4329-f5136cded03e959ebb00a1160e5f00973c38007e: f5136cded03e959ebb00a1160e5f00973c38007e
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14283/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14284/index.html
 
---===============5196710752222175238==
+--===============7524461980018952261==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -138,58 +127,48 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>intel-ci: Update LNL/BMG display blocklist (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159623/">https://patchwork.freedesktop.org/series/159623/</a></td></tr>
+<tr><td><b>Series:</b></td><td>intel-ci: Update LNL/PTL display blocklist</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159632/">https://patchwork.freedesktop.org/series/159632/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14283/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14283/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14284/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14284/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_8683 -&gt; IGTPW_14283</h1>
+    <h1>CI Bug Log - changes from XEIGT_8683_BAT -&gt; XEIGTPW_14284_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14283/index.html</p>
-<h2>Participating hosts (44 -&gt; 42)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14283 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_14284_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8683/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14283/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8683/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14283/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14867">i915#14867</a>)</li>
-</ul>
-</li>
-</ul>
 <h4>Possible fixes</h4>
 <ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8683/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14283/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>
+<p>igt@kms_force_connector_basic@force-edid:</p>
+<ul>
+<li>bat-ptl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8683/bat-ptl-1/igt@kms_force_connector_basic@force-edid.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14284/bat-ptl-1/igt@kms_force_connector_basic@force-edid.html">PASS</a> +3 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_waitfence@reltime:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8683/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14284/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a></li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8683 -&gt; IGTPW_14283</li>
+<li>IGT: IGT_8683 -&gt; IGTPW_14284</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17766: f5136cded03e959ebb00a1160e5f00973c38007e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14283: 14283<br />
-  IGT_8683: 8683</p>
+<p>IGTPW_14284: 14284<br />
+  IGT_8683: 8683<br />
+  xe-4329-f5136cded03e959ebb00a1160e5f00973c38007e: f5136cded03e959ebb00a1160e5f00973c38007e</p>
 
 </body>
 </html>
 
---===============5196710752222175238==--
+--===============7524461980018952261==--
