@@ -4,55 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57606CE9D7D
-	for <igt-dev@archiver.kernel.org>; Tue,  6 Jan 2026 16:53:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DF78CE9D7B
+	for <igt-dev@archiver.kernel.org>; Tue,  6 Jan 2026 16:53:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 091CD10E524;
-	Tue,  6 Jan 2026 16:53:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1065D10E522;
+	Tue,  6 Jan 2026 16:53:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VzXmSNJq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WE7OG3lK";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9136810E524
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Jan 2026 16:53:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A9F810E525
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Jan 2026 16:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767718430; x=1799254430;
+ t=1767718432; x=1799254432;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=KtMP00FfjhCYX7BVs9K/SsLrVj5UmTYoppIlG4Ak58c=;
- b=VzXmSNJqRSsiCtICVImhfkGjFSki7UuZLXvgV2yOD814JCa0V4ZcacEk
- xokS02iNsq0dmMOUEwRshzehkfUPKmwXD98wCcdx+WamryqXfB5Zk6KNT
- PMivRt/nJU8xmoEh0yQfCExIiqVM1LVqHPQexCZZyhThAMSiimV2ct4A/
- 7hraFYDslRmZnUiUNI5ThdG5zoyCRrI6Y7QAivsDj0bJjBaXFMAldaSO2
- ttNJEP6RV699IGlS+fXNA6R4l9fMtYLoHgon7BYUefPPydvaDI23cxgf5
- zXarUdSVZz7XLXfJzvw+I/e2up4kbFXPUM87X0ZEnJ1rgrZ7CUqy0Txk4 w==;
-X-CSE-ConnectionGUID: XwJEujdJQxydDxTKZTN99Q==
-X-CSE-MsgGUID: OhiM31hHTWm2k8LJmIITjg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="68097971"
-X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; d="scan'208";a="68097971"
+ bh=GrY7rsA6kHV5horZjaWf7McDo19pg1u7F9qFENdrnwk=;
+ b=WE7OG3lKWRu+M9SQVOvacegd6KocUrGRQC1avBMgpVZqnL10F+keD9ft
+ T2DzxQcAU+ATk89aeQQ0wXxeRQUvzCW7csDxwClZ9Z+iqkaBqsM3VetVd
+ VDEGWxGnjtDUAdGwwPRehhprdDvfdo5/T2glqbM/tzS50GlEFJgShYlbn
+ eCUVo9GdJnBTR1t77WA0u+hHMqxAytgKMx0vC2nISOmlVuoadC5SPKSnd
+ QmyqV9QETDgQoCdX1QPIv2UB/RwDATad065s3YvP/Pv9langL0VfCxVct
+ dYHCOW/cdMVtOOpx6kjz3yMVrkB11uJQBcdk2FJgk74Z1BAeHDf8/NmxL A==;
+X-CSE-ConnectionGUID: RC6uZVrNTSy37d/jAbZ17w==
+X-CSE-MsgGUID: 0u3tqcHBRnavjARBSc/NCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="68097979"
+X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; d="scan'208";a="68097979"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jan 2026 08:53:50 -0800
-X-CSE-ConnectionGUID: su8SmArzS+2Ye34ZNerbzg==
-X-CSE-MsgGUID: YCBpLK2hTSqJSToDyWvR3w==
+ 06 Jan 2026 08:53:52 -0800
+X-CSE-ConnectionGUID: WRBx6KGVTfOnkBqG3LHeDQ==
+X-CSE-MsgGUID: rxzHiP9CTQuVe3QXG4mnLw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; d="scan'208";a="202460108"
+X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; d="scan'208";a="202460116"
 Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jan 2026 08:53:47 -0800
+ 06 Jan 2026 08:53:50 -0800
 From: Soham Purkait <soham.purkait@intel.com>
 To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
  badal.nilawar@intel.com, kamil.konieczny@intel.com
 Cc: anshuman.gupta@intel.com, soham.purkait@intel.com,
  umesh.nerlige.ramappa@intel.com
-Subject: [PATCH i-g-t v4 2/3] lib/xe/xe_spin: Export xe_spin_sync_wait
-Date: Tue,  6 Jan 2026 22:18:00 +0530
-Message-Id: <20260106164801.46353-3-soham.purkait@intel.com>
+Subject: [PATCH i-g-t v4 3/3] tests/intel/xe_pmu: Refine engine activity
+ accuracy test
+Date: Tue,  6 Jan 2026 22:18:01 +0530
+Message-Id: <20260106164801.46353-4-soham.purkait@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260106164801.46353-1-soham.purkait@intel.com>
 References: <20260106164801.46353-1-soham.purkait@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,61 +71,104 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Make function xe_spin_sync_wait() public
-Which waits for the spin batch associated with the
-given igt_spin object to complete by waiting
-on its syncobj after spin end is executed.
+Creating a new spinner during each pass was introducing unnecessary
+overhead, which could distort timing-sensitive measurements
+and increase error rates. The cumulative cost of repeated spinner
+initialization was impacting test accuracy and efficiency.
+
+To address this, a single spinner instance is now reused and properly
+ended and reset between iterations. This approach reduces the overhead
+associated with repeated spinner creation, saving time across multiple
+passes by eliminating the cumulative time spent on spinner
+initialization (creation time × number of passes). As the spinner's active
+duration more accurately reflects actual engine busyness, this leads to
+more precise measurements of the percentage of engine busyness in terms
+of spinner running time.
+
+With this change, the engine-activity-accuracy test results clearly show
+an improvement in error reduction ranging from 98.97% to 99.53%.
 
 v1:
- - Add simple commit message. (Kamil)
+ - Add how this patch improves the engine activity accuracy test. (Lucas)
+ - Show the numbers with the said improvement. (Lucas)
+
 v2:
- - Add fd description for xe_spin_sync_wait. (Kamil)
- - Add improved documentation for xe_spin_sync_wait. (Kamil)
+ - Add an overview of the issue. (Riana)
+ - Add the links in Closes. (Riana)
+ - Add improvement in percentage. (Kamil)
 
+v3:
+ - Add spin_sync_wait() with excess time adjusted
+   accordingly. (Riana)
+
+Fixes: 477154cbad2c ("tests/intel/xe_pmu: Add tests to validate engine activity accuracy")
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6251
 Signed-off-by: Soham Purkait <soham.purkait@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/xe/xe_spin.c | 14 +++++++++++++-
- lib/xe/xe_spin.h |  1 +
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ tests/intel/xe_pmu.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index ad55293f5..4dc110c22 100644
---- a/lib/xe/xe_spin.c
-+++ b/lib/xe/xe_spin.c
-@@ -351,7 +351,19 @@ xe_spin_create(int fd, const struct igt_spin_factory *opt)
- 	return spin;
+diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
+index c8b3cebf0..33852270a 100644
+--- a/tests/intel/xe_pmu.c
++++ b/tests/intel/xe_pmu.c
+@@ -534,6 +534,10 @@ static void accuracy(int fd, struct drm_xe_engine_class_instance *eci,
+ 		intel_allocator_init();
+ 		ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
+ 
++		spin = igt_spin_new(fd, .ahnd = ahnd, .vm = vm, .hwe = eci);
++		xe_spin_end(spin->xe_spin);
++		xe_spin_sync_wait(fd, spin);
++
+ 		for (int pass = 0; pass < ARRAY_SIZE(timeout); pass++) {
+ 			unsigned int target_idle_us = idle_us;
+ 			struct timespec start = { };
+@@ -546,21 +550,25 @@ static void accuracy(int fd, struct drm_xe_engine_class_instance *eci,
+ 
+ 			while (pass_ns < timeout[pass]) {
+ 				unsigned long loop_ns, loop_active_ns, loop_idle_ns, now;
++				unsigned long after_sync;
+ 				double err, prev_avg, cur_val;
+ 
+ 				/* idle sleep */
+ 				igt_measured_usleep(target_idle_us);
+ 
+ 				/* start spinner */
+-				spin = igt_spin_new(fd, .ahnd = ahnd, .vm = vm, .hwe = eci);
++				xe_spin_reset(fd, spin);
+ 				loop_idle_ns = igt_nsec_elapsed(&start);
+ 				igt_measured_usleep(active_us);
+-				igt_spin_free(fd, spin);
++				xe_spin_end(spin->xe_spin);
+ 
+ 				now = igt_nsec_elapsed(&start);
++				xe_spin_sync_wait(fd, spin);
++				after_sync = igt_nsec_elapsed(&start);
++
+ 				loop_active_ns = now - loop_idle_ns;
+ 				loop_ns = now - pass_ns;
+-				pass_ns = now;
++				pass_ns = after_sync;
+ 
+ 				pass_active_ns += loop_active_ns;
+ 				total_active_ns += loop_active_ns;
+@@ -590,6 +598,7 @@ static void accuracy(int fd, struct drm_xe_engine_class_instance *eci,
+ 				      sizeof(expected));
+ 		}
+ 
++		igt_spin_free(fd, spin);
+ 		xe_vm_destroy(fd, vm);
+ 		put_ahnd(ahnd);
+ 	}
+@@ -622,7 +631,7 @@ static void accuracy(int fd, struct drm_xe_engine_class_instance *eci,
+ 	igt_info("error=%.2f%% (%.2f%% vs %.2f%%)\n",
+ 		 (engine_activity - expected) * 100, 100 * engine_activity, 100 * expected);
+ 
+-	assert_within(100.0 * engine_activity, 100.0 * expected, 3);
++	assert_within(100.0 * engine_activity, 100.0 * expected, 2);
  }
  
--static void xe_spin_sync_wait(int fd, struct igt_spin *spin)
-+/**
-+ * xe_spin_sync_wait - Wait for a GPU spin workload to complete
-+ * @fd: File descriptor for the DRM device
-+ * @spin: Pointer to an igt_spin structure representing the spin workload
-+ *
-+ * This function blocks until the GPU spin operation associated with the
-+ * given `igt_spin` object has finished, ensuring that the function does
-+ * not return until the workload completes.
-+ * If the wait fails, `igt_assert()` will trigger an assertion failure.
-+ *
-+ * This function does not return a value. It aborts on failure.
-+ */
-+void xe_spin_sync_wait(int fd, struct igt_spin *spin)
- {
- 	igt_assert(syncobj_wait(fd, &spin->syncobj, 1, INT64_MAX, 0, NULL));
- }
-diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
-index 5dfe05cb5..31154997b 100644
---- a/lib/xe/xe_spin.h
-+++ b/lib/xe/xe_spin.h
-@@ -81,6 +81,7 @@ void xe_spin_reset(int fd, igt_spin_t *spin);
- bool xe_spin_started(struct xe_spin *spin);
- void xe_spin_wait_started(struct xe_spin *spin);
- void xe_spin_end(struct xe_spin *spin);
-+void xe_spin_sync_wait(int fd, struct igt_spin *spin);
- void xe_spin_preempt_wait(struct xe_spin *spin);
- void xe_spin_preempt_nowait(struct xe_spin *spin);
- 
+ static void engine_activity_all_fn(int fd, struct drm_xe_engine_class_instance *eci, int num_fns)
 -- 
 2.34.1
 
