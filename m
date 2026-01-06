@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73207CE9D7B
-	for <igt-dev@archiver.kernel.org>; Tue,  6 Jan 2026 16:53:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3207FCE9D7F
+	for <igt-dev@archiver.kernel.org>; Tue,  6 Jan 2026 16:53:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F3E9D10E522;
-	Tue,  6 Jan 2026 16:53:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D53D810E523;
+	Tue,  6 Jan 2026 16:53:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aBUMqISM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IEp1isa9";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C556110E522
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Jan 2026 16:53:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8062A10E523
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Jan 2026 16:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767718425; x=1799254425;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=v76kOb71ZcWVCg3mGbv28Gek/N6BTamLb5a7ez5387w=;
- b=aBUMqISM4LOohCx21QBdkcHhNMdNzLMgue76Z274z5s8EfO9VJX+8kNz
- EaTXe8eVladJosmp2YKfJoCi4OvsEji7qYeOrmbE0JkI1nLfGOSoCR0cl
- ztNZZgXtAuoN7FjWk2HoTTEeScvXKQSc5O82V1IuYGyn8pf2lc0JyfWTF
- Tp9OLLlmwqFPGLypD8A93pqpGLPVSGjH3lLmupnhOWYShczD8XKW0SDmG
- pfrW7BrYB7zTeyc5tmEkBp/Ih1prPD8MWBkbsl5oJtP4Wz/q2weLpm9Mx
- eIjTZ9GY8Hm2SH9opMVZYmSkj90ee+YHt5TgCyQfUaCpD5vJIfuco1VQB g==;
-X-CSE-ConnectionGUID: F8HjrU2lQK+z4veXr+SFQQ==
-X-CSE-MsgGUID: NuJlTt6+Sw2tw8okSmR/zg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="68097960"
-X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; d="scan'208";a="68097960"
+ t=1767718428; x=1799254428;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=1scAW+gQB5NqJoxOJh3mxp5wXMUk0vXCpLonEPxlowU=;
+ b=IEp1isa9/9/w57o8bbPIpIDvIysGAPPpZ5xl6FpDuWqOFez7CAjF0GKi
+ AKQfPLjssjq4Su31ivXN9oiP8RqfOxDTiAYBQ4NgKFwT5uy2utZPSW42d
+ JniCWUrm0eSFheo6qtcNN8M4kRg0CYoJhOFUeuKnWdSaCKvjSFxpHGits
+ Hjdm1IowzmXiNwz8WEo9Desyw94ubOk0xJEI/CikRP32rl63LAIr4hZes
+ nPyUjsk2VrgCgxfChpUAc3vsX7YlMIfGy+9E8u59VMeuntKY+7try7GIr
+ lw80ePIpsOY4QW3UVYq3jP9h9+p1Nmga/mKUQo3l1je5tNL9/tSvT9XEl g==;
+X-CSE-ConnectionGUID: Q9+KJg5XSeWcd/b4P5K42w==
+X-CSE-MsgGUID: UY+csRVKT0+YmKWYlcYjqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="68097969"
+X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; d="scan'208";a="68097969"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jan 2026 08:53:45 -0800
-X-CSE-ConnectionGUID: /7cOo3PsTDuBOXNxVc4ewg==
-X-CSE-MsgGUID: 5qBA1iFxQFqG01RTGjYSOg==
+ 06 Jan 2026 08:53:47 -0800
+X-CSE-ConnectionGUID: F7U01UjtQhusluW3GEJ9QA==
+X-CSE-MsgGUID: /7q4Mr6SQFmK4lliIOAQyQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; d="scan'208";a="202460036"
+X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; d="scan'208";a="202460105"
 Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jan 2026 08:53:42 -0800
+ 06 Jan 2026 08:53:44 -0800
 From: Soham Purkait <soham.purkait@intel.com>
 To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
  badal.nilawar@intel.com, kamil.konieczny@intel.com
 Cc: anshuman.gupta@intel.com, soham.purkait@intel.com,
  umesh.nerlige.ramappa@intel.com
-Subject: [PATCH i-g-t v4 0/3] Improve engine activity accuracy test with
- spinner reuse
-Date: Tue,  6 Jan 2026 22:17:58 +0530
-Message-Id: <20260106164801.46353-1-soham.purkait@intel.com>
+Subject: [PATCH i-g-t v4 1/3] lib/xe/xe_spin: Introduce xe_spin_reset
+Date: Tue,  6 Jan 2026 22:17:59 +0530
+Message-Id: <20260106164801.46353-2-soham.purkait@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260106164801.46353-1-soham.purkait@intel.com>
+References: <20260106164801.46353-1-soham.purkait@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,78 +69,75 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-      Instead of creating a new spinner during each pass, it's more efficient
-to instantiate the spinner once and reuse it by properly ending and resetting
-it between iterations.
-    This approach reduces the overhead associated with repeated spinner creation,
-saving time across multiple passes. By eliminating the cumulative time spent
-on spinner initialization (i.e., creation time * number of passes),
-the spinner's active duration more accurately reflects the actual engine busyness.
-This leads to more precise measurements of the percentage of engine busyness in
-terms of spinner running time.
+Create new function xe_spin_reset()
+This function resets the state of spin, allowing
+its reuse for engine activity accuracy test.
 
-With this change engine-activity-accuracy test result clearly shows the difference:
+v1:
+ - Add simple commit message and mention test where it is going to be
+   used. (kamil)
+v2:
+ - Add fd description for xe_spin_reset. (Kamil)
 
-Before spinner reuse :
+Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ lib/xe/xe_spin.c | 29 +++++++++++++++++++++++++++++
+ lib/xe/xe_spin.h |  1 +
+ 2 files changed, 30 insertions(+)
 
-Starting subtest: engine-activity-accuracy-90
-Starting dynamic subtest: engine-DRM_XE_ENGINE_CLASS_RENDER0
-calibration=500ms, test=1000ms, cycle=100ms; ratio=90.00% (90000us/10000us)
-error=-2.90% (81.03% vs 83.93%)
-Dynamic subtest engine-DRM_XE_ENGINE_CLASS_RENDER0: SUCCESS (1.598s)
-Starting dynamic subtest: engine-DRM_XE_ENGINE_CLASS_COPY0
-calibration=500ms, test=1000ms, cycle=100ms; ratio=90.00% (90000us/10000us)
-error=-2.81% (83.06% vs 85.87%)
-Dynamic subtest engine-DRM_XE_ENGINE_CLASS_COPY0: SUCCESS (1.684s)
-Starting dynamic subtest: engine-DRM_XE_ENGINE_CLASS_COMPUTE0
-calibration=500ms, test=1000ms, cycle=100ms; ratio=90.00% (90000us/10000us)
-error=-2.04% (83.83% vs 85.87%)
-Dynamic subtest engine-DRM_XE_ENGINE_CLASS_COMPUTE0: SUCCESS (1.667s)
-Starting dynamic subtest: engine-DRM_XE_ENGINE_CLASS_VIDEO_DECODE0
-calibration=500ms, test=1000ms, cycle=100ms; ratio=90.00% (90000us/10000us)
-error=-2.15% (83.99% vs 86.14%)
-Dynamic subtest engine-DRM_XE_ENGINE_CLASS_VIDEO_DECODE0: SUCCESS (1.647s)
-Starting dynamic subtest: engine-DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE0
-calibration=500ms, test=1000ms, cycle=100ms; ratio=90.00% (90000us/10000us)
-error=-2.00% (83.59% vs 85.60%)
-Dynamic subtest engine-DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE0: SUCCESS (1.664s)
-Subtest engine-activity-accuracy-90: SUCCESS (8.264s)
-
-After spinner reuse:
-
-Starting subtest: engine-activity-accuracy-90
-Starting dynamic subtest: engine-DRM_XE_ENGINE_CLASS_RENDER0
-calibration=500ms, test=1000ms, cycle=100ms; ratio=90.00% (90000us/10000us)
-error=0.03% (89.45% vs 89.42%)
-Dynamic subtest engine-DRM_XE_ENGINE_CLASS_RENDER0: SUCCESS (1.560s)
-Starting dynamic subtest: engine-DRM_XE_ENGINE_CLASS_COPY0
-calibration=500ms, test=1000ms, cycle=100ms; ratio=90.00% (90000us/10000us)
-error=0.02% (89.56% vs 89.54%)
-Dynamic subtest engine-DRM_XE_ENGINE_CLASS_COPY0: SUCCESS (1.559s)
-Starting dynamic subtest: engine-DRM_XE_ENGINE_CLASS_COMPUTE0
-calibration=500ms, test=1000ms, cycle=100ms; ratio=90.00% (90000us/10000us)
-error=0.02% (89.42% vs 89.40%)
-Dynamic subtest engine-DRM_XE_ENGINE_CLASS_COMPUTE0: SUCCESS (1.571s)
-Starting dynamic subtest: engine-DRM_XE_ENGINE_CLASS_VIDEO_DECODE0
-calibration=500ms, test=1000ms, cycle=100ms; ratio=90.00% (90000us/10000us)
-error=0.01% (89.28% vs 89.27%)
-Dynamic subtest engine-DRM_XE_ENGINE_CLASS_VIDEO_DECODE0: SUCCESS (1.581s)
-Starting dynamic subtest: engine-DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE0
-calibration=500ms, test=1000ms, cycle=100ms; ratio=90.00% (90000us/10000us)
-error=0.01% (89.37% vs 89.36%)
-Dynamic subtest engine-DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE0: SUCCESS (1.583s)
-Subtest engine-activity-accuracy-90: SUCCESS (7.859s)
-
-Soham Purkait (3):
-  lib/xe/xe_spin: Introduce xe_spin_reset
-  lib/xe/xe_spin: Export xe_spin_sync_wait
-  tests/intel/xe_pmu: Refine engine activity accuracy test
-
- lib/xe/xe_spin.c     | 43 ++++++++++++++++++++++++++++++++++++++++++-
- lib/xe/xe_spin.h     |  2 ++
- tests/intel/xe_pmu.c | 17 +++++++++++++----
- 3 files changed, 57 insertions(+), 5 deletions(-)
-
+diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+index ff19128b6..ad55293f5 100644
+--- a/lib/xe/xe_spin.c
++++ b/lib/xe/xe_spin.c
+@@ -205,6 +205,35 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+ 	igt_assert(b <= ARRAY_SIZE(spin->batch));
+ }
+ 
++/**
++ * xe_spin_reset:
++ * @fd: xe device file descriptor
++ * @spin: spin state from xe_spin_new()
++ *
++ * Reset the state of spin, allowing its reuse.
++ */
++void xe_spin_reset(int fd, igt_spin_t *spin)
++{
++	struct drm_xe_sync sync = {
++		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.handle = spin->syncobj,
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++		.exec_queue_id = spin->engine,
++		.address = spin->address,
++	};
++
++	xe_spin_init_opts((struct xe_spin *)spin->xe_spin,
++			  .addr = spin->address,
++			  .preempt = !(spin->opts.flags & IGT_SPIN_NO_PREEMPTION));
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec), 0);
++	xe_spin_wait_started((struct xe_spin *)spin->xe_spin);
++}
++
+ /**
+  * xe_spin_started:
+  * @spin: pointer to spinner mapped bo
+diff --git a/lib/xe/xe_spin.h b/lib/xe/xe_spin.h
+index 5c7566423..5dfe05cb5 100644
+--- a/lib/xe/xe_spin.h
++++ b/lib/xe/xe_spin.h
+@@ -77,6 +77,7 @@ uint32_t xe_spin_nsec_to_ticks(int fd, int gt_id, uint64_t nsec);
+ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts);
+ #define xe_spin_init_opts(fd, ...) \
+ 	xe_spin_init(fd, &((struct xe_spin_opts){__VA_ARGS__}))
++void xe_spin_reset(int fd, igt_spin_t *spin);
+ bool xe_spin_started(struct xe_spin *spin);
+ void xe_spin_wait_started(struct xe_spin *spin);
+ void xe_spin_end(struct xe_spin *spin);
 -- 
 2.34.1
 
