@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 193C8CD585F
-	for <igt-dev@archiver.kernel.org>; Wed,  7 Jan 2026 11:49:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE465CFD621
+	for <igt-dev@archiver.kernel.org>; Wed,  7 Jan 2026 12:26:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A427310E09B;
-	Wed,  7 Jan 2026 11:49:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 40EBE10E5A4;
+	Wed,  7 Jan 2026 12:26:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RQnxUXad";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MfJE5rnV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DFA810E09B;
- Wed,  7 Jan 2026 11:49:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A16510E5A1;
+ Wed,  7 Jan 2026 12:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767786585; x=1799322585;
+ t=1767788804; x=1799324804;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=c9dAtQW+NwcoBXMSI3sjPP5VJocRS9bLUFFrxG4570o=;
- b=RQnxUXadsEVTmb7S5F8YBtcOYEwvUePaWU9U+S5y7yAkhBfvedxqf5Th
- v1nDJPza9oVr26SnGsHXR2BxRM86gu+fuwM7lot2hB1x2Vt7KPDK0SmSk
- B7GM5zmGy1Yv2mo/RYOLZEDiA3ynMPNhAlINxFUdNQuZMnGR3ExtAOoQA
- 1/+DG0zMfbfhXKjNncxd1s5hLvN/qtU7wiPx4Q5oO9/r4Jywicig/FXaV
- dl/DVP9LaRu4EBeSIo3Mmj5No+c2vZoW1l28/lgJLSD1PWngTSdcza3Gl
- wNNCvGayFvAWualPkzJX/uMKbSTyrtBFfGDLD3FDNR09HP/76cIIZhW3U g==;
-X-CSE-ConnectionGUID: hIGQiis0QRypHQVsYsOddQ==
-X-CSE-MsgGUID: WzynDgUnTReyLgAoovYllQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="69204410"
-X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; d="scan'208";a="69204410"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2026 03:49:44 -0800
-X-CSE-ConnectionGUID: 1yx4wpkYT++uxIdphJFvAg==
-X-CSE-MsgGUID: KJxYPDRJRhSgVAJsqRLT9w==
+ bh=8EmLPceCL4w7w3/zyXpDecKjo9S4Jq/4g20J/0v0TmU=;
+ b=MfJE5rnVgi0Qg7oZAFBW4Vw1kA8/x6BsC5ssWOgUjk7FMNdgAefndSqw
+ S4Y7HeIQ6muKxObsv0eNwGQhXtZ1rCtkQoUdvZQhfrvx75Ma2dISQ7mJI
+ V6bILEHP+OLe70ArHdq4SlSAgLj8hiG+RD3YbFawE8JK5GIvel8XPtzOS
+ /aiACUTiK10OVyao2R//Efa9x24ej0VsWNnSjOshbgw3Cc54Q4CsCRCrb
+ 8pSe3cZpvFAuBce9UgFPsqgX6pck78pvzEcNzd4pNpt/YlKMp+/WDIQqQ
+ e3vfUqF2cAX+J65ZkH6/4LEC7Y7inhjmUNEH+hPQ3QCS6Wfh/Ve8JIoBP w==;
+X-CSE-ConnectionGUID: TCmvt0HiS8OhgEKT0bC0Ew==
+X-CSE-MsgGUID: u+THEJM0Tumc/fR+F2sQcA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="69231521"
+X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; d="scan'208";a="69231521"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jan 2026 04:26:43 -0800
+X-CSE-ConnectionGUID: 6rybUvc6QLqFpf9YFPT7lA==
+X-CSE-MsgGUID: 5TR7/CppQuyYdhVDkjdOvg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; d="scan'208";a="202922441"
+X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; d="scan'208";a="202121474"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 03:49:42 -0800
-Date: Wed, 7 Jan 2026 12:49:38 +0100
+ by orviesa010-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 04:26:42 -0800
+Date: Wed, 7 Jan 2026 13:26:39 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Janne Grunau <j@jannau.net>
 Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, 
  dri-devel@lists.freedesktop.org, asahi@lists.linux.dev,
  Alyssa Rosenzweig <alyssa@rosenzweig.io>, Neal Gompa <neal@gompa.dev>
-Subject: Re: [PATCH i-g-t 2/3] asahi: Add test infrastruture for asahi DRM
- render driver
-Message-ID: <20260107114938.cevehcqjypsdnozh@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH i-g-t 3/3] tests/asahi: Add test for
+ DRM_IOCTL_ASAHI_GET_TIME
+Message-ID: <20260107122639.ewxbql4n5qu3z6su@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Janne Grunau <j@jannau.net>,
  Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
@@ -57,11 +57,11 @@ Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Alyssa Rosenzweig <alyssa@rosenzweig.io>,
  Neal Gompa <neal@gompa.dev>
 References: <20260105-asahi-tests-wave1-v1-0-a6c72617e680@jannau.net>
- <20260105-asahi-tests-wave1-v1-2-a6c72617e680@jannau.net>
+ <20260105-asahi-tests-wave1-v1-3-a6c72617e680@jannau.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260105-asahi-tests-wave1-v1-2-a6c72617e680@jannau.net>
+In-Reply-To: <20260105-asahi-tests-wave1-v1-3-a6c72617e680@jannau.net>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,206 +78,83 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Janne,
-On 2026-01-05 at 22:03:46 +0100, Janne Grunau wrote:
-> Asahi is DRM render-only driver for Apple AGX GPUs found in Apple
-> silicon SoCs starting with the Apple M1 family.
-> Add a define for the driver, build system support and a helper function
-> for DRM_IOCTL_ASAHI_GET_PARAMS. To ensure everything works add an
-> initial test for DRM_IOCTL_ASAHI_GET_PARAMS.
-> Further tests are expected to require some of the queried parameters.
+On 2026-01-05 at 22:03:47 +0100, Janne Grunau wrote:
+> Test that the call succeeds, to subsequent calls do not produce the same
+> timestamps and invalid flag values are rejected.
 > 
 
-+cc Alyssa and Jean
++cc Alyssa and Neal
 
 > Signed-off-by: Janne Grunau <j@jannau.net>
 > ---
->  lib/drmtest.c                  |  1 +
->  lib/drmtest.h                  |  1 +
->  lib/igt_asahi.c                | 44 +++++++++++++++++++++++++++++++++
->  lib/igt_asahi.h                | 12 +++++++++
->  lib/meson.build                |  1 +
->  meson.build                    |  8 ++++++
->  tests/asahi/asahi_get_params.c | 55 ++++++++++++++++++++++++++++++++++++++++++
->  tests/asahi/meson.build        | 13 ++++++++++
->  tests/meson.build              |  2 ++
->  9 files changed, 137 insertions(+)
+>  lib/igt_asahi.c              | 14 ++++++++++
+>  lib/igt_asahi.h              |  3 +++
+>  tests/asahi/asahi_get_time.c | 63 ++++++++++++++++++++++++++++++++++++++++++++
+>  tests/asahi/meson.build      |  1 +
+>  4 files changed, 81 insertions(+)
 > 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index 4a788ea7a59cfd2878d0586b1d7ed9ad0de14a14..dc3fe330bf57693fa4f157cf9076e995e64639cb 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -222,6 +222,7 @@ static const struct module {
->  	void (*modprobe)(const char *name);
->  } modules[] = {
->  	{ DRIVER_AMDGPU, "amdgpu" },
-> +	{ DRIVER_ASAHI, "asahi" },
->  	{ DRIVER_INTEL, "i915", modprobe_i915 },
->  	{ DRIVER_MSM, "msm" },
->  	{ DRIVER_PANFROST, "panfrost" },
-> diff --git a/lib/drmtest.h b/lib/drmtest.h
-> index 37874d729bb89577f61875728bd0d6d2a6458756..74cff27ffd3deba4b7664b4f37fbd59143e04f3e 100644
-> --- a/lib/drmtest.h
-> +++ b/lib/drmtest.h
-> @@ -58,6 +58,7 @@ int __get_drm_device_name(int fd, char *name, int name_size);
->  #define DRIVER_VKMS	(1 << 9)
->  #define DRIVER_VIRTIO	(1 << 10)
->  #define DRIVER_PANTHOR	(1 << 11)
-> +#define DRIVER_ASAHI	(1 << 12)
->  
->  /*
->   * Exclude DRIVER_VGEM and DRIVER_VIRTIO from DRIVER_ANY since if you run
 > diff --git a/lib/igt_asahi.c b/lib/igt_asahi.c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..90d2c190f0dd05e372af0eefaed22d2b2a26eb71
-> --- /dev/null
+> index 90d2c190f0dd05e372af0eefaed22d2b2a26eb71..17ac60749a3a5b03722403386f8b16cc0caeff3c 100644
+> --- a/lib/igt_asahi.c
 > +++ b/lib/igt_asahi.c
-> @@ -0,0 +1,44 @@
-> +// SPDX-License-Identifier: MIT
-> +// SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
-> +// SPDX-FileCopyrightText: Copyright (C) 2025 Asahi Linux contributors
-> +/*
-> + * Based on igt_panthor.c
-> + */
-> +
-> +#include "drmtest.h"
-> +#include "igt_asahi.h"
-> +#include "ioctl_wrappers.h"
-> +#include "asahi_drm.h"
-
-This should be before drmtest.h, keep it alphabetical.
-
-> +
-> +#include <stdint.h>
-
-System headers should be first ones, so before asahi_drm.h
-
+> @@ -42,3 +42,17 @@ void igt_asahi_get_params(int fd, uint32_t param_group, void *params, size_t siz
+>  	else
+>  		do_ioctl(fd, DRM_IOCTL_ASAHI_GET_PARAMS, &get_params);
+>  }
 > +
 > +/**
-> + * SECTION:igt_asahi
-> + * @short_description: asahi support library
-> + * @title: Asahi
-> + * @include: igt.h
-> + *
-> + * This Library provides auxiliary helper functions for writing asahi tests.
-> + */
-> +
-> +/**
-> + * igt_asahi_get_params:
+> + * igt_asahi_get_time:
 > + * @fd: device file descriptor
-> + * @param_group: which params to query parameters for
-> + * @params: pointer to the struct to store the parameters in
-> + * @size: size of the params buffer
+> + * @get_time: pointer to drm_asahi_get_time struct
 > + * @err: expected error code, 0 for success
 > + */
-> +void igt_asahi_get_params(int fd, uint32_t param_group, void *params, size_t size, int err)
+> +void igt_asahi_get_time(int fd, struct drm_asahi_get_time *get_time, int err)
 > +{
-> +	struct drm_asahi_get_params get_params = {
-> +		.param_group = param_group,
-> +		.pointer = (uintptr_t)params,
-> +		.size = size,
-> +	};
-> +
 > +	if (err)
-> +		do_ioctl_err(fd, DRM_IOCTL_ASAHI_GET_PARAMS, &get_params, err);
+> +		do_ioctl_err(fd, DRM_IOCTL_ASAHI_GET_TIME, get_time, err);
 > +	else
-> +		do_ioctl(fd, DRM_IOCTL_ASAHI_GET_PARAMS, &get_params);
+> +		do_ioctl(fd, DRM_IOCTL_ASAHI_GET_TIME, get_time);
 > +}
 > diff --git a/lib/igt_asahi.h b/lib/igt_asahi.h
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..f0ac3fbf428a8050957eab0e9b259f68b5ecd0cd
-> --- /dev/null
+> index f0ac3fbf428a8050957eab0e9b259f68b5ecd0cd..a15acc5a08092fae0b3a569c527087082e6fc05c 100644
+> --- a/lib/igt_asahi.h
 > +++ b/lib/igt_asahi.h
-> @@ -0,0 +1,12 @@
-> +// SPDX-License-Identifier: MIT
-
-Here it should be C-style comment:
-
-/* SPDX-License-Identifier: MIT */
-
-> +// SPDX-FileCopyrightText: Copyright (C) 2025 Asahi Linux contributors
-
-Same here, look into lib for pathor lib/igt_panthor.h
-Note that it differs from lib/igt_panthor.c
-
-> +
-> +#ifndef ASAHI_IOCTL_H
-
-Same here, look into panthor lib header, it should be:
-
-#ifndef IGT_ASAHI_H
-
-> +#define ASAHI_IOCTL_H
-> +
-> +#include <stddef.h>
-> +#include <stdint.h>
-> +
-> +void igt_asahi_get_params(int fd, uint32_t param_group, void *data, size_t size, int err);
-> +
-> +#endif /* ASAHI_IOCTL_H */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index d0487fb3ca79faa40640579ce78efd434eb38f86..73e07ea677ebbffa9722de7c28b6c94bc2a53ee0 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -105,6 +105,7 @@ lib_sources = [
->  	'uwildmat/uwildmat.c',
->  	'igt_kmod.c',
->  	'igt_ktap.c',
-> +	'igt_asahi.c',
->  	'igt_panfrost.c',
->  	'igt_panthor.c',
->  	'igt_v3d.c',
-> diff --git a/meson.build b/meson.build
-> index 4b2496c01679852c05c575ab4589192b15da149c..1b16a60281e6202b99affbf43d1ab4e098ea6860 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -286,6 +286,7 @@ includedir = get_option('includedir')
->  libdir = get_option('libdir')
->  libexecdir = join_paths(get_option('libexecdir'), 'igt-gpu-tools')
->  amdgpudir = join_paths(libexecdir, 'amdgpu')
-> +asahidir = join_paths(libexecdir, 'asahi')
->  msmdir = join_paths(libexecdir, 'msm')
->  panfrostdir = join_paths(libexecdir, 'panfrost')
->  panthordir = join_paths(libexecdir, 'panthor')
-> @@ -330,6 +331,12 @@ if get_option('use_rpath')
->  	endforeach
->  	amdgpudir_rpathdir = join_paths(amdgpudir_rpathdir, libdir)
+> @@ -7,6 +7,9 @@
+>  #include <stddef.h>
+>  #include <stdint.h>
 >  
-> +	asahi_rpathdir = '$ORIGIN'
-> +	foreach p : asahidir.split('/')
-> +		asahi_rpathdir = join_paths(asahi_rpathdir, '..')
-> +	endforeach
-> +	asahi_rpathdir = join_paths(asahi_rpathdir, libdir)
+> +#include "asahi_drm.h"
 > +
->  	msm_rpathdir = '$ORIGIN'
->  	foreach p : msmdir.split('/')
->  		msm_rpathdir = join_paths(msm_rpathdir, '..')
-> @@ -375,6 +382,7 @@ else
->  	bindir_rpathdir = ''
->  	libexecdir_rpathdir = ''
->  	amdgpudir_rpathdir = ''
-> +	asahi_rpathdir = ''
->  	msm_rpathdir = ''
->  	panfrost_rpathdir = ''
->  	panthor_rpathdir = ''
-> diff --git a/tests/asahi/asahi_get_params.c b/tests/asahi/asahi_get_params.c
+
+imho this should be in previous patch.
+
+>  void igt_asahi_get_params(int fd, uint32_t param_group, void *data, size_t size, int err);
+> +void igt_asahi_get_time(int fd, struct drm_asahi_get_time *get_time, int err);
+>  
+>  #endif /* ASAHI_IOCTL_H */
+> diff --git a/tests/asahi/asahi_get_time.c b/tests/asahi/asahi_get_time.c
 > new file mode 100644
-> index 0000000000000000000000000000000000000000..43482a00418f854cba2417f8f8eb5c6a04e19385
+> index 0000000000000000000000000000000000000000..91c865d0f8c65b410771b491758a81b4d4a96044
 > --- /dev/null
-> +++ b/tests/asahi/asahi_get_params.c
-> @@ -0,0 +1,55 @@
+> +++ b/tests/asahi/asahi_get_time.c
+> @@ -0,0 +1,63 @@
 > +// SPDX-License-Identifier: MIT
 > +// SPDX-FileCopyrightText: Copyright (C) Asahi Linux contributors
 > +
 > +#include "igt.h"
 > +#include "igt_core.h"
 > +#include "igt_asahi.h"
+
+It should be before igt_core.h
+
 > +#include "asahi_drm.h"
 
-Same here, should be before igt.h
+Now it is redundant, you have it in igt_asahi.h
 
 > +#include <stdint.h>
 
-Same here, should be first include, before asahi.h
+Should be first include but it is also redundant as it
+is in igt_asahi.h
 
 > +
 > +int igt_main()
@@ -288,60 +165,75 @@ Same here, should be first include, before asahi.h
 > +		fd = drm_open_driver_render(DRIVER_ASAHI);
 > +	}
 > +
-> +	igt_describe("Query global GPU parameters from device.");
-> +	igt_subtest("get-params") {
-> +		struct drm_asahi_params_global globals = {};
+> +	igt_describe("Query GPU device time.");
+> +	igt_subtest("get-time") {
+> +		struct drm_asahi_get_time time = {};
 > +
-> +		igt_asahi_get_params(fd, 0, &globals, sizeof(globals), 0);
+> +		igt_asahi_get_time(fd, &time, 0);
+> +		// Nothing to assert on, the timestamp could have any value
 
-Could you print all params here, before asserts below?
+Use C-style comments:
+		/* Nothing to assert on, the timestamp could have any value */
+So why not just printing it with igt_info()
 
-> +
-> +		// Supported GPU generations start with G13G
-
-Use C-style comments, here and in all places below:
-
-		/* Supported GPU generations start with G13G */
-
-> +		igt_assert(globals.gpu_generation >= 13);
-> +		// chip id is expected to be non zero
-> +		igt_assert(globals.chip_id != 0);
-> +		// VM should contain some space
-> +		igt_assert(globals.vm_end > globals.vm_start);
-> +		// the driver is expected to request some space for the
-> +		// kernel in a VM
-> +		igt_assert(globals.vm_kernel_min_size > 0);
-> +		// the frequency of the clock used to generate timestamps
-> +		igt_assert(globals.command_timestamp_frequency_hz > 0);
 > +	}
 > +
-> +	igt_describe("Query global GPU parameters for invalid param_groups.");
-> +	igt_subtest_group() {
-> +		struct drm_asahi_params_global globals = {};
+> +	igt_describe("Query GPU device time twice and compare timestamps.");
+> +	igt_subtest("get-time-compare") {
+> +		struct drm_asahi_get_time time1 = {};
+> +		struct drm_asahi_get_time time2 = {};
 > +
-> +		igt_subtest("get-params-1") {
+> +		igt_asahi_get_time(fd, &time1, 0);
+> +
+> +		// sleep for 100 micro seconds to ensure
 
-Better name would be invalid-param-1
+Same here, C-style /* comment... */
 
-> +			igt_asahi_get_params(fd, 1, &globals, sizeof(globals), EINVAL);
+> +		usleep(100);
+> +
+> +		igt_asahi_get_time(fd, &time2, 0);
+> +
+> +		// assert that the timestamps are different
+
+Same here.
+
+> +		igt_assert(time1.gpu_timestamp != time2.gpu_timestamp);
+
+You could also use igt_assert_noteq so you will get also actual
+value printed in case they are the same.
+
+> +	}
+> +
+> +	igt_describe("Query GPU device time with invalid flags values.");
+> +	igt_subtest_group() {
+> +		struct drm_asahi_get_time time = {};
+> +
+> +		igt_subtest("get-time-flags-1") {
+
+imho better name invalid-time-flags-1
+
+> +			time.flags = 1;
+> +			igt_asahi_get_time(fd, &time, EINVAL);
 > +		}
-> +		igt_subtest("get-params-2") {
+> +		igt_subtest("get-time-flags-2") {
 
-invalid-param-2
+invalid-time-flags-2
 
-> +			igt_asahi_get_params(fd, 2, &globals, sizeof(globals), EINVAL);
+> +			time.flags = 2;
+> +			igt_asahi_get_time(fd, &time, EINVAL);
 > +		}
-> +		igt_subtest("get-params-uint32-max") {
+> +		igt_subtest("get-time-flags-uint64-max") {
 
-invalid-param-uint32-max
+invalid-time-flags-max
 
-Above are minor fixes to do so after you will fix them
-imho you could add Alyssa and Neal r-b.
+All above are minors so after fix imho you could add r-b
+from Alyssa and Neal.
 
 Regards,
 Kamil
 
-> +			igt_asahi_get_params(fd, UINT32_MAX, &globals, sizeof(globals), EINVAL);
+> +			time.flags = UINT64_MAX;
+> +			igt_asahi_get_time(fd, &time, EINVAL);
 > +		}
 > +	}
 > +
@@ -350,37 +242,16 @@ Kamil
 > +	}
 > +}
 > diff --git a/tests/asahi/meson.build b/tests/asahi/meson.build
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..909e146295e83f558ef7378f814ded55adaafe2b
-> --- /dev/null
+> index 909e146295e83f558ef7378f814ded55adaafe2b..2997017924f72443a7b5ad907c52a9976f464810 100644
+> --- a/tests/asahi/meson.build
 > +++ b/tests/asahi/meson.build
-> @@ -0,0 +1,13 @@
-> +asahi_progs = [
-> +	'asahi_get_params',
-> +]
-> +
-> +foreach prog : asahi_progs
-> +	test_executables += executable(prog,
-> +				       prog + '.c',
-> +				       dependencies : test_deps,
-> +				       install_dir : asahidir,
-> +				       install_rpath : asahi_rpathdir,
-> +				       install : true)
-> +	test_list += join_paths('asahi', prog)
-> +endforeach
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 169340d7d0937020f04b1720d5570619ce0d3591..ba69c56e7f872cb0050f6508d91318e000be6e97 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -491,6 +491,8 @@ endif
+> @@ -1,5 +1,6 @@
+>  asahi_progs = [
+>  	'asahi_get_params',
+> +	'asahi_get_time',
+>  ]
 >  
->  subdir('amdgpu')
->  
-> +subdir('asahi')
-> +
->  subdir('msm')
->  
->  subdir('panfrost')
+>  foreach prog : asahi_progs
 > 
 > -- 
 > 2.52.0
