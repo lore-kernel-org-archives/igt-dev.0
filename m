@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F08CD0D16C
-	for <igt-dev@archiver.kernel.org>; Wed,  7 Jan 2026 19:43:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DB38D0D16D
+	for <igt-dev@archiver.kernel.org>; Wed,  7 Jan 2026 19:59:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5409810E5E4;
-	Wed,  7 Jan 2026 19:43:51 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gab3DfBg";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C2C410E5E4
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Jan 2026 19:43:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1767815030; x=1799351030;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=vHDLckTbxVOWAxJNZ9vgVigDM+6h2s4V9V++LYHsjhg=;
- b=gab3DfBgIdIrrmg1gUEaaGF9zeJZPrOBrC2KJdIA+nUwucSQTJxbJnZi
- 4LhukDDrVQ26t40C9Idv8mLeFbnmzXToEOUgwJhU8A0/IHiGl7PrKTy2p
- xvo5PJwj8oY5i498wRZ0HuMf+AqD7guj2unUvmrZGk+9XNAerNqVL5X0P
- rIwdvgZc7cSdpims5gA7nBZUW1n9NcECNvNU9zk0alZOpEuNSoVMCu7ct
- ms6egbYAgd7jCQDu332lfDqv9SYfYQGQ5cu5rQgF7WNPJBznBoMf8EkJA
- H07fczG93NpMNO8hl7lTk/cZ4FrFWcujaGWwzGLai6X9b06+owfV7f5a0 Q==;
-X-CSE-ConnectionGUID: HN3FsVptT2GOYpagxzKVBw==
-X-CSE-MsgGUID: zah/9sOcRxSrUoOu6ejj2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="69091806"
-X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; d="scan'208";a="69091806"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2026 11:43:49 -0800
-X-CSE-ConnectionGUID: r88Q0Nu8T+iSIxxLvtvjgQ==
-X-CSE-MsgGUID: eAOU/Dz9Qr2lQ4nbNtn6Kg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; d="scan'208";a="203457757"
-Received: from osgc-sh-dragon.sh.intel.com ([10.239.81.44])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jan 2026 11:43:49 -0800
-From: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
-To: 
-Cc: igt-dev@lists.freedesktop.org, jonathan.cavitt@intel.com,
- matthew.d.roper@intel.com, Jagmeet Randhawa <jagmeet.randhawa@intel.com>
-Subject: [i-g-t] tests/intel/xe_ccs: split block-multicopy into 3 submissions
-Date: Thu,  8 Jan 2026 03:43:29 +0800
-Message-ID: <e2bd6e36919fb6d43e182f17eac21195d1d31e4e.1767814525.git.jagmeet.randhawa@intel.com>
-X-Mailer: git-send-email 2.52.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4CD1610E1EB;
+	Wed,  7 Jan 2026 19:59:36 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D52A10E1EB;
+ Wed,  7 Jan 2026 19:59:35 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1306713622335673588=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Close_any_open_drm_device_a?=
+ =?utf-8?q?fter_engine_initialization_in_GPUTOP_=28rev5=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Soham Purkait" <soham.purkait@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 07 Jan 2026 19:59:35 -0000
+Message-ID: <176781597531.134482.8784543319773172608@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260107183739.84597-1-soham.purkait@intel.com>
+In-Reply-To: <20260107183739.84597-1-soham.purkait@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,70 +37,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Split the block multicopy test into separate batch buffer
-submissions. Submitting multiple block copies within a
-single submission can  result in incorrect ordering between
-stages. Run each copy as it's own submission then wait for
-completion between stages to ensure proper sequencing
-to prevent the read-after-write hazards.
+--===============1306713622335673588==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
----
- tests/intel/xe_ccs.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-index a21922ee5..33dde0c1f 100644
---- a/tests/intel/xe_ccs.c
-+++ b/tests/intel/xe_ccs.c
-@@ -281,8 +281,6 @@ static int blt_block_copy3(int xe,
- 	struct blt_copy_data blt0;
- 	struct blt_block_copy_data_ext ext0;
- 	uint64_t bb_offset, alignment;
--	uint64_t bb_pos = 0;
--	int ret;
- 
- 	igt_assert_f(ahnd, "block-copy3 supports softpin only\n");
- 	igt_assert_f(blt3, "block-copy3 requires data to do blit\n");
-@@ -303,7 +301,9 @@ static int blt_block_copy3(int xe,
- 	blt0.print_bb = blt3->print_bb;
- 	ext0.src = ext3->src;
- 	ext0.dst = ext3->mid;
--	bb_pos = emit_blt_block_copy(xe, ahnd, &blt0, &ext0, bb_pos, false);
-+	emit_blt_block_copy(xe, ahnd, &blt0, &ext0, 0, true);
-+	intel_ctx_xe_exec(ctx, ahnd, bb_offset);
-+	intel_ctx_xe_sync((intel_ctx_t *)ctx, true);
- 
- 	/* Second blit mid -> dst */
- 	blt_copy_init(xe, &blt0);
-@@ -314,7 +314,9 @@ static int blt_block_copy3(int xe,
- 	blt0.print_bb = blt3->print_bb;
- 	ext0.src = ext3->mid;
- 	ext0.dst = ext3->dst;
--	bb_pos = emit_blt_block_copy(xe, ahnd, &blt0, &ext0, bb_pos, false);
-+	emit_blt_block_copy(xe, ahnd, &blt0, &ext0, 0, true);
-+	intel_ctx_xe_exec(ctx, ahnd, bb_offset);
-+	intel_ctx_xe_sync((intel_ctx_t *)ctx, true);
- 
- 	/* Third blit dst -> final */
- 	blt_copy_init(xe, &blt0);
-@@ -325,11 +327,11 @@ static int blt_block_copy3(int xe,
- 	blt0.print_bb = blt3->print_bb;
- 	ext0.src = ext3->dst;
- 	ext0.dst = ext3->final;
--	bb_pos = emit_blt_block_copy(xe, ahnd, &blt0, &ext0, bb_pos, true);
-+	emit_blt_block_copy(xe, ahnd, &blt0, &ext0, 0, true);
- 
- 	intel_ctx_xe_exec(ctx, ahnd, bb_offset);
- 
--	return ret;
-+	return 0;
- }
- 
- #define CHECK_MIN_WIDTH 2
--- 
-2.52.0
+Series: Close any open drm device after engine initialization in GPUTOP (rev5)
+URL   : https://patchwork.freedesktop.org/series/158161/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8692_BAT -> XEIGTPW_14309_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14309_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_waitfence@abstime:
+    - bat-dg2-oem2:       [PASS][1] -> [TIMEOUT][2] ([Intel XE#6506])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8692/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14309/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_waitfence@reltime:
+    - bat-dg2-oem2:       [FAIL][3] ([Intel XE#6520]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8692/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14309/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+
+  
+  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
+  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8692 -> IGTPW_14309
+  * Linux: xe-4339-77ca0c5f244b2796408d20cf3c0741094304e09f -> xe-4341-89981c4f9f7c7e10f4eddb40ca0588743b6af19d
+
+  IGTPW_14309: 14309
+  IGT_8692: 8692
+  xe-4339-77ca0c5f244b2796408d20cf3c0741094304e09f: 77ca0c5f244b2796408d20cf3c0741094304e09f
+  xe-4341-89981c4f9f7c7e10f4eddb40ca0588743b6af19d: 89981c4f9f7c7e10f4eddb40ca0588743b6af19d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14309/index.html
+
+--===============1306713622335673588==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Close any open drm device after engine initialization in GPUTOP (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/158161/">https://patchwork.freedesktop.org/series/158161/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14309/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14309/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8692_BAT -&gt; XEIGTPW_14309_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14309_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_waitfence@abstime:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8692/bat-dg2-oem2/igt@xe_waitfence@abstime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14309/bat-dg2-oem2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_waitfence@reltime:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8692/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14309/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8692 -&gt; IGTPW_14309</li>
+<li>Linux: xe-4339-77ca0c5f244b2796408d20cf3c0741094304e09f -&gt; xe-4341-89981c4f9f7c7e10f4eddb40ca0588743b6af19d</li>
+</ul>
+<p>IGTPW_14309: 14309<br />
+  IGT_8692: 8692<br />
+  xe-4339-77ca0c5f244b2796408d20cf3c0741094304e09f: 77ca0c5f244b2796408d20cf3c0741094304e09f<br />
+  xe-4341-89981c4f9f7c7e10f4eddb40ca0588743b6af19d: 89981c4f9f7c7e10f4eddb40ca0588743b6af19d</p>
+
+</body>
+</html>
+
+--===============1306713622335673588==--
