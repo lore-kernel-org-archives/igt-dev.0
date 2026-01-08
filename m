@@ -4,127 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61C37D148AE
-	for <igt-dev@archiver.kernel.org>; Thu,  8 Jan 2026 06:35:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B81CD148AF
+	for <igt-dev@archiver.kernel.org>; Thu,  8 Jan 2026 06:57:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E4A2610E696;
-	Thu,  8 Jan 2026 06:35:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AEF7E10E20F;
+	Thu,  8 Jan 2026 06:57:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="mLGPvebY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fEWAYN/6";
 	dkim-atps=neutral
-Received: from CY3PR05CU001.outbound.protection.outlook.com
- (mail-westcentralusazon11013053.outbound.protection.outlook.com
- [40.93.201.53])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE40C10E696
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Jan 2026 06:35:09 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD70710E20F
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Jan 2026 06:57:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1767855449; x=1799391449;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=Ih8Pa+AVqta6ox22zXDwe0GKosQJJ4rBoLSM9oHERDE=;
+ b=fEWAYN/6+7Rh3HcZtWyKo8+3WZY4IGmHPECWfXzR0TjXCVK0aJg6fnd3
+ Kz5Xm7XTbQyCPoHTU9HgEj3/zgkhl9P4iIVeTSfp4/pZjPyhzVR/wjjbF
+ fuHgQbevsx7uG3SMRweV3p39nimcKpPnkEmlAwPyTj/JabKQ67OtJUZd9
+ mR2Qn46WQ3GCiei/SB93v0uoJUi0KsMHnk7wXUgkfF0ICfIJ77BlzNEe6
+ KWPaYzIMAH5zPH/QsKfrli/+zYmJNLwd1kVC9LXEAnKmOjLN85sib/k4g
+ QTEzI336tbBJmkx4oRzEdelREi16fub+1aYEQfNkHO7mdx8HacsDviED7 Q==;
+X-CSE-ConnectionGUID: irL6ulTjSuKY1oDPJr06cw==
+X-CSE-MsgGUID: 6AtW10wOTdC8eq5d+5ZQLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="69389296"
+X-IronPort-AV: E=Sophos;i="6.21,210,1763452800"; d="scan'208";a="69389296"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jan 2026 22:57:29 -0800
+X-CSE-ConnectionGUID: CSrm8AYYT5+a0afZ4uI1kg==
+X-CSE-MsgGUID: voYvHTbmSt+3ocC7UAWZeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,210,1763452800"; d="scan'208";a="207660634"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jan 2026 22:57:29 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 7 Jan 2026 22:57:29 -0800
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Wed, 7 Jan 2026 22:57:29 -0800
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.21) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 7 Jan 2026 22:57:28 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QqV+QKohVZ7kku3HiNRzRLrhSaIeF8S1ndeCtJFzc6Bts+v4pZR5LP5KpQ6hwZ8/uV2MV6ss3aMcND5CHcF+b3f+0AxUTwAEIXrBoCPToMJV3jEIFjbMBWRqv3MgO/oq8bDOMJJh1TmHG8f73+q1RYof6/mn/M7edeo8xL6CAAPEogO1XkvAHcvksffp4sB7VfTdz2brJh/lk+DXR6uaXlbex9pcKsnLlQL7wuEln9P8NNAFtNZalWD6MO4Zdo3o0CTm54Yua3d5B5TJ29s7awFVBA4iDXiq0cDERaVfbHyQJOLsu4SfUcSgJcamGN978AovfIKP3azW5xcmYL34gw==
+ b=VhDXRtBsC2cFfeL3ozeSkpd7YCqBqqRzb8hPwaZujvOIZhKRE4L6Wq5yWWRc9JyEltvmR548fMBIwxdCia6/YZdA+rbIKQYBj28lUlEoQrQyVTHq7Ot+wXizPDp8sRjqAu33PymUfMRIxO0F38KIKS/99inX94OKqx/nt3nbgcKQP5Ll4lypmoRcdrG2PVB56yQA6jzg8E1Z65WB9n6hDKvgfPpTMlQ0Tt3MBMBnV0gxySQBrh/oCORATk7U4RN2lyKoxv2j6veKAFm65djT/kq9w91Dwsk3538Qmr4XOlcJ6f2OLKkU+Dqy0nnPrChTl2SgV1uDXAA4m+Fnt/k25g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Hh5CavAYh/IzNaVgy3nniR+eQ7IJYMQqr5AYm2YtHKA=;
- b=pgmRZNePYpLz9+WvIQhGgHqeguJbq0r2wIXvlfv4/kjBqkCaIiuNUVQH0NkIUtiPwboO2Wvl+uGst0ei+KhkG6F0w3S5ZdPc7UIzgplPoWoHm2YMuRGF2SrOVhsfFh5gs4xBlqwKu9VKa9ocpU8Vw6i2msDisinVrDw2NrSVI7ayhUWNaNDPSll02zJ2Y0tiIaEJzSK5Kvp0yfYFiGkAMw8NlQ08jiThh9zufmIB8YaQgz+9wDgZCA8J64bxKLrqrXQQXKe/k/jiEn5P6upLtlyR5FmarbCmWVFJyCEBC1yeyilBk1znjdXFepaafzKQKwEZXmRduVnnfM/HsdI4nw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Hh5CavAYh/IzNaVgy3nniR+eQ7IJYMQqr5AYm2YtHKA=;
- b=mLGPvebYT7hMh5Imxf80R4mhM+hoi2w9JKVGpxdqX/eD+jdn3jnj1NLQuevFUHm5xTXH7+Mnqe28YAoPmOfbg3El/4HpLfAA7/sqywfue3RuQGEoDsMVWGbGwqB2xfSqw7sOK4GoHReA1z0q+FH6EfxnCw18jF+YH3sJkEjCC1Y=
-Received: from DS7PR06CA0006.namprd06.prod.outlook.com (2603:10b6:8:2a::7) by
- SA1PR12MB8887.namprd12.prod.outlook.com (2603:10b6:806:386::18) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=oT9Nll+JyM5gzGpmsWZxdXnNsf2wMh/T0TSQTUB63A8=;
+ b=m/N61WKyUUPjOmKRSCHC+a44u7DCxnx3rcSDHLjHPapfHUTgvgbYz7vNjzfvcgO8zAKSezRiEN9mH8FXemntayr/IY1hMCuS0jVce6Z5xFjp4Gp0IC9SynU3GVdZWNC+FjjDm+WgJtuRGJoZw2nRX3iE9IiLsdmENmA3hHhETAaF1dievorv09cTwYIMltUK1/l3S7SH6gbFEst0xK2sLnaX+QckXYUEgGwAwsLRH+AGAF1+mIQyvW/p2yj9shTjDMAnVLDlJRFluDHBYzmC8BkJre0fWYtb0J4ku6EJJX/6+zb2xL98tr1yPgvw8dsP+FTf/kDYrfsPPVRI5cKu0g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA3PR11MB8046.namprd11.prod.outlook.com (2603:10b6:806:2fb::22)
+ by BL4PR11MB8799.namprd11.prod.outlook.com (2603:10b6:208:5aa::8)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Thu, 8 Jan
- 2026 06:35:05 +0000
-Received: from CY4PEPF0000EE3C.namprd03.prod.outlook.com
- (2603:10b6:8:2a:cafe::53) by DS7PR06CA0006.outlook.office365.com
- (2603:10b6:8:2a::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.3 via Frontend Transport; Thu, 8
- Jan 2026 06:35:03 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- CY4PEPF0000EE3C.mail.protection.outlook.com (10.167.242.13) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.1 via Frontend Transport; Thu, 8 Jan 2026 06:35:04 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 8 Jan
- 2026 00:35:04 -0600
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 8 Jan
- 2026 00:35:03 -0600
-Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
- satlexmb07.amd.com (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17
- via Frontend Transport; Wed, 7 Jan 2026 22:34:57 -0800
-From: Jesse.Zhang <Jesse.Zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Jesse.Zhang <Jesse.Zhang@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
-Subject: [PATCH i-g-t v3] lib/amdgpu: implement selective sync skipping for
- error injection tests
-Date: Thu, 8 Jan 2026 14:33:36 +0800
-Message-ID: <20260108063451.4110907-1-Jesse.Zhang@amd.com>
-X-Mailer: git-send-email 2.49.0
-MIME-Version: 1.0
+ 2026 06:57:26 +0000
+Received: from SA3PR11MB8046.namprd11.prod.outlook.com
+ ([fe80::87cd:16d5:8dbe:2286]) by SA3PR11MB8046.namprd11.prod.outlook.com
+ ([fe80::87cd:16d5:8dbe:2286%5]) with mapi id 15.20.9499.002; Thu, 8 Jan 2026
+ 06:57:26 +0000
+Message-ID: <070cc1b5-b4f6-4138-b871-9003f3dab38f@intel.com>
+Date: Wed, 7 Jan 2026 22:57:23 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] tests/xe_pat: add bo-wb-comp-1way-bind PAT test
+To: Matthew Auld <matthew.auld@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20260107052406.21678-1-x.wang@intel.com>
+ <20260107052406.21678-4-x.wang@intel.com>
+ <cacc459b-f946-4f8a-9c7a-4a152dc07284@intel.com>
+Content-Language: en-US
+From: "Wang, X" <x.wang@intel.com>
+In-Reply-To: <cacc459b-f946-4f8a-9c7a-4a152dc07284@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
+X-ClientProxiedBy: BY3PR10CA0006.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::11) To SA3PR11MB8046.namprd11.prod.outlook.com
+ (2603:10b6:806:2fb::22)
+MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3C:EE_|SA1PR12MB8887:EE_
-X-MS-Office365-Filtering-Correlation-Id: a673edc2-5814-4891-cda1-08de4e800f0f
+X-MS-TrafficTypeDiagnostic: SA3PR11MB8046:EE_|BL4PR11MB8799:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11d1537e-7cfe-40d8-f24c-08de4e832e8e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|1800799024|376014|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?H7eIfPQCE1yuVzKr/HjWnJz8eSsRwJGP5zwXqf0XL6OOBevHIGm355VsqCvF?=
- =?us-ascii?Q?ikqY/YKvVATTbO2VuUS4zD1F6/+CkjilRIo7FLdazH7++DNxyZumka4EvAG2?=
- =?us-ascii?Q?qSVEUEaGc9xULp2RpFYgbLfk56xYZhIiIO5r3iiDSCli3JZ2MEtvi5j/iKKf?=
- =?us-ascii?Q?KjLNVjS3cZ0/WVTPXGjXaA8MKfyBc8+gpW/zkp1nnx8925f1Szyvl2NosJfO?=
- =?us-ascii?Q?wYPzJsCIAGt0X5pZFfqWkbdPdb0ZFQ0Ix1sjmg2blAHLn1rhlTH9wg3whUrH?=
- =?us-ascii?Q?uWl2SLLGurd6pRuhzG9UHcqu/TgGD+7RqJlMmZt71gWFjmv6x27YphoPMzYS?=
- =?us-ascii?Q?GHyWoLMb/wUuBTGFR6WEXH42EQPw6GFOBudhC57dYSSn4yIhmhvBBFhZLias?=
- =?us-ascii?Q?JLUDP3GHBfQIXjQ+xxjr2T+43Rh7okaGM+6f9HmgZDGi8zqaOp9hgiFOkIrL?=
- =?us-ascii?Q?b82f8qijktYAfNWDI/o2GiV0RXBep0rMovmFhYG0HFLhsPTu2UjgVSLf0ZMT?=
- =?us-ascii?Q?21CazHD1jyLJJ0Pza6/FkPpctkiR0jOnC8P9ymkBi6PcVYIBLrVNl2bEuP2R?=
- =?us-ascii?Q?hvmBdu+3ze5I49780W/jZKDCArcyRg5BzCdRO/XMSqv/f3IwT0Hk1IctlZ+d?=
- =?us-ascii?Q?i/Fh8zRPFbqQz2jnVT2iY4LTNxQb6itzmkVnecjlNGkvgA08mfsqg0LSAdFv?=
- =?us-ascii?Q?jZAa/oeqni4cvsqvCDmXeb/V4mPWpFgBKVYWfMbzcFwVUyORXbDYml+gqH1y?=
- =?us-ascii?Q?Yn/GPfYPCemSBWfQQ+ap4y4l0BCtNJzoo8cxL/9yD+hCdNqvcGQD7CXIwND6?=
- =?us-ascii?Q?YM6+0560XwINlNo0JYl6fng8icYDCrib14SbxrbLo9YFkhQln5Duuz0bbLXO?=
- =?us-ascii?Q?Ip60JrGkTKYbi8ld2ugqwoDvWr2mOcTzugzp4WawgMrBj6VQwp6ufca3u/IX?=
- =?us-ascii?Q?v6np2FB/a9xTwdhvxem/dlx+pnFrsW8ad/sS5tuW08xygB+pgnAHSwdb5sBm?=
- =?us-ascii?Q?ufxCRUn6JWB+56+0FT5OWABYjsvBeWPjjukzhOILXCbUfLPaLVbcVVSxhuKR?=
- =?us-ascii?Q?ZAG4w/wdI8g+kIb3YqBrDhN6KvVFfU0xwsqc2ueZnYqmgIO5Gu3cG7Xe6ak7?=
- =?us-ascii?Q?NfK4BkKFQHt7Ze3oTKw8+Xgk2BgIz++HinMeyJOnNPKikczE+Uf4OWC/2Ley?=
- =?us-ascii?Q?P03+z3rJumovmpQIHa5lN6JKcvsh3H5amm926ZVLG3nOKrBcbzA3kEH1r6QT?=
- =?us-ascii?Q?+WbsMHcVIv+WYxvfLJzhGLuEmoxb2vQLNnqhihklHXCaalYE/wGwqZqBj2GE?=
- =?us-ascii?Q?zKf/mCXQlQMW9MbxMXSeqcuepVk1JIfbk5/ssNjhlAtHjbGMR7qdIORPFD8O?=
- =?us-ascii?Q?4ICUDDASlPdYiHI9kMoF4RCsVgHGNgCwf1zKjftNP8JA26D3MQUurhSifCNX?=
- =?us-ascii?Q?pD8hvc8aRUSoChszGLUpBAasFct+OwDNtUTzz1G/tEPQjDaASWbwkIzF3X2z?=
- =?us-ascii?Q?1YLMRSXTt1qvioLLQQ9NP1wGxADmL0jfHnARD/NyPFpNbQu4xrJBo+TPmGoW?=
- =?us-ascii?Q?Rt63UoiSJu2YpUj0jaw=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(1800799024)(376014)(36860700013); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 06:35:04.7795 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a673edc2-5814-4891-cda1-08de4e800f0f
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE3C.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8887
+X-Microsoft-Antispam: BCL:0; ARA:13230040|1800799024|376014|366016|42112799006;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?amJlN1VyRFpCeEtnR29zSHhnazJZZTh1UFpkN01yM3RYQmUxV3UrMnNtcmZM?=
+ =?utf-8?B?ZXlGOXkrSitlY2h3djRpTE9uNCt2YmhmN0JqcVg5eXF4eUVRQkNwOG1ZZFhN?=
+ =?utf-8?B?YUwwd2xBMkhXY2FjcDRtc2lkeTAwWlROeDJKMHZ5Rnd2U2tuZ3l2VUw2U3ky?=
+ =?utf-8?B?ZXdFamJFL3pLaVdHUWs2L2VvcCtJdVJzUitycmZocWt3MEdaZ3lFa3AwOUwz?=
+ =?utf-8?B?S1dyWUM2TXBpRzRjN1Z3SXUzQmNFYlFpYU9sS0xFKytVVWkzYnR4dzRKeE53?=
+ =?utf-8?B?SEwvT3lDLzRYdUFqWkdqaFJDOHdyS2JXZFkrN0dibjlFeWo5bDg1YjB6VVNx?=
+ =?utf-8?B?ZEVHb3QxVTZIUENSR0RXeGZ6YUwzc290clprcndtYlNlaHpKSElMYURhWWda?=
+ =?utf-8?B?ZUlOTGU4S2s4cU15cGxVdS9PV1lhREdwWmNjR3QvSjlCdGJKQlZXK3pLL1Zs?=
+ =?utf-8?B?V0Q3djVSQlpkeXFzRkRpeU5Dd01QWVo4TzE1eXkyWFFyYmswSndhN1FTcVpq?=
+ =?utf-8?B?eFB6dnhrVFIyTVdMcmRBTDE2YjlHM2xrLzRwNERCaGJkbWRtNFZnS1plMzJh?=
+ =?utf-8?B?Yjd1SldoQ21mM24zMmhtdW5lNE1tMk14bTRydVZWYnB3UzlocXh2dWpCWVJq?=
+ =?utf-8?B?SVFjWHhEaHRVQmcwZCtiUm9xSDBxL0Fzdnlnb3hJSUpQK3R4dThSS1lIb3Vi?=
+ =?utf-8?B?a0dGc1B2QXNTWnFmOFdqZE9ib3ZSQ1N3ZHZhbitBOEEvZ3RJcGpuZjhBSkIx?=
+ =?utf-8?B?cmZFRjJLVzdtc1lJaWUwQk1wUEE0a1hteGVsV1VnNkRsSnlwRzBySStJZGND?=
+ =?utf-8?B?bi9FYzVnVmVVb2NiZzU0MEtRN2VsdzdKZ21oT1N3MTN5cndWNUs2THBRKzFT?=
+ =?utf-8?B?VzduRE0rVjVuZHp0SXh6ZU9lQjJuVFZoRmJIMUd6Y1ZHbmRvdE4vdG1oWUNI?=
+ =?utf-8?B?WlBza2dlNi9uVlF4SXYrM1Y2VCtvYUljMEt2OWlkdkF3N1d3WU9hMmVPQlhw?=
+ =?utf-8?B?YlArRTVNSENjTzNnVEtWaUFETXBEcTY1RzRlUitOYUNEUGZxZmxmaVpiRUlN?=
+ =?utf-8?B?YjJpMThKVGRiai9KY25WQVNIOWxEVytySmFXZVFiYmorbzJtblB6QnVsandm?=
+ =?utf-8?B?R0l4TlJOVXpML1ltYTBTcExieFhISHMxVXZIY0FjOGtFL0tlTVhXRWtlWVZX?=
+ =?utf-8?B?SlhzS0pSVkRwSitXeHVzZk5FQWh1a25Yd3JkNU1ablN1a1dZR05zOGU0Q1N4?=
+ =?utf-8?B?cTZOV1RsSkkyKzNoNmw3VEhkWkhIemdxeFFqVysvNGdhNW16QWtrTE5VKzBy?=
+ =?utf-8?B?dVN1TjM2THlBNWltZkhpWllMaStWWjQ3U2xOTmpGckozUmgyRTNZczNFdnpP?=
+ =?utf-8?B?eHVhMGVJbWpWSzN5dGppWWlVc3FsaTF2R3JlcG9LcHAvWkRkVEovblg0VE5K?=
+ =?utf-8?B?dS9mTVlpdU9TTEJUR292Z29QcUhnM0k0T2tHQlZyaWxZZlBPdTJDbE4rZHV1?=
+ =?utf-8?B?TEVaQ1FMU0RJdVBHdkdOUGpaVHV3aWxCaFU4K3QxZ0xpbnQ5TExnOWpQakNJ?=
+ =?utf-8?B?N2tVWnVMTmFjanRXbk9KOFBYOUFyOUtaMU9zb1ZYTkZSODd1MzJCTlRyY1Nr?=
+ =?utf-8?B?V3g2SklzTFFWWnMreTdFRHo5cTIwK09zWUZkVjhWY2dOaWdMUlBKaHA0MU9L?=
+ =?utf-8?B?UjVESzc2anhQbGFYNzFXU2lDYVArKzVRK2c5ZGQ3TXdjUmFoVjVJTU9Va0tF?=
+ =?utf-8?B?Z3M0ZHZqMWpKbnV2RUNSNUJ4V3V3dDA3RVBMS3RVTUVVNGZJR3ZrdklhamJC?=
+ =?utf-8?B?bWx5c1J1WVpiVWZUQjB2UVY3MXphNmNsYm51Q3NnekRqd0ZOWEkvOVFSQjc1?=
+ =?utf-8?B?ekdNL2VWQXpBYlJlcWNXS1NPSS9tR2ZXZFAvbnk3U283Sk85blpFZkU5YWlE?=
+ =?utf-8?Q?DMhr2H/igURzORNFJnNEx6SUJ/QSpGIg?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA3PR11MB8046.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(42112799006); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dk5SeUNTejcreFRlNWV6bFV3dkRUY1V1ZElXSVF6V2V0YUh3eHM5QkRUWUkw?=
+ =?utf-8?B?TGhQdnY4UDVBQStlV1lSQW1YemRpN25LN21vcSt5WFVGa0cxRTk5bEtiUUcz?=
+ =?utf-8?B?MCtHcVVBemU3cHFIM1NBd1RBSC8rWUVjb1pwdTJiVFE3NEtOZGVXT3IxOWdQ?=
+ =?utf-8?B?dDdwRUNsKzhrdFQxOEFXQkJ2Sm9JeFYyUUpNb1RONWlnbzQ0WXRKb3ExTXli?=
+ =?utf-8?B?OXNNOW9OSlhDRU5FYnN6NUNDK21EWkNVVFVlNThNcnY0NTFWZkkySWYrYnFt?=
+ =?utf-8?B?WDJod05MREpvMHlydFpMOHM3SzU5STNUelI5b1IxWlNOckYvYVJSSGtiTi9n?=
+ =?utf-8?B?aW5Ta2lPdVRsbjJUTHJWMFBNWXRCR1pwbU9kZU0wV1BZQ2F4dWc3UmlBNUhR?=
+ =?utf-8?B?RWpMY1p3QnVic252djdhMEcvMEF1WlV0eGdQZWE0OGhlNVgvNkxBN1ZHUWFp?=
+ =?utf-8?B?ZGtkQnBhTjErRER1Y3pzQzNRR1dpOUhMQWFZSFNUUUxkVmJTUEMreFlBVU0x?=
+ =?utf-8?B?dUNMZVFDVXF1M0hQYzUvZVI2bVpLeWFCKzhPZFBNbWNzZWdhS0lBY016bWYv?=
+ =?utf-8?B?eVVFa2h5MHJxMGM1R1RodXhyVXJNNUlaUHF6SndPM3VaWGJaV1dYNFJLUTRk?=
+ =?utf-8?B?L3RmQzAvaEozYStUbFBVRXg0UmhYY3NsdFNzNVFhUXhUbzhmVHhhbGNpNElJ?=
+ =?utf-8?B?QmFDdTRxUXdNOG9YTlNOTzZ2OGRSSEd6VVFUNkRMSXBZWHR0Rm9QT2NGdGhI?=
+ =?utf-8?B?RGpTUkYvRlAyektxWHVweGRGMk5qY29sSkgvZXNtVGZKaFljYm1TOFR0UXhD?=
+ =?utf-8?B?ZGNqOTloYUR1eWY5M0tjTmEwRGE5c2JIWUhHckVFVStpWjhJSUNacTd5KzNX?=
+ =?utf-8?B?N0M1MFh3cGhOc0l5SzNLWnVsSlVRTmw3UnE4cXExSUhiaWhZYTRqbjB1a0pi?=
+ =?utf-8?B?dkVCZUt3RE1KRmhyUzFadXRLM3NYOU5HS3JycStuYUN2REdaRFpsMy80NzR6?=
+ =?utf-8?B?UEhyUHUzUXRYbVh4TkE3S214WHlCZ09XMFdyU1BVdWZCbThybHVXbUNCMWxC?=
+ =?utf-8?B?QXZYRWJIalRObkkxY2paWXgwTWZvYkFEalpsSlA5S3o2d0dKOStpQm5kbFRM?=
+ =?utf-8?B?QVhMU1lENG5lbkF6b0cvbnZ1VjdUZnJEdzU1dFdnWUJjYmxCaThuTE5zRjVT?=
+ =?utf-8?B?U0duaW8zdWUrTSs4VkY5N2haV3JmQ1F3ekN2R1pOSzhvM2VTU01oMURqZlVl?=
+ =?utf-8?B?UkJKV09oV00zZnB4WVJKQU9PdmtBM2RPM0d5QUM4MWZTTk5Qem9YeHhDV1k2?=
+ =?utf-8?B?V3BXdlRRb0U4UUdPSzdUa1I3ZHhwb050eVpnYU1mdUxpdlFRanVEeUUzSVhj?=
+ =?utf-8?B?cFpaOENNa3M0QkthcHBkOHVUYytUMGcyNFhhK0k0ME5Zb0dMbXRvM0FyRUo0?=
+ =?utf-8?B?Ly9MRzVlY2llcVdUb3NDU01WQ3hWaUp3KzlXMk9jVmhLSlU4OUdpdHI3M2lX?=
+ =?utf-8?B?YWdINm1nTjg4OERvTlNvaGhqdWNCMTMwS2lqbmpSKzZGcEFxdzFoeEtsMFRF?=
+ =?utf-8?B?bWdxMm0wS1AreFhPeWZJdVZqZW5ialpVb0w5U0NIdmNCMXJHY0JRUzIrcWtX?=
+ =?utf-8?B?a05xbzczbG9CU3BGV2ZOREtqRHdROTJXcUllL0QvUmRQUmRWcWJId1pZSFpl?=
+ =?utf-8?B?NEhKWXY3SGg4Y2JnNXZvSzEzbG5jZEpES3Z0eG5HZHFMRTlrWFhFaTZIMndX?=
+ =?utf-8?B?aGRjL1dKODVXUDZkUUdNUGtONExLNHEvMGRxTERtMzlRbEliR0dYdjVSN3RJ?=
+ =?utf-8?B?VmJpZDc4N1VIUUFsOFc0elNQK1pUeE1FS1F6VlNnamVOU0loemdrdDlERWxT?=
+ =?utf-8?B?dzZrVFRHNkx2NUNOT1RkekFoVVplcmVuUi9Jem4vNVc0c3FJcDlZclU2dEFs?=
+ =?utf-8?B?R25JRy9zTWozVUtyZ0lKc0w1eDNpTkVzbXM5Wk1RMWw1RXc2L2NHNGoxdnVo?=
+ =?utf-8?B?ZmluS2lYMlZmYmcvRnRiTE80N3VZSjZHYkN1dkwvK2R0RWlXMkhBSGpvWi9w?=
+ =?utf-8?B?YU45R3k5bm42bTQ2Q1NoQTRVNzE5b2ZMdWFUL1hmTWxzNm4wT3ZFb0xyNTk3?=
+ =?utf-8?B?aEJaYlUxYWw3M1YwZWUyRWhNNHZiV1ZBSWtkMy9WYnhIYmRYY092NUZjdWtN?=
+ =?utf-8?B?YlNSc295cnFxMXNDeXJNVjdoWDlLMHFrVDNtRkdvNmlhRkZYOGhNTEZsZHJH?=
+ =?utf-8?B?TmlTMGVNQ3ZEdlNBUCtneVZGcHU2TEVsRGFUWFNqbHZLMjFYNnVkWUhTZTN5?=
+ =?utf-8?B?aFhZM3d0TS96SjZxS1ZjK0lrNzA3d2NEVTlNU3BMQzFZUGdqZTFZZz09?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11d1537e-7cfe-40d8-f24c-08de4e832e8e
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR11MB8046.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 06:57:26.3884 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EaeJZzDcI32NjfTcS6SAytjM2UmV7lLYrFsnEVC1XhSVeqPZBzrxBI3z/g4iM8ukkRPmJv7K2uE5cnbBjextgQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR11MB8799
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -140,249 +198,144 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Refactor user queue submission to handle error injection cases where
-GPU commands are intentionally invalid and would cause syncobj waits
-to hang indefinitely.
-
-Key changes:
-1. Introduce `enum uq_submission_mode` with two modes:
-   - UQ_SUBMIT_NORMAL: Full synchronization (default)
-   - UQ_SUBMIT_NO_SYNC: Skip sync for error injection
-
-2. Add helper functions:
-   - `wait_for_packet_consumption()`: Busy-waits with timeout for GPU
-     to process commands without synchronization
-   - `create_sync_signal()`: Extracts signal creation and wait logic
-     for normal submissions
-
-3. Update `user_queue_submit()` to switch between modes:
-   - NO_SYNC mode: Waits for command consumption via rptr/wptr polling
-   - NORMAL mode: Creates sync signal and waits for completion
-
-4. Modify `bad_access_helper()` to use UQ_SUBMIT_NO_SYNC mode for
-   error injection tests, replacing the hardcoded timeout value
-
-Benefits:
-- Prevents permanent hangs when submitting invalid commands in tests
-- Maintains full synchronization for normal operation
-- Provides timeout protection for error injection cases
-- Improves code organization with clear separation of concerns
-- Enables future expansion of submission modes
-
-The fix specifically addresses deadlock test scenarios where invalid
-GPU commands would cause `amdgpu_cs_syncobj_wait()` to block forever,
-preventing proper resource cleanup in `user_queue_destroy()`.
-
-v2: fix build warning
 
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
----
- lib/amdgpu/amd_command_submission.c | 20 ++++++--
- lib/amdgpu/amd_deadlock_helpers.c   |  1 -
- lib/amdgpu/amd_ip_blocks.c          | 72 +++++++++++++++++++++--------
- lib/amdgpu/amd_ip_blocks.h          |  7 +++
- 4 files changed, 76 insertions(+), 24 deletions(-)
-
-diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
-index fc5a0ed32..6129b7104 100644
---- a/lib/amdgpu/amd_command_submission.c
-+++ b/lib/amdgpu/amd_command_submission.c
-@@ -70,6 +70,11 @@ int amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned int ip_type
- 	memcpy(ring_ptr, ring_context->pm4, ring_context->pm4_dw * sizeof(*ring_context->pm4));
- 
- 	if (user_queue) {
-+		if (expect_failure)
-+			ring_context->submit_mode = UQ_SUBMIT_NO_SYNC;
-+		else
-+			ring_context->submit_mode = UQ_SUBMIT_NORMAL;
-+
- 		r = ip_block->funcs->userq_submit(device, ring_context, ip_type, ib_result_mc_address);
- 		if (!expect_failure)
- 			igt_assert_eq(r, 0);
-@@ -180,7 +185,8 @@ static void amdgpu_create_ip_queues(amdgpu_device_handle device,
- 		ring_context[ring_id].pm4_size = pm4_dw;
- 		ring_context[ring_id].res_cnt = 1;
- 		ring_context[ring_id].user_queue = user_queue;
--		ring_context[ring_id].time_out = 0;
-+		if (user_queue)
-+			ring_context[ring_id].time_out = INT64_MAX;
- 		igt_assert(ring_context[ring_id].pm4);
- 
- 		/* Copy the previously queried HW IP info instead of querying again */
-@@ -370,7 +376,8 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
- 	ring_context->pm4_size = pm4_dw;
- 	ring_context->res_cnt = 1;
- 	ring_context->user_queue = user_queue;
--	ring_context->time_out = 0;
-+	if (user_queue)
-+		ring_context->time_out = INT64_MAX;
- 	igt_assert(ring_context->pm4);
- 
- 	r = amdgpu_query_hw_ip_info(device, ip_block->type, 0, &ring_context->hw_ip_info);
-@@ -503,7 +510,8 @@ void amdgpu_command_submission_const_fill_helper(amdgpu_device_handle device,
- 	ring_context->pm4_size = pm4_dw;
- 	ring_context->res_cnt = 1;
- 	ring_context->user_queue = user_queue;
--	ring_context->time_out = 0;
-+	if (user_queue)
-+		ring_context->time_out = INT64_MAX;
- 	igt_assert(ring_context->pm4);
- 	r = amdgpu_query_hw_ip_info(device, ip_block->type, 0, &ring_context->hw_ip_info);
- 	igt_assert_eq(r, 0);
-@@ -604,7 +612,8 @@ void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
- 	ring_context->pm4_size = pm4_dw;
- 	ring_context->res_cnt = 2;
- 	ring_context->user_queue = user_queue;
--	ring_context->time_out = 0;
-+	if (user_queue)
-+		ring_context->time_out = INT64_MAX;
- 	igt_assert(ring_context->pm4);
- 	r = amdgpu_query_hw_ip_info(device, ip_block->type, 0, &ring_context->hw_ip_info);
- 	igt_assert_eq(r, 0);
-@@ -927,7 +936,8 @@ cmd_context_t* cmd_context_create(amdgpu_device_handle device,
- 	ctx->ring_ctx->ring_id = ring_id;
- 	ctx->ring_ctx->secure = false;
- 	ctx->ring_ctx->user_queue = user_queue;
--	ctx->ring_ctx->time_out = 0;
-+	if (user_queue)
-+		ctx->ring_ctx->time_out = INT64_MAX;
- 
- 	if (user_queue) {
- 	/* Initialize user queue if requested */
-diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
-index 5efb5e73d..01c0f9928 100644
---- a/lib/amdgpu/amd_deadlock_helpers.c
-+++ b/lib/amdgpu/amd_deadlock_helpers.c
-@@ -347,7 +347,6 @@ bad_access_helper(amdgpu_device_handle device_handle, unsigned int cmd_error,
- 	ring_context->res_cnt = 1;
- 	ring_context->ring_id = 0;
- 	ring_context->user_queue = user_queue;
--	ring_context->time_out = 0x7ffff;
- 	igt_assert(ring_context->pm4);
- 	r = amdgpu_bo_alloc_and_map_sync(device_handle,
- 				    ring_context->write_length * sizeof(uint32_t),
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-index 73bdace5a..0a9487c95 100644
---- a/lib/amdgpu/amd_ip_blocks.c
-+++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -582,15 +582,55 @@ int amdgpu_timeline_syncobj_wait(amdgpu_device_handle device_handle,
- 	return r;
- }
- 
-+static
-+int wait_for_packet_consumption(struct amdgpu_ring_context *ring_context)
-+{
-+	uint64_t count = 0;
-+
-+	while (*ring_context->rptr_cpu == *ring_context->wptr_cpu) {
-+		if (count > 2000) {
-+			igt_warn("Timeout waiting for bad packet consumption\n");
-+			return -ETIMEDOUT;
-+		}
-+		count++;
-+		usleep(1000);
-+	}
-+	return 0;
-+}
-+
-+static
-+int create_sync_signal(amdgpu_device_handle device,
-+                             struct amdgpu_ring_context *ring_context,
-+                             uint64_t timeout)
-+{
-+	uint32_t syncarray[1];
-+	struct drm_amdgpu_userq_signal signal_data;
-+	int r;
-+
-+	syncarray[0] = ring_context->timeline_syncobj_handle;
-+	signal_data.queue_id = ring_context->queue_id;
-+	signal_data.syncobj_handles = (uintptr_t)syncarray;
-+	signal_data.num_syncobj_handles = 1;
-+	signal_data.bo_read_handles = 0;
-+	signal_data.bo_write_handles = 0;
-+	signal_data.num_bo_read_handles = 0;
-+	signal_data.num_bo_write_handles = 0;
-+
-+	r = amdgpu_userq_signal(device, &signal_data);
-+	if (r)
-+		return r;
-+
-+	return amdgpu_cs_syncobj_wait(device, &ring_context->timeline_syncobj_handle,
-+				  1, timeout, DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL, NULL);
-+}
-+
- static int
- user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_context,
- 			      unsigned int ip_type, uint64_t mc_address)
- {
- 	int r;
- 	uint32_t control = ring_context->pm4_dw;
--	uint32_t syncarray[1];
--	struct drm_amdgpu_userq_signal signal_data;
--	uint64_t timeout = ring_context->time_out ? ring_context->time_out : INT64_MAX;
-+	uint64_t timeout = ring_context->time_out;
- 	unsigned int nop_count;
- 
- 	if (ip_type == AMD_IP_DMA) {
-@@ -640,21 +680,17 @@ user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_
- #endif
- 	ring_context->doorbell_cpu[DOORBELL_INDEX] = *ring_context->wptr_cpu;
- 
--	/* Add a fence packet for signal */
--	syncarray[0] = ring_context->timeline_syncobj_handle;
--	signal_data.queue_id = ring_context->queue_id;
--	signal_data.syncobj_handles = (uintptr_t)syncarray;
--	signal_data.num_syncobj_handles = 1;
--	signal_data.bo_read_handles = 0;
--	signal_data.bo_write_handles = 0;
--	signal_data.num_bo_read_handles = 0;
--	signal_data.num_bo_write_handles = 0;
--
--	r = amdgpu_userq_signal(device, &signal_data);
--	igt_assert_eq(r, 0);
--
--	r = amdgpu_cs_syncobj_wait(device, &ring_context->timeline_syncobj_handle, 1, timeout,
--				DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL, NULL);
-+	switch (ring_context->submit_mode) {
-+	case UQ_SUBMIT_NO_SYNC:
-+		/* Error injection: wait for packet consumption without sync */
-+		r = wait_for_packet_consumption(ring_context);
-+		break;
-+	case UQ_SUBMIT_NORMAL:
-+	default:
-+		/* Standard submission with full synchronization */
-+		r = create_sync_signal(device, ring_context, timeout);
-+		break;
-+	}
- 	return r;
- }
- 
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index 51f492da2..8fd9fde9a 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -194,6 +194,12 @@ struct amdgpu_userq_bo {
- 	void *ptr;
- };
- 
-+/* Submission modes for user queues */
-+enum uq_submission_mode {
-+	UQ_SUBMIT_NORMAL,        /* Full synchronization */
-+	UQ_SUBMIT_NO_SYNC,       /* Skip sync for error injection */
-+};
-+
- #define for_each_test(t, T) for(typeof(*T) *t = T; t->name; t++)
- 
- /* set during execution */
-@@ -272,6 +278,7 @@ struct amdgpu_ring_context {
- 	uint64_t point;
- 	bool user_queue;
- 	uint64_t time_out;
-+	enum uq_submission_mode submit_mode;
- 
- 	struct drm_amdgpu_info_uq_fw_areas info;
- };
--- 
-2.49.0
+On 1/7/2026 02:17, Matthew Auld wrote:
+> On 07/01/2026 05:24, Xin Wang wrote:
+>> Add a xe_pat subtest that looks up a WB+compression+1way PAT entry
+>> from the debugfs PAT table and validates that binding a WB-cached
+>> BO with that PAT index succeeds on Xe3+.
+>>
+>> Skip the test when the platform doesn't expose a suitable PAT entry.
+>>
+>> Cc: Matthew Auld <matthew.auld@intel.com>
+>> Signed-off-by: Xin Wang <x.wang@intel.com>
+>> ---
+>>   tests/intel/xe_pat.c | 76 ++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 76 insertions(+)
+>>
+>> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+>> index 8af6ad174..2c98acd2c 100644
+>> --- a/tests/intel/xe_pat.c
+>> +++ b/tests/intel/xe_pat.c
+>> @@ -112,6 +112,43 @@ static int xe_fetch_pat_sw_config(int fd, struct 
+>> intel_pat_cache *pat_sw_config)
+>>       return parsed;
+>>   }
+>>   +static bool find_wb_comp_1way_pat_index(int fd, uint8_t 
+>> *pat_index_out)
+>> +{
+>> +    struct intel_pat_cache pat_sw_config = {};
+>> +    int32_t parsed;
+>> +    int i;
+>> +
+>> +    parsed = xe_fetch_pat_sw_config(fd, &pat_sw_config);
+>> +
+>> +    for (i = 0; i < parsed; i++) {
+>> +        uint32_t pat = pat_sw_config.entries[i].pat;
+>> +
+>> +        if (pat_sw_config.entries[i].rsvd)
+>> +            continue;
+>> +
+>> +        if (!(pat & XE2_COMP_EN))
+>> +            continue;
+>> +
+>> +        if (REG_FIELD_GET(XE2_COH_MODE, pat) != COH_MODE_1WAY)
+>> +            continue;
+>> +
+>> +        if (REG_FIELD_GET(XE2_L3_POLICY, pat) != L3_CACHE_POLICY_WB)
+>> +            continue;
+>> +
+>> +        /*
+>> +         * Matches Xe3 compressed+coherent entry (see kernel 
+>> xe3_lpg_pat_table[16]).
+>> +         * Note: L4 policy is UC in that entry.
+>> +         */
+>> +        if (REG_FIELD_GET(XE2_L4_POLICY, pat) != L4_CACHE_POLICY_UC)
+>> +            continue;
+>> +
+>> +        *pat_index_out = i;
+>> +        return true;
+>> +    }
+>> +
+>> +    return false;
+>> +}
+>> +
+>>   /**
+>>    * SUBTEST: pat-sanity
+>>    * Test category: functionality test
+>> @@ -958,6 +995,42 @@ static void bo_comp_disable_bind(int fd)
+>>       xe_vm_destroy(fd, vm);
+>>   }
+>>   +/**
+>> + * SUBTEST: bo-wb-comp-1way-bind
+>> + * Test category: functionality test
+>> + * Description: Validate binding a WB-cached BO using a 
+>> WB+compression+1way PAT
+>> + * index (as advertised by the debugfs PAT table) succeeds. Skip if the
+>> + * platform doesn't expose such a PAT entry.
+>> + */
+>> +static void bo_wb_comp_1way_bind(int fd)
+>> +{
+>> +    size_t size = xe_get_default_alignment(fd);
+>> +    uint16_t dev_id = intel_get_drm_devid(fd);
+>> +    uint8_t wb_comp_pat_index;
+>> +    bool supported;
+>> +    uint32_t vm, bo;
+>> +    int ret;
+>> +
+>> +    igt_require(intel_get_device_info(dev_id)->graphics_ver >= 30);
+>> +
+>> +    supported = find_wb_comp_1way_pat_index(fd, &wb_comp_pat_index);
+>> +    igt_require_f(supported, "No WB+compression+1way PAT index 
+>> found, skipping.\n");
+>> +
+>> +    vm = xe_vm_create(fd, 0, 0);
+>> +    bo = xe_bo_create_caching(fd, 0, size, system_memory(fd), 0,
+>> +                  DRM_XE_GEM_CPU_CACHING_WB);
+>> +
+>> +    ret = __xe_vm_bind(fd, vm, 0, bo, 0, 0x100000,
+>> +              size, 0, 0, NULL, 0,
+>> +              0, wb_comp_pat_index, 0);
+>
+> I think we also need something that actually uses and validates 
+> compression with cpu:wb from hw pov (which is a significant change), 
+> similar to what we do with other interesting PAT modes and adding them 
+> to pat_index_modes[], and then hitting them with blit, render-copy 
+> etc. Otherwise only testing the software bind interface is big test 
+> coverage gap IMO.
+>
+> I think you were reworking the pat_index_modes stuff somewhere else, 
+> so it might change a bit but in the meantime I think we really need to 
+> have at least something trigger the hw flow with this new mode in this 
+> series. Or does that already exist and I missed it? What are your 
+> thoughts here?
+>
+I do plan to refactor the pat_index_modes[] table. By reading the 
+complete PAT table, I can automatically generate random test lists for 
+each platform, thus automatically including the newly added case with 
+pat_index = 16. However, I intend to move that modification to a 
+separate patch. Currently, I plan to add a new test table for xe3_lpg.
+>> +
+>> +    igt_assert_eq(ret, 0);
+>> +    xe_vm_unbind_sync(fd, vm, 0, 0x100000, size);
+>> +
+>> +    gem_close(fd, bo);
+>> +    xe_vm_destroy(fd, vm);
+>> +}
+>> +
+>>   /**
+>>    * SUBTEST: userptr-comp
+>>    * Test category: functionality test
+>> @@ -1461,6 +1534,9 @@ int igt_main_args("V", NULL, help_str, 
+>> opt_handler, NULL)
+>>       igt_subtest("bo-comp-disable-bind")
+>>           bo_comp_disable_bind(fd);
+>>   +    igt_subtest("bo-wb-comp-1way-bind")
+>> +        bo_wb_comp_1way_bind(fd);
+>> +
+>>       igt_subtest_with_dynamic("pat-index-xelp") {
+>>           igt_require(intel_graphics_ver(dev_id) <= IP_VER(12, 55));
+>>           subtest_pat_index_modes_with_regions(fd, xelp_pat_index_modes,
+>
 
