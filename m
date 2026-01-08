@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 411A7D148B5
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94DBBD148B7
 	for <igt-dev@archiver.kernel.org>; Thu,  8 Jan 2026 06:59:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 52D0210E69D;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 768C610E69E;
 	Thu,  8 Jan 2026 06:59:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cLlFAus8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kvoYLbj8";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A17B410E69B
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB52D10E699
  for <igt-dev@lists.freedesktop.org>; Thu,  8 Jan 2026 06:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1767855576; x=1799391576;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MsyGQ0MIeRqFowiY3MT8ktF6g4E+QgxJPoeEZDzjjHM=;
- b=cLlFAus8ckaW0sMlaXqziXLD37rTkhqYtvT8v+vk1s3v3OZkXzm4xyGs
- OFrye5DB/v3zNd6T9LrBGL9xNBswK+MZZYpNrD1DHnO9JokcctZOdNHuc
- HYEQxKedjiif2bK6nBy0BScEcBgoCCwOWNeFUdGyE0kOfd1B+45fXGWoy
- F9G2tct64ATdMVH/nkco06rxGR0mmRJRSCMEnUJZqUunYop8Eh8koKALb
- h5ynfOb7CG0Zn1w1MmW1KylnStk6BAUA08+WuysEIx68U0nlVpdn47OsY
- j9MD35v2SZHJHaWbMhqCBmewbLrx04a+OPec2HCOsa152Izi7AuMVqAyz Q==;
-X-CSE-ConnectionGUID: AuraPu7XRMWcfa6f/zud1w==
-X-CSE-MsgGUID: eWlI+nl0SPiA211bP2rgGg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="73078772"
-X-IronPort-AV: E=Sophos;i="6.21,210,1763452800"; d="scan'208";a="73078772"
+ bh=TdnZiGDQ5BLLqLpqAk1vwyKw4Q0DVuOCTW/rvVpsfc0=;
+ b=kvoYLbj8uNiigvhrXEbsII5HKtTjTz4CZuA7Ug24v8rVMDHJxx/8yZqV
+ bGckNs1Jk1D8NVW0USE/gOW0kIiO9fVfGRHW56QvCm9q8s+LGrd+a1SDF
+ U/OFsFvkMTp9s+I1yzRN+LMUJrliCHPngw3+2BfdPREwVsLEkAnrFgX/Y
+ APu+SX6Bi5g4bddrA/vAEaXuaa15gjgVzLgmwv5Uwqw1WAkK3uSTEAekt
+ BaSEF3BLkMRZ1i0zZFRKnw8JMWHg+CBMxCnmg8PdWZjcVTyJcV8tEwQA1
+ TGB5kaSUiIzL8aIg4K57DMO8xoV81TmKo+DlLFohFOXkMIXOcn3gHQ3Bc g==;
+X-CSE-ConnectionGUID: t/LbYm0VTJayaJe3c7sYlQ==
+X-CSE-MsgGUID: 60G07uJVQFaFbL1BvsiGzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="73078773"
+X-IronPort-AV: E=Sophos;i="6.21,210,1763452800"; d="scan'208";a="73078773"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 Jan 2026 22:59:36 -0800
-X-CSE-ConnectionGUID: HL7uNIC7QsyLwb3wI4OclA==
-X-CSE-MsgGUID: o0P5jWyvTV2+mxMp4X3Odg==
+X-CSE-ConnectionGUID: /lEe4yQbR5ajwXDDUNaTtQ==
+X-CSE-MsgGUID: siwpTs5yQ5CTdhBz3e4c5A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,210,1763452800"; d="scan'208";a="203034233"
+X-IronPort-AV: E=Sophos;i="6.21,210,1763452800"; d="scan'208";a="203034236"
 Received: from dut6304bmgfrd.fm.intel.com ([10.36.21.42])
  by fmviesa006.fm.intel.com with ESMTP; 07 Jan 2026 22:59:36 -0800
 From: Xin Wang <x.wang@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Xin Wang <x.wang@intel.com>,
 	Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH v2 1/4] tests/intel/xe_pat: add userptr-comp subtest
-Date: Thu,  8 Jan 2026 06:59:30 +0000
-Message-ID: <20260108065933.409757-2-x.wang@intel.com>
+Subject: [PATCH v2 2/4] tests/intel/xe_pat: add prime-external-import-comp
+ subtest
+Date: Thu,  8 Jan 2026 06:59:31 +0000
+Message-ID: <20260108065933.409757-3-x.wang@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260108065933.409757-1-x.wang@intel.com>
 References: <20260108065933.409757-1-x.wang@intel.com>
@@ -67,97 +68,111 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a new xe_pat subtest that iterates the debugfs PAT table and
-validates that userptr bindings are rejected for PAT entries
-enabling compression and for COH_MODE_NONE entries.
+Add a xe_pat subtest that imports a vgem dma-buf into Xe and
+verifies that binding it with any compression-enabled PAT index
+is rejected with -EINVAL.
 
-Expected failures return -EINVAL.
+Also keep a WB sanity bind to ensure imports still work with
+non-compressed caching.
 
 Cc: Matthew Auld <matthew.auld@intel.com>
 Signed-off-by: Xin Wang <x.wang@intel.com>
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 ---
- tests/intel/xe_pat.c | 61 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
+ tests/intel/xe_pat.c | 74 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 74 insertions(+)
 
 diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index a7f8ab088..5ad4922dd 100644
+index 5ad4922dd..8af6ad174 100644
 --- a/tests/intel/xe_pat.c
 +++ b/tests/intel/xe_pat.c
-@@ -887,6 +887,64 @@ static void bo_comp_disable_bind(int fd)
- 	xe_vm_destroy(fd, vm);
+@@ -831,6 +831,77 @@ static void prime_external_import_coh(void)
+ 	drm_close_driver(fd2);
  }
  
 +/**
-+ * SUBTEST: userptr-comp
++ * SUBTEST: prime-external-import-comp
 + * Test category: functionality test
-+ * Description: Validate that userptr mappings cannot be bound with a PAT index
++ * Description: Validate that imported dma-bufs cannot be bound with a PAT index
 + * that enables compression (expected to fail with -EINVAL).
 + */
-+static void userptr_comp(int fd)
++static void prime_external_import_comp(void)
 +{
-+	size_t size = xe_get_default_alignment(fd);
-+	uint16_t dev_id = intel_get_drm_devid(fd);
++	uint16_t dev_id;
 +	struct intel_pat_cache pat_sw_config = {};
 +	int32_t parsed;
++	struct vgem_bo vgem_bo = {};
++	int fd_vgem, fd_xe;
++	int dma_buf_fd;
++	uint32_t handle_import;
 +	uint32_t vm;
-+	void *data;
++	int bpp = 32;
++	int size;
 +
++	fd_vgem = drm_open_driver(DRIVER_VGEM);
++	fd_xe = drm_open_driver(DRIVER_XE);
++
++	dev_id = intel_get_drm_devid(fd_xe);
 +	igt_require(intel_get_device_info(dev_id)->graphics_ver >= 20);
 +
-+	parsed = xe_fetch_pat_sw_config(fd, &pat_sw_config);
++	parsed = xe_fetch_pat_sw_config(fd_xe, &pat_sw_config);
 +
-+	data = mmap(0, size, PROT_READ | PROT_WRITE,
-+		    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-+	igt_assert(data != MAP_FAILED);
++	vgem_bo.width = 1024;
++	vgem_bo.height = 512;
++	vgem_bo.bpp = bpp;
++	vgem_create(fd_vgem, &vgem_bo);
 +
-+	vm = xe_vm_create(fd, 0, 0);
++	size = vgem_bo.width * vgem_bo.height * bpp / 8;
++
++	dma_buf_fd = prime_handle_to_fd(fd_vgem, vgem_bo.handle);
++	handle_import = prime_fd_to_handle(fd_xe, dma_buf_fd);
++
++	vm = xe_vm_create(fd_xe, 0, 0);
 +
 +	for (int i = 0; i < parsed; i++) {
 +		uint32_t pat;
-+		uint32_t coh_mode;
 +		bool compressed;
-+		uint64_t va;
-+		int expected;
 +		int ret;
 +
 +		if (pat_sw_config.entries[i].rsvd)
 +			continue;
 +		pat = pat_sw_config.entries[i].pat;
 +		compressed = !!(pat & XE2_COMP_EN);
-+		coh_mode = REG_FIELD_GET(XE2_COH_MODE, pat);
-+
-+		/* Spread VAs to keep each attempt independent. */
-+		va = 0x40000ull + (uint64_t)i * 0x200000ull;
-+
-+		if (compressed || coh_mode == COH_MODE_NONE)
-+			expected = -EINVAL;
-+		else
-+			expected = 0;
-+		ret = __xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), va,
-+				   size, DRM_XE_VM_BIND_OP_MAP_USERPTR, 0, NULL, 0, 0,
++		if (!compressed)
++			continue;
++		ret = __xe_vm_bind(fd_xe, vm, 0, handle_import, 0, 0x40000,
++				   size, DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
 +				   i, 0);
-+		igt_assert_eq(ret, expected);
-+		if (!ret)
-+			xe_vm_unbind_sync(fd, vm, 0, va, size);
++		xe_vm_unbind_sync(fd_xe, vm, 0, 0x40000, size);
++		igt_assert_eq(ret, -EINVAL);
 +	}
 +
-+	munmap(data, size);
-+	xe_vm_destroy(fd, vm);
++	/* Sanity: non-compressed WB should still be accepted for imports. */
++	igt_assert_eq(__xe_vm_bind(fd_xe, vm, 0, handle_import, 0, 0x40000,
++			   size, DRM_XE_VM_BIND_OP_MAP, 0, NULL, 0, 0,
++			   intel_get_pat_idx_wb(fd_xe), 0),
++		      0);
++	xe_vm_unbind_sync(fd_xe, vm, 0, 0x40000, size);
++
++	xe_vm_destroy(fd_xe, vm);
++	close(dma_buf_fd);
++
++	drm_close_driver(fd_vgem);
++	drm_close_driver(fd_xe);
 +}
 +
- /**
-  * SUBTEST: display-vs-wb-transient
-  * Test category: functionality test
-@@ -1317,6 +1375,9 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
- 	igt_subtest("userptr-coh-none")
- 		userptr_coh_none(fd);
+ static bool has_no_compression_hint(int fd)
+ {
+ 	struct drm_xe_query_config *config = xe_config(fd);
+@@ -1384,6 +1455,9 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
+ 	igt_subtest("prime-external-import-coh")
+ 		prime_external_import_coh();
  
-+	igt_subtest("userptr-comp")
-+		userptr_comp(fd);
++	igt_subtest("prime-external-import-comp")
++		prime_external_import_comp();
 +
- 	igt_subtest("prime-self-import-coh")
- 		prime_self_import_coh();
+ 	igt_subtest("bo-comp-disable-bind")
+ 		bo_comp_disable_bind(fd);
  
 -- 
 2.43.0
