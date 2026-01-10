@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E274CD277CA
-	for <igt-dev@archiver.kernel.org>; Sat, 10 Jan 2026 00:33:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 605B2D277CA
+	for <igt-dev@archiver.kernel.org>; Sat, 10 Jan 2026 00:37:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7260210E07F;
-	Sat, 10 Jan 2026 00:33:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1331A10E07F;
+	Sat, 10 Jan 2026 00:37:30 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1066D10E07F;
- Sat, 10 Jan 2026 00:33:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F262310E07F;
+ Sat, 10 Jan 2026 00:37:28 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4480526645853699238=="
+ boundary="===============6570093541527940513=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Ffault=5Fin?=
- =?utf-8?q?jection=3A_Close_drm_fd_before_unbind?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Ffault=5F?=
+ =?utf-8?q?injection=3A_Close_drm_fd_before_unbind?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Shuicheng Lin" <shuicheng.lin@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Sat, 10 Jan 2026 00:33:08 -0000
-Message-ID: <176800518806.143365.15166032141466539045@a3b018990fe9>
+Date: Sat, 10 Jan 2026 00:37:28 -0000
+Message-ID: <176800544898.143327.5629732123229386459@a3b018990fe9>
 X-Patchwork-Hint: ignore
 References: <20260109224047.2483497-2-shuicheng.lin@intel.com>
 In-Reply-To: <20260109224047.2483497-2-shuicheng.lin@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4480526645853699238==
+--===============6570093541527940513==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8694_BAT -> XEIGTPW_14320_BAT
+CI Bug Log - changes from IGT_8694 -> IGTPW_14320
 ====================================================
 
 Summary
@@ -64,47 +64,38 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14320/index.html
 
-Participating hosts (12 -> 12)
+Participating hosts (43 -> 40)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 
 
-Known issues
-------------
 
-  Here are the changes found in XEIGTPW_14320_BAT that come from known issues:
+Changes
+-------
 
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_waitfence@abstime:
-    - bat-dg2-oem2:       [PASS][1] -> [TIMEOUT][2] ([Intel XE#6506])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8694/bat-dg2-oem2/igt@xe_waitfence@abstime.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14320/bat-dg2-oem2/igt@xe_waitfence@abstime.html
-
-  
-  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
+  No changes found
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_8694 -> IGTPW_14320
-  * Linux: xe-4360-e956f80845230486226415d5176b9bc5f792aad4 -> xe-4361-070b98e5f13d7b8c95b1f348629cdef8b7aafa80
+  * Linux: CI_DRM_17797 -> CI_DRM_17798
 
+  CI-20190529: 20190529
+  CI_DRM_17797: e956f80845230486226415d5176b9bc5f792aad4 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_17798: 070b98e5f13d7b8c95b1f348629cdef8b7aafa80 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_14320: 07b872470f740bcb96e52b0d65008842aa567bf8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8694: 8694
-  xe-4360-e956f80845230486226415d5176b9bc5f792aad4: e956f80845230486226415d5176b9bc5f792aad4
-  xe-4361-070b98e5f13d7b8c95b1f348629cdef8b7aafa80: 070b98e5f13d7b8c95b1f348629cdef8b7aafa80
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14320/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14320/index.html
 
---===============4480526645853699238==
+--===============6570093541527940513==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -128,38 +119,33 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159903/">https://patchwork.freedesktop.org/series/159903/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14320/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14320/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14320/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14320/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8694_BAT -&gt; XEIGTPW_14320_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_8694 -&gt; IGTPW_14320</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 12)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14320_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_waitfence@abstime:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8694/bat-dg2-oem2/igt@xe_waitfence@abstime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14320/bat-dg2-oem2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>)</li>
-</ul>
-</li>
-</ul>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14320/index.html</p>
+<h2>Participating hosts (43 -&gt; 40)</h2>
+<p>Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_8694 -&gt; IGTPW_14320</li>
-<li>Linux: xe-4360-e956f80845230486226415d5176b9bc5f792aad4 -&gt; xe-4361-070b98e5f13d7b8c95b1f348629cdef8b7aafa80</li>
+<li>Linux: CI_DRM_17797 -&gt; CI_DRM_17798</li>
 </ul>
-<p>IGTPW_14320: 07b872470f740bcb96e52b0d65008842aa567bf8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8694: 8694<br />
-  xe-4360-e956f80845230486226415d5176b9bc5f792aad4: e956f80845230486226415d5176b9bc5f792aad4<br />
-  xe-4361-070b98e5f13d7b8c95b1f348629cdef8b7aafa80: 070b98e5f13d7b8c95b1f348629cdef8b7aafa80</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17797: e956f80845230486226415d5176b9bc5f792aad4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_17798: 070b98e5f13d7b8c95b1f348629cdef8b7aafa80 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14320: 07b872470f740bcb96e52b0d65008842aa567bf8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8694: 8694</p>
 
 </body>
 </html>
 
---===============4480526645853699238==--
+--===============6570093541527940513==--
