@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EED6CF45C9
-	for <igt-dev@archiver.kernel.org>; Mon, 12 Jan 2026 19:13:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9F83CF45C5
+	for <igt-dev@archiver.kernel.org>; Mon, 12 Jan 2026 19:17:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3091610E063;
-	Mon, 12 Jan 2026 19:13:46 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 020BB10E063;
- Mon, 12 Jan 2026 19:13:45 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3034135366136145697=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8C66910E063;
+	Mon, 12 Jan 2026 19:17:41 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Nw1LC6V1";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 066CC10E063
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Jan 2026 19:17:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1768245461; x=1799781461;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=WG8sPOa8fxoWCEMpnUWMbuRhIARsQUPRNVqkSFeYYuc=;
+ b=Nw1LC6V1k+k0L0CYajB9qUxrJeaKh46vK5YlFCdYlIEfrJqPq50+1flm
+ HeeGyZETgtyghXZxjCy5AGMz0xpYbeOHfMnrRYxNmf1jhBFZkqicv4wMh
+ KlLtyHey4N0cOeCjVruJg7IMhEtHDAhndqN5Zt0GuTNraBL7nnUL9WsWe
+ OmsZE/nFHTVJqPSgfTthL/ZCoPU5+9lelLHn1W5kPj79PB5NeS253D57U
+ ctU3e6sqswXG7U9PAvjBPpOIPf4wV6IlECGik3z1bG7kRkNJM1ujb4qeY
+ Nh1xrWga+ccyTyfD6WUnDgUUV6mGhmsah3qe3ryPexDA3ssPCRQrJZ9Pi g==;
+X-CSE-ConnectionGUID: ndLHTnOtQYGpn6JO+3aK8Q==
+X-CSE-MsgGUID: Fin553rtQp6WkW79lRpUOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="80978163"
+X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; d="scan'208";a="80978163"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jan 2026 11:17:40 -0800
+X-CSE-ConnectionGUID: +emq/SH0QsCNdMPaNk3ZWw==
+X-CSE-MsgGUID: cuvChVd6Ttmr6l4EpbzrDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; d="scan'208";a="209247603"
+Received: from dut6304bmgfrd.fm.intel.com ([10.36.21.42])
+ by orviesa005.jf.intel.com with ESMTP; 12 Jan 2026 11:17:39 -0800
+From: Xin Wang <x.wang@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Xin Wang <x.wang@intel.com>
+Subject: [PATCH v10 0/2] lib/intel_device_info: get the xe .graphics_rel from
+ GMD_ID
+Date: Mon, 12 Jan 2026 19:17:30 +0000
+Message-ID: <20260112191732.672297-1-x.wang@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fb?=
- =?utf-8?q?asic=3A_Enable_dynamic_subtest?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Balasubramani Vivekanandan" <balasubramani.vivekanandan@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 12 Jan 2026 19:13:45 -0000
-Message-ID: <176824522500.147285.3459948618603014284@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260112140137.311483-2-balasubramani.vivekanandan@intel.com>
-In-Reply-To: <20260112140137.311483-2-balasubramani.vivekanandan@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,154 +62,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3034135366136145697==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This series enables IGT to retrieve the accurate IP minor version
+(graphics_rel) at runtime for xe platforms with GMD_ID support,
+instead of relying on hardcoded values in the PCI device table.
 
-== Series Details ==
+Background:
+-----------
+Current IGT uses static PCI device tables with hardcoded graphics_rel
+values. For Xe2 platforms, Different device instances may have
+different graphics_rel (minor version) values
 
-Series: tests/intel/xe_exec_basic: Enable dynamic subtest
-URL   : https://patchwork.freedesktop.org/series/159958/
-State : success
+The kernel's GMD_ID ioctl provides accurate runtime IP version
+information (ip_ver_major.ip_ver_minor) which should be used for
+platform-specific workarounds and feature detection.
 
-== Summary ==
+Solution:
+---------
+This series adds support to query xe device info at runtime:
 
-CI Bug Log - changes from IGT_8697 -> IGTPW_14324
-====================================================
+Patch 1/2: Get runtime xe device graphics version from GMD_ID
+- Populate graphics versions in xe_device from GMD_ID ioctl
+- Cache device ipver by devid in global map for efficient lookup
+- Provide xe_ipver_cache_lookup() API for other components
 
-Summary
--------
+Patch 2/2: Query runtime xe device graphics versions
+- Use runtime xe device ipver for Gen20+ platforms
+- Use weak symbol linkage to avoid breaking static library builds
+- Remove hardcoded graphics_rel from static table for xe platforms
 
-  **SUCCESS**
+Benefits:
+---------
+- Accurate IP version for platform-specific workarounds
+- Proper feature detection for hardware variants
+- Unified device info API between i915 and xe drivers
+- No changes needed to existing test code
 
-  No regressions found.
+V2:
+- set the graphics version info in xe_device_get() don't copy 
+  the whole struct of the intel_device_info 
+- update the graphics_rel when the info is already in the cache
+V3:
+- Optimize the coding style
+V4:
+- add braces around the else statement body
+V5:
+- add new struct xe_device_ipver to hold the ipver info
+- separate cache map to eliminate collision (Roper, Matthew D)
+- changed function name to xe_ipver_cache_lookup() to avoid 
+  confusion (Roper, Matthew D)
+V6:
+- optimize the coding style. (Summers, Stuart)
+V7:
+- rebased to latest mainline
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14324/index.html
+Xin Wang (2):
+  lib/xe/xe_query: Get runtime xe device graphics version from GMD_ID
+  lib/intel_device_info: Query runtime xe device graphics versions
 
-Participating hosts (42 -> 41)
-------------------------------
+ lib/intel_chipset.h     |  6 +++++
+ lib/intel_device_info.c | 26 +++++++++++++++++---
+ lib/xe/xe_query.c       | 54 ++++++++++++++++++++++++++++++++++++++++-
+ lib/xe/xe_query.h       |  4 +++
+ 4 files changed, 86 insertions(+), 4 deletions(-)
 
-  Additional (1): fi-kbl-7567u 
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
+-- 
+2.43.0
 
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14324 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][1] ([i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14324/fi-kbl-7567u/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14324/fi-kbl-7567u/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@kms_dsc@dsc-basic:
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][3] +12 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14324/fi-kbl-7567u/igt@kms_dsc@dsc-basic.html
-
-  
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8697 -> IGTPW_14324
-
-  CI-20190529: 20190529
-  CI_DRM_17808: 630dc29de423d3640e7b2ee4a7125e0433d9eb7f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14324: 14324
-  IGT_8697: 8697
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14324/index.html
-
---===============3034135366136145697==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_basic: Enable dynamic subtest</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159958/">https://patchwork.freedesktop.org/series/159958/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14324/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14324/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8697 -&gt; IGTPW_14324</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14324/index.html</p>
-<h2>Participating hosts (42 -&gt; 41)</h2>
-<p>Additional (1): fi-kbl-7567u <br />
-  Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14324 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14324/fi-kbl-7567u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14324/fi-kbl-7567u/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14324/fi-kbl-7567u/igt@kms_dsc@dsc-basic.html">SKIP</a> +12 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8697 -&gt; IGTPW_14324</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17808: 630dc29de423d3640e7b2ee4a7125e0433d9eb7f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14324: 14324<br />
-  IGT_8697: 8697</p>
-
-</body>
-</html>
-
---===============3034135366136145697==--
