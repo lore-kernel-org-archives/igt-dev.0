@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7EFDC9EC88
-	for <igt-dev@archiver.kernel.org>; Mon, 12 Jan 2026 13:01:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58C08C9EC88
+	for <igt-dev@archiver.kernel.org>; Mon, 12 Jan 2026 13:01:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 95A8010E3CE;
-	Mon, 12 Jan 2026 13:01:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0E55310E3C5;
+	Mon, 12 Jan 2026 13:01:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iLlQ7iKy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jyF359d0";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5ACF210E3C8
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Jan 2026 13:01:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D823D10E3C5
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Jan 2026 13:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768222866; x=1799758866;
+ t=1768222868; x=1799758868;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=VJfeSd+BFdp7JwawJfzT/tCrfLriZfwJ/VkIzorGzG4=;
- b=iLlQ7iKy3NjWmmZBACvT9m5KMNRevoZiBdsUIQisJISw8a/RvTum18Xz
- vTJAPZPYirBhfU+eC85K4dU5JPjdVnNDtt6TevQGR89LGUeCw0t+eqyG3
- jTTcdjF/pHLLkxABRPvpXwimeXCMMVLboLYoBGRoS4NpWQuG7L76NQ3hK
- EH/ddGbzF5C4aQ/C8B1l5ZfWfZWZUX4/XU6FJXSTiX5/l7j8pEqLGa/3z
- MBOTDaGHIdAgAr2ie0/qoRPYpY0XGmJnQPISlLX+BDVGKumXzCdCtWqBo
- IzsfUZKEOvA8UWjRYj7hl5J/N65HEvxBk0Mn1Y0BielOQAIPpZZdHaESX w==;
-X-CSE-ConnectionGUID: LQ3ARMXrT9mztvhnmG72tw==
-X-CSE-MsgGUID: fCSRznDDT9GqSimBDpiLQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="69545600"
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; d="scan'208";a="69545600"
+ bh=N/mXGrmwjbl2jF8MHYAmSNFQ70KzlbvXE3pa2hhzgg4=;
+ b=jyF359d0pL/+GpryTZw1Px8Ys/L7Q33u88USa3vd1oZ2UhzVT8GE/Idn
+ LngdACAgQElNZbfzQ9JMpHF0wAPHgt9lL8/wziR71uXvUepjEwl2aLWm8
+ hizqWVdp2OP47vMbLmoPe6ovsQdL+9+9b+J8UNiaQpDUNPREOfB0YYjFl
+ 3yqqdyylKC/WgX7CeKrf2o1hS6e2IOnMyAJLVzM7eSqZPANnib03vZ9Ts
+ NM8z5Do+m9zrINUBX2aBgloP3pRfewQyiSXM6/C/jcTacd51wOgqSiW+V
+ okWrIMR32XOTcHMPtlu6uTR39cWVB0I0S8e2/FhYyJz0ddI35JCXPD5sj w==;
+X-CSE-ConnectionGUID: fjY1wV+GQj+kqnUXqPLcRQ==
+X-CSE-MsgGUID: 16hLptkOS16ppF9YpJSejA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="69545607"
+X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; d="scan'208";a="69545607"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jan 2026 05:01:05 -0800
-X-CSE-ConnectionGUID: aFBO0+jxRTmRMVO6lxOSwg==
-X-CSE-MsgGUID: 2VUNGMyRRriNk4uHgkCl6A==
+ 12 Jan 2026 05:01:08 -0800
+X-CSE-ConnectionGUID: lMLuDOt1RLCYXO/nU5I7UQ==
+X-CSE-MsgGUID: +j7z9UyiQcG0RcZ727JAtw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; d="scan'208";a="204095076"
+X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; d="scan'208";a="204095088"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO
  mkuoppal-desk.home.arpa) ([10.245.246.240])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jan 2026 05:01:03 -0800
+ 12 Jan 2026 05:01:05 -0800
 From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: christoph.manszewski@intel.com, dominik.karol.piatkowski@intel.com,
  maciej.patelczyk@intel.com, jan.maslak@intel.com,
  zbigniew.kempczynski@intel.com,
  Mika Kuoppala <mika.kuoppala@linux.intel.com>
-Subject: [PATCH i-g-t 17/21] tests/xe_eudebug_online: Adapt set-breakpoint
- test to work with new vm bind event interface
-Date: Mon, 12 Jan 2026 15:00:03 +0200
-Message-ID: <20260112130008.1649357-18-mika.kuoppala@linux.intel.com>
+Subject: [PATCH i-g-t 18/21] tests/xe_eudebug_online: Adapt several subtests
+ to work with new vm bind event interface
+Date: Mon, 12 Jan 2026 15:00:04 +0200
+Message-ID: <20260112130008.1649357-19-mika.kuoppala@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260112130008.1649357-1-mika.kuoppala@linux.intel.com>
 References: <20260112130008.1649357-1-mika.kuoppala@linux.intel.com>
@@ -74,89 +74,77 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 
-Metadata used to be a standalone kernel resource created with a dedicated
-ioctl and carried a binary blob as payload. The set-breakpoint testcase
-relies on metadata resource creation events for bb ppgtt address and size
-passing.
-
-After rework the (now called) debug data can only be passed to the debugger
-by mapping it to a vm. Convert the test to use this new interface.
+Add 'online_debug_data_trigger' to multiple test functions to adapt the
+following subtests to the new debug data passing mechanism:
+ - interrupt-all*
+ - tdctl-parameters
+ - single-step*
+ - writes-caching*
 
 Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
 Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 ---
- tests/intel/xe_eudebug_online.c | 37 +++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ tests/intel/xe_eudebug_online.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-index 34a8ff26e9..a9fa150114 100644
+index a9fa150114..473c362470 100644
 --- a/tests/intel/xe_eudebug_online.c
 +++ b/tests/intel/xe_eudebug_online.c
-@@ -875,6 +875,32 @@ static void vm_open_trigger(struct xe_eudebug_debugger *d,
- 	pthread_mutex_unlock(&data->mutex);
- }
+@@ -1596,6 +1596,8 @@ static void test_set_breakpoint_online_sigint_debugger(int fd,
+ 						ufence_ack_set_bp_trigger);
+ 		xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
+ 						eu_attention_resume_trigger);
++		xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_DEBUG_DATA,
++						online_debug_data_trigger);
  
-+static void online_debug_data_trigger(struct xe_eudebug_debugger *d, struct drm_xe_eudebug_event *e)
-+{
-+	struct drm_xe_eudebug_event_vm_bind_op_debug_data *ed = (void *)e;
-+	struct online_debug_data *data = d->ptr;
-+
-+	if (!(e->flags & DRM_XE_EUDEBUG_EVENT_CREATE))
-+		return;
-+
-+	igt_assert(ed->flags & DRM_XE_VM_BIND_DEBUG_DATA_FLAG_PSEUDO);
-+
-+	pthread_mutex_lock(&data->mutex);
-+	switch (ed->pseudopath) {
-+	case DRM_XE_VM_BIND_DEBUG_DATA_PSEUDO_SBA_AREA:
-+		data->bb_offset = ed->addr;
-+		data->bb_size = ed->range;
-+		break;
-+	case DRM_XE_VM_BIND_DEBUG_DATA_PSEUDO_MODULE_AREA:
-+		data->target_offset = ed->addr;
-+		data->target_size = ed->range;
-+		break;
-+	default:
-+		break;
-+	}
-+	pthread_mutex_unlock(&data->mutex);
-+}
-+
- static void overwrite_immediate_value_in_common_target_write(int vm_fd, uint64_t offset,
- 							     uint32_t old_val, uint32_t new_val)
- {
-@@ -1081,6 +1107,13 @@ static void run_online_client(struct xe_eudebug_client *c)
- 
- 	create.vm_id = xe_eudebug_client_vm_create(c, vm_flags, 0);
- 
-+	xe_eudebug_client_vm_bind_debug_data_add(c, create.vm_id, 0, bb_offset, bb_size,
-+						 DRM_XE_VM_BIND_DEBUG_DATA_PSEUDO_SBA_AREA,
-+						 NULL, NULL, 0);
-+	xe_eudebug_client_vm_bind_debug_data_add(c, create.vm_id, 0, target_offset, buf->size,
-+						 DRM_XE_VM_BIND_DEBUG_DATA_PSEUDO_MODULE_AREA,
-+						 NULL, NULL, 0);
-+
- 	xe_eudebug_client_exec_queue_create(c, &create);
- 
- 	ibb = xe_bb_create_on_offset(c->fd,
-@@ -1126,6 +1159,8 @@ static void run_online_client(struct xe_eudebug_client *c)
- 	intel_bb_destroy(ibb);
- 
- 	xe_eudebug_client_exec_queue_destroy(c, &create);
-+	xe_eudebug_client_vm_bind_debug_data_remove(c, create.vm_id, bb_offset, bb_size);
-+	xe_eudebug_client_vm_bind_debug_data_remove(c, create.vm_id, target_offset, buf->size);
- 	xe_eudebug_client_vm_destroy(c, create.vm_id);
- 
- 	intel_buf_destroy(buf);
-@@ -1493,6 +1528,8 @@ static void test_set_breakpoint_online(int fd, struct drm_xe_engine_class_instan
- 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE,
- 					exec_queue_trigger);
+ 		igt_assert_eq(xe_eudebug_debugger_attach(s->debugger, s->client), 0);
+ 		xe_eudebug_debugger_start_worker(s->debugger);
+@@ -1716,6 +1718,8 @@ static void test_pagefault_online(int fd, struct drm_xe_engine_class_instance *h
+ 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
+ 					eu_attention_resume_trigger);
  	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
 +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_DEBUG_DATA,
 +					online_debug_data_trigger);
  	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
- 					ufence_ack_set_bp_trigger);
+ 					ufence_ack_trigger);
+ 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_PAGEFAULT,
+@@ -1851,6 +1855,8 @@ static void test_interrupt_all(int fd, struct drm_xe_engine_class_instance *hwe,
  	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
+ 					eu_attention_resume_trigger);
+ 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
++	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_DEBUG_DATA,
++					online_debug_data_trigger);
+ 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
+ 					ufence_ack_trigger);
+ 
+@@ -2024,6 +2030,8 @@ static void test_tdctl_parameters(int fd, struct drm_xe_engine_class_instance *h
+ 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
+ 					eu_attention_resume_trigger);
+ 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
++	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_DEBUG_DATA,
++					online_debug_data_trigger);
+ 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
+ 					ufence_ack_trigger);
+ 
+@@ -2237,6 +2245,8 @@ static void test_single_step(int fd, struct drm_xe_engine_class_instance *hwe, i
+ 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
+ 					eu_attention_resume_single_step_trigger);
+ 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
++	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_DEBUG_DATA,
++					online_debug_data_trigger);
+ 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
+ 					ufence_ack_trigger);
+ 
+@@ -2334,6 +2344,8 @@ static void test_caching(int fd, struct drm_xe_engine_class_instance *hwe, int f
+ 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
+ 					eu_attention_resume_caching_trigger);
+ 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
++	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_DEBUG_DATA,
++					online_debug_data_trigger);
+ 	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
+ 					ufence_ack_trigger);
+ 
 -- 
 2.43.0
 
