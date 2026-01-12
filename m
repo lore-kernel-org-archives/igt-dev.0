@@ -4,155 +4,192 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D4BFD2502E
-	for <igt-dev@archiver.kernel.org>; Mon, 12 Jan 2026 01:12:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E355CD25039
+	for <igt-dev@archiver.kernel.org>; Mon, 12 Jan 2026 07:20:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E4EAF10E0A5;
-	Mon, 12 Jan 2026 01:12:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 885A010E2D8;
+	Mon, 12 Jan 2026 07:20:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="vhHJwCJS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BMMVmkQV";
 	dkim-atps=neutral
-Received: from SN4PR0501CU005.outbound.protection.outlook.com
- (mail-southcentralusazon11011029.outbound.protection.outlook.com
- [40.93.194.29])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDEA910E0A5
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Jan 2026 01:12:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38B0E10E2D7;
+ Mon, 12 Jan 2026 07:20:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1768202451; x=1799738451;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=AP3MLs0m7ju4yuZvwgt3NNVZQG47xiHbeUNp0ASFDIE=;
+ b=BMMVmkQVsCPGx2zVIs5jWszvUCpm8D7qOXF+6Z0t7a4sCUEnRBi5kyLt
+ euHMKHUvyCdDMGyYMRKYyh5snNVDd/4n29D/a89pFSapA1Ofb0HFSkjDd
+ SxiFlzirrlq4eVCUeqp7TzW1wo00RrpP53QoRX5DqfpqhY+z5oPUAhEA0
+ /GDFhea+IWGmoUDgLgCJKPaN/V8O7fnhRbYR0T/Okxk5yySFKwuyegWev
+ wg7ExdxYA4y4M8XFz/WV+Y8Gi8sK8IfMyDIHXwtwcIpmwRNbFTFAdCVg9
+ c2TMPyD0+bNg5SqWt3yRGdhXcn18Uprv95GcU8QEVJavpgwCNEk2RZlO9 w==;
+X-CSE-ConnectionGUID: OUYhObL0Q8ixj4WAVxriLg==
+X-CSE-MsgGUID: MNNQo7kzTCOafX0gCzkokw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="79766168"
+X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; d="scan'208";a="79766168"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jan 2026 23:20:50 -0800
+X-CSE-ConnectionGUID: QOFPk9rqRmKrs1WN7DPwgQ==
+X-CSE-MsgGUID: Nn1wRpudRK+wSXWwag9keA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; d="scan'208";a="234717241"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jan 2026 23:20:49 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Sun, 11 Jan 2026 23:20:48 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Sun, 11 Jan 2026 23:20:48 -0800
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.4) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Sun, 11 Jan 2026 23:20:48 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kK862IQOIr/xqYSLjDqxA52283CKKd5D9c9d1oeg9c0SU6xBqkJG/IGW4DtDmmw5bp1DrzOkV/ylYwC96nchdIat23t3AmhHbz2cSMd9L28uBdoCez4A7KsWnpJXzeaouWVcFQBUS4J+o3yQBGqHRnSvFM7aiB3KaRmng1TAwMz+S4HHGnVzpbgwHaTlCiO+Vl/JAUOggBHP7j2g7Mg4Tw5GZMDDn6E4nMktAEcOY+a9RmLZheJj2JmpjFC7rWjHQWVb2uDaOZ6bRw3rpj0jONkJKyB/i33TkXWfokePA8qnoC2xnzy47wXCHp/V7EUhCfJYl96oQGyk25Q+j82O/w==
+ b=fl/+fMbCR/KCrLd7SAtIO8iIatG2L/HH7Nw8toXrRD/22zFbA+06IvH8IRGS7p7BQ6fhbDD92/gh98E49ef+uy3s315b1hfjMEajdelftoFloLFeyFPJRCZE8nJg/MfLtu4pFo4mjz2TzJKZMB+TAVhbb+HU+L6k7gWPmib7hKS9sGG7tY7jKoA/edW2m/GNJv9PqexLxm5uxtcAkJiUTFRi2vWh0zC5MoEhDMRT5nFX8Qc1+LHR0jJ2ZJ4qXRScgQTphAV/0WvOPkiNhe8Y8f+BbASZM3YUjcbXvTowoF/frra0E5bJLw9GvpBJRgQQh2lhevlB0dtspphgsI8OxA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zGV0toMlDQDJhAv8poqzc9AEsSm5v3PbCawh5Uo+T6U=;
- b=Jk60pZDEUNNvD4XlqTsFyqj16cp3aUMtdNzlWA7Aey0X1m5iIE2W7QbNrLUePGXbiIXKmkjghujOLjbprt7uD+jDEcUSD2yRfgXUHzdppNmTRn8zyXqh/EqEw2E3ctnGkTU4YDAq8tlTiPob0LkxswtBKycIYGoh9sGIDohm7OQ7/FL2beqAkZ2ejcrcMIlY6987KPw52Gff/M0abolCw5x8ZRg6DCO3c0KXU2xn/C1hgsoDqegb8iFm/Mjk31LnzC90JzvUB921pYRU2YKcalDE5iAe7k/7Rm7mCNHbyuT+BU8BRpplhyFzH4Bb+HzJjWyPxLWAL/lUj9hyf66FBQ==
+ bh=h1r1lH9WD/N+kW4k5rJM8ZJItJfxs/d0VWrTWpTyy70=;
+ b=N4jAkoFPPplQsI5Mf31L+tR00e+cJ2yRfHufAtnpjsHQbfwAlZqQzvX2qAMiWqfzLzfP5BOPtOsSRT0lopsiwP5Wkj/6I8r0dfj2OVJbCC3npjrUaZAT8KL9bC5u5d1Q4EEpmsqY25YtmuV0KrMbuTXF0Fw0Tqr6yBhhgvKSvBuTmj4a+o413qD0mECeFeHxMbWM4ZpEr+dOt9sgHFU3xm6MvJW/Q2ymK6GfxRzL+X3Flr29GORK6zJ8uOhNMOuo8+Q08QGCe41wuKJE40lEGwO+pUD4O/0L/KhOjCuTxmGAiDpem/97JT37JSiyZx3dlNddRnE/D+gKOEKAuZf/jg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zGV0toMlDQDJhAv8poqzc9AEsSm5v3PbCawh5Uo+T6U=;
- b=vhHJwCJSwva4bDjnNOvhmvKudXam+bGEfWa7qeSRjEGXdBx/7PAd6alZL4TAHdy2Y5EsJRMsDdjPA0nMkanfDGdxSmPD5uczw83DgrdItqAPIsskIGfESzDBuqwD5c2DolDmp90Kw95aEk41FKPbMo6/R7nbkxSMOiNtTtLPp24=
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB6420.namprd12.prod.outlook.com (2603:10b6:510:1fc::18)
- by BN7PPF5D27497F1.namprd12.prod.outlook.com
- (2603:10b6:40f:fc02::6d1) with Microsoft SMTP Server (version=TLS1_2,
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO1PR11MB5057.namprd11.prod.outlook.com (2603:10b6:303:6c::15)
+ by SA3PR11MB7612.namprd11.prod.outlook.com (2603:10b6:806:31b::7)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Mon, 12 Jan
- 2026 01:12:33 +0000
-Received: from PH7PR12MB6420.namprd12.prod.outlook.com
- ([fe80::e0e7:bd76:e99:43af]) by PH7PR12MB6420.namprd12.prod.outlook.com
- ([fe80::e0e7:bd76:e99:43af%5]) with mapi id 15.20.9499.005; Mon, 12 Jan 2026
- 01:12:32 +0000
-Message-ID: <7b3d1b71-77e0-4c2b-a0f6-94751e2e5189@amd.com>
-Date: Sun, 11 Jan 2026 20:12:29 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3] lib/amdgpu: implement selective sync skipping
- for error injection tests
-To: "Jesse.Zhang" <Jesse.Zhang@amd.com>, igt-dev@lists.freedesktop.org
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
-References: <20260108063451.4110907-1-Jesse.Zhang@amd.com>
-Content-Language: en-US
-From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <20260108063451.4110907-1-Jesse.Zhang@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: YT4PR01CA0407.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:108::21) To PH7PR12MB6420.namprd12.prod.outlook.com
- (2603:10b6:510:1fc::18)
+ 2026 07:20:41 +0000
+Received: from CO1PR11MB5057.namprd11.prod.outlook.com
+ ([fe80::3b75:a8d2:464e:30cc]) by CO1PR11MB5057.namprd11.prod.outlook.com
+ ([fe80::3b75:a8d2:464e:30cc%3]) with mapi id 15.20.9499.005; Mon, 12 Jan 2026
+ 07:20:41 +0000
+Date: Mon, 12 Jan 2026 07:20:30 +0000
+From: Krzysztof Karas <krzysztof.karas@intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+CC: <igt-dev@lists.freedesktop.org>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>, Sebastian Brzezinka
+ <sebastian.brzezinka@intel.com>, <intel-gfx@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t v2] tests/intel/gem_lmem_swapping: Avoid false
+ failures from oom-killer
+Message-ID: <hikkcyrelmy7dqijsamiwbgvozwapeg7flmwmeschvdla2snfc@sjilwgemapx6>
+"Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316"
+References: <20251219100218.334117-2-janusz.krzysztofik@linux.intel.com>
+ <st6kgzhfy5j3axw3mc44ckzwpe3wdpjpztgoy6ksmmnh2ciqaq@imi27uxmupvm>
+ <2248271.irdbgypaU6@jkrzyszt-mobl2.ger.corp.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <2248271.irdbgypaU6@jkrzyszt-mobl2.ger.corp.intel.com>
+X-ClientProxiedBy: TL2P290CA0005.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:2::15) To CO1PR11MB5057.namprd11.prod.outlook.com
+ (2603:10b6:303:6c::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB6420:EE_|BN7PPF5D27497F1:EE_
-X-MS-Office365-Filtering-Correlation-Id: 901c8bb6-f0d0-4b63-45b2-08de5177a9ba
+X-MS-TrafficTypeDiagnostic: CO1PR11MB5057:EE_|SA3PR11MB7612:EE_
+X-MS-Office365-Filtering-Correlation-Id: a2457c58-1f48-4896-2c7c-08de51ab17ce
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?RWlTR1V1SWpwczBsSjFiWk9HaWN6eWlScHBkbTNrYnZpUDhLZ2VKVWJtS0gy?=
- =?utf-8?B?MnNZKzUzdFVraUJ3VWVtRHdQYWc1bW9zS1pTZ1hCdVBXV2JNKzR4ZHZRV1ox?=
- =?utf-8?B?VlE3S0t0QUxYeHJRQy9NazljaXBDYUpNZ3M2ZnZFVDJqa01KVXJsdHBiVUJq?=
- =?utf-8?B?SndieTg1dkNwOGduOFp0ajlLYTVZZHcyNlNTc3FudEZxcGtQVFh2aFBiRDBQ?=
- =?utf-8?B?ZFY0Mi8yQURKUE5Da0xPeUxCVHlmL21PWFVkSktiYUxmeGRyZGJGRzdodDBZ?=
- =?utf-8?B?Z1QvR0IzWkRNUVBXV3ZtSnZXSVpzcHZUai9oNzBMVGpWWXdZVVhjWmZsTEFO?=
- =?utf-8?B?YXFVb0Q5WkxWT3BUSlhWSVIvbmxOSmgzbTE3TlM0UkhzVGw0eDNpS3dKRHA3?=
- =?utf-8?B?RnN6Z21MNjNHUmw5LzRIS1VZNUtkS0hURHFVd0JkVU1NK0YzdmVBblNwV2Q2?=
- =?utf-8?B?QUJrd1l4NUhIdVVFR1ZSRFBFcDJFT0tsS0YyY1UrU0k2SVZ4cjhmUHdSdjJI?=
- =?utf-8?B?bnhzdnhRTkRXdzBWSk9LaXQ4d21VK3dyMFpMeUNxY1pPWklKQmRQUlN2ZmhH?=
- =?utf-8?B?WE9QOTRMT0psRWRjR243bWJaRFpmT0VXSlJzUkVyUXlkci9maXJkckIvVHF2?=
- =?utf-8?B?UUJFZVZxTC84d2RsMnRvRE9leXltWnFJTDZBRi9sSlljelFvQUZVTTBUdGRG?=
- =?utf-8?B?NGNmRlZ4ampueU5IZHc2RmFkSHFNWDZkT0d0aE41aEw5eDJNZjNuYlM2dFZh?=
- =?utf-8?B?T2t6bUc4cWVjODd0YnpaM2VPeGFKaDN5NmorazNRVy85MW9rWnlpNUxraGVY?=
- =?utf-8?B?U3RiR1VuVUM1eTFYTVdEaDdjb1ZKRUUyVU9YR09iemI0b09ZREF2cFEyd2lY?=
- =?utf-8?B?MmpZcDFPSlFjekg3dGxnMDRsc1Mvak81dEFMRDlMWUZOSTlFUllqek9hMkND?=
- =?utf-8?B?T0NhdmVMZUxINUQ4S2hnOFFaZ1NuUjJ0a3FUbzMvN0RMMTMwS2o2Q1J2a254?=
- =?utf-8?B?cUtObVBybk8rZjBINUZhSGp3RUZUdDJSZXE2Q0RKNTIvbjdENWxvcU9IRXhz?=
- =?utf-8?B?ZFd4MmU1MTlpZ1AxcXYxOXZnY3dvUzhneTE0SkVYb21ZakEyQjBmK29RS0w1?=
- =?utf-8?B?RFhwcC9LWDQwcjBZN0lEY3k0WXRHcXN4VCtjOU5wNmE5bWhob0xnREkyNUdq?=
- =?utf-8?B?Z3Yvd3FQR0t5MmpxZXJlSXlHZHJoaXZjajhRcVlPVHhKU0ovWDZNNGZpdFhU?=
- =?utf-8?B?eVpBdlhPRDRDTm1IL0drOFZOTEdYZzJscXR0Qk1LaWtGeVhXNThyTTlSem9a?=
- =?utf-8?B?TmxmYjVuWUlLelVSNTUwM2dqOHh5bXU5dFhqWE5jdEdveFpHWUROUVpSTnFz?=
- =?utf-8?B?a1lDWFVIZG5QQWZucFpCeTVVYXVEcVY3SHNVVEJ4ZmhLQlRLTUhBWW54MXJM?=
- =?utf-8?B?czhJRWhncVdFSHA1eDBBQ1R0NCthZXVjVDRBOE1Nc3lFZ3FOWW9ueFQ2ZFgy?=
- =?utf-8?B?c1dHU2Z5b0VIdFZNbHhhczZVa05Wc1M2cDF5RW10alp6amJJd01za29mZTMr?=
- =?utf-8?B?T0RJVzV0cHFIdnZGUUdWNTFTaytxVUpndUhCM2pkd3Rzc1ZsSitRUG5iYnlr?=
- =?utf-8?B?VWVybjhZYXpzUEFMT004T0sydFREN2VFazIxbndEMUI1WEFodjJOODRScWgz?=
- =?utf-8?B?L3ZIREtaelFRUlJCN3BEcVRQaGVBK0Evdy9odGZENWpIT21LenIrZ3VIWitL?=
- =?utf-8?B?VGdTUGd1YjVrR1FhczNqZWVaUXVvMXBMN0NaRWs1YU9EYU5aenNVOXlmR1g4?=
- =?utf-8?B?T21LQUpSSkJZUE12L3diNHlnQlhQbjR1dWxLSzR3N3VSMHVVZTFsNVJZMXcz?=
- =?utf-8?B?REhueUZOUm5JWjNtZEVPZis2S3JxbmsvL3gvdDlEWktOVG1OMmhRQm9NUlpj?=
- =?utf-8?Q?mZQPXrX88gr7IadOKpDMVW0KS+mHK3tz?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?WGMrQ2RtV0RKOG92eDdjWEJpUmJRd3Y5ekhvelBoVW9TUmZ6cm14Nmt0Vkc4?=
+ =?utf-8?B?b0llb0dzTmtYa0JaUGw3RWpzNVIxbURUV1VoMkhnaFk5alNTNldhTmpFejh4?=
+ =?utf-8?B?cnJaZFFrZ1Y0aDBGUFZVUVdyMFRvaVo5Q3hBOWpiakJDWGFQT1AydHNSS2Vt?=
+ =?utf-8?B?OU9nL1Q4emw2a0g1dXFLOGFPZ3hCRG9XMklRYVNxc1Y4ZldJeFV2QmpZdXNZ?=
+ =?utf-8?B?NmJaL1lRa0hvYkFpcC8xbjdWOWFrN0hBSjJpMFA1TUlpTlg4ZEFzQ0lzSkNM?=
+ =?utf-8?B?T1gvVTUxY04vU280T0N0UXJLd0g3VVVJcnhQSGxmc0oxbHRxK0ZhM25vUkxj?=
+ =?utf-8?B?aXpsOGtPUktXZFljU1pNcHkwalNTdzBqOERGRFIzWUFHOU45c3l0NEh2NlRL?=
+ =?utf-8?B?V3NYKzE3YUdnUXVxTEgxejd4ZU16WHVNK3NPR0doTHZqaXlmOTkvK3NlUmxJ?=
+ =?utf-8?B?T2JmQ3QvbUdNZG83SzVUdEYrZmRrakRVZEhsWVVRTUg5WnoyNzhWZXRBVE8z?=
+ =?utf-8?B?ZHRxb2JudmRNaUNzbjNQd2szQlMyZmRWazk0Wnhyd2ZoM0lSdExyYVY3SjF3?=
+ =?utf-8?B?TFZLZjMvaXVnTjM0RmRLWXVSUW1POVFDN0ZtT0RJTERsTEtrc2VQaHFBRG5j?=
+ =?utf-8?B?SWN0WkxqeU5rMUpnMXZVR0ZkY3VsSnVaUnVpN3hsWGsyZlZJWWtJaEhXSHZ6?=
+ =?utf-8?B?Q21VTXBKZnNPWkdLaCtobVZiVkJ6S2V3T0swUThqbndIU1dFRjl4WkJuc09L?=
+ =?utf-8?B?UGJ5T1FsVUgwMm1lMkd5YmM4eDI5bmZzZ2dTeHJiZWxLcTAvdjBlMVBjRXo2?=
+ =?utf-8?B?R3lsM3FVU1pGSDYxWTVsc0dnTXNGd0tkT216QXVPdVRlMno3R1dQTWg5MHJG?=
+ =?utf-8?B?RUNUTVlqdmo0U2NzTGcrczdqM0w2ZXY1L3pTTzBPOElMVC83UEFzRjZqNlBh?=
+ =?utf-8?B?YkFEM0dWSFpRbzZUaGVqdmtoYlJRS1Y5ZzBIa1QxSWxJSko2M0lvZHNLUy9S?=
+ =?utf-8?B?TmJJOXd4S1NJaUV3eG9nU3hLWFA2K3pXYWRDcldrc2xiL09wZXo4MnFKZWl0?=
+ =?utf-8?B?MUVUWWkvU2lRd3I0ellGdWgvdTlRZlpXaDQrQlRNdEl1ZHlTbzVwbWRIek1j?=
+ =?utf-8?B?UUNCbVlhMmROTWVTeHdCYUNTNUdmbndVaXhhb3B2OTVLYnZ1aXphenA5K3px?=
+ =?utf-8?B?WXVUNDluSmFpNGtoV1R2cnhUM1pSY0F3V0FpZVZsMFZKYllGVmlWN1g0Mjlw?=
+ =?utf-8?B?a1VJWHVJd21yMVJ4RHBqaCsxLzg5ZXZhT3V1cFBibTR4QkpsV0ZRWjhaK3lr?=
+ =?utf-8?B?Y2JrR0Rwc09LWDNTYlZaazRmTlhWQTI3RmFKdTUwbFNlNGs3UDhScW5rcjBW?=
+ =?utf-8?B?b3VTVXZ4TWVRYStJeUsyMDhFakY2SXB6WlpKN3RIVzNGRkFTenNCZWRuZHFS?=
+ =?utf-8?B?dVVxSWkrNkRobGd4WkcrSWFnSXBYNmV3ZlIyaXN0d0x2dnQ1eVpjQ1BpeG9q?=
+ =?utf-8?B?NzFUSVBtVGJXMDl5d0xPUG9Vdml3TjRQeDhiQnduN2pxNkpIVzVoMXdFZHl0?=
+ =?utf-8?B?MnI5MFFJajYyQ2k5ejc0SmJzK09RZUdUZWdOM1JyRHk2cUxPL1AvaTNBeksx?=
+ =?utf-8?B?bmpsMEFqV2xsMStBQ0tzZGdGZDZuVktQclZMVFlmVmp3RURPYysyTEIzOHpy?=
+ =?utf-8?B?czUxUDVtZE8yWnNMZGc1bERRNGpXcU1VNXJDNWVNUUN5M211SUowYWxSUW5w?=
+ =?utf-8?B?cHBWdWE2U29uakhBSCtGMzc0RXFOUmtrdm9lS09OdEo3VkUzZjRsd1Z0NlRu?=
+ =?utf-8?B?SGxUMHVpYnlYMkFzQjUyYXBuZkQ0Wlg4bmFTMzFwRHZCaUV0LytQUk1KckxL?=
+ =?utf-8?B?TnBFc3N6UlgwdzJyZmF0cWRhRis0QnNtZ0g1QVhhdUlDNXI5dnNXZ3RhSjM0?=
+ =?utf-8?B?ODIvMms3SE5qVXd6VWM5UHB0d1lsRFRGSzVoRkFIRFE4UmJjb3ZEQnl0ck04?=
+ =?utf-8?B?cXJCUDZvRVNnPT0=?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR12MB6420.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:CO1PR11MB5057.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q1Q1enQ0K3JjVFg0ekVTTXhYa1hRbEhFRmY1eDV4NlNReU5NbXBlSEozY3dt?=
- =?utf-8?B?NC85dlJ5T05NZ1doNDBRRXpUYW1keitZK25JdkVnUmtWZXRXOWQrNXFqVkJw?=
- =?utf-8?B?S1ZCNktRNTUwMWt0WldJc3RXR2NaY3FWb2pUWHlBaUM3dFV3VWYrRXEyRkow?=
- =?utf-8?B?czZaRlNVRHpwMHlrZXlSRys4TjhRWXYzOUNheUZwUzhUYmtkNTZlMUVUV2ZC?=
- =?utf-8?B?ZnBGOGRZaitDSjVmM05FYjZkOWhuTDdjQi9xRmEyRzM5WERydUIwY2dNVit5?=
- =?utf-8?B?RU9wbEZSa0JtL2FQVGt3OWxNTzFkVnpsTTJkQXhJMWEwZnFoa2RvdXRvSG4r?=
- =?utf-8?B?S29ieUhnYXE5UHN5VGlyQWR2NW42N0dUVTRYVU1uMkJuNDVKaklzQm9MWU1q?=
- =?utf-8?B?MUpWY3FkWDhWSWk4bk81VmxVeUZtcE4zcDlBWks5RExCOCsydG5lNmZaYzh1?=
- =?utf-8?B?VVNMTXQySFBUREsrTnE2dGhTclh4VjYrOEZWVVBsUDRUQU10MlpFaE9KaXNx?=
- =?utf-8?B?RVR1b3Y2VGlmNHRsZEsrTnFDcTlLWjRPeTVXQ3B4M3MyNWR4aHdwTkhsQUs0?=
- =?utf-8?B?ZEhGQUh6LzNqY1FyYXZCb3I4VmJsakgyaTVSMHdtMWlybHpSYVFUMm1mZTRv?=
- =?utf-8?B?VnBXdFc0NW5QSVRhc3pXWnlSUHF4U3ZVZjRsZi9XR0lleTVJMmxWVnJzWkRq?=
- =?utf-8?B?eUp0Rk1wZjdVbWxyVXVyNzU5OVBxRWljQ1ZvcFpWUzV6UHJrZ1Nxa1k4RDht?=
- =?utf-8?B?Mnk2eElMREMwODl2dUFmbUZROG1GQTcrVEtuZ0doWERYeW8xbVN1QzFmSU43?=
- =?utf-8?B?QlhuWnVOeWs2NklKbzlMeDVxQ2NESUR2a1pjSVM3NjA4U1AzbEhjNW10S3NW?=
- =?utf-8?B?ZDhpZDl3aUxaejkyVGlFRWxHNW5YL3JLWHE0REl2YVZUdzM0UUxScWlVZFNn?=
- =?utf-8?B?OXpsSllhWTQyUm1zb0o0eW5xbldqaEoraWZlZnZXZHVJYUFtL2E5T2xFYnMr?=
- =?utf-8?B?ajE3VVM5blRIRHkyQkgzZjVleDI2ZC9sUlBJVVZoWWtYUjJBam9pT3lKZThT?=
- =?utf-8?B?enkrRDFrdy9CbWlmbWt4ajBWWUNJeXBLdi9GLzlVL00rWmlvZTU5Tkh2eTh2?=
- =?utf-8?B?bzEzcE4xMWlCNXFrVCtBUWVIUzNkQ1RrNmxDS0N6c0FRRVVXVEFoa1NBVC9o?=
- =?utf-8?B?SW10UEIrZldub1JMNXdoZlRiMDFBY0lQWS80QkNWYXJaMldnV3dIZ0Qzc1c4?=
- =?utf-8?B?WXRoSEZEWFExeG9nT0xYTFlCeldEU2RJRlRIbGtTQUdwbEZyMFZYRmtwYTBt?=
- =?utf-8?B?U0d0SkYyVkNGWVM0ZDNNNjJUVGQwQUFaT05xSUhvN1U5V2Ftc3JuM3hkMGVR?=
- =?utf-8?B?L2h4Z0dROVNLaHhrZVdieWZLL3IzRHJScjZxMlI2cjhiUnZka0JjczdlajN4?=
- =?utf-8?B?NmR5Z3FWZVpab1ZOYnhpOGhDWGc3VXpDZVlJWUhMb1VoYkdZKzJSMldnUWIy?=
- =?utf-8?B?OEtZZkpydmo3NEZSWFdDbmErdmx2TFZ0T244OENETGhRTVozVlhqWFZRazBN?=
- =?utf-8?B?eWJPZHpldERxd1o3dFBleHpRRGFzZGR0d1hYeTVpT1hiWTB3WG9xejFIVXly?=
- =?utf-8?B?Mk0vZ1o2MmpvNndMNUNHdjBHc293akFrbnNtb2JiWnc0U1FQYzk4Z1ZpOUph?=
- =?utf-8?B?ZEFqZlJRbWx5MEsxbzFNSnlxQ0pFNlIwQzRPQnZvclBqUkZMWVpia0ZRMHl4?=
- =?utf-8?B?S200OThOTVFPV1ZOS3Erc2JyTU91UDQvd1RzVEVOTDZrVjZmNmVnTGZOVmp6?=
- =?utf-8?B?T1dlUERhQUl1U21wT2lPdFNITWFRVVg1Q0RVc2srMXBJdFBIMlB5dCtWWU1j?=
- =?utf-8?B?R2toMTFYTnhhdENmQXMyZktRZHNmNDRPZzVQNTdzMTA5Z0tWa2p1Z00rSm1O?=
- =?utf-8?B?dXhzc05Od1lvdnRtTjgrcXYrZEcvVmY1cjd2ZzdseEtOY1dVUkI5VlR5cDRP?=
- =?utf-8?B?SnNKMnUyREJwY1VENzZXdXY3TzRMWFdTenkySTBiTlVXTHdDMy96TGhqRWRx?=
- =?utf-8?B?aHJhdk5jeWJoZUtSUkR1WlpNZlhxYy9iWkJsN1BWOE9aS3Y1MXpTa0VHT2xN?=
- =?utf-8?B?WmxzRFZ2N3RFZUxDalVWbXFBVHAxQ3E1M3YvQkJuS1ZlVFI5NzB0RDlmSy9m?=
- =?utf-8?B?NTQzME9mcnp6WmJxOVFxZUVycENENHNoTXp4eDhKT2J3ZFlCWGNDcjlNVElZ?=
- =?utf-8?B?c1pyczlHcDV4bVY5ZG5yOCt3a3E0R2FGa0h4M0JEMG5NanF2SkpteCtiby9k?=
- =?utf-8?B?Q21SOTdVRGtmamVwQW5HajI1Z253aUlrUmtxZmUrV2h6RjFLc2dXZz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 901c8bb6-f0d0-4b63-45b2-08de5177a9ba
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6420.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?S2JxK29LdjJWT29GbUNmVUljNHJUR0owTDAycUhDZXl1eXBTUTZ3c21rbXF3?=
+ =?utf-8?B?NnlNN3pLZEFvTFFlNlVhaGlNNkhvVThlaTdjazNwN2taeDJPSEJNenRhTmpl?=
+ =?utf-8?B?WE9NRE1jRXp0SW44NVBCS3pLTGRQWHNTanAzY2pmSWt3amVIbnAva3FNM0NJ?=
+ =?utf-8?B?S3U3cWhONE1OTUl5U0ZlRzZaM0hKaDM4M2ZqbnprZHBnZFo1MlBqb29PU1BL?=
+ =?utf-8?B?MFE0WS82N0FIclQ3VUNPVHQ1TXYwMytJSHNzcFR2Q0txTlNvYklrTThtUWoy?=
+ =?utf-8?B?S2pFSXVQVWNHbE5LZXpqS0RuZEZ6eUlOQmptVEp4NXFYcEc4QnMxRXZZM3BC?=
+ =?utf-8?B?TGFFZitPcmNiN3JvaWkyZ2NpS2Q4Wk5VdlBiR1V1RDFNaStka3BMZlhiRnJ2?=
+ =?utf-8?B?OVlxQkpLYnluR2piWi9FL1dUamxyVW5SSiswSHM1Y21pOXk5cHhTTGQ3UEhM?=
+ =?utf-8?B?ZWxYV084b1E3dDVjMTlJVVYwanJjUE1aTzNUaldVQ2tOZHpIQzgrdnE2VTdU?=
+ =?utf-8?B?SUx1aXV6MnloSHh5OVYrclYveDUwN2djUERRelhvSnppL2tEQXAyOUJ5cTRB?=
+ =?utf-8?B?MVFzUlZMbEhMRXVkMG5SSDJyNHdrUlkweXNid0pVU1ZLVjRwd3dFTHpVbkFw?=
+ =?utf-8?B?WGJGaEdRODFFbWpXMWg5Q1JzeUZIRVFJVnFham5OZlNTRXdzK0J5SG54Z3ND?=
+ =?utf-8?B?SmM0NzZFZ1NWbGVuNTBQb2M0UnNTbnJrZ2NYdTJtUlgxTFlmRDZMRXVTN1NV?=
+ =?utf-8?B?L2YwcWo0d2JYOStrelRZSE8xWVhKMksrVGhXNjV2bm1qWEZkOTU0ejk4akZz?=
+ =?utf-8?B?K3o1QkxqQ2dXWUZCNFhOd29iTWNUUzZabEluRTVvOXFPQmgxazFnbTNiOGdn?=
+ =?utf-8?B?SjJtOC9pMFdzL2swdS9QcE00N01CRmN6eDV1dGZNb2VmMkQxNFh4eHRSWllj?=
+ =?utf-8?B?ZllmT2pYK0x6bUVzb0xsV3NKQUl5MWRWaU5yZ2M4RUY5OHgwQ0YvekxTUGlP?=
+ =?utf-8?B?RlZQQ1JvUkxXZ0o1VmU2UGtzMFhIK014akZCL0hSVnNYQnBudlhBdmhrRUo1?=
+ =?utf-8?B?RVg0V25seFFqVHROZTB0N0JFbjFSalN6RTNJcHI5SGpxbjhUbnhJUnQrUHVa?=
+ =?utf-8?B?SUcyY3F3MFVHS3prSGo3M0tvS29aS01YTm0zSTh2VVFxUmptR3RRMzhRVHVY?=
+ =?utf-8?B?dzdzYXA1WnpuZEh1OGpqcGhHVVNJbnBoZ05pWEdhMUhBSkxDOWliQXZHUVNl?=
+ =?utf-8?B?SkZ2ekZJN2s5VGxPWDl5cVRWMHJDN044YW5TOHF5MVV2MEZOL09NL0hUckpR?=
+ =?utf-8?B?SVlRbVJiTDUrTUxSVGdRNWV5enQxWlU3S2R3ODVwM3ZBRmhWZEViQWR1V0tQ?=
+ =?utf-8?B?WE9lejd2NXdxRm5sdEs5Y0NDRFdESjZJTEtjTFp5UzVneTZjZXdZYk1raWl2?=
+ =?utf-8?B?cUhnYUNZdDE5cVlxRERqWmE0ck9CV1FsQ1hKRWxIdXd1TXFtWHhuUkU3bndK?=
+ =?utf-8?B?SlZKakFiQk5FdER1ZGdJUmxWYldxSkJyS2NNdys2SUc0YjZJMlFYZnBlMk5N?=
+ =?utf-8?B?OHg4dWIrSUI2aGlkRXNzTWlmNm4xOFkvVTQyMVM3eU5ZYVNWbDIvcU83S0Js?=
+ =?utf-8?B?THljbDVvTjM2L29ENmhtdzI4VEJTckIzZWNyTmRiMXF5OTBXakdYTHJRa0pV?=
+ =?utf-8?B?Si9XWWhpNWRuZVl4Yk9qaDZhejVnR0JKZVJQN1lEaVpCeUNzU2pQalNzM1Aw?=
+ =?utf-8?B?U2ExNElPOFcrb0lJeU1pVUVSL20zN3YxVDRpOVdKdkFaNG5mbGY1clV0WTND?=
+ =?utf-8?B?cGQ4dFRwUUxVRWY5bEFTVG9yNU4yOVEwNlh5K2txZEJSZEdoL0tIam54a0x5?=
+ =?utf-8?B?MFFPdUIzVzJ1SDBmcVU0S2FqRXhrTDcvbWREQU5QRFNXMm5nUGpETkFWNXhP?=
+ =?utf-8?B?ZExqeklVek41eEhuOGxVd1JwUjhLUHpmUFZWaTJJZHNzNEZQejlreVE5R0Nn?=
+ =?utf-8?B?b0ZTbGRqdFFMWlIySVdYd0llWlpEOHJFK2pDV2tsYXRBRk0zVHJSTlRGVk8v?=
+ =?utf-8?B?SXY0T3c2VEtubmVOcGZYRHZLV2FQenV3NDA2aGRsV2Z5azdoN2ZkVkhMUCtO?=
+ =?utf-8?B?dWwxa2c0c2V6bFRwaEZGT1ZkaWFOWmhmTkJLMDlGcGt5NEg4aUtKVTFDMTNJ?=
+ =?utf-8?B?ZmhjK3l1L2F3UktpMlN3bWtTa1FnMTg0SDUzUkhFTkpwcEVXS1ZaNzZqSjF0?=
+ =?utf-8?B?V2JrQnRtMStZck5jVXZNRG52UW91Nm8yNDdkUWZKWXR5dFJWT0JtMXEwSnF6?=
+ =?utf-8?B?eVkxZHNNQVNjQlUzYjA1QzVZYmY2SGViTXVOZ2N3dm1DQ0QvRHhuNmxzN1cx?=
+ =?utf-8?Q?BWNyboSmApYyUicA=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a2457c58-1f48-4896-2c7c-08de51ab17ce
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5057.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 01:12:32.6654 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 07:20:41.4983 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /PGDLKMKJBXVy5/TZPnYnF015x/vL8rcjO4F7qaFSHPf1mAHllziAyD0cjqBwz7yLuIk1jMdptnTQ6bz+TfsCA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF5D27497F1
+X-MS-Exchange-CrossTenant-UserPrincipalName: uuc9yqLItDCxK9/hKQKjnShJj0i38ENUnwZiew3iKOGJYDdAggQ/5V+oGcfGf8otFrtGg+DpVCjKsoBaCyRyAOCC7iLxZ+h7IDWS5mcXARs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7612
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -168,249 +205,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
- Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Hi Janusz,
 
-On 2026-01-08 01:33, Jesse.Zhang wrote:
-> Refactor user queue submission to handle error injection cases where
-> GPU commands are intentionally invalid and would cause syncobj waits
-> to hang indefinitely.
->
-> Key changes:
-> 1. Introduce `enum uq_submission_mode` with two modes:
->    - UQ_SUBMIT_NORMAL: Full synchronization (default)
->    - UQ_SUBMIT_NO_SYNC: Skip sync for error injection
->
-> 2. Add helper functions:
->    - `wait_for_packet_consumption()`: Busy-waits with timeout for GPU
->      to process commands without synchronization
->    - `create_sync_signal()`: Extracts signal creation and wait logic
->      for normal submissions
->
-> 3. Update `user_queue_submit()` to switch between modes:
->    - NO_SYNC mode: Waits for command consumption via rptr/wptr polling
->    - NORMAL mode: Creates sync signal and waits for completion
->
-> 4. Modify `bad_access_helper()` to use UQ_SUBMIT_NO_SYNC mode for
->    error injection tests, replacing the hardcoded timeout value
->
-> Benefits:
-> - Prevents permanent hangs when submitting invalid commands in tests
-> - Maintains full synchronization for normal operation
-> - Provides timeout protection for error injection cases
-> - Improves code organization with clear separation of concerns
-> - Enables future expansion of submission modes
->
-> The fix specifically addresses deadlock test scenarios where invalid
-> GPU commands would cause `amdgpu_cs_syncobj_wait()` to block forever,
-> preventing proper resource cleanup in `user_queue_destroy()`.
->
-> v2: fix build warning
->
->
-> Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-> ---
->  lib/amdgpu/amd_command_submission.c | 20 ++++++--
->  lib/amdgpu/amd_deadlock_helpers.c   |  1 -
->  lib/amdgpu/amd_ip_blocks.c          | 72 +++++++++++++++++++++--------
->  lib/amdgpu/amd_ip_blocks.h          |  7 +++
->  4 files changed, 76 insertions(+), 24 deletions(-)
->
-> diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
-> index fc5a0ed32..6129b7104 100644
-> --- a/lib/amdgpu/amd_command_submission.c
-> +++ b/lib/amdgpu/amd_command_submission.c
-> @@ -70,6 +70,11 @@ int amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned int ip_type
->  	memcpy(ring_ptr, ring_context->pm4, ring_context->pm4_dw * sizeof(*ring_context->pm4));
->  
->  	if (user_queue) {
-> +		if (expect_failure)
-> +			ring_context->submit_mode = UQ_SUBMIT_NO_SYNC;
-> +		else
-> +			ring_context->submit_mode = UQ_SUBMIT_NORMAL;
-> +
->  		r = ip_block->funcs->userq_submit(device, ring_context, ip_type, ib_result_mc_address);
->  		if (!expect_failure)
->  			igt_assert_eq(r, 0);
-> @@ -180,7 +185,8 @@ static void amdgpu_create_ip_queues(amdgpu_device_handle device,
->  		ring_context[ring_id].pm4_size = pm4_dw;
->  		ring_context[ring_id].res_cnt = 1;
->  		ring_context[ring_id].user_queue = user_queue;
-> -		ring_context[ring_id].time_out = 0;
-> +		if (user_queue)
-> +			ring_context[ring_id].time_out = INT64_MAX;
->  		igt_assert(ring_context[ring_id].pm4);
->  
->  		/* Copy the previously queried HW IP info instead of querying again */
-> @@ -370,7 +376,8 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
->  	ring_context->pm4_size = pm4_dw;
->  	ring_context->res_cnt = 1;
->  	ring_context->user_queue = user_queue;
-> -	ring_context->time_out = 0;
-> +	if (user_queue)
-> +		ring_context->time_out = INT64_MAX;
->  	igt_assert(ring_context->pm4);
->  
->  	r = amdgpu_query_hw_ip_info(device, ip_block->type, 0, &ring_context->hw_ip_info);
-> @@ -503,7 +510,8 @@ void amdgpu_command_submission_const_fill_helper(amdgpu_device_handle device,
->  	ring_context->pm4_size = pm4_dw;
->  	ring_context->res_cnt = 1;
->  	ring_context->user_queue = user_queue;
-> -	ring_context->time_out = 0;
-> +	if (user_queue)
-> +		ring_context->time_out = INT64_MAX;
->  	igt_assert(ring_context->pm4);
->  	r = amdgpu_query_hw_ip_info(device, ip_block->type, 0, &ring_context->hw_ip_info);
->  	igt_assert_eq(r, 0);
-> @@ -604,7 +612,8 @@ void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
->  	ring_context->pm4_size = pm4_dw;
->  	ring_context->res_cnt = 2;
->  	ring_context->user_queue = user_queue;
-> -	ring_context->time_out = 0;
-> +	if (user_queue)
-> +		ring_context->time_out = INT64_MAX;
->  	igt_assert(ring_context->pm4);
->  	r = amdgpu_query_hw_ip_info(device, ip_block->type, 0, &ring_context->hw_ip_info);
->  	igt_assert_eq(r, 0);
-> @@ -927,7 +936,8 @@ cmd_context_t* cmd_context_create(amdgpu_device_handle device,
->  	ctx->ring_ctx->ring_id = ring_id;
->  	ctx->ring_ctx->secure = false;
->  	ctx->ring_ctx->user_queue = user_queue;
-> -	ctx->ring_ctx->time_out = 0;
-> +	if (user_queue)
-> +		ctx->ring_ctx->time_out = INT64_MAX;
->  
->  	if (user_queue) {
->  	/* Initialize user queue if requested */
-> diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
-> index 5efb5e73d..01c0f9928 100644
-> --- a/lib/amdgpu/amd_deadlock_helpers.c
-> +++ b/lib/amdgpu/amd_deadlock_helpers.c
-> @@ -347,7 +347,6 @@ bad_access_helper(amdgpu_device_handle device_handle, unsigned int cmd_error,
->  	ring_context->res_cnt = 1;
->  	ring_context->ring_id = 0;
->  	ring_context->user_queue = user_queue;
-> -	ring_context->time_out = 0x7ffff;
->  	igt_assert(ring_context->pm4);
->  	r = amdgpu_bo_alloc_and_map_sync(device_handle,
->  				    ring_context->write_length * sizeof(uint32_t),
-> diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-> index 73bdace5a..0a9487c95 100644
-> --- a/lib/amdgpu/amd_ip_blocks.c
-> +++ b/lib/amdgpu/amd_ip_blocks.c
-> @@ -582,15 +582,55 @@ int amdgpu_timeline_syncobj_wait(amdgpu_device_handle device_handle,
->  	return r;
->  }
->  
-> +static
-> +int wait_for_packet_consumption(struct amdgpu_ring_context *ring_context)
-> +{
-> +	uint64_t count = 0;
-> +
-> +	while (*ring_context->rptr_cpu == *ring_context->wptr_cpu) {
-> +		if (count > 2000) {
-> +			igt_warn("Timeout waiting for bad packet consumption\n");
-> +			return -ETIMEDOUT;
-> +		}
-> +		count++;
-> +		usleep(1000);
-> +	}
-> +	return 0;
-> +}
-> +
-> +static
-> +int create_sync_signal(amdgpu_device_handle device,
-> +                             struct amdgpu_ring_context *ring_context,
-> +                             uint64_t timeout)
-> +{
-> +	uint32_t syncarray[1];
-> +	struct drm_amdgpu_userq_signal signal_data;
-> +	int r;
-> +
-> +	syncarray[0] = ring_context->timeline_syncobj_handle;
-> +	signal_data.queue_id = ring_context->queue_id;
-> +	signal_data.syncobj_handles = (uintptr_t)syncarray;
-> +	signal_data.num_syncobj_handles = 1;
-> +	signal_data.bo_read_handles = 0;
-> +	signal_data.bo_write_handles = 0;
-> +	signal_data.num_bo_read_handles = 0;
-> +	signal_data.num_bo_write_handles = 0;
-> +
-> +	r = amdgpu_userq_signal(device, &signal_data);
-> +	if (r)
-> +		return r;
-> +
-> +	return amdgpu_cs_syncobj_wait(device, &ring_context->timeline_syncobj_handle,
-> +				  1, timeout, DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL, NULL);
-> +}
-> +
->  static int
->  user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_context,
->  			      unsigned int ip_type, uint64_t mc_address)
->  {
->  	int r;
->  	uint32_t control = ring_context->pm4_dw;
-> -	uint32_t syncarray[1];
-> -	struct drm_amdgpu_userq_signal signal_data;
-> -	uint64_t timeout = ring_context->time_out ? ring_context->time_out : INT64_MAX;
-> +	uint64_t timeout = ring_context->time_out;
->  	unsigned int nop_count;
->  
->  	if (ip_type == AMD_IP_DMA) {
-> @@ -640,21 +680,17 @@ user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_
->  #endif
->  	ring_context->doorbell_cpu[DOORBELL_INDEX] = *ring_context->wptr_cpu;
->  
-> -	/* Add a fence packet for signal */
-> -	syncarray[0] = ring_context->timeline_syncobj_handle;
-> -	signal_data.queue_id = ring_context->queue_id;
-> -	signal_data.syncobj_handles = (uintptr_t)syncarray;
-> -	signal_data.num_syncobj_handles = 1;
-> -	signal_data.bo_read_handles = 0;
-> -	signal_data.bo_write_handles = 0;
-> -	signal_data.num_bo_read_handles = 0;
-> -	signal_data.num_bo_write_handles = 0;
-> -
-> -	r = amdgpu_userq_signal(device, &signal_data);
-> -	igt_assert_eq(r, 0);
-> -
-> -	r = amdgpu_cs_syncobj_wait(device, &ring_context->timeline_syncobj_handle, 1, timeout,
-> -				DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL, NULL);
-> +	switch (ring_context->submit_mode) {
-> +	case UQ_SUBMIT_NO_SYNC:
-> +		/* Error injection: wait for packet consumption without sync */
-> +		r = wait_for_packet_consumption(ring_context);
-> +		break;
-> +	case UQ_SUBMIT_NORMAL:
-> +	default:
-> +		/* Standard submission with full synchronization */
-> +		r = create_sync_signal(device, ring_context, timeout);
-> +		break;
-> +	}
->  	return r;
->  }
->  
-> diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-> index 51f492da2..8fd9fde9a 100644
-> --- a/lib/amdgpu/amd_ip_blocks.h
-> +++ b/lib/amdgpu/amd_ip_blocks.h
-> @@ -194,6 +194,12 @@ struct amdgpu_userq_bo {
->  	void *ptr;
->  };
->  
-> +/* Submission modes for user queues */
-> +enum uq_submission_mode {
-> +	UQ_SUBMIT_NORMAL,        /* Full synchronization */
-> +	UQ_SUBMIT_NO_SYNC,       /* Skip sync for error injection */
-> +};
-> +
->  #define for_each_test(t, T) for(typeof(*T) *t = T; t->name; t++)
->  
->  /* set during execution */
-> @@ -272,6 +278,7 @@ struct amdgpu_ring_context {
->  	uint64_t point;
->  	bool user_queue;
->  	uint64_t time_out;
-> +	enum uq_submission_mode submit_mode;
->  
->  	struct drm_amdgpu_info_uq_fw_areas info;
->  };
+> Hi Krzysztof,
+> 
+> Thanks for looking at this.
+> 
+> On Thursday, 8 January 2026 09:58:34 CET Krzysztof Karas wrote:
+> > Hi Janusz,
+> > 
+> > [...]
+> > 
+> > > +		FILE *printk = fopen("/proc/sys/kernel/printk", "r+");
+> > > +		int console_log_level, default_log_level;
+> > > +		unsigned int i;
+> > > +
+> > > +		if (!igt_debug_on(!printk)) {
+> > > +			if (!igt_debug_on(fscanf(printk, "%d %d",
+> > > +						 &console_log_level,
+> > > +						 &default_log_level) != 2) &&
+> > > +			    default_log_level < 6) {
+> > > +				rewind(printk);
+> > > +				igt_debug_on(fprintf(printk, "%d 6",
+> > > +						     console_log_level) != 3);
+> > Will this not erase the remaining two values held in printk
+> > file? I mean "minimmum" and "boot-time-default".
+> 
+> No, it won't, see https://www.kernel.org/doc/Documentation/core-api/printk-basics.rst.
+> There you can find an example of only the first element written.
+> I've also verified the same rule applies when writing two elements.
+You are right, sorry for doubting your solution without prior
+verification. I also played with the printk file and it works
+as you claim, so I do not have other issues.
+
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+
+-- 
+Best Regards,
+Krzysztof
