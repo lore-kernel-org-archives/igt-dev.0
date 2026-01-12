@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1B9CC9EC82
-	for <igt-dev@archiver.kernel.org>; Mon, 12 Jan 2026 13:00:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBEDFC9EC82
+	for <igt-dev@archiver.kernel.org>; Mon, 12 Jan 2026 13:00:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 57B7310E3C5;
-	Mon, 12 Jan 2026 13:00:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6F4B610E3C8;
+	Mon, 12 Jan 2026 13:00:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FSqoJCAu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VqbS5dEE";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A53F710E3CB
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Jan 2026 13:00:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B10B10E3CC
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Jan 2026 13:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768222843; x=1799758843;
+ t=1768222845; x=1799758845;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=id/1ek7H0QK2A1xurn5UP8iE0H6wKXzYk0SWBq/pXJE=;
- b=FSqoJCAuM0hf+G462bbub+M5K2+lyiZQPA55l/LYqkUUJwqrQ4ngWAsS
- HnmrytANEiVTQUgNyH9AsD+gIj7OBS+WsbxgEc3W5CB9Fniui0nA968Z7
- B85fQc/WECYDD5jph64Sy61rOddYzLleJtgpJn2wliNPcRLDHoVC3+oTO
- zGdyIeKnVt/nPtkAb2wCHBi8Gbm8uMoIJxERy/vPUQfcK2q1HnHtUgDME
- hcLwXSNUoKUCHjvXAWhSPek07Y/4Pm4WmtG1MQVbblMs32CgxrjZKMacc
- YC9FNn+ftiBKd3foCOr8mrrUjebHsQDaqXAKj9pI8DMIhh6KU/qdBh+kj Q==;
-X-CSE-ConnectionGUID: 9szXZB2bQgmME1srf2wHNQ==
-X-CSE-MsgGUID: 0s1KSg/bRE6hHiGckMVjKg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="69545535"
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; d="scan'208";a="69545535"
+ bh=fw7SsetxXtSzu0GRxB2IMlF2W4RfBM39EoYFdSAhd1A=;
+ b=VqbS5dEEV1tngGh8/oFwPi0rXQDC4EkicrOnxPMiPQTUt5PqrzUXqPi2
+ k+8YOlAJyLPjwzDKwQk2xnIXJxAJsTqvmrbGD7RDNS7SQe+nUY4BVazDk
+ /qwcVHPxByzROILpgbzz9GDHIr6YcEvPd94mQ5xRPPS8LKZRrtNDE77MS
+ R+72IxNu7a6K8M6kgGDOa1Hpmpokz3HHDFCfDnPW7bf5R7twrAqPvdQD4
+ 1kzNqt/cidYzzUIt9ibgTGYvgAeOLVC1SXOsOwgcckUUpZrIIK2/qD6VN
+ w2DP+2oUhm3dfaMAfR9ysqZID21s9wBLURWC73owaC+7iED2G4bU954E0 g==;
+X-CSE-ConnectionGUID: Zcz8YtMERUamVlM2Tbp8ag==
+X-CSE-MsgGUID: Lo1hNSevTaG2pUWLmt9IWQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="69545538"
+X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; d="scan'208";a="69545538"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jan 2026 05:00:43 -0800
-X-CSE-ConnectionGUID: d4I/TLC2QSG4ULfBNjhIuA==
-X-CSE-MsgGUID: GBlpShtxQoG1MRDJ0ckPyw==
+ 12 Jan 2026 05:00:45 -0800
+X-CSE-ConnectionGUID: rg+/Hp3DRv6SYxuy/pZQlQ==
+X-CSE-MsgGUID: a5pI4JcHQNSjWBJf1H1Z5w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; d="scan'208";a="204094966"
+X-IronPort-AV: E=Sophos;i="6.21,219,1763452800"; d="scan'208";a="204094979"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO
  mkuoppal-desk.home.arpa) ([10.245.246.240])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jan 2026 05:00:40 -0800
+ 12 Jan 2026 05:00:43 -0800
 From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: christoph.manszewski@intel.com, dominik.karol.piatkowski@intel.com,
  maciej.patelczyk@intel.com, jan.maslak@intel.com,
  zbigniew.kempczynski@intel.com,
  Mika Kuoppala <mika.kuoppala@linux.intel.com>
-Subject: [PATCH i-g-t 08/21] tests/intel/xe_eudebug: Fix connect-user test
-Date: Mon, 12 Jan 2026 14:59:54 +0200
-Message-ID: <20260112130008.1649357-9-mika.kuoppala@linux.intel.com>
+Subject: [PATCH i-g-t 09/21] tests/intel/xe_eudebug: Mold ufence reconnect
+ test to disconnect
+Date: Mon, 12 Jan 2026 14:59:55 +0200
+Message-ID: <20260112130008.1649357-10-mika.kuoppala@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260112130008.1649357-1-mika.kuoppala@linux.intel.com>
 References: <20260112130008.1649357-1-mika.kuoppala@linux.intel.com>
@@ -71,38 +72,67 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-We changed from connecting to pid into connecting into
-a filedescriptor of a drm client. As the access checks
-are now in a filedescriptor level we get EBADFD
-instead of EACCESS. Adjust to new error returns.
+If debugger disconnects, the driver will automatically ack all
+ufences as we have 1:1 mapping between debuggers and drm clients.
+
+In old way of connecting, reconnecting test made sense but it
+does not anymore.
+
+Convert the test to just disconnect the debugger.
 
 Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 ---
- tests/intel/xe_eudebug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/intel/xe_eudebug.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
 diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index 3c7a13f6fe..1bb30a1cad 100644
+index 1bb30a1cad..353828f673 100644
 --- a/tests/intel/xe_eudebug.c
 +++ b/tests/intel/xe_eudebug.c
-@@ -637,7 +637,7 @@ static void test_connect_user(int fd)
- 	test[0].skip = !pwd;
- 	test[0].u[P_GDB] = u1;
- 	test[0].g[P_GDB] = g1;
--	test[0].ret = -EACCES;
-+	test[0].ret = -EBADFD;
- 	test[0].desc = "User GDB to Root App";
+@@ -63,7 +63,7 @@ static void test_sysfs_toggle(int fd)
+ #define VM_BIND_EXTENDED		(1 << 5)
+ #define VM_BIND_OP_MAP_USERPTR		(1 << 6)
+ #define VM_BIND_DELAY_UFENCE_ACK	(1 << 7)
+-#define VM_BIND_UFENCE_RECONNECT	(1 << 8)
++#define VM_BIND_UFENCE_DISCONNECT	(1 << 8)
+ #define VM_BIND_UFENCE_SIGINT_CLIENT	(1 << 9)
+ #define TEST_FAULTABLE			(1 << 30)
+ #define TEST_DISCOVERY			(1 << 31)
+@@ -1920,7 +1920,7 @@ static int wait_for_ufence_events(struct ufence_priv *priv, int timeout_ms)
+  * Description:
+  *	Give user fence in application and check if delayed ufence ack works
+  *
+- * SUBTEST: basic-vm-bind-ufence-reconnect
++ * SUBTEST: basic-vm-bind-ufence-disconnect
+  * Functionality: VM bind event
+  * Description:
+  *	Give user fence in application, hold it, drop the debugger connection and check if anything
+@@ -1964,11 +1964,9 @@ static void test_basic_ufence(int fd, unsigned int flags)
+ 		kill(c->pid, SIGINT);
+ 		c->pid = 0;
+ 		c->done = 1;
+-	} else if (flags & VM_BIND_UFENCE_RECONNECT) {
+-		filter = XE_EUDEBUG_FILTER_EVENT_VM_BIND | XE_EUDEBUG_FILTER_EVENT_VM;
+-		xe_eudebug_debugger_detach(d);
+-		xe_eudebug_client_wait_done(c);
+-		igt_assert_eq(xe_eudebug_debugger_attach(d, c), 0);
++	} else if (flags & VM_BIND_UFENCE_DISCONNECT) {
++		filter = XE_EUDEBUG_FILTER_ALL;
++		close(s->debugger->fd);
+ 	} else {
+ 		ack_fences(d);
+ 	}
+@@ -2648,8 +2646,8 @@ int igt_main()
+ 	igt_subtest("basic-vm-bind-ufence-delay-ack")
+ 		test_basic_ufence(fd, VM_BIND_DELAY_UFENCE_ACK);
  
- 	test[1].skip = !pwd;
-@@ -659,7 +659,7 @@ static void test_connect_user(int fd)
- 	test[3].g[P_APP] = g1;
- 	test[3].u[P_GDB] = u2;
- 	test[3].g[P_GDB] = g2;
--	test[3].ret = -EACCES;
-+	test[3].ret = -EBADFD;
- 	test[3].desc = "User GDB to Other User App";
+-	igt_subtest("basic-vm-bind-ufence-reconnect")
+-		test_basic_ufence(fd, VM_BIND_UFENCE_RECONNECT);
++	igt_subtest("basic-vm-bind-ufence-disconnect")
++		test_basic_ufence(fd, VM_BIND_UFENCE_DISCONNECT);
  
- 	if (!pwd2)
+ 	igt_subtest("basic-vm-bind-ufence-sigint-client")
+ 		test_basic_ufence(fd, VM_BIND_UFENCE_SIGINT_CLIENT);
 -- 
 2.43.0
 
