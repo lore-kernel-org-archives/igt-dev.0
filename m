@@ -4,188 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4EE6CF45A8
-	for <igt-dev@archiver.kernel.org>; Mon, 12 Jan 2026 16:54:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD05ACF45C1
+	for <igt-dev@archiver.kernel.org>; Mon, 12 Jan 2026 18:40:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8305B10E2AA;
-	Mon, 12 Jan 2026 16:54:37 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F6cGrqBP";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 788C710E2AA
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Jan 2026 16:54:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768236876; x=1799772876;
- h=date:from:to:cc:subject:message-id:references:
- content-transfer-encoding:in-reply-to:mime-version;
- bh=Otp+ebkaTdS11nv2j1gZqEr7KyrL2lxruEQX9jCIRb8=;
- b=F6cGrqBPDzoualUzEMKaiDDkQKb86QKYcqMkL805lNFmrp6Ar3dy4YRy
- XDqDPPdg2O8Y9a/DZ9qRq7fRapBSz9GmfQkHrJrkLMjV1aPbGc8ZRCVQZ
- 6/V2dmV453/Vme0Lz5/lgifqLT6/I9J9ibZcFPhPVc4nBdQT2/Ku46W17
- ZH1hmtwwD4dJ5sqJOu0SqvBzICyX5Xsn1fHyUkkxWqMPuo3dOTKbpOxLu
- flOESa74vtlxhWigOLInnDgeDmy5wLFbjnogFBdehzl9yNQSd2tKSb5O+
- pP+l5l/hpdk4x9J6yiwpWYe5ML8g+roPhpQn8TyijXDz6RVJjMrNtQHR+ w==;
-X-CSE-ConnectionGUID: 3X+3EjvPR9ym71vhypfp+A==
-X-CSE-MsgGUID: qcVq0a16T46b2qLrW89IYg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="68518777"
-X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; d="scan'208";a="68518777"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jan 2026 08:54:36 -0800
-X-CSE-ConnectionGUID: EQHH9ZP3RlGHkyJkMF0HCA==
-X-CSE-MsgGUID: 9HZwG0GCQs+t0HzArW9WxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,221,1763452800"; d="scan'208";a="204147797"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jan 2026 08:54:36 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 12 Jan 2026 08:54:35 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Mon, 12 Jan 2026 08:54:35 -0800
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.71)
- by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 12 Jan 2026 08:54:35 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tFtSssAwdQjQaUBMpKguSUfDYxW5Y3yWY4790Zjoxo+nG7H/cpn1QRN8BKSOzFtk9hYglWRUg4LVmtqWJ8ATyLTA35RS5rkUBcC60BhCsoYwEhLipEFM69kKj0Vqr5t33mgJajSM25zMjHBRdEVAU1SKe9PVFD7McNIydZ/VHKd8Nzjz6L8QLd2TVux/7WnLdgt9SE7l+HGtqh9pi5aHDYpdNskzk5Jpgpw1wC7UthqcTA+ae5W357ofR/BrxPHjuztOKhdCBo4vV/QJeps7AevXMCNWfW6OdvfMFpM0Is9FhwGdlASws5aqSQPWZEqRD1MZx3mrg7Oc6MamXhUWjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TjoHCxyZryLxhdnOmqZq7NJHlgGYhpPuzImJ8O0JDWM=;
- b=NvLYI5yvRl86EKnYMk3auZ1OeLGb+SFSbrCFwEBTaLAgblYqS0QtpLrTaXL/fm8JLo/8khukURWlkZgyHYpVXfHCfyXV5UveCTVab3syOucYLugcSlxCqY5zfA8pb47R1VrFF9y8JvreSnFTSUvRhLffj4lPZnMbTnx71pOmrVANQJ6kpukAyqdFn6PU4EXPXJE+LitdBEIecSmtNOXsR1OaN4fkDOdSYBia4Dpd9HkX8F7t/ztvxFOT3u//ISUbZi4NWMKbBJV2+Ap819rbYyiArUgCIGhY0zZfJ6h2TyJs+Lys13qEs6iBDZbAOn4aAzPtElEkEjfA0klwbjDd0A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY8PR11MB7828.namprd11.prod.outlook.com (2603:10b6:930:78::8)
- by PH8PR11MB6729.namprd11.prod.outlook.com (2603:10b6:510:1c5::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Mon, 12 Jan
- 2026 16:54:32 +0000
-Received: from CY8PR11MB7828.namprd11.prod.outlook.com
- ([fe80::1171:db4d:d6ad:3277]) by CY8PR11MB7828.namprd11.prod.outlook.com
- ([fe80::1171:db4d:d6ad:3277%3]) with mapi id 15.20.9499.005; Mon, 12 Jan 2026
- 16:54:32 +0000
-Date: Mon, 12 Jan 2026 17:54:25 +0100
-From: Francois Dugast <francois.dugast@intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>
-Subject: Re: [PATCH i-g-t v2 1/5] lib/intel_compute: Add compute-square for
- xe3p
-Message-ID: <aWUnQdvdCNZw20Kw@fdugast-desk>
-References: <20260105124757.1421059-7-zbigniew.kempczynski@intel.com>
- <20260105124757.1421059-8-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260105124757.1421059-8-zbigniew.kempczynski@intel.com>
-Organization: Intel Corporation
-X-ClientProxiedBy: DU2PR04CA0162.eurprd04.prod.outlook.com
- (2603:10a6:10:2b0::17) To CY8PR11MB7828.namprd11.prod.outlook.com
- (2603:10b6:930:78::8)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4F69610E2A9;
+	Mon, 12 Jan 2026 18:40:41 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7AE4A10E2A9;
+ Mon, 12 Jan 2026 18:40:39 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7552098861923390851=="
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR11MB7828:EE_|PH8PR11MB6729:EE_
-X-MS-Office365-Filtering-Correlation-Id: 993b45d3-0de3-4d00-bd33-08de51fb4211
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?SWRycUdwYzJFbVpOdWR4aFV4UmN4dEt4NVNYZ3J1WnJOMEdkT0RKSmd5aGpH?=
- =?utf-8?B?ck5LVGFpMENtNFZrWHVPdWpnREMvRHZacmZqZE5pTkhWSjhTVFVlVG1PSGNl?=
- =?utf-8?B?aUZqSm9McTNseTlxV29iWUJnbEN3anZnNXd2VWZWcmlBM1UzQmFGaXNIZ2d2?=
- =?utf-8?B?d1M4akJlQmhFRE5rNXhBSXg1YkJoRG5qVGJMbVlNdVpjNzdlRTlKSkE4V1o3?=
- =?utf-8?B?WXVic0ttZ0JxUXFnM0RqYUtyelg0SENNRHVKdzJjV2hoOHI2RUpyUC8rbGRq?=
- =?utf-8?B?TUhZanM0L29Nejh4b2huTmlid0dMZWxDRGd1NFYyc01Td3NncXBSanVScXZ6?=
- =?utf-8?B?NVN5aXNWZEJZVXRtWEQzNGxFQ3Y4V3oyUGxOUXpUZkcrTXRJbzgxT0llUDdS?=
- =?utf-8?B?QnhFK3ovbll6Y1JUMzJURHMzSWM3QkJKN093ZmVIamwrcHRVOVRRY2o3Y0ov?=
- =?utf-8?B?MmZOa3p0aFA2MVVLSDZwSzlwTzNBTXJhend2bnlkTXptVG02MnZaNHdNeHhG?=
- =?utf-8?B?dGVqRndWZDRaRjQ1TmlmVkEvcDU1N3hENlRvZSs1TGNUeERuVGt1aVpqM2hX?=
- =?utf-8?B?VmY2R3BIcjh5anhRVmpTSjdwUVEvWWxKTUFrYUFaVXViSnpoN3l6K3RieGJ2?=
- =?utf-8?B?b20rL3VRM29MdUJBYlVMUWtHb29jZUFYN0poWUxGT1ArWTIzY1h2bFlNSUE3?=
- =?utf-8?B?aXBmTkJuTW1paVh3ZHh6TCtSQXVUeWI1UXUwaTVSUGQ0MVhpdjkyMUwzNElY?=
- =?utf-8?B?WVUzellIbGRaTXl0Yy83M1MySitTRGhtWmRra1BVRWhDVElJYVpSREhwd3I4?=
- =?utf-8?B?eTJoYm5FcnEvckdzMnU0eUpuVHhPck41dklrMlZEeVZRNHhhSlRhU2NCbGk0?=
- =?utf-8?B?WC9iNVQ1eEVISGhXTFBpWTg2WGx6bFJ5WGFJR093dmxITHpZWmQzSnExUmx0?=
- =?utf-8?B?OUUzd0JESzZvRUhxeHlMNkZrNVFxQnBMd1NXWXVJRnI0S1BNZlhGbURQRXdT?=
- =?utf-8?B?ZzhUd1U5bGNmY1krN3hXbXBwb055aWJGcnZsZ01kckZqWXZMU1plTmQ1M3Qv?=
- =?utf-8?B?R21ETklwWVY3K3pCRFJNRW1xcnQ1b3VCRVVPbVR4bHlDSHBmeE5yd1d2aGFV?=
- =?utf-8?B?U1FNYUpOM2pFMHM0Z3d0eFdraXk1dmI2Z01XK21xRzk0b0x6VW13d2QyZDE5?=
- =?utf-8?B?dU14ZS9zSys2NUFBQTc5czRxQ043ZTlhWEJWdDJZMHJOMEh5ekYrYmVxazdn?=
- =?utf-8?B?a0hjLzR3KzlYa0c5Q0JNSTFkUmZQRjg3MTRXbElOc01ZTm9zZ1FmNUc3THk1?=
- =?utf-8?B?YkZ1a3dXeERCYWZQMjZsZ25wYVh1dlVHTk9Qa2RYenpPMGFxNjBWbk5rRmox?=
- =?utf-8?B?dXRyMHM4RGovR0ZDbitXSUFEc1pBUlRJTDVQaXE2bGFNZXE0eW1pRWZhMm9T?=
- =?utf-8?B?OGtDUWRtSDBBSEQ3V3ZQTEVJWTMrMmRHUlcxOVhpc0ZXZFR3OVpZd3BYZ2Ew?=
- =?utf-8?B?SWNuYnE2QmZSSVQweDlIN3NIT2RXa3JmWUk2N0Fmd1ZhZyt2T2RteDd2dTRy?=
- =?utf-8?B?bEF5OGRRR1BMRE5YcUxuMnhES3R2b0FBYnVyOWdBYVlGdS9hSE41bWZ1WVN6?=
- =?utf-8?B?dG8yV0I4NGxmaFRSS2hPRm5yRWlqOHpwUms1UnA0MjlrUGJ0VXJ3VDBJRUV0?=
- =?utf-8?B?QzNxaWxkeEY5eW1SS3RsYXhsb2UxY3pNQVNGU01YZzhrTkJjb3FWMTNMUnJr?=
- =?utf-8?B?OHlJWXl2YWdUeHEwT1FBT2Y5WnMzdzZlczRSdndRVkdObm92UjR6WkxYMXZF?=
- =?utf-8?B?M1dHaDcrNmJldWtZMHAwbXdaRkZrY0xUTUxMRXgvNzBoK1NmeHJnb3c1ZzVt?=
- =?utf-8?B?UkVESFg2emYxK3h2cEVJV2MzZmtNbXJ0Y3F1bWxhS0JZNzBablQrY1RwR2xl?=
- =?utf-8?Q?4GhcOmsO9ZHASWT6sJ8AzFUxKOXCi06r?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY8PR11MB7828.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TTM3UmZoSU91U3l5YTVWQkJkNWZLek51MmNpT3BZU0xVRzdtTURCUzBpamRO?=
- =?utf-8?B?RnFsb0E5b1dUY0tZSDEvbk9pZStGSG8veUc4M2dOUVFHQWVDNUFhOUtvQXpC?=
- =?utf-8?B?ME1TQzQ4dzJPVEZObWtqMHZDM1k0WUpxS3FIcllqTUxrSHlBOGxNL2ZHeEtK?=
- =?utf-8?B?NDdkRThwY0Yyb2J6aCszSjF3d1V5NjVwbm9aUWdZZ2NDK05HdHFJY3RDakxs?=
- =?utf-8?B?NTN2Z09WL25CY0t0dkhCNEw4ODRkTkhBQVExZTZKdFBnVmh1MVZrb3hmNWUy?=
- =?utf-8?B?Ym5pZVhpQjdtMEVBS3BWWmgwUlRXZStTMzB1L3NDNTVUcytaT2xSaHBOM0RB?=
- =?utf-8?B?c1QvREV6VTh1WEFJN1E4bnlRd0NuU0UrUlBJTXcxQTlMd2h2Y1BOZG43Y3h2?=
- =?utf-8?B?UlUycFMvc3dJS2tObmJmY1dSQ0F3WFg1TEFqQXhZWjZFZWZSa3V2NGpNR1Y3?=
- =?utf-8?B?dWZSSmtDLzB2U3Y5R0VtTHFWaWFLUy9mZkF0b0djdnk3Wmp1NGY0a1BsT3dt?=
- =?utf-8?B?TThoaC9qNkRlWHUxTGw0T0l1VEZmWkZjbGF3S3owem8zRUszK1BRK0RsdlhP?=
- =?utf-8?B?R1JLRGRuMERNZkVEZy9WL2RTaGl5SmVVNG5UYkp6M1JVWVZEdXZJNjI5T0Nj?=
- =?utf-8?B?dmtSZXdkajhZYjRlUFROUkpXTzBreFJ4UUdtR3lrNlpoZitpSkdwbXozS2gr?=
- =?utf-8?B?K3gzdlFZa2doakFqWnhvTGxtZXp6WHF0THovYzdhemdDN0ZkTGpLcDNkbXdV?=
- =?utf-8?B?b0pwVDEzSFdkcDFPMnlsOTJlNW1qS2xaZW9GNFhRak1EOExzMlVRb3QzN3Qw?=
- =?utf-8?B?QkNxTUFkbDBIVXBRTWQzaW1YU1h1ZmhjM3NHbHdOUlJ5KzlBMlJXMHBkMDVy?=
- =?utf-8?B?Ukl5WUJReUwvTXdVOFIzUTZZWFV4bmJBRk9SaThTa1hMOGV6V2pUT3MwNFJi?=
- =?utf-8?B?V2Q5VFhKeE80RXlEbTdwelZZM2VXUEpEakNhMlV6c3R0NkgxMnlTOFFxT1Iw?=
- =?utf-8?B?S0tNK1NNR3cwWU1TTzNLSlBqTXhTangzc1E3MTVqTEcxS3JvcndIVmhGRHNE?=
- =?utf-8?B?Zm12VURLcFFxUkhTcUJFYlBYVXdrenc0c295dDVZZ1RYUFppOW9ZVDR6SEhE?=
- =?utf-8?B?QVY2L0Z1U2MybVdKVkhKWnlLNitqZkUyblFWaXJiV2lsd2dIMWFhWlB5V0pz?=
- =?utf-8?B?aFYreC81TENDMkFmR1VjWC83K2NiamJ1ei9sZ2dTUmZSVzhOYThuTEEzUno5?=
- =?utf-8?B?VHBKbEhWbEVsd0VGZ2tVQ0wzYmJBSDdza282d2NtOXEraVAvc1pReThNci95?=
- =?utf-8?B?cmQzWURTT1Y0TG5UczdoRTlMUG1CVFV4R3d0MmpoQUd0OHpXTGZhQXdqTG5z?=
- =?utf-8?B?anVPVEl2ZjgrQUMydGhlRWJHZ2NqOHZPTVlQZkpaM1gzQ3VJK1M3Q2VPM2VS?=
- =?utf-8?B?MnFWMlpqRmFKNlRlTDJLdGovSXVKL1dlMjloVzdBQ2xoUUsvKzlVS21uRDBD?=
- =?utf-8?B?WTNYTGVTL1RVVVNUZDRCVWhhY2JJcTJKLzFKYW5lUWtrMzM5VDVkMDhsWWJn?=
- =?utf-8?B?ZlJ3UUtQMkJ4enRqMmhlK1p0QWx3OW1BcHZVUGJ1aFg4U055QjRncU1xeE1W?=
- =?utf-8?B?RU0xaXhFcWEva0hqMVdtMGpvNjhaVjFZcWdWejBvMmJ6Y1FEWW9qK3F5RytH?=
- =?utf-8?B?bkVCMHQ2Vkt3a0pVTjdoZE9TcWJlNm5rVEJrc2U5QjVOU2MxTm8xREwyK3Yy?=
- =?utf-8?B?ZVNEalNKYVBXdWxkMmtFVTRPMXdlVUZYbFZnT2FsWXZaMmQ1bE54dzNXRGVi?=
- =?utf-8?B?Uy9iWk5BTmd5SWdKNm9Bb3ErcENWeFl3UzlLM2hJSitvc0RQWUVxMWhQelFK?=
- =?utf-8?B?SFBMakQvWkRXQUxQK09jZExnNHZYMWY5L3lkSXdoekpyMitrNXU4VmhSOGpP?=
- =?utf-8?B?VzUvUHExaTIwbE1KL2UwenVyTTMrRFA2dmY1UXJzQ2duNU8xV2dqUy9KR2xZ?=
- =?utf-8?B?cEwwNDJHNHRGU0VNYVZkSjJHZ3FmR1ZWMjJ6ZUF2NUtzeFdTNUNscVppZDFP?=
- =?utf-8?B?ejYrN0N6eVlyOVd4MFlqbVZtUi9SQTV3LzMwS2JxMmIyZWs4ZFNmbHBFVDZN?=
- =?utf-8?B?SXhJV1YxNER5QlVLZ3ZHRkFQVlBmd09ScGoxbTJXL3pDa3lGL0N5T3A4UXJa?=
- =?utf-8?B?MkY5Y25abmliNjFFNGdseVpZZk5FTjkvZ1FJM2JieDhXbUR6QXFheXpiLzNO?=
- =?utf-8?B?TGl0dnA2K0NxYm9PVUJST0h6c2FDYXlHOFJxV2l0TTRSUmRiRUw4UHBMUUZJ?=
- =?utf-8?B?K0RCQXU4NStLcjhVMkVWZFBpbWpWNXc5M3RhQlM1a2hMWm9NZ3dibjd4Y3Mz?=
- =?utf-8?Q?E95oZabJxuLoezgo=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 993b45d3-0de3-4d00-bd33-08de51fb4211
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7828.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 16:54:32.2996 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E7djiKV84Ndk+nCkXcaHUCq4IQgxdE1ZIQKMi63CgdcyD/+5fpGd0kYMuFA7kuCAqyLaeN3Qa4jbP9/EwsXEKrev0lpEhXhQVOIeyt8KSB8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6729
-X-OriginatorOrg: intel.com
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fexec=5Fbas?=
+ =?utf-8?q?ic=3A_Enable_dynamic_subtest?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Balasubramani Vivekanandan" <balasubramani.vivekanandan@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 12 Jan 2026 18:40:39 -0000
+Message-ID: <176824323948.147285.627389269491064985@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260112140137.311483-2-balasubramani.vivekanandan@intel.com>
+In-Reply-To: <20260112140137.311483-2-balasubramani.vivekanandan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -198,394 +37,5513 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi,
+--===============7552098861923390851==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jan 05, 2026 at 01:47:59PM +0100, Zbigniew Kempczyński wrote:
-> Extend support of compute-square calculation in IGT to xe3p platforms
-> like CrescentIsland.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  lib/intel_compute.c                | 234 ++++++++++++++++++++++++++++-
->  lib/intel_compute_krn_square.h     |  41 +++++
->  lib/intel_compute_square_kernels.c |   5 +
->  lib/xehp_media.h                   |   1 +
->  4 files changed, 280 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index a555f908b1..c3a5cf83bc 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -49,7 +49,11 @@
->  #define ADDR_INSTRUCTION_STATE_BASE	0x8000000ULL
->  #define OFFSET_BINDING_TABLE		0x10000
->  
-> +#define ADDR_STATE_CONTEXT_DATA_BASE	0xA0000000ULL
+== Series Details ==
 
-Maybe XE3_ADDR_STATE_CONTEXT_DATA_BASE?
+Series: tests/intel/xe_exec_basic: Enable dynamic subtest
+URL   : https://patchwork.freedesktop.org/series/159958/
+State : failure
 
-> +
->  #define XE2_ADDR_STATE_CONTEXT_DATA_BASE	0x9000000ULL
-> +#define XE2_STATE_CONTEXT_DATA_BASE_ADDRESS ((3 << 29) | (0 << 27) | (1 << 24) | (11 << 16) | (1 << 0))
-> +
->  #define OFFSET_STATE_SIP			0xFFFF0000
->  
->  #define USER_FENCE_VALUE			0xdeadbeefdeadbeefull
-> @@ -66,6 +70,7 @@
->  #define DP_PIPELINE_FLUSH		(1 << 2)
->  #define WRITE_IMM_DATA			(1 << 0)
->  #define WRITE_TIMESTAMP		(3 << 0)
-> +#define XE3P_WRITE_IMM_DATA		(1 << 16)
->  
->  /*
->   * TGP  - ThreadGroup Preemption
-> @@ -109,6 +114,17 @@ struct bo_execenv {
->  	struct user_execenv *user;
->  };
->  
-> +struct inline_data {
-> +	union {
-> +		uint32_t dw[16];
-> +
-> +		struct {
-> +			uint32_t indirect_addr_lo;
-> +			uint32_t indirect_addr_hi;
-> +		} xe3p;
-> +	};
-> +};
-> +
->  static void bo_randomize(float *ptr, int size)
->  {
->  	srand(time(NULL));
-> @@ -1578,7 +1594,6 @@ static void xe2lpg_compute_exec_compute(int fd,
->  	addr_bo_buffer_batch[b++] = 0xE0004000;
->  	addr_bo_buffer_batch[b++] = 0x00000000;
->  
-> -#define XE2_STATE_CONTEXT_DATA_BASE_ADDRESS ((3 << 29) | (0 << 27) | (1 << 24) | (11 << 16) | (1 << 0))
->  	addr_bo_buffer_batch[b++] = XE2_STATE_CONTEXT_DATA_BASE_ADDRESS;
->  	// Split into low and high 32 bits
->  	addr_bo_buffer_batch[b++] = addr_state_contect_data_base & 0xFFFFFFFF; // Mask the low 32 bits ;
-> @@ -1902,6 +1917,218 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
->  	bo_execenv_destroy(&execenv);
->  }
->  
-> +static void xe3p_compute_exec_compute(int fd,
-> +				      const struct inline_data *idata,
-> +				      uint32_t *addr_bo_buffer_batch,
-> +				      uint64_t kernel_start_pointer_addr,
-> +				      uint64_t context_data_base_addr,
-> +				      bool threadgroup_preemption)
-> +
-> +{
-> +	int b = 0;
-> +	uint64_t kernel_addr = kernel_start_pointer_addr;
+== Summary ==
 
-What is the point of the new variable kernel_addr instead of using
-kernel_start_pointer_addr directly?
+CI Bug Log - changes from XEIGT_8697_BAT -> XEIGTPW_14324_BAT
+====================================================
 
-> +	uint8_t uc_mocs = intel_get_uc_mocs_index(fd);
-> +
-> +	igt_assert(idata);
-> +	igt_debug("kernel addr         : %"PRIx64"\n", kernel_addr);
-> +
-> +	addr_bo_buffer_batch[b++] = STATE_BASE_ADDRESS  | 0x14; /* dw0 */
-> +	addr_bo_buffer_batch[b++] = 0x00000040; /* dw1 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw2 */
-> +	addr_bo_buffer_batch[b++] = 0x40048000; /* dw3 */
-> +	addr_bo_buffer_batch[b++] = 0x00000040; /* dw4 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw5 */
-> +	addr_bo_buffer_batch[b++] = 0x00000040; /* dw6 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw7 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw8 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw9 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw10 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw11 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw12 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw13 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw14 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw15 */
-> +	addr_bo_buffer_batch[b++] = 0x00000040; /* dw16 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw17 */
-> +	addr_bo_buffer_batch[b++] = 0xFFFFFFFE; /* dw18 */
-> +	addr_bo_buffer_batch[b++] = 0x00000040; /* dw19 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw20 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw21 */
-> +
-> +	addr_bo_buffer_batch[b++] = XEHP_STATE_COMPUTE_MODE | 1;
-> +	addr_bo_buffer_batch[b++] = 0x14001400;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +
-> +	addr_bo_buffer_batch[b++] = XE2_STATE_CONTEXT_DATA_BASE_ADDRESS;
-> +	addr_bo_buffer_batch[b++] = context_data_base_addr;
-> +	addr_bo_buffer_batch[b++] = context_data_base_addr >> 32;
-> +
-> +	addr_bo_buffer_batch[b++] = XE3P_COMPUTE_WALKER2 | 0x3e; /* dw0 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw1 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw2 */
-> +	addr_bo_buffer_batch[b++] = 0x008004A0; /* dw3 */
-> +	addr_bo_buffer_batch[b++] = 0xBE040000; /* dw4 */
-> +	addr_bo_buffer_batch[b++] = 0xFFFFFFFF; /* dw5 */
-> +	addr_bo_buffer_batch[b++] = 0x000001FF; /* dw6 */
-> +
-> +	if (threadgroup_preemption)
-> +		addr_bo_buffer_batch[b++] = XE2_THREADGROUP_PREEMPT_XDIM; // Thread Group ID X Dimension
-> +	else
-> +		addr_bo_buffer_batch[b++] = 0x00000004;
-> +
-> +	addr_bo_buffer_batch[b++] = 0x00000001; /* dw8 */
-> +	addr_bo_buffer_batch[b++] = 0x00000001; /* dw9 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw10 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw11 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw12 */
-> +	addr_bo_buffer_batch[b++] = 0x00010000; /* dw13 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw14 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw15 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw16 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw17 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw18 */
-> +	addr_bo_buffer_batch[b++] = kernel_addr; /* dw19 */
-> +	addr_bo_buffer_batch[b++] = kernel_addr >> 32; /* dw20 */
-> +	if (threadgroup_preemption)
-> +		addr_bo_buffer_batch[b++] = 0x00000002;
-> +	else
-> +		addr_bo_buffer_batch[b++] = 0x00100002; // Enable Mid Thread Preemption BitField:20
-> +
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw22 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw23 */
-> +	addr_bo_buffer_batch[b++] = 0x0C000010; /* dw24 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw25 */
-> +	addr_bo_buffer_batch[b++] = 0x00000400; /* dw26 */
-> +
-> +	addr_bo_buffer_batch[b++] = DP_SS_CACHE_FLUSH | uc_mocs << 4 |
-> +				    DP_PIPELINE_FLUSH | XE3P_WRITE_IMM_DATA; /* dw27 */
-> +	addr_bo_buffer_batch[b++] = ADDR_BATCH;		/* dw28 (postsync addr) */
-> +	addr_bo_buffer_batch[b++] = ADDR_BATCH >> 32;	/* dw29 */
-> +	addr_bo_buffer_batch[b++] = (uint32_t) POST_SYNC_VALUE;		/* dw30 */
-> +	addr_bo_buffer_batch[b++] = (uint32_t) (POST_SYNC_VALUE >> 32);	/* dw31 */
-> +
-> +	/* inline data 32 - 47 */
-> +	memcpy(&addr_bo_buffer_batch[b], idata, sizeof(*idata));
-> +	b += 16;
-> +
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw48 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw49 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw50 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw51 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw52 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw53 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw54 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw55 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw56 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw57 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw58 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw59 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw60 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw61 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw62 */
-> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw63 */
-> +
-> +	addr_bo_buffer_batch[b++] = MI_BATCH_BUFFER_END;
-> +}
-> +
-> +static void xe3p_create_indirect_data(uint32_t *addr_bo_buffer_batch,
-> +				      uint64_t addr_input,
-> +				      uint64_t addr_output,
-> +				      uint32_t loop_count)
-> +{
-> +	int b = 0;
-> +
-> +	addr_bo_buffer_batch[b++] = addr_input & 0xffffffff;
-> +	addr_bo_buffer_batch[b++] = addr_input >> 32;
-> +	addr_bo_buffer_batch[b++] = addr_output & 0xffffffff;
-> +	addr_bo_buffer_batch[b++] = addr_output >> 32;
-> +	addr_bo_buffer_batch[b++] = loop_count;
-> +	addr_bo_buffer_batch[b++] = 0x00000200;
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +	addr_bo_buffer_batch[b++] = 0x00000001;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +	addr_bo_buffer_batch[b++] = 0x00000000;
-> +}
-> +
-> +/**
-> + * xe3p_compute_exec - run a pipeline compatible with XE3P
-> + *
-> + * @fd: file descriptor of the opened DRM device
-> + * @kernel: GPU Kernel binary to be executed
-> + * @size: size of @kernel
-> + * @eci: engine instance class
-> + * @user: user defined exec environment
-> + * @alloc_prefs: memory allocation preference
-> + */
-> +static void xe3p_compute_exec(int fd, const unsigned char *kernel,
-> +			      unsigned int size,
-> +			      struct drm_xe_engine_class_instance *eci,
-> +			      struct user_execenv *user,
-> +			      enum execenv_alloc_prefs alloc_prefs)
-> +{
-> +	struct bo_dict_entry bo_dict[] = {
-> +		{ .addr = ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
-> +		  .name = "instr state base"},
-> +		{ .addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
-> +		  .size =  0x1000,
-> +		  .name = "indirect object base"},
-> +		{ .addr = ADDR_INPUT,
-> +		  .name = "addr input"},
-> +		{ .addr = ADDR_OUTPUT,
-> +		  .name = "addr output" },
-> +		{ .addr = ADDR_BATCH,
-> +		  .size = SIZE_BATCH,
-> +		  .name = "batch" },
-> +		{ .addr = ADDR_STATE_CONTEXT_DATA_BASE,
-> +		  .size = 0x10000,
-> +		  .name = "state context data base"},
-> +	};
-> +	struct inline_data idata = {};
-> +	struct bo_execenv execenv;
-> +	float *input_data, *output_data;
-> +	uint64_t indirect_addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START;
-> +	int entries = ARRAY_SIZE(bo_dict);
-> +
-> +	bo_execenv_create(fd, &execenv, eci, user);
-> +
-> +	/* Sets Kernel size */
-> +	bo_dict[0].size = ALIGN(size, 0x1000);
-> +	bo_dict[2].size = size_input(execenv.array_size);
-> +	bo_dict[3].size = size_output(execenv.array_size);
-> +
-> +	bo_execenv_bind(&execenv, alloc_prefs, bo_dict, entries);
-> +
-> +	memcpy(bo_dict[0].data, kernel, size);
-> +	memset(bo_dict[1].data, 0, 4096);
-> +
-> +	xe3p_create_indirect_data(bo_dict[1].data, ADDR_INPUT, ADDR_OUTPUT,
-> +				  0x400);
-> +	idata.xe3p.indirect_addr_lo = indirect_addr;
-> +	idata.xe3p.indirect_addr_hi = indirect_addr >> 32;
-> +
-> +	input_data = get_input_data(&execenv, user, bo_dict[2].data);
-> +	output_data = get_output_data(&execenv, user, bo_dict[3].data);
-> +
-> +	xe3p_compute_exec_compute(fd, &idata,
-> +				  bo_dict[4].data,
-> +				  ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
-> +				  ADDR_STATE_CONTEXT_DATA_BASE, false);
-> +
-> +	bo_execenv_exec(&execenv, ADDR_BATCH);
-> +
-> +	if (!user || (user && !user->skip_results_check))
-> +		bo_check_square(input_data, output_data, execenv.array_size);
-> +
-> +	bo_execenv_unbind(&execenv, bo_dict, entries);
-> +	bo_execenv_destroy(&execenv);
-> +}
-> +
->  /*
->   * Compatibility flags.
->   *
-> @@ -1968,6 +2195,11 @@ static const struct {
->  		.compute_exec = xe2lpg_compute_exec,
->  		.compat = COMPAT_DRIVER_XE,
->  	},
-> +	{
-> +		.ip_ver = IP_VER(35, 11),
-> +		.compute_exec = xe3p_compute_exec,
-> +		.compat = COMPAT_DRIVER_XE,
-> +	},
->  };
->  
->  static const struct intel_compute_kernels
-> diff --git a/lib/intel_compute_krn_square.h b/lib/intel_compute_krn_square.h
-> index 2b616f136b..0490a692ef 100644
-> --- a/lib/intel_compute_krn_square.h
-> +++ b/lib/intel_compute_krn_square.h
-> @@ -288,4 +288,45 @@ static const unsigned char xe3lpg_kernel_square_bin[] = {
->  	0x04, 0x00, 0x00, 0x00, 0x0c, 0x14, 0x20, 0x30, 0x00, 0x00, 0x00, 0x00
->  };
->  
-> +static const unsigned char xe3p_kernel_square_bin[] = {
-> +	0x61, 0x00, 0x00, 0x80, 0x30, 0x43, 0x61, 0x60, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x33, 0x22, 0x01, 0x80, 0x06, 0x18, 0x00, 0x05,
-> +	0x0c, 0x04, 0x28, 0xf0, 0x00, 0x00, 0x00, 0x96, 0x61, 0x80, 0x10, 0x80,
-> +	0x20, 0x02, 0x05, 0x02, 0x04, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80, 0x00, 0x80, 0x00, 0x02,
-> +	0xc0, 0x04, 0x00, 0x40, 0x01, 0x09, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x82, 0x00, 0x00,
-> +	0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x41, 0x21, 0x03, 0x80, 0x60, 0x06, 0x05, 0x03, 0x54, 0x05, 0x00, 0x06,
-> +	0x14, 0x02, 0x10, 0x00, 0x61, 0x00, 0x14, 0x00, 0x10, 0x01, 0x06, 0x0d,
-> +	0x04, 0x01, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x52, 0x19, 0x14, 0x00,
-> +	0x60, 0x06, 0x04, 0x06, 0x04, 0x03, 0x06, 0x01, 0x04, 0x0d, 0x84, 0x04,
-> +	0x70, 0x19, 0x14, 0x00, 0x20, 0x02, 0x01, 0x00, 0x04, 0x06, 0x10, 0x52,
-> +	0x44, 0x05, 0x10, 0x00, 0x2e, 0x00, 0x14, 0x14, 0x00, 0xc0, 0x00, 0x00,
-> +	0x60, 0x00, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x61, 0x00, 0x00, 0x80,
-> +	0x70, 0x07, 0x41, 0x60, 0x04, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x61, 0x00, 0x00, 0x80, 0x70, 0x07, 0x61, 0x60, 0x24, 0x05, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x33, 0x43, 0x17, 0x00, 0x06, 0x11, 0x00, 0x08,
-> +	0x14, 0x06, 0x00, 0xf0, 0x00, 0x00, 0x00, 0x50, 0x41, 0x83, 0x14, 0x00,
-> +	0xa0, 0x02, 0x05, 0x0a, 0x04, 0x08, 0x10, 0x0a, 0x04, 0x08, 0x00, 0x00,
-> +	0x33, 0x24, 0x15, 0x00, 0x04, 0x19, 0x00, 0x00, 0x14, 0x06, 0x00, 0xf0,
-> +	0x14, 0x0a, 0x04, 0x50, 0x2f, 0x00, 0x14, 0x00, 0x00, 0x40, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x33, 0x00, 0x00, 0x80,
-> +	0x01, 0x00, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +	0x00, 0x00, 0x00, 0x00
-> +};
-> +
->  #endif /* __INTEL_COMPUTE_KRN_SQUARE_H__ */
-> diff --git a/lib/intel_compute_square_kernels.c b/lib/intel_compute_square_kernels.c
-> index 3c888ebd85..4d69f270e9 100644
-> --- a/lib/intel_compute_square_kernels.c
-> +++ b/lib/intel_compute_square_kernels.c
-> @@ -86,5 +86,10 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
->  		.loop_kernel = xe3lpg_kernel_loop_bin,
->  		.loop_kernel_size = sizeof(xe3lpg_kernel_loop_bin),
->  	},
-> +	{
-> +		.ip_ver = IP_VER(35, 11),
-> +		.size = sizeof(xe3p_kernel_square_bin),
-> +		.kernel = xe3p_kernel_square_bin,
-> +	},
->  	{}
->  };
-> diff --git a/lib/xehp_media.h b/lib/xehp_media.h
-> index fb65b8f207..20227bd3a6 100644
-> --- a/lib/xehp_media.h
-> +++ b/lib/xehp_media.h
-> @@ -18,6 +18,7 @@
->  #define XEHP_STATE_COMPUTE_MODE		GFXPIPE(0, 1, 5)
->  #define XEHP_CFE_STATE			GFXPIPE_XEHP(2, 2, 0)
->  #define XEHP_COMPUTE_WALKER		GFXPIPE_XEHP(2, 2, 2)
-> +#define XE3P_COMPUTE_WALKER2		GFXPIPE_XEHP(2, 2, 8)
+Summary
+-------
 
-Why the trailing 2? XE3P_COMPUTE_WALKER does not seem to exist.
+  **FAILURE**
 
-Francois
+  Serious unknown changes coming with XEIGTPW_14324_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_14324_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
->  
->  #define BITRANGE(start, end) (end - start + 1)
->  
-> -- 
-> 2.43.0
-> 
+  
+
+Participating hosts (12 -> 12)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_14324_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind:
+    - bat-bmg-3:          [PASS][1] -> [SKIP][2] +53 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8697/bat-bmg-3/igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14324/bat-bmg-3/igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind.html
+
+  * {igt@xe_exec_basic@multigpu-no-exec-rebind@ccs0} (NEW):
+    - bat-bmg-3:          NOTRUN -> [INCOMPLETE][3] +6 other tests incomplete
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14324/bat-bmg-3/igt@xe_exec_basic@multigpu-no-exec-rebind@ccs0.html
+
+  * {igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@rcs0} (NEW):
+    - bat-bmg-3:          NOTRUN -> [WARN][4] +60 other tests warn
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14324/bat-bmg-3/igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@rcs0.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between XEIGT_8697_BAT and XEIGTPW_14324_BAT:
+
+### New IGT tests (483) ###
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.04] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.05] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic@ccs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.05] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.16] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.06] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.14] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.06] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.06] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.16] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.05] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.14] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.05] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.05] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.05] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.05] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.05] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.06] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.14] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.05] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.12] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.05] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.13] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.11] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.06] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.09] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.14] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.08] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.04] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.06] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.07] s
+
+  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.10] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-basic@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind@rcs0:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind@vcs1:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race@vcs1:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind@bcs0:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind@ccs0:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue@vcs1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-defer-bind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-defer-bind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-defer-bind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-defer-bind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-defer-bind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-defer-bind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-defer-bind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-rebind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-rebind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-rebind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-rebind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-rebind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-rebind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null-rebind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-null@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-rebind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-rebind@ccs0:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-rebind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-rebind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-rebind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-rebind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-rebind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race@vcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-rebind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-rebind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-rebind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-rebind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-rebind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-rebind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr-rebind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr@bcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr@rcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr@vcs1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-no-exec-userptr@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic-defer-bind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic-defer-bind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic-defer-bind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-once-basic-defer-bind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic-defer-bind@vcs1:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic-defer-bind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic-defer-bind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic-defer-mmap@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic-defer-mmap@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic-defer-mmap@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-once-basic-defer-mmap@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic-defer-mmap@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic-defer-mmap@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic-defer-mmap@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-basic@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.02] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.02] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate@vcs1:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind@vcs1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr@ccs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr@rcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue@bcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue@rcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-defer-bind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-defer-bind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-defer-bind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-once-null-defer-bind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-defer-bind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-defer-bind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-defer-bind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-defer-mmap@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-defer-mmap@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-defer-mmap@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-defer-mmap@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-defer-mmap@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-defer-mmap@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-defer-mmap@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-rebind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-rebind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-rebind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-rebind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-rebind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-rebind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null-rebind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@multigpu-once-null@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-null@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-rebind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-rebind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-rebind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-rebind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-rebind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-rebind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-rebind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-invalidate-race@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-invalidate-race@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-invalidate-race@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-invalidate-race@vcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-invalidate-race@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-invalidate-race@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-invalidate-race@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-invalidate@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-invalidate@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-invalidate@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-invalidate@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-invalidate@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-invalidate@vecs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-invalidate@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-rebind@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-rebind@ccs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-rebind@rcs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-rebind@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-rebind@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-rebind@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr-rebind@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr@bcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr@ccs0:
+    - Statuses : 1 warn(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr@rcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr@vcs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr@vcs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr@vecs0:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@multigpu-once-userptr@vecs1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.01] s
+
+  * igt@xe_exec_basic@no-exec-basic@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-basic@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-basic@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-basic@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-basic@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-basic@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-basic@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-bindexecqueue@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-bindexecqueue@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-bindexecqueue@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-bindexecqueue@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-bindexecqueue@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-bindexecqueue@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-bindexecqueue@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-userptr-invalidate@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-userptr-invalidate@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-userptr-invalidate@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-userptr-invalidate@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-userptr-invalidate@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-userptr-invalidate@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-userptr-invalidate@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00] s
+
+  * igt@xe_exec_basic@twice-basic-defer-bind@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-bind@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-bind@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-bind@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-bind@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-bind@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-bind@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-mmap@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-mmap@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-mmap@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-mmap@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-mmap@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-mmap@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-mmap@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-rebind@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-rebind@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-rebind@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-rebind@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-rebind@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-rebind@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-rebind@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-invalidate@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-invalidate@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-invalidate@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-invalidate@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-invalidate@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-invalidate@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-invalidate@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-rebind@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-rebind@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-rebind@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-rebind@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-rebind@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-rebind@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-rebind@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14324_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_waitfence@reltime:
+    - bat-dg2-oem2:       [PASS][5] -> [FAIL][6] ([Intel XE#6520])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8697/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14324/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8697 -> IGTPW_14324
+
+  IGTPW_14324: 14324
+  IGT_8697: 8697
+  xe-4368-e9383891a008f23b432b7b3c4ca2d7dd0f49824d: e9383891a008f23b432b7b3c4ca2d7dd0f49824d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14324/index.html
+
+--===============7552098861923390851==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_basic: Enable dynamic subtest</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159958/">https://patchwork.freedesktop.org/series/159958/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14324/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14324/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8697_BAT -&gt; XEIGTPW_14324_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_14324_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_14324_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_14324_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind:</p>
+<ul>
+<li>bat-bmg-3:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8697/bat-bmg-3/igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14324/bat-bmg-3/igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind.html">SKIP</a> +53 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_exec_basic@multigpu-no-exec-rebind@ccs0} (NEW):</p>
+<ul>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14324/bat-bmg-3/igt@xe_exec_basic@multigpu-no-exec-rebind@ccs0.html">INCOMPLETE</a> +6 other tests incomplete</li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@rcs0} (NEW):</p>
+<ul>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14324/bat-bmg-3/igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@rcs0.html">WARN</a> +60 other tests warn</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8697_BAT and XEIGTPW_14324_BAT:</p>
+<h3>New IGT tests (483)</h3>
+<ul>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-mmap@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic@ccs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.16] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.16] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue-userptr@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-bindexecqueue@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-bind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-defer-mmap@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-null@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate-race@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-invalidate@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-userptr@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic-defer-bind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic-defer-mmap@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-basic@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 1 incomplete(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race@vcs1:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate-race@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 1 incomplete(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 1 incomplete(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue@vcs1:</p>
+<ul>
+<li>Statuses : 1 incomplete(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-defer-bind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-defer-bind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-defer-bind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-defer-bind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-defer-bind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-defer-bind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-defer-bind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-defer-mmap@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-null@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 1 incomplete(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race@vcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate-race@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-invalidate@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr@bcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr@rcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr@vcs1:</p>
+<ul>
+<li>Statuses : 1 incomplete(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-no-exec-userptr@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic-defer-bind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic-defer-bind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic-defer-bind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic-defer-bind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic-defer-bind@vcs1:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic-defer-bind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic-defer-bind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic-defer-mmap@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic-defer-mmap@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic-defer-mmap@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic-defer-mmap@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic-defer-mmap@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic-defer-mmap@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic-defer-mmap@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate-race@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate@vcs1:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-invalidate@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 1 incomplete(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr@ccs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr@rcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue@bcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue@rcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-defer-bind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-defer-bind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-defer-bind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-defer-bind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-defer-bind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-defer-bind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-defer-bind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-defer-mmap@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-defer-mmap@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-defer-mmap@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-defer-mmap@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-defer-mmap@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-defer-mmap@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-defer-mmap@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-null@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-invalidate-race@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-invalidate-race@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-invalidate-race@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-invalidate-race@vcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-invalidate-race@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-invalidate-race@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-invalidate-race@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-invalidate@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-invalidate@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-invalidate@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-invalidate@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-invalidate@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-invalidate@vecs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-invalidate@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr@bcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr@ccs0:</p>
+<ul>
+<li>Statuses : 1 warn(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr@rcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr@vcs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr@vcs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr@vecs0:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-userptr@vecs1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-basic@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-basic@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-basic@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-basic@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-basic@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-basic@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-basic@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-bindexecqueue@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-bindexecqueue@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-bindexecqueue@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-bindexecqueue@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-bindexecqueue@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-bindexecqueue@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-bindexecqueue@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-userptr-invalidate@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-userptr-invalidate@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-userptr-invalidate@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-userptr-invalidate@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-userptr-invalidate@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-userptr-invalidate@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-userptr-invalidate@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-bind@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-bind@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-bind@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-bind@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-bind@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-bind@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-bind@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-mmap@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-mmap@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-mmap@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-mmap@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-mmap@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-mmap@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-mmap@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-invalidate@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-invalidate@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-invalidate@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-invalidate@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-invalidate@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-invalidate@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-invalidate@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14324_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_waitfence@reltime:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8697/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14324/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8697 -&gt; IGTPW_14324</li>
+</ul>
+<p>IGTPW_14324: 14324<br />
+  IGT_8697: 8697<br />
+  xe-4368-e9383891a008f23b432b7b3c4ca2d7dd0f49824d: e9383891a008f23b432b7b3c4ca2d7dd0f49824d</p>
+
+</body>
+</html>
+
+--===============7552098861923390851==--
