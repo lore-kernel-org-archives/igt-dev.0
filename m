@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24D62CF45CE
-	for <igt-dev@archiver.kernel.org>; Mon, 12 Jan 2026 20:17:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0355CF45CD
+	for <igt-dev@archiver.kernel.org>; Mon, 12 Jan 2026 20:38:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C109410E2C1;
-	Mon, 12 Jan 2026 20:17:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 79A1310E428;
+	Mon, 12 Jan 2026 20:38:31 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB67610E2C1;
- Mon, 12 Jan 2026 20:17:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0FADB10E428;
+ Mon, 12 Jan 2026 20:38:30 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0576778820566568491=="
+ boundary="===============3794388638450675746=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_RFC=3A_cut_successful_dmesg?=
- =?utf-8?q?_logs?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/intel=5Fdevice=5Finfo?=
+ =?utf-8?q?=3A_get_the_xe_=2Egraphics=5Frel_from_GMD=5FID?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+To: "Xin Wang" <x.wang@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 12 Jan 2026 20:17:21 -0000
-Message-ID: <176824904189.147285.16941062891619908540@a3b018990fe9>
+Date: Mon, 12 Jan 2026 20:38:30 -0000
+Message-ID: <176825031005.147285.17636555151447343081@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260112165006.237964-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20260112165006.237964-1-kamil.konieczny@linux.intel.com>
+References: <20260112191732.672297-1-x.wang@intel.com>
+In-Reply-To: <20260112191732.672297-1-x.wang@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0576778820566568491==
+--===============3794388638450675746==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: RFC: cut successful dmesg logs
-URL   : https://patchwork.freedesktop.org/series/159973/
+Series: lib/intel_device_info: get the xe .graphics_rel from GMD_ID
+URL   : https://patchwork.freedesktop.org/series/159978/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8697_BAT -> XEIGTPW_14325_BAT
+CI Bug Log - changes from XEIGT_8697_BAT -> XEIGTPW_14326_BAT
 ====================================================
 
 Summary
@@ -74,7 +74,7 @@ Participating hosts (12 -> 12)
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_14325_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_14326_BAT that come from known issues:
 
 ### IGT changes ###
 
@@ -83,7 +83,7 @@ Known issues
   * igt@xe_waitfence@reltime:
     - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#6520])
    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8697/bat-dg2-oem2/igt@xe_waitfence@reltime.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14325/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14326/bat-dg2-oem2/igt@xe_waitfence@reltime.html
 
   
   [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
@@ -92,19 +92,19 @@ Known issues
 Build changes
 -------------
 
-  * IGT: IGT_8697 -> IGTPW_14325
+  * IGT: IGT_8697 -> IGTPW_14326
   * Linux: xe-4368-e9383891a008f23b432b7b3c4ca2d7dd0f49824d -> xe-4370-fb2e525015f1b65b83809995601ea7827ee08ab9
 
-  IGTPW_14325: 8d9a0e2390df3dd43be75fce0dac1d387b0a0a6a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_14326: 14326
   IGT_8697: 8697
   xe-4368-e9383891a008f23b432b7b3c4ca2d7dd0f49824d: e9383891a008f23b432b7b3c4ca2d7dd0f49824d
   xe-4370-fb2e525015f1b65b83809995601ea7827ee08ab9: fb2e525015f1b65b83809995601ea7827ee08ab9
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14325/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14326/index.html
 
---===============0576778820566568491==
+--===============3794388638450675746==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -124,37 +124,37 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>RFC: cut successful dmesg logs</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159973/">https://patchwork.freedesktop.org/series/159973/</a></td></tr>
+<tr><td><b>Series:</b></td><td>lib/intel_device_info: get the xe .graphics_rel from GMD_ID</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159978/">https://patchwork.freedesktop.org/series/159978/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14325/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14325/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14326/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14326/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8697_BAT -&gt; XEIGTPW_14325_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8697_BAT -&gt; XEIGTPW_14326_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (12 -&gt; 12)</h2>
 <p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14325_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_14326_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>igt@xe_waitfence@reltime:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8697/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14325/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>)</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8697/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14326/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>)</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8697 -&gt; IGTPW_14325</li>
+<li>IGT: IGT_8697 -&gt; IGTPW_14326</li>
 <li>Linux: xe-4368-e9383891a008f23b432b7b3c4ca2d7dd0f49824d -&gt; xe-4370-fb2e525015f1b65b83809995601ea7827ee08ab9</li>
 </ul>
-<p>IGTPW_14325: 8d9a0e2390df3dd43be75fce0dac1d387b0a0a6a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_14326: 14326<br />
   IGT_8697: 8697<br />
   xe-4368-e9383891a008f23b432b7b3c4ca2d7dd0f49824d: e9383891a008f23b432b7b3c4ca2d7dd0f49824d<br />
   xe-4370-fb2e525015f1b65b83809995601ea7827ee08ab9: fb2e525015f1b65b83809995601ea7827ee08ab9</p>
@@ -162,4 +162,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============0576778820566568491==--
+--===============3794388638450675746==--
