@@ -4,172 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA9BFD2D10A
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Jan 2026 14:36:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E567D2D10A
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Jan 2026 14:37:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7FECF10E2B9;
-	Tue, 13 Jan 2026 14:36:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0074F89906;
+	Tue, 13 Jan 2026 14:37:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="O3p9rRmT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S6KslJZl";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C9B9610E2B9
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Jan 2026 14:36:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9831489906
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Jan 2026 14:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768315007; x=1799851007;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=gxxjLTLkisG3Jfajd6JHWWXbcs5EGgSme+kAKr1npdA=;
- b=O3p9rRmTIutgu59q2tuIKAf79geyhxgU44ftPziTROGC7EJkvRqzaz7l
- 3LqqV86JGMLlEFBoYkTCkmMlI8KU3HtcBb1f88D4YQurU8F/CC6GFFj4y
- MktMjOo4eotholBQ4m02cAttFZzFX+gMn1Ip7XYJHqlL/RckANeGyrVc9
- 2YU1/Tpsa+xQfZbVjDHc/l7se4DdkQnPi+yRtDxlTRDUfH5TXRO4Sk0Re
- FG5QqCIcKLY+YAKVuE5wCKbQGXWrNrPMiYGBrhnLTJ2PgPPMTG/3uTL1m
- cSuV6KBSb0virTeL61otGed811l+7URVzBhPDcnrs9CqoY0dWxFK+HaRT A==;
-X-CSE-ConnectionGUID: Rrxy0xiNQpaHdyQOXrNtsw==
-X-CSE-MsgGUID: VMOUPWzeRJGHeE2QPSdyxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="73455622"
-X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; d="scan'208";a="73455622"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jan 2026 06:36:47 -0800
-X-CSE-ConnectionGUID: +aBiRen+Q4q/3Mx8r7D7aQ==
-X-CSE-MsgGUID: xHOsndiDQqWzCwZ51rstDA==
+ t=1768315065; x=1799851065;
+ h=from:to:subject:in-reply-to:references:date:message-id:
+ mime-version:content-transfer-encoding;
+ bh=fhGe/dVzjOqRs0ENZ+UfT4SsrJR/dVqsP6AoPePREi4=;
+ b=S6KslJZleRGPaept9GSz/daR8lnp0dD89dFvoUoDzN65wP279aLeqyZ+
+ XWn9ESuG7Tnkg3T8YXJ0ULE0aE/mpytLGAe8merK7wL2BtW65oPNFteG9
+ yCQflZ5llGEk4WXKRutNgybY36r9Mv1pA5OtWf3OUA2DAeup+PK0z2mN8
+ xghcB3xHGvg2jKwPC1ZfVzeaP8BJzx6dY+h7kuJmXNOAlP5Y2O2aIK1aH
+ VG6sAxulZe/g+fBOEspUGKSC23PXinOy9WUWVruos6B22SMZv8bIxo+2d
+ EHFcL/GxDfNTS/CeBbBUKuavuBkvHb9MLyEcJ1yn+NPCcGvjgzd32h+5f A==;
+X-CSE-ConnectionGUID: vwaAnCAySFO8KiEzzkBYSQ==
+X-CSE-MsgGUID: YMKplHcTS5G45rgnkCjWig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="68606877"
+X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; d="scan'208";a="68606877"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jan 2026 06:37:45 -0800
+X-CSE-ConnectionGUID: wD5qblbMRK6GDPeCnouINA==
+X-CSE-MsgGUID: p72fuakSSTu4KMb/Aj8vqw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; d="scan'208";a="235111914"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jan 2026 06:36:46 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 13 Jan 2026 06:36:45 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Tue, 13 Jan 2026 06:36:45 -0800
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.13) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 13 Jan 2026 06:36:45 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aeEWsC7OkkBFUUeWF+baYE5tr4UBdTwol9CORzpWVyw2CcosO6gCJiNjg2zSlPKdMcOTYxo2tcHO4Ci50Q9Y/FMj/LuZWcNhs1Pz+0w2rWsSpugqxKWzwi0QzBATeP0R8hhl2xRRf45JUwL3k577BjzSt0Xc7ZadZO9SLW1j6GIlTxgTZgEGGgBJco7GmJmBYP8yRWlYP/tfU/K8KZ5fwM0exTPq0LDe2OkYsratKh2aIImBAL41hENYyzIWuAjlhGs4c1C5nrFz9LpKvAUVn8DPnz4PFrzgVD1vtSKALXYlUOmJQTa2NljrXcZBO7N+RUswpgDykt6e+bzWXBwzog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LqnhLdG7+ARKSM6CzfxErNOlGgCGbaUnrhTorI47dFw=;
- b=CtcFZPy2qm6fxux5yiVsWKW0L5f9S06Ktj2fEUAalzWvOy99nv+DA55QmECk7MWTiqQWCvsW1YBJii6zFcGj7l2rmcplBhziUX/w7mWYvqOk3mrdY1DRA3EdZYbzg/xh7/LcF1r7LjTsMST78qPBaI6B/G1HLsKoN6qt/fHxH08F3euuem6KZPJWuo7OAjelS3x0ghs44QwRxRsxjL4UtWw0ZJh7qFwSPQE17EWquLbJ5FmcoHckX4LaJm+NakJkVA5NsBFFfvl+3PHliTg0whLAhLUTC1TRTg2mo4PHWmr9Oisa887P4Y/S/KYLXFlmI1iTEogwGOW7pBS/y/Gdng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6053.namprd11.prod.outlook.com (2603:10b6:510:1d1::8)
- by MW4PR11MB7127.namprd11.prod.outlook.com (2603:10b6:303:221::15)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Tue, 13 Jan
- 2026 14:36:41 +0000
-Received: from PH7PR11MB6053.namprd11.prod.outlook.com
- ([fe80::3e15:8d62:5e58:a513]) by PH7PR11MB6053.namprd11.prod.outlook.com
- ([fe80::3e15:8d62:5e58:a513%5]) with mapi id 15.20.9499.005; Tue, 13 Jan 2026
- 14:36:41 +0000
-From: "Samala, Pranay" <pranay.samala@intel.com>
-To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-Subject: RE: [PATCH v1 0/2] DC5 DPMS/PSR suspend/resume validation test
-Thread-Topic: [PATCH v1 0/2] DC5 DPMS/PSR suspend/resume validation test
-Thread-Index: AQHchJDzSj4cinLcxUaimXWwaqWwELVQKjiQ
-Date: Tue, 13 Jan 2026 14:36:41 +0000
-Message-ID: <PH7PR11MB6053818E666120B7FBD73578E78EA@PH7PR11MB6053.namprd11.prod.outlook.com>
-References: <20260113132639.13411-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20260113132639.13411-1-mohammed.thasleem@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6053:EE_|MW4PR11MB7127:EE_
-x-ms-office365-filtering-correlation-id: 0fb5e464-ea9e-458e-1c9b-08de52b12ae5
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|376014|366016|1800799024|7053199007|38070700021; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?lufEJ9UA1YViPLExbwK88TOwTsZinEZLP91XcTjI2wUdQDULScy2ln7LoiY0?=
- =?us-ascii?Q?IicztlpTv4ARtYS++8mXRd6Bd+U6wA5EFUit9sTx8R/dz8XBGRC5VQTtEuam?=
- =?us-ascii?Q?qiHJgjMtHoDrEuYjfpKSroeErcjnZ6BZ0zqR1bu0LeAXrRl4xcH6KvtH7Wmu?=
- =?us-ascii?Q?60s1WUcnYZeO4vzKVTn9I3Tn+sXtq+7dHlpHxj+IokZRCmSra7NVRNkjYoNd?=
- =?us-ascii?Q?6wgM8byHie7qjhRAP5PPIvQZFM0WWxD87j4Jvrf6VgL3Gu2Ky5eLv7MDa2Y0?=
- =?us-ascii?Q?s8UfYOp06FrqMfc2wXbW5MbJB7+cVnGOS57puGoXqo995vMykx77j0Zkn3KA?=
- =?us-ascii?Q?g0aN6OgAQsnnfxRCw1S0YEyLeen7mlndQTh3k7ucEM+jNPe4Mvup5i7phkvU?=
- =?us-ascii?Q?4FCUDIW8MFik5jPcy/OLeu+2hVDiSxgxAxzHvRKTtaFQj8SC0mx/3a2LO4A6?=
- =?us-ascii?Q?p6lySopquXfsbwIhiaC7JMtgvjRCnzi1MwEgnsa1c5DzzHBqTJdmNwbf1La0?=
- =?us-ascii?Q?44lBWCkHbqnFQBpgJj62s6TAxdN1QQNKpgxMDRV1vIeZJfRid2qQuePM8hi4?=
- =?us-ascii?Q?2MZGW9Pry7Y4t8bvof5uun3iuE1LGO3i8oCWCSfCNf7nJCCKn5otsIgpWM3K?=
- =?us-ascii?Q?Fd32VL+WA/Dl5UUJ0lbRPMnyZJMMX9vY7aNeVb7hNprvMP3M49DFUlV3+RR4?=
- =?us-ascii?Q?AZvRLJwhm4JIVycoi8C8gv3qyOYx2IiU+4aZJHbkP71XVH6ukitaDYBbju40?=
- =?us-ascii?Q?bLQiQsGP0guB8YHzuWhxBN6m/6jK/0rV3Qgd9AhUGoYSVLi/y1Qcp8u0haz+?=
- =?us-ascii?Q?YD2oHGj7VJisa7NNm+M2bDyGuhPdpGC3WtIEu0IlCEipWLoVqXsMFJyH1n5i?=
- =?us-ascii?Q?W+aeKJvvHz1Ui3IkOL9MozMkBz4I9Mep+O/lNzDfXCtKf0mcWxb1KkRA3MQT?=
- =?us-ascii?Q?yuzIHeV06RCS+RzjcRtLQF8pA/+DHLK+lrVsqmuAVL6WYK2o2SsD57fHxI4E?=
- =?us-ascii?Q?Nodf5SxQvPvMn4j+DlvRtPRfiKvLKRZed7UX7FO+yIXnISrSN8F1E72NEa74?=
- =?us-ascii?Q?TZEi7imNdoylsEeTZywuWGfCP9DMbF7EnDDN99AQANK9LWiFBCrPv+C3Dp39?=
- =?us-ascii?Q?lyH79DgsZHyM/7ED08yZvebfQW7Nuy2W/+sfYSdJgSutD2TZqjmwfAH+YInu?=
- =?us-ascii?Q?Owg4RSqPN3R9cn7MiSI+MBz1wVIt6eN51ZOIP/HcsCKckviWBcxUOZNYwnAe?=
- =?us-ascii?Q?a8HPYREpf899ILsM3ebAslPAYo/8fnMV30O0t+BpSfBiociyqpV02iVcb2tx?=
- =?us-ascii?Q?m54qGalx6JD1dT9jN5Nk49ow3W7yYicG25/Yi1Q6AZRLz3JE5e1nt99+O5hr?=
- =?us-ascii?Q?IsXiMfH/7aZpI+eDjq41hyGP7mhoKKurxLfSuSJP4ytTaQho6h4Jh9vWyaAi?=
- =?us-ascii?Q?xVgF5162BY+hs0SWr9mt8TB+r/eDg8kRUBI363ZmlJMunZfsxsBF65xGOl19?=
- =?us-ascii?Q?/er1Yn6YPcRPtH2o7HCibGYIyC/O7HkNyVLK?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB6053.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024)(7053199007)(38070700021); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?8DBBGqJGmSM/YZBbVBW9V4TuroDXiBA2TlzJrnWAyFuQKPPAcMwrT6DNXA0Z?=
- =?us-ascii?Q?syZczfJnjGVpsKwyfjemGHLV3F3DbT7Pg1kWyUJHBt7XBY5uvmpEJdwTDEif?=
- =?us-ascii?Q?4hYzzWyOROJ09m3tGiOvkQ0x69IIXrbgZuiFauUksalnRpbJvQpbQD4Odxhf?=
- =?us-ascii?Q?Arfnf47DJfWvRf8ijQqW+mglQRkcV6ObPjg0Tbo1/MBkMnm3Cdm3CBscQxVl?=
- =?us-ascii?Q?HfcNP0nMS8z3ovRgdjiIwuUHGVhY6Vhow1WN8Y63/TBCU58/uaZIixyxCqsZ?=
- =?us-ascii?Q?6EZVSUs7g4TFxedWsxaOnbvSeE8+nUB3VJ9sUckluwCdhWfjLRYfu0Q4CcU6?=
- =?us-ascii?Q?vmKWllbYAlZhjJZURM6EKwrwN3/eHALR/sOagg3tjOZAMR27vm6FICwe89yc?=
- =?us-ascii?Q?cL1OsnF809FPBR+xEtvnNXiHhigsS2WQIBcM402FTRL++TCzvRkLORU8Dote?=
- =?us-ascii?Q?tAhgCrKi4A0DxZOgpRyGqbwaHa9zAifbvBjYhwM9KiZryzey4zAwphIVheBU?=
- =?us-ascii?Q?xM0e30cXRoDbbKUrDxVMe7bk4+xNMTbSbcS4UuimI9nyoG0SvRfTM4TdoVGk?=
- =?us-ascii?Q?UrouULotaGGmW+buh+14Jel/Ml4/pYr5L0IYWg5K/KWdpH//xAy6nFHFYMc6?=
- =?us-ascii?Q?1wBx+gjMDPC51IoFUQA+gbOkiBDHlD89eWibXD1uWKAK5H3bxw06x7z7Tz0I?=
- =?us-ascii?Q?9sbWw4P9Arao5C65mpvH9/aU4wvy48C/LQ1em+IlR9LSzo6Wv+fxSy44MWNd?=
- =?us-ascii?Q?8sD48QKOeGSc4QN8y72tvhIxysoyEqUJZGho4b/2A1PYoNBXW0KlbAhQi/aN?=
- =?us-ascii?Q?NEESZGqHDnptCl9CX7HuATdH/4YT7hRFb2XhuKiVSfkynz2Z+1jVz4bWTtas?=
- =?us-ascii?Q?gUpsL3GJFcjVO/eQfSguKSyEVaU8Zs+ipVU4OleudI8a+RKD3f2iTC6cV8dy?=
- =?us-ascii?Q?c6zt2VliOBmYxATZEnJBvmSJySbAmE+FXwgm0RX+d7gM3zWtbcYitnYlEMys?=
- =?us-ascii?Q?3SphgKymCY9AQkuwKmMq0Zvx2oKu1egxbo5lIcmtgGqiqgeMLn/hR0ARQ42u?=
- =?us-ascii?Q?Ey8vC3cuHXNA3zbQbhjdA+iODrWzPhoWRaYl29d3AQKrbo61T8HGHQdKh5+g?=
- =?us-ascii?Q?Gu1bSBVlMAX1EyjT2nC29ma72B1myVGHB7krS3frqATrPPIlpe2N1RmvIynK?=
- =?us-ascii?Q?KWemRUlSW7doiwzsthqbr033sXWb40M3jfy6S8AUbykd4CmBookjYtiKpzIl?=
- =?us-ascii?Q?w7Ge94VSOAKnKXx+2YXFBevNRF4sp/U1LNB59j+ryRoMc1P9ImMpsrmc65pr?=
- =?us-ascii?Q?3E7w6uyNhn94af4n1NqIDC4CvyyNjSfM84HVstKcUTeXStkqDg8gfpk6JmmR?=
- =?us-ascii?Q?7rTD7kGiEOiKQ68azTdRA2oeofZoa2rTYGfTYr8Kq50QYt2p2h8WEPuVTRzS?=
- =?us-ascii?Q?TgN9l2m/jKIIDL/NNx/4ZLFcg05njSjyFkzMwZ8ybMkhGcFWtVFfdcuYvSRy?=
- =?us-ascii?Q?7gEXOesULc8zfmiCVGTbet7/9xlWF2ZMc3wU2VT66HMQKVifh1zQ+31zVuCa?=
- =?us-ascii?Q?U56uS3ISGKS5Pb3NfifEFyQjvgtzrPvSanrhgXt3EqYKIBTAQDkvVDp/KOCA?=
- =?us-ascii?Q?EREUI9zsyM40JfD7mlynIg6m/3EDK98ly/uQ/QViuY/NnoI9ACEWtUSZW2+G?=
- =?us-ascii?Q?lS1z6XKI4tKVNm7gOCQZvHM0wG3gVUoX0eFeFC26Movh2is3I4EVz1+jbrVB?=
- =?us-ascii?Q?Wkpev7onSQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; d="scan'208";a="204808955"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.36])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jan 2026 06:37:44 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 6/8] tests/kms_async_flips: Use designated
+ initializers in wait_for_vblank()
+In-Reply-To: <20260113120439.12577-7-ville.syrjala@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260113120439.12577-1-ville.syrjala@linux.intel.com>
+ <20260113120439.12577-7-ville.syrjala@linux.intel.com>
+Date: Tue, 13 Jan 2026 16:37:41 +0200
+Message-ID: <9b8eb5a4c72be70f1e280f671c27eeb30aaee531@intel.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6053.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0fb5e464-ea9e-458e-1c9b-08de52b12ae5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jan 2026 14:36:41.4937 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: KmQrTxtuUqQJJsa37V8pLnKQz8vJftaD6kP3lm+Xi4YqJmXY8cKSlZGf4Mpm2N/xNTRWz/ITOMdIg4WgAAYziQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB7127
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -185,33 +72,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Thasleem,
+On Tue, 13 Jan 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>
+> Clean up wait_vblank() by using designated initializers.
+> The non-blocking queue_vblank() counterpart already does
+> it this way.
+>
+> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> ---
+>  tests/kms_async_flips.c | 16 ++++++----------
+>  1 file changed, 6 insertions(+), 10 deletions(-)
+>
+> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+> index 71570385c32e..92246037ca87 100644
+> --- a/tests/kms_async_flips.c
+> +++ b/tests/kms_async_flips.c
+> @@ -555,18 +555,14 @@ static void test_async_flip(data_t *data)
+>=20=20
+>  static void wait_for_vblank(data_t *data, unsigned long *vbl_time, unsig=
+ned int *seq)
+>  {
+> -	drmVBlank wait_vbl;
+> -	uint32_t pipe_id_flag;
+> -	int pipe;
+> -
+> -	memset(&wait_vbl, 0, sizeof(wait_vbl));
+> -	pipe =3D kmstest_get_pipe_from_crtc_id(data->drm_fd, data->crtc_id);
+> -	pipe_id_flag =3D kmstest_get_vbl_flag(pipe);
+> -
+> -	wait_vbl.request.type =3D DRM_VBLANK_RELATIVE | pipe_id_flag;
+> -	wait_vbl.request.sequence =3D 1;
+> +	int pipe =3D kmstest_get_pipe_from_crtc_id(data->drm_fd, data->crtc_id);
+> +	drmVBlank wait_vbl =3D {
+> +		.request.type =3D DRM_VBLANK_RELATIVE | kmstest_get_vbl_flag(pipe),
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> Mohammed Thasleem
-> Sent: Tuesday, January 13, 2026 6:57 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Thasleem, Mohammed <mohammed.thasleem@intel.com>
-> Subject: [PATCH v1 0/2] DC5 DPMS/PSR suspend/resume validation test
->=20
-> This test validates dc5 dpms/psr before and after suspend/resume cycle.
->=20
-> *** BLURB HERE ***
-The commit message still contains the placeholder.=20
-Please remove it.
+I'll note that passing pipe to kmstest_get_vbl_flag() is wrong, but the
+patch at hand is just non-functional cleanup. We'll need to revisit
+this.
 
-Regards,
-Pranay
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
->=20
-> Mohammed Thasleem (2):
->   tests/intel/kms_pm_dc: Add DC5 DPMS suspend/resume validation test
->   tests/intel/kms_pm_dc: Add DC5 PSR suspend/resume validation test
->=20
->  tests/intel/kms_pm_dc.c | 37 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 37 insertions(+)
->=20
-> --
-> 2.25.1
 
+> +		.request.sequence =3D 1,
+> +	};
+>=20=20
+>  	do_ioctl(data->drm_fd, DRM_IOCTL_WAIT_VBLANK, &wait_vbl);
+> +
+>  	*vbl_time =3D wait_vbl.reply.tval_sec * 1000000 + wait_vbl.reply.tval_u=
+sec;
+>  	*seq =3D wait_vbl.reply.sequence;
+>  }
+
+--=20
+Jani Nikula, Intel
