@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1A7CD2F33C
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Jan 2026 16:01:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B33FDD2F33D
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Jan 2026 16:06:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E23A810E510;
-	Tue, 13 Jan 2026 16:01:07 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EZD5l7SW";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DC13910E515;
- Tue, 13 Jan 2026 16:01:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768320067; x=1799856067;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=bK6+FCCd/J3jMJylAzVoZnQEtvTvDWEM1Yq2RiQ8gtw=;
- b=EZD5l7SWlAvPwjxX5UKeEI0F00r9tJVTenYP0aThOtcNDDzE6lPLsZYd
- oFO4Cc8Wekdd8fFnc7Elmgb4b5fYJf18Ucwhve73zWeVps7faLsKJ7nSN
- d6kUS4Lo3T9dNGb5pPBFDUiJWF/2Qt7BnBHe5pw/y8E+gc/4Q8vV7LbJz
- zBagLcjuunop/L0//BI7GZqZ2xVEOQvSO+20DTC+RakqXMPD4jSAr/Wbk
- RZbpe85ooWNUrOgxbDjQ3Sw2hVwg3BYgQ7nXAWSu/bUMzvdZTN37pkhHu
- npQh3M0W0xkAFsXx2zildfujRzzmg2Ke8stZPG/bn3pjowSvsYPTIlizB A==;
-X-CSE-ConnectionGUID: zgzZsRgDQYipGQZexKgEyw==
-X-CSE-MsgGUID: mxm5fgGURKSbEztJobn8yQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="69689162"
-X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; d="scan'208";a="69689162"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jan 2026 08:01:07 -0800
-X-CSE-ConnectionGUID: aSGe1+aVT8C7wvMI1GRaGw==
-X-CSE-MsgGUID: DBVA281ASH+C5ts99K+LvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; d="scan'208";a="235136856"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO
- jkrzyszt-mobl2.intranet) ([10.245.246.48])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jan 2026 08:01:04 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t v3] tests/intel/gem_lmem_swapping: Avoid false failures
- from oom-killer
-Date: Tue, 13 Jan 2026 16:59:36 +0100
-Message-ID: <20260113160043.694106-2-janusz.krzysztofik@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6127C10E35D;
+	Tue, 13 Jan 2026 16:06:37 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 820B510E35D;
+ Tue, 13 Jan 2026 16:06:36 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0172700575984375661=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fbas?=
+ =?utf-8?q?ic=3A_Enable_dynamic_subtest_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Balasubramani Vivekanandan" <balasubramani.vivekanandan@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 13 Jan 2026 16:06:36 -0000
+Message-ID: <176832039652.150541.2914758916238900227@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260113145314.331614-2-balasubramani.vivekanandan@intel.com>
+In-Reply-To: <20260113145314.331614-2-balasubramani.vivekanandan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,118 +37,1298 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The smem-oom subtest can expectedly result in oom-killer being triggered,
-which then dumps a call trace from a process that triggered it.  If that
-happens to be a process that executes drm or i915 functions then the call
-trace dump contains lines recognized by igt_runner running in piglit mode
-as potential warnings.  If severity of the call trace dump messages is
-NOTICE or higher, which isn't unlikely, then a dmesg-warn result is
-reported despite successful completion of the subtest.
+--===============0172700575984375661==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Fortunately, severity of those call trace dump messages depends on kernel
-default log level which can be controlled from user space over sysctl.
+== Series Details ==
 
-To avoid false failure reports, relax kernel default log level to INFO so
-those log lines are ignored by igt_runner in piglit mode at an expense of
-call traces from real issues potentially detected by the subtest not
-contributing to the igt_runner reported result.  Since those call traces
-are still available to developers, only submitted with reduced severity,
-that shouldn't hurt as long as the igt_runner still abandons further
-execution and reports an abort result on a kernel taint.
+Series: tests/intel/xe_exec_basic: Enable dynamic subtest (rev2)
+URL   : https://patchwork.freedesktop.org/series/159958/
+State : success
 
-v3: Move cleanup to an exit handler in case we are killed (Kamil).
-v2: Move default log level setup inside subtest smem-oom (Kamil),
-  - move cleanup there as well.
+== Summary ==
 
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5493
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- tests/intel/gem_lmem_swapping.c | 61 +++++++++++++++++++++++++++++++--
- 1 file changed, 59 insertions(+), 2 deletions(-)
+CI Bug Log - changes from XEIGT_8699_BAT -> XEIGTPW_14333_BAT
+====================================================
 
-diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
-index adae26716c..e68d318fd0 100644
---- a/tests/intel/gem_lmem_swapping.c
-+++ b/tests/intel/gem_lmem_swapping.c
-@@ -661,6 +661,21 @@ static void gem_leak(int fd, uint64_t alloc)
- 	gem_madvise(fd, handle, I915_MADV_DONTNEED);
- }
- 
-+static FILE *printk;
-+static int console_log_level, default_log_level;
-+
-+static void printk_exit_handler(int sig)
-+{
-+	if (printk) {
-+		rewind(printk);
-+		igt_debug_on(fprintf(printk, "%d %d",
-+				     console_log_level,
-+				     default_log_level) != 3);
-+		fclose(printk);
-+		printk = NULL;
-+	}
-+}
-+
- static int *lmem_done;
- 
- static void smem_oom_exit_handler(int sig)
-@@ -861,8 +876,50 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	}
- 
- 	igt_describe("Exercise local memory swapping during exhausting system memory");
--	dynamic_lmem_subtest(region, regions, "smem-oom")
--		test_smem_oom(i915, ctx, region);
-+	igt_subtest_with_dynamic("smem-oom") {
-+		unsigned int i;
-+
-+		/*
-+		 * This subtest can result in oom-killer being triggered, which
-+		 * then dumps a call trace from a process that triggered it.
-+		 * If that happens to be a process that executes drm or i915
-+		 * functions then the call trace dump contains lines recognized
-+		 * by igt_runner as warnings and a dmesg-warn result is
-+		 * reported.  To avoid false failure reports, relax kernel
-+		 * default log level to INFO for those lines to be ignored by
-+		 * igt_runner in piglit mode, at an expense of call traces from
-+		 * potential real issues not contributing to the igt_runner
-+		 * reported result.  Since those call traces are still available
-+		 * to developers, only displayed with relaxed severity, that
-+		 * shouldn't hurt as long as igt_runner still abandons further
-+		 * execution and reports an abort result on a kernel taint.
-+		 */
-+		printk = fopen("/proc/sys/kernel/printk", "r+");
-+		if (!igt_debug_on(!printk)) {
-+			if (!igt_debug_on(fscanf(printk, "%d %d",
-+						 &console_log_level,
-+						 &default_log_level) != 2) &&
-+			    default_log_level < 6) {
-+				igt_install_exit_handler(printk_exit_handler);
-+
-+				rewind(printk);
-+				igt_debug_on(fprintf(printk, "%d 6",
-+						     console_log_level) != 3);
-+			} else {
-+				fclose(printk);
-+				printk = NULL;
-+			}
-+		}
-+
-+		for (i = 0; i < regions->num_regions; i++) {
-+			region = &regions->regions[i];
-+			if (region->region.memory_class == I915_MEMORY_CLASS_DEVICE)
-+				igt_dynamic_f("lmem%u", region->region.memory_instance)
-+					test_smem_oom(i915, ctx, region);
-+		}
-+
-+		printk_exit_handler(0);
-+	}
- 
- 	igt_fixture() {
- 		intel_allocator_multiprocess_stop();
--- 
-2.52.0
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 11)
+------------------------------
+
+  Missing    (1): bat-bmg-3 
+
+New tests
+---------
+
+  New tests have been introduced between XEIGT_8699_BAT and XEIGTPW_14333_BAT:
+
+### New IGT tests (105) ###
+
+  * igt@xe_exec_basic@no-exec-basic@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-basic@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-basic@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-basic@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-basic@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-basic@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-basic@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-bindexecqueue@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-bindexecqueue@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-bindexecqueue@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-bindexecqueue@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-bindexecqueue@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-bindexecqueue@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-bindexecqueue@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-userptr-invalidate@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-userptr-invalidate@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-userptr-invalidate@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-userptr-invalidate@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-userptr-invalidate@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-userptr-invalidate@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@no-exec-userptr-invalidate@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-bind@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-bind@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-bind@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-bind@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-bind@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-bind@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-bind@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-mmap@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-mmap@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-mmap@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-mmap@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-mmap@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-mmap@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic-defer-mmap@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-basic@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-rebind@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.02] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue-userptr@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-bindexecqueue@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-rebind@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-rebind@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-rebind@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-rebind@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-rebind@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-rebind@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-rebind@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-invalidate@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-invalidate@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-invalidate@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-invalidate@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-invalidate@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-invalidate@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-invalidate@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-rebind@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-rebind@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-rebind@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-rebind@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-rebind@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-rebind@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr-rebind@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr@bcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr@ccs0:
+    - Statuses : 9 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr@rcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr@vcs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr@vcs1:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr@vecs0:
+    - Statuses : 11 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_basic@twice-userptr@vecs1:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14333_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_waitfence@engine:
+    - bat-dg2-oem2:       [FAIL][1] ([Intel XE#6519]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8699/bat-dg2-oem2/igt@xe_waitfence@engine.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14333/bat-dg2-oem2/igt@xe_waitfence@engine.html
+
+  
+  [Intel XE#6519]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8699 -> IGTPW_14333
+  * Linux: xe-4373-7907558010710b0829258fc6a7bbcbb8783b8aa5 -> xe-4377-2ea51667c07c23307c4337bcccf28a2efb232007
+
+  IGTPW_14333: 14333
+  IGT_8699: 0b67ab25f2eb58b296872c8c34474b79353727d5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4373-7907558010710b0829258fc6a7bbcbb8783b8aa5: 7907558010710b0829258fc6a7bbcbb8783b8aa5
+  xe-4377-2ea51667c07c23307c4337bcccf28a2efb232007: 2ea51667c07c23307c4337bcccf28a2efb232007
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14333/index.html
+
+--===============0172700575984375661==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_basic: Enable dynamic subtest (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159958/">https://patchwork.freedesktop.org/series/159958/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14333/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14333/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8699_BAT -&gt; XEIGTPW_14333_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 11)</h2>
+<p>Missing    (1): bat-bmg-3 </p>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8699_BAT and XEIGTPW_14333_BAT:</p>
+<h3>New IGT tests (105)</h3>
+<ul>
+<li>
+<p>igt@xe_exec_basic@no-exec-basic@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-basic@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-basic@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-basic@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-basic@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-basic@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-basic@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-bindexecqueue@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-bindexecqueue@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-bindexecqueue@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-bindexecqueue@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-bindexecqueue@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-bindexecqueue@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-bindexecqueue@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-userptr-invalidate@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-userptr-invalidate@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-userptr-invalidate@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-userptr-invalidate@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-userptr-invalidate@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-userptr-invalidate@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-userptr-invalidate@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-bind@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-bind@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-bind@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-bind@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-bind@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-bind@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-bind@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-mmap@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-mmap@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-mmap@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-mmap@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-mmap@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-mmap@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic-defer-mmap@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-basic@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-bindexecqueue@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-invalidate@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-invalidate@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-invalidate@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-invalidate@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-invalidate@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-invalidate@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-invalidate@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-rebind@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-rebind@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-rebind@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-rebind@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-rebind@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-rebind@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr-rebind@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr@bcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr@ccs0:</p>
+<ul>
+<li>Statuses : 9 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr@rcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr@vcs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr@vcs1:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr@vecs0:</p>
+<ul>
+<li>Statuses : 11 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@twice-userptr@vecs1:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14333_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_waitfence@engine:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8699/bat-dg2-oem2/igt@xe_waitfence@engine.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519">Intel XE#6519</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14333/bat-dg2-oem2/igt@xe_waitfence@engine.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8699 -&gt; IGTPW_14333</li>
+<li>Linux: xe-4373-7907558010710b0829258fc6a7bbcbb8783b8aa5 -&gt; xe-4377-2ea51667c07c23307c4337bcccf28a2efb232007</li>
+</ul>
+<p>IGTPW_14333: 14333<br />
+  IGT_8699: 0b67ab25f2eb58b296872c8c34474b79353727d5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4373-7907558010710b0829258fc6a7bbcbb8783b8aa5: 7907558010710b0829258fc6a7bbcbb8783b8aa5<br />
+  xe-4377-2ea51667c07c23307c4337bcccf28a2efb232007: 2ea51667c07c23307c4337bcccf28a2efb232007</p>
+
+</body>
+</html>
+
+--===============0172700575984375661==--
