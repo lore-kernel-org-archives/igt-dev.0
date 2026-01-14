@@ -4,174 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2496D31A0E
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Jan 2026 06:36:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC423D31A0E
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Jan 2026 06:39:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8BAAD10E1C0;
-	Wed, 14 Jan 2026 06:36:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 69E8110E1C0;
+	Wed, 14 Jan 2026 06:39:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jweViQhq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PPmywPWj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BE40E10E1C0
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jan 2026 06:36:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA9DC10E1C0
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jan 2026 06:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768372591; x=1799908591;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=lND7LSuvT5OzcoR8Uz0PH9VheTuUo0lD+FMUx1npjqM=;
- b=jweViQhq6yT4yR9+NImSfB93QM6dd/5KAlORxiHFgol3Uarnju0A5eBk
- HfxpTBsGE1dGF1X5HhNpmdV/1oms5313GH/SzMLoKUjrm31Mqs4o0W61E
- VHCpocYbVcUheM5Z+UrrqRHmKSExTB0vW2dJyfFRTEwl1w5858j45Fcwt
- HTydZXHcGQRnHYsqWfKB+Rw1QhJRTnKGKnJqKHRjs8996grvHODIIHnyY
- n3PDwM/qDG+SQ5j0xGqxaoGD/Vr3cipVr2DzGuDEPPkgahzvQ8CVmhFxr
- NQkSh2h7N+VTPdh/L5eJvSxM1Y6qHc6Gr/g2J/6tNjtqPhCG3OMLp9CfH g==;
-X-CSE-ConnectionGUID: 7gvI2rTzRpG9+dVROop+Eg==
-X-CSE-MsgGUID: LkazP2dYQQW0Ao0QYOGozA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="69586037"
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; d="scan'208";a="69586037"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jan 2026 22:36:31 -0800
-X-CSE-ConnectionGUID: 76T8SCrnSJueirplqX3aiw==
-X-CSE-MsgGUID: rGAkVGdSTNWdwzcSdZq98w==
+ t=1768372782; x=1799908782;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=MiJP9ProAOkAaM+KHW/ZnUbULYcEQbWsl+CMoRaBiBs=;
+ b=PPmywPWjM/BkNCWjR3JDEwj1vLs4irISHnxHHQrkrRiRoyIDfN4jckqX
+ CeC6tEJ6GbCgLlPXBgDjofj9mGVFU8BWSyo7WmxmC5jIw+ETKfW1uA5zW
+ AK2oechJliMeHy0cEMAAsvYvlIKTRdtg8yzxQu8qVxSA/v75c3CKY9EPQ
+ 9dVo+3uzv6ddEcndY+5q3bl1vR0W5m9/B/OhKNTazaWlgwKLVyhTXqDw2
+ F27S3vloVtmUFPKzFPNsPyUGMoAlXf3sch/LmIcM6cP6UqdMt/SomhbJ4
+ tPmL25DahaEtR2qruCs1c9Nbv71qc9pFNYaYgpvbWRUXwB6ACoDTUB6Eb Q==;
+X-CSE-ConnectionGUID: wcg5zJkTS3Ogkq1FWVS0Tw==
+X-CSE-MsgGUID: Ra+fEe+kSXuG/8BaCy5EQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="69646868"
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; d="scan'208";a="69646868"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jan 2026 22:39:41 -0800
+X-CSE-ConnectionGUID: wKCH2lkcRwav3VVJmu4YPQ==
+X-CSE-MsgGUID: qUahGLNtTB2fNBRig/pbww==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; d="scan'208";a="235312745"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jan 2026 22:36:30 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; d="scan'208";a="205157519"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jan 2026 22:39:40 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 13 Jan 2026 22:36:30 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.2562.29; Tue, 13 Jan 2026 22:39:40 -0800
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Tue, 13 Jan 2026 22:36:30 -0800
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.28) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.2562.29 via Frontend Transport; Tue, 13 Jan 2026 22:39:40 -0800
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.8) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 13 Jan 2026 22:36:29 -0800
+ 15.2.2562.29; Tue, 13 Jan 2026 22:39:39 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BQNVEHM6fk1mak325eCEm5iP2UUFzDn4KnISg04K2yP7IY8BZuiSJKtt1+uVdHv7Ncu/q0rAqSmAR3rzCbjkBVPEwIZDWnymlyUwoncZJDYvIuJnzcCdWWcIEvYjn/WNOw/ji4nb9YO4Qseg1dzT01d2JeLAABjoT2xr0/cJoXkWb2S+p9dqvLJMzK2D3+aUTj43+o7/nebDWqhiRgWtyzlbRQ/dQYlhRuRHg97o/2BOVJCw8v9klBcDIs3cLDK9lT+JRmeerUGQoRBAv1bMWptTvLu1p00gasBm4AhucXsn838Cg4FBadyd2zHddr3Bn3XRlkUJmlaFV22KqsXVTQ==
+ b=Uk3A3V393d0QeA4b4EIkINv1ByoaRxPE2FC3N2IB4VrBfQWSzxllyTxAWivV33nqg9N1YktvSsR+vK3X+lYOEsXA8+KElpzsjapHXheBPHnRkfDO0DJZbL2SZY078p0+TXL9xfvpxK03PtPwslHzyd+IJHR0oc7Wnqd+YJ9PACGjpGWMb2N9GP6WbGF8yf+awqcO4W/UXr1YD0yFiuv8fR0eX+3BIxBTILjagnrMLIlat/ffCbAMpri9M2KnLFzWGEOuFQ2j3fuol1qiXhjAs7hzI17wNQubVQlUIiCiWLOQb56uSWNCFFDQIN4kdUq5zTNiOkl8DebyfrzczL8pDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=swBCKpPvWstdHYA53lxNh9OM34B7SKulB5b3RaCP2FE=;
- b=iYPG0cX6UMpwQYvNijtIe0WejGh1Kg6JBrtAPDJC1kfv9BjJKHUyVemuntpgG8VyGFMBDUtUkeFIUI03MEIYxdhHz3KSE2+fkBJkWioQARuHgp0nhjkUocu7ZLesfP0SdI9V5HFbHIcfpI2YNrXx25ALA6rZ8iiyK1SMccLpHdVC+p8gvxiHCRKpsxUQtOqdiUubp2bn4ti5f582GnpGJgiZbk0HzdVAEHQ94v9Ids0c6Am8TayKoY4iGG7zFMjXStdzru5+AgE9hR5mpTDpXsWJtdzpjCaqILybnSPKpys2dil4ozugbznaKWqI3qq5CNLbEfg7jxlP4TdrWphkyw==
+ bh=wq2MJOtH3+a9M4KDRowuGFlUNxLew7vC28Cfgpf1qW0=;
+ b=co9Ldl1pWWA9/ZOtKDn5wMFXz6NXL6dZN5GDiLEmpZWqfIhfmZiUz+YU1MIev/XpjqpX59+aVdGN0YNm/WpKkiP/mzd+Yo/mae27dAsWG7vSzmMMx3awmlcpW2ojN9Y9lwuMaOohEz4lKMOjNGNdwQobp3fDb6fnpjXrXPJwGYzy4XjsX9sGo1oeJGRCp3TNJnxxJrB1ZUd4mmkAUBP3lsnLlSGlgzqUMS05aiu4siDOPq5bRAunIT39V0DYMDXmxJgkxSdkLHp93/EnjnQmfgsgf/9TLyju6fO6oAxYjE/Z1/ZHFWfnPHdUwDP8eayvO7vtnf9S+Lcy9HPUlM6krA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from CH3PR11MB8434.namprd11.prod.outlook.com (2603:10b6:610:176::19)
- by IA1PR11MB7199.namprd11.prod.outlook.com (2603:10b6:208:418::21)
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL3PR11MB6410.namprd11.prod.outlook.com (2603:10b6:208:3b9::15)
+ by PH8PR11MB6707.namprd11.prod.outlook.com (2603:10b6:510:1c6::16)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Wed, 14 Jan
- 2026 06:36:22 +0000
-Received: from CH3PR11MB8434.namprd11.prod.outlook.com
- ([fe80::52c4:16e1:a67e:63bc]) by CH3PR11MB8434.namprd11.prod.outlook.com
- ([fe80::52c4:16e1:a67e:63bc%4]) with mapi id 15.20.9520.003; Wed, 14 Jan 2026
- 06:36:22 +0000
-From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
-To: "Vishwanathapura, Niranjana" <niranjana.vishwanathapura@intel.com>
-CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: RE: [PATCH i-g-t 7/7] tests/intel/xe_exec_threads: Extend multi queue
- testing
-Thread-Topic: [PATCH i-g-t 7/7] tests/intel/xe_exec_threads: Extend multi
- queue testing
-Thread-Index: AQHccN926DY1gJBSWEWVmXoLyBTLUrU8WN4AgBUFVdA=
-Date: Wed, 14 Jan 2026 06:36:22 +0000
-Message-ID: <CH3PR11MB8434E2E14E930C2EEC2D443B8D8FA@CH3PR11MB8434.namprd11.prod.outlook.com>
-References: <20251219120154.695287-1-priyanka.dandamudi@intel.com>
- <20251219120154.695287-8-priyanka.dandamudi@intel.com>
- <aVWXAMbNVuCdo__V@nvishwa1-desk>
-In-Reply-To: <aVWXAMbNVuCdo__V@nvishwa1-desk>
-Accept-Language: en-IN, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH3PR11MB8434:EE_|IA1PR11MB7199:EE_
-x-ms-office365-filtering-correlation-id: 04e273c9-81d5-4ef6-648f-08de53373bea
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|376014|366016|1800799024|7053199007|38070700021; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?7xBqkUnWIWhAxe5oOl8uDhXaNtcC6tOUy8fe+2s3lh0MV43kEHXQtBxgf9K9?=
- =?us-ascii?Q?VH+UQu/iIVbNOYaq3Vs0z8ZRtTg+qD1gA47A2CKuhXdJHis3OWZ0OGPuVESd?=
- =?us-ascii?Q?pM0kF474PpmMUV0RR99CivmNc9Rk7BAUY2UOyE/FQ89p2Cpfh+qi+8zTG1BB?=
- =?us-ascii?Q?8QnB56FIzjdeDCQie4jJjlEy1c0vfrVwvhT/9qgBo5/vDdxHQVz9bobHUg51?=
- =?us-ascii?Q?XnOs1LZ0lTQlt9ZAML0LwQHW8K8SSbNNavgU87Nu23M+VZWYAg5YAS/Bxw4m?=
- =?us-ascii?Q?ukmJGFHqKNv0lUxh0VOsFkCHWIzZouejtRp2EBbZLTOnM6WguPdBYhFp0IO4?=
- =?us-ascii?Q?a9yqkcvVOC+7BVkHPVbbiE3rb3Z0lfcu/iVV/pWU8qo0auO8aDFBE3LIIMZ4?=
- =?us-ascii?Q?IBJmPKpKz+PWeiOoyNYxGQHVltXGXOvacD0JVD1LKHzWKqlmWdp6PRMks6Ik?=
- =?us-ascii?Q?WiPUpinRM5aHX0VANBHYk347w5VevT82djOJOyymvk9SU1yX8IOq6Lyr8J6V?=
- =?us-ascii?Q?LypbzE7x4asoOeeocBUYawM/IfU+vr/C5h1pXzDQzbrxk+Sinhxe2i+yu7n2?=
- =?us-ascii?Q?zD397/xp9lsntfORGzqQ7u+uvb30l6qR1VDp7E/VYaG+5Itn7zseDUQtNhUK?=
- =?us-ascii?Q?RbXQ+ZqQNTDgQvTtsb7pH6OI2OiGu6YmB3XKqL/NxLz3jIiLtVfEZkW0RNbI?=
- =?us-ascii?Q?pfe2jPFV6n1nfXo4ylmD1rLUw+pZ3hpO7GqmO89rByv6/S5l7lgJ0997W4q1?=
- =?us-ascii?Q?olOfSHsVkdq3DZDyqnx419Xkfnc0thAwcqC88GyDza2p18BQyGPDY9EmGxRW?=
- =?us-ascii?Q?hleEBC/JYssok19J3nnP1BBj6vMIyp6mLtP2BflZEr4Ej66+NAjY8yA7x54y?=
- =?us-ascii?Q?FjHaCjwE4ddcv+S7TrWcwg9y0Eg77S0gqSVHUrjVbm1XbDc5uN6y9qLTpUST?=
- =?us-ascii?Q?vKtFCTCkgwUEkjJNUux0oXFXftclZPG29P18RmrRQfuBaOp7L9nP4Qw6H5HO?=
- =?us-ascii?Q?Vh5p0c0wHKUXKb/1L7TG/61TPbup80qe/RfB9BDili2rN67YdHgYO9Tp0mQH?=
- =?us-ascii?Q?f92w4rpJRSwbubqaR0yYTSnDLGa3xtEyy84c5ntmkr5oTBa9KtdLhLLarZay?=
- =?us-ascii?Q?3uIiq62CaAtQ2p9/k03c6/iYn51riY7lRiInLEyCkzPZ9xJw72S2QAx7KYWj?=
- =?us-ascii?Q?ywuTu5hIVolSKosjRjGpElyQX+29VXT5lzlzzqr9d9Be6hcVq4wPhYnVkEGI?=
- =?us-ascii?Q?RpGX9w/wb5DdsQtwDKT5Iuwf008zQcuxDXEtgTKERlj6cnh8Ct30AVsD+LCV?=
- =?us-ascii?Q?ydZSvy3XhVGQT7jK5ca7Xf+4aPQQ+qgBuB9MtFbBva/lLB5St/3qklnQLOVG?=
- =?us-ascii?Q?xMgmi7uHNDVRbKf7A9mc3pfiG5lJJ9jfxJ9FiCP7PLOMhwOGEJJ+gizWYmGR?=
- =?us-ascii?Q?o1gRSnb1Qh9zCfn0QMgryF+dZ8DE7LpIMV4zeIoT+zjYsVpxqlSH5npQaW7e?=
- =?us-ascii?Q?aE+07McF4p3c+tkG9D3u70j3n2m2x2MwRlpf?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH3PR11MB8434.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024)(7053199007)(38070700021); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?NPonbfZVPpcK/tRrzRJbfDrvtEptIsh2l54Id3Fjju0imGpHZJ/1bO2meRCZ?=
- =?us-ascii?Q?SVuaGg9XyPzIqMB+9R3/RSY+UFM5U+Yuucj+rxrewKXAg3fF/S6LHWLFlxIu?=
- =?us-ascii?Q?Gmhqla+0rEKMe/tp4cSOdldaotB6xRTl4NnvDxU34VCnV6wjUA9KJxtJ5tUG?=
- =?us-ascii?Q?uaRd0DHYEXVPXr9OIeozKlGHf9HK0+mXknTCdUwW+O3NwJm8I8+sUEccM/I4?=
- =?us-ascii?Q?Evm88euk5WdBGBg2l9IkHhR21sfBOymOVY7j5Q+7AgIIbXiuydDIGI6xcwH0?=
- =?us-ascii?Q?aZw/5XFzIah4UKoalBGywd8Ql8dbuvU2F2H0XQBiCRMifQy2j9aLmnDEoZkR?=
- =?us-ascii?Q?Q6/gICqCSQsLlJDINArW//Q84/nyqRJhun1VzbrdBs2tiDkAZ4z0VEzBkbhX?=
- =?us-ascii?Q?bm/AKLXDppqMyzuM84OuCPkXiq6YvFl0Y4DbwTRecGZoCX1azY/hLGolTlJV?=
- =?us-ascii?Q?XSaTlbqbs2DRW73UFSP4Y/wlPUFjoFW9Vb1651ou6Cqm94C+TVO4yukBwonw?=
- =?us-ascii?Q?GY9/Xs0neYoMs/++Bh5x1EffNzIOuuOPsLgUTIa5X1RTPfiW+uxnrj75EMiP?=
- =?us-ascii?Q?MwAJGUrgJGdsJtxUhdumhVPdoXRFTAu/NsFPAk0ezH/rJq7PCrAZY8GZCbJh?=
- =?us-ascii?Q?G0siI41wDQwohq+cyTzQBC+IbVucEwYJq8xPGtCW3bh2Gp3uHOxKr+f2uVaD?=
- =?us-ascii?Q?0SHquXOmnghSLpzxNZNVLPhb3Qw/bZgAfNh57z9NAVlhgb2MsiBTBg1D2Nbv?=
- =?us-ascii?Q?SgpTXcoJW9X6oqyh1XH96wKvlF+Y8uCOytJufJx20fY96NRzBNqKn4hmJZkR?=
- =?us-ascii?Q?zx6NZq8Ijo3qNKZBRJzY0BYsI1i3CVVSFAcVAUhAXlFCwCsDkTcVROKun09D?=
- =?us-ascii?Q?O4kZX+aoqdLX9lPHAf96NM7sckZgd1XiRGWRq9OHREh940wsHtK2NH3B3bc2?=
- =?us-ascii?Q?U6vhrev8+12K69EJbQRgCRwiBqOYHRhPAQsAyCeJSDsArKpBznQpQM0gHZSt?=
- =?us-ascii?Q?W0hcjkRyKLyKRuFcaL5+IBV11g2N8yvr6SGHMKhk4qoD3gRnoT8/+li6KedI?=
- =?us-ascii?Q?NTLReWhhlIpNxZWEBN6Nk4STvDpfI7Gy8wKKuGVzJdMXEuWO6VkrnkIZ/giD?=
- =?us-ascii?Q?tD03X70Qe6kC4BlUq3vh06pLkf4E62hOt07XtZG+lOQyIQHNf9PHyqaDOGUZ?=
- =?us-ascii?Q?WwdUS5d+C0ghV0Tyizf2KH+suTZwtIRHtTWNtWCR3ruXz6bpyFAw/ZgZzYlc?=
- =?us-ascii?Q?hUB+TaqDZmNaH0zilBVbD7JovVE5aDRX9fyLBwimQNB80MwPEovl2lQK1j36?=
- =?us-ascii?Q?TbohTdxZzro83L27N6wTsOd+wlqHTlz+RubLA9NjvRBpJF/dEb4v4irFSzhw?=
- =?us-ascii?Q?dltRr4olVCWncUhO92Xzs40ZLeJQj5AbBy50lf03L1MIKq1d9bQVoWVk/2kL?=
- =?us-ascii?Q?mFmzM9IsZVyt06LwnNeUODoaFl0HPg0YQ0EabZeTG1ZefdXzxIgBOfaAAkAP?=
- =?us-ascii?Q?Tv8xpwbvMjT9RG4KnBMpESvayXRQufRvECDzPDrWeuMbRTQISuEvQlMUWXiE?=
- =?us-ascii?Q?HfWUc4ZKYEX3c2JsRvZl6A+W5Nqm1JL4lgwkjAnaUwovy59AP9yZYHUZKfB0?=
- =?us-ascii?Q?9OtX8Cz3gy8VEUcmP/5jx77v9tCB+opTJoQK8Ha2g5s+qpHvajIwgKHzgQwm?=
- =?us-ascii?Q?oNJlC6L78g1GoBMFhua1hZ4TH4gcgg5Dil4XbbMtyFxXIf2RPd0qNKkHy6tm?=
- =?us-ascii?Q?JUPd6yyCDm9gY0hxQ2RvSL1m+RIZwrQ=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 2026 06:39:36 +0000
+Received: from BL3PR11MB6410.namprd11.prod.outlook.com
+ ([fe80::b01a:aa33:165:efc]) by BL3PR11MB6410.namprd11.prod.outlook.com
+ ([fe80::b01a:aa33:165:efc%6]) with mapi id 15.20.9520.005; Wed, 14 Jan 2026
+ 06:39:35 +0000
+Date: Tue, 13 Jan 2026 22:39:32 -0800
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: Xin Wang <x.wang@intel.com>
+CC: <igt-dev@lists.freedesktop.org>, <stuart.summers@intel.com>
+Subject: Re: [PATCH] tests/intel/xe_exec_multi_queue: enable preempt flag for
+ Q0
+Message-ID: <aWc6JMjfLxSycokG@nvishwa1-desk>
+References: <20260114063236.831396-1-x.wang@intel.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260114063236.831396-1-x.wang@intel.com>
+X-ClientProxiedBy: SJ0PR13CA0122.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c6::7) To BL3PR11MB6410.namprd11.prod.outlook.com
+ (2603:10b6:208:3b9::15)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR11MB6410:EE_|PH8PR11MB6707:EE_
+X-MS-Office365-Filtering-Correlation-Id: c64efe37-75b2-4d55-eaac-08de5337aeed
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?cQnt06wQ6dhCwsd1DtGqYPNTawsfciDLt30hAIfO+az5ZkbGNUmBiZRm7IAG?=
+ =?us-ascii?Q?uX6DYEVlbcEhZwgNmk4n5sFcMf/aLSLNwXStNC24aWaeR57JnlpiV5zdc6w6?=
+ =?us-ascii?Q?v2z7nTfAqYgQZmY2HIElbL9WiwVJNeRwFvqEcThIGFgE2YFIa76WYXJHSEmk?=
+ =?us-ascii?Q?Ou4NKFk5IQUNna+ctf1U7NQp/MvIvw8vJZLhVNBD8fkb0EgucZ8YHtkbD5+L?=
+ =?us-ascii?Q?a3idWRPaJh2SKYTzD+HSxNLe8L7ENqC38ahHaV+sLgxFjzIjqkMJRRYdNA49?=
+ =?us-ascii?Q?N9Fm/RJ+2MP2jDDN5C9SB0qXfeyIdhP+lAyVdACXm0I064PLcR3Iw1j8uiB5?=
+ =?us-ascii?Q?l6srkAeos2Cu/VZUwwFMp17qqvxLHt7eHHyA7a5p3A66W7ZfPhnJ/veaciXW?=
+ =?us-ascii?Q?d9pvFiAVaK9KluVFMvcI/CzsJtGUBFeEul2RLPndAV8wt0TOcjEKRrFOLRih?=
+ =?us-ascii?Q?aZVMZAegw5FYrZ/DwiT1LGvNpDSiQjLJ/cH7h6QRYASqOPZwc9I170L8ObZz?=
+ =?us-ascii?Q?oq9i7ONNMJtqZoITnWT/Nf8q1w64VQtcMYyWhwzXNUc+NLBA8qJU+WcnAznz?=
+ =?us-ascii?Q?4diJG9hK1KkwsEYuPz0V8jMU0l6vbocWhKRLJuhh8fZN872icnJPP7mp01xz?=
+ =?us-ascii?Q?z1iiey+tsOiYT3PtRpc/aI90EbB+T9bZbAx+B66/OtO1zWq8CyfMCZKzh3ou?=
+ =?us-ascii?Q?5RrBqR3AsKgTCv40TfkPDZeUIiCjkIyJslSbxGJxtdhGhrrEdY8Q1wFNUTA/?=
+ =?us-ascii?Q?4JwSXHBzcBGeptTUkUgxpR1gyTILFEmO9kzytQYFNqkavYlR6XrAm1CaeTKB?=
+ =?us-ascii?Q?mVQyPn13ucM36sbfAglAbfFTq3/jRKAo+/zyaFJH82qmVBkKHJfI6nFqjP37?=
+ =?us-ascii?Q?yCDnrNepIbN0QHPJy/mrrgmaro/umADnP7UiTHKZwey47YnqRfh66YV3R6/Q?=
+ =?us-ascii?Q?tfU/5dVLXqixPUUHMWd0aSunVQ8HUFdAJO5x284z/UreaaN7vg1H3oD8YIUN?=
+ =?us-ascii?Q?5iQkiz+bQ2I6J87kve4609/UGDEP1O1LlQdCzQ9chsVuzNmb99qJt8Q7NWnl?=
+ =?us-ascii?Q?bZiWN3lSebVVohY+zg/ItBWr/E+bkx5BfDVQzFIY4zYxN620p88rJ5sJadKz?=
+ =?us-ascii?Q?QDkoSjUDCccCjxtpdT/3l+cdoyqPa4jnRfCYQEp1LDw91WUR1nKZR/12igH8?=
+ =?us-ascii?Q?MTUC9r8KYdt8xXtJk4gvUqfCXbQMULVwQYTCFJEVSbBbANCiOpbuVGV00/mr?=
+ =?us-ascii?Q?lAPkKmBKJnhF7cudzFiRWdEpln/p4liAV40IvUQt3yMCnqKzXka4eIAdpg3z?=
+ =?us-ascii?Q?PXVCru+1EV9bWGOweTER8Z7dVdlhG01GCVmW+O+9C73W1PZlbarVg/7JrRgn?=
+ =?us-ascii?Q?P0RNdh1TXNePw4XEQcCPP8lbGLG+fjXu1yYPFzGDNtsu9hHic/TogBznWct5?=
+ =?us-ascii?Q?OhqKJginZOsl2s9L3jX0fDv3uD/hSfx9?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BL3PR11MB6410.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?J5yMPimDI66nXro1+yl2Y+NuoIKPejDnbF2GMPXprF0L2mJiVgNsdBxrluRg?=
+ =?us-ascii?Q?R2rFNav09p9fquToqtQR7f6iqxsMO2rz9mytwoivLPoqOd2ALubL8vbP5ZbV?=
+ =?us-ascii?Q?gWZRrdmVHqhnuJ14svNlk64DOAT+kYM8qA+B9KCL+xA0YVuCnXdOw0TY5ktH?=
+ =?us-ascii?Q?SGScWqfd0c7YC041W4pLx/j2XMRJQmrXwVfseeP65ZxYXZvuZ9H++E4FxcUT?=
+ =?us-ascii?Q?mHvIrAghDPWnNTHkSFjU2wPqYvgsPEmenLg92Dsoeg0ySjDYk1Te2w1BSfsp?=
+ =?us-ascii?Q?iJgkrv3tj/Jvtr68f7UB9WJm9768wPCbzqfxl4gzNPc9KPEZEJhlfTrOxUdC?=
+ =?us-ascii?Q?mnlNDYrBUBokgQsJ3RM8fweS3NfJnftoUzncLAgf54J57RwHrv5TX1BdQx8j?=
+ =?us-ascii?Q?xdn7sS4HX0VDftiNVQV1wSzhkrRymBX5CKKOnIWgGUBLZIgrj92qlYEcvnmD?=
+ =?us-ascii?Q?TsGS37bIUjAuIGSKRqv3Y+MbyD5aRP7vIAFK02Gf0Jlh8otmqpraXP8YzHdE?=
+ =?us-ascii?Q?pcVVD9A4zdxoRs4k2Uu5m13DZuw6XjBXjyPpRYIPGqJfRr9/Usz5qunnuVej?=
+ =?us-ascii?Q?XFDRcYXOQQW8AzkFsEdPPiNSl2vDVDqGs9w6hS+UoYsx0amYQkSTd/Xkh749?=
+ =?us-ascii?Q?RmHstj7OML78EuZzhCaV2Q4i989YTnghCKaTk0NXb5QPTqT1D3U97v6qanCX?=
+ =?us-ascii?Q?KMo/vAKt/59DCi3tLlcx64pGT7Jru9ikcRLhVd0VlY5Yu1Ast2AcdWTl8uAw?=
+ =?us-ascii?Q?/JZLEjixUU0adygyix6o0n4h8QrGvBwLDwunD3qZKAp9YpD8xoYgAT87i2Pp?=
+ =?us-ascii?Q?amCmvmt4kd7FSPZw1Ipxu07fO/RCRycEBJc0OX4MRz30KW4KDHry3k/2BasA?=
+ =?us-ascii?Q?MrkZyoQoiNWNPxAU0sM2lBpijxkFhQKGV98a+TaRvAM0aK1dFdxArQC150xn?=
+ =?us-ascii?Q?V+OcrqtT1MenoBWtzE/UYq4iWCLv9OXMfE08GmjAU6arz8QJSTMXEr0FhVli?=
+ =?us-ascii?Q?JDGbfLzwtbJw7GPZBgXTXeGh8EeXgZCZubU6fbCC69GxA3sgnxfRLI5G090e?=
+ =?us-ascii?Q?W0WCu6A4kL/HN0L/OS8hoBF69y6DLaeJXgz9XtAj09JOdkqbUAGpsEhiyqJ9?=
+ =?us-ascii?Q?RoBFvUNDthVLR0UAkMO5Q+9UNmw/Zl7g859Toa2gU0Lt2kf9khLvC5b4p/kk?=
+ =?us-ascii?Q?agOZ5Dwc7QZTDXHVQiIkxVvZc0d/c9eVj+NWf0TfGLvEpIyrIEa1/2SEAVcr?=
+ =?us-ascii?Q?ZWvSxaxBLsfAg6WV4JS68bq2fmWOnmb9hf3g34OFGYsBG0kZbPwh/303/Kk3?=
+ =?us-ascii?Q?lSBAuc4b+VehmaXwfYgeHQ6/CEySbsZWGD4+To5ya1lyHwgpdNqPSlQPBeh8?=
+ =?us-ascii?Q?lmf31IC2BUQ3JQ2vMJeOeHlOIX8FOO8z2BN+NEvzyg1HW4whrRZDEU+8rokh?=
+ =?us-ascii?Q?95gf0ezkWEYOXZGCxjgseNaK+MIsQkmPpBQyP2EXjZ3qj+zXIEaztHzy4Q6Z?=
+ =?us-ascii?Q?wJgW8z0N7cZFnZKeiKaqh0bzAH0LEfx4sHVkMYt8OyPySx11YxW8vw4n8yL5?=
+ =?us-ascii?Q?+QY5po28ROGANa8FiA1HjZaDLg/LcKPYcM0ZdUUFWH+XPdvdIcTEcutlIwLd?=
+ =?us-ascii?Q?O7ODZugaUyDGbn2oV/qGQFy+t4Z2rbOwwebEWMRnYaMggg6F5C8I0ySi3F4j?=
+ =?us-ascii?Q?KBIoS+0uIpK+hrhqI3debrLgPdPzF64lvGPGjoVYYQACN7gf970RsiSYpedt?=
+ =?us-ascii?Q?sI3k8xO8HmWgg8oDkGPoXfD14sEHlo27IkwtI7YNju91TLyQLKD2?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: c64efe37-75b2-4d55-eaac-08de5337aeed
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6410.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8434.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 04e273c9-81d5-4ef6-648f-08de53373bea
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jan 2026 06:36:22.6227 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: whE4bQXeUanHqgrGCdwQsEG0zoWrSlvdHGH2w8CGk9oe/sQ5GGWOY56+p9Ikxc/kK3y4ZwLo4ZDK9LzMRtO74LCmcHDcZzbaEN+3Ahe1g10=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7199
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2026 06:39:35.7387 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Cjl99zqoXCp94QMUX0Jw9GyDY15oLp1DQN7CiaB1xvBjqP2t1WF6SewZWNt8uEO/4fzOJW98IpV27fCTwG5xT1Zkkrsh5PNxulm1ZMxuLklf2bVbOhsBM1KdQvi2kdQC
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6707
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -188,286 +179,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+On Wed, Jan 14, 2026 at 06:32:36AM +0000, Xin Wang wrote:
+>The spinner preempt flag enables queue preemption and multi-queue
+>switching. Always enable premept flag while inserting multi-queue
+>switch point. We need multi-queue switch point only in Q0 which
+>acts as a gating queue until all other queues with different
+>priorities are submitted to hardware.
 
+NIT...may be bit of rewording...
+"In priority test, we need multi-queue switch point only in Q0..."
 
-> -----Original Message-----
-> From: Vishwanathapura, Niranjana <niranjana.vishwanathapura@intel.com>
-> Sent: 01 January 2026 03:05 AM
-> To: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
-> Cc: igt-dev@lists.freedesktop.org
-> Subject: Re: [PATCH i-g-t 7/7] tests/intel/xe_exec_threads: Extend multi
-> queue testing
->=20
-> On Fri, Dec 19, 2025 at 05:31:54PM +0530, priyanka.dandamudi@intel.com
-> wrote:
-> >From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
-> >
-> >Extend multi queue testing to different scenarios.
-> >
-> >Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
->=20
-> Same here. Remove.
->=20
-> >Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> >---
-> > tests/intel/xe_exec_threads.c | 163
-> +++++++++++++++++++++++++++++++++-
-> > 1 file changed, 160 insertions(+), 3 deletions(-)
-> >
-> >diff --git a/tests/intel/xe_exec_threads.c
-> >b/tests/intel/xe_exec_threads.c index 4bf1cd1b1..0545c7ab6 100644
-> >--- a/tests/intel/xe_exec_threads.c
-> >+++ b/tests/intel/xe_exec_threads.c
-> >@@ -312,9 +312,21 @@ test_compute_mode(int fd, uint32_t vm, uint64_t
-> addr, uint64_t userptr,
-> > 	igt_assert(exec_sync !=3D MAP_FAILED);
-> > 	memset(exec_sync, 0, sync_size);
-> >
-> >-	for (i =3D 0; i < n_exec_queues; i++)
-> >-		exec_queues[i] =3D xe_exec_queue_create(fd, vm, eci, 0);
-> >+	for (i =3D 0; i < n_exec_queues; i++) {
-> >+		if (flags & MULTI_QUEUE) {
-> >+			struct drm_xe_ext_set_property multi_queue =3D {
-> >+				.base.next_extension =3D 0,
-> >+				.base.name =3D
-> DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> >+				.property =3D
-> DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
-> >+			};
-> >+			uint64_t ext =3D to_user_pointer(&multi_queue);
-> >
-> >+			multi_queue.value =3D i ? exec_queues[0] :
-> DRM_XE_MULTI_GROUP_CREATE;
-> >+			exec_queues[i] =3D xe_exec_queue_create(fd, vm, eci,
-> ext);
-> >+		} else {
-> >+			exec_queues[i] =3D xe_exec_queue_create(fd, vm, eci,
-> 0);
-> >+		}
-> >+	}
-> > 	pthread_barrier_wait(&barrier);
-> >
-> > 	sync[0].addr =3D to_user_pointer(&data[0].vm_sync);
-> >@@ -994,8 +1006,95 @@ static void *thread(void *data)
-> >  *	balancer mixed fd userptr invalidate
-> >  * @bal-mixed-fd-userptr-invalidate-race:
-> >  *	balancer mixed fd userptr invalidate race
-> >+ */
-> >+/**
-> >+ * SUBTEST: threads-%s
-> >+ * Mega feature: MultiQ
-> >+ * Sub-category: MultiQ tests
->=20
-> Same comments as in patch#1 applies here also regarding SUBTEST name and
-> MultiQ naming.
->=20
-> >+ * Description: Run threads %arg[1] test with multi threads
-> >+ * arg[1]:
-> >+ * @multi-queue-basic:
-> >+ *	multi-queue basic
-> >+ * @multi-queue-userptr:
-> >+ *	multi-queue userptr
-> >+ * @multi-queue-rebind:
-> >+ *	multi-queue rebind
-> >+ * @multi-queue-userptr-rebind:
-> >+ *	multi-queue userptr rebind
-> >+ * @multi-queue-userptr-invalidate:
-> >+ *	multi-queue userptr invalidate
-> >+ * @multi-queue-userptr-invalidate-race:
-> >+ *	multi-queue userptr invalidate race
-> >  * @multi-queue-shared-vm-basic:
-> >- *	multi-queue shared vm basic test
-> >+ *	multi-queue shared vm basic
->=20
-> Ah I see, the rest of tests are added in this patch.
-> It is bit confusing though as compute mode variant support is added in th=
-is
-> patch along with other legacy mode test extensions.
->=20
-> It is probably better to move the above changes in test_compute_mode also
-> to previous patch with a compute mode test variant added? Or simply merge
-> both patches together. It will also remove the above multi-queue-shared-v=
-m-
-> basic description change here which is unnecessary.
->=20
-> Also, I don't see cm* test variants being added.
-> Why not?
->=20
-> Niranjana
-Will merge 2 patches into one and add all cm variants in another patch.
->=20
-> >+ * @multi-queue-shared-vm-userptr:
-> >+ *	multi-queue shared vm userptr
-> >+ * @multi-queue-shared-vm-rebind:
-> >+ *	multi-queue shared vm rebind
-> >+ * @multi-queue-shared-vm-userptr-rebind:
-> >+ *	multi-queue shared vm userptr rebind
-> >+ * @multi-queue-rebind-err:
-> >+ *	multi-queue rebind err
-> >+ * @multi-queue-userptr-rebind-err:
-> >+ *	multi-queue userptr rebind err
-> >+ * @multi-queue-shared-vm-userptr-invalidate:
-> >+ *	multi-queue shared vm userptr invalidate
-> >+ * @multi-queue-shared-vm-userptr-invalidate-race:
-> >+ *	multi-queue shared vm userptr invalidate race
-> >+ * @multi-queue-fd-basic:
-> >+ *	multi-queue fd basic
-> >+ * @multi-queue-fd-userptr:
-> >+ *	multi-queue fd userptr
-> >+ * @multi-queue-fd-rebind:
-> >+ *	multi-queue fd rebind
-> >+ * @multi-queue-fd-userptr-rebind:
-> >+ *	multi-queue fd userptr rebind
-> >+ * @multi-queue-fd-userptr-invalidate:
-> >+ *	multi-queue fd userptr invalidate
-> >+ * @multi-queue-fd-userptr-invalidate-race:
-> >+ *	multi-queue fd userptr invalidate race
-> >+ * @multi-queue-hang-basic:
-> >+ *     multi-queue hang basic
-> >+ * @multi-queue-hang-fd-userptr-invalidate-race:
-> >+ *	multi-queue hang fd userptr invalidate race
-> >+ * @multi-queue-cm-fd-userptr-invalidate-race:
-> >+ *	multi-queue compute mode fd userptr invalidate race
-> >+ * @multi-queue-mixed-basic:
-> >+ *	multi-queue mixed basic
-> >+ * @multi-queue-mixed-userptr:
-> >+ *	multi-queue-mixed userptr
-> >+ * @multi-queue-mixed-rebind:
-> >+ *	multi-queue-mixed rebind
-> >+ * @multi-queue-mixed-userptr-rebind:
-> >+ *	multi-queue-mixed userptr rebind
-> >+ * @multi-queue-mixed-userptr-invalidate:
-> >+ *	multi-queue-mixed userptr invalidate
-> >+ * @multi-queue-mixed-userptr-invalidate-race:
-> >+ *	multi-queue-mixed userptr invalidate race
-> >+ * @multi-queue-mixed-shared-vm-basic:
-> >+ *	multi-queue mixed shared vm basic
-> >+ * @multi-queue-mixed-shared-vm-userptr:
-> >+ *	multi-queue-mixed shared vm userptr
-> >+ * @multi-queue-mixed-shared-vm-rebind:
-> >+ *	multi-queue-mixed shared vm rebind
-> >+ * @multi-queue-mixed-shared-vm-userptr-rebind:
-> >+ *	multi-queue-mixed shared vm userptr rebind
-> >+ * @multi-queue-mixed-shared-vm-userptr-invalidate:
-> >+ *	multi-queue-mixed shared vm userptr invalidate
-> >+ * @multi-queue-mixed-shared-vm-userptr-invalidate-race:
-> >+ *	multi-queue-mixed shared vm userptr invalidate race
-> >+ * @multi-queue-mixed-fd-basic:
-> >+ *	multi-queue mixed fd basic
-> >+ * @multi-queue-mixed-fd-userptr:
-> >+ *	multi-queue-mixed fd userptr
-> >+ * @multi-queue-mixed-fd-rebind:
-> >+ *	multi-queue-mixed fd rebind
-> >+ * @multi-queue-mixed-fd-userptr-rebind:
-> >+ *	multi-queue-mixed fd userptr rebind
-> >+ * @multi-queue-mixed-fd-userptr-invalidate:
-> >+ *	multi-queue-mixed fd userptr invalidate
-> >+ * @multi-queue-mixed-fd-userptr-invalidate-race:
-> >+ *	multi-queue-mixed fd userptr invalidate race
-> >  */
-> >
-> > static void threads(int fd, int flags) @@ -1299,7 +1398,65 @@ int
-> >igt_main()
-> > 			FD | USERPTR | INVALIDATE },
-> > 		{ "bal-mixed-fd-userptr-invalidate-race", BALANCER |
-> > 			MIXED_MODE | FD | USERPTR | INVALIDATE | RACE
-> },
-> >+		{ "multi-queue-basic", MULTI_QUEUE | 0 },
-> >+		{ "multi-queue-userptr", MULTI_QUEUE | USERPTR },
-> >+		{ "multi-queue-rebind", MULTI_QUEUE | REBIND },
-> >+		{ "multi-queue-userptr-rebind", MULTI_QUEUE | USERPTR |
-> REBIND },
-> >+		{ "multi-queue-userptr-invalidate", MULTI_QUEUE | USERPTR
-> | INVALIDATE },
-> >+		{ "multi-queue-userptr-invalidate-race", MULTI_QUEUE |
-> USERPTR | INVALIDATE |
-> >+			RACE },
-> > 		{ "multi-queue-shared-vm-basic", MULTI_QUEUE |
-> SHARED_VM },
-> >+		{ "multi-queue-shared-vm-userptr", MULTI_QUEUE |
-> SHARED_VM | USERPTR },
-> >+		{ "multi-queue-shared-vm-rebind", MULTI_QUEUE |
-> SHARED_VM | REBIND },
-> >+		{ "multi-queue-shared-vm-userptr-rebind", MULTI_QUEUE |
-> SHARED_VM | USERPTR |
-> >+			REBIND },
-> >+		{ "multi-queue-rebind-err", MULTI_QUEUE | REBIND |
-> REBIND_ERROR },
-> >+		{ "multi-queue-userptr-rebind-err", MULTI_QUEUE |
-> USERPTR | REBIND |
-> >+			REBIND_ERROR },
-> >+		{ "multi-queue-shared-vm-userptr-invalidate", MULTI_QUEUE
-> | SHARED_VM |
-> >+			USERPTR | INVALIDATE },
-> >+		{ "multi-queue-shared-vm-userptr-invalidate-race",
-> MULTI_QUEUE | SHARED_VM |
-> >+			USERPTR | INVALIDATE | RACE },
-> >+		{ "multi-queue-fd-basic", MULTI_QUEUE | FD },
-> >+		{ "multi-queue-fd-userptr", MULTI_QUEUE | FD | USERPTR },
-> >+		{ "multi-queue-fd-rebind", MULTI_QUEUE | FD | REBIND },
-> >+		{ "multi-queue-fd-userptr-rebind", MULTI_QUEUE | FD |
-> USERPTR | REBIND },
-> >+		{ "multi-queue-fd-userptr-invalidate", MULTI_QUEUE | FD |
-> USERPTR |
-> >+			INVALIDATE },
-> >+		{ "multi-queue-fd-userptr-invalidate-race", MULTI_QUEUE |
-> FD | USERPTR |
-> >+			INVALIDATE | RACE },
-> >+		{ "multi-queue-hang-basic", MULTI_QUEUE | HANG },
-> >+		{ "multi-queue-hang-fd-userptr-invalidate-race",
-> MULTI_QUEUE | HANG | FD | USERPTR |
-> >+			INVALIDATE | RACE },
-> >+		{ "multi-queue-cm-fd-userptr-invalidate-race", MULTI_QUEUE
-> | COMPUTE_MODE | FD |
-> >+			USERPTR | INVALIDATE | RACE },
-> >+		{ "multi-queue-mixed-basic", MULTI_QUEUE | MIXED_MODE
-> },
-> >+		{ "multi-queue-mixed-userptr", MULTI_QUEUE |
-> MIXED_MODE | USERPTR },
-> >+		{ "multi-queue-mixed-rebind", MULTI_QUEUE |
-> MIXED_MODE | REBIND },
-> >+		{ "multi-queue-mixed-userptr-rebind", MULTI_QUEUE |
-> MIXED_MODE | USERPTR | REBIND },
-> >+		{ "multi-queue-mixed-userptr-invalidate", MULTI_QUEUE |
-> MIXED_MODE | USERPTR |
-> >+			INVALIDATE },
-> >+		{ "multi-queue-mixed-userptr-invalidate-race",
-> MULTI_QUEUE | MIXED_MODE | USERPTR |
-> >+			INVALIDATE | RACE },
-> >+		{ "multi-queue-mixed-shared-vm-basic", MULTI_QUEUE |
-> MIXED_MODE | SHARED_VM },
-> >+		{ "multi-queue-mixed-shared-vm-userptr", MULTI_QUEUE |
-> MIXED_MODE | SHARED_VM |
-> >+			USERPTR },
-> >+		{ "multi-queue-mixed-shared-vm-rebind", MULTI_QUEUE |
-> MIXED_MODE | SHARED_VM | REBIND },
-> >+		{ "multi-queue-mixed-shared-vm-userptr-rebind",
-> MULTI_QUEUE | MIXED_MODE | SHARED_VM |
-> >+			USERPTR | REBIND },
-> >+		{ "multi-queue-mixed-shared-vm-userptr-invalidate",
-> MULTI_QUEUE | MIXED_MODE |
-> >+			SHARED_VM | USERPTR | INVALIDATE },
-> >+		{ "multi-queue-mixed-shared-vm-userptr-invalidate-race",
-> MULTI_QUEUE | MIXED_MODE |
-> >+			SHARED_VM | USERPTR | INVALIDATE | RACE },
-> >+		{ "multi-queue-mixed-fd-basic", MULTI_QUEUE |
-> MIXED_MODE | FD },
-> >+		{ "multi-queue-mixed-fd-userptr", MULTI_QUEUE |
-> MIXED_MODE | FD | USERPTR },
-> >+		{ "multi-queue-mixed-fd-rebind", MULTI_QUEUE |
-> MIXED_MODE | FD | REBIND },
-> >+		{ "multi-queue-mixed-fd-userptr-rebind", MULTI_QUEUE |
-> MIXED_MODE | FD | USERPTR |
-> >+			REBIND },
-> >+		{ "multi-queue-mixed-fd-userptr-invalidate", MULTI_QUEUE |
-> MIXED_MODE | FD |
-> >+			USERPTR | INVALIDATE },
-> >+		{ "multi-queue-mixed-fd-userptr-invalidate-race",
-> MULTI_QUEUE | MIXED_MODE | FD |
-> >+			USERPTR | INVALIDATE | RACE },
-> > 		{ NULL },
-> > 	};
-> > 	int fd;
-> >--
-> >2.43.0
-> >
+In any case, LGTM.
+Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+
+>
+>Suggested-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+>Signed-off-by: Xin Wang <x.wang@intel.com>
+>---
+> lib/xe/xe_spin.c                  | 2 +-
+> tests/intel/xe_exec_multi_queue.c | 4 ++--
+> 2 files changed, 3 insertions(+), 3 deletions(-)
+>
+>diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+>index 4dc110c22..0bc06aec3 100644
+>--- a/lib/xe/xe_spin.c
+>+++ b/lib/xe/xe_spin.c
+>@@ -181,7 +181,7 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+> 	 */
+> 	if (opts->multi_queue_switch) {
+> 		uint64_t wait_addr = opts->addr + offsetof(struct xe_spin, wait_cond);
+>-
+>+		igt_assert_f(opts->preempt, "preempt field is required to enable multi-queue switching\n");
+> 		spin->batch[b++] = MI_SEMAPHORE_WAIT_CMD |
+> 				MI_SEMAPHORE_POLL |
+> 				MI_SEMAPHORE_QUEUE_SWITCH_MODE |
+>diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
+>index 6bc6f9f63..32a84ef6b 100644
+>--- a/tests/intel/xe_exec_multi_queue.c
+>+++ b/tests/intel/xe_exec_multi_queue.c
+>@@ -453,8 +453,8 @@ __test_priority(int fd, struct drm_xe_engine_class_instance *eci,
+>
+> 	for (i = 0; i < num_queues; i++) {
+> 		uint64_t spin_addr = addr + i * sizeof(struct xe_spin);
+>-
+>-		xe_spin_init_opts(spin[i], .addr = spin_addr, .multi_queue_switch = true);
+>+		/* Insert multi-queue switch point in Q0 to validate priority based queue switching */
+>+		xe_spin_init_opts(spin[i], .addr = spin_addr, .multi_queue_switch = !i, .preempt = !i);
+> 		sync.addr = spin_addr + (char *)&spin[i]->exec_sync - (char *)spin[i];
+> 		exec.exec_queue_id = exec_queues[i];
+> 		exec.address = spin_addr;
+>-- 
+>2.43.0
+>
