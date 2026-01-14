@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09357D31A14
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Jan 2026 06:59:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27C09D31A13
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Jan 2026 06:59:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 936C510E58D;
-	Wed, 14 Jan 2026 06:59:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CB9E610E58F;
+	Wed, 14 Jan 2026 06:59:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="He52+3ix";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lD0+/7TT";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E9D4510E362
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jan 2026 06:59:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EDC7F10E58F
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jan 2026 06:59:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768373970; x=1799909970;
+ t=1768373974; x=1799909974;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=gz2vAKFCqa5Yk0B0UxK4IlYrI96k/azzogwg9kdyAcA=;
- b=He52+3ixW4aP3H7RIliyWhTiuj+i8BdMC3p9NBgTsIO8Y5Mfr1W2yoC7
- 83ut3pwClsBya3b/NkeHgdAJr0PmTEHVZPkCx6Eh2x0a1QGR4qIsHRSJJ
- EzfqTxGN5gWK8Pe5i/OvSF/dtARQx6a6/bXTvCcTGrCbGbNPWho0dQ05x
- dXM4dt59mv9qHF3edgLmdAmUIV8foIESFqwgEKKD76KQCtSc8e4uqtlYC
- NDR4LGoLbICWw0xElViqQ9Iy9gxydG1FtOnolcElVK1BeHBydVeMPxHBi
- epQty/wn9OJOA10405KGOaUldVkhZjEqhjqJtnQb+1+r5Q1TRL6gykRfC g==;
-X-CSE-ConnectionGUID: 4GG8X4H+QpeGfuLSpkwNVw==
-X-CSE-MsgGUID: BM77dEBYSOmdzL/6p6f+GQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="69647888"
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; d="scan'208";a="69647888"
+ bh=mWqqrayFBKLbe742FcssOxWizR1qZen0mkTFTqkanjM=;
+ b=lD0+/7TTqdCEFGspfCJhDLmzOcc6az3zFx8KUuyqeCyKe2rg633YiFG0
+ o76yYD2aucQxmdqiBM6qJ2382PsMHQkYgjQ6WZ3Qlo9GMpW3PSJFsYoWr
+ uxI3gegHMtwamtVs2H7nM5ute8f2/aYtCRFB8ItJYUQHrOUKLvWdOowNO
+ DucKzZwvIjuBBgBByC/BYuTX//RKzTp3RUoN2YpjGE75d39/Kiod23Rlk
+ CtZsDIbSjOXOLrMABjXKJf3eaQ8qs40wKU67IgSwLGASPjPMkDuEiVTEW
+ BFb/EfCUkUVAr72D8Isks1W8hi1ObvTNOoNI08jqXpjvBdyIT8dsMRjR5 w==;
+X-CSE-ConnectionGUID: OrtN5jEKTxOf+0RVOe4Jqw==
+X-CSE-MsgGUID: O8E57sRrRmmTkTC5NUCAnA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="69647892"
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; d="scan'208";a="69647892"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jan 2026 22:59:30 -0800
-X-CSE-ConnectionGUID: EvG4lB+3SwS2ch0h30/7FQ==
-X-CSE-MsgGUID: dksY+KsnQ0aoftY9/g3KGw==
+ 13 Jan 2026 22:59:34 -0800
+X-CSE-ConnectionGUID: R90OixgTRlSPNEr7vttAvg==
+X-CSE-MsgGUID: zYEYT1/GRKaMxpBegBq1AQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; d="scan'208";a="205159890"
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; d="scan'208";a="205159902"
 Received: from priyanka.iind.intel.com ([10.190.216.153])
- by fmviesa010.fm.intel.com with ESMTP; 13 Jan 2026 22:59:28 -0800
+ by fmviesa010.fm.intel.com with ESMTP; 13 Jan 2026 22:59:32 -0800
 From: priyanka.dandamudi@intel.com
 To: priyanka.dandamudi@intel.com, igt-dev@lists.freedesktop.org,
  niranjana.vishwanathapura@intel.com, ramadevi.gandi@intel.com,
  dwarakanath.ramadeva@intel.com
-Subject: [PATCH i-g-t 1/9] tests/intel/xe_exec_fault_mode: Add multi-queue
- test support
-Date: Wed, 14 Jan 2026 12:29:17 +0530
-Message-ID: <20260114065925.197958-2-priyanka.dandamudi@intel.com>
+Subject: [PATCH i-g-t 3/9] tests/intel/xe_evict: Add multi-queue priority test
+Date: Wed, 14 Jan 2026 12:29:19 +0530
+Message-ID: <20260114065925.197958-4-priyanka.dandamudi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260114065925.197958-1-priyanka.dandamudi@intel.com>
 References: <20260114065925.197958-1-priyanka.dandamudi@intel.com>
@@ -70,208 +69,100 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Extend fault mode test to cover multi-queue test scenarios.
+Add 2 tests small-multiqueue-priority and small-multiqueue-priority-cm
+which sets priority for multiqueue.
 
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- tests/intel/xe_exec_fault_mode.c | 111 ++++++++++++++++++++++++++-----
- 1 file changed, 96 insertions(+), 15 deletions(-)
+ tests/intel/xe_evict.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-index 5f42051a1..3e92dfbd9 100644
---- a/tests/intel/xe_exec_fault_mode.c
-+++ b/tests/intel/xe_exec_fault_mode.c
-@@ -35,6 +35,7 @@
- #define INVALID_FAULT	(0x1 << 7)
- #define INVALID_VA	(0x1 << 8)
- #define ENABLE_SCRATCH  (0x1 << 9)
-+#define MULTI_QUEUE	(0x1 << 10)
+diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
+index bcf13b8cf..2f23538fc 100644
+--- a/tests/intel/xe_evict.c
++++ b/tests/intel/xe_evict.c
+@@ -21,6 +21,7 @@
+ #include "xe/xe_query.h"
+ #include <string.h>
  
- /**
-  * SUBTEST: invalid-va
-@@ -77,6 +78,14 @@
-  *					bindexecqueue userptr invalidate
-  * @bindexecqueue-userptr-invalidate-race:
-  *					bindexecqueue userptr invalidate race
-+ * @multi-queue:			multi-queue
-+ * @multi-queue-userptr:		multi-queue userptr
-+ * @multi-queue-rebind:			multi-queue rebind
-+ * @multi-queue-userptr-rebind:		multi-queue userptr rebind
-+ * @multi-queue-userptr-invalidate:
-+ *					multi-queue userptr invalidate
-+ * @multi-queue-userptr-invalidate-race:
-+ *					multi-queue userptr invalidate race
-  * @basic-imm:				basic imm
-  * @userptr-imm:			userptr imm
-  * @rebind-imm:				rebind imm
-@@ -92,6 +101,15 @@
-  *					bindexecqueue userptr invalidate imm
-  * @bindexecqueue-userptr-invalidate-race-imm:
-  *					bindexecqueue userptr invalidate race imm
-+ * @multi-queue-imm:			multi-queue imm
-+ * @multi-queue-userptr-imm:		multi-queue userptr imm
-+ * @multi-queue-rebind-imm:		multi-queue rebind imm
-+ * @multi-queue-userptr-rebind-imm:
-+ *					multi-queue userptr rebind imm
-+ * @multi-queue-userptr-invalidate-imm:
-+ *					multi-queue userptr invalidate imm
-+ * @multi-queue-userptr-invalidate-race-imm:
-+ *					multi-queue userptr invalidate race imm
-  * @basic-prefetch:			basic prefetch
-  * @userptr-prefetch:			userptr prefetch
-  * @rebind-prefetch:			rebind prefetch
-@@ -106,8 +124,18 @@
-  *					bindexecqueue userptr invalidate prefetch
-  * @bindexecqueue-userptr-invalidate-race-prefetch:
-  *					bindexecqueue userptr invalidate race prefetch
-+ * @multi-queue-prefetch:		multi-queue prefetch
-+ * @multi-queue-userptr-prefetch:	multi-queue userptr prefetch
-+ * @multi-queue-rebind-prefetch:	multi-queue rebind prefetch
-+ * @multi-queue-userptr-rebind-prefetch:	multi-queue userptr rebind prefetch
-+ * @multi-queue-userptr-invalidate-prefetch:
-+ *					multi-queue userptr invalidate prefetch
-+ * @multi-queue-userptr-invalidate-race-prefetch:
-+ *					multi-queue userptr invalidate race prefetch
-  * @invalid-fault:			invalid fault
-  * @invalid-userptr-fault:		invalid userptr fault
-+ * @multi-queue-invalid-fault:		multi-queue invalid fault
-+ * @multi-queue-invalid-userptr-fault:  multi-queue invalid userptr fault
-  */
++#define XE_EXEC_QUEUE_PRIORITY_NORMAL   1
+ #define MAX_N_EXEC_QUEUES	16
+ #define MULTI_VM			(0x1 << 0)
+ #define THREADED			(0x1 << 1)
+@@ -30,6 +31,7 @@
+ #define EXTERNAL_OBJ		(0x1 << 5)
+ #define BIND_EXEC_QUEUE		(0x1 << 6)
+ #define MULTI_QUEUE		(0x1 << 7)
++#define PRIORITY		(0x1 << 8)
  
  static void
-@@ -188,7 +216,19 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	memset(exec_sync, 0, sync_size);
+ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
+@@ -89,6 +91,15 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
+ 			};
+ 			uint64_t ext = to_user_pointer(&multi_queue);
  
- 	for (i = 0; i < n_exec_queues; i++) {
--		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
-+		if (flags & MULTI_QUEUE) {
-+			struct drm_xe_ext_set_property multi_queue = {
-+				.base.next_extension = 0,
-+				.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+				.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
-+			};
-+			uint64_t ext = to_user_pointer(&multi_queue);
-+
-+			multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
-+			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
-+		} else
-+			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
-+
- 		if (flags & BIND_EXEC_QUEUE)
- 			bind_exec_queues[i] =
- 				xe_bind_exec_queue_create(fd, vm, 0);
-@@ -398,6 +438,21 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 		close(map_fd);
- }
++			if (flags & PRIORITY) {
++				struct drm_xe_ext_set_property mq_priority = {
++					.base.next_extension = 0,
++					.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++					.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY,
++				};
++				multi_queue.base.next_extension = to_user_pointer(&mq_priority);
++				mq_priority.value = XE_EXEC_QUEUE_PRIORITY_NORMAL + (rand() % 2);
++			}
+ 			multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
+ 			igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci,
+ 							     ext, &exec_queues[i]), 0);
+@@ -279,6 +290,15 @@ test_evict_cm(int fd, struct drm_xe_engine_class_instance *eci,
+ 			};
+ 			uint64_t ext = to_user_pointer(&multi_queue);
  
-+static void
-+test_exec_main(int fd, int n_exec_queues, int n_execs, unsigned int flags)
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+
-+	if (flags & MULTI_QUEUE) {
-+		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
-+		xe_for_each_multi_queue_engine(fd, hwe)
-+			test_exec(fd, hwe, n_exec_queues, n_execs, flags);
-+	} else {
-+		xe_for_each_engine(fd, hwe)
-+			test_exec(fd, hwe, n_exec_queues, n_execs, flags);
-+	}
-+}
-+
- int igt_main()
- {
- 	struct drm_xe_engine_class_instance *hwe;
-@@ -420,6 +475,15 @@ int igt_main()
- 			INVALIDATE },
- 		{ "bindexecqueue-userptr-invalidate-race", BIND_EXEC_QUEUE | USERPTR |
- 			INVALIDATE | RACE },
-+		{ "multi-queue", MULTI_QUEUE },
-+		{ "multi-queue-userptr", MULTI_QUEUE | USERPTR },
-+		{ "multi-queue-rebind",  MULTI_QUEUE | REBIND },
-+		{ "multi-queue-userptr-rebind", MULTI_QUEUE | USERPTR | REBIND },
-+		{ "multi-queue-userptr-invalidate", MULTI_QUEUE | USERPTR |
-+			INVALIDATE },
-+		{ "multi-queue-userptr-invalidate-race", MULTI_QUEUE | USERPTR |
-+			INVALIDATE | RACE },
-+
- 		{ "basic-imm", IMMEDIATE },
- 		{ "userptr-imm", IMMEDIATE | USERPTR },
- 		{ "rebind-imm", IMMEDIATE | REBIND },
-@@ -436,6 +500,15 @@ int igt_main()
- 			USERPTR | INVALIDATE },
- 		{ "bindexecqueue-userptr-invalidate-race-imm", IMMEDIATE |
- 			BIND_EXEC_QUEUE | USERPTR | INVALIDATE | RACE },
-+		{ "multi-queue-imm", IMMEDIATE | MULTI_QUEUE },
-+		{ "multi-queue-userptr-imm", IMMEDIATE | MULTI_QUEUE | USERPTR },
-+		{ "multi-queue-rebind-imm", IMMEDIATE | MULTI_QUEUE | REBIND },
-+		{ "multi-queue-userptr-rebind-imm", IMMEDIATE | MULTI_QUEUE |
-+			USERPTR | REBIND },
-+		{ "multi-queue-userptr-invalidate-imm", IMMEDIATE | MULTI_QUEUE |
-+			USERPTR | INVALIDATE },
-+		{ "multi-queue-userptr-invalidate-race-imm", IMMEDIATE |
-+			MULTI_QUEUE | USERPTR | INVALIDATE | RACE },
- 
- 		{ "basic-prefetch", PREFETCH },
- 		{ "userptr-prefetch", PREFETCH | USERPTR },
-@@ -453,8 +526,20 @@ int igt_main()
- 			USERPTR | INVALIDATE },
- 		{ "bindexecqueue-userptr-invalidate-race-prefetch", PREFETCH |
- 			BIND_EXEC_QUEUE | USERPTR | INVALIDATE | RACE },
-+		{ "multi-queue-prefetch", PREFETCH | MULTI_QUEUE },
-+		{ "multi-queue-userptr-prefetch", PREFETCH | MULTI_QUEUE | USERPTR },
-+		{ "multi-queue-rebind-prefetch", PREFETCH | MULTI_QUEUE | REBIND },
-+		{ "multi-queue-userptr-rebind-prefetch", PREFETCH | MULTI_QUEUE |
-+			USERPTR | REBIND },
-+		{ "multi-queue-userptr-invalidate-prefetch", PREFETCH | MULTI_QUEUE |
-+			USERPTR | INVALIDATE },
-+		{ "multi-queue-userptr-invalidate-race-prefetch", PREFETCH |
-+			MULTI_QUEUE | USERPTR | INVALIDATE | RACE },
- 		{ "invalid-fault", INVALID_FAULT },
- 		{ "invalid-userptr-fault", INVALID_FAULT | USERPTR },
-+		{ "multi-queue-invalid-fault", MULTI_QUEUE | INVALID_FAULT },
-+		{ "multi-queue-invalid-userptr-fault", MULTI_QUEUE | INVALID_FAULT | USERPTR },
-+
- 		{ NULL },
- 	};
- 	int fd;
-@@ -478,26 +563,22 @@ int igt_main()
- 
- 	for (const struct section *s = sections; s->name; s++) {
- 		igt_subtest_f("once-%s", s->name)
--			xe_for_each_engine(fd, hwe)
--				test_exec(fd, hwe, 1, 1, s->flags);
-+			test_exec_main(fd, 1, 1, s->flags);
- 
- 		igt_subtest_f("twice-%s", s->name)
--			xe_for_each_engine(fd, hwe)
--				test_exec(fd, hwe, 1, 2, s->flags);
-+			test_exec_main(fd, 1, 2, s->flags);
- 
- 		igt_subtest_f("many-%s", s->name)
--			xe_for_each_engine(fd, hwe)
--				test_exec(fd, hwe, 1,
--					  s->flags & (REBIND | INVALIDATE) ?
--					  64 : 128,
--					  s->flags);
-+			test_exec_main(fd, 1,
-+					s->flags & (REBIND | INVALIDATE) ?
-+					64 : 128,
-+					s->flags);
- 
- 		igt_subtest_f("many-execqueues-%s", s->name)
--			xe_for_each_engine(fd, hwe)
--				test_exec(fd, hwe, 16,
--					  s->flags & (REBIND | INVALIDATE) ?
--					  64 : 128,
--					  s->flags);
-+			test_exec_main(fd, 16,
-+					s->flags & (REBIND | INVALIDATE) ?
-+					64 : 128,
-+					s->flags);
- 	}
- 
- 	igt_subtest("invalid-va")
++			if (flags & PRIORITY) {
++				struct drm_xe_ext_set_property mq_priority = {
++					.base.next_extension = 0,
++					.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++					.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY,
++				};
++				multi_queue.base.next_extension = to_user_pointer(&mq_priority);
++				mq_priority.value = XE_EXEC_QUEUE_PRIORITY_NORMAL + (rand() % 2);
++			}
+ 			multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
+ 			igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci,
+ 							     ext, &exec_queues[i]), 0);
+@@ -540,6 +560,8 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
+  *
+  * @small:			small
+  * @small-multi-queue:		small multi queue
++ * @small-multi-queue-priority:
++ * 				small multi queue priority
+  * @small-external:		small external
+  * @small-multi-vm:		small multi VM
+  * @beng-small:			small bind exec_queue
+@@ -571,6 +593,8 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
+  *
+  * @small-cm:			small compute machine
+  * @small-multi-queue-cm:	small multi queue compute machine
++ * @small-multi-queue-priority-cm:
++ * 				small multi queue priority compute machine
+  * @small-external-cm:		small external compute machine
+  * @small-multi-vm-cm:		small multi VM compute machine
+  * @beng-small-cm:		small bind exec_queue compute machine
+@@ -714,6 +738,7 @@ int igt_main()
+ 	} sections[] = {
+ 		{ "small", 16, 448, 1, 128, 0 },
+ 		{ "small-multi-queue", 16, 448, 1, 128, MULTI_QUEUE },
++		{ "small-multi-queue-priority", 16, 448, 1, 128, MULTI_QUEUE | PRIORITY },
+ 		{ "small-external", 16, 448, 1, 128, EXTERNAL_OBJ },
+ 		{ "small-multi-vm", 16, 256, 1, 128, MULTI_VM },
+ 		{ "large", 4, 16, 1, 4, 0 },
+@@ -740,6 +765,7 @@ int igt_main()
+ 	} sections_cm[] = {
+ 		{ "small-cm", 16, 448, 1, 128, 0 },
+ 		{ "small-multi-queue-cm", 16, 448, 1, 128, MULTI_QUEUE },
++		{ "small-multi-queue-priority-cm", 16, 448, 1, 128, MULTI_QUEUE | PRIORITY },
+ 		{ "small-external-cm", 16, 448, 1, 128, EXTERNAL_OBJ },
+ 		{ "small-multi-vm-cm", 16, 256, 1, 128, MULTI_VM },
+ 		{ "large-cm", 4, 16, 1, 4, 0 },
 -- 
 2.43.0
 
