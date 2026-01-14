@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 890CDD30CF5
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Jan 2026 00:41:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7247ED30CF6
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Jan 2026 01:20:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 07CD810E56A;
-	Wed, 14 Jan 2026 00:41:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CAC5010E593;
+	Wed, 14 Jan 2026 01:20:45 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B31CC10E56A;
- Wed, 14 Jan 2026 00:41:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1BE8F10E593;
+ Wed, 14 Jan 2026 01:20:44 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============5369918927704862727=="
+ boundary="===============4408439457819264471=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests/intel/xe=5Fexec=5Fba?=
- =?utf-8?q?sic=3A_Enable_dynamic_subtest_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests/intel/gem=5Flmem=5Fs?=
+ =?utf-8?q?wapping=3A_Avoid_false_failures_from_oom-killer_=28rev4=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Balasubramani Vivekanandan" <balasubramani.vivekanandan@intel.com>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 14 Jan 2026 00:41:00 -0000
-Message-ID: <176835126073.152389.11036373281884541505@a3b018990fe9>
+Date: Wed, 14 Jan 2026 01:20:44 -0000
+Message-ID: <176835364411.152389.3224911162142180483@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260113145314.331614-2-balasubramani.vivekanandan@intel.com>
-In-Reply-To: <20260113145314.331614-2-balasubramani.vivekanandan@intel.com>
+References: <20260113160043.694106-2-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20260113160043.694106-2-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,15 +41,15 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5369918927704862727==
+--===============4408439457819264471==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_exec_basic: Enable dynamic subtest (rev2)
-URL   : https://patchwork.freedesktop.org/series/159958/
+Series: tests/intel/gem_lmem_swapping: Avoid false failures from oom-killer (rev4)
+URL   : https://patchwork.freedesktop.org/series/159160/
 State : failure
 
 == Summary ==
@@ -58,9 +58,9 @@ ERROR: The runconfig 'XEIGT_8699_FULL' does not exist in the database
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14333/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14334/index.html
 
---===============5369918927704862727==
+--===============4408439457819264471==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,11 +80,11 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_basic: Enable dynamic subtest (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159958/">https://patchwork.freedesktop.org/series/159958/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/gem_lmem_swapping: Avoid false failures from oom-killer (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159160/">https://patchwork.freedesktop.org/series/159160/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14333/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14333/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14334/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14334/index.html</a></td></tr>
 
 </table>
 
@@ -94,4 +94,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============5369918927704862727==--
+--===============4408439457819264471==--
