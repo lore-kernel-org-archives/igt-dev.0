@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B59F9D31A13
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Jan 2026 06:57:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C15C3D31A14
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Jan 2026 06:59:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 558ED10E362;
-	Wed, 14 Jan 2026 06:57:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 596A210E362;
+	Wed, 14 Jan 2026 06:59:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kKxf9y77";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UVC5230Y";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA3F110E362
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Jan 2026 06:57:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B0A1D10E362
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Jan 2026 06:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768373827; x=1799909827;
- h=from:to:cc:subject:date:message-id:mime-version:
+ t=1768373969; x=1799909969;
+ h=from:to:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=iUUF61/B+4SQWzCv4fMeSvhRjnocfvEFtY3HsO/Ikr8=;
- b=kKxf9y77GnZ0TGG5IIqMphPqDZVNLnTFAp+TrzIU+DiRTc1sw4NmyMJc
- daYHwDKGbQvXQSmOzjrqgb3hPV4hRsNJswYzaIwd0YyWMCHQsMbnncKKm
- 0ZdxTjPD55A6hApzjyDzFTRTOhs3GBxm7Gca2Veg0QiyiqoBSvZRQ748O
- e8+quGUBCkdixSxLRCYtEj1gxVyvU21o5uY+H3V3+lNc35jjcCoJEU3ez
- 6LJU6SS3wbiGYw7/NHqJvJT0yMLgzpk5AH8R3vPdFIgSPiV70RVvJDX3e
- 5umszoXWEawhmnJbOsNQ3efQO2HXvrWWhVcmdkFiJtl3X1rH+SPr2ES2Z A==;
-X-CSE-ConnectionGUID: OaqjqvBqQzePbfF5/pvBrw==
-X-CSE-MsgGUID: 6GSUCw9cT16DmELtEPRBVw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="81031966"
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; d="scan'208";a="81031966"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jan 2026 22:57:06 -0800
-X-CSE-ConnectionGUID: qOvQxj+SSau7XVXZe93CWQ==
-X-CSE-MsgGUID: ysBdBn54T9yD3w12qPq5VQ==
+ bh=hbPI4Jw8vo7ELR2KcCr5v5BgBNj6uUubGdYRe/mAjNc=;
+ b=UVC5230YPjko91L1+Uo6MjrV5DU2RGqBXMpYXQVQUFWO3fJWuXYqp5Mo
+ UjHcetHPW+cdTGe0fvNh6NMV1+zeNcX3YDk+xx3Ff+lHfAonKz2+9j7GG
+ OSeVxeuvvnSQ1FgkUiXFlGlndggcRpsU5FEXYAf0ZCHz0cSrRCGJYxNs+
+ ZUi4ijJR7d4oB1gGifPXEubeOLJl23kDeTsdwI6SHzD0ljwq2ZIl6DqWv
+ lVukyv88A+UxrHDhGVOKRlbWAUA4yVIeRJTTwOeHC3vYaAMI4mxh8rTop
+ u0SOMAgNUXb0VvAC8o6FEbXjw9v2LNa9H27xfXBgKLaNfGegZF3Le+vDu g==;
+X-CSE-ConnectionGUID: mB4IwEbbRuSdgaXWNIZDqg==
+X-CSE-MsgGUID: HlW5u+sSQHK4ckuU38kbvA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="69647887"
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; d="scan'208";a="69647887"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jan 2026 22:59:28 -0800
+X-CSE-ConnectionGUID: 1tElzMbgSiOd0rjiEeA+Aw==
+X-CSE-MsgGUID: pqFhjoXtRPelQ+uFcoNqcQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; d="scan'208";a="204874098"
-Received: from bvivekan-desk.iind.intel.com ([10.190.238.63])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jan 2026 22:57:02 -0800
-From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
- Matt Atwood <matthew.s.atwood@intel.com>
-Subject: [PATCH v3] tests/intel/xe_exec_basic: Enable dynamic subtest
-Date: Wed, 14 Jan 2026 12:27:33 +0530
-Message-ID: <20260114065732.377106-2-balasubramani.vivekanandan@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; d="scan'208";a="205159885"
+Received: from priyanka.iind.intel.com ([10.190.216.153])
+ by fmviesa010.fm.intel.com with ESMTP; 13 Jan 2026 22:59:26 -0800
+From: priyanka.dandamudi@intel.com
+To: priyanka.dandamudi@intel.com, igt-dev@lists.freedesktop.org,
+ niranjana.vishwanathapura@intel.com, ramadevi.gandi@intel.com,
+ dwarakanath.ramadeva@intel.com
+Subject: [PATCH i-g-t 0/9] Extend multi queue feature validation support
+Date: Wed, 14 Jan 2026 12:29:16 +0530
+Message-ID: <20260114065925.197958-1-priyanka.dandamudi@intel.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -66,99 +65,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Sometimes during debugging it is required to execute tests only on
-selected engines. Dynamic subtests allows us to filter engines for test
-execution.
+From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-Reviewed-by: Matt Atwood <matthew.s.atwood@intel.com>
----
+Add multi queue validation support to other tests.
 
-v2: prefix card index for multigpu tests. Otherwise runner complains
-    duplicate test execution when a same dynamic test is executed
-    parallely on multiple GPUs.
+xe_exec_fault_mode
+xe_exec_reset
+xe_evict
+xe_exec_threads
 
-v3: Remove dynamic subtests for multigpu tests. Even with unique names
-    for dynamic subtests, runner complains when starting multiple dynamic
-    subtests in parallel.
+v2:
+1. Remove documentation changes in this series to avoid confusion
+and will be added in a separate patch.
+2. Rename emailid's who are no longer valid.
+3. Rename multiq in the starting of the patch for the test xe_evict.c.
+4. Add cm multi queue tests for xe_exec_threads.
+5. Include a patch in this series for new 2 subtests engine-reset and cm-engine-reset
+as it's lib changes are dependent for multi-queue-engine-reset test
+cases.
+6. Separate out lib changes related to cat-error as those are also for cat-error
+test cases but include in this series as multi queue cat error test
+cases are also dependent on it.
+7. Remove lib change related to sync object in legacy mode lib as that
+change doesn't add any difference.
 
----
- tests/intel/xe_exec_basic.c | 42 ++++++++++++++++++++++++++-----------
- 1 file changed, 30 insertions(+), 12 deletions(-)
+Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
-index b105455f3..5335bffc4 100644
---- a/tests/intel/xe_exec_basic.c
-+++ b/tests/intel/xe_exec_basic.c
-@@ -349,38 +349,56 @@ int igt_main()
- 		fd = drm_open_driver(DRIVER_XE);
- 
- 	for (const struct section *s = sections; s->name; s++) {
--		igt_subtest_f("once-%s", s->name)
-+		igt_subtest_with_dynamic_f("once-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
--				test_exec(fd, hwe, 1, 1, 1, s->flags);
-+				igt_dynamic_f("%s%d",
-+					      xe_engine_class_short_string(hwe->engine_class),
-+					      hwe->engine_instance)
-+					test_exec(fd, hwe, 1, 1, 1, s->flags);
- 
--		igt_subtest_f("twice-%s", s->name)
-+		igt_subtest_with_dynamic_f("twice-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
--				test_exec(fd, hwe, 1, 2, 1, s->flags);
-+				igt_dynamic_f("%s%d",
-+					      xe_engine_class_short_string(hwe->engine_class),
-+					      hwe->engine_instance)
-+					test_exec(fd, hwe, 1, 2, 1, s->flags);
- 
--		igt_subtest_f("many-%s", s->name)
-+		igt_subtest_with_dynamic_f("many-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
--				test_exec(fd, hwe, 1,
-+				igt_dynamic_f("%s%d",
-+					      xe_engine_class_short_string(hwe->engine_class),
-+					      hwe->engine_instance)
-+					test_exec(fd, hwe, 1,
- 					  s->flags & (REBIND | INVALIDATE) ?
- 					  64 : 1024, 1,
- 					  s->flags);
- 
--		igt_subtest_f("many-execqueues-%s", s->name)
-+		igt_subtest_with_dynamic_f("many-execqueues-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
--				test_exec(fd, hwe, 16,
-+				igt_dynamic_f("%s%d",
-+					      xe_engine_class_short_string(hwe->engine_class),
-+					      hwe->engine_instance)
-+					test_exec(fd, hwe, 16,
- 					  s->flags & (REBIND | INVALIDATE) ?
- 					  64 : 1024, 1,
- 					  s->flags);
- 
--		igt_subtest_f("many-execqueues-many-vm-%s", s->name)
-+		igt_subtest_with_dynamic_f("many-execqueues-many-vm-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
--				test_exec(fd, hwe, 16,
-+				igt_dynamic_f("%s%d",
-+					      xe_engine_class_short_string(hwe->engine_class),
-+					      hwe->engine_instance)
-+					test_exec(fd, hwe, 16,
- 					  s->flags & (REBIND | INVALIDATE) ?
- 					  64 : 1024, 16,
- 					  s->flags);
- 
--		igt_subtest_f("no-exec-%s", s->name)
-+		igt_subtest_with_dynamic_f("no-exec-%s", s->name)
- 			xe_for_each_engine(fd, hwe)
--				test_exec(fd, hwe, 1, 0, 1, s->flags);
-+				igt_dynamic_f("%s%d",
-+					      xe_engine_class_short_string(hwe->engine_class),
-+					      hwe->engine_instance)
-+					test_exec(fd, hwe, 1, 0, 1, s->flags);
- 	}
- 
- 	igt_fixture()
+Priyanka Dandamudi (9):
+  tests/intel/xe_exec_fault_mode: Add multi-queue test support
+  tests/intel/xe_evict: Add basic multi-queue test
+  tests/intel/xe_evict: Add multi-queue priority test
+  tests/intel/xe_evict: Enhance testing of multi-queue functionality
+  tests/intel/xe_exec_threads: Add multi-queue basic test
+  tests/intel/xe_exec_threads: Add multi queue for compute mode
+  tests/intel/xe_exec_reset: Add tests for engine-reset
+  tests/intel/xe_exec_reset: Resolve failures in cat-error tests
+  tests/intel/xe_exec_reset: Add multi-queue subtests
+
+ lib/xe/xe_legacy.c               |  35 ++++-
+ tests/intel/xe_evict.c           | 104 +++++++++++--
+ tests/intel/xe_exec_fault_mode.c | 111 ++++++++++++--
+ tests/intel/xe_exec_reset.c      | 184 +++++++++++++++++++++-
+ tests/intel/xe_exec_threads.c    | 253 ++++++++++++++++++++++++++++++-
+ 5 files changed, 644 insertions(+), 43 deletions(-)
+
 -- 
 2.43.0
 
