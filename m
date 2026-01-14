@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81919D38FEC
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Jan 2026 17:16:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAFCDD39003
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Jan 2026 18:06:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 21C0810E629;
-	Wed, 14 Jan 2026 17:16:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 68BDC10E661;
+	Wed, 14 Jan 2026 18:06:07 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88DFF10E629;
- Wed, 14 Jan 2026 17:16:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B8FD610E661;
+ Wed, 14 Jan 2026 18:06:05 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6736011530622677595=="
+ boundary="===============8427624665570241998=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_tests/intel/xe=5Fexec=5Fba?=
- =?utf-8?q?sic=3A_Enable_dynamic_subtest_=28rev4=29?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_Extend_multi_queue_feature?=
+ =?utf-8?q?_validation_support_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Balasubramani Vivekanandan" <balasubramani.vivekanandan@intel.com>
+To: priyanka.dandamudi@intel.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 14 Jan 2026 17:16:14 -0000
-Message-ID: <176841097453.153896.17782373302675900191@a3b018990fe9>
+Date: Wed, 14 Jan 2026 18:06:05 -0000
+Message-ID: <176841396573.154682.16400931747125560581@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260114065732.377106-2-balasubramani.vivekanandan@intel.com>
-In-Reply-To: <20260114065732.377106-2-balasubramani.vivekanandan@intel.com>
+References: <20260114065925.197958-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20260114065925.197958-1-priyanka.dandamudi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6736011530622677595==
+--===============8427624665570241998==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_exec_basic: Enable dynamic subtest (rev4)
-URL   : https://patchwork.freedesktop.org/series/159958/
+Series: Extend multi queue feature validation support (rev3)
+URL   : https://patchwork.freedesktop.org/series/159287/
 State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8700_FULL -> XEIGTPW_14339_FULL
+CI Bug Log - changes from XEIGT_8700_FULL -> XEIGTPW_14340_FULL
 ====================================================
 
 Summary
@@ -62,11 +62,11 @@ Summary
 
   **FAILURE**
 
-  Serious unknown changes coming with XEIGTPW_14339_FULL absolutely need to be
+  Serious unknown changes coming with XEIGTPW_14340_FULL absolutely need to be
   verified manually.
   
   If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_14339_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  introduced in XEIGTPW_14340_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
   to document this new failure mode, which will reduce false positives in CI.
 
   
@@ -79,3449 +79,1352 @@ Participating hosts (2 -> 2)
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in XEIGTPW_14339_FULL:
+  Here are the unknown changes that may have been introduced in XEIGTPW_14340_FULL:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
-  * igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-hdmi-a-3:
-    - shard-bmg:          NOTRUN -> [INCOMPLETE][1]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-hdmi-a-3.html
+  * igt@xe_exec_fault_mode@many-bindexecqueue-rebind-imm:
+    - shard-lnl:          [PASS][1] -> [DMESG-WARN][2] +7 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-8/igt@xe_exec_fault_mode@many-bindexecqueue-rebind-imm.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@xe_exec_fault_mode@many-bindexecqueue-rebind-imm.html
 
-  * igt@xe_exec_system_allocator@many-large-execqueues-mmap-remap-ro-eocheck:
-    - shard-lnl:          [PASS][2] -> [DMESG-WARN][3] +2 other tests dmesg-warn
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-8/igt@xe_exec_system_allocator@many-large-execqueues-mmap-remap-ro-eocheck.html
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@xe_exec_system_allocator@many-large-execqueues-mmap-remap-ro-eocheck.html
+  * igt@xe_exec_threads@threads-many-queues:
+    - shard-lnl:          [PASS][3] -> [FAIL][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-2/igt@xe_exec_threads@threads-many-queues.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-8/igt@xe_exec_threads@threads-many-queues.html
+    - shard-bmg:          NOTRUN -> [FAIL][5]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@xe_exec_threads@threads-many-queues.html
+
+  * {igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-rebind} (NEW):
+    - shard-lnl:          NOTRUN -> [SKIP][6] +137 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-rebind.html
+
+  * igt@xe_exec_threads@threads-multi-queue-mixed-shared-vm-userptr-rebind (NEW):
+    - shard-bmg:          NOTRUN -> [SKIP][7] +115 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_exec_threads@threads-multi-queue-mixed-shared-vm-userptr-rebind.html
+
+  * igt@xe_module_load@unload:
+    - shard-bmg:          NOTRUN -> [ABORT][8]
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@xe_module_load@unload.html
+
+  * igt@xe_pmu@engine-activity-accuracy-90:
+    - shard-bmg:          [PASS][9] -> [FAIL][10] +1 other test fail
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-10/igt@xe_pmu@engine-activity-accuracy-90.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_pmu@engine-activity-accuracy-90.html
+
+  
+#### Warnings ####
+
+  * igt@xe_module_load@load:
+    - shard-bmg:          ([PASS][11], [PASS][12], [PASS][13], [PASS][14], [PASS][15], [PASS][16], [PASS][17], [PASS][18], [PASS][19], [PASS][20], [PASS][21], [PASS][22], [PASS][23], [ABORT][24], [ABORT][25], [ABORT][26], [PASS][27], [PASS][28], [PASS][29], [PASS][30], [PASS][31], [PASS][32], [PASS][33], [PASS][34]) -> ([PASS][35], [PASS][36], [PASS][37], [PASS][38], [PASS][39], [PASS][40], [PASS][41], [PASS][42], [SKIP][43], [PASS][44], [PASS][45], [PASS][46], [PASS][47], [ABORT][48], [ABORT][49], [ABORT][50], [PASS][51], [PASS][52], [PASS][53], [PASS][54], [PASS][55], [PASS][56], [PASS][57], [PASS][58], [PASS][59]) ([Intel XE#2457])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-1/igt@xe_module_load@load.html
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-1/igt@xe_module_load@load.html
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-8/igt@xe_module_load@load.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-10/igt@xe_module_load@load.html
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-1/igt@xe_module_load@load.html
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@xe_module_load@load.html
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-2/igt@xe_module_load@load.html
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-2/igt@xe_module_load@load.html
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-8/igt@xe_module_load@load.html
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-9/igt@xe_module_load@load.html
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@xe_module_load@load.html
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-6/igt@xe_module_load@load.html
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-6/igt@xe_module_load@load.html
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-4/igt@xe_module_load@load.html
+   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-4/igt@xe_module_load@load.html
+   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-4/igt@xe_module_load@load.html
+   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-10/igt@xe_module_load@load.html
+   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@xe_module_load@load.html
+   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@xe_module_load@load.html
+   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-10/igt@xe_module_load@load.html
+   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@xe_module_load@load.html
+   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@xe_module_load@load.html
+   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-9/igt@xe_module_load@load.html
+   [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-9/igt@xe_module_load@load.html
+   [35]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@xe_module_load@load.html
+   [36]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@xe_module_load@load.html
+   [37]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@xe_module_load@load.html
+   [38]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@xe_module_load@load.html
+   [39]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@xe_module_load@load.html
+   [40]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@xe_module_load@load.html
+   [41]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@xe_module_load@load.html
+   [42]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@xe_module_load@load.html
+   [43]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@xe_module_load@load.html
+   [44]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_module_load@load.html
+   [45]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@xe_module_load@load.html
+   [46]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_module_load@load.html
+   [47]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@xe_module_load@load.html
+   [48]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-4/igt@xe_module_load@load.html
+   [49]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-4/igt@xe_module_load@load.html
+   [50]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-4/igt@xe_module_load@load.html
+   [51]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@xe_module_load@load.html
+   [52]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@xe_module_load@load.html
+   [53]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-1/igt@xe_module_load@load.html
+   [54]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-1/igt@xe_module_load@load.html
+   [55]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@xe_module_load@load.html
+   [56]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@xe_module_load@load.html
+   [57]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@xe_module_load@load.html
+   [58]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@xe_module_load@load.html
+   [59]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_module_load@load.html
 
   
 New tests
 ---------
 
-  New tests have been introduced between XEIGT_8700_FULL and XEIGTPW_14339_FULL:
+  New tests have been introduced between XEIGT_8700_FULL and XEIGTPW_14340_FULL:
 
-### New IGT tests (685) ###
+### New IGT tests (161) ###
 
-  * igt@xe_exec_basic@many-basic-defer-bind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-basic-defer-bind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-basic-defer-bind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.05] s
-
-  * igt@xe_exec_basic@many-basic-defer-bind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-basic-defer-bind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-basic-defer-bind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-basic-defer-bind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-basic-defer-mmap@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.05] s
-
-  * igt@xe_exec_basic@many-basic-defer-mmap@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.05] s
-
-  * igt@xe_exec_basic@many-basic-defer-mmap@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.06] s
-
-  * igt@xe_exec_basic@many-basic-defer-mmap@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.05] s
-
-  * igt@xe_exec_basic@many-basic-defer-mmap@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-basic-defer-mmap@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-basic-defer-mmap@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-basic@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-basic@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-basic@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-basic@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-basic@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-basic@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-basic@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.02] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.02] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.02] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.02, 0.03] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.02] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.02, 0.03] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.02] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.02, 0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.02, 0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.02] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.02] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.05] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue-userptr@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.05] s
-
-  * igt@xe_exec_basic@many-bindexecqueue@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-bindexecqueue@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-execqueues-basic-defer-bind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-basic-defer-bind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-basic-defer-bind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-basic-defer-bind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-basic-defer-bind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-basic-defer-bind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-basic-defer-bind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-basic-defer-mmap@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-basic-defer-mmap@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-basic-defer-mmap@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-basic-defer-mmap@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-basic-defer-mmap@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-basic@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-basic@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-basic@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-basic@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-basic@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-basic@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-basic@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-rebind@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-rebind@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-rebind@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-rebind@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-rebind@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate-race@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate-race@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate-race@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate-race@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate-race@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.02] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate-race@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate-race@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.02] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-rebind@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-rebind@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-rebind@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-rebind@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-rebind@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-bindexecqueue@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-bind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.07, 0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-bind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.07, 0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-bind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.11, 0.12] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-bind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-bind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-bind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.07, 0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-bind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-mmap@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-mmap@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-mmap@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.11] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-mmap@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-mmap@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.11] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.07, 0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-basic@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-rebind@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-rebind@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-rebind@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.13] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-rebind@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-rebind@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-rebind@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-rebind@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-rebind@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.12] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-rebind@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-rebind@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.09, 0.11] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.09, 0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.09, 0.11] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.09, 0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-defer-bind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-defer-bind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-defer-bind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.09, 0.12] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-defer-bind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-defer-bind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-defer-bind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-defer-bind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-defer-mmap@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-defer-mmap@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-defer-mmap@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.11] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-defer-mmap@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-defer-mmap@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-defer-mmap@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-defer-mmap@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.09, 0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.08, 0.11] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-null@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.09] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate-race@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate-race@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate-race@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate-race@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate-race@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate-race@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate-race@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.10] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-rebind@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-rebind@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-rebind@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-rebind@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr-rebind@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-many-vm-userptr@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-null-defer-bind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-null-defer-bind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-null-defer-bind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-null-defer-bind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-null-defer-bind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-null-defer-bind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-null-defer-bind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-null-defer-mmap@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-null-defer-mmap@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-null-defer-mmap@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.08] s
-
-  * igt@xe_exec_basic@many-execqueues-null-defer-mmap@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-null-defer-mmap@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-null-rebind@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-execqueues-null-rebind@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-execqueues-null-rebind@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-null-rebind@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-execqueues-null-rebind@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-execqueues-null@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-null@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-null@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-null@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-null@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-null@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-null@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-execqueues-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-invalidate-race@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.02] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-invalidate-race@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.02] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-invalidate-race@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.02] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-invalidate-race@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-invalidate-race@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-invalidate@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-invalidate@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-invalidate@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-invalidate@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-invalidate@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-invalidate@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-invalidate@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05, 0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06, 0.07] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.06] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-execqueues-userptr@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-null-defer-bind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-null-defer-bind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-null-defer-bind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.06] s
-
-  * igt@xe_exec_basic@many-null-defer-bind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-null-defer-bind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-null-defer-bind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-null-defer-bind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-null-defer-mmap@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-null-defer-mmap@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-null-defer-mmap@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-null-defer-mmap@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-null-defer-mmap@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-null-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.02, 0.03] s
-
-  * igt@xe_exec_basic@many-null-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.02, 0.03] s
-
-  * igt@xe_exec_basic@many-null-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.02, 0.04] s
-
-  * igt@xe_exec_basic@many-null-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.02, 0.03] s
-
-  * igt@xe_exec_basic@many-null-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.02] s
-
-  * igt@xe_exec_basic@many-null-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.02, 0.03] s
-
-  * igt@xe_exec_basic@many-null-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.02] s
-
-  * igt@xe_exec_basic@many-null@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-null@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-null@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.05] s
-
-  * igt@xe_exec_basic@many-null@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-null@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-null@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04, 0.05] s
-
-  * igt@xe_exec_basic@many-null@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.05] s
-
-  * igt@xe_exec_basic@many-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.02, 0.04] s
-
-  * igt@xe_exec_basic@many-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-userptr-invalidate-race@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@many-userptr-invalidate-race@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@many-userptr-invalidate-race@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@many-userptr-invalidate-race@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@many-userptr-invalidate-race@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@many-userptr-invalidate-race@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@many-userptr-invalidate-race@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@many-userptr-invalidate@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-userptr-invalidate@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-userptr-invalidate@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-userptr-invalidate@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-userptr-invalidate@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-userptr-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-userptr-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-userptr-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-userptr-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-userptr-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-userptr-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.03, 0.04] s
-
-  * igt@xe_exec_basic@many-userptr-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.03] s
-
-  * igt@xe_exec_basic@many-userptr@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-userptr@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-userptr@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-userptr@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@many-userptr@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.04] s
-
-  * igt@xe_exec_basic@no-exec-basic-defer-bind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic-defer-bind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic-defer-bind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic-defer-bind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic-defer-bind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic-defer-bind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic-defer-bind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic-defer-mmap@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic-defer-mmap@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic-defer-mmap@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic-defer-mmap@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic-defer-mmap@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic-defer-mmap@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic-defer-mmap@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@no-exec-basic@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-basic@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate-race@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate-race@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate-race@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate-race@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate-race@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-rebind@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-rebind@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-rebind@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-rebind@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-rebind@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@no-exec-bindexecqueue@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-defer-bind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-defer-bind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-defer-bind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@no-exec-null-defer-bind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-defer-bind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-defer-bind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-defer-bind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-defer-mmap@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-defer-mmap@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-defer-mmap@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-defer-mmap@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-defer-mmap@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-rebind@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-rebind@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-rebind@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-rebind@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null-rebind@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-null@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr-invalidate-race@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr-invalidate-race@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr-invalidate-race@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr-invalidate-race@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr-invalidate-race@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr-invalidate-race@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr-invalidate-race@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@no-exec-userptr@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@no-exec-userptr@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic-defer-bind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic-defer-bind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic-defer-bind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic-defer-bind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic-defer-bind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic-defer-bind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic-defer-bind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic-defer-mmap@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic-defer-mmap@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic-defer-mmap@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic-defer-mmap@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic-defer-mmap@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-basic@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-rebind@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-rebind@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-rebind@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-rebind@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-rebind@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate-race@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate-race@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate-race@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate-race@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate-race@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-rebind@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-rebind@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-rebind@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-rebind@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr-rebind@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue-userptr@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@once-bindexecqueue@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-bindexecqueue@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-defer-bind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-defer-bind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-defer-bind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-defer-bind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-defer-bind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-defer-bind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-defer-bind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-defer-mmap@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-null-defer-mmap@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-defer-mmap@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-defer-mmap@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-defer-mmap@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-defer-mmap@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-defer-mmap@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@once-null-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@once-null-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-null@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@once-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-userptr-invalidate-race@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-userptr-invalidate-race@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-userptr-invalidate-race@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-userptr-invalidate-race@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
-
-  * igt@xe_exec_basic@once-userptr-invalidate-race@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-userptr-invalidate@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-userptr-invalidate@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-userptr-invalidate@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-userptr-invalidate@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-userptr-invalidate@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_evict@evict-cm-threads-small-multi-queue:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@once-userptr-invalidate@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-userptr-invalidate@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_evict@evict-mixed-threads-small-multi-queue:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@once-userptr-rebind@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_evict@evict-small-external-multi-queue:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@once-userptr-rebind@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_evict@evict-small-external-multi-queue-cm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@once-userptr-rebind@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_evict@evict-small-multi-queue:
+    - Statuses :
+    - Exec time: [None] s
 
-  * igt@xe_exec_basic@once-userptr-rebind@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_evict@evict-small-multi-queue-cm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@once-userptr-rebind@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@once-userptr@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_evict@evict-small-multi-queue-priority:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@once-userptr@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_evict@evict-small-multi-queue-priority-cm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@once-userptr@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_evict@evict-threads-small-multi-queue:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@once-userptr@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue:
+    - Statuses :
+    - Exec time: [None] s
 
-  * igt@xe_exec_basic@once-userptr@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@once-userptr@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-invalid-fault:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@once-userptr@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-invalid-userptr-fault:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic-defer-bind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-prefetch:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic-defer-bind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic-defer-bind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-rebind-imm:
+    - Statuses :
+    - Exec time: [None] s
 
-  * igt@xe_exec_basic@twice-basic-defer-bind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-rebind-prefetch:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic-defer-bind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic-defer-bind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic-defer-bind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-invalidate:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic-defer-mmap@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-invalidate-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic-defer-mmap@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-invalidate-prefetch:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic-defer-mmap@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-invalidate-race:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic-defer-mmap@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-invalidate-race-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic-defer-mmap@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-invalidate-race-prefetch:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-prefetch:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-rebind-imm:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-rebind-prefetch:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-invalid-fault:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-invalid-userptr-fault:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-prefetch:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-rebind-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-rebind-prefetch:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-userptr:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-userptr-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-userptr-invalidate:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-userptr-invalidate-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-userptr-invalidate-prefetch:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-userptr-invalidate-race:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-userptr-invalidate-race-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-userptr-invalidate-race-prefetch:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-userptr-prefetch:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-userptr-rebind:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-userptr-rebind-imm:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@xe_exec_fault_mode@many-multi-queue-userptr-rebind-prefetch:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue-invalid-fault:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue-invalid-userptr-fault:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue-prefetch:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue-rebind-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue-rebind-prefetch:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue-userptr:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue-userptr-imm:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue-userptr-invalidate:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue-userptr-invalidate-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue-userptr-invalidate-prefetch:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue-userptr-invalidate-race:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue-userptr-invalidate-race-imm:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@xe_exec_fault_mode@once-multi-queue-userptr-invalidate-race-prefetch:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic-defer-mmap@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@once-multi-queue-userptr-prefetch:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic-defer-mmap@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@once-multi-queue-userptr-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@once-multi-queue-userptr-rebind-imm:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@once-multi-queue-userptr-rebind-prefetch:
+    - Statuses :
+    - Exec time: [None] s
 
-  * igt@xe_exec_basic@twice-basic@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@twice-multi-queue:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-basic@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-invalid-fault:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-invalid-userptr-fault:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-prefetch:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-rebind-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-rebind-prefetch:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-userptr:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-userptr-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate-race@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.02] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-userptr-invalidate:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate-race@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-userptr-invalidate-imm:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate-race@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-userptr-invalidate-prefetch:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate-race@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-userptr-invalidate-race:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate-race@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-userptr-invalidate-race-imm:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-userptr-invalidate-race-prefetch:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-userptr-prefetch:
+    - Statuses :
+    - Exec time: [None] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-userptr-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-userptr-rebind-imm:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_fault_mode@twice-multi-queue-userptr-rebind-prefetch:
+    - Statuses :
+    - Exec time: [None] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vecs0:
+  * igt@xe_exec_reset@cm-engine-reset:
     - Statuses : 2 pass(s)
-    - Exec time: [0.01] s
+    - Exec time: [6.67, 9.17] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_reset@cm-multi-queue-cat-error:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_reset@cm-multi-queue-cat-error-on-secondary:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_reset@cm-multi-queue-close-execqueues:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_reset@cm-multi-queue-close-fd:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_reset@cm-multi-queue-engine-reset:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_reset@cm-multi-queue-gt-reset:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vecs0:
+  * igt@xe_exec_reset@engine-reset:
     - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+    - Exec time: [6.68, 9.21] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_reset@multi-queue-cat-error:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_reset@multi-queue-cat-error-on-secondary:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_reset@multi-queue-close-execqueues:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_reset@multi-queue-close-fd:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue-userptr@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_reset@multi-queue-engine-reset:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@twice-bindexecqueue@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@twice-bindexecqueue@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@twice-bindexecqueue@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
-
-  * igt@xe_exec_basic@twice-bindexecqueue@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_reset@multi-queue-gt-reset:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue@vecs0:
-    - Statuses : 1 dmesg-warn(s) 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-basic:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-bindexecqueue@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-basic:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-defer-bind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-fd-basic:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-defer-bind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-fd-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-defer-bind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-fd-userptr:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-defer-bind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-fd-userptr-invalidate:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-defer-bind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-fd-userptr-invalidate-race:
+    - Statuses :
+    - Exec time: [None] s
 
-  * igt@xe_exec_basic@twice-null-defer-bind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-fd-userptr-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-defer-bind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-defer-mmap@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-basic:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-defer-mmap@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-defer-mmap@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-userptr:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-defer-mmap@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-userptr-invalidate:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-defer-mmap@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-userptr-invalidate-race:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-userptr-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-userptr:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-userptr-invalidate:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-userptr-invalidate-race:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-cm-userptr-rebind:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-fd-basic:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-fd-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-fd-userptr:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-fd-userptr-invalidate:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-fd-userptr-invalidate-race:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-fd-userptr-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-hang-basic:
+    - Statuses :
+    - Exec time: [None] s
 
-  * igt@xe_exec_basic@twice-null@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-hang-fd-userptr-invalidate-race:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-null@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-basic:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-rebind@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-fd-basic:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-rebind@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-fd-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-rebind@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-fd-userptr:
+    - Statuses :
+    - Exec time: [None] s
 
-  * igt@xe_exec_basic@twice-rebind@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-fd-userptr-invalidate:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-rebind@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-fd-userptr-invalidate-race:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-invalidate-race@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-fd-userptr-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-invalidate-race@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-rebind:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-invalidate-race@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-shared-vm-basic:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-invalidate-race@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-shared-vm-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-invalidate-race@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-shared-vm-userptr:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-invalidate-race@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-shared-vm-userptr-invalidate:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-invalidate-race@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-shared-vm-userptr-invalidate-race:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-invalidate@bcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-shared-vm-userptr-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-invalidate@ccs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-userptr:
+    - Statuses :
+    - Exec time: [None] s
 
-  * igt@xe_exec_basic@twice-userptr-invalidate@rcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-userptr-invalidate:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-invalidate@vcs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-userptr-invalidate-race:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-invalidate@vecs0:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-mixed-userptr-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-rebind@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-rebind:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-rebind@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-rebind-err:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-rebind@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-shared-vm-basic:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-rebind@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-shared-vm-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-rebind@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-shared-vm-userptr:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-rebind@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-shared-vm-userptr-invalidate:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr-rebind@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-shared-vm-userptr-invalidate-race:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr@bcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-shared-vm-userptr-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr@ccs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-userptr:
+    - Statuses :
+    - Exec time: [None] s
 
-  * igt@xe_exec_basic@twice-userptr@rcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-userptr-invalidate:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr@vcs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00, 0.01] s
+  * igt@xe_exec_threads@threads-multi-queue-userptr-invalidate-race:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr@vcs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-userptr-rebind:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
-  * igt@xe_exec_basic@twice-userptr@vecs0:
-    - Statuses : 2 pass(s)
-    - Exec time: [0.00] s
-
-  * igt@xe_exec_basic@twice-userptr@vecs1:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.00] s
+  * igt@xe_exec_threads@threads-multi-queue-userptr-rebind-err:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
 
   
 
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_14339_FULL that come from known issues:
+  Here are the changes found in XEIGTPW_14340_FULL that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
   * igt@intel_hwmon@hwmon-read:
-    - shard-lnl:          NOTRUN -> [SKIP][4] ([Intel XE#1125])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@intel_hwmon@hwmon-read.html
+    - shard-lnl:          NOTRUN -> [SKIP][60] ([Intel XE#1125])
+   [60]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@intel_hwmon@hwmon-read.html
 
   * igt@intel_hwmon@hwmon-write:
-    - shard-bmg:          NOTRUN -> [SKIP][5] ([Intel XE#5177] / [Intel XE#6703])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@intel_hwmon@hwmon-write.html
+    - shard-bmg:          NOTRUN -> [FAIL][61] ([Intel XE#4665])
+   [61]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@intel_hwmon@hwmon-write.html
 
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - shard-bmg:          NOTRUN -> [SKIP][6] ([Intel XE#2233])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+  * igt@kms_async_flips@async-flip-with-page-flip-events-linear:
+    - shard-lnl:          [PASS][62] -> [FAIL][63] ([Intel XE#5993]) +3 other tests fail
+   [62]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-5/igt@kms_async_flips@async-flip-with-page-flip-events-linear.html
+   [63]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_async_flips@async-flip-with-page-flip-events-linear.html
 
   * igt@kms_atomic_transition@plane-all-modeset-transition:
-    - shard-lnl:          NOTRUN -> [SKIP][7] ([Intel XE#3279])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-7/igt@kms_atomic_transition@plane-all-modeset-transition.html
+    - shard-lnl:          NOTRUN -> [SKIP][64] ([Intel XE#3279])
+   [64]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_atomic_transition@plane-all-modeset-transition.html
 
   * igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels:
-    - shard-bmg:          NOTRUN -> [SKIP][8] ([Intel XE#2370]) +1 other test skip
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html
-
-  * igt@kms_big_fb@4-tiled-16bpp-rotate-90:
-    - shard-bmg:          NOTRUN -> [SKIP][9] ([Intel XE#2327]) +2 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_big_fb@4-tiled-16bpp-rotate-90.html
+    - shard-bmg:          NOTRUN -> [SKIP][65] ([Intel XE#2370]) +1 other test skip
+   [65]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html
 
   * igt@kms_big_fb@linear-32bpp-rotate-90:
-    - shard-lnl:          NOTRUN -> [SKIP][10] ([Intel XE#1407]) +3 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_big_fb@linear-32bpp-rotate-90.html
+    - shard-lnl:          NOTRUN -> [SKIP][66] ([Intel XE#1407]) +3 other tests skip
+   [66]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_big_fb@linear-32bpp-rotate-90.html
+    - shard-bmg:          NOTRUN -> [SKIP][67] ([Intel XE#2327]) +4 other tests skip
+   [67]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_big_fb@linear-32bpp-rotate-90.html
 
   * igt@kms_big_fb@linear-max-hw-stride-32bpp-rotate-180-hflip:
-    - shard-bmg:          NOTRUN -> [SKIP][11] ([Intel XE#7059])
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_big_fb@linear-max-hw-stride-32bpp-rotate-180-hflip.html
-
-  * igt@kms_big_fb@y-tiled-addfb-size-offset-overflow:
-    - shard-lnl:          NOTRUN -> [SKIP][12] ([Intel XE#1477])
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@kms_big_fb@y-tiled-addfb-size-offset-overflow.html
+    - shard-bmg:          NOTRUN -> [SKIP][68] ([Intel XE#7059])
+   [68]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@kms_big_fb@linear-max-hw-stride-32bpp-rotate-180-hflip.html
 
   * igt@kms_big_fb@yf-tiled-16bpp-rotate-180:
-    - shard-lnl:          NOTRUN -> [SKIP][13] ([Intel XE#1124]) +3 other tests skip
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_big_fb@yf-tiled-16bpp-rotate-180.html
+    - shard-lnl:          NOTRUN -> [SKIP][69] ([Intel XE#1124]) +3 other tests skip
+   [69]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-5/igt@kms_big_fb@yf-tiled-16bpp-rotate-180.html
 
   * igt@kms_big_fb@yf-tiled-32bpp-rotate-0:
-    - shard-bmg:          NOTRUN -> [SKIP][14] ([Intel XE#1124]) +11 other tests skip
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_big_fb@yf-tiled-32bpp-rotate-0.html
+    - shard-bmg:          NOTRUN -> [SKIP][70] ([Intel XE#1124]) +15 other tests skip
+   [70]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@kms_big_fb@yf-tiled-32bpp-rotate-0.html
 
   * igt@kms_big_fb@yf-tiled-addfb:
-    - shard-bmg:          NOTRUN -> [SKIP][15] ([Intel XE#2328])
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-8/igt@kms_big_fb@yf-tiled-addfb.html
+    - shard-bmg:          NOTRUN -> [SKIP][71] ([Intel XE#2328])
+   [71]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_big_fb@yf-tiled-addfb.html
 
   * igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow:
-    - shard-bmg:          NOTRUN -> [SKIP][16] ([Intel XE#607])
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-10/igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow.html
+    - shard-bmg:          NOTRUN -> [SKIP][72] ([Intel XE#607])
+   [72]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow.html
 
   * igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p:
-    - shard-bmg:          NOTRUN -> [SKIP][17] ([Intel XE#2314] / [Intel XE#2894])
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p.html
+    - shard-bmg:          NOTRUN -> [SKIP][73] ([Intel XE#2314] / [Intel XE#2894])
+   [73]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p.html
 
   * igt@kms_bw@linear-tiling-1-displays-2560x1440p:
-    - shard-bmg:          NOTRUN -> [SKIP][18] ([Intel XE#367]) +4 other tests skip
-   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_bw@linear-tiling-1-displays-2560x1440p.html
+    - shard-bmg:          NOTRUN -> [SKIP][74] ([Intel XE#367]) +3 other tests skip
+   [74]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-1/igt@kms_bw@linear-tiling-1-displays-2560x1440p.html
 
-  * igt@kms_bw@linear-tiling-2-displays-2560x1440p:
-    - shard-lnl:          NOTRUN -> [SKIP][19] ([Intel XE#367])
-   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@kms_bw@linear-tiling-2-displays-2560x1440p.html
+  * igt@kms_bw@linear-tiling-2-displays-3840x2160p:
+    - shard-lnl:          NOTRUN -> [SKIP][75] ([Intel XE#367])
+   [75]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@kms_bw@linear-tiling-2-displays-3840x2160p.html
 
   * igt@kms_ccs@bad-aux-stride-yf-tiled-ccs:
-    - shard-bmg:          NOTRUN -> [SKIP][20] ([Intel XE#2887]) +17 other tests skip
-   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_ccs@bad-aux-stride-yf-tiled-ccs.html
+    - shard-bmg:          NOTRUN -> [SKIP][76] ([Intel XE#2887]) +22 other tests skip
+   [76]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_ccs@bad-aux-stride-yf-tiled-ccs.html
 
   * igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs-cc:
-    - shard-lnl:          NOTRUN -> [SKIP][21] ([Intel XE#2887]) +10 other tests skip
-   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs-cc.html
+    - shard-lnl:          NOTRUN -> [SKIP][77] ([Intel XE#2887]) +9 other tests skip
+   [77]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs-cc.html
 
   * igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs:
-    - shard-bmg:          NOTRUN -> [SKIP][22] ([Intel XE#3432])
-   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs.html
+    - shard-bmg:          NOTRUN -> [SKIP][78] ([Intel XE#3432])
+   [78]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs.html
+
+  * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-lnl-ccs@pipe-d-hdmi-a-3:
+    - shard-bmg:          NOTRUN -> [SKIP][79] ([Intel XE#2652] / [Intel XE#787]) +8 other tests skip
+   [79]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_ccs@crc-sprite-planes-basic-4-tiled-lnl-ccs@pipe-d-hdmi-a-3.html
 
   * igt@kms_cdclk@plane-scaling:
-    - shard-lnl:          NOTRUN -> [SKIP][23] ([Intel XE#4416]) +3 other tests skip
-   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-8/igt@kms_cdclk@plane-scaling.html
-    - shard-bmg:          NOTRUN -> [SKIP][24] ([Intel XE#2724])
-   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_cdclk@plane-scaling.html
+    - shard-lnl:          NOTRUN -> [SKIP][80] ([Intel XE#4416]) +3 other tests skip
+   [80]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_cdclk@plane-scaling.html
+    - shard-bmg:          NOTRUN -> [SKIP][81] ([Intel XE#2724])
+   [81]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@kms_cdclk@plane-scaling.html
 
-  * igt@kms_chamelium_color@degamma:
-    - shard-bmg:          NOTRUN -> [SKIP][25] ([Intel XE#2325])
-   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_chamelium_color@degamma.html
+  * igt@kms_chamelium_color@ctm-limited-range:
+    - shard-bmg:          NOTRUN -> [SKIP][82] ([Intel XE#2325])
+   [82]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@kms_chamelium_color@ctm-limited-range.html
 
   * igt@kms_chamelium_edid@hdmi-edid-change-during-hibernate:
-    - shard-bmg:          NOTRUN -> [SKIP][26] ([Intel XE#2252]) +10 other tests skip
-   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_chamelium_edid@hdmi-edid-change-during-hibernate.html
+    - shard-bmg:          NOTRUN -> [SKIP][83] ([Intel XE#2252]) +16 other tests skip
+   [83]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_chamelium_edid@hdmi-edid-change-during-hibernate.html
 
   * igt@kms_chamelium_hpd@dp-hpd-enable-disable-mode:
-    - shard-lnl:          NOTRUN -> [SKIP][27] ([Intel XE#373]) +3 other tests skip
-   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@kms_chamelium_hpd@dp-hpd-enable-disable-mode.html
+    - shard-lnl:          NOTRUN -> [SKIP][84] ([Intel XE#373]) +2 other tests skip
+   [84]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_chamelium_hpd@dp-hpd-enable-disable-mode.html
 
   * igt@kms_chamelium_sharpness_filter@filter-basic:
-    - shard-bmg:          NOTRUN -> [SKIP][28] ([Intel XE#6507])
-   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-10/igt@kms_chamelium_sharpness_filter@filter-basic.html
-    - shard-lnl:          NOTRUN -> [SKIP][29] ([Intel XE#6507])
-   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_chamelium_sharpness_filter@filter-basic.html
+    - shard-bmg:          NOTRUN -> [SKIP][85] ([Intel XE#6507])
+   [85]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_chamelium_sharpness_filter@filter-basic.html
+    - shard-lnl:          NOTRUN -> [SKIP][86] ([Intel XE#6507])
+   [86]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-5/igt@kms_chamelium_sharpness_filter@filter-basic.html
 
   * igt@kms_content_protection@atomic:
-    - shard-bmg:          NOTRUN -> [FAIL][30] ([Intel XE#1178] / [Intel XE#3304]) +5 other tests fail
-   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-10/igt@kms_content_protection@atomic.html
+    - shard-bmg:          NOTRUN -> [FAIL][87] ([Intel XE#1178] / [Intel XE#3304]) +5 other tests fail
+   [87]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_content_protection@atomic.html
 
   * igt@kms_content_protection@atomic-dpms-hdcp14:
-    - shard-lnl:          NOTRUN -> [SKIP][31] ([Intel XE#6973])
-   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@kms_content_protection@atomic-dpms-hdcp14.html
+    - shard-lnl:          NOTRUN -> [SKIP][88] ([Intel XE#6973])
+   [88]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-8/igt@kms_content_protection@atomic-dpms-hdcp14.html
 
   * igt@kms_content_protection@atomic-dpms-hdcp14@pipe-a-dp-2:
-    - shard-bmg:          NOTRUN -> [FAIL][32] ([Intel XE#3304]) +1 other test fail
-   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-8/igt@kms_content_protection@atomic-dpms-hdcp14@pipe-a-dp-2.html
+    - shard-bmg:          NOTRUN -> [FAIL][89] ([Intel XE#3304]) +1 other test fail
+   [89]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_content_protection@atomic-dpms-hdcp14@pipe-a-dp-2.html
 
   * igt@kms_content_protection@dp-mst-lic-type-0-hdcp14:
-    - shard-bmg:          NOTRUN -> [SKIP][33] ([Intel XE#6974])
-   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html
-    - shard-lnl:          NOTRUN -> [SKIP][34] ([Intel XE#6974])
-   [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html
+    - shard-bmg:          NOTRUN -> [SKIP][90] ([Intel XE#6974])
+   [90]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html
+    - shard-lnl:          NOTRUN -> [SKIP][91] ([Intel XE#6974])
+   [91]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html
 
   * igt@kms_content_protection@dp-mst-type-1:
-    - shard-bmg:          NOTRUN -> [SKIP][35] ([Intel XE#2390] / [Intel XE#6974])
-   [35]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_content_protection@dp-mst-type-1.html
+    - shard-bmg:          NOTRUN -> [SKIP][92] ([Intel XE#2390] / [Intel XE#6974])
+   [92]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_content_protection@dp-mst-type-1.html
 
   * igt@kms_content_protection@uevent:
-    - shard-lnl:          NOTRUN -> [SKIP][36] ([Intel XE#3278])
-   [36]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@kms_content_protection@uevent.html
+    - shard-lnl:          NOTRUN -> [SKIP][93] ([Intel XE#3278])
+   [93]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_content_protection@uevent.html
 
   * igt@kms_content_protection@uevent-hdcp14:
-    - shard-bmg:          NOTRUN -> [FAIL][37] ([Intel XE#6707]) +1 other test fail
-   [37]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_content_protection@uevent-hdcp14.html
-
-  * igt@kms_cursor_crc@cursor-random-512x170:
-    - shard-bmg:          NOTRUN -> [SKIP][38] ([Intel XE#2321]) +1 other test skip
-   [38]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_cursor_crc@cursor-random-512x170.html
+    - shard-bmg:          NOTRUN -> [FAIL][94] ([Intel XE#6707]) +3 other tests fail
+   [94]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_content_protection@uevent-hdcp14.html
 
   * igt@kms_cursor_crc@cursor-rapid-movement-32x10:
-    - shard-bmg:          NOTRUN -> [SKIP][39] ([Intel XE#2320]) +5 other tests skip
-   [39]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_cursor_crc@cursor-rapid-movement-32x10.html
+    - shard-bmg:          NOTRUN -> [SKIP][95] ([Intel XE#2320]) +5 other tests skip
+   [95]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@kms_cursor_crc@cursor-rapid-movement-32x10.html
 
   * igt@kms_cursor_crc@cursor-rapid-movement-32x32:
-    - shard-lnl:          NOTRUN -> [SKIP][40] ([Intel XE#1424]) +3 other tests skip
-   [40]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@kms_cursor_crc@cursor-rapid-movement-32x32.html
+    - shard-lnl:          NOTRUN -> [SKIP][96] ([Intel XE#1424]) +3 other tests skip
+   [96]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_cursor_crc@cursor-rapid-movement-32x32.html
+
+  * igt@kms_cursor_crc@cursor-sliding-128x128:
+    - shard-lnl:          [PASS][97] -> [DMESG-WARN][98] ([Intel XE#4537]) +1 other test dmesg-warn
+   [97]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-5/igt@kms_cursor_crc@cursor-sliding-128x128.html
+   [98]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-8/igt@kms_cursor_crc@cursor-sliding-128x128.html
+
+  * igt@kms_cursor_crc@cursor-sliding-512x512:
+    - shard-bmg:          NOTRUN -> [SKIP][99] ([Intel XE#2321]) +2 other tests skip
+   [99]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_cursor_crc@cursor-sliding-512x512.html
 
   * igt@kms_cursor_legacy@cursorb-vs-flipb-atomic:
-    - shard-lnl:          NOTRUN -> [SKIP][41] ([Intel XE#309]) +1 other test skip
-   [41]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@kms_cursor_legacy@cursorb-vs-flipb-atomic.html
+    - shard-lnl:          NOTRUN -> [SKIP][100] ([Intel XE#309]) +1 other test skip
+   [100]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-2/igt@kms_cursor_legacy@cursorb-vs-flipb-atomic.html
+
+  * igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions:
+    - shard-bmg:          NOTRUN -> [SKIP][101] ([Intel XE#2286])
+   [101]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions.html
 
   * igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions-varying-size:
-    - shard-lnl:          NOTRUN -> [SKIP][42] ([Intel XE#323]) +1 other test skip
-   [42]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions-varying-size.html
+    - shard-lnl:          NOTRUN -> [SKIP][102] ([Intel XE#323]) +1 other test skip
+   [102]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-4/igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions-varying-size.html
 
   * igt@kms_dirtyfb@drrs-dirtyfb-ioctl:
-    - shard-lnl:          NOTRUN -> [SKIP][43] ([Intel XE#1508])
-   [43]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@kms_dirtyfb@drrs-dirtyfb-ioctl.html
-    - shard-bmg:          NOTRUN -> [SKIP][44] ([Intel XE#1508])
-   [44]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_dirtyfb@drrs-dirtyfb-ioctl.html
+    - shard-lnl:          NOTRUN -> [SKIP][103] ([Intel XE#1508])
+   [103]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-5/igt@kms_dirtyfb@drrs-dirtyfb-ioctl.html
+    - shard-bmg:          NOTRUN -> [SKIP][104] ([Intel XE#1508])
+   [104]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_dirtyfb@drrs-dirtyfb-ioctl.html
+
+  * igt@kms_dither@fb-8bpc-vs-panel-6bpc@pipe-a-hdmi-a-3:
+    - shard-bmg:          NOTRUN -> [SKIP][105] ([Intel XE#1340])
+   [105]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_dither@fb-8bpc-vs-panel-6bpc@pipe-a-hdmi-a-3.html
 
   * igt@kms_dp_linktrain_fallback@dsc-fallback:
-    - shard-bmg:          NOTRUN -> [SKIP][45] ([Intel XE#4331])
-   [45]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html
-
-  * igt@kms_dsc@dsc-fractional-bpp-with-bpc:
-    - shard-bmg:          NOTRUN -> [SKIP][46] ([Intel XE#2244])
-   [46]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@kms_dsc@dsc-fractional-bpp-with-bpc.html
+    - shard-lnl:          NOTRUN -> [SKIP][106] ([Intel XE#4331])
+   [106]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_dp_linktrain_fallback@dsc-fallback.html
+    - shard-bmg:          NOTRUN -> [SKIP][107] ([Intel XE#4331])
+   [107]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html
 
   * igt@kms_fbc_dirty_rect@fbc-dirty-rectangle-out-visible-area:
-    - shard-bmg:          NOTRUN -> [SKIP][47] ([Intel XE#4422])
-   [47]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-8/igt@kms_fbc_dirty_rect@fbc-dirty-rectangle-out-visible-area.html
-
-  * igt@kms_fbcon_fbt@fbc-suspend:
-    - shard-bmg:          NOTRUN -> [SKIP][48] ([Intel XE#4156]) +1 other test skip
-   [48]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_fbcon_fbt@fbc-suspend.html
+    - shard-bmg:          NOTRUN -> [SKIP][108] ([Intel XE#4422]) +1 other test skip
+   [108]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_fbc_dirty_rect@fbc-dirty-rectangle-out-visible-area.html
 
   * igt@kms_feature_discovery@display-2x:
-    - shard-lnl:          NOTRUN -> [SKIP][49] ([Intel XE#702])
-   [49]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@kms_feature_discovery@display-2x.html
+    - shard-lnl:          NOTRUN -> [SKIP][109] ([Intel XE#702])
+   [109]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-8/igt@kms_feature_discovery@display-2x.html
 
   * igt@kms_feature_discovery@dp-mst:
-    - shard-bmg:          NOTRUN -> [SKIP][50] ([Intel XE#2375])
-   [50]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_feature_discovery@dp-mst.html
+    - shard-bmg:          NOTRUN -> [SKIP][110] ([Intel XE#2375])
+   [110]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_feature_discovery@dp-mst.html
+
+  * igt@kms_flip@2x-flip-vs-absolute-wf_vblank@cd-dp2-hdmi-a3:
+    - shard-bmg:          [PASS][111] -> [DMESG-WARN][112] ([Intel XE#6766]) +1 other test dmesg-warn
+   [111]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-6/igt@kms_flip@2x-flip-vs-absolute-wf_vblank@cd-dp2-hdmi-a3.html
+   [112]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_flip@2x-flip-vs-absolute-wf_vblank@cd-dp2-hdmi-a3.html
 
   * igt@kms_flip@2x-wf_vblank-ts-check:
-    - shard-lnl:          NOTRUN -> [SKIP][51] ([Intel XE#1421]) +1 other test skip
-   [51]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_flip@2x-wf_vblank-ts-check.html
-
-  * igt@kms_flip@flip-vs-panning-interruptible:
-    - shard-bmg:          [PASS][52] -> [DMESG-FAIL][53] ([Intel XE#5208])
-   [52]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-1/igt@kms_flip@flip-vs-panning-interruptible.html
-   [53]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_flip@flip-vs-panning-interruptible.html
-
-  * igt@kms_flip@flip-vs-panning-interruptible@b-hdmi-a3:
-    - shard-bmg:          [PASS][54] -> [DMESG-WARN][55] ([Intel XE#6766])
-   [54]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-1/igt@kms_flip@flip-vs-panning-interruptible@b-hdmi-a3.html
-   [55]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_flip@flip-vs-panning-interruptible@b-hdmi-a3.html
-
-  * igt@kms_flip@flip-vs-panning-interruptible@c-hdmi-a3:
-    - shard-bmg:          [PASS][56] -> [DMESG-FAIL][57] ([Intel XE#5545])
-   [56]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-1/igt@kms_flip@flip-vs-panning-interruptible@c-hdmi-a3.html
-   [57]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_flip@flip-vs-panning-interruptible@c-hdmi-a3.html
+    - shard-lnl:          NOTRUN -> [SKIP][113] ([Intel XE#1421]) +1 other test skip
+   [113]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-2/igt@kms_flip@2x-wf_vblank-ts-check.html
 
   * igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-downscaling:
-    - shard-lnl:          NOTRUN -> [SKIP][58] ([Intel XE#1397] / [Intel XE#1745]) +1 other test skip
-   [58]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-downscaling.html
+    - shard-lnl:          NOTRUN -> [SKIP][114] ([Intel XE#1397] / [Intel XE#1745]) +1 other test skip
+   [114]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-5/igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-downscaling.html
 
   * igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-downscaling@pipe-a-default-mode:
-    - shard-lnl:          NOTRUN -> [SKIP][59] ([Intel XE#1397]) +1 other test skip
-   [59]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-downscaling@pipe-a-default-mode.html
+    - shard-lnl:          NOTRUN -> [SKIP][115] ([Intel XE#1397]) +1 other test skip
+   [115]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-5/igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-downscaling@pipe-a-default-mode.html
 
   * igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling:
-    - shard-lnl:          NOTRUN -> [SKIP][60] ([Intel XE#1401] / [Intel XE#1745]) +1 other test skip
-   [60]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling.html
+    - shard-lnl:          NOTRUN -> [SKIP][116] ([Intel XE#1401] / [Intel XE#1745]) +1 other test skip
+   [116]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling.html
 
   * igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling@pipe-a-default-mode:
-    - shard-lnl:          NOTRUN -> [SKIP][61] ([Intel XE#1401]) +1 other test skip
-   [61]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling@pipe-a-default-mode.html
+    - shard-lnl:          NOTRUN -> [SKIP][117] ([Intel XE#1401]) +1 other test skip
+   [117]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling@pipe-a-default-mode.html
 
-  * igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-downscaling@pipe-a-valid-mode:
-    - shard-bmg:          NOTRUN -> [SKIP][62] ([Intel XE#2293]) +7 other tests skip
-   [62]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-downscaling@pipe-a-valid-mode.html
+  * igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling@pipe-a-valid-mode:
+    - shard-bmg:          NOTRUN -> [SKIP][118] ([Intel XE#2293]) +5 other tests skip
+   [118]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling@pipe-a-valid-mode.html
 
   * igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-upscaling:
-    - shard-bmg:          NOTRUN -> [SKIP][63] ([Intel XE#2293] / [Intel XE#2380]) +7 other tests skip
-   [63]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-upscaling.html
+    - shard-bmg:          NOTRUN -> [SKIP][119] ([Intel XE#2293] / [Intel XE#2380]) +5 other tests skip
+   [119]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-upscaling.html
 
   * igt@kms_flip_scaled_crc@flip-nv12-linear-to-nv12-linear-reflect-x:
-    - shard-bmg:          NOTRUN -> [SKIP][64] ([Intel XE#7064]) +1 other test skip
-   [64]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@kms_flip_scaled_crc@flip-nv12-linear-to-nv12-linear-reflect-x.html
+    - shard-bmg:          NOTRUN -> [SKIP][120] ([Intel XE#7064]) +1 other test skip
+   [120]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@kms_flip_scaled_crc@flip-nv12-linear-to-nv12-linear-reflect-x.html
 
   * igt@kms_force_connector_basic@prune-stale-modes:
-    - shard-lnl:          NOTRUN -> [SKIP][65] ([Intel XE#352])
-   [65]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_force_connector_basic@prune-stale-modes.html
+    - shard-lnl:          NOTRUN -> [SKIP][121] ([Intel XE#352])
+   [121]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_force_connector_basic@prune-stale-modes.html
 
   * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-render:
-    - shard-lnl:          NOTRUN -> [SKIP][66] ([Intel XE#651]) +7 other tests skip
-   [66]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-render.html
-
-  * igt@kms_frontbuffer_tracking@drrs-abgr161616f-draw-mmap-wc:
-    - shard-bmg:          NOTRUN -> [SKIP][67] ([Intel XE#7061]) +9 other tests skip
-   [67]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_frontbuffer_tracking@drrs-abgr161616f-draw-mmap-wc.html
+    - shard-lnl:          NOTRUN -> [SKIP][122] ([Intel XE#651]) +6 other tests skip
+   [122]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-render.html
 
   * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-shrfb-msflip-blt:
-    - shard-lnl:          NOTRUN -> [SKIP][68] ([Intel XE#656]) +18 other tests skip
-   [68]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-shrfb-msflip-blt.html
+    - shard-lnl:          NOTRUN -> [SKIP][123] ([Intel XE#656]) +16 other tests skip
+   [123]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-shrfb-msflip-blt.html
 
   * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-onoff:
-    - shard-bmg:          NOTRUN -> [SKIP][69] ([Intel XE#4141]) +16 other tests skip
-   [69]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-onoff.html
-
-  * igt@kms_frontbuffer_tracking@fbc-abgr161616f-draw-mmap-wc:
-    - shard-lnl:          NOTRUN -> [SKIP][70] ([Intel XE#7061]) +3 other tests skip
-   [70]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-8/igt@kms_frontbuffer_tracking@fbc-abgr161616f-draw-mmap-wc.html
+    - shard-bmg:          NOTRUN -> [SKIP][124] ([Intel XE#4141]) +19 other tests skip
+   [124]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-onoff.html
 
   * igt@kms_frontbuffer_tracking@fbc-tiling-y:
-    - shard-bmg:          NOTRUN -> [SKIP][71] ([Intel XE#2352])
-   [71]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-10/igt@kms_frontbuffer_tracking@fbc-tiling-y.html
+    - shard-bmg:          NOTRUN -> [SKIP][125] ([Intel XE#2352])
+   [125]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-1/igt@kms_frontbuffer_tracking@fbc-tiling-y.html
 
   * igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscreen-pri-shrfb-draw-render:
-    - shard-lnl:          NOTRUN -> [SKIP][72] ([Intel XE#6312])
-   [72]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscreen-pri-shrfb-draw-render.html
+    - shard-lnl:          NOTRUN -> [SKIP][126] ([Intel XE#6312])
+   [126]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-4/igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscreen-pri-shrfb-draw-render.html
 
   * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc:
-    - shard-bmg:          NOTRUN -> [SKIP][73] ([Intel XE#2311]) +37 other tests skip
-   [73]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc.html
+    - shard-bmg:          NOTRUN -> [SKIP][127] ([Intel XE#2311]) +40 other tests skip
+   [127]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc.html
 
-  * igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-indfb-msflip-blt:
-    - shard-bmg:          NOTRUN -> [SKIP][74] ([Intel XE#2313]) +42 other tests skip
-   [74]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-indfb-msflip-blt.html
+  * igt@kms_frontbuffer_tracking@fbcdrrs-argb161616f-draw-render:
+    - shard-bmg:          NOTRUN -> [SKIP][128] ([Intel XE#7061]) +9 other tests skip
+   [128]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_frontbuffer_tracking@fbcdrrs-argb161616f-draw-render.html
 
-  * igt@kms_hdr@bpc-switch@pipe-a-dp-2:
-    - shard-bmg:          [PASS][75] -> [ABORT][76] ([Intel XE#6740]) +1 other test abort
-   [75]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-2/igt@kms_hdr@bpc-switch@pipe-a-dp-2.html
-   [76]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_hdr@bpc-switch@pipe-a-dp-2.html
+  * igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-blt:
+    - shard-bmg:          NOTRUN -> [SKIP][129] ([Intel XE#2313]) +48 other tests skip
+   [129]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-blt.html
 
-  * igt@kms_joiner@invalid-modeset-ultra-joiner:
-    - shard-lnl:          NOTRUN -> [SKIP][77] ([Intel XE#6900])
-   [77]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@kms_joiner@invalid-modeset-ultra-joiner.html
+  * igt@kms_frontbuffer_tracking@psr-argb161616f-draw-blt:
+    - shard-lnl:          NOTRUN -> [SKIP][130] ([Intel XE#7061]) +2 other tests skip
+   [130]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_frontbuffer_tracking@psr-argb161616f-draw-blt.html
+
+  * igt@kms_hdr@invalid-hdr@pipe-a-hdmi-a-3:
+    - shard-bmg:          NOTRUN -> [ABORT][131] ([Intel XE#6740]) +1 other test abort
+   [131]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@kms_hdr@invalid-hdr@pipe-a-hdmi-a-3.html
 
   * igt@kms_pipe_stress@stress-xrgb8888-yftiled:
-    - shard-bmg:          NOTRUN -> [SKIP][78] ([Intel XE#6912])
-   [78]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_pipe_stress@stress-xrgb8888-yftiled.html
+    - shard-bmg:          NOTRUN -> [SKIP][132] ([Intel XE#6912])
+   [132]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@kms_pipe_stress@stress-xrgb8888-yftiled.html
 
   * igt@kms_pipe_stress@stress-xrgb8888-ytiled:
-    - shard-bmg:          NOTRUN -> [SKIP][79] ([Intel XE#4329] / [Intel XE#6912])
-   [79]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_pipe_stress@stress-xrgb8888-ytiled.html
+    - shard-bmg:          NOTRUN -> [SKIP][133] ([Intel XE#4329] / [Intel XE#6912])
+   [133]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_pipe_stress@stress-xrgb8888-ytiled.html
 
   * igt@kms_plane_lowres@tiling-y:
-    - shard-lnl:          NOTRUN -> [SKIP][80] ([Intel XE#599]) +1 other test skip
-   [80]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-8/igt@kms_plane_lowres@tiling-y.html
-    - shard-bmg:          NOTRUN -> [SKIP][81] ([Intel XE#2393]) +1 other test skip
-   [81]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_plane_lowres@tiling-y.html
+    - shard-lnl:          NOTRUN -> [SKIP][134] ([Intel XE#599]) +1 other test skip
+   [134]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-8/igt@kms_plane_lowres@tiling-y.html
+    - shard-bmg:          NOTRUN -> [SKIP][135] ([Intel XE#2393]) +1 other test skip
+   [135]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@kms_plane_lowres@tiling-y.html
 
   * igt@kms_plane_multiple@tiling-y:
-    - shard-bmg:          NOTRUN -> [SKIP][82] ([Intel XE#5020])
-   [82]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_plane_multiple@tiling-y.html
+    - shard-bmg:          NOTRUN -> [SKIP][136] ([Intel XE#5020])
+   [136]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_plane_multiple@tiling-y.html
 
   * igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25:
-    - shard-lnl:          NOTRUN -> [SKIP][83] ([Intel XE#6886]) +3 other tests skip
-   [83]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25.html
+    - shard-lnl:          NOTRUN -> [SKIP][137] ([Intel XE#6886]) +3 other tests skip
+   [137]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25.html
 
   * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5:
-    - shard-bmg:          NOTRUN -> [SKIP][84] ([Intel XE#6886]) +4 other tests skip
-   [84]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5.html
+    - shard-bmg:          NOTRUN -> [SKIP][138] ([Intel XE#6886]) +4 other tests skip
+   [138]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5.html
 
   * igt@kms_pm_backlight@bad-brightness:
-    - shard-bmg:          NOTRUN -> [SKIP][85] ([Intel XE#870])
-   [85]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-8/igt@kms_pm_backlight@bad-brightness.html
+    - shard-bmg:          NOTRUN -> [SKIP][139] ([Intel XE#870]) +1 other test skip
+   [139]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@kms_pm_backlight@bad-brightness.html
 
   * igt@kms_pm_backlight@brightness-with-dpms:
-    - shard-bmg:          NOTRUN -> [SKIP][86] ([Intel XE#2938])
-   [86]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_pm_backlight@brightness-with-dpms.html
+    - shard-bmg:          NOTRUN -> [SKIP][140] ([Intel XE#2938])
+   [140]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_pm_backlight@brightness-with-dpms.html
 
-  * igt@kms_pm_dc@dc6-dpms:
-    - shard-lnl:          [PASS][87] -> [FAIL][88] ([Intel XE#718])
-   [87]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-3/igt@kms_pm_dc@dc6-dpms.html
-   [88]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_pm_dc@dc6-dpms.html
+  * igt@kms_pm_dc@dc5-psr:
+    - shard-lnl:          [PASS][141] -> [FAIL][142] ([Intel XE#718]) +1 other test fail
+   [141]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-2/igt@kms_pm_dc@dc5-psr.html
+   [142]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_pm_dc@dc5-psr.html
 
   * igt@kms_pm_rpm@modeset-lpsp-stress-no-wait:
-    - shard-bmg:          NOTRUN -> [SKIP][89] ([Intel XE#1439] / [Intel XE#3141] / [Intel XE#836])
-   [89]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_pm_rpm@modeset-lpsp-stress-no-wait.html
+    - shard-bmg:          NOTRUN -> [SKIP][143] ([Intel XE#1439] / [Intel XE#3141] / [Intel XE#836])
+   [143]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_pm_rpm@modeset-lpsp-stress-no-wait.html
 
   * igt@kms_pm_rpm@package-g7:
-    - shard-bmg:          NOTRUN -> [SKIP][90] ([Intel XE#6814])
-   [90]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-10/igt@kms_pm_rpm@package-g7.html
+    - shard-bmg:          NOTRUN -> [SKIP][144] ([Intel XE#6814])
+   [144]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_pm_rpm@package-g7.html
 
-  * igt@kms_properties@connector-properties-legacy:
-    - shard-bmg:          [PASS][91] -> [SKIP][92] ([Intel XE#6703]) +16 other tests skip
-   [91]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@kms_properties@connector-properties-legacy.html
-   [92]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_properties@connector-properties-legacy.html
+  * igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area:
+    - shard-lnl:          NOTRUN -> [SKIP][145] ([Intel XE#1406] / [Intel XE#2893]) +1 other test skip
+   [145]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html
 
   * igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area:
-    - shard-lnl:          NOTRUN -> [SKIP][93] ([Intel XE#1406] / [Intel XE#2893] / [Intel XE#4608])
-   [93]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html
+    - shard-lnl:          NOTRUN -> [SKIP][146] ([Intel XE#1406] / [Intel XE#2893] / [Intel XE#4608])
+   [146]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-2/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html
 
   * igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area@pipe-b-edp-1:
-    - shard-lnl:          NOTRUN -> [SKIP][94] ([Intel XE#1406] / [Intel XE#4608]) +1 other test skip
-   [94]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area@pipe-b-edp-1.html
-
-  * igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-sf:
-    - shard-lnl:          NOTRUN -> [SKIP][95] ([Intel XE#1406] / [Intel XE#2893])
-   [95]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-7/igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-sf.html
+    - shard-lnl:          NOTRUN -> [SKIP][147] ([Intel XE#1406] / [Intel XE#4608]) +1 other test skip
+   [147]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-2/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area@pipe-b-edp-1.html
 
   * igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area:
-    - shard-bmg:          NOTRUN -> [SKIP][96] ([Intel XE#1406] / [Intel XE#1489]) +8 other tests skip
-   [96]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area.html
+    - shard-bmg:          NOTRUN -> [SKIP][148] ([Intel XE#1406] / [Intel XE#1489]) +12 other tests skip
+   [148]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area.html
+
+  * igt@kms_psr2_su@frontbuffer-xrgb8888:
+    - shard-bmg:          NOTRUN -> [SKIP][149] ([Intel XE#1406] / [Intel XE#2387])
+   [149]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@kms_psr2_su@frontbuffer-xrgb8888.html
 
   * igt@kms_psr@fbc-pr-no-drrs:
-    - shard-lnl:          NOTRUN -> [SKIP][97] ([Intel XE#1406]) +2 other tests skip
-   [97]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_psr@fbc-pr-no-drrs.html
+    - shard-lnl:          NOTRUN -> [SKIP][150] ([Intel XE#1406]) +2 other tests skip
+   [150]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@kms_psr@fbc-pr-no-drrs.html
 
   * igt@kms_psr@fbc-psr2-suspend@edp-1:
-    - shard-lnl:          NOTRUN -> [SKIP][98] ([Intel XE#1406] / [Intel XE#4609])
-   [98]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@kms_psr@fbc-psr2-suspend@edp-1.html
+    - shard-lnl:          NOTRUN -> [SKIP][151] ([Intel XE#1406] / [Intel XE#4609])
+   [151]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_psr@fbc-psr2-suspend@edp-1.html
 
   * igt@kms_psr@psr2-no-drrs:
-    - shard-bmg:          NOTRUN -> [SKIP][99] ([Intel XE#1406] / [Intel XE#2234] / [Intel XE#2850]) +19 other tests skip
-   [99]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_psr@psr2-no-drrs.html
-
-  * igt@kms_psr@psr2-sprite-render:
-    - shard-bmg:          NOTRUN -> [SKIP][100] ([Intel XE#1406] / [Intel XE#6703])
-   [100]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_psr@psr2-sprite-render.html
+    - shard-bmg:          NOTRUN -> [SKIP][152] ([Intel XE#1406] / [Intel XE#2234] / [Intel XE#2850]) +15 other tests skip
+   [152]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_psr@psr2-no-drrs.html
 
   * igt@kms_psr_stress_test@invalidate-primary-flip-overlay:
-    - shard-bmg:          NOTRUN -> [SKIP][101] ([Intel XE#1406] / [Intel XE#2414])
-   [101]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_psr_stress_test@invalidate-primary-flip-overlay.html
+    - shard-bmg:          NOTRUN -> [SKIP][153] ([Intel XE#1406] / [Intel XE#2414])
+   [153]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_psr_stress_test@invalidate-primary-flip-overlay.html
 
   * igt@kms_rotation_crc@primary-yf-tiled-reflect-x-0:
-    - shard-bmg:          NOTRUN -> [SKIP][102] ([Intel XE#2330])
-   [102]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_rotation_crc@primary-yf-tiled-reflect-x-0.html
+    - shard-bmg:          NOTRUN -> [SKIP][154] ([Intel XE#2330])
+   [154]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_rotation_crc@primary-yf-tiled-reflect-x-0.html
 
   * igt@kms_rotation_crc@sprite-rotation-90:
-    - shard-bmg:          NOTRUN -> [SKIP][103] ([Intel XE#3414] / [Intel XE#3904]) +1 other test skip
-   [103]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_rotation_crc@sprite-rotation-90.html
+    - shard-bmg:          NOTRUN -> [SKIP][155] ([Intel XE#3414] / [Intel XE#3904])
+   [155]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_rotation_crc@sprite-rotation-90.html
 
   * igt@kms_scaling_modes@scaling-mode-center:
-    - shard-bmg:          NOTRUN -> [SKIP][104] ([Intel XE#2413]) +1 other test skip
-   [104]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_scaling_modes@scaling-mode-center.html
+    - shard-bmg:          NOTRUN -> [SKIP][156] ([Intel XE#2413]) +2 other tests skip
+   [156]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_scaling_modes@scaling-mode-center.html
 
   * igt@kms_sharpness_filter@filter-toggle:
-    - shard-bmg:          NOTRUN -> [SKIP][105] ([Intel XE#6503]) +2 other tests skip
-   [105]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-8/igt@kms_sharpness_filter@filter-toggle.html
+    - shard-bmg:          NOTRUN -> [SKIP][157] ([Intel XE#6503]) +2 other tests skip
+   [157]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@kms_sharpness_filter@filter-toggle.html
+
+  * igt@kms_vrr@cmrr:
+    - shard-bmg:          NOTRUN -> [SKIP][158] ([Intel XE#2168])
+   [158]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@kms_vrr@cmrr.html
+
+  * igt@kms_vrr@flip-dpms:
+    - shard-bmg:          NOTRUN -> [SKIP][159] ([Intel XE#1499])
+   [159]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_vrr@flip-dpms.html
 
   * igt@kms_vrr@negative-basic:
-    - shard-lnl:          NOTRUN -> [SKIP][106] ([Intel XE#1499])
-   [106]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_vrr@negative-basic.html
+    - shard-lnl:          NOTRUN -> [SKIP][160] ([Intel XE#1499])
+   [160]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_vrr@negative-basic.html
 
-  * igt@kms_vrr@seamless-rr-switch-virtual:
-    - shard-bmg:          NOTRUN -> [SKIP][107] ([Intel XE#1499])
-   [107]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@kms_vrr@seamless-rr-switch-virtual.html
-
-  * igt@xe_eudebug@basic-vm-access-parameters-faultable:
-    - shard-lnl:          NOTRUN -> [SKIP][108] ([Intel XE#4837]) +2 other tests skip
-   [108]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-8/igt@xe_eudebug@basic-vm-access-parameters-faultable.html
+  * igt@testdisplay:
+    - shard-bmg:          NOTRUN -> [ABORT][161] ([Intel XE#6740] / [Intel XE#6976])
+   [161]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@testdisplay.html
 
   * igt@xe_eudebug@discovery-empty:
-    - shard-bmg:          NOTRUN -> [SKIP][109] ([Intel XE#4837]) +10 other tests skip
-   [109]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_eudebug@discovery-empty.html
+    - shard-bmg:          NOTRUN -> [SKIP][162] ([Intel XE#4837]) +12 other tests skip
+   [162]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@xe_eudebug@discovery-empty.html
 
   * igt@xe_eudebug_online@interrupt-other-debuggable:
-    - shard-lnl:          NOTRUN -> [SKIP][110] ([Intel XE#4837] / [Intel XE#6665]) +2 other tests skip
-   [110]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@xe_eudebug_online@interrupt-other-debuggable.html
+    - shard-lnl:          NOTRUN -> [SKIP][163] ([Intel XE#4837] / [Intel XE#6665]) +2 other tests skip
+   [163]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@xe_eudebug_online@interrupt-other-debuggable.html
 
   * igt@xe_eudebug_online@pagefault-read-stress:
-    - shard-bmg:          NOTRUN -> [SKIP][111] ([Intel XE#6665] / [Intel XE#6681]) +1 other test skip
-   [111]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@xe_eudebug_online@pagefault-read-stress.html
+    - shard-bmg:          NOTRUN -> [SKIP][164] ([Intel XE#6665] / [Intel XE#6681]) +1 other test skip
+   [164]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_eudebug_online@pagefault-read-stress.html
 
   * igt@xe_eudebug_online@pagefault-write-stress:
-    - shard-lnl:          NOTRUN -> [SKIP][112] ([Intel XE#6665])
-   [112]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-8/igt@xe_eudebug_online@pagefault-write-stress.html
+    - shard-lnl:          NOTRUN -> [SKIP][165] ([Intel XE#6665])
+   [165]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-8/igt@xe_eudebug_online@pagefault-write-stress.html
 
   * igt@xe_eudebug_online@single-step-one:
-    - shard-bmg:          NOTRUN -> [SKIP][113] ([Intel XE#4837] / [Intel XE#6665]) +7 other tests skip
-   [113]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@xe_eudebug_online@single-step-one.html
+    - shard-bmg:          NOTRUN -> [SKIP][166] ([Intel XE#4837] / [Intel XE#6665]) +6 other tests skip
+   [166]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@xe_eudebug_online@single-step-one.html
 
   * igt@xe_eudebug_sriov@deny-sriov:
-    - shard-bmg:          NOTRUN -> [SKIP][114] ([Intel XE#5793])
-   [114]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@xe_eudebug_sriov@deny-sriov.html
+    - shard-bmg:          NOTRUN -> [SKIP][167] ([Intel XE#5793])
+   [167]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_eudebug_sriov@deny-sriov.html
 
   * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
-    - shard-lnl:          NOTRUN -> [SKIP][115] ([Intel XE#688]) +2 other tests skip
-   [115]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
-
-  * igt@xe_evict@evict-mixed-many-threads-small:
-    - shard-bmg:          [PASS][116] -> [INCOMPLETE][117] ([Intel XE#6321])
-   [116]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@xe_evict@evict-mixed-many-threads-small.html
-   [117]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_evict@evict-mixed-many-threads-small.html
+    - shard-lnl:          NOTRUN -> [SKIP][168] ([Intel XE#688]) +11 other tests skip
+   [168]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-5/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
 
   * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic:
-    - shard-lnl:          NOTRUN -> [SKIP][118] ([Intel XE#1392]) +4 other tests skip
-   [118]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-8/igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic.html
+    - shard-lnl:          NOTRUN -> [SKIP][169] ([Intel XE#1392]) +4 other tests skip
+   [169]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic.html
 
   * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate:
-    - shard-bmg:          NOTRUN -> [SKIP][119] ([Intel XE#2322]) +9 other tests skip
-   [119]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate.html
-
-  * {igt@xe_exec_basic@twice-bindexecqueue@vecs0} (NEW):
-    - shard-lnl:          NOTRUN -> [DMESG-WARN][120] ([Intel XE#4537])
-   [120]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@xe_exec_basic@twice-bindexecqueue@vecs0.html
+    - shard-bmg:          NOTRUN -> [SKIP][170] ([Intel XE#2322]) +11 other tests skip
+   [170]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-1/igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate.html
 
   * igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr:
-    - shard-lnl:          NOTRUN -> [SKIP][121] ([Intel XE#6874]) +13 other tests skip
-   [121]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr.html
+    - shard-lnl:          NOTRUN -> [SKIP][171] ([Intel XE#6874]) +15 other tests skip
+   [171]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr.html
 
   * igt@xe_exec_multi_queue@two-queues-priority:
-    - shard-bmg:          NOTRUN -> [SKIP][122] ([Intel XE#6874]) +38 other tests skip
-   [122]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_exec_multi_queue@two-queues-priority.html
+    - shard-bmg:          NOTRUN -> [SKIP][172] ([Intel XE#6874]) +43 other tests skip
+   [172]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@xe_exec_multi_queue@two-queues-priority.html
+
+  * igt@xe_exec_sip_eudebug@breakpoint-writesip-twice:
+    - shard-lnl:          NOTRUN -> [SKIP][173] ([Intel XE#4837]) +3 other tests skip
+   [173]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@xe_exec_sip_eudebug@breakpoint-writesip-twice.html
+
+  * igt@xe_exec_system_allocator@madvise-no-range-invalidate-same-attr:
+    - shard-lnl:          NOTRUN -> [WARN][174] ([Intel XE#5786]) +2 other tests warn
+   [174]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@xe_exec_system_allocator@madvise-no-range-invalidate-same-attr.html
 
   * igt@xe_exec_system_allocator@many-64k-mmap-free-huge:
-    - shard-bmg:          NOTRUN -> [SKIP][123] ([Intel XE#5007]) +2 other tests skip
-   [123]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_exec_system_allocator@many-64k-mmap-free-huge.html
+    - shard-bmg:          NOTRUN -> [SKIP][175] ([Intel XE#5007]) +2 other tests skip
+   [175]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@xe_exec_system_allocator@many-64k-mmap-free-huge.html
 
   * igt@xe_exec_system_allocator@many-64k-mmap-huge-nomemset:
-    - shard-lnl:          NOTRUN -> [SKIP][124] ([Intel XE#5007])
-   [124]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@xe_exec_system_allocator@many-64k-mmap-huge-nomemset.html
-
-  * igt@xe_exec_system_allocator@many-stride-malloc-prefetch-madvise:
-    - shard-lnl:          NOTRUN -> [WARN][125] ([Intel XE#5786]) +1 other test warn
-   [125]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@xe_exec_system_allocator@many-stride-malloc-prefetch-madvise.html
+    - shard-lnl:          NOTRUN -> [SKIP][176] ([Intel XE#5007])
+   [176]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@xe_exec_system_allocator@many-64k-mmap-huge-nomemset.html
 
   * igt@xe_exec_system_allocator@many-stride-new-prefetch:
-    - shard-bmg:          NOTRUN -> [INCOMPLETE][126] ([Intel XE#6480])
-   [126]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_exec_system_allocator@many-stride-new-prefetch.html
-
-  * igt@xe_exec_system_allocator@partial-atomic-middle-remap-no-cpu-fault:
-    - shard-bmg:          NOTRUN -> [FAIL][127] ([Intel XE#5625])
-   [127]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@xe_exec_system_allocator@partial-atomic-middle-remap-no-cpu-fault.html
+    - shard-bmg:          NOTRUN -> [INCOMPLETE][177] ([Intel XE#6480])
+   [177]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@xe_exec_system_allocator@many-stride-new-prefetch.html
 
   * igt@xe_exec_system_allocator@process-many-mmap-new-huge-nomemset:
-    - shard-lnl:          NOTRUN -> [SKIP][128] ([Intel XE#4943]) +13 other tests skip
-   [128]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@xe_exec_system_allocator@process-many-mmap-new-huge-nomemset.html
-
-  * igt@xe_exec_system_allocator@threads-many-large-execqueues-malloc-nomemset:
-    - shard-bmg:          [PASS][129] -> [INCOMPLETE][130] ([Intel XE#6480])
-   [129]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-2/igt@xe_exec_system_allocator@threads-many-large-execqueues-malloc-nomemset.html
-   [130]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-10/igt@xe_exec_system_allocator@threads-many-large-execqueues-malloc-nomemset.html
-
-  * igt@xe_exec_system_allocator@threads-shared-vm-many-malloc:
-    - shard-bmg:          NOTRUN -> [SKIP][131] ([Intel XE#6703]) +10 other tests skip
-   [131]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@xe_exec_system_allocator@threads-shared-vm-many-malloc.html
+    - shard-lnl:          NOTRUN -> [SKIP][178] ([Intel XE#4943]) +15 other tests skip
+   [178]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-8/igt@xe_exec_system_allocator@process-many-mmap-new-huge-nomemset.html
 
   * igt@xe_exec_system_allocator@threads-shared-vm-many-stride-mmap-free-huge:
-    - shard-bmg:          NOTRUN -> [SKIP][132] ([Intel XE#4943]) +26 other tests skip
-   [132]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@xe_exec_system_allocator@threads-shared-vm-many-stride-mmap-free-huge.html
+    - shard-bmg:          NOTRUN -> [SKIP][179] ([Intel XE#4943]) +36 other tests skip
+   [179]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-1/igt@xe_exec_system_allocator@threads-shared-vm-many-stride-mmap-free-huge.html
 
-  * igt@xe_fault_injection@probe-fail-guc-xe_guc_ct_send_recv:
-    - shard-bmg:          NOTRUN -> [ABORT][133] ([Intel XE#5466])
-   [133]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-8/igt@xe_fault_injection@probe-fail-guc-xe_guc_ct_send_recv.html
+  * igt@xe_mmap@small-bar:
+    - shard-bmg:          NOTRUN -> [SKIP][180] ([Intel XE#586])
+   [180]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_mmap@small-bar.html
 
   * igt@xe_mmap@vram:
-    - shard-lnl:          NOTRUN -> [SKIP][134] ([Intel XE#1416])
-   [134]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@xe_mmap@vram.html
+    - shard-lnl:          NOTRUN -> [SKIP][181] ([Intel XE#1416])
+   [181]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-2/igt@xe_mmap@vram.html
 
   * igt@xe_module_load@force-load:
-    - shard-bmg:          NOTRUN -> [SKIP][135] ([Intel XE#2457])
-   [135]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@xe_module_load@force-load.html
+    - shard-bmg:          NOTRUN -> [SKIP][182] ([Intel XE#2457])
+   [182]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_module_load@force-load.html
 
   * igt@xe_multigpu_svm@mgpu-atomic-op-conflict:
-    - shard-lnl:          NOTRUN -> [SKIP][136] ([Intel XE#6964]) +1 other test skip
-   [136]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@xe_multigpu_svm@mgpu-atomic-op-conflict.html
+    - shard-lnl:          NOTRUN -> [SKIP][183] ([Intel XE#6964]) +1 other test skip
+   [183]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-2/igt@xe_multigpu_svm@mgpu-atomic-op-conflict.html
 
   * igt@xe_multigpu_svm@mgpu-pagefault-basic:
-    - shard-bmg:          NOTRUN -> [SKIP][137] ([Intel XE#6964]) +4 other tests skip
-   [137]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_multigpu_svm@mgpu-pagefault-basic.html
-
-  * igt@xe_oa@invalid-oa-format-id:
-    - shard-lnl:          [PASS][138] -> [DMESG-WARN][139] ([Intel XE#4537]) +3 other tests dmesg-warn
-   [138]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-3/igt@xe_oa@invalid-oa-format-id.html
-   [139]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@xe_oa@invalid-oa-format-id.html
+    - shard-bmg:          NOTRUN -> [SKIP][184] ([Intel XE#6964]) +3 other tests skip
+   [184]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@xe_multigpu_svm@mgpu-pagefault-basic.html
 
   * igt@xe_oa@oa-tlb-invalidate:
-    - shard-bmg:          NOTRUN -> [SKIP][140] ([Intel XE#2248])
-   [140]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_oa@oa-tlb-invalidate.html
+    - shard-bmg:          NOTRUN -> [SKIP][185] ([Intel XE#2248])
+   [185]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-1/igt@xe_oa@oa-tlb-invalidate.html
 
   * igt@xe_pat@pat-index-xelpg:
-    - shard-bmg:          NOTRUN -> [SKIP][141] ([Intel XE#2236])
-   [141]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@xe_pat@pat-index-xelpg.html
+    - shard-bmg:          NOTRUN -> [SKIP][186] ([Intel XE#2236])
+   [186]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@xe_pat@pat-index-xelpg.html
 
   * igt@xe_pm@d3cold-mocs:
-    - shard-bmg:          NOTRUN -> [SKIP][142] ([Intel XE#2284])
-   [142]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_pm@d3cold-mocs.html
+    - shard-lnl:          NOTRUN -> [SKIP][187] ([Intel XE#2284])
+   [187]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@xe_pm@d3cold-mocs.html
 
   * igt@xe_pm@d3cold-multiple-execs:
-    - shard-lnl:          NOTRUN -> [SKIP][143] ([Intel XE#2284] / [Intel XE#366])
-   [143]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-7/igt@xe_pm@d3cold-multiple-execs.html
+    - shard-bmg:          NOTRUN -> [SKIP][188] ([Intel XE#2284]) +3 other tests skip
+   [188]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@xe_pm@d3cold-multiple-execs.html
+    - shard-lnl:          NOTRUN -> [SKIP][189] ([Intel XE#2284] / [Intel XE#366])
+   [189]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-4/igt@xe_pm@d3cold-multiple-execs.html
 
   * igt@xe_pm@s3-basic-exec:
-    - shard-lnl:          NOTRUN -> [SKIP][144] ([Intel XE#584])
-   [144]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@xe_pm@s3-basic-exec.html
+    - shard-lnl:          NOTRUN -> [SKIP][190] ([Intel XE#584])
+   [190]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-4/igt@xe_pm@s3-basic-exec.html
 
-  * igt@xe_pxp@pxp-stale-bo-exec-post-suspend:
-    - shard-bmg:          NOTRUN -> [SKIP][145] ([Intel XE#4733]) +3 other tests skip
-   [145]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@xe_pxp@pxp-stale-bo-exec-post-suspend.html
+  * igt@xe_pxp@display-black-pxp-fb:
+    - shard-bmg:          NOTRUN -> [SKIP][191] ([Intel XE#4733]) +3 other tests skip
+   [191]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@xe_pxp@display-black-pxp-fb.html
 
   * igt@xe_query@multigpu-query-invalid-extension:
-    - shard-bmg:          NOTRUN -> [SKIP][146] ([Intel XE#944]) +2 other tests skip
-   [146]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-10/igt@xe_query@multigpu-query-invalid-extension.html
+    - shard-bmg:          NOTRUN -> [SKIP][192] ([Intel XE#944]) +2 other tests skip
+   [192]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@xe_query@multigpu-query-invalid-extension.html
 
   * igt@xe_query@multigpu-query-uc-fw-version-guc:
-    - shard-lnl:          NOTRUN -> [SKIP][147] ([Intel XE#944])
-   [147]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@xe_query@multigpu-query-uc-fw-version-guc.html
+    - shard-lnl:          NOTRUN -> [SKIP][193] ([Intel XE#944])
+   [193]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-2/igt@xe_query@multigpu-query-uc-fw-version-guc.html
 
-  * igt@xe_sriov_vram@vf-access-after-resize-down:
-    - shard-bmg:          [PASS][148] -> [FAIL][149] ([Intel XE#5937])
-   [148]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-2/igt@xe_sriov_vram@vf-access-after-resize-down.html
-   [149]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@xe_sriov_vram@vf-access-after-resize-down.html
+  * igt@xe_sriov_flr@flr-vf1-clear:
+    - shard-bmg:          [PASS][194] -> [FAIL][195] ([Intel XE#5937])
+   [194]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-6/igt@xe_sriov_flr@flr-vf1-clear.html
+   [195]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@xe_sriov_flr@flr-vf1-clear.html
+
+  * igt@xe_sriov_flr@flr-vfs-parallel:
+    - shard-bmg:          [PASS][196] -> [FAIL][197] ([Intel XE#6569])
+   [196]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-2/igt@xe_sriov_flr@flr-vfs-parallel.html
+   [197]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@xe_sriov_flr@flr-vfs-parallel.html
 
   
 #### Possible fixes ####
 
-  * igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-dp-2:
-    - shard-bmg:          [INCOMPLETE][150] ([Intel XE#6891]) -> [PASS][151]
-   [150]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-dp-2.html
-   [151]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-dp-2.html
+  * igt@kms_atomic_transition@plane-all-modeset-transition-fencing:
+    - shard-bmg:          [INCOMPLETE][198] ([Intel XE#6819] / [Intel XE#6891] / [Intel XE#6904]) -> [PASS][199]
+   [198]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
+   [199]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
 
-  * igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs:
-    - shard-bmg:          [INCOMPLETE][152] -> [PASS][153] +1 other test pass
-   [152]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-1/igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs.html
-   [153]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs.html
+  * igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-dp-2:
+    - shard-bmg:          [INCOMPLETE][200] ([Intel XE#6891]) -> [PASS][201]
+   [200]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-dp-2.html
+   [201]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-dp-2.html
 
   * igt@kms_cursor_crc@cursor-rapid-movement-128x128:
-    - shard-lnl:          [DMESG-WARN][154] ([Intel XE#4537]) -> [PASS][155] +3 other tests pass
-   [154]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-2/igt@kms_cursor_crc@cursor-rapid-movement-128x128.html
-   [155]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@kms_cursor_crc@cursor-rapid-movement-128x128.html
+    - shard-lnl:          [DMESG-WARN][202] ([Intel XE#4537]) -> [PASS][203] +3 other tests pass
+   [202]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-2/igt@kms_cursor_crc@cursor-rapid-movement-128x128.html
+   [203]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-4/igt@kms_cursor_crc@cursor-rapid-movement-128x128.html
 
   * igt@kms_flip@2x-flip-vs-expired-vblank@ad-dp2-hdmi-a3:
-    - shard-bmg:          [FAIL][156] -> [PASS][157]
-   [156]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-6/igt@kms_flip@2x-flip-vs-expired-vblank@ad-dp2-hdmi-a3.html
-   [157]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_flip@2x-flip-vs-expired-vblank@ad-dp2-hdmi-a3.html
+    - shard-bmg:          [FAIL][204] -> [PASS][205]
+   [204]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-6/igt@kms_flip@2x-flip-vs-expired-vblank@ad-dp2-hdmi-a3.html
+   [205]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_flip@2x-flip-vs-expired-vblank@ad-dp2-hdmi-a3.html
 
   * igt@kms_flip@2x-flip-vs-expired-vblank@bc-dp2-hdmi-a3:
-    - shard-bmg:          [FAIL][158] ([Intel XE#3321]) -> [PASS][159] +1 other test pass
-   [158]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-6/igt@kms_flip@2x-flip-vs-expired-vblank@bc-dp2-hdmi-a3.html
-   [159]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_flip@2x-flip-vs-expired-vblank@bc-dp2-hdmi-a3.html
+    - shard-bmg:          [FAIL][206] ([Intel XE#3321]) -> [PASS][207] +1 other test pass
+   [206]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-6/igt@kms_flip@2x-flip-vs-expired-vblank@bc-dp2-hdmi-a3.html
+   [207]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_flip@2x-flip-vs-expired-vblank@bc-dp2-hdmi-a3.html
 
   * igt@kms_flip@flip-vs-expired-vblank-interruptible:
-    - shard-lnl:          [FAIL][160] ([Intel XE#301] / [Intel XE#3149]) -> [PASS][161] +1 other test pass
-   [160]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-4/igt@kms_flip@flip-vs-expired-vblank-interruptible.html
-   [161]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-8/igt@kms_flip@flip-vs-expired-vblank-interruptible.html
+    - shard-lnl:          [FAIL][208] ([Intel XE#301] / [Intel XE#3149]) -> [PASS][209] +1 other test pass
+   [208]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-4/igt@kms_flip@flip-vs-expired-vblank-interruptible.html
+   [209]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_flip@flip-vs-expired-vblank-interruptible.html
+
+  * igt@kms_hdr@bpc-switch-suspend:
+    - shard-bmg:          [ABORT][210] ([Intel XE#6740]) -> [PASS][211] +1 other test pass
+   [210]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-9/igt@kms_hdr@bpc-switch-suspend.html
+   [211]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_hdr@bpc-switch-suspend.html
 
   * igt@kms_pm_dc@dc6-psr:
-    - shard-lnl:          [FAIL][162] ([Intel XE#718]) -> [PASS][163]
-   [162]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-5/igt@kms_pm_dc@dc6-psr.html
-   [163]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@kms_pm_dc@dc6-psr.html
-
-  * igt@kms_vrr@cmrr@pipe-a-edp-1:
-    - shard-lnl:          [FAIL][164] ([Intel XE#4459]) -> [PASS][165] +1 other test pass
-   [164]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-4/igt@kms_vrr@cmrr@pipe-a-edp-1.html
-   [165]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@kms_vrr@cmrr@pipe-a-edp-1.html
+    - shard-lnl:          [FAIL][212] ([Intel XE#718]) -> [PASS][213]
+   [212]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-5/igt@kms_pm_dc@dc6-psr.html
+   [213]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-4/igt@kms_pm_dc@dc6-psr.html
 
   * igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1:
-    - shard-lnl:          [FAIL][166] ([Intel XE#2142]) -> [PASS][167] +1 other test pass
-   [166]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-2/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.html
-   [167]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.html
-
-  * igt@xe_fault_injection@probe-fail-guc-xe_guc_mmio_send_recv:
-    - shard-bmg:          [ABORT][168] -> [PASS][169]
-   [168]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-8/igt@xe_fault_injection@probe-fail-guc-xe_guc_mmio_send_recv.html
-   [169]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_fault_injection@probe-fail-guc-xe_guc_mmio_send_recv.html
+    - shard-lnl:          [FAIL][214] ([Intel XE#2142]) -> [PASS][215] +1 other test pass
+   [214]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-2/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.html
+   [215]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.html
 
   * igt@xe_pmu@fn-engine-activity-load:
-    - shard-bmg:          [FAIL][170] ([Intel XE#5937]) -> [PASS][171]
-   [170]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@xe_pmu@fn-engine-activity-load.html
-   [171]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_pmu@fn-engine-activity-load.html
+    - shard-bmg:          [FAIL][216] ([Intel XE#5937]) -> [PASS][217]
+   [216]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@xe_pmu@fn-engine-activity-load.html
+   [217]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@xe_pmu@fn-engine-activity-load.html
 
   * igt@xe_waitfence@abstime:
-    - shard-bmg:          [TIMEOUT][172] ([Intel XE#6506]) -> [PASS][173]
-   [172]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-2/igt@xe_waitfence@abstime.html
-   [173]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_waitfence@abstime.html
+    - shard-bmg:          [TIMEOUT][218] ([Intel XE#6506]) -> [PASS][219]
+   [218]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-2/igt@xe_waitfence@abstime.html
+   [219]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_waitfence@abstime.html
 
   
 #### Warnings ####
 
-  * igt@kms_atomic_transition@plane-all-modeset-transition-fencing:
-    - shard-bmg:          [INCOMPLETE][174] ([Intel XE#6819] / [Intel XE#6891] / [Intel XE#6904]) -> [INCOMPLETE][175] ([Intel XE#6819] / [Intel XE#6904])
-   [174]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
-   [175]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
-
-  * igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-0-hflip:
-    - shard-bmg:          [SKIP][176] ([Intel XE#7059]) -> [SKIP][177] ([Intel XE#6703])
-   [176]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-9/igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-0-hflip.html
-   [177]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-0-hflip.html
-
-  * igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180:
-    - shard-bmg:          [SKIP][178] ([Intel XE#1124]) -> [SKIP][179] ([Intel XE#6703])
-   [178]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-1/igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180.html
-   [179]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180.html
-
-  * igt@kms_bw@connected-linear-tiling-3-displays-2560x1440p:
-    - shard-bmg:          [SKIP][180] ([Intel XE#2314] / [Intel XE#2894]) -> [SKIP][181] ([Intel XE#6703])
-   [180]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@kms_bw@connected-linear-tiling-3-displays-2560x1440p.html
-   [181]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_bw@connected-linear-tiling-3-displays-2560x1440p.html
-
-  * igt@kms_ccs@bad-rotation-90-4-tiled-lnl-ccs:
-    - shard-bmg:          [SKIP][182] ([Intel XE#2652] / [Intel XE#787]) -> [SKIP][183] ([Intel XE#6703])
-   [182]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-2/igt@kms_ccs@bad-rotation-90-4-tiled-lnl-ccs.html
-   [183]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_ccs@bad-rotation-90-4-tiled-lnl-ccs.html
-
-  * igt@kms_ccs@crc-primary-rotation-180-y-tiled-gen12-rc-ccs:
-    - shard-bmg:          [SKIP][184] ([Intel XE#2887]) -> [SKIP][185] ([Intel XE#6703])
-   [184]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-6/igt@kms_ccs@crc-primary-rotation-180-y-tiled-gen12-rc-ccs.html
-   [185]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_ccs@crc-primary-rotation-180-y-tiled-gen12-rc-ccs.html
-
-  * igt@kms_cursor_crc@cursor-offscreen-512x170:
-    - shard-bmg:          [SKIP][186] ([Intel XE#2321]) -> [SKIP][187] ([Intel XE#6703])
-   [186]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-10/igt@kms_cursor_crc@cursor-offscreen-512x170.html
-   [187]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_cursor_crc@cursor-offscreen-512x170.html
-
-  * igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-blt:
-    - shard-bmg:          [SKIP][188] ([Intel XE#2313]) -> [SKIP][189] ([Intel XE#6703])
-   [188]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-blt.html
-   [189]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-blt.html
+  * igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-mmap-wc:
+    - shard-bmg:          [SKIP][220] ([Intel XE#4141]) -> [ABORT][221] ([Intel XE#5545])
+   [220]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-9/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-mmap-wc.html
+   [221]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-mmap-wc.html
 
   * igt@kms_hdr@brightness-with-hdr:
-    - shard-bmg:          [SKIP][190] ([Intel XE#3374] / [Intel XE#3544]) -> [SKIP][191] ([Intel XE#3544])
-   [190]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@kms_hdr@brightness-with-hdr.html
-   [191]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_hdr@brightness-with-hdr.html
+    - shard-bmg:          [SKIP][222] ([Intel XE#3374] / [Intel XE#3544]) -> [SKIP][223] ([Intel XE#3544])
+   [222]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@kms_hdr@brightness-with-hdr.html
+   [223]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@kms_hdr@brightness-with-hdr.html
 
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area:
-    - shard-bmg:          [SKIP][192] ([Intel XE#1406] / [Intel XE#1489]) -> [SKIP][193] ([Intel XE#1406] / [Intel XE#6703])
-   [192]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-10/igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area.html
-   [193]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area.html
-
-  * igt@kms_tiled_display@basic-test-pattern:
-    - shard-bmg:          [SKIP][194] ([Intel XE#2426]) -> [FAIL][195] ([Intel XE#1729])
-   [194]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@kms_tiled_display@basic-test-pattern.html
-   [195]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_tiled_display@basic-test-pattern.html
-
-  * igt@xe_exec_multi_queue@two-queues-close-fd-smem:
-    - shard-bmg:          [SKIP][196] ([Intel XE#6874]) -> [SKIP][197] ([Intel XE#6703]) +1 other test skip
-   [196]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@xe_exec_multi_queue@two-queues-close-fd-smem.html
-   [197]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@xe_exec_multi_queue@two-queues-close-fd-smem.html
+  * igt@kms_tiled_display@basic-test-pattern-with-chamelium:
+    - shard-bmg:          [SKIP][224] ([Intel XE#2426]) -> [SKIP][225] ([Intel XE#2509])
+   [224]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-1/igt@kms_tiled_display@basic-test-pattern-with-chamelium.html
+   [225]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_tiled_display@basic-test-pattern-with-chamelium.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
@@ -3530,6 +1433,7 @@ Known issues
   [Intel XE#1124]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1124
   [Intel XE#1125]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1125
   [Intel XE#1178]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1178
+  [Intel XE#1340]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1340
   [Intel XE#1392]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1392
   [Intel XE#1397]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1397
   [Intel XE#1401]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1401
@@ -3539,20 +1443,18 @@ Known issues
   [Intel XE#1421]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1421
   [Intel XE#1424]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1424
   [Intel XE#1439]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1439
-  [Intel XE#1477]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1477
   [Intel XE#1489]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1489
   [Intel XE#1499]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1499
   [Intel XE#1508]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1508
-  [Intel XE#1729]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1729
   [Intel XE#1745]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1745
   [Intel XE#2142]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2142
-  [Intel XE#2233]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233
+  [Intel XE#2168]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2168
   [Intel XE#2234]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234
   [Intel XE#2236]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236
-  [Intel XE#2244]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244
   [Intel XE#2248]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2248
   [Intel XE#2252]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2252
   [Intel XE#2284]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2284
+  [Intel XE#2286]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2286
   [Intel XE#2293]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2293
   [Intel XE#2311]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2311
   [Intel XE#2313]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2313
@@ -3568,12 +1470,14 @@ Known issues
   [Intel XE#2370]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2370
   [Intel XE#2375]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2375
   [Intel XE#2380]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2380
+  [Intel XE#2387]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2387
   [Intel XE#2390]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2390
   [Intel XE#2393]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2393
   [Intel XE#2413]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2413
   [Intel XE#2414]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2414
   [Intel XE#2426]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2426
   [Intel XE#2457]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2457
+  [Intel XE#2509]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2509
   [Intel XE#2652]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2652
   [Intel XE#2724]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2724
   [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
@@ -3600,42 +1504,38 @@ Known issues
   [Intel XE#373]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/373
   [Intel XE#3904]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3904
   [Intel XE#4141]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4141
-  [Intel XE#4156]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4156
   [Intel XE#4329]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4329
   [Intel XE#4331]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4331
   [Intel XE#4416]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4416
   [Intel XE#4422]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4422
-  [Intel XE#4459]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4459
   [Intel XE#4537]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4537
   [Intel XE#4608]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4608
   [Intel XE#4609]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4609
+  [Intel XE#4665]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4665
   [Intel XE#4733]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4733
   [Intel XE#4837]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837
   [Intel XE#4943]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4943
   [Intel XE#5007]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5007
   [Intel XE#5020]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5020
-  [Intel XE#5177]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5177
-  [Intel XE#5208]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5208
-  [Intel XE#5466]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5466
   [Intel XE#5545]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5545
-  [Intel XE#5625]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5625
   [Intel XE#5786]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5786
   [Intel XE#5793]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5793
   [Intel XE#584]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/584
+  [Intel XE#586]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/586
   [Intel XE#5937]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5937
   [Intel XE#599]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/599
+  [Intel XE#5993]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5993
   [Intel XE#607]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/607
   [Intel XE#6312]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6312
-  [Intel XE#6321]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6321
   [Intel XE#6480]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6480
   [Intel XE#6503]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6503
   [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
   [Intel XE#6507]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6507
   [Intel XE#651]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/651
   [Intel XE#656]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/656
+  [Intel XE#6569]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6569
   [Intel XE#6665]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6665
   [Intel XE#6681]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6681
-  [Intel XE#6703]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6703
   [Intel XE#6707]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6707
   [Intel XE#6740]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6740
   [Intel XE#6766]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6766
@@ -3645,12 +1545,12 @@ Known issues
   [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
   [Intel XE#6886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6886
   [Intel XE#6891]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6891
-  [Intel XE#6900]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6900
   [Intel XE#6904]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6904
   [Intel XE#6912]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6912
   [Intel XE#6964]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6964
   [Intel XE#6973]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6973
   [Intel XE#6974]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6974
+  [Intel XE#6976]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6976
   [Intel XE#702]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/702
   [Intel XE#7059]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7059
   [Intel XE#7061]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7061
@@ -3665,28 +1565,28 @@ Known issues
 Build changes
 -------------
 
-  * IGT: IGT_8700 -> IGTPW_14339
+  * IGT: IGT_8700 -> IGTPW_14340
 
-  IGTPW_14339: 14339
+  IGTPW_14340: 14340
   IGT_8700: 8700
   xe-4381-128c57f68ef105cefa8e8e3dd7078f275d59fd4a: 128c57f68ef105cefa8e8e3dd7078f275d59fd4a
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/index.html
 
---===============6736011530622677595==
+--===============8427624665570241998==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns=3D"http://www.w3.org/1999/xhtml">
  <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8"/>
   <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
+  <style id=3D"css-table-select" type=3D"text/css">
    td { padding: 2pt; }
   </style>
 </head>
@@ -3695,5801 +1595,2747 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_basic: Enable dynamic subtest (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159958/">https://patchwork.freedesktop.org/series/159958/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Extend multi queue feature validation suppor=
+t (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href=3D"https://patchwork.freedesktop.org/se=
+ries/159287/">https://patchwork.freedesktop.org/series/159287/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href=3D"https://intel-gfx-ci.01.org/=
+tree/intel-xe/IGTPW_14340/index.html">https://intel-gfx-ci.01.org/tree/inte=
+l-xe/IGTPW_14340/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8700_FULL -&gt; XEIGTPW_14339_FULL</h1>
+    <h1>CI Bug Log - changes from XEIGT_8700_FULL -&gt; XEIGTPW_14340_FULL<=
+/h1>
 <h2>Summary</h2>
 <p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_14339_FULL absolutely need to be<br />
+<p>Serious unknown changes coming with XEIGTPW_14340_FULL absolutely need t=
+o be<br />
   verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_14339_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>If you think the reported changes have nothing to do with the changes<br=
+ />
+  introduced in XEIGTPW_14340_FULL, please notify your bug team (I915-ci-in=
+fra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in C=
+I.</p>
 <h2>Participating hosts (2 -&gt; 2)</h2>
 <p>No changes in participating hosts</p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_14339_FULL:</p>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_14=
+340_FULL:</p>
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
 <li>
-<p>igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-hdmi-a-3:</p>
+<p>igt@xe_exec_fault_mode@many-bindexecqueue-rebind-imm:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-hdmi-a-3.html">INCOMPLETE</a></li>
+<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-lnl-8/igt@xe_exec_fault_mode@many-bindexecqueue-rebind-imm=
+.html">PASS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/=
+IGTPW_14340/shard-lnl-7/igt@xe_exec_fault_mode@many-bindexecqueue-rebind-im=
+m.html">DMESG-WARN</a> +7 other tests dmesg-warn</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_system_allocator@many-large-execqueues-mmap-remap-ro-eocheck:</p>
+<p>igt@xe_exec_threads@threads-many-queues:</p>
 <ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-8/igt@xe_exec_system_allocator@many-large-execqueues-mmap-remap-ro-eocheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@xe_exec_system_allocator@many-large-execqueues-mmap-remap-ro-eocheck.html">DMESG-WARN</a> +2 other tests dmesg-warn</li>
+<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-lnl-2/igt@xe_exec_threads@threads-many-queues.html">PASS</=
+a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/s=
+hard-lnl-8/igt@xe_exec_threads@threads-many-queues.html">FAIL</a></li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@xe_exec_threads@threads-many-que=
+ues.html">FAIL</a></li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-rebind} (NEW):</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@xe_exec_threads@threads-multi-qu=
+eue-cm-shared-vm-rebind.html">SKIP</a> +137 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-shared-vm-userptr-rebind (=
+NEW):</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_exec_threads@threads-multi-q=
+ueue-mixed-shared-vm-userptr-rebind.html">SKIP</a> +115 other tests skip</l=
+i>
+</ul>
+</li>
+<li>
+<p>igt@xe_module_load@unload:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@xe_module_load@unload.html">ABOR=
+T</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pmu@engine-activity-accuracy-90:</p>
+<ul>
+<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-bmg-10/igt@xe_pmu@engine-activity-accuracy-90.html">PASS</=
+a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/s=
+hard-bmg-10/igt@xe_pmu@engine-activity-accuracy-90.html">FAIL</a> +1 other =
+test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@xe_module_load@load:<ul>
+<li>shard-bmg:          (<a href=3D"https://intel-gfx-ci.01.org/tree/intel-=
+xe/IGT_8700/shard-bmg-1/igt@xe_module_load@load.html">PASS</a>, <a href=3D"=
+https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-1/igt@xe_modul=
+e_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/int=
+el-xe/IGT_8700/shard-bmg-8/igt@xe_module_load@load.html">PASS</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-10/igt@xe_=
+module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tre=
+e/intel-xe/IGT_8700/shard-bmg-1/igt@xe_module_load@load.html">PASS</a>, <a =
+href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@=
+xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/=
+tree/intel-xe/IGT_8700/shard-bmg-2/igt@xe_module_load@load.html">PASS</a>, =
+<a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-2/i=
+gt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.o=
+rg/tree/intel-xe/IGT_8700/shard-bmg-8/igt@xe_module_load@load.html">PASS</a=
+>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-=
+9/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.0=
+1.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@xe_module_load@load.html">PASS=
+</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-b=
+mg-6/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-c=
+i.01.org/tree/intel-xe/IGT_8700/shard-bmg-6/igt@xe_module_load@load.html">P=
+ASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shar=
+d-bmg-4/igt@xe_module_load@load.html">ABORT</a>, <a href=3D"https://intel-g=
+fx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-4/igt@xe_module_load@load.htm=
+l">ABORT</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700=
+/shard-bmg-4/igt@xe_module_load@load.html">ABORT</a>, <a href=3D"https://in=
+tel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-10/igt@xe_module_load@lo=
+ad.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT=
+_8700/shard-bmg-7/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https:=
+//intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@xe_module_load=
+@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/=
+IGT_8700/shard-bmg-10/igt@xe_module_load@load.html">PASS</a>, <a href=3D"ht=
+tps://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@xe_module_=
+load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel=
+-xe/IGT_8700/shard-bmg-3/igt@xe_module_load@load.html">PASS</a>, <a href=3D=
+"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-9/igt@xe_modu=
+le_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/in=
+tel-xe/IGT_8700/shard-bmg-9/igt@xe_module_load@load.html">PASS</a>) -&gt; (=
+<a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-=
+9/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.0=
+1.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@xe_module_load@load.html">P=
+ASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/s=
+hard-bmg-2/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel=
+-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@xe_module_load@loa=
+d.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTP=
+W_14340/shard-bmg-3/igt@xe_module_load@load.html">PASS</a>, <a href=3D"http=
+s://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@xe_module=
+_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/inte=
+l-xe/IGTPW_14340/shard-bmg-8/igt@xe_module_load@load.html">PASS</a>, <a hre=
+f=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@=
+xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/=
+tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@xe_module_load@load.html">SKIP</a=
+>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-b=
+mg-10/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-=
+ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@xe_module_load@load.htm=
+l">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_143=
+40/shard-bmg-10/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://=
+intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@xe_module_loa=
+d@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe=
+/IGTPW_14340/shard-bmg-4/igt@xe_module_load@load.html">ABORT</a>, <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-4/igt@x=
+e_module_load@load.html">ABORT</a>, <a href=3D"https://intel-gfx-ci.01.org/=
+tree/intel-xe/IGTPW_14340/shard-bmg-4/igt@xe_module_load@load.html">ABORT</=
+a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-=
+bmg-2/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-=
+ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@xe_module_load@load.htm=
+l">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_143=
+40/shard-bmg-1/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://i=
+ntel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-1/igt@xe_module_load=
+@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/=
+IGTPW_14340/shard-bmg-3/igt@xe_module_load@load.html">PASS</a>, <a href=3D"=
+https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@xe_mo=
+dule_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/=
+intel-xe/IGTPW_14340/shard-bmg-7/igt@xe_module_load@load.html">PASS</a>, <a=
+ href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-7/=
+igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.=
+org/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_module_load@load.html">PA=
+SS</a>) (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/245=
+7">Intel XE#2457</a>)</li>
 </ul>
 </li>
 </ul>
 <h2>New tests</h2>
-<p>New tests have been introduced between XEIGT_8700_FULL and XEIGTPW_14339_FULL:</p>
-<h3>New IGT tests (685)</h3>
+<p>New tests have been introduced between XEIGT_8700_FULL and XEIGTPW_14340=
+_FULL:</p>
+<h3>New IGT tests (161)</h3>
 <ul>
 <li>
-<p>igt@xe_exec_basic@many-basic-defer-bind@bcs0:</p>
+<p>igt@xe_evict@evict-cm-threads-small-multi-queue:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic-defer-bind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic-defer-bind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic-defer-bind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic-defer-bind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic-defer-bind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic-defer-bind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic-defer-mmap@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic-defer-mmap@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic-defer-mmap@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic-defer-mmap@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic-defer-mmap@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic-defer-mmap@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic-defer-mmap@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-basic@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-rebind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-rebind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.02] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.02] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.02] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.02, 0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.02] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.02, 0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.02] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.02, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.02, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-rebind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.02] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr-rebind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.02] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue-userptr@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-bindexecqueue@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic-defer-bind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic-defer-bind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic-defer-bind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic-defer-bind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic-defer-bind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic-defer-bind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic-defer-bind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic-defer-mmap@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic-defer-mmap@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic-defer-mmap@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic-defer-mmap@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic-defer-mmap@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-basic@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate-race@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate-race@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate-race@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate-race@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate-race@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.02] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate-race@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate-race@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.02] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-invalidate@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue-userptr@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-bindexecqueue@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-bind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.07, 0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-bind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.07, 0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-bind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.11, 0.12] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-bind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-bind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-bind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.07, 0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-bind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-mmap@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-mmap@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-mmap@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-mmap@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic-defer-mmap@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.07, 0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-basic@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.13] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate-race@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-invalidate@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.12] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.09, 0.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue-userptr@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.09, 0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.09, 0.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.09, 0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-bindexecqueue@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-defer-bind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-defer-bind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-defer-bind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.09, 0.12] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-defer-bind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-defer-bind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-defer-bind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-defer-bind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-defer-mmap@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-defer-mmap@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-defer-mmap@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-defer-mmap@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-defer-mmap@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-defer-mmap@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-defer-mmap@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-rebind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null-rebind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.09, 0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.08, 0.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-null@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-rebind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-rebind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate-race@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate-race@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate-race@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate-race@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate-race@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate-race@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate-race@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-invalidate@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-many-vm-userptr@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-defer-bind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-defer-bind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-defer-bind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-defer-bind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-defer-bind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-defer-bind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-defer-bind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-defer-mmap@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-defer-mmap@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-defer-mmap@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-defer-mmap@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-defer-mmap@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-null@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-rebind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-rebind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-invalidate-race@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.02] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-invalidate-race@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.02] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-invalidate-race@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.02] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-invalidate-race@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-invalidate-race@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-invalidate@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-invalidate@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-invalidate@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-invalidate@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-invalidate@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-invalidate@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-invalidate@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-rebind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr-rebind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05, 0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06, 0.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-execqueues-userptr@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-defer-bind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-defer-bind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-defer-bind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-defer-bind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-defer-bind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-defer-bind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-defer-bind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-defer-mmap@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-defer-mmap@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-defer-mmap@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-defer-mmap@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-defer-mmap@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.02, 0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.02, 0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.02, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.02, 0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-rebind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.02] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.02, 0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null-rebind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.02] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-null@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.05] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.02, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-rebind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-rebind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-invalidate-race@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-invalidate-race@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-invalidate-race@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-invalidate-race@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-invalidate-race@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-invalidate-race@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-invalidate-race@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-invalidate@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-invalidate@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-invalidate@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-invalidate@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-invalidate@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-rebind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.03, 0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr-rebind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.03] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@many-userptr@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic-defer-bind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic-defer-bind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic-defer-bind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic-defer-bind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic-defer-bind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic-defer-bind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic-defer-bind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic-defer-mmap@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic-defer-mmap@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic-defer-mmap@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic-defer-mmap@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic-defer-mmap@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic-defer-mmap@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic-defer-mmap@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-basic@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-rebind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-rebind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate-race@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate-race@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate-race@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate-race@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate-race@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-bindexecqueue@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-defer-bind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-defer-bind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-defer-bind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-defer-bind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-defer-bind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-defer-bind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-defer-bind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-defer-mmap@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-defer-mmap@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-defer-mmap@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-defer-mmap@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-defer-mmap@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-null@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-rebind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-rebind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr-invalidate-race@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr-invalidate-race@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr-invalidate-race@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr-invalidate-race@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr-invalidate-race@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr-invalidate-race@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr-invalidate-race@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr-rebind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr-rebind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@no-exec-userptr@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic-defer-bind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic-defer-bind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic-defer-bind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic-defer-bind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic-defer-bind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic-defer-bind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic-defer-bind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic-defer-mmap@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic-defer-mmap@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic-defer-mmap@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic-defer-mmap@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic-defer-mmap@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-basic@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate-race@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate-race@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate-race@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate-race@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate-race@vecs0:</p>
+<p>igt@xe_evict@evict-mixed-threads-small-multi-queue:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate@bcs0:</p>
+<p>igt@xe_evict@evict-small-external-multi-queue:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-invalidate@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-rebind@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr-rebind@vecs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue-userptr@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-bindexecqueue@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-null-defer-bind@bcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-null-defer-bind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-null-defer-bind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-null-defer-bind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-null-defer-bind@vcs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-null-defer-bind@vecs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null-defer-bind@vecs1:</p>
+<p>igt@xe_evict@evict-small-external-multi-queue-cm:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null-defer-mmap@bcs0:</p>
+<p>igt@xe_evict@evict-small-multi-queue:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null-defer-mmap@ccs0:</p>
+<p>igt@xe_evict@evict-small-multi-queue-cm:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null-defer-mmap@rcs0:</p>
+<p>igt@xe_evict@evict-small-multi-queue-priority:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null-defer-mmap@vcs0:</p>
+<p>igt@xe_evict@evict-small-multi-queue-priority-cm:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null-defer-mmap@vcs1:</p>
+<p>igt@xe_evict@evict-threads-small-multi-queue:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null-defer-mmap@vecs0:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null-defer-mmap@vecs1:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-imm:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null-rebind@bcs0:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-invalid-fault:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-null-rebind@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-null-rebind@rcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@once-null-rebind@vcs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null-rebind@vcs1:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-invalid-userptr-fault=
+:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null-rebind@vecs0:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-prefetch:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null-rebind@vecs1:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-rebind:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null@bcs0:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-rebind-imm:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null@ccs0:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-rebind-prefetch:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null@rcs0:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null@vcs0:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-imm:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null@vcs1:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-invalidate:</=
+p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null@vecs0:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-invalidate-im=
+m:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-null@vecs1:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-invalidate-pr=
+efetch:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-rebind@bcs0:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-invalidate-ra=
+ce:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-rebind@ccs0:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-invalidate-ra=
+ce-imm:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-rebind@rcs0:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-invalidate-ra=
+ce-prefetch:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-rebind@vcs0:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-prefetch:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-rebind@vcs1:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-rebind:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-rebind@vecs0:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-rebind-imm:</=
+p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-rebind@vecs1:</p>
+<p>igt@xe_exec_fault_mode@many-execqueues-multi-queue-userptr-rebind-prefet=
+ch:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-invalidate-race@bcs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-invalidate-race@ccs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-imm:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-invalidate-race@rcs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-invalid-fault:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-invalidate-race@vcs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-invalid-userptr-fault:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-invalidate-race@vecs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-prefetch:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-invalidate@bcs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-rebind:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-invalidate@ccs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-rebind-imm:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-invalidate@rcs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-rebind-prefetch:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-invalidate@vcs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-userptr:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-invalidate@vcs1:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-userptr-imm:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-invalidate@vecs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-userptr-invalidate:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-invalidate@vecs1:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-userptr-invalidate-imm:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-rebind@bcs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-userptr-invalidate-prefetch:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-rebind@ccs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-userptr-invalidate-race:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-rebind@rcs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-userptr-invalidate-race-imm:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-rebind@vcs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-userptr-invalidate-race-prefetch=
+:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr-rebind@vecs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-userptr-prefetch:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr@bcs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-userptr-rebind:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr@ccs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-userptr-rebind-imm:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr@rcs0:</p>
+<p>igt@xe_exec_fault_mode@many-multi-queue-userptr-rebind-prefetch:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr@vcs0:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr@vcs1:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-imm:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr@vecs0:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-invalid-fault:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@once-userptr@vecs1:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-invalid-userptr-fault:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic-defer-bind@bcs0:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-prefetch:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic-defer-bind@ccs0:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-rebind:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic-defer-bind@rcs0:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-rebind-imm:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic-defer-bind@vcs0:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-rebind-prefetch:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic-defer-bind@vcs1:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-userptr:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic-defer-bind@vecs0:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-userptr-imm:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic-defer-bind@vecs1:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-userptr-invalidate:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic-defer-mmap@bcs0:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-userptr-invalidate-imm:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic-defer-mmap@ccs0:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-userptr-invalidate-prefetch:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic-defer-mmap@rcs0:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-userptr-invalidate-race:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic-defer-mmap@vcs0:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-userptr-invalidate-race-imm:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic-defer-mmap@vcs1:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-userptr-invalidate-race-prefetch=
+:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic-defer-mmap@vecs0:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-userptr-prefetch:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic-defer-mmap@vecs1:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-userptr-rebind:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic@bcs0:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-userptr-rebind-imm:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic@ccs0:</p>
+<p>igt@xe_exec_fault_mode@once-multi-queue-userptr-rebind-prefetch:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic@rcs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic@vcs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-imm:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-basic@vecs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-invalid-fault:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@bcs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-invalid-userptr-fault:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@ccs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-prefetch:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@rcs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-rebind:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@vcs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-rebind-imm:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@vcs1:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-rebind-prefetch:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@vecs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-userptr:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-rebind@vecs1:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-userptr-imm:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate-race@bcs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-userptr-invalidate:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.02] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate-race@ccs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-userptr-invalidate-imm:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate-race@rcs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-userptr-invalidate-prefetch:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate-race@vcs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-userptr-invalidate-race:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate-race@vecs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-userptr-invalidate-race-imm:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@bcs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-userptr-invalidate-race-prefetc=
+h:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@ccs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-userptr-prefetch:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@rcs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-userptr-rebind:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vcs0:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-userptr-rebind-imm:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vcs1:</p>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-userptr-rebind-prefetch:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vecs0:</p>
+<p>igt@xe_exec_reset@cm-engine-reset:</p>
 <ul>
 <li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Exec time: [6.67, 9.17] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate@vecs1:</p>
+<p>igt@xe_exec_reset@cm-multi-queue-cat-error:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@bcs0:</p>
+<p>igt@xe_exec_reset@cm-multi-queue-cat-error-on-secondary:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@ccs0:</p>
+<p>igt@xe_exec_reset@cm-multi-queue-close-execqueues:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@rcs0:</p>
+<p>igt@xe_exec_reset@cm-multi-queue-close-fd:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vcs0:</p>
+<p>igt@xe_exec_reset@cm-multi-queue-engine-reset:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vcs1:</p>
+<p>igt@xe_exec_reset@cm-multi-queue-gt-reset:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vecs0:</p>
+<p>igt@xe_exec_reset@engine-reset:</p>
 <ul>
 <li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind@vecs1:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@bcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@ccs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@rcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@vcs0:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Exec time: [6.68, 9.21] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue-userptr@vecs0:</p>
+<p>igt@xe_exec_reset@multi-queue-cat-error:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue@bcs0:</p>
+<p>igt@xe_exec_reset@multi-queue-cat-error-on-secondary:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@twice-bindexecqueue@ccs0:</p>
-<ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue@rcs0:</p>
+<p>igt@xe_exec_reset@multi-queue-close-execqueues:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue@vcs0:</p>
+<p>igt@xe_exec_reset@multi-queue-close-fd:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue@vcs1:</p>
+<p>igt@xe_exec_reset@multi-queue-engine-reset:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue@vecs0:</p>
+<p>igt@xe_exec_reset@multi-queue-gt-reset:</p>
 <ul>
-<li>Statuses : 1 dmesg-warn(s) 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-bindexecqueue@vecs1:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-basic:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-defer-bind@bcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-basic:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-defer-bind@ccs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-fd-basic:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-defer-bind@rcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-fd-rebind:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-defer-bind@vcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-fd-userptr:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-defer-bind@vcs1:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-fd-userptr-invalidate:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-defer-bind@vecs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-fd-userptr-invalidate-race:</=
+p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-defer-bind@vecs1:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-fd-userptr-rebind:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-defer-mmap@bcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-rebind:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-defer-mmap@ccs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-basic:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-defer-mmap@rcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-rebind:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-defer-mmap@vcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-userptr:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-defer-mmap@vecs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-userptr-invalidate:=
+</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-rebind@bcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-userptr-invalidate-=
+race:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-rebind@ccs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-userptr-rebind:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-rebind@rcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-userptr:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-rebind@vcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-userptr-invalidate:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-rebind@vcs1:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-userptr-invalidate-race:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-rebind@vecs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-userptr-rebind:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null-rebind@vecs1:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-fd-basic:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null@bcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-fd-rebind:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null@ccs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-fd-userptr:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null@rcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-fd-userptr-invalidate:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null@vcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-fd-userptr-invalidate-race:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null@vcs1:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-fd-userptr-rebind:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null@vecs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-hang-basic:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-null@vecs1:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-hang-fd-userptr-invalidate-race:=
+</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-rebind@bcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-basic:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-rebind@ccs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-fd-basic:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-rebind@rcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-fd-rebind:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-rebind@vcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-fd-userptr:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-rebind@vecs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-fd-userptr-invalidate:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-invalidate-race@bcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-fd-userptr-invalidate-race=
+:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-invalidate-race@ccs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-fd-userptr-rebind:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-invalidate-race@rcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-rebind:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-invalidate-race@vcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-shared-vm-basic:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-invalidate-race@vcs1:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-shared-vm-rebind:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-invalidate-race@vecs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-shared-vm-userptr:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-invalidate-race@vecs1:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-shared-vm-userptr-invalida=
+te:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-invalidate@bcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-shared-vm-userptr-invalida=
+te-race:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-invalidate@ccs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-shared-vm-userptr-rebind:<=
+/p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-invalidate@rcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-userptr:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-invalidate@vcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-userptr-invalidate:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-invalidate@vecs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-userptr-invalidate-race:</=
+p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-rebind@bcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-userptr-rebind:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-rebind@ccs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-rebind:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-rebind@rcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-rebind-err:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-rebind@vcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-shared-vm-basic:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-rebind@vcs1:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-shared-vm-rebind:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-rebind@vecs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-shared-vm-userptr:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr-rebind@vecs1:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-shared-vm-userptr-invalidate:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr@bcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-shared-vm-userptr-invalidate-rac=
+e:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr@ccs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-shared-vm-userptr-rebind:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr@rcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-userptr:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr@vcs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-userptr-invalidate:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00, 0.01] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr@vcs1:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-userptr-invalidate-race:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr@vecs0:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-userptr-rebind:</p>
 <ul>
-<li>Statuses : 2 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_basic@twice-userptr@vecs1:</p>
+<p>igt@xe_exec_threads@threads-multi-queue-userptr-rebind-err:</p>
 <ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.00] s</li>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 </ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14339_FULL that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_14340_FULL that come from known is=
+sues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
 <p>igt@intel_hwmon@hwmon-read:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@intel_hwmon@hwmon-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1125">Intel XE#1125</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@intel_hwmon@hwmon-read.html">SKI=
+P</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/1125"=
+>Intel XE#1125</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@intel_hwmon@hwmon-write:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@intel_hwmon@hwmon-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5177">Intel XE#5177</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6703">Intel XE#6703</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@intel_hwmon@hwmon-write.html">FA=
+IL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/4665=
+">Intel XE#4665</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<p>igt@kms_async_flips@async-flip-with-page-flip-events-linear:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233">Intel XE#2233</a>)</li>
+<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-lnl-5/igt@kms_async_flips@async-flip-with-page-flip-events=
+-linear.html">PASS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/in=
+tel-xe/IGTPW_14340/shard-lnl-7/igt@kms_async_flips@async-flip-with-page-fli=
+p-events-linear.html">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/d=
+rm/xe/kernel/issues/5993">Intel XE#5993</a>) +3 other tests fail</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_atomic_transition@plane-all-modeset-transition:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-7/igt@kms_atomic_transition@plane-all-modeset-transition.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3279">Intel XE#3279</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_atomic_transition@plane-all-=
+modeset-transition.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.or=
+g/drm/xe/kernel/issues/3279">Intel XE#3279</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels:</p>
+<p>igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels:<=
+/p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2370">Intel XE#2370</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_fb@4-tiled-16bpp-rotate-90:</p>
-<ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_big_fb@4-tiled-16bpp-rotate-90.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2327">Intel XE#2327</a>) +2 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@kms_atomic_transition@plane-all-=
+modeset-transition-internal-panels.html">SKIP</a> (<a href=3D"https://gitla=
+b.freedesktop.org/drm/xe/kernel/issues/2370">Intel XE#2370</a>) +1 other te=
+st skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_big_fb@linear-32bpp-rotate-90:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_big_fb@linear-32bpp-rotate-90.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1407">Intel XE#1407</a>) +3 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_big_fb@linear-32bpp-rotate-9=
+0.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/i=
+ssues/1407">Intel XE#1407</a>) +3 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_big_fb@linear-32bpp-rotate-9=
+0.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/i=
+ssues/2327">Intel XE#2327</a>) +4 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_big_fb@linear-max-hw-stride-32bpp-rotate-180-hflip:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_big_fb@linear-max-hw-stride-32bpp-rotate-180-hflip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7059">Intel XE#7059</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_fb@y-tiled-addfb-size-offset-overflow:</p>
-<ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@kms_big_fb@y-tiled-addfb-size-offset-overflow.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1477">Intel XE#1477</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@kms_big_fb@linear-max-hw-stride-=
+32bpp-rotate-180-hflip.html">SKIP</a> (<a href=3D"https://gitlab.freedeskto=
+p.org/drm/xe/kernel/issues/7059">Intel XE#7059</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_big_fb@yf-tiled-16bpp-rotate-180:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_big_fb@yf-tiled-16bpp-rotate-180.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1124">Intel XE#1124</a>) +3 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-5/igt@kms_big_fb@yf-tiled-16bpp-rotate=
+-180.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kerne=
+l/issues/1124">Intel XE#1124</a>) +3 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_big_fb@yf-tiled-32bpp-rotate-0:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_big_fb@yf-tiled-32bpp-rotate-0.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1124">Intel XE#1124</a>) +11 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@kms_big_fb@yf-tiled-32bpp-rotate=
+-0.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/=
+issues/1124">Intel XE#1124</a>) +15 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_big_fb@yf-tiled-addfb:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-8/igt@kms_big_fb@yf-tiled-addfb.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2328">Intel XE#2328</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_big_fb@yf-tiled-addfb.html">=
+SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/23=
+28">Intel XE#2328</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-10/igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/607">Intel XE#607</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_big_fb@yf-tiled-addfb-size-o=
+ffset-overflow.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/dr=
+m/xe/kernel/issues/607">Intel XE#607</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2314">Intel XE#2314</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2894">Intel XE#2894</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@kms_bw@connected-linear-tiling-3=
+-displays-1920x1080p.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.=
+org/drm/xe/kernel/issues/2314">Intel XE#2314</a> / <a href=3D"https://gitla=
+b.freedesktop.org/drm/xe/kernel/issues/2894">Intel XE#2894</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_bw@linear-tiling-1-displays-2560x1440p:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_bw@linear-tiling-1-displays-2560x1440p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/367">Intel XE#367</a>) +4 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-1/igt@kms_bw@linear-tiling-1-displays-=
+2560x1440p.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe=
+/kernel/issues/367">Intel XE#367</a>) +3 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_bw@linear-tiling-2-displays-2560x1440p:</p>
+<p>igt@kms_bw@linear-tiling-2-displays-3840x2160p:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@kms_bw@linear-tiling-2-displays-2560x1440p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/367">Intel XE#367</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@kms_bw@linear-tiling-2-displays-=
+3840x2160p.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe=
+/kernel/issues/367">Intel XE#367</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_ccs@bad-aux-stride-yf-tiled-ccs:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_ccs@bad-aux-stride-yf-tiled-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2887">Intel XE#2887</a>) +17 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_ccs@bad-aux-stride-yf-tiled=
+-ccs.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kerne=
+l/issues/2887">Intel XE#2887</a>) +22 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs-cc:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@kms_ccs@bad-rotation-90-4-tiled-mtl-rc-ccs-cc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2887">Intel XE#2887</a>) +10 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@kms_ccs@bad-rotation-90-4-tiled-=
+mtl-rc-ccs-cc.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm=
+/xe/kernel/issues/2887">Intel XE#2887</a>) +9 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3432">Intel XE#3432</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_ccs@crc-primary-suspend-y-ti=
+led-gen12-rc-ccs.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/=
+drm/xe/kernel/issues/3432">Intel XE#3432</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-sprite-planes-basic-4-tiled-lnl-ccs@pipe-d-hdmi-a-3:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_ccs@crc-sprite-planes-basic-=
+4-tiled-lnl-ccs@pipe-d-hdmi-a-3.html">SKIP</a> (<a href=3D"https://gitlab.f=
+reedesktop.org/drm/xe/kernel/issues/2652">Intel XE#2652</a> / <a href=3D"ht=
+tps://gitlab.freedesktop.org/drm/xe/kernel/issues/787">Intel XE#787</a>) +8=
+ other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_cdclk@plane-scaling:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-8/igt@kms_cdclk@plane-scaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4416">Intel XE#4416</a>) +3 other tests skip</li>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_cdclk@plane-scaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2724">Intel XE#2724</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_cdclk@plane-scaling.html">SK=
+IP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/4416=
+">Intel XE#4416</a>) +3 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@kms_cdclk@plane-scaling.html">SK=
+IP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/2724=
+">Intel XE#2724</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_chamelium_color@degamma:</p>
+<p>igt@kms_chamelium_color@ctm-limited-range:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_chamelium_color@degamma.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2325">Intel XE#2325</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@kms_chamelium_color@ctm-limited-=
+range.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kern=
+el/issues/2325">Intel XE#2325</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_chamelium_edid@hdmi-edid-change-during-hibernate:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_chamelium_edid@hdmi-edid-change-during-hibernate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2252">Intel XE#2252</a>) +10 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_chamelium_edid@hdmi-edid-cha=
+nge-during-hibernate.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.=
+org/drm/xe/kernel/issues/2252">Intel XE#2252</a>) +16 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_chamelium_hpd@dp-hpd-enable-disable-mode:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@kms_chamelium_hpd@dp-hpd-enable-disable-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/373">Intel XE#373</a>) +3 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_chamelium_hpd@dp-hpd-enable-=
+disable-mode.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/=
+xe/kernel/issues/373">Intel XE#373</a>) +2 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_chamelium_sharpness_filter@filter-basic:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-10/igt@kms_chamelium_sharpness_filter@filter-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6507">Intel XE#6507</a>)</li>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_chamelium_sharpness_filter@filter-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6507">Intel XE#6507</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_chamelium_sharpness_filter@f=
+ilter-basic.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/x=
+e/kernel/issues/6507">Intel XE#6507</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-5/igt@kms_chamelium_sharpness_filter@f=
+ilter-basic.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/x=
+e/kernel/issues/6507">Intel XE#6507</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_content_protection@atomic:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-10/igt@kms_content_protection@atomic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1178">Intel XE#1178</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3304">Intel XE#3304</a>) +5 other tests fail</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_content_protection@atomic.h=
+tml">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issu=
+es/1178">Intel XE#1178</a> / <a href=3D"https://gitlab.freedesktop.org/drm/=
+xe/kernel/issues/3304">Intel XE#3304</a>) +5 other tests fail</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_content_protection@atomic-dpms-hdcp14:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@kms_content_protection@atomic-dpms-hdcp14.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6973">Intel XE#6973</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-8/igt@kms_content_protection@atomic-dp=
+ms-hdcp14.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/=
+kernel/issues/6973">Intel XE#6973</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_content_protection@atomic-dpms-hdcp14@pipe-a-dp-2:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-8/igt@kms_content_protection@atomic-dpms-hdcp14@pipe-a-dp-2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3304">Intel XE#3304</a>) +1 other test fail</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_content_protection@atomic-dp=
+ms-hdcp14@pipe-a-dp-2.html">FAIL</a> (<a href=3D"https://gitlab.freedesktop=
+.org/drm/xe/kernel/issues/3304">Intel XE#3304</a>) +1 other test fail</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_content_protection@dp-mst-lic-type-0-hdcp14:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6974">Intel XE#6974</a>)</li>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6974">Intel XE#6974</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@kms_content_protection@dp-mst-li=
+c-type-0-hdcp14.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/d=
+rm/xe/kernel/issues/6974">Intel XE#6974</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@kms_content_protection@dp-mst-li=
+c-type-0-hdcp14.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/d=
+rm/xe/kernel/issues/6974">Intel XE#6974</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_content_protection@dp-mst-type-1:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_content_protection@dp-mst-type-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2390">Intel XE#2390</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6974">Intel XE#6974</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_content_protection@dp-mst-ty=
+pe-1.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kerne=
+l/issues/2390">Intel XE#2390</a> / <a href=3D"https://gitlab.freedesktop.or=
+g/drm/xe/kernel/issues/6974">Intel XE#6974</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_content_protection@uevent:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@kms_content_protection@uevent.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3278">Intel XE#3278</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_content_protection@uevent.ht=
+ml">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issue=
+s/3278">Intel XE#3278</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_content_protection@uevent-hdcp14:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_content_protection@uevent-hdcp14.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6707">Intel XE#6707</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_crc@cursor-random-512x170:</p>
-<ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_cursor_crc@cursor-random-512x170.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2321">Intel XE#2321</a>) +1 other test skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_content_protection@uevent-hd=
+cp14.html">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kerne=
+l/issues/6707">Intel XE#6707</a>) +3 other tests fail</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_cursor_crc@cursor-rapid-movement-32x10:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_cursor_crc@cursor-rapid-movement-32x10.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2320">Intel XE#2320</a>) +5 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@kms_cursor_crc@cursor-rapid-move=
+ment-32x10.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe=
+/kernel/issues/2320">Intel XE#2320</a>) +5 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_cursor_crc@cursor-rapid-movement-32x32:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@kms_cursor_crc@cursor-rapid-movement-32x32.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1424">Intel XE#1424</a>) +3 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_cursor_crc@cursor-rapid-move=
+ment-32x32.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe=
+/kernel/issues/1424">Intel XE#1424</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-sliding-128x128:</p>
+<ul>
+<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-lnl-5/igt@kms_cursor_crc@cursor-sliding-128x128.html">PASS=
+</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340=
+/shard-lnl-8/igt@kms_cursor_crc@cursor-sliding-128x128.html">DMESG-WARN</a>=
+ (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/4537">Inte=
+l XE#4537</a>) +1 other test dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-sliding-512x512:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_cursor_crc@cursor-sliding-51=
+2x512.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kern=
+el/issues/2321">Intel XE#2321</a>) +2 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_cursor_legacy@cursorb-vs-flipb-atomic:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@kms_cursor_legacy@cursorb-vs-flipb-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/309">Intel XE#309</a>) +1 other test skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-2/igt@kms_cursor_legacy@cursorb-vs-fli=
+pb-atomic.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/=
+kernel/issues/309">Intel XE#309</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions-varying-size:</p>
+<p>igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions:<=
+/p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions-varying-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/323">Intel XE#323</a>) +1 other test skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_cursor_legacy@short-busy-fli=
+p-before-cursor-atomic-transitions.html">SKIP</a> (<a href=3D"https://gitla=
+b.freedesktop.org/drm/xe/kernel/issues/2286">Intel XE#2286</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions-v=
+arying-size:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-4/igt@kms_cursor_legacy@short-busy-fli=
+p-before-cursor-atomic-transitions-varying-size.html">SKIP</a> (<a href=3D"=
+https://gitlab.freedesktop.org/drm/xe/kernel/issues/323">Intel XE#323</a>) =
++1 other test skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_dirtyfb@drrs-dirtyfb-ioctl:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@kms_dirtyfb@drrs-dirtyfb-ioctl.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1508">Intel XE#1508</a>)</li>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_dirtyfb@drrs-dirtyfb-ioctl.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1508">Intel XE#1508</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-5/igt@kms_dirtyfb@drrs-dirtyfb-ioctl.h=
+tml">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issu=
+es/1508">Intel XE#1508</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_dirtyfb@drrs-dirtyfb-ioctl.h=
+tml">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issu=
+es/1508">Intel XE#1508</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dither@fb-8bpc-vs-panel-6bpc@pipe-a-hdmi-a-3:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_dither@fb-8bpc-vs-panel-6bpc=
+@pipe-a-hdmi-a-3.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/=
+drm/xe/kernel/issues/1340">Intel XE#1340</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_dp_linktrain_fallback@dsc-fallback:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_dp_linktrain_fallback@dsc-fallback.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4331">Intel XE#4331</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-fractional-bpp-with-bpc:</p>
-<ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@kms_dsc@dsc-fractional-bpp-with-bpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_dp_linktrain_fallback@dsc-fa=
+llback.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/ker=
+nel/issues/4331">Intel XE#4331</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-1/igt@kms_dp_linktrain_fallback@dsc-fa=
+llback.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/ker=
+nel/issues/4331">Intel XE#4331</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_fbc_dirty_rect@fbc-dirty-rectangle-out-visible-area:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-8/igt@kms_fbc_dirty_rect@fbc-dirty-rectangle-out-visible-area.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4422">Intel XE#4422</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_fbcon_fbt@fbc-suspend:</p>
-<ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_fbcon_fbt@fbc-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4156">Intel XE#4156</a>) +1 other test skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_fbc_dirty_rect@fbc-dirty-re=
+ctangle-out-visible-area.html">SKIP</a> (<a href=3D"https://gitlab.freedesk=
+top.org/drm/xe/kernel/issues/4422">Intel XE#4422</a>) +1 other test skip</l=
+i>
 </ul>
 </li>
 <li>
 <p>igt@kms_feature_discovery@display-2x:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@kms_feature_discovery@display-2x.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/702">Intel XE#702</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-8/igt@kms_feature_discovery@display-2x=
+.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/is=
+sues/702">Intel XE#702</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_feature_discovery@dp-mst:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_feature_discovery@dp-mst.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2375">Intel XE#2375</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_feature_discovery@dp-mst.htm=
+l">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues=
+/2375">Intel XE#2375</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-flip-vs-absolute-wf_vblank@cd-dp2-hdmi-a3:</p>
+<ul>
+<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-bmg-6/igt@kms_flip@2x-flip-vs-absolute-wf_vblank@cd-dp2-hd=
+mi-a3.html">PASS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/inte=
+l-xe/IGTPW_14340/shard-bmg-2/igt@kms_flip@2x-flip-vs-absolute-wf_vblank@cd-=
+dp2-hdmi-a3.html">DMESG-WARN</a> (<a href=3D"https://gitlab.freedesktop.org=
+/drm/xe/kernel/issues/6766">Intel XE#6766</a>) +1 other test dmesg-warn</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_flip@2x-wf_vblank-ts-check:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_flip@2x-wf_vblank-ts-check.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1421">Intel XE#1421</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@flip-vs-panning-interruptible:</p>
-<ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-1/igt@kms_flip@flip-vs-panning-interruptible.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_flip@flip-vs-panning-interruptible.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5208">Intel XE#5208</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@flip-vs-panning-interruptible@b-hdmi-a3:</p>
-<ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-1/igt@kms_flip@flip-vs-panning-interruptible@b-hdmi-a3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_flip@flip-vs-panning-interruptible@b-hdmi-a3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6766">Intel XE#6766</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@flip-vs-panning-interruptible@c-hdmi-a3:</p>
-<ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-1/igt@kms_flip@flip-vs-panning-interruptible@c-hdmi-a3.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_flip@flip-vs-panning-interruptible@c-hdmi-a3.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5545">Intel XE#5545</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-2/igt@kms_flip@2x-wf_vblank-ts-check.h=
+tml">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issu=
+es/1421">Intel XE#1421</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-downscaling:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-downscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1397">Intel XE#1397</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1745">Intel XE#1745</a>) +1 other test skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-5/igt@kms_flip_scaled_crc@flip-32bpp-x=
+tile-to-64bpp-xtile-downscaling.html">SKIP</a> (<a href=3D"https://gitlab.f=
+reedesktop.org/drm/xe/kernel/issues/1397">Intel XE#1397</a> / <a href=3D"ht=
+tps://gitlab.freedesktop.org/drm/xe/kernel/issues/1745">Intel XE#1745</a>) =
++1 other test skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-downscaling@pipe-a-default-mode:</p>
+<p>igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-downscaling@pipe=
+-a-default-mode:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_flip_scaled_crc@flip-32bpp-xtile-to-64bpp-xtile-downscaling@pipe-a-default-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1397">Intel XE#1397</a>) +1 other test skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-5/igt@kms_flip_scaled_crc@flip-32bpp-x=
+tile-to-64bpp-xtile-downscaling@pipe-a-default-mode.html">SKIP</a> (<a href=
+=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/1397">Intel XE#1397=
+</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling:</p>
+<p>igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling=
+:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1401">Intel XE#1401</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1745">Intel XE#1745</a>) +1 other test skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_flip_scaled_crc@flip-32bpp-y=
+ftile-to-32bpp-yftileccs-downscaling.html">SKIP</a> (<a href=3D"https://git=
+lab.freedesktop.org/drm/xe/kernel/issues/1401">Intel XE#1401</a> / <a href=
+=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/1745">Intel XE#1745=
+</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling@pipe-a-default-mode:</p>
+<p>igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling=
+@pipe-a-default-mode:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling@pipe-a-default-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1401">Intel XE#1401</a>) +1 other test skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_flip_scaled_crc@flip-32bpp-y=
+ftile-to-32bpp-yftileccs-downscaling@pipe-a-default-mode.html">SKIP</a> (<a=
+ href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/1401">Intel XE=
+#1401</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-downscaling@pipe-a-valid-mode:</p>
+<p>igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-downscaling=
+@pipe-a-valid-mode:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-downscaling@pipe-a-valid-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2293">Intel XE#2293</a>) +7 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_flip_scaled_crc@flip-32bpp-y=
+ftile-to-32bpp-yftileccs-downscaling@pipe-a-valid-mode.html">SKIP</a> (<a h=
+ref=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/2293">Intel XE#2=
+293</a>) +5 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-upscaling:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-upscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2293">Intel XE#2293</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2380">Intel XE#2380</a>) +7 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_flip_scaled_crc@flip-64bpp-y=
+tile-to-16bpp-ytile-upscaling.html">SKIP</a> (<a href=3D"https://gitlab.fre=
+edesktop.org/drm/xe/kernel/issues/2293">Intel XE#2293</a> / <a href=3D"http=
+s://gitlab.freedesktop.org/drm/xe/kernel/issues/2380">Intel XE#2380</a>) +5=
+ other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_flip_scaled_crc@flip-nv12-linear-to-nv12-linear-reflect-x:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@kms_flip_scaled_crc@flip-nv12-linear-to-nv12-linear-reflect-x.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7064">Intel XE#7064</a>) +1 other test skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@kms_flip_scaled_crc@flip-nv12-li=
+near-to-nv12-linear-reflect-x.html">SKIP</a> (<a href=3D"https://gitlab.fre=
+edesktop.org/drm/xe/kernel/issues/7064">Intel XE#7064</a>) +1 other test sk=
+ip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_force_connector_basic@prune-stale-modes:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/352">Intel XE#352</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_force_connector_basic@prune-=
+stale-modes.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/x=
+e/kernel/issues/352">Intel XE#352</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-render:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@kms_frontbuffer_tracking@drrs-1p-primscrn-cur-indfb-draw-render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/651">Intel XE#651</a>) +7 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@drrs-abgr161616f-draw-mmap-wc:</p>
-<ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_frontbuffer_tracking@drrs-abgr161616f-draw-mmap-wc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7061">Intel XE#7061</a>) +9 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_frontbuffer_tracking@drrs-1p=
+-primscrn-cur-indfb-draw-render.html">SKIP</a> (<a href=3D"https://gitlab.f=
+reedesktop.org/drm/xe/kernel/issues/651">Intel XE#651</a>) +6 other tests s=
+kip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-shrfb-msflip-blt:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-shrfb-msflip-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/656">Intel XE#656</a>) +18 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@kms_frontbuffer_tracking@fbc-2p-=
+scndscrn-shrfb-msflip-blt.html">SKIP</a> (<a href=3D"https://gitlab.freedes=
+ktop.org/drm/xe/kernel/issues/656">Intel XE#656</a>) +16 other tests skip</=
+li>
 </ul>
 </li>
 <li>
 <p>igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-onoff:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4141">Intel XE#4141</a>) +16 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@fbc-abgr161616f-draw-mmap-wc:</p>
-<ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-8/igt@kms_frontbuffer_tracking@fbc-abgr161616f-draw-mmap-wc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7061">Intel XE#7061</a>) +3 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_frontbuffer_tracking@fbc-2p-=
+scndscrn-spr-indfb-onoff.html">SKIP</a> (<a href=3D"https://gitlab.freedesk=
+top.org/drm/xe/kernel/issues/4141">Intel XE#4141</a>) +19 other tests skip<=
+/li>
 </ul>
 </li>
 <li>
 <p>igt@kms_frontbuffer_tracking@fbc-tiling-y:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-10/igt@kms_frontbuffer_tracking@fbc-tiling-y.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2352">Intel XE#2352</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-1/igt@kms_frontbuffer_tracking@fbc-til=
+ing-y.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kern=
+el/issues/2352">Intel XE#2352</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscreen-pri-shrfb-draw-render:</p>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscreen-pri-shrfb-draw-render:=
+</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@kms_frontbuffer_tracking@fbcdrrs-1p-offscreen-pri-shrfb-draw-render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6312">Intel XE#6312</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-4/igt@kms_frontbuffer_tracking@fbcdrrs=
+-1p-offscreen-pri-shrfb-draw-render.html">SKIP</a> (<a href=3D"https://gitl=
+ab.freedesktop.org/drm/xe/kernel/issues/6312">Intel XE#6312</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc:</p>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc:=
+</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-cur-indfb-draw-mmap-wc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2311">Intel XE#2311</a>) +37 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@kms_frontbuffer_tracking@fbcdrrs=
+-2p-scndscrn-cur-indfb-draw-mmap-wc.html">SKIP</a> (<a href=3D"https://gitl=
+ab.freedesktop.org/drm/xe/kernel/issues/2311">Intel XE#2311</a>) +40 other =
+tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-indfb-msflip-blt:</p>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-argb161616f-draw-render:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-indfb-msflip-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2313">Intel XE#2313</a>) +42 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_frontbuffer_tracking@fbcdrrs=
+-argb161616f-draw-render.html">SKIP</a> (<a href=3D"https://gitlab.freedesk=
+top.org/drm/xe/kernel/issues/7061">Intel XE#7061</a>) +9 other tests skip</=
+li>
 </ul>
 </li>
 <li>
-<p>igt@kms_hdr@bpc-switch@pipe-a-dp-2:</p>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-blt:</p>
 <ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-2/igt@kms_hdr@bpc-switch@pipe-a-dp-2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_hdr@bpc-switch@pipe-a-dp-2.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6740">Intel XE#6740</a>) +1 other test abort</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_frontbuffer_tracking@fbcpsr-=
+rgb565-draw-blt.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/d=
+rm/xe/kernel/issues/2313">Intel XE#2313</a>) +48 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_joiner@invalid-modeset-ultra-joiner:</p>
+<p>igt@kms_frontbuffer_tracking@psr-argb161616f-draw-blt:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@kms_joiner@invalid-modeset-ultra-joiner.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6900">Intel XE#6900</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_frontbuffer_tracking@psr-arg=
+b161616f-draw-blt.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org=
+/drm/xe/kernel/issues/7061">Intel XE#7061</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@invalid-hdr@pipe-a-hdmi-a-3:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@kms_hdr@invalid-hdr@pipe-a-hdmi-=
+a-3.html">ABORT</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kerne=
+l/issues/6740">Intel XE#6740</a>) +1 other test abort</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_pipe_stress@stress-xrgb8888-yftiled:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_pipe_stress@stress-xrgb8888-yftiled.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6912">Intel XE#6912</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@kms_pipe_stress@stress-xrgb8888-=
+yftiled.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/ke=
+rnel/issues/6912">Intel XE#6912</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_pipe_stress@stress-xrgb8888-ytiled:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_pipe_stress@stress-xrgb8888-ytiled.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4329">Intel XE#4329</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6912">Intel XE#6912</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_pipe_stress@stress-xrgb8888-=
+ytiled.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/ker=
+nel/issues/4329">Intel XE#4329</a> / <a href=3D"https://gitlab.freedesktop.=
+org/drm/xe/kernel/issues/6912">Intel XE#6912</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_plane_lowres@tiling-y:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-8/igt@kms_plane_lowres@tiling-y.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/599">Intel XE#599</a>) +1 other test skip</li>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_plane_lowres@tiling-y.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2393">Intel XE#2393</a>) +1 other test skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-8/igt@kms_plane_lowres@tiling-y.html">=
+SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/59=
+9">Intel XE#599</a>) +1 other test skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@kms_plane_lowres@tiling-y.html">=
+SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/23=
+93">Intel XE#2393</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_plane_multiple@tiling-y:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_plane_multiple@tiling-y.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5020">Intel XE#5020</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_plane_multiple@tiling-y.html=
+">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/=
+5020">Intel XE#5020</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25:</p>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25:</=
+p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6886">Intel XE#6886</a>) +3 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_plane_scaling@planes-downsca=
+le-factor-0-5-upscale-factor-0-25.html">SKIP</a> (<a href=3D"https://gitlab=
+.freedesktop.org/drm/xe/kernel/issues/6886">Intel XE#6886</a>) +3 other tes=
+ts skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5:</=
+p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6886">Intel XE#6886</a>) +4 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@kms_plane_scaling@planes-upscale=
+-factor-0-25-downscale-factor-0-5.html">SKIP</a> (<a href=3D"https://gitlab=
+.freedesktop.org/drm/xe/kernel/issues/6886">Intel XE#6886</a>) +4 other tes=
+ts skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_pm_backlight@bad-brightness:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-8/igt@kms_pm_backlight@bad-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/870">Intel XE#870</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@kms_pm_backlight@bad-brightness.=
+html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/iss=
+ues/870">Intel XE#870</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_pm_backlight@brightness-with-dpms:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@kms_pm_backlight@brightness-with-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2938">Intel XE#2938</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_pm_backlight@brightness-with=
+-dpms.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kern=
+el/issues/2938">Intel XE#2938</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_pm_dc@dc6-dpms:</p>
+<p>igt@kms_pm_dc@dc5-psr:</p>
 <ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-3/igt@kms_pm_dc@dc6-dpms.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_pm_dc@dc6-dpms.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/718">Intel XE#718</a>)</li>
+<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-lnl-2/igt@kms_pm_dc@dc5-psr.html">PASS</a> -&gt; <a href=
+=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@k=
+ms_pm_dc@dc5-psr.html">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/=
+drm/xe/kernel/issues/718">Intel XE#718</a>) +1 other test fail</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_pm_rpm@modeset-lpsp-stress-no-wait:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_pm_rpm@modeset-lpsp-stress-no-wait.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1439">Intel XE#1439</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3141">Intel XE#3141</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/836">Intel XE#836</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_pm_rpm@modeset-lpsp-stress-n=
+o-wait.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/ker=
+nel/issues/1439">Intel XE#1439</a> / <a href=3D"https://gitlab.freedesktop.=
+org/drm/xe/kernel/issues/3141">Intel XE#3141</a> / <a href=3D"https://gitla=
+b.freedesktop.org/drm/xe/kernel/issues/836">Intel XE#836</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_pm_rpm@package-g7:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-10/igt@kms_pm_rpm@package-g7.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6814">Intel XE#6814</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_pm_rpm@package-g7.html">SKI=
+P</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/6814"=
+>Intel XE#6814</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_properties@connector-properties-legacy:</p>
+<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area:</p>
 <ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@kms_properties@connector-properties-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_properties@connector-properties-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6703">Intel XE#6703</a>) +16 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_psr2_sf@fbc-pr-overlay-plane=
+-update-sf-dmg-area.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.o=
+rg/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href=3D"https://gitlab=
+.freedesktop.org/drm/xe/kernel/issues/2893">Intel XE#2893</a>) +1 other tes=
+t skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2893">Intel XE#2893</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4608">Intel XE#4608</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-2/igt@kms_psr2_sf@fbc-psr2-overlay-pri=
+mary-update-sf-dmg-area.html">SKIP</a> (<a href=3D"https://gitlab.freedeskt=
+op.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href=3D"https://gi=
+tlab.freedesktop.org/drm/xe/kernel/issues/2893">Intel XE#2893</a> / <a href=
+=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/4608">Intel XE#4608=
+</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area@pipe-b-edp-1:</p>
+<p>igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area@pipe-b-edp-1=
+:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area@pipe-b-edp-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4608">Intel XE#4608</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-7/igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-sf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2893">Intel XE#2893</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-2/igt@kms_psr2_sf@fbc-psr2-overlay-pri=
+mary-update-sf-dmg-area@pipe-b-edp-1.html">SKIP</a> (<a href=3D"https://git=
+lab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href=
+=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/4608">Intel XE#4608=
+</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1489">Intel XE#1489</a>) +8 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_psr2_sf@psr2-plane-move-sf-d=
+mg-area.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/ke=
+rnel/issues/1406">Intel XE#1406</a> / <a href=3D"https://gitlab.freedesktop=
+.org/drm/xe/kernel/issues/1489">Intel XE#1489</a>) +12 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_su@frontbuffer-xrgb8888:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-7/igt@kms_psr2_su@frontbuffer-xrgb8888=
+.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/is=
+sues/1406">Intel XE#1406</a> / <a href=3D"https://gitlab.freedesktop.org/dr=
+m/xe/kernel/issues/2387">Intel XE#2387</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_psr@fbc-pr-no-drrs:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@kms_psr@fbc-pr-no-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a>) +2 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@kms_psr@fbc-pr-no-drrs.html">SKI=
+P</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406"=
+>Intel XE#1406</a>) +2 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_psr@fbc-psr2-suspend@edp-1:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@kms_psr@fbc-psr2-suspend@edp-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4609">Intel XE#4609</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_psr@fbc-psr2-suspend@edp-1.h=
+tml">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issu=
+es/1406">Intel XE#1406</a> / <a href=3D"https://gitlab.freedesktop.org/drm/=
+xe/kernel/issues/4609">Intel XE#4609</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_psr@psr2-no-drrs:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_psr@psr2-no-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234">Intel XE#2234</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a>) +19 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr2-sprite-render:</p>
-<ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_psr@psr2-sprite-render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6703">Intel XE#6703</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_psr@psr2-no-drrs.html">SKIP<=
+/a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">I=
+ntel XE#1406</a> / <a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/=
+issues/2234">Intel XE#2234</a> / <a href=3D"https://gitlab.freedesktop.org/=
+drm/xe/kernel/issues/2850">Intel XE#2850</a>) +15 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_psr_stress_test@invalidate-primary-flip-overlay:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_psr_stress_test@invalidate-primary-flip-overlay.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2414">Intel XE#2414</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@kms_psr_stress_test@invalidate-p=
+rimary-flip-overlay.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.o=
+rg/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href=3D"https://gitlab=
+.freedesktop.org/drm/xe/kernel/issues/2414">Intel XE#2414</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_rotation_crc@primary-yf-tiled-reflect-x-0:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_rotation_crc@primary-yf-tiled-reflect-x-0.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2330">Intel XE#2330</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_rotation_crc@primary-yf-til=
+ed-reflect-x-0.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/dr=
+m/xe/kernel/issues/2330">Intel XE#2330</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_rotation_crc@sprite-rotation-90:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_rotation_crc@sprite-rotation-90.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3414">Intel XE#3414</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3904">Intel XE#3904</a>) +1 other test skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_rotation_crc@sprite-rotatio=
+n-90.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kerne=
+l/issues/3414">Intel XE#3414</a> / <a href=3D"https://gitlab.freedesktop.or=
+g/drm/xe/kernel/issues/3904">Intel XE#3904</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_scaling_modes@scaling-mode-center:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_scaling_modes@scaling-mode-center.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2413">Intel XE#2413</a>) +1 other test skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_scaling_modes@scaling-mode-=
+center.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/ker=
+nel/issues/2413">Intel XE#2413</a>) +2 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_sharpness_filter@filter-toggle:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-8/igt@kms_sharpness_filter@filter-toggle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6503">Intel XE#6503</a>) +2 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@kms_sharpness_filter@filter-togg=
+le.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/=
+issues/6503">Intel XE#6503</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@cmrr:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@kms_vrr@cmrr.html">SKIP</a> (<a =
+href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/2168">Intel XE#=
+2168</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@flip-dpms:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_vrr@flip-dpms.html">SKIP</a>=
+ (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/1499">Inte=
+l XE#1499</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_vrr@negative-basic:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@kms_vrr@negative-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1499">Intel XE#1499</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@kms_vrr@negative-basic.html">SKI=
+P</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/1499"=
+>Intel XE#1499</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_vrr@seamless-rr-switch-virtual:</p>
+<p>igt@testdisplay:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@kms_vrr@seamless-rr-switch-virtual.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1499">Intel XE#1499</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_eudebug@basic-vm-access-parameters-faultable:</p>
-<ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-8/igt@xe_eudebug@basic-vm-access-parameters-faultable.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837">Intel XE#4837</a>) +2 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@testdisplay.html">ABORT</a> (<a =
+href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/6740">Intel XE#=
+6740</a> / <a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/6=
+976">Intel XE#6976</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_eudebug@discovery-empty:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_eudebug@discovery-empty.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837">Intel XE#4837</a>) +10 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@xe_eudebug@discovery-empty.html"=
+>SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/4=
+837">Intel XE#4837</a>) +12 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_eudebug_online@interrupt-other-debuggable:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@xe_eudebug_online@interrupt-other-debuggable.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837">Intel XE#4837</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6665">Intel XE#6665</a>) +2 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@xe_eudebug_online@interrupt-othe=
+r-debuggable.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/=
+xe/kernel/issues/4837">Intel XE#4837</a> / <a href=3D"https://gitlab.freede=
+sktop.org/drm/xe/kernel/issues/6665">Intel XE#6665</a>) +2 other tests skip=
+</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_eudebug_online@pagefault-read-stress:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@xe_eudebug_online@pagefault-read-stress.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6665">Intel XE#6665</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6681">Intel XE#6681</a>) +1 other test skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_eudebug_online@pagefault-rea=
+d-stress.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/k=
+ernel/issues/6665">Intel XE#6665</a> / <a href=3D"https://gitlab.freedeskto=
+p.org/drm/xe/kernel/issues/6681">Intel XE#6681</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_eudebug_online@pagefault-write-stress:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-8/igt@xe_eudebug_online@pagefault-write-stress.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6665">Intel XE#6665</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-8/igt@xe_eudebug_online@pagefault-writ=
+e-stress.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/k=
+ernel/issues/6665">Intel XE#6665</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_eudebug_online@single-step-one:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@xe_eudebug_online@single-step-one.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4837">Intel XE#4837</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6665">Intel XE#6665</a>) +7 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@xe_eudebug_online@single-step-on=
+e.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/i=
+ssues/4837">Intel XE#4837</a> / <a href=3D"https://gitlab.freedesktop.org/d=
+rm/xe/kernel/issues/6665">Intel XE#6665</a>) +6 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_eudebug_sriov@deny-sriov:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@xe_eudebug_sriov@deny-sriov.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5793">Intel XE#5793</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_eudebug_sriov@deny-sriov.htm=
+l">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues=
+/5793">Intel XE#5793</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_evict@evict-mixed-many-threads-small:</p>
-<ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@xe_evict@evict-mixed-many-threads-small.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_evict@evict-mixed-many-threads-small.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6321">Intel XE#6321</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-5/igt@xe_evict@evict-beng-mixed-thread=
+s-small-multi-vm.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/=
+drm/xe/kernel/issues/688">Intel XE#688</a>) +11 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-8/igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1392">Intel XE#1392</a>) +4 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@xe_exec_basic@multigpu-many-exec=
+queues-many-vm-basic.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.=
+org/drm/xe/kernel/issues/1392">Intel XE#1392</a>) +4 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_exec_basic@multigpu-no-exec-bindexecqueue-userptr-invalidate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2322">Intel XE#2322</a>) +9 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@xe_exec_basic@twice-bindexecqueue@vecs0} (NEW):</p>
-<ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@xe_exec_basic@twice-bindexecqueue@vecs0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4537">Intel XE#4537</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-1/igt@xe_exec_basic@multigpu-no-exec-b=
+indexecqueue-userptr-invalidate.html">SKIP</a> (<a href=3D"https://gitlab.f=
+reedesktop.org/drm/xe/kernel/issues/2322">Intel XE#2322</a>) +11 other test=
+s skip</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@xe_exec_multi_queue@many-queues-preempt-mode-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6874">Intel XE#6874</a>) +13 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@xe_exec_multi_queue@many-queues-=
+preempt-mode-userptr.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.=
+org/drm/xe/kernel/issues/6874">Intel XE#6874</a>) +15 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_exec_multi_queue@two-queues-priority:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_exec_multi_queue@two-queues-priority.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6874">Intel XE#6874</a>) +38 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@xe_exec_multi_queue@two-queues-p=
+riority.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/ke=
+rnel/issues/6874">Intel XE#6874</a>) +43 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_sip_eudebug@breakpoint-writesip-twice:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@xe_exec_sip_eudebug@breakpoint-w=
+ritesip-twice.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm=
+/xe/kernel/issues/4837">Intel XE#4837</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_system_allocator@madvise-no-range-invalidate-same-attr:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@xe_exec_system_allocator@madvise=
+-no-range-invalidate-same-attr.html">WARN</a> (<a href=3D"https://gitlab.fr=
+eedesktop.org/drm/xe/kernel/issues/5786">Intel XE#5786</a>) +2 other tests =
+warn</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_exec_system_allocator@many-64k-mmap-free-huge:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_exec_system_allocator@many-64k-mmap-free-huge.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5007">Intel XE#5007</a>) +2 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@xe_exec_system_allocator@many-64=
+k-mmap-free-huge.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/=
+drm/xe/kernel/issues/5007">Intel XE#5007</a>) +2 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_exec_system_allocator@many-64k-mmap-huge-nomemset:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@xe_exec_system_allocator@many-64k-mmap-huge-nomemset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5007">Intel XE#5007</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_system_allocator@many-stride-malloc-prefetch-madvise:</p>
-<ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-1/igt@xe_exec_system_allocator@many-stride-malloc-prefetch-madvise.html">WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5786">Intel XE#5786</a>) +1 other test warn</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-1/igt@xe_exec_system_allocator@many-64=
+k-mmap-huge-nomemset.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.=
+org/drm/xe/kernel/issues/5007">Intel XE#5007</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_exec_system_allocator@many-stride-new-prefetch:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_exec_system_allocator@many-stride-new-prefetch.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6480">Intel XE#6480</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_system_allocator@partial-atomic-middle-remap-no-cpu-fault:</p>
-<ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-9/igt@xe_exec_system_allocator@partial-atomic-middle-remap-no-cpu-fault.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5625">Intel XE#5625</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@xe_exec_system_allocator@many-st=
+ride-new-prefetch.html">INCOMPLETE</a> (<a href=3D"https://gitlab.freedeskt=
+op.org/drm/xe/kernel/issues/6480">Intel XE#6480</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_exec_system_allocator@process-many-mmap-new-huge-nomemset:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@xe_exec_system_allocator@process-many-mmap-new-huge-nomemset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4943">Intel XE#4943</a>) +13 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-8/igt@xe_exec_system_allocator@process=
+-many-mmap-new-huge-nomemset.html">SKIP</a> (<a href=3D"https://gitlab.free=
+desktop.org/drm/xe/kernel/issues/4943">Intel XE#4943</a>) +15 other tests s=
+kip</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_system_allocator@threads-many-large-execqueues-malloc-nomemset:</p>
+<p>igt@xe_exec_system_allocator@threads-shared-vm-many-stride-mmap-free-hug=
+e:</p>
 <ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-2/igt@xe_exec_system_allocator@threads-many-large-execqueues-malloc-nomemset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-10/igt@xe_exec_system_allocator@threads-many-large-execqueues-malloc-nomemset.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6480">Intel XE#6480</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-1/igt@xe_exec_system_allocator@threads=
+-shared-vm-many-stride-mmap-free-huge.html">SKIP</a> (<a href=3D"https://gi=
+tlab.freedesktop.org/drm/xe/kernel/issues/4943">Intel XE#4943</a>) +36 othe=
+r tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_exec_system_allocator@threads-shared-vm-many-malloc:</p>
+<p>igt@xe_mmap@small-bar:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@xe_exec_system_allocator@threads-shared-vm-many-malloc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6703">Intel XE#6703</a>) +10 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_system_allocator@threads-shared-vm-many-stride-mmap-free-huge:</p>
-<ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@xe_exec_system_allocator@threads-shared-vm-many-stride-mmap-free-huge.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4943">Intel XE#4943</a>) +26 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_fault_injection@probe-fail-guc-xe_guc_ct_send_recv:</p>
-<ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-8/igt@xe_fault_injection@probe-fail-guc-xe_guc_ct_send_recv.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5466">Intel XE#5466</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_mmap@small-bar.html">SKIP</a=
+> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/586">Inte=
+l XE#586</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_mmap@vram:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416">Intel XE#1416</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-2/igt@xe_mmap@vram.html">SKIP</a> (<a =
+href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416">Intel XE#=
+1416</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_module_load@force-load:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@xe_module_load@force-load.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2457">Intel XE#2457</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@xe_module_load@force-load.html"=
+>SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/2=
+457">Intel XE#2457</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_multigpu_svm@mgpu-atomic-op-conflict:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@xe_multigpu_svm@mgpu-atomic-op-conflict.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6964">Intel XE#6964</a>) +1 other test skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-2/igt@xe_multigpu_svm@mgpu-atomic-op-c=
+onflict.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/ke=
+rnel/issues/6964">Intel XE#6964</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_multigpu_svm@mgpu-pagefault-basic:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_multigpu_svm@mgpu-pagefault-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6964">Intel XE#6964</a>) +4 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_oa@invalid-oa-format-id:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-3/igt@xe_oa@invalid-oa-format-id.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@xe_oa@invalid-oa-format-id.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4537">Intel XE#4537</a>) +3 other tests dmesg-warn</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-6/igt@xe_multigpu_svm@mgpu-pagefault-b=
+asic.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kerne=
+l/issues/6964">Intel XE#6964</a>) +3 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_oa@oa-tlb-invalidate:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_oa@oa-tlb-invalidate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2248">Intel XE#2248</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-1/igt@xe_oa@oa-tlb-invalidate.html">SK=
+IP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/2248=
+">Intel XE#2248</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_pat@pat-index-xelpg:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236">Intel XE#2236</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@xe_pat@pat-index-xelpg.html">SKI=
+P</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236"=
+>Intel XE#2236</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_pm@d3cold-mocs:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_pm@d3cold-mocs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2284">Intel XE#2284</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-3/igt@xe_pm@d3cold-mocs.html">SKIP</a>=
+ (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/2284">Inte=
+l XE#2284</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_pm@d3cold-multiple-execs:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-7/igt@xe_pm@d3cold-multiple-execs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2284">Intel XE#2284</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/366">Intel XE#366</a>)</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-9/igt@xe_pm@d3cold-multiple-execs.html=
+">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/=
+2284">Intel XE#2284</a>) +3 other tests skip</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-4/igt@xe_pm@d3cold-multiple-execs.html=
+">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/=
+2284">Intel XE#2284</a> / <a href=3D"https://gitlab.freedesktop.org/drm/xe/=
+kernel/issues/366">Intel XE#366</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_pm@s3-basic-exec:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-3/igt@xe_pm@s3-basic-exec.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/584">Intel XE#584</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-4/igt@xe_pm@s3-basic-exec.html">SKIP</=
+a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/584">Int=
+el XE#584</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_pxp@pxp-stale-bo-exec-post-suspend:</p>
+<p>igt@xe_pxp@display-black-pxp-fb:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@xe_pxp@pxp-stale-bo-exec-post-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4733">Intel XE#4733</a>) +3 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@xe_pxp@display-black-pxp-fb.html=
+">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/=
+4733">Intel XE#4733</a>) +3 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_query@multigpu-query-invalid-extension:</p>
 <ul>
-<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-10/igt@xe_query@multigpu-query-invalid-extension.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/944">Intel XE#944</a>) +2 other tests skip</li>
+<li>shard-bmg:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-3/igt@xe_query@multigpu-query-invalid-=
+extension.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/=
+kernel/issues/944">Intel XE#944</a>) +2 other tests skip</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_query@multigpu-query-uc-fw-version-guc:</p>
 <ul>
-<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-4/igt@xe_query@multigpu-query-uc-fw-version-guc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/944">Intel XE#944</a>)</li>
+<li>shard-lnl:          NOTRUN -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-lnl-2/igt@xe_query@multigpu-query-uc-fw-ve=
+rsion-guc.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/=
+kernel/issues/944">Intel XE#944</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@xe_sriov_vram@vf-access-after-resize-down:</p>
+<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
 <ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-2/igt@xe_sriov_vram@vf-access-after-resize-down.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@xe_sriov_vram@vf-access-after-resize-down.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5937">Intel XE#5937</a>)</li>
+<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-bmg-6/igt@xe_sriov_flr@flr-vf1-clear.html">PASS</a> -&gt; =
+<a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-=
+8/igt@xe_sriov_flr@flr-vf1-clear.html">FAIL</a> (<a href=3D"https://gitlab.=
+freedesktop.org/drm/xe/kernel/issues/5937">Intel XE#5937</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_flr@flr-vfs-parallel:</p>
+<ul>
+<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-bmg-2/igt@xe_sriov_flr@flr-vfs-parallel.html">PASS</a> -&g=
+t; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-b=
+mg-7/igt@xe_sriov_flr@flr-vfs-parallel.html">FAIL</a> (<a href=3D"https://g=
+itlab.freedesktop.org/drm/xe/kernel/issues/6569">Intel XE#6569</a>)</li>
 </ul>
 </li>
 </ul>
 <h4>Possible fixes</h4>
 <ul>
 <li>
-<p>igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-dp-2:</p>
+<p>igt@kms_atomic_transition@plane-all-modeset-transition-fencing:</p>
 <ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-dp-2.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6891">Intel XE#6891</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-dp-2.html">PASS</a></li>
+<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-bmg-3/igt@kms_atomic_transition@plane-all-modeset-transiti=
+on-fencing.html">INCOMPLETE</a> (<a href=3D"https://gitlab.freedesktop.org/=
+drm/xe/kernel/issues/6819">Intel XE#6819</a> / <a href=3D"https://gitlab.fr=
+eedesktop.org/drm/xe/kernel/issues/6891">Intel XE#6891</a> / <a href=3D"htt=
+ps://gitlab.freedesktop.org/drm/xe/kernel/issues/6904">Intel XE#6904</a>) -=
+&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard=
+-bmg-8/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html"=
+>PASS</a></li>
 </ul>
 </li>
 <li>
-<p>igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs:</p>
+<p>igt@kms_atomic_transition@plane-all-modeset-transition-fencing@pipe-b-dp=
+-2:</p>
 <ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-1/igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-7/igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs.html">PASS</a> +1 other test pass</li>
+<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-bmg-3/igt@kms_atomic_transition@plane-all-modeset-transiti=
+on-fencing@pipe-b-dp-2.html">INCOMPLETE</a> (<a href=3D"https://gitlab.free=
+desktop.org/drm/xe/kernel/issues/6891">Intel XE#6891</a>) -&gt; <a href=3D"=
+https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-8/igt@kms_a=
+tomic_transition@plane-all-modeset-transition-fencing@pipe-b-dp-2.html">PAS=
+S</a></li>
 </ul>
 </li>
 <li>
 <p>igt@kms_cursor_crc@cursor-rapid-movement-128x128:</p>
 <ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-2/igt@kms_cursor_crc@cursor-rapid-movement-128x128.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4537">Intel XE#4537</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@kms_cursor_crc@cursor-rapid-movement-128x128.html">PASS</a> +3 other tests pass</li>
+<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-lnl-2/igt@kms_cursor_crc@cursor-rapid-movement-128x128.htm=
+l">DMESG-WARN</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/=
+issues/4537">Intel XE#4537</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.or=
+g/tree/intel-xe/IGTPW_14340/shard-lnl-4/igt@kms_cursor_crc@cursor-rapid-mov=
+ement-128x128.html">PASS</a> +3 other tests pass</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_flip@2x-flip-vs-expired-vblank@ad-dp2-hdmi-a3:</p>
 <ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-6/igt@kms_flip@2x-flip-vs-expired-vblank@ad-dp2-hdmi-a3.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_flip@2x-flip-vs-expired-vblank@ad-dp2-hdmi-a3.html">PASS</a></li>
+<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-bmg-6/igt@kms_flip@2x-flip-vs-expired-vblank@ad-dp2-hdmi-a=
+3.html">FAIL</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe=
+/IGTPW_14340/shard-bmg-2/igt@kms_flip@2x-flip-vs-expired-vblank@ad-dp2-hdmi=
+-a3.html">PASS</a></li>
 </ul>
 </li>
 <li>
 <p>igt@kms_flip@2x-flip-vs-expired-vblank@bc-dp2-hdmi-a3:</p>
 <ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-6/igt@kms_flip@2x-flip-vs-expired-vblank@bc-dp2-hdmi-a3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3321">Intel XE#3321</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_flip@2x-flip-vs-expired-vblank@bc-dp2-hdmi-a3.html">PASS</a> +1 other test pass</li>
+<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-bmg-6/igt@kms_flip@2x-flip-vs-expired-vblank@bc-dp2-hdmi-a=
+3.html">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/i=
+ssues/3321">Intel XE#3321</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org=
+/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_flip@2x-flip-vs-expired-vbla=
+nk@bc-dp2-hdmi-a3.html">PASS</a> +1 other test pass</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_flip@flip-vs-expired-vblank-interruptible:</p>
 <ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-4/igt@kms_flip@flip-vs-expired-vblank-interruptible.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/301">Intel XE#301</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3149">Intel XE#3149</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-8/igt@kms_flip@flip-vs-expired-vblank-interruptible.html">PASS</a> +1 other test pass</li>
+<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-lnl-4/igt@kms_flip@flip-vs-expired-vblank-interruptible.ht=
+ml">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issue=
+s/301">Intel XE#301</a> / <a href=3D"https://gitlab.freedesktop.org/drm/xe/=
+kernel/issues/3149">Intel XE#3149</a>) -&gt; <a href=3D"https://intel-gfx-c=
+i.01.org/tree/intel-xe/IGTPW_14340/shard-lnl-7/igt@kms_flip@flip-vs-expired=
+-vblank-interruptible.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@bpc-switch-suspend:</p>
+<ul>
+<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-bmg-9/igt@kms_hdr@bpc-switch-suspend.html">ABORT</a> (<a h=
+ref=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/6740">Intel XE#6=
+740</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_1=
+4340/shard-bmg-10/igt@kms_hdr@bpc-switch-suspend.html">PASS</a> +1 other te=
+st pass</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_pm_dc@dc6-psr:</p>
 <ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-5/igt@kms_pm_dc@dc6-psr.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/718">Intel XE#718</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-2/igt@kms_pm_dc@dc6-psr.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_vrr@cmrr@pipe-a-edp-1:</p>
-<ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-4/igt@kms_vrr@cmrr@pipe-a-edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4459">Intel XE#4459</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@kms_vrr@cmrr@pipe-a-edp-1.html">PASS</a> +1 other test pass</li>
+<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-lnl-5/igt@kms_pm_dc@dc6-psr.html">FAIL</a> (<a href=3D"htt=
+ps://gitlab.freedesktop.org/drm/xe/kernel/issues/718">Intel XE#718</a>) -&g=
+t; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-l=
+nl-4/igt@kms_pm_dc@dc6-psr.html">PASS</a></li>
 </ul>
 </li>
 <li>
 <p>igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1:</p>
 <ul>
-<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-lnl-2/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2142">Intel XE#2142</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-lnl-5/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_fault_injection@probe-fail-guc-xe_guc_mmio_send_recv:</p>
-<ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-8/igt@xe_fault_injection@probe-fail-guc-xe_guc_mmio_send_recv.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_fault_injection@probe-fail-guc-xe_guc_mmio_send_recv.html">PASS</a></li>
+<li>shard-lnl:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-lnl-2/igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1.=
+html">FAIL</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/iss=
+ues/2142">Intel XE#2142</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/t=
+ree/intel-xe/IGTPW_14340/shard-lnl-1/igt@kms_vrr@seamless-rr-switch-virtual=
+@pipe-a-edp-1.html">PASS</a> +1 other test pass</li>
 </ul>
 </li>
 <li>
 <p>igt@xe_pmu@fn-engine-activity-load:</p>
 <ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@xe_pmu@fn-engine-activity-load.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5937">Intel XE#5937</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_pmu@fn-engine-activity-load.html">PASS</a></li>
+<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-bmg-7/igt@xe_pmu@fn-engine-activity-load.html">FAIL</a> (<=
+a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/5937">Intel X=
+E#5937</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTP=
+W_14340/shard-bmg-6/igt@xe_pmu@fn-engine-activity-load.html">PASS</a></li>
 </ul>
 </li>
 <li>
 <p>igt@xe_waitfence@abstime:</p>
 <ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-1/igt@xe_waitfence@abstime.html">PASS</a></li>
+<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-bmg-2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href=
+=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506=
+</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_1434=
+0/shard-bmg-10/igt@xe_waitfence@abstime.html">PASS</a></li>
 </ul>
 </li>
 </ul>
 <h4>Warnings</h4>
 <ul>
 <li>
-<p>igt@kms_atomic_transition@plane-all-modeset-transition-fencing:</p>
+<p>igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-indfb-draw-mmap-wc:</p>
 <ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6819">Intel XE#6819</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6891">Intel XE#6891</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6904">Intel XE#6904</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-3/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6819">Intel XE#6819</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6904">Intel XE#6904</a>)</li>
-</ul>
+<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-bmg-9/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-pri-ind=
+fb-draw-mmap-wc.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/d=
+rm/xe/kernel/issues/4141">Intel XE#4141</a>) -&gt; <a href=3D"https://intel=
+-gfx-ci.01.org/tree/intel-xe/IGTPW_14340/shard-bmg-2/igt@kms_frontbuffer_tr=
+acking@fbc-1p-primscrn-pri-indfb-draw-mmap-wc.html">ABORT</a> (<a href=3D"h=
+ttps://gitlab.freedesktop.org/drm/xe/kernel/issues/5545">Intel XE#5545</a>)=
 </li>
-<li>
-<p>igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-0-hflip:</p>
-<ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-9/igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-0-hflip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7059">Intel XE#7059</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-0-hflip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6703">Intel XE#6703</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180:</p>
-<ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-1/igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1124">Intel XE#1124</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6703">Intel XE#6703</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-3-displays-2560x1440p:</p>
-<ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@kms_bw@connected-linear-tiling-3-displays-2560x1440p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2314">Intel XE#2314</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2894">Intel XE#2894</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_bw@connected-linear-tiling-3-displays-2560x1440p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6703">Intel XE#6703</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@bad-rotation-90-4-tiled-lnl-ccs:</p>
-<ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-2/igt@kms_ccs@bad-rotation-90-4-tiled-lnl-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2652">Intel XE#2652</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/787">Intel XE#787</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_ccs@bad-rotation-90-4-tiled-lnl-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6703">Intel XE#6703</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_ccs@crc-primary-rotation-180-y-tiled-gen12-rc-ccs:</p>
-<ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-6/igt@kms_ccs@crc-primary-rotation-180-y-tiled-gen12-rc-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2887">Intel XE#2887</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_ccs@crc-primary-rotation-180-y-tiled-gen12-rc-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6703">Intel XE#6703</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_crc@cursor-offscreen-512x170:</p>
-<ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-10/igt@kms_cursor_crc@cursor-offscreen-512x170.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2321">Intel XE#2321</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_cursor_crc@cursor-offscreen-512x170.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6703">Intel XE#6703</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-blt:</p>
-<ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-7/igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2313">Intel XE#2313</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6703">Intel XE#6703</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_hdr@brightness-with-hdr:</p>
 <ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@kms_hdr@brightness-with-hdr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3374">Intel XE#3374</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3544">Intel XE#3544</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-6/igt@kms_hdr@brightness-with-hdr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3544">Intel XE#3544</a>)</li>
+<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-bmg-3/igt@kms_hdr@brightness-with-hdr.html">SKIP</a> (<a h=
+ref=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/3374">Intel XE#3=
+374</a> / <a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/35=
+44">Intel XE#3544</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/in=
+tel-xe/IGTPW_14340/shard-bmg-9/igt@kms_hdr@brightness-with-hdr.html">SKIP</=
+a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/3544">In=
+tel XE#3544</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area:</p>
+<p>igt@kms_tiled_display@basic-test-pattern-with-chamelium:</p>
 <ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-10/igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1489">Intel XE#1489</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6703">Intel XE#6703</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_tiled_display@basic-test-pattern:</p>
-<ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@kms_tiled_display@basic-test-pattern.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2426">Intel XE#2426</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@kms_tiled_display@basic-test-pattern.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1729">Intel XE#1729</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_multi_queue@two-queues-close-fd-smem:</p>
-<ul>
-<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8700/shard-bmg-3/igt@xe_exec_multi_queue@two-queues-close-fd-smem.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6874">Intel XE#6874</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14339/shard-bmg-2/igt@xe_exec_multi_queue@two-queues-close-fd-smem.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6703">Intel XE#6703</a>) +1 other test skip</li>
+<li>shard-bmg:          <a href=3D"https://intel-gfx-ci.01.org/tree/intel-x=
+e/IGT_8700/shard-bmg-1/igt@kms_tiled_display@basic-test-pattern-with-chamel=
+ium.html">SKIP</a> (<a href=3D"https://gitlab.freedesktop.org/drm/xe/kernel=
+/issues/2426">Intel XE#2426</a>) -&gt; <a href=3D"https://intel-gfx-ci.01.o=
+rg/tree/intel-xe/IGTPW_14340/shard-bmg-10/igt@kms_tiled_display@basic-test-=
+pattern-with-chamelium.html">SKIP</a> (<a href=3D"https://gitlab.freedeskto=
+p.org/drm/xe/kernel/issues/2509">Intel XE#2509</a>)</li>
 </ul>
 </li>
 </ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+<p>{name}: This element is suppressed. This means it is ignored when comput=
+ing<br />
           the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8700 -&gt; IGTPW_14339</li>
+<li>IGT: IGT_8700 -&gt; IGTPW_14340</li>
 </ul>
-<p>IGTPW_14339: 14339<br />
+<p>IGTPW_14340: 14340<br />
   IGT_8700: 8700<br />
-  xe-4381-128c57f68ef105cefa8e8e3dd7078f275d59fd4a: 128c57f68ef105cefa8e8e3dd7078f275d59fd4a</p>
+  xe-4381-128c57f68ef105cefa8e8e3dd7078f275d59fd4a: 128c57f68ef105cefa8e8e3=
+dd7078f275d59fd4a</p>
 
 </body>
 </html>
 
---===============6736011530622677595==--
+--===============8427624665570241998==--
