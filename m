@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E58C9D44C41
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Jan 2026 12:57:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09B08D44C41
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Jan 2026 12:57:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 683AE10E74B;
-	Thu, 15 Jan 2026 12:57:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A801610E74D;
+	Thu, 15 Jan 2026 12:57:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BCuOddlZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SWAA+zAR";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5023D10E74B
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jan 2026 12:57:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 404F710E74B
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Jan 2026 12:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768481869; x=1800017869;
+ t=1768481874; x=1800017874;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=g/JtzT5fFvqqJNea8lO1ILpR5wxcjJ/IGn9IySMHmqQ=;
- b=BCuOddlZMlZgB9HN6NAwyj0IgwWNQ56ULl0dOv6qRLJ2i0bMhIMv1PPW
- fEdfbZqNzNu8Kkm9d1kQB2RF5CZXkUSf8DnCJDlFQ5opjemtI/sgyZHy/
- GAsRtlZUpvSCtfmUAlW3J9fCcRH5P8gjbW2KWxG524MLQdAy5udmuyuzw
- LQlyPrWCIUxCjW8YjSzSUN44ZSgygnczNXSwib3CcPAsXUbgutmmafZMS
- Y2LrTtqLzfXr9yjvPIEgLtiIbOKCGegPMP3jdeOOX8B10Edn+KGoZUdZS
- ycz41swZ29vSqs9qvt6tzXTHX8mquopRl2Aj/X/RTiijR1hh/A327BFGx g==;
-X-CSE-ConnectionGUID: QXkK2xdcS/KItcUSHQYcqw==
-X-CSE-MsgGUID: FxGn+9/6RcKAHti+mHCV1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="73628839"
-X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; d="scan'208";a="73628839"
+ bh=37YocPPaU+eCzJJDrRreQ/vq+BkI3CmxZ/NDusJ27Co=;
+ b=SWAA+zARoqYa8wU27paPbgEYiOXCpFODd6TFSGuHe/3jw2qyDkeT9GGM
+ W9lxnqjekylYUXVv9alwQ4QkrKLSlGD35qTn4B5SHe5OdJ997sdm1Dngt
+ J71DiW0v3UGlmOze8uGNHBHgLWX/jZ6FDFO89EWAiHCIx6rs3VkVBQ883
+ EfVhGaeGUpd3MC7YX1JmbsRF4nkKyaf6iKFgKhzJdWuPQl/QlWBL/UsZy
+ 9FTcpx2Mnqn3vJ5mM+iZAuF9U5Ukz3iMO0SrGj7ajP/sngicfhuQmoEqi
+ 6nzRogHl5gcvvEvXXeCbvsqLBE9T5Qg99Zuz4A2g4PBH7PzLquFAk22aE Q==;
+X-CSE-ConnectionGUID: 5knBsQC7QRuyC0Q/hrnSeg==
+X-CSE-MsgGUID: GJ1PamhQR66VmTC5KqHMzw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="73628846"
+X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; d="scan'208";a="73628846"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2026 04:57:49 -0800
-X-CSE-ConnectionGUID: ESIrtJhKQfSagqL2M3QSQg==
-X-CSE-MsgGUID: v5GcpvTTRmyTcmTYAnlhdQ==
+ 15 Jan 2026 04:57:54 -0800
+X-CSE-ConnectionGUID: AssJotU/SFyNwXauI2A5HQ==
+X-CSE-MsgGUID: lIEWb8gORwGPYhECe4kxpw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; d="scan'208";a="204093193"
+X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; d="scan'208";a="204093202"
 Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.245.21])
  by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 04:57:47 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 04:57:51 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mateusz Grabski <mateusz.grabski@intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>, Ryszard Knop <rk@dragonic.eu>
-Subject: [PATCH i-g-t v2 2/4] runner: implement dmesg reduction for successful
- case
-Date: Thu, 15 Jan 2026 13:57:30 +0100
-Message-ID: <20260115125732.20542-3-kamil.konieczny@linux.intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v2 3/4] RFC: runner/resultgen: add compressed dmesg
+ before reduction
+Date: Thu, 15 Jan 2026 13:57:31 +0100
+Message-ID: <20260115125732.20542-4-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115125732.20542-1-kamil.konieczny@linux.intel.com>
 References: <20260115125732.20542-1-kamil.konieczny@linux.intel.com>
@@ -70,195 +69,141 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Create a way for reduction of dmesg size in a successful case,
-when there are no kernel warnings detected.  Get the beginning
-and the end of a log and also indicate that it was reduced.
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-Cc: Mateusz Grabski <mateusz.grabski@intel.com>
-Cc: Ryszard Knop <ryszard.knop@intel.com>
-Cc: Ryszard Knop <rk@dragonic.eu>
+Before reducing dmesg in results.json, compress it with zlib
+and encode into base64 format, then add to json. With this,
+original dmesg should be available for inspection.
+
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- runner/resultgen.c | 97 ++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 85 insertions(+), 12 deletions(-)
+ runner/resultgen.c | 71 +++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 67 insertions(+), 4 deletions(-)
 
 diff --git a/runner/resultgen.c b/runner/resultgen.c
-index 1f7e79f24..6080ddc0e 100644
+index 6080ddc0e..a2e4e7c7d 100644
 --- a/runner/resultgen.c
 +++ b/runner/resultgen.c
-@@ -961,9 +961,9 @@ static void generate_formatted_dmesg_line(char *message,
+@@ -8,6 +8,7 @@
+ #include <sys/stat.h>
+ #include <sys/types.h>
+ #include <unistd.h>
++#include <zlib.h>
+ 
+ #include <json.h>
+ 
+@@ -961,6 +962,59 @@ static void generate_formatted_dmesg_line(char *message,
  	*f = '\0';
  }
  
--static void add_dmesg(struct json_object *obj,
--		      const char *dmesg, size_t dmesglen,
--		      const char *warnings, size_t warningslen)
-+static void __add_dmesg(struct json_object *obj,
-+			const char *dmesg, size_t dmesglen,
-+			const char *warnings, size_t warningslen)
- {
- 	json_object_object_add(obj, "dmesg",
- 			       new_escaped_json_string(dmesg, dmesglen));
-@@ -974,6 +974,72 @@ static void add_dmesg(struct json_object *obj,
- 	}
- }
- 
-+static void add_dmesg(struct json_object *obj,
-+		      size_t reduced_dmesg_size,
-+		      const char *dmesg, size_t dmesglen,
-+		      const char *warnings, size_t warningslen)
++static struct json_object *encode_compressed_base64(const char *data, size_t len, size_t *osize)
 +{
-+	static const char *middleinfo = "...dmesg reduced\n";
-+	char *reduced, *middle;
-+	const char *p, *lastp, *end;
-+	size_t len, lastlen, rsize, half;
++	uLongf destLen;
++	unsigned char *dest;
++	gchar *b64_text;
++	struct json_object *obj;
 +
-+	if (warnings || !reduced_dmesg_size || dmesglen <= reduced_dmesg_size)
-+		return __add_dmesg(obj, dmesg, dmesglen, warnings, warningslen);
++	if (osize)
++		*osize = 0;
++	if (len == 0)
++		return NULL;
 +
-+	end = dmesg + dmesglen;
++	destLen = compressBound(len);
++	dest = malloc(destLen);
 +
-+	rsize = reduced_dmesg_size + 256;
-+	reduced = malloc(rsize); /* +256 for last message */
-+	if (!reduced) {
-+		fprintf(stderr, "resultgen: malloc error, no reduction\n");
-+		return __add_dmesg(obj, dmesg, dmesglen, warnings, warningslen);
++	if (!dest)
++		return NULL;
++
++	if (compress(dest, &destLen, (const unsigned char*)data, len) != Z_OK) {
++		free(dest);
++		return NULL;
 +	}
 +
-+	half = reduced_dmesg_size / 2;
-+	memcpy(reduced, dmesg, half);
++	*osize = (size_t)destLen;
++	b64_text = g_base64_encode((const guchar *)dest, (gsize)destLen);
++	obj = json_object_new_string(b64_text);
 +
-+	for (p = reduced + half - 1; p > reduced; --p)
-+		if (*p == '\n')
-+			break;
-+	for (; p > reduced; --p)
-+		if (*p == '\n')
-+			break;
++	g_free(b64_text);
++	free(dest);
 +
-+	if (p == reduced)
-+		p = reduced + half;
-+	if (*p == '\n')
-+		p++;
-+
-+	len = p - reduced;
-+
-+	memcpy(reduced + len, middleinfo, strlen(middleinfo));
-+	len += strlen(middleinfo);
-+	middle = reduced + len;
-+
-+	for (p = dmesg + (dmesglen - half); p < end; p++)
-+		if (*p == '\n')
-+			break;
-+
-+	if (p == end)
-+		lastp = dmesg + (dmesglen - half);
-+	else
-+		lastp = p + 1;
-+
-+	lastlen = end - lastp;
-+	memcpy(middle, lastp, lastlen);
-+	middle += lastlen;
-+	len += lastlen;
-+
-+	/* add also last message to inform about reduction */
-+	len += sprintf(middle, "...dmesg reduced from %ld to %ld\n", dmesglen, len);
-+	fprintf(stderr, "resultgen: dmesg reduced from %ld to %ld\n", dmesglen, len);
-+	json_object_object_add(obj, "dmesg",
-+			       new_escaped_json_string(reduced, len));
-+
-+	free(reduced);
++	return obj;
 +}
 +
- static void add_empty_dmesgs_where_missing(struct json_object *tests,
- 					   char *binary,
- 					   struct subtest_list *subtests)
-@@ -987,7 +1053,7 @@ static void add_empty_dmesgs_where_missing(struct json_object *tests,
- 		generate_piglit_name(binary, subtests->subs[i].name, piglit_name, sizeof(piglit_name));
- 		current_test = get_or_create_json_object(tests, piglit_name);
- 		if (!json_object_object_get_ex(current_test, "dmesg", NULL)) {
--			add_dmesg(current_test, "", 0, NULL, 0);
-+			__add_dmesg(current_test, "", 0, NULL, 0);
- 		}
- 
- 		for (k = 0; k < subtests->subs[i].dynamic_size; k++) {
-@@ -995,7 +1061,7 @@ static void add_empty_dmesgs_where_missing(struct json_object *tests,
- 							 dynamic_piglit_name, sizeof(dynamic_piglit_name));
- 			current_test = get_or_create_json_object(tests, dynamic_piglit_name);
- 			if (!json_object_object_get_ex(current_test, "dmesg", NULL)) {
--				add_dmesg(current_test, "", 0, NULL, 0);
-+				__add_dmesg(current_test, "", 0, NULL, 0);
- 			}
- 		}
- 	}
-@@ -1048,7 +1114,8 @@ static bool fill_from_dmesg(int fd,
- 		if ((subtest = strstr(message, STARTING_SUBTEST_DMESG)) != NULL) {
- 			if (current_test != NULL) {
- 				/* Done with the previous subtest, file up */
--				add_dmesg(current_test, dmesg, dmesglen, warnings, warningslen);
-+				add_dmesg(current_test, settings->reduce_dmesg,
-+					  dmesg, dmesglen, warnings, warningslen);
- 
- 				free(dmesg);
- 				free(warnings);
-@@ -1056,7 +1123,8 @@ static bool fill_from_dmesg(int fd,
- 				dmesglen = warningslen = 0;
- 
- 				if (current_dynamic_test != NULL)
--					add_dmesg(current_dynamic_test, dynamic_dmesg, dynamic_dmesg_len, dynamic_warnings, dynamic_warnings_len);
-+					add_dmesg(current_dynamic_test, settings->reduce_dmesg,
-+						  dynamic_dmesg, dynamic_dmesg_len, dynamic_warnings, dynamic_warnings_len);
- 
- 				free(dynamic_dmesg);
- 				free(dynamic_warnings);
-@@ -1075,7 +1143,8 @@ static bool fill_from_dmesg(int fd,
- 		    (dynamic_subtest = strstr(message, STARTING_DYNAMIC_SUBTEST_DMESG)) != NULL) {
- 			if (current_dynamic_test != NULL) {
- 				/* Done with the previous dynamic subtest, file up */
--				add_dmesg(current_dynamic_test, dynamic_dmesg, dynamic_dmesg_len, dynamic_warnings, dynamic_warnings_len);
-+				add_dmesg(current_dynamic_test, settings->reduce_dmesg,
-+					  dynamic_dmesg, dynamic_dmesg_len, dynamic_warnings, dynamic_warnings_len);
- 
- 				free(dynamic_dmesg);
- 				free(dynamic_warnings);
-@@ -1116,9 +1185,10 @@ static bool fill_from_dmesg(int fd,
- 	free(line);
- 
- 	if (current_test != NULL) {
--		add_dmesg(current_test, dmesg, dmesglen, warnings, warningslen);
-+		add_dmesg(current_test, settings->reduce_dmesg, dmesg, dmesglen, warnings, warningslen);
- 		if (current_dynamic_test != NULL) {
--			add_dmesg(current_dynamic_test, dynamic_dmesg, dynamic_dmesg_len, dynamic_warnings, dynamic_warnings_len);
-+			add_dmesg(current_dynamic_test, settings->reduce_dmesg,
-+				  dynamic_dmesg, dynamic_dmesg_len, dynamic_warnings, dynamic_warnings_len);
- 		}
- 	} else {
- 		/*
-@@ -1134,13 +1204,13 @@ static bool fill_from_dmesg(int fd,
- 			 * there are would have skip as their result
- 			 * anyway.
- 			 */
--			add_dmesg(current_test, dmesg, dmesglen, NULL, 0);
-+			add_dmesg(current_test, settings->reduce_dmesg, dmesg, dmesglen, NULL, 0);
- 		}
- 
- 		if (subtests->size == 0) {
- 			generate_piglit_name(binary, NULL, piglit_name, sizeof(piglit_name));
- 			current_test = get_or_create_json_object(tests, piglit_name);
--			add_dmesg(current_test, dmesg, dmesglen, warnings, warningslen);
-+			add_dmesg(current_test, settings->reduce_dmesg, dmesg, dmesglen, warnings, warningslen);
- 		}
- 	}
- 
-@@ -2323,6 +2393,9 @@ struct json_object *generate_results_json(int dirfd)
- 		return NULL;
- 	}
- 
-+	if (settings.reduce_dmesg)
-+		fprintf(stderr, "resultgen: dmesg reduction set to %ldKB\n", settings.reduce_dmesg / 1024);
++static void add_compressed_dmesg(struct json_object *obj,
++				 const char *name,
++				 const char *dmesg,
++				 size_t dmesglen)
++{
++	struct json_object *compressed_obj;
++	size_t compressed_size;
 +
- 	obj = json_object_new_object();
- 	json_object_object_add(obj, "__type__", json_object_new_string("TestrunResult"));
- 	json_object_object_add(obj, "results_version", json_object_new_int(10));
++	//if (settings && settings->compress_dmesg && dmesglen > 0) {
++	compressed_obj = encode_compressed_base64(dmesg, dmesglen, &compressed_size);
++
++	if (compressed_obj) {
++		json_object_object_add(obj, name, compressed_obj);
++		fprintf(stderr, "igt_resultgen: Compresed %s with size reduced from %ld to %ld.\n",
++			name, dmesglen, compressed_size * 4 / 3);
++	} else {
++		fprintf(stderr, "igt_resultgen: Compression for %s failed.\n", name);
++	}
++}
++
+ static void __add_dmesg(struct json_object *obj,
+ 			const char *dmesg, size_t dmesglen,
+ 			const char *warnings, size_t warningslen)
+@@ -987,10 +1041,15 @@ static void add_dmesg(struct json_object *obj,
+ 	if (warnings || !reduced_dmesg_size || dmesglen <= reduced_dmesg_size)
+ 		return __add_dmesg(obj, dmesg, dmesglen, warnings, warningslen);
+ 
++	/* Add compressed dmesg */
++	/* TODO - this should be controlled by option */
++	add_compressed_dmesg(obj, "dmsg.gz", dmesg, dmesglen);
++
++	/* take from begin and from end of dmesg, each of size 'half' */
+ 	end = dmesg + dmesglen;
+ 
+-	rsize = reduced_dmesg_size + 256;
+-	reduced = malloc(rsize); /* +256 for last message */
++	rsize = reduced_dmesg_size + 512; /* place for messages */
++	reduced = malloc(rsize);
+ 	if (!reduced) {
+ 		fprintf(stderr, "resultgen: malloc error, no reduction\n");
+ 		return __add_dmesg(obj, dmesg, dmesglen, warnings, warningslen);
+@@ -999,6 +1058,7 @@ static void add_dmesg(struct json_object *obj,
+ 	half = reduced_dmesg_size / 2;
+ 	memcpy(reduced, dmesg, half);
+ 
++	/* reduce it by few lines so it will break on newline */
+ 	for (p = reduced + half - 1; p > reduced; --p)
+ 		if (*p == '\n')
+ 			break;
+@@ -1013,10 +1073,12 @@ static void add_dmesg(struct json_object *obj,
+ 
+ 	len = p - reduced;
+ 
++	/* add info in middle - this is dropped from dmesg */
+ 	memcpy(reduced + len, middleinfo, strlen(middleinfo));
+ 	len += strlen(middleinfo);
+ 	middle = reduced + len;
+ 
++	/* find part at end of dmesg to glue, start after newline */
+ 	for (p = dmesg + (dmesglen - half); p < end; p++)
+ 		if (*p == '\n')
+ 			break;
+@@ -1031,8 +1093,9 @@ static void add_dmesg(struct json_object *obj,
+ 	middle += lastlen;
+ 	len += lastlen;
+ 
+-	/* add also last message to inform about reduction */
+-	len += sprintf(middle, "...dmesg reduced from %ld to %ld\n", dmesglen, len);
++	/* add also last message to easy spot reduction */
++	len += sprintf(middle, "...dmesg reduced from %ld to %ld\n"
++		       "...saved in dmsg.gz in json\n", dmesglen, len);
+ 	fprintf(stderr, "resultgen: dmesg reduced from %ld to %ld\n", dmesglen, len);
+ 	json_object_object_add(obj, "dmesg",
+ 			       new_escaped_json_string(reduced, len));
 -- 
 2.52.0
 
