@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AC4DD46627
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Jan 2026 22:39:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4EB0D46634
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Jan 2026 23:11:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B5EE110E0CA;
-	Thu, 15 Jan 2026 22:39:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 34A2410E0CA;
+	Thu, 15 Jan 2026 23:11:47 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2843010E0CA;
- Thu, 15 Jan 2026 22:39:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A74E10E0CA;
+ Thu, 15 Jan 2026 23:11:46 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0082561754590212168=="
+ boundary="===============8138807749227728278=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFull=3A_failure_for_Runner=3A_Use_Jansson_inst?=
- =?utf-8?q?ead_of_json-c?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/xe/xe=5Flegacy=3A_Clean?=
+ =?utf-8?q?ups_in_xe=5Flegacy=5Ftest=5Fmode=28=29_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+To: "Shuicheng Lin" <shuicheng.lin@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 15 Jan 2026 22:39:38 -0000
-Message-ID: <176851677815.159980.5657841558156180739@a3b018990fe9>
+Date: Thu, 15 Jan 2026 23:11:46 -0000
+Message-ID: <176851870610.159980.12470522657853068071@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260115175811.179898-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20260115175811.179898-1-kamil.konieczny@linux.intel.com>
+References: <20260115222938.330490-1-shuicheng.lin@intel.com>
+In-Reply-To: <20260115222938.330490-1-shuicheng.lin@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,66 +41,70 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0082561754590212168==
+--===============8138807749227728278==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Runner: Use Jansson instead of json-c
-URL   : https://patchwork.freedesktop.org/series/160154/
-State : failure
+Series: lib/xe/xe_legacy: Cleanups in xe_legacy_test_mode() (rev2)
+URL   : https://patchwork.freedesktop.org/series/160162/
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8704_FULL -> XEIGTPW_14351_FULL
+CI Bug Log - changes from XEIGT_8704_BAT -> XEIGTPW_14355_BAT
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with XEIGTPW_14351_FULL absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_14351_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
   
 
-Participating hosts (2 -> 0)
+Participating hosts (11 -> 11)
 ------------------------------
 
-  ERROR: It appears as if the changes made in XEIGTPW_14351_FULL prevented too many machines from booting.
+  No changes in participating hosts
 
-  Missing    (2): shard-bmg shard-lnl 
+Known issues
+------------
 
+  Here are the changes found in XEIGTPW_14355_BAT that come from known issues:
 
-Changes
--------
+### IGT changes ###
 
-  No changes found
+#### Issues hit ####
+
+  * igt@xe_waitfence@abstime:
+    - bat-bmg-2:          [PASS][1] -> [TIMEOUT][2] ([Intel XE#6506])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8704/bat-bmg-2/igt@xe_waitfence@abstime.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14355/bat-bmg-2/igt@xe_waitfence@abstime.html
+
+  
+  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8704 -> IGTPW_14351
-  * Linux: xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d -> xe-4387-e11a5aad7dae203adfba9554480c058eeb890a1b
+  * IGT: IGT_8704 -> IGTPW_14355
+  * Linux: xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d -> xe-4388-7488f4d19288e0919c24ffc8b2c375e8b7c8a823
 
-  IGTPW_14351: 14351
+  IGTPW_14355: 14355
   IGT_8704: 8704
   xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d: 733664f1edf3c01cc68e6dd0bbdb135158a98a1d
-  xe-4387-e11a5aad7dae203adfba9554480c058eeb890a1b: e11a5aad7dae203adfba9554480c058eeb890a1b
+  xe-4388-7488f4d19288e0919c24ffc8b2c375e8b7c8a823: 7488f4d19288e0919c24ffc8b2c375e8b7c8a823
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14351/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14355/index.html
 
---===============0082561754590212168==
+--===============8138807749227728278==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -120,39 +124,42 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Runner: Use Jansson instead of json-c</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160154/">https://patchwork.freedesktop.org/series/160154/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>lib/xe/xe_legacy: Cleanups in xe_legacy_test_mode() (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160162/">https://patchwork.freedesktop.org/series/160162/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14351/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14351/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14355/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14355/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8704_FULL -&gt; XEIGTPW_14351_FULL</h1>
+    <h1>CI Bug Log - changes from XEIGT_8704_BAT -&gt; XEIGTPW_14355_BAT</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_14351_FULL absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_14351_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (2 -&gt; 0)</h2>
-<p>ERROR: It appears as if the changes made in XEIGTPW_14351_FULL prevented too many machines from booting.</p>
-<p>Missing    (2): shard-bmg shard-lnl </p>
-<h2>Changes</h2>
-<p>No changes found</p>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14355_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_waitfence@abstime:<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8704/bat-bmg-2/igt@xe_waitfence@abstime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14355/bat-bmg-2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>)</li>
+</ul>
+</li>
+</ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8704 -&gt; IGTPW_14351</li>
-<li>Linux: xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d -&gt; xe-4387-e11a5aad7dae203adfba9554480c058eeb890a1b</li>
+<li>IGT: IGT_8704 -&gt; IGTPW_14355</li>
+<li>Linux: xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d -&gt; xe-4388-7488f4d19288e0919c24ffc8b2c375e8b7c8a823</li>
 </ul>
-<p>IGTPW_14351: 14351<br />
+<p>IGTPW_14355: 14355<br />
   IGT_8704: 8704<br />
   xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d: 733664f1edf3c01cc68e6dd0bbdb135158a98a1d<br />
-  xe-4387-e11a5aad7dae203adfba9554480c058eeb890a1b: e11a5aad7dae203adfba9554480c058eeb890a1b</p>
+  xe-4388-7488f4d19288e0919c24ffc8b2c375e8b7c8a823: 7488f4d19288e0919c24ffc8b2c375e8b7c8a823</p>
 
 </body>
 </html>
 
---===============0082561754590212168==--
+--===============8138807749227728278==--
