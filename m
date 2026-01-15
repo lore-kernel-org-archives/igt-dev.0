@@ -4,55 +4,194 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC798D41156
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Jan 2026 10:01:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 244F4D41157
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Jan 2026 10:05:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 78CA810E731;
-	Thu, 15 Jan 2026 10:01:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AE66310E733;
+	Thu, 15 Jan 2026 10:05:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Kv07Fuog";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G8fHfFij";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0247C10E730
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jan 2026 10:01:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EECC010E733
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Jan 2026 10:05:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768471307; x=1800007307;
- h=date:from:to:subject:message-id:references:mime-version:
- in-reply-to; bh=ZNa5I3YI0IETwguff0YMENgVD/02osdNVWJK987sJio=;
- b=Kv07FuogTJWLgMFRrKpsGGpfOHJr4w2O0dXJblABGZjqDa5kUA8Tn/hR
- Qc67naW7nOqNJuNbRy1Qi7l1tbJeoXpIsxCyxqyCsx0/O9WBezSSfOir5
- RYKDmZz5k48QnYH5c5h0/il0lSJojrcVNq2YIGVpkzMXdg0ISyQxg7RFz
- ru3n786PeuIMHqI2TTcL6Fvr0CyZ4p13RO0RlF5sf9E/P3xeyRKAiGxep
- /FkqtgKzA5MP5reApxHyS8yixpeS8EWlDgY0uLdmGIxSgjix3jqRhoXff
- 31WZCi1hfUL/mTqGOg42DG5m8F06+S80XgTQiufNt4PkQDo8WdZortcLa Q==;
-X-CSE-ConnectionGUID: VhAlM6SWRrGIjikWCYCmeQ==
-X-CSE-MsgGUID: c+Gs1kADR96B9tHpjAbZvA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="73627218"
-X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; d="scan'208";a="73627218"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2026 02:01:46 -0800
-X-CSE-ConnectionGUID: EHofRizqR92sfVkXeLCPsA==
-X-CSE-MsgGUID: 35KsUGyrScqdFFz3WYfiCw==
+ t=1768471537; x=1800007537;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=GBXGKWKpeu+StleXfEtxo97ZL9c7ehv4QUc0cx/45TU=;
+ b=G8fHfFij5w5TLPPHcSVVCrCjIDC1v9e92DmVE9gKTvb069a4Z9t/GJ8O
+ 0h8rGbEummF3NuyINiumckP2KDMHvwiItU187ISQ7i4DNBK6JPduV1v/U
+ zSU77eLRu1pXbffmhX0N2CEST3aYEUjgZR2k51QZs8b/qwZyPQDTggxX3
+ AGaHzoHeVaJxV+K5SD55XfJtFBWcXX1uxPBYrBFS/+4rTR++xyzPLoxC5
+ 8DUcqogoY0pynLATh7X6qE5x8xYJDcOAfAbyaT4wMAEfccRhdY+0fsOO4
+ sPcrehIksLFXJIlzSWCtTlS+DXb8BPCIxHoPhtU3rJhg4LL2lYYGTAhBs Q==;
+X-CSE-ConnectionGUID: PCszj4hXQ5elnDTGh3qZBw==
+X-CSE-MsgGUID: gjnlMwyeQQCwdAuITTFlrA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="72360181"
+X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; d="scan'208";a="72360181"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jan 2026 02:05:36 -0800
+X-CSE-ConnectionGUID: Ug9/NTlQTd6WanWhFjJRhQ==
+X-CSE-MsgGUID: nmf/YbMHQMKR9eAnPebg3g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; d="scan'208";a="205327587"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.244.208])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2026 02:01:40 -0800
-Date: Thu, 15 Jan 2026 11:01:36 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbDogZmFpbHVy?= =?utf-8?Q?e?= for
- Add xe3p compute kernels and preemption support (rev3)
-Message-ID: <wd23r66l4exmwbqphc3ibrguk23snhlyh2cykxeihjtimtl6xl@vp2vowopn6aj>
-References: <20260114151930.211512-7-zbigniew.kempczynski@intel.com>
- <176842379910.155684.14139872737327631146@a3b018990fe9>
+X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; d="scan'208";a="236171865"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jan 2026 02:05:36 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 15 Jan 2026 02:05:35 -0800
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29 via Frontend Transport; Thu, 15 Jan 2026 02:05:35 -0800
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.26) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 15 Jan 2026 02:05:35 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rcNEAcqTUQFBpvLEqubqo0jMGc+ypir69EWjCgvwtddGN7JgYrTROyEsmReAED7WmqkFbBtol3BGr/G4B4qPv6coDuqk8Wly6NLDseum37xc2BuPPDesOvlSuKvwzeQuF7gTZMRMtIxAQWAMU1Bz2Q6wCnCt9gIAXEhwL6eJJWHL6xliugUXGZkr/ZcW8IFCT09uwkKBp8YMFLkYUCbzwJrRK1O961sPrpG5gfADM2720KtYvJ3dZw4ZZd6oE+7FC5nkEBeHUX0B9UOGKj68Hi5oJhUXKva/CeahAM+hi12qbRoA9IUs94UJQmaCpWd6PEPsZBJHc3ZASJqHBlSzpg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/a5laOrYOC/rPugFf8Mo1o/qW9TELwUrdrH9DegRYoA=;
+ b=fb+AtS0StFy/zN0cIAHgEW7iyClOcdJU7GNEcCg7u1LOPGQbpOfrE9AdEYljkf72e9VR+lSwd+45OfXZ+AEwsBUFTOocjVL0KsIBRQ2j/F5fIosHK1CLFRfCZ+pCWuYe45anUDXQiRlfbiB9arwp+lmKAdMi9JrcjT1DQfxV2zFhOopiKszRqOmbXlLI36u1o42cbAlogAbw0WKicHagWu3zn9B1JqgqXEd9LoYeMZ4msujMMKPrgszoV1HbgEcBPsJg0DtgYncql4ivhFrwoDNZP6IYSgk0h4cv2+rn/VIw1QZOmYk6L0Q2aFc11KM1py1RA1anf1iTRN6E+DSlrg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BN9PR11MB5482.namprd11.prod.outlook.com (2603:10b6:408:103::16)
+ by IA1PR11MB8831.namprd11.prod.outlook.com (2603:10b6:208:597::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Thu, 15 Jan
+ 2026 10:05:32 +0000
+Received: from BN9PR11MB5482.namprd11.prod.outlook.com
+ ([fe80::d269:c67e:1cc2:d1ca]) by BN9PR11MB5482.namprd11.prod.outlook.com
+ ([fe80::d269:c67e:1cc2:d1ca%6]) with mapi id 15.20.9520.003; Thu, 15 Jan 2026
+ 10:05:32 +0000
+Message-ID: <0f201c67-14a9-462a-9491-fff56866821b@intel.com>
+Date: Thu, 15 Jan 2026 11:05:27 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2 10/10] tests/intel/xe_sriov_admin_profile: Add
+ SR-IOV admin sysfs scheduling attributes tests
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>
+CC: <adam.miszczak@linux.intel.com>, <jakub1.kolakowski@intel.com>,
+ <michal.wajdeczko@intel.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>
+References: <20251125102312.43142-1-marcin.bernatowicz@linux.intel.com>
+ <20251125102312.43142-11-marcin.bernatowicz@linux.intel.com>
+Content-Language: en-US
+From: "Laguna, Lukasz" <lukasz.laguna@intel.com>
+In-Reply-To: <20251125102312.43142-11-marcin.bernatowicz@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: VI1PR0102CA0022.eurprd01.prod.exchangelabs.com
+ (2603:10a6:802::35) To BN9PR11MB5482.namprd11.prod.outlook.com
+ (2603:10b6:408:103::16)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <176842379910.155684.14139872737327631146@a3b018990fe9>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR11MB5482:EE_|IA1PR11MB8831:EE_
+X-MS-Office365-Filtering-Correlation-Id: cbd31abc-566b-494f-10e6-08de541d9e34
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|1800799024|366016|7053199007|7142099003; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?cm5lMWRhZWw5UWdDUEc5K0N0SUdLZmFxVCt2My9acGRoZWoybDQ2U1Q1VE9x?=
+ =?utf-8?B?RnVJREJzNTJKRU1rMVo3S2RTbnlQT0xxaytQTzBVRUEvSENFZy9aMENBZ1J5?=
+ =?utf-8?B?Nng5c2hHNmdoT2pnejFrbEVhTXEyekZQR0dOVjd4TWEvM2pNSTFVWnJQUzQ2?=
+ =?utf-8?B?YzhyUmxIYS84TXBjYW1MSDBhR0NyZkNoUUV2OW5iQWpyNEU5cVFXZ09jYWhk?=
+ =?utf-8?B?VkNuUklqSXBWaWliYkh2Zyt2bUVWMWRqZmRFcTFqc0ZGL1VsdGttYTUvWVV0?=
+ =?utf-8?B?ekVuZ2UxTFQ2ODljVVArZldLSGpkOHlxZ1ZzdHRUUUxmR3VkVGRjTHRUamQ1?=
+ =?utf-8?B?dytIdVRTanlHQzlzNXg2dVE5d3VpVm5LaEh2c0gyVFY3b1gzUUNPbk1IT0pU?=
+ =?utf-8?B?bEprQW10TW1PTlBpZWYwUUR0V01kdHM3cHdBRmlnZkM2aVF4eHhaMFRUcHFJ?=
+ =?utf-8?B?YTdSWGgrMU1xWEd4VitCWmNPK3l6MzA5eVAxdFlwMnRQWlN0RnRncUZFdmZM?=
+ =?utf-8?B?V2FIaTllRVMxdVQ5RFBZK095VEIyYXBoeWtFclFQb2l4ZExTa0Fha3E4WVJ5?=
+ =?utf-8?B?cGYyWTFoS2VrWUU3YUhSM0w4TEhROTBDYUIyeW5pYW9Tck9DRnNlMGVxaG5J?=
+ =?utf-8?B?TDdyaWt4eWJBejJEMk1TRnhmSTRhVjRmQVpUSGNSOUdqcW9KMTZwbVl3T2tw?=
+ =?utf-8?B?eFF0eEpNcWxVTE53QS9NNnBmK1I1OStKdXMvZjdVbE83VXNnRVRrZ1RZVUJi?=
+ =?utf-8?B?OXlqTDhhWSs4VE5kL1FvY0ZnK1ltMDFkQzFIdXhlVXJvVnJrM3luOUc0Tncy?=
+ =?utf-8?B?cXVvQzdBVi80OElYTDlvZUdTV2xDNU5vZXJsN3pRZThaejRSZXJBUEZKWVQ0?=
+ =?utf-8?B?ZlA5VXYyTWhUekRHcm5xZkVmUmkzVC85WlRCNkZEZ3l4S3VLZ1V6U3orbmQv?=
+ =?utf-8?B?d01LMjRDWkxRQ1lzajYrYk1PRFI3bnUxN1Y2V01TQUxXRHhIOXhmNC9zS0hJ?=
+ =?utf-8?B?Q2dhS0tDWExZK3p5Q2R1ME11SFNxK25wSmpwVXQwckMzL0J2SEFwYXNSb09V?=
+ =?utf-8?B?TVlLZVE1ZU0zTXhXRnYwQTVIWHVIbDFUNVJmRThtUC9adTVmVlU0a2c2WHZv?=
+ =?utf-8?B?YUpQYzZhanNZdGNBRUFYei9LaG1Pam9Idjk0WTdGbzlFLzl5WG85YVdkZzlz?=
+ =?utf-8?B?SEVzYTd2SG5tdS9YZWhaNlYrWjEwRXNxQTNBTjhEY1ZMK3pwWFNybWt2bC9Q?=
+ =?utf-8?B?K2xWSHJOUFhFQUZLUFAzcDhMbzNjR2dQNmhaQlc5azQwRElkaXB1Y3BxVmNW?=
+ =?utf-8?B?WGhYUUlhSFZzOG5TZnNWM0N0R1crY0ZzY2tEL01uUkZ5clBPWVJ2Zk1BT3N2?=
+ =?utf-8?B?Vm9KTGxCRVZTL1RaY1dmeWhDb1FFcSttN2k1NHdES0lQZlVkVmVpY3VCMU1X?=
+ =?utf-8?B?VDEvaWZWWWdYMVY2d0xmOHlaODhNZXc0ZVF3RmhMZTlqbktLS1dISHppNjdQ?=
+ =?utf-8?B?YnozbHk0RWNzWWprYXVtaFZBbmQrRW5taVZzMUNKQ1VRTmV2Zm5GbC9qYWRv?=
+ =?utf-8?B?Rk5EUWo5T0FLSmdKeldTRmU1ZFQ5M2hEVjhDS0xwaHJMdTJQZzc3NTlQbk1k?=
+ =?utf-8?B?eVJVYy8rQWE5ZW1RU0tUWVhYcFZ2VGZmTWUxYklteWJVZndzK2ZpbW8zUEJF?=
+ =?utf-8?B?VkxCSDZHbnF5OVBIQXh6cktsVHZOR1NVelVGTTYySkV2czhVT1hzUGNhY1hl?=
+ =?utf-8?B?TFBGK1ovWmVBOUVvTVJxRTF1aU8wR0d0WlJZNWNNalVGVHE1cXk2NHZDS2NJ?=
+ =?utf-8?B?M2lMbFpTdmJnTlh2aVREcWlPQWxscmxXRC9WZ3ZEL3pCZ3g5WEpEWUhxTmZG?=
+ =?utf-8?B?OExtbTVPOTBtaEU0Q3JTaDI3Z0NONnRYU2w4UWY2UHBCM0EyVGY5SUttWlZo?=
+ =?utf-8?B?THlrOUVYU011dVJjVnFsR1kvZTgxUllkZkdqY01HRUkvN2pvdEd3NEEyckFa?=
+ =?utf-8?B?N3hETWtvWXpkaVpzcE0vWTRUL3E2bklFMEpvekxKd0MyaDNZZDBSNENRSTdi?=
+ =?utf-8?B?a3l6bDlReVRyNGJqVU0zNE9yaEh0OFYrSHNiN3RFZE4ySUF6TmJON2Z0ZFBW?=
+ =?utf-8?Q?/Sfw=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BN9PR11MB5482.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(7053199007)(7142099003); DIR:OUT;
+ SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Z2ZWNUVzMGdJVEdhQ0dUQ0hkMzl2SDJMcVV6K2NIcjlDaFM2SGU3YUNoMERT?=
+ =?utf-8?B?MFd1TzRuUVNDZC9JcVBoNEZ3bC9LTWcyVnhVY2hidnJoYW5OaGhiRHg0OHpo?=
+ =?utf-8?B?UE92QUFjcTIxRnFuZUVQeFFMalRvSThHeDg4MC9ucXhkVURLak5lSWNMV2Nx?=
+ =?utf-8?B?TmtqZ09wVVl3NjFiQjBnUVZEbUo1TGROamQyWDN6dk8xOEpPL0hyZVpHdUdy?=
+ =?utf-8?B?V2FUb01HTllZeFM0M01SSEdLejgwOUp1RCtoaTFYR0tHNHFLMWpDQ0ExNTdi?=
+ =?utf-8?B?MU90U0FCcFpmTWYrNTNVV1NuU3pUL2RzWjlkTDQ0ek11Y3duTnpUWFp3WEdN?=
+ =?utf-8?B?VEtidDFSaUQzTVUyL3Y3a2trZ1lOTmJCWVRtTDFmM2MrOStaTVpjN0Nvdyt0?=
+ =?utf-8?B?elFmM1ExR0N0WG5sNjBtU1pkWGZuYnppOXZIK1dqM0Z1aHJxQnpEeTg2ODY1?=
+ =?utf-8?B?SXNjWC96Z3dWS0xaalJYYUFTKytaWVc2UWNmT291TDdFdENiOVdVMzYxY1ZH?=
+ =?utf-8?B?bnBlb1ZMYU1iM3JEOUZwLzdlTVl1M1IzWXM1UFRrNzFLclA3eWNrMnhZKzds?=
+ =?utf-8?B?TXdndnk1YitsZWZsbk9CcnJGaUZ5ZWpXTHhOa1NJY0I2WXl1SXFhdGIzNkVZ?=
+ =?utf-8?B?RktxTG42VkR6WFdoT2dINHg3QkYzRkVVTnRLT0VMVWxaK05aQmloYjViY3RS?=
+ =?utf-8?B?TkxydFRzL0lZMUpadXNhS0l4dU5nOThFMkxiekREOFdoaVZBQm5xcVB1ckpr?=
+ =?utf-8?B?bU81U1doRDBWN3JXeFhId08wbWthVVlLUm9wSzBnS2VuRUN4TVB6UTc4b0o2?=
+ =?utf-8?B?NTUwUDQ3SFJ2YzRMREZvRVZDa052OEh3cmpMODBlYzlPRnVsdWpDQVh2K0xq?=
+ =?utf-8?B?VXB6d1lJK0h1RVFyb2FyL0RJLzQzZEJCYzdnZktxczdUYjBTUDBhdWtZT1Bn?=
+ =?utf-8?B?MVcvd2l0dDJKbGZ1OVBkR1F2YVlYWHgrM0J6ZlZqbzR5Q0VDQk1yWThmVzVW?=
+ =?utf-8?B?bVJ1VXdrL01YTFFxZkt2cFd1SmZFTk94MWlNdzZkeUpQaTN3ZkE0alRaQW9n?=
+ =?utf-8?B?dGZYdlNxRXJKK3cwcXJFV1Zjc0N0VytGdm5CZnNSMFlFRmtxZ015Q1lxTzZl?=
+ =?utf-8?B?YW95d2JreklFbnFFMU56UjR5VFAvUlFGc25ubFdIWXpNczl6dFFJNlJZbW9w?=
+ =?utf-8?B?UEhQelUwU0Q3Y0RKRlNQRGFnOGJtdDNMMzJwRUE4bEZ2WFFjclgyYXZHenNa?=
+ =?utf-8?B?djdpUXRMeWhJUCs1eFRKalV3ZjMxTUhiNlhOcHVvSnJMQ2tNUTVnN0RaTjlY?=
+ =?utf-8?B?eTh4QkVDVWV3TUhmeTFwUmhMMXFKaXZYME9ZREhmTDJiWUV0UWtsbC9tV1BL?=
+ =?utf-8?B?bStEQnQxb2R5OUplaEZLZmZ3T3NMOURhL0xQYVdEb1BCa2h6cit0eklBdXdK?=
+ =?utf-8?B?VVVYSklJeG0vY1djQ3V0Y3U0VjNyU2J2VjFxTHBkR1cxM1ZXMEh5dTBVTlVN?=
+ =?utf-8?B?T0FXUm5IWktSYjY5VkhGT2xKNmVWMFgwaDJmSUM5aTc4SXBCSGw1WGViM2JG?=
+ =?utf-8?B?NVRoVmZ0THFkdjBrRHlMand5NktuWVNmUy96S3k1TXExbzU3aDlSUUZZYkVN?=
+ =?utf-8?B?ZW1KZFd6Tk9sYkUrNVBnRHZuM3pUZHF1OEJLSWIyWU4zUG9JcTZSVTJDQmJ5?=
+ =?utf-8?B?QjgzUnBGNi80OHRaSmVLbzdBVFJBdFpycG5EcXBseFQwNWtMUVp1ZnNPcldI?=
+ =?utf-8?B?QkRYRXBNdEI4SDkzR2dlQkJJRVRRVEx3UU9mdXpWdGM1MjBrN1UrN2dqQ0tL?=
+ =?utf-8?B?bVlXdVkrVDlFbGlwa0JzUnkxSUhnckxVZWdaejQxcS9KQVFaOUhpS0VuQkR0?=
+ =?utf-8?B?MHlwNktNcHBuSmluTEpGQUhpZDcveSt4VDN4WVJDMnlHUHZJSWE5YmNIcE5N?=
+ =?utf-8?B?M3F4VXFSdFd3bEtpRkltT3NtL2w3MmF1Z2E4OEF0eHZFVEtWbno3L0Rkajlh?=
+ =?utf-8?B?K2RoQisrNkcxRmgwdUlIYWR1Rm1wODZWWEdqa1Z2WGZUVjZPM3ZxQy9YeXUv?=
+ =?utf-8?B?NXF1dXpGeWsyU1JxY2ZwY2tPNktwMWNZc2EyRXNHbHhLWVdvSTQzMi9DZWI2?=
+ =?utf-8?B?clZSZ2pBdjFBbXVZVm5iZjVUK2grSUw0VXVjNHk4L1hBK2kxOU56SytOdWt4?=
+ =?utf-8?B?UEgyWmFLM0hlNFF2aVQ2UGxXcHJkSVMwc2FOWnpLSkd6dnFKRjRzbTUyemRU?=
+ =?utf-8?B?Nnk0VlBsSzFUV0h6VjNzM1ltUXBocnhLbEZIMEdVWTlRUnNxYitsZjFzaDhP?=
+ =?utf-8?B?aVlFRkgweDJoTGMrWmIwb0tmSHNvNGMxOXYrMG9ySk15VU8wSVNDUT09?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: cbd31abc-566b-494f-10e6-08de541d9e34
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5482.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 10:05:32.6343 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8QGZ80Nb1RMRRbwFoaSAtABVVC34/317SB7yiQhzpEWCBgg3IrwZ7E1Ls9dlYEmrlGjv3SiUqNlIsRuFEAlG2Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8831
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,1278 +207,462 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jan 14, 2026 at 08:49:59PM +0000, Patchwork wrote:
->    Patch Details
-> 
->    Series:  Add xe3p compute kernels and preemption support (rev3)          
->    URL:     https://patchwork.freedesktop.org/series/159522/                
->    State:   failure                                                         
->    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14344/index.html 
-> 
->           CI Bug Log - changes from IGT_8701_full -> IGTPW_14344_full
-> 
-> Summary
-> 
->    FAILURE
-> 
->    Serious unknown changes coming with IGTPW_14344_full absolutely need to be
->    verified manually.
-> 
->    If you think the reported changes have nothing to do with the changes
->    introduced in IGTPW_14344_full, please notify your bug team
->    (I915-ci-infra@lists.freedesktop.org) to allow them
->    to document this new failure mode, which will reduce false positives in
->    CI.
-> 
->    External URL:
->    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14344/index.html
-> 
-> Participating hosts (9 -> 9)
-> 
->    No changes in participating hosts
-> 
-> Possible new issues
-> 
->    Here are the unknown changes that may have been introduced in
->    IGTPW_14344_full:
-> 
->   IGT changes
-> 
->     Possible regressions
-> 
->      * igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs@pipe-a-hdmi-a-2:
-> 
->           * shard-rkl: NOTRUN -> INCOMPLETE +1 other test incomplete
->      * igt@kms_flip_scaled_crc@flip-64bpp-xtile-to-32bpp-xtile-upscaling:
-> 
->           * shard-dg1: PASS -> FAIL +1 other test fail
->      * igt@kms_rotation_crc@sprite-rotation-90:
-> 
->           * shard-dg1: PASS -> INCOMPLETE
->      * igt@perf@polling-parameterized:
-> 
->           * shard-tglu: PASS -> INCOMPLETE
 
-Above failures are not related to the series. This applies to Xe.CI.Full
-as well but I haven't received email for that.
+On 11/25/2025 11:23, Marcin Bernatowicz wrote:
+> Add tests that exercise SR-IOV admin sysfs attributes for PF/VF functions
+> with VFs disabled, covering default values, write -> readback behavior, and
+> bulk updates for exec_quantum_ms, preempt_timeout_us, and sched_priority.
+>
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+> Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+> ---
+>   tests/intel/xe_sriov_admin_profile.c | 414 +++++++++++++++++++++++++++
+>   tests/meson.build                    |   1 +
+>   2 files changed, 415 insertions(+)
+>   create mode 100644 tests/intel/xe_sriov_admin_profile.c
+>
+> diff --git a/tests/intel/xe_sriov_admin_profile.c b/tests/intel/xe_sriov_admin_profile.c
+> new file mode 100644
+> index 000000000..6f4ed31b1
+> --- /dev/null
+> +++ b/tests/intel/xe_sriov_admin_profile.c
+> @@ -0,0 +1,414 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2025 Intel Corporation
 
---
-Zbigniew
+2026
 
-> 
-> Known issues
-> 
->    Here are the changes found in IGTPW_14344_full that come from known
->    issues:
-> 
->   IGT changes
-> 
->     Issues hit
-> 
->      * igt@device_reset@cold-reset-bound:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#11078 / i915#14544)
->      * igt@drm_buddy@drm_buddy:
-> 
->           * shard-glk: NOTRUN -> DMESG-WARN (i915#15095) +1 other test
->             dmesg-warn
->      * igt@gem_ccs@block-copy-compressed:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#3555 / i915#9323)
->      * igt@gem_ccs@ctrl-surf-copy:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#3555 / i915#9323)
->      * igt@gem_ccs@ctrl-surf-copy-new-ctx:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#9323)
->      * igt@gem_close_race@multigpu-basic-process:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#7697) +1 other test skip
->      * igt@gem_close_race@multigpu-basic-threads:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#7697)
->      * igt@gem_create@create-ext-cpu-access-sanity-check:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#6335)
->      * igt@gem_ctx_persistence@heartbeat-many:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#8555) +1 other test skip
->      * igt@gem_ctx_persistence@smoketest:
-> 
->           * shard-snb: NOTRUN -> SKIP (i915#1099)
->      * igt@gem_ctx_sseu@invalid-args:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#280)
->      * igt@gem_ctx_sseu@invalid-sseu:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#280)
->           * shard-dg1: NOTRUN -> SKIP (i915#280)
->           * shard-tglu: NOTRUN -> SKIP (i915#280)
->           * shard-mtlp: NOTRUN -> SKIP (i915#280)
->      * igt@gem_exec_balancer@noheartbeat:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#8555) +1 other test skip
->           * shard-mtlp: NOTRUN -> SKIP (i915#8555)
->      * igt@gem_exec_balancer@parallel:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#4525) +2 other tests skip
->      * igt@gem_exec_balancer@parallel-keep-submit-fence:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#14544 / i915#4525)
->           * shard-tglu: NOTRUN -> SKIP (i915#4525) +2 other tests skip
->      * igt@gem_exec_balancer@parallel-out-fence:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#4525)
->      * igt@gem_exec_big@single:
-> 
->           * shard-tglu: PASS -> ABORT (i915#11713)
->      * igt@gem_exec_capture@capture-invisible:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#6334) +1 other test skip
->      * igt@gem_exec_capture@capture-recoverable:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#6344)
->      * igt@gem_exec_reloc@basic-cpu-noreloc:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#3281) +4 other tests skip
->      * igt@gem_exec_reloc@basic-gtt-read-noreloc:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#3281) +13 other tests skip
->      * igt@gem_exec_reloc@basic-write-wc-noreloc:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#3281) +4 other tests skip
->           * shard-dg1: NOTRUN -> SKIP (i915#3281) +4 other tests skip
->      * igt@gem_exec_schedule@preempt-queue:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#4537 / i915#4812)
->      * igt@gem_exec_schedule@reorder-wide:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#4537 / i915#4812) +1 other test
->             skip
->           * shard-dg1: NOTRUN -> SKIP (i915#4812) +1 other test skip
->      * igt@gem_exec_schedule@semaphore-power:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#7276)
->      * igt@gem_exec_suspend@basic-s0@smem:
-> 
->           * shard-dg2: PASS -> INCOMPLETE (i915#13356) +3 other tests
->             incomplete
->      * igt@gem_fence_thrash@bo-copy:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#4860) +1 other test skip
->           * shard-dg1: NOTRUN -> SKIP (i915#4860) +1 other test skip
->      * igt@gem_fenced_exec_thrash@too-many-fences:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#4860)
->      * igt@gem_lmem_swapping@basic:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#4613)
->      * igt@gem_lmem_swapping@heavy-random:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#4613)
->      * igt@gem_lmem_swapping@heavy-verify-multi-ccs:
-> 
->           * shard-glk: NOTRUN -> SKIP (i915#4613) +2 other tests skip
->      * igt@gem_lmem_swapping@parallel-multi:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#4613) +1 other test skip
->      * igt@gem_lmem_swapping@parallel-random-verify-ccs:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#4613) +7 other tests skip
->      * igt@gem_media_vme:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#284)
->      * igt@gem_mmap_gtt@coherency:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#4077) +5 other tests skip
->      * igt@gem_mmap_gtt@cpuset-basic-small-copy-xy:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#4077) +1 other test skip
->      * igt@gem_mmap_gtt@fault-concurrent-x:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#4077) +4 other tests skip
->      * igt@gem_mmap_wc@bad-size:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#4083) +1 other test skip
->           * shard-dg1: NOTRUN -> SKIP (i915#4083) +1 other test skip
->      * igt@gem_mmap_wc@invalid-flags:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#4083) +1 other test skip
->      * igt@gem_partial_pwrite_pread@reads-uncached:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#3282) +2 other tests skip
->      * igt@gem_partial_pwrite_pread@writes-after-reads-uncached:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#3282) +6 other tests skip
->           * shard-mtlp: NOTRUN -> SKIP (i915#3282) +2 other tests skip
->      * igt@gem_pread@bench:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#3282) +2 other tests skip
->      * igt@gem_pxp@dmabuf-shared-protected-dst-is-context-refcounted:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#4270) +2 other tests skip
->           * shard-dg1: NOTRUN -> SKIP (i915#4270) +2 other tests skip
->      * igt@gem_pxp@hw-rejects-pxp-buffer:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#13398)
->      * igt@gem_render_copy@y-tiled-to-vebox-x-tiled:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#8428)
->      * igt@gem_render_copy@yf-tiled-to-vebox-y-tiled:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#5190 / i915#8428) +1 other test
->             skip
->      * igt@gem_set_tiling_vs_blt@untiled-to-tiled:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#8411)
->      * igt@gem_softpin@evict-snoop-interruptible:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#4885)
->           * shard-dg1: NOTRUN -> SKIP (i915#4885)
->           * shard-mtlp: NOTRUN -> SKIP (i915#4885)
->      * igt@gem_tiled_pread_basic:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#4079)
->           * shard-dg1: NOTRUN -> SKIP (i915#4079)
->      * igt@gem_userptr_blits@access-control:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#3297) +1 other test skip
->      * igt@gem_userptr_blits@coherency-unsync:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#3297) +2 other tests skip
->      * igt@gem_userptr_blits@dmabuf-sync:
-> 
->           * shard-glk: NOTRUN -> SKIP (i915#3323)
->      * igt@gem_userptr_blits@forbidden-operations:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#3282 / i915#3297)
->      * igt@gem_userptr_blits@unsync-unmap-cycles:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#3297) +1 other test skip
->           * shard-dg1: NOTRUN -> SKIP (i915#3297) +2 other tests skip
->           * shard-tglu: NOTRUN -> SKIP (i915#3297) +2 other tests skip
->           * shard-mtlp: NOTRUN -> SKIP (i915#3297) +1 other test skip
->      * igt@gem_workarounds@suspend-resume:
-> 
->           * shard-glk: NOTRUN -> INCOMPLETE (i915#13356 / i915#14586)
->      * igt@gen9_exec_parse@basic-rejected:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#2856)
->           * shard-dg2: NOTRUN -> SKIP (i915#2856)
->           * shard-dg1: NOTRUN -> SKIP (i915#2527)
->      * igt@gen9_exec_parse@bb-start-param:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#2527 / i915#2856)
->      * igt@gen9_exec_parse@cmd-crossing-page:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#2527 / i915#2856) +1 other test
->             skip
->      * igt@gen9_exec_parse@secure-batches:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#2527) +4 other tests skip
->      * igt@i915_drm_fdinfo@virtual-busy:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#14118)
->           * shard-mtlp: NOTRUN -> SKIP (i915#14118) +1 other test skip
->      * igt@i915_drm_fdinfo@virtual-busy-hang-all:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#14118) +1 other test skip
->      * igt@i915_module_load@fault-injection:
-> 
->           * shard-rkl: NOTRUN -> ABORT (i915#15342 / i915#15481)
->           * shard-tglu-1: NOTRUN -> ABORT (i915#15342 / i915#15481)
->           * shard-glk: NOTRUN -> ABORT (i915#15342 / i915#15481)
->      * igt@i915_module_load@fault-injection@i915_driver_hw_probe:
-> 
->           * shard-glk: NOTRUN -> ABORT (i915#15481)
->           * shard-rkl: NOTRUN -> ABORT (i915#15481)
->           * shard-tglu-1: NOTRUN -> ABORT (i915#15481)
->      * igt@i915_module_load@fault-injection@intel_connector_register:
-> 
->           * shard-rkl: NOTRUN -> DMESG-WARN (i915#15342)
->           * shard-tglu-1: NOTRUN -> DMESG-WARN (i915#15342)
->           * shard-glk: NOTRUN -> DMESG-WARN (i915#15342)
->      * igt@i915_module_load@fault-injection@intel_gt_init-enodev:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#14544 / i915#15479) +4 other
->             tests skip
->           * shard-tglu-1: NOTRUN -> SKIP (i915#15479) +4 other tests skip
->      * igt@i915_pm_freq_api@freq-reset-multiple:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#8399)
->           * shard-tglu-1: NOTRUN -> SKIP (i915#8399)
->      * igt@i915_pm_freq_mult@media-freq@gt0:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#6590) +1 other test skip
->      * igt@i915_pm_rpm@system-suspend:
-> 
->           * shard-glk: NOTRUN -> INCOMPLETE (i915#13356) +2 other tests
->             incomplete
->      * igt@i915_pm_rpm@system-suspend-devices:
-> 
->           * shard-rkl: PASS -> ABORT (i915#15060)
->      * igt@i915_pm_rps@thresholds-idle-park:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#11681)
->      * igt@i915_pm_sseu@full-enable:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#4387)
->      * igt@i915_power@sanity:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#7984)
->      * igt@i915_query@test-query-geometry-subslices:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#5723)
->      * igt@intel_hwmon@hwmon-read:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#7707)
->      * igt@kms_async_flips@async-flip-suspend-resume:
-> 
->           * shard-rkl: NOTRUN -> INCOMPLETE (i915#12761) +1 other test
->             incomplete
->      * igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels:
-> 
->           * shard-glk: NOTRUN -> SKIP (i915#1769) +1 other test skip
->      * igt@kms_atomic_transition@plane-all-modeset-transition-internal-panels:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#1769 / i915#3555)
->      * igt@kms_big_fb@4-tiled-8bpp-rotate-0:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#4538 / i915#5286) +2 other tests
->             skip
->      * igt@kms_big_fb@4-tiled-addfb:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#5286) +6 other tests skip
->      * igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-async-flip:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#5286) +5 other tests skip
->      * igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-hflip:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#5286) +2 other tests skip
->      * igt@kms_big_fb@linear-32bpp-rotate-90:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#3638) +6 other tests skip
->      * igt@kms_big_fb@linear-max-hw-stride-32bpp-rotate-0-hflip:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#3828) +1 other test skip
->      * igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-180-hflip:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#3828)
->      * igt@kms_big_fb@x-tiled-16bpp-rotate-90:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#14544 / i915#3638)
->      * igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180-hflip:
-> 
->           * shard-mtlp: NOTRUN -> SKIP +4 other tests skip
->      * igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0-hflip-async-flip:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#4538 / i915#5190) +3 other tests
->             skip
->      * igt@kms_big_fb@yf-tiled-64bpp-rotate-90:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#4538) +1 other test skip
->      * igt@kms_ccs@bad-aux-stride-y-tiled-gen12-rc-ccs@pipe-d-hdmi-a-1:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#10307 / i915#10434 / i915#6095)
->      * igt@kms_ccs@bad-pixel-format-4-tiled-mtl-mc-ccs:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#10307 / i915#6095) +122 other
->             tests skip
->      * igt@kms_ccs@bad-rotation-90-4-tiled-dg2-mc-ccs@pipe-c-hdmi-a-1:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#6095) +44 other tests skip
->      * igt@kms_ccs@crc-primary-rotation-180-4-tiled-dg2-mc-ccs@pipe-a-hdmi-a-3:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#6095) +42 other tests skip
->      * igt@kms_ccs@crc-primary-rotation-180-4-tiled-dg2-mc-ccs@pipe-b-hdmi-a-1:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#6095) +85 other tests skip
->      * igt@kms_ccs@crc-primary-rotation-180-4-tiled-dg2-mc-ccs@pipe-c-edp-1:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#6095) +14 other tests skip
->      * igt@kms_ccs@crc-primary-rotation-180-y-tiled-ccs@pipe-b-hdmi-a-2:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#14544 / i915#6095) +1 other test
->             skip
->      * igt@kms_ccs@crc-primary-rotation-180-y-tiled-ccs@pipe-c-hdmi-a-2:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#14098 / i915#14544 / i915#6095)
->      * igt@kms_ccs@crc-primary-rotation-180-y-tiled-gen12-rc-ccs:
-> 
->           * shard-dg1: PASS -> DMESG-WARN (i915#4423)
->      * igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#12805)
->      * igt@kms_ccs@crc-primary-suspend-yf-tiled-ccs@pipe-c-hdmi-a-2:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#14098 / i915#6095) +64 other
->             tests skip
->      * igt@kms_ccs@crc-sprite-planes-basic-y-tiled-gen12-rc-ccs@pipe-c-hdmi-a-2:
-> 
->           * shard-glk10: NOTRUN -> SKIP +102 other tests skip
->      * igt@kms_ccs@missing-ccs-buffer-yf-tiled-ccs@pipe-b-hdmi-a-1:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#6095) +34 other tests skip
->           * shard-dg1: NOTRUN -> SKIP (i915#6095) +129 other tests skip
->      * igt@kms_ccs@random-ccs-data-4-tiled-bmg-ccs:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#12313)
->           * shard-rkl: NOTRUN -> SKIP (i915#12313)
->           * shard-dg1: NOTRUN -> SKIP (i915#12313)
->           * shard-tglu: NOTRUN -> SKIP (i915#12313) +2 other tests skip
->           * shard-mtlp: NOTRUN -> SKIP (i915#12313)
->      * igt@kms_chamelium_color@ctm-red-to-blue:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#14544) +1 other test skip
->      * igt@kms_chamelium_hpd@hdmi-hpd-for-each-pipe:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#11151 / i915#7828) +3 other
->             tests skip
->           * shard-mtlp: NOTRUN -> SKIP (i915#11151 / i915#7828) +2 other
->             tests skip
->      * igt@kms_chamelium_hpd@vga-hpd-after-suspend:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#11151 / i915#7828) +2 other tests
->             skip
->           * shard-dg1: NOTRUN -> SKIP (i915#11151 / i915#7828) +2 other tests
->             skip
->      * igt@kms_chamelium_hpd@vga-hpd-fast:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#11151 / i915#7828) +3 other
->             tests skip
->      * igt@kms_chamelium_hpd@vga-hpd-for-each-pipe:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#11151 / i915#7828) +12 other
->             tests skip
->      * igt@kms_color_pipeline@plane-lut3d-green-only:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#15523) +4 other tests skip
->      * igt@kms_color_pipeline@plane-lut3d-green-only@pipe-a-hdmi-a-3:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#15523) +3 other tests skip
->      * igt@kms_color_pipeline@plane-lut3d-green-only@pipe-d-hdmi-a-3:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#15523) +3 other tests skip
->      * igt@kms_content_protection@atomic-dpms-hdcp14:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#6944)
->      * igt@kms_content_protection@atomic-dpms@pipe-a-dp-3:
-> 
->           * shard-dg2: NOTRUN -> FAIL (i915#7173)
->      * igt@kms_content_protection@dp-mst-lic-type-0-hdcp14:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#15330)
->      * igt@kms_content_protection@dp-mst-type-0-hdcp14:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#15330) +1 other test skip
->      * igt@kms_content_protection@legacy-hdcp14:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#6944)
->      * igt@kms_content_protection@srm:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#6944 / i915#7116 / i915#7118)
->      * igt@kms_content_protection@suspend-resume:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#6944) +1 other test skip
->      * igt@kms_content_protection@uevent:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#6944 / i915#7118 / i915#9424) +3
->             other tests skip
->      * igt@kms_cursor_crc@cursor-offscreen-128x42:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#8814)
->      * igt@kms_cursor_crc@cursor-random-128x42:
-> 
->           * shard-tglu: NOTRUN -> FAIL (i915#13566) +3 other tests fail
->      * igt@kms_cursor_crc@cursor-random-32x32:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#3555) +2 other tests skip
->      * igt@kms_cursor_crc@cursor-random-512x170:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#13049) +1 other test skip
->           * shard-rkl: NOTRUN -> SKIP (i915#13049) +2 other tests skip
->           * shard-tglu: NOTRUN -> SKIP (i915#13049)
->           * shard-mtlp: NOTRUN -> SKIP (i915#13049)
->      * igt@kms_cursor_crc@cursor-random-64x21@pipe-a-hdmi-a-1:
-> 
->           * shard-rkl: NOTRUN -> FAIL (i915#13566) +1 other test fail
->      * igt@kms_cursor_crc@cursor-rapid-movement-max-size:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#3555) +4 other tests skip
->      * igt@kms_cursor_crc@cursor-sliding-128x42:
-> 
->           * shard-tglu: PASS -> FAIL (i915#13566) +3 other tests fail
->      * igt@kms_cursor_crc@cursor-sliding-512x170:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#13049)
->      * igt@kms_cursor_crc@cursor-sliding-max-size:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#3555 / i915#8814)
->           * shard-dg2: NOTRUN -> SKIP (i915#3555) +1 other test skip
->           * shard-dg1: NOTRUN -> SKIP (i915#3555) +1 other test skip
->      * igt@kms_cursor_legacy@2x-flip-vs-cursor-legacy:
-> 
->           * shard-rkl: NOTRUN -> SKIP +32 other tests skip
->      * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-varying-size:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#4103) +1 other test skip
->      * igt@kms_cursor_legacy@cursor-vs-flip-atomic-transitions-varying-size:
-> 
->           * shard-rkl: PASS -> FAIL (i915#15564)
->      * igt@kms_cursor_legacy@cursora-vs-flipb-legacy:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#9809) +2 other tests skip
->      * igt@kms_cursor_legacy@cursorb-vs-flipa-atomic:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#13046 / i915#5354) +3 other tests
->             skip
->      * igt@kms_cursor_legacy@cursorb-vs-flipa-varying-size:
-> 
->           * shard-tglu: NOTRUN -> SKIP +50 other tests skip
->      * igt@kms_cursor_legacy@cursorb-vs-flipb-atomic-transitions-varying-size:
-> 
->           * shard-dg1: NOTRUN -> SKIP +13 other tests skip
->      * igt@kms_cursor_legacy@modeset-atomic-cursor-hotspot:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#9067)
->      * igt@kms_dirtyfb@psr-dirtyfb-ioctl:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#9723)
->      * igt@kms_display_modes@extended-mode-basic:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#13691)
->           * shard-tglu: NOTRUN -> SKIP (i915#13691)
->      * igt@kms_dither@fb-8bpc-vs-panel-6bpc:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#3555 / i915#3804)
->      * igt@kms_dither@fb-8bpc-vs-panel-6bpc@pipe-a-hdmi-a-1:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#3804)
->      * igt@kms_dp_link_training@uhbr-mst:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#13748)
->           * shard-tglu-1: NOTRUN -> SKIP (i915#13748)
->      * igt@kms_dp_link_training@uhbr-sst:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#13748)
->      * igt@kms_dsc@dsc-basic:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#3555 / i915#3840) +2 other tests
->             skip
->      * igt@kms_dsc@dsc-fractional-bpp:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#3840)
->      * igt@kms_dsc@dsc-fractional-bpp-with-bpc:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#3840)
->      * igt@kms_dsc@dsc-with-output-formats:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#3555 / i915#3840)
->      * igt@kms_dsc@dsc-with-output-formats-with-bpc:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#3840 / i915#9053)
->      * igt@kms_fbcon_fbt@psr-suspend:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#3955)
->      * igt@kms_feature_discovery@chamelium:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#4854)
->      * igt@kms_feature_discovery@display-2x:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#1839)
->      * igt@kms_fence_pin_leak:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#4881)
->      * igt@kms_flip@2x-flip-vs-panning:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#9934) +1 other test skip
->      * igt@kms_flip@2x-flip-vs-suspend:
-> 
->           * shard-glk: NOTRUN -> INCOMPLETE (i915#12745 / i915#4839)
->      * igt@kms_flip@2x-flip-vs-suspend@ab-hdmi-a1-hdmi-a2:
-> 
->           * shard-glk: NOTRUN -> INCOMPLETE (i915#4839)
->      * igt@kms_flip@2x-nonexisting-fb:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#3637 / i915#9934) +3 other tests
->             skip
->      * igt@kms_flip@2x-plain-flip:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#9934) +15 other tests skip
->      * igt@kms_flip@2x-plain-flip-ts-check-interruptible:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#3637 / i915#9934) +3 other
->             tests skip
->      * igt@kms_flip@2x-wf_vblank-ts-check:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#9934) +2 other tests skip
->      * igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-32bpp-4tiledg2rcccs-upscaling@pipe-a-valid-mode:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#2672) +5 other tests skip
->      * igt@kms_flip_scaled_crc@flip-32bpp-linear-to-32bpp-linear-reflect-x@pipe-a-valid-mode:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#15573) +1 other test skip
->      * igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-32bpp-yftileccs-upscaling@pipe-a-valid-mode:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#2587 / i915#2672) +1 other
->             test skip
->      * igt@kms_flip_scaled_crc@flip-32bpp-yftile-to-64bpp-yftile-upscaling:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#2672 / i915#3555) +1 other test
->             skip
->      * igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile-downscaling:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#2587 / i915#2672 / i915#3555)
->      * igt@kms_flip_scaled_crc@flip-32bpp-ytileccs-to-64bpp-ytile-downscaling@pipe-a-valid-mode:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#2587 / i915#2672) +2 other tests
->             skip
->      * igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tile-upscaling:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#2672 / i915#3555) +1 other
->             test skip
->      * igt@kms_flip_scaled_crc@flip-64bpp-xtile-to-16bpp-xtile-downscaling:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#3555 / i915#8810 / i915#8813) +1
->             other test skip
->      * igt@kms_flip_scaled_crc@flip-64bpp-yftile-to-32bpp-yftile-downscaling:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#2672 / i915#3555) +5 other tests
->             skip
->      * igt@kms_frontbuffer_tracking@fbc-2p-rte:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#5354) +9 other tests skip
->      * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-mmap-gtt:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#8708) +4 other tests skip
->      * igt@kms_frontbuffer_tracking@fbc-argb161616f-draw-mmap-wc:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#15574) +1 other test skip
->      * igt@kms_frontbuffer_tracking@fbc-tiling-4:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#5439)
->      * igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-indfb-draw-mmap-gtt:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#15104)
->      * igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-shrfb-draw-blt:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#15102) +4 other tests skip
->      * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-render:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#15102 / i915#3458) +7 other tests
->             skip
->           * shard-rkl: NOTRUN -> SKIP (i915#14544 / i915#15102 / i915#3023)
->      * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-mmap-gtt:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#15102 / i915#3023) +28 other
->             tests skip
->      * igt@kms_frontbuffer_tracking@fbcpsr-2p-pri-indfb-multidraw:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP +27 other tests skip
->      * igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-cur-indfb-draw-mmap-gtt:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#1825) +49 other tests skip
->           * shard-dg1: NOTRUN -> SKIP (i915#8708) +5 other tests skip
->      * igt@kms_frontbuffer_tracking@fbcpsr-argb161616f-draw-blt:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#15574) +4 other tests skip
->           * shard-dg2: NOTRUN -> SKIP (i915#15574) +1 other test skip
->           * shard-dg1: NOTRUN -> SKIP (i915#15574)
->      * igt@kms_frontbuffer_tracking@fbcpsr-argb161616f-draw-mmap-gtt:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#14544 / i915#15574)
->      * igt@kms_frontbuffer_tracking@fbcpsr-tiling-4:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#5439)
->      * igt@kms_frontbuffer_tracking@psr-1p-offscreen-pri-indfb-draw-render:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#15102)
->           * shard-dg1: NOTRUN -> SKIP (i915#15102)
->      * igt@kms_frontbuffer_tracking@psr-1p-offscreen-pri-shrfb-draw-render:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#14544 / i915#15102)
->      * igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-draw-mmap-wc:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#15102) +11 other tests skip
->      * igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-draw-mmap-cpu:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#15102) +15 other tests skip
->      * igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-indfb-draw-render:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#14544 / i915#1825) +3 other tests
->             skip
->      * igt@kms_frontbuffer_tracking@psr-2p-primscrn-shrfb-msflip-blt:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#1825) +5 other tests skip
->      * igt@kms_frontbuffer_tracking@psr-2p-primscrn-spr-indfb-draw-mmap-gtt:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#8708) +2 other tests skip
->      * igt@kms_frontbuffer_tracking@psr-2p-scndscrn-pri-indfb-draw-mmap-cpu:
-> 
->           * shard-snb: NOTRUN -> SKIP +115 other tests skip
->      * igt@kms_frontbuffer_tracking@psr-argb161616f-draw-pwrite:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#15574) +8 other tests skip
->           * shard-tglu-1: NOTRUN -> SKIP (i915#15574) +3 other tests skip
->      * igt@kms_frontbuffer_tracking@psr-modesetfrombusy:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#15102 / i915#3458) +7 other tests
->             skip
->      * igt@kms_hdr@bpc-switch-suspend:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#3555 / i915#8228) +1 other test
->             skip
->      * igt@kms_hdr@static-toggle:
-> 
->           * shard-dg2: PASS -> SKIP (i915#3555 / i915#8228)
->      * igt@kms_hdr@static-toggle-suspend:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#3555 / i915#8228) +4 other tests
->             skip
->           * shard-dg1: NOTRUN -> SKIP (i915#3555 / i915#8228)
->           * shard-mtlp: NOTRUN -> SKIP (i915#12713 / i915#3555 / i915#8228)
->      * igt@kms_joiner@basic-force-big-joiner:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#15459)
->      * igt@kms_joiner@basic-ultra-joiner:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#15458)
->      * igt@kms_joiner@invalid-modeset-big-joiner:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#15460)
->           * shard-tglu: NOTRUN -> SKIP (i915#15460)
->      * igt@kms_joiner@invalid-modeset-ultra-joiner:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#15458)
->      * igt@kms_joiner@switch-modeset-ultra-joiner-big-joiner:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#13522)
->      * igt@kms_multipipe_modeset@basic-max-pipe-crc-check:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#1839 / i915#4816)
->      * igt@kms_panel_fitting@atomic-fastset:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#6301)
->           * shard-tglu-1: NOTRUN -> SKIP (i915#6301)
->      * igt@kms_pipe_b_c_ivb@from-pipe-c-to-b-with-3-lanes:
-> 
->           * shard-dg2: NOTRUN -> SKIP
->      * igt@kms_pipe_crc_basic@suspend-read-crc:
-> 
->           * shard-glk10: NOTRUN -> INCOMPLETE (i915#12756 / i915#13409 /
->             i915#13476)
->      * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-b-hdmi-a-2:
-> 
->           * shard-glk10: NOTRUN -> INCOMPLETE (i915#13409 / i915#13476)
->      * igt@kms_plane@plane-panning-bottom-right-suspend:
-> 
->           * shard-glk: NOTRUN -> INCOMPLETE (i915#13026) +1 other test
->             incomplete
->      * igt@kms_plane_alpha_blend@alpha-basic:
-> 
->           * shard-glk: NOTRUN -> FAIL (i915#12178)
->      * igt@kms_plane_alpha_blend@alpha-basic@pipe-c-hdmi-a-1:
-> 
->           * shard-glk: NOTRUN -> FAIL (i915#7862) +1 other test fail
->      * igt@kms_plane_multiple@2x-tiling-x:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#13958)
->           * shard-rkl: NOTRUN -> SKIP (i915#13958) +1 other test skip
->           * shard-dg1: NOTRUN -> SKIP (i915#13958)
->           * shard-tglu: NOTRUN -> SKIP (i915#13958) +1 other test skip
->           * shard-mtlp: NOTRUN -> SKIP (i915#13958)
->      * igt@kms_plane_multiple@2x-tiling-yf:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#13958)
->      * igt@kms_plane_scaling@plane-upscale-20x20-with-rotation:
-> 
->           * shard-glk: NOTRUN -> SKIP +281 other tests skip
->      * igt@kms_plane_scaling@plane-upscale-20x20-with-rotation@pipe-a:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#15329) +4 other tests skip
->           * shard-dg1: NOTRUN -> SKIP (i915#15329) +4 other tests skip
->      * igt@kms_plane_scaling@plane-upscale-factor-0-25-with-rotation@pipe-c:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#15329) +3 other tests skip
->      * igt@kms_plane_scaling@planes-downscale-factor-0-75:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#15329 / i915#3555 / i915#6953)
->      * igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-b:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#15329) +3 other tests skip
->      * igt@kms_pm_backlight@bad-brightness:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#5354)
->      * igt@kms_pm_backlight@brightness-with-dpms:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#12343)
->      * igt@kms_pm_dc@dc5-psr:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#9685)
->      * igt@kms_pm_dc@dc5-retention-flops:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#3828)
->           * shard-dg2: NOTRUN -> SKIP (i915#3828)
->           * shard-rkl: NOTRUN -> SKIP (i915#3828) +1 other test skip
->           * shard-dg1: NOTRUN -> SKIP (i915#3828)
->      * igt@kms_pm_rpm@dpms-mode-unset-non-lpsp:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#15073) +1 other test skip
->      * igt@kms_pm_rpm@modeset-non-lpsp:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#15073) +2 other tests skip
->      * igt@kms_pm_rpm@modeset-non-lpsp-stress:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#15073)
->      * igt@kms_pm_rpm@modeset-non-lpsp-stress-no-wait:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#15073)
->           * shard-dg1: PASS -> SKIP (i915#15073)
->      * igt@kms_pm_rpm@package-g7:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#15403)
->           * shard-mtlp: NOTRUN -> SKIP (i915#15403)
->           * shard-dg2: NOTRUN -> SKIP (i915#15403)
->           * shard-rkl: NOTRUN -> SKIP (i915#15403)
->           * shard-dg1: NOTRUN -> SKIP (i915#15403)
->      * igt@kms_prime@basic-modeset-hybrid:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#6524)
->      * igt@kms_prime@d3hot:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#6524) +1 other test skip
->      * igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-sf:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#11520)
->           * shard-rkl: NOTRUN -> SKIP (i915#11520) +8 other tests skip
->           * shard-snb: NOTRUN -> SKIP (i915#11520)
->           * shard-dg1: NOTRUN -> SKIP (i915#11520)
->           * shard-mtlp: NOTRUN -> SKIP (i915#12316)
->      * igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf:
-> 
->           * shard-glk: NOTRUN -> SKIP (i915#11520) +5 other tests skip
->      * igt@kms_psr2_sf@pr-overlay-plane-update-sf-dmg-area:
-> 
->           * shard-glk10: NOTRUN -> SKIP (i915#11520)
->      * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#11520) +5 other tests skip
->      * igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#11520) +4 other tests skip
->      * igt@kms_psr2_su@page_flip-p010:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#9683)
->      * igt@kms_psr@fbc-pr-primary-render:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#1072 / i915#9732) +8 other tests
->             skip
->      * igt@kms_psr@fbc-psr-sprite-plane-move:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#9732) +16 other tests skip
->      * igt@kms_psr@fbc-psr2-primary-mmap-cpu:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#9688) +6 other tests skip
->           * shard-rkl: NOTRUN -> SKIP (i915#1072 / i915#14544 / i915#9732)
->      * igt@kms_psr@psr-cursor-plane-move:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#1072 / i915#9732) +8 other tests
->             skip
->      * igt@kms_psr@psr-primary-mmap-cpu:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#9732) +8 other tests skip
->      * igt@kms_psr@psr2-cursor-mmap-gtt:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#1072 / i915#9732) +29 other tests
->             skip
->      * igt@kms_psr_stress_test@flip-primary-invalidate-overlay:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#9685)
->      * igt@kms_rotation_crc@exhaust-fences:
-> 
->           * shard-dg1: NOTRUN -> SKIP (i915#4884)
->      * igt@kms_rotation_crc@primary-4-tiled-reflect-x-180:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#5289)
->           * shard-dg1: NOTRUN -> SKIP (i915#5289)
->           * shard-tglu: NOTRUN -> SKIP (i915#5289)
->      * igt@kms_rotation_crc@primary-y-tiled-reflect-x-90:
-> 
->           * shard-dg2: NOTRUN -> SKIP (i915#12755 / i915#5190)
->      * igt@kms_rotation_crc@sprite-rotation-270:
-> 
->           * shard-mtlp: NOTRUN -> SKIP (i915#12755)
->           * shard-dg2: NOTRUN -> SKIP (i915#12755)
->      * igt@kms_selftest@drm_framebuffer:
-> 
->           * shard-tglu: NOTRUN -> ABORT (i915#13179) +1 other test abort
->      * igt@kms_setmode@basic:
-> 
->           * shard-tglu: PASS -> FAIL (i915#15106) +2 other tests fail
->      * igt@kms_tiled_display@basic-test-pattern:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#8623)
->      * igt@kms_tiled_display@basic-test-pattern-with-chamelium:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#8623)
->      * igt@kms_vrr@flip-basic-fastset:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#9906)
->      * igt@kms_vrr@flipline:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#15243 / i915#3555)
->           * shard-tglu-1: NOTRUN -> SKIP (i915#3555)
->      * igt@kms_vrr@max-min:
-> 
->           * shard-tglu: NOTRUN -> SKIP (i915#9906)
->      * igt@kms_vrr@negative-basic:
-> 
->           * shard-mtlp: PASS -> FAIL (i915#15420) +1 other test fail
->           * shard-rkl: NOTRUN -> SKIP (i915#3555 / i915#9906)
->      * igt@kms_vrr@seamless-rr-switch-virtual:
-> 
->           * shard-tglu-1: NOTRUN -> SKIP (i915#9906)
->      * igt@perf_pmu@rc6-suspend:
-> 
->           * shard-rkl: PASS -> INCOMPLETE (i915#13520)
->      * igt@prime_vgem@coherency-gtt:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#3708) +1 other test skip
->      * igt@sriov_basic@enable-vfs-bind-unbind-each-numvfs-all:
-> 
->           * shard-rkl: NOTRUN -> SKIP (i915#9917) +1 other test skip
->      * igt@sriov_basic@enable-vfs-bind-unbind-each@numvfs-random:
-> 
->           * shard-tglu: NOTRUN -> FAIL (i915#12910) +8 other tests fail
-> 
->     Possible fixes
-> 
->      * igt@gem_exec_suspend@basic-s0@smem:
-> 
->           * shard-rkl: INCOMPLETE (i915#13356) -> PASS +1 other test pass
->      * igt@gem_lmem_swapping@smem-oom@lmem0:
-> 
->           * shard-dg2: DMESG-WARN (i915#5493) -> PASS +1 other test pass
->      * igt@gem_mmap_offset@clear-via-pagefault:
-> 
->           * shard-mtlp: ABORT (i915#14809) -> PASS +1 other test pass
->      * igt@gem_softpin@noreloc-s3:
-> 
->           * shard-rkl: INCOMPLETE (i915#13809) -> PASS
->      * igt@i915_pm_rc6_residency@rc6-fence:
-> 
->           * shard-tglu: WARN (i915#13790 / i915#2681) -> PASS +1 other test
->             pass
->      * igt@i915_pm_rps@reset:
-> 
->           * shard-snb: INCOMPLETE (i915#13729 / i915#13821) -> PASS
->      * igt@i915_power@sanity:
-> 
->           * shard-mtlp: SKIP (i915#7984) -> PASS
->      * igt@i915_selftest@live@workarounds:
-> 
->           * shard-dg2: DMESG-FAIL (i915#12061) -> PASS +1 other test pass
->      * igt@i915_suspend@basic-s3-without-i915:
-> 
->           * shard-rkl: ABORT (i915#15131) -> PASS +3 other tests pass
->      * igt@i915_suspend@sysfs-reader:
-> 
->           * shard-glk: INCOMPLETE (i915#4817) -> PASS
->      * igt@kms_atomic_transition@plane-all-transition:
-> 
->           * shard-rkl: INCOMPLETE -> PASS
->      * igt@kms_big_fb@4-tiled-64bpp-rotate-0:
-> 
->           * shard-mtlp: FAIL (i915#12469 / i915#5138) -> PASS
->      * igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0-async-flip:
-> 
->           * shard-dg1: DMESG-WARN (i915#4423) -> PASS
->      * igt@kms_cursor_crc@cursor-onscreen-128x42:
-> 
->           * shard-rkl: FAIL (i915#13566) -> PASS +3 other tests pass
->      * igt@kms_cursor_crc@cursor-onscreen-128x42@pipe-a-hdmi-a-1:
-> 
->           * shard-tglu: FAIL (i915#13566) -> PASS +1 other test pass
->      * igt@kms_cursor_crc@cursor-suspend@pipe-a-hdmi-a-2:
-> 
->           * shard-rkl: INCOMPLETE (i915#12358 / i915#14152) -> PASS +1 other
->             test pass
->      * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions:
-> 
->           * shard-glk: FAIL (i915#2346) -> PASS
->      * igt@kms_dither@fb-8bpc-vs-panel-6bpc:
-> 
->           * shard-dg2: SKIP (i915#3555) -> PASS
->      * igt@kms_frontbuffer_tracking@fbc-rgb565-draw-blt:
-> 
->           * shard-dg2: FAIL (i915#15389 / i915#6880) -> PASS
->      * igt@kms_hdr@bpc-switch-suspend:
-> 
->           * shard-dg2: SKIP (i915#3555 / i915#8228) -> PASS
->      * igt@kms_hdr@static-toggle:
-> 
->           * shard-rkl: SKIP (i915#3555 / i915#8228) -> PASS
->      * igt@kms_pipe_stress@stress-xrgb8888-xtiled:
-> 
->           * shard-mtlp: DMESG-WARN -> PASS
->      * igt@kms_pm_rpm@dpms-mode-unset-lpsp:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#15073) -> PASS
->      * igt@kms_pm_rpm@dpms-mode-unset-non-lpsp:
-> 
->           * shard-dg1: SKIP (i915#15073) -> PASS
->      * igt@kms_pm_rpm@modeset-lpsp-stress-no-wait:
-> 
->           * shard-dg2: SKIP (i915#15073) -> PASS
->      * igt@kms_pm_rpm@system-suspend-idle:
-> 
->           * shard-dg2: INCOMPLETE (i915#14419) -> PASS
->      * igt@perf_pmu@busy-double-start@rcs0:
-> 
->           * shard-mtlp: FAIL (i915#4349) -> PASS
-> 
->     Warnings
-> 
->      * igt@gem_exec_balancer@parallel-balancer:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#4525) -> SKIP (i915#4525)
->      * igt@gem_exec_reloc@basic-gtt-wc:
-> 
->           * shard-rkl: SKIP (i915#3281) -> SKIP (i915#14544 / i915#3281) +1
->             other test skip
->      * igt@gem_exec_reloc@basic-scanout:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#3281) -> SKIP (i915#3281) +3
->             other tests skip
->      * igt@gem_huc_copy@huc-copy:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#2190) -> SKIP (i915#2190)
->      * igt@gem_lmem_evict@dontneed-evict-race:
-> 
->           * shard-rkl: SKIP (i915#4613 / i915#7582) -> SKIP (i915#14544 /
->             i915#4613 / i915#7582)
->      * igt@gem_media_vme:
-> 
->           * shard-rkl: SKIP (i915#284) -> SKIP (i915#14544 / i915#284)
->      * igt@gem_partial_pwrite_pread@write-display:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#3282) -> SKIP (i915#3282) +1
->             other test skip
->      * igt@gem_partial_pwrite_pread@writes-after-reads:
-> 
->           * shard-rkl: SKIP (i915#3282) -> SKIP (i915#14544 / i915#3282) +2
->             other tests skip
->      * igt@gen9_exec_parse@bb-start-cmd:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#2527) -> SKIP (i915#2527)
->      * igt@gen9_exec_parse@valid-registers:
-> 
->           * shard-rkl: SKIP (i915#2527) -> SKIP (i915#14544 / i915#2527) +1
->             other test skip
->      * igt@i915_module_load@resize-bar:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#6412) -> SKIP (i915#6412)
->      * igt@i915_pm_freq_api@freq-basic-api:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#8399) -> SKIP (i915#8399)
->      * igt@i915_query@hwconfig_table:
-> 
->           * shard-rkl: SKIP (i915#6245) -> SKIP (i915#14544 / i915#6245)
->      * igt@kms_big_fb@4-tiled-64bpp-rotate-270:
-> 
->           * shard-rkl: SKIP (i915#5286) -> SKIP (i915#14544 / i915#5286)
->      * igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-180-hflip:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#5286) -> SKIP (i915#5286) +2
->             other tests skip
->      * igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-async-flip:
-> 
->           * shard-dg1: SKIP (i915#4538 / i915#5286) -> SKIP (i915#4423 /
->             i915#4538 / i915#5286)
->      * igt@kms_big_fb@linear-16bpp-rotate-90:
-> 
->           * shard-rkl: SKIP (i915#3638) -> SKIP (i915#14544 / i915#3638)
->      * igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180-async-flip:
-> 
->           * shard-rkl: SKIP (i915#14544) -> SKIP +5 other tests skip
->      * igt@kms_ccs@bad-pixel-format-4-tiled-dg2-rc-ccs-cc@pipe-b-hdmi-a-2:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#6095) -> SKIP (i915#6095) +2
->             other tests skip
->      * igt@kms_ccs@ccs-on-another-bo-4-tiled-mtl-mc-ccs:
-> 
->           * shard-rkl: SKIP (i915#14098 / i915#6095) -> SKIP (i915#14098 /
->             i915#14544 / i915#6095) +2 other tests skip
->      * igt@kms_ccs@ccs-on-another-bo-4-tiled-mtl-mc-ccs@pipe-a-hdmi-a-2:
-> 
->           * shard-rkl: SKIP (i915#6095) -> SKIP (i915#14544 / i915#6095) +1
->             other test skip
->      * igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-rc-ccs@pipe-c-hdmi-a-2:
-> 
->           * shard-rkl: SKIP (i915#14098 / i915#14544 / i915#6095) -> SKIP
->             (i915#14098 / i915#6095) +5 other tests skip
->      * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-lnl-ccs:
-> 
->           * shard-rkl: SKIP (i915#12313 / i915#14544) -> SKIP (i915#12313)
->      * igt@kms_chamelium_hpd@dp-hpd:
-> 
->           * shard-rkl: SKIP (i915#11151 / i915#14544 / i915#7828) -> SKIP
->             (i915#11151 / i915#7828) +2 other tests skip
->      * igt@kms_chamelium_hpd@vga-hpd-enable-disable-mode:
-> 
->           * shard-rkl: SKIP (i915#11151 / i915#7828) -> SKIP (i915#11151 /
->             i915#14544 / i915#7828) +3 other tests skip
->      * igt@kms_content_protection@atomic-dpms:
-> 
->           * shard-dg2: SKIP (i915#6944 / i915#7118 / i915#9424) -> FAIL
->             (i915#7173)
->      * igt@kms_content_protection@mei-interface:
-> 
->           * shard-rkl: SKIP (i915#6944 / i915#9424) -> SKIP (i915#14544 /
->             i915#6944 / i915#9424)
->           * shard-dg1: SKIP (i915#6944 / i915#9424) -> SKIP (i915#9433)
->      * igt@kms_cursor_crc@cursor-rapid-movement-512x170:
-> 
->           * shard-rkl: SKIP (i915#13049 / i915#14544) -> SKIP (i915#13049)
->      * igt@kms_cursor_legacy@cursora-vs-flipb-varying-size:
-> 
->           * shard-rkl: SKIP -> SKIP (i915#14544) +6 other tests skip
->      * igt@kms_dither@fb-8bpc-vs-panel-8bpc:
-> 
->           * shard-dg1: SKIP (i915#3555 / i915#4423) -> SKIP (i915#3555)
->      * igt@kms_dp_aux_dev:
-> 
->           * shard-rkl: SKIP (i915#1257 / i915#14544) -> SKIP (i915#1257)
->      * igt@kms_dp_link_training@non-uhbr-sst:
-> 
->           * shard-rkl: SKIP (i915#13749 / i915#14544) -> SKIP (i915#13749)
->      * igt@kms_fbcon_fbt@psr:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#3955) -> SKIP (i915#3955)
->      * igt@kms_feature_discovery@display-2x:
-> 
->           * shard-rkl: SKIP (i915#1839) -> SKIP (i915#14544 / i915#1839)
->      * igt@kms_flip@2x-single-buffer-flip-vs-dpms-off-vs-modeset-interruptible:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#9934) -> SKIP (i915#9934) +1
->             other test skip
->      * igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling:
-> 
->           * shard-rkl: SKIP (i915#2672 / i915#3555) -> SKIP (i915#14544 /
->             i915#2672 / i915#3555)
->      * igt@kms_flip_scaled_crc@flip-32bpp-4tile-to-64bpp-4tile-downscaling@pipe-a-valid-mode:
-> 
->           * shard-rkl: SKIP (i915#2672) -> SKIP (i915#14544 / i915#2672)
->      * igt@kms_flip_scaled_crc@flip-32bpp-yftileccs-to-64bpp-yftile-downscaling:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#2672 / i915#3555) -> SKIP
->             (i915#2672 / i915#3555) +2 other tests skip
->      * igt@kms_flip_scaled_crc@flip-32bpp-yftileccs-to-64bpp-yftile-downscaling@pipe-a-valid-mode:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#2672) -> SKIP (i915#2672) +2
->             other tests skip
->      * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-mmap-wc:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#1825) -> SKIP (i915#1825) +6
->             other tests skip
->      * igt@kms_frontbuffer_tracking@fbcpsr-1p-offscreen-pri-indfb-draw-mmap-wc:
-> 
->           * shard-rkl: SKIP (i915#15102) -> SKIP (i915#14544 / i915#15102)
->      * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-mmap-gtt:
-> 
->           * shard-rkl: SKIP (i915#15102 / i915#3023) -> SKIP (i915#14544 /
->             i915#15102 / i915#3023) +4 other tests skip
->      * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-pwrite:
-> 
->           * shard-dg2: SKIP (i915#10433 / i915#15102 / i915#3458) -> SKIP
->             (i915#15102 / i915#3458) +2 other tests skip
->      * igt@kms_frontbuffer_tracking@psr-1p-offscreen-pri-indfb-draw-mmap-cpu:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#15102) -> SKIP (i915#15102)
->      * igt@kms_frontbuffer_tracking@psr-1p-primscrn-pri-shrfb-draw-blt:
-> 
->           * shard-dg1: SKIP (i915#15102 / i915#3458) -> SKIP (i915#15102 /
->             i915#3458 / i915#4423)
->      * igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-draw-pwrite:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#15102 / i915#3023) -> SKIP
->             (i915#15102 / i915#3023) +7 other tests skip
->      * igt@kms_frontbuffer_tracking@psr-2p-scndscrn-indfb-pgflip-blt:
-> 
->           * shard-rkl: SKIP (i915#1825) -> SKIP (i915#14544 / i915#1825) +1
->             other test skip
->      * igt@kms_frontbuffer_tracking@psr-abgr161616f-draw-blt:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#15574) -> SKIP (i915#15574) +1
->             other test skip
->      * igt@kms_frontbuffer_tracking@psr-rgb565-draw-mmap-cpu:
-> 
->           * shard-dg2: SKIP (i915#15102 / i915#3458) -> SKIP (i915#10433 /
->             i915#15102 / i915#3458) +1 other test skip
->      * igt@kms_hdr@brightness-with-hdr:
-> 
->           * shard-dg2: SKIP (i915#13331) -> SKIP (i915#12713)
->           * shard-dg1: SKIP (i915#12713) -> SKIP (i915#1187 / i915#12713)
->      * igt@kms_hdr@static-swap:
-> 
->           * shard-dg2: FAIL -> SKIP (i915#3555 / i915#8228)
->      * igt@kms_pipe_stress@stress-xrgb8888-4tiled:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#14712) -> SKIP (i915#14712)
->      * igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-a:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#15329) -> SKIP (i915#15329) +3
->             other tests skip
->      * igt@kms_plane_scaling@plane-upscale-20x20-with-rotation@pipe-a:
-> 
->           * shard-rkl: SKIP (i915#15329) -> SKIP (i915#14544 / i915#15329) +3
->             other tests skip
->      * igt@kms_pm_dc@dc3co-vpb-simulation:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#9685) -> SKIP (i915#9685) +1
->             other test skip
->      * igt@kms_pm_dc@dc6-dpms:
-> 
->           * shard-tglu: SKIP (i915#15128) -> FAIL (i915#9295)
->      * igt@kms_pm_lpsp@kms-lpsp:
-> 
->           * shard-dg1: SKIP (i915#9340) -> SKIP (i915#3828)
->      * igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf:
-> 
->           * shard-dg1: SKIP (i915#11520 / i915#4423) -> SKIP (i915#11520)
->      * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-sf:
-> 
->           * shard-rkl: SKIP (i915#11520 / i915#14544) -> SKIP (i915#11520) +1
->             other test skip
->      * igt@kms_psr@pr-sprite-render:
-> 
->           * shard-rkl: SKIP (i915#1072 / i915#9732) -> SKIP (i915#1072 /
->             i915#14544 / i915#9732) +2 other tests skip
->      * igt@kms_psr@psr-primary-mmap-cpu:
-> 
->           * shard-rkl: SKIP (i915#1072 / i915#14544 / i915#9732) -> SKIP
->             (i915#1072 / i915#9732) +7 other tests skip
->      * igt@kms_tiled_display@basic-test-pattern-with-chamelium:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#8623) -> SKIP (i915#8623)
->      * igt@kms_vrr@flip-dpms:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#15243 / i915#3555) -> SKIP
->             (i915#15243 / i915#3555)
->      * igt@kms_vrr@lobf:
-> 
->           * shard-rkl: SKIP (i915#11920) -> SKIP (i915#11920 / i915#14544)
->      * igt@kms_vrr@seamless-rr-switch-virtual:
-> 
->           * shard-rkl: SKIP (i915#14544 / i915#9906) -> SKIP (i915#9906)
-> 
-> Build changes
-> 
->      * CI: CI-20190529 -> None
->      * IGT: IGT_8701 -> IGTPW_14344
-> 
->    CI-20190529: 20190529
->    CI_DRM_17819: d5b0278e4bea2fb27de6d12b7f865a74072af677 @
->    git://anongit.freedesktop.org/gfx-ci/linux
->    IGTPW_14344: 14344
->    IGT_8701: 8701
+> + */
+> +#include "igt.h"
+> +#include "igt_sriov_device.h"
+> +#include "igt_sysfs.h"
+> +#include "igt_sysfs_choice.h"
+> +#include "xe_drm.h"
+> +#include "xe/xe_sriov_admin.h"
+> +
+> +/**
+> + * TEST: Tests for SR-IOV admin sysfs.
+> + * Category: Core
+> + * Mega feature: SR-IOV
+> + * Sub-category: sysfs
+> + * Functionality: SR-IOV admin sysfs
+> + * Description: Verify behavior of exposed SR-IOV admin sysfs attributes.
+> + */
+> +
+> +/**
+> + * SUBTEST: default-sched-attributes-vfs-disabled
+> + * Description:
+> + *   Verify default scheduling attributes under sriov_admin
+> + *   with VFs disabled.
+> + */
+> +static void default_sched_attributes(int pf_fd, int vf_num)
+> +{
+> +	igt_dynamic_f("%s-default-exec-quantum", igt_sriov_func_str(vf_num)) {
+> +		igt_assert_eq(0, xe_sriov_profile_get_exec_quantum_ms(pf_fd, vf_num));
+> +	}
+> +
+> +	igt_dynamic_f("%s-default-preempt-timeout", igt_sriov_func_str(vf_num)) {
+> +		igt_assert_eq(0, xe_sriov_profile_get_preempt_timeout_us(pf_fd, vf_num));
+> +	}
+> +
+> +	igt_dynamic_f("%s-default-sched-priority", igt_sriov_func_str(vf_num)) {
+> +		enum xe_sriov_sched_priority prio;
+> +		unsigned int prio_mask;
+> +		char mask_str[64];
+> +
+> +		prio = xe_sriov_profile_get_sched_priority(pf_fd, vf_num, &prio_mask);
+> +		igt_debug("PRIO=%s\n",
+> +			  xe_sriov_sched_priority_mask_to_string(prio_mask, prio, mask_str,
+> +								 sizeof(mask_str)));
+> +		igt_assert_eq(XE_SRIOV_SCHED_PRIORITY_LOW, prio);
+> +	}
+> +}
+> +
+> +/**
+> + * SUBTEST: exec-quantum-write-readback-vfs-disabled
+> + * Description:
+> + *   Verify write -> readback of exec_quantum_ms under sriov_admin
+> + *   for PF and all VFs with VFs disabled.
+> + */
+> +static void exec_quantum_write_readback(int pf_fd, unsigned int vf_num,
+> +					uint32_t eq_ms)
+> +{
+> +	int ret_read, ret_restore;
+> +	uint32_t read_val;
+> +
+> +	igt_require(xe_sriov_profile_get_exec_quantum_ms(pf_fd, vf_num) == 0);
+> +
+> +	xe_sriov_profile_set_exec_quantum_ms(pf_fd, vf_num, eq_ms);
+> +
+> +	ret_read = __xe_sriov_profile_get_exec_quantum_ms(pf_fd, vf_num, &read_val);
+> +
+> +	ret_restore = __xe_sriov_profile_set_exec_quantum_ms(pf_fd, vf_num, 0);
+> +
+> +	igt_assert_eq(ret_read, 0);
+> +	igt_assert_eq(read_val, eq_ms);
+> +	igt_fail_on(ret_restore);
+> +}
+> +
+> +/**
+> + * SUBTEST: preempt-timeout-write-readback-vfs-disabled
+> + * Description:
+> + *   Verify write -> readback of preempt_timeout_us under sriov_admin
+> + *   for PF and all VFs with VFs disabled.
+> + */
+> +static void preempt_timeout_write_readback(int pf_fd, unsigned int vf_num,
+> +					   uint32_t pt_us)
+> +{
+> +	int ret_read, ret_restore;
+> +	uint32_t read_val;
+> +
+> +	igt_require(xe_sriov_profile_get_preempt_timeout_us(pf_fd, vf_num) == 0);
+> +
+> +	xe_sriov_profile_set_preempt_timeout_us(pf_fd, vf_num, pt_us);
+> +
+> +	ret_read = __xe_sriov_profile_get_preempt_timeout_us(pf_fd, vf_num, &read_val);
+> +
+> +	ret_restore = __xe_sriov_profile_set_preempt_timeout_us(pf_fd, vf_num, 0);
+> +
+> +	igt_assert_eq(ret_read, 0);
+> +	igt_assert_eq(read_val, pt_us);
+> +	igt_fail_on(ret_restore);
+> +}
+> +
+> +/**
+> + * SUBTEST: sched-priority-write-readback-vfs-disabled
+> + * Description:
+> + *   Verify write -> readback of sched_priority under sriov_admin
+> + *   for PF and all VFs with VFs disabled.
+> + */
+> +static void sched_priority_write_readback(int pf_fd, unsigned int vf_num)
+> +{
+> +	struct igt_sysfs_choice prio, now;
+> +	enum xe_sriov_sched_priority prio_enum;
+> +	int ret;
+> +
+> +	ret = __xe_sriov_profile_get_sched_priority_choice(pf_fd, vf_num, &prio);
+> +	igt_assert_eq(ret, 0);
+> +
+> +	for (size_t n = prio.num_tokens; n-- > 0; ) {
+> +		igt_warn_on_f(xe_sriov_sched_priority_from_string(prio.tokens[n],
+> +								  &prio_enum),
+> +			      "Unrecognized sched_priority value '%s'\n",
+> +			      prio.tokens[n]);
+> +		igt_debug("Setting priority string '%s'\n", prio.tokens[n]);
+> +		ret = __xe_sriov_profile_set_sched_priority_string(pf_fd, vf_num,
+> +								   prio.tokens[n]);
+> +
+> +		/* Not settable on VF */
+> +		if (igt_debug_on(vf_num && (ret == -EPERM || ret == -EACCES)))
+> +			break;
+> +
+> +		igt_assert_eq(ret, 0);
+> +		ret = __xe_sriov_profile_get_sched_priority_choice(pf_fd, vf_num, &now);
+> +		igt_assert_f(!strcmp(now.tokens[now.selected], prio.tokens[n]),
+> +			     "'%s' != '%s'", now.tokens[now.selected],
+> +			     prio.tokens[n]);
+> +		igt_assert_eq(now.selected, n);
+> +	}
+> +	__xe_sriov_profile_set_sched_priority_string(pf_fd, vf_num,
+> +						     prio.tokens[prio.selected]);
+> +}
+> +
+> +/**
+> + * SUBTEST: bulk-exec-quantum-vfs-disabled
+> + * Description:
+> + *   Verify that bulk setting exec_quantum_ms under sriov_admin applies
+> + *   the expected value to the PF and all VFs when VFs are disabled.
+> + */
+> +static void bulk_set_exec_quantum(int pf_fd, unsigned int total_vfs, uint32_t eq_ms)
+> +{
+> +	uint32_t read_val;
+> +	unsigned int id;
+
+nit: vf_id
+
+> +	int fails = 0;
+> +
+> +	xe_sriov_bulk_set_exec_quantum_ms(pf_fd, eq_ms);
+> +
+> +	for (id = 0; id <= total_vfs; ++id) {
+> +		int ret = __xe_sriov_profile_get_exec_quantum_ms(pf_fd, id,
+> +								 &read_val);
+> +
+> +		if (ret) {
+> +			igt_debug("%s: failed to read exec_quantum_ms, ret=%d\n",
+> +				  igt_sriov_func_str(id), ret);
+> +			fails++;
+> +			continue;
+> +		}
+> +
+> +		if (read_val != eq_ms) {
+> +			igt_debug("%s: exec_quantum_ms=%u, expected=%u\n",
+> +				  igt_sriov_func_str(id), read_val, eq_ms);
+> +			fails++;
+> +		}
+> +	}
+> +
+> +	xe_sriov_bulk_set_exec_quantum_ms(pf_fd, 0);
+> +	igt_fail_on(fails);
+> +}
+> +
+> +/**
+> + * SUBTEST: bulk-preempt-timeout-vfs-disabled
+> + * Description:
+> + *   Verify that bulk setting preempt_timeout_us under sriov_admin applies
+> + *   the expected value to the PF and all VFs when VFs are disabled.
+> + */
+> +static void bulk_set_preempt_timeout(int pf_fd, unsigned int total_vfs, uint32_t pt_us)
+> +{
+> +	uint32_t read_val;
+> +	unsigned int id;
+> +	int fails = 0;
+> +
+> +	xe_sriov_bulk_set_preempt_timeout_us(pf_fd, pt_us);
+> +
+> +	for (id = 0; id <= total_vfs; ++id) {
+> +		int ret = __xe_sriov_profile_get_preempt_timeout_us(pf_fd, id,
+> +								    &read_val);
+> +
+> +		if (ret) {
+> +			igt_debug("%s: failed to read preempt_timeout_us, ret=%d\n",
+> +				  igt_sriov_func_str(id), ret);
+> +			fails++;
+> +			continue;
+> +		}
+> +
+> +		if (read_val != pt_us) {
+> +			igt_debug("%s: preempt_timeout_us=%u, expected=%u\n",
+> +				  igt_sriov_func_str(id), read_val, pt_us);
+> +			fails++;
+> +		}
+> +	}
+> +
+> +	xe_sriov_bulk_set_preempt_timeout_us(pf_fd, 0);
+> +	igt_fail_on(fails);
+> +}
+> +
+> +static void build_common_sched_priority_choice(int pf_fd, int num_vfs,
+> +					       struct igt_sysfs_choice *common)
+> +{
+> +	int ret;
+> +
+> +	/* Start from PF */
+> +	ret = __xe_sriov_profile_get_sched_priority_choice(pf_fd, 0, common);
+> +	igt_require_f(ret == 0,
+> +		      "Failed to read PF sched_priority (ret=%d)\n", ret);
+> +
+> +	igt_require_f(common->num_tokens > 0,
+> +		      "PF sched_priority exposes no tokens\n");
+> +
+> +	/* Intersect with every VF 1..num_vfs */
+> +	for (int vf = 1; vf <= num_vfs; vf++) {
+> +		struct igt_sysfs_choice prio = {};
+> +
+> +		ret = __xe_sriov_profile_get_sched_priority_choice(pf_fd, vf, &prio);
+> +		igt_require_f(ret == 0,
+> +			      "Failed to read VF%u sched_priority (ret=%d)\n",
+> +			      vf, ret);
+> +
+> +		ret = igt_sysfs_choice_intersect(common, &prio);
+> +		igt_require_f(ret == 0,
+> +			      "No common sched_priority between PF and VF%u\n",
+> +			      vf);
+> +	}
+> +
+> +	igt_require_f(common->num_tokens > 0,
+> +		      "No common sched_priority across PF and all VFs\n");
+> +
+> +	if (common->selected < 0) {
+> +		igt_debug("Common sched_priority has no selected token, "
+> +			  "defaulting to tokens[0]=\"%s\"\n",
+> +			  common->tokens[0]);
+> +		common->selected = 0;
+> +	}
+> +}
+> +
+> +/**
+> + * SUBTEST: bulk-sched-priority-vfs-disabled
+> + * Description: Verify bulk sched_priority modification with VFs disabled.
+> + */
+> +static void bulk_set_sched_priority(int pf_fd, unsigned int total_vfs, const char *prio_str)
+> +{
+> +	struct igt_sysfs_choice read_val;
+> +	const char *selected;
+> +	unsigned int id;
+> +	int fails = 0;
+> +
+> +	xe_sriov_bulk_set_sched_priority_string(pf_fd, prio_str);
+> +
+> +	for (id = 0; id <= total_vfs; ++id) {
+> +		int ret = __xe_sriov_profile_get_sched_priority_choice(pf_fd, id,
+> +								       &read_val);
+> +
+> +		if (ret) {
+> +			igt_debug("%s: failed to read sched_priority, ret=%d\n",
+> +				  igt_sriov_func_str(id), ret);
+> +			fails++;
+> +			continue;
+> +		}
+> +
+> +		selected = igt_sysfs_choice_selected(&read_val);
+> +		if (!selected || strncmp(selected, prio_str, strlen(prio_str))) {
+> +			igt_debug("%s: sched_priority='%s', expected='%s'\n",
+> +				  igt_sriov_func_str(id), selected ?: "NULL", prio_str);
+> +			fails++;
+> +		}
+> +	}
+> +
+> +	igt_fail_on(fails);
+> +}
+> +
+> +/**
+> + * SUBTEST: sched-priority-vf-write-denied
+> + * Description:
+> + *   Verify that sched_priority cannot be modified on a VF.
+> + *   A write attempt must fail with -EPERM or -EACCES and the
+> + *   current priority selection must remain unchanged.
+> + */
+> +static void sched_priority_vf_write_denied(int pf_fd, unsigned int vf_num)
+> +{
+> +	struct igt_sysfs_choice before, after;
+> +	const char *new_token;
+> +	int ret;
+> +
+> +	igt_require(vf_num > 0);
+> +
+> +	ret = __xe_sriov_profile_get_sched_priority_choice(pf_fd, vf_num, &before);
+> +	igt_require(ret == 0);
+> +	igt_require(before.num_tokens > 0);
+> +
+> +	new_token = before.tokens[(before.selected + 1) % before.num_tokens];
+
+Missing loop to try all possible values?
+
+> +
+> +	ret = __xe_sriov_profile_set_sched_priority_string(pf_fd, vf_num, new_token);
+> +	igt_assert_f(ret == -EPERM || ret == -EACCES,
+> +		     "Expected -EPERM/-EACCES when writing VF sched_priority "
+> +		     "(token='%s'), got %d\n", new_token, ret);
+> +
+> +	ret = __xe_sriov_profile_get_sched_priority_choice(pf_fd, vf_num, &after);
+> +	igt_assert_eq(ret, 0);
+> +
+> +	igt_assert_eq(after.selected, before.selected);
+> +	igt_assert(!strcmp(igt_sysfs_choice_selected(&before),
+> +			   igt_sysfs_choice_selected(&after)));
+> +}
+> +
+> +igt_main
+> +{
+> +	unsigned int total_vfs;
+> +	int pf_fd;
+> +
+> +	igt_fixture {
+> +		pf_fd = drm_open_driver(DRIVER_XE);
+> +		igt_require(igt_sriov_is_pf(pf_fd));
+> +		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
+> +		igt_require(xe_sriov_admin_is_present(pf_fd));
+> +		total_vfs = igt_sriov_get_total_vfs(pf_fd);
+> +	}
+> +
+> +	igt_subtest_with_dynamic("default-sched-attributes-vfs-disabled") {
+> +		for (unsigned int id = 0; id <= total_vfs; ++id)
+> +			default_sched_attributes(pf_fd, id);
+> +	}
+> +
+> +	igt_subtest_with_dynamic("exec-quantum-write-readback-vfs-disabled") {
+> +		uint32_t eq_ms = 10;
+> +
+> +		for (unsigned int id = 0; id <= total_vfs; ++id) {
+> +			igt_dynamic_f("%s-eq_ms-%u", igt_sriov_func_str(id), eq_ms) {
+> +				exec_quantum_write_readback(pf_fd, id, eq_ms);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("preempt-timeout-write-readback-vfs-disabled") {
+> +		uint32_t pt_us = 20000;
+> +
+> +		for (unsigned int id = 0; id <= total_vfs; ++id) {
+> +			igt_dynamic_f("%s-pt_us-%u", igt_sriov_func_str(id), pt_us) {
+> +				preempt_timeout_write_readback(pf_fd, id, pt_us);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("sched-priority-write-readback-vfs-disabled") {
+> +		for (unsigned int id = 0; id <= total_vfs; ++id) {
+> +			igt_dynamic_f("%s", igt_sriov_func_str(id)) {
+> +				sched_priority_write_readback(pf_fd, id);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("sched-priority-vf-write-denied") {
+> +		for_each_sriov_num_vfs(pf_fd, vf_num) {
+> +			igt_dynamic_f("%s", igt_sriov_func_str(vf_num)) {
+> +				sched_priority_vf_write_denied(pf_fd, vf_num);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_subtest("bulk-exec-quantum-vfs-disabled") {
+> +		const uint32_t eq_ms = 10;
+> +
+> +		bulk_set_exec_quantum(pf_fd, total_vfs, eq_ms);
+> +	}
+> +
+> +	igt_subtest("bulk-preempt-timeout-vfs-disabled") {
+> +		uint32_t pt_us = 10000;
+> +
+> +		bulk_set_preempt_timeout(pf_fd, total_vfs, pt_us);
+> +	}
+> +
+> +	igt_subtest_group {
+> +		struct igt_sysfs_choice prio = {};
+> +
+> +		igt_fixture {
+> +			build_common_sched_priority_choice(pf_fd, total_vfs,
+> +							   &prio);
+> +		}
+> +
+> +		igt_subtest_with_dynamic_f("bulk-sched-priority-vfs-disabled") {
+> +			for (size_t i = prio.num_tokens; i-- > 0; ) {
+> +				const char *prio_str = prio.tokens[i];
+> +
+> +				igt_dynamic_f("%s", prio_str)
+> +					bulk_set_sched_priority(pf_fd, 0, prio_str);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_fixture {
+> +		int ret;
+> +
+> +		ret = __xe_sriov_bulk_restore_defaults(pf_fd);
+> +		igt_sriov_disable_vfs(pf_fd);
+> +		/* abort to avoid execution of next tests with enabled VFs */
+> +		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0,
+> +			       "Failed to disable VF(s)");
+> +		igt_abort_on_f(ret, "Failed to restore default profile values\n");
+> +		drm_close_driver(pf_fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index ecc0f4c7f..6516a0a9a 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -327,6 +327,7 @@ intel_xe_progs = [
+>   	'xe_vm',
+>   	'xe_waitfence',
+>   	'xe_spin_batch',
+> +	'xe_sriov_admin_profile',
+>   	'xe_sriov_auto_provisioning',
+>   	'xe_sriov_flr',
+>   	'xe_sriov_scheduling',
