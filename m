@@ -4,61 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F08BD44C41
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Jan 2026 13:18:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A8D9D44C4A
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Jan 2026 13:29:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DD5A010E752;
-	Thu, 15 Jan 2026 13:18:44 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nkyx0VUQ";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B200610E756
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jan 2026 13:18:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768483123; x=1800019123;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=IE6JisX0fRpbtefTd+VeZZ+wE0u+NJ4U5y+NhgPMnpk=;
- b=nkyx0VUQ3NGmeg5x6v22UR39UrGg8cDJpwalrouv30+qhWCRhICBCfgF
- 7JXuBeXQFzzWrMX5HQfXJcs78NuzbMrSxLzwiB0a5m+fbt3wXDvFxp1ps
- 5UV2wPnUbD9r+SeTmDDl3BXaNkaCSv93N8SlZIfhqzHkN86oUff4VFzD5
- k/VoNmqkOTlOTf+zuLFFj1ohWsMvDwA9ol4H1Oq46zt2/DN3l4SJr7yzn
- m9+ASKj61yfalJJ46sdQ5W0UaByYit32+yKSdazC4NVUV5nojlbAmzdMT
- 3yw/PyOuBKSLC+R5HcuEsVichBPaYCPNlRNj3KuMQzO02tgVdY3c3hAm1 g==;
-X-CSE-ConnectionGUID: utAK/laQSWmoW4BpV9sXmw==
-X-CSE-MsgGUID: eBUeDyspRAmBmuAn7NxbQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="80509812"
-X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; d="scan'208";a="80509812"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2026 05:18:43 -0800
-X-CSE-ConnectionGUID: F5eTUwx5QJeNSWwTyHGOqw==
-X-CSE-MsgGUID: 6rSmWZMITHiOepo+CAxhwg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; d="scan'208";a="205364161"
-Received: from soc-5cg43972f8.clients.intel.com (HELO localhost)
- ([172.28.180.143])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2026 05:18:41 -0800
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
- lukasz.laguna@intel.com, michal.winiarski@intel.com,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t 4/4] lib/igt_kmod: Fix PCI bind/unbind for module/driver
- name mismatch
-Date: Thu, 15 Jan 2026 14:18:09 +0100
-Message-ID: <20260115131812.256678-5-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260115131812.256678-1-marcin.bernatowicz@linux.intel.com>
-References: <20260115131812.256678-1-marcin.bernatowicz@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B768E10E0A2;
+	Thu, 15 Jan 2026 13:29:14 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDAF710E0A2;
+ Thu, 15 Jan 2026 13:29:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7803111507252259449=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_RFC=3A_cut_successful_dmesg?=
+ =?utf-8?q?_logs_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 15 Jan 2026 13:29:13 -0000
+Message-ID: <176848375383.156800.11106707924301268839@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260115125732.20542-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20260115125732.20542-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,169 +37,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-igt_kmod_bind() and igt_kmod_unbind() assumed that the PCI
-driver name was identical to the module name, which is not true
-for drivers such as xe_vfio_pci (module) vs xe-vfio-pci (driver).
+--===============7803111507252259449==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Resolve the registered PCI driver name via
-/sys/module/<module>/drivers/pci:* and forward bind/unbind operations
-to the generic PCI driver helpers.
+== Series Details ==
 
-Mark these helpers as deprecated, as bind/unbind are fundamentally
-driver-level operations. New code should prefer the igt_pci_driver_*
-APIs, while these wrappers remain for backwards compatibility and
-“unbind before module unload” workflows.
+Series: RFC: cut successful dmesg logs (rev2)
+URL   : https://patchwork.freedesktop.org/series/159973/
+State : success
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>
----
- lib/igt_kmod.c | 90 ++++++++++++++++++++++++++++----------------------
- 1 file changed, 51 insertions(+), 39 deletions(-)
+== Summary ==
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index d1d7a3840..008752f29 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -44,6 +44,7 @@
- #include "igt_hook.h"
- #include "igt_kmod.h"
- #include "igt_ktap.h"
-+#include "igt_pci.h"
- #include "igt_sysfs.h"
- #include "igt_taints.h"
- 
-@@ -598,43 +599,58 @@ int __igt_intel_driver_unload(char **who, const char *driver)
- 	return 0;
- }
- 
-+static char *kmod_pci_driver_from_module_alloc(const char *mod_name)
-+{
-+	char dirpath[PATH_MAX];
-+	struct dirent *de;
-+	DIR *d;
-+
-+	snprintf(dirpath, sizeof(dirpath), "/sys/module/%s/drivers", mod_name);
-+	d = opendir(dirpath);
-+	if (!d)
-+		return NULL;
-+
-+	while ((de = readdir(d))) {
-+		if (!strncmp(de->d_name, "pci:", 4)) {
-+			char *drv = strdup(de->d_name + 4);
-+
-+			closedir(d);
-+			return drv;
-+		}
-+	}
-+
-+	closedir(d);
-+	return NULL;
-+}
-+
- /**
-  * igt_kmod_unbind: Unbind driver from devices. Currently supports only PCI bus
-  * @mod_name: name of the module to unbind
-  * @pci_device: if provided, unbind only this device, otherwise unbind all devices
-+ *
-+ * Deprecated: bind/unbind is a driver operation. Prefer using:
-+ *   - igt_pci_driver_unbind()/igt_pci_driver_unbind_all()
-+ *   - igt_pci_device_unbind()
-+ *
-+ * This helper remains for backwards compatibility and for “unbind before
-+ * module unload” workflows.
-  */
- int igt_kmod_unbind(const char *mod_name, const char *pci_device)
- {
- 	struct igt_hook *igt_hook = NULL;
--	char path[PATH_MAX];
--	struct dirent *de;
--	int dirlen;
--	DIR *dir;
--
--	dirlen = snprintf(path, sizeof(path), "/sys/module/%s/drivers/pci:%s/",
--			  mod_name, mod_name);
--	igt_assert(dirlen < sizeof(path));
--
--	dir = opendir(path);
--
--	/* Module not loaded, nothing to unbind */
--	if (!dir)
--		return 0;
--
--	while ((de = readdir(dir))) {
--		bool ret;
--
--		if (de->d_type != DT_LNK || !isdigit(de->d_name[0]))
--			continue;
-+	char *driver;
-+	int ret;
- 
--		if (pci_device && strcmp(pci_device, de->d_name) != 0)
--			continue;
-+	driver = kmod_pci_driver_from_module_alloc(mod_name);
-+	if (!driver)
-+		return 0; /* module not loaded / no pci driver */
- 
--		ret = igt_sysfs_set(dirfd(dir), "unbind", de->d_name);
--		igt_assert(ret);
--	}
-+	if (pci_device)
-+		ret = igt_pci_driver_unbind(driver, pci_device);
-+	else
-+		ret = igt_pci_driver_unbind_all(driver);
- 
--	closedir(dir);
-+	free(driver);
- 
- 	igt_hook = igt_core_get_igt_hook();
- 	igt_hook_event_notify(igt_hook, &(struct igt_hook_evt){
-@@ -642,7 +658,7 @@ int igt_kmod_unbind(const char *mod_name, const char *pci_device)
- 		.target_name = mod_name,
- 	});
- 
--	return 0;
-+	return ret;
- }
- 
- /**
-@@ -651,25 +667,21 @@ int igt_kmod_unbind(const char *mod_name, const char *pci_device)
-  * @pci_device: device to bind
-  *
-  * Module should already be loaded
-+ *
-+ * Deprecated: prefer igt_pci_driver_bind().
-  */
- int igt_kmod_bind(const char *mod_name, const char *pci_device)
- {
--	char path[PATH_MAX];
--	int dirlen, dirfd;
-+	char *driver;
- 	int ret;
- 
--	dirlen = snprintf(path, sizeof(path), "/sys/module/%s/drivers/pci:%s/",
--			  mod_name, mod_name);
--	igt_assert(dirlen < sizeof(path));
--
--	dirfd = open(path, O_RDONLY | O_CLOEXEC);
--	if (dirfd < 0)
--		return dirfd;
--
--	ret = igt_sysfs_set(dirfd, "bind", pci_device);
-+	driver = kmod_pci_driver_from_module_alloc(mod_name);
-+	if (!driver)
-+		return -ENOENT;
- 
--	close(dirfd);
-+	ret = igt_pci_driver_bind(driver, pci_device);
- 
-+	free(driver);
- 	return ret;
- }
- 
--- 
-2.43.0
+CI Bug Log - changes from XEIGT_8701_BAT -> XEIGTPW_14348_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 11)
+------------------------------
+
+  Missing    (1): bat-bmg-3 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14348_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_waitfence@abstime:
+    - bat-dg2-oem2:       [TIMEOUT][1] ([Intel XE#6506]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8701/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14348/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+
+  * igt@xe_waitfence@reltime:
+    - bat-dg2-oem2:       [FAIL][3] ([Intel XE#6520]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8701/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14348/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+
+  
+  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
+  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8701 -> IGTPW_14348
+  * Linux: xe-4382-d5b0278e4bea2fb27de6d12b7f865a74072af677 -> xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d
+
+  IGTPW_14348: 14348
+  IGT_8701: 8701
+  xe-4382-d5b0278e4bea2fb27de6d12b7f865a74072af677: d5b0278e4bea2fb27de6d12b7f865a74072af677
+  xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d: 733664f1edf3c01cc68e6dd0bbdb135158a98a1d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14348/index.html
+
+--===============7803111507252259449==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>RFC: cut successful dmesg logs (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159973/">https://patchwork.freedesktop.org/series/159973/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14348/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14348/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8701_BAT -&gt; XEIGTPW_14348_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 11)</h2>
+<p>Missing    (1): bat-bmg-3 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14348_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@xe_waitfence@abstime:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8701/bat-dg2-oem2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14348/bat-dg2-oem2/igt@xe_waitfence@abstime.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_waitfence@reltime:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8701/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14348/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8701 -&gt; IGTPW_14348</li>
+<li>Linux: xe-4382-d5b0278e4bea2fb27de6d12b7f865a74072af677 -&gt; xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d</li>
+</ul>
+<p>IGTPW_14348: 14348<br />
+  IGT_8701: 8701<br />
+  xe-4382-d5b0278e4bea2fb27de6d12b7f865a74072af677: d5b0278e4bea2fb27de6d12b7f865a74072af677<br />
+  xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d: 733664f1edf3c01cc68e6dd0bbdb135158a98a1d</p>
+
+</body>
+</html>
+
+--===============7803111507252259449==--
