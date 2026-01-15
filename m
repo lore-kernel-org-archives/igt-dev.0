@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7CA7D46621
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Jan 2026 20:18:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82E5AD46621
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Jan 2026 20:27:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 97BBB10E1A7;
-	Thu, 15 Jan 2026 20:18:34 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GVTER+Dt";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15AAB10E09D
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jan 2026 20:18:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768508313; x=1800044313;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=D3lunjU/HYa6Ub6764qGaAKMjLGmPOk0i0EpilRxDN8=;
- b=GVTER+DtAYREsf1u6EkFHGNm7X2ZDJTgmV3vZ8djDTWHt1r1AcJUfG+G
- uYh2WptgCyOuMYhNTlNJIbTU5/Og0sP3hMGLFtVn7UrucIVIeQnskjtbM
- yoNhUWMvTzv01AMmrtgN5tKj7x0BHMtmtlFKUhfE/+wwYrPO1qBpTV9B8
- 3wDmD4fa0j+UnWYA9OiuR6lvDcMWyn9TK1T0gWbKmsEPfhfzDsaVM8Tsd
- WrG86sms1+zhBGEiO6SX7h8cyHpWa2j925CHc61IfkakWPNLWm7Qju5Qs
- X/iI2EnCruKypwk0Xt3VSxErR0+coMtA054J9/jJASG7sQsMMRBg3/GUu Q==;
-X-CSE-ConnectionGUID: nfmgdMGTSXOTYV06JRtgkQ==
-X-CSE-MsgGUID: mGUz0hufQUiOLJI37yGZeA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="68833162"
-X-IronPort-AV: E=Sophos;i="6.21,229,1763452800"; d="scan'208";a="68833162"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2026 12:18:33 -0800
-X-CSE-ConnectionGUID: eGY4lkp1RZWSFnDHcICajQ==
-X-CSE-MsgGUID: f+sdGYKqQR2X7DpPngOk0A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,229,1763452800"; d="scan'208";a="204836477"
-Received: from dut4086lnl.fm.intel.com ([10.105.8.126])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2026 12:18:33 -0800
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: saurabhg.gupta@intel.com, alex.zuo@intel.com, jonathan.cavitt@intel.com,
- niranjana.vishwanathapura@intel.com, priyanka.dandamudi@intel.com,
- stuart.summers@intel.com
-Subject: [PATCH] tests/intel/xe_exec_multi_queue: No engines in virtual test
- expected
-Date: Thu, 15 Jan 2026 20:18:32 +0000
-Message-ID: <20260115201831.6718-2-jonathan.cavitt@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2A08710E09D;
+	Thu, 15 Jan 2026 20:27:39 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D9B810E09D;
+ Thu, 15 Jan 2026 20:27:38 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8989061087092658065=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_Runner=3A_Use_Jansson_inste?=
+ =?utf-8?q?ad_of_json-c?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 15 Jan 2026 20:27:38 -0000
+Message-ID: <176850885850.159376.4888272043531230762@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260115175811.179898-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20260115175811.179898-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,45 +37,122 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In the xe_exec_multi_queue@virtual test, we currently assert that at
-least one engine with a given class on a given GT ID exists.  However,
-the way we generate these class and GT ID pairs is through brute-force
-(I.E. list all engine classes that support multi queue, then list all GT
-IDs, to generate all pairs).  This frequently results in invalid class
-and GT ID pairs.
+--===============8989061087092658065==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-While a smart solution that only generates valid class and GT ID
-pairings would be preferred here, doing so would probably be overkill,
-so just remove the igt_assert case and exit silently if no engines are
-found.
+== Series Details ==
 
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Cc: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Cc: Stuart Summers <stuart.summers@intel.com>
----
- tests/intel/xe_exec_multi_queue.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Series: Runner: Use Jansson instead of json-c
+URL   : https://patchwork.freedesktop.org/series/160154/
+State : failure
 
-diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
-index 6bc6f9f63b..9a02744967 100644
---- a/tests/intel/xe_exec_multi_queue.c
-+++ b/tests/intel/xe_exec_multi_queue.c
-@@ -995,7 +995,9 @@ test_exec_virtual(int fd, int gt, int class)
- 
- 		eci[n++] = *hwe;
- 	}
--	igt_assert(n);
-+
-+	if (!n)
-+		return;
- 
- 	test_exec(fd, eci, n, n, n, 0);
- 	test_exec(fd, eci, n, n, n, PREEMPT_MODE);
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8704_BAT -> XEIGTPW_14351_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_14351_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_14351_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (11 -> 0)
+------------------------------
+
+  ERROR: It appears as if the changes made in XEIGTPW_14351_BAT prevented too many machines from booting.
+
+  Missing    (11): bat-bmg-1 bat-lnl-2 bat-lnl-1 bat-ptl-2 bat-ptl-vm bat-ptl-1 bat-atsm-2 bat-bmg-3 bat-bmg-2 bat-adlp-vm bat-adlp-7 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8704 -> IGTPW_14351
+  * Linux: xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d -> xe-4387-e11a5aad7dae203adfba9554480c058eeb890a1b
+
+  IGTPW_14351: 14351
+  IGT_8704: 8704
+  xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d: 733664f1edf3c01cc68e6dd0bbdb135158a98a1d
+  xe-4387-e11a5aad7dae203adfba9554480c058eeb890a1b: e11a5aad7dae203adfba9554480c058eeb890a1b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14351/index.html
+
+--===============8989061087092658065==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Runner: Use Jansson instead of json-c</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160154/">https://patchwork.freedesktop.org/series/160154/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14351/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14351/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8704_BAT -&gt; XEIGTPW_14351_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_14351_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_14351_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (11 -&gt; 0)</h2>
+<p>ERROR: It appears as if the changes made in XEIGTPW_14351_BAT prevented too many machines from booting.</p>
+<p>Missing    (11): bat-bmg-1 bat-lnl-2 bat-lnl-1 bat-ptl-2 bat-ptl-vm bat-ptl-1 bat-atsm-2 bat-bmg-3 bat-bmg-2 bat-adlp-vm bat-adlp-7 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8704 -&gt; IGTPW_14351</li>
+<li>Linux: xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d -&gt; xe-4387-e11a5aad7dae203adfba9554480c058eeb890a1b</li>
+</ul>
+<p>IGTPW_14351: 14351<br />
+  IGT_8704: 8704<br />
+  xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d: 733664f1edf3c01cc68e6dd0bbdb135158a98a1d<br />
+  xe-4387-e11a5aad7dae203adfba9554480c058eeb890a1b: e11a5aad7dae203adfba9554480c058eeb890a1b</p>
+
+</body>
+</html>
+
+--===============8989061087092658065==--
