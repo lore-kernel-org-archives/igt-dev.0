@@ -4,56 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F26FFD4660D
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Jan 2026 18:36:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13D30D46606
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Jan 2026 18:43:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E85510E04E;
-	Thu, 15 Jan 2026 18:36:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7FE4610E05B;
+	Thu, 15 Jan 2026 18:43:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gLXNlngM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PPUhXG0R";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33F8610E04E
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Jan 2026 18:36:13 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A2BBD10E05B;
+ Thu, 15 Jan 2026 18:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768502173; x=1800038173;
- h=date:from:to:subject:message-id:references:mime-version:
- in-reply-to; bh=4ZgHDmgaKvEhTj0tLo2TlcZ00BFTWhTQhODGOkdmTEE=;
- b=gLXNlngMdP8gebb5Ep89MR+J7SoUmFE0Sw5BXdJj7e83m7fYOiBAhk5a
- 0xntClVrK9Kc4UHY6wLq0xNsPZwvGW49h+dRaiAAxCSd2V/MG9h8Ci4I4
- zaBPeqdHFwus4YwJvdtGQTGH4POiy40ZJFXvZNztBE+VkOyWFiPCr8m6n
- gSo8nJQR66zEbZbM+d3wRJ893x0zXCJ4iSE+4d0PIMmOQQfKD8tApp91E
- qSYYI+I6tjWcyJzh/xFEZeAFJYqrb/HUWLIAxGDzQbkQSiF37mT5klChY
- GGNIbl9SjcudsPGsmMkt6Cb3h/XSaRWHBA2QdYSmkuly6QX6oasGw4GPl A==;
-X-CSE-ConnectionGUID: byxegVWCRPWfnjGTy7+HAg==
-X-CSE-MsgGUID: jstolI3vQJmfJFoxnNkEjw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="69907636"
-X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; d="scan'208";a="69907636"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jan 2026 10:36:13 -0800
-X-CSE-ConnectionGUID: DvaxfuSCS0ihidpZSjUDgA==
-X-CSE-MsgGUID: xkzOeFqXQiij/Tb/CtLw9w==
+ t=1768502629; x=1800038629;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=J9UHAgBFif9BQA5Rr7xWXGXDuuPoPfUtKNKptThFN3I=;
+ b=PPUhXG0RUF85RNB4BMdf1C3R5kZskLJ9BqrBE/Pzbfo0MKWVRgzlNuhP
+ xfzyqvUV66Qn4SU424Udm1bahhC5hcOc/gU6V1lTaYwf/pHP5uQEDPNBy
+ akgOz6Epj4hMOkYzVNDfgn2T2NDlZIGJX+YPq6tI6AG9/1l/BfFXhvjjj
+ FqxDCBcqdtPuR2lnpmRCcBA6P4aHp9uEL9FKqGIP6S6c19sUx11aYk6/N
+ rQxg9TTaUL3GFbPd3FZPqfXhMMogbtrr9XmYwN9pGv4CiZxhk6zqzVw36
+ vj3pSgCfrgl3SaC4E5XCm4WOk4b/HxUsdBvcW7FyiTtjqt64Inpww61IS A==;
+X-CSE-ConnectionGUID: FxMQSttVRcm4nqufltWf0Q==
+X-CSE-MsgGUID: 9usyxfm4Q2Gm/dKUI0debw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="80926655"
+X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; d="scan'208";a="80926655"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jan 2026 10:43:48 -0800
+X-CSE-ConnectionGUID: V1EHs+ioQtilRFMksBPnvQ==
+X-CSE-MsgGUID: 1HbAX6ojRg6uBxnUSQJE5Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; d="scan'208";a="205082843"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 10:36:12 -0800
-Date: Thu, 15 Jan 2026 19:36:09 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; d="scan'208";a="209510037"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO
+ jkrzyszt-mobl2.intranet) ([10.245.246.152])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jan 2026 10:43:45 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw=?= =?utf-8?Q?=3A?= failure for
- RFC: cut successful dmesg logs (rev2)
-Message-ID: <20260115183609.xpwceflxoi7wcwwi@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20260115125732.20542-1-kamil.konieczny@linux.intel.com>
- <176848948465.158821.9627968054287168312@a3b018990fe9>
+Cc: intel-gfx@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t v4] tests/intel/gem_lmem_swapping: Avoid false failures
+ from oom-killer
+Date: Thu, 15 Jan 2026 19:43:03 +0100
+Message-ID: <20260115184334.1025817-2-janusz.krzysztofik@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <176848948465.158821.9627968054287168312@a3b018990fe9>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,67 +73,155 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2026-01-15 at 15:04:44 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: RFC: cut successful dmesg logs (rev2)
-> URL   : https://patchwork.freedesktop.org/series/159973/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_8701_FULL -> XEIGTPW_14348_FULL
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_14348_FULL absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_14348_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (2 -> 2)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_14348_FULL:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@xe_exec_system_allocator@many-large-mmap-remap-dontunmap:
->     - shard-lnl:          [PASS][1] -> [DMESG-WARN][2] +4 other tests dmesg-warn
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8701/shard-lnl-4/igt@xe_exec_system_allocator@many-large-mmap-remap-dontunmap.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14348/shard-lnl-5/igt@xe_exec_system_allocator@many-large-mmap-remap-dontunmap.html
-> 
->   * igt@xe_pmu@fn-engine-activity-sched-if-idle:
->     - shard-bmg:          [PASS][3] -> [INCOMPLETE][4] +1 other test incomplete
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8701/shard-bmg-1/igt@xe_pmu@fn-engine-activity-sched-if-idle.html
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14348/shard-bmg-7/igt@xe_pmu@fn-engine-activity-sched-if-idle.html
-> 
+The smem-oom subtest can expectedly result in oom-killer being triggered,
+which then dumps a call trace from a process that triggered it.  If that
+happens to be a process that executes drm or i915 functions then the call
+trace dump contains lines recognized by igt_runner running in piglit mode
+as potential warnings.  If severity of the call trace dump messages is
+NOTICE or higher, which isn't unlikely, then a dmesg-warn result is
+reported despite successful completion of the subtest.
 
-Unrelated.
+Fortunately, severity of those call trace dump messages depends on kernel
+default log level which can be controlled from user space over sysctl.
 
-Regards,
-Kamil
+To avoid false failure reports, relax kernel default log level to INFO so
+those log lines are ignored by igt_runner in piglit mode at an expense of
+call traces from real issues potentially detected by the subtest not
+contributing to the igt_runner reported result.  Since those call traces
+are still available to developers, only submitted with reduced severity,
+that shouldn't hurt as long as the igt_runner still abandons further
+execution and reports an abort result on a kernel taint.
 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_14348_FULL that come from known issues:
-> 
-...cut...
+v4: In the exit handler, restore the default log level with a simple
+    write() from a formerly prepared buffer, and abort verbosely if that
+    doesn't succeed (Kamil).
+v3: Move cleanup to an exit handler in case we are killed (Kamil).
+v2: Move default log level setup inside subtest smem-oom (Kamil),
+  - move cleanup there as well.
+
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5493
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ tests/intel/gem_lmem_swapping.c | 91 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 89 insertions(+), 2 deletions(-)
+
+diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+index adae26716c..1b07124aff 100644
+--- a/tests/intel/gem_lmem_swapping.c
++++ b/tests/intel/gem_lmem_swapping.c
+@@ -9,6 +9,7 @@
+ #include "i915/intel_memory_region.h"
+ #include "igt.h"
+ #include "igt_kmod.h"
++#include "runnercomms.h"
+ #include <unistd.h>
+ #include <stdlib.h>
+ #include <stdint.h>
+@@ -661,6 +662,38 @@ static void gem_leak(int fd, uint64_t alloc)
+ 	gem_madvise(fd, handle, I915_MADV_DONTNEED);
+ }
+ 
++static int printk = -1;
++static char log_levels[4];
++
++static void printk_exit_handler(int sig)
++{
++	char *message = NULL;
++	int n;
++
++	if (printk < 0)
++		return;
++
++	n = strlen(log_levels);
++	if (!n) {
++		message = strdup("no defaults saved, unable to restore /proc/sys/kernel/printk\n");
++	} else if (write(printk, log_levels, n) != n) {
++		n = errno;
++		if (asprintf(&message,
++			     "restoring /proc/sys/kernel/printk defaults failed, errno: %d\n",
++			     n) < 0)
++			message = NULL;
++	}
++	close(printk);
++
++	if (message) {
++		log_to_runner_sig_safe(message, strlen(message));
++		free(message);
++		abort();
++	}
++
++	printk = -1;
++}
++
+ static int *lmem_done;
+ 
+ static void smem_oom_exit_handler(int sig)
+@@ -861,8 +894,62 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	}
+ 
+ 	igt_describe("Exercise local memory swapping during exhausting system memory");
+-	dynamic_lmem_subtest(region, regions, "smem-oom")
+-		test_smem_oom(i915, ctx, region);
++	igt_subtest_with_dynamic("smem-oom") {
++		int console_log_level, default_log_level;
++		unsigned int fd, i = 0;
++		FILE *stream = NULL;
++
++		/*
++		 * This subtest can result in oom-killer being triggered, which
++		 * then dumps a call trace from a process that triggered it.
++		 * If that happens to be a process that executes drm or i915
++		 * functions then the call trace dump contains lines recognized
++		 * by igt_runner as warnings and a dmesg-warn result is
++		 * reported.  To avoid false failure reports, relax kernel
++		 * default log level to INFO for those lines to be ignored by
++		 * igt_runner in piglit mode, at an expense of call traces from
++		 * potential real issues not contributing to the igt_runner
++		 * reported result.  Since those call traces are still available
++		 * to developers, only displayed with relaxed severity, that
++		 * shouldn't hurt as long as igt_runner still abandons further
++		 * execution and reports an abort result on a kernel taint.
++		 */
++		fd = open("/proc/sys/kernel/printk", O_RDWR);
++		if (!igt_debug_on(fd < 0))
++			stream = fdopen(fd, "r+");
++
++		if (igt_debug_on(!stream))
++			close(fd);
++		else
++			i = fscanf(stream, "%d %d", &console_log_level, &default_log_level);
++
++		if (igt_debug_on(i != 2) || default_log_level >= 6) {
++			i = 0;
++			fclose(stream);
++		} else {
++			i = snprintf(log_levels, sizeof(log_levels), "%d %d",
++				     console_log_level, default_log_level);
++		}
++
++		if (!igt_debug_on(i != 3))
++			printk = dup(fd);
++
++		if (!igt_debug_on(printk < 0)) {
++			igt_install_exit_handler(printk_exit_handler);
++
++			rewind(stream);
++			igt_debug_on(fprintf(stream, "%d 6", console_log_level) != 6);
++		}
++
++		for (i = 0; i < regions->num_regions; i++) {
++			region = &regions->regions[i];
++			if (region->region.memory_class == I915_MEMORY_CLASS_DEVICE)
++				igt_dynamic_f("lmem%u", region->region.memory_instance)
++					test_smem_oom(i915, ctx, region);
++		}
++
++		printk_exit_handler(0);
++	}
+ 
+ 	igt_fixture() {
+ 		intel_allocator_multiprocess_stop();
+-- 
+2.52.0
+
