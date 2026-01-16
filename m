@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF951C982D3
-	for <igt-dev@archiver.kernel.org>; Fri, 16 Jan 2026 15:46:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22B4DC982D4
+	for <igt-dev@archiver.kernel.org>; Fri, 16 Jan 2026 15:47:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 76C0210E8CC;
-	Fri, 16 Jan 2026 15:46:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C033C10E8CE;
+	Fri, 16 Jan 2026 15:47:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bKzQaWy5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZVYx3xdT";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 367CD10E8CE
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Jan 2026 15:46:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0314810E8CE
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Jan 2026 15:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768578416; x=1800114416;
+ t=1768578424; x=1800114424;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=WbXt6ZSrZzr+p9JaJu6hMYl2MAYIRnoHgo1cHviYPRA=;
- b=bKzQaWy5Gs9oEpuNhjAnZISaMg75Me5DmVeWOo8oP6QBaq8dQcDKmQ2j
- zIXlbAIdicY+v8d5g45pnnB4Pi8bXqLWWDQBrHN0rhM3BGv6VY89DlOdA
- UM7druk877rdEbXL8rtILL0CGAsnoxufnv2tasvqPxFOWSBNQaw/ZJCOI
- MVbAWAQCFJzZTyb69IwQJK6blgPCLxHvW5x1+oY4LNWHNjAwmXCu1DxwJ
- JR4YzXr7LXyK0vDcWuzbGbYGtVc/dxn6Yir6sRm5SeJ/IIWWgOukzOpM8
- i0SSN0+H9C5IMPEAyMrE6uwEkKzU3RptQST8qbmX4BWK+EsO6PnRNBsH/ Q==;
-X-CSE-ConnectionGUID: l2v9QOa3SBSLVOfOwIZD3g==
-X-CSE-MsgGUID: QOJzGDs5Reu9FR1wX4aEfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="68905312"
-X-IronPort-AV: E=Sophos;i="6.21,231,1763452800"; d="scan'208";a="68905312"
+ bh=9l0pkB1Ho0DDExpLH70cJqIEujapKbyW2FfvtOWf3Mo=;
+ b=ZVYx3xdTOp667XkRH7wIKjKvhd3KJVc5B+qlUGLNo87KsNf1VvxQT/yU
+ yz7JIqG4L0YWcoS/Kf+lsIWiMGK8LPScofUXfKsad11HT56kFoFrUDgWV
+ u1hz6cN7v+aXFqlX2UBViw6OjrWuQiC2WfZHynWiG41Zie5VdB1slsMiw
+ qvRyhGUjsB/ZbP4tR5mZMEMSZgpUFVpGbC+cdxNCr3Gn9+DOd1UllNO9l
+ JADhT/qJNkePeXt9IVSJsZ4l0+Ir5sNqJNXJVyid5URxZcfK6wnAqOAox
+ 7ZZyEX0HS5xBSF5dMzhacZ54blI1y0t34AA/l51g+IsbWoyZK+N+otAf2 w==;
+X-CSE-ConnectionGUID: C5X/Y4GOQq6EfSPxqkgmng==
+X-CSE-MsgGUID: MXD/SzR8TxapCIO3r6f2dQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="68905322"
+X-IronPort-AV: E=Sophos;i="6.21,231,1763452800"; d="scan'208";a="68905322"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jan 2026 07:46:56 -0800
-X-CSE-ConnectionGUID: 0TPrGS3SS9a1UnL8Sx4tfw==
-X-CSE-MsgGUID: fqmaw1ctSjyjTPmqYY/1qg==
+ 16 Jan 2026 07:47:04 -0800
+X-CSE-ConnectionGUID: U8LPj/t8QF2bjPfNmGxeOw==
+X-CSE-MsgGUID: /RtzXYIuQUCXsI6zPmJAvA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,231,1763452800"; d="scan'208";a="209749488"
+X-IronPort-AV: E=Sophos;i="6.21,231,1763452800"; d="scan'208";a="209749565"
 Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
  ([10.245.245.180])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jan 2026 07:46:55 -0800
+ 16 Jan 2026 07:47:03 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v4 3/5] lib/intel_compute: Add xe3p SIP support
-Date: Fri, 16 Jan 2026 16:46:40 +0100
-Message-ID: <20260116154636.204553-10-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v4 5/5] lib/intel_compute: Add loop_kernel_duration
+ support for xe3p
+Date: Fri, 16 Jan 2026 16:46:42 +0100
+Message-ID: <20260116154636.204553-12-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260116154636.204553-7-zbigniew.kempczynski@intel.com>
 References: <20260116154636.204553-7-zbigniew.kempczynski@intel.com>
@@ -70,48 +72,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend xe3p pipeline to handle sip for WTMP tests.
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
+Xe3p is missing loop_kernel_duration. Port the implementation from
+xe2lpg_compute_exec(). It stops failing "xe_compute@loop-duration-2s"
+for xe3p platform.
+
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/intel_compute.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ lib/intel_compute.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 05ea92c7db..75cf1beba6 100644
+index f27344e717..3244d4fde5 100644
 --- a/lib/intel_compute.c
 +++ b/lib/intel_compute.c
-@@ -1920,6 +1920,7 @@ static void xe3p_compute_exec_compute(int fd,
- 				      uint32_t *addr_bo_buffer_batch,
- 				      uint64_t kernel_start_pointer,
- 				      uint64_t context_data_base_addr,
-+				      uint64_t sip_start_pointer,
- 				      bool threadgroup_preemption,
- 				      uint32_t work_size)
- {
-@@ -1960,6 +1961,12 @@ static void xe3p_compute_exec_compute(int fd,
- 	addr_bo_buffer_batch[b++] = context_data_base_addr;
- 	addr_bo_buffer_batch[b++] = context_data_base_addr >> 32;
+@@ -2098,6 +2098,7 @@ static void xe3p_compute_exec(int fd, const unsigned char *kernel,
+ 	float *input_data, *output_data;
+ 	uint64_t indirect_addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START;
+ 	int entries = ARRAY_SIZE(bo_dict);
++	int64_t timeout_one_ns = 1;
  
-+	if (sip_start_pointer && !threadgroup_preemption) {
-+		addr_bo_buffer_batch[b++] = XE2_STATE_SIP | 0x1;
-+		addr_bo_buffer_batch[b++] = sip_start_pointer;
-+		addr_bo_buffer_batch[b++] = sip_start_pointer >> 32;
-+	}
-+
- 	addr_bo_buffer_batch[b++] = XE3P_COMPUTE_WALKER2 | 0x3e; /* dw0 */
- 	addr_bo_buffer_batch[b++] = 0x00000000; /* dw1 */
- 	addr_bo_buffer_batch[b++] = 0x00000000; /* dw2 */
-@@ -2115,7 +2122,7 @@ static void xe3p_compute_exec(int fd, const unsigned char *kernel,
- 	xe3p_compute_exec_compute(fd, &idata,
- 				  bo_dict[4].data,
- 				  ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
--				  XE2_ADDR_STATE_CONTEXT_DATA_BASE, false,
-+				  XE2_ADDR_STATE_CONTEXT_DATA_BASE, 0, false,
+ 	bo_execenv_create(fd, &execenv, eci, user);
+ 
+@@ -2125,7 +2126,18 @@ static void xe3p_compute_exec(int fd, const unsigned char *kernel,
+ 				  XE2_ADDR_STATE_CONTEXT_DATA_BASE, 0, false,
  				  execenv.array_size);
  
- 	bo_execenv_exec(&execenv, ADDR_BATCH);
+-	bo_execenv_exec(&execenv, ADDR_BATCH);
++	if (user && user->loop_kernel_duration) {
++		bo_execenv_exec_async(&execenv, ADDR_BATCH);
++		igt_measured_usleep(user->loop_kernel_duration);
++		/* Check that the loop kernel has not completed yet */
++		igt_assert_neq(0, __xe_wait_ufence(fd, &execenv.bo_sync->sync, USER_FENCE_VALUE,
++						   execenv.exec_queue, &timeout_one_ns));
++		((int *)bo_dict[2].data)[0] = MAGIC_LOOP_STOP;
++		bo_execenv_sync(&execenv);
++		user->skip_results_check = 1;
++	} else {
++		bo_execenv_exec(&execenv, ADDR_BATCH);
++	}
+ 
+ 	if (!user || (user && !user->skip_results_check))
+ 		bo_check_square(input_data, output_data, execenv.array_size);
 -- 
 2.43.0
 
