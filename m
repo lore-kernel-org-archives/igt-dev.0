@@ -4,197 +4,190 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A1F9D4A615
-	for <igt-dev@archiver.kernel.org>; Fri, 16 Jan 2026 09:02:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F4A7D4A619
+	for <igt-dev@archiver.kernel.org>; Fri, 16 Jan 2026 09:53:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EF0E610E838;
-	Fri, 16 Jan 2026 09:02:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 233D810E844;
+	Fri, 16 Jan 2026 09:53:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mYRuElQy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W0IZ7S2h";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8591810E10C;
- Fri, 16 Jan 2026 09:02:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 625EA10E844
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Jan 2026 09:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768554146; x=1800090146;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=X86Dajb5zlKBRoPLYiTMIMnfquKkvzE4nnW2wYssdRo=;
- b=mYRuElQyGVdZjB2CHtMJOEm83koQPE/0nuTPhLEMxMFyfqqoUZ8b18M/
- RhL+LVfLhVxYRpwzbkBsE3Xcs59JMOrEjwlhO3ceyewhHepBSNgGKStMD
- 6UfGNbIUKPJ8yVzHeMZHAssfjw3FDYh5pkfcjT6oQwhyIhWJFXOr87paX
- lCrJHw+LREJCAG9gvWG3nrQ2uVKsuG9lW3PnflDebs/0CjntrGrfcNNIi
- nQHq3ApGyr5m0vNWy9uNxR6Pde3OcYfRvKQz3j9oEXS8mBmpqy1/SsVhN
- 0+tU1SI4OyuCzQNFslAcjKoCchluc0Bn8O9CIPV0Q0AnV9bXQSkNL+ZBU A==;
-X-CSE-ConnectionGUID: sWcjdm51TNOFJMw5NabzuA==
-X-CSE-MsgGUID: VHLzMBmlTQS2DqoWR8NAFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="92529913"
-X-IronPort-AV: E=Sophos;i="6.21,230,1763452800"; d="scan'208";a="92529913"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jan 2026 01:02:26 -0800
-X-CSE-ConnectionGUID: YJXRLvfpSminF2BiKt7jOg==
-X-CSE-MsgGUID: 4UkNA7QPQFKOOFIRYUO+zQ==
+ t=1768557183; x=1800093183;
+ h=date:from:to:cc:subject:message-id:references:
+ content-transfer-encoding:in-reply-to:mime-version;
+ bh=/PuL8G0809emXXV8u0wiF/28f8GPE+Tn5ZSmsROmTq0=;
+ b=W0IZ7S2hFnXuVSt13ktiVrVTRjZQ6/m+d6TT4GA8hVcASG6i5+merXno
+ PlfvoeBDBMsn/EQvFfu4FicJLQ+UjMWG+ursUgNx9IQaDsvXubGMhQdrn
+ Z2nTY2kilJHmqOPGcvdOPaP1lpBCDp+3f3xwLfV1bZdayIJiCdKgDJd8O
+ dJNNFaLBnTT1d8i5u3JBu6jpNMo/NmBlvw/cbhRGa0PG0+mNsBYnQvXh0
+ Ruowi/f9bzYfX8iiX3VsmfGbDRn37PWsy6iD9Q32NztMFk90BmDj9weUY
+ bYty++XFxeDshlWS+zjdN78fo1hMw61iqAKlU0bmdBc9xdF6E0DkY3M85 w==;
+X-CSE-ConnectionGUID: x4JKmmWhQGuXjzoX83YORw==
+X-CSE-MsgGUID: RxkF63ZlQFSRZssFzy9TaA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="68879986"
+X-IronPort-AV: E=Sophos;i="6.21,230,1763452800"; d="scan'208";a="68879986"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jan 2026 01:53:03 -0800
+X-CSE-ConnectionGUID: Ew2vA4t4Sza4doL66+lv3g==
+X-CSE-MsgGUID: MNyXKokASt2DjPaThXYYvw==
 X-ExtLoop1: 1
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jan 2026 01:02:26 -0800
+X-IronPort-AV: E=Sophos;i="6.21,230,1763452800"; d="scan'208";a="205098563"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jan 2026 01:53:03 -0800
 Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 16 Jan 2026 01:02:25 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ 15.2.2562.29; Fri, 16 Jan 2026 01:53:01 -0800
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Fri, 16 Jan 2026 01:02:25 -0800
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.27) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.29 via Frontend Transport; Fri, 16 Jan 2026 01:53:01 -0800
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.12) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 16 Jan 2026 01:02:22 -0800
+ 15.2.2562.29; Fri, 16 Jan 2026 01:53:00 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VwekbInCFT9f6gUisWHVOsJl8bLLYkNJh3UUQ+/q8CoUxxyiiJWHM42dR81YprJDtLIaeLNl4s+/LSCQEpVpi9wQ9Gqfq50EPBW8U+0NliAVDsnpdJcM11y4UuhyJOdJIOcxZZwgSLmH4udQiupnWdq+waz5TT0CIL0b3swwqswHQcn0hU4yBS91zIKeSJmvel/RtvmTVkdJKe9gwLu5hhHfofEebdU+SVfrNmydha/iWgVdZmEku61TwjfyevoD57b+b4YfyE/4ya1mFjsl21IRgAdP5kiyh5VKEwPpMQ6dmiKVDqxRblK+A8/urykVFk50oAvInwl5Qk62+9rYkw==
+ b=txy2+7t/KcUjbkUZQDrgZ59syUDljejEnAJ/qJ6feckszSCC8fFCYIGcWWCuXHBgmnM24Epd166hACP4/62XTbqUUg8HC+hRc/oHCIx7serXiWRgHHwSzpEaq6d0gXpZHfyuckLOwObnXOzhfgc9yUPgf+Aq/PQqrMyu4ZV7vgEJ10pjbThxezOOPZ5+bO75uMmN8gwKNoPxXuJ4xVeCZT0pPg4jyWDv0E/vVSy0EouylFIOnylW3QdJ8q0dj8Bq2lNtMGUi58Q86WG7pPv1lYSFsXRYn7IQbXiTc0K8z3ogadyUDUqwjn3qxVw/MpOE6tGcH0RLkUSa75JhusevDg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=X86Dajb5zlKBRoPLYiTMIMnfquKkvzE4nnW2wYssdRo=;
- b=kfYe+dY3K+BJx4U0f03JQ3v67o4gtRBoqrHw7oOZtfxQTTVWpoK83RpR0NsmuGG+twwYK7SyLRlIPSV1dcIE3/W4dnHjnGGcCfCZp1+3XM4sqlQwgFHPZ54VmS7bUY3SUwvGIXmNAxQqkRqmvWfJl2JtO9DpU1WLQMalCM+TU7Q+Gv45lZPhibg67RYf5OBR3HGSL9WGw271tUamB0S1ZxakheVDA17TBytr53ZG5zDh1q8p0EWXyPQ/ImTnoz6itTT2JgIwG5eBp0ZRI100cB8Bovvj7E/zC5R+2ne65Idd9GIa2UI3PY+/pVkQCUmmJploiu/MfiO723FwoQmg/g==
+ bh=3I9WKWjEQjOuNzDNOfcgCgkPD61Dm5BedVf1WbpUFUk=;
+ b=yxnILkqIIOycnlPna5pQ3T9nx57WJyEIneXZz9eNs3e3XoxOl0JRORQjovwqHBRAbDXONevTjNWpJI5Dl1fpYeReYfTc1XnIuGpeV3EYSWsi7tXwGuOWgHTabJrZyote927toCBGceCMLpMIzCmgRn67PmxIZczo8sfgWiF8uzhNsW7ixhBmaMxaKneBEzzcGP5tLYk3hrt/ERQh5/NeVrqMGA5WMsETZnujk2b7FsAdn64RheYZ8HYYtsE178CKMsH4Tw/Qf0+4X+y6GPPQVDNFfjNckxU7B02TROepNMhABO7CeU/sCLWHKRXcjm4sy10F7HnLKnPSQgN+l9XlzQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from CH0PR11MB5491.namprd11.prod.outlook.com (2603:10b6:610:d6::19)
- by LV1PR11MB8789.namprd11.prod.outlook.com (2603:10b6:408:2b4::8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.7; Fri, 16 Jan
- 2026 09:02:21 +0000
-Received: from CH0PR11MB5491.namprd11.prod.outlook.com
- ([fe80::250:1566:d191:a23b]) by CH0PR11MB5491.namprd11.prod.outlook.com
- ([fe80::250:1566:d191:a23b%6]) with mapi id 15.20.9520.005; Fri, 16 Jan 2026
- 09:02:20 +0000
-From: "Ravali, JupallyX" <jupallyx.ravali@intel.com>
-To: "i915-ci-infra@lists.freedesktop.org" <i915-ci-infra@lists.freedesktop.org>
-CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Janusz
- Krzysztofik" <janusz.krzysztofik@linux.intel.com>
-Subject: =?utf-8?B?UkU6IOKclyBpOTE1LkNJLkZ1bGw6IGZhaWx1cmUgZm9yIHRlc3RzL2ludGVs?=
- =?utf-8?B?L2dlbV9sbWVtX3N3YXBwaW5nOiBBdm9pZCBmYWxzZSBmYWlsdXJlcyBmcm9t?=
- =?utf-8?Q?_oom-killer_(rev4)?=
-Thread-Topic: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbDogZmFpbHVyZSBmb3IgdGVzdHMvaW50ZWwvZ2Vt?=
- =?utf-8?B?X2xtZW1fc3dhcHBpbmc6IEF2b2lkIGZhbHNlIGZhaWx1cmVzIGZyb20gb29t?=
- =?utf-8?Q?-killer_(rev4)?=
-Thread-Index: AQHchVcG6mMf+Fnu+0GB0puvVWJ7DrVUgngw
-Date: Fri, 16 Jan 2026 09:02:20 +0000
-Message-ID: <CH0PR11MB5491F7048DE02930D787FB28EF8DA@CH0PR11MB5491.namprd11.prod.outlook.com>
-References: <20260113160043.694106-2-janusz.krzysztofik@linux.intel.com>
- <176835414338.152186.17058735113237015167@a3b018990fe9>
- <3351138.aV6nBDHxoP@jkrzyszt-mobl2.ger.corp.intel.com>
-In-Reply-To: <3351138.aV6nBDHxoP@jkrzyszt-mobl2.ger.corp.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH0PR11MB5491:EE_|LV1PR11MB8789:EE_
-x-ms-office365-filtering-correlation-id: c61f8056-aa28-4da4-f6c3-08de54ddf50b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|10070799003|366016|1800799024|376014|7053199007|38070700021|13003099007;
-x-microsoft-antispam-message-info: =?utf-8?B?K1ltQmdFWmNONFZ0OFZwRUtrVDFyNTdCKzBic3g1OXl5UE9EQXk3cmUyMytB?=
- =?utf-8?B?QUZDZzRjQjFFQmJqeHJWcnJrNDV1ekZLanYvcUJxMktVMnYyOVBaSWRUV04z?=
- =?utf-8?B?V2dySXVnMFkzQXcyWTBrZXlIZm1UdGFjNk1wQ0JaM2tSendtNjIzbnQ1YWsv?=
- =?utf-8?B?cGtkbmtqSG1zNzNmK2JyVHdXMUJVd0FZcnFRZmJSWTFoUWwzVDN1NlJaTDE4?=
- =?utf-8?B?ZVloeTBoNWN6b0hPYlh6ZkFlbEg4bE9uTHBUSFNCZUNFRjlpMk5IWGFVK2tM?=
- =?utf-8?B?UXVyV1JQaXdIVzR5K3htbUNVdURNS0crTEVUdUFlV0VpU0JmajVNMWpKSXRO?=
- =?utf-8?B?Q3ZTcEFHT1h1QXI2M2tTZVp3N0w3Ni9LRUdYMW1wZkNNY3cwWHdwekw2dHRm?=
- =?utf-8?B?d0Vub2ZpL25NSW4rQ01pdGhEN1pWRHhrSVZHQnhkeXRYWXlQRHhta0QyK1J2?=
- =?utf-8?B?QlFxN2JNWmhaZEhxaEt6WEFBUFA0YUcweGRDQXV4MlFtdGtzTDZvVkJqS0Ja?=
- =?utf-8?B?d0lBSk9Fdi83OFNZeTJlYjlSMm9ESmp3M2tzc3N0a0FrTU1GV25uRjBXd212?=
- =?utf-8?B?OGFzTDNHR3dGRTFnQms4M21qVkVnMVVGK3ZpenR3YzBZNUZEd0hsQ3RVQkRL?=
- =?utf-8?B?dVVyYXYxM244Qjk4N3FXUUIzU3UyVkYrTDRMUWUvdGgxKzRBNWdsd05MTGd0?=
- =?utf-8?B?Yml6ajdDWUJXdGF0dEx6YlQram5VU2JsRzNib3BuOGZ6QnhmMDQ0eld1VklY?=
- =?utf-8?B?RUJ5SmpieTd4QlVTRGt0bG1uVXNVSVd3T2RUbHdmeVY3YmxYUUx1bWhGR3Jq?=
- =?utf-8?B?L2w3R2swVmFHc1lmak82RkNlQmtJMlpTL1JXd1luUXd4dHMwYUJBNlNDeVNi?=
- =?utf-8?B?ZStLYWt2eTdjek8vdm9GQ3lsRjJ0Qk5TKzRLVDdOSTJXNi9KTHEwL1JLMGRa?=
- =?utf-8?B?WEI1b1o0U2hVZlU1cGJDdjJKRGhOTEhxYlBuTjVlaEYweFZIakw4dkt0em1Z?=
- =?utf-8?B?UFJKSXNDZ3dQbHVxRmtjd2FDQjh0RW9aaFluZmZkLzloWVhjeEJtc0lHbmFl?=
- =?utf-8?B?VndHMnI2ZGZVdWVMMHE1Zy9HRkxUcXpWRkRmMXRLTlFlS3Jhb2t1azlzT3pn?=
- =?utf-8?B?MVpwTURGaFRYVjYvVU5ZanowMERyc3c0NFZRNXlLUWdGQTN1L09SS2FjcFJR?=
- =?utf-8?B?dFJpaVFuWGRqWGVWa3ZwNXlCZHFrdXpmaytiRmZvbWk1R1oxa0V0Q0kvWDVy?=
- =?utf-8?B?ZHFNWnF2UVdHc0FlSk1tM3U5am5RcGNzTzZDOTZhcllXajNJQjRSTGFIUnV6?=
- =?utf-8?B?SVNKYWVyUjlpbldzVGwzeFl6eGtZS2NEYTlzV0JqUkVkOTNEenNyMVFKa3Jy?=
- =?utf-8?B?UDBFL2lsTHhsNmVrZ2gvVENRdWNlQWJ2Ty94TzY0dVVxbExmMDNSc2k3N25U?=
- =?utf-8?B?WWZMS1dxWFp6MGZXU2lsNzNZbFNZYWVoODdVc3N5UWVqdURNK3AxakRDYTRm?=
- =?utf-8?B?SzhOeTlUVVNpUG5SSUwxaGM5eHprd09UWWs3bjlRdmVrWXh6VGRwbXpvcWo0?=
- =?utf-8?B?SUo0dVluUHJCNzc2Q0NBNzZ3aUtxWFN6SnUyY3pDZzVaeGFIL0s4Z3M5QjA0?=
- =?utf-8?B?MjBPd3AyM24zdVBoREpKb3hhTmoxVWIwM3RjVjJpUXNTeVl4dXlIaGs4dUNk?=
- =?utf-8?B?TmxTRkxVOWV6V0VJa2Q4YThoZDc1bWRicUx4MHNheXFZT0hKMFVLcmREVXYv?=
- =?utf-8?B?Q0ljckRrR2lSbXMrZ0xnQkxuUzk5OE9KcnJiZFVqZVFmeVJ1MnduRkdnaUtM?=
- =?utf-8?B?bmtmN2svZFdpM3BOaC9zbjY2emFLMnV2UWdrc2cwT0ZES3B1R0JweVdRQ0d0?=
- =?utf-8?B?bnJuRHh4ME5COGtVbEtwRHlJMnhWUnpWdU1LdjRFQkttZVRNbTJBY0xGd1pH?=
- =?utf-8?B?dC9UM0MxQVN2VjdIYWdTZmZXMlpNc0ZFSU9RQXA3anpZaEpJL2lLQTE0L2Nm?=
- =?utf-8?B?TVFsYkxjYi80RVlrRVVLdUdNZXlkdTVQL1JHMS8zVU9UOVBjZVBGWWJmYis4?=
- =?utf-8?B?TGlvQ2hoNU1BZGZTN3dVcTRNOUp3YWFSbTVvVHhoZHlTRW9hOVlPU0NvYXNW?=
- =?utf-8?Q?mqi914zIrlWQBhiFtyPR4UkB2?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH0PR11MB5491.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(10070799003)(366016)(1800799024)(376014)(7053199007)(38070700021)(13003099007);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZFkwOWV2VGFSSDU4QjlPaFpmNmdyankxQ2o4Q2NLdHhQVERpanlyMXhVNEJh?=
- =?utf-8?B?ei94OWxWZ29xZ0dHcExTZG5EQlBFVXR4c1ByM2RzYUkxYnlVMnNWcXpQWjVN?=
- =?utf-8?B?R2xkTHd6MGZVUXkyUjRWNEJWWWlzSTYyMG9HWndjMTlHTkJXZjNXRHludE4y?=
- =?utf-8?B?TFdZMERTSWlTMWltb1JEdEpkZ1hYbzQzQmo1Qmx6cVVIbkIwcytnV2E5NFND?=
- =?utf-8?B?YmdOYVdjU3dTakk4Yk1ncnpSdTB2WWhPRkVHOGRuaXBIV1BHaFQ1VU1NZ0Ft?=
- =?utf-8?B?SXhEcnNCRHg3emp6LzVCV0o3d0lmanVlOWtid3YxV0xOZ1B4bkpDeVZ1SlBK?=
- =?utf-8?B?bWppNVNKRzNwUkpwNHZpODVSNE1xNksyUUFjb0JaODVxOXNYdFNRL0VNam5L?=
- =?utf-8?B?NDRkT2xGUmowcmRDL3hGcXEyd3RzMXV6WDZGYnpBaDB6SElZd2hSckpEVWF1?=
- =?utf-8?B?TFNRRWlwYlU2YVVkQXlteFZ4TkVSekk2TWJ6bzdsOGZmNkZRa0x1MjU3WG1T?=
- =?utf-8?B?K284cEhFdHVJMGR3QkhXSTNxMGN1RFA1bDlqUmlLTFl6SzFJUW5WS2Z0aWN5?=
- =?utf-8?B?VlhoNFRrY0Y5b2dBeWRHNlRzbGpia0NmUFFmc2FZbmtoMzBVTUx2a081WitL?=
- =?utf-8?B?d0tYbzNYdVhtQm1EbCt1b0wrUTJ4M0txZTZhMVQ4eXZXWlVBV2lpdmllYWR0?=
- =?utf-8?B?V2VxVnBBeDBFQkFuT0lZNUtDcE5LcStaekEzMy9aZHpYdjRsa0REZVZQNGtq?=
- =?utf-8?B?Mkxvcnhxa0RiK2FoSmFjRko5bHhuNmpHVmF4WFpiUG0vZzVDSE1WTVFqSzE4?=
- =?utf-8?B?aDVyVUlQZTVKc0NOTHhTeExld0Q2S1JPMkZVTWI2TElwMzZUWDVDOUsyMjky?=
- =?utf-8?B?K1Q0cUhBc1VtS0NWU2VSSGNKcEpQdEgzdFpVV21XcHFmOXp5WHg1TThZVDYw?=
- =?utf-8?B?MlJuL3hKdmhGc2Z2blgzQTljd3I3UHMwL2poQk1lVGpWM1puYjlKUjBSakdH?=
- =?utf-8?B?cWhKaDhqTnJUcUJkT1k2Ym84ajJ2TGpmOWE0UTEwbDRwT21RNUE2RUtMOEhX?=
- =?utf-8?B?RzdQNTI0MkdRVkpEYllIM3p3NmdQUTRoc2tKVDdOQ1BEc3BjZnV1aS9TY25a?=
- =?utf-8?B?amxzOGVEU0RRM1FXNUI1L3V2L2VqWmUvQ0FsdG1uL0poVTBEOVIxRlg2SFJO?=
- =?utf-8?B?SzhWODVhYVhRMkwwL2tEQ0k5NlQ1Z1R0dCtwR0ZtQzk3dDFGNWQ3dEhTZXp1?=
- =?utf-8?B?R2luUjRwR3UvYWFMU0dwMG9rVjh1cWhrVlBSU0FOeitnTG5RZlJLcVpTcURo?=
- =?utf-8?B?Ty9SZllkUklqeERTUXk3UnJCYjJsQXc2U2xUb3ZNQlRHWGNDQnAxbG8vQXBq?=
- =?utf-8?B?bU1MNlhlaFNZYVpvNlBrU1ZERzcrTnJRMjFPRVNmYjloejJpbkl2VlZEYXdu?=
- =?utf-8?B?eU5FWXF5Zk1MdEswTkljMkt2WEczYW1CbWQyUFR1WGYzcklNbGxBa1FZN3Z6?=
- =?utf-8?B?QXptNVVyZ1U1by91eG1DTkk1R2haTHlEV2pUZUc2eDBCc1lIZlVTTmZRQ04x?=
- =?utf-8?B?U0xGdXR0QzVIcisySnlVcUxsMDNBUlZHNXVIejFZakVkVkpZVVNmN3kxa25K?=
- =?utf-8?B?MWZOb0VIMjAvcEpTS1BDYnRIbXpQYWY5ZnJBQjhKMHBibmNjTUxxTjR4MTZm?=
- =?utf-8?B?WGRyUEprRXUycVVUOXhBU21yTmhpbEtXVmkrZ2Z4a0k3cjhFR1VqVTlFYnps?=
- =?utf-8?B?ZnVvQ2crb0xTbVVGTVRTVzBoTkNTUmp1L1dETWMrM1hNM3oveUFDTUkvMEc0?=
- =?utf-8?B?VmhTNFNJUXpCdUdxYXkrTFhkeXhlZlFLRHlqTXNsYk5MK2I5cTZRWG8rVnUw?=
- =?utf-8?B?ckZ5czFzMCs2eUM3QlZSWXFiRFhXNDJQbFI3ZlBJK0hiUFo4bjhaYTFnM01Z?=
- =?utf-8?B?ZENiV1JCTHNnSS9WUmMvM3o5R0FIQlVSN3ZKcjJQbzZ5cE5EWlNKS25mSko3?=
- =?utf-8?B?UUkxdkQwUHU4aHgzUG1SNE8yTURDUER4cGQyOERGWWkvRVFvTnFVVWVBdDJw?=
- =?utf-8?B?UEJEa05wbDBvU0FRMXhEV0t4bTJ5UDdGck4yRjF6alBlVmx6UDZrNXBERHlD?=
- =?utf-8?B?citCOTZMdC84Z09oRnp4Nzh6N2RRNGpzRGYzcHBWNHBDRWR3NWJrdXUwei9O?=
- =?utf-8?B?djYrQW80T0JqWGtteENBazF6R0FhclJ2N04xZGZVMngzK1NvdjVJb21iUSts?=
- =?utf-8?B?WVBVdGlHUUg3Znh6eW1LbjBRZTUvREtGdlh3R1EycGtBZ2orcWErYVVTR0hK?=
- =?utf-8?B?bTNXRjgweCtKc3lzaG5FdXNDZmNiTldCWk1yN3FlR1NpSUFUSGdUNkdQbzZU?=
- =?utf-8?Q?IiCwXCYbum1a0NCbz0s8NhD8HKb5Hh/JDLfZLFToewpmA?=
-x-ms-exchange-antispam-messagedata-1: Ppe0hiT24JsRgQ==
+Received: from CY8PR11MB7828.namprd11.prod.outlook.com (2603:10b6:930:78::8)
+ by SJ5PPF64191BB3C.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::82f) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Fri, 16 Jan
+ 2026 09:52:58 +0000
+Received: from CY8PR11MB7828.namprd11.prod.outlook.com
+ ([fe80::1171:db4d:d6ad:3277]) by CY8PR11MB7828.namprd11.prod.outlook.com
+ ([fe80::1171:db4d:d6ad:3277%3]) with mapi id 15.20.9520.006; Fri, 16 Jan 2026
+ 09:52:58 +0000
+Date: Fri, 16 Jan 2026 10:52:54 +0100
+From: Francois Dugast <francois.dugast@intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+CC: <igt-dev@lists.freedesktop.org>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH i-g-t v3 1/5] lib/intel_compute: Add compute-square for
+ xe3p
+Message-ID: <aWoKdp8zOYjAEqk-@fdugast-desk>
+References: <20260114151930.211512-7-zbigniew.kempczynski@intel.com>
+ <20260114151930.211512-8-zbigniew.kempczynski@intel.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260114151930.211512-8-zbigniew.kempczynski@intel.com>
+Organization: Intel Corporation
+X-ClientProxiedBy: DU2PR04CA0343.eurprd04.prod.outlook.com
+ (2603:10a6:10:2b4::29) To CY8PR11MB7828.namprd11.prod.outlook.com
+ (2603:10b6:930:78::8)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY8PR11MB7828:EE_|SJ5PPF64191BB3C:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3aead51b-5043-4e5f-8954-08de54e50768
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?TUIrWGl6ejIzYlA5dEg5ZlZjOEFCMG5vUnozclNaYTRwY0svK3Y4Z3lTNXl4?=
+ =?utf-8?B?ejB4NnpWQ09LYXd4QXJtdjE4djRjaER3MVZPeDYvRHBicmJremtTUDlrUzc0?=
+ =?utf-8?B?UDFrZ2Q2V0xaemYxRFJNUUI5Tm9NMVJsNnJBQS9PK0VJR3VNUklQOVpRU2cz?=
+ =?utf-8?B?ZUZBQ3FxTHNNelluclVNTVpNdWV4aFUza0o4QzFpMlRXbGZpYzV5eklNSHF0?=
+ =?utf-8?B?a0RGUnpmVUtDTEhESVZqZmFUOGNxSTVSSU5NTFVYVFRhcXdZTjRlbS9VemxN?=
+ =?utf-8?B?UWZCeHBQSDNQeFNRNmFNQThsenBrUjZvc0dxR0FoRThjckM4TUF3VW01VDFt?=
+ =?utf-8?B?c0FDNklmVnJNS1Bocm52NDk3OWF5N2p5Zi9jSkZLWEFueWpKb0w5QlpWLzZw?=
+ =?utf-8?B?TGhCVWtZVitFTkFhRVhSODZ2KzdFcjhiNTF0blJPVE5lY2lDQUZzU0tVSUFv?=
+ =?utf-8?B?cmFLTGk1MDFGcm5ORWpMczJ5eHRmN0pFaU9aUEQzZ3RjWk44UGhUV3FVT2dY?=
+ =?utf-8?B?N1ZrVmdGNkRjemgrRzFFa1owTTBrakRBRDU2V3NtUFVtcVlCRTZzWDR2U2lK?=
+ =?utf-8?B?c0M2dlJ3VWdwZHNsK2lKbHBlVGY4UjBKN05Ddi91eWJJTnhTaGFqaHovczBK?=
+ =?utf-8?B?dncxYXlJT3ZCUndTMTc3U295RG1jQjc2ekMvWWdUTHdta1d0V0pOMTc0Wk1Y?=
+ =?utf-8?B?d09lVzdPQlBzRENzL0NrSWJzUDZ6aVJRYXFjdStrWWV3dXY4QlFhc09pZi9s?=
+ =?utf-8?B?SUZUalZidmRaTFJTMWJQMGVCdE83K050a1NCQUZXVzZQaVZDb2F5ZFZCT042?=
+ =?utf-8?B?RTFobHVPVzQ4c1BpbytvKzNwRVgvZDNQVWdnS1RxU2pJOTFKLzZ0UGJVS3NN?=
+ =?utf-8?B?STh1blppczV4NzFvMWdnZDkwSkRQNHhDMnkxd2FJaWFlOU1mbDVDYWJ0UjJz?=
+ =?utf-8?B?eWpwbFhLWFVEMkkrb254VWJZa2hYaXRjdnEraWNXd0krNGozMHdKUlRSNWVz?=
+ =?utf-8?B?ZGxVQ2hGTk5RMjRqNWJ2OXVOWSs5YnF5OE90RFhjTlZicTVBTkRRL3M5QnZG?=
+ =?utf-8?B?WEFSclpTbHNNKzd0SndveWRMSFUyNG9zZXNDYXpMNFVIUDlZOWFUOFBsRkdG?=
+ =?utf-8?B?K2JJbzkrWmhlanhSNk8vdVNzTkgreHIrTzdsdnBYcUNvTlNqOEdUY2hzb3l5?=
+ =?utf-8?B?U2Vvb25yYXBSR1d4dWxOTVNKZENJS0R6SlpFN3ovQnpERzFJWEYybWF6c1dl?=
+ =?utf-8?B?WngxTG44KzRZbHZTMVQwOHVJb0p4dUVUVnFONG9Ka01xUEtYR0JHM0txRGNC?=
+ =?utf-8?B?aEVlRXlsZFVLajZRd1lyd0NrdmdRYU1ESVM4eGNTdmNZanJFRnJZMzlRb1BM?=
+ =?utf-8?B?b3hHbjNqRVFvR3Z0MTVvaGVQRURpakZKNzVDbWpycVB1QkV4cG1YQWI0bDFM?=
+ =?utf-8?B?TEwxU05ibkNFUHVIWmhYOERmcDQwQjloNXd2REN2R3o1djR3ZjJaajJ3QmNX?=
+ =?utf-8?B?SmdGak1QaTBvQ3FkdFVKdVROSEFxaEo0Z0lSeEdFbEVNRWhvMjV3TElSbWVz?=
+ =?utf-8?B?dVJVaVAyYkpQeWtBS0svQldwOU1qaDZFeTU2aUZZUk5yZW9takFEcUdERkhU?=
+ =?utf-8?B?YjhLb0cvNUpzMER6NTB6a0Jmczk1aGs1WE9JODB6bXdBU3Jhdm04M1VqeVEv?=
+ =?utf-8?B?blFkeEk1S0xmbjVDd3FOOXZ5WiswR3lMd1VZNFhZL1VUUWxlVThtdndDUnhN?=
+ =?utf-8?B?UzN6am56bFZ6TkVIZFNzYS9YUFFESzVEUUpIVWNyNUV1ZW00NTc1VWx5V0Rj?=
+ =?utf-8?B?TUVLWHFuUmJWdkxHLzlIUWlUR3dKV0J0enhnb0tYRWdFMFBUWGpteUl1OFhJ?=
+ =?utf-8?B?L1VWTUZESTJDVWNhVkw3ZzY4UDVrM00vSi9LQVcza0c3RXFUTURhRjh2VFQ2?=
+ =?utf-8?B?OHVrUXN0eG5Kb2dGYjVlVHNRc0tNdk5NRFdZUVdTTSswTGNMWmNDZW9tdHox?=
+ =?utf-8?B?Q2dEOUpzeStSMFRWdHNCUlNCQTFDQko3d3JOQVZWbzF0ODc0NHZTVHdxWnZY?=
+ =?utf-8?B?L3JDUEJkMlVtbjNuOHdSbW5yNnFKVmJxNlZhUTYwSXNNbzRFSUpYRUtkN1VQ?=
+ =?utf-8?Q?+Ejc=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY8PR11MB7828.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZHlPd2I1SmJHN3hORDFDdGNDbzJaNE5lNDZZYWpaUEszbzJJMkFhNEJDWk15?=
+ =?utf-8?B?TElwQ0s3NU03NytVVFhobDRvL0ROWHM0NElpMnJ5Ull6cWlIRXc0azY3YlZa?=
+ =?utf-8?B?Tzl1K3M4WHptRlN1eTdKWnhNNmxVVUdjSVJNZzJGaXg0UVR4QXFkOERyTEJZ?=
+ =?utf-8?B?ZG0zMkNySVV3N2RqMzYwbG5pMThmb056cFZ4VFFMTC90ZXd0Mzk5b1V5Tlhs?=
+ =?utf-8?B?by96SzdVRWZEZ0RiTDJDTjRXTGZpSXZKaERMVmdBYnhsRHhLVHBTbkp4TnE4?=
+ =?utf-8?B?MnMrTzBPSDljQm5IWFZ3TWlyb0pTNDFPUDBWdXJ1Ry9RTTgwQVh2ZXRsNjJa?=
+ =?utf-8?B?U1F0dnVrSThXSERGaUxNVWVkRDlqVDg0c3k4K2xFVVFtSnEzTTJGSEVLV05z?=
+ =?utf-8?B?Q3gxbjNwTld2RThYUEZJUTBtdlNIVmExekRJMEl4UjEwR1VaV0VGY0xpbm10?=
+ =?utf-8?B?R056Z3Q3TS9jZFQrSGIzeThvRmFlNkt1RTFxeURQS2tObDJCQW9tYjlNajV0?=
+ =?utf-8?B?emQyMmI0NXgwNWlKVlhFV0plL1Q3Y2dUM2hSQi9tc1FTQVRYd1c3TXVxdDV2?=
+ =?utf-8?B?OVBDWURndmZlVmIzNGY3SW1CRUNvZW1uMHNtVG5sK25ZTkVPbHVKTlh0L21O?=
+ =?utf-8?B?aXMyODIrREJMdWVuaW5hU1hLTjNOd0RnWVBiUDMrQ3c1WjhwYi9RZkRIbTBi?=
+ =?utf-8?B?K2h4cFVCeHZTV0REUXQwdVpaM2VzZTdFSU0rWGZ1a2JjSVJYRkxGMUZUcFdq?=
+ =?utf-8?B?ZERBUGtxaWpBSEJZbUtYeTMzd2tCWjFlay9CRGtOU3ZBSWJLdXJENzZhejQz?=
+ =?utf-8?B?cnRxL1loVUl5SGo5MzBBeHl1Tm53cXJ0SXY2anlocmdQZHJsbmlHNjVBZFYr?=
+ =?utf-8?B?T3JiVUE4VEZIWG5BbjdVbjB1WEtMSDA1bHhqOG9UNUVzdUhZajJJTUNUTldP?=
+ =?utf-8?B?MzBJRERFc1pkNXdNTnArdEJZbmlpYlJEQmJGZHpQbDQrNlpFK05jRUw2Zit5?=
+ =?utf-8?B?OThnbUFmVkVvTFc0R2dlOTNhOU5nbmhJaWNYNkJxeG9najJ5NHd0R2dHK3Vr?=
+ =?utf-8?B?Ump1SGxYZFBVRWdnV3BIbUxhbmF0V3ZNZ0VtZWFGKzJLZ1JvdHcwNlhwK1BI?=
+ =?utf-8?B?QW9MSlp1bDlsNUxPWm1wc2xmekpZL282eFYybXlIV3NUNXNvbGQ2L3BUb00y?=
+ =?utf-8?B?RGg1NGp6S3YwTW5rbjR6c0JuNk5ZVTE3bmgrejBqcmNZbEZKYmxEeTRaR3Vp?=
+ =?utf-8?B?TXVvNWtnbGJyeFV0aFRsSy9mTCtwSlNGalR0KzlCZGoyTjlNWGVSQzJLSWJh?=
+ =?utf-8?B?NGRIWTN3UEEzQThDYS82aS85cXlPYTFHcWx4bURqUUVRbFFVSWRrOVhwRzFF?=
+ =?utf-8?B?U3k2MldzYkZDejluU1I4QVpIeTFkci9uUFpPSXA3Y0I4TWE5M2xIR0Q4ZlBO?=
+ =?utf-8?B?THBVYkhlaW03Z3IrQmdmd2lyemc2bjNkcSs0UU1XQno1dmIyK09STG9ZRjJr?=
+ =?utf-8?B?SWtXU1BOdGh0MmpWOVRsZ3U4cStpTTExV3RPUWFNWWdSbW1hL2ZLTk1ncDN4?=
+ =?utf-8?B?Zk1XU003eFc0N25CMXNUMFdxT1V1RTd5TWZUd1Y4ZWRZRG9KMjJ0aE9RVjAv?=
+ =?utf-8?B?TVppSVJGbDRCSk0wNU9jWG02RDQ1bmJPUGFxWXU3QlhXNVRleDgyZ0Exd2p4?=
+ =?utf-8?B?NkZ5YjgwRkRUZUZLaTBzUW1qaUpYYXlzcERkY2I5RUZPeFoxSnpMUU1RVVpP?=
+ =?utf-8?B?dGhrVFpwSEpwWEtrdk5TUndmaWd0Qk5kWjBuQTdBRmk0TDNiRVRoNE8wT05L?=
+ =?utf-8?B?WTd1SHhDN285OFIrSVFwV25BNHdTelRYZFlvTjZMUkdxeWtzb3RMZkpPTlZG?=
+ =?utf-8?B?cXBIZnVTcnd5U0FGWnphWUFFa1BiQ3JNYzNwTTh3Q3FZTkduWGQ4QzQzd3V0?=
+ =?utf-8?B?SzYxNEpqcDU0bklmendtS0VBZ0o3UjVPd3RnaUhKTytBcmd3Mlp6c0ZBb3ZW?=
+ =?utf-8?B?d3BxSEtDSHBjUlZ3alVHcHZyTHJvc21jZ3JHcHNZdE5UQlBGZ011V3BTaFhK?=
+ =?utf-8?B?cms2WGZVZG5xTm54ZW04VmtNNExMc2E3WWw2ajF2bGgvN2lTbng0V1ArVEth?=
+ =?utf-8?B?cWQ0d2pJSzMybzJPYVc4K3RrUkdWV1ZxZVA4K0Z6NGRIa1E1YWVXMklTWmNw?=
+ =?utf-8?B?VkE1ejNsWGdqL3VkSlZnUVpLZHprTEpTc2VJdzZrcG1VZGhUR3dBUWFFcnc0?=
+ =?utf-8?B?cEtaWmw3emNOU3pyWmRHTXc4dEo2TFRhRS9kMVlKcnZYd3lncURpQ0lVQXdm?=
+ =?utf-8?B?Q01GUFFrNzVQODdtSm0veEVFTDAvbHovNDJ3aHBTd1dFdnNvYXM1YUJkVlht?=
+ =?utf-8?Q?FZIc+FMkfCUR/1J0=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3aead51b-5043-4e5f-8954-08de54e50768
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7828.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5491.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c61f8056-aa28-4da4-f6c3-08de54ddf50b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Jan 2026 09:02:20.8827 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 9u7n0oAsr1ZB6TU8FWvfvNwqo1ZEbVTzYzKvOuYxqhKb5tnwAD/p+5fq/kwyP/1mR+Y/Jw8LLbkfiQE4a4bjm7zgSZpQHLOCS+xJvglKjD0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR11MB8789
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 09:52:58.4180 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 77F4tHFwaz55MQqum0MfUtTKUU/crFWKYnYdEIZ9W78kkfMLZKirslSippFY1bcvL2x/GlU39cw1s0VrEu1bZG3O636Con26mN+XubFqzaA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF64191BB3C
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -211,54 +204,381 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-SGksDQoNCmh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMTU5MTYwLw0K
-aTkxNS5DSS5GVUxMIC0gUmUtcmVwb3J0ZWQuDQoNClRoYW5rcywNClJhdmFsaS4NCg0KLS0tLS1P
-cmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206IEk5MTUtY2ktaW5mcmEgPGk5MTUtY2ktaW5mcmEt
-Ym91bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmc+IE9uIEJlaGFsZiBPZiBKYW51c3ogS3J6eXN6
-dG9maWsNClNlbnQ6IDE0IEphbnVhcnkgMjAyNiAxODozOQ0KVG86IEk5MTUtY2ktaW5mcmFAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnDQpDYzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IEph
-bnVzeiBLcnp5c3p0b2ZpayA8amFudXN6LmtyenlzenRvZmlrQGxpbnV4LmludGVsLmNvbT4NClN1
-YmplY3Q6IFJlOiDinJcgaTkxNS5DSS5GdWxsOiBmYWlsdXJlIGZvciB0ZXN0cy9pbnRlbC9nZW1f
-bG1lbV9zd2FwcGluZzogQXZvaWQgZmFsc2UgZmFpbHVyZXMgZnJvbSBvb20ta2lsbGVyIChyZXY0
-KQ0KDQpIaSBJOTE1LWNpLWluZnJhQGxpc3RzLmZyZWVkZXNrdG9wLm9yZywNCg0KT24gV2VkbmVz
-ZGF5LCAxNCBKYW51YXJ5IDIwMjYgMDI6Mjk6MDMgQ0VUIFBhdGNod29yayB3cm90ZToNCj4gPT0g
-U2VyaWVzIERldGFpbHMgPT0NCj4gDQo+IFNlcmllczogdGVzdHMvaW50ZWwvZ2VtX2xtZW1fc3dh
-cHBpbmc6IEF2b2lkIGZhbHNlIGZhaWx1cmVzIGZyb20gb29tLWtpbGxlciAocmV2NCkNCj4gVVJM
-ICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzE1OTE2MC8NCj4g
-U3RhdGUgOiBmYWlsdXJlDQo+IA0KPiA9PSBTdW1tYXJ5ID09DQo+IA0KPiBDSSBCdWcgTG9nIC0g
-Y2hhbmdlcyBmcm9tIENJX0RSTV8xNzgxNF9mdWxsIC0+IElHVFBXXzE0MzM0X2Z1bGwgDQo+ID09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0NCj4gDQo+
-IFN1bW1hcnkNCj4gLS0tLS0tLQ0KPiANCj4gICAqKkZBSUxVUkUqKg0KPiANCj4gICBTZXJpb3Vz
-IHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0aCBJR1RQV18xNDMzNF9mdWxsIGFic29sdXRlbHkg
-bmVlZCB0byBiZQ0KPiAgIHZlcmlmaWVkIG1hbnVhbGx5Lg0KPiAgIA0KPiAgIElmIHlvdSB0aGlu
-ayB0aGUgcmVwb3J0ZWQgY2hhbmdlcyBoYXZlIG5vdGhpbmcgdG8gZG8gd2l0aCB0aGUgY2hhbmdl
-cw0KPiAgIGludHJvZHVjZWQgaW4gSUdUUFdfMTQzMzRfZnVsbCwgcGxlYXNlIG5vdGlmeSB5b3Vy
-IGJ1ZyB0ZWFtIChJOTE1LWNpLWluZnJhQGxpc3RzLmZyZWVkZXNrdG9wLm9yZykgdG8gYWxsb3cg
-dGhlbQ0KPiAgIHRvIGRvY3VtZW50IHRoaXMgbmV3IGZhaWx1cmUgbW9kZSwgd2hpY2ggd2lsbCBy
-ZWR1Y2UgZmFsc2UgcG9zaXRpdmVzIGluIENJLg0KPiANCj4gICBFeHRlcm5hbCBVUkw6IA0KPiBo
-dHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzE0MzM0L2luZGV4
-Lmh0bWwNCj4gDQo+IFBhcnRpY2lwYXRpbmcgaG9zdHMgKDkgLT4gOSkNCj4gLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tDQo+IA0KPiAgIE5vIGNoYW5nZXMgaW4gcGFydGljaXBhdGluZyBo
-b3N0cw0KPiANCj4gUG9zc2libGUgbmV3IGlzc3Vlcw0KPiAtLS0tLS0tLS0tLS0tLS0tLS0tDQo+
-IA0KPiAgIEhlcmUgYXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVuIGlu
-dHJvZHVjZWQgaW4gSUdUUFdfMTQzMzRfZnVsbDoNCj4gDQo+ICMjIyBJR1QgY2hhbmdlcyAjIyMN
-Cj4gDQo+ICMjIyMgUG9zc2libGUgcmVncmVzc2lvbnMgIyMjIw0KPiANCj4gICAqIGlndEBnZW1f
-ZXhlY19hd2FpdEB3aWRlLWNvbnRleHRzOg0KPiAgICAgLSBzaGFyZC1kZzI6ICAgICAgICAgIFtQ
-QVNTXVsxXSAtPiBbRE1FU0ctV0FSTl1bMl0NCj4gICAgWzFdOiBodHRwczovL2ludGVsLWdmeC1j
-aS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV8xNzgxNC9zaGFyZC1kZzItMy9pZ3RAZ2VtX2V4
-ZWNfYXdhaXRAd2lkZS1jb250ZXh0cy5odG1sDQo+ICAgIFsyXTogDQo+IGh0dHBzOi8vaW50ZWwt
-Z2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTQzMzQvc2hhcmQtZGcyLTUvaWd0QGcN
-Cj4gZW1fZXhlY19hd2FpdEB3aWRlLWNvbnRleHRzLmh0bWwNCj4gDQo+ICAgKiBpZ3RAZ2VtX3B3
-cml0ZUBiYXNpYy1leGhhdXN0aW9uOg0KPiAgICAgLSBzaGFyZC10Z2x1OiAgICAgICAgIE5PVFJV
-TiAtPiBbQUJPUlRdWzNdDQo+ICAgIFszXTogDQo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
-Zy90cmVlL2RybS10aXAvSUdUUFdfMTQzMzQvc2hhcmQtdGdsdS0yL2lndEANCj4gZ2VtX3B3cml0
-ZUBiYXNpYy1leGhhdXN0aW9uLmh0bWwNCg0KVGhlIHBhdGNoIHVuZGVyIHRoaXMgcHJlLW1lcmdl
-IHRlc3Rpbmcgb25seSBhZmZlY3RzIGlndEBnZW1fbG1lbV9zd2FwcGluZy4gIA0KTm9uZSBvZiB0
-aGUgYWJvdmUgaXMgcmVsYXRlZC4gIFBsZWFzZSB1cGRhdGUgZmlsdGVycyBhbmQgcmUtcmVwb3J0
-Lg0KDQpUaGFua3MsDQpKYW51c3oNCg0KPiANCj4gICANCj4gTmV3IHRlc3RzDQo+IC0tLS0tLS0t
-LQ0KPiANCj4gICBOZXcgdGVzdHMgaGF2ZSBiZWVuIGludHJvZHVjZWQgYmV0d2VlbiBDSV9EUk1f
-MTc4MTRfZnVsbCBhbmQgSUdUUFdfMTQzMzRfZnVsbDoNCj4gDQo+ICMjIyBOZXcgSUdUIHRlc3Rz
-ICgxKSAjIyMNCj4gDQo+ICAgKiBpZ3RAa21zX2RyYXdfY3JjQGRyYXctbWV0aG9kLW1tYXAtY3B1
-QHhiZ3IxNjE2MTYxNmYteXRpbGVkOg0KPiAgICAgLSBTdGF0dXNlcyA6IDQgcGFzcyhzKQ0KPiAg
-ICAgLSBFeGVjIHRpbWU6IFswLjA4LCAwLjE4XSBzDQo+IA0KPiAgIA0KPiANCj4gS25vd24gaXNz
-dWVzDQo+IC0tLS0tLS0tLS0tLQ0KLi4uDQoNCg0K
+On Wed, Jan 14, 2026 at 04:19:32PM +0100, Zbigniew Kempczyński wrote:
+> Extend support of compute-square calculation in IGT to xe3p platforms
+> like CrescentIsland.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Francois Dugast <francois.dugast@intel.com>
+> ---
+> v2 - remove unnecessary kernel_addr variable and reuse
+>      XE2_ADDR_STATE_CONTEXT_DATA_BASE definition (Francois)
+> ---
+>  lib/intel_compute.c                | 231 ++++++++++++++++++++++++++++-
+>  lib/intel_compute_krn_square.h     |  41 +++++
+>  lib/intel_compute_square_kernels.c |   5 +
+>  lib/xehp_media.h                   |   1 +
+>  4 files changed, 277 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+> index a555f908b1..397cef0ae9 100644
+> --- a/lib/intel_compute.c
+> +++ b/lib/intel_compute.c
+> @@ -50,6 +50,8 @@
+>  #define OFFSET_BINDING_TABLE		0x10000
+>  
+>  #define XE2_ADDR_STATE_CONTEXT_DATA_BASE	0x9000000ULL
+> +#define XE2_STATE_CONTEXT_DATA_BASE_ADDRESS ((3 << 29) | (0 << 27) | (1 << 24) | (11 << 16) | (1 << 0))
+> +
+>  #define OFFSET_STATE_SIP			0xFFFF0000
+>  
+>  #define USER_FENCE_VALUE			0xdeadbeefdeadbeefull
+> @@ -66,6 +68,7 @@
+>  #define DP_PIPELINE_FLUSH		(1 << 2)
+>  #define WRITE_IMM_DATA			(1 << 0)
+>  #define WRITE_TIMESTAMP		(3 << 0)
+> +#define XE3P_WRITE_IMM_DATA		(1 << 16)
+>  
+>  /*
+>   * TGP  - ThreadGroup Preemption
+> @@ -109,6 +112,17 @@ struct bo_execenv {
+>  	struct user_execenv *user;
+>  };
+>  
+> +struct inline_data {
+> +	union {
+> +		uint32_t dw[16];
+> +
+> +		struct {
+> +			uint32_t indirect_addr_lo;
+> +			uint32_t indirect_addr_hi;
+> +		} xe3p;
+> +	};
+> +};
+> +
+>  static void bo_randomize(float *ptr, int size)
+>  {
+>  	srand(time(NULL));
+> @@ -1578,7 +1592,6 @@ static void xe2lpg_compute_exec_compute(int fd,
+>  	addr_bo_buffer_batch[b++] = 0xE0004000;
+>  	addr_bo_buffer_batch[b++] = 0x00000000;
+>  
+> -#define XE2_STATE_CONTEXT_DATA_BASE_ADDRESS ((3 << 29) | (0 << 27) | (1 << 24) | (11 << 16) | (1 << 0))
+>  	addr_bo_buffer_batch[b++] = XE2_STATE_CONTEXT_DATA_BASE_ADDRESS;
+>  	// Split into low and high 32 bits
+>  	addr_bo_buffer_batch[b++] = addr_state_contect_data_base & 0xFFFFFFFF; // Mask the low 32 bits ;
+> @@ -1902,6 +1915,217 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+>  	bo_execenv_destroy(&execenv);
+>  }
+>  
+> +static void xe3p_compute_exec_compute(int fd,
+> +				      const struct inline_data *idata,
+> +				      uint32_t *addr_bo_buffer_batch,
+> +				      uint64_t kernel_start_pointer,
+> +				      uint64_t context_data_base_addr,
+> +				      bool threadgroup_preemption)
+> +
+> +{
+> +	int b = 0;
+> +	uint8_t uc_mocs = intel_get_uc_mocs_index(fd);
+> +
+> +	igt_assert(idata);
+> +	igt_debug("kernel addr         : %"PRIx64"\n", kernel_start_pointer);
+> +
+> +	addr_bo_buffer_batch[b++] = STATE_BASE_ADDRESS  | 0x14; /* dw0 */
+> +	addr_bo_buffer_batch[b++] = 0x00000040; /* dw1 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw2 */
+> +	addr_bo_buffer_batch[b++] = 0x40048000; /* dw3 */
+> +	addr_bo_buffer_batch[b++] = 0x00000040; /* dw4 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw5 */
+> +	addr_bo_buffer_batch[b++] = 0x00000040; /* dw6 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw7 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw8 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw9 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw10 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw11 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw12 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw13 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw14 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw15 */
+> +	addr_bo_buffer_batch[b++] = 0x00000040; /* dw16 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw17 */
+> +	addr_bo_buffer_batch[b++] = 0xFFFFFFFE; /* dw18 */
+> +	addr_bo_buffer_batch[b++] = 0x00000040; /* dw19 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw20 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw21 */
+> +
+> +	addr_bo_buffer_batch[b++] = XEHP_STATE_COMPUTE_MODE | 1;
+> +	addr_bo_buffer_batch[b++] = 0x14001400;
+> +	addr_bo_buffer_batch[b++] = 0x00000000;
+> +
+> +	addr_bo_buffer_batch[b++] = XE2_STATE_CONTEXT_DATA_BASE_ADDRESS;
+> +	addr_bo_buffer_batch[b++] = context_data_base_addr;
+> +	addr_bo_buffer_batch[b++] = context_data_base_addr >> 32;
+> +
+> +	addr_bo_buffer_batch[b++] = XE3P_COMPUTE_WALKER2 | 0x3e; /* dw0 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw1 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw2 */
+> +	addr_bo_buffer_batch[b++] = 0x008004A0; /* dw3 */
+> +	addr_bo_buffer_batch[b++] = 0xBE040000; /* dw4 */
+> +	addr_bo_buffer_batch[b++] = 0xFFFFFFFF; /* dw5 */
+> +	addr_bo_buffer_batch[b++] = 0x000001FF; /* dw6 */
+> +
+> +	if (threadgroup_preemption)
+> +		addr_bo_buffer_batch[b++] = XE2_THREADGROUP_PREEMPT_XDIM; // Thread Group ID X Dimension
+> +	else
+> +		addr_bo_buffer_batch[b++] = 0x00000004;
+
+Sorry, realized after sending previous email: could we parameterize
+work_size here as it is done in xe2lpg_compute_preempt_exec()?
+
+> +
+> +	addr_bo_buffer_batch[b++] = 0x00000001; /* dw8 */
+> +	addr_bo_buffer_batch[b++] = 0x00000001; /* dw9 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw10 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw11 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw12 */
+> +	addr_bo_buffer_batch[b++] = 0x00010000; /* dw13 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw14 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw15 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw16 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw17 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw18 */
+> +	addr_bo_buffer_batch[b++] = kernel_start_pointer; /* dw19 */
+> +	addr_bo_buffer_batch[b++] = kernel_start_pointer >> 32; /* dw20 */
+> +	if (threadgroup_preemption)
+> +		addr_bo_buffer_batch[b++] = 0x00000002;
+> +	else
+> +		addr_bo_buffer_batch[b++] = 0x00100002; // Enable Mid Thread Preemption BitField:20
+> +
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw22 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw23 */
+> +	addr_bo_buffer_batch[b++] = 0x0C000010; /* dw24 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw25 */
+> +	addr_bo_buffer_batch[b++] = 0x00000400; /* dw26 */
+> +
+> +	addr_bo_buffer_batch[b++] = DP_SS_CACHE_FLUSH | uc_mocs << 4 |
+> +				    DP_PIPELINE_FLUSH | XE3P_WRITE_IMM_DATA; /* dw27 */
+> +	addr_bo_buffer_batch[b++] = ADDR_BATCH;		/* dw28 (postsync addr) */
+> +	addr_bo_buffer_batch[b++] = ADDR_BATCH >> 32;	/* dw29 */
+> +	addr_bo_buffer_batch[b++] = (uint32_t) POST_SYNC_VALUE;		/* dw30 */
+> +	addr_bo_buffer_batch[b++] = (uint32_t) (POST_SYNC_VALUE >> 32);	/* dw31 */
+> +
+> +	/* inline data 32 - 47 */
+> +	memcpy(&addr_bo_buffer_batch[b], idata, sizeof(*idata));
+> +	b += 16;
+> +
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw48 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw49 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw50 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw51 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw52 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw53 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw54 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw55 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw56 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw57 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw58 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw59 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw60 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw61 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw62 */
+> +	addr_bo_buffer_batch[b++] = 0x00000000; /* dw63 */
+> +
+> +	addr_bo_buffer_batch[b++] = MI_BATCH_BUFFER_END;
+> +}
+> +
+> +static void xe3p_create_indirect_data(uint32_t *addr_bo_buffer_batch,
+> +				      uint64_t addr_input,
+> +				      uint64_t addr_output,
+> +				      uint32_t loop_count)
+> +{
+> +	int b = 0;
+> +
+> +	addr_bo_buffer_batch[b++] = addr_input & 0xffffffff;
+> +	addr_bo_buffer_batch[b++] = addr_input >> 32;
+> +	addr_bo_buffer_batch[b++] = addr_output & 0xffffffff;
+> +	addr_bo_buffer_batch[b++] = addr_output >> 32;
+> +	addr_bo_buffer_batch[b++] = loop_count;
+> +	addr_bo_buffer_batch[b++] = 0x00000200;
+> +	addr_bo_buffer_batch[b++] = 0x00000001;
+> +	addr_bo_buffer_batch[b++] = 0x00000001;
+> +	addr_bo_buffer_batch[b++] = 0x00000000;
+> +	addr_bo_buffer_batch[b++] = 0x00000000;
+> +	addr_bo_buffer_batch[b++] = 0x00000000;
+> +	addr_bo_buffer_batch[b++] = 0x00000000;
+> +	addr_bo_buffer_batch[b++] = 0x00000000;
+> +	addr_bo_buffer_batch[b++] = 0x00000000;
+> +	addr_bo_buffer_batch[b++] = 0x00000000;
+> +	addr_bo_buffer_batch[b++] = 0x00000000;
+> +}
+> +
+> +/**
+> + * xe3p_compute_exec - run a pipeline compatible with XE3P
+> + *
+> + * @fd: file descriptor of the opened DRM device
+> + * @kernel: GPU Kernel binary to be executed
+> + * @size: size of @kernel
+> + * @eci: engine instance class
+> + * @user: user defined exec environment
+> + * @alloc_prefs: memory allocation preference
+> + */
+> +static void xe3p_compute_exec(int fd, const unsigned char *kernel,
+> +			      unsigned int size,
+> +			      struct drm_xe_engine_class_instance *eci,
+> +			      struct user_execenv *user,
+> +			      enum execenv_alloc_prefs alloc_prefs)
+> +{
+> +	struct bo_dict_entry bo_dict[] = {
+> +		{ .addr = ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
+> +		  .name = "instr state base"},
+> +		{ .addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START,
+> +		  .size =  0x1000,
+> +		  .name = "indirect object base"},
+> +		{ .addr = ADDR_INPUT,
+> +		  .name = "addr input"},
+> +		{ .addr = ADDR_OUTPUT,
+> +		  .name = "addr output" },
+> +		{ .addr = ADDR_BATCH,
+> +		  .size = SIZE_BATCH,
+> +		  .name = "batch" },
+> +		{ .addr = XE2_ADDR_STATE_CONTEXT_DATA_BASE,
+> +		  .size = 0x10000,
+> +		  .name = "state context data base"},
+> +	};
+> +	struct inline_data idata = {};
+> +	struct bo_execenv execenv;
+> +	float *input_data, *output_data;
+> +	uint64_t indirect_addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START;
+> +	int entries = ARRAY_SIZE(bo_dict);
+> +
+> +	bo_execenv_create(fd, &execenv, eci, user);
+> +
+> +	/* Sets Kernel size */
+> +	bo_dict[0].size = ALIGN(size, 0x1000);
+> +	bo_dict[2].size = size_input(execenv.array_size);
+> +	bo_dict[3].size = size_output(execenv.array_size);
+> +
+> +	bo_execenv_bind(&execenv, alloc_prefs, bo_dict, entries);
+> +
+> +	memcpy(bo_dict[0].data, kernel, size);
+> +	memset(bo_dict[1].data, 0, 4096);
+> +
+> +	xe3p_create_indirect_data(bo_dict[1].data, ADDR_INPUT, ADDR_OUTPUT,
+> +				  0x400);
+> +	idata.xe3p.indirect_addr_lo = indirect_addr;
+> +	idata.xe3p.indirect_addr_hi = indirect_addr >> 32;
+> +
+> +	input_data = get_input_data(&execenv, user, bo_dict[2].data);
+> +	output_data = get_output_data(&execenv, user, bo_dict[3].data);
+> +
+> +	xe3p_compute_exec_compute(fd, &idata,
+> +				  bo_dict[4].data,
+> +				  ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
+> +				  XE2_ADDR_STATE_CONTEXT_DATA_BASE, false);
+> +
+> +	bo_execenv_exec(&execenv, ADDR_BATCH);
+> +
+> +	if (!user || (user && !user->skip_results_check))
+> +		bo_check_square(input_data, output_data, execenv.array_size);
+> +
+> +	bo_execenv_unbind(&execenv, bo_dict, entries);
+> +	bo_execenv_destroy(&execenv);
+> +}
+> +
+>  /*
+>   * Compatibility flags.
+>   *
+> @@ -1968,6 +2192,11 @@ static const struct {
+>  		.compute_exec = xe2lpg_compute_exec,
+>  		.compat = COMPAT_DRIVER_XE,
+>  	},
+> +	{
+> +		.ip_ver = IP_VER(35, 11),
+> +		.compute_exec = xe3p_compute_exec,
+> +		.compat = COMPAT_DRIVER_XE,
+> +	},
+>  };
+>  
+>  static const struct intel_compute_kernels
+> diff --git a/lib/intel_compute_krn_square.h b/lib/intel_compute_krn_square.h
+> index 2b616f136b..0490a692ef 100644
+> --- a/lib/intel_compute_krn_square.h
+> +++ b/lib/intel_compute_krn_square.h
+> @@ -288,4 +288,45 @@ static const unsigned char xe3lpg_kernel_square_bin[] = {
+>  	0x04, 0x00, 0x00, 0x00, 0x0c, 0x14, 0x20, 0x30, 0x00, 0x00, 0x00, 0x00
+>  };
+>  
+> +static const unsigned char xe3p_kernel_square_bin[] = {
+> +	0x61, 0x00, 0x00, 0x80, 0x30, 0x43, 0x61, 0x60, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x33, 0x22, 0x01, 0x80, 0x06, 0x18, 0x00, 0x05,
+> +	0x0c, 0x04, 0x28, 0xf0, 0x00, 0x00, 0x00, 0x96, 0x61, 0x80, 0x10, 0x80,
+> +	0x20, 0x02, 0x05, 0x02, 0x04, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80, 0x00, 0x80, 0x00, 0x02,
+> +	0xc0, 0x04, 0x00, 0x40, 0x01, 0x09, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x82, 0x00, 0x00,
+> +	0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x41, 0x21, 0x03, 0x80, 0x60, 0x06, 0x05, 0x03, 0x54, 0x05, 0x00, 0x06,
+> +	0x14, 0x02, 0x10, 0x00, 0x61, 0x00, 0x14, 0x00, 0x10, 0x01, 0x06, 0x0d,
+> +	0x04, 0x01, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x52, 0x19, 0x14, 0x00,
+> +	0x60, 0x06, 0x04, 0x06, 0x04, 0x03, 0x06, 0x01, 0x04, 0x0d, 0x84, 0x04,
+> +	0x70, 0x19, 0x14, 0x00, 0x20, 0x02, 0x01, 0x00, 0x04, 0x06, 0x10, 0x52,
+> +	0x44, 0x05, 0x10, 0x00, 0x2e, 0x00, 0x14, 0x14, 0x00, 0xc0, 0x00, 0x00,
+> +	0x60, 0x00, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x61, 0x00, 0x00, 0x80,
+> +	0x70, 0x07, 0x41, 0x60, 0x04, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x61, 0x00, 0x00, 0x80, 0x70, 0x07, 0x61, 0x60, 0x24, 0x05, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x33, 0x43, 0x17, 0x00, 0x06, 0x11, 0x00, 0x08,
+> +	0x14, 0x06, 0x00, 0xf0, 0x00, 0x00, 0x00, 0x50, 0x41, 0x83, 0x14, 0x00,
+> +	0xa0, 0x02, 0x05, 0x0a, 0x04, 0x08, 0x10, 0x0a, 0x04, 0x08, 0x00, 0x00,
+> +	0x33, 0x24, 0x15, 0x00, 0x04, 0x19, 0x00, 0x00, 0x14, 0x06, 0x00, 0xf0,
+> +	0x14, 0x0a, 0x04, 0x50, 0x2f, 0x00, 0x14, 0x00, 0x00, 0x40, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x33, 0x00, 0x00, 0x80,
+> +	0x01, 0x00, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00
+> +};
+> +
+>  #endif /* __INTEL_COMPUTE_KRN_SQUARE_H__ */
+> diff --git a/lib/intel_compute_square_kernels.c b/lib/intel_compute_square_kernels.c
+> index 3c888ebd85..4d69f270e9 100644
+> --- a/lib/intel_compute_square_kernels.c
+> +++ b/lib/intel_compute_square_kernels.c
+> @@ -86,5 +86,10 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
+>  		.loop_kernel = xe3lpg_kernel_loop_bin,
+>  		.loop_kernel_size = sizeof(xe3lpg_kernel_loop_bin),
+>  	},
+> +	{
+> +		.ip_ver = IP_VER(35, 11),
+> +		.size = sizeof(xe3p_kernel_square_bin),
+> +		.kernel = xe3p_kernel_square_bin,
+> +	},
+>  	{}
+>  };
+> diff --git a/lib/xehp_media.h b/lib/xehp_media.h
+> index fb65b8f207..20227bd3a6 100644
+> --- a/lib/xehp_media.h
+> +++ b/lib/xehp_media.h
+> @@ -18,6 +18,7 @@
+>  #define XEHP_STATE_COMPUTE_MODE		GFXPIPE(0, 1, 5)
+>  #define XEHP_CFE_STATE			GFXPIPE_XEHP(2, 2, 0)
+>  #define XEHP_COMPUTE_WALKER		GFXPIPE_XEHP(2, 2, 2)
+> +#define XE3P_COMPUTE_WALKER2		GFXPIPE_XEHP(2, 2, 8)
+>  
+>  #define BITRANGE(start, end) (end - start + 1)
+>  
+> -- 
+> 2.43.0
+> 
