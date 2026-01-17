@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A1BDC98315
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51950C98316
 	for <igt-dev@archiver.kernel.org>; Sat, 17 Jan 2026 07:15:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4598110E182;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5896E10E251;
 	Sat, 17 Jan 2026 07:15:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KNNqzOeR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LGtJv6S4";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6874610E043
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C877D10E029
  for <igt-dev@lists.freedesktop.org>; Sat, 17 Jan 2026 07:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768634155; x=1800170155;
+ t=1768634156; x=1800170156;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=hjOYFg0rT+WkEqIEVmm06KEo3PUglTul/NG94HHclCM=;
- b=KNNqzOeR2dXSYwu1G/n9UT0b6azqzrzplNydEtM+2DiwjDx4kum1an2y
- ovyimxlCVpDhE8/pYiaTNezg1b6E643FSDNWvtwPjArAO2OHQVh/UGd3i
- msOKKtMf9LATKZ14KLwHF0diHgmho+gHfBoYhA15KW/yoMtxE14nga7cD
- LjYRgl8DhkS+NzCfvFBMOApCauQvlbffjAbDsWZqPu1M5swyhKZ/LRhtZ
- hqtzQ09rmKeqOf91LVawHDyKfafr0XbM9iwKvOZIXs+N+TrQXoYAGg7vh
- W8FdFQaWXlORPaR2v1Vzg3By+D5ZtZKGDXUDYn94kORjLPIde8zBNp7TW w==;
-X-CSE-ConnectionGUID: WFAVDNBASa6bnNUhDr5eAA==
-X-CSE-MsgGUID: D6RuGC/sTAePgaB2QDM0tg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="73786308"
-X-IronPort-AV: E=Sophos;i="6.21,233,1763452800"; d="scan'208";a="73786308"
+ bh=jnl20jEN90XxuSq7XqxwdRcf5kHF6kftJy4u10Rx/7E=;
+ b=LGtJv6S45VWokiynNnrcM3R33TSQSGmnKwoa6qT1qLjPChafkmx4Qi7V
+ Otoay1EIMMRaKxKTlngrdkxTIsxwDhpwYFT6x0QZBKwWVTw69Wl8XCqMk
+ cJwPsDM2ubGgwuX6kkjItQd3y9/VS0XIPMK1w1+hbY/f108OaTKsaypv7
+ u5sTn704QToqZaxtwDxhvPZeaTfotToqVFJiHLqFiN/c0HERSQ49mDL0h
+ U1S73MwfU1YuAmDO0CKWADDC4R2z1QxU86vzul/uE3HK0Xzs6hYNmOw+E
+ W5pgjxHkKx0ftmrBLx/q35NC5Pi3fkW/FOk0JWpKNlLbBwdko+BS0rgmn Q==;
+X-CSE-ConnectionGUID: D3k92tv1RBGGPhLysaFkyg==
+X-CSE-MsgGUID: HX5FOKbdQ2GoYZhEkuf3kQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11673"; a="73786311"
+X-IronPort-AV: E=Sophos;i="6.21,233,1763452800"; d="scan'208";a="73786311"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  16 Jan 2026 23:15:55 -0800
-X-CSE-ConnectionGUID: iAotJRAvQSaBFVy0pUfdTw==
-X-CSE-MsgGUID: QJlmihfeQJi2RloLmUMyDg==
+X-CSE-ConnectionGUID: u+s3L8JiSzC7kGa7UOx4Hg==
+X-CSE-MsgGUID: GyJmP4cTQZOlrY4uPbFVXw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,233,1763452800"; d="scan'208";a="205842654"
+X-IronPort-AV: E=Sophos;i="6.21,233,1763452800"; d="scan'208";a="205842663"
 Received: from dut6304bmgfrd.fm.intel.com ([10.36.21.42])
- by fmviesa009.fm.intel.com with ESMTP; 16 Jan 2026 23:15:54 -0800
+ by fmviesa009.fm.intel.com with ESMTP; 16 Jan 2026 23:15:55 -0800
 From: Xin Wang <x.wang@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: matthew.d.roper@intel.com, zbigniew.kempczynski@intel.com,
  kamil.konieczny@linux.intel.com, ravi.kumar.vodapalli@intel.com,
  Xin Wang <x.wang@intel.com>
-Subject: [PATCH 1/4] lib/igt_core: add igt_destructor helper macro
-Date: Sat, 17 Jan 2026 07:14:56 +0000
-Message-ID: <20260117071459.892532-2-x.wang@intel.com>
+Subject: [PATCH 4/4] lib/intel_device_info: remove the graphcs_rel from xe2+
+ devices
+Date: Sat, 17 Jan 2026 07:14:59 +0000
+Message-ID: <20260117071459.892532-5-x.wang@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260117071459.892532-1-x.wang@intel.com>
 References: <20260117071459.892532-1-x.wang@intel.com>
@@ -68,37 +69,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add igt_destructor alongside igt_constructor to make it easy to run
-library teardown code when the binary unloads/exits.
+On Xe2+ platforms, the graphics/media IP version is no longer a stable
+property of a PCI ID "device type". After IP disaggregation, devices
+sharing the same PCI ID can potentially report different IP versions, so
+encoding graphics_rel in the static PCI-ID table is misleading.
 
 Signed-off-by: Xin Wang <x.wang@intel.com>
 ---
- lib/igt_core.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ lib/intel_device_info.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/lib/igt_core.h b/lib/igt_core.h
-index 6845f853c..ebeac140e 100644
---- a/lib/igt_core.h
-+++ b/lib/igt_core.h
-@@ -516,6 +516,18 @@ void igt_simple_init_parse_opts(int *argc, char **argv,
- 	__attribute__((constructor)) \
- 	static void igt_unique(__igt_constructor_l)(void)
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 7ae2a642a..52aef5140 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -508,7 +508,6 @@ static const struct intel_device_info intel_pontevecchio_info = {
  
-+/**
-+ * igt_destructor:
-+ *
-+ * Convenience macro to run the provided code block when igt is exiting,
-+ * after all tests have been run. This should be used for parts of the igt
-+ * library that require de-initialization of objects with global context.
-+ * This code block will be executed exactly once.
-+ */
-+#define igt_destructor \
-+	__attribute__((destructor)) \
-+	static void igt_unique(__igt_destructor_l)(void)
-+
- __noreturn __attribute__((format(printf, 1, 2)))
- void igt_skip(const char *f, ...);
- __noreturn __attribute__((format(printf, 5, 6)))
+ static const struct intel_device_info intel_lunarlake_info = {
+ 	.graphics_ver = 20,
+-	.graphics_rel = 4,
+ 	.display_ver = 20,
+ 	.has_4tile = true,
+ 	.has_flatccs = true,
+@@ -520,7 +519,6 @@ static const struct intel_device_info intel_lunarlake_info = {
+ 
+ static const struct intel_device_info intel_battlemage_info = {
+ 	.graphics_ver = 20,
+-	.graphics_rel = 1,
+ 	.display_ver = 14,
+ 	.has_4tile = true,
+ 	.has_flatccs = true,
+@@ -532,7 +530,6 @@ static const struct intel_device_info intel_battlemage_info = {
+ 
+ static const struct intel_device_info intel_pantherlake_info = {
+ 	.graphics_ver = 30,
+-	.graphics_rel = 0,
+ 	.display_ver = 30,
+ 	.has_4tile = true,
+ 	.has_flatccs = true,
+@@ -544,7 +541,6 @@ static const struct intel_device_info intel_pantherlake_info = {
+ 
+ static const struct intel_device_info intel_novalake_s_info = {
+ 	.graphics_ver = 30,
+-	.graphics_rel = 04,
+ 	.display_ver = 35,
+ 	.has_4tile = true,
+ 	.has_oam = true,
+@@ -556,7 +552,6 @@ static const struct intel_device_info intel_novalake_s_info = {
+ 
+ static const struct intel_device_info intel_crescentisland_info = {
+ 	.graphics_ver = 35,
+-	.graphics_rel = 11,
+ 	.display_ver = 0,
+ 	.has_oam = true,
+ 	.is_crescentisland = true,
 -- 
 2.43.0
 
