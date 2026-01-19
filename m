@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDF4FCCF2F6
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 12:35:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F527CCF2F7
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 12:35:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9171210E42F;
-	Mon, 19 Jan 2026 12:35:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4C8AC10E42E;
+	Mon, 19 Jan 2026 12:35:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HIiePlkx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JVX79GdR";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 23C3710E42F
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 12:35:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9080310E42E
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 12:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768826104; x=1800362104;
+ t=1768826107; x=1800362107;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0UFzxlA0jg0GkS/I6MbaZv/u14DDPxDKOH4fgJof5vU=;
- b=HIiePlkx6aZhXgw8Z+Zj+XtQdgTRprtMAJX+7zJ4gP4JssNnLk5KXzVp
- aRojWmn4DNiHXb3YReYYnM3H/94QxNDObJy668GmquqM12C1QeCksYFOA
- xGeZ8ZqGPw4Xxy3/dCMiuj3jrFmw8Sm4ZWx3T8j7fQl3prEXKV+7u/xxW
- tw54IFmrOOfByWJniAd8mAXojHZg1dkfU040bd5Ila4qIqyAAHv+6Byoc
- 4YubVGEzeZJK8VSTE6tPoiwc2Wh0FATOvvU2yXyy+/XoEZBmd/Sqq7v0w
- AnsgN70K3jX4iAQwaBRYMk7qS44fakj2dN0vKDqFR27wHesH2XDvqZMb0 w==;
-X-CSE-ConnectionGUID: Irw4B5WeQ/WxX4DZa1SuuA==
-X-CSE-MsgGUID: ARJRzML1SeK6+GbC4KfykA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="69769773"
-X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="69769773"
+ bh=RpaG5uZxfgwnGTHUzY9O9UjmSTXowDGPQNLiQwSuK8w=;
+ b=JVX79GdRc7qRjGrUnNBYH3Y9FkHLFj4JH8ZLa1R9p2AivPKPGXxhGsEO
+ SwDDNRdDDO2qlLLCm6u4e01jUqt1SKEaMKNrzxyphIUS6Y9IrYuo8g2cC
+ vZ6h6WFnSTJbpFopHCMgbcRyUgNJYwQjVhZQZ2X2H39nm4g+eQ6n9gDtY
+ +O3owuoqZUjtmjPrbLK2xfalH9hbRboJkHjs1dJnaZLMTi6NH8q6Myyaw
+ Uuxs+Jfuvfahwwv/bEFMnp8zA5HB5Uvzrs+LxD4TcTAqMrG70fLs3mJjM
+ ktSuy1hL8sazEHTUNcmVlOar0mGp2XFFkYlkGvE3VC+gY6Jho1p9LehBd Q==;
+X-CSE-ConnectionGUID: vMPyui6RR463mfhgcHkMSg==
+X-CSE-MsgGUID: /a/BPXxlRkGvQGQrcGwiCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="69769779"
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="69769779"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 04:35:04 -0800
-X-CSE-ConnectionGUID: tV9tO8ANTHW3IVEfCDr49Q==
-X-CSE-MsgGUID: IDmOvzD4QLG0cAoRj9ejCw==
+ 19 Jan 2026 04:35:06 -0800
+X-CSE-ConnectionGUID: 5b29SA4LS2eOdAh2wbpHRg==
+X-CSE-MsgGUID: fszQQBr7TVKOrWEbvw4AOA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="206211411"
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="206211434"
 Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
  by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 04:35:01 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 04:35:04 -0800
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, mohammed.thasleem@intel.com,
  suraj.kandpal@intel.com, ankit.k.nautiyal@intel.com,
  kamil.konieczny@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v6 01/10] tools/intel_hdcp: Basic init and cleanup for
- hdcp, constants, enums
-Date: Mon, 19 Jan 2026 18:01:33 +0530
-Message-Id: <20260119123142.504623-2-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v6 02/10] tools/intel_hdcp: Rename variable c to
+ connector
+Date: Mon, 19 Jan 2026 18:01:34 +0530
+Message-Id: <20260119123142.504623-3-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260119123142.504623-1-santhosh.reddy.guddati@intel.com>
 References: <20260119123142.504623-1-santhosh.reddy.guddati@intel.com>
@@ -71,93 +71,52 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add hdcp enums and constants and proper cleanup for tool on exit
+Replace variable name c with 'connector' in get_hdcp_info() to improve
+code readability.
 
 Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
 ---
- tools/intel_hdcp.c | 45 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 44 insertions(+), 1 deletion(-)
+ tools/intel_hdcp.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c
-index 8ec698828..ae2520b03 100644
+index ae2520b03..6ca067b41 100644
 --- a/tools/intel_hdcp.c
 +++ b/tools/intel_hdcp.c
-@@ -10,11 +10,25 @@
+@@ -71,24 +71,24 @@ static void get_hdcp_info(data_t *data)
+ 	fprintf(stderr, "Connectors:\n");
+ 	fprintf(stderr, "id\tencoder\tstatus\t\ttype\tHDCP\n");
+ 	for (int i = 0; i < res->count_connectors; i++) {
+-		drmModeConnector *c;
++		drmModeConnector *connector;
  
- #define MAX_HDCP_BUF_LEN	5000
+-		c = drmModeGetConnectorCurrent(data->fd, res->connectors[i]);
++		connector = drmModeGetConnectorCurrent(data->fd, res->connectors[i]);
  
-+#define CP_UNDESIRED	0
-+#define CP_DESIRED	1
-+#define CP_ENABLED	2
-+
-+enum hdcp_type {
-+	HDCP_TYPE_NONE,
-+	HDCP_TYPE_1_4,
-+	HDCP_TYPE_2_2_TYPE_0,
-+	HDCP_TYPE_2_2_TYPE_1
-+};
-+
- typedef struct data {
- 	int fd;
- 	igt_display_t display;
--	struct igt_fb red, green;
-+	struct igt_fb fb;
- 	int height, width;
-+	igt_output_t *output;
-+	enum pipe pipe;
-+	enum hdcp_type hdcp_type;
- } data_t;
+-		if (!c)
++		if (!connector)
+ 			continue;
  
- static const char *get_hdcp_version(int fd, char *connector_name)
-@@ -90,6 +104,8 @@ static void print_usage(void)
+ 		asprintf(&output_name, "%s-%d",
+-			 kmstest_connector_type_str(c->connector_type),
+-			 c->connector_type_id);
++			 kmstest_connector_type_str(connector->connector_type),
++			 connector->connector_type_id);
  
- static void test_init(data_t *data)
- {
-+	drmModeModeInfo *mode;
-+
- 	data->fd = __drm_open_driver(DRIVER_ANY);
- 	if (data->fd < 0) {
- 		fprintf(stderr, "Failed to open DRM driver\n");
-@@ -97,6 +113,32 @@ static void test_init(data_t *data)
+ 		fprintf(stderr, "%d\t%d\t%s\t%s\t%s\n",
+-			c->connector_id, c->encoder_id,
+-			kmstest_connector_status_str(c->connection),
+-			kmstest_connector_type_str(c->connector_type),
++			connector->connector_id, connector->encoder_id,
++			kmstest_connector_status_str(connector->connection),
++			kmstest_connector_type_str(connector->connector_type),
+ 			get_hdcp_version(data->fd, output_name));
+ 
+-		drmModeFreeConnector(c);
++		drmModeFreeConnector(connector);
  	}
- 	igt_display_require(&data->display, data->fd);
- 	igt_display_require_output(&data->display);
-+	igt_display_reset(&data->display);
-+
-+	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
-+		if (!igt_output_has_prop(data->output, IGT_CONNECTOR_CONTENT_PROTECTION))
-+			continue;
-+
-+		mode = igt_output_get_mode(data->output);
-+		data->width = mode->hdisplay;
-+		data->height = mode->vdisplay;
-+
-+		igt_create_color_fb(data->fd, data->width, data->height, DRM_FORMAT_XRGB8888,
-+				    DRM_FORMAT_MOD_LINEAR, 0.0, 0.0, 0.0, &data->fb);
-+
-+		igt_output_set_crtc(data->output, igt_crtc_for_pipe(&data->display, data->pipe));
-+		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+		break;
-+	}
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+
-+static void cleanup(data_t *data)
-+{
-+	igt_remove_fb(data->fd, &data->fb);
-+	igt_display_fini(&data->display);
-+	close(data->fd);
- }
  
- int main(int argc, char **argv)
-@@ -123,4 +165,5 @@ int main(int argc, char **argv)
- 			break;
- 		}
- 	}
-+	cleanup(&data);
- }
+ 	drmModeFreeResources(res);
 -- 
 2.34.1
 
