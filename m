@@ -4,50 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6092D4A5F4
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 07:33:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34C07CA5FE4
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 07:33:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9786110E377;
-	Mon, 19 Jan 2026 07:33:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D6C0910E37D;
+	Mon, 19 Jan 2026 07:33:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JlTuPgF2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aP9qZKhi";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0133410E377
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 07:33:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA30210E377
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 07:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768808018; x=1800344018;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=DWlPBJsQ2iCjDI8HRyKjslyOGHqRqPpxM9lzyOrT7f8=;
- b=JlTuPgF2m6qbMj/xpsxkRSTg114jSw1qiLTqAkXJmBHCM0rvsKqMUbSJ
- OVWQ7g6qN6SmiAXK7XeWEWD7Id8+ozjCuWTUn6eJXyuJJUqwu+GH/i+2/
- axUwZK0n5atvxT64zKlSEAPOg7yhRhnnyM7kQepq3xgxpWPiuVUjjLYyT
- GER34ESxu+u2eUcfTdadoLQ1yTDulAefWe1t7pAuk2llmB8q9rH3ZNLWb
- kwNgBLOaKL780X1PGEJ3+w9PyDR630dy4sprd/4eBk5ARDr+8U1Fb8WxM
- uDgSxpweIsxEQrLuyDLiBniGcp7usNztVPXxxykZrCX+TRJlmdnP3X4bF w==;
-X-CSE-ConnectionGUID: KjkNyS5fRWej2H7Qn1+u4A==
-X-CSE-MsgGUID: lWbdu50FT/WYzr3gfjZYzw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="69747945"
-X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; d="scan'208";a="69747945"
+ t=1768808019; x=1800344019;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=dGRVCogwFWyrtZCwnhH0zkNUbQG44KYDlSfnNgDg0h0=;
+ b=aP9qZKhiMCHX9iiGUWkuovT3urgkKtZlJCMsDdiDCEryyZ014naLP/5U
+ /TeV4z+1Bs8UXORoUs7mVLJgQlGmum2RjnblfsrfNebbNZcJjjxwXhq4l
+ etXkKdxCs/PbqtCnQ+fvOlC9uvPkZKQ5OCcbiEPJ5JWnVuaO2qRlgxLy3
+ C2HRVH0Q4v/PGXWXD6XST9d8pJ0VsAlvTz1yrbXvWzErS/LBnIepzVS3h
+ KUGuju+hyND3h+6YGmwAsDQJYJ0Dc0e1apmbWfyjnPBg2RxmlHDF/w3IE
+ p/GV5U5aRmrMzDainM7Ozg7iuc/+hssMZuqXhM+VfJ/GIsCsqfZzZB7GT g==;
+X-CSE-ConnectionGUID: d2aN2bycTL6loFY7kSdsGQ==
+X-CSE-MsgGUID: elPLz7LTSpKDixw2RNaopA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="69747947"
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; d="scan'208";a="69747947"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2026 23:33:37 -0800
-X-CSE-ConnectionGUID: Iob20osYS9eKtnvwU7yz1g==
-X-CSE-MsgGUID: UR34MfXlSW+w2HmdaiKCBw==
+ 18 Jan 2026 23:33:38 -0800
+X-CSE-ConnectionGUID: grSc0207Si2t4I73DJv8Mg==
+X-CSE-MsgGUID: +efB/rJZTiOnuwpJ+Dk56w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; d="scan'208";a="210285381"
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; d="scan'208";a="210285387"
 Received: from dut6304bmgfrd.fm.intel.com ([10.36.21.42])
  by fmviesa005.fm.intel.com with ESMTP; 18 Jan 2026 23:33:37 -0800
 From: Xin Wang <x.wang@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Xin Wang <x.wang@intel.com>
-Subject: [PATCH 0/3] lib/intel: switch graphics/IP version queries to fd-based
- APIs
-Date: Mon, 19 Jan 2026 07:33:13 +0000
-Message-ID: <20260119073316.1033676-1-x.wang@intel.com>
+Cc: Xin Wang <x.wang@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Matt Roper <matthew.d.roper@intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Ravi Kumar V <ravi.kumar.vodapalli@intel.com>
+Subject: [PATCH 2/3] lib/intel: add fd-based intel_gen/intel_graphics_ver via
+ Xe query
+Date: Mon, 19 Jan 2026 07:33:15 +0000
+Message-ID: <20260119073316.1033676-3-x.wang@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260119073316.1033676-1-x.wang@intel.com>
+References: <20260119073316.1033676-1-x.wang@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -66,147 +72,145 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series separates PCI ID–based device traits from per‑device IP version
-queries. It introduces fd‑based intel_gen()/intel_graphics_ver() using Xe
-query data when available, keeps PCI ID translation as _legacy, and
-updates Xe‑side libs/tests to use the fd‑based APIs. This aligns IGT with
-post‑MTL IP disaggregation while preserving i915 safety fallback.
+Add fd‑based intel_gen() and intel_graphics_ver() that prefer Xe query
+ip_ver_{major,minor} from the main GT, falling back to PCI ID legacy mapping.
+Export xe_get_main_gt() to access main GT data from the cached query info.
 
-Xin Wang (3):
-  lib/intel: suffix PCI ID based gen/graphics_ver with _legacy
-  lib/intel: add fd-based intel_gen/intel_graphics_ver via Xe query
-  intel/xe: use fd-based graphics/IP version helpers
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Ravi Kumar V <ravi.kumar.vodapalli@intel.com>
+Signed-off-by: Xin Wang <x.wang@intel.com>
+---
+ lib/intel_chipset.c | 51 +++++++++++++++++++++++++++++++++++++++++++++
+ lib/intel_chipset.h |  2 ++
+ lib/xe/xe_query.c   | 25 ++++++++++++++++++++++
+ lib/xe/xe_query.h   |  1 +
+ 4 files changed, 79 insertions(+)
 
- benchmarks/gem_blt.c                     |  2 +-
- benchmarks/gem_busy.c                    |  2 +-
- benchmarks/gem_latency.c                 |  2 +-
- benchmarks/gem_wsim.c                    |  8 ++--
- benchmarks/intel_upload_blit_large.c     |  2 +-
- benchmarks/intel_upload_blit_large_gtt.c |  2 +-
- benchmarks/intel_upload_blit_large_map.c |  2 +-
- benchmarks/intel_upload_blit_small.c     |  2 +-
- lib/gpgpu_shader.c                       |  5 +--
- lib/gpu_cmds.c                           | 21 +++++-----
- lib/i915/gem_engine_topology.c           |  6 +--
- lib/i915/gem_mman.c                      |  2 +-
- lib/i915/gem_submission.c                |  8 ++--
- lib/i915/i915_crc.c                      |  4 +-
- lib/i915/intel_decode.c                  |  4 +-
- lib/igt_dummyload.c                      |  2 +-
- lib/igt_gt.c                             |  4 +-
- lib/igt_store.c                          |  2 +-
- lib/instdone.c                           |  2 +-
- lib/intel_batchbuffer.c                  | 18 ++++----
- lib/intel_blt.c                          | 21 ++++------
- lib/intel_blt.h                          |  2 +-
- lib/intel_bufops.c                       | 10 ++---
- lib/intel_chipset.c                      | 51 +++++++++++++++++++++++
- lib/intel_chipset.h                      | 14 ++++---
- lib/intel_common.c                       |  2 +-
- lib/intel_compute.c                      |  6 +--
- lib/intel_device_info.c                  |  6 +--
- lib/intel_mmio.c                         |  8 ++--
- lib/intel_mocs.c                         | 48 +++++++++++-----------
- lib/intel_pat.c                          | 19 ++++-----
- lib/intel_reg_map.c                      |  2 +-
- lib/ioctl_wrappers.c                     |  2 +-
- lib/rendercopy_gen9.c                    | 22 +++++-----
- lib/xe/xe_legacy.c                       |  2 +-
- lib/xe/xe_oa.c                           |  4 +-
- lib/xe/xe_query.c                        | 25 ++++++++++++
- lib/xe/xe_query.h                        |  1 +
- lib/xe/xe_spin.c                         |  4 +-
- lib/xe/xe_sriov_provisioning.c           |  4 +-
- tests/intel/api_intel_allocator.c        |  2 +-
- tests/intel/api_intel_bb.c               | 10 ++---
- tests/intel/gem_bad_reloc.c              |  4 +-
- tests/intel/gem_blits.c                  |  2 +-
- tests/intel/gem_close_race.c             |  2 +-
- tests/intel/gem_concurrent_all.c         |  2 +-
- tests/intel/gem_ctx_create.c             |  4 +-
- tests/intel/gem_ctx_engines.c            |  6 +--
- tests/intel/gem_ctx_isolation.c          | 14 +++----
- tests/intel/gem_ctx_shared.c             |  8 ++--
- tests/intel/gem_ctx_sseu.c               |  2 +-
- tests/intel/gem_eio.c                    |  6 +--
- tests/intel/gem_evict_alignment.c        |  6 +--
- tests/intel/gem_evict_everything.c       |  8 ++--
- tests/intel/gem_exec_async.c             |  2 +-
- tests/intel/gem_exec_await.c             |  2 +-
- tests/intel/gem_exec_balancer.c          |  4 +-
- tests/intel/gem_exec_big.c               |  2 +-
- tests/intel/gem_exec_capture.c           |  6 +--
- tests/intel/gem_exec_fair.c              | 20 ++++-----
- tests/intel/gem_exec_fence.c             | 18 ++++----
- tests/intel/gem_exec_flush.c             |  4 +-
- tests/intel/gem_exec_gttfill.c           |  2 +-
- tests/intel/gem_exec_latency.c           |  6 +--
- tests/intel/gem_exec_nop.c               |  4 +-
- tests/intel/gem_exec_parallel.c          |  2 +-
- tests/intel/gem_exec_params.c            |  8 ++--
- tests/intel/gem_exec_reloc.c             | 10 ++---
- tests/intel/gem_exec_schedule.c          | 20 ++++-----
- tests/intel/gem_exec_store.c             |  6 +--
- tests/intel/gem_exec_suspend.c           |  2 +-
- tests/intel/gem_exec_whisper.c           |  6 +--
- tests/intel/gem_fenced_exec_thrash.c     |  2 +-
- tests/intel/gem_gtt_hog.c                |  2 +-
- tests/intel/gem_linear_blits.c           |  8 ++--
- tests/intel/gem_media_vme.c              |  2 +-
- tests/intel/gem_mmap_gtt.c               | 12 +++---
- tests/intel/gem_read_read_speed.c        |  2 +-
- tests/intel/gem_render_copy.c            |  8 ++--
- tests/intel/gem_ringfill.c               |  4 +-
- tests/intel/gem_set_tiling_vs_blt.c      |  2 +-
- tests/intel/gem_softpin.c                |  6 +--
- tests/intel/gem_streaming_writes.c       |  4 +-
- tests/intel/gem_sync.c                   |  8 ++--
- tests/intel/gem_tiled_fence_blits.c      |  4 +-
- tests/intel/gem_tiling_max_stride.c      |  8 ++--
- tests/intel/gem_userptr_blits.c          | 20 ++++-----
- tests/intel/gem_vm_create.c              |  2 +-
- tests/intel/gem_watchdog.c               |  4 +-
- tests/intel/gem_workarounds.c            |  2 +-
- tests/intel/gen7_exec_parse.c            |  2 +-
- tests/intel/gen9_exec_parse.c            |  2 +-
- tests/intel/i915_getparams_basic.c       |  6 +--
- tests/intel/i915_module_load.c           |  2 +-
- tests/intel/i915_pm_rc6_residency.c      |  6 +--
- tests/intel/i915_pm_rpm.c                |  2 +-
- tests/intel/i915_pm_sseu.c               |  2 +-
- tests/intel/kms_ccs.c                    | 13 ++----
- tests/intel/kms_fbcon_fbt.c              |  2 +-
- tests/intel/kms_frontbuffer_tracking.c   |  6 +--
- tests/intel/kms_pipe_stress.c            |  4 +-
- tests/intel/perf.c                       | 52 ++++++++++++------------
- tests/intel/perf_pmu.c                   |  8 ++--
- tests/intel/sysfs_preempt_timeout.c      |  2 +-
- tests/intel/sysfs_timeslice_duration.c   |  2 +-
- tests/intel/xe_ccs.c                     | 16 ++++----
- tests/intel/xe_compute.c                 |  8 ++--
- tests/intel/xe_copy_basic.c              |  6 +--
- tests/intel/xe_debugfs.c                 |  3 +-
- tests/intel/xe_eudebug_online.c          |  8 +---
- tests/intel/xe_exec_multi_queue.c        |  3 +-
- tests/intel/xe_exec_store.c              | 18 ++++----
- tests/intel/xe_fault_injection.c         |  8 ++--
- tests/intel/xe_intel_bb.c                |  7 ++--
- tests/intel/xe_multigpu_svm.c            |  3 +-
- tests/intel/xe_oa.c                      | 22 +++++-----
- tests/intel/xe_pat.c                     | 16 +++-----
- tests/intel/xe_query.c                   |  4 +-
- tests/intel/xe_render_copy.c             |  2 +-
- tests/prime_vgem.c                       |  2 +-
- tools/intel_dp_compliance.c              |  2 +-
- tools/intel_error_decode.c               | 12 +++---
- tools/intel_gtt.c                        | 12 +++---
- tools/intel_l3_parity.c                  |  2 +-
- tools/intel_reg.c                        |  6 +--
- tools/intel_reg_decode.c                 |  4 +-
- tools/intel_tiling_detect.c              |  2 +-
- tools/intel_vbt_decode.c                 |  2 +-
- 128 files changed, 487 insertions(+), 445 deletions(-)
-
+diff --git a/lib/intel_chipset.c b/lib/intel_chipset.c
+index 760faede2..3e2d7a19c 100644
+--- a/lib/intel_chipset.c
++++ b/lib/intel_chipset.c
+@@ -127,6 +127,57 @@ static uint32_t __i915_get_drm_devid(int fd)
+ 	return devid;
+ }
+ 
++/**
++ * intel_graphics_ver:
++ * @fd: Open DRM device file descriptor
++ *
++ * Returns the graphics/IP version encoded with IP_VER(major, minor).
++ *
++ * The function prefers the modern XE path: if a main GT is available via
++ * xe_get_main_gt() and it reports a non-zero ip_ver_major, the version is
++ * constructed from main_gt->ip_ver_major and main_gt->ip_ver_minor.
++ *
++ * If XE information is unavailable, it falls back to the legacy path by reading
++ * the DRM device ID with intel_get_drm_devid() and translating it via
++ * intel_graphics_ver_legacy().
++ *
++ * Return: Encoded IP version (IP_VER(major, minor)).
++ */
++unsigned intel_graphics_ver(int fd)
++{
++	uint16_t devid;
++	const struct drm_xe_gt* main_gt = xe_get_main_gt(fd);
++
++	if (main_gt && main_gt->ip_ver_major)
++		return IP_VER(main_gt->ip_ver_major, main_gt->ip_ver_minor);
++
++	devid = intel_get_drm_devid(fd);
++	return intel_graphics_ver_legacy(devid);
++}
++
++/**
++ * intel_gen:
++ * @fd: DRM device file descriptor.
++ *
++ * Attempts to determine the graphics "generation" by querying the Xe driver for
++ * the main GT IP version major. If unavailable (e.g., not an Xe device or no IP
++ * version reported), falls back to retrieving the DRM device ID and mapping it
++ * to a legacy graphics version.
++ *
++ * Return: The graphics generation/major IP version for the device.
++ */
++unsigned intel_gen(int fd)
++{
++	uint16_t devid;
++	const struct drm_xe_gt* main_gt = xe_get_main_gt(fd);
++
++	if (main_gt && main_gt->ip_ver_major)
++		return main_gt->ip_ver_major;
++
++	devid = intel_get_drm_devid(fd);
++	return intel_gen_legacy(devid);
++}
++
+ /**
+  * intel_get_drm_devid:
+  * @fd: open i915/xe drm file descriptor
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index fb360268d..59edf70ea 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -106,6 +106,8 @@ const struct intel_cmds_info *intel_get_cmds_info(uint16_t devid) __attribute__(
+ unsigned intel_gen_legacy(uint16_t devid) __attribute__((pure));
+ unsigned intel_graphics_ver_legacy(uint16_t devid) __attribute__((pure));
+ unsigned intel_display_ver(uint16_t devid) __attribute__((pure));
++unsigned intel_gen(int fd);
++unsigned intel_graphics_ver(int fd);
+ 
+ extern enum pch_type intel_pch;
+ 
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 981d76948..742e48c11 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -931,6 +931,31 @@ uint16_t xe_tile_get_main_gt_id(int fd, uint8_t tile)
+ 	return gt_id;
+ }
+ 
++/**
++ * xe_get_main_gt:
++ * @fd: xe device fd
++ *
++ * Returns pointer to main GT data structure for given xe device @fd.
++ */
++const struct drm_xe_gt* xe_get_main_gt(int fd)
++{
++	struct xe_device *xe_dev;
++
++	xe_dev = find_in_cache(fd);
++
++	if (xe_dev) {
++		for (int i = 0; i < xe_dev->gt_list->num_gt; i++) {
++			const struct drm_xe_gt *gt_data = &xe_dev->gt_list->gt_list[i];
++
++			if (gt_data->type == DRM_XE_QUERY_GT_TYPE_MAIN) {
++				return gt_data;
++			}
++		}
++	}
++
++	return NULL;
++}
++
+ /**
+  * xe_hwconfig_lookup_value:
+  * @fd: xe device fd
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index d7a9f95f9..bbf6bf9b6 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -160,6 +160,7 @@ uint32_t xe_hwconfig_lookup_value_u32(int fd, enum intel_hwconfig attribute);
+ void *xe_query_device_may_fail(int fd, uint32_t type, uint32_t *size);
+ int xe_query_pxp_status(int fd);
+ int xe_wait_for_pxp_init(int fd);
++const struct drm_xe_gt* xe_get_main_gt(int fd);
+ 
+ /**
+  * xe_query_device:
 -- 
 2.43.0
 
