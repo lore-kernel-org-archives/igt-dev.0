@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A75D1CCF2DA
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 10:17:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E973CCF2DB
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 10:36:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6208610E3E1;
-	Mon, 19 Jan 2026 10:17:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C368E10E3E5;
+	Mon, 19 Jan 2026 10:36:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OLHmlb+i";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AQFoTpul";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C850B10E3DE;
- Mon, 19 Jan 2026 10:17:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E5CC10E3E5
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 10:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768817876; x=1800353876;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=B3VV8A+PouJR1YCOGllCPo7gd6LEdpZc0Ey6PgMGrzc=;
- b=OLHmlb+i1Se6oJoCCyf5b/Q8lcv/tysoN6bIEjWn9E8Sq84dLinv8CqU
- b8xmSXjZefQiUk0e7P8Z43T6aDxuY6m/AR9Js94RIvKdvTwPkbvXmx5XV
- iZxyMgAk8mjOZa3KRQQqGnLt1SAVvLG8C0Vo7TKb32kDV3N9yK+yfDFEl
- kWfzOLS5IjvyJnYEFgGNcw0TWbFoVRCyEuNTv/FkLol83RQpT+S16jFl2
- AF6aeYxdr98dg7mO0A9eyEniWXsFIf9+lLDXcz0PfJf9ut1QB5uw8Jwyl
- iqpIBSjWUPHFBSlKeTO2F11xSEYRxKkLcnG4wXzzM3CKw/t6ecn0yd110 Q==;
-X-CSE-ConnectionGUID: E+eLlJ/fTTGYL4iU4ihh7w==
-X-CSE-MsgGUID: QJM/2HtjSAay5Yw3OkmqpA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="70078824"
-X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="70078824"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 02:17:55 -0800
-X-CSE-ConnectionGUID: faX62xL0Tc6sdRrBZFAlUQ==
-X-CSE-MsgGUID: zqznzjqQS2WLSwOiI0jGYQ==
+ t=1768818992; x=1800354992;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=KAtpYb7SB7xUH8iEXOlFHUT/eD9Wy218tUeokyIx3cY=;
+ b=AQFoTpulnkKM04OhjL36QV+7cxhkA4N0rC7zWtmCnLpcesfsjhBMKLF7
+ Zm+ozk0V5JeYKx7AJeZjSGijHENpvW946EafThehVvcyFhfFOr4G5jWbY
+ K5UZ3VbiKE9lGuDPIfyjPmWWCkL0LrEIu9pmkR697mmP6BsLNqQxLrw4+
+ zLoHUxNe4OV+/vb+ywtWzRjFfPAhwcoJAmVld/W0/T7bL0nSjrFEwXNct
+ eDraehlHLQalBxLhGrGXrNJrBWsMv9vyFxqHMGz60ejeEvyAalUThiMqx
+ OrosLB2OGYUMj3KI+7Jo6vPjzz/fN5M3TxGf2cnjcc8xyjduY87rZhyje A==;
+X-CSE-ConnectionGUID: 8me6EpHnRveInBHJ4Nef2Q==
+X-CSE-MsgGUID: CioSD/d8S6+jQjPmgSArAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="81140615"
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="81140615"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2026 02:36:32 -0800
+X-CSE-ConnectionGUID: 33vR9pOFRI6Dfwfe+kTYJA==
+X-CSE-MsgGUID: g40IlLU3Q163JVXBMpacjw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="204978205"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO
- jkrzyszt-mobl2.intranet) ([10.245.246.22])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 02:17:52 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org,
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="205454066"
+Received: from zzombora-mobl1 (HELO localhost) ([10.245.244.56])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2026 02:36:29 -0800
+Date: Mon, 19 Jan 2026 11:36:27 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Matt Roper <matthew.d.roper@intel.com>
+Cc: Xin Wang <x.wang@intel.com>, igt-dev@lists.freedesktop.org, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t v7] tests/intel/gem_lmem_swapping: Avoid false failures
- from oom-killer
-Date: Mon, 19 Jan 2026 11:17:30 +0100
-Message-ID: <20260119101735.1328416-2-janusz.krzysztofik@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
+ Ravi Kumar V <ravi.kumar.vodapalli@intel.com>
+Subject: Re: [PATCH v10 1/2] lib/xe/xe_query: Get runtime xe device graphics
+ version from GMD_ID
+Message-ID: <gt6bnphnrhub64xwn67xgx6aom7245osaqvqq3la5o4qt3hny3@zoqteqp6fd4e>
+References: <20260112191732.672297-1-x.wang@intel.com>
+ <20260112191732.672297-2-x.wang@intel.com>
+ <viv6pwhicr6jjm5d4hoznn7w4h7ixamqdwalpx3eb3aoc5fgbr@2rrcrdhe7rsn>
+ <20260116213358.GJ458797@mdroper-desk1.amr.corp.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260116213358.GJ458797@mdroper-desk1.amr.corp.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,168 +74,306 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The smem-oom subtest can expectedly result in oom-killer being triggered,
-which then dumps a call trace from a process that triggered it.  If that
-happens to be a process that executes drm or i915 functions then the call
-trace dump contains lines recognized by igt_runner running in piglit mode
-as potential warnings.  If severity of the call trace dump messages is
-NOTICE or higher, which isn't unlikely, then a dmesg-warn result is
-reported despite successful completion of the subtest.
+On Fri, Jan 16, 2026 at 01:33:58PM -0800, Matt Roper wrote:
+> On Thu, Jan 15, 2026 at 09:00:53AM +0100, Zbigniew Kempczyński wrote:
+> > On Mon, Jan 12, 2026 at 07:17:31PM +0000, Xin Wang wrote:
+> > > This allows IGT to query the exact IP version for xe platforms.
+> > > 
+> > > Key changes:
+> > > - Add xe_device_ipver field to xe_device structure
+> > > - set the graphics versions based on the GMD_ID
+> > > - Cache device ipver in global map indexed by devid for efficient lookup
+> > > - Implement xe_ipver_cache_lookup() to retrieve cached ipver by devid
+> > > - Clean up cached device ipver when xe_device is released
+> > > 
+> > > V2:
+> > > - add new struct xe_device_ipver to hold the ipver info
+> > > - separate cache map to eliminate collision (Roper, Matthew D)
+> > > - changed function name to xe_ipver_cache_lookup() to avoid
+> > >   confusion (Roper, Matthew D)
+> > > 
+> > > V3:
+> > > - optimize the coding style. (Summers, Stuart)
+> > > 
+> > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > > Cc: Matt Roper <matthew.d.roper@intel.com>
+> > > Signed-off-by: Xin Wang <x.wang@intel.com>
+> > > Reviewed-by: Ravi Kumar V <ravi.kumar.vodapalli@intel.com>
+> > > ---
+> > >  lib/intel_chipset.h |  6 +++++
+> > >  lib/xe/xe_query.c   | 54 ++++++++++++++++++++++++++++++++++++++++++++-
+> > >  lib/xe/xe_query.h   |  4 ++++
+> > >  3 files changed, 63 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+> > > index cc2225110..424811f7c 100644
+> > > --- a/lib/intel_chipset.h
+> > > +++ b/lib/intel_chipset.h
+> > > @@ -100,6 +100,12 @@ struct intel_device_info {
+> > >  	const char *codename;
+> > >  };
+> > >  
+> > > +struct xe_device_ipver {
+> > > +	uint32_t devid;
+> > > +	uint16_t graphics_ver;
+> > > +	uint16_t graphics_rel;
+> > > +};
+> > > +
+> > >  const struct intel_device_info *intel_get_device_info(uint16_t devid) __attribute__((pure));
+> > >  
+> > >  const struct intel_cmds_info *intel_get_cmds_info(uint16_t devid) __attribute__((pure));
+> > > diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+> > > index 981d76948..823a29f2d 100644
+> > > --- a/lib/xe/xe_query.c
+> > > +++ b/lib/xe/xe_query.c
+> > > @@ -210,6 +210,22 @@ static struct xe_device_cache {
+> > >  	struct igt_map *map;
+> > >  } cache;
+> > >  
+> > > +static struct xe_ipver_cache {
+> > > +	pthread_mutex_t mutex;
+> > > +	struct igt_map *map;
+> > > +} xe_ipver;
+> > > +
+> > > +struct xe_device_ipver *xe_ipver_cache_lookup(uint32_t devid)
+> > > +{
+> > > +	struct xe_device_ipver *ipver;
+> > > +
+> > > +	pthread_mutex_lock(&xe_ipver.mutex);
+> > > +	ipver = igt_map_search(xe_ipver.map, &devid);
+> > > +	pthread_mutex_unlock(&xe_ipver.mutex);
+> > > +
+> > > +	return ipver;
+> > > +}
+> > > +
+> > 
+> > Please forgive me for sharing my thoughts only now.
+> > 
+> > I wondered about this a bit and according to current code shape
+> > I don't like this design - especially ip_ver cache in xe_query.
+> > I mean I don't like to use external cache which might or might not
+> > be filled at time of calling intel_get_device_info().
+> > 
+> > At the moment I see following options:
+> > 
+> > 1. Provide update function intel_device_info_update(devid, ver, rel)
+> >    allowing to update rel field during xe_device_get(). This still
+> >    keeps intel_device_info.c independent but rel field might be
+> >    incorrect. BTW I would set it in static definition to -1 (max
+> >    unsigned) to catch it is not set/updated properly during
+> >    intel_get_device_info().
+> > 
+> > 2. Add new function intel_get_device_info_by_fd() which will support
+> >    passing fd instead devid and migrate code to use it. Most of our code
+> >    uses fd to acquire device id before calling intel_get_device_info()
+> >    [exception is igt_device_scan which uses pci devid directly]. This
+> >    will break intel_device_info.c independency because we start calling
+> >    driver functions, but maybe it is time to do this (GMD_ID).
+> > 
+> >    Digression: It seems when INTEL_DEVID_OVERRIDE won't work properly
+> >    but I wouldn't care about it for now.
+> > 
+> > 3. Mix 1 and 2 but build hash map from intel_device_match[] in the
+> >    constructor and update it during xe_device_get(). Pros of this
+> >    is we could stop using 'static __thread' for caching last info.
+> 
+> The problem is that "graphics version" and "media version" are not
+> supposed to be a characteristic of a general device type anymore.  An
+> individual device will have some version number, but another device of
+> the same "type" with the same PCI ID can can potentially have a
+> different IP version.  We've been lucky enough so far to still have
+> unique PCI IDs for cases where the version numbers are different (at
+> least for production parts), but this is not something that we're
+> supposed to be relying on since the IP disaggregation happened around
+> the MTL timeframe.  Personally I think that hacks that keep treating
+> versions as something associated with a device type are just making the
+> problem harder to untangle.
 
-Fortunately, severity of those call trace dump messages depends on kernel
-default log level which can be controlled from user space over sysctl.
+Thanks for explaining this. I wasn't aware same PCI ID may map to
+different IP versions. If I'm not wrong atm kernel also doesn't have
+this addressed yet (pciidlist[] still maps PCI ID to some device
+characteristics). Is it possible the opossite that same ver/rel may map
+to different PCI IDs? This would complicate things even more, especially
+we heavily depend on some flags set for device (has_flatccs, etc). Or
+ver/rel will uniquely determine other device characteristics? If yes
+may we replace PCI ID to ver/rel as a key for device info?
 
-To avoid false failure reports, relax kernel default log level to INFO so
-those log lines are ignored by igt_runner in piglit mode at an expense of
-call traces from real issues potentially detected by the subtest not
-contributing to the igt_runner reported result.  Since those call traces
-are still available to developers, only submitted with reduced severity,
-that shouldn't hurt as long as the igt_runner still abandons further
-execution and reports an abort result on a kernel taint.
+> 
+> For a proper solution, I think we really need to separate the concept of
+> "traits associated with a type of device" (which is the stuff we have in
+> the device info structure which can be accurately looked up by PCI ID)
+> from "IP version associated with a specific device instance" (which on
+> modern platforms can only be accurately looked up in the context of a
+> specific device handle such as a FD).
 
-v7: Use symbolic name for relaxed log level (Krzysztof),
-    emit debug message also when default log level change not needed.
-v6: Expect fprintf() to return 3, not a mistyped 6 (Kamil),
-  - fclose() the stream if not null, leaking it not only doesn't look good
-    but also results in fprintf() output potentially not flushed.
-v5: Fix abort skipped on memory allocation failure or other error.
-v4: In the exit handler, restore the default log level with a simple
-    write() from a formerly prepared buffer, and abort verbosely if that
-    doesn't succeed (Kamil).
-v3: Move cleanup to an exit handler in case we are killed (Kamil).
-v2: Move default log level setup inside subtest smem-oom (Kamil),
-  - move cleanup there as well.
+I'm not sure what you've written is equal to my previous comment? I mean
+ver/rel is a device characteristic key?
 
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5493
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- tests/intel/gem_lmem_swapping.c | 90 ++++++++++++++++++++++++++++++++-
- 1 file changed, 88 insertions(+), 2 deletions(-)
+--
+Zbigniew
 
-diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
-index adae26716c..77e18f1a3c 100644
---- a/tests/intel/gem_lmem_swapping.c
-+++ b/tests/intel/gem_lmem_swapping.c
-@@ -9,6 +9,7 @@
- #include "i915/intel_memory_region.h"
- #include "igt.h"
- #include "igt_kmod.h"
-+#include "runnercomms.h"
- #include <unistd.h>
- #include <stdlib.h>
- #include <stdint.h>
-@@ -19,6 +20,7 @@
- #include <errno.h>
- #include <sys/stat.h>
- #include <sys/ioctl.h>
-+#include <sys/syslog.h>
- #include <sys/time.h>
- #include <sys/wait.h>
- #include "drm.h"
-@@ -661,6 +663,35 @@ static void gem_leak(int fd, uint64_t alloc)
- 	gem_madvise(fd, handle, I915_MADV_DONTNEED);
- }
- 
-+static int printk = -1;
-+static char log_levels[4];
-+
-+static void printk_exit_handler(int sig)
-+{
-+	char msg[80] = {};
-+	int len;
-+
-+	if (printk < 0)
-+		return;
-+
-+	len = strlen(log_levels);
-+	if (!len)
-+		snprintf(msg, sizeof(msg), "%s\n",
-+			 "no defaults saved, unable to restore /proc/sys/kernel/printk");
-+	else if (write(printk, log_levels, len) != len)
-+		snprintf(msg, sizeof(msg),
-+			 "restoring /proc/sys/kernel/printk defaults failed, errno: %d\n",
-+			 errno);
-+	close(printk);
-+
-+	if (*msg) {
-+		log_to_runner_sig_safe(msg, strlen(msg));
-+		abort();
-+	}
-+
-+	printk = -1;
-+}
-+
- static int *lmem_done;
- 
- static void smem_oom_exit_handler(int sig)
-@@ -861,8 +892,63 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	}
- 
- 	igt_describe("Exercise local memory swapping during exhausting system memory");
--	dynamic_lmem_subtest(region, regions, "smem-oom")
--		test_smem_oom(i915, ctx, region);
-+	igt_subtest_with_dynamic("smem-oom") {
-+		int console_log_level, default_log_level;
-+		unsigned int fd, i = 0;
-+		FILE *stream = NULL;
-+
-+		/*
-+		 * This subtest can result in oom-killer being triggered, which
-+		 * then dumps a call trace from a process that triggered it.
-+		 * If that happens to be a process that executes drm or i915
-+		 * functions then the call trace dump contains lines recognized
-+		 * by igt_runner as warnings and a dmesg-warn result is
-+		 * reported.  To avoid false failure reports, relax kernel
-+		 * default log level to INFO for those lines to be ignored by
-+		 * igt_runner in piglit mode, at an expense of call traces from
-+		 * potential real issues not contributing to the igt_runner
-+		 * reported result.  Since those call traces are still available
-+		 * to developers, only displayed with relaxed severity, that
-+		 * shouldn't hurt as long as igt_runner still abandons further
-+		 * execution and reports an abort result on a kernel taint.
-+		 */
-+		fd = open("/proc/sys/kernel/printk", O_RDWR);
-+		if (!igt_debug_on(fd < 0))
-+			stream = fdopen(fd, "r+");
-+
-+		if (igt_debug_on(!stream))
-+			close(fd);
-+		else
-+			i = fscanf(stream, "%d %d", &console_log_level, &default_log_level);
-+
-+		if (igt_debug_on(i != 2) || igt_debug_on(default_log_level >= LOG_INFO))
-+			i = 0;
-+		else
-+			i = snprintf(log_levels, sizeof(log_levels), "%d %d",
-+				     console_log_level, default_log_level);
-+
-+		if (!igt_debug_on(i != 3))
-+			printk = dup(fd);
-+
-+		if (!igt_debug_on(printk < 0)) {
-+			igt_install_exit_handler(printk_exit_handler);
-+
-+			rewind(stream);
-+			igt_debug_on(fprintf(stream, "%d %d", console_log_level, LOG_INFO) != 3);
-+		}
-+
-+		if (stream)
-+			igt_debug_on(fclose(stream) == EOF);
-+
-+		for (i = 0; i < regions->num_regions; i++) {
-+			region = &regions->regions[i];
-+			if (region->region.memory_class == I915_MEMORY_CLASS_DEVICE)
-+				igt_dynamic_f("lmem%u", region->region.memory_instance)
-+					test_smem_oom(i915, ctx, region);
-+		}
-+
-+		printk_exit_handler(0);
-+	}
- 
- 	igt_fixture() {
- 		intel_allocator_multiprocess_stop();
--- 
-2.52.0
-
+> 
+> So aside from a few special cases, we want IGT to stop translating PCI
+> IDs into version numbers and instead start translating fd's into version
+> numbers.  The special case exceptions I can think of that don't really
+> have a way to do fd-based lookups are: 
+> 
+>  * tools/tests that bypass the driver entirely (possibly running without
+>    the driver loaded) and just use libpciaccess for direct BAR access.
+>    Most of these either don't have version-based conditions or only have
+>    version conditions matching against very old platforms (where a
+>    PCIID-based lookup is "safe")
+> 
+>  * the old i915-era error dump decoder tool just reads its information
+>    (including PCI ID) from a dump file on disk.  The tool might be
+>    executed on a completely different machine from where the dump was
+>    originally captured.  I don't think this tool has been updated since
+>    gen8 (everyone switched over to using the Mesa tool instead), and I
+>    don't think it would function at all on any of our modern platforms.
+>    So if this tool is still useful at all, it would only be on ancient
+>    i915 platforms where a PCIID-based lookup is "safe."
+> 
+> 
+> The solution I suggested during an earlier review of this series was:
+> 
+>  * Create separate "version from PCI ID" APIs that can be used in the
+>    few special cases listed above, and migrate those uses over.
+> 
+>  * Change the signature of intel_gen / intel_graphics_ver to take an FD
+>    rather than a PCI ID; when running on Xe this would do the lookup via
+>    the query ioctl to get an accurate value.
+> 
+>  * Update intel_gen / intel_graphics_ver:
+>      - If running on i915, fall back to the device_info lookup that
+>        we've always used.  That's safe for all i915 platforms except
+>        MTL/ARL, and we were lucky enough that they never created any
+>        production MTL/ARL platforms where a single PCI ID had different
+>        possible versions, so it winds up being safe there too.
+> 
+>     - If running on Xe, use the query ioctl to obtain the version
+>       number.  This will return the proper value for all platforms
+>       officially supported by Xe (i.e., Xe2 and later).  It will return
+>       0 on pre-MTL platforms (which aren't officially supported), but in
+>       that case IGT can fall back to the i915 approach above.
+> 
+> I did a mockup of the first two parts several months ago:
+> 
+>   https://github.com/mattrope/intel-gpu-tools/commits/forupstream/version_query/
+> 
+> Since the function interface is changing, it's a lot of churn, but most
+> of it can be auto-converted quickly via Coccinelle.
+> 
+> 
+> Matt
+> 
+> > 
+> > --
+> > Zbigniew
+> > 
+> > >  static struct xe_device *find_in_cache_unlocked(int fd)
+> > >  {
+> > >  	return igt_map_search(cache.map, &fd);
+> > > @@ -270,6 +286,24 @@ struct xe_device *xe_device_get(int fd)
+> > >  	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++)
+> > >  		xe_dev->gt_mask |= (1ull << xe_dev->gt_list->gt_list[gt].gt_id);
+> > >  
+> > > +	/*
+> > > +	 * Set graphics_ver and graphics_rel based on the main GT's GMD_ID.
+> > > +	 * We should use the hardcoded value for the non-GMD_ID platforms (ip_ver_major == 0)
+> > > +	 */
+> > > +	xe_dev->ipver.devid = 0;
+> > > +	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++) {
+> > > +		if (xe_dev->gt_list->gt_list[gt].type == DRM_XE_QUERY_GT_TYPE_MAIN &&
+> > > +		    xe_dev->gt_list->gt_list[gt].ip_ver_major) {
+> > > +			igt_debug("Setting graphics_ver to %u and graphics_rel to %u\n",
+> > > +				  xe_dev->gt_list->gt_list[gt].ip_ver_major,
+> > > +				  xe_dev->gt_list->gt_list[gt].ip_ver_minor);
+> > > +			xe_dev->ipver.graphics_ver = xe_dev->gt_list->gt_list[gt].ip_ver_major;
+> > > +			xe_dev->ipver.graphics_rel = xe_dev->gt_list->gt_list[gt].ip_ver_minor;
+> > > +			xe_dev->ipver.devid = xe_dev->dev_id;
+> > > +			break;
+> > > +		}
+> > > +	}
+> > > +
+> > >  	/* Tile IDs may be non-consecutive; keep a mask of valid IDs */
+> > >  	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++)
+> > >  		xe_dev->tile_mask |= (1ull << xe_dev->gt_list->gt_list[gt].tile_id);
+> > > @@ -304,6 +338,11 @@ struct xe_device *xe_device_get(int fd)
+> > >  	prev = find_in_cache_unlocked(fd);
+> > >  	if (!prev) {
+> > >  		igt_map_insert(cache.map, &xe_dev->fd, xe_dev);
+> > > +		if (xe_dev->ipver.devid) {
+> > > +			pthread_mutex_lock(&xe_ipver.mutex);
+> > > +			igt_map_insert(xe_ipver.map, &xe_dev->ipver.devid, &xe_dev->ipver);
+> > > +			pthread_mutex_unlock(&xe_ipver.mutex);
+> > > +		}
+> > >  	} else {
+> > >  		xe_device_free(xe_dev);
+> > >  		xe_dev = prev;
+> > > @@ -315,7 +354,15 @@ struct xe_device *xe_device_get(int fd)
+> > >  
+> > >  static void delete_in_cache(struct igt_map_entry *entry)
+> > >  {
+> > > -	xe_device_free((struct xe_device *)entry->data);
+> > > +	struct xe_device *xe_dev = (struct xe_device *)entry->data;
+> > > +
+> > > +	if (xe_dev->ipver.devid) {
+> > > +		pthread_mutex_lock(&xe_ipver.mutex);
+> > > +		igt_map_remove(xe_ipver.map, &xe_dev->ipver.devid, NULL);
+> > > +		pthread_mutex_unlock(&xe_ipver.mutex);
+> > > +	}
+> > > +
+> > > +	xe_device_free(xe_dev);
+> > >  }
+> > >  
+> > >  /**
+> > > @@ -365,13 +412,18 @@ static void xe_device_destroy_cache(void)
+> > >  	pthread_mutex_lock(&cache.cache_mutex);
+> > >  	igt_map_destroy(cache.map, delete_in_cache);
+> > >  	pthread_mutex_unlock(&cache.cache_mutex);
+> > > +	pthread_mutex_lock(&xe_ipver.mutex);
+> > > +	igt_map_destroy(xe_ipver.map, NULL);
+> > > +	pthread_mutex_unlock(&xe_ipver.mutex);
+> > >  }
+> > >  
+> > >  static void xe_device_cache_init(void)
+> > >  {
+> > >  	pthread_mutex_init(&cache.cache_mutex, NULL);
+> > > +	pthread_mutex_init(&xe_ipver.mutex, NULL);
+> > >  	xe_device_destroy_cache();
+> > >  	cache.map = igt_map_create(igt_map_hash_32, igt_map_equal_32);
+> > > +	xe_ipver.map = igt_map_create(igt_map_hash_32, igt_map_equal_32);
+> > >  }
+> > >  
+> > >  #define xe_dev_FN(_NAME, _FIELD, _TYPE) \
+> > > diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+> > > index d7a9f95f9..19690cff3 100644
+> > > --- a/lib/xe/xe_query.h
+> > > +++ b/lib/xe/xe_query.h
+> > > @@ -74,6 +74,9 @@ struct xe_device {
+> > >  
+> > >  	/** @dev_id: Device id of xe device */
+> > >  	uint16_t dev_id;
+> > > +
+> > > +	/** @ipver: Device ip version */
+> > > +	struct xe_device_ipver ipver;
+> > >  };
+> > >  
+> > >  #define xe_for_each_engine(__fd, __hwe) \
+> > > @@ -181,6 +184,7 @@ static inline void *xe_query_device(int fd, uint32_t type, uint32_t *size)
+> > >  }
+> > >  
+> > >  struct xe_device *xe_device_get(int fd);
+> > > +struct xe_device_ipver *xe_ipver_cache_lookup(uint32_t devid);
+> > >  void xe_device_put(int fd);
+> > >  
+> > >  int xe_query_eu_count(int fd, int gt);
+> > > -- 
+> > > 2.43.0
+> > > 
+> 
+> -- 
+> Matt Roper
+> Graphics Software Engineer
+> Linux GPU Platform Enablement
+> Intel Corporation
