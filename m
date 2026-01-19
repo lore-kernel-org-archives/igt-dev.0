@@ -4,27 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD5B8D29C4C
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 17:32:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BFCED29C50
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 17:41:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6073010E4D9;
-	Mon, 19 Jan 2026 17:32:52 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A0D910E4D9;
- Mon, 19 Jan 2026 17:32:51 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1915607463593196624=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Runner=3A_Use_Jansson_inste?=
- =?utf-8?q?ad_of_json-c_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4F9AF10E4DB;
+	Mon, 19 Jan 2026 17:41:30 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RKyQaAcI";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 586D910E4DB
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 17:41:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1768844488; x=1800380488;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=P3uxfY4pmAQ+ZBYi5+0UZsK9QJtnkhQHPZA/Mh8EYbc=;
+ b=RKyQaAcISR/X0CHcJbOB1QQxh2XKJN0kVK1HDEevJlvG6DoWqkCscszy
+ CD/ZWmgs6me5C8HuURc2lQOzmwqM6sZQCKJebkyAbr3GZQ9yVgBexxTZ2
+ jb9OkqE83eZqgnGUrdVjdzLF14U70F311opyctS8dY88++m9Vmrfs/5Nj
+ SX6hL9fN/0Tvk0XfUgWeKO70nSH8qnX/0xueRD+F192L3/FMAYL2LEXgA
+ YnTy783qRSOWGLkop3jwPeWyDlEoRQKcybp+rjLlKxf1AeCekFkpuwEK8
+ UenkzhBYLlJMMePSi9Q1G9UbcJOMxhk22H4CGrXy3wEo4VvjCxbuhryZm Q==;
+X-CSE-ConnectionGUID: gs/C7RxDRTKZHOpbewsgZQ==
+X-CSE-MsgGUID: hl/jaxuMQtuu4kdsRm2DRw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="80780332"
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="80780332"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2026 09:41:28 -0800
+X-CSE-ConnectionGUID: 81tHsYk/SkiF1yNyfZ7j8A==
+X-CSE-MsgGUID: cOxkzPLxS161NY91WhFwEg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="237186905"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2026 09:41:27 -0800
+Date: Mon, 19 Jan 2026 18:41:25 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 19 Jan 2026 17:32:51 -0000
-Message-ID: <176884397149.169325.7627133001289488408@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260115175811.179898-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20260115175811.179898-1-kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH i-g-t v4 2/5] lib/intel_compute: Add loop and loop-count
+ shaders for xe3p
+Message-ID: <20260119174125.xnnulrvqpoqw7xlf@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20260116154636.204553-7-zbigniew.kempczynski@intel.com>
+ <20260116154636.204553-9-zbigniew.kempczynski@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260116154636.204553-9-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,125 +70,132 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1915607463593196624==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Zbigniew,
+On 2026-01-16 at 16:46:39 +0100, Zbigniew Kempczyński wrote:
+> Upcoming changes for WMTP and TG preemption require loop and
+> loop-count shaders. Introduce them in separate patch for easier
+> review even if they are not directly used yet.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  lib/intel_compute_krn_loop.h       | 36 ++++++++++++++++++++++++++++++
+>  lib/intel_compute_krn_loop_count.h | 34 ++++++++++++++++++++++++++++
+>  lib/intel_compute_square_kernels.c |  4 ++++
+>  3 files changed, 74 insertions(+)
+> 
+> diff --git a/lib/intel_compute_krn_loop.h b/lib/intel_compute_krn_loop.h
+> index 3a52691cde..1f92ed33f2 100644
+> --- a/lib/intel_compute_krn_loop.h
+> +++ b/lib/intel_compute_krn_loop.h
+> @@ -80,4 +80,40 @@ static const unsigned char xe3lpg_kernel_loop_bin[] = {
+>  	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+>  };
+>  
+> +/*
+> + * Opencl code is in opencl/loop_noopt.cl
 
-== Series Details ==
+This file is missing, it should be included in this patch.
 
-Series: Runner: Use Jansson instead of json-c (rev2)
-URL   : https://patchwork.freedesktop.org/series/160154/
-State : success
+Regards,
+Kamil
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8705_BAT -> XEIGTPW_14368_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (12 -> 9)
-------------------------------
-
-  Missing    (3): bat-bmg-1 bat-adlp-vm bat-ptl-vm 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14368_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_waitfence@engine:
-    - bat-dg2-oem2:       [FAIL][1] ([Intel XE#6519]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8705/bat-dg2-oem2/igt@xe_waitfence@engine.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14368/bat-dg2-oem2/igt@xe_waitfence@engine.html
-
-  
-  [Intel XE#6519]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519
-
-
-Build changes
--------------
-
-  * IGT: IGT_8705 -> IGTPW_14368
-
-  IGTPW_14368: 14368
-  IGT_8705: 8705
-  xe-4408-ce23d0a333e80437caeac552d098b1f241ff2926: ce23d0a333e80437caeac552d098b1f241ff2926
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14368/index.html
-
---===============1915607463593196624==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Runner: Use Jansson instead of json-c (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160154/">https://patchwork.freedesktop.org/series/160154/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14368/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14368/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8705_BAT -&gt; XEIGTPW_14368_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 9)</h2>
-<p>Missing    (3): bat-bmg-1 bat-adlp-vm bat-ptl-vm </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14368_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_waitfence@engine:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8705/bat-dg2-oem2/igt@xe_waitfence@engine.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519">Intel XE#6519</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14368/bat-dg2-oem2/igt@xe_waitfence@engine.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8705 -&gt; IGTPW_14368</li>
-</ul>
-<p>IGTPW_14368: 14368<br />
-  IGT_8705: 8705<br />
-  xe-4408-ce23d0a333e80437caeac552d098b1f241ff2926: ce23d0a333e80437caeac552d098b1f241ff2926</p>
-
-</body>
-</html>
-
---===============1915607463593196624==--
+> + *
+> + * To work properly it requires to use uncached reads, so ocloc has to
+> + * be called with: -options " -igc_opts 'LscLoadCacheControlOverride=1'" arg
+> + *
+> + * To reuse compute pipeline for xe3p loop.cl can't be used but loop_noopt.cl.
+> + * For loop.cl IGC optimizer notices output is not used and gets it rid of.
+> + * Artificial write to output[0] prevents compiler from doing that.
+> + * Starting offset should be shifted according to .ze_info section.
+> + */
+> +static const unsigned char xe3p_kernel_loop_bin[] = {
+> +	0x61, 0x00, 0x00, 0x80, 0x30, 0x43, 0x61, 0x60, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x33, 0x22, 0x01, 0x80, 0x06, 0x18, 0x00, 0x05,
+> +	0x0c, 0x04, 0x28, 0xf0, 0x00, 0x00, 0x00, 0x96, 0x61, 0x80, 0x10, 0x28,
+> +	0x02, 0x00, 0x00, 0x00, 0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
+> +	0x00, 0x80, 0x00, 0x02, 0xc0, 0x04, 0x00, 0x40, 0x61, 0x09, 0x14, 0x00,
+> +	0x60, 0x01, 0x05, 0x07, 0x04, 0x01, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x01, 0x82, 0x8c, 0x34, 0x00, 0x00, 0x00, 0x00, 0x41, 0x61, 0x01, 0x80,
+> +	0x60, 0x06, 0x05, 0x03, 0x54, 0x05, 0x00, 0x06, 0x14, 0x02, 0x10, 0x00,
+> +	0x61, 0x00, 0x84, 0x68, 0x06, 0x05, 0x00, 0x00, 0x33, 0x23, 0x03, 0x80,
+> +	0x02, 0x00, 0x00, 0x04, 0x0c, 0x06, 0x02, 0xf0, 0x00, 0x00, 0x00, 0x94,
+> +	0x70, 0x83, 0x14, 0x80, 0x60, 0x86, 0x01, 0x00, 0x04, 0x04, 0x00, 0x16,
+> +	0x34, 0x12, 0x34, 0x12, 0x20, 0x00, 0x00, 0x94, 0x00, 0x40, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0xd8, 0xff, 0xff, 0xff, 0x61, 0x00, 0x84, 0x68,
+> +	0x0b, 0x05, 0x06, 0x00, 0x52, 0x00, 0xb8, 0x28, 0x09, 0x03, 0x04, 0x07,
+> +	0x61, 0x1a, 0x10, 0x00, 0xa0, 0x0a, 0x06, 0x0c, 0x04, 0x0b, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x02, 0xa0, 0x0a, 0x06, 0x0e,
+> +	0x04, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x00,
+> +	0xa0, 0x0a, 0x16, 0x0c, 0x14, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x61, 0x12, 0x10, 0x02, 0x20, 0x02, 0x16, 0x0e, 0x14, 0x0b, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x33, 0x24, 0x15, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x24, 0x0c, 0x00, 0xf0, 0x14, 0x09, 0x04, 0x90, 0x33, 0xc5, 0x00, 0x80,
+> +	0x01, 0x00, 0x00, 0x00, 0x0c, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x00,
+> +};
+> +
+>  #endif /* __INTEL_COMPUTE_KRN_LOOP_H__ */
+> diff --git a/lib/intel_compute_krn_loop_count.h b/lib/intel_compute_krn_loop_count.h
+> index ecad7fe256..7b4542cda7 100644
+> --- a/lib/intel_compute_krn_loop_count.h
+> +++ b/lib/intel_compute_krn_loop_count.h
+> @@ -90,4 +90,38 @@ static const unsigned char xe3lpg_kernel_count_bin[] = {
+>  	0x04, 0x00, 0x00, 0x00, 0x0c, 0x12, 0x20, 0x30, 0x00, 0x00, 0x00, 0x00,
+>  };
+>  
+> +static const unsigned char xe3p_kernel_count_bin[] = {
+> +	0x61, 0x00, 0x00, 0x80, 0x30, 0x43, 0x61, 0x60, 0x00, 0x00, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x33, 0x22, 0x01, 0x80, 0x06, 0x18, 0x00, 0x05,
+> +	0x0c, 0x04, 0x28, 0xf0, 0x00, 0x00, 0x00, 0x96, 0x61, 0x80, 0x10, 0x28,
+> +	0x02, 0x00, 0x00, 0x00, 0x66, 0x09, 0x00, 0x80, 0x20, 0x82, 0x01, 0x80,
+> +	0x00, 0x80, 0x00, 0x02, 0xc0, 0x04, 0x00, 0x40, 0x41, 0x22, 0x17, 0x00,
+> +	0x60, 0x06, 0x01, 0x20, 0x14, 0x02, 0x00, 0x06, 0x54, 0x05, 0x10, 0x00,
+> +	0x61, 0x00, 0x14, 0x00, 0x10, 0x01, 0x06, 0x13, 0x04, 0x01, 0x10, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x70, 0x00, 0x14, 0x80, 0x60, 0x86, 0x01, 0x00,
+> +	0x44, 0x05, 0x00, 0x15, 0x00, 0x00, 0x00, 0x00, 0x40, 0x1a, 0x14, 0x00,
+> +	0x60, 0x06, 0x05, 0x06, 0x00, 0x20, 0x10, 0x01, 0x04, 0x13, 0x00, 0x00,
+> +	0x20, 0x00, 0x00, 0x84, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0xe8, 0x00, 0x00, 0x00, 0x61, 0x81, 0x84, 0xa0, 0x03, 0x00, 0x00, 0x00,
+> +	0x61, 0x00, 0x84, 0x68, 0x08, 0x05, 0x00, 0x00, 0x33, 0x24, 0x03, 0x80,
+> +	0x02, 0x00, 0x00, 0x04, 0x0c, 0x08, 0x02, 0xf0, 0x00, 0x00, 0x00, 0x94,
+> +	0x70, 0x84, 0x94, 0x80, 0x60, 0x86, 0x01, 0x00, 0x04, 0x04, 0x00, 0x16,
+> +	0x34, 0x12, 0x34, 0x12, 0x20, 0x00, 0x80, 0x84, 0x00, 0x40, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0xa8, 0x00, 0x00, 0x00, 0x61, 0x00, 0x84, 0x68,
+> +	0x0a, 0x05, 0x06, 0x00, 0x40, 0x00, 0x84, 0x68, 0x03, 0x03, 0x10, 0x00,
+> +	0x33, 0x45, 0x03, 0x80, 0x02, 0x00, 0x00, 0x09, 0x0c, 0x0a, 0x02, 0xf0,
+> +	0x00, 0x00, 0x00, 0x94, 0x61, 0xa3, 0x10, 0x00, 0xa0, 0x0a, 0x06, 0x0d,
+> +	0x04, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x61, 0x00, 0x10, 0x02,
+> +	0xa0, 0x0a, 0x06, 0x0f, 0x04, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x61, 0x00, 0x10, 0x00, 0xa0, 0x0a, 0x16, 0x0d, 0x14, 0x0a, 0x00, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x61, 0x12, 0x10, 0x02, 0x20, 0x02, 0x16, 0x0f,
+> +	0x14, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x70, 0x1a, 0x54, 0x80,
+> +	0x20, 0x02, 0x01, 0x00, 0x04, 0x03, 0x00, 0x52, 0x44, 0x05, 0x10, 0x00,
+> +	0x52, 0x85, 0xb8, 0x28, 0x0b, 0x09, 0x04, 0x06, 0x33, 0x23, 0x15, 0x00,
+> +	0x00, 0x00, 0x00, 0x00, 0x24, 0x0d, 0x00, 0xf0, 0x14, 0x0b, 0x04, 0x90,
+> +	0x20, 0x00, 0x40, 0x84, 0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +	0x40, 0xff, 0xff, 0xff, 0x33, 0xc6, 0x00, 0x80, 0x01, 0x00, 0x00, 0x00,
+> +	0x0c, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+> +};
+> +
+>  #endif /* __INTEL_COMPUTE_KRN_LOOP_COUNT_H__ */
+> diff --git a/lib/intel_compute_square_kernels.c b/lib/intel_compute_square_kernels.c
+> index 4d69f270e9..155a3f0df4 100644
+> --- a/lib/intel_compute_square_kernels.c
+> +++ b/lib/intel_compute_square_kernels.c
+> @@ -90,6 +90,10 @@ const struct intel_compute_kernels intel_compute_square_kernels[] = {
+>  		.ip_ver = IP_VER(35, 11),
+>  		.size = sizeof(xe3p_kernel_square_bin),
+>  		.kernel = xe3p_kernel_square_bin,
+> +		.long_kernel = xe3p_kernel_count_bin,
+> +		.long_kernel_size = sizeof(xe3p_kernel_count_bin),
+> +		.loop_kernel = xe3p_kernel_loop_bin,
+> +		.loop_kernel_size = sizeof(xe3p_kernel_loop_bin),
+>  	},
+>  	{}
+>  };
+> -- 
+> 2.43.0
+> 
