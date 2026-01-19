@@ -4,55 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 665B0CCF2EB
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 11:35:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9700CCF2E0
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 12:29:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1F03710E3FE;
-	Mon, 19 Jan 2026 11:35:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B11810E423;
+	Mon, 19 Jan 2026 12:29:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eHyVxSU4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JurBQTzS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21BF410E3FD
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 11:35:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F2C610E423
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 12:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768822513; x=1800358513;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=/6jUaXdHAaJaGkew6ymaQFt2MKb+rx415fmptCvEAJs=;
- b=eHyVxSU4EtaaCrdL9BH0AraApF7m2qscxbD+JRJSrPiSPT0VqftfWXb0
- 1Q9kYay6fauRMH4JkzE9TR69/0Ksy9p9/owZihG6cjhSs1e9hHcc+lwDW
- BG1PMHIYaQyffq9AOl5FxjpZ6yu7udRBzGFCGY9nizXkRBoaVsOLk63t6
- GSBogkkIm8GeXpZidHEAd3SQlqjkyCsdQk7JUPm90EnYK4xeDFefLsgFC
- 6gEmMaHCjvYgb5Q9ZHdOFPPP7PlwnefDhz06CDibEltQRde+6XIJJA9J+
- yM3d8E2hwFULS4R5YRgU+KGPueSJ16ZVoGSDSJ3t9oiTojl8OJnDYdTHe A==;
-X-CSE-ConnectionGUID: EOmVwLl8Ty+h4XSRHd1KbA==
-X-CSE-MsgGUID: UDJfrdeBTqeIrhM+oHPPgQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="69942205"
-X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="69942205"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 03:35:13 -0800
-X-CSE-ConnectionGUID: /bXQJoc/T3y62NZEvRERUg==
-X-CSE-MsgGUID: h8B8vE11QqevKqKVhBfQeg==
+ t=1768825798; x=1800361798;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=BKSWxGVuLU6GAfbVdM2mfqKpFHD8Wh4GJx0pWhDIlvI=;
+ b=JurBQTzSgTjmjmDmWCEVmGJb0QHU7eDhylrhA6hGZCPv6H3nC996WOFQ
+ B29Xr5JyF4wfbHzj+LGp67OhD8EXnhwx96bylFyxlvlm4XeyAqoXoxYpD
+ 4UhzSanCKK6Je8O4IXRArjJCZHBC5JzDPPIxnpoPqjLqUvl9XIhABwRuw
+ oCq/n+WQWht4D/iXKc1m4jV9vMDRcJYGdtOLrWG9klzXXc6XU1BYBasVa
+ 7StnxMBSXmzFlQ+ZaP/HiCOfKcpvmVKfi1GNe2AKHcY52GVsdC+LDJaNr
+ 1uGc/skaHoe2nXSW/cmed9UAtKytcPWTHimkinaacUKmKb3+c7951My57 Q==;
+X-CSE-ConnectionGUID: lKDE+/HzQCO/LlcXoCAe5A==
+X-CSE-MsgGUID: +n5DAoQvTXaGvq+HKwLFHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="80335517"
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="80335517"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2026 04:29:57 -0800
+X-CSE-ConnectionGUID: sbt5qgmDT2KG4UfAMyFdJw==
+X-CSE-MsgGUID: garGM+kZRAmOSs+cJMqL7g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="205102208"
-Received: from srr4-3-linux-103-aknautiy.iind.intel.com ([10.223.34.160])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 03:35:13 -0800
-From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Subject: [PATCH i-g-t 1/2] tools/intel_vbt_decode: sync intel_vbt_defs.h with
- commit 835a0d544def
-Date: Mon, 19 Jan 2026 16:49:17 +0530
-Message-ID: <20260119111918.2686910-2-ankit.k.nautiyal@intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20260119111918.2686910-1-ankit.k.nautiyal@intel.com>
-References: <20260119111918.2686910-1-ankit.k.nautiyal@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="210708022"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 04:29:55 -0800
+Date: Mon, 19 Jan 2026 13:29:39 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH v2 i-g-t 2/2] tests/intel/xe_compute: check root-only
+ write permission for ccs_mode
+Message-ID: <20260119122939.eh5sxmh3n56l3qcd@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20250909130808.54117-1-peter.senna@linux.intel.com>
+ <20260118200010.18669-1-peter.senna@linux.intel.com>
+ <20260118200010.18669-2-peter.senna@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260118200010.18669-2-peter.senna@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,105 +73,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Synchronize intel_vbt_defs.h with kernel commit:
-835a0d544def ("drm/i915/bios: Add function to check if edp data override is needed")
+Hi Peter,
+On 2026-01-18 at 21:00:10 +0100, Peter Senna Tschudin wrote:
+> Add a call to igt_fs_check_root_perm() in test_ccs_mode() to verify that
+> the "ccs_mode" sysfs attribute is writable only by root. This enforces a
+> security requirement that only root can modify "ccs_mode", preventing
+> unintended or unauthorized writes by other users.
+> 
+> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+> ---
+> Changes from v1:
+>  - Moved the test to after the existing test
+>  - Check for file not found and skip when it is the case
+> 
+>  tests/intel/xe_compute.c | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+> index 310093fc5..eb2410a0a 100644
+> --- a/tests/intel/xe_compute.c
+> +++ b/tests/intel/xe_compute.c
+> @@ -14,6 +14,7 @@
+>  #include <string.h>
+>  
+>  #include "igt.h"
+> +#include "igt_fs.h"
+>  #include "igt_sysfs.h"
+>  #include "intel_compute.h"
+>  #include "xe/xe_ioctl.h"
+> @@ -88,7 +89,7 @@ test_ccs_mode(void)
+>  {
+>  	struct drm_xe_engine_class_instance *hwe;
+>  	u32 gt, m, ccs_mode, vm, q, num_slices;
+> -	int fd, gt_fd, num_gt_with_ccs_mode = 0;
+> +	int fd, file_perm_res, gt_fd, num_gt_with_ccs_mode = 0;
+>  	uint64_t gt_mask = get_gt_mask();
+>  
+>  	/*
+> @@ -102,6 +103,20 @@ test_ccs_mode(void)
+>  		num_gt_with_ccs_mode++;
+>  		gt_fd = gt_sysfs_open(gt);
+>  		igt_assert(igt_sysfs_printf(gt_fd, "ccs_mode", "%u", 0) < 0);
+> +
+> +		/* Check if ccs_mode is writeble only by root. Having root only
+> +		 * write permission is a security requirement.
+> +		 */
+> +		file_perm_res = igt_fs_check_root_perm(gt_fd, "ccs_mode");
+> +		if (file_perm_res == -ENOENT) {
 
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- tools/intel_vbt_decode.c | 36 ++++++++++++++++++++++++++++++++++++
- tools/intel_vbt_defs.h   | 18 ++++++++++++++++++
- 2 files changed, 54 insertions(+)
+You need also fix lib function in first patch,
+it currently returns bool.
 
-diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index d4aada743e42..6f6f70dcee63 100644
---- a/tools/intel_vbt_decode.c
-+++ b/tools/intel_vbt_decode.c
-@@ -1125,6 +1125,39 @@ static const char * const hdmi_frl_rate_str[] = {
- 	[5] = "12 GT/s",
- };
- 
-+static void dump_edp_data_rate_override(uint32_t edp_data_rate_override)
-+{
-+	int i;
-+	static const uint32_t link_rates[BDB_263_VBT_EDP_NUM_RATES][2] = {
-+		{ BDB_263_VBT_EDP_LINK_RATE_1_62, 162000 },
-+		{ BDB_263_VBT_EDP_LINK_RATE_2_16, 216000 },
-+		{ BDB_263_VBT_EDP_LINK_RATE_2_43, 243000 },
-+		{ BDB_263_VBT_EDP_LINK_RATE_2_7, 270000 },
-+		{ BDB_263_VBT_EDP_LINK_RATE_3_24, 324000 },
-+		{ BDB_263_VBT_EDP_LINK_RATE_4_32, 432000 },
-+		{ BDB_263_VBT_EDP_LINK_RATE_5_4, 540000 },
-+		{ BDB_263_VBT_EDP_LINK_RATE_6_75, 675000 },
-+		{ BDB_263_VBT_EDP_LINK_RATE_8_1, 810000 },
-+		{ BDB_263_VBT_EDP_LINK_RATE_10, 1000000 },
-+		{ BDB_263_VBT_EDP_LINK_RATE_13_5, 1350000 },
-+		{ BDB_263_VBT_EDP_LINK_RATE_20, 2000000},
-+	};
-+
-+	edp_data_rate_override &= BDB_263_VBT_EDP_RATES_MASK;
-+
-+	printf("\t\teDP data rate override:");
-+
-+	if (!edp_data_rate_override) {
-+		printf("(none)\n");
-+		return;
-+	}
-+	printf("\n");
-+
-+	for (i = 0; i < BDB_263_VBT_EDP_NUM_RATES; i++)
-+		if (link_rates[i][0] & edp_data_rate_override)
-+			printf("\t\t\t%d kbps\n", link_rates[i][1]);
-+}
-+
- static void dump_child_device(struct context *context,
- 			      const struct child_device_config *child)
- {
-@@ -1285,6 +1318,9 @@ static void dump_child_device(struct context *context,
- 
- 	if (context->bdb->version >= 256)
- 		printf("\t\tEFP panel index: %d\n", child->efp_index);
-+
-+	if (context->bdb->version >= 263)
-+		dump_edp_data_rate_override(child->edp_data_rate_override);
- }
- 
- static void dump_child_devices(struct context *context, const uint8_t *devices,
-diff --git a/tools/intel_vbt_defs.h b/tools/intel_vbt_defs.h
-index 6612d3a4ec49..932305df2320 100644
---- a/tools/intel_vbt_defs.h
-+++ b/tools/intel_vbt_defs.h
-@@ -437,6 +437,22 @@ enum vbt_gmbus_ddi {
- #define BDB_230_VBT_DP_MAX_LINK_RATE_UHBR13P5	6
- #define BDB_230_VBT_DP_MAX_LINK_RATE_UHBR20	7
- 
-+/* EDP link rate 263+ */
-+#define BDB_263_VBT_EDP_LINK_RATE_1_62		(1 << 0)
-+#define BDB_263_VBT_EDP_LINK_RATE_2_16		(1 << 1)
-+#define BDB_263_VBT_EDP_LINK_RATE_2_43		(1 << 2)
-+#define BDB_263_VBT_EDP_LINK_RATE_2_7		(1 << 3)
-+#define BDB_263_VBT_EDP_LINK_RATE_3_24		(1 << 4)
-+#define BDB_263_VBT_EDP_LINK_RATE_4_32		(1 << 5)
-+#define BDB_263_VBT_EDP_LINK_RATE_5_4		(1 << 6)
-+#define BDB_263_VBT_EDP_LINK_RATE_6_75		(1 << 7)
-+#define BDB_263_VBT_EDP_LINK_RATE_8_1		(1 << 8)
-+#define BDB_263_VBT_EDP_LINK_RATE_10		(1 << 9)
-+#define BDB_263_VBT_EDP_LINK_RATE_13_5		(1 << 10)
-+#define BDB_263_VBT_EDP_LINK_RATE_20		(1 << 11)
-+#define BDB_263_VBT_EDP_NUM_RATES		12
-+#define BDB_263_VBT_EDP_RATES_MASK		0xfff
-+
- /*
-  * The child device config, aka the display device data structure, provides a
-  * description of a port and its configuration on the platform.
-@@ -547,6 +563,8 @@ struct child_device_config {
- 	u8 dp_max_link_rate:3;					/* 216+ */
- 	u8 dp_max_link_rate_reserved:5;				/* 216+ */
- 	u8 efp_index;						/* 256+ */
-+	u32 edp_data_rate_override:12;                          /* 263+ */
-+	u32 edp_data_rate_override_reserved:20;                 /* 263+ */
- } __packed;
- 
- struct bdb_general_definitions {
--- 
-2.45.2
+> +			igt_skip("ccs_mode sysfs entry not found\n");
+> +		} else if (file_perm_res < 0) {
+> +			igt_skip("Cannot stat ccs_mode file\n");
 
+Print errno here. Overall patch looks good.
+
+Regards,
+Kamil
+
+> +		} else {
+> +			igt_assert_f(file_perm_res == 0,
+> +				     "ccs_mode sysfs entry has incorrect permissions\n");
+> +		}
+> +
+>  		for (m = 1; m <= num_slices; m++) {
+>  			/* compute slices are to be equally distributed among enabled engines */
+>  			if (num_slices % m) {
+> -- 
+> 2.43.0
+> 
