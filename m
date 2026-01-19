@@ -4,189 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA966CA5FEF
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 06:30:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6092D4A5F4
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 07:33:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7014410E30F;
-	Mon, 19 Jan 2026 06:30:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9786110E377;
+	Mon, 19 Jan 2026 07:33:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DFkfOkFw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JlTuPgF2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B463410E30F
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 06:30:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0133410E377
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 07:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768804258; x=1800340258;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=M0aMCONHVci4c6ir9OqgTILbJCiKUSnICJtKYyC4GGI=;
- b=DFkfOkFwJLCzBg/H3kkvVVFRhWbJmZ9SbTbnxVVLpvcmsxT+JZeWrjvf
- S1CNk62sMz5V1SjoXFXDjDJBjJPgF74WppYtuzTG8voAKfmHRZrg/y1C8
- 8OU5MzgjD+wooaETJlj+IGhukB2bi+3GylsDVg6dlQiB9gJqafp9GL17M
- QRP6mEkyzq8BGQ7Z/cm3tftR14vV5WnVP/0cW3p33XN2L+pAVf7Uuca9u
- 1hzteCgzG8yGN5qoXouL5oHV+SMyZz/Et/Mct12FOzYQPFZh159E7OUi1
- BVYK5+mD3pBWtlAxSNFGmIkFfiJYWxxIxomgIl3HeyjHw3JAyML79PTul g==;
-X-CSE-ConnectionGUID: MfcvUdufRduDYXyMWId+0Q==
-X-CSE-MsgGUID: 9qu0Z/hcQlu6Zz+jj60SzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="69922190"
-X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; d="scan'208";a="69922190"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2026 22:30:57 -0800
-X-CSE-ConnectionGUID: 7Le+Tl43RuOnT1VTn3faew==
-X-CSE-MsgGUID: DqcufG8eTb2bVtDK11EK/Q==
+ t=1768808018; x=1800344018;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=DWlPBJsQ2iCjDI8HRyKjslyOGHqRqPpxM9lzyOrT7f8=;
+ b=JlTuPgF2m6qbMj/xpsxkRSTg114jSw1qiLTqAkXJmBHCM0rvsKqMUbSJ
+ OVWQ7g6qN6SmiAXK7XeWEWD7Id8+ozjCuWTUn6eJXyuJJUqwu+GH/i+2/
+ axUwZK0n5atvxT64zKlSEAPOg7yhRhnnyM7kQepq3xgxpWPiuVUjjLYyT
+ GER34ESxu+u2eUcfTdadoLQ1yTDulAefWe1t7pAuk2llmB8q9rH3ZNLWb
+ kwNgBLOaKL780X1PGEJ3+w9PyDR630dy4sprd/4eBk5ARDr+8U1Fb8WxM
+ uDgSxpweIsxEQrLuyDLiBniGcp7usNztVPXxxykZrCX+TRJlmdnP3X4bF w==;
+X-CSE-ConnectionGUID: KjkNyS5fRWej2H7Qn1+u4A==
+X-CSE-MsgGUID: lWbdu50FT/WYzr3gfjZYzw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="69747945"
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; d="scan'208";a="69747945"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jan 2026 23:33:37 -0800
+X-CSE-ConnectionGUID: Iob20osYS9eKtnvwU7yz1g==
+X-CSE-MsgGUID: UR34MfXlSW+w2HmdaiKCBw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; d="scan'208";a="206042351"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jan 2026 22:30:57 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Sun, 18 Jan 2026 22:30:56 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Sun, 18 Jan 2026 22:30:56 -0800
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.59) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Sun, 18 Jan 2026 22:30:56 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mj8IfZQpDDXUIRfSLSMKBxhREEizj5ihY8Vj+ZPhd1SVhwm0S9vg9wOpPVRljmKWJNRRT5J985Xf1ST521n6LSd0ZzK8WkCKghKFf7PZIEKYXW2u79j3LhmGaH7vwJUSYILSxEYhESAQtNgyF8R9D3T4fYOFGd6Pd/+btFW0+SQqKXxBTAdia+/I99ADE1DqCRFWmM6wXQPGiREjYSgoUaDc0fxS0ITNXQPAxjujmLiCiyETpBlWsXM1Dnsk0RKF/WQst9Ym6tv4YN4h4lHwLYH9jN5FNZqzHL2ZkLTGnj9++AWFC6SKSHcOLU8gEJI57qcY6m4tZ48Oesx+bP9XsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QAuY6Sv808CAE16mJqcFSfX4fRUErV7OtTE66NHbnjI=;
- b=F/p5XXJ0Ol6HAdpuHRnhn0+RMpSVnNa0ZQQJ6IqY6MrPe2TlSUe8l5MZgRKoUEFF+snMMzh/DriOe8xfsWhXemMGPp/o2hHzf4zpS1Isuckgd3GPbLdzNyAeJgvUgVEisurXCwwlu6ZeS8vf7YC7iGZm7fyI6rmQcKSBz54vCkBWjgGswI3pPImGtJ+9SFqgH822aHPvynXp3PcTOTei0xupv8kfNcgEtVtJgwKw7QvF2lIg1fX/OIA7iqmPCZOyVSlpjt79Rg9+WgZoeTxQc+vHxqpjrBdg+p/kSbQaB48SJru3V1WbX0T6Q5bevpXcQXnNZ8si3h8AiEekeIsMdA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BN0PR11MB5694.namprd11.prod.outlook.com (2603:10b6:408:167::10)
- by LV8PR11MB8745.namprd11.prod.outlook.com (2603:10b6:408:204::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.11; Mon, 19 Jan
- 2026 06:30:54 +0000
-Received: from BN0PR11MB5694.namprd11.prod.outlook.com
- ([fe80::cf04:8739:e8a6:ac3a]) by BN0PR11MB5694.namprd11.prod.outlook.com
- ([fe80::cf04:8739:e8a6:ac3a%7]) with mapi id 15.20.9520.011; Mon, 19 Jan 2026
- 06:30:53 +0000
-Message-ID: <f4dc1107-61a5-44d9-a343-3cd729f1ea6b@intel.com>
-Date: Mon, 19 Jan 2026 12:00:44 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3] tests/kms_universal_plane: Add vblank wait for
- cursor fb leak
-To: Suraj Kandpal <suraj.kandpal@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <jeevan.b@intel.com>, <swati2.sharma@intel.com>
-References: <20260116060932.523060-1-suraj.kandpal@intel.com>
- <20260119062604.591288-1-suraj.kandpal@intel.com>
-Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20260119062604.591288-1-suraj.kandpal@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0PR01CA0095.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:af::6) To BN0PR11MB5694.namprd11.prod.outlook.com
- (2603:10b6:408:167::10)
+X-IronPort-AV: E=Sophos;i="6.21,237,1763452800"; d="scan'208";a="210285381"
+Received: from dut6304bmgfrd.fm.intel.com ([10.36.21.42])
+ by fmviesa005.fm.intel.com with ESMTP; 18 Jan 2026 23:33:37 -0800
+From: Xin Wang <x.wang@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Xin Wang <x.wang@intel.com>
+Subject: [PATCH 0/3] lib/intel: switch graphics/IP version queries to fd-based
+ APIs
+Date: Mon, 19 Jan 2026 07:33:13 +0000
+Message-ID: <20260119073316.1033676-1-x.wang@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN0PR11MB5694:EE_|LV8PR11MB8745:EE_
-X-MS-Office365-Filtering-Correlation-Id: f2049b90-d1c1-4e6a-29e6-08de57244ac5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0; ARA:13230040|376014|42112799006|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?MlE3ejlnOFMwdm9VUWpmaTY1Q2FobXVlemN3dzNwSXZqWGQxaURtNTJPRXlU?=
- =?utf-8?B?dGI5d1hpb2kwMnNnSnNtQ3ExV2VkOTJ2L05UaVRLcnRYMFhMZkxnWHA4VnZu?=
- =?utf-8?B?Ykx3cmJ1THEyVVllRHZleVhZRHF2aDRmcmR2VW56K0FyaWtqWlJZMkVZUzhx?=
- =?utf-8?B?anBsWGJSMVFKaWRBbjJtazBMZlE2dkphZ2liT2pFNTV5ZWZ6L1BmT3gyZzR6?=
- =?utf-8?B?WlY2Q0Rtb1pKcFVWV0FqaUIvY0t3SUtrSVRROG9hSTBTRkszeEszWGZUakQy?=
- =?utf-8?B?WnlZWkp1TUc5SWZRcU5PZWdXaTgxUkMzZ0pHaVovdEd4ZmpJTlIzNU9ENm1n?=
- =?utf-8?B?VGphUlFQNDNyaGtsMGd3UFhaUEtiMmw5VVliaGh1R0FyYlRHa1NtSHRwcXlW?=
- =?utf-8?B?M3NmOXJvRm9tYlB6Z3o4elBCdC9sSVNJZUpORmdzUmVJQWdSR21LQlhkNUcv?=
- =?utf-8?B?RXM4d21wTnhnWWs5bUo2Ri85M1FtV1dvQXhVclhwQ2pBeDZzcTF6b2xnZnBl?=
- =?utf-8?B?eWZ4bVIwZVlSUVFxbDQyVEdxcUZITVI2SVNSQmtDaUFOSkxXVTFVMk9yT1ZF?=
- =?utf-8?B?eGlPeVFkTy9NeWg4eVFCdStDbWRtZHlKOU1mTUprOS9CNlR4QjlaY293N241?=
- =?utf-8?B?cTRYS05Yc1Z5UHZWdjVGcCtHeUNiR0FVU0hKK0hWdmpndyt5aGhFTHc4VjY2?=
- =?utf-8?B?bmRUeDFNWkh2OW81elFKK3NHRFFTaDl1Tm1BRVlZNy9VRTMzRWpRc2wrTGZ2?=
- =?utf-8?B?UUN2QmpCUU5qYXlWdTczT284Q3FjYTgvcmpnZk1DTlhRN0pWZVJzajQweE8x?=
- =?utf-8?B?QTNFUUhmU2lzOGQzanBmZFBESldFVGR4WWdUcnRYVWFRR2NjbjZmekdvY1lu?=
- =?utf-8?B?enI4L3F6dXZJRFRZNDhwK3VkTTJhdEJGWnphNXhxYzFLN0IwMTlXZWhPWXVi?=
- =?utf-8?B?WG9lVzFsSVhLOWVYUWFkRk13NnR4SHJNS1lGaFcwVGxFSjRKeEhBLzlHcnNS?=
- =?utf-8?B?aTNOS3hlNnRDaHdzY3d0ejhxTTYvUFJtd1UzKy9udGhKOTZnbUpER05UUEJE?=
- =?utf-8?B?eStvSXJKOHdQN244cTc0M3hwcVdYRFVPSTJXZmxXNFdtR0dyNkgzeU1XVWZi?=
- =?utf-8?B?WEFHNUI2SlBreEdOZ3gyOE1EU1ZjM0NFdjFRdFRPYm00RmxtZDJ3MXJkWWwv?=
- =?utf-8?B?OURnNDNZZldOcndNUGYvUFRsdDduK1hDbXQ3alJuQTZ2VW1jNm9iL2Izdkdi?=
- =?utf-8?B?NG5tWE5oanJRWWQvQjRDSU12aXltTVFyamhMMzNPaGRITmFjcE9rM3ltUlJN?=
- =?utf-8?B?MXRXR3FzVXkxVWw2WHBqNlo4YkZLUXhjekxLMkRFeEprWDlKVEl0RmtBeDdB?=
- =?utf-8?B?WFdqdzJvTDJQWlF2T3JsWUtrMEpwSDh3eC9XNEw0OTBKUWFaQUdrUzRNNGdJ?=
- =?utf-8?B?dU5hbGVPMjZWN01POEJlVEJ4eU83TmtaQzBxNEtJdTQvL01KWWVGc2c2TFhG?=
- =?utf-8?B?YXJUbERMRGhaQzM3L3FsMjdlY21HVUphbzlsNlhzb3o0WTZKM01nY2E5WjFC?=
- =?utf-8?B?bGxYUWI1SXk0cTNJaUVvOFRiajdmUmtNM1l4ZU1FcjU0d2NhVExoYmZwY0NX?=
- =?utf-8?B?Qkg4b01sM2VZMGNkQmd1TGxlbldCNmNmMEExWkZiTWF4SHBBblJYMFZ0YlQz?=
- =?utf-8?B?MDVER1JGSFhPWmVxUGFNVWNWN3ljRFdmSWxsUEd0WjgzaU5tK2VnYjlPTnFL?=
- =?utf-8?B?bEo1c2lWTE1KWVdwWDIzN290eVdzOFdWMGhpcHZVRndoZWdPemkvbldnbDVw?=
- =?utf-8?B?Z0dFQUYzSWoyQ013SWlKa01IV0pQTEpaMXpWYmVBaW92aGNURHRtZjU1YU15?=
- =?utf-8?B?MnVMS3NIcVhuM2RITVdGWkdQU2RpemZPb2Y2UVJISFN0VzBhejViWDViNnVG?=
- =?utf-8?B?QnU3em14L3BZd3RuM2d0TlZkTVEyZUFGak9CNTJBTjM0MjlMRGkyRXFCc2Vs?=
- =?utf-8?B?TjNmSzRPTmdhYS9kcE9vTEhKVHVSbEdwcTAvQkFtL2VuY3h0K0xTaSsrRk1Y?=
- =?utf-8?B?K1pXcFVRcTZxSDh3c0JySVNHUW4vUUJNcTl0em9TRDQ1d2VuclpPNUpIZVNW?=
- =?utf-8?Q?Laxs=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BN0PR11MB5694.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(42112799006)(366016)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?N3B1VUJaU042TTloMEM3YUJ2K0ZUSkxoRWdJNGI1M1NDZm94V1VEUmR6aHAz?=
- =?utf-8?B?U2Vua0JnQUlKTHlqTDM4dm9xVlN1amlrS2RqMUJXcDBjNERMSzY5Y0dwMFJS?=
- =?utf-8?B?a3Flb3J2aERnUG5XQmd0TlJ3ZUJZUS9TdENIQmVaTmJxWjRPUWphNGsxTGM3?=
- =?utf-8?B?ZnhZYmc5TXFBV203S25NL2hPcDNJVEFFUUVHc0pkaGxWTE0xRzM4eEIvSGpL?=
- =?utf-8?B?QXA3am93TWdleXJKbzkycW1ZV0xXb051ejVmWHpRM0VCOTRnYkxLTFcwdmYv?=
- =?utf-8?B?aFdMbXdEN2Y3TjhzeDU1eFZZSHhLam5nc0lQU2RHMzNIQWlteCt1UTVRSUMv?=
- =?utf-8?B?UEU5Ky91eHVtZWRRVG1teUxHelNyVWZ6bHdDNmQ4UHpaWkRQZkZ3akVxYUFv?=
- =?utf-8?B?UUE0azI5YlU2Y3c0WUVNSzlxOTFWRHpKaEU0K0FoQkZ6RXpWZ0lyZm1jZ1dq?=
- =?utf-8?B?b1E3RzNBcVdmQmM4S201eFNJckN4dTR5T2gvalhlWDlYM2tsVHVqMzA3QTR3?=
- =?utf-8?B?M24wMFFod3VQcGhzN2xnUnF4anIwbzJ2SWFRTlBjQVYrZEUrU1ZKYVJ6b0ZP?=
- =?utf-8?B?QVY1cHZaSHdMQ2VycGxhek93a0N6ajRqSi9hTnlxSkJLanVjUHdteFFHd2tj?=
- =?utf-8?B?V2laL1gzYUZjTWdldXhQcDgvNGZWNFlEemVibzRrWG5xNkNuL3FXM0NPL3V6?=
- =?utf-8?B?RXNtOEZMZEZKakR0bFVJUTZ6bmhjZm4wbTVrVzQ4VnQ5NGM0RTBGRjlmVTlz?=
- =?utf-8?B?Y2tHaHlFL2pSVVJBdlUvR1FYcVJIYzZ3emo3WERhUDBuNFNTNGVQMjJFL3Zm?=
- =?utf-8?B?dXhLSEg0TUZ0dy84ZXdmQURvbmswZ01Sd1JlVjFPdTRvaHRlY2RpWnI2UXd4?=
- =?utf-8?B?akRIWjIremJ4ak1PdWJsUHhrT1Q3R0lZSGVqY3NvVE5yS2syaWhFWFp1OHdG?=
- =?utf-8?B?RHY5YitRWVgxM1ROL0tlNjlrRXFOZDdERUViOGh2b2ZjM1FDQUlvZ1VMeWFh?=
- =?utf-8?B?WXhKdEs1RzRISEFHeXpBMTJZaGJQTXp4Y3lpWEovNVpvQzYxUDZoUU9hdXJS?=
- =?utf-8?B?MU9MaDJPY3hBUnYwSnNlV3pFeTVQNjJIenZnVTlodGdBdWMrenM5UFl4V2RB?=
- =?utf-8?B?Z08vMFZOTW5oNDJVWWkwUkxsdFdteWYzc0gyUkF1S2pWaGVtTDdZaWNpMENQ?=
- =?utf-8?B?ZUZITFlLdnZ4TUVQemNhWDJmRDdLVTRwVnpkZXh2dGNDNXdlbmdLKzQzdENU?=
- =?utf-8?B?bm9hcjdjUEFQZ3JNS0pvUnp6d0ZRbFhUUytFcDAvcWVWUnFoaHdBSHJGU25x?=
- =?utf-8?B?WlJlVjhabWlWa3BSaVM1MTM5YXVCVVlWMEEvaU1jYmc1SHphK3lMMTdWamRQ?=
- =?utf-8?B?WjNRLzZiS3E3TkN4SlIveHRuVzlmVmY4Y1JDSXljL3FJZEZGV1A2aHV6RkVD?=
- =?utf-8?B?MzhieHc5TUNIRDN2TzMrRnNyV05YN0ZUTElESFUrU3lMeEJISWQ1c3BRSGdJ?=
- =?utf-8?B?bGNacy8xY3ZwUE9KMElyd01hRUhJWkpPZjRVUFZvVjJxNElkUDNNL05JVWNi?=
- =?utf-8?B?RVUybS9LS0tleGkzR0NIeWFyb3NGa2d4ODJIVGdNcm1ZSyt5RjcvWEdHTERz?=
- =?utf-8?B?Ulh5TVJvZlo3aGFqYnJOMGN6c0JiMWhRSjRVTlBOZEtsMVBybTRpU0ZGSjFD?=
- =?utf-8?B?eDhxc0NiZ2s2ditLNE5vNk91Z3NEMzBpWjlnS3gzNjZxV0tNVlZ3aDBvY2Rh?=
- =?utf-8?B?eU5RT09rZGhtVms2ODZXUUZkbVdHTXVnTUlrekpyVXdPS2RQT1hOM1MxK1h5?=
- =?utf-8?B?NXlGZ0NWd2RNVzVFbm5PSnZ2dHlOMkNrRzVBSG04UWQ0Q25ad0NtY2VQcmVj?=
- =?utf-8?B?UmpxZWsrcWJWb01FbGN4Z3RRWHZ3RUh4YXV3SXpGWGtsaU5kVXQ2TnRCN29u?=
- =?utf-8?B?KzV0U3dlN3JpTS9NSEpncW53YUREVWo5STlrLzJvWmhHcjBnK3AwRzJQLzZ6?=
- =?utf-8?B?OWpIdk9mMXFjNE5PMjBJSXJjT3hnYnVBQ3VYaksvbjFISWlIc3JFSGg2bFZD?=
- =?utf-8?B?SEVPM3JIck9aSFV4d3hWdmlIT1l0MmRaeVg2S3NuTjlzSHZ2YW51aS9GaXZn?=
- =?utf-8?B?c0lQTGQ0ZkdXY3lDY3dFVEtJYXlwQU4ybDlKSTFWU2ZyeWxQUTFMcmFHNHVS?=
- =?utf-8?B?WGloMFpzeFhwL0FSLzhkVEk2ZVMvZTZ1WDBKTDIxdFVtWk1Sc1NZWVJLd2ZO?=
- =?utf-8?B?TDVuME1VZjZPNXQ4c25rU2E0RmZlaVZ4aWowRHJBeWJWSVcxYURBL1J4R2gv?=
- =?utf-8?B?c3BNYU1mMXd3c3hvaGw4WWxFWjMvcEp1aHZhWExtZit0ZGp5RHdVZz09?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2049b90-d1c1-4e6a-29e6-08de57244ac5
-X-MS-Exchange-CrossTenant-AuthSource: BN0PR11MB5694.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 06:30:53.3536 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SovBb1+KeJ0sGym9kSjjCvApIrzzVBRagqlGERQC7Q+mMUYcdBnSMc/i0nytSDzUob/dChmAclq8+NOyRIkZtA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR11MB8745
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -202,49 +66,147 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+This series separates PCI ID–based device traits from per‑device IP version
+queries. It introduces fd‑based intel_gen()/intel_graphics_ver() using Xe
+query data when available, keeps PCI ID translation as _legacy, and
+updates Xe‑side libs/tests to use the fd‑based APIs. This aligns IGT with
+post‑MTL IP disaggregation while preserving i915 safety fallback.
 
-On 1/19/2026 11:56 AM, Suraj Kandpal wrote:
-> Add the vblank wait even for i915 as the legacy path uses the
-> vblank worker to unpin cursor fbs.
->
-> v2
-> - Add closes tag [Jeevan]
->
-> v3
-> - Pretty up the comment [Karthik]
-> - Use is_intel_device condition for the vblank wait [Karthik]
->
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9196
-> Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->   tests/kms_universal_plane.c | 15 ++++++++-------
->   1 file changed, 8 insertions(+), 7 deletions(-)
->
-> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-> index aa5927cdf..49dceb1af 100644
-> --- a/tests/kms_universal_plane.c
-> +++ b/tests/kms_universal_plane.c
-> @@ -703,14 +703,15 @@ cursor_leak_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
->   			    COMMIT_ATOMIC : COMMIT_LEGACY);
->   	cursor_leak_test_fini(data, output, &background_fb, cursor_fb);
->   
-> -	/* Since unpinning of cursor fb occurs during vblank in xe, we need
-> -	 * to wait atleast 1 vblank for driver to remove cursor fb. We need
-> -	 * 1 additional vblank because vblank event is scheduled before
-> -	 * unpinning. Therefore add 2 vblank wait to ensure that all
-> -	 * cursor-related framebuffers can be removed before counting the
-> -	 * framebuffer.
-> +	/*
-> +	 * Since unpinning of cursor fb occurs during vblank in Intel
-> +	 * specially in case of legacy commit we need to wait atleast 1
-> +	 * vblank for driver to remove cursor fb. We need 1 additional
-> +	 * vblank because vblank event is scheduled before unpinning.
-> +	 * Therefore add 2 vblank wait to ensure that all cursor-related
-> +	 * framebuffers can be removed before counting the framebuffer.
->   	 */
-> -	if (is_xe_device(data->drm_fd))
-> +	if (is_intel_device(display->drm_fd))
->   		igt_wait_for_vblank_count(igt_crtc_for_pipe(&data->display, pipe),
->   					  2);
->   
+Xin Wang (3):
+  lib/intel: suffix PCI ID based gen/graphics_ver with _legacy
+  lib/intel: add fd-based intel_gen/intel_graphics_ver via Xe query
+  intel/xe: use fd-based graphics/IP version helpers
+
+ benchmarks/gem_blt.c                     |  2 +-
+ benchmarks/gem_busy.c                    |  2 +-
+ benchmarks/gem_latency.c                 |  2 +-
+ benchmarks/gem_wsim.c                    |  8 ++--
+ benchmarks/intel_upload_blit_large.c     |  2 +-
+ benchmarks/intel_upload_blit_large_gtt.c |  2 +-
+ benchmarks/intel_upload_blit_large_map.c |  2 +-
+ benchmarks/intel_upload_blit_small.c     |  2 +-
+ lib/gpgpu_shader.c                       |  5 +--
+ lib/gpu_cmds.c                           | 21 +++++-----
+ lib/i915/gem_engine_topology.c           |  6 +--
+ lib/i915/gem_mman.c                      |  2 +-
+ lib/i915/gem_submission.c                |  8 ++--
+ lib/i915/i915_crc.c                      |  4 +-
+ lib/i915/intel_decode.c                  |  4 +-
+ lib/igt_dummyload.c                      |  2 +-
+ lib/igt_gt.c                             |  4 +-
+ lib/igt_store.c                          |  2 +-
+ lib/instdone.c                           |  2 +-
+ lib/intel_batchbuffer.c                  | 18 ++++----
+ lib/intel_blt.c                          | 21 ++++------
+ lib/intel_blt.h                          |  2 +-
+ lib/intel_bufops.c                       | 10 ++---
+ lib/intel_chipset.c                      | 51 +++++++++++++++++++++++
+ lib/intel_chipset.h                      | 14 ++++---
+ lib/intel_common.c                       |  2 +-
+ lib/intel_compute.c                      |  6 +--
+ lib/intel_device_info.c                  |  6 +--
+ lib/intel_mmio.c                         |  8 ++--
+ lib/intel_mocs.c                         | 48 +++++++++++-----------
+ lib/intel_pat.c                          | 19 ++++-----
+ lib/intel_reg_map.c                      |  2 +-
+ lib/ioctl_wrappers.c                     |  2 +-
+ lib/rendercopy_gen9.c                    | 22 +++++-----
+ lib/xe/xe_legacy.c                       |  2 +-
+ lib/xe/xe_oa.c                           |  4 +-
+ lib/xe/xe_query.c                        | 25 ++++++++++++
+ lib/xe/xe_query.h                        |  1 +
+ lib/xe/xe_spin.c                         |  4 +-
+ lib/xe/xe_sriov_provisioning.c           |  4 +-
+ tests/intel/api_intel_allocator.c        |  2 +-
+ tests/intel/api_intel_bb.c               | 10 ++---
+ tests/intel/gem_bad_reloc.c              |  4 +-
+ tests/intel/gem_blits.c                  |  2 +-
+ tests/intel/gem_close_race.c             |  2 +-
+ tests/intel/gem_concurrent_all.c         |  2 +-
+ tests/intel/gem_ctx_create.c             |  4 +-
+ tests/intel/gem_ctx_engines.c            |  6 +--
+ tests/intel/gem_ctx_isolation.c          | 14 +++----
+ tests/intel/gem_ctx_shared.c             |  8 ++--
+ tests/intel/gem_ctx_sseu.c               |  2 +-
+ tests/intel/gem_eio.c                    |  6 +--
+ tests/intel/gem_evict_alignment.c        |  6 +--
+ tests/intel/gem_evict_everything.c       |  8 ++--
+ tests/intel/gem_exec_async.c             |  2 +-
+ tests/intel/gem_exec_await.c             |  2 +-
+ tests/intel/gem_exec_balancer.c          |  4 +-
+ tests/intel/gem_exec_big.c               |  2 +-
+ tests/intel/gem_exec_capture.c           |  6 +--
+ tests/intel/gem_exec_fair.c              | 20 ++++-----
+ tests/intel/gem_exec_fence.c             | 18 ++++----
+ tests/intel/gem_exec_flush.c             |  4 +-
+ tests/intel/gem_exec_gttfill.c           |  2 +-
+ tests/intel/gem_exec_latency.c           |  6 +--
+ tests/intel/gem_exec_nop.c               |  4 +-
+ tests/intel/gem_exec_parallel.c          |  2 +-
+ tests/intel/gem_exec_params.c            |  8 ++--
+ tests/intel/gem_exec_reloc.c             | 10 ++---
+ tests/intel/gem_exec_schedule.c          | 20 ++++-----
+ tests/intel/gem_exec_store.c             |  6 +--
+ tests/intel/gem_exec_suspend.c           |  2 +-
+ tests/intel/gem_exec_whisper.c           |  6 +--
+ tests/intel/gem_fenced_exec_thrash.c     |  2 +-
+ tests/intel/gem_gtt_hog.c                |  2 +-
+ tests/intel/gem_linear_blits.c           |  8 ++--
+ tests/intel/gem_media_vme.c              |  2 +-
+ tests/intel/gem_mmap_gtt.c               | 12 +++---
+ tests/intel/gem_read_read_speed.c        |  2 +-
+ tests/intel/gem_render_copy.c            |  8 ++--
+ tests/intel/gem_ringfill.c               |  4 +-
+ tests/intel/gem_set_tiling_vs_blt.c      |  2 +-
+ tests/intel/gem_softpin.c                |  6 +--
+ tests/intel/gem_streaming_writes.c       |  4 +-
+ tests/intel/gem_sync.c                   |  8 ++--
+ tests/intel/gem_tiled_fence_blits.c      |  4 +-
+ tests/intel/gem_tiling_max_stride.c      |  8 ++--
+ tests/intel/gem_userptr_blits.c          | 20 ++++-----
+ tests/intel/gem_vm_create.c              |  2 +-
+ tests/intel/gem_watchdog.c               |  4 +-
+ tests/intel/gem_workarounds.c            |  2 +-
+ tests/intel/gen7_exec_parse.c            |  2 +-
+ tests/intel/gen9_exec_parse.c            |  2 +-
+ tests/intel/i915_getparams_basic.c       |  6 +--
+ tests/intel/i915_module_load.c           |  2 +-
+ tests/intel/i915_pm_rc6_residency.c      |  6 +--
+ tests/intel/i915_pm_rpm.c                |  2 +-
+ tests/intel/i915_pm_sseu.c               |  2 +-
+ tests/intel/kms_ccs.c                    | 13 ++----
+ tests/intel/kms_fbcon_fbt.c              |  2 +-
+ tests/intel/kms_frontbuffer_tracking.c   |  6 +--
+ tests/intel/kms_pipe_stress.c            |  4 +-
+ tests/intel/perf.c                       | 52 ++++++++++++------------
+ tests/intel/perf_pmu.c                   |  8 ++--
+ tests/intel/sysfs_preempt_timeout.c      |  2 +-
+ tests/intel/sysfs_timeslice_duration.c   |  2 +-
+ tests/intel/xe_ccs.c                     | 16 ++++----
+ tests/intel/xe_compute.c                 |  8 ++--
+ tests/intel/xe_copy_basic.c              |  6 +--
+ tests/intel/xe_debugfs.c                 |  3 +-
+ tests/intel/xe_eudebug_online.c          |  8 +---
+ tests/intel/xe_exec_multi_queue.c        |  3 +-
+ tests/intel/xe_exec_store.c              | 18 ++++----
+ tests/intel/xe_fault_injection.c         |  8 ++--
+ tests/intel/xe_intel_bb.c                |  7 ++--
+ tests/intel/xe_multigpu_svm.c            |  3 +-
+ tests/intel/xe_oa.c                      | 22 +++++-----
+ tests/intel/xe_pat.c                     | 16 +++-----
+ tests/intel/xe_query.c                   |  4 +-
+ tests/intel/xe_render_copy.c             |  2 +-
+ tests/prime_vgem.c                       |  2 +-
+ tools/intel_dp_compliance.c              |  2 +-
+ tools/intel_error_decode.c               | 12 +++---
+ tools/intel_gtt.c                        | 12 +++---
+ tools/intel_l3_parity.c                  |  2 +-
+ tools/intel_reg.c                        |  6 +--
+ tools/intel_reg_decode.c                 |  4 +-
+ tools/intel_tiling_detect.c              |  2 +-
+ tools/intel_vbt_decode.c                 |  2 +-
+ 128 files changed, 487 insertions(+), 445 deletions(-)
+
+-- 
+2.43.0
+
