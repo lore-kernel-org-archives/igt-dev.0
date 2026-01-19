@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BA21D29C4B
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 17:10:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1968CD29C4C
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 17:10:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 400D510E012;
-	Mon, 19 Jan 2026 17:10:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C09F710E4D4;
+	Mon, 19 Jan 2026 17:10:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W6Lh+TYS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TreoNrA+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA36A10E4D4
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 17:10:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85CDF10E05F
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 17:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768842631; x=1800378631;
+ t=1768842639; x=1800378639;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=WbXt6ZSrZzr+p9JaJu6hMYl2MAYIRnoHgo1cHviYPRA=;
- b=W6Lh+TYSq+Q7/OrLASLp5V17Q2uMHF1DekV7TbS2f2RZ0p0j+zQUZfEK
- o9ZvYMQ/Lu5vl0qw2TpW4KQ4wpY7vUyGyo3cBXOJMtbZlo6yUrhNlme5F
- bidFh1koVxu8L19uXtGNWscI4RkBWDGGWle8/8ffw4AEeAXQCRWibfcgK
- Ow0SrckdaLkcYpUe25fhb6VWOK4WUUjN4GnN8sEj2l6jUDLD8zAuwJdDE
- cB64juiQImQuUNsom9FZ8QGomTVQpcdUv657YbZASxfVOKonN5T90BDRI
- VvK+h+mDjlq7XqsyPwKSDtDvPbamBZZgSmE7t9ttqL006m9CzBBU/KjY0 A==;
-X-CSE-ConnectionGUID: B9PoJNhNR4W5Z9lJ091yuQ==
-X-CSE-MsgGUID: xoHVe+GETZi7kcqx/BeVbg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="57612007"
-X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="57612007"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 09:10:31 -0800
-X-CSE-ConnectionGUID: otfPJtquQgadqGzj+VK8jw==
-X-CSE-MsgGUID: v8jw4amgT02aPY2a7OLb7Q==
+ bh=9l0pkB1Ho0DDExpLH70cJqIEujapKbyW2FfvtOWf3Mo=;
+ b=TreoNrA+FIc6k8YZX9+pa+WPj6jZ/86uUmtRKU3MqJdGlTO13hZZ+upC
+ 0pxNGrI31qP0E9kkgXOixuYmfgti0qnjMI5ybOXlw0glVFNC/tjilohWD
+ bkRBU+DloH8BTVLGGJ2Ngw+R+NP0NdYam80xhd1u2Ng8P1YHF8rDM4xRg
+ QB8qHvzMBGRi+WS58Bj0+1YYN6RpaMzkFJcrNfAJXsxEAXGhTkeKr0cky
+ KeXfn3B2bbwa4VaSklo+173SMq4aoSMQUV1D5M8mJSvmoEDRUPGNm4qZL
+ OIffgimk+QPY8O+volUyqE3k/Mi3fa+FChTa42w03mrUhT0MYMBJsBR/F Q==;
+X-CSE-ConnectionGUID: gilP50EdQfuFMAQycbfRaw==
+X-CSE-MsgGUID: Ue5E6W1YQaeZVolhXUH/rw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="73911306"
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="73911306"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2026 09:10:39 -0800
+X-CSE-ConnectionGUID: IMsllqcWR92jpmtyeIsJTw==
+X-CSE-MsgGUID: uDs2rJQXQeCRyTIZxzfp1Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="210412323"
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="205165277"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.244.142])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 09:10:30 -0800
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2026 09:10:38 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v5 3/5] lib/intel_compute: Add xe3p SIP support
-Date: Mon, 19 Jan 2026 18:10:17 +0100
-Message-ID: <20260119171013.442579-10-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v5 5/5] lib/intel_compute: Add loop_kernel_duration
+ support for xe3p
+Date: Mon, 19 Jan 2026 18:10:19 +0100
+Message-ID: <20260119171013.442579-12-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260119171013.442579-7-zbigniew.kempczynski@intel.com>
 References: <20260119171013.442579-7-zbigniew.kempczynski@intel.com>
@@ -70,48 +72,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend xe3p pipeline to handle sip for WTMP tests.
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
+Xe3p is missing loop_kernel_duration. Port the implementation from
+xe2lpg_compute_exec(). It stops failing "xe_compute@loop-duration-2s"
+for xe3p platform.
+
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/intel_compute.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ lib/intel_compute.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index 05ea92c7db..75cf1beba6 100644
+index f27344e717..3244d4fde5 100644
 --- a/lib/intel_compute.c
 +++ b/lib/intel_compute.c
-@@ -1920,6 +1920,7 @@ static void xe3p_compute_exec_compute(int fd,
- 				      uint32_t *addr_bo_buffer_batch,
- 				      uint64_t kernel_start_pointer,
- 				      uint64_t context_data_base_addr,
-+				      uint64_t sip_start_pointer,
- 				      bool threadgroup_preemption,
- 				      uint32_t work_size)
- {
-@@ -1960,6 +1961,12 @@ static void xe3p_compute_exec_compute(int fd,
- 	addr_bo_buffer_batch[b++] = context_data_base_addr;
- 	addr_bo_buffer_batch[b++] = context_data_base_addr >> 32;
+@@ -2098,6 +2098,7 @@ static void xe3p_compute_exec(int fd, const unsigned char *kernel,
+ 	float *input_data, *output_data;
+ 	uint64_t indirect_addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START;
+ 	int entries = ARRAY_SIZE(bo_dict);
++	int64_t timeout_one_ns = 1;
  
-+	if (sip_start_pointer && !threadgroup_preemption) {
-+		addr_bo_buffer_batch[b++] = XE2_STATE_SIP | 0x1;
-+		addr_bo_buffer_batch[b++] = sip_start_pointer;
-+		addr_bo_buffer_batch[b++] = sip_start_pointer >> 32;
-+	}
-+
- 	addr_bo_buffer_batch[b++] = XE3P_COMPUTE_WALKER2 | 0x3e; /* dw0 */
- 	addr_bo_buffer_batch[b++] = 0x00000000; /* dw1 */
- 	addr_bo_buffer_batch[b++] = 0x00000000; /* dw2 */
-@@ -2115,7 +2122,7 @@ static void xe3p_compute_exec(int fd, const unsigned char *kernel,
- 	xe3p_compute_exec_compute(fd, &idata,
- 				  bo_dict[4].data,
- 				  ADDR_INSTRUCTION_STATE_BASE + OFFSET_KERNEL,
--				  XE2_ADDR_STATE_CONTEXT_DATA_BASE, false,
-+				  XE2_ADDR_STATE_CONTEXT_DATA_BASE, 0, false,
+ 	bo_execenv_create(fd, &execenv, eci, user);
+ 
+@@ -2125,7 +2126,18 @@ static void xe3p_compute_exec(int fd, const unsigned char *kernel,
+ 				  XE2_ADDR_STATE_CONTEXT_DATA_BASE, 0, false,
  				  execenv.array_size);
  
- 	bo_execenv_exec(&execenv, ADDR_BATCH);
+-	bo_execenv_exec(&execenv, ADDR_BATCH);
++	if (user && user->loop_kernel_duration) {
++		bo_execenv_exec_async(&execenv, ADDR_BATCH);
++		igt_measured_usleep(user->loop_kernel_duration);
++		/* Check that the loop kernel has not completed yet */
++		igt_assert_neq(0, __xe_wait_ufence(fd, &execenv.bo_sync->sync, USER_FENCE_VALUE,
++						   execenv.exec_queue, &timeout_one_ns));
++		((int *)bo_dict[2].data)[0] = MAGIC_LOOP_STOP;
++		bo_execenv_sync(&execenv);
++		user->skip_results_check = 1;
++	} else {
++		bo_execenv_exec(&execenv, ADDR_BATCH);
++	}
+ 
+ 	if (!user || (user && !user->skip_results_check))
+ 		bo_check_square(input_data, output_data, execenv.array_size);
 -- 
 2.43.0
 
