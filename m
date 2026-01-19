@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B409CCCF2F7
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 12:35:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72647CCF2F6
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 12:35:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6715810E42F;
-	Mon, 19 Jan 2026 12:35:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 24A8210E430;
+	Mon, 19 Jan 2026 12:35:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GTuJPV9a";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A6e2U5h8";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C7D0510E42F
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 12:35:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 325A610E430
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 12:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768826114; x=1800362114;
+ t=1768826116; x=1800362116;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=5OUb5zsFy4yzUzJDvJpOQQjgMMMsZ/N0NBg62Nusfso=;
- b=GTuJPV9allPCVjSibyHqAb8bLpjwAGQOXVv02ihFYQvWJ/BnPST5y5Yr
- 3E2DawO7Jr+IRSIbeLbD6HRszwlzfDrXGfksjg5HWiw1Kt94nlwhPm8XG
- iCAyaOyxv074bRMnvdyqNql/6ur+Xr0i5StVCB+49pywvQQTiab+fij05
- iY2x4umeFtsM7UL8RdPCzrxeaeuoZfXBnYJ5ohoe8IsKIF8blLZQbRYZa
- maFNvnxw7EkXK0d4DC8583zwxuUA5W2/jzgWmQman2FrA43Ca/0ExAEFS
- Cc7BeasIwYXxzAWJ4og99VUDlgftoy3QXI1BtigiZbduYvK8WHn+nqqVO w==;
-X-CSE-ConnectionGUID: Ua6uQWszShiwBxD8zq0NEQ==
-X-CSE-MsgGUID: cQqfW9vtR66pLd7HMVufSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="69769788"
-X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="69769788"
+ bh=Y8T42PdAvMArDhpeNHXxzqxNoOpG6zmgJP+aRKUfp6g=;
+ b=A6e2U5h8pD4bR2mdaN5ImfAjbDeWpZuj+tdwo+w4XCvtvYMkVk/YIU01
+ mYh1Xe7oOxMAMxxPwuf82uzLmRglYoU+i4v32/bWf1cLwFPbGen5iS7iN
+ Gp5EOeGClaxwjDChSC4td1W/P3eIwZUzytVuJGC9lnf1K65XfvzeQV6JT
+ 3pYkouUplsdfn2TD95wStEjvZfOzAm1sXkJpVOnf7pPMo9nm9oOZvWHhn
+ scKf6LKs2sDgt+szpTSF7L1XpvuX/Yra26FqnBEMtiTdh+yh65MGEFbQ4
+ 7V/K3UcP8aThWL+jgmjMFkxPOzCLe9cZSzVfcEWHGXNy/dFic7UwuxIPF g==;
+X-CSE-ConnectionGUID: Nd3sd1mIQiy8FmpUhQQa4g==
+X-CSE-MsgGUID: K75bFU4WQiK+UpOEKf331A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="69769791"
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="69769791"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 04:35:13 -0800
-X-CSE-ConnectionGUID: a2ag1FM/R2mgofA32wMZDQ==
-X-CSE-MsgGUID: wtQDTY7kRAu2xcnoPjI3mQ==
+ 19 Jan 2026 04:35:16 -0800
+X-CSE-ConnectionGUID: vEaoex72SlGZYLzI42Wrtg==
+X-CSE-MsgGUID: Q36cZqjGQVech/EuDe/fxw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="206211459"
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="206211466"
 Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
  by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 04:35:11 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 04:35:13 -0800
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, mohammed.thasleem@intel.com,
  suraj.kandpal@intel.com, ankit.k.nautiyal@intel.com,
  kamil.konieczny@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v6 05/10] tools/intel_hdcp: Add helper to get HDCP
- content type
-Date: Mon, 19 Jan 2026 18:01:37 +0530
-Message-Id: <20260119123142.504623-6-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v6 06/10] tools/intel_hdcp: Display HDCP details for
+ connectors.
+Date: Mon, 19 Jan 2026 18:01:38 +0530
+Message-Id: <20260119123142.504623-7-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260119123142.504623-1-santhosh.reddy.guddati@intel.com>
 References: <20260119123142.504623-1-santhosh.reddy.guddati@intel.com>
@@ -71,63 +71,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add get_hdcp_content_type() to read current content type property
-This displays Type 0 or Type 1 or N/A status for connector.
+Display detailed HDCP information for connectors
+
+Add support for displaying  HDCP information for all
+connectors in a formatted table:
+
+- Add get_hdcp_status() to read Content Protection property state
+  (Disabled/Desired/Enabled)
+- Add get_hdcp_content_type() to read HDCP Content Type property
+  (Type 0/Type 1)
+- Add get_hdcp_version() to read HDCP capabilities from debugfs
+  (HDCP1.4/HDCP2.2)
+- Display connector information in a formatted table with columns:
+  ID, Encoder, Status, Type, HDCP Support, HDCP Status, Content Type
+- Show 'N/A' for disconnected connectors or when properties are not
+  applicable
 
 Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- tools/intel_hdcp.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ tools/intel_hdcp.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c
-index fcb746b6e..dbedc60c8 100644
+index dbedc60c8..b96fc570f 100644
 --- a/tools/intel_hdcp.c
 +++ b/tools/intel_hdcp.c
-@@ -79,6 +79,44 @@ static void set_hdcp_prop(data_t *data, int property, int type, int connector_id
- 	drmModeFreeConnector(drm_connector);
- }
+@@ -191,7 +191,10 @@ static void get_hdcp_info(data_t *data)
+ 	}
  
-+static const char *get_hdcp_content_type(data_t *data, uint32_t connector_id)
-+{
-+	drmModeConnector *drm_connector = drmModeGetConnectorCurrent(data->fd, connector_id);
-+	igt_output_t *output;
-+	uint64_t status, content_type;
+ 	fprintf(stderr, "Connectors:\n");
+-	fprintf(stderr, "id\tencoder\tstatus\t\ttype\tHDCP\n");
++	fprintf(stderr, "%-4s %-8s %-12s %-8s %-20s %-12s %-12s\n",
++		"ID", "Encoder", "Status", "Type", "HDCP Support", "HDCP Status", "Content Type");
++	fprintf(stderr, "---- -------- ------------ -------- -------------------- ------------\n");
 +
-+	if (!drm_connector)
-+		return "N/A";
-+
-+	output = igt_output_from_connector(&data->display, drm_connector);
-+	if (!output) {
-+		drmModeFreeConnector(drm_connector);
-+		return "Unknown";
-+	}
-+
-+	/* Only show content type for connected connectors */
-+	if (drm_connector->connection != DRM_MODE_CONNECTED || drm_connector->encoder_id == 0) {
-+		drmModeFreeConnector(drm_connector);
-+		return "N/A";
-+	}
-+
-+	drmModeFreeConnector(drm_connector);
-+
-+	status = igt_output_get_prop(output, IGT_CONNECTOR_CONTENT_PROTECTION);
-+	if (status != CP_ENABLED)
-+		return "N/A";
-+
-+	content_type = igt_output_get_prop(output, IGT_CONNECTOR_HDCP_CONTENT_TYPE);
-+	switch (content_type) {
-+	case 0:
-+		return "Type 0";
-+	case 1:
-+		return "Type 1";
-+	default:
-+		return "Unknown";
-+	}
-+}
-+
- static const char *get_hdcp_status(data_t *data, uint32_t connector_id)
- {
- 	drmModeConnector *drm_connector = drmModeGetConnectorCurrent(data->fd, connector_id);
+ 	for (int i = 0; i < res->count_connectors; i++) {
+ 		drmModeConnector *connector;
+ 
+@@ -204,14 +207,18 @@ static void get_hdcp_info(data_t *data)
+ 			 kmstest_connector_type_str(connector->connector_type),
+ 			 connector->connector_type_id);
+ 
+-		fprintf(stderr, "%d\t%d\t%s\t%s\t%s\n",
++		fprintf(stderr, "%-4d %-8d %-12s %-8s %-20s %-12s %-12s\n",
+ 			connector->connector_id, connector->encoder_id,
+ 			kmstest_connector_status_str(connector->connection),
+ 			kmstest_connector_type_str(connector->connector_type),
+-			get_hdcp_version(data->fd, output_name));
++			get_hdcp_version(data->fd, output_name),
++			get_hdcp_status(data, connector->connector_id),
++			get_hdcp_content_type(data, connector->connector_id));
+ 
++		free(output_name);
+ 		drmModeFreeConnector(connector);
+ 	}
++	fprintf(stderr, "---- -------- ------------ -------- -------------------- ------------\n");
+ 
+ 	drmModeFreeResources(res);
+ }
 -- 
 2.34.1
 
