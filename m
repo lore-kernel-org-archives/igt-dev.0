@@ -4,61 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E973CCF2DB
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 10:36:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CC8ECCF2E6
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Jan 2026 11:14:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C368E10E3E5;
-	Mon, 19 Jan 2026 10:36:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BE50D10E244;
+	Mon, 19 Jan 2026 11:14:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AQFoTpul";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="elZWyRd0";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E5CC10E3E5
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 10:36:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE99710E244
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Jan 2026 11:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768818992; x=1800354992;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=KAtpYb7SB7xUH8iEXOlFHUT/eD9Wy218tUeokyIx3cY=;
- b=AQFoTpulnkKM04OhjL36QV+7cxhkA4N0rC7zWtmCnLpcesfsjhBMKLF7
- Zm+ozk0V5JeYKx7AJeZjSGijHENpvW946EafThehVvcyFhfFOr4G5jWbY
- K5UZ3VbiKE9lGuDPIfyjPmWWCkL0LrEIu9pmkR697mmP6BsLNqQxLrw4+
- zLoHUxNe4OV+/vb+ywtWzRjFfPAhwcoJAmVld/W0/T7bL0nSjrFEwXNct
- eDraehlHLQalBxLhGrGXrNJrBWsMv9vyFxqHMGz60ejeEvyAalUThiMqx
- OrosLB2OGYUMj3KI+7Jo6vPjzz/fN5M3TxGf2cnjcc8xyjduY87rZhyje A==;
-X-CSE-ConnectionGUID: 8me6EpHnRveInBHJ4Nef2Q==
-X-CSE-MsgGUID: CioSD/d8S6+jQjPmgSArAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="81140615"
-X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="81140615"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 02:36:32 -0800
-X-CSE-ConnectionGUID: 33vR9pOFRI6Dfwfe+kTYJA==
-X-CSE-MsgGUID: g40IlLU3Q163JVXBMpacjw==
+ t=1768821286; x=1800357286;
+ h=date:from:to:subject:message-id:references:mime-version:
+ in-reply-to; bh=rwbNdaO9KZazZIbGPYBcLEXNluLO110l7R2dC1FseGM=;
+ b=elZWyRd0UUjv/xVS5lYo7NlsF4kTQSlRmlvYnM01leEy8NnDb4hnq6ou
+ dHyz1VpAKNgXuM5JUeqdalhb1MEp9xPHHeJO7baKgdPFh6vHutuHzisYj
+ hOMU2WWb+iSci/hmt4sukxcUklOnaO00R+QbVPkOcue0ACXxaTkHDyj6g
+ zyC+9runBqbUuRO9oYNgkFCaYudb45ZHCyiZkyQjcBQlIbM96Z380wIYA
+ LtXl4DN+SD5XK9UJCElyr98P3fJR0iWEfMDGSVUo5wrDuf/jOZikIDSx4
+ 61lm5nGZc0a/s9ZMkIhsLkBK5esuEYgImPHBGvfQ8MK6tLm9rd8SZtkLZ w==;
+X-CSE-ConnectionGUID: jFit0BX8Tea8BR8DFyEh1Q==
+X-CSE-MsgGUID: RBh8PZbnSdendZNnW6x0NA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11675"; a="73885857"
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="73885857"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2026 03:14:45 -0800
+X-CSE-ConnectionGUID: OUD4rg2eQWCXGfbydEYkGw==
+X-CSE-MsgGUID: eIJb/86CSESQo36NgRnNfQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="205454066"
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; d="scan'208";a="228779428"
 Received: from zzombora-mobl1 (HELO localhost) ([10.245.244.56])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 02:36:29 -0800
-Date: Mon, 19 Jan 2026 11:36:27 +0100
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2026 03:14:44 -0800
+Date: Mon, 19 Jan 2026 12:14:42 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Matt Roper <matthew.d.roper@intel.com>
-Cc: Xin Wang <x.wang@intel.com>, igt-dev@lists.freedesktop.org, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ravi Kumar V <ravi.kumar.vodapalli@intel.com>
-Subject: Re: [PATCH v10 1/2] lib/xe/xe_query: Get runtime xe device graphics
- version from GMD_ID
-Message-ID: <gt6bnphnrhub64xwn67xgx6aom7245osaqvqq3la5o4qt3hny3@zoqteqp6fd4e>
-References: <20260112191732.672297-1-x.wang@intel.com>
- <20260112191732.672297-2-x.wang@intel.com>
- <viv6pwhicr6jjm5d4hoznn7w4h7ixamqdwalpx3eb3aoc5fgbr@2rrcrdhe7rsn>
- <20260116213358.GJ458797@mdroper-desk1.amr.corp.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZ1bGw6IGZhaWx1cg==?= =?utf-8?Q?e?= for
+ Add xe3p compute kernels and preemption support (rev4)
+Message-ID: <as4tgov3rp2zzzqil7nsqoqi72dwcvkmhmgzza42ssndsdxe2e@4pmksj23cmeg>
+References: <20260116154636.204553-7-zbigniew.kempczynski@intel.com>
+ <176859290386.162646.10540229348906439883@a3b018990fe9>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260116213358.GJ458797@mdroper-desk1.amr.corp.intel.com>
+In-Reply-To: <176859290386.162646.10540229348906439883@a3b018990fe9>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,306 +67,452 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Jan 16, 2026 at 01:33:58PM -0800, Matt Roper wrote:
-> On Thu, Jan 15, 2026 at 09:00:53AM +0100, Zbigniew Kempczyński wrote:
-> > On Mon, Jan 12, 2026 at 07:17:31PM +0000, Xin Wang wrote:
-> > > This allows IGT to query the exact IP version for xe platforms.
-> > > 
-> > > Key changes:
-> > > - Add xe_device_ipver field to xe_device structure
-> > > - set the graphics versions based on the GMD_ID
-> > > - Cache device ipver in global map indexed by devid for efficient lookup
-> > > - Implement xe_ipver_cache_lookup() to retrieve cached ipver by devid
-> > > - Clean up cached device ipver when xe_device is released
-> > > 
-> > > V2:
-> > > - add new struct xe_device_ipver to hold the ipver info
-> > > - separate cache map to eliminate collision (Roper, Matthew D)
-> > > - changed function name to xe_ipver_cache_lookup() to avoid
-> > >   confusion (Roper, Matthew D)
-> > > 
-> > > V3:
-> > > - optimize the coding style. (Summers, Stuart)
-> > > 
-> > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > > Cc: Matt Roper <matthew.d.roper@intel.com>
-> > > Signed-off-by: Xin Wang <x.wang@intel.com>
-> > > Reviewed-by: Ravi Kumar V <ravi.kumar.vodapalli@intel.com>
-> > > ---
-> > >  lib/intel_chipset.h |  6 +++++
-> > >  lib/xe/xe_query.c   | 54 ++++++++++++++++++++++++++++++++++++++++++++-
-> > >  lib/xe/xe_query.h   |  4 ++++
-> > >  3 files changed, 63 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-> > > index cc2225110..424811f7c 100644
-> > > --- a/lib/intel_chipset.h
-> > > +++ b/lib/intel_chipset.h
-> > > @@ -100,6 +100,12 @@ struct intel_device_info {
-> > >  	const char *codename;
-> > >  };
-> > >  
-> > > +struct xe_device_ipver {
-> > > +	uint32_t devid;
-> > > +	uint16_t graphics_ver;
-> > > +	uint16_t graphics_rel;
-> > > +};
-> > > +
-> > >  const struct intel_device_info *intel_get_device_info(uint16_t devid) __attribute__((pure));
-> > >  
-> > >  const struct intel_cmds_info *intel_get_cmds_info(uint16_t devid) __attribute__((pure));
-> > > diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-> > > index 981d76948..823a29f2d 100644
-> > > --- a/lib/xe/xe_query.c
-> > > +++ b/lib/xe/xe_query.c
-> > > @@ -210,6 +210,22 @@ static struct xe_device_cache {
-> > >  	struct igt_map *map;
-> > >  } cache;
-> > >  
-> > > +static struct xe_ipver_cache {
-> > > +	pthread_mutex_t mutex;
-> > > +	struct igt_map *map;
-> > > +} xe_ipver;
-> > > +
-> > > +struct xe_device_ipver *xe_ipver_cache_lookup(uint32_t devid)
-> > > +{
-> > > +	struct xe_device_ipver *ipver;
-> > > +
-> > > +	pthread_mutex_lock(&xe_ipver.mutex);
-> > > +	ipver = igt_map_search(xe_ipver.map, &devid);
-> > > +	pthread_mutex_unlock(&xe_ipver.mutex);
-> > > +
-> > > +	return ipver;
-> > > +}
-> > > +
-> > 
-> > Please forgive me for sharing my thoughts only now.
-> > 
-> > I wondered about this a bit and according to current code shape
-> > I don't like this design - especially ip_ver cache in xe_query.
-> > I mean I don't like to use external cache which might or might not
-> > be filled at time of calling intel_get_device_info().
-> > 
-> > At the moment I see following options:
-> > 
-> > 1. Provide update function intel_device_info_update(devid, ver, rel)
-> >    allowing to update rel field during xe_device_get(). This still
-> >    keeps intel_device_info.c independent but rel field might be
-> >    incorrect. BTW I would set it in static definition to -1 (max
-> >    unsigned) to catch it is not set/updated properly during
-> >    intel_get_device_info().
-> > 
-> > 2. Add new function intel_get_device_info_by_fd() which will support
-> >    passing fd instead devid and migrate code to use it. Most of our code
-> >    uses fd to acquire device id before calling intel_get_device_info()
-> >    [exception is igt_device_scan which uses pci devid directly]. This
-> >    will break intel_device_info.c independency because we start calling
-> >    driver functions, but maybe it is time to do this (GMD_ID).
-> > 
-> >    Digression: It seems when INTEL_DEVID_OVERRIDE won't work properly
-> >    but I wouldn't care about it for now.
-> > 
-> > 3. Mix 1 and 2 but build hash map from intel_device_match[] in the
-> >    constructor and update it during xe_device_get(). Pros of this
-> >    is we could stop using 'static __thread' for caching last info.
+On Fri, Jan 16, 2026 at 07:48:23PM +0000, Patchwork wrote:
+>    Patch Details
 > 
-> The problem is that "graphics version" and "media version" are not
-> supposed to be a characteristic of a general device type anymore.  An
-> individual device will have some version number, but another device of
-> the same "type" with the same PCI ID can can potentially have a
-> different IP version.  We've been lucky enough so far to still have
-> unique PCI IDs for cases where the version numbers are different (at
-> least for production parts), but this is not something that we're
-> supposed to be relying on since the IP disaggregation happened around
-> the MTL timeframe.  Personally I think that hacks that keep treating
-> versions as something associated with a device type are just making the
-> problem harder to untangle.
-
-Thanks for explaining this. I wasn't aware same PCI ID may map to
-different IP versions. If I'm not wrong atm kernel also doesn't have
-this addressed yet (pciidlist[] still maps PCI ID to some device
-characteristics). Is it possible the opossite that same ver/rel may map
-to different PCI IDs? This would complicate things even more, especially
-we heavily depend on some flags set for device (has_flatccs, etc). Or
-ver/rel will uniquely determine other device characteristics? If yes
-may we replace PCI ID to ver/rel as a key for device info?
-
+>    Series:  Add xe3p compute kernels and preemption support (rev4)           
+>    URL:     https://patchwork.freedesktop.org/series/159522/                 
+>    State:   failure                                                          
+>    Details: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14358/index.html 
 > 
-> For a proper solution, I think we really need to separate the concept of
-> "traits associated with a type of device" (which is the stuff we have in
-> the device info structure which can be accurately looked up by PCI ID)
-> from "IP version associated with a specific device instance" (which on
-> modern platforms can only be accurately looked up in the context of a
-> specific device handle such as a FD).
+>         CI Bug Log - changes from XEIGT_8704_FULL -> XEIGTPW_14358_FULL
+> 
+> Summary
+> 
+>    FAILURE
+> 
+>    Serious unknown changes coming with XEIGTPW_14358_FULL absolutely need to
+>    be
+>    verified manually.
+> 
+>    If you think the reported changes have nothing to do with the changes
+>    introduced in XEIGTPW_14358_FULL, please notify your bug team
+>    (I915-ci-infra@lists.freedesktop.org) to allow them
+>    to document this new failure mode, which will reduce false positives in
+>    CI.
+> 
+> Participating hosts (2 -> 2)
+> 
+>    No changes in participating hosts
+> 
+> Possible new issues
+> 
+>    Here are the unknown changes that may have been introduced in
+>    XEIGTPW_14358_FULL:
+> 
+>   IGT changes
+> 
+>     Possible regressions
+> 
+>      * igt@kms_plane_alpha_blend@coverage-7efc:
+> 
+>           * shard-bmg: PASS -> FAIL +2 other tests fail
+>      * igt@kms_universal_plane@universal-plane-functional@pipe-c-dp-2:
+> 
+>           * shard-bmg: PASS -> INCOMPLETE +1 other test incomplete
 
-I'm not sure what you've written is equal to my previous comment? I mean
-ver/rel is a device characteristic key?
+Above failures are unrelated to the series.
 
 --
 Zbigniew
 
 > 
-> So aside from a few special cases, we want IGT to stop translating PCI
-> IDs into version numbers and instead start translating fd's into version
-> numbers.  The special case exceptions I can think of that don't really
-> have a way to do fd-based lookups are: 
+>     Warnings
 > 
->  * tools/tests that bypass the driver entirely (possibly running without
->    the driver loaded) and just use libpciaccess for direct BAR access.
->    Most of these either don't have version-based conditions or only have
->    version conditions matching against very old platforms (where a
->    PCIID-based lookup is "safe")
+>      * igt@xe_pm@d3cold-basic:
+>           * shard-bmg: SKIP (Intel XE#2284) -> ABORT
 > 
->  * the old i915-era error dump decoder tool just reads its information
->    (including PCI ID) from a dump file on disk.  The tool might be
->    executed on a completely different machine from where the dump was
->    originally captured.  I don't think this tool has been updated since
->    gen8 (everyone switched over to using the Mesa tool instead), and I
->    don't think it would function at all on any of our modern platforms.
->    So if this tool is still useful at all, it would only be on ancient
->    i915 platforms where a PCIID-based lookup is "safe."
+> Known issues
 > 
+>    Here are the changes found in XEIGTPW_14358_FULL that come from known
+>    issues:
 > 
-> The solution I suggested during an earlier review of this series was:
+>   IGT changes
 > 
->  * Create separate "version from PCI ID" APIs that can be used in the
->    few special cases listed above, and migrate those uses over.
+>     Issues hit
 > 
->  * Change the signature of intel_gen / intel_graphics_ver to take an FD
->    rather than a PCI ID; when running on Xe this would do the lookup via
->    the query ioctl to get an accurate value.
+>      * igt@kms_async_flips@async-flip-with-page-flip-events-linear:
 > 
->  * Update intel_gen / intel_graphics_ver:
->      - If running on i915, fall back to the device_info lookup that
->        we've always used.  That's safe for all i915 platforms except
->        MTL/ARL, and we were lucky enough that they never created any
->        production MTL/ARL platforms where a single PCI ID had different
->        possible versions, so it winds up being safe there too.
+>           * shard-lnl: PASS -> FAIL (Intel XE#5993) +3 other tests fail
+>      * igt@kms_atomic_transition@plane-all-modeset-transition-fencing:
 > 
->     - If running on Xe, use the query ioctl to obtain the version
->       number.  This will return the proper value for all platforms
->       officially supported by Xe (i.e., Xe2 and later).  It will return
->       0 on pre-MTL platforms (which aren't officially supported), but in
->       that case IGT can fall back to the i915 approach above.
+>           * shard-bmg: PASS -> INCOMPLETE (Intel XE#6819 / Intel XE#6904) +1
+>             other test incomplete
+>      * igt@kms_big_fb@4-tiled-32bpp-rotate-90:
 > 
-> I did a mockup of the first two parts several months ago:
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2327) +4 other tests skip
+>      * igt@kms_big_fb@4-tiled-max-hw-stride-32bpp-rotate-0-hflip-async-flip:
 > 
->   https://github.com/mattrope/intel-gpu-tools/commits/forupstream/version_query/
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#3658)
+>      * igt@kms_big_fb@x-tiled-16bpp-rotate-270:
 > 
-> Since the function interface is changing, it's a lot of churn, but most
-> of it can be auto-converted quickly via Coccinelle.
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1407)
+>      * igt@kms_big_fb@y-tiled-8bpp-rotate-90:
 > 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#1124) +7 other tests skip
+>      * igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip:
 > 
-> Matt
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1124) +6 other tests skip
+>      * igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p:
 > 
-> > 
-> > --
-> > Zbigniew
-> > 
-> > >  static struct xe_device *find_in_cache_unlocked(int fd)
-> > >  {
-> > >  	return igt_map_search(cache.map, &fd);
-> > > @@ -270,6 +286,24 @@ struct xe_device *xe_device_get(int fd)
-> > >  	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++)
-> > >  		xe_dev->gt_mask |= (1ull << xe_dev->gt_list->gt_list[gt].gt_id);
-> > >  
-> > > +	/*
-> > > +	 * Set graphics_ver and graphics_rel based on the main GT's GMD_ID.
-> > > +	 * We should use the hardcoded value for the non-GMD_ID platforms (ip_ver_major == 0)
-> > > +	 */
-> > > +	xe_dev->ipver.devid = 0;
-> > > +	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++) {
-> > > +		if (xe_dev->gt_list->gt_list[gt].type == DRM_XE_QUERY_GT_TYPE_MAIN &&
-> > > +		    xe_dev->gt_list->gt_list[gt].ip_ver_major) {
-> > > +			igt_debug("Setting graphics_ver to %u and graphics_rel to %u\n",
-> > > +				  xe_dev->gt_list->gt_list[gt].ip_ver_major,
-> > > +				  xe_dev->gt_list->gt_list[gt].ip_ver_minor);
-> > > +			xe_dev->ipver.graphics_ver = xe_dev->gt_list->gt_list[gt].ip_ver_major;
-> > > +			xe_dev->ipver.graphics_rel = xe_dev->gt_list->gt_list[gt].ip_ver_minor;
-> > > +			xe_dev->ipver.devid = xe_dev->dev_id;
-> > > +			break;
-> > > +		}
-> > > +	}
-> > > +
-> > >  	/* Tile IDs may be non-consecutive; keep a mask of valid IDs */
-> > >  	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++)
-> > >  		xe_dev->tile_mask |= (1ull << xe_dev->gt_list->gt_list[gt].tile_id);
-> > > @@ -304,6 +338,11 @@ struct xe_device *xe_device_get(int fd)
-> > >  	prev = find_in_cache_unlocked(fd);
-> > >  	if (!prev) {
-> > >  		igt_map_insert(cache.map, &xe_dev->fd, xe_dev);
-> > > +		if (xe_dev->ipver.devid) {
-> > > +			pthread_mutex_lock(&xe_ipver.mutex);
-> > > +			igt_map_insert(xe_ipver.map, &xe_dev->ipver.devid, &xe_dev->ipver);
-> > > +			pthread_mutex_unlock(&xe_ipver.mutex);
-> > > +		}
-> > >  	} else {
-> > >  		xe_device_free(xe_dev);
-> > >  		xe_dev = prev;
-> > > @@ -315,7 +354,15 @@ struct xe_device *xe_device_get(int fd)
-> > >  
-> > >  static void delete_in_cache(struct igt_map_entry *entry)
-> > >  {
-> > > -	xe_device_free((struct xe_device *)entry->data);
-> > > +	struct xe_device *xe_dev = (struct xe_device *)entry->data;
-> > > +
-> > > +	if (xe_dev->ipver.devid) {
-> > > +		pthread_mutex_lock(&xe_ipver.mutex);
-> > > +		igt_map_remove(xe_ipver.map, &xe_dev->ipver.devid, NULL);
-> > > +		pthread_mutex_unlock(&xe_ipver.mutex);
-> > > +	}
-> > > +
-> > > +	xe_device_free(xe_dev);
-> > >  }
-> > >  
-> > >  /**
-> > > @@ -365,13 +412,18 @@ static void xe_device_destroy_cache(void)
-> > >  	pthread_mutex_lock(&cache.cache_mutex);
-> > >  	igt_map_destroy(cache.map, delete_in_cache);
-> > >  	pthread_mutex_unlock(&cache.cache_mutex);
-> > > +	pthread_mutex_lock(&xe_ipver.mutex);
-> > > +	igt_map_destroy(xe_ipver.map, NULL);
-> > > +	pthread_mutex_unlock(&xe_ipver.mutex);
-> > >  }
-> > >  
-> > >  static void xe_device_cache_init(void)
-> > >  {
-> > >  	pthread_mutex_init(&cache.cache_mutex, NULL);
-> > > +	pthread_mutex_init(&xe_ipver.mutex, NULL);
-> > >  	xe_device_destroy_cache();
-> > >  	cache.map = igt_map_create(igt_map_hash_32, igt_map_equal_32);
-> > > +	xe_ipver.map = igt_map_create(igt_map_hash_32, igt_map_equal_32);
-> > >  }
-> > >  
-> > >  #define xe_dev_FN(_NAME, _FIELD, _TYPE) \
-> > > diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> > > index d7a9f95f9..19690cff3 100644
-> > > --- a/lib/xe/xe_query.h
-> > > +++ b/lib/xe/xe_query.h
-> > > @@ -74,6 +74,9 @@ struct xe_device {
-> > >  
-> > >  	/** @dev_id: Device id of xe device */
-> > >  	uint16_t dev_id;
-> > > +
-> > > +	/** @ipver: Device ip version */
-> > > +	struct xe_device_ipver ipver;
-> > >  };
-> > >  
-> > >  #define xe_for_each_engine(__fd, __hwe) \
-> > > @@ -181,6 +184,7 @@ static inline void *xe_query_device(int fd, uint32_t type, uint32_t *size)
-> > >  }
-> > >  
-> > >  struct xe_device *xe_device_get(int fd);
-> > > +struct xe_device_ipver *xe_ipver_cache_lookup(uint32_t devid);
-> > >  void xe_device_put(int fd);
-> > >  
-> > >  int xe_query_eu_count(int fd, int gt);
-> > > -- 
-> > > 2.43.0
-> > > 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1512)
+>      * igt@kms_bw@linear-tiling-3-displays-1920x1080p:
 > 
-> -- 
-> Matt Roper
-> Graphics Software Engineer
-> Linux GPU Platform Enablement
-> Intel Corporation
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#367)
+>      * igt@kms_bw@linear-tiling-4-displays-2160x1440p:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#367) +3 other tests skip
+>      * igt@kms_ccs@ccs-on-another-bo-y-tiled-gen12-rc-ccs:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#2887) +5 other tests skip
+>      * igt@kms_ccs@crc-primary-rotation-180-4-tiled-bmg-ccs@pipe-b-edp-1:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#2669) +3 other tests skip
+>      * igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-rc-ccs-cc:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#3432) +1 other test skip
+>      * igt@kms_ccs@crc-primary-suspend-4-tiled-lnl-ccs@pipe-d-hdmi-a-3:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2652 / Intel XE#787) +8 other
+>             tests skip
+>      * igt@kms_ccs@crc-primary-suspend-y-tiled-gen12-rc-ccs:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#3432) +1 other test skip
+>      * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-dg2-rc-ccs-cc:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2887) +10 other tests skip
+>      * igt@kms_ccs@random-ccs-data-4-tiled-lnl-ccs@pipe-a-edp-1:
+> 
+>           * shard-lnl: PASS -> DMESG-WARN (Intel XE#7063) +5 other tests
+>             dmesg-warn
+>      * igt@kms_cdclk@mode-transition-all-outputs:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2724)
+>      * igt@kms_chamelium_color@ctm-blue-to-red:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2325) +1 other test skip
+>      * igt@kms_chamelium_hpd@dp-hpd-enable-disable-mode:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#373) +5 other tests skip
+>      * igt@kms_chamelium_hpd@dp-hpd-storm:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2252) +8 other tests skip
+>      * igt@kms_content_protection@dp-mst-type-0-suspend-resume:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#6974)
+>      * igt@kms_content_protection@dp-mst-type-1:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2390 / Intel XE#6974)
+>      * igt@kms_content_protection@legacy:
+> 
+>           * shard-bmg: NOTRUN -> FAIL (Intel XE#1178 / Intel XE#3304) +1
+>             other test fail
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#3278) +1 other test skip
+>      * igt@kms_cursor_crc@cursor-offscreen-32x10:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1424)
+>      * igt@kms_cursor_crc@cursor-rapid-movement-512x170:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2321)
+>      * igt@kms_cursor_crc@cursor-rapid-movement-max-size:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2320) +1 other test skip
+>      * igt@kms_cursor_crc@cursor-sliding-512x512:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#2321) +1 other test skip
+>      * igt@kms_cursor_legacy@cursorb-vs-flipa-varying-size:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#309) +1 other test skip
+>      * igt@kms_cursor_legacy@flip-vs-cursor-varying-size:
+> 
+>           * shard-bmg: PASS -> DMESG-WARN (Intel XE#5354)
+>      * igt@kms_dirtyfb@psr-dirtyfb-ioctl:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#1508)
+>      * igt@kms_dp_link_training@non-uhbr-mst:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#4354)
+>      * igt@kms_dp_linktrain_fallback@dp-fallback:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#4294)
+>      * igt@kms_dsc@dsc-fractional-bpp:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2244)
+>      * igt@kms_fbcon_fbt@psr-suspend:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#776) +1 other test skip
+>      * igt@kms_feature_discovery@chamelium:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2372)
+>      * igt@kms_feature_discovery@psr1:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2374)
+>      * igt@kms_flip@2x-flip-vs-rmfb-interruptible:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1421) +4 other tests skip
+>      * igt@kms_flip_scaled_crc@flip-32bpp-linear-to-32bpp-linear-reflect-x:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1397) +1 other test skip
+>      * igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-upscaling:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2293 / Intel XE#2380) +3
+>             other tests skip
+>      * igt@kms_flip_scaled_crc@flip-32bpp-ytile-to-32bpp-ytileccs-upscaling@pipe-a-default-mode:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1401) +1 other test skip
+>      * igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytile-upscaling:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1401 / Intel XE#1745) +1
+>             other test skip
+>      * igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilegen12rcccs-upscaling@pipe-a-valid-mode:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2293) +3 other tests skip
+>      * igt@kms_frontbuffer_tracking@drrs-argb161616f-draw-blt:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#7061) +1 other test skip
+>      * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-pri-indfb-draw-mmap-wc:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#4141) +13 other tests skip
+>      * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-indfb-msflip-blt:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#651) +4 other tests skip
+>      * igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-shrfb-plflip-blt:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2311) +24 other tests skip
+>      * igt@kms_frontbuffer_tracking@fbcdrrs-2p-rte:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#656) +21 other tests skip
+>      * igt@kms_frontbuffer_tracking@fbcdrrs-argb161616f-draw-render:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#7061) +5 other tests skip
+>      * igt@kms_frontbuffer_tracking@psr-2p-scndscrn-spr-indfb-draw-mmap-wc:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2313) +28 other tests skip
+>      * igt@kms_panel_fitting@legacy:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2486)
+>      * igt@kms_pm_backlight@brightness-with-dpms:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2938)
+>      * igt@kms_pm_dc@dc5-psr:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2392)
+>      * igt@kms_pm_dc@dc5-retention-flops:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#3309)
+>      * igt@kms_pm_rpm@dpms-mode-unset-non-lpsp:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1439 / Intel XE#836)
+>      * igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-fully-sf:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#1406 / Intel XE#1489) +5
+>             other tests skip
+>      * igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1406 / Intel XE#2893 / Intel
+>             XE#4608)
+>      * igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-b-edp-1:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1406 / Intel XE#4608) +1
+>             other test skip
+>      * igt@kms_psr2_sf@pr-overlay-plane-update-sf-dmg-area:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1406 / Intel XE#2893) +1
+>             other test skip
+>      * igt@kms_psr2_su@page_flip-xrgb8888:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1128 / Intel XE#1406)
+>      * igt@kms_psr@fbc-psr2-primary-render:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1406) +1 other test skip
+>      * igt@kms_psr@fbc-psr2-primary-render@edp-1:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1406 / Intel XE#4609)
+>      * igt@kms_psr@psr-basic:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#1406 / Intel XE#2234 / Intel
+>             XE#2850) +10 other tests skip
+>      * igt@kms_rotation_crc@primary-y-tiled-reflect-x-90:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#3414 / Intel XE#3904) +2
+>             other tests skip
+>      * igt@kms_rotation_crc@sprite-rotation-90-pos-100-0:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#3414 / Intel XE#3904)
+>      * igt@kms_sequence@get-forked-busy:
+> 
+>           * shard-lnl: PASS -> DMESG-WARN (Intel XE#4537 / Intel XE#7063) +2
+>             other tests dmesg-warn
+>      * igt@kms_setmode@basic:
+> 
+>           * shard-bmg: PASS -> FAIL (Intel XE#6361) +1 other test fail
+>      * igt@kms_setmode@basic-clone-single-crtc:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1435)
+>      * igt@kms_sharpness_filter@filter-basic:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#6503)
+>      * igt@kms_tiled_display@basic-test-pattern:
+> 
+>           * shard-bmg: NOTRUN -> FAIL (Intel XE#1729)
+>      * igt@kms_tv_load_detect@load-detect:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#330)
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2450)
+>      * igt@kms_vrr@cmrr@pipe-a-edp-1:
+> 
+>           * shard-lnl: PASS -> FAIL (Intel XE#4459) +1 other test fail
+>      * igt@kms_vrr@seamless-rr-switch-virtual@pipe-a-edp-1:
+> 
+>           * shard-lnl: PASS -> FAIL (Intel XE#2142) +1 other test fail
+>      * igt@xe_compute@ccs-mode-basic:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#6599) +1 other test skip
+>      * igt@xe_eudebug@basic-vm-bind-extended-discovery:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#4837) +2 other tests skip
+>      * igt@xe_eudebug@basic-vm-bind-metadata-discovery:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#4837) +5 other tests skip
+>      * igt@xe_eudebug_online@interrupt-all-set-breakpoint:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#4837 / Intel XE#6665)
+>      * igt@xe_eudebug_online@pagefault-one-of-many:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#6665)
+>      * igt@xe_eudebug_online@pagefault-write-stress:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#6665)
+>      * igt@xe_eudebug_online@writes-caching-vram-bb-vram-target-vram:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#4837 / Intel XE#6665) +1
+>             other test skip
+>      * igt@xe_eudebug_sriov@deny-eudebug:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#4518)
+>      * igt@xe_evict@evict-beng-large-cm:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#688) +5 other tests skip
+>      * igt@xe_exec_basic@multigpu-no-exec-bindexecqueue:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#2322) +6 other tests skip
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#1392) +2 other tests skip
+>      * igt@xe_exec_multi_queue@many-execs-preempt-mode-userptr:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#6874) +13 other tests skip
+>      * igt@xe_exec_multi_queue@max-queues-preempt-mode-basic-smem:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#6874) +25 other tests skip
+>      * igt@xe_exec_reset@gt-reset-stress:
+> 
+>           * shard-lnl: PASS -> DMESG-WARN (Intel XE#7023)
+>      * igt@xe_exec_system_allocator@once-large-mmap-prefetch:
+> 
+>           * shard-bmg: PASS -> ABORT (Intel XE#3970 / Intel XE#5545)
+>      * igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-wt-single-vma:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#6196)
+>      * igt@xe_exec_system_allocator@threads-many-execqueues-mmap-huge-nomemset:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#4943) +14 other tests skip
+>      * igt@xe_exec_system_allocator@threads-many-large-mmap-huge-nomemset:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#4943) +19 other tests skip
+>      * igt@xe_module_load@load:
+> 
+>           * shard-bmg: (PASS, PASS, PASS, PASS, PASS, PASS, PASS, PASS, PASS,
+>             PASS, PASS, PASS, PASS, PASS, PASS, PASS, PASS, PASS, PASS, PASS,
+>             PASS, PASS, PASS, PASS, PASS) -> (PASS, PASS, PASS, PASS, PASS,
+>             PASS, PASS, PASS, PASS, PASS, PASS, PASS, PASS, SKIP, PASS, PASS,
+>             PASS, PASS, PASS, PASS, PASS, PASS, PASS, PASS, PASS, PASS)
+>             (Intel XE#2457)
+>      * igt@xe_multigpu_svm@mgpu-atomic-op-conflict:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#6964) +3 other tests skip
+>      * igt@xe_multigpu_svm@mgpu-pagefault-basic:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#6964) +3 other tests skip
+>      * igt@xe_pm@d3cold-i2c:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#5694)
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#5694)
+>      * igt@xe_pm@d3cold-mocs:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#2284)
+>      * igt@xe_pm@d3hot-i2c:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#5742)
+>      * igt@xe_pm@s3-exec-after:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#584)
+>      * igt@xe_pm@vram-d3cold-threshold:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#579)
+>      * igt@xe_pxp@pxp-stale-queue-post-suspend:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#4733)
+>      * igt@xe_query@multigpu-query-invalid-query:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#944)
+>      * igt@xe_query@multigpu-query-invalid-size:
+> 
+>           * shard-bmg: NOTRUN -> SKIP (Intel XE#944)
+>      * igt@xe_sriov_flr@flr-vfs-parallel:
+> 
+>           * shard-bmg: PASS -> FAIL (Intel XE#6569) +1 other test fail
+>      * igt@xe_sriov_vram@vf-access-after-resize-down:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#6376)
+>      * igt@xe_vm@out-of-memory:
+> 
+>           * shard-lnl: NOTRUN -> SKIP (Intel XE#5745)
+> 
+>     Possible fixes
+> 
+>      * igt@kms_async_flips@async-flip-with-page-flip-events-linear-atomic@pipe-c-edp-1:
+> 
+>           * shard-lnl: FAIL (Intel XE#6054) -> PASS +3 other tests pass
+>      * igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs:
+> 
+>           * shard-bmg: INCOMPLETE (Intel XE#7084) -> PASS +1 other test pass
+>      * igt@kms_flip@flip-vs-expired-vblank@a-edp1:
+> 
+>           * shard-lnl: FAIL (Intel XE#301) -> PASS +1 other test pass
+>      * igt@kms_pm_dc@dc5-dpms:
+> 
+>           * shard-lnl: FAIL (Intel XE#718) -> PASS
+>      * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf:
+> 
+>           * shard-lnl: DMESG-WARN (Intel XE#4537) -> PASS +1 other test pass
+>      * igt@xe_exec_fault_mode@many-userptr-invalidate-race:
+> 
+>           * shard-lnl: DMESG-WARN (Intel XE#7063) -> PASS +10 other tests
+>             pass
+> 
+>     Warnings
+> 
+>      * igt@kms_flip_scaled_crc@flip-nv12-linear-to-nv12-linear-reflect-x:
+> 
+>           * shard-bmg: SKIP (Intel XE#7064) -> SKIP (Intel XE#7064 / Intel
+>             XE#7081) +2 other tests skip
+>      * igt@xe_exec_system_allocator@many-stride-new-prefetch:
+> 
+>           * shard-bmg: INCOMPLETE (Intel XE#6480) -> INCOMPLETE (Intel
+>             XE#7098)
+> 
+>    {name}: This element is suppressed. This means it is ignored when
+>    computing
+>    the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+> Build changes
+> 
+>      * IGT: IGT_8704 -> IGTPW_14358
+>      * Linux: xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d ->
+>        xe-4396-eaf341ec50e661b2c81347e4bb9f3348b7fea5b9
+> 
+>    IGTPW_14358: 14358
+>    IGT_8704: 8704
+>    xe-4384-733664f1edf3c01cc68e6dd0bbdb135158a98a1d:
+>    733664f1edf3c01cc68e6dd0bbdb135158a98a1d
+>    xe-4396-eaf341ec50e661b2c81347e4bb9f3348b7fea5b9:
+>    eaf341ec50e661b2c81347e4bb9f3348b7fea5b9
