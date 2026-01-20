@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE5F4D2ED0F
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 03:30:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB281D2ED11
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 03:32:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 64E8A10E0A8;
-	Tue, 20 Jan 2026 03:30:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8968110E070;
+	Tue, 20 Jan 2026 03:32:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gbMB6tL7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LkBu6Pjm";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C59F10E0A8
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 03:30:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 96BC810E070
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 03:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768879815; x=1800415815;
+ t=1768879938; x=1800415938;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=cuQjpZD1NY2feXkIsaYJcs8s2OgAOLO4XY5IThzxrWA=;
- b=gbMB6tL7pJ2667sS9BTU34djVAuq3r5EW+89WqFbk36dySpz/u0Qt/h0
- MW62pG9hKit9lF5YqC+r9RVAnoLvyHHVgJBdOnSaPwjyDebzrpTeLFwXj
- MCK+j4/s0YqzGn7PkjhghYj99j+GBWZAvyuIM63kY3vxFlViWUQShtsiz
- MCF+DmSJkQIWGvTIkuUfDpXr38MxTnVQbISbayaB239JXXbk4s+qNa8rY
- NjgbsAG0RmM/Ek+0PBuw95U1MG9oxywNp6KKwbVAicntxwHA+2el/A9KC
- fXMRJfIzDJMM838TeqPbIfKR0OgWvtnrJ/pml+6wXldLBSFpBdp1XEYfr g==;
-X-CSE-ConnectionGUID: VBzCBOKpQyCHji4Nx8oUtA==
-X-CSE-MsgGUID: fLmaEkHEQ7Cf1qsU1I1xHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="69981036"
-X-IronPort-AV: E=Sophos;i="6.21,239,1763452800"; d="scan'208";a="69981036"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 19:30:14 -0800
-X-CSE-ConnectionGUID: GucA0QyBQQOi8utT2IQ1tg==
-X-CSE-MsgGUID: WEJKT75jQJiOR5mgfLFKLA==
+ bh=n0bLQuIpgVU4q45yVrdx7opH03mzuNZHiU0WGlAIyJ0=;
+ b=LkBu6Pjm0JHmuRowQKZ3dZDZKILFf4Cz72WwJyoNP2Rm/4b1qXJNfnUd
+ 8tK/EehlxdEhbsm4vhdozVDS2iCbKig9GhtpaGn53CqigKkxkfgocptUA
+ MW8i7hImjeZVebJeju072ioVOMEqjOP0JMViCLfXDfFVMJc3qzBoxoE0/
+ qHn7PT1mz+b4bB2IAkRfjxy6Di6nG8B4Lp2/moGxQp2Q5Ix4RWZViAUtj
+ zswpxSpGTFD5Eg4JGoNTAMrOy8pwx54ljLF/ckNhq14ophJRtrzh+SrXo
+ 4TPVwGUIMbhXWJZG9baBJ+8P0Zptasrtz/LaFf4RJ/70J7tfANV81ZP3o w==;
+X-CSE-ConnectionGUID: UtZh2fOxTYCg39+nK/Ka4g==
+X-CSE-MsgGUID: fvESg/OPSyCODYEa9Z6E+g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="69094699"
+X-IronPort-AV: E=Sophos;i="6.21,239,1763452800"; d="scan'208";a="69094699"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2026 19:32:17 -0800
+X-CSE-ConnectionGUID: TmrlQDEGTQOwjqBCFJewWQ==
+X-CSE-MsgGUID: S5j8mFpkTnmcEwg1VY0xwQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,239,1763452800"; d="scan'208";a="237268838"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 19:30:14 -0800
+X-IronPort-AV: E=Sophos;i="6.21,239,1763452800"; d="scan'208";a="236687190"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2026 19:32:16 -0800
 Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 19 Jan 2026 19:30:13 -0800
+ 15.2.2562.35; Mon, 19 Jan 2026 19:32:14 -0800
 Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Mon, 19 Jan 2026 19:30:13 -0800
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.71)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ 15.2.2562.35 via Frontend Transport; Mon, 19 Jan 2026 19:32:14 -0800
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.70) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 19 Jan 2026 19:30:13 -0800
+ 15.2.2562.35; Mon, 19 Jan 2026 19:32:14 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VCvj+xQ7t8Jj87EWhaDP6sOay0ak6o2R8b9j0uk1uahK/m5joOrXV1vR9MyuZ6SvQ7f4mGNjPx/UTTy88bbY0hA7+F+V6mTr6mdz3NhdOzXzCBrgE9nfpUv6GghwC7ts3VP3zMwZAp090/O9O2yw2dPAl8A5wYkc4HkxKtKo/4ZjMlLOgX0XS3abL75gEt/tcf57pMLzSWrooCg4mFiGdeYkraGgBHvbn/DvG2OPXhgUPoXnPCr/4TWKqttYJtMNg+o/3YhDJHCdyHY2n5g5BV8mtwfXebsFUEsywmZdKUL1bl1SQiH+7VgnAUVM2lAxv81SQlswluAgsImXuxgX3g==
+ b=pgxBLWz+Zs1UJeEuQgz8HmK6X6t6PIq/r7ifFLYJuGsRWfQ6t8WaA/ELcP5cJkoMrjv/Z3cJHLbyfZGNnhJWI5FJOCjVAg9DAvBLVmiStSXM+z3xqfDLOb/xiMFfhDR31y1MpVJjwA8TI6OLDSudeI17tq6kZr40xdOs++E3SHqNKFdlabyYT78ffFPi8eQoAjdzPa5Ltqk9UH9GNBfueMqTrsaGR2DClL2DU99Xh1P7vjRNk4T9iP1Uwm5PwSsI9NX90GWIgfuKXq+eaByVY2OjM7RQxwDQK6ivkJCyGZMBaEwLdBueDaH6EmtueYLDPYrmO0N76lJDVE5xqPQN0A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o1ihGPLPN6RTaX63js75ROn02zzZgZhNSTlqQ/omho4=;
- b=yM5rPZw1sJt8Ucmrrg94SO2jNaLfk0GE0TQatWxhuNdSQ42AtMohlUdW2yb4lmv63MblRhE6YcMhOCOQEysuqSxNWh+0g15aYDlLfe+pu9iFwH61D7V02xhsPcHeOEe75bWB2K8b7HPxFAh5yoDDnvSYNw6ut0Ah4+mKpltb7hjmYm//n9vfNpqkY/tPGGZbNJcPYpmUYTyD4xHv2MFybQkZydE7kp41DDUaTF1aRy3UaXnmnGxI5DJvo2AAlkV4O/HXk4IdvxUoKfDuFjInul4+m++G3FN2wszqKxwFnSV9DRawBdaCRUNxFKO1wwUk+rBFY093BxMNTinZJt0RZw==
+ bh=x5JnOgbts897qnn6Rdzu+U3Dr5kCjFJbVBMUdozMz9E=;
+ b=dQ0SfH3bHKVHWG+Kk/nFcGWaRiUTO0NoSpo8K36kR/3Z0w3BqpzGFyiA6MsSP8XC7BWpGTk20B3eOvilqaE/4w1jZmQQymfEj6qd1sILKi1ZUn3bCfLvDCzSSmfTEe5/y04l72bh0EKJVhUv1875fztQ+qKM5Oo5czwGjjvpp6Ozr8vKymAWfnpEjImdAuihCgQGh67+03OZexGmWyOs84zZCU9guwKH3KuaiDW/w+TfKh5S5QdOhTWRXgkOZRdou36F/aSk/YlVXE/JnCvOPxkK0dCG4IZXnw7IdPbKhFohcjV7QS2JoYqa35wWygIJeZDyTlT68zOSxHIeWUKh+g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -67,27 +67,27 @@ Received: from DM3PPF208195D8D.namprd11.prod.outlook.com
  (2603:10b6:f:fc00::f13) by PH7PR11MB8057.namprd11.prod.outlook.com
  (2603:10b6:510:24c::18) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Tue, 20 Jan
- 2026 03:30:11 +0000
+ 2026 03:32:06 +0000
 Received: from DM3PPF208195D8D.namprd11.prod.outlook.com
  ([fe80::7cc8:75c9:22c6:3c66]) by DM3PPF208195D8D.namprd11.prod.outlook.com
  ([fe80::7cc8:75c9:22c6:3c66%7]) with mapi id 15.20.9520.011; Tue, 20 Jan 2026
- 03:30:11 +0000
+ 03:32:06 +0000
 From: "Kandpal, Suraj" <suraj.kandpal@intel.com>
 To: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 CC: "B S, Karthik" <karthik.b.s@intel.com>, "Thasleem, Mohammed"
  <mohammed.thasleem@intel.com>, "Nautiyal, Ankit K"
  <ankit.k.nautiyal@intel.com>, "Konieczny, Kamil" <kamil.konieczny@intel.com>
-Subject: RE: [PATCH i-g-t v6 06/10] tools/intel_hdcp: Display HDCP details for
- connectors.
-Thread-Topic: [PATCH i-g-t v6 06/10] tools/intel_hdcp: Display HDCP details
- for connectors.
-Thread-Index: AQHciUF+khV2FDZ0Z0i1HM9VxFj9zbVaZzzQ
-Date: Tue, 20 Jan 2026 03:30:11 +0000
-Message-ID: <DM3PPF208195D8D30FC5FF1355CECC1D0F9E389A@DM3PPF208195D8D.namprd11.prod.outlook.com>
+Subject: RE: [PATCH i-g-t v6 05/10] tools/intel_hdcp: Add helper to get HDCP
+ content type
+Thread-Topic: [PATCH i-g-t v6 05/10] tools/intel_hdcp: Add helper to get HDCP
+ content type
+Thread-Index: AQHciUAWo2QcU/IRY0y/vvSP59JGB7VaZ7Vw
+Date: Tue, 20 Jan 2026 03:32:06 +0000
+Message-ID: <DM3PPF208195D8DA77B845E8121A253516AE389A@DM3PPF208195D8D.namprd11.prod.outlook.com>
 References: <20260119123142.504623-1-santhosh.reddy.guddati@intel.com>
- <20260119123142.504623-7-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20260119123142.504623-7-santhosh.reddy.guddati@intel.com>
+ <20260119123142.504623-6-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20260119123142.504623-6-santhosh.reddy.guddati@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -96,85 +96,85 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: DM3PPF208195D8D:EE_|PH7PR11MB8057:EE_
-x-ms-office365-filtering-correlation-id: b8b3865b-88fa-4a4b-59e9-08de57d437a7
+x-ms-office365-filtering-correlation-id: dd87f7ac-8e58-4535-e968-08de57d47c78
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
  ARA:13230040|1800799024|376014|366016|7053199007|38070700021; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?ZxTlq+ncfvddeqsHuQnBXFOMo0cxaoHnMNvMKNSIrmBW/+vpgHslO/uymadx?=
- =?us-ascii?Q?Knq9i8lEkuHWnh6E3rA8B0lz6KAodfmgaJvcHZppaxFJL6oFlfyf+CU4/feL?=
- =?us-ascii?Q?9clHt2AeWIcBE739kewSC9WK16ZNFB6Ulqhd9xs5dwZy3hQwm78GkKgP6PTD?=
- =?us-ascii?Q?29CsM0RV6VWsO0BjRH67Q26H3/JK0rCd4HYe6dASRCK+fE14eVXFWx+63rkr?=
- =?us-ascii?Q?Iu6EcVjF2yrO1tSXCVuPzMwy82AwLZVHKcKhdBtNBnySM/lrszbNhV9hqKhF?=
- =?us-ascii?Q?UGqOhPs3pRDtFB+CI+9n28dm/MxijkSnr0SXdPEHcpXNDSx5MTs8qjWrg3zB?=
- =?us-ascii?Q?AJc8VxfXJxjbsM1pHBHgM76Oc1PARNa6xluSQ6SVu1LF1TRyq2Lo0S0AkAKc?=
- =?us-ascii?Q?9b7G1hQdtegzpeuwMwwFNpFZ8PFAFlYAzBk+EMq28zy1aCsadSPRrXeTgwMZ?=
- =?us-ascii?Q?rIDI6IMQTslecvOFk1JxFGgPsWjXjT1FyqPGoUkOqZH2wULzlGRigtuuzhT8?=
- =?us-ascii?Q?wiadie3QcPUzXcFjclXM8jMpn+bfuGZ0O66M3ZMHRXGbnuHD5kX4aMegAwtL?=
- =?us-ascii?Q?E6Y95Nbfa4FpTcFiFV3U4qi4ArbxMMfpPbOFgjRZJSxpS9Avn/GnKP3I3R1S?=
- =?us-ascii?Q?rabyZvYbO0d4Jr+v3vCS8DbcaD5natd6mOBtoiHXPsMKd1F1DHlWkWXCfOBK?=
- =?us-ascii?Q?pZgkRJO3oKh0DuZhIz+J+QDu77yARS4/ZENy3IqQgjwXdVRt40Duy6M5YMoV?=
- =?us-ascii?Q?wWnUOSrRbNQqyjQjXga0Q4z1aWE2xw9myx2BCyap0Vy4DE2c0LA3c7z9e4XM?=
- =?us-ascii?Q?NvfgOM7B3NKF3ipJ7Lz4bR4+qKr9dtMzZUC8gSBCYrumlWPwvP7LJIYSsrZn?=
- =?us-ascii?Q?Sh7nMqw4G9rrbu/mbbKc0IjkB8dV6jqb7ACChofU88iy07aQbJsz0EuB83tj?=
- =?us-ascii?Q?p3lHTm8Fg/i5Ezz6llEDdL+1XVCGN9O3fUT1Qu757SQP3PDlZRPDYyyVm5Xc?=
- =?us-ascii?Q?ausvWIAa32AcenYtXv9czHJYtyNnmhW+/4GPlFKZZ42+U2ghCc00O/QrV125?=
- =?us-ascii?Q?VdwV3l5Kcf75gDjohc8diphyXavY8z9q84HhEFc4/QvRe8P2je/mPabt0ML+?=
- =?us-ascii?Q?MZ906doQrKsrr6BhkdIlNyJM5jjwwkXcbFPrnyqHxsSHxzDi5oqhAjlxbwSF?=
- =?us-ascii?Q?FcGSYyU28pmFct8WjiM30+MP4+lSCKO27w2pyRSkn1ZtODJPir2cG6j7rFpe?=
- =?us-ascii?Q?j9fXQKnc8D5ysp+NTHfe5DhwLdkUtVGqa5WYC0bNisvOesTmOTgN6e9paVUC?=
- =?us-ascii?Q?NUSA3NRek6NCFLdlnYJ2w8Wqb8ARVSxsBXC+nt+DlmpJOWnzjnJ6Zt8hXJ/J?=
- =?us-ascii?Q?s8hoSP3RBRz+D7BvGZlaxm7vjydQ5ZvGTjuqmREOmL3RnlNfueHX82i9iw41?=
- =?us-ascii?Q?ESdxTIo4FIQZWR5sqT1JEi5kxGIHVJke2N4/iRdN348Y40X8vPtNNgT/0vOZ?=
- =?us-ascii?Q?TeHYwtUdzpUBKvuswkrLgvn8HiwItiyXj/UtmSYmKJ1apedJ4P/O1eNFs7tl?=
- =?us-ascii?Q?jVGZz9dCZzS3TVgAWlBZIthF9yuXlaZoCvu2IWbPvq9upc9SyWj82TtxNtBx?=
- =?us-ascii?Q?+SWTdLdV+ZoYDturFozrGe8=3D?=
+x-microsoft-antispam-message-info: =?us-ascii?Q?utuqozinm3FZvTPGaTKsr5ib7IvO5UhyrFqZyvlc611a8unINrQb10gBxmwy?=
+ =?us-ascii?Q?eo6v53q9zXlKbZUuPSmUEjDGlgtrmbkyIqIIHgcji8aU2Ux5eBBtv8FfDEwP?=
+ =?us-ascii?Q?gu9kMYTUQDpARTcV7nwEdndXmRHhqr52jgOtaH6SZS3i6DkG5I5Dq+TG/ZM8?=
+ =?us-ascii?Q?xjTdag7fy+1ieqCPLfalhMzYsTGeSyl+jYg6HopM7T6owkDjYYD9vesEYFBg?=
+ =?us-ascii?Q?qP0ZteWrULLGOXPTFgucQ7WJjiAJsF9ny3Swb8LuyzXYKKcVHdFaCQ6OuHFt?=
+ =?us-ascii?Q?zhFAJvyVJoajpDES5AgRJa5iTLXyBETiyYzp9vlyJ35ZLcwHJ/KpOOhdPT3z?=
+ =?us-ascii?Q?PQ2vufLSV0d+5mKVeOyXu98lbz3t6paOTMrMGgsrd5H3YwXfPy9PA9wm3IEn?=
+ =?us-ascii?Q?YlUlQFq0F6qIZs0362XmUxBui3vVPZU12CCNMIGbLz1PmlBxDAU2MOAnegOQ?=
+ =?us-ascii?Q?U4VJuXAweSTMPh5iKS8T+Doel3TYPBIPr/joUy7kPZmfOYO3k8XHQUsksepE?=
+ =?us-ascii?Q?S1CUrABwMFd6s8e4UEWIcfs8GFExzneDwPiIDTLvIqnqXrn9PIS0kJpENlzq?=
+ =?us-ascii?Q?HGwL9Xo6AlK/qjxCOkjxhOwJ6z4TfMIQN0i1RiuPdJeBztQBgfCwc/FTpwJz?=
+ =?us-ascii?Q?IDk7/6Uad9IWLawYNrRMoVkbfAX4lw3hE2YLysrxA46jWoWYIw62/XX2Yhok?=
+ =?us-ascii?Q?zdwL15NJzC5SE24ZPBXeeVAJXrk1woZX6Wy5ZUMNajyQ+jHh3mqVNRM/oILF?=
+ =?us-ascii?Q?B5SvG0IO1wXRN/N3yd0R3gLQeAw6Vs5qpbA+ZdeKBmYm0RaAD0WH4viOFFOa?=
+ =?us-ascii?Q?VL4cvyM8tU6n/s2lHig4WTJm0oXbwnLT5qVEYotDF7E2EORcgYJuGm8ZX9Up?=
+ =?us-ascii?Q?vUYXnvj8hfNPkNfX1e3juFWzJObD8vgkr8DFScutl47eTVe3h32gMQvEJlgg?=
+ =?us-ascii?Q?pYd+G+zDFkGxybrNJ15NMwFwvNWdz8f/8f26NnMzKqqKcfQoG7Z9Ibd1SjhQ?=
+ =?us-ascii?Q?vxYEkzgR8LfTbVRzIEyZdct8JzUNi4VeL9eMTgj/i1laaKHzmElADKbbCoy8?=
+ =?us-ascii?Q?g9dFUJHDFqqoXqQrPprvMaNYucqQfxXzvJwUbiWbk3TcdiEUgtxDCGSeGoby?=
+ =?us-ascii?Q?i4X7mejqhTspNuTIuvqCu3f4I68WeH3TyxbgFnlEaIr62PmrTf/OH9/ofkgI?=
+ =?us-ascii?Q?fIyzypowIymQSzMGjlw5nRQN991edYqFb4YKay2kJfi61eUevuxKh2oXnUqg?=
+ =?us-ascii?Q?EuwMfsTvD9TEbWqw+hOOwjO0vS7bkmgRwbAYEAGgOjw8fuwAzQThBqjYfLJk?=
+ =?us-ascii?Q?4JIAWgQPpuSbVUfh9BX6sI+REMNcLbMOgorxkO6oXHLQyHprbqzaOoeTmCnb?=
+ =?us-ascii?Q?JpSUz1P5eabBgjpPrjUEh4XPjPqA9e07ifE5oPktYvTesXgd0b+r6THfeKZW?=
+ =?us-ascii?Q?65LLHnxT8aQqF6IjL0/vnR0l3SYwjmQtkkejxz7x7ksTwATqUBxmMnDGasmw?=
+ =?us-ascii?Q?RTb58mZ4Gf6isuODlAeCdwKKG6pL7tZlUrKp4izdhYLdIiQHzaYdjCjrmLkj?=
+ =?us-ascii?Q?n95LkrpTGhXZyZG03MTtITDcBPl+XVUj1Y8+rVK8ykLQpSZCGpn5xJ3W5lxh?=
+ =?us-ascii?Q?VpsQgMa1S4BurDcVNRAELoc=3D?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM3PPF208195D8D.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(376014)(366016)(7053199007)(38070700021); DIR:OUT;
  SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?rCCAiLJmJyZ7yHSTecCNSGuRjEuERw6QmqXhJSmb47qBkf2ZqGGHnlZbDZNO?=
- =?us-ascii?Q?XwUoPdX+uVW3N1MgYIrXvlJ9CN0Y60Ol8GeHu1kSRgZeCSPXimtc1gSK2eFt?=
- =?us-ascii?Q?1Tvb6kjjjaj7JJMlU9XX9BlV3bQ4Ywo8glsURXDGMOTaTSf1ZD6F+euoSio3?=
- =?us-ascii?Q?xJfZTlro8aGwYv/HW94rQfzrvokerHikQs078W2rT8/8hI1BC1ArFBUbROxk?=
- =?us-ascii?Q?Li6NQUnyQZHgiX6a1AcPrLXv3emopqLpuKEQeNTZwqOTLS6kRLvw1nxlco+n?=
- =?us-ascii?Q?BAkX3VjCcApEvzvMvXV++s8saUQ/AuFG6usLAOywO+C+6pANeJvnyAvSiFra?=
- =?us-ascii?Q?A58+8usPEJ1x0hdTW5XXfHEXdH2GiggFepCeiMKj6Mn3NIx7ovXkKNbKibRT?=
- =?us-ascii?Q?Khso+WYJe+vIJj2jQ/xQDE5MDmGiY36kBZCtkgtNFxFSn+e2earhTrEg3aI8?=
- =?us-ascii?Q?dlvob1UPGBSVRlkkFwm9p6F3lIblELEh9kok4VnNpOFZQT2usUc/B5tMcYFa?=
- =?us-ascii?Q?st9TkNcwBpS759tvGI6q7qIMVBTyZ0BoDkbeRCPB6ciQq//juKcGXdDgXoC6?=
- =?us-ascii?Q?Qd3eatpyo4KysC7zmw8YaOhxmy+qHDQARgBPKoQgjMJYcbcRyjf+tRhYJnjY?=
- =?us-ascii?Q?45jyMO5dMi/wRfoz42/gpStzU9+AOt1d/S2jXJYcQuUEYI2FxYDvShVThRbt?=
- =?us-ascii?Q?ZId2tnFcfrlDffbUOB3pCXDw3tbTiYimJUGckBANOsxqAj5fkKJWON5xuioi?=
- =?us-ascii?Q?hcYmM4fNQFBdqI/Xnbz+hspWupClvQ5glDxIKAorY6/Y2t2r8jqc72JOaxOB?=
- =?us-ascii?Q?I7Nl9ujkPyFXAgZSlohnYsf5KHH8LBIYGnXPVC56ezMFs9oHwPPHzKGR9Nkf?=
- =?us-ascii?Q?JTNArpKIxkTxDEOOEY/resdt6L+iGyFjKO+e/NWb8avmMBjg4tKXj7WZ5wOb?=
- =?us-ascii?Q?sV5x/WkqCor5LOYuY2UVEcqxdKwIxd6dF7yn1x2QM1wj9a36nfe7WuqAXTFN?=
- =?us-ascii?Q?AIYTVeWzFUNuRXar4mRkQFISzkjbYtECiU/B5TQXdYEjf7ytYGjlzfa/2DGy?=
- =?us-ascii?Q?imtsk5MBh0imEFz+z2cK3W92OSowwfRobxYMF2kSEOF/Efr88bqkUIXHQNAm?=
- =?us-ascii?Q?6YwHkFXSQfAHQ5c6jPQo+fqjcW6K8jdumkaQLajT7CQ0GzUm/yF5x2J4x+CV?=
- =?us-ascii?Q?ybM0hXdkQV/ceq8wy3qo9l2JRm0D1UjezrCnlQumN56I/+i03zNZx3nd6qS0?=
- =?us-ascii?Q?HkrDiTQOjfKijVQ3N5RIR5qmfJgzvXm1ygHIyq4XTl0OvP/g4NhpJBe8zVPk?=
- =?us-ascii?Q?vL74hN5GY5rKDnLA9e7DLB1bGej/wQlws+S7mPVoOxE6TkFhjme4JAFxcNBS?=
- =?us-ascii?Q?tYQK9u/L+0kRdupPHr+R+afyfP176RdHxWPm2aRKmDoA/PJOJ8TFng24CCIc?=
- =?us-ascii?Q?MDurVbVFE3h4vfaes59vzBW2jXdwa8/Xm47mwhjN1D+IE4uAX6ITHyhHgiz3?=
- =?us-ascii?Q?FkIWjnjKQw+kDZP5hDLXUzdWGiu9e5IItgfZTPasRShcBfwhqSKQHorGSX5l?=
- =?us-ascii?Q?FxWxBePpIGk/UvSpzjXMcBatBZaL41LEMFm5l4tdzhfdnLYMwOO8IHxPqyfh?=
- =?us-ascii?Q?4dn+t7uikeIdzjWL77OsmoDRo2loqleO/+RlD4SzH+WbuAAPmbUDwxJvKR/1?=
- =?us-ascii?Q?0HUyaQ9Wj7fMCmpvPySRLw4K/RvyLMkD+CsMh0Kc12zltSjryrL0cGbeWC4Q?=
- =?us-ascii?Q?XgcPG0pkvw=3D=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?qNFnPa3nKpcVU0y0ylD/7cfUF/0xfBxET+MOV5aXlPwLWMx9VlPuCvV8mSGc?=
+ =?us-ascii?Q?hCtnDMlKATeCwd+zPSLLR2mwcPsLnaTYfX8PhdKojwqg1mZLumvp13gVMlvi?=
+ =?us-ascii?Q?Lbx3binQy1st2+ELr4DDqBf/44kjF+N9Xh02JfGvJjT1CLByHIRu0oeKwi+v?=
+ =?us-ascii?Q?vokZ7eZdnAg6Q9Dw/U5/yDlhEncyR7xQZG16L6Jz7KqbbZDpEaaL4hY6nKkJ?=
+ =?us-ascii?Q?QYaglim3oi+rfImWunraYxGh8yxipfkxdOPYuovQfJp1dmib/+EfgOzc5eBR?=
+ =?us-ascii?Q?BnOe8QHT5rLepPn/jRWQpb6aWQJPih6r/YouH8nbVMbUjuabxHa+jcX2/avE?=
+ =?us-ascii?Q?R795JBrrEYnHympeFkan1TZn07Ef+XOi/3j+XaFQGLLp17m3mOKhmeIPBiTF?=
+ =?us-ascii?Q?gMjvHD8UJHX6xpmbHXVORniCTKVkexbBwKEBnwiR2ywdhRhd5PGPMQQo2sIc?=
+ =?us-ascii?Q?hVBtLoUS9px+jr5Ec2Tbh5H5KNpfaDTYDPPiBPwqqX/HaVLzf/A/moSvFmmb?=
+ =?us-ascii?Q?bSy+q4P+uOsHvV1XgK5b19Kt4ipOjLPU6BuZbnlPhpbyx5QiJAYZtoub3qni?=
+ =?us-ascii?Q?v2VF/ro5kpGQP92Cue9D8mlhIyAnGzw5LQmJrAbut1Uq59441T9cTR42O9qc?=
+ =?us-ascii?Q?LMwMYQ/LoijlzoVMwa/UDuGn71RST9PpiQjbA8l1OImaCabOgUq3QEEFVrB7?=
+ =?us-ascii?Q?fC/DgZL/YlbAEJibhT/rUtHMGFAYPByZ1MoRa2r+g2L3907RkBLQdfVPUnZq?=
+ =?us-ascii?Q?wvH0ljaXR56PS9QHX5M2WuuIhJZyUHb5o5tQCKScXdJNoWs/4ix59AuuIp+u?=
+ =?us-ascii?Q?vivbzpYau7rnMlayPx/fxrK+KdTSWKVWH3qRL09SElvqotbNqoE5pNpTgm0T?=
+ =?us-ascii?Q?9jQlr+KdoAwDzgLKUrY0k8ejffGw+IHehQ23s2MQge33p2OCvFJRc5TM8x9N?=
+ =?us-ascii?Q?0uT3EfsxBoSnsUUW48Vo+WSO+gBlwP4g3B4bBhbdpivNdKEJZSllVHGWY9xz?=
+ =?us-ascii?Q?Utfe8lgPNRjT4UfZ/wUFZjjU/1aB8u7iSvNDrRsHIGLXMblDrBmfg7oD8I2w?=
+ =?us-ascii?Q?dYg+6/f6Ng6unUn2wTD5cSZtadlNqvDwnR5IgREnAGyu3DsgE3GlBGSCOyw3?=
+ =?us-ascii?Q?LPMdDSWtTM0GZr3Hbxu6djI8bcbwgyAlUoffaVjBCTblI2vkFdJG5jrxYhvO?=
+ =?us-ascii?Q?MqwYj20z33FGqIaimkK5DDMFO8h8uEj0Q8oYP9g4deAsX17ez0wowTzf0FNB?=
+ =?us-ascii?Q?w1MkChDd1ZSlB0v0CCd8ieBaK6FpRReU6P8jLWrgBkC/rODcPHz1dti53gMy?=
+ =?us-ascii?Q?BHiGCnV793URh9R1UF40sDN6ox1cqHV4DI+6TLnDEv/2hIVpvrD1cr7yGhE5?=
+ =?us-ascii?Q?ZCRX8NTOShtnGQ/u0NljfGgSEWgaMOaAxiBW09LzhfNMnovZn/gHmTQ1l8ri?=
+ =?us-ascii?Q?FMOV8Q5P3TyOV4gmyLQPSzUg1LQ8YneqhxeXD8pywZ456MR2FJQCK2DaRgef?=
+ =?us-ascii?Q?/ubaE9XKi6gJsIAkTp7beOLC9ALdz2dMeN5If3iua6CO8ehxT/e1d8dfarP4?=
+ =?us-ascii?Q?t21frUaZ3ncSD0JMXLlzpD3K+8sGL5k1uNaae7SlqJrNhykbpF9ZBzIRDL00?=
+ =?us-ascii?Q?Kd4YnhnHv9aUS8a4Nyup+MsGaYOL2sHMohrFZTkQAIFRg3BEgkop07sIBvXQ?=
+ =?us-ascii?Q?9ctusHb0clHE0ph4z0e7uyGnSwAmOfbq1FTjLy/Zw7vqrdqiU6ej0G6AQNdC?=
+ =?us-ascii?Q?pC+JQ8Kf4A=3D=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: DM3PPF208195D8D.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b8b3865b-88fa-4a4b-59e9-08de57d437a7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jan 2026 03:30:11.1534 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd87f7ac-8e58-4535-e968-08de57d47c78
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jan 2026 03:32:06.6051 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: BhS1RccPgJ6sEx2C2qWxzxeY2iA2HEJyOasWWFjAkyLfhhbYQJSt2722e5B+To7iNzgPgPVtv+xLcJZiBFITAw==
+X-MS-Exchange-CrossTenant-userprincipalname: pzgX3+6kMZcKiplUvzcKT7Z30DEHTsrE0eDVz5jH/tFlmCeV2s0ZpWwdap4ARzYroVC80q4ee7NSYMjtW+0V0w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8057
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -204,82 +204,83 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 ;
 > Konieczny, Kamil <kamil.konieczny@intel.com>; Reddy Guddati, Santhosh
 > <santhosh.reddy.guddati@intel.com>
-> Subject: [PATCH i-g-t v6 06/10] tools/intel_hdcp: Display HDCP details fo=
-r
-> connectors.
+> Subject: [PATCH i-g-t v6 05/10] tools/intel_hdcp: Add helper to get HDCP
+> content type
 >=20
-> Display detailed HDCP information for connectors
->=20
-> Add support for displaying  HDCP information for all connectors in a form=
-atted
-> table:
->=20
-> - Add get_hdcp_status() to read Content Protection property state
->   (Disabled/Desired/Enabled)
-> - Add get_hdcp_content_type() to read HDCP Content Type property
->   (Type 0/Type 1)
-> - Add get_hdcp_version() to read HDCP capabilities from debugfs
->   (HDCP1.4/HDCP2.2)
-> - Display connector information in a formatted table with columns:
->   ID, Encoder, Status, Type, HDCP Support, HDCP Status, Content Type
-> - Show 'N/A' for disconnected connectors or when properties are not
->   applicable
+> Add get_hdcp_content_type() to read current content type property This
+> displays Type 0 or Type 1 or N/A status for connector.
 >=20
 > Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 > ---
->  tools/intel_hdcp.c | 13 ++++++++++---
->  1 file changed, 10 insertions(+), 3 deletions(-)
+>  tools/intel_hdcp.c | 38 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 38 insertions(+)
 >=20
 > diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c index
-> dbedc60c8..b96fc570f 100644
+> fcb746b6e..dbedc60c8 100644
 > --- a/tools/intel_hdcp.c
 > +++ b/tools/intel_hdcp.c
-> @@ -191,7 +191,10 @@ static void get_hdcp_info(data_t *data)
->  	}
->=20
->  	fprintf(stderr, "Connectors:\n");
-> -	fprintf(stderr, "id\tencoder\tstatus\t\ttype\tHDCP\n");
-> +	fprintf(stderr, "%-4s %-8s %-12s %-8s %-20s %-12s %-12s\n",
-> +		"ID", "Encoder", "Status", "Type", "HDCP Support", "HDCP
-> Status", "Content Type");
-> +	fprintf(stderr, "---- -------- ------------ --------
-> +-------------------- ------------\n");
-> +
->  	for (int i =3D 0; i < res->count_connectors; i++) {
->  		drmModeConnector *connector;
->=20
-> @@ -204,14 +207,18 @@ static void get_hdcp_info(data_t *data)
->  			 kmstest_connector_type_str(connector-
-> >connector_type),
->  			 connector->connector_type_id);
->=20
-> -		fprintf(stderr, "%d\t%d\t%s\t%s\t%s\n",
-> +		fprintf(stderr, "%-4d %-8d %-12s %-8s %-20s %-12s %-12s\n",
->  			connector->connector_id, connector->encoder_id,
->  			kmstest_connector_status_str(connector-
-> >connection),
->  			kmstest_connector_type_str(connector-
-> >connector_type),
-> -			get_hdcp_version(data->fd, output_name));
-> +			get_hdcp_version(data->fd, output_name),
-> +			get_hdcp_status(data, connector->connector_id),
-> +			get_hdcp_content_type(data, connector-
-> >connector_id));
-
-Hmm from the way you use it here I think keeping them separate is better lo=
-oking but still I feel something there can be pulled out and reused
-Anyways this patch LGTM,
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-
->=20
-> +		free(output_name);
->  		drmModeFreeConnector(connector);
->  	}
-> +	fprintf(stderr, "---- -------- ------------ --------
-> +-------------------- ------------\n");
->=20
->  	drmModeFreeResources(res);
+> @@ -79,6 +79,44 @@ static void set_hdcp_prop(data_t *data, int property,
+> int type, int connector_id
+>  	drmModeFreeConnector(drm_connector);
 >  }
+>=20
+> +static const char *get_hdcp_content_type(data_t *data, uint32_t
+> +connector_id) {
+> +	drmModeConnector *drm_connector =3D
+> drmModeGetConnectorCurrent(data->fd, connector_id);
+> +	igt_output_t *output;
+> +	uint64_t status, content_type;
+> +
+> +	if (!drm_connector)
+> +		return "N/A";
+> +
+> +	output =3D igt_output_from_connector(&data->display, drm_connector);
+> +	if (!output) {
+> +		drmModeFreeConnector(drm_connector);
+> +		return "Unknown";
+> +	}
+> +
+> +	/* Only show content type for connected connectors */
+> +	if (drm_connector->connection !=3D DRM_MODE_CONNECTED ||
+> drm_connector->encoder_id =3D=3D 0) {
+> +		drmModeFreeConnector(drm_connector);
+> +		return "N/A";
+> +	}
+> +
+> +	drmModeFreeConnector(drm_connector);
+> +
+
+Disregard my previous comment from the next patch idt that would be the bes=
+t direction=20
+One thing we can do is all the above code can go into its own function get_=
+hdcp_output().
+
+What do you think?
+
+Regards,
+Suraj Kandpal
+
+> +	status =3D igt_output_get_prop(output,
+> IGT_CONNECTOR_CONTENT_PROTECTION);
+> +	if (status !=3D CP_ENABLED)
+> +		return "N/A";
+> +
+> +	content_type =3D igt_output_get_prop(output,
+> IGT_CONNECTOR_HDCP_CONTENT_TYPE);
+> +	switch (content_type) {
+> +	case 0:
+> +		return "Type 0";
+> +	case 1:
+> +		return "Type 1";
+> +	default:
+> +		return "Unknown";
+> +	}
+> +}
+> +
+>  static const char *get_hdcp_status(data_t *data, uint32_t connector_id) =
+ {
+>  	drmModeConnector *drm_connector =3D
+> drmModeGetConnectorCurrent(data->fd, connector_id);
 > --
 > 2.34.1
 
