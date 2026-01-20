@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BBD5D2ED0F
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 10:54:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CCA9D2ECF7
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 10:54:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 417D310E05E;
-	Tue, 20 Jan 2026 10:54:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 45A2710E023;
+	Tue, 20 Jan 2026 10:54:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Oy9/+ory";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="foQhJ7Fl";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D8F910E05E
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 10:54:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B701E10E023
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 10:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768906491; x=1800442491;
+ t=1768906495; x=1800442495;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=KIoni2tpqewK3zRl/WcO4SUkrjfi/vg/9IfKUxOpF+E=;
- b=Oy9/+ory9lDNdXSySEeQftAeJjx5NrVvw2svkrk9l/IFe4ogKdKadvA6
- 3QN44NPUrpduIPTQ4CMyqPMITFtgV1GHFWDEhIq2+X0tt+Fwq6m50CSQP
- GSpHU6I+CUO2RO7wLI9QayPONXIUCpkjM50mpHjtn8CQcGcTf5dgjFkjN
- 1EXc0JskTLlPYIaEufNIZAKYQQ21Fa2RDlLZDUTpQf1LMyXEXE3ytcbkf
- d3Q4supLgpE1ICLCVfV2pObjl2gXWeZFjDnQK2bXuMTJKWWk64QflWaT1
- YIuj6lkkgIP55edLtG1AdEa28nfznDO6K0+wrhFliAZvPqJrJ1JmHlcEy w==;
-X-CSE-ConnectionGUID: QLfREp05RRqqa6WN2RnC+Q==
-X-CSE-MsgGUID: 5U136iDHRZmrGpKgWzXYLw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="70163564"
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="70163564"
+ bh=bjlNnc9E4dCPY7Qo2YJ1xVB/aFTRTcp1C9+5KGbq+fw=;
+ b=foQhJ7Fl7W2TAiTukRsQgQj4LCWjBfZ47U8jpYL8f9F+tHL/5acANf90
+ kvfnX8VQlqsOB+9ssCVq71Z+WQ/eSjfZJ6TDBK7agrr5DfU85sfiHIsAx
+ SHnrX9mbipUaiujau79IHNklROqY0RDYanqtbRuPkxpURrgVR0jr1HYlr
+ QrJVjsYXKn1V8xm/MrK180JPAT1OZzvtXxB9rXX++2odRNzlmIEi+A93z
+ pXwdEVhyDcjTmTptlEp0HggbBleyszdzc1ri6sacjAjNhIXxgF18X3fPR
+ aHQyaN7qMEqjMrh1Qv+h3nZiuEGNR4r20WJ2mi80OHx+OdmzhkP025MuF w==;
+X-CSE-ConnectionGUID: kIdCUUK6QOGb5XfBGtRMRQ==
+X-CSE-MsgGUID: HlmAZRsMSqem9yejeUkyAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="70163569"
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="70163569"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 02:54:50 -0800
-X-CSE-ConnectionGUID: /uEsOC8kR1SccCbFgXolgg==
-X-CSE-MsgGUID: C8FY5vvSS7CrGW3aUVYuyA==
+ 20 Jan 2026 02:54:55 -0800
+X-CSE-ConnectionGUID: 3Z9zX4HtQheIrpNe/7hAlg==
+X-CSE-MsgGUID: uMgymHvJTDCTy3g+Cc1ooA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="210940254"
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="210940275"
 Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.246.69])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 02:54:48 -0800
+ 20 Jan 2026 02:54:52 -0800
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com,
 	ville.syrjala@linux.intel.com
-Subject: [PATCH i-g-t 1/3] lib/igt_kms: Always return CRTC index from
- kmstest_get_pipe_from_crtc_id()
-Date: Tue, 20 Jan 2026 12:54:35 +0200
-Message-ID: <062405da51425256100edf0a7de51a5aa4a51721.1768906414.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 2/3] lib/igt_kms: Drop the ioctl fallback for CRTC id to
+ pipe mapping
+Date: Tue, 20 Jan 2026 12:54:36 +0200
+Message-ID: <b0044dee19440afe71abc57789cc25383ed03df7.1768906414.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1768906414.git.jani.nikula@intel.com>
 References: <cover.1768906414.git.jani.nikula@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 Content-Transfer-Encoding: 8bit
@@ -72,130 +73,91 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-All users of kmstest_get_pipe_from_crtc_id() actually need the CRTC
-index, not the hardware pipe. Stop doing the CRTC index to hardware pipe
-special case mapping on Intel devices. Rename the function
-kmstest_get_crtc_index_from_id().
-
-kms_setmode.c does use the result also for logging, which would now be
-incorrect if pipe != CRTC index. But even there, it functionally
-requires the CRTC index. The test needs other cleanups.
+The kernel support for i915_pipe debugfs has been around for 2½ years in
+both i915 and xe. Drop the ioctl fallback for simplicity. Rename the
+function __intel_get_pipe_from_crtc_index() as it's now purely about
+CRTC index and not id.
 
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- lib/igt_kms.c               | 13 +++++--------
- lib/igt_kms.h               |  2 +-
- tests/intel/kms_fbcon_fbt.c |  2 +-
- tests/kms_async_flips.c     |  6 +++---
- tests/kms_setmode.c         |  3 +--
- 5 files changed, 11 insertions(+), 15 deletions(-)
+ lib/igt_kms.c | 44 +++++++++-----------------------------------
+ 1 file changed, 9 insertions(+), 35 deletions(-)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 77b3ae2afa01..57e6474f2c2d 100644
+index 57e6474f2c2d..f6769d31edcb 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -1360,16 +1360,14 @@ static int __intel_get_pipe_from_crtc_id(int fd, int crtc_id, int crtc_idx)
+@@ -1312,51 +1312,27 @@ void kmstest_dump_mode(drmModeModeInfo *mode)
  }
  
- /**
-- * kmstest_get_pipe_from_crtc_id:
-+ * kmstest_get_crtc_index_from_id:
-  * @fd: DRM fd
-  * @crtc_id: DRM CRTC id
-  *
-- * Returns: The crtc index for the given DRM CRTC ID @crtc_id. The crtc index
-- * is the equivalent of the pipe id.  This value maps directly to an enum pipe
-- * value used in other helper functions.  Returns 0 if the index could not be
-- * determined.
-+ * Returns: The crtc index for the given DRM CRTC ID @crtc_id. Returns 0 if the
-+ * index could not be determined.
+ /*
+- * With non-contiguous pipes display, crtc mapping is not always same
+- * as pipe mapping, In i915 pipe is enum id of i915's crtc object.
+- * hence allocating upper bound igt_pipe array to support non-contiguos
+- * pipe display and reading pipe enum for a crtc using GET_PIPE_FROM_CRTC_ID
+- * ioctl for a pipe to do pipe ordering with respect to crtc list.
++ * The hardware pipe may be different from the CRTC index. Figure out the CRTC
++ * index to pipe mapping from the debugfs.
   */
--int kmstest_get_pipe_from_crtc_id(int fd, int crtc_id)
-+int kmstest_get_crtc_index_from_id(int fd, int crtc_id)
+-static int __intel_get_pipe_from_crtc_id(int fd, int crtc_id, int crtc_idx)
++static int __intel_get_pipe_from_crtc_index(int fd, int crtc_index)
  {
- 	drmModeRes *res;
- 	drmModeCrtc *drm_crtc;
-@@ -1391,8 +1389,7 @@ int kmstest_get_pipe_from_crtc_id(int fd, int crtc_id)
+ 	char buf[2];
+ 	int debugfs_fd, res = 0;
++	char pipe_char;
  
- 	drmModeFreeResources(res);
+-	/*
+-	 * No GET_PIPE_FROM_CRTC_ID ioctl support for XE. Instead read
+-	 * from the debugfs "i915_pipe".
+-	 *
+-	 * This debugfs is applicable for both i915 & XE. For i915, still
+-	 * we can fallback to ioctl method to support older kernels.
+-	 */
+-	debugfs_fd = igt_debugfs_pipe_dir(fd, crtc_idx, O_RDONLY);
++	debugfs_fd = igt_debugfs_pipe_dir(fd, crtc_index, O_RDONLY);
  
--	return is_intel_device(fd) ?
--		__intel_get_pipe_from_crtc_id(fd, crtc_id, i) : i;
-+	return i;
+ 	if (debugfs_fd >= 0) {
+ 		res = igt_debugfs_simple_read(debugfs_fd, "i915_pipe", buf, sizeof(buf));
+ 		close(debugfs_fd);
+ 	}
+ 
+-	if (res <= 0) {
+-		/* Fallback to older ioctl method. */
+-		if (is_i915_device(fd)) {
+-			struct drm_i915_get_pipe_from_crtc_id get_pipe;
+-
+-			get_pipe.pipe = 0;
+-			get_pipe.crtc_id =  crtc_id;
++	igt_assert_f(res > 0, "Failed to read the debugfs i915_pipe.\n");
+ 
+-			do_ioctl(fd, DRM_IOCTL_I915_GET_PIPE_FROM_CRTC_ID,
+-				 &get_pipe);
++	igt_assert_eq(sscanf(buf, "%c", &pipe_char), 1);
+ 
+-			return get_pipe.pipe;
+-		} else
+-			igt_assert_f(false, "XE: Failed to read the debugfs i915_pipe.\n");
+-	} else {
+-		char pipe;
+-
+-		igt_assert_eq(sscanf(buf, "%c", &pipe), 1);
+-		return kmstest_pipe_to_index(pipe);
+-	}
++	return kmstest_pipe_to_index(pipe_char);
  }
  
  /**
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index e1044101707c..d25c166eba4a 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -148,7 +148,7 @@ void kmstest_dump_mode(drmModeModeInfo *mode);
- #define HDISPLAY_6K_PER_PIPE 6144
- #define HDISPLAY_5K_PER_PIPE 5120
+@@ -3229,9 +3205,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
  
--int kmstest_get_pipe_from_crtc_id(int fd, int crtc_id);
-+int kmstest_get_crtc_index_from_id(int fd, int crtc_id);
- void kmstest_set_vt_graphics_mode(void);
- void kmstest_restore_vt_mode(void);
- void kmstest_set_vt_text_mode(void);
-diff --git a/tests/intel/kms_fbcon_fbt.c b/tests/intel/kms_fbcon_fbt.c
-index 1b9e535ebffc..f6de4b0afef6 100644
---- a/tests/intel/kms_fbcon_fbt.c
-+++ b/tests/intel/kms_fbcon_fbt.c
-@@ -148,7 +148,7 @@ static bool fbc_check_cursor_blinking(struct drm_info *drm)
- 	bool ret;
- 	int i, pipe;
+ 	for (i = 0; i < resources->count_crtcs; i++) {
+ 		igt_crtc_t *pipe;
+-		int pipe_enum = (is_intel_dev)?
+-			__intel_get_pipe_from_crtc_id(drm_fd,
+-						      resources->crtcs[i], i) : i;
++		int pipe_enum = is_intel_dev ? __intel_get_pipe_from_crtc_index(drm_fd, i) : i;
  
--	pipe = kmstest_get_pipe_from_crtc_id(drm->fd, drm->crtc_id);
-+	pipe = kmstest_get_crtc_index_from_id(drm->fd, drm->crtc_id);
- 	pipe_crc = igt_pipe_crc_new(drm->fd, pipe, IGT_PIPE_CRC_SOURCE_AUTO);
- 
- 	igt_pipe_crc_start(pipe_crc);
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 71570385c32e..0ee0cdc47a96 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -560,7 +560,7 @@ static void wait_for_vblank(data_t *data, unsigned long *vbl_time, unsigned int
- 	int pipe;
- 
- 	memset(&wait_vbl, 0, sizeof(wait_vbl));
--	pipe = kmstest_get_pipe_from_crtc_id(data->drm_fd, data->crtc_id);
-+	pipe = kmstest_get_crtc_index_from_id(data->drm_fd, data->crtc_id);
- 	pipe_id_flag = kmstest_get_vbl_flag(pipe);
- 
- 	wait_vbl.request.type = DRM_VBLANK_RELATIVE | pipe_id_flag;
-@@ -732,7 +732,7 @@ static void test_invalid(data_t *data)
- 
- static void queue_vblank(data_t *data)
- {
--	int pipe = kmstest_get_pipe_from_crtc_id(data->drm_fd, data->crtc_id);
-+	int pipe = kmstest_get_crtc_index_from_id(data->drm_fd, data->crtc_id);
- 	drmVBlank wait_vbl = {
- 		.request.type = DRM_VBLANK_RELATIVE | DRM_VBLANK_EVENT |
- 			kmstest_get_vbl_flag(pipe),
-@@ -855,7 +855,7 @@ static void test_crc(data_t *data)
- 	igt_assert_eq(ret, 0);
- 
- 	data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
--					  kmstest_get_pipe_from_crtc_id(data->drm_fd, data->crtc_id),
-+					  kmstest_get_crtc_index_from_id(data->drm_fd, data->crtc_id),
- 					  IGT_PIPE_CRC_SOURCE_AUTO);
- 
- 	igt_pipe_crc_start(data->pipe_crc);
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 108e713610fd..8ed6113205f6 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -354,8 +354,7 @@ static void setup_crtcs(const struct test_config *tconf,
- 					  resources->crtcs[crtc->crtc_idx]);
- 		crtc->crtc_id = drm_crtc->crtc_id;
- 		drmModeFreeCrtc(drm_crtc);
--		crtc->pipe_id = kmstest_get_pipe_from_crtc_id(drm_fd,
--							      crtc->crtc_id);
-+		crtc->pipe_id = kmstest_get_crtc_index_from_id(drm_fd, crtc->crtc_id);
- 
- 		crtc->connector_count = 1;
- 		for (j = i + 1; j < connector_count; j++)
+ 		pipe = igt_crtc_for_pipe(display, pipe_enum);
+ 		pipe->pipe = pipe_enum;
 -- 
 2.47.3
 
