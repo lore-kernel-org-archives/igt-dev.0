@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19991D2629E
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 21:10:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C428D262A2
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 21:10:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C93DD10E666;
-	Tue, 20 Jan 2026 21:10:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1FCF810E660;
+	Tue, 20 Jan 2026 21:10:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="bQ7XKUMo";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="dWuywlhG";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8BFF210E666
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 21:10:07 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5284F10E648
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 21:10:20 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 66F8E4E420EB;
- Tue, 20 Jan 2026 21:10:06 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 102E5C214FD
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 21:09:52 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 3DB99606AB;
- Tue, 20 Jan 2026 21:10:06 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 35F68606AB;
+ Tue, 20 Jan 2026 21:10:19 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id D1403119B0198; Tue, 20 Jan 2026 22:10:04 +0100 (CET)
+ with ESMTPSA id A6EB0119B0E2B; Tue, 20 Jan 2026 22:10:17 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1768943405; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1768943418; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=1ldGkJdzBeAnsCidqscItQ10aeHwEmFRKeuda8l/eok=;
- b=bQ7XKUMonJu2VW/Mj+DF1njHqyCTnxCmGdeWfqTPG2G2BL1foDrcHBscRMa5oBP7y4VsQ4
- oKBhMvfuh6E3+y9jrkfMh5VRNoh+qG3ExwXvxqxqwoOdcgWrBFHQPUHhXMMAgHYn5pusMJ
- GSMZRHJePEeqw1wXyK6cjBybxtoUPUaoj0hWZTNlljDZUQbUcswWBgHE0NgqD5O2RnQCz2
- yaFtXtTx/dKfqlMQBwjkke97ThTcOdGe+E/nH65IcZtK4eYd5LLFinHs7ndZfEWaLD2ajz
- 2d+kMzDn8eRPjWxgTYVwIb+kJmIAwYaa+3rU68MEObkwrq6PnPeVoCMd4himdw==
+ bh=ebs5scn3Mq4+XT6CZjGhfImzssKHiWbZHNLDi7phWoM=;
+ b=dWuywlhGDRbflvZrgnErwRl7G5llue50ti90uZW+k6MGPbIzaP47bYe9d4hBqInn30Vh0w
+ 6IdqIw6MdGJpdLNwy0aBeLBEKOGACPJdq9kiKCK6zyYZ/yrSGs3c/9GdclWdLosOndgRxQ
+ mVjT4FFVfax4pD1GBlcBWfZMkHyi9wDeFKx871IiPqLazRRTQnzlzUdKnHKec/83cCSlay
+ PbwWh+lOjVPqke4KMD9hs9DxNP81Pv84m1Wc5k6bB62nN/VObMtzScja0OM8YG26n2kCVl
+ 5ryqSXrRU/togDauDrV35OxJk/ujB+0OD1NRCYq/HX6DIdp7w2BmUKfSwPS5DQ==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Jan 2026 22:10:04 +0100
-Message-Id: <DFTQ3PBRSIWS.1JQ13A3O3SYFQ@bootlin.com>
-Subject: Re: [PATCH i-g-t v4 04/46] lib/igt_kms: Add helper to obtain a
- connector by its name or MST path
+Date: Tue, 20 Jan 2026 22:10:17 +0100
+Message-Id: <DFTQ3V8NHXUK.1C4RPYSHTC1OD@bootlin.com>
+Subject: Re: [PATCH i-g-t v4 05/46] lib/igt_kms: Add helper to wait for new
+ connectors
 Cc: <thomas.petazzoni@bootlin.com>, <markyacoub@google.com>,
  <khaled.almahallawy@intel.com>, "igt-dev"
  <igt-dev-bounces@lists.freedesktop.org>
@@ -47,8 +47,8 @@ To: "Louis Chauvet" <louis.chauvet@bootlin.com>,
 From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
 X-Mailer: aerc 0.20.1
 References: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
- <20251110-unigraf-integration-v4-4-0fc7bb1b4101@bootlin.com>
-In-Reply-To: <20251110-unigraf-integration-v4-4-0fc7bb1b4101@bootlin.com>
+ <20251110-unigraf-integration-v4-5-0fc7bb1b4101@bootlin.com>
+In-Reply-To: <20251110-unigraf-integration-v4-5-0fc7bb1b4101@bootlin.com>
 X-Last-TLS-Session-Version: TLSv1.3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,109 +66,155 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 On Mon Nov 10, 2025 at 2:39 PM CET, Louis Chauvet wrote:
-> Introduce the functions igt_get_connector_from_name() and
-> igt_get_connector_id_from_mst_path(). These functions serve to retrieve
-> the connector object using a connector name and a connector ID from its
-> MST path, respectively.
->
-> Given that the connector id may not be consistent, especially with MST
-> connectors, these functions are essential to recognize each connector eve=
-n
-> after system reboots and plug/unplug events.
->
-> The function igt_get_connector_id_from_name() is a convenient wrapper for
-> igt_get_connector_from_name() to streamline its usage when the caller onl=
-y
-> requires the connector id.
+> Add list comparison utilities and a new function to wait for new
+> connectors to appear on the system.
 >
 > Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > ---
->  lib/igt_kms.c | 107 ++++++++++++++++++++++++++++++++++++++++++++++++++++=
+>  lib/igt_kms.c | 93 +++++++++++++++++++++++++++++++++++++++++++++++++++++=
 ++++++
->  lib/igt_kms.h |   3 ++
->  2 files changed, 110 insertions(+)
+>  lib/igt_kms.h |  6 ++++
+>  2 files changed, 99 insertions(+)
 >
 > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 6392999bb341..6f2a8abbaf7d 100644
+> index 6f2a8abbaf7d..c77c94d7c437 100644
 > --- a/lib/igt_kms.c
 > +++ b/lib/igt_kms.c
-> @@ -93,6 +93,10 @@
->  #define MAX_CONNECTORS 32
->  #define MAX_EDID 2
->  #define DISPLAY_TILE_BLOCK 0x12
-> +/**
-> + * define IGT_KMS_CONNECTOR_NAME_SIZE - Size used when a connector name =
-is needed
-> + */
-> +#define IGT_KMS_CONNECTOR_NAME_SIZE 50
+> @@ -7833,3 +7833,96 @@ uint32_t igt_get_connector_id_from_mst_path(int dr=
+m_fd, const void *mst_path)
 >
->  typedef bool (*igt_connector_attr_set)(int dir, const char *attr, const =
-char *value);
->
-> @@ -7726,3 +7730,106 @@ int igt_get_connected_connectors(int drm_fd, uint=
-32_t **connector_ids)
->
->  	return connected_count;
+>  	return 0;
 >  }
 > +
 > +/**
-> + * igt_get_connector_from_name:
-> + * @drm_fd: DRM file descriptor
-> + * @port_name: Port name to search
+> + * list_contains() - Search an element in the list
 > + *
-> + * Returns: The connector if found, NULL otherwise. The pointer must
-> + * be freed with drmModeFreeConnector()
+> + * @list: Pointer to the list to search into
+> + * @list_len: Length of the list
+> + * @value: Value to search in the list
+> + *
+> + * Returns true if @list contains @value
 > + */
-> +drmModeConnectorPtr igt_get_connector_from_name(int drm_fd, const char *=
-port_name)
+> +static bool list_contains(const uint32_t *list, int list_len, uint32_t v=
+alue)
 > +{
-> +	drmModeResPtr res =3D drmModeGetResources(drm_fd);
-> +	double timeout =3D igt_default_display_detect_timeout();
-> +	int i, len;
+> +	igt_assert((!list && list_len =3D=3D 0) || list);
+> +	for (int i =3D 0; i < list_len; i++) {
+> +		if (list[i] =3D=3D value)
+> +			return true;
+> +	}
+> +	return false;
+> +}
 > +
-> +	if (!res)
-> +		return NULL;
-> +
-> +	for (i =3D 0; i < res->count_connectors; i++) {
-> +		char name[IGT_KMS_CONNECTOR_NAME_SIZE];
-> +
-> +		drmModeConnectorPtr connector =3D igt_wait_for_connector(drm_fd, res->=
-connectors[i],
-> +								       timeout);
-> +
-> +		if (connector) {
-> +			/* We have to generate the connector name on our own */
-> +			len =3D snprintf(name, ARRAY_SIZE(name), "%s-%u",
+> +/**
+> + * get_list_diff() - Compute and return the difference between two lists
 
-Any reason you prefer ARRAY_SIZE() over sizeof(), which I'd have expected
-to see here??
+Maybe s/difference/set difference/, because it's really what this function
+does: a set difference.
 
-Also, I see you are declaring most variables in the inner scope using them
-instead of all at function scope. This is good, but you missed the 'len'
-variable, which can be moved inside this scope.
+> + *
+> + * @list_a: Pointer to the first list to compare
+> + * @list_a_len: Length of the first list
+> + * @list_b: Pointer to the second list to compare
+> + * @list_b_len: Length of the second list
+> + * @diff: Out pointer for the difference. Can be null to only count new =
+elements.
 
-> +				       kmstest_connector_type_str(connector->connector_type),
-> +				       connector->connector_type_id);
-> +			name[len] =3D 0;
+"new elements" here makes sense if you use this function in a given way:
+list_a is new "new" list and list_b is the "old" list. So I'd rephrase
+like:
+
+ * @diff: Out pointer returning a list of items in list_a but not in
+          list_b. Can be NULL to only count the elements.
+
+> + *
+> + * Returns the number of element which are in @list_a but not in @list_b=
+.
+> + */
+> +int
+> +get_list_diff(const uint32_t *list_a, int list_a_len, const uint32_t *li=
+st_b, int list_b_len,
+> +	      uint32_t **diff)
+> +{
+> +	int diff_len =3D 0;
 > +
-> +			if (strcmp(port_name, name) =3D=3D 0) {
-> +				drmModeFreeResources(res);
+> +	igt_assert((!list_a && list_a_len =3D=3D 0) || list_a);
+> +	igt_assert((!list_b && list_b_len =3D=3D 0) || list_b);
 > +
-> +				return connector;
+> +	if (diff)
+> +		*diff =3D malloc(sizeof(**diff));
+> +
+> +	for (int i =3D 0; i < list_a_len; i++) {
+> +		if (!list_contains(list_b, list_b_len, list_a[i])) {
+> +			if (diff) {
+> +				*diff =3D reallocarray(*diff, diff_len + 1, sizeof(**diff));
+> +				igt_assert(*diff);
+> +				(*diff)[diff_len] =3D list_a[i];
 > +			}
 > +
-> +			drmModeFreeConnector(connector);
+> +			diff_len++;
 > +		}
 > +	}
 > +
-> +	drmModeFreeResources(res);
+> +	return diff_len;
+> +}
 > +
-> +	return NULL;
+> +/**
+> + * kms_wait_for_new_connectors() - Wait for new connector to appear
+> + *
+> + * @list_a: Pointer to the first list to compare
+> + * @list_a_len: Length of the first list
+> + * @list_b: Pointer to the second list to compare
+> + * @list_b_len: Length of the second list
+> + * @diff: Out pointer for the difference. Can be null.
+> + *
+> + * Returns the number of element which differ between the two lists.
+
+These docs are a copy of the get_list_diff() docs, perhaps you forgot to
+update them after copy-paste.
+
+Based on the implementation I think this should sound like:
+
+ * @newly_connected: Out pointer returning the list of connectors currently=
+ found connected
+ * @already_connected: Input pointer to list of connectors previously conne=
+cted
+ * @already_connected_count: Length of @already_connected
+ * @drm_fd: DRM file descriptor
+ *
+ * Returns the number of connectors not in @already_connected and currently
+ * found connected.
+
+> + */
+> +int kms_wait_for_new_connectors(uint32_t **newly_connected,
+> +				const uint32_t *already_connected,
+> +				int already_connected_count, int drm_fd)
+> +{
+> +	int newly_connected_count;
+> +	struct timespec start, end;
+> +
+> +	igt_assert(newly_connected);
+> +	igt_assert(drm_fd);
+> +
+> +	clock_gettime(CLOCK_MONOTONIC, &start);
+> +	clock_gettime(CLOCK_MONOTONIC, &end);
+> +	do {
+> +		if (*newly_connected)
+> +			free(*newly_connected);
+> +		newly_connected_count =3D igt_get_connected_connectors(drm_fd, newly_c=
+onnected);
+> +		clock_gettime(CLOCK_MONOTONIC, &end);
+> +	} while (get_list_diff(*newly_connected, newly_connected_count,
+> +			       already_connected, already_connected_count,
+> +			       NULL) =3D=3D 0 &&
+> +		 igt_time_elapsed(&start, &end) <=3D igt_default_display_detect_timeou=
+t());
+> +
+> +	return newly_connected_count;
 > +}
 
-With those fixed:
+With the above fixed:
  Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-
 
 --
 Luca Ceresoli, Bootlin
