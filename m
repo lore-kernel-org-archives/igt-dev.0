@@ -4,63 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54906D2ECF7
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 11:00:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87008D2ECF7
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 11:01:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D4A6910E5C8;
-	Tue, 20 Jan 2026 11:00:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3387D10E5B8;
+	Tue, 20 Jan 2026 11:01:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aGuFBNSX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ILzTETVC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CA3A10E5B9
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 11:00:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE43210E5B8
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 11:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768906846; x=1800442846;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=WxWD4Nbk9iexRyWzodyZjlljN4N3ugwlrpN0DnyBeQA=;
- b=aGuFBNSXRY4beVtTL69SZuppsqrxDMrsUwoN5/2TCIBsdQt5WcbAe6vJ
- Vs93sKdo3/dTOSNAWsB4XygB+vCaVA5dm8/kuLcCWNCEoZt0v1l9LygU5
- 9s3SZIiNCFriZnNXT6REWxHs2/+zBXhz9KZGTc8TOMqqx6qkzJkJzt6F9
- Np+sJNpqZZRxaN4nFP5nk9wdPQz+DtBXpPVgkvKy7O97Po1OAXkzQDpzP
- f6b6q81B1IXU4VHKm1IYBCeoTtWBzAwTHZ+MqPTE5eohHKfG+Kwzyv9kg
- rd1550j84uHIb/TQeg66REGjvfmi8UJcfANzQjxrxZUC42dbSAiDj0Q4w A==;
-X-CSE-ConnectionGUID: +ZF7Hj+ATLaCFjPuiFrNMA==
-X-CSE-MsgGUID: K3B7aSTWQLalsAKWSOCqNw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="87693072"
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="87693072"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 03:00:46 -0800
-X-CSE-ConnectionGUID: 8WQTrS2gS0SfM8VZFVIe+A==
-X-CSE-MsgGUID: EZI4wlh/THW7k3oOecikLA==
+ t=1768906882; x=1800442882;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=JcyAjMNv0f/l8Ou3P75Co8wCNLNqO4pffbi/t+96J10=;
+ b=ILzTETVC9hC3jfxf4YquE4x9e4E/XCeO6zTRysVcOV3A7dxDZffa8TUV
+ Srf3NEn8+87BDddph3FcrZKh4Xx6BianAvAPEt4WVquunTLzhkaISkbeD
+ 8ySqPH7PPv7ZXHaB8nOOh1U60Pg7Vy38yeAPuFkQGVcvy4ddccF1krAh4
+ SDibldM50MQAMUfejieytz6NWnUxmC+WHQtzT+Nkc6IJiX62fbiAZgVL4
+ rkGAymjfYFciheohKpbL/FkhRq1Yjj95fBD4KX02EQg7NVHhuEh10eMif
+ g355FZcT9z4xkwRhUYu6srn9tFcnGXs5xGQaSWaw33+pz0DgO4WsNMYIi g==;
+X-CSE-ConnectionGUID: DNZ+oDLPSzSDVjHjG8jQzw==
+X-CSE-MsgGUID: UfWm0jzxT7C0xb2BqwFnLQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="81483999"
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="81483999"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jan 2026 03:01:21 -0800
+X-CSE-ConnectionGUID: WvB5LsOlQamMKUJXTeS2/g==
+X-CSE-MsgGUID: 1PUc2lnzS8+zUvtL02c3UA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="210583337"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 03:00:44 -0800
-Date: Tue, 20 Jan 2026 12:00:41 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Soham Purkait <soham.purkait@intel.com>
-Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- badal.nilawar@intel.com, kamil.konieczny@intel.com,
- anshuman.gupta@intel.com, umesh.nerlige.ramappa@intel.com
-Subject: Re: [PATCH i-g-t v4 1/6] tools: Rename tools/gputop to
- tools/gputop.src
-Message-ID: <20260120110041.tpwooiljcrgmyay5@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Soham Purkait <soham.purkait@intel.com>,
- igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- badal.nilawar@intel.com, kamil.konieczny@intel.com,
- anshuman.gupta@intel.com, umesh.nerlige.ramappa@intel.com
-References: <20260107183739.84597-1-soham.purkait@intel.com>
- <20260107183739.84597-2-soham.purkait@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="205246619"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.241])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jan 2026 03:01:19 -0800
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Priyanka Dandamudi <priyanka.dandamudi@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>,
+ Shuicheng Lin <shuicheng.lin@intel.com>
+Subject: [PATCH i-g-t v6 0/5] Add xe3p compute kernels and preemption support
+Date: Tue, 20 Jan 2026 12:01:09 +0100
+Message-ID: <20260120110108.84369-7-zbigniew.kempczynski@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260107183739.84597-2-soham.purkait@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,56 +71,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Soham,
-On 2026-01-08 at 00:07:34 +0530, Soham Purkait wrote:
-> The GPUTOP source directory is renamed to gputop.src
-> under tools/ path and gputop.c under tools/ is also moved
-> under tools/gputop.src, to implement engine busyness in
-> gputop.
-> 
-> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
-> ---
->  tools/{ => gputop.src}/gputop.c          | 0
->  tools/{gputop => gputop.src}/utils.c     | 0
->  tools/{gputop => gputop.src}/utils.h     | 0
->  tools/{gputop => gputop.src}/xe_gputop.c | 0
->  tools/{gputop => gputop.src}/xe_gputop.h | 0
->  5 files changed, 0 insertions(+), 0 deletions(-)
->  rename tools/{ => gputop.src}/gputop.c (100%)
->  rename tools/{gputop => gputop.src}/utils.c (100%)
->  rename tools/{gputop => gputop.src}/utils.h (100%)
->  rename tools/{gputop => gputop.src}/xe_gputop.c (100%)
->  rename tools/{gputop => gputop.src}/xe_gputop.h (100%)
-> 
+Enable compute-square + preemption tests for CrescentIsland.
 
-This is good but should be done together with meson.build
-change, so after appling only this first patch it should compile.
+v2: reorder, loop_kernel_duration requires loop kernel added before
+v3: drop kernel_addr variable and reuse XE2_ADDR_STATE_CONTEXT_DATA_BASE
+v4: use variables instead of hardcoded sizes
+v5: add missing loop_noopt.cl file
 
-Please fix compilation.
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>
 
-Regards,
-Kamil
+Shuicheng Lin (1):
+  lib/intel_compute: Add loop_kernel_duration support for xe3p
 
-> diff --git a/tools/gputop.c b/tools/gputop.src/gputop.c
-> similarity index 100%
-> rename from tools/gputop.c
-> rename to tools/gputop.src/gputop.c
-> diff --git a/tools/gputop/utils.c b/tools/gputop.src/utils.c
-> similarity index 100%
-> rename from tools/gputop/utils.c
-> rename to tools/gputop.src/utils.c
-> diff --git a/tools/gputop/utils.h b/tools/gputop.src/utils.h
-> similarity index 100%
-> rename from tools/gputop/utils.h
-> rename to tools/gputop.src/utils.h
-> diff --git a/tools/gputop/xe_gputop.c b/tools/gputop.src/xe_gputop.c
-> similarity index 100%
-> rename from tools/gputop/xe_gputop.c
-> rename to tools/gputop.src/xe_gputop.c
-> diff --git a/tools/gputop/xe_gputop.h b/tools/gputop.src/xe_gputop.h
-> similarity index 100%
-> rename from tools/gputop/xe_gputop.h
-> rename to tools/gputop.src/xe_gputop.h
-> -- 
-> 2.34.1
-> 
+Zbigniew Kempczyński (4):
+  lib/intel_compute: Add compute-square for xe3p
+  lib/intel_compute: Add loop and loop-count shaders for xe3p
+  lib/intel_compute: Add xe3p SIP support
+  lib/intel_compute: Enable xe3p preemption testing
+
+ lib/intel_compute.c                |  397 +++-
+ lib/intel_compute_krn_loop.h       |   36 +
+ lib/intel_compute_krn_loop_count.h |   34 +
+ lib/intel_compute_krn_sip.h        | 3127 ++++++++++++++++++++++++++++
+ lib/intel_compute_krn_square.h     |   41 +
+ lib/intel_compute_square_kernels.c |   11 +
+ lib/xehp_media.h                   |    1 +
+ opencl/loop_noopt.cl               |   15 +
+ 8 files changed, 3661 insertions(+), 1 deletion(-)
+ create mode 100644 opencl/loop_noopt.cl
+
+-- 
+2.43.0
+
