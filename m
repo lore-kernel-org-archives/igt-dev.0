@@ -4,189 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5DF9D2ED0F
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 04:05:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0558FD2ED11
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 04:18:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E0B210E234;
-	Tue, 20 Jan 2026 04:05:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9737C10E565;
+	Tue, 20 Jan 2026 04:18:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NnzyfSGP";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="TQvG/NJ9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEE8410E234
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 04:05:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768881918; x=1800417918;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=PkckNATVU9TBf/UQ4vAHrfRZltnLZtc6rEkVb1HNPKE=;
- b=NnzyfSGPa+FaWK55/oKtRUFnAz9urJecLm2YoG2zZ5WayREGqwPLVTJ4
- ZxEwMA02soR88KMx1xDE9SAv9L1BizS6Hw1TC0l8qQ4kTPL4jdzk8RM2g
- 7QILPheuAW1B84+ag99ndfu2y33BoR5hEg1q68x0S8nelSEMsIInz3L3U
- 1uG5FrZ2m6PBy/8RcMyazoJo3Lm1VqR//oPargNHqQ4S5UQg7+Dfyfxz7
- xM335qvKo4X7yycXisH3kpZh8Numg6Z6EyI8DbRUphM2G5htYPKhNxDDo
- We9aWe22KZmuxnxzJHw1mfAsSgIgrPu11uyKy0kP1ahI1uYjDe+3ktgjI Q==;
-X-CSE-ConnectionGUID: 6lReFLecSnWsdOVpr4XOGg==
-X-CSE-MsgGUID: GVL3PK8sSNe4OUP4HD4oVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="95558232"
-X-IronPort-AV: E=Sophos;i="6.21,239,1763452800"; d="scan'208";a="95558232"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 20:05:18 -0800
-X-CSE-ConnectionGUID: Wy4AfFMhRJyXpxki+OFJcw==
-X-CSE-MsgGUID: /VlF2xOzRWq9c3cZc2/1iA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,239,1763452800"; d="scan'208";a="243600352"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 20:05:18 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 19 Jan 2026 20:05:16 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Mon, 19 Jan 2026 20:05:16 -0800
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.34) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 19 Jan 2026 20:05:16 -0800
+Received: from CH1PR05CU001.outbound.protection.outlook.com
+ (mail-northcentralusazon11010028.outbound.protection.outlook.com
+ [52.101.193.28])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 820F710E235
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 04:18:16 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g2cbl+53vsreNxax6OQoTYrck4EkaQrwazvFPWB8CvzgrGrwTvwUuaectLXxdjlAumtkuCdQ209tybLemGGtsbN+sbD+EcZPfFa2sPsprf7lD6pvG/7lwL121rJLAbqBhnFSLcplB8xiRFM3FbJKvZCXiEDCmrlHVxFwiq3tYFlPJxg7Ji/oN4NYIYknU9Ez/mT0tOYY6tvIBJuIPnlQwDmUHWmCLuXFPDEkxo8zJCeCxCivMhRTc4cpNkw9bwezYRi2qRMysOiYOHQRNHpUjGlKvh8/OgaseGQTqDdEfLdeTgY0kqUvQO+QJ+AYM8sXRs8clOBhMrGdQY5GglUvDg==
+ b=Cudo6FkIrADzxfagDKCCarEY7cNOIpAOb+dr6Mdc+WcT95FfOkG4C9a7g7vYCXQ/4muIAv+XKle3jLeGxtqKdFvzGZSrnDJ+/CGw7CGVkDVH81BxbqYjGeoLzYCSRQ1RN9YXdUwig/t7OkXCF1n8DdEcRrlkCUL0RC6n5YBlLv2RKZLesJnBHYg4GlVcymc7QVyXz4CoHhYF8NzkARQhQiU5cNq/T9wA6FTQOOlbof9p10IN7mYSKCMIem/vool4nq9MlXe7IUahceyz3dqZPDKBNIE9PijHZ3x1jIUsK8tZ0uK4lXgBaJvOEJZJX/DJXJqzAtLY26WT2l4uoap4Bg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0zDnBBNayL2yIdGR6/H8IgiI+RJzCO/w89ah9yOPI3Q=;
- b=Ydw52y1zQ2XmVx6AKRAQ8Tb3nggqzX9q/0eIRuo7qOErTw231pE5k5MVTspCULlE8FMX6qLByO3y5cz6q6PfOn3leLc9SHCB3u/oSPM4UHqcYXqzfo5EuRe2V75S9nv2loGE1NbfKndV03bQvNSpqvlQUaQoKTD43Uszk+mAKbtGm/NvG0agDR4lVFFb/Ty3IoPmm6qbCSmb3Ctgsf8GTOfqcEdviPS7RYeYvKPTFAFdppwtWLCw4q3agYAQu0T2BUd8snXLpC4bjiaCVUVc2RxwuYb7FL72NyiFRPEYB/o+OHo5oOVZIbC+Yv+aW/SI8Tx1oZAIQPjmHKXzCGsE6Q==
+ bh=2CnHEzXP2pi0tYgPz4Qu1+Q0y6h26e15u8p5zRGiEGk=;
+ b=MqOiTzfupxvp3GBo5csvJfG4BvDtkyYEo9y43iiOZ2t6S3EM6rAUUNey+iFpNkXY3Y1I9MsrFGuBVLyYV7ROuTUtw14xG5rPwpgmLuhBUOA4L1rG4xkSIsmvLJq2K6GIrEt0bGEDAywsCxWls284iOJ1QGOHx84PELZ1krcP6FlyFgeJ2rUBv9ey9CZFbeX7OdY1BKC5Yhntq8ClGAvlrF3X7rSMLEKJJS9PjpX1E8Wf9yToOfFEyg7RvJmc7hJJCObwowbwo9wn1HO1DW+OrvRL82Rhabw3FfJqpO1VSbf0c2xbTKhzL+d4pt2+Uy77cK2tp8RYX25CpFttQw40nA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2CnHEzXP2pi0tYgPz4Qu1+Q0y6h26e15u8p5zRGiEGk=;
+ b=TQvG/NJ99INEIi21B00M2q1TDVWWUTWMvLosYIzkV+dGETqgt3hkoiP0XsCCp53TaavblH8EK/7qb43jsvO7fkceZLBX15ocvDZyVsfT/AizmMxzHImxHQlkvzbekNsHxt7SNa8+q+8wMtjBJ46TDLuuWf6SiENk/fjYqxQuieg=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH0PR11MB5690.namprd11.prod.outlook.com (2603:10b6:610:ed::9)
- by MN2PR11MB4566.namprd11.prod.outlook.com (2603:10b6:208:24e::16) with
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB8476.namprd12.prod.outlook.com (2603:10b6:8:17e::15)
+ by DS7PR12MB5960.namprd12.prod.outlook.com (2603:10b6:8:7f::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.9; Tue, 20 Jan
- 2026 04:05:14 +0000
-Received: from CH0PR11MB5690.namprd11.prod.outlook.com
- ([fe80::d0b2:7271:ad7e:cb1a]) by CH0PR11MB5690.namprd11.prod.outlook.com
- ([fe80::d0b2:7271:ad7e:cb1a%5]) with mapi id 15.20.9520.011; Tue, 20 Jan 2026
- 04:05:14 +0000
-Message-ID: <9c613a62-a076-43a0-8974-0b0a1cffa46b@intel.com>
-Date: Tue, 20 Jan 2026 09:35:06 +0530
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Tue, 20 Jan
+ 2026 04:18:13 +0000
+Received: from DM4PR12MB8476.namprd12.prod.outlook.com
+ ([fe80::2d79:122f:c62b:1cd8]) by DM4PR12MB8476.namprd12.prod.outlook.com
+ ([fe80::2d79:122f:c62b:1cd8%6]) with mapi id 15.20.9520.011; Tue, 20 Jan 2026
+ 04:18:11 +0000
+Message-ID: <126dc573-e29d-4982-9803-857763d6b343@amd.com>
+Date: Mon, 19 Jan 2026 21:18:09 -0700
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/kms_explict_fence: Add Test for Explicit
- Fencing
-To: S Sebinraj <s.sebinraj@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <carlos.santa@intel.com>, <jeevaka.badrappan@intel.com>,
- <krzysztof.karas@intel.com>, <kamil.konieczny@intel.com>,
- <zbigniew.kempczynski@intel.com>
-References: <20260114082323.2534785-1-s.sebinraj@intel.com>
+Subject: Re: [PATCH 1/2] lib/igt_kms: Increase MAX_NUM_COLOROPS
+To: "Kandpal, Suraj" <suraj.kandpal@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "harry.wentland@amd.com" <harry.wentland@amd.com>,
+ "aurabindo.pillai@amd.com" <aurabindo.pillai@amd.com>
+References: <20260119224237.561000-1-alex.hung@amd.com>
+ <DM3PPF208195D8DF69335A6195C2064A37CE389A@DM3PPF208195D8D.namprd11.prod.outlook.com>
 Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20260114082323.2534785-1-s.sebinraj@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5PR01CA0216.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1f3::6) To CH0PR11MB5690.namprd11.prod.outlook.com
- (2603:10b6:610:ed::9)
+From: Alex Hung <alex.hung@amd.com>
+In-Reply-To: <DM3PPF208195D8DF69335A6195C2064A37CE389A@DM3PPF208195D8D.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR03CA0144.namprd03.prod.outlook.com
+ (2603:10b6:303:8c::29) To DM4PR12MB8476.namprd12.prod.outlook.com
+ (2603:10b6:8:17e::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|MN2PR11MB4566:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2ce5a203-9a3d-4562-f525-08de57d91cc8
+X-MS-TrafficTypeDiagnostic: DM4PR12MB8476:EE_|DS7PR12MB5960:EE_
+X-MS-Office365-Filtering-Correlation-Id: 51895edf-c4bd-4194-896d-08de57daec33
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0; ARA:13230040|1800799024|366016|42112799006|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?R0o1SHdHamorNFEwaU1rZVhkMXJCbFczVHREajdybHY4RFBYYXFab2REWmJ1?=
- =?utf-8?B?TnhXVERDSVdDWXlZQlZXdWdZMDNSeXpjNmFtb3ZodXcvWDZwa2xBTk9ySUQz?=
- =?utf-8?B?MEwrVTMrU2p6S3lGVHJEWTk5dm9kMlBwV1hnNXpOM0F1bGFXeEFqQmx0dW8y?=
- =?utf-8?B?bTVoa29DQnFscFowdzdHZU8yVTJ4YldpbnN1MC85ZDNpM00ydDZySGkzMFAv?=
- =?utf-8?B?QnRNYUgwZWpXMWZxdTlzTTBDajZ0OU9vYU9ZVFhyd1J5Sk52MHNQQnZKaEdi?=
- =?utf-8?B?aTV0V3dzNjJadXNxSWRXdW1MR082V09qVlhrWkRpVTg0WlhFRkZKYUFVVVNO?=
- =?utf-8?B?cEovOWZIYlgycHdwbStuSFhsYkFTM1FsVDNIV3VIUjk0SDlRbjdpZmhEMEhD?=
- =?utf-8?B?RUtxQVY2OW5KR3MxVWRxQU8vSWJWYXNCaG5LOFhHQ2sxQjhSL2d2TjNOSFdF?=
- =?utf-8?B?UlQ3djdKbzM0OUdIUld3TlFFVjlDSFU1WU9LRGJzSngxQ0hVckRJUENjZjg2?=
- =?utf-8?B?SlBrM1lvbDYwZ3REc0VQVWFpMWV6YUxwYlY1ZmY5Rk9ueWtyOGZFaU9xNlB3?=
- =?utf-8?B?anlVV1VQZlIxR0FZelBVVEFZelpsNGluV1JCR2ZGWndTcXRlQWFJYnBDSFFW?=
- =?utf-8?B?M3QyNEVZOUpBWVE3L2tFT1hCYVBNcThscUNyRTNZUkRBUWRna2ZTaG5lSlBB?=
- =?utf-8?B?RTd2b0g1R3lieEs0aTlwbnFpejlEelpQTlgza0lyWUhxV0FQUjVqVzJwVFdw?=
- =?utf-8?B?RDVnK3FtOU5IcTc2c203TEhiY1A4NVNWYTkzSXF6WUZuTWxzUEFqVnQxamVR?=
- =?utf-8?B?b0VPR2FSU21GT2lzYURIeUJZRE9WUkI0SUhUdWsrRHJRQkROWlI1SkRsVytV?=
- =?utf-8?B?d0d4SEhiN0hPRXhoU0hhRUNWdEpXY0I3NE44TTRRbmswWUdjL1lkajZHdzhT?=
- =?utf-8?B?dmR5SWNxZGlETE5xSEdXVGd5ZTBBb1BVamdCVDMzSFp2UWVwM1gwNEUvaW9C?=
- =?utf-8?B?VVdUT2tWVmFVSnlqQ01MUEx6Y0pJWDBodkM3OFBMKzhuREFqdkFFL1plMDFQ?=
- =?utf-8?B?eGdKcTZRSTQxcEpXZmtZcHB3SG1ncklUaFB6cHBzNjl0emNoQ1BIZzUrVm5y?=
- =?utf-8?B?WmMvMU1FNGhlbXhXbURHdTRuREFOYW1yNkRGQzdXTFp2dGVnZGowbHFxdi9h?=
- =?utf-8?B?M0FYdGNPdmRCSjNRLzZXMVdOS1J1VUg4UUdTRWZyQlp3Y2VqYjZBN1VmVjdX?=
- =?utf-8?B?R0JMQm5nbTNTNEU2UmttTUtHWkptUllQVEhxUHUyRXdvMExvYkpCY1BPc2lS?=
- =?utf-8?B?UGd0aXFla1lhcDFQRHpXemE5Ynd4NUpneFRHUDR4SnVJQ0FMdXdJU3kwNHFu?=
- =?utf-8?B?UE5OMjFxRXRBZklQSnN5ZnViZUhnVUxSWjh0K1VSZUVSUm52ZWNjYkZwbS94?=
- =?utf-8?B?c0J6RWtDSFJMR2Z6dit0MkVRVFlEU1BnS09nZ0g2YnZRRC9nOVZDRVg2MzI3?=
- =?utf-8?B?VVFiaDlNWkRPNHN2MDlwZnVhZkRWU3FpSGN5OHRUdGIrVzFacGpEVTN3RHFz?=
- =?utf-8?B?S1Y2R3ZOanNSNUVGWkhSejZjSGhoQmgvQlhVMVI1WXJXSnpDR0NQSVlpMC9H?=
- =?utf-8?B?OGN2T2cvdllBaWhvVDBqREtHTElJY2xhWDlINzNBcEkxcUx5Um4vbk5oVmtq?=
- =?utf-8?B?UWRpWGoveUlEcWtvY0I5Wk9BUGpkVy9EV1lWVzdDV3ljZldONmtsRjl1ZzFL?=
- =?utf-8?B?M2crSW9kdWFPMXNFb2w1Vm1TU1I0YURTUTNua2xLdi9PWGlzUWNjc1hWODJl?=
- =?utf-8?B?MHB0OUtuM1BQSE5QeVcyM3JoTDZDZ1hsb0FEZkd3eTB4Zmc5aVphZ1RZMmRJ?=
- =?utf-8?B?cWNuQ1BnSjlSck9qTDhwMXFxNWtZaTR6RnlRMXZwdm15WUptSmIyZE0wcHR6?=
- =?utf-8?B?SHZuK09ZRDlwQVVVenVRZjRHSndOUC83MXVoZ2ZsbXR3b2hhWm01c29DeVdG?=
- =?utf-8?B?VGV3SWlCQzJ4YWQvY1VTc282WVZnOXNSSUlMcGJkaWpiSzA1RTNxTDBZOFFw?=
- =?utf-8?Q?06riOm?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UVRTYlh5ZWh6SXFiU3lRNnRiRDBLV09oRzlqd1hNUGg4WG8xSi9lekhOK3hw?=
+ =?utf-8?B?UXgyYm5RMEMzTUFrQUs2dWFueHMrd2dDMVlYbitpOGhzaXN1UjN0N2Jiem9Y?=
+ =?utf-8?B?QWtBeWJJUnY1UkJDVnF0NHJ1RnB6S3pQdlJHQmFyQVlYcFIwNGROa3VTVnZ1?=
+ =?utf-8?B?ZUZmclFFTHV4TGxXSUh0VUdqb3B2ZnUxTDUxOVVKekZ6cXk3bm8zZmJ4NDI1?=
+ =?utf-8?B?bzZGMmxMT0JmeHg0VDlTYTFRa1Jtb1FCWmlZTHp2Njk4cXFJTEs3OFZteWk0?=
+ =?utf-8?B?d3FDc2dJV0R4OGg0V0c4c2c0L2ZsQk9ibTcyRElkVmtUV3N5MmF1VlN3Y0J3?=
+ =?utf-8?B?a0tBTUZvaWZEdVNuSE93eUdQMHpXSHorc2p5azB3RTI0Mmd2YXI1Wnh6K0Fn?=
+ =?utf-8?B?V2Q0L01TdHo4UFRaSFhqTEdaeTd1ZTJQRWZSaW5PR3dmL2gzVEVyV1FyQ1Ru?=
+ =?utf-8?B?S082aURTRmgrYWFIMkt4ZTdYNWdFRXB0ZmRUMUVOTXdWdFJFU3I1RXFVMFpS?=
+ =?utf-8?B?ZS9rSklVcnh3MVlqM1JWbFdrN2F5bVpleFp0UjhYRDBkN0NMYWpvM0ZGMzU5?=
+ =?utf-8?B?UERZeFcxOTg5ZGptUmQ3R1ZqS3owNGR2UVowMURuOGlWWVRXbEVGeTZya3R6?=
+ =?utf-8?B?SHJrOGhwdS9UNHFHTUpXc1I5ZWlTQkM5NE1WcmlZWkRXWXp0Kzlpd1NxU0hj?=
+ =?utf-8?B?N29Lb0Qxb0d6bWRPU2ZHSFhPUUxvTU1TYVJaU2JSY2xsSWxCenlRRmp0TnRI?=
+ =?utf-8?B?OUlRQytTVWQwNTRXaWs4cnRxRk15SGs3OFFmSG1wcVlWWitlcWJLbkxvV1lU?=
+ =?utf-8?B?anZwdUhGVitMaDRUZkJxMTJNZ2EwanNNYWQyVGZoa2ZaZ2tDSnQxczJxVytS?=
+ =?utf-8?B?ZDhmNE1pdjBsS2FIaHp6Qkppbk1HN3o4SFNTS2ZDME8wMXRNeStBSDZldWRp?=
+ =?utf-8?B?Z2F2cUpDZW5UMDBIT2ZhNWFYK1crMCtOVk1CaFZ2NmdTK3hERndGOWFoV3Vx?=
+ =?utf-8?B?SlpkcTN0elhUQTh4cEV0b001Nkh3d2hhR2dPUTFINkFtMktrRXhJU01HSmNl?=
+ =?utf-8?B?Rmx5cFMxT0NqWm1MUzA2UjErRHpaMUhzWUZVUkw4YUZtVHZ6WURDK1hWMmFz?=
+ =?utf-8?B?L282aWF1c1djUzdaRWRFSHJuSWpBbC9LSU1XcSsvVjR4R0U0YzZpWmw5K2Z5?=
+ =?utf-8?B?TlZ3aWY0YkhwOGZ4ckZUOUZ4MEl4c1hQWXlnWHVuZUlza3Q2STBnd2RPWVlu?=
+ =?utf-8?B?QmhKajljK1dDVlJsUHN2azExR2dGVkM5eGkvdXhCU2pONSt0cXF5S3p4cDBi?=
+ =?utf-8?B?YWFxM2pjWkdaVFhzRklTZDN0MVNMLzFQeEttMUh1Rkw4OE1lbmVRZDBHdW5p?=
+ =?utf-8?B?M0pXL3NGckJTRjlKZDdvcXM5QS85UmQ5WGRhUTlNb0ovQnlWcUJpUk9BeWM3?=
+ =?utf-8?B?VVB0MEQ0NmxTTGs2b2RabWdwdHdWcm9iU25wNnRrRU94SDA2VXkxdnozZnlu?=
+ =?utf-8?B?WWJ6amw3SGQ5b28wM1dTNGdjVmZ2TUJaeWY2T0JoV1VTUWVDQVdQNjRpN0hv?=
+ =?utf-8?B?N2pHdFhoUHF1NldPMUxLM1duMlQ3d1hOMk5saldRcjdpZjFaTG53VzRraDZx?=
+ =?utf-8?B?MHRLQllVZzZ0MXduNC8xNmVBQ3lVOHJzaFUzbzFEMVV3ZFlZTnV5SU1VemxH?=
+ =?utf-8?B?eFJLcXhwMTRJUlJSR0huNVZucjRLMlBTSDRKTUhWWWVScDBEK004eXVmNDlI?=
+ =?utf-8?B?b3pVVkEyZFd5TGhBS01xVjFNNU50MW5BYWhQN3V5MHhabWRVOERGb21ETWt1?=
+ =?utf-8?B?M1BDelVLWGYzMjcwMWEwSUJVVE54MVhCdUxBaHA3K0ZRcU1LNk1vazE5UEJz?=
+ =?utf-8?B?dEkvdy9qdDNsYTdudS9ScFdYQmxtMXVGRzRQZmJMWmUzTUNQNHEzc1JTVkdW?=
+ =?utf-8?B?NHZpdzNzSm55dHRhZWR4cGN1VUYvcC9lY3FTb2JOYTBuNitsUjkyQ0pIbDVo?=
+ =?utf-8?B?WnIrU1ViempqUEI5dkR2amRteXljemlRTW5WNjk1V3JSejFUK1cyc3VyVWdq?=
+ =?utf-8?B?aUlzUDUxcmZPMzB3eTFzbjRUMk02dHYyQmhMWDFCaG5RM1BzbUVGUHFsNEFJ?=
+ =?utf-8?Q?tslk=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH0PR11MB5690.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(42112799006)(376014); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:DM4PR12MB8476.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Vkp5dFNEVVQzUU9uYjR1Q0ZXQVdOY0tHK1VhN25LVWdtUXNTekMrVjZvbHkx?=
- =?utf-8?B?bDNvREd6MVU0ODU3eXZuTEEvcXV4K2N4bWZ6ZUM3UFF0bjBmNEJKbHVQSFdJ?=
- =?utf-8?B?aVZaYWpub0k3SW1WN0RnNnVNTDZKNCtlZTZFL3I5ZXlZVHpiNmdJUW0wcFhS?=
- =?utf-8?B?MTF4eTZsVEQ5bVMxOFluZWJwc0NsRXlWc1VlZkg5QWZxeEpSd3RXaUNNS1Bx?=
- =?utf-8?B?RXZGeDA4SFQwZHY2blMxdVFxR1dFYXBGNTdHWTl0UGRQRDliMWVMV0tkd2Y1?=
- =?utf-8?B?SGREa0FKTXJ0cWhweEtLOE91QkVSVWRUOHVCQ1NSOWMvcHNlZzQ4azk2ZWJJ?=
- =?utf-8?B?NGU5blZRTm9aZUlCT0FhOTFtcFpvTmM4K1dTM3psdDFWczNTUEdOdHhMYXFa?=
- =?utf-8?B?MllTZXV0blArQTF0dmQyRjdZQldLWW93VUFGZ09Tb1pVckZsbE0zQ2YrUHN6?=
- =?utf-8?B?OTRHSDBnNDRYTTlCYUo3ZC9IR0NIY3NFK3N5UlVDQWtaU1kyL0dzM05Xa3R5?=
- =?utf-8?B?ZVoxbkk5N3R5dUVZL3RRSE16UDh4UVVwclZNeDFVenRUN1laZE0yaWtPd3JK?=
- =?utf-8?B?czJ1Unl3ZlFvQm9pc01ENkg0eEovbWwwcEFISTgyeWJwTGExeEp1VXZtYWhM?=
- =?utf-8?B?ZWhPNFZCUlRzSTJpVVduZ1JjcUo2QzdPQ2haUmZFcUFmd3FKSjd5OGxxSlpy?=
- =?utf-8?B?T3dJWnNUZVRKV0ZiUG9DQmdQbEFOU3VFZmgvVzFKdTNud01kT2t3UjhJbStR?=
- =?utf-8?B?Q1V0TlhiaUJCYm5yUkQyNXRuZDMwQ3FJcTcwS2xrK3NMMkQ1WHlwVFdacmJa?=
- =?utf-8?B?dWhjU1NYWk9id0dGN0x4QjhJQ0sxQUNGMzdNakJOVWpRNW1YUVIwdDZrR0Fl?=
- =?utf-8?B?L25mVTJLcnV6Tk9oTUtqM3JkTkp3U045a1lsTEhUY2VaYUJvc0FNbnpwa0tC?=
- =?utf-8?B?dUJXbUtRVjJQdjRFRG4yWGxOWWt4NnVCaGJxYnNxZmIwalFPMWFNMFJ3UWlE?=
- =?utf-8?B?UnVFQkhYREFFOE8xMS9UNlJ1Q0YvNFNVM21LS2VsVU9Bbmlsa3JJYmkvbmZK?=
- =?utf-8?B?ZHlBZ1YzU3pSL0YvNWZUZnhab0FlaFAzSU8vd0tGbCtGZU1yNkF0MDl0MGRL?=
- =?utf-8?B?NG5DU2toa3lQOUwvTHh3am9JUmN2VkxTU3V6OEVYVEVUTUdLS1kzNEJDc3R0?=
- =?utf-8?B?VW1oU2FOLzhBYVBlTFBuSitmNGhJQWlDekNkbTNUbUlXTkhyRXVsdEE4Q2NO?=
- =?utf-8?B?eXFLNVh4UklmY1I1MmQ2ZHpkdlZlZEZjS0tsVVU2SnVDMmJSODM0M2l2alRM?=
- =?utf-8?B?eGdyL245aElvUXQ2QnJvbWpPM1VaMEZtM0E4WmdXdmxXYUZXd09majdNSjhF?=
- =?utf-8?B?bVo0NFhwWXdMVVRCQ2tYejVUM0J4NVlOSHAvcXEvTTl4NlJSZTBhd3VoT3FV?=
- =?utf-8?B?Rzl4RTVPYlBjRnhVOHlNcVhDRXpicm5tSUE2eU1yZnBtaGZRU3VkYis2WUpm?=
- =?utf-8?B?aW83aG55SzZIQ0dYQ2g1bm55SXMwZUEvTXJQM3dNZS9OMEI3RVlTaEtmVlRC?=
- =?utf-8?B?VUw1ZDkyRzRBdVY3M0RPaFI3RXFqSHNpaCtUQWlSWmMwQVBmdGMyNTNibnJu?=
- =?utf-8?B?VlVOY2Nla2xiTkMvT1NKZFUwYSt1NWxMQzFHSXIyNXM2enh4bzFJRWJhdVhr?=
- =?utf-8?B?aHhEOExSZTAvbzNFL3hTVEFvNGMxTnFhVnRuSzlCOHkwUUFHcndxYjIxbjlI?=
- =?utf-8?B?dTlkRUlNeTg5d2J3bm9kbVdpSWZGVkZRZ09GVzJxV1F3ejVQWmt3QVh3MEx2?=
- =?utf-8?B?dFVEUVhHcjNXcitEV2o3SVdUZHZiL3Z4WDFLQ25HK1MycnZnK0lleS9lMGVY?=
- =?utf-8?B?QjlXeHQrMlRXQm9hRFhsK3VHa2pBZ0tNQjBlVjE0R1ArMHBZbVREV25FM29D?=
- =?utf-8?B?cS93ajhtTFlndzkzOFViTUFid2lwTHU0bHY4NFAzV0Z1TFZaYjJ3aTF5WDlY?=
- =?utf-8?B?T0U1VGZLbzVHcFNvdnpmU3N0dWdsTmZaZGFaRGNKNHRpVmZDZndRMWY0YURv?=
- =?utf-8?B?TGluZXlpYU9ZbGYzcC9FYU81eDdDWXp4djBWRFhlN2w2WThpaDBRbzhaZjl6?=
- =?utf-8?B?aDF4eEFCSEloaXltQWJZMGo2czZMeE05TnZ5ZlVWaFlNQ1FkMWV0T251amwv?=
- =?utf-8?B?enNsRWNqSFhmU1JCTDgveTBDMkdWellNNTZvZkUxTlFiYVpWb2ZVTi9uWTVy?=
- =?utf-8?B?TXhlaVc1UUlMV1dlQ1hoNFBScGhHODNCcm56NkJ3TEhVQkRDWVUxK2dBQTBu?=
- =?utf-8?B?RW8rODNKU1BHdC9SUk02TlczQjRxb0Zzb0crajN6eDVxUjZMR0tDZz09?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2ce5a203-9a3d-4562-f525-08de57d91cc8
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5690.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L2cvblNtMnY5NEo3Zmk4VmRwazV6QkFHOU9UYWdoMEtNZFRsTmFodndDeUYz?=
+ =?utf-8?B?SnF3ZGNRbHBJNlIxNEZXUXhLY2QwRnRHeUU4ZXY3OEptZFJ4c1hEWU5Jc2Nn?=
+ =?utf-8?B?bGRndmRSb093ZHRhNVIzbHh5b3hBcXNJVkJlZGp4bEZzU3FLSjYvZndiRS90?=
+ =?utf-8?B?T2VHcHlTRkJTUnNFb0tsblpIenArTEZmMTNnV2ljYUd3WWdrdjVxcnEzVmtv?=
+ =?utf-8?B?ZFFNczNvemFqNkEwSXVPc1gzb2djVGgrVmY0b28rMzBqeitGSlpnY2Jydk80?=
+ =?utf-8?B?ZGNURXBKeURiSGhQR2ppeCthV0dqUkh0T2xRTE56NDUydzYydkNGWnppdnNI?=
+ =?utf-8?B?K2ZFM1QzUU0yTDZnYm10MnZuZHdVQVdwS2MxK3J3cXAvZHlkalNRN2JiTU1J?=
+ =?utf-8?B?Qm5ZRDdTUkdUZ2JIaVFyNEh2eVcxaVBPQjZFbmFOV2ZGMEV4eFlpTkJNbWJw?=
+ =?utf-8?B?U1QxVFVkZjlwdzNTbUJ1YlVVWGlsMDc5SExoREFRVWtSdU01ckVKWTI3TmZO?=
+ =?utf-8?B?VUN6Y1JOZjNXdzFpa012SEtkVEpFKzBGbEFTQU5jOTJ3eWZ6UEZOTW1KYUpm?=
+ =?utf-8?B?YnlhSmRtWVlTUWFBcnJMcjZuSUR6NEd0RklrWk9QMkFtS1ZkU2FRLzRIaENq?=
+ =?utf-8?B?K3Y2WXRId2pFaCtxZHpWMmdZamhQdEdSZDQvNmJob25HV1hMaFhUSVlCMVhL?=
+ =?utf-8?B?WGdqeERwVUlxdW12QkZlTFNUMERxb1hGemN2YUlHVTlpSEZ5bzJyQUFDVkx2?=
+ =?utf-8?B?Y3hCWFlSLzA0SmFPWTdKUE43Y2J4U1QzaWIyd2hiVWVTTXR1cW5qaWk2MW9w?=
+ =?utf-8?B?VlRwYWVNWWNZUFl6T01oK1ZrRmhEL242dUx4TGV5SWJlZC9IRUhEemFVWjNW?=
+ =?utf-8?B?NHU3SWpKUVpNS1k2OHVpNU9VbERFSkVvdkFmMVlVU3FMQkM3QWQvZWxhU1JN?=
+ =?utf-8?B?SUNGOWdRZTZZVFRRcWQ1citKY1RadS85YitzMC9Ub1JkQnZYVDV6UDZxdktk?=
+ =?utf-8?B?SHJlMzFxaWhmTEpobzE3S3N1d0VsOXpXcGt2dXpqNTdiTUgzS25TUUNmMHE1?=
+ =?utf-8?B?SmdKSkN1TUNDUGJVbFJ0RysyMHIzUy9JT21zdHY4Zk1sMXF5b3BoK0x1blhw?=
+ =?utf-8?B?LzN2YlY4UmpQT3lYMmdyb1NYQkdFbzZTVi9PN2RKczArWjRiOVI4Rm5nNlZ0?=
+ =?utf-8?B?bURlUFhHOFEvZFllcnVlYzFtSGhnMEFNUXdLUHJ0Zk9JNmxOOGFPUnFPb3FN?=
+ =?utf-8?B?M2VRWW0rVDhPc2FqNi9oamtiV3VXOHNNNENLS0ZpSnJReXBPcFJlNnJoTEdQ?=
+ =?utf-8?B?cnU3U0dlNllNeGhiRzVDVW9WN3lobkhCMlZvaDY4bU9DUmJkV0tPWVhaaFVz?=
+ =?utf-8?B?YVVJMmVYRHJMUTRyTmR3dmhSQm8vZENMSVpRa1NrRjZITHUzS2hlK1c5TW1V?=
+ =?utf-8?B?VENldWUzQ0dSQkFkV2R3eW9xdzFSSWZVSnh1WnI5eHNDWTkvS2VLNjZvQU9O?=
+ =?utf-8?B?dW9OTk5LZWJtQVJ2NjVTWjdZR3daRUU5eE1lRzllK2ZaQmMrVm9mbmpGUFZW?=
+ =?utf-8?B?SEg1dlFzVDVUWTZaWFBCeUh3ZnRTZjN3SUk1K3RSaHJSQ3Z2SElvV2dkeTZr?=
+ =?utf-8?B?WlBKM1h2TW12U2wzVVNzWFJaS3pENXUyWFYzdGJZQlkxUDNURWt6TzRYWWVq?=
+ =?utf-8?B?TG1qM0NVQ3U0TDc3bjV2Y2p5ZGVEb1pBNkVONzRHWmxUV21qSVk4b3YySTZB?=
+ =?utf-8?B?bnJDWWRxeC92R0hqODdpMWZBbFZuM2NJOWdLUktPRHgxLzdXam9SNnRjb0hl?=
+ =?utf-8?B?NXNUL0s0QUJ4SkwyRHM0YkJhZVd5a1NHeHNoZUVKckxKMlhnMTJyejZKOWxF?=
+ =?utf-8?B?VU1JSHg3TXllZGtreU50ejdwT3ZqOCt4RFRBZnBkVUxtQTlVZnV3bEhROXFE?=
+ =?utf-8?B?WG8wUW9HZVE1YkpxekZRZTlCOGtTTzZsU1dOZURLNE1aWEZvMmdhMHFoVHln?=
+ =?utf-8?B?dyt2QW9uWThxQStkL0FaTld3N3hCTUF5QURoUGZpWk5DQlRWeWVjbjZMakRG?=
+ =?utf-8?B?Z293bHJ0KytjS1lxaFFGYkkrVTN4YzVpSE1sZGtrVHR3OG1WZzhiR0J5RitC?=
+ =?utf-8?B?SWhqMlF0Z2ZkdkFVLzQ4eVB1cFNHT2MxS1Bab3RldldVUWovdXhiUUdzL01k?=
+ =?utf-8?B?V1FHeVAxZ2VUcG1aeEpVYzRtbi9PaVlaeVV6RzZDK2JFTUJGZUZyNUZxTzUz?=
+ =?utf-8?B?cGtTRGtWV2RkT0dyRDZRUGYrWVhidWFCY2dxVWNPV0pqYlNia0piM1Nidmkz?=
+ =?utf-8?B?dFQ5MXp6UUNWUmtFU3BsV2xlbmRvSmVWOHcvZEMrZ05BRzFUVXBSZz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 51895edf-c4bd-4194-896d-08de57daec33
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB8476.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 04:05:13.8713 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 04:18:11.2561 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6erA4hdaYkJJ/+uhpEZZCziYx561wrJgMomGx7X6iS0bD+RTYex7wsXZpTuBSmwsDbsOXD4RHvNWdqs69NjJ9g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4566
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: N47zfXqN0hfIqUuVrChKR8Et+Owchu1LVH0GbNjWlfI9Iu5dPbnbhO0KyYqBzQ30DjBfnsgbKqp1Ez1D+I6Tow==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5960
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -202,466 +171,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sebinraj,
 
-On 1/14/2026 1:53 PM, S Sebinraj wrote:
-> Add a new test to validate explicit fencing.
-> This test handles multiple planes in a single atomic commit.
-> This test addresses a critical scenario where drivers must correctly
-> synchronize planes with mixed fence states.
->
-> Test Scenario:
-> - Creates three planes: one primary, two overlay
-> - Attaches fences with different states:
->     - Primary plane:   signaled fence (simulating completed GPU work)
->     - Overlay-1 plane: signaled fence (simulating completed GPU work)
->     - Overlay-2 plane: unsignaled fence (simulating long-running GPU job)
-> - Submits all planes in a single atomic commit with IN_FENCE_FD set
-> - Validates that display waits for ALL fences before updating ANY plane
->
-> Bug Detection:
-> This test catches driver bugs where:
->   - Planes with signaled fences update prematurely before unsignaled
->     fences complete, breaking atomic commit semantics
->   - Fence states are mismanaged across multiple planes causing visual
->     glitches or corruption
->   - The driver fails to wait on all IN_FENCE_FDs atomically
->
-> The test uses sw_sync timelines to create controllable fence states,
-> allowing precise validation of fence synchronization behavior. An
-> OUT_FENCE_PTR is requested to monitor when the display update actually
-> completes, enabling detection of premature updates.
->
-> Implementation Details:
-> - Uses sw_sync for creating fences with controlled signaling
-> - Monitors OUT_FENCE to detect premature display updates
-> - Validates atomic commit integrity across multiple planes
->
-> Background:
-> - A bug regressed for Xe driver on PTL (Android) i915/display handling
->    of explicit fences when provided two or more buffers at once,
->    with 1+ already-signaled fences and 1+ not-yet-signaled fences.
->    https://patchwork.freedesktop.org/patch/662982/
-> - Adding this test so that IGT contains sufficient testing for the
->    use of explicit fencing in the KMS Atomic Modesetting APIs.
->
-> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
-> ---
->   tests/kms_explicit_fence.c | 372 +++++++++++++++++++++++++++++++++++++
->   tests/meson.build          |   1 +
->   2 files changed, 373 insertions(+)
->   create mode 100644 tests/kms_explicit_fence.c
->
-> diff --git a/tests/kms_explicit_fence.c b/tests/kms_explicit_fence.c
-> new file mode 100644
-> index 000000000..d3cad5904
-> --- /dev/null
-> +++ b/tests/kms_explicit_fence.c
-> @@ -0,0 +1,372 @@
-> +/*
-> + * Copyright © 2026 Intel Corporation
-Please use SPDX licence, please look into the recently added tests which 
-uses them.
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the next
-> + * paragraph) shall be included in all copies or substantial portions of the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> + * IN THE SOFTWARE.
-> + */
-> +
-> +/**
-> + * TEST: kms explicit fence multiplane
-> + * Category: Display
-> + * Description: Test explicit fencing with multiple planes and mixed fence states
-> + * Driver requirement: i915, xe
-> + * Mega feature: General Display Features
-> + *
-> + * This test validates correct handling of explicit fences when multiple planes
-> + * are updated in a single atomic commit with different fence states. This is
-> + * critical for catching fence synchronization bugs where the driver might:
-> + * 1. Prematurely display buffers with signaled fences before unsignaled fences complete
-> + * 2. Mismanage fence states across multiple planes causing visual glitches
-> + * 3. Fail to wait on all fences atomically before updating the display
-> + */
-> +
-> +#include "igt.h"
-> +#include "igt_aux.h"
-> +#include "sw_sync.h"
-> +#include <errno.h>
-> +#include <stdbool.h>
-> +#include <stdio.h>
-> +#include <string.h>
-> +#include <sys/eventfd.h>
-> +#include <poll.h>
-> +
-> +/**
-> + * SUBTEST: multiplane-atomic-fence-wait
-> + * Description: Test 3 planes (1 primary, 2 overlay) with mixed fence states:
-> + *              2 planes with signaled fences and 1 plane with unsignaled fence.
-> + *              Validates that display waits for all fences before updating any plane.
-> + */
-> +
-> +/* Test configuration macros */
-> +#define NUM_PLANES 3
-> +#define PLANE_PRIMARY_IDX 0
-> +#define PLANE_OVERLAY1_IDX 1
-> +#define PLANE_OVERLAY2_IDX 2
-> +#define OVERLAY_COUNT 2
-> +
-> +#define FENCE_TIMEOUT_MS 2000
-> +#define VISUAL_DELAY_US 500000  /* 500ms for visual observation */
-> +
-> +#define OVERLAY_SIZE_DIVISOR 3
-> +#define OVERLAY1_POS_X 100
-> +#define OVERLAY1_POS_Y 100
-> +#define OVERLAY2_OFFSET 100
-> +
-> +typedef struct {
-> +	int drm_fd;
-> +	igt_display_t display;
-> +	igt_output_t *output;
-> +	enum pipe pipe;
-> +	igt_plane_t *primary;
-> +	igt_plane_t *overlay1;
-> +	igt_plane_t *overlay2;
-> +	struct igt_fb primary_fb;
-> +	struct igt_fb overlay1_fb;
-> +	struct igt_fb overlay2_fb;
-> +	drmModeModeInfo *mode;
-> +	int width, height;
-> +} data_t;
-> +
-> +static void setup_output(data_t *data)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	igt_output_t *output;
-> +	enum pipe pipe;
-> +
-> +	for_each_pipe_with_valid_output(display, pipe, output) {
-> +		data->output = output;
-> +		data->pipe = pipe;
-> +		data->mode = igt_output_get_mode(output);
-> +
-> +		/* Get planes */
-> +		data->primary = igt_pipe_get_plane_type(
-> +			igt_crtc_for_pipe(display, pipe), DRM_PLANE_TYPE_PRIMARY);
-> +		data->overlay1 = igt_pipe_get_plane_type_index(
-> +			igt_crtc_for_pipe(display, pipe), DRM_PLANE_TYPE_OVERLAY, 0);
-> +		data->overlay2 = igt_pipe_get_plane_type_index(
-> +			igt_crtc_for_pipe(display, pipe), DRM_PLANE_TYPE_OVERLAY, 1);
-> +
-> +		data->width = data->mode->hdisplay;
-> +		data->height = data->mode->vdisplay;
-> +
-> +		/* We need at least OVERLAY_COUNT overlay planes for this test */
-> +		if (data->overlay1 && data->overlay2)
-> +			return;
-> +	}
-> +
-> +	igt_skip("Need at least %d overlay planes for this test\n", OVERLAY_COUNT);
-> +}
-> +
-> +static void cleanup_crtc(data_t *data)
-> +{
-> +	igt_display_reset(&data->display);
-> +
-> +	if (data->primary_fb.fb_id)
-  igt_remove_fb already has the check for fb_id, so these checks could 
-be removed.
-> +		igt_remove_fb(data->drm_fd, &data->primary_fb);
-> +	if (data->overlay1_fb.fb_id)
-> +		igt_remove_fb(data->drm_fd, &data->overlay1_fb);
-> +	if (data->overlay2_fb.fb_id)
-> +		igt_remove_fb(data->drm_fd, &data->overlay2_fb);
-> +}
-> +
-> +static void create_fbs(data_t *data)
-> +{
-> +	int overlay_width = data->width / OVERLAY_SIZE_DIVISOR;
-> +	int overlay_height = data->height / OVERLAY_SIZE_DIVISOR;
-> +
-> +	/* Primary plane - Blue background */
-> +	igt_create_color_fb(data->drm_fd, data->width, data->height,
-> +			    DRM_FORMAT_XRGB8888,
-> +			    DRM_FORMAT_MOD_LINEAR,
-> +			    0.0, 0.0, 1.0, /* Blue */
-> +			    &data->primary_fb);
-> +
-> +	/* Overlay 1 - Red square */
-> +	igt_create_color_fb(data->drm_fd, overlay_width, overlay_height,
-> +			    DRM_FORMAT_XRGB8888,
-> +			    DRM_FORMAT_MOD_LINEAR,
-> +			    1.0, 0.0, 0.0, /* Red */
-> +			    &data->overlay1_fb);
-> +
-> +	/* Overlay 2 - Green square */
-> +	igt_create_color_fb(data->drm_fd, overlay_width, overlay_height,
-> +			    DRM_FORMAT_XRGB8888,
-> +			    DRM_FORMAT_MOD_LINEAR,
-> +			    0.0, 1.0, 0.0, /* Green */
-> +			    &data->overlay2_fb);
-> +}
-> +
-> +/**
-> + * multiplane_atomic_fence_wait - Test atomic commit with mixed fence states
-> + *
-> + * This test reproduces the critical scenario where multiple planes are updated
-> + * in a single atomic commit with different fence states. The key validation is
-> + * that the display does NOT update any plane until ALL fences are signaled.
-> + *
-> + * Test setup:
-> + * - Primary plane: buffer with a signaled fence (already retired)
-> + * - Overlay 1 plane: buffer with a signaled fence (already retired)
-> + * - Overlay 2 plane: buffer with an UNSIGNALED fence (long-running operation)
-> + *
-> + * Expected behavior:
-> + * - Atomic commit succeeds immediately (non-blocking)
-> + * - Display waits internally for ALL fences before updating
-> + * - No plane shows its new buffer until the unsignaled fence completes
-> + * - After signaling the last fence, all planes update atomically
-> + *
-> + * Bug detection:
-> + * If the driver has a bug, it will either:
-> + * 1. Show the primary and overlay1 buffers prematurely (before overlay2's fence signals)
-> + * 2. Cause visual glitches from fence mismanagement
-> + * 3. Fail the atomic commit
-> + */
-> +static void multiplane_atomic_fence_wait(data_t *data)
-> +{
-> +	int timelines[NUM_PLANES];
-> +	int fences[NUM_PLANES];
-> +	int ret;
-> +	int out_fence;
-> +	igt_plane_t *planes[NUM_PLANES];
-> +	const char *plane_names[NUM_PLANES] = { "Primary", "Overlay1", "Overlay2" };
-> +	bool should_signal[NUM_PLANES] = { true, true, false };
-> +
-> +	igt_debug("Starting multiplane atomic fence wait test\n");
-IMHO, this(& most of the below igt_debug statements) do not add any real 
-debug value. Please consider dropping most of them unless it is clearly 
-helping in failure diagnosis.
-> +
-> +	igt_require_sw_sync();
-> +
-> +	/* Initial modeset to establish baseline (no fences) */
-> +	igt_debug("Setting up initial display configuration...\n");
-> +	igt_output_set_crtc(data->output, igt_crtc_for_pipe(&data->display, data->pipe));
-> +	igt_plane_set_fb(data->primary, &data->primary_fb);
-> +	igt_plane_set_fb(data->overlay1, &data->overlay1_fb);
-> +	igt_plane_set_position(data->overlay1, OVERLAY1_POS_X, OVERLAY1_POS_Y);
-> +	igt_plane_set_fb(data->overlay2, &data->overlay2_fb);
-> +	igt_plane_set_position(data->overlay2, data->width - OVERLAY2_OFFSET -
-> +				data->overlay2_fb.width, OVERLAY1_POS_Y);
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +	igt_debug("Initial display setup complete\n");
-> +
-> +	/* Setup arrays for loop-based processing */
-> +	planes[PLANE_PRIMARY_IDX] = data->primary;
-> +	planes[PLANE_OVERLAY1_IDX] = data->overlay1;
-> +	planes[PLANE_OVERLAY2_IDX] = data->overlay2;
-May the above part could be a separate setup function so that the test 
-function is easier to read. Not a must have, good to have.
-> +
-> +	/* Create timelines and fences for all planes */
-> +	igt_debug("Creating timelines and fences for %d planes...\n", NUM_PLANES);
-> +	for (int i = 0; i < NUM_PLANES; i++) {
-> +		/* Create timeline */
-> +		timelines[i] = sw_sync_timeline_create();
-> +		igt_assert(timelines[i] >= 0);
-> +
-> +		/* Create fence at sequence 1 */
-> +		fences[i] = sw_sync_timeline_create_fence(timelines[i], 1);
-> +		igt_assert(fences[i] >= 0);
-> +
-> +		/* Signal fence if needed (first 2 planes) */
-> +		if (should_signal[i]) {
-> +			sw_sync_timeline_inc(timelines[i], 1);
-> +			igt_assert_eq(sync_fence_status(fences[i]), 1);
-> +			igt_debug("  %s: fence SIGNALED (fd=%d)\n",
-> +				  plane_names[i], fences[i]);
-> +		} else {
-> +			igt_assert_eq(sync_fence_status(fences[i]), 0);
-> +			igt_debug("  %s: fence UNSIGNALED (fd=%d) - blocks commit\n",
-> +				  plane_names[i], fences[i]);
-> +		}
-> +
-> +		/* Attach IN_FENCE_FD to plane */
-> +		igt_plane_set_fence_fd(planes[i], fences[i]);
-> +	}
-> +
-> +	/* swap overlay colors to see visible change from the previous scanout*/
-> +	igt_plane_set_fb(data->overlay1, &data->overlay2_fb);
-> +	igt_plane_set_position(data->overlay1, OVERLAY1_POS_X, OVERLAY1_POS_Y);
-> +	igt_plane_set_fb(data->overlay2, &data->overlay1_fb);
-> +	igt_plane_set_position(data->overlay2, data->width - OVERLAY2_OFFSET -
-> +				data->overlay1_fb.width, OVERLAY1_POS_Y);
-> +
-> +	/* Request OUT_FENCE to track when display update completes */
-> +	igt_pipe_request_out_fence(igt_crtc_for_pipe(&data->display, data->pipe));
-> +
-> +	/*
-> +	 * The atomic commit should succeed immediately (NONBLOCK mode),
-> +	 * but the display should NOT update any plane until ALL fences
-> +	 * (including the unsignaled overlay2 fence) are signaled.
-> +	 *
-> +	 * A buggy driver might:
-> +	 * - Show primary and overlay1 immediately (wrong!)
-> +	 * - Cause visual corruption
-> +	 * - Fail the commit
-> +	 */
-> +	ret = igt_display_try_commit_atomic(&data->display,
-> +					    DRM_MODE_ATOMIC_NONBLOCK,
-> +					    NULL);
-> +	igt_assert_eq(ret, 0);
-> +	igt_debug("Atomic commit SUCCEEDED (non-blocking)\n");
-> +
-> +	/* Get the out fence to monitor completion */
-> +	out_fence = igt_crtc_for_pipe(&data->display, data->pipe)->out_fence_fd;
-> +	igt_assert(out_fence >= 0);
-> +	igt_debug("Got OUT_FENCE_FD=%d to monitor display update\n", out_fence);
-> +
-> +	/* Verify overlay2 fence (last one) is still unsignaled */
-> +	igt_assert_eq(sync_fence_status(fences[PLANE_OVERLAY2_IDX]), 0);
-> +	igt_debug("Overlay2 fence still UNSIGNALED - display should be waiting\n");
-> +
-> +	/* Verify out fence is also unsignaled (display hasn't updated yet) */
-> +	ret = sync_fence_status(out_fence);
-> +	if (ret == 1) {
-> +		igt_warn("OUT_FENCE already signaled - this may indicate the "
-> +			 "driver is not waiting for all IN_FENCEs correctly!\n");
-Shouldn't we be already asserting here? no point in the test going ahead?
-> +	} else {
-> +		igt_debug("OUT_FENCE still unsignaled - display correctly "
-> +			  "waiting for fences\n");
-> +	}
-> +
-> +	/*
-> +	 * Wait a moment to ensure the display really is waiting.
-> +	 * In a buggy implementation, the primary and overlay1 planes might
-> +	 * show up prematurely during this delay.
-> +	 */
-> +	igt_debug("Waiting %dms to verify display doesn't update "
-> +		  "prematurely\n", VISUAL_DELAY_US / 1000);
-> +	usleep(VISUAL_DELAY_US);
-The visual verification(if required) should be a command line option 
-passed which can be enabled when required and be disabled by default, as 
-on CI this manual verification will not be done. Instead can we add a 
-CRC check here to verify there is no visual change?
-> +
-> +	/* Check if out fence signaled prematurely */
-> +	ret = sync_fence_status(out_fence);
-> +	if (ret == 1) {
-> +		igt_critical("BUG DETECTED: OUT_FENCE signaled before "
-> +			     "overlay2 fence was signaled\n");
-> +		igt_critical("This indicates the driver updated the display "
-> +			     "without waiting for all fences\n");
-> +		igt_assert_f(0, "Display updated prematurely before all fences signaled");
-> +	}
-> +	igt_debug("Display has not updated yet (waiting for overlay2 fence)\n");
-This should be just igt_assert_f(ret == 1, <>)
-> +
-> +	/* Now signal the blocking fence (overlay2) */
-> +	igt_debug("Signaling the blocking overlay2 fence");
-> +	sw_sync_timeline_inc(timelines[PLANE_OVERLAY2_IDX], 1);
-> +
-> +	/* Wait for overlay2 fence to be signaled */
-> +	ret = sync_fence_wait(fences[PLANE_OVERLAY2_IDX], FENCE_TIMEOUT_MS);
-> +	igt_assert_eq(ret, 0);
-> +	igt_assert_eq(sync_fence_status(fences[PLANE_OVERLAY2_IDX]), 1);
-> +	igt_debug("Overlay2 fence now SIGNALED\n");
-> +
-> +	/* Now wait for the display update to complete (out fence signals) */
-> +	igt_debug("Waiting for display update to complete (OUT_FENCE)\n");
-> +	ret = sync_fence_wait(out_fence, FENCE_TIMEOUT_MS);
-> +	igt_assert_eq(ret, 0);
-> +	igt_assert_eq(sync_fence_status(out_fence), 1);
-> +	igt_debug("OUT_FENCE signaled - all planes updated atomically\n");
-> +
-> +	igt_debug("TEST PASSED\n");
-> +
-> +	usleep(VISUAL_DELAY_US);
-Same as above, should be a CRC check and an optional manual visual 
-verification.
-> +
-> +	/* Cleanup: close test-specific resources (fences and timelines) */
-> +	for (int i = 0; i < NUM_PLANES; i++) {
-> +		close(fences[i]);
-> +		close(timelines[i]);
-> +		igt_plane_set_fence_fd(planes[i], -1);
-> +	}
-> +	close(out_fence);
-> +	igt_crtc_for_pipe(&data->display, data->pipe)->out_fence_fd = -1;
-> +}
-> +
-> +static void test_fini(data_t *data)
-> +{
-> +	/* Reset display state */
-> +	igt_plane_set_fb(data->primary, NULL);
-> +	igt_plane_set_fb(data->overlay1, NULL);
-> +	igt_plane_set_fb(data->overlay2, NULL);
-> +	igt_output_set_crtc(data->output, NULL);
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +}
-> +
-> +int igt_main()
-> +{
-> +	data_t data = {};
-> +
-> +	igt_fixture() {
-> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
-Why do we need this to be specific to intel?
-> +		kmstest_set_vt_graphics_mode();
-> +		igt_display_require(&data.display, data.drm_fd);
-> +		igt_display_require_output(&data.display);
-> +
-> +		setup_output(&data);
-> +		create_fbs(&data);
-> +	}
-> +
-> +	igt_describe("Test atomic commit with 3 planes (1 primary, 2 overlay) "
-> +		     "where 2 planes have signaled fences and 1 plane has an "
-> +		     "unsignaled fence. Validates that display does not update "
-> +		     "any plane until all fences are signaled, catching bugs "
-> +		     "where drivers might prematurely display buffers or "
-> +		     "mismanage fence synchronization across multiple planes.");
-> +	igt_subtest("multiplane-atomic-fence-wait")
-> +		multiplane_atomic_fence_wait(&data);
-> +
-> +	igt_fixture() {
-> +		test_fini(&data);
-> +		cleanup_crtc(&data);
-> +		igt_display_fini(&data.display);
-> +		drm_close_driver(data.drm_fd);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 0ad728b87..a61395332 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -35,6 +35,7 @@ test_progs = [
->   	'kms_debugfs',
->   	'kms_dither',
->   	'kms_display_modes',
-> +	'kms_explicit_fence',
 
-Please keep this in alphabetical order.
+On 1/19/26 20:02, Kandpal, Suraj wrote:
+>> Subject: [PATCH 1/2] lib/igt_kms: Increase MAX_NUM_COLOROPS
+>>
+>> MAX_NUM_COLOROPS = 128 is too small for some hardware and it stops
+>> kms_writeback from running.
+> 
+> How does that stop from kms writeback from running needs to be mentioned in the commit message here.
+> Also curious myself ?
 
-Regards,
-Karthik.B.S
->   	'kms_dp_aux_dev',
->   	'kms_feature_discovery',
->   	'kms_flip',
+There is an assert from "igt_assert(display->n_colorops < 
+MAX_NUM_COLOROPS)" as below
+
+(kms_colorop:3233) igt_kms-DEBUG: Test requirement passed: 
+resources->count_crtcs <= IGT_MAX_PIPES
+(kms_colorop:3233) igt_kms-CRITICAL: Test assertion failure function 
+igt_fill_plane_color_pipelines, file ../lib/igt_kms.c:877:
+(kms_colorop:3233) igt_kms-CRITICAL: Failed assertion: 
+display->n_colorops < MAX_NUM_COLOROPS
+(kms_colorop:3233) igt_kms-CRITICAL: Last errno: 95, Operation not supported
+(kms_colorop:3233) igt_core-INFO: Stack trace: not implemented
+
+> 
+> Regards,
+> Suraj Kandpal
+> 
+>>
+>> Double MAX_NUM_COLOROPS to 256 to avoid future frequent changes.
+>>
+>> Signed-off-by: Alex Hung <alex.hung@amd.com>
+>> ---
+>>   lib/igt_kms.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c index 77b3ae2af..dfdebb83f 100644
+>> --- a/lib/igt_kms.c
+>> +++ b/lib/igt_kms.c
+>> @@ -92,7 +92,7 @@
+>>   #define MAX_CONNECTORS 32
+>>   #define MAX_EDID 2
+>>   #define DISPLAY_TILE_BLOCK 0x12
+>> -#define MAX_NUM_COLOROPS 128
+>> +#define MAX_NUM_COLOROPS 256
+>>
+>>   typedef bool (*igt_connector_attr_set)(int dir, const char *attr, const char
+>> *value);
+>>
+>> --
+>> 2.43.0
+> 
+
