@@ -4,63 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7238D2ED12
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 12:27:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED129D2ECF7
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 12:40:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 94EE510E5DA;
-	Tue, 20 Jan 2026 12:27:56 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WXMHO8RC";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3675C10E5DB
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 12:27:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768912075; x=1800448075;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=wEFGqN8fD+M/TVeguBNqslW6eTdPqbKppDSb2O9DKiY=;
- b=WXMHO8RCXiKBdOt9GODkJqpasnvHPz/GIjSF9mXoSvWrVqIXnP5eRNwH
- HCs9TrwakM19IOHy797HkKp3dGx2jLU6KA4U1UP4IKyD/u6sxLuvfW3he
- dJUZrr6P58zWxXVI2LC2W3m0YlzZ754Hb6TSO0Ra0gm1q44j8jDwJQV3R
- FlMJWNosr8tUBm+QAKSDeIQrhhMRelVUri1SdqsVtIY0v/IJIzH8n7TTW
- l1oNP3OZehaDW9YcUD2l310lax5u5itfZ2IVLDDWQHkNBKLdMfJovZjbo
- bjq61GmPImVmgQZMLWCKB2y7O/lAr8itt+WBbL6KRKIdpLNPH2rsehDEC w==;
-X-CSE-ConnectionGUID: RzwWZZrqQMKWb/EOUte8Ng==
-X-CSE-MsgGUID: PmdhnlRbRwSxI0CyAK7ymQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="81557125"
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="81557125"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 04:27:54 -0800
-X-CSE-ConnectionGUID: EliU7uoNSdqdIFby21M7CA==
-X-CSE-MsgGUID: j92XNdnvRyiWlu0QiBEzyw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="229042746"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 04:27:52 -0800
-Date: Tue, 20 Jan 2026 13:27:35 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Soham Purkait <soham.purkait@intel.com>
-Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- badal.nilawar@intel.com, kamil.konieczny@intel.com,
- anshuman.gupta@intel.com, umesh.nerlige.ramappa@intel.com
-Subject: Re: [PATCH i-g-t v4 2/6] tools/gputop.src/utils: Add clamp macro to
- remove dependency on lib/xe/*
-Message-ID: <20260120122735.njvn6rngqzikhzfy@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Soham Purkait <soham.purkait@intel.com>,
- igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- badal.nilawar@intel.com, kamil.konieczny@intel.com,
- anshuman.gupta@intel.com, umesh.nerlige.ramappa@intel.com
-References: <20260107183739.84597-1-soham.purkait@intel.com>
- <20260107183739.84597-3-soham.purkait@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6AE2610E5D9;
+	Tue, 20 Jan 2026 12:40:34 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E8ED610E17C;
+ Tue, 20 Jan 2026 12:40:32 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3423112025433121486=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260107183739.84597-3-soham.purkait@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_intel-ci=3A_Update_display_?=
+ =?utf-8?q?blocklist_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 20 Jan 2026 12:40:32 -0000
+Message-ID: <176891283295.170966.12020564148665781999@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260120090632.144336-1-jeevan.b@intel.com>
+In-Reply-To: <20260120090632.144336-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,55 +37,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Soham,
-On 2026-01-08 at 00:07:35 +0530, Soham Purkait wrote:
-> Add clamp helper macro to utils.h to remove dependency on lib/xe/*
+--===============3423112025433121486==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-You still have #include "igt_core.h" so there is more to improve.
-Before your change:
+== Series Details ==
 
-ldd build/tools/gputop |wc -l
-5
+Series: intel-ci: Update display blocklist (rev2)
+URL   : https://patchwork.freedesktop.org/series/159672/
+State : success
 
-after appling all patches in this series:
+== Summary ==
 
-ldd build/tools/gputop |wc -l
-78
+CI Bug Log - changes from XEIGT_8708_BAT -> XEIGTPW_14378_BAT
+====================================================
 
-> 
-> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
-> ---
->  tools/gputop.src/utils.h | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/tools/gputop.src/utils.h b/tools/gputop.src/utils.h
-> index 00befed56..0334ec839 100644
-> --- a/tools/gputop.src/utils.h
-> +++ b/tools/gputop.src/utils.h
-> @@ -19,6 +19,14 @@
->  
->  #define PERCLIENT_ENGINE_WIDTH 8
->  
+Summary
+-------
 
-guard '#define clamp' with #ifndef/endif
+  **SUCCESS**
 
-Regards,
-Kamil
+  No regressions found.
 
-> +#define clamp(val, lo, hi)			\
-> +({						\
-> +	__typeof__(val) _v = (val);             \
-> +	__typeof__(lo)  _lo = (lo);             \
-> +	__typeof__(hi)  _hi = (hi);             \
-> +	_v < _lo ? _lo : (_v > _hi ? _hi : _v); \
-> +})
-> +
->  /**
->   * struct gputop_driver
->   *
-> -- 
-> 2.34.1
-> 
+  
+
+Participating hosts (12 -> 12)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14378_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_waitfence@engine:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#6519])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8708/bat-dg2-oem2/igt@xe_waitfence@engine.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14378/bat-dg2-oem2/igt@xe_waitfence@engine.html
+
+  * igt@xe_waitfence@reltime:
+    - bat-dg2-oem2:       [PASS][3] -> [FAIL][4] ([Intel XE#6520])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8708/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14378/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+
+  
+  [Intel XE#6519]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519
+  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8708 -> IGTPW_14378
+  * Linux: xe-4414-d35d9c7052f6a3840ec8aa3fd141842a0b0d8b5a -> xe-4415-a26bd7f7a98308a43caa23113b034d0ae002d5d6
+
+  IGTPW_14378: 14378
+  IGT_8708: 8708
+  xe-4414-d35d9c7052f6a3840ec8aa3fd141842a0b0d8b5a: d35d9c7052f6a3840ec8aa3fd141842a0b0d8b5a
+  xe-4415-a26bd7f7a98308a43caa23113b034d0ae002d5d6: a26bd7f7a98308a43caa23113b034d0ae002d5d6
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14378/index.html
+
+--===============3423112025433121486==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>intel-ci: Update display blocklist (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159672/">https://patchwork.freedesktop.org/series/159672/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14378/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14378/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8708_BAT -&gt; XEIGTPW_14378_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14378_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_waitfence@engine:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8708/bat-dg2-oem2/igt@xe_waitfence@engine.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14378/bat-dg2-oem2/igt@xe_waitfence@engine.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519">Intel XE#6519</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_waitfence@reltime:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8708/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14378/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8708 -&gt; IGTPW_14378</li>
+<li>Linux: xe-4414-d35d9c7052f6a3840ec8aa3fd141842a0b0d8b5a -&gt; xe-4415-a26bd7f7a98308a43caa23113b034d0ae002d5d6</li>
+</ul>
+<p>IGTPW_14378: 14378<br />
+  IGT_8708: 8708<br />
+  xe-4414-d35d9c7052f6a3840ec8aa3fd141842a0b0d8b5a: d35d9c7052f6a3840ec8aa3fd141842a0b0d8b5a<br />
+  xe-4415-a26bd7f7a98308a43caa23113b034d0ae002d5d6: a26bd7f7a98308a43caa23113b034d0ae002d5d6</p>
+
+</body>
+</html>
+
+--===============3423112025433121486==--
