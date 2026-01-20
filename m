@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7564AD2ED11
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 03:49:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFE1FD2ED0F
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 03:53:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EFE4110E070;
-	Tue, 20 Jan 2026 03:49:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8A76810E070;
+	Tue, 20 Jan 2026 03:53:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VT1Z7saO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AvKiziA3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C7C3D10E070
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 03:49:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DDCCF10E070
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 03:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768880969; x=1800416969;
+ t=1768881220; x=1800417220;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=Xt+HOHEqGKx+I2xg6uMkgAMIp3iSbXmACMGwiaivwRQ=;
- b=VT1Z7saOMET2JsaVz92pcKcxiMUcwDq10fLxWZPWDalUXGgThnd0m6qu
- t0QUya5du+itK19sDJmw/Hu2I+5aKkbNDNuRk4BjPeOy4Z0vKGqSXnq9y
- 1+lMNHENwJ8TVq99/3ew4XxcINNp68lShoIx1JrnObFC3fC7qDBhBpnZg
- S6pcELIgNqNjwZbFJqbJEwMtLL7bQLK5QvB+mDjfHzQdSimFfEmvBqPAe
- XXkpCZMnjT1y1d70iHjyXFgPTzX6DYnhqVT77mNgbn1n1E4WOnzcR0/wA
- 2Btxl93BgiN+T2XDRWAQbgRiGbKlJvwVx2Z/tzxLzF8qH5DuBrPTtXkRg g==;
-X-CSE-ConnectionGUID: +oO6D5ATRJG4njGApmMqaA==
-X-CSE-MsgGUID: CJeeKeZbT0+DQBmsaggzng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="69284455"
-X-IronPort-AV: E=Sophos;i="6.21,239,1763452800"; d="scan'208";a="69284455"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 19:49:28 -0800
-X-CSE-ConnectionGUID: ij1mjtf0QPeVL4ihDjAO0w==
-X-CSE-MsgGUID: f5oidqJcSHCaK0j6CdI48Q==
+ bh=xl7nFW2ukdr1N0kmqnEPz/szq4DT8Girjv/fNZ2BW4U=;
+ b=AvKiziA39NQD7aN5cAq8BOJelpC4zSwy0Wk/5LscaYJNCad5Dbytl+em
+ G+wMqTuJG620g4Oa2JZSOlpZPQUTzsx7eAWgVtfjWoikW+5FNOv986i0Z
+ 5GaQoFmk1v6tKgtQsDhjAxMnZ8mZj5IbPS2QsaGvSxa6mDMz4zhBrYZdj
+ bZXYYYEiLqXfYSCI0XXKrYVdiRarCSwX6/8FuaH47SJF3KJRLZIwVYmp0
+ nSAyvMh2Qwm8ofZo1Uqk1Bta8y4E4Sklm4+rcoKxSmXAQpEQm18qWmcOA
+ ixWOktwtxTcxC5CFXlZJFHhJdrq8PWGAjTulyE2O9JGpfmE+3EDcvBwZh w==;
+X-CSE-ConnectionGUID: 0Gy0IfvqTEymwx1HbRJscw==
+X-CSE-MsgGUID: j60viD2xSpOD84BpGCvPmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="70055578"
+X-IronPort-AV: E=Sophos;i="6.21,239,1763452800"; d="scan'208";a="70055578"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2026 19:53:39 -0800
+X-CSE-ConnectionGUID: p60FyTRUSMa9p91uaIVEYQ==
+X-CSE-MsgGUID: IpKKmmqCSnqzTd9+C5d5Gw==
 X-ExtLoop1: 1
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jan 2026 19:49:28 -0800
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.21,239,1763452800"; d="scan'208";a="205907893"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2026 19:53:39 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 19 Jan 2026 19:49:27 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ 15.2.2562.35; Mon, 19 Jan 2026 19:53:38 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Mon, 19 Jan 2026 19:49:27 -0800
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.28) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.2562.35 via Frontend Transport; Mon, 19 Jan 2026 19:53:38 -0800
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.47) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 19 Jan 2026 19:49:27 -0800
+ 15.2.2562.35; Mon, 19 Jan 2026 19:53:37 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OweUVSaKD6XQEj+qw0c8L+4VxFYiayDvjpbJQl1LH9TLY1nYuTwu2Cqm6wbYG6y1mzWIp8qYSbIVXf4qrM/BgGdMTUJMRXMiUW0+RogVWJ6OOU2FP6OStHZ2DLNFL7dpVBqNxzRBO5OBxohlrrkaJV6JCOAkM2bHCwQ7BaKddOFlgBPdqh2YHKaRGp3bycSuCeIrkJ8neBKnlZGFzo2UQMSkqiwAFYoLqRmscAQAbdGpgH8sNJib9IrlsxLidfxTNt84G1WbiOK5wCQwOE9cj+/WEVxrDnyB6a71wWVxq9oTkvouCy3Z/gXrAKWv1Zjflmkl4k/Ewd/EtVSwq3SVdg==
+ b=IHLXfdhz5Hi0VjHcITAXw6CkDH5rlh4vtwLxQouelB55ev6VHy7Z6H3tqBGBxzrdmGQfM86ZmVU/YamtfCZSzUcsAa8b7CnfIo96Yl97RPvF1YweYTd4fhOxCXDyG4K+F4Y+4awJcHsmeczv773wuHcy77d34WxBlUZFUqDSfsnNUYt1e4oeu6vAfKeWTcFB92EeUz0Ns9Zl8khA5s/NfhHI1ujG+PhUoTGLYRHuiDKMOC5rCdetWe3yuuZoeqpyWhsHnxcqUINH4OR/try+85+8EHlxEkQUQXqraWYAB+Xd9uqvratgJ5LTA6HyB6J9WvWAbm8EDeV2esYlWBVNEg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yPhMcMBvqOM6XGzWKgSIbLbk8gAvTHWXJ+D+2Gf8fEg=;
- b=W3srB0pf5x7arLSyrgltNVtNFnMEFn/PW2rTyLF18/wGjOj74waFHaI2pHxIR88WHfIKjPMVFOkgUbVce0OU0PrgP93jaQ3XE1UhskUo9Sr/XHoQHp59bryi1nSPWs8iqxkXnbqeFmA6B/s58ZNBsNqwIzXjnYvPXZEkAnI+rV+8YlRkNJAKmnZOgdvOgVufubF1IXPH0vDHRZouoDuFVH2dgey4NHUGu3czCKuIXczjTT9zKHQuT1fnzc++6ynGS5EoH5bfeNasumUZxCPUGiQM57jUQrOEZiX5A8Pq5EyozVsagbFhfYI0GUAV9fLauZwrXF7CvvQew8RVwqFJyA==
+ bh=AD/MjNlgCLc18EHiOZ7X3PnRszzUUpDT7vR1SFL14lo=;
+ b=EVcRpDeGUzdmUDuOqrEVln6BdCcqKiDrnku2yA16mf2f4Az9ODUZx1Hk/qh51+5OfXMyA5EXfgBETSV/Tv462fWoYglzVlB2GYwPcqaKtcxgq+lSOfHf+5HNioc5ks92/6/cVe34FaN3WIHIWTOYslsgiIuuCsjLMwxHxBpHnie88ce422JnplS/6GORmakBE3x4elpM1qz0JdQs7EMGSkBITIWo3hv41033o/0URkse0g+xs6AVq1j0DrMM8jS/IGzsVo2pKR9S/F6pXtQe7062Tc9B7/RaZseFSvlCOjnOGVvGNDkqQMmI37knUBlJNB9WiVTddEUbvMhtx6bZlA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from DM3PPF208195D8D.namprd11.prod.outlook.com
- (2603:10b6:f:fc00::f13) by DM4PR11MB6503.namprd11.prod.outlook.com
- (2603:10b6:8:8c::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.13; Tue, 20 Jan
- 2026 03:49:25 +0000
+ (2603:10b6:f:fc00::f13) by IA1PR11MB6348.namprd11.prod.outlook.com
+ (2603:10b6:208:3af::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Tue, 20 Jan
+ 2026 03:53:35 +0000
 Received: from DM3PPF208195D8D.namprd11.prod.outlook.com
  ([fe80::7cc8:75c9:22c6:3c66]) by DM3PPF208195D8D.namprd11.prod.outlook.com
  ([fe80::7cc8:75c9:22c6:3c66%7]) with mapi id 15.20.9520.011; Tue, 20 Jan 2026
- 03:49:25 +0000
+ 03:53:35 +0000
 From: "Kandpal, Suraj" <suraj.kandpal@intel.com>
 To: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 CC: "B S, Karthik" <karthik.b.s@intel.com>, "Thasleem, Mohammed"
  <mohammed.thasleem@intel.com>, "Nautiyal, Ankit K"
  <ankit.k.nautiyal@intel.com>, "Konieczny, Kamil" <kamil.konieczny@intel.com>
-Subject: RE: [PATCH i-g-t v6 07/10] tools/intel_hdcp: Interactive keypress
- thread for menu
-Thread-Topic: [PATCH i-g-t v6 07/10] tools/intel_hdcp: Interactive keypress
- thread for menu
-Thread-Index: AQHciUAfSGYM7hISYEC+zFYxGryukLVaa/tQ
-Date: Tue, 20 Jan 2026 03:49:25 +0000
-Message-ID: <DM3PPF208195D8D162C4D2DEB3BA817FD41E389A@DM3PPF208195D8D.namprd11.prod.outlook.com>
+Subject: RE: [PATCH i-g-t v6 08/10] tools/intel_hdcp: Add video playback loop
+ with thread
+Thread-Topic: [PATCH i-g-t v6 08/10] tools/intel_hdcp: Add video playback loop
+ with thread
+Thread-Index: AQHciUAeJTG8RsSxUkizeRNB/7IQtLVabVKA
+Date: Tue, 20 Jan 2026 03:53:35 +0000
+Message-ID: <DM3PPF208195D8D2A3171A3C883571EC37FE389A@DM3PPF208195D8D.namprd11.prod.outlook.com>
 References: <20260119123142.504623-1-santhosh.reddy.guddati@intel.com>
- <20260119123142.504623-8-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20260119123142.504623-8-santhosh.reddy.guddati@intel.com>
+ <20260119123142.504623-9-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20260119123142.504623-9-santhosh.reddy.guddati@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -94,85 +95,85 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM3PPF208195D8D:EE_|DM4PR11MB6503:EE_
-x-ms-office365-filtering-correlation-id: 6083ed2c-bd55-4c20-2bfe-08de57d6e7a2
+x-ms-traffictypediagnostic: DM3PPF208195D8D:EE_|IA1PR11MB6348:EE_
+x-ms-office365-filtering-correlation-id: 80e5ceec-a42d-4575-6bf8-08de57d77c85
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|376014|366016|38070700021;
-x-microsoft-antispam-message-info: =?us-ascii?Q?2Vv2qtsL9WgV/7qMRyWlPCWo99bKboWqhdaxMTpu8LHpzHL6LeRm/BPuxuqW?=
- =?us-ascii?Q?bNW1dJzNz3ets0lEHbc2fE8c4zuo+1lZ9+286/BYloe023P6yUKUv26Fkm53?=
- =?us-ascii?Q?dIJvuSbcJZFdJ1YU4ZIyap+Gr+eAMSXwPsz7YgFNK+p/RjotoyMizzedhGrl?=
- =?us-ascii?Q?BbzsCPONVJcS6KYQMjNyBFF6RM47F7eikqnL+ZDxvMERXffbFBOx8pfn+Tvu?=
- =?us-ascii?Q?IRf5qbtupIPFALK+UmNIUPsuXbILIwCk/JQhfENCe+DF/YDkSrOzzvUuspOY?=
- =?us-ascii?Q?q++EVtadXngnzLZv0pZbtQsYne2OFx7JmOfq8ThYBDHZ9Xcahxov8mV43QwO?=
- =?us-ascii?Q?4rPG+HZgM4LQSnDI1aE10h8yyWzC+ygXHSmAwATIlmIQtXUvel4Xxyw9Wv0U?=
- =?us-ascii?Q?eS8sqORsMA//UVNdYz4BgeDTKESzWitfK3qlH+XujnyalUUQ42pTkxVdBuAa?=
- =?us-ascii?Q?PBvR/04uNmoszIT/ehJVGAOl3A3kRoIbOgqKk/xLtp75+afqsQfjyw8/a/es?=
- =?us-ascii?Q?MdDjNQFACNHyfPIJrDUcL/nOp9XSBd+tlbU5RHM4wZKn3hOSitds3AmJn+V1?=
- =?us-ascii?Q?3eWqIrwkyJISe1JEQE3D/+1+KuaXkzYnKnvjVAdbYmmvqwEuXSHKnrI8xsIP?=
- =?us-ascii?Q?WjIR0OImnn0nztRxDQjznkbH6knWyd/w0smcFfJ7qhtCdl6OWNjn6uFlM0Gh?=
- =?us-ascii?Q?zNlArh/UlhrnUTEH0UWVdadvbAc05/sdHbCwo4WBIw5L8gbds6J4TZXqi/qt?=
- =?us-ascii?Q?1J8mMpWjjBz252vod7fptO4kHYBELSQya71Qqf3iwb48+EVC7dbBntAfduQk?=
- =?us-ascii?Q?vXmMAkxyHPrcVbKmNZ7SVz5qkEf13e85xsJE965cthVixl7cFPG8qf/zzndm?=
- =?us-ascii?Q?yZJi4r8tYt3/n87iM7pwiWF9XUoFNaN0q29vtg46V+FcF7I5bSEPWpLroeZD?=
- =?us-ascii?Q?MAhPD2bwjo96RFbj+h2/I8bCfls8dlmIZATx33Ls2C1G8a5Fl4c6kZ+0NPGx?=
- =?us-ascii?Q?6RDSETJ/MiJaJ+BipU71hz1SPweHWKn4+8R5d475CdURw0NYj6xxCpEgg9tN?=
- =?us-ascii?Q?a9dNbIb6+1QqiaIJUsdGwc+t8Noz4h673MRmiByRrMJsQFZpbMjFVjGUNeh2?=
- =?us-ascii?Q?wnj5q/4NpND/cObsTF5I+51C6g/34bCLP8CusxxNi4TIsKdZEoSYm6/cowu0?=
- =?us-ascii?Q?+lRpmZtMp+PHnoD4QBXVhCSJj7c5HeuvLXdY4jg/wBOtOgnxaR570ILPJ2o1?=
- =?us-ascii?Q?qP8xwhEqRGzT18WfsJ2hFrZvrgr2OD8MRrHopedTwu8Bjaa2WCEAtAk24ZV9?=
- =?us-ascii?Q?eTevKrozfhURWkpk9EJLn3n0W8CLtDq1ueHdmYDv6cAWl/E+kYV5nV/Y0Gdi?=
- =?us-ascii?Q?oQJYM95lmP2PXMDOCUP35FVQutLf33w223LjU8bCiH5iPo4/t7hayklS3+oe?=
- =?us-ascii?Q?fbplUBiIoJZz91natEPExytTfL110fDJzBMWuMhReNhTxfqLYyCjmNw2Khwh?=
- =?us-ascii?Q?anuNzwuopuePcBiIDMaZyRck6X7UXv8QKZTpa0AuTU2cnhlRcQlk1eE/ClVT?=
- =?us-ascii?Q?3TVmcNAKWyp7lNEh5W3RC4mgG4ZrSxnb0yH6rW/y03i+z/M108EkVtaNfmU+?=
- =?us-ascii?Q?3ejTkPlRCmyLyGy2F3WXvFM=3D?=
+x-microsoft-antispam: BCL:0; ARA:13230040|366016|376014|1800799024|38070700021;
+x-microsoft-antispam-message-info: =?us-ascii?Q?T7zrhPL0BEHlGKl61yJYLXt8M+E5XuNy1Sa5RSrgJjU4UvMBAXXUFcuykbKM?=
+ =?us-ascii?Q?1QDWJb+aEw4sdIWIeEg45/s4hwTj0Jt0IcMi6kk4GGtx3BaCIcCVRSAmEXAx?=
+ =?us-ascii?Q?hF86Z5bNdip9232bnuLH8msiWTvRVN7UVuO1PvtaEBol2aDAVan+YiVFY+K5?=
+ =?us-ascii?Q?Z4Tjj30m+lttXnklFa2YCrpBQuIfb5UVC4LvcUwPAtwl0N3DRICZE6ykwzVN?=
+ =?us-ascii?Q?dfiEPCqFKTD4ZnHVs/N97cnNvLQYy37DitGiGrHOQkVr/OU/roTrEodRciFg?=
+ =?us-ascii?Q?+CtpZB4epBNzJf/2LTNuWEFABYHuV/eUTgZgPF+Pq/7XfyUUUqkz5pAPjxRg?=
+ =?us-ascii?Q?wZLy3mx2QPko67xlwKtE15u4Lm44SlFOFEud6w59Tqt92jBhQJPzp4Mv4Ryj?=
+ =?us-ascii?Q?XSg2sADkE6+B4tc9xpdAOoOtfORGSJWt9cMj9A7zeybTv5aST7gEAh6GSyM4?=
+ =?us-ascii?Q?4zoG9Hjj+BxMqCNxH3vk8IsIifyxtKYhnR9Tn/FtfsxWU9/l56wVa7pz4ZqN?=
+ =?us-ascii?Q?TNjLKPqHC5M3EAUSjEk+2z9VNsrlzY8rWloI8RWIfpj2xE7w+Tv6G+j8q+fP?=
+ =?us-ascii?Q?H9C3708CgzNRcVaR0RIiiUCcWPMTItD6lgaVJahNWB+bDp+4DoPI1gjNXVSl?=
+ =?us-ascii?Q?pcuCE6NtZISp954i9zg3t11G03ehe+Z8jeVzs4EoTIN5WWRgedvQsquVQIOY?=
+ =?us-ascii?Q?R3bbrCIbitvNJpyGawowlGDdrA064cVXLDsqEgoXXqNqwPuMZmsNNWoBhxJW?=
+ =?us-ascii?Q?LidRlUIi+xiJF3Sm3OqhkE9AaIhhKK1i069JPkWK2FUbfctWzDPtMHCEpeW4?=
+ =?us-ascii?Q?6kGKyefRga9t5eoEJE6pd0e56ZkcPAiOe9ztLdcA0ix/sqiCFCt4gJkaHRYu?=
+ =?us-ascii?Q?L8jv9On0VFlpab2AOAA/099RkZgmDjj+Mi/1hKK2UtbMHhbJStBHSX2I4Zl3?=
+ =?us-ascii?Q?xlVkZW+kKmi1aC4SLgGd2tiPFevzwYEIcfejJNSEZvOOOnkS7eNghKGf826S?=
+ =?us-ascii?Q?Wcpi1IhGlTikQhsXDwoPXs4gRFuKHrYIiBEXcRAQULvkfTX22RkItYfsTAOl?=
+ =?us-ascii?Q?PVaYmnbv5hZX6Jq0izAmF1ZCrBbqqjdH5PCzmIcrqrGwUqrZj0Zwk9V+Hxv4?=
+ =?us-ascii?Q?eek/hoQJYDzsGlcubfnwauQr/o62+3N0LnRFRBCFqGcbnZxrUV0s8zcMKtCR?=
+ =?us-ascii?Q?0IhEmw60q3rr2cJdOnT/OYRPnRWTOzNh537DvzYW12jF/YOknQxoO+arJ3g8?=
+ =?us-ascii?Q?4StXMQQ7tW2gYwfCSdnCqt+fNiKvw/Sd3c/jv5NqF2VOXJHDnrCoBN406olj?=
+ =?us-ascii?Q?wNydAyXHSkOk7CzgFh9YKmcgzJM1ZpZfKC/aNFMTYDCubzK+ofNpXf/MwQAx?=
+ =?us-ascii?Q?tKXsbfs6bLS6EUON5zbeXZ42KT7WqEs3ztXavPINHMgc79CDau3O06DfGxSf?=
+ =?us-ascii?Q?pF88Ary2hV6WMgaFvLgLMdSsuERuLM1xhQexOFgSa1cTO4V10coiI9OqQmRb?=
+ =?us-ascii?Q?jNZdkqPNplO46Gx1aGCK0PV1JQo91410mCrcwCj+lLeZIe6hThstKnWsICs5?=
+ =?us-ascii?Q?4XrkR1mlTiyyvZ4wUsWYMHBpIxUKMPdSyodxV1f6h8O+6CJBTlJJP9gvTKlu?=
+ =?us-ascii?Q?LBqMe7qu/B6kU7OG5opMLSQ=3D?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM3PPF208195D8D.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(38070700021); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(366016)(376014)(1800799024)(38070700021); DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?98weEa8u2iD2GiH37wRsNbteKSGLlpYB16ly5f0yv2aYPD6XRC29Mhx+LW7z?=
- =?us-ascii?Q?0/civxPf6B9q7NG3ZJ3uXum9/vKDMZQv66neEXO9/KUn5bGot9q8fANIzIse?=
- =?us-ascii?Q?6rDv1QuAgN5G1kNWFU8IY5+CmxQEygQtgPy3gtdkAkKiiHFcK1sEcmp6OyUu?=
- =?us-ascii?Q?BuD86YsuiSeHYRraIj8wUmprzlV+gU7Pi9dV8ph8JRXRT+x75MMGo3VZOoPQ?=
- =?us-ascii?Q?En84pguDD7eW4Vvvntxd+uvZHOTVz24AACvRGLBnTJ3786Jdgj9GuyaMQ0z1?=
- =?us-ascii?Q?ewQ4/P2sgEDprDs4oPV8UhbaZ/pnPPfXvHqZ2O++SGFJi569qf8eVGkGqihD?=
- =?us-ascii?Q?x4FNrTc/w7Q6AtPb7DS7E/21fC+XUoT7JZzqyPOwberVvLr08wUnJ63Yfc0y?=
- =?us-ascii?Q?jKXYvpVZohFRPSjqSu3P8UOQ6Rmpkp2k1GtBx5oi1THwK0lo9D/m0ZPOfz7s?=
- =?us-ascii?Q?IZeVy+rVaP43glJUUnNbrmN6FiQitWTKdwzuUUVp8mq6IkXbYVcRv4GhYPAn?=
- =?us-ascii?Q?F72TYakHQbICBMsdHhQu1pIH5PYjxW5nWo8+Y1TR8Exl2jHR5QcouTl4rDcv?=
- =?us-ascii?Q?/9BsciQ4P3NH+CYsdByoOD1hWDmossdQyoRgKrapxWbEoPGn2BOGmwOSRWTZ?=
- =?us-ascii?Q?/SY607DYtdPzVPBxL7MHRtWXyY5JPwjwp/VJPKBk9QdRDF9QX1eHNJ0xXD4d?=
- =?us-ascii?Q?D420XbItz9XGhZPwp+nhtw2L7Hzhwk7n5/zysq1GRSCePECKnasYXuTXuUuS?=
- =?us-ascii?Q?2EGpCBqwfE/aWMWmlqive1sUAkgbCwjN+hfcdjrQFf3ZVI7pUiMcIYr9bNhL?=
- =?us-ascii?Q?LGvS+A7ZiSHva1+luRk6Gtpf4XNPcQjKOsSjaawCiUwh5EbiUaXtugmeqSVj?=
- =?us-ascii?Q?BJH/LuAKlZIbt6tbV/ZRcPiDIT+KAeoSeOuaswq1n9JqlyG7458IdymtpQT+?=
- =?us-ascii?Q?zYshTjCu5OkF94IFHhDf6P99HlfPZOR/qNRE6hDOVEZTeuYHgjfp8O/hlOFz?=
- =?us-ascii?Q?wzhdOw3IoPXWiOEKsMFa1z0jZkXlGpvPuUuChA2XWNgVIHQhXJqvvhV3bg2a?=
- =?us-ascii?Q?cHLL64yldcOnlYpuqVKI7mOUCo1iVcsBzlXxD0RIdMrA0tX4QXcLmdZXblWD?=
- =?us-ascii?Q?mGqaR9kwIqfB98y1xbRyAdZFV8JZ5RHCuEGwR9jTDEgWdrUBmiQAmMf/WrpT?=
- =?us-ascii?Q?CXIBT/6VLczjWYhNjSNPIrGO0ZhU8jLU+E9hAO3PLUMxX4UCrGo9N8i1rtXR?=
- =?us-ascii?Q?PMUC60D/cytY0+zxpLnq+KyW5gcMP7nWUXoKEVRMHU/js9v4xqSK3UM6UbCl?=
- =?us-ascii?Q?UX+mpeZyAkmuqvXHKEXlddgbCYp3W4hNTkfzKlGrFMAYmhjZtxeBcAt3RtTQ?=
- =?us-ascii?Q?0j/sWVPVzqzOd6JJkkVTZVFB8gFL4azd1VopsYkkFtV4Lta6s7xM25fFM/OL?=
- =?us-ascii?Q?2DEdX4e9IteUi6LNHbPZ0o9aMLSorY2nvf4LFUN5CfF9T2vAHgPiUUCJbmfR?=
- =?us-ascii?Q?jydtOKS7GYSzDAzh9B6xl63ST1JgGzl9uWCkNCQ5lVcSwYOt67rwg86/L3TW?=
- =?us-ascii?Q?sY1ar1TIguzNqp0WIOUSOmSCQBu9n8j7wALKLTzAzKvF3Rxyo0qoDxCA0Mf1?=
- =?us-ascii?Q?WacElKAeUV6GTc6JPz3lzn92+uYNksvjvYoqAfdEOZcyzQmExb6g5t3eMsgA?=
- =?us-ascii?Q?NeSu3t9kfW6p7IagmIwh2/HvUTXjKEtF20MnSuO8h0vLEV/22BeLl2VOOvm4?=
- =?us-ascii?Q?Py9daIkG2g=3D=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?/q8heMEGMlIXdEqFZTMl2goz6DbZApUmgcx6PESybHANPiQSXs16AR0AIq6l?=
+ =?us-ascii?Q?KwmSXrJB15kfBEsdL/83rdCNbKvlQSmZvJq2mMuP3DGSPPOYOAwA9m8qOVsQ?=
+ =?us-ascii?Q?q0W6vy14kkWEtQSPkTLLyXRkJJtBu02uJJZlMlOPsyJFQ5K90OjZRn/xaxbR?=
+ =?us-ascii?Q?e1Ln99Hzf4hsB2lglwl+/o/CCxXJMmk111eQw/zazK4I/KuWed4Pfw8hnMBK?=
+ =?us-ascii?Q?2FXOKA0XDAzSAx1B4hMPAjflK6u3IRq19kHGRGHt/K+66MlhpSS5rZNSN160?=
+ =?us-ascii?Q?6w0Fbovn4a8qquPASMlKCVjhpjE83ixWDx4JDeifNfpyUK+Ig57N2/xCcsJo?=
+ =?us-ascii?Q?N/SmvhZxEzbZ5IW/8YH9II5IS8mEZrd8TQzfCdKiCskCTGGbLkN9s+9hyq9K?=
+ =?us-ascii?Q?74tuZuIbOB+dao6H119b/Z8gWj5Ji7EHTjacb/Xib/3CRhu851nI7gNy7y00?=
+ =?us-ascii?Q?hZFTdhk27GZMUEU9X7DmBr3DI2zDxOa8wSZaFc5+vmddwZ9klzJwS59DaJB1?=
+ =?us-ascii?Q?ETwRqw65lZvk8NmqbQuq1f/SjxXrIMuEZg6uy0i9frphBOl0rFM3EGAtxrGB?=
+ =?us-ascii?Q?XTHOpvF05aGD5ldHKwj2KeAIwpfLW+mrpn0Ios7HeZZRDpEEYNf0+Oq/k43p?=
+ =?us-ascii?Q?hyS5p6AljzVR1zKmThjMuA/LUyuWcVzAuK032jURVRunzEDY0tumPQxPevvN?=
+ =?us-ascii?Q?7WSMNqN8UvGENLt1K2kcSv5/q3VhidGRJo/NZpboeBGXep3OSBaMK/ZUqLlE?=
+ =?us-ascii?Q?wudQqqknv1NRqYcSad9KpRY9+F+hSjyP2hoQ/o+K2PZrFGBeTwUUfpwQ2kVH?=
+ =?us-ascii?Q?sGH3TSn20c6VMJM5y/9YtPwc+mWzEShOCLOgLPkHD2ak3RizRNISNLpmUNf2?=
+ =?us-ascii?Q?8PomRQhT/WDE3axDSBCtE7ghQiD3XEoB7QUXuB25pVub9b+0rKk1YTZykgL4?=
+ =?us-ascii?Q?xFpaQhWEnRnlBlOpu+OwUw86xlfTIUKI27BjgjhRuBcTxFWuRmVniLeaaIW1?=
+ =?us-ascii?Q?KFTfWswDf3CXmAcCy0H3z/2ZGPSnB9wYT3hMTcmx5EP1GWdcTAt2t3KENPN9?=
+ =?us-ascii?Q?m6lcFC5NxfvIIcuML6FGH4MgqSz0cfcnoObzUftRV9sup57wCf1tnhszK9mI?=
+ =?us-ascii?Q?spxMdhSTJUcHGC/AbD1hqknpFGwb9TXCU7OvPOm5Xex6mFAQZndqQn4vN5Jw?=
+ =?us-ascii?Q?VgwGdfEboI43PdL8i9qkxobvqpe9ktahgynBPBNzHKjU+wOvzsDZb8ix8xZf?=
+ =?us-ascii?Q?xqcEb6IbwjNM4pL48XbWHWMQfS/nFISCzLhHB4Lqp1kU6Jxq190rTbu/F+OI?=
+ =?us-ascii?Q?duE8OK7Iogkt3DzUTlMJOqZjSyJh38t7FpP1rAXruLTnUyzsV0cqc9tY+VUU?=
+ =?us-ascii?Q?X0hlsgENTZuK0FYATFkrYVIivM4qgaAqPECUqutDfzKh9UB+i7HiKI7X2uXX?=
+ =?us-ascii?Q?hAaimDQWR+Y5ccv59cs6tjb7djx/PRw4uGxaP9Xe48AGsbyPa5Okm5P/GxoY?=
+ =?us-ascii?Q?PcDcbXSoMOLuij2lm/F9M8akC1ZNZW8aco2N9lNc70q4hw28FjW0uzEXeJfN?=
+ =?us-ascii?Q?wDwT8DB7q2s3HlVYJR7yYrUDhRSI+x0hgg6/ofvEbUvV4Hh6GM0+xDavmbG6?=
+ =?us-ascii?Q?x3z0cLgic9GXZYzbb6PbdbdH1Fpyraatk78TZhqBt5X2JeqDqEQBvlJ12SCn?=
+ =?us-ascii?Q?CiItJwjTJZdm9zuMtmwlhVrcJbsnbPNGD6Of8z+usJeKpSOpdAVZTWe6J/wU?=
+ =?us-ascii?Q?w1xzzqicig=3D=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: DM3PPF208195D8D.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6083ed2c-bd55-4c20-2bfe-08de57d6e7a2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jan 2026 03:49:25.3347 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 80e5ceec-a42d-4575-6bf8-08de57d77c85
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jan 2026 03:53:35.1592 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: OSNt02C8+S62ebn6aXBPgKZXHpXw1WphpY/skK64tZQ4qRjBe/zpYIpOpD24C56hH4Jsuu41JZUJ88EzgDaYtg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6503
+X-MS-Exchange-CrossTenant-userprincipalname: 8ZnlBFuS0QYyEsMr+kAbzPVJcscUig8A+Hc7iPmJMlL57oFKM/rQNTE1/11LCnmutY4G+/JyLuqtbVzQ7m5tpA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6348
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -189,305 +190,145 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-> Subject: [PATCH i-g-t v6 07/10] tools/intel_hdcp: Interactive keypress th=
-read
-> for menu
+> Subject: [PATCH i-g-t v6 08/10] tools/intel_hdcp: Add video playback loop=
+ with
+> thread
 >=20
-> Handle user input asynchronously with keypress_thread ,enable interactive
-> HDCP via user options.
-> Update print_menu to display available actions.
+> The thread dynamically updates the framebuffer with HDCP status visual (e=
+.g.,
+> HDCP1.4, HDCP2.2 Type 0/1) using color-coded backgrounds and text.
+> Use start_video_player() and stop_video_player() functions to manage the
+> thread lifecycle.
 >=20
-> v2: Handle invalid user input like choosing an invalid connector or non H=
-DCP
-> supported output
->=20
-> v3: Use menu lines to print, Avoid reverifying the user input connector i=
-d to be
-> valid or not for HDCP. Instead display only HDCP supported connectors to =
-the
-> user and verify the option provided by user (Suraj)
-
-Nit :
-Try defining it as points
-V3 :
--
--
-
->=20
-> Introduce validate_input(), get_valid_hdcp_connectors(), select_connector=
-()
-> and handle_connector_selection() to parse user input.
->=20
-
-Move this above the versioning info
-
 > Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 > ---
->  tools/intel_hdcp.c | 205
-> +++++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 199 insertions(+), 6 deletions(-)
+>  tools/intel_hdcp.c | 96
+> ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 96 insertions(+)
 >=20
 > diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c index
-> b96fc570f..bc0485caa 100644
+> bc0485caa..fdaa7d931 100644
 > --- a/tools/intel_hdcp.c
 > +++ b/tools/intel_hdcp.c
-> @@ -5,6 +5,7 @@
->=20
->  #include <fcntl.h>
->  #include <stdio.h>
-> +#include <ctype.h>
->=20
->  #include "igt.h"
->=20
-> @@ -29,8 +30,23 @@ typedef struct data {
->  	igt_output_t *output;
->  	enum pipe pipe;
->  	enum hdcp_type hdcp_type;
-> +	int user_cmd;
-> +	bool running;
-> +	pthread_mutex_t lock;
-> +	pthread_t video_tid;
-> +	int selected_connector;
+> @@ -35,6 +35,7 @@ typedef struct data {
+>  	pthread_mutex_t lock;
+>  	pthread_t video_tid;
+>  	int selected_connector;
+> +	bool video_running;
 >  } data_t;
 >=20
-> +static const char * const menu_lines[] =3D {
-> +	"=3D=3D=3D HDCP Tool =3D=3D=3D",
-> +	"1. Get HDCP Information",
-> +	"2. Enable HDCP1.4",
-> +	"3. Enable HDCP2.2 Type 0",
-> +	"4. Enable HDCP2.2 Type 1",
-> +	"5. Disable HDCP",
-> +	"q. Quit"
-> +};
-> +
->  static void set_hdcp_prop(data_t *data, int property, int type, int
-> connector_id)  {
->  	drmModeConnector *drm_connector =3D
-> drmModeGetConnectorCurrent(data->fd, connector_id); @@ -223,12
-> +239,190 @@ static void get_hdcp_info(data_t *data)
->  	drmModeFreeResources(res);
+>  static const char * const menu_lines[] =3D { @@ -425,6 +426,101 @@ stati=
+c
+> void *keypress_thread(void *arg)
+>  	return NULL;
 >  }
 >=20
-> -static void print_usage(void)
-> +static void print_menu(void)
-> +{
-> +	printf("\n");
-> +	for (size_t i =3D 0; i < ARRAY_SIZE(menu_lines); i++)
-> +		printf("%s\n", menu_lines[i]);
-> +	printf("\n");
-> +}
+> +static void *video_player_thread(void *arg) {
+> +	double font_size, x, y;
+> +	struct igt_fb fb;
+> +	cairo_t *cr;
+> +	igt_plane_t *primary;
+> +	const char *hdcp_str;
+> +	double bg_r =3D 0.0, bg_g =3D 0.0, bg_b =3D 0.0;
+> +	cairo_text_extents_t ext;
 > +
-> +static bool validate_input(const char *input, char *choice) {
-> +	const char *p =3D input;
-> +	const char *rest;
-> +
-> +	/* Trim leading whitespace */
-> +	while (*p && isspace((unsigned char)*p))
-> +		p++;
-> +
-> +	/* Empty input */
-> +	if (*p =3D=3D '\0')
-> +		return false;
-> +
-> +	*choice =3D *p;
-> +	rest =3D p + 1;
-> +
-> +	/* Ensure rest is only whitespace/newline */
-> +	while (*rest) {
-> +		if (!isspace((unsigned char)*rest) && *rest !=3D '\0') {
-> +			fprintf(stderr, "Invalid input format\n");
-> +			return false;
-> +		}
-> +		rest++;
-> +	}
-> +
-> +	return true;
-> +}
-> +
-> +static int get_valid_hdcp_connectors(data_t *data, int
-> +*valid_connectors) {
-> +	drmModeRes *res;
-> +	int valid_count =3D 0;
-> +
-> +	res =3D drmModeGetResources(data->fd);
-> +	if (!res)
-> +		return 0;
-> +
-> +	for (int i =3D 0; i < res->count_connectors; i++) {
-> +		drmModeConnector *connector;
-> +		char *output_name;
-> +		const char *hdcp_support;
-> +
-> +		connector =3D drmModeGetConnectorCurrent(data->fd, res-
-> >connectors[i]);
-> +		if (!connector)
-> +			continue;
-> +
-> +		if (connector->connection =3D=3D DRM_MODE_CONNECTED &&
-> +		    connector->encoder_id !=3D 0) {
-> +			asprintf(&output_name, "%s-%d",
-> +				 kmstest_connector_type_str(connector-
-> >connector_type),
-> +				 connector->connector_type_id);
-> +			hdcp_support =3D get_hdcp_version(data->fd,
-> output_name);
-> +			free(output_name);
-> +
-> +			if (hdcp_support && strcmp(hdcp_support, "No HDCP
-> support") !=3D 0)
-> +				valid_connectors[valid_count++] =3D connector-
-> >connector_id;
-> +		}
-> +		drmModeFreeConnector(connector);
-> +	}
-> +	drmModeFreeResources(res);
-> +
-> +	return valid_count;
-> +}
-> +
-> +static bool select_connector(data_t *data, int *valid_connectors, int
-> +valid_count) {
-> +	char input[256];
-> +	int cid;
-> +	const char *q;
-> +
-> +	printf("\nValid HDCP-capable connector IDs: ");
-> +	for (int i =3D 0; i < valid_count; i++) {
-> +		printf("%d", valid_connectors[i]);
-> +		if (i < valid_count - 1)
-> +			printf(", ");
-> +	}
-> +	printf("\n");
-> +
-> +	while (data->running) {
-> +		printf("Enter connector id (blank to cancel): ");
-> +		fflush(stdout);
-> +
-> +		if (!fgets(input, sizeof(input), stdin)) {
-> +			fprintf(stderr, "No input; aborting action\n");
-> +			return false;
-> +		}
-> +
-> +		/* Check for blank line (cancel) */
-> +		q =3D input;
-> +		while (*q && isspace((unsigned char)*q))
-> +			q++;
-> +
-> +		if (*q =3D=3D '\0' || *q =3D=3D '\n') {
-> +			fprintf(stderr, "Cancelled connector selection\n");
-> +			return false;
-> +		}
-> +
-> +		if (sscanf(input, "%d", &cid) !=3D 1) {
-> +			fprintf(stderr, "Invalid number; try again\n");
-> +			continue;
-> +		}
-> +
-> +		/* Verify connector is in valid list */
-> +		for (int i =3D 0; i < valid_count; i++) {
-> +			if (valid_connectors[i] =3D=3D cid) {
-> +				data->selected_connector =3D cid;
-> +				printf("Using connector: %d\n", data-
-> >selected_connector);
-> +				return true;
-> +			}
-> +		}
-> +
-> +		fprintf(stderr, "Connector %d is not a valid HDCP-capable
-> connector\n", cid);
-> +	}
-> +
-> +	return false;
-> +}
-> +
-> +static bool handle_connector_selection(data_t *data, int cmd) {
-> +	int valid_connectors[32];
-> +	int valid_count;
-> +
-> +	/* Commands 2-5 need connector selection if not already set */
-> +	if (cmd < 2 || cmd > 5 || data->selected_connector !=3D -1)
-> +		return true;
-> +
-> +	valid_count =3D get_valid_hdcp_connectors(data, valid_connectors);
-> +
-> +	if (valid_count =3D=3D 0) {
-> +		fprintf(stderr, "No HDCP-capable connectors available\n");
-> +		return false;
-> +	}
-> +
-> +	return select_connector(data, valid_connectors, valid_count); }
-> +
-> +static void *keypress_thread(void *arg)
->  {
-> -	fprintf(stderr, "Usage: intel_hdcp [OPTIONS]\n");
-> -	fprintf(stderr, "Options:\n");
-> -	fprintf(stderr, "-i,	--info		Get HDCP Information\n");
-> -	fprintf(stderr, "-h,	--help		Display this help
-> message\n");
 > +	data_t *data =3D (data_t *)arg;
-> +	char input[256], choice;
+> +	enum hdcp_type cur_type =3D data->hdcp_type;
+
+
+No random declarations all declarations should be on top you can reassign i=
+t here later.
+
+With that fixed LGTM,
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+
 > +
-> +	print_menu();
+> +	igt_create_color_fb(data->fd, data->width, data->height,
+> DRM_FORMAT_XRGB8888,
+> +			    DRM_FORMAT_MOD_LINEAR, 0.0, 0.0, 0.0, &fb);
 > +
-> +	while (data->running) {
-> +		printf("Enter input 1-5 or q: ");
-> +		fflush(stdout);
+> +	while (data->video_running) {
+> +		pthread_mutex_lock(&data->lock);
 > +
-> +		if (!fgets(input, sizeof(input), stdin)) {
-> +			printf("\nExiting...\n");
+> +		cur_type =3D data->hdcp_type;
+> +
+> +		switch (cur_type) {
+> +		case HDCP_TYPE_1_4:
+> +			bg_r =3D 0.0; bg_g =3D 0.7; bg_b =3D 0.0;
+> +			hdcp_str =3D "HDCP1.4";
+> +			break;
+> +		case HDCP_TYPE_2_2_TYPE_0:
+> +			bg_r =3D 0.0; bg_g =3D 0.45; bg_b =3D 0.45;
+> +			hdcp_str =3D "HDCP2.2 TYPE 0";
+> +			break;
+> +		case HDCP_TYPE_2_2_TYPE_1:
+> +			bg_r =3D 0.45; bg_g =3D 0.15; bg_b =3D 0.6;
+> +			hdcp_str =3D "HDCP2.2 TYPE 1";
+> +			break;
+> +		default:
+> +			bg_r =3D 0.0; bg_g =3D 0.0; bg_b =3D 0.0;
+> +			hdcp_str =3D "NO HDCP";
 > +			break;
 > +		}
 > +
-> +		if (!validate_input(input, &choice))
-> +			continue;
+> +		cr =3D igt_get_cairo_ctx(data->fd, &fb);
 > +
-> +		pthread_mutex_lock(&data->lock);
+> +		cairo_set_source_rgb(cr, bg_r, bg_g, bg_b);
+> +		cairo_paint(cr);
 > +
-> +		if (choice =3D=3D 'q' || choice =3D=3D 'Q') {
-> +			data->running =3D false;
-> +			pthread_mutex_unlock(&data->lock);
-> +			continue;
-> +		}
+> +		cairo_select_font_face(cr, "Helvetica",
+> CAIRO_FONT_SLANT_NORMAL,
+> +				       CAIRO_FONT_WEIGHT_BOLD);
+> +		font_size =3D data->height / 12.0;
+> +		cairo_set_font_size(cr, font_size);
 > +
-> +		if (choice >=3D '1' && choice <=3D '5') {
-> +			data->user_cmd =3D choice - '0';
+> +		cairo_text_extents(cr, hdcp_str, &ext);
+> +		x =3D (data->width - ext.width) / 2.0 - ext.x_bearing;
+> +		y =3D (data->height - ext.height) / 2.0 - ext.y_bearing;
 > +
-> +			if (!handle_connector_selection(data, data-
-> >user_cmd))
-> +				data->user_cmd =3D 0;
-> +		} else {
-> +			fprintf(stderr, "Invalid choice: %c\n", choice);
-> +		}
+> +		cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+> +		cairo_move_to(cr, x, y + ext.height);
+> +		cairo_show_text(cr, hdcp_str);
+> +		cairo_destroy(cr);
+> +
+> +		primary =3D igt_output_get_plane_type(data->output,
+> DRM_PLANE_TYPE_PRIMARY);
+> +		igt_plane_set_fb(primary, &fb);
+> +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
 > +
 > +		pthread_mutex_unlock(&data->lock);
+> +
+> +		usleep(100 * 1000);
 > +	}
 > +
+> +	igt_remove_fb(data->fd, &fb);
+> +
 > +	return NULL;
->  }
->=20
+> +}
+> +
+> +static void start_video_player(data_t *data) {
+> +	if (data->video_running)
+> +		return;
+> +
+> +	data->video_running =3D true;
+> +	if (pthread_create(&data->video_tid, NULL, video_player_thread,
+> data) !=3D 0) {
+> +		fprintf(stderr, "Failed to create video player thread\n");
+> +		data->video_running =3D false;
+> +	}
+> +}
+> +
+> +static void stop_video_player(data_t *data) {
+> +	if (!data->video_running)
+> +		return;
+> +
+> +	data->video_running =3D false;
+> +	pthread_join(data->video_tid, NULL);
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC); }
+> +
 >  static void test_init(data_t *data)
-> @@ -290,7 +484,6 @@ int main(int argc, char **argv)
->  			break;
->  		case 'h':
->  		default:
-> -			print_usage();
-
-So here is my problem with this patch you add all these functions in this p=
-atch which you do not use here which is understandable since you do not hav=
-e all the
-Gears to get it working but the you delete print_usage() here which means a=
-t this point of the patch something that was working breaks
-
-I would like to keep print usage here as is and delete this in the 9th patc=
-h where you add all the other necessary fitting to get the new upgraded too=
-l working
-
-Regards,
-Suraj Kandpal
-
->  			break;
->  		}
->  	}
+>  {
+>  	drmModeModeInfo *mode;
 > --
 > 2.34.1
 
