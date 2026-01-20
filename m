@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 261FACA5FAF
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 17:17:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2788CA5FAF
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 17:17:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CDB8910E63F;
-	Tue, 20 Jan 2026 17:17:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 752A510E639;
+	Tue, 20 Jan 2026 17:17:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="blGaDf9r";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iO1CK2T8";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2201310E63F
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 17:17:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 070F910E639
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 17:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768929458; x=1800465458;
+ t=1768929462; x=1800465462;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=ziBXO5G+4IgfcgB0sNOSh9Ele7VrOLj67BMlZdpG/NI=;
- b=blGaDf9riIhqvhPOSN23wazwPSTR/l5y0R4be3zVwB/SH1nopuYB2MuY
- ucGjnoEZKjZdRlaWY73HYBKI5+Rk3G2Ogo5gybP3ISKQnNb+b4H3RS9+T
- 2ikOaI/nbNqBYvcPs133GEQDt9LAE8XCWiigAy3mpqfG+lgc3/Ng0N7Wr
- sj9qyOXM5f/fHePLknZL+eMYlAHDuVFBRltvxAyFNDuPTm8KybOsFtHnC
- GEQUHG5zzXf6OZAnKGDCX0NweMzSyo5bis5AiJgxiUwt9NgT+bsD79mZY
- v53Xyrr8CKr6ey3EdvcoK+EdWmJ7imcMTyFJUmeuh3YnW8xbSb3Aat3tS A==;
-X-CSE-ConnectionGUID: +XVxQ7yiRi+5HQTxAeXuXA==
-X-CSE-MsgGUID: mAnab71mTFGMkPxphASNHA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="81519250"
-X-IronPort-AV: E=Sophos;i="6.21,241,1763452800"; d="scan'208";a="81519250"
+ bh=FMEg0Gyn2Kh29n6+u1Q8FsAbzEPwyzH5+0p8/oRl3sU=;
+ b=iO1CK2T8IvGv7ojTvhFY3eM572a13PwXDTVQDKmp7PS10Po9Zr0ZJJlH
+ 6WE4+Mly45mFGYYhkvDL1Yn1GoVwUJSKgzjxZx60A9OCoNf9JeHSnaz9b
+ RC9zHhkW187U1ixX/4X0xNv0ev9v6r7Fq9bK4B9Y31zhmTLLc9sTBnF76
+ kP3IGPEbhvbEo0gT7D9qogNJmSN5G2JhLKjPj6pSgEB0ijDz1tNLAofm2
+ xO+AKHYCPrnzkKZFcQJ+rhsgdRLtCwx9CrThixPZMcKHIymoTZJzCsQqG
+ SOD+a7vyqrZrnjTR2dPG44X+kldbsboRSFwZVf9153PKDbexbEUFW2Gi+ A==;
+X-CSE-ConnectionGUID: lEhjJeHGRN63rBhmRORPAw==
+X-CSE-MsgGUID: pg/TCT/gQAqoa+28Uecp9A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="81519252"
+X-IronPort-AV: E=Sophos;i="6.21,241,1763452800"; d="scan'208";a="81519252"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 09:17:38 -0800
-X-CSE-ConnectionGUID: rqkvbMNwSoKuqWU4a9TOug==
-X-CSE-MsgGUID: xWTEvhNbQ2C7E9uzbCSDCA==
+ 20 Jan 2026 09:17:42 -0800
+X-CSE-ConnectionGUID: mSxijEiBQNKIJACL6xzLgg==
+X-CSE-MsgGUID: p7d2plGITx+qGgz8mPBqwA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,241,1763452800"; d="scan'208";a="205798506"
+X-IronPort-AV: E=Sophos;i="6.21,241,1763452800"; d="scan'208";a="205798524"
 Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.245.13])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 09:17:37 -0800
+ 20 Jan 2026 09:17:40 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 09/12] lib/kms: Use igt_crtc_crc_new()
-Date: Tue, 20 Jan 2026 19:16:52 +0200
-Message-ID: <20260120171656.15840-10-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 10/12] lib/kms: Use igt_crtc_crc_new() more
+Date: Tue, 20 Jan 2026 19:16:53 +0200
+Message-ID: <20260120171656.15840-11-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260120171656.15840-1-ville.syrjala@linux.intel.com>
 References: <20260120171656.15840-1-ville.syrjala@linux.intel.com>
@@ -72,351 +72,587 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Replace igt_pipe_crc_new*() with igt_crtc_crc_new*() in
-the places that already have the igt_crtc_t around.
+Switch over to igt_crtc_crc_new() from igt_pipe_crc_new()
+even for the places that don't have a igt_crtc_t around.
+This make it more obvious where we need to modify the
+tests when fully switching over from pipe to igt_crc_t.
 
 Done with cocci:
  #include "scripts/iterators.cocci"
 
+@find_data@
+iterator name pipe_test;
+type T;
+T DATA;
+identifier FD;
+identifier DISPLAY;
 @@
-typedef igt_crtc_t;
-igt_crtc_t *CRTC;
-expression FD;
+igt_display_require(&DATA.DISPLAY, DATA.FD);
+
+@depends on find_data@
+find_data.T *DATA;
+identifier find_data.FD;
+identifier find_data.DISPLAY;
+expression PIPE;
 @@
-(
-- igt_pipe_crc_new(FD, CRTC->pipe
-+ igt_crtc_crc_new(CRTC
+- igt_pipe_crc_new(DATA->FD, PIPE
++ igt_crtc_crc_new(igt_crtc_for_pipe(&DATA->DISPLAY, PIPE)
 	,...)
-|
-- igt_pipe_crc_new_nonblock(FD, CRTC->pipe
-+ igt_crtc_crc_new_nonblock(CRTC
+
+@local_fd depends on find_data@
+find_data.T *DATA;
+identifier find_data.FD, FD2;
+identifier find_data.DISPLAY;
+expression PIPE;
+@@
+int FD2 = DATA->FD;
+<...
+- igt_pipe_crc_new(FD2, PIPE
++ igt_crtc_crc_new(igt_crtc_for_pipe(&DATA->DISPLAY, PIPE)
 	,...)
-)
+...>
+
+@depends on local_fd@
+find_data.T *DATA;
+identifier find_data.FD;
+identifier FD2;
+@@
+- int FD2 = DATA->FD;
+... when != FD2
+
+@depends on find_data@
+typedef igt_display_t;
+identifier DISPLAY, find_data.FD;
+expression PIPE, E;
+find_data.T *DATA;
+@@
+ igt_display_t *DISPLAY = E;
+<...
+- igt_pipe_crc_new(DATA->FD, PIPE
++ igt_crtc_crc_new(igt_crtc_for_pipe(DISPLAY, PIPE)
+	,...)
+...>
+
+@depends on find_data@
+identifier find_data.DISPLAY, find_data.FD;
+expression PIPE;
+find_data.T find_data.DATA;
+@@
+- igt_pipe_crc_new(DATA.FD, PIPE
++ igt_crtc_crc_new(igt_crtc_for_pipe(&DATA.DISPLAY, PIPE)
+	,...)
 
 @@
-typedef igt_plane_t;
-igt_plane_t *PLANE;
-expression FD;
+igt_display_t *DISPLAY;
+expression PIPE;
 @@
-(
-- igt_pipe_crc_new(FD, PLANE->pipe->pipe
-+ igt_crtc_crc_new(PLANE->pipe
+- igt_pipe_crc_new(DISPLAY->drm_fd, PIPE
++ igt_crtc_crc_new(igt_crtc_for_pipe(DISPLAY, PIPE)
 	,...)
-|
-- igt_pipe_crc_new_nonblock(FD, PLANE->pipe->pipe
-+ igt_crtc_crc_new_nonblock(PLANE->pipe
-	,...)
-)
 
 @@
-expression FD, CRTC, DISPLAY, PIPE;
+expression DISPLAY, PIPE;
 @@
+igt_crtc_crc_new(...)
 {
-...
- CRTC = igt_crtc_for_pipe(DISPLAY, PIPE)
-<+...
-- igt_pipe_crc_new(FD, PIPE
-+ igt_crtc_crc_new(CRTC
-  ,...)
-...+>
+<...
+- igt_crtc_crc_new(igt_crtc_for_pipe(DISPLAY, PIPE)
++ igt_pipe_crc_new(DISPLAY->drm_fd, PIPE
+	,...)
+...>
 }
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/amdgpu/amd_bypass.c               | 2 +-
- tests/amdgpu/amd_color.c                | 2 +-
- tests/amdgpu/amd_dp_dsc.c               | 2 +-
- tests/amdgpu/amd_hotplug.c              | 2 +-
- tests/amdgpu/amd_ilr.c                  | 2 +-
- tests/amdgpu/amd_mall.c                 | 2 +-
- tests/amdgpu/amd_max_bpc.c              | 2 +-
- tests/amdgpu/amd_multidisplay_modeset.c | 9 ++++-----
- tests/amdgpu/amd_plane.c                | 2 +-
- tests/amdgpu/amd_psr.c                  | 2 +-
- tests/amdgpu/amd_subvp.c                | 3 +--
- tests/intel/gem_pxp.c                   | 2 +-
- tests/intel/xe_pxp.c                    | 2 +-
- tests/kms_atomic_transition.c           | 2 +-
- tests/kms_bw.c                          | 2 +-
- tests/kms_color.c                       | 3 +--
- tests/kms_color_pipeline.c              | 3 +--
- tests/kms_hdr.c                         | 2 +-
- tests/kms_multipipe_modeset.c           | 2 +-
- tests/kms_plane_cursor.c                | 2 +-
- 20 files changed, 23 insertions(+), 27 deletions(-)
+ tests/amdgpu/amd_cursor_overlay.c      |  2 +-
+ tests/intel/kms_big_fb.c               |  4 ++--
+ tests/intel/kms_ccs.c                  |  2 +-
+ tests/intel/kms_dirtyfb.c              |  4 ++--
+ tests/intel/kms_fb_coherency.c         |  2 +-
+ tests/intel/kms_fbc_dirty_rect.c       |  2 +-
+ tests/intel/kms_flip_scaled_crc.c      |  2 +-
+ tests/intel/kms_flip_tiling.c          |  2 +-
+ tests/intel/kms_frontbuffer_tracking.c |  2 +-
+ tests/intel/kms_mmap_write_crc.c       |  2 +-
+ tests/intel/kms_pipe_stress.c          |  2 +-
+ tests/intel/kms_pwrite_crc.c           |  2 +-
+ tests/intel/kms_sharpness_filter.c     |  2 +-
+ tests/kms_async_flips.c                |  3 +--
+ tests/kms_atomic.c                     |  2 +-
+ tests/kms_cursor_crc.c                 |  2 +-
+ tests/kms_cursor_legacy.c              |  4 ++--
+ tests/kms_display_modes.c              |  6 ++++--
+ tests/kms_pipe_crc_basic.c             |  6 +++---
+ tests/kms_plane.c                      |  6 +++---
+ tests/kms_plane_alpha_blend.c          |  2 +-
+ tests/kms_plane_lowres.c               |  2 +-
+ tests/kms_plane_multiple.c             |  8 ++++----
+ tests/kms_rotation_crc.c               |  4 ++--
+ tests/kms_universal_plane.c            |  2 +-
+ tests/nouveau_crc.c                    | 16 +++++++++-------
+ 26 files changed, 48 insertions(+), 45 deletions(-)
 
-diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
-index 626c4bf36c13..3924b84da736 100644
---- a/tests/amdgpu/amd_bypass.c
-+++ b/tests/amdgpu/amd_bypass.c
-@@ -89,7 +89,7 @@ static void test_init(data_t *data)
- 	data->primary =
- 		igt_crtc_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
- 
--	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe_id,
-+	data->pipe_crc = igt_crtc_crc_new(data->pipe,
- 					  AMDGPU_PIPE_CRC_SOURCE_DPRX);
- 
- 	igt_output_set_crtc(data->output,
-diff --git a/tests/amdgpu/amd_color.c b/tests/amdgpu/amd_color.c
-index 28622d8e16ed..df418bfbe7c1 100644
---- a/tests/amdgpu/amd_color.c
-+++ b/tests/amdgpu/amd_color.c
-@@ -193,7 +193,7 @@ static void test_init(data_t *data)
- 	data->primary =
- 		igt_crtc_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
- 
--	data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id,
-+	data->pipe_crc = igt_crtc_crc_new(data->pipe,
- 					  IGT_PIPE_CRC_SOURCE_AUTO);
- 
- 	igt_output_set_crtc(data->output,
-diff --git a/tests/amdgpu/amd_dp_dsc.c b/tests/amdgpu/amd_dp_dsc.c
-index 91298ba20cde..25ea4660c821 100644
---- a/tests/amdgpu/amd_dp_dsc.c
-+++ b/tests/amdgpu/amd_dp_dsc.c
-@@ -70,7 +70,7 @@ static void test_init(data_t *data)
- 		data->primary[i] = igt_crtc_get_plane_type(
- 				data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
- 		data->pipe_crc[i] =
--				igt_pipe_crc_new(data->fd, data->pipe_id[i],
-+				igt_crtc_crc_new(data->pipe[i],
- 						 IGT_PIPE_CRC_SOURCE_AUTO);
- 	}
- 
-diff --git a/tests/amdgpu/amd_hotplug.c b/tests/amdgpu/amd_hotplug.c
-index 774630696a61..82de393b6d32 100644
---- a/tests/amdgpu/amd_hotplug.c
-+++ b/tests/amdgpu/amd_hotplug.c
-@@ -64,7 +64,7 @@ static void test_init(data_t *data)
- 		data->cursor[i] = igt_crtc_get_plane_type(
- 			data->pipe[i], DRM_PLANE_TYPE_CURSOR);
- 		data->pipe_crc[i] =
--			igt_pipe_crc_new(data->fd, data->pipe_id[i],
-+			igt_crtc_crc_new(data->pipe[i],
- 					 IGT_PIPE_CRC_SOURCE_AUTO);
- 	}
- 
-diff --git a/tests/amdgpu/amd_ilr.c b/tests/amdgpu/amd_ilr.c
-index 70254bdc1288..861110bcc7c3 100644
---- a/tests/amdgpu/amd_ilr.c
-+++ b/tests/amdgpu/amd_ilr.c
-@@ -100,7 +100,7 @@ static void test_init(data_t *data, igt_output_t *output)
- 
- 	data->pipe = igt_crtc_for_pipe(&data->display, data->pipe_id);
- 
--	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe_id,
-+	data->pipe_crc = igt_crtc_crc_new(data->pipe,
- 					  AMDGPU_PIPE_CRC_SOURCE_DPRX);
- 
- 	igt_output_set_crtc(output,
-diff --git a/tests/amdgpu/amd_mall.c b/tests/amdgpu/amd_mall.c
-index baa475ed0fbf..2c5345907d24 100644
---- a/tests/amdgpu/amd_mall.c
-+++ b/tests/amdgpu/amd_mall.c
-@@ -85,7 +85,7 @@ static void test_init(data_t *data)
- 	data->primary =
- 		igt_crtc_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
- 
--	data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id,
-+	data->pipe_crc = igt_crtc_crc_new(data->pipe,
- 					  IGT_PIPE_CRC_SOURCE_AUTO);
- 
- 	igt_output_set_crtc(data->output,
-diff --git a/tests/amdgpu/amd_max_bpc.c b/tests/amdgpu/amd_max_bpc.c
-index b25cc80f3817..46be469d9e13 100644
---- a/tests/amdgpu/amd_max_bpc.c
-+++ b/tests/amdgpu/amd_max_bpc.c
-@@ -82,7 +82,7 @@ static void test_init(data_t *data)
- 	data->primary =
- 		igt_crtc_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
- 
--	data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id,
-+	data->pipe_crc = igt_crtc_crc_new(data->pipe,
- 					  IGT_PIPE_CRC_SOURCE_AUTO);
- 
- 	igt_output_set_crtc(data->output,
-diff --git a/tests/amdgpu/amd_multidisplay_modeset.c b/tests/amdgpu/amd_multidisplay_modeset.c
-index 2af063a9937b..0af235e77394 100644
---- a/tests/amdgpu/amd_multidisplay_modeset.c
-+++ b/tests/amdgpu/amd_multidisplay_modeset.c
-@@ -174,13 +174,12 @@ static void test_init(struct data_t *data)
- 			ret = dpcd_read_byte(data->fd, output->config.connector,
- 				DPCD_TEST_SINK_MISC, &dpcd_246h);
- 			if (ret && ((dpcd_246h & 0x20) != 0x0))
--				data->pipe_crc_dprx[i] = igt_pipe_crc_new(
--					data->fd, pipes->pipe,
--					AMDGPU_PIPE_CRC_SOURCE_DPRX);
-+				data->pipe_crc_dprx[i] = igt_crtc_crc_new(pipes,
-+									  AMDGPU_PIPE_CRC_SOURCE_DPRX);
- 		}
- 
--		data->pipe_crc_otg[i] = igt_pipe_crc_new(data->fd, pipes->pipe,
--						IGT_PIPE_CRC_SOURCE_AUTO);
-+		data->pipe_crc_otg[i] = igt_crtc_crc_new(pipes,
-+							 IGT_PIPE_CRC_SOURCE_AUTO);
- 		/* disable eDP PSR */
- 		if (data->output[i]->config.connector->connector_type ==
- 				DRM_MODE_CONNECTOR_eDP) {
-diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index f56723d74485..369bce509a87 100644
---- a/tests/amdgpu/amd_plane.c
-+++ b/tests/amdgpu/amd_plane.c
-@@ -166,7 +166,7 @@ static void test_init(data_t *data)
- 		data->cursor[i] = igt_crtc_get_plane_type(
- 			data->pipe[i], DRM_PLANE_TYPE_CURSOR);
- 		data->pipe_crc[i] =
--			igt_pipe_crc_new(data->fd, data->pipe_id[i],
-+			igt_crtc_crc_new(data->pipe[i],
- 					 IGT_PIPE_CRC_SOURCE_AUTO);
- 	}
- 
-diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index af52f0e4ed54..9479e8cd3de4 100644
---- a/tests/amdgpu/amd_psr.c
-+++ b/tests/amdgpu/amd_psr.c
-@@ -193,7 +193,7 @@ static void test_init(data_t *data)
- 	data->overlay =
- 		igt_crtc_get_plane_type(data->pipe, DRM_PLANE_TYPE_OVERLAY);
- 
--	data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id,
-+	data->pipe_crc = igt_crtc_crc_new(data->pipe,
- 					  IGT_PIPE_CRC_SOURCE_AUTO);
- 
- 	igt_output_set_crtc(data->output,
-diff --git a/tests/amdgpu/amd_subvp.c b/tests/amdgpu/amd_subvp.c
-index a4ee50a85f78..f6465ba35b50 100644
---- a/tests/amdgpu/amd_subvp.c
-+++ b/tests/amdgpu/amd_subvp.c
-@@ -69,8 +69,7 @@ static void test_init(struct data *data)
- 						  data->pipe_id[i]);
- 		data->primary[i] = igt_crtc_get_plane_type(data->pipe[i],
- 							   DRM_PLANE_TYPE_PRIMARY);
--		data->pipe_crc[i] = igt_pipe_crc_new(data->fd,
--						     data->pipe_id[i],
-+		data->pipe_crc[i] = igt_crtc_crc_new(data->pipe[i],
- 						     IGT_PIPE_CRC_SOURCE_AUTO);
- 	}
- 
-diff --git a/tests/intel/gem_pxp.c b/tests/intel/gem_pxp.c
-index b45cfde0c1ac..d41a07b4c012 100644
---- a/tests/intel/gem_pxp.c
-+++ b/tests/intel/gem_pxp.c
-@@ -1245,7 +1245,7 @@ static void test_display_protected_crc(int i915, igt_display_t *display)
- 	for_each_connected_output(display, output) {
- 		mode = igt_output_get_mode(output);
- 		pipe = igt_crtc_for_pipe(display, output->pending_pipe);
--		pipe_crc = igt_pipe_crc_new(i915, pipe->pipe,
-+		pipe_crc = igt_crtc_crc_new(pipe,
- 					    IGT_PIPE_CRC_SOURCE_AUTO);
- 		plane = igt_crtc_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
- 		igt_require(igt_pipe_connector_valid(pipe->pipe, output));
-diff --git a/tests/intel/xe_pxp.c b/tests/intel/xe_pxp.c
-index 2642109693d3..6aadf691a3ae 100644
---- a/tests/intel/xe_pxp.c
-+++ b/tests/intel/xe_pxp.c
-@@ -846,7 +846,7 @@ static void compare_crcs(int fd, igt_display_t *display, igt_fb_t *ref_fb, igt_f
- 	for_each_connected_output(display, output) {
- 		mode = igt_output_get_mode(output);
- 		pipe = igt_crtc_for_pipe(display, output->pending_pipe);
--		pipe_crc = igt_pipe_crc_new(fd, pipe->pipe,
-+		pipe_crc = igt_crtc_crc_new(pipe,
- 					    IGT_PIPE_CRC_SOURCE_AUTO);
- 		plane = igt_crtc_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
- 		igt_require(igt_pipe_connector_valid(pipe->pipe, output));
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index ca97edbc73e0..60f743c6c614 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -929,7 +929,7 @@ retry:
- 		j += 1;
- 
- 		if (is_intel_device(data->drm_fd))
--			data->pipe_crcs[i] = igt_pipe_crc_new(data->drm_fd, i,
-+			data->pipe_crcs[i] = igt_crtc_crc_new(pipe,
- 							      IGT_PIPE_CRC_SOURCE_AUTO);
- 
- 		for_each_valid_output_on_pipe(&data->display, i, output) {
-diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-index 13c8e3bec2b9..13e2bdfba266 100644
---- a/tests/kms_bw.c
-+++ b/tests/kms_bw.c
-@@ -130,7 +130,7 @@ static void test_init(data_t *data, bool physical)
- 		data->primary[i] = igt_crtc_get_plane_type(
- 			data->pipe[i], DRM_PLANE_TYPE_PRIMARY);
- 		data->pipe_crc[i] =
--			igt_pipe_crc_new(data->fd, data->pipe_id[i],
-+			igt_crtc_crc_new(data->pipe[i],
- 					 IGT_PIPE_CRC_SOURCE_AUTO);
- 	}
- 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 529fa33ab000..baa629a84b42 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -740,8 +740,7 @@ static void test_setup(data_t *data, enum pipe p)
- 	igt_require(pipe->n_planes >= 0);
- 
- 	data->primary = igt_crtc_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
--	data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
--					  data->primary->pipe->pipe,
-+	data->pipe_crc = igt_crtc_crc_new(data->primary->pipe,
- 					  IGT_PIPE_CRC_SOURCE_AUTO);
- 
- 	igt_display_reset(&data->display);
-diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
-index e1b7c50e6d5f..e360f77af45e 100644
---- a/tests/kms_color_pipeline.c
-+++ b/tests/kms_color_pipeline.c
-@@ -62,8 +62,7 @@ static void test_setup(data_t *data, enum pipe p)
- 	data->mode = igt_output_get_mode(data->output);
- 	igt_require(data->mode);
- 
--	data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
--					  data->primary->pipe->pipe,
-+	data->pipe_crc = igt_crtc_crc_new(data->primary->pipe,
- 					  IGT_PIPE_CRC_SOURCE_AUTO);
- 
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index 6fb936955d62..f4c88bc04ab7 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -222,7 +222,7 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
- 	data->primary =
- 		igt_crtc_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
- 
--	data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id,
-+	data->pipe_crc = igt_crtc_crc_new(data->pipe,
- 					  IGT_PIPE_CRC_SOURCE_AUTO);
- 
- 	igt_output_set_crtc(data->output,
-diff --git a/tests/kms_multipipe_modeset.c b/tests/kms_multipipe_modeset.c
-index 27df48899d71..8270f6e12ec5 100644
---- a/tests/kms_multipipe_modeset.c
-+++ b/tests/kms_multipipe_modeset.c
-@@ -80,7 +80,7 @@ static void run_test(data_t *data, int valid_outputs)
- 
- 		mode = NULL;
- 
--		pipe_crcs[i] = igt_pipe_crc_new(display->drm_fd, i,
-+		pipe_crcs[i] = igt_crtc_crc_new(pipe,
- 						IGT_PIPE_CRC_SOURCE_AUTO);
- 
- 		igt_output_set_crtc(output,
-diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
-index 9e2d59b80765..23febe05a473 100644
---- a/tests/kms_plane_cursor.c
-+++ b/tests/kms_plane_cursor.c
-@@ -108,7 +108,7 @@ static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output,
+diff --git a/tests/amdgpu/amd_cursor_overlay.c b/tests/amdgpu/amd_cursor_overlay.c
+index dff03cb9aa52..e500d9e34066 100644
+--- a/tests/amdgpu/amd_cursor_overlay.c
++++ b/tests/amdgpu/amd_cursor_overlay.c
+@@ -157,7 +157,7 @@ static void test_init(data_t *data, enum pipe pipe_id, igt_output_t *output,
  		 kmstest_pipe_name(data->pipe_id), igt_output_name(data->output));
  
  	igt_require_pipe_crc(data->drm_fd);
 -	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe_id,
-+	data->pipe_crc = igt_crtc_crc_new(data->pipe,
++	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe_id),
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ }
+ 
+diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+index 4c83398400ba..f6de287f57f2 100644
+--- a/tests/intel/kms_big_fb.c
++++ b/tests/intel/kms_big_fb.c
+@@ -566,7 +566,7 @@ static bool test_pipe(data_t *data)
+ 	igt_display_commit2(&data->display, data->display.is_atomic ?
+ 			    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
+ 
+-	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
++	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe),
  					  IGT_PIPE_CRC_SOURCE_AUTO);
  
- 	/* Overlay rectangle for a rect in the center of the screen */
+ 	for_each_plane_on_pipe(&data->display, data->pipe, data->plane) {
+@@ -632,7 +632,7 @@ max_hw_stride_async_flip_test(data_t *data)
+ 		 data->hw_stride);
+ 	generate_pattern(data, &data->big_fb_flip[1], 640, 480);
+ 
+-	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
++	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe),
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 	igt_pipe_crc_start(data->pipe_crc);
+ 
+diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+index 6512e206f047..ea23b6581b06 100644
+--- a/tests/intel/kms_ccs.c
++++ b/tests/intel/kms_ccs.c
+@@ -1052,7 +1052,7 @@ static int test_ccs(data_t *data)
+ 		 IGT_FORMAT_ARGS(data->format), IGT_MODIFIER_ARGS(data->ccs_modifier));
+ 
+ 	if (data->flags & TEST_CRC) {
+-		data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
++		data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe),
+ 						  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 		if (try_config(data, fb_flags | FB_COMPRESSED, &ref_crc) &&
+diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+index 5697afb2b3e1..407338affd6b 100644
+--- a/tests/intel/kms_dirtyfb.c
++++ b/tests/intel/kms_dirtyfb.c
+@@ -232,8 +232,8 @@ static void prepare(data_t *data)
+ 	igt_output_set_crtc(data->output,
+ 			    igt_crtc_for_pipe(data->output->display, data->pipe));
+ 
+-	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
+-					 IGT_PIPE_CRC_SOURCE_AUTO);
++	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe),
++					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
+ 			    data->mode->vdisplay, DRM_FORMAT_XRGB8888,
+diff --git a/tests/intel/kms_fb_coherency.c b/tests/intel/kms_fb_coherency.c
+index ca915bc16c4d..e6d043c114d5 100644
+--- a/tests/intel/kms_fb_coherency.c
++++ b/tests/intel/kms_fb_coherency.c
+@@ -65,7 +65,7 @@ static void prepare_crtc(data_t *data)
+ 	if (data->pipe_crc)
+ 		igt_pipe_crc_free(data->pipe_crc);
+ 
+-	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
++	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe),
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	/* get reference crc for the white fb */
+diff --git a/tests/intel/kms_fbc_dirty_rect.c b/tests/intel/kms_fbc_dirty_rect.c
+index e063493ef4f4..c43acb7e9cb5 100644
+--- a/tests/intel/kms_fbc_dirty_rect.c
++++ b/tests/intel/kms_fbc_dirty_rect.c
+@@ -409,7 +409,7 @@ static bool prepare_test(data_t *data)
+ 	data->mode = igt_output_get_mode(data->output);
+ 	igt_output_set_crtc(data->output,
+ 			    igt_crtc_for_pipe(data->output->display, data->pipe));
+-	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
++	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe),
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	igt_require_f(intel_fbc_supported_on_chipset(data->drm_fd, data->pipe),
+diff --git a/tests/intel/kms_flip_scaled_crc.c b/tests/intel/kms_flip_scaled_crc.c
+index 3f8cd0bd642a..c2b1c0700499 100644
+--- a/tests/intel/kms_flip_scaled_crc.c
++++ b/tests/intel/kms_flip_scaled_crc.c
+@@ -783,7 +783,7 @@ static void test_flip_to_scaled(data_t *data, uint32_t index,
+ 		igt_pipe_crc_stop(data->pipe_crc);
+ 		igt_pipe_crc_free(data->pipe_crc);
+ 	}
+-	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
++	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe),
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	igt_plane_set_position(primary, 0, 0);
+diff --git a/tests/intel/kms_flip_tiling.c b/tests/intel/kms_flip_tiling.c
+index e7ada7740cd2..269bb0e24d0a 100644
+--- a/tests/intel/kms_flip_tiling.c
++++ b/tests/intel/kms_flip_tiling.c
+@@ -72,7 +72,7 @@ static void pipe_crc_new(data_t *data, int pipe)
+ 	if (data->pipe_crc)
+ 		return;
+ 
+-	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
++	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe),
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 	igt_assert(data->pipe_crc);
+ 	igt_pipe_crc_start(data->pipe_crc);
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index e8c8e342f5dc..7dd52f982d96 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -1987,7 +1987,7 @@ static void init_blue_crc(enum pixel_format format, enum tiling_type tiling)
+ 	igt_display_commit(&drm.display);
+ 
+ 	if (!pipe_crc) {
+-		pipe_crc = igt_pipe_crc_new(drm.fd, prim_mode_params.pipe,
++		pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&drm.display, prim_mode_params.pipe),
+ 					    IGT_PIPE_CRC_SOURCE_AUTO);
+ 		igt_assert(pipe_crc);
+ 	}
+diff --git a/tests/intel/kms_mmap_write_crc.c b/tests/intel/kms_mmap_write_crc.c
+index 587fe715bd47..453bcd0198a7 100644
+--- a/tests/intel/kms_mmap_write_crc.c
++++ b/tests/intel/kms_mmap_write_crc.c
+@@ -206,7 +206,7 @@ static void prepare_crtc(data_t *data)
+ 	if (data->pipe_crc)
+ 		igt_pipe_crc_free(data->pipe_crc);
+ 
+-	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
++	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe),
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	/* get reference crc for the white fb */
+diff --git a/tests/intel/kms_pipe_stress.c b/tests/intel/kms_pipe_stress.c
+index 33ccac9fcee3..85bff58d6587 100644
+--- a/tests/intel/kms_pipe_stress.c
++++ b/tests/intel/kms_pipe_stress.c
+@@ -807,7 +807,7 @@ static void prepare_test(struct data *data)
+ 		if (data->highest_mode[i]) {
+ 			igt_info("Using mode: \n");
+ 			kmstest_dump_mode(data->highest_mode[i]);
+-			data->pipe_crc[i] = igt_pipe_crc_new(data->drm_fd, i,
++			data->pipe_crc[i] = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, i),
+ 							     IGT_PIPE_CRC_SOURCE_AUTO);
+ 		} else
+ 			data->pipe_crc[i] = NULL;
+diff --git a/tests/intel/kms_pwrite_crc.c b/tests/intel/kms_pwrite_crc.c
+index d1cd9674381c..64c167ad3f44 100644
+--- a/tests/intel/kms_pwrite_crc.c
++++ b/tests/intel/kms_pwrite_crc.c
+@@ -142,7 +142,7 @@ static void prepare_crtc(data_t *data)
+ 	if (data->pipe_crc)
+ 		igt_pipe_crc_free(data->pipe_crc);
+ 
+-	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
++	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe),
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	/* get reference crc for the white fb */
+diff --git a/tests/intel/kms_sharpness_filter.c b/tests/intel/kms_sharpness_filter.c
+index 45285818c895..3bee950df95a 100644
+--- a/tests/intel/kms_sharpness_filter.c
++++ b/tests/intel/kms_sharpness_filter.c
+@@ -369,7 +369,7 @@ static void test_sharpness_filter(data_t *data,  enum test_type type)
+ 		ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 	if (type == TEST_FILTER_DPMS || type == TEST_FILTER_SUSPEND) {
+-		pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe_id,
++		pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe_id),
+ 					    IGT_PIPE_CRC_SOURCE_AUTO);
+ 		igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
+ 	}
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 92246037ca87..c8586a5f947c 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -850,8 +850,7 @@ static void test_crc(data_t *data)
+ 			     &data->output->config.connector->connector_id, 1, mode);
+ 	igt_assert_eq(ret, 0);
+ 
+-	data->pipe_crc = igt_pipe_crc_new(data->drm_fd,
+-					  kmstest_get_pipe_from_crtc_id(data->drm_fd, data->crtc_id),
++	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, kmstest_get_pipe_from_crtc_id(data->drm_fd, data->crtc_id)),
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	igt_pipe_crc_start(data->pipe_crc);
+diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+index 8966637c450b..b0d920a54cba 100644
+--- a/tests/kms_atomic.c
++++ b/tests/kms_atomic.c
+@@ -475,7 +475,7 @@ plane_immutable_zpos(data_t *data, igt_output_t *output, enum pipe pipe, int n_p
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 	/* create the pipe_crc object for this pipe */
+-	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
++	pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe),
+ 				    IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	/* get reference crc */
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index 24553e1bda09..4dcf63025687 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -605,7 +605,7 @@ static void prepare_crtc(data_t *data, int cursor_w, int cursor_h)
+ 	/* create the pipe_crc object for this pipe */
+ 	if (data->pipe_crc)
+ 		igt_pipe_crc_free(data->pipe_crc);
+-	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
++	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe),
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	/* x/y position where the cursor is still fully visible */
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index d5a61e30e6a7..667fc0344c9a 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -1611,7 +1611,7 @@ static void flip_vs_cursor_crc(igt_display_t *display, bool atomic)
+ 
+ 	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+-	pipe_crc = igt_pipe_crc_new(display->drm_fd, pipe,
++	pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, pipe),
+ 				    IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	cursor = set_cursor_on_pipe(display, pipe, &cursor_fb);
+@@ -1692,7 +1692,7 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 
+ 	igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+-	pipe_crc = igt_pipe_crc_new(display->drm_fd, pipe,
++	pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, pipe),
+ 				    IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	cursor = set_cursor_on_pipe(display, pipe, &cursor_fb);
+diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
+index 77f5677fe69e..317bc57f21a5 100644
+--- a/tests/kms_display_modes.c
++++ b/tests/kms_display_modes.c
+@@ -97,8 +97,10 @@ static void run_extendedmode_basic(data_t *data,
+ 
+ 	igt_assert_f(igt_fit_modes_in_bw(display), "Unable to fit modes in bw\n");
+ 
+-	pipe_crc[0] = igt_pipe_crc_new(data->drm_fd, pipe1, IGT_PIPE_CRC_SOURCE_AUTO);
+-	pipe_crc[1] = igt_pipe_crc_new(data->drm_fd, pipe2, IGT_PIPE_CRC_SOURCE_AUTO);
++	pipe_crc[0] = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe1),
++				       IGT_PIPE_CRC_SOURCE_AUTO);
++	pipe_crc[1] = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe2),
++				       IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	igt_create_color_fb(data->drm_fd, mode[0]->hdisplay, mode[0]->vdisplay,
+ 			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 1, 0, 0, &fbs[0]);
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index c74c0a02ae2f..8861dc7b26bd 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -183,7 +183,7 @@ static void test_read_crc(data_t *data, enum pipe pipe,
+ 		} else {
+ 			igt_pipe_crc_t *pipe_crc;
+ 
+-			pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
++			pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe),
+ 						    IGT_PIPE_CRC_SOURCE_AUTO);
+ 			igt_pipe_crc_start(pipe_crc);
+ 
+@@ -268,7 +268,7 @@ static void test_compare_crc(data_t *data, enum pipe pipe, igt_output_t *output,
+ 	igt_plane_set_fb(primary, &fb0);
+ 	igt_display_commit(display);
+ 
+-	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
++	pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe),
+ 				    IGT_PIPE_CRC_SOURCE_AUTO);
+ 	igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
+ 
+@@ -298,7 +298,7 @@ static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe,
+ 	igt_crc_t crc[2];
+ 	igt_plane_t *primary;
+ 
+-	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
++	pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe),
+ 				    IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	igt_display_reset(display);
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index ec3245c9f2e0..d1c7b06fd4ee 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -130,7 +130,7 @@ static void test_init(data_t *data, enum pipe pipe)
+ 	igt_require(igt_crtc_for_pipe(&data->display, pipe)->n_planes > 0);
+ 	if (data->pipe_crc)
+ 		igt_pipe_crc_free(data->pipe_crc);
+-	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
++	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe),
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 	igt_display_reset(&data->display);
+ }
+@@ -1364,8 +1364,8 @@ static void test_planar_settings(data_t *data)
+ 		if (rval == 0) {
+ 			set_legacy_lut(data, pipe, LUT_MASK);
+ 			igt_wait_for_vblank_count(igt_crtc_for_pipe(&data->display, pipe), 1);
+-			data->pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
+-						IGT_PIPE_CRC_SOURCE_AUTO);
++			data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe),
++							  IGT_PIPE_CRC_SOURCE_AUTO);
+ 			igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
+ 
+ 			igt_create_color_fb(data->drm_fd, 256, 256,
+diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+index a7070ac62169..c3d53c66c02a 100644
+--- a/tests/kms_plane_alpha_blend.c
++++ b/tests/kms_plane_alpha_blend.c
+@@ -219,7 +219,7 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe)
+ 
+ 	/* create the pipe_crc object for this pipe */
+ 	igt_pipe_crc_free(data->pipe_crc);
+-	data->pipe_crc = igt_pipe_crc_new(data->gfx_fd, pipe,
++	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe),
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	mode = igt_output_get_mode(output);
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index 4b4b4b4597f3..1b08685f2aac 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -307,7 +307,7 @@ static void run_test(data_t *data, uint64_t modifier)
+ 			if (!intel_pipe_output_combo_valid(&data->display))
+ 				continue;
+ 
+-			data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
++			data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe),
+ 							  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), data->output->name)
+diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
+index 342eb7b293da..f0b9e2aba668 100644
+--- a/tests/kms_plane_multiple.c
++++ b/tests/kms_plane_multiple.c
+@@ -107,8 +107,8 @@ struct {
+  */
+ static void test_init(data_t *data, enum pipe pipe, int n_planes)
+ {
+-	data->pipe_crc1 = igt_pipe_crc_new(data->drm_fd, pipe,
+-					  IGT_PIPE_CRC_SOURCE_AUTO);
++	data->pipe_crc1 = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe),
++					   IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	data->plane1 = calloc(n_planes, sizeof(*data->plane1));
+ 	igt_assert_f(data->plane1 != NULL, "Failed to allocate memory for planes\n");
+@@ -417,9 +417,9 @@ test_plane_position(data_t *data, enum pipe pipe, igt_output_t *output, uint64_t
+ 
+ static void test_init_2_display(data_t *data, enum pipe pipe1, enum pipe pipe2, int n_planes)
+ {
+-	data->pipe_crc1 = igt_pipe_crc_new(data->drm_fd, pipe1,
++	data->pipe_crc1 = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe1),
+ 					   IGT_PIPE_CRC_SOURCE_AUTO);
+-	data->pipe_crc2 = igt_pipe_crc_new(data->drm_fd, pipe2,
++	data->pipe_crc2 = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe2),
+ 					   IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	data->plane1 = calloc(n_planes, sizeof(*data->plane1));
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index b1765b4c75e5..abd87508045e 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -312,7 +312,7 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
+ 	 */
+ 	if (!is_amdgpu_device(data->gfx_fd))
+ 		igt_display_commit2(display, COMMIT_ATOMIC);
+-	data->pipe_crc = igt_pipe_crc_new(data->gfx_fd, pipe,
++	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe),
+ 				          IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	if (!is_amdgpu_device(data->gfx_fd) && start_crc)
+@@ -955,7 +955,7 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+ 		p[0].plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 		p[1].plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_OVERLAY);
+ 
+-		data->pipe_crc = igt_pipe_crc_new(data->gfx_fd, pipe,
++		data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe),
+ 						  IGT_PIPE_CRC_SOURCE_AUTO);
+ 		igt_pipe_crc_start(data->pipe_crc);
+ 
+diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+index 7b18f3ee8910..16409a4a55e0 100644
+--- a/tests/kms_universal_plane.c
++++ b/tests/kms_universal_plane.c
+@@ -96,7 +96,7 @@ functional_test_init(functional_test_t *test, igt_output_t *output, enum pipe pi
+ 	data_t *data = test->data;
+ 	drmModeModeInfo *mode;
+ 
+-	test->pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
++	test->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, pipe),
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	igt_output_set_crtc(output, igt_crtc_for_pipe(output->display, pipe));
+diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
+index 7887ff409e9e..6d61df006095 100644
+--- a/tests/nouveau_crc.c
++++ b/tests/nouveau_crc.c
+@@ -122,7 +122,7 @@ static void test_ctx_flip_detection(data_t *data)
+ 	int start = -1, frame, start_color = -1, i;
+ 	bool found_skip = false;
+ 
+-	pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
++	pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe),
+ 				    IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	create_crc_colors(data, colors, n_colors, pipe_crc);
+@@ -233,7 +233,8 @@ static void test_ctx_flip_skip_current_frame(data_t *data)
+ 	const int n_colors = ARRAY_SIZE(colors);
+ 	const int n_crcs = 30;
+ 
+-	pipe_crc = igt_pipe_crc_new(fd, data->pipe, IGT_PIPE_CRC_SOURCE_AUTO);
++	pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe),
++				    IGT_PIPE_CRC_SOURCE_AUTO);
+ 	create_crc_colors(data, colors, n_colors, pipe_crc);
+ 
+ 	set_crc_flip_threshold(data, 5);
+@@ -263,10 +264,10 @@ static void test_ctx_flip_skip_current_frame(data_t *data)
+ static void test_ctx_flip_threshold_reset_after_capture(data_t *data)
+ {
+ 	igt_pipe_crc_t *pipe_crc;
+-	const int fd = data->drm_fd;
+ 	uint32_t value = 0;
+ 
+-	pipe_crc = igt_pipe_crc_new(fd, data->pipe, IGT_PIPE_CRC_SOURCE_AUTO);
++	pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe),
++				    IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	set_crc_flip_threshold(data, 5);
+ 	igt_pipe_crc_start(pipe_crc);
+@@ -281,7 +282,8 @@ static void test_ctx_flip_threshold_reset_after_capture(data_t *data)
+ 
+ static void test_source(data_t *data, const char *source)
+ {
+-	igt_pipe_crc_t *pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe, source);
++	igt_pipe_crc_t *pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe),
++						    source);
+ 	igt_crc_t *crcs;
+ 
+ 	igt_pipe_crc_start(pipe_crc);
+@@ -302,10 +304,10 @@ static void test_source_outp_inactive(data_t *data)
+ 		{ .r = 0.0, .g = 1.0, .b = 0.0 },
+ 	};
+ 	igt_pipe_crc_t *pipe_crc;
+-	const int fd = data->drm_fd;
+ 	const int n_colors = ARRAY_SIZE(colors);
+ 
+-	pipe_crc = igt_pipe_crc_new(fd, data->pipe, "outp-inactive");
++	pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&data->display, data->pipe),
++				    "outp-inactive");
+ 	create_crc_colors(data, colors, n_colors, pipe_crc);
+ 
+ 	/* Changing the color should not change what's outside the active raster */
 -- 
 2.52.0
 
