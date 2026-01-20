@@ -4,63 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED50DD2ECE9
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 12:58:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9590D2ECE9
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 13:03:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9C69710E5E6;
-	Tue, 20 Jan 2026 12:58:45 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b9ozovzG";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7F4610E5E6
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 12:58:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768913924; x=1800449924;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=bm32q106hOB0NNVH+Gmk5RHOfftzDQf8KwCB5TzK5JA=;
- b=b9ozovzGU8EMAp4EbcfXnxG6evu6JkvFKTPvEzIUEFRc8BKzTK5PNOts
- MG7pea0sPQPU3n/MamNUwaIf7GpLuX1+rHmokaLIWQIUkza66yFpSmsTJ
- A20BuDj01kLGV+HFkk5eaqsXzDj2vAv8oCPXCwbpESlfYEim+pdP9wi+3
- /fxSPMeOjYu1kuPx0ztt5TckVrEtmT17eUyztGDe8g82xEgMNBpE0r/hG
- Mwa8zYccscVFazNH5/ruQVfrjqt2oFEPfn3ZEpsznonlhJfafT4mCqGmg
- Od3Z+zRyRRvpA4b7v0sfJWa+yz1Jw6bE2IU6m7bry43N3U6iJrOcWAV/8 Q==;
-X-CSE-ConnectionGUID: cGe30BN1T/i0Yt388BljTQ==
-X-CSE-MsgGUID: vM5skzwAT4WWqoVYbuZd9A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="70209572"
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="70209572"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 04:58:43 -0800
-X-CSE-ConnectionGUID: d+mKfzxyQQuFVboK01vCOA==
-X-CSE-MsgGUID: qYuP59m+SeuSlw4YRkZatw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="205266067"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 04:58:41 -0800
-Date: Tue, 20 Jan 2026 13:58:38 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: S Sebinraj <s.sebinraj@intel.com>
-Cc: igt-dev@lists.freedesktop.org, carlos.santa@intel.com,
- jeevaka.badrappan@intel.com, krzysztof.karas@intel.com,
- kamil.konieczny@intel.com, zbigniew.kempczynski@intel.com
-Subject: Re: [PATCH i-g-t] tests/kms_explict_fence: Add Test for Explicit
- Fencing
-Message-ID: <20260120125838.t5l4r7nrz5j7m3c6@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- S Sebinraj <s.sebinraj@intel.com>, igt-dev@lists.freedesktop.org,
- carlos.santa@intel.com, jeevaka.badrappan@intel.com,
- krzysztof.karas@intel.com, kamil.konieczny@intel.com,
- zbigniew.kempczynski@intel.com
-References: <20260114082323.2534785-1-s.sebinraj@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5A5D410E5E6;
+	Tue, 20 Jan 2026 13:03:23 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F6FA10E5E6;
+ Tue, 20 Jan 2026 13:03:21 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2999207707981345291=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260114082323.2534785-1-s.sebinraj@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_intel-ci=3A_Update_displa?=
+ =?utf-8?q?y_blocklist_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 20 Jan 2026 13:03:21 -0000
+Message-ID: <176891420157.170966.14790384743776905360@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260120090632.144336-1-jeevan.b@intel.com>
+In-Reply-To: <20260120090632.144336-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,134 +37,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi S,
-On 2026-01-14 at 13:53:23 +0530, S Sebinraj wrote:
-> Add a new test to validate explicit fencing.
-> This test handles multiple planes in a single atomic commit.
-> This test addresses a critical scenario where drivers must correctly
-> synchronize planes with mixed fence states.
-> 
-> Test Scenario:
-> - Creates three planes: one primary, two overlay
-> - Attaches fences with different states:
->    - Primary plane:   signaled fence (simulating completed GPU work)
->    - Overlay-1 plane: signaled fence (simulating completed GPU work)
->    - Overlay-2 plane: unsignaled fence (simulating long-running GPU job)
-> - Submits all planes in a single atomic commit with IN_FENCE_FD set
-> - Validates that display waits for ALL fences before updating ANY plane
-> 
-> Bug Detection:
-> This test catches driver bugs where:
->  - Planes with signaled fences update prematurely before unsignaled
->    fences complete, breaking atomic commit semantics
->  - Fence states are mismanaged across multiple planes causing visual
->    glitches or corruption
->  - The driver fails to wait on all IN_FENCE_FDs atomically
-> 
-> The test uses sw_sync timelines to create controllable fence states,
-> allowing precise validation of fence synchronization behavior. An
-> OUT_FENCE_PTR is requested to monitor when the display update actually
-> completes, enabling detection of premature updates.
-> 
-> Implementation Details:
-> - Uses sw_sync for creating fences with controlled signaling
-> - Monitors OUT_FENCE to detect premature display updates
-> - Validates atomic commit integrity across multiple planes
-> 
-> Background:
-> - A bug regressed for Xe driver on PTL (Android) i915/display handling
->   of explicit fences when provided two or more buffers at once,
->   with 1+ already-signaled fences and 1+ not-yet-signaled fences.
->   https://patchwork.freedesktop.org/patch/662982/
-> - Adding this test so that IGT contains sufficient testing for the
->   use of explicit fencing in the KMS Atomic Modesetting APIs.
-> 
-> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
-> ---
->  tests/kms_explicit_fence.c | 372 +++++++++++++++++++++++++++++++++++++
->  tests/meson.build          |   1 +
->  2 files changed, 373 insertions(+)
->  create mode 100644 tests/kms_explicit_fence.c
-> 
-> diff --git a/tests/kms_explicit_fence.c b/tests/kms_explicit_fence.c
-> new file mode 100644
-> index 000000000..d3cad5904
-> --- /dev/null
-> +++ b/tests/kms_explicit_fence.c
-> @@ -0,0 +1,372 @@
-> +/*
-> + * Copyright © 2026 Intel Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the next
-> + * paragraph) shall be included in all copies or substantial portions of the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> + * IN THE SOFTWARE.
-> + */
-> +
-> +/**
-> + * TEST: kms explicit fence multiplane
-> + * Category: Display
-> + * Description: Test explicit fencing with multiple planes and mixed fence states
-> + * Driver requirement: i915, xe
-> + * Mega feature: General Display Features
-> + *
-> + * This test validates correct handling of explicit fences when multiple planes
-> + * are updated in a single atomic commit with different fence states. This is
-> + * critical for catching fence synchronization bugs where the driver might:
-> + * 1. Prematurely display buffers with signaled fences before unsignaled fences complete
-> + * 2. Mismanage fence states across multiple planes causing visual glitches
-> + * 3. Fail to wait on all fences atomically before updating the display
-> + */
-> +
-> +#include "igt.h"
-> +#include "igt_aux.h"
-> +#include "sw_sync.h"
-> +#include <errno.h>
-> +#include <stdbool.h>
-> +#include <stdio.h>
-> +#include <string.h>
-> +#include <sys/eventfd.h>
-> +#include <poll.h>
+--===============2999207707981345291==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-System headers should be first, then newline, then igt.
-Also, sort them alphabetically:
+== Series Details ==
 
-> +#include <errno.h>
-> +#include <poll.h>
-> +#include <stdbool.h>
-> +#include <stdio.h>
-> +#include <string.h>
-> +#include <sys/eventfd.h>
+Series: intel-ci: Update display blocklist (rev2)
+URL   : https://patchwork.freedesktop.org/series/159672/
+State : success
 
-> +#include "igt.h"
-> +#include "igt_aux.h"
-> +#include "sw_sync.h"
+== Summary ==
 
-Regards,
-Kamil
+CI Bug Log - changes from IGT_8708 -> IGTPW_14378
+====================================================
 
-> +
-> +/**
-> + * SUBTEST: multiplane-atomic-fence-wait
-> + * Description: Test 3 planes (1 primary, 2 overlay) with mixed fence states:
-> + *              2 planes with signaled fences and 1 plane with unsignaled fence.
-> + *              Validates that display waits for all fences before updating any plane.
-> + */
-[cut]
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14378/index.html
+
+Participating hosts (42 -> 40)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14378 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-rpls-4:         [DMESG-WARN][1] ([i915#13400]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8708/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14378/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [DMESG-FAIL][3] ([i915#12061]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8708/bat-mtlp-8/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14378/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-9:          [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8708/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14378/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8708 -> IGTPW_14378
+  * Linux: CI_DRM_17850 -> CI_DRM_17851
+
+  CI-20190529: 20190529
+  CI_DRM_17850: a26bd7f7a98308a43caa23113b034d0ae002d5d6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_17851: 3e731ecb5e75b84db724c5f0a70f7938c2c000ce @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14378: 14378
+  IGT_8708: 8708
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14378/index.html
+
+--===============2999207707981345291==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>intel-ci: Update display blocklist (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159672/">https://patchwork.freedesktop.org/series/159672/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14378/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14378/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8708 -&gt; IGTPW_14378</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14378/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14378 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8708/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14378/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8708/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14378/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8708/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14378/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8708 -&gt; IGTPW_14378</li>
+<li>Linux: CI_DRM_17850 -&gt; CI_DRM_17851</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17850: a26bd7f7a98308a43caa23113b034d0ae002d5d6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_17851: 3e731ecb5e75b84db724c5f0a70f7938c2c000ce @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14378: 14378<br />
+  IGT_8708: 8708</p>
+
+</body>
+</html>
+
+--===============2999207707981345291==--
