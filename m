@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00B95D2629E
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 21:11:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88FF4D262A2
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 21:11:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A14DB10E66A;
-	Tue, 20 Jan 2026 21:11:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3CF1B10E664;
+	Tue, 20 Jan 2026 21:11:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="B3ywfQFf";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="GiBkVuYV";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED57210E66C
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 21:11:34 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B7F8710E664;
+ Tue, 20 Jan 2026 21:11:40 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id DD4351A2999;
- Tue, 20 Jan 2026 21:11:33 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 721D8C214DF;
+ Tue, 20 Jan 2026 21:11:12 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id B00ED606AB;
- Tue, 20 Jan 2026 21:11:33 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 958CF606AB;
+ Tue, 20 Jan 2026 21:11:39 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id CF944119B0E60; Tue, 20 Jan 2026 22:11:31 +0100 (CET)
+ with ESMTPSA id 6D3B2119B0198; Tue, 20 Jan 2026 22:11:38 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1768943492; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1768943499; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=fPjfYWtKHtTkZ0Ai0ra4QtOcxBXLnHA3WSUrjo5m02I=;
- b=B3ywfQFfqufTNeUlz2voyoMMJNc43WvRR2fZkISkLXaXbeYdcT87/DaDllJSk1949n1msd
- TDMdoAatgeq6pURG30mgdCjVkahWRWU28lGQORRn1xv77j9qazDyPRrsYoIoAi06hDxnFm
- PIHs5Uqy2VRDA3N6nDn1+CcuJ7KeUhXlefS3P4M8j+kI9PzO+pAD+IyqpJP/SvyEsu9QDK
- tmZGkXeDNgG7Pu55E+YmTzYgxZB3ZX34FwJ2kbecq2v+4PLDOsypGLksNEhUZmc/mwovN9
- YVf2SyfsI8X9mTjRxP7HGgU6jA/arY0zy9Cf4d6Q9bYU2PiQlqmhCcHhiLWIzg==
+ bh=IaO/SsWDDinXRZsImGIomDijZ7VyqacWXVQ3GURltIU=;
+ b=GiBkVuYVG7nw/QknyVrmol4inHTMm+hkzjEveeS2MqEDmGlIVr5aaarARzhtgutp1lgd5E
+ lovc2AxuQQlRkexVXQHu/2lhY9qdEEKREkzM9cIP3EHtjXOxVn7JRI7vobDjzhycpPx4Dq
+ ncONyAvZIMuahMZ9xYaczhzj8WGir0uiY3sz6r5aMHjjSs8csbPpNcuDQebVBKOL6jhxTB
+ t1OqrG2ZMb3uWcEjWjaHVMiz0yzih/IyNdJ+rsQBihGftXEKrlvLafrC1BghfkVAsau2eO
+ RzuYBa+8AQ1C8vG3XB/NHV4tp3M+d9ocH+kxQZ81zukmq/Ax9+PUtc8sfu9uZg==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Jan 2026 22:11:31 +0100
-Message-Id: <DFTQ4TC0SAIV.226HYL3YZ19VD@bootlin.com>
+Date: Tue, 20 Jan 2026 22:11:38 +0100
+Message-Id: <DFTQ4WCIJU6R.3JR7NR04X78DL@bootlin.com>
+Subject: Re: [PATCH i-g-t v4 16/46] lib/monitor_edids: Add helper to print
+ all available EDID names
 Cc: <thomas.petazzoni@bootlin.com>, <markyacoub@google.com>,
  <khaled.almahallawy@intel.com>, "igt-dev"
  <igt-dev-bounces@lists.freedesktop.org>
 To: "Louis Chauvet" <louis.chauvet@bootlin.com>,
  <igt-dev@lists.freedesktop.org>
 From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH i-g-t v4 15/46] lib/monitor_edids: Add helper to get an
- EDID by its name
 X-Mailer: aerc 0.20.1
 References: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
- <20251110-unigraf-integration-v4-15-0fc7bb1b4101@bootlin.com>
-In-Reply-To: <20251110-unigraf-integration-v4-15-0fc7bb1b4101@bootlin.com>
+ <20251110-unigraf-integration-v4-16-0fc7bb1b4101@bootlin.com>
+In-Reply-To: <20251110-unigraf-integration-v4-16-0fc7bb1b4101@bootlin.com>
 X-Last-TLS-Session-Version: TLSv1.3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,8 +66,8 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 On Mon Nov 10, 2025 at 2:39 PM CET, Louis Chauvet wrote:
-> For testing specific EDID, it is useful to be able to retrieve an EDID by
-> a verbose name.
+> During the unigraf configuration, it may be required to know the list
+> of supported EDID names, so add an helper to print them.
 >
 > Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
