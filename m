@@ -4,58 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1BE9D2ECF7
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 10:55:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54906D2ECF7
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 11:00:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5786A10E023;
-	Tue, 20 Jan 2026 10:55:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D4A6910E5C8;
+	Tue, 20 Jan 2026 11:00:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cxAD7vgj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aGuFBNSX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F90510E05E
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 10:54:59 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CA3A10E5B9
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 11:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768906499; x=1800442499;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=29N7iVuak1wSSBQahVkkYdU+qXlAsmTOlZSeFtjsDqU=;
- b=cxAD7vgjxA8r6Dke1xFaYieVqOj5Yvyk/980ww5PBQqFfwLJs4/KaIMb
- IxPMvHj22Xr2cHCgFGG30sEnIo620BVI8aUGhYvd7VMNm3KF8bESp97h+
- 3XM0Yp1Bt5Zvn8b3hDhhKJQQ5plChThta8/9XBIiOWYALlWKMir8rKgJK
- 94NSxgi+sUj0OU0IG+FZoNs+osGghQ9BO+b2fiQhmHl6Z/ngZoMYExuUT
- 6GwB3vGkAB6pDyH+dP8/K/Ng4OCrMp67OkPe1x84dUzMa3YCit0JyrDJw
- a6zhcOVQI/cp+SIVHl2u4ieccrrTaxDZm/kjMdh9kDei6Zu8hYklm9ibM g==;
-X-CSE-ConnectionGUID: IakVAEazQzqpPxi7xKzq5Q==
-X-CSE-MsgGUID: VsXOiyxXTFWNyP5B7DGodg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="70163579"
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="70163579"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 02:54:59 -0800
-X-CSE-ConnectionGUID: z77TunCsT4WBdcbMKrTbIQ==
-X-CSE-MsgGUID: UQSQeyq1RfGkO94Rqdo7tw==
+ t=1768906846; x=1800442846;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=WxWD4Nbk9iexRyWzodyZjlljN4N3ugwlrpN0DnyBeQA=;
+ b=aGuFBNSXRY4beVtTL69SZuppsqrxDMrsUwoN5/2TCIBsdQt5WcbAe6vJ
+ Vs93sKdo3/dTOSNAWsB4XygB+vCaVA5dm8/kuLcCWNCEoZt0v1l9LygU5
+ 9s3SZIiNCFriZnNXT6REWxHs2/+zBXhz9KZGTc8TOMqqx6qkzJkJzt6F9
+ Np+sJNpqZZRxaN4nFP5nk9wdPQz+DtBXpPVgkvKy7O97Po1OAXkzQDpzP
+ f6b6q81B1IXU4VHKm1IYBCeoTtWBzAwTHZ+MqPTE5eohHKfG+Kwzyv9kg
+ rd1550j84uHIb/TQeg66REGjvfmi8UJcfANzQjxrxZUC42dbSAiDj0Q4w A==;
+X-CSE-ConnectionGUID: +ZF7Hj+ATLaCFjPuiFrNMA==
+X-CSE-MsgGUID: K3B7aSTWQLalsAKWSOCqNw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="87693072"
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="87693072"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jan 2026 03:00:46 -0800
+X-CSE-ConnectionGUID: 8WQTrS2gS0SfM8VZFVIe+A==
+X-CSE-MsgGUID: EZI4wlh/THW7k3oOecikLA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="210940313"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.246.69])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 02:54:57 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jani.nikula@intel.com,
-	ville.syrjala@linux.intel.com
-Subject: [PATCH i-g-t 3/3] lib/igt_kms: Remove kmstest_pipe_to_index()
-Date: Tue, 20 Jan 2026 12:54:37 +0200
-Message-ID: <05cfd01a2489865efab4f54ab42379cec70ac26c.1768906414.git.jani.nikula@intel.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1768906414.git.jani.nikula@intel.com>
-References: <cover.1768906414.git.jani.nikula@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="210583337"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 03:00:44 -0800
+Date: Tue, 20 Jan 2026 12:00:41 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Soham Purkait <soham.purkait@intel.com>
+Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
+ badal.nilawar@intel.com, kamil.konieczny@intel.com,
+ anshuman.gupta@intel.com, umesh.nerlige.ramappa@intel.com
+Subject: Re: [PATCH i-g-t v4 1/6] tools: Rename tools/gputop to
+ tools/gputop.src
+Message-ID: <20260120110041.tpwooiljcrgmyay5@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Soham Purkait <soham.purkait@intel.com>,
+ igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
+ badal.nilawar@intel.com, kamil.konieczny@intel.com,
+ anshuman.gupta@intel.com, umesh.nerlige.ramappa@intel.com
+References: <20260107183739.84597-1-soham.purkait@intel.com>
+ <20260107183739.84597-2-soham.purkait@intel.com>
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260107183739.84597-2-soham.purkait@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,95 +76,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There's only a single user for kmstest_pipe_to_index(), and that should
-be the extent of it. There's no reason for other code than the i915_pipe
-debugfs parsing to convert from pipe name character to the enum
-pipe. And for that, the name of the function is misleading anyway.
+Hi Soham,
+On 2026-01-08 at 00:07:34 +0530, Soham Purkait wrote:
+> The GPUTOP source directory is renamed to gputop.src
+> under tools/ path and gputop.c under tools/ is also moved
+> under tools/gputop.src, to implement engine busyness in
+> gputop.
+> 
+> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+> ---
+>  tools/{ => gputop.src}/gputop.c          | 0
+>  tools/{gputop => gputop.src}/utils.c     | 0
+>  tools/{gputop => gputop.src}/utils.h     | 0
+>  tools/{gputop => gputop.src}/xe_gputop.c | 0
+>  tools/{gputop => gputop.src}/xe_gputop.h | 0
+>  5 files changed, 0 insertions(+), 0 deletions(-)
+>  rename tools/{ => gputop.src}/gputop.c (100%)
+>  rename tools/{gputop => gputop.src}/utils.c (100%)
+>  rename tools/{gputop => gputop.src}/utils.h (100%)
+>  rename tools/{gputop => gputop.src}/xe_gputop.c (100%)
+>  rename tools/{gputop => gputop.src}/xe_gputop.h (100%)
+> 
 
-Inline the functionality in __intel_get_pipe_from_crtc_index(), using
-igt_assert_f() for invalid values instead of propagating -EINVAL which
-isn't even checked by the caller.
+This is good but should be done together with meson.build
+change, so after appling only this first patch it should compile.
 
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
----
- lib/igt_kms.c       | 24 ++++++------------------
- lib/igt_kms.h       |  1 -
- tests/kms_setmode.c |  1 +
- 3 files changed, 7 insertions(+), 19 deletions(-)
+Please fix compilation.
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index f6769d31edcb..08b982f0f68f 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1061,22 +1061,6 @@ const char *kmstest_pipe_name(enum pipe pipe)
- 	return str + (pipe * 2);
- }
- 
--/**
-- * kmstest_pipe_to_index:
-- * @pipe: display pipe in string format
-- *
-- * Returns: Index to corresponding pipe
-- */
--int kmstest_pipe_to_index(char pipe)
--{
--	int r = pipe - 'A';
--
--	if (r < 0 || r >= IGT_MAX_PIPES)
--		return -EINVAL;
--
--	return r;
--}
--
- /**
-  * kmstest_plane_type_name:
-  * @plane_type: display plane type
-@@ -1318,7 +1302,7 @@ void kmstest_dump_mode(drmModeModeInfo *mode)
- static int __intel_get_pipe_from_crtc_index(int fd, int crtc_index)
- {
- 	char buf[2];
--	int debugfs_fd, res = 0;
-+	int debugfs_fd, pipe, res = 0;
- 	char pipe_char;
- 
- 	debugfs_fd = igt_debugfs_pipe_dir(fd, crtc_index, O_RDONLY);
-@@ -1332,7 +1316,11 @@ static int __intel_get_pipe_from_crtc_index(int fd, int crtc_index)
- 
- 	igt_assert_eq(sscanf(buf, "%c", &pipe_char), 1);
- 
--	return kmstest_pipe_to_index(pipe_char);
-+	pipe = pipe_char - 'A';
-+
-+	igt_assert_f(pipe >= 0 && pipe < IGT_MAX_PIPES, "i915_pipe %c out of range\n", pipe_char);
-+
-+	return pipe;
- }
- 
- /**
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index d25c166eba4a..a3b3d578f16d 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -90,7 +90,6 @@ enum pipe {
-         IGT_MAX_PIPES
- };
- const char *kmstest_pipe_name(enum pipe pipe);
--int kmstest_pipe_to_index(char pipe);
- const char *kmstest_plane_type_name(int plane_type);
- 
- enum port {
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 8ed6113205f6..3f61f72f772b 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -354,6 +354,7 @@ static void setup_crtcs(const struct test_config *tconf,
- 					  resources->crtcs[crtc->crtc_idx]);
- 		crtc->crtc_id = drm_crtc->crtc_id;
- 		drmModeFreeCrtc(drm_crtc);
-+		/* FIXME: The test functionally uses this as CRTC index, not pipe */
- 		crtc->pipe_id = kmstest_get_crtc_index_from_id(drm_fd, crtc->crtc_id);
- 
- 		crtc->connector_count = 1;
--- 
-2.47.3
+Regards,
+Kamil
 
+> diff --git a/tools/gputop.c b/tools/gputop.src/gputop.c
+> similarity index 100%
+> rename from tools/gputop.c
+> rename to tools/gputop.src/gputop.c
+> diff --git a/tools/gputop/utils.c b/tools/gputop.src/utils.c
+> similarity index 100%
+> rename from tools/gputop/utils.c
+> rename to tools/gputop.src/utils.c
+> diff --git a/tools/gputop/utils.h b/tools/gputop.src/utils.h
+> similarity index 100%
+> rename from tools/gputop/utils.h
+> rename to tools/gputop.src/utils.h
+> diff --git a/tools/gputop/xe_gputop.c b/tools/gputop.src/xe_gputop.c
+> similarity index 100%
+> rename from tools/gputop/xe_gputop.c
+> rename to tools/gputop.src/xe_gputop.c
+> diff --git a/tools/gputop/xe_gputop.h b/tools/gputop.src/xe_gputop.h
+> similarity index 100%
+> rename from tools/gputop/xe_gputop.h
+> rename to tools/gputop.src/xe_gputop.h
+> -- 
+> 2.34.1
+> 
