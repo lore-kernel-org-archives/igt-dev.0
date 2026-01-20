@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28CB6D2ECE9
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 14:29:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06D3DD2ECE9
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 14:32:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9399A10E06B;
-	Tue, 20 Jan 2026 14:29:01 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iauxrGo+";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F3DF10E06B
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 14:29:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768919340; x=1800455340;
- h=message-id:subject:from:to:cc:date:in-reply-to:
- references:content-transfer-encoding:mime-version;
- bh=ZutA/oljLM2wXX9FfFx7+9y6a7td0sbB+8iBkdZFn1A=;
- b=iauxrGo+ydRxbh06mKYvtsOeEbGp4dvomahhMOQa/zAY7qwD+7lwM/LB
- 68JX0MBPtSlh4wHBffeg9L4o2Ku173xlfnFYvdpSVbFIj3+DY8D6pJwiZ
- kB6i+wdRw2YHbP/knhjvDWkkcLVRlR8VNPqHdyA+YwR9mILlQOb87Gz5U
- 2oKup218zbmvCViwuOJGEEAwYwDX7ZZ/+WVTlHpBzfMLJjfZRhT/RxOjs
- K738nA9tQx7TSk2JHvTRQrmlM1PA5zAK/7b9wIj2UlXvpkMm4g46kyjYr
- RhfY3h2UkmFH4MSqzKNzD5DCPpXVMDU7NPKLxJ275hNBCoyo0hdB/OyW3 Q==;
-X-CSE-ConnectionGUID: JOJloQLvTeGHqk7trU9RDA==
-X-CSE-MsgGUID: sMc17dZDQI28lNqo4p4Icw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="57686862"
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="57686862"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 06:29:00 -0800
-X-CSE-ConnectionGUID: Gj/YjcspTIukFrw6+zLnPg==
-X-CSE-MsgGUID: +ix528k5R/6oToM6ew6d6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; d="scan'208";a="206043417"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO [10.245.244.250])
- ([10.245.244.250])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 06:28:57 -0800
-Message-ID: <d2a42b33a4b948eb5ab4043a80add20b1ec759c2.camel@linux.intel.com>
-Subject: Re: [PATCH i-g-t 3/3] tests/intel/xe_exec_system_allocator: Add
- purgeable memory madvise tests
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Arvind Yadav <arvind.yadav@intel.com>, igt-dev@lists.freedesktop.org
-Cc: matthew.brost@intel.com, himal.prasad.ghimiray@intel.com, 
- nishit.sharma@intel.com, pravalika.gurram@intel.com
-Date: Tue, 20 Jan 2026 15:28:44 +0100
-In-Reply-To: <20260120061141.3139060-4-arvind.yadav@intel.com>
-References: <20260120061141.3139060-1-arvind.yadav@intel.com>
- <20260120061141.3139060-4-arvind.yadav@intel.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+	by gabe.freedesktop.org (Postfix) with ESMTP id B644E10E608;
+	Tue, 20 Jan 2026 14:32:40 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43DC510E608;
+ Tue, 20 Jan 2026 14:32:39 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1417741077480028390=="
 MIME-Version: 1.0
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_intel-ci=3A_Update_argb1616?=
+ =?utf-8?q?16f_format_tests_in_display_blocklist?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jeevan B" <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 20 Jan 2026 14:32:39 -0000
+Message-ID: <176891955927.172333.2118220014441859341@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260120092914.144780-1-jeevan.b@intel.com>
+In-Reply-To: <20260120092914.144780-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,831 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi, Arvind,
+--===============1417741077480028390==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2026-01-20 at 11:41 +0530, Arvind Yadav wrote:
-> Add six purgeable memory test cases for system allocator using
-> madvise:
+== Series Details ==
 
-I wonder is xe_exec_system_allocator really the igt we should use for
-this? Sure, it's possible to bind bos to a SVM VM, but I think that's
-not really the typical use-case, but rather ordinary VMs used by
-graphics UMDs.=20
+Series: intel-ci: Update argb161616f format tests in display blocklist
+URL   : https://patchwork.freedesktop.org/series/160343/
+State : success
 
-xe_exec_system_allocator is already a huge test, primarily intended to
-test the system allocator functionality rather than bo functionality.=C2=A0
-Can't we craft a separate igt test app for this that tests the
-purgeability functionality for various VM types?
+== Summary ==
 
-Thanks,
-Thomas
+CI Bug Log - changes from XEIGT_8708_BAT -> XEIGTPW_14379_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 10)
+------------------------------
+
+  Missing    (2): bat-dg2-oem2 bat-bmg-3 
 
 
+Changes
+-------
 
->=20
-> - madvise-purgeable-dontneed-before-mmap: Mark BO as DONTNEED before
-> mmap,
-> =C2=A0 verify mmap fails on purged memory
->=20
-> - madvise-purgeable-dontneed-after-mmap: Mark BO as DONTNEED after
-> mmap,
-> =C2=A0 verify SIGBUS/SIGSEGV on accessing purged mapping
->=20
-> - madvise-purgeable-dontneed-before-exec: Mark BO as DONTNEED before
-> GPU
-> =C2=A0 execution, verify GPU behavior on purged memory with SCRATCH_PAGE
-> VMs
->=20
-> - madvise-purgeable-dontneed-after-exec: Mark BO as DONTNEED after
-> GPU
-> =C2=A0 execution, verify previously-used memory becomes inaccessible
->=20
-> - madvise-purgeable-per-vma-tracking: One BO mapped in two VMs
-> becomes
-> =C2=A0 purgeable only when BOTH VMAs are marked DONTNEED
->=20
-> - madvise-purgeable-per-vma-protection: One VMA marked DONTNEED
-> allows
-> =C2=A0 GPU execution on other VMA; both DONTNEED makes BO purgeable
->=20
-> Tests use xe_vm_madvise_purgeable() for WILLNEED/DONTNEED state
-> management
-> and trigger_memory_pressure() to simulate OOM conditions forcing
-> kernel to
-> reclaim purgeable memory.
->=20
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
-> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-> Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
-> ---
-> =C2=A0tests/intel/xe_exec_system_allocator.c | 638
-> +++++++++++++++++++++++++
-> =C2=A01 file changed, 638 insertions(+)
->=20
-> diff --git a/tests/intel/xe_exec_system_allocator.c
-> b/tests/intel/xe_exec_system_allocator.c
-> index 8af66d76e..338037a48 100644
-> --- a/tests/intel/xe_exec_system_allocator.c
-> +++ b/tests/intel/xe_exec_system_allocator.c
-> @@ -32,6 +32,15 @@
-> =C2=A0#define QUARTER_SEC		(NSEC_PER_SEC / 4)
-> =C2=A0#define FIVE_SEC		(5LL * NSEC_PER_SEC)
-> =C2=A0
-> +/* Purgeable test constants */
-> +#define PURGEABLE_ADDR		0x1a0000
-> +#define PURGEABLE_ADDR2		0x2b0000
-> +#define PURGEABLE_BATCH_ADDR	0x3c0000
-> +#define PURGEABLE_BO_SIZE	4096
-> +#define PURGEABLE_FENCE_VAL	0xbeef
-> +#define PURGEABLE_TEST_PATTERN	0xc0ffee
-> +#define PURGEABLE_DEAD_PATTERN	0xdead
-> +
-> =C2=A0struct test_exec_data {
-> =C2=A0	uint32_t batch[32];
-> =C2=A0	uint64_t pad;
-> @@ -2245,6 +2254,599 @@ test_compute(int fd, size_t size, unsigned
-> int flags)
-> =C2=A0	xe_vm_destroy(fd, vm);
-> =C2=A0}
-> =C2=A0
-> +/**
-> + * trigger_memory_pressure - Trigger memory pressure for purgeable
-> tests
-> + * @fd: DRM file descriptor
-> + * @vm: VM handle
-> + *
-> + * Creates temporary BOs exceeding VRAM size (VRAM + 64MB) to
-> trigger memory
-> + * pressure, forcing kernel to reclaim purgeable BOs in system
-> allocator.
-> + */
-> +static void trigger_memory_pressure(int fd, uint32_t vm)
-> +{
-> +	uint64_t vram_size;
-> +	const uint64_t chunk =3D 8ull << 20; /* 8 MiB */
-> +	int max_objs, n =3D 0;
-> +	uint32_t *handles;
-> +	uint64_t total;
-> +	void *p;
-> +	uint32_t bo2;
-> +
-> +	vram_size =3D xe_visible_vram_size(fd, 0);
-> +	max_objs =3D vram_size / chunk + 64;
-> +	handles =3D calloc(max_objs, sizeof(*handles));
-> +	igt_assert(handles);
-> +
-> +	total =3D 0;
-> +	while (total < vram_size + (64 << 20) && n < max_objs) {
-> +		bo2 =3D xe_bo_create(fd, vm, chunk,
-> vram_if_possible(fd, 0),
-> +				=C2=A0=C2=A0
-> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +		handles[n++] =3D bo2;
-> +		total +=3D chunk;
-> +		p =3D xe_bo_map(fd, bo2, chunk);
-> +		memset(p, 0xCD, 4096);
-> +		munmap(p, chunk);
-> +	}
-> +
-> +	for (int i =3D 0; i < n; i++)
-> +		gem_close(fd, handles[i]);
-> +
-> +	free(handles);
-> +}
-> +
-> +static jmp_buf jmp;
-> +
-> +__noreturn static void sigtrap(int sig)
-> +{
-> +	siglongjmp(jmp, sig);
-> +}
-> +
-> +/**
-> + * purgeable_mark_and_verify_purged - Mark BO as DONTNEED and verify
-> purge
-> + * @fd: DRM file descriptor
-> + * @vm: VM handle
-> + * @addr: Virtual address of the BO
-> + * @size: Size of the BO
-> + *
-> + * Marks BO as DONTNEED, triggers memory pressure, and verifies
-> purge.
-> + * Returns: true if BO was successfully purged, false otherwise
-> + */
-> +static bool purgeable_mark_and_verify_purged(int fd, uint32_t vm,
-> uint64_t addr, size_t size)
-> +{
-> +	uint32_t retained;
-> +
-> +	/* Mark as DONTNEED */
-> +	retained =3D xe_vm_madvise_purgeable(fd, vm, addr, size,
-> +					=C2=A0=C2=A0
-> DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
-> +	if (retained !=3D 1)
-> +		return false;
-> +
-> +	/* Trigger memory pressure */
-> +	trigger_memory_pressure(fd, vm);
-> +
-> +	/* Verify purged */
-> +	retained =3D xe_vm_madvise_purgeable(fd, vm, addr, size,
-> +					=C2=A0=C2=A0
-> DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
-> +	return retained =3D=3D 0;
-> +}
-> +
-> +/**
-> + * purgeable_setup_simple_bo - Setup VM and bind a single BO
-> + * @fd: DRM file descriptor
-> + * @vm: Output VM handle
-> + * @bo: Output BO handle
-> + * @addr: Virtual address to bind at
-> + * @size: Size of the BO
-> + * @use_scratch: Whether to use scratch page flag
-> + *
-> + * Helper to create VM, BO, and bind it at the specified address.
-> + */
-> +static void purgeable_setup_simple_bo(int fd, uint32_t *vm, uint32_t
-> *bo,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint64_t addr, size_t size,
-> bool use_scratch)
-> +{
-> +	struct drm_xe_sync sync =3D {
-> +		.type =3D DRM_XE_SYNC_TYPE_USER_FENCE,
-> +		.flags =3D DRM_XE_SYNC_FLAG_SIGNAL,
-> +		.timeline_value =3D 1,
-> +	};
-> +	uint64_t sync_val =3D 0;
-> +
-> +	*vm =3D xe_vm_create(fd, use_scratch ?
-> DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE : 0, 0);
-> +	*bo =3D xe_bo_create(fd, *vm, size, vram_if_possible(fd, 0),
-> 0);
-> +
-> +	sync.addr =3D to_user_pointer(&sync_val);
-> +	xe_vm_bind_async(fd, *vm, 0, *bo, 0, addr, size, &sync, 1);
-> +	xe_wait_ufence(fd, &sync_val, 1, 0, NSEC_PER_SEC);
-> +}
-> +
-> +/**
-> + * purgeable_setup_batch_and_data - Setup VM with batch and data BOs
-> for GPU exec
-> + * @fd: DRM file descriptor
-> + * @vm: Output VM handle
-> + * @bind_engine: Output bind engine handle
-> + * @batch_bo: Output batch BO handle
-> + * @data_bo: Output data BO handle
-> + * @batch: Output batch buffer pointer
-> + * @data: Output data buffer pointer
-> + * @batch_addr: Batch virtual address
-> + * @data_addr: Data virtual address
-> + * @batch_size: Batch buffer size
-> + * @data_size: Data buffer size
-> + *
-> + * Helper to create VM, bind engine, batch and data BOs, and bind
-> them.
-> + */
-> +static void purgeable_setup_batch_and_data(int fd, uint32_t *vm,
-> uint32_t *bind_engine,
-> +					=C2=A0=C2=A0=C2=A0 uint32_t *batch_bo,
-> uint32_t *data_bo,
-> +					=C2=A0=C2=A0=C2=A0 uint32_t **batch,
-> uint32_t **data,
-> +					=C2=A0=C2=A0=C2=A0 uint64_t batch_addr,
-> uint64_t data_addr,
-> +					=C2=A0=C2=A0=C2=A0 size_t batch_size,
-> size_t data_size)
-> +{
-> +	struct drm_xe_sync sync =3D {
-> +		.type =3D DRM_XE_SYNC_TYPE_USER_FENCE,
-> +		.flags =3D DRM_XE_SYNC_FLAG_SIGNAL,
-> +		.timeline_value =3D PURGEABLE_FENCE_VAL,
-> +	};
-> +	uint64_t vm_sync =3D 0;
-> +
-> +	*vm =3D xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE,
-> 0);
-> +	*bind_engine =3D xe_bind_exec_queue_create(fd, *vm, 0);
-> +
-> +	/* Create and bind batch BO */
-> +	*batch_bo =3D xe_bo_create(fd, *vm, batch_size,
-> vram_if_possible(fd, 0),
-> +			=09
-> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +	*batch =3D xe_bo_map(fd, *batch_bo, batch_size);
-> +
-> +	sync.addr =3D to_user_pointer(&vm_sync);
-> +	xe_vm_bind_async(fd, *vm, *bind_engine, *batch_bo, 0,
-> batch_addr, batch_size, &sync, 1);
-> +	xe_wait_ufence(fd, &vm_sync, PURGEABLE_FENCE_VAL, 0,
-> NSEC_PER_SEC);
-> +
-> +	/* Create and bind data BO */
-> +	*data_bo =3D xe_bo_create(fd, *vm, data_size,
-> vram_if_possible(fd, 0),
-> +				DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE
-> _VRAM);
-> +	*data =3D xe_bo_map(fd, *data_bo, data_size);
-> +
-> +	vm_sync =3D 0;
-> +	xe_vm_bind_async(fd, *vm, *bind_engine, *data_bo, 0,
-> data_addr, data_size, &sync, 1);
-> +	xe_wait_ufence(fd, &vm_sync, PURGEABLE_FENCE_VAL, 0,
-> NSEC_PER_SEC);
-> +}
-> +
-> +/**
-> + * purgeable_setup_two_vms_shared_bo - Setup two VMs with one shared
-> BO
-> + * @fd: DRM file descriptor
-> + * @vm1: Output first VM handle
-> + * @vm2: Output second VM handle
-> + * @bo: Output shared BO handle
-> + * @addr1: Virtual address in VM1
-> + * @addr2: Virtual address in VM2
-> + * @size: Size of the BO
-> + * @use_scratch: Whether to use scratch page flag for VMs
-> + *
-> + * Helper to create two VMs and bind one shared BO in both VMs.
-> + * Returns mapped pointer to the BO.
-> + */
-> +static void *purgeable_setup_two_vms_shared_bo(int fd, uint32_t
-> *vm1, uint32_t *vm2,
-> +						uint32_t *bo,
-> uint64_t addr1, uint64_t addr2,
-> +						size_t size, bool
-> use_scratch)
-> +{
-> +	struct drm_xe_sync sync =3D {
-> +		.type =3D DRM_XE_SYNC_TYPE_USER_FENCE,
-> +		.flags =3D DRM_XE_SYNC_FLAG_SIGNAL,
-> +		.timeline_value =3D 1,
-> +	};
-> +	uint64_t sync_val =3D 0;
-> +	void *map;
-> +
-> +	/* Create two VMs */
-> +	*vm1 =3D xe_vm_create(fd, use_scratch ?
-> DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE : 0, 0);
-> +	*vm2 =3D xe_vm_create(fd, use_scratch ?
-> DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE : 0, 0);
-> +
-> +	/* Create shared BO */
-> +	*bo =3D xe_bo_create(fd, 0, size, vram_if_possible(fd, 0),
-> +			=C2=A0=C2=A0
-> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +
-> +	map =3D xe_bo_map(fd, *bo, size);
-> +	memset(map, 0xAB, size);
-> +
-> +	/* Bind BO in VM1 */
-> +	sync.addr =3D to_user_pointer(&sync_val);
-> +	sync_val =3D 0;
-> +	xe_vm_bind_async(fd, *vm1, 0, *bo, 0, addr1, size, &sync,
-> 1);
-> +	xe_wait_ufence(fd, &sync_val, 1, 0, NSEC_PER_SEC);
-> +
-> +	/* Bind BO in VM2 */
-> +	sync_val =3D 0;
-> +	xe_vm_bind_async(fd, *vm2, 0, *bo, 0, addr2, size, &sync,
-> 1);
-> +	xe_wait_ufence(fd, &sync_val, 1, 0, NSEC_PER_SEC);
-> +
-> +	return map;
-> +}
-> +
-> +/**
-> + * SUBTEST: madvise-purgeable-dontneed-before-mmap
-> + * Description: Test marking memory as DONTNEED before mmap access
-> in system allocator
-> + * Test category: functionality test
-> + */
-> +static void test_dontneed_before_mmap_madvise(int fd, struct
-> drm_xe_engine_class_instance *hwe)
-> +{
-> +	uint32_t bo, vm;
-> +	uint64_t addr =3D PURGEABLE_ADDR;
-> +	size_t bo_size =3D PURGEABLE_BO_SIZE;
-> +	void *map;
-> +
-> +	purgeable_setup_simple_bo(fd, &vm, &bo, addr, bo_size,
-> false);
-> +	if (!purgeable_mark_and_verify_purged(fd, vm, addr,
-> bo_size))
-> +		igt_skip("Unable to induce purge on this
-> platform/config");
-> +
-> +	/* Try to mmap - should fail on purged BO */
-> +	map =3D __gem_mmap__device_coherent(fd, bo, 0, bo_size,
-> PROT_READ | PROT_WRITE);
-> +	igt_assert_f(map =3D=3D NULL, "mmap should fail on purged BO");
-> +	igt_assert_f(errno =3D=3D EINVAL || errno =3D=3D EFAULT,
-> +		=C2=A0=C2=A0=C2=A0=C2=A0 "Expected EINVAL or EFAULT, got errno=3D%d\n"=
-,
-> errno);
-> +
-> +	gem_close(fd, bo);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
-> +/**
-> + * SUBTEST: madvise-purgeable-dontneed-after-mmap
-> + * Description: Test marking memory as DONTNEED after mmap in system
-> allocator
-> + * Test category: functionality test
-> + */
-> +static void test_dontneed_after_mmap_madvise(int fd, struct
-> drm_xe_engine_class_instance *hwe)
-> +{
-> +	uint32_t bo, vm;
-> +	uint64_t addr =3D PURGEABLE_ADDR;
-> +	size_t bo_size =3D PURGEABLE_BO_SIZE;
-> +	void *map;
-> +
-> +	purgeable_setup_simple_bo(fd, &vm, &bo, addr, bo_size,
-> true);
-> +
-> +	map =3D xe_bo_map(fd, bo, bo_size);
-> +	memset(map, 0xAB, bo_size);
-> +
-> +	if (!purgeable_mark_and_verify_purged(fd, vm, addr,
-> bo_size))
-> +		igt_skip("Unable to induce purge on this
-> platform/config");
-> +
-> +	/* Access purged mapping - should trigger SIGBUS/SIGSEGV */
-> +	{
-> +		sighandler_t old_sigsegv, old_sigbus;
-> +		char *ptr =3D (char *)map;
-> +		int sig;
-> +
-> +		old_sigsegv =3D signal(SIGSEGV,
-> (__sighandler_t)sigtrap);
-> +		old_sigbus =3D signal(SIGBUS,
-> (__sighandler_t)sigtrap);
-> +
-> +		sig =3D sigsetjmp(jmp, SIGBUS | SIGSEGV);
-> +		if (sig =3D=3D SIGBUS || sig =3D=3D SIGSEGV) {
-> +			/* Expected - purged mapping access failed
-> */
-> +		} else if (sig =3D=3D 0) {
-> +			*ptr =3D 0;
-> +			igt_assert_f(false, "Access to purged
-> mapping should trigger signal\n");
-> +		} else {
-> +			igt_assert_f(false, "unexpected signal
-> %d\n", sig);
-> +		}
-> +
-> +		signal(SIGBUS, old_sigbus);
-> +		signal(SIGSEGV, old_sigsegv);
-> +	}
-> +
-> +	munmap(map, bo_size);
-> +	gem_close(fd, bo);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
-> +/**
-> + * SUBTEST: madvise-purgeable-dontneed-before-exec
-> + * Description: Test marking memory as DONTNEED before GPU exec in
-> system allocator
-> + * Test category: functionality test
-> + */
-> +static void test_dontneed_before_exec_madvise(int fd, struct
-> drm_xe_engine_class_instance *hwe)
-> +{
-> +	uint32_t vm, exec_queue, bo, batch_bo, bind_engine;
-> +	uint64_t data_addr =3D 0x1a0000;
-> +	uint64_t batch_addr =3D 0x2a0000;
-> +	size_t data_size =3D 4096;
-> +	size_t batch_size =3D 4096;
-> +	struct drm_xe_sync sync[1] =3D {
-> +		{ .type =3D DRM_XE_SYNC_TYPE_USER_FENCE,
-> +		=C2=A0 .flags =3D DRM_XE_SYNC_FLAG_SIGNAL,
-> +		=C2=A0 .timeline_value =3D 0xbeef },
-> +	};
-> +	struct drm_xe_exec exec =3D {
-> +		.num_batch_buffer =3D 1,
-> +		.num_syncs =3D 1,
-> +		.syncs =3D to_user_pointer(sync),
-> +	};
-> +	uint32_t *data, *batch;
-> +	uint64_t vm_sync =3D 0;
-> +	int b, ret;
-> +
-> +	purgeable_setup_batch_and_data(fd, &vm, &bind_engine,
-> &batch_bo, &bo,
-> +					&batch, &data, batch_addr,
-> data_addr,
-> +					batch_size, data_size);
-> +
-> +	/* Prepare batch */
-> +	b =3D 0;
-> +	batch[b++] =3D MI_STORE_DWORD_IMM_GEN4;
-> +	batch[b++] =3D data_addr;
-> +	batch[b++] =3D data_addr >> 32;
-> +	batch[b++] =3D PURGEABLE_DEAD_PATTERN;
-> +	batch[b++] =3D MI_BATCH_BUFFER_END;
-> +
-> +	igt_assert(purgeable_mark_and_verify_purged(fd, vm,
-> data_addr, data_size));
-> +
-> +	/* Try to execute - should fail or cause GPU fault */
-> +	exec_queue =3D xe_exec_queue_create(fd, vm, hwe, 0);
-> +	exec.exec_queue_id =3D exec_queue;
-> +	exec.address =3D batch_addr;
-> +
-> +	vm_sync =3D 0;
-> +	sync[0].addr =3D to_user_pointer(&vm_sync);
-> +
-> +	ret =3D __xe_exec(fd, &exec);
-> +	if (ret =3D=3D 0) {
-> +		int64_t timeout =3D NSEC_PER_SEC;
-> +
-> +		__xe_wait_ufence(fd, &vm_sync, 0xbeef, exec_queue,
-> &timeout);
-> +		/* Wait may succeed (NULL rebind) or fail (purged) -
-> both acceptable */
-> +	}
-> +
-> +	munmap(data, data_size);
-> +	munmap(batch, batch_size);
-> +	gem_close(fd, bo);
-> +	gem_close(fd, batch_bo);
-> +	xe_exec_queue_destroy(fd, bind_engine);
-> +	xe_exec_queue_destroy(fd, exec_queue);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
-> +/**
-> + * SUBTEST: madvise-purgeable-dontneed-after-exec
-> + * Description: Test marking memory as DONTNEED after successful GPU
-> exec
-> + * Test category: functionality test
-> + */
-> +static void test_dontneed_after_exec_madvise(int fd, struct
-> drm_xe_engine_class_instance *hwe)
-> +{
-> +	uint32_t vm, exec_queue, bo, batch_bo, bind_engine;
-> +	uint64_t data_addr =3D 0x1a0000;
-> +	uint64_t batch_addr =3D 0x2a0000;
-> +	size_t data_size =3D 4096;
-> +	size_t batch_size =3D 4096;
-> +	struct drm_xe_sync sync[2] =3D {
-> +		{ .type =3D DRM_XE_SYNC_TYPE_USER_FENCE,
-> +		=C2=A0 .flags =3D DRM_XE_SYNC_FLAG_SIGNAL,
-> +		=C2=A0 .timeline_value =3D 0xbeef },
-> +		{ .type =3D DRM_XE_SYNC_TYPE_SYNCOBJ,
-> +		=C2=A0 .flags =3D DRM_XE_SYNC_FLAG_SIGNAL },
-> +	};
-> +	struct drm_xe_exec exec =3D {
-> +		.num_batch_buffer =3D 1,
-> +		.num_syncs =3D 2,
-> +		.syncs =3D to_user_pointer(sync),
-> +	};
-> +	uint32_t *data, *batch;
-> +	uint32_t syncobj;
-> +	int b, ret;
-> +
-> +	purgeable_setup_batch_and_data(fd, &vm, &bind_engine,
-> &batch_bo, &bo,
-> +					&batch, &data, batch_addr,
-> data_addr,
-> +					batch_size, data_size);
-> +	memset(data, 0, data_size);
-> +
-> +	syncobj =3D syncobj_create(fd, 0);
-> +
-> +	/* Prepare batch to write to data BO */
-> +	b =3D 0;
-> +	batch[b++] =3D MI_STORE_DWORD_IMM_GEN4;
-> +	batch[b++] =3D data_addr;
-> +	batch[b++] =3D data_addr >> 32;
-> +	batch[b++] =3D 0xfeed0001;
-> +	batch[b++] =3D MI_BATCH_BUFFER_END;
-> +
-> +	exec_queue =3D xe_exec_queue_create(fd, vm, hwe, 0);
-> +	exec.exec_queue_id =3D exec_queue;
-> +	exec.address =3D batch_addr;
-> +
-> +	/* Use only syncobj for exec (not USER_FENCE) */
-> +	sync[1].handle =3D syncobj;
-> +	exec.num_syncs =3D 1;
-> +	exec.syncs =3D to_user_pointer(&sync[1]);
-> +
-> +	ret =3D __xe_exec(fd, &exec);
-> +	igt_assert_eq(ret, 0);
-> +
-> +	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0,
-> NULL));
-> +	munmap(data, data_size);
-> +	data =3D xe_bo_map(fd, bo, data_size);
-> +	igt_assert_eq(data[0], 0xfeed0001);
-> +
-> +	igt_assert(purgeable_mark_and_verify_purged(fd, vm,
-> data_addr, data_size));
-> +
-> +	/* Prepare second batch (different value) */
-> +	b =3D 0;
-> +	batch[b++] =3D MI_STORE_DWORD_IMM_GEN4;
-> +	batch[b++] =3D data_addr;
-> +	batch[b++] =3D data_addr >> 32;
-> +	batch[b++] =3D 0xfeed0002;
-> +	batch[b++] =3D MI_BATCH_BUFFER_END;
-> +
-> +	ret =3D __xe_exec(fd, &exec);
-> +	if (ret =3D=3D 0) {
-> +		/* Exec succeeded, but wait may fail on purged BO
-> (both behaviors valid) */
-> +		syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL);
-> +	}
-> +
-> +	munmap(data, data_size);
-> +	munmap(batch, batch_size);
-> +	gem_close(fd, bo);
-> +	gem_close(fd, batch_bo);
-> +	syncobj_destroy(fd, syncobj);
-> +	xe_exec_queue_destroy(fd, bind_engine);
-> +	xe_exec_queue_destroy(fd, exec_queue);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
-> +/**
-> + * SUBTEST: madvise-purgeable-per-vma-tracking
-> + * Description: Test per-VMA purgeable state tracking with multiple
-> VMs
-> + * Test category: functionality test
-> + */
-> +static void test_per_vma_tracking_madvise(int fd, struct
-> drm_xe_engine_class_instance *hwe)
-> +{
-> +	uint32_t bo, vm1, vm2;
-> +	uint64_t addr1 =3D PURGEABLE_ADDR;
-> +	uint64_t addr2 =3D PURGEABLE_ADDR2;
-> +	size_t bo_size =3D PURGEABLE_BO_SIZE;
-> +	uint32_t retained;
-> +	void *map;
-> +
-> +	map =3D purgeable_setup_two_vms_shared_bo(fd, &vm1, &vm2, &bo,
-> +							addr1,
-> addr2, bo_size, false);
-> +
-> +	/* Mark VMA1 as DONTNEED */
-> +	retained =3D xe_vm_madvise_purgeable(fd, vm1, addr1, bo_size,
-> +					=C2=A0=C2=A0
-> DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
-> +	igt_assert_eq(retained, 1);
-> +
-> +	/* Verify BO NOT purgeable (VMA2 still WILLNEED) */
-> +	retained =3D xe_vm_madvise_purgeable(fd, vm1, addr1, bo_size,
-> +					=C2=A0=C2=A0
-> DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
-> +	igt_assert_eq(retained, 1);
-> +
-> +	/* Mark both VMAs as DONTNEED */
-> +	retained =3D xe_vm_madvise_purgeable(fd, vm1, addr1, bo_size,
-> +					=C2=A0=C2=A0
-> DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
-> +	igt_assert_eq(retained, 1);
-> +
-> +	retained =3D xe_vm_madvise_purgeable(fd, vm2, addr2, bo_size,
-> +					=C2=A0=C2=A0
-> DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
-> +	igt_assert_eq(retained, 1);
-> +
-> +	/* Trigger pressure and verify BO was purged */
-> +	trigger_memory_pressure(fd, vm1);
-> +
-> +	retained =3D xe_vm_madvise_purgeable(fd, vm1, addr1, bo_size,
-> +					=C2=A0=C2=A0
-> DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
-> +	igt_assert_eq(retained, 0);
-> +
-> +	munmap(map, bo_size);
-> +	gem_close(fd, bo);
-> +	xe_vm_destroy(fd, vm1);
-> +	xe_vm_destroy(fd, vm2);
-> +}
-> +
-> +/**
-> + * SUBTEST: madvise-purgeable-per-vma-protection
-> + * Description: Test per-VMA protection from purging with GPU
-> workload
-> + * Test category: functionality test
-> + */
-> +static void test_per_vma_protection_madvise(int fd, struct
-> drm_xe_engine_class_instance *hwe)
-> +{
-> +	uint32_t vm1, vm2, exec_queue, bo, batch_bo, bind_engine;
-> +	uint64_t data_addr1 =3D PURGEABLE_ADDR;
-> +	uint64_t data_addr2 =3D PURGEABLE_ADDR2;
-> +	uint64_t batch_addr =3D PURGEABLE_BATCH_ADDR;
-> +	size_t data_size =3D PURGEABLE_BO_SIZE;
-> +	size_t batch_size =3D PURGEABLE_BO_SIZE;
-> +	struct drm_xe_sync sync[2] =3D {
-> +		{ .type =3D DRM_XE_SYNC_TYPE_USER_FENCE,
-> +		=C2=A0 .flags =3D DRM_XE_SYNC_FLAG_SIGNAL,
-> +		=C2=A0 .timeline_value =3D PURGEABLE_FENCE_VAL },
-> +		{ .type =3D DRM_XE_SYNC_TYPE_SYNCOBJ,
-> +		=C2=A0 .flags =3D DRM_XE_SYNC_FLAG_SIGNAL },
-> +	};
-> +	struct drm_xe_exec exec =3D {
-> +		.num_batch_buffer =3D 1,
-> +		.num_syncs =3D 1,
-> +		.syncs =3D to_user_pointer(&sync[1]),
-> +	};
-> +	uint32_t *data, *batch;
-> +	uint64_t vm_sync =3D 0;
-> +	uint32_t retained, syncobj;
-> +	int b, ret;
-> +
-> +	/* Create two VMs and bind shared data BO */
-> +	data =3D purgeable_setup_two_vms_shared_bo(fd, &vm1, &vm2,
-> &bo,
-> +							 data_addr1,
-> data_addr2, data_size, true);
-> +	memset(data, 0, data_size);
-> +	bind_engine =3D xe_bind_exec_queue_create(fd, vm2, 0);
-> +
-> +	/* Create and bind batch BO in VM2 */
-> +	batch_bo =3D xe_bo_create(fd, vm2, batch_size,
-> vram_if_possible(fd, 0),
-> +				DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE
-> _VRAM);
-> +	batch =3D xe_bo_map(fd, batch_bo, batch_size);
-> +
-> +	sync[0].addr =3D to_user_pointer(&vm_sync);
-> +	vm_sync =3D 0;
-> +	xe_vm_bind_async(fd, vm2, bind_engine, batch_bo, 0,
-> batch_addr, batch_size, sync, 1);
-> +	xe_wait_ufence(fd, &vm_sync, PURGEABLE_FENCE_VAL, 0,
-> NSEC_PER_SEC);
-> +
-> +	/* Mark VMA1 as DONTNEED, VMA2 stays WILLNEED */
-> +	retained =3D xe_vm_madvise_purgeable(fd, vm1, data_addr1,
-> data_size,
-> +					=C2=A0=C2=A0
-> DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
-> +	igt_assert_eq(retained, 1);
-> +
-> +	/* Trigger pressure - BO should survive (VMA2 protects) */
-> +	trigger_memory_pressure(fd, vm1);
-> +
-> +	retained =3D xe_vm_madvise_purgeable(fd, vm2, data_addr2,
-> data_size,
-> +					=C2=A0=C2=A0
-> DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
-> +	igt_assert_eq(retained, 1);
-> +
-> +	/* GPU workload - should succeed */
-> +	b =3D 0;
-> +	batch[b++] =3D MI_STORE_DWORD_IMM_GEN4;
-> +	batch[b++] =3D data_addr2;
-> +	batch[b++] =3D data_addr2 >> 32;
-> +	batch[b++] =3D PURGEABLE_TEST_PATTERN;
-> +	batch[b++] =3D MI_BATCH_BUFFER_END;
-> +
-> +	syncobj =3D syncobj_create(fd, 0);
-> +	sync[1].handle =3D syncobj;
-> +	exec_queue =3D xe_exec_queue_create(fd, vm2, hwe, 0);
-> +	exec.exec_queue_id =3D exec_queue;
-> +	exec.address =3D batch_addr;
-> +
-> +	ret =3D __xe_exec(fd, &exec);
-> +	igt_assert_eq(ret, 0);
-> +	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0,
-> NULL));
-> +
-> +	munmap(data, data_size);
-> +	data =3D xe_bo_map(fd, bo, data_size);
-> +	igt_assert_eq(data[0], PURGEABLE_TEST_PATTERN);
-> +
-> +	/* Mark both VMAs DONTNEED */
-> +	retained =3D xe_vm_madvise_purgeable(fd, vm2, data_addr2,
-> data_size,
-> +					=C2=A0=C2=A0
-> DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
-> +	igt_assert_eq(retained, 1);
-> +
-> +	/* Trigger pressure - BO should be purged */
-> +	trigger_memory_pressure(fd, vm1);
-> +
-> +	retained =3D xe_vm_madvise_purgeable(fd, vm2, data_addr2,
-> data_size,
-> +					=C2=A0=C2=A0
-> DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
-> +	igt_assert_eq(retained, 0);
-> +
-> +	/* GPU workload - should fail or succeed with NULL rebind */
-> +	batch[3] =3D PURGEABLE_DEAD_PATTERN;
-> +
-> +	ret =3D __xe_exec(fd, &exec);
-> +	/* With SCRATCH_PAGE, kernel may allow exec with NULL
-> rebind.
-> +	 * Without it, exec should fail with -EIO/-EFAULT or wait
-> should timeout.
-> +	 * Both behaviors are valid depending on kernel support.
-> +	 */
-> +
-> +	munmap(data, data_size);
-> +	munmap(batch, batch_size);
-> +	gem_close(fd, bo);
-> +	gem_close(fd, batch_bo);
-> +	syncobj_destroy(fd, syncobj);
-> +	xe_exec_queue_destroy(fd, bind_engine);
-> +	xe_exec_queue_destroy(fd, exec_queue);
-> +	xe_vm_destroy(fd, vm1);
-> +	xe_vm_destroy(fd, vm2);
-> +}
-> +
-> =C2=A0struct section {
-> =C2=A0	const char *name;
-> =C2=A0	unsigned long long flags;
-> @@ -2649,6 +3251,42 @@ int igt_main()
-> =C2=A0			test_compute(fd, SZ_2M, s->flags);
-> =C2=A0	}
-> =C2=A0
-> +	igt_subtest("madvise-purgeable-dontneed-before-mmap")
-> +		xe_for_each_engine(fd, hwe) {
-> +			test_dontneed_before_mmap_madvise(fd, hwe);
-> +			break;
-> +		}
-> +
-> +	igt_subtest("madvise-purgeable-dontneed-after-mmap")
-> +		xe_for_each_engine(fd, hwe) {
-> +			test_dontneed_after_mmap_madvise(fd, hwe);
-> +			break;
-> +		}
-> +
-> +	igt_subtest("madvise-purgeable-dontneed-before-exec")
-> +		xe_for_each_engine(fd, hwe) {
-> +			test_dontneed_before_exec_madvise(fd, hwe);
-> +			break;
-> +		}
-> +
-> +	igt_subtest("madvise-purgeable-dontneed-after-exec")
-> +		xe_for_each_engine(fd, hwe) {
-> +			test_dontneed_after_exec_madvise(fd, hwe);
-> +			break;
-> +		}
-> +
-> +	igt_subtest("madvise-purgeable-per-vma-tracking")
-> +		xe_for_each_engine(fd, hwe) {
-> +			test_per_vma_tracking_madvise(fd, hwe);
-> +			break;
-> +		}
-> +
-> +	igt_subtest("madvise-purgeable-per-vma-protection")
-> +		xe_for_each_engine(fd, hwe) {
-> +			test_per_vma_protection_madvise(fd, hwe);
-> +			break;
-> +		}
-> +
-> =C2=A0	igt_fixture() {
-> =C2=A0		xe_device_put(fd);
-> =C2=A0		drm_close_driver(fd);
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8708 -> IGTPW_14379
+  * Linux: xe-4414-d35d9c7052f6a3840ec8aa3fd141842a0b0d8b5a -> xe-4416-3e731ecb5e75b84db724c5f0a70f7938c2c000ce
+
+  IGTPW_14379: 14379
+  IGT_8708: 8708
+  xe-4414-d35d9c7052f6a3840ec8aa3fd141842a0b0d8b5a: d35d9c7052f6a3840ec8aa3fd141842a0b0d8b5a
+  xe-4416-3e731ecb5e75b84db724c5f0a70f7938c2c000ce: 3e731ecb5e75b84db724c5f0a70f7938c2c000ce
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14379/index.html
+
+--===============1417741077480028390==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>intel-ci: Update argb161616f format tests in display blocklist</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160343/">https://patchwork.freedesktop.org/series/160343/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14379/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14379/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8708_BAT -&gt; XEIGTPW_14379_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 10)</h2>
+<p>Missing    (2): bat-dg2-oem2 bat-bmg-3 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8708 -&gt; IGTPW_14379</li>
+<li>Linux: xe-4414-d35d9c7052f6a3840ec8aa3fd141842a0b0d8b5a -&gt; xe-4416-3e731ecb5e75b84db724c5f0a70f7938c2c000ce</li>
+</ul>
+<p>IGTPW_14379: 14379<br />
+  IGT_8708: 8708<br />
+  xe-4414-d35d9c7052f6a3840ec8aa3fd141842a0b0d8b5a: d35d9c7052f6a3840ec8aa3fd141842a0b0d8b5a<br />
+  xe-4416-3e731ecb5e75b84db724c5f0a70f7938c2c000ce: 3e731ecb5e75b84db724c5f0a70f7938c2c000ce</p>
+
+</body>
+</html>
+
+--===============1417741077480028390==--
