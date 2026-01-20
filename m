@@ -4,125 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17DD9D2ECF7
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 04:47:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD1E9D2ECF9
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Jan 2026 04:48:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9C76310E183;
-	Tue, 20 Jan 2026 04:47:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7E49710E183;
+	Tue, 20 Jan 2026 04:48:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="aLwY/oAS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hEpqXuWM";
 	dkim-atps=neutral
-Received: from CH5PR02CU005.outbound.protection.outlook.com
- (mail-northcentralusazon11012026.outbound.protection.outlook.com
- [40.107.200.26])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B46A10E183
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 04:47:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9DFA010E183
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Jan 2026 04:48:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1768884511; x=1800420511;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=IVXIgs0w2Yx4a9GuDvQ025FUiOhhYfVcKh+/e3lc8r4=;
+ b=hEpqXuWMRQAW8/njojYhNz7ntmoXFzgVNKWCTDx9wMi/NkQhhsRPmyfE
+ vzbiy4W8SJyVpA9ZwQYsRonHmy4pHiRVVfeqfa5Lk1Z0TkIDJOMw+TWtw
+ L+DioBEfZrgXNlHsV2rVbeC+vSCsvkXFekBrfx6KREnLWQ2SB9Jis6Gnk
+ 0aLioG+YBnOGV/Me/l6f+PXhsPXtJNeQ5Zvmwg/7hiQQZvcj+oYIIAj4L
+ 3J+LGWCycwpXYzILmsfRgfTkF3OMj2vi/tR9/dtVM9eoQO476bdvNg8Al
+ rZKJt3uMzceQuV/VXDDWyeFJAfY9mkWiCpZzNnVZHg3DrYgGB7h1f4cnC g==;
+X-CSE-ConnectionGUID: KS+zb3h8Suu0CdyOachCWA==
+X-CSE-MsgGUID: ExXr4pflQ6WJJppeI80ReQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="57644253"
+X-IronPort-AV: E=Sophos;i="6.21,239,1763452800"; d="scan'208";a="57644253"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2026 20:48:30 -0800
+X-CSE-ConnectionGUID: dCdFUDPLRbCwh6n93lbvmQ==
+X-CSE-MsgGUID: IW7E6g84Tg2cmBxEW9LyCQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,239,1763452800"; d="scan'208";a="205816122"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+ by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jan 2026 20:48:30 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Mon, 19 Jan 2026 20:48:29 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Mon, 19 Jan 2026 20:48:29 -0800
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.60) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Mon, 19 Jan 2026 20:48:28 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=l09Orkr373pbDzwEmIXyazzE5hfbmxcoaFQkdOgMLi30BN4yva0bVaWhkQVnYmT+MMrcykBqjv4vqNq07/gK9TT7JhCrgJip9uG62YfdgOlArB+IzLau6qVs1nsdyzqPKIuPy1n/l38tQc+yFUvXfxu69X3T7VfYRZOg66qVs82X5MjJp9F/DlljG8On9li1uYZSwIHRkOevSei7jMxZuN/hGiCmGBbsvLvqgD2eq7phsISy/H8jv2zHRmCY3nVa1x67dcMhz5tw/j1xIuJQ8TVKQRvgS5S4VIEGCRcHgIK2Up6zw8GwWv5OL9v1+/lWjQ9OtjKTxUNynEsUXvbx7g==
+ b=CQm6YM9aUHw+glIPO11rvF4106jxSB/AVDvBy2jHSFQY1Wwxl1m12KNoHSfguH7OQSNqIkYjlPX2w1wOuAfUDwbIHqiITYx+i5rHMNYM4y/RNklZN/qEeAQSOECKxiD0k6HSKD/3UAn3tsThVFg66nCYl7DWP1JyEmWUtS6uRGe/mMD7lbdd22BYEDDXzxYeP9PwasxV5V97SGxU7mbpaFP6cXX+J3eYU878PjOLpGbuF72kz2NCB4s5rMOC8hE6VylH10zRCGkl/hmZXioDKD4WDYOzyH1Qkjrknkm7znBScpFe7CNPuv/xO0qBya31TyOYLuZXpvhSvQLrjuC9+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jYl7kIIq2rypfmhooNnPHcWNqChSLt897PAAFMuyils=;
- b=EpnusycnN+Ox9sP3RzZIdGH/vwf3nq+FBCQgeo8+1s7eRHOYgs+WiZZlHGm+sPlQLtknAopX6EqpvwX2ka8plkNotIthEXoKl/rGiWCHrxlZImtVhbZpur71nYLw6/6uitixaK79tkykMqCi7ANYk1xBV7mSbXoUHiV46PwZa0CYQN9FL2yoYNqJ/xDfmeApsKIVu9A4dOKrxdgEfjufT+G8bO1mUf5Ni0RUR/yyLSTqfkUVZ7UcGd0LRFVyqLyblo8pqVIfy9uGlL9vi1AwvOkqxldanTUJJDf2GoadoanGmyuFkcN8OacnglcX4/s35sWf2bNLN4ktDfNUhfD2jg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jYl7kIIq2rypfmhooNnPHcWNqChSLt897PAAFMuyils=;
- b=aLwY/oAS5q9V+S9XKbkk+z9CyClW0qX9icj2TjEG3FQoKF+JSlh4bfowQpo2e8rqO66nT/PRaGZXYhdC9ehIxyuha5b51WQXZ5CnQLgO+cf+kwtvBZ5WIOXiEImbuySn/BY0M1dGrUFQL3LH147x2hR4zHENN2cHX22RNsCbIEo=
-Received: from MN2PR05CA0063.namprd05.prod.outlook.com (2603:10b6:208:236::32)
- by DM4PR12MB7741.namprd12.prod.outlook.com (2603:10b6:8:103::21) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=PlalDYfOUarjBce7KgIHyyg2qmV5IdEwJJ2uxgHvKUk=;
+ b=OoLA5CkOoRtLK9aiSUH9oqbxeHH9OJ5MKUnDQfrJxx0A7PUEG46cJg7HB7PKnWI577bYZaMU87kU/1/AzgFuDhHD3of3DsfjNbe9LBHmUDCCtd03Me0lC7zZ2lHoIMNftVKfmjhk3Lx+ruoNMGjxrrvthI0ntt2jW3SNhR4f0l5aze4b5uUQQ5wJPOcy3Lagp92vrNGVqs6nBC1TZgA5zNdP8wcMMsLhXVf8Q/kSqHenlep688+Rr5+rhw8zw/cUMWkwzxsHpFPj50pxxFVvA13bXzhquAtPnoeEffl6gXL59zWIF4tddM9ksHH3ORovD3E3ajszKKm7IBNgAMTvDw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM3PPF208195D8D.namprd11.prod.outlook.com
+ (2603:10b6:f:fc00::f13) by PH8PR11MB6998.namprd11.prod.outlook.com
+ (2603:10b6:510:222::22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Tue, 20 Jan
- 2026 04:47:17 +0000
-Received: from BL6PEPF00020E63.namprd04.prod.outlook.com
- (2603:10b6:208:236:cafe::9f) by MN2PR05CA0063.outlook.office365.com
- (2603:10b6:208:236::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.8 via Frontend Transport; Tue,
- 20 Jan 2026 04:46:27 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF00020E63.mail.protection.outlook.com (10.167.249.24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9542.4 via Frontend Transport; Tue, 20 Jan 2026 04:47:17 +0000
-Received: from kylin.lan (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 19 Jan
- 2026 22:47:15 -0600
-From: Alex Hung <alex.hung@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: <harry.wentland@amd.com>, <aurabindo.pillai@amd.com>,
- <suraj.kandpal@intel.com>, Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 2/2][V2] lib/igt_color: Improve fb compare time
-Date: Mon, 19 Jan 2026 21:46:46 -0700
-Message-ID: <20260120044646.589301-2-alex.hung@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260120044646.589301-1-alex.hung@amd.com>
+ 2026 04:48:26 +0000
+Received: from DM3PPF208195D8D.namprd11.prod.outlook.com
+ ([fe80::7cc8:75c9:22c6:3c66]) by DM3PPF208195D8D.namprd11.prod.outlook.com
+ ([fe80::7cc8:75c9:22c6:3c66%7]) with mapi id 15.20.9520.011; Tue, 20 Jan 2026
+ 04:48:26 +0000
+From: "Kandpal, Suraj" <suraj.kandpal@intel.com>
+To: Alex Hung <alex.hung@amd.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+CC: "harry.wentland@amd.com" <harry.wentland@amd.com>,
+ "aurabindo.pillai@amd.com" <aurabindo.pillai@amd.com>
+Subject: RE: [PATCH 1/2][V2] lib/igt_kms: Increase MAX_NUM_COLOROPS
+Thread-Topic: [PATCH 1/2][V2] lib/igt_kms: Increase MAX_NUM_COLOROPS
+Thread-Index: AQHcicfYtPhT+Id+e0Wv9cNUblNBHLVafE2Q
+Date: Tue, 20 Jan 2026 04:48:26 +0000
+Message-ID: <DM3PPF208195D8DE04C5EE1D9E0303449B5E389A@DM3PPF208195D8D.namprd11.prod.outlook.com>
 References: <20260120044646.589301-1-alex.hung@amd.com>
+In-Reply-To: <20260120044646.589301-1-alex.hung@amd.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM3PPF208195D8D:EE_|PH8PR11MB6998:EE_
+x-ms-office365-filtering-correlation-id: a35c4fc8-b187-488d-b5da-08de57df262d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|376014|366016|1800799024|38070700021;
+x-microsoft-antispam-message-info: =?us-ascii?Q?nuHSbufeLncxSprNI2x+K/jrUvsM2HcJG5/ifePQ5r4fkI+EcEuxDxR6Ykb9?=
+ =?us-ascii?Q?f4IW17D/I4WnUAbFqqEK1reN3pUxYu0J1ba6NH5/7m08PriktdYtTRVeesha?=
+ =?us-ascii?Q?K+kDQTf7wuZHld8dOZ7o/R2vCJWuwc7zN2pvKiZFAXkXyCF39+wadoJ1uqol?=
+ =?us-ascii?Q?2XavGYNwdmk4wa1cu05mSKAJHt7xZKpD+JLAKWffoQwNJGpAUUkQ3ws9taaF?=
+ =?us-ascii?Q?Qdjr+UGG08/XEKJL4R+z3fv4WA+Pux10c6yehDkes9sedsrDRdlpFrPg6xD7?=
+ =?us-ascii?Q?IgJJM2caoG1D2UpEECVFRe93q97zqDmPIKFKMoifjUR/1nK7+5QD/ZIP2EEk?=
+ =?us-ascii?Q?QihJ7Tz/BlPro+ovQSYN9b0SmyAiJR1jw0RGyLv+DSJpj3sAJhPkn0Y5pBpe?=
+ =?us-ascii?Q?efRsgrGs44J6E37XrE/bzl3CItnIUlvP+EmFVFhMnbJNsA6YOAYYErjeOGx3?=
+ =?us-ascii?Q?wHT5eZ9pvJuKySW8fvK09jTRsakuxw0tj8ZtUjLQObT4Dw5Z3WUg6m61CPfp?=
+ =?us-ascii?Q?4LfuWinHTLTIB/6Tpgs7IW0T0NZf0WtzDHn4SMQJeAD0meKHLAHAym3YryO8?=
+ =?us-ascii?Q?sy0cmYzLHVjKQmykanO6rfI9EDvlwjiI5ko51g9FFf79YkNF189jbxsvD31/?=
+ =?us-ascii?Q?F2RhgsEHsqjHfkZ3i6ofuDJKNyPF3B5IJnrB7VR7cdrTsKHnpv+LZSC4ZQ8I?=
+ =?us-ascii?Q?u1oHjHbh5u5+praYMRSMfNLjEG0xZpZYCMhQdQv6F9PkX9/UxIAMkSZXhQ2l?=
+ =?us-ascii?Q?kGkvAMhMhviyvCKKpfEmVVQbjz6n3GHfLNRxHjMn+8twbIR6Qeo+HuSKRd1y?=
+ =?us-ascii?Q?OyrlR53058hSCcaV4zjPlS8QTuqJfrr4pCq6hbWDTm1h/3wB8PqmWkx3Mg0D?=
+ =?us-ascii?Q?N0T8arMxLUTN5r5OqotYyUd7Vrmb4rRhr0/M57Hq8gXrdIkG69haQOyn7bGP?=
+ =?us-ascii?Q?DYtttrM5jgGZpbb6alyZrw/J/TFOfyf0UI2A1W7mXcELitMR+3ou1HJzRzsN?=
+ =?us-ascii?Q?I0iVg+rgd0Yr3kjatX7eJoN24k/O+x2w1eI8zoiXZd1JKpWQfY7YRxKL1CjU?=
+ =?us-ascii?Q?8XaCc+mti0uIv75mtOdpDNnM3ts4J7lhViv/UI9GImXXDahz67pFyFDWa6i5?=
+ =?us-ascii?Q?lobSwM7BP+uDvD5kSMuVfZMnTlfsDQrct1Xc9GjyGoE6qhnH8Db+ipkThTqh?=
+ =?us-ascii?Q?cjlwtmRVvwyFzM2HZr42mpeygEXC9bMgyfqST497C8xWYVtFSXyjBfJNCWVO?=
+ =?us-ascii?Q?U1NSr1bM4p7iI6tLhUMlwkodI8KcJbdvTMGycZ7KsOSZYku/RQvI5m7Y5eCE?=
+ =?us-ascii?Q?NCNlWxjKoh+fNlz5eWiiy0z5DhaU1kaP6n8+YC1a1rY2Qh5g51G330YRkHii?=
+ =?us-ascii?Q?COsWsUDadIAScLdMsXxlwzPVpQuCdChVSlyGHhfS4/27cdaZSabAu5P6g7BY?=
+ =?us-ascii?Q?RsFIuxa62tRo/Az30cQ42/tr/ggo1RFJGFUZYwBUu+yBqB7zvGHQurfAuFXB?=
+ =?us-ascii?Q?VCN9xngIBIxM0fWK35yxYhoeNRvQ7R1mGjMknB7DYxBln/+t+DXa0VcDWX7x?=
+ =?us-ascii?Q?Q7qAEReL0GM2yl5pCNeJCpsmwcozXJmciMDbgv8qpWXSWbjghl1rqGxT6Qrb?=
+ =?us-ascii?Q?SLuVxTxpOHuG97YbW+SllOE=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM3PPF208195D8D.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(38070700021); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?kBPUXkzB78xQyI7eH4mrno423XGxWYNOTgFvEk1kA0pzDffZIm/6tHaHqJDw?=
+ =?us-ascii?Q?ujbMHx5AaStHbLG6d/9BJYzGL6y42MojgUvz9NXi5ZXzShs9QQkTH0GdBsEB?=
+ =?us-ascii?Q?1Eg79zHmBziAIdZ4SDlrLrMltx3p6XuLjzc17q0U5vXc0l+wq8lkKRX/TYwz?=
+ =?us-ascii?Q?AXsLSr7lrEzSeqmLfSfnztm4rUI3eK85R8SabtqsY2RDPXicdmy/se1qcrs0?=
+ =?us-ascii?Q?dP47MIgbYmNpsuCmXO1LxFJv2MLDTji9Ymg0ZTX336wUaPtjLX7Psb/6Gcuq?=
+ =?us-ascii?Q?RjpYJwBRTvKE8LsFLkNjcyc/9afqicv8YUz1exuBQvNZkZKMzQoXqb6kYObh?=
+ =?us-ascii?Q?4GO3oGjFlD6WjcRTh+abI950xmyXeQ3EUQMmKHQ6lsCZntOQQ/m0Il7JQ747?=
+ =?us-ascii?Q?yI48qxp1Ig9GnB4hAN38hv9kUEy5t0m1CLzdyuudnMhj/ytCrSqjwYt2pXwP?=
+ =?us-ascii?Q?jr1VugvDZ9xC3LJN+Vj4v1nT2Xj5ZOyxl23QTwHB3OeEg0aJ4fl+r/BGuVRD?=
+ =?us-ascii?Q?VfElGOiieV91h6AXwnevktlDt6BXnD/yvWjPkp1z0135ptzQRchO8lKRkIGi?=
+ =?us-ascii?Q?WhRDBzVPASWLnc1ylBqyMN7o/QuX/NjuA0pVFWatDtBcMtV9nGYc4WNxWWOP?=
+ =?us-ascii?Q?TMJXuS7MhXpYhcN+2rEQAkCcG2QUx5GfK2Lp0A4jHJAZ/M2ejXu5i2vlJFpc?=
+ =?us-ascii?Q?Pq40UH5lnujDndstj+IDqbGf3nxBIQZXmbwPSZa2rfSsXvDAda9DjjBFesnN?=
+ =?us-ascii?Q?ucHjvV9+KYpeAIbCRVMx+RgFdhA6RhIrT/9VAa8Vv3mhli9VeXAbEOtkFeFz?=
+ =?us-ascii?Q?vjeuy0Ic/BaFpGY3J1U7RNZDlS0NyFx5JhvBOPPxQYpymjDjJmoQTQL0G9LL?=
+ =?us-ascii?Q?q6RnFRRLwTubNScMrWzIZxECHLgEDs9btdLkSWLueC5GHCmUaaGj5ZEs9yRD?=
+ =?us-ascii?Q?PqME7G8l3o2n3tWMwdylVTVIY83fOfagq36Ni1JN5F/YnCtekwQAErs49uDi?=
+ =?us-ascii?Q?CI90YP1HZwDzaUXhNL4t2h6jHWtzifjaQKqsMO8PHIQmPgFcvnZiYfAGGV67?=
+ =?us-ascii?Q?Hb72EOqyP4fbCSpixR2qxuJfm8RPF2+FS0nIJBKPv15vcT+K+aBvHsbDyHA8?=
+ =?us-ascii?Q?vo49Qa12Q0YFsh22VtNXJ8wPEoIkFa2OxUKm8D0PaozMgXEBTeuhQqZEzo1A?=
+ =?us-ascii?Q?O+uzUwTfMzcODVJAhHtYEnXIANQY8DtjpoH+arYpac/LLWbvuSlJfWyTrE8n?=
+ =?us-ascii?Q?f9G73QMD3MmUr4Pw8fkJoRnSDWPIL+IJoLFzNdMIr5Aw91vh5+aWz/cIUuuo?=
+ =?us-ascii?Q?g50mmWIM7gcrupHndVMDJHfBL+5wMaSUkMBZIdz4QvLk+1V5RtY534+DHUF4?=
+ =?us-ascii?Q?YdRutRd3EtUHQxy4hLSkEWVJDYRIiaPO5fkvjmN5s+ZxKaArbDeZRLxTDsAE?=
+ =?us-ascii?Q?72dnKlehN8MoN07uCa0gYLK4LwaYmctS116ncU1UcCWAyUS8tg984eF1wsL6?=
+ =?us-ascii?Q?pwXYnC8kqQer8hmluzaVq3gxIhkbsdj8d0khNhVNFjUu9QhXhbEKOi4VYSaq?=
+ =?us-ascii?Q?Kh5NZdzzO/uScgSvzI/2TAjkAhQdj1fYdNgo3ud3cT+atK9iEsTgrCPjEliT?=
+ =?us-ascii?Q?big5bo42pcACMlld3UEXyc7B7Inz4WC8QJaDvatStecWZFVavMlOq0XgOTN/?=
+ =?us-ascii?Q?8MmxJGmDTsCPqRrnj4eA4KVIpIQIaW0EexmVewqrt2FNdt+6lqnMVTKo9qos?=
+ =?us-ascii?Q?bTAmoEymow=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00020E63:EE_|DM4PR12MB7741:EE_
-X-MS-Office365-Filtering-Correlation-Id: c3527c91-a57d-4d2a-9dea-08de57defce9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|376014|1800799024|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?7Kzni4cDWAx2nnRgHp8huH7ieI+2Ug1EVV8MY+TR0dagSZ/S9hz3dCSk1dJa?=
- =?us-ascii?Q?zkZYUsWFYFBVMh2ZqgzU4z97h4op2qVRRIipRn3ckdIHdL8Bg+KQTpCg5ysJ?=
- =?us-ascii?Q?o0FtwwJsm7apJzrXP/bizVbdB0q7v9piNRMcm6OWx+nb88B1JSnpJ9XFPVxT?=
- =?us-ascii?Q?AKO21BozrHQpjWkNmu4l41mNS6G2IbzkSJQzXBhoTCQnLxM/Id99smy5pze+?=
- =?us-ascii?Q?CO0vyH8CLh0LGLWDbLsYGf4ETlgn8BdQC6qczNVdLDBxyn+F41LVOI0BSQbA?=
- =?us-ascii?Q?supQDYeST8awy5D0nqsoiM6GbBA+dopS4fb3WN1Q6oYvmui/VDjpSrkEYfyO?=
- =?us-ascii?Q?YwNWSyzKsV4xkSzkJPDhgi8u6oTxeyofI61xzZNFwLgmLkOYJZC7lj9xGscn?=
- =?us-ascii?Q?Xmw85aVQ5gsHq4QI4njBiBbUXqykadyyozuEd0UTLsFUF0JUA07IT9ZeCLf7?=
- =?us-ascii?Q?KXfYtWxGEJ96g8Nslz/fOB4Sb4nBD60WNumUt85GpEXjpn2tVh3srWVkAbg3?=
- =?us-ascii?Q?pkMCPctUhkAm84AzL/zKLiVKahpElKAbfhTH++WDX6Yh3L5JDkg45vF9kPB3?=
- =?us-ascii?Q?S+sAx+/+87OX1kd+BLypvlYFjQuivykA1dB5qFutCDXsWY2D4T8I3C4Ta7/h?=
- =?us-ascii?Q?92gVTYlxST5HtQeeUoHFK344w43QwEwLA9Jjm9hoZq4jDiXp6vgmLKltiiBI?=
- =?us-ascii?Q?jryAoJ9+Ulnq0dajDVeWiHdiHiVfKsuS9Nq2cW76QoiP6q28qczo6tzDunNx?=
- =?us-ascii?Q?ZwMfz7bxGmdCvkZbxSGkJ1i0R5H4Z0c6KMUxRbBGMCCMKEeFV8fnFFWiYLUa?=
- =?us-ascii?Q?RMc06VuziAcV0CO+ui0A449ninKJOLPvBQALANNBNnonm9vXTkOnpbsxLEF8?=
- =?us-ascii?Q?Hdvw+EBq+e5r0JtvJ2MYcTgsbp3kL2QGSivNTQJRFlbqJJXrsz3XEObt2shF?=
- =?us-ascii?Q?02NDOFg1Ddqt6lM1qLiXH9UfL1gW1L3FKCdPpa+THq1mEfpV/xjFc4i9PJ63?=
- =?us-ascii?Q?t5qTTqO4EgEsAkal9k37oGa0w2bqWMgnOgyPfwrPOP9a5AjvSoucNRET7mG0?=
- =?us-ascii?Q?1enKuO/mNTdpwxnoEXhg9qLWHZ0mx2qiB4ag8b7vhcQCwZtUpGMGi5o5xklz?=
- =?us-ascii?Q?JU+oIqvBgtqX91X/0AZoa6Dtb/QCBGtnHPFPJGmyuGBCi601PJfSWO1fKAiW?=
- =?us-ascii?Q?WCzGJCtWszMFvrqy8HPNCi+6sCXdbYJ9rwdR3/75nU0jgioSGxCre5KSPtSp?=
- =?us-ascii?Q?MBIJLSnw9oZk9bnYlkOJDFG5gjbUOpxLOcgHNofmE67bKYdJOC67pMeLmPaJ?=
- =?us-ascii?Q?I+6xcZ8AO28bYl+cL+pQJuSwQ9f1xCNDOCVghdr5SXuLy/bHicy4bTZLFdUm?=
- =?us-ascii?Q?B7eC4n4rs1hJ8N0A80utwOaJXsOdlwaNIT2jZuVIQJeKeMeej2scPFuZMUDm?=
- =?us-ascii?Q?ceZgYeytFfQ/5lvVOiXnLZqnQfchwI/xWnc0GL/W2CkBt3ADmbcDCU+ocidL?=
- =?us-ascii?Q?FRvBMfM/HWTumI53pzKUbzw1bZHsWmwbQghIeVHNuV1PZdqAGY/8pRWntGQp?=
- =?us-ascii?Q?pPehqoFO7Qsw+zUg4iSmJYeikBvwiLlJFpIK4VmRuoxWapL2g3Dr4WKkE7xp?=
- =?us-ascii?Q?8cuIANyA3q+C+Nd+xeaXKI8+mV7XwMhz+67g8nDHYv9cGxVktxoOJ+v7caoA?=
- =?us-ascii?Q?UvYCeQ=3D=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 04:47:17.0267 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c3527c91-a57d-4d2a-9dea-08de57defce9
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF00020E63.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7741
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM3PPF208195D8D.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a35c4fc8-b187-488d-b5da-08de57df262d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jan 2026 04:48:26.2866 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ZWdW3dSh1xBvHB4blQhoFoyyqpM4eJWfNekCoKokUq0lYiFnR9M8SNasuzdYrlRMbLrAPT8vMukrWzvR6WojHw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6998
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -138,79 +186,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Copy the memory to a cached buffer first to avoid slow memory accesses
-on dGPU.
 
-This cuts kms_colorop execution time on dGPU from 1 min to 17 seconds.
 
-Signed-off-by: Alex Hung <alex.hung@amd.com>
----
- lib/igt_color.c | 34 +++++++++++++++++++++++++++-------
- 1 file changed, 27 insertions(+), 7 deletions(-)
+> -----Original Message-----
+> From: Alex Hung <alex.hung@amd.com>
+> Sent: Tuesday, January 20, 2026 10:17 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: harry.wentland@amd.com; aurabindo.pillai@amd.com; Kandpal, Suraj
+> <suraj.kandpal@intel.com>; Alex Hung <alex.hung@amd.com>
+> Subject: [PATCH 1/2][V2] lib/igt_kms: Increase MAX_NUM_COLOROPS
+>=20
+> MAX_NUM_COLOROPS =3D 128 is too small for some hardware and it stops
+> kms_colorop from running by the following assertion:
+>=20
+> (kms_colorop:3233) igt_kms-DEBUG: Test requirement passed: resources-
+> >count_crtcs <=3D IGT_MAX_PIPES
+> (kms_colorop:3233) igt_kms-CRITICAL: Test assertion failure function
+> igt_fill_plane_color_pipelines, file ../lib/igt_kms.c:877:
+> (kms_colorop:3233) igt_kms-CRITICAL: Failed assertion: display->n_colorop=
+s <
+> MAX_NUM_COLOROPS
+> (kms_colorop:3233) igt_kms-CRITICAL: Last errno: 95, Operation not
+> supported
+>=20
+> Double MAX_NUM_COLOROPS to 256 to avoid future frequent changes.
+>=20
+> Signed-off-by: Alex Hung <alex.hung@amd.com>
 
-diff --git a/lib/igt_color.c b/lib/igt_color.c
-index 4d94421ba..4a7b20b2b 100644
---- a/lib/igt_color.c
-+++ b/lib/igt_color.c
-@@ -575,15 +575,31 @@ bool igt_cmp_fb_component(uint16_t comp1, uint16_t comp2, uint8_t up, uint8_t do
- bool igt_cmp_fb_pixels(igt_fb_t *fb1, igt_fb_t *fb2, uint8_t up, uint8_t down)
- {
- 	uint32_t *ptr1, *ptr2;
-+	uint32_t *map1, *map2;
- 	uint32_t pixel1, pixel2, i, j;
--	bool matched = true;
-+	uint32_t *cached_p1 = NULL, *cached_p2 = NULL;
-+	bool result = true;
- 
--	ptr1 = igt_fb_map_buffer(fb1->fd, fb1);
--	ptr2 = igt_fb_map_buffer(fb2->fd, fb2);
-+	map1 = ptr1 = igt_fb_map_buffer(fb1->fd, fb1);
-+	map2 = ptr2 = igt_fb_map_buffer(fb2->fd, fb2);
- 
- 	igt_assert(fb1->drm_format == fb2->drm_format);
- 	igt_assert(fb1->size == fb2->size);
- 
-+	/*
-+	 * Copy WC memory to cached buffer for faster reads.
-+	 * Reading from WC memory is extremely slow so this is important
-+	 * on dGPUs where framebuffer mappings are typically Write-Combining.
-+	 */
-+	cached_p1 = malloc(fb1->size);
-+	cached_p2 = malloc(fb2->size);
-+	if (cached_p1 && cached_p2) {
-+		memcpy(cached_p1, ptr1, fb1->size);
-+		memcpy(cached_p2, ptr2, fb2->size);
-+		ptr1 = cached_p1;
-+		ptr2 = cached_p2;
-+	}
-+
- 	for (i = 0; i < fb1->size / sizeof(uint32_t); i++) {
- 		uint16_t mask = 0xff;
- 		uint16_t shift = 8;
-@@ -614,15 +630,19 @@ bool igt_cmp_fb_pixels(igt_fb_t *fb1, igt_fb_t *fb2, uint8_t up, uint8_t down)
- 			if (!igt_cmp_fb_component(comp1, comp2, up, down)) {
- 				igt_info("i %d j %d shift %d mask %x comp1 %x comp2 %x, pixel1 %x pixel2 %x\n",
- 					 i, j, shift, mask, comp1, comp2, pixel1, pixel2);
--				return false;
-+				result = false;
-+				goto cleanup;
- 			}
- 		}
- 	}
- 
--	igt_fb_unmap_buffer(fb1, ptr1);
--	igt_fb_unmap_buffer(fb2, ptr2);
-+	igt_fb_unmap_buffer(fb1, map1);
-+	igt_fb_unmap_buffer(fb2, map2);
- 
--	return matched;
-+cleanup:
-+	free(cached_p1);
-+	free(cached_p2);
-+	return result;
- }
- 
- void igt_dump_fb(igt_display_t *display, igt_fb_t *fb,
--- 
-2.43.0
+LGTM,
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+
+> ---
+>  lib/igt_kms.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c index 77b3ae2af..dfdebb83f 100=
+644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -92,7 +92,7 @@
+>  #define MAX_CONNECTORS 32
+>  #define MAX_EDID 2
+>  #define DISPLAY_TILE_BLOCK 0x12
+> -#define MAX_NUM_COLOROPS 128
+> +#define MAX_NUM_COLOROPS 256
+>=20
+>  typedef bool (*igt_connector_attr_set)(int dir, const char *attr, const =
+char
+> *value);
+>=20
+> --
+> 2.43.0
 
