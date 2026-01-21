@@ -4,62 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CA5EC4451F
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 11:48:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D254C4450D
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 12:00:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5037010E761;
-	Wed, 21 Jan 2026 11:48:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 478E210E786;
+	Wed, 21 Jan 2026 12:00:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q7R5RWHX";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="NhL85QXx";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D56610E76B;
- Wed, 21 Jan 2026 11:48:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768996106; x=1800532106;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=f3WUAaEZAjlQK8xmNRKUdlo2YUwr0Uwhu94TRrQWkvc=;
- b=Q7R5RWHX5gN+1bR+5K2w11Qm//sd+X6YrRNAPCO2c+g4Ey7VJNTONiPP
- aaJ0jd9iYspcz14c+47aeFVC7GGbf0R5S4AxIXqfhAKvkod1ZuaCqVx2F
- ziE+Ba+vClQ2LzRV6P8FxTN9R/yThG3Y45rMi4TXAZx+dtfp9WtJdzuMK
- LrGHNL3rukvhe3DrZdD6Py+80TkSDUhXOfx7lY3pOz+DF8WVIxvzcheS+
- 6+ln89bm5KYEDP5XxPjL350kbDYyOhe1kJ5d7JIN4c8toW2oB7kURNsuR
- yBF2JCS6SvslVZKJOOOP68hX75ccK62+ORVQ8Lx2WL0+n09Za0VPThYBM A==;
-X-CSE-ConnectionGUID: 6zdAeMmqSQS2uyv6KfA0sw==
-X-CSE-MsgGUID: 3ppvFO+DSO+LEFIB+mK3gA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="92889129"
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="92889129"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2026 03:48:26 -0800
-X-CSE-ConnectionGUID: Cey3sf/RR5qjuJjKfByWng==
-X-CSE-MsgGUID: weBvKmDBRo+SMoPst1Eqtg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="206347813"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO
- jkrzyszt-mobl2.intranet) ([10.245.246.125])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2026 03:48:24 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t 7/7] lib/igt_device_scan: Print GPU upstream port
- parent/child relations
-Date: Wed, 21 Jan 2026 12:42:25 +0100
-Message-ID: <20260121114656.1970684-16-janusz.krzysztofik@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121114656.1970684-9-janusz.krzysztofik@linux.intel.com>
-References: <20260121114656.1970684-9-janusz.krzysztofik@linux.intel.com>
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com
+ [209.85.210.174])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC47B10E776
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 12:00:32 +0000 (UTC)
+Received: by mail-pf1-f174.google.com with SMTP id
+ d2e1a72fcca58-81f4e136481so3075216b3a.3
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 04:00:32 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768996832; cv=none;
+ d=google.com; s=arc-20240605;
+ b=RxllypUNF6Dzu2WzM1MYWqDgqJs9JPTAaJFCV4QtYmFNJx3zFohM1WjfT0e6IhqRDX
+ CBZ7A6p4vyY7+TX+jpR8+SBbUyYUF2/ISA+LcC6GlMuz1xzXymqMdrrig+FdOgnLIABO
+ p36kGG2cauMlZf7z8w4xyz93tgbtirzKVdl0tV7gFaJktXbIX78BQysNS6FYSadOo1gP
+ 91TSqXgRBSdcbyBxkheCrc84wXeqGbk3/E0eWzNGSDVyjXS/6LJSsIj7WN6jKe+gXZZx
+ QXQyBgseZQtv2WUe7VHHENaXpvYqwN54snx/E/OOxO1UcF59Ojy2fMWF/gP+eQTAQX1J
+ CawQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
+ s=arc-20240605; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:dkim-signature;
+ bh=4f0Stl/9+qNqbgyf71uS1uMfX8S6l9nvmeKOcExGZzk=;
+ fh=jiZtKjlARfrRM2yNEBasMo1wsZCckE6V/OhneC84kWQ=;
+ b=BHuBQwHK4goOysyZlrd4VPDA9t4xi3BEa4jIGbI+y4pf3sStZ13nC7b13F1w6RHNui
+ OomxRKFkenbq/KUdTRaabWa2qEtddZlwUg4XfaDR//Bxeu2tcwuNUaespPX07XwEWXQ8
+ owu9ezKgFsrzouj8ulOOeG09s0loxBomyvR40J10z0hY2LTdlIatbwqSGekxZ7YxbQ5E
+ vh1joNTTFFFJEtUj1EFaYQ/pWDMTqVLKn4ww85AJN5bPQh5i5yqOOyAH7Oorf5GXkDmk
+ 7aGMKpPMIpLK1Qt/37u6u4g0GoH+BQM08mfQnJkXbuf+TGWp/Xzm5Ze2Pfza7jrfD4ku
+ k1PQ==; darn=lists.freedesktop.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1768996832; x=1769601632; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4f0Stl/9+qNqbgyf71uS1uMfX8S6l9nvmeKOcExGZzk=;
+ b=NhL85QXxyE9oiOIyAwQ0GkpcBxDWXd/Z2NP8d281lLyUSJJ8OYyHxD+criJwJnvl4p
+ JcBR7ot5au4Rc2QCCzbMKSG3J7WvRFJMeQRajvLRUjoXnlb31E+Fh7FZFQ0gWq9ceolM
+ jWDJ1G9wBVD+kW0vIJ5fW/rqvplArP0eYAk2IX3mpf2ruthBAu1NNi51lYBHJrN+mfO9
+ MIHNXTR1Amz+15HkUgisdigX7WDMob+yyIOso3fHbjL0g3O9VyrJboh05cexTBxaV1Vd
+ +6vOWQyPxSbrB4yDp8oCysDPppwFZv3m5hbQMq33hofZbcoTGpn2Un7mwCAIMXEyHexG
+ aWeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1768996832; x=1769601632;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=4f0Stl/9+qNqbgyf71uS1uMfX8S6l9nvmeKOcExGZzk=;
+ b=bioUcQwPfTnG/HsRWZsJ4r0Rwb1hdmT7CJf2THFNwsuBgrO+o/EeNtLqXqA9kfK0zA
+ DWtXPuZooyQhBeWInBblyYvtUg4Obz6rLdlRifZS8Yd7E789FR9M0FHaYuoBegnb/LJG
+ KxBJQTP1VtClL/S7OsCI2tVzf75ADACnPArGW49u9jj9AYwgDgTDnUU6vXhehjQFxhWu
+ YcyOjEb1eooMeBlJbRLHV+7fCMf16s7VUorvysHrs58iuY4TGe9iJ3fgJM2AVNA5i8/Q
+ Xj/IR6xuEQ1D+bgz1KfRKm14VHLGaIKyCGIiKMe1oaG7toji2qwGHuH+JM+GKKmx560h
+ Grtg==
+X-Gm-Message-State: AOJu0YwW7i0PKKQTxd9Ne58X/hORqJeEOBMZMiDuIiGQPFEHtZitGYJn
+ JvBBKsU8DCAaPa8pslOoePlCFacbSQgTakK9aMrip7p+o7XN8L/0fQ12mgyH0hlbt7Eo4D6FhmE
+ rLtaIHEM9Fke1FgOgH0XvfK1TxsvfsSw=
+X-Gm-Gg: AZuq6aKISMCpwJj10FGrFu1gjnXLgz+lRsQP/QVu6SFA72GAIaJk+oTi17Dtzprx+zA
+ hnzRCvTVNQDaMhoUyRvaxtaGaXpVYYsibXh2SbF7ThZecOXKMuJNm/q8+prUPvIlkvrESQSVi2F
+ D2oTScA0+pBlx6Awa8563dRVsXfgYuEqZ6UII5gA8kbyRV0Vr0vUTdpVl14bby1+QIc348rS0bf
+ YTxl1eXFsvg+WDRCl0prIVkq689qYYyu3D3kJRLzkZit9scvBFtWxO/snmPf+ZZAeoBNH+bGALw
+ TpUAzztA5jmAOBVMuzogzf7B4iq30w==
+X-Received: by 2002:a05:6a21:6014:b0:38d:f7e8:e8a8 with SMTP id
+ adf61e73a8af0-38e00da4242mr16685609637.78.1768996831895; Wed, 21 Jan 2026
+ 04:00:31 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260120045545.102676-1-ramanaidu.naladala@intel.com>
+ <20260120045545.102676-2-ramanaidu.naladala@intel.com>
+In-Reply-To: <20260120045545.102676-2-ramanaidu.naladala@intel.com>
+From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
+Date: Wed, 21 Jan 2026 14:00:20 +0200
+X-Gm-Features: AZwV_QgQRvjjuiGoq-Fc11sf_9PVmmtB1oNeDOLARJ0Tuw2hDzMNRsSP_jEEHl8
+Message-ID: <CAJ=qYWSmWEi26YKLF2WvG5rVEoFw=nZFdnyK19+gA8wOc86UNw@mail.gmail.com>
+Subject: =?UTF-8?Q?Re=3A_=5BPATCH_i=2Dg=2Dt_v2_1=2F3=5D_tests=2Fkms=5Fplane=3A_Split_pixe?=
+ =?UTF-8?Q?l=E2=80=91format_validation_into_modifier_specific?=
+To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, jeevan.b@intel.com, 
+ juha-pekka.heikkila@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,72 +105,197 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In a short listing, information about PCI parents of DRM devices, as well
-as about DRM children of PCI GPU devices is now printed.  In a long
-listing in turn, the latter is also printed.  Apply a similar approach to
-PCIe bridge upstream ports: print information about their PCI GPU children
-and also their codenames in both formats, and inform about upstream ports
-of PCIe bridges found on PCI discrete GPU cards in the short format.
+There were few things that caught my eye but I guess they don't fall
+in the scope of these patches, at some point will need to start to
+think about restructuring this test.
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- lib/igt_device_scan.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-index e86da001a9..69ea8d2eaf 100644
---- a/lib/igt_device_scan.c
-+++ b/lib/igt_device_scan.c
-@@ -250,6 +250,8 @@ struct igt_device {
- 	char *codename; /* For grouping by codename */
- 	enum dev_type dev_type; /* For grouping by integrated/discrete */
- 
-+	char *pci_gpu; /* Filled for upstream bridge ports */
-+
- 	struct igt_list_head link;
- };
- 
-@@ -1058,6 +1060,9 @@ static void update_or_add_parent(struct udev *udev,
- 	igt_assert(bridge_idev);
- 
- 	bridge_idev->dev_type = DEVTYPE_BRIDGE;
-+	bridge_idev->pci_gpu = parent_idev->pci_slot_name;
-+	bridge_idev->codename = parent_idev->codename;
-+	parent_idev->parent = bridge_idev;
- }
- 
- static struct igt_device *duplicate_device(struct igt_device *dev) {
-@@ -1316,8 +1321,11 @@ igt_devs_print_simple(struct igt_list_head *view,
- 			if (is_pci_subsystem(dev)) {
- 				_pr_simple("vendor", dev->vendor);
- 				_pr_simple("device", dev->device);
--				if (dev->dev_type != DEVTYPE_BRIDGE)
--					_pr_simple("codename", dev->codename);
-+				if (dev->pci_gpu)
-+					_pr_simple("GPU device", dev->pci_gpu);
-+				_pr_simple("codename", dev->codename);
-+				if (dev->parent && dev->parent->pci_slot_name)
-+					_pr_simple("upstream port", dev->parent->pci_slot_name);
- 			}
- 		}
- 		printf("\n");
-@@ -1469,9 +1477,13 @@ igt_devs_print_detail(struct igt_list_head *view,
- 	igt_list_for_each_entry(dev, view, link) {
- 		printf("========== %s:%s ==========\n",
- 		       dev->subsystem, dev->syspath);
--		if (!is_drm_subsystem(dev) && dev->dev_type != DEVTYPE_BRIDGE) {
--			_print_key_value("card device", dev->drm_card);
--			_print_key_value("render device", dev->drm_render);
-+		if (!is_drm_subsystem(dev)) {
-+			if (dev->dev_type != DEVTYPE_BRIDGE) {
-+				_print_key_value("card device", dev->drm_card);
-+				_print_key_value("render device", dev->drm_render);
-+			} else {
-+				_print_key_value("GPU device", dev->pci_gpu);
-+			}
- 			_print_key_value("codename", dev->codename);
- 		}
- 
--- 
-2.52.0
-
+On Tue, Jan 20, 2026 at 7:02=E2=80=AFAM Naladala Ramanaidu
+<ramanaidu.naladala@intel.com> wrote:
+>
+> Change restructures the pixel-format test flow so that each
+> modifier is validated through its own dynamic subtest.
+> Previously, all supported modifiers were exercised within a
+> single test path, which made failures harder to isolate.
+> The new structure improves clarity and debuggability by
+> generating explicit subtest names for each modifier.
+> Subtests now run only for the selected modifier, and
+> unsupported combinations are cleanly skipped.
+>
+> v2: Fix review comments. (Jeevan)
+>
+> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+> ---
+>  tests/kms_plane.c | 91 ++++++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 79 insertions(+), 12 deletions(-)
+>
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index ec3245c9f..653a911ad 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -72,13 +72,32 @@
+>   */
+>
+>  /**
+> - * SUBTEST: pixel-%s
+> + * SUBTEST: pixel-format-%s-modifier
+>   * Description: verify the pixel formats for given plane and pipe
+>   *
+> + * SUBTEST: pixel-format-%s-modifier-source-clamping
+> + * Description: verify the pixel formats for given plane and pipe with s=
+ource clamping
+> + *
+>   * arg[1]:
+>   *
+> - * @format:
+> - * @format-source-clamping:          with source clamping
+> + * @x-tiled:                     x tiled
+> + * @y-tiled:                     y tiled
+> + * @yf-tiled:                    yf tiled
+> + * @y-tiled-ccs:                 y tiled ccs
+> + * @yf-tiled-ccs:                yf tiled ccs
+> + * @y-tiled-gen12-rc-ccs:        y tiled gen12 rc ccs
+> + * @y-tiled-gen12-mc-ccs:        y tiled gen12 mc ccs
+> + * @y-tiled-gen12-rc-ccs-cc:     y tiled gen12 rc ccs cc
+> + * @4-tiled:                     4 tiled
+> + * @4-tiled-dg2-rc-ccs:          4 tiled dg2 rc ccs
+> + * @4-tiled-dg2-mc-ccs:          4 tiled dg2 mc ccs
+> + * @4-tiled-dg2-rc-ccs-cc:       4 tiled dg2 rc ccs cc
+> + * @4-tiled-mtl-rc-ccs:          4 tiled mtl rc ccs
+> + * @4-tiled-mtl-mc-ccs:          4 tiled mtl mc ccs
+> + * @4-tiled-mtl-mc-ccs-cc:       4 tiled mtl mc ccs cc
+> + * @4-tiled-lnl-ccs:             4 tiled lnl ccs
+> + * @4-tiled-bmg-ccs:             4 tiled bmg ccs
+> + * @linear:                      linear
+>   */
+>
+>  /*
+> @@ -114,6 +133,7 @@ typedef struct {
+>         uint32_t crop;
+>         bool extended;
+>         unsigned int flags;
+> +       uint64_t mod;
+>  } data_t;
+>
+>  static bool all_pipes;
+> @@ -149,6 +169,30 @@ enum {
+>         TEST_SUSPEND_RESUME             =3D 1 << 4,
+>  };
+>
+> +static const struct {
+> +       uint64_t modifier;
+> +       const char *str;
+> +} modifiers[] =3D {
+> +       {I915_FORMAT_MOD_X_TILED, "x-tiled"},
+> +       {I915_FORMAT_MOD_Y_TILED, "y-tiled"},
+> +       {I915_FORMAT_MOD_Yf_TILED, "yf-tiled"},
+> +       {I915_FORMAT_MOD_Y_TILED_CCS, "y-tiled-ccs"},
+> +       {I915_FORMAT_MOD_Yf_TILED_CCS, "yf-tiled-ccs"},
+> +       {I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, "y-tiled-gen12-rc-ccs"},
+> +       {I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS, "y-tiled-gen12-mc-ccs"},
+> +       {I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC, "y-tiled-gen12-rc-ccs-c=
+c"},
+> +       {I915_FORMAT_MOD_4_TILED, "4-tiled"},
+> +       {I915_FORMAT_MOD_4_TILED_DG2_RC_CCS, "4-tiled-dg2-rc-ccs"},
+> +       {I915_FORMAT_MOD_4_TILED_DG2_MC_CCS, "4-tiled-dg2-mc-ccs"},
+> +       {I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC, "4-tiled-dg2-rc-ccs-cc"},
+> +       {I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, "4-tiled-mtl-rc-ccs"},
+> +       {I915_FORMAT_MOD_4_TILED_MTL_MC_CCS, "4-tiled-mtl-mc-ccs"},
+> +       {I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC, "4-tiled-mtl-mc-ccs-cc"},
+> +       {I915_FORMAT_MOD_4_TILED_LNL_CCS, "4-tiled-lnl-ccs"},
+> +       {I915_FORMAT_MOD_4_TILED_BMG_CCS, "4-tiled-bmg-ccs"},
+> +       {DRM_FORMAT_MOD_LINEAR, "linear"},
+> +};
+> +
+>  /*
+>   * create a colored fb, possibly with a series of 64x64 colored rectangl=
+es (used
+>   * for position tests)
+> @@ -1040,6 +1084,7 @@ static void test_format_plane(data_t *data, enum pi=
+pe pipe,
+>         struct format_mod ref =3D {};
+>         igt_crc_t* crcset;
+>         bool result =3D true;
+> +       bool found =3D false;
+>
+>         /*
+>          * No clamping test for cursor plane
+> @@ -1047,6 +1092,17 @@ static void test_format_plane(data_t *data, enum p=
+ipe pipe,
+>         if (data->crop !=3D 0 && plane->type =3D=3D DRM_PLANE_TYPE_CURSOR=
+)
+>                 return;
+>
+> +       for (int i =3D 0; i < plane->format_mod_count; i++) {
+> +               if (data->mod =3D=3D plane->modifiers[i]) {
+> +                       found =3D true;
+> +                       break;
+> +               }
+> +       }
+> +
+> +       igt_skip_on_f(!found,
+> +                     "Modifier " IGT_MODIFIER_FMT " not supported on pla=
+ne %d\n",
+> +                     IGT_MODIFIER_ARGS(data->mod), plane->index);
+> +
+>         igt_vec_init(&tested_formats, sizeof(struct format_mod));
+>
+>         mode =3D igt_output_get_mode(output);
+> @@ -1101,6 +1157,9 @@ static void test_format_plane(data_t *data, enum pi=
+pe pipe,
+>                         .modifier =3D plane->modifiers[i],
+>                 };
+>
+> +               if (data->mod !=3D f.modifier)
+> +                       continue;
+> +
+>                 if (f.format =3D=3D ref.format &&
+>                     f.modifier =3D=3D ref.modifier)
+>                         continue;
+> @@ -1433,17 +1492,25 @@ static void dynamic_test_handler(data_t *data, en=
+um pipe pipe)
+>  static void
+>  run_tests_for_pipe_plane(data_t *data)
+>  {
+> -       igt_describe("verify the pixel formats for given plane and pipe")=
+;
+> -       igt_subtest_with_dynamic_f("pixel-format")
+> -               run_test(data, test_pixel_formats);
+> -
+> -       igt_describe("verify the pixel formats for given plane and pipe w=
+ith source clamping");
+> -       igt_subtest_with_dynamic_f("pixel-format-source-clamping") {
+> -               data->crop =3D 4;
+> -               run_test(data, test_pixel_formats);
+> +       for (int i =3D 0; i < ARRAY_SIZE(modifiers); i++) {
+> +               igt_describe("verify the pixel formats for given plane an=
+d pipe");
+> +               igt_subtest_with_dynamic_f("pixel-format-%s-modifier", mo=
+difiers[i].str) {
+> +                       data->mod =3D modifiers[i].modifier;
+> +                       run_test(data, test_pixel_formats);
+> +               }
+> +       }
+> +
+> +       for (int i =3D 0; i < ARRAY_SIZE(modifiers); i++) {
+> +               igt_describe("verify the pixel formats for given plane an=
+d pipe with source clamping");
+> +               igt_subtest_with_dynamic_f("pixel-format-%s-modifier-sour=
+ce-clamping",
+> +                                          modifiers[i].str) {
+> +                       data->mod =3D modifiers[i].modifier;
+> +                       data->crop =3D 4;
+> +                       run_test(data, test_pixel_formats);
+> +               }
+> +               data->crop =3D 0;
+>         }
+>
+> -       data->crop =3D 0;
+>         igt_describe("verify plane position using two planes to create a =
+fully covered screen");
+>         igt_subtest_with_dynamic_f("plane-position-covered") {
+>                 data->flags =3D 0;
+> --
+> 2.43.0
+>
