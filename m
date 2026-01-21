@@ -4,174 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E038D262AD
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 02:43:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B009FCA5FBA
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 03:41:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 42B5B10E1E3;
-	Wed, 21 Jan 2026 02:43:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 41FCE10E0C0;
+	Wed, 21 Jan 2026 03:41:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GE/pCS+D";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="iU+uFhBU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB09B10E1E3
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 02:43:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768963421; x=1800499421;
- h=from:to:subject:date:message-id:references:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=U+7uoatQsVUZofi47eBCYbGiQtFhj3+TVPS9EdtrM/Q=;
- b=GE/pCS+D9QDNQooAMEYbce1uk+QCzMtqYLzXQbDnbZSSqDP+cxtkkaz8
- 58uSpGff6Jp0Bf4cH1i1KfLtFVQTk87zKBbHAsInwmkdz1K8qDNN1Metu
- 55/VpaahDrSdYCpPHk06lmY854FnZI4RRwrrdwPLCNDu9V8gG5FvpUegM
- IM9VEzd/m6O8XkADPlIjs5rNE7VeKlPpg0PQ1NiqrfRSni2jLfmUChNRC
- 81aMKJCsxlXm9B9mkVKT5w4QenVop6RaIqAFA/uv72xijOrNsurDgSKsi
- Ap9Wv9tKpfLsdDzzbbYIk2X/IofnQ+KmeAqfRUdleviWg5LywB2MgVBUI A==;
-X-CSE-ConnectionGUID: 36UeKtx0S36npJHCFjMoBQ==
-X-CSE-MsgGUID: /kgkMXY/QM6CaxxtgGnTsg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="70277361"
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="70277361"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 18:43:40 -0800
-X-CSE-ConnectionGUID: IZDKluEtQVa4vjJ1PxJAXQ==
-X-CSE-MsgGUID: EL6u4myvT+OzXGAAvcOxYw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="205432949"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 18:43:41 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 20 Jan 2026 18:43:39 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Tue, 20 Jan 2026 18:43:39 -0800
-Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.61) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 20 Jan 2026 18:43:39 -0800
+Received: from BN1PR04CU002.outbound.protection.outlook.com
+ (mail-eastus2azon11010036.outbound.protection.outlook.com [52.101.56.36])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 45EBE10E0C0
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 03:41:05 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uhuzwB2KPuWfP86vNViQkW6Vq1BHqi5UORng+r6suUiGyFs82SBZ+dr5e3WHouk/hocBneDFDNO+oZ8wgvTel3mJGfRCKExWI847R0JFZKdUdVdsjViVjhX7bXPIwu1nZl0pba/z0VlkTlqm7uitNDOtReOGPdwDxojr1KPeSj2wRdxHDaDcEZHspUxYKrfwyHMuUKLr+DgSn5UBo4HbjUaiShHsY792FG0NASz9YBOKoMbezbbah2f7Q1dgwWCM69EEfHDHXA9XkRH6oricvd4gw0IllwWT1rdXG/hDNgUQB2MfSC4yh9fWWGshbafRH+xZ8AKrXRWvXQwzA0l27w==
+ b=RvoLI3javjXTkNQVURmea0kMQY/STHXuL6LFkcAen4Yu4DhjgoNhAmu590B/sOZyhFyccJz4O+UieUTf/0Iednbhk9s7Krfj3CO0fMINaH4mtPbV+2SlNy5U9nljbQEBSMp48FRTa6dpiizX4jpHgCPOn0EUCG9lxUMuAVxN6vrTVcDfiJdL4obaENF8N0DMgWSNPEZ5QMS0Jf66Fymv6IBUIyRuL1fpbiyYQqkijDa7knuHQ4B+EPPzzPkRiavC5U4uas3j1OV3u3UQdqpNp5Szpe+ucRHIY8cCjVqBTHonYCrM3CAp1FxI8cSL/sFaZH0mBX2NaECFSAhcMwKXzA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=daMCyPm5PNvSmlIPNldnYFvB7K+DZnvHa8GsBw+tfzo=;
- b=I48tOZiYEjr2EDLfipTtJpGzBFN9MapFiVOguHIi9JcsWLgTC2838A6qlmcirtFIrfJO7PjBPsDOwA+VS84oWrkobQQ0XnWIdxSnHMtmGssQI4JVQzXj7mL6KQFB83egkT43Z1Rc2r524cfAtPFtrE3olso1K1ePKNbEXYGBsGlCwTV5tDFbhILYTADIf9X4SAnUspCHkyrOzjbW6mpfLY6bMh/aZEy/kpqa/a+Q9iKp/db+siVB8JHC98ystrZJfn5YhNDikNk5wDS+FH0gu8QCJwGTpKJxWZGzGSwxFPMlNWYahiLuXc4RdcQ0EWXMrpTZ5QnJ6eVBhSyDU90vBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM4PR11MB5456.namprd11.prod.outlook.com (2603:10b6:5:39c::14)
- by DS7PR11MB6296.namprd11.prod.outlook.com (2603:10b6:8:94::19) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=4lU2Plh5m8Vh0S5sNE82D4VvsBI3ZJNdKva03dOi1Dc=;
+ b=O+ThkEHD4/MboNu5N932aup6VFroSXh49WJUYfRgoJw8EMw15a+dFWKeXvjqwaNT0Ujv5GCNqYMVW+hJMG9HYmGrrrVLo+ayf2Jf1lGssQkSqKx1c+OQgnizXUXo3kcOu5gLoCR+lbib8/e6zVnMSm9Fzps00fYpXQ+UfIHI7P27fGLEpLdaYUaM2KVFe6JwLW74xLAzPvZCKQQ/jEElcZ0OtZB/kHIQE9gWXISj9osVS55MGMHmu8mxaGEDKdN3SXFhWrZSHueVfbo6T2rUF/8ght0hiwjHa3riy1rNbiFuZ3SxWRsKpUqbsq4UAs88L9bbWe4k0nl50R+xeQNx5w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4lU2Plh5m8Vh0S5sNE82D4VvsBI3ZJNdKva03dOi1Dc=;
+ b=iU+uFhBUtU6LTmCjHgzg2ZSWl1//oO1tp9zEgOmpFXXoTTyYadO6GYpK46LXUPOSuk7uJUdtDORUGPcgLRMPIqMBZb3mo645S7G6C+v7l7L1YiJZQZTZlgif5Ie+tVpK7/UJwM9QPFa+OMy+pJRoysii5z5zFPEkig6Wgo90YcE=
+Received: from BL1PR13CA0096.namprd13.prod.outlook.com (2603:10b6:208:2b9::11)
+ by MN2PR12MB4189.namprd12.prod.outlook.com (2603:10b6:208:1d8::22)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.9; Wed, 21 Jan
- 2026 02:43:37 +0000
-Received: from DM4PR11MB5456.namprd11.prod.outlook.com
- ([fe80::b23b:735f:b015:26ad]) by DM4PR11MB5456.namprd11.prod.outlook.com
- ([fe80::b23b:735f:b015:26ad%5]) with mapi id 15.20.9542.008; Wed, 21 Jan 2026
- 02:43:37 +0000
-From: "Lin, Shuicheng" <shuicheng.lin@intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: RE: [PATCH] tests/intel/xe_fault_injection: Close drm fd before unbind
-Thread-Topic: [PATCH] tests/intel/xe_fault_injection: Close drm fd before
- unbind
-Thread-Index: AQHcgblsfMCfdbaX4Eais2bacAVhSrVb+4Hw
-Date: Wed, 21 Jan 2026 02:43:37 +0000
-Message-ID: <DM4PR11MB545620EA1B0F449402A31B0EEA96A@DM4PR11MB5456.namprd11.prod.outlook.com>
-References: <20260109224047.2483497-2-shuicheng.lin@intel.com>
-In-Reply-To: <20260109224047.2483497-2-shuicheng.lin@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR11MB5456:EE_|DS7PR11MB6296:EE_
-x-ms-office365-filtering-correlation-id: f9d86d49-1ea7-48fa-0923-08de5896e114
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|376014|366016|10070799003|38070700021; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?zHy42s6ZRa/RbO43W2tTzFCVWwfLwYLx1V0W6gDsZiTj9vBwNlA5AFR3qwG3?=
- =?us-ascii?Q?0ZD7rUwJjOR1Hl1G7snxZ5GCs7UsH0bvitw9PsRHnwg0AzJ8OFsdWo6K4fZc?=
- =?us-ascii?Q?qKxHIGZEklAIcuT+qosMU2nuV/cOoOgu2oxESRfDW+z5UQ625flpTnVPO4kg?=
- =?us-ascii?Q?eJiXg86RrgG1J/KqZT/wVEyBEJ+K2eKJMKIuXraPQXvbL7LvDsH0zQFgJjn3?=
- =?us-ascii?Q?hmj4ZwSDgwKBERCSxAdchyT9R9hkSg84/Te6TM5/vuLzpyRMBqqIW3bI47nM?=
- =?us-ascii?Q?Fl4eiyg/1G3QR44kiWRi++dv7ysNvSSGzNKLv1nr7VyfDdDW+ivw9k/7Rk9s?=
- =?us-ascii?Q?F4wD30DOsEG32q/uabS0iy8H7+kDhpyHCS6TF6w3kZzaG6ZXaH3KPjlTKvDK?=
- =?us-ascii?Q?V33BeOaW63OrAKVr8tk+WTAGQ6dTWX23ulwx0WRsIyVT9+ljYc+V7K+VvN6H?=
- =?us-ascii?Q?T9hxe/sSSK0bKuiankJXQH6rIPw6/osZ4ySOQYxR789hvG5rznHoga6fBnCg?=
- =?us-ascii?Q?2sGy7mI2tq0WedwH4RZRtJqvMxg+BDxYIX/pjREDRNOMmT4BCCSQnfj1pL2H?=
- =?us-ascii?Q?Vh0sZ/ey5pNe/mOUZ6r+5DNSBC3bALqcNYaXoiP7CHleioUweGrtQ97eFk+H?=
- =?us-ascii?Q?pN7rL4JQ1gcesOj2uMywjHo1s2efloZfOu67ukOCPVrGeRls5wmADkk46zgE?=
- =?us-ascii?Q?BsHA/VnlZUaSSsXWaXX2c21I7gV3FRHkHjbcWJtTVFBH555pGCH1K99acUAy?=
- =?us-ascii?Q?F8CJkAUrtHkjm1qYTWiQJ8yWgO6R7oZ92irqYM+ufLJXtp2FHEnnLlKhMXBp?=
- =?us-ascii?Q?KzRk5dEO490/UuD65p6le6NCrVEPHgLXi8jvRGZ1coHLEuedFYkWDh7jUb3D?=
- =?us-ascii?Q?aKzFC0LJzHExUxPmLAY9ZARIrnCSFUogFEvocGgGumZjcO6zVFiqEYxJgV4z?=
- =?us-ascii?Q?1JWhQHFORlKj6yaWJYUuG+ayjXdX/CnR4o+Y2MwA6JIdK54/yCUcCqwg9Zvz?=
- =?us-ascii?Q?6UutXf3c6NIfBHI0xcCah+r1VSBoPZa5S4CRiyJhcp4PiMIStD+xkB5XkZtF?=
- =?us-ascii?Q?kqB6laKs2EoY+KxkDjaMvCkDDqG79CQitjxXdV+SuFlwWsWug5MBsVWXsmFE?=
- =?us-ascii?Q?SFAVjajGiF4FdVo0TDKaVjx8Y6jDmT1sNbK9qzfMEtffwQ/XCYuAumpmUM27?=
- =?us-ascii?Q?JFXIrKSTW4oLgocIbgHWNyIbMku5hsE4U3+5X1A4KFDMz51AUqTtxXlkXO5t?=
- =?us-ascii?Q?Cc+hl4lMBl6/tGTvw/NRqUAEk3hhZrLrF/lEByOJIqZku1LgDtEvkAUM67KD?=
- =?us-ascii?Q?g97YjPE3HrUkWTOAv5NtoKbAcbUKFEZniGdeJpi/pXAnz3H+fQZP8g9L4/jL?=
- =?us-ascii?Q?3OYFq0NDaemUugz9jfJy1j/omJE3FCHoMHZsOrQpn9TWsGnmody7qQHDRjJa?=
- =?us-ascii?Q?bCl+CSJ18oWAMorW5loxDmjIgAWv6Tks6c1V59w4yg66fJj49WF8SLciPAAp?=
- =?us-ascii?Q?bl+RmPNDq9fObZdA7fWuWaOy4qGdKBmKFqgSmgbO6+XWxl10lGXiqY/6R//y?=
- =?us-ascii?Q?Ar1g4oJLe5uAAYefx5jFPkVZ4+adhrCqlUCWV+AtbALhspz3kKAm7jzlthTy?=
- =?us-ascii?Q?ppdr7SOzZP1fpNiVuO3vvv4=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB5456.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(10070799003)(38070700021); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?jnVZg+4E4ua4KsyL/wbpT53L/y80ntLj4VzVwCNahYU8n1+cFzKRMx5aBpFl?=
- =?us-ascii?Q?fa8C4Vnlty0ybh6BgFvvtyTirpwSXdM+IRigysgoIcDkdxi8wR3/ke3Ac/qL?=
- =?us-ascii?Q?8GgeqlNk1P0GXrZgvyFOdtW4JbYcFwgTcvgybKXjcKwMPxfhly044UjixilR?=
- =?us-ascii?Q?qWY6bJwPAj//OJVtU+ORZ2E/Y+f3EwlAwMBOKM4LYOtpJ5Iqrd4qY7CQYpB1?=
- =?us-ascii?Q?vDhe2m9TV9+XN28Q5xc1wBL7aBwwCjiSOYs8msWTthX5rQ/PBGNErxDgDIRG?=
- =?us-ascii?Q?Ku9wlCH0nPERvsDRSZSoCJO934mizXxTLLYbevS994HaKsbHqjiJRrZ/b+Kf?=
- =?us-ascii?Q?HdduJ7Z+R6NyYTKu/ovHNQpwOIQH8fkIxskEBhkbOcjLRfiwBXAdaIaeHjve?=
- =?us-ascii?Q?gCW0RZ6pImzs84LwXl5EB/UM/4D1ofShpqRZLWWq3VdA3EcKzp5MA0KMkxib?=
- =?us-ascii?Q?RSrdSsbRcnwuXnL/NOjUCrRnJql0PoReOnJzmAqTkitRTdUw0wdNU//Vamn1?=
- =?us-ascii?Q?4OGCbsiuMKxkXu9uxcp2RNOkfcdUjdVMgvHhGAt2JB1XgHPR+IQll1l5u1CD?=
- =?us-ascii?Q?VMxwGqzII+T1LHxJVSXLKUALNXiQIpC5dIfp9mJsaFrD/JT9d1o0AmONs8dj?=
- =?us-ascii?Q?CNrqNtRcvII7St/SLxdYCvWQ/Kt8SO9BRZ6p+1KDAxQYtSx+iPAfRQQ392Pu?=
- =?us-ascii?Q?zDQc8xLYjQqe5dLYI6YmF3P432VoJqWLY1G41uz2B2kBNFC814U6mx9S0mtM?=
- =?us-ascii?Q?+CxMXM6M03MOUccVdQRTDVEo0v3XyIicDBA6Xfiwu+PHoCvVg9YhgAMP248d?=
- =?us-ascii?Q?hIrV5WZxb547T1j0JJ89FrC7O647GOtpjYiTrNlo3PcpOpY+mkZ+r2oYyMQL?=
- =?us-ascii?Q?IErA+t7McM1u2/Aeq5Y6f285NVCzEr4OhrJFaFzspsPdUqUmiYRs1w5KXtMT?=
- =?us-ascii?Q?O4GeX7lw22Vt7sZR/wRA1S39Whq8+Og1xizyT9mDN5N0zhLI/WNXY55A4Flw?=
- =?us-ascii?Q?UoNNAwEI1dnjomHaqq+iZ7g934punJgiBrd2NfkpR6BwsdM9Q8+w3OAG3qDo?=
- =?us-ascii?Q?iVC2pSV4fKWlnHBXM4Jqx9qW1+7iSWMbGds/GZBzyOZ5ph8Zx1oHFanfUCZ+?=
- =?us-ascii?Q?eYg/TXic3iTCH/yiOmpn6yHpwlkk/d5gf+wbDdkgr8/HvvkXmSuD65gSC0qm?=
- =?us-ascii?Q?m/IeljfQx7wuTOAcuDZsFeQzjRYfDC6969PNkTTlK0Ow78XFhhFuhSN981iq?=
- =?us-ascii?Q?ZXSg8RXLg92BafOSPe/QOM0smRbcWePjCiVhoR1uUfTHHj4o4xp2JFhlPm1/?=
- =?us-ascii?Q?xffptdN4CDKtzBzFmGPr7V1+Gzq4O59eedDp32XMAjn8WNLcpK0bSkVEoFT8?=
- =?us-ascii?Q?akq4BJDofdLzLGax+4kgmjJnpyI/x8Fz5tTRj50yRTY/k5a+BToT9MIb0WVd?=
- =?us-ascii?Q?1aDNZhOKX5kPFKLg4wnheCH83RXNKRphOhO9aN0UGcC89c3xCk/8yFOQ44EH?=
- =?us-ascii?Q?hRxJNUMr+lqrT9iXHEXdYVPssDJywp1GGr/b/59ptGYEEilaaz0l1eFEReoJ?=
- =?us-ascii?Q?wMyZT36L+6Li3ICTTJr6Ki4Y3bB7AArRK+I9K7w4ZsYlo+irhgS9Nv9oGiwa?=
- =?us-ascii?Q?L6JZvIhKReskQ7nKFu9Mz9iexkzV2Pbbvmz+II+KZdZia7y5wcr5npcuaCdA?=
- =?us-ascii?Q?LNNJJ8K831+g5cXjO3JWeeoffoIG1qVrdYSExqVciV3qBw9gRk5TIhPqZBLV?=
- =?us-ascii?Q?0hpB263UL46IyghtQoHFSpfzLJfkdy2M5w5jtimxRnQcZSNj4lW1VBLFf3Q8?=
-x-ms-exchange-antispam-messagedata-1: 8JrNbVeNCrg1Iw==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 2026 03:41:01 +0000
+Received: from BL6PEPF0001AB56.namprd02.prod.outlook.com
+ (2603:10b6:208:2b9:cafe::aa) by BL1PR13CA0096.outlook.office365.com
+ (2603:10b6:208:2b9::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.9 via Frontend Transport; Wed,
+ 21 Jan 2026 03:40:59 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BL6PEPF0001AB56.mail.protection.outlook.com (10.167.241.8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9542.4 via Frontend Transport; Wed, 21 Jan 2026 03:41:00 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 20 Jan
+ 2026 21:40:56 -0600
+Received: from kylin.lan (10.180.168.240) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 20 Jan
+ 2026 19:38:13 -0800
+From: Alex Hung <alex.hung@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: <harry.wentland@amd.com>, <aurabindo.pillai@amd.com>,
+ <suraj.kandpal@intel.com>, Alex Hung <alex.hung@amd.com>
+Subject: [PATCH][V3] lib/igt_color: Improve fb compare time
+Date: Tue, 20 Jan 2026 20:38:01 -0700
+Message-ID: <20260121033801.407475-1-alex.hung@amd.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5456.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f9d86d49-1ea7-48fa-0923-08de5896e114
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jan 2026 02:43:37.7204 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: IUUoQ9YyfS0D5+0Yn3GIou5hkR0PzEJ+ZkFgHX/V0X42ONYnyWbRcb/TI/BGJiV6OQfgN0mhBlEklPrkJbyeUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6296
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb09.amd.com
+ (10.181.42.218)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB56:EE_|MN2PR12MB4189:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6c994493-1224-4c44-4fce-08de589ee551
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|82310400026|376014|36860700013|1800799024; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?WJqr7TivhbLlOKkvnG1MZ4ypHTUX/ecVsVRj6Q/SU/o5vwBU/KXzXOc0mEoL?=
+ =?us-ascii?Q?wzfFa+Rv89m/fJK7SMyMbGcvviFidq/TI+so4SouXmOOCn3BqVZBHEP4URSl?=
+ =?us-ascii?Q?ebM3EgxTVLCk1g/qNASC3SLXcI4IxUuolBsv4FHJM2dNi+OVaExBCIDcKQlS?=
+ =?us-ascii?Q?mctgFulKVUBIKlBNN/kTClWfgXb3R1skzmcAbVzvmLhE9VLgo3Hkmbsj+shO?=
+ =?us-ascii?Q?ByfypVx3Jb9OfOPQQdvocPP+POSomicBM9DYCH4BQfEqzWqrHcmNywBs+qk6?=
+ =?us-ascii?Q?I+KnnLD327CSPIEU9ULQ+TfXY3skYz0w+nBNMLteyMITMgQMMishHq/uLI8+?=
+ =?us-ascii?Q?vQbykKvIv8cbmQHVAT/l0Qvk8cY001FIFhEqYuTD5PQXG4F7la2bzuGTeR6m?=
+ =?us-ascii?Q?AFv0nBq72S2IPcrNSmsiOIPsvOC4+/c90xchwffEJ511hT1cXN5GcJfCICCS?=
+ =?us-ascii?Q?n4NaQD+O/BMPRTaJjDKarwMKeObJGsqlgCm9SIvRbsQaUfTNTwkU4olIDr5v?=
+ =?us-ascii?Q?k5nch3PZLds5ZsjN+MuZzhV6HHKqwmJ85OjM8ZY8B9dQspiQE4elOlWfSpaG?=
+ =?us-ascii?Q?zMQ5oNu3fA8Aogs5fNy9u53LoN7HpYpXC/P1FW22cM3noWnR2TggrBein1VN?=
+ =?us-ascii?Q?slCkIG8l3gOMRmTs6Z+6CkM3N6nwme3k4F16s+2qi06ySvaaIXPMUxRkny3o?=
+ =?us-ascii?Q?M8t58m8H0WCnKgZLzw+5w9QZW5UXgezlihhVooGEQqIVTVVTQWquGwmRvnPH?=
+ =?us-ascii?Q?R+yBPOwOT2OyXkdFfbJwDqfmMxPW3Em55Tz3n4iKd2DtgUXEqR6mI/pOAJ4Z?=
+ =?us-ascii?Q?8uVygCdwQyisrtvOIlHBZa583jFL2kEtGJ6OpZ5v7jKqbkhDPVxZretzu89l?=
+ =?us-ascii?Q?VkqPdS/9O8NW9jtVyabm9gzvGS0LiDr7eq50TmC80iM5Kfo7+TcwONVLFlQO?=
+ =?us-ascii?Q?lTkTdyxhSd9YUkw40NxhqNZCetbkYvrI3sJgdQ22KCdC9gTXvKvJfYRC0Asn?=
+ =?us-ascii?Q?PiBQ6dM0wC4mNLM8XnmoEK/ThTsYTE2wauFpPtEhXDkTl84oVICK+xyeVQGk?=
+ =?us-ascii?Q?kF4q0pNwVjLeexZsjxaZqeYTxCttIfQx6iMHx6KCRDVGMPFlyQ7lYTCJ8SHn?=
+ =?us-ascii?Q?VWN/e07aNU1I8abOQ+Im7zstSV0Y4Ic0qZbkHS46HCFiOujoj+DxTZHCvoBs?=
+ =?us-ascii?Q?ZQ9eC23OCD9V4eD9evHHrXxKjFrkr47o8zLCN51VnYGqE6devcAJBvD0r+pY?=
+ =?us-ascii?Q?cWI2J2WznVkF/Rjbw1IqIuvMWmfLPUGw1d8B8PiprQIrCPM8hY8j/qmOzKwm?=
+ =?us-ascii?Q?+X2SxYidR2mA3GDRHT55oCvcXyGB7EQuXyzvgm+p9mjjSp7zSNKLBFeFhSrT?=
+ =?us-ascii?Q?Dlon6e6iQ2P5dGOLJ8/T0joALZfkOoqqjasrakSzmeLT8lmM9JB3Hj2vVryJ?=
+ =?us-ascii?Q?voDFDW1ZZS1YEJwyD3NZiL2cz0c2/NtwJIMIvZDYSgIECQEFnmW0/JMuyUcH?=
+ =?us-ascii?Q?w4J95aX+RdEN6oUKc4W0tjLXmRuHX0fOAI6y3/K65ktLi//prdXu4aFRDxKQ?=
+ =?us-ascii?Q?9ELCD7fUCXjQbduccfF5R3gHJTik6RGADFSdhUY0pEvAV1l/e512JL+MLJ5P?=
+ =?us-ascii?Q?edOg1Tv92s/kQ48wtNxGfWWSNtEILq9WeQdrJM4VTq7+cpcX2Gd0Yly2P1cs?=
+ =?us-ascii?Q?COwDpA=3D=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2026 03:41:00.8232 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c994493-1224-4c44-4fce-08de589ee551
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB56.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4189
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -187,105 +139,95 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi all,
-May I ask review of this patch? Thanks.
+Copy the memory to cached buffers first to avoid slow memory accesses
+on dGPU.
 
-Best Regards
-Shuicheng
+This cuts kms_colorop execution time on dGPU from 1 min to 10 seconds.
 
-On Fri, Jan 9, 2026 2:41 PM Shuicheng Lin wrote:
-> Close the sysfs and DRM device fd before unbinding the xe driver. Otherwi=
-se
-> the open fd holds a reference, and the subsequent bind can come up with
-> different card/render minor numbers (e.g. renderD128 -> renderD129, card0=
- -
-> > card1).
->=20
-> Also drop the unused DRM fd parameter from inject_fault_probe() and
-> probe_fail_guc() now that these paths don't require it.
->=20
-> Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-> ---
->  tests/intel/xe_fault_injection.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
->=20
-> diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_inje=
-ction.c
-> index f3bfc4b40..76d1c6fa3 100644
-> --- a/tests/intel/xe_fault_injection.c
-> +++ b/tests/intel/xe_fault_injection.c
-> @@ -260,7 +260,7 @@ static void ignore_fail_dump_in_dmesg(const char
-> function_name[], bool enable)
->   * @xe_wopcm_init:			xe_wopcm_init
->   */
->  static int
-> -inject_fault_probe(int fd, const char pci_slot[], const char function_na=
-me[])
-> +inject_fault_probe(const char pci_slot[], const char function_name[])
->  {
->  	int err =3D 0;
->  	igt_info("Injecting error \"%s\" (%d) in function \"%s\"\n", @@ -
-> 289,7 +289,7 @@ inject_fault_probe(int fd, const char pci_slot[], const c=
-har
-> function_name[])
->   * @xe_guc_mmio_send_recv:     Inject an error when calling
-> xe_guc_mmio_send_recv
->   * @xe_guc_ct_send_recv:       Inject an error when calling
-> xe_guc_ct_send_recv
->   */
-> -static void probe_fail_guc(int fd, const char pci_slot[], const char
-> function_name[],
-> +static void probe_fail_guc(const char pci_slot[], const char
-> +function_name[],
->  			   struct fault_injection_params *fault_params)  {
->  	int iter_start =3D 0, iter_end =3D 0, iter =3D 0; @@ -308,7 +308,7 @@ s=
-tatic
-> void probe_fail_guc(int fd, const char pci_slot[], const char function_na
->  		fault_params->space =3D i;
->  		fault_params->times =3D MAX_INJECTIONS_PER_ITER;
->  		setup_injection_fault(fault_params);
-> -		inject_fault_probe(fd, pci_slot, function_name);
-> +		inject_fault_probe(pci_slot, function_name);
->  		igt_kmod_unbind("xe", pci_slot);
->=20
->  		/*
-> @@ -662,6 +662,8 @@ int igt_main_args("I:", NULL, help_str, opt_handler,
-> NULL)
->  			oa_add_config_fail(fd, sysfs, devid, pci_slot, s-
-> >name);
->=20
->  	igt_fixture() {
-> +		close(sysfs);
-> +		drm_close_driver(fd);
->  		igt_kmod_unbind("xe", pci_slot);
->  	}
->=20
-> @@ -670,7 +672,7 @@ int igt_main_args("I:", NULL, help_str, opt_handler,
-> NULL)
->  			bool should_pass =3D s->pf_only && is_vf_device;
->  			int err;
->=20
-> -			err =3D inject_fault_probe(fd, pci_slot, s->name);
-> +			err =3D inject_fault_probe(pci_slot, s->name);
->=20
->  			igt_assert_eq(should_pass ? 0 : INJECT_ERRNO, err);
->  			igt_kmod_unbind("xe", pci_slot);
-> @@ -680,12 +682,10 @@ int igt_main_args("I:", NULL, help_str, opt_handler=
-,
-> NULL)
->  		igt_subtest_f("probe-fail-guc-%s", s->name) {
->  			memcpy(&fault_params, &default_fault_params,
->  					sizeof(struct fault_injection_params));
-> -			probe_fail_guc(fd, pci_slot, s->name, &fault_params);
-> +			probe_fail_guc(pci_slot, s->name, &fault_params);
->  		}
->=20
->  	igt_fixture() {
-> -		close(sysfs);
-> -		drm_close_driver(fd);
->  		injection_list_clear();
->  		igt_kmod_bind("xe", pci_slot);
->  	}
-> --
-> 2.50.1
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+---
+V2:
+- Change Improvement to Improve in Subject
+- Update comment style
+
+V3:
+- Move igt_fb_unmap_buffer after cleanup so map1/map2 are always unmapped.
+- Handle partial allocation for cached_p1 && cached_p2.
+- Replace memcpy with igt_fb_map_buffer to more speedup.
+
+ lib/igt_color.c | 41 ++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 34 insertions(+), 7 deletions(-)
+
+diff --git a/lib/igt_color.c b/lib/igt_color.c
+index 4d94421ba..54cfebc40 100644
+--- a/lib/igt_color.c
++++ b/lib/igt_color.c
+@@ -575,15 +575,38 @@ bool igt_cmp_fb_component(uint16_t comp1, uint16_t comp2, uint8_t up, uint8_t do
+ bool igt_cmp_fb_pixels(igt_fb_t *fb1, igt_fb_t *fb2, uint8_t up, uint8_t down)
+ {
+ 	uint32_t *ptr1, *ptr2;
++	uint32_t *map1, *map2;
+ 	uint32_t pixel1, pixel2, i, j;
+-	bool matched = true;
++	uint32_t *cached_p1 = NULL, *cached_p2 = NULL;
++	bool result = true;
+ 
+-	ptr1 = igt_fb_map_buffer(fb1->fd, fb1);
+-	ptr2 = igt_fb_map_buffer(fb2->fd, fb2);
++	map1 = ptr1 = igt_fb_map_buffer(fb1->fd, fb1);
++	map2 = ptr2 = igt_fb_map_buffer(fb2->fd, fb2);
++	igt_assert(map1);
++	igt_assert(map2);
+ 
+ 	igt_assert(fb1->drm_format == fb2->drm_format);
+ 	igt_assert(fb1->size == fb2->size);
+ 
++	/*
++	 * Copy WC memory to cached buffer for faster reads.
++	 * Reading from WC memory is extremely slow so this is important
++	 * on dGPUs where framebuffer mappings are typically Write-Combining.
++	 */
++	cached_p1 = malloc(fb1->size);
++	cached_p2 = malloc(fb2->size);
++	if (cached_p1 && cached_p2) {
++		igt_memcpy_from_wc(cached_p1, ptr1, fb1->size);
++		igt_memcpy_from_wc(cached_p2, ptr2, fb2->size);
++		ptr1 = cached_p1;
++		ptr2 = cached_p2;
++	} else {
++		free(cached_p1);
++		free(cached_p2);
++		cached_p1 = NULL;
++		cached_p2 = NULL;
++	}
++
+ 	for (i = 0; i < fb1->size / sizeof(uint32_t); i++) {
+ 		uint16_t mask = 0xff;
+ 		uint16_t shift = 8;
+@@ -614,15 +637,19 @@ bool igt_cmp_fb_pixels(igt_fb_t *fb1, igt_fb_t *fb2, uint8_t up, uint8_t down)
+ 			if (!igt_cmp_fb_component(comp1, comp2, up, down)) {
+ 				igt_info("i %d j %d shift %d mask %x comp1 %x comp2 %x, pixel1 %x pixel2 %x\n",
+ 					 i, j, shift, mask, comp1, comp2, pixel1, pixel2);
+-				return false;
++				result = false;
++				goto cleanup;
+ 			}
+ 		}
+ 	}
+ 
+-	igt_fb_unmap_buffer(fb1, ptr1);
+-	igt_fb_unmap_buffer(fb2, ptr2);
++cleanup:
++	igt_fb_unmap_buffer(fb1, map1);
++	igt_fb_unmap_buffer(fb2, map2);
+ 
+-	return matched;
++	free(cached_p1);
++	free(cached_p2);
++	return result;
+ }
+ 
+ void igt_dump_fb(igt_display_t *display, igt_fb_t *fb,
+-- 
+2.43.0
 
