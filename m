@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AAE1D262B0
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 06:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B5C8D262B0
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 06:12:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1FCEF10E6BF;
-	Wed, 21 Jan 2026 06:12:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 91E8D10E6BF;
+	Wed, 21 Jan 2026 06:12:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HGofiSIM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h7QnhSqL";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFBD310E6BF
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 06:12:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F30E10E6BF
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 06:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768975923; x=1800511923;
+ t=1768975978; x=1800511978;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:mime-version;
- bh=GlUC1lOQ4Pap0jpUqzuYFnTkVtbYAbriKhbG9uqrx5s=;
- b=HGofiSIMPswuTgu0lIiF2YIWmVnhYHJco+YmdiA40Gsih25NB7jLwItQ
- 5dmBrjpm2KQYwGE3hRwiIHVnurY06Un53U1L3JXLsnn+KF8DCAZ4i2yED
- 5OiAdss4cK6ovRAGKs4Mr7oyOq7qwdqYqAIJr282gsFkkIMZwAhAm67QA
- zQMAVRppqRFlnB7Rzkyo7XCiUFUhhvD7u2RJK4WpD2sr/krm5qf4BHc6f
- lp5skiN+fEx8oRC8HfCcoCZ21jErUVoVYOwMNBm6BkEZ909NyRpQAozhR
- dmNesAco8y1nuVNFWvIdS9eBTd6hnopV3RwVS8sWQWbMZW9m5UW6TzSKU A==;
-X-CSE-ConnectionGUID: ES1Jrhh7QD+yg+JWzzi/WQ==
-X-CSE-MsgGUID: OKOrtlrUTWyaU0KCOX5J7Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="70108197"
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208,217";a="70108197"
+ bh=gRVTqAaAW8qAgYzPwCLww9Md0zwlgnCF4DJDSJSxYig=;
+ b=h7QnhSqLXg7Yiq2m/vfOAsqXNkA+o+FA5gEGUM28fyLAWwtEGSyHMpnc
+ u5X7iWuEutdchqsS7xbtPdsh2A1G003PM20f/VrApaJnmHnH/b3qkZFEe
+ 7+KXXYA7lC6Ept5fQVmUaiufSybRr/NVuqIuI3NxwWFmsb6j5A/rxqkTl
+ GJ6gaAGCHfq3I7LVsfBlukPh7wRtwp9cSBDU9g8T0XQhSDlyiypJS71vV
+ vQg/sPD+8kmlIsEFyECOdwqzysGvGwTbR9ffpF1EUkIw/WZbcgAv46ig/
+ X03Qm5YDHwrg/GZXTOGFk9mWhxo2Pzgd4GTm2JHk6DdY+g5j0tDdUL45U g==;
+X-CSE-ConnectionGUID: v3IDG250QymtAPcyoOA4JA==
+X-CSE-MsgGUID: ZIACp7MST0qbQxj0VtM1Zg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="70108274"
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208,217";a="70108274"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 22:12:02 -0800
-X-CSE-ConnectionGUID: Su2trOpWTCOlHmdJI1X3DA==
-X-CSE-MsgGUID: c1RQnLUVSvaR9Cl5z9vfog==
+ 20 Jan 2026 22:12:58 -0800
+X-CSE-ConnectionGUID: TwG2KjD9RN6uxJLzhOVpRA==
+X-CSE-MsgGUID: MC0EA44qShqY8SYCab9G4g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
- d="scan'208,217";a="205983563"
+ d="scan'208,217";a="205983630"
 Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 22:12:02 -0800
+ 20 Jan 2026 22:12:57 -0800
 Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 20 Jan 2026 22:12:01 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ 15.2.2562.35; Tue, 20 Jan 2026 22:12:56 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Tue, 20 Jan 2026 22:12:01 -0800
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.47) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ 15.2.2562.35 via Frontend Transport; Tue, 20 Jan 2026 22:12:56 -0800
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.29)
+ by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 20 Jan 2026 22:11:58 -0800
+ 15.2.2562.35; Tue, 20 Jan 2026 22:12:52 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qgD25LQhJ5bYeUg9lup/SMSjwTjMnrHo4XQA/InwZ6NM++FJHrUXvBtB6u1+e5tP4Jd40I3SYOeEjtMXtStXQmofpt/tn3BXRa31nWY6+FqAeygAI2AjBIg3DckJAiURML6B2g0HJ76QJ38AHwGCNXmvBxrD2MuVOupx7Eb+8FHmimeR76zmm4J7rdLKc2cYqB/sVbJV75lUNFw15n14qyqZdyEF7/NdvtE3RqLPegNbcoTUNJ2DPEaXDy1dVR+TzxwjUCfkutvKbIm4bU9f5e9mfRYhdHxirBKNQngplGQkWYvrUHbOR91SvkWohPe3zjtNYyvvOBiBg4C6EgIfqA==
+ b=lFeEtfenlrjE/r+FRZgyTJgE2Y+ya5MEw2esZuXUoK8aG2vyJLGffDk2vQwIoPUDKAESg/9jcbkXwAg2+dq72w7Ln7uyCUisJqMrw/1uhIpoQcYyDIjc4rs+1ixjud9SXC75vO2YUepc+7llYTsbb2H6xjeOrD62CuQ2bZXWgFpEWOOf54XSe9WA2/AqFFB45+Ks3kgTffPgmvWd4J9O+RAbmXDgae0+7USAYY1uxn9Hxp4gVDZD4pNPQGaCoxpL9yfamsd1HxA6hrB+cBe0Q8ogyFHcZ4nlasWzQvx6RJCJBNzff/4+L3Yfo0odb98rP7MrEiQclos5kHQzGVkvfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8Zq474Cv9ckpW0jcHVbuYXItYiQHSiLQXUoKhBlQrIg=;
- b=c0y8LH3FkvSfTOr4CytQ7MmCeayL5TLEOQkcND+Sd9hIoXtZzWj/Ea79cZ8AjcC3/o2jLrPJFAlWBqurafdAYHu8f5ZnPQVBWfbgdTv5989CVMaAwnrcnIaHl+UEbR55FQezzfx3/7hmve7q5mhDMVOShBim5Vt9yO1DCBHP2QWW98Icoyc2gqnG8ADoKwqWlciEQEk4VzAFTpHkcUVUKRpFYNtZ5kFSfHyCLTdQpvWZ6Ic9HJbqX5i2VNfhkk8bxGqGjmzo4H9wBDFaRBe0R5LQk2RzX2C6ILq7NDb9TIhviZpQfTkp79/ab2z6JzrUzf3EXYBIehAlvJdITzJtFQ==
+ bh=gRVTqAaAW8qAgYzPwCLww9Md0zwlgnCF4DJDSJSxYig=;
+ b=m2FChUksC+/beSHLVc93Cyau1ZoWH5gGUPJWyZh2b2TRlOYrGUb2OapR/TDOFvi/AOA3M9e8vLcXWsb5DLpkBIRNV8ROjygjqOHWwQSvOClglsodpAg8UhHWHtViQsol4fQ/vZQprmQyy1FH+uHQbNeelni87WXBz3MXecPnituVoLds+j4ufjJHPvYCUKhueN99ktvoiGY5bPDJxpIOeWw8A94YWVFWdXK6TPbjsizfwq/DS8bqIRYBXA+nPOCL+LfkO7NMHvlT5JqTmBE+r+S3NeeCOHKrFIb+QKsTaSXCmrRlygZnCMY79R7iqxfoyXfhfV4KpH35h7RvQ7gSVQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -68,28 +68,26 @@ Received: from CH0PR11MB5427.namprd11.prod.outlook.com (2603:10b6:610:d2::14)
  by DS0PR11MB8717.namprd11.prod.outlook.com (2603:10b6:8:1ab::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.9; Wed, 21 Jan
- 2026 06:11:55 +0000
+ 2026 06:12:49 +0000
 Received: from CH0PR11MB5427.namprd11.prod.outlook.com
  ([fe80::a4c2:eb7b:574b:ab2b]) by CH0PR11MB5427.namprd11.prod.outlook.com
  ([fe80::a4c2:eb7b:574b:ab2b%5]) with mapi id 15.20.9542.008; Wed, 21 Jan 2026
- 06:11:55 +0000
+ 06:12:49 +0000
 From: "Sebinraj, S" <s.sebinraj@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Santa,
- Carlos" <carlos.santa@intel.com>, "Badrappan, Jeevaka"
- <jeevaka.badrappan@intel.com>, "Karas, Krzysztof"
- <krzysztof.karas@intel.com>, "Konieczny, Kamil" <kamil.konieczny@intel.com>,
- "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t] tests/kms_explict_fence: Add Test for Explicit
- Fencing
-Thread-Topic: [PATCH i-g-t] tests/kms_explict_fence: Add Test for Explicit
- Fencing
-Thread-Index: AQHchTAmGZobl9qsjEqU6WPrCWHrl7VbDpwAgAEgjzU=
-Date: Wed, 21 Jan 2026 06:11:55 +0000
-Message-ID: <CH0PR11MB542785B6A77ADEE33727BA689896A@CH0PR11MB5427.namprd11.prod.outlook.com>
-References: <20260114082323.2534785-1-s.sebinraj@intel.com>
- <20260120125838.t5l4r7nrz5j7m3c6@kamilkon-DESK.igk.intel.com>
-In-Reply-To: <20260120125838.t5l4r7nrz5j7m3c6@kamilkon-DESK.igk.intel.com>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Badrappan, Jeevaka" <jeevaka.badrappan@intel.com>, "Karas, Krzysztof"
+ <krzysztof.karas@intel.com>, "Konieczny, Kamil" <kamil.konieczny@intel.com>
+Subject: Re: [PATCH i-g-t v4] tools/gputop: Add GPU frequencies to the client
+ headers
+Thread-Topic: [PATCH i-g-t v4] tools/gputop: Add GPU frequencies to the client
+ headers
+Thread-Index: AQHccA4OOaV4+z+X+EO/Tf5KHJl08LVbP2aAgAEaPjM=
+Date: Wed, 21 Jan 2026 06:12:49 +0000
+Message-ID: <CH0PR11MB54272E13539D3A74542B01D19896A@CH0PR11MB5427.namprd11.prod.outlook.com>
+References: <20251218104303.2268868-1-s.sebinraj@intel.com>
+ <20260120132159.ptv7yizmtatwh6p3@kamilkon-DESK.igk.intel.com>
+In-Reply-To: <20260120132159.ptv7yizmtatwh6p3@kamilkon-DESK.igk.intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -99,85 +97,99 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: CH0PR11MB5427:EE_|DS0PR11MB8717:EE_
-x-ms-office365-filtering-correlation-id: ec95a807-c9af-49ae-0aab-08de58b3fa84
+x-ms-office365-filtering-correlation-id: 12647557-f428-4c6a-9081-08de58b41aac
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|376014|1800799024|366016|8096899003|13003099007|38070700021|7053199007;
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?gDR91pT2CHIeOTFRLLHqZ2jg+RS3n/ByTjBZVAl/qrqOQ7TqzpnC66k35/?=
- =?iso-8859-1?Q?IjeHYZZmoLj0UuLEff/BbSvrzuD30BRvO7tEcSL62lTOMXaphmw4D409S+?=
- =?iso-8859-1?Q?Stx39HlhXBYVeKAN2fTp89dfaO2+NiI2PozSPSb9OVDQm6V+37PLl9UpDU?=
- =?iso-8859-1?Q?dHE+pn9WAAk8VrAemlxR+Cic4OcrqpfWAIlcCitfX2M5RMZaINQHvsr+pn?=
- =?iso-8859-1?Q?8+rFABUbPW6Tn0WwIatOaCDHsTbJGyjh5K2UHpNTne/gfmtxl3BdkG2bQP?=
- =?iso-8859-1?Q?6CzYAuMDVtTL2fOSgPM99RfhrMUlGlieuzgHVGHJLKYjNBYezKjQQU8GKt?=
- =?iso-8859-1?Q?rkkpVzN4E6kqyomKW1WmffF8nV/r/VgluMYlr4HAHqbgg9/+zlg9JU088P?=
- =?iso-8859-1?Q?1QRnKg02vuj5Lk+uzaV5xY9mAJ8yLlv3r74Ux4TCGUdP+iIBqfrMKdc/Gm?=
- =?iso-8859-1?Q?piMveIMFE6p98wwZ3wQdv9sdxSReahuAOHe9KKujsT5CndRt7oefqZGFoF?=
- =?iso-8859-1?Q?eLDwFdXnF3Z0H8LUR4pFPvjx+5LIJfqG3LiUTIX+IpJPzsIEkfktobPVqC?=
- =?iso-8859-1?Q?lNHn77bkUPTcUxRtvFIro+hfwPQmqs44MdVBtE5SJDJYM6wysofeycU0hp?=
- =?iso-8859-1?Q?PrIYWEA947UfJWujKKSbvpsLNUIJzpGuenE0ovG1hQSONcpqP7HOiwUGlr?=
- =?iso-8859-1?Q?P1uY/zuLLqDFWewmS4gvzokx9QJB6D6oJH9tDHsfj9Oxu0scpave9cD9Bi?=
- =?iso-8859-1?Q?bESCbmB3CRcnHD6YZ0DzAqOm1GM1bJbNaNQWCMyGFaJSbJid11hE57wZ57?=
- =?iso-8859-1?Q?PYAHRxPkTg7xEX1+b1mor9W/Clx3/4FuJH845IRVB68oG0hDn5mYoRWYX5?=
- =?iso-8859-1?Q?m9WzpDHPWo9ZihY0S7yTV7pdgb6XOuIvlCFLTke1JBFfh9eSwCwAeSUOL7?=
- =?iso-8859-1?Q?xWSzhGskz54De23bC8COC6YJCOevjAY8fojyFkSc22smKK1+zDmuOpAjrr?=
- =?iso-8859-1?Q?QovLPGNMynbx5p3V1rc+h7OilbkIVS8J20QYtYmEc8CXfMbWpbuu1vZF+h?=
- =?iso-8859-1?Q?uzIuh30gh9dcGwfbVQbrOaTxTaYPoZqHvC7Em/vJ0+xRB6nhPHefYCDDef?=
- =?iso-8859-1?Q?ayzSxUSS1y6FEUQh7GV9w96PZWJrJKfSR+/8l98eaJB4Jfe7F4nb1hQscD?=
- =?iso-8859-1?Q?XquJmG4A820LjXz2gHEBSrPncq4sGtJQnlV9bNyT11hieVE43XwZTaBOBX?=
- =?iso-8859-1?Q?eKV9GS1oZVDdjDBlsSZpihzLj+LIQuyvpOrk6+fEhtyANYWg7z0h4uWHal?=
- =?iso-8859-1?Q?Shm2mUYrqQ/GD86O26pH6PfUViLO5EazXK2v5RbuI3i7nhDO5XyHVUy7lf?=
- =?iso-8859-1?Q?Vtd7VaIhSZNN3aK55po76yiDS4LnRqJjxTIG74ANaJs3ANf3za5y90xlr3?=
- =?iso-8859-1?Q?6Yo5N4mN2BeLnH6RqmzNYLjIvf5JRFyC+2Vs9OOQdPlyQjnC6nmUHF7IGL?=
- =?iso-8859-1?Q?z14xtiBsyKWp7EKGWj63KjTEW01PCACNY4DEPZ0LJgfuk2ElHmcyS/rryo?=
- =?iso-8859-1?Q?3e4N8eLaUBwNd4PugccyGgIW/Xd4QYKtZ6L6L2m+Y3lyDICzhNpEQAuuv8?=
- =?iso-8859-1?Q?y/fGz1RvCe2VNJym4hfWQewhSZaQKcgk+T?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH0PR11MB5427.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(8096899003)(13003099007)(38070700021)(7053199007);
+ ARA:13230040|376014|1800799024|366016|8096899003|38070700021|7053199007; 
+x-microsoft-antispam-message-info: =?big5?B?R2RXTkZBN21OK1d6enI1RkpUTDhQYmVsVzkyZkdHNFI4dnBwME92dmF0bGdSUFhs?=
+ =?big5?B?QjlHMkFqczFoeTcySEhYeWpzVzl4YU04dnhYRDJZUnlqWjRuKzlxei9PMmI0Q0hw?=
+ =?big5?B?MmZHdmhvWjJYaExaMWVocjFEc3ZWYVdmR0I2Qzc0dm9WdFVOWUxkdGQ3U3ZzMEhu?=
+ =?big5?B?WG5kWnJpTnZBRXI5UVRiRDcrSjhkTnBIamJzaEoxY3NpVTdQRHR1WHhDUzRKZ2pY?=
+ =?big5?B?ZWsvL3F4WHhJSDFtQnZsUHRtNS8zRDcrTmp4UE9qaGJvak9DcU9WMjZBbndxK1Jk?=
+ =?big5?B?eGdOQzZoRldMVHo5MGQ5VDhNRyt1L3NnWW9oTkVMZlF6Tk1HckJvUW9FekN0ZDMv?=
+ =?big5?B?UVdhN3FGWmhzT0YzaUNGUEhTc0VIbkFtWTdFc1ZZZTFpVkt6N3FUYVpqVEphcEtm?=
+ =?big5?B?NjhDYzIyUURncXdHWE96T3U1WWJ6RjE2NGFwa0RXelE5SXNSbFBTTzAvVEJaeTVC?=
+ =?big5?B?dWZ2bmNyUFE2VGtsSTgwT3k2QmJ3UFVwNkhTVnBGYjM4VVcvSjI2dXBLV1VMM3Nl?=
+ =?big5?B?MlFvR2tJUEpVOWJCdnNJNjN4WFk0OE9pdWpRbGM3bFE2YjJXbWlQa3RYRTVDdGR1?=
+ =?big5?B?MjI4Y2krMDIvQVJzNXNNWTdheUs4bnJzWVRvZXl3T01kUGltNUwzWmdzUzBtc25B?=
+ =?big5?B?bFNURk5VRERGcnZkOHVLQlBZUjJMbkhUSzl1czMyVVZNcnFucGNUZ0hnVEZYOC94?=
+ =?big5?B?MVh6RVF3YzNldkJVdzN1QzlsTXkrMHFXU1Bvc3hXRkZuRjNHakI5MmZPNFZTTjJz?=
+ =?big5?B?NXFnTlpUWkNOMDg5cjZFSWd5UHQ4QVZPUjM3WXpjb3JVaTJEeG1mUktNcDFTNTEx?=
+ =?big5?B?RWdBVjNudmFvWGhKeDc2YjAyWmF4VnVPdXBGOUtMNEZRMzRrTlRsVDYxWnE5UVlF?=
+ =?big5?B?a1N3NThjaXRBRFdyc1RFL2dHZ01jVjd2R1ptbCtOaUtvOWRwQzJSeEpJTi93S1BY?=
+ =?big5?B?TVNkdmZ6NGdtemlZdTdYY2lWSXZYUGVuVXpjODdtbkpHTTJNbUU0Y0xCL2lQYVlR?=
+ =?big5?B?NVF2dmxWOHd2T2pOdGtkUDlSbkJKcis2NFB1TUFDNEpleStwWjdGREZHWmdRSXdY?=
+ =?big5?B?U1oxWXZqZ25VclJKMEJaUS9sRnB5NlhiM2Y4ejRZQ1QweW1kbTl6YlRUbEhiZlRF?=
+ =?big5?B?S2JVNU05UHIxM0lQWWdDQWNPWC85bFBiTTZHeldjSE0rOE5qam8yVHpHWktNSFVx?=
+ =?big5?B?ZkMvVStEK2dQM1lRcTdPTS9ySVpGRUphNEY3RU9iMkhjb0N5dmxIQU5udGFMU2Vq?=
+ =?big5?B?a0NTazk3UXloTExWOWxibkhibG5URW5tWDQ4ZmR0YjRaZmFVbUFlOWNFTXBMaGhm?=
+ =?big5?B?R3lHRE5aUHRWVXF1T3BVZVFaRVoweHprYTNpS3hDMWN3VEI0Wi9VSWQ0NTBJL2tl?=
+ =?big5?B?S2Q5UUVaOExpMnpHNStCQjVkNkNUajJEWjU1WWhDMGRXdlQ0NEJ4MXc0czA3RkNU?=
+ =?big5?B?RWlybElNNEJ0SkdqZWUzb0hlVE1Ic2VSVlo4UTgzY0J5SnQ0b3ZaMWxLdkhjbjFs?=
+ =?big5?B?ZUNHVFZjaTBzellQWUNnRDJtcm5DOFBiYXN1UjBXUU14aGZFZmZBODFDSkpRS2FL?=
+ =?big5?B?UlQ5VVRVQ1JWd3VjSUFuUlI0amtqUXJJMzhzL3BsKzcyM3pMMzNCVzNYN3FMNkE1?=
+ =?big5?B?Y3drVGhDWXE5NXF6WE5vMWpFRVVXbWUwMXQxMTRrMHUvR04zOUFJVTVtdC9JdlVX?=
+ =?big5?B?R2Vpcm1aSkMzaFhzMzB4dFpUcFJPZWhjRHNZVm8yR0k1T2VNOWtQQmZRTFh1ZEJr?=
+ =?big5?B?aEFTOE1DY1RRbnVod3pjUDF0OS9xVXhpZHVYbkFGNWM0U2RDYkVIeDFOZjE4UU96?=
+ =?big5?B?TEVjRTNaSkQ2elFFUUpFSGZJN3NFb21sVUZMWXhhZytYUkZQQlRPSndSM3lKTTlD?=
+ =?big5?B?Ylora1VSWEtpWjJRMFpVcXU2RUh0cE1MRjBsOUFpVWxkczc3N2hhT0FhcFN6Vm4v?=
+ =?big5?B?bEw2QVhrOUNtWGZ6THZ1Z3dCTDRJUTNrODNBQWZ3dWhPWVBja2VHa0dHNFhhK25G?=
+ =?big5?B?dUZmVjg4b1hQUmJxbC9DdUNoUkVCdktRUWJaU2N1bTB2RnJzUlZxYU9OeGhTWURo?=
+ =?big5?Q?A7t+kNBElu0=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:zh-tw; SCL:1;
+ SRV:; IPV:NLI; SFV:NSPM; H:CH0PR11MB5427.namprd11.prod.outlook.com; PTR:;
+ CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(8096899003)(38070700021)(7053199007);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?k8buHnDNljW0zOlpNS37cAuvHD4PGQ0ALMDWjRF8XIX9Pu71lDYjFNlrqX?=
- =?iso-8859-1?Q?ZECcsrEOT6kXkUKGVQot5UfETlYfM/3g66Sb+yn15HjwjRFwQ8RFIm8pE3?=
- =?iso-8859-1?Q?8vOeTGgpjzcMfEcTv/PVAuZWlTOgQoMdkvf9qqoWa9GAQxMKe3gT5dZ8Yw?=
- =?iso-8859-1?Q?celldlz8zT7lib4chIQ4kUno8VUgVPLucDtVLSbT7rrTWOM2z4NuDzF8iO?=
- =?iso-8859-1?Q?QWBOzWAgRY9JN8nL1IIjXqA1W0933FNStw6mqVilcSajZUSlYLL4sJKE+W?=
- =?iso-8859-1?Q?EswY8nULLxAO6A2Q09a3vzUa4GxFt4c/qQQnPWVRfgL+DL2SMJqx0+Xcnk?=
- =?iso-8859-1?Q?uLbGZUQS0htvIJAZVcehk0LlFd6LGr4nqO93A8pyCrylw3beX8wYnT8JJN?=
- =?iso-8859-1?Q?5FS1VKjfcLDYA8QazpA6r4BwXtMiidJ7X6olLAPLKP6x988jKEYcldQ7gF?=
- =?iso-8859-1?Q?JNVVDkOzqdisv9mlekBJh3w+QbpxWWlYADOt3MmursTJIkzdP9R6f1f419?=
- =?iso-8859-1?Q?ycVGzHnNFWKiTIiYj/RF894VGSdGzOkFdrtwdZQZP/8smrdk0e6yIIte5P?=
- =?iso-8859-1?Q?dpD9kJZ20sPoQpaup6KnyUsboh4JOagY5dUbOk/Wzh8UObxOgRG1DvCqIZ?=
- =?iso-8859-1?Q?GDUynQsdBf9MUoc7sBsm0qJ9bK6XcqjEdtr69ekhL1/vm3LSmXORELJgtu?=
- =?iso-8859-1?Q?EUtQcZPkVKLPO79nbLIsT09EJvmFIWlrKXzkFgSVJa3zG0MKtY7w127duR?=
- =?iso-8859-1?Q?RZnttxkZ5uxQfAPTMR84hf122EWVDc2/bJHqAFVD94kgy3h98Efqxa7m4S?=
- =?iso-8859-1?Q?63Y/ymi4DFCvMrua9k5bCMZnpET80JXavSHC2vnxcnk/OwK+dfidqcWRIG?=
- =?iso-8859-1?Q?skB+d+/Fq7KYps+ytz1Y1qZ83kzdRrXI76h8UYbEQrc270yjMyZ+iRpj1B?=
- =?iso-8859-1?Q?Q9lzpOMcGQq0jblhjAvWeoy5vZ8/PD+n1Cdky8fsoT2f1HDCStT2MvN3oP?=
- =?iso-8859-1?Q?g6xw1Slv2E5PXyqYcxccBe80/tlT8e7Cm7p7TUXXXP6HVZgC/xRUFgLPKe?=
- =?iso-8859-1?Q?6I0+EmrxjkKSqef01XRpt1J8SNhPX2ZcTFnCWi4eKU4s4UeVY4saNKsKqM?=
- =?iso-8859-1?Q?YfvpCyzMsOVksLbZ8M4tRT+cwQyZCoOFvYRxL5XSu3tKaR9r0SPiI2OmkJ?=
- =?iso-8859-1?Q?MCqxP5Z/XrpTZTq/ZSIG5/npjDGkoJP6HU4/sQ35DvwcIE1XAyWwA/Cp+/?=
- =?iso-8859-1?Q?bsa/0xvM5AeoulndEuNUg13RsxN7k1ps9TLi5lH7YVlrdGyX7mNUOVqgmX?=
- =?iso-8859-1?Q?tBr1PM/zk6XcWadLtgcE+mXaz/0dLhNX8QLfndQZF5z7Fj43tIcZzXQgTM?=
- =?iso-8859-1?Q?wPAh/i2iifeKTLE3YJGwKwjE82b2woD4jLXpNewCfITKOF5qikkOzLJSBs?=
- =?iso-8859-1?Q?MGRLLNNDe+3Y1YaZRCSEAkefh3ck7qffrkLRaIHZGhl3NS3Eaw5o8G60v+?=
- =?iso-8859-1?Q?ExWQ1UV/n+F0LK3Grm9CSQJGM8SEnR7/hw1pcXD5hP6/dgKsL8elKuhWVP?=
- =?iso-8859-1?Q?PMacCvSijbpsOXjJwvZFZ0TQl+/1vRn+k8egFxwQWJZ3sIwGXaryVoBkOC?=
- =?iso-8859-1?Q?XGaTcgYXlXtWbkTOA6IDK+hB71aidrINBOwB9qbChsx4ON+SIGIxSDb+8d?=
- =?iso-8859-1?Q?9iXr/oeujtJ2b0BJdoYyvbLwIxz5dqUHBSEdKQP4ODfgt6Ob2TZVuXgNfP?=
- =?iso-8859-1?Q?dGM1HTDI5UDloUTGRNgm3no0DWN6crey4Y7fuY6dOZRoOk?=
+x-ms-exchange-antispam-messagedata-0: =?big5?B?MDVtaStZVjd3RVJQSFUvNmRPbjZDWENSYnpwTnJYaE01YjZaQmRWNkFuQXdvRlh5?=
+ =?big5?B?NVBjS1hkN1hSUUFTdnNJNEdNcklnTGU5TVFIVnUrZEhSK1RlKzJaZlM4YmljbFNy?=
+ =?big5?B?UGJCekl1U2N3bFBlcTVnM2xoMDRoTmR3eE5UZUpCVy9lS2Z3aEZ1TzNkZ0o1SGhz?=
+ =?big5?B?N1dMNi9UQk1ENXNaa1NSb3FIVjIrMkVvUU9ZNmpqKzRNcGNmeDBXZUt5aGhSZEpm?=
+ =?big5?B?d3hvN21UZHROSC8weGQ5OGYvaFg1cjBvUEl3U3JFUExWaDAwQ0Q2TUFBY3VoMlpQ?=
+ =?big5?B?TGhlWjZVdmk3b3hxcFBTQlpteTBFQ2NTRVlkZlgrOU1kNFBpb2kyZFRNWXNETFMx?=
+ =?big5?B?RmRFQXBaSGRZbmloaFF3UmJ3bzhYSUljMVJ3ZEw2Vm9zT01JSEVUWGhMT1V1QXl1?=
+ =?big5?B?R1Fnako4cnNDY0YvaEgxQkNVSmExc2lwWjVtZEFMZDJTV3dvZUQzMVVnNFNTMU1Z?=
+ =?big5?B?TGxWTmZzNGNIc0FPaU15dHo3cmlqTzV1b1E1MGUzSXRoOWt6eG5OL2ZvbmtJSElk?=
+ =?big5?B?d3dQT2pUUWxVdXNHWGJ1RXUxWmx3VmpFaDdKT2YrT3d0MWtlVzdQalIzM241Wmsv?=
+ =?big5?B?c1d3dWRrU3lSVjhWUW9mMWR6c3RnT1BrTmNIRWxpODRncEpvUkhSWHFON09oMWZL?=
+ =?big5?B?Mko0QU1ybVdYVXcrUUJVVWltdVdwZm1OQzN6Y0VDam8vbXlQVzBDcVdua1UzczZj?=
+ =?big5?B?U1cwZzV5SmdEb0MrRUtZUnBNWkZhcGtHTjVtYllheDNxUlBpT3VwR1hXOUx2KzZi?=
+ =?big5?B?VitwTER4QXUrWFdOV1hqcFZlREtyalJER200YUZPZXRXbEhQVHdVaXlTYXdlQ2Ir?=
+ =?big5?B?ZnAxeXlsWTRrTnYrakRjdXE4T2hxcGdFVkZyc3ZDVDRPdXhSM3NuSWx6WkI5U1Nh?=
+ =?big5?B?ZForeTM3OG00MlYxamJQNU12Mk14cDE0dkFqdVc1ZXVCUEtoNmhZR2pOU0JFYWFa?=
+ =?big5?B?Z2JIWXJtNVdpcHlmc3BRYzk4YnU5SW4rMWRlcUU0Sm05VGRuazJMQmVwZjR6dGNx?=
+ =?big5?B?OUdHRjFZS2xPem5hTnVhWk1wenFvTEhKZjVQdWlyWDhZU0xrRFBmdmRHSHlBSnJ2?=
+ =?big5?B?cCtONnYrWFFGaWtURy9iSlpEZkRwUkU4a1V2YmdCcFZlR1FKVXVnMkRTTWh4bEkz?=
+ =?big5?B?NFRDeFNDSTZyT0V5NWg3KzgrWUhQZHVyVUJEei9RQ2NPN3ZwZWhaWXFuYnJuUzdl?=
+ =?big5?B?ZGh3bHZJOEZpRmpSVFJMTC9ySzJ6SjNZTzh1QzN6Ylk3a1E0SWY2N3U3RXMyV1kz?=
+ =?big5?B?TkRURG8zMjl2OFJYTVVxZDJCV1Rsd2pRK2V5K3hVelFxYldPQ1haOXliRFRCS0JJ?=
+ =?big5?B?TSt0SFhTRk53cVNObUJwd3B2Y2tiN1k0UVIzdWlaeFFVRFM1ZS9IWElTeUpJcWEy?=
+ =?big5?B?U1pDT0dZM0xPWXNsQUNSOWJXVVI5em1GOHE3L0pOZEJKMWhwSWIzVmhDMVZVWm43?=
+ =?big5?B?OTJnd2VWTTd5QUlnY3Nwc3pJYjNUNXJOL1ZEZXExSnRQZ1pRZVZZZGVzR0VFUHJ3?=
+ =?big5?B?TEVSV09SbDYrbWl3cW9vclFWNXFYMm9veVdVMVA2b2k3V0VrRVA5Wm5samxXZVhQ?=
+ =?big5?B?RTRydi80MFFTdlluUEJrQXhsUEdTU3VMWmNXL1FTN1NVZWtKZTZ6U3pleStFR1Bk?=
+ =?big5?B?Tm0wU25aUWdwY203dWIxUS9yK1JXM2hTcFdxNmFITGlUU2hjZUhkYThTNXRIaVJQ?=
+ =?big5?B?OHBWb3BFc1pURXlZV2pxa1BQa2RuOWRYMURaR291empOcDhnUHZCVDBpNVY3ZVU5?=
+ =?big5?B?S3duRWdzY0kzQlJXYm54UldQWEJ1SkRLZDZjSjNaMlZzK1pza0pSKzUydDZUMS9K?=
+ =?big5?B?Q3N3dmFTeVZkVEl6L21XaGc2Vm41NmNpSXdoKzdVRk5yb2prcjlYZlZ2ZVZsVmZX?=
+ =?big5?B?RENZSkN6S1Z0QnhCWGhVLzB1NGdEdFdpMk92WHliVlRFcE03MUtqMW11cHc4NmFj?=
+ =?big5?B?ZTFlSUtBVEVuUmNka2Z0VGp3akExa0o5QWd0MFFaRldrU1ViQ0s2RTF2cVFMZlJG?=
+ =?big5?B?aWprMzN2d3JZcDBSRUgyeUhPMDNMUWxic0lDSDltSjErVWR0TXFzcVkyUitJWHpo?=
+ =?big5?B?ckJBeFJTSlFnU3dJN2ZyNEV6UFhDUnk3K1ArTkFnd1kwQ3Nock1mZnFVeTRVT2Er?=
+ =?big5?Q?whID7BfHM7p02ySe9npHSYzZw03O+nZzfHLr57I3aPfoum51?=
 Content-Type: multipart/alternative;
- boundary="_000_CH0PR11MB542785B6A77ADEE33727BA689896ACH0PR11MB5427namp_"
+ boundary="_000_CH0PR11MB54272E13539D3A74542B01D19896ACH0PR11MB5427namp_"
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5427.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ec95a807-c9af-49ae-0aab-08de58b3fa84
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jan 2026 06:11:55.8180 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12647557-f428-4c6a-9081-08de58b41aac
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jan 2026 06:12:49.7502 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1gFhj00BWmZNpV7gtt9/BCrIa3oJV/WIGL9rrpbSaFeMqdWHdSCO968BQg3+yYILxfmp2R9ZX+f3ltagvO/8CA==
+X-MS-Exchange-CrossTenant-userprincipalname: Uv2AV/9UDnw+A5gDZOaBOKWTiWcv2mLxf0lNfEDBElOC7PAeQ0MkejFYj/Vh/uEIr+2tvwiEZjqYZkjftG+Vow==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8717
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -195,185 +207,157 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---_000_CH0PR11MB542785B6A77ADEE33727BA689896ACH0PR11MB5427namp_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+--_000_CH0PR11MB54272E13539D3A74542B01D19896ACH0PR11MB5427namp_
+Content-Type: text/plain; charset="big5"
+Content-Transfer-Encoding: base64
 
+DQoNCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCkZyb206IEthbWlsIEtvbmll
+Y3pueSA8a2FtaWwua29uaWVjem55QGxpbnV4LmludGVsLmNvbT4NClNlbnQ6IFR1ZXNkYXksIEph
+bnVhcnkgMjAsIDIwMjYgNjo1MSBQTQ0KVG86IFNlYmlucmFqLCBTIDxzLnNlYmlucmFqQGludGVs
+LmNvbT4NCkNjOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZyA8aWd0LWRldkBsaXN0cy5m
+cmVlZGVza3RvcC5vcmc+OyBCYWRyYXBwYW4sIEplZXZha2EgPGplZXZha2EuYmFkcmFwcGFuQGlu
+dGVsLmNvbT47IEthcmFzLCBLcnp5c3p0b2YgPGtyenlzenRvZi5rYXJhc0BpbnRlbC5jb20+OyBL
+b25pZWN6bnksIEthbWlsIDxrYW1pbC5rb25pZWN6bnlAaW50ZWwuY29tPg0KU3ViamVjdDogUmU6
+IFtQQVRDSCBpLWctdCB2NF0gdG9vbHMvZ3B1dG9wOiBBZGQgR1BVIGZyZXF1ZW5jaWVzIHRvIHRo
+ZSBjbGllbnQgaGVhZGVycw0KDQpIaSBTLA0KT24gMjAyNS0xMi0xOCBhdCAxNjoxMzowMyArMDUz
+MCwgUyBTZWJpbnJhaiB3cm90ZToNCj4gRW5oYW5jZSBncHV0b3AgdG8gZGlzcGxheSBHUFUgZnJl
+cXVlbmN5IGluZm9ybWF0aW9uIChjdXJyZW50L2FjdHVhbCkNCj4gZm9yIGVhY2ggR1QgaW4gdGhl
+IGNsaWVudCBoZWFkZXIgbGluZSBhbG9uZ3NpZGUgdGhlIERSTSBtaW5vciBudW1iZXIuDQo+DQo+
+IEtleSBjaGFuZ2VzOg0KPiAtIEFkZCBnZXRfZ3RfZnJlcXVlbmNpZXMoKSBmdW5jdGlvbiB0byBy
+ZWFkIEdUIGZyZXF1ZW5jeSB2YWx1ZXMNCj4gLSBTdXBwb3J0IGJvdGggaTkxNSBhbmQgWGUgZHJp
+dmVycyB1c2luZyBhcHByb3ByaWF0ZSBzeXNmcyBwYXRocw0KPiAtIERpc3BsYXkgZm9ybWF0OiAi
+RFJNIG1pbm9yIFggIEZyZXEoY3VyL2FjdCkgR1QwLWZyZXEvZnJlcSBHVDEtZnJlcS9mcmVxIg0K
+PiAtIFVzZSBJR1QgQVBJIGZ1bmN0aW9ucyAoeGVfc3lzZnNfZ3RfcGF0aCwgaWd0X3N5c2ZzX2d0
+X3BhdGgpIGZvcg0KPiAgIGRyaXZlci1hZ25vc3RpYyBzeXNmcyBhY2Nlc3MNCj4NCj4gVGhlIGZy
+ZXF1ZW5jeSBpbmZvcm1hdGlvbiBoZWxwcyB1c2VycyBtb25pdG9yIEdQVSBwZXJmb3JtYW5jZSBz
+dGF0ZXMNCj4gaW4gcmVhbC10aW1lIHdoaWxlIG9ic2VydmluZyBjbGllbnQgd29ya2xvYWQgdXRp
+bGl6YXRpb24uDQo+DQo+IEV4YW1wbGUgb3V0cHV0Og0KPiAgIERSTSBtaW5vciAwICAgICAgICAg
+IEZyZXEoY3VyL2FjdCkgR1QwLTE4MDAvMTgwMCBHVDEtNDAwLzQwMA0KPiAgIERSTSBtaW5vciAx
+MjggICAgICAgIEZyZXEoY3VyL2FjdCkgR1QwLTQwMC80MDAgR1QxLTQwMC80MDANCj4NCj4gdjI6
+DQo+IC0gVG8gdXNlIG1hY3JvIHRvIHN1ZmZpeCBzdHJpbmdzDQo+IC0gVG8gc2tpcCBmYWlsdXJl
+IGxvb3BzDQo+DQo+IHYzOg0KPiAtIFRvIGtlZXAgZXJyb3IgbG9ncw0KPg0KPiB2NDoNCj4gLSBS
+ZW1vdmVkIFJGQyBmcm9tIFN1YmplY3QNCj4NCj4gU2lnbmVkLW9mZi1ieTogUyBTZWJpbnJhaiA8
+cy5zZWJpbnJhakBpbnRlbC5jb20+DQo+IFRlc3RlZC1ieTogS2FyYXMgS3J6eXN6dG9mIDxrcnp5
+c3p0b2Yua2FyYXNAaW50ZWwuY29tPg0KPiBSZXZpZXdlZC1ieTogS2FyYXMgS3J6eXN6dG9mIDxr
+cnp5c3p0b2Yua2FyYXNAaW50ZWwuY29tPg0KPiAtLS0NCj4gIHRvb2xzL2dwdXRvcC5jICAgIHwg
+MTE5ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0NCj4gIHRv
+b2xzL21lc29uLmJ1aWxkIHwgICAyICstDQo+ICAyIGZpbGVzIGNoYW5nZWQsIDExOSBpbnNlcnRp
+b25zKCspLCAyIGRlbGV0aW9ucygtKQ0KPg0KPiBkaWZmIC0tZ2l0IGEvdG9vbHMvZ3B1dG9wLmMg
+Yi90b29scy9ncHV0b3AuYw0KPiBpbmRleCBmNTc3YTE3NTAuLmQ2YjYxYTU2MyAxMDA2NDQNCj4g
+LS0tIGEvdG9vbHMvZ3B1dG9wLmMNCj4gKysrIGIvdG9vbHMvZ3B1dG9wLmMNCj4gQEAgLTMwLDEz
+ICszMCwyMCBAQA0KPiAgI2luY2x1ZGUgImlndF9kcm1fY2xpZW50cy5oIg0KPiAgI2luY2x1ZGUg
+ImlndF9kcm1fZmRpbmZvLmgiDQo+ICAjaW5jbHVkZSAiaWd0X3Byb2ZpbGluZy5oIg0KPiArI2lu
+Y2x1ZGUgImlndF9zeXNmcy5oIg0KPiAgI2luY2x1ZGUgImRybXRlc3QuaCINCj4gKyNpbmNsdWRl
+ICJ4ZS94ZV9ndC5oIg0KDQo+IFRoaXMgYWRkIGEgbG90IG9mIGRlcGVuZGVuY2llcyB0byBhIHRv
+b2wsIGJlZm9yZSB5b3VyIGNoYW5nZToNCg0KbGRkIGJ1aWxkL3Rvb2xzL2dwdXRvcCB8d2MgLWwN
+CjUNCg0KPmFmdGVyIGl0Og0KDQpsZGQgYnVpbGQvdG9vbHMvZ3B1dG9wIHx3YyAtbA0KNzgNCg0K
+PlBsZWFzZSBtYWtlIGl0IHdpdGhvdXQgbmVlZCBmb3IgbGlua2luZyBhbGwgdGVzdCBsaWJzLg0K
+DQo+UmVnYXJkcywNCkthbWlsDQoNClN1cmUsIEknbGwgY2hlY2sgdGhlc2Ugb3V0LCBUaGFua3Mg
+Zm9yIHBvaW50aW5nIG91dC4NCg0KPg0KPiAgZW51bSB1dGlsaXphdGlvbl90eXBlIHsNCj4gICAg
+ICAgIFVUSUxJWkFUSU9OX1RZUEVfRU5HSU5FX1RJTUUsDQo+ICAgICAgICBVVElMSVpBVElPTl9U
+WVBFX1RPVEFMX0NZQ0xFUywNCj4gIH07DQo+DQo+ICsjZGVmaW5lIFhFX0ZSRVFfQ1VSX1NVRkZJ
+WCAiL2ZyZXEwL2N1cl9mcmVxIg0KPiArI2RlZmluZSBYRV9GUkVRX0FDVF9TVUZGSVggIi9mcmVx
+MC9hY3RfZnJlcSINCj4gKyNkZWZpbmUgSTkxNV9GUkVRX0NVUl9TVUZGSVggIi9ycHNfY3VyX2Zy
+ZXFfbWh6Ig0KPiArI2RlZmluZSBJOTE1X0ZSRVFfQUNUX1NVRkZJWCAiL3Jwc19hY3RfZnJlcV9t
+aHoiDQo+ICsNCj4gIHN0YXRpYyBjb25zdCBjaGFyICpiYXJzW10gPSB7ICIgIiwgIqJqIiwgIqJr
+IiwgIqJsIiwgIqJtIiwgIqJuIiwgIqJvIiwgIqJwIiwgIqJpIiB9Ow0KPg0KPiAgI2RlZmluZSBB
+TlNJX0hFQURFUiAiXDAzM1s3bSINCj4gQEAgLTc2LDE3ICs4MywxMjcgQEAgc3RhdGljIHZvaWQg
+cHJpbnRfcGVyY2VudGFnZV9iYXIoZG91YmxlIHBlcmNlbnQsIGludCBtYXhfbGVuKQ0KPiAgICAg
+ICAgcHV0Y2hhcignfCcpOw0KPiAgfQ0KPg0KPiArc3RhdGljIGNoYXIgKmdldF9ndF9mcmVxdWVu
+Y2llcyh2b2lkKQ0KPiArew0KPiArICAgICBjaGFyIGZyZXFfc3RyWzUxMl0gPSAiIjsNCj4gKyAg
+ICAgY2hhciBndF9pbmZvWzY0XTsNCj4gKyAgICAgaW50IGZkID0gLTE7DQo+ICsgICAgIGludCBu
+dW1fZ3RzID0gMDsNCj4gKyAgICAgaW50IGd0Ow0KPiArICAgICBib29sIGlzX3hlID0gZmFsc2U7
+DQo+ICsgICAgIGJvb2wgZmlyc3QgPSB0cnVlOw0KPiArDQo+ICsgICAgIGZkID0gX19kcm1fb3Bl
+bl9kcml2ZXIoRFJJVkVSX0lOVEVMIHwgRFJJVkVSX1hFKTsNCj4gKyAgICAgaWYgKGZkIDwgMCkg
+ew0KPiArICAgICAgICAgICAgIGZwcmludGYoc3RkZXJyLCAiRmFpbGVkIHRvIG9wZW4gRFJNIGRl
+dmljZVxuIik7DQo+ICsgICAgICAgICAgICAgcmV0dXJuIE5VTEw7DQo+ICsgICAgIH0NCj4gKw0K
+PiArICAgICAvKiBEZXRlY3QgZHJpdmVyIHR5cGUgYW5kIGdldCBHVCBjb3VudCAqLw0KPiArICAg
+ICBpc194ZSA9IGlzX3hlX2RldmljZShmZCk7DQo+ICsgICAgIGlmIChpc194ZSkNCj4gKyAgICAg
+ICAgICAgICBudW1fZ3RzID0geGVfbnVtYmVyX2d0KGZkKTsNCj4gKyAgICAgZWxzZQ0KPiArICAg
+ICAgICAgICAgIG51bV9ndHMgPSBpZ3Rfc3lzZnNfZ2V0X251bV9ndChmZCk7DQo+ICsNCj4gKyAg
+ICAgaWYgKG51bV9ndHMgPD0gMCkgew0KPiArICAgICAgICAgICAgIGZwcmludGYoc3RkZXJyLCAi
+RmFpbGVkIHRvIGdldCBHVCBjb3VudFxuIik7DQo+ICsgICAgICAgICAgICAgY2xvc2UoZmQpOw0K
+PiArICAgICAgICAgICAgIHJldHVybiBOVUxMOw0KPiArICAgICB9DQo+ICsNCj4gKyAgICAgLyog
+UmVhZCBmcmVxdWVuY2llcyBmb3IgZWFjaCBHVCAqLw0KPiArICAgICBmb3IgKGd0ID0gMDsgZ3Qg
+PCBudW1fZ3RzOyBndCsrKSB7DQo+ICsgICAgICAgICAgICAgY2hhciBndF9wYXRoWzk2XTsNCj4g
+KyAgICAgICAgICAgICBjaGFyIGZyZXFfcGF0aFsxMjhdOw0KPiArICAgICAgICAgICAgIGNoYXIg
+ZnJlcV9idWZbMzJdOw0KPiArICAgICAgICAgICAgIGNoYXIgKnBhdGhfcHRyOw0KPiArICAgICAg
+ICAgICAgIHVuc2lnbmVkIGludCBjdXJfZnJlcSA9IDAsIGFjdF9mcmVxID0gMDsNCj4gKyAgICAg
+ICAgICAgICBGSUxFICpmcDsNCj4gKw0KPiArICAgICAgICAgICAgIC8qIEdldCBHVC1zcGVjaWZp
+YyBzeXNmcyBwYXRoICovDQo+ICsgICAgICAgICAgICAgaWYgKGlzX3hlKQ0KPiArICAgICAgICAg
+ICAgICAgICAgICAgcGF0aF9wdHIgPSB4ZV9zeXNmc19ndF9wYXRoKGZkLCBndCwgZ3RfcGF0aCwg
+c2l6ZW9mKGd0X3BhdGgpKTsNCj4gKyAgICAgICAgICAgICBlbHNlDQo+ICsgICAgICAgICAgICAg
+ICAgICAgICBwYXRoX3B0ciA9IGlndF9zeXNmc19ndF9wYXRoKGZkLCBndCwgZ3RfcGF0aCwgc2l6
+ZW9mKGd0X3BhdGgpKTsNCj4gKw0KPiArICAgICAgICAgICAgIGlmICghcGF0aF9wdHIpIHsNCj4g
+KyAgICAgICAgICAgICAgICAgICAgIGZwcmludGYoc3RkZXJyLCAiRmFpbGVkIHRvIGdldCBzeXNm
+cyBwYXRoIGZvciBHVCVkXG4iLCBndCk7DQo+ICsgICAgICAgICAgICAgICAgICAgICBjb250aW51
+ZTsNCj4gKyAgICAgICAgICAgICB9DQo+ICsNCj4gKyAgICAgICAgICAgICAvKiBSZWFkIGN1cnJl
+bnQvcmVxdWVzdGVkIGZyZXF1ZW5jeSAqLw0KPiArICAgICAgICAgICAgIGlmIChpc194ZSkNCj4g
+KyAgICAgICAgICAgICAgICAgICAgIHNucHJpbnRmKGZyZXFfcGF0aCwgc2l6ZW9mKGZyZXFfcGF0
+aCksICIlcyVzIiwgZ3RfcGF0aCwgWEVfRlJFUV9DVVJfU1VGRklYKTsNCj4gKyAgICAgICAgICAg
+ICBlbHNlDQo+ICsgICAgICAgICAgICAgICAgICAgICBzbnByaW50ZihmcmVxX3BhdGgsIHNpemVv
+ZihmcmVxX3BhdGgpLCAiJXMlcyIsIGd0X3BhdGgsIEk5MTVfRlJFUV9DVVJfU1VGRklYKTsNCj4g
+Kw0KPiArICAgICAgICAgICAgIGZwID0gZm9wZW4oZnJlcV9wYXRoLCAiciIpOw0KPiArICAgICAg
+ICAgICAgIGlmIChmcCkgew0KPiArICAgICAgICAgICAgICAgICAgICAgaWYgKGZnZXRzKGZyZXFf
+YnVmLCBzaXplb2YoZnJlcV9idWYpLCBmcCkpDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIGN1cl9mcmVxID0gYXRvaShmcmVxX2J1Zik7DQo+ICsgICAgICAgICAgICAgICAgICAgICBm
+Y2xvc2UoZnApOw0KPiArICAgICAgICAgICAgIH0gZWxzZSB7DQo+ICsgICAgICAgICAgICAgICAg
+ICAgICBmcHJpbnRmKHN0ZGVyciwgIkZhaWxlZCB0byBvcGVuICVzXG4iLCBmcmVxX3BhdGgpOw0K
+PiArICAgICAgICAgICAgICAgICAgICAgY29udGludWU7DQo+ICsgICAgICAgICAgICAgfQ0KPiAr
+DQo+ICsgICAgICAgICAgICAgLyogUmVhZCBhY3R1YWwgZnJlcXVlbmN5ICovDQo+ICsgICAgICAg
+ICAgICAgaWYgKGlzX3hlKQ0KPiArICAgICAgICAgICAgICAgICAgICAgc25wcmludGYoZnJlcV9w
+YXRoLCBzaXplb2YoZnJlcV9wYXRoKSwgIiVzJXMiLCBndF9wYXRoLCBYRV9GUkVRX0FDVF9TVUZG
+SVgpOw0KPiArICAgICAgICAgICAgIGVsc2UNCj4gKyAgICAgICAgICAgICAgICAgICAgIHNucHJp
+bnRmKGZyZXFfcGF0aCwgc2l6ZW9mKGZyZXFfcGF0aCksICIlcyVzIiwgZ3RfcGF0aCwgSTkxNV9G
+UkVRX0FDVF9TVUZGSVgpOw0KPiArDQo+ICsgICAgICAgICAgICAgZnAgPSBmb3BlbihmcmVxX3Bh
+dGgsICJyIik7DQo+ICsgICAgICAgICAgICAgaWYgKGZwKSB7DQo+ICsgICAgICAgICAgICAgICAg
+ICAgICBpZiAoZmdldHMoZnJlcV9idWYsIHNpemVvZihmcmVxX2J1ZiksIGZwKSkNCj4gKyAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgYWN0X2ZyZXEgPSBhdG9pKGZyZXFfYnVmKTsNCj4gKyAg
+ICAgICAgICAgICAgICAgICAgIGZjbG9zZShmcCk7DQo+ICsgICAgICAgICAgICAgfSBlbHNlIHsN
+Cj4gKyAgICAgICAgICAgICAgICAgICAgIGZwcmludGYoc3RkZXJyLCAiRmFpbGVkIHRvIG9wZW4g
+JXNcbiIsIGZyZXFfcGF0aCk7DQo+ICsgICAgICAgICAgICAgICAgICAgICBjb250aW51ZTsNCj4g
+KyAgICAgICAgICAgICB9DQo+ICsNCj4gKyAgICAgICAgICAgICAvKiBBcHBlbmQgdG8gZnJlcXVl
+bmN5IHN0cmluZyAqLw0KPiArICAgICAgICAgICAgIGlmICghZmlyc3QpDQo+ICsgICAgICAgICAg
+ICAgICAgICAgICBzdHJjYXQoZnJlcV9zdHIsICIgIik7DQo+ICsgICAgICAgICAgICAgZWxzZQ0K
+PiArICAgICAgICAgICAgICAgICAgICAgZmlyc3QgPSBmYWxzZTsNCj4gKw0KPiArICAgICAgICAg
+ICAgIHNucHJpbnRmKGd0X2luZm8sIHNpemVvZihndF9pbmZvKSwgIkdUJWQtJXUvJXUiLCBndCwg
+Y3VyX2ZyZXEsIGFjdF9mcmVxKTsNCj4gKyAgICAgICAgICAgICBzdHJjYXQoZnJlcV9zdHIsIGd0
+X2luZm8pOw0KPiArICAgICB9DQo+ICsNCj4gKyAgICAgY2xvc2UoZmQpOw0KPiArDQo+ICsgICAg
+IGlmIChzdHJsZW4oZnJlcV9zdHIpID4gMCkNCj4gKyAgICAgICAgICAgICByZXR1cm4gc3RyZHVw
+KGZyZXFfc3RyKTsNCj4gKw0KPiArICAgICByZXR1cm4gTlVMTDsNCj4gK30NCj4gKw0KPiAgc3Rh
+dGljIGludA0KPiAgcHJpbnRfY2xpZW50X2hlYWRlcihzdHJ1Y3QgaWd0X2RybV9jbGllbnQgKmMs
+IGludCBsaW5lcywgaW50IGNvbl93LCBpbnQgY29uX2gsDQo+ICAgICAgICAgICAgICAgICAgICBp
+bnQgKmVuZ2luZV93KQ0KPiAgew0KPiAgICAgICAgaW50IHJldCwgbGVuOw0KPiArICAgICBjaGFy
+ICpmcmVxX2luZm8gPSBOVUxMOw0KPg0KPiAgICAgICAgaWYgKGxpbmVzKysgPj0gY29uX2gpDQo+
+ICAgICAgICAgICAgICAgIHJldHVybiBsaW5lczsNCj4NCj4gICAgICAgIHByaW50ZihBTlNJX0hF
+QURFUik7DQo+IC0gICAgIHJldCA9IHByaW50ZigiRFJNIG1pbm9yICV1IiwgYy0+ZHJtX21pbm9y
+KTsNCj4gKw0KPiArICAgICAvKiBHZXQgZnJlcXVlbmN5IGluZm9ybWF0aW9uICovDQo+ICsgICAg
+IGZyZXFfaW5mbyA9IGdldF9ndF9mcmVxdWVuY2llcygpOw0KPiArDQo+ICsgICAgIGlmIChmcmVx
+X2luZm8pIHsNCj4gKyAgICAgICAgICAgICByZXQgPSBwcmludGYoIkRSTSBtaW5vciAldSAgICAg
+ICAgICBGcmVxKGN1ci9hY3QpICVzIiwgYy0+ZHJtX21pbm9yLCBmcmVxX2luZm8pOw0KPiArICAg
+ICAgICAgICAgIGZyZWUoZnJlcV9pbmZvKTsNCj4gKyAgICAgfSBlbHNlIHsNCj4gKyAgICAgICAg
+ICAgICByZXQgPSBwcmludGYoIkRSTSBtaW5vciAldSIsIGMtPmRybV9taW5vcik7DQo+ICsgICAg
+IH0NCj4gKw0KPiAgICAgICAgbl9zcGFjZXMoY29uX3cgLSByZXQpOw0KPg0KPiAgICAgICAgaWYg
+KGxpbmVzKysgPj0gY29uX2gpDQo+IGRpZmYgLS1naXQgYS90b29scy9tZXNvbi5idWlsZCBiL3Rv
+b2xzL21lc29uLmJ1aWxkDQo+IGluZGV4IDgxODViYTE2MC4uZDMyNjFkNDI5IDEwMDY0NA0KPiAt
+LS0gYS90b29scy9tZXNvbi5idWlsZA0KPiArKysgYi90b29scy9tZXNvbi5idWlsZA0KPiBAQCAt
+NzMsNyArNzMsNyBAQCBlbmRpZg0KPiAgZXhlY3V0YWJsZSgnZ3B1dG9wJywgJ2dwdXRvcC5jJywN
+Cj4gICAgICAgICAgICAgaW5zdGFsbCA6IHRydWUsDQo+ICAgICAgICAgICAgIGluc3RhbGxfcnBh
+dGggOiBiaW5kaXJfcnBhdGhkaXIsDQo+IC0gICAgICAgICAgIGRlcGVuZGVuY2llcyA6IFtsaWJf
+aWd0X2RybV9jbGllbnRzLGxpYl9pZ3RfZHJtX2ZkaW5mbyxsaWJfaWd0X3Byb2ZpbGluZyxtYXRo
+XSkNCj4gKyAgICAgICAgICAgZGVwZW5kZW5jaWVzIDogW2xpYl9pZ3RfZHJtX2NsaWVudHMsbGli
+X2lndF9kcm1fZmRpbmZvLGxpYl9pZ3RfcHJvZmlsaW5nLHRvb2xfZGVwcyxtYXRoXSkNCj4NCj4g
+IGludGVsX2wzX3Bhcml0eV9zcmMgPSBbICdpbnRlbF9sM19wYXJpdHkuYycsICdpbnRlbF9sM191
+ZGV2X2xpc3RlbmVyLmMnIF0NCj4gIGV4ZWN1dGFibGUoJ2ludGVsX2wzX3Bhcml0eScsIHNvdXJj
+ZXMgOiBpbnRlbF9sM19wYXJpdHlfc3JjLA0KPiAtLQ0KPiAyLjQzLjANCj4NCg==
 
-
-
-________________________________
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Sent: Tuesday, January 20, 2026 6:28 PM
-To: Sebinraj, S <s.sebinraj@intel.com>
-Cc: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>; Santa, C=
-arlos <carlos.santa@intel.com>; Badrappan, Jeevaka <jeevaka.badrappan@intel=
-.com>; Karas, Krzysztof <krzysztof.karas@intel.com>; Konieczny, Kamil <kami=
-l.konieczny@intel.com>; Kempczynski, Zbigniew <zbigniew.kempczynski@intel.c=
-om>
-Subject: Re: [PATCH i-g-t] tests/kms_explict_fence: Add Test for Explicit F=
-encing
-
-Hi S,
-On 2026-01-14 at 13:53:23 +0530, S Sebinraj wrote:
-> Add a new test to validate explicit fencing.
-> This test handles multiple planes in a single atomic commit.
-> This test addresses a critical scenario where drivers must correctly
-> synchronize planes with mixed fence states.
->
-> Test Scenario:
-> - Creates three planes: one primary, two overlay
-> - Attaches fences with different states:
->    - Primary plane:   signaled fence (simulating completed GPU work)
->    - Overlay-1 plane: signaled fence (simulating completed GPU work)
->    - Overlay-2 plane: unsignaled fence (simulating long-running GPU job)
-> - Submits all planes in a single atomic commit with IN_FENCE_FD set
-> - Validates that display waits for ALL fences before updating ANY plane
->
-> Bug Detection:
-> This test catches driver bugs where:
->  - Planes with signaled fences update prematurely before unsignaled
->    fences complete, breaking atomic commit semantics
->  - Fence states are mismanaged across multiple planes causing visual
->    glitches or corruption
->  - The driver fails to wait on all IN_FENCE_FDs atomically
->
-> The test uses sw_sync timelines to create controllable fence states,
-> allowing precise validation of fence synchronization behavior. An
-> OUT_FENCE_PTR is requested to monitor when the display update actually
-> completes, enabling detection of premature updates.
->
-> Implementation Details:
-> - Uses sw_sync for creating fences with controlled signaling
-> - Monitors OUT_FENCE to detect premature display updates
-> - Validates atomic commit integrity across multiple planes
->
-> Background:
-> - A bug regressed for Xe driver on PTL (Android) i915/display handling
->   of explicit fences when provided two or more buffers at once,
->   with 1+ already-signaled fences and 1+ not-yet-signaled fences.
->   https://patchwork.freedesktop.org/patch/662982/
-> - Adding this test so that IGT contains sufficient testing for the
->   use of explicit fencing in the KMS Atomic Modesetting APIs.
->
-> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
-> ---
->  tests/kms_explicit_fence.c | 372 +++++++++++++++++++++++++++++++++++++
->  tests/meson.build          |   1 +
->  2 files changed, 373 insertions(+)
->  create mode 100644 tests/kms_explicit_fence.c
->
-> diff --git a/tests/kms_explicit_fence.c b/tests/kms_explicit_fence.c
-> new file mode 100644
-> index 000000000..d3cad5904
-> --- /dev/null
-> +++ b/tests/kms_explicit_fence.c
-> @@ -0,0 +1,372 @@
-> +/*
-> + * Copyright =A9 2026 Intel Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a
-> + * copy of this software and associated documentation files (the "Softwa=
-re"),
-> + * to deal in the Software without restriction, including without limita=
-tion
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
-se,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the =
-next
-> + * paragraph) shall be included in all copies or substantial portions of=
- the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
-SS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
-TY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
-ALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
-OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
-NG
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
-EALINGS
-> + * IN THE SOFTWARE.
-> + */
-> +
-> +/**
-> + * TEST: kms explicit fence multiplane
-> + * Category: Display
-> + * Description: Test explicit fencing with multiple planes and mixed fen=
-ce states
-> + * Driver requirement: i915, xe
-> + * Mega feature: General Display Features
-> + *
-> + * This test validates correct handling of explicit fences when multiple=
- planes
-> + * are updated in a single atomic commit with different fence states. Th=
-is is
-> + * critical for catching fence synchronization bugs where the driver mig=
-ht:
-> + * 1. Prematurely display buffers with signaled fences before unsignaled=
- fences complete
-> + * 2. Mismanage fence states across multiple planes causing visual glitc=
-hes
-> + * 3. Fail to wait on all fences atomically before updating the display
-> + */
-> +
-> +#include "igt.h"
-> +#include "igt_aux.h"
-> +#include "sw_sync.h"
-> +#include <errno.h>
-> +#include <stdbool.h>
-> +#include <stdio.h>
-> +#include <string.h>
-> +#include <sys/eventfd.h>
-> +#include <poll.h>
-
-> System headers should be first, then newline, then igt.
-Also, sort them alphabetically:
-
-Thanks for pointing out, I'll change it accordingly.
-
-> +#include <errno.h>
-> +#include <poll.h>
-> +#include <stdbool.h>
-> +#include <stdio.h>
-> +#include <string.h>
-> +#include <sys/eventfd.h>
-
-> +#include "igt.h"
-> +#include "igt_aux.h"
-> +#include "sw_sync.h"
-
-Regards,
-Kamil
-
-> +
-> +/**
-> + * SUBTEST: multiplane-atomic-fence-wait
-> + * Description: Test 3 planes (1 primary, 2 overlay) with mixed fence st=
-ates:
-> + *              2 planes with signaled fences and 1 plane with unsignale=
-d fence.
-> + *              Validates that display waits for all fences before updat=
-ing any plane.
-> + */
-[cut]
-
---_000_CH0PR11MB542785B6A77ADEE33727BA689896ACH0PR11MB5427namp_
-Content-Type: text/html; charset="iso-8859-1"
+--_000_CH0PR11MB54272E13539D3A74542B01D19896ACH0PR11MB5427namp_
+Content-Type: text/html; charset="big5"
 Content-Transfer-Encoding: quoted-printable
 
 <html>
 <head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-1">
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dbig5">
 <style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
 ttom:0;} </style>
 </head>
@@ -395,200 +379,349 @@ s=3D"elementToProof">
 : 12pt; color: rgb(0, 0, 0);">
 <b>From:</b>&nbsp;Kamil Konieczny &lt;kamil.konieczny@linux.intel.com&gt;<b=
 r>
-<b>Sent:</b>&nbsp;Tuesday, January 20, 2026 6:28 PM<br>
+<b>Sent:</b>&nbsp;Tuesday, January 20, 2026 6:51 PM<br>
 <b>To:</b>&nbsp;Sebinraj, S &lt;s.sebinraj@intel.com&gt;<br>
 <b>Cc:</b>&nbsp;igt-dev@lists.freedesktop.org &lt;igt-dev@lists.freedesktop=
-.org&gt;; Santa, Carlos &lt;carlos.santa@intel.com&gt;; Badrappan, Jeevaka =
-&lt;jeevaka.badrappan@intel.com&gt;; Karas, Krzysztof &lt;krzysztof.karas@i=
-ntel.com&gt;; Konieczny, Kamil &lt;kamil.konieczny@intel.com&gt;; Kempczyns=
-ki,
- Zbigniew &lt;zbigniew.kempczynski@intel.com&gt;<br>
-<b>Subject:</b>&nbsp;Re: [PATCH i-g-t] tests/kms_explict_fence: Add Test fo=
-r Explicit Fencing
+.org&gt;; Badrappan, Jeevaka &lt;jeevaka.badrappan@intel.com&gt;; Karas, Kr=
+zysztof &lt;krzysztof.karas@intel.com&gt;; Konieczny, Kamil &lt;kamil.konie=
+czny@intel.com&gt;<br>
+<b>Subject:</b>&nbsp;Re: [PATCH i-g-t v4] tools/gputop: Add GPU frequencies=
+ to the client headers
 </div>
 <div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
 : 12pt; color: rgb(0, 0, 0);">
 <br>
 </div>
 <div style=3D"font-size: 11pt;" class=3D"elementToProof">Hi S,<br>
-On 2026-01-14 at 13:53:23 +0530, S Sebinraj wrote:<br>
-&gt; Add a new test to validate explicit fencing.<br>
-&gt; This test handles multiple planes in a single atomic commit.<br>
-&gt; This test addresses a critical scenario where drivers must correctly<b=
+On 2025-12-18 at 16:13:03 +0530, S Sebinraj wrote:<br>
+&gt; Enhance gputop to display GPU frequency information (current/actual)<b=
 r>
-&gt; synchronize planes with mixed fence states.<br>
+&gt; for each GT in the client header line alongside the DRM minor number.<=
+br>
 &gt;<br>
-&gt; Test Scenario:<br>
-&gt; - Creates three planes: one primary, two overlay<br>
-&gt; - Attaches fences with different states:<br>
-&gt;&nbsp;&nbsp;&nbsp; - Primary plane:&nbsp;&nbsp; signaled fence (simulat=
-ing completed GPU work)<br>
-&gt;&nbsp;&nbsp;&nbsp; - Overlay-1 plane: signaled fence (simulating comple=
-ted GPU work)<br>
-&gt;&nbsp;&nbsp;&nbsp; - Overlay-2 plane: unsignaled fence (simulating long=
--running GPU job)<br>
-&gt; - Submits all planes in a single atomic commit with IN_FENCE_FD set<br=
->
-&gt; - Validates that display waits for ALL fences before updating ANY plan=
-e<br>
+&gt; Key changes:<br>
+&gt; - Add get_gt_frequencies() function to read GT frequency values<br>
+&gt; - Support both i915 and Xe drivers using appropriate sysfs paths<br>
+&gt; - Display format: &quot;DRM minor X&nbsp; Freq(cur/act) GT0-freq/freq =
+GT1-freq/freq&quot;<br>
+&gt; - Use IGT API functions (xe_sysfs_gt_path, igt_sysfs_gt_path) for<br>
+&gt;&nbsp;&nbsp; driver-agnostic sysfs access<br>
 &gt;<br>
-&gt; Bug Detection:<br>
-&gt; This test catches driver bugs where:<br>
-&gt;&nbsp; - Planes with signaled fences update prematurely before unsignal=
-ed<br>
-&gt;&nbsp;&nbsp;&nbsp; fences complete, breaking atomic commit semantics<br=
->
-&gt;&nbsp; - Fence states are mismanaged across multiple planes causing vis=
-ual<br>
-&gt;&nbsp;&nbsp;&nbsp; glitches or corruption<br>
-&gt;&nbsp; - The driver fails to wait on all IN_FENCE_FDs atomically<br>
-&gt;<br>
-&gt; The test uses sw_sync timelines to create controllable fence states,<b=
+&gt; The frequency information helps users monitor GPU performance states<b=
 r>
-&gt; allowing precise validation of fence synchronization behavior. An<br>
-&gt; OUT_FENCE_PTR is requested to monitor when the display update actually=
-<br>
-&gt; completes, enabling detection of premature updates.<br>
+&gt; in real-time while observing client workload utilization.<br>
 &gt;<br>
-&gt; Implementation Details:<br>
-&gt; - Uses sw_sync for creating fences with controlled signaling<br>
-&gt; - Monitors OUT_FENCE to detect premature display updates<br>
-&gt; - Validates atomic commit integrity across multiple planes<br>
+&gt; Example output:<br>
+&gt;&nbsp;&nbsp; DRM minor 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp; Freq(cur/act) GT0-1800/1800 GT1-400/400<br>
+&gt;&nbsp;&nbsp; DRM minor 128&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Fr=
+eq(cur/act) GT0-400/400 GT1-400/400<br>
 &gt;<br>
-&gt; Background:<br>
-&gt; - A bug regressed for Xe driver on PTL (Android) i915/display handling=
-<br>
-&gt;&nbsp;&nbsp; of explicit fences when provided two or more buffers at on=
-ce,<br>
-&gt;&nbsp;&nbsp; with 1+ already-signaled fences and 1+ not-yet-signaled fe=
-nces.<br>
-&gt;&nbsp;&nbsp; <a data-auth=3D"NotApplicable" class=3D"OWAAutoLink" id=3D=
-"OWA19dc0360-4dd0-1eb5-94f7-4a839cdb465e" href=3D"https://patchwork.freedes=
-ktop.org/patch/662982/">
-https://patchwork.freedesktop.org/patch/662982/</a><br>
-&gt; - Adding this test so that IGT contains sufficient testing for the<br>
-&gt;&nbsp;&nbsp; use of explicit fencing in the KMS Atomic Modesetting APIs=
-.<br>
+&gt; v2:<br>
+&gt; - To use macro to suffix strings<br>
+&gt; - To skip failure loops<br>
+&gt;<br>
+&gt; v3:<br>
+&gt; - To keep error logs<br>
+&gt;<br>
+&gt; v4:<br>
+&gt; - Removed RFC from Subject<br>
 &gt;<br>
 &gt; Signed-off-by: S Sebinraj &lt;s.sebinraj@intel.com&gt;<br>
+&gt; Tested-by: Karas Krzysztof &lt;krzysztof.karas@intel.com&gt;<br>
+&gt; Reviewed-by: Karas Krzysztof &lt;krzysztof.karas@intel.com&gt;<br>
 &gt; ---<br>
-&gt;&nbsp; tests/kms_explicit_fence.c | 372 +++++++++++++++++++++++++++++++=
-++++++<br>
-&gt;&nbsp; tests/meson.build&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp; |&nbsp;&nbsp; 1 +<br>
-&gt;&nbsp; 2 files changed, 373 insertions(+)<br>
-&gt;&nbsp; create mode 100644 tests/kms_explicit_fence.c<br>
+&gt;&nbsp; tools/gputop.c&nbsp;&nbsp;&nbsp; | 119 +++++++++++++++++++++++++=
+++++++++++++++++++++-<br>
+&gt;&nbsp; tools/meson.build |&nbsp;&nbsp; 2 +-<br>
+&gt;&nbsp; 2 files changed, 119 insertions(+), 2 deletions(-)<br>
 &gt;<br>
-&gt; diff --git a/tests/kms_explicit_fence.c b/tests/kms_explicit_fence.c<b=
-r>
-&gt; new file mode 100644<br>
-&gt; index 000000000..d3cad5904<br>
-&gt; --- /dev/null<br>
-&gt; +++ b/tests/kms_explicit_fence.c<br>
-&gt; @@ -0,0 +1,372 @@<br>
-&gt; +/*<br>
-&gt; + * Copyright =A9 2026 Intel Corporation<br>
-&gt; + *<br>
-&gt; + * Permission is hereby granted, free of charge, to any person obtain=
-ing a<br>
-&gt; + * copy of this software and associated documentation files (the &quo=
-t;Software&quot;),<br>
-&gt; + * to deal in the Software without restriction, including without lim=
-itation<br>
-&gt; + * the rights to use, copy, modify, merge, publish, distribute, subli=
-cense,<br>
-&gt; + * and/or sell copies of the Software, and to permit persons to whom =
-the<br>
-&gt; + * Software is furnished to do so, subject to the following condition=
-s:<br>
-&gt; + *<br>
-&gt; + * The above copyright notice and this permission notice (including t=
-he next<br>
-&gt; + * paragraph) shall be included in all copies or substantial portions=
- of the<br>
-&gt; + * Software.<br>
-&gt; + *<br>
-&gt; + * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF AN=
-Y KIND, EXPRESS OR<br>
-&gt; + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTAB=
-ILITY,<br>
-&gt; + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.&nbsp; IN NO =
-EVENT SHALL<br>
-&gt; + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES =
-OR OTHER<br>
-&gt; + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, AR=
-ISING<br>
-&gt; + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHE=
-R DEALINGS<br>
-&gt; + * IN THE SOFTWARE.<br>
-&gt; + */<br>
-&gt; +<br>
-&gt; +/**<br>
-&gt; + * TEST: kms explicit fence multiplane<br>
-&gt; + * Category: Display<br>
-&gt; + * Description: Test explicit fencing with multiple planes and mixed =
-fence states<br>
-&gt; + * Driver requirement: i915, xe<br>
-&gt; + * Mega feature: General Display Features<br>
-&gt; + *<br>
-&gt; + * This test validates correct handling of explicit fences when multi=
-ple planes<br>
-&gt; + * are updated in a single atomic commit with different fence states.=
- This is<br>
-&gt; + * critical for catching fence synchronization bugs where the driver =
-might:<br>
-&gt; + * 1. Prematurely display buffers with signaled fences before unsigna=
-led fences complete<br>
-&gt; + * 2. Mismanage fence states across multiple planes causing visual gl=
-itches<br>
-&gt; + * 3. Fail to wait on all fences atomically before updating the displ=
-ay<br>
-&gt; + */<br>
-&gt; +<br>
-&gt; +#include &quot;igt.h&quot;<br>
-&gt; +#include &quot;igt_aux.h&quot;<br>
-&gt; +#include &quot;sw_sync.h&quot;<br>
-&gt; +#include &lt;errno.h&gt;<br>
-&gt; +#include &lt;stdbool.h&gt;<br>
-&gt; +#include &lt;stdio.h&gt;<br>
-&gt; +#include &lt;string.h&gt;<br>
-&gt; +#include &lt;sys/eventfd.h&gt;<br>
-&gt; +#include &lt;poll.h&gt;<br>
+&gt; diff --git a/tools/gputop.c b/tools/gputop.c<br>
+&gt; index f577a1750..d6b61a563 100644<br>
+&gt; --- a/tools/gputop.c<br>
+&gt; +++ b/tools/gputop.c<br>
+&gt; @@ -30,13 +30,20 @@<br>
+&gt;&nbsp; #include &quot;igt_drm_clients.h&quot;<br>
+&gt;&nbsp; #include &quot;igt_drm_fdinfo.h&quot;<br>
+&gt;&nbsp; #include &quot;igt_profiling.h&quot;<br>
+&gt; +#include &quot;igt_sysfs.h&quot;<br>
+&gt;&nbsp; #include &quot;drmtest.h&quot;<br>
+&gt; +#include &quot;xe/xe_gt.h&quot;<br>
 <br>
-&gt; System headers should be first, then newline, then igt.<br>
-Also, sort them alphabetically:<br>
+&gt; This add a lot of dependencies to a tool, before your change:<br>
 <br>
-Thanks for pointing out, I'll change it accordingly.<br>
+ldd build/tools/gputop |wc -l<br>
+5<br>
 <br>
-&gt; +#include &lt;errno.h&gt;<br>
-&gt; +#include &lt;poll.h&gt;<br>
-&gt; +#include &lt;stdbool.h&gt;<br>
-&gt; +#include &lt;stdio.h&gt;<br>
-&gt; +#include &lt;string.h&gt;<br>
-&gt; +#include &lt;sys/eventfd.h&gt;<br>
+&gt;after it:<br>
 <br>
-&gt; +#include &quot;igt.h&quot;<br>
-&gt; +#include &quot;igt_aux.h&quot;<br>
-&gt; +#include &quot;sw_sync.h&quot;<br>
+ldd build/tools/gputop |wc -l<br>
+78<br>
 <br>
-Regards,<br>
+&gt;Please make it without need for linking all test libs.<br>
+<br>
+&gt;Regards,<br>
 Kamil<br>
 <br>
+Sure, I'll check these out, Thanks for pointing out.<br>
+<br>
+&gt;&nbsp;<br>
+&gt;&nbsp; enum utilization_type {<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UTILIZATION_TYPE_ENGINE_TIME=
+,<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UTILIZATION_TYPE_TOTAL_CYCLE=
+S,<br>
+&gt;&nbsp; };<br>
+&gt;&nbsp;<br>
+&gt; +#define XE_FREQ_CUR_SUFFIX &quot;/freq0/cur_freq&quot;<br>
+&gt; +#define XE_FREQ_ACT_SUFFIX &quot;/freq0/act_freq&quot;<br>
+&gt; +#define I915_FREQ_CUR_SUFFIX &quot;/rps_cur_freq_mhz&quot;<br>
+&gt; +#define I915_FREQ_ACT_SUFFIX &quot;/rps_act_freq_mhz&quot;<br>
 &gt; +<br>
-&gt; +/**<br>
-&gt; + * SUBTEST: multiplane-atomic-fence-wait<br>
-&gt; + * Description: Test 3 planes (1 primary, 2 overlay) with mixed fence=
- states:<br>
-&gt; + *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp; 2 planes with signaled fences and 1 plane with unsignaled fence=
-.<br>
-&gt; + *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp; Validates that display waits for all fences before updating any=
- plane.<br>
-&gt; + */<br>
-[cut]<br>
+&gt;&nbsp; static const char *bars[] =3D { &quot; &quot;, &quot;=A2j&quot;,=
+ &quot;=A2k&quot;, &quot;=A2l&quot;, &quot;=A2m&quot;, &quot;=A2n&quot;, &q=
+uot;=A2o&quot;, &quot;=A2p&quot;, &quot;=A2i&quot; };<br>
+&gt;&nbsp;<br>
+&gt;&nbsp; #define ANSI_HEADER &quot;\033[7m&quot;<br>
+&gt; @@ -76,17 +83,127 @@ static void print_percentage_bar(double percent, =
+int max_len)<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; putchar('|');<br>
+&gt;&nbsp; }<br>
+&gt;&nbsp;<br>
+&gt; +static char *get_gt_frequencies(void)<br>
+&gt; +{<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; char freq_str[512] =3D &quot;&quot;;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; char gt_info[64];<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int fd =3D -1;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int num_gts =3D 0;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int gt;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; bool is_xe =3D false;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; bool first =3D true;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; fd =3D __drm_open_driver(DRIVER_INTEL | DRIV=
+ER_XE);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; if (fd &lt; 0) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; fprintf(stderr, &quot;Failed to open DRM device\n&quot;);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; return NULL;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Detect driver type and get GT count */<br=
+>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; is_xe =3D is_xe_device(fd);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; if (is_xe)<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; num_gts =3D xe_number_gt(fd);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; else<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; num_gts =3D igt_sysfs_get_num_gt(fd);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; if (num_gts &lt;=3D 0) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; fprintf(stderr, &quot;Failed to get GT count\n&quot;);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; close(fd);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; return NULL;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Read frequencies for each GT */<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; for (gt =3D 0; gt &lt; num_gts; gt++) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; char gt_path[96];<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; char freq_path[128];<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; char freq_buf[32];<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; char *path_ptr;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; unsigned int cur_freq =3D 0, act_freq =3D 0;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; FILE *fp;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; /* Get GT-specific sysfs path */<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; if (is_xe)<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path_ptr =3D xe_sysfs_g=
+t_path(fd, gt, gt_path, sizeof(gt_path));<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; else<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; path_ptr =3D igt_sysfs_=
+gt_path(fd, gt, gt_path, sizeof(gt_path));<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; if (!path_ptr) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(stderr, &quot;F=
+ailed to get sysfs path for GT%d\n&quot;, gt);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; }<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; /* Read current/requested frequency */<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; if (is_xe)<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; snprintf(freq_path, siz=
+eof(freq_path), &quot;%s%s&quot;, gt_path, XE_FREQ_CUR_SUFFIX);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; else<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; snprintf(freq_path, siz=
+eof(freq_path), &quot;%s%s&quot;, gt_path, I915_FREQ_CUR_SUFFIX);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; fp =3D fopen(freq_path, &quot;r&quot;);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; if (fp) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (fgets(freq_buf, siz=
+eof(freq_buf), fp))<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp; cur_freq =3D atoi(freq_buf);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fclose(fp);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; } else {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(stderr, &quot;F=
+ailed to open %s\n&quot;, freq_path);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; }<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; /* Read actual frequency */<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; if (is_xe)<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; snprintf(freq_path, siz=
+eof(freq_path), &quot;%s%s&quot;, gt_path, XE_FREQ_ACT_SUFFIX);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; else<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; snprintf(freq_path, siz=
+eof(freq_path), &quot;%s%s&quot;, gt_path, I915_FREQ_ACT_SUFFIX);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; fp =3D fopen(freq_path, &quot;r&quot;);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; if (fp) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (fgets(freq_buf, siz=
+eof(freq_buf), fp))<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp; act_freq =3D atoi(freq_buf);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fclose(fp);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; } else {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fprintf(stderr, &quot;F=
+ailed to open %s\n&quot;, freq_path);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; }<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; /* Append to frequency string */<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; if (!first)<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; strcat(freq_str, &quot;=
+ &quot;);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; else<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; first =3D false;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; snprintf(gt_info, sizeof(gt_info), &quot;GT%d-%u/%u&quot;, gt, cur_freq=
+, act_freq);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; strcat(freq_str, gt_info);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; close(fd);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; if (strlen(freq_str) &gt; 0)<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; return strdup(freq_str);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; return NULL;<br>
+&gt; +}<br>
+&gt; +<br>
+&gt;&nbsp; static int<br>
+&gt;&nbsp; print_client_header(struct igt_drm_client *c, int lines, int con=
+_w, int con_h,<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int *engine_w)<br>
+&gt;&nbsp; {<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int ret, len;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; char *freq_info =3D NULL;<br>
+&gt;&nbsp;<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (lines++ &gt;=3D con_h)<b=
+r>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; return lines;<br>
+&gt;&nbsp;<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; printf(ANSI_HEADER);<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; ret =3D printf(&quot;DRM minor %u&quot;, c-&=
+gt;drm_minor);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Get frequency information */<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; freq_info =3D get_gt_frequencies();<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; if (freq_info) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; ret =3D printf(&quot;DRM minor %u&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp; Freq(cur/act) %s&quot;, c-&gt;drm_minor, freq_info);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; free(freq_info);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; } else {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; ret =3D printf(&quot;DRM minor %u&quot;, c-&gt;drm_minor);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt; +<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; n_spaces(con_w - ret);<br>
+&gt;&nbsp;<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (lines++ &gt;=3D con_h)<b=
+r>
+&gt; diff --git a/tools/meson.build b/tools/meson.build<br>
+&gt; index 8185ba160..d3261d429 100644<br>
+&gt; --- a/tools/meson.build<br>
+&gt; +++ b/tools/meson.build<br>
+&gt; @@ -73,7 +73,7 @@ endif<br>
+&gt;&nbsp; executable('gputop', 'gputop.c',<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+; install : true,<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+; install_rpath : bindir_rpathdir,<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dependen=
+cies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math])<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dependen=
+cies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,tool_deps,=
+math])<br>
+&gt;&nbsp;<br>
+&gt;&nbsp; intel_l3_parity_src =3D [ 'intel_l3_parity.c', 'intel_l3_udev_li=
+stener.c' ]<br>
+&gt;&nbsp; executable('intel_l3_parity', sources : intel_l3_parity_src,<br>
+&gt; --<br>
+&gt; 2.43.0<br>
+&gt;<br>
 </div>
 </body>
 </html>
 
---_000_CH0PR11MB542785B6A77ADEE33727BA689896ACH0PR11MB5427namp_--
+--_000_CH0PR11MB54272E13539D3A74542B01D19896ACH0PR11MB5427namp_--
