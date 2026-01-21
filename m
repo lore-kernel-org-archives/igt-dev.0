@@ -4,53 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E486C4450D
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 11:46:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E64E5C4451E
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 11:48:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B5F5F10E1FC;
-	Wed, 21 Jan 2026 11:46:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9C94A10E1FC;
+	Wed, 21 Jan 2026 11:48:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IudyzZz7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LztYWaX+";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B890F10E75A
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 11:46:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 94D4410E12F;
+ Wed, 21 Jan 2026 11:48:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768996005; x=1800532005;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=Ovc1IN4g5l3owa0Juu+GWoDJu4RPIJ4qJ6ttw6mPlMo=;
- b=IudyzZz71HFk2fujgrpEEkH+xoPCnQEC2w2JOTXtGdU5ncaA+fwiVuuB
- /PzCBgCrWI88XkHhU349tvd912E440iCDB5cYXiKV8mPAFol54ZcExHso
- QGAnvpwPT6y9iQuqmrxsmBBcWVMIKbkZtW+tLarBYdUWKFc7NUO7+3EST
- pAeFSBsDHX66dEFO1uW3OdaTW33lkolujKFQOrU4W081yO0v0rfTTLhih
- rJnUGFBCp/bD8LmKTA2WJ+6rlhmU9Elk2GN+R4xaZjE74rLKTG6M9er8B
- U4xibg1uGzsJbgZfZZlB6k41ZqyE6/FJa2BmbEX+FofDP2imXTY75ecF3 Q==;
-X-CSE-ConnectionGUID: 64YpOqlxQ2qOrOMAy/Fzlg==
-X-CSE-MsgGUID: 6hF7zQTYTLaCquX0f6P9PQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="92889037"
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="92889037"
+ t=1768996088; x=1800532088;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=eHXaJggzG1lcO9MrNDZ6KddNlyYqMj8KaMP9wSzWSxQ=;
+ b=LztYWaX+B8Xg2I+3x6ilVaGcb7SZ9f0jGLjbSnAQQpTKm83mKnkaJ3Ni
+ xq3HyzHrNp/FM/a9g8CJblYESpoS/eWFMH4Cigqbl2EOOloTc//cWh9hi
+ Y2CkKfmQGewFsNCohsUFAibcSQMUP80s2TheuOlMs6xO/zQQgMMYCWpKR
+ uv/ZFeLw6UF7HkbTkEBKaYYYkrQ8gRmxdQ6Az/8lWBcY89PcCdEwDE4t1
+ yGbpqprgmxgWbG1/uhk1xD57j8X3b7afJtBmBvf4v7aNIp61puvuwtQoO
+ 3P6cIacCFWm3dFJOXjqUIhaUNFFOwCC7uezoW18kJKPAHDj50FOuvuCD2 g==;
+X-CSE-ConnectionGUID: sij24A9PSDa8OAuc34p6KQ==
+X-CSE-MsgGUID: KvQSeNCmRFuxWrwDHWNaMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="92889105"
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="92889105"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2026 03:46:45 -0800
-X-CSE-ConnectionGUID: +feZu12FRXqvW7/O8a8qgA==
-X-CSE-MsgGUID: NmCEDEjfSNOK43t8BXd5ww==
+ 21 Jan 2026 03:48:08 -0800
+X-CSE-ConnectionGUID: En6B4UrgQGuDFhO3HkG+tA==
+X-CSE-MsgGUID: 47BCdHCwQsOCLhyCAA38cA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="206347468"
-Received: from priyanka.iind.intel.com ([10.190.216.153])
- by fmviesa006.fm.intel.com with ESMTP; 21 Jan 2026 03:46:44 -0800
-From: priyanka.dandamudi@intel.com
-To: priyanka.dandamudi@intel.com, igt-dev@lists.freedesktop.org,
- niranjana.vishwanathapura@intel.com, ramadevi.gandi@intel.com,
- dwarakanath.ramadeva@intel.com
-Subject: [PATCH v3 6/6] tests/intel/xe_exec_threads: Add multi queue for
- compute mode
-Date: Wed, 21 Jan 2026 17:16:31 +0530
-Message-ID: <20260121114631.277272-7-priyanka.dandamudi@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260121114631.277272-1-priyanka.dandamudi@intel.com>
-References: <20260121114631.277272-1-priyanka.dandamudi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="206347720"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO
+ jkrzyszt-mobl2.intranet) ([10.245.246.125])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jan 2026 03:48:05 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t 0/7] lsgpu: Report upstream port link bandwidth
+Date: Wed, 21 Jan 2026 12:42:18 +0100
+Message-ID: <20260121114656.1970684-9-janusz.krzysztofik@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,121 +72,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Users of Intel discrete graphics adapters are confused with fake
+information on PCIe link bandwidth (speed and size) of their GPU devices
+reported by tools like lspci or lsgpu.  That fake information is
+unfortunately provided by hardware, Linux PCI subsystem just exposes it
+untouched to upper layers, including userspace via sysfs, and userspace
+tools just report those fake values.
 
-Add multi queue tests for compute mode.
+While we can't do much about the kernel side or general purpose userspace
+tools like lspci, we can try to address the issue with our lsgpu utility.
 
-v3: Add multi queue related code in the test_compute_code function.
+Correct link bandwidth attributes of a discrete GPU card can be obtained
+from the kernel by looking not at the PCI device of the GPU itself, only
+at a PCIe upstream port of the card's PCI bridge.  For integrity with
+content of the sysfs and with output from the other tools, we are not
+going to replace the fake information with that from the bridge upstream
+port, only show that port and its attributes themselves while listing
+devices.
 
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
----
- tests/intel/xe_exec_threads.c | 79 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 77 insertions(+), 2 deletions(-)
+Since the tool uses our udev based igt_device_scan library for identifying
+GPU devices and printing their properties and attributes, modifications
+that we need apply to that library.
 
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index 0c14b242a..27d5a8928 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
-@@ -312,8 +312,21 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 	igt_assert(exec_sync != MAP_FAILED);
- 	memset(exec_sync, 0, sync_size);
- 
--	for (i = 0; i < n_exec_queues; i++)
--		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
-+	for (i = 0; i < n_exec_queues; i++) {
-+		if (flags & MULTI_QUEUE) {
-+			struct drm_xe_ext_set_property multi_queue = {
-+				.base.next_extension = 0,
-+				.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+				.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
-+			};
-+			uint64_t ext = to_user_pointer(&multi_queue);
-+
-+			multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
-+			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
-+		} else {
-+			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
-+		}
-+	}
- 
- 	pthread_barrier_wait(&barrier);
- 
-@@ -1074,6 +1087,42 @@ static void *thread(void *data)
-  *	multi-queue-mixed fd userptr invalidate
-  * @multi-queue-mixed-fd-userptr-invalidate-race:
-  *	multi-queue-mixed fd userptr invalidate race
-+ * @multi-queue-cm-basic:
-+ * 	multi-queue cm basic
-+ * @multi-queue-cm-fd-basic:
-+ * 	multi-queue cm fd basic
-+ * @multi-queue-cm-userptr:
-+ *	multi-queue compute mode userptr
-+ * @multi-queue-cm-rebind:
-+ *	multi-queue compute mode rebind
-+ * @multi-queue-cm-userptr-rebind:
-+ *	multi-queue compute mode userptr rebind
-+ * @multi-queue-cm-userptr-invalidate:
-+ *	multi-queue compute mode userptr invalidate
-+ * @multi-queue-cm-userptr-invalidate-race:
-+ *	multi-queue compute mode userptr invalidate race
-+ * @multi-queue-cm-shared-vm-basic:
-+ *	multi-queue compute mode shared vm basic
-+ * @multi-queue-cm-shared-vm-userptr:
-+ *	multi-queue compute mode shared vm userptr
-+ * @multi-queue-cm-shared-vm-rebind:
-+ *	multi-queue compute mode shared vm rebind
-+ * @multi-queue-cm-shared-vm-userptr-rebind:
-+ *	multi-queue compute mode shared vm userptr rebind
-+ * @multi-queue-cm-shared-vm-userptr-invalidate:
-+ *	multi-queue compute mode shared vm userptr invalidate
-+ * @multi-queue-cm-shared-vm-userptr-invalidate-race:
-+ *	multi-queue compute mode shared vm userptr invalidate race
-+ * @multi-queue-cm-fd-userptr:
-+ *	multi-queue compute mode fd userptr
-+ * @multi-queue-cm-fd-rebind:
-+ *	multi-queue compute mode fd rebind
-+ * @multi-queue-cm-fd-userptr-rebind:
-+ *	multi-queue compute mode fd userptr rebind
-+ * @multi-queue-cm-fd-userptr-invalidate:
-+ *	multi-queue compute mode fd userptr invalidate
-+ * @multi-queue-cm-fd-userptr-invalidate-race:
-+ *	multi-queue compute mode fd userptr invalidate race
-  */
- 
- static void threads(int fd, int flags)
-@@ -1434,6 +1483,32 @@ int igt_main()
- 			USERPTR | INVALIDATE },
- 		{ "multi-queue-mixed-fd-userptr-invalidate-race", MULTI_QUEUE | MIXED_MODE | FD |
- 			USERPTR | INVALIDATE | RACE },
-+		{ "multi-queue-cm-basic", MULTI_QUEUE | COMPUTE_MODE },
-+		{ "multi-queue-cm-userptr", MULTI_QUEUE | COMPUTE_MODE | USERPTR },
-+		{ "multi-queue-cm-rebind", MULTI_QUEUE | COMPUTE_MODE | REBIND },
-+		{ "multi-queue-cm-userptr-rebind", MULTI_QUEUE | COMPUTE_MODE | USERPTR | REBIND },
-+		{ "multi-queue-cm-userptr-invalidate", MULTI_QUEUE | COMPUTE_MODE | USERPTR |
-+			INVALIDATE },
-+		{ "multi-queue-cm-userptr-invalidate-race", MULTI_QUEUE | COMPUTE_MODE | USERPTR |
-+			INVALIDATE | RACE },
-+		{ "multi-queue-cm-shared-vm-basic", MULTI_QUEUE | COMPUTE_MODE | SHARED_VM },
-+		{ "multi-queue-cm-shared-vm-userptr", MULTI_QUEUE | COMPUTE_MODE | SHARED_VM | USERPTR },
-+		{ "multi-queue-cm-shared-vm-rebind", MULTI_QUEUE | COMPUTE_MODE | SHARED_VM | REBIND },
-+		{ "multi-queue-cm-shared-vm-userptr-rebind", MULTI_QUEUE | COMPUTE_MODE | SHARED_VM |
-+			USERPTR | REBIND },
-+		{ "multi-queue-cm-shared-vm-userptr-invalidate", MULTI_QUEUE | COMPUTE_MODE | SHARED_VM |
-+			USERPTR | INVALIDATE },
-+		{ "multi-queue-cm-shared-vm-userptr-invalidate-race", MULTI_QUEUE | COMPUTE_MODE |
-+			SHARED_VM | USERPTR | INVALIDATE | RACE },
-+		{ "multi-queue-cm-fd-basic", MULTI_QUEUE | COMPUTE_MODE | FD },
-+		{ "multi-queue-cm-fd-userptr", MULTI_QUEUE | COMPUTE_MODE | FD | USERPTR },
-+		{ "multi-queue-cm-fd-rebind", MULTI_QUEUE | COMPUTE_MODE | FD | REBIND },
-+		{ "multi-queue-cm-fd-userptr-rebind", MULTI_QUEUE | COMPUTE_MODE | FD | USERPTR |
-+			REBIND },
-+		{ "multi-queue-cm-fd-userptr-invalidate", MULTI_QUEUE | COMPUTE_MODE | FD |
-+			USERPTR | INVALIDATE },
-+		{ "multi-queue-cm-fd-userptr-invalidate-race", MULTI_QUEUE | COMPUTE_MODE | FD |
-+			USERPTR | INVALIDATE | RACE },
- 		{ NULL },
- 	};
- 	int fd;
+Janusz Krzysztofik (7):
+  lib/igt_device_scan: Don't print fake link bandwidth attributes
+  lib/igt_device_scan: Split out reusable part of update_or_add_parent
+  lib/igt_device_scan: Include PCIe bridge upstream port if available
+  lib/igt_device_scan: List PCIe bridge ports after their children
+  lib/igt_device_scan: Omit AER statistics data from attributes
+  lib/igt_device_scan: Don't print bridge not applicable attributes
+  lib/igt_device_scan: Print GPU upstream port parent/child relations
+
+ lib/igt_device_scan.c | 179 +++++++++++++++++++++++++++++++++++-------
+ lib/meson.build       |   2 +
+ meson.build           |   1 +
+ 3 files changed, 153 insertions(+), 29 deletions(-)
+
 -- 
-2.43.0
+2.52.0
 
