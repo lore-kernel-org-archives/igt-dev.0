@@ -4,27 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B0F7C44502
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 09:18:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81CC3C44502
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 09:21:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1BF4B10E720;
-	Wed, 21 Jan 2026 09:18:00 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E73210E720;
- Wed, 21 Jan 2026 09:17:58 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1120536269732061724=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 34F1910E72F;
+	Wed, 21 Jan 2026 09:21:13 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ikyTcS7n";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C1DA010E72E
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 09:21:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1768987271; x=1800523271;
+ h=from:to:subject:in-reply-to:references:date:message-id:
+ mime-version:content-transfer-encoding;
+ bh=7yGsP7CJG2SKFs3cueGgfVTHQ3q5BSsPSiYNnSE0GeA=;
+ b=ikyTcS7nxCGh5WLHsScHzUVZLrxh5mTGeZRTfUO7uZLHiAisBfveDjL/
+ DtVe5clmEc9QQBN5G10DfySsivBR13gwrY/oXzGXGvq2OV1j3HJYBC1ib
+ V782B/vpCaUAL4bHEhYRAF5qzTT5W+6LTy8RBuG5bXTv/HM5Udj/yOvTm
+ RJ0QscoE9BLuWtn24OSpy3JU3MNh/kjto5alhQ9hoSVlqpbz/KVdDI0Y0
+ uiTw8U1YC6VCIDb07f9hah2G0rYquH6YU+IJlgAzlJDYxNUQVy8u1SewJ
+ P726+aMRpTNP4EFi6LmXo0u7UHpWdxbTBXLDkVMJNC5JjgaL4SSFrTxQa g==;
+X-CSE-ConnectionGUID: 51FY2dKSQ5maRZsvCFOwug==
+X-CSE-MsgGUID: 80eePwkYTa21ZSG/NloSVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="70303854"
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="70303854"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jan 2026 01:21:10 -0800
+X-CSE-ConnectionGUID: Ru6H9P+mSe+dblx4bgwQJQ==
+X-CSE-MsgGUID: HDEB3I6bR1ul+0dd8nahIw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="210901389"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.119])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jan 2026 01:21:09 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 07/12] lib/crc: Convert igt_pipe_crc away from
+ enum pipe
+In-Reply-To: <20260120171656.15840-8-ville.syrjala@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260120171656.15840-1-ville.syrjala@linux.intel.com>
+ <20260120171656.15840-8-ville.syrjala@linux.intel.com>
+Date: Wed, 21 Jan 2026 11:21:05 +0200
+Message-ID: <f78347bb6aebe3e4c8e63f73cf3ce1f987193237@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fexplict=5Ffence?=
- =?utf-8?q?=3A_Add_Test_for_Explicit_Fencing_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "S Sebinraj" <s.sebinraj@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 21 Jan 2026 09:17:58 -0000
-Message-ID: <176898707851.176277.14422641057781135469@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260121060909.2467562-1-s.sebinraj@intel.com>
-In-Reply-To: <20260121060909.2467562-1-s.sebinraj@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,144 +69,179 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1120536269732061724==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tue, 20 Jan 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>
+> Use the correct crtc_index/crtc_offset rather than the
+> incorrect pipe for the pipe crc debugfs stuff. Currently
+> the two match 1:1 so no functional change, but if/when we
+> change the pipe<->crtc mapping this needs to be done correctly.
 
-== Series Details ==
+Yeah, this aligns with my thinking. If a function uses the passed in
+pipe as a crtc index, the function should be explicitly using crtc
+(index) in function/parameter naming. If the caller requires a specific
+pipe, it's the caller's responsibility to pass in a crtc that matches
+the pipe they want, because *that* is the special case.
 
-Series: tests/kms_explict_fence: Add Test for Explicit Fencing (rev2)
-URL   : https://patchwork.freedesktop.org/series/160078/
-State : success
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
-== Summary ==
+>
+> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> ---
+>  lib/igt_pipe_crc.c | 32 ++++++++++++++++----------------
+>  lib/igt_pipe_crc.h |  6 ++----
+>  2 files changed, 18 insertions(+), 20 deletions(-)
+>
+> diff --git a/lib/igt_pipe_crc.c b/lib/igt_pipe_crc.c
+> index 866bf2881cbd..9a79edd51531 100644
+> --- a/lib/igt_pipe_crc.c
+> +++ b/lib/igt_pipe_crc.c
+> @@ -189,7 +189,7 @@ struct _igt_pipe_crc {
+>  	int crc_fd;
+>  	int flags;
+>=20=20
+> -	enum pipe pipe;
+> +	int crtc_index;
+>  	char *source;
+>  };
+>=20=20
+> @@ -215,7 +215,7 @@ void igt_require_pipe_crc(int fd)
+>  }
+>=20=20
+>  static igt_pipe_crc_t *
+> -pipe_crc_new(int fd, enum pipe pipe, const char *source, int flags)
+> +pipe_crc_new(int fd, int crtc_index, const char *source, int flags)
+>  {
+>  	igt_pipe_crc_t *pipe_crc;
+>  	char buf[128];
+> @@ -235,14 +235,14 @@ pipe_crc_new(int fd, enum pipe pipe, const char *so=
+urce, int flags)
+>  	pipe_crc =3D calloc(1, sizeof(struct _igt_pipe_crc));
+>  	igt_assert(pipe_crc);
+>=20=20
+> -	sprintf(buf, "crtc-%d/crc/control", pipe);
+> +	sprintf(buf, "crtc-%d/crc/control", crtc_index);
+>  	pipe_crc->ctl_fd =3D openat(debugfs, buf, O_WRONLY);
+>  	igt_assert(pipe_crc->ctl_fd !=3D -1);
+>=20=20
+>  	pipe_crc->crc_fd =3D -1;
+>  	pipe_crc->fd =3D fd;
+>  	pipe_crc->dir =3D debugfs;
+> -	pipe_crc->pipe =3D pipe;
+> +	pipe_crc->crtc_index =3D crtc_index;
+>  	pipe_crc->source =3D strdup(env_source);
+>  	igt_assert(pipe_crc->source);
+>  	pipe_crc->flags =3D flags;
+> @@ -253,39 +253,39 @@ pipe_crc_new(int fd, enum pipe pipe, const char *so=
+urce, int flags)
+>  /**
+>   * igt_pipe_crc_new:
+>   * @fd: fd of the device
+> - * @pipe: display pipe to use as source
+> + * @crtc_index: CRTC to use as source
+>   * @source: CRC tap point to use as source
+>   *
+> - * This sets up a new pipe CRC capture object for the given @pipe and @s=
+ource
+> + * This sets up a new pipe CRC capture object for the given @crtc_index =
+and @source
+>   * in blocking mode.
+>   *
+> - * Returns: A pipe CRC object for the given @pipe and @source. The libra=
+ry
+> + * Returns: A pipe CRC object for the given @crtc_index and @source. The=
+ library
+>   * assumes that the source is always available since recent kernels supp=
+ort at
+>   * least IGT_PIPE_CRC_SOURCE_AUTO everywhere.
+>   */
+>  igt_pipe_crc_t *
+> -igt_pipe_crc_new(int fd, enum pipe pipe, const char *source)
+> +igt_pipe_crc_new(int fd, int crtc_index, const char *source)
+>  {
+> -	return pipe_crc_new(fd, pipe, source, O_RDONLY);
+> +	return pipe_crc_new(fd, crtc_index, source, O_RDONLY);
+>  }
+>=20=20
+>  /**
+>   * igt_pipe_crc_new_nonblock:
+>   * @fd: fd of the device
+> - * @pipe: display pipe to use as source
+> + * @crtc_index: CRTC to use as source
+>   * @source: CRC tap point to use as source
+>   *
+> - * This sets up a new pipe CRC capture object for the given @pipe and @s=
+ource
+> + * This sets up a new pipe CRC capture object for the given @crtc_index =
+and @source
+>   * in nonblocking mode.
+>   *
+> - * Returns: A pipe CRC object for the given @pipe and @source. The libra=
+ry
+> + * Returns: A pipe CRC object for the given @crtc_index and @source. The=
+ library
+>   * assumes that the source is always available since recent kernels supp=
+ort at
+>   * least IGT_PIPE_CRC_SOURCE_AUTO everywhere.
+>   */
+>  igt_pipe_crc_t *
+> -igt_pipe_crc_new_nonblock(int fd, enum pipe pipe, const char *source)
+> +igt_pipe_crc_new_nonblock(int fd, int crtc_index, const char *source)
+>  {
+> -	return pipe_crc_new(fd, pipe, source, O_RDONLY | O_NONBLOCK);
+> +	return pipe_crc_new(fd, crtc_index, source, O_RDONLY | O_NONBLOCK);
+>  }
+>=20=20
+>  /**
+> @@ -380,7 +380,7 @@ void igt_pipe_crc_start(igt_pipe_crc_t *pipe_crc)
+>=20=20
+>  	igt_assert_eq(write(pipe_crc->ctl_fd, src, strlen(src)), strlen(src));
+>=20=20
+> -	sprintf(buf, "crtc-%d/crc/data", pipe_crc->pipe);
+> +	sprintf(buf, "crtc-%d/crc/data", pipe_crc->crtc_index);
+>=20=20
+>  	igt_set_timeout(10, "Opening crc fd, and poll for first CRC.");
+>  	pipe_crc->crc_fd =3D openat(pipe_crc->dir, buf, pipe_crc->flags);
+> @@ -560,7 +560,7 @@ igt_pipe_crc_get_for_frame(int drm_fd, igt_pipe_crc_t=
+ *pipe_crc,
+>  void
+>  igt_pipe_crc_get_current(int drm_fd, igt_pipe_crc_t *pipe_crc, igt_crc_t=
+ *crc)
+>  {
+> -	unsigned vblank =3D kmstest_get_vblank(drm_fd, pipe_crc->pipe, 0) + 1;
+> +	unsigned vblank =3D kmstest_get_vblank(drm_fd, pipe_crc->crtc_index, 0)=
+ + 1;
+>=20=20
+>  	return igt_pipe_crc_get_for_frame(drm_fd, pipe_crc, vblank, crc);
+>  }
+> diff --git a/lib/igt_pipe_crc.h b/lib/igt_pipe_crc.h
+> index 171f082300ec..f648b2c9231e 100644
+> --- a/lib/igt_pipe_crc.h
+> +++ b/lib/igt_pipe_crc.h
+> @@ -9,8 +9,6 @@
+>  #include <stdbool.h>
+>  #include <stdint.h>
+>=20=20
+> -enum pipe;
+> -
+>  /**
+>   * igt_pipe_crc_t:
+>   *
+> @@ -48,9 +46,9 @@ char *igt_crc_to_string(igt_crc_t *crc);
+>=20=20
+>  void igt_require_pipe_crc(int fd);
+>  igt_pipe_crc_t *
+> -igt_pipe_crc_new(int fd, enum pipe pipe, const char *source);
+> +igt_pipe_crc_new(int fd, int crtc_index, const char *source);
+>  igt_pipe_crc_t *
+> -igt_pipe_crc_new_nonblock(int fd, enum pipe pipe, const char *source);
+> +igt_pipe_crc_new_nonblock(int fd, int crtc_index, const char *source);
+>  void igt_pipe_crc_free(igt_pipe_crc_t *pipe_crc);
+>  void igt_pipe_crc_start(igt_pipe_crc_t *pipe_crc);
+>  void igt_pipe_crc_stop(igt_pipe_crc_t *pipe_crc);
 
-CI Bug Log - changes from XEIGT_8709_BAT -> XEIGTPW_14387_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (11 -> 12)
-------------------------------
-
-  Additional (1): bat-bmg-3 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14387_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p:
-    - bat-bmg-3:          NOTRUN -> [SKIP][1] ([Intel XE#6566]) +3 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14387/bat-bmg-3/igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p.html
-
-  
-#### Possible fixes ####
-
-  * igt@xe_waitfence@abstime:
-    - bat-dg2-oem2:       [TIMEOUT][2] ([Intel XE#6506]) -> [PASS][3]
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8709/bat-dg2-oem2/igt@xe_waitfence@abstime.html
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14387/bat-dg2-oem2/igt@xe_waitfence@abstime.html
-
-  
-  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
-  [Intel XE#6566]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6566
-
-
-Build changes
--------------
-
-  * IGT: IGT_8709 -> IGTPW_14387
-  * Linux: xe-4419-fa2241b92adb500a9c016188d338aa3f6f8a95a1 -> xe-4424-b7c3274a57563fc1652889043a6e8d08473e5f31
-
-  IGTPW_14387: 14387
-  IGT_8709: 16ce286cac6acc9669a1c758572ae9fceb483c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-4419-fa2241b92adb500a9c016188d338aa3f6f8a95a1: fa2241b92adb500a9c016188d338aa3f6f8a95a1
-  xe-4424-b7c3274a57563fc1652889043a6e8d08473e5f31: b7c3274a57563fc1652889043a6e8d08473e5f31
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14387/index.html
-
---===============1120536269732061724==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_explict_fence: Add Test for Explicit Fencing (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160078/">https://patchwork.freedesktop.org/series/160078/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14387/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14387/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8709_BAT -&gt; XEIGTPW_14387_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 12)</h2>
-<p>Additional (1): bat-bmg-3 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14387_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p:<ul>
-<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14387/bat-bmg-3/igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6566">Intel XE#6566</a>) +3 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_waitfence@abstime:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8709/bat-dg2-oem2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14387/bat-dg2-oem2/igt@xe_waitfence@abstime.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8709 -&gt; IGTPW_14387</li>
-<li>Linux: xe-4419-fa2241b92adb500a9c016188d338aa3f6f8a95a1 -&gt; xe-4424-b7c3274a57563fc1652889043a6e8d08473e5f31</li>
-</ul>
-<p>IGTPW_14387: 14387<br />
-  IGT_8709: 16ce286cac6acc9669a1c758572ae9fceb483c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-4419-fa2241b92adb500a9c016188d338aa3f6f8a95a1: fa2241b92adb500a9c016188d338aa3f6f8a95a1<br />
-  xe-4424-b7c3274a57563fc1652889043a6e8d08473e5f31: b7c3274a57563fc1652889043a6e8d08473e5f31</p>
-
-</body>
-</html>
-
---===============1120536269732061724==--
+--=20
+Jani Nikula, Intel
