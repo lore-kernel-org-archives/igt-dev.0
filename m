@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A715CC4450D
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 12:00:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07EE7C4450D
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 12:01:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 59BF210E771;
-	Wed, 21 Jan 2026 12:00:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ABE7210E776;
+	Wed, 21 Jan 2026 12:01:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="YCi++AHJ";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="WqRmfnyU";
 	dkim-atps=neutral
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com
- [209.85.210.171])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D84A10E771
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 12:00:57 +0000 (UTC)
-Received: by mail-pf1-f171.google.com with SMTP id
- d2e1a72fcca58-81f4e136481so3075455b3a.3
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 04:00:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768996857; cv=none;
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com
+ [209.85.216.44])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5694F10E776
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 12:01:35 +0000 (UTC)
+Received: by mail-pj1-f44.google.com with SMTP id
+ 98e67ed59e1d1-34ab8e0df53so4896734a91.3
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 04:01:35 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768996895; cv=none;
  d=google.com; s=arc-20240605;
- b=EgLQeqjsOKfEajj+UZ+Mgxx+YWpHDexyR41sYJBSxDbvO++4MMJgp412j1D9AW6DJT
- AYZLk4GYVJiD0Hs4mKCOdxjwQgoewkBP6mjjFO4x7nwkIPjPlnZ1wEaG5qaT5LPjjZ1g
- HgDYtcFol9KXPuXodZr7zgotmvVlk6Oxf+Odp06XLYWPkYm/v7pAldaikg3U7OevC1p+
- hvnD0KUCfMzR49wlRz7ZUqtrbpqW2OE87Rli1BdBodqWYJnCMi6IHcsVmyXGhsUcWJ45
- j5onpPA0eQ4YVxT77STVPSnocN+4Zb9J+4a3MWj872bu3/TFkS+gTaMy46dsUiil9IPm
- lLxw==
+ b=fYON38X+zKS7Ly9hKuZxmR86ZMnKe9y0z6I+Dj9nv3fJi9IciBvkKByq80a/uwvlnm
+ 7wgvQrbT3kHXiN0ls6OPuPkMtLRC2OjV2V6p8lfo99vedAdrhKz2yIcoGp7z5DabZuaP
+ DenqGi+TNUc3w+YeYLczNVAKdjGGXZ2KkR2mRVdj4Lr2qA7vMIEF2SSxep1WzXEcDt8E
+ tiFWJQl1Cp9ki1ho4Ac8ZnMGBq1WeT2XhC9F9tXevE8nyAXvsED8oxqZh/9kyYu29dWC
+ 6dSNxLZ8Q80ywyCnA5vnWL8D5J8VKMsslG79z4Vwx1BojiAxcIH4F82CeFOIbPVfjtCT
+ 1/VQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
  s=arc-20240605; 
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:dkim-signature;
- bh=j6JvXg6Dkj3QaNmNNzWPGY3PzYa6Gg0s7vVR7VzqoRk=;
+ bh=nBW7Pp0O1nUHeVh8vWlEcB2Bh09GbL6ivMPNLJUzRYs=;
  fh=jiZtKjlARfrRM2yNEBasMo1wsZCckE6V/OhneC84kWQ=;
- b=J8ZjyuVez6RxuO6atj8yN31Ui6Lll91Y5e7NmGh5niMLNwkmdyfCU4eTofPnOribwX
- fJxCJQ+7dsxmTF2GROaPUcQxqK2FEq8HmxwDp2URNj0yKEsmZ11dDMGW3HjlXvouGQ6l
- E1/2YSWp3efWpp1l+0330HcqIKH+dxtp9yHwSVKk4hf4o8hbbMkh9Avr8PjNjtrVBgjN
- t7UM2SqlAsDLTiR/tVhD7lk5fc0G43AA19UJxYTYKQub08lCyjgX3/inMJD08PQkhBFp
- WslyWluvLFN+X0BJun9a3M4CiEWrJx/HtpaLpUTXxyb8N+NfFXkSd6gihZdLcGMxR8Ig
- 0Kbw==; darn=lists.freedesktop.org
+ b=l2YaguNCA/QUJE+20aurAcxHM9HKFmQ3Ghc4MsWjnZ8ORu9mNMzO8JOd4nlJ2uzHJB
+ ZSr+dGCfw8fEax5uWE4Lu8IGDG7+BdYKumBccEUxx1MDj66nb/4MPywC7NnyJ651zl2Y
+ s8saGDaTSG6Zj/JrFOUZL2Iigf/fhERVlgk7aW39STlOjT3SzaZ3guTlwc8UOYEiONhO
+ nZtPnD4/0PXlafHOV8YqoG0Y4WQ18DQzjffgASGowYi4doKvpRbfENG09NFoD4hmM4KQ
+ pYStDttSQNzsHbDOFJLvXVX4vrSkiOUXJHt9W1jjwJuaNXUM4uSYN2gzaFJAsArV/P7K
+ NZjg==; darn=lists.freedesktop.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1768996857; x=1769601657; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1768996895; x=1769601695; darn=lists.freedesktop.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=j6JvXg6Dkj3QaNmNNzWPGY3PzYa6Gg0s7vVR7VzqoRk=;
- b=YCi++AHJztMPSO4UeJuDJfcXdWXLjW0/J7fiBna5yEvtF/2ePXpEkkpc+RoV4x9eSQ
- foQ4N3X/qjkFSfoCjE6eMn/xNjv+rumDu61uGnWqqwhalB9ZazXWURzMf8KVpIOhogaM
- uU3fvHX2Khdua5tw97T0t7xeBqe23jiHUEHNNQlF908oxdCiOtKVWUTbcsmUnBYTmiay
- lPNkOGT8bQbd7zZ2DTESRjnLw+9Eu9GQr7fhL0NgLqrS/qC5AWgtz23B7UFt+WqMhVGC
- t6c9Op5M05ksKPSLap7qlSjKyO8Ul3PHzqHngUY6G2gawnlQzlVZ470nCZB+8eij3W9/
- UICw==
+ bh=nBW7Pp0O1nUHeVh8vWlEcB2Bh09GbL6ivMPNLJUzRYs=;
+ b=WqRmfnyUOq4jU+s3G1fQ/3MfwnD1mG5nn78EphRfSCCpoVV872kyUoXsrjRpQWZKC/
+ e9qpZ0stUGVHv9vGCXx+9AwUJOJtzenKPBMTydpaEu9gdZmfbBVA3qutYZDyT8CEE+fa
+ Q0gUJ1411YbRiFKmPmnFwg/2mJAEWNI7ObjWiQsEA3BIOTo4eS7+CSlAHOycW1Fa7KaZ
+ Yafi2Ckt8nYXqxCn6xKQODCu2v3R689RWaA4ZgvkGvPy0IwpA0d8mzPM1TRCIVh7m5En
+ 99EpOHdJTm09LOQPTQEz88WFfWjA79LiSJfg8VTjsOHqnobULr1/cRHqJwqUQWb9TqVW
+ WGvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1768996857; x=1769601657;
+ d=1e100.net; s=20230601; t=1768996895; x=1769601695;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=j6JvXg6Dkj3QaNmNNzWPGY3PzYa6Gg0s7vVR7VzqoRk=;
- b=X2x3pZU/tm+dFL3Pnq1dqZul2oBvrWuLweEtXtGD6UVhzP/8BNWe7vxy0YnUGAHyKq
- oSHSYLWwwYVom6K+5WkLdIE61p2IboHbOwx4BI0LzuEl0S0O63cbFJPiotMXFDLqJ9dY
- R0OM6F4kdv2MgguNj5eB2/lx0i4X0fJdQIGTPON0jbMBbW/QMmLSPukLvLZP6cA5JXGv
- gZIc8gtHUOyJecZjS7lJQOoD3LPL7jnY/R6d2zPwy2j3PUedyz29sW/kuqHQGl7XO6eV
- FitFX9zJMO7Od2LGv7GW7DCDu6JyzNnPsLnPRDCwd3L4ZqXeMkWrsrGD9kCF9oHeJdWH
- nfHw==
-X-Gm-Message-State: AOJu0YxYR2dePIphsoI1jj93ne8KeXE85NxbG7ajo+JtYyQM47jNajpQ
- M4sKaiiN08p+ecRJsVCjsqxoLWEcLawyiB7HipguRdYI6r9YU2O+1exV5EnYcZPliXtK1jJM4sS
- yk2XUWITT6bHqJbTVovdFHtdk/jIlrcY=
-X-Gm-Gg: AZuq6aIITxDO3ltA9mG825CwESeU/hx5PJYyopo5Dyb7lK6EPX+zRuyNd6Kijj6pGQA
- aXGa4/iBPBFSN03ILFV54HcAgWdxU5yWBwL9D8dUzNVpNlMLsq3tUDSVjz1zXkrIapVaX2/AHjl
- 5zSXsRINrxcTsC4VV/DHbevkFHLzZS6yzJ2Q3+Cp51XmNO+Fq7maWQIu7jMzTPOd4Lb33bXYoiX
- vUTCwPp3S+tA4CbRTKeOvC/p0iAeuVZOMzM9uAJzB/jhu0j2JpuBpiT/KbmG8kcfp700umTgjgj
- 6OnGT5iruZC05p436GF9v3M59vb06x1DrUNsDsCM
-X-Received: by 2002:a05:6a21:a87:b0:38c:627f:872b with SMTP id
- adf61e73a8af0-38e00d47ca8mr15875814637.59.1768996856580; Wed, 21 Jan 2026
- 04:00:56 -0800 (PST)
+ bh=nBW7Pp0O1nUHeVh8vWlEcB2Bh09GbL6ivMPNLJUzRYs=;
+ b=KW/c7LMW2oTxLO3m4niiAACc51yJN1yWzPMuwd/993eCtP7MszQeFwb7WivJ3rcJ2M
+ eCQMZR4Dkbww/gyXTeZOR05i+FbF2V+DVdhlUulpTlT0TtxVVCm1NwHZj1MdyDw9B4aP
+ Z+w6UA71v91/Y1xrpmshvoZZbVUolxv1pb6V4Li3LIaZyXMG7Go5MML4EL76QNCdnjll
+ XPx8oO4aGRVJWCDLQpO51RDNfo8TrbaJIwNvZxpn7EVgpZRuwKJ5ZgPCd0oPae9b6TQo
+ M3WNfBMTKiYXtM4wM0tE285n7BuKU5ci2D0BCQpwinmc+4HwFvUymotsDN/2d0qkFTmK
+ h+Nw==
+X-Gm-Message-State: AOJu0YzpgMSUOehacbSV0WXD5w6t7cYZcwhYKHW145Zr8G0Qhv6AjSZl
+ j+fIiMDD4LHvfioOsCVAH3tRY+h/DuTJVsF3a5/R9CGgSHvMV2QOlUZb3OnnSDYwGuMK7XuhI2h
+ ikRaaM627as+HvqiCa8UOOO66LJA+wg4lfDLjR7JOiA==
+X-Gm-Gg: AZuq6aIn5YSKIcc6ZtfByeG1K3WOou8SPtXAmuSY6AuALcwjK7HEmXCkYPU5hetpH2d
+ hn9csHU/o6WZSKPBEdoLc1PKvW8YKLPlkPYXa7SrMMj+thyHupkujWK+J7LJ+fuZAEqbJbb7RMJ
+ s15HF2/6cd/A1OElUeNEtTYVeDw6CcCQPCL43/F3uycoq/S9kfBz6B6gvJEuLKhIAPGAzRJnHbJ
+ 5PX0VxM42MzGmltvbmQxSVwJyFkstaOFlUT1ZMWW/CBlXMoIF0RwnZGA/6KSyCMVjsg8HWSHoXt
+ zG2bZR6ssEfpEV/Fho/U81iWAc2kHA==
+X-Received: by 2002:a17:90b:3802:b0:34c:a35d:de19 with SMTP id
+ 98e67ed59e1d1-35272fc4f82mr13926849a91.33.1768996894610; Wed, 21 Jan 2026
+ 04:01:34 -0800 (PST)
 MIME-Version: 1.0
 References: <20260120045545.102676-1-ramanaidu.naladala@intel.com>
- <20260120045545.102676-4-ramanaidu.naladala@intel.com>
-In-Reply-To: <20260120045545.102676-4-ramanaidu.naladala@intel.com>
+ <20260120045545.102676-3-ramanaidu.naladala@intel.com>
+In-Reply-To: <20260120045545.102676-3-ramanaidu.naladala@intel.com>
 From: =?UTF-8?Q?Juha=2DPekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-Date: Wed, 21 Jan 2026 14:00:45 +0200
-X-Gm-Features: AZwV_QgX3fnHeDxkd3cjqRNQo4pDli6SQsIEPrQzeIlLDdyRp5rE1h32oQRp_9s
-Message-ID: <CAJ=qYWS_hoAt9FkFfZp8jBBJDKR43-p2GeJ+mpQD+ZXKmOPp8A@mail.gmail.com>
-Subject: Re: [PATCH i-g-t v2 3/3] tests/kms_plane: skip cursor clamping to
- avoid false positives
+Date: Wed, 21 Jan 2026 14:01:23 +0200
+X-Gm-Features: AZwV_QiH8N2dMEogAaDGeiqJAPVuH1HJLyRbklM1CUhQMxySqqMW98arEwkE2CQ
+Message-ID: <CAJ=qYWRySZ46vfHEKO-VCEdPr5TbSJd4X3P=At_Yw-hd5Qy=-A@mail.gmail.com>
+Subject: Re: [PATCH i-g-t v2 2/3] tests/kms_plane: Speed up simulation by
+ limiting YUV range tests
 To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 Cc: igt-dev@lists.freedesktop.org, jeevan.b@intel.com, 
  juha-pekka.heikkila@intel.com
@@ -107,54 +107,41 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-On Tue, Jan 20, 2026 at 7:02=E2=80=AFAM Naladala Ramanaidu
+On Tue, Jan 20, 2026 at 6:54=E2=80=AFAM Naladala Ramanaidu
 <ramanaidu.naladala@intel.com> wrote:
 >
-> Clamping subtest is not applicable to the cursor plane. Returning
-> early caused the subtest to be reported as passed, which can
-> mislead results when clamping is exercised elsewhere. Switch to
-> igt_skip() with a clear reason so the outcome is reported correctly
-> as =E2=80=9CSKIP=E2=80=9D.
+> Optimizes the YUV format test flow by skipping all non=E2=80=93full=E2=80=
+=91range
+> cases when running in simulation. Previously, the test iterated
+> over every supported color range, which significantly increased
+> execution time in simulated environments. By restricting execution
+> to the full=E2=80=91range variant during simulation, the overall runtime
+> is reduced.
 >
 > Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 > ---
->  tests/kms_plane.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
+>  tests/kms_plane.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 >
 > diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index b71b3586f..396afce9a 100644
+> index 653a911ad..b71b3586f 100644
 > --- a/tests/kms_plane.c
 > +++ b/tests/kms_plane.c
-> @@ -1094,7 +1094,7 @@ static void test_format_plane(data_t *data, enum pi=
-pe pipe,
->          * No clamping test for cursor plane
->          */
->         if (data->crop !=3D 0 && plane->type =3D=3D DRM_PLANE_TYPE_CURSOR=
-)
-> -               return;
-> +               igt_skip("Clamping is invalid for the cursor plane.\n");
+> @@ -968,6 +968,10 @@ static bool test_format_plane_yuv(data_t *data, enum=
+ pipe pipe,
+>                                                      igt_color_range_to_s=
+tr(r)))
+>                                 continue;
 >
->         for (int i =3D 0; i < plane->format_mod_count; i++) {
->                 if (data->mod =3D=3D plane->modifiers[i]) {
-> @@ -1116,10 +1116,9 @@ static void test_format_plane(data_t *data, enum p=
-ipe pipe,
->                 ref.format =3D DRM_FORMAT_XRGB8888;
->                 ref.modifier =3D DRM_FORMAT_MOD_LINEAR;
->         } else {
-> -               if (!plane->drm_plane) {
-> -                       igt_debug("Only legacy cursor ioctl supported, sk=
-ipping cursor plane\n");
-> -                       return;
-> -               }
-> +               if (!plane->drm_plane)
-> +                       igt_skip("Only legacy cursor ioctl supported, ski=
-pping cursor plane\n");
+> +                       if (r !=3D IGT_COLOR_YCBCR_FULL_RANGE &&
+> +                           igt_run_in_simulation())
+> +                               continue;
 > +
->                 do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_WIDTH, &=
-width));
->                 do_or_die(drmGetCap(data->drm_fd, DRM_CAP_CURSOR_HEIGHT, =
-&height));
->                 ref.format =3D DRM_FORMAT_ARGB8888;
+>                         igt_info("Testing format " IGT_FORMAT_FMT " / mod=
+ifier " IGT_MODIFIER_FMT
+>                                  " (%s, %s) on %s.%u\n", IGT_FORMAT_ARGS(=
+format),
+>                                  IGT_MODIFIER_ARGS(modifier),
 > --
 > 2.43.0
 >
