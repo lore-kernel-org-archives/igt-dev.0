@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 983AFC44500
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 08:39:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D303FC44502
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 08:42:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4646710E70A;
-	Wed, 21 Jan 2026 08:39:27 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1EA3810E70A;
- Wed, 21 Jan 2026 08:39:26 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8702513659484088267=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 880F010E712;
+	Wed, 21 Jan 2026 08:42:57 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TJy17tLA";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C359C10E712
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 08:42:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1768984976; x=1800520976;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=aGJvsyRQtWF+h85q6xyC6gCSzqQEsKqU4Q+kNd7cBGE=;
+ b=TJy17tLA0NCSruTXTSVEYmq/VMOphAmtfCyzFlAAP5hcllhEPeT23TVB
+ KOKYsB1LptqJxsZGUVhqXAcmj3s7BsK0XyOZ0Vzt7BVbIEXAkk/OZH8Zu
+ RrES6/hWJormRzrs+gt/ipzAezVnVxO1NNUx7zfFV7wFSEqfWN+szpIMQ
+ l51tptL3VDgUIGrm4LF3IZXPEeeeol9SMEZzDFrDgibptg+B9PPziDOA2
+ Djo5/uZOGSUsqqrtPdvLw9gUs6HJsB/a+26605TllPbMET3pVRZv5CfGx
+ wTUc2LfoGIXaTo3isf+5Ach2XLgn//FW9bKct2UgFTjaPz0vVSRnR8U3b w==;
+X-CSE-ConnectionGUID: dxT+LTUMSEaLfAWmPkj50A==
+X-CSE-MsgGUID: u4DPkmlzSk6bv4VdUeanTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="70112986"
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="70112986"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jan 2026 00:42:55 -0800
+X-CSE-ConnectionGUID: ptABBNmOSBy5zUHpW+vEig==
+X-CSE-MsgGUID: Jq/0vu6sSqKznvp3IVrVsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="210891263"
+Received: from intel-s2600wft.iind.intel.com ([10.223.26.143])
+ by orviesa004.jf.intel.com with ESMTP; 21 Jan 2026 00:42:53 -0800
+From: S Sebinraj <s.sebinraj@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: krzysztof.karas@intel.com, kamil.konieczny@intel.com,
+ zbigniew.kempczynski@intel.com, S Sebinraj <s.sebinraj@intel.com>
+Subject: [PATCH i-g-t v5] tools/gputop: Add GPU frequencies to the client
+ headers
+Date: Wed, 21 Jan 2026 14:04:24 +0530
+Message-Id: <20260121083424.99006-1-s.sebinraj@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fflip=5Fscaled?=
- =?utf-8?q?=5Fcrc=3A_Move_require_checks_at_the_beginning_of_the_subtest?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Karthik B S" <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 21 Jan 2026 08:39:26 -0000
-Message-ID: <176898476611.176040.17631030023777352220@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260121052158.491159-1-karthik.b.s@intel.com>
-In-Reply-To: <20260121052158.491159-1-karthik.b.s@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,128 +64,225 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8702513659484088267==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Enhance gputop to display GPU frequency information (current/actual)
+for each GT in the client header line alongside the DRM minor number.
 
-== Series Details ==
+Key changes:
+- Add get_gt_frequencies() function to read GT frequency values
+- Support both i915 and Xe drivers using appropriate sysfs paths
+- Display format: "DRM minor X  Freq(cur/act) GT0-freq/freq GT1-freq/freq"
+- Driver-agnostic sysfs access
 
-Series: tests/kms_flip_scaled_crc: Move require checks at the beginning of the subtest
-URL   : https://patchwork.freedesktop.org/series/160397/
-State : success
+The frequency information helps users monitor GPU performance states
+in real-time while observing client workload utilization.
 
-== Summary ==
+Example output:
+  DRM minor 0          Freq(cur/act) GT0-1800/1800 GT1-400/400
+  DRM minor 128        Freq(cur/act) GT0-400/400 GT1-400/400
 
-CI Bug Log - changes from XEIGT_8709_BAT -> XEIGTPW_14386_BAT
-====================================================
+v2:
+- To use macro to suffix strings
+- To skip failure loops
 
-Summary
--------
+v3:
+- To keep error logs
 
-  **SUCCESS**
+v4:
+- Removed RFC from Subject
 
-  No regressions found.
+v5:
+- Fallback to normal sysfs read instead of using lib api's
+  as it increased the dependencies highly
 
-  
+Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
+Tested-by: Karas Krzysztof <krzysztof.karas@intel.com>
+Reviewed-by: Karas Krzysztof <krzysztof.karas@intel.com>
+---
+ tools/gputop.c | 145 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 143 insertions(+), 2 deletions(-)
 
-Participating hosts (11 -> 12)
-------------------------------
+diff --git a/tools/gputop.c b/tools/gputop.c
+index f577a1750..fb6c9e13c 100644
+--- a/tools/gputop.c
++++ b/tools/gputop.c
+@@ -30,13 +30,20 @@
+ #include "igt_drm_clients.h"
+ #include "igt_drm_fdinfo.h"
+ #include "igt_profiling.h"
+-#include "drmtest.h"
+ 
+ enum utilization_type {
+ 	UTILIZATION_TYPE_ENGINE_TIME,
+ 	UTILIZATION_TYPE_TOTAL_CYCLES,
+ };
+ 
++#define XE_FREQ_CUR_SUFFIX "/freq0/cur_freq"
++#define XE_FREQ_ACT_SUFFIX "/freq0/act_freq"
++#define I915_FREQ_CUR_SUFFIX "/rps_cur_freq_mhz"
++#define I915_FREQ_ACT_SUFFIX "/rps_act_freq_mhz"
++
++#define MAX_GTS 8
++#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
++
+ static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
+ 
+ #define ANSI_HEADER "\033[7m"
+@@ -76,17 +83,151 @@ static void print_percentage_bar(double percent, int max_len)
+ 	putchar('|');
+ }
+ 
++/* Detect if this is a Xe driver by checking for Xe-specific sysfs structure */
++static bool detect_xe_driver(unsigned int drm_minor)
++{
++	char path[256];
++	struct stat st;
++
++	/* Xe driver has device/tile0 directory */
++	snprintf(path, sizeof(path), "/sys/class/drm/card%u/device/tile0", drm_minor);
++	return (stat(path, &st) == 0 && S_ISDIR(st.st_mode));
++}
++
++/* Count the number of GTs by checking which gt* directories exist */
++static int get_num_gts(unsigned int drm_minor, bool is_xe)
++{
++	char path[256];
++	struct stat st;
++	int gt_count = 0;
++
++	/* Check for gt0, gt1, gt2, etc. up to a reasonable maximum */
++	for (int i = 0; i < MAX_GTS; i++) {
++		if (is_xe)
++			/* For Xe, all GTs are under tile0 */
++			snprintf(path, sizeof(path), "/sys/class/drm/card%u/device/tile0/gt%d",
++				 drm_minor, i);
++		else
++			snprintf(path, sizeof(path), "/sys/class/drm/card%u/gt/gt%d",
++				 drm_minor, i);
++
++		if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
++			gt_count++;
++		else
++			break;  /* Assume GTs are numbered sequentially */
++	}
++
++	return gt_count > 0 ? gt_count : 1;  /* At least 1 GT should exist */
++}
++
++/* Read a single frequency value from sysfs */
++static bool read_freq_value(const char *path, unsigned int *freq)
++{
++	FILE *fp;
++	char buf[32];
++	bool success = false;
++
++	fp = fopen(path, "r");
++	if (fp) {
++		if (fgets(buf, sizeof(buf), fp)) {
++			*freq = atoi(buf);
++			success = true;
++		}
++		fclose(fp);
++	}
++
++	return success;
++}
++
++static char *get_gt_frequencies(unsigned int drm_minor)
++{
++	char freq_str[512] = "";
++	char gt_info[64];
++	int num_gts;
++	int gt;
++	bool is_xe;
++	bool first = true;
++
++	/* Detect driver type from sysfs structure */
++	is_xe = detect_xe_driver(drm_minor);
++
++	/* Get GT count from sysfs */
++	num_gts = get_num_gts(drm_minor, is_xe);
++	if (num_gts <= 0)
++		return NULL;
++
++	/* Read frequencies for each GT */
++	for (gt = 0; gt < num_gts; gt++) {
++		char freq_path[256];
++		unsigned int cur_freq = 0, act_freq = 0;
++		bool has_cur = false, has_act = false;
++
++		/* Read current/requested frequency */
++		if (is_xe)
++			snprintf(freq_path, sizeof(freq_path),
++				 "/sys/class/drm/card%u/device/tile0/gt%d%s",
++				 drm_minor, gt, XE_FREQ_CUR_SUFFIX);
++		else
++			snprintf(freq_path, sizeof(freq_path),
++				 "/sys/class/drm/card%u/gt/gt%d%s",
++				 drm_minor, gt, I915_FREQ_CUR_SUFFIX);
++
++		has_cur = read_freq_value(freq_path, &cur_freq);
++
++		/* Read actual frequency */
++		if (is_xe)
++			snprintf(freq_path, sizeof(freq_path),
++				 "/sys/class/drm/card%u/device/tile0/gt%d%s",
++				 drm_minor, gt, XE_FREQ_ACT_SUFFIX);
++		else
++			snprintf(freq_path, sizeof(freq_path),
++				 "/sys/class/drm/card%u/gt/gt%d%s",
++				 drm_minor, gt, I915_FREQ_ACT_SUFFIX);
++
++		has_act = read_freq_value(freq_path, &act_freq);
++
++		/* Skip this GT if we couldn't read any frequency */
++		if (!has_cur && !has_act)
++			continue;
++
++		/* Append to frequency string */
++		if (!first)
++			strcat(freq_str, " ");
++		else
++			first = false;
++
++		snprintf(gt_info, sizeof(gt_info), "GT%d-%u/%u", gt, cur_freq, act_freq);
++		strcat(freq_str, gt_info);
++	}
++
++	if (strlen(freq_str) > 0)
++		return strdup(freq_str);
++
++	return NULL;
++}
++
+ static int
+ print_client_header(struct igt_drm_client *c, int lines, int con_w, int con_h,
+ 		    int *engine_w)
+ {
+ 	int ret, len;
++	char *freq_info = NULL;
+ 
+ 	if (lines++ >= con_h)
+ 		return lines;
+ 
+ 	printf(ANSI_HEADER);
+-	ret = printf("DRM minor %u", c->drm_minor);
++
++	/* Get frequency information */
++	freq_info = get_gt_frequencies(c->drm_minor);
++
++	if (freq_info) {
++		ret = printf("DRM minor %u          Freq(cur/act) %s", c->drm_minor, freq_info);
++		free(freq_info);
++	} else {
++		ret = printf("DRM minor %u", c->drm_minor);
++	}
++
+ 	n_spaces(con_w - ret);
+ 
+ 	if (lines++ >= con_h)
+-- 
+2.43.0
 
-  Additional (1): bat-bmg-3 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14386_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p:
-    - bat-bmg-3:          NOTRUN -> [SKIP][1] ([Intel XE#6566]) +3 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14386/bat-bmg-3/igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p.html
-
-  
-  [Intel XE#6566]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6566
-
-
-Build changes
--------------
-
-  * IGT: IGT_8709 -> IGTPW_14386
-  * Linux: xe-4419-fa2241b92adb500a9c016188d338aa3f6f8a95a1 -> xe-4423-97a937cbdac99e49f279955be6b427237bfe4772
-
-  IGTPW_14386: 14386
-  IGT_8709: 16ce286cac6acc9669a1c758572ae9fceb483c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-4419-fa2241b92adb500a9c016188d338aa3f6f8a95a1: fa2241b92adb500a9c016188d338aa3f6f8a95a1
-  xe-4423-97a937cbdac99e49f279955be6b427237bfe4772: 97a937cbdac99e49f279955be6b427237bfe4772
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14386/index.html
-
---===============8702513659484088267==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_flip_scaled_crc: Move require checks at the beginning of the subtest</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160397/">https://patchwork.freedesktop.org/series/160397/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14386/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14386/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8709_BAT -&gt; XEIGTPW_14386_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (11 -&gt; 12)</h2>
-<p>Additional (1): bat-bmg-3 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14386_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p:<ul>
-<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14386/bat-bmg-3/igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6566">Intel XE#6566</a>) +3 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8709 -&gt; IGTPW_14386</li>
-<li>Linux: xe-4419-fa2241b92adb500a9c016188d338aa3f6f8a95a1 -&gt; xe-4423-97a937cbdac99e49f279955be6b427237bfe4772</li>
-</ul>
-<p>IGTPW_14386: 14386<br />
-  IGT_8709: 16ce286cac6acc9669a1c758572ae9fceb483c46 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-4419-fa2241b92adb500a9c016188d338aa3f6f8a95a1: fa2241b92adb500a9c016188d338aa3f6f8a95a1<br />
-  xe-4423-97a937cbdac99e49f279955be6b427237bfe4772: 97a937cbdac99e49f279955be6b427237bfe4772</p>
-
-</body>
-</html>
-
---===============8702513659484088267==--
