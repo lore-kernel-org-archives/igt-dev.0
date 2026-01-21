@@ -4,61 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8851DD262B3
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 02:07:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF0EFD2629F
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 02:12:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1BE4510E1A6;
-	Wed, 21 Jan 2026 02:07:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 292BB10E678;
+	Wed, 21 Jan 2026 02:12:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T/DULdEC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C5+mcBT5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A4FB10E1A6
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 02:07:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 09DCE10E678
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 02:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1768961222; x=1800497222;
+ t=1768961539; x=1800497539;
  h=date:from:to:cc:subject:message-id:references:
  in-reply-to:mime-version;
- bh=NvkJoEkE+NqD3FJrc5att3CSM2qHyPHybOWpOO27YzA=;
- b=T/DULdECSMiTD/7UaQXVrgb9VARsFfMrghCnNof4Gu4E+3bsiFBt/qoI
- hKoDToFSZuuBQ7fMzUCw8osan1oj/h8EraqP8wolur2jXuX8nXAEO6ZA1
- a8er70up8oSPgZUSmE89yCOE6PREAB0k0Aaq8aP41vpL7+rVW+zZ4N70/
- BsJ7khW/fwL17OfPVREa+qgf8n79ImUhrW/F5xc/yrZsLf/rFcFBosGB0
- 9HdAws+eJ7zKI3Iga6lBuMJT7Jw4dVQvYAV0qLFttintIxYBLrpsxVqgq
- ing6PNQoKLAos8vvCutychmw0iav00dQB9IFqFSeYU7ZhzOsHO6oBp5LV g==;
-X-CSE-ConnectionGUID: Z5/Ujgg0TpKJNOGT0AvOZw==
-X-CSE-MsgGUID: UzEUTCyXRAqM1JJbme32mw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="69381241"
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="69381241"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 18:07:02 -0800
-X-CSE-ConnectionGUID: U42d1d+uQKyxncdEW1a7fQ==
-X-CSE-MsgGUID: ju/jL+qKQ8eU426qdblhzg==
+ bh=DiRQO3kz6BWCWyDVRFKeentlVIHDIUVun8V5O+cACuQ=;
+ b=C5+mcBT5xVYEILBYM7j4b3k1s1tukqMFeIklaPnG9NRmJeMCw8FRbM9f
+ ZWfX2VRL1KHGX2NYCR1YO4FH5OtSEZuWO4rkd7YPccUXnp9UpFeZNPZsT
+ Tv4C0+RTQ6eIZFaRtcbB35pC8qCV6fc/5FPObpUWoO5fhyY7Srk3KAQ/d
+ 68A4FQoQBvkRkG0j9A2k4RhftZ9t1Gk2maFL6zroPsogw1FBM0q/7hPLV
+ PU5ebVym1rkbXk1466KiL3wfcONm/pOBG3BQ7hfZiqPilSGLpyQapOz/f
+ hITI8FDlDvOlcAwcRYYac21HZTP7bKxPhYaS/QuREcJKeLbjJT88iQE5c w==;
+X-CSE-ConnectionGUID: MJ51Q0QqSkeONMxOi4Z1iQ==
+X-CSE-MsgGUID: n1R9XLzvStSDK8yNZkKatA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="87597482"
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="87597482"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jan 2026 18:12:19 -0800
+X-CSE-ConnectionGUID: DtL8BPgdTpSKlOPUyKVoRg==
+X-CSE-MsgGUID: iKv6JcumRompSq1ydccdIw==
 X-ExtLoop1: 1
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jan 2026 18:07:01 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="206337765"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jan 2026 18:12:19 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 20 Jan 2026 18:07:00 -0800
+ 15.2.2562.35; Tue, 20 Jan 2026 18:12:18 -0800
 Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Tue, 20 Jan 2026 18:07:00 -0800
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.20) by
+ 15.2.2562.35 via Frontend Transport; Tue, 20 Jan 2026 18:12:18 -0800
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.8) by
  edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 20 Jan 2026 18:07:00 -0800
+ 15.2.2562.35; Tue, 20 Jan 2026 18:12:17 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=epeOzMuYxVzTliaITxtI0dfzjaB/xl4TQe9xQxmL44USYBtR6wV3AdQXqYDtz7PG3D0+OMyHrR+mw+y5aK2bYUABTug4Xh8ltS29tfZMc0IHGVQ5RfVukP4YIygU4x6ZaDYtLxt7ifWfkxrKZkk9iWRueUDEckk3YnV+5gztPg7LKQy6++45BFCZAHBg7+t0f+Koobn3spjGSWIvrrMEcwxpI+Hk/uDukT5/NryYoOTuASuxT2XWaX+/mbo15iNnKb5lfQSChjhssgR3g8gMA0YDtaycAgCfejRvRKfzwEdZUWE0kxIYmQDrooa+gNGHDG8SsyYlPclZ0QFIdNeoDA==
+ b=ZNNK2zH1LldKPvem5xu3KHzWadrJ8AP6ZymRb+JRG/Q/UMCfDvk4h+hdMEWOWAwIqcVzB2klmC5On+8EOm0cAl73Qx4U6UJNPfGHtgFJIzmrbUIV6QkyL3Cgj7S57JR4uVhmvIIBxNAN7bgbwNppTlN9+RfkLywwp7Y0ynP6awvTLSy6/aQqCEOv6bwenc70JkVqUjmJbpVsP6LxWvhL59lzKsRl2D0EH9fZUh8uSPspFNPJi1zAbzJGTqXwJVuGhuHL/MQJGJWn1xdKTVLOskAYDVob5e7RYtzLEoEGv8PMMR7v6llHbWBfg/RhW6xn19+v+6TAocpvmySIWnYQww==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sHx+IJ919/+2btMLxeBZ1eXTZV6mXCG0AJuTGuwViVw=;
- b=sUIjgOJ9K3bSDpQhgjceQiHr+JbUwDc6IgTPNwaIuuQDab4Kv5Ls0mC4es/leeZPebyl2uxMp9OlWNNUcJ0Ki5RckkfUJDn2vnXRfSIEEXlJKQmB/6aoFC4snjl3rtIWQP0SooteR43kM/D2McdR0vYb/vHJXoIHPlXwZA1q67WxHBI7rR9f0rleqJmaxsCQv67UE5zYFYb9S5Exot6L9zA+rPHdqOSih1Q/puGThQICNjQiagIcpqyS18ZVgr3rd9SbYpO+1oteDEWX9QSDwfja1gIRZy0b/K4GIhm+q5K0gpQnqeqV5usTnCirYcYVjv+McIUkuOoYubulr8TyCg==
+ bh=5gGAWGnhjqf7+EAIUvzBC69amUyR3uxoECGwJEiWKUw=;
+ b=qbLjgZGhw6khWdbLbb3ddDrpTPCvZJvO1vPhBeC9W3hLirtCobFIwYUOhohDcWq+2ZfqFl3jI2ev8M7UaGS3UiD7sLrKRmrZW2rZPomUJvMsayO9JqpHBVNPObPmNxwNKQizQdfAvpw6c6XHYvbU5fV/yX9URl9kv2jSqW8IodkbrKB3xiNoI8/WPgMc+HaprPtZkyoxS/EoaKRBZOBEYIpMg0Lp4dxcsaCwnufvIxhFBo8PZX11lohBlBYFNyZbTAdISTROARghSXEz6vJJZMWXajUEeuUtzWsYews/E1F7VGWdEmU05zGnZWw8iHd3bY7zoiItKxTuWZYPc0F1/A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -68,103 +69,102 @@ Received: from BL3PR11MB6410.namprd11.prod.outlook.com (2603:10b6:208:3b9::15)
  by CO1PR11MB4914.namprd11.prod.outlook.com (2603:10b6:303:90::24)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.9; Wed, 21 Jan
- 2026 02:06:58 +0000
+ 2026 02:12:15 +0000
 Received: from BL3PR11MB6410.namprd11.prod.outlook.com
  ([fe80::b01a:aa33:165:efc]) by BL3PR11MB6410.namprd11.prod.outlook.com
  ([fe80::b01a:aa33:165:efc%6]) with mapi id 15.20.9520.011; Wed, 21 Jan 2026
- 02:06:57 +0000
-Date: Tue, 20 Jan 2026 18:06:54 -0800
+ 02:12:15 +0000
+Date: Tue, 20 Jan 2026 18:12:11 -0800
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 To: <priyanka.dandamudi@intel.com>
 CC: <igt-dev@lists.freedesktop.org>, <ramadevi.gandi@intel.com>,
  <dwarakanath.ramadeva@intel.com>
-Subject: Re: [PATCH i-g-t 1/9] tests/intel/xe_exec_fault_mode: Add
- multi-queue test support
-Message-ID: <aXA0vibRIwHa8gIh@nvishwa1-desk>
+Subject: Re: [PATCH i-g-t 2/9] tests/intel/xe_evict: Add basic multi-queue test
+Message-ID: <aXA1-ySkVsXB6eYd@nvishwa1-desk>
 References: <20260114065925.197958-1-priyanka.dandamudi@intel.com>
- <20260114065925.197958-2-priyanka.dandamudi@intel.com>
+ <20260114065925.197958-3-priyanka.dandamudi@intel.com>
 Content-Type: text/plain; charset="us-ascii"; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260114065925.197958-2-priyanka.dandamudi@intel.com>
-X-ClientProxiedBy: SJ0PR05CA0169.namprd05.prod.outlook.com
- (2603:10b6:a03:339::24) To BL3PR11MB6410.namprd11.prod.outlook.com
+In-Reply-To: <20260114065925.197958-3-priyanka.dandamudi@intel.com>
+X-ClientProxiedBy: BYAPR03CA0016.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::29) To BL3PR11MB6410.namprd11.prod.outlook.com
  (2603:10b6:208:3b9::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BL3PR11MB6410:EE_|CO1PR11MB4914:EE_
-X-MS-Office365-Filtering-Correlation-Id: 02e55617-3cad-4be8-b507-08de5891c159
+X-MS-Office365-Filtering-Correlation-Id: 24e4e448-6a0d-4b76-81b1-08de58927ed2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?LX1i9LxPEQoqp46TdNLmN0Syu9VZuY/VAvXJLLjtbLQ8RuFG/RpdneYOoEJ7?=
- =?us-ascii?Q?Jeag2grqfZajA+ZlT7Ur2C6u3qZ1sLqk6KXyc94OmO4a6RjfWNq7iUnle9st?=
- =?us-ascii?Q?8lEnsXJ8rK/o4HyG9M5Aba8HPwt5Bfd2x5gOCB0T0LiTKWDCv1cizJuPy3tA?=
- =?us-ascii?Q?VK8ggeCOSSuiMeubr5feZt+SRks5trjbY2ITIhu4BEG/Q7nJ/dNlaH6McuA5?=
- =?us-ascii?Q?Sme0i6vkZJWtWhl+RegWD9ICcwGYvLuuOllpNIii3RUhObcvDNIIvvThTNP2?=
- =?us-ascii?Q?nnwr9x/qpl/1+WXvc8U+FzP/6ujU3XJvJzfrxcS9JCjkprsVv2kwKWns3UlI?=
- =?us-ascii?Q?/80MD+ChUXacORuUqe/RsA5FRuXqs0vwPkhFe1nL5mhN/L8CM/xYH18Ed4WA?=
- =?us-ascii?Q?lAeUAD5+CwjXHk3pFCmVSPPkTRxE2xid/GvpufcPyyCJH0Hf0grmWlPH8pbm?=
- =?us-ascii?Q?eKsyGKCoo44y2vgT393tFVacOk96Vc8/+z6kRQNKAzm21FavRFxCTLXUun1Z?=
- =?us-ascii?Q?jTfdqKn8uMA18DcfxC0vD4NiIwbH6xXXUbNAG5XLYByNYzWrSRaMBt5Smb30?=
- =?us-ascii?Q?v5ODvWr/s/XRFWOuCK/R5TPUYKUe6gK7Fjf2WwrvXx835fIRRak90JGXYhfK?=
- =?us-ascii?Q?dqhMJIFwHqMAVTksLsVg1DIlKkgrowma9Ui83KTcRey+fNGyepZWm10mgm/B?=
- =?us-ascii?Q?xB+HhJYRQ3XTVcdpSSRBcZIO2VvdKXe63SHabL1dDVZ4gLwV7Mh/S1jcGphi?=
- =?us-ascii?Q?FjRtRu0UeBN1rPqd9CpHMJbZlOpgxNnV44w+CCnyF2w3t0ONz//XtcpPJmVK?=
- =?us-ascii?Q?w3MUiQzekWwyL4F0IsUxKF1yscgfY4N2lyvHjsGkX2BEsFZXovOShgkf5q/Q?=
- =?us-ascii?Q?y27n6jxm81U0sGgulTCml5tQL6x/EN2G0dkjzoRuLu+xVTk+ZQDGzO79OEAj?=
- =?us-ascii?Q?VD/2CLICDPJEDh2EyRl4shA1pEq7993ezOkeqaskMFpIzZf4F1rVQIg5GA2N?=
- =?us-ascii?Q?qj7jB8EOC4ZljB5Uw0W+NXnGLmE/cgP2EOv9OLyezhxEDIJnRKCv2jjfL7FL?=
- =?us-ascii?Q?BllIC0vqlESaBHN4hML8NgUcRXPp+GGewcCFL0+aMP+6bAlEXBjd2mv0sG9k?=
- =?us-ascii?Q?SbywG6ph0QPz2l+HiZLDR9ua9mmQLd0emUQFuXiTVh0mI68qPDFTneYdv9EP?=
- =?us-ascii?Q?86GfuoVPqnH/56Eyt+a2AGsrFcN1L0E441rnwzDisRlNK4HyOlDZd84bk+PA?=
- =?us-ascii?Q?WPZ/dKfMri4tLcQOdEyCkYXxYQCu4iHAgz4PQIL8JAq/M0AnYbS8DdXkvUEh?=
- =?us-ascii?Q?AabRCJb9WhyGpaYVHFtIM33kcUNzrLv+S8Veca19kYOZze9wblIKJiawzZ+i?=
- =?us-ascii?Q?VRhZdmyme4NC+uQuoSINy9Xgmdi7Na+bm5BYaTGzO8s8Qm35Z155hQg3acPo?=
- =?us-ascii?Q?/+16TuO/hoqatPAL+i/L1QykPa85AYZ4kpJYlFOEPH9YE9PYZtOeQvjusGHb?=
- =?us-ascii?Q?QQD0Mb8WoZohvSvB4pAnGBmAX5Mb/cnpKbT0t5dsQhirBeq6SgDdZVBc0Ifs?=
- =?us-ascii?Q?59k3i6vP+MVIXvFD/XU=3D?=
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?+6vsBagAWfV+CYBAsO9fBXyRQ/7y8x3QqfM2foN9fBp/nE2IlfKMcaiQTUYk?=
+ =?us-ascii?Q?HmUN2Di9S99N9LJvCD9ej1grq64325NWNGqPgM06aoUnoCue8CaNVqHrAuVC?=
+ =?us-ascii?Q?RV9KJhIHj1oF1qSFxr6051+BCh33T2BBnakIjDqC3aV50QmJ0BosGpDBH6HI?=
+ =?us-ascii?Q?CVrsXGd0IvlGJEACw8M6k7U1OBtk3knFSRwJ1Acls/MZRm2jQd7a3ymeJLiX?=
+ =?us-ascii?Q?TyDPxD0BxYNzao5BC5jBy4LcCh0s11EYNRRs9hDicjiqKPN2gtzULV1GxX/B?=
+ =?us-ascii?Q?4x9zAtfK0xLbaydfJkxldv+5cv4+7TBwkWQDT2IIwPYh0CdlMsk+H16Kdust?=
+ =?us-ascii?Q?JgUReAeDUvD+cDSKEsa3gHWUcJqFfHTr7nfBHiz1hGgaLaESBNhMb18H9xZL?=
+ =?us-ascii?Q?nYJ/i1rzcP+n4EAydeBNpaD/KSOc675JLcgxFg2/aVZt1y6dmtfw2cu0Zjz1?=
+ =?us-ascii?Q?XKXDF2uaVUcncb0fdmotQ/ZnXw5YM8CHoU36Fd/zCGRtHMtQoly/ncKfFAYd?=
+ =?us-ascii?Q?fGpo0Q3LWRdJsVldhaJdyPEg2cb6TYANNNfo9ORW6H0JACxq1VmTyyU8Sg98?=
+ =?us-ascii?Q?2ZCallcu0KhOAcPmg+BCZRxpCDLMDHvpKYzH+NIqit8ZqHEuMNvqdTSEheLG?=
+ =?us-ascii?Q?6AbKeGCzXYFNPFIOr7YLp/B5ZhnBdw/9Xx75flBHTp5BpVDzQiv9YWctw1gY?=
+ =?us-ascii?Q?4TF+piXYkTtX0ljl+pNUw0GzfQxKMl/Wo9/2YFmMLkanHJ5PVl7mi1NV8Pdi?=
+ =?us-ascii?Q?rX/8xga85DZ4ax3ogbROf2hhb0emL08c7j2tCZnUcvaRPWo2KtKBcDkVUW9e?=
+ =?us-ascii?Q?RO3LmMqneyzS0gh3MjZ+RWNJCqcFn62r7TrvgFd4VV+GNv8nOBRwrNh/sn6o?=
+ =?us-ascii?Q?EjG+79xg0QSY/pT8Ey5vdbPQlTVXgxg1xLgOtxaBra3rsMOcIZbaitI5PS4u?=
+ =?us-ascii?Q?q6lUv8J4SdeTuugkXds0qC5NHf+Ot3rXveOL+JeS/67/1yIkAWQQhMzD3yWS?=
+ =?us-ascii?Q?lKV1DvPxfAM6TJ0Zi5sbZ3aASI4dxowYdGQnDEvnERtB78dA/1/UgMxegRhU?=
+ =?us-ascii?Q?Nc7suwuelIC/rfB676ch32jkW3sUszOnO41AbvACqoCZGrBYHmR+MLROsO4B?=
+ =?us-ascii?Q?0/fp2fveODY8x/nxzRuwgoJgA1xj48Uka50qHLUEsjhkDK/YQpQ6HFdvvYvy?=
+ =?us-ascii?Q?MLgZ2E0pS/kqMxARx/Ylq4bYSXbb3Dfw7tCeIgCHQlxWFpy+LEqqHMVTjC0h?=
+ =?us-ascii?Q?cIfqLwYecbW3Z8ftfWWfBmmy/ykS24y2n1XleXJY4mQogfKR5opsqsLcndCA?=
+ =?us-ascii?Q?pCxQL4HF5nZnc0zMYuKOM573QGNXhI60qBCUDQpDYWxVdmi8IP9amzsM798i?=
+ =?us-ascii?Q?kFnIM+kUhiWR3DklXG8uUdabu80Crmzsd/khvnUdYMTAQ9LvVkwPC68Zdc8b?=
+ =?us-ascii?Q?wzvLs5UthkM8PqgTkN2CNAR681TG6GkyFr4SVQE/o9Yr9NzztCFCCBRwWpXs?=
+ =?us-ascii?Q?MB3UxfS/lq28OlSHBxTTRKEnAN60r2RGqLpg6PUWJ7+l6mrAjcbD3AWahxzR?=
+ =?us-ascii?Q?pQ/dRDNl6Yc6fcRmsh0=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BL3PR11MB6410.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?KnSJrUiwjBtfVQfV2dsZF1t/7UfMzZwV+55BmNmsCK5DTDS2UpLoIIk4DTd/?=
- =?us-ascii?Q?/HGcjI4B8Z5l+MoerOIO1THogsyIj0EtdbxPiG1Mle/g8zLZDtIoIxjMVWUs?=
- =?us-ascii?Q?3mbOuBSrS0vwMjruYCLkTwkiGmqtf0bPD+ldng673jBZZUT3it5wBVhh5Xio?=
- =?us-ascii?Q?X/njd2zL9o3ikYwMRYftPL9dXlwrUs/m5OVqfqvxq0crTdBAOsZq7k6ymZPe?=
- =?us-ascii?Q?tfuZoFkgZO+/ptbV6+l0+Kq2z0eWGA9W++wNs5TmgtfFw8qqgsRvUUcptf4c?=
- =?us-ascii?Q?RW/r7MF/yp+fSXN5MAPpMuy9ZaDB8jt5t1LZhPL+X7pqIFlEug3YFgxKHUC6?=
- =?us-ascii?Q?G+uJdDR1ZjL5/yklJBXtVaRHcDp7QU4GyDPzEeWZPxS9Yo2ToEQgvoSJxbHX?=
- =?us-ascii?Q?LCCmbMxaACUXCZfUf2+CQIrraVnBe1Bh3aQCtwnXxwrxXraqRUhJRkPCJvaV?=
- =?us-ascii?Q?yfB3ZzqT45V+7RtTLxbwj0DXzXQ4fYF/VcwIEtIx0RXev4Y5lqIuKRSiYoQn?=
- =?us-ascii?Q?iqoeXtS5iVOgP2G5Sc8TG/qkinpBD12WkSBbq+kYEDNZ1cL93NwCtBSdXsb4?=
- =?us-ascii?Q?elnz5sq4udkyLbIDML954Iy506+AhEkZ/KnESPhv39l0nhkZ+XwIdMSVWeKr?=
- =?us-ascii?Q?MkOrKaai81P8Q0TJ4pebqqcy22WXoUIM8C10BF0GrdehJuZueZsL0Pf8sHlG?=
- =?us-ascii?Q?NHt4G8vIQbLBCEFreETb5lhgKmucmGpDl47baRh9Mqd35ygGTMbGAgWw0BFZ?=
- =?us-ascii?Q?g2kMcAaLhWZawefvhcjzDJP4XoVBDYvrMKQoJXy1DH/0B3SKBC3pw1wFlhc9?=
- =?us-ascii?Q?LoH1moBaxLSTvQVLya0QjYVhNQqLw1IT6rGkPLzN6l5fvV+V/RRncnbLmwqT?=
- =?us-ascii?Q?Brt/x3ajF8LUkvW36qXmnwiWllWaSRg/hhpCFJem31RpdFyyaSrKEHWu/wKA?=
- =?us-ascii?Q?JeBYr908qWRkpBjKN4rOuzL3JsL4Ecg1jOXluE3eHCBQAg3FxDtRZAvzpAxA?=
- =?us-ascii?Q?VZzcTKuEvjUVYfJAsfdk/I1kOvlwo8j2ifIx+fjtSmxv7Em4a4pLmjO9WLQG?=
- =?us-ascii?Q?pj2qfahSFtk/K0nsqT+W++IY8nitXfshD5Vn6mkfVGIOU+Dj1yTlVYFyqQmM?=
- =?us-ascii?Q?lvUbC350mKNYQrP/g8Xw02GZsiJGBR62wYGJFMITNisoxzk+ihA72aB1TJKB?=
- =?us-ascii?Q?Iunx9D/bEk0RR8cEch5RnZWvLEWPFFKogz4rgWZnvkE/ULfNYFUeyTeZ6t+R?=
- =?us-ascii?Q?AnpBXbjp9tlv73vvWy7KajJAPIEci8KLNTmTxLzp5BXweLzU1FmOFqghOKkW?=
- =?us-ascii?Q?EoSn8GbQnoTmzbVi/paZwDJNc5WDOi9ipr0HZn6gPUvIKvPw2gJeqErwjm2N?=
- =?us-ascii?Q?mBz+33BQSpXabhv6f7xC8THuCUnWEG9syYUsMneLuHsMcSXtti9aqBc2kt8p?=
- =?us-ascii?Q?0Tpxvm6jth8g/ol6fPL48+0+els+XyW53LYcU+0N4jALYUVsFtTdQYZMnFBc?=
- =?us-ascii?Q?9dveiVr2dpekUOy/FukmsZuqshXac/VB5EouQf+YCeRfqDcSVySWHtQMCldH?=
- =?us-ascii?Q?KqSeZh7Qz0+ISjWgdscGVVrhGV6DR7aKw2MfH/DZTj6czYdNQpm73BB4EsY0?=
- =?us-ascii?Q?infa1P3IreWy9oz/lpjGLT56kUwYDYTMc4DmQ1L8euUACZZitcitAZQSV53B?=
- =?us-ascii?Q?MzDa3mJWQYW3tjwxPAhQdIaOJ5jBolU51Wp9y35tikWbx5WqcjZhgSMCiTyg?=
- =?us-ascii?Q?fH2urOPE1ud+46UZHGFiloujKAOsEVwu/ByNMqR/HkkFCAyT1SoI?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02e55617-3cad-4be8-b507-08de5891c159
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?KumJjFs/1zG5Dkd6o1uVOEGN09xHAaXWgJwsgc+j7RfRaSEd1d8naky/NZQQ?=
+ =?us-ascii?Q?EFS1ykBgmoI3IQVADt47RSbFLLzTrCDMtCE44m9G0X41UFKnFB1OxLppAKvv?=
+ =?us-ascii?Q?b+VCjd4ttnyT4jc2gSH4qf7y09Tp7cJOX4ggCjBrSJFUEjR65iHq0RkkF7tl?=
+ =?us-ascii?Q?t4HLKm1Nhxl0xfLUra2dLESFwT6FBliH76E/4Ju4oKXDQDl8h8dREfFv7+te?=
+ =?us-ascii?Q?7OWiQQD3VbYZ+GgugJ9cV9mw1QfvBZLtBA8PxnMZJxOAPwe9Rpj8EKjzfFd/?=
+ =?us-ascii?Q?TzqsX3s3cbTBfpvEtjRTJaptMShR5hYUQ70IX3LGo8t24jr5+Orc+n6caGxA?=
+ =?us-ascii?Q?DQ8YrbjDK+4KfFghIY3xiEgXmNYg+nHCA2IbfeQ2HrT+0Bxk+pGeRuYl7bVj?=
+ =?us-ascii?Q?y9LQ5WMw77Y5pmAxCm7PobAcUF0EpLs8LJsQGCSeZkLCvH23sX4JnV9VC71T?=
+ =?us-ascii?Q?ig99rtrOxYJhkzUshmjvMeWEQeZ2+e07Q8qKDW2P5i5/O0iNNXbojHWuvV65?=
+ =?us-ascii?Q?My3Z2ZpbYkwm5yO5Z30JcqgBMB/l4RwT/QoKrBEF8Xgvl/wsSh2iRiwiw84d?=
+ =?us-ascii?Q?Orzre977dTFRCA8qJBRS1DApd9V73C3A4892xJoYGFwZ4Hz9hbjNlQncxjAL?=
+ =?us-ascii?Q?bZjV3oHfzYaVKVb6HdcOBB48v+xrvuclTGKe5UpFWtGsGtwokQIYw8Ct3BXp?=
+ =?us-ascii?Q?p5xLbULdcDTD9bbsh23hhIx4PQ8Xz6J9p4F/2QcXi+NkKpN1m7nWWgCVLQ99?=
+ =?us-ascii?Q?FtWQpBUHujKD4eOlRfVBqpK5SLAsKSiKLGOxHvrhQ8r7xBNY6wMEtNlsTKpt?=
+ =?us-ascii?Q?DsmtGidh3NkBYqEEoill5B7MVifQGsUFWON0RLKFK7ue0uaS25WAMznm4po1?=
+ =?us-ascii?Q?vGX/wmJPqHk75EFaaHpfPkM34H2nw11DYAT2jg5K6bYhpfFdAyMU+UslGVwW?=
+ =?us-ascii?Q?nk4Em0VgT1+n5+F9W+CkzMI43r1/4Wpw35vwu/MDxGNTdNqTCanXlPOkgTvd?=
+ =?us-ascii?Q?Kp92ITkaUgOPVaicgKWQYDuEavqATuturI5PJUUe1HbOFtTs6g9RUa/Eo8g2?=
+ =?us-ascii?Q?uRLClL91MqqKSCZbM2ikxQrsCHOzRbnwDvhdR3eJKkQJpCBkPJEcf79DVV+c?=
+ =?us-ascii?Q?s8O4nGICwzBCoIdmMoBzbidTlbF3gV2TkbjxsvFHh6TMM6oz877DMLNfBOGI?=
+ =?us-ascii?Q?CJjOzuCE4CPCMOWNQUbru+R6hkd4l4SdiughODkLIUSXzjwPHGwZty6c4aZp?=
+ =?us-ascii?Q?26yBbGLGgGnyVfY00GpXg8VKi9esQ3cKpxX+59qTqw5xg2Fj3rOyLoPryXLZ?=
+ =?us-ascii?Q?eVKx3YTfqCqDffIpO+RuEq+BMELy/X0HnZxvGiIVgcdVABE2Wfusi6TGAVMD?=
+ =?us-ascii?Q?7liqkqCdadEEyPSGOwmr2HfwndSzURghcQf/ttTtpA2rKyUSq/Km9/FX2Z13?=
+ =?us-ascii?Q?G3BSLS9Q/j3Aw8owfeEUchtzfRxDwWUpjeZ6VbUNLjZilXkk0URdVpgzeqFM?=
+ =?us-ascii?Q?OstgaeK8k8s21qIlPVcraY7CP0wfYcf27ddGpFp5ahWaJ9cbDqP3+haVbqta?=
+ =?us-ascii?Q?aAME0CQjEJ2HyRLFDg3xu38tJv245EbuQqc6j6jpuZZ5so99Y4V6wsJsI+iA?=
+ =?us-ascii?Q?1ll017w3rwCv+ovrkkDBgAg8K1mZNY0zWpKH4PhElEEYmSQY5+krkUDwF/HI?=
+ =?us-ascii?Q?Kr7+O72hiILgrGJ26unz+oQRQMzLSWS/8RVj8Yzam2GW8TfiE5MV3C19wG3A?=
+ =?us-ascii?Q?IgkxumMcX9gTbqUlixCZQB7OELBLtAmeGlH6GgfpOEVgMRk49YjV?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24e4e448-6a0d-4b76-81b1-08de58927ed2
 X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6410.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2026 02:06:57.2252 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2026 02:12:15.0885 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Tuvpve8DWFjlwkkGG40ehrlHKjA/2vdaknI5ZjOKTQBJbwfOn4MawYmZAldQCeTrr++GJ5XZo8jhaW4n3ZHEc3nAgJlBdknyGhN/rtq5HjSik43QfZYd2Md9oTKjw9gG
+X-MS-Exchange-CrossTenant-UserPrincipalName: w8XMNAE/LoZQG6IjmrHVoSUt8Pz03RkZ9ZWO9zGSAxBuwy/ANWfjNm2RQXCbMYKp0+eQTrLmSCBHI7e/eXh4RHiK7VmVpD/nhiIFMhoKbH9OAZKoZ0/gtmj+8zPiNZUS
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4914
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -182,93 +182,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jan 14, 2026 at 12:29:17PM +0530, priyanka.dandamudi@intel.com wrote:
+On Wed, Jan 14, 2026 at 12:29:18PM +0530, priyanka.dandamudi@intel.com wrote:
 >From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 >
->Extend fault mode test to cover multi-queue test scenarios.
+>Added basic multi-queue test for small buffer objects.
 >
-
-The patch series is missing versioning. Please use
---subject_prefix to add versioning to patch series next time
-around. Also, add version change log for each updated patch
-in the series next time around.
-
-Other than that this patch looks good to me.
-Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-
 >Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 >---
-> tests/intel/xe_exec_fault_mode.c | 111 ++++++++++++++++++++++++++-----
-> 1 file changed, 96 insertions(+), 15 deletions(-)
+> tests/intel/xe_evict.c | 62 +++++++++++++++++++++++++++++++++++-------
+> 1 file changed, 52 insertions(+), 10 deletions(-)
 >
->diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
->index 5f42051a1..3e92dfbd9 100644
->--- a/tests/intel/xe_exec_fault_mode.c
->+++ b/tests/intel/xe_exec_fault_mode.c
->@@ -35,6 +35,7 @@
-> #define INVALID_FAULT	(0x1 << 7)
-> #define INVALID_VA	(0x1 << 8)
-> #define ENABLE_SCRATCH  (0x1 << 9)
->+#define MULTI_QUEUE	(0x1 << 10)
->
-> /**
->  * SUBTEST: invalid-va
->@@ -77,6 +78,14 @@
->  *					bindexecqueue userptr invalidate
->  * @bindexecqueue-userptr-invalidate-race:
->  *					bindexecqueue userptr invalidate race
->+ * @multi-queue:			multi-queue
->+ * @multi-queue-userptr:		multi-queue userptr
->+ * @multi-queue-rebind:			multi-queue rebind
->+ * @multi-queue-userptr-rebind:		multi-queue userptr rebind
->+ * @multi-queue-userptr-invalidate:
->+ *					multi-queue userptr invalidate
->+ * @multi-queue-userptr-invalidate-race:
->+ *					multi-queue userptr invalidate race
->  * @basic-imm:				basic imm
->  * @userptr-imm:			userptr imm
->  * @rebind-imm:				rebind imm
->@@ -92,6 +101,15 @@
->  *					bindexecqueue userptr invalidate imm
->  * @bindexecqueue-userptr-invalidate-race-imm:
->  *					bindexecqueue userptr invalidate race imm
->+ * @multi-queue-imm:			multi-queue imm
->+ * @multi-queue-userptr-imm:		multi-queue userptr imm
->+ * @multi-queue-rebind-imm:		multi-queue rebind imm
->+ * @multi-queue-userptr-rebind-imm:
->+ *					multi-queue userptr rebind imm
->+ * @multi-queue-userptr-invalidate-imm:
->+ *					multi-queue userptr invalidate imm
->+ * @multi-queue-userptr-invalidate-race-imm:
->+ *					multi-queue userptr invalidate race imm
->  * @basic-prefetch:			basic prefetch
->  * @userptr-prefetch:			userptr prefetch
->  * @rebind-prefetch:			rebind prefetch
->@@ -106,8 +124,18 @@
->  *					bindexecqueue userptr invalidate prefetch
->  * @bindexecqueue-userptr-invalidate-race-prefetch:
->  *					bindexecqueue userptr invalidate race prefetch
->+ * @multi-queue-prefetch:		multi-queue prefetch
->+ * @multi-queue-userptr-prefetch:	multi-queue userptr prefetch
->+ * @multi-queue-rebind-prefetch:	multi-queue rebind prefetch
->+ * @multi-queue-userptr-rebind-prefetch:	multi-queue userptr rebind prefetch
->+ * @multi-queue-userptr-invalidate-prefetch:
->+ *					multi-queue userptr invalidate prefetch
->+ * @multi-queue-userptr-invalidate-race-prefetch:
->+ *					multi-queue userptr invalidate race prefetch
->  * @invalid-fault:			invalid fault
->  * @invalid-userptr-fault:		invalid userptr fault
->+ * @multi-queue-invalid-fault:		multi-queue invalid fault
->+ * @multi-queue-invalid-userptr-fault:  multi-queue invalid userptr fault
->  */
+>diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
+>index 2350487c8..bcf13b8cf 100644
+>--- a/tests/intel/xe_evict.c
+>+++ b/tests/intel/xe_evict.c
+>@@ -29,6 +29,7 @@
+> #define COMPUTE_THREAD		(0x1 << 4)
+> #define EXTERNAL_OBJ		(0x1 << 5)
+> #define BIND_EXEC_QUEUE		(0x1 << 6)
+>+#define MULTI_QUEUE		(0x1 << 7)
 >
 > static void
->@@ -188,7 +216,19 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
-> 	memset(exec_sync, 0, sync_size);
->
-> 	for (i = 0; i < n_exec_queues; i++) {
->-		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
->+		if (flags & MULTI_QUEUE) {
+> test_evict(int fd, struct drm_xe_engine_class_instance *eci,
+>@@ -80,7 +81,18 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
+> 		if (flags & MULTI_VM)
+> 			exec_queues[i] = xe_exec_queue_create(fd, i & 1 ? vm2 : vm ,
+> 						      eci, 0);
+>-		else
+>+		else if (flags & MULTI_QUEUE) {
 >+			struct drm_xe_ext_set_property multi_queue = {
 >+				.base.next_extension = 0,
 >+				.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
@@ -277,125 +218,144 @@ Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 >+			uint64_t ext = to_user_pointer(&multi_queue);
 >+
 >+			multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
->+			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, ext);
+>+			igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci,
+>+							     ext, &exec_queues[i]), 0);
 >+		} else
->+			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
->+
-> 		if (flags & BIND_EXEC_QUEUE)
-> 			bind_exec_queues[i] =
-> 				xe_bind_exec_queue_create(fd, vm, 0);
->@@ -398,6 +438,21 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
-> 		close(map_fd);
-> }
->
->+static void
->+test_exec_main(int fd, int n_exec_queues, int n_execs, unsigned int flags)
->+{
->+	struct drm_xe_engine_class_instance *hwe;
->+
->+	if (flags & MULTI_QUEUE) {
->+		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
->+		xe_for_each_multi_queue_engine(fd, hwe)
->+			test_exec(fd, hwe, n_exec_queues, n_execs, flags);
->+	} else {
->+		xe_for_each_engine(fd, hwe)
->+			test_exec(fd, hwe, n_exec_queues, n_execs, flags);
->+	}
->+}
->+
-> int igt_main()
-> {
-> 	struct drm_xe_engine_class_instance *hwe;
->@@ -420,6 +475,15 @@ int igt_main()
-> 			INVALIDATE },
-> 		{ "bindexecqueue-userptr-invalidate-race", BIND_EXEC_QUEUE | USERPTR |
-> 			INVALIDATE | RACE },
->+		{ "multi-queue", MULTI_QUEUE },
->+		{ "multi-queue-userptr", MULTI_QUEUE | USERPTR },
->+		{ "multi-queue-rebind",  MULTI_QUEUE | REBIND },
->+		{ "multi-queue-userptr-rebind", MULTI_QUEUE | USERPTR | REBIND },
->+		{ "multi-queue-userptr-invalidate", MULTI_QUEUE | USERPTR |
->+			INVALIDATE },
->+		{ "multi-queue-userptr-invalidate-race", MULTI_QUEUE | USERPTR |
->+			INVALIDATE | RACE },
->+
-> 		{ "basic-imm", IMMEDIATE },
-> 		{ "userptr-imm", IMMEDIATE | USERPTR },
-> 		{ "rebind-imm", IMMEDIATE | REBIND },
->@@ -436,6 +500,15 @@ int igt_main()
-> 			USERPTR | INVALIDATE },
-> 		{ "bindexecqueue-userptr-invalidate-race-imm", IMMEDIATE |
-> 			BIND_EXEC_QUEUE | USERPTR | INVALIDATE | RACE },
->+		{ "multi-queue-imm", IMMEDIATE | MULTI_QUEUE },
->+		{ "multi-queue-userptr-imm", IMMEDIATE | MULTI_QUEUE | USERPTR },
->+		{ "multi-queue-rebind-imm", IMMEDIATE | MULTI_QUEUE | REBIND },
->+		{ "multi-queue-userptr-rebind-imm", IMMEDIATE | MULTI_QUEUE |
->+			USERPTR | REBIND },
->+		{ "multi-queue-userptr-invalidate-imm", IMMEDIATE | MULTI_QUEUE |
->+			USERPTR | INVALIDATE },
->+		{ "multi-queue-userptr-invalidate-race-imm", IMMEDIATE |
->+			MULTI_QUEUE | USERPTR | INVALIDATE | RACE },
->
-> 		{ "basic-prefetch", PREFETCH },
-> 		{ "userptr-prefetch", PREFETCH | USERPTR },
->@@ -453,8 +526,20 @@ int igt_main()
-> 			USERPTR | INVALIDATE },
-> 		{ "bindexecqueue-userptr-invalidate-race-prefetch", PREFETCH |
-> 			BIND_EXEC_QUEUE | USERPTR | INVALIDATE | RACE },
->+		{ "multi-queue-prefetch", PREFETCH | MULTI_QUEUE },
->+		{ "multi-queue-userptr-prefetch", PREFETCH | MULTI_QUEUE | USERPTR },
->+		{ "multi-queue-rebind-prefetch", PREFETCH | MULTI_QUEUE | REBIND },
->+		{ "multi-queue-userptr-rebind-prefetch", PREFETCH | MULTI_QUEUE |
->+			USERPTR | REBIND },
->+		{ "multi-queue-userptr-invalidate-prefetch", PREFETCH | MULTI_QUEUE |
->+			USERPTR | INVALIDATE },
->+		{ "multi-queue-userptr-invalidate-race-prefetch", PREFETCH |
->+			MULTI_QUEUE | USERPTR | INVALIDATE | RACE },
-> 		{ "invalid-fault", INVALID_FAULT },
-> 		{ "invalid-userptr-fault", INVALID_FAULT | USERPTR },
->+		{ "multi-queue-invalid-fault", MULTI_QUEUE | INVALID_FAULT },
->+		{ "multi-queue-invalid-userptr-fault", MULTI_QUEUE | INVALID_FAULT | USERPTR },
->+
-> 		{ NULL },
+> 			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
+> 		syncobjs[i] = syncobj_create(fd, 0);
 > 	};
-> 	int fd;
->@@ -478,26 +563,22 @@ int igt_main()
->
-> 	for (const struct section *s = sections; s->name; s++) {
-> 		igt_subtest_f("once-%s", s->name)
->-			xe_for_each_engine(fd, hwe)
->-				test_exec(fd, hwe, 1, 1, s->flags);
->+			test_exec_main(fd, 1, 1, s->flags);
->
-> 		igt_subtest_f("twice-%s", s->name)
->-			xe_for_each_engine(fd, hwe)
->-				test_exec(fd, hwe, 1, 2, s->flags);
->+			test_exec_main(fd, 1, 2, s->flags);
->
-> 		igt_subtest_f("many-%s", s->name)
->-			xe_for_each_engine(fd, hwe)
->-				test_exec(fd, hwe, 1,
->-					  s->flags & (REBIND | INVALIDATE) ?
->-					  64 : 128,
->-					  s->flags);
->+			test_exec_main(fd, 1,
->+					s->flags & (REBIND | INVALIDATE) ?
->+					64 : 128,
->+					s->flags);
->
-> 		igt_subtest_f("many-execqueues-%s", s->name)
->-			xe_for_each_engine(fd, hwe)
->-				test_exec(fd, hwe, 16,
->-					  s->flags & (REBIND | INVALIDATE) ?
->-					  64 : 128,
->-					  s->flags);
->+			test_exec_main(fd, 16,
->+					s->flags & (REBIND | INVALIDATE) ?
->+					64 : 128,
->+					s->flags);
+>@@ -259,7 +271,18 @@ test_evict_cm(int fd, struct drm_xe_engine_class_instance *eci,
+> 		if (flags & MULTI_VM)
+> 			exec_queues[i] = xe_exec_queue_create(fd, i & 1 ? vm2 :
+> 							      vm, eci, 0);
+>-		else
+>+		else if (flags & MULTI_QUEUE) {
+>+			struct drm_xe_ext_set_property multi_queue = {
+>+				.base.next_extension = 0,
+>+				.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+>+				.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
+>+			};
+>+			uint64_t ext = to_user_pointer(&multi_queue);
+>+
+>+			multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
+>+			igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci,
+>+							     ext, &exec_queues[i]), 0);
+>+		} else
+> 			exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
 > 	}
 >
-> 	igt_subtest("invalid-va")
+>@@ -516,6 +539,7 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
+>  * arg[1]:
+>  *
+>  * @small:			small
+>+ * @small-multi-queue:		small multi queue
+>  * @small-external:		small external
+>  * @small-multi-vm:		small multi VM
+>  * @beng-small:			small bind exec_queue
+>@@ -546,6 +570,7 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
+>  * arg[1]:
+>  *
+>  * @small-cm:			small compute machine
+>+ * @small-multi-queue-cm:	small multi queue compute machine
+>  * @small-external-cm:		small external compute machine
+>  * @small-multi-vm-cm:		small multi VM compute machine
+>  * @beng-small-cm:		small bind exec_queue compute machine
+>@@ -678,7 +703,7 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
+>  */
+> int igt_main()
+> {
+>-	struct drm_xe_engine_class_instance *hwe;
+>+	struct drm_xe_engine_class_instance *hwe, *multi_queue_hwe = NULL;
+> 	const struct section {
+> 		const char *name;
+> 		int n_exec_queues;
+>@@ -688,6 +713,7 @@ int igt_main()
+> 		unsigned int flags;
+> 	} sections[] = {
+> 		{ "small", 16, 448, 1, 128, 0 },
+>+		{ "small-multi-queue", 16, 448, 1, 128, MULTI_QUEUE },
+> 		{ "small-external", 16, 448, 1, 128, EXTERNAL_OBJ },
+> 		{ "small-multi-vm", 16, 256, 1, 128, MULTI_VM },
+> 		{ "large", 4, 16, 1, 4, 0 },
+>@@ -713,6 +739,7 @@ int igt_main()
+> 		unsigned int flags;
+> 	} sections_cm[] = {
+> 		{ "small-cm", 16, 448, 1, 128, 0 },
+>+		{ "small-multi-queue-cm", 16, 448, 1, 128, MULTI_QUEUE },
+> 		{ "small-external-cm", 16, 448, 1, 128, EXTERNAL_OBJ },
+> 		{ "small-multi-vm-cm", 16, 256, 1, 128, MULTI_VM },
+> 		{ "large-cm", 4, 16, 1, 4, 0 },
+>@@ -820,6 +847,9 @@ int igt_main()
+> 		xe_for_each_engine(fd, hwe)
+> 			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COPY)
+> 				break;
+>+
+>+		xe_for_each_multi_queue_engine(fd, multi_queue_hwe)
+>+			break;
+> 	}
+>
+> 	for (const struct section *s = sections; s->name; s++) {
+>@@ -829,9 +859,13 @@ int igt_main()
+> 					     1, s->flags);
+>
+> 			igt_debug("Max working set %d n_execs %d\n", ws, s->n_execs);
+>+			if (s->flags & MULTI_QUEUE) {
+>+				igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+>+				igt_require(multi_queue_hwe != NULL);
+>+			}
+
+I think you missed my previous comment.
+
+"May be also assert that s->flags do not have MULTI_VM flag set.
+Same applies to below sections as well."
+
+With that,
+Reviewed-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+
+Niranjana
+
+> 			igt_skip_on_f(!ws, "System memory size is too small.\n");
+>-			test_evict(fd, hwe, s->n_exec_queues,
+>-				   min(ws, s->n_execs), bo_size,
+>+			test_evict(fd, s->flags & MULTI_QUEUE ? multi_queue_hwe : hwe,
+>+				   s->n_exec_queues, min(ws, s->n_execs), bo_size,
+> 				   s->flags, NULL);
+> 		}
+> 	}
+>@@ -843,10 +877,13 @@ int igt_main()
+> 					     1, s->flags);
+>
+> 			igt_debug("Max working set %d n_execs %d\n", ws, s->n_execs);
+>+			if (s->flags & MULTI_QUEUE) {
+>+				igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+>+				igt_require(multi_queue_hwe != NULL);
+>+			}
+> 			igt_skip_on_f(!ws, "System memory size is too small.\n");
+>-			test_evict_cm(fd, hwe, s->n_exec_queues,
+>-				      min(ws, s->n_execs), bo_size,
+>-				      s->flags, NULL);
+>+			test_evict_cm(fd, s->flags & MULTI_QUEUE ? multi_queue_hwe : hwe, s->n_exec_queues,
+>+				      min(ws, s->n_execs), bo_size, s->flags, NULL);
+> 		}
+> 	}
+>
+>@@ -857,9 +894,14 @@ int igt_main()
+> 					     s->n_threads, s->flags);
+>
+> 			igt_debug("Max working set %d n_execs %d\n", ws, s->n_execs);
+>+			if (s->flags & MULTI_QUEUE) {
+>+				igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+>+				igt_require(multi_queue_hwe != NULL);
+>+			}
+> 			igt_skip_on_f(!ws, "System memory size is too small.\n");
+>-			threads(fd, hwe, s->n_threads, s->n_exec_queues,
+>-				min(ws, s->n_execs), bo_size, s->flags);
+>+			threads(fd, s->flags & MULTI_QUEUE ? multi_queue_hwe : hwe,
+>+				s->n_threads, s->n_exec_queues, min(ws, s->n_execs),
+>+				bo_size, s->flags);
+> 		}
+> 	}
+>
 >-- 
 >2.43.0
 >
