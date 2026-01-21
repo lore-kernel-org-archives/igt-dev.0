@@ -4,61 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16D4BC44536
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 15:09:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C278D4694A
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Jan 2026 15:29:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BDB2D10E0A3;
-	Wed, 21 Jan 2026 15:09:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5284610E801;
+	Wed, 21 Jan 2026 15:29:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YAXyHXQG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WIzayIKj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 26B2010E0A3
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 15:09:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F268E10E819
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Jan 2026 15:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769008191; x=1800544191;
+ t=1769009344; x=1800545344;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=MBb23IwJCfictsuTLgS3tXW/Fi0npRSiJzh5BLiSRMw=;
- b=YAXyHXQGrjAZ/ownEC2y2/SkCvuHENQJMiEYX78PFQ6TCxnRx3V8v0e+
- 6xxmEniEbmSVlP5Jnt82JmOwXi/Y/L6kQl+zagVrxVcgBX7ZEYLCWN2Db
- CRP+G0yzKzJqymoPn1tAqj5+h03cXsR+42+d5lPOUtP8Ib4+sDXTzrXzv
- c/dsvUFvlJ3hmxOBHUaAoOep45ok6MRwrmWBkivjrzZO9xPtFjTjF4RhC
- hQM/wAxj3cXnADWfHqbcpZtpWBMqV8YAeiXnIZmBMFc1AI2mlnvv7zK8B
- VGQqoW0ieIw/gepvDJryQH3xwuOMDo+OJwmwXBNvepBbTsYns8b3/6/wv g==;
-X-CSE-ConnectionGUID: DIJ32U27SHe7pK4IcadwOQ==
-X-CSE-MsgGUID: QmMTHCM1T52z12qae+7lCA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="69962038"
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="69962038"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2026 07:09:50 -0800
-X-CSE-ConnectionGUID: 4b7+nbeJTCSI0nJi0pKdKw==
-X-CSE-MsgGUID: oNjIL/VwS5eIsksY90qJoQ==
+ bh=/kUZISceQnZ+tfBDDTWhkT5zl90aflW2A5R4t0KeJpM=;
+ b=WIzayIKjCYRT2WkRTfcE2WVO3iaMiJUCg5k+hfq1T2jVkBQxru4ltSKy
+ TzZ5Fl3LVsBS0mBkKVqSGcFaalTVEa7TyUPfMDEPesBfRHUIQGZl+1R9K
+ DP0wvZweaoX9HC4EioaA5TVPau70R2mmlG1BgOmXQZVAQAST2Tavsy1YD
+ 3catklqe4NKNkzB+1VOmOrGjGMmHsFDJkzKSTxjP0cgRCdeC+ny0r0NBx
+ 8/06U5l/ja4pBBS8P+TUo5ZXKdcbfpE5AJOQSuGoHw7kOCcYqmQgbRM6O
+ U5Q8QyQ36/CA9fGgNlJw1xHCrlejb6wG78bCMIcq0VywJ9eXopQhFVmMd g==;
+X-CSE-ConnectionGUID: 4U3cJwfISH6MxKwj1cPHPA==
+X-CSE-MsgGUID: yWfuPPQaRYOWVhVWSeYrDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="70151130"
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="70151130"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jan 2026 07:29:03 -0800
+X-CSE-ConnectionGUID: tOqi1LmAQ5WzJpjC2TLyfA==
+X-CSE-MsgGUID: sFixvUBKRge2i+47EkRqDA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="210908823"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
- ([10.245.245.164])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2026 07:09:48 -0800
-Date: Wed, 21 Jan 2026 17:09:46 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 08/12] lib/kms: Add igt_crtc_t based CRC wrappers
-Message-ID: <aXDsOuJe7iOV9Cab@intel.com>
-References: <20260120171656.15840-1-ville.syrjala@linux.intel.com>
- <20260120171656.15840-9-ville.syrjala@linux.intel.com>
- <533fc18053baa268f1188aa2dc589c51a522a703@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; d="scan'208";a="206714639"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 07:29:01 -0800
+Date: Wed, 21 Jan 2026 16:28:46 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: S Sebinraj <s.sebinraj@intel.com>
+Cc: igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com,
+ kamil.konieczny@intel.com, zbigniew.kempczynski@intel.com,
+ Soham Purkait <soham.purkait@intel.com>
+Subject: Re: [PATCH i-g-t v5] tools/gputop: Add GPU frequencies to the client
+ headers
+Message-ID: <20260121152846.cag7mv7go3anufsa@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ S Sebinraj <s.sebinraj@intel.com>, igt-dev@lists.freedesktop.org,
+ krzysztof.karas@intel.com, kamil.konieczny@intel.com,
+ zbigniew.kempczynski@intel.com,
+ Soham Purkait <soham.purkait@intel.com>
+References: <20260121083424.99006-1-s.sebinraj@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <533fc18053baa268f1188aa2dc589c51a522a703@intel.com>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+In-Reply-To: <20260121083424.99006-1-s.sebinraj@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,95 +76,252 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jan 21, 2026 at 11:33:26AM +0200, Jani Nikula wrote:
-> On Tue, 20 Jan 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
-> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> >
-> > Add wrappers for igt_pipe_crc_new*() that take igt_crtc_t rather
-> > than the bare crtc index. Should help eliminate the pipe usage
-> > from tests.
+Hi,
+On 2026-01-21 at 14:04:24 +0530, S Sebinraj wrote:
+> Enhance gputop to display GPU frequency information (current/actual)
+> for each GT in the client header line alongside the DRM minor number.
 > 
-> I think the basic idea is good, but a couple of comments inline.
+> Key changes:
+> - Add get_gt_frequencies() function to read GT frequency values
+> - Support both i915 and Xe drivers using appropriate sysfs paths
+> - Display format: "DRM minor X  Freq(cur/act) GT0-freq/freq GT1-freq/freq"
+> - Driver-agnostic sysfs access
 > 
-> Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+> The frequency information helps users monitor GPU performance states
+> in real-time while observing client workload utilization.
 > 
-> > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > ---
-> >  lib/igt_kms.c | 14 ++++++++++++++
-> >  lib/igt_kms.h |  4 ++++
-> >  2 files changed, 18 insertions(+)
-> >
-> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> > index 74ad82d77dd3..901bbfab5934 100644
-> > --- a/lib/igt_kms.c
-> > +++ b/lib/igt_kms.c
-> > @@ -59,6 +59,7 @@
-> >  #include "intel_chipset.h"
-> >  #include "igt_debugfs.h"
-> >  #include "igt_device.h"
-> > +#include "igt_pipe_crc.h"
-> >  #include "igt_sysfs.h"
-> >  #include "sw_sync.h"
-> >  #ifdef HAVE_CHAMELIUM
-> > @@ -5299,6 +5300,19 @@ int igt_output_preferred_vrefresh(igt_output_t *output)
-> >  		return 60;
-> >  }
-> >  
-> > +igt_pipe_crc_t *igt_crtc_crc_new(igt_crtc_t *crtc, const char *source)
-> > +{
-> > +	return igt_pipe_crc_new(crtc->display->drm_fd, crtc->crtc_offset,
-> > +				source);
-> > +}
-> > +
-> > +igt_pipe_crc_t *igt_crtc_crc_new_nonblock(igt_crtc_t *crtc, const char *source)
-> > +{
-> > +	return igt_pipe_crc_new_nonblock(crtc->display->drm_fd,
-> > +					 crtc->crtc_offset,
-> > +					 source);
-> > +}
-> > +
-> >  static const char *igt_crtc_name(igt_crtc_t *crtc)
-> >  {
-> >  	if (crtc == NULL)
-> > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> > index 71a2f2c4d89c..b291673c2f7f 100644
-> > --- a/lib/igt_kms.h
-> > +++ b/lib/igt_kms.h
-> > @@ -584,6 +584,10 @@ static inline igt_crtc_t *igt_crtc_for_pipe(igt_display_t *display, enum pipe pi
-> >  	return &display->pipes[pipe];
-> >  }
-> >  
-> > +typedef struct _igt_pipe_crc igt_pipe_crc_t;
+> Example output:
+>   DRM minor 0          Freq(cur/act) GT0-1800/1800 GT1-400/400
+>   DRM minor 128        Freq(cur/act) GT0-400/400 GT1-400/400
 > 
-> So this is a dupe typedef, also defined in igt_pipe_crc.h. It works,
-> it's probably better than including the other header here, but also a
-> bit meh.
+> v2:
+> - To use macro to suffix strings
+> - To skip failure loops
+> 
+> v3:
+> - To keep error logs
+> 
+> v4:
+> - Removed RFC from Subject
+> 
+> v5:
+> - Fallback to normal sysfs read instead of using lib api's
+>   as it increased the dependencies highly
 
-Yeah, forward declarations seem be to be painful with typedefs.
+Thank you for this change.
 
 > 
-> Another idea is naming this based on crtc instead of pipe, even if "crtc
-> crc" is a mouthful:
+> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
+> Tested-by: Karas Krzysztof <krzysztof.karas@intel.com>
+> Reviewed-by: Karas Krzysztof <krzysztof.karas@intel.com>
+
+When you made a big change which was not agreed by reviewer,
+you should remove its 'Reviewed-by' from new version. Same
+apply for the Tested-by.
+
+> ---
+>  tools/gputop.c | 145 ++++++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 143 insertions(+), 2 deletions(-)
 > 
-> typedef struct _igt_pipe_crc igt_crtc_crc_t;
+> diff --git a/tools/gputop.c b/tools/gputop.c
+> index f577a1750..fb6c9e13c 100644
+> --- a/tools/gputop.c
+> +++ b/tools/gputop.c
+> @@ -30,13 +30,20 @@
+>  #include "igt_drm_clients.h"
+>  #include "igt_drm_fdinfo.h"
+>  #include "igt_profiling.h"
+> -#include "drmtest.h"
+>  
+>  enum utilization_type {
+>  	UTILIZATION_TYPE_ENGINE_TIME,
+>  	UTILIZATION_TYPE_TOTAL_CYCLES,
+>  };
+>  
+> +#define XE_FREQ_CUR_SUFFIX "/freq0/cur_freq"
+> +#define XE_FREQ_ACT_SUFFIX "/freq0/act_freq"
+> +#define I915_FREQ_CUR_SUFFIX "/rps_cur_freq_mhz"
+> +#define I915_FREQ_ACT_SUFFIX "/rps_act_freq_mhz"
+> +
+> +#define MAX_GTS 8
+> +#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+> +
+
+These are driver-specific and should go into xe_gputop.c
+in a patchseries sent by Soham, see
+https://patchwork.freedesktop.org/series/158161/
+Close any open drm device after engine initialization in GPUTOP
+
++cc Soham Purkait <soham.purkait@intel.com>
+
+>  static const char *bars[] = { " ", "â–", "â–Ž", "â–", "â–Œ", "â–‹", "â–Š", "â–‰", "â–ˆ" };
+>  
+>  #define ANSI_HEADER "\033[7m"
+> @@ -76,17 +83,151 @@ static void print_percentage_bar(double percent, int max_len)
+>  	putchar('|');
+>  }
+>  
+> +/* Detect if this is a Xe driver by checking for Xe-specific sysfs structure */
+> +static bool detect_xe_driver(unsigned int drm_minor)
+> +{
+> +	char path[256];
+> +	struct stat st;
+> +
+> +	/* Xe driver has device/tile0 directory */
+> +	snprintf(path, sizeof(path), "/sys/class/drm/card%u/device/tile0", drm_minor);
+> +	return (stat(path, &st) == 0 && S_ISDIR(st.st_mode));
+> +}
+> +
+> +/* Count the number of GTs by checking which gt* directories exist */
+> +static int get_num_gts(unsigned int drm_minor, bool is_xe)
+> +{
+> +	char path[256];
+> +	struct stat st;
+> +	int gt_count = 0;
+> +
+> +	/* Check for gt0, gt1, gt2, etc. up to a reasonable maximum */
+> +	for (int i = 0; i < MAX_GTS; i++) {
+> +		if (is_xe)
+> +			/* For Xe, all GTs are under tile0 */
+> +			snprintf(path, sizeof(path), "/sys/class/drm/card%u/device/tile0/gt%d",
+> +				 drm_minor, i);
+> +		else
+> +			snprintf(path, sizeof(path), "/sys/class/drm/card%u/gt/gt%d",
+> +				 drm_minor, i);
+> +
+> +		if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+> +			gt_count++;
+> +		else
+> +			break;  /* Assume GTs are numbered sequentially */
+> +	}
+> +
+> +	return gt_count > 0 ? gt_count : 1;  /* At least 1 GT should exist */
+> +}
+> +
+> +/* Read a single frequency value from sysfs */
+> +static bool read_freq_value(const char *path, unsigned int *freq)
+> +{
+> +	FILE *fp;
+> +	char buf[32];
+> +	bool success = false;
+> +
+> +	fp = fopen(path, "r");
+> +	if (fp) {
+> +		if (fgets(buf, sizeof(buf), fp)) {
+> +			*freq = atoi(buf);
+> +			success = true;
+> +		}
+> +		fclose(fp);
+> +	}
+> +
+> +	return success;
+> +}
+> +
+> +static char *get_gt_frequencies(unsigned int drm_minor)
+> +{
+> +	char freq_str[512] = "";
+> +	char gt_info[64];
+> +	int num_gts;
+> +	int gt;
+> +	bool is_xe;
+> +	bool first = true;
+> +
+> +	/* Detect driver type from sysfs structure */
+> +	is_xe = detect_xe_driver(drm_minor);
+> +
+> +	/* Get GT count from sysfs */
+> +	num_gts = get_num_gts(drm_minor, is_xe);
+> +	if (num_gts <= 0)
+> +		return NULL;
+> +
+> +	/* Read frequencies for each GT */
+> +	for (gt = 0; gt < num_gts; gt++) {
+> +		char freq_path[256];
+> +		unsigned int cur_freq = 0, act_freq = 0;
+> +		bool has_cur = false, has_act = false;
+> +
+> +		/* Read current/requested frequency */
+> +		if (is_xe)
+> +			snprintf(freq_path, sizeof(freq_path),
+> +				 "/sys/class/drm/card%u/device/tile0/gt%d%s",
+> +				 drm_minor, gt, XE_FREQ_CUR_SUFFIX);
+> +		else
+> +			snprintf(freq_path, sizeof(freq_path),
+> +				 "/sys/class/drm/card%u/gt/gt%d%s",
+> +				 drm_minor, gt, I915_FREQ_CUR_SUFFIX);
+> +
+> +		has_cur = read_freq_value(freq_path, &cur_freq);
+> +
+> +		/* Read actual frequency */
+> +		if (is_xe)
+> +			snprintf(freq_path, sizeof(freq_path),
+> +				 "/sys/class/drm/card%u/device/tile0/gt%d%s",
+> +				 drm_minor, gt, XE_FREQ_ACT_SUFFIX);
+> +		else
+> +			snprintf(freq_path, sizeof(freq_path),
+> +				 "/sys/class/drm/card%u/gt/gt%d%s",
+> +				 drm_minor, gt, I915_FREQ_ACT_SUFFIX);
+> +
+> +		has_act = read_freq_value(freq_path, &act_freq);
+> +
+> +		/* Skip this GT if we couldn't read any frequency */
+> +		if (!has_cur && !has_act)
+> +			continue;
+> +
+> +		/* Append to frequency string */
+> +		if (!first)
+> +			strcat(freq_str, " ");
+> +		else
+> +			first = false;
+> +
+> +		snprintf(gt_info, sizeof(gt_info), "GT%d-%u/%u", gt, cur_freq, act_freq);
+> +		strcat(freq_str, gt_info);
+> +	}
+> +
+> +	if (strlen(freq_str) > 0)
+> +		return strdup(freq_str);
+> +
+> +	return NULL;
+> +}
+> +
+>  static int
+>  print_client_header(struct igt_drm_client *c, int lines, int con_w, int con_h,
+>  		    int *engine_w)
+>  {
+>  	int ret, len;
+> +	char *freq_info = NULL;
+>  
+>  	if (lines++ >= con_h)
+>  		return lines;
+>  
+>  	printf(ANSI_HEADER);
+> -	ret = printf("DRM minor %u", c->drm_minor);
+> +
+> +	/* Get frequency information */
+> +	freq_info = get_gt_frequencies(c->drm_minor);
+
+Better:
+	freq_info = get_frequencies(c->drm_minor);
+
+> +
+> +	if (freq_info) {
+> +		ret = printf("DRM minor %u          Freq(cur/act) %s", c->drm_minor, freq_info);
+
+It looks driver dependent, imho better:
+
+ret = printf("DRM minor %u  Frequency(MHz) %s", c->drm_minor, freq_info);
+
+Regards,
+Kamil
+
+> +		free(freq_info);
+> +	} else {
+> +		ret = printf("DRM minor %u", c->drm_minor);
+> +	}
+> +
+>  	n_spaces(con_w - ret);
+>  
+>  	if (lines++ >= con_h)
+> -- 
+> 2.43.0
 > 
-> I think it'll work, the types are compatible with the underlying struct
-> being the same. So we could (gradually) convert from pipe_crc to
-> crtc_crc.
-
-Shrug.
-
-> 
-> With the wrappers being in igt_kms.[ch], is the idea that most tests
-> could cease to include igt_pipe_crc.h after the conversions?
-
-I expect the tests will need a bunch of other stuff from there
-still.
-
-Originally I put the crtc wrappers into igt_pipe_crc.[ch], but
-then I needed to add forward declarations and includes for
-igt_crtc_t which felt even worse.
-
--- 
-Ville Syrjälä
-Intel
