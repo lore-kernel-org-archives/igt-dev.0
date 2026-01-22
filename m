@@ -4,51 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02E82D3EE8E
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Jan 2026 16:53:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CC84D3EE92
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Jan 2026 17:03:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8D93D10E9FA;
-	Thu, 22 Jan 2026 16:53:08 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="IT9l6oA6";
-	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0289010EA09;
- Thu, 22 Jan 2026 16:53:06 +0000 (UTC)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id F02434E421F4;
- Thu, 22 Jan 2026 16:53:04 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id BBD1960711;
- Thu, 22 Jan 2026 16:53:04 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id A7C2F119A8568; Thu, 22 Jan 2026 17:53:02 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1769100783; h=from:subject:date:message-id:to:cc:mime-version:content-type:
- content-transfer-encoding:content-language:in-reply-to:references;
- bh=Zs3mJu/FzJxjv84aI2Ch8vddRewnniYx80rcpfq18r0=;
- b=IT9l6oA6f38vo/t3UrcWgYv5FQOTncczm0qt8NiJwBplQ2zShRtSkf7H3WGZVNdXPupMLZ
- Q7kckht3x6xe9EfCTjYWniNVlbmdbV1kBpEGGXv/YmNs+XrTjuJls9c4igMjh4sd3umbWb
- nIEFmaoOPyYli6/VR42dJYfC2ILSyufaPWmgP0ozcxxDw68DVXOB6Sa7/wxTrvKFDcHZiK
- 4oSJzWd9LkcCBg3zINzh+2E0M1+jc44Dm24LTpysashNJ/P+ceJs3lJK2aGWKdGL1thzAl
- 4IMdTExvOOis2lm5QixxkzYYIuLArjW+iAZx+8Vwa9zIPZ+KN6NkUOfQ+Kqb0Q==
-Message-ID: <9376f3ad-2202-4eb7-9c74-bb57b30e21bf@bootlin.com>
-Date: Thu, 22 Jan 2026 17:53:28 +0100
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2EB1510EA17;
+	Thu, 22 Jan 2026 17:03:19 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C627610E0D8;
+ Thu, 22 Jan 2026 17:03:17 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5688396960851485251=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4 18/46] lib/unigraf: Add TSI.h
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>, igt-dev@lists.freedesktop.org
-Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com,
- khaled.almahallawy@intel.com, igt-dev <igt-dev-bounces@lists.freedesktop.org>
-References: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
- <20251110-unigraf-integration-v4-18-0fc7bb1b4101@bootlin.com>
- <DFUGGVHPISTJ.ZSMBM3NR3UBZ@bootlin.com>
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <DFUGGVHPISTJ.ZSMBM3NR3UBZ@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fpm=5Frp?=
+ =?utf-8?q?m=3A_Fix_CRTC_conflicts_in_output_selection_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 22 Jan 2026 17:03:17 -0000
+Message-ID: <176910139780.184013.3125627481647791221@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260114123426.14804-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20260114123426.14804-1-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,296 +37,393 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============5688396960851485251==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/intel/kms_pm_rpm: Fix CRTC conflicts in output selection (rev2)
+URL   : https://patchwork.freedesktop.org/series/160089/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_8713 -> IGTPW_14399
+====================================================
+
+Summary
+-------
+
+  **WARNING**
+
+  Minor unknown changes coming with IGTPW_14399 need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_14399, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/index.html
+
+Participating hosts (41 -> 39)
+------------------------------
+
+  Additional (2): bat-twl-1 bat-adls-6 
+  Missing    (4): bat-dg2-13 bat-apl-1 bat-arls-5 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_14399:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@i915_selftest@live@mman:
+    - bat-atsm-1:         [DMESG-FAIL][1] ([i915#14204]) -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-atsm-1/igt@i915_selftest@live@mman.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-atsm-1/igt@i915_selftest@live@mman.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14399 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@dmabuf@all-tests@dma_fence_chain:
+    - bat-twl-1:          NOTRUN -> [SKIP][3] ([i915#15249])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@dmabuf@all-tests@dma_fence_chain.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - bat-adls-6:         NOTRUN -> [SKIP][4] ([i915#4613]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@gem_lmem_swapping@parallel-random-engines.html
+    - bat-twl-1:          NOTRUN -> [SKIP][5] ([i915#10213] / [i915#11671]) +3 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@gem_tiled_pread_basic:
+    - bat-twl-1:          NOTRUN -> [SKIP][6] ([i915#11031])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@gem_tiled_pread_basic.html
+    - bat-adls-6:         NOTRUN -> [SKIP][7] ([i915#3282])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@gem_tiled_pread_basic.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-twl-1:          NOTRUN -> [SKIP][8] ([i915#10209] / [i915#11681])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [PASS][9] -> [DMESG-FAIL][10] ([i915#12061]) +1 other test dmesg-fail
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+
+  * igt@intel_hwmon@hwmon-read:
+    - bat-adls-6:         NOTRUN -> [SKIP][11] ([i915#7707]) +1 other test skip
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@intel_hwmon@hwmon-read.html
+    - bat-twl-1:          NOTRUN -> [SKIP][12] ([i915#7707]) +1 other test skip
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@intel_hwmon@hwmon-read.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - bat-adls-6:         NOTRUN -> [SKIP][13] ([i915#4103]) +1 other test skip
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+    - bat-twl-1:          NOTRUN -> [SKIP][14] ([i915#11030] / [i915#11731]) +1 other test skip
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-twl-1:          NOTRUN -> [SKIP][15] ([i915#9886])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_dsc@dsc-basic.html
+    - bat-adls-6:         NOTRUN -> [SKIP][16] ([i915#3555] / [i915#3840])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-adls-6:         NOTRUN -> [SKIP][17]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html
+    - bat-twl-1:          NOTRUN -> [SKIP][18] ([i915#11032])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - bat-adls-6:         NOTRUN -> [SKIP][19] ([i915#5354])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_psr@psr-primary-mmap-gtt:
+    - bat-adls-6:         NOTRUN -> [SKIP][20] ([i915#1072] / [i915#9732]) +3 other tests skip
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-twl-1:          NOTRUN -> [SKIP][21] ([i915#8809])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_setmode@basic-clone-single-crtc.html
+    - bat-adls-6:         NOTRUN -> [SKIP][22] ([i915#3555])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-read:
+    - bat-adls-6:         NOTRUN -> [SKIP][23] ([i915#3291]) +2 other tests skip
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@prime_vgem@basic-fence-read.html
+    - bat-twl-1:          NOTRUN -> [SKIP][24] ([i915#10212] / [i915#3708])
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@prime_vgem@basic-fence-read.html
+
+  * igt@prime_vgem@basic-read:
+    - bat-twl-1:          NOTRUN -> [SKIP][25] ([i915#10214] / [i915#3708])
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@prime_vgem@basic-read.html
+
+  * igt@prime_vgem@basic-write:
+    - bat-twl-1:          NOTRUN -> [SKIP][26] ([i915#10216] / [i915#3708])
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@prime_vgem@basic-write.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-adlp-11:        [DMESG-WARN][27] ([i915#14872]) -> [PASS][28] +1 other test pass
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-adlp-11/igt@i915_selftest@live.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adlp-11/igt@i915_selftest@live.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-atsm-1:         [DMESG-FAIL][29] ([i915#12061] / [i915#14204]) -> [DMESG-FAIL][30] ([i915#12061])
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-atsm-1/igt@i915_selftest@live.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-atsm-1/igt@i915_selftest@live.html
+
+  
+  [i915#10209]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10209
+  [i915#10212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10212
+  [i915#10213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10213
+  [i915#10214]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10214
+  [i915#10216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216
+  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
+  [i915#11030]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11030
+  [i915#11031]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11031
+  [i915#11032]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11032
+  [i915#11671]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11671
+  [i915#11681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681
+  [i915#11731]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11731
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#14204]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204
+  [i915#14872]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14872
+  [i915#15249]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15249
+  [i915#3282]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282
+  [i915#3291]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
+  [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
+  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
+  [i915#7707]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707
+  [i915#8809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809
+  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+  [i915#9886]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9886
 
 
-On 1/21/26 18:49, Luca Ceresoli wrote:
-> On Mon Nov 10, 2025 at 2:39 PM CET, Louis Chauvet wrote:
->> Unigraf does not provide header for the libTSI.so file, only dynamic
->> library loading helpers for windows.
->>
->> In order to link against this library and use unigraf devices, add the
->> function declaration used in the dynamic library loading wrappers.
->>
->> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
->> ---
->>   lib/unigraf/TSI.h | 234 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 234 insertions(+)
->>
->> diff --git a/lib/unigraf/TSI.h b/lib/unigraf/TSI.h
->> new file mode 100644
->> index 000000000000..62daaab6300e
->> --- /dev/null
->> +++ b/lib/unigraf/TSI.h
->> @@ -0,0 +1,234 @@
->> +/* SPDX-License-Identifier: MIT */
->> +
->> +/*
->> + * tsi.h - Header for libTSI.so
->> + * Documentation here is taken from official documentation and developer observation.
->> + */
->> +
->> +#ifndef TSI_H
->> +#define TSI_H
->> +
->> +#define TSI_CURRENT_VERSION	12
->> +#define MAX_EDID_SIZE		4096
->> +
->> +#define TSI_SUCCESS		0
->> +
->> +typedef unsigned int		TSI_VERSION_ID;
->> +typedef unsigned int		TSI_SEARCH_OPTIONS;
->> +typedef unsigned int		TSI_DEVICE_CAPS;
->> +typedef unsigned int		TSI_CONFIG_ID;
->> +typedef unsigned int		TSI_DEVICE_ID;
->> +typedef unsigned int		TSI_INPUT_ID;
->> +typedef int			TSI_RESULT;
->> +typedef void			*TSI_HANDLE;
->> +typedef int			TSI_FLAGS;
->> +
->> +/**
->> + * TSI_Init() - Initialize the TSI library
->> + * @ClientVersion: Indicates the version used to call the libTSI.so functions.
->> + *
->> + * Initialize libTSI for use and sets up internal state. It can be called
->> + * multiple times, but TSI_Clean must be called the exact same number of time.
->                                                                              times
->> + *
->> + * Returns:
->> + * - In case of success: Reference count to the API (number of times to call TSI_Clean)
->> + * - TSI_ERROR_NOT_COMPATIBLE if the requested client version is not supported
->> + *   by the library
->> + * - TSI_ERROR_COMPATIBILITY_MISMATCH if TSI_Init is called twice with
->> + *   different client version
->> + */
->> +TSI_RESULT TSI_Init(TSI_VERSION_ID ClientVersion);
->> +
->> +/**
->> + * TSI_Clean() - Cleans and closes the TSI library
->> + *
->> + * When TSI_Clean is called for the last time, cleanup the internal state. It
->> + * should be called exactly the same number of time as TSI_Init
->                                                    times
-> 
->> + */
->> +TSI_RESULT TSI_Clean(void);
->> +
->> +/**
->> + * TSI_MISC_GetErrorDescription() - Get a human readable error message
->> + * @ErrorCode: Error code for which you want the message
->> + * @ErrorString: Pointer where to copy the message
->> + * @StringMaxLen: Size of the allocated string @ErrorString
->> + *
->> + * The official documentation states: If the function succeeds, the
->> + * return value is the number of characters required for the complete
->> + * error description string.
->> + * In reality, this function always returns 0 or error, so there is no way to
-> 
-> On error it returns 0...
+Build changes
+-------------
 
-0 *or* error (<0):
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8713 -> IGTPW_14399
+  * Linux: CI_DRM_17872 -> CI_DRM_17873
 
-	If the function succeeds, the return value is the number of
-	characters required for the complete error description string.
-	If the return value is EQUAL or HIGHER than StringMaxLen
-	parameter's value, it means that the string was truncated.
-	If the function fails, the return value is a negative error
-	code.
+  CI-20190529: 20190529
+  CI_DRM_17872: 75950b1567cb40a67e93cb3912e023219745ff60 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_17873: cb83f2b90fe3dba3db516c1d9ad1a86dcc5e8e50 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14399: 14399
+  IGT_8713: 33d772ed2d772fee329e6200cd968962f695a927 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
->> + * tell if the allocated memory was big enough
->> + *
->> + * Returns:
->> + * - >= 0 on success, theorically the required string len to store the message
->> + * - < 0 on failure
-> 
-> ...or <0?
->
->> + */
->> +TSI_RESULT TSI_MISC_GetErrorDescription(TSI_RESULT ErrorCode,
->> +					char *ErrorString,
->> +					unsigned int StringMaxLen);
->> +
->> +/**
->> + * TSIX_TS_GetConfigItem() - Read a configuration item from the UCD device
->> + * @Device: Device handle to read config from. Can be NULL for certain configuration items.
-> 
-> For which items it can be NULL? I can guess some global config items, not
-> device-specific. Is it the case?
+== Logs ==
 
-Yes, at least for `TSI_VERSION_TEXT` according to the examples provided 
-by unigraf.
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/index.html
 
->> + * @ConfigItemID: Identifier of the requested configuration item.
->> + * @ConfigItemData: Pointer to store the read value.
->> + * @ItemMaxSize: Size of the allocated memory for @ConfigItemData.
->> + *
->> + * Returns: The size of the raw data. If the return value is larger than ItemMaxSize, no data
->> + *          is copied to ConfigItemData.
->> + * Note:
->> + * - Some configurations require specific size and alignment for the allocated buffer. Refer to
->> + *   the specific item configuration documentation for details.
->> + * - Data may still be written to @ConfigItemData even if the return value is larger than
->> + *   @ItemMaxSize, potentially causing buffer overflow.
-> 
-> Oh, amazing!
->>> + */
->> +TSI_RESULT TSIX_TS_GetConfigItem(TSI_HANDLE Device, TSI_CONFIG_ID ConfigItemID,
->> +				 void *ConfigItemData,
->> +				 unsigned int ItemMaxSize);
->> +
->> +/**
->> + * TSIX_DEV_RescanDevices() - Refresh the internal list of devices for libTSI
->> + * @SearchOptions: Options to filter the list of devices (e.g.,
->> + *                 TSI_SEARCHOPTIONS_SHOW_DEVICES_IN_USE to include
->> + *                 devices already in use).
->> + * @RequiredCaps: Filter to list only devices with specific capabilities.
->> + * @UnallowedCaps: Filter to list only devices without specific capabilities.
->> + *
->> + * Returns: >=0 in case of success.
-> 
-> The returned value is not the amount of devices found? It's just some
-> arbitrary non-negative number?
-> 
-> Being a closed source blob I can well understand a "don't know" answer of
-> course.
-
-That what the documentation tell me (the documentation is a PDF provided 
-with the unigraf SDK)
-
-	If the function succeeds, the return value is zero. Please note
-	that future versions may return non-zero positive value to
-	indicate success.
+--===============5688396960851485251==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
-> Also, maybe add "<0 on error"?
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
-Good idea!
 
->> + *
->> + * This function should be called every time you need to update the list of connected devices,
->> + * and it must be called at least once before calling TSI_DEV_GetDeviceCount.
->> + */
->> +TSI_RESULT TSIX_DEV_RescanDevices(TSI_SEARCH_OPTIONS SearchOptions,
->> +				  TSI_DEVICE_CAPS RequiredCaps,
->> +				  TSI_DEVICE_CAPS UnallowedCaps);
->> +/**
->> + * TSIX_DEV_GetDeviceCount() - Get the count of scanned devices
->> + * Returns: the number of devices that the previous call to TSIX_DEV_RescanDevices() detected
->> + *
->> + * Must be called after a TSIX_DEV_RescanDevices.
->> + */
->> +TSI_RESULT TSIX_DEV_GetDeviceCount(void);
->> +
->> +/**
->> + * TSIX_DEV_OpenDevice() - Open a device from the scanned list
->> + * @DeviceID: index in the TSI_DEV_RescanDevices list
->> + * @Result: Pointer to store the error code returned while opening the device
->> + * Returns: if the device is found, an opaque pointer that can be used for other
->> + * API calls. If some error occurred during the detection, the status code is
->> + * written in the pointer @Result.
-> 
-> Not in the pointer, I believe! :-)
-> 
-> Maybe "is written in *@Result."? But the sentence is actually redundant,
-> it's implicit in the @Result parameter description. I'd rather add what is
-> returned on error. Just guessing that's NULL:
-> 
->   * Returns: if the device is found, an opaque pointer that can be used for other
->   * API calls, or NULL on error.
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_pm_rpm: Fix CRTC conflicts in output selection (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160089/">https://patchwork.freedesktop.org/series/160089/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-That a good formulation, I will copy it!
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/index.html</a></td></tr>
 
-> 
->> + */
->> +TSI_HANDLE TSIX_DEV_OpenDevice(TSI_DEVICE_ID DeviceID, TSI_RESULT *Result);
->> +
->> +/**
->> + * TSIX_DEV_CloseDevice() - Close the device handle when finished
->> + * @Device: Device handle to close
->> + * Returns: >=0 in case of success
->> + */
->> +TSI_RESULT TSIX_DEV_CloseDevice(TSI_HANDLE Device);
-> 
-> Why not moving TSIX_TS_GetConfigItem() and TSIX_TS_SetConfigItem() here,
-> alsop keeping them nearby? It looks to me logical: first the init/open
-> functions, then the get/set config, then the various video operations.
+</table>
 
-For unigraf the logic is: open, role select, VIN select, your stuff, VIN 
-disable, close. VIN stuff is part of the "init".
 
->> +
->> +/**
->> + * TSIX_VIN_Disable() - Disable video input on the specified device
->> + * @Device: Device handle to disable video input on
->> + * Returns: >=0 in case of success
->> + */
->> +TSI_RESULT TSIX_VIN_Disable(TSI_HANDLE Device);
->> +
->> +/**
->> + * TSIX_VIN_Select() - Select a specific video input on the specified device
->> + * @Device: Device handle on which to select the input
->> + * @InputID: Identifier of the input to select
->> + * Returns: >=0 in case of success
->> + */
->> +TSI_RESULT TSIX_VIN_Select(TSI_HANDLE Device, TSI_INPUT_ID InputID);
->> +
->> +/**
->> + * TSIX_DEV_SelectRole() - Select a specific role for the specified device
->> + * @Device: Device handle on which to assign the role
->> + * @RoleIndex: Index of the role to assign
-> 
-> Is there an enum telling us which values mean what?
+    <h1>CI Bug Log - changes from IGT_8713 -&gt; IGTPW_14399</h1>
+<h2>Summary</h2>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with IGTPW_14399 need to be verified<br />
+  manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_14399, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/index.html</p>
+<h2>Participating hosts (41 -&gt; 39)</h2>
+<p>Additional (2): bat-twl-1 bat-adls-6 <br />
+  Missing    (4): bat-dg2-13 bat-apl-1 bat-arls-5 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_14399:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live@mman:<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14399 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
+<ul>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@dmabuf@all-tests@dma_fence_chain.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15249">i915#15249</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10213">i915#10213</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11671">i915#11671</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic:</p>
+<ul>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11031">i915#11031</a>)</li>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282">i915#3282</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10209">i915#10209</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681">i915#11681</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@intel_hwmon@hwmon-read:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@intel_hwmon@hwmon-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707">i915#7707</a>) +1 other test skip</li>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@intel_hwmon@hwmon-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707">i915#7707</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a>) +1 other test skip</li>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11030">i915#11030</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11731">i915#11731</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9886">i915#9886</a>)</li>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840">i915#3840</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a></li>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11032">i915#11032</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@basic-brightness:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-primary-mmap-gtt:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809">i915#8809</a>)</li>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-read:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291">i915#3291</a>) +2 other tests skip</li>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10212">i915#10212</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-read:</p>
+<ul>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@prime_vgem@basic-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10214">i915#10214</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216">i915#10216</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-adlp-11/igt@i915_selftest@live.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14872">i915#14872</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adlp-11/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8713 -&gt; IGTPW_14399</li>
+<li>Linux: CI_DRM_17872 -&gt; CI_DRM_17873</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17872: 75950b1567cb40a67e93cb3912e023219745ff60 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_17873: cb83f2b90fe3dba3db516c1d9ad1a86dcc5e8e50 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14399: 14399<br />
+  IGT_8713: 33d772ed2d772fee329e6200cd968962f695a927 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
-That would be too easy:
+</body>
+</html>
 
-	A numeric value identifying the queried role. Valid RoleIndex
-	values range from zero to the number of roles returned
-	by TSIX_DEV_GetDeviceRoleCount minus one.
-
-The only "identifier" for a role is the Name...
-
-Role name is something like "UCD-500 DP Input,DP Output", "UCD 500, USBC 
-Input,DP Output"...
-
-> PS: I see you can get a list and the names from
-> TSIX_DEV_GetDeviceRoleCount/Name(), below. One more reason to keep related
-> functions together...
- >
->> +/**
->> + * TSIX_DEV_GetDeviceRoleName() - Get the name of a specific role for a device
->> + * @Device: Device handle to query
->> + * @RoleIndex: Index of the role to get the name for
->> + * @RoleNameString: Pointer to store the role name
->> + * @RoleStringMaxLength: Size of the allocated memory for @RoleNameString
->> + *
->> + * Returns: >=0 in case of success, the length of the role name string
->> + * Note: If the return value is larger than RoleStringMaxLength, the string may be truncated
->> + */
->> +TSI_RESULT TSIX_DEV_GetDeviceRoleName(TSI_HANDLE Device, int RoleIndex,
->> +				      char *RoleNameString, unsigned int RoleStringMaxLength);
->> +
-> 
-> ...as said above, TSIX_DEV_SelectRole() should probably be here.
-
-Ack, I will reorder properly
-
-Thanks for all your reviews!
-
->> +TSI_RESULT TSIX_VIN_GetInputName(TSI_HANDLE Device, TSI_INPUT_ID InputID,
->> +				 char *InputNameString, unsigned int NameStringMaxLen);
->> +
->> +#endif
-> 
-> As for patch 17, I'd add:
-> 
->     #endif /* TSI_H */
-> 
-> 
-> 
-> --
-> Luca Ceresoli, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
-
+--===============5688396960851485251==--
