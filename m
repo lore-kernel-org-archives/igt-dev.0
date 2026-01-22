@@ -4,28 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25E06D3EE84
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Jan 2026 16:39:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 005EBD3EE84
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Jan 2026 16:40:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CEC9610E0D8;
-	Thu, 22 Jan 2026 16:39:25 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41EC310E0D8;
- Thu, 22 Jan 2026 16:39:24 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id 89C5C10E0D8;
+	Thu, 22 Jan 2026 16:40:36 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="U1rdETnS";
+	dkim-atps=neutral
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2CE1E10E0D8;
+ Thu, 22 Jan 2026 16:40:35 +0000 (UTC)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 9BF7E4E421F2;
+ Thu, 22 Jan 2026 16:40:33 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 6274960711;
+ Thu, 22 Jan 2026 16:40:33 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
+ with ESMTPSA id 793CA119A8184; Thu, 22 Jan 2026 17:40:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+ t=1769100032; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ content-transfer-encoding:content-language:in-reply-to:references;
+ bh=Pn06AWYrBVBojxvBSSuD914fP1JucYo9oXfesxCIA/E=;
+ b=U1rdETnS1nD+ilS/JAy7ANdoopVg/LoF5nNJtQqH9KnjcuZB0jasvQIsEB06wTmZQ/WY7q
+ HTYGsevrlVE1wY4Ka2qeewUO9r/BphdCfVjSfD3SGtR0Yf4Uj4/A7TuiHZwoIaiCtxM59z
+ ZKTmYYkNynU7Sk/n8avBsWhj7HBH1TNkBe8/jYqM+YIiTwty2M+o+PkMwQ1DUWkLjsPEgo
+ T9rI6/A7TOQ9CpdQ+3BgYD5Mm7kMcEIiW+VO5dim2ezJhHWSZOvMbmAQJy1c9JCVjUrpeY
+ ZOgLZCGI7l/igjGVT/uGxRhuaBynNlJHrs6kIURlWKKZn7FJIFRF8yoBEDmjBg==
+Message-ID: <63ca4b24-81c9-43ba-acc5-a0c6363bdd12@bootlin.com>
+Date: Thu, 22 Jan 2026 17:40:56 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v4 17/46] lib/unigraf: Add used defines for TSI_Types
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, igt-dev@lists.freedesktop.org
+Cc: thomas.petazzoni@bootlin.com, markyacoub@google.com,
+ khaled.almahallawy@intel.com, igt-dev <igt-dev-bounces@lists.freedesktop.org>
+References: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
+ <20251110-unigraf-integration-v4-17-0fc7bb1b4101@bootlin.com>
+ <DFUGGY0CG33Q.828539M5UNFK@bootlin.com>
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <DFUGGY0CG33Q.828539M5UNFK@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_series_starting_with_=5Bv?=
- =?utf-8?q?3=2Ci-g-t=2C1/1=5D_tests/intel/xe=5Fevict=3A_overcommit_tests_for?=
- =?utf-8?q?_fault-mode_and_non-fault-mode_VMs?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sobin Thomas" <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Jan 2026 16:39:24 -0000
-Message-ID: <176909996426.184722.16562761305543231424@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260122125424.45139-1-sobin.thomas@intel.com>
-In-Reply-To: <20260122125424.45139-1-sobin.thomas@intel.com>
+X-Last-TLS-Session-Version: TLSv1.3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,27 +61,210 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: series starting with [v3,i-g-t,1/1] tests/intel/xe_evict: overcommit tests for fault-mode and non-fault-mode VMs
-URL   : https://patchwork.freedesktop.org/series/160491/
-State : failure
 
-== Summary ==
+On 1/21/26 18:49, Luca Ceresoli wrote:
+> Hi Louis,
+> 
+> On Mon Nov 10, 2025 at 2:39 PM CET, Louis Chauvet wrote:
+>> Current unigraf public release are not c-compatible, this file hardcode
+>> some values. One future release of libTSI may include a c-compatible
+>> TSI_types.h file with full structure definition, but until then.
+>>
+>> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+>> ---
+>>   lib/unigraf/TSI_types.h | 117 ++++++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 117 insertions(+)
+>>
+>> diff --git a/lib/unigraf/TSI_types.h b/lib/unigraf/TSI_types.h
+>> new file mode 100644
+>> index 000000000000..f854c500a82c
+>> --- /dev/null
+>> +++ b/lib/unigraf/TSI_types.h
+>> @@ -0,0 +1,117 @@
+>> +/* SPDX-License-Identifier: MIT */
+>> +
+>> +// DO NOT MERGE THIS FILE
+> 
+> What do you mean? Shoudl this patch be applied or not? Maybe it's a
+> leftover from the RFC v1?
 
-Applying: tests/intel/xe_evict: overcommit tests for fault-mode and non-fault-mode VMs
-Using index info to reconstruct a base tree...
-M	tests/intel/xe_evict.c
-Falling back to patching base and 3-way merge...
-Auto-merging tests/intel/xe_evict.c
-CONFLICT (content): Merge conflict in tests/intel/xe_evict.c
-Patch failed at 0001 tests/intel/xe_evict: overcommit tests for fault-mode and non-fault-mode VMs
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+This patch must be applied, the SDK is very annoying to install and the 
+last time I tried the compilation issue was not solved.
 
+>> +//
+>> +// Current unigraf public release are not c-compatible, this file hardcode some values
+> 
+> Add a '.' at end of sentence.
+> 
+>> +// The next release of libTSI should include a c-compatible TSI_types.h file, that will
+>> +// be directly used in place of this file
+> 
+> Here too.
+> 
+>> +
+>> +#include <stdbool.h>
+>> +#include <stdint.h>
+>> +#ifndef TSI_REG_H
+> 
+> If I got what you mena here, this should be before the includes, and should
+> be followed by a #define TSI_REG_H.
+> 
+>> +
+>> +#define TSI_VERSION_TEXT			0x80000001
+>> +#define TSI_DEVCAP_VIDEO_CAPTURE		0x00000001
+>> +#define TSI_SEARCHOPTIONS_SHOW_DEVICES_IN_USE	0x00000001
+>> +
+>> +#define TSI_EDID_TE_INPUT			0x1100
+>> +#define TSI_EDID_SELECT_STREAM			0x1102
+>> +
+>> +#define TSI_BASE_LEGACY_GENERIC(offset)		(0x210 + (offset))
+>> +#define	TSI_FORCE_HOT_PLUG_STATE_W		TSI_BASE_LEGACY_GENERIC(0x2)
+>             ^
+> Tab instead of space
+> 
+>> +
+>> +#define TSI_BASE_LEGACY_DPRX_MSA(offset)		(0x260 + (offset))
+>> +#define	TSI_DPRX_MSA_COMMAND_W				TSI_BASE_LEGACY_DPRX_MSA(0x0)
+>             ^
+> Tab instead of space
+> 
+
+Good catch, I can't "see" it on my editor, thanks!
+
+>> +#define TSI_DPRX_MSA_STREAM_COUNT_R			TSI_BASE_LEGACY_DPRX_MSA(0x1)
+>> +#define TSI_DPRX_MSA_STREAM_SELECT			TSI_BASE_LEGACY_DPRX_MSA(0x3)
+>> +#define TSI_DPRX_MSA_HTOTAL_R				TSI_BASE_LEGACY_DPRX_MSA(0x6)
+>> +#define TSI_DPRX_MSA_VTOTAL_R				TSI_BASE_LEGACY_DPRX_MSA(0x7)
+>> +#define TSI_DPRX_MSA_HACTIVE_R				TSI_BASE_LEGACY_DPRX_MSA(0x8)
+>> +#define TSI_DPRX_MSA_VACTIVE_R				TSI_BASE_LEGACY_DPRX_MSA(0x9)
+>> +#define TSI_DPRX_MSA_HSYNC_WIDTH_R			TSI_BASE_LEGACY_DPRX_MSA(0xa)
+>> +#define TSI_DPRX_MSA_VSYNC_WIDTH_R			TSI_BASE_LEGACY_DPRX_MSA(0xb)
+>> +#define TSI_DPRX_MSA_HSTART_R				TSI_BASE_LEGACY_DPRX_MSA(0xc)
+>> +#define TSI_DPRX_MSA_VSTART_R				TSI_BASE_LEGACY_DPRX_MSA(0xd)
+>> +
+>> +#define TSI_DPRX_LINK_FLAGS_MST				0x01
+>> +#define TSI_DPRX_LINK_FLAGS_TPS3			0x02
+>> +#define TSI_DPRX_LINK_FLAGS_TPS4			0x03
+>> +#define TSI_DPRX_LINK_FLAGS_EDP				0x04
+>> +#define TSI_DPRX_NOT_DOCUMENTED_DP_128_132_SUPPORTED	0x10
+>> +#define TSI_DPRX_NOT_DOCUMENTED_SIDEBAND_MSG_SUPPORT	0x20
+>> +
+>> +#define TSI_BASE_DPRX(offset)			(0x50000000u + 0x21000 + (offset))
+>> +#define TSI_DPRX_HW_CAPS_R			TSI_BASE_DPRX(0x4)
+>> +
+>> +/**
+>> + * struct TSI_DPRX_HW_CAPS_R_s - Structure representing the hardware capabilities of the DP RX.
+>> + *
+>> + * This structure defines the bitfields and fields that describe the hardware
+>> + * capabilities of the DP RX (DisplayPort Receiver) interface. Each field
+>> + * corresponds to a specific capability or feature supported by the hardware.
+>> + *
+>> + * This structure is used to interpret the value read from the
+>> + * TSI_DPRX_HW_CAPS_R register.
+>> + *
+>> + * @mst: MST support
+>> + * @hdcp_1_x: HDCP 1.x support.
+>> + * @hdcp_2_x: HDCP 2.x support.
+>> + * @fec_8_10_b: FEC for 8/10 link support.
+>> + * @dsc_8_10_b: DSC for 8/10 link support.
+>> + * @three_lanes: Three lane link configuration support.
+>> + * @edp_link_rate: eDP link rate support.
+> 
+> I thought this was a rate (an amount of bits per time unit or so) but it's
+> a bool, so perhaps it means "eDP link rates are supported" or similar I
+> guess. Can you clarify?
+> 
+> If my guess is right, this could be renamed edp_link_rates_supported for
+> clarity.
+
+Ack
+
+>> + * @mst_stream_count: Number of MST streams supported.
+>> + * @max_link_rate: Maximum link rate supported.
+> 
+> And I guess it is an amount (it's not a bool), so what's the unit?
+
+No unit are specified in the documentation. I hope it is the same as the 
+other config options: rate = value * 0.27GHz.
+
+I will add a comment
+
+>> + * @force_link_config: Forced link configuration support.
+>> + * @power_provision: Power provision support on DP_PWR pin of receptacle connector.
+>> + * @aux_swing_voltage_control: AUX output voltage swing control support.
+>> + * @custom_dp_rate: Custom DP 2.0 rate support.
+>> + * @custom_bit_rate: Custom bit rate support.
+>> + * @fec_128_132_b: FEC for 128/132 link support.
+>> + * @dsc_128_132_b: DSC for 128/132 link support.
+>> + */
+>> +struct TSI_DPRX_HW_CAPS_R_s {
+>> +	bool mst:1;
+>> +	bool hdcp_1_x:1;
+>> +	bool hdcp_2_x:1;
+>> +	bool fec_8_10_b:1;
+>> +	bool dsc_8_10_b:1;
+>> +	bool reserved_1:1;
+>> +	bool three_lanes:1;
+>> +	bool edp_link_rate:1;
+> 
+> Sure the rate is bool? BTW knowing the unit would help finding the
+> answer. :)
+
+You are right, this is "is link rate modificatino supported":
+
+	eDP link rate support. 0 = Not supported, 1 = Supported
+
+>> +	uint8_t mst_stream_count:3;
+>> +	uint8_t reserved_2:5;
+>> +	uint8_t max_link_rate;
+>> +	bool force_link_config:1;
+>> +	bool reserved_3:1;
+>> +	bool power_provision:1;
+>> +	bool aux_swing_voltage_control:1;
+>> +	bool custom_dp_rate:1;
+>> +	bool custom_bit_rate:1;
+>> +	bool fec_128_132_b:1;
+>> +	bool dsc_128_132_b:1;
+>> +};
+>> +
+>> +#define TSI_DPRX_LT_LANE_COUNT_R		TSI_BASE_DPRX(0x0B)
+>> +#define TSI_DPRX_LT_RATE_R			TSI_BASE_DPRX(0x0C)
+>> +#define TSI_DPRX_HPD_FORCE			TSI_BASE_DPRX(0x12)
+>> +#define TSI_DPRX_MST_SINK_COUNT			TSI_BASE_DPRX(0x9D)
+>> +
+>> +#define TSI_BASE_DP_RX(offset)                  (0x00010100 + (offset))
+>> +#define TSI_DP_RX_DUT_MAX_LANE_COUNT		TSI_BASE_DP_RX(0xf)
+>> +
+>> +#define TSI_BASE_DP_LTT(offset)                 (0x00010700 + (offset))
+>> +#define TSI_DP_LTT_MAX_LANE_COUNT		TSI_BASE_DP_LTT(0x01)
+>> +
+>> +#define TSI_BASE_LEGACY_DPRX(offset)		(0x2b0 + (offset))
+>> +#define TSI_DPRX_DPCD_BASE_W			TSI_BASE_LEGACY_DPRX(0x9)
+>> +#define TSI_DPRX_DPCD_DATA			TSI_BASE_LEGACY_DPRX(0xA)
+>> +#define TSI_DPRX_MAX_LANES			TSI_BASE_LEGACY_DPRX(0x10)
+>> +#define TSI_DPRX_MAX_LINK_RATE			TSI_BASE_LEGACY_DPRX(0x11)
+>> +#define TSI_DPRX_LINK_FLAGS			TSI_BASE_LEGACY_DPRX(0x12)
+>> +#define TSI_DPRX_STREAM_SELECT			TSI_BASE_LEGACY_DPRX(0x13)
+>> +#define TSI_DPRX_CRC_R_R			TSI_BASE_LEGACY_DPRX(0x14)
+>> +#define TSI_DPRX_CRC_G_R			TSI_BASE_LEGACY_DPRX(0x15)
+>> +#define TSI_DPRX_CRC_B_R			TSI_BASE_LEGACY_DPRX(0x16)
+>> +#define TSI_DPRX_HPD_PULSE_W			TSI_BASE_LEGACY_DPRX(0x1B)
+>> +#endif
+> 
+> A comment would be nice:
+> 
+>    #endif /* TSI_REG_H */
+
+Ack
+
+> Luca
+> 
+> --
+> Luca Ceresoli, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
 
