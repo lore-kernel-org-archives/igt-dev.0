@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CC84D3EE92
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Jan 2026 17:03:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DDB8D3EE84
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Jan 2026 17:03:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2EB1510EA17;
-	Thu, 22 Jan 2026 17:03:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B6A2E10EA03;
+	Thu, 22 Jan 2026 17:03:29 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C627610E0D8;
- Thu, 22 Jan 2026 17:03:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4BDE710E0D8;
+ Thu, 22 Jan 2026 17:03:29 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============5688396960851485251=="
+ boundary="===============7509679783276770536=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fpm=5Frp?=
- =?utf-8?q?m=3A_Fix_CRTC_conflicts_in_output_selection_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/kms=3A_More_pipe-=3Ecrt?=
+ =?utf-8?q?c_renaming?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+To: "Ville Syrjala" <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Jan 2026 17:03:17 -0000
-Message-ID: <176910139780.184013.3125627481647791221@a3b018990fe9>
+Date: Thu, 22 Jan 2026 17:03:29 -0000
+Message-ID: <176910140931.184013.11681760258483200651@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260114123426.14804-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20260114123426.14804-1-mohammed.thasleem@intel.com>
+References: <20260122125937.10807-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20260122125937.10807-1-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,208 +41,99 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5688396960851485251==
+--===============7509679783276770536==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/kms_pm_rpm: Fix CRTC conflicts in output selection (rev2)
-URL   : https://patchwork.freedesktop.org/series/160089/
+Series: lib/kms: More pipe->crtc renaming
+URL   : https://patchwork.freedesktop.org/series/160493/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8713 -> IGTPW_14399
+CI Bug Log - changes from XEIGT_8713_BAT -> XEIGTPW_14401_BAT
 ====================================================
 
 Summary
 -------
 
-  **WARNING**
+  **SUCCESS**
 
-  Minor unknown changes coming with IGTPW_14399 need to be verified
-  manually.
+  No regressions found.
+
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_14399, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/index.html
-
-Participating hosts (41 -> 39)
+Participating hosts (10 -> 12)
 ------------------------------
 
-  Additional (2): bat-twl-1 bat-adls-6 
-  Missing    (4): bat-dg2-13 bat-apl-1 bat-arls-5 fi-snb-2520m 
+  Additional (2): bat-ptl-vm bat-bmg-3 
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_14399:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@i915_selftest@live@mman:
-    - bat-atsm-1:         [DMESG-FAIL][1] ([i915#14204]) -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-atsm-1/igt@i915_selftest@live@mman.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-atsm-1/igt@i915_selftest@live@mman.html
-
-  
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_14399 that come from known issues:
+  Here are the changes found in XEIGTPW_14401_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@dmabuf@all-tests@dma_fence_chain:
-    - bat-twl-1:          NOTRUN -> [SKIP][3] ([i915#15249])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@dmabuf@all-tests@dma_fence_chain.html
+  * igt@xe_evict@evict-beng-small-cm:
+    - bat-ptl-vm:         NOTRUN -> [SKIP][1] ([Intel XE#5764]) +10 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/bat-ptl-vm/igt@xe_evict@evict-beng-small-cm.html
 
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - bat-adls-6:         NOTRUN -> [SKIP][4] ([i915#4613]) +3 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@gem_lmem_swapping@parallel-random-engines.html
-    - bat-twl-1:          NOTRUN -> [SKIP][5] ([i915#10213] / [i915#11671]) +3 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@gem_lmem_swapping@parallel-random-engines.html
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-ptl-vm:         NOTRUN -> [SKIP][2] ([Intel XE#5775])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/bat-ptl-vm/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
 
-  * igt@gem_tiled_pread_basic:
-    - bat-twl-1:          NOTRUN -> [SKIP][6] ([i915#11031])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@gem_tiled_pread_basic.html
-    - bat-adls-6:         NOTRUN -> [SKIP][7] ([i915#3282])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@gem_tiled_pread_basic.html
+  * igt@xe_mmap@vram:
+    - bat-ptl-vm:         NOTRUN -> [SKIP][3] ([Intel XE#5776])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/bat-ptl-vm/igt@xe_mmap@vram.html
 
-  * igt@i915_pm_rps@basic-api:
-    - bat-twl-1:          NOTRUN -> [SKIP][8] ([i915#10209] / [i915#11681])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@i915_pm_rps@basic-api.html
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-ptl-vm:         NOTRUN -> [SKIP][4] ([Intel XE#5777])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/bat-ptl-vm/igt@xe_pat@pat-index-xehpc.html
 
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [PASS][9] -> [DMESG-FAIL][10] ([i915#12061]) +1 other test dmesg-fail
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+  * igt@xe_pat@pat-index-xelp:
+    - bat-ptl-vm:         NOTRUN -> [SKIP][5] ([Intel XE#5771])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/bat-ptl-vm/igt@xe_pat@pat-index-xelp.html
 
-  * igt@intel_hwmon@hwmon-read:
-    - bat-adls-6:         NOTRUN -> [SKIP][11] ([i915#7707]) +1 other test skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@intel_hwmon@hwmon-read.html
-    - bat-twl-1:          NOTRUN -> [SKIP][12] ([i915#7707]) +1 other test skip
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@intel_hwmon@hwmon-read.html
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-ptl-vm:         NOTRUN -> [SKIP][6] ([Intel XE#5780])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/bat-ptl-vm/igt@xe_pat@pat-index-xelpg.html
 
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-    - bat-adls-6:         NOTRUN -> [SKIP][13] ([i915#4103]) +1 other test skip
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-    - bat-twl-1:          NOTRUN -> [SKIP][14] ([i915#11030] / [i915#11731]) +1 other test skip
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-twl-1:          NOTRUN -> [SKIP][15] ([i915#9886])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_dsc@dsc-basic.html
-    - bat-adls-6:         NOTRUN -> [SKIP][16] ([i915#3555] / [i915#3840])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-adls-6:         NOTRUN -> [SKIP][17]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html
-    - bat-twl-1:          NOTRUN -> [SKIP][18] ([i915#11032])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_pm_backlight@basic-brightness:
-    - bat-adls-6:         NOTRUN -> [SKIP][19] ([i915#5354])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html
-
-  * igt@kms_psr@psr-primary-mmap-gtt:
-    - bat-adls-6:         NOTRUN -> [SKIP][20] ([i915#1072] / [i915#9732]) +3 other tests skip
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-twl-1:          NOTRUN -> [SKIP][21] ([i915#8809])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_setmode@basic-clone-single-crtc.html
-    - bat-adls-6:         NOTRUN -> [SKIP][22] ([i915#3555])
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-read:
-    - bat-adls-6:         NOTRUN -> [SKIP][23] ([i915#3291]) +2 other tests skip
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@prime_vgem@basic-fence-read.html
-    - bat-twl-1:          NOTRUN -> [SKIP][24] ([i915#10212] / [i915#3708])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@prime_vgem@basic-fence-read.html
-
-  * igt@prime_vgem@basic-read:
-    - bat-twl-1:          NOTRUN -> [SKIP][25] ([i915#10214] / [i915#3708])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@prime_vgem@basic-read.html
-
-  * igt@prime_vgem@basic-write:
-    - bat-twl-1:          NOTRUN -> [SKIP][26] ([i915#10216] / [i915#3708])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@prime_vgem@basic-write.html
+  * igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p:
+    - bat-bmg-3:          NOTRUN -> [SKIP][7] ([Intel XE#6566]) +3 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/bat-bmg-3/igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p.html
 
   
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-adlp-11:        [DMESG-WARN][27] ([i915#14872]) -> [PASS][28] +1 other test pass
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-adlp-11/igt@i915_selftest@live.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adlp-11/igt@i915_selftest@live.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live:
-    - bat-atsm-1:         [DMESG-FAIL][29] ([i915#12061] / [i915#14204]) -> [DMESG-FAIL][30] ([i915#12061])
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-atsm-1/igt@i915_selftest@live.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-atsm-1/igt@i915_selftest@live.html
-
-  
-  [i915#10209]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10209
-  [i915#10212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10212
-  [i915#10213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10213
-  [i915#10214]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10214
-  [i915#10216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216
-  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
-  [i915#11030]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11030
-  [i915#11031]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11031
-  [i915#11032]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11032
-  [i915#11671]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11671
-  [i915#11681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681
-  [i915#11731]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11731
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#14204]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204
-  [i915#14872]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14872
-  [i915#15249]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15249
-  [i915#3282]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282
-  [i915#3291]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291
-  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
-  [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
-  [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
-  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
-  [i915#7707]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707
-  [i915#8809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809
-  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
-  [i915#9886]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9886
+  [Intel XE#5764]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5764
+  [Intel XE#5771]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5771
+  [Intel XE#5775]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5775
+  [Intel XE#5776]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5776
+  [Intel XE#5777]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5777
+  [Intel XE#5780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5780
+  [Intel XE#6566]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6566
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8713 -> IGTPW_14399
-  * Linux: CI_DRM_17872 -> CI_DRM_17873
+  * IGT: IGT_8713 -> IGTPW_14401
+  * Linux: xe-4435-a3ecd278f9a05323fab7471760a7ea10081251d6 -> xe-4437-75950b1567cb40a67e93cb3912e023219745ff60
 
-  CI-20190529: 20190529
-  CI_DRM_17872: 75950b1567cb40a67e93cb3912e023219745ff60 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_17873: cb83f2b90fe3dba3db516c1d9ad1a86dcc5e8e50 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14399: 14399
+  IGTPW_14401: 14401
   IGT_8713: 33d772ed2d772fee329e6200cd968962f695a927 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4435-a3ecd278f9a05323fab7471760a7ea10081251d6: a3ecd278f9a05323fab7471760a7ea10081251d6
+  xe-4437-75950b1567cb40a67e93cb3912e023219745ff60: 75950b1567cb40a67e93cb3912e023219745ff60
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/index.html
 
---===============5688396960851485251==
+--===============7509679783276770536==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -262,168 +153,80 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_pm_rpm: Fix CRTC conflicts in output selection (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160089/">https://patchwork.freedesktop.org/series/160089/</a></td></tr>
+<tr><td><b>Series:</b></td><td>lib/kms: More pipe-&gt;crtc renaming</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160493/">https://patchwork.freedesktop.org/series/160493/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_8713 -&gt; IGTPW_14399</h1>
+    <h1>CI Bug Log - changes from XEIGT_8713_BAT -&gt; XEIGTPW_14401_BAT</h1>
 <h2>Summary</h2>
-<p><strong>WARNING</strong></p>
-<p>Minor unknown changes coming with IGTPW_14399 need to be verified<br />
-  manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_14399, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/index.html</p>
-<h2>Participating hosts (41 -&gt; 39)</h2>
-<p>Additional (2): bat-twl-1 bat-adls-6 <br />
-  Missing    (4): bat-dg2-13 bat-apl-1 bat-arls-5 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_14399:</p>
-<h3>IGT changes</h3>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_selftest@live@mman:<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-atsm-1/igt@i915_selftest@live@mman.html">DMESG-FAIL</a></li>
-</ul>
-</li>
-</ul>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (10 -&gt; 12)</h2>
+<p>Additional (2): bat-ptl-vm bat-bmg-3 </p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14399 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_14401_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@dmabuf@all-tests@dma_fence_chain:</p>
+<p>igt@xe_evict@evict-beng-small-cm:</p>
 <ul>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@dmabuf@all-tests@dma_fence_chain.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15249">i915#15249</a>)</li>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/bat-ptl-vm/igt@xe_evict@evict-beng-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5764">Intel XE#5764</a>) +10 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
 <ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10213">i915#10213</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11671">i915#11671</a>) +3 other tests skip</li>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/bat-ptl-vm/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5775">Intel XE#5775</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_tiled_pread_basic:</p>
+<p>igt@xe_mmap@vram:</p>
 <ul>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11031">i915#11031</a>)</li>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282">i915#3282</a>)</li>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/bat-ptl-vm/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5776">Intel XE#5776</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_pm_rps@basic-api:</p>
+<p>igt@xe_pat@pat-index-xehpc:</p>
 <ul>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10209">i915#10209</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681">i915#11681</a>)</li>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/bat-ptl-vm/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5777">Intel XE#5777</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_selftest@live@workarounds:</p>
+<p>igt@xe_pat@pat-index-xelp:</p>
 <ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/bat-ptl-vm/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5771">Intel XE#5771</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@intel_hwmon@hwmon-read:</p>
+<p>igt@xe_pat@pat-index-xelpg:</p>
 <ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@intel_hwmon@hwmon-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707">i915#7707</a>) +1 other test skip</li>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@intel_hwmon@hwmon-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707">i915#7707</a>) +1 other test skip</li>
+<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/bat-ptl-vm/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5780">Intel XE#5780</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<p>igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p:</p>
 <ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a>) +1 other test skip</li>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11030">i915#11030</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11731">i915#11731</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9886">i915#9886</a>)</li>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840">i915#3840</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a></li>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11032">i915#11032</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_backlight@basic-brightness:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-mmap-gtt:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809">i915#8809</a>)</li>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-read:</p>
-<ul>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adls-6/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291">i915#3291</a>) +2 other tests skip</li>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10212">i915#10212</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-read:</p>
-<ul>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@prime_vgem@basic-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10214">i915#10214</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-write:</p>
-<ul>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-twl-1/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216">i915#10216</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-adlp-11/igt@i915_selftest@live.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14872">i915#14872</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-adlp-11/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8713/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14204">i915#14204</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14399/bat-atsm-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
+<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/bat-bmg-3/igt@xe_peer2peer@read@read-gpua-vram01-gpub-vram01-p2p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6566">Intel XE#6566</a>) +3 other tests skip</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8713 -&gt; IGTPW_14399</li>
-<li>Linux: CI_DRM_17872 -&gt; CI_DRM_17873</li>
+<li>IGT: IGT_8713 -&gt; IGTPW_14401</li>
+<li>Linux: xe-4435-a3ecd278f9a05323fab7471760a7ea10081251d6 -&gt; xe-4437-75950b1567cb40a67e93cb3912e023219745ff60</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17872: 75950b1567cb40a67e93cb3912e023219745ff60 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_17873: cb83f2b90fe3dba3db516c1d9ad1a86dcc5e8e50 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14399: 14399<br />
-  IGT_8713: 33d772ed2d772fee329e6200cd968962f695a927 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_14401: 14401<br />
+  IGT_8713: 33d772ed2d772fee329e6200cd968962f695a927 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4435-a3ecd278f9a05323fab7471760a7ea10081251d6: a3ecd278f9a05323fab7471760a7ea10081251d6<br />
+  xe-4437-75950b1567cb40a67e93cb3912e023219745ff60: 75950b1567cb40a67e93cb3912e023219745ff60</p>
 
 </body>
 </html>
 
---===============5688396960851485251==--
+--===============7509679783276770536==--
