@@ -4,55 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F174DD3EE66
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Jan 2026 14:42:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8BB7D3EE6B
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Jan 2026 14:43:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9DBDE10E9CC;
-	Thu, 22 Jan 2026 14:42:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5C55E10E02D;
+	Thu, 22 Jan 2026 14:43:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JJPUJZRH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SgaC28Oz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B50A10E9C8
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Jan 2026 14:42:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 489B910E02D
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Jan 2026 14:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769092951; x=1800628951;
+ t=1769093027; x=1800629027;
  h=from:to:subject:in-reply-to:references:date:message-id:
  mime-version:content-transfer-encoding;
- bh=SYMD84STrOHBi3h2PvXzfIRHp6gB6tT8b9uuv4AUsBc=;
- b=JJPUJZRHhNaYYbEX3blXEuJuBkUa/lL+R5CDwM0BHvSUAGRCxdLYupVx
- ToLdZJrGpxDYy7fMtaul5jrX1DyLTvB+Q92OyMPwsL/G4rs+LEX5gCh2e
- +xbtpptTKJ1XLYL4H1/Wm+dKcLQrRVzPyrlzVnNCmEBuyDGn0WlPNq4L7
- t3aBEJlC51lWNjiYQLuM0CCL+Lju/p2SIPiUuyUVuZNScv5iUeRDYs4LC
- fS3t2KeBgsC9thcizq+uwG1WT2mDDkoWpbPyWAI4GYPjFuiBvVGdibZ6e
- pAUUu2+q0uKe5//e1sX+GJV65Se70IAo3kimWA/Ovl58X8kRhj5Cn6Jto w==;
-X-CSE-ConnectionGUID: 61vk6L2hQRmLrFheCJw0kA==
-X-CSE-MsgGUID: KueTPt2oTZO0yQu5QttYiA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11679"; a="81777734"
-X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; d="scan'208";a="81777734"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2026 06:42:31 -0800
-X-CSE-ConnectionGUID: KWtqkNe2SUyWy6V+7Kq+QQ==
-X-CSE-MsgGUID: RlOaqEmMRtWd5kTgRor+LQ==
+ bh=mync8QzPDxuYa2XoAGdpqEB301j+ICWZdVEeRnmiOKg=;
+ b=SgaC28OzHZYKHBKlIqvavy7FFaeNYTRSoL4GS+sZbpyy4jck94avZ3to
+ STHaXOME4CDdaujCfXBht6/gw1KXzDJ5vVkMyuFwZimcCzvolBoSC1X9R
+ ViNbpidXHRCnZJ0AzzwkXpfoPgG4Kb0KpyOGNICsZqRVm6QmUL7IIbuvI
+ 2u3MybTuXNu6Vf4oAcwBkPrmmyDc0ovj0APYnrQJ4qF/3HHva+WYaFYO+
+ tUEkM//JXy6bGU6F6vaNvZRWHajyXo+aHk3kCu83k7BMLXimrG3shDoBa
+ n9rnwzgpVRVJNv6vkcwJlk7VOcWvwF1g94STt8lfNsh1I/FNVPBFdYh1U g==;
+X-CSE-ConnectionGUID: 5LwrMdGTScWA57ZT71SMTA==
+X-CSE-MsgGUID: pz/1SUqQQouvG43L4Iv4Sw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11679"; a="70306760"
+X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; d="scan'208";a="70306760"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2026 06:43:46 -0800
+X-CSE-ConnectionGUID: HnVxoSIjSZS1d/PsnZAujw==
+X-CSE-MsgGUID: 2UqSADpBQV2Pa1C6mOyupA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; d="scan'208";a="210887628"
+X-IronPort-AV: E=Sophos;i="6.21,246,1763452800"; d="scan'208";a="207185445"
 Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.246.192])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2026 06:42:29 -0800
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jan 2026 06:43:45 -0800
 From: Jani Nikula <jani.nikula@intel.com>
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 04/10] lib/kms: s/n_pipes/n_crtcs/
-In-Reply-To: <20260122125937.10807-5-ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t 05/10] lib/kms: Rename display->pipes[] to
+ display->crtcs[]
+In-Reply-To: <20260122125937.10807-6-ville.syrjala@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 References: <20260122125937.10807-1-ville.syrjala@linux.intel.com>
- <20260122125937.10807-5-ville.syrjala@linux.intel.com>
-Date: Thu, 22 Jan 2026 16:42:26 +0200
-Message-ID: <f5e916025ac9fa3006b7952646eada4b6400784e@intel.com>
+ <20260122125937.10807-6-ville.syrjala@linux.intel.com>
+Date: Thu, 22 Jan 2026 16:43:41 +0200
+Message-ID: <262b96287fb014b226afa3f7a6c7bfa703208478@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -74,9 +75,8 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 On Thu, 22 Jan 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
 > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >
-> Rename 'n_pipes' to 'n_crtcs' to better match the the crtc
-> based future we're aiming for. The actual pipes[] array
-> will be renamed separately.
+> display->pipes[] actually contains igt_crtc_t's, so
+> rename it to display->crtcs[] to match.
 >
 > Done with cocci:
 >  #include "scripts/iterators.cocci"
@@ -85,142 +85,105 @@ On Thu, 22 Jan 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
 > @@
 > struct igt_display {
 > 	...
-> -	int n_pipes;
-> +	int n_crtcs;
+> -	igt_crtc_t *pipes;
+> +	igt_crtc_t *crtcs;
 > 	...
 >  };
 >
 > @@
 > typedef igt_display_t;
-> identifier D;
-> expression E ;
-> @@
-> igt_display_t D =3D {
-> 	...,
-> -	.n_pipes =3D E
-> +	.n_crtcs =3D E
-> ,...
->  };
->
-> @@
-> igt_display_t S;
-> @@
-> - S.n_pipes
-> + S.n_crtcs
->
-> @@
 > igt_display_t *S;
 > @@
-> - S->n_pipes
-> + S->n_crtcs
+> - S->pipes
+> + S->crtcs
 >
 > @@
-> expression S;
+> typedef igt_display_t;
+> igt_display_t S;
 > @@
-> (
-> - S.display.n_pipes
-> + S.dsiplay.n_crtcs
-> |
-> - S->display.n_pipes
-> + S->display.n_crtcs
-> |
-> - S.display->n_pipes
-> + S.dsiplay->n_crtcs
-> |
-> - S->display->n_pipes
-> + S->display->n_crtcs
-> )
+> - S.pipes
+> + S.crtcs
 >
 > Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> ---
+>  lib/igt_kms.c                     | 9 +++++----
+>  lib/igt_kms.h                     | 4 ++--
+>  tests/amdgpu/amd_cursor_overlay.c | 2 +-
+>  3 files changed, 8 insertions(+), 7 deletions(-)
+>
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 6f29a419b42d..30b237263e91 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -3219,9 +3219,10 @@ void igt_display_require(igt_display_t *display, i=
+nt drm_fd)
+>  		     resources->count_crtcs, IGT_MAX_PIPES);
+>=20=20
+>  	display->n_crtcs =3D IGT_MAX_PIPES;
+> -	display->pipes =3D calloc(igt_display_n_crtcs(display),
+> +	display->crtcs =3D calloc(igt_display_n_crtcs(display),
+>  				sizeof(igt_crtc_t));
+> -	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n",
+> +	igt_assert_f(display->crtcs,
+> +		     "Failed to allocate memory for %d pipes\n",
+
+A manual touch-up could switch the error message s/pipes/CRTCs/.
 
 Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
-> ---
->  lib/igt_kms.c                | 4 ++--
->  lib/igt_kms.h                | 2 +-
->  tests/intel/gem_eio.c        | 2 +-
->  tests/intel/gem_exec_reloc.c | 2 +-
->  tests/intel/kms_busy.c       | 2 +-
->  5 files changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 31013f36f705..6f29a419b42d 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -3218,7 +3218,7 @@ void igt_display_require(igt_display_t *display, in=
-t drm_fd)
->  		     "count_crtcs exceeds IGT_MAX_PIPES, resources->count_crtcs=3D%d, =
-IGT_MAX_PIPES=3D%d\n",
->  		     resources->count_crtcs, IGT_MAX_PIPES);
+>  		     igt_display_n_crtcs(display));
 >=20=20
-> -	display->n_pipes =3D IGT_MAX_PIPES;
-> +	display->n_crtcs =3D IGT_MAX_PIPES;
->  	display->pipes =3D calloc(igt_display_n_crtcs(display),
->  				sizeof(igt_crtc_t));
->  	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n",
-> @@ -3298,7 +3298,7 @@ out:
->   */
->  int igt_display_n_crtcs(igt_display_t *display)
->  {
-> -	return display->n_pipes;
-> +	return display->n_crtcs;
->  }
+>  	for (i =3D 0; i < resources->count_crtcs; i++) {
+> @@ -3485,8 +3486,8 @@ void igt_display_fini(igt_display_t *display)
 >=20=20
->  /**
+>  	free(display->outputs);
+>  	display->outputs =3D NULL;
+> -	free(display->pipes);
+> -	display->pipes =3D NULL;
+> +	free(display->crtcs);
+> +	display->crtcs =3D NULL;
+>  	free(display->planes);
+>  	display->planes =3D NULL;
+>  	free(display->colorops);
 > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index a20cc9fd4021..73a907a2e474 100644
+> index 73a907a2e474..0fbbeca754c8 100644
 > --- a/lib/igt_kms.h
 > +++ b/lib/igt_kms.h
-> @@ -526,7 +526,7 @@ typedef struct {
->  struct igt_display {
->  	int drm_fd;
->  	int log_shift;
-> -	int n_pipes;
-> +	int n_crtcs;
->  	int n_planes;
->  	int n_colorops;
->  	int n_outputs;
-> diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
-> index 2191274ae8d3..92420d0920e5 100644
-> --- a/tests/intel/gem_eio.c
-> +++ b/tests/intel/gem_eio.c
-> @@ -1196,7 +1196,7 @@ int igt_main()
+> @@ -533,7 +533,7 @@ struct igt_display {
+>  	igt_output_t *outputs;
+>  	igt_plane_t *planes;
+>  	igt_colorop_t *colorops;
+> -	igt_crtc_t *pipes;
+> +	igt_crtc_t *crtcs;
+>  	bool has_cursor_plane;
+>  	bool is_atomic;
+>  	bool has_virt_cursor_plane;
+> @@ -581,7 +581,7 @@ static inline igt_crtc_t *igt_crtc_for_pipe(igt_displ=
+ay_t *display, enum pipe pi
+>  	if (pipe =3D=3D PIPE_NONE)
+>  		return NULL;
 >=20=20
->  	igt_subtest_group() {
->  		igt_display_t display =3D {
-> -			.drm_fd =3D -1, .n_pipes =3D IGT_MAX_PIPES
-> +			.drm_fd =3D -1, .n_crtcs =3D IGT_MAX_PIPES
->  		};
+> -	return &display->pipes[pipe];
+> +	return &display->crtcs[pipe];
+>  }
 >=20=20
->  		igt_fixture() {
-> diff --git a/tests/intel/gem_exec_reloc.c b/tests/intel/gem_exec_reloc.c
-> index eecc201308c2..9cf6d8201888 100644
-> --- a/tests/intel/gem_exec_reloc.c
-> +++ b/tests/intel/gem_exec_reloc.c
-> @@ -1756,7 +1756,7 @@ int igt_main()
->  	igt_subtest_group() {
->  		igt_display_t display =3D {
->  			.drm_fd =3D fd,
-> -			.n_pipes =3D IGT_MAX_PIPES
-> +			.n_crtcs =3D IGT_MAX_PIPES
->  		};
+>  typedef struct _igt_pipe_crc igt_pipe_crc_t;
+> diff --git a/tests/amdgpu/amd_cursor_overlay.c b/tests/amdgpu/amd_cursor_=
+overlay.c
+> index e500d9e34066..5c7dcb197b44 100644
+> --- a/tests/amdgpu/amd_cursor_overlay.c
+> +++ b/tests/amdgpu/amd_cursor_overlay.c
+> @@ -138,7 +138,7 @@ static void test_init(data_t *data, enum pipe pipe_id=
+, igt_output_t *output,
 >=20=20
->  		igt_fixture() {
-> diff --git a/tests/intel/kms_busy.c b/tests/intel/kms_busy.c
-> index 35a52a2994d9..f78a40891539 100644
-> --- a/tests/intel/kms_busy.c
-> +++ b/tests/intel/kms_busy.c
-> @@ -412,7 +412,7 @@ const char *help_str =3D
->=20=20
->  int igt_main_args("e", NULL, help_str, opt_handler, NULL)
->  {
-> -	igt_display_t display =3D { .drm_fd =3D -1, .n_pipes =3D IGT_MAX_PIPES =
-};
-> +	igt_display_t display =3D { .drm_fd =3D -1, .n_crtcs =3D IGT_MAX_PIPES =
-};
->=20=20
->  	enum pipe pipe, active_pipes[IGT_MAX_PIPES];
->  	igt_output_t *output;
+>  	data->pipe_id =3D pipe_id;
+>  	data->available_overlay_planes =3D available_overlay_planes;
+> -	data->pipe =3D &data->display.pipes[data->pipe_id];
+> +	data->pipe =3D &data->display.crtcs[data->pipe_id];
+>  	data->output =3D output;
+>  	data->mode =3D igt_output_get_mode(data->output);
+>  	data->primary =3D igt_crtc_get_plane_type(data->pipe, DRM_PLANE_TYPE_PR=
+IMARY);
 
 --=20
 Jani Nikula, Intel
