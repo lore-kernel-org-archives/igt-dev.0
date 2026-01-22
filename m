@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDDABD625FD
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EF0DD625F9
 	for <igt-dev@archiver.kernel.org>; Thu, 22 Jan 2026 08:51:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D486510E955;
+	by gabe.freedesktop.org (Postfix) with ESMTP id C957310E954;
 	Thu, 22 Jan 2026 08:51:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LmAjsPro";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BeSKApFh";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 31E3110E950
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Jan 2026 08:51:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F3FD10E94C
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Jan 2026 08:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769071877; x=1800607877;
+ t=1769071876; x=1800607876;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=2G32URO/QrKrf+gkl+2fdFGdoXButrT3EQlQ4S/WO8o=;
- b=LmAjsProkBz42p4SG6rGxuI79Ght+PpYHBiwUGemMicuBLBXYM3iC3Gs
- PMjg1zCG7qA57h+UZKAPuunJeOt9Qt2K8DWHWFhEi9qMhMXLAsNdNQpqO
- kuFa0k2kx7VL6chA/5UoWtAB1BSjLUm+n7G4V6uBAUrDHi8H3rmkKrDQ3
- g00pCE5UukEBCBFODkHzv0s8yBfqiHqZ8unb6EuJa6I2cT2KcZNoOZuRu
- UpRMx6j5ReHL5n7nfinlz6ZknB2n/NKCIibpkvppxwwjXXooCsMfkdfgi
- etTVEXQ6uEdywiXL0x4SpqwKnD82yGfGv7EljVqCdTS8PLgLTMa+6cx/0 A==;
-X-CSE-ConnectionGUID: 8aBYudR2Qu+f/cNFi2yuAg==
-X-CSE-MsgGUID: QBbmBUFTRhy8ZHB1jUl0bg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="70031165"
-X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; d="scan'208";a="70031165"
+ bh=SRSX4BL+TzBKDswoh61+LHUD+WkbdvKQNEyIvDMVeLk=;
+ b=BeSKApFhO8ZWBKzECsdqekJtEZ6EwFY5vVwBBodeqADO9aB7raYSoKSA
+ 97MZKZuMc8NrwDMCdF0LdXBz6xMosNFOMdT91zerHTDS60Hr75DtMdrUF
+ GWjI3feqzsjcYghGBgFyMvrCODeuAWgOG1mCjeR87+Oj1IoGLI9GmLzpZ
+ /84qrUlixeEoPK54FDtyNobuSGmTpIHOZG+I+DU9pll1ZqxRjnXROcgRu
+ raCgdzWMubcldZNV0yaNmQmIp1JM4+RVadkDHW5+8F7DdrytvXduCfsho
+ neqm3yJIQ4Qrw7LLy4DGoKZcVzoePeRoxNVNaWaaH2hKzJ8d1EyFkR89B A==;
+X-CSE-ConnectionGUID: NIl0MLKFT+6oGqoe8I+elg==
+X-CSE-MsgGUID: s7puYiz6RUu3p3ctws3RvQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="70031128"
+X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; d="scan'208";a="70031128"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2026 00:50:46 -0800
-X-CSE-ConnectionGUID: nJkiOiDWQ1S0cqIVU6alJw==
-X-CSE-MsgGUID: t0WHHk28Rk+yiBnMLje4ow==
+ 22 Jan 2026 00:50:40 -0800
+X-CSE-ConnectionGUID: BEWAsdlxQueuEZgrywCdxQ==
+X-CSE-MsgGUID: Zt7Qs9V/Qb6lczh5osRCoQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; d="scan'208";a="244280636"
+X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; d="scan'208";a="244280531"
 Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2026 00:50:43 -0800
+ 22 Jan 2026 00:50:37 -0800
 From: Soham Purkait <soham.purkait@intel.com>
 To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
  badal.nilawar@intel.com, kamil.konieczny@intel.com
 Cc: anshuman.gupta@intel.com, soham.purkait@intel.com,
  umesh.nerlige.ramappa@intel.com
-Subject: [PATCH i-g-t v5 5/5] tools/gputop.src/gputop: Add command line option
- for device filter
-Date: Thu, 22 Jan 2026 14:15:26 +0530
-Message-Id: <20260122084526.538837-6-soham.purkait@intel.com>
+Subject: [PATCH i-g-t v5 3/5] tools/gputop.src/xe_gputop: Close card_fd after
+ engine population in xe_populate_engines()
+Date: Thu, 22 Jan 2026 14:15:24 +0530
+Message-Id: <20260122084526.538837-4-soham.purkait@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260122084526.538837-1-soham.purkait@intel.com>
 References: <20260122084526.538837-1-soham.purkait@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,78 +71,181 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-With a new command-line option for device filtering, the engine
-busyness for the specific device could be selected.
+During the engine initialization for a specific device in GPUTOP,
+IGT helper functions need card_fd to access each engine and
+respective configs. These are required in obtaining the busyness
+of the respective engines through PMU in GPUTOP. But for KMS tests
+no other DRM client should run while it is running. So once the
+required configs and engines are obtained, the card_fd is closed
+as opened card_fd in xe_populate_engines() makes appear itself as
+DRM client.
+
+v1:
+ - Initialize pmu_device_obj to null.
+v2:
+ - Remove dependency on lib/xe/* libraries. (Kamil)
 
 Signed-off-by: Soham Purkait <soham.purkait@intel.com>
 ---
- tools/gputop.src/gputop.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ tools/gputop.src/xe_gputop.c | 64 +++++++++++++++++++++++++++++-------
+ tools/gputop.src/xe_gputop.h |  3 +-
+ 2 files changed, 53 insertions(+), 14 deletions(-)
 
-diff --git a/tools/gputop.src/gputop.c b/tools/gputop.src/gputop.c
-index 7d4515f8f..e803db99e 100644
---- a/tools/gputop.src/gputop.c
-+++ b/tools/gputop.src/gputop.c
-@@ -412,6 +412,7 @@ static void clrscr(void)
- struct gputop_args {
- 	long n_iter;
- 	unsigned long delay_usec;
-+	char *device;
- };
+diff --git a/tools/gputop.src/xe_gputop.c b/tools/gputop.src/xe_gputop.c
+index bb2caa6ea..55a867130 100644
+--- a/tools/gputop.src/xe_gputop.c
++++ b/tools/gputop.src/xe_gputop.c
+@@ -3,6 +3,7 @@
+  * Copyright © 2025 Intel Corporation
+  */
  
- static void countdown(const char *msg, const int start_sec)
-@@ -450,7 +451,8 @@ static void help(char *full_path)
- 	       "Options:\n"
- 	       "\t-h, --help                show this help\n"
- 	       "\t-d, --delay =SEC[.TENTHS] iterative delay as SECS [.TENTHS]\n"
--	       "\t-n, --iterations =NUMBER  number of executions\n\n"
-+	       "\t-n, --iterations =NUMBER  number of executions\n"
-+	       "\t-D, --device              Device filter\n\n"
- 	       "Running without root:\n"
- 	       "\tAs a non-root user, CAP_PERFMON or perf_event_paranoid is required to\n"
- 	       "\taccess engine busyness\n"
-@@ -481,11 +483,12 @@ static void help(char *full_path)
++#include <sys/ioctl.h>
+ #include "xe_gputop.h"
  
- static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- {
--	static const char cmdopts_s[] = "hn:d:";
-+	static const char cmdopts_s[] = "hn:d:D:";
- 	static const struct option cmdopts[] = {
- 	       {"help", no_argument, 0, 'h'},
- 	       {"delay", required_argument, 0, 'd'},
- 	       {"iterations", required_argument, 0, 'n'},
-+	       {"device", required_argument, 0, 'D'},
- 	       { }
- 	};
+ #define engine_ptr(pmu_device, n) (&(pmu_device)->engine + (n))
+@@ -92,6 +93,7 @@ void xe_gputop_init(void *ptr, int index,
  
-@@ -493,6 +496,7 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- 	memset(args, 0, sizeof(*args));
- 	args->n_iter = -1;
- 	args->delay_usec = 2 * USEC_PER_SEC;
-+	args->device = NULL;
+ 	obj = ((struct xe_gputop *)ptr) + index;
+ 	obj->card = card;
++	obj->pmu_device_obj = NULL;
+ }
  
- 	for (;;) {
- 		int c, idx = 0;
-@@ -516,6 +520,9 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- 				return -1;
- 			}
- 			break;
-+		case 'D':
-+			args->device = optarg;
-+			break;
- 		case 'h':
- 			help(argv[0]);
- 			return 0;
-@@ -557,7 +564,8 @@ int main(int argc, char **argv)
+ static int pmu_format_shift(int xe, const char *name)
+@@ -127,10 +129,11 @@ void *xe_populate_engines(const void *obj, int index)
+ 	struct igt_device_card *card = ptr->card;
+ 	uint64_t engine_active_config, engine_total_config;
+ 	uint64_t engine_class, engine_instance, gt_shift;
+-	struct drm_xe_engine_class_instance *hwe;
++	struct drm_xe_device_query q;
++	struct drm_xe_query_engines *engine_q;
+ 	struct xe_pmu_device *engines;
+ 	char device[30];
+-	int ret = 0;
++	int ret = 0, num_eng;
+ 	int card_fd;
  
- 	n = args.n_iter;
- 	period_us = args.delay_usec;
--	populate_device_instances("device:subsystem=pci,card=all");
-+	populate_device_instances(args.device ? args.device
-+				  : "device:subsystem=pci,card=all");
+ 	if (!card || !strlen(card->card) || !strlen(card->render))
+@@ -144,14 +147,45 @@ void *xe_populate_engines(const void *obj, int index)
+ 		fprintf(stderr, "Failed to detect device!\n");
+ 		return NULL;
+ 	}
+-	xe_device_get(card_fd);
++
++	memset(&q, 0, sizeof(q));
++	q.query = DRM_XE_DEVICE_QUERY_ENGINES;
++
++	ret = ioctl(card_fd, DRM_IOCTL_XE_DEVICE_QUERY, &q);
++	if (ret != 0) {
++		if (errno != ENOSPC && errno != E2BIG)
++			return NULL;
++		if (q.size == 0)
++			return NULL;
++	}
++	if (q.size == 0)
++		return NULL;
++
++	num_eng = (int)((q.size - sizeof(struct drm_xe_query_engines)) /
++			sizeof(struct drm_xe_engine_class_instance));
++
+ 	engines = malloc(sizeof(struct xe_pmu_device) +
+-			 xe_number_engines(card_fd) * sizeof(struct xe_engine));
++			 num_eng * sizeof(struct xe_engine));
+ 	if (!engines)
+ 		return NULL;
  
- 	for (int i = 0; drivers[i]; i++) {
- 		if (!per_driver_contexts[i].device_present)
++	engine_q = (struct drm_xe_query_engines *)calloc(1, q.size);
++	if (!engine_q) {
++		free(engines);
++		return NULL;
++	}
++
++	q.data = (uintptr_t)engine_q;
++
++	ret = ioctl(card_fd, DRM_IOCTL_XE_DEVICE_QUERY, &q);
++	if (ret != 0) {
++		free(engines);
++		free(engine_q);
++		return NULL;
++	}
++
+ 	memset(engines, 0, sizeof(struct xe_pmu_device) +
+-	       xe_number_engines(card_fd) * sizeof(struct xe_engine));
++	       num_eng * sizeof(struct xe_engine));
+ 
+ 	engines->num_engines = 0;
+ 	gt_shift = pmu_format_shift(card_fd, "gt");
+@@ -167,14 +201,17 @@ void *xe_populate_engines(const void *obj, int index)
+ 	if (ret < 0)
+ 		return NULL;
+ 
+-	xe_for_each_engine(card_fd, hwe) {
++	while (engines->num_engines < engine_q->num_engines) {
+ 		uint64_t  param_config;
+ 		struct xe_engine *engine;
++		struct drm_xe_engine_class_instance hwe;
++
++		hwe = engine_q->engines[engines->num_engines].instance;
+ 
+ 		engine = engine_ptr(engines, engines->num_engines);
+-		param_config = (uint64_t)hwe->gt_id << gt_shift | hwe->engine_class << engine_class
+-			| hwe->engine_instance << engine_instance;
+-		engine->drm_xe_engine = *hwe;
++		param_config = (uint64_t)hwe.gt_id << gt_shift | hwe.engine_class << engine_class
++			| hwe.engine_instance << engine_instance;
++		engine->drm_xe_engine = hwe;
+ 		engine->engine_active_ticks.config = engine_active_config | param_config;
+ 		engine->engine_total_ticks.config = engine_total_config | param_config;
+ 
+@@ -185,7 +222,7 @@ void *xe_populate_engines(const void *obj, int index)
+ 		}
+ 
+ 		ret = asprintf(&engine->display_name, "GT:%u %s/%u",
+-			       hwe->gt_id,
++			       hwe.gt_id,
+ 			       class_display_name(engine->drm_xe_engine.engine_class),
+ 			       engine->drm_xe_engine.engine_instance);
+ 
+@@ -197,6 +234,9 @@ void *xe_populate_engines(const void *obj, int index)
+ 		engines->num_engines++;
+ 	}
+ 
++	free(engine_q);
++	close(card_fd);
++
+ 	if (!ret) {
+ 		errno = ret;
+ 		return NULL;
+@@ -263,11 +303,11 @@ int xe_pmu_init(const void *obj, int index)
+ 		fd = _open_pmu(type, &engines->num_counters, &engine->engine_active_ticks,
+ 			       &engines->fd);
+ 		if (fd < 0)
+-			return -1;
++			return fd;
+ 		fd = _open_pmu(type, &engines->num_counters, &engine->engine_total_ticks,
+ 			       &engines->fd);
+ 		if (fd < 0)
+-			return -1;
++			return fd;
+ 	}
+ 	return 0;
+ }
+diff --git a/tools/gputop.src/xe_gputop.h b/tools/gputop.src/xe_gputop.h
+index 1e3856071..dcd82de7d 100644
+--- a/tools/gputop.src/xe_gputop.h
++++ b/tools/gputop.src/xe_gputop.h
+@@ -7,11 +7,10 @@
+ #define __XE_GPUTOP_H__
+ 
+ #include <dirent.h>
++#include <xe_drm.h>
+ 
+-#include "igt_device_scan.h"
+ #include "igt_perf.h"
+ #include "utils.h"
+-#include "xe/xe_query.h"
+ 
+ struct xe_pmu_pair {
+ 	uint64_t cur;
 -- 
 2.34.1
 
