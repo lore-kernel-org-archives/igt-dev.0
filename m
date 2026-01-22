@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83D23C44500
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Jan 2026 06:42:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A431C44536
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Jan 2026 07:13:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3E81610E8EB;
-	Thu, 22 Jan 2026 06:42:22 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bamwqAKt";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9013E10E8F1
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Jan 2026 06:42:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769064141; x=1800600141;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=2G32URO/QrKrf+gkl+2fdFGdoXButrT3EQlQ4S/WO8o=;
- b=bamwqAKt9v5x2y6vzyRfygRrSDDt8J7bdK9s8MYAsQP6KY7OiSJmIzsW
- NGZ+bD5Vvjt2w3IrTLs/RgIUNWBZcvxKSoMk4tcs1iCzxpZZzWNxaZ2Ns
- IokwQVnxDNW5tGZr6N6d2Cv4/nr18QXw5EF6TLXPUFdZJuSUBux1r5cLX
- ESaGVNP7Dk9GpILNZbfBmu5cgJOeOWSYDUTRiPTSLEu2qP9KcR7EisLEY
- 6QJhfg696NuSgZWoBuQbAJ68LI1/lhBMOzeKqUGLHG+9+p23vGDpMwWB6
- D7VLbsVck7NZpmNg1JPQDVnLw0sJmPk4OKY2CzTcgoGN5Dehl5d+Q3duO w==;
-X-CSE-ConnectionGUID: FF9YJJldQDa0OnYgg8DpmQ==
-X-CSE-MsgGUID: trJo6T/yQl6c1elZaNOw2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="74152312"
-X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; d="scan'208";a="74152312"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2026 22:42:20 -0800
-X-CSE-ConnectionGUID: +zGPYh4XQfa7mVz+EzrRag==
-X-CSE-MsgGUID: 5wAWMRv8SIOh2vY2HJdJDg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; d="scan'208";a="210807539"
-Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2026 22:42:18 -0800
-From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- badal.nilawar@intel.com, kamil.konieczny@intel.com
-Cc: anshuman.gupta@intel.com, soham.purkait@intel.com,
- umesh.nerlige.ramappa@intel.com
-Subject: [PATCH i-g-t v5 5/5] tools/gputop.src/gputop: Add command line option
- for device filter
-Date: Thu, 22 Jan 2026 12:07:02 +0530
-Message-Id: <20260122063702.524450-6-soham.purkait@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260122063702.524450-1-soham.purkait@intel.com>
-References: <20260122063702.524450-1-soham.purkait@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4DB7F10E1F3;
+	Thu, 22 Jan 2026 07:13:16 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AFD0310E28B;
+ Thu, 22 Jan 2026 07:13:14 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4299593709925551809=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Close_any_open_drm_device_a?=
+ =?utf-8?q?fter_engine_initialization_in_GPUTOP_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Soham Purkait" <soham.purkait@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 22 Jan 2026 07:13:14 -0000
+Message-ID: <176906599471.181791.12324729763666262842@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260122063702.524450-1-soham.purkait@intel.com>
+In-Reply-To: <20260122063702.524450-1-soham.purkait@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,81 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-With a new command-line option for device filtering, the engine
-busyness for the specific device could be selected.
+--===============4299593709925551809==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Soham Purkait <soham.purkait@intel.com>
----
- tools/gputop.src/gputop.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+== Series Details ==
 
-diff --git a/tools/gputop.src/gputop.c b/tools/gputop.src/gputop.c
-index 7d4515f8f..e803db99e 100644
---- a/tools/gputop.src/gputop.c
-+++ b/tools/gputop.src/gputop.c
-@@ -412,6 +412,7 @@ static void clrscr(void)
- struct gputop_args {
- 	long n_iter;
- 	unsigned long delay_usec;
-+	char *device;
- };
- 
- static void countdown(const char *msg, const int start_sec)
-@@ -450,7 +451,8 @@ static void help(char *full_path)
- 	       "Options:\n"
- 	       "\t-h, --help                show this help\n"
- 	       "\t-d, --delay =SEC[.TENTHS] iterative delay as SECS [.TENTHS]\n"
--	       "\t-n, --iterations =NUMBER  number of executions\n\n"
-+	       "\t-n, --iterations =NUMBER  number of executions\n"
-+	       "\t-D, --device              Device filter\n\n"
- 	       "Running without root:\n"
- 	       "\tAs a non-root user, CAP_PERFMON or perf_event_paranoid is required to\n"
- 	       "\taccess engine busyness\n"
-@@ -481,11 +483,12 @@ static void help(char *full_path)
- 
- static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- {
--	static const char cmdopts_s[] = "hn:d:";
-+	static const char cmdopts_s[] = "hn:d:D:";
- 	static const struct option cmdopts[] = {
- 	       {"help", no_argument, 0, 'h'},
- 	       {"delay", required_argument, 0, 'd'},
- 	       {"iterations", required_argument, 0, 'n'},
-+	       {"device", required_argument, 0, 'D'},
- 	       { }
- 	};
- 
-@@ -493,6 +496,7 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- 	memset(args, 0, sizeof(*args));
- 	args->n_iter = -1;
- 	args->delay_usec = 2 * USEC_PER_SEC;
-+	args->device = NULL;
- 
- 	for (;;) {
- 		int c, idx = 0;
-@@ -516,6 +520,9 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
- 				return -1;
- 			}
- 			break;
-+		case 'D':
-+			args->device = optarg;
-+			break;
- 		case 'h':
- 			help(argv[0]);
- 			return 0;
-@@ -557,7 +564,8 @@ int main(int argc, char **argv)
- 
- 	n = args.n_iter;
- 	period_us = args.delay_usec;
--	populate_device_instances("device:subsystem=pci,card=all");
-+	populate_device_instances(args.device ? args.device
-+				  : "device:subsystem=pci,card=all");
- 
- 	for (int i = 0; drivers[i]; i++) {
- 		if (!per_driver_contexts[i].device_present)
--- 
-2.34.1
+Series: Close any open drm device after engine initialization in GPUTOP (rev6)
+URL   : https://patchwork.freedesktop.org/series/158161/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8711_BAT -> XEIGTPW_14393_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 12)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8711 -> IGTPW_14393
+  * Linux: xe-4432-ad2a046603cba140214aed34015ed5027441e85a -> xe-4433-40800011414446888105f6beae6dd3fac56516aa
+
+  IGTPW_14393: 14393
+  IGT_8711: 38428617bae65b39b306f79217ac922ebee3b477 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4432-ad2a046603cba140214aed34015ed5027441e85a: ad2a046603cba140214aed34015ed5027441e85a
+  xe-4433-40800011414446888105f6beae6dd3fac56516aa: 40800011414446888105f6beae6dd3fac56516aa
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14393/index.html
+
+--===============4299593709925551809==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Close any open drm device after engine initialization in GPUTOP (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/158161/">https://patchwork.freedesktop.org/series/158161/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14393/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14393/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8711_BAT -&gt; XEIGTPW_14393_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8711 -&gt; IGTPW_14393</li>
+<li>Linux: xe-4432-ad2a046603cba140214aed34015ed5027441e85a -&gt; xe-4433-40800011414446888105f6beae6dd3fac56516aa</li>
+</ul>
+<p>IGTPW_14393: 14393<br />
+  IGT_8711: 38428617bae65b39b306f79217ac922ebee3b477 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4432-ad2a046603cba140214aed34015ed5027441e85a: ad2a046603cba140214aed34015ed5027441e85a<br />
+  xe-4433-40800011414446888105f6beae6dd3fac56516aa: 40800011414446888105f6beae6dd3fac56516aa</p>
+
+</body>
+</html>
+
+--===============4299593709925551809==--
