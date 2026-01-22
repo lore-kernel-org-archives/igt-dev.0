@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F522C44500
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Jan 2026 06:42:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7215CC44536
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Jan 2026 06:42:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2E71E10E8EB;
-	Thu, 22 Jan 2026 06:42:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2676410E206;
+	Thu, 22 Jan 2026 06:42:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c514yP5N";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ecBba2QM";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4676A10E8F1
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Jan 2026 06:42:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 30BC610E206
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Jan 2026 06:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769064128; x=1800600128;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Zd30Y1yWm9m8xNd88ri2XooGCYQbusMlqlB0T6A3adI=;
- b=c514yP5Niu7T7LlEIVtsk2DU++6Q7XDnO2tnqRVrSn6hxBnhRAelTR2z
- YxP5JSN0gO/661xqrO3P8HoBk6CrQsZ/ygdKpExRQwak4tZCG5N1BmaeX
- l9uM5UujgB/vdzdDbFNxR74r0HcHmV4Q97XKTZU8RWrAa9+rF0btw4xgt
- MDocziL/y6u00W98EMqNva1KOWY0mqDqImaMV2dFXRjOra5h3G8C8Z/AC
- D2ukXmqc2cGNYDT4Y2/LeF20MgPGnfiPjo0/LTnoqZyhV8sbIR7t5Hyzv
- dH16CfCBy2cZCGTjVG2gcuL7mALOdClSXJGF9bzeFnYLTWhDL0fLzVQ4s g==;
-X-CSE-ConnectionGUID: DAUGlS2hQSaa0543p7aBQg==
-X-CSE-MsgGUID: nLLm6lpvT+WztE2Ha9QBKw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="74152294"
-X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; d="scan'208";a="74152294"
+ t=1769064130; x=1800600130;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Rv10aCUJdSxp1AvK3cEAjomR5okFd1+H6KY6paM+5JQ=;
+ b=ecBba2QMHgailR9ZkSu+5MRN27FaLFRGgnIb1GKXRsCLPMPVqrPYthag
+ Z8bQfyXOiKrDAsmApOdk5hQor9fgwcJqMXGJE7uiIvdiy+x3viUl3Yzrd
+ ITuN3zzsUy4wwYkyk4pGkEB+pdVSHTuGXiidL4+Qr0ooeqO5uBmPt6GEf
+ mqNWFLTB2zHtLJTvfNiYe8vP6+ZpaBALV20ewGgUy8+4nPvNnc6Fs72nm
+ Cza5Mi62C5cxzydLwRF9CfkNpcrsvNyxXVp8QVFem6saeQzp9jUbQH9Xk
+ 7PKK2VWSHviqh7ShE1TfjSQGcMz4/B+FDMf2eX2HJux/A9++eI2Fqe8Yk w==;
+X-CSE-ConnectionGUID: gC+GmJHJSwqYLK00SQ2bXA==
+X-CSE-MsgGUID: K9ew6Z2BRbaKHkIEZxjuvA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="74152298"
+X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; d="scan'208";a="74152298"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2026 22:42:08 -0800
-X-CSE-ConnectionGUID: 13vfqZgXQQGPqJwlQdieVQ==
-X-CSE-MsgGUID: wnKmBanBSU+C8amxfK+XYw==
+ 21 Jan 2026 22:42:10 -0800
+X-CSE-ConnectionGUID: Z0U+FY8rQIKpUdHPMjfuDA==
+X-CSE-MsgGUID: eImGM1clRXmFDtrXEVu3TQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; d="scan'208";a="210807514"
+X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; d="scan'208";a="210807518"
 Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jan 2026 22:42:05 -0800
+ 21 Jan 2026 22:42:07 -0800
 From: Soham Purkait <soham.purkait@intel.com>
 To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
  badal.nilawar@intel.com, kamil.konieczny@intel.com
 Cc: anshuman.gupta@intel.com, soham.purkait@intel.com,
  umesh.nerlige.ramappa@intel.com
-Subject: [PATCH i-g-t v5 0/5] Close any open drm device after engine
- initialization in GPUTOP
-Date: Thu, 22 Jan 2026 12:06:57 +0530
-Message-Id: <20260122063702.524450-1-soham.purkait@intel.com>
+Subject: [PATCH i-g-t v5 1/5] tools: Rename tools/gputop to tools/gputop.src
+Date: Thu, 22 Jan 2026 12:06:58 +0530
+Message-Id: <20260122063702.524450-2-soham.purkait@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260122063702.524450-1-soham.purkait@intel.com>
+References: <20260122063702.524450-1-soham.purkait@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,60 +69,84 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-       During the engine initialization for a specific device, igt helper
-functions need card_fd to access each engine and respective configs which
-is required in obtaining the busyness of the same through PMU.
-But during KMS tests no other DRM client should run. So once the required
-configs and engines are obtained, the card_fd should be closed as opened
-card_fd in gputop makes appear itself as DRM client.
-  
-  GPUTOP engine busyness is also capable of running without superuser access
-through setting CAP_PERFMON or an appropriate perf_event_paranoid setting,
-Otherwise user could continue with only GPU client busyness if required.
+The GPUTOP source directory is renamed to gputop.src
+under tools/ path.
 
-Steps to enable engine busyness to run without root (using CAP_PERFMON):
-$ cd /path/to/igt-gpu-tools/
-$ sudo setcap cap_perfmon=+ep $(pwd)/build/tools/gputop
-$ sudo sh -c "echo $(pwd)/build/lib > /etc/ld.so.conf.d/lib-igt.conf"
-$ sudo ldconfig
-Steps to revert once done:
-$ sudo setcap cap_perfmon=-ep $(pwd)/build/tools/gputop
-$ sudo rm /etc/ld.so.conf.d/lib-igt.conf
-$ sudo ldconfig
+v1:
+ - Add meson build files accordingly to generate
+   the binary under tools. (Kamil)
 
-Steps to enable engine busyness to run without root (using perf_event_paranoid):
-# Save current value
-$ orig_val=$(sysctl -n kernel.perf_event_paranoid)
-# Set the value to allow running GPUTOP without root privileges
-$ sudo sysctl -w kernel.perf_event_paranoid=-1
-Steps to revert once done:
-$ sudo sysctl -w kernel.perf_event_paranoid=$orig_val
-
-Soham Purkait (5):
-  tools: Rename tools/gputop to tools/gputop.src
-  tools/gputop.src/utils: Add clamp macro to remove dependency on
-    lib/xe/*
-  tools/gputop.src/xe_gputop: Close card_fd after engine population in
-    xe_populate_engines()
-  tools/gputop.src/gputop: Enable support for multiple GPUs and
-    instances
-  tools/gputop.src/gputop: Add command line option for device filter
-
- tools/{ => gputop.src}/gputop.c          | 286 +++++++++++++++++++----
- tools/gputop.src/meson.build             |   1 +
- tools/{gputop => gputop.src}/utils.c     |   0
- tools/{gputop => gputop.src}/utils.h     |  11 +-
- tools/{gputop => gputop.src}/xe_gputop.c |  64 ++++-
- tools/{gputop => gputop.src}/xe_gputop.h |   3 +-
- tools/meson.build                        |  12 +-
- 7 files changed, 316 insertions(+), 61 deletions(-)
- rename tools/{ => gputop.src}/gputop.c (58%)
+Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+---
+ tools/{ => gputop.src}/gputop.c          |  0
+ tools/gputop.src/meson.build             |  1 +
+ tools/{gputop => gputop.src}/utils.c     |  0
+ tools/{gputop => gputop.src}/utils.h     |  0
+ tools/{gputop => gputop.src}/xe_gputop.c |  0
+ tools/{gputop => gputop.src}/xe_gputop.h |  0
+ tools/meson.build                        | 12 +++++++-----
+ 7 files changed, 8 insertions(+), 5 deletions(-)
+ rename tools/{ => gputop.src}/gputop.c (100%)
  create mode 100644 tools/gputop.src/meson.build
  rename tools/{gputop => gputop.src}/utils.c (100%)
- rename tools/{gputop => gputop.src}/utils.h (89%)
- rename tools/{gputop => gputop.src}/xe_gputop.c (86%)
- rename tools/{gputop => gputop.src}/xe_gputop.h (95%)
+ rename tools/{gputop => gputop.src}/utils.h (100%)
+ rename tools/{gputop => gputop.src}/xe_gputop.c (100%)
+ rename tools/{gputop => gputop.src}/xe_gputop.h (100%)
 
+diff --git a/tools/gputop.c b/tools/gputop.src/gputop.c
+similarity index 100%
+rename from tools/gputop.c
+rename to tools/gputop.src/gputop.c
+diff --git a/tools/gputop.src/meson.build b/tools/gputop.src/meson.build
+new file mode 100644
+index 000000000..ec39f4c7a
+--- /dev/null
++++ b/tools/gputop.src/meson.build
+@@ -0,0 +1 @@
++gputop_src = files('gputop.c')
+diff --git a/tools/gputop/utils.c b/tools/gputop.src/utils.c
+similarity index 100%
+rename from tools/gputop/utils.c
+rename to tools/gputop.src/utils.c
+diff --git a/tools/gputop/utils.h b/tools/gputop.src/utils.h
+similarity index 100%
+rename from tools/gputop/utils.h
+rename to tools/gputop.src/utils.h
+diff --git a/tools/gputop/xe_gputop.c b/tools/gputop.src/xe_gputop.c
+similarity index 100%
+rename from tools/gputop/xe_gputop.c
+rename to tools/gputop.src/xe_gputop.c
+diff --git a/tools/gputop/xe_gputop.h b/tools/gputop.src/xe_gputop.h
+similarity index 100%
+rename from tools/gputop/xe_gputop.h
+rename to tools/gputop.src/xe_gputop.h
+diff --git a/tools/meson.build b/tools/meson.build
+index 8185ba160..abd1ebc09 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -70,11 +70,6 @@ if libudev.found()
+ 		   install : true)
+ endif
+ 
+-executable('gputop', 'gputop.c',
+-           install : true,
+-           install_rpath : bindir_rpathdir,
+-           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math])
+-
+ intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
+ executable('intel_l3_parity', sources : intel_l3_parity_src,
+ 	   dependencies : tool_deps,
+@@ -123,3 +118,10 @@ endif
+ subdir('i915-perf')
+ subdir('xe-perf')
+ subdir('null_state_gen')
++
++subdir('gputop.src')
++executable('gputop', sources : gputop_src,
++	   install : true,
++	   install_rpath : bindir_rpathdir,
++	   dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math],
++	   install: true)
 -- 
 2.34.1
 
