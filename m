@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 012ADC44536
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Jan 2026 08:51:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDDABD625FD
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Jan 2026 08:51:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A6C3810E950;
+	by gabe.freedesktop.org (Postfix) with ESMTP id D486510E955;
 	Thu, 22 Jan 2026 08:51:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aOCaRJZ4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LmAjsPro";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6EE710E94C
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Jan 2026 08:51:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 31E3110E950
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Jan 2026 08:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769071876; x=1800607876;
+ t=1769071877; x=1800607877;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=H4UJOcyxs/6unbAUEGTWepim70y8jlkr78uaLEYVL2E=;
- b=aOCaRJZ4zTWIor/Nr79HLSTXuUgBNo3jpKDzk0dvUZq73Elto6GpRPZh
- GKtuBXjkQc7d+v9dZKtOIvtywiDXhR2wMD8X5nKndHR0zhwIFG8xYLdAT
- Tq5g5UfqmhShslOKuUMfRsa875EcSynAhX4EBJX+vogeCGMSA24YiOG/F
- eoWtyZxr0Ibo74U4FvgreD90KfJdaY7Xa+S/WL72FgzgGE5tMju9bIcIS
- BQfEZcJhKyu+FvV8gGHxOSYT8LGdDm2jHtCUFQbpnzZNzSSffQPTSOBWW
- aEV8jd2oS6/3uRAOPGO85s0LQK/8HDDNRFvRIM2DUnxKbPw4Uj6yiz0hT Q==;
-X-CSE-ConnectionGUID: aU41mCu6RHyFu0gPZ6oyeg==
-X-CSE-MsgGUID: fa5CoPodQ4i0RvFX74vjSQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="70031105"
-X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; d="scan'208";a="70031105"
+ bh=2G32URO/QrKrf+gkl+2fdFGdoXButrT3EQlQ4S/WO8o=;
+ b=LmAjsProkBz42p4SG6rGxuI79Ght+PpYHBiwUGemMicuBLBXYM3iC3Gs
+ PMjg1zCG7qA57h+UZKAPuunJeOt9Qt2K8DWHWFhEi9qMhMXLAsNdNQpqO
+ kuFa0k2kx7VL6chA/5UoWtAB1BSjLUm+n7G4V6uBAUrDHi8H3rmkKrDQ3
+ g00pCE5UukEBCBFODkHzv0s8yBfqiHqZ8unb6EuJa6I2cT2KcZNoOZuRu
+ UpRMx6j5ReHL5n7nfinlz6ZknB2n/NKCIibpkvppxwwjXXooCsMfkdfgi
+ etTVEXQ6uEdywiXL0x4SpqwKnD82yGfGv7EljVqCdTS8PLgLTMa+6cx/0 A==;
+X-CSE-ConnectionGUID: 8aBYudR2Qu+f/cNFi2yuAg==
+X-CSE-MsgGUID: QBbmBUFTRhy8ZHB1jUl0bg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="70031165"
+X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; d="scan'208";a="70031165"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2026 00:50:35 -0800
-X-CSE-ConnectionGUID: /Hmu0SuqSd6gj4MUCS1i6g==
-X-CSE-MsgGUID: /OpAMhjBQQSytqDQuzfLMg==
+ 22 Jan 2026 00:50:46 -0800
+X-CSE-ConnectionGUID: nJkiOiDWQ1S0cqIVU6alJw==
+X-CSE-MsgGUID: t0WHHk28Rk+yiBnMLje4ow==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; d="scan'208";a="244280480"
+X-IronPort-AV: E=Sophos;i="6.21,245,1763452800"; d="scan'208";a="244280636"
 Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jan 2026 00:50:32 -0800
+ 22 Jan 2026 00:50:43 -0800
 From: Soham Purkait <soham.purkait@intel.com>
 To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
  badal.nilawar@intel.com, kamil.konieczny@intel.com
 Cc: anshuman.gupta@intel.com, soham.purkait@intel.com,
  umesh.nerlige.ramappa@intel.com
-Subject: [PATCH i-g-t v5 1/5] tools: Rename tools/gputop to tools/gputop.src
-Date: Thu, 22 Jan 2026 14:15:22 +0530
-Message-Id: <20260122084526.538837-2-soham.purkait@intel.com>
+Subject: [PATCH i-g-t v5 5/5] tools/gputop.src/gputop: Add command line option
+ for device filter
+Date: Thu, 22 Jan 2026 14:15:26 +0530
+Message-Id: <20260122084526.538837-6-soham.purkait@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260122084526.538837-1-soham.purkait@intel.com>
 References: <20260122084526.538837-1-soham.purkait@intel.com>
@@ -69,83 +70,78 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The GPUTOP source directory is renamed to gputop.src
-under tools/ path.
-
-v1:
- - Add meson build files accordingly to generate
-   the binary under tools. (Kamil)
+With a new command-line option for device filtering, the engine
+busyness for the specific device could be selected.
 
 Signed-off-by: Soham Purkait <soham.purkait@intel.com>
 ---
- tools/{ => gputop.src}/gputop.c          |  0
- tools/gputop.src/meson.build             |  1 +
- tools/{gputop => gputop.src}/utils.c     |  0
- tools/{gputop => gputop.src}/utils.h     |  0
- tools/{gputop => gputop.src}/xe_gputop.c |  0
- tools/{gputop => gputop.src}/xe_gputop.h |  0
- tools/meson.build                        | 11 ++++++-----
- 7 files changed, 7 insertions(+), 5 deletions(-)
- rename tools/{ => gputop.src}/gputop.c (100%)
- create mode 100644 tools/gputop.src/meson.build
- rename tools/{gputop => gputop.src}/utils.c (100%)
- rename tools/{gputop => gputop.src}/utils.h (100%)
- rename tools/{gputop => gputop.src}/xe_gputop.c (100%)
- rename tools/{gputop => gputop.src}/xe_gputop.h (100%)
+ tools/gputop.src/gputop.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/tools/gputop.c b/tools/gputop.src/gputop.c
-similarity index 100%
-rename from tools/gputop.c
-rename to tools/gputop.src/gputop.c
-diff --git a/tools/gputop.src/meson.build b/tools/gputop.src/meson.build
-new file mode 100644
-index 000000000..ec39f4c7a
---- /dev/null
-+++ b/tools/gputop.src/meson.build
-@@ -0,0 +1 @@
-+gputop_src = files('gputop.c')
-diff --git a/tools/gputop/utils.c b/tools/gputop.src/utils.c
-similarity index 100%
-rename from tools/gputop/utils.c
-rename to tools/gputop.src/utils.c
-diff --git a/tools/gputop/utils.h b/tools/gputop.src/utils.h
-similarity index 100%
-rename from tools/gputop/utils.h
-rename to tools/gputop.src/utils.h
-diff --git a/tools/gputop/xe_gputop.c b/tools/gputop.src/xe_gputop.c
-similarity index 100%
-rename from tools/gputop/xe_gputop.c
-rename to tools/gputop.src/xe_gputop.c
-diff --git a/tools/gputop/xe_gputop.h b/tools/gputop.src/xe_gputop.h
-similarity index 100%
-rename from tools/gputop/xe_gputop.h
-rename to tools/gputop.src/xe_gputop.h
-diff --git a/tools/meson.build b/tools/meson.build
-index 8185ba160..521607a4c 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -70,11 +70,6 @@ if libudev.found()
- 		   install : true)
- endif
+diff --git a/tools/gputop.src/gputop.c b/tools/gputop.src/gputop.c
+index 7d4515f8f..e803db99e 100644
+--- a/tools/gputop.src/gputop.c
++++ b/tools/gputop.src/gputop.c
+@@ -412,6 +412,7 @@ static void clrscr(void)
+ struct gputop_args {
+ 	long n_iter;
+ 	unsigned long delay_usec;
++	char *device;
+ };
  
--executable('gputop', 'gputop.c',
--           install : true,
--           install_rpath : bindir_rpathdir,
--           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math])
--
- intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
- executable('intel_l3_parity', sources : intel_l3_parity_src,
- 	   dependencies : tool_deps,
-@@ -123,3 +118,9 @@ endif
- subdir('i915-perf')
- subdir('xe-perf')
- subdir('null_state_gen')
-+
-+subdir('gputop.src')
-+executable('gputop', sources : gputop_src,
-+	   install : true,
-+	   install_rpath : bindir_rpathdir,
-+	   dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math],)
+ static void countdown(const char *msg, const int start_sec)
+@@ -450,7 +451,8 @@ static void help(char *full_path)
+ 	       "Options:\n"
+ 	       "\t-h, --help                show this help\n"
+ 	       "\t-d, --delay =SEC[.TENTHS] iterative delay as SECS [.TENTHS]\n"
+-	       "\t-n, --iterations =NUMBER  number of executions\n\n"
++	       "\t-n, --iterations =NUMBER  number of executions\n"
++	       "\t-D, --device              Device filter\n\n"
+ 	       "Running without root:\n"
+ 	       "\tAs a non-root user, CAP_PERFMON or perf_event_paranoid is required to\n"
+ 	       "\taccess engine busyness\n"
+@@ -481,11 +483,12 @@ static void help(char *full_path)
+ 
+ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
+ {
+-	static const char cmdopts_s[] = "hn:d:";
++	static const char cmdopts_s[] = "hn:d:D:";
+ 	static const struct option cmdopts[] = {
+ 	       {"help", no_argument, 0, 'h'},
+ 	       {"delay", required_argument, 0, 'd'},
+ 	       {"iterations", required_argument, 0, 'n'},
++	       {"device", required_argument, 0, 'D'},
+ 	       { }
+ 	};
+ 
+@@ -493,6 +496,7 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
+ 	memset(args, 0, sizeof(*args));
+ 	args->n_iter = -1;
+ 	args->delay_usec = 2 * USEC_PER_SEC;
++	args->device = NULL;
+ 
+ 	for (;;) {
+ 		int c, idx = 0;
+@@ -516,6 +520,9 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
+ 				return -1;
+ 			}
+ 			break;
++		case 'D':
++			args->device = optarg;
++			break;
+ 		case 'h':
+ 			help(argv[0]);
+ 			return 0;
+@@ -557,7 +564,8 @@ int main(int argc, char **argv)
+ 
+ 	n = args.n_iter;
+ 	period_us = args.delay_usec;
+-	populate_device_instances("device:subsystem=pci,card=all");
++	populate_device_instances(args.device ? args.device
++				  : "device:subsystem=pci,card=all");
+ 
+ 	for (int i = 0; drivers[i]; i++) {
+ 		if (!per_driver_contexts[i].device_present)
 -- 
 2.34.1
 
