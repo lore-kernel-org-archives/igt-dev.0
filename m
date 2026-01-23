@@ -4,52 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E890D77897
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Jan 2026 17:40:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5A45D778AC
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Jan 2026 18:29:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3E12310EB85;
-	Fri, 23 Jan 2026 17:40:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5D01410E2E4;
+	Fri, 23 Jan 2026 18:29:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="dfT08a0x";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TUU2hyHy";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 789B810EB8D
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Jan 2026 17:40:35 +0000 (UTC)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 630F54E42225;
- Fri, 23 Jan 2026 17:40:34 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 38C676070A;
- Fri, 23 Jan 2026 17:40:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id E3B66119A80FC; Fri, 23 Jan 2026 18:40:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1769190033; h=from:subject:date:message-id:to:cc:mime-version:content-type:
- content-transfer-encoding:in-reply-to:references;
- bh=k5hKXP8IJR9E/GRxayL8dA9fnRmNUvD5n4gcprrs8I8=;
- b=dfT08a0xOh1O8syUiOUkSK9NEPyqkQwUDslDPLubM+Y/Di1e3VjDHeoNtW50A973u2lgja
- PA5Feu0+kEwEHeOhn2uBdKqJ/Nxj6WY6Icciq1urAWVlonU8KSiXG2JlHewmloJmWwikL9
- Kd1gSBKLDkoMGtv4R26MaEERvmp5NrWvzxmg/v0Yx3EWvzIWyMhKRyjcxW0cPsU5/KCJ7h
- 0UZarNfan5EyjIXsYObeeb48zUqdXSoRadEpEDfz3g4q1Txdbe1qEDLHYL0TMVBjbMd30g
- s+JN+SPG1lgJx+dO5VJmsZ0Lim9roQ6K1rxfcOFJLrCZDy1sbWLaemdCo9cCHQ==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 23 Jan 2026 18:40:32 +0100
-Message-Id: <DFW5IWQLH7IP.1YQH9SWGZFRL5@bootlin.com>
-Subject: Re: [PATCH i-g-t v4 28/46] lib/unigraf: Add helpers to read and
- write edid
-Cc: <thomas.petazzoni@bootlin.com>, <markyacoub@google.com>,
- <khaled.almahallawy@intel.com>, "igt-dev"
- <igt-dev-bounces@lists.freedesktop.org>
-To: "Louis Chauvet" <louis.chauvet@bootlin.com>,
- <igt-dev@lists.freedesktop.org>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.20.1
-References: <20251110-unigraf-integration-v4-0-0fc7bb1b4101@bootlin.com>
- <20251110-unigraf-integration-v4-28-0fc7bb1b4101@bootlin.com>
-In-Reply-To: <20251110-unigraf-integration-v4-28-0fc7bb1b4101@bootlin.com>
-X-Last-TLS-Session-Version: TLSv1.3
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B637810E2E4
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Jan 2026 18:29:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1769192988; x=1800728988;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=W3/1+m++NwsZ+g6ueFhlnWdDWND87m7XVFiqFRevYn4=;
+ b=TUU2hyHyF/LrJAL6Cevw0L63VwETKvnjNTo+/BDdI43wOWhSdB6P1z6W
+ kRmD1sXkKeXhsBWVp/WgLPHVpIf27Sq0KLSOMFvcyXt0+tkP0kQc3O0ND
+ mV9lj+dZYRQWRD1pZR1mRVeEpnd76lItMylAZBwpbOUehSDM49ncphiYE
+ Ou06uSkH2qBaJmV3zCov1Cg46SsIe9M/Tw4LTfKwPWRHf6YL0uTinIKsn
+ a4DTIbPhYA+Ra/GVxhjLC5IbLKE5LU2i8JhojEtK+kxkl+OEbKd2OyE2r
+ mEAFOyCypJpaRP1hhSbFl/1so6Hm2Ce9pm45/dcej05tP0H7lNRapaAcJ g==;
+X-CSE-ConnectionGUID: W3KBCVImSjSH457V7XzYAQ==
+X-CSE-MsgGUID: Yy5KT8dOSumxqEmPzrzOOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11680"; a="88026609"
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="88026609"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jan 2026 10:29:48 -0800
+X-CSE-ConnectionGUID: dvM0KVW8QZKREm347VffZQ==
+X-CSE-MsgGUID: c955FOmlTSir6v1g2SDKoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="211952114"
+Received: from sinjan-super-server.iind.intel.com ([10.190.239.39])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jan 2026 10:29:46 -0800
+From: Karthik Poosa <karthik.poosa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
+ raag.jadav@intel.com, mallesh.koujalagi@intel.com,
+ Karthik Poosa <karthik.poosa@intel.com>
+Subject: [PATCH i-g-t v2] tests/intel/hwmon: Check temperature limit in
+ hwmon-read
+Date: Sat, 24 Jan 2026 00:05:56 +0530
+Message-Id: <20260123183556.1649959-1-karthik.poosa@intel.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,120 +68,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon Nov 10, 2025 at 2:39 PM CET, Louis Chauvet wrote:
-> Read and writing EDID on unigraf can be useful to emulate different
-> screens, add helpers to read and write them.
->
-> There is a limitation on the libTSI.so, it is only possible to read EDID
-> using buffers of size multiple of 128 bytes, and there is no way to query
-> the actual EDID size. The current implementation can only read EDID up to
-> 2048 bytes.
->
-> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> ---
->  lib/unigraf/unigraf.c | 40 ++++++++++++++++++++++++++++++++++++++++
->  lib/unigraf/unigraf.h | 21 +++++++++++++++++++++
->  2 files changed, 61 insertions(+)
->
-> diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-> index 9e77a052d755..2229202ea868 100644
-> --- a/lib/unigraf/unigraf.c
-> +++ b/lib/unigraf/unigraf.c
-> @@ -125,6 +125,21 @@ static uint32_t _unigraf_read_u32(TSI_CONFIG_ID conf=
-ig_id)
->  		value;								\
->  	})
->
-> +/**
-> + * unigraf_write() - Helper to write a value to unigraf
-> + * @dev: device handle, can be null for some config id
+Improve hwmon-read test to check if current temperature
+is above critical temperature limit in hwmon-read test.
+This will help identify any thermal issues with the
+setups during test runs.
 
-This function has no @dev parameter.
+v2:
+ - Address review comments. (Mallesh)
+ - Call check_temp_is_valid() only for temperature hwmon entries.
 
-> + * @config: config id to write
-> + * @data: data to write
-> + * @data_len: length of the data
-> + * Returns
-> + */
-> +static void unigraf_write(TSI_CONFIG_ID config, const void *data, size_t=
- data_len)
-> +{
-> +	unigraf_debug("Writing %zu bytes to 0x%x\n", data_len, config);
-> +
-> +	unigraf_assert(TSIX_TS_SetConfigItem(unigraf_device, config, data, data=
-_len));
-> +}
-> +
->  /**
->   * unigraf_device_count() - Return the number of scanned devices
->   *
-> @@ -332,6 +347,31 @@ void unigraf_reset(void)
->  	unigraf_set_sst();
->  }
->
-> +struct edid *unigraf_read_edid(uint32_t stream, uint32_t *edid_size)
-> +{
-> +	void *edid;
-> +
-> +	unigraf_debug("Read EDID for stream %d...\n", stream);
-> +
-> +	edid =3D malloc(2048);
-> +	memset(edid, 0, 2048);
-> +
-> +	unigraf_write_u32(TSI_EDID_SELECT_STREAM, stream);
-> +	*edid_size =3D unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device,
-> +							  TSI_EDID_TE_INPUT,
-> +							  edid, 2048));
-> +
-> +	return edid;
-> +}
-> +
-> +void unigraf_write_edid(uint32_t stream, const struct edid *edid, uint32=
-_t edid_size)
-> +{
-> +	unigraf_debug("Write EDID for stream %d...\n", stream);
-> +
-> +	unigraf_write_u32(TSI_EDID_SELECT_STREAM, stream);
-> +	unigraf_write(TSI_EDID_TE_INPUT, edid, 2048);
-> +}
-> +
->  void unigraf_hpd_assert(void)
->  {
->  	unigraf_write_u32(TSI_FORCE_HOT_PLUG_STATE_W, 1);
-> diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
-> index 9fcae674b1d5..983a21bbd61b 100644
-> --- a/lib/unigraf/unigraf.h
-> +++ b/lib/unigraf/unigraf.h
-> @@ -57,6 +57,27 @@ void unigraf_require_device(int drm_fd);
->   */
->  void unigraf_reset(void);
->
-> +/**
-> + * unigraf_read_edid() - Read the EDID from the specified input
+Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
+---
+ tests/intel/intel_hwmon.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-"from the specified stream"?
+diff --git a/tests/intel/intel_hwmon.c b/tests/intel/intel_hwmon.c
+index 103ae69cd..9deb48a00 100644
+--- a/tests/intel/intel_hwmon.c
++++ b/tests/intel/intel_hwmon.c
+@@ -26,6 +26,28 @@
+ 
+ IGT_TEST_DESCRIPTION("Tests for intel hwmon");
+ 
++static void check_if_temp_valid(int hwm, char *sysfs_name)
++{
++	char str[32] = {0};
++	uint32_t cur_temp = 0;
++	uint8_t ch = 0;
++	s32 limit = 0;
++
++	/* Get the channel number and sysfs entry suffix. */
++	igt_assert(sscanf(sysfs_name, "temp%hhu_%s", &ch, str) == 2);
++
++	/* If entry is tempX_input, check if it exceeds tempX_crit. */
++	if (!strncmp("input", str, 5)) {
++		sprintf(str, "temp%hhu_crit", ch);
++		if (!faccessat(hwm, str, R_OK, 0)) {
++			igt_assert_lt(0, igt_sysfs_scanf(hwm, sysfs_name, "%d", &cur_temp));
++			igt_assert_lt(0, igt_sysfs_scanf(hwm, str, "%d", &limit));
++			igt_debug("current temp = %d limit = %d\n", cur_temp, limit);
++			igt_assert_f(cur_temp <= limit, "current temperature exceeds limit!\n");
++		}
++	}
++}
++
+ static void hwmon_read(int hwm)
+ {
+ 	struct dirent *de;
+@@ -43,6 +65,9 @@ static void hwmon_read(int hwm)
+ 		igt_assert(igt_sysfs_scanf(hwm, de->d_name, "%127s", val) == 1);
+ 		igt_debug("'%s': %s\n", de->d_name, val);
+ 
++		if (!strncmp(de->d_name, "temp", 4))
++			check_if_temp_valid(hwm, de->d_name);
++
+ 	}
+ 	closedir(dir);
+ }
+-- 
+2.25.1
 
-> + * @dev: The device handle
-
-This function has no @dev parameter.
-
-> + * @stream: The stream ID to read the EDID from
-> + * @edid_size: Pointer to an integer where the size of the EDID will be =
-stored
-> + *
-> + * Returns: A pointer to the EDID structure, or NULL if the operation fa=
-iled. The caller
-> + * is responsible to free this pointer.
-> + */
-> +struct edid *unigraf_read_edid(uint32_t stream, uint32_t *edid_size);
-
-With the two @dev lines removed and the unigraf_read_edid() description fix=
-ed:
- Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
