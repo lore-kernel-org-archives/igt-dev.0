@@ -4,55 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 155C3D7236C
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Jan 2026 11:32:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35A3AD7237D
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Jan 2026 11:58:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BC31F10EAC5;
-	Fri, 23 Jan 2026 11:32:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B409910E2A5;
+	Fri, 23 Jan 2026 11:58:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="geazObK9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YU1KvUZU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ADEA310E00D
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Jan 2026 11:32:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1CDC710E125
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Jan 2026 11:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769167948; x=1800703948;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=/g9bo9BJB4jnDgqWNWUeUy2zu80/gRmytR4JtK20qT0=;
- b=geazObK9NmIwjgb7/2ochvzQeY36HKvY4dz1knS6P0kqVI1o1zhTPYsa
- VX8W7x3wc0hl+pMheL73D8M6NSeMYdi5BF1Wp9cOiG6qpoHutaG/d39mn
- k0jhx8fMkfhltDTJJ0+xwoJxv3Dp/pyU9sQL9WG+B2yNq1RwxdscCaWWs
- PqXaKKB1GwdbJ5yC5jpI6RS9bj2N5+tD36qr8D1v9ehCGFY+dI/FC/fWg
- 8phoAzJE+yzZNGl6Vy7B7/j3vwpl5fB1jArq4MALI+FWFrh6V76BvAhmU
- g/VJGUVOfefPRUdpNhxpfpywSvCja45ZVfVYqoMven20yDa9t3Rldqtek Q==;
-X-CSE-ConnectionGUID: fwV5kRzRQCKXU8vDLRUQdg==
-X-CSE-MsgGUID: zz5K0GdwSlem+ofgjwYTKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11679"; a="73008519"
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="73008519"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2026 03:32:28 -0800
-X-CSE-ConnectionGUID: 3gDq8OfxSlC916eTZJ9+OA==
-X-CSE-MsgGUID: azAzuMRTSEa6ZOmog0+AMw==
+ t=1769169481; x=1800705481;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=W/GFpXcOStq5b2WPaKPMKVZ1GUTXxqubABCtctR17qs=;
+ b=YU1KvUZUmnxMv3kgSsmgl0cS4aaA9sL1UcZZAZHWHv6MttRmqNnDKB1J
+ LMwmuyYxkiOMKFJ2Xsbz9E6q+TBcM/fV1iKv8bPWyAga/SPYXR0QyPFkL
+ PQp0ZAUHLDELBOP9g9M54pkz+UwzP/MYYsJ2cxcIVHXT28/nJHn2iwAtP
+ OpMJ9nZYbqdmickGP06NL+uDecNKlbuI6ApOm6TE7DtZ4h3KlQ7IlIZ4M
+ yaQia2OCfI63KW8N3fzLirCXxnMpiuX82GuUzbs0/UNahPQqut/6FS8co
+ kNigZ0+OzX8lRWnv9UpBLI198MuSj0j9L45OK3pajjAM1as6VKed/zcwx A==;
+X-CSE-ConnectionGUID: oA0JB8PpSjGtlY10yMyB/g==
+X-CSE-MsgGUID: ER205qJzRnOYXcJ3H7X2Eg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11679"; a="70482844"
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="70482844"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jan 2026 03:58:01 -0800
+X-CSE-ConnectionGUID: 3EXD0CduSjSxrpr/UKF4pg==
+X-CSE-MsgGUID: i/PHflgVQYOaxuZOG6Mhxw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="229966634"
-Received: from prudnick-desk.igk.intel.com ([10.91.34.80])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2026 03:32:26 -0800
-From: Piotr Rudnicki <piotr.rudnicki@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Piotr Rudnicki <piotr.rudnicki@intel.com>
-Subject: [PATCH i-g-t 1/1] tests/intel/xe_eudebug_online: test_interrupt_other
- wait fix
-Date: Fri, 23 Jan 2026 12:35:25 +0100
-Message-ID: <20260123113523.262544-4-piotr.rudnicki@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260123113523.262544-3-piotr.rudnicki@intel.com>
-References: <20260123113523.262544-3-piotr.rudnicki@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="207433964"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 03:57:59 -0800
+Date: Fri, 23 Jan 2026 12:57:41 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Piotr Rudnicki <piotr.rudnicki@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>
+Subject: Re: [PATCH i-g-t 2/2] tests/xe_eudebug_online: Extract workload
+ start helpers
+Message-ID: <20260123115741.7kb3rkucl2gnns5p@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Piotr Rudnicki <piotr.rudnicki@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>
+References: <20260122125958.3975827-2-piotr.rudnicki@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260122125958.3975827-2-piotr.rudnicki@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,140 +74,177 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The test was incorrectly waiting for debugee completion when the first
-client should complete due to the reset. Fix the test to wait for the
-correct client after reset and properly cleanup the debugee.
+Hi Piotr,
+On 2026-01-22 at 13:59:59 +0100, Piotr Rudnicki wrote:
 
-Add pipe validation in pipe_signal() to prevent writes to closed pipes
-after SIGKILL. Update pipe_close() to set descriptors to -1 after closing
-to ensure the guard condition works correctly.
+in subject there is 2/2 but it is a single patch? Did you want
+send v2?
 
-Verify waitpid() return value to ensure the process was successfully
-reaped before marking as done. Verify second workload started before
-cleanup and skip session validation as SIGKILL causes incomplete event log.
+> Extract duplicate workload start wait logic into reusable helpers
+> wait_for_workloads_start() and wait_for_workload_start().
+> 
+> Signed-off-by: Piotr Rudnicki <piotr.rudnicki@intel.com>
+> Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+> ---
+>  tests/intel/xe_eudebug_online.c | 78 +++++++++++++++------------------
+>  1 file changed, 36 insertions(+), 42 deletions(-)
 
-Signed-off-by: Piotr Rudnicki <piotr.rudnicki@intel.com>
----
- lib/xe/xe_eudebug.c             | 16 ++++++++-----
- tests/intel/xe_eudebug_online.c | 40 +++++++++++++++++++++++++++------
- 2 files changed, 44 insertions(+), 12 deletions(-)
+Please fix compilation error and warnings:
 
-diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
-index 2abee7ba2..9f981d226 100644
---- a/lib/xe/xe_eudebug.c
-+++ b/lib/xe/xe_eudebug.c
-@@ -304,16 +304,22 @@ static int safe_pipe_read(int pipe[2], void *buf, int nbytes, int timeout_ms)
- 
- static void pipe_signal(int pipe[2], uint64_t token)
- {
--	igt_assert(write(pipe[1], &token, sizeof(token)) == sizeof(token));
-+	/* Skip signaling if pipe is closed (e.g., after SIGKILL) */
-+	if (pipe[1] >= 0)
-+		igt_assert(write(pipe[1], &token, sizeof(token)) == sizeof(token));
- }
- 
- static void pipe_close(int pipe[2])
- {
--	if (pipe[0] != -1)
--		close(pipe[0]);
-+	if (pipe[0] >= 0) {
-+		igt_assert_eq(close(pipe[0]), 0);
-+		pipe[0] = -1;
-+	}
- 
--	if (pipe[1] != -1)
--		close(pipe[1]);
-+	if (pipe[1] >= 0) {
-+		igt_assert_eq(close(pipe[1]), 0);
-+		pipe[1] = -1;
-+	}
- }
- 
- #define DEAD_CLIENT 0xccccdead
-diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-index ff6c5ff19..1093df133 100644
---- a/tests/intel/xe_eudebug_online.c
-+++ b/tests/intel/xe_eudebug_online.c
-@@ -21,6 +21,7 @@
- #include "intel_pat.h"
- #include "intel_mocs.h"
- #include "gpgpu_shader.h"
-+#include <sys/wait.h>
- 
- #define SHADER_NOP			(0 << 0)
- #define SHADER_BREAKPOINT		(1 << 0)
-@@ -2014,7 +2015,7 @@ static void test_interrupt_other(int fd, struct drm_xe_engine_class_instance *hw
- 	xe_eudebug_debugger_start_worker(s->debugger);
- 	xe_eudebug_client_start(s->client);
- 
--	/* wait for workload to start */
-+	/* wait for the first client workload to start */
- 	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
- 		if (READ_ONCE(data->vm_fd) == -1 || READ_ONCE(data->target_size) == 0)
- 			continue;
-@@ -2034,6 +2035,7 @@ static void test_interrupt_other(int fd, struct drm_xe_engine_class_instance *hw
- 	igt_assert_eq(xe_eudebug_debugger_attach(s->debugger, debugee), 0);
- 	xe_eudebug_client_start(debugee);
- 
-+	/* wait for the second client */
- 	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
- 		if (READ_ONCE(debugee_data->vm_fd) == -1 || READ_ONCE(debugee_data->target_size) == 0)
- 			continue;
-@@ -2044,8 +2046,8 @@ static void test_interrupt_other(int fd, struct drm_xe_engine_class_instance *hw
- 	igt_assert(debugee_data->exec_queue_handle != -1);
- 
- 	/*
--	 * Interrupting the other client should return invalid state
--	 * as it is running in runalone mode
-+	 * Interrupting the first client (currently running)
-+	 * should return invalid state as it is running in runalone mode
- 	 */
- 	igt_assert_eq(__eu_ctl(s->debugger->fd, debugee_data->client_handle,
- 		      debugee_data->exec_queue_handle, debugee_data->lrc_handle, NULL, 0,
-@@ -2054,15 +2056,39 @@ static void test_interrupt_other(int fd, struct drm_xe_engine_class_instance *hw
- 
- 	xe_force_gt_reset_async(s->debugger->master_fd, debugee_data->hwe.gt_id);
- 
--	xe_eudebug_client_wait_done(debugee);
-+	/* First client should complete because of the reset */
-+	xe_eudebug_client_wait_done(s->client);
-+
-+	/* Check if second workload was started and is running */
-+	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
-+		if (READ_ONCE(debugee_data->vm_fd) == -1 ||
-+		    READ_ONCE(debugee_data->target_size) == 0)
-+			continue;
-+
-+		if (pread(debugee_data->vm_fd, &val, sizeof(val),
-+			  debugee_data->target_offset) == sizeof(val))
-+			if (val != 0)
-+				break;
-+	}
-+	igt_assert_f(val != 0, "Debugee workload execution is not yet started\n");
-+
-+	/* Terminate debugee and mark it as cleaned up */
-+	igt_assert_eq(kill(debugee->pid, 0), 0);
-+	igt_assert_eq(debugee->done, 0);
-+	kill(debugee->pid, SIGKILL);
-+	igt_assert_eq(waitpid(debugee->pid, NULL, 0), debugee->pid);
-+	debugee->done = 1;
-+	debugee->pid = 0;
-+
- 	xe_eudebug_debugger_stop_worker(s->debugger);
- 
- 	xe_eudebug_event_log_print(s->debugger->log, true);
- 	xe_eudebug_event_log_print(debugee->log, true);
- 
--	xe_eudebug_session_check(s, true, XE_EUDEBUG_FILTER_EVENT_VM_BIND |
--				 XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP |
--				 XE_EUDEBUG_FILTER_EVENT_VM_BIND_UFENCE);
-+	/*
-+	 * Skip xe_eudebug_session_check() because we forcibly killed the debugee
-+	 * with SIGKILL, so its event log is incomplete and validation would fail.
-+	 */
- 
- 	xe_eudebug_client_destroy(debugee);
- 	xe_eudebug_session_destroy(s);
--- 
-2.43.0
+../tests/intel/xe_eudebug_online.c
+../tests/intel/xe_eudebug_online.c: In function ‘test_interrupt_all’:
+../tests/intel/xe_eudebug_online.c:1938:18: warning: unused variable ‘val’ [-Wunused-variable]
+ 1938 |         uint32_t val;
+      |                  ^~~
+../tests/intel/xe_eudebug_online.c: In function ‘test_interrupt_other’:
+../tests/intel/xe_eudebug_online.c:2022:13: warning: unused variable ‘val’ [-Wunused-variable]
+2022 |         int val;
+     |             ^~~
+../tests/intel/xe_eudebug_online.c: In function ‘test_tdctl_parameters’:
+../tests/intel/xe_eudebug_online.c:2126:1: error: invalid use of void expression
+2126 | +       wait_for_workload_start(data);
+     | ^
+../teVsts/intel/xe_eudebug_online.c: In function ‘test_interrupt_reconnect’:
+../tests/intel/xe_eudebug_online.c:2266:1: error: invalid use of void expression
+2266 | +       wait_for_workload_start(data);
+     | ^
+			    
 
+Regards,
+Kamil
+
+> 
+> diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+> index ff6c5ff19..f60399060 100644
+> --- a/tests/intel/xe_eudebug_online.c
+> +++ b/tests/intel/xe_eudebug_online.c
+> @@ -470,6 +470,38 @@ static void online_debug_data_destroy(struct online_debug_data *data)
+>  	munmap(data, ALIGN(sizeof(*data), PAGE_SIZE));
+>  }
+>  
+> +static void wait_for_workloads_start(struct online_debug_data **data, int n)
+> +{
+> +	int val;
+> +	int count;
+> +	int i;
+> +
+> +	igt_for_milliseconds(n * STARTUP_TIMEOUT_MS) {
+> +		count = 0;
+> +		for (i = 0; i < n; i++) {
+> +			if (READ_ONCE(data[i]->vm_fd) == -1 ||
+> +			    READ_ONCE(data[i]->target_size) == 0)
+> +				continue;
+> +
+> +			if (pread(data[i]->vm_fd, &val, sizeof(val),
+> +				  data[i]->target_offset) == sizeof(val) &&
+> +			    val != 0)
+> +				count++;
+> +		}
+> +
+> +		if (count == n)
+> +			break;
+> +	}
+> +	igt_assert_eq(count, n);
+> +}
+> +
+> +static void wait_for_workload_start(struct online_debug_data *data)
+> +{
+> +	struct online_debug_data *array[] = { data };
+> +
+> +	wait_for_workloads_start(array, 1);
+> +}
+> +
+>  static void eu_attention_debug_trigger(struct xe_eudebug_debugger *d,
+>  				       struct drm_xe_eudebug_event *e)
+>  {
+> @@ -1928,16 +1960,7 @@ static void test_interrupt_all(int fd, struct drm_xe_engine_class_instance *hwe,
+>  	xe_eudebug_debugger_start_worker(s->debugger);
+>  	xe_eudebug_client_start(s->client);
+>  
+> -	/* wait for workload to start */
+> -	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
+> -		/* collect needed data from triggers */
+> -		if (READ_ONCE(data->vm_fd) == -1 || READ_ONCE(data->target_size) == 0)
+> -			continue;
+> -
+> -		if (pread(data->vm_fd, &val, sizeof(val), data->target_offset) == sizeof(val))
+> -			if (val != 0)
+> -				break;
+> -	}
+> +	wait_for_workload_start(data);
+>  
+>  	pthread_mutex_lock(&data->mutex);
+>  	igt_assert(data->client_handle != -1);
+> @@ -2014,16 +2037,7 @@ static void test_interrupt_other(int fd, struct drm_xe_engine_class_instance *hw
+>  	xe_eudebug_debugger_start_worker(s->debugger);
+>  	xe_eudebug_client_start(s->client);
+>  
+> -	/* wait for workload to start */
+> -	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
+> -		if (READ_ONCE(data->vm_fd) == -1 || READ_ONCE(data->target_size) == 0)
+> -			continue;
+> -
+> -		if (pread(data->vm_fd, &val, sizeof(val), data->target_offset) == sizeof(val))
+> -			if (val != 0)
+> -				break;
+> -	}
+> -	igt_assert_f(val != 0, "Workload execution is not yet started\n");
+> +	wait_for_workload_start(data);
+>  
+>  	xe_eudebug_debugger_detach(s->debugger);
+>  	reset_debugger_log(s->debugger);
+> @@ -2082,7 +2096,6 @@ static void test_tdctl_parameters(int fd, struct drm_xe_engine_class_instance *h
+>  {
+>  	struct xe_eudebug_session *s;
+>  	struct online_debug_data *data;
+> -	uint32_t val;
+>  	uint32_t random_command;
+>  	uint32_t bitmask_size = query_attention_bitmask_size(fd, hwe->gt_id);
+>  	uint8_t *attention_bitmask = malloc(bitmask_size * sizeof(uint8_t));
+> @@ -2110,16 +2123,7 @@ static void test_tdctl_parameters(int fd, struct drm_xe_engine_class_instance *h
+>  	xe_eudebug_debugger_start_worker(s->debugger);
+>  	xe_eudebug_client_start(s->client);
+>  
+> -	/* wait for workload to start */
+> -	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
+> -		/* collect needed data from triggers */
+> -		if (READ_ONCE(data->vm_fd) == -1 || READ_ONCE(data->target_size) == 0)
+> -			continue;
+> -
+> -		if (pread(data->vm_fd, &val, sizeof(val), data->target_offset) == sizeof(val))
+> -			if (val != 0)
+> -				break;
+> -	}
+> ++	wait_for_workload_start(data);
+>  
+>  	pthread_mutex_lock(&data->mutex);
+>  	igt_assert(data->client_handle != -1);
+> @@ -2237,7 +2241,6 @@ static void test_interrupt_reconnect(int fd, struct drm_xe_engine_class_instance
+>  	struct drm_xe_eudebug_event *e = NULL;
+>  	struct online_debug_data *data;
+>  	struct xe_eudebug_session *s;
+> -	uint32_t val;
+>  
+>  	data = online_debug_data_create(fd, hwe, flags);
+>  	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
+> @@ -2260,16 +2263,7 @@ static void test_interrupt_reconnect(int fd, struct drm_xe_engine_class_instance
+>  	xe_eudebug_debugger_start_worker(s->debugger);
+>  	xe_eudebug_client_start(s->client);
+>  
+> -	/* wait for workload to start */
+> -	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
+> -		/* collect needed data from triggers */
+> -		if (READ_ONCE(data->vm_fd) == -1 || READ_ONCE(data->target_size) == 0)
+> -			continue;
+> -
+> -		if (pread(data->vm_fd, &val, sizeof(val), data->target_offset) == sizeof(val))
+> -			if (val != 0)
+> -				break;
+> -	}
+> ++	wait_for_workload_start(data);
+>  
+>  	pthread_mutex_lock(&data->mutex);
+>  	igt_assert(data->client_handle != -1);
+> -- 
+> 2.43.0
+> 
