@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35A3AD7237D
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Jan 2026 11:58:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14B2DD7237D
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Jan 2026 11:59:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B409910E2A5;
-	Fri, 23 Jan 2026 11:58:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 915D610E125;
+	Fri, 23 Jan 2026 11:59:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YU1KvUZU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W3Uhx0TW";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1CDC710E125
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Jan 2026 11:58:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8518D10E125
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Jan 2026 11:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769169481; x=1800705481;
+ t=1769169581; x=1800705581;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=W/GFpXcOStq5b2WPaKPMKVZ1GUTXxqubABCtctR17qs=;
- b=YU1KvUZUmnxMv3kgSsmgl0cS4aaA9sL1UcZZAZHWHv6MttRmqNnDKB1J
- LMwmuyYxkiOMKFJ2Xsbz9E6q+TBcM/fV1iKv8bPWyAga/SPYXR0QyPFkL
- PQp0ZAUHLDELBOP9g9M54pkz+UwzP/MYYsJ2cxcIVHXT28/nJHn2iwAtP
- OpMJ9nZYbqdmickGP06NL+uDecNKlbuI6ApOm6TE7DtZ4h3KlQ7IlIZ4M
- yaQia2OCfI63KW8N3fzLirCXxnMpiuX82GuUzbs0/UNahPQqut/6FS8co
- kNigZ0+OzX8lRWnv9UpBLI198MuSj0j9L45OK3pajjAM1as6VKed/zcwx A==;
-X-CSE-ConnectionGUID: oA0JB8PpSjGtlY10yMyB/g==
-X-CSE-MsgGUID: ER205qJzRnOYXcJ3H7X2Eg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11679"; a="70482844"
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="70482844"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2026 03:58:01 -0800
-X-CSE-ConnectionGUID: 3EXD0CduSjSxrpr/UKF4pg==
-X-CSE-MsgGUID: i/PHflgVQYOaxuZOG6Mhxw==
+ bh=8Q5mVRjJhvnuE5smP3ILmukfQJsz0Bg6+iW2eBLG7s4=;
+ b=W3Uhx0TWl69uYXPkAFC68z/OY3/o/3xYXKKCmP8buxm3zQ/Foxuw7F7E
+ J7mE4Hh3cqz/P/6r0SXuEwRCdYuwUaJPbrhuhNNNttIk1yI/vt3C4CYr3
+ JG1A/yVXs22sOsSHNVr9lM1WIQ/CJdmhHQ2jNSLH7Lq8ejrh6tw5F4ePN
+ o+ajHmXrKpnf8DO3zsdziM8KZnQj3Uv32bdUBGzZlPBo8ltH7CH7idJ4a
+ 1FE4ZED8tGLFyGB7rSgpyeRvXW2FF1i4KDXO1UIs5xzD0XTThkjFF8UfC
+ BIdofzH0XCvYkFDYCjUqafK1Fd8HS0VgBHE+Uy7BhAFKkU/qme3bmns6L g==;
+X-CSE-ConnectionGUID: DEMs0mVCRwGfGlyVUnU46Q==
+X-CSE-MsgGUID: /1LHGzPAS1Wb7SBlICXUtg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11679"; a="87839944"
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="87839944"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jan 2026 03:59:41 -0800
+X-CSE-ConnectionGUID: HHqrGeFQRQSS1ejWj5ZfNg==
+X-CSE-MsgGUID: oGbz3WoZQkayg1w6MiG1PQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="207433964"
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="211510319"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 03:57:59 -0800
-Date: Fri, 23 Jan 2026 12:57:41 +0100
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 03:59:40 -0800
+Date: Fri, 23 Jan 2026 12:59:37 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Piotr Rudnicki <piotr.rudnicki@intel.com>
 Cc: igt-dev@lists.freedesktop.org,
  Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>
-Subject: Re: [PATCH i-g-t 2/2] tests/xe_eudebug_online: Extract workload
- start helpers
-Message-ID: <20260123115741.7kb3rkucl2gnns5p@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH v2 RESEND i-g-t 1/1] tests/xe_eudebug_online: Extract
+ workload start helpers
+Message-ID: <20260123115937.psafn2p4arlvgeub@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Piotr Rudnicki <piotr.rudnicki@intel.com>,
  igt-dev@lists.freedesktop.org,
  Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>
-References: <20260122125958.3975827-2-piotr.rudnicki@intel.com>
+References: <20260123093307.166062-2-piotr.rudnicki@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260122125958.3975827-2-piotr.rudnicki@intel.com>
+In-Reply-To: <20260123093307.166062-2-piotr.rudnicki@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,44 +75,23 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Piotr,
-On 2026-01-22 at 13:59:59 +0100, Piotr Rudnicki wrote:
-
-in subject there is 2/2 but it is a single patch? Did you want
-send v2?
-
+On 2026-01-23 at 10:33:08 +0100, Piotr Rudnicki wrote:
 > Extract duplicate workload start wait logic into reusable helpers
 > wait_for_workloads_start() and wait_for_workload_start().
 > 
 > Signed-off-by: Piotr Rudnicki <piotr.rudnicki@intel.com>
 > Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 > ---
->  tests/intel/xe_eudebug_online.c | 78 +++++++++++++++------------------
->  1 file changed, 36 insertions(+), 42 deletions(-)
+> V1 -> V2: Use count++ and implicit array size per review feedback
 
-Please fix compilation error and warnings:
-
-../tests/intel/xe_eudebug_online.c
-../tests/intel/xe_eudebug_online.c: In function ‘test_interrupt_all’:
-../tests/intel/xe_eudebug_online.c:1938:18: warning: unused variable ‘val’ [-Wunused-variable]
- 1938 |         uint32_t val;
-      |                  ^~~
-../tests/intel/xe_eudebug_online.c: In function ‘test_interrupt_other’:
-../tests/intel/xe_eudebug_online.c:2022:13: warning: unused variable ‘val’ [-Wunused-variable]
-2022 |         int val;
-     |             ^~~
-../tests/intel/xe_eudebug_online.c: In function ‘test_tdctl_parameters’:
-../tests/intel/xe_eudebug_online.c:2126:1: error: invalid use of void expression
-2126 | +       wait_for_workload_start(data);
-     | ^
-../teVsts/intel/xe_eudebug_online.c: In function ‘test_interrupt_reconnect’:
-../tests/intel/xe_eudebug_online.c:2266:1: error: invalid use of void expression
-2266 | +       wait_for_workload_start(data);
-     | ^
-			    
+Still the same compilation error, see my previous reply.
 
 Regards,
 Kamil
 
+> 
+>  tests/intel/xe_eudebug_online.c | 78 +++++++++++++++------------------
+>  1 file changed, 36 insertions(+), 42 deletions(-)
 > 
 > diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
 > index ff6c5ff19..f60399060 100644
