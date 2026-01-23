@@ -4,65 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE416D74EDB
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Jan 2026 14:29:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 541C2D74ED3
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Jan 2026 14:32:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6EC9510EB06;
-	Fri, 23 Jan 2026 14:29:31 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RmSz653N";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 35F6010EB04;
- Fri, 23 Jan 2026 14:29:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769178569; x=1800714569;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=+Ljz6X3pg9b4MwaJws3QtPQtxP1Uq8JbUBRAeoxtbxA=;
- b=RmSz653NLOBPTugZ8Ehm1Is5NLKc7MJIf2A4FGX1CmeAph7E1quqwow1
- zkAaO69HjiMb1qzcqhDnMZZdq2CccFTeh2o7/5HFaiaWq3nXoR0wX00rD
- A9ny4af1T//aI1A1nmkI5D2bjtsg16H8gq2TfcT7nlqLDIgeeg2gFVibp
- golJnXYE/hfbGkIv34Brqt9yiVFGrVkRrW1CtftWt/85xMV3aYDRdZlln
- rtFvFRNTONSm36C32xhyRob5FfcM1GOwzptLjaCXYTD828oew9cuCCAj3
- zz9mdRwkpVX+2AoOM20l6wYqVuURxktDAx6UPcwtWwSe/MlyUAEG+JInl Q==;
-X-CSE-ConnectionGUID: SODJmmrvRxKfp9Jrwnzr0w==
-X-CSE-MsgGUID: trxKDlF4Qt+SeJjO4ubNWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11680"; a="81149432"
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="81149432"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2026 06:29:29 -0800
-X-CSE-ConnectionGUID: bYkkBBiGRg2dCQ2FL/a/+Q==
-X-CSE-MsgGUID: nUsLlEU+RQ6lKtH5Cp735Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="211161237"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.8])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2026 06:29:26 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Subject: Re: [PATCH i-g-t 6/7] lib/igt_device_scan: Don't print bridge not
- applicable attributes
-Date: Fri, 23 Jan 2026 15:29:23 +0100
-Message-ID: <3672367.iIbC2pHGDl@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <DFVX2N7U0WJA.UOCF6Q7ATIMG@intel.com>
-References: <20260121114656.1970684-9-janusz.krzysztofik@linux.intel.com>
- <20260121114656.1970684-15-janusz.krzysztofik@linux.intel.com>
- <DFVX2N7U0WJA.UOCF6Q7ATIMG@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 12E3210EAFF;
+	Fri, 23 Jan 2026 14:32:08 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41FC410EAFF;
+ Fri, 23 Jan 2026 14:32:07 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6736956240783451314=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
+ =?utf-8?q?-g-t=2Cv3=2C1/1=5D_tests/xe=5Feudebug=5Fonline=3A_Extract_workloa?=
+ =?utf-8?q?d_start_helpers?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Piotr Rudnicki" <piotr.rudnicki@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 23 Jan 2026 14:32:07 -0000
+Message-ID: <176917872724.187528.17784891314126265937@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260123125342.311645-2-piotr.rudnicki@intel.com>
+In-Reply-To: <20260123125342.311645-2-piotr.rudnicki@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,79 +38,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sebastian,
+--===============6736956240783451314==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Friday, 23 January 2026 12:03:09 CET Sebastian Brzezinka wrote:
-> Hi Janusz,
-> 
-> On Wed Jan 21, 2026 at 12:42 PM CET, Janusz Krzysztofik wrote:
-> > In addition to properties and attributes obtained from udev, print
-> > functions also list some library specific attributes: drm_card,
-> > drm_render and codename.  Those not necessarily make sense for PCIe
-> > bridge upstream ports that follow their PCI GPU devices on the listing.
-> > Skip them.
-> >
-> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > ---
-> >  lib/igt_device_scan.c | 8 ++++++--
-> >  1 file changed, 6 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> > index 7c58ab84e8..e86da001a9 100644
-> > --- a/lib/igt_device_scan.c
-> > +++ b/lib/igt_device_scan.c
-> > @@ -204,6 +204,7 @@ enum dev_type {
-> >  	DEVTYPE_ALL,
-> >  	DEVTYPE_INTEGRATED,
-> >  	DEVTYPE_DISCRETE,
-> > +	DEVTYPE_BRIDGE,
-> >  };
-> >  
-> >  #define STR_INTEGRATED "integrated"
-> > @@ -1055,6 +1056,8 @@ static void update_or_add_parent(struct udev *udev,
-> >  
-> >  	bridge_idev = find_or_add_igt_device(udev, bridge_dev, limit_attrs);
-> >  	igt_assert(bridge_idev);
-> > +
-> > +	bridge_idev->dev_type = DEVTYPE_BRIDGE;
-> >  }
-> >  
-> >  static struct igt_device *duplicate_device(struct igt_device *dev) {
-> > @@ -1313,7 +1316,8 @@ igt_devs_print_simple(struct igt_list_head *view,
-> >  			if (is_pci_subsystem(dev)) {
-> >  				_pr_simple("vendor", dev->vendor);
-> >  				_pr_simple("device", dev->device);
-> > -				_pr_simple("codename", dev->codename);
-> > +				if (dev->dev_type != DEVTYPE_BRIDGE)
-> > +					_pr_simple("codename", dev->codename);
-> >  			}
-> >  		}
-> >  		printf("\n");
-> > @@ -1465,7 +1469,7 @@ igt_devs_print_detail(struct igt_list_head *view,
-> >  	igt_list_for_each_entry(dev, view, link) {
-> >  		printf("========== %s:%s ==========\n",
-> >  		       dev->subsystem, dev->syspath);
-> > -		if (!is_drm_subsystem(dev)) {
-> > +		if (!is_drm_subsystem(dev) && dev->dev_type != DEVTYPE_BRIDGE) {
-> >  			_print_key_value("card device", dev->drm_card);
-> >  			_print_key_value("render device", dev->drm_render);
-> >  			_print_key_value("codename", dev->codename);
-> 
-> Could this be merged with patch 7? Most of this will be removed in the next patch anyway.
+== Series Details ==
 
-If there are no cons from other reviewers for whom that split into two 
-patches, intended to improve their readability, should be better preserved, 
-then yes, I can merge them.
+Series: series starting with [i-g-t,v3,1/1] tests/xe_eudebug_online: Extract workload start helpers
+URL   : https://patchwork.freedesktop.org/series/160557/
+State : success
 
-Thanks,
-Janusz
+== Summary ==
 
-> 
-> 
+CI Bug Log - changes from IGT_8716 -> IGTPW_14413
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14413/index.html
+
+Participating hosts (43 -> 41)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14413 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-twl-1:          [PASS][1] -> [ABORT][2] ([i915#14365]) +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8716/bat-twl-1/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14413/bat-twl-1/igt@i915_selftest@live.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [DMESG-FAIL][3] ([i915#12061]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8716/bat-mtlp-8/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14413/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8716/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14413/bat-arls-5/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#14365]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14365
 
 
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8716 -> IGTPW_14413
+
+  CI-20190529: 20190529
+  CI_DRM_17877: ab42b1c3fe4ce1ae5534c51b880d3a97e6bba145 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14413: 14413
+  IGT_8716: 8716
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14413/index.html
+
+--===============6736956240783451314==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v3,1/1] tests/xe_eudebug_online: Extract workload start helpers</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160557/">https://patchwork.freedesktop.org/series/160557/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14413/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14413/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8716 -&gt; IGTPW_14413</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14413/index.html</p>
+<h2>Participating hosts (43 -&gt; 41)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14413 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8716/bat-twl-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14413/bat-twl-1/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14365">i915#14365</a>) +1 other test abort</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8716/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14413/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8716/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14413/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8716 -&gt; IGTPW_14413</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17877: ab42b1c3fe4ce1ae5534c51b880d3a97e6bba145 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14413: 14413<br />
+  IGT_8716: 8716</p>
+
+</body>
+</html>
+
+--===============6736956240783451314==--
