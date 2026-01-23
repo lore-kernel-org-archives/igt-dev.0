@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1912D72345
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Jan 2026 08:34:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32347D72361
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Jan 2026 09:30:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8E26F10EA70;
-	Fri, 23 Jan 2026 08:34:25 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E51510EA6E;
- Fri, 23 Jan 2026 08:34:24 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7425777999960410921=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id C34FA10EA84;
+	Fri, 23 Jan 2026 09:30:08 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nt26RjVT";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 022DA10EA84
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Jan 2026 09:30:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1769160607; x=1800696607;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=xBluK/28o20GOKhacUUl7uqMYuGeVlBxNDwUt8r1iTg=;
+ b=nt26RjVTsouDJXbF47BFviGgnC+7sZQQRxPikO9wy9QHF8mP0YKSFzTA
+ kSdHIGUvHMF79SHf3o4jydKWccEi7bBXuSwd8xo98uB+cCWRrSBuxgJUf
+ 2qFvUcQUvzbP/n96f4MjgeJ9wftSATg+cR3hDAx5Z0eZ+ORQ7SqDkcwo6
+ Hdfrg6aTU/YSnVuQx7/tjgbxBBOuYiPsKCg9aQP/kNTcqyKRcqVV3XpVy
+ 46OKHVXJiihZETCJblkNV0Vru02YvAugKNvCW/Vn8jUK2GU+5Wa2lNk2Y
+ iAUKZzNqD6zGVBRcSH2gP0M9Hf+bSp5uLD21tb/AJzYnfPjVJKx1U8TeL Q==;
+X-CSE-ConnectionGUID: 45QO1zhLSC651wOi03UTBA==
+X-CSE-MsgGUID: y2eSXL2QQ1+KSSfYAXV2Dw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11679"; a="93079944"
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="93079944"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jan 2026 01:30:07 -0800
+X-CSE-ConnectionGUID: QHcH3UciQqazb8OyIbEetA==
+X-CSE-MsgGUID: 7hUJmCdDTSShbbQDSxqgLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="237629110"
+Received: from prudnick-desk.igk.intel.com ([10.91.34.80])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jan 2026 01:30:06 -0800
+From: Piotr Rudnicki <piotr.rudnicki@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Piotr Rudnicki <piotr.rudnicki@intel.com>,
+ =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
+Subject: [PATCH v2 RESEND i-g-t 1/1] tests/xe_eudebug_online: Extract workload
+ start helpers
+Date: Fri, 23 Jan 2026 10:33:08 +0100
+Message-ID: <20260123093307.166062-2-piotr.rudnicki@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFull=3A_success_for_lib/kms=3A_More_pipe-=3Ecr?=
- =?utf-8?q?tc_renaming?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ville Syrjala" <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 23 Jan 2026 08:34:24 -0000
-Message-ID: <176915726425.186773.11491118094216199883@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260122125937.10807-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20260122125937.10807-1-ville.syrjala@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,206 +66,151 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7425777999960410921==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Extract duplicate workload start wait logic into reusable helpers
+wait_for_workloads_start() and wait_for_workload_start().
 
-== Series Details ==
+Signed-off-by: Piotr Rudnicki <piotr.rudnicki@intel.com>
+Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+---
+V1 -> V2: Use count++ and implicit array size per review feedback
 
-Series: lib/kms: More pipe->crtc renaming
-URL   : https://patchwork.freedesktop.org/series/160493/
-State : success
+ tests/intel/xe_eudebug_online.c | 78 +++++++++++++++------------------
+ 1 file changed, 36 insertions(+), 42 deletions(-)
 
-== Summary ==
+diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+index ff6c5ff19..f60399060 100644
+--- a/tests/intel/xe_eudebug_online.c
++++ b/tests/intel/xe_eudebug_online.c
+@@ -470,6 +470,38 @@ static void online_debug_data_destroy(struct online_debug_data *data)
+ 	munmap(data, ALIGN(sizeof(*data), PAGE_SIZE));
+ }
+ 
++static void wait_for_workloads_start(struct online_debug_data **data, int n)
++{
++	int val;
++	int count;
++	int i;
++
++	igt_for_milliseconds(n * STARTUP_TIMEOUT_MS) {
++		count = 0;
++		for (i = 0; i < n; i++) {
++			if (READ_ONCE(data[i]->vm_fd) == -1 ||
++			    READ_ONCE(data[i]->target_size) == 0)
++				continue;
++
++			if (pread(data[i]->vm_fd, &val, sizeof(val),
++				  data[i]->target_offset) == sizeof(val) &&
++			    val != 0)
++				count++;
++		}
++
++		if (count == n)
++			break;
++	}
++	igt_assert_eq(count, n);
++}
++
++static void wait_for_workload_start(struct online_debug_data *data)
++{
++	struct online_debug_data *array[] = { data };
++
++	wait_for_workloads_start(array, 1);
++}
++
+ static void eu_attention_debug_trigger(struct xe_eudebug_debugger *d,
+ 				       struct drm_xe_eudebug_event *e)
+ {
+@@ -1928,16 +1960,7 @@ static void test_interrupt_all(int fd, struct drm_xe_engine_class_instance *hwe,
+ 	xe_eudebug_debugger_start_worker(s->debugger);
+ 	xe_eudebug_client_start(s->client);
+ 
+-	/* wait for workload to start */
+-	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
+-		/* collect needed data from triggers */
+-		if (READ_ONCE(data->vm_fd) == -1 || READ_ONCE(data->target_size) == 0)
+-			continue;
+-
+-		if (pread(data->vm_fd, &val, sizeof(val), data->target_offset) == sizeof(val))
+-			if (val != 0)
+-				break;
+-	}
++	wait_for_workload_start(data);
+ 
+ 	pthread_mutex_lock(&data->mutex);
+ 	igt_assert(data->client_handle != -1);
+@@ -2014,16 +2037,7 @@ static void test_interrupt_other(int fd, struct drm_xe_engine_class_instance *hw
+ 	xe_eudebug_debugger_start_worker(s->debugger);
+ 	xe_eudebug_client_start(s->client);
+ 
+-	/* wait for workload to start */
+-	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
+-		if (READ_ONCE(data->vm_fd) == -1 || READ_ONCE(data->target_size) == 0)
+-			continue;
+-
+-		if (pread(data->vm_fd, &val, sizeof(val), data->target_offset) == sizeof(val))
+-			if (val != 0)
+-				break;
+-	}
+-	igt_assert_f(val != 0, "Workload execution is not yet started\n");
++	wait_for_workload_start(data);
+ 
+ 	xe_eudebug_debugger_detach(s->debugger);
+ 	reset_debugger_log(s->debugger);
+@@ -2082,7 +2096,6 @@ static void test_tdctl_parameters(int fd, struct drm_xe_engine_class_instance *h
+ {
+ 	struct xe_eudebug_session *s;
+ 	struct online_debug_data *data;
+-	uint32_t val;
+ 	uint32_t random_command;
+ 	uint32_t bitmask_size = query_attention_bitmask_size(fd, hwe->gt_id);
+ 	uint8_t *attention_bitmask = malloc(bitmask_size * sizeof(uint8_t));
+@@ -2110,16 +2123,7 @@ static void test_tdctl_parameters(int fd, struct drm_xe_engine_class_instance *h
+ 	xe_eudebug_debugger_start_worker(s->debugger);
+ 	xe_eudebug_client_start(s->client);
+ 
+-	/* wait for workload to start */
+-	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
+-		/* collect needed data from triggers */
+-		if (READ_ONCE(data->vm_fd) == -1 || READ_ONCE(data->target_size) == 0)
+-			continue;
+-
+-		if (pread(data->vm_fd, &val, sizeof(val), data->target_offset) == sizeof(val))
+-			if (val != 0)
+-				break;
+-	}
+++	wait_for_workload_start(data);
+ 
+ 	pthread_mutex_lock(&data->mutex);
+ 	igt_assert(data->client_handle != -1);
+@@ -2237,7 +2241,6 @@ static void test_interrupt_reconnect(int fd, struct drm_xe_engine_class_instance
+ 	struct drm_xe_eudebug_event *e = NULL;
+ 	struct online_debug_data *data;
+ 	struct xe_eudebug_session *s;
+-	uint32_t val;
+ 
+ 	data = online_debug_data_create(fd, hwe, flags);
+ 	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
+@@ -2260,16 +2263,7 @@ static void test_interrupt_reconnect(int fd, struct drm_xe_engine_class_instance
+ 	xe_eudebug_debugger_start_worker(s->debugger);
+ 	xe_eudebug_client_start(s->client);
+ 
+-	/* wait for workload to start */
+-	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
+-		/* collect needed data from triggers */
+-		if (READ_ONCE(data->vm_fd) == -1 || READ_ONCE(data->target_size) == 0)
+-			continue;
+-
+-		if (pread(data->vm_fd, &val, sizeof(val), data->target_offset) == sizeof(val))
+-			if (val != 0)
+-				break;
+-	}
+++	wait_for_workload_start(data);
+ 
+ 	pthread_mutex_lock(&data->mutex);
+ 	igt_assert(data->client_handle != -1);
+-- 
+2.43.0
 
-CI Bug Log - changes from XEIGT_8713_FULL -> XEIGTPW_14401_FULL
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (2 -> 1)
-------------------------------
-
-  Missing    (1): shard-bmg 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14401_FULL that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_module_load@load:
-    - shard-lnl:          ([PASS][1], [PASS][2], [PASS][3], [PASS][4], [PASS][5], [PASS][6], [PASS][7], [PASS][8], [PASS][9], [PASS][10], [PASS][11], [PASS][12], [PASS][13], [PASS][14], [PASS][15], [PASS][16], [SKIP][17], [PASS][18], [PASS][19], [PASS][20], [PASS][21], [PASS][22], [PASS][23], [PASS][24], [PASS][25], [PASS][26]) ([Intel XE#378]) -> [PASS][27]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-4/igt@xe_module_load@load.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-1/igt@xe_module_load@load.html
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-7/igt@xe_module_load@load.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-4/igt@xe_module_load@load.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-2/igt@xe_module_load@load.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-4/igt@xe_module_load@load.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-4/igt@xe_module_load@load.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-8/igt@xe_module_load@load.html
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-1/igt@xe_module_load@load.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-3/igt@xe_module_load@load.html
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-3/igt@xe_module_load@load.html
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-8/igt@xe_module_load@load.html
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-8/igt@xe_module_load@load.html
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-8/igt@xe_module_load@load.html
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-2/igt@xe_module_load@load.html
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-2/igt@xe_module_load@load.html
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-8/igt@xe_module_load@load.html
-   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-2/igt@xe_module_load@load.html
-   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-7/igt@xe_module_load@load.html
-   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-7/igt@xe_module_load@load.html
-   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-7/igt@xe_module_load@load.html
-   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-3/igt@xe_module_load@load.html
-   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-8/igt@xe_module_load@load.html
-   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-1/igt@xe_module_load@load.html
-   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-1/igt@xe_module_load@load.html
-   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-1/igt@xe_module_load@load.html
-   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/shard-lnl-4/igt@xe_module_load@load.html
-
-  
-  [Intel XE#378]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/378
-
-
-Build changes
--------------
-
-  * IGT: IGT_8713 -> IGTPW_14401
-  * Linux: xe-4435-a3ecd278f9a05323fab7471760a7ea10081251d6 -> xe-4437-75950b1567cb40a67e93cb3912e023219745ff60
-
-  IGTPW_14401: 14401
-  IGT_8713: 33d772ed2d772fee329e6200cd968962f695a927 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-4435-a3ecd278f9a05323fab7471760a7ea10081251d6: a3ecd278f9a05323fab7471760a7ea10081251d6
-  xe-4437-75950b1567cb40a67e93cb3912e023219745ff60: 75950b1567cb40a67e93cb3912e023219745ff60
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/index.html
-
---===============7425777999960410921==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-
-
-<!DOCTYPE html>
-<html xmlns=3D"http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id=3D"css-table-select" type=3D"text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/kms: More pipe-&gt;crtc renaming</td></t=
-r>
-<tr><td><b>URL:</b></td><td><a href=3D"https://patchwork.freedesktop.org/se=
-ries/160493/">https://patchwork.freedesktop.org/series/160493/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href=3D"https://intel-gfx-ci.01.org/=
-tree/intel-xe/IGTPW_14401/index.html">https://intel-gfx-ci.01.org/tree/inte=
-l-xe/IGTPW_14401/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8713_FULL -&gt; XEIGTPW_14401_FULL<=
-/h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (2 -&gt; 1)</h2>
-<p>Missing    (1): shard-bmg </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14401_FULL that come from known is=
-sues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_module_load@load:<ul>
-<li>shard-lnl:          (<a href=3D"https://intel-gfx-ci.01.org/tree/intel-=
-xe/IGT_8713/shard-lnl-4/igt@xe_module_load@load.html">PASS</a>, <a href=3D"=
-https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-1/igt@xe_modul=
-e_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/int=
-el-xe/IGT_8713/shard-lnl-7/igt@xe_module_load@load.html">PASS</a>, <a href=
-=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-4/igt@xe_m=
-odule_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree=
-/intel-xe/IGT_8713/shard-lnl-2/igt@xe_module_load@load.html">PASS</a>, <a h=
-ref=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-4/igt@x=
-e_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/t=
-ree/intel-xe/IGT_8713/shard-lnl-4/igt@xe_module_load@load.html">PASS</a>, <=
-a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-8/ig=
-t@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.or=
-g/tree/intel-xe/IGT_8713/shard-lnl-1/igt@xe_module_load@load.html">PASS</a>=
-, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-3=
-/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01=
-.org/tree/intel-xe/IGT_8713/shard-lnl-3/igt@xe_module_load@load.html">PASS<=
-/a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-ln=
-l-8/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci=
-.01.org/tree/intel-xe/IGT_8713/shard-lnl-8/igt@xe_module_load@load.html">PA=
-SS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard=
--lnl-8/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-gfx=
--ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-2/igt@xe_module_load@load.html"=
->PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/sh=
-ard-lnl-2/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://intel-=
-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-8/igt@xe_module_load@load.ht=
-ml">SKIP</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713=
-/shard-lnl-2/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://int=
-el-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-7/igt@xe_module_load@load=
-.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8=
-713/shard-lnl-7/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https://=
-intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-7/igt@xe_module_load@l=
-oad.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IG=
-T_8713/shard-lnl-3/igt@xe_module_load@load.html">PASS</a>, <a href=3D"https=
-://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-8/igt@xe_module_loa=
-d@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe=
-/IGT_8713/shard-lnl-1/igt@xe_module_load@load.html">PASS</a>, <a href=3D"ht=
-tps://intel-gfx-ci.01.org/tree/intel-xe/IGT_8713/shard-lnl-1/igt@xe_module_=
-load@load.html">PASS</a>, <a href=3D"https://intel-gfx-ci.01.org/tree/intel=
--xe/IGT_8713/shard-lnl-1/igt@xe_module_load@load.html">PASS</a>) (<a href=
-=3D"https://gitlab.freedesktop.org/drm/xe/kernel/issues/378">Intel XE#378</=
-a>) -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14401/=
-shard-lnl-4/igt@xe_module_load@load.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8713 -&gt; IGTPW_14401</li>
-<li>Linux: xe-4435-a3ecd278f9a05323fab7471760a7ea10081251d6 -&gt; xe-4437-7=
-5950b1567cb40a67e93cb3912e023219745ff60</li>
-</ul>
-<p>IGTPW_14401: 14401<br />
-  IGT_8713: 33d772ed2d772fee329e6200cd968962f695a927 @ https://gitlab.freed=
-esktop.org/drm/igt-gpu-tools.git<br />
-  xe-4435-a3ecd278f9a05323fab7471760a7ea10081251d6: a3ecd278f9a05323fab7471=
-760a7ea10081251d6<br />
-  xe-4437-75950b1567cb40a67e93cb3912e023219745ff60: 75950b1567cb40a67e93cb3=
-912e023219745ff60</p>
-
-</body>
-</html>
-
---===============7425777999960410921==--
