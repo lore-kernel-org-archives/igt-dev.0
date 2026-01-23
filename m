@@ -4,63 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 362DAD778AE
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Jan 2026 19:25:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2780BD778AF
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Jan 2026 20:34:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CD2DA10EBC1;
-	Fri, 23 Jan 2026 19:25:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF72510E0BC;
+	Fri, 23 Jan 2026 20:34:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HRLxwBSx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XY6WSANE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD6C710EBC1
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Jan 2026 19:25:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D7B0310E0BC
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Jan 2026 20:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769196332; x=1800732332;
- h=date:message-id:from:to:subject:in-reply-to:references:
- mime-version; bh=7/drRfWltq6BWfZ0WyuOt4iS7RsI+wOPd2yd2lvxIfQ=;
- b=HRLxwBSxPMfC9LjZDT93CKsioI1Y5QclBYGH+5S6D/j8Nndzx6l1sSoO
- KkM3D1adzrgtik8daGExnqLRZ3NFUVuVOEgerM8Dnzyr3aqf48OnTdaHT
- ASEPEcpb8fKqqUY47OhjtLyDtJ5cGNaY+eeEHyi9p2Qs+166uMPquWEbV
- kTIWA5Q2MHpklanWLLrzh+QlERLF7QawuuFfsoldA0hEfWhPcgJ/2lelp
- QcKcarHEmvfbhHXe1CQrdFzIlZaTbmC7GG3R2vrZoRa7dJ+N8aSADPW9O
- h19a7xP3sflLTRWYLvLmdQsg1cn3HFmXbPR9xSe4nNnOnH1y+tP4/HOVC w==;
-X-CSE-ConnectionGUID: rB4LFIC0QZWsudICR/VeTA==
-X-CSE-MsgGUID: n4kJwifhQsSNL49YLxez8w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11680"; a="88030053"
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="88030053"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2026 11:25:32 -0800
-X-CSE-ConnectionGUID: 5cFL70hKR8WGq8p98FWVaA==
-X-CSE-MsgGUID: oNCSJpa+Tj289MZWq1bEvw==
+ t=1769200460; x=1800736460;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=BSD9QCjz7oTDwmKvpAyHCFzz3CtGBDrjEaG7uhAKRhA=;
+ b=XY6WSANEEMCo3O1B+/rf9NZb5qTeJvhZtIth40Lt3RNNw/IPrDLDxdyJ
+ Is7FOSyiaaf/SfZrRA2wkBc3wMmLvUO7brtq0il1Q2ZJUrxrhPH+NxhtH
+ 8RiZTgoh3x8NKMdA5JRnwK+E83dgxtBruEzk8TSkPKKMo4tud9TcUdP08
+ g4UMmlLe8/FLrWsVWNIEZHuApbntU05fwMKJTo29HSWD6DeJ7o2p/of6z
+ 1M8wymnSoRKu88eYGM3D6vYUXwMv+KuBPy+jVadJsJp8Hlqh/P5i1D5yF
+ 4spTdcdtOK41nJLC3MEW7eLJ+WOaCB0ME/URKY+Hp7/fhPe8HoT2fGX4S Q==;
+X-CSE-ConnectionGUID: kajqDfnuS0aTAz7ZP7eC/w==
+X-CSE-MsgGUID: AOCx7su9Sl2jg0I0Q3dRDw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11680"; a="70546332"
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="70546332"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jan 2026 12:34:19 -0800
+X-CSE-ConnectionGUID: KlcUhJ+aRbaUJEpA9Jme0Q==
+X-CSE-MsgGUID: 918m69C4T6C5owDPi5m2Vw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="207009704"
-Received: from unknown (HELO adixit-MOBL3.intel.com) ([10.125.136.209])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jan 2026 11:25:31 -0800
-Date: Fri, 23 Jan 2026 11:25:31 -0800
-Message-ID: <87ms24i11w.wl-ashutosh.dixit@intel.com>
-From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
- Soham Purkait <soham.purkait@intel.com>, igt-dev@lists.freedesktop.org,
- riana.tauro@intel.com, badal.nilawar@intel.com, kamil.konieczny@intel.com,
- anshuman.gupta@intel.com, umesh.nerlige.ramappa@intel.com
-Subject: Re: [PATCH i-g-t v5 1/5] tools: Rename tools/gputop to
- tools/gputop.src
-In-Reply-To: <20260123151806.n3isxtvdd55mugws@kamilkon-DESK.igk.intel.com>
-References: <20260122084526.538837-1-soham.purkait@intel.com>
- <20260122084526.538837-2-soham.purkait@intel.com>
- <20260123134528.d7px67wm2a35oc7s@kamilkon-DESK.igk.intel.com>
- <87o6mkighk.wl-ashutosh.dixit@intel.com>
- <20260123151806.n3isxtvdd55mugws@kamilkon-DESK.igk.intel.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
- Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; d="scan'208";a="211621334"
+Received: from administrator-system-product-name.igk.intel.com
+ ([10.91.214.181])
+ by orviesa004.jf.intel.com with ESMTP; 23 Jan 2026 12:34:18 -0800
+From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: mohammed.thasleem@intel.com,
+ =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v1] tests/kms_flip: test suspend on one pair of pipes
+Date: Fri, 23 Jan 2026 21:34:11 +0100
+Message-ID: <20260123203411.689766-1-michal.grzelak@intel.com>
+X-Mailer: git-send-email 2.45.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,82 +69,70 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, 23 Jan 2026 07:18:06 -0800, Kamil Konieczny wrote:
->
-> Hi Dixit,,
-> On 2026-01-23 at 05:52:07 -0800, Dixit, Ashutosh wrote:
-> > On Fri, 23 Jan 2026 05:45:28 -0800, Kamil Konieczny wrote:
-> > >
-> > > Hi Soham,
-> > > On 2026-01-22 at 14:15:22 +0530, Soham Purkait wrote:
-> > >
-> > > I guess it is v6, not v5?
-> > >
-> > > > The GPUTOP source directory is renamed to gputop.src
-> > >
-> > > s/GPUTOP/gputop/
-> > > > under tools/ path.
-> > >
-> > > imho here a little more explanation why, like:
-> > >
-> > > to compile binary into build/tools/gputop file.
-> > >
-> > > This could be done at merge (unless another version is
-> > > needed).
-> > >
-> > > LGTM
-> > > Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > >
-> > > Regards,
-> > > Kamil
-> > >
-> > > >
-> > > > v1:
-> > > >  - Add meson build files accordingly to generate
-> > > >    the binary under tools. (Kamil)
-> > > >
-> > > > Signed-off-by: Soham Purkait <soham.purkait@intel.com>
-> > > > ---
-> > > >  tools/{ => gputop.src}/gputop.c          |  0
-> >
-> > Can't we name the directory 'gputop' if we are moving gputop.c into the
-> > directory.
-> >
-> > tools/gputop/ looks better than tools/gputop.src, fwiw.
-> >
->
-> While we can do it, I like to have build binary in
-> build/tools/gputop
-> not
-> build/tools/gputop/gputop
+Currently, every pair of ({pipe1, pipe2}, {output1, output2}) is being
+tested in 2x-* subtests. Since suspend shouldn't be tested per pipe, it
+causes unnecessary overhead: with 4 pipes & 4 displays it runs in total
+36 tests. Given that each suspend's dynamic subtest can take up to tens
+of seconds, total duration of the test easily exceeds timeout.
 
-We can't thave the binary in build/tools/gputop if the source is in
-build/tools/gputop/ ?
+When testing suspend, for each pair of outputs test only first and last
+pipe unless it is said to run on all pipes.
 
-gputop.src is fine if it can't be done, just thought I'll mention it.
+Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
+---
+ tests/kms_flip.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
->
-> This folder could have other name, is 'gpu_top' good?
->
-> Regards,
-> Kamil
->
-> >
-> > > >  tools/gputop.src/meson.build             |  1 +
-> > > >  tools/{gputop => gputop.src}/utils.c     |  0
-> > > >  tools/{gputop => gputop.src}/utils.h     |  0
-> > > >  tools/{gputop => gputop.src}/xe_gputop.c |  0
-> > > >  tools/{gputop => gputop.src}/xe_gputop.h |  0
-> > > >  tools/meson.build                        | 11 ++++++-----
-> > > >  7 files changed, 7 insertions(+), 5 deletions(-)
-> > > >  rename tools/{ => gputop.src}/gputop.c (100%)
-> > > >  create mode 100644 tools/gputop.src/meson.build
-> > > >  rename tools/{gputop => gputop.src}/utils.c (100%)
-> > > >  rename tools/{gputop => gputop.src}/utils.h (100%)
-> > > >  rename tools/{gputop => gputop.src}/xe_gputop.c (100%)
-> > > >  rename tools/{gputop => gputop.src}/xe_gputop.h (100%)
-> > > >
-> > > > diff --git a/tools/gputop.c b/tools/gputop.src/gputop.c
-> > > > similarity index 100%
->
-> [cut]
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index a74e69c6f..dd110aecf 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -1841,8 +1841,8 @@ static void run_test(int duration, int flags)
+ 	/* Count output configurations to scale test runtime. */
+ 	for (i = 0; i < resources->count_connectors; i++) {
+ 		for (n = 0; n < resources->count_crtcs; n++) {
+-			/* Limit the execution to 2 CRTCs (first & last) for hang tests */
+-			if ((flags & TEST_HANG) && !all_pipes &&
++			/* Limit the execution to 2 CRTCs (first & last) for hang and suspend tests */
++			if (((flags & TEST_HANG) || (flags & TEST_SUSPEND)) && !all_pipes &&
+ 			    n != 0 && n != (resources->count_crtcs - 1))
+ 				continue;
+ 
+@@ -1873,8 +1873,8 @@ static void run_test(int duration, int flags)
+ 		for (n = 0; n < resources->count_crtcs; n++) {
+ 			int crtc_idx;
+ 
+-			/* Limit the execution to 2 CRTCs (first & last) for hang tests */
+-			if ((flags & TEST_HANG) && !all_pipes &&
++			/* Limit the execution to 2 CRTCs (first & last) for hang and suspend tests */
++			if (((flags & TEST_HANG) || (flags & TEST_SUSPEND)) && !all_pipes &&
+ 			    n != 0 && n != (resources->count_crtcs - 1))
+ 				continue;
+ 
+@@ -1920,6 +1920,12 @@ static void run_pair(int duration, int flags)
+ 		for (n = 0; n < resources->count_crtcs; n++) {
+ 			for (j = i + 1; j < resources->count_connectors; j++) {
+ 				for (m = n + 1; m < resources->count_crtcs; m++) {
++					/* Limit the execution to 2 CRTCs (first & last) for hang and suspend tests */
++					if (((flags & TEST_HANG) || (flags & TEST_SUSPEND)) && !all_pipes &&
++					    ((n != 0 && n != resources->count_crtcs) ||
++					    m != resources->count_crtcs - 1))
++						continue;
++
+ 					memset(&o, 0, sizeof(o));
+ 					o.count = 2;
+ 					o._connector[0] = resources->connectors[i];
+@@ -1965,8 +1971,8 @@ static void run_pair(int duration, int flags)
+ 					crtc_idxs[0] = n;
+ 					crtc_idxs[1] = m;
+ 
+-					/* Limit the execution to 2 CRTCs (first & last) for hang tests */
+-					if ((flags & TEST_HANG) && !all_pipes &&
++					/* Limit the execution to 2 CRTCs (first & last) for hang and suspend tests */
++					if (((flags & TEST_HANG) || (flags & TEST_SUSPEND)) && !all_pipes &&
+ 					    ((n != 0 && n != resources->count_crtcs) ||
+ 					    m != resources->count_crtcs - 1))
+ 						continue;
+-- 
+2.45.2
+
