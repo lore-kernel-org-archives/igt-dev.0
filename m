@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8713ED25933
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Jan 2026 04:12:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A89BDD25932
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Jan 2026 04:12:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 31B7A10E278;
-	Tue, 27 Jan 2026 04:12:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5F50F10E24C;
+	Tue, 27 Jan 2026 04:12:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NvETv2Ol";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dVAyXwwc";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 83C0D10E272
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Jan 2026 04:12:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 04A7D10E264
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Jan 2026 04:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769487145; x=1801023145;
+ t=1769487149; x=1801023149;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8w2psa62mldmkW9H7cJCyIuxp9SSylZglX/PtpqWX8I=;
- b=NvETv2Oll2OeoC0BW8X6w+lXljBvCDWC0rkHReT/FqOL2AGBYLwayaAi
- G8VtXlr0osEpXUPbiCLJ646HCDQa3ybHDuMIqk4zGEk8ByJqMzoHzZxuc
- OTF4AIzrSlC8HQTG0L21qBrpUkpNbBVRCqLkyQxIr7mxXTSv8RTUEHuuV
- OeU2blS9SxSb3DfApXAEXtb9NkKM7abPkzDxgj4CUSQC0PRQQVnpK3pXU
- w4XuJ9mSdK3GWM+o/KrAgqaI2uy9eRyh+Zym8WQYGmZCF0FhUkEU2hTkz
- xhlfw+3jisMDjYIKnDh2R0gB5c36hfn6/IRn5Jz2vFiofOtMn+IotNuAk g==;
-X-CSE-ConnectionGUID: n57kLKJpQvuXXGaebdHqKg==
-X-CSE-MsgGUID: +UOCU9buTXGZZebfKu12yw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="81783923"
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="81783923"
+ bh=nWQG2UXnypLx/kRh9fDHqjswXGV6lE+65SNPO4Kyh9A=;
+ b=dVAyXwwcwagVDRPVGsw97pOCY3lYS5e/AwAlcMAFUNazIvKcCkrpcPnL
+ BnWC0OMceLv/CUxpIdtXuY/CDqFI3/3brboYxkYeTyiiR8R9LTyM6Xkyh
+ twxA1+O9v9bHWUtZ0Qmj1ylZh6OYSwEdoLqjLX0dzIDW/TbyFw3CJtCzN
+ /fBNNMFpqP6Vkykte/tXWOcoNvCGSrJi6Ait9x9aJW1CivbvW1nr3VpRy
+ EZUoah3+sv7e5ZacB/qSaqpc3Rey+cPdLbAd/iR8PJKQ1TdNPx5wXRYhM
+ ZNXdJNjIfBOriYSPXWn9/xazOaoiurYIBPdMuw1oFnOGXp7SDvcVrm0Uw w==;
+X-CSE-ConnectionGUID: xFjBqMLGSrK1zdQ8EfF6gA==
+X-CSE-MsgGUID: 1G4yHJ+JTmOfrsC9ZLg6dQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="81783928"
+X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="81783928"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jan 2026 20:12:25 -0800
-X-CSE-ConnectionGUID: YVlgmyEDQUeabmEfXVhGjw==
-X-CSE-MsgGUID: 0+caLC5dRW24UsODRiM15A==
+ 26 Jan 2026 20:12:28 -0800
+X-CSE-ConnectionGUID: Kso4QsU0QdK8ayeV2DKg/A==
+X-CSE-MsgGUID: J8EY7Z2+SkGquimcV7+qiw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="212724523"
+X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="212724535"
 Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jan 2026 20:12:23 -0800
+ 26 Jan 2026 20:12:27 -0800
 From: Sowmiya S <sowmiya.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: swati2.sharma@intel.com, suraj.kandpal@intel.com,
  Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v7 7/9] tests/kms_writeback: Remove unused invalid_fb
- parameter
-Date: Tue, 27 Jan 2026 10:02:31 +0530
-Message-ID: <20260127043233.254107-8-sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v7 9/9] tests/kms_writeback: Use helper to fetch default
+ FB format
+Date: Tue, 27 Jan 2026 10:02:33 +0530
+Message-ID: <20260127043233.254107-10-sowmiya.s@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260127043233.254107-1-sowmiya.s@intel.com>
 References: <20260127043233.254107-1-sowmiya.s@intel.com>
@@ -69,51 +69,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Remove the invalid_fb/output_fb parameter since it is not used
-anywhere in the test. Reuse the fixture's input_fb for both
-8-bit and 10-bit formats to simplify the setup.
+Replace remaining hardcoded formats with the default
+formatr selected by the helper based on requested BPC.
 
-v7: Remove invalid_fb in a separate patch as per review (Suraj)
+v7: Refactor the commit message (Suraj)
 
 Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
 ---
- tests/kms_writeback.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ tests/kms_writeback.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index 58118b8da..8d5bf5294 100644
+index ec8d974d0..d467652f7 100644
 --- a/tests/kms_writeback.c
 +++ b/tests/kms_writeback.c
-@@ -297,7 +297,7 @@ static void test_invalid_parameters(igt_output_t *output, igt_fb_t *valid_fb, ig
- 	}
- }
- 
--static void writeback_fb_id(igt_output_t *output, igt_fb_t *valid_fb, igt_fb_t *invalid_fb)
-+static void writeback_fb_id(igt_output_t *output, igt_fb_t *valid_fb)
- {
- 
- 	int ret;
-@@ -706,19 +706,11 @@ int igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
- 			    (!strstr(igt_format_str(test_format), "BGR")))
- 				continue;
- 			igt_dynamic_f("writeback-fb-id-%s", igt_format_str(test_format)) {
--				igt_fb_t output_fb;
--
--				fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
--						      get_default_fb_format(&display, bpc),
--						      igt_fb_mod_to_tiling(0),
--						      &output_fb);
--
- 				igt_skip_on(data.dump_check || data.list_modes);
- 				igt_skip_on_f(!(data.supported_colors & (1 << i)),
- 					      "DRM_FORMAT_%s is not supported\n",
- 					      igt_format_str(test_format));
--				writeback_fb_id(output, &input_fb, &output_fb);
--				igt_remove_fb(display.drm_fd, &output_fb);
-+				writeback_fb_id(output, (bpc == 8) ? &input_fb : &input_fb_10bit);
- 			}
- 		}
- 	}
+@@ -685,7 +685,7 @@ int igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+ 		igt_skip_on(data.dump_check || data.list_modes);
+ 		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay / 2,
+ 				      mode.vdisplay / 2,
+-				      DRM_FORMAT_XRGB8888,
++				      get_default_fb_format(&display, BPC_8),
+ 				      DRM_FORMAT_MOD_LINEAR,
+ 				      &invalid_output_fb);
+ 		igt_require(fb_id > 0);
 -- 
 2.43.0
 
