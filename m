@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E5C4D2D8DE
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Jan 2026 09:46:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29222D2D8E1
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Jan 2026 09:46:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1DA7E88735;
+	by gabe.freedesktop.org (Postfix) with ESMTP id C47B810E500;
 	Tue, 27 Jan 2026 09:46:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UbBYUPNP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RGDJuWUB";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 552D610E503
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Jan 2026 09:46:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA36E10E500
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Jan 2026 09:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769507205; x=1801043205;
+ t=1769507208; x=1801043208;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=6GBstvo0nKtdT7CaskqLkwG92UH/cIRkeEmFlV4kNN0=;
- b=UbBYUPNP4QRMHR4ymdqh34v8MwdFcRBuPGf6+LuxmyZjsn6U8XEpqmlw
- dLZChYUkpRBZ+D9ctmsGz+cRtv1vwsWmNlcuVSNt6cRqqXYwN93sBeWsG
- fxkcFWe7hpRBL8W4P7E1mHc9NIEgIQH3WFHA5dYP8fMtCyRXTdPlBM1L9
- 6i8sYlKD8b8AJppKyhVHNLBKJ9FPEOE/aiOnvcAxD+xcpHbBBmnVdn/Hv
- REivnj90LOL+f+9CVgeMof+XcBLH7nevobj6f2Itj4rC54T4aJoJ6EuMx
- Lbc0iVZKaKRpreR4jOeYjtaHJJ0ww6Y62y66RFV/VfugQrlNbtrG2dhd2 Q==;
-X-CSE-ConnectionGUID: JvhTDoCQTwOEW0ENIpeW/g==
-X-CSE-MsgGUID: pTzocb4pQgyCIAYtMEm0Qw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="81420946"
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="81420946"
+ bh=5HCszNq8tpA4Co/GVgkdS4dIAS9TNh/9J4HOBRASkE0=;
+ b=RGDJuWUB17/5jNJzLGWElAe+Ep4uKAsasuQBrgSMjN+jSlQnkW6gxKE+
+ Us9lsiucZA0qxGdeD5nkVTX1flTLjS8Jqr2DS9s414Ulms+ZVuovklP9B
+ Vl6k3rEsfr4LyTXl9eGLSozflU1IYUCirwIjE9LEoUD38CaUbFlcE5zC6
+ RhKTv5aGnN2eqk901B8NRodeUfnlCewP80tFDwxtk4VL/FapFoT86cYG+
+ tjih2BBvuZHXKvGjN3zI7HwLRBkunn3sK7STkK/q9Ur6WEm/dO3OafyAa
+ /eemv6c+AGJ22UVKpSVhciJ+MoBfP9LBznNioBJGUF545M51yD04Pov5j g==;
+X-CSE-ConnectionGUID: EX5sLQ3wQl+8ngEbapW9Cg==
+X-CSE-MsgGUID: SyPU/MRoTOuo9MZMXPx2IA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="81420949"
+X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="81420949"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2026 01:46:45 -0800
-X-CSE-ConnectionGUID: LcJKNYDIQ66XOM4FphVVYA==
-X-CSE-MsgGUID: fQHSPKF5SGSZmMhNGS2DHg==
+ 27 Jan 2026 01:46:47 -0800
+X-CSE-ConnectionGUID: 1T7dEJi2QCiPVUuxHr/yOg==
+X-CSE-MsgGUID: AeIgPxCOT5qTo1amlSKgow==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="208172690"
+X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="208172694"
 Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
  by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 01:46:43 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 01:46:45 -0800
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, mohammed.thasleem@intel.com,
  suraj.kandpal@intel.com, ankit.k.nautiyal@intel.com,
  kamil.konieczny@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v9 07/11] tools/intel_hdcp: Display HDCP details for
- connectors.
-Date: Tue, 27 Jan 2026 15:12:53 +0530
-Message-Id: <20260127094257.572736-8-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v9 08/11] tools/intel_hdcp: Interactive keypress thread
+ for menu
+Date: Tue, 27 Jan 2026 15:12:54 +0530
+Message-Id: <20260127094257.572736-9-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260127094257.572736-1-santhosh.reddy.guddati@intel.com>
 References: <20260127094257.572736-1-santhosh.reddy.guddati@intel.com>
@@ -71,65 +71,263 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Display detailed HDCP information for connectors
+Handle user input asynchronously with keypress_thread ,enable
+interactive HDCP via user options.
+Update print_menu to display available actions.
+Introduce validate_input(), get_valid_hdcp_connectors(), select_connector()
+and handle_connector_selection() to parse user input.
 
-Add support for displaying  HDCP information for all
-connectors in a formatted table:
+v2: Handle invalid user input like choosing an invalid connector or non
+HDCP supported output
 
-- Add get_hdcp_status() to read Content Protection property state
-  (Disabled/Desired/Enabled)
-- Add get_hdcp_content_type() to read HDCP Content Type property
-  (Type 0/Type 1)
-- Add get_hdcp_version() to read HDCP capabilities from debugfs
-  (HDCP1.4/HDCP2.2)
-- Display connector information in a formatted table with columns:
-  ID, Encoder, Status, Type, HDCP Support, HDCP Status, Content Type
-- Show 'N/A' for disconnected connectors or when properties are not
-  applicable
+v3:
+Use menu lines to print.
+Avoid reverifying the user input connector id to be valid or not for HDCP,
+Instead display only HDCP supported connectors to the user and
+verify the option provided by user (Suraj)
+
+v4:
+Retain print_usage in this patch to keep the tool functional.(Suraj)
 
 Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
 ---
- tools/intel_hdcp.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ tools/intel_hdcp.c | 202 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 202 insertions(+)
 
 diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c
-index db97ea0c5..c12a1b6d6 100644
+index c12a1b6d6..53eda713d 100644
 --- a/tools/intel_hdcp.c
 +++ b/tools/intel_hdcp.c
-@@ -181,7 +181,10 @@ static void get_hdcp_info(data_t *data)
- 	}
+@@ -5,6 +5,7 @@
  
- 	fprintf(stderr, "Connectors:\n");
--	fprintf(stderr, "id\tencoder\tstatus\t\ttype\tHDCP\n");
-+	fprintf(stderr, "%-4s %-8s %-12s %-8s %-20s %-12s %-12s\n",
-+		"ID", "Encoder", "Status", "Type", "HDCP Support", "HDCP Status", "Content Type");
-+	fprintf(stderr, "---- -------- ------------ -------- -------------------- ------------\n");
-+
- 	for (int i = 0; i < res->count_connectors; i++) {
- 		drmModeConnector *connector;
+ #include <fcntl.h>
+ #include <stdio.h>
++#include <ctype.h>
  
-@@ -194,14 +197,18 @@ static void get_hdcp_info(data_t *data)
- 			 kmstest_connector_type_str(connector->connector_type),
- 			 connector->connector_type_id);
+ #include "igt.h"
  
--		fprintf(stderr, "%d\t%d\t%s\t%s\t%s\n",
-+		fprintf(stderr, "%-4d %-8d %-12s %-8s %-20s %-12s %-12s\n",
- 			connector->connector_id, connector->encoder_id,
- 			kmstest_connector_status_str(connector->connection),
- 			kmstest_connector_type_str(connector->connector_type),
--			get_hdcp_version(data->fd, output_name));
-+			get_hdcp_version(data->fd, output_name),
-+			get_hdcp_status(data, connector->connector_id),
-+			get_hdcp_content_type(data, connector->connector_id));
+@@ -29,6 +30,11 @@ typedef struct data {
+ 	igt_output_t *output;
+ 	enum pipe pipe;
+ 	enum hdcp_type hdcp_type;
++	int user_cmd;
++	bool running;
++	pthread_mutex_t lock;
++	pthread_t video_tid;
++	int selected_connector;
+ } data_t;
  
-+		free(output_name);
- 		drmModeFreeConnector(connector);
- 	}
-+	fprintf(stderr, "---- -------- ------------ -------- -------------------- ------------\n");
- 
- 	drmModeFreeResources(res);
+ static igt_output_t *get_hdcp_output(data_t *data, uint32_t connector_id, bool *is_valid)
+@@ -57,6 +63,16 @@ static igt_output_t *get_hdcp_output(data_t *data, uint32_t connector_id, bool *
+ 	return output;
  }
+ 
++static const char * const menu_lines[] = {
++	"=== HDCP Tool ===",
++	"1. Get HDCP Information",
++	"2. Enable HDCP1.4",
++	"3. Enable HDCP2.2 Type 0",
++	"4. Enable HDCP2.2 Type 1",
++	"5. Disable HDCP",
++	"q. Quit"
++};
++
+ static void set_hdcp_prop(data_t *data, int property, int type, int connector_id)
+ {
+ 	igt_output_t *output;
+@@ -221,6 +237,192 @@ static void print_usage(void)
+ 	fprintf(stderr, "-h,	--help		Display this help message\n");
+ }
+ 
++static void print_menu(void)
++{
++	printf("\n");
++	for (size_t i = 0; i < ARRAY_SIZE(menu_lines); i++)
++		printf("%s\n", menu_lines[i]);
++	printf("\n");
++}
++
++static bool validate_input(const char *input, char *choice)
++{
++	const char *p = input;
++	const char *rest;
++
++	/* Trim leading whitespace */
++	while (*p && isspace((unsigned char)*p))
++		p++;
++
++	/* Empty input */
++	if (*p == '\0')
++		return false;
++
++	*choice = *p;
++	rest = p + 1;
++
++	/* Ensure rest is only whitespace/newline */
++	while (*rest) {
++		if (!isspace((unsigned char)*rest) && *rest != '\0') {
++			fprintf(stderr, "Invalid input format\n");
++			return false;
++		}
++		rest++;
++	}
++
++	return true;
++}
++
++static int get_valid_hdcp_connectors(data_t *data, int *valid_connectors)
++{
++	drmModeRes *res;
++	int valid_count = 0;
++
++	res = drmModeGetResources(data->fd);
++	if (!res)
++		return 0;
++
++	for (int i = 0; i < res->count_connectors; i++) {
++		drmModeConnector *connector;
++		char *output_name;
++		const char *hdcp_support;
++
++		connector = drmModeGetConnectorCurrent(data->fd, res->connectors[i]);
++		if (!connector)
++			continue;
++
++		if (connector->connection == DRM_MODE_CONNECTED &&
++		    connector->encoder_id != 0) {
++			asprintf(&output_name, "%s-%d",
++				 kmstest_connector_type_str(connector->connector_type),
++				 connector->connector_type_id);
++			hdcp_support = get_hdcp_version(data->fd, output_name);
++			free(output_name);
++
++			if (hdcp_support && strcmp(hdcp_support, "No HDCP support") != 0)
++				valid_connectors[valid_count++] = connector->connector_id;
++		}
++		drmModeFreeConnector(connector);
++	}
++	drmModeFreeResources(res);
++
++	return valid_count;
++}
++
++static bool select_connector(data_t *data, int *valid_connectors, int valid_count)
++{
++	char input[256];
++	int cid;
++	const char *q;
++
++	printf("\nValid HDCP-capable connector IDs: ");
++	for (int i = 0; i < valid_count; i++) {
++		printf("%d", valid_connectors[i]);
++		if (i < valid_count - 1)
++			printf(", ");
++	}
++	printf("\n");
++
++	while (data->running) {
++		printf("Enter connector id (blank to cancel): ");
++		fflush(stdout);
++
++		if (!fgets(input, sizeof(input), stdin)) {
++			fprintf(stderr, "No input; aborting action\n");
++			return false;
++		}
++
++		/* Check for blank line (cancel) */
++		q = input;
++		while (*q && isspace((unsigned char)*q))
++			q++;
++
++		if (*q == '\0' || *q == '\n') {
++			fprintf(stderr, "Cancelled connector selection\n");
++			return false;
++		}
++
++		if (sscanf(input, "%d", &cid) != 1) {
++			fprintf(stderr, "Invalid number; try again\n");
++			continue;
++		}
++
++		/* Verify connector is in valid list */
++		for (int i = 0; i < valid_count; i++) {
++			if (valid_connectors[i] == cid) {
++				data->selected_connector = cid;
++				printf("Using connector: %d\n", data->selected_connector);
++				return true;
++			}
++		}
++
++		fprintf(stderr, "Connector %d is not a valid HDCP-capable connector\n", cid);
++	}
++
++	return false;
++}
++
++static bool handle_connector_selection(data_t *data, int cmd)
++{
++	int valid_connectors[32];
++	int valid_count;
++
++	/* Commands 2-5 need connector selection if not already set */
++	if (cmd < 2 || cmd > 5 || data->selected_connector != -1)
++		return true;
++
++	valid_count = get_valid_hdcp_connectors(data, valid_connectors);
++
++	if (valid_count == 0) {
++		fprintf(stderr, "No HDCP-capable connectors available\n");
++		return false;
++	}
++
++	return select_connector(data, valid_connectors, valid_count);
++}
++
++static void *keypress_thread(void *arg)
++{
++	data_t *data = (data_t *)arg;
++	char input[256], choice;
++
++	print_menu();
++
++	while (data->running) {
++		printf("Enter input 1-5 or q: ");
++		fflush(stdout);
++
++		if (!fgets(input, sizeof(input), stdin)) {
++			printf("\nExiting...\n");
++			break;
++		}
++
++		if (!validate_input(input, &choice))
++			continue;
++
++		pthread_mutex_lock(&data->lock);
++
++		if (choice == 'q' || choice == 'Q') {
++			data->running = false;
++			pthread_mutex_unlock(&data->lock);
++			continue;
++		}
++
++		if (choice >= '1' && choice <= '5') {
++			data->user_cmd = choice - '0';
++
++			if (!handle_connector_selection(data, data->user_cmd))
++				data->user_cmd = 0;
++		} else {
++			fprintf(stderr, "Invalid choice: %c\n", choice);
++		}
++
++		pthread_mutex_unlock(&data->lock);
++	}
++
++	return NULL;
++}
++
+ static void test_init(data_t *data)
+ {
+ 	drmModeModeInfo *mode;
 -- 
 2.34.1
 
