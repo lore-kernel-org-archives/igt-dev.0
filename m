@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0004D2F000
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Jan 2026 11:56:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1884CD2F004
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Jan 2026 11:56:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6430E10E551;
-	Tue, 27 Jan 2026 11:56:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BCE0A10E54C;
+	Tue, 27 Jan 2026 11:56:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hy+fO0C3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S3oFdXKh";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0EBF110E551
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Jan 2026 11:56:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BDDD510E54C
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Jan 2026 11:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769515006; x=1801051006;
+ t=1769515011; x=1801051011;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/Cu2YKpFW2cKpYJ8JQLQlfZLyZuuubtn4zV1OKSkXrg=;
- b=hy+fO0C3OvKkiFxOTLKaygMMu6O2MkeghuoX8Uz5nmxedaliSgfMnMr3
- aMIOL5M10NaiBkouiPC3LzWdcD2Kjq49b3N5x8PF1FLBU/PD7o920py94
- LNFIXYwMhYi2MNgbhcNsbBgeb3NidsHLRyXtA4aggatU0PKAcD+ev0wjZ
- Zscm5HI5h4dhUvGbZ8zoprLWwCEbymJV6vo1qXH/vfEVdvxIT0A8H/7uX
- dW/+OGTNaqOo4MHAhFKhUihC4RiWuAv1aTleM3oXdBr65hhRo5N0MTe0C
- 2d8Ua7sUCDAxV7Ol86o9XkLNpdRRqR22gB4pa7GTA+rIGR0+WsPbXisQ9 w==;
-X-CSE-ConnectionGUID: qnjL90mlRGSTRNX/3Q+U/w==
-X-CSE-MsgGUID: ybgxfQV8SY6i+cEKmwzjHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="93365895"
-X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; d="scan'208";a="93365895"
+ bh=fzVgz882ZneLrWmGhUY2DN53N68I5iSdS3NuC+2bjNU=;
+ b=S3oFdXKh9IYfccC/ht/geoezKkRBj7UXYWcYpuEaXoU5+eE69UoL2ejp
+ j2UtHxVkmuppsz0WoAE5NnukHbpYa+6UWyS3FSZLCJWFNR56F7oFDpzvO
+ +xCsNGRbS5XfFrOX4X5EoOMNJRikySmb9K4SQO3R7vnZcVfzXPJFAMA3W
+ 3yXFaiE4/eJ3/Rr/WgI3b8sEWlVFCyIYQEn+PN+nrLKLQJN1+YYt9ft7I
+ JMz0Zi8GQdEj7koMLhBUIJ5TmmCerPODRynjA6Uj4F//WBLH+hT3GpWNY
+ QRRGg0kI3ZkR9T+4JDotmWRl634trGrpLoh6Jgj8abgIe4fepqMp5poGg w==;
+X-CSE-ConnectionGUID: JR2QZIv9TuexJNnZ5luoFw==
+X-CSE-MsgGUID: LmuFtXyjSb2VDZNQ6mMnvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="93365897"
+X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; d="scan'208";a="93365897"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2026 03:56:46 -0800
-X-CSE-ConnectionGUID: W/2oq8qwSjSHsJrYua2PDg==
-X-CSE-MsgGUID: BU0Kokw/SKesFmGnmxs+Kg==
+ 27 Jan 2026 03:56:50 -0800
+X-CSE-ConnectionGUID: u7tNI0pAR2WET38NWd8xkw==
+X-CSE-MsgGUID: RpUgGKxZTIq2WzTMUHKnYg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; d="scan'208";a="239222433"
+X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; d="scan'208";a="239222442"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.148])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2026 03:56:44 -0800
+ 27 Jan 2026 03:56:49 -0800
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com,
 	ville.syrjala@linux.intel.com
-Subject: [PATCH i-g-t 7/8] lib/igt_debugfs: rename igt_debugfs_pipe_dir() to
- igt_debugfs_crtc_dir()
-Date: Tue, 27 Jan 2026 13:56:04 +0200
-Message-ID: <305787a2b7c67d4b0f25824e042d266c1f59e147.1769514879.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 8/8] lib/i915/drrs: switch the interface from pipe to
+ CRTC index
+Date: Tue, 27 Jan 2026 13:56:05 +0200
+Message-ID: <02071779015eff879fce4d4e79c38576ab3fcca2.1769514879.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1769514879.git.jani.nikula@intel.com>
 References: <cover.1769514879.git.jani.nikula@intel.com>
@@ -72,177 +72,146 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Rename the function to reflect what it does. It opens the debugfs
-directory based on the CRTC index, not the pipe.
+All of the DRRS functionality assumes CRTC index, even though the
+functions have enum pipe as parameter. Switch to CRTC index to reflect
+what the functions expect in reality.
 
 There's no functional change here. If there's code that passes the
-hardware pipe to igt_debugfs_crtc_dir(), it needs to be fixed.
+hardware pipe to the DRRS functions, it needs to be fixed.
 
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- lib/i915/intel_drrs.c                  |  6 +++---
- lib/i915/intel_fbc.c                   |  4 ++--
- lib/igt_debugfs.c                      | 10 +++++-----
- lib/igt_debugfs.h                      |  4 +---
- lib/igt_kms.c                          |  4 ++--
- tests/intel/kms_frontbuffer_tracking.c |  2 +-
- tests/nouveau_crc.c                    |  2 +-
- 7 files changed, 15 insertions(+), 17 deletions(-)
+ lib/i915/intel_drrs.c | 36 ++++++++++++++++++------------------
+ lib/i915/intel_drrs.h |  8 ++++----
+ 2 files changed, 22 insertions(+), 22 deletions(-)
 
 diff --git a/lib/i915/intel_drrs.c b/lib/i915/intel_drrs.c
-index ac8dd5e61d21..5257a6a6a7ca 100644
+index 5257a6a6a7ca..ab32f2b4734f 100644
 --- a/lib/i915/intel_drrs.c
 +++ b/lib/i915/intel_drrs.c
-@@ -25,7 +25,7 @@ bool intel_is_drrs_supported(int device, enum pipe pipe)
+@@ -13,19 +13,19 @@
+ /**
+  * intel_is_drrs_supported:
+  * @device: fd of the device
+- * @pipe: Display pipe
++ * @crtc_index: CRTC index
+  *
+- * Check if DRRS is supported on given pipe.
++ * Check if DRRS is supported on given CRTC index.
+  *
+  * Returns:
+  * true if DRRS is supported and false otherwise.
+  */
+-bool intel_is_drrs_supported(int device, enum pipe pipe)
++bool intel_is_drrs_supported(int device, int crtc_index)
+ {
  	char buf[256];
  	int dir;
  
--	dir = igt_debugfs_pipe_dir(device, pipe, O_DIRECTORY);
-+	dir = igt_debugfs_crtc_dir(device, pipe, O_DIRECTORY);
+-	dir = igt_debugfs_crtc_dir(device, pipe, O_DIRECTORY);
++	dir = igt_debugfs_crtc_dir(device, crtc_index, O_DIRECTORY);
  	igt_require_fd(dir);
  	igt_debugfs_simple_read(dir, "i915_drrs_status", buf, sizeof(buf));
  	close(dir);
+@@ -56,7 +56,7 @@ bool intel_output_has_drrs(int device, igt_output_t *output)
+ 	return strstr(buf, "seamless");
+ }
+ 
+-static void drrs_set(int device, enum pipe pipe, unsigned int val)
++static void drrs_set(int device, int crtc_index, unsigned int val)
+ {
+ 	char buf[2];
+ 	int dir, ret;
 @@ -64,7 +64,7 @@ static void drrs_set(int device, enum pipe pipe, unsigned int val)
  	igt_debug("Manually %sabling DRRS. %u\n", val ? "en" : "dis", val);
  	snprintf(buf, sizeof(buf), "%d", val);
  
--	dir = igt_debugfs_pipe_dir(device, pipe, O_DIRECTORY);
-+	dir = igt_debugfs_crtc_dir(device, pipe, O_DIRECTORY);
+-	dir = igt_debugfs_crtc_dir(device, pipe, O_DIRECTORY);
++	dir = igt_debugfs_crtc_dir(device, crtc_index, O_DIRECTORY);
  	igt_require_fd(dir);
  	ret = igt_sysfs_write(dir, "i915_drrs_ctl", buf, sizeof(buf) - 1);
  	close(dir);
-@@ -123,7 +123,7 @@ bool intel_is_drrs_inactive(int device, enum pipe pipe)
- 	char buf[256];
- 	int dir;
- 
--	dir = igt_debugfs_pipe_dir(device, pipe, O_DIRECTORY);
-+	dir = igt_debugfs_crtc_dir(device, pipe, O_DIRECTORY);
- 	igt_require_fd(dir);
- 	igt_debugfs_simple_read(dir, "i915_drrs_status", buf, sizeof(buf));
- 	close(dir);
-diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
-index a1a6de90e3f3..84c66929dabc 100644
---- a/lib/i915/intel_fbc.c
-+++ b/lib/i915/intel_fbc.c
-@@ -28,7 +28,7 @@ bool intel_fbc_supported_on_chipset(int device, enum pipe pipe)
- 	char buf[FBC_STATUS_BUF_LEN];
- 	int dir;
- 
--	dir = igt_debugfs_pipe_dir(device, pipe, O_DIRECTORY);
-+	dir = igt_debugfs_crtc_dir(device, pipe, O_DIRECTORY);
- 	igt_require_fd(dir);
- 	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
- 	close(dir);
-@@ -45,7 +45,7 @@ static bool _intel_fbc_is_enabled(int device, enum pipe pipe, int log_level, cha
- 	bool print = true;
- 	int dir;
- 
--	dir = igt_debugfs_pipe_dir(device, pipe, O_DIRECTORY);
-+	dir = igt_debugfs_crtc_dir(device, pipe, O_DIRECTORY);
- 	igt_require_fd(dir);
- 	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
- 	close(dir);
-diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-index 40b719545e9b..11f5ee9984ee 100644
---- a/lib/igt_debugfs.c
-+++ b/lib/igt_debugfs.c
-@@ -285,23 +285,23 @@ int igt_debugfs_connector_dir(int device, char *conn_name, int mode)
+@@ -81,49 +81,49 @@ static void drrs_set(int device, enum pipe pipe, unsigned int val)
+ /**
+  * intel_drrs_enable:
+  * @device: fd of the device
+- * @pipe: Display pipe
++ * @crtc_index: CRTC index
+  *
+- * Enable DRRS on given pipe
++ * Enable DRRS on given CRTC index.
+  *
+  * Returns:
+  * none
+  */
+-void intel_drrs_enable(int device, enum pipe pipe)
++void intel_drrs_enable(int device, int crtc_index)
+ {
+-	drrs_set(device, pipe, 1);
++	drrs_set(device, crtc_index, 1);
  }
  
  /**
-- * igt_debugfs_pipe_dir:
-+ * igt_debugfs_crtc_dir:
+  * intel_drrs_disable:
   * @device: fd of the device
-- * @pipe: index of pipe
+- * @pipe: Display pipe
 + * @crtc_index: CRTC index
-  * @mode: mode bits as used by open()
   *
-- * This opens the debugfs directory corresponding to the pipe index on the
-+ * This opens the debugfs directory corresponding to the CRTC index on the
-  * device for use with igt_sysfs_get() and related functions. This is just
-  * syntax sugar for igt_debugfs_open().
+- * Disable DRRS on given pipe
++ * Disable DRRS on given CRTC index.
   *
   * Returns:
-  * The directory fd, or -1 on failure.
+  * none
   */
--int igt_debugfs_pipe_dir(int device, int pipe, int mode)
-+int igt_debugfs_crtc_dir(int device, int crtc_index, int mode)
+-void intel_drrs_disable(int device, enum pipe pipe)
++void intel_drrs_disable(int device, int crtc_index)
  {
- 	char buf[128];
- 
--	snprintf(buf, sizeof(buf), "crtc-%d", pipe);
-+	snprintf(buf, sizeof(buf), "crtc-%d", crtc_index);
- 	return igt_debugfs_open(device, buf, mode);
+-	drrs_set(device, pipe, 0);
++	drrs_set(device, crtc_index, 0);
  }
  
-diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-index 76dbff3e8e7f..2c546f299a43 100644
---- a/lib/igt_debugfs.h
-+++ b/lib/igt_debugfs.h
-@@ -29,14 +29,12 @@
- #include <stdint.h>
- #include <stdio.h>
+ /**
+  * intel_is_drrs_inactive:
+  * @device: fd of the device
+- * @pipe: Display pipe
++ * @crtc_index: CRTC index
+  *
+- * Check if drrs is inactive on given pipe
++ * Check if drrs is inactive on given CRTC index.
+  *
+  * Returns:
+  * true if inactive and false otherwise
+  */
+-bool intel_is_drrs_inactive(int device, enum pipe pipe)
++bool intel_is_drrs_inactive(int device, int crtc_index)
+ {
+ 	char buf[256];
+ 	int dir;
  
--enum pipe;
--
- const char *igt_debugfs_mount(void);
- char *igt_debugfs_path(int device, char *path, int pathlen);
- 
- int igt_debugfs_dir(int device);
- int igt_debugfs_connector_dir(int device, char *conn_name, int mode);
--int igt_debugfs_pipe_dir(int device, int pipe, int mode);
-+int igt_debugfs_crtc_dir(int device, int crtc_index, int mode);
- 
- int igt_debugfs_open(int fd, const char *filename, int mode);
- bool igt_debugfs_is_dir(int drm_fd, const char *name, int gt_id);
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 6508400fd686..a94c4820bd87 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1309,7 +1309,7 @@ int __intel_get_pipe_from_crtc_index(int fd, int crtc_index)
- 	int debugfs_fd, pipe, res = 0;
- 	char pipe_char;
- 
--	debugfs_fd = igt_debugfs_pipe_dir(fd, crtc_index, O_RDONLY);
-+	debugfs_fd = igt_debugfs_crtc_dir(fd, crtc_index, O_RDONLY);
- 
- 	if (debugfs_fd >= 0) {
- 		res = igt_debugfs_simple_read(debugfs_fd, "i915_pipe", buf, sizeof(buf));
-@@ -6649,7 +6649,7 @@ unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe)
- 	int fd, res;
- 	unsigned int current;
- 
--	fd = igt_debugfs_pipe_dir(drmfd, pipe, O_RDONLY);
-+	fd = igt_debugfs_crtc_dir(drmfd, pipe, O_RDONLY);
- 	igt_assert(fd >= 0);
- 
- 	if (is_intel_device(drmfd))
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 7dd52f982d96..cd80ba444cf5 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -1538,7 +1538,7 @@ static void __debugfs_read_crtc(const char *param, char *buf, int len)
- 	enum pipe pipe;
- 
- 	pipe = prim_mode_params.pipe;
--	dir = igt_debugfs_pipe_dir(drm.fd, pipe, O_DIRECTORY);
-+	dir = igt_debugfs_crtc_dir(drm.fd, pipe, O_DIRECTORY);
+-	dir = igt_debugfs_crtc_dir(device, pipe, O_DIRECTORY);
++	dir = igt_debugfs_crtc_dir(device, crtc_index, O_DIRECTORY);
  	igt_require_fd(dir);
- 	igt_debugfs_simple_read(dir, param, buf, len);
+ 	igt_debugfs_simple_read(dir, "i915_drrs_status", buf, sizeof(buf));
  	close(dir);
-diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
-index 6d61df006095..b30dbb1be592 100644
---- a/tests/nouveau_crc.c
-+++ b/tests/nouveau_crc.c
-@@ -369,7 +369,7 @@ int igt_main()
- 			igt_plane_set_fb(data.primary, &data.default_fb);
- 			igt_display_commit(&data.display);
+diff --git a/lib/i915/intel_drrs.h b/lib/i915/intel_drrs.h
+index d4d27a5f9991..1a612d16f6b6 100644
+--- a/lib/i915/intel_drrs.h
++++ b/lib/i915/intel_drrs.h
+@@ -8,10 +8,10 @@
  
--			dir = igt_debugfs_pipe_dir(data.drm_fd, pipe, O_DIRECTORY);
-+			dir = igt_debugfs_crtc_dir(data.drm_fd, pipe, O_DIRECTORY);
- 			igt_require_fd(dir);
- 			data.nv_crc_dir = openat(dir, "nv_crc", O_DIRECTORY);
- 			close(dir);
+ #include "igt.h"
+ 
+-bool intel_is_drrs_supported(int device, enum pipe pipe);
++bool intel_is_drrs_supported(int device, int crtc_index);
+ bool intel_output_has_drrs(int device, igt_output_t *output);
+-void intel_drrs_enable(int device, enum pipe pipe);
+-void intel_drrs_disable(int device, enum pipe pipe);
+-bool intel_is_drrs_inactive(int device, enum pipe pipe);
++void intel_drrs_enable(int device, int crtc_index);
++void intel_drrs_disable(int device, int crtc_index);
++bool intel_is_drrs_inactive(int device, int crtc_index);
+ 
+ #endif
 -- 
 2.47.3
 
