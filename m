@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BCEED2592C
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Jan 2026 04:12:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DD68D2592C
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Jan 2026 04:12:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3027010E24A;
-	Tue, 27 Jan 2026 04:12:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1B8CA10E264;
+	Tue, 27 Jan 2026 04:12:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q/CLMaOs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nPKX31of";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3758F10E1FD
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Jan 2026 04:12:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60A5F10E24C
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Jan 2026 04:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769487135; x=1801023135;
+ t=1769487140; x=1801023140;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=tp1B4pAI5wjlF6LonhBEpuQ9W7gK7fj1dB+lvIv33yU=;
- b=Q/CLMaOsDxbY69pDQgT7H3hR1D3Ehxvvu1ElK3ANnK0ysWlOsMLmYOL9
- CD3XH2e3TTJab+YfRuDfBmvYplDZ19YLhkFpH7wIFj5VRsaF2kztcdZpw
- BzsisWwMVN324gf8yXxT4zz0VN8yc5GZWbBCvBdTr2EikxMWQWorXktLp
- aBEPFFIjEmbwJfvt8QPKBjjRAtBPBi7obakB+HDw+BaB+T/nPqrrd6fbY
- u482hEt6cA1rVMsvpeQGGLks6FZWny9cv9MSAVBFkK707qJBW7tI7DaVH
- PUZDvz42dcRhB5juATHE+M7i5FpJ8vUJCciEfO25cpEQ9FnPCCBrAwpFk Q==;
-X-CSE-ConnectionGUID: B5DXXreMRVq07kvcXE0rdA==
-X-CSE-MsgGUID: 6X3ph7z0RoePq4MWAeH5Yw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="81783908"
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="81783908"
+ bh=5GIIt9NkEuIbMA0z7zF7SrSvDAExeGt5v7kJiRyUXzc=;
+ b=nPKX31of6EyjTIqcrn8onT5Ix1f/o8ECM1EK+i2Q5MXHy9T9rsr3SRIg
+ 6JxTIfB1LSJ8sREMGmpVXbV+rA+0Jdv3B1IegSfRCcMzdz0N8IfbjT6io
+ 6nMGLh40mtc3BXpjRXojnBvOES2R/bituM3AadvS8JXS2SU19tWqbanJE
+ /Exo6GacQrZWrLfQQ/AA+TaU0KGx8yoJEJeSJYMaD69EcxUPmQE9ccWZZ
+ G0RO0VG5rm3Tslca7YUy5jv8xaLp8+Q6RnrS/0axImkEuECcAz1t07xUj
+ Zjoa/EX7UDOSMhK9Uyf3FA+M6octMdmIjaFyQBuHR0d9PsFMOGYDGEQOE g==;
+X-CSE-ConnectionGUID: aHb4GEfuRfWNHcaYK4oabA==
+X-CSE-MsgGUID: z1UffVn+Qwm3HZ6TtEol6Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="81783916"
+X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="81783916"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jan 2026 20:12:15 -0800
-X-CSE-ConnectionGUID: WL6lsZI8T9ucWXPUZBsIHQ==
-X-CSE-MsgGUID: HbtW9D/gQh6nLYR43actYw==
+ 26 Jan 2026 20:12:20 -0800
+X-CSE-ConnectionGUID: taDosL3/TM6F/hvB66iZxw==
+X-CSE-MsgGUID: JGU1AEa0QzSphM/e+gkHxA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="212724474"
+X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="212724500"
 Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jan 2026 20:12:13 -0800
+ 26 Jan 2026 20:12:18 -0800
 From: Sowmiya S <sowmiya.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: swati2.sharma@intel.com, suraj.kandpal@intel.com,
  Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v7 1/9] tests/kms_writeback: Add support for
- intel-specific formats
-Date: Tue, 27 Jan 2026 10:02:25 +0530
-Message-ID: <20260127043233.254107-2-sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v7 4/9] lib/igt_fb: Add helper to get bpc from DRM fourcc
+Date: Tue, 27 Jan 2026 10:02:28 +0530
+Message-ID: <20260127043233.254107-5-sowmiya.s@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260127043233.254107-1-sowmiya.s@intel.com>
 References: <20260127043233.254107-1-sowmiya.s@intel.com>
@@ -69,86 +68,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Integrate BGR formats supported by intel
-into the supported format list and verify
-format before test execution.
-
-v4: Reframe commit message. (Suraj)
+Introduce igt_drm_format_get_bpc, which returns
+the nominal bits per color channel (BPC) for
+common RGB DRM fourcc formats.
 
 Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
 Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
 ---
- tests/kms_writeback.c | 29 +++++++++++++++++++++--------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+ lib/igt_fb.c | 33 +++++++++++++++++++++++++++++++++
+ lib/igt_fb.h |  1 +
+ 2 files changed, 34 insertions(+)
 
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index 0b968baa2..691774777 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -90,6 +90,15 @@ static data_t data;
- enum {
- 	XRGB8888 = 1 << 0,
- 	XRGB2101010 = 1 << 1,
-+	XBGR8888 = 1 << 2,
-+	XBGR2101010 = 1 << 3,
-+};
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 3a1553d48..b3575d266 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -5083,6 +5083,39 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
+ 	return 0;
+ }
+ 
++/**
++ * igt_drm_format_get_bpc: Return bits-per-channel for a DRM fourcc format
++ * @drm_format: drm fourcc code
++ *
++ * Returns the nominal bits-per-color-channel (BPC) for the given @drm_format.
++ * This helper is intended for RGB formats and currently covers common packed
++ * and planar RGB(A/X) variants. Non-RGB formats are not yet handled.
++ * Extend as needed to cover additional FOURCCs (including YUV) by
++ * adding explicit cases.
++ */
++int igt_drm_format_get_bpc(uint32_t drm_format)
++{
++	switch (drm_format) {
++	case DRM_FORMAT_XRGB8888:
++	case DRM_FORMAT_ARGB8888:
++	case DRM_FORMAT_XBGR8888:
++	case DRM_FORMAT_ABGR8888:
++		return 8;
++	case DRM_FORMAT_XRGB2101010:
++	case DRM_FORMAT_ARGB2101010:
++	case DRM_FORMAT_XBGR2101010:
++	case DRM_FORMAT_ABGR2101010:
++		return 10;
++	case DRM_FORMAT_XRGB16161616F:
++	case DRM_FORMAT_XBGR16161616F:
++	case DRM_FORMAT_ARGB16161616F:
++	case DRM_FORMAT_ABGR16161616F:
++		return 16;
++	default:
++		return -1;
++	}
++}
 +
-+const uint32_t fourcc[] = {
-+	DRM_FORMAT_XRGB8888,
-+	DRM_FORMAT_XRGB2101010,
-+	DRM_FORMAT_XBGR8888,
-+	DRM_FORMAT_XBGR2101010,
- };
- 
- static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
-@@ -101,11 +110,6 @@ static bool check_writeback_config(igt_display_t *display, igt_output_t *output,
- 	int width, height, ret;
- 	uint16_t i;
- 
--	const uint32_t fourcc[] = {
--		DRM_FORMAT_XRGB8888,
--		DRM_FORMAT_XRGB2101010,
--	};
--
- 	igt_output_override_mode(output, &override_mode);
- 
- 	width = override_mode.hdisplay;
-@@ -299,7 +303,10 @@ static void fill_fb(igt_fb_t *fb, uint32_t pixel)
- 	uint32_t *ptr;
- 	int64_t pixel_count, i;
- 
--	igt_assert(fb->drm_format == DRM_FORMAT_XRGB8888 || fb->drm_format == DRM_FORMAT_XRGB2101010);
-+	igt_assert(fb->drm_format == DRM_FORMAT_XRGB8888 ||
-+		   fb->drm_format == DRM_FORMAT_XRGB2101010 ||
-+		   fb->drm_format == DRM_FORMAT_XBGR8888 ||
-+		   fb->drm_format == DRM_FORMAT_XBGR2101010);
- 
- 	ptr = igt_fb_map_buffer(fb->fd, fb);
- 	igt_assert(ptr);
-@@ -334,7 +341,8 @@ static void writeback_sequence(igt_output_t *output, igt_plane_t *plane,
- 	uint32_t clear_color = 0xffffffff;
- 	igt_crc_t cleared_crc, out_expected;
- 
--	if (fourcc_color == DRM_FORMAT_XRGB2101010)
-+	if (fourcc_color == DRM_FORMAT_XRGB2101010 ||
-+	    fourcc_color == DRM_FORMAT_XBGR2101010)
- 		in_fb_colors = in_fb_colors_10bits;
- 	else
- 		in_fb_colors = in_fb_colors_8bits;
-@@ -420,7 +428,12 @@ static void writeback_check_output(igt_output_t *output, igt_plane_t *plane,
- static void do_single_commit(igt_output_t *output, igt_plane_t *plane, igt_fb_t *in_fb,
- 			      igt_fb_t *out_fb)
- {
--	uint32_t in_fb_color = 0xffff0000;
-+	uint32_t in_fb_color;
-+
-+	if (data.format == DRM_FORMAT_XRGB8888 || data.format == DRM_FORMAT_XBGR8888)
-+		in_fb_color = 0xffff0000;
-+	else
-+		in_fb_color = 0x3ff00000;
- 
- 	fill_fb(in_fb, in_fb_color);
- 
+ /**
+  * igt_format_is_yuv:
+  * @drm_format: drm fourcc
+diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+index 8e5907dab..844b27ff2 100644
+--- a/lib/igt_fb.h
++++ b/lib/igt_fb.h
+@@ -222,6 +222,7 @@ int igt_cairo_printf_line(cairo_t *cr, enum igt_text_align align,
+ /* helpers to handle drm fourcc codes */
+ uint32_t igt_bpp_depth_to_drm_format(int bpp, int depth);
+ uint32_t igt_drm_format_to_bpp(uint32_t drm_format);
++int igt_drm_format_get_bpc(uint32_t drm_format);
+ const char *igt_format_str(uint32_t drm_format);
+ bool igt_fb_supported_format(uint32_t drm_format);
+ bool igt_format_is_yuv(uint32_t drm_format);
 -- 
 2.43.0
 
