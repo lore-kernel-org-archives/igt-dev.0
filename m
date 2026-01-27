@@ -4,52 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CF56CA6C9D
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Jan 2026 08:50:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4E6FCA6C9D
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Jan 2026 08:51:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ADB2210E00B;
-	Tue, 27 Jan 2026 08:50:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 68D1510E01F;
+	Tue, 27 Jan 2026 08:51:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z5z/YCbH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mBRFHj5a";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6A9D10E00B
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Jan 2026 08:50:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C64010E01F
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Jan 2026 08:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769503832; x=1801039832;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=1d0v8UV8Nl5QD41bpPmrXFAJPtMMucaAvSi1YZvp0mQ=;
- b=Z5z/YCbHeqb42OtT7wrPhv4qyisR6TJQjzQ5JYkhw+DnZINnKtOVc+U5
- Bi/O7zGs1ZRlXyGnzdcJotZNw44tUk/g/8SI3kVzK5hrjc+rkWjZKyk0D
- N3kN7rYQVX9yGxv71pMk3HRNckwtUlo0XtyL4XyJ2BI7hMLs0QjbMUeU1
- HIcyrxe58whInlIwXRtaqZ0QSyyl7ObAao1ymKdnN3jxoUJpwBXcc3LSR
- L/EXvDMuRhZcjUTXC9Q8w1RZFm8kr2noJNoQVk121Nq7hoxb4LNUYuCAc
- P/DJuJUam3zB/OyWX1TqZSARNa+Fo0RT7BdSDLDp3H1dacbfnBbqmhQFD g==;
-X-CSE-ConnectionGUID: +DAl8pKBRVi6JrARGHNmIA==
-X-CSE-MsgGUID: OovM5NrGQS2O35Wr6Z8Zmw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="70595894"
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="70595894"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2026 00:50:30 -0800
-X-CSE-ConnectionGUID: E4eJ4q/7SP2QT2Uh4zt6bg==
-X-CSE-MsgGUID: n3gfCWXmSqWa6Rumfh1txQ==
+ t=1769503866; x=1801039866;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=R9887Sy5A7gudcTKcX/uZ4PQDGacbaCdEoLmU3g+7Og=;
+ b=mBRFHj5aKtaWtpVHR8mujGrkhgJKsWoxHg12JpdgU7OP9DwQZjjbivwk
+ u8sQaxhQnNd12oip7jvbFJVewBraPJVCmiF1SWvi3Nh29P0aCD/LoMGlm
+ HvVv4a73r8IuF7n/tAWVi17TZGZJ7pwU55RluggYYvoJBr7ZL7thhGks2
+ PiXeFfB3QGgLW8CzMGrGYy2ohVn1ePbMPAIwcrQaTwKRYSdR+uWyMXg19
+ Nu/mvBE+wiG2w5ccLvHGy7a3ARJJSu8OybVmzkIFRCoISZXMIUVasVaGu
+ h8NBQONw0DYDTHcTiUY46qXVpXgqdHvsDrjNveXN/cEhnp/B586SjwZPK A==;
+X-CSE-ConnectionGUID: N9bV3I+EQBaC5mw8z1R7pA==
+X-CSE-MsgGUID: 2xKTWfy2Tnmnq+gk2eZypA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="70751942"
+X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="70751942"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jan 2026 00:51:05 -0800
+X-CSE-ConnectionGUID: xO30ORW6Qwic10URyPDLGg==
+X-CSE-MsgGUID: sblhQ2cUR7m7RMrNlr8fIQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="245526470"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2026 00:50:27 -0800
-From: Kunal Joshi <kunal1.joshi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t] tests/kms_pipe_crc_basic: add mst suspend-resume test
-Date: Tue, 27 Jan 2026 14:41:46 +0530
-Message-Id: <20260127091146.2212514-1-kunal1.joshi@intel.com>
-X-Mailer: git-send-email 2.25.1
+X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; d="scan'208";a="207720803"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jan 2026 00:51:05 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Tue, 27 Jan 2026 00:51:04 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Tue, 27 Jan 2026 00:51:04 -0800
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.0) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Tue, 27 Jan 2026 00:51:04 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FK7Vo1/R89Z1lbrtaEnDzppBYkkRyW7yXY6iVcOt2EIRTcRTnzyTN5scizuNVTCjFAMmnT5xtvEBi98ZztR/DOt8xeIYdQyn2/wnm/Qk2UHxhYFjooa7oVaaIocBQNz0UYU9VV9un4hX4aZu96ON2rSe2igoWqjEDBrHtBDdCAWj7b9s1qpeog21QIbGo8981sVeffbJMBqBP1XGX/utdIGstmKxKT1lCLDKAXHLUuk5lcUBqQZFHwvG2N48lmiVKHPBdsEzsaY13FQuRJicR/4235JrTCiAK1rkheEDBTWzwtMZLgjPmVNYwlN2C9BukT6hLH65pGuQzhlHZSAkBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6YaOXn6yBHU9rAcy2Qgkm0f+kQ1CNMC5tjEKQyPFUPg=;
+ b=GtxzAKljFjAFgDkZWFGjnZrdCfZuR3UvY506iQA1xOabDOX+NtUGGdDg6MF7D6i64F9ANDOnbMkRr44kVGRub3D67RoL38HbTSUHmaz6JOGGuSFomPwaMyrcHibnFZ97S56XctAaDWPtNgbl6uSmCChK2DSP0iutbS7In8B5NU14W/7289+nMokP5DpP5xwJWWu2jhJYImBit7s7bG/7QUanDJ5Mv0/9k4TvJ5ZhNd6Sq41Q3q7UhF1939BO1xJ6UE0a5vAT/4A4AjgJgA5/n6VIGUnifCt31p6ZqlFGHcqgs3XoSpk0DSf10oYBwAbmdNIzPtSAtH34FXiCZig74w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN0PR11MB6034.namprd11.prod.outlook.com (2603:10b6:208:375::17)
+ by CYXPR11MB8754.namprd11.prod.outlook.com (2603:10b6:930:dc::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.16; Tue, 27 Jan
+ 2026 08:51:01 +0000
+Received: from MN0PR11MB6034.namprd11.prod.outlook.com
+ ([fe80::eec5:c441:1afe:cb73]) by MN0PR11MB6034.namprd11.prod.outlook.com
+ ([fe80::eec5:c441:1afe:cb73%5]) with mapi id 15.20.9542.010; Tue, 27 Jan 2026
+ 08:51:01 +0000
+From: "Bilal, Mohammed" <mohammed.bilal@intel.com>
+To: "S, Sowmiya" <sowmiya.s@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+CC: "Sharma, Swati2" <swati2.sharma@intel.com>, "Kandpal, Suraj"
+ <suraj.kandpal@intel.com>, "S, Sowmiya" <sowmiya.s@intel.com>
+Subject: RE: [PATCH i-g-t v7 6/9] tests/kms_writeback: Refactor
+ writeback-fb-id subtest
+Thread-Topic: [PATCH i-g-t v7 6/9] tests/kms_writeback: Refactor
+ writeback-fb-id subtest
+Thread-Index: AQHcj0M4jC0jI4QLS0KEjhrkYbyGcbVls+8Q
+Date: Tue, 27 Jan 2026 08:51:01 +0000
+Message-ID: <MN0PR11MB6034A3B5821AA60936C59C8E8190A@MN0PR11MB6034.namprd11.prod.outlook.com>
+References: <20260127043233.254107-1-sowmiya.s@intel.com>
+ <20260127043233.254107-7-sowmiya.s@intel.com>
+In-Reply-To: <20260127043233.254107-7-sowmiya.s@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR11MB6034:EE_|CYXPR11MB8754:EE_
+x-ms-office365-filtering-correlation-id: 0ebedc8f-b80a-4b0e-ba6c-08de5d813270
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|1800799024|376014|366016|38070700021|7053199007; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?RO7+uhyqOXfqv8o0wqXEiyeHzh5M1xFfk1NNYj/Voj4FLfDB6e+2JOTyjx6o?=
+ =?us-ascii?Q?rsHcVWhVusCazV2Fexj0gjLJl+GETAWuuOog1/y6v6Hwf1ui0XQyrQRlFr/A?=
+ =?us-ascii?Q?3C3c97UTJZKAFlBGxkakjUPx349dpV1k5k6sgBjC5Z03ypHH1iFioDI3CuwR?=
+ =?us-ascii?Q?PetHqV5qY12uIYFdvnx7ewa+xT/t3lIc+1bTHE5LOQ0FXXDIt4wZ0m265TNL?=
+ =?us-ascii?Q?aLgHMdEPJ7TLzAi2T3CmjNiKCi2CRY9A0gc65xGutT628AtuYv7V0jhtKP+A?=
+ =?us-ascii?Q?5cIh7MLH9qprE3mhINzMg+NWUWGWhsRP2mXeJQJnSwlsO3yazyIRj/OXcZQR?=
+ =?us-ascii?Q?fbi0Ztloz8WC7aG3FO6FXHgVEWaC4fVstFeKKbCrY6XhbFPSSbbNPpbhn0dK?=
+ =?us-ascii?Q?NL9aOHJdFsXjXDJEwFQOR1I675ecXAfUAtKIS/IzaL6kHJK/iqOVoZYjs5YL?=
+ =?us-ascii?Q?XwpqODlZsGOFMnkpPjL5qou57vao1Io5GcWofE7Jf7v1cIK0SXccT75dU1XY?=
+ =?us-ascii?Q?EsFUhDj9H4XqLF2RiB0V0D9R6qzCy9qfI7CR/2yS9vxIt1dN2ScBtom9XwPn?=
+ =?us-ascii?Q?eBlGnKiX4E9zdKiJmnLR+pKuMJxNCoWm2CB5zYTaxp4jiBOOq2ahJQU/Rcw/?=
+ =?us-ascii?Q?tz1U/zvq2AvoTiSU753cDBjtvswjC+NkzQ7vAKo1TPIFNdPMtElpDc+6hYvh?=
+ =?us-ascii?Q?8tBa33gZunQtByhUlIkjN1tXoLXKca1eVKEt/EmLR1MBugLlY2gbwMcgV84a?=
+ =?us-ascii?Q?gekhihJdWr47mjKtfk+XWtrJybXkMpHAttOmfiJowD2wT0fPfzSCpGyfHMnZ?=
+ =?us-ascii?Q?3FuQsDRqLAvAJisfUoGSRqnRs75pVbfdutMXVl7di6aGtVcb3cSzaGamItGA?=
+ =?us-ascii?Q?W1lLlEFJgROnpvAspJXDGMdB0FYgb6M6gXbBBlLkwY0If8i7gZmHKrci3dHH?=
+ =?us-ascii?Q?8dpvSSKD9beAL4bkJseoGFFuteSca+rpD518B47odmAb/F25+6S5bXYgpM8R?=
+ =?us-ascii?Q?WdJjOKcoByl+c7LRnyZfTpTgM1qZ5D1ZEXEcjGLZLpJCXtP/OQ/NrW4XWjwd?=
+ =?us-ascii?Q?7A+T4Of1YbeOTduCXNu3YzPp+w4JW55ki7PRgZjsXzuYfWcFHbIsBBv3c8Xl?=
+ =?us-ascii?Q?nF+ACdluNNG1NYsz3DW/YlEG9Um8NaFGG81Ucns7sBvITV2j0uayfyowhFsi?=
+ =?us-ascii?Q?vfuyyYuiGUHHgtxoTgj5lRIqiLp1NJ94RfVDmxxJDRZt1ycNeQd5/4bgffPi?=
+ =?us-ascii?Q?LfyQbi0D6nEqJkBdw2lilq/QVC2y+FgX2+82CTeeGxV7zc78qE1YjhIdR1c6?=
+ =?us-ascii?Q?C4e5KlF86fskdq5TqjqlnN9FkGEpKM4mHtI0tqF4iyVoo8E2ZiMLFOf+HvFi?=
+ =?us-ascii?Q?a2TczThMsfn1aLUrYFds58aN8nByWrFxqOz019iCr20Mkv6bS8owRti7aU41?=
+ =?us-ascii?Q?DdrqrHXtIB7bPEDR60z8z+WtmO5Tk8/ohuJKhrp5bMan3qIR0AoD3PBMKKq+?=
+ =?us-ascii?Q?ob72CWJsuEiZhfsQg1Wb6zUSduGDm7KJqQvKm4h/rrhXsmfQPH+aRjMSfWi3?=
+ =?us-ascii?Q?E7YG/b2b6JO29PDr7KFUXFhw5RnxU5M4Ch6oAYb8NuIt5BSaAtcAR3jBerhX?=
+ =?us-ascii?Q?Iizzd+5PrPVynUgcUXhlu0c=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MN0PR11MB6034.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(38070700021)(7053199007); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?qsr4dlB1Fwh+e4OzL4NDS4Ve/UUOs/I2Bvqaq4dMTxPBKqSXE0bNpl0MApQK?=
+ =?us-ascii?Q?/szBE9inoFv1h0ApiKtQvh6yqBfxVadqjq7MZyqaDTh6qPTkkae+IVCWuUKd?=
+ =?us-ascii?Q?t+g9U4fQ+xi+sqgsjes93JaVSTGXdK40vBUqrHRg9Ca2Cf0I8a7qG/u169ys?=
+ =?us-ascii?Q?qljQebFLoE7cv1L2WgIrBbt4p98OAeNhDg3teg89xHEHbhFSHxKcJ2w68xqG?=
+ =?us-ascii?Q?hc+Bvleo16zwvGHjQ+REoZbH40og4ezKOi46MuFmC7NLRFKklnPvzVkzOE+p?=
+ =?us-ascii?Q?vmepsh6CUUr+RnKhqzjXibiRa7/vJd5DXgoJAAMkQl6NXg8BCHHMoKYSQsgJ?=
+ =?us-ascii?Q?yimV/tXg25fmPk04rniq70klbTpngKODGb3C5odp1+c93+nZoMoerPT8ElOI?=
+ =?us-ascii?Q?FaNxz6KzVRtclpBXdf7co6JCp3HQ0Ni2kGrkXC3sQuSSuI+hnTkn/sD1GwpU?=
+ =?us-ascii?Q?xGWP0Aiy2QoeDNCdANGOG9+cjcaXiAD/MKXHf5vQtezfKN9zjDkSAiZB2RbL?=
+ =?us-ascii?Q?hiIFkALxkGsrO1u7Nw3iY9OUofBi1QGUVVxfVshz2yiHA88G5Q5ygwx6Qm5j?=
+ =?us-ascii?Q?3L/PDDVp05B7346o0TraiQD/hanj4U1Ow0aXzM5wmq+9r97BNdtCSkUJudPs?=
+ =?us-ascii?Q?aQMmUbwPsoGulxDbFM5fXw6jhm+Em9foycR6vv1f4911J6WAOMX2UNftKFwV?=
+ =?us-ascii?Q?6AfLjtZETVyGqcDh79O3uVzisDSpYFSJ6tlwcu4gto+hESREF2TmW88RiYvV?=
+ =?us-ascii?Q?FMrvrhjvvTpS1O3NXgAx69HiBQZC/CnhK5mk/6JKnRCj7eGuYEFZ4C5p+wJh?=
+ =?us-ascii?Q?FuPCctzRKyNEPpVapmiGPsFH3xTuQxGkJh+kwnoJiOUERq981M6CyaMyfYtU?=
+ =?us-ascii?Q?K/rtEgdT7uZASO6N2P+x5kta80cyQ1CntXMatz1ogZFqmrwTM3QES+HJrgWK?=
+ =?us-ascii?Q?goCgIHCV7ypUIcdDnBi1yv7HAITQ7BmDkeLg0EOrUUFgiLsvxMaIwp/2CrMY?=
+ =?us-ascii?Q?InNdMXQA0vRGjHADTY5zo8otrlYR7f66j1rAmtm3ngHRB342STE3Fzx/uLiv?=
+ =?us-ascii?Q?qvxcYPQ1KCcBB9dyafVdHQAR6qrAuXZR0udqIKyPhVN4PySYvHROb4BvajRg?=
+ =?us-ascii?Q?15FA8KMojxpdsS0LY5bAyN22hc0vU7srI4OtrebFl06RCxga/622aXU1/+si?=
+ =?us-ascii?Q?lSUv4pK9KSiU2cdLk1DoCSPPnf2YAHSMAbLqkMmXkGq1iSC9lNdWW6WuVV+a?=
+ =?us-ascii?Q?L0yd6WhdpwDxGgBiq9tIHoY13YVQPj0E5wO2aKrVjqGDjAxMsF2N74Je5OMr?=
+ =?us-ascii?Q?m7j1VBCmQl9NzyJ7xe1pFVSB70IoGMvh2CwTVdNOx+ah3OFGzSzAkSna5Dc+?=
+ =?us-ascii?Q?atBzjTbkbwtegwtG8ePKAnmeKQflMMr9uXwLLNvmWJMvD16+QnmJZaB4T8PJ?=
+ =?us-ascii?Q?J46VJG7HBpvBY4RpICPKdMqJ91ICP8hjRtrFy9e1KtOjf5KkXRWpXnB1wq8D?=
+ =?us-ascii?Q?pwR7NUrMh+t/BRZhk/azQgDJxCoazH/U1YzCTf+GsPrrQQfir2YrDQcnJCrf?=
+ =?us-ascii?Q?8Dv/uIJ9tZTFAUibW5YTA5I6k9f1sbCEa7LHpcNZTiW/AY2rybgJlSqac7Nv?=
+ =?us-ascii?Q?QG+GMwfaVOCrj/eYBcopaponG3OQXujKuuxaLm+uqO2t+MQMNjgMjLydg74I?=
+ =?us-ascii?Q?SbaxiCGWllgvaX6DOKv9boVVRawjFnFVEFy6qlKIef1+V7eqoAHiUKwhU0Os?=
+ =?us-ascii?Q?oAhUHahyJw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB6034.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0ebedc8f-b80a-4b0e-ba6c-08de5d813270
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jan 2026 08:51:01.1416 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: G2FuZ8GgZtMKrsfhqqOi0glY6YCzCiEgY4mg8u6lxDcjNNZgeXFs0paeJkFD3ia76ZPcc1KP+WqM3ChozJ0TI2cYyKvdHez99IQvo+8hQlE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR11MB8754
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,295 +191,135 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend kms_pipe_crc_basic with an MST-specific
-suspend-resume subtest.
+Hi Sowmiya ,
 
-mst-suspend-read-crc subtest does below:
--> Enumerates MST topologies using the PATH-based helpers.
--> Builds all non-empty subsets of up to MAX_MST_OUTPUT
-   outputs per topology.
--> Assigns pipes in a joiner-aware way and enforces
-   link bandwidth limits.
--> Asserts that pre and post-suspend CRCs match for each
-   tested subset.
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Sowmiy=
+a S
+> Sent: 27 January 2026 10:03
+> To: igt-dev@lists.freedesktop.org
+> Cc: Sharma, Swati2 <swati2.sharma@intel.com>; Kandpal, Suraj
+> <suraj.kandpal@intel.com>; S, Sowmiya <sowmiya.s@intel.com>
+> Subject: [PATCH i-g-t v7 6/9] tests/kms_writeback: Refactor writeback-fb-=
+id
+> subtest
+>=20
+> Remove individual tests for each format for the test writeback-fb-id and
+> introduce dynamic subtest generation based on the formats supported.
+> Framebuffer creation was now part of the subtest level based on format.
+>=20
+> v4: squashed the FB creation function with this commit (Suraj)
+> v5: -Update dynamic subtest documentation (Suraj)
+>     -Rename input_fb to in_fb
+>     -Set plane to in_fb and remove unused input_fb as an arg to
+>      writeback-fb-id function.
+> v6: -Remove in_fb inside subtest and reuse input_fb from
+>      fixture (Suraj)
+> v7: -Join nested if conditions (Suraj)
+>=20
+> Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
+> ---
+>  tests/kms_writeback.c | 56 ++++++++++++++++++-------------------------
+>  1 file changed, 23 insertions(+), 33 deletions(-)
+>=20
+> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c index
+> 63917bf4f..58118b8da 100644
+> --- a/tests/kms_writeback.c
+> +++ b/tests/kms_writeback.c
+> @@ -51,9 +51,6 @@
+>   * SUBTEST: writeback-check-output
+>   * Description: Check writeback output with CRC validation
+>   *
+> - * SUBTEST: writeback-fb-id-XRGB2101010
+> - * Description: Validate WRITEBACK_FB_ID with valid and invalid options
+> - *
+>   * SUBTEST: writeback-fb-id
+>   * Description: Validate WRITEBACK_FB_ID with valid and invalid options
+>   *
+> @@ -700,37 +697,30 @@ int igt_main_args("b:c:f:dl", long_options, help_st=
+r,
+> opt_handler, NULL)
+>  	}
+>=20
+>  	igt_describe("Validate WRITEBACK_FB_ID with valid and invalid
+> options");
+> -	igt_subtest("writeback-fb-id") {
+> -		igt_fb_t output_fb;
+> -
+> -		igt_skip_on(data.dump_check || data.list_modes);
+> -		igt_skip_on_f(!(data.supported_colors &
+> XRGB8888),"DRM_FORMAT_XRGB8888 is unsupported\n");
+> -		fb_id =3D igt_create_fb(display.drm_fd, mode.hdisplay,
+> mode.vdisplay,
+> -				      DRM_FORMAT_XRGB8888,
+> -				      DRM_FORMAT_MOD_LINEAR,
+> -				      &output_fb);
+> -		igt_require(fb_id > 0);
+> -
+> -		writeback_fb_id(output, &input_fb, &output_fb);
+> -
+> -		igt_remove_fb(display.drm_fd, &output_fb);
+> -	}
+> +	igt_subtest_with_dynamic_f("writeback-fb-id") {
+> +		for (int i =3D 0; i < ARRAY_SIZE(fourcc); i++) {
+> +			uint32_t test_format =3D fourcc[i];
+> +			int bpc =3D igt_drm_format_get_bpc(test_format);
+>=20
+> -	igt_describe("Validate XRGB2101010 WRITEBACK_FB_ID with valid and
+> invalid options");
+> -	igt_subtest("writeback-fb-id-XRGB2101010") {
+> -		igt_fb_t output_fb;
+> -
+> -		igt_skip_on(data.dump_check || data.list_modes);
+> -		igt_skip_on_f(!(data.supported_colors & XRGB2101010),
+> "DRM_FORMAT_XRGB2101010 is unsupported\n");
+> -		fb_id =3D igt_create_fb(display.drm_fd, mode.hdisplay,
+> mode.vdisplay,
+> -				      DRM_FORMAT_XRGB2101010,
+> -				      DRM_FORMAT_MOD_LINEAR,
+> -				      &output_fb);
+> -		igt_require(fb_id > 0);
+> -
+> -		writeback_fb_id(output, &input_fb_10bit, &output_fb);
+> -
+> -		igt_remove_fb(display.drm_fd, &output_fb);
+> +			if (is_intel_device(display.drm_fd) &&
+> +			    (!strstr(igt_format_str(test_format), "BGR")))
+> +				continue;
+> +			igt_dynamic_f("writeback-fb-id-%s",
+> igt_format_str(test_format)) {
+> +				igt_fb_t output_fb;
+> +
+> +				fb_id =3D igt_create_fb(display.drm_fd,
+> mode.hdisplay, mode.vdisplay,
+> +
+> get_default_fb_format(&display, bpc),
+> +						      igt_fb_mod_to_tiling(0),
+> +						      &output_fb);
+> +
 
-v2:
-- Add error handling for igt_pipe_crc_new (Thasleem)
-- Improve log format with index for clarity (Thasleem)
-- Order declarations in decreasing line length (Thasleem)
-- Add print message when no MST found (Thasleem)
-- Add bounds check for idx in subset loop (Thasleem)
-- Use igt_crtc_crc_new() instead of igt_pipe_crc_new() (Ville)
+Framebuffer created before skip checks. If test skips,=20
+igt_remove_fb() won't be called and framebuffer leaks. Suggest checking=20
+skip conditions first.
 
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
----
- tests/kms_pipe_crc_basic.c | 217 +++++++++++++++++++++++++++++++++++++
- tests/meson.build          |   3 +
- 2 files changed, 220 insertions(+)
+> +				igt_skip_on(data.dump_check ||
+> data.list_modes);
+> +				igt_skip_on_f(!(data.supported_colors & (1 <<
+> i)),
+> +					      "DRM_FORMAT_%s is not
+> supported\n",
+> +					      igt_format_str(test_format));
+> +				writeback_fb_id(output, &input_fb,
+> &output_fb);
+> +				igt_remove_fb(display.drm_fd, &output_fb);
+> +			}
+> +		}
+>  	}
+>=20
+>  	igt_describe("Check writeback output with CRC validation");
+> --
+> 2.43.0
 
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index fb2f5f8eb..6a4c3d9aa 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -32,6 +32,8 @@
- 
- #include "igt.h"
- #include "igt_sysfs.h"
-+#include "intel/kms_mst_helper.h"
-+#include "intel/kms_joiner_helper.h"
- #include <errno.h>
- #include <stdbool.h>
- #include <stdio.h>
-@@ -77,6 +79,11 @@
-  *              CRTC does not cause issues.
-  */
- 
-+/**
-+ * SUBTEST: mst-suspend-read-crc
-+ * Description: MST suspend test for pipe CRC reads.
-+ */
-+
- static bool extended;
- static enum pipe active_pipes[IGT_MAX_PIPES];
- static uint32_t last_pipe;
-@@ -96,6 +103,205 @@ static struct {
- 	{ .r = 0.0, .g = 1.0, .b = 1.0 },
- };
- 
-+#define MAX_MST_OUTPUT 3
-+
-+static void collect_single_crc(igt_crtc_t *crtc, igt_crc_t *crc)
-+{
-+	igt_pipe_crc_t *pipe_crc;
-+
-+	pipe_crc = igt_crtc_crc_new(crtc, IGT_PIPE_CRC_SOURCE_AUTO);
-+	igt_assert(pipe_crc);
-+	igt_pipe_crc_collect_crc(pipe_crc, crc);
-+	igt_pipe_crc_free(pipe_crc);
-+}
-+
-+static void collect_crc_for_active_outputs(igt_display_t *display,
-+					   igt_output_t **outputs,
-+					   int num_outputs,
-+					   igt_crc_t *crcs)
-+{
-+	int i;
-+
-+	for (i = 0; i < num_outputs; i++) {
-+		igt_output_t *output = outputs[i];
-+		enum pipe pipe = output->pending_pipe;
-+		igt_crtc_t *crtc;
-+
-+		igt_assert(pipe >= 0 && pipe < IGT_MAX_PIPES);
-+		crtc = igt_crtc_for_pipe(display, pipe);
-+		collect_single_crc(crtc, &crcs[i]);
-+	}
-+}
-+
-+static void run_mst_subset_and_verify(igt_display_t *display,
-+				      igt_output_t **active_outputs,
-+				      int num_active,
-+				      int n_pipes,
-+				      uint32_t master_pipes_mask,
-+				      uint32_t valid_pipes_mask)
-+{
-+	int a;
-+	igt_crc_t pre_crcs[IGT_MAX_PIPES];
-+	igt_crc_t post_crcs[IGT_MAX_PIPES];
-+	uint32_t used_pipes_mask = 0;
-+	enum igt_suspend_test stest = SUSPEND_TEST_NONE;
-+	int drm_fd = display->drm_fd;
-+
-+	igt_require_f(num_active <= n_pipes,
-+		      "Not enough pipes for MST subset\n");
-+
-+	igt_require(igt_assign_pipes_for_outputs(drm_fd,
-+						 active_outputs,
-+						 num_active,
-+						 n_pipes,
-+						 &used_pipes_mask,
-+						 master_pipes_mask,
-+						 valid_pipes_mask));
-+
-+	igt_require_f(igt_fit_modes_in_bw(display),
-+		      "Unable to fit modes in bw\n");
-+
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	igt_info("MST subset: %d outputs, n_pipes=%d\n",
-+		 num_active, n_pipes);
-+	for (a = 0; a < num_active; a++) {
-+		igt_output_t *o = active_outputs[a];
-+		drmModeModeInfo *m = igt_output_get_mode(o);
-+
-+		igt_info("[%d] PRE-SUSPEND: output %s -> pipe %s, mode %dx%d@%d\n",
-+			 a, o->name,
-+			 kmstest_pipe_name(o->pending_pipe),
-+			 m ? m->hdisplay : -1,
-+			 m ? m->vdisplay : -1,
-+			 m ? m->vrefresh : 0);
-+	}
-+
-+	collect_crc_for_active_outputs(display,
-+				       active_outputs,
-+				       num_active,
-+				       pre_crcs);
-+
-+	for (a = 0; a < num_active; a++) {
-+		char *s = igt_crc_to_string(&pre_crcs[a]);
-+
-+		igt_info(" pre: output %s CRC %s\n",
-+			 active_outputs[a]->name, s);
-+		free(s);
-+	}
-+
-+	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, stest);
-+
-+	collect_crc_for_active_outputs(display,
-+				       active_outputs,
-+				       num_active,
-+				       post_crcs);
-+
-+	for (a = 0; a < num_active; a++) {
-+		igt_output_t *o = active_outputs[a];
-+		drmModeModeInfo *m = igt_output_get_mode(o);
-+		char *s_post = igt_crc_to_string(&post_crcs[a]);
-+
-+		igt_info("[%d] POST-SUSPEND: output %s -> pipe %s, CRC %s, mode %dx%d@%d\n",
-+			 a, o->name,
-+			 kmstest_pipe_name(o->pending_pipe),
-+			 s_post,
-+			 m ? m->hdisplay : -1,
-+			 m ? m->vdisplay : -1,
-+			 m ? m->vrefresh : 0);
-+		free(s_post);
-+	}
-+
-+	for (a = 0; a < num_active; a++)
-+		igt_assert_crc_equal(&pre_crcs[a], &post_crcs[a]);
-+}
-+
-+static void mst_suspend_read_crc(igt_display_t *display)
-+{
-+	int n_pipes = igt_display_n_crtcs(display);
-+	igt_output_t *active_outputs[MAX_MST_OUTPUT];
-+	igt_output_t *mst_outputs[MAX_MST_OUTPUT];
-+	int traversed_roots[IGT_MAX_PIPES];
-+	int drm_fd = display->drm_fd;
-+	uint32_t valid_pipes_mask = 0;
-+	int num_mst, i, num_active;
-+	uint32_t master_pipes_mask;
-+	igt_output_t *output;
-+	int num_roots = 0;
-+
-+	for (i = 0; i < IGT_MAX_PIPES; i++) {
-+		if (display->pipes[i].valid)
-+			valid_pipes_mask |= BIT(i);
-+	}
-+
-+	igt_set_all_master_pipes_for_platform(display, &master_pipes_mask);
-+
-+	for_each_connected_output(display, output) {
-+		int root_id;
-+		bool root_seen = false;
-+
-+		root_id = igt_get_dp_mst_connector_id(output);
-+		if (root_id < 0) {
-+			igt_info("Skipping non-mst output %s\n", output->name);
-+			continue;
-+		}
-+
-+		for (i = 0; i < num_roots; i++)
-+			if (traversed_roots[i] == root_id)
-+				root_seen = true;
-+
-+		if (root_seen)
-+			continue;
-+
-+		num_mst = 0;
-+		igt_require(igt_find_all_mst_output_in_topology(drm_fd, display,
-+								output, mst_outputs,
-+								&num_mst) == 0);
-+		if (num_mst == 0) {
-+			igt_info("No MST outputs found in topology for output %s\n",
-+				 output->name);
-+			igt_skip("No MST outputs found in topology\n");
-+		}
-+
-+		if (num_roots < IGT_MAX_PIPES)
-+			traversed_roots[num_roots++] = root_id;
-+
-+		if (num_mst > MAX_MST_OUTPUT)
-+			num_mst = MAX_MST_OUTPUT;
-+
-+		/* In future if we can print name of MST hub will be great */
-+		igt_dynamic_f("mst-topo-%d", num_roots) {
-+			int mask;
-+
-+			for (mask = 1; mask < (1 << num_mst); mask++) {
-+				int bit, idx = 0;
-+
-+				/* build subset for this bitmask */
-+				for (bit = 0; bit < num_mst; bit++) {
-+					if (!(mask & (1 << bit)))
-+						continue;
-+
-+					if (idx >= MAX_MST_OUTPUT)
-+						break;
-+
-+					active_outputs[idx++] = mst_outputs[bit];
-+				}
-+
-+				num_active = idx;
-+				if (!num_active)
-+					continue;
-+
-+				igt_display_reset(display);
-+
-+				run_mst_subset_and_verify(display, active_outputs,
-+							  num_active, n_pipes,
-+							  master_pipes_mask,
-+							  valid_pipes_mask);
-+			}
-+		}
-+	}
-+}
-+
- static bool simulation_constraint(enum pipe pipe)
- {
- 	if (igt_run_in_simulation() && !extended &&
-@@ -456,6 +662,17 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 		}
- 	}
- 
-+	igt_describe("MST suspend test for pipe CRC reads.");
-+	igt_subtest_with_dynamic("mst-suspend-read-crc") {
-+		bool found_mst_output = false;
-+
-+		for_each_connected_output(&data.display, output)
-+			found_mst_output = found_mst_output |
-+					   igt_check_output_is_dp_mst(output);
-+		igt_require_f(found_mst_output, "Need at least 1 MST output\n");
-+		mst_suspend_read_crc(&data.display);
-+	}
-+
- 	igt_describe("Check that disabling CRCs on a CRTC after having disabled the CRTC "
- 		     "does not cause issues.");
- 	igt_subtest_with_dynamic("disable-crc-after-crtc") {
-diff --git a/tests/meson.build b/tests/meson.build
-index 0ad728b87..0675e2dfd 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -398,6 +398,9 @@ extra_sources = {
- 	'kms_dsc': [ join_paths ('intel', 'kms_dsc_helper.c') ],
- 	'kms_joiner': [ join_paths ('intel', 'kms_joiner_helper.c') ],
- 	'kms_psr2_sf':  [ join_paths ('intel', 'kms_dsc_helper.c') ],
-+        'kms_pipe_crc_basic': [
-+           join_paths ('intel', 'kms_mst_helper.c'),
-+           join_paths ('intel', 'kms_joiner_helper.c') ],
- }
- 
- # Extra dependencies used on core and Intel drivers
--- 
-2.25.1
+Regards ,
+Mohammed Bilal.
 
