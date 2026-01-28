@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AF89D25B48
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 12:45:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5703FD25B53
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 12:45:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3BC8B10E6C3;
-	Wed, 28 Jan 2026 12:45:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0801110E6C3;
+	Wed, 28 Jan 2026 12:45:54 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6373910E6C3;
- Wed, 28 Jan 2026 12:45:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB0E510E6C3;
+ Wed, 28 Jan 2026 12:45:52 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6761906850823260416=="
+ boundary="===============9017858816083741467=="
 MIME-Version: 1.0
 Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_xe=5Feudebug=5Fonline=3A_Fi?=
  =?utf-8?q?x_test=5Finterrupt=5Fother_wait_logic_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Piotr Rudnicki" <piotr.rudnicki@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 28 Jan 2026 12:45:43 -0000
-Message-ID: <176960434340.200099.13448160382466744809@a3b018990fe9>
+Date: Wed, 28 Jan 2026 12:45:52 -0000
+Message-ID: <176960435283.200099.12699817422644113740@a3b018990fe9>
 X-Patchwork-Hint: ignore
 References: <20260128101529.401653-4-piotr.rudnicki@intel.com>
 In-Reply-To: <20260128101529.401653-4-piotr.rudnicki@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6761906850823260416==
+--===============9017858816083741467==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,7 +113,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14435/index.html
 
---===============6761906850823260416==
+--===============9017858816083741467==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -178,4 +178,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============6761906850823260416==--
+--===============9017858816083741467==--
