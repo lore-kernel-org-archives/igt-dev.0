@@ -4,58 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6BE8D358E9
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Jan 2026 09:29:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F0BCD358F1
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Jan 2026 09:51:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9AC6810E809;
-	Thu, 29 Jan 2026 09:29:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BA8E010E127;
+	Thu, 29 Jan 2026 09:51:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A2Gvzoo3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aUkrvmlo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4747A10E809
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jan 2026 09:29:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 271D710E732
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 16:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769678992; x=1801214992;
- h=message-id:subject:from:to:date:in-reply-to:references:
- content-transfer-encoding:mime-version;
- bh=pren4N3cVNzzZt5xwVcQFUpxQCRF2NKzQ+q2itrc0Xs=;
- b=A2Gvzoo3RP9KwKWpzhwMClEG6od38eq1DlDdQUSU4fmxeDMuA8KGcj57
- qugSPNUdTz7C+hmpbAjsXh8l5hC+M6Rwc19txx1qkUqK/0ZfmizU3X1dq
- 3hiTucdJZEmWIbXRtcvDQC1+YZKagy+wPkMbwfkSiHaeA6rXPPwU2we2P
- 3LMWrrwqyKORMb+yJXMNnXUeeBYRSdcqueht31SJ13BjD2+XXo9xAbrRr
- JbI3yRdGtxO+QN91vMynBZl5e1LRrDTz3TNsOAy/5vO0drJwOtFPtnzpJ
- OexK0xqOGfYdVGbweAWKcbHEMUmxyPve8aoTpM8ng6ct/AZgGMoqGIxqr g==;
-X-CSE-ConnectionGUID: 0vaKlkkBRn6G70IvHBGYrw==
-X-CSE-MsgGUID: +F/CU4pgTTql2S38aQpq0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="70881156"
-X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; d="scan'208";a="70881156"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2026 01:29:51 -0800
-X-CSE-ConnectionGUID: l0T1tEl5Ty2QRw9SEtahag==
-X-CSE-MsgGUID: G316WbqkRKyCV30Azm9FCg==
+ t=1769618722; x=1801154722;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=2hYScf8mjw0Cp/baRnNPQBYPbc1+Zd+vZY+mPTryGtE=;
+ b=aUkrvmloNCh4WALr8kPOYc3JhRAl710DN5m9mb95Mn1HDM/9jTkJOe0b
+ R4jXlJaClhTvLBNFwoOzkqgM7GGtrh/LphvgY+D5fTiFsD7PtBhDK6kKk
+ IkpPhHfyHZWo2e2NBIzR3wwg1xxTrA2AllsRRBT6rKB/TR3ip+n7V2dKY
+ vOA4vLOgFD/+kd2RQqZ/AIwzkFrIvlUPtAtjpnhvOh6VUQPMVWKuEfPiZ
+ YComMXnaqaPb83VTu3ReF5kOyupOyZhxG5jAOkmV2bYk3MnHaAgq0+wLQ
+ WAolXFPD8YR86Jn60OfnDf9pwkGbD+hWmfFV76Yw3T3Tg+LUeqxgu57cy w==;
+X-CSE-ConnectionGUID: M5j8cQU6ShGjSEqczxjpyA==
+X-CSE-MsgGUID: +F+Cac6kTyuEOPXe6qD5Xg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="71003922"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="71003922"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jan 2026 08:45:21 -0800
+X-CSE-ConnectionGUID: rPT7uerNQMqu3OzzwneeJg==
+X-CSE-MsgGUID: q+hv6cerQZ6EZnscTYwGJg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; d="scan'208";a="208536228"
-Received: from pjwade-mobl1.ger.corp.intel.com (HELO [10.245.17.81])
- ([10.245.17.81])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2026 01:29:51 -0800
-Message-ID: <7f8b8095a03416aa48b9caf68495c67f6cb74438.camel@linux.intel.com>
-Subject: Re: [PATCH i-g-t 1/1] RFC tests/intel/xe_exec_reset: Filter
- expected timeout dmesg during reset tests
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-To: Sobin Thomas <sobin.thomas@intel.com>, igt-dev@lists.freedesktop.org, 
- matthew.brost@intel.com
-Date: Thu, 29 Jan 2026 10:29:26 +0100
-In-Reply-To: <20260123065238.48129-2-sobin.thomas@intel.com>
-References: <20260123065238.48129-1-sobin.thomas@intel.com>
- <20260123065238.48129-2-sobin.thomas@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="208390803"
+Received: from dut6094bmgfrd.fm.intel.com ([10.80.55.45])
+ by orviesa007.jf.intel.com with ESMTP; 28 Jan 2026 08:45:20 -0800
+From: Jia Yao <jia.yao@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jia Yao <jia.yao@intel.com>, Alex Zuo <alex.zuo@intel.com>,
+ Shuicheng Lin <shuicheng.lin@intel.com>, Xin Wang <x.wang@intel.com>
+Subject: [PATCH] tests/intel/xe_exec_system_allocator: Fix UC PAT case timeout
+Date: Wed, 28 Jan 2026 16:45:17 +0000
+Message-ID: <20260128164518.44353-1-jia.yao@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 29 Jan 2026 09:51:23 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,237 +66,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sobin,
+The pat-index-madvise-pat-idx-uc-single-vma subtest was intermittently
+failing with 'Timer expired' error when waiting for user fence.
 
-Please see my comments bellow.
+Root cause:
+When the PAT index is set to UC (Uncached), the batch buffer written
+by CPU may not be visible to GPU due to CPU cache not being flushed
+to memory. The GPU would then read stale or corrupted batch commands,
+causing the execution to hang and the user fence to never be signaled.
 
-On Fri, 2026-01-23 at 06:52 +0000, Sobin Thomas wrote:
-> During reset testing there are timedout messages with lrc seq no
-> and seqno coming in CI Dmesg. These logs are causing CI warnings.
->=20
-> Since we are intentionally causing the GPU reset, so timeout messages
-> are expected behavior rather than actual test failures. These
-> messages
-> filtered by CI and incorrectly flagged as errors.
->=20
-> This change adds ignore_timeout_dmesg() function that registers a
-> regex
-> pattern to filter out expected timeout-related dmesg messages:
-> - "Timedout"
-> - "timeout"
->=20
-> The function is strategically called before operations that trigger
-> resets to proactively filter expected messages:
-> - GT reset operations (xe_force_gt_reset_async/sync)
-> - Legacy test modes involving resets
-> - Compute mode tests with GT reset flags
-> - Thread-based reset testing scenarios
->=20
-> This ensures cleaner test output by suppressing expected noise while
-> preserving genuine error reporting for actual test failures.
->=20
-> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
-> ---
-> =C2=A0tests/intel/xe_exec_reset.c | 49 +++++++++++++++++++++++++++++++---=
--
-> --
-> =C2=A01 file changed, 41 insertions(+), 8 deletions(-)
->=20
-> diff --git a/tests/intel/xe_exec_reset.c
-> b/tests/intel/xe_exec_reset.c
-> index 7aaee31dd..19b2c96b9 100644
-> --- a/tests/intel/xe_exec_reset.c
-> +++ b/tests/intel/xe_exec_reset.c
-> @@ -28,6 +28,17 @@
-> =C2=A0
-> =C2=A0#define SYNC_OBJ_SIGNALED	(0x1 << 0)
-> =C2=A0#define LEGACY_MODE_ADDR	0x1a0000
-> +static void ignore_timeout_dmesg(void)
-> +{
-> +	/*
-> +	 * Timedout jobs are expected during reset testing,
-> +	 * so ignore these in igt_runner.
-> +	 */
-> +	static const char *store =3D "Timedout|timeout";
-> +
-> +	igt_emit_ignore_dmesg_regex(store);
-> +}
-> +
+Fix:
+- Use igt_clflush_range() to explicitly flush the batch buffer from
+  CPU cache to memory before GPU execution
+- Initialize clflush support in igt_fixture with igt_setup_clflush()
 
-This will cause igt to ignore all timeouts. Would it be a good idea to
-make this more specific so that only the expected timeouts are ignored?
+v2 (Xin Wang):
+- Move igt_setup_clflush() from igt_fixture to just before
+  xe_for_each_engine loop for UC PAT index subtests. This ensures
+  clflush is only initialized when actually needed, and allows
+  proper skip if clflush is not supported on the platform.
 
-> =C2=A0
-> =C2=A0/**
-> =C2=A0 * SUBTEST: spin
-> @@ -73,6 +84,7 @@ static void test_spin(int fd, struct
-> drm_xe_engine_class_instance *eci,
-> =C2=A0
-> =C2=A0	sync[0].handle =3D syncobj_create(fd, 0);
-> =C2=A0	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
-> +	ignore_timeout_dmesg();
-> =C2=A0
-> =C2=A0#define N_TIMES 4
-> =C2=A0	for (i =3D 0; i < N_TIMES; ++i) {
-> @@ -260,8 +272,10 @@ test_balancer(int fd, int gt, int class, int
-> n_exec_queues, int n_execs,
-> =C2=A0
-> =C2=A0	}
-> =C2=A0
-> -	if (flags & GT_RESET)
-> +	if (flags & GT_RESET) {
-> +		ignore_timeout_dmesg();
-> =C2=A0		xe_force_gt_reset_async(fd, gt);
-> +	}
-> =C2=A0
-> =C2=A0	if (flags & CLOSE_FD) {
-> =C2=A0		if (flags & CLOSE_EXEC_QUEUES) {
-> @@ -446,6 +460,7 @@ test_compute_mode(int fd, struct
-> drm_xe_engine_class_instance *eci,
-> =C2=A0	}
-> =C2=A0
-> =C2=A0	if (flags & GT_RESET) {
-> +		ignore_timeout_dmesg();
-> =C2=A0		xe_spin_wait_started(&data[0].spin);
-> =C2=A0		xe_force_gt_reset_sync(fd, eci->gt_id);
-> =C2=A0	}
-> @@ -590,6 +605,7 @@ gt_reset(int fd, int n_threads, int n_sec)
-> =C2=A0
-> =C2=A0	pthread_mutex_init(&mutex, 0);
-> =C2=A0	pthread_cond_init(&cond, 0);
-> +	ignore_timeout_dmesg();
-> =C2=A0
-> =C2=A0	for (i =3D 0; i < n_threads; ++i) {
-> =C2=A0		threads[i].mutex =3D &mutex;
-> @@ -650,6 +666,7 @@ gt_mocs_reset(int fd, int gt)
-> =C2=A0	igt_debugfs_dump(fd, path);
-> =C2=A0	igt_debugfs_read(fd, path, mocs_content_pre);
-> =C2=A0
-> +	ignore_timeout_dmesg();
-> =C2=A0	xe_force_gt_reset_sync(fd, gt);
-> =C2=A0
-> =C2=A0	igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
-> @@ -683,6 +700,7 @@ static void *thread(void *data)
-> =C2=A0		pthread_cond_wait(t->cond, t->mutex);
-> =C2=A0	pthread_mutex_unlock(t->mutex);
-> =C2=A0
-> +	ignore_timeout_dmesg();
-> =C2=A0	xe_legacy_test_mode(t->fd, t->hwe, t->n_exec_queue, t-
-> >n_exec,
-> =C2=A0			=C2=A0=C2=A0=C2=A0 t->flags, LEGACY_MODE_ADDR, false);
-> =C2=A0
-> @@ -739,6 +757,7 @@ static void threads(int fd, int n_exec_queues,
-> int n_execs, unsigned int flags)
-> =C2=A0	pthread_mutex_init(&mutex, 0);
-> =C2=A0	pthread_cond_init(&cond, 0);
-> =C2=A0
-> +	ignore_timeout_dmesg();
-> =C2=A0	xe_for_each_engine(fd, hwe) {
-> =C2=A0		if (hwe->gt_id && (flags & GT0))
-> =C2=A0			continue;
-> @@ -797,12 +816,15 @@ int igt_main()
-> =C2=A0			test_spin(fd, hwe, SYNC_OBJ_SIGNALED);
-> =C2=A0
-> =C2=A0	igt_subtest("cat-error")
-> -		xe_for_each_engine(fd, hwe)
-> +		xe_for_each_engine(fd, hwe) {
-> +			ignore_timeout_dmesg();
-> =C2=A0			xe_legacy_test_mode(fd, hwe, 2, 2,
-> CAT_ERROR,
-> =C2=A0					=C2=A0=C2=A0=C2=A0 LEGACY_MODE_ADDR,
-> false);
-> +		}
-> =C2=A0
-> =C2=A0	igt_subtest("cancel")
-> =C2=A0		xe_for_each_engine(fd, hwe) {
-> +			ignore_timeout_dmesg();
-> =C2=A0			xe_legacy_test_mode(fd, hwe, 1, 1, 0,
-> =C2=A0					=C2=A0=C2=A0=C2=A0 LEGACY_MODE_ADDR,
-> false);
-> =C2=A0			break;
-> @@ -810,6 +832,7 @@ int igt_main()
-> =C2=A0
-> =C2=A0	igt_subtest("cancel-preempt")
-> =C2=A0		xe_for_each_engine(fd, hwe) {
-> +			ignore_timeout_dmesg();
-> =C2=A0			xe_legacy_test_mode(fd, hwe, 1, 1, PREEMPT,
-> =C2=A0					=C2=A0=C2=A0=C2=A0 LEGACY_MODE_ADDR,
-> false);
-> =C2=A0			break;
-> @@ -897,25 +920,33 @@ int igt_main()
-> =C2=A0			LONG_SPIN_REUSE_QUEUE);
-> =C2=A0
-> =C2=A0	igt_subtest("gt-reset")
-> -		xe_for_each_engine(fd, hwe)
-> +		xe_for_each_engine(fd, hwe) {
-> +			ignore_timeout_dmesg();
-> =C2=A0			xe_legacy_test_mode(fd, hwe, 2, 2, GT_RESET,
-> =C2=A0					=C2=A0=C2=A0=C2=A0 LEGACY_MODE_ADDR,
-> false);
-> +		}
-> =C2=A0
-> =C2=A0	igt_subtest("close-fd-no-exec")
-> -		xe_for_each_engine(fd, hwe)
-> +		xe_for_each_engine(fd, hwe) {
-> +			ignore_timeout_dmesg();
-> =C2=A0			xe_legacy_test_mode(-1, hwe, 16, 0,
-> CLOSE_FD,
-> =C2=A0					=C2=A0=C2=A0=C2=A0 LEGACY_MODE_ADDR,
-> false);
-> +		}
-> =C2=A0
-> =C2=A0	igt_subtest("close-fd")
-> -		xe_for_each_engine(fd, hwe)
-> +		xe_for_each_engine(fd, hwe) {
-> +			ignore_timeout_dmesg();
-> =C2=A0			xe_legacy_test_mode(-1, hwe, 16, 256,
-> CLOSE_FD,
-> =C2=A0					=C2=A0=C2=A0=C2=A0 LEGACY_MODE_ADDR,
-> false);
-> +		}
-> =C2=A0
-> =C2=A0	igt_subtest("close-execqueues-close-fd")
-> -		xe_for_each_engine(fd, hwe)
-> +		xe_for_each_engine(fd, hwe) {
-> +			ignore_timeout_dmesg();
-> =C2=A0			xe_legacy_test_mode(-1, hwe, 16, 256,
-> CLOSE_FD |
-> =C2=A0					=C2=A0=C2=A0=C2=A0 CLOSE_EXEC_QUEUES,
-> =C2=A0					=C2=A0=C2=A0=C2=A0 LEGACY_MODE_ADDR,
-> false);
-> +		}
-> =C2=A0
-> =C2=A0	igt_subtest("cm-cat-error")
-> =C2=A0		xe_for_each_engine(fd, hwe)
-> @@ -941,17 +972,19 @@ int igt_main()
-> =C2=A0	for (const struct section *s =3D sections; s->name; s++) {
-> =C2=A0		igt_subtest_f("%s-cat-error", s->name)
-> =C2=A0			xe_for_each_gt(fd, gt)
+This ensures that when using UC PAT index, the GPU can read the
+correct batch buffer data from memory.
 
-The changes after this point should either be on a separate patch or
-simply removed.
-> -				xe_for_each_engine_class(class)
-> +				xe_for_each_engine_class(class) {
-> =C2=A0					test_balancer(fd, gt, class,
-> XE_MAX_ENGINE_INSTANCE + 1,
-> =C2=A0						=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> XE_MAX_ENGINE_INSTANCE + 1,
-> =C2=A0						=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 CAT_ERROR | s-
-> >flags);
-> +				}
-> =C2=A0
-> =C2=A0		igt_subtest_f("%s-gt-reset", s->name)
-> =C2=A0			xe_for_each_gt(fd, gt)
-> -				xe_for_each_engine_class(class)
-> +				xe_for_each_engine_class(class) {
-> =C2=A0					test_balancer(fd, gt, class,
-> XE_MAX_ENGINE_INSTANCE + 1,
-> =C2=A0						=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
-> XE_MAX_ENGINE_INSTANCE + 1,
-> =C2=A0						=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 GT_RESET | s-
-> >flags);
-> +				}
-> =C2=A0
-> =C2=A0		igt_subtest_f("%s-close-fd-no-exec", s->name)
-> =C2=A0			xe_for_each_gt(fd, gt)
+Cc: Alex Zuo <alex.zuo@intel.com>
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: Xin Wang <x.wang@intel.com>
+Signed-off-by: Jia Yao <jia.yao@intel.com>
+---
+ tests/intel/xe_exec_system_allocator.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
+index 412ad0384..2938b3c87 100644
+--- a/tests/intel/xe_exec_system_allocator.c
++++ b/tests/intel/xe_exec_system_allocator.c
+@@ -1692,6 +1692,10 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 			prefetch_ns += (end - start);
+ 		}
+ 
++		if (pat_value == intel_get_pat_idx_uc ||
++		    pat_value == intel_get_pat_idx_uc_comp)
++			igt_clflush_range(data[idx].batch, sizeof(data[idx].batch));
++
+ 		sync[0].addr = exec_ufence ? to_user_pointer(exec_ufence) :
+ 			addr + (char *)&data[idx].exec_sync - (char *)data;
+ 
+@@ -2633,6 +2637,11 @@ int igt_main()
+ 			     !xe_has_vram(fd)) {
+ 				igt_skip("Skipping compression-related PAT index\n");
+ 			}
++			if (strstr(s->name, "madvise-pat-idx-uc-")) {
++				igt_require_f(igt_setup_clflush(),
++					      "CLFLUSH support required for UC PAT index test\n");
++			}
++
+ 			xe_for_each_engine(fd, hwe)
+ 				test_exec(fd, hwe, 1, 1, SZ_4M, 0, 0, NULL, NULL, s->flags, s->fn);
+ 		}
+-- 
+2.43.0
 
