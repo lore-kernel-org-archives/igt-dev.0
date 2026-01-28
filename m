@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E963BD25B5A
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 13:14:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23530D25B59
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 13:14:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A06B310E6D9;
+	by gabe.freedesktop.org (Postfix) with ESMTP id AE6B510E6CF;
 	Wed, 28 Jan 2026 13:14:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Zq9OoZUR";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="xtMBCuMk";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 995B910E6D9
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:41 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5A1EE10E6D9
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:40 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 05AE7C211E5
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:43 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 434504E422FD
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:39 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 7E3BE6071F;
- Wed, 28 Jan 2026 13:14:40 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 1A8356071F;
+ Wed, 28 Jan 2026 13:14:39 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 93E4E119A8814; Wed, 28 Jan 2026 14:14:39 +0100 (CET)
+ with ESMTPSA id D6C84119A8816; Wed, 28 Jan 2026 14:14:37 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1769606080; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1769606078; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=BWx7rNUIr1psbc8Et3zZjU9RNSsRLpIuHI9stsd0/cI=;
- b=Zq9OoZURNC2+EPV9bv/xydxrtNtT/rX9nk88D81+O99/LylJu2+Xr0Kz419dgvrUdBmwu9
- 1VusI6bt61sjj6EH9IfpJ2oKRgDsHJfDx+6q7J9tnD7TJlLjgsVu6ayKFcp6RXyVaYUUZD
- YNEc8CwDDwUam2llfBgp89PL4nSnfqMETT/fDO82JAQDreAU292BFwrVXDl0b1495Btcx+
- FrBquRT9kIQt9+zbFxZOKMn2MNzGj2oz0D097nn4H/zKMNgK28ttluVPGUSjf9WJUJc8Uk
- UXAyJasJF9hk4+Ot4KpnNlyKoOUHDG17FriIflwPrNzRulMRkkC0d/Iuq8VSaQ==
+ bh=2t7ibwNn6PQAx3AHo84BzjrIe3RkCOYCGjiNY1GmBWQ=;
+ b=xtMBCuMk7bciFaQCK0xvxJZoUqAMcm9VvMWWLn51rNd+pOch5IIMpxICeXtWVxif7tr3kz
+ dS/UIZMX34T5SybMP1YyIguHQ0JgqS19PT8PpahbqGwX2Agk3Z6XB8ME1vO/V8GGCPQit2
+ vWrgz7euAtDmasbMI1aVGbKVgS1atD8pdwnA6108n4TuATlzAkx46Mjd4emNvwXTsqwkke
+ SajlPqqJBgjH4ehJkBqPLIDhPRfzJ0unAoKkQKyxhupD+tyZTnAkHvI+JCsXwVaVpH8gzQ
+ IY5BbBB0RUnRUCJJV8ZZCBrXjYnrGhBdGJjH0sln1gcD8zqntKg0HbQhAJXT4Q==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 28 Jan 2026 14:14:44 +0100
-Subject: [PATCH i-g-t v5 13/48] lib/igt_kms: Add const when make sense
+Date: Wed, 28 Jan 2026 14:14:42 +0100
+Subject: [PATCH i-g-t v5 11/48] lib/igt_debugfs: Add const when make sense
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-unigraf-integration-v5-13-fbf2e997a011@bootlin.com>
+Message-Id: <20260128-unigraf-integration-v5-11-fbf2e997a011@bootlin.com>
 References: <20260128-unigraf-integration-v5-0-fbf2e997a011@bootlin.com>
 In-Reply-To: <20260128-unigraf-integration-v5-0-fbf2e997a011@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -46,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1458;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2208;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=HP7ACEljbhVvm5I/UWr/WCi+AFcrqsBwCMiSp3TGLBc=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpegvJfYjwEzjvuYIS+5VF8BJqRWuXEp+8WgKx0
- ASycCGVNmeJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaXoLyRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKvihAA08y1yg1YuISzI8Oqwb0Mdl8HWFnV8BW
- 64x7nW+lGq+w8UeY5z83ozYJVHK/xUbX1d80epB3HbCVsEUyIIl1+s1/i9Q5RZofmPnk1ilb3fO
- dGJTjyv3/YpPsuxtdopcwPKljWDQJH3bY4sZBo/secQrJIlGNlyvWAF4k0yPAlo5LOGVPluVk1h
- IMHnzK6OTxBTNpTOa0lSjchfexGD9mHRRDIFGVY/VNO6gtKMF2hVokIDCaYGJbWvTvkokineCWP
- 3mCX4dvied9HURYeDSQ3F0x/jCmpnfzwoYRKOwNNG47J7Wa6yBzE7yktnjup6xm3VOI8myUvUhz
- yHNSjZknyk6yGDBWukMcpEhzoAJ7eg3U5V047YDl66zZkXD1wZmA6t6YUxPDdDnBfuQShzs2uWw
- tx4PApmQktlolm24l2zdZQHgPExL9sHA6YbjmnZ/H+2vfZYJpBlS8TDHUu9GnFi1OryMkENlcVV
- DZx2s6I4UPOfnRb1Tj2uD5z1vLP+fgl6O5uBb6ePHljBgubRwRNGtEpTqdToP1N0RiUuXMSiegz
- Aho1xNMcMhcq73x5cR4I5aORIthhHq+60+Q5uJL0rQhT/mxrseEuPDxDFWg/Q3zGNk41FRncMxb
- S3acXorlbaIwr3JXA79WjNPpbd8cDZeY3eMWg/liJx8bzb1yZcPw=
+ bh=PFv1skDSi2XZOTcvRvCqh4Kzgzl1+hzz1NgsuRvohbk=;
+ b=kA0DAAgBIK0uxlsQLOIByyZiAGl6C8igyCDbceLKN038UIuEmRAssSA7bk48j5KTBFmu7rbDP
+ 4kCTwQAAQgAORYhBE+PuD++eDwxDFBZBCCtLsZbECziBQJpegvIGxSAAAAAAAQADm1hbnUyLDIu
+ NSsxLjExLDIsMgAKCRAgrS7GWxAs4uEYD/4o2E6bzjbV6wj/njX+qzL1gbgxDeDzM94iYd8hyaG
+ nd8eQ+c5G69Nlh+MM/H0GJ88vLf+WyZOLKd2iQ1gWEMjcHfCipHU8p6pTMY/t1kZfmEOroyJYe9
+ T3rnGe3WhL2aDrW+pxqSqM5nS/r6YLzFIV/KLqQyRyXuWECaBlvl5zMJcQ+1POPBidM47ONyS+g
+ ZIiOxuhr0aPXnyWogSHZDH4Blp0G7+VuC8CVfGYvXZ7mIst25DDUXjTxCYp0u/g1Z0iZfFegSAB
+ 4ZoG4iXHldiSZCZe2JrW3BoEtDRLDC7A5QftFMg3ZNEmp88hfLuqX6aW3pOywdyLBo+6AHSGOcc
+ RJsDXsZbPJFxteh0uYqHcHoqVi1bhdIshpE9IbE9rTvoRtgpznmogMBMz679mbalm0lo0Hcagnj
+ gtaji71uP7/1JOPaMvSZgt5CHIiFpCoeyPvNMlmpLr6FLgqfFOfHYWIHMnMFpLsvKmAsRefRwrr
+ RgfrI5UAc+2PAtEj+D0Lh2ATCaP/kor54cEtEr9hQlVdSU+JOwE62Xsw/cO5ziq5M9FB4oEJykL
+ DaVWc/9QDOWxNPLhi1ZTcOmimXEHNy3qRL98W3iqoeIQjfnyeXyzGjwUEz44boOkW/imKvbnfnG
+ 6wY9mgrYzCdtvDssFw5W41QVlXy9NDm5hbr8TmHRVSw==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,43 +79,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Const qualifier helps to avoid unwanted modification of a pointer.
-To help avoiding those errors, modify the function signature to
-use const.
+Const qualifier avoid unwanted modifications. Add const at place where
+it make sense.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- lib/igt_kms.c | 2 +-
- lib/igt_kms.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ lib/igt_debugfs.c | 4 ++--
+ lib/igt_debugfs.h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 17fd6a22a3e8..2cd21278a9bc 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -5183,7 +5183,7 @@ int igt_display_drop_events(igt_display_t *display)
-  *
-  * Returns: String representing a connector's name, e.g. "DP-1".
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index 31e40901f25e..ece8b34f4ed9 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -270,7 +270,7 @@ int igt_debugfs_tile_dir(int device, uint8_t tile)
+  * Returns:
+  * The directory fd, or -1 on failure.
   */
--const char *igt_output_name(igt_output_t *output)
-+const char *igt_output_name(const igt_output_t *output)
+-int igt_debugfs_connector_dir(int device, char *conn_name, int mode)
++int igt_debugfs_connector_dir(int device, const char *conn_name, int mode)
  {
- 	return output->name;
- }
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 7cda645206de..af9586a2edb4 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -598,7 +598,7 @@ typedef struct _igt_pipe_crc igt_pipe_crc_t;
- igt_pipe_crc_t *igt_crtc_crc_new(igt_crtc_t *crtc, const char *source);
- igt_pipe_crc_t *igt_crtc_crc_new_nonblock(igt_crtc_t *crtc, const char *source);
+ 	int dir, ret;
  
--const char *igt_output_name(igt_output_t *output);
-+const char *igt_output_name(const igt_output_t *output);
- bool kmstest_mode_is_valid(const drmModeModeInfo *mode);
- drmModeModeInfo *igt_output_get_mode(igt_output_t *output);
- drmModeModeInfo *igt_output_get_highres_mode(igt_output_t *output);
+@@ -790,7 +790,7 @@ void __igt_debugfs_dump(int device, const char *filename, int level)
+  *
+  * Returns: 0 on success, -1 on failure.
+  */
+-int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
++int igt_debugfs_read_connector_file(int drm_fd, const char *conn_name,
+ 				    const char *filename, char *buf,
+ 				    size_t buf_size)
+ {
+diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+index 6c2efc16ff5e..8c0224f78427 100644
+--- a/lib/igt_debugfs.h
++++ b/lib/igt_debugfs.h
+@@ -36,7 +36,7 @@ const char *igt_debugfs_mount(void);
+ char *igt_debugfs_path(int device, char *path, int pathlen);
+ 
+ int igt_debugfs_dir(int device);
+-int igt_debugfs_connector_dir(int device, char *conn_name, int mode);
++int igt_debugfs_connector_dir(int device, const char *conn_name, int mode);
+ int igt_debugfs_pipe_dir(int device, int pipe, int mode);
+ 
+ int igt_debugfs_open(int fd, const char *filename, int mode);
+@@ -179,7 +179,7 @@ int igt_get_stable_obj_count(int driver);
+ void __igt_debugfs_dump(int device, const char *filename, int level);
+ #define igt_debugfs_dump(d, f) __igt_debugfs_dump(d, f, IGT_LOG_DEBUG)
+ 
+-int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
++int igt_debugfs_read_connector_file(int drm_fd, const char *conn_name,
+ 				    const char *filename, char *buf,
+ 				    size_t buf_size);
+ int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
 
 -- 
 2.52.0
