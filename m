@@ -4,67 +4,195 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E73AD25B5B
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 13:15:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C64A9D25B5D
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 13:25:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DF55710E6DF;
-	Wed, 28 Jan 2026 13:15:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5009D10E119;
+	Wed, 28 Jan 2026 13:25:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="zdbKX7P4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M6coiOvU";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73BFE10E119
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:59 +0000 (UTC)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id D001FC211E5;
- Wed, 28 Jan 2026 13:15:00 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 5243D6071F;
- Wed, 28 Jan 2026 13:14:58 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 69A4C119A8812; Wed, 28 Jan 2026 14:14:57 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1769606097; h=from:subject:date:message-id:to:cc:mime-version:content-type:
- content-transfer-encoding:in-reply-to:references;
- bh=a6Cc5VxLtUMeaDTxshujrImFa/LLhtiIf9bSSppEftc=;
- b=zdbKX7P4P8lldNS22WwE0x5SZ8RXm2liT7URIvJQInHrZ+iUQxlfvRDkFm59IFUhidWk3h
- 7gcmaO5j0Q+X/MvN9tzKlcI5V7cZARfLVsY/vBM3oFgiDPnjJNc2K20gV0hLzMJmxnH7Ql
- bd3j4kkrZPDZIvZKew33UoL0e9ZHTff8lQkjUBhomveOTWZibx62Scp8YX3vageqEGeRDu
- BJ+pM3PURZ7gMhzfTZPTHTD0s+DRwsIANr47bxp3cesXYizOXGfaSRyAFTaZY0vqUkXunr
- 111jSjkR2BQwDiwyDoOLUwhnT05iYdv142hC/K8GMGJBtWSDcH/m3YuNNi7kTQ==
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 28 Jan 2026 14:15:08 +0100
-Subject: [PATCH i-g-t v5 37/48] lib/i915/dp: Rename functions to avoid
- confusion
-MIME-Version: 1.0
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 142F410E119
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:25:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1769606716; x=1801142716;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=rBzrxxJ486lBlwvEsqyxN07ZmsgrxKnDYtF+la9uBHc=;
+ b=M6coiOvU+E4Fc2l34brMcro2p8u8MfrcF7bKSraI25JedVdJEd8B9jZC
+ WKkc+81qVX5S5LCEg/zxWEwxVrqPcVnKS+5nhu5ACX3MgDiirJvFP2xVX
+ vmC4pII8T21nhh/CiZ9BIrrCkxxpYUEWF7hFIwTqpgc0UysSB24gL6jw3
+ /OHsPZFgR+exXDcrx7+zMnw3ih4GNPD3hKqPLlVoEzMgXkJYgsS4zwJhT
+ 7ko/VJwY+JTt2/5kTjQBFTohUD7a+TMMtS2SvPC8gfzo4gPKaQzLh4T3I
+ ZM4F5OLNPWhtAu1FmJp5fRjMAKpjdvs11+HkCgTWekTLwrS8y8VQQrA0Y A==;
+X-CSE-ConnectionGUID: wh3pmRqUShi/Tw6IMAmOvQ==
+X-CSE-MsgGUID: s2VudOB6TYGG4JpxPqQwFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="70533073"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="70533073"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jan 2026 05:25:15 -0800
+X-CSE-ConnectionGUID: FnBIKQbFQdyM/1e6wcWcTw==
+X-CSE-MsgGUID: BZha86zmQOq7YhVLt+ENoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="212365114"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jan 2026 05:25:16 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Wed, 28 Jan 2026 05:25:15 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Wed, 28 Jan 2026 05:25:15 -0800
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.14) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Wed, 28 Jan 2026 05:25:14 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kFm8dTaWI/sspA5Tl0Xrhele2WAr740O4FEXDe2Rybpy+ObyXF+hMKso3RyAiAjYO0M1grfPcS9oYPxAPBt3CmqdfLAeHDF2azgragUkCq1053xspH0aox5jP9VWs+fznnbvGhzfHlPA/LrtRnFcvk7rBuaELgDgt6BUxkHi+K9hV4QhQkIRq8/rBivecItGgb3r3I0I+OCZcJapD+Qj1aCg8IXYbrMp9PQ0/CMmlioj9tuSjMCQ8Mjw3jJDolYBKUVCDYag4yA4gCBwEwnGy7EjrLhTs6wqpTG6iy2ZIFEzHXq6ufMLgdRKmEBTZWoRS6YaYBMQR26s+LqQYjsZeQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rBzrxxJ486lBlwvEsqyxN07ZmsgrxKnDYtF+la9uBHc=;
+ b=DTa9hJyfm620ZrcZaE6MOwn9z7/WwS1xCu7aNnYpEpfosa87QIwWXoHqdP1GjDaiVLwVLFXOmhSzQ6OZpsOjdS4vRPfQBC6DeA0/x2zzTwAcSUkeUc19QvpFOWETq61w8Kf8Sc56ZzCI7twA+MXbqmWNXtBOaJ2dr9UZd6aCW86bEeKaY+pUUntMaNQA++5N7i473ixkuG3wCbd2TqAvpNmg5yHkT6mFQBooAdWNvHOCiNIKElCkicJAIKzI6GV0C5/6sToMwCnkT2gg5Bb2gaxmKwarVsgepX7s8grZ2TQHXhoF87LzhlH+DE874lxUioHYBDuyP02hKkKk7q802w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DS0PR11MB7264.namprd11.prod.outlook.com (2603:10b6:8:13b::5) by
+ IA0PR11MB7209.namprd11.prod.outlook.com (2603:10b6:208:441::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Wed, 28 Jan
+ 2026 13:25:07 +0000
+Received: from DS0PR11MB7264.namprd11.prod.outlook.com
+ ([fe80::d250:d70b:55aa:5ff7]) by DS0PR11MB7264.namprd11.prod.outlook.com
+ ([fe80::d250:d70b:55aa:5ff7%4]) with mapi id 15.20.9564.006; Wed, 28 Jan 2026
+ 13:25:06 +0000
+From: "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>
+To: "Rudnicki, Piotr" <piotr.rudnicki@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: RE: [PATCH i-g-t v2 1/2] lib/xe: xe_eudebug - Add pipe validation and
+ cleanup improvements
+Thread-Topic: [PATCH i-g-t v2 1/2] lib/xe: xe_eudebug - Add pipe validation
+ and cleanup improvements
+Thread-Index: AQHckD6zLGGs84irUUihm0L543jlsbVnjxNw
+Date: Wed, 28 Jan 2026 13:25:06 +0000
+Message-ID: <DS0PR11MB726448F3249DF28CCD4BFA6ED991A@DS0PR11MB7264.namprd11.prod.outlook.com>
+References: <20260128101529.401653-4-piotr.rudnicki@intel.com>
+ <20260128101529.401653-5-piotr.rudnicki@intel.com>
+In-Reply-To: <20260128101529.401653-5-piotr.rudnicki@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DS0PR11MB7264:EE_|IA0PR11MB7209:EE_
+x-ms-office365-filtering-correlation-id: 372ae82e-23bd-46db-592f-08de5e70a751
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|366016|1800799024|7142099003|38070700021|7053199007; 
+x-microsoft-antispam-message-info: =?utf-8?B?eHFUSHlxMncveDQ5K3pIQ3NRYitoVkhGNFVBWm1PcmNXQ3R4SXQxcHZtSkZK?=
+ =?utf-8?B?c2RRODh3WEIxaGUvUXFPSUR1RzBUdFZGbDU4bHhoZ2pjNGh0YURiK2lzdnRh?=
+ =?utf-8?B?T2thUVViV1pKVlYwbFBZOGI4M3N2YTVQUllwa25PV1g3ZDM3T2hPTnF3bVdv?=
+ =?utf-8?B?Y2tZT3JaUTUxZDk3dCt6ZW00SzVIVlRaNWdoNjlZZCtuS2JBSWdUSEM2SEsx?=
+ =?utf-8?B?NFpNNGZuNDB1bzV1SjkxOWJYYXkxMEM2d3UwS2FqSEZ1dy83MDJnOFhra3JW?=
+ =?utf-8?B?cGlENUJ2emdGWnJpQWx6MEFadnlqYVh3VXpLcGdyTVlVWnFEQTJoM2cvRThx?=
+ =?utf-8?B?K3dXaE81dmtaRW83bjhCN2pib2dZM29jbkptdmxiaWFHakpmdWdRNStIc0Za?=
+ =?utf-8?B?TnVXNVBzQkFLekJVQjNrelE1bmU0cGw5M3llRXlhNUVYaExwSGkvWEg0NWVY?=
+ =?utf-8?B?dVBxRElSelE5cTFzZXdTWDBBeW1CMDNMeGEwM25va1V6LysrQnRwQWdWM0lC?=
+ =?utf-8?B?OHFtdFFtRzY1ZHpHem1OUURsVHVXOXdRek9RZzd5ak9pb3FGTnNTL3pBRnBD?=
+ =?utf-8?B?UnRLLzhSSXZCMDRycTA0ajF0LzVhbXh4WGROZWlXNTNWa29VeGFEdHdITG5B?=
+ =?utf-8?B?VGpudWhXYUk1eVZ2ZGN5U1ZnUDlvcFA2b202akVUK3dVWUZOWXBRVE9iRTA1?=
+ =?utf-8?B?Q3RaakhRN05nMGlaRC9LSkZmUnErZ0o1OVhQS3RYUUJUNElKMTRRNGdjaE53?=
+ =?utf-8?B?KzJzbkVoc2Yvc2Z1dWxEQ0lKejlqRFNnc3BqZ2NySUVjcVZJQ2oxRGpXY24w?=
+ =?utf-8?B?Z2N3MkNQUzJnVjY2R0Y5QitKUG1qK3ZoTlhmZEhmVE9lNDAvenRlYlJ6ZUxI?=
+ =?utf-8?B?QkpDN0xDemFMN3VWbkNsQ2JPcncwcjBwUUVEVzdVdUtrb3ZaYm5sbmF3b0Vx?=
+ =?utf-8?B?S0t4ZmNtRUs4QmZSa2NQN0RCbEhXelZ2ckFvQkE2K2w5cVhUQkgxcXlUS3Jm?=
+ =?utf-8?B?Z1BIRHJ0eWFBUFRkWVhIY3ZqUEdVUWxjYVZyV0d4TzZzWllrQlIxOGo1Z0Rz?=
+ =?utf-8?B?WTBXUFlCS2ZMNzMySGo5Z0cwdzhhemk1bkE0VGlXaFFIdUppMkZTZVNtSklu?=
+ =?utf-8?B?L2NZMmk5NGdiZFdLL0ozbmJiZW01ZUpmU0VzcG1TQUFBYW00ZzhyZW1OQnN6?=
+ =?utf-8?B?WTcvNVcrNm1tNmdUZllvL3Q4VlNSRisrRkxKaXdCb1FPcHlhVUUwRnFGY3pY?=
+ =?utf-8?B?aC9BTzNGSnNzNEZlR1lONU9NbVNxdENsYWgwYjM0alFOWEoxc05odk5lQ3Zw?=
+ =?utf-8?B?VkFvbmFoRTNDZ3dOTUN2MmpJTTZqY1c3V09kV2wxaWdJNFpXZzhzWkpRS204?=
+ =?utf-8?B?ZjZjT3Z2TEJJcDVEYWRwRENSV25YYi9Lejl4ZTV6S0hyYTY5dmNLQ3BLVytE?=
+ =?utf-8?B?and4K0FzSDBwREI4RUo0dmFuNExrNE5EVkdSdllIa1BTRzlsRUg3Tkw2MS9G?=
+ =?utf-8?B?NFdSUkk3RkxNS0hEVjk4TmNFZUpueThxUmYxU3A1eWdUOUZjOFJHQ0hCSm9E?=
+ =?utf-8?B?V0xrUVZaa1drRjVBR1VabmdBVVdyc3hnN3lGMmNRTVd5VW4zMGZ6SS9SNWh4?=
+ =?utf-8?B?N2VGMVV6NWNUNkUveUNKQi9MUnVqb0FqK2JCNHVmbnJVS0tRYmlDVmR0VWRz?=
+ =?utf-8?B?a0JCZGVsZ21NbFFnMS9PNnZmWmdBTE14S09jWFBDSnVkL0RVVXJGczFtVnhN?=
+ =?utf-8?B?NWZwMSt6L2wxbU4wcEs0UHZVZFJMa2REMDN0Q3NrbVgxYmd4V0VVUkNjVDNi?=
+ =?utf-8?B?Ui9WQ1piUGs0K1BZVG8vRmEwUHFNeUFUVys5UGVVZUEzYUpSbTZiMldrbytm?=
+ =?utf-8?B?Z1BaU1hIU1JaNnN0WGNYTWY2SllZbi96Yk92ZUZrSnVRWFRVUlJyYkpveS95?=
+ =?utf-8?B?dURvbG8wcEwzVjBwTTlVdS8rR2dKZjNaTUxrRkpoT3oxemJraVFIaThIREJU?=
+ =?utf-8?B?cEs2Zmt1S25ZZXo2SDU1QktKQVdJaTR0MkQvWlBDVFFjTk1jenZMMlpsMzRX?=
+ =?utf-8?B?TS9OZ3pNRU51ODlVeTZ3NFUrMnFTYVREREQ0RDhhVk42UG1tVlp4dTBTaWdD?=
+ =?utf-8?B?Uk9Pd2xLUk5ndGxjbkhIdlh6MkkxR0FrQTZMdE5jQ212LytzekJZQU9tekJV?=
+ =?utf-8?Q?VfAhILJ36UmYDD54fttkFD4=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7264.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(7142099003)(38070700021)(7053199007);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VlI0YTJYRUo3QTFlQXVkQm0weG5YdWtjMWJDZGNDeVdZM04vUndWbnZQZTdv?=
+ =?utf-8?B?NTdYdWEzNFRuU3E3SlBrYnprYmtYdDNUZnp2Ylg2RjNMaXpHUWlnVUJtQUZ0?=
+ =?utf-8?B?UnFwSTNvU2tpdm4xMVY3MlIyaG1tMlZUNU5lU0Z3Qit2cTl5TE1PclVJTUMw?=
+ =?utf-8?B?bTVuS041YlJJQTY2QWcrSDFoVGNrWjhtbm5ZSER1YWVJaEorNG5lelhkbkF6?=
+ =?utf-8?B?SGZNa21jV1EzY1pDTWZvUUF3L1phRmdVQnUvTmordUlHb0hZZW5tY241TWlu?=
+ =?utf-8?B?OE9sUCsxQlBIdEpETmNLc0F6ZHh1TXdjMmgxZFhsdkR5aGpMSG9FU3hkeUhD?=
+ =?utf-8?B?dGZMS0xOZW9QdWlHMk82ZDRmZStUZ1Q0OGEyVklpMWYwazY4S0VHQzVPeU9t?=
+ =?utf-8?B?YXE0K2djVFBpMVFQdEFvajNZUjJEeE1tQmtXOFRWMXMwMzM4TVpUVUZjR2xX?=
+ =?utf-8?B?MzR1NXVsNEcrUml1bFpES1VTZ0hidEU0b0xzT3JGbjdnWERZUlh6a0U4TG5K?=
+ =?utf-8?B?R3B0dzJZcmk1elYvUURCQ2t5S3ZIK0FNL0FCZzd3LytXSXNGN0pnMUZubDZl?=
+ =?utf-8?B?ZlByY0pqSGRwa2g5TUVlWXpoR2dQNzIrYzlTT0xEZnhhTUpMdVJCcS9rSlE3?=
+ =?utf-8?B?K25OMjZ4QytoN0xJMTVubWtvdjNuVVVjbTk0RklwNUdSVWVKdGprQkk4aHpu?=
+ =?utf-8?B?NmV4NHlETjJ0dGhvc2pHSVFRVzRnbStqRTJvd3dmZm9nMEFJRWwrN1NTbkVw?=
+ =?utf-8?B?S0dzVWs0TThsdVcza0NqNDBVK0pvOCs3R3IwRVNrekxkeFlvWE9BZCtCTU1Q?=
+ =?utf-8?B?WlRqR1BUMm9rZ3NFUHNqcWpnU3I5TjV3S2RVUmZlVHowVFFNL0NFRTkwRitB?=
+ =?utf-8?B?OHFySkJhSnMwYW41eS9ONENsRjBhRXdyOEhrSllJTEJJc2JrT3llUDhLbEp1?=
+ =?utf-8?B?UFpPeEY1bmhxcFlTQWhralFRZ2V3RmtNSXE0ekJYcktPaUlzbTJFaU5kcUIv?=
+ =?utf-8?B?TDR2R1hmekpGU0U4ekplRTJFN3NIT0ZXVGFkRENpMTFIODBSOGlWWHZDT01w?=
+ =?utf-8?B?a3MrV2FBZ3dUaFlwUVJYTFV1T0dqdzNqR1VVL0NaUHNQc29HaFpMcmlPU1dk?=
+ =?utf-8?B?allpcC81WGQ1dTNNZE1ZblRvSzJxd3JacEJtdnRMM28wdFVwOVpyRVVnZzVZ?=
+ =?utf-8?B?L1doWXhLeXBBQnhIMGNXVTR6ZXNwS0FyMlBQOGMrUVhBV1RRNUFmQ0tDUnl2?=
+ =?utf-8?B?c1RFbk9jUzBPNkhPaU1MallaOWdNZm54U3YzZkhQSWpCRmhHYks4WTV1ajFp?=
+ =?utf-8?B?MTV4ekdCb3RpekQrdlhJNi8wK0tuRDBmZEdncjN4K1FocFhmOHl5S2J4eVk3?=
+ =?utf-8?B?T1FLbEpYbjB3VFIzejlaaDV0WkprYnM4dG9tNHRpWG1Qc3lVbUFKU3lJVkg0?=
+ =?utf-8?B?QmJpbnpxRm51Q2YvSkpkM3hDOExOZkVKcTNFNTh6MS9LdTIxSGFuVXpwNEFm?=
+ =?utf-8?B?aXFDcDZXQUQ0ZlF4K2tMZmVkSXNzRjFYNzg0clBTVWdZUUU2eE83azkwUGN3?=
+ =?utf-8?B?T1AvalBZbmxGS3c5OE85bjdjeUl5SWx4V3dkZ3Y1dnQ3Y1FwMWNZazhjL0M1?=
+ =?utf-8?B?elNteWFFZWk3aUk2QlRlSmxiMUpWcDhwUGY0RW5Bc291R2ZQQWF5ajA3T2VB?=
+ =?utf-8?B?bHZhbFpvblhkUThUakJYemxQV2FHL1R0TmFmZFFwYVlZTC9FTVRPS0grK2hs?=
+ =?utf-8?B?ZGpDUlFidEhHeExsMmJDNDA4NldSdDJlMERFdkhNc0N0REd0SFZsRG93S3Fq?=
+ =?utf-8?B?ZFJydlZ5bFpNQ21NWDlSM1dLa05RalhEN2plVjVtdWNoYk5UdDcrU0NZSVN3?=
+ =?utf-8?B?UHVpWXJyT0lVdEIzUzZCOWNSK1RtemFZemNWZGhVU0dXWlVISStSRjhTdkFT?=
+ =?utf-8?B?eGZ0bklITTRwTkpzNkVvVmR1ZEtUT2k3aGo1cmttMWdWbHB4enlIaFU5bG9P?=
+ =?utf-8?B?b2JjcDdUcWZlaGdOWVBoWENPUVhtSlNZT0pNcHNtS2FEVWgyV1ZHUnBJdE95?=
+ =?utf-8?B?S1ZkaDRTU1Z3NW56RURoZ3FpZTVpbXVvTzZZWXk5TmRDaDMvbUJEWHJUTk8v?=
+ =?utf-8?B?Uy9tK3ZOOWZlTE1tU0JYa2poaFF4a0dkSkVWa3J6bm0wQkJmemZaaEZaZWoy?=
+ =?utf-8?B?NlpvdXgwNEVDV2JlOWpYSkg3cHVrUklFbnlZSmxHdTN2WG8xbWcxRDJ6VTN4?=
+ =?utf-8?B?ZjNteDBIdS8vMit0ZWNSSWNVekNnMnNXU1JaSlVmZ0ltMWxuOVdGaVZVejhP?=
+ =?utf-8?B?R2JoRmZtUlA4YjBXM05CT0F2eXltSGZzdWhWbkhCZlVDSTZMNGtlYUJla2FH?=
+ =?utf-8?Q?dk2p6c5tNT2AAoJM=3D?=
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-unigraf-integration-v5-37-fbf2e997a011@bootlin.com>
-References: <20260128-unigraf-integration-v5-0-fbf2e997a011@bootlin.com>
-In-Reply-To: <20260128-unigraf-integration-v5-0-fbf2e997a011@bootlin.com>
-To: igt-dev@lists.freedesktop.org
-Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com, 
- kory.maincent@bootlin.com, markyacoub@google.com, 
- khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=19906;
- i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=/eV6XISPeKNf/745YmfgIlBWLKbT+5Bf8iD3iiIGr30=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpegvMYG/ez9BO1lTPrPvpbgRyLW8qgTLija3sI
- aA6yxj7CrWJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaXoLzBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLahBAAgAb03ams1Ylp7mzcmfdqymeSomLrRAE
- x4f7p9vmf3PwYJvjUVnnkB4QrwEAGf8zM3yLjFmM3oqN/MF5OrWqlnKOYNVRVer7cdwINmMiQpj
- 3K1SatAIefjI72P1gZMxgubqc2nUifH5BLefwt30KKyw2Btr4NVfLTvB34p2ESNdD3sck3mNMha
- qq1u2PTmx+Phd8I2Y1lU0UkTFGiIHvCXbg37L/wnHa8hBIzxNmymTplDBWCEI7R7DQiKMjlBJ7i
- OvEtgdTneBVrdTNPIG4AD1C7cE6ULjQWx44H0ZjU9he77aSr2wdTSceAnHdetA1LoNasOL9eXBO
- j2dM9fYyfDuTmszrUy1CLMryy/WLhp6MQKsEYbgmpVnmDk3LPezaQB6N04a5s+LJDBdO2CSUT2T
- XH9hjHhIW0ED/SOc9qcYQG3Gm2vHZYZsfzEbxwbkkb/s3Dk59gAc+bYnLU2ygpDnMX3q3ZaMMAL
- I1RV7gEuHV/6t3ZilptJzRFe6OF/fsQHO+5biTavx8ZdwA4mvFSe/X1M4iGOvAsSipHH/HHCrvo
- BO72QzmYw0ml5HsD+Tc5T1YNRiAP841tpJR1k/av8wFkzqtD+pk2+jg2/xrinIKIHWzb6WHmBoG
- iz9TWEBYzR+ck6BWLLA+caUeQM3ZG4B1fs5lBx7xLYkb7wmyZm8w=
-X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
- fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7264.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 372ae82e-23bd-46db-592f-08de5e70a751
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Jan 2026 13:25:06.9439 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: u3LpUPWXkrm0TtI6k1cUzZZXeYHu+suPTgi/s6QTgbqTXg3GevT+NuXhrenQ+O3QAhp9YRkIcdAKJO9ktQjxjFbj/RWmvNnE9vSUYSwv2rdLvkCrts853BcKupAe9ZtP
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7209
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,494 +208,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add the proper prefix for i915 dp-related functions.
-This will avoid confusion when using them.
-
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
----
- lib/i915/i915_dp.c                      | 57 +++++++++++++++++----------------
- lib/i915/i915_dp.h                      | 26 +++++++--------
- tests/intel/kms_dp_link_training.c      | 18 +++++------
- tests/intel/kms_dp_linktrain_fallback.c | 56 ++++++++++++++++----------------
- 4 files changed, 79 insertions(+), 78 deletions(-)
-
-diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
-index 6cb212f20b1b..c5b9273ebafd 100644
---- a/lib/i915/i915_dp.c
-+++ b/lib/i915/i915_dp.c
-@@ -8,7 +8,7 @@
- #include "igt_core.h"
- 
- /**
-- * igt_parse_marked_value:
-+ * i915_dp_parse_marked_value:
-  * @buf: Buffer containing the content to parse
-  * @marked_char: The character marking the value to parse
-  * @result: Pointer to store the parsed value
-@@ -17,7 +17,7 @@
-  *
-  * Returns: 0 on success, -1 on failure
-  */
--static int igt_parse_marked_value(const char *buf, char marked_char, int *result)
-+static int i915_dp_parse_marked_value(const char *buf, char marked_char, int *result)
- {
- 	char *marked_ptr, *val_ptr;
- 
-@@ -38,13 +38,13 @@ static int igt_parse_marked_value(const char *buf, char marked_char, int *result
- }
- 
-  /**
--  * igt_get_current_link_rate:
-+  * i915_dp_get_current_link_rate:
-   * @drm_fd: A drm file descriptor
-   * @output: Target output
-   *
-   * Returns: link_rate if set for output else -1
-   */
--int igt_get_current_link_rate(int drm_fd, igt_output_t *output)
-+int i915_dp_get_current_link_rate(int drm_fd, igt_output_t *output)
- {
- 	char buf[512];
- 	int res, ret;
-@@ -54,19 +54,19 @@ int igt_get_current_link_rate(int drm_fd, igt_output_t *output)
- 					      buf, sizeof(buf));
- 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_force_link_rate\n",
- 		     output->name);
--	res = igt_parse_marked_value(buf, '*', &ret);
-+	res = i915_dp_parse_marked_value(buf, '*', &ret);
- 	igt_assert_f(res == 0, "Output %s not enabled\n", output->name);
- 	return ret;
- }
- 
- /**
-- * igt_get_current_lane_count:
-+ * i915_dp_get_current_lane_count:
-  * @drm_fd: A drm file descriptor
-  * @output: Target output
-  *
-  * Returns: lane_count if set for output else -1
-  */
--int igt_get_current_lane_count(int drm_fd, igt_output_t *output)
-+int i915_dp_get_current_lane_count(int drm_fd, igt_output_t *output)
- {
- 	char buf[512];
- 	int res, ret;
-@@ -76,19 +76,19 @@ int igt_get_current_lane_count(int drm_fd, igt_output_t *output)
- 					      buf, sizeof(buf));
- 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_force_lane_count\n",
- 		     output->name);
--	res = igt_parse_marked_value(buf, '*', &ret);
-+	res = i915_dp_parse_marked_value(buf, '*', &ret);
- 	igt_assert_f(res == 0, "Output %s not enabled\n", output->name);
- 	return ret;
- }
- 
- /**
-- * igt_get_max_link_rate:
-+ * i915_dp_get_max_link_rate:
-  * @drm_fd: A drm file descriptor
-  * @output: Target output
-  *
-  * Returns: max_link_rate
-  */
--int igt_get_max_link_rate(int drm_fd, igt_output_t *output)
-+int i915_dp_get_max_link_rate(int drm_fd, igt_output_t *output)
- {
- 	char buf[512];
- 	int res, ret;
-@@ -104,13 +104,13 @@ int igt_get_max_link_rate(int drm_fd, igt_output_t *output)
- }
- 
- /**
-- * igt_get_max_link_rate:
-+ * i915_dp_get_max_lane_count:
-  * @drm_fd: A drm file descriptor
-  * @output: Target output
-  *
-  * Returns: max_link_rate
-  */
--int igt_get_max_lane_count(int drm_fd, igt_output_t *output)
-+int i915_dp_get_max_lane_count(int drm_fd, igt_output_t *output)
- {
- 	char buf[512];
- 	int res, ret;
-@@ -126,14 +126,14 @@ int igt_get_max_lane_count(int drm_fd, igt_output_t *output)
- }
- 
- /**
-- * igt_force_link_retrain:
-+ * i915_dp_force_link_retrain:
-  * @drm_fd: A drm file descriptor
-  * @output: Target output
-  * @retrain_count: number of retraining required
-  *
-  * Force link retrain on the output.
-  */
--void igt_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count)
-+void i915_dp_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count)
- {
- 	char value[2];
- 	int res;
-@@ -147,7 +147,7 @@ void igt_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count)
- }
- 
- /**
-- * igt_force_lt_failure:
-+ * i915_dp_force_lt_failure:
-  * @drm_fd: A drm file descriptor
-  * @output: Target output
-  * @failure_count: 1 for same link param and
-@@ -157,7 +157,7 @@ void igt_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count)
-  * @failure_count: 1 for retraining with same link params
-  *		   2 for retraining with reduced link params
-  */
--void igt_force_lt_failure(int drm_fd, igt_output_t *output, int failure_count)
-+void i915_dp_force_lt_failure(int drm_fd, igt_output_t *output, int failure_count)
- {
- 	char value[2];
- 	int res;
-@@ -171,13 +171,13 @@ void igt_force_lt_failure(int drm_fd, igt_output_t *output, int failure_count)
- }
- 
- /**
-- * igt_get_dp_link_retrain_disabled:
-+ * i915_dp_get_link_retrain_disabled:
-  * @drm_fd: A drm file descriptor
-  * @output: Target output
-  *
-  * Returns: True if link retrain disabled, false otherwise
-  */
--bool igt_get_dp_link_retrain_disabled(int drm_fd, igt_output_t *output)
-+bool i915_dp_get_link_retrain_disabled(int drm_fd, igt_output_t *output)
- {
- 	char buf[512];
- 	int res;
-@@ -191,6 +191,7 @@ bool igt_get_dp_link_retrain_disabled(int drm_fd, igt_output_t *output)
- }
- 
- /**
-+ * i915_dp_has_force_link_training_failure_debugfs:
-  * Checks if the force link training failure debugfs
-  * is available for a specific output.
-  *
-@@ -199,7 +200,7 @@ bool igt_get_dp_link_retrain_disabled(int drm_fd, igt_output_t *output)
-  * Returns:
-  *  true if the debugfs is available, false otherwise.
-  */
--bool igt_has_force_link_training_failure_debugfs(int drmfd, igt_output_t *output)
-+bool i915_dp_has_force_link_training_failure_debugfs(int drmfd, igt_output_t *output)
- {
- 	char buf[512];
- 	int res;
-@@ -211,13 +212,13 @@ bool igt_has_force_link_training_failure_debugfs(int drmfd, igt_output_t *output
- }
- 
- /**
-- * igt_get_dp_pending_lt_failures:
-+ * i915_dp_get_pending_lt_failures:
-  * @drm_fd: A drm file descriptor
-  * @output: Target output
-  *
-  * Returns: Number of pending link training failures.
-  */
--int igt_get_dp_pending_lt_failures(int drm_fd, igt_output_t *output)
-+int i915_dp_get_pending_lt_failures(int drm_fd, igt_output_t *output)
- {
- 	char buf[512];
- 	int res, ret;
-@@ -232,13 +233,13 @@ int igt_get_dp_pending_lt_failures(int drm_fd, igt_output_t *output)
- }
- 
- /**
-- * igt_dp_pending_retrain:
-+ * i915_dp_get_pending_retrain:
-  * @drm_fd: A drm file descriptor
-  * @output: Target output
-  *
-  * Returns: Number of pending link retrains.
-  */
--int igt_get_dp_pending_retrain(int drm_fd, igt_output_t *output)
-+int i915_dp_get_pending_retrain(int drm_fd, igt_output_t *output)
- {
- 	char buf[512];
- 	int res, ret;
-@@ -253,14 +254,14 @@ int igt_get_dp_pending_retrain(int drm_fd, igt_output_t *output)
- }
- 
- /**
-- * igt_reset_link_params:
-+ * i915_dp_reset_link_params:
-  * @drm_fd: A drm file descriptor
-  * @output: Target output
-  *
-  * Reset link rate and lane count to auto, also installs exit handler
-  * to set link rate and lane count to auto on exit
-  */
--void igt_reset_link_params(int drm_fd, igt_output_t *output)
-+void i915_dp_reset_link_params(int drm_fd, igt_output_t *output)
- {
- 	bool valid;
- 	drmModeConnector *temp;
-@@ -285,15 +286,15 @@ void igt_reset_link_params(int drm_fd, igt_output_t *output)
- }
- 
- /**
-- * igt_set_link_params:
-+ * i915_dp_set_link_params:
-  * @drm_fd: A drm file descriptor
-  * @output: Target output
-  *
-  * set link rate and lane count to given value, also installs exit handler
-  * to set link rate and lane count to auto on exit
-  */
--void igt_set_link_params(int drm_fd, igt_output_t *output,
--			 char *link_rate, char *lane_count)
-+void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
-+			     char *link_rate, char *lane_count)
- {
- 	bool valid;
- 	drmModeConnector *temp;
-diff --git a/lib/i915/i915_dp.h b/lib/i915/i915_dp.h
-index 2bcc9e2cb031..e4249d179543 100644
---- a/lib/i915/i915_dp.h
-+++ b/lib/i915/i915_dp.h
-@@ -5,18 +5,18 @@
- 
- #include "igt_kms.h"
- 
--int igt_get_current_link_rate(int drm_fd, igt_output_t *output);
--int igt_get_current_lane_count(int drm_fd, igt_output_t *output);
--int igt_get_max_link_rate(int drm_fd, igt_output_t *output);
--int igt_get_max_lane_count(int drm_fd, igt_output_t *output);
--void igt_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count);
--void igt_force_lt_failure(int drm_fd, igt_output_t *output, int failure_count);
--bool igt_get_dp_link_retrain_disabled(int drm_fd, igt_output_t *output);
--bool igt_has_force_link_training_failure_debugfs(int drmfd, igt_output_t *output);
--int igt_get_dp_pending_lt_failures(int drm_fd, igt_output_t *output);
--int igt_get_dp_pending_retrain(int drm_fd, igt_output_t *output);
--void igt_reset_link_params(int drm_fd, igt_output_t *output);
--void igt_set_link_params(int drm_fd, igt_output_t *output,
--			 char *link_rate, char *lane_count);
-+int i915_dp_get_current_link_rate(int drm_fd, igt_output_t *output);
-+int i915_dp_get_current_lane_count(int drm_fd, igt_output_t *output);
-+int i915_dp_get_max_link_rate(int drm_fd, igt_output_t *output);
-+int i915_dp_get_max_lane_count(int drm_fd, igt_output_t *output);
-+void i915_dp_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count);
-+void i915_dp_force_lt_failure(int drm_fd, igt_output_t *output, int failure_count);
-+bool i915_dp_get_link_retrain_disabled(int drm_fd, igt_output_t *output);
-+bool i915_dp_has_force_link_training_failure_debugfs(int drmfd, igt_output_t *output);
-+int i915_dp_get_pending_lt_failures(int drm_fd, igt_output_t *output);
-+int i915_dp_get_pending_retrain(int drm_fd, igt_output_t *output);
-+void i915_dp_reset_link_params(int drm_fd, igt_output_t *output);
-+void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
-+			     char *link_rate, char *lane_count);
- 
- #endif
-diff --git a/tests/intel/kms_dp_link_training.c b/tests/intel/kms_dp_link_training.c
-index 70865f657562..f76b29c47a24 100644
---- a/tests/intel/kms_dp_link_training.c
-+++ b/tests/intel/kms_dp_link_training.c
-@@ -201,20 +201,20 @@ static bool run_link_rate_test(data_t *data, bool mst, bool uhbr)
- 	char lane_str[32];
- 
- 	igt_display_reset(&data->display);
--	igt_reset_link_params(data->drm_fd, data->output);
-+	i915_dp_reset_link_params(data->drm_fd, data->output);
- 	do_modeset(data, mst);
- 
- 	/* Retrain at default/driver parameters */
--	igt_force_link_retrain(data->drm_fd, data->output, RETRAIN_COUNT);
-+	i915_dp_force_link_retrain(data->drm_fd, data->output, RETRAIN_COUNT);
- 	igt_assert_eq(check_condition_with_timeout(data->drm_fd, data->output,
--						   igt_get_dp_pending_retrain,
-+						   i915_dp_get_pending_retrain,
- 						   1.0, 20.0), 0);
- 	assert_link_status_good(data, mst);
- 
- 	/* FIXME : Driver may lie max link rate or max lane count */
- 	/* Read max_link_rate and max_lane_count */
--	max_link_rate = igt_get_max_link_rate(data->drm_fd, data->output);
--	max_lane_count = igt_get_max_lane_count(data->drm_fd, data->output);
-+	max_link_rate = i915_dp_get_max_link_rate(data->drm_fd, data->output);
-+	max_lane_count = i915_dp_get_max_lane_count(data->drm_fd, data->output);
- 
- 	/* Check sink supports uhbr or not */
- 	is_uhbr_output = (max_link_rate >= UHBR_LINK_RATE);
-@@ -233,14 +233,14 @@ static bool run_link_rate_test(data_t *data, bool mst, bool uhbr)
- 		 data->output->name, rate_str, max_lane_count);
- 
- 	/* Force retrain at max link params */
--	igt_set_link_params(data->drm_fd, data->output, rate_str, lane_str);
--	igt_force_link_retrain(data->drm_fd, data->output, RETRAIN_COUNT);
-+	i915_dp_set_link_params(data->drm_fd, data->output, rate_str, lane_str);
-+	i915_dp_force_link_retrain(data->drm_fd, data->output, RETRAIN_COUNT);
- 	igt_assert_eq(check_condition_with_timeout(data->drm_fd, data->output,
--						   igt_get_dp_pending_retrain,
-+						   i915_dp_get_pending_retrain,
- 						   1.0, 20.0), 0);
- 	assert_link_status_good(data, mst);
- 
--	current_link_rate = igt_get_current_link_rate(data->drm_fd, data->output);
-+	current_link_rate = i915_dp_get_current_link_rate(data->drm_fd, data->output);
- 	igt_info("Current link rate is %d\n", current_link_rate);
- 	igt_assert_f(current_link_rate == max_link_rate,
- 		     "Link training did not succeed at max link rate.\n");
-diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
-index 9d7693dc3b7d..40bf0e668e9c 100644
---- a/tests/intel/kms_dp_linktrain_fallback.c
-+++ b/tests/intel/kms_dp_linktrain_fallback.c
-@@ -240,12 +240,12 @@ static bool force_failure_and_wait(data_t *data,
- 				   double interval,
- 				   double timeout)
- {
--	igt_force_lt_failure(data->drm_fd, output, failure_type);
--	igt_force_link_retrain(data->drm_fd, output, retrain_count);
-+	i915_dp_force_lt_failure(data->drm_fd, output, failure_type);
-+	i915_dp_force_link_retrain(data->drm_fd, output, retrain_count);
- 
- 	/* Wait until there's no pending retrain */
- 	if (check_condition_with_timeout(data->drm_fd, output,
--					 igt_get_dp_pending_retrain,
-+					 i915_dp_get_pending_retrain,
- 					 interval, timeout)) {
- 		igt_info("Timed out waiting for pending retrain\n");
- 		return false;
-@@ -253,7 +253,7 @@ static bool force_failure_and_wait(data_t *data,
- 
- 	/* Wait until there's no pending LT failures */
- 	if (check_condition_with_timeout(data->drm_fd, output,
--					 igt_get_dp_pending_lt_failures,
-+					 i915_dp_get_pending_lt_failures,
- 					 interval, timeout)) {
- 		igt_info("Timed out waiting for pending LT failures\n");
- 		return false;
-@@ -353,7 +353,7 @@ static void test_fallback(data_t *data, bool is_mst)
- 	retries = SPURIOUS_HPD_RETRY;
- 
- 	igt_display_reset(&data->display);
--	igt_reset_link_params(data->drm_fd, data->output);
-+	i915_dp_reset_link_params(data->drm_fd, data->output);
- 	if (!setup_outputs(data, is_mst, outputs,
- 			   &output_count, modes, fbs,
- 			   primaries))
-@@ -361,13 +361,13 @@ static void test_fallback(data_t *data, bool is_mst)
- 
- 	igt_info("Testing link training fallback on %s\n",
- 		 igt_output_name(data->output));
--	max_link_rate = igt_get_max_link_rate(data->drm_fd, data->output);
--	max_lane_count = igt_get_max_lane_count(data->drm_fd, data->output);
--	prev_link_rate = igt_get_current_link_rate(data->drm_fd, data->output);
--	prev_lane_count = igt_get_current_lane_count(data->drm_fd, data->output);
-+	max_link_rate = i915_dp_get_max_link_rate(data->drm_fd, data->output);
-+	max_lane_count = i915_dp_get_max_lane_count(data->drm_fd, data->output);
-+	prev_link_rate = i915_dp_get_current_link_rate(data->drm_fd, data->output);
-+	prev_lane_count = i915_dp_get_current_lane_count(data->drm_fd, data->output);
- 
--	while (!igt_get_dp_link_retrain_disabled(data->drm_fd,
--						 data->output)) {
-+	while (!i915_dp_get_link_retrain_disabled(data->drm_fd,
-+						  data->output)) {
- 		igt_info("Current link rate: %d, Current lane count: %d\n",
- 			 prev_link_rate,
- 			 prev_lane_count);
-@@ -379,8 +379,8 @@ static void test_fallback(data_t *data, bool is_mst)
- 						    1.0, 20.0),
- 						    "Link training failure steps timed out\n");
- 
--		if (igt_get_dp_link_retrain_disabled(data->drm_fd,
--						     data->output)) {
-+		if (i915_dp_get_link_retrain_disabled(data->drm_fd,
-+						      data->output)) {
- 			igt_reset_connectors();
- 			return;
- 		}
-@@ -400,8 +400,8 @@ static void test_fallback(data_t *data, bool is_mst)
- 							  fbs,
- 							  primaries), "modeset failed\n");
- 		igt_assert_eq(data->output->values[IGT_CONNECTOR_LINK_STATUS], DRM_MODE_LINK_STATUS_GOOD);
--		curr_link_rate = igt_get_current_link_rate(data->drm_fd, data->output);
--		curr_lane_count = igt_get_current_lane_count(data->drm_fd, data->output);
-+		curr_link_rate = i915_dp_get_current_link_rate(data->drm_fd, data->output);
-+		curr_lane_count = i915_dp_get_current_lane_count(data->drm_fd, data->output);
- 
- 		igt_debug("Fallback state: prev %dx%d, curr %dx%d, max %dx%d, retries=%u\n",
- 			  prev_link_rate, prev_lane_count,
-@@ -426,8 +426,8 @@ static bool run_lt_fallback_test(data_t *data)
- 	for_each_connected_output(&data->display, output) {
- 		data->output = output;
- 
--		if (!igt_has_force_link_training_failure_debugfs(data->drm_fd,
--								 data->output)) {
-+		if (!i915_dp_has_force_link_training_failure_debugfs(data->drm_fd,
-+								     data->output)) {
- 			igt_info("Output %s doesn't support forcing link training failure\n",
- 				 igt_output_name(data->output));
- 			continue;
-@@ -470,8 +470,8 @@ static void test_dsc_sst_fallback(data_t *data)
- 	data->pipe = PIPE_A;
- 
- 	igt_display_reset(&data->display);
--	igt_reset_link_params(data->drm_fd, data->output);
--	igt_force_link_retrain(data->drm_fd, data->output, RETRAIN_COUNT);
-+	i915_dp_reset_link_params(data->drm_fd, data->output);
-+	i915_dp_force_link_retrain(data->drm_fd, data->output, RETRAIN_COUNT);
- 
- 	/* Find a mode that doesn't require DSC initially */
- 	for_each_connector_mode(data->output) {
-@@ -507,8 +507,8 @@ static void test_dsc_sst_fallback(data_t *data)
- 			igt_info("Found mode %dx%d@%d %s that doesn't need DSC with link rate %d and lane count %d\n",
- 				 non_dsc_mode->hdisplay, non_dsc_mode->vdisplay,
- 				 non_dsc_mode->vrefresh, non_dsc_mode->name,
--				 igt_get_current_link_rate(data->drm_fd, data->output),
--				 igt_get_current_lane_count(data->drm_fd, data->output));
-+				 i915_dp_get_current_link_rate(data->drm_fd, data->output),
-+				 i915_dp_get_current_lane_count(data->drm_fd, data->output));
- 			non_dsc_mode_found = true;
- 			break;
- 		}
-@@ -518,7 +518,7 @@ static void test_dsc_sst_fallback(data_t *data)
- 		      igt_output_name(data->output));
- 
- 	/* Repeatedly force link failure until DSC is required (or link is disabled) */
--	while (!igt_get_dp_link_retrain_disabled(data->drm_fd, data->output)) {
-+	while (!i915_dp_get_link_retrain_disabled(data->drm_fd, data->output)) {
- 		mon = igt_watch_uevents();
- 
- 		igt_assert_f(force_failure_and_wait(data, data->output,
-@@ -526,8 +526,8 @@ static void test_dsc_sst_fallback(data_t *data)
- 						    RETRAIN_COUNT, 1.0, 20.0),
- 			     "Forcing DSC fallback timed out\n");
- 
--		if (igt_get_dp_link_retrain_disabled(data->drm_fd,
--						     data->output)) {
-+		if (i915_dp_get_link_retrain_disabled(data->drm_fd,
-+						      data->output)) {
- 			igt_reset_connectors();
- 			igt_flush_uevents(mon);
- 			return;
-@@ -551,8 +551,8 @@ static void test_dsc_sst_fallback(data_t *data)
- 			igt_info("mode %dx%d@%d now requires DSC with link rate %d and lane count %d\n",
- 				 mode_to_check->hdisplay, mode_to_check->vdisplay,
- 				 mode_to_check->vrefresh,
--				 igt_get_current_link_rate(data->drm_fd, data->output),
--				 igt_get_current_lane_count(data->drm_fd, data->output));
-+				 i915_dp_get_current_link_rate(data->drm_fd, data->output),
-+				 i915_dp_get_current_lane_count(data->drm_fd, data->output));
- 			igt_info("DSC fallback successful on %s\n",
- 				 igt_output_name(data->output));
- 			dsc_fallback_successful = true;
-@@ -579,8 +579,8 @@ static bool run_dsc_sst_fallaback_test(data_t *data)
- 	for_each_connected_output(&data->display, output) {
- 		data->output = output;
- 
--		if (!igt_has_force_link_training_failure_debugfs(data->drm_fd,
--								 data->output)) {
-+		if (!i915_dp_has_force_link_training_failure_debugfs(data->drm_fd,
-+								     data->output)) {
- 			igt_info("Output %s doesn't support forcing link training.\n",
- 				 igt_output_name(data->output));
- 			continue;
-
--- 
-2.52.0
-
+SGkgUGlvdHIsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUnVkbmlj
+a2ksIFBpb3RyIDxwaW90ci5ydWRuaWNraUBpbnRlbC5jb20+DQo+IFNlbnQ6IFdlZG5lc2RheSwg
+SmFudWFyeSAyOCwgMjAyNiAxMToxNSBBTQ0KPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3Rv
+cC5vcmcNCj4gQ2M6IFBpYXRrb3dza2ksIERvbWluaWsgS2Fyb2wgPGRvbWluaWsua2Fyb2wucGlh
+dGtvd3NraUBpbnRlbC5jb20+Ow0KPiBSdWRuaWNraSwgUGlvdHIgPHBpb3RyLnJ1ZG5pY2tpQGlu
+dGVsLmNvbT4NCj4gU3ViamVjdDogW1BBVENIIGktZy10IHYyIDEvMl0gbGliL3hlOiB4ZV9ldWRl
+YnVnIC0gQWRkIHBpcGUgdmFsaWRhdGlvbiBhbmQNCj4gY2xlYW51cCBpbXByb3ZlbWVudHMNCg0K
+Tml0OiBJJ2Qgc3RpY2sgd2l0aCBjb21taXQgdGl0bGUgaW4gdGhlIGZvbGxvd2luZyBmb3JtYXQ6
+DQpsaWIveGVfZXVkZWJ1ZzogQWRkIHBpcGUgdmFsaWRhdGlvbiBhbmQgY2xlYW51cCBpbXByb3Zl
+bWVudHMNCg0KT3RoZXJ3aXNlLCBMR1RNLA0KUmV2aWV3ZWQtYnk6IERvbWluaWsgS2Fyb2wgUGnE
+hXRrb3dza2kgPGRvbWluaWsua2Fyb2wucGlhdGtvd3NraUBpbnRlbC5jb20+DQoNCj4gDQo+IEFk
+ZCBwaXBlIHZhbGlkYXRpb24gaW4gcGlwZV9zaWduYWwoKSB0byBwcmV2ZW50IHdyaXRlcyB0byBj
+bG9zZWQgcGlwZXMuDQo+IFVwZGF0ZSBwaXBlX2Nsb3NlKCkgdG8gc2V0IGRlc2NyaXB0b3JzIHRv
+IC0xIGFmdGVyIGNsb3NpbmcgdG8gZW5zdXJlDQo+IHRoZSBndWFyZCBjb25kaXRpb24gd29ya3Mg
+Y29ycmVjdGx5Lg0KPiANCj4gU2lnbmVkLW9mZi1ieTogUGlvdHIgUnVkbmlja2kgPHBpb3RyLnJ1
+ZG5pY2tpQGludGVsLmNvbT4NCj4gQ2M6IERvbWluaWsgS2Fyb2wgUGnEhXRrb3dza2kgPGRvbWlu
+aWsua2Fyb2wucGlhdGtvd3NraUBpbnRlbC5jb20+DQo+IC0tLQ0KPiBWMSAtPiBWMjogU3BsaXQg
+aW50byBzZXBhcmF0ZSBsaWJyYXJ5IGFuZCB0ZXN0IGNvbW1pdHMNCj4gDQo+ICBsaWIveGUveGVf
+ZXVkZWJ1Zy5jIHwgMTYgKysrKysrKysrKystLS0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDExIGlu
+c2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbGliL3hlL3hl
+X2V1ZGVidWcuYyBiL2xpYi94ZS94ZV9ldWRlYnVnLmMNCj4gaW5kZXggMmFiZWU3YmEyLi4yMzg3
+Yjc0ZjggMTAwNjQ0DQo+IC0tLSBhL2xpYi94ZS94ZV9ldWRlYnVnLmMNCj4gKysrIGIvbGliL3hl
+L3hlX2V1ZGVidWcuYw0KPiBAQCAtMzA0LDE2ICszMDQsMjIgQEAgc3RhdGljIGludCBzYWZlX3Bp
+cGVfcmVhZChpbnQgcGlwZVsyXSwgdm9pZCAqYnVmLCBpbnQNCj4gbmJ5dGVzLCBpbnQgdGltZW91
+dF9tcykNCj4gDQo+ICBzdGF0aWMgdm9pZCBwaXBlX3NpZ25hbChpbnQgcGlwZVsyXSwgdWludDY0
+X3QgdG9rZW4pDQo+ICB7DQo+IC0JaWd0X2Fzc2VydCh3cml0ZShwaXBlWzFdLCAmdG9rZW4sIHNp
+emVvZih0b2tlbikpID09IHNpemVvZih0b2tlbikpOw0KPiArCS8qIFNraXAgc2lnbmFsaW5nIGlm
+IHBpcGUgd2FzIGFscmVhZHkgY2xvc2VkICovDQo+ICsJaWYgKHBpcGVbMV0gPj0gMCkNCj4gKwkJ
+aWd0X2Fzc2VydCh3cml0ZShwaXBlWzFdLCAmdG9rZW4sIHNpemVvZih0b2tlbikpID09DQo+IHNp
+emVvZih0b2tlbikpOw0KPiAgfQ0KPiANCj4gIHN0YXRpYyB2b2lkIHBpcGVfY2xvc2UoaW50IHBp
+cGVbMl0pDQo+ICB7DQo+IC0JaWYgKHBpcGVbMF0gIT0gLTEpDQo+IC0JCWNsb3NlKHBpcGVbMF0p
+Ow0KPiArCWlmIChwaXBlWzBdID49IDApIHsNCj4gKwkJaWd0X2Fzc2VydF9lcShjbG9zZShwaXBl
+WzBdKSwgMCk7DQo+ICsJCXBpcGVbMF0gPSAtMTsNCj4gKwl9DQo+IA0KPiAtCWlmIChwaXBlWzFd
+ICE9IC0xKQ0KPiAtCQljbG9zZShwaXBlWzFdKTsNCj4gKwlpZiAocGlwZVsxXSA+PSAwKSB7DQo+
+ICsJCWlndF9hc3NlcnRfZXEoY2xvc2UocGlwZVsxXSksIDApOw0KPiArCQlwaXBlWzFdID0gLTE7
+DQo+ICsJfQ0KPiAgfQ0KPiANCj4gICNkZWZpbmUgREVBRF9DTElFTlQgMHhjY2NjZGVhZA0KPiAt
+LQ0KPiAyLjQzLjANCg0K
