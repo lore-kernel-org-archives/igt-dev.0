@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F4A6D46BFB
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 20:32:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 804E0D46BFB
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 20:33:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B2EE110E768;
-	Wed, 28 Jan 2026 20:32:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2AA7C10E768;
+	Wed, 28 Jan 2026 20:33:34 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C22FF10E768;
- Wed, 28 Jan 2026 20:32:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D04010E768;
+ Wed, 28 Jan 2026 20:33:33 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3614909325195176144=="
+ boundary="===============8269798587267643046=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Xe_SR-IOV_admin_scheduling_?=
- =?utf-8?q?helpers_and_test_updates_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_Extend_xe=5Fexec=5Fsystem?=
+ =?utf-8?q?=5Fallocator_compute_tests?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+To: "Francois Dugast" <francois.dugast@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 28 Jan 2026 20:32:20 -0000
-Message-ID: <176963234077.202812.11147290057459622364@a3b018990fe9>
+Date: Wed, 28 Jan 2026 20:33:33 -0000
+Message-ID: <176963241331.202811.16299636862034089259@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260128180819.1373376-1-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20260128180819.1373376-1-marcin.bernatowicz@linux.intel.com>
+References: <20260128173412.1319610-1-francois.dugast@intel.com>
+In-Reply-To: <20260128173412.1319610-1-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,57 +41,109 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3614909325195176144==
+--===============8269798587267643046==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Xe SR-IOV admin scheduling helpers and test updates (rev3)
-URL   : https://patchwork.freedesktop.org/series/157591/
-State : success
+Series: Extend xe_exec_system_allocator compute tests
+URL   : https://patchwork.freedesktop.org/series/160784/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8723_BAT -> XEIGTPW_14443_BAT
+CI Bug Log - changes from IGT_8723 -> IGTPW_14442
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
-
+  Serious unknown changes coming with IGTPW_14442 absolutely need to be
+  verified manually.
   
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_14442, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-Participating hosts (12 -> 11)
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/index.html
+
+Participating hosts (42 -> 40)
 ------------------------------
 
-  Missing    (1): bat-bmg-3 
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
 
+Possible new issues
+-------------------
 
-Changes
--------
+  Here are the unknown changes that may have been introduced in IGTPW_14442:
 
-  No changes found
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-adlp-6:         [PASS][1] -> [DMESG-WARN][2] +78 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14442 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-9:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-mtlp-8/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/bat-mtlp-8/igt@i915_selftest@live.html
+    - bat-dg2-8:          [DMESG-FAIL][9] ([i915#12061]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-dg2-8/igt@i915_selftest@live.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/bat-dg2-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-6:         [DMESG-FAIL][11] ([i915#12061]) -> [PASS][12] +1 other test pass
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8723 -> IGTPW_14443
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8723 -> IGTPW_14442
 
-  IGTPW_14443: 14443
+  CI-20190529: 20190529
+  CI_DRM_17900: 8059f097e25f736bb3da09af6a9b283079abfd4f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14442: bc07aaf6236d19e6912e8e91eec762611d539fd4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8723: 8723
-  xe-4465-8059f097e25f736bb3da09af6a9b283079abfd4f: 8059f097e25f736bb3da09af6a9b283079abfd4f
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14443/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/index.html
 
---===============3614909325195176144==
+--===============8269798587267643046==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,32 +163,74 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Xe SR-IOV admin scheduling helpers and test updates (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/157591/">https://patchwork.freedesktop.org/series/157591/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>Extend xe_exec_system_allocator compute tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160784/">https://patchwork.freedesktop.org/series/160784/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14443/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14443/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8723_BAT -&gt; XEIGTPW_14443_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_8723 -&gt; IGTPW_14442</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 11)</h2>
-<p>Missing    (1): bat-bmg-3 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_14442 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_14442, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_14442:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> +78 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14442 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14442/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8723 -&gt; IGTPW_14443</li>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8723 -&gt; IGTPW_14442</li>
 </ul>
-<p>IGTPW_14443: 14443<br />
-  IGT_8723: 8723<br />
-  xe-4465-8059f097e25f736bb3da09af6a9b283079abfd4f: 8059f097e25f736bb3da09af6a9b283079abfd4f</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_17900: 8059f097e25f736bb3da09af6a9b283079abfd4f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14442: bc07aaf6236d19e6912e8e91eec762611d539fd4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8723: 8723</p>
 
 </body>
 </html>
 
---===============3614909325195176144==--
+--===============8269798587267643046==--
