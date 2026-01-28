@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39CFDD25B5B
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 13:14:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8FFAD25B5C
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 13:14:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9309510E6EC;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 70EC810E6E7;
 	Wed, 28 Jan 2026 13:14:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="WeNphOQW";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="TeAIeL/7";
 	dkim-atps=neutral
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 288AF10E119
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C08CA10E6EB
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:52 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 1DE6C1A2AC1
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:48 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id B46881A2AC0
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:51 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id E98AE6071F;
- Wed, 28 Jan 2026 13:14:47 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 8919D6071F;
+ Wed, 28 Jan 2026 13:14:51 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 0F90F119A8823; Wed, 28 Jan 2026 14:14:47 +0100 (CET)
+ with ESMTPSA id 9BE54119A8826; Wed, 28 Jan 2026 14:14:50 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1769606087; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1769606091; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=GBWFnrdQzQVpvgFgg+chbMf+/aWXhPWRHNXb+Vu+LhY=;
- b=WeNphOQWaXf/HP3u2gRa+6Zs/a9LSKgDk32ZCzVLK75tPAQgFFdl/M/5Ll/FxUkg2A1bTB
- Q/euK9l4a6zsRlos2H7S2X+1uzBekfpSvCdfjTZb9nyV1yFmeBgGLbq4Ib9pFvt7XigK32
- WifVFc0/an7zkGwxEf88HpJud7SRwIXz1o8jGusT+E/6EFMJzputRlDxwZuK/NMo754tV5
- Mzi4qy/b5rC15nd49xjpYf5p5gkM0RKs605l8swZ8UH9QMTJ1Q0H6J/kiZ2jUzKDtFBmKs
- vZ84FfmUHch/ooL4BwxfMj0UhlfnIUhGoFVPbX5NqorkoAPs0HY3p+Ofb8gCNQ==
+ bh=StdL+73sU/AP0lNaVVfWGqDceqsrwXeYTSo2jvG4ubA=;
+ b=TeAIeL/70Pvy/szMf48k+nU2FVBX/sTdSuDp8L0NU3QrE3OC2raUqv6o9Q2MOkJ/+Akya6
+ xBvdzkEU93gbwiErPCnbUMhxw9ejJO+lSQZQGQ5zpZ1AAVOl1fF3/oyU6d+NenVarTmfjh
+ CIrnJmMg0pFUgmnJDf6YFuFBbG6mSNRzew/JfPjnImbi8wvDIw65SueS0sKzYVOIN8+08O
+ aqtyEvzSvdUP0hYOLrFNn5cCAkndZ9eQiIYP3rv84GTHgnZVoh1WmD1rcqaQfX61pMc00n
+ mIHyZUqLmYa+C8M+WNgcN+52Mq7XpM9iETRc9dirlJd6ZcAdzScDt3YFFzlQ5Q==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 28 Jan 2026 14:14:54 +0100
-Subject: [PATCH i-g-t v5 23/48] lib/unigraf: Introduce input configuration
+Date: Wed, 28 Jan 2026 14:14:59 +0100
+Subject: [PATCH i-g-t v5 28/48] lib/unigraf: Add helpers to read and write edid
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-unigraf-integration-v5-23-fbf2e997a011@bootlin.com>
+Message-Id: <20260128-unigraf-integration-v5-28-fbf2e997a011@bootlin.com>
 References: <20260128-unigraf-integration-v5-0-fbf2e997a011@bootlin.com>
 In-Reply-To: <20260128-unigraf-integration-v5-0-fbf2e997a011@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -46,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4124;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3389;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=vKTYW5HeOEZL9fhRJ1CFpBi5tPWmSzJj5SvGfsGESS8=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpegvKyrrBiETBzcuSrF2W7PXgcwSKlm13vARvZ
- HdqBtUpZayJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaXoLyhsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOIXXhAAmpEqkRG2V9NuEoOqXsmErqf85X1SOUW
- KWXy5s2qp9cXQhfRmhVBKrgjl7r8oMRGaMhL3ZkukzytGcv36F4VZT3aIgqZOc2Jk1nfeQuD5dG
- IZvVBHBtF3z9ad1rzNK4OexbiFFbOxa8vNyGnInQFCXdCnqLCQpYCs4WKS8atq/LUWtmBOimQPQ
- g4+nTy2M2G+guRN+pgHAyA1ipcLSfI4H/AB2tVNXLnu8MeSQ75FKdbio7TNQ0NglMVf52Ba+Xbn
- qiMa8Snf+Y8ql3as6gpsNOxe+itVvwJ9T+BYzHaqRNLWMB93cJXcKA1Zs/mZA/fTnHTC4uC3Qeu
- f6wRfwaHk0+Zet5+cKF09Y9mHFt6jjUCHaz02SOG/k5VRV/pfGfx8+vMuhwsC9TgXTcZPgwf24J
- vJ+gMgfL5H14BEte3J+ofYP6/KRoYRPv3IF7FaGSWMs1FAn3Po30X9xtkjxTBZ+n8kKCs+jJKp1
- hhDs1COo2oE5Zn9uvs25QSmeh3eNKoq8859IvHvDZvl9kGOw408oCNdfOlrAGCzO8MhvPfQRrf5
- XL/k98nAvuIPDMYNWNaYf4XOJ5xv+FN9nrXHNYu1viX34g/5PLX8eXMWLRajBBHId1hSVXk6zha
- EA+MxfZHKDx9DqvtoFIReihFPFhK1iD+FWosej63geVKoRnI4Heo=
+ bh=ZgOIbJavNZhnZlmVLkoHtgkibPviX+aoRiLSrjvSbq4=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpegvLsIB4suugdpDpufnMJMtT1AlT1/0oVDbwt
+ VdVmWTW2JuJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaXoLyxsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOJutg/9FraK6pYmDbHg4ZyZMCOT/XrwXkV0xb+
+ Hc1RnpBkrFmCMtgxPiXr+8ejDjEt2DzxWv5SRsgAL0sQr0kpXLIdmoTdkc/7k6Dlw2QZGarX8Fx
+ m2EGajjX5uOYtYT7uAwCljyqhdVcA4fQyyeNnltJEJGHRUgYF27MvTUVvxGVMsfOeTVrNLu9zT9
+ lRB8A/g3oG3nptDDqu1IUGowybhhorrE7qNl8vS+wnsdMW6uBHAUzU8mnKUoyfXzyqLgmr0JBn2
+ lGPxnm5UcIZwbLSfZ8yXHZdMTGDThtSUJFXhvMr6+8pq3khKMjLhkaDTovRoTgu3UgiJlqzELqR
+ HdP3MlVJjSjR+tHt82cnWEL2/U5JGSg4WY8qUwek2zO5iqmcMfqKEqL2cKmem1Z1iCfWjUHHSPQ
+ kqjXBYNtzbf7fN18UwVSFWvJANdo7pbEgxQQbWHvg1g/RsQhJdbK5uNF9+gCOpa/ZqY2whSRsL9
+ xGJPpVmDRVK5TyH1CYPluHILfAjwbZNsKWWBolJRR4ursbsITQhaW/Rv4v4O5LaLITB4AX0OzD+
+ rgeC0M2loFG0LIj7llsh3hIMRINml5peM0KUPWjqoLSMypt1D6Gt3jY6qaEcDE4Ed1i9jh0hDOa
+ W+o27uHWhmGr2rafXktGy2b/XXxIwktNEWyQIOsx0EXPBpeGNke4=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,135 +79,109 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As multiple input can be present on unigraf devices, add a configuration
-field to select the proper input. By default it will take the first
-available.
+Read and writing EDID on unigraf can be useful to emulate different
+screens, add helpers to read and write them.
 
-The configuration can look like:
-
-[Unigraf]
-Device=UCD-500 [2434C620]
-Role=DisplayPort Source and Sink
-Input=DP RX
+There is a limitation on the libTSI.so, it is only possible to read EDID
+using buffers of size multiple of 128 bytes, and there is no way to query
+the actual EDID size. The current implementation can only read EDID up to
+2048 bytes.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- lib/unigraf/unigraf.c | 59 ++++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 58 insertions(+), 1 deletion(-)
+ lib/unigraf/unigraf.c | 55 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/unigraf/unigraf.h |  4 ++++
+ 2 files changed, 59 insertions(+)
 
 diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index fb901c38453e..1b31f7a44566 100644
+index 4a3b0a5fc28e..59a4720e0112 100644
 --- a/lib/unigraf/unigraf.c
 +++ b/lib/unigraf/unigraf.c
-@@ -34,11 +34,21 @@ static char *unigraf_connector_name;
-  */
- #define UNIGRAF_CONFIG_DEVICE_ROLE "Role"
+@@ -122,6 +122,20 @@ static uint32_t _unigraf_read_u32(TSI_CONFIG_ID config_id)
+ 		value;								\
+ 	})
  
 +/**
-+ * UNIGRAF_CONFIG_INPUT_NAME - Key of the input name in the configuration file
++ * unigraf_write() - Helper to write a value to unigraf
++ * @config: config id to write
++ * @data: data to write
++ * @data_len: length of the data
++ * Returns
 + */
-+#define UNIGRAF_CONFIG_INPUT_NAME "Input"
-+
- /**
-  * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf device
-  */
- #define UNIGRAF_DEFAULT_ROLE_NAME "USB-C, DP Alt Mode Source and Sink"
- 
-+/**
-+ * UNIGRAF_DEFAULT_INPUT_NAME - Default input name to search on the unigraf device
-+ */
-+#define UNIGRAF_DEFAULT_INPUT_NAME "DP RX"
-+
- static void unigraf_close_device(void)
- {
- 	if (!unigraf_device)
-@@ -121,6 +131,24 @@ static int unigraf_find_role(const char *request)
- 	return chosen_role;
- }
- 
-+static int unigraf_find_input(const char *request)
++static void unigraf_write(TSI_CONFIG_ID config, const void *data, size_t data_len)
 +{
-+	int chosen_input = -1;
-+	int role_count = unigraf_assert(TSIX_VIN_GetInputCount(unigraf_device));
++	unigraf_debug("Writing %zu bytes to 0x%x\n", data_len, config);
 +
-+	for (int i = 0; i < role_count; i++) {
-+		char input_name[UNIGRAF_NAME_MAX];
-+
-+		memset(input_name, 0, UNIGRAF_NAME_MAX);
-+		unigraf_assert(TSIX_VIN_GetInputName(unigraf_device, i,
-+						     input_name, UNIGRAF_NAME_MAX));
-+		unigraf_debug("Input %d: %s\n", i, input_name);
-+		if (!strncmp(input_name, request, UNIGRAF_NAME_MAX))
-+			chosen_input = i;
-+	}
-+	return chosen_input;
++	unigraf_assert(TSIX_TS_SetConfigItem(unigraf_device, config, data, data_len));
 +}
 +
  /**
-  * unigraf_open_device() - Search and open a device.
-  * @drm_fd: File descriptor of the currently used drm device
-@@ -136,10 +164,11 @@ bool unigraf_open_device(int drm_fd)
- 	GError *cfg_error = NULL;
- 	char *cfg_device = NULL;
- 	char *cfg_role = NULL;
-+	char *cfg_input = NULL;
- 	int device_count;
- 	int chosen_device;
- 	int chosen_role;
--	int chosen_input = 0;
-+	int chosen_input;
+  * unigraf_device_count() - Return the number of scanned devices
+  *
+@@ -350,6 +364,47 @@ void unigraf_reset(void)
+ 	unigraf_set_sst();
+ }
  
- 	assert(igt_can_fail());
- 
-@@ -163,6 +192,7 @@ bool unigraf_open_device(int drm_fd)
- 		unigraf_debug("No device configured, will try to find the first available.\n");
- 		cfg_device = NULL;
- 		cfg_role = NULL;
-+		cfg_input = NULL;
- 		unigraf_connector_name = NULL;
- 	} else {
- 		cfg_device = g_key_file_get_string(igt_key_file, cfg_group,
-@@ -179,6 +209,14 @@ bool unigraf_open_device(int drm_fd)
- 			unigraf_debug("No device role configured.\n");
- 			cfg_role = NULL;
- 		}
++/**
++ * unigraf_read_edid() - Read the EDID from the specified stream
++ * @stream: The stream ID to read the EDID from
++ * @edid_size: Pointer to an integer where the size of the EDID will be stored
++ *
++ * Returns: A pointer to the EDID structure, or NULL if the operation failed. The caller
++ * is responsible to free this pointer.
++ */
++struct edid *unigraf_read_edid(uint32_t stream, uint32_t *edid_size)
++{
++	void *edid;
 +
-+		cfg_error = NULL;
-+		cfg_input = g_key_file_get_string(igt_key_file, cfg_group,
-+						  UNIGRAF_CONFIG_INPUT_NAME, &cfg_error);
-+		if (cfg_error) {
-+			unigraf_debug("No input name configured.\n");
-+			cfg_input = NULL;
-+		}
- 	}
- 
- 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
-@@ -223,6 +261,25 @@ bool unigraf_open_device(int drm_fd)
- 	}
- 
- 	unigraf_assert(TSIX_DEV_SelectRole(unigraf_device, chosen_role));
++	unigraf_debug("Read EDID for stream %d...\n", stream);
 +
-+	if (!cfg_input) {
-+		unigraf_debug("No input configured, trying " UNIGRAF_DEFAULT_INPUT_NAME "\n");
-+		chosen_input = unigraf_find_input(UNIGRAF_DEFAULT_INPUT_NAME);
-+		if (chosen_input < 0) {
-+			char input_name[UNIGRAF_NAME_MAX];
++	edid = malloc(2048);
++	memset(edid, 0, 2048);
 +
-+			chosen_input = 0;
-+			unigraf_assert(TSIX_VIN_GetInputName(unigraf_device, chosen_input,
-+							     input_name, UNIGRAF_NAME_MAX));
-+			unigraf_debug("Input " UNIGRAF_DEFAULT_INPUT_NAME " not found, using input 0 (%s).\n",
-+				      input_name);
-+		}
-+	} else  {
-+		chosen_input = unigraf_find_input(cfg_input);
-+		igt_assert_f(chosen_input >= 0, "TSI:%p: Input %s not found.",
-+			     unigraf_device, cfg_input);
-+	}
++	unigraf_write_u32(TSI_EDID_SELECT_STREAM, stream);
++	*edid_size = unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device,
++							  TSI_EDID_TE_INPUT,
++							  edid, 2048));
 +
- 	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
- 	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
++	return edid;
++}
++
++/**
++ * unigraf_write_edid() - Write EDID data to the specified stream
++ * @stream: The stream ID to write the EDID to
++ * @edid: Pointer to the EDID structure to write
++ * @edid_size: Size of the EDID data in bytes
++ *
++ * This function writes the provided EDID data to the specified stream.
++ */
++void unigraf_write_edid(uint32_t stream, const struct edid *edid, uint32_t edid_size)
++{
++	unigraf_debug("Write EDID for stream %d...\n", stream);
++
++	unigraf_write_u32(TSI_EDID_SELECT_STREAM, stream);
++	unigraf_write(TSI_EDID_TE_INPUT, edid, 2048);
++}
++
+ /**
+  * unigraf_hpd_assert() - Assert Hot Plug Detect signal
+  *
+diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
+index 7ff6dbda71fe..0d200b1ec520 100644
+--- a/lib/unigraf/unigraf.h
++++ b/lib/unigraf/unigraf.h
+@@ -36,6 +36,10 @@ void unigraf_require_device(int drm_fd);
  
+ void unigraf_reset(void);
+ 
++struct edid *unigraf_read_edid(uint32_t stream, uint32_t *edid_size);
++
++void unigraf_write_edid(uint32_t stream, const struct edid *edid, uint32_t edid_size);
++
+ void unigraf_hpd_deassert(void);
+ 
+ void unigraf_hpd_pulse(int duration);
 
 -- 
 2.52.0
