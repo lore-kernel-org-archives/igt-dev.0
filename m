@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD744D3F094
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 16:42:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0CC6D3F094
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 16:42:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7D7E010E1B4;
-	Wed, 28 Jan 2026 16:42:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9869D10E2CC;
+	Wed, 28 Jan 2026 16:42:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fxJ1lmVV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NyL99wid";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 47BBB10E1B4
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 16:42:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C80D310E2CC
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 16:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769618553; x=1801154553;
+ t=1769618557; x=1801154557;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=EJzR6Q9CceORpxI41iCsweNOZLXys6OhbKuwUhJyB/E=;
- b=fxJ1lmVVKqKsdc9tE7Bns9olkMowX8xiv8CWU3G8z28zsWqnaySKScQq
- T8dZWlsAmadSr3YYdzVWytXSQWeR4jIhwSwRxVveaT/oAv02luqNI7ZvK
- cv2AKHoFVdcVARX+9mDE7nkjYUDcrq9oEUSjBWzYUHJ3AYyRSBc2XD91L
- W4O5jJxfmTtUl/cp9orJUUootdNd88ttJFtucpBDMUn9O7U3U5K7t7sAI
- 9r/yk55lVTnbvhUdUjwgUYOvVaPKHw8Vi01RQ7WHteCz8d/WTs/wZqcn2
- fWLnCOd+b6cV36/57SIfKQ9De7vwho4dabcElT1zHkzq1tGWBWTbqdGIj Q==;
-X-CSE-ConnectionGUID: rFDM7TIET6iJcnBO80AHFw==
-X-CSE-MsgGUID: tWyGR8ISRg2/K8qLhpUhJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="96298704"
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="96298704"
+ bh=CUL4r+7DLmaG1PR8jAD7MGpa214aDQaGZTnmId4PI2c=;
+ b=NyL99wid7OXHVJClV0Pl+GA0Zcq557zzrlmTECbFrgzoDWan6BMx65SD
+ gSEgAoP9AtyjV9Cb0yS4myNq7sFdwQGjKZqSW0t59gXJ1lAxy24HnswD9
+ LP6vElg2NAGQSBYfnHN2yT/AgefFciV61CWq8j/Vk4qYu6+4Mrmr9FmUJ
+ PYCbKux1fPNKUdJTdHQeWi/Su7hFedWIKRma6ZvLtOWSnnXiFmu342K1C
+ WZLG0esi+4DyN9q/GYAACFbt/gNLOXm3TNl0grKOp6B2aZVyzPG54adXW
+ +d+BXiQSQmXeyXO8gb9pLqMp9ArGdd4jxulbpCOkJR+8O+QpvaJa5b2iW w==;
+X-CSE-ConnectionGUID: IAOhIgIFT8+1ip+5YuaOkw==
+X-CSE-MsgGUID: 5r17T+H1RoulM9QypwS91A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="96298713"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="96298713"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jan 2026 08:42:33 -0800
-X-CSE-ConnectionGUID: zsdDF2DkSpeR0auVnhX90A==
-X-CSE-MsgGUID: ubagwrWfTF6Z0r5RacrWtg==
+ 28 Jan 2026 08:42:37 -0800
+X-CSE-ConnectionGUID: MK82EutqRU215gveuh57kw==
+X-CSE-MsgGUID: KjzysoThRjCCQlAphdZGZQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="208334309"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="208334324"
 Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
  ([10.245.245.49])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jan 2026 08:42:32 -0800
+ 28 Jan 2026 08:42:35 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t 1/2] tests/xe_exec_system_allocator: Don't leave
- bo_flags uninitialized
-Date: Wed, 28 Jan 2026 17:42:26 +0100
-Message-ID: <20260128164224.932886-5-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 2/2] meson.build: FOR-CI-ONLY: Change to debug
+Date: Wed, 28 Jan 2026 17:42:27 +0100
+Message-ID: <20260128164224.932886-6-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260128164224.932886-4-zbigniew.kempczynski@intel.com>
 References: <20260128164224.932886-4-zbigniew.kempczynski@intel.com>
@@ -71,30 +70,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently it works by accident because compiler optimization initializes
-bo_flags to DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM (even if this
-should happen conditionally) so consecutive xe_bo_create() succeeds.
-But without optimization many subtests start to fail.
+Patch is only for testing purposes, it should reveal hidden bugs
+related to compiler optimization. As first patch changes one of
+tests use this CI run to reveal additional bugs (if any).
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_exec_system_allocator.c | 2 +-
+ meson.build | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 412ad0384e..fc987ac7f4 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -1417,7 +1417,7 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	};
- 	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
- 	struct test_exec_data *data, *next_data = NULL, *original_data = NULL;
--	uint32_t bo_flags;
-+	uint32_t bo_flags = 0;
- 	uint32_t bo = 0, bind_sync = 0;
- 	void **pending_free;
- 	u64 *exec_ufence = NULL, *bind_ufence = NULL;
+diff --git a/meson.build b/meson.build
+index 4b2496c016..1ce7efa282 100644
+--- a/meson.build
++++ b/meson.build
+@@ -4,7 +4,7 @@ project('igt-gpu-tools', 'c',
+           'warning_level=2',
+           'c_std=gnu11',
+           'b_ndebug=false',
+-          'buildtype=debugoptimized',
++          'buildtype=debug',
+         ],
+ 	license : 'MIT',
+ 	meson_version : '>=0.52.1')
 -- 
 2.43.0
 
