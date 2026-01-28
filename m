@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46FEAD3F096
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 16:46:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C68B2D3F096
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 16:47:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E20CC10E732;
-	Wed, 28 Jan 2026 16:46:38 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E700510E732;
- Wed, 28 Jan 2026 16:46:37 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4642967290835716594=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_xe=5Feudebug=5Fonline=3A_Fi?=
- =?utf-8?q?x_test=5Finterrupt=5Fother_wait_logic_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Piotr Rudnicki" <piotr.rudnicki@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 719DA10E1D6;
+	Wed, 28 Jan 2026 16:47:19 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Coi6tmKo";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D360410E1D6
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 16:47:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1769618837; x=1801154837;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version:content-transfer-encoding;
+ bh=rjCAHuFdyI0JYZx+X9gs9d8pBPBJnWhSaTULANewQlM=;
+ b=Coi6tmKop9ivZWXhbSqv27Q8sNqm/PgCuH5LTgyjVhGhXuNuV7rYMRe7
+ bXWIG4M1wC4d93f+6RWMsZZEkc8ACH7XjvD5dym7tnq9bMolI5OLKduer
+ jCv1EIgE1vzbju8K9T08p6DU9Mpz4VPYwdnaVRfDWwltGoyIVKpn6L+JF
+ sGkX2AMlFGSBqt3DpBLUXk5LJWL+TD3VWnueWz9/jDlywhb34XXPiPi7A
+ tUTdydEJ6BCMZPf1qpV32R/qYDXoTVYh+91nnSC6nAevxqa+JZ7mDjSYd
+ FYYWMoFxrwKE0AwGSd60jc+sTkAU5anQDG3rXswe+eGXbqdvlbtM3EwQ4 Q==;
+X-CSE-ConnectionGUID: tZItZ29/Q6KEwZXGI66bBg==
+X-CSE-MsgGUID: EDGD05vaR02Ekqbgu5cxQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="74698490"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="74698490"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jan 2026 08:47:17 -0800
+X-CSE-ConnectionGUID: dx/ftSSOTWKol+qyS8NHZw==
+X-CSE-MsgGUID: l1dUOTldT9eYg8QdTfBs5A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="208750584"
+Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.207])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jan 2026 08:47:16 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 28 Jan 2026 16:46:37 -0000
-Message-ID: <176961879794.200694.13368321300644260189@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260128144626.452925-4-piotr.rudnicki@intel.com>
-In-Reply-To: <20260128144626.452925-4-piotr.rudnicki@intel.com>
+Subject: Re: [PATCH i-g-t 0/8] lib/igt_kms: pipe vs CRTC index cleanups
+In-Reply-To: <aXon4Dk6azuIFd4w@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <cover.1769514879.git.jani.nikula@intel.com>
+ <aXon4Dk6azuIFd4w@intel.com>
+Date: Wed, 28 Jan 2026 18:47:13 +0200
+Message-ID: <d6530c2859f5e77f84be1e69aa48625a036a0c76@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +68,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4642967290835716594==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, 28 Jan 2026, Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com=
+> wrote:
+> On Tue, Jan 27, 2026 at 01:55:57PM +0200, Jani Nikula wrote:
+>> Jani Nikula (8):
+>>   lib/igt_kms: Drop the ioctl fallback for CRTC id to pipe mapping
+>>   lib/igt_kms: Remove kmstest_pipe_to_index()
+>>   tests/kms_setmode: drop redundant drmModeGetCrtc() call
+>>   tests/kms_setmode: use CRTC index instead of pipe for
+>>     intel_drrs_disable()
+>>   tests/kms_setmode: use __intel_get_pipe_from_crtc_index() directly
+>>   lib/igt_kms: Always return CRTC index from
+>>     kmstest_get_pipe_from_crtc_id()
+>>   lib/igt_debugfs: rename igt_debugfs_pipe_dir() to
+>>     igt_debugfs_crtc_dir()
+>>   lib/i915/drrs: switch the interface from pipe to CRTC index
+>
+> Series is
+> Reviewed-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 
-== Series Details ==
+Thanks, all pushed to master, the CI issues seem unrelated.
 
-Series: xe_eudebug_online: Fix test_interrupt_other wait logic (rev4)
-URL   : https://patchwork.freedesktop.org/series/160553/
-State : success
+Do you have more cocci changes in the, uh, pipeline?
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8722_BAT -> XEIGTPW_14439_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (12 -> 12)
-------------------------------
-
-  No changes in participating hosts
+BR,
+Jani.
 
 
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8722 -> IGTPW_14439
-
-  IGTPW_14439: 14439
-  IGT_8722: 8722
-  xe-4465-8059f097e25f736bb3da09af6a9b283079abfd4f: 8059f097e25f736bb3da09af6a9b283079abfd4f
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14439/index.html
-
---===============4642967290835716594==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>xe_eudebug_online: Fix test_interrupt_other wait logic (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160553/">https://patchwork.freedesktop.org/series/160553/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14439/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14439/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8722_BAT -&gt; XEIGTPW_14439_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 12)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8722 -&gt; IGTPW_14439</li>
-</ul>
-<p>IGTPW_14439: 14439<br />
-  IGT_8722: 8722<br />
-  xe-4465-8059f097e25f736bb3da09af6a9b283079abfd4f: 8059f097e25f736bb3da09af6a9b283079abfd4f</p>
-
-</body>
-</html>
-
---===============4642967290835716594==--
+--=20
+Jani Nikula, Intel
