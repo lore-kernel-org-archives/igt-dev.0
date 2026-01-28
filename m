@@ -4,190 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D9B2D35670
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 04:08:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6AF2D35672
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 05:46:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8C5F288FB2;
-	Wed, 28 Jan 2026 04:08:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 730C510E61E;
+	Wed, 28 Jan 2026 05:46:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KMU8zMlp";
+	dkim=pass (1024-bit key; unprotected) header.d=mediatek.com header.i=@mediatek.com header.b="SVcm8FDQ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 37FA588FB2
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 04:08:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769573299; x=1801109299;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=/QawZ6bZwarHkw7RezueF9T1+juljdI9p1KoGkOOzeQ=;
- b=KMU8zMlpEy2oPgbwkZM5vHMvc/nBWHlWb96WweqlnOWVFD1Yy+65QzUp
- 4+lgHw2rafsbhk8MU0lpTk41vjP2h68amUVppH6PKX67Pq/3nuWeVhisg
- iZmFYwvJvRECau/DswuXUH8AP9I0oBaOz1mW2vDsQQdlpy6kiSx+WYaDI
- FXgR80KHagcvcU24LZ3gfTwjCwkT79JxqrEtrD2Vj5vE/dAdxzUN80JIV
- eBz6Wxp+UpKwGb6zmtgMhwwFIRhReCBxKd6F9cS+7E+1nGjowNIvr85+w
- a48MdxKOH64hoYR7TLAbeoGziNbGlDTQkIz9uxOhCQg+/J8IWKBzebNxA w==;
-X-CSE-ConnectionGUID: N4tPgjaWS9SQXtCw3nWgCw==
-X-CSE-MsgGUID: HqI75IbdSL6O2qDUworZqQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="88356353"
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="88356353"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2026 20:08:18 -0800
-X-CSE-ConnectionGUID: JTaVlAfERZmvhiGqupd3mg==
-X-CSE-MsgGUID: axRjcqlsRQWrdz0gJv68Vg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="208174383"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2026 20:08:18 -0800
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 44E5710E18B
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 05:46:28 +0000 (UTC)
+X-UUID: ac0ddd18fc0c11f0b7fc4fdb8733b2bc-20260128
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
+ s=dk; 
+ h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From;
+ bh=1R7VTId9BC0r9ZKDOH270RV4+MPNxlWEebrfh+HoLb0=; 
+ b=SVcm8FDQALmXvvTzcruyLy51tht7pnFoYMk+XSSAX7PFi0hFG3wwZP3kEvxUPvIM4VLuMS4qxLjB289qBrI7UNEMVnyNnKRjPwM5tuHjxP8e5/XyAxRBEh43RJmhpi9ZUVKf1T0GpIoguvQ7VNq9iAp64Bt1D8GmU2CvZ2RxL5k=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11, REQID:c21164b2-3110-417d-be0f-de58c3bab8b5, IP:0,
+ U
+ RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+ release,TS:0
+X-CID-META: VersionHash:89c9d04, CLOUDID:ce8807e9-ef90-4382-9c6f-55f2a0689a6b,
+ B
+ ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
+ 0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
+ :0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: ac0ddd18fc0c11f0b7fc4fdb8733b2bc-20260128
+Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by
+ mailgw02.mediatek.com (envelope-from <jason-jh.lin@mediatek.com>)
+ (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+ with ESMTP id 596508282; Wed, 28 Jan 2026 13:46:20 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 27 Jan 2026 20:08:17 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Tue, 27 Jan 2026 20:08:17 -0800
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.64) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 27 Jan 2026 20:08:17 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uZzPyfT9i2+DxlQzcH4mX//M3mziVx8eHKGI/2s3+tZbqAW0w4v8g4hWd9fzeBnwovSDmE3dYA+M+4dKoJSSm6/5kHKvqBo7rLlsYU9EKc7+998Da9+tpqDyARNUb49qfV30JkjjGsIilopPVOs8r9f8bOk8Jp+C34VZdy6bNVGGIpjO/ovcFxfEs/LPZ3mS1hW+YtUM1/eGegNdqJG1+uRZUISXpTseHslvdBhNRXwzkc8zHh+hXpYIbNczxlAqq9Tguf4m8ZkthODtcgJUTD5bATh4itaiAefnZDMEe7+vHy5nqVJXAEYt/3WJ7AdI9sGRrCWFsrCdVgdWEkicDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=f3mUv1Y6h6NVPwhpYV4U19Gd0pI0eo472KSHBAUAqiA=;
- b=qEojiQFT04TxKWLDew4+YSAOdx6CQmyskkglwrrXSv90a4iBDuP0/WtoG6rxAaJNmsXpkHtxCwXyO5FIZX2M6VzjqenO7zfWgCO/xf4p6AMKQapFOzP9KaO46ZWLFricI+yIZaMY3QKm0W3zWX3pjqGKo4Xayif/FlWHENnrvBe83Ls2sIzevwcGNxEtxaAdnZc3tyb5ZdNkmInU6bDCrceretAF8E6/djcPwqqFux2FTE2bu0C/08BaqRpzZfJQH3pReVAiN57CD1vvlIgn0jUOw5Z8bzgrC4CcRUFwxK7a4JaI++dKRJFoQ+UfA0JMORbkCsjJmoibgVc9NHEODw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH0PR11MB5690.namprd11.prod.outlook.com (2603:10b6:610:ed::9)
- by MW4PR11MB6837.namprd11.prod.outlook.com (2603:10b6:303:221::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Wed, 28 Jan
- 2026 04:08:12 +0000
-Received: from CH0PR11MB5690.namprd11.prod.outlook.com
- ([fe80::d0b2:7271:ad7e:cb1a]) by CH0PR11MB5690.namprd11.prod.outlook.com
- ([fe80::d0b2:7271:ad7e:cb1a%5]) with mapi id 15.20.9542.010; Wed, 28 Jan 2026
- 04:08:12 +0000
-Message-ID: <a7d659e0-2962-4c57-877b-a2aa465e7766@intel.com>
-Date: Wed, 28 Jan 2026 09:38:05 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel/kms_joiner: Fix var usage
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>
-CC: Jeevan B <jeevan.b@intel.com>
-References: <20260127164018.63157-1-kamil.konieczny@linux.intel.com>
-Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <20260127164018.63157-1-kamil.konieczny@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0P287CA0012.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:d9::11) To CH0PR11MB5690.namprd11.prod.outlook.com
- (2603:10b6:610:ed::9)
+ 15.2.2562.29; Wed, 28 Jan 2026 13:46:18 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Wed, 28 Jan 2026 13:46:18 +0800
+From: Jason-JH Lin <jason-jh.lin@mediatek.com>
+To: <igt-dev@lists.freedesktop.org>, Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
+ <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
+ <bhanuprakash.modem@gmail.com>, Fei Shao <fshao@chromium.org>
+CC: Jani <jani.nikula@intel.com>, Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ Paul-PL Chen <paul-pl.chen@mediatek.com>, Nancy Lin <nancy.lin@mediatek.com>, 
+ Singo Chang <singo.chang@mediatek.com>, Gil Dekel <gildekel@google.com>,
+ Yacoub <markyacoub@chromium.org>,
+ <Project_Global_Chrome_Upstream_Group@mediatek.com>
+Subject: [PATCH i-g-t] tests/kms_content_protection: Fix framebuffer management
+Date: Wed, 28 Jan 2026 13:45:52 +0800
+Message-ID: <20260128054617.817010-1-jason-jh.lin@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|MW4PR11MB6837:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e875337-8517-4d94-3423-08de5e22da54
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|42112799006|376014|1800799024|7053199007; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Y1Y5YVFsYkFWL0J6cDE3SktaSGx4NmhCWm15V2EveXBwSE1wbkVhWXpjdUNw?=
- =?utf-8?B?UTBjbVF6a3AxaEtqRjBSUVF4bVMxanpTbXMzMlVtMEY4ZjNyU0I3WmV2S3ox?=
- =?utf-8?B?d3o5ck4vbmtMRHhIS3dvUnRyWENVS0h2K0VRRTd0UVpqc2dveFNMUWo1YllQ?=
- =?utf-8?B?UGx1UVpOeXdHUEZ6eHJKZHpUWkNNRWpxYlVVOEg0cUkzR0JMd1owRm1PVWE4?=
- =?utf-8?B?UkFQMXdEaFhOMEp1dExwNit4VDVuOCt4RUx3L29QeE92d1BkeTNuM1BsMkF1?=
- =?utf-8?B?SGFEckpGU082RTJMMXduWnJBZWxrYUVqTVRSZndKc0s1RUx6eWN4bEE0UytD?=
- =?utf-8?B?Y2pCNlk2aldyMkRpZzhxK2h4bGQ0clZpQVh5ZGZEQkpNcnVZUUhiYXZjU1lQ?=
- =?utf-8?B?NHB4dXczcXhiUUloV3grNklBZXYvQThhTnRUcHZRTU1tUGcvMjlRK214UXE5?=
- =?utf-8?B?NEhHcktpZk1hNVA3NHhhTDRpL0lvVWh2TDhSb0RLMGZaTXhtR2RZUlBLMG93?=
- =?utf-8?B?VmJ1cmUrcjdGdjBSdHVpemRIY2lJQ0wvM2lQUlFRZDYwajl5Wk9PV3FrTERK?=
- =?utf-8?B?N2JvcjRGOVIyK2JQVUFmM2ZuekIzejFtYkFIY3hkbk40cmtZWDh4QUxtajJi?=
- =?utf-8?B?d2lxcmN0MTkzTi9KSDlzY2pUOGN4OXNVMi9BTXhPM3VvdXdtSnMra3BxTzM0?=
- =?utf-8?B?VHhVL3RneTd1NVVZamhER1gyakRDRzN5azRSbk5CdEl2MlJLUDdWREhmdklW?=
- =?utf-8?B?YjRHM3pURURVdzZpdjVJV0pNcVNJeTFYQTNzTjR5Z3J3TXpuNXRFTW1uOU42?=
- =?utf-8?B?MTVSajduaDl2RUVHejNPT3pXSFZLNitKekl0c3huZE9kaDMvSnZyNlJrNWty?=
- =?utf-8?B?eFZEbDZyZ0FncHJiVGlTNWZlM1R2MHFqamtxUEY2M1pyWS9DQTNiZE5wdWhI?=
- =?utf-8?B?c2FKcngrcFl5RGNnanBrekNLdTA3T0toeWdlOStaa1ZuRVplZEY3MEllS05W?=
- =?utf-8?B?V2ZwQnpEUGFlazljcTJZZGlydy8wRmwxUzRyUnBwSVc2UU5zV3JrZ0pjbGtJ?=
- =?utf-8?B?WkNQYVUzdVRxYWtnT243eS9oZ1M0b0djNE5iUk4vSitYZ2ZCamVBY1Fjay9N?=
- =?utf-8?B?VVNtOHJyV1FGYlZIWjV3VTFGNVVFR041NUI1eDNyam5uVGYvYmJvVWQrekVV?=
- =?utf-8?B?Si9EdXhQQ1NlSUdaVGh0MmRGVFUvWnFnR05sbDMrZWpTZjhYTEErTTRzRG1m?=
- =?utf-8?B?SFdVQ0t1Q1Zmck0yUlBBZXl1NXhRV2FYeFQzU3l2cmhhcHRTcWFBRThWZHFF?=
- =?utf-8?B?d3VxZTB2R2lndXd1a3JHRTBkSG9VL05oZXU4Wjl0cXEvdkNQMjRhNXl0VCt6?=
- =?utf-8?B?RER1YVJvM1NFTHlVRUtTME1uSkU0ZHJmNG1CWHZXdHN4MHM2ZWZyNnZqTVpX?=
- =?utf-8?B?QlBxblJVVmZUM0dnZ2hzYitzN0J1QnJPYXU3OE9HVGp6SzZXQXRrdmFLVmNv?=
- =?utf-8?B?NlY5S0QxTWNtazNCOENBbFZaYTFxMzF4eHVJcmhoTWZlY2ZtcnFacEUySHFG?=
- =?utf-8?B?M2ZOT1o2VGVsTG5CaVZZOXBCdVNzZXhUcCtqOGp4WVBpbFIyWU9SQWVJblJM?=
- =?utf-8?B?VGVrdmtSOE9uTFh0RWh5ZC9Tdk9uRThER3VOcHQ0VWhGa3E5cUJUZm52aVRh?=
- =?utf-8?B?ejRMWWVBQmVKU04rZ1FBejFMbGlsVG5wMmZTaWZEdTF1MnZqSDJiRWxHa3NX?=
- =?utf-8?B?WTB4ZVBBaGJFbkNmeTh3eUR2RkVFS1QrSldPUklldjhFQXFuNlgwOWFPK3Az?=
- =?utf-8?B?ODFiSklBRkZJOXVLaTNQeVkxdFVwYlp6K0V1R2VIZjRrcktzU2ZQaEhoMU9h?=
- =?utf-8?B?NHdQdmU2TUFmV21ITGdUVVg5ejVid05QTVdPUzNESXBCcWxoL3cwMk53UnZM?=
- =?utf-8?B?Yjd2bG92d1JlNWJhb0d1b3VJcllSNU5PV0Y4R3p4dTc5QVZkSWJ4RFBuMFE3?=
- =?utf-8?B?elE1NXdDWktrTXNjZVZNSG1wSjloMzE4cnQxQjhlU1g0ajU1TnVOL0RDc1B5?=
- =?utf-8?B?QnlRbW9rcGxRUXNMWFZFd1IyQWJnaG9vYVg0bnp1bEo3eDVMRkMrR2xKR0ta?=
- =?utf-8?Q?iidY=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH0PR11MB5690.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(42112799006)(376014)(1800799024)(7053199007); DIR:OUT;
- SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aFhoR2lmejhyYVJ5dW85U21rdVEveGxpTEU0OXNjU3V1NStvclQ2d3djUXVW?=
- =?utf-8?B?dFBlM2VPSjBmTEI0d2srVE1TWkRhMFMrOTQxdU42VTM1SXIyZGtjRUR0am5Q?=
- =?utf-8?B?OVM0bEYzQjZYSDI0a2J4Z3BvSXRWS0RRbWxRTmliMkhyUndlKzVtbU5hTEZm?=
- =?utf-8?B?bUUydjVSUlJqNVdiL1dER1NYL21Yd3RnaDhVcGRlRTNXZ202enFDTXYvNDFM?=
- =?utf-8?B?VDJlRzRSM3UrUTZ6OEpjeXQ4Sm9pQnNvMGJIdy9vNjQrQU9uVGJUQ3ZhdUpS?=
- =?utf-8?B?bzFycWNzUVpuaVBhd1d4OW92R3hMUVB4R0sxbDFJK1A2dlpjVG5xWTYrVC94?=
- =?utf-8?B?YXI2endQdTBoRkYzRHN1eEJ6ZXkyQTNpb09kVUU1RExkTVZaUEt3M1JZMlpn?=
- =?utf-8?B?NWlUcHMwWm44L2dJbWdGL3FqUWdGbHJEV08wTURTN3BkL2RPMXlTU1JuNU5L?=
- =?utf-8?B?ZVY1emtkUXdiSXZ0cmpNUUdub0RaQkhkOXRxT2ZMZjF0bjB5N21PQ3RmY3F3?=
- =?utf-8?B?bGMyV2ZjKytlY1JhelJJaS9nVjZURXhMVjVUelZJVUp4VDFlcEdITzY3YnhT?=
- =?utf-8?B?WDBFRDZrT3UxOGg4QmYvUUxGNnRGM3NRRUxlUDkyQTExMnB5MGhTYThVVUl4?=
- =?utf-8?B?OFNvbE5nZDlCbkJidDQwTUFUN2dBUG1kSVA3RUVjRVNoL1ppTHRTaExMcnBW?=
- =?utf-8?B?TWtvZU9nODJzelVQUzJTNVpKeGtXNW91MU1lNnBpTXg5YkdzM1UwRlNCb3FC?=
- =?utf-8?B?Y0krR1NhZ3haczllZVhaZFU4dGp4eU4zNXM5WWpLVE9XdlUwWTdnRFlPWVQw?=
- =?utf-8?B?d1pwVVFmcW1jbTZRa1pNdzllcGhPRjFTRGdSR1pyZDZWT2ZTdVZYTFVaVnlT?=
- =?utf-8?B?cFhyR2hsS3ozMjlsOU9SOTVHVTUwUzArMzk3WHY2THlQK2F2K1dLVzN5YUMz?=
- =?utf-8?B?bzEwczNtZDJYOW41VEdHZys1OENxMTJ1QXlZSDM3dk9pK2htRW0vem9aWXZQ?=
- =?utf-8?B?dmRUN2pQSC83dmNBdWJkQzdxUlkrTHFpKzlIU1BSYTZaT3BiV1h1N09xY0VD?=
- =?utf-8?B?NzFDNnNvMzdDcXE2UkZYN0cyUzk0WWNLY2gvV2l1MHRTTlY1RVJxMHNrdlJZ?=
- =?utf-8?B?ZTdXSXh4anBZWnFPOURGaHlZUkhpZjhSWVdodjl0VDJQSU1MemI4SHBEL1Jx?=
- =?utf-8?B?K0dTYmhtY0JaZVp4UW5LY2hwR1dWUWtQVUIwM21WTVV4SVZkeWlGandzS0Fj?=
- =?utf-8?B?b2Vzb0U2akVKMDdPSEYvelNQSWE4d2t6NVJuSko4UzdLdEViMjVMTTY3WEF4?=
- =?utf-8?B?eHExLzhDZmNzYVNVVndGYlJ6Mk1zTktjRURjVkMvZEZTUTg4Ykp1N3RHdkhj?=
- =?utf-8?B?aTQvNDVKcDlCOGlhdnllNHpUMklaMlh1dlRkM0dmamxuQWNEaFBhTUNVb2lS?=
- =?utf-8?B?N3VZME9laE80ZU9nM1NKTUxDU2NsNkwrbzRHUU9Sd3RNS0psR1FCaWlzZkRY?=
- =?utf-8?B?SkNTV0VrNzZuNzYrSklqbmZiOFE5cXRmV1ZlQ0k1amozR25DUGxEK0krcWha?=
- =?utf-8?B?VUxVb2hSR2p6MUcrNTN0ZXhLNjZRN09KS0tmd0REb29ZV0gxcnh1RXdiZWtR?=
- =?utf-8?B?TjVuK0FHdVA3VktvMlN3V1dRWmErRDNDQitnaXZpbzVqZ3c2NjA2US9GT3Nk?=
- =?utf-8?B?QXVZMGV0MWRXMW0zMm1KZzc1KzZQZjFkUDJXb3lyTFlsSStWTDlRTXMzaGM0?=
- =?utf-8?B?M2tzY2d3OXUwQmZyeFpLaWpST29PK0cwU05jMXFIV0ovdHlKY1E4VWFwaHNW?=
- =?utf-8?B?czJuei9RcEQ1MktURmVDS0VlQ09ScUlhTFA1K01KUGFLMGdqUGZkYW1jQ0xq?=
- =?utf-8?B?cGJlZ3oyVEpNYnlVejNxNmJhMzZwaEswRFUzQzI1S0d2WmVvemZsMEtaVG1S?=
- =?utf-8?B?RUpYaGlQS29IUG9mbzZFNTdIZjJyZlVFMVVhNU4zWWpBVXdnOXNHVGlOS1ZB?=
- =?utf-8?B?QTA1Yy9ZMGZvSXpRUnQ3YlBBNnZ4bTRYQWZhL2tjK0w2QnN5dlNCdnRUc3pv?=
- =?utf-8?B?M1FDd2tqVHhhYlVHaVBJc3lKWHBIakF0eHJlR3VIYnpMbGZidXprNS9CamtM?=
- =?utf-8?B?L2NmdktSWWhxczJUQ0hobG9uQVlhcHpIckErTXpGdU5jRGR2bGl4U08rNVQz?=
- =?utf-8?B?TUFBbG4ycjM5Q3ZNY1ZFMUVpbU0rNDVrQXZMZ0FWb1g5MmRxYTRkUDRzYlV2?=
- =?utf-8?B?NE9ZdVdnT1Z2LzlzMjdjWHdrcEJjdDlBWmNFTHVQWUlTQnZ4dHBNT3lSOWdm?=
- =?utf-8?B?eFNQc3VYRHVGelp4TGNhbU9PS1N0UUJlNjdJejZ4dlFwU2xxWHQ0UT09?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e875337-8517-4d94-3423-08de5e22da54
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5690.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2026 04:08:12.1572 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: forDonb6legaL84+LLxmVGWVFi5dduNu+DGTYBcEwfP//a71bQC2yQ6CoPXO2qVdmqGQy1oOPoPu6G4NJ/sTBg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6837
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -203,43 +81,406 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+The framebuffers were previously created once at test start.
+On systems with multiple outputs of different resolutions, the
+pre-created framebuffer size might not match subsequent outputs,
+causing modeset failures.
 
-On 1/27/2026 10:10 PM, Kamil Konieczny wrote:
-> Var ultra_joiner_supported is declared and later on used in
-> subtest switch-modeset-ultra-joiner-big-joiner without previous
-> setting, which could lead to unpredictable skips or fails.
->
-> Fix it by removing its definition from a function and replace its
-> usage with proper check.
->
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Cc: Jeevan B <jeevan.b@intel.com>
-> Fixes: 319db2ffba41 ("tests/intel/kms_joiner: Add function for pretest checks")
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->   tests/intel/kms_joiner.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
-> index bf817a453..1f8d6600b 100644
-> --- a/tests/intel/kms_joiner.c
-> +++ b/tests/intel/kms_joiner.c
-> @@ -581,7 +581,7 @@ static void test_basic_max_non_joiner(data_t *data)
->   
->   int igt_main()
->   {
-> -	bool ultra_joiner_supported, is_dgfx;
-> +	bool is_dgfx;
->   	int i, j, display_ver;
->   	igt_output_t *output;
->   	drmModeModeInfo mode;
-> @@ -755,7 +755,7 @@ int igt_main()
->   
->   	igt_describe("Verify modeset switch between ultra joiner and big joiner");
->   	igt_subtest_with_dynamic("switch-modeset-ultra-joiner-big-joiner") {
-> -		igt_require_f(ultra_joiner_supported,
-> +		igt_require_f(data.ultra_joiner_supported,
->   			      "Ultra joiner not supported on this platform\n");
->   		igt_require_f(data.ultra_joiner_output_count > 0 ||
->   			      data.non_ultra_joiner_output_count > 0,
+Fix framebuffer indexing to properly handle different resolutions:
+- Single output tests: Use pipe as framebuffer index
+- MST tests: Use valid output sequential indexing to support multiple
+  outputs per pipe with different resolutions
+
+Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+---
+ tests/kms_content_protection.c | 150 ++++++++++++++++++++-------------
+ 1 file changed, 93 insertions(+), 57 deletions(-)
+
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 5928266f2fe4..e9f15e4cf22a 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -107,10 +107,15 @@
+ 
+ IGT_TEST_DESCRIPTION("Test content protection (HDCP)");
+ 
++struct hdcp_test_fbs {
++	struct igt_fb red;
++	struct igt_fb green;
++};
++
+ struct data {
+ 	int drm_fd;
+ 	igt_display_t display;
+-	struct igt_fb red, green;
++	struct hdcp_test_fbs fbs[IGT_MAX_PIPES];
+ 	unsigned int cp_tests;
+ 	struct udev_monitor *uevent_monitor;
+ 	bool is_force_hdcp14;
+@@ -267,18 +272,19 @@ static void modeset_with_fb(const enum pipe pipe, igt_output_t *output,
+ 	mode = igt_output_get_mode(output);
+ 
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+-	igt_plane_set_fb(primary, &data.red);
+-	igt_fb_set_size(&data.red, primary, mode->hdisplay, mode->vdisplay);
++	igt_plane_set_fb(primary, &data.fbs[pipe].red);
++	igt_fb_set_size(&data.fbs[pipe].red, primary, mode->hdisplay, mode->vdisplay);
+ 
+ 	igt_display_commit2(display, commit_style);
+ 
+-	igt_plane_set_fb(primary, &data.green);
++	igt_plane_set_fb(primary, &data.fbs[pipe].green);
+ 
+ 	/* Wait for Flip completion before starting the HDCP authentication */
+ 	commit_display_and_wait_for_flip(commit_style);
+ }
+ 
+-static bool test_cp_enable(igt_output_t *output, enum igt_commit_style commit_style,
++static bool test_cp_enable(igt_output_t *output, enum pipe pipe,
++			   enum igt_commit_style commit_style,
+ 			   int content_type, bool type_change)
+ {
+ 	igt_display_t *display = &data.display;
+@@ -301,7 +307,7 @@ static bool test_cp_enable(igt_output_t *output, enum igt_commit_style commit_st
+ 	ret = wait_for_prop_value(output, CP_ENABLED,
+ 				  KERNEL_AUTH_TIME_ALLOWED_MSEC);
+ 	if (ret) {
+-		igt_plane_set_fb(primary, &data.green);
++		igt_plane_set_fb(primary, &data.fbs[pipe].green);
+ 		igt_display_commit2(display, commit_style);
+ 	}
+ 
+@@ -320,7 +326,7 @@ static void test_mst_cp_disable(igt_output_t *hdcp_mst_output[],
+ 
+ 	for (count = 0; count < valid_outputs; count++) {
+ 		primary = igt_output_get_plane_type(hdcp_mst_output[count], DRM_PLANE_TYPE_PRIMARY);
+-		igt_plane_set_fb(primary, &data.red);
++		igt_plane_set_fb(primary, &data.fbs[count].red);
+ 		igt_output_set_prop_value(hdcp_mst_output[count], IGT_CONNECTOR_CONTENT_PROTECTION,
+ 					  CP_UNDESIRED);
+ 	}
+@@ -338,7 +344,8 @@ static void test_mst_cp_disable(igt_output_t *hdcp_mst_output[],
+ 	igt_assert_f(ret, "Content Protection not cleared on all MST outputs\n");
+ }
+ 
+-static void test_cp_disable(igt_output_t *output, enum igt_commit_style commit_style)
++static void test_cp_disable(igt_output_t *output, enum pipe pipe,
++			    enum igt_commit_style commit_style)
+ {
+ 	igt_display_t *display = &data.display;
+ 	igt_plane_t *primary;
+@@ -352,7 +359,7 @@ static void test_cp_disable(igt_output_t *output, enum igt_commit_style commit_s
+ 	 */
+ 	igt_output_set_prop_value(output, IGT_CONNECTOR_CONTENT_PROTECTION,
+ 				  CP_UNDESIRED);
+-	igt_plane_set_fb(primary, &data.red);
++	igt_plane_set_fb(primary, &data.fbs[pipe].red);
+ 	igt_display_commit2(display, commit_style);
+ 
+ 	/* Wait for HDCP to be disabled, before crtc off */
+@@ -361,7 +368,7 @@ static void test_cp_disable(igt_output_t *output, enum igt_commit_style commit_s
+ 	igt_assert_f(ret, "Content Protection not cleared\n");
+ }
+ 
+-static void test_cp_enable_with_retry(igt_output_t *output,
++static void test_cp_enable_with_retry(igt_output_t *output, enum pipe pipe,
+ 				      enum igt_commit_style commit_style,
+ 				      int retry, int content_type,
+ 				      bool expect_failure,
+@@ -372,16 +379,16 @@ static void test_cp_enable_with_retry(igt_output_t *output,
+ 
+ 	do {
+ 		if (!type_change || retry_orig != retry)
+-			test_cp_disable(output, commit_style);
++			test_cp_disable(output, pipe, commit_style);
+ 
+-		ret = test_cp_enable(output, commit_style, content_type, type_change);
++		ret = test_cp_enable(output, pipe, commit_style, content_type, type_change);
+ 
+ 		if (!ret && --retry)
+ 			igt_debug("Retry (%d/2) ...\n", 3 - retry);
+ 	} while (retry && !ret);
+ 
+ 	if (!ret)
+-		test_cp_disable(output, commit_style);
++		test_cp_disable(output, pipe, commit_style);
+ 
+ 	if (expect_failure)
+ 		igt_assert_f(!ret,
+@@ -451,16 +458,16 @@ static void test_content_protection_on_output(igt_output_t *output,
+ 	igt_display_t *display = &data.display;
+ 	bool ret;
+ 
+-	test_cp_enable_with_retry(output, commit_style, 3, content_type, false,
++	test_cp_enable_with_retry(output, pipe, commit_style, 3, content_type, false,
+ 				  false);
+ 
+ 	if (data.cp_tests & CP_TYPE_CHANGE) {
+ 		/* Type 1 -> Type 0 */
+-		test_cp_enable_with_retry(output, commit_style, 3,
++		test_cp_enable_with_retry(output, pipe, commit_style, 3,
+ 					  HDCP_CONTENT_TYPE_0, false,
+ 					  true);
+ 		/* Type 0 -> Type 1 */
+-		test_cp_enable_with_retry(output, commit_style, 3,
++		test_cp_enable_with_retry(output, pipe, commit_style, 3,
+ 					  content_type, false,
+ 					  true);
+ 	}
+@@ -470,14 +477,14 @@ static void test_content_protection_on_output(igt_output_t *output,
+ 			     "mei_hdcp unload failed");
+ 
+ 		/* Expected to fail */
+-		test_cp_enable_with_retry(output, commit_style, 3,
++		test_cp_enable_with_retry(output, pipe, commit_style, 3,
+ 					  content_type, true, false);
+ 
+ 		igt_assert_f(!igt_kmod_load("mei_hdcp", NULL),
+ 			     "mei_hdcp load failed");
+ 
+ 		/* Expected to pass */
+-		test_cp_enable_with_retry(output, commit_style, 3,
++		test_cp_enable_with_retry(output, pipe, commit_style, 3,
+ 					  content_type, false, false);
+ 	}
+ 
+@@ -496,7 +503,7 @@ static void test_content_protection_on_output(igt_output_t *output,
+ 		ret = wait_for_prop_value(output, CP_ENABLED,
+ 					  KERNEL_AUTH_TIME_ALLOWED_MSEC);
+ 		if (!ret)
+-			test_cp_enable_with_retry(output, commit_style, 2,
++			test_cp_enable_with_retry(output, pipe, commit_style, 2,
+ 						  content_type, false,
+ 						  false);
+ 	}
+@@ -507,7 +514,7 @@ static void test_content_protection_on_output(igt_output_t *output,
+ 		ret = wait_for_prop_value(output, CP_ENABLED,
+ 					  KERNEL_AUTH_TIME_ALLOWED_MSEC);
+ 		if (!ret)
+-			test_cp_enable_with_retry(output, commit_style, 2,
++			test_cp_enable_with_retry(output, pipe, commit_style, 2,
+ 						  content_type, false,
+ 						  false);
+ 	}
+@@ -577,21 +584,24 @@ static bool sink_hdcp2_capable(igt_output_t *output)
+ 	return strstr(buf, "HDCP2.2");
+ }
+ 
+-static void prepare_modeset_on_mst_output(igt_output_t *output, bool is_enabled)
++static void prepare_modeset_on_mst_output(igt_output_t *output, int count, bool is_enabled)
+ {
+ 	drmModeModeInfo *mode;
+ 	igt_plane_t *primary;
+ 	int width, height;
++	struct igt_fb *fb;
+ 
+ 	mode = igt_output_get_mode(output);
+ 
+ 	width = mode->hdisplay;
+ 	height = mode->vdisplay;
+ 
++	fb = is_enabled ? &data.fbs[count].green : &data.fbs[count].red;
++
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, NULL);
+-	igt_plane_set_fb(primary, is_enabled ? &data.green : &data.red);
+-	igt_fb_set_size(is_enabled ? &data.green : &data.red, primary, width, height);
++	igt_plane_set_fb(primary, fb);
++	igt_fb_set_size(fb, primary, width, height);
+ 	igt_plane_set_size(primary, width, height);
+ }
+ 
+@@ -663,11 +673,11 @@ static void reset_i915_force_hdcp14(igt_output_t *output)
+ }
+ 
+ static void
+-test_fini(igt_output_t *output, enum igt_commit_style commit_style)
++test_fini(igt_output_t *output, enum pipe pipe, enum igt_commit_style commit_style)
+ {
+ 	igt_plane_t *primary;
+ 
+-	test_cp_disable(output, commit_style);
++	test_cp_disable(output, pipe, commit_style);
+ 	primary = igt_output_get_plane_type(output,
+ 					    DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, NULL);
+@@ -725,6 +735,8 @@ test_content_protection(enum igt_commit_style commit_style, int content_type)
+ 
+ 	for_each_connected_output(display, output) {
+ 		for_each_pipe(display, pipe) {
++			drmModeModeInfo *mode;
++
+ 			if (!output_hdcp_capable(output, content_type))
+ 				continue;
+ 			if (is_output_hdcp_test_exempt(output)) {
+@@ -739,6 +751,14 @@ test_content_protection(enum igt_commit_style commit_style, int content_type)
+ 			if (!intel_pipe_output_combo_valid(display))
+ 				continue;
+ 
++			mode = igt_output_get_mode(output);
++			igt_create_color_fb(data.drm_fd, mode->hdisplay, mode->vdisplay,
++					    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++					    1.f, 0.f, 0.f, &data.fbs[pipe].red);
++			igt_create_color_fb(data.drm_fd, mode->hdisplay, mode->vdisplay,
++					    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++					    0.f, 1.f, 0.f, &data.fbs[pipe].green);
++
+ 			modeset_with_fb(pipe, output, commit_style);
+ 			if (data.is_force_hdcp14)
+ 				set_i915_force_hdcp14(output);
+@@ -749,7 +769,11 @@ test_content_protection(enum igt_commit_style commit_style, int content_type)
+ 			if (data.is_force_hdcp14)
+ 				reset_i915_force_hdcp14(output);
+ 
+-			test_fini(output, commit_style);
++			test_fini(output, pipe, commit_style);
++
++			igt_remove_fb(data.drm_fd, &data.fbs[pipe].red);
++			igt_remove_fb(data.drm_fd, &data.fbs[pipe].green);
++
+ 			/*
+ 			 * Testing a output with a pipe is enough for HDCP
+ 			 * testing. No ROI in testing the connector with other
+@@ -843,7 +867,7 @@ test_mst_cp_enable_with_retry(igt_output_t *hdcp_mst_output[], int valid_outputs
+ 			igt_debug("Retry %d/3\n", 3 - retries);
+ 
+ 		for (i = 0; i < valid_outputs; i++)
+-			prepare_modeset_on_mst_output(hdcp_mst_output[i], ret);
++			prepare_modeset_on_mst_output(hdcp_mst_output[i], i, ret);
+ 
+ 		igt_display_commit2(display, COMMIT_ATOMIC);
+ 	} while (retries && !ret);
+@@ -865,6 +889,7 @@ test_content_protection_mst(int content_type)
+ 	enum pipe pipe;
+ 	bool pipe_found;
+ 	igt_output_t *hdcp_mst_output[IGT_MAX_PIPES];
++	drmModeModeInfo *mode;
+ 
+ 	for_each_pipe(display, pipe)
+ 		max_pipe++;
+@@ -890,7 +915,16 @@ test_content_protection_mst(int content_type)
+ 
+ 		igt_output_set_crtc(output,
+ 				    igt_crtc_for_pipe(output->display, pipe));
+-		prepare_modeset_on_mst_output(output, false);
++
++		mode = igt_output_get_mode(output);
++		igt_create_color_fb(data.drm_fd, mode->hdisplay, mode->vdisplay,
++				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++				    1.f, 0.f, 0.f, &data.fbs[valid_outputs].red);
++		igt_create_color_fb(data.drm_fd, mode->hdisplay, mode->vdisplay,
++				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++				    0.f, 1.f, 0.f, &data.fbs[valid_outputs].green);
++
++		prepare_modeset_on_mst_output(output, valid_outputs, false);
+ 		dp_mst_outputs++;
+ 		if (output_hdcp_capable(output, content_type))
+ 			hdcp_mst_output[valid_outputs++] = output;
+@@ -906,8 +940,22 @@ test_content_protection_mst(int content_type)
+ 		bool found = igt_override_all_active_output_modes_to_fit_bw(display);
+ 		igt_require_f(found, "No valid mode combo found for MST modeset\n");
+ 
+-		for (count = 0; count < valid_outputs; count++)
+-			prepare_modeset_on_mst_output(hdcp_mst_output[count], false);
++		/* Need to re-prepare after mode override */
++		for (count = 0; count < valid_outputs; count++) {
++			igt_remove_fb(data.drm_fd, &data.fbs[count].red);
++			igt_remove_fb(data.drm_fd, &data.fbs[count].green);
++
++			mode = igt_output_get_mode(hdcp_mst_output[count]);
++
++			igt_create_color_fb(data.drm_fd, mode->hdisplay, mode->vdisplay,
++					    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++					    1.f, 0.f, 0.f, &data.fbs[count].red);
++			igt_create_color_fb(data.drm_fd, mode->hdisplay, mode->vdisplay,
++					    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++					    0.f, 1.f, 0.f, &data.fbs[count].green);
++
++			prepare_modeset_on_mst_output(hdcp_mst_output[count], count, false);
++		}
+ 
+ 		ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+ 		igt_require_f(ret == 0, "Commit failure during MST modeset\n");
+@@ -935,7 +983,7 @@ test_content_protection_mst(int content_type)
+ 	 * Verify if CP is still enabled on other outputs by disabling CP on the first output.
+ 	 */
+ 	igt_debug("CP Prop being UNDESIRED on %s\n", hdcp_mst_output[0]->name);
+-	test_cp_disable(hdcp_mst_output[0], COMMIT_ATOMIC);
++	test_cp_disable(hdcp_mst_output[0], 0, COMMIT_ATOMIC);
+ 
+ 	/* CP is expected to be still enabled on other outputs*/
+ 	for (i = 1; i < valid_outputs; i++) {
+@@ -946,6 +994,11 @@ test_content_protection_mst(int content_type)
+ 
+ 	if (data.cp_tests & CP_LIC)
+ 		test_cp_lic_on_mst(hdcp_mst_output, valid_outputs, 1);
++
++	for (count = 0; count < valid_outputs; count++) {
++		igt_remove_fb(data.drm_fd, &data.fbs[count].red);
++		igt_remove_fb(data.drm_fd, &data.fbs[count].green);
++	}
+ }
+ 
+ 
+@@ -956,6 +1009,8 @@ static void test_content_protection_cleanup(void)
+ 	uint64_t val;
+ 
+ 	for_each_connected_output(display, output) {
++		drmModeModeInfo *mode;
++
+ 		if (!output->props[IGT_CONNECTOR_CONTENT_PROTECTION])
+ 			continue;
+ 
+@@ -964,34 +1019,16 @@ static void test_content_protection_cleanup(void)
+ 		if (val == CP_UNDESIRED)
+ 			continue;
+ 
+-		igt_info("CP Prop being UNDESIRED on %s\n", output->name);
+-		test_cp_disable(output, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+-	}
+-
+-	igt_remove_fb(data.drm_fd, &data.red);
+-	igt_remove_fb(data.drm_fd, &data.green);
+-}
+-
+-static void create_fbs(void)
+-{
+-	uint16_t width = 0, height = 0;
+-	drmModeModeInfo *mode;
+-	igt_output_t *output;
+-
+-	for_each_connected_output(&data.display, output) {
+ 		mode = igt_output_get_mode(output);
+-		igt_assert(mode);
++		igt_create_color_fb(data.drm_fd, mode->hdisplay, mode->vdisplay,
++				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++				    1.f, 0.f, 0.f, &data.fbs[0].red);
+ 
+-		width = max(width, mode->hdisplay);
+-		height = max(height, mode->vdisplay);
+-	}
++		igt_info("CP Prop being UNDESIRED on %s\n", output->name);
++		test_cp_disable(output, 0, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+-	igt_create_color_fb(data.drm_fd, width, height,
+-			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+-			    1.f, 0.f, 0.f, &data.red);
+-	igt_create_color_fb(data.drm_fd, width, height,
+-			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+-			    0.f, 1.f, 0.f, &data.green);
++		igt_remove_fb(data.drm_fd, &data.fbs[0].red);
++	}
+ }
+ 
+ static const struct {
+@@ -1159,7 +1196,6 @@ int igt_main()
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
+-		create_fbs();
+ 	}
+ 
+ 	igt_describe("Test content protection with legacy style commit.");
+-- 
+2.43.0
+
