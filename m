@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BB1AD25B59
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8FC3D25B5A
 	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 13:14:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3F44710E6EE;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 76B4910E6E9;
 	Wed, 28 Jan 2026 13:14:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="WCY4vAcg";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="x6lLmlJc";
 	dkim-atps=neutral
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D21C110E119
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DE0D310E6D9
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:40 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 3CDF3C211E6;
- Wed, 28 Jan 2026 13:14:51 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 46225C211E8
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:42 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id B5ECD6071F;
- Wed, 28 Jan 2026 13:14:48 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id BF9DF6071F;
+ Wed, 28 Jan 2026 13:14:39 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id C0B73119A8824; Wed, 28 Jan 2026 14:14:47 +0100 (CET)
+ with ESMTPSA id E1798119A881B; Wed, 28 Jan 2026 14:14:38 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1769606088; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1769606079; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=2P5KPd1zfQ4hcLsUblfG5jWOS7GzR6jbZrTUp1+9u5M=;
- b=WCY4vAcg2Qp0FhlZbKo2ChFtUI0cCWXOVSNGSl34IGwlxkn7fvcfufcYXD4qMW/pyCMAAC
- 3L/guIEEJiVPVouXau+HkU/Mx8QhZxX+AxtkKjZRJuWCx4Nx3R3MPpaw39u2KRrNJev6AD
- rIqUMjYno5QUZOeqoXR6xU+fn6yJrFkvpDJlsnfKwfXDUDVPVaAHtrk/lPrEO130JswdcR
- VXHrau1rYDgHNcUyZa6zAbB5Nhab/TFIImzg7RnmYdinbIDYihwU+/544ryi1T9SrNTDjq
- N+nfqvex65vpFfFbiIM+yE2Ejk7OKdhgwr/YXMXThm97hDSBnFokDIJo0qQLqQ==
+ bh=57TFzKl+2SRsvM6e/cAgvtl1k0owV9oeaLn7aVwaOHc=;
+ b=x6lLmlJc72avgi0Z5dhJTOb2KGU5tgOMnzyeIwW6V62ikhRWcqTzLpq1NeqbF/nUc9P3jE
+ 9kfPe12IsCAIVMP1ARiB16apqx5wzpCgarhK76RDRT5a4MjnHa+2/hhQHSH0h3zJ3dgGWT
+ 0eD1ghPXxVJNXkCAoULQnR+/4/x3TfMIwJTmk+jZhbflFMTvHZy5ykI0XHCLclfstEZgpR
+ Ye6EqhkpF2ojuq7bbOzW5nrN0pkw+wvuvf/GwAAO2GuOBhRkio9dK0Bs6btz2WbAOQo6a0
+ oh2F+JFNrGNEoFxVkUs/Rv3T6u4gxQQ4VoEqySb0mTsN5ibb3w6ybiqmMLDvbw==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 28 Jan 2026 14:14:55 +0100
-Subject: [PATCH i-g-t v5 24/48] lib/unigraf: Add reset function
+Date: Wed, 28 Jan 2026 14:14:43 +0100
+Subject: [PATCH i-g-t v5 12/48] lib/igt_amd: Add const when make sense
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-unigraf-integration-v5-24-fbf2e997a011@bootlin.com>
+Message-Id: <20260128-unigraf-integration-v5-12-fbf2e997a011@bootlin.com>
 References: <20260128-unigraf-integration-v5-0-fbf2e997a011@bootlin.com>
 In-Reply-To: <20260128-unigraf-integration-v5-0-fbf2e997a011@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -46,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1462;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1578;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=4gGnUXXFV7lEFkOsWtcDwCWfv6a22sTWmsNNaFk99P4=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpegvKmv1TcqOriXD0YFqZ2LgL49Fz6x2zBcFFX
- fDlfHyX+/2JAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaXoLyhsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLi4BAAjf+D00hRs9GBgksmxrCzk/L6ucCbd4u
- EmGm0BhyAw/qm5akp+3evrAcg1J8PA5d246s0yYfzIiQKyIKJjTyS6/mgkx4Iq0HKQTY7F5+Xqn
- h4XQF8ga0D98C6wrNGGVL+KpJDFx6kOz0yNwgOFmZ5mhq+DlW8rZHF9vQXBGDQSSYRp453jVzvr
- lq9etTaFWBGy21/3G1pmDizJ5f3CPWMNYjAwj6SCQbtGyLnB+g98K9lSidrhT5+QBLC7WXV4Ksn
- MnKGywp32M4n4IZq7SsITKYBYpk0NgGZT561ZU4BIgg9jb0snwcKZl0a6rHCIMOyuXM8fZwZ1PH
- ZCk9xFN1M5uQri3kLF4zGaLMEBsn+0Upq3ZFY4MBIpxZAsRc/YAkpZvxU9MKNIOeXqsbFHOdvCl
- HikF9qKlQ0C6AoQjVZtjuqIHe3GL9dAGhJAm0P7HwX/9q6pzKBRu6h33qx9MwiXCsJ5ju6FwbN6
- EDBYmcSTvZAzQbnGao94OXZigA2EImglSfGsuRqlgO9Lv3crTiTdT+Tt4+V7ME9VBT+3cpAo+6A
- 4oObN9H+RuR7wywCeh5nVVe8TdiZtuDNzVbuvPFWKSdU4Rwwr/V0hgi3fmBp/GiXvvQ3fb8B4Ze
- RX8o+NPyncxFc5MFzBCrUjn+9sKK0jm6td6j0NrCFNkC5nbtCmK0=
+ bh=imoyiYaQ4r0RGLIZsyMkXVhd6gC0/SPlQOCgPWS9cws=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpegvJrgjKSN54bRJ96JyVylrvzrjnWPfdNen7C
+ POAc3/9sXCJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaXoLyRsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOIvKg/9FE+GTQYmIzCZ9XMaW5XKYKdH66c5u4a
+ ezRkt2GeAvfxOIkR0Hc8QBQuXb+hz2NV82cdjpkUJq0KNzvjD3BTXuEpyfInzPGC9AgYjqPvoUS
+ k7NcFFJHOZgYL2PXJTyVNPfcaTLVe0NoYQ3nivA5bJv+3xBAEtf2GMpgeYyI9kDm9wy1ZCd7rIY
+ V34t5X/Q7Lv/s325JW+C3EbcjtXmXrcm6aB/1OEFk1Q9GIMQ5zzbRAD+/XZE4xvliZHq2t9HqKT
+ N/YkJQLtlGuMvkPMxnNMEYzynN7OaM/x6NcS8BgeM85qPbva8n/T2PNOjUaoR9dvGXzfLJVVvdF
+ igjREvNx176xO1QMIxjyGL/yYOtaqedgqY4Mhgz99x+nSVEmDM0J2vY83xAiBiGZxQSRiKhROUP
+ H7Tvt0QN8JpVtLUL1xh9eIJRd2wF9mIyvob2yeXDvosZidj4x9qZcno5TwkmNyfmxOxaf3PZYdx
+ plNUopFDtl/6APcCOr5zhSHnYssMwerAAeNbfR1Q8f1TNes2JG/l/EGTBnJ00fy9y/BhCbMU1DJ
+ D3JfER8qjqWmcZFqsEkLfy/nZ1M/ECWgb6x/G/CGqvz4CfvdEfAhgQwKZ5TkmYdMJNdqo/3Wta3
+ zctyjt1MHgbkV08Ih4pMyvvnYKx9ViQQ2mv/3kX1FfohOSRU2z8s=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,53 +79,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To have a consistent state at the beginning of tests, add a unigraf_reset
-function that will restore a known state.
+Const qualifier helps to avoid unwanted modification of a pointer.
+To help avoiding those errors, modify the function signature to
+use const.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- lib/unigraf/unigraf.c | 12 ++++++++++++
- lib/unigraf/unigraf.h |  2 ++
- 2 files changed, 14 insertions(+)
+ lib/igt_amd.c | 2 +-
+ lib/igt_amd.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index 1b31f7a44566..02ade26f7bdd 100644
---- a/lib/unigraf/unigraf.c
-+++ b/lib/unigraf/unigraf.c
-@@ -283,6 +283,8 @@ bool unigraf_open_device(int drm_fd)
- 	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
- 	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
- 
-+	unigraf_reset();
-+
- 	return true;
- }
- 
-@@ -296,3 +298,13 @@ void unigraf_require_device(int drm_fd)
+diff --git a/lib/igt_amd.c b/lib/igt_amd.c
+index 3ddb5f40374e..081bad411355 100644
+--- a/lib/igt_amd.c
++++ b/lib/igt_amd.c
+@@ -831,7 +831,7 @@ int igt_amd_trigger_hotplug(int drm_fd, char *connector_name)
+  * values of "Current", "Verified", "Reported", and "Preferred", respectively.
+  */
+ void igt_amd_read_link_settings(
+-	int drm_fd, char *connector_name, int *lane_count, int *link_rate, int *link_spread)
++	int drm_fd, const char *connector_name, int *lane_count, int *link_rate, int *link_spread)
  {
- 	igt_require(unigraf_open_device(drm_fd));
- }
-+
-+/**
-+ * unigraf_reset() - Reset the Unigraf device
-+ *
-+ * This function performs a hardware reset of the Unigraf device, restoring it to a
-+ * default state. This includes resetting all configuration parameters, stream settings,
-+ * and link parameters to default values.
-+ */
-+void unigraf_reset(void)
-+{}
-diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
-index 376ed910bfa8..9395815dee00 100644
---- a/lib/unigraf/unigraf.h
-+++ b/lib/unigraf/unigraf.h
-@@ -34,4 +34,6 @@ bool unigraf_open_device(int drm_fd);
+ 	int fd, ret;
+ 	char buf[101];
+diff --git a/lib/igt_amd.h b/lib/igt_amd.h
+index bce4657cbcfd..217ee6dcbd02 100644
+--- a/lib/igt_amd.h
++++ b/lib/igt_amd.h
+@@ -210,7 +210,7 @@ int igt_amd_trigger_hotplug(int drm_fd, char *connector_name);
  
- void unigraf_require_device(int drm_fd);
- 
-+void unigraf_reset(void);
-+
- #endif // UNIGRAF_H
+ /* IGT link helper functions */
+ void igt_amd_read_link_settings(
+-	int drm_fd, char *connector_name, int *lane_count, int *link_rate, int *link_spread);
++	int drm_fd, const char *connector_name, int *lane_count, int *link_rate, int *link_spread);
+ void igt_amd_write_link_settings(
+ 	int drm_fd, char *connector_name, enum dc_lane_count lane_count,
+ 	enum dc_link_rate link_rate, enum dc_link_training_type training_type);
 
 -- 
 2.52.0
