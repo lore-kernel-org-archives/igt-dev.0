@@ -4,63 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C866D3F09A
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 17:16:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C287D46BE2
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 17:34:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2DF4E10E73C;
-	Wed, 28 Jan 2026 17:16:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4DF6310E2D2;
+	Wed, 28 Jan 2026 17:34:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gPOsKl/f";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JSLJvTAC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4555210E73C
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 17:16:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A519210E2D2
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 17:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769620586; x=1801156586;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=bi5ohV90g6jEa7xabuH+YKBhgvrOOBX4DriiL6RwRkM=;
- b=gPOsKl/fWdyo3aJRF1uFG4+qJRl+9KHYpnp4LL/l+mBwmE2Wz0qQVQJk
- KeB/luQnaWg+UfURPBi9qRhtDH4rlxbFiTkbsVk7t9QsjexQg+S7sOsBA
- iuhqCc3B0XU1PiDEkzX3EEmwI+9qAtqe8o92t6TO/ReI+UPxu5PfhPOXo
- kB2mG+uJOtvdQhppm232AaqRxIIDmUpHDz3gbMHNveBuwPcezf67byklZ
- kMM9pF9dW8geL9gtgsCgnfzDVD6jsBbmpF4AJ1ktwDoRiB8V7wyi7Nq7N
- fPBynUWA4Tht+iK7bSTPW0ZKy6RP/jFWDda/L4BKKDJ61YOp+Tf+AP9Bl w==;
-X-CSE-ConnectionGUID: GNWC8xjVTpWZoNLRjGuCgA==
-X-CSE-MsgGUID: hqUkHY+lRD6sZTPvgoamAw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="58421234"
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="58421234"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jan 2026 09:16:26 -0800
-X-CSE-ConnectionGUID: cAOch/5VQq2fLde1l350gg==
-X-CSE-MsgGUID: vXH8QgXKQjqLlblyDmGEfA==
+ t=1769621669; x=1801157669;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=0Em+Szjn1V0H+ByxogiRpjPH3RhdSk5TvvXEbq9y94U=;
+ b=JSLJvTACUkiQwjC/LpMaSAVZzHZ5dLNWK+ZuqqbgWi5nI0zkpYYVzc2L
+ 6M1ujYgcJQdOXuD87L+HvfM74vEOMU6o6MGjND6+kDkV956apF53Bau4e
+ ygaDPyUMUrEtNKgntAnbrAsFgze0hPyyzusdNEC/H+gpGAvpRM8LX2lGW
+ FPYgcYFyPaZok950eH1j6WGrtrJOHlWWG2+XoSDDNPE712E45W4Ayn+Hv
+ 90axv/b/OGg96Ge2gndqB6Gk5Zdig/+Kuxli8xenocf4ROZgQQcF5nCOM
+ kJ1AR2XxDyn+34mY688I+ty5gX2olnkWfWX5GlUgVdqW7jioAXaf5dlJb A==;
+X-CSE-ConnectionGUID: yuev9DhwRYWqzCoG6GBbyA==
+X-CSE-MsgGUID: RFy9+Sq1SWGvVaGxjELpcg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="82213444"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="82213444"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jan 2026 09:34:29 -0800
+X-CSE-ConnectionGUID: Yu8oJJ7BTZe1XRjUvMjFmg==
+X-CSE-MsgGUID: UEWG1A8HRC2sgzMNgC4FJg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="239056435"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
- ([10.245.245.54])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jan 2026 09:16:24 -0800
-Date: Wed, 28 Jan 2026 19:16:19 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 0/8] lib/igt_kms: pipe vs CRTC index cleanups
-Message-ID: <aXpEYzgf6MKLKJKW@intel.com>
-References: <cover.1769514879.git.jani.nikula@intel.com>
- <aXon4Dk6azuIFd4w@intel.com>
- <d6530c2859f5e77f84be1e69aa48625a036a0c76@intel.com>
- <aXo-3HMDhUlUoCcR@intel.com>
- <5939a9a4a24dd14e875951e0d8687c1ec86ca5fe@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="245927179"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO fdugast-desk.home)
+ ([10.245.244.217])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jan 2026 09:34:27 -0800
+From: Francois Dugast <francois.dugast@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: matthew.brost@intel.com, thomas.hellstrom@linux.intel.com,
+ Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH i-g-t 0/5] Extend xe_exec_system_allocator compute tests
+Date: Wed, 28 Jan 2026 18:29:05 +0100
+Message-ID: <20260128173412.1319610-1-francois.dugast@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5939a9a4a24dd14e875951e0d8687c1ec86ca5fe@intel.com>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,18 +67,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jan 28, 2026 at 06:59:35PM +0200, Jani Nikula wrote:
-> On Wed, 28 Jan 2026, Ville Syrjälä <ville.syrjala@linux.intel.com> wrote:
-> > Yeah, The next set tries to convert the for_each_pipe*()
-> > stuff to crtcs. Just doing some (hopefully) final tweaks
-> > to catch a few more stragglers...
-> 
-> I forget, are you aiming for making it iterate igt_crtc_t instead of
-> crtc index? If feasible, I think it would make a ton of sense all over
-> the place.
+Single GPU page fault handling duration is an important metric used for KMD
+performance optimizations. Extend SVM's compute test variants to allow fine
+control over GPU page faults triggered from EU context with a simple compute
+kernel, assert expected counters from KMD and print average duration. Please
+see example below:
 
-Yeah, igt_crtc_t.
+    $ IGT_SVM_COMPUTE_LOOPS=1000 sudo -E xe_exec_system_allocator --r eu-fault-2m-once-device
+    IGT-Version: 2.3-ge596586fe (x86_64) (Linux: 6.19.0-rc7-perf x86_64)
+    Using IGT_SRANDOM=1769621444 for randomisation
+    Opened device: /dev/dri/card0
+    Starting subtest: eu-fault-2m-once-device
+      svm_2M_pagefault_us=747
+    Subtest eu-fault-2m-once-device: SUCCESS (5.525s)
+
+Francois Dugast (5):
+  tests/intel/xe_exec_system_allocator: Fix compute array migration size
+  tests/intel/xe_exec_system_allocator: Allow looping in compute
+  tests/intel/xe_exec_system_allocator: Add hw engine argument for
+    compute
+  tests/intel/xe_exec_system_allocator: Assert page fault count in
+    compute
+  tests/intel/xe_exec_system_allocator: Print page fault duration in
+    compute
+
+ tests/intel/xe_exec_system_allocator.c | 160 ++++++++++++++++++++++---
+ 1 file changed, 145 insertions(+), 15 deletions(-)
 
 -- 
-Ville Syrjälä
-Intel
+2.43.0
+
