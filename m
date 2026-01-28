@@ -4,27 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 691C7D3F097
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 16:58:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6146CD3F098
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 16:59:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B0B210E1D6;
-	Wed, 28 Jan 2026 16:58:07 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFF2710E1D6;
- Wed, 28 Jan 2026 16:58:05 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1769216606912102858=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_xe=5Feudebug=5Fonline=3A_?=
- =?utf-8?q?Fix_test=5Finterrupt=5Fother_wait_logic_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Piotr Rudnicki" <piotr.rudnicki@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 158F410E739;
+	Wed, 28 Jan 2026 16:59:43 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aj6f4E2S";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F2BA410E739
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 16:59:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1769619581; x=1801155581;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version:content-transfer-encoding;
+ bh=NjkdQEqfJTFZP+Rc9NB/g8i7TwSQvaEsolr3XEA5NKc=;
+ b=aj6f4E2SPGxRxHVg9X3CepvIa+9B4rG5grIxVy6xMJOEqruG6GCRDePR
+ 4zt3Kas7S9qtImAmxeKgc55FHjsUVc25tsF/tCSSqZkVIEEjkyQFWmjXV
+ QkVj3ouluMCfB1VvTiYq4R/Oqi+m3LgtWMGAhMo00NEL9eVA3zVekuuDn
+ IGhQc4T51+6P9WGwJo4I7jtgGVdsqMsT8k7YXEL93U2nvp83FVwcHAXUd
+ 1r0ztwPzGzOD3YSoLSQqIoptu67ytaQmQzE/yysQ8LbuMmkQ4T+uXP4H/
+ 60qDfLwVf0rojRuEwt6x35fIM6uk1bb95zoOtMzW5PHIAu/PNluA6bCyO w==;
+X-CSE-ConnectionGUID: VsAs+2dcRei4cie9B4S2dg==
+X-CSE-MsgGUID: u7TdWbN6QsWcCEbJ/uL1AA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="70812886"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="70812886"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jan 2026 08:59:40 -0800
+X-CSE-ConnectionGUID: tl9brtNJRMyHlu5dlU5QAQ==
+X-CSE-MsgGUID: hNGkwYsATN+qzn8Lg5EPVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="208555508"
+Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.207])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jan 2026 08:59:38 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 28 Jan 2026 16:58:05 -0000
-Message-ID: <176961948598.201476.2685258256460209776@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260128144626.452925-4-piotr.rudnicki@intel.com>
-In-Reply-To: <20260128144626.452925-4-piotr.rudnicki@intel.com>
+Subject: Re: [PATCH i-g-t 0/8] lib/igt_kms: pipe vs CRTC index cleanups
+In-Reply-To: <aXo-3HMDhUlUoCcR@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <cover.1769514879.git.jani.nikula@intel.com>
+ <aXon4Dk6azuIFd4w@intel.com>
+ <d6530c2859f5e77f84be1e69aa48625a036a0c76@intel.com>
+ <aXo-3HMDhUlUoCcR@intel.com>
+Date: Wed, 28 Jan 2026 18:59:35 +0200
+Message-ID: <5939a9a4a24dd14e875951e0d8687c1ec86ca5fe@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,159 +70,22 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1769216606912102858==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, 28 Jan 2026, Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com=
+> wrote:
+> Yeah, The next set tries to convert the for_each_pipe*()
+> stuff to crtcs. Just doing some (hopefully) final tweaks
+> to catch a few more stragglers...
 
-== Series Details ==
-
-Series: xe_eudebug_online: Fix test_interrupt_other wait logic (rev4)
-URL   : https://patchwork.freedesktop.org/series/160553/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_8722 -> IGTPW_14439
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14439/index.html
-
-Participating hosts (43 -> 40)
-------------------------------
-
-  Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14439 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-dg2-8:          [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8722/bat-dg2-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14439/bat-dg2-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-9:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8722/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14439/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-adlp-6:         [ABORT][5] ([i915#14365]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8722/bat-adlp-6/igt@i915_selftest@live.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14439/bat-adlp-6/igt@i915_selftest@live.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#14365]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14365
+I forget, are you aiming for making it iterate igt_crtc_t instead of
+crtc index? If feasible, I think it would make a ton of sense all over
+the place.
 
 
-Build changes
--------------
+BR,
+Jani.
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8722 -> IGTPW_14439
-
-  CI-20190529: 20190529
-  CI_DRM_17900: 8059f097e25f736bb3da09af6a9b283079abfd4f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14439: 14439
-  IGT_8722: 8722
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14439/index.html
-
---===============1769216606912102858==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>xe_eudebug_online: Fix test_interrupt_other wait logic (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160553/">https://patchwork.freedesktop.org/series/160553/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14439/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14439/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8722 -&gt; IGTPW_14439</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14439/index.html</p>
-<h2>Participating hosts (43 -&gt; 40)</h2>
-<p>Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14439 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8722/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14439/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8722/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14439/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8722/bat-adlp-6/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14365">i915#14365</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14439/bat-adlp-6/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8722 -&gt; IGTPW_14439</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17900: 8059f097e25f736bb3da09af6a9b283079abfd4f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14439: 14439<br />
-  IGT_8722: 8722</p>
-
-</body>
-</html>
-
---===============1769216606912102858==--
+--=20
+Jani Nikula, Intel
