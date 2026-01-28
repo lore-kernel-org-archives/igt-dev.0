@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F04CD25B5D
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 13:14:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E963BD25B5A
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 13:14:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4F87210E119;
-	Wed, 28 Jan 2026 13:14:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A06B310E6D9;
+	Wed, 28 Jan 2026 13:14:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="xnO/EYCV";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Zq9OoZUR";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 466BF10E6DA
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:37 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 995B910E6D9
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:41 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 2748B4E422FD
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:36 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 05AE7C211E5
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:43 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id EC6996071F;
- Wed, 28 Jan 2026 13:14:35 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 7E3BE6071F;
+ Wed, 28 Jan 2026 13:14:40 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id E1D24119A880F; Wed, 28 Jan 2026 14:14:34 +0100 (CET)
+ with ESMTPSA id 93E4E119A8814; Wed, 28 Jan 2026 14:14:39 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1769606075; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1769606080; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=B6XJkaLr5H0MMcRkc5tpwbb2Yt+e4EEKaem1F/mPL6Y=;
- b=xnO/EYCVWJgglTQi8nTSXw4jjsTm60QOkDgeGgPsFzpK3ZMEJcE7LkjqRtniYKRuZC6bOt
- HNu48XIEVmPSrcn4jos1C0NXt72ZDCzUElco7mj62lYjpQEPdSbl1XWJI08xhSg+CdQxfj
- QGyF/UgJtziGV0I1xbxeN4QIgDxBa8IyWHnkfop1AMIbGWC+FEzql8me9nf0CF4pcQHHaq
- cVRk0CSQXDk2JVFKO5iVYYYSClfQkG1YflgSyjoHn7q3j8JSJ9MZ3xNdKTCOR4gCv/aMtJ
- 0WzGqJ75EO/L2kYtehKZI5SXHPBt27kOBP/C5+F9YIenftw1vVCQCGtPxaeMKA==
+ bh=BWx7rNUIr1psbc8Et3zZjU9RNSsRLpIuHI9stsd0/cI=;
+ b=Zq9OoZURNC2+EPV9bv/xydxrtNtT/rX9nk88D81+O99/LylJu2+Xr0Kz419dgvrUdBmwu9
+ 1VusI6bt61sjj6EH9IfpJ2oKRgDsHJfDx+6q7J9tnD7TJlLjgsVu6ayKFcp6RXyVaYUUZD
+ YNEc8CwDDwUam2llfBgp89PL4nSnfqMETT/fDO82JAQDreAU292BFwrVXDl0b1495Btcx+
+ FrBquRT9kIQt9+zbFxZOKMn2MNzGj2oz0D097nn4H/zKMNgK28ttluVPGUSjf9WJUJc8Uk
+ UXAyJasJF9hk4+Ot4KpnNlyKoOUHDG17FriIflwPrNzRulMRkkC0d/Iuq8VSaQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 28 Jan 2026 14:14:38 +0100
-Subject: [PATCH i-g-t v5 07/48] lib/igt_kms: Expose dump_connector_attrs
+Date: Wed, 28 Jan 2026 14:14:44 +0100
+Subject: [PATCH i-g-t v5 13/48] lib/igt_kms: Add const when make sense
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-unigraf-integration-v5-7-fbf2e997a011@bootlin.com>
+Message-Id: <20260128-unigraf-integration-v5-13-fbf2e997a011@bootlin.com>
 References: <20260128-unigraf-integration-v5-0-fbf2e997a011@bootlin.com>
 In-Reply-To: <20260128-unigraf-integration-v5-0-fbf2e997a011@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -46,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1189;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1458;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=Plly5avrdWVgbAr1uICknFoOaYo5Bmul5FOg8SEKzZY=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpegvI+rh3IENVb2KBODzcEzwuDMo8dYyH3EJ7w
- CpmHZbefHSJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaXoLyBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOL7ZxAAzMnbbhT4Tl0H1DiK0jD0V+QDsqivDwv
- RkXFGa5Dv+NupFMI6+uWReovxfHyxq7w4tnNXRucUwuXKI6btXwirRdyg6yhvELEAL2pdpPhFpX
- OXkDnRZAjEg9l+O0RpgzsL2uBz6t1DgbPspP7w39hxM3Pc0ZI80QZTa0/UjIys3wi6j3hf4Okh/
- peOLZTjNHVC/UZzlLSsZdKNA2RnMdyWpyNzRjDmhAs3b44Ct/hUB/bzLHyUZR0QlnIjNBaq+ABF
- RvJNk2YqW8RVXzkjhXy+k7K5lSKXCunxEv8uEVsfMF1eity6fYf4vRpiYQ6zdheLxZlKEUnAhyX
- hzEDhJxVXnzlq6umwySZh+ckhyvfw5rLl4hasMhFdL5p81zBD4nZBc7W3z/FsKUOqclA7Q+aEIm
- 7q00dVPLLyG1//aQOWvnWTJKANPd6yc94srT1GQDCDDkTEsp8Uq6vCfuuHlBRfkiLqa3erPrXfD
- XGO5ls6CtZOJkGqHLCa4Brn9jAOrehG1hGLyXSK21nqTIG8eV0eC63bHvjjgEpILX36mnaVYr9P
- YR5r1oZccUmE9TOwOSuMGP6X4QTu66NHEGUL3S5e6/GacwuHylCwX2YBHwzbLbFaZ7qOvfm9909
- fv/3sHClcU2qQDkFx2LEZD3/pPnO9hxPGrDqkYpyVy8BvHSZ63Ro=
+ bh=HP7ACEljbhVvm5I/UWr/WCi+AFcrqsBwCMiSp3TGLBc=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpegvJfYjwEzjvuYIS+5VF8BJqRWuXEp+8WgKx0
+ ASycCGVNmeJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaXoLyRsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKvihAA08y1yg1YuISzI8Oqwb0Mdl8HWFnV8BW
+ 64x7nW+lGq+w8UeY5z83ozYJVHK/xUbX1d80epB3HbCVsEUyIIl1+s1/i9Q5RZofmPnk1ilb3fO
+ dGJTjyv3/YpPsuxtdopcwPKljWDQJH3bY4sZBo/secQrJIlGNlyvWAF4k0yPAlo5LOGVPluVk1h
+ IMHnzK6OTxBTNpTOa0lSjchfexGD9mHRRDIFGVY/VNO6gtKMF2hVokIDCaYGJbWvTvkokineCWP
+ 3mCX4dvied9HURYeDSQ3F0x/jCmpnfzwoYRKOwNNG47J7Wa6yBzE7yktnjup6xm3VOI8myUvUhz
+ yHNSjZknyk6yGDBWukMcpEhzoAJ7eg3U5V047YDl66zZkXD1wZmA6t6YUxPDdDnBfuQShzs2uWw
+ tx4PApmQktlolm24l2zdZQHgPExL9sHA6YbjmnZ/H+2vfZYJpBlS8TDHUu9GnFi1OryMkENlcVV
+ DZx2s6I4UPOfnRb1Tj2uD5z1vLP+fgl6O5uBb6ePHljBgubRwRNGtEpTqdToP1N0RiUuXMSiegz
+ Aho1xNMcMhcq73x5cR4I5aORIthhHq+60+Q5uJL0rQhT/mxrseEuPDxDFWg/Q3zGNk41FRncMxb
+ S3acXorlbaIwr3JXA79WjNPpbd8cDZeY3eMWg/liJx8bzb1yZcPw=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,43 +79,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-dump_connector_attrs is used by i915 DP helpers, so expose it from igt_kms
-to be able to reuse them.
+Const qualifier helps to avoid unwanted modification of a pointer.
+To help avoiding those errors, modify the function signature to
+use const.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- lib/igt_kms.c | 5 ++++-
- lib/igt_kms.h | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ lib/igt_kms.c | 2 +-
+ lib/igt_kms.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 65c9b71be975..4d22ad71221c 100644
+index 17fd6a22a3e8..2cd21278a9bc 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -1803,7 +1803,10 @@ static bool connector_attr_set_debugfs(int drm_fd,
- 	return true;
- }
- 
--static void dump_connector_attrs(void)
-+/**
-+ * dump_connector_attrs: Display on debug log all the connector attributes
-+ */
-+void dump_connector_attrs(void)
+@@ -5183,7 +5183,7 @@ int igt_display_drop_events(igt_display_t *display)
+  *
+  * Returns: String representing a connector's name, e.g. "DP-1".
+  */
+-const char *igt_output_name(igt_output_t *output)
++const char *igt_output_name(const igt_output_t *output)
  {
- 	char name[80];
- 
+ 	return output->name;
+ }
 diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index c1e5291af56c..584e05fd159d 100644
+index 7cda645206de..af9586a2edb4 100644
 --- a/lib/igt_kms.h
 +++ b/lib/igt_kms.h
-@@ -266,6 +266,7 @@ enum joined_pipes {
+@@ -598,7 +598,7 @@ typedef struct _igt_pipe_crc igt_pipe_crc_t;
+ igt_pipe_crc_t *igt_crtc_crc_new(igt_crtc_t *crtc, const char *source);
+ igt_pipe_crc_t *igt_crtc_crc_new_nonblock(igt_crtc_t *crtc, const char *source);
  
- uint64_t igt_kms_frame_time_from_vrefresh(uint32_t vrefresh);
- 
-+void dump_connector_attrs(void);
- bool kmstest_force_connector(int fd, drmModeConnector *connector,
- 			     enum kmstest_force_connector_state state);
- bool kmstest_force_connector_joiner(int drm_fd, drmModeConnector *connector, int joined_pipes);
+-const char *igt_output_name(igt_output_t *output);
++const char *igt_output_name(const igt_output_t *output);
+ bool kmstest_mode_is_valid(const drmModeModeInfo *mode);
+ drmModeModeInfo *igt_output_get_mode(igt_output_t *output);
+ drmModeModeInfo *igt_output_get_highres_mode(igt_output_t *output);
 
 -- 
 2.52.0
