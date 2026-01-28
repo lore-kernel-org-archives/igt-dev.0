@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF18ED25B77
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 13:39:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CBFFD25B77
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 13:40:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DF71610E119;
-	Wed, 28 Jan 2026 13:39:56 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cGhFXSab";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E9E510E5D6
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 00:30:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769560224; x=1801096224;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=yiDs4WrzIttZB2JLeMejkozfNcwful7s1abfh/3mtmY=;
- b=cGhFXSabPv8suYxKwPE3L8c5nPZ1diApx94v5z+cWW2a6OSIxFcKSzxx
- 1PIcRo9Ju4HJ5vEVx2DsMUCHdoAcrXjmUw67/yG5nJBCBNJ6wpoS03Cp0
- 4e7rh4OrtIp/ngC0AxkBip/mAB98zP4dSLm0a0fSgj63veP0Q7LTRYqLQ
- +ma0k0wbCBliFLnW4Btt9Ml/uRQ+1u+/DqBl7f9lTKGhsPPlCjjtEdEUy
- 2TUPP1JWinKpTJL58DuBkKuoaLNYBi+T3rLAxzsG2dG3EPAakCHEk/4tt
- ifKO2JGHF4k76eDKbXUeHi2nkMN4ZPk6aLpWMDsmAb9MQD2aC+PhGS/DA Q==;
-X-CSE-ConnectionGUID: D10405gnSP2hpW+8DP5Kog==
-X-CSE-MsgGUID: mv9enStSSBi1Wal1VUNswQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="81874805"
-X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; d="scan'208";a="81874805"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jan 2026 16:30:24 -0800
-X-CSE-ConnectionGUID: 1xvWsrBzSe2DOaMSYUjB3A==
-X-CSE-MsgGUID: MdWMCLRbRXqMr5juBhqI+w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; d="scan'208";a="212662995"
-Received: from dut6094bmgfrd.fm.intel.com ([10.80.55.45])
- by orviesa004.jf.intel.com with ESMTP; 27 Jan 2026 16:30:23 -0800
-From: Jia Yao <jia.yao@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jia Yao <jia.yao@intel.com>, Alex Zuo <alex.zuo@intel.com>,
- Shuicheng Lin <shuicheng.lin@intel.com>, Xin Wang <x.wang@intel.com>
-Subject: [PATCH v2] tests/intel/xe_exec_system_allocator: Fix UC PAT index
- test timeout
-Date: Wed, 28 Jan 2026 00:30:21 +0000
-Message-ID: <20260128003021.33204-1-jia.yao@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260127215102.19951-1-jia.yao@intel.com>
-References: <20260127215102.19951-1-jia.yao@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0465A10E6D0;
+	Wed, 28 Jan 2026 13:40:04 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1619F10E6D0;
+ Wed, 28 Jan 2026 13:40:03 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4091257443212435708=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 28 Jan 2026 13:39:55 +0000
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Runner=3A_Use_Jansson_inste?=
+ =?utf-8?q?ad_of_json-c_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 28 Jan 2026 13:40:03 -0000
+Message-ID: <176960760307.200694.17521830949825879309@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260115175811.179898-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20260115175811.179898-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,67 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The pat-index-madvise-pat-idx-uc-single-vma subtest was intermittently
-failing with 'Timer expired' error when waiting for user fence.
+--===============4091257443212435708==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Root cause:
-When the PAT index is set to UC (Uncached), the batch buffer written
-by CPU may not be visible to GPU due to CPU cache not being flushed
-to memory. The GPU would then read stale or corrupted batch commands,
-causing the execution to hang and the user fence to never be signaled.
+== Series Details ==
 
-Fix:
-- Use igt_clflush_range() to explicitly flush the batch buffer from
-  CPU cache to memory before GPU execution
-- Initialize clflush support in igt_fixture with igt_setup_clflush()
+Series: Runner: Use Jansson instead of json-c (rev3)
+URL   : https://patchwork.freedesktop.org/series/160154/
+State : success
 
-v2 (Xin Wang):
-- Move igt_setup_clflush() from igt_fixture to just before
-  xe_for_each_engine loop for UC PAT index subtests. This ensures
-  clflush is only initialized when actually needed, and allows
-  proper skip if clflush is not supported on the platform.
+== Summary ==
 
-This ensures that when using UC PAT index, the GPU can read the
-correct batch buffer data from memory.
+CI Bug Log - changes from XEIGT_8721_BAT -> XEIGTPW_14436_BAT
+====================================================
 
-Cc: Alex Zuo <alex.zuo@intel.com>
-Cc: Shuicheng Lin <shuicheng.lin@intel.com>
-Cc: Xin Wang <x.wang@intel.com>
-Signed-off-by: Jia Yao <jia.yao@intel.com>
----
- tests/intel/xe_exec_system_allocator.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Summary
+-------
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 412ad0384..6970b8201 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -1692,6 +1692,10 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 			prefetch_ns += (end - start);
- 		}
- 
-+		if (pat_value == intel_get_pat_idx_uc ||
-+			pat_value == intel_get_pat_idx_uc_comp)
-+			igt_clflush_range(data[idx].batch, sizeof(data[idx].batch));
-+
- 		sync[0].addr = exec_ufence ? to_user_pointer(exec_ufence) :
- 			addr + (char *)&data[idx].exec_sync - (char *)data;
- 
-@@ -2633,6 +2637,11 @@ int igt_main()
- 			     !xe_has_vram(fd)) {
- 				igt_skip("Skipping compression-related PAT index\n");
- 			}
-+			if (strstr(s->name, "madvise-pat-idx-uc-")) {
-+				igt_require_f(igt_setup_clflush(),
-+							  "CLFLUSH support required for UC PAT index test\n");
-+			}
-+
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 1, 1, SZ_4M, 0, 0, NULL, NULL, s->flags, s->fn);
- 		}
--- 
-2.43.0
+  **SUCCESS**
 
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 10)
+------------------------------
+
+  Missing    (2): bat-adlp-vm bat-ptl-vm 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14436_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_waitfence@reltime:
+    - bat-dg2-oem2:       [FAIL][1] ([Intel XE#6520]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8721/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14436/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+
+  
+  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8721 -> IGTPW_14436
+  * Linux: xe-4459-6d88e21d3ccde3ca984304cde021744d0e326ee1 -> xe-4465-8059f097e25f736bb3da09af6a9b283079abfd4f
+
+  IGTPW_14436: 9d76741e56c0a80a388f69d589d749706b37bc15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8721: 3707bb4267de22a18d61b232c4ab5fbaf61db90c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4459-6d88e21d3ccde3ca984304cde021744d0e326ee1: 6d88e21d3ccde3ca984304cde021744d0e326ee1
+  xe-4465-8059f097e25f736bb3da09af6a9b283079abfd4f: 8059f097e25f736bb3da09af6a9b283079abfd4f
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14436/index.html
+
+--===============4091257443212435708==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Runner: Use Jansson instead of json-c (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160154/">https://patchwork.freedesktop.org/series/160154/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14436/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14436/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8721_BAT -&gt; XEIGTPW_14436_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 10)</h2>
+<p>Missing    (2): bat-adlp-vm bat-ptl-vm </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14436_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_waitfence@reltime:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8721/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14436/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8721 -&gt; IGTPW_14436</li>
+<li>Linux: xe-4459-6d88e21d3ccde3ca984304cde021744d0e326ee1 -&gt; xe-4465-8059f097e25f736bb3da09af6a9b283079abfd4f</li>
+</ul>
+<p>IGTPW_14436: 9d76741e56c0a80a388f69d589d749706b37bc15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8721: 3707bb4267de22a18d61b232c4ab5fbaf61db90c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4459-6d88e21d3ccde3ca984304cde021744d0e326ee1: 6d88e21d3ccde3ca984304cde021744d0e326ee1<br />
+  xe-4465-8059f097e25f736bb3da09af6a9b283079abfd4f: 8059f097e25f736bb3da09af6a9b283079abfd4f</p>
+
+</body>
+</html>
+
+--===============4091257443212435708==--
