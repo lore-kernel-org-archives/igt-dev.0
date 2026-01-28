@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02DB9D46BEB
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 18:08:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 051CED46BEB
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 18:08:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A68C810E1E7;
-	Wed, 28 Jan 2026 18:08:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A9EDE10E2D6;
+	Wed, 28 Jan 2026 18:08:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SuVvFQvN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IVj7VNes";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C3A510E1E7
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 18:08:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 01FFE10E2D6
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 18:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769623722; x=1801159722;
+ t=1769623727; x=1801159727;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=s4OUII4lHvp8o6maULnj6U/6GXD48OnQY2MWQNlZUl8=;
- b=SuVvFQvNlvD2IV1A30KKb9qXPmsCV0gmi6Wm4SZBXk8IqYqQ3CHFRKdJ
- H70wDa5oEExkxCOeRmIxHl3/Snd1pMhZUoKE+D0T/FmgqgciI2oNx35j3
- rOl60vGmu+CG9TTpBiyOPiQJ71KiBA3O6wB7meAzOXAdLiCDqpNSlewVU
- wGyzlCrfFOiO2KISTZQ6/wLMHImrviiTOy6M4Dnrwrzc0zR0clQ3FoGWm
- 2I0uOVXdthRyKNp+VzOvaH5Q8JmovQS3N6bfEHII8vHyQd8lMJRqLWl0X
- oQhM2pzi0xOQJ7jdnWsxmj8PV8DmCssjLED6CdZ5qoLc9UbV/0Rx9s0P3 w==;
-X-CSE-ConnectionGUID: 8vwa8UHfT26SKuCnI9TvRg==
-X-CSE-MsgGUID: Mz4YdwugR7iCwQDNXGB+FQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="70819833"
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="70819833"
+ bh=dZf1OrZRKDW2WUBqApeo5GQgJJypGeNzobEgvJk6UTs=;
+ b=IVj7VNesbYqHAxO4aJobqG4ClEckbAA0LQGEYf1IYwgAQ/us7lly/9A2
+ K9u63JeP7/dsa7GcG07tX7IFiheS1QB2Hd7bYob7Rt2hIxY9r90Zx4JPd
+ yPxpV9XeG0HPIJ319wTPrAiF0MZvgfxh1TYV4BYBAl6AdAvP33eG4XwRI
+ 6Ovs2sCtNZF5HQVjJG2urKPLaMeNXVef3GwnCwfCWYsZlSnsuGrpV0rou
+ EsfofX33MsUkvOgR7w5nxXlPAUVOiizi1rJM/WuBJwQ18CcefOJgApYte
+ tmhBF1i8xg/rUvbrJiUcueOIvHCpLvLCm4loqORBFRthly6RUiRMxqD48 Q==;
+X-CSE-ConnectionGUID: LEXjQQLdRjC7npQo+0G/aw==
+X-CSE-MsgGUID: gf75JuuaQUauAeZXcDbcdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="70819843"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="70819843"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jan 2026 10:08:42 -0800
-X-CSE-ConnectionGUID: yNq+hc+XSAmpMPTnX2l/Sg==
-X-CSE-MsgGUID: 9Vn/Y3uHR4GynIdZHxxFMw==
+ 28 Jan 2026 10:08:47 -0800
+X-CSE-ConnectionGUID: hDY6IZnoSqCyb+qyHQQlfQ==
+X-CSE-MsgGUID: H7xFbGXsRxaikSCx+MyVtw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="231282747"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="231282769"
 Received: from soc-5cg43972f8.clients.intel.com (HELO localhost)
  ([172.28.182.71])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jan 2026 10:08:40 -0800
+ 28 Jan 2026 10:08:45 -0800
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
  lukasz.laguna@intel.com, michal.wajdeczko@intel.com,
  Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH v3 i-g-t 01/10] lib/igt_sysfs_choice: Add helpers for sysfs
- enumerated choice attributes
-Date: Wed, 28 Jan 2026 19:08:07 +0100
-Message-ID: <20260128180819.1373376-2-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v3 i-g-t 02/10] lib/tests/igt_sysfs_choice: Add test coverage
+Date: Wed, 28 Jan 2026 19:08:08 +0100
+Message-ID: <20260128180819.1373376-3-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260128180819.1373376-1-marcin.bernatowicz@linux.intel.com>
 References: <20260128180819.1373376-1-marcin.bernatowicz@linux.intel.com>
@@ -73,15 +72,9 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce igt_sysfs_choice, a lightweight, fixed-size, no-malloc helper
-for parsing and formatting sysfs "choice" attributes of the form:
+Add unit tests exercising parsing, selection rules, intersection,
+round-trip formatting, and mask conversion for igt_sysfs_choice.
 
-    "low [normal] high\n"
-
-The helper provides parsing, lookup, formatting, mask conversion, and
-intersection utilities for consistent handling of enumerated sysfs values.
-
-Suggested-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
 Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
@@ -91,536 +84,425 @@ Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
 
 ---
 v2:
-- Corrected date
-- Fix documentation formatting/description.
-- Make igt_sysfs_choice_to_string() return error code instead of NULL.
-- Use names_sz consistently.
-- Make igt_sysfs_choice_format_mask() return error code instead of NULL.
+- Align igt_simple_main() usage with upstream changes.
+- Corrected date, improved assert messages.
+- Use BIT() instead of (1u << n) for sysfs choice masks.
+- Adjust test for igt_sysfs_choice_to_string() returning error code.
+- Adjust test for igt_sysfs_choice_format_mask() returning error code.
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- lib/igt_sysfs_choice.c | 439 +++++++++++++++++++++++++++++++++++++++++
- lib/igt_sysfs_choice.h |  52 +++++
- lib/meson.build        |   1 +
- 3 files changed, 492 insertions(+)
- create mode 100644 lib/igt_sysfs_choice.c
- create mode 100644 lib/igt_sysfs_choice.h
+ lib/tests/igt_sysfs_choice.c | 388 +++++++++++++++++++++++++++++++++++
+ lib/tests/meson.build        |   1 +
+ 2 files changed, 389 insertions(+)
+ create mode 100644 lib/tests/igt_sysfs_choice.c
 
-diff --git a/lib/igt_sysfs_choice.c b/lib/igt_sysfs_choice.c
+diff --git a/lib/tests/igt_sysfs_choice.c b/lib/tests/igt_sysfs_choice.c
 new file mode 100644
-index 000000000..5ce2a2b70
+index 000000000..c573a0dff
 --- /dev/null
-+++ b/lib/igt_sysfs_choice.c
-@@ -0,0 +1,439 @@
++++ b/lib/tests/igt_sysfs_choice.c
+@@ -0,0 +1,388 @@
 +// SPDX-License-Identifier: MIT
 +/*
 + * Copyright © 2026 Intel Corporation
 + */
-+#include "igt_sysfs_choice.h"
-+#include <ctype.h>
 +#include <errno.h>
++#include "drmtest.h"
 +#include "igt_core.h"
-+#include "igt_sysfs.h"
++#include "intel_chipset.h"
++#include "igt_sysfs_choice.h"
 +
-+#define IGT_SYSFS_CHOICE_MAX_LEN 256
-+#define IGT_SYSFS_CHOICE_MAX_TOKENS 16
-+
-+/**
-+ * igt_sysfs_choice_parse() - parse sysfs enumerated choice buffer
-+ * @buf: NUL-terminated buffer with sysfs contents
-+ * @choice: output descriptor, must be non-NULL (can be zeroed)
-+ *
-+ * Parses a sysfs enumerated choice buffer, e.g.:
-+ *
-+ *	"low [normal] high\n"
-+ *
-+ * into a token list and the index of the selected token.
-+ *
-+ * Parsing rules:
-+ *  - tokens are separated by ASCII whitespace
-+ *  - exactly one token must be wrapped in '[' and ']'
-+ *  - surrounding '[' and ']' are stripped from the selected token
-+ *  - empty tokens are treated as malformed input
-+ *
-+ * On entry, any previous contents of @choice are freed.
-+ *
-+ * Returns:
-+ *  0        on success,
-+ *  -EINVAL  malformed format (no tokens, no selected token, multiple
-+ *           selected tokens, unterminated '[' or ']'),
-+ *  -E2BIG   on too many tokens or too small choice buffer size.
-+ */
-+int igt_sysfs_choice_parse(const char *buf, struct igt_sysfs_choice *choice)
++static void assert_token(const struct igt_sysfs_choice *c,
++			 size_t idx, const char *expected)
 +{
-+	char *p, *tok_start;
-+	bool selected_seen = false;
-+	size_t num_tokens = 0;
-+	int n, selected = -1;
-+	bool is_selected;
-+
-+	igt_assert(buf && choice);
-+
-+	memset(choice, 0, sizeof(*choice));
-+	n = snprintf(choice->buf, sizeof(choice->buf), "%s", buf);
-+	if (igt_debug_on(n < 0))
-+		return -EINVAL;
-+	if (igt_debug_on((size_t)n >= sizeof(choice->buf)))
-+		return -E2BIG;
-+
-+	choice->num_tokens = 0;
-+	choice->selected = -1;
-+	p = choice->buf;
-+
-+	while (*p) {
-+		/* skip leading whitespace */
-+		while (*p && isspace((unsigned char)*p))
-+			p++;
-+		if (!*p)
-+			break;
-+
-+		is_selected = false;
-+		tok_start = p;
-+
-+		if (*p == '[') {
-+			is_selected = true;
-+			p++;
-+			tok_start = p;
-+
-+			if (selected_seen) {
-+				igt_debug("choice-parse: multiple [selected] tokens: \"%s\"\n",
-+					  choice->buf);
-+				return -EINVAL;
-+			}
-+			selected_seen = true;
-+		}
-+
-+		/* walk until ']' or whitespace */
-+		while (*p && !isspace((unsigned char)*p) && *p != ']')
-+			p++;
-+
-+		if (is_selected) {
-+			if (*p != ']') {
-+				igt_debug("choice-parse: unterminated '[' in: \"%s\"\n",
-+					  choice->buf);
-+				return -EINVAL;
-+			}
-+		}
-+
-+		/* terminate token */
-+		if (*p) {
-+			*p = '\0';
-+			p++;
-+		}
-+
-+		if (!*tok_start) {
-+			igt_debug("choice-parse: empty token in: \"%s\"\n",
-+				  choice->buf);
-+			return -EINVAL;
-+		}
-+
-+		if (num_tokens >= IGT_SYSFS_CHOICE_MAX_TOKENS) {
-+			igt_debug("choice-parse: too many tokens (>%d) in: \"%s\"\n",
-+				  IGT_SYSFS_CHOICE_MAX_TOKENS, choice->buf);
-+			return -E2BIG;
-+		}
-+
-+		choice->tokens[num_tokens] = tok_start;
-+		if (is_selected)
-+			selected = (int)num_tokens;
-+
-+		num_tokens++;
-+	}
-+
-+	if (!num_tokens) {
-+		igt_debug("choice-parse: no tokens in string: \"%s\"\n",
-+			  choice->buf);
-+		return -EINVAL;
-+	}
-+
-+	if (selected < 0) {
-+		igt_debug("choice-parse: missing selected token ([...]) in: \"%s\"\n",
-+			  choice->buf);
-+		return -EINVAL;
-+	}
-+
-+	choice->num_tokens = num_tokens;
-+	choice->selected = selected;
-+
-+	return 0;
++	igt_assert_f(idx < c->num_tokens,
++		     "token index %zu out of range (num_tokens=%zu)\n",
++		     idx, c->num_tokens);
++	igt_assert(c->tokens[idx]);
++	igt_assert_f(!strcmp(c->tokens[idx], expected),
++		     "token[%zu] mismatch: got='%s' expected='%s'\n",
++		     idx, c->tokens[idx], expected);
 +}
 +
-+/**
-+ * igt_sysfs_choice_read() - read and parse a sysfs enumerated choice attribute
-+ * @dirfd: directory file descriptor of the sysfs node
-+ * @attr: attribute name relative to @dirfd
-+ * @choice: output descriptor, must be non-NULL
-+ *
-+ * Reads the given sysfs attribute into a temporary buffer and parses it.
-+ *
-+ * Returns:
-+ *  0 on success,
-+ *  negative errno-style value on read or parse error.
-+ */
-+int igt_sysfs_choice_read(int dirfd, const char *attr,
-+			  struct igt_sysfs_choice *choice)
++static void parse_ok(const char *str, struct igt_sysfs_choice *choice)
 +{
-+	char buf[IGT_SYSFS_CHOICE_MAX_LEN];
-+	int len;
++	int ret;
 +
-+	len = igt_sysfs_read(dirfd, attr, buf, sizeof(buf) - 1);
-+	if (len < 0)
-+		return len;
-+
-+	buf[len] = '\0';
-+
-+	return igt_sysfs_choice_parse(buf, choice);
++	ret = igt_sysfs_choice_parse(str, choice);
++	igt_assert_f(ret == 0, "parse(\"%s\") failed: %d\n", str, ret);
 +}
 +
-+/**
-+ * igt_sysfs_choice_selected() - Return selected token string
-+ * @choice: Parsed choice
-+ *
-+ * Returns:
-+ *   Pointer to the selected token string, or NULL if no valid selection.
-+ */
-+const char *igt_sysfs_choice_selected(const struct igt_sysfs_choice *choice)
++static void test_parse_basic_first_selected(void)
 +{
-+	if (!choice || choice->selected < 0 ||
-+	    (size_t)choice->selected >= choice->num_tokens)
-+		return NULL;
++	struct igt_sysfs_choice c;
 +
-+	return choice->tokens[choice->selected];
++	parse_ok("[low] normal high\n", &c);
++
++	igt_assert_eq(c.num_tokens, 3);
++	assert_token(&c, 0, "low");
++	assert_token(&c, 1, "normal");
++	assert_token(&c, 2, "high");
++
++	igt_assert_eq(c.selected, 0);
 +}
 +
-+/**
-+ * igt_sysfs_choice_to_string() - Render a parsed choice into string
-+ * @choice:   Parsed choice (tokens[] + selected index)
-+ * @buf:      Output buffer for formatted string
-+ * @buf_sz:   Size of @buf in bytes
-+ *
-+ * Formats the given @choice into the string:
-+ *
-+ *	"low [normal] high"
-+ *
-+ * Tokens are emitted in the order stored in @choice->tokens.  The
-+ * selected token (choice->selected) is wrapped in '[' and ']'.
-+ *
-+ * Returns:
-+ *   0        on success,
-+ *   -EINVAL  if arguments are invalid,
-+ *   -E2BIG   if @buf_sz is too small.
-+ */
-+int igt_sysfs_choice_to_string(const struct igt_sysfs_choice *choice,
-+			       char *buf, size_t buf_sz)
++static void test_parse_middle_selected_whitespace(void)
 +{
-+	bool first = true;
-+	size_t pos = 0;
-+	int n;
++	struct igt_sysfs_choice c;
 +
-+	if (!choice || !buf || !buf_sz)
-+		return -EINVAL;
++	parse_ok("  low   [normal]   high  \n", &c);
 +
-+	buf[0] = '\0';
++	igt_assert_eq(c.num_tokens, 3);
++	assert_token(&c, 0, "low");
++	assert_token(&c, 1, "normal");
++	assert_token(&c, 2, "high");
 +
-+	for (size_t i = 0; i < choice->num_tokens; i++) {
-+		const char *name = choice->tokens[i];
-+		bool is_selected = (choice->selected == (int)i);
-+
-+		if (!name)
-+			continue;
-+
-+		n = snprintf(buf + pos, buf_sz - pos,
-+			     "%s%s%s%s",
-+			     first ? "" : " ",
-+			     is_selected ? "[" : "",
-+			     name,
-+			     is_selected ? "]" : "");
-+
-+		if (n < 0)
-+			return -EINVAL;
-+		if ((size_t)n >= buf_sz - pos)
-+			return -E2BIG;
-+
-+		pos += (size_t)n;
-+		first = false;
-+	}
-+
-+	return 0;
++	igt_assert_eq(c.selected, 1);
 +}
 +
-+/**
-+ * igt_sysfs_choice_find() - find token index by name
-+ * @choice: parsed choice struct
-+ * @token: token to look for (plain name, without '[' / ']')
-+ *
-+ * Performs a case-sensitive comparison of @token against entries in
-+ * @choice->tokens.
-+ *
-+ * Returns:
-+ *  index in [0..choice->num_tokens-1] on match,
-+ *  -1 if @token is not present or @choice/@token is NULL.
-+ */
-+int igt_sysfs_choice_find(const struct igt_sysfs_choice *choice,
-+			  const char *token)
++static void test_parse_single_token(void)
 +{
-+	if (!choice || !token)
-+		return -1;
++	struct igt_sysfs_choice c;
 +
-+	for (size_t i = 0; i < choice->num_tokens; i++)
-+		if (!strcmp(choice->tokens[i], token))
-+			return (int)i;
++	parse_ok("[only]\n", &c);
 +
-+	return -1;
++	igt_assert_eq(c.num_tokens, 1);
++	assert_token(&c, 0, "only");
++	igt_assert_eq(c.selected, 0);
 +}
 +
-+/**
-+ * igt_sysfs_choice_to_mask() - map parsed tokens to bitmask + selection
-+ * @choice: parsed choice struct
-+ * @names: array of known token names
-+ * @names_sz: number of elements in @names
-+ * @mask: output bitmask of supported names
-+ * @selected_idx: output index of selected token in @names, or -1 if selected
-+ *                token is not among @names
-+ *
-+ * Builds a bitmask of known tokens present in @choice and identifies the
-+ * selected token, if it matches one of @names.
-+ *
-+ * Unknown tokens do not cause an error; they are ignored and not
-+ * reflected in @mask. This keeps the API "loose": tests can still
-+ * validate required choices while tolerating additional values.
-+ *
-+ * Returns:
-+ *  0        on success,
-+ *  -EINVAL  on bad input parameters.
-+ */
-+int igt_sysfs_choice_to_mask(const struct igt_sysfs_choice *choice,
-+			     const char * const *names, size_t names_sz,
-+			     unsigned int *mask, int *selected_idx)
++static void test_parse_error_missing_selected(void)
 +{
-+	unsigned int m = 0;
-+	int sel = -1, idx;
++	struct igt_sysfs_choice c;
++	int ret;
 +
-+	if (!choice || !names || !mask)
-+		return -EINVAL;
-+
-+	for (size_t i = 0; i < names_sz; i++) {
-+		const char *name = names[i];
-+
-+		if (!name)
-+			continue;
-+
-+		idx = igt_sysfs_choice_find(choice, name);
-+		if (idx >= 0) {
-+			m |= 1u << i;
-+			if (idx == choice->selected)
-+				sel = (int)i;
-+		}
-+	}
-+
-+	*mask = m;
-+	if (selected_idx)
-+		*selected_idx = sel;
-+
-+	return 0;
++	ret = igt_sysfs_choice_parse("low normal high\n", &c);
++	igt_assert_eq(ret, -EINVAL);
 +}
 +
-+/**
-+ * igt_sysfs_choice_format_mask() - Format a bitmask as a space-separated list of names
-+ * @buf: Output buffer
-+ * @buf_sz: Size of @buf in bytes
-+ * @names: Array of token names indexed by bit position
-+ * @names_sz: Number of elements in @names
-+ * @mask: Bitmask of available tokens
-+ * @selected_idx: Index to highlight with brackets, or <0 for none
-+ *
-+ * Builds a space-separated list of all bits set in @mask, mapping bit positions
-+ * to names in @names. If @selected_idx >= 0 and that bit is set, the token is
-+ * wrapped in brackets, e.g. "low [normal] high".
-+ *
-+ * This function is best-effort by design:
-+ *  - If names[i] is NULL, it is formatted as "?".
-+ *  - Bits beyond @names_sz are ignored.
-+ * Empty @mask results in an empty string.
-+ *
-+ * Returns:
-+ *  0        on success,
-+ *  -EINVAL  on invalid arguments,
-+ *  -E2BIG   if @buf_sz is too small.
-+ */
-+int igt_sysfs_choice_format_mask(char *buf, size_t buf_sz,
-+				 const char *const *names,
-+				 size_t names_sz,
-+				 unsigned int mask,
-+				 int selected_idx)
++static void test_parse_error_multiple_selected(void)
 +{
-+	bool first = true;
-+	size_t pos = 0;
++	struct igt_sysfs_choice c;
++	int ret;
 +
-+	if (!buf || !buf_sz || !names || !names_sz)
-+		return -EINVAL;
++	ret = igt_sysfs_choice_parse("[low] [normal] high\n", &c);
++	igt_assert_eq(ret, -EINVAL);
 +
-+	buf[0] = '\0';
-+
-+	for (size_t idx = 0; idx < names_sz && mask; idx++) {
-+		int n;
-+		const char *name;
-+		bool highlight;
-+
-+		if (!(mask & 1u)) {
-+			mask >>= 1;
-+			continue;
-+		}
-+
-+		name = names[idx] ?: "?";
-+		highlight = ((int)idx == selected_idx);
-+		n = snprintf(buf + pos, buf_sz - pos, "%s%s%s%s",
-+			     first ? "" : " ",
-+			     highlight ? "[" : "",
-+			     name,
-+			     highlight ? "]" : "");
-+		if (n < 0)
-+			return -EINVAL;
-+		if ((size_t)n >= buf_sz - pos)
-+			return -E2BIG;
-+
-+		pos += (size_t)n;
-+		first = false;
-+		mask >>= 1;
-+	}
-+
-+	return 0;
++	ret = igt_sysfs_choice_parse("low [normal] [high]\n", &c);
++	igt_assert_eq(ret, -EINVAL);
 +}
 +
-+/**
-+ * igt_sysfs_choice_intersect() - Restrict a choice set to tokens common with another
-+ * @dst:   Choice to be updated in place
-+ * @other: Choice providing the allowed tokens
-+ *
-+ * Computes the intersection of the token sets in @dst and @other.
-+ * The resulting @dst contains only tokens that appear in both choices,
-+ * preserving their original order from @dst.
-+ *
-+ * If the previously selected token in @dst is still present after
-+ * intersection, its index is updated accordingly.  If it is not present,
-+ * @dst->selected is set to -1.
-+ *
-+ * Returns:
-+ * * 0        - success
-+ * * -EINVAL  - invalid arguments
-+ * * -ENOENT  - no common tokens
-+ */
-+int igt_sysfs_choice_intersect(struct igt_sysfs_choice *dst,
-+			       const struct igt_sysfs_choice *other)
++static void test_parse_error_unterminated_bracket(void)
 +{
-+	char *new_tokens[IGT_SYSFS_CHOICE_MAX_TOKENS];
-+	const char *selected_name;
-+	int new_selected = -1;
-+	size_t new_n = 0;
++	struct igt_sysfs_choice c;
++	int ret;
 +
-+	if (!dst || !other)
-+		return -EINVAL;
++	ret = igt_sysfs_choice_parse("[low normal high\n", &c);
++	igt_assert_eq(ret, -EINVAL);
 +
-+	selected_name = (dst->selected >= 0 && dst->selected < dst->num_tokens) ?
-+			 dst->tokens[dst->selected] : NULL;
-+
-+	for (size_t i = 0; i < dst->num_tokens; i++) {
-+		char *tok = dst->tokens[i];
-+
-+		if (igt_sysfs_choice_find(other, tok) < 0)
-+			continue;
-+
-+		new_tokens[new_n] = tok;
-+
-+		if (selected_name && !strcmp(tok, selected_name))
-+			new_selected = (int)new_n;
-+
-+		new_n++;
-+	}
-+
-+	if (!new_n) {
-+		dst->num_tokens = 0;
-+		dst->selected = -1;
-+		return -ENOENT;
-+	}
-+
-+	for (size_t i = 0; i < new_n; i++)
-+		dst->tokens[i] = new_tokens[i];
-+
-+	dst->num_tokens = new_n;
-+	dst->selected = new_selected;
-+
-+	return 0;
++	ret = igt_sysfs_choice_parse("low [normal high]\n", &c);
++	igt_assert_eq(ret, -EINVAL);
 +}
-diff --git a/lib/igt_sysfs_choice.h b/lib/igt_sysfs_choice.h
-new file mode 100644
-index 000000000..b354c774a
---- /dev/null
-+++ b/lib/igt_sysfs_choice.h
-@@ -0,0 +1,52 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+#ifndef __IGT_SYSFS_CHOICE_H__
-+#define __IGT_SYSFS_CHOICE_H__
 +
-+#include <stddef.h>
-+#include <stdbool.h>
++static void test_parse_error_too_many_tokens(void)
++{
++	struct igt_sysfs_choice c;
++	char buf[512];
++	size_t i;
++	int len = 0;
++	int ret;
 +
-+#define IGT_SYSFS_CHOICE_MAX_LEN    256
-+#define IGT_SYSFS_CHOICE_MAX_TOKENS 16
++	/*
++	 * Build a line with (IGT_SYSFS_CHOICE_MAX_TOKENS + 1) tokens:
++	 * "[t0] t1 t2 ... tN"
++	 */
++	len += snprintf(buf + len, sizeof(buf) - len, "[t0]");
++	for (i = 1; i < IGT_SYSFS_CHOICE_MAX_TOKENS + 1 && len < (int)sizeof(buf); i++)
++		len += snprintf(buf + len, sizeof(buf) - len, " t%zu", i);
++	len += snprintf(buf + len, sizeof(buf) - len, "\n");
 +
-+/**
-+ * struct igt_sysfs_choice - parsed sysfs enumerated choice attribute
-+ * @tokens:      array of token strings
-+ * @num_tokens:  number of entries in @tokens
-+ * @selected:    index of the active token in @tokens, or -1 if invalid
-+ *
-+ * This struct represents a sysfs enumerated choice attribute, for example:
-+ *
-+ *	"low [normal] high\n"
-+ *
-+ * After parsing, @tokens point to "low", "normal", "high" and
-+ * @selected will be 1 (the index of "normal").
-+ */
-+struct igt_sysfs_choice {
-+	char    buf[IGT_SYSFS_CHOICE_MAX_LEN];
-+	char   *tokens[IGT_SYSFS_CHOICE_MAX_TOKENS];
-+	size_t  num_tokens;
-+	int     selected; /* index into tokens[], or -1 */
++	ret = igt_sysfs_choice_parse(buf, &c);
++	igt_assert_eq(ret, -E2BIG);
++}
++
++static void test_selected_basic(void)
++{
++	struct igt_sysfs_choice c;
++	const char *sel;
++
++	/* selected at position 0 */
++	parse_ok("[low] normal high\n", &c);
++	sel = igt_sysfs_choice_selected(&c);
++	igt_assert(sel);
++	igt_assert(!strcmp(sel, "low"));
++
++	/* selected at position 1 */
++	parse_ok("low [normal] high\n", &c);
++	sel = igt_sysfs_choice_selected(&c);
++	igt_assert(sel);
++	igt_assert(!strcmp(sel, "normal"));
++
++	/* selected at position 2 */
++	parse_ok("low normal [high]\n", &c);
++	sel = igt_sysfs_choice_selected(&c);
++	igt_assert(sel);
++	igt_assert(!strcmp(sel, "high"));
++}
++
++static void test_selected_invalid_index(void)
++{
++	struct igt_sysfs_choice c;
++	const char *sel;
++
++	/* selected = -1 */
++	parse_ok("[only]\n", &c);
++	c.selected = -1;
++	sel = igt_sysfs_choice_selected(&c);
++	igt_assert(!sel);
++
++	/* selected >= num_tokens */
++	parse_ok("[only]\n", &c);
++	c.selected = 999;
++	sel = igt_sysfs_choice_selected(&c);
++	igt_assert(!sel);
++
++	/* empty choice */
++	memset(&c, 0, sizeof(c));
++	sel = igt_sysfs_choice_selected(&c);
++	igt_assert(!sel);
++}
++
++static void test_to_string_roundtrip(void)
++{
++	struct igt_sysfs_choice c1, c2;
++	char out[IGT_SYSFS_CHOICE_MAX_LEN];
++	int ret;
++
++	parse_ok(" low [normal]  high \n", &c1);
++
++	ret = igt_sysfs_choice_to_string(&c1, out, sizeof(out));
++	igt_assert_eq(ret, 0);
++
++	/*
++	 * Expect canonical format: tokens separated by single spaces,
++	 * one [selected], no trailing newline.
++	 */
++	igt_assert_f(!strcmp(out, "low [normal] high"),
++		     "choice_to_string produced '%s'\n", out);
++
++	/* Parse again and ensure we get the same structure. */
++	parse_ok(out, &c2);
++
++	igt_assert_eq(c2.num_tokens, 3);
++	assert_token(&c2, 0, "low");
++	assert_token(&c2, 1, "normal");
++	assert_token(&c2, 2, "high");
++	igt_assert_eq(c2.selected, 1);
++}
++
++static void test_find_basic(void)
++{
++	struct igt_sysfs_choice c;
++	int idx;
++
++	parse_ok("[low] normal high\n", &c);
++
++	idx = igt_sysfs_choice_find(&c, "low");
++	igt_assert_eq(idx, 0);
++
++	idx = igt_sysfs_choice_find(&c, "normal");
++	igt_assert_eq(idx, 1);
++
++	idx = igt_sysfs_choice_find(&c, "high");
++	igt_assert_eq(idx, 2);
++
++	idx = igt_sysfs_choice_find(&c, "ultra");
++	igt_assert_lt(idx, 0);
++}
++
++static const char *const prio_names[] = {
++	"low",
++	"normal",
++	"high",
 +};
 +
-+int igt_sysfs_choice_parse(const char *buf, struct igt_sysfs_choice *choice);
-+int igt_sysfs_choice_read(int dirfd, const char *attr,
-+			  struct igt_sysfs_choice *choice);
-+const char *igt_sysfs_choice_selected(const struct igt_sysfs_choice *choice);
-+int igt_sysfs_choice_to_string(const struct igt_sysfs_choice *choice,
-+			       char *buf, size_t buf_sz);
-+int igt_sysfs_choice_find(const struct igt_sysfs_choice *choice,
-+			  const char *token);
-+int igt_sysfs_choice_to_mask(const struct igt_sysfs_choice *choice,
-+			     const char *const *names, size_t names_sz,
-+			     unsigned int *mask, int *selected_idx);
-+int igt_sysfs_choice_format_mask(char *buf, size_t buf_sz,
-+				 const char *const *names,
-+				 size_t names_sz, unsigned int mask,
-+				 int selected_idx);
-+int igt_sysfs_choice_intersect(struct igt_sysfs_choice *dst,
-+			       const struct igt_sysfs_choice *other);
++static void test_to_mask_basic(void)
++{
++	struct igt_sysfs_choice c;
++	unsigned int mask = 0;
++	int selected_idx = -1;
++	int ret;
 +
-+#endif /* __IGT_SYSFS_CHOICE_H__ */
-diff --git a/lib/meson.build b/lib/meson.build
-index 1a569ba52..83569e8d2 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -44,6 +44,7 @@ lib_sources = [
- 	'igt_stats.c',
- 	'igt_syncobj.c',
- 	'igt_sysfs.c',
-+	'igt_sysfs_choice.c',
- 	'igt_sysrq.c',
- 	'igt_taints.c',
- 	'igt_thread.c',
++	parse_ok("[low] normal high\n", &c);
++
++	ret = igt_sysfs_choice_to_mask(&c, prio_names, ARRAY_SIZE(prio_names),
++				       &mask, &selected_idx);
++	igt_assert_eq(ret, 0);
++
++	/* low | normal | high -> bits 0,1,2 set */
++	igt_assert_eq(mask, BIT(0) | BIT(1) | BIT(2));
++	igt_assert_eq(selected_idx, 0);
++}
++
++static void test_to_mask_ignores_unknown(void)
++{
++	struct igt_sysfs_choice c;
++	unsigned int mask = 0;
++	int selected_idx = -1;
++	int ret;
++
++	parse_ok("[low] normal extra\n", &c);
++
++	ret = igt_sysfs_choice_to_mask(&c, prio_names, ARRAY_SIZE(prio_names),
++				       &mask, &selected_idx);
++	igt_assert_eq(ret, 0);
++
++	/* "extra" is ignored, only low + normal mapped */
++	igt_assert_eq(mask, BIT(0) | BIT(1));
++	igt_assert_eq(selected_idx, 0);
++}
++
++static void test_to_mask_selected_unknown(void)
++{
++	struct igt_sysfs_choice c;
++	unsigned int mask = 0;
++	int selected_idx = 123;
++	int ret;
++
++	parse_ok("low normal [extra]\n", &c);
++
++	ret = igt_sysfs_choice_to_mask(&c, prio_names, ARRAY_SIZE(prio_names),
++				       &mask, &selected_idx);
++	igt_assert_eq(ret, 0);
++
++	igt_assert_eq(mask, BIT(0) | BIT(1)); /* low + normal */
++	igt_assert_eq(selected_idx, -1);
++}
++
++static void test_format_mask_basic(void)
++{
++	char buf[128];
++	int ret;
++
++	/* mask for low + normal + high, selected = normal (1) */
++	ret = igt_sysfs_choice_format_mask(buf, sizeof(buf),
++					   prio_names, ARRAY_SIZE(prio_names),
++					   BIT(0) | BIT(1) | BIT(2),
++					   1);
++	igt_assert_eq(ret, 0);
++	igt_assert_f(!strcmp(buf, "low [normal] high"),
++		     "choice_format_mask produced '%s'\n", buf);
++}
++
++static void test_format_mask_empty(void)
++{
++	char buf[128];
++	int ret;
++
++	ret = igt_sysfs_choice_format_mask(buf, sizeof(buf),
++					   prio_names, ARRAY_SIZE(prio_names),
++					   0, -1);
++	igt_assert_eq(ret, 0);
++	igt_assert_eq(buf[0], '\0');
++}
++
++static void test_format_mask_unknown_bit(void)
++{
++	char buf[128];
++	int ret;
++
++	ret = igt_sysfs_choice_format_mask(buf, sizeof(buf),
++					   prio_names, ARRAY_SIZE(prio_names),
++					   BIT(0) | BIT(3),
++					   0);
++	igt_assert_eq(ret, 0);
++	igt_assert_f(!strcmp(buf, "[low]"),
++		     "format_mask produced '%s'\n", buf);
++}
++
++static void test_intersect_basic(void)
++{
++	struct igt_sysfs_choice a, b;
++	int ret;
++
++	parse_ok("[low] normal high\n", &a);
++	parse_ok("low [normal] ultra\n", &b);
++
++	ret = igt_sysfs_choice_intersect(&a, &b);
++	igt_assert_eq(ret, 0);
++
++	igt_assert_eq(a.num_tokens, 2);
++	assert_token(&a, 0, "low");
++	assert_token(&a, 1, "normal");
++
++	/* semantics: selected remains the original selected token if still common */
++	igt_assert_eq(a.selected, 0);
++}
++
++static void test_intersect_single_common(void)
++{
++	struct igt_sysfs_choice a, b;
++	int ret;
++
++	parse_ok("low [normal] high\n", &a);
++	parse_ok("[normal] ultra\n", &b);
++
++	ret = igt_sysfs_choice_intersect(&a, &b);
++	igt_assert_eq(ret, 0);
++
++	igt_assert_eq(a.num_tokens, 1);
++	assert_token(&a, 0, "normal");
++	igt_assert_eq(a.selected, 0);
++}
++
++static void test_intersect_no_common(void)
++{
++	struct igt_sysfs_choice a, b;
++	int ret;
++
++	parse_ok("[low] normal\n", &a);
++	parse_ok("[high] ultra\n", &b);
++
++	ret = igt_sysfs_choice_intersect(&a, &b);
++	igt_assert_eq(ret, -ENOENT);
++}
++
++int igt_simple_main()
++{
++	test_parse_basic_first_selected();
++	test_parse_middle_selected_whitespace();
++	test_parse_single_token();
++	test_parse_error_missing_selected();
++	test_parse_error_multiple_selected();
++	test_parse_error_unterminated_bracket();
++	test_parse_error_too_many_tokens();
++	test_selected_basic();
++	test_selected_invalid_index();
++	test_to_string_roundtrip();
++	test_find_basic();
++	test_to_mask_basic();
++	test_to_mask_ignores_unknown();
++	test_to_mask_selected_unknown();
++	test_format_mask_basic();
++	test_format_mask_empty();
++	test_format_mask_unknown_bit();
++	test_intersect_basic();
++	test_intersect_single_common();
++	test_intersect_no_common();
++}
+diff --git a/lib/tests/meson.build b/lib/tests/meson.build
+index 1ce19f63c..124a9ecae 100644
+--- a/lib/tests/meson.build
++++ b/lib/tests/meson.build
+@@ -23,6 +23,7 @@ lib_tests = [
+ 	'igt_simulation',
+ 	'igt_stats',
+ 	'igt_subtest_group',
++	'igt_sysfs_choice',
+ 	'igt_thread',
+ 	'igt_types',
+ 	'i915_perf_data_alignment',
 -- 
 2.43.0
 
