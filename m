@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0687D46BE2
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 17:34:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D77FAD46BEB
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 18:08:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 606DC10E752;
-	Wed, 28 Jan 2026 17:34:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 895C410E2D9;
+	Wed, 28 Jan 2026 18:08:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DoQR6+qO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y8XyqKIh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D9A0E10E752
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 17:34:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D321110E1E7
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 18:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769621676; x=1801157676;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=TCx2qlGe4lDfARY7UbzCOH0lgRz2jLbR0H196loQW68=;
- b=DoQR6+qOgyawxpMw8zfgtnRw1TEQ5Hl+cDPx9QgNFan/V77h4kddnJsC
- ixP0aFHg450TiGlSUtoJ2eFjBI/ByY8EqUts/VS1zyn2URtEhsLCLsWEF
- ym4tFTYrmgOGIR3swIy43HwRMIMTkbrpEJkFDjtIH3Wx1Mlrfa33k+z+Q
- hLZu9d5nsn4PJkIND0IRWNyrHO6saLlDIVCQSmOBf7UYdImLZxPpAFxWL
- 4rbY2i8A7gbG3fLzG+D1jBvhLGhW1iw9xegq6k00pjl3kFOLF8E8QN3JJ
- gErl5wRyFKAP2baNqXBsd7R62pkZMV5fcJg5YEHG1xaua9QnCeX2Vh8iC A==;
-X-CSE-ConnectionGUID: zqBlsCMXRZK76do9ljzb9g==
-X-CSE-MsgGUID: oPVgj8J0Qbmnp1qV72FPpw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="82213477"
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="82213477"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jan 2026 09:34:36 -0800
-X-CSE-ConnectionGUID: qsS9VEuWR1C/URci/3HNbQ==
-X-CSE-MsgGUID: YqFqTfgTT+iEAUX6EEfLug==
+ t=1769623716; x=1801159716;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=lBA51alectG3X0HFD89Jh0o10a42kqO08NpCeJrtSpQ=;
+ b=Y8XyqKIhUXdDi5DNPUl+byeGZfIq1GTN7gHXiKCb3YiPGr2sNOYpq4bf
+ tNWmbFxWq0SwRTYurqABvsYzQk7st0w7sTT0QJ8OE5z2yo5UChz/47YyC
+ wIMJPECH9COvRBLm33YiAM9tcBfug+TrRGsEBolq4Z/KzwZ83/RqBF3tI
+ mRlo/DIsKfwKc56C3Rnio9LEi19D7iFF1Saj97BJHu837QLJa9rL1XxLx
+ M5uAAMDaHOWAzAwzij1wTyiyrTvk1E/HUuaNwQYoP1gqi7fOZs7WNxWgk
+ XASlHB/1XqlXfaOPSZoCsmyhStC08SrnzDh3n+uTDToiLoiKMkq7m5IUQ g==;
+X-CSE-ConnectionGUID: VTKxiEYaS7mSEBUwquQcpw==
+X-CSE-MsgGUID: oSUrX9U+TjSgPT43bSRqYw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="88265585"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="88265585"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jan 2026 10:08:35 -0800
+X-CSE-ConnectionGUID: Ms2povA4SzqziUGrcOB4QQ==
+X-CSE-MsgGUID: XFXUQ79FS0eRilh1rYIFHw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="245927213"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO fdugast-desk.home)
- ([10.245.244.217])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jan 2026 09:34:35 -0800
-From: Francois Dugast <francois.dugast@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="208129298"
+Received: from soc-5cg43972f8.clients.intel.com (HELO localhost)
+ ([172.28.182.71])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jan 2026 10:08:34 -0800
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: matthew.brost@intel.com, thomas.hellstrom@linux.intel.com,
- Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t 5/5] tests/intel/xe_exec_system_allocator: Print page
- fault duration in compute
-Date: Wed, 28 Jan 2026 18:29:10 +0100
-Message-ID: <20260128173412.1319610-6-francois.dugast@intel.com>
+Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
+ lukasz.laguna@intel.com, michal.wajdeczko@intel.com,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v3 i-g-t 00/10] Xe SR-IOV admin scheduling helpers and test
+ updates
+Date: Wed, 28 Jan 2026 19:08:06 +0100
+Message-ID: <20260128180819.1373376-1-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260128173412.1319610-1-francois.dugast@intel.com>
-References: <20260128173412.1319610-1-francois.dugast@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,85 +70,84 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend use of GT stats in the compute test to display the GPU page fault
-handling duration as this is a KPI use for performance optimization.
+This v3 series introduces a generic helper for sysfs "choice" attributes
+and wires Xe SR-IOV scheduling helpers and tests to the SR-IOV admin
+sysfs interface.
 
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
----
- tests/intel/xe_exec_system_allocator.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+Patches 1–2 add igt_sysfs_choice and unit tests for parsing and
+formatting enumerated sysfs values such as sched_priority.
+Patches 3–4 convert the existing sched_priority helpers in
+xe_sriov_provisioning into thin wrappers around igt_sysfs_choice.
+Patch 5 adds a small PF/VF sysfs path helper used by the SR-IOV code.
+Patch 6 exposes SR-IOV admin sysfs accessors for execution quantum,
+preemption timeout, scheduling priority, VF stop and restoring defaults,
+following recent kernel changes:
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index e45165acd..18ea6e7fe 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -2183,6 +2183,10 @@ struct xe_gt_stats_snapshot {
- 	int svm_2M_migrate_count;
- 
- 	int svm_device_copy_kb;
-+
-+	int svm_4K_pagefault_us;
-+	int svm_64K_pagefault_us;
-+	int svm_2M_pagefault_us;
- };
- 
- static void read_gt_stats_snapshot(int fd,
-@@ -2205,6 +2209,13 @@ static void read_gt_stats_snapshot(int fd,
- 
- 	snapshot->svm_device_copy_kb =
- 		xe_gt_stats_get_count(fd, eci->gt_id, "svm_device_copy_kb");
-+
-+	snapshot->svm_4K_pagefault_us =
-+		xe_gt_stats_get_count(fd, eci->gt_id, "svm_4K_pagefault_us");
-+	snapshot->svm_64K_pagefault_us =
-+		xe_gt_stats_get_count(fd, eci->gt_id, "svm_64K_pagefault_us");
-+	snapshot->svm_2M_pagefault_us =
-+		xe_gt_stats_get_count(fd, eci->gt_id, "svm_2M_pagefault_us");
- }
- 
- /* compute flags */
-@@ -2257,6 +2268,8 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
- 	float *compute_input;
- 	struct xe_gt_stats_snapshot stats_before, stats_after;
- 
-+	igt_assert(loops);
-+
- 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE | DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
- 	bo_sync = aligned_alloc(xe_get_default_alignment(fd), sizeof(*bo_sync));
- 	sync.addr = to_user_pointer(&bo_sync->sync);
-@@ -2298,6 +2311,10 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
- 				      stats_before.svm_64K_migrate_count);
- 			igt_assert_eq(stats_after.svm_2M_migrate_count,
- 				      stats_before.svm_2M_migrate_count);
-+
-+			igt_info("  svm_4K_pagefault_us=%d\n",
-+				 (stats_after.svm_4K_pagefault_us -
-+				  stats_before.svm_4K_pagefault_us) / loops);
- 		} else if (size == SZ_64K) {
- 			igt_assert_eq(stats_after.svm_4K_pagefault_count,
- 				      stats_before.svm_4K_pagefault_count);
-@@ -2312,6 +2329,10 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
- 				      stats_before.svm_64K_migrate_count + loops);
- 			igt_assert_eq(stats_after.svm_2M_migrate_count,
- 				      stats_before.svm_2M_migrate_count);
-+
-+			igt_info("  svm_64K_pagefault_us=%d\n",
-+				 (stats_after.svm_64K_pagefault_us -
-+				  stats_before.svm_64K_pagefault_us) / loops);
- 		} else if (size == SZ_2M) {
- 			igt_assert_eq(stats_after.svm_4K_pagefault_count,
- 				      stats_before.svm_4K_pagefault_count);
-@@ -2326,6 +2347,10 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
- 				      stats_before.svm_64K_migrate_count);
- 			igt_assert_eq(stats_after.svm_2M_migrate_count,
- 				      stats_before.svm_2M_migrate_count + loops);
-+
-+			igt_info("  svm_2M_pagefault_us=%d\n",
-+				 (stats_after.svm_2M_pagefault_us -
-+				  stats_before.svm_2M_pagefault_us) / loops);
- 		}
- 
- 		igt_assert_eq(stats_after.svm_device_copy_kb,
+Link: https://lore.kernel.org/intel-xe/20251030222348.186658-1-michal.wajdeczko@intel.com/
+
+Patches 7–10 update the xe_sriov_scheduling and xe_pmu tests to prefer
+the admin interface, improve cleanup, and add coverage for SR-IOV
+admin sysfs scheduling attributes in xe_sriov_admin_profile.
+
+v2 -> v3:
+- Renamed the xe_sriov_admin_profile test binary to xe_sriov_admin.
+- Made SR-IOV admin accessor naming consistent (__xe_sriov_admin_* /
+  xe_sriov_admin_*) and updated all users.
+- Expanded sched_priority negative coverage by trying all available tokens
+  when validating VF write-denied behavior.
+- Switched mask formatting helpers to return explicit error codes
+  and adjusted callers/tests accordingly.
+- Minor logging improvements and formatting fixes.
+
+v1 -> v2:
+- Added generic igt_sysfs_choice helper and unit tests.
+- Reworked sched_priority helpers to use igt_sysfs_choice wrappers.
+- Introduced igt_sriov_func_str() PF/VF sysfs path helper.
+- Extended SR-IOV admin helpers with scheduling accessors.
+- Updated xe_sriov_scheduling and xe_pmu to prefer SR-IOV admin sysfs.
+- Added xe_sriov_admin_profile tests for admin sysfs scheduling
+  attributes (defaults, write->readback, bulk updates).
+
+
+Marcin Bernatowicz (10):
+  lib/igt_sysfs_choice: Add helpers for sysfs enumerated choice
+    attributes
+  lib/tests/igt_sysfs_choice: Add test coverage
+  lib/xe/xe_sriov_provisioning: Add string conversion helpers for
+    scheduling priority
+  lib/xe/xe_sriov_provisioning: Add sched priority mask to string helper
+  lib/igt_sriov_device: Add helper for PF/VF sysfs path formatting
+  lib/xe/xe_sriov_admin: Add SR-IOV admin sysfs accessors
+  tests/intel/xe_sriov_scheduling: Avoid assert on scheduling params
+    restore in cleanup
+  tests/intel/xe_sriov_scheduling: Prefer SR-IOV admin sysfs accessors
+  tests/intel/xe_pmu: Prefer SR-IOV admin sysfs accessors
+  tests/intel/xe_sriov_admin: Add SR-IOV admin sysfs scheduling
+    attributes tests
+
+ lib/igt_sriov_device.c            |  19 +
+ lib/igt_sriov_device.h            |   1 +
+ lib/igt_sysfs_choice.c            | 439 +++++++++++++++++++++
+ lib/igt_sysfs_choice.h            |  52 +++
+ lib/meson.build                   |   2 +
+ lib/tests/igt_sysfs_choice.c      | 388 +++++++++++++++++++
+ lib/tests/meson.build             |   1 +
+ lib/xe/xe_sriov_admin.c           | 625 ++++++++++++++++++++++++++++++
+ lib/xe/xe_sriov_admin.h           |  60 +++
+ lib/xe/xe_sriov_provisioning.c    | 105 +++++
+ lib/xe/xe_sriov_provisioning.h    |  15 +
+ tests/intel/xe_pmu.c              |  43 +-
+ tests/intel/xe_sriov_admin.c      | 434 +++++++++++++++++++++
+ tests/intel/xe_sriov_scheduling.c |  43 +-
+ tests/meson.build                 |   1 +
+ 15 files changed, 2195 insertions(+), 33 deletions(-)
+ create mode 100644 lib/igt_sysfs_choice.c
+ create mode 100644 lib/igt_sysfs_choice.h
+ create mode 100644 lib/tests/igt_sysfs_choice.c
+ create mode 100644 lib/xe/xe_sriov_admin.c
+ create mode 100644 lib/xe/xe_sriov_admin.h
+ create mode 100644 tests/intel/xe_sriov_admin.c
+
 -- 
 2.43.0
 
