@@ -4,58 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13443D35691
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 08:24:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6C5DD35691
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 08:25:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BFB9D10E625;
-	Wed, 28 Jan 2026 08:24:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 668EF10E627;
+	Wed, 28 Jan 2026 08:25:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DWLMq5D3";
+	dkim=pass (1024-bit key; unprotected) header.d=mediatek.com header.i=@mediatek.com header.b="nv3+gPH2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B3A310E625;
- Wed, 28 Jan 2026 08:24:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769588676; x=1801124676;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=14IsrjjMwvDONKbAeAsP0L76eG71a9Z+UtOugDmYrvA=;
- b=DWLMq5D32GXIHvm4R+/w9WEmC8LCYYFL+xDu6bYMzP8PAYofwVMskNYU
- OtaiTrOKPkgdiYMbxeJ00UacuD41k3tIDjlhy8xIGkUmLZF1NTdoRUIYV
- GzeN2yN+x6pbmE0aUO+Ismw8j+7tIUr8HbvrSe0EwYGzZhQ5AIViz5i31
- BnPiiP9LMVH+f0YuPDVhiz4wpwnxgFZRrZwHVes7X8GARPT8CvyT8Lvzs
- 3LGlloL3Db8YEo+92fjx35UU3r35CPFc9Ue9UEUn0KUkoBiaHemgylXw8
- FCPyikibbWskzS0yYxBvnoH6KOwIZE0S0cbZNYIyayncPFec0+EAL7G4L Q==;
-X-CSE-ConnectionGUID: lK0C+/GmSse9uF7EQ8fbcg==
-X-CSE-MsgGUID: 422rgjIASEOKhGQHKpxIQA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="70768623"
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="70768623"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jan 2026 00:24:32 -0800
-X-CSE-ConnectionGUID: 3MW0SBgeQiiyeYb9JCAY+Q==
-X-CSE-MsgGUID: bZckid5sT9WIXKJ2KCarSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="208105656"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 00:24:29 -0800
-Date: Wed, 28 Jan 2026 09:24:27 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuQkFU?= =?utf-8?Q?=3A?= failure for
- tests/intel/kms_joiner: Fix var usage
-Message-ID: <20260128082427.mooqiduqpwpmygqw@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20260127164018.63157-1-kamil.konieczny@linux.intel.com>
- <176953828942.197229.12111453565230579635@a3b018990fe9>
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 62D5C10E627
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 08:25:27 +0000 (UTC)
+X-UUID: e1b51d3afc2211f0b7fc4fdb8733b2bc-20260128
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
+ s=dk; 
+ h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From;
+ bh=fwu4J8deLWQNsdSZLMJoPmIWpE0vpVAlud2W4i5NeAY=; 
+ b=nv3+gPH2nuONFuqllBGjbT6bjLZOaIqdLpP/N4qeglrifvkExYnIQ+ahXzbHopTq+xHHSP8hojomU7hASTtXnL5SZ9bjA02KNVp0egiOda68v9DPqbWymkQiWUc0wS6KDrt8EoqTN7tdi6lUuqIScet1txldHWdA31qG5Ljehio=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11, REQID:fec8ca83-cedd-478a-b728-49f0890f7081, IP:0,
+ U
+ RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+ release,TS:0
+X-CID-META: VersionHash:89c9d04, CLOUDID:5d7109e9-ef90-4382-9c6f-55f2a0689a6b,
+ B
+ ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
+ 0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
+ :0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: e1b51d3afc2211f0b7fc4fdb8733b2bc-20260128
+Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by
+ mailgw02.mediatek.com (envelope-from <jason-jh.lin@mediatek.com>)
+ (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+ with ESMTP id 692495508; Wed, 28 Jan 2026 16:25:19 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 28 Jan 2026 16:25:18 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Wed, 28 Jan 2026 16:25:18 +0800
+From: Jason-JH Lin <jason-jh.lin@mediatek.com>
+To: <igt-dev@lists.freedesktop.org>, Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
+ <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
+ <bhanuprakash.modem@gmail.com>, Fei Shao <fshao@chromium.org>
+CC: Jani <jani.nikula@intel.com>, Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ Paul-PL Chen <paul-pl.chen@mediatek.com>, Nancy Lin <nancy.lin@mediatek.com>, 
+ Singo Chang <singo.chang@mediatek.com>, Gil Dekel <gildekel@google.com>,
+ Yacoub <markyacoub@chromium.org>,
+ <Project_Global_Chrome_Upstream_Group@mediatek.com>
+Subject: [PATCH i-g-t 0/2] Add MediaTek CTM color test support
+Date: Wed, 28 Jan 2026 16:24:41 +0800
+Message-ID: <20260128082517.920321-1-jason-jh.lin@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <176953828942.197229.12111453565230579635@a3b018990fe9>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,155 +81,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2026-01-27 at 18:24:49 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: tests/intel/kms_joiner: Fix var usage
-> URL   : https://patchwork.freedesktop.org/series/160713/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from IGT_8720 -> IGTPW_14429
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_14429 absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_14429, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/index.html
-> 
-> Participating hosts (42 -> 41)
-> ------------------------------
-> 
->   Additional (1): bat-adls-6 
->   Missing    (2): bat-dg2-13 fi-snb-2520m 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_14429:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_selftest@live@gt_pm:
->     - bat-dg2-14:         [PASS][1] -> [DMESG-FAIL][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8720/bat-dg2-14/igt@i915_selftest@live@gt_pm.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/bat-dg2-14/igt@i915_selftest@live@gt_pm.html
-> 
->   
-> #### Warnings ####
-> 
->   * igt@i915_selftest@live:
->     - bat-dg2-14:         [DMESG-FAIL][3] ([i915#12061]) -> [DMESG-FAIL][4]
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8720/bat-dg2-14/igt@i915_selftest@live.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/bat-dg2-14/igt@i915_selftest@live.html
-> 
+This series adds MediaTek hardware support for CTM (Color Transformation
+Matrix) color tests.
 
-These are unrelated, please update and run full i915 testing.
+MediaTek display hardware has two specific characteristics for CTM:
+1. CTM matrix value range is limited to -2.0 to 2.0
+2. Bit-true results are only achievable with 10-bit color depth
 
-Regards,
-Kamil
+Patch 1 clamps CTM matrix values to the hardware-supported range to
+prevent test failures when values exceed the limits.
 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_14429 that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@gem_lmem_swapping@parallel-random-engines:
->     - bat-adls-6:         NOTRUN -> [SKIP][5] ([i915#4613]) +3 other tests skip
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/bat-adls-6/igt@gem_lmem_swapping@parallel-random-engines.html
-> 
->   * igt@gem_tiled_pread_basic:
->     - bat-adls-6:         NOTRUN -> [SKIP][6] ([i915#3282])
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/bat-adls-6/igt@gem_tiled_pread_basic.html
-> 
->   * igt@intel_hwmon@hwmon-read:
->     - bat-adls-6:         NOTRUN -> [SKIP][7] ([i915#7707]) +1 other test skip
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/bat-adls-6/igt@intel_hwmon@hwmon-read.html
-> 
->   * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
->     - bat-adls-6:         NOTRUN -> [SKIP][8] ([i915#4103]) +1 other test skip
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-> 
->   * igt@kms_dsc@dsc-basic:
->     - bat-adls-6:         NOTRUN -> [SKIP][9] ([i915#3555] / [i915#3840])
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/bat-adls-6/igt@kms_dsc@dsc-basic.html
-> 
->   * igt@kms_force_connector_basic@force-load-detect:
->     - bat-adls-6:         NOTRUN -> [SKIP][10]
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html
-> 
->   * igt@kms_pm_backlight@basic-brightness:
->     - bat-adls-6:         NOTRUN -> [SKIP][11] ([i915#5354])
->    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html
-> 
->   * igt@kms_psr@psr-primary-mmap-gtt:
->     - bat-adls-6:         NOTRUN -> [SKIP][12] ([i915#1072] / [i915#9732]) +3 other tests skip
->    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html
-> 
->   * igt@kms_setmode@basic-clone-single-crtc:
->     - bat-adls-6:         NOTRUN -> [SKIP][13] ([i915#3555])
->    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html
-> 
->   * igt@prime_vgem@basic-fence-read:
->     - bat-adls-6:         NOTRUN -> [SKIP][14] ([i915#3291]) +2 other tests skip
->    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/bat-adls-6/igt@prime_vgem@basic-fence-read.html
-> 
->   
-> #### Possible fixes ####
-> 
->   * igt@i915_selftest@live@workarounds:
->     - bat-dg2-14:         [DMESG-FAIL][15] ([i915#12061]) -> [PASS][16]
->    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8720/bat-dg2-14/igt@i915_selftest@live@workarounds.html
->    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/bat-dg2-14/igt@i915_selftest@live@workarounds.html
->     - bat-mtlp-9:         [DMESG-FAIL][17] ([i915#12061]) -> [PASS][18] +1 other test pass
->    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8720/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
->    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-> 
->   
->   [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
->   [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
->   [i915#3282]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282
->   [i915#3291]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291
->   [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
->   [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
->   [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
->   [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
->   [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
->   [i915#7707]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707
->   [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
-> 
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_8720 -> IGTPW_14429
->   * Linux: CI_DRM_17894 -> CI_DRM_17895
-> 
->   CI-20190529: 20190529
->   CI_DRM_17894: 6d88e21d3ccde3ca984304cde021744d0e326ee1 @ git://anongit.freedesktop.org/gfx-ci/linux
->   CI_DRM_17895: 0d98ae30dc3a1479c9a2d3e38b3068faa46e04d0 @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_14429: 0310a1feeebd6497a0cfd0186385ac71ffc47750 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   IGT_8720: b37a4d70080afd7426cb249787545df75f762dc0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14429/index.html
+Patch 2 switches to 10-bit color depth and XRGB2101010 format for
+MediaTek devices to enable accurate CRC validation.
+
+Jason-JH Lin (2):
+  test/kms_color: Clamp CTM values to -2.0~2.0 for MediaTek devices
+  tests/kms_color: Add 10-bit color depth support to CTM test for
+    MediaTek
+
+ tests/kms_color.c | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
+
+--
+2.43.0
+
