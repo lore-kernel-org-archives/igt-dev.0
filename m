@@ -4,42 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90DA2D25B5C
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E370AD25B5F
 	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 13:15:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1FD8810E6F3;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 75A9710E6E0;
 	Wed, 28 Jan 2026 13:15:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="QIJNEPQO";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="VlMCP3qu";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3DF710E6E6
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:15:06 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 51FFC10E119
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:46 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id A53724E422FC
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:15:05 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 4654E1A2AC1
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:45 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 7A26B6071F;
- Wed, 28 Jan 2026 13:15:05 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 1C9856071F;
+ Wed, 28 Jan 2026 13:14:45 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id A75EA119A8801; Wed, 28 Jan 2026 14:15:04 +0100 (CET)
+ with ESMTPSA id 20D87119A881F; Wed, 28 Jan 2026 14:14:44 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1769606105; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1769606084; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=iWFbVpCzmpfmVx722T9voMzfX2XjcQACG6gONR3rnZc=;
- b=QIJNEPQOBQE2/sZ6eoT24uEIwOizi3PoFSIOBsDChYKqcmgLOnzsu+aD8nLdHpdW1QKQaC
- +/V9hAa8xFHRNWRgaSjoue7Ndhr2MKDf0Tyul8OpXRShCM5hujc6giNmBMQtBfjrTnbMiQ
- xbEPh2ipT5oMrpCzeEVulLVyO4w4KjG5ddOc3We6l47umzIFSz42c645FUyEdUkrNka2Fy
- S5ee33j8U+MKMYRvZmqZwld/nlHNKBYL56qNYMXhq4D/tXj+o6s/slbTJmFWTxSvAWu2Xg
- tC2+tYMHbTxPlZgN7EYmuYIr0XBSv+Pv3BwvGldWardqanYntnjvqfHEGcVKVg==
+ bh=2QHjofWC/lHDxJYsNwLPN3/LazqBuuSdlm1QxBM0Y9Y=;
+ b=VlMCP3qu0Li6jFjqGKOT/UYuWo6RoiL4zIoTjr62xsSRRjKaASrerM7iW5EhuQXBATk+18
+ oIOe9jGwIM9S+S7PSC/QcnzKXcDOCiotCp9wKKp5BtS4OCd/OIodpz3XbPGcImDgkbQY65
+ quyRZMGyzLGeMFhTa6O/QGtVLFoH56OFRCDyMKwLnZ3xHmktvJDWIHb/5Asq77KkDLfmba
+ VBD31ajU6hQu0mYeuNhspXn0b3D4JqyfEwoCI70Fe5FBDWvHM0Wt4g7JWwQv4OO+uCnBv2
+ WwYrG5eU9dFC3dXxiIAyGB/HUtD22XSK7OZi4doi8c73QQUPEhdxWdCqMTrlQQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 28 Jan 2026 14:15:17 +0100
-Subject: [PATCH i-g-t v5 46/48] lib/unigraf: Add helpers to set maximum
- link rate
+Date: Wed, 28 Jan 2026 14:14:50 +0100
+Subject: [PATCH i-g-t v5 19/48] lib/unigraf: Initial Unigraf support
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-unigraf-integration-v5-46-fbf2e997a011@bootlin.com>
+Message-Id: <20260128-unigraf-integration-v5-19-fbf2e997a011@bootlin.com>
 References: <20260128-unigraf-integration-v5-0-fbf2e997a011@bootlin.com>
 In-Reply-To: <20260128-unigraf-integration-v5-0-fbf2e997a011@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -47,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3063;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7446;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=y/Tk7h9Ot1cftKV46OldIqvpKgxzsdgkeSGz4dSiY7Y=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpegvNx4cIr1TTxlmfNatclI6+johsf2f21LKsO
- Qdn3t3Z9+iJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaXoLzRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOIChg/9EydL65RyewqAzUvb5sY29jAQQS3U1sr
- 7JmlcgZnLTtqMCSQVTeJfaM2p4dvOyfTiTPFj4pIyBN5t0A2nlTvy1Pp1lsJINEAuLqsx0XtlHW
- Yyjf7l+2jKZr2/2kSs2reGPQed21hQ26k69Qqv2wFrgoa9KSheI4wlPOy0ipEp24yONUqYMitxr
- bBK/R0O6VfP9uS40YSJooE4f04ncE/Tu9naL8WJ9XL7IO3g6j8Fx2I+7bPINCObGNGA0uAptkcE
- xu1AGkuqu6Fd5Ih3fjRv5uaVTjB3ywDhDPzaZpZ1aySPcDjFhLOU/hb+ge7HHRNAyx4BhgPUTP1
- EU4xeF2nAdbK6Gqlzn/t5JdhyXZaDd9HA8xgcolucmKHz2ELEqJ8Aw9d4lxnonfMvKVixV7yVSZ
- xYV+lt1KmnaiWJSSyu3Tgk7IKLF5o01oUI1bP5nxD6TopZW5Ca1SMz40XKWBhcKovASjegMXX8C
- FrVmuz9VjkR6snWQQwqJ9N/2ItEsn6BHN3jPrlCQ7sgNZKMuJlfKKJxoqRHrA8YU2zfnvqt1PGw
- ghm36khXlUm6W01m9Ofo//uGjxy9JDqbAZDlCa2Vw/mv4yqCN2jMLQQxlUBLUqlTlrOJ+7QzmTz
- a0OplWWyMU9rs38OWOvW6oscm0SvVK5zWLpgD9PrABkS6fsCmpe8=
+ bh=LowCEjqki7pk5oJMG4Iqwf9BXK4xN8IMuzgSXqAUXQE=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpegvKwUHht24PlJa04O0BxxDMy4zRHw019RGtA
+ 6WldUOPIW6JAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaXoLyhsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOL5QRAAvveEGg+5/NMMkerAUBiAAcHpmJnrp66
+ R/OB84MOHJTJAry3p9dnl8+QuXz9btM4MutnQ60jC4hJJ+GRtUdepP+YXBbaIViT6fUmI7bekcC
+ jpt09ZENDKRMyBj/7cvYoDFbJNlKhPivHCCwRzN2Pgajn7KsElGcFM625Qgc+KS45mzFW/HrOeA
+ AGX5uij0iZooT2IgpYGpjacjYV7rhTbMx2Dk3pKzSbCDoqDZ7hVdiaGvIn+VQIylqlRh0PEJwSX
+ bHIneW8qRNCC/XpzxiApH6xq57ehZHNJvErhvKoaUSXL0qiCJmftaotjzlrOpyg3eCfKQyFA2NQ
+ 975Yhye29HOp06Qu9AtrwzQj2DdvO1gez7pT+7IoiS+aGqs/Y4np6kGeUGKCRVJybUQXHNrhWaa
+ QRdwkjdSgDhRrRNrt6mphhDpCavWalhBgelQOggVmRP5OifyzT/RS3ceXpahAWnON6EqTYo+hk3
+ 1v3Hl2toaeRtRA31FQ+zltmtiOX5/ibaNF0H+9POh+g995DFIQK8Fz5FbV90XC2B9vQkajJ+XGl
+ rjTZ7GQFcHcYsIaXmTWpJMFT44bEJrdzVZ/o8HLVPteD5ODTXkrs8E6+4j+9ZuibYihEGmHkzu/
+ LgN5VatClWv4Yoht/lrgT7NfM91B6cThj+OebySI8z/OAMxMoPWI=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,106 +79,259 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As link rate can vary on a display port link, add a way
-to change advertised link rate from unigraf.
+This introduce the basic boilerplate to connect to a unigraf device.
+
+This integration currently only supports one device openned to simplify
+its usage and cleanup.
+
+The functions unigraf_open_device and unigraf_require_device will register
+a handler to do proper cleanup on IGT exit.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/unigraf/unigraf.c | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/unigraf/unigraf.h | 14 ++++++++++++++
- 2 files changed, 67 insertions(+)
+ lib/meson.build       |  10 +++++
+ lib/unigraf/unigraf.c | 114 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/unigraf/unigraf.h |  37 ++++++++++++++++
+ meson.build           |  14 +++++++
+ 4 files changed, 175 insertions(+)
 
-diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
-index 98cac5d7e929..e1f77a959a93 100644
---- a/lib/unigraf/unigraf.c
-+++ b/lib/unigraf/unigraf.c
-@@ -565,6 +565,7 @@ void unigraf_reset(void)
- 	unigraf_load_default_edid();
- 	unigraf_hpd_assert();
- 	unigraf_set_max_lane_count(4);
-+	unigraf_set_max_link_rate(UNIGRAF_RATE_8_10_GHZ);
- 	sleep(1);
- }
+diff --git a/lib/meson.build b/lib/meson.build
+index 1a569ba52aff..5e74222f17b7 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -148,6 +148,13 @@ lib_deps = [
+ 	zlib
+ ]
  
-@@ -853,3 +854,55 @@ int unigraf_get_max_lane_count(void)
- 					     &max_lanes, sizeof(max_lanes)));
- 	return max_lanes;
- }
++if libtsi.found()
++	lib_deps += libtsi
++	lib_sources += [
++		'unigraf/unigraf.c'
++	]
++endif
 +
-+/**
-+ * unigraf_set_max_link_rate() - Set the maximum link rate advertised to the DUT
-+ * @rate: The maximum link rate to configure on the device. Actual value is
-+ *        @rate * 270000 kHz. Common values can be found in enum unigraf_rate
-+ *
-+ * This function sets the maximum link rate that the device will advertise on the DP link.
-+ * The actual link rate used may be less than the requested value if the DUT does not
-+ * support/use it.
-+ */
-+void unigraf_set_max_link_rate(int bandwidth)
+ if libdrm_nouveau.found()
+ 	lib_deps += libdrm_nouveau
+ 	lib_sources += [
+@@ -228,6 +235,9 @@ endif
+ if chamelium.found()
+ 	lib_deps += chamelium
+ 	lib_sources += [ 'igt_chamelium.c', 'igt_chamelium_stream.c' ]
++endif
++
++if chamelium.found() or libtsi.found()
+ 	lib_sources += 'monitor_edids/monitor_edids_helper.c'
+ endif
+ 
+diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
+new file mode 100644
+index 000000000000..3318c95fbbb6
+--- /dev/null
++++ b/lib/unigraf/unigraf.c
+@@ -0,0 +1,114 @@
++// SPDX-License-Identifier: MIT
++
++#include "igt_core.h"
++#include <stdint.h>
++
++#include "unigraf.h"
++#include "TSI.h"
++#include "TSI_types.h"
++
++#define unigraf_debug(fmt, ...)	igt_debug("TSI:%p: " fmt, unigraf_device, ##__VA_ARGS__)
++
++static TSI_HANDLE unigraf_device;
++static char *unigraf_default_edid;
++static char *unigraf_connector_name;
++
++static void unigraf_close_device(void)
 +{
-+	unigraf_write_u32(TSI_DPRX_MAX_LINK_RATE, bandwidth);
++	if (!unigraf_device)
++		return;
++
++	unigraf_debug("Closing...\n");
++	unigraf_assert(TSIX_DEV_CloseDevice(unigraf_device));
++	TSI_Clean();
++	unigraf_device = NULL;
++	free(unigraf_default_edid);
++	free(unigraf_connector_name);
 +}
 +
 +/**
-+ * unigraf_get_max_link_rate() - Get the maximum link rate supported by the device
++ * unigraf_exit_handler - Handle the exit signal and clean up unigraf resources.
++ * @sig: The signal number received.
 + *
-+ * Returns: The maximum link rate supported by the device. The value returned must be multiplied by
-+ *          270000 to get the value in kHz.
++ * This function is called when the program receives an exit signal. It ensures
++ * that all unigraf resources are properly cleaned up by calling unigraf_deinit
++ * for each open instance.
 + */
-+int unigraf_get_max_link_rate(void)
++static void unigraf_exit_handler(int sig)
 +{
-+	return unigraf_read_u32(TSI_DPRX_MAX_LINK_RATE);
++	unigraf_close_device();
++}
++
++static void unigraf_init(void)
++{
++	int ret;
++
++	unigraf_debug("Initialize unigraf...\n");
++	ret = TSI_Init(TSI_CURRENT_VERSION);
++	unigraf_assert(ret);
++	igt_install_exit_handler(unigraf_exit_handler);
 +}
 +
 +/**
-+ * unigraf_rate_to_kbs - Convert a rate value to kilobits per second
-+ * @rate: The rate value to convert
++ * unigraf_device_count() - Return the number of scanned devices
 + *
-+ * This function converts a rate value to kilobits per second (kbps).
-+ *
-+ * Returns: The converted rate in kilobits per second
++ * Must be called after a unigraf_rescan_devices().
 + */
-+int unigraf_rate_to_kbs(enum unigraf_rate rate)
++static unsigned int unigraf_device_count(void)
 +{
-+	switch (rate) {
-+	case UNIGRAF_RATE_1_62_GHZ:
-+		return 1620000;
-+	case UNIGRAF_RATE_2_7_GHZ:
-+		return 2700000;
-+	case UNIGRAF_RATE_5_4_GHZ:
-+		return 5400000;
-+	case UNIGRAF_RATE_6_75_GHZ:
-+		return 6750000;
-+	case UNIGRAF_RATE_8_10_GHZ:
-+		return 8100000;
-+	default:
-+		igt_assert_f(0, "Unknown rate %d\n", rate);
-+		return 0;
++	return unigraf_assert(TSIX_DEV_GetDeviceCount());
++}
++
++/**
++ * unigraf_open_device() - Search and open a device.
++ * @drm_fd: File descriptor of the currently used drm device
++ *
++ * Returns: true if a device was found and initialized, otherwise false.
++ *
++ * This function searches for a compatible device and opens it.
++ */
++bool unigraf_open_device(int drm_fd)
++{
++	TSI_RESULT r;
++	int device_count;
++	int chosen_device = 0;
++	int chosen_role = 0;
++	int chosen_input = 0;
++
++	assert(igt_can_fail());
++
++	if (unigraf_device)
++		return true;
++
++	unigraf_init();
++
++	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
++
++	device_count = unigraf_device_count();
++	if (device_count < 1) {
++		unigraf_debug("No device found.\n");
++		return false;
 +	}
++
++	unigraf_device = TSIX_DEV_OpenDevice(chosen_device, &r);
++	unigraf_assert(r);
++	igt_assert(unigraf_device);
++	unigraf_debug("Successfully opened the unigraf device %d.\n", chosen_device);
++
++	unigraf_assert(TSIX_DEV_SelectRole(unigraf_device, chosen_role));
++	unigraf_assert(TSIX_VIN_Select(unigraf_device, chosen_input));
++	unigraf_assert(TSIX_VIN_Enable(unigraf_device, chosen_input));
++
++	return true;
++}
++
++/**
++ * unigraf_require_device() - Search and open a device.
++ * @drm_fd: File descriptor of the currently used drm device
++ *
++ * This is a shorthand to reduce test boilerplate when a unigraf device must be present.
++ */
++void unigraf_require_device(int drm_fd)
++{
++	igt_require(unigraf_open_device(drm_fd));
 +}
 diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
-index a10a45dfb395..34d00de2786a 100644
---- a/lib/unigraf/unigraf.h
+new file mode 100644
+index 000000000000..376ed910bfa8
+--- /dev/null
 +++ b/lib/unigraf/unigraf.h
-@@ -78,4 +78,18 @@ int unigraf_get_max_lane_count(void);
+@@ -0,0 +1,37 @@
++/* SPDX-License-Identifier: MIT */
++
++#ifndef UNIGRAF_H
++#define UNIGRAF_H
++
++#include <stdbool.h>
++#include <stdint.h>
++
++/**
++ * unigraf_assert: Helper macro to assert a TSI return value and retrieve a detailed error message.
++ * @result: libTSI return value to check
++ *
++ * This macro checks the return value of a libTSI function call. If the return value indicates an
++ * error, it retrieves a detailed error message and asserts with that message.
++ * If retrieving the error description fails, it asserts with a generic error message.
++ */
++#define unigraf_assert(result)									\
++({												\
++	char msg[256];										\
++	TSI_RESULT __r = (result);								\
++	if (__r < TSI_SUCCESS) {								\
++		TSI_RESULT __r2 = TSI_MISC_GetErrorDescription(__r, msg, sizeof(msg));		\
++		if (__r2 < TSI_SUCCESS)								\
++			igt_assert_f(false,							\
++				     "unigraf error: %d (get error description failed: %d)\n",	\
++				     __r, __r2);						\
++		else										\
++			igt_assert_f(false, "unigraf error: %d (%s)\n", __r, msg);		\
++	}											\
++	(__r);											\
++})
++
++bool unigraf_open_device(int drm_fd);
++
++void unigraf_require_device(int drm_fd);
++
++#endif // UNIGRAF_H
+diff --git a/meson.build b/meson.build
+index 4b2496c01679..ff197cec314d 100644
+--- a/meson.build
++++ b/meson.build
+@@ -165,6 +165,12 @@ cairo = dependency('cairo', version : '>1.12.0', required : true)
+ libudev = dependency('libudev', required : true)
+ glib = dependency('glib-2.0', required : true)
  
- void unigraf_set_max_lane_count(uint32_t count);
++libtsi = cc.find_library('TSI', required : false)
++
++if libtsi.found()
++	config.set('HAVE_UNIGRAF', 1)
++endif
++
+ xmlrpc = dependency('xmlrpc', required : false)
+ xmlrpc_util = dependency('xmlrpc_util', required : false)
+ xmlrpc_client = dependency('xmlrpc_client', required : false)
+@@ -289,6 +295,7 @@ amdgpudir = join_paths(libexecdir, 'amdgpu')
+ msmdir = join_paths(libexecdir, 'msm')
+ panfrostdir = join_paths(libexecdir, 'panfrost')
+ panthordir = join_paths(libexecdir, 'panthor')
++unigrafdir = join_paths(libexecdir, 'unigraf')
+ v3ddir = join_paths(libexecdir, 'v3d')
+ vc4dir = join_paths(libexecdir, 'vc4')
+ vkmsdir = join_paths(libexecdir, 'vkms')
+@@ -371,6 +378,12 @@ if get_option('use_rpath')
+ 		vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, '..')
+ 	endforeach
+ 	vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, libdir)
++
++	unigraf_rpathdir = '$ORIGIN'
++	foreach p : unigrafdir.split('/')
++		unigraf_rpathdir = join_paths(unigraf_rpathdir, '..')
++	endforeach
++	unigraf_rpathdir = join_paths(unigraf_rpathdir, libdir)
+ else
+ 	bindir_rpathdir = ''
+ 	libexecdir_rpathdir = ''
+@@ -382,6 +395,7 @@ else
+ 	vc4_rpathdir = ''
+ 	vkms_rpathdir = ''
+ 	vmwgfx_rpathdir = ''
++	unigraf_rpathdir = ''
+ endif
  
-+enum unigraf_rate {
-+	UNIGRAF_RATE_1_62_GHZ = 6,
-+	UNIGRAF_RATE_2_7_GHZ = 10,
-+	UNIGRAF_RATE_5_4_GHZ = 20,
-+	UNIGRAF_RATE_6_75_GHZ = 25,
-+	UNIGRAF_RATE_8_10_GHZ = 30,
-+};
-+
-+void unigraf_set_max_link_rate(int rate);
-+
-+int unigraf_get_max_link_rate(void);
-+
-+int unigraf_rate_to_kbs(enum unigraf_rate rate);
-+
- #endif // UNIGRAF_H
+ build_testplan = get_option('testplan')
 
 -- 
 2.52.0
