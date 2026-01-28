@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B96AD25B57
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 13:15:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3562CD25B5A
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Jan 2026 13:15:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C86A10E6DA;
+	by gabe.freedesktop.org (Postfix) with ESMTP id CED0D10E119;
 	Wed, 28 Jan 2026 13:15:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="TYlISsx8";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Dcy89EUp";
 	dkim-atps=neutral
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 22D6E10E119
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:15:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF48610E6DD
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:44 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 7FB65C211E6;
- Wed, 28 Jan 2026 13:15:02 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 1B876C211E7
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Jan 2026 13:14:46 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id EB9AF6071F;
- Wed, 28 Jan 2026 13:14:59 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 9395E6071F;
+ Wed, 28 Jan 2026 13:14:43 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id E9749119A880E; Wed, 28 Jan 2026 14:14:58 +0100 (CET)
+ with ESMTPSA id AD493119A881D; Wed, 28 Jan 2026 14:14:42 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1769606099; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1769606083; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=N38KY791UR7qWlaTcUDrSaCnSXQ+CwlaMaJ0V5+a1Q0=;
- b=TYlISsx8Q/waKJ0SgOy1CeVJCT8UgPXJ/z7g1pW6Ogde2CrUUY+mqr6HCz+WHGKuV5TSRS
- ciq/ED6Fe6qS2RkfLAW22jScj5HAnGthIuaV5gD+YXh4YBP6OT8t0SWYa+rZeufe0Zh4oH
- ZiZD6TkBtyOQ07t7NTcd4cwBBO+jsnkRTZ9Er/1+i0sZbmM7OCoYPMXUxQZDgSp46yOP58
- lLFXu/AiNjpihqMP0Ju2MPKiqGwV6TWC4APefCDVlXYXIVv/RocPvj50abwrYGwF60UNQ9
- yOwMS76BegZTrZoJ8BHZSjxyTBX2YvSbIw0GzV1AyLAPdRmFzMDgGTWgteH1tQ==
+ bh=TOcWVhx1Ge4qbl7EwKPGfHyhlB2R0GjQc/36tmCHXqU=;
+ b=Dcy89EUpnpDY9SD29HSOnJm+mmGG2G9VIf5OWHn1enyzPOJbZdDmNiSKp5HtQceWj5UM8o
+ cbJP460hXPFzHCh9CSpmMIuPzbwh/cizagn8+wI1YdGI9woQJkax1ZnkyHxeqTU9FAaudi
+ 6i/rSjzvgpB6WKSwOG2GxazO9w/X0MWdFGiKMveoDy+bAOkiUAuivFlRfBhRGONueNIGGZ
+ F1gw4Cx7pMwV7fLp5gpjfsz7KDcNJffgKGVwI1bJyBH0VYPyVVHNa03N6+apivRQuUkf23
+ l7pQ4gywa2Gekns3OURtpfFBz7n5cK9beea/6inwRH4tbXrF7FgYw6Id4U4s4g==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 28 Jan 2026 14:15:10 +0100
-Subject: [PATCH i-g-t v5 39/48] lib/i915/dp: Properly check sscanf results
+Date: Wed, 28 Jan 2026 14:14:48 +0100
+Subject: [PATCH i-g-t v5 17/48] lib/unigraf: Add used defines for TSI_Types
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-unigraf-integration-v5-39-fbf2e997a011@bootlin.com>
+Message-Id: <20260128-unigraf-integration-v5-17-fbf2e997a011@bootlin.com>
 References: <20260128-unigraf-integration-v5-0-fbf2e997a011@bootlin.com>
 In-Reply-To: <20260128-unigraf-integration-v5-0-fbf2e997a011@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -46,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1905;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6008;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=T2p2V7hYzh2KMea4q9Yc0/EkYmrXLKFL8wt/5FNTZRM=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpegvMvHB9aUrc57yQhN2lleyRJHvdLXQ/8Y3sy
- tyyE8eAA1OJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaXoLzBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOL5NxAAm5RaHAM01S5zJVjlJ9kOHE/ARtXEkop
- sSfauaSwNylDxQVbMPJ4wvR0Id9q3+wsmufRDf1B5gaRsuWszUqqOOFM1/g7MlmuxfcTmNnkuaf
- SDp1OGN3RTYm4e44bPoe7BGnfxuK16mWpDAwXoB8hQvsitNFXX1FIf3kCwx/rKEfQwu35lSfue/
- pUpXkkHfYW/tGFzOn+YYYzTZ58DM4k+gWxo2dTD83ccKvnElmqlwvB1ihr2mN/NYV8YhJzvRygv
- I8GEJFP0CTu+YvJ1aK19Mwr5wtCXk0OUUBIoFJvbJzCElnbQgBEt/3ihZMOKbMuNYmbOvCOm3gE
- Ra8zDUA0yS01gJUdcQG3hT5Jp0QQQYD4VH9c+dMU7P9e5bIWEwzeHGBf1CRyJdqTzYxOGOv4EGA
- 5FPhmivsAJhxpKDaSW2JK6QmU79vPYy+u2Lsws49lFAbiMh+soBAyUpOUgI3TiIlag/vOspPmBC
- E6P0szcmlxy4yPhjLcT2+OY1HLzEmlV3VI8dJep5BBDSCbOGx7sYJWh7lolEfFmVxZNWBOGgBeO
- GW2F3S00E3SKurNt2EPEzRFSt+eJwzWcH7XtC1YrtdX8vLaRT4pwUE457wW9tQpzrrW3sh1W/2d
- bKcDA5rd1zbrGT7EKOjqtmosjdR0CIZUebnQlfZ/zOFfRawTh2Ek=
+ bh=lKay8BC+YiH/T8pXvPVvsArjdd36q+wxCg7eRmqeFDo=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpegvJ226xg3NC85/GSu7PlWAb53/M6m/maA4Ns
+ NSbLW0dZcyJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaXoLyRsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOL4Vg/9G6vG/WWcLI/huTLmneO+nlyP4ypR1bx
+ 0t+CsMdv1L2+epXy8y0oENIOpLD29CUUgjQ/YBO4Y9cs35PkvO6YOTLfWGwF6g+6shF/1dXfu5r
+ v9ZKToFd5Zg4qOWTOWO2sIMEaT2aJuuvfKJyoqXb1O91Qe5/cUbuhz9bx/F3KkKczUHoZnYUXif
+ whtMlMBEVhUAGIBC4MK08AJnfqW9DpR6Y85zsUdfPyPi+ZYTshgFYaOu4VMJOWXHWoQgFK29V36
+ wSuiS61aUdQwzBZeTSCX/4VElHmDkYtw7mNINrDIn5802uv1c5NSGKyci8rUBxTRltskfyceh9r
+ kulDchnKyhrtZ0Kh38DBFEP+qOTw83lOP3MIddG+EMG7lS0TuwMPoeFdnXYK33AYPR9bLk5L1SW
+ K5ysyLher2012eSxmsuloWCMiKiOQZ+l7C1EIw/ZFypuCLI99EN5ckpaeW/Pe1WDv/JBP3zV3Q1
+ P7/wUx3usmgHPLhGWWV8JiGkCbkggv5vmd0Lztpt7XZsrSmsP4GbZ8jMMC384Ui5HsDPopxwaDQ
+ 66wzG9D6aZQxlvMivCLohQEPDaHGrakmY6IKPsGtzVxuDmuRobX/tDS+1NO6sfPtMN/ZfjYQGmG
+ 6dJoxqs1FZLHs4C1dRkXbTPMrISAsHkSMniJEHUsmRztEMo594wE=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,64 +79,147 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Current sscanf usage can fail silently, add assert to ensure that the
-returned value is correct.
+Current unigraf public release are not c-compatible, this file hardcode
+some values. One future release of libTSI may include a c-compatible
+TSI_types.h file with full structure definition, but until then.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/i915/i915_dp.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ lib/unigraf/TSI_types.h | 126 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 126 insertions(+)
 
-diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
-index 219f3d29e362..53caf3fa7716 100644
---- a/lib/i915/i915_dp.c
-+++ b/lib/i915/i915_dp.c
-@@ -101,7 +101,9 @@ int i915_dp_get_max_link_rate(int drm_fd, igt_output_t *output)
- 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_max_link_rate\n",
- 		     output->name);
- 
--	sscanf(buf, "%d", &ret);
-+	igt_assert_f(sscanf(buf, "%d", &ret) == 1,
-+		     "Failed to parse max link rate from %s\n", buf);
+diff --git a/lib/unigraf/TSI_types.h b/lib/unigraf/TSI_types.h
+new file mode 100644
+index 000000000000..c387ab4e1941
+--- /dev/null
++++ b/lib/unigraf/TSI_types.h
+@@ -0,0 +1,126 @@
++/* SPDX-License-Identifier: MIT */
 +
- 	return ret;
- }
- 
-@@ -123,7 +125,9 @@ int i915_dp_get_max_lane_count(int drm_fd, igt_output_t *output)
- 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_max_lane_count\n",
- 		     output->name);
- 
--	sscanf(buf, "%d", &ret);
-+	igt_assert_f(sscanf(buf, "%d", &ret) == 1,
-+		     "Failed to parse max lane count from %s\n", buf);
++// Current unigraf public release are not c-compatible, this file hardcode some values.
++// The next release of libTSI should include a c-compatible TSI_types.h file, that will
++// be directly used in place of this file.
 +
- 	return ret;
- }
- 
-@@ -230,7 +234,10 @@ int i915_dp_get_pending_lt_failures(int drm_fd, igt_output_t *output)
- 					      buf, sizeof(buf));
- 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_force_link_training_failure\n",
- 		     output->name);
--	sscanf(buf, "%d", &ret);
++#ifndef TSI_REG_H
 +
-+	igt_assert_f(sscanf(buf, "%d", &ret) == 1,
-+		     "Failed to parse pending link training failures from %s\n", buf);
++#include <stdbool.h>
++#include <stdint.h>
 +
- 	return ret;
- }
- 
-@@ -251,7 +258,10 @@ int i915_dp_get_pending_retrain(int drm_fd, igt_output_t *output)
- 					      buf, sizeof(buf));
- 	igt_assert_f(res == 0, "Unable to read %s/i915_dp_force_link_retrain\n",
- 		     output->name);
--	sscanf(buf, "%d", &ret);
++#define TSI_VERSION_TEXT			0x80000001
++#define TSI_DEVCAP_VIDEO_CAPTURE		0x00000001
++#define TSI_SEARCHOPTIONS_SHOW_DEVICES_IN_USE	0x00000001
 +
-+	igt_assert_f(sscanf(buf, "%d", &ret) == 1,
-+		     "Failed to parse pending link retrains from %s\n", buf);
++#define TSI_EDID_TE_INPUT			0x1100
++#define TSI_EDID_SELECT_STREAM			0x1102
 +
- 	return ret;
- }
- 
++#define TSI_BASE_LEGACY_GENERIC(offset)		(0x210 + (offset))
++#define	TSI_FORCE_HOT_PLUG_STATE_W		TSI_BASE_LEGACY_GENERIC(0x2)
++
++#define TSI_BASE_LEGACY_DPRX_MSA(offset)		(0x260 + (offset))
++#define TSI_DPRX_MSA_COMMAND_W				TSI_BASE_LEGACY_DPRX_MSA(0x0)
++#define TSI_DPRX_MSA_STREAM_COUNT_R			TSI_BASE_LEGACY_DPRX_MSA(0x1)
++#define TSI_DPRX_MSA_STREAM_SELECT			TSI_BASE_LEGACY_DPRX_MSA(0x3)
++#define TSI_DPRX_MSA_HTOTAL_R				TSI_BASE_LEGACY_DPRX_MSA(0x6)
++#define TSI_DPRX_MSA_VTOTAL_R				TSI_BASE_LEGACY_DPRX_MSA(0x7)
++#define TSI_DPRX_MSA_HACTIVE_R				TSI_BASE_LEGACY_DPRX_MSA(0x8)
++#define TSI_DPRX_MSA_VACTIVE_R				TSI_BASE_LEGACY_DPRX_MSA(0x9)
++#define TSI_DPRX_MSA_HSYNC_WIDTH_R			TSI_BASE_LEGACY_DPRX_MSA(0xa)
++#define TSI_DPRX_MSA_VSYNC_WIDTH_R			TSI_BASE_LEGACY_DPRX_MSA(0xb)
++#define TSI_DPRX_MSA_HSTART_R				TSI_BASE_LEGACY_DPRX_MSA(0xc)
++#define TSI_DPRX_MSA_VSTART_R				TSI_BASE_LEGACY_DPRX_MSA(0xd)
++
++#define TSI_DPRX_LINK_FLAGS_MST				0x01
++#define TSI_DPRX_LINK_FLAGS_TPS3			0x02
++#define TSI_DPRX_LINK_FLAGS_TPS4			0x03
++#define TSI_DPRX_LINK_FLAGS_EDP				0x04
++#define TSI_DPRX_NOT_DOCUMENTED_DP_128_132_SUPPORTED	0x10
++#define TSI_DPRX_NOT_DOCUMENTED_SIDEBAND_MSG_SUPPORT	0x20
++
++#define TSI_BASE_DPRX(offset)			(0x50000000u + 0x21000 + (offset))
++#define TSI_DPRX_HW_CAPS_R			TSI_BASE_DPRX(0x4)
++
++/**
++ * struct TSI_DPRX_HW_CAPS_R_s - Structure representing the hardware capabilities of the DP RX.
++ *
++ * This structure defines the bitfields and fields that describe the hardware
++ * capabilities of the DP RX (DisplayPort Receiver) interface. Each field
++ * corresponds to a specific capability or feature supported by the hardware.
++ *
++ * This structure is used to interpret the value read from the
++ * TSI_DPRX_HW_CAPS_R register.
++ *
++ * @mst: MST support
++ * @hdcp_1_x: HDCP 1.x support.
++ * @hdcp_2_x: HDCP 2.x support.
++ * @fec_8_10_b: FEC for 8/10 link support.
++ * @dsc_8_10_b: DSC for 8/10 link support.
++ * @three_lanes: Three lane link configuration support.
++ * @edp_link_rate: eDP link rates are supported.
++ * @mst_stream_count: Number of MST streams supported.
++ * @max_link_rate: Maximum link rate supported. The unit is not specified in documentation,
++ *                 it is probably like other config rate = 0.27GHz * value
++ * @force_link_config: Forced link configuration support.
++ * @power_provision: Power provision support on DP_PWR pin of receptacle connector.
++ * @aux_swing_voltage_control: AUX output voltage swing control support.
++ * @custom_dp_rate: Custom DP 2.0 rate support.
++ * @custom_bit_rate: Custom bit rate support.
++ * @fec_128_132_b: FEC for 128/132 link support.
++ * @dsc_128_132_b: DSC for 128/132 link support.
++ */
++struct TSI_DPRX_HW_CAPS_R_s {
++	bool mst:1;
++	bool hdcp_1_x:1;
++	bool hdcp_2_x:1;
++	bool fec_8_10_b:1;
++	bool dsc_8_10_b:1;
++	bool reserved_1:1;
++	bool three_lanes:1;
++	bool edp_link_rates_supported:1;
++	uint8_t mst_stream_count:3;
++	uint8_t reserved_2:5;
++	uint8_t max_link_rate;
++	bool force_link_config:1;
++	bool reserved_3:1;
++	bool power_provision:1;
++	bool aux_swing_voltage_control:1;
++	bool custom_dp_rate:1;
++	bool custom_bit_rate:1;
++	bool fec_128_132_b:1;
++	bool dsc_128_132_b:1;
++};
++
++#define TSI_DPRX_LT_LANE_COUNT_R		TSI_BASE_DPRX(0x0B)
++#define TSI_DPRX_LT_RATE_R			TSI_BASE_DPRX(0x0C)
++#define TSI_DPRX_HPD_FORCE			TSI_BASE_DPRX(0x12)
++#define TSI_DPRX_MST_SINK_COUNT			TSI_BASE_DPRX(0x9D)
++
++#define TSI_BASE_DP_RX(offset)                  (0x00010100 + (offset))
++#define TSI_DP_RX_DUT_MAX_LANE_COUNT		TSI_BASE_DP_RX(0xf)
++
++#define TSI_BASE_DP_LTT(offset)                 (0x00010700 + (offset))
++#define TSI_DP_LTT_MAX_LANE_COUNT		TSI_BASE_DP_LTT(0x01)
++
++#define TSI_BASE_LEGACY_DPRX(offset)		(0x2b0 + (offset))
++#define TSI_DPRX_DPCD_BASE_W			TSI_BASE_LEGACY_DPRX(0x9)
++#define TSI_DPRX_DPCD_DATA			TSI_BASE_LEGACY_DPRX(0xA)
++#define TSI_DPRX_MAX_LANES			TSI_BASE_LEGACY_DPRX(0x10)
++#define TSI_DPRX_MAX_LINK_RATE			TSI_BASE_LEGACY_DPRX(0x11)
++#define TSI_DPRX_LINK_FLAGS			TSI_BASE_LEGACY_DPRX(0x12)
++#define TSI_DPRX_STREAM_SELECT			TSI_BASE_LEGACY_DPRX(0x13)
++#define TSI_DPRX_CRC_R_R			TSI_BASE_LEGACY_DPRX(0x14)
++#define TSI_DPRX_CRC_G_R			TSI_BASE_LEGACY_DPRX(0x15)
++#define TSI_DPRX_CRC_B_R			TSI_BASE_LEGACY_DPRX(0x16)
++#define TSI_DPRX_HPD_PULSE_W			TSI_BASE_LEGACY_DPRX(0x1B)
++
++#define H2_SINK_LOAD_PROD_KEYS                         0x002
++#define H2_SINK_UNLOAD_KEYS                            0x003
++#define H2_SINK_SET_CAPABLE                            0x004
++#define H2_SINK_CLEAR_CAPABLE                          0x005
++
++#define TSI_BASE_LEGACY_HDCP2(offset)                  (0x290 + (offset))
++#define TSI_HDCP_2X_COMMAND_W                          TSI_BASE_LEGACY_HDCP2(0x1)
++
++#endif /* TSI_REG_H */
 
 -- 
 2.52.0
