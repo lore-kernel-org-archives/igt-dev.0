@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEA2BD358DF
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Jan 2026 08:21:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08427D358DC
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Jan 2026 08:21:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6779110E7FC;
-	Thu, 29 Jan 2026 08:21:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AF93D10E806;
+	Thu, 29 Jan 2026 08:21:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eeezPyvb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FwuDacon";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3AC1610E7FC
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jan 2026 08:21:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 015F410E806
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jan 2026 08:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769674878; x=1801210878;
+ t=1769674912; x=1801210912;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=aGyL7Prp6SJbv8pBEabLNmmf9gxaH9H7kol06qYi/sw=;
- b=eeezPyvbKjL2cBmW/0EsSISezfHIl9PEboHI1ctdYGBkgQyCQlxFkPiJ
- UBaZVnYef5DvEEGELju0WqF9hMxa2PIwv6kxUo/fxaISLpxQLzRw6vulL
- zujc+u3SsjPOoW+8R2Yiou2n+Zv/9UqBa+XQNprP18U9lGtzrobP4cvPx
- rUe9/pkcu1aaJp0rn8cNgOLmTWujhOfjiAF9dDdRe6028IwwIQlstl7LO
- NJKyMZ7TE/Z4KIX9F4u8UAE9iXLXvCQJ9Csi0AdPgskX3DI57Qdrshw3c
- m5v1XFU4TttHThcqZLAWqZyB046+S1IBev7Gp7vF0/9aFHF583uDgXJg4 w==;
-X-CSE-ConnectionGUID: 6plGTEEUQ4Csg7QU0YiIoA==
-X-CSE-MsgGUID: 00LlGcgAR5mbwegnHsO8/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="82272599"
-X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; d="scan'208";a="82272599"
+ bh=Ts/ll0lg7cix+C2K9fNDKN4PL56J8d9lHyh3eLvh0wI=;
+ b=FwuDacon4NeigqagY6X0ech5XXc3b8lPkmqBXQuAFREw2AeeAcv8jYqz
+ O8qrWPUf40GrzXl9HeF2Jb2QtrLBOJG06Yvab7RVbvrl+2gJrrSco1DMr
+ Xkme/Yf905Zs4+pJ5PqTDc9bTutcZnz0Po8c1c2dDMttHr18DbU84Y6VK
+ p24o1SqZyyLAiA+HDdu9LwXmnaa6isu6/g+JkouXOGbk3lsWy80YIqIep
+ Ah3qxTc5xCUSPZqe4kgeApFRQNwBrSb08QWHZPwpnngKjyMMChuwmRDEA
+ FJZWOxurh/JKHN9UHj9ZgWLJMk/DrxShV9Q+4TI21IYXZLYAcTdfLeKjD Q==;
+X-CSE-ConnectionGUID: gc9AhPyRTqmvq7IZaX3N0w==
+X-CSE-MsgGUID: HjbdgLxfThG1T5CLgQjVOw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="82272703"
+X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; d="scan'208";a="82272703"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2026 00:21:18 -0800
-X-CSE-ConnectionGUID: DXyy6P9XR0CO46RAfkqFoA==
-X-CSE-MsgGUID: i+c3HuSGSyyQgcJ1rVHadw==
+ 29 Jan 2026 00:21:52 -0800
+X-CSE-ConnectionGUID: dgA1NPv7T4iiuywH8O0qzw==
+X-CSE-MsgGUID: mfwS2/y4QBKfWb9AzRGyVw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; d="scan'208";a="208404979"
+X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; d="scan'208";a="208405090"
 Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2026 00:21:17 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ 29 Jan 2026 00:21:51 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
  fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Thu, 29 Jan 2026 00:21:17 -0800
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ 15.2.2562.35; Thu, 29 Jan 2026 00:21:51 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Thu, 29 Jan 2026 00:21:17 -0800
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.9) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.35 via Frontend Transport; Thu, 29 Jan 2026 00:21:51 -0800
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.49) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Thu, 29 Jan 2026 00:21:17 -0800
+ 15.2.2562.35; Thu, 29 Jan 2026 00:21:51 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S4cw/Ef5C04OG7VQQuUiC/piSgAaKuc388oe/NLs0T500EbVKA319gK6oMJ29NOQ91LUKeVeYb2rxIiUbafz1OaETkwcHvygD2Wx/zt6P3wD0Ftm0qN9k0EMmyWuESy1cHE8ISc3C35ZJuHOtgF/IoI34AaoUIWzj27QrAywxa4yXCvn0i3U8eW01lopFJZ2uvgucKORFM55DEgWSL0l/QVGgs2Ado9NMO1hQcjvuspZRs6jZoymKvijF2VBu31iRbGUHncFV0ZbUT0VRJd/YEOd9kV3UI+aaYLR3WOwk+Da5XHXuqvOOi2dqxzY95UzivS6ZuT4RffpG1sjy0+92Q==
+ b=LVAFbcFzePxmrP54xVpVkaUt8tFRZhvkQwYI45evtf6gKvH2PakJQ9ieqQDPdNQdCdyaQdoXsEiqGwHQC7iuLEcwde6/S2WgYNiQB4PWPMlEqTYpo/uBI0i4kV/2Ucz9hFfnUDcZ78Kgujo4v7fenHbGecGeBFB4aez++B/RCLtdZNKRJcTib4XqW60cDFkpeZHDYJhv4pylZfWW7S6WyRs94tJftBdVXnJ3Wx74kmjpchI3rVUJCGxkAct1z0E4R5JJmt+7VP52Iv/ur5mFIX37rrzG6C1ymhVzfjm39v6gdVapwdhry6oiwerpGKtxVbRa7zqJlR1AxOCQzYpAtw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mk5cMS9eNHVhq/u5Jp3adfbAa39Qu/qJ+e7R0KL0E/w=;
- b=Wa0EmnTcU00a15VSwEJDqTQMSmzvxZRJMaeQqzB52zxBYlIup5ePjqWtsYXNyqC2H1YUpsPhsF7Tj5uoZNO0TDUzA+VKlQcBxiq7r/jWtNP9Vqg4Ehm25tG8ynIk9s06Zeldm7p70GL7RP6BdfMQ8InQ07GXeadLQmZxd9PZchsB2KJpefNNyGevV8k35PscWc4T7esAUPwjAR2IOQOY51voNbLQf5SRri7foVUCN9ozZxEPBlU3yhz94FBpY/W4zk1pihRxanhhDhyDKEJEKgrvAQ3gXZG/42SUhxrc/q66mLt8QMTMN5IbLVKjQvvq402Q8jk5Or5/ynJ0aqN44g==
+ bh=UMVTtgXaDJsyihNgn0G3LtEaDJNOurtJf74WqqYeOmU=;
+ b=mr5ZGelBX8NXW1ad4WUx4EKY06TeY79mT2Q3qmPPuFZvNOMQSVs3jywcnkebTT4FvKt70KBLeW7Ih0aVY76EQZIoZiH4R++m9QofF/ml0T5npEIJdqcJRO7xVyhn9i/AJcnxMv1fujv0YopZ8sKJFKikHB9VcbiZ72Ij6Sh8nSuaUPQZhdeyc8q4dqXT3gTii3eTg7jY8nRS35RrD5fT5OAESJEAbEjfcSlJcUrvx6JRwETlwV0Lfy9fkP/BvD5jn5Yy2L8a9EP8olQP5zvisk+NvzTaHw2ErIjJaYcDjh01whKOcpbGn+TwhLUxine8+Q5S58ePUGbDF0vRvB9+dA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,124 +69,127 @@ Received: from BN9PR11MB5482.namprd11.prod.outlook.com (2603:10b6:408:103::16)
  by IA3PR11MB9087.namprd11.prod.outlook.com (2603:10b6:208:57f::5)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.8; Thu, 29 Jan
- 2026 08:21:15 +0000
+ 2026 08:21:49 +0000
 Received: from BN9PR11MB5482.namprd11.prod.outlook.com
  ([fe80::d269:c67e:1cc2:d1ca]) by BN9PR11MB5482.namprd11.prod.outlook.com
  ([fe80::d269:c67e:1cc2:d1ca%6]) with mapi id 15.20.9564.008; Thu, 29 Jan 2026
- 08:21:15 +0000
-Message-ID: <9cfecdad-0853-479d-b63c-e02a9c59658a@intel.com>
-Date: Thu, 29 Jan 2026 09:21:11 +0100
+ 08:21:49 +0000
+Message-ID: <40af309f-7342-4c8b-bbbb-b981767d0d38@intel.com>
+Date: Thu, 29 Jan 2026 09:21:44 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 i-g-t 06/10] lib/xe/xe_sriov_admin: Add SR-IOV admin
- sysfs accessors
+Subject: Re: [PATCH v3 i-g-t 10/10] tests/intel/xe_sriov_admin: Add SR-IOV
+ admin sysfs scheduling attributes tests
 To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  <igt-dev@lists.freedesktop.org>
 CC: <adam.miszczak@linux.intel.com>, <jakub1.kolakowski@intel.com>,
- <michal.wajdeczko@intel.com>
+ <michal.wajdeczko@intel.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>
 References: <20260128180819.1373376-1-marcin.bernatowicz@linux.intel.com>
- <20260128180819.1373376-7-marcin.bernatowicz@linux.intel.com>
+ <20260128180819.1373376-11-marcin.bernatowicz@linux.intel.com>
 From: "Laguna, Lukasz" <lukasz.laguna@intel.com>
 Content-Language: en-US
-In-Reply-To: <20260128180819.1373376-7-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20260128180819.1373376-11-marcin.bernatowicz@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: VI1PR03CA0053.eurprd03.prod.outlook.com
- (2603:10a6:803:50::24) To BN9PR11MB5482.namprd11.prod.outlook.com
+X-ClientProxiedBy: VI1PR04CA0118.eurprd04.prod.outlook.com
+ (2603:10a6:803:f0::16) To BN9PR11MB5482.namprd11.prod.outlook.com
  (2603:10b6:408:103::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BN9PR11MB5482:EE_|IA3PR11MB9087:EE_
-X-MS-Office365-Filtering-Correlation-Id: 911957ae-f0f8-4465-242f-08de5f0f5e90
+X-MS-Office365-Filtering-Correlation-Id: 9b104051-3d4b-4cf9-e0db-08de5f0f72c4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?YTFja2NTMlVHYjNRcUJLZXMvT1lucERGazI0azZObkNCNysxVWhWWWpwcHM0?=
- =?utf-8?B?a3Q3MStpQ0ZXRlpPL3JIdTNxdlJSenBSSTRzQlhZK2VhK3ArTUs3RkdHdHRG?=
- =?utf-8?B?LzIyZ3RBTE02WjZXYk9kKzI3cFJiU2Q2SC9LeUg0NnM3V1ZZT2gwZm12WkE0?=
- =?utf-8?B?V2xVQkRBTkRJaHN3TGlVSEFBL1BWN09KejBOYWdxNDhYVENidUxhTGJhbjN5?=
- =?utf-8?B?ZnpzNkswUXY1eTUvWTc5aEpVVGN4bllzY1YyVEdOcmdwcUhhQnFKV253V0NE?=
- =?utf-8?B?RWdJRTRxN0FZZkxQWnpSNUJzY2s1ZzczelZnSDJlRmQvY3h5Um9Ha1YyWkVy?=
- =?utf-8?B?WWpKYk92OTc3UUhVWGkxLytlWUtZeWhTQkdFRlA2TU93Ukhha1RMQS81VHpO?=
- =?utf-8?B?L01hOXVQVGYwVkJVemx0Z3FsL3dmcHJhcW5aRGplRXB0ZklHN3FVSWdZTERN?=
- =?utf-8?B?QjFGdHVPUTdndjhUWVA3dkZWYVJPcXVrWncwYnVSWDVxUE9XNHZ4QTcvS3B3?=
- =?utf-8?B?NXh4ZUVzOVQ1bzQvbTFrTmczdS8vTUVmVU9HL2haUFlNM1hwQnZXNTV5M1JU?=
- =?utf-8?B?MzdoaU1IZmVLektaM2wxRGVRbHpqM3JTV3NNTFh1Tmk5cFRaQVI5NE13MTZO?=
- =?utf-8?B?SVBKWGxXOGtQbk0wRFc4MVNabEpvZkl5M1Z1MWFlZG0vcWJQNGVRL2xKQmJh?=
- =?utf-8?B?U0FtWTRoY3FmMEVnazQ1QUppVTltZTJza1hKTU1nM3NVMUxXS0ErVzNVVlVz?=
- =?utf-8?B?Y1ZRcm5nZHJTbEZFMmh1dE9McVpDdmx0cE1lSHBucitwQmRsSUEyeEJHMlhj?=
- =?utf-8?B?azYzQUV2T2dJa1F3RkluZG1MLy9GbHJwWmZqMDMyTHAyWHZBUElPbDAwdE5K?=
- =?utf-8?B?dGdQSWxEV0NPOVV0REh3N081Q1d4N2liRThPOFpZcE9Xd1ZwU20xSU83RWph?=
- =?utf-8?B?WHovaHR0WDd5V2lENk40WFRDTTF4dnY2ZS94UVFqa292ekd4K24vT3UwZUND?=
- =?utf-8?B?R21Sd1hHYndRdkR6VU5JRzdjaFdzNmE5aGtaYlAwQ0ptOTdmVkFrc0YxM1lG?=
- =?utf-8?B?Ui9rZWcybDRuWkg5Mklmd3B3SmROUFlQVlJQcVJPb281NXF4bHM1RUkxK0d0?=
- =?utf-8?B?ZTBuKzZXR2xJREhRU1JjeW9BOXd1K3pYUnJPeEo0b1I3SkNrZUlrVlA2a1hp?=
- =?utf-8?B?U1V2N3Yzbmt2TEl2dkVkRnUyS2JqdmVNY29haUhMZytoRnh4SXlrdlYrazBu?=
- =?utf-8?B?OUd4QXRPN29aQlVmbHhaWkN6VTUzVklwNExPR0J1M3dDRXA5UTF1YThoZXdk?=
- =?utf-8?B?ZWoxQ2o3aFhyQVVqNkVHeDZhZk9FeVVVZGU5ZzZJYWVteGR2MmZHSEJjY1FC?=
- =?utf-8?B?YnYzK2k3NmFPNXAvWU1ZdVdyN3Y2U1ZOTGFCUEhaaGQ5aG1vQUFVUCtBaG5n?=
- =?utf-8?B?QWI0b21iTTRzVE5aaWEyNHNZa0xVZlBHMzBQYmtVWHBtWUE4QU1YLzlsOFBt?=
- =?utf-8?B?VFVpM0FSMk5tdVlXVGNPdmNGVEZkazB0WE9MVVh1TEZYUHloTGpXOUNkaitD?=
- =?utf-8?B?Q2tUajBqM3VwOVFYYTVYcnRyc0VuOVpRaHFIRWFMQ3YyU2F0QkZRZVQwRENi?=
- =?utf-8?B?WmdBVi84bTJoVXJqVVZsdXN6S3p3UnM4OEM1M2c2R3BGc3FPaEYva2tMZnhD?=
- =?utf-8?B?Qk9PbmxMa2dQNUZoSUZTdEs0dWtmRkU4S0dZM3o5d2VYak0yMEpQeEVURTdy?=
- =?utf-8?B?UEJjQmVMYlFwbEpYdFdRbzZ1bHo2Q0lDZ2FBSU5xTyt6blhObkxVTFc0UE5P?=
- =?utf-8?B?ZGh4MGI2a0JSbXdCd3dldnp6ZkJYamh5YUVDVnZ2blFyTGNRVktTQi9BUEI2?=
- =?utf-8?B?T0ovbEJscjY2b1R4QWhHV21xMDZzMGN6bzVjUDRMU2E1eE41QnJ0N0VJT1Fp?=
- =?utf-8?B?ZncyWFlCV0ZFbXlMeUROUmhCUWEvTFJhTjhKOFc2eEdRNlJ1dnNRWlhSK0p0?=
- =?utf-8?B?T0tMN1R3cFBmZER4S1ZtUVZ4QXMvVUloUWMwdHRDREI5b0FmQVVpb0FkcXhQ?=
- =?utf-8?B?N3lRMVVHZTFXV0Ivb2wrajUzY3pwTFF1eWdRTUJtN1pQTmZKaGFvcWdTYytm?=
- =?utf-8?Q?1HAA=3D?=
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|366016|1800799024|7142099003|7053199007; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UG0xcndVaklZbFZ0Qi9aa2REV1dXU2xyT25HU0xXak5PNFhPek1Mbkt4dktP?=
+ =?utf-8?B?TUNxaXJCVlBnTythL05iWmxhRG56UTVGd1lZOTlLQ3dhazc5cGZQeTFCYVUx?=
+ =?utf-8?B?WWp1aHhwdDBsdkNwd0hDZyt3cnhwVWJrSVRnMjNyZHpBaUEybmlTdjE1c21D?=
+ =?utf-8?B?RkpJR2FBRDFhcm8wczdlbHBXYUZueVhPY2ZMMW9GWkVkMHVPYmQ4Q2htN0VU?=
+ =?utf-8?B?WG43ZWRCb1ZpTGdmcGtzcG10RHZ5VVFNMm5EQjBWdGJsTHVkdGNQSnBUN3FW?=
+ =?utf-8?B?eUkvL2dXZURaSGpRMVdmS2s0Lzhud2JpMExHaUVGMTd5M2lpVUEyNCs4dXAz?=
+ =?utf-8?B?eWdyeDZ4U1laOHE1YUhXM1gwS1FmMThERUs0L09nUFZlcHpUakhVZWNhVFpC?=
+ =?utf-8?B?MFQ2eGxkMDZoUWlJd1ZkcHJONmRzZzhEdXc0azZBUHBGaStVMHVqRUtwTUJm?=
+ =?utf-8?B?c0R1Yk9SalJMYVkyUjFTS2FKeGMyZ3l6YXZBcFBwQ0d3UlYweFkvbTg0Ympj?=
+ =?utf-8?B?c2lFeE9MSk1vRkhLVm9mUXY3emU3djdvcW1lWkNoM1RXUlZPVytSSFd6YlFD?=
+ =?utf-8?B?cUlGdDJDYk1GZ3NTdjRXaDRYQ2JkcytBVVc4bWRlVVpPSEZhQzFnN2x2WGUr?=
+ =?utf-8?B?UnJoSUxYRFpEQnI0ZG1mTm1rMmNrVEhTU2JsOStMdHVTVHVPVFJ6dG1rRUNx?=
+ =?utf-8?B?TEdpa0t4MS93Rk81WjEzY1VSZURQeWU2b1N1cnYxUCt0NmJwZVFvYTBoOFVG?=
+ =?utf-8?B?YjhIR2pSdnl6a2pMckkxckROUmdWYmRqQU5ZcW1OZHJiN1drK3RiSG1jRDBx?=
+ =?utf-8?B?TVp4VFp6T2ZlL3EwdDJTaktsNXRNQ3ZpVHhNc0tXRjUvWlZ0Y0VaK3Y1QWZO?=
+ =?utf-8?B?NkVxQjFPTVpsVlBZNVl3OGx5TTVzcUo0ZE11Y1pQUFpkb2pUUWp4NlhLWlRj?=
+ =?utf-8?B?UFdBZG5EajN0TFE1SGxsWUYxZXZXWEdoZVJkL0NML2NKMGpQN2Z6VUFLU0Iy?=
+ =?utf-8?B?Qi8vb05ib3V6TVp1amJrUXVPWnEvWS9sUlZzb1A0bFlzYUQ3Y2Y2SFhSVytR?=
+ =?utf-8?B?SXhmNW45NlZjZFVUaHA2aE5QRFVzSTUwQ0NjbkVsQU9xRHRjOW10aGtLMW9D?=
+ =?utf-8?B?bVNTVTBneXVncHNYZTQ4MXBHUXVYQ2p5WDNyTzE1QlRMcXkwRlpQSEVva1JH?=
+ =?utf-8?B?UmNpWmtUbFlEaEswYm1YWmJicUwrN29jWEg4SWMrdmYrUVRtYWVlNGZEWmNl?=
+ =?utf-8?B?K0dKU0RwRzhzbkhZUzhvUk9lQXV6SUcyYzBjZVFLNGZLVGNQVW56akt0RUNH?=
+ =?utf-8?B?cHQzZUdGdXBIM2gvcnl2b3VFVFpsRDRGd1E4YnlqTVRrK3Y3UUhUVkUwMCtp?=
+ =?utf-8?B?aHlmWkduWmtHdFFVOFFKNEVUamNGSm9KN2hUY3FLTFlIdm9JaW5pcXFYODk2?=
+ =?utf-8?B?TE9FSy80VXFHRkNmOXlna3FsUHpLVG1FTHljeldnaVJMd083a00ySzd0eUR1?=
+ =?utf-8?B?RU44ZGY0NHo2TGV6Y3NqMjNSYVFIOUdoRmVLZUxKakpmcmJpQW9HK084YXVV?=
+ =?utf-8?B?T2wvYzJKbHJpNTk5blRQQTVCREkrVjZ4TjRFcTF2cWV6K1dKMVN3bFJOUjhx?=
+ =?utf-8?B?by9QaXBERm5ESlJDV05JUnR1VDNqYTdBaElyMDN2TyszN3FTaDhLSnJ4YVZL?=
+ =?utf-8?B?Rm1KNmcyd29RaHBhY01VRE4wTDBzOWRENy9WODhIcXZCYjJOcUQ3ZmIwU0tW?=
+ =?utf-8?B?UlN3ODZiMDBYUFRGakcwNm9pWEFaWUhRditTekpIcXpLUnhrd2o2MEVSbDhS?=
+ =?utf-8?B?TTM3YmI2WlRNQzZwMU1SbmhOTyswSGE4czJjbWQ1K3RpVlVubW9JU3N0SWV6?=
+ =?utf-8?B?blJIRFVQVFczVGVWYWIzc21iRTArS04xQ0xwa2ZXQXdLM0srVzNMR0M0Q3hF?=
+ =?utf-8?B?cXBMWXE1QmlhQ0dQejFOTEgvL2ZBekhEQktLVE9MZGxVc2dSZHZJMVNpTjlt?=
+ =?utf-8?B?Vm5PaXFCcHI0MmhYRWwvdFdEaFVsaEpOb2dtN2JwUTFXTDYzbFNsYWl3Q2JO?=
+ =?utf-8?B?bWxDTit6ZGpRV28ybUJyMlZlTy91c25oSWYybm9lKzZKY1lmWmRjcUdzdXlY?=
+ =?utf-8?Q?vSzs=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BN9PR11MB5482.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024)(7053199007); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(376014)(366016)(1800799024)(7142099003)(7053199007); DIR:OUT;
+ SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VEJNVjNuMzVMWTMyVmh1M2c4SEhkdExFOVVDQTZIcy9IUk9kWHdJeUxoS216?=
- =?utf-8?B?bWY0TnJORWIwblVyT0hEQ29VbU9yb1VRTHQvVm12RzhqQVJEeS9LZTFDejlz?=
- =?utf-8?B?N3ZvQmptTjljYzZSVVpiNy9RK0JyVGZPKzJxVjluV1k4QkpUYXdWcndZVkhW?=
- =?utf-8?B?VTUwK2pqTnBicXBROHkzV2xtaUMyaW5scW9YZjh3cW1JYkxVYVp6eUxKN1BH?=
- =?utf-8?B?VVBMQm5wZm5Tczc0NnBDUnBKd0x4S2R1ZGJqeGtzc1lTc0kvZ2RFT0p6NTN2?=
- =?utf-8?B?QzNsYUIrUXNXNkhWcGMrV0ZEY2JRS3VxeVRFRGJkRGVoUkNZQnhBU0s0bzF6?=
- =?utf-8?B?WnlCUnVjYmJLcmpOYnJiVnR4VVRwbk1RRnMwMkhVTGovU1JtODZvbUg1alNC?=
- =?utf-8?B?UVRmSUVjaG9WdDF3QUdRb1RJVDBVTmlvRXBwQXgwckJIQWd3TWZtNVRYS1JG?=
- =?utf-8?B?Q0dTVHlqeElJK2tJbGtuVUxkbkthazg4V2FrSTY2Q2dMNzEvYkx2Z21vUGdm?=
- =?utf-8?B?VlA3UnNIRXlwUG10QVdBY1FWR3JId0RuNkZoazc4cnEvSHNKVWNBR3R5T3I2?=
- =?utf-8?B?U01SWS8rY2llN0ZIMEsvNVJybm9mOVVXUUxtUG52MXpLSlFZenIrWFl4bjhi?=
- =?utf-8?B?TFlST2FBbzA4T3Bham8zeTlBQWhBcTBKVld3TXdnZk1XekRFWkFSeU84RGpn?=
- =?utf-8?B?QkNRT1BjL3RDMjRaV29URE1ha2huTitSeW55ZFY0N3Z4M2pnaDlML1lFeGpl?=
- =?utf-8?B?TXc1akhvaHVXQmFVeG5GMW9CVkRDZis3YUR5UnVzYjZRYXJHOUpjRXJKaVlU?=
- =?utf-8?B?THZXS2RqamwzT3VxT1RoeENMYVo2MjFLdFp4a1JHNnp5QUh1UW42eDMvV0dW?=
- =?utf-8?B?NVFiVG1pY1Ivd05NMnpNMHlZcEJzVk1jZVZrbTBQeXJqYXRoaVovNUIvUWZZ?=
- =?utf-8?B?TGNEblJZaFVETmk5TmVjRVBnOTdCRDJJM2RHelJiakZha09Ycm9zVUw5Q3lR?=
- =?utf-8?B?bWV3WFVsV3pyYnpXU3dXSFFIY3VhWnIxTm9ZUVYwOXFTbTlDMXUxL1lqYzNW?=
- =?utf-8?B?L2xVM1I1c3l6WmNtRXY0TFI0T1gxOTZsTDltS2R6MG56TWwxcnV2eWtaVENw?=
- =?utf-8?B?SFhzN2xHdDBnRXZZMGdtNnF5Ui9vZjlwZlJpUEwzS0hEbmw5QzBlOU1uVjZ3?=
- =?utf-8?B?dGs4OEx0QWZVclVGSVJQN2l6WkxLeVBmbFpwYy9Nd2djRU4zQWZ4M3FLanla?=
- =?utf-8?B?bE1rNWtzQ0tBbVJMZll2QTJOUWVCakhoNUV6VTI3RmxJV25wQlJGbVV2OC9S?=
- =?utf-8?B?SEI2bTQzTFlIcEs0Z2FFc2kxSnpZeklsZkdPNVNwazNDS2RVbExiWjU5dUI5?=
- =?utf-8?B?bEVhTmFVSzFYM1g0MHVqZVhoSHlWdnZoSERnTnJscURkMzh1RjJGek9GQXdS?=
- =?utf-8?B?a0pRb3dOMnF4NkxvQ1lwSlV0b2hneCszbkRJMXNlaE1HYm9mcnJZVTQ4U2VI?=
- =?utf-8?B?S3Q3WVVWbkpYSHB6YmJZaWpRR051N0pCamRYZVJ3UE05ZzM2RFVJQkxrMmZG?=
- =?utf-8?B?S1hMYy9WY0c1bVJTZWVJTSt1Q2ZVLzZVQzcrc2tCTXJMYXQwTTVCejVUVjRO?=
- =?utf-8?B?OXhPa3lrYVJ6cnNyT2QvS01CSXFBT1BnenhVS2V0NGJCOFdHRHNGMEhTYlFW?=
- =?utf-8?B?QWd0UG1jSlJmbGhYWllPcVcrS3l3QmJjRGRzakxPOVJFbmhIR3drMDZkWS9x?=
- =?utf-8?B?bGw3TmxoNit3S0NFNjFkYXJDVG5GNlUveGhuWEtaN0YrWXhXRTR0cnRCMXFQ?=
- =?utf-8?B?Q2tOVFVMbEFoQXV1YVJqbEt5Q2dLRnJwL2ZkMTlYRUZ3ZWdhNWZlVllDOFRv?=
- =?utf-8?B?U0pmSTFVWVlaTWlsWHRWMUt2cE5IcXFBdVVyRXFvWTY3dWI4QnFlbUppRE9K?=
- =?utf-8?B?bnRrd1JPVE8wUTZGb2lrai9LNnFhbks4WFRvaFZPMnpSMU5pR2NHYUtaWWNH?=
- =?utf-8?B?L0lORWRReEhBSkZDa3pKekkyNytwWHpnd3ZRRTZjVXVhU1pjQklzWkNnOXVv?=
- =?utf-8?B?RmJhaTk5SG9oNjMzNTFLTkFkeFFSL1REcXhUdlRtSC8zNndySzVreUZRUnpv?=
- =?utf-8?B?QkVxcUlKOTh2QjBFR3g5RWlTWnBCSG9Zdm8yQUlpUk1oOGl5c2FWa2tqRkRC?=
- =?utf-8?B?ay9OZytMMTZka3BDSHh5SHM0Vmx2b3FGLzZpakx6dkJhOEhGZG1hZkNiaG9k?=
- =?utf-8?B?NVY0WU0zMStzSlBhK0FBNTd3RGJUaVNtSjJiRFd4UzNnRXFLbXNWakVSQk44?=
- =?utf-8?B?NkhXa01ZdnpDdDlGbXVKVkc2ZXBKdXJYNDhWR2FWb3dLcXdnVEFlQT09?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 911957ae-f0f8-4465-242f-08de5f0f5e90
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M3hsRGhQWUE0WjBsQ3NDYjZqOWx1bDBrR1MxeUM1MG1WV09YZi96c01kQjQz?=
+ =?utf-8?B?T0ttVEJiZ1VYaVVjNy9QZ0dtOHliRVk4UEZWTVNpMjFGL0dRd0ZubjFaZ3Vs?=
+ =?utf-8?B?Rk45YzZNYnN3dkg2VFNwL25tUTFJUWMrS29qd3ozY0tXTUdIcWkralRJSEJq?=
+ =?utf-8?B?elZoZGpjYit0bkdtZ0hjamY5RWhHYWJsa3VHZFNXZFBlajU5TTNMcDVsTlZE?=
+ =?utf-8?B?dFYrbWlqcW5zaTN1MnEyOGcwanJFSjJsd05Kb1NhUzQwNktFNG1NTXlvdEhl?=
+ =?utf-8?B?Qy90TWZpMCtTUExZa2dSUGVZK3pDNTk3MDVCTEJ0Y1RkWGlrMlZTMWpWTU5U?=
+ =?utf-8?B?VTRiWEo1Q3BsWUtmNm9zRFV2WXNjanY2ZmN5SUdKODh1L3pmRDVhZ3pUd0Rr?=
+ =?utf-8?B?c1hKNTE0c1FRdW1mZ1JhYXJtcHVPQlczYTRNaEFvdVp2VkJNT29oY3dnSzc5?=
+ =?utf-8?B?WHIrc0pLaU9YSW4vWmx0aE1reXFDZmlIUzIrdTJDU2pBbGpuRXVqdFJWWk5l?=
+ =?utf-8?B?Y2lJVHJYQVdGdFZ5eVdPNjBma1NnV2dtcEQxTld5eUpkK0dScHdJWDM4S2dT?=
+ =?utf-8?B?akNuMlAzYjlRTXl2OW9Fa041SjhScHR6YVVKTWhYem5mMFh2dU8zTCt3bWNr?=
+ =?utf-8?B?T2p0UzE4REI5MXpCT0laWjRuaVl2N0VWRXZ0bHNmV2Z2Q3N4b0pBYWtYWWky?=
+ =?utf-8?B?UVl5RWpJVzhnTk9zYkUxc2xjek9CcG51Q1RscytaUUo1QTBFN0J0MVpiRkNU?=
+ =?utf-8?B?SnRzQ1JwWEtTeC9QeFJHMU9IY2FMMTkvUGcxaFJBZXI2RFNWalN2TTdmWmsv?=
+ =?utf-8?B?Y2F5QjBlaGFXME9GaDVzVS9nK0w5VmlHQWFFaC9HMC9LdTRjWTU1QWZISnFp?=
+ =?utf-8?B?Z1M4SFdKeXMwTmQ4MkhmVmtJcXE3bDZkVlpJbnJoK24zVm1saE1DajI3dVFv?=
+ =?utf-8?B?d0hnbjRZTitubWIrNlZqMTk1RWtzZk5kUWx5NksxSWNVNDBFamFPd0U1VTl6?=
+ =?utf-8?B?U3NlQ3pzdkhKWlJMNi96SHc0akhtOXBjVVJDc25WM3Brd2tIRTZZLzlBZlFO?=
+ =?utf-8?B?TEE0d2kyQjBJdjY2SG9PRVhaNHNHdmhIMFVqT0ZHRDVZbnh0c3NqcnV2Z3I4?=
+ =?utf-8?B?WVFaS1JBaG1YRW4wS3lGTDBGUGpuVjFVR1FWRHdRekpBUjNOSWpjaDhtbmJQ?=
+ =?utf-8?B?dzJzcGhwVFhEYWwxNEdKUHJMMUQxaUdCdUF2Qm5PeTVtL3dRMUpmSmpOaGl4?=
+ =?utf-8?B?T0hNSUdkWmdhdnV1S3pMcVUxMlA3dk9WQTB4SWpjY1dJQXFhVVFQNit0RXNV?=
+ =?utf-8?B?M3M4QzlIVmU0Q09oQ2hCUVNyUGtkYTUzM0xZZko0dmZqdExRMVltRWo0Q1M3?=
+ =?utf-8?B?dnlqWmJxQkFBeTczYzJMVUwxTjdOM0xOaDJCU1lPTUNwTkU4c05FTU9kbWZ4?=
+ =?utf-8?B?K1REb21LeXZRRGsweVI0ejJUa09HQXBkbTdQSHFna0VPZCtKQ2ZOakowblpU?=
+ =?utf-8?B?L2FDSTFuenQ0V0xucSsxWDRXN3V0QjZURG5IWkFrdzU1Rlo5OE1pM1BzcW95?=
+ =?utf-8?B?b3NhQVEyK2hjTnJrRmFneWpuVEYzcEJUVzdWdFRsNnQxUERkY0tNd3ZZbzlT?=
+ =?utf-8?B?bElveGhCeEtiVUp4VHpKOFJFR2tMVXJUdkZFcHRWS0Rla0tqMHg0cWp0ZUVt?=
+ =?utf-8?B?MndLZisxNnZzZVNRdVZIaFZ1NzdSM2I3WFI3QlJyeWNzSW43K251Y2NhN3c4?=
+ =?utf-8?B?dUs3N2k4MUE4Smh1eTBSc0pJb20xSWhwTUVGblJncU01NHhoTHExZ1hMa1RP?=
+ =?utf-8?B?TFkrTE5aTUNBVWl0U2Z2eHhwQ3hIZmZaTjNiRFdOclN5MGJiZDc0Nm1lR1M0?=
+ =?utf-8?B?Z1drV25yRFZRZG9UbUJxUGl0SVpWYWM1ZUM3MHp0VHk2c1AxeGpRaTBLckh4?=
+ =?utf-8?B?MS82cHdJL3B4YWJnd01QMkJ6ZUpodU53QldqTmVKUG8rUkREQUpTdUJvSmtE?=
+ =?utf-8?B?dUE5RkF6RTIxV2k1bGpsSEExOUZ3STJ0VGRES1c1ZXEyRGJNcGM2OVlINlFR?=
+ =?utf-8?B?dkZialEyL0dKbWxJNW03VlNMaTdBNzJMR1RzM0FyY2k4UTJ0ZUFuSzk2VmVi?=
+ =?utf-8?B?eGlnZXkwZnN1WmRqS2FnZEhKR0tNTm9xQytHNVBWMDhueGhhZExETVMzSTNS?=
+ =?utf-8?B?K1RCMzdlclFXY1YvZXZOZC90OVB0RzRHNmhNTEFiN3dOVlp1YVZ6NVlwZUxF?=
+ =?utf-8?B?bWR1K1ozc0R2RFA2cjRmN2szYVJSZ2lNVUh6RDNxSlhyOTNzWnVtUElrRG1z?=
+ =?utf-8?B?aFh4ZDBnM0hLU0ZkeXI2dVpvb2lyQzlaTGU0S0RCOCs1OFJVMGZ4Zz09?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9b104051-3d4b-4cf9-e0db-08de5f0f72c4
 X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5482.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 08:21:15.0932 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 08:21:49.0353 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9GGnpX+8ktSptm1ho0/2F339hwib+N5DtQ0Zf6j69XmZ4TKNa0Lc8IodAjjedC/va3tTco1icAbRt1Wm+eJKJw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Gw/drg+V0qlrtgp+NEuFM26Dp8Y+sXlm1FkHljmgrxsZ5ULsWv7wxxqwFi344TUlwxiFczG6ZlXQTXco4zs7jA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9087
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -206,14 +209,14 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 1/28/2026 19:08, Marcin Bernatowicz wrote:
-> Reflect recent kernel changes and expose SR-IOV admin sysfs helpers for
-> scheduling control. Add per-VF and bulk accessors for execution quantum,
-> preemption timeout, scheduling priority, VF stop and restoring defaults.
+> Add tests that exercise SR-IOV admin sysfs attributes for PF/VF functions
+> with VFs disabled, covering default values, write -> readback behavior, and
+> bulk updates for exec_quantum_ms, preempt_timeout_us, and sched_priority.
 >
-> Link: https://lore.kernel.org/intel-xe/20251030222348.186658-1-michal.wajdeczko@intel.com/
 > Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 > Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
 > Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > Cc: Lukasz Laguna <lukasz.laguna@intel.com>
 
 Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
@@ -222,726 +225,472 @@ Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
 >
 > ---
 > v2:
-> - Correct __xe_sriov_profile_set_exec_quantum_ms return code
->    on igt_sysfs_open() fail.
-> - Correct formatting.
-> - Rename helpers to consistent __xe_sriov_admin_*/xe_sriov_admin_*
+> - Align igt_main()/igt_fixture() usage with upstream changes.
+> - Correct date
+> - Replace id with vf_id
+> - Iterate all VF sched_priority tokens and verify denied
+>    writes don’t change selection. (Lukasz)
+> - Rename xe_sriov_admin_profile to xe_sriov_admin (Lukasz)
+> - Adjust test for xe_sriov_sched_priority_mask_to_string() returning
+>    error code.
+> - Adjust to renamed __xe_sriov_admin_* helpers
 >
 > Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 > ---
->   lib/meson.build         |   1 +
->   lib/xe/xe_sriov_admin.c | 625 ++++++++++++++++++++++++++++++++++++++++
->   lib/xe/xe_sriov_admin.h |  60 ++++
->   3 files changed, 686 insertions(+)
->   create mode 100644 lib/xe/xe_sriov_admin.c
->   create mode 100644 lib/xe/xe_sriov_admin.h
+>   tests/intel/xe_sriov_admin.c | 434 +++++++++++++++++++++++++++++++++++
+>   tests/meson.build            |   1 +
+>   2 files changed, 435 insertions(+)
+>   create mode 100644 tests/intel/xe_sriov_admin.c
 >
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 83569e8d2..d851029e0 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -128,6 +128,7 @@ lib_sources = [
->   	'xe/xe_mmio.c',
->   	'xe/xe_query.c',
->   	'xe/xe_spin.c',
-> +	'xe/xe_sriov_admin.c',
->   	'xe/xe_sriov_debugfs.c',
->   	'xe/xe_sriov_provisioning.c',
->   	'xe/xe_util.c',
-> diff --git a/lib/xe/xe_sriov_admin.c b/lib/xe/xe_sriov_admin.c
+> diff --git a/tests/intel/xe_sriov_admin.c b/tests/intel/xe_sriov_admin.c
 > new file mode 100644
-> index 000000000..f3be70db8
+> index 000000000..5c7f5d621
 > --- /dev/null
-> +++ b/lib/xe/xe_sriov_admin.c
-> @@ -0,0 +1,625 @@
+> +++ b/tests/intel/xe_sriov_admin.c
+> @@ -0,0 +1,434 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
-> + * Copyright(c) 2025 Intel Corporation. All rights reserved.
+> + * Copyright © 2026 Intel Corporation
 > + */
-> +
-> +#include <errno.h>
-> +#include <fcntl.h>
-> +#include <limits.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <unistd.h>
 > +#include "igt.h"
 > +#include "igt_sriov_device.h"
 > +#include "igt_sysfs.h"
 > +#include "igt_sysfs_choice.h"
-> +#include "xe_sriov_admin.h"
-> +
-> +static const char SRIOV_ADMIN[] = "device/sriov_admin";
-> +
-> +static int fmt_profile_rel_path(char *buf, size_t sz, unsigned int vf_num,
-> +				const char *attr)
-> +{
-> +	igt_assert(buf && attr && sz);
-> +
-> +	return snprintf(buf, sz, "%s/%s/%s", SRIOV_ADMIN, igt_sriov_func_str(vf_num), attr);
-> +}
-> +
-> +static int fmt_bulk_rel_path(char *buf, size_t sz, const char *attr)
-> +{
-> +	igt_assert(buf && attr && sz);
-> +
-> +	return snprintf(buf, sz, "%s/.bulk_profile/%s", SRIOV_ADMIN, attr);
-> +}
-> +
-> +static int ret_from_printf(int ret)
-> +{
-> +	return ret > 0 ? 0 : ret;
-> +}
-> +
-> +static int ret_from_scanf_items(int ret, int want_items)
-> +{
-> +	/* igt_sysfs_scanf: returns number of assigned items, or <0 on -errno */
-> +	if (ret < 0)
-> +		return ret;
-> +	return (ret == want_items) ? 0 : -EIO;
-> +}
+> +#include "xe_drm.h"
+> +#include "xe/xe_sriov_admin.h"
 > +
 > +/**
-> + * xe_sriov_admin_is_present - Check if SR-IOV admin sysfs interface is available
-> + * @pf_fd: PF device file descriptor.
-> + *
-> + * Returns: true if the PF exposes the SR-IOV admin tree, false otherwise.
+> + * TEST: Tests for SR-IOV admin sysfs.
+> + * Category: Core
+> + * Mega feature: SR-IOV
+> + * Sub-category: sysfs
+> + * Functionality: SR-IOV admin sysfs
+> + * Description: Verify behavior of exposed SR-IOV admin sysfs attributes.
 > + */
-> +bool xe_sriov_admin_is_present(int pf_fd)
-> +{
-> +	int sysfs;
-> +	bool ret;
-> +
-> +	sysfs = igt_sysfs_open(pf_fd);
-> +	if (sysfs < 0)
-> +		return -1;
-> +
-> +	ret = igt_sysfs_has_attr(sysfs, SRIOV_ADMIN);
-> +	close(sysfs);
-> +	return ret;
-> +}
 > +
 > +/**
-> + * __xe_sriov_admin_set_exec_quantum_ms - Set execution quantum for a VF
-> + * @pf_fd:   PF device file descriptor.
-> + * @vf_num:  VF index (0 for PF, >0 for VFs).
-> + * @eq_ms:   Execution quantum in milliseconds.
-> + *
-> + * Writes the new execution quantum to sysfs.
-> + *
-> + * Returns: 0 on success or negative errno on error.
+> + * SUBTEST: default-sched-attributes-vfs-disabled
+> + * Description:
+> + *   Verify default scheduling attributes under sriov_admin
+> + *   with VFs disabled.
 > + */
-> +int __xe_sriov_admin_set_exec_quantum_ms(int pf_fd, unsigned int vf_num,
-> +					 uint32_t eq_ms)
+> +static void default_sched_attributes(int pf_fd, int vf_num)
 > +{
-> +	char path[PATH_MAX];
-> +	int sysfs;
-> +	bool ret;
-> +
-> +	sysfs = igt_sysfs_open(pf_fd);
-> +	if (sysfs < 0)
-> +		return sysfs;
-> +
-> +	fmt_profile_rel_path(path, sizeof(path), vf_num, "profile/exec_quantum_ms");
-> +	ret = igt_sysfs_printf(sysfs, path, "%u", eq_ms);
-> +	close(sysfs);
-> +
-> +	return ret_from_printf(ret);
-> +}
-> +
-> +/**
-> + * xe_sriov_admin_set_exec_quantum_ms - Assert wrapper for setting VF execution quantum
-> + * @pf_fd:   PF device file descriptor.
-> + * @vf_num:  VF index (0 for PF, >0 for VFs).
-> + * @eq_ms:   Execution quantum in milliseconds.
-> + *
-> + * Calls __xe_sriov_admin_set_exec_quantum_ms() and asserts on error.
-> + */
-> +void xe_sriov_admin_set_exec_quantum_ms(int pf_fd, unsigned int vf_num, uint32_t eq_ms)
-> +{
-> +	igt_assert_eq(0, __xe_sriov_admin_set_exec_quantum_ms(pf_fd, vf_num, eq_ms));
-> +}
-> +
-> +/**
-> + * __xe_sriov_admin_get_exec_quantum_ms - Read execution quantum for a VF
-> + * @pf_fd:   PF device file descriptor.
-> + * @vf_num:  VF index (0 for PF, >0 for VFs).
-> + * @eq_ms:   Output pointer for the execution quantum (ms).
-> + *
-> + * Reads current VF execution quantum from sysfs.
-> + *
-> + * Returns: 0 on success or negative errno on error.
-> + */
-> +int __xe_sriov_admin_get_exec_quantum_ms(int pf_fd, unsigned int vf_num, uint32_t *eq_ms)
-> +{
-> +	char path[PATH_MAX];
-> +	unsigned int val = 0;
-> +	int sysfs, ret;
-> +
-> +	sysfs = igt_sysfs_open(pf_fd);
-> +	if (sysfs < 0)
-> +		return sysfs;
-> +
-> +	fmt_profile_rel_path(path, sizeof(path), vf_num, "profile/exec_quantum_ms");
-> +	ret = igt_sysfs_scanf(sysfs, path, "%u", &val);
-> +	close(sysfs);
-> +
-> +	ret = ret_from_scanf_items(ret, 1);
-> +	if (ret)
-> +		return ret;
-> +
-> +	*eq_ms = val;
-> +	return 0;
-> +}
-> +
-> +/**
-> + * xe_sriov_admin_get_exec_quantum_ms - Assert wrapper for reading VF execution quantum
-> + * @pf_fd:   PF device file descriptor.
-> + * @vf_num:  VF index (0 for PF, >0 for VFs).
-> + *
-> + * Returns: execution quantum (ms); asserts on error.
-> + */
-> +uint32_t xe_sriov_admin_get_exec_quantum_ms(int pf_fd, unsigned int vf_num)
-> +{
-> +	uint32_t v = 0;
-> +
-> +	igt_assert_eq(0, __xe_sriov_admin_get_exec_quantum_ms(pf_fd, vf_num, &v));
-> +
-> +	return v;
-> +}
-> +
-> +/**
-> + * __xe_sriov_admin_set_preempt_timeout_us - Set preemption timeout for a VF
-> + * @pf_fd:   PF device file descriptor.
-> + * @vf_num:  VF index (0 for PF, >0 for VFs).
-> + * @pt_us:   Preemption timeout in microseconds.
-> + *
-> + * Returns: 0 on success or negative errno on error.
-> + */
-> +int __xe_sriov_admin_set_preempt_timeout_us(int pf_fd, unsigned int vf_num, uint32_t pt_us)
-> +{
-> +	char path[PATH_MAX];
-> +	int sysfs, ret;
-> +
-> +	sysfs = igt_sysfs_open(pf_fd);
-> +	if (sysfs < 0)
-> +		return sysfs;
-> +
-> +	fmt_profile_rel_path(path, sizeof(path), vf_num, "profile/preempt_timeout_us");
-> +	ret = igt_sysfs_printf(sysfs, path, "%u", pt_us);
-> +	close(sysfs);
-> +
-> +	return ret_from_printf(ret);
-> +}
-> +
-> +/**
-> + * xe_sriov_admin_set_preempt_timeout_us - Assert wrapper for setting VF preemption timeout
-> + * @pf_fd:   PF device file descriptor.
-> + * @vf_num:  VF index (0 for PF, >0 for VFs).
-> + * @pt_us:   Preemption timeout in microseconds.
-> + */
-> +void xe_sriov_admin_set_preempt_timeout_us(int pf_fd, unsigned int vf_num, uint32_t pt_us)
-> +{
-> +	igt_assert_eq(0, __xe_sriov_admin_set_preempt_timeout_us(pf_fd, vf_num, pt_us));
-> +}
-> +
-> +/**
-> + * __xe_sriov_admin_get_preempt_timeout_us - Read preemption timeout for a VF
-> + * @pf_fd:   PF device file descriptor.
-> + * @vf_num:  VF index (0 for PF, >0 for VFs).
-> + * @pt_us:   Output pointer for preemption timeout (µs).
-> + *
-> + * Returns: 0 on success or negative errno on error.
-> + */
-> +int __xe_sriov_admin_get_preempt_timeout_us(int pf_fd, unsigned int vf_num,
-> +					    uint32_t *pt_us)
-> +{
-> +	char path[PATH_MAX];
-> +	unsigned int val = 0;
-> +	int sysfs, ret;
-> +
-> +	sysfs = igt_sysfs_open(pf_fd);
-> +	if (sysfs < 0)
-> +		return sysfs;
-> +
-> +	fmt_profile_rel_path(path, sizeof(path), vf_num,
-> +			     "profile/preempt_timeout_us");
-> +	ret = igt_sysfs_scanf(sysfs, path, "%u", &val);
-> +	close(sysfs);
-> +
-> +	ret = ret_from_scanf_items(ret, 1);
-> +	if (ret)
-> +		return ret;
-> +	*pt_us = val;
-> +	return 0;
-> +}
-> +
-> +/**
-> + * xe_sriov_admin_get_preempt_timeout_us - Assert wrapper for reading VF preemption timeout
-> + * @pf_fd:   PF device file descriptor.
-> + * @vf_num:  VF index (0 for PF, >0 for VFs).
-> + *
-> + * Returns: preemption timeout (µs); asserts on error.
-> + */
-> +uint32_t xe_sriov_admin_get_preempt_timeout_us(int pf_fd, unsigned int vf_num)
-> +{
-> +	uint32_t v = 0;
-> +
-> +	igt_assert_eq(0, __xe_sriov_admin_get_preempt_timeout_us(pf_fd, vf_num, &v));
-> +	return v;
-> +}
-> +
-> +/**
-> + * __xe_sriov_admin_set_sched_priority_string - Set VF priority from string
-> + * @pf_fd:   PF device file descriptor.
-> + * @vf_num:  VF index (0 for PF, >0 for VFs).
-> + * @prio:    String value ("low", "normal", "high").
-> + *
-> + * Returns: 0 on success or negative errno on error.
-> + */
-> +int __xe_sriov_admin_set_sched_priority_string(int pf_fd, unsigned int vf_num,
-> +					       const char *prio)
-> +{
-> +	char path[PATH_MAX];
-> +	int sysfs, ret;
-> +
-> +	if (!prio)
-> +		return -EINVAL;
-> +
-> +	sysfs = igt_sysfs_open(pf_fd);
-> +	if (sysfs < 0)
-> +		return sysfs;
-> +
-> +	fmt_profile_rel_path(path, sizeof(path), vf_num,
-> +			     "profile/sched_priority");
-> +	ret = igt_sysfs_printf(sysfs, path, "%s", prio);
-> +	close(sysfs);
-> +	return ret_from_printf(ret);
-> +}
-> +
-> +/**
-> + * __xe_sriov_admin_set_sched_priority - Set VF scheduling priority
-> + * @pf_fd:   PF device file descriptor.
-> + * @vf_num:  VF index (0 for PF, >0 for VFs).
-> + * @prio:    Priority enum value.
-> + *
-> + * Returns: 0 on success or negative errno on error.
-> + */
-> +int __xe_sriov_admin_set_sched_priority(int pf_fd, unsigned int vf_num,
-> +					enum xe_sriov_sched_priority prio)
-> +{
-> +	const char *p = xe_sriov_sched_priority_to_string(prio);
-> +
-> +	return __xe_sriov_admin_set_sched_priority_string(pf_fd, vf_num, p);
-> +}
-> +
-> +/**
-> + * xe_sriov_admin_set_sched_priority - Assert wrapper for setting VF priority
-> + * @pf_fd:   PF device file descriptor.
-> + * @vf_num:  VF index (0 for PF, >0 for VFs).
-> + * @prio:    Priority enum value.
-> + */
-> +void xe_sriov_admin_set_sched_priority(int pf_fd, unsigned int vf_num,
-> +				       enum xe_sriov_sched_priority prio)
-> +{
-> +	igt_assert_eq(0, __xe_sriov_admin_set_sched_priority(pf_fd, vf_num, prio));
-> +}
-> +
-> +/**
-> + * __xe_sriov_admin_get_sched_priority_choice - Read sched_priority tokens
-> + * @pf_fd:   PF device file descriptor
-> + * @vf_num:  VF index (0 for PF, >0 for VFs).
-> + * @choice:  Output choice structure with parsed tokens and selected index
-> + *
-> + * Reads the sched_priority sysfs attribute for the given PF/VF and parses it
-> + * into an igt_sysfs_choice.
-> + *
-> + * Returns: 0 on success or a negative errno code.
-> + */
-> +int __xe_sriov_admin_get_sched_priority_choice(int pf_fd, unsigned int vf_num,
-> +					       struct igt_sysfs_choice *choice)
-> +{
-> +	char path[PATH_MAX];
-> +	int sysfs, ret;
-> +
-> +	sysfs = igt_sysfs_open(pf_fd);
-> +	if (sysfs < 0)
-> +		return sysfs;
-> +
-> +	fmt_profile_rel_path(path, sizeof(path), vf_num, "profile/sched_priority");
-> +	ret = igt_sysfs_choice_read(sysfs, path, choice);
-> +	close(sysfs);
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * __xe_sriov_admin_get_sched_priority - Read VF scheduling priority + mask
-> + * @pf_fd:     PF device file descriptor.
-> + * @vf_num:    VF index (0 for PF, >0 for VFs).
-> + * @prio:      Output pointer for the effective priority.
-> + * @prio_mask: Output mask of allowed priorities.
-> + *
-> + * Returns: 0 on success or negative errno on error.
-> + */
-> +int __xe_sriov_admin_get_sched_priority(int pf_fd, unsigned int vf_num,
-> +					enum xe_sriov_sched_priority *prio,
-> +					unsigned int *prio_mask)
-> +{
-> +	struct igt_sysfs_choice prio_ch = {};
-> +	int ret;
-> +
-> +	ret = __xe_sriov_admin_get_sched_priority_choice(pf_fd, vf_num, &prio_ch);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = xe_sriov_sched_priority_from_string(prio_ch.tokens[prio_ch.selected], prio);
-> +	if (igt_debug_on_f(ret, "unknown selected value '%s' (err=%d)\n",
-> +			   prio_ch.tokens[prio_ch.selected], ret))
-> +		return ret;
-> +
-> +	if (prio_mask) {
-> +		ret = xe_sriov_sched_priority_choice_to_mask(&prio_ch, prio_mask, NULL);
-> +		if (igt_debug_on_f(ret, "mask conversion failed (err=%d)\n", ret))
-> +			return ret;
+> +	igt_dynamic_f("%s-default-exec-quantum", igt_sriov_func_str(vf_num)) {
+> +		igt_assert_eq(0, xe_sriov_admin_get_exec_quantum_ms(pf_fd, vf_num));
 > +	}
 > +
-> +	return 0;
+> +	igt_dynamic_f("%s-default-preempt-timeout", igt_sriov_func_str(vf_num)) {
+> +		igt_assert_eq(0, xe_sriov_admin_get_preempt_timeout_us(pf_fd, vf_num));
+> +	}
+> +
+> +	igt_dynamic_f("%s-default-sched-priority", igt_sriov_func_str(vf_num)) {
+> +		enum xe_sriov_sched_priority prio;
+> +		unsigned int prio_mask;
+> +		char mask_str[64];
+> +		int ret;
+> +
+> +		prio = xe_sriov_admin_get_sched_priority(pf_fd, vf_num, &prio_mask);
+> +		ret = xe_sriov_sched_priority_mask_to_string(mask_str, sizeof(mask_str),
+> +							     prio_mask, prio);
+> +		igt_debug("sched_priority: ret=%d mask=0x%x selected_idx=%d str='%s'\n",
+> +			  ret, prio_mask, prio, mask_str);
+> +		igt_assert_eq(ret, 0);
+> +		igt_assert_eq(XE_SRIOV_SCHED_PRIORITY_LOW, prio);
+> +	}
 > +}
 > +
 > +/**
-> + * xe_sriov_admin_get_sched_priority - Assert wrapper for reading VF priority
-> + * @pf_fd:     PF device file descriptor.
-> + * @vf_num:    VF index (0 for PF, >0 for VFs).
-> + * @prio_mask: Output mask of supported priorities.
-> + *
-> + * Returns: effective priority; asserts on error.
+> + * SUBTEST: exec-quantum-write-readback-vfs-disabled
+> + * Description:
+> + *   Verify write -> readback of exec_quantum_ms under sriov_admin
+> + *   for PF and all VFs with VFs disabled.
 > + */
-> +enum xe_sriov_sched_priority
-> +xe_sriov_admin_get_sched_priority(int pf_fd, unsigned int vf_num,
-> +				  unsigned int *prio_mask)
+> +static void exec_quantum_write_readback(int pf_fd, unsigned int vf_num,
+> +					uint32_t eq_ms)
 > +{
-> +	enum xe_sriov_sched_priority cur_prio;
+> +	int ret_read, ret_restore;
+> +	uint32_t read_val;
 > +
-> +	igt_assert_eq(0,
-> +		      __xe_sriov_admin_get_sched_priority(pf_fd, vf_num, &cur_prio, prio_mask));
+> +	igt_require(xe_sriov_admin_get_exec_quantum_ms(pf_fd, vf_num) == 0);
 > +
-> +	return cur_prio;
+> +	xe_sriov_admin_set_exec_quantum_ms(pf_fd, vf_num, eq_ms);
+> +
+> +	ret_read = __xe_sriov_admin_get_exec_quantum_ms(pf_fd, vf_num, &read_val);
+> +
+> +	ret_restore = __xe_sriov_admin_set_exec_quantum_ms(pf_fd, vf_num, 0);
+> +
+> +	igt_assert_eq(ret_read, 0);
+> +	igt_assert_eq(read_val, eq_ms);
+> +	igt_fail_on(ret_restore);
 > +}
 > +
 > +/**
-> + * __xe_sriov_admin_bulk_set_exec_quantum_ms - Set execution quantum for PF and all VFs
-> + * @pf_fd: PF device file descriptor.
-> + * @eq_ms: Execution quantum in milliseconds.
-> + *
-> + * Applies the value to PF and all VFs.
-> + *
-> + * Returns: 0 on success or negative errno on error.
+> + * SUBTEST: preempt-timeout-write-readback-vfs-disabled
+> + * Description:
+> + *   Verify write -> readback of preempt_timeout_us under sriov_admin
+> + *   for PF and all VFs with VFs disabled.
 > + */
-> +int __xe_sriov_admin_bulk_set_exec_quantum_ms(int pf_fd, uint32_t eq_ms)
+> +static void preempt_timeout_write_readback(int pf_fd, unsigned int vf_num,
+> +					   uint32_t pt_us)
 > +{
-> +	char path[PATH_MAX];
-> +	int sysfs, ret;
+> +	int ret_read, ret_restore;
+> +	uint32_t read_val;
 > +
-> +	sysfs = igt_sysfs_open(pf_fd);
-> +	if (sysfs < 0)
-> +		return sysfs;
+> +	igt_require(xe_sriov_admin_get_preempt_timeout_us(pf_fd, vf_num) == 0);
 > +
-> +	fmt_bulk_rel_path(path, sizeof(path), "exec_quantum_ms");
-> +	ret = igt_sysfs_printf(sysfs, path, "%u", eq_ms);
-> +	close(sysfs);
+> +	xe_sriov_admin_set_preempt_timeout_us(pf_fd, vf_num, pt_us);
 > +
-> +	return ret_from_printf(ret);
+> +	ret_read = __xe_sriov_admin_get_preempt_timeout_us(pf_fd, vf_num, &read_val);
+> +
+> +	ret_restore = __xe_sriov_admin_set_preempt_timeout_us(pf_fd, vf_num, 0);
+> +
+> +	igt_assert_eq(ret_read, 0);
+> +	igt_assert_eq(read_val, pt_us);
+> +	igt_fail_on(ret_restore);
 > +}
 > +
 > +/**
-> + * xe_sriov_admin_bulk_set_exec_quantum_ms - Assert wrapper for bulk execution quantum update
-> + * @pf_fd: PF device file descriptor.
-> + * @eq_ms: Execution quantum in milliseconds.
+> + * SUBTEST: sched-priority-write-readback-vfs-disabled
+> + * Description:
+> + *   Verify write -> readback of sched_priority under sriov_admin
+> + *   for PF and all VFs with VFs disabled.
 > + */
-> +void xe_sriov_admin_bulk_set_exec_quantum_ms(int pf_fd, uint32_t eq_ms)
+> +static void sched_priority_write_readback(int pf_fd, unsigned int vf_num)
 > +{
-> +	igt_assert_eq(0, __xe_sriov_admin_bulk_set_exec_quantum_ms(pf_fd, eq_ms));
+> +	struct igt_sysfs_choice prio, now;
+> +	enum xe_sriov_sched_priority prio_enum;
+> +	int ret;
+> +
+> +	ret = __xe_sriov_admin_get_sched_priority_choice(pf_fd, vf_num, &prio);
+> +	igt_assert_eq(ret, 0);
+> +
+> +	for (size_t n = prio.num_tokens; n-- > 0; ) {
+> +		igt_warn_on_f(xe_sriov_sched_priority_from_string(prio.tokens[n],
+> +								  &prio_enum),
+> +			      "Unrecognized sched_priority value '%s'\n",
+> +			      prio.tokens[n]);
+> +		igt_debug("Setting priority string '%s'\n", prio.tokens[n]);
+> +		ret = __xe_sriov_admin_set_sched_priority_string(pf_fd, vf_num,
+> +								 prio.tokens[n]);
+> +
+> +		/* Not settable on VF */
+> +		if (igt_debug_on(vf_num && (ret == -EPERM || ret == -EACCES)))
+> +			break;
+> +
+> +		igt_assert_eq(ret, 0);
+> +		ret = __xe_sriov_admin_get_sched_priority_choice(pf_fd, vf_num, &now);
+> +		igt_assert_f(!strcmp(now.tokens[now.selected], prio.tokens[n]),
+> +			     "'%s' != '%s'", now.tokens[now.selected],
+> +			     prio.tokens[n]);
+> +		igt_assert_eq(now.selected, n);
+> +	}
+> +	__xe_sriov_admin_set_sched_priority_string(pf_fd, vf_num,
+> +						   prio.tokens[prio.selected]);
 > +}
 > +
 > +/**
-> + * __xe_sriov_admin_bulk_set_preempt_timeout_us - Set preemption timeout for PF and all VFs
-> + * @pf_fd: PF device file descriptor.
-> + * @pt_us: Preemption timeout in microseconds.
-> + *
-> + * Applies the value to PF and all VFs.
-> + *
-> + * Returns: 0 on success or negative errno on error.
+> + * SUBTEST: bulk-exec-quantum-vfs-disabled
+> + * Description:
+> + *   Verify that bulk setting exec_quantum_ms under sriov_admin applies
+> + *   the expected value to the PF and all VFs when VFs are disabled.
 > + */
-> +int __xe_sriov_admin_bulk_set_preempt_timeout_us(int pf_fd, uint32_t pt_us)
+> +static void bulk_set_exec_quantum(int pf_fd, unsigned int total_vfs, uint32_t eq_ms)
 > +{
-> +	char path[PATH_MAX];
-> +	int sysfs, ret;
+> +	uint32_t read_val;
+> +	unsigned int vf_id;
+> +	int fails = 0;
 > +
-> +	sysfs = igt_sysfs_open(pf_fd);
-> +	if (sysfs < 0)
-> +		return sysfs;
+> +	xe_sriov_admin_bulk_set_exec_quantum_ms(pf_fd, eq_ms);
 > +
-> +	fmt_bulk_rel_path(path, sizeof(path), "preempt_timeout_us");
-> +	ret = igt_sysfs_printf(sysfs, path, "%u", pt_us);
-> +	close(sysfs);
+> +	for (vf_id = 0; vf_id <= total_vfs; ++vf_id) {
+> +		int ret = __xe_sriov_admin_get_exec_quantum_ms(pf_fd, vf_id,
+> +							       &read_val);
 > +
-> +	return ret_from_printf(ret);
+> +		if (ret) {
+> +			igt_debug("%s: failed to read exec_quantum_ms, ret=%d\n",
+> +				  igt_sriov_func_str(vf_id), ret);
+> +			fails++;
+> +			continue;
+> +		}
+> +
+> +		if (read_val != eq_ms) {
+> +			igt_debug("%s: exec_quantum_ms=%u, expected=%u\n",
+> +				  igt_sriov_func_str(vf_id), read_val, eq_ms);
+> +			fails++;
+> +		}
+> +	}
+> +
+> +	xe_sriov_admin_bulk_set_exec_quantum_ms(pf_fd, 0);
+> +	igt_fail_on(fails);
 > +}
 > +
 > +/**
-> + * xe_sriov_admin_bulk_set_preempt_timeout_us - Assert wrapper for bulk preemption timeout update
-> + * @pf_fd: PF device file descriptor.
-> + * @pt_us: Preemption timeout in microseconds.
+> + * SUBTEST: bulk-preempt-timeout-vfs-disabled
+> + * Description:
+> + *   Verify that bulk setting preempt_timeout_us under sriov_admin applies
+> + *   the expected value to the PF and all VFs when VFs are disabled.
 > + */
-> +void xe_sriov_admin_bulk_set_preempt_timeout_us(int pf_fd, uint32_t pt_us)
+> +static void bulk_set_preempt_timeout(int pf_fd, unsigned int total_vfs, uint32_t pt_us)
 > +{
-> +	igt_assert_eq(0, __xe_sriov_admin_bulk_set_preempt_timeout_us(pf_fd, pt_us));
+> +	uint32_t read_val;
+> +	unsigned int id;
+> +	int fails = 0;
+> +
+> +	xe_sriov_admin_bulk_set_preempt_timeout_us(pf_fd, pt_us);
+> +
+> +	for (id = 0; id <= total_vfs; ++id) {
+> +		int ret = __xe_sriov_admin_get_preempt_timeout_us(pf_fd, id,
+> +								  &read_val);
+> +
+> +		if (ret) {
+> +			igt_debug("%s: failed to read preempt_timeout_us, ret=%d\n",
+> +				  igt_sriov_func_str(id), ret);
+> +			fails++;
+> +			continue;
+> +		}
+> +
+> +		if (read_val != pt_us) {
+> +			igt_debug("%s: preempt_timeout_us=%u, expected=%u\n",
+> +				  igt_sriov_func_str(id), read_val, pt_us);
+> +			fails++;
+> +		}
+> +	}
+> +
+> +	xe_sriov_admin_bulk_set_preempt_timeout_us(pf_fd, 0);
+> +	igt_fail_on(fails);
+> +}
+> +
+> +static void build_common_sched_priority_choice(int pf_fd, int num_vfs,
+> +					       struct igt_sysfs_choice *common)
+> +{
+> +	int ret;
+> +
+> +	/* Start from PF */
+> +	ret = __xe_sriov_admin_get_sched_priority_choice(pf_fd, 0, common);
+> +	igt_require_f(ret == 0,
+> +		      "Failed to read PF sched_priority (ret=%d)\n", ret);
+> +
+> +	igt_require_f(common->num_tokens > 0,
+> +		      "PF sched_priority exposes no tokens\n");
+> +
+> +	/* Intersect with every VF 1..num_vfs */
+> +	for (int vf = 1; vf <= num_vfs; vf++) {
+> +		struct igt_sysfs_choice prio = {};
+> +
+> +		ret = __xe_sriov_admin_get_sched_priority_choice(pf_fd, vf, &prio);
+> +		igt_require_f(ret == 0,
+> +			      "Failed to read VF%u sched_priority (ret=%d)\n",
+> +			      vf, ret);
+> +
+> +		ret = igt_sysfs_choice_intersect(common, &prio);
+> +		igt_require_f(ret == 0,
+> +			      "No common sched_priority between PF and VF%u\n",
+> +			      vf);
+> +	}
+> +
+> +	igt_require_f(common->num_tokens > 0,
+> +		      "No common sched_priority across PF and all VFs\n");
+> +
+> +	if (common->selected < 0) {
+> +		igt_debug("Common sched_priority has no selected token, "
+> +			  "defaulting to tokens[0]=\"%s\"\n",
+> +			  common->tokens[0]);
+> +		common->selected = 0;
+> +	}
 > +}
 > +
 > +/**
-> + * __xe_sriov_admin_bulk_set_sched_priority_string - Set scheduling priority for PF and all VFs
-> + * @pf_fd: PF device file descriptor.
-> + * @prio:  String priority ("low", "normal", "high").
-> + *
-> + * Returns: 0 on success or negative errno on error.
+> + * SUBTEST: bulk-sched-priority-vfs-disabled
+> + * Description: Verify bulk sched_priority modification with VFs disabled.
 > + */
-> +int __xe_sriov_admin_bulk_set_sched_priority_string(int pf_fd, const char *prio)
+> +static void bulk_set_sched_priority(int pf_fd, unsigned int total_vfs, const char *prio_str)
 > +{
-> +	char path[PATH_MAX];
-> +	int sysfs, ret;
+> +	struct igt_sysfs_choice read_val;
+> +	const char *selected;
+> +	unsigned int id;
+> +	int fails = 0;
 > +
-> +	sysfs = igt_sysfs_open(pf_fd);
-> +	if (sysfs < 0)
-> +		return sysfs;
+> +	xe_sriov_admin_bulk_set_sched_priority_string(pf_fd, prio_str);
 > +
-> +	fmt_bulk_rel_path(path, sizeof(path), "sched_priority");
-> +	ret = igt_sysfs_printf(sysfs, path, "%s", prio);
-> +	close(sysfs);
+> +	for (id = 0; id <= total_vfs; ++id) {
+> +		int ret = __xe_sriov_admin_get_sched_priority_choice(pf_fd, id,
+> +								     &read_val);
 > +
-> +	return ret_from_printf(ret);
+> +		if (ret) {
+> +			igt_debug("%s: failed to read sched_priority, ret=%d\n",
+> +				  igt_sriov_func_str(id), ret);
+> +			fails++;
+> +			continue;
+> +		}
+> +
+> +		selected = igt_sysfs_choice_selected(&read_val);
+> +		if (!selected || strncmp(selected, prio_str, strlen(prio_str))) {
+> +			igt_debug("%s: sched_priority='%s', expected='%s'\n",
+> +				  igt_sriov_func_str(id), selected ?: "NULL", prio_str);
+> +			fails++;
+> +		}
+> +	}
+> +
+> +	igt_fail_on(fails);
 > +}
 > +
 > +/**
-> + * xe_sriov_admin_bulk_set_sched_priority_string - Assert wrapper for bulk priority update
-> + * @pf_fd: PF device file descriptor.
-> + * @prio:  String priority.
+> + * SUBTEST: sched-priority-vf-write-denied
+> + * Description:
+> + *   Verify that sched_priority cannot be modified on a VF.
+> + *   A write attempt must fail with -EPERM or -EACCES and the
+> + *   current priority selection must remain unchanged.
 > + */
-> +void xe_sriov_admin_bulk_set_sched_priority_string(int pf_fd, const char *prio)
+> +static void sched_priority_vf_write_denied(int pf_fd, unsigned int vf_num)
 > +{
-> +	igt_assert_eq(0, __xe_sriov_admin_bulk_set_sched_priority_string(pf_fd, prio));
+> +	struct igt_sysfs_choice before, after;
+> +	const char *new_token;
+> +	const char *baseline;
+> +	int baseline_selected;
+> +	bool attempted = false;
+> +	int ret;
+> +
+> +	igt_require(vf_num > 0);
+> +
+> +	ret = __xe_sriov_admin_get_sched_priority_choice(pf_fd, vf_num, &before);
+> +	igt_require(ret == 0);
+> +	igt_require(before.num_tokens > 0);
+> +	igt_require(before.selected >= 0);
+> +
+> +	baseline_selected = before.selected;
+> +	baseline = igt_sysfs_choice_selected(&before);
+> +	igt_require(baseline);
+> +
+> +	for (size_t i = 0; i < before.num_tokens; i++) {
+> +		if (before.num_tokens > 1 && (int)i == baseline_selected)
+> +			continue;
+> +
+> +		new_token = before.tokens[i];
+> +		attempted = true;
+> +
+> +		ret = __xe_sriov_admin_set_sched_priority_string(pf_fd, vf_num,
+> +								 new_token);
+> +		igt_assert_f(ret == -EPERM || ret == -EACCES,
+> +			     "Expected -EPERM/-EACCES when writing VF sched_priority "
+> +			     "(token='%s'), got %d\n", new_token, ret);
+> +
+> +		ret = __xe_sriov_admin_get_sched_priority_choice(pf_fd, vf_num,
+> +								 &after);
+> +		igt_assert_eq(ret, 0);
+> +
+> +		igt_assert_eq(after.selected, baseline_selected);
+> +		igt_assert(!strcmp(baseline, igt_sysfs_choice_selected(&after)));
+> +	}
+> +
+> +	igt_assert(attempted);
 > +}
 > +
-> +/**
-> + * __xe_sriov_admin_bulk_set_sched_priority - Set numeric priority for PF and all VFs
-> + * @pf_fd: PF device file descriptor.
-> + * @prio:  Enum priority value.
-> + *
-> + * Returns: 0 on success or negative errno on error.
-> + */
-> +int __xe_sriov_admin_bulk_set_sched_priority(int pf_fd,
-> +					     enum xe_sriov_sched_priority prio)
+> +int igt_main()
 > +{
-> +	const char *s = xe_sriov_sched_priority_to_string(prio);
+> +	unsigned int total_vfs;
+> +	int pf_fd;
 > +
-> +	if (!s)
-> +		return -EINVAL;
-> +	return __xe_sriov_admin_bulk_set_sched_priority_string(pf_fd, s);
+> +	igt_fixture() {
+> +		pf_fd = drm_open_driver(DRIVER_XE);
+> +		igt_require(igt_sriov_is_pf(pf_fd));
+> +		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
+> +		igt_require(xe_sriov_admin_is_present(pf_fd));
+> +		total_vfs = igt_sriov_get_total_vfs(pf_fd);
+> +	}
+> +
+> +	igt_subtest_with_dynamic("default-sched-attributes-vfs-disabled") {
+> +		for (unsigned int id = 0; id <= total_vfs; ++id)
+> +			default_sched_attributes(pf_fd, id);
+> +	}
+> +
+> +	igt_subtest_with_dynamic("exec-quantum-write-readback-vfs-disabled") {
+> +		uint32_t eq_ms = 10;
+> +
+> +		for (unsigned int id = 0; id <= total_vfs; ++id) {
+> +			igt_dynamic_f("%s-eq_ms-%u", igt_sriov_func_str(id), eq_ms) {
+> +				exec_quantum_write_readback(pf_fd, id, eq_ms);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("preempt-timeout-write-readback-vfs-disabled") {
+> +		uint32_t pt_us = 20000;
+> +
+> +		for (unsigned int id = 0; id <= total_vfs; ++id) {
+> +			igt_dynamic_f("%s-pt_us-%u", igt_sriov_func_str(id), pt_us) {
+> +				preempt_timeout_write_readback(pf_fd, id, pt_us);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("sched-priority-write-readback-vfs-disabled") {
+> +		for (unsigned int id = 0; id <= total_vfs; ++id) {
+> +			igt_dynamic_f("%s", igt_sriov_func_str(id)) {
+> +				sched_priority_write_readback(pf_fd, id);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("sched-priority-vf-write-denied") {
+> +		for_each_sriov_num_vfs(pf_fd, vf_num) {
+> +			igt_dynamic_f("%s", igt_sriov_func_str(vf_num)) {
+> +				sched_priority_vf_write_denied(pf_fd, vf_num);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_subtest("bulk-exec-quantum-vfs-disabled") {
+> +		const uint32_t eq_ms = 10;
+> +
+> +		bulk_set_exec_quantum(pf_fd, total_vfs, eq_ms);
+> +	}
+> +
+> +	igt_subtest("bulk-preempt-timeout-vfs-disabled") {
+> +		uint32_t pt_us = 10000;
+> +
+> +		bulk_set_preempt_timeout(pf_fd, total_vfs, pt_us);
+> +	}
+> +
+> +	igt_subtest_group() {
+> +		struct igt_sysfs_choice prio = {};
+> +
+> +		igt_fixture() {
+> +			build_common_sched_priority_choice(pf_fd, total_vfs,
+> +							   &prio);
+> +		}
+> +
+> +		igt_subtest_with_dynamic_f("bulk-sched-priority-vfs-disabled") {
+> +			for (size_t i = prio.num_tokens; i-- > 0; ) {
+> +				const char *prio_str = prio.tokens[i];
+> +
+> +				igt_dynamic_f("%s", prio_str)
+> +					bulk_set_sched_priority(pf_fd, 0, prio_str);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_fixture() {
+> +		int ret;
+> +
+> +		ret = __xe_sriov_admin_bulk_restore_defaults(pf_fd);
+> +		igt_sriov_disable_vfs(pf_fd);
+> +		/* abort to avoid execution of next tests with enabled VFs */
+> +		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0,
+> +			       "Failed to disable VF(s)");
+> +		igt_abort_on_f(ret, "Failed to restore default profile values\n");
+> +		drm_close_driver(pf_fd);
+> +	}
 > +}
-> +
-> +/**
-> + * xe_sriov_admin_bulk_set_sched_priority - Assert wrapper for bulk priority update
-> + * @pf_fd: PF device file descriptor.
-> + * @prio:  Enum priority value.
-> + */
-> +void xe_sriov_admin_bulk_set_sched_priority(int pf_fd,
-> +					    enum xe_sriov_sched_priority prio)
-> +{
-> +	igt_assert_eq(0, __xe_sriov_admin_bulk_set_sched_priority(pf_fd, prio));
-> +}
-> +
-> +/**
-> + * __xe_sriov_admin_vf_stop - Issue stop command for a VF
-> + * @pf_fd:  PF device file descriptor.
-> + * @vf_num: VF index.
-> + *
-> + * Triggers VF stop via sysfs.
-> + *
-> + * Returns: 0 on success or negative errno on error.
-> + */
-> +int __xe_sriov_admin_vf_stop(int pf_fd, unsigned int vf_num)
-> +{
-> +	char path[PATH_MAX];
-> +	int sysfs, ret;
-> +
-> +	sysfs = igt_sysfs_open(pf_fd);
-> +	if (sysfs < 0)
-> +		return sysfs;
-> +
-> +	fmt_profile_rel_path(path, sizeof(path), vf_num, "stop");
-> +	ret = igt_sysfs_printf(sysfs, path, "%u", 1u);
-> +	close(sysfs);
-> +
-> +	return ret_from_printf(ret);
-> +}
-> +
-> +/**
-> + * xe_sriov_admin_vf_stop - Assert wrapper for VF stop command
-> + * @pf_fd:  PF device file descriptor.
-> + * @vf_num: VF index.
-> + */
-> +void xe_sriov_admin_vf_stop(int pf_fd, unsigned int vf_num)
-> +{
-> +	igt_assert_eq(0, __xe_sriov_admin_vf_stop(pf_fd, vf_num));
-> +}
-> +
-> +/**
-> + * __xe_sriov_admin_restore_defaults - Restore scheduling defaults for a VF
-> + * @pf_fd:  PF device file descriptor.
-> + * @vf_num: VF index (0 for PF, >0 for VFs).
-> + *
-> + * Resets execution quantum, preemption timeout, and priority to driver defaults.
-> + *
-> + * Returns: 0 on success or negative errno on error.
-> + */
-> +int __xe_sriov_admin_restore_defaults(int pf_fd, unsigned int vf_num)
-> +{
-> +	int ret_eq, ret_pt, ret_prio;
-> +	int ret = 0;
-> +
-> +	ret_eq = __xe_sriov_admin_set_exec_quantum_ms(pf_fd, vf_num, 0);
-> +	igt_warn_on(ret_eq);
-> +	if (!ret)
-> +		ret = ret_eq;
-> +
-> +	ret_pt = __xe_sriov_admin_set_preempt_timeout_us(pf_fd, vf_num, 0);
-> +	igt_warn_on(ret_pt);
-> +	if (!ret)
-> +		ret = ret_pt;
-> +
-> +	ret_prio = __xe_sriov_admin_set_sched_priority(pf_fd, vf_num,
-> +						       XE_SRIOV_SCHED_PRIORITY_LOW);
-> +	igt_warn_on(ret_prio);
-> +	if (!ret)
-> +		ret = ret_prio;
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * xe_sriov_admin_restore_defaults - Assert wrapper restoring VF defaults
-> + * @pf_fd:  PF device file descriptor.
-> + * @vf_num: VF index (0 for PF, >0 for VFs).
-> + */
-> +void xe_sriov_admin_restore_defaults(int pf_fd, unsigned int vf_num)
-> +{
-> +	igt_assert_eq(0, __xe_sriov_admin_restore_defaults(pf_fd, vf_num));
-> +}
-> +
-> +/**
-> + * __xe_sriov_admin_bulk_restore_defaults - Restore scheduling defaults for PF and all VFs
-> + * @pf_fd: PF device file descriptor.
-> + *
-> + * Resets PF and all VFs to driver default scheduling parameters.
-> + *
-> + * Returns: 0 on success or negative errno on error.
-> + */
-> +int __xe_sriov_admin_bulk_restore_defaults(int pf_fd)
-> +{
-> +	int ret_eq, ret_pt, ret_prio;
-> +	int ret = 0;
-> +
-> +	ret_eq = __xe_sriov_admin_bulk_set_exec_quantum_ms(pf_fd, 0);
-> +	igt_warn_on(ret_eq);
-> +	if (!ret)
-> +		ret = ret_eq;
-> +
-> +	ret_pt = __xe_sriov_admin_bulk_set_preempt_timeout_us(pf_fd, 0);
-> +	igt_warn_on(ret_pt);
-> +	if (!ret)
-> +		ret = ret_pt;
-> +
-> +	ret_prio = __xe_sriov_admin_bulk_set_sched_priority(pf_fd,
-> +							    XE_SRIOV_SCHED_PRIORITY_LOW);
-> +	igt_warn_on(ret_prio);
-> +	if (!ret)
-> +		ret = ret_prio;
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * xe_sriov_admin_bulk_restore_defaults - Assert wrapper for restoring defaults on PF and all VFs
-> + * @pf_fd: PF device file descriptor.
-> + */
-> +void xe_sriov_admin_bulk_restore_defaults(int pf_fd)
-> +{
-> +	igt_assert_eq(0, __xe_sriov_admin_bulk_restore_defaults(pf_fd));
-> +}
-> diff --git a/lib/xe/xe_sriov_admin.h b/lib/xe/xe_sriov_admin.h
-> new file mode 100644
-> index 000000000..607e33a86
-> --- /dev/null
-> +++ b/lib/xe/xe_sriov_admin.h
-> @@ -0,0 +1,60 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright(c) 2025 Intel Corporation. All rights reserved.
-> + */
-> +
-> +#ifndef __XE_SRIOV_ADMIN_H__
-> +#define __XE_SRIOV_ADMIN_H__
-> +
-> +#include <stdbool.h>
-> +#include <stdint.h>
-> +#include <stddef.h>
-> +#include "xe_sriov_provisioning.h" /* for enum xe_sriov_sched_priority */
-> +
-> +struct igt_sysfs_choice;
-> +
-> +bool xe_sriov_admin_is_present(int pf_fd);
-> +
-> +int  __xe_sriov_admin_set_exec_quantum_ms(int pf_fd, unsigned int vf_num, uint32_t eq_ms);
-> +void  xe_sriov_admin_set_exec_quantum_ms(int pf_fd, unsigned int vf_num, uint32_t eq_ms);
-> +int  __xe_sriov_admin_get_exec_quantum_ms(int pf_fd, unsigned int vf_num, uint32_t *eq_ms);
-> +uint32_t xe_sriov_admin_get_exec_quantum_ms(int pf_fd, unsigned int vf_num);
-> +int  __xe_sriov_admin_set_preempt_timeout_us(int pf_fd, unsigned int vf_num, uint32_t pt_us);
-> +void  xe_sriov_admin_set_preempt_timeout_us(int pf_fd, unsigned int vf_num, uint32_t pt_us);
-> +int  __xe_sriov_admin_get_preempt_timeout_us(int pf_fd, unsigned int vf_num, uint32_t *pt_us);
-> +uint32_t xe_sriov_admin_get_preempt_timeout_us(int pf_fd, unsigned int vf_num);
-> +int __xe_sriov_admin_set_sched_priority_string(int pf_fd, unsigned int vf_num,
-> +					       const char *prio);
-> +int __xe_sriov_admin_get_sched_priority_choice(int pf_fd, unsigned int vf_num,
-> +					       struct igt_sysfs_choice *choice);
-> +int __xe_sriov_admin_set_sched_priority(int pf_fd, unsigned int vf_num,
-> +					enum xe_sriov_sched_priority prio);
-> +void xe_sriov_admin_set_sched_priority(int pf_fd, unsigned int vf_num,
-> +				       enum xe_sriov_sched_priority prio);
-> +int __xe_sriov_admin_get_sched_priority(int pf_fd, unsigned int vf_num,
-> +					enum xe_sriov_sched_priority *prio,
-> +					unsigned int *prio_mask);
-> +enum xe_sriov_sched_priority
-> +xe_sriov_admin_get_sched_priority(int pf_fd, unsigned int vf_num,
-> +				  unsigned int *prio_mask);
-> +
-> +int  __xe_sriov_admin_bulk_set_exec_quantum_ms(int pf_fd, uint32_t eq_ms);
-> +void  xe_sriov_admin_bulk_set_exec_quantum_ms(int pf_fd, uint32_t eq_ms);
-> +int  __xe_sriov_admin_bulk_set_preempt_timeout_us(int pf_fd, uint32_t pt_us);
-> +void  xe_sriov_admin_bulk_set_preempt_timeout_us(int pf_fd, uint32_t pt_us);
-> +int  __xe_sriov_admin_bulk_set_sched_priority_string(int pf_fd, const char *prio);
-> +void  xe_sriov_admin_bulk_set_sched_priority_string(int pf_fd, const char *prio);
-> +int __xe_sriov_admin_bulk_set_sched_priority(int pf_fd,
-> +					     enum xe_sriov_sched_priority prio);
-> +void xe_sriov_admin_bulk_set_sched_priority(int pf_fd,
-> +					    enum xe_sriov_sched_priority prio);
-> +
-> +int  __xe_sriov_admin_vf_stop(int pf_fd, unsigned int vf_num);
-> +void  xe_sriov_admin_vf_stop(int pf_fd, unsigned int vf_num);
-> +
-> +int  __xe_sriov_admin_restore_defaults(int pf_fd, unsigned int vf_num);
-> +void  xe_sriov_admin_restore_defaults(int pf_fd, unsigned int vf_num);
-> +int  __xe_sriov_admin_bulk_restore_defaults(int pf_fd);
-> +void  xe_sriov_admin_bulk_restore_defaults(int pf_fd);
-> +
-> +#endif /* __XE_SRIOV_ADMIN_H__ */
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 0ad728b87..ef4edaa0d 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -331,6 +331,7 @@ intel_xe_progs = [
+>   	'xe_vm',
+>   	'xe_waitfence',
+>   	'xe_spin_batch',
+> +	'xe_sriov_admin',
+>   	'xe_sriov_auto_provisioning',
+>   	'xe_sriov_flr',
+>   	'xe_sriov_scheduling',
