@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10266D73E9E
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Jan 2026 22:51:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DF84D73EA7
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Jan 2026 23:37:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 98B7910E1EA;
-	Thu, 29 Jan 2026 22:51:12 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cMlpyCNt";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8162610E1EA
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jan 2026 22:51:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769727071; x=1801263071;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=7zQX8fiCF4HNct5kFwYMKysoBKc91LkLnC0DXovWbAg=;
- b=cMlpyCNtbGn2MouHPPdXeRTUxRxT8VmUFKSEjHopj6HEm8DtCFlVyNob
- 2FECqudfu+TUekCvh7OxQUVWdoG2abWMzgTXIJ2ocXhw5CDWF/4AGsT4U
- bwd8E8qB80TUnz0tgq/G2nCq7hNHytZWAjMG8YGKD9oc9Hur5TkSub37G
- FNylISvtLQsx8FI5qFVpDZZ3R2knK0U/rRGQ4EoCxlJlXYzdDLvRWWDsA
- lrObmtnJu2oice3bUOmQxmBK+PfcmfoMkTv8yGdRiwcgfoX0vjk31vhTS
- rGYARQjoWvoidbkc1siO1oIoLZ5yaGM9Z+4wlmYUBhW5K9b99TjxLvrDv A==;
-X-CSE-ConnectionGUID: ICylbtY4TNuqZM1gSMPeOQ==
-X-CSE-MsgGUID: cKiKJPCYTRW36NBbnYm4ag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="69995725"
-X-IronPort-AV: E=Sophos;i="6.21,261,1763452800"; d="scan'208";a="69995725"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2026 14:51:11 -0800
-X-CSE-ConnectionGUID: Gerhakw5SKmvXwryU+Ugiw==
-X-CSE-MsgGUID: sjj/pysLREqOlRZTHkC7Ag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,261,1763452800"; d="scan'208";a="209054786"
-Received: from dut6094bmgfrd.fm.intel.com ([10.80.55.45])
- by fmviesa010.fm.intel.com with ESMTP; 29 Jan 2026 14:51:11 -0800
-From: Jia Yao <jia.yao@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jia Yao <jia.yao@intel.com>,
-	Xin Wang <x.wang@intel.com>
-Subject: [PATCH v2] tests/intel/xe_exec_system_allocator: Expect UC PAT
- madvise rejection
-Date: Thu, 29 Jan 2026 22:51:07 +0000
-Message-ID: <20260129225107.541292-1-jia.yao@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260129003146.340181-1-jia.yao@intel.com>
-References: <20260129003146.340181-1-jia.yao@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id E962E10E19D;
+	Thu, 29 Jan 2026 23:37:53 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4365E10E144;
+ Thu, 29 Jan 2026 23:37:53 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============9155180188107157483=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fsys?=
+ =?utf-8?q?tem=5Fallocator=3A_Expect_UC_PAT_madvise_rejection_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jia Yao" <jia.yao@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 29 Jan 2026 23:37:53 -0000
+Message-ID: <176972987327.207489.8741598663351910115@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260129003146.340181-1-jia.yao@intel.com>
+In-Reply-To: <20260129003146.340181-1-jia.yao@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,99 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-UC PAT index with CPU cached memory (system allocator) is now rejected
-by kernel to prevent security issues where GPU could bypass CPU cache
-and read stale sensitive data from DRAM.
+--===============9155180188107157483==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Modify UC PAT index tests to verify kernel correctly rejects the madvise
-call with -EINVAL, instead of attempting to execute batch buffers.
+== Series Details ==
 
-UC_COMP tests are not affected as they require VRAM which uses different
-caching.
+Series: tests/intel/xe_exec_system_allocator: Expect UC PAT madvise rejection (rev2)
+URL   : https://patchwork.freedesktop.org/series/160833/
+State : success
 
-v2(Xin Wang)
-- Put madvise rejection in a function
+== Summary ==
 
-Cc: Xin Wang <x.wang@intel.com>
-Signed-off-by: Jia Yao <jia.yao@intel.com>
----
- tests/intel/xe_exec_system_allocator.c | 53 ++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+CI Bug Log - changes from XEIGT_8725_BAT -> XEIGTPW_14451_BAT
+====================================================
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 412ad0384..d59748ec0 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -2246,6 +2246,53 @@ test_compute(int fd, size_t size, unsigned int flags)
- 	xe_vm_destroy(fd, vm);
- }
- 
-+/**
-+ * test_uc_pat_madvise_rejected - Verify UC PAT madvise is rejected for CPU cached memory
-+ * @fd: file descriptor
-+ * @pat_index: UC PAT index to test
-+ *
-+ * UC PAT index with CPU cached memory (system allocator) is rejected by kernel
-+ * to prevent security issues where GPU could bypass CPU cache and read stale
-+ * sensitive data from DRAM.
-+ */
-+static void
-+test_uc_pat_madvise_rejected(int fd, uint8_t pat_index)
-+{
-+	struct drm_xe_sync sync[1] = {
-+		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+		  .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-+	};
-+	uint64_t addr;
-+	uint32_t vm;
-+	void *data;
-+	int err;
-+	uint64_t bind_sync = 0;
-+
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-+	data = aligned_alloc(SZ_4K, SZ_4M);
-+	igt_assert(data);
-+	memset(data, 0, SZ_4M);
-+	addr = to_user_pointer(data);
-+
-+	/* Bind memory to create VMA first */
-+	sync[0].addr = to_user_pointer(&bind_sync);
-+	sync[0].timeline_value = 1;
-+	__xe_vm_bind_assert(fd, vm, 0, 0, 0, addr, SZ_4M,
-+			    DRM_XE_VM_BIND_OP_MAP,
-+			    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR,
-+			    sync, 1, 0, 0);
-+	xe_wait_ufence(fd, &bind_sync, 1, 0, FIVE_SEC);
-+
-+	/* Madvise should fail with -EINVAL */
-+	err = __xe_vm_madvise(fd, vm, addr, SZ_4M, 0,
-+			      DRM_XE_MEM_RANGE_ATTR_PAT, pat_index, 0, 0);
-+	igt_assert_eq(err, -EINVAL);
-+
-+	free(data);
-+	xe_vm_destroy(fd, vm);
-+}
-+
- struct section {
- 	const char *name;
- 	unsigned long long flags;
-@@ -2633,6 +2680,12 @@ int igt_main()
- 			     !xe_has_vram(fd)) {
- 				igt_skip("Skipping compression-related PAT index\n");
- 			}
-+
-+		if (strstr(s->name, "madvise-pat-idx-uc-")) {
-+			test_uc_pat_madvise_rejected(fd, s->fn(fd));
-+			continue;
-+		}
-+
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 1, 1, SZ_4M, 0, 0, NULL, NULL, s->flags, s->fn);
- 		}
--- 
-2.43.0
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 9)
+------------------------------
+
+  Missing    (3): bat-adlp-vm bat-ptl-vm bat-bmg-3 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8725 -> IGTPW_14451
+  * Linux: xe-4469-7d2c5f861ae9bbed1464e1a6aa39a9055139a4b0 -> xe-4472-bd9c2b8a3a5b7bd8c38108929bfabd7a40dc922b
+
+  IGTPW_14451: 14451
+  IGT_8725: 8725
+  xe-4469-7d2c5f861ae9bbed1464e1a6aa39a9055139a4b0: 7d2c5f861ae9bbed1464e1a6aa39a9055139a4b0
+  xe-4472-bd9c2b8a3a5b7bd8c38108929bfabd7a40dc922b: bd9c2b8a3a5b7bd8c38108929bfabd7a40dc922b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14451/index.html
+
+--===============9155180188107157483==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_system_allocator: Expect UC PAT madvise rejection (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160833/">https://patchwork.freedesktop.org/series/160833/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14451/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14451/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8725_BAT -&gt; XEIGTPW_14451_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 9)</h2>
+<p>Missing    (3): bat-adlp-vm bat-ptl-vm bat-bmg-3 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8725 -&gt; IGTPW_14451</li>
+<li>Linux: xe-4469-7d2c5f861ae9bbed1464e1a6aa39a9055139a4b0 -&gt; xe-4472-bd9c2b8a3a5b7bd8c38108929bfabd7a40dc922b</li>
+</ul>
+<p>IGTPW_14451: 14451<br />
+  IGT_8725: 8725<br />
+  xe-4469-7d2c5f861ae9bbed1464e1a6aa39a9055139a4b0: 7d2c5f861ae9bbed1464e1a6aa39a9055139a4b0<br />
+  xe-4472-bd9c2b8a3a5b7bd8c38108929bfabd7a40dc922b: bd9c2b8a3a5b7bd8c38108929bfabd7a40dc922b</p>
+
+</body>
+</html>
+
+--===============9155180188107157483==--
