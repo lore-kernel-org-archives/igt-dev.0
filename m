@@ -4,57 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71EE0D6100C
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Jan 2026 11:44:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C24BAD6100B
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Jan 2026 11:47:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 23F1010E102;
-	Thu, 29 Jan 2026 11:44:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 70B4710E102;
+	Thu, 29 Jan 2026 11:47:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mdQHkhkF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OYwzw2+v";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0E9B10E102
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jan 2026 11:44:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C6CC610E102
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jan 2026 11:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769687045; x=1801223045;
+ t=1769687277; x=1801223277;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=V24gBjjlkDQquz5VsQjmzqzOIa2aQ6klhZsgw7/foNU=;
- b=mdQHkhkFR4MEdV+xqpapNWEPIF7HF2pEGCI8akTKd55FGRhdDZ6Jz82E
- OY23wJn1Sfll99dk5lj5FtWpaElySiAdzp1Wup9XH4uADcJtUqNY3aUgy
- +73iQSpPj9/p5pFLv3MEHo3jQUGke9SLePJhIrIDXc/Z4bgjor8d+cpQ7
- GtTp2a/2prBUF89v0P24nCBpNIfRk0g7LAuzlx8Tv1v5hu6j3nzfkbrTk
- Ayv+CErLzBhsQqgdyKFZgeWcypHnXNw96qKaP/MPvwL2Ww0KdGJogX+ro
- tUSszQqOW/4aHAe2KUyhtfFzCjS6//D/PiL1XR9SaMvuuXkAT4pG3ykFm w==;
-X-CSE-ConnectionGUID: eNRumoEyQiumijdoPrhesA==
-X-CSE-MsgGUID: FEu1ne4bSXiNKs7JnwUYIg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="73517665"
-X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; d="scan'208";a="73517665"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2026 03:44:05 -0800
-X-CSE-ConnectionGUID: EYLm1kM/REiF9O4kVfYEfw==
-X-CSE-MsgGUID: NuchdRnGTS+Y2WLpOvAQLw==
+ bh=gShU9nD8q6OfOMogIEU8LJwdqoTiiiAFEdXWtdP/qn8=;
+ b=OYwzw2+vBG2Nlj2fuV6uckwXawRAeblEXuP9lhpdXGgjeuqanIlFt6E1
+ 6iRxl2QbPXXTCFAmwpTcz/eYzY5/pLV46X1Kacwzjbdok1TZrCKvUUOY4
+ JaqisKgI0n72xVQgbiQyN4Tm64Xw4B8F3/B0GAxj2YLL0/aTuv+whkZJm
+ NDMoB1p2Dc0lxxWvJ6kW+p9zZP+ea/A+1VkqTBaN3al1KtMxoBhT0lEbo
+ 2BTPmcO1O7ZpT3UFFIgXv8949HWiVT7FJRN8YusJxBTI5DwQcSkPG+qhc
+ xDO5U0MfchT0xInitkhZrFAvYUd5OA/DY4QzCEt3x8Olo4nyAoHAz6jrw g==;
+X-CSE-ConnectionGUID: uu6TZnegQYuiEQfjZSzMvg==
+X-CSE-MsgGUID: 4x8qGANqR4+GYsCvELp/BQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="74774455"
+X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; d="scan'208";a="74774455"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jan 2026 03:47:57 -0800
+X-CSE-ConnectionGUID: xj6GZKJ3QKOAzJLT1E8Jqg==
+X-CSE-MsgGUID: qKFrv2CGShCdB35CbvJS7w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; d="scan'208";a="208338358"
+X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; d="scan'208";a="208917042"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 03:44:02 -0800
-Date: Thu, 29 Jan 2026 12:43:59 +0100
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 03:47:54 -0800
+Date: Thu, 29 Jan 2026 12:47:52 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Swati Sharma <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] intel-ci: Update NVL display blocklist
-Message-ID: <20260129114359.6iztop2m52uui6gt@kamilkon-DESK.igk.intel.com>
+To: Sk Anirban <sk.anirban@intel.com>
+Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
+ badal.nilawar@intel.com, riana.tauro@intel.com,
+ karthik.poosa@intel.com, raag.jadav@intel.com,
+ soham.purkait@intel.com, mallesh.koujalagi@intel.com
+Subject: Re: [PATCH] lib/xe_gt: Handle unknown C-state
+Message-ID: <20260129114752.nk3aqzrzhd6jvtof@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20260129114440.155214-1-swati2.sharma@intel.com>
+ Sk Anirban <sk.anirban@intel.com>, igt-dev@lists.freedesktop.org,
+ anshuman.gupta@intel.com, badal.nilawar@intel.com,
+ riana.tauro@intel.com, karthik.poosa@intel.com,
+ raag.jadav@intel.com, soham.purkait@intel.com,
+ mallesh.koujalagi@intel.com
+References: <20260129105938.1114574-2-sk.anirban@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260129114440.155214-1-swati2.sharma@intel.com>
+In-Reply-To: <20260129105938.1114574-2-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,34 +76,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Swati,
-On 2026-01-29 at 17:14:40 +0530, Swati Sharma wrote:
-> Add deep-pkgc test to xe.nvl.display blocklist as valid skip.
+Hi Sk,
+On 2026-01-29 at 16:29:39 +0530, Sk Anirban wrote:
+> When GT C-state reads as "unknown", return false with a debug
+> message instead of silently failing the "gt-c6" comparison.
 > 
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+> ---
+>  lib/xe/xe_gt.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
+> index ed19bec74..9164c4e3c 100644
+> --- a/lib/xe/xe_gt.c
+> +++ b/lib/xe/xe_gt.c
+> @@ -220,6 +220,11 @@ bool xe_gt_is_in_c6(int fd, int gt)
+>  	igt_assert(igt_sysfs_scanf(gt_fd, "gtidle/idle_status", "%s", gt_c_state) == 1);
+>  	close(gt_fd);
+>  
+> +	if (!strcmp(gt_c_state, "unknown")) {
+> +		igt_debug("GT %d C-state is unknown\n", gt);
+> +		return false;
+> +	}
+> +
+>  	return strcmp(gt_c_state, "gt-c6") == 0;
 
-LGTM
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+If you want a debug on failure, why not print it:
+
+	if (!strcmp(gt_c_state, "gt-c6"))
+  		return true;
+
+	igt_debug("GT%d C-state is %s\n", gt, gt_c_state);
+
+	return false;
 
 Regards,
 Kamil
 
-> ---
->  tests/intel-ci/xe.nvl.display.blocklist.txt | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/tests/intel-ci/xe.nvl.display.blocklist.txt b/tests/intel-ci/xe.nvl.display.blocklist.txt
-> index 41d9eed3e..749514129 100644
-> --- a/tests/intel-ci/xe.nvl.display.blocklist.txt
-> +++ b/tests/intel-ci/xe.nvl.display.blocklist.txt
-> @@ -130,3 +130,7 @@ igt@kms_psr2_sf@fbc-(psr2|pr)-.*
->  ##############################################################################
->  igt@kms_pm_rpm@package-g7
->  ##############################################################################
-> +# Valid skip: Deep-pkgc IGT not applicable
-> +##############################################################################
-> +igt@kms_pm_dc@deep-pkgc
-> +##############################################################################
+>  }
+>  
 > -- 
-> 2.25.1
+> 2.43.0
 > 
