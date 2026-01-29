@@ -4,61 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F483D358FE
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Jan 2026 11:10:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A855CD358FF
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Jan 2026 11:15:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0EE4C10E327;
-	Thu, 29 Jan 2026 11:10:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3ADCD10E102;
+	Thu, 29 Jan 2026 11:15:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I7ZtOEu4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lrgvS5TQ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D98610E31B;
- Thu, 29 Jan 2026 11:10:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28D6A10E102
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jan 2026 11:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769685012; x=1801221012;
+ t=1769685321; x=1801221321;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=+3VKp3+NKp2xv0L5kicQH5Sg8XXgRhYFLVDR/FYLij8=;
- b=I7ZtOEu48i1IWm9NBHwGJEYqYWdskck2lmIN2Cypryx0Awz1L7bCPuhg
- Sz4nBsK6Y0Gusnyj/3KN0gAKerKjcpduRcf2tbtsKwdD+qh+OeFZ/TNJN
- eXOTIfckqoIva1+9t8dGqI7GgR3dQwfxEO4mbs+wTvcxr8ocdvKobADcm
- rBxD/il3aR74c4EPG9UjEOM1PkEJ/Om25kupCxJ4ecqisSzC1VddPDK/n
- qDfaqPzrbNDRAjuesA+JhRROol4chJvpbRsC+y137WdblWQwYRSVnTBnN
- DJP3epXZTGNZWYv4A+uF6myJw+Scq06LNERMNAaejZM75ZVQ00IVF9lcn Q==;
-X-CSE-ConnectionGUID: SUtcNq/UTtmB2EnBFWs/+Q==
-X-CSE-MsgGUID: fPegkbTEQY6/dtWj28D9Ag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="58503009"
-X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; d="scan'208";a="58503009"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jan 2026 03:09:55 -0800
-X-CSE-ConnectionGUID: QKWjJQ+lRnKaeemgLoW4aA==
-X-CSE-MsgGUID: Twf6TzvjSWuRIQeyP+R4og==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=oHTYdwVLSlrhOK6sA6hFjbyIL+qjAOjq7v2aUKsqFwA=;
+ b=lrgvS5TQRxau7zMfRFv1G8/vdbqdxHHKjngTVXj1RX6VJWXWPI8hLUW0
+ VxtIb8e2Q0rufCoJm34RSvXaDdieIwsTiaD0QSd0AZyCX5BSYRajtWG7A
+ Jhb3KYOJyOSAc4VKHZEEagQNi4eqCCjaV65A7qxmJZu3Cl7bUFRBM0iWt
+ sL+2bwh9yUAoyYPNVo50XdlYlrHfHyPzutoFR4+BBeyWgMDXLjJYHQjyJ
+ FPQKnv21LO74fxVg6sM0zIMYz2utC8iTM7t2rVJjWb/jES+5bmeRT/9zX
+ OsQ+jJb8vwuXkq3PMNTPoRwCz9qHcHR3t8NaxHLb1kkpKGY8AQkIL0BGj Q==;
+X-CSE-ConnectionGUID: X9WhSVe6R/egvKZsk1bXJw==
+X-CSE-MsgGUID: vkm/qX4HRtChYPCrMwZ3nw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="70960452"
+X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; d="scan'208";a="70960452"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jan 2026 03:15:20 -0800
+X-CSE-ConnectionGUID: 9/RE3BxaRFaEzGI2PdE/oQ==
+X-CSE-MsgGUID: 3twocmxFRmCEoMX1a2rfPw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; d="scan'208";a="239281145"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 03:09:54 -0800
-Date: Thu, 29 Jan 2026 12:09:50 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jason-JH Lin <jason-jh.lin@mediatek.com>,
- I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbA==?= =?utf-8?Q?=3A?= failure for
- Add MediaTek CTM color test support
-Message-ID: <20260129110950.t5kr6ma3jaru72pi@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Jason-JH Lin <jason-jh.lin@mediatek.com>,
- I915-ci-infra@lists.freedesktop.org
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO localhost)
+ ([10.124.220.86])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jan 2026 03:15:16 -0800
+Date: Thu, 29 Jan 2026 13:15:13 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Jason-JH Lin <jason-jh.lin@mediatek.com>
+Cc: igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Fei Shao <fshao@chromium.org>, Jani <jani.nikula@intel.com>,
+ Paul-PL Chen <paul-pl.chen@mediatek.com>,
+ Nancy Lin <nancy.lin@mediatek.com>, Singo Chang <singo.chang@mediatek.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+Subject: Re: [PATCH i-g-t 1/2] test/kms_color: Clamp CTM values to -2.0~2.0
+ for MediaTek devices
+Message-ID: <aXtBQd_hHu3OgCG6@intel.com>
 References: <20260128082517.920321-1-jason-jh.lin@mediatek.com>
- <176961674259.200694.14410525769329707596@a3b018990fe9>
+ <20260128082517.920321-2-jason-jh.lin@mediatek.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <176961674259.200694.14410525769329707596@a3b018990fe9>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260128082517.920321-2-jason-jh.lin@mediatek.com>
+X-Patchwork-Hint: comment
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,144 +82,72 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2026-01-28 at 16:12:22 -0000, Patchwork wrote:
-> == Series Details ==
+On Wed, Jan 28, 2026 at 04:24:42PM +0800, Jason-JH Lin wrote:
+> Use clamp to restrict CTM matrix values to the -2.0 to 2.0 range for
+> MediaTek devices, ensuring tests do not exceed hardware limits.
 > 
-> Series: Add MediaTek CTM color test support
-> URL   : https://patchwork.freedesktop.org/series/160743/
-> State : failure
+> Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+> ---
+>  tests/kms_color.c | 19 +++++++++++++++++--
+>  1 file changed, 17 insertions(+), 2 deletions(-)
 > 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_17899_full -> IGTPW_14434_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_14434_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_14434_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14434/index.html
-> 
-> Participating hosts (10 -> 10)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_14434_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_plane@pixel-format-4-tiled-modifier:
->     - shard-mtlp:         [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17899/shard-mtlp-7/igt@kms_plane@pixel-format-4-tiled-modifier.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14434/shard-mtlp-7/igt@kms_plane@pixel-format-4-tiled-modifier.html
-> 
->   * igt@kms_setmode@basic@pipe-a-hdmi-a-1:
->     - shard-glk:          [PASS][3] -> [FAIL][4] +1 other test fail
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_17899/shard-glk1/igt@kms_setmode@basic@pipe-a-hdmi-a-1.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14434/shard-glk1/igt@kms_setmode@basic@pipe-a-hdmi-a-1.html
-> 
+> diff --git a/tests/kms_color.c b/tests/kms_color.c
+> index b2ca6975d6a5..c6cd35d74a2f 100644
+> --- a/tests/kms_color.c
+> +++ b/tests/kms_color.c
+> @@ -76,6 +76,8 @@
+>   * @gamma-lut:          Gamma LUT
+>   */
+>  
+> +#define CTM_SIZE		(9)
+> +
+>  IGT_TEST_DESCRIPTION("Test Color Features at Pipe level");
+>  
+>  static bool test_pipe_degamma(data_t *data,
+> @@ -1025,7 +1027,7 @@ run_tests_for_pipe(data_t *data)
+>  		const char *name;
+>  		int iter;
+>  		const color_t *fb_colors;
+> -		double ctm[9];
+> +		double ctm[CTM_SIZE];
+>  		const char *desc;
+>  	} ctm_tests[] = {
+>  		{ .name = "ctm-red-to-blue",
+> @@ -1128,6 +1130,19 @@ run_tests_for_pipe(data_t *data)
+>  	}
+>  
+>  	for (i = 0; i < ARRAY_SIZE(ctm_tests); i++) {
+> +		double fixed_ctm[CTM_SIZE];
+> +		const double *ctm_ptr = ctm_tests[i].ctm;
+> +
+> +		/* The valid value of MediaTek color matrix range is -2.0 ~ 2.0 */
+> +		if (is_mtk_device(data->drm_fd)) {
+> +			int j;
+> +
+> +			for (j = 0; j < CTM_SIZE; j++)
+> +				fixed_ctm[j] = clamp(ctm_tests[i].ctm[j], -2.0, 2.0);
+> +
+> +			ctm_ptr = fixed_ctm;
+> +		}
 
-Unrelated to change in kms_color.
+The kernel is supposed to clamp this.
 
-Regards,
-Kamil
+> +
+>  		igt_describe_f("%s", ctm_tests[i].desc);
+>  		igt_subtest_with_dynamic_f("%s", ctm_tests[i].name) {
+>  			for_each_pipe_with_valid_output(&data->display, pipe, data->output) {
+> @@ -1135,7 +1150,7 @@ run_tests_for_pipe(data_t *data)
+>  					      igt_output_name(data->output))
+>  					run_ctm_tests_for_pipe(data, pipe,
+>  							       ctm_tests[i].fb_colors,
+> -							       ctm_tests[i].ctm,
+> +							       ctm_ptr,
+>  							       ctm_tests[i].iter);
+>  				if (igt_run_in_simulation())
+>  					break;
+> -- 
+> 2.43.0
 
->   
-> New tests
-> ---------
-> 
->   New tests have been introduced between CI_DRM_17899_full and IGTPW_14434_full:
-> 
-> ### New IGT tests (15) ###
-> 
->   * igt@i915_pm_rps@addfb25-4-tiled:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@i915_pm_rps@basic-wc-gtt:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@i915_pm_rps@cursora-vs-flipa-varying-size:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@i915_pm_rps@draw-method-mmap-gtt:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@i915_pm_rps@drm_dp_mst_helper:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@i915_pm_rps@fbc-2p-scndscrn-cur-indfb-draw-render:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@i915_pm_rps@fbcpsr-1p-primscrn-spr-indfb-draw-blt:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@i915_pm_rps@hw-rejects-pxp-context:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@i915_pm_rps@psr-abgr161616f-draw-mmap-cpu:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@i915_pm_rps@single-bo:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@i915_pm_rps@syncobj-repeat:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@i915_pm_rps@x-tiled-max-hw-stride-64bpp-rotate-180-hflip:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@kms_sequence@get-forked@pipe-a-vga-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.37] s
-> 
->   * igt@kms_vblank@ts-continuation-modeset@pipe-a-vga-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.38] s
-> 
->   * igt@kms_vblank@ts-continuation-modeset@pipe-b-vga-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.27] s
-> 
->   
-> 
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_14434_full that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@api_intel_bb@crc32:
->     - shard-tglu:         NOTRUN -> [SKIP][5] ([i915#6230])
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14434/shard-tglu-8/igt@api_intel_bb@crc32.html
-> 
-...cut...
+-- 
+Ville Syrjälä
+Intel
