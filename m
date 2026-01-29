@@ -4,53 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24030D358EE
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Jan 2026 09:51:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D54E3D358F5
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Jan 2026 10:11:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CB22610E844;
-	Thu, 29 Jan 2026 09:51:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 88B2B10E844;
+	Thu, 29 Jan 2026 10:11:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UlapDsrX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WWjN+/jS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7293010E78B
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Jan 2026 00:31:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67CDB10E844
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Jan 2026 10:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769646710; x=1801182710;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=cwYAwUTeegPpglLhRVFjc1058DoPrkp9V5l4LbiFjxI=;
- b=UlapDsrXgVFVk5ygPAB35+hZl3Ywb+RU8daW20dU8epSAe3GnZ71QpOp
- 5fUDyZoOveTv8xNlabo0vsvPVxO47Bb1Nx3cEkEy7Z9/69GmZB6ClOzUQ
- W7YZp1q9SdgIYR4gJsNfwb95+RSYkizuFtk+tajJnJbr5n9Lr9OiZmML0
- JBRg5fe5s18fM250u6IsL5cofu1luBUfyJ0WBswCjxJRd33gGjPC6WurL
- pC5t3U5DcGHp54b14CTZsfCZOQnsiH9JcUtaZmR991eWQ4x2tTOF//qVi
- qv4xqQkoR9lE076cTcy5bjv9K82WGNavuti/U9oF1bB2AuMGe+w3Urpgn Q==;
-X-CSE-ConnectionGUID: xk+bfLf5Sry7zVXS1m1btw==
-X-CSE-MsgGUID: J1OUeG9xQnqjLuzHBGOF0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="69889065"
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="69889065"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jan 2026 16:31:49 -0800
-X-CSE-ConnectionGUID: 7LZj54eLQl6q9Xh/Nb5RiQ==
-X-CSE-MsgGUID: wYmmLdedRMCq9XmJHOCzRQ==
+ t=1769681465; x=1801217465;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=BhQfAW/RvmxOgOx1kRo6yFIFY6E6nferGGAztz/1dBQ=;
+ b=WWjN+/jSj8yIL1KhJjkou3lOu0516nh6TVNm1gl4a3l7aQtcx8PmFWch
+ fGHe3inr16bV111rk7wKfPepotz37+7DOH8ZmojQ66Nx/+924+ESoiK9G
+ f1VnNc1tdQorC18e4gmuYSgsgmBZ3YlY57ImasaoSpnOr6SKV6IpPRvXK
+ 5ZxkvF3EK5HSZGAfOyPqupxIFKFDidgOip++Ohf6Nddev5Qy4nXL7LUUt
+ PnfUaoU5nmwkfrqoDdAk9dGPx1I35/7nishEDJqZcKS1K9Ntwy3SZ3Bii
+ 6Ai9hM5brkTRbi2rcH6i1W+ocWOj/ybKluOTdRS/bUZGRXYWrgUMD1cR1 g==;
+X-CSE-ConnectionGUID: N+dxJzdHSIiHfv2Ftun4WQ==
+X-CSE-MsgGUID: qWUoBjAUTDCCafs+yoBFWA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="71079839"
+X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; d="scan'208";a="71079839"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jan 2026 02:11:05 -0800
+X-CSE-ConnectionGUID: HjLR+zZzRhGxF6u4AJgGAg==
+X-CSE-MsgGUID: vaBT5TttRASBux5R0b42PA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; d="scan'208";a="208207123"
-Received: from dut6094bmgfrd.fm.intel.com ([10.80.55.45])
- by orviesa009.jf.intel.com with ESMTP; 28 Jan 2026 16:31:48 -0800
-From: Jia Yao <jia.yao@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jia Yao <jia.yao@intel.com>
-Subject: [PATCH] tests/intel/xe_exec_system_allocator: Expect UC PAT madvise
- rejection
-Date: Thu, 29 Jan 2026 00:31:46 +0000
-Message-ID: <20260129003146.340181-1-jia.yao@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.21,260,1763452800"; d="scan'208";a="239789856"
+Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.180.102])
+ ([172.28.180.102])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jan 2026 02:11:04 -0800
+Message-ID: <65da9cae-c49b-47a4-9a6b-40174b13db2b@linux.intel.com>
+Date: Thu, 29 Jan 2026 11:11:01 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Thu, 29 Jan 2026 09:51:23 +0000
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_Xe_SR-IOV_?=
+ =?UTF-8?Q?admin_scheduling_helpers_and_test_updates_=28rev3=29?=
+To: igt-dev@lists.freedesktop.org, lgci.bug.filing@intel.com
+References: <20260128180819.1373376-1-marcin.bernatowicz@linux.intel.com>
+ <176963326610.202811.153305377259600957@a3b018990fe9>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <176963326610.202811.153305377259600957@a3b018990fe9>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,76 +71,155 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-UC PAT index with CPU cached memory (system allocator) is now rejected
-by kernel to prevent security issues where GPU could bypass CPU cache
-and read stale sensitive data from DRAM.
 
-Modify UC PAT index tests to verify kernel correctly rejects the madvise
-call with -EINVAL, instead of attempting to execute batch buffers.
+On 1/28/2026 9:47 PM, Patchwork wrote:
+> == Series Details ==
+>
+> Series: Xe SR-IOV admin scheduling helpers and test updates (rev3)
+> URL   : https://patchwork.freedesktop.org/series/157591/
+> State : failure
+>
+> == Summary ==
+>
+> CI Bug Log - changes from IGT_8723 -> IGTPW_14443
+> ====================================================
+>
+> Summary
+> -------
+>
+>    **FAILURE**
+>
+>    Serious unknown changes coming with IGTPW_14443 absolutely need to be
+>    verified manually.
+>    
+>    If you think the reported changes have nothing to do with the changes
+>    introduced in IGTPW_14443, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>    to document this new failure mode, which will reduce false positives in CI.
+>
+>    External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/index.html
+>
+> Participating hosts (42 -> 41)
+> ------------------------------
+>
+>    Additional (1): bat-adls-6
+>    Missing    (2): bat-dg2-13 fi-snb-2520m
+>
+> Possible new issues
+> -------------------
+>
+>    Here are the unknown changes that may have been introduced in IGTPW_14443:
+>
+> ### IGT changes ###
+>
+> #### Possible regressions ####
+>
+>    * igt@i915_pm_rpm@module-reload:
+>      - bat-adlp-6:         [PASS][1] -> [DMESG-WARN][2] +78 other tests dmesg-warn
+>     [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+>     [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
 
-UC_COMP tests are not affected as they require VRAM which uses different
-caching.
+Not related to the series.
 
-Signed-off-by: Jia Yao <jia.yao@intel.com>
----
- tests/intel/xe_exec_system_allocator.c | 44 ++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+--
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 20282fe8a..41194e460 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -2604,6 +2604,50 @@ int igt_main()
- 			     !xe_has_vram(fd)) {
- 				igt_skip("Skipping compression-related PAT index\n");
- 			}
-+
-+			/*
-+			 * UC PAT index with CPU cached memory (system allocator)
-+			 * is rejected by kernel to prevent security issues.
-+			 * Only verify madvise returns -EINVAL.
-+			 */
-+			if (strstr(s->name, "madvise-pat-idx-uc-")) {
-+				struct drm_xe_sync sync[1] = {
-+					{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+					.flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-+				};
-+				uint64_t addr;
-+				uint32_t vm;
-+				void *data;
-+				int err;
-+				uint64_t bind_sync = 0;
-+
-+				vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+						  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-+				data = aligned_alloc(SZ_4K, SZ_4M);
-+				igt_assert(data);
-+				memset(data, 0, SZ_4M);
-+				addr = to_user_pointer(data);
-+
-+				/* Bind memory to create VMA first */
-+				sync[0].addr = to_user_pointer(&bind_sync);
-+				sync[0].timeline_value = 1;
-+				__xe_vm_bind_assert(fd, vm, 0, 0, 0, addr, SZ_4M,
-+						    DRM_XE_VM_BIND_OP_MAP,
-+						    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR,
-+						    sync, 1, 0, 0);
-+				xe_wait_ufence(fd, &bind_sync, 1, 0, FIVE_SEC);
-+
-+				/* Now madvise should fail with -EINVAL */
-+				err = __xe_vm_madvise(fd, vm, addr, SZ_4M, 0,
-+						      DRM_XE_MEM_RANGE_ATTR_PAT,
-+						      s->fn(fd), 0, 0);
-+				igt_assert_eq(err, -EINVAL);
-+
-+				free(data);
-+				xe_vm_destroy(fd, vm);
-+				continue;
-+			}
-+
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 1, 1, SZ_4M, 0, 0, NULL, NULL, s->flags, s->fn);
- 		}
--- 
-2.43.0
+marcin
 
+>
+>    
+> Known issues
+> ------------
+>
+>    Here are the changes found in IGTPW_14443 that come from known issues:
+>
+> ### IGT changes ###
+>
+> #### Issues hit ####
+>
+>    * igt@gem_lmem_swapping@parallel-random-engines:
+>      - bat-adls-6:         NOTRUN -> [SKIP][3] ([i915#4613]) +3 other tests skip
+>     [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/bat-adls-6/igt@gem_lmem_swapping@parallel-random-engines.html
+>
+>    * igt@gem_tiled_pread_basic:
+>      - bat-adls-6:         NOTRUN -> [SKIP][4] ([i915#3282])
+>     [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/bat-adls-6/igt@gem_tiled_pread_basic.html
+>
+>    * igt@i915_selftest@live:
+>      - bat-twl-1:          [PASS][5] -> [DMESG-WARN][6] ([i915#14872]) +1 other test dmesg-warn
+>     [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-twl-1/igt@i915_selftest@live.html
+>     [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/bat-twl-1/igt@i915_selftest@live.html
+>
+>    * igt@intel_hwmon@hwmon-read:
+>      - bat-adls-6:         NOTRUN -> [SKIP][7] ([i915#7707]) +1 other test skip
+>     [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/bat-adls-6/igt@intel_hwmon@hwmon-read.html
+>
+>    * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+>      - bat-adls-6:         NOTRUN -> [SKIP][8] ([i915#4103]) +1 other test skip
+>     [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+>
+>    * igt@kms_dsc@dsc-basic:
+>      - bat-adls-6:         NOTRUN -> [SKIP][9] ([i915#3555] / [i915#3840])
+>     [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/bat-adls-6/igt@kms_dsc@dsc-basic.html
+>
+>    * igt@kms_force_connector_basic@force-load-detect:
+>      - bat-adls-6:         NOTRUN -> [SKIP][10]
+>     [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html
+>
+>    * igt@kms_pm_backlight@basic-brightness:
+>      - bat-adls-6:         NOTRUN -> [SKIP][11] ([i915#5354])
+>     [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html
+>
+>    * igt@kms_psr@psr-primary-mmap-gtt:
+>      - bat-adls-6:         NOTRUN -> [SKIP][12] ([i915#1072] / [i915#9732]) +3 other tests skip
+>     [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html
+>
+>    * igt@kms_setmode@basic-clone-single-crtc:
+>      - bat-adls-6:         NOTRUN -> [SKIP][13] ([i915#3555])
+>     [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html
+>
+>    * igt@prime_vgem@basic-fence-read:
+>      - bat-adls-6:         NOTRUN -> [SKIP][14] ([i915#3291]) +2 other tests skip
+>     [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/bat-adls-6/igt@prime_vgem@basic-fence-read.html
+>
+>    
+> #### Possible fixes ####
+>
+>    * igt@i915_selftest@live:
+>      - bat-mtlp-8:         [DMESG-FAIL][15] ([i915#12061]) -> [PASS][16] +1 other test pass
+>     [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-mtlp-8/igt@i915_selftest@live.html
+>     [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/bat-mtlp-8/igt@i915_selftest@live.html
+>
+>    * igt@i915_selftest@live@workarounds:
+>      - bat-arls-6:         [DMESG-FAIL][17] ([i915#12061]) -> [PASS][18] +1 other test pass
+>     [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8723/bat-arls-6/igt@i915_selftest@live@workarounds.html
+>     [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/bat-arls-6/igt@i915_selftest@live@workarounds.html
+>
+>    
+>    [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
+>    [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+>    [i915#14872]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14872
+>    [i915#3282]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282
+>    [i915#3291]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291
+>    [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+>    [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
+>    [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
+>    [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+>    [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
+>    [i915#7707]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707
+>    [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+>
+>
+> Build changes
+> -------------
+>
+>    * CI: CI-20190529 -> None
+>    * IGT: IGT_8723 -> IGTPW_14443
+>
+>    CI-20190529: 20190529
+>    CI_DRM_17900: 8059f097e25f736bb3da09af6a9b283079abfd4f @ git://anongit.freedesktop.org/gfx-ci/linux
+>    IGTPW_14443: 14443
+>    IGT_8723: 8723
+>
+> == Logs ==
+>
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14443/index.html
+>
