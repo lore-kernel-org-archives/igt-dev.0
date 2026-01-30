@@ -4,65 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03B28D73EAB
-	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 11:09:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DCC2E6BF03
+	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 11:32:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AA87710E99D;
-	Fri, 30 Jan 2026 11:09:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0DBDA10E179;
+	Fri, 30 Jan 2026 11:32:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jz+VofZd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AFA0NAhU";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9EEF510E99D;
- Fri, 30 Jan 2026 11:09:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D216D10E179
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jan 2026 11:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769771397; x=1801307397;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=7vhIM5lUWBvdm4v0NzBoco8QyAyfN5ldfZCimTIhE8E=;
- b=jz+VofZdeJqlYtw+roj1Z7YEsJnE8sTuBIldn6knbImI/R+TCah7kR/k
- nd7ixg9O+hNGp8V7Nvd+Qpy6hO4lO+2Prm74CMWijrj1888Kc+wOFt3iW
- Vb+RD+5alSbGZX8mfHCatk+41sX55QTIUL15fp/LbzVE5QRmA8ohUoigc
- vbfemC8vI1m2xfCPbMeAyTyUYCEREUigod5WFPux+XiBUOJiAQs/1jvLu
- aOilMBJ8oiQ9IdJk1wVKjGb6nHUVn7jCRCuQezsb5w703XzV3HzygPN03
- WDp5YsoHbRVNVAhmIWl1fuppBnAb2MQPGZRfyFm2UwD1XjNZ6Pszgvjde w==;
-X-CSE-ConnectionGUID: Cxezd0VzRLWUonGdPFpN8A==
-X-CSE-MsgGUID: kF22CoI+Sb6f6kXn6lmEvw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="71057604"
-X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="71057604"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ t=1769772728; x=1801308728;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=lrn1bklYAmdNHa08ZSgbwKWStx0DjPEU4np+hNXO06M=;
+ b=AFA0NAhUzSZAHdJA5MiaeFJmZal+w2aVgWOjrOSw6DPQgQ0c+kczJTY5
+ spCawJI5rMf2mWZzzv9FNjTqpevZIVZxF7kX6XCaTsGgvDF9kcZbk8+dl
+ wXCQNKLprfNnvbtoaot/mU6vJCDDqWoR0c3GMRPLL3kzAZbAqtLBtqKCD
+ Mxtc8F3+5UXtsLev5bT0+OvPqLBOtl/KHncf5RGL9QUYXYTtMnpM4wuFw
+ S6cLgkarkNTOAjJgOCbc34VW80DYLPlwUc8kpBA2TLV9qU8gK5/W+Vj30
+ GaAlPfjzipYTKk5d1aSWbWpNFwBcLBCV0RBTEvfoOuYoyCmwKRO0oq+P1 A==;
+X-CSE-ConnectionGUID: lzvGG3ywQ5yu8yd4/+Qd7A==
+X-CSE-MsgGUID: miOLl23zQjyuLBWLkg/afw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="71059318"
+X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="71059318"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2026 03:09:57 -0800
-X-CSE-ConnectionGUID: h/IC3LhxR4Knh74kkT6Euw==
-X-CSE-MsgGUID: zYwRJu6uTuajNrpYGLtznA==
+ 30 Jan 2026 03:32:08 -0800
+X-CSE-ConnectionGUID: LijuHpsKSL+XzzSn+G+A9g==
+X-CSE-MsgGUID: oDBxX1sITP2A17P2nVgajA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="208073771"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.83])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2026 03:09:54 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Subject: Re: [PATCH i-g-t v3 6/6] lib/igt_device_scan: Print GPU upstream port
- parent/child relations
-Date: Fri, 30 Jan 2026 12:09:51 +0100
-Message-ID: <4683807.8F6SAcFxjW@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <DG11TIYPUWHH.1SQKHOBSDKJEF@intel.com>
-References: <20260128161041.225652-8-janusz.krzysztofik@linux.intel.com>
- <20260128161041.225652-14-janusz.krzysztofik@linux.intel.com>
- <DG11TIYPUWHH.1SQKHOBSDKJEF@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="208834379"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 03:32:06 -0800
+Date: Fri, 30 Jan 2026 12:32:04 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: "Kandpal, Suraj" <suraj.kandpal@intel.com>
+Cc: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "B S, Karthik" <karthik.b.s@intel.com>,
+ "Thasleem, Mohammed" <mohammed.thasleem@intel.com>,
+ "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>,
+ "Konieczny, Kamil" <kamil.konieczny@intel.com>
+Subject: Re: [PATCH i-g-t v9 03/11] tools/intel_hdcp: Function to get valid
+ HDCP output
+Message-ID: <20260130113204.p43ajxmbbby7zwzt@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "Kandpal, Suraj" <suraj.kandpal@intel.com>,
+ "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "B S, Karthik" <karthik.b.s@intel.com>,
+ "Thasleem, Mohammed" <mohammed.thasleem@intel.com>,
+ "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>,
+ "Konieczny, Kamil" <kamil.konieczny@intel.com>
+References: <20260127094257.572736-1-santhosh.reddy.guddati@intel.com>
+ <20260127094257.572736-4-santhosh.reddy.guddati@intel.com>
+ <DM3PPF208195D8D8903EEE28A745279003CE390A@DM3PPF208195D8D.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <DM3PPF208195D8D8903EEE28A745279003CE390A@DM3PPF208195D8D.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,99 +83,68 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thursday, 29 January 2026 12:49:39 CET Sebastian Brzezinka wrote:
-> Hi Janusz,
->=20
-> On Wed Jan 28, 2026 at 5:09 PM CET, Janusz Krzysztofik wrote:
-> > In a short listing, lsgpu prints a sysfs path of a PCI GPU parent as a
-> > local attribute of a DRM device.  However, if that's a discrete GPU and
-> > its associated PCIe upstream bridge port has been identified, no
-> > information on that bridge is listed among the GPU attributes.  Follow =
-the
-> > pattern used with DRM devices and also show a PCI slot of the bridge po=
-rt
-> > as a local attribute of the discrete GPU device.
-> >
-> > Moreover, in both short and detailed listings, local attributes intended
-> > for providing device names of GPU associated DRM devices and the GPU
-> > codename are also printed as attributes of related PCIe upstream bridge
-> > port, however, the DRM device names are shown as (null), and the codena=
-me
-> > attribute provides raw vendor:device codes of the bridge itself.  Repla=
-ce
-> > those with PCI slot and codename of the GPU device.
-> >
-> > v2: Allocate memory to local attributes of a bridge for safety=20
-(Sebastian),
-> >   - merge with a formerly separate patch "lib/igt_device_scan: Don't pr=
-int
-> >     bridge not applicable attributes" (Sebastian),
-> >   - no need for DEVTYPE_BRIDGE, just skip attributes if NULL.
-> >
-> > Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Hi Kandpal,,
+On 2026-01-27 at 11:01:40 +0000, Kandpal, Suraj wrote:
+> > Subject: [PATCH i-g-t v9 03/11] tools/intel_hdcp: Function to get valid HDCP
+> > output
+> > 
+> > Add a function to get valid HDCP output for a given connector
+> > 
+> > Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 > > ---
-> >  lib/igt_device_scan.c | 18 ++++++++++++++++--
-> >  1 file changed, 16 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> > index f4d2eb6568..96bf0e359d 100644
-> > --- a/lib/igt_device_scan.c
-> > +++ b/lib/igt_device_scan.c
-> > @@ -249,6 +249,8 @@ struct igt_device {
-> >  	char *codename; /* For grouping by codename */
-> >  	enum dev_type dev_type; /* For grouping by integrated/discrete */
-> > =20
-> > +	char *pci_gpu; /* Filled for upstream bridge ports */
+> >  tools/intel_hdcp.c | 26 ++++++++++++++++++++++++++
+> >  1 file changed, 26 insertions(+)
+> > 
+> > diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c index 6ca067b41..2b38c8cf2
+> > 100644
+> > --- a/tools/intel_hdcp.c
+> > +++ b/tools/intel_hdcp.c
+> > @@ -31,6 +31,32 @@ typedef struct data {
+> >  	enum hdcp_type hdcp_type;
+> >  } data_t;
+> > 
+> > +static igt_output_t *get_hdcp_output(data_t *data, uint32_t
+> > +connector_id, bool *is_valid) {
+> > +	drmModeConnector *connector =
+> > drmModeGetConnectorCurrent(data->fd, connector_id);
+> > +	igt_output_t *output;
 > > +
-> >  	struct igt_list_head link;
-> >  };
-> > =20
-> > @@ -1063,6 +1065,9 @@ static void update_or_add_parent(struct udev *ude=
-v,
-> > =20
-> >  	/* override DEVTYPE_INTEGRATED so link attributes won't be omitted=20
-*/
-> >  	bridge_idev->dev_type =3D DEVTYPE_ALL;
-> > +	bridge_idev->pci_gpu =3D strdup(parent_idev->pci_slot_name);
-> > +	bridge_idev->codename =3D strdup(parent_idev->codename);
-> Releasing memory here is safer, but we must ensure
-> igt_device_new_from_udev hasn't already filled the codename otherwise,
-> the original pointer will be lost.
+> > +	*is_valid = false;
+> > +
+> 
+> Extra line not required 
+> 
+> Other than that LGTM,
+> Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+> 
 
-Indeed, it comes already populated, then I should release the old string=20
-before overwriting.
+Thank you all, I fixed this and pushed.
 
->=20
-> I=E2=80=99m thinking about how to refactor these functions to make them
-> cleaner. They=E2=80=99re a bit cluttered right now since the 'find' and
-> 'update' logic are merged together. This might be outside the scope
-> of your current patches, but the memory management is becoming quite
-> confusing. Unfortunately, there isn't an easy way to move this logic
-> into igt_device_new_from_udev right now.
->=20
-> > +	parent_idev->parent =3D bridge_idev;
-> >  }
-> > =20
-> >  static struct igt_device *duplicate_device(struct igt_device *dev) {
-> > @@ -1234,6 +1239,7 @@ static void igt_device_free(struct igt_device *de=
-v)
-> >  	free(dev->device);
-> >  	free(dev->driver);
-> >  	free(dev->pci_slot_name);
-> > +	free(dev->pci_gpu);
-> It could be unalocated memory.
+Regards,
+Kamil 
 
-Since igt_device_new() allocates memory with calloc(), it may be NULL, and=
-=20
-free(NULL) is safe, I believe.
-
-Thanks,
-Janusz
-
->=20
->=20
-
-
-
-
+> > +	if (!connector)
+> > +		return NULL;
+> > +
+> > +	output = igt_output_from_connector(&data->display, connector);
+> > +	if (!output) {
+> > +		drmModeFreeConnector(connector);
+> > +		return NULL;
+> > +	}
+> > +
+> > +	if (connector->connection != DRM_MODE_CONNECTED || connector-
+> > >encoder_id == 0) {
+> > +		drmModeFreeConnector(connector);
+> > +		return NULL;
+> > +	}
+> > +
+> > +	drmModeFreeConnector(connector);
+> > +	*is_valid = true;
+> > +	return output;
+> > +}
+> > +
+> >  static const char *get_hdcp_version(int fd, char *connector_name)  {
+> >  	char buf[MAX_HDCP_BUF_LEN];
+> > --
+> > 2.34.1
+> 
