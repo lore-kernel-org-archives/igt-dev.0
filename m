@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D97ED49C94
-	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 09:58:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81E24D49C90
+	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 09:58:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3517410E93B;
-	Fri, 30 Jan 2026 09:58:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3B61C10E2C4;
+	Fri, 30 Jan 2026 09:58:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JVZsOUN/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n+ZPdjHF";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 22EA110E93B
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Jan 2026 09:58:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B7A9610E941
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jan 2026 09:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769767114; x=1801303114;
+ t=1769767117; x=1801303117;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=3ubbzLo7kcIymvTdPiBZP7j01Ul6MbStEOvlB9PSmgk=;
- b=JVZsOUN/nFAYr3DkdtkS0xr9hAcAXmYMNsHNMOU+T8H2MtsATOnrJ61S
- rwcCCRpYeq74nCi3VHELbUjiRxzAUBSz12ZCXR+Ihigr1N0L3BJ7FWtsG
- oVmgR0qgcZ1xCLFRwqxo7TBAU4VmxjaQj2Q8S5M+m0ap0w496hdX1iKzW
- sB1P+XF0uUfwnVHw/UUpRBpTQ7/5y5C0s5kifDIeVvLwbOqkhj/vFYwu+
- SuwQxqf0+hBl97esBjeISUAm84yIJaea8yRSQnLUZ+7sSSFaRARR0qEr+
- aocNiHIXRatRRz+HFws9VB7CsU82eEnpcC722BJTuEFc7wdnhXLfHROjF w==;
-X-CSE-ConnectionGUID: RM55UqKaRuea3cruCvA0BA==
-X-CSE-MsgGUID: nX9+noZeQuGRK9DH2DMrlw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="58595942"
-X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="58595942"
+ bh=x8kSzZPOueHIg8KUsLnkZAIf/9m8aOiczE7ZhJfq05M=;
+ b=n+ZPdjHFEk3p2bJqHJt1CO0ckL4AsNZCedWRuoHQ+luzxHOyZHgyp2KT
+ tmRfVWuTPAwXmeN6mdkg16HxavUMIK/Ody/X/nwZZIgkNqYmlxq1jmQ/4
+ N0qz3Cij631m4iUfO19wLI3PquwRY305nH+QXlXTSQlikEixZdCRxk450
+ FsYuIvrNoVNZXOdsTTW42OnbpEhF3CkFQEaIbbce+6TzxHJJSGpRRRWDR
+ /swGBU1pmrzpucc/W9wkd6ryyHy0FF3KaOcVdcgazHZyMIRr6NT0ynnBf
+ 60BZqAWV9GxwJj6KVm8Fy751mdUHX5zkpcnWCqa48F7ixuNs7HPYPypul w==;
+X-CSE-ConnectionGUID: uS1QzTyjSh65dNUs3pjaMw==
+X-CSE-MsgGUID: vFLOPYJyR82loPpI7in90Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="58595947"
+X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="58595947"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2026 01:58:34 -0800
-X-CSE-ConnectionGUID: TL47xG33SxCyIoZJdlhZ1w==
-X-CSE-MsgGUID: 4XRmHJ/PTlWBYH4mB2FHhQ==
+ 30 Jan 2026 01:58:37 -0800
+X-CSE-ConnectionGUID: 90FEjrxqS86LunSHuwyyww==
+X-CSE-MsgGUID: QW42I7SpRm+xZ16fSdLdKg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="208413951"
+X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="208413983"
 Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2026 01:58:32 -0800
+ 30 Jan 2026 01:58:34 -0800
 From: Soham Purkait <soham.purkait@intel.com>
 To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
  badal.nilawar@intel.com, kamil.konieczny@intel.com,
  ashutosh.dixit@intel.com
 Cc: anshuman.gupta@intel.com, soham.purkait@intel.com,
  umesh.nerlige.ramappa@intel.com
-Subject: [PATCH i-g-t v7 1/5] tools: Rename tools/gputop to tools/gputop.src
-Date: Fri, 30 Jan 2026 15:23:14 +0530
-Message-Id: <20260130095318.644256-2-soham.purkait@intel.com>
+Subject: [PATCH i-g-t v7 2/5] tools/gputop.src/utils: Add clamp macro to
+ remove dependency on lib/xe/*
+Date: Fri, 30 Jan 2026 15:23:15 +0530
+Message-Id: <20260130095318.644256-3-soham.purkait@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260130095318.644256-1-soham.purkait@intel.com>
 References: <20260130095318.644256-1-soham.purkait@intel.com>
@@ -70,84 +71,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The GPUTOP source directory is renamed to gputop.src
-under tools/ path.
-
-v1:
- - Add meson build files accordingly to generate
-   the binary under tools. (Kamil)
+Add clamp helper macro to utils.h to remove dependency on lib/xe/*
 
 Signed-off-by: Soham Purkait <soham.purkait@intel.com>
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tools/{ => gputop.src}/gputop.c          |  0
- tools/gputop.src/meson.build             |  1 +
- tools/{gputop => gputop.src}/utils.c     |  0
- tools/{gputop => gputop.src}/utils.h     |  0
- tools/{gputop => gputop.src}/xe_gputop.c |  0
- tools/{gputop => gputop.src}/xe_gputop.h |  0
- tools/meson.build                        | 11 ++++++-----
- 7 files changed, 7 insertions(+), 5 deletions(-)
- rename tools/{ => gputop.src}/gputop.c (100%)
- create mode 100644 tools/gputop.src/meson.build
- rename tools/{gputop => gputop.src}/utils.c (100%)
- rename tools/{gputop => gputop.src}/utils.h (100%)
- rename tools/{gputop => gputop.src}/xe_gputop.c (100%)
- rename tools/{gputop => gputop.src}/xe_gputop.h (100%)
+ tools/gputop.src/utils.h | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/tools/gputop.c b/tools/gputop.src/gputop.c
-similarity index 100%
-rename from tools/gputop.c
-rename to tools/gputop.src/gputop.c
-diff --git a/tools/gputop.src/meson.build b/tools/gputop.src/meson.build
-new file mode 100644
-index 000000000..ec39f4c7a
---- /dev/null
-+++ b/tools/gputop.src/meson.build
-@@ -0,0 +1 @@
-+gputop_src = files('gputop.c')
-diff --git a/tools/gputop/utils.c b/tools/gputop.src/utils.c
-similarity index 100%
-rename from tools/gputop/utils.c
-rename to tools/gputop.src/utils.c
-diff --git a/tools/gputop/utils.h b/tools/gputop.src/utils.h
-similarity index 100%
-rename from tools/gputop/utils.h
-rename to tools/gputop.src/utils.h
-diff --git a/tools/gputop/xe_gputop.c b/tools/gputop.src/xe_gputop.c
-similarity index 100%
-rename from tools/gputop/xe_gputop.c
-rename to tools/gputop.src/xe_gputop.c
-diff --git a/tools/gputop/xe_gputop.h b/tools/gputop.src/xe_gputop.h
-similarity index 100%
-rename from tools/gputop/xe_gputop.h
-rename to tools/gputop.src/xe_gputop.h
-diff --git a/tools/meson.build b/tools/meson.build
-index 8185ba160..521607a4c 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -70,11 +70,6 @@ if libudev.found()
- 		   install : true)
- endif
+diff --git a/tools/gputop.src/utils.h b/tools/gputop.src/utils.h
+index 00befed56..7f3e2ac76 100644
+--- a/tools/gputop.src/utils.h
++++ b/tools/gputop.src/utils.h
+@@ -6,7 +6,6 @@
+ #ifndef COMMON_GPUTOP_H
+ #define COMMON_GPUTOP_H
  
--executable('gputop', 'gputop.c',
--           install : true,
--           install_rpath : bindir_rpathdir,
--           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math])
--
- intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
- executable('intel_l3_parity', sources : intel_l3_parity_src,
- 	   dependencies : tool_deps,
-@@ -123,3 +118,9 @@ endif
- subdir('i915-perf')
- subdir('xe-perf')
- subdir('null_state_gen')
+-#include <glib.h>
+ #include <math.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+@@ -19,6 +18,16 @@
+ 
+ #define PERCLIENT_ENGINE_WIDTH 8
+ 
++#ifndef clamp
++#define clamp(val, lo, hi)			\
++({						\
++	__typeof__(val) _v = (val);		\
++	__typeof__(lo)  _lo = (lo);		\
++	__typeof__(hi)  _hi = (hi);		\
++	_v < _lo ? _lo : (_v > _hi ? _hi : _v);	\
++})
++#endif
 +
-+subdir('gputop.src')
-+executable('gputop', sources : gputop_src,
-+	   install : true,
-+	   install_rpath : bindir_rpathdir,
-+	   dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math],)
+ /**
+  * struct gputop_driver
+  *
 -- 
 2.34.1
 
