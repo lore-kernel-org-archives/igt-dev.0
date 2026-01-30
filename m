@@ -4,132 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8985BD49C7D
-	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 08:47:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2EA5D49C8D
+	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 09:48:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3903810E98C;
-	Fri, 30 Jan 2026 08:47:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7699310E2C4;
+	Fri, 30 Jan 2026 09:48:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="kv0oZ301";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="zq7Dqrg4";
 	dkim-atps=neutral
-Received: from BL2PR02CU003.outbound.protection.outlook.com
- (mail-eastusazon11011064.outbound.protection.outlook.com [52.101.52.64])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1812410E992
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Jan 2026 08:47:15 +0000 (UTC)
+Received: from CH5PR02CU005.outbound.protection.outlook.com
+ (mail-northcentralusazon11012038.outbound.protection.outlook.com
+ [40.107.200.38])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C1AF10E17E
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jan 2026 08:17:05 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ATzXfoaUnMmZnXzXr0dXdiGup6wYYRkf0kuwaPI2UjW9ko9z2A44GYYZeGXIxEcDIS17/jQoHA2kx5fgqa3eqmJwdbqHiGLzH1rbockVs6rJrLrfSWi2uBYcwJsy0NPWFHqRxxI41K6oyeR/tkGFMA1SMwzbh4GEMnLGPTSquEjBuB4GbgL+w8AM2vQeLtbqyrOFBss164w17mQOfpSC8rJQLOAGR32PiydIpzM3lzd8MIRnCEnJAaz2Lre2OGOJ16BZpKHQBZM2yNKTsfsZFod7dU6eUh4Ck92XTul/EsodTZLnG0V4o3uGcywCEgI6l05/x9kuzGRYfxf1pd9KRw==
+ b=vNLWAEwp3wZiSdr+2xZG9Ce3bKNWni716h8pSWdEX1iBbf0uXssKL2LWHEcoWP6bjIXFeDONQCKuo1BrABwxIIMVzbo7qvVJLVIHDJqYWB/34thXonLTkiWCFNdvKXVeoNYpDI3je4piUgU8BaqwM8zPYANRqQrnE5oVPVrHqdMCaqqTMLih6Nesd8bVAaQ51TX4rwMvduM0fPOB78rvxool6/BIg2M2m4CVRVmS1vEtU80QH1HBwADSIycLywt9BW7k2jW/swZy/p4q3CGSMbVFBq9ciLNKKxKtSsCqpYrCAyLYYL65V2CWwMzUI+OCwkCnTCIit9fIzUHDR1VRYg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/fQMXZmVMIBzLhWA9dUZuEMOXn9DEF2OluOm80SrwTA=;
- b=K2g0WhxyZflQE6eE32wjvlg3NkQpKZG9rb9gC2Dh9yK0f+XBfRXIdwVEEjfcH00B7W7TnPMAvYscEcOohnU6FzyEW2V1fDauwjF5CnS12Ug1J0Pto0kEj57haBvEQxgtSWfPcwFMYfprDGl1x02JPet3qcRVq3FkS/OpFO5qX5dTugOQ37jV/jDy+rKpQJfHinDMjDFalWZwOZWasOG8RbyT59EuSBnPmKkqcbB9CpEh5jSpb0nhEJDwuziH8s0rhSurUnXPTlUfzWirxx+KvugR9FKoaM0S/HUtC77+ocQGszH297S1oqCB94XI5MpVgKO5gTcmUiaos6RKNCmsWA==
+ bh=YW9wrAxzEII52EECbQwp6WnbAA+4mlbJ8F62+JaX6bM=;
+ b=aHqiP2ysxsswHojRtzUfYxO0mK6vXNDdz4UFKR1cQgZeg/c6lainmhuMx3CW59U7bnbcwST1sbXwZDyM/KsTFskZ+InUXxy+69XAL+6LLqWF+FvD87eP43WuxJDXeV0dMLB5lS8/rsrV/exvUspNkFQ/z+isslToBDgwY9TLaIJGLBn8J8aLTlp8c3bK841QXWfLG317rpjzbqZn8ctKQzyQGttAQ+y+gMfX936ZpHDjPkYVLmdlYQfq2nO8ikgk1HOOjxgZ4SoVXoH5lcdzx0eioQeiqu7dJrrfrzZuls+3ty0FFKvLFODmMt42117rvNKJo4Cc/CJor2TNmkyGNA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/fQMXZmVMIBzLhWA9dUZuEMOXn9DEF2OluOm80SrwTA=;
- b=kv0oZ301yV0QZBC+I4bWEVHKLgkDhVGJV97+ZvsFpA4dHMaQfXm/8J38XIIxvEo8dEE3wInTBGt348Aq0Eff61CnyRkxTJRiLcGHdV2WDQtjovWAkrQeOBGRI0C14LD3KNwqYWj4uddB7XKkcygfPwC6PneNH72UpvywD27RRo4=
-Received: from BN9P222CA0026.NAMP222.PROD.OUTLOOK.COM (2603:10b6:408:10c::31)
- by DS5PPFF2923D4C1.namprd12.prod.outlook.com (2603:10b6:f:fc00::669)
+ bh=YW9wrAxzEII52EECbQwp6WnbAA+4mlbJ8F62+JaX6bM=;
+ b=zq7Dqrg4eZfCGIwBBap/TkzhZAhG2Rmq9LUCDdNofvmayPUXrO8yrJB9H/Q4cPIJfoWbv+xCGj6PIoJ8YZM0rsEvYqJSy6wSpuvzeFEUHUvNfzpNu3OVo43yTeEo+AhB1+l+x/CiyOjbuIm7bPwkk43M9rEs8DZHOTrmrq4zzI4=
+Received: from BL1PR13CA0284.namprd13.prod.outlook.com (2603:10b6:208:2bc::19)
+ by BL1PR12MB5707.namprd12.prod.outlook.com (2603:10b6:208:386::10)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Fri, 30 Jan
- 2026 08:47:07 +0000
-Received: from BN2PEPF00004FBF.namprd04.prod.outlook.com
- (2603:10b6:408:10c:cafe::78) by BN9P222CA0026.outlook.office365.com
- (2603:10b6:408:10c::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.10 via Frontend Transport; Fri,
- 30 Jan 2026 08:46:54 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.8; Fri, 30 Jan
+ 2026 08:17:00 +0000
+Received: from BL6PEPF0001AB76.namprd02.prod.outlook.com
+ (2603:10b6:208:2bc:cafe::82) by BL1PR13CA0284.outlook.office365.com
+ (2603:10b6:208:2bc::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.7 via Frontend Transport; Fri,
+ 30 Jan 2026 08:16:54 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BN2PEPF00004FBF.mail.protection.outlook.com (10.167.243.185) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF0001AB76.mail.protection.outlook.com (10.167.242.169) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.3 via Frontend Transport; Fri, 30 Jan 2026 08:47:06 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Fri, 30 Jan
- 2026 02:47:02 -0600
-Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 30 Jan
- 2026 02:47:01 -0600
-Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
- satlexmb08.amd.com (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17
- via Frontend Transport; Fri, 30 Jan 2026 02:46:55 -0600
-From: Jesse.Zhang <Jesse.Zhang@amd.com>
+ 15.20.9564.3 via Frontend Transport; Fri, 30 Jan 2026 08:16:59 +0000
+Received: from rtg-jaguar-KRK2e.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 30 Jan
+ 2026 02:16:58 -0600
+From: Tessita Thomas <Tessita.Thomas@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Jesse.Zhang <Jesse.Zhang@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
-Subject: [PATCH i-g-t] lib/amdgpu: Refactor sched_mask read logic and add XCP
- partition mode support
-Date: Fri, 30 Jan 2026 16:46:28 +0800
-Message-ID: <20260130084654.4031554-1-Jesse.Zhang@amd.com>
-X-Mailer: git-send-email 2.49.0
+CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Tessita Thomas
+ <Tessita.Thomas@amd.com>
+Subject: [PATCH] Fix IGT JPEG Dec Failure
+Date: Fri, 30 Jan 2026 13:45:44 +0530
+Message-ID: <20260130081544.440891-1-Tessita.Thomas@amd.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: None (SATLEXMB03.amd.com: Jesse.Zhang@amd.com does not designate
- permitted sender hosts)
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF00004FBF:EE_|DS5PPFF2923D4C1:EE_
-X-MS-Office365-Filtering-Correlation-Id: babe36c8-887e-428c-08c4-08de5fdc25c3
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB76:EE_|BL1PR12MB5707:EE_
+X-MS-Office365-Filtering-Correlation-Id: 977f9deb-cd4d-468e-dc8c-08de5fd7f10d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|376014|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?cx9TXsZyD6z4ldPUZtk9JOBjMjzhTQ71OPYaxO/5PTkbrCEH5onhqD5ryJcN?=
- =?us-ascii?Q?3LCK5A0oDjcjrNBItvr27A0NSHl5cXjP09kBRwfRFTi98bwESmZbrBh0kAa1?=
- =?us-ascii?Q?gaM0tHjjSxRcv9JQfiNNb8J8Tmn8fcYB8JTcqRq+MitXgf6Az+V6SyjCEFbH?=
- =?us-ascii?Q?B7v4eeWK4gpV4W0IunwYvngoLKyNMq7APciV4TSjplC5Wd89CPS6KCCmjuz9?=
- =?us-ascii?Q?wNdMe2tlFGeIQvDebudyU6GU/H+7Ln/OuB2vItMOfO1OUFdgryPn6bMZJrvN?=
- =?us-ascii?Q?fIHFRuEsKeRnR03NmHNOtwOZ8HJwWbnpFZ5fGL4LV7/XWzhZsQqjzHNWO/ag?=
- =?us-ascii?Q?IlGbvtgAoqjLmBH0rtpxhVZw5AAFme6m+H0z5MamUWb2dUDbYYzecv/ek3fx?=
- =?us-ascii?Q?f4L+/onAdtMEYExZGk+IY5LZFwCzg52qikmlbixeOf+dIVsw0JtxYu8fM0De?=
- =?us-ascii?Q?q0C1OZ2nBgtw2v+43nVS85DIJ47+FcXgrmbAao2qu/n1RzrCvcdJIpaCO+lz?=
- =?us-ascii?Q?FalbsRsQwCfv7EdkYy+hnQ/a/IzCeO/6NF7X+kof62MzOQb7o1YFzBwou+BX?=
- =?us-ascii?Q?eFDaI/uQOt10rCEs2r3ug/sArnFsb71vKRigXhWeRdQx5/l5g2iZxNZ68sI2?=
- =?us-ascii?Q?dakaGoRXVsOy1H6MaIa4kM8TymL3scJq1QlCyovc38i1KJTo9mjoFWtcDCi3?=
- =?us-ascii?Q?BAEOcQudJHY6UgpafDKnvi3W3smPi7lXkGfs5c5mtyuKMPG/7ZxSHTsPCEtY?=
- =?us-ascii?Q?/w3UBDmsCtwb60xhWazXP+pqTX5QDAGN3FeKSLQjVXbEu17Mj0ISdm8lzZxp?=
- =?us-ascii?Q?wANrtHLMeyNraojSEkAWCzT1CSYoTro2D6TExpauZxCG3NcR/j4ZejR7OBpb?=
- =?us-ascii?Q?qhsG0Pzpb1UTzci29rHI2Nrl0xIloEwWdx+nwzhZUUiAX+kawzMCsMK8zpVC?=
- =?us-ascii?Q?HTQWn0hfEd1qa/OQ7JtO92OvubBLENR8R7ZiEmVZUii6gmsEI1I2DfyCWDXm?=
- =?us-ascii?Q?l2YopMqG9wIIhLPcUHuK04YaTVvWlD3Z5HQOJaKJ4SfVi7K2JK4rqP1KWrDT?=
- =?us-ascii?Q?bsksAu42lW30uqfE73J1PfR6JKPlJtO8Gr3k/rid8TAQ7BaTfyN7OpoCqZcw?=
- =?us-ascii?Q?0/ZUNXbbyqOLJ/9WGcPF7nekGgfzI4qfaHffEIrRZtmu6N5pLk/6JFSJB9AO?=
- =?us-ascii?Q?fHrFm2K57IkmkWDQrkN+xjtc+IOgVLrZURm6F1rU9Pxnl4p7DwVwP5RnJw0O?=
- =?us-ascii?Q?ehfpoTIDczLsLC5JBp2wk0rpLQvTSTgZlF/AoBwTI+gJ+w5iOcxFS7bx5bSt?=
- =?us-ascii?Q?5l2WyhS7x+GlC+ZvVU3VYri+7VnKtowQMPkZ94jXC92khWbjDiH1PDQC7d0W?=
- =?us-ascii?Q?6+S7LPMw6wJK7nlbxbGqfY3gs3BpQvMHvpmALbDWwNY05MQu6cGeJBUsieo2?=
- =?us-ascii?Q?yMwEYC8yIgK0uNqTAeH632/OQDZQqY4Hwpdi6LJRkwnxVSynjMiOjcnD3ZL4?=
- =?us-ascii?Q?AWwR+PRlRoYNmp0+GXw+SFHXE3ZWVavf0XdJN7cvTvq7A3ehohO6L/I99ajY?=
- =?us-ascii?Q?JgB9h/J+GnSdhyH7AqFeIUVrrmRuIVcRur4IBJX7No7luuOMyss4EMaBVZjz?=
- =?us-ascii?Q?xVLJochc5jKKZOynH+PlHKF7qxQyTYBXlxUAUjWhpuSb2xz7kNyc7BZm7O8t?=
- =?us-ascii?Q?ripMkw=3D=3D?=
+ ARA:13230040|1800799024|376014|36860700013|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?baKUXXwNxJGPjiSOyjG2LA5q+jEfl58FbZ5B4jchKDkl9RTfO3rLsex55Nru?=
+ =?us-ascii?Q?dADbhybtY1m0gMrmi0uy1OFhr39E5vMmb06P1ABJAtl755CgBvsFrkLz+Pqg?=
+ =?us-ascii?Q?zTunbaWdMHMIYVZzFmtznmimg9NLauGE6m/ZQnYyAAkJGmn4Zx5Zb7EpA8jF?=
+ =?us-ascii?Q?aDZtq6zXAPmbBEX8hcCk8aec4+bCVwCK2QvcOJKAbS99ZUCM59sRF2Rf85rH?=
+ =?us-ascii?Q?Q7chban+Wv8E0OqT1IshuifKeHrsbICE+46dhYrP/+yEhCCl3tizNFqeC5S6?=
+ =?us-ascii?Q?VGEr+musLm/V1aFeGFTbUEPECCaarTJjN5mYt96zCVQPKhtmuPHjIeT3qtwU?=
+ =?us-ascii?Q?vrV5CoOD3enoScTaVMrSJ2YW6WofqSw3T6pZ106Js3mT5VJPJpw7TRUkRLD7?=
+ =?us-ascii?Q?Es0Np/Sj4+BmNPf5FAsLmJYgPDMQeXqGwvFiXfJruPrzagfOqehRlI/s8vqR?=
+ =?us-ascii?Q?Zot5ELFOJJHyREEYbKKSUDuxpcF1dO9jJ3Wg5B8Z89cSSuTGpD7uHRJsCG1N?=
+ =?us-ascii?Q?zw2GYOfAKLZ3EcxQdmiweNgYiGCt8BQZAw8V5Zv3wzUQBOpQoVUoF3F5jhsQ?=
+ =?us-ascii?Q?BTgkMpmaXRbxjkmZ6DOYWx7r3+rZMAUBUNWWKCDaynpA0lDniANbQ6hzhJ6v?=
+ =?us-ascii?Q?+QzjWKRay/Ia92oHU010hrpS+rEovgjjMDHcDrmRC2i2BiwhBxR43/80wlKm?=
+ =?us-ascii?Q?DmUuFwGHwq13EgVbK8w/DOjHsGF2nPWGmjk935Jm1lpZjfSh/4XCOIukt5lO?=
+ =?us-ascii?Q?kvdTl5QWfBDQWku65Lk47JOPfuVn6BmL8Su1XFcxIgjPJ5Fp7NdsFY24Y7CH?=
+ =?us-ascii?Q?gAFw95q2/xhbqjk/Pn29GV9U1v3mG7QK17VAEhltYiL0R2IcYKK9XsU1quQv?=
+ =?us-ascii?Q?VjMncjs4ERtY4lZsBy5mEhSpVv/nEqFkGMzLrupeQuk7UJmsbAq9REdWQi5p?=
+ =?us-ascii?Q?dz3G2BSWQtKp8MdWNYKxPj7hQq5Am5VNUVCL49hw+SNrjCe/ksyo0mz3RpMF?=
+ =?us-ascii?Q?3l5AEiy9qYQ1vtQ2xXIliOXSk1x6AxtnfUAdTH+fvN763+4kFDx3+eVrbOM7?=
+ =?us-ascii?Q?DMvD6hCq+RdQybxo3+CMq8WDK+Vt/q7w0fFgcBY+vgvlVeDLhcL6A5QPKl8e?=
+ =?us-ascii?Q?esEmldUAsr7DdUk/+c7qOStOX+U6Ee0iJ6hxvaSRmWK4MT4u3/ouHk59tRSD?=
+ =?us-ascii?Q?f9+8HuaYdUH71/O4bZ0r2Rv5170J3gPUS3YzFUHgVj9Blp0Qw3AfC541dcXr?=
+ =?us-ascii?Q?71xGAOJl5k6LBx6Yzi12r6kGDAsptxeAZhOdI5R3PAv+vMp2eWHSGtbTH960?=
+ =?us-ascii?Q?QVroeI5pAbumJcOyhNrwFQjjtJO9TIgbIN4g3Wsv/5rBZgIZZEdzFFxh5Q+b?=
+ =?us-ascii?Q?+gDfyieGgZ0hgZwCbRq7XthUD0kiv7W5/KK54HBHWJFbhOnRyYHMcd10hggW?=
+ =?us-ascii?Q?bbUgiax1sTrmoN9+vZPksXRKPUNpV8B3lu1YwegsrlShPBBWwz7L9v+iFY9j?=
+ =?us-ascii?Q?sMGXfauxEEaSiBWkcK78LlNMhksKDC2EGo/rpKbSr8JuX/1QygPW3xqWCypL?=
+ =?us-ascii?Q?Jc5otXh9a9z+AEPjkrPM9Y6+gfC0hgvB0mxXE4VCoKJ7atXyuaEFQy0/bL22?=
+ =?us-ascii?Q?4+GTHy7DhisIeU+GZdbdQjWZuES6/eDphm+G8A+4v3qBRVmOf062j8KcJ5Qo?=
+ =?us-ascii?Q?ig4oVA=3D=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026); DIR:OUT;
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(36860700013)(82310400026); DIR:OUT;
  SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: e3gtbYkZclkgU7qRZTVnNuyE+dPCTwHGWC4QUvudxKaV+uOJf8E/furRxOKKSw6Ups5Rn7nH/p7NaqSIpt7nN4sZ7cEufHJkqVygg6GeA2q5ZLmnzlvSM38OEOzwBoDwRTvBEpLv9lpjQxA+Lr5C0JXZsgDqaxdcDIbtja4uJLPfgpkJtKflLRK9yAnpcBoeFMgaAOjT18uk900un0w7r/z2MRNGZ+zylcMxQtu1dayU4Qa/Un9GFKzwdZ5TQJV+bA+luAgxmGHFYhDAoWiU4dCbGxMbcz0WTdiAODur+RAd2qw78sdFSZaQkIKCeb36vBrMcvkq+dOoy+lRDPDfl5foB0wFtHXc5oijfJXrTkOiwKo+7FndaITvWB8H9qGujMgDPG3iFukbYjF9vk5Pl8kqa75dOVVhjza67UJUsL+ZqR0Z/LA+BUMf+fijO92F
+X-MS-Exchange-AntiSpam-MessageData-0: XqKCu45wW8F3YbkNX+1Py4d1MZnhh037dt9zM3U/e/PhMOcefVpf0aNyVjahdvcdjkKoFIanTp82aMgOj0LTC98hcHD6uy+VJkx1NmO13fcdbYu7+Xsaxbyd3BP+wAHZ5vW/eQVNxuq/n2+CendDpJuR8EXALVy5MW2VigIUxdrUBDTo9vyO1xNFVsqeAWV+Mn8ZkG/sumSF1AQBoRoqGwRz+QSfw0vWHmlVX0I779ABwNHytmKAh5x8FaD/nkQJYzvYOve9t/9njWMD0Nttc7mWie2QL2eDl62avoMlrwXYo1sg1RJfvKfs4O8qxwImrI9fQjvuFEwz4mbO6fv1NXW3Ca/bvCGDrvkYe8JnIOinjqlDbCmmGFg3e/2GTHOyeiafQHrg5KNHR5iXlpxzN0xoXh5JWMqNkERIM33iflCvmjqMzfSDlbZWWqjsSHYF
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 08:47:06.3743 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: babe36c8-887e-428c-08c4-08de5fdc25c3
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 08:16:59.9569 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 977f9deb-cd4d-468e-dc8c-08de5fd7f10d
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF00004FBF.namprd04.prod.outlook.com
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB76.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFF2923D4C1
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5707
+X-Mailman-Approved-At: Fri, 30 Jan 2026 09:48:42 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -145,388 +139,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The refactoring maintains all existing functionality while creating a
-centralized, more robust implementation for reading scheduler masks
-across different IP blocks and GPU configurations.
-Adapt IGT test logic to XCP non-SPX (CPX/DPX/TPX/QPX) partition modes, force sched_mask=1 for partitioned modes
+For VCN 4.0.5, IGT needs to send aligned IB buffer.
+Added padding logic for ip = AMDGPU_HW_IP_VCN_JPEG.
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+Signed-off-by: Tessita Thomas <Tessita.Thomas@amd.com>
 ---
- lib/amdgpu/amd_deadlock_helpers.c       | 54 ++--------------
- lib/amdgpu/amd_ip_blocks.c              | 85 +++++++++++++++++++++++++
- lib/amdgpu/amd_ip_blocks.h              |  5 ++
- lib/amdgpu/amd_mmd_shared.c             | 42 ++----------
- lib/amdgpu/compute_utils/amd_dispatch.c | 60 +++--------------
- 5 files changed, 110 insertions(+), 136 deletions(-)
+ lib/amdgpu/amd_mmd_shared.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
-index 01c0f9928..cb37a3564 100644
---- a/lib/amdgpu/amd_deadlock_helpers.c
-+++ b/lib/amdgpu/amd_deadlock_helpers.c
-@@ -206,13 +206,11 @@ amdgpu_wait_memory(amdgpu_device_handle device_handle, unsigned int ip_type, uin
- void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int ip_type, struct pci_addr *pci, bool userq)
- {
- 	int r;
--	FILE *fp;
- 	char cmd[1024];
--	char buffer[128];
- 	uint64_t sched_mask = 0, ring_id;
- 	struct drm_amdgpu_info_hw_ip info;
- 	uint32_t  prio;
--	char sysfs[125];
-+	char sysfs[256];
- 	bool support_page;
- 
- 	r = amdgpu_query_hw_ip_info(device_handle, ip_type, 0, &info);
-@@ -234,27 +232,8 @@ void amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int
- 
- 	support_page = is_support_page_queue(ip_type, pci);
- 
--	if (ip_type == AMD_IP_GFX)
--		snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_gfx_sched_mask",
--			pci->domain, pci->bus, pci->device, pci->function);
--	else if (ip_type == AMD_IP_COMPUTE)
--		snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_compute_sched_mask",
--			pci->domain, pci->bus, pci->device, pci->function);
--	else if (ip_type == AMD_IP_DMA)
--		snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_sdma_sched_mask",
--			pci->domain, pci->bus, pci->device, pci->function);
--
--	snprintf(cmd, sizeof(cmd) - 1, "sudo cat %s", sysfs);
--	r = access(sysfs, R_OK);
--	if (!r) {
--		fp = popen(cmd, "r");
--		if (fp == NULL)
--			igt_skip("read the sysfs failed: %s\n", sysfs);
--
--		if (fgets(buffer, 128, fp) != NULL)
--			sched_mask = strtol(buffer, NULL, 16);
--
--		pclose(fp);
-+	if (is_spx_mode(pci)) {
-+		sched_mask = amdgpu_get_ip_schedule_mask(pci, (enum amd_ip_block_type)ip_type, sysfs);
- 	} else {
- 		sched_mask = 1;
- 		igt_info("The scheduling ring only enables one for ip %d\n", ip_type);
-@@ -483,13 +462,11 @@ amdgpu_hang_sdma_helper(amdgpu_device_handle device_handle, uint8_t hang_type)
- void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd_error, unsigned int ip_type, struct pci_addr *pci, bool user_queue)
- {
- 	int r;
--	FILE *fp;
- 	char cmd[1024];
--	char buffer[128];
- 	uint64_t sched_mask = 0, ring_id;
- 	struct drm_amdgpu_info_hw_ip info;
- 	uint32_t prio;
--	char sysfs[125];
-+	char sysfs[256];
- 	bool support_page;
- 	uint32_t available_rings = 0;
- 	r = amdgpu_query_hw_ip_info(device_handle, ip_type, 0, &info);
-@@ -510,27 +487,8 @@ void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd
- 		return;
- 	}
- 	support_page = is_support_page_queue(ip_type, pci);
--	if (ip_type == AMD_IP_GFX)
--		snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_gfx_sched_mask",
--			pci->domain, pci->bus, pci->device, pci->function);
--	else if (ip_type == AMD_IP_COMPUTE)
--		snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_compute_sched_mask",
--			pci->domain, pci->bus, pci->device, pci->function);
--	else if (ip_type == AMD_IP_DMA)
--		snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_sdma_sched_mask",
--			pci->domain, pci->bus, pci->device, pci->function);
--
--	snprintf(cmd, sizeof(cmd) - 1, "sudo cat %s", sysfs);
--	r = access(sysfs, R_OK);
--	if (!r) {
--		fp = popen(cmd, "r");
--		if (fp == NULL)
--			igt_skip("read the sysfs failed: %s\n", sysfs);
--
--		if (fgets(buffer, 128, fp) != NULL)
--			sched_mask = strtol(buffer, NULL, 16);
--
--		pclose(fp);
-+	if (is_spx_mode(pci)) {
-+		sched_mask = amdgpu_get_ip_schedule_mask(pci, (enum amd_ip_block_type)ip_type, sysfs);
- 	} else {
- 		sched_mask = 1;
- 		igt_info("The scheduling ring only enables one for ip %d\n", ip_type);
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-index eb0b71728..9822662e3 100644
---- a/lib/amdgpu/amd_ip_blocks.c
-+++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -1873,3 +1873,88 @@ const char *cmd_get_ip_name(enum amd_ip_block_type ip_type)
- 		return "Unknown";
- 	}
- }
-+
-+bool is_spx_mode(const struct pci_addr *pci)
-+{
-+	char path[256];
-+	char buffer[16] = {0};
-+	FILE *fp;
-+
-+	snprintf(path, sizeof(path), "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/current_compute_partition",
-+		 pci->domain, pci->bus, pci->device, pci->function);
-+
-+	/* If file doesn't exist, assume SPX or non-partitioned capable */
-+	if (access(path, R_OK) != 0)
-+		return true;
-+
-+	fp = fopen(path, "r");
-+	if (!fp)
-+		return true;
-+
-+	if (fgets(buffer, sizeof(buffer), fp)) {
-+		if (strstr(buffer, "SPX")) {
-+			fclose(fp);
-+			return true;
-+		}
-+	}
-+	fclose(fp);
-+	return false;
-+}
-+
-+long amdgpu_get_ip_schedule_mask(const struct pci_addr *pci, enum amd_ip_block_type ip_type, char *sysfs_path)
-+{
-+	char sysfs_local[256];
-+	char *sysfs = sysfs_path ? sysfs_path : sysfs_local;
-+	char cmd[512];
-+	char buffer[128];
-+	FILE *fp;
-+	long sched_mask = 0;
-+	int dri_id;
-+	const char *mask_name = NULL;
-+
-+	switch (ip_type) {
-+	case AMD_IP_GFX:
-+		mask_name = "amdgpu_gfx_sched_mask";
-+		break;
-+	case AMD_IP_COMPUTE:
-+		mask_name = "amdgpu_compute_sched_mask";
-+		break;
-+	case AMD_IP_DMA:
-+		mask_name = "amdgpu_sdma_sched_mask";
-+		break;
-+	case AMD_IP_VCN_UNIFIED:
-+		mask_name = "amdgpu_vcn_sched_mask";
-+		break;
-+	case AMD_IP_VCN_JPEG:
-+		mask_name = "amdgpu_jpeg_sched_mask";
-+		break;
-+	default:
-+		return 0;
-+	}
-+
-+	snprintf(sysfs, 256, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/%s",
-+		 pci->domain, pci->bus, pci->device, pci->function, mask_name);
-+
-+	if (access(sysfs, F_OK) != 0) {
-+		dri_id = find_dri_id_by_pci(pci);
-+		if (dri_id < 0)
-+			dri_id = 0;
-+
-+		snprintf(sysfs, 256, "/sys/kernel/debug/dri/%d/%s", dri_id, mask_name);
-+	}
-+
-+	if (access(sysfs, R_OK) != 0)
-+		return 1;
-+
-+	snprintf(cmd, sizeof(cmd) - 1, "sudo cat %s", sysfs);
-+
-+	fp = popen(cmd, "r");
-+	if (fp) {
-+		if (fgets(buffer, sizeof(buffer), fp))
-+			sched_mask = strtol(buffer, NULL, 16);
-+		pclose(fp);
-+	}
-+
-+	return sched_mask;
-+}
-+
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index 8fd9fde9a..424b3210a 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -442,6 +442,11 @@ is_support_page_queue(enum amd_ip_block_type ip_type, const struct pci_addr *pci
- int
- find_dri_id_by_pci(const struct pci_addr *pci);
- 
-+long
-+amdgpu_get_ip_schedule_mask(const struct pci_addr *pci, enum amd_ip_block_type ip_type, char *sysfs_path);
-+
-+bool is_spx_mode(const struct pci_addr *pci);
-+
- int
- get_dri_index_from_device(amdgpu_device_handle device, int fd);
- /**
 diff --git a/lib/amdgpu/amd_mmd_shared.c b/lib/amdgpu/amd_mmd_shared.c
-index f504db596..261ca7205 100644
+index f504db596..b9eff16f9 100644
 --- a/lib/amdgpu/amd_mmd_shared.c
 +++ b/lib/amdgpu/amd_mmd_shared.c
-@@ -196,54 +196,20 @@ mm_queue_test_helper(amdgpu_device_handle device_handle, struct mmd_shared_conte
- 		mm_test_callback callback, int err_type, const struct pci_addr *pci)
- {
+@@ -161,9 +161,22 @@ submit(amdgpu_device_handle device_handle, struct mmd_context *context,
+ 	struct amdgpu_cs_fence fence_status = {0};
+ 	uint32_t expired;
  	int r;
--	FILE *fp;
- 	char cmd[1024];
--	char buffer[128];
- 	long sched_mask = 0;
- 	long mask = 0;
- 	uint32_t ring_id;
--	char sysfs[125];
--	char dri_dir[128];
--	int dri_id = 0;
-+	char sysfs[256];
- 
- 	if (!callback)
- 		return -1;
- 
--	snprintf(dri_dir, sizeof(dri_dir) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x",
--		pci->domain, pci->bus, pci->device, pci->function);
--
--	if (access(dri_dir, F_OK) == 0) {
--		// test is only supported on VCN version >= 4
--		if (context->ip_type == AMD_IP_VCN_UNIFIED)
--			snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_vcn_sched_mask",
--					pci->domain, pci->bus, pci->device, pci->function);
--		else if (context->ip_type == AMD_IP_VCN_JPEG)
--			snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_jpeg_sched_mask",
--					pci->domain, pci->bus, pci->device, pci->function);
-+	if (is_spx_mode(pci)) {
-+		sched_mask = amdgpu_get_ip_schedule_mask(pci, (enum amd_ip_block_type)context->ip_type, sysfs);
- 	} else {
--		dri_id = find_dri_id_by_pci(pci);
--		if (dri_id < 0)
--			dri_id = 0;
--
--		if (context->ip_type == AMD_IP_VCN_UNIFIED)
--			snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%d/amdgpu_vcn_sched_mask", dri_id);
--		else if (context->ip_type == AMD_IP_VCN_JPEG)
--			snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%d/amdgpu_jpeg_sched_mask", dri_id);
-+		sched_mask = 1; 
- 	}
--	snprintf(cmd, sizeof(cmd) - 1, "sudo cat %s", sysfs);
--	r = access(sysfs, R_OK);
--	if (!r) {
--		fp = popen(cmd, "r");
--		if (fp == NULL) {
--			igt_skip("read the sysfs failed: %s\n", sysfs);
--			return -1;
--		}
--
--		if (fgets(buffer, 128, fp) != NULL)
--			sched_mask = strtol(buffer, NULL, 16);
--		pclose(fp);
--	} else
--		sched_mask = 1;
- 
- 	mask = sched_mask;
- 	for (ring_id = 0;  mask > 0; ring_id++) {
-diff --git a/lib/amdgpu/compute_utils/amd_dispatch.c b/lib/amdgpu/compute_utils/amd_dispatch.c
-index ded62bbd1..23c15ef1b 100644
---- a/lib/amdgpu/compute_utils/amd_dispatch.c
-+++ b/lib/amdgpu/compute_utils/amd_dispatch.c
-@@ -664,13 +664,11 @@ amdgpu_dispatch_hang_slow_helper(amdgpu_device_handle device_handle,
- 				 uint32_t ip_type, const struct pci_addr *pci, bool userq)
- {
- 	int r;
--	FILE *fp;
- 	char cmd[1024];
--	char buffer[128];
- 	long sched_mask = 0;
- 	struct drm_amdgpu_info_hw_ip info;
- 	uint32_t ring_id, version, prio;
--	char sysfs[125];
-+	char sysfs[256];
- 
- 	r = amdgpu_query_hw_ip_info(device_handle, ip_type, 0, &info);
- 	igt_assert_eq(r, 0);
-@@ -683,29 +681,11 @@ amdgpu_dispatch_hang_slow_helper(amdgpu_device_handle device_handle,
- 		return;
- 	}
- 
--	if (ip_type == AMD_IP_GFX)
--		snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_gfx_sched_mask",
--				pci->domain, pci->bus, pci->device, pci->function);
--	else if (ip_type == AMD_IP_COMPUTE)
--		snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_compute_sched_mask",
--				pci->domain, pci->bus, pci->device, pci->function);
--	else if (ip_type == AMD_IP_DMA)
--		snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_sdma_sched_mask",
--				pci->domain, pci->bus, pci->device, pci->function);
--
--	snprintf(cmd, sizeof(cmd) - 1, "sudo cat %s", sysfs);
--	r = access(sysfs, R_OK);
--	if (!r) {
--		fp = popen(cmd, "r");
--		if (fp == NULL)
--			igt_skip("read the sysfs failed: %s \n",sysfs);
--
--		if (fgets(buffer, 128, fp) != NULL)
--			sched_mask = strtol(buffer, NULL, 16);
--
--		pclose(fp);
--	} else
-+	if (is_spx_mode(pci)) {
-+		sched_mask = amdgpu_get_ip_schedule_mask(pci, (enum amd_ip_block_type)ip_type, sysfs);
-+	} else {
- 		sched_mask = 1;
++	
++	unsigned int padded_ndw = ndw;
++
++	/* Pad IB to 16 DW alignment for VCN JPEG (ib_pad_dw_mask = 0xF)*/
++	if (ip == AMDGPU_HW_IP_VCN_JPEG) {
++		if (padded_ndw & 1)
++			return -1;
++
++		while (padded_ndw & 0xF) {
++			context->ib_cpu[padded_ndw++] = 0x60000000; /* NOP packet */
++			context->ib_cpu[padded_ndw++] = 0x00000000;
++		}
 +	}
  
- 	for (ring_id = 0; (0x1 << ring_id) <= sched_mask; ring_id++) {
- 		/* check sched is ready is on the ring. */
-@@ -760,13 +740,11 @@ void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_ty
- 		enum cmd_error_type hang, const struct pci_addr *pci,  bool userq)
- {
- 	int r;
--	FILE *fp;
- 	char cmd[1024];
--	char buffer[128];
- 	long sched_mask = 0;
- 	struct drm_amdgpu_info_hw_ip info;
- 	uint32_t ring_id, version, prio;
--	char sysfs[125];
-+	char sysfs[256];
+ 	ib_info.ib_mc_address = context->ib_mc_address;
+-	ib_info.size = ndw;
++	ib_info.size = padded_ndw;
  
- 	r = amdgpu_query_hw_ip_info(device_handle, ip_type, 0, &info);
- 	igt_assert_eq(r, 0);
-@@ -784,29 +762,11 @@ void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_ty
- 	if (userq) {
- 		sched_mask = 1;
- 	} else {
--		if (ip_type == AMD_IP_GFX)
--			snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_gfx_sched_mask",
--					pci->domain, pci->bus, pci->device, pci->function);
--		else if (ip_type == AMD_IP_COMPUTE)
--			snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_compute_sched_mask",
--					pci->domain, pci->bus, pci->device, pci->function);
--		else if (ip_type == AMD_IP_DMA)
--			snprintf(sysfs, sizeof(sysfs) - 1, "/sys/kernel/debug/dri/%04x:%02x:%02x.%01x/amdgpu_sdma_sched_mask",
--					pci->domain, pci->bus, pci->device, pci->function);
--
--		snprintf(cmd, sizeof(cmd) - 1, "sudo cat %s", sysfs);
--		r = access(sysfs, R_OK);
--		if (!r) {
--			fp = popen(cmd, "r");
--			if (fp == NULL)
--				igt_skip("read the sysfs failed: %s \n",sysfs);
--
--			if (fgets(buffer, 128, fp) != NULL)
--				sched_mask = strtol(buffer, NULL, 16);
--
--			pclose(fp);
--		} else
-+		if (is_spx_mode(pci)) {
-+			sched_mask = amdgpu_get_ip_schedule_mask(pci, (enum amd_ip_block_type)ip_type, sysfs);
-+		} else {
- 			sched_mask = 1;
-+		}
- 	}
+ 	ibs_request.ip_type = ip;
  
- 	for (ring_id = 0; (0x1 << ring_id) <= sched_mask; ring_id++) {
 -- 
-2.49.0
+2.43.0
 
