@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A970FE6BF13
-	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 14:16:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB3EAE6BF17
+	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 14:20:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 607F210E9EC;
-	Fri, 30 Jan 2026 14:16:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B4A110E256;
+	Fri, 30 Jan 2026 14:20:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JWzv+XIT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c49ZA0Js";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2CA5F10E9EC
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Jan 2026 14:16:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E5D6C10E256
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jan 2026 14:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769782611; x=1801318611;
+ t=1769782803; x=1801318803;
  h=from:to:subject:in-reply-to:references:date:message-id:
  mime-version:content-transfer-encoding;
- bh=N3xGskbo6/dG0GeNePYtBi/qpPQYtqTdxLUsOonESTE=;
- b=JWzv+XITLqy+pUKMOltPVo4JU7zidurt18gFMCrxsYzxIyR+Mp10q4Zq
- 4q4IA9iGqAusIy1wVxQBdzgOZRrKh1kib5/t+3BvlPgMi/aWknKKpjYQ1
- kMAGl38J9rMdQhkNMJoXGqfAeIxsTIARS0r4+WsfNSCUG9EL5/qmtBCL3
- qQebtHDuvPApkhiiTYjSW6VRIw2y1AqKLcZbBTHkP0R58v5bc9E0yRMka
- 3aI2tY3A12yNfyJe0IadaAeEkC8WvWsTC4CJSXTTLXZ7J6uC7/msi+SRW
- dIV4Mz/Z/vM39zSbSkmYYylUpPVjU6HpGNtZXt6hG3KLGXdHs2j/SfVVl Q==;
-X-CSE-ConnectionGUID: sCBkkHa1R4eNIg8rH8y5HQ==
-X-CSE-MsgGUID: YnV47Cr/RCWp6zDf1Xqc8g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="70936364"
-X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; d="scan'208";a="70936364"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2026 06:16:51 -0800
-X-CSE-ConnectionGUID: mvBS8bx5R6G/rw9l6vcPmg==
-X-CSE-MsgGUID: MUOEN19uQVmaQjxH5XloNw==
+ bh=qwU4z6/Hbg2+pf7A616TlsBbohXi6SMpHG14gkmXPh8=;
+ b=c49ZA0Jsuva36hfrP8ipwCtOqc8hqtYLN9vTCYYdsRY3aN/C9U7fTsXd
+ Zvev8O2eKH7KbTfNOwChtK6+SowrjUlPUzn2eHieL1oKR/pUSF8ceRMlH
+ xDQFeDoV7pRm3ea+8/VFxr6qKxzZOq+QOfI6kUqvSvDftnoKXSiXmsJA8
+ vRGvh+LiavpG44YXnnkzKdKYa9C32Cr+7OPRVZGINFqSA9kEpVK3aJlgO
+ MhSJ3+BGVzljkDRXZL3JW9NGZhDnpnX3oD62wAVaJErz+JLam/hxB3+EB
+ UUPtOWHiZ8iqaOBjdxs677/3sfr6nar4rT3/yeIv9Ffnl8M/WhPoJEr9A w==;
+X-CSE-ConnectionGUID: nT1bf0+8QJChXHLKOntxMw==
+X-CSE-MsgGUID: J2ibPOHXTmGUVbEZUQDpOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="81666219"
+X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; d="scan'208";a="81666219"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2026 06:20:03 -0800
+X-CSE-ConnectionGUID: GESsFOVVQE28aN+GPCCRMA==
+X-CSE-MsgGUID: W+TPaxaNS0aZoLtyVp5Spg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; d="scan'208";a="213356591"
+X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; d="scan'208";a="208863405"
 Received: from ettammin-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.246.77])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2026 06:16:49 -0800
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2026 06:20:01 -0800
 From: Jani Nikula <jani.nikula@intel.com>
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 08/15] lib/kms: Use
- for_each_crtc_with_single_output(), part 1
-In-Reply-To: <20260130105237.14481-9-ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t 09/15] lib/kms: Use
+ for_each_crtc_with_single_output(), part 2
+In-Reply-To: <20260130105237.14481-10-ville.syrjala@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 References: <20260130105237.14481-1-ville.syrjala@linux.intel.com>
- <20260130105237.14481-9-ville.syrjala@linux.intel.com>
-Date: Fri, 30 Jan 2026 16:16:41 +0200
-Message-ID: <a40a5df54628b7565ff82ee65e2ceca7b1ca8b8a@intel.com>
+ <20260130105237.14481-10-ville.syrjala@linux.intel.com>
+Date: Fri, 30 Jan 2026 16:19:57 +0200
+Message-ID: <db585e231f9d445c7589a478c05f6b9f0057b7e3@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -75,105 +75,484 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 On Fri, 30 Jan 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
 > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >
-> Convert some uses of for_each_pipe_with_single_output()
-> to for_each_crtc_with_single_output(). Take care of the
-> cases where we (presumably) still have to keep some
-> kind of 'data.pipe' thingy still up to date.
->
-> Eventually we should probably replace 'data.pipe' with
-> 'data.crtc' but I didn't want to go that far here.
+> Convert more of the for_each_pipe_with_single_output() uses
+> over to for_each_crtc_with_single_output(). This covers the
+> simple use cases.
+
+Here and in a handful of previous patches the subject prefix should
+probably be "tests/kms:".
+
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+
 >
 > Done with cocci:
 >  #include "scripts/iterators.cocci"
 >
-> @change@
+> @find@
+> typedef igt_crtc_t;
 > iterator name for_each_pipe_with_single_output;
 > iterator name for_each_crtc_with_single_output;
-> typedef igt_crtc_t;
+> expression DISPLAY, OUTPUT;
 > identifier PIPE;
-> expression DISPLAY, OUTPUT, X;
+> type T;
 > @@
-> - for_each_pipe_with_single_output(DISPLAY, X.PIPE, OUTPUT)
+> (
+> - T PIPE;
+> + igt_crtc_t *crtc;
+> |
+> - T PIPE =3D PIPE_NONE;
+> + igt_crtc_t *crtc;
+> )
+> <+...
+> for_each_pipe_with_single_output(DISPLAY, PIPE, OUTPUT) { ... }
+> ...+>
+>
+> @change depends on find@
+> expression DISPLAY, OUTPUT;
+> identifier find.PIPE;
+> @@
+> - for_each_pipe_with_single_output(DISPLAY, PIPE, OUTPUT)
 > + for_each_crtc_with_single_output(DISPLAY, crtc, OUTPUT)
 > {
-> + X.PIPE =3D crtc->pipe;
 > <...
 > (
-> - igt_crtc_for_pipe(..., X.PIPE)
+> - igt_crtc_for_pipe(..., PIPE)
 > + crtc
 > |
-> - kmstest_pipe_name(X.PIPE)
+> - kmstest_pipe_name(PIPE)
 > + igt_crtc_name(crtc)
 > |
-> - X.PIPE
+> - PIPE
 > + crtc->pipe
 > )
 > ...>
 > }
 >
-> @depends on change@
-> identifier FUNC;
-> @@
-> FUNC(...)
-> {
-> + igt_crtc_t *crtc;
-> <+...
-> for_each_crtc_with_single_output(...) { ... }
-> ...+>
-> }
->
 > Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
-
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-
 > ---
->  tests/kms_cursor_edge_walk.c | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
+>  tests/amdgpu/amd_cursor_overlay.c | 16 ++++++----
+>  tests/kms_color_pipeline.c        | 12 ++++----
+>  tests/kms_plane.c                 |  8 ++---
+>  tests/kms_plane_alpha_blend.c     | 24 +++++++++------
+>  tests/kms_plane_cursor.c          | 14 +++++----
+>  tests/kms_properties.c            | 22 +++++++-------
+>  tests/kms_rmfb.c                  | 10 +++----
+>  tests/kms_universal_plane.c       | 49 ++++++++++++++++++-------------
+>  8 files changed, 89 insertions(+), 66 deletions(-)
 >
-> diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-> index eaf4c59b8a19..86577fbc53d8 100644
-> --- a/tests/kms_cursor_edge_walk.c
-> +++ b/tests/kms_cursor_edge_walk.c
-> @@ -344,6 +344,7 @@ static const char *help_str =3D
->=20=20
->  int igt_main_args("", long_opts, help_str, opt_handler, &data)
+> diff --git a/tests/amdgpu/amd_cursor_overlay.c b/tests/amdgpu/amd_cursor_=
+overlay.c
+> index 76c3003ca432..1d8ffcc86e1d 100644
+> --- a/tests/amdgpu/amd_cursor_overlay.c
+> +++ b/tests/amdgpu/amd_cursor_overlay.c
+> @@ -400,7 +400,7 @@ int igt_main()
 >  {
+>  	static const int cursor_sizes[] =3D { 64, 128, 256 };
+>  	data_t data =3D { .max_curw =3D 64, .max_curh =3D 64 };
+> -	enum pipe pipe;
 > +	igt_crtc_t *crtc;
->  	struct {
->  		const char *name;
->  		unsigned flags;
-> @@ -394,21 +395,24 @@ int igt_main_args("", long_opts, help_str, opt_hand=
-ler, &data)
->  					data.curw, data.curh, tests[i].name);
->  			igt_subtest_with_dynamic_f("%dx%d-%s", data.curw,
->  						   data.curh, tests[i].name) {
-> -				for_each_pipe_with_single_output(&data.display, data.pipe, data.outp=
-ut) {
-> -					if (!extended && data.pipe !=3D active_pipes[0] &&
-> -					    data.pipe !=3D active_pipes[last_pipe])
-> +				for_each_crtc_with_single_output(&data.display,
-> +								 crtc,
-> +								 data.output) {
-> +					data.pipe =3D crtc->pipe;
-> +					if (!extended && crtc->pipe !=3D active_pipes[0] &&
-> +					    crtc->pipe !=3D active_pipes[last_pipe])
->  						continue;
+>  	igt_output_t *output;
+>  	igt_display_t *display;
+>  	int i, j, available_overlay_planes;
+> @@ -478,13 +478,15 @@ int igt_main()
+>  							DRM_FORMAT_NV12,
+>  							DRM_FORMAT_MOD_LINEAR));
 >=20=20
->  					igt_display_reset(&data.display);
->  					igt_output_set_crtc(data.output,
-> -							    igt_crtc_for_pipe(data.output->display, data.pipe));
-> +							    crtc);
->  					if (!intel_pipe_output_combo_valid(&data.display))
->  						continue;
+> -			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +			for_each_crtc_with_single_output(&data.display, crtc,
+> +							 output) {
 >=20=20
->  					igt_output_set_crtc(data.output, NULL);
+>  				igt_display_reset(display);
+>  				igt_output_set_crtc(output,
+> -					igt_crtc_for_pipe(output->display, pipe));
+> +					crtc);
 >=20=20
->  					igt_dynamic_f("pipe-%s-%s",
-> -						      kmstest_pipe_name(data.pipe),
+> -				available_overlay_planes =3D get_overlay_planes_count(display, pipe);
+> +				available_overlay_planes =3D get_overlay_planes_count(display,
+> +										    crtc->pipe);
+>=20=20
+>  				/* Require at least one overlay plane. */
+>  				if (!available_overlay_planes)
+> @@ -500,13 +502,15 @@ int igt_main()
+>  					igt_skip("%s subtest requires 3 overlay planes with a supported DCN=
+.\n",
+>  						 tests[i].name);
+>=20=20
+> -				test_init(&data, pipe, output, tests[i].flags, available_overlay_pla=
+nes);
+> +				test_init(&data, crtc->pipe, output,
+> +					  tests[i].flags,
+> +					  available_overlay_planes);
+>=20=20
+>  				for (j =3D 0; j < ARRAY_SIZE(cursor_sizes); j++) {
+>  					int size =3D cursor_sizes[j];
+>=20=20
+>  					igt_dynamic_f("pipe-%s-%s-size-%d",
+> -						      kmstest_pipe_name(pipe),
 > +						      igt_crtc_name(crtc),
->  						      data.output->name)
->  						test_crtc(&data, tests[i].flags);
+>  						      igt_output_name(output),
+>  						      size)
+>  						test_cursor(&data, size, tests[i].flags, tests[i].scale_factor);
+> diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
+> index bf8c4734b5fd..1e272671f63d 100644
+> --- a/tests/kms_color_pipeline.c
+> +++ b/tests/kms_color_pipeline.c
+> @@ -155,7 +155,7 @@ static bool test_plane_colorops(data_t *data,
+>  static void
+>  run_tests_for_plane(data_t *data)
+>  {
+> -	enum pipe pipe;
+> +	igt_crtc_t *crtc;
+>  	igt_output_t *output =3D NULL;
+>  	static const color_t colors_rgb[] =3D {
+>  	        { 1.0, 0.0, 0.0 },
+> @@ -276,20 +276,22 @@ run_tests_for_plane(data_t *data)
+>  	for (int i =3D 0; i < ARRAY_SIZE(plane_colorops_tests); i++) {
+>  		igt_describe_f("Test plane color pipeline with colorops: %s", plane_co=
+lorops_tests[i].name);
+>  		igt_subtest_with_dynamic_f("plane-%s", plane_colorops_tests[i].name) {
+> -			for_each_pipe_with_single_output(&data->display, pipe, output) {
+> +			for_each_crtc_with_single_output(&data->display, crtc,
+> +							 output) {
+>  				data->output =3D output;
+>=20=20
+> -				if (!pipe_output_combo_valid(data, pipe))
+> +				if (!pipe_output_combo_valid(data, crtc->pipe))
+>  					continue;
+>=20=20
+> -				test_setup(data, pipe);
+> +				test_setup(data, crtc->pipe);
+>=20=20
+>  				if (!igt_plane_has_prop(data->primary, IGT_PLANE_COLOR_PIPELINE)) {
+>  					test_cleanup(data);
+>  					continue;
 >  				}
+>=20=20
+> -				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> +				igt_dynamic_f("pipe-%s-%s",
+> +					       igt_crtc_name(crtc),
+>  					       igt_output_name(data->output)) {
+>  					data->color_depth =3D 8;
+>  					data->drm_format =3D DRM_FORMAT_XRGB8888;
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index 21d80847cfd1..2be10f03280a 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -1467,19 +1467,19 @@ static bool is_pipe_limit_reached(int count)
+>=20=20
+>  static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
+>  {
+> -	enum pipe pipe;
+> +	igt_crtc_t *crtc;
+>  	int count =3D 0;
+>=20=20
+> -	for_each_pipe_with_single_output(&data->display, pipe, data->output) {
+> +	for_each_crtc_with_single_output(&data->display, crtc, data->output) {
+>  		igt_display_reset(&data->display);
+>=20=20
+>  		igt_output_set_crtc(data->output,
+> -				    igt_crtc_for_pipe(data->output->display, pipe));
+> +				    crtc);
+>  		if (!intel_pipe_output_combo_valid(&data->display))
+>  			continue;
+>=20=20
+>  		igt_output_set_crtc(data->output, NULL);
+> -		test(data, pipe);
+> +		test(data, crtc->pipe);
+>=20=20
+>  		if (is_pipe_limit_reached(++count))
+>  			break;
+> diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+> index c3d53c66c02a..eaa4f8e2ef1b 100644
+> --- a/tests/kms_plane_alpha_blend.c
+> +++ b/tests/kms_plane_alpha_blend.c
+> @@ -691,31 +691,37 @@ static bool pipe_check(data_t *data, enum pipe pipe,
+>  static void run_subtests(data_t *data)
+>  {
+>  	igt_output_t *output;
+> -	enum pipe pipe;
+> +	igt_crtc_t *crtc;
+>=20=20
+>  	for (int i =3D 0; i < ARRAY_SIZE(subtests); i++) {
+>  		igt_describe_f("%s\n", subtests[i].desc);
+>=20=20
+>  		igt_subtest_with_dynamic(subtests[i].name) {
+> -			for_each_pipe_with_single_output(&data->display, pipe, output) {
+> +			for_each_crtc_with_single_output(&data->display, crtc,
+> +							 output) {
+>  				if (!extended &&
+> -				    pipe !=3D active_pipes[0] &&
+> -				    pipe !=3D active_pipes[last_pipe])
+> +				    crtc->pipe !=3D active_pipes[0] &&
+> +				    crtc->pipe !=3D active_pipes[last_pipe])
+>  					continue;
+>=20=20
+>  				igt_display_reset(&data->display);
+>=20=20
+>  				igt_output_set_crtc(output,
+> -						    igt_crtc_for_pipe(output->display, pipe));
+> +						    crtc);
+>  				if (!intel_pipe_output_combo_valid(&data->display))
+>  					continue;
+>=20=20
+> -				prepare_crtc(data, output, pipe);
+> -				if (!pipe_check(data, pipe, subtests[i].blend, subtests[i].must_mult=
+iply))
+> +				prepare_crtc(data, output, crtc->pipe);
+> +				if (!pipe_check(data, crtc->pipe, subtests[i].blend, subtests[i].mus=
+t_multiply))
+>  					continue;
+>=20=20
+> -				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+> -					run_test_on_pipe_planes(data, pipe, output, subtests[i].blend,
+> +				igt_dynamic_f("pipe-%s-%s",
+> +					      igt_crtc_name(crtc),
+> +					      output->name)
+> +					run_test_on_pipe_planes(data,
+> +								crtc->pipe,
+> +								output,
+> +								subtests[i].blend,
+>  								subtests[i].must_multiply, subtests[i].test);
+>  			}
+>  		}
+> diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+> index 60e757fc701b..8095154718bc 100644
+> --- a/tests/kms_plane_cursor.c
+> +++ b/tests/kms_plane_cursor.c
+> @@ -290,7 +290,7 @@ int igt_main()
+>  {
+>  	static const int cursor_sizes[] =3D { 64, 128, 256 };
+>  	data_t data =3D { .max_curw =3D 64, .max_curh =3D 64 };
+> -	enum pipe pipe;
+> +	igt_crtc_t *crtc;
+>  	igt_output_t *output;
+>  	igt_display_t *display;
+>  	int i, j;
+> @@ -329,26 +329,28 @@ int igt_main()
+>  	for (i =3D 0; i < ARRAY_SIZE(tests); i++) {
+>  		igt_describe_f("%s", tests[i].desc);
+>  		igt_subtest_with_dynamic_f("%s", tests[i].name) {
+> -			for_each_pipe_with_single_output(&data.display, pipe, output) {
+> +			for_each_crtc_with_single_output(&data.display, crtc,
+> +							 output) {
+>  				if ((tests[i].flags & TEST_OVERLAY) &&
+> -				    !igt_crtc_get_plane_type(igt_crtc_for_pipe(&data.display, pipe),
+> +				    !igt_crtc_get_plane_type(crtc,
+>  							     DRM_PLANE_TYPE_OVERLAY))
+>  					continue;
+>=20=20
+>  				igt_display_reset(display);
+>=20=20
+>  				igt_output_set_crtc(output,
+> -						    igt_crtc_for_pipe(output->display, pipe));
+> +						    crtc);
+>  				if (!intel_pipe_output_combo_valid(display))
+>  					continue;
+>=20=20
+> -				test_init(&data, pipe, output, tests[i].flags);
+> +				test_init(&data, crtc->pipe, output,
+> +					  tests[i].flags);
+>=20=20
+>  				for (j =3D 0; j < ARRAY_SIZE(cursor_sizes); j++) {
+>  					int size =3D cursor_sizes[j];
+>=20=20
+>  					igt_dynamic_f("pipe-%s-%s-size-%d",
+> -						      kmstest_pipe_name(pipe),
+> +						      igt_crtc_name(crtc),
+>  						      igt_output_name(output),
+>  						      size)
+>  						test_cursor(&data, size, tests[i].flags);
+> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+> index 62e936bc5e51..1d46bca52114 100644
+> --- a/tests/kms_properties.c
+> +++ b/tests/kms_properties.c
+> @@ -348,39 +348,41 @@ static void colorop_properties(igt_display_t *displ=
+ay, bool atomic)
+>  static void plane_properties(igt_display_t *display, bool atomic)
+>  {
+>  	igt_output_t *output;
+> -	enum pipe pipe;
+> +	igt_crtc_t *crtc;
+>=20=20
+> -	for_each_pipe_with_single_output(display, pipe, output) {
+> +	for_each_crtc_with_single_output(display, crtc, output) {
+>  		igt_display_reset(display);
+>=20=20
+>  		igt_output_set_crtc(output,
+> -				    igt_crtc_for_pipe(output->display, pipe));
+> +				    crtc);
+>  		if (!intel_pipe_output_combo_valid(display))
+>  			continue;
+>=20=20
+> -		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> +		igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
+>  			      igt_output_name(output)) {
+> -			run_plane_property_tests(display, pipe, output, atomic);
+> +			run_plane_property_tests(display, crtc->pipe, output,
+> +						 atomic);
+>  		}
+>  	}
+>  }
+>=20=20
+>  static void crtc_properties(igt_display_t *display, bool atomic)
+>  {
+> -	enum pipe pipe;
+> +	igt_crtc_t *crtc;
+>  	igt_output_t *output;
+>=20=20
+> -	for_each_pipe_with_single_output(display, pipe, output) {
+> +	for_each_crtc_with_single_output(display, crtc, output) {
+>  		igt_display_reset(display);
+>=20=20
+>  		igt_output_set_crtc(output,
+> -				    igt_crtc_for_pipe(output->display, pipe));
+> +				    crtc);
+>  		if (!intel_pipe_output_combo_valid(display))
+>  			continue;
+>=20=20
+> -		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> +		igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
+>  			      igt_output_name(output)) {
+> -			run_crtc_property_tests(display, pipe, output, atomic);
+> +			run_crtc_property_tests(display, crtc->pipe, output,
+> +						atomic);
+>  		}
+>  	}
+>  }
+> diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
+> index d4e0b519bbc4..e71d1b9a6fc4 100644
+> --- a/tests/kms_rmfb.c
+> +++ b/tests/kms_rmfb.c
+> @@ -175,20 +175,20 @@ static void
+>  run_rmfb_test(struct rmfb_data *data, bool reopen)
+>  {
+>  	igt_output_t *output;
+> -	enum pipe pipe;
+> +	igt_crtc_t *crtc;
+>  	igt_display_t *display =3D &data->display;
+>=20=20
+> -	for_each_pipe_with_single_output(display, pipe, output) {
+> +	for_each_crtc_with_single_output(display, crtc, output) {
+>  		igt_display_reset(display);
+>=20=20
+>  		igt_output_set_crtc(output,
+> -				    igt_crtc_for_pipe(output->display, pipe));
+> +				    crtc);
+>  		if (!intel_pipe_output_combo_valid(display))
+>  			continue;
+>=20=20
+> -		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> +		igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
+>  			      igt_output_name(output))
+> -			test_rmfb(data, output, pipe, reopen);
+> +			test_rmfb(data, output, crtc->pipe, reopen);
+>  	}
+>  }
+>=20=20
+> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
+> index 16409a4a55e0..33567597fa88 100644
+> --- a/tests/kms_universal_plane.c
+> +++ b/tests/kms_universal_plane.c
+> @@ -833,62 +833,69 @@ static void
+>  run_tests(data_t *data)
+>  {
+>  	igt_output_t *output;
+> -	enum pipe pipe;
+> +	igt_crtc_t *crtc;
+>=20=20
+>  	igt_describe("Check the switching between different primary plane fbs w=
+ith CRTC off");
+>  	igt_subtest_with_dynamic("universal-plane-functional") {
+> -		for_each_pipe_with_single_output(&data->display, pipe, output) {
+> -			if (!pipe_output_combo_valid(&data->display, pipe, output))
+> +		for_each_crtc_with_single_output(&data->display, crtc, output) {
+> +			if (!pipe_output_combo_valid(&data->display, crtc->pipe, output))
+>  				continue;
+>=20=20
+> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(=
+output))
+> -				functional_test_pipe(data, pipe, output);
+> +			igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
+> +				      igt_output_name(output))
+> +				functional_test_pipe(data, crtc->pipe, output);
+>  		}
+>  	}
+>=20=20
+>  	igt_describe("Test for scale-up or scale-down using universal plane API=
+ without covering CRTC");
+>  	igt_subtest_with_dynamic("universal-plane-sanity") {
+> -		for_each_pipe_with_single_output(&data->display, pipe, output) {
+> -			if (!pipe_output_combo_valid(&data->display, pipe, output))
+> +		for_each_crtc_with_single_output(&data->display, crtc, output) {
+> +			if (!pipe_output_combo_valid(&data->display, crtc->pipe, output))
+>  				continue;
+>=20=20
+> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(=
+output))
+> -				sanity_test_pipe(data, pipe, output);
+> +			igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
+> +				      igt_output_name(output))
+> +				sanity_test_pipe(data, crtc->pipe, output);
+>  		}
+>  	}
+>=20=20
+>  	igt_describe("Check pageflips while primary plane is disabled before IO=
+CTL or between IOCTL"
+>  		     " and pageflip execution");
+>  	igt_subtest_with_dynamic("disable-primary-vs-flip") {
+> -		for_each_pipe_with_single_output(&data->display, pipe, output) {
+> -			if (!pipe_output_combo_valid(&data->display, pipe, output))
+> +		for_each_crtc_with_single_output(&data->display, crtc, output) {
+> +			if (!pipe_output_combo_valid(&data->display, crtc->pipe, output))
+>  				continue;
+>=20=20
+> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(=
+output))
+> -				pageflip_test_pipe(data, pipe, output);
+> +			igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
+> +				      igt_output_name(output))
+> +				pageflip_test_pipe(data, crtc->pipe, output);
+>  		}
+>  	}
+>=20=20
+>  	igt_describe("Check for cursor leaks after performing cursor operations=
+");
+>  	igt_subtest_with_dynamic("cursor-fb-leak") {
+> -		for_each_pipe_with_single_output(&data->display, pipe, output) {
+> -			if (!pipe_output_combo_valid(&data->display, pipe, output))
+> +		for_each_crtc_with_single_output(&data->display, crtc, output) {
+> +			if (!pipe_output_combo_valid(&data->display, crtc->pipe, output))
+>  				continue;
+>=20=20
+> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(=
+output))
+> -				cursor_leak_test_pipe(data, pipe, output);
+> +			igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
+> +				      igt_output_name(output))
+> +				cursor_leak_test_pipe(data, crtc->pipe,
+> +						      output);
+>  		}
+>  	}
+>=20=20
+>  	igt_describe("Check if pageflip succeeds in windowed setting");
+>  	igt_subtest_with_dynamic("universal-plane-pageflip-windowed") {
+>  		igt_require(is_intel_device(data->drm_fd) && data->display_ver >=3D 9);
+> -		for_each_pipe_with_single_output(&data->display, pipe, output) {
+> -			if (!pipe_output_combo_valid(&data->display, pipe, output))
+> +		for_each_crtc_with_single_output(&data->display, crtc, output) {
+> +			if (!pipe_output_combo_valid(&data->display, crtc->pipe, output))
+>  				continue;
+>=20=20
+> -			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(=
+output))
+> -				pageflip_win_test_pipe(data, pipe, output);
+> +			igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
+> +				      igt_output_name(output))
+> +				pageflip_win_test_pipe(data, crtc->pipe,
+> +						       output);
+>  		}
+>  	}
+>  }
 
 --=20
 Jani Nikula, Intel
