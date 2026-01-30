@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63E48D49C92
-	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 10:52:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4598D49C92
+	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 10:52:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1B2DC10E9B9;
-	Fri, 30 Jan 2026 10:52:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5487C10E9B4;
+	Fri, 30 Jan 2026 10:52:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZUh3+1oo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kXIpWr8V";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C2B8610E9B9
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Jan 2026 10:52:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B7B310E9B4
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jan 2026 10:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769770367; x=1801306367;
+ t=1769770370; x=1801306370;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=QO6s/JSZqYoOO7v0694R7U/UylCgHIim9e3txLlBGvk=;
- b=ZUh3+1ooZu8tPs/3rPY6aXYTkfauzR6KB2XDTNa4Eg2W1xaw27NsQ1/I
- WDtdDdFV+gMEg4TJ6oM/v5JuygViCyvQJbmEdV+B1s9oj+JECBB3Fen5N
- fsTyUYaJSHB0PsjyviRmHacj+5di5CZ5VRLhgUuL4GWoVgRYyMvX/AXhk
- f4G77hA92sdBpCqMDiYgHi40DLfCDpEOIqe7iMqPSkiGn7MWtNZTuWFpj
- ZV5Duq+7vIajDqFPOsoo4QvRnczKHebzPmIZPDWL+LF+hcuOcMCkVUbb8
- WtrxFchKDQ0O365fSTHfi5G8jLc0h3FGVMEVBGZfARSCy1O33ep0DgUax A==;
-X-CSE-ConnectionGUID: JV8yG1ksTwCZxiEzi7eqsA==
-X-CSE-MsgGUID: S9D4dETNSn6ob98HPG5EfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="88593131"
-X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="88593131"
+ bh=in5XjA9HFZguejRedhLbGbBb5Yu+4fdnkqpbl6SxUrg=;
+ b=kXIpWr8V0TXBrOrTzj7B5kvyZyQQWIU402/LVND5DBTYAGiN8t8eJ+gr
+ IYoyx1lD2CQ6pXHz1ir1t6Ql7vVUGCWsoX6dUIX7usuiqE1YOYpthMYCm
+ zTHv7jX3SgpROjwcHNl+2Kg1PhkTBnaYHlrt0dT4hhzSSz5BT0WJmTxWV
+ JJgQd8TbqrxddylMrJw3JkaS91WNQqh7AAkm2drrsTljAN8gn/+/jVpHW
+ isCJaU/tJbUQv4aLK/4DZPeJ+PhqMaJx7nH6Of+tttMR68oOsGXYU1e1v
+ HN7U7flSJoPUpmU0oB/7a5S6bQ2Beq7ShfxPpCVoK8GAZgL3vLoKUpnht w==;
+X-CSE-ConnectionGUID: HQ8ggEoDQUaFiLxIQRN1uQ==
+X-CSE-MsgGUID: pFagF36yQueHQNB8vpBFng==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="88593135"
+X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="88593135"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2026 02:52:46 -0800
-X-CSE-ConnectionGUID: I4tuChsFRM2PXtnpft9dJA==
-X-CSE-MsgGUID: 3yeuHAFeTJC+/wyHCrsPcw==
+ 30 Jan 2026 02:52:50 -0800
+X-CSE-ConnectionGUID: O8dwWf73QbyK1CyAwmMfxg==
+X-CSE-MsgGUID: sd4oX0xpR565LZUTetcRuA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="213354737"
+X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="213354746"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.244.42])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2026 02:52:45 -0800
+ 30 Jan 2026 02:52:49 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 01/15] lib/kms: Introduce for_each_crtc*()
-Date: Fri, 30 Jan 2026 12:52:23 +0200
-Message-ID: <20260130105237.14481-2-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 02/15] tests/drm_read: Use for_each_crtc*()
+Date: Fri, 30 Jan 2026 12:52:24 +0200
+Message-ID: <20260130105237.14481-3-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260130105237.14481-1-ville.syrjala@linux.intel.com>
 References: <20260130105237.14481-1-ville.syrjala@linux.intel.com>
@@ -72,115 +72,54 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Add for_each_crtc*() as the crtc based replacement for
-the for_each_pipe*() iterators (which will eventually get
-nuked).
+Convert tests/drm_read to use the crtc based iterators
+(as opposed to the old pipe based ones).
+
+This one was done manually due to coccinelle refusing
+to cooperate with me.
+
+I left the old 'pipe' variable around since its final value
+gets used in a bunch of places after the loop. I'll probably
+need further cleanup later, but this seems sufficient for now.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_kms.h | 68 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+ tests/drm_read.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 432c67d11780..a4857ea0e574 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -682,6 +682,19 @@ static inline bool igt_pipe_connector_valid(enum pipe pipe, igt_output_t *output
- 		output->config.valid_crtc_idx_mask & (1 << (pipe));
- }
+diff --git a/tests/drm_read.c b/tests/drm_read.c
+index c44e207f7dd8..e745e98534bd 100644
+--- a/tests/drm_read.c
++++ b/tests/drm_read.c
+@@ -280,6 +280,7 @@ int igt_main()
+ 	igt_fixture() {
+ 		struct sigaction alarm_action = {};
+ 		igt_output_t *output;
++		igt_crtc_t *crtc;
  
-+/**
-+ * igt_crtc_connector_valid:
-+ * @crtc: CRTC to check.
-+ * @output: #igt_output_t to check.
-+ *
-+ * Checks whether the given CRTC and output can be used together.
-+ */
-+static inline bool igt_crtc_connector_valid(igt_crtc_t *crtc, igt_output_t *output)
-+{
-+	return igt_output_is_connected(output) &&
-+		output->config.valid_crtc_idx_mask & (1 << crtc->pipe);
-+}
+ 		igt_assert_neq(sigaction(SIGALRM, NULL, &alarm_action), -1);
+ 		alarm_action.sa_flags &= ~SA_RESTART;
+@@ -292,16 +293,17 @@ int igt_main()
+ 		igt_display_require(&display, fd);
+ 		igt_display_require_output(&display);
+ 
+-		for_each_pipe_with_valid_output(&display, pipe, output) {
++		for_each_crtc_with_valid_output(&display, crtc, output) {
+ 			drmModeModeInfo *mode = igt_output_get_mode(output);
+ 
+ 			igt_create_pattern_fb(fd, mode->hdisplay, mode->vdisplay,
+ 					      DRM_FORMAT_XRGB8888,
+ 					      DRM_FORMAT_MOD_LINEAR, &fb);
+ 
+-			igt_output_set_crtc(output,
+-				            igt_crtc_for_pipe(output->display, pipe));
++			igt_output_set_crtc(output, crtc);
+ 			igt_plane_set_fb(igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY), &fb);
 +
- #define for_each_if(condition) if (!(condition)) {} else
++			pipe = crtc->pipe;
+ 			break;
+ 		}
  
- /**
-@@ -744,6 +757,23 @@ static inline bool igt_pipe_connector_valid(enum pipe pipe, igt_output_t *output
- 	for_each_pipe_static(pipe) \
- 		for_each_if(igt_crtc_for_pipe((display), (pipe))->valid)
- 
-+/**
-+ * for_each_crtc:
-+ * @display: a pointer to an #igt_display_t structure
-+ * @crtc: The CRTC
-+ *
-+ * This for loop iterates over all CRTCs.
-+ *
-+ * Note that this cannot be used to enumerate per-CRTC subtest names since it
-+ * depends upon runtime probing of the actual kms driver that is being tested.
-+ * Use #for_each_pipe_static instead.
-+ */
-+#define for_each_crtc(display, crtc) \
-+	for ((crtc) = &(display)->crtcs[0]; \
-+	     (crtc) < &(display)->crtcs[(display)->n_crtcs]; \
-+	     (crtc)++) \
-+		for_each_if ((crtc)->valid)
-+
- /**
-  * for_each_pipe_with_valid_output:
-  * @display: a pointer to an #igt_display_t structure
-@@ -765,6 +795,27 @@ static inline bool igt_pipe_connector_valid(enum pipe pipe, igt_output_t *output
- 			for_each_if ((((output) = &(display)->outputs[con__]), \
- 						igt_pipe_connector_valid((pipe), (output))))
- 
-+/**
-+ * for_each_crtc_with_valid_output:
-+ * @display: a pointer to an #igt_display_t structure
-+ * @crtc: CRTC for which this @crtc / @output combination is valid.
-+ * @output: The output for which this @crtc / @output combination is valid.
-+ *
-+ * This for loop is called over all connected outputs. This function
-+ * will try every combination of @crtc and @output.
-+ *
-+ * If you only need to test a single output for each pipe, use
-+ * for_each_crtc_with_single_output(), if you only need an
-+ * output for a single CRTC, use igt_get_single_output_for_pipe().
-+ */
-+#define for_each_crtc_with_valid_output(display, crtc, output) \
-+	for ((output) = &(display)->outputs[0], (crtc) = &(display)->crtcs[0]; \
-+	     assert(igt_can_fail()), (crtc) < &(display)->crtcs[(display)->n_crtcs] && \
-+		     (output) < &(display)->outputs[(display)->n_outputs]; \
-+	     (output) = (output) + 1 < &(display)->outputs[(display)->n_outputs] ? \
-+		     (output) + 1 : ((crtc)++, &(display)->outputs[0])) \
-+		for_each_if ((crtc)->valid && igt_crtc_connector_valid((crtc), (output)))
-+
- igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
- 					   igt_output_t **chosen_outputs);
- 
-@@ -785,6 +836,23 @@ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
- 		for_each_if (*__output && \
- 			     ((pipe) = (__output - __outputs), (output) = *__output, 1))
- 
-+/**
-+ * for_each_crtc_with_single_output:
-+ * @display: a pointer to an #igt_display_t structure
-+ * @crtc: The CRTC for which this @crtc / @output combination is valid.
-+ * @output: The output for which this @crtc / @output combination is valid.
-+ *
-+ * This loop is called over all CRTCs, and will try to find a compatible output
-+ * for each CRTC. Unlike for_each_pipe_with_valid_output(), this function will
-+ * be called at most once for each pipe.
-+ */
-+#define for_each_crtc_with_single_output(display, crtc, output) \
-+	for (igt_output_t *__outputs[igt_display_n_crtcs(display)], \
-+	     **__output = __igt_pipe_populate_outputs((display), __outputs); \
-+		 __output < &__outputs[igt_display_n_crtcs(display)]; __output++) \
-+		for_each_if (*__output && \
-+			     ((crtc) = igt_crtc_for_pipe((display), (__output - __outputs)), (output) = *__output, 1))
-+
- /**
-  * for_each_valid_output_on_pipe:
-  * @display: a pointer to an #igt_display_t structure
 -- 
 2.52.0
 
