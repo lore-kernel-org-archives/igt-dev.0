@@ -4,50 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C93FED49C92
-	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 10:52:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63E48D49C92
+	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 10:52:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7F48910E9B4;
-	Fri, 30 Jan 2026 10:52:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1B2DC10E9B9;
+	Fri, 30 Jan 2026 10:52:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CXJBLD0v";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZUh3+1oo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E92710E9B4
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Jan 2026 10:52:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C2B8610E9B9
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jan 2026 10:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769770364; x=1801306364;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=MDpzT2k8jx4SeWtZQ9MHH2+Ogzj1f1ni6G55ef2EiAo=;
- b=CXJBLD0vpW2J1bXJK3IvcqC9VC6Akwl0icYdUuxrNTHq610npVxrkVQ5
- wJcPYMGisgtuSxOPjFBA5mNOm2dUO0a48RDsArn/LfBA1sj9f02UPgGor
- ZbuvwgwGPJYyCtI1x+c75X3AHNHDaHWeMp8iHJWoKz1zNorShr/EeFPzH
- CoqYDeZ13I16JJ+VKEGKCCtsATLQSdgdFYfQz0YBGDObzdWoK/qpFasB9
- OiU1jB0Clv2IOpUggAGzh8LO0zXum0AIuiw5CgQ2uZLIPHJxJCMgy7ECb
- 07DPT8LozPLknmyk4PMujZgR8z+IvrGgEH6mbVUtAwOHMa/u7qsZOd0LP Q==;
-X-CSE-ConnectionGUID: sHtv1YUXTAur5vdlZ3tKrQ==
-X-CSE-MsgGUID: 8LIzmnh8RaKnAZHXpI+ixQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="70998326"
-X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="70998326"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2026 02:52:43 -0800
-X-CSE-ConnectionGUID: jhLjkPIpSJasAoqJ7jLjbg==
-X-CSE-MsgGUID: 6iRksAHgQOS3ITvczab07g==
+ t=1769770367; x=1801306367;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=QO6s/JSZqYoOO7v0694R7U/UylCgHIim9e3txLlBGvk=;
+ b=ZUh3+1ooZu8tPs/3rPY6aXYTkfauzR6KB2XDTNa4Eg2W1xaw27NsQ1/I
+ WDtdDdFV+gMEg4TJ6oM/v5JuygViCyvQJbmEdV+B1s9oj+JECBB3Fen5N
+ fsTyUYaJSHB0PsjyviRmHacj+5di5CZ5VRLhgUuL4GWoVgRYyMvX/AXhk
+ f4G77hA92sdBpCqMDiYgHi40DLfCDpEOIqe7iMqPSkiGn7MWtNZTuWFpj
+ ZV5Duq+7vIajDqFPOsoo4QvRnczKHebzPmIZPDWL+LF+hcuOcMCkVUbb8
+ WtrxFchKDQ0O365fSTHfi5G8jLc0h3FGVMEVBGZfARSCy1O33ep0DgUax A==;
+X-CSE-ConnectionGUID: JV8yG1ksTwCZxiEzi7eqsA==
+X-CSE-MsgGUID: S9D4dETNSn6ob98HPG5EfQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="88593131"
+X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="88593131"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2026 02:52:46 -0800
+X-CSE-ConnectionGUID: I4tuChsFRM2PXtnpft9dJA==
+X-CSE-MsgGUID: 3yeuHAFeTJC+/wyHCrsPcw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="208737718"
+X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="213354737"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.244.42])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2026 02:52:40 -0800
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2026 02:52:45 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 00/15] lib/kms: Start introducing for_each_crtc*()
-Date: Fri, 30 Jan 2026 12:52:22 +0200
-Message-ID: <20260130105237.14481-1-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 01/15] lib/kms: Introduce for_each_crtc*()
+Date: Fri, 30 Jan 2026 12:52:23 +0200
+Message-ID: <20260130105237.14481-2-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260130105237.14481-1-ville.syrjala@linux.intel.com>
+References: <20260130105237.14481-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
@@ -70,87 +72,115 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Start converting the for_each_pipe*() stuff to for_each_crtc*().
+Add for_each_crtc*() as the crtc based replacement for
+the for_each_pipe*() iterators (which will eventually get
+nuked).
 
-The series was getting a bit too big to handle so I cut it
-after I got all the for_each_pipe_{single,valid}_output()
-converted. There is still quite a bit of for_each_pipe() left
-to do after this.
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ lib/igt_kms.h | 68 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 68 insertions(+)
 
-Haven't even smoke tested this. Fingers crossed...
-
-Ville Syrjälä (15):
-  lib/kms: Introduce for_each_crtc*()
-  tests/drm_read: Use for_each_crtc*()
-  tests/kms_plane_scaling: Use for_each_crtc*()
-  tests/kms_color: Convert to for_each_crtc*()
-  tests/intel/kms_pm_dc: Use for_each_crtc*()
-  tests/kms_rotation_crc: Use for_each_crtc*()
-  lib/kms: Use for_each_crtc_with_single_output() and for_each_crtc()
-  lib/kms: Use for_each_crtc_with_single_output(), part 1
-  lib/kms: Use for_each_crtc_with_single_output(), part 2
-  lib/kms: Use for_each_crtc_with_single_output(), part 3
-  lib/kms: Use for_each_crtc_with_valid_output(), part 1
-  lib/kms: Use for_each_crtc_with_valid_output(), part 2
-  lib/kms: Use for_each_crtc_with_valid_output(), part 3
-  lib/kms: Use for_each_crtc_with_valid_output(), part 4
-  lib/kms: Nuke for_each_pipe_with_*_output()
-
- lib/igt_kms.c                          |   4 +-
- lib/igt_kms.h                          |  70 ++++++++----
- tests/amdgpu/amd_cursor_overlay.c      |  16 ++-
- tests/drm_read.c                       |   8 +-
- tests/intel/kms_big_fb.c               |   6 +-
- tests/intel/kms_busy.c                 |  59 +++++-----
- tests/intel/kms_ccs.c                  |  19 +++-
- tests/intel/kms_cdclk.c                |  12 +-
- tests/intel/kms_draw_crc.c             |   8 +-
- tests/intel/kms_dsc.c                  |   6 +-
- tests/intel/kms_fb_coherency.c         |   6 +-
- tests/intel/kms_fence_pin_leak.c       |   8 +-
- tests/intel/kms_flip_tiling.c          |  15 ++-
- tests/intel/kms_frontbuffer_tracking.c |  14 +--
- tests/intel/kms_mmap_write_crc.c       |  10 +-
- tests/intel/kms_pipe_b_c_ivb.c         |   8 +-
- tests/intel/kms_pm_dc.c                |  36 +++---
- tests/intel/kms_pm_rpm.c               |   8 +-
- tests/intel/kms_psr2_sf.c              |   7 +-
- tests/intel/kms_psr2_su.c              |  15 +--
- tests/intel/kms_psr_stress_test.c      |   6 +-
- tests/intel/kms_pwrite_crc.c           |   6 +-
- tests/intel/perf_pmu.c                 |   8 +-
- tests/intel/prime_mmap_kms.c           |   6 +-
- tests/intel/xe_pat.c                   |   8 +-
- tests/kms_async_flips.c                |  23 ++--
- tests/kms_atomic.c                     | 147 ++++++++++++++-----------
- tests/kms_atomic_interruptible.c       |  79 ++++++++-----
- tests/kms_atomic_transition.c          |  25 +++--
- tests/kms_color.c                      |  28 ++---
- tests/kms_color_pipeline.c             |  12 +-
- tests/kms_cursor_crc.c                 |  86 ++++++++-------
- tests/kms_cursor_edge_walk.c           |  14 ++-
- tests/kms_flip_event_leak.c            |  11 +-
- tests/kms_invalid_mode.c               |  13 ++-
- tests/kms_lease.c                      |  15 ++-
- tests/kms_panel_fitting.c              |  12 +-
- tests/kms_pipe_crc_basic.c             |  74 ++++++++-----
- tests/kms_plane.c                      |   8 +-
- tests/kms_plane_alpha_blend.c          |  24 ++--
- tests/kms_plane_cursor.c               |  14 ++-
- tests/kms_plane_multiple.c             |  11 +-
- tests/kms_plane_scaling.c              | 119 ++++++++++----------
- tests/kms_prime.c                      |   6 +-
- tests/kms_properties.c                 |  22 ++--
- tests/kms_rmfb.c                       |  10 +-
- tests/kms_rotation_crc.c               |  25 ++---
- tests/kms_scaling_modes.c              |  12 +-
- tests/kms_sequence.c                   |  13 ++-
- tests/kms_universal_plane.c            |  49 +++++----
- tests/kms_vblank.c                     |  63 +++++++----
- tests/prime_vgem.c                     |   4 +-
- tests/vmwgfx/vmw_prime.c               |  16 +--
- 53 files changed, 745 insertions(+), 559 deletions(-)
-
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 432c67d11780..a4857ea0e574 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -682,6 +682,19 @@ static inline bool igt_pipe_connector_valid(enum pipe pipe, igt_output_t *output
+ 		output->config.valid_crtc_idx_mask & (1 << (pipe));
+ }
+ 
++/**
++ * igt_crtc_connector_valid:
++ * @crtc: CRTC to check.
++ * @output: #igt_output_t to check.
++ *
++ * Checks whether the given CRTC and output can be used together.
++ */
++static inline bool igt_crtc_connector_valid(igt_crtc_t *crtc, igt_output_t *output)
++{
++	return igt_output_is_connected(output) &&
++		output->config.valid_crtc_idx_mask & (1 << crtc->pipe);
++}
++
+ #define for_each_if(condition) if (!(condition)) {} else
+ 
+ /**
+@@ -744,6 +757,23 @@ static inline bool igt_pipe_connector_valid(enum pipe pipe, igt_output_t *output
+ 	for_each_pipe_static(pipe) \
+ 		for_each_if(igt_crtc_for_pipe((display), (pipe))->valid)
+ 
++/**
++ * for_each_crtc:
++ * @display: a pointer to an #igt_display_t structure
++ * @crtc: The CRTC
++ *
++ * This for loop iterates over all CRTCs.
++ *
++ * Note that this cannot be used to enumerate per-CRTC subtest names since it
++ * depends upon runtime probing of the actual kms driver that is being tested.
++ * Use #for_each_pipe_static instead.
++ */
++#define for_each_crtc(display, crtc) \
++	for ((crtc) = &(display)->crtcs[0]; \
++	     (crtc) < &(display)->crtcs[(display)->n_crtcs]; \
++	     (crtc)++) \
++		for_each_if ((crtc)->valid)
++
+ /**
+  * for_each_pipe_with_valid_output:
+  * @display: a pointer to an #igt_display_t structure
+@@ -765,6 +795,27 @@ static inline bool igt_pipe_connector_valid(enum pipe pipe, igt_output_t *output
+ 			for_each_if ((((output) = &(display)->outputs[con__]), \
+ 						igt_pipe_connector_valid((pipe), (output))))
+ 
++/**
++ * for_each_crtc_with_valid_output:
++ * @display: a pointer to an #igt_display_t structure
++ * @crtc: CRTC for which this @crtc / @output combination is valid.
++ * @output: The output for which this @crtc / @output combination is valid.
++ *
++ * This for loop is called over all connected outputs. This function
++ * will try every combination of @crtc and @output.
++ *
++ * If you only need to test a single output for each pipe, use
++ * for_each_crtc_with_single_output(), if you only need an
++ * output for a single CRTC, use igt_get_single_output_for_pipe().
++ */
++#define for_each_crtc_with_valid_output(display, crtc, output) \
++	for ((output) = &(display)->outputs[0], (crtc) = &(display)->crtcs[0]; \
++	     assert(igt_can_fail()), (crtc) < &(display)->crtcs[(display)->n_crtcs] && \
++		     (output) < &(display)->outputs[(display)->n_outputs]; \
++	     (output) = (output) + 1 < &(display)->outputs[(display)->n_outputs] ? \
++		     (output) + 1 : ((crtc)++, &(display)->outputs[0])) \
++		for_each_if ((crtc)->valid && igt_crtc_connector_valid((crtc), (output)))
++
+ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
+ 					   igt_output_t **chosen_outputs);
+ 
+@@ -785,6 +836,23 @@ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
+ 		for_each_if (*__output && \
+ 			     ((pipe) = (__output - __outputs), (output) = *__output, 1))
+ 
++/**
++ * for_each_crtc_with_single_output:
++ * @display: a pointer to an #igt_display_t structure
++ * @crtc: The CRTC for which this @crtc / @output combination is valid.
++ * @output: The output for which this @crtc / @output combination is valid.
++ *
++ * This loop is called over all CRTCs, and will try to find a compatible output
++ * for each CRTC. Unlike for_each_pipe_with_valid_output(), this function will
++ * be called at most once for each pipe.
++ */
++#define for_each_crtc_with_single_output(display, crtc, output) \
++	for (igt_output_t *__outputs[igt_display_n_crtcs(display)], \
++	     **__output = __igt_pipe_populate_outputs((display), __outputs); \
++		 __output < &__outputs[igt_display_n_crtcs(display)]; __output++) \
++		for_each_if (*__output && \
++			     ((crtc) = igt_crtc_for_pipe((display), (__output - __outputs)), (output) = *__output, 1))
++
+ /**
+  * for_each_valid_output_on_pipe:
+  * @display: a pointer to an #igt_display_t structure
 -- 
 2.52.0
 
