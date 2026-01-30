@@ -4,64 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33546E6BF0F
-	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 13:49:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 569E1E6BF11
+	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 14:07:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CC4F710E0B7;
-	Fri, 30 Jan 2026 13:49:50 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n8AMt4c/";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21EA410E0B7;
- Fri, 30 Jan 2026 13:49:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1769780991; x=1801316991;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Q4o6CmsDePCGGmgeL2EewxzfibSe5d+HQ8rdud317qI=;
- b=n8AMt4c/l4S4n9ttyZ/50TQL+7o7l8x7KTig4Ne/EaJWjQhtPknC8Ain
- tEjKW3ueeGuWHlv/NGow2tKK5a0ReXLu48e9/GuXoe1/qUAOa14uWCIrj
- XGzvSjFwTCNC1yTzDgoX2AcZIJBlfiVjjFzIaA/PRSEjMyyf6EC4+uBkI
- vk3VOI0Si4jvgF/zALECccQWgJKaVsskhoZjQyeVhPXIxikyJ5vQ6RjDi
- Z/cOzHzLioQnVzj9uek4/5fckgroF0zSRg91pMnXvu0RJ9DOICEaMsoud
- dLBiuJKKuIx7Y8eu54Tbjc3GcnE9gHyAPYJ/kW8KfM+ObBb+v8fdpYRrC w==;
-X-CSE-ConnectionGUID: 6rU6BzO8SnmAL3Ug9wxYoQ==
-X-CSE-MsgGUID: mGoDaOppR56rrjStSfFiwg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="82139871"
-X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; d="scan'208";a="82139871"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2026 05:49:50 -0800
-X-CSE-ConnectionGUID: c3A+jh+fTSu2vqtte1KUQg==
-X-CSE-MsgGUID: oKRx5FErSDKoJhS1qGtiyw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; d="scan'208";a="240123544"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.83])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jan 2026 05:49:47 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Krzysztof Karas <krzysztof.karas@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Subject: Re: [PATCH i-g-t v2 2/6] lib/igt_device_scan: Split out reusable part
- of update_or_add_parent
-Date: Fri, 30 Jan 2026 14:49:44 +0100
-Message-ID: <8046332.lvqk35OSZv@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <yv43qczs55sghgbvhdz5jyan6upf7sgcckaslnli33jbz2m4kz@jypceu4xi5ig>
-References: <20260127100123.114516-8-janusz.krzysztofik@linux.intel.com>
- <20260127100123.114516-10-janusz.krzysztofik@linux.intel.com>
- <yv43qczs55sghgbvhdz5jyan6upf7sgcckaslnli33jbz2m4kz@jypceu4xi5ig>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0B03510E9EB;
+	Fri, 30 Jan 2026 14:07:13 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DAB3810E11C;
+ Fri, 30 Jan 2026 14:07:11 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============9119471363595473849=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/hwmon=3A_Check_?=
+ =?utf-8?q?temperature_limit_in_hwmon-read_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Karthik Poosa" <karthik.poosa@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 30 Jan 2026 14:07:11 -0000
+Message-ID: <176978203189.210706.4007740319019597033@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260130103553.1935825-1-karthik.poosa@intel.com>
+In-Reply-To: <20260130103553.1935825-1-karthik.poosa@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,117 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Krzysztof,
+--===============9119471363595473849==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Friday, 30 January 2026 14:36:46 CET Krzysztof Karas wrote:
-> Hi Janusz,
-> 
-> >  #define RETRIES_GET_PARENT 5
-> Now that you excluded the "parent" word from names in function
-> below, so it's only implicitly operating on parent devices, you
-> could change this name to RETRIES_GET_DEVICE.
+== Series Details ==
 
-OK.
+Series: tests/intel/hwmon: Check temperature limit in hwmon-read (rev3)
+URL   : https://patchwork.freedesktop.org/series/158829/
+State : success
 
-Thanks,
-Janusz
+== Summary ==
 
-> 
-> Rest of the code looks good to me:
-> Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-> 
-> > -/* For each drm igt_device add or update its parent igt_device to the array.
-> > - * As card/render drm devices mostly have same parent (vkms is an exception)
-> > - * link to it and update corresponding drm_card / drm_render fields.
-> > - */
-> > -static void update_or_add_parent(struct udev *udev,
-> > -				 struct udev_device *dev,
-> > -				 struct igt_device *idev,
-> > -				 bool limit_attrs)
-> > +
-> > +static struct igt_device *find_or_add_igt_device(struct udev *udev,
-> > +						 struct udev_device *dev,
-> > +						 bool limit_attrs)
-> >  {
-> > -	struct udev_device *parent_dev;
-> > -	struct igt_device *parent_idev;
-> > -	const char *subsystem, *syspath, *devname;
-> >  	int retries = RETRIES_GET_PARENT;
-> > +	const char *subsystem, *syspath;
-> > +	struct igt_device *idev;
-> >  
-> > -	/*
-> > -	 * Get parent for drm node. It caches parent in udev device
-> > -	 * and will be destroyed along with the node.
-> > -	 */
-> > -	parent_dev = udev_device_get_parent(dev);
-> > -	igt_assert(parent_dev);
-> > -
-> > -	subsystem = udev_device_get_subsystem(parent_dev);
-> > -	syspath = udev_device_get_syspath(parent_dev);
-> > +	subsystem = udev_device_get_subsystem(dev);
-> > +	syspath = udev_device_get_syspath(dev);
-> >  
-> > -	parent_idev = igt_device_find(subsystem, syspath);
-> > -	while (!parent_idev && retries--) {
-> > +	idev = igt_device_find(subsystem, syspath);
-> > +	while (!idev && retries--) {
-> >  		/*
-> >  		 * Don't care about previous parent_dev, it is tracked
-> >  		 * by the child node. There's very rare race when driver module
-> > @@ -951,15 +939,41 @@ static void update_or_add_parent(struct udev *udev,
-> >  		 * only udev_device_new*() will scan sys directory and
-> >  		 * return fresh udev device.
-> >  		 */
-> > -		parent_dev = udev_device_new_from_syspath(udev, syspath);
-> > -		parent_idev = igt_device_new_from_udev(parent_dev, limit_attrs);
-> > -		udev_device_unref(parent_dev);
-> > +		dev = udev_device_new_from_syspath(udev, syspath);
-> > +		idev = igt_device_new_from_udev(dev, limit_attrs);
-> > +		udev_device_unref(dev);
-> >  
-> > -		if (parent_idev)
-> > -			igt_list_add_tail(&parent_idev->link, &igt_devs.all);
-> > +		if (idev)
-> > +			igt_list_add_tail(&idev->link, &igt_devs.all);
-> >  		else
-> >  			usleep(100000); /* arbitrary, 100ms should be enough */
-> >  	}
-> > +
-> > +	return idev;
-> > +}
-> > +
-> > +/*
-> > + * For each drm igt_device add or update its parent igt_device to the array.
-> > + * As card/render drm devices mostly have same parent (vkms is an exception)
-> > + * link to it and update corresponding drm_card / drm_render fields.
-> > + */
-> > +static void update_or_add_parent(struct udev *udev,
-> > +				 struct udev_device *dev,
-> > +				 struct igt_device *idev,
-> > +				 bool limit_attrs)
-> > +{
-> > +	struct udev_device *parent_dev;
-> > +	struct igt_device *parent_idev;
-> > +	const char *devname;
-> > +
-> > +	/*
-> > +	 * Get parent for drm node. It caches parent in udev device
-> > +	 * and will be destroyed along with the node.
-> > +	 */
-> > +	parent_dev = udev_device_get_parent(dev);
-> > +	igt_assert(parent_dev);
-> > +
-> > +	parent_idev = find_or_add_igt_device(udev, parent_dev, limit_attrs);
-> >  	igt_assert(parent_idev);
-> >  
-> >  	devname = udev_device_get_devnode(dev);
-> 
-> 
+CI Bug Log - changes from XEIGT_8727_BAT -> XEIGTPW_14456_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 12)
+------------------------------
+
+  No changes in participating hosts
 
 
+Changes
+-------
+
+  No changes found
 
 
+Build changes
+-------------
+
+  * IGT: IGT_8727 -> IGTPW_14456
+
+  IGTPW_14456: b25e8bc6eaea6a230f75bf6bd8ad365c79ed2919 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8727: 8727
+  xe-4476-feea7da320aa6950f02d3c4633ab678e6e61f7e9: feea7da320aa6950f02d3c4633ab678e6e61f7e9
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14456/index.html
+
+--===============9119471363595473849==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/hwmon: Check temperature limit in hwmon-read (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/158829/">https://patchwork.freedesktop.org/series/158829/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14456/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14456/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8727_BAT -&gt; XEIGTPW_14456_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8727 -&gt; IGTPW_14456</li>
+</ul>
+<p>IGTPW_14456: b25e8bc6eaea6a230f75bf6bd8ad365c79ed2919 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8727: 8727<br />
+  xe-4476-feea7da320aa6950f02d3c4633ab678e6e61f7e9: feea7da320aa6950f02d3c4633ab678e6e61f7e9</p>
+
+</body>
+</html>
+
+--===============9119471363595473849==--
