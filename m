@@ -4,27 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E460AE6BF1B
-	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 15:29:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD0D4E6BF1F
+	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 15:36:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9564C10E375;
-	Fri, 30 Jan 2026 15:29:54 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C44D10E375;
- Fri, 30 Jan 2026 15:29:53 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5520112893731683025=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tools/gputop=3A_Add_GPU_fre?=
- =?utf-8?q?quencies_to_the_client_headers_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "S Sebinraj" <s.sebinraj@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8759410E375;
+	Fri, 30 Jan 2026 15:36:09 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="drvqNdzO";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A9D210EA1A
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jan 2026 15:36:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1769787368; x=1801323368;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=67A+EYnnO5tsyOQcrwx18oPhBQVKflN8LpCmQ1T68Z8=;
+ b=drvqNdzOYLRbNTpfY1tjk1x9+KQSz5Z12iLQbSyWJ74/dPTxkwl0l3Cl
+ oVAtsr9nuldMTvQtmzfCe6Y4A0NAnQ/wlCpPydzdXh9ECBGHahIYrwJRA
+ I0uLQ6jDFMl3461tP+/QBpFwWI45OZVAo6I9+6HL1mR3VyHARhwdNGx0w
+ pG+USydzMcMeIwKTu15n4ludxRU/EppmubJfBPNzBRGDy0+HsBD8oPNp/
+ jGKnqslZntWHI50BuZKChqn+h9Dp2M09dItM7Crn1zavFT6PIpYvf6xri
+ Yes/PZZn1o3bvEC0Xlk4+7qd3z/5rYSYbvOE+5+6AfjO0npcQjSFVDvQo A==;
+X-CSE-ConnectionGUID: 9pzeKYaYSZuBczKaO8+nGA==
+X-CSE-MsgGUID: S7Q/TNTQSH+DO9PbqmmIZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="73640926"
+X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; d="scan'208";a="73640926"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2026 07:36:08 -0800
+X-CSE-ConnectionGUID: /BCQQeb4SeqOApx8yr7c3Q==
+X-CSE-MsgGUID: XupREpxAQ3aAJbD9TfAF4g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; d="scan'208";a="208119265"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.42])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2026 07:36:07 -0800
+Date: Fri, 30 Jan 2026 17:36:03 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 30 Jan 2026 15:29:53 -0000
-Message-ID: <176978699323.210706.11982082054292489785@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260130122954.2236101-1-s.sebinraj@intel.com>
-In-Reply-To: <20260130122954.2236101-1-s.sebinraj@intel.com>
+Subject: Re: [PATCH i-g-t 01/15] lib/kms: Introduce for_each_crtc*()
+Message-ID: <aXzP4wDaz9hCkKKi@intel.com>
+References: <20260130105237.14481-1-ville.syrjala@linux.intel.com>
+ <20260130105237.14481-2-ville.syrjala@linux.intel.com>
+ <8ce09d54c3f0208797f5b256e8aa27d29c6f4fbf@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8ce09d54c3f0208797f5b256e8aa27d29c6f4fbf@intel.com>
+X-Patchwork-Hint: comment
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +71,194 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5520112893731683025==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, Jan 30, 2026 at 03:38:03PM +0200, Jani Nikula wrote:
+> On Fri, 30 Jan 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> >
+> > Add for_each_crtc*() as the crtc based replacement for
+> > the for_each_pipe*() iterators (which will eventually get
+> > nuked).
+> >
+> > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > ---
+> >  lib/igt_kms.h | 68 +++++++++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 68 insertions(+)
+> >
+> > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> > index 432c67d11780..a4857ea0e574 100644
+> > --- a/lib/igt_kms.h
+> > +++ b/lib/igt_kms.h
+> > @@ -682,6 +682,19 @@ static inline bool igt_pipe_connector_valid(enum pipe pipe, igt_output_t *output
+> >  		output->config.valid_crtc_idx_mask & (1 << (pipe));
+> >  }
+> >  
+> > +/**
+> > + * igt_crtc_connector_valid:
+> > + * @crtc: CRTC to check.
+> > + * @output: #igt_output_t to check.
+> > + *
+> > + * Checks whether the given CRTC and output can be used together.
+> > + */
+> > +static inline bool igt_crtc_connector_valid(igt_crtc_t *crtc, igt_output_t *output)
+> > +{
+> > +	return igt_output_is_connected(output) &&
+> > +		output->config.valid_crtc_idx_mask & (1 << crtc->pipe);
+> 
+> So should this use crtc->crtc_offset instead of crtc->pipe? Or will that
+> bring complications during the conversions that try to remain
+> functionally unchanged?
 
-== Series Details ==
+I wasn't thinking too had at this point. Just trying to mostly preserve
+the behaviour until we can get to the point where we only have to
+modify igt_kms.[ch] to change things.
 
-Series: tools/gputop: Add GPU frequencies to the client headers (rev3)
-URL   : https://patchwork.freedesktop.org/series/159205/
-State : success
+> 
+> (And should crtc->crtc_offset really be named crtc_index?)
 
-== Summary ==
+Yeah, I think so. But not worrying about it right now.
 
-CI Bug Log - changes from XEIGT_8728_BAT -> XEIGTPW_14458_BAT
-====================================================
+> 
+> > +}
+> > +
+> >  #define for_each_if(condition) if (!(condition)) {} else
+> >  
+> >  /**
+> > @@ -744,6 +757,23 @@ static inline bool igt_pipe_connector_valid(enum pipe pipe, igt_output_t *output
+> >  	for_each_pipe_static(pipe) \
+> >  		for_each_if(igt_crtc_for_pipe((display), (pipe))->valid)
+> >  
+> > +/**
+> > + * for_each_crtc:
+> > + * @display: a pointer to an #igt_display_t structure
+> > + * @crtc: The CRTC
+> > + *
+> > + * This for loop iterates over all CRTCs.
+> > + *
+> > + * Note that this cannot be used to enumerate per-CRTC subtest names since it
+> > + * depends upon runtime probing of the actual kms driver that is being tested.
+> > + * Use #for_each_pipe_static instead.
+> > + */
+> > +#define for_each_crtc(display, crtc) \
+> > +	for ((crtc) = &(display)->crtcs[0]; \
+> > +	     (crtc) < &(display)->crtcs[(display)->n_crtcs]; \
+> > +	     (crtc)++) \
+> > +		for_each_if ((crtc)->valid)
+> 
+> I feel like for_each_crtc() should iterate the CRTCs in CRTC order, not
+> pipe order. What's the plan? Are we eventually going to have ->crtcs[]
+> in CRTC order?
 
-Summary
--------
+I don't even know what it means to have them in pipe order. It should be
+one and the same right now because the kernel anyway has them in the
+same order. I guess it just means we could theoeretically have holes
+in the array with crtc->valid==false for fused off pipes?
 
-  **SUCCESS**
+But yeah, if/when we start to reorder the pipes, I think we should keep
+this stuff in CRTC order, and get rid of the holes.
 
-  No regressions found.
+> And then do something special when some tests want to use
+> pipe order?
 
-  
+Something like that. Or make sure the tests don't have some
+silly assumptions where the order matters.
 
-Participating hosts (12 -> 11)
-------------------------------
+> The other day I was looking at making ->n_crtcs and thus
+> igt_display_n_crtcs() reflect the actual CRTC count, not IGT_MAX_PIPES,
+> and it's also complicated because too many places depend on
+> igt_display_n_crtcs() indicating the size of ->crtcs[] and that being
+> indexed by pipe instead of CRTC index. So that's also dependent on
+> indexing ->crtcs[] with CRTC index.
 
-  Missing    (1): bat-bmg-3 
+Yeah, it all needs to get fixed properly to get rid of the pipe
+indexing/holes. And then we can nuke that silly crtc->valid thing
+as well. Though I admit I didn't really look to closely at what
+it all entails.
 
+> Anyway, the loops here make my head spin, but it's all
 
-Changes
--------
+Yeah, they ugly. for_each_crtc_with_single_output() in particular since
+it still shares __igt_pipe_populate_outputs() with the pipe based thing
+but I didn't want to start rewriting that stuff until the old iterator
+is gone.
 
-  No changes found
+> 
+> Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+> 
+> I'd just like to hear what the plan is wrt the above questions, perhaps
+> recorded in the commit message.
 
+I suppose I don't really have a real solid plane yet, other than
+to try to limit the damage to lib/igt_kms.[ch] when we need to
+do those changes.
 
-Build changes
--------------
+> 
+> BR,
+> Jani.
+> 
+> 
+> > +
+> >  /**
+> >   * for_each_pipe_with_valid_output:
+> >   * @display: a pointer to an #igt_display_t structure
+> > @@ -765,6 +795,27 @@ static inline bool igt_pipe_connector_valid(enum pipe pipe, igt_output_t *output
+> >  			for_each_if ((((output) = &(display)->outputs[con__]), \
+> >  						igt_pipe_connector_valid((pipe), (output))))
+> >  
+> > +/**
+> > + * for_each_crtc_with_valid_output:
+> > + * @display: a pointer to an #igt_display_t structure
+> > + * @crtc: CRTC for which this @crtc / @output combination is valid.
+> > + * @output: The output for which this @crtc / @output combination is valid.
+> > + *
+> > + * This for loop is called over all connected outputs. This function
+> > + * will try every combination of @crtc and @output.
+> > + *
+> > + * If you only need to test a single output for each pipe, use
+> > + * for_each_crtc_with_single_output(), if you only need an
+> > + * output for a single CRTC, use igt_get_single_output_for_pipe().
+> > + */
+> > +#define for_each_crtc_with_valid_output(display, crtc, output) \
+> > +	for ((output) = &(display)->outputs[0], (crtc) = &(display)->crtcs[0]; \
+> > +	     assert(igt_can_fail()), (crtc) < &(display)->crtcs[(display)->n_crtcs] && \
+> > +		     (output) < &(display)->outputs[(display)->n_outputs]; \
+> > +	     (output) = (output) + 1 < &(display)->outputs[(display)->n_outputs] ? \
+> > +		     (output) + 1 : ((crtc)++, &(display)->outputs[0])) \
+> > +		for_each_if ((crtc)->valid && igt_crtc_connector_valid((crtc), (output)))
+> > +
+> >  igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
+> >  					   igt_output_t **chosen_outputs);
+> >  
+> > @@ -785,6 +836,23 @@ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
+> >  		for_each_if (*__output && \
+> >  			     ((pipe) = (__output - __outputs), (output) = *__output, 1))
+> >  
+> > +/**
+> > + * for_each_crtc_with_single_output:
+> > + * @display: a pointer to an #igt_display_t structure
+> > + * @crtc: The CRTC for which this @crtc / @output combination is valid.
+> > + * @output: The output for which this @crtc / @output combination is valid.
+> > + *
+> > + * This loop is called over all CRTCs, and will try to find a compatible output
+> > + * for each CRTC. Unlike for_each_pipe_with_valid_output(), this function will
+> > + * be called at most once for each pipe.
+> > + */
+> > +#define for_each_crtc_with_single_output(display, crtc, output) \
+> > +	for (igt_output_t *__outputs[igt_display_n_crtcs(display)], \
+> > +	     **__output = __igt_pipe_populate_outputs((display), __outputs); \
+> > +		 __output < &__outputs[igt_display_n_crtcs(display)]; __output++) \
+> > +		for_each_if (*__output && \
+> > +			     ((crtc) = igt_crtc_for_pipe((display), (__output - __outputs)), (output) = *__output, 1))
+> > +
+> >  /**
+> >   * for_each_valid_output_on_pipe:
+> >   * @display: a pointer to an #igt_display_t structure
+> 
+> -- 
+> Jani Nikula, Intel
 
-  * IGT: IGT_8728 -> IGTPW_14458
-
-  IGTPW_14458: 14458
-  IGT_8728: 8728
-  xe-4476-feea7da320aa6950f02d3c4633ab678e6e61f7e9: feea7da320aa6950f02d3c4633ab678e6e61f7e9
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14458/index.html
-
---===============5520112893731683025==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tools/gputop: Add GPU frequencies to the client headers (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159205/">https://patchwork.freedesktop.org/series/159205/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14458/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14458/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8728_BAT -&gt; XEIGTPW_14458_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 11)</h2>
-<p>Missing    (1): bat-bmg-3 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8728 -&gt; IGTPW_14458</li>
-</ul>
-<p>IGTPW_14458: 14458<br />
-  IGT_8728: 8728<br />
-  xe-4476-feea7da320aa6950f02d3c4633ab678e6e61f7e9: feea7da320aa6950f02d3c4633ab678e6e61f7e9</p>
-
-</body>
-</html>
-
---===============5520112893731683025==--
+-- 
+Ville Syrjälä
+Intel
