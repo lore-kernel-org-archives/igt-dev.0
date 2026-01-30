@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0BC5D49C8D
-	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 09:55:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 624F0D49C92
+	for <igt-dev@archiver.kernel.org>; Fri, 30 Jan 2026 09:58:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4E6DA10E93B;
-	Fri, 30 Jan 2026 09:55:11 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 79CD910E93A;
- Fri, 30 Jan 2026 09:55:10 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4090008190416813245=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1E38E10E2C4;
+	Fri, 30 Jan 2026 09:58:33 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="neLL7R0K";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4A6F10E955
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Jan 2026 09:58:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1769767112; x=1801303112;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=qiOHgVNeZtv1WOSWdnLyvSlLUTMMWi/J2mWNeR3qZXs=;
+ b=neLL7R0Kd0eVFzYhzVINXZv3bKeqCwpiP7NqxAkvdtNOnnHniBznXA0b
+ rSe8D5+lGWERWTxP+iPJ1IGHZOx1sdMs2yt6+COPRVeMv6nyRlEGmmfCA
+ xIykitAux0wzt7biHlqjsZ4fsH5Q89PT9nA6R++p4uBLR0Y/slG7Nu4ux
+ 7KkWwSFqpaBOx9Y8/GtWt6Di8+qBlxdhh1N17Ry36+ZvFLp7/bwbwO1Lg
+ 4erQEvGPR7eCr5FEGhBZeVt4p3LWRpLuEfa02yXVmqage6heF0zxLiJY2
+ pcETNIj2RPoC+sc1ytAJzcoVegryGjYN+UJ72AQXlD+2lq49dno6FZlcR A==;
+X-CSE-ConnectionGUID: OSMi9MvhQteMaVCmFy6fxg==
+X-CSE-MsgGUID: UPEhKHT7SZGy97KpwDOWNw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="58595941"
+X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="58595941"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2026 01:58:31 -0800
+X-CSE-ConnectionGUID: N2UQvWzMQYKIinPuD1zBAw==
+X-CSE-MsgGUID: tF9O+SQGRfKItPI0+9uE2g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; d="scan'208";a="208413945"
+Received: from psoham-nuc7i7bnh.iind.intel.com ([10.190.216.151])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jan 2026 01:58:29 -0800
+From: Soham Purkait <soham.purkait@intel.com>
+To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
+ badal.nilawar@intel.com, kamil.konieczny@intel.com,
+ ashutosh.dixit@intel.com
+Cc: anshuman.gupta@intel.com, soham.purkait@intel.com,
+ umesh.nerlige.ramappa@intel.com
+Subject: [PATCH i-g-t v7 0/5] Close any open drm device after engine
+ initialization in GPUTOP
+Date: Fri, 30 Jan 2026 15:23:13 +0530
+Message-Id: <20260130095318.644256-1-soham.purkait@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/amdgpu=3A_Refactor_sche?=
- =?utf-8?q?d=5Fmask_read_logic_and_add_XCP_partition_mode_support?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jesse.Zhang" <jesse.zhang@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 30 Jan 2026 09:55:10 -0000
-Message-ID: <176976691049.209830.13228716294840589854@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260130084654.4031554-1-Jesse.Zhang@amd.com>
-In-Reply-To: <20260130084654.4031554-1-Jesse.Zhang@amd.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,255 +66,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4090008190416813245==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: lib/amdgpu: Refactor sched_mask read logic and add XCP partition mode support
-URL   : https://patchwork.freedesktop.org/series/160891/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8726_BAT -> XEIGTPW_14454_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
+       During engine initialization for a specific device, the helper
+functions require an open card_fd to query engines and configurations
+needed to compute engine busyness via PMU. However, KMS tests require
+that no other DRM client be active, and keeping card_fd open causes
+gputop to appear as a DRM client. Therefore, card_fd is closed immediately
+after discovery.
+     Additionally, this patch removes the lib/xe/* dependency and perform
+engine discovery using direct ioctl calls, simplifying the implementation
+and reducing external dependencies, while also providing a fallback to
+report only client busyness when engine busyness counters are not
+accessible to non-root users.
   
+  GPUTOP engine busyness is also capable of running without superuser access
+through setting CAP_PERFMON or an appropriate perf_event_paranoid setting,
+Otherwise user could continue with only GPU client busyness if required.
 
-Participating hosts (10 -> 12)
-------------------------------
+Steps to enable engine busyness to run without root (using CAP_PERFMON):
+$ cd /path/to/igt-gpu-tools/
+$ sudo setcap cap_perfmon=+ep $(pwd)/build/tools/gputop
+$ sudo sh -c "echo $(pwd)/build/lib > /etc/ld.so.conf.d/lib-igt.conf"
+$ sudo ldconfig
+Steps to revert once done:
+$ sudo setcap cap_perfmon=-ep $(pwd)/build/tools/gputop
+$ sudo rm /etc/ld.so.conf.d/lib-igt.conf
+$ sudo ldconfig
 
-  Additional (2): bat-adlp-vm bat-ptl-vm 
+Steps to enable engine busyness to run without root (using perf_event_paranoid):
+# Save current value
+$ orig_val=$(sysctl -n kernel.perf_event_paranoid)
+# Set the value to allow running GPUTOP without root privileges
+$ sudo sysctl -w kernel.perf_event_paranoid=-1
+Steps to revert once done:
+$ sudo sysctl -w kernel.perf_event_paranoid=$orig_val
 
-Known issues
-------------
+Soham Purkait (5):
+  tools: Rename tools/gputop to tools/gputop.src
+  tools/gputop.src/utils: Add clamp macro to remove dependency on
+    lib/xe/*
+  tools/gputop.src/xe_gputop: Refactor xe_populate_engines to close
+    card_fd and use direct ioctl calls
+  tools/gputop.src/gputop: Enable support for multiple GPUs and
+    instances
+  tools/gputop.src/gputop: Add command line option for device filter
 
-  Here are the changes found in XEIGTPW_14454_BAT that come from known issues:
+ tools/{ => gputop.src}/gputop.c          | 286 +++++++++++++++++++----
+ tools/gputop.src/meson.build             |   1 +
+ tools/{gputop => gputop.src}/utils.c     |   0
+ tools/{gputop => gputop.src}/utils.h     |  11 +-
+ tools/{gputop => gputop.src}/xe_gputop.c | 100 ++++++--
+ tools/{gputop => gputop.src}/xe_gputop.h |   3 +-
+ tools/meson.build                        |  12 +-
+ 7 files changed, 344 insertions(+), 69 deletions(-)
+ rename tools/{ => gputop.src}/gputop.c (58%)
+ create mode 100644 tools/gputop.src/meson.build
+ rename tools/{gputop => gputop.src}/utils.c (100%)
+ rename tools/{gputop => gputop.src}/utils.h (89%)
+ rename tools/{gputop => gputop.src}/xe_gputop.c (83%)
+ rename tools/{gputop => gputop.src}/xe_gputop.h (95%)
 
-### IGT changes ###
+-- 
+2.34.1
 
-#### Issues hit ####
-
-  * igt@xe_evict@evict-beng-small-cm:
-    - bat-ptl-vm:         NOTRUN -> [SKIP][1] ([Intel XE#5764]) +10 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-ptl-vm/igt@xe_evict@evict-beng-small-cm.html
-
-  * igt@xe_evict@evict-small-external-cm:
-    - bat-adlp-vm:        NOTRUN -> [SKIP][2] ([Intel XE#261] / [Intel XE#688]) +9 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_evict@evict-small-external-cm.html
-
-  * igt@xe_evict_ccs@evict-overcommit-simple:
-    - bat-adlp-vm:        NOTRUN -> [SKIP][3] ([Intel XE#688])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_evict_ccs@evict-overcommit-simple.html
-
-  * igt@xe_exec_fault_mode@twice-userptr-invalidate-imm:
-    - bat-adlp-vm:        NOTRUN -> [SKIP][4] ([Intel XE#288]) +32 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_exec_fault_mode@twice-userptr-invalidate-imm.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-ptl-vm:         NOTRUN -> [SKIP][5] ([Intel XE#5775])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-ptl-vm/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-    - bat-adlp-vm:        NOTRUN -> [SKIP][6] ([Intel XE#2229] / [Intel XE#5488])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  * igt@xe_mmap@vram:
-    - bat-adlp-vm:        NOTRUN -> [SKIP][7] ([Intel XE#1008] / [Intel XE#5591])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_mmap@vram.html
-    - bat-ptl-vm:         NOTRUN -> [SKIP][8] ([Intel XE#5776])
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-ptl-vm/igt@xe_mmap@vram.html
-
-  * igt@xe_pat@pat-index-xe2:
-    - bat-adlp-vm:        NOTRUN -> [SKIP][9] ([Intel XE#977])
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_pat@pat-index-xe2.html
-
-  * igt@xe_pat@pat-index-xehpc:
-    - bat-ptl-vm:         NOTRUN -> [SKIP][10] ([Intel XE#5777])
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-ptl-vm/igt@xe_pat@pat-index-xehpc.html
-    - bat-adlp-vm:        NOTRUN -> [SKIP][11] ([Intel XE#2838] / [Intel XE#979])
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_pat@pat-index-xehpc.html
-
-  * igt@xe_pat@pat-index-xelp:
-    - bat-ptl-vm:         NOTRUN -> [SKIP][12] ([Intel XE#5771])
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-ptl-vm/igt@xe_pat@pat-index-xelp.html
-
-  * igt@xe_pat@pat-index-xelpg:
-    - bat-ptl-vm:         NOTRUN -> [SKIP][13] ([Intel XE#5780])
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-ptl-vm/igt@xe_pat@pat-index-xelpg.html
-    - bat-adlp-vm:        NOTRUN -> [SKIP][14] ([Intel XE#979])
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_pat@pat-index-xelpg.html
-
-  * igt@xe_waitfence@engine:
-    - bat-dg2-oem2:       [PASS][15] -> [FAIL][16] ([Intel XE#6519])
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8726/bat-dg2-oem2/igt@xe_waitfence@engine.html
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-dg2-oem2/igt@xe_waitfence@engine.html
-
-  
-  [Intel XE#1008]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
-  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#5488]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5488
-  [Intel XE#5591]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5591
-  [Intel XE#5764]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5764
-  [Intel XE#5771]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5771
-  [Intel XE#5775]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5775
-  [Intel XE#5776]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5776
-  [Intel XE#5777]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5777
-  [Intel XE#5780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5780
-  [Intel XE#6519]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519
-  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
-  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
-  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
-
-
-Build changes
--------------
-
-  * IGT: IGT_8726 -> IGTPW_14454
-
-  IGTPW_14454: 14454
-  IGT_8726: 8726
-  xe-4475-69c1143407ca17d556eb4e5ead7eb43b60a3fe65: 69c1143407ca17d556eb4e5ead7eb43b60a3fe65
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/index.html
-
---===============4090008190416813245==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/amdgpu: Refactor sched_mask read logic and add XCP partition mode support</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160891/">https://patchwork.freedesktop.org/series/160891/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8726_BAT -&gt; XEIGTPW_14454_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (10 -&gt; 12)</h2>
-<p>Additional (2): bat-adlp-vm bat-ptl-vm </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14454_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_evict@evict-beng-small-cm:</p>
-<ul>
-<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-ptl-vm/igt@xe_evict@evict-beng-small-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5764">Intel XE#5764</a>) +10 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_evict@evict-small-external-cm:</p>
-<ul>
-<li>bat-adlp-vm:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_evict@evict-small-external-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +9 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_evict_ccs@evict-overcommit-simple:</p>
-<ul>
-<li>bat-adlp-vm:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_evict_ccs@evict-overcommit-simple.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-imm:</p>
-<ul>
-<li>bat-adlp-vm:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_exec_fault_mode@twice-userptr-invalidate-imm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-ptl-vm/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5775">Intel XE#5775</a>)</li>
-<li>bat-adlp-vm:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5488">Intel XE#5488</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_mmap@vram:</p>
-<ul>
-<li>bat-adlp-vm:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1008">Intel XE#1008</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5591">Intel XE#5591</a>)</li>
-<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-ptl-vm/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5776">Intel XE#5776</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xe2:</p>
-<ul>
-<li>bat-adlp-vm:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-ptl-vm/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5777">Intel XE#5777</a>)</li>
-<li>bat-adlp-vm:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelp:</p>
-<ul>
-<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-ptl-vm/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5771">Intel XE#5771</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelpg:</p>
-<ul>
-<li>bat-ptl-vm:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-ptl-vm/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5780">Intel XE#5780</a>)</li>
-<li>bat-adlp-vm:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-adlp-vm/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_waitfence@engine:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8726/bat-dg2-oem2/igt@xe_waitfence@engine.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14454/bat-dg2-oem2/igt@xe_waitfence@engine.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519">Intel XE#6519</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8726 -&gt; IGTPW_14454</li>
-</ul>
-<p>IGTPW_14454: 14454<br />
-  IGT_8726: 8726<br />
-  xe-4475-69c1143407ca17d556eb4e5ead7eb43b60a3fe65: 69c1143407ca17d556eb4e5ead7eb43b60a3fe65</p>
-
-</body>
-</html>
-
---===============4090008190416813245==--
