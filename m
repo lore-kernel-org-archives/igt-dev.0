@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF3EBE8305D
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 08:00:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17BA9E83061
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 08:00:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 45F1410E54C;
-	Tue,  3 Feb 2026 08:00:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B765710E535;
+	Tue,  3 Feb 2026 08:00:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=foxmail.com header.i=@foxmail.com header.b="YaN6qb/A";
+	dkim=pass (1024-bit key; unprotected) header.d=foxmail.com header.i=@foxmail.com header.b="OYc7nowi";
 	dkim-atps=neutral
-X-Greylist: delayed 1814 seconds by postgrey-1.36 at gabe;
- Sun, 01 Feb 2026 03:17:13 UTC
-Received: from out203-205-221-240.mail.qq.com (out203-205-221-240.mail.qq.com
- [203.205.221.240])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E2F3710E009
- for <igt-dev@lists.freedesktop.org>; Sun,  1 Feb 2026 03:17:13 +0000 (UTC)
+X-Greylist: delayed 12361 seconds by postgrey-1.36 at gabe;
+ Sun, 01 Feb 2026 06:11:57 UTC
+Received: from out162-62-58-216.mail.qq.com (out162-62-58-216.mail.qq.com
+ [162.62.58.216])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC4D210E004
+ for <igt-dev@lists.freedesktop.org>; Sun,  1 Feb 2026 06:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
- s=s201512; t=1769915830;
- bh=zTlUCWeRK2FU+unX1x6WRCY8IdqLeOH6/7kTZJKr4O0=;
+ s=s201512; t=1769926311;
+ bh=uxyE50yluaZUUGqNz5+8TuicIcylLkhqQTi4De1FHgU=;
  h=From:To:Cc:Subject:Date;
- b=YaN6qb/A08f9QgoyaUeukl7Q7IbnOFvIaiRik3x9id3nvzj9sgQj3RgpXpkdjbLbA
- 03djqk9b6djf5M5FfpCkykA8ISn8RezBuxMNsv8VImricrKt6x/9e8D/1DEYxjm6Q8
- bxPC7ulO3zKD0TtzXNrQUpkIvtzXmrRecMQDb7NY=
+ b=OYc7nowia3xAwmYGXmxxBUrlfEvuSbQGSV7LyCwXdQxO5RQDPGb8y1z4PR648rBt1
+ /9JubB4r9GPXRFwCtchl0l1/SvrwA02AAzpGizCMnj9st0iPpHG/7qDrM7E5nVORYr
+ XkRL1LcRWtRgI8E9fNy0086X51hK4nD1KRPc8fsI=
 Received: from localhost.localdomain ([171.223.89.62])
- by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
- id B718B213; Sun, 01 Feb 2026 10:45:49 +0800
-X-QQ-mid: xmsmtpt1769913949tza2dio7n
-Message-ID: <tencent_C9CEB3AD0E497CB0B666DD6B2E9389C56708@qq.com>
-X-QQ-XMAILINFO: ORmE8plt8QkE2X03U9q/xgpGxjekmbNX36HLj10XWAu3Ll8DrGGx2GxdJMmX3j
- yfaPrpOUR33xEmchhulxKTuDtQROEuTAF/oaY9ZxzZTB/bwUluEJsSteg3g2LZmbs0tYcccp5Y/P
- VNCQVS/XYHEOItUA13nGm3Y5IMJ2w7GHuh6uD0WeYQvoCd6l4+CNfyMjbIlYV3+C+kpITgELQ+Cz
- LUkvL1edq8wdadUc2W2vF4SKtJM+IPjuM5Ip3YLPJfGEfIH+h02p2h8wh4k4KfsTVW2lNVAQ9HfT
- rzGOiYfvZ5FhGe/Gs3Chrn+bsoHDUmWDz4+jdpd0oHTRx+P+HVQ+M9LQMOfz1DJCLwmtEt1eEq78
- V0TlXzgfxg0PfcChaJ0KFhu4Z42Sux23WzieVipV35seSg+7OVSHb1wvae1bYuMmDFImxVhnIm7a
- btmCY2pteddIR8f/n5XfXwyTu1haYxx6xRTVFg8XgW8l0tJQW9aC7dX1Zs4RjmKUS9o+G9FVIRsJ
- STvImoY0wMZqltXXdcPcXJXQbalUJrYH2c+qPycOHkvEOuIdllSY2GJ808aeRzJB3tbGHCtQ2lPL
- TUgB5N3MEEmtvyT3gkZ2pYqgQajpVytevdIxp/Iwz1DmLN393sgLMRQSEx0L4fabX9+x1648LoPx
- SVlZMmQ8K3yuTcTFE5nqkCTeKY1ZUdjkEYO6UQqm4RpshJaRSmibJikOD8T7pNQmOf/hVTWZpnle
- fqoDbtpjdMGBGbggWXL2QAMCBR1fl7k3iDNxoRFR6fpH1gkSop3syLPPFKxECDKLXfjsxLdpCaVM
- QFelzWLxvy8WhNQ+K/ZZa0qiJ10UXRp0gGmNDwhEX1p7RWGHHiep60BgK45mj9/ibc6mKRW/L6P0
- fM1ZDK+UJGZdMbKQDY9/iHqb3aY+54gYHbbiGue10Tg3oaMJKx8DbdPwYdwtIYQzgVfNbZa8DU2I
- SDryaeDxBB3ffX7ORFPUCuaUQHI+huOb+fNZaRJ8iHAsW2Wc/IIzv+2UNNHr2jor3XruIEDsv+j4
- 28DhwLVAs3IUqJKATv9M0we4umr3QONj/7cOV/sQ==
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+ by newxmesmtplogicsvrszc41-0.qq.com (NewEsmtp) with SMTP
+ id 2F130AA6; Sun, 01 Feb 2026 14:11:49 +0800
+X-QQ-mid: xmsmtpt1769926309t239pe4qs
+Message-ID: <tencent_009881AF754F22143F3943B76A2645C05A0A@qq.com>
+X-QQ-XMAILINFO: OeJ9zRfntlNPVN6ywS0pQZvU8H1Tvq/8sDUXdv62p7m4VTh9i7/l7Cikvxglwe
+ cx3zMdNDJCvZ8XqGQKzG2Lt8NYzCtxPtKF2TMzb3a/FoSf+8odhIKw9ZIGl1vgCIh9y73Rr6/ah/
+ gad4VfTavXdTWq2uNbcRUmykXvVKtUorYCax26CWvkOQuB352/afw/WRvEcd9hoT2aoqySydHCeg
+ 8DXNuijGk+tY2Pqc2kqOMsEnDjdwn/1Ze/5/3GIBKthgSZQqDx5qI3klY7y7EdOebnJwcf00bIoX
+ H52CaLbhwKNLvtTQLMy/LGmWkbohCupxgAz0S4CCZnbIrafncGsQwhGmJzGre0Mnnly/loq+I2Vn
+ SS4REyhQMB4I8NlqB/iiQL0Dvex//tFtaDkzZUshR71vNyOA8eS7GtI3hAKbpBvagIZ4htAc64LJ
+ KNKyg9uzqbSZHk2MDqowzLdGHHHDoYRjaqXUo7bhYBKXVMC22I5+Euh+0pvosG4bWRWMhy08tktV
+ pnVAcy5esW9WbOpKUv6SYqOpAzhVAjPKIKx1F7kIZb6DCgTePe1/KIdsUp5V8HcMQblUxzAZsrth
+ 2wm3V3liYccG8ohgbEOkUPhzk1lspKsYFun5gxIj11PEZU9tBPY+pRqRQd0rVRXgQvLeZcrFkPiS
+ v7lN0aATb+R3UlBVoKtUZcfAyMb6Qm5Gmf97uBVYTJEhtU/LbTAoz7dfvOhvrKVFppKs6p0ZST9c
+ 6FktVaQNmWvtjtmzjiny66hdEzTXemBYTZsjYkB2Qkr+w4YwFDJ4/xze0RdC/uBZ2ByvK9nWDXSW
+ v4Gn9PuRBdk7NDEvHgguuiWs7B7dMCD1X7Mvb+1hA+yqHJJSnLbGd3UTaSlqsyQhcZkw+dR0mcDu
+ TEbyv19RKZNCZItflrIFJbetdh7qKr8zMyCpTTHyiUyFCcis0N2Kny6lR8KK+HvTehQ94zPJEObv
+ BtMefIh0nZ5KZmckHWhoz1dLkltW/o4RzGhBF9ZcMwt0dZ/en5jfbvJ7wZhQ1DfMs03R7i8nkDb5
+ X4lzyf805efzW6hm5y/GiTY1WsMwMksoZIHgVM62v7xypjV/1Ko+utw/aD5/knAlq39CSjsg==
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
 From: Renjun Wang <renjunw0@foxmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Renjun Wang <renjunw0@foxmail.com>
-Subject: [PATCH i-g-t] lib/igt_fb: add YUV410 YUV411 YUV444 YVU410 YVU411
- YVU444 formats
-Date: Sun,  1 Feb 2026 10:45:42 +0800
-X-OQ-MSGID: <20260201024542.16714-1-renjunw0@foxmail.com>
+Subject: [PATCH i-g-t] tests/kms_plane: Allow planar-pixel-format-settings to
+ pass on VKMS
+Date: Sun,  1 Feb 2026 14:11:43 +0800
+X-OQ-MSGID: <20260201061143.178953-1-renjunw0@foxmail.com>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -72,218 +72,104 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add support for additional YUV format variants in framebuffer and color
-encoding handling. Extend format descriptors, color encoding configuration,
-YUV buffer clearing, parameter calculation, and format conversions to support
-4:1:0, 4:1:1, and 4:4:4 chroma subsampling formats.
+Set expected_rval to 0 for planar-pixel-format-settings tests when
+running on VKMS driver. VKMS currently accepts odd width/height for
+NV12, odd horizontal panning for NV12, and odd vertical panning for
+P016 formats.
 
 Signed-off-by: Renjun Wang <renjunw0@foxmail.com>
 ---
- lib/igt_color_encoding.c |  6 ++++
- lib/igt_fb.c             | 72 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 78 insertions(+)
+ tests/kms_plane.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
-index a7bd2b22f..da56b2b10 100644
---- a/lib/igt_color_encoding.c
-+++ b/lib/igt_color_encoding.c
-@@ -140,10 +140,16 @@ static const struct color_encoding_format {
- 	{ DRM_FORMAT_NV16, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_NV21, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_NV61, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YUV410, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YUV411, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YUV420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YUV422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YUV444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YVU410, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YVU411, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YVU420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YVU422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YVU444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YUYV, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YVYU, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_UYVY, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index d59fe133b..fa9220953 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -282,6 +282,16 @@ static const struct format_desc_struct {
- 	  .num_planes = 1, .plane_bpp = { 16, },
- 	  .hsub = 2, .vsub = 1,
- 	},
-+	{ .name = "YU10", .depth = -1, .drm_id = DRM_FORMAT_YUV410,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 4, .vsub = 4,
-+	},
-+	{ .name = "YU11", .depth = -1, .drm_id = DRM_FORMAT_YUV411,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 4, .vsub = 1,
-+	},
- 	{ .name = "YU12", .depth = -1, .drm_id = DRM_FORMAT_YUV420,
- 	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
- 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-@@ -292,6 +302,21 @@ static const struct format_desc_struct {
- 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
- 	  .hsub = 2, .vsub = 1,
- 	},
-+	{ .name = "YU24", .depth = -1, .drm_id = DRM_FORMAT_YUV444,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 1, .vsub = 1,
-+	},
-+	{ .name = "YV10", .depth = -1, .drm_id = DRM_FORMAT_YVU410,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 4, .vsub = 4,
-+	},
-+	{ .name = "YV11", .depth = -1, .drm_id = DRM_FORMAT_YVU411,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 4, .vsub = 1,
-+	},
- 	{ .name = "YV12", .depth = -1, .drm_id = DRM_FORMAT_YVU420,
- 	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
- 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-@@ -302,6 +327,11 @@ static const struct format_desc_struct {
- 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
- 	  .hsub = 2, .vsub = 1,
- 	},
-+	{ .name = "YV24", .depth = -1, .drm_id = DRM_FORMAT_YVU444,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 1, .vsub = 1,
-+	},
- 	{ .name = "Y410", .depth = -1, .drm_id = DRM_FORMAT_Y410,
- 	  .cairo_id = CAIRO_FORMAT_RGBA128F, .convert = true,
- 	  .num_planes = 1, .plane_bpp = { 32, },
-@@ -1164,10 +1194,16 @@ static void clear_yuv_buffer(struct igt_fb *fb)
- 			 full_range ? 0x800000008000ULL : 0x800010008000ULL,
- 			 plane_size[0] / sizeof(uint64_t));
- 		break;
-+	case DRM_FORMAT_YUV410:
-+	case DRM_FORMAT_YUV411:
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
-+	case DRM_FORMAT_YVU410:
-+	case DRM_FORMAT_YVU411:
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 		igt_assert(ARRAY_SIZE(plane_size) == 3);
- 		memset(ptr + fb->offsets[0],
- 		       full_range ? 0x00 : 0x10,
-@@ -3675,10 +3711,16 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 		params->uv_inc = 2;
- 		break;
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 21d80847c..57adfe199 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -1313,11 +1313,9 @@ static void test_planar_settings(data_t *data)
+ 	int devid;
+ 	int display_ver = -1;
+ 	int rval;
++	bool is_intel = false;
++	bool is_vkms = false;
  
-+	case DRM_FORMAT_YUV410:
-+	case DRM_FORMAT_YUV411:
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
-+	case DRM_FORMAT_YVU410:
-+	case DRM_FORMAT_YVU411:
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 		params->ay_inc = 1;
- 		params->uv_inc = 1;
- 		break;
-@@ -3709,10 +3751,16 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 	case DRM_FORMAT_NV16:
- 	case DRM_FORMAT_NV21:
- 	case DRM_FORMAT_NV61:
-+	case DRM_FORMAT_YUV410:
-+	case DRM_FORMAT_YUV411:
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
-+	case DRM_FORMAT_YVU410:
-+	case DRM_FORMAT_YVU411:
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 	case DRM_FORMAT_P010:
- 	case DRM_FORMAT_P012:
- 	case DRM_FORMAT_P016:
-@@ -3752,15 +3800,21 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 		params->v_offset = fb->offsets[1];
- 		break;
+-	/*
+-	 * If here is added non-intel tests below require will need to be
+-	 * changed to if(..)
+-	 */
+ 	igt_require_f(data->display.is_atomic, "Atomic mode-set not supported\n");
+ 	if (is_intel_device(data->drm_fd)) {
+ 		igt_require_intel(data->drm_fd);
+@@ -1325,6 +1323,9 @@ static void test_planar_settings(data_t *data)
+ 		igt_require(intel_display_ver(devid) >= 9);
+ 		display_ver = intel_display_ver(devid);
+ 		igt_require(display_ver >= 9);
++		is_intel = true;
++	} else if (is_vkms_device(data->drm_fd)) {
++		is_vkms = true;
+ 	}
  
-+	case DRM_FORMAT_YUV410:
-+	case DRM_FORMAT_YUV411:
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
- 		params->y_offset = fb->offsets[0];
- 		params->u_offset = fb->offsets[1];
- 		params->v_offset = fb->offsets[2];
- 		break;
+ 	output = igt_get_single_output_for_pipe(&data->display, pipe);
+@@ -1337,12 +1338,12 @@ static void test_planar_settings(data_t *data)
+ 				  DRM_MODE_ATOMIC_ALLOW_MODESET,
+ 				  NULL);
  
-+	case DRM_FORMAT_YVU410:
-+	case DRM_FORMAT_YVU411:
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 		params->y_offset = fb->offsets[0];
- 		params->u_offset = fb->offsets[2];
- 		params->v_offset = fb->offsets[1];
-@@ -4497,11 +4551,17 @@ static void fb_convert(struct fb_convert *cvt)
- 		case DRM_FORMAT_NV61:
- 		case DRM_FORMAT_UYVY:
- 		case DRM_FORMAT_VYUY:
-+		case DRM_FORMAT_YUV410:
-+		case DRM_FORMAT_YUV411:
- 		case DRM_FORMAT_YUV420:
- 		case DRM_FORMAT_YUV422:
-+		case DRM_FORMAT_YUV444:
- 		case DRM_FORMAT_YUYV:
-+		case DRM_FORMAT_YVU410:
-+		case DRM_FORMAT_YVU411:
- 		case DRM_FORMAT_YVU420:
- 		case DRM_FORMAT_YVU422:
-+		case DRM_FORMAT_YVU444:
- 		case DRM_FORMAT_YVYU:
- 			convert_yuv_to_rgb24(cvt);
- 			return;
-@@ -4515,11 +4575,17 @@ static void fb_convert(struct fb_convert *cvt)
- 		case DRM_FORMAT_NV61:
- 		case DRM_FORMAT_UYVY:
- 		case DRM_FORMAT_VYUY:
-+		case DRM_FORMAT_YUV410:
-+		case DRM_FORMAT_YUV411:
- 		case DRM_FORMAT_YUV420:
- 		case DRM_FORMAT_YUV422:
-+		case DRM_FORMAT_YUV444:
- 		case DRM_FORMAT_YUYV:
-+		case DRM_FORMAT_YVU410:
-+		case DRM_FORMAT_YVU411:
- 		case DRM_FORMAT_YVU420:
- 		case DRM_FORMAT_YVU422:
-+		case DRM_FORMAT_YVU444:
- 		case DRM_FORMAT_YVYU:
- 			convert_rgb24_to_yuv(cvt);
- 			return;
-@@ -5095,9 +5161,15 @@ bool igt_format_is_yuv(uint32_t drm_format)
- 	case DRM_FORMAT_NV21:
- 	case DRM_FORMAT_NV61:
- 	case DRM_FORMAT_YUV420:
-+	case DRM_FORMAT_YUV410:
-+	case DRM_FORMAT_YUV411:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
- 	case DRM_FORMAT_YVU420:
-+	case DRM_FORMAT_YVU410:
-+	case DRM_FORMAT_YVU411:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 	case DRM_FORMAT_P010:
- 	case DRM_FORMAT_P012:
- 	case DRM_FORMAT_P016:
+-	/* test against intel_plane_check_src_coordinates() in i915 */
++	/* Test odd width for NV12 format */
+ 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
+ 				     DRM_FORMAT_MOD_LINEAR)) {
+ 		int expected_rval = -EINVAL;
+ 
+-		if (display_ver >= 20)
++		if ((is_intel && display_ver >= 20) || is_vkms)
+ 			expected_rval = 0;
+ 
+ 		igt_create_fb(data->drm_fd, 257, 256,
+@@ -1358,12 +1359,12 @@ static void test_planar_settings(data_t *data)
+ 		igt_debug("Odd width NV12 framebuffer test skipped\n");
+ 	}
+ 
+-	/* test against intel_plane_check_src_coordinates() in i915 */
++	/* Test odd height for NV12 format */
+ 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
+ 				     DRM_FORMAT_MOD_LINEAR)) {
+ 		int expected_rval = -EINVAL;
+ 
+-		if (display_ver >= 20 && display_ver < 35)
++		if ((is_intel && display_ver >= 20 && display_ver < 35) || is_vkms)
+ 			expected_rval = 0;
+ 
+ 		igt_create_fb(data->drm_fd, 256, 257,
+@@ -1378,13 +1379,12 @@ static void test_planar_settings(data_t *data)
+ 	} else {
+ 		igt_debug("Odd height NV12 framebuffer test skipped\n");
+ 	}
+-
+-	/* test against intel_plane_check_src_coordinates() in i915 */
++	/*Test odd horizontal panning for NV12 format */
+ 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
+ 				     DRM_FORMAT_MOD_LINEAR)) {
+ 		int expected_rval = -EINVAL;
+ 
+-		if (display_ver >= 35)
++		if ((is_intel && display_ver >= 35) || is_vkms)
+ 			expected_rval = 0;
+ 
+ 		igt_create_fb(data->drm_fd, 810, 590,
+@@ -1401,11 +1401,12 @@ static void test_planar_settings(data_t *data)
+ 		igt_debug("Odd horizontal pan NV12 framebuffer test skipped\n");
+ 	}
+ 
++	/* Test odd vertical panning for P016 format */
+ 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_P016,
+ 					    DRM_FORMAT_MOD_LINEAR)) {
+ 		int expected_rval = -EINVAL;
+ 
+-		if (display_ver >= 20 && display_ver < 35)
++		if ((is_intel && display_ver >= 20 && display_ver < 35) || is_vkms)
+ 			expected_rval = 0;
+ 
+ 		igt_create_color_fb(data->drm_fd, 256, 260,
 -- 
 2.47.3
 
