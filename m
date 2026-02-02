@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E9CBE83065
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 08:01:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F33AE83063
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 08:01:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C59810E56E;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0FB9E10E56B;
 	Tue,  3 Feb 2026 08:01:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="FI5tSP7U";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ub3ZX/Uk";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E3A9F10E1B4
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 17:18:59 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DAAB010E1C2
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 15:17:24 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 4FBA3C237F3
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 17:19:03 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 8E6694E423CB;
+ Mon,  2 Feb 2026 15:17:23 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 716FB60767;
- Mon,  2 Feb 2026 17:18:58 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 535DB6076C;
+ Mon,  2 Feb 2026 15:17:23 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 6CDD0119A8888; Mon,  2 Feb 2026 18:18:56 +0100 (CET)
+ with ESMTPSA id 359B4119A88EE; Mon,  2 Feb 2026 16:17:21 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770052738; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1770045442; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=L3uW+KTOpXbc369kJOq1RGgwM3Cp+qDWXIZw1/zM2rE=;
- b=FI5tSP7UjREn1f3ilk++6i8sXDUjZuHElS28HKOP1ugFf04wUKCOMiv03QIYiX9et0fnUF
- WNNCmho3mJC2PG/RWiUyHao6QisgYcF9AUDVajo6ItBwoXODGDmYUdpL+vRO22JQVyuVXo
- cN+V3jxE7TbUZwEKyATQ/ZXHJa9wbPajYsv2oj/TEb8I7kQb2h1pbjBKlC3RKzu6kC28bl
- jX2+rMuKkmgI4SaitCFkAT++PVYsbQCQXHvFVwPmJoAPcesRF4p+4RfK29tlxCDBr2ylux
- AoO1DwIP9X2dURCwslYTLrToj2ULYf3sKdIEkA4a+QPHPmnAuHNx+eh98lPOaA==
-Date: Mon, 2 Feb 2026 18:18:55 +0100
+ bh=fPOiMt/oIEs9zYVASIT/7ZAfhFiWYNVdxO8S9ptBoIU=;
+ b=ub3ZX/UkDZj6clvl3a0DtWG4BUN7lRzuDOkrZgqSC/q/L3rA0k/2m6Aa27OybANdFvZIUv
+ SNTojyqjHguIJgwSSyv8uj93keYKJLWjBuelAvRjtroqWCyWvJ1Fn8zpZGdX7WqVtjO/Vy
+ PFIHIaBnpcgBaenyVrXDgm+qNL9PQbTJk6Coyw96WHMMP+q11MFdMQc2rutbqXJggXpNpw
+ d130M3F6nRXr+kMEcwstsM9+EHAFe2mTwe0i8Q6dTWZm8EUOvz65EBL5EA/dc0eTXNQdpM
+ hspJ2qTrRxWVXoYpQsCJfwr+K6Kig5Z0VKv/x0d6m2yGfEZHyFZvjYw77lDZGA==
+Date: Mon, 2 Feb 2026 16:17:20 +0100
 From: Kory Maincent <kory.maincent@bootlin.com>
 To: Louis Chauvet <louis.chauvet@bootlin.com>
 Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
  luca.ceresoli@bootlin.com, markyacoub@google.com,
  khaled.almahallawy@intel.com
-Subject: Re: [PATCH i-g-t v6 20/48] lib/igt_kms: Automatically connect
- unigraf on display require
-Message-ID: <20260202181855.25b5cbee@kmaincent-XPS-13-7390>
-In-Reply-To: <20260202-unigraf-integration-v6-20-834af822eee7@bootlin.com>
+Subject: Re: [PATCH i-g-t v6 03/48] lib/igt_kms: Add function to list
+ connected connectors
+Message-ID: <20260202161720.3fe87446@kmaincent-XPS-13-7390>
+In-Reply-To: <20260202-unigraf-integration-v6-3-834af822eee7@bootlin.com>
 References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
- <20260202-unigraf-integration-v6-20-834af822eee7@bootlin.com>
+ <20260202-unigraf-integration-v6-3-834af822eee7@bootlin.com>
 Organization: bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -66,32 +66,127 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 02 Feb 2026 15:32:59 +0100
+On Mon, 02 Feb 2026 15:32:42 +0100
 Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 
-> As Unigraf can emualte a display, automatically connect it for all
-> devices. If a test is already using unigraf, this have no effect.
-
-*emulate
-
+> Introduce the igt_get_connected_connectors() function, which returns a
+> list of connector IDs that are currently connected according to DRM.
+>=20
+> This function includes a timeout mechanism because connectors can be
+> unplugged at any time. Also, especially with MST, the connector can be
+> listed by drmModeGetResources() but not yet accessible with
+> drmModeGetConnector().
 >=20
 > Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 > ---
->  lib/igt_kms.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+>  lib/igt_kms.c | 67
+> +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ lib/igt_kms.h=
+ |
+> 1 + 2 files changed, 68 insertions(+)
 >=20
 > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 799952c18f07..556c215c3456 100644
+> index 74178adc21b3..d8910a01c17c 100644
 > --- a/lib/igt_kms.c
 > +++ b/lib/igt_kms.c
-> @@ -37,6 +37,7 @@
->  #include <sys/stat.h>
->  #include <string.h>
->  #include <stdlib.h>
-> +#include <xf86drmMode.h>
+> @@ -8016,6 +8016,29 @@ double igt_default_display_detect_timeout(void)
+>  	return timeout;
+>  }
+> =20
+> +static drmModeConnectorPtr igt_wait_for_connector(int drm_fd, unsigned i=
+nt
+> connector_id,
+> +						  double timeout)
+> +{
+> +	drmModeConnectorPtr connector =3D NULL;
+> +	struct timespec start, end;
+> +
+> +	connector =3D drmModeGetConnector(drm_fd, connector_id);
+> +	/*
+> +	 * This time is required as sometimes some id in the connector list
+> are not totally
+> +	 * ready or can disappear
+> +	 */
+> +	clock_gettime(CLOCK_MONOTONIC, &start);
+> +	end =3D start;
+> +
+> +	while (!connector &&
+> +	       igt_time_elapsed(&start, &end) <=3D timeout) {
+> +		connector =3D drmModeGetConnector(drm_fd, connector_id);
+> +		clock_gettime(CLOCK_MONOTONIC, &end);
 
-Why is it needed here?
+Same here as patch 2. Maybe add usleep(10000).
+
+> +	}
+> +
+> +	return connector;
+> +}
+> +
+>  /**
+>   * igt_wait_for_connector_status:
+>   * @drm_fd: drm file descriptor
+> @@ -8054,3 +8077,47 @@ bool igt_wait_for_connector_status(int drm_fd,
+> unsigned int connector_id, double connector_id);
+>  	return false;
+>  }
+> +
+> +/**
+> + * igt_get_connected_connectors:
+> + *
+> + * @drm_fd: DRM file descriptor
+> + * @connector_ids: Out pointer for the list of connector ids connected. =
+It
+> must be freed by the
+> + * caller.
+
+Should the caller freed only the connector_ids pointer or also all the
+connectors pointers that are inside the list? Maybe it needs a bit more
+explanation here.
+
+> + *
+> + * This will probe all the connectors and return the list of all
+> + * connected connectors.
+> + * Returns: The number of connectors in @connector_ids
+> + */
+> +int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids)
+> +{
+> +	int connected_count =3D 0;
+> +	double timeout =3D igt_default_display_detect_timeout();
+> +	drmModeResPtr resources;
+> +
+> +	igt_assert(drm_fd);
+> +	*connector_ids =3D NULL;
+> +
+> +	resources =3D drmModeGetResources(drm_fd);
+> +	igt_assert(resources);
+> +	for (int j =3D 0; j < resources->count_connectors; j++) {
+> +		drmModeConnectorPtr connector =3D
+> igt_wait_for_connector(drm_fd,
+> +
+> resources->connectors[j],
+> +
+> timeout); +
+> +		if (connector) {
+> +			if (connector->connection =3D=3D DRM_MODE_CONNECTED) {
+> +				*connector_ids =3D reallocarray(*connector_ids,
+> +							      connected_count
+> +							      + 1,
+> sizeof(**connector_ids));
+> +				igt_assert(*connector_ids);
+> +				(*connector_ids)[connected_count] =3D
+> resources->connectors[j];
+> +				connected_count++;
+> +			}
+> +			drmModeFreeConnector(connector);
+> +		}
+> +	}
+> +	drmModeFreeResources(resources);
+> +
+> +	return connected_count;
+> +}
+
+It seems that igt support lists inspired by the kernel.
+Why didn't you use the igt_list API here? It would be nicer to read.
 
 Regards,
 --=20
