@@ -4,59 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17BA9E83061
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 08:00:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21DEDE8305F
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 08:01:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B765710E535;
-	Tue,  3 Feb 2026 08:00:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C525310E569;
+	Tue,  3 Feb 2026 08:01:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=foxmail.com header.i=@foxmail.com header.b="OYc7nowi";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="WzxlksXo";
 	dkim-atps=neutral
-X-Greylist: delayed 12361 seconds by postgrey-1.36 at gabe;
- Sun, 01 Feb 2026 06:11:57 UTC
-Received: from out162-62-58-216.mail.qq.com (out162-62-58-216.mail.qq.com
- [162.62.58.216])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC4D210E004
- for <igt-dev@lists.freedesktop.org>; Sun,  1 Feb 2026 06:11:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
- s=s201512; t=1769926311;
- bh=uxyE50yluaZUUGqNz5+8TuicIcylLkhqQTi4De1FHgU=;
- h=From:To:Cc:Subject:Date;
- b=OYc7nowia3xAwmYGXmxxBUrlfEvuSbQGSV7LyCwXdQxO5RQDPGb8y1z4PR648rBt1
- /9JubB4r9GPXRFwCtchl0l1/SvrwA02AAzpGizCMnj9st0iPpHG/7qDrM7E5nVORYr
- XkRL1LcRWtRgI8E9fNy0086X51hK4nD1KRPc8fsI=
-Received: from localhost.localdomain ([171.223.89.62])
- by newxmesmtplogicsvrszc41-0.qq.com (NewEsmtp) with SMTP
- id 2F130AA6; Sun, 01 Feb 2026 14:11:49 +0800
-X-QQ-mid: xmsmtpt1769926309t239pe4qs
-Message-ID: <tencent_009881AF754F22143F3943B76A2645C05A0A@qq.com>
-X-QQ-XMAILINFO: OeJ9zRfntlNPVN6ywS0pQZvU8H1Tvq/8sDUXdv62p7m4VTh9i7/l7Cikvxglwe
- cx3zMdNDJCvZ8XqGQKzG2Lt8NYzCtxPtKF2TMzb3a/FoSf+8odhIKw9ZIGl1vgCIh9y73Rr6/ah/
- gad4VfTavXdTWq2uNbcRUmykXvVKtUorYCax26CWvkOQuB352/afw/WRvEcd9hoT2aoqySydHCeg
- 8DXNuijGk+tY2Pqc2kqOMsEnDjdwn/1Ze/5/3GIBKthgSZQqDx5qI3klY7y7EdOebnJwcf00bIoX
- H52CaLbhwKNLvtTQLMy/LGmWkbohCupxgAz0S4CCZnbIrafncGsQwhGmJzGre0Mnnly/loq+I2Vn
- SS4REyhQMB4I8NlqB/iiQL0Dvex//tFtaDkzZUshR71vNyOA8eS7GtI3hAKbpBvagIZ4htAc64LJ
- KNKyg9uzqbSZHk2MDqowzLdGHHHDoYRjaqXUo7bhYBKXVMC22I5+Euh+0pvosG4bWRWMhy08tktV
- pnVAcy5esW9WbOpKUv6SYqOpAzhVAjPKIKx1F7kIZb6DCgTePe1/KIdsUp5V8HcMQblUxzAZsrth
- 2wm3V3liYccG8ohgbEOkUPhzk1lspKsYFun5gxIj11PEZU9tBPY+pRqRQd0rVRXgQvLeZcrFkPiS
- v7lN0aATb+R3UlBVoKtUZcfAyMb6Qm5Gmf97uBVYTJEhtU/LbTAoz7dfvOhvrKVFppKs6p0ZST9c
- 6FktVaQNmWvtjtmzjiny66hdEzTXemBYTZsjYkB2Qkr+w4YwFDJ4/xze0RdC/uBZ2ByvK9nWDXSW
- v4Gn9PuRBdk7NDEvHgguuiWs7B7dMCD1X7Mvb+1hA+yqHJJSnLbGd3UTaSlqsyQhcZkw+dR0mcDu
- TEbyv19RKZNCZItflrIFJbetdh7qKr8zMyCpTTHyiUyFCcis0N2Kny6lR8KK+HvTehQ94zPJEObv
- BtMefIh0nZ5KZmckHWhoz1dLkltW/o4RzGhBF9ZcMwt0dZ/en5jfbvJ7wZhQ1DfMs03R7i8nkDb5
- X4lzyf805efzW6hm5y/GiTY1WsMwMksoZIHgVM62v7xypjV/1Ko+utw/aD5/knAlq39CSjsg==
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-From: Renjun Wang <renjunw0@foxmail.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Renjun Wang <renjunw0@foxmail.com>
-Subject: [PATCH i-g-t] tests/kms_plane: Allow planar-pixel-format-settings to
- pass on VKMS
-Date: Sun,  1 Feb 2026 14:11:43 +0800
-X-OQ-MSGID: <20260201061143.178953-1-renjunw0@foxmail.com>
-X-Mailer: git-send-email 2.47.3
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 20F8E10E52A
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 16:44:30 +0000 (UTC)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+ by smtpout-03.galae.net (Postfix) with ESMTPS id CBB514E423C1
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 16:44:28 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 884AF60767;
+ Mon,  2 Feb 2026 16:44:28 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
+ with ESMTPSA id 7D346119A88EE; Mon,  2 Feb 2026 17:44:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+ t=1770050668; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ content-transfer-encoding:in-reply-to:references;
+ bh=uzomLj6HrcAeb1W/+m3+lEQSj/rHsZF+lWUyuOYlHLQ=;
+ b=WzxlksXoLulcB55EF20WYBxgvSnEF4ZdmvsGPmmLTNw+EK88VFzuxwyFHUHRmi2AnQT0fY
+ 7ZF/g3SrjB8MnwAVABqskpssWuXbk68zi3uZhh+wg1qs/bGvFl86hcbS4xCxx9hcWhYVHd
+ W84bjsduxQQJOaEhL+72Mq2TPie9DkZYFc+wzfkKOc/986IqwbikqrWsdhN0g38sRrDVQg
+ tLuX52g7UejzVsvtfsTQV9br5W1O2rai0VGlNZ4RLTzsxTElcdSjQqmGUZvFT9b258hbgg
+ A0M9IB9Hil8lHaek6YMJ3DcbQBbT3FR1Kl6wplW8sl1hB3nnRkvVg1FPHnks3A==
+Date: Mon, 2 Feb 2026 17:44:25 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Louis Chauvet <louis.chauvet@bootlin.com>
+Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
+ luca.ceresoli@bootlin.com, markyacoub@google.com,
+ khaled.almahallawy@intel.com
+Subject: Re: [PATCH i-g-t v6 14/48] lib/monitor_edids: Add helper functions
+ for using monitor_edid objects
+Message-ID: <20260202174425.45617d82@kmaincent-XPS-13-7390>
+In-Reply-To: <20260202-unigraf-integration-v6-14-834af822eee7@bootlin.com>
+References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
+ <20260202-unigraf-integration-v6-14-834af822eee7@bootlin.com>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Tue, 03 Feb 2026 08:00:46 +0000
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
+X-Mailman-Approved-At: Tue, 03 Feb 2026 08:01:01 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,104 +66,81 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Set expected_rval to 0 for planar-pixel-format-settings tests when
-running on VKMS driver. VKMS currently accepts odd width/height for
-NV12, odd horizontal panning for NV12, and odd vertical panning for
-P016 formats.
+On Mon, 02 Feb 2026 15:32:53 +0100
+Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 
-Signed-off-by: Renjun Wang <renjunw0@foxmail.com>
----
- tests/kms_plane.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+> Introduce the functions edid_from_monitor_edid() and
+> get_edids_for_connector_type(). The former converts a monitor_edid object
+> to a struct edid, which can then be utilized by igt_kms helpers. The
+> latter returns a list of monitor_edid objects for a specific connector
+> with certain characteristics
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 21d80847c..57adfe199 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -1313,11 +1313,9 @@ static void test_planar_settings(data_t *data)
- 	int devid;
- 	int display_ver = -1;
- 	int rval;
-+	bool is_intel = false;
-+	bool is_vkms = false;
- 
--	/*
--	 * If here is added non-intel tests below require will need to be
--	 * changed to if(..)
--	 */
- 	igt_require_f(data->display.is_atomic, "Atomic mode-set not supported\n");
- 	if (is_intel_device(data->drm_fd)) {
- 		igt_require_intel(data->drm_fd);
-@@ -1325,6 +1323,9 @@ static void test_planar_settings(data_t *data)
- 		igt_require(intel_display_ver(devid) >= 9);
- 		display_ver = intel_display_ver(devid);
- 		igt_require(display_ver >= 9);
-+		is_intel = true;
-+	} else if (is_vkms_device(data->drm_fd)) {
-+		is_vkms = true;
- 	}
- 
- 	output = igt_get_single_output_for_pipe(&data->display, pipe);
-@@ -1337,12 +1338,12 @@ static void test_planar_settings(data_t *data)
- 				  DRM_MODE_ATOMIC_ALLOW_MODESET,
- 				  NULL);
- 
--	/* test against intel_plane_check_src_coordinates() in i915 */
-+	/* Test odd width for NV12 format */
- 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
- 				     DRM_FORMAT_MOD_LINEAR)) {
- 		int expected_rval = -EINVAL;
- 
--		if (display_ver >= 20)
-+		if ((is_intel && display_ver >= 20) || is_vkms)
- 			expected_rval = 0;
- 
- 		igt_create_fb(data->drm_fd, 257, 256,
-@@ -1358,12 +1359,12 @@ static void test_planar_settings(data_t *data)
- 		igt_debug("Odd width NV12 framebuffer test skipped\n");
- 	}
- 
--	/* test against intel_plane_check_src_coordinates() in i915 */
-+	/* Test odd height for NV12 format */
- 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
- 				     DRM_FORMAT_MOD_LINEAR)) {
- 		int expected_rval = -EINVAL;
- 
--		if (display_ver >= 20 && display_ver < 35)
-+		if ((is_intel && display_ver >= 20 && display_ver < 35) || is_vkms)
- 			expected_rval = 0;
- 
- 		igt_create_fb(data->drm_fd, 256, 257,
-@@ -1378,13 +1379,12 @@ static void test_planar_settings(data_t *data)
- 	} else {
- 		igt_debug("Odd height NV12 framebuffer test skipped\n");
- 	}
--
--	/* test against intel_plane_check_src_coordinates() in i915 */
-+	/*Test odd horizontal panning for NV12 format */
- 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
- 				     DRM_FORMAT_MOD_LINEAR)) {
- 		int expected_rval = -EINVAL;
- 
--		if (display_ver >= 35)
-+		if ((is_intel && display_ver >= 35) || is_vkms)
- 			expected_rval = 0;
- 
- 		igt_create_fb(data->drm_fd, 810, 590,
-@@ -1401,11 +1401,12 @@ static void test_planar_settings(data_t *data)
- 		igt_debug("Odd horizontal pan NV12 framebuffer test skipped\n");
- 	}
- 
-+	/* Test odd vertical panning for P016 format */
- 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_P016,
- 					    DRM_FORMAT_MOD_LINEAR)) {
- 		int expected_rval = -EINVAL;
- 
--		if (display_ver >= 20 && display_ver < 35)
-+		if ((is_intel && display_ver >= 20 && display_ver < 35) || is_vkms)
- 			expected_rval = 0;
- 
- 		igt_create_color_fb(data->drm_fd, 256, 260,
--- 
-2.47.3
+...
 
+>  #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_HDMI_EDIDS_H_ */
+> diff --git a/lib/monitor_edids/monitor_edids_helper.c
+> b/lib/monitor_edids/monitor_edids_helper.c index 1cbf1c22f0bb..6043e7a084=
+b3
+> 100644 --- a/lib/monitor_edids/monitor_edids_helper.c
+> +++ b/lib/monitor_edids/monitor_edids_helper.c
+> @@ -15,6 +15,10 @@
+>  #include <assert.h>
+> =20
+>  #include "igt_core.h"
+> +#include "igt_edid.h"
+> +#include "dp_edids.h"
+> +#include "drmtest.h"
+> +#include "hdmi_edids.h"
+> =20
+>  static uint8_t convert_hex_char_to_byte(char c)
+>  {
+> @@ -90,3 +94,79 @@ void free_chamelium_edid_from_monitor_edid(struct
+> chamelium_edid *edid) free(edid);
+>  	edid =3D NULL;
+>  }
+> +
+> +/**
+> + * edid_from_monitor_edid:
+> + * @mon_edid: Monitor EDID to convert
+> + *
+> + * Get a struct edid from a monitor_edid. This returns a pointer to a ne=
+wly
+> allocated struct edid.
+> + * The caller is in charge to free this pointer when required.
+> + */
+> +struct edid *edid_from_monitor_edid(const monitor_edid *mon_edid)
+> +{
+> +	uint8_t *raw_edid;
+> +	size_t edid_size;
+> +	int i;
+> +
+> +	edid_size =3D strlen(mon_edid->edid) / 2; /* each ascii is a nibble. */
+> +	raw_edid =3D malloc(edid_size);
+> +	igt_assert(raw_edid);
+> +
+> +	for (i =3D 0; i < edid_size; i++) {
+> +		raw_edid[i] =3D convert_hex_char_to_byte(mon_edid->edid[i *
+> 2]) << 4 |
+> +			      convert_hex_char_to_byte(mon_edid->edid[i * 2
+> + 1]);
+> +	}
+> +
+> +	if (edid_get_size((struct edid *)raw_edid) > edid_size) {
+> +		uint8_t *new_edid;
+> +
+> +		igt_debug("The edid size stored in the raw edid is longer
+> than the edid stored in the table.");
+> +		new_edid =3D realloc(raw_edid, edid_get_size((struct edid
+> *)raw_edid));
+> +		igt_assert(new_edid);
+> +		raw_edid =3D new_edid;
+
+I don't really know much about the edid content but shouldn't you have to
+convert_hex_char_to_byte() also for the edid extensions?
+Else ok to me.
+
+Regards,
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
