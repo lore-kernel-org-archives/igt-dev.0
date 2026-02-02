@@ -4,41 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDE5CE7DEF1
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 14:32:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16360E7DEF3
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 14:32:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 767C710E4DF;
-	Mon,  2 Feb 2026 14:32:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B5E4110E4D2;
+	Mon,  2 Feb 2026 14:32:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="2iv6alOz";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="BurRcfJ7";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F8E910E410
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:32:30 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF2E410E4D2
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:32:33 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 0C7181A2C19;
- Mon,  2 Feb 2026 14:32:29 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id C6A034E423C9;
+ Mon,  2 Feb 2026 14:32:32 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id D764B60767;
- Mon,  2 Feb 2026 14:32:28 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 9C85360767;
+ Mon,  2 Feb 2026 14:32:32 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id ABB98119A8891; Mon,  2 Feb 2026 15:32:27 +0100 (CET)
+ with ESMTPSA id 51D4C119A8888; Mon,  2 Feb 2026 15:32:31 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770042748; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1770042751; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=iLOKZEUJG7LXZQJwW5pVOfRtwcwOoY6RvUlqKrP222Q=;
- b=2iv6alOzlD8XoKE2DIyule3oi66i40xBaJoiD2rDjf61fElj/ZTP8GDuJcgq0xz2xmJgA7
- ktWWJNp28W980woOKH5PmuREk81wtHgRC3SMpVuR+NfwBmW2ZfZ7imYVAzlVJF6wL65lnh
- 5726iOS31zC81zwpajmVfyq/y0k5PkBHIra6D2O4uPNefm6FXxgZFMnnG4ilHqK+vEPmHA
- 1ed8eJwZ3PUtgfQLbIA9swbvBxOcJiu9H5Es0cifno8PasdWckNBqlJtLNfeFG3lkqkQi3
- o+LHk8qj8ivGAMDnKbuGsBG76YtVtax4Db3iEP1WxZSRFT4yZ6yN6eci2oG3dQ==
+ bh=Z5GMt4Qr94oR003+ti95oIUkWH0RujK8ygieF+4uEV0=;
+ b=BurRcfJ7O+o1THOKS602lNMzAWbIboKZw8U7XthAmMIHYlRmnC4xAyQlAKPQTWI6fx3FXy
+ GitJPMnhainkHAXL0kwhvqgbzitVEKF87ip+OhpxLZH80sdDn+4oOvQBg0y76xwjU/Cl1g
+ 0jztKwc5Ylu0O2N6z2M2zffCv4EVYuR+1ns1oYdDABjXtTYB//rLN+MgYR+TuRw4izOI92
+ hEeu3D/nAbx1McFJh8Bk4DzXJdJm7Fd+1kvLgS1rlt9Cmu1H+XGmn20S85ZKln/K5ScHMo
+ mZQ/hVvkE9mAHnYfr+sLfESAWOiBwpiQWmii9nulhSPwCUmURH59TEuJD8aDQw==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 02 Feb 2026 15:32:40 +0100
-Subject: [PATCH i-g-t v6 01/48] lib/igt_kms: Add a detect timeout value
+Date: Mon, 02 Feb 2026 15:32:44 +0100
+Subject: [PATCH i-g-t v6 05/48] lib/igt_kms: Add helper to wait for new
+ connectors
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260202-unigraf-integration-v6-1-834af822eee7@bootlin.com>
+Message-Id: <20260202-unigraf-integration-v6-5-834af822eee7@bootlin.com>
 References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
 In-Reply-To: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -46,21 +47,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3125;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4282;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=qn5t6CSDgxeumhcDW3/qs42eCYPenzNpWoN57DjLpH8=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpgLWOlqWxhil01NQoIiq03opNhbUvYJgjo4W7h
- KS/snn5x1WJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaYC1jhsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKffg/+MvqEsw3FSDM0Je0KzZnE3ciwH1bin7j
- 4fugskIvoCA4m9g4hAZFT3dnu66IZxbUC0Sw/67TslOaPjWcwia3acGbVci0nB/l7iN0idwIJ4D
- dGBc3Zt8yZo490Yuwt0/y3X48g2Q5dvTxx2ZozcWo/NnW2dMwL10YQc8C+D0pB6kM4A/f6T4GkF
- 0NlOjRLYgB/szBtHWnCPKmt2lYNp0EAJn9CvoGT73h0s1Dp9nRkqc55y3fklS5myYg91Sa2GrCj
- 7ZFEkecxnZ1ymmaWjY2jDFHK+17N2ENSE6PSvtXnAwRcnVw6PdnMFjgHj8mVxSDWCl+HP2wJLB/
- BXERS4WBpy8darL5Ad60z9GMVaoJxz6lsAb3pwktoSN5xd8bL9uNW4Jz0MPHv0ZMZqbzNVhRe7E
- 7JOLjU4fEFIoqib27vs5NLfJRVEd4YRust0iKgSqVCaD/00rtIFTKIxvX70b5vQbavg3GZY42a1
- AO3/ymkhCENEIG59b6o9TAft+UB9MEL/sgY1ym6KOOObs9CX/Kk1fUJssJsAfGQ/4firniZnfko
- HLPnIq/tP4CoUVXQKxxloChvFDm8269iZvQPTGtFt4Fxux2STFXZ4BYGF4gGAh8bZHo6ufL1WZ6
- dCjaDGgfASe6/6joZwBBHh/L929pJOYghJcE/znC8Pn5Vxhw4SQc=
+ bh=vTV5Zdc8Mm3KyR/11zBqwNdqP8O8klL6JxHtppcYIWo=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpgLWPbdECR/61tIUB+4SvkUJq+bRmF9p11aITY
+ 7CGQ8gm56mJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaYC1jxsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOJLWhAAluPS5tIz1pbc7lexWMpYZWS/qvf8h97
+ Ks9NqFhAykF3qSJXThWPZ24zyBBw4BPoEHffFmv9ub+c+x85xzJMrIO7utgMzkQ5ntITMDlHHdh
+ OW10N2DMah4NjrF2ZeEFhgDA0MbmLWcJs7NL7XBDAUaLlcXHLVwp6Ruma7wnO6SDEdZBFqEvAVD
+ eTcWnH8q7UC2+Y9qqwMUndHLtPz8s6+LlHGW6xMBHGINRo4bC37J/mJ2KL+P6ClFm6EVCMazbdS
+ KATH3K5/D9wzNJU3vJm3BpXtAnAjSEGdImmQ9R3JliHBgL8DwX0xLiUFUiyJe3EaZYzqgurtjyq
+ 2rrcaXjx0Ykf8CKE2FostmyRH/Kz1ToQ2xvtaBkaVKF/cAuuliJVO9EanpzYvnY6BXRGOCHcKEr
+ 9jZW0JKEBHdi3E4KqQrKzJnyz7Ls3r/cOxJxUn5iKuLxx7sUXLpDMxnHg6N6T8MIVRrKk+K1nKO
+ /1qN9fvXZcHKErc7JopN6t0cCjvAu3gQORs4e4OMQxus45xKYTv3PlVRx9XRiPdvoDPtCfXCKGS
+ nTUaiFFZm8piKMch0FAkm+aa80ETBqx8udPMRGEqARWRGXZq8IkcT9aD+QfsSAe5A6wi/tywPiU
+ wb/8kV6Q0q+QnbYeI+Q+Eqt2hsLgqskdCi5f2pMd3L4qfPIxdap0=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,108 +80,134 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some tests need to wait for a specific connector status. In order to make
-the timeout customisable for each target, add an option in the
-configuration file.
+Add list comparison utilities and a new function to wait for new
+connectors to appear on the system.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- lib/igt_core.c |  4 ++++
- lib/igt_kms.c  | 35 +++++++++++++++++++++++++++++++++++
- lib/igt_kms.h  |  9 +++++++++
- 3 files changed, 48 insertions(+)
+ lib/igt_kms.c | 96 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h |  6 ++++
+ 2 files changed, 102 insertions(+)
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index 3ee670a41a91..da2453cc1028 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -271,6 +271,10 @@
-  *	&num; It is not mandatory and allows overriding default values.
-  *	[DUT]
-  *	SuspendResumeDelay=10
-+ *
-+ *	&num; The following option define the timeout for detection feature
-+ *	&num; (waiting for a connector status)
-+ *	DisplayDetectTimeout=10.0
-  * ]|
-  *
-  * Some specific configuration options may be used by specific parts of IGT,
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index a94c4820bd87..3f1e93af62b7 100644
+index 2d39f1cafc2c..6122de8d877f 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -60,6 +60,7 @@
- #include "igt_debugfs.h"
- #include "igt_device.h"
- #include "igt_pipe_crc.h"
-+#include "igt_rc.h"
- #include "igt_sysfs.h"
- #include "sw_sync.h"
- #ifdef HAVE_CHAMELIUM
-@@ -7980,3 +7981,37 @@ bool igt_has_lobf_debugfs(int drmfd, igt_output_t *output)
-                                               buf, sizeof(buf));
-         return res == 0;
+@@ -8229,3 +8229,99 @@ uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path)
+ 
+ 	return 0;
  }
 +
 +/**
-+ * igt_default_display_detect_timeout:
++ * list_contains() - Search an element in the list
 + *
-+ * Get the default timeout value for detection feature
++ * @list: Pointer to the list to search into
++ * @list_len: Length of the list
++ * @value: Value to search in the list
 + *
-+ * Some tests requires to wait for a specific connector status. This value will determine the
-+ * timeout value for this waiting.
++ * Returns true if @list contains @value
 + */
-+double igt_default_display_detect_timeout(void)
++static bool list_contains(const uint32_t *list, int list_len, uint32_t value)
 +{
-+	static double timeout = 0.0;
-+	static bool first_call = true;
-+	GError *error = NULL;
++	igt_assert((!list && list_len == 0) || list);
++	for (int i = 0; i < list_len; i++) {
++		if (list[i] == value)
++			return true;
++	}
++	return false;
++}
 +
-+	if (first_call) {
-+		if (igt_key_file) {
-+			timeout = g_key_file_get_double(igt_key_file, "DUT", "DisplayDetectTimeout",
-+							&error);
-+			if (error) {
-+				igt_debug("Failed to read DisplayDetectTimeout, defaulting to %f\n",
-+					  DEFAULT_DETECT_TIMEOUT);
-+				g_clear_error(&error);
-+				timeout = DEFAULT_DETECT_TIMEOUT;
++/**
++ * get_list_diff() - Compute and return the set difference between two lists
++ *
++ * @list_a: Pointer to the first list to compare
++ * @list_a_len: Length of the first list
++ * @list_b: Pointer to the second list to compare
++ * @list_b_len: Length of the second list
++ * @diff: Out pointer returning a list of items in list_a but not
++ *        in list_b. Can be NULL to only count the elements.
++ *
++ * Returns the number of element which are in @list_a but not in @list_b.
++ */
++int
++get_list_diff(const uint32_t *list_a, int list_a_len, const uint32_t *list_b, int list_b_len,
++	      uint32_t **diff)
++{
++	int diff_len = 0;
++
++	igt_assert((!list_a && list_a_len == 0) || list_a);
++	igt_assert((!list_b && list_b_len == 0) || list_b);
++
++	if (diff)
++		*diff = malloc(sizeof(**diff));
++
++	for (int i = 0; i < list_a_len; i++) {
++		if (!list_contains(list_b, list_b_len, list_a[i])) {
++			if (diff) {
++				*diff = reallocarray(*diff, diff_len + 1, sizeof(**diff));
++				igt_assert(*diff);
++				(*diff)[diff_len] = list_a[i];
 +			}
-+		} else {
-+			timeout = DEFAULT_DETECT_TIMEOUT;
-+		}
 +
-+		first_call = false;
++			diff_len++;
++		}
 +	}
 +
-+	return timeout;
++	return diff_len;
++}
++
++/**
++ * kms_wait_for_new_connectors() - Wait for new connector to appear
++ *
++ * @newly_connected: Out pointer returning the list of connectors currently
++ *                   found connected
++ * @already_connected: Input pointer to list of connectors previously
++ *                     connected
++ * @already_connected_count: Length of @already_connected
++ * @drm_fd: DRM file descriptor
++ *
++ * Returns the number of connectors not in @already_connected and currently
++ * found connected.
++ */
++int kms_wait_for_new_connectors(uint32_t **newly_connected,
++				const uint32_t *already_connected,
++				int already_connected_count, int drm_fd)
++{
++	int newly_connected_count;
++	struct timespec start, end;
++
++	igt_assert(newly_connected);
++	igt_assert(drm_fd);
++
++	clock_gettime(CLOCK_MONOTONIC, &start);
++	clock_gettime(CLOCK_MONOTONIC, &end);
++	do {
++		if (*newly_connected)
++			free(*newly_connected);
++		newly_connected_count = igt_get_connected_connectors(drm_fd, newly_connected);
++		clock_gettime(CLOCK_MONOTONIC, &end);
++	} while (get_list_diff(*newly_connected, newly_connected_count,
++			       already_connected, already_connected_count,
++			       NULL) == 0 &&
++		 igt_time_elapsed(&start, &end) <= igt_default_display_detect_timeout());
++
++	return newly_connected_count;
 +}
 diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 432c67d11780..ca3c79f713cb 100644
+index 16324e5dfbc8..6843b6ae2e96 100644
 --- a/lib/igt_kms.h
 +++ b/lib/igt_kms.h
-@@ -40,6 +40,14 @@
- #include "igt_fb.h"
- #include "ioctl_wrappers.h"
+@@ -1323,4 +1323,10 @@ drmModeConnectorPtr igt_get_connector_from_name(int drm_fd, const char *port_nam
+ uint32_t igt_get_connector_id_from_name(int drm_fd, const char *port_name);
+ uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path);
  
-+/**
-+ * define DEFAULT_DETECT_TIMEOUT - Default timeout in second used for some screen detection
-+ * functions
-+ *
-+ * It can be overiden by option DetectTimeout in the .igtrc file.
-+ */
-+#define DEFAULT_DETECT_TIMEOUT 10.0
-+
- /* Low-level helpers with kmstest_ prefix */
- 
- /**
-@@ -1306,5 +1314,6 @@ void igt_detach_crtc(igt_display_t *display, igt_output_t *output);
- void igt_get_and_wait_out_fence(igt_output_t *output);
- 
- igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
-+double igt_default_display_detect_timeout(void);
- 
++int kms_wait_for_new_connectors(uint32_t **newly_connected,
++				const uint32_t *already_connected,
++				int already_connected_count, int drm_fd);
++int
++get_list_diff(const uint32_t *list_a, int list_a_len, const uint32_t *list_b, int list_b_len,
++	      uint32_t **diff);
  #endif /* __IGT_KMS_H__ */
 
 -- 
