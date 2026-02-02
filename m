@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C32C7E7DEF6
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 14:33:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F979E7DEF4
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 14:33:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3B4CE10E4E7;
-	Mon,  2 Feb 2026 14:33:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4741C10E282;
+	Mon,  2 Feb 2026 14:33:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="oNLZVtzw";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="xmufC5JI";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B246910E4E7
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:33:02 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E7E4C10E4EC
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:33:06 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id A67741A2C19
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:33:01 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 8A8ECC237F3;
+ Mon,  2 Feb 2026 14:33:10 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 7E34D60767;
- Mon,  2 Feb 2026 14:33:01 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id BDAD860767;
+ Mon,  2 Feb 2026 14:33:05 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 8080F119A890F; Mon,  2 Feb 2026 15:33:00 +0100 (CET)
+ with ESMTPSA id A63BF119A8913; Mon,  2 Feb 2026 15:33:04 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770042781; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1770042785; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=fTPXM2xODQN2M2Jm1aYFCBm4W2k/MHC6BzgNAjmOsHo=;
- b=oNLZVtzwxar7RIIAhQiZZf7KR1rGx1jbNvyRlA/egToJdzvMGMLnHgtFBRiAP859+E7Nfk
- TLQSVGN5ILGELgwkoztXFqXv0RwzKOUV9H7A/2mlpzFXD0V/7f2JD5EzMpuoQIqpKwfKEO
- m6WfW4TZAjp2CLPPqcreN0c/ZIjXHlhp23KbrRQX99mGR1FST7XLFQwq/LW+IOsKSAYHyG
- b2IA03tvUCvacMKcXAqAnPwOHPbj23AtVnJVCcCvr0uie4Uwzbq2NL8TIqjOPYS+X1HhFG
- oAn2QzCrpnNSbAE4XbRVrXScZ1P93Qp5c+Nrgo2p/Qdrx/SXk6vQKUkrCxgCXA==
+ bh=lxjDEXNLOCRqNM+hGJ4AFfy6emMdDlrvpQvIF4mA6Xk=;
+ b=xmufC5JIr4mNy5c8dCfZ5dHLDR654jK7OdOXILdBl849ptX4DBQzgcGiKRvV8ah+qAns+j
+ mHQb+mdl+nQstjzZBS5vgWBSvMefC37viJM+lASrfCKyv0Q9Yw4KuQbvEPmUKxkTMXeNXD
+ bB50LA+q77LmkYSwJzFcXw/PoYHfTBoIAiwJANfBBPVM0J0HLFujNoQfhnmG/hzJYoH1xI
+ j/FQAQXOdpwMD2tRV4y5AV4I/om75v5cGvauqKqPVZWC9NgqaUjolUFR1oLKftxarl7f05
+ C+gIi7BZ49Wj8lDSvWonoQEj0rn1txpZ7DONQ9dIeQrXLijXXN/OYMf0eBxUNw==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 02 Feb 2026 15:33:17 +0100
-Subject: [PATCH i-g-t v6 38/48] lib/i915/dp: Add helper to get maximum
- supported rate
+Date: Mon, 02 Feb 2026 15:33:22 +0100
+Subject: [PATCH i-g-t v6 43/48] lib/igt_kms: Add helper to get a pipe from
+ an output
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260202-unigraf-integration-v6-38-834af822eee7@bootlin.com>
+Message-Id: <20260202-unigraf-integration-v6-43-834af822eee7@bootlin.com>
 References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
 In-Reply-To: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -47,21 +47,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2254;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1514;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=cM3EA5HZjKLICLqwEK7qyqvoW0wiG8Nv4uxOkkAGUrM=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpgLWTw8jpdkF1QYT+H+VqkPKDPqp7xBrS95Wk/
- 98saJuHE4CJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaYC1kxsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLVsA/+PWMGqeDy7XuzKhoA5Fr3+Q4v/Tndk4e
- Z13RfNpMD8vk+zDy4QSaANeQg8DHXIDW7I8daQkTHDRnVHZaQyi61sLSCqyLW25qknkrskk1GvM
- 4om0FY5cIOyOdlax/w8wxBH0s1Fp4kk6VUS54btnuO7PyAOwdursjO2Fvajc7HVecbUBc9NTSf/
- jBbLM47X20KiDFrgX1EQaEd9W5qXI9UwWybqfytl8IEIqY56+uhx9f6Szg5LT+qH5wkpNYXwxsX
- 9xGUt0cvPXblo8WiCjBxrVHdifynLhW83qW48JsL3owfKf/s/NbsbtPts5so6fkYvto9tBgc63o
- CmmuUhAeyhG1G47bwBb6ZLMunoPAsoqYOqZNDt0XMK4NpuxUkdWR10jLijqlh8+mVdGuoVOyMDR
- EPp5l+8VJtYInAuyvIigfPIQqoBF4JZk9CoM/SdY2E1XxIXLvxvCwOrrt9i5k+pyxgEO/3uGPTC
- HKTj+GkjBcjiMzLqqwnIPRsMbSfkM1ItCtedO1oZ0JySidoAqBqwjoFu1xiMb5NXz1xY/M4JbAC
- 0gOXj50HB+oYChjg8WTkjHlyIBStADO+dntJxJwhl/DXdzmaLc019ObWMVGMoAm+2S3hXuQO7tx
- +gVObflXzJk91QkniEWQ+exobbyegzgds23DutXVG74tEHBqR+qU=
+ bh=czZNpM5Zi1ILSSdi04CzDUQzNkm3ca5NnMpZTMWMHnY=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpgLWUeO8KZghBRZ1jcQUcSaC0MNnYjcEEp6A1M
+ awzaj0RGbqJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaYC1lBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOIjug//fJswLPg71WW2PrD4WulPqfaC5s7YN8g
+ y8W//ZDj0Yncrq7Ml2YPcOFEr/OSfonchGxRVDdEABG+J5kJH/Z0nB3aU7QIuc77YfHF8pkyabe
+ Lm7/R4Zf04Xzmie3PI+AFAyYy7/12moV6PJqzkG1U9sy2ZXJqf79T47bLzHbAOF0Iy/LcArKGdP
+ hr/GFHhyDYcRnOKVGHFVbXkZW7qvjy+z0nKF97N35O6gIZH06QoAWyeJJ7GChxSPyht47ctMoSZ
+ aLsOCl1bi8T2+ddTkHNi2KWLwkkxaSaBrlSOlwiKcNRX0BJQlSOmBLQU1IFom8CxRiwpenhoHkH
+ nR6F69QX+irjL/0CiRC0h1QoN7yzmm/IhLeWpjR7BDOWrXWxA/hOpJd5m/+EQC37gLDqztuGYsk
+ cYF3bnZ1sD2iGcqnmR/XJWbdcDwXwbgyBpjpyikn4HVjSRUGPgwVFKbAZJorTeTGny1U4yUKjx3
+ vKJLzhR5D2o4bEjDZtj1EyJJBWEX/toA3nVh6Zub2ccuaeFrQqDX8v3TNWOzr5G9zUMPHKCuWLD
+ umoWTyCY+9ZN0yiaEuiZ0a9CiQSEJZMZUK4PY7F3bREVmLpaxqmlxFXKvGWJOxjG4l0wF4uYAhv
+ ZMIGFskKNIJckzU41S3mcsMjN+s0PoGyIVEHQsVIP+wHkjlw20J8=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,78 +80,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some GPU can't reach all the DP rates. To avoid false positive during
-testing with unigraf, add an helper to filter tests based on the maximum
-supported rate of the current GPU.
+Grabbing a valid pipe from a specific output is useful when testing
+the output.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/i915/i915_dp.c | 35 +++++++++++++++++++++++++++++++++++
- lib/i915/i915_dp.h |  1 +
- 2 files changed, 36 insertions(+)
+ lib/igt_kms.c | 22 ++++++++++++++++++++++
+ lib/igt_kms.h |  2 ++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
-index c5b9273ebafd..219f3d29e362 100644
---- a/lib/i915/i915_dp.c
-+++ b/lib/i915/i915_dp.c
-@@ -1,7 +1,9 @@
- // SPDX-License-Identifier: MIT
- 
- #include <ctype.h>
-+#include <errno.h>
- #include <stdio.h>
-+#include <stdlib.h>
- #include <string.h>
- 
- #include "i915_dp.h"
-@@ -317,3 +319,36 @@ void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
- 	temp = drmModeGetConnector(drm_fd, output->config.connector->connector_id);
- 	drmModeFreeConnector(temp);
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index cab42bd4ceb0..aeb09c9f0abe 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -7997,3 +7997,25 @@ int igt_get_crtc_index_from_connector_id(int drm_fd, int connector_id)
+ 	}
+ 	return 0;
  }
 +
-+/**
-+ * i915_dp_get_max_supported_rate:
-+ * @drm_fd: A drm file descriptor
-+ * @output: Target output
++/*
++ * igt_get_pipe_for_output:
++ * @display: display to fetch the pipes
++ * @output: output to use
 + *
-+ * Returns: Max supported link rate available for output, else -1
++ * Get a valid pipe for a specific output. The return value is the pipe first valid pipe for a
++ * specific output.
 + */
-+int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output)
++enum pipe igt_get_pipe_for_output(igt_display_t *display,
++				  igt_output_t *output)
 +{
-+	char buf[512];
-+	int res, max_rate = -1;
-+	char *token;
++	enum pipe pipe;
 +
-+	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
-+					      "i915_dp_force_link_rate",
-+					      buf, sizeof(buf));
-+	igt_assert_f(res == 0, "Unable to read %s/i915_dp_force_link_rate\n",
-+		     igt_output_name(output));
-+
-+	token = strtok(buf, " ");
-+	while (token) {
-+		int rate;
-+
-+		errno = 0;
-+		rate = strtol(token, NULL, 0);
-+		if (errno == 0 && rate > max_rate)
-+			max_rate = rate;
-+		token = strtok(NULL, " ");
++	for_each_pipe(display, pipe) {
++		if (igt_output_is_connected(output) &&
++		    (output->config.valid_crtc_idx_mask & (1 << (pipe))))
++			return pipe;
 +	}
 +
-+	return max_rate;
++	return PIPE_NONE;
 +}
-diff --git a/lib/i915/i915_dp.h b/lib/i915/i915_dp.h
-index e4249d179543..b13629147804 100644
---- a/lib/i915/i915_dp.h
-+++ b/lib/i915/i915_dp.h
-@@ -18,5 +18,6 @@ int i915_dp_get_pending_retrain(int drm_fd, igt_output_t *output);
- void i915_dp_reset_link_params(int drm_fd, igt_output_t *output);
- void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
- 			     char *link_rate, char *lane_count);
-+int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output);
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 7d7850ed1a8f..982f94ee2109 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1326,5 +1326,7 @@ get_list_diff(const uint32_t *list_a, int list_a_len, const uint32_t *list_b, in
+ 	      uint32_t **diff);
  
- #endif
+ int igt_get_crtc_index_from_connector_id(int drm_fd, int connector_id);
++enum pipe igt_get_pipe_for_output(igt_display_t *display,
++				  igt_output_t *output);
+ 
+ #endif /* __IGT_KMS_H__ */
 
 -- 
 2.52.0
