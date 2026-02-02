@@ -4,67 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E31AE7DEF1
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 14:33:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92C1DE7DEEE
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 15:31:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 41CC310E282;
-	Mon,  2 Feb 2026 14:33:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3DFD810E2C0;
+	Mon,  2 Feb 2026 15:31:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="y+B9ausJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fqpiyEdn";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C545410E282
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:33:12 +0000 (UTC)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id ACBCB4E423C3;
- Mon,  2 Feb 2026 14:33:11 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 5807A60767;
- Mon,  2 Feb 2026 14:33:11 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id C8B1D119A8918; Mon,  2 Feb 2026 15:33:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770042790; h=from:subject:date:message-id:to:cc:mime-version:content-type:
- content-transfer-encoding:in-reply-to:references;
- bh=cACwSlEXSqAm8gQ+d7qOeYuXppQJrscyrLP0+nX9ty0=;
- b=y+B9ausJvL1pI/iwe3O+EuljjHwzyRtvCCHYBlieQ4qLGhAWAyl0FXlikKzxHtGTnpw1gV
- eZ4RHpKHe83w2879NqwMkzp7N3IXWS5e4Xr8pd06Pl9jmgcpyfF8+VQk/za89opDRHT9UG
- 5RBC29co+E4HIgXqCVWDzkeUAK44LPfZd7O0u16HEA4wFdJwpHCyNxNRtf98PrgZdJb4ow
- N9uWLE8UdZ7n1fc6KTDtF6LHU2tJplNZdnyC+M41jM28E8cN4oUVZxAmiPH/wMA59JYQG+
- OMPzdiO/oiEC7PHpVKuTdKZRtwL1e1p5fiGDoc3LC/pX3vcCsTB9lgGhkW0wmA==
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 02 Feb 2026 15:33:27 +0100
-Subject: [PATCH i-g-t v6 48/48] tests/unigraf/unigraf_lt: Add test for link
- training
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6CD5110E2C0
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 15:31:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1770046296; x=1801582296;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=5/kRES9KOs+FYV5McVs/oh5XwA4qC3L3IjnljWwLRHk=;
+ b=fqpiyEdnw8YX6Z6j49XYGfbFk8HKNMMTgnItVkGCsYH4Z5VHH1p0uN+4
+ qv9OaxzS6jF1JZVDCYukuozxN7Eu0qNmBZXBwED222r7DCtbQ9ea1hfHC
+ Z/rQd5ouy4j91op1JT4ONtp1ChX+HH+fAXyx7JRTEvyuh6ie3mYwfDzuy
+ XAuZjoakRhh6Tcf/Okp77ErtLQjnCcDQtWX+TthmL+OKyPsYhrPJEZQPY
+ vDbIxkiHgq/SDGcfvk3o03oXz+2k/aOfMLMB4sF1qavhs0xvjibhgaHlE
+ sbC6EW+oyEjmj7CtGjoxssHyClvhszFqL35uP98LPJjWyRXXkRIzDqWE+ w==;
+X-CSE-ConnectionGUID: ajyAfzGkQWOVJK0KI/l0yA==
+X-CSE-MsgGUID: H/nyYEe3THid2Jc0RiILkQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="82631165"
+X-IronPort-AV: E=Sophos;i="6.21,269,1763452800"; d="scan'208";a="82631165"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Feb 2026 07:31:36 -0800
+X-CSE-ConnectionGUID: MO3SDFxHS1uPyCqzDP0ENQ==
+X-CSE-MsgGUID: FLaA5YdESxmPy/H4QEuz8g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,269,1763452800"; d="scan'208";a="232470208"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.247])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Feb 2026 07:31:34 -0800
+Date: Mon, 2 Feb 2026 17:31:32 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 01/15] lib/kms: Introduce for_each_crtc*()
+Message-ID: <aYDDVPwt1zZd7478@intel.com>
+References: <20260130105237.14481-1-ville.syrjala@linux.intel.com>
+ <20260130105237.14481-2-ville.syrjala@linux.intel.com>
+ <8ce09d54c3f0208797f5b256e8aa27d29c6f4fbf@intel.com>
+ <aXzP4wDaz9hCkKKi@intel.com>
+ <70db2072688f084cff3321a97b02ac561a1eeb0e@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260202-unigraf-integration-v6-48-834af822eee7@bootlin.com>
-References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
-In-Reply-To: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
-To: igt-dev@lists.freedesktop.org
-Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com, 
- kory.maincent@bootlin.com, markyacoub@google.com, 
- khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6383;
- i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=FgFNbAoDCrJBhsoHnT24xrSYd/gD7LyTnivQD7K4laI=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpgLWVBvZqWGXzRC/1gzG8tVhua8FX/YOT9EBta
- H6MExCd2TGJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaYC1lRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKqcw/+NbnGWwJYfJ+TbGqpFeb02SPidgnjhtd
- Ax7TBw2Qqo0p/19FuPFLqgOeCewMJyURCBa/0/O8MvAHLRsJfiZ2apDE/aGw5SJSbEzzfoEJ3Th
- sUJjEz/+pFksGUaw2dPBwCGlWctEAhFTw0Eoytx2yG7l0qvUIAvS5IgoTZsl8k3e/jn3svhXOl5
- xtOEkOQ5L5UbPtpLWrleVdoW5w0iOpjqqFkMuk5hDU0bzMxjSLtDzug3Ec13gUhzx8tgqANMCni
- BbR1IrH7+/1QfcrXoCNNYX4S6kFNq6g02GM2iUNYUGE9B/Wbx1HP9htBt+yd1MWR7EtnbzaGskW
- KTVZr0uITvaqJIJGORmYSIR/u9rJorodVBvk5XCfXPvAckUB72L7HOG3P5hgMnqpaNi03q5quvQ
- UEbQfAIpr0NuBSkyH5vc1iIMjRJWi4OTtQ77ftO6klpTV4z3cO5TbdFZXblLPq/zbyy4vbyCOV2
- gNqfpjR4GdfrwTQ1nrcrXV0XGxrGTgOhHS2Xo/xqtmfCYOJYCxpGiJVNwypLpSLsSlKrdteea57
- 6DgOYGYH4kbSRmZO0fOaR5DRLnd/Qb6rbIkdrBSksNlksspkwnoMxT1RrQyWahFT72eZaKKQaut
- 0u6HIVgDq/Z30fcz/J96bjOrmVSy6Ghup6N7XTP5ELiIvTixdsA4=
-X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
- fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <70db2072688f084cff3321a97b02ac561a1eeb0e@intel.com>
+X-Patchwork-Hint: comment
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,211 +76,81 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To test link trianing on various situation, add multiple link
-training scenarios.
+On Mon, Feb 02, 2026 at 01:10:35PM +0200, Jani Nikula wrote:
+> On Fri, 30 Jan 2026, Ville Syrjälä <ville.syrjala@linux.intel.com> wrote:
+> > On Fri, Jan 30, 2026 at 03:38:03PM +0200, Jani Nikula wrote:
+> >> On Fri, 30 Jan 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> >> > +/**
+> >> > + * for_each_crtc:
+> >> > + * @display: a pointer to an #igt_display_t structure
+> >> > + * @crtc: The CRTC
+> >> > + *
+> >> > + * This for loop iterates over all CRTCs.
+> >> > + *
+> >> > + * Note that this cannot be used to enumerate per-CRTC subtest names since it
+> >> > + * depends upon runtime probing of the actual kms driver that is being tested.
+> >> > + * Use #for_each_pipe_static instead.
+> >> > + */
+> >> > +#define for_each_crtc(display, crtc) \
+> >> > +	for ((crtc) = &(display)->crtcs[0]; \
+> >> > +	     (crtc) < &(display)->crtcs[(display)->n_crtcs]; \
+> >> > +	     (crtc)++) \
+> >> > +		for_each_if ((crtc)->valid)
+> >> 
+> >> I feel like for_each_crtc() should iterate the CRTCs in CRTC order, not
+> >> pipe order. What's the plan? Are we eventually going to have ->crtcs[]
+> >> in CRTC order?
+> >
+> > I don't even know what it means to have them in pipe order. It should be
+> > one and the same right now because the kernel anyway has them in the
+> > same order. I guess it just means we could theoeretically have holes
+> > in the array with crtc->valid==false for fused off pipes?
+> >
+> > But yeah, if/when we start to reorder the pipes, I think we should keep
+> > this stuff in CRTC order, and get rid of the holes.
+> 
+> In igt_display_require(), the loop is:
+> 
+> 	for (i = 0; i < resources->count_crtcs; i++) {
+> 		igt_crtc_t *crtc;
+> 		int pipe_enum = is_intel_dev ? __intel_get_pipe_from_crtc_index(drm_fd, i) : i;
+> 
+> 		crtc = igt_crtc_for_pipe(display, pipe_enum);
+> 		crtc->pipe = pipe_enum;
+> 
+> 		crtc->valid = true;
+> 		crtc->crtc_id = resources->crtcs[i];
+> 		/* offset of a pipe in crtcs list */
+> 		crtc->crtc_offset = i;
+> 	}
+> 
+> And igt_crtc_for_pipe() returns &display->crtcs[pipe] i.e. the
+> display->crtcs is currently in pipe order, and it could have holes if
+> pipes have been fused off.
+> 
+> Feels like this is so convoluted all over the place that we'd be better
+> off resetting everything back to assuming pipe === crtc index, and
+> fixing stuff from ground up. :/
 
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
----
- tests/unigraf/meson.build  |   1 +
- tests/unigraf/unigraf_lt.c | 178 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 179 insertions(+)
+Yeah, pretty much.
 
-diff --git a/tests/unigraf/meson.build b/tests/unigraf/meson.build
-index 4ef8c32151e4..22e64c0f389d 100644
---- a/tests/unigraf/meson.build
-+++ b/tests/unigraf/meson.build
-@@ -1,5 +1,6 @@
- unigraf_progs = [
- 	'unigraf_connectivity',
-+	'unigraf_lt',
- ]
- 
- foreach prog : unigraf_progs
-diff --git a/tests/unigraf/unigraf_lt.c b/tests/unigraf/unigraf_lt.c
-new file mode 100644
-index 000000000000..ad3f3f91ec3c
---- /dev/null
-+++ b/tests/unigraf/unigraf_lt.c
-@@ -0,0 +1,178 @@
-+// SPDX-License-Identifier: MIT
-+
-+#include <stdint.h>
-+#include <sys/types.h>
-+#include <unistd.h>
-+#include <xf86drm.h>
-+#include <xf86drmMode.h>
-+
-+#include "drm_fourcc.h"
-+#include "drmtest.h"
-+#include "igt_aux.h"
-+#include "igt_core.h"
-+#include "igt_dp.h"
-+#include "igt_edid.h"
-+#include "igt_kms.h"
-+#include "unigraf/unigraf.h"
-+
-+/**
-+ * TEST: unigraf link training
-+ * Category: Core
-+ * Description: Testing DP link training with a unigraf device
-+ *
-+ * SUBTEST: unigraf-dp-lane-count
-+ * Description: Make sure that the link training goes well for different lane count
-+ *
-+ * SUBTEST: unigraf-dp-link-rate
-+ * Description: Make sure that the link training goes well for different link rates
-+ */
-+
-+static void init_output_and_display_pattern(igt_display_t *display, igt_output_t *output)
-+{
-+	enum pipe pipe;
-+	struct igt_fb fb;
-+	igt_plane_t *primary;
-+	drmModeModeInfo *mode;
-+	int fb_id;
-+
-+	igt_modeset_disable_all_outputs(display);
-+	igt_display_reset(display);
-+
-+	igt_output_set_crtc(output, 0);
-+
-+	pipe = igt_get_pipe_for_output(display, output);
-+	igt_output_set_crtc(output, igt_crtc_for_pipe(display, pipe));
-+
-+	/* Get the current mode */
-+	mode = igt_output_get_mode(output);
-+	igt_assert(mode);
-+
-+	/* Create a framebuffer with a solid color pattern */
-+	fb_id = igt_create_color_pattern_fb(display->drm_fd, mode->hdisplay,
-+					    mode->vdisplay, DRM_FORMAT_XRGB8888,
-+					    DRM_FORMAT_MOD_LINEAR, 0, 0, 0, &fb);
-+	igt_assert(fb_id > 0);
-+
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	igt_assert(primary);
-+
-+	igt_plane_set_size(primary, mode->hdisplay, mode->vdisplay);
-+	igt_plane_set_fb(primary, &fb);
-+	igt_output_override_mode(output, mode);
-+
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	/* Set the framebuffer to the plane */
-+	igt_plane_set_fb(primary, &fb);
-+
-+	/* Set the plane properties atomically */
-+	igt_plane_set_prop_value(primary, IGT_PLANE_FB_ID, fb.fb_id);
-+	igt_plane_set_prop_value(primary, IGT_PLANE_CRTC_X, 0);
-+	igt_plane_set_prop_value(primary, IGT_PLANE_CRTC_Y, 0);
-+	igt_plane_set_prop_value(primary, IGT_PLANE_CRTC_W, mode->hdisplay);
-+	igt_plane_set_prop_value(primary, IGT_PLANE_CRTC_H, mode->vdisplay);
-+
-+	/* Commit the changes atomically */
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+}
-+
-+IGT_TEST_DESCRIPTION("Test unigraf device functionality");
-+int igt_main()
-+{
-+	int drm_fd = -1;
-+	igt_display_t display;
-+	igt_output_t *output;
-+	drmModeConnectorPtr connector;
-+	int i;
-+
-+	igt_fixture() {
-+		drm_fd = drm_open_driver(DRIVER_ANY);
-+		igt_assert(drm_fd >= 0);
-+
-+		igt_display_require(&display, drm_fd);
-+		unigraf_require_device(drm_fd);
-+
-+		connector = unigraf_get_connector(drm_fd);
-+	}
-+
-+	igt_subtest_with_dynamic("unigraf-dp-lane-count") {
-+		int lane_counts[3] = {1, 2, 4};
-+		int current_lanes;
-+
-+		for (i = 0; i < ARRAY_SIZE(lane_counts); i++) {
-+			igt_dynamic_f("unigraf-dp-lane-count-%d", lane_counts[i]) {
-+				unigraf_reset();
-+				unigraf_set_max_lane_count(lane_counts[i]);
-+				unigraf_hpd_pulse(500000);
-+
-+				igt_display_require_output(&display);
-+				output = igt_output_from_connector(&display, connector);
-+				igt_assert(output);
-+				igt_dp_force_link_retrain(drm_fd, output, 2);
-+				init_output_and_display_pattern(&display, output);
-+
-+				current_lanes = igt_dp_get_current_lane_count(drm_fd, output);
-+				igt_assert_eq(current_lanes, lane_counts[i]);
-+			}
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("unigraf-dp-link-rate") {
-+		int rates[] = {UNIGRAF_RATE_1_62_GHZ,
-+			       UNIGRAF_RATE_2_7_GHZ,
-+			       UNIGRAF_RATE_5_4_GHZ,
-+			       UNIGRAF_RATE_6_75_GHZ,
-+			       UNIGRAF_RATE_8_10_GHZ};
-+		int current_rate;
-+		int max_supported_rate;
-+
-+		for (i = 0; i < ARRAY_SIZE(rates); i++) {
-+			igt_dynamic_f("unigraf-dp-link-rate-%d", rates[i]) {
-+				unigraf_reset();
-+				unigraf_set_max_link_rate(rates[i]);
-+				unigraf_hpd_pulse(1000000);
-+				igt_display_require_output(&display);
-+				igt_display_reset(&display);
-+				igt_display_require_output(&display);
-+				output = igt_output_from_connector(&display, connector);
-+				igt_assert(output);
-+				igt_dp_force_link_retrain(drm_fd, output, 2);
-+
-+				init_output_and_display_pattern(&display, output);
-+
-+				current_rate = igt_dp_get_max_link_rate(drm_fd, output);
-+				max_supported_rate = igt_dp_get_max_supported_rate(drm_fd, output);
-+				igt_require(max_supported_rate >= unigraf_rate_to_kbs(rates[i]));
-+				igt_assert_eq(current_rate, unigraf_rate_to_kbs(rates[i]));
-+			}
-+		}
-+	}
-+
-+	igt_subtest("unigraf-dp-link-suspend-resume") {
-+		int current_rate, current_lanes;
-+
-+		unigraf_reset();
-+		igt_display_require_output(&display);
-+		igt_display_reset(&display);
-+		igt_display_require_output(&display);
-+		output = igt_output_from_connector(&display, connector);
-+		igt_assert(output);
-+
-+		/* Get initial link parameters */
-+		current_rate = igt_dp_get_current_link_rate(drm_fd, output);
-+		current_lanes = igt_dp_get_current_lane_count(drm_fd, output);
-+
-+		/* Suspend the system */
-+		igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
-+
-+		/* Verify link parameters are maintained */
-+		igt_assert_eq(igt_dp_get_current_link_rate(drm_fd, output), current_rate);
-+		igt_assert_eq(igt_dp_get_current_lane_count(drm_fd, output), current_lanes);
-+	}
-+
-+	igt_fixture() {
-+		igt_display_fini(&display);
-+		close(drm_fd);
-+	}
-+}
+I guess once the bigger cocci stuff is done we should do something
+like:
+- leave most crtc->pipe vs. PIPE_<whatever> checks alone as those
+  are probably looking for a specific hardware pipe
+- most other crtc->pipe usages should just be converted to
+  crtc_index instead
+
+That could perhaps be done with cocci as well.
+
+And then we can start cleaning igt_kms itself:
+- make display->crtcs[] keep the kernel crtc order and get rid of
+  the holes, and have igt_crtc_for_pipe() just search through the
+  array for the right crtc
+- change all the pending_pipe/valid_crtc_idx_mask/etc. stuff to use
+  igt_crtc_t or crtc_index
+- etc.
 
 -- 
-2.52.0
-
+Ville Syrjälä
+Intel
