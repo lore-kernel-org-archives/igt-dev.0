@@ -4,46 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DE73E83070
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26B6EE83065
 	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 08:01:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B40CB10E585;
+	by gabe.freedesktop.org (Postfix) with ESMTP id AB6CB10E584;
 	Tue,  3 Feb 2026 08:01:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="PkLJhT9I";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="kxwz9MNe";
 	dkim-atps=neutral
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E25DF10E2C0
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 15:49:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD77110E53A
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 18:08:06 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 8D85D1A2BF0;
- Mon,  2 Feb 2026 15:49:33 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 92DA31A2B96;
+ Mon,  2 Feb 2026 18:08:05 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 5A80D60767;
- Mon,  2 Feb 2026 15:49:33 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 2170360767;
+ Mon,  2 Feb 2026 18:08:05 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 8B62B119A8891; Mon,  2 Feb 2026 16:49:31 +0100 (CET)
+ with ESMTPSA id 3E8A3119A8891; Mon,  2 Feb 2026 19:08:03 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770047372; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1770055684; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=qSloE4X4teSmspg4abEa/Y8Vyaup8Ub0PQGb8DMPVj4=;
- b=PkLJhT9IGaxketcZPxZUAsKaAOwcUN3tc1h+GIwNsz3+cjgpOBKU9R0ibxV8Y44kWPSP6y
- FIrGhR95dUeOJS0hzZgEVvwkYL+vDO8Oqstcgk1EsZIFS3ynqZP+U9Z48kbxqth34qWzoB
- 9b3O+B21NmtN8jbsWQa1VYydp1OTnT8qsxau0WfbbyT222KcwRPmkuT7QSjjKIMNPbOw/i
- ZX/XM5qflYiKYZx+FmmgRuEt32ag2VMPLrbw/Vd7nSHtk+KHJGxZ0cD0Ul/f/1LstdJTER
- RRG3rfZEaoP65aCwwPGRCY4BhUE/0XlQ5b+1UmXCB7hsrjBue7DzFB4R6JnVbQ==
-Date: Mon, 2 Feb 2026 16:49:30 +0100
+ bh=KFGLafvEwNiFRucGyCh4qIPGW0ka8+nxm621RpGz38w=;
+ b=kxwz9MNewu6itD9NuYhFxbuLsuWzlFo5jLEXbSm5UYzKcXpId9qRpxHmerC/xILVNNtFgy
+ eBLvfvk69MZFmZx7N5deBp/xs6L5+Zq9gh383lGrSvqJ0nvnjYzPZN0imFohwEHViFspVL
+ LAj175hYNXOS7znAn/3RCfqq+tb84VsVaqFeyLUAyOJ7bGQfuLzUM8rSnxeS9Gk2UhN2de
+ +V+NgvJ+E+0SIahbsZMvmhp4G0YcvuiXgCgk/orn2y+z7iLPTvvjlUtuoOgpIpHQaHRzCO
+ 0r/02SfzzBIctPfIXP/mI5V4oOSKxzcrDjKbD6X93RiVqxGYdt4E3k3Jrbt6Pw==
+Date: Mon, 2 Feb 2026 19:08:02 +0100
 From: Kory Maincent <kory.maincent@bootlin.com>
 To: Louis Chauvet <louis.chauvet@bootlin.com>
 Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
  luca.ceresoli@bootlin.com, markyacoub@google.com,
  khaled.almahallawy@intel.com
-Subject: Re: [PATCH i-g-t v6 09/48] lib/igt_kms: Expose connector_attr_set
- and igt_connector_attr_set
-Message-ID: <20260202164930.58db2955@kmaincent-XPS-13-7390>
-In-Reply-To: <20260202-unigraf-integration-v6-9-834af822eee7@bootlin.com>
+Subject: Re: [PATCH i-g-t v6 23/48] lib/unigraf: Introduce input configuration
+Message-ID: <20260202190802.5eebe8d2@kmaincent-XPS-13-7390>
+In-Reply-To: <20260202-unigraf-integration-v6-23-834af822eee7@bootlin.com>
 References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
- <20260202-unigraf-integration-v6-9-834af822eee7@bootlin.com>
+ <20260202-unigraf-integration-v6-23-834af822eee7@bootlin.com>
 Organization: bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -66,16 +65,105 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 02 Feb 2026 15:32:48 +0100
+On Mon, 02 Feb 2026 15:33:02 +0100
 Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 
-> Some debugfs helpers need to use connector attributes. Expose those helpe=
-rs
-> to allow using them in igt_debugfs.
+> As multiple input can be present on unigraf devices, add a configuration
+> field to select the proper input. By default it will take the first
+> available.
+>=20
+> The configuration can look like:
+>=20
+> [Unigraf]
+> Device=3DUCD-500 [2434C620]
+> Role=3DDisplayPort Source and Sink
+> Input=3DDP RX
+>=20
+> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+> ---
+>  lib/unigraf/unigraf.c | 59
+> ++++++++++++++++++++++++++++++++++++++++++++++++++- 1 file changed, 58
+> insertions(+), 1 deletion(-)
+>=20
+> diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
+> index fb901c38453e..1b31f7a44566 100644
+> --- a/lib/unigraf/unigraf.c
+> +++ b/lib/unigraf/unigraf.c
+> @@ -34,11 +34,21 @@ static char *unigraf_connector_name;
+>   */
+>  #define UNIGRAF_CONFIG_DEVICE_ROLE "Role"
+> =20
+> +/**
+> + * UNIGRAF_CONFIG_INPUT_NAME - Key of the input name in the configuration
+> file
+> + */
+> +#define UNIGRAF_CONFIG_INPUT_NAME "Input"
+> +
+>  /**
+>   * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf
+> device */
+>  #define UNIGRAF_DEFAULT_ROLE_NAME "USB-C, DP Alt Mode Source and Sink"
+> =20
+> +/**
+> + * UNIGRAF_DEFAULT_INPUT_NAME - Default input name to search on the unig=
+raf
+> device
+> + */
+> +#define UNIGRAF_DEFAULT_INPUT_NAME "DP RX"
+> +
+>  static void unigraf_close_device(void)
+>  {
+>  	if (!unigraf_device)
+> @@ -121,6 +131,24 @@ static int unigraf_find_role(const char *request)
+>  	return chosen_role;
+>  }
+> =20
+> +static int unigraf_find_input(const char *request)
+> +{
+> +	int chosen_input =3D -1;
+> +	int role_count =3D
+> unigraf_assert(TSIX_VIN_GetInputCount(unigraf_device)); +
+> +	for (int i =3D 0; i < role_count; i++) {
+> +		char input_name[UNIGRAF_NAME_MAX];
+> +
+> +		memset(input_name, 0, UNIGRAF_NAME_MAX);
 
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Same as previous patch:
+char input_name[UNIGRAF_NAME_MAX] =3D "";
 
-Thank you!
+> +		unigraf_assert(TSIX_VIN_GetInputName(unigraf_device, i,
+> +						     input_name,
+> UNIGRAF_NAME_MAX));
+> +		unigraf_debug("Input %d: %s\n", i, input_name);
+> +		if (!strncmp(input_name, request, UNIGRAF_NAME_MAX))
+> +			chosen_input =3D i;
+
+return chosen_input;
+
+> +	}
+> +	return chosen_input;
+
+return -ENODEV;
+
+> +}
+> +
+>  /**
+>   * unigraf_open_device() - Search and open a device.
+>   * @drm_fd: File descriptor of the currently used drm device
+> @@ -136,10 +164,11 @@ bool unigraf_open_device(int drm_fd)
+>  	GError *cfg_error =3D NULL;
+>  	char *cfg_device =3D NULL;
+>  	char *cfg_role =3D NULL;
+> +	char *cfg_input =3D NULL;
+>  	int device_count;
+>  	int chosen_device;
+>  	int chosen_role;
+> -	int chosen_input =3D 0;
+> +	int chosen_input;
+
+Why?
+
+Regards,
 --=20
 K=C3=B6ry Maincent, Bootlin
 Embedded Linux and kernel engineering
