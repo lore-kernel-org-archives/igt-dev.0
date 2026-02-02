@@ -4,41 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0612FE7DEF7
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4637DE7DEF3
 	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 14:32:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9569F10E410;
+	by gabe.freedesktop.org (Postfix) with ESMTP id DC71310E4D2;
 	Mon,  2 Feb 2026 14:32:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="OjnsvngW";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="JMMLrRRR";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA36610E4ED
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:32:39 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89F8710E4E3
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:32:40 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id A4F254E423C3;
- Mon,  2 Feb 2026 14:32:38 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 33395C237F3
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:32:44 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 760E360767;
- Mon,  2 Feb 2026 14:32:38 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 6A91460767;
+ Mon,  2 Feb 2026 14:32:39 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 7091B119A88FB; Mon,  2 Feb 2026 15:32:37 +0100 (CET)
+ with ESMTPSA id 375A6119A88FC; Mon,  2 Feb 2026 15:32:38 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770042757; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1770042758; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=57TFzKl+2SRsvM6e/cAgvtl1k0owV9oeaLn7aVwaOHc=;
- b=OjnsvngWVZMpqONHyZ+6L62wGmWxImFrxRQOFxpolZPNvZ1NncW5ilVToFffW2z8dLeM5K
- EJ5foywJVm59pQbtxvgelP/F2dSwh/iIHBNz+XJ3QZcKHblDgnOJfrsVCjqcrN82rCwAoD
- CVBQEWX7wGajO2bPoDEqQKVg5GlA1wjp48/jIAPAL8wO3SYVNOumVr0/p3wxyY9QKYDhjL
- 2PXhrr4a2Lz7K3KCJ1mLiah5qeX0PsaDz0PkF/Q5f4wsMWHnzlWqy4vls1ihpGPJmSAi94
- 4EdgaZFHF1bRTdXxQUa9Y03qa0reFB8SEK3lU1q7dzQJfhCQXGHs+rj1gT97Fg==
+ bh=b+AFcqzBj7aWmIbmBW7eS2S1MpwcdwW/c/c6A7h4QqU=;
+ b=JMMLrRRRdwNO1gPK+YfsOB0j1/tIy2x7v+RRFm0v8WyrULviBOlpY++BznUJZ4RB2MqFJO
+ ezk7EoJQ4xgKAz3IwBASVuUkT44hcGLju0aPFq2mDWK8RgUXDotZmOfM5UA0KmwM+BHaqb
+ UOlfU3PAEF/IXmzPV9xUlY7Uhjgc3tbTTwbZxddjaMmtXk5nbRxDxDIqMXm/mb39q+ADKe
+ WKkfM91WXR2+oJVjakRhKQjKq20zFuzuatGSav57P+OUNoc/L4Q7iToNGhHuSnSxJTkRZ/
+ TYvIPb9bAAefsIbBL6SWqBmqcWcuQWlNJZSsYbTa8Gs1r3kcMU99VW942aqq2A==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 02 Feb 2026 15:32:51 +0100
-Subject: [PATCH i-g-t v6 12/48] lib/igt_amd: Add const when make sense
+Date: Mon, 02 Feb 2026 15:32:52 +0100
+Subject: [PATCH i-g-t v6 13/48] lib/igt_kms: Add const when make sense
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260202-unigraf-integration-v6-12-834af822eee7@bootlin.com>
+Message-Id: <20260202-unigraf-integration-v6-13-834af822eee7@bootlin.com>
 References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
 In-Reply-To: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -46,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1578;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1476;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=imoyiYaQ4r0RGLIZsyMkXVhd6gC0/SPlQOCgPWS9cws=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpgLWQOPG6+OKHIhPTS5DUHBLs6uDW8zO8ad1o0
- /spmVCHsxaJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaYC1kBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKWhg/+KKaQwoqd2rXhnDSGkdUJyDlujCNLl3x
- KjYCS3eF0H+tnvSPrsa326eN/yMbQV/aVKBn4E5LDgflTY/NfggpZhQd8aiRztVmuAwug4Ln8VE
- pXBOFDX/ZTRqKb4JW4FpUVP4M0q4DMsu6Pdzm9XryIFs9jWdR67DOQLnPk6gDwe4XVLb5UjgGwA
- QHnKUigD9orkmZalsyKDjurOZZNKCfRrvF54E5mHeADATtIq1a2fOaNT5V9YBZ7+8QRmKa9FWnR
- vm297V52ti/yBKifgaegbY8kdDDp+Xm13gMvOveiaA7VMW1jCsCh6BxDWgATLMvcWDezK+e/vbF
- anF2YIDAsVVowZcXEL0lyrd6tyzQuyPyK7GWDnBjqZ9s+7mW9hul+40TEiQdDXqcERE3SWpoXk0
- PqosZmOafQUs8GbJXWMMgLqkdm+s3AqSJRuhb7uiD2SXMwMFrNzDMyhPfmNmSC1fGj3z2kQZsEz
- jkz9IebqrwQH6WYD9Lc1Ed+EBnnTJaFGZcmCbjyin5p5cyRG+PZ4fSeSoHqJGstD8UC79dYLBVg
- Gwm9Sd67kUBrHsSibN3Uri4xmVJs3dwuAb2drB1r2ejBiLrfikGtsOkfiOyo1NfFQ8ZimF+ECcr
- m8vfz7pxwV3R7tLLVCmeKfAO8agBv27RK+pb7lhMyAiN9NXcxWj8=
+ bh=CE0CTVgZtkBEkD/fqb8wJ/3/HRjQ5iRv/hGc5Opfkzo=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpgLWQ2QMjhqYwk3sr9N9/XGhn85I0GadncrIBH
+ PUjzIIhQEyJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaYC1kBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOJTERAAouWc2mqhAHaOUzCmlfd8ZusPPALivjF
+ 7igtLpO8FkMg62pBTQPFBIb+iagQ6hgKeY0yojfU3Qa3Ti7+3oL2UpVAAt2qyvwTtF59ejf+04z
+ xSesNcmyP3O59AzT/QMPei6I5kteNXF9HaeCSDbjehxzEkFq63gxuQ7Z1j9MhG6dBALofujPG/g
+ pCCPyeeMJvayEv5aWf0K9FhCXXyikFD0E5xYKPYAI7js+clPodOfhPCRGLsWpGbRiyEO2mEiC4k
+ GB67BwjoWRf5s8pr/5DvWURKW5UeNbV0bPxlTtrxwNnrXCREXcuawdSs7lMEjSV9mzwalGsCkEe
+ L5Z47uDAN8b91p3pj/DNa48cTRqwmA+hNcr7Y8szDxpTYegKivljaKKJTBgkQM0NnNNeYVooW/C
+ 6Id0le9mp7NHPTrjAVf/ZiBr0QhUPrqLayO6Kq7BNqas2SQDXBBDP8CBtfroI/Y8DqrWPiK25WV
+ Dcva+ANJ+Vk6FMh6dDGG3oEIsXBJa4RE3QXJduaMNznx+jLPMQHHPJ2QCAo4K9yBMmbigNILhoq
+ Hv+3JwSrtx0GXcWxXNW7tPEJC6dDk5qp9bK1FpB9JxqOCa7lyeTuMxgtzHwzK0y2/krL67YRXh3
+ R1HIRS64gjgYaBUDsaCtjMJRH3sZVWSdaGsb25IQXMSgYxS2Ibnw=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -86,36 +86,36 @@ use const.
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- lib/igt_amd.c | 2 +-
- lib/igt_amd.h | 2 +-
+ lib/igt_kms.c | 2 +-
+ lib/igt_kms.h | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_amd.c b/lib/igt_amd.c
-index 3ddb5f40374e..081bad411355 100644
---- a/lib/igt_amd.c
-+++ b/lib/igt_amd.c
-@@ -831,7 +831,7 @@ int igt_amd_trigger_hotplug(int drm_fd, char *connector_name)
-  * values of "Current", "Verified", "Reported", and "Preferred", respectively.
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 2754b3bc0c91..799952c18f07 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -5163,7 +5163,7 @@ int igt_display_drop_events(igt_display_t *display)
+  *
+  * Returns: String representing a connector's name, e.g. "DP-1".
   */
- void igt_amd_read_link_settings(
--	int drm_fd, char *connector_name, int *lane_count, int *link_rate, int *link_spread)
-+	int drm_fd, const char *connector_name, int *lane_count, int *link_rate, int *link_spread)
+-const char *igt_output_name(igt_output_t *output)
++const char *igt_output_name(const igt_output_t *output)
  {
- 	int fd, ret;
- 	char buf[101];
-diff --git a/lib/igt_amd.h b/lib/igt_amd.h
-index bce4657cbcfd..217ee6dcbd02 100644
---- a/lib/igt_amd.h
-+++ b/lib/igt_amd.h
-@@ -210,7 +210,7 @@ int igt_amd_trigger_hotplug(int drm_fd, char *connector_name);
+ 	return output->name;
+ }
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 42d47071d932..50a02a9b5aa1 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -601,7 +601,7 @@ igt_pipe_crc_t *igt_crtc_crc_new(igt_crtc_t *crtc, const char *source);
+ igt_pipe_crc_t *igt_crtc_crc_new_nonblock(igt_crtc_t *crtc, const char *source);
  
- /* IGT link helper functions */
- void igt_amd_read_link_settings(
--	int drm_fd, char *connector_name, int *lane_count, int *link_rate, int *link_spread);
-+	int drm_fd, const char *connector_name, int *lane_count, int *link_rate, int *link_spread);
- void igt_amd_write_link_settings(
- 	int drm_fd, char *connector_name, enum dc_lane_count lane_count,
- 	enum dc_link_rate link_rate, enum dc_link_training_type training_type);
+ igt_crtc_t *igt_output_get_driving_crtc(igt_output_t *output);
+-const char *igt_output_name(igt_output_t *output);
++const char *igt_output_name(const igt_output_t *output);
+ bool kmstest_mode_is_valid(const drmModeModeInfo *mode);
+ drmModeModeInfo *igt_output_get_mode(igt_output_t *output);
+ drmModeModeInfo *igt_output_get_highres_mode(igt_output_t *output);
 
 -- 
 2.52.0
