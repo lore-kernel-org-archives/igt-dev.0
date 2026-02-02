@@ -4,124 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE343D172CD
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 05:08:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54034D172CC
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 05:09:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3CCFC10E103;
-	Mon,  2 Feb 2026 05:08:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EE76E10E103;
+	Mon,  2 Feb 2026 05:08:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="Dwl37B62";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Gh1JhutV";
 	dkim-atps=neutral
-Received: from SA9PR02CU001.outbound.protection.outlook.com
- (mail-southcentralusazon11013057.outbound.protection.outlook.com
- [40.93.196.57])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F2DF10E103
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 05:08:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7631B10E103
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 05:08:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1770008939; x=1801544939;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=fp9KuKaVfeFPokHe4qUGfzwc0cZD9Yx7Pvfn34FWosk=;
+ b=Gh1JhutVgXF7umGcLlXXn3X4VNelmji88b0FAEoKvzmo1BtsKwl0o/1C
+ aMUjYcX9HJMkBvhqAK510KehWXXG3B7AuFvTDKd6H9h1xTxpGSGUMeJHR
+ wG3iToCDiDydeFNwTvYTfPwwjrVpQb9bw5BgZFMBSrQwsD0eN+pFXniWv
+ qrkSyTx8MOHDN+K6GPcopZ3270Uvg8iJPOQq3ObcMUy5vcSBKiaGuX4x8
+ jGqawhcBPEYHDN20RVOF1qxTGeVQWqeBYGNtpuqVv/hlcj20Iw5psqUql
+ k38gtf6xl8+5wUR/43O+v3DoNNXTEaJoLsfx3g7INalnvW9ayG9BZqu5z g==;
+X-CSE-ConnectionGUID: +VwKgygMQnWj68Ne5b9Gnw==
+X-CSE-MsgGUID: zrv0jggASn+ZDmCFtEc++Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11689"; a="58745009"
+X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; d="scan'208";a="58745009"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2026 21:08:58 -0800
+X-CSE-ConnectionGUID: D+DVS1WSQq2Ai9v+drFwkA==
+X-CSE-MsgGUID: O7kad5t/SHCvDQd5zGXvQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; d="scan'208";a="209205375"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Feb 2026 21:08:57 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Sun, 1 Feb 2026 21:08:57 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Sun, 1 Feb 2026 21:08:57 -0800
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.10) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Sun, 1 Feb 2026 21:08:54 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fsWUmHtgoeGP9WAH0N1t9M26VemM4BMmZU5FxonygsynmZIZQ5Rvxj3bQZzpWW9lOufA5EERRp+Qfk/hP2gq+bib/BQ1+Y9BggBx9/o2NgL9w4mFNPtPxq1Qx3mXLXv8wmtNenaHcVvSAAahvDmzztQhMnKMrp92ZW5HcEDt1H9D9LKK2f15uahqn3s3fcv0/ODN3vgLZ62iAJZCAsfFa98h8hWTOGcbD7a5AsYXsFQnPy3zuUb/3itlq10Ztr1vHAUZtLTqHPoFAau9Zkhf+J4k6zFADmWOXpUfO3y/yeM/pKgzIMHmUQnDgOZnPx8N5En93XeAmrblc0CvrpCJQA==
+ b=D0XGM7yuuZ+Q/VMZG9Mwrzwf3xI5vfAJoCrCXXmzX6Sj9Q+JCF2LDxpz1KqZvyEsZtlTtQuZ6juULVsAMlAd2QTyGLqmclExerdwEFDTpRzvJKIyNg+3cuMQmtjNUFqGXOw9HsjGzZihPEDaipP+E3YEnc/RmqoGzWc7inxzse+gBNDVIwCsxhKrxvLFT23o+T6CyJ+hlHgjnesETGZ4eFNcfymXgHcPhQhYGFIMo5PNmtd2FaAm3l1Q7yXHnVO1HP/duFJwBerdLYSHyDxOJEJQWRBiIXW1ZhI+PGpS97/r9VB0Qbgm50rnlBS+40P3Gj715+f86C9HmZjVzFeSOw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IYs2YgZXbgzDsHNP9ezMNpvjabTee1K5ci4KnXWo7uE=;
- b=upIpBRH+DdqhzL8iWFDL8yd+Zwn+OpZLAinh+kEUJhWIlKCEhpuga6JEZoEn/dQIXbowTTOEFWVVCbtCPeehmTQSItt4NAtKyGERhLQiBmhr4sH7oMe1Q/OZfJZHryfEooMlp+ibDQR5bLHuG+PDdnofXJjoCROKSNie+7C4qD8Wxs7wuGTjpf1HLwipsWAUotlzcfbKy2ezpLWTYe1SsP/O5bz3eSYakZNrCDZAn0Q1DcgV2Z63JAUzjqUAB0foXij598XBeFCayxUraaqpSF4D1EWOcqXv+a7Z43bc7Be4k3bulHYvBB3DGtq6LvHEeXKfgnNzvYLx+uYaQcKyZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IYs2YgZXbgzDsHNP9ezMNpvjabTee1K5ci4KnXWo7uE=;
- b=Dwl37B62i1eqWq25z0FqSp3U7SO7/6RXeU9P3YPRC3uXspZBlkBAKoZmEMuM0yUznv/AS5zKpjUB95rUMiB4pai4ex64fyst0LWH0Dk2pk3UUErFPUN9M/+zblJ+Np4H1ZcJG/aFhnkPDG6LxKUUnTiK43eIp7TuNc094LocJpA=
-Received: from BYAPR08CA0015.namprd08.prod.outlook.com (2603:10b6:a03:100::28)
- by MN6PR12MB8544.namprd12.prod.outlook.com (2603:10b6:208:47f::17)
+ bh=QXWCk4/K7NFGyt9alhbSk6V+ontkmJBnJhv5NKAVbgs=;
+ b=xGJLwScnCyNtuZkEI0PO83vgjT0NXbbODfoAh1g6udRibg8La8QMBrsixB41kIiEqyGOdCZfyrPIsv7MPOOXLvVPSteEaXtFZIpbyWPbpcYM7/pDnV4VPXsBGk+otGFhsvHXtaHNpCZhjV6D60tswO9Rm9wwjlmujbZX4CHyXyxLY7PnfNBMhmgC4UKfzC88lsUcHfUM+vS/PFY00gWTUN+bnMFdk1PZS51i6AM92j5xAVOUWHFQ0CTNK+jw1U0NEpAeGWeu9+PR4c5XIHbU57fzvt8rcOj7SHc1uokhfkPxDczb+HYshVE+KZVR3vfzXa9a6wANJr9UszsH+N1/SQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6796.namprd11.prod.outlook.com (2603:10b6:510:1ba::6)
+ by DS4PPF64C459891.namprd11.prod.outlook.com (2603:10b6:f:fc02::27)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.15; Mon, 2 Feb
- 2026 05:07:58 +0000
-Received: from SJ1PEPF00002316.namprd03.prod.outlook.com
- (2603:10b6:a03:100:cafe::83) by BYAPR08CA0015.outlook.office365.com
- (2603:10b6:a03:100::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.13 via Frontend Transport; Mon,
- 2 Feb 2026 05:07:50 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF00002316.mail.protection.outlook.com (10.167.242.170) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9587.10 via Frontend Transport; Mon, 2 Feb 2026 05:07:57 +0000
-Received: from rtg-jaguar-KRK2e.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Sun, 1 Feb
- 2026 23:07:54 -0600
-From: Tessita Thomas <Tessita.Thomas@amd.com>
-To: <igt-dev@lists.freedesktop.org>, Vitaly Prosyak <vitaly.prosyak@amd.com>
-CC: <Tessita.Thomas@amd.com>
-Subject: [PATCH] tests/amdgpu/amd_jpeg_dec: Add VCN JPEG IB alignment
-Date: Mon, 2 Feb 2026 10:37:38 +0530
-Message-ID: <20260202050738.518285-1-Tessita.Thomas@amd.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002316:EE_|MN6PR12MB8544:EE_
-X-MS-Office365-Filtering-Correlation-Id: 56a791e3-6908-4932-f29d-08de6219078a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|82310400026|36860700013|376014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?/C3ZwAlzGhWKw4F/i9FmGew12mxbFa4qP01cWtxT+DsVLtuJAAj47yGnMvi6?=
- =?us-ascii?Q?QX6pIqEMY6LKj6pxYm8kqA6qFaXyvv+w/o4LianLrl/xvozhQRWfkP7VO8R1?=
- =?us-ascii?Q?OtvN7VHNNthMtzhq4LXS0dPUrE+41ApS4DwvT1AJl9pXlc5gCEsR6jY13Q+r?=
- =?us-ascii?Q?z1tguwEO4O1ydHEJi6Nn+2O40YyYXFkEPJac442wA+V3nfcIsIocc+1T9A7x?=
- =?us-ascii?Q?kCagXrxy8ee9IGWDBSncau8yAgb3nRy17y/BMgB+P9AGEW9VPDYevqYojGXQ?=
- =?us-ascii?Q?sZNICCb3WNL/6sDQD/UmRf1JPPDduegdf+XTfXb3MQSiA1c/icpUgXysNI7h?=
- =?us-ascii?Q?FPKakPQwDybhu9HoRh16iwrdfb3aOmK1nAsaDmqDM8gHKcZWAurlcnckLJic?=
- =?us-ascii?Q?jgJVKapsFqJRciNXPZHw2SUGeIrxjJvZDMFt4WFrEfmA8V0SFXxkFITICKeh?=
- =?us-ascii?Q?mL29KhuMyv+R5EROoCJ/xCj0EQf8L7J9Rbj/AbrOPXoMx10GVr0MbsERL3KO?=
- =?us-ascii?Q?KqQyOJdcwtk9x+s6nTPruQu1e8MplhCV07dBnKsFIJooJDPiTA4HkL/LZ9Pz?=
- =?us-ascii?Q?Hx0HF1KeFe02habbWd/Xhn9O+Tk+NHKgZuFgRm0WrKM6Gt/Z1sFyULCsSBtr?=
- =?us-ascii?Q?oII4WAJM5eZFdrbC0p5DTpMPKq61UG46d9JLfG+SDyd2UoJE/3S+dN00IclE?=
- =?us-ascii?Q?yeDqisC2AKTIfsFiDcEPdzPMzkeKjJ5PCvVtTjzTCdXPQsgZ5h/jA7AmQR2L?=
- =?us-ascii?Q?gcQD+k20QL1ByAOa3aEJ7Jovpns+zwlJwriryeZQ8UGSGm0EtNsaUC+4DvAQ?=
- =?us-ascii?Q?JUymyNfe6kSrb8Ws01K/RVnbv6IeSQR5d4N/OJA5VRJLvArAgThLH36cCqa/?=
- =?us-ascii?Q?ZQ1WsRF1BK7endJN8Th6YvmxgRgSAC9v9oYDaJD8Y+Xi/h3BxJqGQPJ1nyWa?=
- =?us-ascii?Q?tZG+kawJN44FGzJIJW83jCPT67EUiye7LzZTlHLUvWkKrywTm0K8/lio1I6z?=
- =?us-ascii?Q?oPHbyaqbY4Xzyy0pon2bvMAVL7QXcmaT1g4E6H7tjmuHj4UFdyWlsz5r4PbU?=
- =?us-ascii?Q?G7YtySkpxqBb8G29QqVD5/Ag2PucesQB1k66KSxYEmcKWS6KW8+f7/ki/+eP?=
- =?us-ascii?Q?QhacFKH6GdxIQz1X30oSgoLBdmghZbo3PoDsPOQjxH2ozx9wp1TYgveVvSsn?=
- =?us-ascii?Q?9+WMJi3+Nc/YsA9vkmlRE8CXMI+zQutTwyWeoTpw0Sbl+a1SZsXslC03pbAt?=
- =?us-ascii?Q?M/9BQoJr6jzegVAyhE1GitIiOU6R9j89/h9+NaI/eun9rAQi/TXlroE7AtQM?=
- =?us-ascii?Q?OHEyDbZPbyF27UemlFaVb+T4gjHwBlQXJkv/Cfaco8AeaiqyQ763jdvBXaNr?=
- =?us-ascii?Q?z7HOZAfQqqIm04gkQ21I5JruPHks58t7O9fJpYsLblHw7j+JqOp4RT9ShqDd?=
- =?us-ascii?Q?H6/CWy8Ju3WlSH1X7GFFNHBD62EUBnQ2RQUPRP7tknjSZqZIob7Zm5TPac+e?=
- =?us-ascii?Q?SpzsY5s0bh6ZtKXzjW4H5hbon7FWQ70N0cO+ZzuG3Jeu6m9EQTCZ5nakt+tu?=
- =?us-ascii?Q?EczxwjU2Xsh88/yRvnd8U2e0OEzhRqhNXqJgH5Crl6RxrM1OXaInNPC8Wdk6?=
- =?us-ascii?Q?D+2+zKqlL7001dAFBZiYvfHublfyKDw7J/XRwQVWjlwee90QljVAOtW7nGrz?=
- =?us-ascii?Q?GYB1QA=3D=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014); DIR:OUT;
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Mon, 2 Feb
+ 2026 05:08:52 +0000
+Received: from PH7PR11MB6796.namprd11.prod.outlook.com
+ ([fe80::60ca:3168:fb41:7ae7]) by PH7PR11MB6796.namprd11.prod.outlook.com
+ ([fe80::60ca:3168:fb41:7ae7%2]) with mapi id 15.20.9564.016; Mon, 2 Feb 2026
+ 05:08:52 +0000
+From: "S, Sowmiya" <sowmiya.s@intel.com>
+To: "Kandpal, Suraj" <suraj.kandpal@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Sharma, Swati2" <swati2.sharma@intel.com>
+Subject: RE: [PATCH i-g-t v7 7/9] tests/kms_writeback: Remove unused
+ invalid_fb parameter
+Thread-Topic: [PATCH i-g-t v7 7/9] tests/kms_writeback: Remove unused
+ invalid_fb parameter
+Thread-Index: AQHcj0MzgNJJB/6kHE2kGRyU5XzyvLVlroQAgAABSQCACTT0EA==
+Date: Mon, 2 Feb 2026 05:08:52 +0000
+Message-ID: <PH7PR11MB6796A4DD3F1643D9DF673F17E59AA@PH7PR11MB6796.namprd11.prod.outlook.com>
+References: <20260127043233.254107-1-sowmiya.s@intel.com>
+ <20260127043233.254107-8-sowmiya.s@intel.com>
+ <DM3PPF208195D8D473384C8865D18E79369E390A@DM3PPF208195D8D.namprd11.prod.outlook.com>
+ <DM3PPF208195D8D791E83C84958C85F3423E390A@DM3PPF208195D8D.namprd11.prod.outlook.com>
+In-Reply-To: <DM3PPF208195D8D791E83C84958C85F3423E390A@DM3PPF208195D8D.namprd11.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6796:EE_|DS4PPF64C459891:EE_
+x-ms-office365-filtering-correlation-id: 0a8d2dbc-77d8-400d-3dd9-08de6219286f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|1800799024|366016|376014|7053199007|38070700021; 
+x-microsoft-antispam-message-info: =?us-ascii?Q?lGfpJ5ERAMN3w8QVYg6JZfridcbn+K0FlrXg38ZRksOmwv9a4DqHUgT3r90Q?=
+ =?us-ascii?Q?azGYlr/oFZ7AzpeZ3Bs05qwgW/3IKlYSiqZf9AhdtKDwjnUPJ/5R9izL8IpH?=
+ =?us-ascii?Q?Y2wPQGJsY1M6scvA3zO5sctkXrvcXC60N6+Hu8/OOZiIjdm0XvdMNWE66OEc?=
+ =?us-ascii?Q?F4TRyk5znRY+jMUrWu6OU5pG2elTU7Dr3zOOr02vwt7khcMnMQ8pNefDlssL?=
+ =?us-ascii?Q?6UYi0WRKDk3fhDPSMT1ow5qDQ3VGKFQSS1V6ZAbwgteo/hIYBYxcTX/7oeMK?=
+ =?us-ascii?Q?uZrSmuG1DV1zbB8gFhRGFT3jMgyYkDj1Yy8MN7r0PKOT3FQY5/bjL9FRjuKJ?=
+ =?us-ascii?Q?+IGb5VX5P1Pwd9VSybPNadgGnmUoFnlHIY9DfE7e5aC52ylb1I5uEhgoDaeg?=
+ =?us-ascii?Q?Mss/AoNACTRU1LN49E6ExgLtOS+AlnWOTtPIOTwl4TL7hXdpsS7oX3ODzk9v?=
+ =?us-ascii?Q?I2IMJWkiwOyZ6KZqRZsZzREcoIIjMzE4jZlXR+Y+Ugq+5890JQWJX1mVwt2e?=
+ =?us-ascii?Q?Xq95Q0ibL6BMk0OqxXpFpzCi4G74Ym3m8aXrKEfc+wxgeWCv4olswnDkEjan?=
+ =?us-ascii?Q?Xm+AzGDIAWgTz1fi3KS6yl1jQNxYB+LCXmiLxrfv79REXkZ2bhN3UL3qWGuF?=
+ =?us-ascii?Q?moKAkEI608/6qj2wG6bzZ2G4rL+tDYeJtO/c6VYX7kiGRTETFCbggkaNGH7I?=
+ =?us-ascii?Q?nm7tNscVQKi+BHc2tfbfH27JiUto0I71sYHfdLWyUwg1nCtLj/9UAVGp3RTd?=
+ =?us-ascii?Q?yVKoBdQ8M+TijRIKS4g5EAcSNq2UMl1/zCM+T4rODpYr5hhdW3R1OdcxMTlE?=
+ =?us-ascii?Q?GZW/wWDTSoDSVPTST9lbpULJU+ed8/wtjw/5XdkkteD03QGaode7PjFX+UgI?=
+ =?us-ascii?Q?DDbwZ50NeNrGp6sOXmQqBoMo8y85ZF2vdhW3n370Mn7U99gxlXuDeqnkb7LD?=
+ =?us-ascii?Q?ih5ggiVfLytvquDhmlMTyBhcr5TIfU5lwJEh8Qo+4VdBTSrA0wcwB+P7x0cl?=
+ =?us-ascii?Q?VB7htWvoE/Lxw6Tylts6Ui2AlkQppLPXXw73J0LUNYdnZzentRhHt+PgAC9m?=
+ =?us-ascii?Q?2qGopLYevN2h461/uXWsBPW6K8KkLcZuZE3POI8w5/KwQqt5jN/j6IsklXra?=
+ =?us-ascii?Q?RSf9MwFI6YxD+DDOatPQjke9QKieR+5bu+cfiEdG4axJYemhC29i5V3cf79e?=
+ =?us-ascii?Q?KTG4O7qzCKd+EUFJPlPaM/vVCc7cTfH/Dr6M6nTi1iuDQpjpCF05RK8xHh1U?=
+ =?us-ascii?Q?g1LGS33850aSkvRwOsxHogQ87eRoaN80PpIK2HIc5XWLDXseUQ7d76Rlbqu4?=
+ =?us-ascii?Q?2UTn0gk/f4ZF0KR1HMZ7CKVpTCVAluGgHNVlvrCGJgSDT0M3smoX2AqiHuM3?=
+ =?us-ascii?Q?YyV7LcGvFqRCmVk7FEofEc46QDkkHZLbemVzBLmd9dnFnYOMZ7uYqMjcSSf2?=
+ =?us-ascii?Q?8dy893cdsblIgGw4pIyk6VyxzX/lbgLmmtNDxNRvom4Bkwef/bvlFXeOCeKQ?=
+ =?us-ascii?Q?V6vOU4QaOkyedUcpdfTzdoKOeYUgMgCepa8BITcNszmCAQdePLwMztuYdYsm?=
+ =?us-ascii?Q?ukFjA+D4WwSuG/efZapc5AX1sMmMUtN9Wb9pPxuW+NrR6+ugiDnUcp7rzkxW?=
+ =?us-ascii?Q?dGQ+zp3V68vRL0MY2K/EPVA=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB6796.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(7053199007)(38070700021); DIR:OUT;
  SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: rXRdsbW2ZYs5Hwt3a1i/yy4W7FB3dKTFy/PjL3kAAhe6zArId0N6kLi7cM9q09/QY+/jE5S1q5MfEJ8YrtaCT6Y9rzhTBdxwBiH1XRLIsfF67uMNNW71MnpTvPax/dj0vNM1qUTN34EeT+QELNqzyEYOOVAP4VqpN+4NWUrKOBepct214hXgzzSiBBQD927ouhvEUlbXngZQAWDRmJlCj9p+4lS521GyCI72Uk4feVFsD8uTRQQVxFXcj6mcnhQC7qcFgqrnUInMFVznHhWt48wDgyvuuatgsoMqszkTBR2DnLKHTHpSalT8sC1xzKv+poRulSkX0yCB6VmRxU2OCcVfaoZxaBoVja4piHk6O3fHgzcVAjyUW+gUV+q6yfxLUBTWLCfTWeMdQK2WMb3lbL1jhYBBb6jXR9MUoH3xuXPABA27kkQgqpakZ1hF080U
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 05:07:57.2103 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56a791e3-6908-4932-f29d-08de6219078a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00002316.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8544
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?xB7K9rIiYytYZ1DcB6EoOA2EegUjqGprbT0DVL5IwYASchYW2VBO8ISYpgTU?=
+ =?us-ascii?Q?788WAiaBLWetFgI7kPdEr4Goc+Nhi4vwdtjVIlGGcTYtDTb8ITwMZtPX6N6a?=
+ =?us-ascii?Q?xNL22IzlOR3xw3rscggq2FP4adKB34q67rsGNZxWaxJ0zuuafbrJxpIuRPfo?=
+ =?us-ascii?Q?N7+mIQX1sOU7IKfYJZJXdZIcepI8O1febj5YQu36ZXThHsFgcIgfq3waTl6h?=
+ =?us-ascii?Q?oBQcinS7ZXph7twTnlvnhUgILUMWUAjw6uwYNhcSF1BSJS7Ve1ejc7igqOQY?=
+ =?us-ascii?Q?YLwFw5JT36PhYX10JxGF8zU8SXBdzkkaa+GfIRo3oXMRvLF0+xh++cgdQakv?=
+ =?us-ascii?Q?g/u3YiuBNhJQIXGCs8sipTlWdh2GNTruq9cmCBIIrborgR4xkYP8VjaVY0jR?=
+ =?us-ascii?Q?9alfgid+OUehtou0yZKylck/5o0y+45UtWgvLUR5U2DSxYLr+QU8XPkrk79B?=
+ =?us-ascii?Q?C7Rv4DA/6Iff0OJ7fx2BOcg2d2ZGn4pADlH4djGDPuLoSggiXw0gRk3wsPcs?=
+ =?us-ascii?Q?8THcK2vSvind7+MhdiKK8Xkt34P/Fzrea1WlUIxFCa59X+lNtXtQItlHPphw?=
+ =?us-ascii?Q?roA5ianEUT4rm2L7nPmWsERwfzhOu2PjI+rILykjC8kPrBE2OKdWGCo37/tY?=
+ =?us-ascii?Q?Js6Eqg0El5SXCOwItzxy457Z7Baf8EE0MeHqAW5LBe55u/G01EKoyIebm2z1?=
+ =?us-ascii?Q?iP7iiZYjfSEQ+6adYT/accR85MPRFhalOAHTzZrlvWGqB+TRNCDnrZxGnqAo?=
+ =?us-ascii?Q?GOk11Veuw+ujyxPFf3s0PGYXH+rF+VtAd8MViVJ2qAHvRX8i9ZEIeTXE0yfs?=
+ =?us-ascii?Q?zlg498Q6Cm9afeaOicdBpr8k5L9rhyIJld+IEzvpTK6T8U7CWfDJMX3gCcLo?=
+ =?us-ascii?Q?bZS2GIiwCjqe1wpQR9Jy/k8l7BxDgXhL9VhXgrJikruMPJJf64rDyIDG2zex?=
+ =?us-ascii?Q?91o8yTXhZBDJmIO7OAzy7HAuLZriG6PK/qFm75AhUpjQ9/8F4RFhessIYfAn?=
+ =?us-ascii?Q?VXCUMv8lVItTnHdUD2wwuknBkvBaXiWI11rPKbUyR71Ow5dpQDOyQQ3BQzqm?=
+ =?us-ascii?Q?oNYA9Tz+PkOHC/9jCpvQmVud8Ufru/xaqY3nl7qHk8o6ILOQqQtGVqVKV0fQ?=
+ =?us-ascii?Q?9rw3Oz4GsFOMOcq8AWTRruuDbBZAR/7g4ng5bkC54VJgM7Wqw0cro/6NrL14?=
+ =?us-ascii?Q?1qYE9wKLx5fAMDtmUBgyeTjct1m+BedkNtYIFaJGIIWqQUOB4KIScf95dGcE?=
+ =?us-ascii?Q?u3QbMdsJ0WTFcyHh2H7eCfsmISBGgw+VQWqD5WPBnQAkvLZgJJTnyByXNnWU?=
+ =?us-ascii?Q?qyPV26/bRMylsT3/dx0eTMB+cqUR0DjuOmrQi5ZZ4fKXrviYK3XuAvMUBk6U?=
+ =?us-ascii?Q?u4jnY+cl75iiwNnpw/cFM5WAw2L7+ECZjXQhOFqKPzPMOYez3fWRXf47iRRN?=
+ =?us-ascii?Q?DkIU7vRa7G741VOUx9alWTdHc33Ufqssct+FxTzw2/gI2dOAHm8GX6Mq/7JK?=
+ =?us-ascii?Q?4I9JPjcRuAU7RXRCYnVAXHK/Bp/toYXeZrWxxFp0uaemccONpUV8ZPccv7xl?=
+ =?us-ascii?Q?HgEKfoerpEdlaA26D8YiQwo/NCAfUZ9l5iJiBbVHl2MVLwtmcJGJHoQKLQde?=
+ =?us-ascii?Q?D1Co7OBDxkxkGUooT7U7TNmNkNkfsOTcRoHkElTbAX46FqnUwUbxfCcV1N14?=
+ =?us-ascii?Q?83jrdFqJwt7acIHBmCNRPmmoFJBCZaJue6YWmNeaS19jzujM?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6796.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a8d2dbc-77d8-400d-3dd9-08de6219286f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Feb 2026 05:08:52.4833 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 97IybxqG7OaagZnEafWqutQmsNFEJPVvqv8ZMRgQJtrKuNbFMnwpJ0nzVcJsOcol7lcyym3bpHPmP8E5e/m6pA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF64C459891
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,52 +191,98 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-VCN JPEG (VCN 4.0.5+) requires IB size to be aligned to 16 DW
-(ib_pad_dw_mask = 0xF) according to hardware specification. The
-current test does not align the IB before submission, which can
-cause failures.
+Hi Suraj,
 
-This patch adds IB alignment logic in amdgpu_cs_jpeg_decode():
-- Validate initial IB count is even (required for 2-DW NOP packets)
-- Pad to 16 DW alignment using 2-DW NOP packets (0x60000000/0x00000000)
-- Add capacity checking to prevent IB buffer overflow
-- Add assertions to catch alignment violations early
+> -----Original Message-----
+> From: Kandpal, Suraj <suraj.kandpal@intel.com>
+> Sent: 27 January 2026 14:00
+> To: S, Sowmiya <sowmiya.s@intel.com>; igt-dev@lists.freedesktop.org
+> Cc: Sharma, Swati2 <swati2.sharma@intel.com>
+> Subject: RE: [PATCH i-g-t v7 7/9] tests/kms_writeback: Remove unused
+> invalid_fb parameter
+>=20
+> > Subject: RE: [PATCH i-g-t v7 7/9] tests/kms_writeback: Remove unused
+> > invalid_fb parameter
+> >
+> > > Subject: [PATCH i-g-t v7 7/9] tests/kms_writeback: Remove unused
+> > > invalid_fb parameter
+> > >
+> > > Remove the invalid_fb/output_fb parameter since it is not used
+> > > anywhere in the test. Reuse the fixture's input_fb for both 8-bit
+> > > and 10-bit formats to simplify the setup.
+> > >
+> > > v7: Remove invalid_fb in a separate patch as per review (Suraj)
+> > >
+> > > Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
+> > > ---
+> > >  tests/kms_writeback.c | 12 ++----------
+> > >  1 file changed, 2 insertions(+), 10 deletions(-)
+> > >
+> > > diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c index
+> > > 58118b8da..8d5bf5294 100644
+> > > --- a/tests/kms_writeback.c
+> > > +++ b/tests/kms_writeback.c
+> > > @@ -297,7 +297,7 @@ static void test_invalid_parameters(igt_output_t
+> > > *output, igt_fb_t *valid_fb, ig
+> > >  	}
+> > >  }
+> > >
+> > > -static void writeback_fb_id(igt_output_t *output, igt_fb_t
+> > > *valid_fb, igt_fb_t
+> > > *invalid_fb)
+> > > +static void writeback_fb_id(igt_output_t *output, igt_fb_t
+> > > +*valid_fb)
+> > >  {
+> > >
+> > >  	int ret;
+> > > @@ -706,19 +706,11 @@ int igt_main_args("b:c:f:dl", long_options,
+> > > help_str, opt_handler, NULL)
+> > >  			    (!strstr(igt_format_str(test_format), "BGR")))
+> > >  				continue;
+> > >  			igt_dynamic_f("writeback-fb-id-%s",
+> > > igt_format_str(test_format)) {
+> > > -				igt_fb_t output_fb;
+> > > -
+> > > -				fb_id =3D igt_create_fb(display.drm_fd,
+> > > mode.hdisplay, mode.vdisplay,
+> > > -
+> > > get_default_fb_format(&display, bpc),
+> > > -						      igt_fb_mod_to_tiling(0),
+> > > -						      &output_fb);
+> > > -
+> >
+> > Why delete these lines this patch is simply supposed to remove the
+> > param invalid_fb since no one uses this All these deletions go in the
+> > next patch
+>=20
+> Actually not the next patch but the previous patch and this patch need to
+> move before the 6th patch
+>=20
+Before 6th patch we have 2 subtests for writeback-fb-id, so refactor the te=
+st and then removing the invalid_fb seems to be an ideal way.=20
 
-This ensures the test properly aligns IBs before calling submit(),
-demonstrating correct usage pattern for VCN JPEG submissions.
-
-Signed-off-by: Tessita Thomas <Tessita.Thomas@amd.com>
----
- tests/amdgpu/amd_jpeg_dec.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/tests/amdgpu/amd_jpeg_dec.c b/tests/amdgpu/amd_jpeg_dec.c
-index ed005b3a1..f0876bfe1 100644
---- a/tests/amdgpu/amd_jpeg_dec.c
-+++ b/tests/amdgpu/amd_jpeg_dec.c
-@@ -193,6 +193,22 @@ amdgpu_cs_jpeg_decode(amdgpu_device_handle device_handle,
- 		send_cmd_target(context, dec_buf.addr + (size / 4), &idx);
- 	}
- 
-+	/*
-+	 * VCN JPEG (VCN 4.0.5+) requires IB size aligned to 16 DW.
-+	 * We pad using a 2-DW NOP packet, so the initial ndw must be even.
-+	 */
-+	/* IB capacity in DW (IB_SIZE is in bytes, divide by 4) */
-+	unsigned int ib_dw_capacity = IB_SIZE / 4;
-+	igt_assert_eq(idx & 1, 0);
-+
-+	while (idx & 0xF) {
-+		igt_assert(idx + 2 <= ib_dw_capacity);
-+
-+		/* 2-DW NOP packet for VCN JPEG */
-+		context->ib_cpu[idx++] = 0x60000000;
-+		context->ib_cpu[idx++] = 0x00000000;
-+	}
-+
- 	amdgpu_bo_cpu_unmap(dec_buf.handle);
- 	r = submit(device_handle, context, idx, AMDGPU_HW_IP_VCN_JPEG);
- 	igt_assert_eq(r, 0);
--- 
-2.43.0
+> Regards,
+> Suraj Kandpal
+>=20
+> >
+> > Regards,
+> > Suraj Kandpal
+> >
+> > >  				igt_skip_on(data.dump_check ||
+> > > data.list_modes);
+> > >  				igt_skip_on_f(!(data.supported_colors & (1 <<
+> > i)),
+> > >  					      "DRM_FORMAT_%s is not
+> > > supported\n",
+> > >  					      igt_format_str(test_format));
+> > > -				writeback_fb_id(output, &input_fb,
+> > > &output_fb);
+> > > -				igt_remove_fb(display.drm_fd, &output_fb);
+> > > +				writeback_fb_id(output, (bpc =3D=3D 8) ?
+> > > &input_fb : &input_fb_10bit);
+> > >  			}
+> > >  		}
+> > >  	}
+> > > --
+> > > 2.43.0
 
