@@ -4,55 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF0B8E73141
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 08:30:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EA2FE73146
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 08:37:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 74BCE10E28C;
-	Mon,  2 Feb 2026 08:30:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C123810E3B4;
+	Mon,  2 Feb 2026 08:36:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jkp4Ck99";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kpQO36gw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61FAC10E28C
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 08:30:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4DEA10E3B4
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 08:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770021003; x=1801557003;
+ t=1770021418; x=1801557418;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=BSD9QCjz7oTDwmKvpAyHCFzz3CtGBDrjEaG7uhAKRhA=;
- b=jkp4Ck99an6r4IIgbwoK+o1LG26USM+3Of74LWmpVxtcvewhauWl/ahg
- sgslRvYsqjClBxR44gEjdoLyX1AsBNdp6LwzwhVz7egTKzKIbC54vwNs0
- JZKt6f2TjfotCLMCX9pDDQCf/ZaC5t7qvs6tU6+kzK4wpzxhlXatUpR7Q
- hPb/ZEq+XIDrgHAvuRBEOyOEgP9kMoA486jF2lIisDqUsvb4yn2XJWMIm
- d6X1nN4L3YBMaMkzE+ifeNBRty7oKoymwtA7lH/b/7sj33lSN0N5rqyAF
- SNr8EsDaRSasl3AQvWxBuDv2NpsI1bHEVo8m9hRQGmucTF/G0XA7aoya9 g==;
-X-CSE-ConnectionGUID: TAF2Q35yRNe0rN1amMAVAw==
-X-CSE-MsgGUID: IqONLLC1QpOuVMNfrlQXBw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11689"; a="88753685"
-X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; d="scan'208";a="88753685"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Feb 2026 00:30:03 -0800
-X-CSE-ConnectionGUID: CuP/7e6CSq+lIPp4jNcTqQ==
-X-CSE-MsgGUID: z0m3JKk9TuWL4a/1GiL0gA==
+ bh=mDPkPM48EsM+6l2BbKp9wqprkW1Q+ZbDSsDMigOXHvQ=;
+ b=kpQO36gwuls6JU0GLBxuiBDGOzE/GqDhW/Lf0XGMqNbd8w+htPeB9nWr
+ HVr6I+8vqIOyG3gzNtq5LSgKPM1P+vS7vWk5tZXEoWten5LKPEKFd4mxb
+ tvMBQae4SXAmh/RvBGwb3XWkaxCnvzdGNTAlSSPr/3u3PwP+aNGnyqJM7
+ 7gLolQSUnV24WMxVdUQHWOcVky7SLzeDePlMvdBFS2lWas2CY7Attuae/
+ CRM8sXFngJm65j6T4O85bJ9I69wuY/pvKQjItpgJ5bS9YBUQALGfjTjN1
+ oc0HHcN9O0/QWykhq6ibi9NciYtWSSHhbTAQ+yg2NS0bJmCax2UA/LMWs g==;
+X-CSE-ConnectionGUID: XV0CgOCtR/mUbFeyfKzETw==
+X-CSE-MsgGUID: KaJzZd4UTx6UsKMxDB8rcw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11689"; a="71259763"
+X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; d="scan'208";a="71259763"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Feb 2026 00:36:58 -0800
+X-CSE-ConnectionGUID: OiFogmA+Spicvl+d9myZaw==
+X-CSE-MsgGUID: 4m3ku0vMTkK8ewrkJRR5aw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; d="scan'208";a="213922718"
-Received: from administrator-system-product-name.igk.intel.com
- ([10.91.214.181])
- by fmviesa005.fm.intel.com with ESMTP; 02 Feb 2026 00:30:01 -0800
-From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; d="scan'208";a="209317400"
+Received: from karthik-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.238.68])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Feb 2026 00:36:57 -0800
+From: Karthik B S <karthik.b.s@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [RESEND i-g-t v1] tests/kms_flip: test suspend on one pair of pipes
-Date: Mon,  2 Feb 2026 09:27:00 +0100
-Message-ID: <20260202082700.3194987-1-michal.grzelak@intel.com>
-X-Mailer: git-send-email 2.45.2
+Cc: swati2.sharma@intel.com,
+	Karthik B S <karthik.b.s@intel.com>
+Subject: [PATCH i-g-t 1/2] intel-ci: Add valid skips on kms_plane to display
+ blocklist
+Date: Mon,  2 Feb 2026 14:02:59 +0530
+Message-ID: <20260202083300.647462-1-karthik.b.s@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,70 +67,85 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently, every pair of ({pipe1, pipe2}, {output1, output2}) is being
-tested in 2x-* subtests. Since suspend shouldn't be tested per pipe, it
-causes unnecessary overhead: with 4 pipes & 4 displays it runs in total
-36 tests. Given that each suspend's dynamic subtest can take up to tens
-of seconds, total duration of the test easily exceeds timeout.
+Multiple kms_plane@pixel-format-* are skipping as those modifiers are
+not on bmg,lnl and ptl. Add these subtests into relavent blocklists.
 
-When testing suspend, for each pair of outputs test only first and last
-pipe unless it is said to run on all pipes.
-
-Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
+Signed-off-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_flip.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ tests/intel-ci/xe.bmg.display.blocklist.txt | 2 ++
+ tests/intel-ci/xe.lnl.display.blocklist.txt | 3 ++-
+ tests/intel-ci/xe.ptl.display.blocklist.txt | 3 +++
+ 3 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index a74e69c6f..dd110aecf 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -1841,8 +1841,8 @@ static void run_test(int duration, int flags)
- 	/* Count output configurations to scale test runtime. */
- 	for (i = 0; i < resources->count_connectors; i++) {
- 		for (n = 0; n < resources->count_crtcs; n++) {
--			/* Limit the execution to 2 CRTCs (first & last) for hang tests */
--			if ((flags & TEST_HANG) && !all_pipes &&
-+			/* Limit the execution to 2 CRTCs (first & last) for hang and suspend tests */
-+			if (((flags & TEST_HANG) || (flags & TEST_SUSPEND)) && !all_pipes &&
- 			    n != 0 && n != (resources->count_crtcs - 1))
- 				continue;
- 
-@@ -1873,8 +1873,8 @@ static void run_test(int duration, int flags)
- 		for (n = 0; n < resources->count_crtcs; n++) {
- 			int crtc_idx;
- 
--			/* Limit the execution to 2 CRTCs (first & last) for hang tests */
--			if ((flags & TEST_HANG) && !all_pipes &&
-+			/* Limit the execution to 2 CRTCs (first & last) for hang and suspend tests */
-+			if (((flags & TEST_HANG) || (flags & TEST_SUSPEND)) && !all_pipes &&
- 			    n != 0 && n != (resources->count_crtcs - 1))
- 				continue;
- 
-@@ -1920,6 +1920,12 @@ static void run_pair(int duration, int flags)
- 		for (n = 0; n < resources->count_crtcs; n++) {
- 			for (j = i + 1; j < resources->count_connectors; j++) {
- 				for (m = n + 1; m < resources->count_crtcs; m++) {
-+					/* Limit the execution to 2 CRTCs (first & last) for hang and suspend tests */
-+					if (((flags & TEST_HANG) || (flags & TEST_SUSPEND)) && !all_pipes &&
-+					    ((n != 0 && n != resources->count_crtcs) ||
-+					    m != resources->count_crtcs - 1))
-+						continue;
-+
- 					memset(&o, 0, sizeof(o));
- 					o.count = 2;
- 					o._connector[0] = resources->connectors[i];
-@@ -1965,8 +1971,8 @@ static void run_pair(int duration, int flags)
- 					crtc_idxs[0] = n;
- 					crtc_idxs[1] = m;
- 
--					/* Limit the execution to 2 CRTCs (first & last) for hang tests */
--					if ((flags & TEST_HANG) && !all_pipes &&
-+					/* Limit the execution to 2 CRTCs (first & last) for hang and suspend tests */
-+					if (((flags & TEST_HANG) || (flags & TEST_SUSPEND)) && !all_pipes &&
- 					    ((n != 0 && n != resources->count_crtcs) ||
- 					    m != resources->count_crtcs - 1))
- 						continue;
+diff --git a/tests/intel-ci/xe.bmg.display.blocklist.txt b/tests/intel-ci/xe.bmg.display.blocklist.txt
+index 2c0c4a0e8..86c1bbd72 100644
+--- a/tests/intel-ci/xe.bmg.display.blocklist.txt
++++ b/tests/intel-ci/xe.bmg.display.blocklist.txt
+@@ -11,6 +11,7 @@ igt@kms_flip_scaled_crc@.*(yf|y)tile.*
+ igt@kms_async_flips@invalid-async-flip
+ igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+ igt@kms_pipe_stress@stress-xrgb8888-(y|yf)tiled
++igt@kms_plane@pixel-format-(y|yf)-tiled.*
+ #########################################
+ # Valid skip :- 90/270 rotation is not supported
+ ##########################################
+@@ -116,6 +117,7 @@ igt@kms_ccs@.*-dg2-.*
+ igt@kms_ccs@.*-lnl-.*
+ igt@kms_ccs@.*-mtl-.*
+ igt@kms_flip_scaled_crc@.*dg2rcccs.*
++igt@kms_plane@pixel-format.*(mtl|dg2).*
+ ##########################################
+ # Valid skip :- Simulation specific
+ ##########################################
+diff --git a/tests/intel-ci/xe.lnl.display.blocklist.txt b/tests/intel-ci/xe.lnl.display.blocklist.txt
+index d92e12d64..d280fb16a 100644
+--- a/tests/intel-ci/xe.lnl.display.blocklist.txt
++++ b/tests/intel-ci/xe.lnl.display.blocklist.txt
+@@ -11,6 +11,7 @@ igt@kms_flip_scaled_crc@.*(yf|y)tile.*
+ igt@kms_async_flips@invalid-async-flip
+ igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+ igt@kms_pipe_stress@stress-xrgb8888-(y|yf)tiled
++igt@kms_plane@pixel-format-(y|yf)-tiled.*
+ #########################################
+ # Valid skip :- 90/270 rotations are not supported
+ ##########################################
+@@ -85,7 +86,7 @@ igt@kms_ccs@.*-dg2-.*
+ igt@kms_ccs@.*-mtl-.*
+ igt@kms_flip_scaled_crc@.*dg2rcccs.*
+ igt@kms_ccs@.*4-tiled-bmg-ccs
+-
++igt@kms_plane@pixel-format.*(mtl|dg2).*
+ ##########################################
+ # Valid skip :- Simulation specific
+ ##########################################
+diff --git a/tests/intel-ci/xe.ptl.display.blocklist.txt b/tests/intel-ci/xe.ptl.display.blocklist.txt
+index e9d0775e7..bb5c83f15 100644
+--- a/tests/intel-ci/xe.ptl.display.blocklist.txt
++++ b/tests/intel-ci/xe.ptl.display.blocklist.txt
+@@ -19,6 +19,7 @@ igt@kms_(plane_lowres|frontbuffer_tracking|plane_multiple)@.*tiling-y.*
+ igt@kms_flip_scaled_crc@.*(yf|y)tile.*
+ igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+ igt@kms_pipe_stress@stress-xrgb8888-(y|yf)tiled
++igt@kms_plane@pixel-format-(y|yf)-tiled.*
+ ##############################################################################
+ # Valid skip: Test skip due to hybrid config requirement
+ ##############################################################################
+@@ -71,6 +72,7 @@ igt@kms_scaling_modes@scaling-mode-none
+ igt@kms_ccs@.*-dg2-.*
+ igt@kms_ccs@.*-mtl-.*
+ igt@kms_flip_scaled_crc@.*dg2rcccs.*
++igt@kms_plane@pixel-format.*(mtl|dg2).*
+ ##############################################################################
+ # Valid skip: Valid for display ver < 13
+ ##############################################################################
+@@ -148,6 +150,7 @@ igt@kms_rotation_crc@primary-4-tiled-reflect-x.*
+ ##############################################################################
+ igt@kms_(plane_lowres|plane_multiple|rotation_crc|big_fb|flip_scaled_crc)@.*(x-tile|xtile|tiling-x).*
+ igt@kms_pipe_stress@stress-xrgb8888-xtiled
++igt@kms_plane@pixel-format-x-tiled.*
+ ##############################################################################
+ # Not supported by current CI configs
+ ##############################################################################
 -- 
-2.45.2
+2.43.0
 
