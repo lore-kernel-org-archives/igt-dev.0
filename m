@@ -4,42 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 362C5E7DEEE
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDE5CE7DEF1
 	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 14:32:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B5FD510E445;
-	Mon,  2 Feb 2026 14:32:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 767C710E4DF;
+	Mon,  2 Feb 2026 14:32:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="dfu37rb2";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="2iv6alOz";
 	dkim-atps=neutral
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E3FF810E445
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F8E910E410
  for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:32:30 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id D38471A2C1B
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:32:29 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id AA22F60767;
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 0C7181A2C19;
  Mon,  2 Feb 2026 14:32:29 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+ by smtpout-01.galae.net (Postfix) with ESMTPS id D764B60767;
+ Mon,  2 Feb 2026 14:32:28 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 9067D119A88EE; Mon,  2 Feb 2026 15:32:28 +0100 (CET)
+ with ESMTPSA id ABB98119A8891; Mon,  2 Feb 2026 15:32:27 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770042749; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1770042748; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=FUkta9fouLv6EhPuumWvIeCW+7EYIKZbucyBWxWIvrY=;
- b=dfu37rb23UCb93lVXfJwzZJF2rwq4A0eyBKAGGRtfYy0ZlTA1VSCvbBdgb2p/yaXKvowpT
- Ljv2uB9VQNUD5pys9gpM6m69jfXhD80EQupQiiUILAF9+wPqFs4E/LnrvGxcLMRIo9TgVP
- S2RHhIaQ5mulAxeas5W2ctZxigEmy4LiJ1TqTuLGGc9RCpn6PwFu1k3q3mf81o0L0IaNNZ
- p3A/Jz1aoelQw7WEPEpqVHC7VYITze6AN/K0tDa4MgV66tON3OoReSyBXjj0cqsVD/M9YC
- Ic14iAQgKfgA/NGfhIieOUl36+7CPNVUGAKMIU0YR26WDrQroKXgsnMJ3LKIjg==
+ bh=iLOKZEUJG7LXZQJwW5pVOfRtwcwOoY6RvUlqKrP222Q=;
+ b=2iv6alOzlD8XoKE2DIyule3oi66i40xBaJoiD2rDjf61fElj/ZTP8GDuJcgq0xz2xmJgA7
+ ktWWJNp28W980woOKH5PmuREk81wtHgRC3SMpVuR+NfwBmW2ZfZ7imYVAzlVJF6wL65lnh
+ 5726iOS31zC81zwpajmVfyq/y0k5PkBHIra6D2O4uPNefm6FXxgZFMnnG4ilHqK+vEPmHA
+ 1ed8eJwZ3PUtgfQLbIA9swbvBxOcJiu9H5Es0cifno8PasdWckNBqlJtLNfeFG3lkqkQi3
+ o+LHk8qj8ivGAMDnKbuGsBG76YtVtax4Db3iEP1WxZSRFT4yZ6yN6eci2oG3dQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 02 Feb 2026 15:32:41 +0100
-Subject: [PATCH i-g-t v6 02/48] lib/igt_kms: Add helper to wait for a
- specific status on a connector
+Date: Mon, 02 Feb 2026 15:32:40 +0100
+Subject: [PATCH i-g-t v6 01/48] lib/igt_kms: Add a detect timeout value
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260202-unigraf-integration-v6-2-834af822eee7@bootlin.com>
+Message-Id: <20260202-unigraf-integration-v6-1-834af822eee7@bootlin.com>
 References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
 In-Reply-To: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -47,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2519;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3125;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=eNEfctpwXj114r7fQLcwZ6q5n8QwLdLB6IDxZyuP8VQ=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpgLWOF9OXx1/0ejCKlrH814bZYBzVdBWixhZ24
- Yh/9FqC94+JAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaYC1jhsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKtPhAAtrDa9TmMTt/y7iq/tXWCUQ/RV3uUKW+
- 5Nhj9IgE3398QYmM1toNbm9sX5UBeMbmuA3B+2bkkUUP5uikKamaYJ3pOC9NcjqNDxVTAlapPP4
- DGbOtzT50HjWwD8os35HNaTZXVUyA81iRyIqbWOQgC/nPhu/Hwa3P8tfnd1G3McBkeB4W+v+QJX
- kdWPNTeGQsx/Mf63YsC4phsS/f/qPgoe/jcfiKAhz3JIjGSAZE7PPF++FpGJ5Bm8UKJhdbaq1iq
- CdVYnYrhh+NWbIfsuXdZMhpAcUA2JktgFEYeFwhLm5mp+Wz+P7tZ3PRcliQrgw9r48LxlfuVOj2
- EjZxhh66bdJRDSOi0OSbQ2Zq4SoINwCF92gJBD1Qu85pzG4mr5VvhOyFbP/lsSWP2WUnKSvW0ZY
- 1FYB871adPlw4Z/R2uuur2Z3rebgJFfgaV5ZVBFjMamn2vwuWhsbRekbTTSXrw3ZC4PLKGBtQYm
- YJUGTVZYsf2ZtfCdOLczPtWAuYAOjeLhjwybXu6HDkHrLko0R11epKotsFkhyMXiKyZmBzh6GAu
- Hvh11s/Yauk10XW/Eg0XODwDhIKKQkpewbMa42pvdNRwso0KR1MkTuUJDPFX/vd6TKqLXvs6WLu
- 4aU2juAPfrQHSLstHO8So+ZBXFjK44nUJF+iY31fgr35GRI0nUC4=
+ bh=qn5t6CSDgxeumhcDW3/qs42eCYPenzNpWoN57DjLpH8=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpgLWOlqWxhil01NQoIiq03opNhbUvYJgjo4W7h
+ KS/snn5x1WJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaYC1jhsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOKffg/+MvqEsw3FSDM0Je0KzZnE3ciwH1bin7j
+ 4fugskIvoCA4m9g4hAZFT3dnu66IZxbUC0Sw/67TslOaPjWcwia3acGbVci0nB/l7iN0idwIJ4D
+ dGBc3Zt8yZo490Yuwt0/y3X48g2Q5dvTxx2ZozcWo/NnW2dMwL10YQc8C+D0pB6kM4A/f6T4GkF
+ 0NlOjRLYgB/szBtHWnCPKmt2lYNp0EAJn9CvoGT73h0s1Dp9nRkqc55y3fklS5myYg91Sa2GrCj
+ 7ZFEkecxnZ1ymmaWjY2jDFHK+17N2ENSE6PSvtXnAwRcnVw6PdnMFjgHj8mVxSDWCl+HP2wJLB/
+ BXERS4WBpy8darL5Ad60z9GMVaoJxz6lsAb3pwktoSN5xd8bL9uNW4Jz0MPHv0ZMZqbzNVhRe7E
+ 7JOLjU4fEFIoqib27vs5NLfJRVEd4YRust0iKgSqVCaD/00rtIFTKIxvX70b5vQbavg3GZY42a1
+ AO3/ymkhCENEIG59b6o9TAft+UB9MEL/sgY1ym6KOOObs9CX/Kk1fUJssJsAfGQ/4firniZnfko
+ HLPnIq/tP4CoUVXQKxxloChvFDm8269iZvQPTGtFt4Fxux2STFXZ4BYGF4gGAh8bZHo6ufL1WZ6
+ dCjaDGgfASe6/6joZwBBHh/L929pJOYghJcE/znC8Pn5Vxhw4SQc=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,76 +79,108 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-During testing with chamelium, it is frequent to wait for a specific
-connector status. This new helper is polling the DRM API to wait for this
-status. This allows detecting it without notifier systems which can fail
-if hot plug detection is not working properly on the device under test.
+Some tests need to wait for a specific connector status. In order to make
+the timeout customisable for each target, add an option in the
+configuration file.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- lib/igt_kms.c | 39 +++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  3 +++
- 2 files changed, 42 insertions(+)
+ lib/igt_core.c |  4 ++++
+ lib/igt_kms.c  | 35 +++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h  |  9 +++++++++
+ 3 files changed, 48 insertions(+)
 
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 3ee670a41a91..da2453cc1028 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -271,6 +271,10 @@
+  *	&num; It is not mandatory and allows overriding default values.
+  *	[DUT]
+  *	SuspendResumeDelay=10
++ *
++ *	&num; The following option define the timeout for detection feature
++ *	&num; (waiting for a connector status)
++ *	DisplayDetectTimeout=10.0
+  * ]|
+  *
+  * Some specific configuration options may be used by specific parts of IGT,
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 3f1e93af62b7..74178adc21b3 100644
+index a94c4820bd87..3f1e93af62b7 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -8015,3 +8015,42 @@ double igt_default_display_detect_timeout(void)
- 
- 	return timeout;
+@@ -60,6 +60,7 @@
+ #include "igt_debugfs.h"
+ #include "igt_device.h"
+ #include "igt_pipe_crc.h"
++#include "igt_rc.h"
+ #include "igt_sysfs.h"
+ #include "sw_sync.h"
+ #ifdef HAVE_CHAMELIUM
+@@ -7980,3 +7981,37 @@ bool igt_has_lobf_debugfs(int drmfd, igt_output_t *output)
+                                               buf, sizeof(buf));
+         return res == 0;
  }
 +
 +/**
-+ * igt_wait_for_connector_status:
-+ * @drm_fd: drm file descriptor
-+ * @connector_id: connector to monitor
-+ * @timeout: maximum duration to wait, in second. Use -1.0 to set the timeout
-+ *           to igt_default_detect_timeout().
-+ * @drm_mode: mode to wait for, see enum drmModeConnection
++ * igt_default_display_detect_timeout:
 + *
-+ * Wait for at most @timeout that the connector @connector_id  status
-+ * become @drm_mode
-+ * Returns: true when the status is reached, false if there is a timeout
++ * Get the default timeout value for detection feature
++ *
++ * Some tests requires to wait for a specific connector status. This value will determine the
++ * timeout value for this waiting.
 + */
-+bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
-+				   int drm_mode)
++double igt_default_display_detect_timeout(void)
 +{
-+	drmModeConnector *connector;
-+	struct timespec start, end;
++	static double timeout = 0.0;
++	static bool first_call = true;
++	GError *error = NULL;
 +
-+	if (timeout == -1.0)
-+		timeout = igt_default_display_detect_timeout();
-+
-+	clock_gettime(CLOCK_MONOTONIC, &start);
-+	end = start;
-+
-+	while (igt_time_elapsed(&start, &end) <= timeout) {
-+		connector = drmModeGetConnector(drm_fd, connector_id);
-+		if (connector && connector->connection == drm_mode) {
-+			drmModeFreeConnector(connector);
-+			return true;
++	if (first_call) {
++		if (igt_key_file) {
++			timeout = g_key_file_get_double(igt_key_file, "DUT", "DisplayDetectTimeout",
++							&error);
++			if (error) {
++				igt_debug("Failed to read DisplayDetectTimeout, defaulting to %f\n",
++					  DEFAULT_DETECT_TIMEOUT);
++				g_clear_error(&error);
++				timeout = DEFAULT_DETECT_TIMEOUT;
++			}
++		} else {
++			timeout = DEFAULT_DETECT_TIMEOUT;
 +		}
-+		drmModeFreeConnector(connector);
-+		clock_gettime(CLOCK_MONOTONIC, &end);
++
++		first_call = false;
 +	}
 +
-+	igt_debug("Timeout waiting for connection status %d on connector %d\n", drm_mode,
-+		  connector_id);
-+	return false;
++	return timeout;
 +}
 diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index ca3c79f713cb..b6937d19f621 100644
+index 432c67d11780..ca3c79f713cb 100644
 --- a/lib/igt_kms.h
 +++ b/lib/igt_kms.h
-@@ -1316,4 +1316,7 @@ void igt_get_and_wait_out_fence(igt_output_t *output);
- igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
- double igt_default_display_detect_timeout(void);
+@@ -40,6 +40,14 @@
+ #include "igt_fb.h"
+ #include "ioctl_wrappers.h"
  
-+bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
-+				   int drm_mode);
++/**
++ * define DEFAULT_DETECT_TIMEOUT - Default timeout in second used for some screen detection
++ * functions
++ *
++ * It can be overiden by option DetectTimeout in the .igtrc file.
++ */
++#define DEFAULT_DETECT_TIMEOUT 10.0
 +
+ /* Low-level helpers with kmstest_ prefix */
+ 
+ /**
+@@ -1306,5 +1314,6 @@ void igt_detach_crtc(igt_display_t *display, igt_output_t *output);
+ void igt_get_and_wait_out_fence(igt_output_t *output);
+ 
+ igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
++double igt_default_display_detect_timeout(void);
+ 
  #endif /* __IGT_KMS_H__ */
 
 -- 
