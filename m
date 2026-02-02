@@ -4,41 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2523BE7DEF5
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 14:33:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F38C8E7DEEE
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 14:33:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B45DB10E4FA;
-	Mon,  2 Feb 2026 14:33:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A0DAB10E4F1;
+	Mon,  2 Feb 2026 14:33:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ZL2p7dJL";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="blaYpbHa";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 992D810E4EC
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:33:08 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8347310E4F1
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:33:09 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 40B2EC237F5;
- Mon,  2 Feb 2026 14:33:12 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 76BA11A2C16;
+ Mon,  2 Feb 2026 14:33:08 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 7754F60767;
- Mon,  2 Feb 2026 14:33:07 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 46A2B60767;
+ Mon,  2 Feb 2026 14:33:08 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 6A1BA119A8915; Mon,  2 Feb 2026 15:33:06 +0100 (CET)
+ with ESMTPSA id 3B70D119A8916; Mon,  2 Feb 2026 15:33:07 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770042786; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1770042787; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=pz8Trs5aby/AXIeZDYzRvSZh8zmpfPPyAIUK7AcT+0U=;
- b=ZL2p7dJL2K5LaXsw3ChZB+BPzrjvkItrNrHs9HzAQCEPYJnNPoMK4sxvYVSRF73jIw61my
- lI4enO9LS+6W7DGryeRDZOea0eiak1KfCTGvzj2PHaVVvJ7OY+TdOrZrVp9hd0CnnuupOW
- TbYvU77Q3gu8HUUhbMPic8PWn2IKXWtmhqV+2b3KdASjzyLv6H8eikyfQFMoG1Md0OBKv0
- E+trY1ogmN1Kzuz1vxRvM3twUnqk26LD6PcLwVHkGpgHvtXP5xuICS3c+da0fN1UAW9/yI
- 0amkzO9OhLfdLa8cZ4gJ9suivzcer1sFtuwk4su68Laz99Imp1bt8v1kPoGP2Q==
+ bh=iWFbVpCzmpfmVx722T9voMzfX2XjcQACG6gONR3rnZc=;
+ b=blaYpbHalPlW09mh3XZKDtp12S4XCV3FPp6ht0EgoyGiycCGiyZz+BKmCBbLAW+03dC8AY
+ g7DeeOFOz2rBZNZX03go1IfKhq7BaOGbEsnnhSihYksgWIXnsZhD5om0lNwhnMSSVLJ6Y7
+ 2zN/ei0MyF7L2lQIfQXA0u13rnnxjGezYPf2np8rwjfPwZ/G38UMkQJEZcj10uw6DQJ2JZ
+ bNlGdHusJjUBw/Te76Bx6PxwxRr1Kvxn6gduFRx1X89RG7TeFmQBSXsv8VsEfUIf1Fa5gh
+ yPL4YG9x+uHL/vAM9w6XLEsbrIwrzFxkqhC/hBaG4m7dA7V1LO2etn9eQHbjSg==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 02 Feb 2026 15:33:24 +0100
-Subject: [PATCH i-g-t v6 45/48] docs/unigraf: Add unigraf documentation
+Date: Mon, 02 Feb 2026 15:33:25 +0100
+Subject: [PATCH i-g-t v6 46/48] lib/unigraf: Add helpers to set maximum
+ link rate
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260202-unigraf-integration-v6-45-834af822eee7@bootlin.com>
+Message-Id: <20260202-unigraf-integration-v6-46-834af822eee7@bootlin.com>
 References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
 In-Reply-To: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -46,21 +47,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3634;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3063;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=vlrPXU7QS89ODF4iEDwzL/ggY+YKVupU3S8LVg38Ir4=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpgLWUXvkhUo3htx7y5WE0g7AZga16qjWicKMki
- LkFL0pbznWJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaYC1lBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOI4xw/+JK+bhiurqH+3c1kgNtUikx7eA4YrpMY
- e6LVA0p3ZDJ8I0x5OkAERHnmkgAQqcEJXejmVCQInm2Xn/cNlC6zuIIekrdFvC5ffIlehOC4cWh
- hC8OPHutDzhbHzQw4vN6FCfg3qxV1qaywOPH40XDJSPYVCvbscO06RCazVkXVadbeHv6EPx2BTM
- zUgW/D698sUw6zM9xBg4204pDZzokUIyU4w39LkE4+N7pvrg2hpgMUkZhOKHn52pBiZTJPECDFM
- i1T1YAksqkZcTpd6scynykzEtdzbH5nx1s1udKzf/2QZn+klFfF/MlqUhAkazSMW7jLuDb4a0lB
- lX8lIpZfd5rQOQHUFhyFYPa6ZcW8MqYa7mF7+AAuTo0DjYHSX19H4/Wt9UTLg8E0qY4MXGk0IUH
- sQprnYryRnGEI5EyfV0q3ijKYCakRPXmMXB77binDg0eMov4HATmc5HAqb4mh9khbBzYrA89UBB
- S3nQckEqqDDvenj5nEzTBS2kLeCjSU2+YfHc9b9ArFzv6cfOHTJqhukdyVqaZyZctwkya4W0c0W
- 4ed3O6jvGFHXR1+VDMnYellw/4PS4kMl5NnTkaP3aB2o5Yuz71XfEuEqlC46gwZZHRD5DGZpWPp
- BiUPVCI6PpmfhOlE9GyXiZuyuhEiSEf+Jj+jrKaFH7p6aU/vr7rg=
+ bh=y/Tk7h9Ot1cftKV46OldIqvpKgxzsdgkeSGz4dSiY7Y=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpgLWVqsyol4gte2iw43piZCQg7j87YGr3QJbR8
+ w30klJ7nhOJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaYC1lRsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOK7KhAArII67IPz4d1gZL/HpKSvr4VhhPL0pRE
+ L/HccpWVPqVZNj4FCAJk/LKRonuhMql4jU7WIhIi5xoRdZplBKlC2fOHldQRz3qZtYlv3KtZFDs
+ QHjhJVT83Mhzw9yy5YNDrYw3xiZOsHJbzNN5sVmEptkdbNWt3J/sIk9qr5poza0hJd/Bd2F2Lqd
+ d7B1RavwfaZxf+mEAKHk+7jmhmRY+RxtbyMGZf3F4c0vjIZ88+zBJzc6ODC7ZaednWzR2sqD/3C
+ dimomhTzxvqLY7y0dBUlj4162cGvOv7Xn6YKc+/WaQ2D1HT7f7Sj9lal885qnfT1k1F54zD6jbO
+ 61HZ06rCpsULhN5BWp0qxcUtaFExqbLmMpsw5UypOWguh0at4aXK9sqgjtfy7MBhehK6aToy9Fk
+ +P08Zof1KmCn8Ut2ANKiCN8OR2xyI5hzcunTmrUvs9r14q35BhSio2ZtU5ZMHD8C2b8+/FFyHYl
+ OVUw49rexFgQDxVNIn+aDerMf3JARMDEuq9R58dvEgP0VTiuLjIkR1GnsTb3UIMviTql4SeNgOj
+ 9SkIfIA1F44qzHrlEW8WjZJqM2MKPxOOCC/o2UjrFCNExzUqgJedQuR0HYHseCHwidjyC1Y/95l
+ NroNIpoHCUTzXa/IerfWBEN1d5wDsf/8Op5n8aj6jdnDN4e0X78U=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,100 +80,106 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add unigraf documentation to explain how to compile and use it with IGT.
+As link rate can vary on a display port link, add a way
+to change advertised link rate from unigraf.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- docs/unigraf.txt | 81 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
+ lib/unigraf/unigraf.c | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/unigraf/unigraf.h | 14 ++++++++++++++
+ 2 files changed, 67 insertions(+)
 
-diff --git a/docs/unigraf.txt b/docs/unigraf.txt
-new file mode 100644
-index 000000000000..49225a6f4e51
---- /dev/null
-+++ b/docs/unigraf.txt
-@@ -0,0 +1,81 @@
-+Unigraf Support in IGT
-+========================
+diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
+index 98cac5d7e929..e1f77a959a93 100644
+--- a/lib/unigraf/unigraf.c
++++ b/lib/unigraf/unigraf.c
+@@ -565,6 +565,7 @@ void unigraf_reset(void)
+ 	unigraf_load_default_edid();
+ 	unigraf_hpd_assert();
+ 	unigraf_set_max_lane_count(4);
++	unigraf_set_max_link_rate(UNIGRAF_RATE_8_10_GHZ);
+ 	sleep(1);
+ }
+ 
+@@ -853,3 +854,55 @@ int unigraf_get_max_lane_count(void)
+ 					     &max_lanes, sizeof(max_lanes)));
+ 	return max_lanes;
+ }
 +
-+This document provides information, instructions and for Unigraf support in IGT.
++/**
++ * unigraf_set_max_link_rate() - Set the maximum link rate advertised to the DUT
++ * @rate: The maximum link rate to configure on the device. Actual value is
++ *        @rate * 270000 kHz. Common values can be found in enum unigraf_rate
++ *
++ * This function sets the maximum link rate that the device will advertise on the DP link.
++ * The actual link rate used may be less than the requested value if the DUT does not
++ * support/use it.
++ */
++void unigraf_set_max_link_rate(int bandwidth)
++{
++	unigraf_write_u32(TSI_DPRX_MAX_LINK_RATE, bandwidth);
++}
 +
-+Introduction
-+------------
++/**
++ * unigraf_get_max_link_rate() - Get the maximum link rate supported by the device
++ *
++ * Returns: The maximum link rate supported by the device. The value returned must be multiplied by
++ *          270000 to get the value in kHz.
++ */
++int unigraf_get_max_link_rate(void)
++{
++	return unigraf_read_u32(TSI_DPRX_MAX_LINK_RATE);
++}
 +
-+Unigraf devices are a set of devices that can be used to test all sort of graphical
-+interface and signals. See Unigraf website for more information about all the
-+capabilities of earch devices: https://unigraf.fi
++/**
++ * unigraf_rate_to_kbs - Convert a rate value to kilobits per second
++ * @rate: The rate value to convert
++ *
++ * This function converts a rate value to kilobits per second (kbps).
++ *
++ * Returns: The converted rate in kilobits per second
++ */
++int unigraf_rate_to_kbs(enum unigraf_rate rate)
++{
++	switch (rate) {
++	case UNIGRAF_RATE_1_62_GHZ:
++		return 1620000;
++	case UNIGRAF_RATE_2_7_GHZ:
++		return 2700000;
++	case UNIGRAF_RATE_5_4_GHZ:
++		return 5400000;
++	case UNIGRAF_RATE_6_75_GHZ:
++		return 6750000;
++	case UNIGRAF_RATE_8_10_GHZ:
++		return 8100000;
++	default:
++		igt_assert_f(0, "Unknown rate %d\n", rate);
++		return 0;
++	}
++}
+diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
+index a10a45dfb395..34d00de2786a 100644
+--- a/lib/unigraf/unigraf.h
++++ b/lib/unigraf/unigraf.h
+@@ -78,4 +78,18 @@ int unigraf_get_max_lane_count(void);
+ 
+ void unigraf_set_max_lane_count(uint32_t count);
+ 
++enum unigraf_rate {
++	UNIGRAF_RATE_1_62_GHZ = 6,
++	UNIGRAF_RATE_2_7_GHZ = 10,
++	UNIGRAF_RATE_5_4_GHZ = 20,
++	UNIGRAF_RATE_6_75_GHZ = 25,
++	UNIGRAF_RATE_8_10_GHZ = 30,
++};
 +
-+Unigraf documentation
-+---------------------
++void unigraf_set_max_link_rate(int rate);
 +
-+All the documentation for libTSI, the library used to communicate with the unigraf,
-+can be found on unigraf website: TODO
++int unigraf_get_max_link_rate(void);
 +
-+Setting up Unigraf
-+------------------
++int unigraf_rate_to_kbs(enum unigraf_rate rate);
 +
-+For most of the unigraf devices, this should be as simple as "plugging the
-+unigraf and plug the video cable". If you need to install some license, upgrade
-+the firmawre... please take a look at the official unigraf documentation.
-+
-+Compiling IGT with Unigraf support
-+----------------------------------
-+
-+Unfortunatly, the communication with the device use a proprietary library and the
-+underlaying protocol is not open. To use the unigraf you need to install the unigraf
-+SDK, grab the libTSI.so and make it available on the build machine and the DUT.
-+
-+Deploying the Unigraf with IGT
-+------------------------------
-+
-+Unigraf may work out of the box: by default if IGT find a unigraf device, it will
-+try to connect and configure it to use USB-C input. This allows running most of
-+the existing tests without an actual screens.
-+
-+Here is a complete example configuration:
-+
-+        [Unigraf]
-+        # Choose a device using his name, you can find it in UCDConsole (installed with the SDK)
-+        Device=UCD-500 [2434C620]
-+        # Choose a role for the device, you can find it UCDConsole
-+        Role=USB-C, DP Alt Mode Source and Sink
-+        # Choose active input for the device
-+        Input=DP RX
-+        # Set the connector name used by the unigraf device. If not set, IGT will try to
-+        # autodetect which connector is used.
-+        Connector=DP-2
-+        # Set the EDID used by Unigraf
-+        EDID=DEL_16543_DELL_P2314T_DP
-+        # Enable or disable the use of Unigraf's CRCs instead of the CRTC CRCs
-+        UseCRC=1
-+        # Set the number of emulated MST streams (0 = Single Stream Transport, >=1 = MST)
-+        MSTStreams=0'
-+
-+Current Support in IGT
-+----------------------
-+
-+Support for the Unigraf devices in IGT is found in the following places:
-+* lib/unigraf/unigraf.[ch] -> IGT API
-+* lib/unigraf/TSI.h -> Header for libTSI.so, not provided by Unigraf
-+* lib/unigraf/TSI_types.h -> Header containing all the relevant values from unigraf SDK. The unigraf SDK can't be used directly because it is only compatible with windows and c++.
-+
-+Current unigraf.c features are:
-+* Plug, unplug, hotplug pulse
-+* EDID management
-+* MST/SST stream management
-+* CRC calculation
-+
-+Current testing are:
-+* All igt tests that require a display and use a CRC (kms_plane, )
-+* Basic EDID and MST tests
-+
-+Planned tests:
-+* Link training scenarios (link rate, lane count, scrambling, ...)
-+* Bandwidth constraint management
-+* HDCP content protection
-+* Display stream compression
+ #endif // UNIGRAF_H
 
 -- 
 2.52.0
