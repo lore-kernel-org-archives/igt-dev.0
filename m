@@ -4,63 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92C1DE7DEEE
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 15:31:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5DB3E7DEF2
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 15:38:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3DFD810E2C0;
-	Mon,  2 Feb 2026 15:31:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 61B6010E4DF;
+	Mon,  2 Feb 2026 15:38:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fqpiyEdn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lGcKI9jC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6CD5110E2C0
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 15:31:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7659510E4DF
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 15:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770046296; x=1801582296;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=5/kRES9KOs+FYV5McVs/oh5XwA4qC3L3IjnljWwLRHk=;
- b=fqpiyEdnw8YX6Z6j49XYGfbFk8HKNMMTgnItVkGCsYH4Z5VHH1p0uN+4
- qv9OaxzS6jF1JZVDCYukuozxN7Eu0qNmBZXBwED222r7DCtbQ9ea1hfHC
- Z/rQd5ouy4j91op1JT4ONtp1ChX+HH+fAXyx7JRTEvyuh6ie3mYwfDzuy
- XAuZjoakRhh6Tcf/Okp77ErtLQjnCcDQtWX+TthmL+OKyPsYhrPJEZQPY
- vDbIxkiHgq/SDGcfvk3o03oXz+2k/aOfMLMB4sF1qavhs0xvjibhgaHlE
- sbC6EW+oyEjmj7CtGjoxssHyClvhszFqL35uP98LPJjWyRXXkRIzDqWE+ w==;
-X-CSE-ConnectionGUID: ajyAfzGkQWOVJK0KI/l0yA==
-X-CSE-MsgGUID: H/nyYEe3THid2Jc0RiILkQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="82631165"
-X-IronPort-AV: E=Sophos;i="6.21,269,1763452800"; d="scan'208";a="82631165"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Feb 2026 07:31:36 -0800
-X-CSE-ConnectionGUID: MO3SDFxHS1uPyCqzDP0ENQ==
-X-CSE-MsgGUID: FLaA5YdESxmPy/H4QEuz8g==
+ t=1770046691; x=1801582691;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=fx+rGxwfStmOtwFBeTwg2z0q41DW/fE0ksaMlY5IkOc=;
+ b=lGcKI9jCoN2vMmEcKuSTwT2I0RnpVPCXUYSNfH5UhQRd5k/g18Hgrgk4
+ kLoQ8y2E/wX3/PG9lGDS4LEdFfy34sf/tDReA8rPi47rjveDdzk9mYSyG
+ kfb+A9BfNjIjXrDQgFjrj30E+w3qofstYtpo4Nh/s6YfLmlSdWuLVUt4h
+ ApeKI/oI3x94F3GRBfoSFz84hmZQuBGNNAW0pjRcZoN9H7GQp1+vuSn5a
+ tCbwV4Qt2wb34Rxsg9nD17GNVCqHe+YptQLAfb8ZbjkRtrriCgTtcwQe/
+ 1Ld+P5/kK+FsZY+G7I+wDoCBwocr485HUSLKrJbKD9pUid6wP80b28WzI w==;
+X-CSE-ConnectionGUID: X2QCZdWJRa6OmlJr9XYUpA==
+X-CSE-MsgGUID: 49fn7VwCQu+w5uMBGoQOXQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="71368835"
+X-IronPort-AV: E=Sophos;i="6.21,269,1763452800"; d="scan'208";a="71368835"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Feb 2026 07:38:11 -0800
+X-CSE-ConnectionGUID: yXKdsEEoSaGBoYLlfSMUrQ==
+X-CSE-MsgGUID: 6oxtxb9VSImsY5AQvp0tVg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,269,1763452800"; d="scan'208";a="232470208"
+X-IronPort-AV: E=Sophos;i="6.21,269,1763452800"; d="scan'208";a="209325536"
 Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.244.247])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Feb 2026 07:31:34 -0800
-Date: Mon, 2 Feb 2026 17:31:32 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 01/15] lib/kms: Introduce for_each_crtc*()
-Message-ID: <aYDDVPwt1zZd7478@intel.com>
-References: <20260130105237.14481-1-ville.syrjala@linux.intel.com>
- <20260130105237.14481-2-ville.syrjala@linux.intel.com>
- <8ce09d54c3f0208797f5b256e8aa27d29c6f4fbf@intel.com>
- <aXzP4wDaz9hCkKKi@intel.com>
- <70db2072688f084cff3321a97b02ac561a1eeb0e@intel.com>
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Feb 2026 07:38:10 -0800
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t v2 12/15] lib/kms: Use for_each_crtc_with_valid_output(), part 2
+Date: Mon,  2 Feb 2026 17:38:06 +0200
+Message-ID: <20260202153806.22096-1-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <1e2764d3af174b9ff51410cf31bcd0a6500d757e@intel.com>
+References: <1e2764d3af174b9ff51410cf31bcd0a6500d757e@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <70db2072688f084cff3321a97b02ac561a1eeb0e@intel.com>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,81 +70,398 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Feb 02, 2026 at 01:10:35PM +0200, Jani Nikula wrote:
-> On Fri, 30 Jan 2026, Ville Syrj‰l‰ <ville.syrjala@linux.intel.com> wrote:
-> > On Fri, Jan 30, 2026 at 03:38:03PM +0200, Jani Nikula wrote:
-> >> On Fri, 30 Jan 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
-> >> > +/**
-> >> > + * for_each_crtc:
-> >> > + * @display: a pointer to an #igt_display_t structure
-> >> > + * @crtc: The CRTC
-> >> > + *
-> >> > + * This for loop iterates over all CRTCs.
-> >> > + *
-> >> > + * Note that this cannot be used to enumerate per-CRTC subtest names since it
-> >> > + * depends upon runtime probing of the actual kms driver that is being tested.
-> >> > + * Use #for_each_pipe_static instead.
-> >> > + */
-> >> > +#define for_each_crtc(display, crtc) \
-> >> > +	for ((crtc) = &(display)->crtcs[0]; \
-> >> > +	     (crtc) < &(display)->crtcs[(display)->n_crtcs]; \
-> >> > +	     (crtc)++) \
-> >> > +		for_each_if ((crtc)->valid)
-> >> 
-> >> I feel like for_each_crtc() should iterate the CRTCs in CRTC order, not
-> >> pipe order. What's the plan? Are we eventually going to have ->crtcs[]
-> >> in CRTC order?
-> >
-> > I don't even know what it means to have them in pipe order. It should be
-> > one and the same right now because the kernel anyway has them in the
-> > same order. I guess it just means we could theoeretically have holes
-> > in the array with crtc->valid==false for fused off pipes?
-> >
-> > But yeah, if/when we start to reorder the pipes, I think we should keep
-> > this stuff in CRTC order, and get rid of the holes.
-> 
-> In igt_display_require(), the loop is:
-> 
-> 	for (i = 0; i < resources->count_crtcs; i++) {
-> 		igt_crtc_t *crtc;
-> 		int pipe_enum = is_intel_dev ? __intel_get_pipe_from_crtc_index(drm_fd, i) : i;
-> 
-> 		crtc = igt_crtc_for_pipe(display, pipe_enum);
-> 		crtc->pipe = pipe_enum;
-> 
-> 		crtc->valid = true;
-> 		crtc->crtc_id = resources->crtcs[i];
-> 		/* offset of a pipe in crtcs list */
-> 		crtc->crtc_offset = i;
-> 	}
-> 
-> And igt_crtc_for_pipe() returns &display->crtcs[pipe] i.e. the
-> display->crtcs is currently in pipe order, and it could have holes if
-> pipes have been fused off.
-> 
-> Feels like this is so convoluted all over the place that we'd be better
-> off resetting everything back to assuming pipe === crtc index, and
-> fixing stuff from ground up. :/
+From: Ville Syrj√§l√§ <ville.syrjala@linux.intel.com>
 
-Yeah, pretty much.
+Convert some uses of for_each_pipe_with_valid_output()
+to for_each_crtc_with_valid_output(). Take care of the
+cases where we (presumably) still have to keep some
+kind of 'data->pipe' thingy still up to date.
 
-I guess once the bigger cocci stuff is done we should do something
-like:
-- leave most crtc->pipe vs. PIPE_<whatever> checks alone as those
-  are probably looking for a specific hardware pipe
-- most other crtc->pipe usages should just be converted to
-  crtc_index instead
+Eventually we should probably replace 'data->pipe' with
+'data->crtc' but I didn't want to go that far here.
 
-That could perhaps be done with cocci as well.
+Done with cocci:
+ #include "scripts/iterators.cocci"
 
-And then we can start cleaning igt_kms itself:
-- make display->crtcs[] keep the kernel crtc order and get rid of
-  the holes, and have igt_crtc_for_pipe() just search through the
-  array for the right crtc
-- change all the pending_pipe/valid_crtc_idx_mask/etc. stuff to use
-  igt_crtc_t or crtc_index
-- etc.
+@change@
+iterator name for_each_pipe_with_valid_output;
+iterator name for_each_crtc_with_valid_output;
+typedef igt_crtc_t;
+identifier PIPE;
+expression DISPLAY, OUTPUT, X;
+@@
+- for_each_pipe_with_valid_output(DISPLAY, X->PIPE, OUTPUT)
++ for_each_crtc_with_valid_output(DISPLAY, crtc, OUTPUT)
+{
++ X->PIPE = crtc->pipe;
+<...
+(
+- igt_crtc_for_pipe(..., X->PIPE)
++ crtc
+|
+- kmstest_pipe_name(X->PIPE)
++ igt_crtc_name(crtc)
+|
+- X->PIPE
++ crtc->pipe
+)
+...>
+}
 
+@depends on change@
+identifier FUNC;
+@@
+FUNC(...)
+{
++ igt_crtc_t *crtc;
+<+...
+for_each_crtc_with_valid_output(...) { ... }
+...+>
+}
+
+@@
+identifier CRTC;
+@@
+igt_crtc_t *CRTC;
+...
+- igt_crtc_t *CRTC;
+
+v2: Deal with the new use in tools/intel_hdcp
+
+Signed-off-by: Ville Syrj√§l√§ <ville.syrjala@linux.intel.com>
+---
+ tests/intel/kms_big_fb.c       |  6 ++++--
+ tests/intel/kms_ccs.c          | 19 +++++++++++------
+ tests/intel/kms_fb_coherency.c |  6 ++++--
+ tests/intel/kms_pwrite_crc.c   |  6 ++++--
+ tests/kms_async_flips.c        | 23 +++++++++++++--------
+ tests/kms_vblank.c             | 37 +++++++++++++++++++++++-----------
+ tools/intel_hdcp.c             |  6 ++++--
+ 7 files changed, 69 insertions(+), 34 deletions(-)
+
+diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+index 415508213e55..3946c7c00dfd 100644
+--- a/tests/intel/kms_big_fb.c
++++ b/tests/intel/kms_big_fb.c
+@@ -685,6 +685,7 @@ max_hw_stride_async_flip_test(data_t *data)
+ 
+ static void test_scanout(data_t *data)
+ {
++	igt_crtc_t *crtc;
+ 	igt_output_t *output;
+ 
+ 	igt_require(data->format == DRM_FORMAT_C8 ||
+@@ -708,11 +709,12 @@ static void test_scanout(data_t *data)
+ 	max_fb_size(data, &data->big_fb_width, &data->big_fb_height,
+ 		    data->format, data->modifier);
+ 
+-	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
++	for_each_crtc_with_valid_output(&data->display, crtc, data->output) {
++		data->pipe = crtc->pipe;
+ 		igt_display_reset(&data->display);
+ 
+ 		igt_output_set_crtc(data->output,
+-				    igt_crtc_for_pipe(data->output->display, data->pipe));
++				    crtc);
+ 		if (!intel_pipe_output_combo_valid(&data->display))
+ 			continue;
+ 
+diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+index ea23b6581b06..85d1e16cafe3 100644
+--- a/tests/intel/kms_ccs.c
++++ b/tests/intel/kms_ccs.c
+@@ -1125,6 +1125,7 @@ static bool valid_modifier_test(u64 modifier, const enum test_flags flags)
+ 
+ static void test_output(data_t *data, const int testnum)
+ {
++	igt_crtc_t *crtc;
+ 	uint16_t dev_id;
+ 
+ 	igt_fixture()
+@@ -1150,15 +1151,18 @@ static void test_output(data_t *data, const int testnum)
+ 					      "Older than Xe2 platform needed.\n");
+ 			}
+ 
+-			for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
++			for_each_crtc_with_valid_output(&data->display, crtc,
++							data->output) {
++				data->pipe = crtc->pipe;
+ 				igt_display_reset(&data->display);
+ 
+ 				igt_output_set_crtc(data->output,
+-						    igt_crtc_for_pipe(data->output->display, data->pipe));
++						    crtc);
+ 				if (!intel_pipe_output_combo_valid(&data->display))
+ 					continue;
+ 
+-				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe),
++				igt_dynamic_f("pipe-%s-%s",
++							    igt_crtc_name(crtc),
+ 							    data->output->name) {
+ 					int valid_tests = 0;
+ 
+@@ -1166,9 +1170,12 @@ static void test_output(data_t *data, const int testnum)
+ 						igt_info("Testing with seed %d\n", data->seed);
+ 
+ 					if (data->flags & TEST_ALL_PLANES) {
+-						igt_display_require_output_on_pipe(&data->display, data->pipe);
++						igt_display_require_output_on_pipe(&data->display,
++										   crtc->pipe);
+ 
+-						for_each_plane_on_pipe(&data->display, data->pipe, data->plane) {
++						for_each_plane_on_pipe(&data->display,
++								       crtc->pipe,
++								       data->plane) {
+ 							if (skip_plane(data, data->plane))
+ 								continue;
+ 
+@@ -1186,7 +1193,7 @@ static void test_output(data_t *data, const int testnum)
+ 					igt_require_f(valid_tests > 0,
+ 						      "no valid tests for %s on pipe %s\n",
+ 						      ccs_modifiers[i].str,
+-						      kmstest_pipe_name(data->pipe));
++						      igt_crtc_name(crtc));
+ 				}
+ 			}
+ 		}
+diff --git a/tests/intel/kms_fb_coherency.c b/tests/intel/kms_fb_coherency.c
+index e6d043c114d5..2f917e97b792 100644
+--- a/tests/intel/kms_fb_coherency.c
++++ b/tests/intel/kms_fb_coherency.c
+@@ -222,13 +222,15 @@ static void test_legacy_mmap_wc(data_t *data)
+ 
+ static void select_valid_pipe_output_combo(data_t *data)
+ {
++	igt_crtc_t *crtc;
+ 	igt_display_t *display = &data->display;
+ 
+-	for_each_pipe_with_valid_output(display, data->pipe, data->output) {
++	for_each_crtc_with_valid_output(display, crtc, data->output) {
++		data->pipe = crtc->pipe;
+ 		igt_display_reset(display);
+ 
+ 		igt_output_set_crtc(data->output,
+-				    igt_crtc_for_pipe(data->output->display, data->pipe));
++				    crtc);
+ 		if (intel_pipe_output_combo_valid(display))
+ 			return;
+ 	}
+diff --git a/tests/intel/kms_pwrite_crc.c b/tests/intel/kms_pwrite_crc.c
+index 64c167ad3f44..4a214d34e53b 100644
+--- a/tests/intel/kms_pwrite_crc.c
++++ b/tests/intel/kms_pwrite_crc.c
+@@ -169,13 +169,15 @@ static void cleanup_crtc(data_t *data)
+ 
+ static void run_test(data_t *data)
+ {
++	igt_crtc_t *crtc;
+ 	igt_display_t *display = &data->display;
+ 
+-	for_each_pipe_with_valid_output(display, data->pipe, data->output) {
++	for_each_crtc_with_valid_output(display, crtc, data->output) {
++		data->pipe = crtc->pipe;
+ 		igt_display_reset(display);
+ 
+ 		igt_output_set_crtc(data->output,
+-				    igt_crtc_for_pipe(data->output->display, data->pipe));
++				    crtc);
+ 		if (!intel_pipe_output_combo_valid(display))
+ 			continue;
+ 
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 993ad37530b0..8539d31efded 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -903,16 +903,18 @@ static void require_linear_modifier(data_t *data)
+ 
+ static void run_test(data_t *data, void (*test)(data_t *))
+ {
++	igt_crtc_t *crtc;
+ 	igt_display_t *display = &data->display;
+ 
+ 	if (data->atomic_path)
+ 		require_atomic_async_cap(data);
+ 
+-	for_each_pipe_with_valid_output(display, data->pipe, data->output) {
++	for_each_crtc_with_valid_output(display, crtc, data->output) {
++		data->pipe = crtc->pipe;
+ 		igt_display_reset(display);
+ 
+ 		igt_output_set_crtc(data->output,
+-				    igt_crtc_for_pipe(data->output->display, data->pipe));
++				    crtc);
+ 		if (!intel_pipe_output_combo_valid(display))
+ 			continue;
+ 
+@@ -923,7 +925,8 @@ static void run_test(data_t *data, void (*test)(data_t *))
+ 		else
+ 			data->modifier = default_modifier(data);
+ 
+-		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
++		igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
++			      data->output->name) {
+ 			/*
+ 			 * FIXME: joiner+async flip is busted currently in KMD.
+ 			 * Remove this check once the issues are fixed in KMD.
+@@ -969,11 +972,13 @@ static bool skip_async_format_mod(data_t *data,
+ 
+ static void run_test_with_async_format_modifiers(data_t *data, void (*test)(data_t *))
+ {
++	igt_crtc_t *crtc;
+ 	struct igt_vec tested_formats;
+ 
+ 	igt_vec_init(&tested_formats, sizeof(struct format_mod));
+ 
+-	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
++	for_each_crtc_with_valid_output(&data->display, crtc, data->output) {
++		data->pipe = crtc->pipe;
+ 		test_init(data);
+ 
+ 		igt_assert_f(data->plane->async_format_mod_count > 0,
+@@ -990,7 +995,7 @@ static void run_test_with_async_format_modifiers(data_t *data, void (*test)(data
+ 					   IGT_MODIFIER_FMT " on %s.%u\n",
+ 					   IGT_FORMAT_ARGS(f.format),
+ 					   IGT_MODIFIER_ARGS(f.modifier),
+-					   kmstest_pipe_name(data->pipe),
++					   igt_crtc_name(crtc),
+ 					   data->plane->index);
+ 				continue;
+ 			}
+@@ -999,7 +1004,7 @@ static void run_test_with_async_format_modifiers(data_t *data, void (*test)(data
+ 			data->plane_format = f.format;
+ 			data->async_mod_formats = true;
+ 
+-			igt_dynamic_f("pipe-%s-%s-%s-%s", kmstest_pipe_name(data->pipe),
++			igt_dynamic_f("pipe-%s-%s-%s-%s", igt_crtc_name(crtc),
+ 				      data->output->name,
+ 				      igt_fb_modifier_name(data->modifier),
+ 				      igt_format_str(data->plane_format)) {
+@@ -1022,10 +1027,12 @@ static void run_test_with_async_format_modifiers(data_t *data, void (*test)(data
+ 
+ static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
+ {
++	igt_crtc_t *crtc;
+ 	if (data->atomic_path)
+ 		require_atomic_async_cap(data);
+ 
+-	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
++	for_each_crtc_with_valid_output(&data->display, crtc, data->output) {
++		data->pipe = crtc->pipe;
+ 		test_init(data);
+ 
+ 		igt_require_f(data->plane->async_format_mod_count > 0,
+@@ -1042,7 +1049,7 @@ static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
+ 
+ 			data->modifier = modifier;
+ 
+-			igt_dynamic_f("pipe-%s-%s-%s", kmstest_pipe_name(data->pipe),
++			igt_dynamic_f("pipe-%s-%s-%s", igt_crtc_name(crtc),
+ 				      data->output->name,
+ 				      igt_fb_modifier_name(modifier)) {
+ 				      /*
+diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+index 1e4ccd83b554..ecbd85d031a6 100644
+--- a/tests/kms_vblank.c
++++ b/tests/kms_vblank.c
+@@ -476,6 +476,7 @@ static void vblank_ts_cont(data_t *data, int fd, int nchildren)
+ 
+ static void run_subtests(data_t *data)
+ {
++	igt_crtc_t *crtc;
+ 	const struct {
+ 		const char *name;
+ 		void (*func)(data_t *, int, int);
+@@ -515,17 +516,23 @@ static void run_subtests(data_t *data)
+ 
+ 			igt_describe("Check if test run while hanging by introducing NOHANG flag.");
+ 			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
+-				for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
+-					if (!pipe_output_combo_valid(&data->display, data->pipe, data->output))
++				for_each_crtc_with_valid_output(&data->display,
++								crtc,
++								data->output) {
++					data->pipe = crtc->pipe;
++					if (!pipe_output_combo_valid(&data->display, crtc->pipe, data->output))
+ 						continue;
+ 
+-					if (!all_pipes && data->pipe != active_pipes[0] &&
+-					    data->pipe != active_pipes[last_pipe]) {
+-						igt_info("Skipping pipe %s\n", kmstest_pipe_name(data->pipe));
++					if (!all_pipes && crtc->pipe != active_pipes[0] &&
++					    crtc->pipe != active_pipes[last_pipe]) {
++						igt_info("Skipping pipe %s\n",
++							 igt_crtc_name(crtc));
+ 						continue;
+ 					}
+ 
+-					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
++					igt_dynamic_f("pipe-%s-%s",
++						      igt_crtc_name(crtc),
++						      data->output->name) {
+ 						data->flags = m->flags | NOHANG;
+ 						run_test(data, f->func);
+ 					}
+@@ -541,17 +548,23 @@ static void run_subtests(data_t *data)
+ 				igt_hang_t hang;
+ 
+ 				hang = igt_allow_hang(data->display.drm_fd, 0, 0);
+-				for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
+-					if (!pipe_output_combo_valid(&data->display, data->pipe, data->output))
++				for_each_crtc_with_valid_output(&data->display,
++								crtc,
++								data->output) {
++					data->pipe = crtc->pipe;
++					if (!pipe_output_combo_valid(&data->display, crtc->pipe, data->output))
+ 						continue;
+ 
+-					if (!all_pipes && data->pipe != active_pipes[0] &&
+-					    data->pipe != active_pipes[last_pipe]) {
+-						igt_info("Skipping pipe %s\n", kmstest_pipe_name(data->pipe));
++					if (!all_pipes && crtc->pipe != active_pipes[0] &&
++					    crtc->pipe != active_pipes[last_pipe]) {
++						igt_info("Skipping pipe %s\n",
++							 igt_crtc_name(crtc));
+ 						continue;
+ 					}
+ 
+-					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
++					igt_dynamic_f("pipe-%s-%s",
++						      igt_crtc_name(crtc),
++						      data->output->name) {
+ 						data->flags = m->flags;
+ 						run_test(data, f->func);
+ 					}
+diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c
+index 86ef0115e5ed..cd5d2b6be108 100644
+--- a/tools/intel_hdcp.c
++++ b/tools/intel_hdcp.c
+@@ -615,6 +615,7 @@ static void enable_hdcp_type(data_t *data, enum hdcp_type type)
+ 
+ static void test_init(data_t *data)
+ {
++	igt_crtc_t *crtc;
+ 	drmModeModeInfo *mode;
+ 
+ 	data->fd = __drm_open_driver(DRIVER_ANY);
+@@ -626,7 +627,8 @@ static void test_init(data_t *data)
+ 	igt_display_require_output(&data->display);
+ 	igt_display_reset(&data->display);
+ 
+-	for_each_pipe_with_valid_output(&data->display, data->pipe, data->output) {
++	for_each_crtc_with_valid_output(&data->display, crtc, data->output) {
++		data->pipe = crtc->pipe;
+ 		if (!igt_output_has_prop(data->output, IGT_CONNECTOR_CONTENT_PROTECTION))
+ 			continue;
+ 
+@@ -637,7 +639,7 @@ static void test_init(data_t *data)
+ 		igt_create_color_fb(data->fd, data->width, data->height, DRM_FORMAT_XRGB8888,
+ 				    DRM_FORMAT_MOD_LINEAR, 0.0, 0.0, 0.0, &data->fb);
+ 
+-		igt_output_set_crtc(data->output, igt_crtc_for_pipe(&data->display, data->pipe));
++		igt_output_set_crtc(data->output, crtc);
+ 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 		break;
 -- 
-Ville Syrj‰l‰
-Intel
+2.52.0
+
