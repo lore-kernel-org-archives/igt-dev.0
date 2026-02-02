@@ -4,46 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B26CE8305D
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 08:01:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD111E8305F
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 08:01:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1A33510E57D;
-	Tue,  3 Feb 2026 08:01:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EBCA810E578;
+	Tue,  3 Feb 2026 08:01:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="NFcoj9s7";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="RxCHWDmq";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A1C710E2C0
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 15:41:23 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E4D689C55
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 15:52:12 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 25182C237F3
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 15:41:27 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 7858D4E423C5
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 15:52:11 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 4E68960767;
- Mon,  2 Feb 2026 15:41:22 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 4F52060767;
+ Mon,  2 Feb 2026 15:52:11 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 10CBB119A8888; Mon,  2 Feb 2026 16:41:21 +0100 (CET)
+ with ESMTPSA id C0364119A8888; Mon,  2 Feb 2026 16:52:09 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770046881; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1770047530; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=uE13h60Br2BtIumr58g35bNRT252M7IfbsUJxWbjk2o=;
- b=NFcoj9s71CZeKYb54SXO3wG9g6Z6uT7oFtqiUFYO8qwKGYE8hZbb03/iNId3Awu1CBH9g2
- +/D4PyrfUSlmFVNzJib22GchAhUr6gryAMgabAZ0sLMSW0q7KwuWHv6U+wfSSk+QWrV/vU
- pz2YDyM3FTUr1bITWQ+jULTLeVdpLUz3EG0pLYn4L26EY9l8tuGR4l7el8rCXr7z++fa0B
- bZKGHxMes8uX6Uj7CJz1LaW2DEsKHaerTFk1Qmzs2KJPy0OxDPwLcXZ61aw9bI3q5KUZT7
- SxIRsSxEsFMsfWbSrmRH6RgKEAu860OBCXT6wBehI3m2mWiRNS8myzSmU7kCQA==
-Date: Mon, 2 Feb 2026 16:41:20 +0100
+ bh=FlrjzBqAScATxtCcq616e99cvmYynJ6dvZsxdz/vkag=;
+ b=RxCHWDmqkTtk+fx3IhWxikF2jCxJtR2TBLkk77PoubDaDZ2Zr8HUCOcH/2JmF2KAsbD11H
+ ESIxulM5UVAfgQHfxvSXG1VTaPqvCN+YlHmXk56zxsYwBSS78wWBOnJh4em+oPanAOxOrS
+ BhZbGYCIIFhDYBWv5AedeUlfk3tBDGCWpUhE1wq3PvXU78jWgFEQfAA7gA9m7q4Q62xzCf
+ dw1djFA1s/YEe1WWQgzwfP5oAdPaj6H0mv3uUCn4Lvog70P7i5BM02LUI4PKRfDnChB8XF
+ mWOfEoefSG6f3pmNiKMqV+G2PjrYumso9X20CYRyfWa2FWy3Qxq91J98hoKKGw==
+Date: Mon, 2 Feb 2026 16:52:09 +0100
 From: Kory Maincent <kory.maincent@bootlin.com>
 To: Louis Chauvet <louis.chauvet@bootlin.com>
 Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
  luca.ceresoli@bootlin.com, markyacoub@google.com,
  khaled.almahallawy@intel.com
-Subject: Re: [PATCH i-g-t v6 08/48] lib/igt_kms: Expose
- reset_connectors_at_exit
-Message-ID: <20260202164120.279c61d3@kmaincent-XPS-13-7390>
-In-Reply-To: <20260202-unigraf-integration-v6-8-834af822eee7@bootlin.com>
+Subject: Re: [PATCH i-g-t v6 13/48] lib/igt_kms: Add const when make sense
+Message-ID: <20260202165209.6f0eeef0@kmaincent-XPS-13-7390>
+In-Reply-To: <20260202-unigraf-integration-v6-13-834af822eee7@bootlin.com>
 References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
- <20260202-unigraf-integration-v6-8-834af822eee7@bootlin.com>
+ <20260202-unigraf-integration-v6-13-834af822eee7@bootlin.com>
 Organization: bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -66,11 +65,12 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 02 Feb 2026 15:32:47 +0100
+On Mon, 02 Feb 2026 15:32:52 +0100
 Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 
-> reset_connectors_at_exit is used by i915 DP helpers, expose it so it can
-> be reused in a different file.
+> Const qualifier helps to avoid unwanted modification of a pointer.
+> To help avoiding those errors, modify the function signature to
+> use const.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 
