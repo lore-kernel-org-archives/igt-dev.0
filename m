@@ -4,42 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73996E7DEE3
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 14:33:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89114E7DEF3
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Feb 2026 14:33:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1381B10E4F8;
-	Mon,  2 Feb 2026 14:33:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 359FC10E4E7;
+	Mon,  2 Feb 2026 14:33:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="KPuTLAFc";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="wYC8pF74";
 	dkim-atps=neutral
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A87A10E4F6
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:33:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D74A010E4EC
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:33:07 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 4BC5D1A2C16;
- Mon,  2 Feb 2026 14:33:04 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id CB0121A2C19
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 14:33:06 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 237AD60767;
- Mon,  2 Feb 2026 14:33:04 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id A160760767;
+ Mon,  2 Feb 2026 14:33:06 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id E90A9119A8911; Mon,  2 Feb 2026 15:33:02 +0100 (CET)
+ with ESMTPSA id 77853119A8914; Mon,  2 Feb 2026 15:33:05 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770042783; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1770042786; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=3iONabodQo7qytkxkEy05NURUjC7AiTV95rryIWpblI=;
- b=KPuTLAFc4VzYShBrLHfs7D12zggRdfbVgo/y/pGR/PuLipnUdMACzCWI0XWtOSHjvU+a2M
- iUmvPUZD0xFuBBaSgaNPckPbTAf0ZE0mhzwIhNJoH0WX7uN7c+bdNTRuwnVtQWVBA79YTb
- ABzmQhJ8Htf6trle1j8oJpghfVJB/pqR90h2/h52rcKywoOvmZKCAEZnEMfPi4WseQmRCw
- hDbluY38mEPrr4Q+uJody9yJg/O40BJSD2Xo/WQRH6zLzMKiooInSuxpROa3Kz/11rz8t6
- zlvtQdjnFExQdHDnKb7GofDsgMu2XFGbFWWbAp14gk492wG1tHFEYs/A8dWr0Q==
+ bh=2di1bQdcd4sRkyh5VePAiRCLuW6HNLvFhRYZwEV5xRs=;
+ b=wYC8pF74KdcPzCZiMdaVydyttotp/UMoIVx00138jfNZw3Jhb7oRtfgb0XpnwUmQr/DA0O
+ 7B+t3wk/svqSWRpu7ACbjPm7X7QW5A1HJWfpZZvf7TFeAd0oGyFk2K1vvnjguFB331zgg3
+ neOvulHpkrJjGp4EdsMb1S5r5yzDlOi4nxonJtXgQj0iOYirB6Zr+lwAED1lI3Y4NcB4ZE
+ maugIt8NUX/o9M6Dv6MInmH57bgTX/pK8Puz+RGnNvC2wfacFWCclKU2SQj59AUgzexrcR
+ pLrFcJwrjyM6m+p95CLvvGS90j3pb73K3oiz0q5tcYNwoKaadoiZ44DWhS5AoA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 02 Feb 2026 15:33:20 +0100
-Subject: [PATCH i-g-t v6 41/48] lib/igt_dp: Create generic helpers for DP
- information
+Date: Mon, 02 Feb 2026 15:33:23 +0100
+Subject: [PATCH i-g-t v6 44/48] lib/unigraf: Add lane count configuration
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260202-unigraf-integration-v6-41-834af822eee7@bootlin.com>
+Message-Id: <20260202-unigraf-integration-v6-44-834af822eee7@bootlin.com>
 References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
 In-Reply-To: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -47,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7327;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2300;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=bPz/8GRe3RUf3ZFOZkOBs0/x2mKn2ndUzvRk3iJwT9k=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpgLWUmU5cfY8Phv4R2srEr7FLAC8xKK+Ams9ow
- e5d2qvnBl+JAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaYC1lBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOJe5BAA06JwvV6F8LBUzNj2CKRYvS1WhQUdWQL
- GG8f+2kCFrEKhZjfIsLtTFLUu8mjonE+MHFiw26hjrWfSQegQi/chzfFBxEUiFfn4+vxH1vX/un
- S+wD57Fj70fjuMl91X6sfPyFYQ/NGzKNefb08BMlXgmUIhTPYh/kDvJnGBT4GLw1GO1LgpQF4ZK
- sOs9R6NPE82FRMAAroR0fGTt4a+VM2uP+DRXXONNwqrvjjBTUE8DwT4LV0E/jrzfSso8+dAsuRI
- U3+WI1DAFC4hSCcCruTsFXFXZx5UwUQw8556YFFqM/2c+VSnaUOt0tf8ilGDM006DQoPr4K02zf
- Yqh2t6YybLcfxVAaMm9jqNG46vOTcHz+sYqyrDyhkF8T8wxWA0bTBxQwWQVrWX5+cWVKLW6hkgh
- j+rZ+P0R2jfIwAgWQ2f0UDN2g6t3L8XK8SiDjUmw9XtNc+6LBkW62orjidoV6oTFpozCGQ/aqE3
- MpnIhwzma7III91Psri0fy236AVvY7tpFNPBZ+MvkohJhnqsGCgL1fARDlt28tFhI8ikPnZWAgS
- 8QFNXvkP7yenNGRghIIAZcTY9hNlgweNzczyrFrxssah/86y+DSusHFDst0ucoMf9qlpCVX9ZYL
- bpSy5JYtAw9EM7Eoo2LFWz4PRapQjIkSnIojPtmITpeFTDHV86Oo=
+ bh=vyKVy8PO47x1X6NmHUF/+LkJ1mu5ABTqRlygp/A0/OA=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpgLWUu/ZPQABNZrCP5ys16ozUxBWCaDFkMYgk+
+ +adeD9Y90iJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaYC1lBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOJWhg//SiJLu2d09yFdiQX3bBZU3mrcE9DalD1
+ QfgIw72fvImTfxxn5qFJwTLhKVyYIVO9Vd9/87rroR7nINeOpmGkEv594OcszBAZt/6GOyyafeA
+ UVMamjBmZnTPH/wputdQ/9oW3TIVaQ7xOBNfTi93qD8xWgBFWyvGgsu3OUft43ScutfZ20VSFHQ
+ XbumUIlPkDNry7iUJ3dQMOetuZGV13ub6W2is5sz3A1v1Jbfs5ZUD8Js/naNcg28NHcF3JZ+Xy0
+ MzP7nyQOZOLwVRHH9HyWhj/bTU+7szIkFdad6ocvep7xHVnbLv9zxS58Bg1gQP3gW9PjujBwcPI
+ yB+LUz5Un/+Cgta6PEwCbgpfRJxA8sCQNyAYREjFnFaPIhSkvh4i6Qh+oZZ/K0LaeOC3k2jdJcG
+ d3pIlsAgvYN4/ZbZZRufq8tMBWRdU9/VK7ZvGCUmvuyUDhkGBoCOlOQQif9C0ybF0IAVN2p79A3
+ qiUgMrOdPz2PD59cTBhzgtUdHFSlns4fSe1poRC26zSZPYzWpFhE+DQS9LBQBT3KtzGhzdGKzf3
+ r+N4uQpDmH/PgnxBBIqQmVqUecYD0yxSrvbzAU67cTqg240ntyEJAmG5unnboH7vfkJm492SwHl
+ fnZbqxlmxWJCSxsVXinZTwVxXYvGyE7HQLf3OGYWLtwNjkUeLs9A=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,229 +79,72 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-With the introduction of unigraf tests, there is no reason to limit the
-implementation to intel. Create easly extendable generic functions to
-help supporting multiple GPU.
+As unigraf can emulate 1, 2 or 4 lanes display port connections, add
+helpers to configure the number of lanes.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_dp.c    | 164 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_dp.h    |  24 +++++++++
- lib/meson.build |   1 +
- 3 files changed, 189 insertions(+)
+ lib/unigraf/unigraf.c | 29 +++++++++++++++++++++++++++++
+ lib/unigraf/unigraf.h |  4 ++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/lib/igt_dp.c b/lib/igt_dp.c
-new file mode 100644
-index 000000000000..f2ee1f7b9975
---- /dev/null
-+++ b/lib/igt_dp.c
-@@ -0,0 +1,164 @@
-+// SPDX-License-Identifier: MIT
-+//
-+#include "drmtest.h"
-+#include "i915/i915_dp.h"
-+#include "igt_amd.h"
-+#include "igt_core.h"
-+#include "igt_kms.h"
-+#include <stdint.h>
-+#include "igt_dp.h"
+diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
+index fbff4aeccba2..98cac5d7e929 100644
+--- a/lib/unigraf/unigraf.c
++++ b/lib/unigraf/unigraf.c
+@@ -564,6 +564,7 @@ void unigraf_reset(void)
+ 	unigraf_set_sst();
+ 	unigraf_load_default_edid();
+ 	unigraf_hpd_assert();
++	unigraf_set_max_lane_count(4);
+ 	sleep(1);
+ }
+ 
+@@ -824,3 +825,31 @@ void unigraf_assert_stream_timings(int stream, drmModeModeInfoPtr mode_info)
+ 	igt_assert_eq(mode_info->vsync_start, unigraf_read_u32(TSI_DPRX_MSA_VSTART_R));
+ 	igt_assert_eq(mode_info->hsync_start, unigraf_read_u32(TSI_DPRX_MSA_HSTART_R));
+ }
 +
 +/**
-+ * igt_dp_get_current_link_rate: Get current link rate on a display port
-+ * @drm_fd: DRM file descriptor
-+ * @output: igt_output_t object representing the display port
++ * unigraf_set_max_lane_count() - Set the maximum number of lanes advertised to the DUT
++ * @count: The maximum number of lanes to configure on the device
 + *
-+ * Returns:
-+ * The current link rate in kb/s, or a negative error code on failure.
++ * This function sets the maximum number of lanes that the device will advertise on the DP link.
++ * The actual number of lanes used may be less than the requested count if the
++ * DUT does not support/use it.
 + */
-+int igt_dp_get_current_link_rate(int drm_fd, igt_output_t *output)
++void unigraf_set_max_lane_count(uint32_t count)
 +{
-+	if (is_intel_device(drm_fd))
-+		// i915_dp_get_current_link_rate returns the value in tens of kb/s because
-+		// that what the kernel uses. Convert it to kb/s to have a sane unit...
-+		return i915_dp_get_current_link_rate(drm_fd, output) * 10;
-+
-+	igt_assert_f(false, "Current drm device is not able to report used link rate\n");
-+	return -EINVAL;
++	unigraf_write_u32(TSI_DPRX_MAX_LANES, count);
 +}
 +
 +/**
-+ * igt_dp_get_current_lane_count: Get current lane count on a display port
-+ * @drm_fd: DRM file descriptor
-+ * @output: igt_output_t object representing the display port
++ * unigraf_get_max_lane_count() - Get the maximum number of lanes supported by the device
 + *
-+ * Returns:
-+ * The number of active lanes, or a negative error code on failure.
++ * Returns: The maximum number of lanes supported by the device.
 + */
-+int igt_dp_get_current_lane_count(int drm_fd, igt_output_t *output)
++int unigraf_get_max_lane_count(void)
 +{
-+	if (is_intel_device(drm_fd))
-+		return i915_dp_get_current_lane_count(drm_fd, output);
++	int max_lanes;
 +
-+	igt_assert_f(false, "Current drm device is not able to report used lane count\n");
-+	return -EINVAL;
++	igt_assert(unigraf_device);
++	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, TSI_DPRX_MAX_LANES,
++					     &max_lanes, sizeof(max_lanes)));
++	return max_lanes;
 +}
+diff --git a/lib/unigraf/unigraf.h b/lib/unigraf/unigraf.h
+index 07fb681a357a..a10a45dfb395 100644
+--- a/lib/unigraf/unigraf.h
++++ b/lib/unigraf/unigraf.h
+@@ -74,4 +74,8 @@ int unigraf_get_connector_id_by_stream(int drm_fd, int stream_id);
+ 
+ void unigraf_assert_stream_timings(int stream, drmModeModeInfoPtr mode_info);
+ 
++int unigraf_get_max_lane_count(void);
 +
-+/**
-+ * igt_dp_get_max_link_rate: Get maximum link rate on a display port
-+ * @drm_fd:		DRM file descriptor
-+ * @output:		igt_output_t object representing the display port
-+ *
-+ * Returns:
-+ * The maximum link rate in kb/s, or a negative error code on failure.
-+ */
-+int igt_dp_get_max_link_rate(int drm_fd, igt_output_t *output)
-+{
-+	if (is_intel_device(drm_fd))
-+		// i915_dp_get_current_link_rate returns the value in tens of kb/s because
-+		// that what the kernel uses. Convert it to kb/s to be sane...
-+		return i915_dp_get_max_link_rate(drm_fd, output) * 10;
++void unigraf_set_max_lane_count(uint32_t count);
 +
-+	igt_assert_f(false, "Current drm device is not able to report max link rate\n");
-+	return -EINVAL;
-+}
-+
-+/**
-+ * igt_dp_get_max_supported_rate: Get maximum supported link rate on a display port
-+ * @drm_fd: DRM file descriptor
-+ * @output: igt_output_t object representing the display port
-+ *
-+ * Returns:
-+ * The maximum supported link rate in kb/s, or a negative error code on failure.
-+ */
-+int igt_dp_get_max_supported_rate(int drm_fd, igt_output_t *output)
-+{
-+	if (is_intel_device(drm_fd))
-+		// i915_dp_get_current_link_rate returns the value in tens of kb/s because
-+		// that what the kernel uses. Convert it to kb/s to be sane...
-+		return i915_dp_get_max_supported_rate(drm_fd, output) * 10;
-+
-+	igt_assert_f(false, "Current drm device is not able to report max link rate\n");
-+	return -EINVAL;
-+}
-+
-+/**
-+ * igt_dp_get_max_lane_count: Get maximum lane count on a display port
-+ * @drm_fd: DRM file descriptor
-+ * @output: igt_output_t object representing the display port
-+ *
-+ * Returns:
-+ * The maximum number of lanes, or a negative error code on failure.
-+ */
-+int igt_dp_get_max_lane_count(int drm_fd, igt_output_t *output)
-+{
-+	if (is_intel_device(drm_fd))
-+		return i915_dp_get_max_lane_count(drm_fd, output);
-+
-+	igt_assert_f(false, "Current drm device is not able to report max lane count\n");
-+	return -EINVAL;
-+}
-+
-+/**
-+ * igt_dp_force_link_retrain: Force link retraining on a display port
-+ * @drm_fd:		DRM file descriptor
-+ * @output:		igt_output_t object representing the display port
-+ * @retrain_count:	Number of times to retrain the link
-+ */
-+void igt_dp_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count)
-+{
-+	if (is_intel_device(drm_fd)) {
-+		i915_dp_force_link_retrain(drm_fd, output, retrain_count);
-+		return;
-+	}
-+
-+	igt_assert_f(false, "Current drm device does not support link retraining\n");
-+}
-+
-+/**
-+ * igt_dp_get_pending_retrain: Get pending link retrain count
-+ * @drm_fd:		DRM file descriptor
-+ * @output:		igt_output_t object representing the display port
-+ *
-+ * Returns:
-+ * The number of pending retrain operations, or a negative error code on failure.
-+ */
-+int igt_dp_get_pending_retrain(int drm_fd, igt_output_t *output)
-+{
-+	if (is_intel_device(drm_fd))
-+		return i915_dp_get_pending_retrain(drm_fd, output);
-+
-+	igt_assert_f(false, "Current drm device does not support pending retrain count checking\n");
-+	return -EINVAL;
-+}
-+
-+/**
-+ * igt_dp_wait_pending_retrain: Wait for pending link retrain operations to complete
-+ * @drm_fd:		DRM file descriptor
-+ * @output:		igt_output_t object representing the display port
-+ *
-+ * This function waits for any pending link retrain operations to complete on the
-+ * specified display port. It polls the debugfs interface for the pending retrain
-+ * count until it reaches zero, indicating all retrain operations have completed.
-+ */
-+void igt_dp_wait_pending_retrain(int drm_fd, igt_output_t *output)
-+{
-+	double timeout = igt_default_display_detect_timeout();
-+	struct timespec start, now;
-+	double elapsed;
-+
-+	clock_gettime(CLOCK_MONOTONIC, &start);
-+
-+	while (1) {
-+		if (igt_dp_get_pending_retrain(drm_fd, output) == 0)
-+			return;
-+
-+		clock_gettime(CLOCK_MONOTONIC, &now);
-+		elapsed = (now.tv_sec - start.tv_sec) +
-+					(now.tv_nsec - start.tv_nsec) / 1e9;
-+
-+		if (elapsed >= timeout)
-+			break;
-+	}
-+	igt_assert_f(false, "Timeout waiting for pending retrain to complete\n");
-+}
-diff --git a/lib/igt_dp.h b/lib/igt_dp.h
-new file mode 100644
-index 000000000000..535ea5c9183d
---- /dev/null
-+++ b/lib/igt_dp.h
-@@ -0,0 +1,24 @@
-+/* SPDX-License-Identifier: MIT */
-+
-+#ifndef _IGT_DP_H_
-+#define _IGT_DP_H_
-+
-+#include "igt_kms.h"
-+
-+int igt_dp_get_current_link_rate(int drm_fd, igt_output_t *output);
-+
-+int igt_dp_get_current_lane_count(int drm_fd, igt_output_t *output);
-+
-+int igt_dp_get_max_link_rate(int drm_fd, igt_output_t *output);
-+
-+int igt_dp_get_max_supported_rate(int drm_fd, igt_output_t *output);
-+
-+int igt_dp_get_max_lane_count(int drm_fd, igt_output_t *output);
-+
-+void igt_dp_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count);
-+
-+int igt_dp_get_pending_retrain(int drm_fd, igt_output_t *output);
-+
-+void igt_dp_wait_pending_retrain(int drm_fd, igt_output_t *output);
-+
-+#endif
-diff --git a/lib/meson.build b/lib/meson.build
-index adf2443173cf..12063258eaa1 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -29,6 +29,7 @@ lib_sources = [
- 	'igt_drm_fdinfo.c',
-         'igt_fs.c',
- 	'igt_aux.c',
-+	'igt_dp.c',
- 	'igt_gt.c',
- 	'igt_halffloat.c',
- 	'igt_hwmon.c',
+ #endif // UNIGRAF_H
 
 -- 
 2.52.0
