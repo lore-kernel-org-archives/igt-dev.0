@@ -4,45 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 974BBE83061
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68669E83068
 	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 08:01:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3A45510E587;
-	Tue,  3 Feb 2026 08:01:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EF6A610E586;
+	Tue,  3 Feb 2026 08:01:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="gVaGBlmZ";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="PqiSkQhu";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E26210E2CC
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 17:07:43 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D94610E52F
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 16:58:44 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 92E90C237F3
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 17:07:46 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 2D1031A2BB1;
+ Mon,  2 Feb 2026 16:58:43 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 9E4EF60767;
- Mon,  2 Feb 2026 17:07:41 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 0335C60767;
+ Mon,  2 Feb 2026 16:58:43 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id A2A19119A8888; Mon,  2 Feb 2026 18:07:39 +0100 (CET)
+ with ESMTPSA id A9480119A8888; Mon,  2 Feb 2026 17:58:41 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770052061; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1770051522; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=rpXBCbHTk2AI1jFp2WIyr4yJh5RXNA8C2M0grWINmN0=;
- b=gVaGBlmZAfSQA43EZnj1LOMZF27Q6rZoQC1E18in08IW3afbEO/pBBBOBBQwNhQ7hNKPGi
- FAIodSnU1U2Zg85ZOw8QoOMKhKVJphRBYDmCfTLoENpX5LqtHYVZPtpX2/dyEp+EFcI1Oi
- x6El0tcjetNkgPA0GWD4pXJh9S9KI7n8uY0pKB8ZZiU3HIqOojZZpVhTpyCxuktJxNW/dh
- XUm1GvNXLpFjeJIM/d+fXurkoIKQxUpM0Gx2snfnYCl1X+qT9m0aVqbME5qEDXufG9E156
- TzBf600zvueOTsfom3UmNZ9a+8B+3lD3GSBthFKaGgvJ4n+XSpVX4AnPxDSpxA==
-Date: Mon, 2 Feb 2026 18:07:38 +0100
+ bh=Y9cwAKM5oTN5M4QucDyDy+XK5x3CWin2pDXYCcCYRzw=;
+ b=PqiSkQhuXsWRnLNFVqZitUXWCsNMnqpGRVSdYRuL/boC2A9jkSLvlVOKGfmDTFVsTIQzyj
+ I/J6ExlY5SxT0jKz9ZHsfTHGBUAqX4juuFBN9oW0awcsNbKi7GnMkJoNFVwH8z/UMHwnFa
+ rp4in8ZTcgJ8a6Le3zbUB+wkk6WyegA67h1IW2guIt0bMviubAaVIxYZKp3torVgYCQHjl
+ /YwQfy/DEy55B5yiKT4IV8xSU4Z47F+C8uYwLXhYM2TH74+0n8wqP7nryiiEhblgn3upM0
+ h92ibTkdwgi4rZW0Ziq6EkcmlAareYqadmT3jghjzQjHAdWEccGO/Mbts1eILQ==
+Date: Mon, 2 Feb 2026 17:58:40 +0100
 From: Kory Maincent <kory.maincent@bootlin.com>
 To: Louis Chauvet <louis.chauvet@bootlin.com>
 Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
  luca.ceresoli@bootlin.com, markyacoub@google.com,
  khaled.almahallawy@intel.com
-Subject: Re: [PATCH i-g-t v6 18/48] lib/unigraf: Add TSI.h
-Message-ID: <20260202180738.614db0a2@kmaincent-XPS-13-7390>
-In-Reply-To: <20260202-unigraf-integration-v6-18-834af822eee7@bootlin.com>
+Subject: Re: [PATCH i-g-t v6 17/48] lib/unigraf: Add used defines for TSI_Types
+Message-ID: <20260202175840.7734944d@kmaincent-XPS-13-7390>
+In-Reply-To: <20260202-unigraf-integration-v6-17-834af822eee7@bootlin.com>
 References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
- <20260202-unigraf-integration-v6-18-834af822eee7@bootlin.com>
+ <20260202-unigraf-integration-v6-17-834af822eee7@bootlin.com>
 Organization: bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -65,16 +65,13 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 02 Feb 2026 15:32:57 +0100
+On Mon, 02 Feb 2026 15:32:56 +0100
 Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 
-> Unigraf does not provide header for the libTSI.so file, only dynamic
-> library loading helpers for windows.
->=20
-> In order to link against this library and use unigraf devices, add the
-> function declaration used in the dynamic library loading wrappers.
+> Current unigraf public release are not c-compatible, this file hardcode
+> some values. One future release of libTSI may include a c-compatible
+> TSI_types.h file with full structure definition, but until then.
 
-Seems ok to me.
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 
 Thank you!
