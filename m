@@ -4,46 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AADE7E8306E
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 08:01:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4296E8306D
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 08:01:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4E8FE10E580;
-	Tue,  3 Feb 2026 08:01:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6FEE510E57A;
+	Tue,  3 Feb 2026 08:01:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="WWTArguO";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="WPeqcdaZ";
 	dkim-atps=neutral
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E64EE10E523
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 16:54:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA87A10E515
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 17:16:52 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id EA7ADC237F3
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 16:54:06 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 8429CC237F6;
+ Mon,  2 Feb 2026 17:16:55 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 1E8516076C;
- Mon,  2 Feb 2026 16:54:02 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id AA82F60767;
+ Mon,  2 Feb 2026 17:16:50 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id E2144119A88EE; Mon,  2 Feb 2026 17:53:59 +0100 (CET)
+ with ESMTPSA id 0152B119A88F9; Mon,  2 Feb 2026 18:16:48 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770051241; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1770052610; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=dhM9GnPb1bzLEKVcDIFJj0XSL0aDjGiJ3cffDdgIKuI=;
- b=WWTArguODyNBwtAfGBgWYWzqRlopPDG95A2r8yyuRAKK2UWXJ35JTTKPPmB8LzIuNtq1O4
- QsvBJxECdr5lhOM7Sc1GXxCSFSMxkqsQ9Xh+t57R7y52xnfbqtphB9fchnzBiUSnAdT71y
- BFB0RW1cqDOGfFiVjFfl0KuTBO0hflfWdsBVbyGr/ZG2WWERWCK68yOpi/1dSgMrypx8rV
- 2eISnrCFm0OKUvVRAny9kIJB1G07PEFL8BiVyLPQxvaEpV/AAEOBZFtvp6m2E2Ovjt+ra3
- ACAT9gAMKsfIOSSKs7Bat1vB2zgIBMygJZ+U4Xqztt0y5qouqIKfDSSo7U3JCQ==
-Date: Mon, 2 Feb 2026 17:53:59 +0100
+ bh=UhPDtk94r2WWoUDgS/UodfEzif1E55CBg3WZHC+lphc=;
+ b=WPeqcdaZHiyZBnR8jzZ/7CnRHu4oQuUDcfbCw4RjmA4QIAxGbCnwAR5VMl6Ducg2Zo+613
+ slWGN6n6PG6uPZn8/K2QJLGAVtEXG44L7V5nLHQQ2HnLeV4Oe/XJh5fx8HCCzolM4hh0Se
+ LI/xUtdk2B25blPYqiktBTl6hSvPLagn5dTUV6RGr8teJ4eyyC4co4H31PAvgWCAX8ABPB
+ aUdh4kKuSh5oQ9VrByYXLafrHbm7T+6iXgpktHCjy07E7sVhe5O95uBH98qCAwI1nItMim
+ Tw42h3j95YYMEk5Oa2KRK3kNHagWwjk7EKvNjFjOKgc4aOSCRRmqExseqL4O7w==
+Date: Mon, 2 Feb 2026 18:16:48 +0100
 From: Kory Maincent <kory.maincent@bootlin.com>
 To: Louis Chauvet <louis.chauvet@bootlin.com>
 Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
  luca.ceresoli@bootlin.com, markyacoub@google.com,
  khaled.almahallawy@intel.com
-Subject: Re: [PATCH i-g-t v6 16/48] lib/monitor_edids: Add helper to print
- all available EDID names
-Message-ID: <20260202175359.68910465@kmaincent-XPS-13-7390>
-In-Reply-To: <20260202-unigraf-integration-v6-16-834af822eee7@bootlin.com>
+Subject: Re: [PATCH i-g-t v6 19/48] lib/unigraf: Initial Unigraf support
+Message-ID: <20260202181648.1c65fa39@kmaincent-XPS-13-7390>
+In-Reply-To: <20260202-unigraf-integration-v6-19-834af822eee7@bootlin.com>
 References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
- <20260202-unigraf-integration-v6-16-834af822eee7@bootlin.com>
+ <20260202-unigraf-integration-v6-19-834af822eee7@bootlin.com>
 Organization: bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -66,15 +65,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 02 Feb 2026 15:32:55 +0100
+On Mon, 02 Feb 2026 15:32:58 +0100
 Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 
-> During the unigraf configuration, it may be required to know the list
-> of supported EDID names, so add an helper to print them.
+> This introduce the basic boilerplate to connect to a unigraf device.
+>=20
+> This integration currently only supports one device openned to simplify
+> its usage and cleanup.
 
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+*opened
 
-Thank you!
+...
+
+> +bool unigraf_open_device(int drm_fd)
+> +{
+> +	TSI_RESULT r;
+> +	int device_count;
+> +	int chosen_device =3D 0;
+> +	int chosen_role =3D 0;
+> +	int chosen_input =3D 0;
+> +
+> +	assert(igt_can_fail());
+> +
+> +	if (unigraf_device)
+> +		return true;
+> +
+> +	unigraf_init();
+> +
+> +	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE,
+> 0)); +
+> +	device_count =3D unigraf_device_count();
+> +	if (device_count < 1) {
+> +		unigraf_debug("No device found.\n");
+> +		return false;
+> +	}
+
+If TSIX_DEV_GetDeviceCount(void) does not return negative value you could
+simply use: if (!device_count)
+
+Regards,
 --=20
 K=C3=B6ry Maincent, Bootlin
 Embedded Linux and kernel engineering
