@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0F9CE8305D
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 08:01:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FA7BE83062
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 08:01:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8730D10E568;
-	Tue,  3 Feb 2026 08:01:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C7AA310E56A;
+	Tue,  3 Feb 2026 08:01:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="XuKN1EyJ";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ZRs0f3dm";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A06A10E2C0
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 15:40:01 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 34B8710E2C7
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Feb 2026 15:50:49 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id D9F461A2BEF;
- Mon,  2 Feb 2026 15:39:59 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id F05614E423CA;
+ Mon,  2 Feb 2026 15:50:47 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id AE5D160767;
- Mon,  2 Feb 2026 15:39:59 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id BFAAC60767;
+ Mon,  2 Feb 2026 15:50:47 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 3E0EB119A88EE; Mon,  2 Feb 2026 16:39:58 +0100 (CET)
+ with ESMTPSA id 255FD119A8888; Mon,  2 Feb 2026 16:50:46 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770046799; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1770047447; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=649mF5FR3sRbd9RATFaefEMNKsb908+NBFFx6Soy6eM=;
- b=XuKN1EyJVe+GyxgjHwfzy9bthClaTLtPKryOwK0JYjOhGEG6dLjqxQc7G0z3dz4dncXCfJ
- S5kAX5nFmC7gduCipKurpyL5slma/5XDwmpL4Ll1/lChBI5jkAgBASpk+gx3Jhb6D3LmrB
- fexyeZhuH9GfREQit123+2id9VNbGR/3pHWuZvpIts8BS6Cd6P79Z7swzuYCCANXRznCxL
- Ld2UTB8JymvN53lhuZ8bSOddmPpsNHK4YM2XmyFQg2QYLk0zSiT9gzNpSJ4Amexx8Bx16G
- cMORuEB+PUrVce7W1uhthy2oTDwjPKUkbqByT4oQujiAQvRFHIYPHkZHPnfD9Q==
-Date: Mon, 2 Feb 2026 16:39:57 +0100
+ bh=K3jTfWbDPmANG2fVPFvnPVBUPu2+F1qZIZjZpzolUwk=;
+ b=ZRs0f3dmKanKnhk+ZnMGpbpXFNaZxjS0HkMXRMec7geIT4GlwYZonJcImxEsPEco5TWcjB
+ m12w71Fh7OA6S2ZvBxdoH9nYoFNmD7ZaWxMc7Jy5ay91a5B9uXkzMNpXR7R48MckOO1+a4
+ YcCHEmYq3hpXUmsiWffs2RtNjN1f0zZtMx36AQgwePQhCons5h33TydtyUmeNwoDqYUKFw
+ Qm+kTy1peNvj/366LlkdBoFGu+DoGuYgaOWNpUI4rn7Re9Q0ADFdVAAnkN2e5V7/SkmQCj
+ 63aEIytKiwMNF1rFW1IKetELAhhv+L7HCd76tCc3eSIFv+FfzxzEMgakd8JYPQ==
+Date: Mon, 2 Feb 2026 16:50:45 +0100
 From: Kory Maincent <kory.maincent@bootlin.com>
 To: Louis Chauvet <louis.chauvet@bootlin.com>
 Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
  luca.ceresoli@bootlin.com, markyacoub@google.com,
  khaled.almahallawy@intel.com
-Subject: Re: [PATCH i-g-t v6 06/48] lib/igt_kms: Add helper to get a pipe
- from a connector
-Message-ID: <20260202163957.31bc813e@kmaincent-XPS-13-7390>
-In-Reply-To: <20260202-unigraf-integration-v6-6-834af822eee7@bootlin.com>
+Subject: Re: [PATCH i-g-t v6 10/48] lib/igt_debugfs: Move debugfs helpers to
+ the proper location
+Message-ID: <20260202165045.7cb0d53d@kmaincent-XPS-13-7390>
+In-Reply-To: <20260202-unigraf-integration-v6-10-834af822eee7@bootlin.com>
 References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
- <20260202-unigraf-integration-v6-6-834af822eee7@bootlin.com>
+ <20260202-unigraf-integration-v6-10-834af822eee7@bootlin.com>
 Organization: bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -66,94 +66,16 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 02 Feb 2026 15:32:45 +0100
+On Mon, 02 Feb 2026 15:32:49 +0100
 Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 
-> Currently there is no way to get a pipe from the connector. Add this tiny
-> helper that will try to get the currently used pipe for a specific
-> connector.
->=20
-> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> ---
->  lib/igt_kms.c | 41 +++++++++++++++++++++++++++++++++++++++++
->  lib/igt_kms.h |  3 +++
->  2 files changed, 44 insertions(+)
->=20
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 6122de8d877f..e24140fc117f 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -8325,3 +8325,44 @@ int kms_wait_for_new_connectors(uint32_t
-> **newly_connected,=20
->  	return newly_connected_count;
->  }
-> +
-> +/**
-> + * igt_get_crtc_index_from_connector_id() - Get a pipe from the connecto=
-r id
-> + * @drm_fd: drm file descriptor to which the connector belongs
-> + * @connector_id: connector to inspect
-> + *
-> + * Returns 0 if the connector is not connected to any pipe
-> + */
-> +int igt_get_crtc_index_from_connector_id(int drm_fd, int connector_id)
-> +{
-> +	drmModeObjectPropertiesPtr proplist;
-> +	drmModePropertyPtr crtc_id_prop;
-> +	drmModePropertyPtr prop;
-> +	uint32_t crtc_id;
-> +	enum pipe crtc_index;
-> +	int i;
+> igt_debugfs_read_connector_file and igt_debugfs_write_connector_file are
+> debugfs related helpers. To avoid mixing everything in igt_kms, move them
+> to igt_debugfs.
 
-Reverse xmas tree. ;)
-Else
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 
 Thank you!
-
-> +
-> +	proplist =3D drmModeObjectGetProperties(drm_fd, connector_id,
-> DRM_MODE_OBJECT_CONNECTOR);
-> +	crtc_id_prop =3D NULL;
-> +
-> +	for (i =3D 0; i < proplist->count_props; i++) {
-> +		prop =3D drmModeGetProperty(drm_fd, proplist->props[i]);
-> +
-> +		if (strcmp(prop->name, "CRTC_ID") =3D=3D 0) {
-> +			crtc_id_prop =3D prop;
-> +			break;
-> +		}
-> +		drmModeFreeProperty(prop);
-> +	}
-> +
-> +	igt_assert(crtc_id_prop);
-> +	igt_assert((crtc_id_prop->flags & DRM_MODE_PROP_EXTENDED_TYPE) =3D=3D
-> DRM_MODE_PROP_OBJECT);
-> +	crtc_id =3D proplist->prop_values[i];
-> +	drmModeFreeProperty(crtc_id_prop);
-> +	drmModeFreeObjectProperties(proplist);
-> +	if (crtc_id !=3D 0) {
-> +		crtc_index =3D kmstest_get_pipe_from_crtc_id(drm_fd, crtc_id);
-> +		return crtc_index;
-> +	}
-> +	return 0;
-> +}
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 6843b6ae2e96..f2eaad61fdf7 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1329,4 +1329,7 @@ int kms_wait_for_new_connectors(uint32_t
-> **newly_connected, int
->  get_list_diff(const uint32_t *list_a, int list_a_len, const uint32_t
-> *list_b, int list_b_len, uint32_t **diff);
-> +
-> +int igt_get_crtc_index_from_connector_id(int drm_fd, int connector_id);
-> +
->  #endif /* __IGT_KMS_H__ */
->=20
-
-
-
 --=20
 K=C3=B6ry Maincent, Bootlin
 Embedded Linux and kernel engineering
