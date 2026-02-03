@@ -4,59 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A91E7E8307A
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 10:09:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16340E6E7FC
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 10:46:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 37F6310E5C2;
-	Tue,  3 Feb 2026 10:09:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B6CD710E603;
+	Tue,  3 Feb 2026 10:46:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LK4JkpZ8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Saj9Mksg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA4D710E5D1;
- Tue,  3 Feb 2026 10:09:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A2BDB10E603
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Feb 2026 10:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770113393; x=1801649393;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=LbbI7G/2/6Q7Gf1N16XYohCrUdtrJRSE8xWEcUk7Wf4=;
- b=LK4JkpZ8kcxkdoPbral9NM8TGjP6Ebhsgf3cfi0bMsbKSztnFFuiiwpV
- wshXq7YCG507fE181NM7xM7kjGUklhnGL8Ws0+qgwVhmbGB/UYS+hYWfj
- UDbL6ExfXfzQqOl6/TZO9Ttn0KqUtgDP0YhRORbd5ZRnyt/cd8+G/PH4s
- /zOzXfPFtwLd2QdNboTpyHPqvLezCB+teK6O5vdBOQftb6ubSwLe48fmn
- 2huW6OOFyZyWXF/cyKx7+hg/2dS4jW2FEtiEIOzLx0/YZecGZmhvtUBN2
- mZr8t9569eZ3VVG5Z8F5W+GTqOEdy2C/v7JlqJUO9JNa0EOPZMLllHa6l A==;
-X-CSE-ConnectionGUID: 5HMyQWsqSSmN/iJX597RyQ==
-X-CSE-MsgGUID: tz/CpGQ3Q3mUKdGb0WPziw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="88702727"
-X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; d="scan'208";a="88702727"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Feb 2026 02:09:53 -0800
-X-CSE-ConnectionGUID: a/lYEfbsTf24Req39SJCSg==
-X-CSE-MsgGUID: Q2jQ4t0bSTu/efWmzOJE8g==
+ t=1770115598; x=1801651598;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=d2ilyRq+C4zp3Vvv7xUc01W9tE4P02hb2OgR6U4aDx0=;
+ b=Saj9MksgSx9XpnjVPaD0AFdQfsGHjmD29QObl2l8eI9qspteLDJgyUym
+ AHPK+wI4G3ZdgJ+tyYbECVq+UCigv/Y5a5gxQtQNbFu5FM0Pzh8KQ+IQS
+ VnK4gOV8pKekC5gksBbSrNWFdepIez0F/yd+Dc0rQD8Wd6skYgW/WY/IU
+ lDxipUBNUZYy3DmYYb2KlQCNE3voVZhV+u3SgtgFQ9UKQGhsmAeGtcJIP
+ 98J8tSWzNWgzvQUQGSEfbQuYa+XoDJvGTsZlXPDcyvUMVvXr7vKf7/Xiz
+ utM7YkfQ+inI3Xd/NpD+7He9/+8gsqCrj2QtNbZifLUAfes3jRSfuMrDn g==;
+X-CSE-ConnectionGUID: +tSzKktPSGuhRKUhxXl1mg==
+X-CSE-MsgGUID: u26yyYNnTjeb/68u78H73A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="71182060"
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; d="scan'208";a="71182060"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Feb 2026 02:46:37 -0800
+X-CSE-ConnectionGUID: pRO88+u+S8KxfyenBr6baQ==
+X-CSE-MsgGUID: /3NKvS3LSniJjz1j96X6FQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; d="scan'208";a="240476232"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.210])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Feb 2026 02:09:50 -0800
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; d="scan'208";a="232731003"
+Received: from soc-5cg43972f8.clients.intel.com (HELO localhost)
+ ([172.28.182.93])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Feb 2026 02:46:35 -0800
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t v4 6/6] lib/igt_device_scan: Print GPU upstream port
- parent/child relations
-Date: Tue,  3 Feb 2026 11:05:08 +0100
-Message-ID: <20260203100920.420551-14-janusz.krzysztofik@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260203100920.420551-8-janusz.krzysztofik@linux.intel.com>
-References: <20260203100920.420551-8-janusz.krzysztofik@linux.intel.com>
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>
+Subject: [PATCH i-g-t] tests/core_hotunplug: Skip unplug when sysfs 'remove'
+ is missing
+Date: Tue,  3 Feb 2026 11:46:29 +0100
+Message-ID: <20260203104629.56005-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -74,96 +70,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In a short listing, lsgpu prints a sysfs path of a PCI GPU parent as a
-local attribute of a DRM device.  However, if that's a discrete GPU and
-its associated PCIe upstream bridge port has been identified, no
-information on that bridge is listed among the GPU attributes.  Follow the
-pattern used with DRM devices and also show a PCI slot of the bridge port
-as a local attribute of the discrete GPU device.
+Some PCI devices don't expose the sysfs remove attribute. The unplug/rescan
+paths in core_hotunplug rely on writing 1 to remove, so attempting those
+subtests would fail, skip the test early when remove is not present.
 
-Moreover, in both short and detailed listings, local attributes intended
-for providing device names of GPU associated DRM devices and the GPU
-codename are also printed as attributes of related PCIe upstream bridge
-port, however, the DRM device names are shown as (null), and the codename
-attribute provides raw vendor:device codes of the bridge itself.  Replace
-those with PCI slot and codename of the GPU device.
-
-v4: Free already allocated numeric codename before replacing (Sebastian),
-  - visually separate bridge specific updates of attributes already
-    populated by find_or_add_igt_device from bridge specific attribute
-    assignments.
-v2: Allocate memory to local attributes of a bridge for safety (Sebastian),
-  - merge with a formerly separate patch "lib/igt_device_scan: Don't print
-    bridge not applicable attributes" (Sebastian),
-  - no need for DEVTYPE_BRIDGE, just skip attributes if NULL.
-
-Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
 ---
- lib/igt_device_scan.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ tests/core_hotunplug.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-index 5742940df7..f5fb15d02f 100644
---- a/lib/igt_device_scan.c
-+++ b/lib/igt_device_scan.c
-@@ -252,6 +252,8 @@ struct igt_device {
- 	char *codename; /* For grouping by codename */
- 	enum dev_type dev_type; /* For grouping by integrated/discrete */
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index e23b5b89f..7c9dae1bf 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -245,6 +245,17 @@ static void device_unplug(struct hotunplug *priv, const char *prefix,
+ {
+ 	igt_require(priv->fd.sysfs_dev == -1);
  
-+	char *pci_gpu; /* Filled for upstream bridge ports */
++	priv->fd.sysfs_dev = openat(priv->fd.sysfs_bus, priv->dev_bus_addr,
++				    O_DIRECTORY);
++	igt_assert_fd(priv->fd.sysfs_dev);
 +
- 	struct igt_list_head link;
- };
- 
-@@ -1066,6 +1068,12 @@ static void update_or_add_parent(struct udev *udev,
- 
- 	/* override DEVTYPE_INTEGRATED so link attributes won't be omitted */
- 	bridge_idev->dev_type = DEVTYPE_ALL;
-+	/* free numeric codename before overwriting with GPU codename */
-+	free(bridge_idev->codename);
-+	bridge_idev->codename = strdup(parent_idev->codename);
++	if (!igt_sysfs_has_attr(priv->fd.sysfs_dev, "remove")) {
++		priv->fd.sysfs_dev = close_sysfs(priv->fd.sysfs_dev);
++		igt_assert_eq(priv->fd.sysfs_dev, -1);
++		igt_skip("PCI %s has no sysfs 'remove' attribute, skipping test\n",
++			 priv->dev_bus_addr);
++	}
 +
-+	bridge_idev->pci_gpu = strdup(parent_idev->pci_slot_name);
-+	parent_idev->parent = bridge_idev;
- }
+ 	/*
+ 	 * FIXME: on some devices, the audio driver (snd_hda_intel)
+ 	 * binds into the i915 driver. On such hardware, kernel warnings
+@@ -254,16 +265,14 @@ static void device_unplug(struct hotunplug *priv, const char *prefix,
+ 	 * unbind i915 driver, reloading it when binding again.
+ 	 */
+ 	if (igt_audio_driver_unload(&priv->snd_driver)) {
++		priv->fd.sysfs_dev = close_sysfs(priv->fd.sysfs_dev);
++		igt_assert_eq(priv->fd.sysfs_dev, -1);
+ 		igt_skip("Audio driver %s in use, skipping test\n",
+ 			 priv->snd_driver);
+ 	} else if (priv->snd_driver) {
+ 		igt_info("Unloaded audio driver %s\n", priv->snd_driver);
+ 	}
  
- static struct igt_device *duplicate_device(struct igt_device *dev) {
-@@ -1237,6 +1245,7 @@ static void igt_device_free(struct igt_device *dev)
- 	free(dev->device);
- 	free(dev->driver);
- 	free(dev->pci_slot_name);
-+	free(dev->pci_gpu);
- 	igt_map_destroy(dev->attrs_map, free_key_value);
- 	igt_map_destroy(dev->props_map, free_key_value);
- }
-@@ -1333,7 +1342,11 @@ igt_devs_print_simple(struct igt_list_head *view,
- 			if (is_pci_subsystem(dev)) {
- 				_pr_simple("vendor", dev->vendor);
- 				_pr_simple("device", dev->device);
-+				if (dev->pci_gpu)
-+					_pr_simple("GPU device", dev->pci_gpu);
- 				_pr_simple("codename", dev->codename);
-+				if (dev->parent && dev->parent->pci_slot_name)
-+					_pr_simple("upstream port", dev->parent->pci_slot_name);
- 			}
- 		}
- 		printf("\n");
-@@ -1486,8 +1499,12 @@ igt_devs_print_detail(struct igt_list_head *view,
- 		printf("========== %s:%s ==========\n",
- 		       dev->subsystem, dev->syspath);
- 		if (!is_drm_subsystem(dev)) {
--			_print_key_value("card device", dev->drm_card);
--			_print_key_value("render device", dev->drm_render);
-+			if (dev->drm_card)
-+				_print_key_value("card device", dev->drm_card);
-+			if (dev->drm_render)
-+				_print_key_value("render device", dev->drm_render);
-+			if (dev->pci_gpu)
-+				_print_key_value("GPU device", dev->pci_gpu);
- 			_print_key_value("codename", dev->codename);
- 		}
+-	priv->fd.sysfs_dev = openat(priv->fd.sysfs_bus, priv->dev_bus_addr,
+-				    O_DIRECTORY);
+-	igt_assert_fd(priv->fd.sysfs_dev);
+-
+ 	local_debug("%sunplugging the device\n", prefix);
+ 	priv->failure = "Device unplug failure!";
  
 -- 
-2.52.0
+2.43.0
 
