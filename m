@@ -4,28 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82036E83041
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 03:02:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1AB4E83043
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 03:06:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1396E10E314;
-	Tue,  3 Feb 2026 03:02:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 89E5E10E4E0;
+	Tue,  3 Feb 2026 03:06:15 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 62FA810E314;
- Tue,  3 Feb 2026 03:02:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A18CB10E314;
+ Tue,  3 Feb 2026 03:06:14 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4384833314388694556=="
+ boundary="===============1416931070074261759=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2C1/2=5D_intel-ci=3A_Add_valid_skips_on_kms=5Fplane_to_display?=
- =?utf-8?q?_blocklist?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/xe=5Fgt=3A_Handle_non-C?=
+ =?utf-8?q?6_states_with_debug_message?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Karthik B S" <karthik.b.s@intel.com>
+To: "Sk Anirban" <sk.anirban@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 03 Feb 2026 03:02:02 -0000
-Message-ID: <177008772238.218809.6234997351415462635@a3b018990fe9>
+Date: Tue, 03 Feb 2026 03:06:14 -0000
+Message-ID: <177008797464.218625.15462032041706034326@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260202083300.647462-1-karthik.b.s@intel.com>
-In-Reply-To: <20260202083300.647462-1-karthik.b.s@intel.com>
+References: <20260202114640.3366549-2-sk.anirban@intel.com>
+In-Reply-To: <20260202114640.3366549-2-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4384833314388694556==
+--===============1416931070074261759==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: series starting with [i-g-t,1/2] intel-ci: Add valid skips on kms_plane to display blocklist
-URL   : https://patchwork.freedesktop.org/series/160991/
+Series: lib/xe_gt: Handle non-C6 states with debug message
+URL   : https://patchwork.freedesktop.org/series/161011/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8729_BAT -> XEIGTPW_14467_BAT
+CI Bug Log - changes from XEIGT_8729_BAT -> XEIGTPW_14468_BAT
 ====================================================
 
 Summary
@@ -67,10 +66,10 @@ Summary
 
   
 
-Participating hosts (12 -> 12)
+Participating hosts (12 -> 11)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (1): bat-bmg-3 
 
 
 Changes
@@ -82,19 +81,19 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8729 -> IGTPW_14467
+  * IGT: IGT_8729 -> IGTPW_14468
   * Linux: xe-4480-88c5cd5324a45f418e99c62974a746596bc81d93 -> xe-4487-4f6f70eee8ddc4a78a87283d8822aaecb26d3d42
 
-  IGTPW_14467: 685586769caac8109ca1563e3bfda72168106927 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_14468: f09d6ba02f7d25019aa1ffd826da868caa776012 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8729: 8729
   xe-4480-88c5cd5324a45f418e99c62974a746596bc81d93: 88c5cd5324a45f418e99c62974a746596bc81d93
   xe-4487-4f6f70eee8ddc4a78a87283d8822aaecb26d3d42: 4f6f70eee8ddc4a78a87283d8822aaecb26d3d42
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14467/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14468/index.html
 
---===============4384833314388694556==
+--===============1416931070074261759==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -114,29 +113,29 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] intel-ci: Add valid skips on kms_plane to display blocklist</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160991/">https://patchwork.freedesktop.org/series/160991/</a></td></tr>
+<tr><td><b>Series:</b></td><td>lib/xe_gt: Handle non-C6 states with debug message</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161011/">https://patchwork.freedesktop.org/series/161011/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14467/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14467/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14468/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14468/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8729_BAT -&gt; XEIGTPW_14467_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8729_BAT -&gt; XEIGTPW_14468_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 12)</h2>
-<p>No changes in participating hosts</p>
+<h2>Participating hosts (12 -&gt; 11)</h2>
+<p>Missing    (1): bat-bmg-3 </p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8729 -&gt; IGTPW_14467</li>
+<li>IGT: IGT_8729 -&gt; IGTPW_14468</li>
 <li>Linux: xe-4480-88c5cd5324a45f418e99c62974a746596bc81d93 -&gt; xe-4487-4f6f70eee8ddc4a78a87283d8822aaecb26d3d42</li>
 </ul>
-<p>IGTPW_14467: 685586769caac8109ca1563e3bfda72168106927 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_14468: f09d6ba02f7d25019aa1ffd826da868caa776012 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_8729: 8729<br />
   xe-4480-88c5cd5324a45f418e99c62974a746596bc81d93: 88c5cd5324a45f418e99c62974a746596bc81d93<br />
   xe-4487-4f6f70eee8ddc4a78a87283d8822aaecb26d3d42: 4f6f70eee8ddc4a78a87283d8822aaecb26d3d42</p>
@@ -144,4 +143,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============4384833314388694556==--
+--===============1416931070074261759==--
