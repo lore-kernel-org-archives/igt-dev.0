@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AC00E8783F
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 15:34:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61FCCE8783F
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Feb 2026 15:34:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1ADF910E28A;
-	Tue,  3 Feb 2026 15:34:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1156710E335;
+	Tue,  3 Feb 2026 15:34:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mXxe7l55";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZQED0SBM";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A278510E6BF
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Feb 2026 15:34:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8555810E335
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Feb 2026 15:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770132863; x=1801668863;
+ t=1770132868; x=1801668868;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=tonCq927lZRnGYB3Fr+OUEZGXXDPR8LEL0A77bh04cA=;
- b=mXxe7l551CJjr3Py2bs1olvvXsoM1sR41n1oQ0/2X+OIxUkI2KEsTfY9
- 60r5MyiM8EyMBbdtuL8Z90rYFKuooGRRsAqSvANC3bGpQ0QnkOCqZh5h2
- +u4vqhLkom02sZAOxCqaUOlIP34GHcQd8AF8MelVEpM9bKWYuajI1InDJ
- r0ZPX3z+Rdyu5nUOl84yDyfegfiEm4jfNJnOdIHgp36xuqI4HAaIG4rRi
- 1VaT5ewlrlmwqYN8fSuUsR41Vzzwtc2p2a5rBiN1RrutNQ1Z52Ntg+eXN
- k8vLWHxjnUpY5X+B3UHHzA2HCtyT+/22zQtxKVy5QgczkCvxdC/Ggr/xJ Q==;
-X-CSE-ConnectionGUID: YdI/x75TQ7CZ13G4+ifshg==
-X-CSE-MsgGUID: 9RAxafOrSa2wSiaK+dCo1w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="71204286"
-X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; d="scan'208";a="71204286"
+ bh=2u1q6jJQWQ7hZxirif+ECTYroq2n7zrquLrjw45k0jU=;
+ b=ZQED0SBMbeElGYA20vvt4z98Pi5po8bMCipVj4o0+vfAg3s3SjTAZ06x
+ 2FDrvJQRY/ylbvA1gQ0AU3aJpzGbiL0YPIz85SsKw1ejfZmHLeynuInX/
+ fBj+OlzUBS40QIuRi9F9lExYdgIwRmJt6uNX/eVQyzOW+Q5PCABjpqxDv
+ 33SxjW/B+JXUfdjgbypdx5fCv0FEH5P+XJ6aI/r04Wd8Eyq98qb2Gm8Qk
+ qpKP0GQFjp9hQq9itw1Jv+HgAKmeMSro50mGq1X3VrrmaOvXTL8vAlPeQ
+ wC9Nbz9BbIUMckz19J/VvCJyZ6N3W38gyPMNt+kmLu4psOCC7b8BdgNXX A==;
+X-CSE-ConnectionGUID: bCmOefuUSyaH6sp8CRBiNA==
+X-CSE-MsgGUID: AoDuQYnkTXmAc1lgLfJS8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="71204305"
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; d="scan'208";a="71204305"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Feb 2026 07:34:23 -0800
-X-CSE-ConnectionGUID: /2Um8bg9Rd+f1MXB2SLVQg==
-X-CSE-MsgGUID: StRXfOaCS+WAHQeeGRijaw==
+ 03 Feb 2026 07:34:28 -0800
+X-CSE-ConnectionGUID: SYleyK8BSmqKlttCE7rskw==
+X-CSE-MsgGUID: FiNkmjVhSQGVV1h2XYt6jA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; d="scan'208";a="247479413"
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; d="scan'208";a="247479443"
 Received: from soc-5cg43972f8.clients.intel.com (HELO localhost)
  ([172.28.182.93])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Feb 2026 07:34:22 -0800
+ 03 Feb 2026 07:34:27 -0800
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jakub1.kolakowski@intel.com, lukasz.laguna@intel.com,
@@ -49,14 +49,15 @@ Cc: jakub1.kolakowski@intel.com, lukasz.laguna@intel.com,
  Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  Adam Miszczak <adam.miszczak@linux.intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH v2 i-g-t 1/4] lib/igt_sriov_device: Add helper to get VF PCI
- slot address
-Date: Tue,  3 Feb 2026 16:33:42 +0100
-Message-ID: <20260203153349.128551-2-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v2 i-g-t 2/4] lib/igt_pci: Add generic PCI driver override and
+ bind/unbind helpers
+Date: Tue,  3 Feb 2026 16:33:43 +0100
+Message-ID: <20260203153349.128551-3-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260203153349.128551-1-marcin.bernatowicz@linux.intel.com>
 References: <20260203153349.128551-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -73,69 +74,434 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add igt_sriov_get_vf_pci_slot_alloc() to resolve the PCI slot address
-of a VF by following the device/virtfnX symlink in the PF sysfs
-directory, returning a newly allocated string or NULL on failure.
+Add generic helpers for controlling PCI driver binding via sysfs.
+
+The new APIs provide driver- and device-centric primitives for:
+  - setting and clearing driver_override
+  - triggering PCI driver reprobe
+  - binding and unbinding devices to a specific PCI driver
+  - query the currently bound PCI driver
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
 Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Lukasz Laguna <lukasz.laguna@intel.com>
----
- lib/igt_sriov_device.c | 25 +++++++++++++++++++++++++
- lib/igt_sriov_device.h |  1 +
- 2 files changed, 26 insertions(+)
 
-diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
-index 788ffbfa1..1f4c3ac04 100644
---- a/lib/igt_sriov_device.c
-+++ b/lib/igt_sriov_device.c
-@@ -354,6 +354,31 @@ static char *__igt_sriov_get_vf_pci_slot_alloc(int pf_sysfs, unsigned int vf_num
- 	return pci_slot_addr ? strdup(pci_slot_addr) : NULL;
- }
+---
+v2:
+- Add igt_pci_get_bound_driver_name() to query the currently bound PCI
+  driver via the /sys/bus/pci/devices/<BDF>/driver symlink.
+- Extend igt_pci_bind_driver_override() and igt_pci_unbind_driver_override()
+  with a timeout_ms parameter so callers can wait for bind/unbind to
+  actually complete, instead of relying on drivers_probe write success.
+
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+---
+ lib/igt_pci.c | 351 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_pci.h |  13 +-
+ 2 files changed, 363 insertions(+), 1 deletion(-)
+
+diff --git a/lib/igt_pci.c b/lib/igt_pci.c
+index 61aaf939d..80aaf07c5 100644
+--- a/lib/igt_pci.c
++++ b/lib/igt_pci.c
+@@ -3,9 +3,18 @@
+  * Copyright © 2022 Intel Corporation
+  */
  
-+/**
-+ * igt_sriov_get_vf_pci_slot_alloc:
-+ * @pf: PF device file descriptor
-+ * @vf_num: VF number (1-based); 0 means PF
-+ *
-+ * Resolves the symlink under the PF sysfs directory (device/virtfnX) to obtain
-+ * the PCI slot address of the VF (or PF if @vf_num is 0).
-+ *
-+ * Returns: newly allocated PCI slot address string (e.g. "0000:3b:00.4"),
-+ * or NULL on failure. Caller must free().
-+ */
-+char *igt_sriov_get_vf_pci_slot_alloc(int pf, unsigned int vf_num)
++#include <ctype.h>
++#include <dirent.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <limits.h>
++#include <string.h>
++#include <unistd.h>
+ #include <pciaccess.h>
++#include "igt_aux.h"
+ #include "igt_core.h"
+ #include "igt_pci.h"
++#include "igt_sysfs.h"
+ 
+ static int find_pci_cap_offset_at(struct pci_device *dev, enum pci_cap_id cap_id,
+ 				  int start_offset)
+@@ -51,3 +60,345 @@ int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id)
+ {
+ 	return find_pci_cap_offset_at(dev, cap_id, PCI_CAPS_START);
+ }
++
++static int open_pci_driver_dir(const char *driver)
 +{
-+	char *pci_slot;
-+	int sysfs;
++	char path[PATH_MAX];
 +
-+	sysfs = igt_sysfs_open(pf);
-+	igt_assert_fd(sysfs);
-+
-+	pci_slot = __igt_sriov_get_vf_pci_slot_alloc(sysfs, vf_num);
-+	close(sysfs);
-+
-+	return pci_slot;
++	snprintf(path, sizeof(path), "/sys/bus/pci/drivers/%s", driver);
++	return open(path, O_RDONLY | O_CLOEXEC);
 +}
 +
- static bool __igt_sriov_bind_vf_drm_driver(int pf, unsigned int vf_num, bool bind)
- {
- 	char *pci_slot;
-diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
-index 84d29b1bb..a417b30d8 100644
---- a/lib/igt_sriov_device.h
-+++ b/lib/igt_sriov_device.h
-@@ -28,6 +28,7 @@ void igt_sriov_enable_driver_autoprobe(int pf);
- void igt_sriov_disable_driver_autoprobe(int pf);
- int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
- bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
-+char *igt_sriov_get_vf_pci_slot_alloc(int pf, unsigned int vf_num);
- void igt_sriov_bind_vf_drm_driver(int pf, unsigned int vf_num);
- void igt_sriov_unbind_vf_drm_driver(int pf, unsigned int vf_num);
- int igt_sriov_device_sysfs_open(int pf, unsigned int vf_num);
++/**
++ * igt_pci_device_unbind:
++ * @pci_slot: BDF like "0000:01:00.0"
++ *
++ * Unbind @pci_slot from its currently bound driver, if any.
++ * Returns 0 on success, or a negative errno-like value.
++ */
++int igt_pci_device_unbind(const char *pci_slot)
++{
++	char path[PATH_MAX];
++	int dirfd;
++	int ret;
++
++	snprintf(path, sizeof(path), "/sys/bus/pci/devices/%s/driver", pci_slot);
++	dirfd = open(path, O_RDONLY | O_CLOEXEC);
++	if (dirfd < 0)
++		return 0; /* already unbound */
++
++	ret = igt_sysfs_set(dirfd, "unbind", pci_slot) ? 0 : -errno;
++	close(dirfd);
++
++	return ret;
++}
++
++/**
++ * igt_pci_driver_bind:
++ * @driver: PCI driver name under /sys/bus/pci/drivers/<driver>
++ * @pci_slot: device to bind
++ *
++ * Bind @pci_slot to @driver. Driver must be present/loaded.
++ * Returns 0 on success, or a negative errno-like value.
++ */
++int igt_pci_driver_bind(const char *driver, const char *pci_slot)
++{
++	int dirfd, ret;
++
++	dirfd = open_pci_driver_dir(driver);
++	if (dirfd < 0)
++		return -errno;
++
++	ret = igt_sysfs_set(dirfd, "bind", pci_slot) ? 0 : -errno;
++	close(dirfd);
++
++	return ret;
++}
++
++/**
++ * igt_pci_driver_unbind:
++ * @driver: PCI driver name
++ * @pci_slot: device to unbind
++ *
++ * Unbind @pci_slot from @driver.
++ * Returns 0 on success, or a negative errno-like value.
++ */
++int igt_pci_driver_unbind(const char *driver, const char *pci_slot)
++{
++	int dirfd, ret;
++
++	dirfd = open_pci_driver_dir(driver);
++	if (dirfd < 0)
++		return -errno;
++
++	ret = igt_sysfs_set(dirfd, "unbind", pci_slot) ? 0 : -errno;
++	close(dirfd);
++
++	return ret;
++}
++
++/**
++ * igt_pci_driver_unbind_all:
++ * @driver: PCI driver name
++ *
++ * Unbind all devices currently bound to @driver.
++ * Returns 0 on success, or a negative errno-like value.
++ */
++int igt_pci_driver_unbind_all(const char *driver)
++{
++	char path[PATH_MAX];
++	DIR *dir;
++	struct dirent *de;
++	int driver_fd;
++
++	snprintf(path, sizeof(path), "/sys/bus/pci/drivers/%s", driver);
++	dir = opendir(path);
++	if (!dir)
++		return -errno;
++
++	driver_fd = dirfd(dir);
++
++	while ((de = readdir(dir))) {
++		bool ok;
++
++		/* BDF symlinks are like "0000:01:00.0" and start with digit */
++		if (de->d_type != DT_LNK || !isdigit(de->d_name[0]))
++			continue;
++
++		ok = igt_sysfs_set(driver_fd, "unbind", de->d_name);
++		if (!ok) {
++			int err = -errno;
++
++			closedir(dir);
++			return err;
++		}
++	}
++
++	closedir(dir);
++	return 0;
++}
++
++/**
++ * igt_pci_set_driver_override:
++ * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
++ * @driver: PCI driver name to force-bind (e.g. "xe-vfio-pci"), or
++ *          NULL / empty string to clear an existing override
++ *
++ * Set or clear the PCI driver_override for @pci_slot via sysfs.
++ *
++ * This does not trigger driver reprobe by itself. Call
++ * igt_pci_probe_drivers() afterwards to apply the override.
++ *
++ * Returns: 0 on success, negative errno on failure.
++ */
++int igt_pci_set_driver_override(const char *pci_slot, const char *driver)
++{
++	char devpath[PATH_MAX];
++	int dev;
++	bool ok;
++
++	snprintf(devpath, sizeof(devpath), "/sys/bus/pci/devices/%s", pci_slot);
++	dev = open(devpath, O_DIRECTORY | O_RDONLY);
++	if (dev < 0)
++		return -errno;
++
++	ok = igt_sysfs_set(dev, "driver_override", driver ? driver : "");
++	close(dev);
++
++	return ok ? 0 : -errno;
++}
++
++/**
++ * igt_pci_probe_drivers:
++ * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
++ *
++ * Trigger PCI driver reprobe for @pci_slot by writing to
++ * /sys/bus/pci/drivers_probe.
++ *
++ * This causes the kernel to attempt binding the device, honoring any
++ * driver_override previously set.
++ *
++ * Note: a successful write only means the reprobe request was accepted.
++ * It does not guarantee that a driver actually bound to the device.
++ *
++ * Returns: 0 on success, negative errno on failure.
++ */
++int igt_pci_probe_drivers(const char *pci_slot)
++{
++	int pci;
++	bool ok;
++
++	pci = open("/sys/bus/pci", O_DIRECTORY | O_RDONLY);
++	if (pci < 0)
++		return -errno;
++
++	ok = igt_sysfs_set(pci, "drivers_probe", pci_slot);
++	close(pci);
++
++	return ok ? 0 : -errno;
++}
++
++/**
++ * igt_pci_get_bound_driver_name:
++ * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
++ * @driver: destination buffer for the bound driver name
++ * @driver_len: size of @driver in bytes
++ *
++ * Read the currently bound PCI driver name for @pci_slot by inspecting the
++ * /sys/bus/pci/devices/<BDF>/driver symlink.
++ *
++ * Return values:
++ *  1: device is bound and @driver contains the driver name
++ *  0: device is unbound (no driver symlink)
++ * <0: negative errno-like value on error
++ */
++int igt_pci_get_bound_driver_name(const char *pci_slot, char *driver, size_t driver_len)
++{
++	char path[PATH_MAX];
++	char link[PATH_MAX];
++	const char *base;
++	ssize_t len;
++
++	if (driver && driver_len)
++		driver[0] = '\0';
++
++	snprintf(path, sizeof(path), "/sys/bus/pci/devices/%s/driver", pci_slot);
++	len = readlink(path, link, sizeof(link) - 1);
++	if (len < 0) {
++		if (errno == ENOENT)
++			return 0; /* unbound */
++
++		return -errno;
++	}
++
++	link[len] = '\0';
++	base = strrchr(link, '/');
++	base = base ? base + 1 : link;
++
++	if (driver && driver_len)
++		snprintf(driver, driver_len, "%s", base);
++
++	return 1;
++}
++
++/**
++ * igt_pci_bind_driver_override:
++ * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
++ * @driver: PCI driver name to bind (must not be NULL or empty)
++ * @timeout_ms: how long to wait for the device to become bound.
++ *              If 0, don't wait (best-effort immediate check only).
++ *
++ * Bind @pci_slot to @driver using the driver_override mechanism.
++ *
++ * This helper sets driver_override and immediately triggers driver
++ * reprobe so that the device is bound to the requested driver.
++ *
++ * Returns: 0 on success, negative errno-like value on failure.
++ * A reprobe request can be accepted by sysfs while the driver probe
++ * fails later; this helper verifies the device ended up bound.
++ *
++ * On bind failure, returns a negative error and the failure reason may
++ * also be logged to dmesg by the kernel driver.
++ */
++int igt_pci_bind_driver_override(const char *pci_slot, const char *driver,
++				 unsigned int timeout_ms)
++{
++	int ret;
++	char bound[64];
++	int bound_ret;
++	bool bound_ok;
++
++	if (!driver || !driver[0])
++		return -EINVAL;
++
++	ret = igt_pci_set_driver_override(pci_slot, driver);
++	if (ret)
++		return ret;
++
++	ret = igt_pci_probe_drivers(pci_slot);
++	if (ret)
++		return ret;
++
++	/*
++	 * Writing to drivers_probe only tells us the kernel accepted the request.
++	 * The actual driver probe may still fail (and only be reported via dmesg).
++	 * Verify that the device ended up bound to the requested driver.
++	 */
++	bound_ret = igt_pci_get_bound_driver_name(pci_slot, bound, sizeof(bound));
++	if (bound_ret < 0)
++		return bound_ret;
++
++	if (timeout_ms == 0) {
++		/*
++		 * No waiting requested. If the device is already bound, validate
++		 * it is bound to the expected driver; otherwise treat as
++		 * best-effort request-only success.
++		 */
++		if (bound_ret > 0 && strcmp(bound, driver))
++			return -EBUSY;
++
++		return 0;
++	}
++
++	bound_ok = igt_wait((bound_ret =
++			     igt_pci_get_bound_driver_name(pci_slot, bound, sizeof(bound))) != 0,
++			    timeout_ms, 1);
++	if (!bound_ok)
++		return -EIO;
++
++	if (bound_ret < 0)
++		return bound_ret;
++
++	if (strcmp(bound, driver))
++		return -EBUSY;
++
++	return 0;
++}
++
++/**
++ * igt_pci_unbind_driver_override:
++ * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
++ * @timeout_ms: how long to wait for the device to become unbound.
++ *              If 0, don't wait (best-effort immediate check only).
++ *
++ * Unbind @pci_slot from its currently bound driver (if any) and clear
++ * any driver_override setting.
++ *
++ * This is the inverse operation of igt_pci_bind_driver_override().
++ *
++ * Returns: 0 on success, negative errno on failure.
++ */
++int igt_pci_unbind_driver_override(const char *pci_slot, unsigned int timeout_ms)
++{
++	int ret;
++	int bound_ret;
++	char bound[64];
++	bool unbound_ok;
++
++	ret = igt_pci_device_unbind(pci_slot);
++	if (ret)
++		return ret;
++
++	ret = igt_pci_set_driver_override(pci_slot, "");
++	if (ret)
++		return ret;
++
++	bound_ret = igt_pci_get_bound_driver_name(pci_slot, bound, sizeof(bound));
++	if (bound_ret < 0)
++		return bound_ret;
++
++	if (timeout_ms == 0)
++		return 0;
++
++	/* Verify the device actually ends up unbound (driver symlink removed). */
++	unbound_ok = igt_wait((bound_ret =
++			       igt_pci_get_bound_driver_name(pci_slot, bound, sizeof(bound))) == 0,
++			      timeout_ms, 1);
++	if (!unbound_ok)
++		return -EBUSY;
++
++	if (bound_ret < 0)
++		return bound_ret;
++
++	return 0;
++}
+diff --git a/lib/igt_pci.h b/lib/igt_pci.h
+index 92b9cc392..a66eeebf2 100644
+--- a/lib/igt_pci.h
++++ b/lib/igt_pci.h
+@@ -6,8 +6,9 @@
+ #ifndef __IGT_PCI_H__
+ #define __IGT_PCI_H__
+ 
+-#include <stdint.h>
+ #include <endian.h>
++#include <stddef.h>
++#include <stdint.h>
+ 
+ /* forward declaration */
+ struct pci_device;
+@@ -24,5 +25,15 @@ enum pci_cap_id {
+ #define  PCI_SLOT_PWR_CTRL_PRESENT (1 << 1)
+ 
+ int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id);
++int igt_pci_device_unbind(const char *pci_slot);
++int igt_pci_driver_bind(const char *driver, const char *pci_slot);
++int igt_pci_driver_unbind(const char *driver, const char *pci_slot);
++int igt_pci_driver_unbind_all(const char *driver);
++int igt_pci_set_driver_override(const char *pci_slot, const char *driver);
++int igt_pci_probe_drivers(const char *pci_slot);
++int igt_pci_get_bound_driver_name(const char *pci_slot, char *driver, size_t driver_len);
++int igt_pci_bind_driver_override(const char *pci_slot, const char *driver,
++				 unsigned int timeout_ms);
++int igt_pci_unbind_driver_override(const char *pci_slot, unsigned int timeout_ms);
+ 
+ #endif
 -- 
 2.43.0
 
