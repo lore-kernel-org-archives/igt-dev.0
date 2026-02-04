@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C11EE83EE7
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Feb 2026 08:28:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 413A8E83EE7
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Feb 2026 08:28:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D7EFA10E566;
-	Wed,  4 Feb 2026 08:28:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DCBDC10E564;
+	Wed,  4 Feb 2026 08:28:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MshnHoJ7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AV1sz0fb";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24D0610E564
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Feb 2026 08:28:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E407A10E564
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Feb 2026 08:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770193722; x=1801729722;
+ t=1770193726; x=1801729726;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=eWpa7Cio8DQimSYQLRlkw3hZPYHN0vByTRz3nJ++3pM=;
- b=MshnHoJ7qrx5KjzfB1iIeT0zVLsHlUzZ1NyQd2SvHWP852nlvCnWu8/K
- 3NeEKUospMK0EbG0dHS4jJ3knmwV/FY7WqGD2a15JnItXOCM4ED44spPh
- 66Pc/8qgnaF4ibsVLU+VZUavdO66qSYFEEJLamx+YRDRB7vVh5bVtynco
- w9ayO8d7TSx17C6uLVYkfgzlpL7y7hZGk6T52EgLaIGiBwflrs90XJtP1
- RGqeG1uBdbvpKzi9w4lg77xFJqT7kgGyYVY+pOJ3fVg0cUtKFiGl77PtC
- znHa14qefjntxsq4HPsw/TMSXZgdmux4jifwvrSnGJLa2ERY7yblJfLUo Q==;
-X-CSE-ConnectionGUID: mQYfP6VcR6uDecA7fgBEkg==
-X-CSE-MsgGUID: hXomAkpsQnKWq8BKdRg6NQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71278297"
-X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; d="scan'208";a="71278297"
+ bh=5Bw6NM3ztU8otTAEKJiLEB7pdkSHNNlcW8tJQEGzDvQ=;
+ b=AV1sz0fbLpOYoeVf8BBqBLbKPCcJYANa6+Ou3Edw0VXKg1IDRG7XnUw+
+ bSeXA/a244L44AQ9otewBfMNUDub7zX5uuTUzIsvdMOA/g7IULEabGh5m
+ 5BXZ6rF+8rznObw1GzRhS2paKVWf3Hm3foqSRCClMqY/CxmMSWc6jLyCf
+ mofHGKCO2khc7Et2o1n3CIOiOMXw7x+W932l5iv2TauISfrgtICEdqisr
+ AlRUUud0irTXnYIP6FQK6RrruamgyRufsXyCVxqteCcX9AnY0or6qplTy
+ KtaKrLiptKKyJHfUb8eoD2WvLnzR3INr5k8XLXqjblhacTgaivR8Zd1h4 Q==;
+X-CSE-ConnectionGUID: TwSgI8jMRnqKCJJvg1c9BA==
+X-CSE-MsgGUID: cOKbWqMpSnSFT1P2VXaUrQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71278298"
+X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; d="scan'208";a="71278298"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Feb 2026 00:28:42 -0800
-X-CSE-ConnectionGUID: pBBoBxJoSBajnzI7i16UHQ==
-X-CSE-MsgGUID: itD/Qxq2QjCozwHqmrWf/w==
+ 04 Feb 2026 00:28:46 -0800
+X-CSE-ConnectionGUID: 3T//pSjVTmmxPAOxFayMTQ==
+X-CSE-MsgGUID: oicyruGCQxeLEZiIAwjyWw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; d="scan'208";a="240930496"
+X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; d="scan'208";a="240930504"
 Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
- by fmviesa001.fm.intel.com with ESMTP; 04 Feb 2026 00:28:40 -0800
+ by fmviesa001.fm.intel.com with ESMTP; 04 Feb 2026 00:28:44 -0800
 From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, ramanaidu.naladala@intel.com,
  sameer.lattannavar@intel.com, pranay.samala@intel.com
-Subject: [PATCH i-g-t 1/2] tests/kms_plane: Skip cursor plane for source
- clamping
-Date: Wed,  4 Feb 2026 14:09:12 +0530
-Message-Id: <20260204083913.1048566-2-pranay.samala@intel.com>
+Subject: [PATCH i-g-t 2/2] tests/kms_plane: Skip unsupported modifiers
+Date: Wed,  4 Feb 2026 14:09:13 +0530
+Message-Id: <20260204083913.1048566-3-pranay.samala@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260204083913.1048566-1-pranay.samala@intel.com>
 References: <20260204083913.1048566-1-pranay.samala@intel.com>
@@ -68,41 +67,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Avoid running source clamping tests on cursor plane,
-which do not support clamping.
+Skip modifier subtests that are not supported.
 
 Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 ---
- tests/kms_plane.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ tests/kms_plane.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 2be10f032..a7b1bf25d 100644
+index a7b1bf25d..69d06d627 100644
 --- a/tests/kms_plane.c
 +++ b/tests/kms_plane.c
-@@ -1090,12 +1090,6 @@ static void test_format_plane(data_t *data, enum pipe pipe,
- 	bool result = true;
- 	bool found = false;
- 
--	/*
--	 * No clamping test for cursor plane
--	 */
--	if (data->crop != 0 && plane->type == DRM_PLANE_TYPE_CURSOR)
--		igt_skip("Clamping is invalid for the cursor plane.\n");
--
- 	for (int i = 0; i < plane->format_mod_count; i++) {
- 		if (data->mod == plane->modifiers[i]) {
- 			found = true;
-@@ -1288,6 +1282,9 @@ test_pixel_formats(data_t *data, enum pipe pipe)
- 	for_each_plane_on_pipe(&data->display, pipe, plane) {
- 		if (skip_plane(data, plane))
- 			continue;
-+		if (data->crop != 0 && plane->type == DRM_PLANE_TYPE_CURSOR)
-+			continue;
-+
- 		igt_dynamic_f("pipe-%s-plane-%u", kmstest_pipe_name(pipe), plane->index)
- 			test_format_plane(data, pipe, output, plane, &primary_fb);
- 	}
+@@ -1495,6 +1495,10 @@ run_tests_for_pipe_plane(data_t *data)
+ 	for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
+ 		igt_describe("verify the pixel formats for given plane and pipe");
+ 		igt_subtest_with_dynamic_f("pixel-format-%s-modifier", modifiers[i].str) {
++			igt_require_f(igt_display_has_format_mod(&data->display,
++								 DRM_FORMAT_XRGB8888,
++								 modifiers[i].modifier),
++								 "Modifier not supported\n");
+ 			data->mod = modifiers[i].modifier;
+ 			run_test(data, test_pixel_formats);
+ 		}
+@@ -1504,6 +1508,10 @@ run_tests_for_pipe_plane(data_t *data)
+ 		igt_describe("verify the pixel formats for given plane and pipe with source clamping");
+ 		igt_subtest_with_dynamic_f("pixel-format-%s-modifier-source-clamping",
+ 					   modifiers[i].str) {
++			igt_require_f(igt_display_has_format_mod(&data->display,
++								 DRM_FORMAT_XRGB8888,
++								 modifiers[i].modifier),
++								 "Modifier not supported\n");
+ 			data->mod = modifiers[i].modifier;
+ 			data->crop = 4;
+ 			run_test(data, test_pixel_formats);
 -- 
 2.34.1
 
