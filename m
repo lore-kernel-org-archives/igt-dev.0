@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3D1DE9D3FF
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Feb 2026 15:30:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9408AE9D40F
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Feb 2026 16:32:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4928010E692;
-	Wed,  4 Feb 2026 15:30:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 226B810E6A7;
+	Wed,  4 Feb 2026 16:32:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bN3Wna9o";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UJuMEllI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4DD610E692
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Feb 2026 15:30:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F3B410E6C6
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Feb 2026 16:32:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770219041; x=1801755041;
+ t=1770222747; x=1801758747;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=nm2/+Eo2981EbfO/9eoR9mzekx4BF74H/BC6RR/6gBM=;
- b=bN3Wna9ogKvY90mnHR1pcr7ucu3avZjJ3cefcyAYNKEJ1WJDoMo57BsC
- 6xwFo6N0+33dO/h7ZfILzPqa5Zj49J329xIO+15WuPVK8eu+7yRJVzMHu
- Z4eIWF6roqznbOncQMcvpMTCJFyI1sW9mbhqXyYIZbEKCCz+eRGY3itvE
- K4AQlzvKSCLmxBONzNM9FtS5PdTCoeG71AzyCY1fm+HkAvkO/UaS+gZB+
- 6s1krH3t843MdNInw5ld+LoELci03oMRW2Gb1chJdRcEb4DnMMxbmg3qN
- gQXGm6sNW8dNAzWQs7CzVNJQmCJSfNSkjselENK4s5cFUqTp+pmFHpXAt Q==;
-X-CSE-ConnectionGUID: V3Moxh5nQ7mlMKhYH0UXIQ==
-X-CSE-MsgGUID: gALU7rQARYSFC1ACW3+zoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="75029590"
-X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; d="scan'208";a="75029590"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Feb 2026 07:30:40 -0800
-X-CSE-ConnectionGUID: KBu+Hj1qQV+MlxeRUZvXkA==
-X-CSE-MsgGUID: BzgIlu3TTVS3zBFTv9FOBA==
+ bh=APIifRCUm0NYTbErhzwT30t7zy1p03ODKLOGelWgmZQ=;
+ b=UJuMEllINZF1WuDXQTPjVLuT3a9LA6vIt7H5A6PsEDEzrgYvHUcYfKzs
+ hirbwGCOfaBvRhVedeF7Gqc7YsDcfPZ2GiyM1zJGq2jCo7MUv8QI5Fvi+
+ JuJoKWIvAn0EMIpZgowKznYAfO9xDRn67AJyzsJsjYyoj0dzpRpK+GEqe
+ MGutVvtTEdeaJIj4aRp/P1vAznFWjR5GhVjzJuDcfWNTR+NMxzveCRW2J
+ H7b/JHD5XWUJB6rntGBpPug94T8cE5ZNfFlq4wWlaHbV4mVvLj35EM092
+ cR00oiVVri7RRKCp/G1oKh+eWyefFQUXDw5hjJeljzFUq3QDUzBMlSgHD g==;
+X-CSE-ConnectionGUID: u6wfFcvcR/63MnHnFg/9uQ==
+X-CSE-MsgGUID: mL+LgOiSQ4qu4+Envn8PJw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71472358"
+X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; d="scan'208";a="71472358"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Feb 2026 08:32:27 -0800
+X-CSE-ConnectionGUID: AIFN8egWQc6yABHIUm4JSA==
+X-CSE-MsgGUID: Gx7zmnPXSAqmdiaDsVceig==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; d="scan'208";a="247794939"
-Received: from nitin-super-server.iind.intel.com ([10.190.238.72])
- by orviesa001.jf.intel.com with ESMTP; 04 Feb 2026 07:30:39 -0800
-From: Nitin Gote <nitin.r.gote@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; d="scan'208";a="209315322"
+Received: from soc-5cg43972f8.clients.intel.com (HELO localhost)
+ ([172.28.182.79])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Feb 2026 08:32:26 -0800
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: michal.wajdeczko@intel.com,
-	Nitin Gote <nitin.r.gote@intel.com>
-Subject: [PATCH] tests/intel/xe_configfs: Reset configfs group after each
- subtest
-Date: Wed,  4 Feb 2026 21:33:09 +0530
-Message-ID: <20260204160308.107154-2-nitin.r.gote@intel.com>
-X-Mailer: git-send-email 2.50.1
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v3 i-g-t 0/7] PCI driver helpers and xe-vfio-pci FLR
+ improvement
+Date: Wed,  4 Feb 2026 17:32:03 +0100
+Message-ID: <20260204163217.121305-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,117 +68,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The xe_configfs test uses a shared configfs group across all subtests.
-When subtests modify configfs attributes without resetting them, the
-modified values persist and affect subsequent subtests. For example,
-ctx-restore-mid-bb reports register value mismatches due to stale
-batch buffer data from previous subtests.
+This series improves PCI driver management infrastructure in IGT
+and updates the xe_sriov_flr test to rely on xe-vfio-pci FLR semantics.
 
-Fix by removing the configfs device directory after each subtest and
-letting the next subtest recreate it to get default values as
-hardcoded in the driver.
+It introduces generic PCI driver helpers for driver_override handling
+and explicit bind/unbind operations.
+Adds a small SR-IOV utility to resolve VF PCI slot addresses.
+Fixes igt_kmod PCI bind/unbind logic to correctly handle module vs driver
+name mismatches (e.g. xe_vfio_pci vs xe-vfio-pci), marking those helpers
+as deprecated in favor of driver-level APIs.
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6204
-Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
----
-v1->v2:
-  Instead of manually resetting each attribute,
-  it's cleaner to remove and recreate the configfs group after
-  each subtests. (Michal)
+The xe_sriov_flr test is updated to attach VFs to xe-vfio-pci
+before initiating FLR, allowing the test to wait for FLR completion
+via the driver.
 
- tests/intel/xe_configfs.c | 47 +++++++++++++++++++++++++++++++--------
- 1 file changed, 38 insertions(+), 9 deletions(-)
+V3 -> V2:
+- Add --wait-flr-ms option to configure post FLR sleep time
+- Add --no-xe-vfio-pci option to skip xe-vfio-pci load
+- Skip xe-vfio-pci load/bind when IOMMU is off
 
-diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
-index d2dfd2e87..aa3435392 100644
---- a/tests/intel/xe_configfs.c
-+++ b/tests/intel/xe_configfs.c
-@@ -361,7 +361,6 @@ int igt_main()
- 
- 		configfs_fd = igt_configfs_open("xe");
- 		igt_require(configfs_fd != -1);
--		configfs_device_fd = create_device_configfs_group(configfs_fd);
- 		igt_install_exit_handler(restore);
- 	}
- 
-@@ -369,39 +368,69 @@ int igt_main()
- 	igt_subtest("survivability-mode") {
- 		igt_require(IS_BATTLEMAGE(devid));
- 		igt_require_f(!is_vf_device, "survivability mode not supported in VF\n");
-+		configfs_device_fd = create_device_configfs_group(configfs_fd);
- 		test_survivability_mode(configfs_device_fd);
-+		close(configfs_device_fd);
-+		igt_fs_remove_dir(configfs_fd, bus_addr);
- 	}
- 
- 	igt_describe("Validate engines_allowed with invalid options");
--	igt_subtest("engines-allowed-invalid")
-+	igt_subtest("engines-allowed-invalid") {
-+		configfs_device_fd = create_device_configfs_group(configfs_fd);
- 		test_engines_allowed_invalid(configfs_device_fd);
-+		close(configfs_device_fd);
-+		igt_fs_remove_dir(configfs_fd, bus_addr);
-+	}
- 
- 	igt_describe("Validate engines_allowed");
--	igt_subtest("engines-allowed")
-+	igt_subtest("engines-allowed") {
-+		configfs_device_fd = create_device_configfs_group(configfs_fd);
- 		test_engines_allowed(configfs_device_fd);
-+		close(configfs_device_fd);
-+		igt_fs_remove_dir(configfs_fd, bus_addr);
-+	}
- 
- 	igt_describe("Validate gt_types_allowed");
--	igt_subtest("gt-types-allowed")
-+	igt_subtest("gt-types-allowed") {
-+		configfs_device_fd = create_device_configfs_group(configfs_fd);
- 		test_gt_types_allowed(configfs_device_fd);
-+		close(configfs_device_fd);
-+		igt_fs_remove_dir(configfs_fd, bus_addr);
-+	}
- 
- 	igt_describe("Validate ctx_restore_post_bb with invalid options");
--	igt_subtest("ctx-restore-post-bb-invalid")
-+	igt_subtest("ctx-restore-post-bb-invalid") {
-+		configfs_device_fd = create_device_configfs_group(configfs_fd);
- 		test_ctx_restore_invalid(configfs_device_fd, "post");
-+		close(configfs_device_fd);
-+		igt_fs_remove_dir(configfs_fd, bus_addr);
-+	}
- 
- 	igt_describe("Validate ctx_restore_post_bb");
--	igt_subtest("ctx-restore-post-bb")
-+	igt_subtest("ctx-restore-post-bb") {
-+		configfs_device_fd = create_device_configfs_group(configfs_fd);
- 		test_ctx_restore(configfs_device_fd, "post");
-+		close(configfs_device_fd);
-+		igt_fs_remove_dir(configfs_fd, bus_addr);
-+	}
- 
- 	igt_describe("Validate ctx_restore_mid_bb with invalid options");
--	igt_subtest("ctx-restore-mid-bb-invalid")
-+	igt_subtest("ctx-restore-mid-bb-invalid") {
-+		configfs_device_fd = create_device_configfs_group(configfs_fd);
- 		test_ctx_restore_invalid(configfs_device_fd, "mid");
-+		close(configfs_device_fd);
-+		igt_fs_remove_dir(configfs_fd, bus_addr);
-+	}
- 
- 	igt_describe("Validate ctx_restore_mid_bb");
--	igt_subtest("ctx-restore-mid-bb")
-+	igt_subtest("ctx-restore-mid-bb") {
-+		configfs_device_fd = create_device_configfs_group(configfs_fd);
- 		test_ctx_restore(configfs_device_fd, "mid");
-+		close(configfs_device_fd);
-+		igt_fs_remove_dir(configfs_fd, bus_addr);
-+	}
- 
- 	igt_fixture() {
--		close(configfs_device_fd);
- 		close(configfs_fd);
- 	}
- }
+V2 -> V1:
+- Add igt_pci_get_bound_driver_name() to query the currently bound PCI
+  driver via the /sys/bus/pci/devices/<BDF>/driver symlink.
+- Extend igt_pci_bind_driver_override() and
+  igt_pci_unbind_driver_override() with a timeout_ms parameter so callers
+  can wait for bind/unbind to actually complete, instead of relying on
+  drivers_probe write success. drivers_probe only initiates an async
+  reprobe, so a successful write does not mean bind/unbind succeeded -
+  verify the effective bound driver with a timeout.
+- Unbind VFs only if they were successfully bound.
+
+Marcin Bernatowicz (7):
+  lib/igt_sriov_device: Add helper to get VF PCI slot address
+  lib/igt_pci: Add generic PCI driver override and bind/unbind helpers
+  tests/intel/xe_sriov_flr: Attach VFs to xe-vfio-pci before initiating
+    FLR
+  lib/igt_kmod: Fix PCI bind/unbind for module/driver name mismatch
+  tests/intel/xe_sriov_flr: Add --wait-flr-ms option
+  tests/intel/xe_sriov_flr: Add --no-xe-vfio-pci option
+  tests/intel/xe_sriov_flr: Skip xe-vfio-pci load/bind when IOMMU is off
+
+ lib/igt_kmod.c             |  90 +++++-----
+ lib/igt_pci.c              | 351 +++++++++++++++++++++++++++++++++++++
+ lib/igt_pci.h              |  13 +-
+ lib/igt_sriov_device.c     |  25 +++
+ lib/igt_sriov_device.h     |   1 +
+ tests/intel/xe_sriov_flr.c | 147 +++++++++++++++-
+ 6 files changed, 585 insertions(+), 42 deletions(-)
+
 -- 
-2.50.1
+2.43.0
 
