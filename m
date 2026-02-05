@@ -4,28 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73081E91264
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 06:09:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB07CE91264
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 06:11:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ECA5C10E202;
-	Thu,  5 Feb 2026 06:09:41 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 075D410E202;
- Thu,  5 Feb 2026 06:09:41 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7736978132611526291=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 406C210E225;
+	Thu,  5 Feb 2026 06:11:53 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h8f7p/5t";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1AB4510E225
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Feb 2026 06:11:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1770271912; x=1801807912;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=IHSxJwKTgobZtOwhGxdiaS28HpiQ8RJIlGyCVXUH2sw=;
+ b=h8f7p/5t7SabSIMzO6W3TdBlbQtZsfBgjVRLkM5rjAJH/gnrpVQ9TTVH
+ YL44rV8jvjMxu6kUmJIa3IGItVwo6j71/dOqHE9kvMr4Y+6ChC/DHA3Cs
+ Q/Ep+Ku61Rms6gL2wJvLJwxCgWs2OOBEZI/sxIOgGKUskKzfMiq0K1ie1
+ Qh0vqnas6DPenIFbNDww2duDNUOrks+03/JWV+zTt9kGvo4YBSgrzQNYI
+ GyPFrGp0FFtwwBNx1kVdE+1P5L1ZZhjAvo5UQXmG84MtPJLfcY24fm/Fj
+ xXWx+DQlDv1pE6/1qOTCz7ZOc1XP24sFPuRHQrs02DNfNHscSR3jjW+LD Q==;
+X-CSE-ConnectionGUID: +wDdURo2RwyfqhthqKuG2A==
+X-CSE-MsgGUID: Xm6ds12UROanQ8N+I1/5Og==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="96920358"
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; d="scan'208";a="96920358"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Feb 2026 22:11:52 -0800
+X-CSE-ConnectionGUID: bup/aaX/Tu2swrmAiKmVkw==
+X-CSE-MsgGUID: R11VkhVjSKGXFRghxizJkg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; d="scan'208";a="210190002"
+Received: from soc-dcgdq34.clients.intel.com (HELO [10.66.113.248])
+ ([10.66.113.248])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Feb 2026 22:11:51 -0800
+Message-ID: <fdba66f6-a4fa-42ce-ad49-48664fdfaab2@intel.com>
+Date: Thu, 5 Feb 2026 11:41:49 +0530
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fevict=3A?=
- =?utf-8?q?_overcommit_tests_for_fault-mode_and_non-fault-mode_VMs_=28rev3?=
- =?utf-8?q?=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sobin Thomas" <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 05 Feb 2026 06:09:40 -0000
-Message-ID: <177027178098.226816.5508426190767601688@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260205035041.413552-1-sobin.thomas@intel.com>
-In-Reply-To: <20260205035041.413552-1-sobin.thomas@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [i-g-t, v2, 3/3] tests/kms_psr2_sf: Allow testing of both PSR2 and
+ Panel Replay if supported
+To: =?UTF-8?Q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20260203061036.21482-4-jouni.hogander@intel.com>
+Content-Language: en-US
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <20260203061036.21482-4-jouni.hogander@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,134 +68,21 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7736978132611526291==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 03-02-2026 11:40, Jouni Högander wrote:
 
-== Series Details ==
-
-Series: tests/intel/xe_evict: overcommit tests for fault-mode and non-fault-mode VMs (rev3)
-URL   : https://patchwork.freedesktop.org/series/159996/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_8737 -> IGTPW_14498
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14498/index.html
-
-Participating hosts (43 -> 41)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14498 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [DMESG-FAIL][1] ([i915#12061]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8737/bat-mtlp-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14498/bat-mtlp-8/igt@i915_selftest@live.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8737 -> IGTPW_14498
-  * Linux: CI_DRM_17933 -> CI_DRM_17935
-
-  CI-20190529: 20190529
-  CI_DRM_17933: 55e3e3aeecf80d9fd2536acd8ed785282be5a7b3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_17935: 8883ec84c85819dacca94997b60371c3ed57ee29 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14498: 14498
-  IGT_8737: 8737
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14498/index.html
-
---===============7736978132611526291==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_evict: overcommit tests for fault-mode and non-fault-mode VMs (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/159996/">https://patchwork.freedesktop.org/series/159996/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14498/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14498/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8737 -&gt; IGTPW_14498</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14498/index.html</p>
-<h2>Participating hosts (43 -&gt; 41)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14498 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8737/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14498/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8737 -&gt; IGTPW_14498</li>
-<li>Linux: CI_DRM_17933 -&gt; CI_DRM_17935</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17933: 55e3e3aeecf80d9fd2536acd8ed785282be5a7b3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_17935: 8883ec84c85819dacca94997b60371c3ed57ee29 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14498: 14498<br />
-  IGT_8737: 8737</p>
-
-</body>
-</html>
-
---===============7736978132611526291==--
+> Currently kms_psr2_sf is testing only Panel Replay even if PSR2 is
+> supported. Allow testing both PSR2 and Panel Replay when supported.
+>
+> Also drop some complexity from fixture for detection of working
+> PSR. Earlier working PSR support was detected in fixture by enabling PSR
+> and then ensuring PSR entry happens. Now we are relying on
+> pipe_output_combo_valid. Earlier approach was problematic as PSR Might be
+> broken due to some earlier test which was run. This caused kms_psr2_sf to
+> not run any tests on that sink/pipe setup. Now these are supposed to be
+> visible as failing testcases.
+>
+> Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
