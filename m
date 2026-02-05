@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1286CECD993
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 17:43:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEFC0ECD994
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 17:51:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AD21810E93E;
-	Thu,  5 Feb 2026 17:43:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 72C1110E21F;
+	Thu,  5 Feb 2026 17:51:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="bZpSndKD";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="w2bDUiYC";
 	dkim-atps=neutral
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 788F710E93E
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Feb 2026 17:43:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7715210E21F
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Feb 2026 17:51:51 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 94774C243B0
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Feb 2026 17:43:52 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id AE99AC243B0;
+ Thu,  5 Feb 2026 17:51:55 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 68F9E6074D;
- Thu,  5 Feb 2026 17:43:46 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 5D1596074D;
+ Thu,  5 Feb 2026 17:51:49 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id E2F4F119D1696; Thu,  5 Feb 2026 18:43:44 +0100 (CET)
+ with ESMTPSA id 4A3CB102F1B6D; Thu,  5 Feb 2026 18:51:47 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770313425; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1770313908; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:content-language:in-reply-to:references;
- bh=kBKGoejXQb3aWYFIIyzsQxaHe1Pdch22/YtN9UhaIKI=;
- b=bZpSndKDmbNmgOtrkgpNjIhGMiWjgfQ6/h+/5RKiLwvmte9R2HlPTNuY2Y3zf5qxbfb57h
- 88waQIGeoZ27HnzAOOt2N/oAku6F+28j+qrP21o1Dp/CCnGem+ZSM9olm4VFipSGeP1eE7
- +2DN/ik33v1N1Zb5zbZzINpoBmxBL0lq7jds/1NRqqkHf9ob5ek0wcWQJKcULNjqUWLuil
- fLU4ZbisgPNib/V5hOc1xM8jrUvegZ7r6Ka7f2L1MJIGToK00tG8gB+uIpPRmvYcaEROuy
- LNKXEQnASzT1AiId0ghMun7Jmvb4W7gKeb6ydXeVK93w2dApF85V/BXPr1UQ4A==
-Message-ID: <6605e2a9-0f2e-40b1-b1c1-8c4577e206c3@bootlin.com>
-Date: Thu, 5 Feb 2026 18:44:12 +0100
+ bh=AM/l7GG5tJy20dRvNZkbq7tidDLvRUFyrbTIJADJ0xc=;
+ b=w2bDUiYCtJB1DOxN20GRIzqjs1PKki7rCFaeJsk/CCU2RMfjZEP/TOi9uKqDl21sELD1Uo
+ pmd0FvKYemSsRXdkgGzzaoZCTkpV9dW5F6HVEN6Zb4yuZ1FCTEemNF62VGdHvXlBXt1KF0
+ G+Iv1WlVWae12f9urC3BUVUc/AG+94hxk54WopCiqPFjz9hyWn6ohvoxDDzZOHXzDkoq29
+ YnZkdIuI64ZzcGlFqo6skcUufPGcDk5kHuJayatI6VYRvm5PxIEC0Fyd27N/ccf74elPZB
+ zIu53Uty9L/zqr2cJ5CbvLQafQ3psjK7cGjgjYPg6BFVdsNapCK2NY91bjYQBQ==
+Message-ID: <06b3555c-adb8-4a56-9972-ae5943086d16@bootlin.com>
+Date: Thu, 5 Feb 2026 18:52:15 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v6 27/48] lib/unigraf: Allows sst/mst configuration
+Subject: Re: [PATCH i-g-t v6 29/48] lib/unigraf: Add connector and EDID
+ configuration
 To: Kory Maincent <kory.maincent@bootlin.com>
 Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
  luca.ceresoli@bootlin.com, markyacoub@google.com,
  khaled.almahallawy@intel.com
 References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
- <20260202-unigraf-integration-v6-27-834af822eee7@bootlin.com>
- <20260205175628.45b09939@kmaincent-XPS-13-7390>
+ <20260202-unigraf-integration-v6-29-834af822eee7@bootlin.com>
+ <20260205184208.19b80208@kmaincent-XPS-13-7390>
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 Content-Language: en-US
-In-Reply-To: <20260205175628.45b09939@kmaincent-XPS-13-7390>
+In-Reply-To: <20260205184208.19b80208@kmaincent-XPS-13-7390>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
@@ -67,63 +68,80 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 
-On 2/5/26 17:56, Kory Maincent wrote:
-> On Mon, 02 Feb 2026 15:33:06 +0100
+On 2/5/26 18:42, Kory Maincent wrote:
+> On Mon, 02 Feb 2026 15:33:08 +0100
 > Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 > 
->> Unigraf devices can emulate both SST and MST display port. In order to
->> write tests using both, add fews helper to manipulate them.
+>> As multiple connectors can be present on the DUT, add a configuration to
+>> tell which connector is used by the Unigraf and which EDID to use on the
+>> Unigraf.
 >>
->> The define TSI_DPRX_NOT_DOCUMENTED_SIDEBAND_MSG_SUPPORT is taken from the
->> python SDK, as it was not defined by the C sdk nor documented.
+>> Complete list of EDID name supported can be found in
+>> lib/monitor_edids/{dp,hdmi}_edids.h
+>>
+>> The configuration will look like:
+>>
+>> [Unigraf]
+>> Device=UCD-500 [2434C620]
+>> Role=DisplayPort Source and Sink
+>> Input=DP RX
+>> Connector=DP-4
+>> EDID=DEL_16543_DELL_P2314T_DP
 >>
 >> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
->> ---
->>   lib/unigraf/unigraf.c | 109
->> ++++++++++++++++++++++++++++++++++++++++++++++++++ lib/unigraf/unigraf.h |
->> 12 ++++++ 2 files changed, 121 insertions(+)
->>
->> diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
->> index 966e7d2a5077..4a3b0a5fc28e 100644
->> --- a/lib/unigraf/unigraf.c
->> +++ b/lib/unigraf/unigraf.c
->> @@ -105,6 +105,23 @@ static void _unigraf_write_u32(TSI_CONFIG_ID config_id,
->> uint32_t value) _unigraf_write_u32(config_id, v);
->> 	\ })
->>   
->> +static uint32_t _unigraf_read_u32(TSI_CONFIG_ID config_id)
->> +{
->> +	uint32_t value;
->> +
->> +	igt_assert(unigraf_device);
->> +	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, config_id,
->> &value, sizeof(value)));
->> +	return value;
->> +}
->> +
->> +#define unigraf_read_u32(config_id)
->> 	\
->> +	({
->> 	\
->> +		uint32_t value;
->> 		\
->> +		value = _unigraf_read_u32((config_id));
->> 		\
->> +		unigraf_debug("Value read: " #config_id "=%d\n",
->> value);	\
->> +		value;
->> 		\
->> +	})
 > 
-> Why is there a define and a function that are doing the same thing ?
-> Same question for the write part patch 25. I missed it in the review.
+> ...
+> 
+>> +	newly_connected_count = kms_wait_for_new_connectors(&newly_connected,
+>> +
+>> already_connected,
+>> +
+>> already_connected_count,
+>> +							    drm_fd);
+>> +
+>> +	diff_len = get_list_diff(newly_connected, newly_connected_count,
+>> +				 already_connected, already_connected_count,
+>> &diff); +
+>> +	if (diff_len == 0) {
+> 
+> if (!diff_len)
+> 
+> ...
+> 
+>> +	if (!unigraf_connector_name) {
+>> +		unigraf_hpd_deassert();
+>> +		unigraf_set_sst();
+>> +		unigraf_hpd_assert();
+>> +		sleep(1);
+> 
+> Why? Please add comment before sleep to understand why it is required.
 
-I use macro so unigraf_debug will print the "good" line (i.e the caller 
-of unigraf_read_u32) and not a line in unigraf_read_u32. This make debug 
-way easier.
+This one is useless, there is a sleep in unigraf_autodetect_connector.
+The goal was to ensure that the hardware had detected the change before 
+trying to do something with the connector.
 
-And I created a function because originally my function was a bit more 
-complex (if/else) and I prefer to avoid complex code inside macro.
+>> +		unigraf_autodetect_connector(drm_fd);
+>> +	}
+>> +
+>>   	unigraf_reset();
+>>   
+>> -	return true;
+>> +	return unigraf_connector_name != NULL;
+>>   }
+>>   
+>>   /**
+>> @@ -362,6 +483,9 @@ void unigraf_reset(void)
+>>   	unigraf_plug();
+>>   	unigraf_set_mst_stream_count(1);
+>>   	unigraf_set_sst();
+>> +	unigraf_load_default_edid();
+>> +	unigraf_hpd_assert();
+>> +	sleep(1);
+> 
+> Same.
+
+It is maybe not needed anymore, I will check. If not I will add the comment:
+	Delay to allow hardware to see the change and report it to linux
 
 > Regards,
 
