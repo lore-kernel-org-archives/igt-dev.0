@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B926ECD993
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 17:42:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1286CECD993
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 17:43:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C141610E3AB;
-	Thu,  5 Feb 2026 17:42:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AD21810E93E;
+	Thu,  5 Feb 2026 17:43:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="CnwGDq7X";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="bZpSndKD";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 193A910E3AB
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Feb 2026 17:42:17 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 788F710E93E
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Feb 2026 17:43:48 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id D8E821A2C33
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Feb 2026 17:42:15 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 94774C243B0
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Feb 2026 17:43:52 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id A74CC6074D;
- Thu,  5 Feb 2026 17:42:15 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 68F9E6074D;
+ Thu,  5 Feb 2026 17:43:46 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 1C9D5119D16A7; Thu,  5 Feb 2026 18:42:10 +0100 (CET)
+ with ESMTPSA id E2F4F119D1696; Thu,  5 Feb 2026 18:43:44 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770313332; h=from:subject:date:message-id:to:cc:mime-version:content-type:
- content-transfer-encoding:in-reply-to:references;
- bh=xsv2rHkdO2Zedw0eYb37ECITMT7Q1+iSnB4LwwoVUV0=;
- b=CnwGDq7X25rXmBcAVmc1QusvmR4IwDNp5HVJzGmdZpPUeebGL/IUi0K90rQ1q4IxfhMLjD
- GvQlZbNgEgNT+bNkRHlqB0N4ZYaj6Rale2PWHiIz5YMCVCsVAT80S26hoYONmbF75VdUD2
- YHRXBhfII6gxnnFxVCfX5UjsIkvh2i2c2+fc+ZlimR333mQvZqDERy/abvgraVuwEgUSYP
- qdyQDGVJH6mxH5K3z1JbEBZc8RLwSDfeMDkXplhd5PJPDZWIYJpgrQNquTDQzDhmpnIeHJ
- HOW6pA86XDwWIrYN7ekRbZ1+FNFb8Supq35SPu0VZCcir8MDM2sIjDwFzxm8Zw==
-Date: Thu, 5 Feb 2026 18:42:08 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Louis Chauvet <louis.chauvet@bootlin.com>
+ t=1770313425; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ content-transfer-encoding:content-language:in-reply-to:references;
+ bh=kBKGoejXQb3aWYFIIyzsQxaHe1Pdch22/YtN9UhaIKI=;
+ b=bZpSndKDmbNmgOtrkgpNjIhGMiWjgfQ6/h+/5RKiLwvmte9R2HlPTNuY2Y3zf5qxbfb57h
+ 88waQIGeoZ27HnzAOOt2N/oAku6F+28j+qrP21o1Dp/CCnGem+ZSM9olm4VFipSGeP1eE7
+ +2DN/ik33v1N1Zb5zbZzINpoBmxBL0lq7jds/1NRqqkHf9ob5ek0wcWQJKcULNjqUWLuil
+ fLU4ZbisgPNib/V5hOc1xM8jrUvegZ7r6Ka7f2L1MJIGToK00tG8gB+uIpPRmvYcaEROuy
+ LNKXEQnASzT1AiId0ghMun7Jmvb4W7gKeb6ydXeVK93w2dApF85V/BXPr1UQ4A==
+Message-ID: <6605e2a9-0f2e-40b1-b1c1-8c4577e206c3@bootlin.com>
+Date: Thu, 5 Feb 2026 18:44:12 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v6 27/48] lib/unigraf: Allows sst/mst configuration
+To: Kory Maincent <kory.maincent@bootlin.com>
 Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
  luca.ceresoli@bootlin.com, markyacoub@google.com,
  khaled.almahallawy@intel.com
-Subject: Re: [PATCH i-g-t v6 29/48] lib/unigraf: Add connector and EDID
- configuration
-Message-ID: <20260205184208.19b80208@kmaincent-XPS-13-7390>
-In-Reply-To: <20260202-unigraf-integration-v6-29-834af822eee7@bootlin.com>
 References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
- <20260202-unigraf-integration-v6-29-834af822eee7@bootlin.com>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+ <20260202-unigraf-integration-v6-27-834af822eee7@bootlin.com>
+ <20260205175628.45b09939@kmaincent-XPS-13-7390>
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260205175628.45b09939@kmaincent-XPS-13-7390>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -65,75 +65,65 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 02 Feb 2026 15:33:08 +0100
-Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 
-> As multiple connectors can be present on the DUT, add a configuration to
-> tell which connector is used by the Unigraf and which EDID to use on the
-> Unigraf.
->=20
-> Complete list of EDID name supported can be found in
-> lib/monitor_edids/{dp,hdmi}_edids.h
->=20
-> The configuration will look like:
->=20
-> [Unigraf]
-> Device=3DUCD-500 [2434C620]
-> Role=3DDisplayPort Source and Sink
-> Input=3DDP RX
-> Connector=3DDP-4
-> EDID=3DDEL_16543_DELL_P2314T_DP
->=20
-> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
-...
+On 2/5/26 17:56, Kory Maincent wrote:
+> On Mon, 02 Feb 2026 15:33:06 +0100
+> Louis Chauvet <louis.chauvet@bootlin.com> wrote:
+> 
+>> Unigraf devices can emulate both SST and MST display port. In order to
+>> write tests using both, add fews helper to manipulate them.
+>>
+>> The define TSI_DPRX_NOT_DOCUMENTED_SIDEBAND_MSG_SUPPORT is taken from the
+>> python SDK, as it was not defined by the C sdk nor documented.
+>>
+>> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+>> ---
+>>   lib/unigraf/unigraf.c | 109
+>> ++++++++++++++++++++++++++++++++++++++++++++++++++ lib/unigraf/unigraf.h |
+>> 12 ++++++ 2 files changed, 121 insertions(+)
+>>
+>> diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
+>> index 966e7d2a5077..4a3b0a5fc28e 100644
+>> --- a/lib/unigraf/unigraf.c
+>> +++ b/lib/unigraf/unigraf.c
+>> @@ -105,6 +105,23 @@ static void _unigraf_write_u32(TSI_CONFIG_ID config_id,
+>> uint32_t value) _unigraf_write_u32(config_id, v);
+>> 	\ })
+>>   
+>> +static uint32_t _unigraf_read_u32(TSI_CONFIG_ID config_id)
+>> +{
+>> +	uint32_t value;
+>> +
+>> +	igt_assert(unigraf_device);
+>> +	unigraf_assert(TSIX_TS_GetConfigItem(unigraf_device, config_id,
+>> &value, sizeof(value)));
+>> +	return value;
+>> +}
+>> +
+>> +#define unigraf_read_u32(config_id)
+>> 	\
+>> +	({
+>> 	\
+>> +		uint32_t value;
+>> 		\
+>> +		value = _unigraf_read_u32((config_id));
+>> 		\
+>> +		unigraf_debug("Value read: " #config_id "=%d\n",
+>> value);	\
+>> +		value;
+>> 		\
+>> +	})
+> 
+> Why is there a define and a function that are doing the same thing ?
+> Same question for the write part patch 25. I missed it in the review.
 
-> +	newly_connected_count =3D kms_wait_for_new_connectors(&newly_connected,
-> +
-> already_connected,
-> +
-> already_connected_count,
-> +							    drm_fd);
-> +
-> +	diff_len =3D get_list_diff(newly_connected, newly_connected_count,
-> +				 already_connected, already_connected_count,
-> &diff); +
-> +	if (diff_len =3D=3D 0) {
+I use macro so unigraf_debug will print the "good" line (i.e the caller 
+of unigraf_read_u32) and not a line in unigraf_read_u32. This make debug 
+way easier.
 
-if (!diff_len)
+And I created a function because originally my function was a bit more 
+complex (if/else) and I prefer to avoid complex code inside macro.
 
-...
+> Regards,
 
-> +	if (!unigraf_connector_name) {
-> +		unigraf_hpd_deassert();
-> +		unigraf_set_sst();
-> +		unigraf_hpd_assert();
-> +		sleep(1);
-
-Why? Please add comment before sleep to understand why it is required.
-
-> +		unigraf_autodetect_connector(drm_fd);
-> +	}
-> +
->  	unigraf_reset();
-> =20
-> -	return true;
-> +	return unigraf_connector_name !=3D NULL;
->  }
-> =20
->  /**
-> @@ -362,6 +483,9 @@ void unigraf_reset(void)
->  	unigraf_plug();
->  	unigraf_set_mst_stream_count(1);
->  	unigraf_set_sst();
-> +	unigraf_load_default_edid();
-> +	unigraf_hpd_assert();
-> +	sleep(1);
-
-Same.
-
-Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
