@@ -4,27 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4162EE91290
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 09:08:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C16A9E91299
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 09:10:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D7DF510E812;
-	Thu,  5 Feb 2026 09:08:20 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0503010E811;
- Thu,  5 Feb 2026 09:08:20 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5010796980916983703=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 51E3B10E815;
+	Thu,  5 Feb 2026 09:10:05 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LbaS3v+p";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3ABCA10E815
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Feb 2026 09:10:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1770282604; x=1801818604;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=9MghnsrvpPtE7xIiD3YTFwnZ0DjQ2as5ShCJqVLb94w=;
+ b=LbaS3v+pnCbi/ndZkrs0kxV1wzCRXrf/uNGtXIEKFs8FUL3nobBk1UVx
+ 7po7oezk7kaRKv/iWF1ey6etesWt4tGp6UL0oz8eisy2uL9SZjmvTRSWn
+ oLo/e+TU6FVKxC5vQ2jNyKzqgo+f/giz1bwWhcuTr/5kphkNMHrfdQ8mh
+ AQiacGPtgNukKd8Z1Q1kWczvQ0Vir31MOX3pZSbH85lKjq7AjLm/RWV3c
+ xJOiQjc5AdD0fC0clzZLwHcdel+QU1jW20twexFySBFMCZRLEroe47dnn
+ nSd6uKc9B7gWlMGSfFYQkNUZl8xKVHsl0KJdhvhxuPCgEswCr4YdUlk/U w==;
+X-CSE-ConnectionGUID: 0pFRUclJRha4erm8yl1IRg==
+X-CSE-MsgGUID: XN7yP1myQi6BNxaSY+9mbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="82916882"
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; d="scan'208";a="82916882"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Feb 2026 01:10:03 -0800
+X-CSE-ConnectionGUID: oaIY+KwwTCOEva3m6R9DBw==
+X-CSE-MsgGUID: GhTDjY/TRgK2iCv9M8Wl/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; d="scan'208";a="209732632"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.69])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Feb 2026 01:10:00 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Xin Wang <x.wang@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Xin Wang <x.wang@intel.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Matt Roper <matthew.d.roper@intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Ravi Kumar V <ravi.kumar.vodapalli@intel.com>
+Subject: Re: [PATCH v2 2/3] lib/intel: add fd-based
+ intel_gen/intel_graphics_ver via Xe query
+In-Reply-To: <20260122071530.1629046-3-x.wang@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260122071530.1629046-1-x.wang@intel.com>
+ <20260122071530.1629046-3-x.wang@intel.com>
+Date: Thu, 05 Feb 2026 11:09:57 +0200
+Message-ID: <e766ce6319b2a59447f4397f1abe3f8e3ce80d00@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Fix_chamelium_port_allocati?=
- =?utf-8?q?on_during_igt=5Ffixture_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bilal, Mohammed" <mohammed.bilal@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 05 Feb 2026 09:08:20 -0000
-Message-ID: <177028250000.226816.12446969529274049592@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260203034546.1516152-1-mohammed.bilal@intel.com>
-In-Reply-To: <20260203034546.1516152-1-mohammed.bilal@intel.com>
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +71,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5010796980916983703==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, 22 Jan 2026, Xin Wang <x.wang@intel.com> wrote:
+> +/**
+> + * intel_gen:
+> + * @fd: DRM device file descriptor.
+> + *
+> + * Attempts to determine the graphics "generation" by querying the Xe driver for
+> + * the main GT IP version major. If unavailable (e.g., not an Xe device or no IP
+> + * version reported), falls back to retrieving the DRM device ID and mapping it
+> + * to a legacy graphics version.
+> + *
+> + * Return: The graphics generation/major IP version for the device.
+> + */
+> +unsigned intel_gen(int fd)
+> +{
+> +	uint16_t devid;
+> +	const struct drm_xe_gt* main_gt = xe_get_main_gt(fd);
+> +
+> +	if (main_gt && main_gt->ip_ver_major)
+> +		return main_gt->ip_ver_major;
+> +
+> +	devid = intel_get_drm_devid(fd);
+> +	return intel_gen_legacy(devid);
+> +}
 
-== Series Details ==
+Why stick with the "gen" naming when the kernel side has completely
+moved to "ver" naming?
 
-Series: Fix chamelium port allocation during igt_fixture (rev3)
-URL   : https://patchwork.freedesktop.org/series/161047/
-State : success
+Also, you won't get build failures if any remaining (or new one, racing
+to get merged) call sites pass in devid to this.
 
-== Summary ==
+BR,
+Jani.
 
-CI Bug Log - changes from XEIGT_8738_BAT -> XEIGTPW_14503_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (12 -> 11)
-------------------------------
-
-  Missing    (1): bat-dg2-oem2 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8738 -> IGTPW_14503
-
-  IGTPW_14503: 14503
-  IGT_8738: b3fc8fb534a27517f2a49e63ef993e7550b9b959 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-4503-8883ec84c85819dacca94997b60371c3ed57ee29: 8883ec84c85819dacca94997b60371c3ed57ee29
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14503/index.html
-
---===============5010796980916983703==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Fix chamelium port allocation during igt_fixture (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161047/">https://patchwork.freedesktop.org/series/161047/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14503/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14503/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8738_BAT -&gt; XEIGTPW_14503_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 11)</h2>
-<p>Missing    (1): bat-dg2-oem2 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8738 -&gt; IGTPW_14503</li>
-</ul>
-<p>IGTPW_14503: 14503<br />
-  IGT_8738: b3fc8fb534a27517f2a49e63ef993e7550b9b959 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-4503-8883ec84c85819dacca94997b60371c3ed57ee29: 8883ec84c85819dacca94997b60371c3ed57ee29</p>
-
-</body>
-</html>
-
---===============5010796980916983703==--
+-- 
+Jani Nikula, Intel
