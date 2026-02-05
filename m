@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D341E91291
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 08:36:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4162EE91290
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 09:08:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 06F2310E7FA;
-	Thu,  5 Feb 2026 08:36:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D7DF510E812;
+	Thu,  5 Feb 2026 09:08:20 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 198B910E7F9;
- Thu,  5 Feb 2026 08:36:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0503010E811;
+ Thu,  5 Feb 2026 09:08:20 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0723391671128055305=="
+ boundary="===============5010796980916983703=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Run_PSR2_and_PR_tests_on_?=
- =?utf-8?q?panel_supporting_both_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Fix_chamelium_port_allocati?=
+ =?utf-8?q?on_during_igt=5Ffixture_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>
+To: "Bilal, Mohammed" <mohammed.bilal@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 05 Feb 2026 08:36:50 -0000
-Message-ID: <177028061007.226816.13201498331979813888@a3b018990fe9>
+Date: Thu, 05 Feb 2026 09:08:20 -0000
+Message-ID: <177028250000.226816.12446969529274049592@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260205070425.300934-1-jouni.hogander@intel.com>
-In-Reply-To: <20260205070425.300934-1-jouni.hogander@intel.com>
+References: <20260203034546.1516152-1-mohammed.bilal@intel.com>
+In-Reply-To: <20260203034546.1516152-1-mohammed.bilal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0723391671128055305==
+--===============5010796980916983703==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Run PSR2 and PR tests on panel supporting both (rev3)
-URL   : https://patchwork.freedesktop.org/series/161016/
+Series: Fix chamelium port allocation during igt_fixture (rev3)
+URL   : https://patchwork.freedesktop.org/series/161047/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8738 -> IGTPW_14501
+CI Bug Log - changes from XEIGT_8738_BAT -> XEIGTPW_14503_BAT
 ====================================================
 
 Summary
@@ -64,50 +64,34 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14501/index.html
+  
 
-Participating hosts (43 -> 40)
+Participating hosts (12 -> 11)
 ------------------------------
 
-  Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 
+  Missing    (1): bat-dg2-oem2 
 
-Known issues
-------------
 
-  Here are the changes found in IGTPW_14501 that come from known issues:
+Changes
+-------
 
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8738/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14501/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-9:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8738/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14501/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  No changes found
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8738 -> IGTPW_14501
+  * IGT: IGT_8738 -> IGTPW_14503
 
-  CI-20190529: 20190529
-  CI_DRM_17935: 8883ec84c85819dacca94997b60371c3ed57ee29 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14501: 14501
+  IGTPW_14503: 14503
   IGT_8738: b3fc8fb534a27517f2a49e63ef993e7550b9b959 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-4503-8883ec84c85819dacca94997b60371c3ed57ee29: 8883ec84c85819dacca94997b60371c3ed57ee29
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14501/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14503/index.html
 
---===============0723391671128055305==
+--===============5010796980916983703==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -127,44 +111,32 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Run PSR2 and PR tests on panel supporting both (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161016/">https://patchwork.freedesktop.org/series/161016/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Fix chamelium port allocation during igt_fixture (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161047/">https://patchwork.freedesktop.org/series/161047/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14501/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14501/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14503/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14503/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_8738 -&gt; IGTPW_14501</h1>
+    <h1>CI Bug Log - changes from XEIGT_8738_BAT -&gt; XEIGTPW_14503_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14501/index.html</p>
-<h2>Participating hosts (43 -&gt; 40)</h2>
-<p>Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14501 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8738/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14501/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8738/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14501/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
+<h2>Participating hosts (12 -&gt; 11)</h2>
+<p>Missing    (1): bat-dg2-oem2 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8738 -&gt; IGTPW_14501</li>
+<li>IGT: IGT_8738 -&gt; IGTPW_14503</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17935: 8883ec84c85819dacca94997b60371c3ed57ee29 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14501: 14501<br />
-  IGT_8738: b3fc8fb534a27517f2a49e63ef993e7550b9b959 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_14503: 14503<br />
+  IGT_8738: b3fc8fb534a27517f2a49e63ef993e7550b9b959 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-4503-8883ec84c85819dacca94997b60371c3ed57ee29: 8883ec84c85819dacca94997b60371c3ed57ee29</p>
 
 </body>
 </html>
 
---===============0723391671128055305==--
+--===============5010796980916983703==--
