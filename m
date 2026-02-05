@@ -4,62 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A0A1ECD994
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 17:54:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C336ECD994
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 17:55:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DE9E110E945;
-	Thu,  5 Feb 2026 17:54:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D148A10E8DB;
+	Thu,  5 Feb 2026 17:55:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YUZr7oCk";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="sjjPuK4n";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E69CA10E8DB
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Feb 2026 17:54:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770314050; x=1801850050;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=YRo5uIAvgwSKKJ4UizcggzueOQk7+jCXFfacXgf+Agw=;
- b=YUZr7oCklzqYCDqRHugilWno7jY7wubWgGoOMjlcFYsOw+/uVALguvKa
- 6+bif6joaflDhrr8AgXkHln4sXn9z/+/qABWvI35ftAfz819n4T2Sp1kO
- bLeUBAFrzBUQiffVQqNp6qlV3YcnoFZAdS5wBbmTogVBzwR3SGaPkQHB0
- ZH43M+sWaCat7UmqG2klitqDXWwfLTgw3P24DrIi2KWE1TljqxinWdLdR
- uuorPHBJZp/5oNIG0g37FfXy6V6IX5yEwAyTxEL2Mhkk8m5h5oT8rPQwe
- WUEHMtedjViSH+rmceGnKz0Qs4CVv/k0xrmGUVBDtuIhnzLaxRFSkXDFd Q==;
-X-CSE-ConnectionGUID: F63XCcn3SIyfNGY1I4jM5g==
-X-CSE-MsgGUID: oMPd6auSTDCoZp7pJmwhYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="71411177"
-X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; d="scan'208";a="71411177"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Feb 2026 09:54:09 -0800
-X-CSE-ConnectionGUID: 8LtYh6tbSSSFeDvxQY/DVg==
-X-CSE-MsgGUID: AagfccUaRXOmyxvNVpBZ2Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; d="scan'208";a="210508690"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 09:54:08 -0800
-Date: Thu, 5 Feb 2026 18:54:05 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: S Sebinraj <s.sebinraj@intel.com>
-Cc: igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com,
- kamil.konieczny@intel.com, zbigniew.kempczynski@intel.com,
- soham.purkait@intel.com
-Subject: Re: [PATCH i-g-t v7] tools/gputop: Add GPU frequencies to the client
- headers
-Message-ID: <20260205175405.w4cgw4bxsgoh7dvy@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- S Sebinraj <s.sebinraj@intel.com>, igt-dev@lists.freedesktop.org,
- krzysztof.karas@intel.com, kamil.konieczny@intel.com,
- zbigniew.kempczynski@intel.com, soham.purkait@intel.com
-References: <20260205111211.3917326-1-s.sebinraj@intel.com>
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE5A410E8DB
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Feb 2026 17:55:48 +0000 (UTC)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+ by smtpout-03.galae.net (Postfix) with ESMTPS id B82874E42424;
+ Thu,  5 Feb 2026 17:55:47 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 68D786074D;
+ Thu,  5 Feb 2026 17:55:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
+ with ESMTPSA id C4D18102F1B6D; Thu,  5 Feb 2026 18:55:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+ t=1770314146; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ content-transfer-encoding:in-reply-to:references;
+ bh=T9rQpq0dIjbaI5V+mmp+x15OKa6CbnBxqOGD0oylgBU=;
+ b=sjjPuK4nltzmySDiBYM3XX3VmfU1IW5lsoGfbHMD8WEFiiDZUqaCbHs5D/ZdhBA9iWFRwu
+ QEitnSkN1KLZjVtS3HDKBLn2YYNq7XVsfEs3Tj7qfpCqlXSmiurVjwAwoVIfObkIxaulG7
+ nyMTPWPdgQDirZH+f3BbOqeVjtSXdMNLu+lUTxvg5b81rMWzodQEmofxcakjhqK3g9htXa
+ Jcr4nR/460UNEu+Ztm0KfylckRx3nYgdoPt67CH574dTpv8nGfA7ctRWz6qDU3s8cJkX8s
+ vf13siMmY0/cKZ99Yx1SJsntZIKpf4ScdKvcpGBV3nr3oox7Vvjz3tE26ozHqA==
+Date: Thu, 5 Feb 2026 18:55:44 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Louis Chauvet <louis.chauvet@bootlin.com>
+Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
+ luca.ceresoli@bootlin.com, markyacoub@google.com,
+ khaled.almahallawy@intel.com
+Subject: Re: [PATCH i-g-t v6 30/48] tests/unigraf: Add basic unigraf tests
+Message-ID: <20260205185544.41e93475@kmaincent-XPS-13-7390>
+In-Reply-To: <20260202-unigraf-integration-v6-30-834af822eee7@bootlin.com>
+References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
+ <20260202-unigraf-integration-v6-30-834af822eee7@bootlin.com>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260205111211.3917326-1-s.sebinraj@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,306 +64,172 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi S,
-On 2026-02-05 at 16:42:11 +0530, S Sebinraj wrote:
-> Enhance gputop to display GPU frequency information (current/actual)
-> for each GT in the client header line alongside the DRM minor number.
-> 
-> Key changes:
-> - Add get_gt_frequencies() function to read GT frequency values
-> - Support both i915 and Xe drivers using appropriate sysfs paths
-> - Display format: "DRM minor X  Freq(cur/act) GT0-freq/freq GT1-freq/freq"
-> - Driver-agnostic sysfs access
-> 
-> The frequency information helps users monitor GPU performance states
-> in real-time while observing client workload utilization.
-> 
-> Example output:
->   DRM minor 0   Frequency GT0-1800/1800 GT1-400/400
->   DRM minor 128   Frequency GT0-400/400 GT1-400/400
-> 
-> v2:
-> - To use macro to suffix strings
-> - To skip failure loops
-> 
-> v3:
-> - To keep error logs
-> 
-> v4:
-> - Removed RFC from Subject
-> 
-> v5:
-> - Fallback to normal sysfs read instead of using lib api's
->   as it increased the dependencies highly
-> 
-> v6:
-> - Remove driver specific logging
-> - Change function name to this regard
-> 
-> v7:
-> - Move intel specific code away from generic funcs
-> - Add func to check which driver is bound
-> - Space correction in strings
-> 
-> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
-> ---
->  tools/gputop.c | 189 ++++++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 187 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/gputop.c b/tools/gputop.c
-> index f577a1750..216b030be 100644
-> --- a/tools/gputop.c
-> +++ b/tools/gputop.c
-> @@ -30,13 +30,20 @@
->  #include "igt_drm_clients.h"
->  #include "igt_drm_fdinfo.h"
->  #include "igt_profiling.h"
-> -#include "drmtest.h"
->  
->  enum utilization_type {
->  	UTILIZATION_TYPE_ENGINE_TIME,
->  	UTILIZATION_TYPE_TOTAL_CYCLES,
->  };
->  
-> +enum intel_driver_type {
-> +	INTEL_DRIVER_I915,
-> +	INTEL_DRIVER_XE,
-> +	INTEL_DRIVER_UNKNOWN,
-> +};
+On Mon, 02 Feb 2026 15:33:09 +0100
+Louis Chauvet <louis.chauvet@bootlin.com> wrote:
+
+> Adds two tests to validate unigraf communication.
+>=20
+> unigraf-connect checks if the device is connected and if the EDID is
+> properly applied.
+>=20
+> ungiraf-reconnect checks if the device can be connected/reconnected
+> using SST and MST configurations.
+
+...
+
+> diff --git a/tests/unigraf/unigraf_connectivity.c
+> b/tests/unigraf/unigraf_connectivity.c new file mode 100644
+> index 000000000000..be7c428a63fc
+> --- /dev/null
+> +++ b/tests/unigraf/unigraf_connectivity.c
+> @@ -0,0 +1,129 @@
+> +// SPDX-License-Identifier: MIT
+
+Copyright?
+
 > +
-> +#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+> +#include <stdint.h>
+> +#include <stdlib.h>
+> +#include <unistd.h>
+> +#include <xf86drmMode.h>
 > +
->  static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
->  
->  #define ANSI_HEADER "\033[7m"
-> @@ -76,17 +83,195 @@ static void print_percentage_bar(double percent, int max_len)
->  	putchar('|');
->  }
->  
-> +/* Detect which driver is bound to the device */
-> +static bool is_driver(unsigned int drm_minor, const char *driver_name)
+> +#include "drmtest.h"
+> +#include "igt_aux.h"
+> +#include "igt_core.h"
+> +#include "igt_kms.h"
+> +#include "unigraf/unigraf.h"
+> +
+> +/**
+> + * TEST: unigraf connectivity
+> + * Category: Core
+> + * Description: Testing connectivity with a unigraf device
+> + *
+> + * SUBTEST: unigraf-connect-edid
+> + * Description: Verify that the unigraf device is properly connected to =
+the
+> DUT
+> + *              and that the correct EDID is detected and read.
+> + *
+> + * SUBTEST: unigraf-connect-mst
+> + * Description: Ensure that the DUT can correctly detect and handle the
+> unigraf device
+> + *              when it is configured to operate in MST mode.
+> + */
+> +
+> +IGT_TEST_DESCRIPTION("Test basic unigraf connectivity");
+> +int igt_main()
 > +{
-> +	char path[256];
-> +	char link[256];
-> +	char *driver;
-> +	ssize_t len;
+> +	int drm_fd;
 > +
-> +	/* Read the driver symlink */
-> +	snprintf(path, sizeof(path), "/sys/class/drm/card%u/device/driver", drm_minor);
-
-For drm_minor >= 128 you should use 'renderD', not 'card'.
-See also note below.
-
-> +	len = readlink(path, link, sizeof(link) - 1);
-> +	if (len == -1)
-> +		return false;
+> +	igt_fixture() {
+> +		drm_fd =3D drm_open_driver_master(DRIVER_ANY);
+> +	}
 > +
-> +	link[len] = '\0';
+> +	igt_describe("Make sure that the unigraf device is connected to the
+> DUT and EDID is properly detected");
+> +	igt_subtest("unigraf-connect-edid") {
+> +		drmModePropertyBlobPtr edid_blob =3D NULL;
+> +		struct igt_display display;
+> +		uint64_t edid_blob_id;
+> +		igt_output_t *output;
+> +		uint32_t unigraf_edid_len;
+> +		void *unigraf_edid;
+> +		bool found =3D false;
 > +
-> +	/* Extract driver name from path (e.g., "bus/pci/drivers/i915" -> "i915") */
-> +	driver = strrchr(link, '/');
-> +	if (!driver)
-> +		return false;
+> +		unigraf_require_device(drm_fd);
+> +		unigraf_hpd_deassert();
+> +		sleep(1);
+> +		unigraf_set_sst();
+> +		unigraf_hpd_assert();
 > +
-> +	driver++; /* Skip the '/' */
-
-Add newline.
-
-> +	return strcmp(driver, driver_name) == 0;
-> +}
+> +		sleep(5);
 > +
-> +/* Detect if this is an Intel device (i915 or Xe) */
-> +static bool is_intel_device(unsigned int drm_minor)
-> +{
-> +	return is_driver(drm_minor, "i915") || is_driver(drm_minor, "xe");
-> +}
+> +		igt_display_require(&display, drm_fd);
+> +		sleep(5);
+
+Please add a comment to explain the sleep.
+
 > +
-> +/* Detect Intel driver variant */
-> +static enum intel_driver_type detect_intel_driver(unsigned int drm_minor)
-> +{
-> +	if (is_driver(drm_minor, "xe"))
-> +		return INTEL_DRIVER_XE;
-> +	else if (is_driver(drm_minor, "i915"))
-> +		return INTEL_DRIVER_I915;
+> +		unigraf_edid =3D unigraf_read_edid(0, &unigraf_edid_len);
 > +
-> +	return INTEL_DRIVER_UNKNOWN;
-> +}
+> +		for_each_connected_output(&display, output) {
+> +			if (output->config.connector->connector_type =3D=3D
+> +			    DRM_MODE_CONNECTOR_DisplayPort) {
+> +				igt_assert(kmstest_get_property(drm_fd,
 > +
-> +/* Count the number of GTs by checking which gt* directories exist */
-> +static int get_num_gts(unsigned int drm_minor, enum intel_driver_type driver_type)
-> +{
-> +	char path[256];
-> +	struct stat st;
-> +	int gt_count = 0;
+> output->config.connector->connector_id,
 > +
-> +	/* Check for gt0, gt1, gt2, etc. up to a reasonable maximum */
-> +	for (int i = 0; i < 8; i++) {
-> +		if (driver_type == INTEL_DRIVER_XE)
-> +			/* For Xe, all GTs are under tile0 */
-> +			snprintf(path, sizeof(path), "/sys/class/drm/card%u/device/tile0/gt%d",
+> DRM_MODE_OBJECT_CONNECTOR, "EDID",
+> +								NULL,
+> &edid_blob_id, NULL));
+> +				edid_blob =3D drmModeGetPropertyBlob(drm_fd,
+> edid_blob_id);
+> +				if (!edid_blob)
+> +					continue;
+> +
+> +				if (memcmp(unigraf_edid, edid_blob->data,
+> +					   min(edid_blob->length,
+> unigraf_edid_len)) =3D=3D 0)
 
-Here you again use 'card', maybe create new function for this name
-and use it instead here and in other places? For example:
+if (!memcmp(...))
 
-char *get_drm_name(int minor)
-{
-	return minor >= 128 ? "renderD" : "card";
-}
+> +					found =3D true;
+> +
+> +				drmModeFreePropertyBlob(edid_blob);
+> +
+> +				if (found)
+> +					break;
+> +			}
+> +		}
+> +		igt_assert_f(found, "No output with the correct EDID was
+> found\n"); +
 
-	snprintf(path, sizeof(path), "/sys/class/drm/%s%u/device/tile0/gt%d",
-		 get_drm_name(drm_minor), ....
+I think you could change the code to remove the "found" flag. It adds a lev=
+el of
+complexity which could be avoided.
 
-or even more, like:
-const char *get_sysfs_prefix(int minor)
-{
-	return minor >= 128 ? "/sys/class/drm/renderD" :
-			      "/sys/class/drm/card";
-}
+> +		free(unigraf_edid);
+> +	}
+> +
+> +	igt_describe("Make sure that the unigraf device can be used as a MST
+> device");
+> +	igt_subtest("ungiraf-connect-mst") {
+> +		int newly_connected_count, already_connected_count, diff_len;
+> +		uint32_t *newly_connected =3D NULL, *already_connected =3D NULL,
+> *diff =3D NULL;
+> +		int max_count;
+> +
+> +		unigraf_require_device(drm_fd);
+> +		max_count =3D unigraf_get_mst_stream_max_count();
+> +
+> +		unigraf_hpd_deassert();
+> +
+> +		already_connected_count =3D
+> igt_get_connected_connectors(drm_fd, &already_connected); +
+> +		igt_debug("Already connected count: %d\n",
+> already_connected_count); +
+> +		// i =3D 0 is SST so we need to process max_count + 1 streams
+> +		for (int i =3D 0; i <=3D max_count; i++) {
+> +			unigraf_hpd_deassert();
+> +
+> +			sleep(1);
+> +			unigraf_set_mst_stream_count(max(i, 1));
+> +			if (i =3D=3D 0)
 
-Rest of code looks good.
+if (!i)
+
+> +				unigraf_set_sst();
+> +			else
+> +				unigraf_set_mst();
+> +
+> +			unigraf_hpd_assert();
+> +
+> +			sleep(5);
+
+Comment?
 
 Regards,
-Kamil
-
-> +				 drm_minor, i);
-> +		else /* i915 */
-> +			snprintf(path, sizeof(path), "/sys/class/drm/card%u/gt/gt%d",
-> +				 drm_minor, i);
-> +
-> +		if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
-> +			gt_count++;
-> +		else
-> +			break;  /* Assume GTs are numbered sequentially */
-> +	}
-> +
-> +	return gt_count > 0 ? gt_count : 1;  /* At least 1 GT should exist */
-> +}
-> +
-> +/* Read a single frequency value from sysfs */
-> +static bool read_freq_value(const char *path, unsigned int *freq)
-> +{
-> +	FILE *fp;
-> +	char buf[32];
-> +	bool success = false;
-> +
-> +	fp = fopen(path, "r");
-> +	if (fp) {
-> +		if (fgets(buf, sizeof(buf), fp)) {
-> +			*freq = atoi(buf);
-> +			success = true;
-> +		}
-> +		fclose(fp);
-> +	}
-> +
-> +	return success;
-> +}
-> +
-> +/* Intel-specific frequency reading for i915/Xe drivers */
-> +static char *get_intel_frequencies(unsigned int drm_minor)
-> +{
-> +	char freq_str[512] = "";
-> +	char gt_info[64];
-> +	int num_gts;
-> +	int gt;
-> +	enum intel_driver_type driver_type;
-> +	bool first = true;
-> +
-> +	/* Detect Intel driver variant */
-> +	driver_type = detect_intel_driver(drm_minor);
-> +	if (driver_type == INTEL_DRIVER_UNKNOWN)
-> +		return NULL;
-> +
-> +	/* Get GT count from sysfs */
-> +	num_gts = get_num_gts(drm_minor, driver_type);
-> +	if (num_gts <= 0)
-> +		return NULL;
-> +
-> +	/* Read frequencies for each GT */
-> +	for (gt = 0; gt < num_gts; gt++) {
-> +		char freq_path[256];
-> +		unsigned int cur_freq = 0, act_freq = 0;
-> +		bool has_cur = false, has_act = false;
-> +
-> +		/* Read current/requested frequency */
-> +		if (driver_type == INTEL_DRIVER_XE)
-> +			snprintf(freq_path, sizeof(freq_path),
-> +				 "/sys/class/drm/card%u/device/tile0/gt%d/freq0/cur_freq",
-> +				 drm_minor, gt);
-> +		else /* i915 */
-> +			snprintf(freq_path, sizeof(freq_path),
-> +				 "/sys/class/drm/card%u/gt/gt%d/rps_cur_freq_mhz",
-> +				 drm_minor, gt);
-> +
-> +		has_cur = read_freq_value(freq_path, &cur_freq);
-> +
-> +		/* Read actual frequency */
-> +		if (driver_type == INTEL_DRIVER_XE)
-> +			snprintf(freq_path, sizeof(freq_path),
-> +				 "/sys/class/drm/card%u/device/tile0/gt%d/freq0/act_freq",
-> +				 drm_minor, gt);
-> +		else /* i915 */
-> +			snprintf(freq_path, sizeof(freq_path),
-> +				 "/sys/class/drm/card%u/gt/gt%d/rps_act_freq_mhz",
-> +				 drm_minor, gt);
-> +
-> +		has_act = read_freq_value(freq_path, &act_freq);
-> +
-> +		/* Skip this GT if we couldn't read any frequency */
-> +		if (!has_cur && !has_act)
-> +			continue;
-> +
-> +		/* Append to frequency string */
-> +		if (!first)
-> +			strcat(freq_str, " ");
-> +		else
-> +			first = false;
-> +
-> +		snprintf(gt_info, sizeof(gt_info), "GT%d-%u/%u", gt, cur_freq, act_freq);
-> +		strcat(freq_str, gt_info);
-> +	}
-> +
-> +	if (strlen(freq_str) > 0)
-> +		return strdup(freq_str);
-> +
-> +	return NULL;
-> +}
-> +
-> +/* Generic wrapper for frequency reading - dispatches to vendor-specific implementations */
-> +static char *get_frequencies(unsigned int drm_minor)
-> +{
-> +	/* Check for Intel devices (i915/Xe) */
-> +	if (is_intel_device(drm_minor))
-> +		return get_intel_frequencies(drm_minor);
-> +
-> +	return NULL;
-> +}
-> +
->  static int
->  print_client_header(struct igt_drm_client *c, int lines, int con_w, int con_h,
->  		    int *engine_w)
->  {
->  	int ret, len;
-> +	char *freq_info = NULL;
->  
->  	if (lines++ >= con_h)
->  		return lines;
->  
->  	printf(ANSI_HEADER);
-> -	ret = printf("DRM minor %u", c->drm_minor);
-> +
-> +	/* Get frequency information */
-> +	freq_info = get_frequencies(c->drm_minor);
-> +
-> +	if (freq_info) {
-> +		ret = printf("DRM minor %u   Frequency(MHz) %s", c->drm_minor, freq_info);
-> +		free(freq_info);
-> +	} else {
-> +		ret = printf("DRM minor %u", c->drm_minor);
-> +	}
-> +
->  	n_spaces(con_w - ret);
->  
->  	if (lines++ >= con_h)
-> -- 
-> 2.43.0
-> 
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
