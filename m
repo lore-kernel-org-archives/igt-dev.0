@@ -4,68 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BB5DECD98C
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 17:11:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00E45ECD98A
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 17:25:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D2D9810E937;
-	Thu,  5 Feb 2026 17:11:58 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cL9b1jvu";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9045E10E936;
- Thu,  5 Feb 2026 17:11:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770311518; x=1801847518;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Vdl0fZMPTue0rn+dQQa1er09bMDH1Epuaexi7vAk/x8=;
- b=cL9b1jvuhet/8pvNnYWFZ3ByM47f58c37t8Mj9p+vUk8KojrXJxJb2OR
- DqatdeLubuzgv04wxALWlm0JWOPvzF1JvoE1H8l9uw1T+gUyeCPueRG8U
- tLmF9Hv8NcRZYE53nQIKJ515E3uxfEiZg60h3wiAXtDP5z16iky21cVsC
- HOWB76lokuPfSRU3G7ZquYRRnrjgU/aN0Ac2hnZqWhzqx4IDs2CssC29A
- aVCHyabxNUi+Quq0/r9GgiRNbGzYSfedhK/uI0wzisXa0iq+gWP+YsSCl
- tJYYAtJd6psD9D9a7Iia5R+e3P4RXDlcuJrkf4OPsUCDh0uQoGOXXbIus g==;
-X-CSE-ConnectionGUID: 1R/V8cNDTg+MlwmqEjLlzg==
-X-CSE-MsgGUID: lCN8D977RtOHVygtqkfBlA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="71553788"
-X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; d="scan'208";a="71553788"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Feb 2026 09:11:58 -0800
-X-CSE-ConnectionGUID: k/ooZn8FQnymNiIgeBn5/w==
-X-CSE-MsgGUID: KtegJtOZSAWImXI2eS7qOQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; d="scan'208";a="241273346"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 09:11:55 -0800
-Date: Thu, 5 Feb 2026 18:11:52 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Subject: Re: [PATCH i-g-t v5 5/6] lib/igt_device_scan: Omit AER statistics
- data from attributes
-Message-ID: <20260205171152.xcstd5ubmqw6fs5p@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-References: <20260205145427.1338534-8-janusz.krzysztofik@linux.intel.com>
- <20260205145427.1338534-13-janusz.krzysztofik@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id AFAAE10E93C;
+	Thu,  5 Feb 2026 17:25:25 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F37F10E93C;
+ Thu,  5 Feb 2026 17:25:24 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4763334689960278482=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260205145427.1338534-13-janusz.krzysztofik@linux.intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lsgpu=3A_Report_upstream_po?=
+ =?utf-8?q?rt_link_bandwidth_=28rev8=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 05 Feb 2026 17:25:24 -0000
+Message-ID: <177031232450.228376.11043437242812544785@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260205145427.1338534-8-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20260205145427.1338534-8-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,64 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Janusz,
-On 2026-02-05 at 15:51:54 +0100, Janusz Krzysztofik wrote:
-> Among attributes of a PCIe bridge upstream port of a discrete graphics
-> card, there are three AER statistics attributes: aer_dev_correctable,
-> aer_dev_nonfatal and aer_dev_fatal.  Each consists of a number of key-
-> value pairs, while the library now expects only single value attributes.
-> That affects formatting of lsgpu -p output.  In order to print that data
-> correctly in a human readable form, extra formatting effort would be
-> needed.  However, users of lsgpu, the only call site of that printing
-> function of the igt_device_scan library, are not necessarily interested in
-> that data.  Just drop those attributes from the printout.
-> 
-> v2: Hand over detection of AER attributes to a helper.
-> 
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+--===============4763334689960278482==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Series Details ==
 
-Regards,
-Kamil
+Series: lsgpu: Report upstream port link bandwidth (rev8)
+URL   : https://patchwork.freedesktop.org/series/160415/
+State : success
 
-> ---
->  lib/igt_device_scan.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> index 6fc02a565a..d7ec6c2b96 100644
-> --- a/lib/igt_device_scan.c
-> +++ b/lib/igt_device_scan.c
-> @@ -617,6 +617,13 @@ static bool is_link_attr(const char *name)
->  	       !strcmp(name, "current_link_width");
->  }
->  
-> +static bool is_aer_attr(const char *name)
-> +{
-> +	return !strcmp(name, "aer_dev_correctable") ||
-> +	       !strcmp(name, "aer_dev_nonfatal") ||
-> +	       !strcmp(name, "aer_dev_fatal");
-> +}
-> +
->  static void dump_props_and_attrs(const struct igt_device *dev, bool omit_link)
->  {
->  	struct igt_map_entry *entry;
-> @@ -632,6 +639,10 @@ static void dump_props_and_attrs(const struct igt_device *dev, bool omit_link)
->  		if (omit_link && is_link_attr(entry->key))
->  			continue;
->  
-> +		/* omit multi-line AER statistics data */
-> +		if (is_aer_attr(entry->key))
-> +			continue;
-> +
->  		_print_key_value((char *)entry->key, (char *)entry->data);
->  	}
->  	printf("\n");
-> -- 
-> 2.52.0
-> 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8739_BAT -> XEIGTPW_14507_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 12)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14507_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_waitfence@engine:
+    - bat-dg2-oem2:       [FAIL][1] ([Intel XE#6519]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8739/bat-dg2-oem2/igt@xe_waitfence@engine.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14507/bat-dg2-oem2/igt@xe_waitfence@engine.html
+
+  
+  [Intel XE#6519]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8739 -> IGTPW_14507
+  * Linux: xe-4506-05230cfcdb1abc225c8e085cd4de470c4b97232f -> xe-4508-7fc41c69853312d5cb58afe7efd7943b6dfb092f
+
+  IGTPW_14507: 14507
+  IGT_8739: 8739
+  xe-4506-05230cfcdb1abc225c8e085cd4de470c4b97232f: 05230cfcdb1abc225c8e085cd4de470c4b97232f
+  xe-4508-7fc41c69853312d5cb58afe7efd7943b6dfb092f: 7fc41c69853312d5cb58afe7efd7943b6dfb092f
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14507/index.html
+
+--===============4763334689960278482==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lsgpu: Report upstream port link bandwidth (rev8)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160415/">https://patchwork.freedesktop.org/series/160415/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14507/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14507/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8739_BAT -&gt; XEIGTPW_14507_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14507_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_waitfence@engine:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8739/bat-dg2-oem2/igt@xe_waitfence@engine.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519">Intel XE#6519</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14507/bat-dg2-oem2/igt@xe_waitfence@engine.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8739 -&gt; IGTPW_14507</li>
+<li>Linux: xe-4506-05230cfcdb1abc225c8e085cd4de470c4b97232f -&gt; xe-4508-7fc41c69853312d5cb58afe7efd7943b6dfb092f</li>
+</ul>
+<p>IGTPW_14507: 14507<br />
+  IGT_8739: 8739<br />
+  xe-4506-05230cfcdb1abc225c8e085cd4de470c4b97232f: 05230cfcdb1abc225c8e085cd4de470c4b97232f<br />
+  xe-4508-7fc41c69853312d5cb58afe7efd7943b6dfb092f: 7fc41c69853312d5cb58afe7efd7943b6dfb092f</p>
+
+</body>
+</html>
+
+--===============4763334689960278482==--
