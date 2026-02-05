@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 097E2EC1EB5
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 13:30:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27981EC1EB3
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 13:30:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B118C10E89C;
-	Thu,  5 Feb 2026 13:30:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF17310E89D;
+	Thu,  5 Feb 2026 13:30:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IDIj32Tb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="O9HMCDlR";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D44F10E89C
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Feb 2026 13:30:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 815A010E89D
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Feb 2026 13:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770298223; x=1801834223;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=P+fbLYdxSuLrXRYkN1i0rokn1v0wwzpWLVxhk2vvm3k=;
- b=IDIj32TbShcZU7sNTwca2zDs6A6/IjA6zcCsnhKo+MUBblpN+AtZHlWL
- cq9JC0YmAcvqMixBOytS70MIipczVbXaBPolqT2d/fGbbUbg7GDyPqYYi
- 24SKXAQLzRf/o2UDyGjn4VNmOWg35YYal5F/pWsE5I9adZwBAeTdLFHNl
- RqmXG7jCO5WKzgkafnbxjLkmYG5b2fGH2r7GnfKNz2gswbkoI9gSDVnfI
- HKf0S0woEvX2Mf9ndLWTrKMK1quGYCWVs0s3/kWiCQldyeUrvelH0iSJk
- EiBV3Zu/bfxHnLd14gngm2V3fAdwCfJC0QN+jCA92tbemsUTaBEjsVXhW w==;
-X-CSE-ConnectionGUID: IUIT4gHaTKaa/WOtWyHaAQ==
-X-CSE-MsgGUID: PRvDwuVVRBWQP8iL7tQMSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71390473"
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; d="scan'208";a="71390473"
+ t=1770298226; x=1801834226;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=K9ThceEnvBo57TW9AHXT5jWg26OPT3oByiLu/fVXXvI=;
+ b=O9HMCDlRHErF8Xonoe965uLvpIZhJd+r2K6LdbHJzYqmw0J4/hIVy5NX
+ iyw4hTfGyeuqPdbs4Dfk+m37N/k+ohtNIYEicyw8xyOUVkQzC/d1XuHKE
+ v0DtsdWzRCfkPe1fPriDO4Nn8GZ0uTjN9uspbP5rLzonZ3j6hwAxxa7PS
+ prNtNVoUCR8keNdGt/g7CNsY4VVWFq8YPZgbVDHm9MQxApSQcelmnWatV
+ A+mi9bnGy0/tStu3AbL20Wd+YfV9rH2PIa3oe8WAL2+EyuZGiHzJarnHM
+ Rl4vLoTXHhB+a/VczZYfB2ozgB9r2iaIiK6KICLxbAlpyjW3lOIDZLqC6 Q==;
+X-CSE-ConnectionGUID: 6YWRV6yKQAWV1CYZKM0YyQ==
+X-CSE-MsgGUID: QLG+sSPCThib271rNg8veg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71390491"
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; d="scan'208";a="71390491"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Feb 2026 05:30:22 -0800
-X-CSE-ConnectionGUID: Sx5dWnUJQMWlTYgOs0ywQg==
-X-CSE-MsgGUID: IcSfFE1uQFKPvqlty0wo2w==
+ 05 Feb 2026 05:30:26 -0800
+X-CSE-ConnectionGUID: sD9Sf2TGTNqZUv0dxeLDEQ==
+X-CSE-MsgGUID: b13k6YYURoOUQPbT/zIOYA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; d="scan'208";a="215020951"
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; d="scan'208";a="215020976"
 Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
  ([10.245.244.121])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Feb 2026 05:30:21 -0800
+ 05 Feb 2026 05:30:25 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 00/12] tests/kms: Convert remaining for_each_pipe() to
+Subject: [PATCH i-g-t 01/12] tests/intel/kms_frontbuffer_tracking: Convert to
  for_each_crtc()
-Date: Thu,  5 Feb 2026 15:30:07 +0200
-Message-ID: <20260205133019.9161-1-ville.syrjala@linux.intel.com>
+Date: Thu,  5 Feb 2026 15:30:08 +0200
+Message-ID: <20260205133019.9161-2-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260205133019.9161-1-ville.syrjala@linux.intel.com>
+References: <20260205133019.9161-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
@@ -71,79 +73,63 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Convert the remaining for_each_pipe()s to for_each_crtc().
+Convert kms_frontbuffer_trackin to use for_each_crtc() instead
+of for_each_pipe(). Coccinelle hates kms_frontbuffer_tracking
+so do this by hand.
 
-I had a lot of performance issues with coccinelle with this one,
-so had to resort to some manual fixups here and there.
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ tests/intel/kms_frontbuffer_tracking.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-Ville Syrjälä (12):
-  tests/intel/kms_frontbuffer_tracking: Convert to for_each_crtc()
-  tests/intel/kms_legacy_colorkey: Convert to for_each_crtc()
-  tests/kms: Convert problematic tests to use for_each_crtc()
-  tests/kms: Use for_each_crtc() for inner loops
-  tests/kms: Clean up some for_each_pipe() local 'crtc' variables
-  tests/kms: Convert to for_each_crtc(), part 1
-  tests/kms: Convert to for_each_crtc(), part 2
-  tests/kms: Convert to for_each_crtc(), part 3
-  tests/kms: Convert to for_each_crtc(), part 4
-  tests/kms: Convert to for_each_crtc(), part 5
-  tests/kms: Convert to for_each_crtc(), part 6
-  lib/kms: Nuke for_each_pipe()
-
- benchmarks/kms_fb_stress.c                    |   8 +-
- lib/igt_kms.c                                 |  58 +++---
- lib/igt_kms.h                                 |  15 --
- tests/amdgpu/amd_dp_dsc.c                     | 191 ++++++++++--------
- tests/amdgpu/amd_freesync_video_mode.c        |  15 +-
- tests/amdgpu/amd_hotplug.c                    |  68 ++++---
- tests/amdgpu/amd_ilr.c                        |   8 +-
- tests/amdgpu/amd_link_settings.c              |   8 +-
- tests/amdgpu/amd_mode_switch.c                |  12 +-
- tests/amdgpu/amd_multidisplay_modeset.c       |  33 ++-
- tests/amdgpu/amd_plane.c                      |  37 ++--
- tests/amdgpu/amd_subvp.c                      |  32 +--
- tests/amdgpu/amd_vrr_range.c                  |   8 +-
- tests/chamelium/kms_chamelium_color.c         |  15 +-
- tests/chamelium/kms_chamelium_helper.c        |   8 +-
- tests/chamelium/kms_chamelium_hpd.c           |   6 +-
- .../kms_chamelium_sharpness_filter.c          |   6 +-
- tests/intel/kms_busy.c                        |   6 +-
- tests/intel/kms_cdclk.c                       |   6 +-
- tests/intel/kms_dirtyfb.c                     |  11 +-
- tests/intel/kms_dp_link_training.c            |   6 +-
- tests/intel/kms_dp_linktrain_fallback.c       |  13 +-
- tests/intel/kms_fbc_dirty_rect.c              |  25 ++-
- tests/intel/kms_flip_scaled_crc.c             |  32 ++-
- tests/intel/kms_frontbuffer_tracking.c        |  18 +-
- tests/intel/kms_joiner.c                      |   7 +-
- tests/intel/kms_legacy_colorkey.c             |  13 +-
- tests/intel/kms_pm_backlight.c                |   6 +-
- tests/intel/kms_pm_lpsp.c                     |  14 +-
- tests/intel/kms_psr.c                         |   8 +-
- tests/intel/kms_sharpness_filter.c            |   6 +-
- tests/kms_atomic_transition.c                 |  63 +++---
- tests/kms_bw.c                                |  29 +--
- tests/kms_colorop.c                           |  15 +-
- tests/kms_content_protection.c                |  25 ++-
- tests/kms_cursor_crc.c                        |   6 +-
- tests/kms_cursor_edge_walk.c                  |   5 +-
- tests/kms_cursor_legacy.c                     |  28 +--
- tests/kms_debugfs.c                           |  19 +-
- tests/kms_display_modes.c                     |  29 +--
- tests/kms_dither.c                            |  12 +-
- tests/kms_feature_discovery.c                 |  10 +-
- tests/kms_hdr.c                               |  33 +--
- tests/kms_lease.c                             |   9 +-
- tests/kms_plane_alpha_blend.c                 |   6 +-
- tests/kms_plane_lowres.c                      |  12 +-
- tests/kms_plane_multiple.c                    |  29 ++-
- tests/kms_properties.c                        |  48 +++--
- tests/kms_tiled_display.c                     |  10 +-
- tests/kms_vblank.c                            |   6 +-
- tests/kms_vrr.c                               |  12 +-
- tests/kms_writeback.c                         |   8 +-
- 52 files changed, 592 insertions(+), 521 deletions(-)
-
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index b60874db000a..58bc92a39422 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -4149,8 +4149,8 @@ struct option long_options[] = {
+ int igt_main_args("", long_options, help_str, opt_handler, NULL)
+ {
+ 	struct test_mode t;
+-	enum pipe pipe;
+ 	igt_output_t *output;
++	igt_crtc_t *crtc;
+ 
+ 	igt_fixture() {
+ 		setup_drm();
+@@ -4225,25 +4225,25 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 			igt_skip_on_f((IS_BATTLEMAGE(drm.devid) && t.feature == FEATURE_FBC),
+ 				      "FBC isn't supported on BMG\n");
+ 
+-			for_each_pipe(&drm.display, pipe) {
+-				if (pipe == default_pipe) {
+-					igt_info("pipe-%s: FBC validated in other subtest\n", kmstest_pipe_name(pipe));
++			for_each_crtc(&drm.display, crtc) {
++				if (crtc->pipe == default_pipe) {
++					igt_info("pipe-%s: FBC validated in other subtest\n", igt_crtc_name(crtc));
+ 					continue;
+ 				}
+ 
+-				if (!intel_fbc_supported_on_chipset(drm.fd, pipe)) {
+-					igt_info("Can't test FBC: not supported on pipe-%s\n", kmstest_pipe_name(pipe));
++				if (!intel_fbc_supported_on_chipset(drm.fd, crtc->pipe)) {
++					igt_info("Can't test FBC: not supported on pipe-%s\n", igt_crtc_name(crtc));
+ 					continue;
+ 				}
+ 
+ 				pipe_crc = NULL;
+ 				setup_crcs();
+ 
+-				for_each_valid_output_on_pipe(&drm.display, pipe, output) {
+-					init_mode_params(&prim_mode_params, output, pipe);
++				for_each_valid_output_on_pipe(&drm.display, crtc->pipe, output) {
++					init_mode_params(&prim_mode_params, output, crtc->pipe);
+ 					setup_fbc();
+ 
+-					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
++					igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
+ 						      igt_output_name(output))
+ 						rte_subtest(&t);
+ 
 -- 
 2.52.0
 
