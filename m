@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16401E9128F
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 14:31:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAFBCE83F1F
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 14:54:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A268E10E8E5;
-	Thu,  5 Feb 2026 14:31:03 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D6D010E8E2;
- Thu,  5 Feb 2026 14:31:02 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0382398656145201708=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6EF2010E227;
+	Thu,  5 Feb 2026 14:54:49 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UYIYUUaE";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CAB2910E227;
+ Thu,  5 Feb 2026 14:54:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1770303289; x=1801839289;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=QY88kpnNO/vwz9qvGSaY6OPX6wd5eXzHYD+rY0duRuQ=;
+ b=UYIYUUaEgz/o0N15HRtdiKWXIHqtLzcxQj+4LPR+BeMCkr4ZnLYfq7WG
+ lV1VY4ZDuZvmsPMkaT7FrYGRFKhtsQjoRPmAhPpCPZhrQiCHbhj3XiVgf
+ kMnPWg5EYw0MhlN1OeyYtz8dzLQY/lJbpxzyFFagW+FnjhntflHXKezMI
+ eq/i9/J2dhZ0fKldWeVU0qBgqAByKfn4+pPwNr4Wd3KJzj2bpl37HAz/n
+ /yqHRBXxPmcIi1lh6NHICSiGwXlZQNXCMRyc/0s38LjKrID2wJ71pSeo/
+ Fb4DjTJG6SMXSiwFghzy6kOJlzXBteZEL8py7zkarihs3VCymfF9XdOgy Q==;
+X-CSE-ConnectionGUID: q9RqSZhOQ2yun14CpeSzCw==
+X-CSE-MsgGUID: WmtxXl0zS82j5x7Su8M4Cw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="89083588"
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; d="scan'208";a="89083588"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Feb 2026 06:54:49 -0800
+X-CSE-ConnectionGUID: afkCjJYITDOzTm9o3tMG+w==
+X-CSE-MsgGUID: wwOKus6XQ62B4RScCTRGaw==
+X-ExtLoop1: 1
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.76])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Feb 2026 06:54:45 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t v5 0/6] lsgpu: Report upstream port link bandwidth
+Date: Thu,  5 Feb 2026 15:51:49 +0100
+Message-ID: <20260205145427.1338534-8-janusz.krzysztofik@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fplane=3A_Refine?=
- =?utf-8?q?_clamping_and_modifier_skips_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pranay Samala" <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 05 Feb 2026 14:31:02 -0000
-Message-ID: <177030186242.228151.2082006977803170452@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260205114619.1054849-1-pranay.samala@intel.com>
-In-Reply-To: <20260205114619.1054849-1-pranay.samala@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,125 +67,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0382398656145201708==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Users of Intel discrete graphics adapters are confused with fake
+information on PCIe link bandwidth (speed and size) of their GPU devices
+reported by tools like lspci or lsgpu.  That fake information is
+unfortunately provided by hardware, Linux PCI subsystem just exposes it
+untouched to upper layers, including userspace via sysfs, and userspace
+tools just report those fake values.
 
-== Series Details ==
+While we can't do much about the kernel side or general purpose userspace
+tools like lspci, we can try to address the issue with our lsgpu utility.
 
-Series: tests/kms_plane: Refine clamping and modifier skips (rev3)
-URL   : https://patchwork.freedesktop.org/series/161133/
-State : success
+Correct link bandwidth attributes of a discrete GPU card can be obtained
+from the kernel by looking not at the PCI device of the GPU itself, only
+at a PCIe upstream port of the card's PCI bridge.  For integrity with
+content of the sysfs and with output from the other tools, we are not
+going to replace the fake information with that from the bridge upstream
+port, only show that port and its attributes themselves while listing
+devices.
 
-== Summary ==
+Since the tool uses our udev based igt_device_scan library for identifying
+GPU devices and printing their properties and attributes, modifications
+that we need apply to that library.
 
-CI Bug Log - changes from XEIGT_8739_BAT -> XEIGTPW_14505_BAT
-====================================================
+v5: Address PCI_HEADER_TYPE_MASK missing from <linux/pci_regs.h> in CI,
+  - add libpci to docker files.
+v4: Also change RETRIES_GET_PARENT to RETRIES_GET_DEVICE for consistency
+    with renamed variables (Krzysztof),
+  - replace 0x7f constant with PCI_HEADER_TYPE_MASK symbol (Krzysztof),
+  - free already allocated numeric codename before replacing (Sebastian),
+  - visually separate bridge specific updates of attributes already
+    populated by find_or_add_igt_device from bridge specific attribute
+    assignments.
+v3: Fix incorrect use of ffs(),
+  - fix bridge link attribute printing suppressed with DEVTYPE_DISCRETE,
+  - in commit description, elaborate more on reasons for using libpci.
+v2: Keep dump_props_and_attrs() generic: hand over decision on omitting
+    link attributes to the caller, and implementation of the check to a
+    helper (Sebastian),
+  - drop unclear GET_REG_MASK macro (Sebastian),
+  - reuse no longer needed variable containing PCI_HEADER_TYPE for storing
+    PCI_EXP_FLAGS_TYPE,
+  - maintain a single instance of struct pci_access throughout processing
+    of the whole udev device list (Sebastian),
+  - hand over detection of AER attributes to a helper,
+  - merge a formerly separate patch "lib/igt_device_scan: Don't print
+    bridge not applicable attributes" into "lib/igt_device_scan: Print GPU
+    upstream port parent/child relations" (Sebastian),
+  - allocate memory to local attributes of a bridge for safety (Sebastian),
+  - no need for DEVTYPE_BRIDGE, just skip attributes if NULL.
 
-Summary
--------
+Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Cc: Krzysztof Karas <krzysztof.karas@intel.com>
 
-  **SUCCESS**
+Janusz Krzysztofik (6):
+  lib/igt_device_scan: Don't print fake link bandwidth attributes
+  lib/igt_device_scan: Split out reusable part of update_or_add_parent
+  lib/igt_device_scan: Include PCIe bridge upstream port if available
+  lib/igt_device_scan: List PCIe bridge ports after their children
+  lib/igt_device_scan: Omit AER statistics data from attributes
+  lib/igt_device_scan: Print GPU upstream port parent/child relations
 
-  No regressions found.
+ Dockerfile.build-debian-arm64   |   1 +
+ Dockerfile.build-debian-armhf   |   1 +
+ Dockerfile.build-debian-minimal |   1 +
+ Dockerfile.build-fedora         |   1 +
+ lib/igt_device_scan.c           | 211 +++++++++++++++++++++++++++-----
+ lib/meson.build                 |   2 +
+ meson.build                     |   1 +
+ 7 files changed, 185 insertions(+), 33 deletions(-)
 
-  
+-- 
+2.52.0
 
-Participating hosts (12 -> 12)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14505_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_waitfence@engine:
-    - bat-dg2-oem2:       [FAIL][1] ([Intel XE#6519]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8739/bat-dg2-oem2/igt@xe_waitfence@engine.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14505/bat-dg2-oem2/igt@xe_waitfence@engine.html
-
-  
-  [Intel XE#6519]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519
-
-
-Build changes
--------------
-
-  * IGT: IGT_8739 -> IGTPW_14505
-
-  IGTPW_14505: cf00f128964ca86541e4bac66e32715de4578a5b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8739: 8739
-  xe-4506-05230cfcdb1abc225c8e085cd4de470c4b97232f: 05230cfcdb1abc225c8e085cd4de470c4b97232f
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14505/index.html
-
---===============0382398656145201708==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane: Refine clamping and modifier skips (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161133/">https://patchwork.freedesktop.org/series/161133/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14505/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14505/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8739_BAT -&gt; XEIGTPW_14505_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 12)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14505_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_waitfence@engine:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8739/bat-dg2-oem2/igt@xe_waitfence@engine.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519">Intel XE#6519</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14505/bat-dg2-oem2/igt@xe_waitfence@engine.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8739 -&gt; IGTPW_14505</li>
-</ul>
-<p>IGTPW_14505: cf00f128964ca86541e4bac66e32715de4578a5b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8739: 8739<br />
-  xe-4506-05230cfcdb1abc225c8e085cd4de470c4b97232f: 05230cfcdb1abc225c8e085cd4de470c4b97232f</p>
-
-</body>
-</html>
-
---===============0382398656145201708==--
