@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF937EC1EB6
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 13:30:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88583EC1EB5
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Feb 2026 13:30:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7DDBF10E8A0;
-	Thu,  5 Feb 2026 13:30:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3D41810E8A2;
+	Thu,  5 Feb 2026 13:30:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nI2hbyIT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N60iIPx3";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6163010E89E
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Feb 2026 13:30:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C47C10E8A1
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Feb 2026 13:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770298242; x=1801834242;
+ t=1770298244; x=1801834244;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=qIyW3BEZFzaqb/mVaohmepgB5Z+9b1stz1A6FlT9qOE=;
- b=nI2hbyITg9vrewK+EORMvefLMUxSzgUSiRwEBbsx51wTyCux7Q/dNK22
- uyNfvnMCur0Dw7rljB55v6k/Mzk7lqbLG0UBsg68HakMygizuG37EBGOS
- E5w8mYWPM/aEHzJlIy78c6LTZe+SAGp1n8YvTNZ28KmGx7+ck46QJHYXL
- XhbGZLrcX4SRE80mvKqgA0cW3HYqWSOEksIg3gMwIp82yccFTX9LyLJ8c
- ohKSL7HKYjEy+hsQQDYaPv6UOwMyvDRUFS7IXSz5kT+fRDk1mD4M0ZFmh
- uiDnCN4mag5W3hDTkWRr1A/lGKiPMDmhZFjITUYXR8DQw2Bh1zJNgUd7G A==;
-X-CSE-ConnectionGUID: 7IDF2NOKTE2jlI2d+d2HvQ==
-X-CSE-MsgGUID: /wevblNkRtObUiLB4qDVXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="70693525"
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; d="scan'208";a="70693525"
+ bh=Tyfo8nxwSRtGoiaqkUl/leaXyOYUbbSgtPzNBS+Z0Y4=;
+ b=N60iIPx3DOP/u76/GnJVzGTSo1fV1Jp12XR9W23FkBRMLZZNITtfsioZ
+ mUQo65Ev6rxSJO79gyTYJkgr2u9jNOHBlPc2zlYZ0oooSrhmni1zpjkJ6
+ wmuqj2Zxgpck6GMZPY7I2a4x/2SuwuWnObD1frKKlmbCA5CxA9mfFzk3K
+ ediV3PlVhrK2LGdIZbXV2LjGEMeAwoOH0Eo/cyKIXhKg2PvmfH2H3YjnN
+ Uaee+qRlHTj4wsGXKeS6MLTT41ntPghWxosGhNMRg3FQIWQd61UPv4fRw
+ fuXs24WOh+egnsat2E6YNnBdLqHnfuIndO4ZZoDFEl/EMgSztrXTa6BXV Q==;
+X-CSE-ConnectionGUID: YN/4fXLDTeCfNbIBP+RjNw==
+X-CSE-MsgGUID: AgtsPEdYTru0wbk2Cuvbhw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="70693529"
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; d="scan'208";a="70693529"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Feb 2026 05:30:41 -0800
-X-CSE-ConnectionGUID: 9ImL7xwHR/apbQzKKVhA9A==
-X-CSE-MsgGUID: dcBl+1YYTZS5pMylxF/mMw==
+ 05 Feb 2026 05:30:44 -0800
+X-CSE-ConnectionGUID: MC/cRyRMQYqIla3pcWaCnQ==
+X-CSE-MsgGUID: Bjt1ssToSqu3w68HotgHLA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; d="scan'208";a="215499268"
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; d="scan'208";a="215499285"
 Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
  ([10.245.244.121])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Feb 2026 05:30:39 -0800
+ 05 Feb 2026 05:30:43 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 05/12] tests/kms: Clean up some for_each_pipe() local
- 'crtc' variables
-Date: Thu,  5 Feb 2026 15:30:12 +0200
-Message-ID: <20260205133019.9161-6-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 06/12] tests/kms: Convert to for_each_crtc(), part 1
+Date: Thu,  5 Feb 2026 15:30:13 +0200
+Message-ID: <20260205133019.9161-7-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260205133019.9161-1-ville.syrjala@linux.intel.com>
 References: <20260205133019.9161-1-ville.syrjala@linux.intel.com>
@@ -73,55 +72,178 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Move the 'crtc = igt_crtc_for_pipe()' to the start of the
-for_each_pipe() loop in order to simplify following
-for_each_pipe()->for_each_crtc() conversions.
+Convert more for_each_pipe()s into for_each_crtc(). In
+these cases the iterator is stored in some kind of data
+structure (data.pipe) which we still want to keep up to
+date to avoid functional changes.
 
-Done with cocci:
+Done with cocci, with a slight manual fix up the data.pipe
+assignment vs. variable declaration order within the loop
+(couldn't come up with a good way to get coccinelle to do
+that for me).
+
  #include "scripts/iterators.cocci"
 
-@@
+@change@
 iterator name for_each_pipe;
-typedef igt_crtc_t;
-identifier PIPE, CRTC;
-expression DISPLAY;
+iterator name for_each_crtc;
+expression DISPLAY, X;
+identifier PIPE;
 @@
-for_each_pipe(DISPLAY, PIPE)
+- for_each_pipe(DISPLAY, X.PIPE)
++ for_each_crtc(DISPLAY, crtc)
 {
-+ igt_crtc_t *CRTC = igt_crtc_for_pipe(DISPLAY, PIPE);
-...
-- igt_crtc_t *CRTC;
-...
-- CRTC = igt_crtc_for_pipe(DISPLAY, PIPE);
-...
++ X.PIPE = crtc->pipe;
+<...
+(
+- igt_crtc_for_pipe(..., X.PIPE)
++ crtc
+|
+- kmstest_pipe_name(X.PIPE)
++ igt_crtc_name(crtc)
+|
+- X.PIPE
++ crtc->pipe
+)
+...>
+}
+
+@depends on change@
+identifier FUNC, CRTC;
+@@
+FUNC(...)
+{
++ igt_crtc_t *CRTC;
+<+...
+for_each_crtc(..., CRTC) { ... }
+...+>
 }
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/amdgpu/amd_multidisplay_modeset.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tests/intel/kms_dirtyfb.c        | 11 +++++++----
+ tests/intel/kms_fbc_dirty_rect.c | 25 ++++++++++++++++---------
+ 2 files changed, 23 insertions(+), 13 deletions(-)
 
-diff --git a/tests/amdgpu/amd_multidisplay_modeset.c b/tests/amdgpu/amd_multidisplay_modeset.c
-index 6ece43f95adc..000053933e8c 100644
---- a/tests/amdgpu/amd_multidisplay_modeset.c
-+++ b/tests/amdgpu/amd_multidisplay_modeset.c
-@@ -152,15 +152,14 @@ static void test_init(struct data_t *data)
- 		data->pipe_crc_dprx[i] = NULL;
+diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+index 407338affd6b..2611884ea8c4 100644
+--- a/tests/intel/kms_dirtyfb.c
++++ b/tests/intel/kms_dirtyfb.c
+@@ -353,6 +353,7 @@ static void run_test(data_t *data)
  
- 	for_each_pipe(display, i) {
-+		igt_crtc_t *crtc = igt_crtc_for_pipe(display, i);
- 		igt_output_t *output;
--		igt_crtc_t *crtc;
+ int igt_main()
+ {
++	igt_crtc_t *crtc;
+ 	data_t data = {};
  
- 		/* For each valid pipe, get one connected display.
- 		 * This will let displays connected to MST hub be
- 		 * tested
- 		 */
- 		output = igt_get_single_output_for_pipe(display, i);
--		crtc = igt_crtc_for_pipe(display, i);
- 		data->primary[i] = igt_crtc_get_plane_type(crtc,
- 							   DRM_PLANE_TYPE_PRIMARY);
- 		data->output[i] = output;
+ 	igt_fixture() {
+@@ -373,11 +374,13 @@ int igt_main()
+ 	     data.feature = data.feature >> 1) {
+ 		igt_describe_f("Test dirtyFB ioctl with %s", feature_str(data.feature));
+ 		igt_subtest_with_dynamic_f("%s-dirtyfb-ioctl", feature_str(data.feature)) {
+-			for_each_pipe(&data.display, data.pipe) {
++			for_each_crtc(&data.display, crtc) {
+ 				int valid_tests = 0;
+ 
++				data.pipe = crtc->pipe;
++
+ 				for_each_valid_output_on_pipe(&data.display,
+-							      data.pipe,
++							      crtc->pipe,
+ 							      data.output) {
+ 					data.mode = igt_output_get_mode(data.output);
+ 
+@@ -396,13 +399,13 @@ int igt_main()
+ 
+ 					igt_display_reset(&data.display);
+ 					igt_output_set_crtc(data.output,
+-							    igt_crtc_for_pipe(data.output->display, data.pipe));
++							    crtc);
+ 					if (!intel_pipe_output_combo_valid(&data.display))
+ 						continue;
+ 
+ 					valid_tests++;
+ 					igt_dynamic_f("%s-%s",
+-						      kmstest_pipe_name(data.pipe),
++						      igt_crtc_name(crtc),
+ 						      igt_output_name(data.output)) {
+ 						prepare(&data);
+ 						run_test(&data);
+diff --git a/tests/intel/kms_fbc_dirty_rect.c b/tests/intel/kms_fbc_dirty_rect.c
+index c43acb7e9cb5..6c59a32bda16 100644
+--- a/tests/intel/kms_fbc_dirty_rect.c
++++ b/tests/intel/kms_fbc_dirty_rect.c
+@@ -439,6 +439,7 @@ static void fbc_dirty_rectangle_test(data_t *data, void (*test_func)(data_t *))
+ 
+ int igt_main()
+ {
++	igt_crtc_t *crtc;
+ 	data_t data = {0};
+ 
+ 	igt_fixture() {
+@@ -458,14 +459,16 @@ int igt_main()
+ 		bool single_pipe = false;
+ 		data.feature = FEATURE_FBC;
+ 
+-		for_each_pipe(&data.display, data.pipe) {
++		for_each_crtc(&data.display, crtc) {
++			data.pipe = crtc->pipe;
+ 			if (single_pipe)
+ 				break;
+-			for_each_valid_output_on_pipe(&data.display, data.pipe, data.output) {
++			for_each_valid_output_on_pipe(&data.display,
++						      crtc->pipe, data.output) {
+ 				data.format = DRM_FORMAT_XRGB8888;
+ 
+ 				igt_dynamic_f("pipe-%s-%s",
+-					       kmstest_pipe_name(data.pipe),
++					       igt_crtc_name(crtc),
+ 					       igt_output_name(data.output)) {
+ 					fbc_dirty_rectangle_test(&data,
+ 						fbc_dirty_rectangle_outside_visible_region);
+@@ -481,14 +484,16 @@ int igt_main()
+ 		bool single_pipe = false;
+ 		data.feature = FEATURE_FBC;
+ 
+-		for_each_pipe(&data.display, data.pipe) {
++		for_each_crtc(&data.display, crtc) {
++			data.pipe = crtc->pipe;
+ 			if (single_pipe)
+ 				break;
+-			for_each_valid_output_on_pipe(&data.display, data.pipe, data.output) {
++			for_each_valid_output_on_pipe(&data.display,
++						      crtc->pipe, data.output) {
+ 				data.format = DRM_FORMAT_XRGB8888;
+ 
+ 				igt_dynamic_f("pipe-%s-%s",
+-					       kmstest_pipe_name(data.pipe),
++					       igt_crtc_name(crtc),
+ 					       igt_output_name(data.output)) {
+ 					fbc_dirty_rectangle_test(&data,
+ 							fbc_dirty_rectangle_dirtyfb);
+@@ -506,17 +511,19 @@ int igt_main()
+ 		bool single_pipe = false;
+ 		data.feature = FEATURE_FBC;
+ 
+-		for_each_pipe(&data.display, data.pipe) {
++		for_each_crtc(&data.display, crtc) {
++			data.pipe = crtc->pipe;
+ 			if (single_pipe)
+ 				break;
+-			for_each_valid_output_on_pipe(&data.display, data.pipe, data.output) {
++			for_each_valid_output_on_pipe(&data.display,
++						      crtc->pipe, data.output) {
+ 				for (int i = 0; i < num_formats; i++) {
+ 					/* on simulation platforms , limit to single format */
+ 					if (data.is_simulation && i > 0)
+ 						break;
+ 
+ 					igt_dynamic_f("pipe-%s-%s-format-%s",
+-						       kmstest_pipe_name(data.pipe),
++						       igt_crtc_name(crtc),
+ 						       igt_output_name(data.output),
+ 						       igt_format_str(formats[i])) {
+ 						data.format = formats[i];
 -- 
 2.52.0
 
