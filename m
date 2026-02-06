@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A652EB28FE
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Feb 2026 09:45:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F9ABEA795E
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Feb 2026 09:46:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1A70810E65D;
-	Fri,  6 Feb 2026 09:45:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ACC5010E6CC;
+	Fri,  6 Feb 2026 09:46:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xp7BodKO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Sz8ki9BJ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7D6810E65D
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Feb 2026 09:45:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F33AB10E6AD
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Feb 2026 09:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770371127; x=1801907127;
+ t=1770371195; x=1801907195;
  h=from:to:subject:in-reply-to:references:date:message-id:
  mime-version:content-transfer-encoding;
- bh=HixNjQvbvsh5tgNHSdnxHtGgPgGQUydoCE9i5wI2lO4=;
- b=Xp7BodKOo52UED+3Xj7RfxbCKW6HCRwv/5tIAkZIoy538Z2lAyu7Zbtw
- ue9e+rr9sDpPPzZf7JXNU2ietYSGbILjKJvAzcDfxwlFFHGIHKWgApfMy
- rMssNpdPeKgoahZOoB9NJ7g9YOG64ARiRKgR/LA6YR53ZIjR2sjPFDgSH
- c2zWOIh5unKRvvUnb8v/3ckPNkRlY/tJDNUw2G4oaod5sJhDzWfuR3Myi
- VhcLjXOBNIpVQTIApSBSq+1J8CqZXOVCYrPgQFMG1emLc4AsBNXsOXuef
- ri5t3lBDpAhd7Jcb/kPKdy6SfX7RC/pil8Hq7FdkyAYwojETfG3baU/uv Q==;
-X-CSE-ConnectionGUID: kOehXF2LSa+SwM/hbOQMkw==
-X-CSE-MsgGUID: nsGwkKWBRxW1u0PGBsEVDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="71644892"
-X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; d="scan'208";a="71644892"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2026 01:45:26 -0800
-X-CSE-ConnectionGUID: 9yQDnq9+S1CJqvGYxYXCyw==
-X-CSE-MsgGUID: iyILxRGqR8eCEmwhsAMzCg==
+ bh=17io2XSiQOTnjQk2dRPMOB3Kp+jxY+OH4aasYyNZhHM=;
+ b=Sz8ki9BJ/z/kHIMvIj/a+5BbgEGf2FK15g2cFZ/Lw88y1VWmOx/e6xHu
+ Wxl6Mm0ngpOyTogGmS7zOQtWqh95CpUgjBpUgk3cEKWyj5vlzip4GkfyC
+ L+vKqOcxDtKIFDpFVA9+UylS524Nqg65PMm95K9kRz/2kIaal0a4QiaYn
+ OgqG84aV6tgxgWt6OYOZCv4lAe3ZqLV6r+xCzpZl2w0ZiajbSBW3XOmOl
+ mH9NGDtzvsK/5GprnY+XI7rvmwLpaKrV5QWM5xg2C3vA4bg44W/C0/zqu
+ 0CqMdgReLwt/j4RxTc2RvesgM0fxGPfHlnbfgmNJ8Q3F1obIIyEd8J0KP Q==;
+X-CSE-ConnectionGUID: uqHXeOY7RYmDmxUY8ywX5w==
+X-CSE-MsgGUID: 0WXkOgq+Sn2HU8VE/1UrSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="70593633"
+X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; d="scan'208";a="70593633"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2026 01:46:34 -0800
+X-CSE-ConnectionGUID: XzaDEUD6SLOZtys+S8oN1A==
+X-CSE-MsgGUID: Da0RxcFoT+2TF+uBLJUXLA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; d="scan'208";a="210622757"
+X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; d="scan'208";a="241492447"
 Received: from lfiedoro-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.246.129])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2026 01:45:25 -0800
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2026 01:46:33 -0800
 From: Jani Nikula <jani.nikula@intel.com>
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 09/12] tests/kms: Convert to for_each_crtc(), part 4
-In-Reply-To: <20260205133019.9161-10-ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t 10/12] tests/kms: Convert to for_each_crtc(), part 5
+In-Reply-To: <20260205133019.9161-11-ville.syrjala@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 References: <20260205133019.9161-1-ville.syrjala@linux.intel.com>
- <20260205133019.9161-10-ville.syrjala@linux.intel.com>
-Date: Fri, 06 Feb 2026 11:45:22 +0200
-Message-ID: <ba29c3bcee4391e4d75c6c38806aed2299211899@intel.com>
+ <20260205133019.9161-11-ville.syrjala@linux.intel.com>
+Date: Fri, 06 Feb 2026 11:46:30 +0200
+Message-ID: <51ae3d359ac9b95f46fa28cac18ef73a96132d08@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -74,49 +74,95 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 On Thu, 05 Feb 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
 > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >
-> Convert more for_each_pipe()s into for_each_crtc(). In
-> these cases we already have a local 'igt_crtc_t*' variable
-> within the loop, so we'll just hoist that upwards to be the
-> loop iterator instead.
-
-[snip]
-
-> @@ -2915,6 +2914,7 @@ static void igt_handle_spurious_hpd(igt_display_t *=
-display)
->   */
->  void igt_display_reset_outputs(igt_display_t *display)
->  {
-> +	igt_crtc_t *crtc;
->  	int i;
->  	drmModeRes *resources;
->=20=20
-> @@ -2968,14 +2968,13 @@ void igt_display_reset_outputs(igt_display_t *dis=
-play)
->  	 * display. */
->  	igt_display_reset(display);
->=20=20
-> -	for_each_pipe(display, i) {
-> -		igt_crtc_t *crtc =3D igt_crtc_for_pipe(display, i);
-> +	for_each_crtc(display, crtc) {
-
-Side note, I especially like the improved clarity in places like this
-that use a plain 'int i' for both for_each_pipe() and some other random
-iteration.
+> Convert more for_each_pipe()s into for_each_crtc(). Deal
+> with the special case where we use the iterator variable
+> after breaking out from the loop.
 
 Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
-
->  		igt_output_t *output;
+>
+> Done with cocci:
+>  #include "scripts/iterators.cocci"
+>
+> @@
+> iterator name for_each_pipe;
+> iterator name for_each_crtc;
+> typedef igt_crtc_t;
+> identifier PIPE;
+> expression DISPLAY;
+> @@
+> - enum pipe PIPE;
+> + igt_crtc_t *crtc;
+> <+...
+> - for_each_pipe(DISPLAY, PIPE)
+> + for_each_crtc(DISPLAY, crtc)
+> {
+> <...
+> (
+> - igt_crtc_for_pipe(..., PIPE)
+> + crtc
+> |
+> - kmstest_pipe_name(PIPE)
+> + igt_crtc_name(crtc)
+> |
+> - PIPE
+> + crtc->pipe
+> )
+> ...>
+> }
+> ...+>
+> - return PIPE;
+> + return crtc->pipe;
+>
+> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> ---
+>  tests/kms_cursor_legacy.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+> index da7225c45e65..717a31f4fa64 100644
+> --- a/tests/kms_cursor_legacy.c
+> +++ b/tests/kms_cursor_legacy.c
+> @@ -425,7 +425,7 @@ static void populate_cursor_args(igt_display_t *displ=
+ay, enum pipe pipe,
+>  static enum pipe
+>  find_connected_pipe(igt_display_t *display, bool second, igt_output_t **=
+output)
+>  {
+> -	enum pipe pipe;
+> +	igt_crtc_t *crtc;
+>  	bool first_output =3D false;
+>  	bool found =3D false;
 >=20=20
-> -		if (!igt_pipe_has_valid_output(display, i))
-> +		if (!igt_pipe_has_valid_output(display, crtc->pipe))
->  			continue;
+> @@ -437,13 +437,13 @@ find_connected_pipe(igt_display_t *display, bool se=
+cond, igt_output_t **output)
+>  	/* Clear display, events will be eaten by commit.. */
+>  	igt_display_reset(display);
 >=20=20
-> -		output =3D igt_get_single_output_for_pipe(display, i);
-> +		output =3D igt_get_single_output_for_pipe(display, crtc->pipe);
+> -	for_each_pipe(display, pipe) {
+> -		for_each_valid_output_on_pipe(display, pipe, *output) {
+> +	for_each_crtc(display, crtc) {
+> +		for_each_valid_output_on_pipe(display, crtc->pipe, *output) {
+>  			if (igt_output_get_driving_crtc(*output) !=3D NULL)
+>  				continue;
 >=20=20
->  		if (crtc->num_primary_planes > 1) {
->  			igt_plane_t *old_primary =3D &crtc->planes[0];
+>  			igt_output_set_crtc(*output,
+> -					    igt_crtc_for_pipe((*output)->display, pipe));
+> +					    crtc);
+>  			if (intel_pipe_output_combo_valid(display)) {
+>  				found =3D true;
+>=20=20
+> @@ -466,7 +466,7 @@ find_connected_pipe(igt_display_t *display, bool seco=
+nd, igt_output_t **output)
+>  	else
+>  		igt_require_f(found, "No valid outputs found\n");
+>=20=20
+> -	return pipe;
+> +	return crtc->pipe;
+>  }
+>=20=20
+>  static void flip_nonblocking(igt_display_t *display, enum pipe pipe_id, =
+bool atomic, struct igt_fb *fb, void *data)
 
 --=20
 Jani Nikula, Intel
