@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA7FBECD9B0
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Feb 2026 01:06:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8A7FECD9AA
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Feb 2026 01:06:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5323310E1FF;
-	Fri,  6 Feb 2026 01:06:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9380810E211;
+	Fri,  6 Feb 2026 01:06:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hUz3eVpf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Sid/zVzC";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7665210E1FF
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Feb 2026 01:06:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 57A0D10E211
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Feb 2026 01:06:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770339968; x=1801875968;
+ t=1770339972; x=1801875972;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=vh62VmiTrmIU9m/I94vmS9zQIZI6W0N7pQDUbw+4FpI=;
- b=hUz3eVpfi844uZ0SSW5MoUgEGM0buZEyqPGizqshHot+Hzc+WxKV2UG3
- IV+waEuim2lbdgfClrUVkYM5Dx5SJRi54db0xgv4F/IQO7T+AxYkUX1L2
- jI2z1xwHzA6ROM3COOmhFXK/jMVUB9KUvOh7aFUsmoRI7iSIiorkcaleC
- RfobaV7LZv/LkLy6EQykfXQwkcmpNQhnvigOI7gcMex1jMybNqNjsfejD
- ANIyzX7FFsWbQml7vKY6rmcowKLm+tArKHGs0UWk2ZCOEw0yte8IVMyUM
- UvpAnKGaoM+l4fU5T8nAOcJF8uy+9cDw5/CE98ZfX6ipLFP8Sg3mMPFGL Q==;
-X-CSE-ConnectionGUID: On6BaNP7SYCwqToIeYhgew==
-X-CSE-MsgGUID: 5GpgCBPnRvai4R/Xlqs7fQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="82919036"
-X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; d="scan'208";a="82919036"
+ bh=bttpDkcHCXZIY2bIpK9ursPlHODy8lvs+7yfEZdzyLY=;
+ b=Sid/zVzC/Tz2kRF+lj8+4oBYBf5gtZYbG9G5zaR/75enFDayMhMWeJXP
+ sAzf9se0+xchvurmLSLiK7ukLSYpnA4UHZPPDKXMJBzTeTVvHY+jFINdK
+ +ZJVZWcE60idg9ZpFbVAVN3x7M0F/tqRYYW0/DwZ56UHHgKv5NYfWZKfn
+ eBgTBccM4Wp5hZE/Vz0Ei0wNu1Uuk2h7GjwT7AAV3aVuzmW62ccQWF7Ga
+ Vt1PgTJA8RWHb2OnDQyRhEqW2BeCtM0+Kdu9NlUOm1xH1HypJq2RFGVxL
+ wRoUJe0LHwCLOcCDCNba35f2yvfPZZ59jtukdR+tifEgAOBjBppNcvcOV w==;
+X-CSE-ConnectionGUID: T6VSIGGJRdCoPTf4KuoPvA==
+X-CSE-MsgGUID: nfwUE/OdQZOI5QYHLDNo1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="82919042"
+X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; d="scan'208";a="82919042"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Feb 2026 17:06:08 -0800
-X-CSE-ConnectionGUID: /TY19uaUSSasb96eh54W+A==
-X-CSE-MsgGUID: DFljH3JLReCkveis9wZfjg==
+ 05 Feb 2026 17:06:12 -0800
+X-CSE-ConnectionGUID: +nUfCfCyRpWXGmwx+hNBLg==
+X-CSE-MsgGUID: 7uh9Uc6nTUKvBBtDcaTSuQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; d="scan'208";a="215223724"
+X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; d="scan'208";a="215223738"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.244.188])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Feb 2026 17:06:07 -0800
+ 05 Feb 2026 17:06:11 -0800
 From: Pawel Sikora <pawel.sikora@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH i-g-t v1 2/4] scripts: add scripts to support api reference
- docs
-Date: Fri,  6 Feb 2026 02:05:49 +0100
-Message-ID: <20260206010551.267237-3-pawel.sikora@intel.com>
+Subject: [PATCH i-g-t v1 3/4] docs: add API Reference user docs
+Date: Fri,  6 Feb 2026 02:05:50 +0100
+Message-ID: <20260206010551.267237-4-pawel.sikora@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260206010551.267237-1-pawel.sikora@intel.com>
 References: <20260206010551.267237-1-pawel.sikora@intel.com>
@@ -70,357 +69,172 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add list_of_tests_to_md.py to generate list of tests
-and update it in specified markdown file.
+Add docs/api_reference.md for the main API Reference page
+to inform users about the generated API reference.
 
-Add update_igt_version_in_docs.py to update IGT version
-in docs/api_reference.md placeholder: <IGT_GPU_TOOLS_VERSION>.
+Add docs/api_tests_glossary.md to complement information
+about tests for a given vendor/module.
 
 Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
 ---
- scripts/list_of_tests_to_md.py        | 250 ++++++++++++++++++++++++++
- scripts/update_igt_version_in_docs.py |  75 ++++++++
- 2 files changed, 325 insertions(+)
- create mode 100644 scripts/list_of_tests_to_md.py
- create mode 100644 scripts/update_igt_version_in_docs.py
+ docs/api_reference.md      | 114 +++++++++++++++++++++++++++++++++++++
+ docs/api_tests_glossary.md |   5 ++
+ mkdocs.yml                 |   2 +-
+ 3 files changed, 120 insertions(+), 1 deletion(-)
+ create mode 100644 docs/api_reference.md
+ create mode 100644 docs/api_tests_glossary.md
 
-diff --git a/scripts/list_of_tests_to_md.py b/scripts/list_of_tests_to_md.py
+diff --git a/docs/api_reference.md b/docs/api_reference.md
 new file mode 100644
-index 000000000..53cd76455
+index 000000000..56cf8ccf9
 --- /dev/null
-+++ b/scripts/list_of_tests_to_md.py
-@@ -0,0 +1,250 @@
-+#!/usr/bin/env python3
-+"""
-+list_of_tests_to_md.py - Parse C test files and generate markdown docs
++++ b/docs/api_reference.md
+@@ -0,0 +1,114 @@
++# igt-gpu-tools API Reference Manual
 +
-+Extracts SUBTEST comments from C source files and builds markdown tables.
-+"""
++!!! info "for igt-gpu-tools version '<IGT_GPU_TOOLS_VERSION>'"
 +
-+import os
-+import re
-+import argparse
-+from pathlib import Path
++For library API reference see: [API igt-lib](igt-lib/files.md)
 +
-+SKIP_DIRS = ['.git', 'build', 'node_modules', '__pycache__']
++For tests API reference see: [API igt-tests](igt-tests/files.md)
 +
-+def parse_subtest_block(comment_text):
-+    """Parse a single SUBTEST block and return (name, desc) or None"""
-+    if 'SUBTEST:' not in comment_text:
-+        return None
++For tests glossary see: [Tests Glossary](api_tests_glossary.md)
 +
-+    match = re.search(r'SUBTEST:\s*([^\n*]+)', comment_text)
-+    if not match:
-+        return None
-+    test_name = match.group(1).strip()
++Below you can find links to specific topics in either **igt-lib** or **igt-tests** API reference.
 +
-+    desc_match = re.search(
-+        r'Description:\s*([^\n]+(?:\n\s*\*\s*(?!SUBTEST:|arg\[|\*\s*@|Sub-category:|Feature:)[^\n]+)*)',
-+        comment_text,
-+        re.MULTILINE
-+    )
++## igt/Xe API Reference
 +
-+    if not desc_match:
-+        return None
++[DMABUF Sync File](../igt-lib/dmabuf__sync__file_8c/index.html) - DMABUF importing/exporting fencing support library
 +
-+    desc = desc_match.group(1)
++[drmtest](../igt-lib/drmtest_8c/index.html) - Base library for drm tests and tools
 +
-+    desc = re.sub(r'\s*\n\s*\*\s*', ' ', desc)
-+    desc = re.sub(r'^\*\s*', '', desc)  # Remove leading asterisk
-+    desc = re.sub(r'\s+', ' ', desc).strip()
++[ALSA](../igt-lib/igt__alsa_8c/index.html) - Library with ALSA helpers
 +
-+    stop_markers = [
-+        ' *', '\n *', ' arg[', '\narg[',
-+        'Sub-category:', 'Feature:', 
-+        '\nSub-category:', '\nFeature:'
-+    ]
++[Audio](../igt-lib/igt__audio_8c/index.html) - Library for audio-related tests
 +
-+    for marker in stop_markers:
-+        if marker in desc:
-+            desc = desc.split(marker)[0].strip()
++[aux](../igt-lib/igt__aux_8c/index.html) - Auxiliary libraries and support functions
 +
-+    desc = desc.rstrip('.,;: /')
++[Chamelium](../igt-lib/igt__chamelium_8c/index.html) - Library for using the Chamelium into igt tests
 +
-+    return (test_name, desc)
++[Collection](../igt-lib/igt__collection_8c/index.html) - Generic combinatorics library
 +
++[Core](../igt-lib/igt__core_8c/index.html) - Core i-g-t testing support
 +
-+def extract_tests_from_file(filepath):
-+    """Read a C file and extract all SUBTEST entries"""
-+    tests = []
++[CRC](../igt-lib/igt__crc_8c/index.html) - igt crc tables and calculation functions
 +
-+    try:
-+        with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
-+            content = f.read()
-+    except:
-+        return tests
++[debugfs](../igt-lib/igt__debugfs_8c/index.html) - Support code for debugfs features
 +
-+    comments = re.findall(r'/\*\*.*?\*/', content, re.DOTALL)
++[igt_device](../igt-lib/igt__device_8c/index.html) - igt_device
 +
-+    for comment in comments:
-+        if 'SUBTEST:' not in comment:
-+            continue
++[Device selection](../igt-lib/igt__device__scan_8c/index.html) - Device scanning and selection
 +
-+        parts = re.split(r'(?=\s*\*\s*SUBTEST:)', comment)
++[Draw](../igt-lib/igt__draw_8c/index.html) - drawing helpers for tests
 +
-+        for part in parts:
-+            result = parse_subtest_block(part)
-+            if result:
-+                tests.append(result)
++[Dummyload](../igt-lib/igt__dummyload_8c/index.html) - Library for submitting GPU workloads
 +
-+    return tests
++[Framebuffer](../igt-lib/igt__fb_8c/index.html) - Framebuffer handling and drawing library
 +
++[Frame](../igt-lib/igt__frame_8c/index.html) - Library for frame-related tests
 +
-+def find_c_files(start_dir, skip_dirs=None):
-+    """Walk directory tree and collect .c files"""
-+    if skip_dirs is None:
-+        skip_dirs = SKIP_DIRS
++[fs](../igt-lib/igt__fs_8c/index.html) - Helpers for file operations
 +
-+    c_files = []
-+    start_path = Path(start_dir)
++[GT](../igt-lib/igt__gt_8c/index.html) - GT support library
 +
-+    for item in start_path.rglob('*.c'):
-+        skip = False
-+        for skip_dir in skip_dirs:
-+            if skip_dir in item.parts:
-+                skip = True
-+                break
++[Hook support](../igt-lib/igt__hook_8c/index.html) - Support for running a hook script on test execution
 +
-+        if not skip:
-+            c_files.append(str(item))
++[kmod](../igt-lib/igt__kmod_8c/index.html) - Wrappers around libkmod for module loading/unloading
 +
-+    return sorted(c_files)
++[KMS](../igt-lib/igt__kms_8c/index.html) - Kernel modesetting support library
 +
++[IGT List](../igt-lib/igt__list_8c/index.html) - a list implementation inspired by the kernel
 +
-+def make_relative_path(filepath, base_dir):
-+    """Convert to relative path and strip extension"""
-+    p = Path(filepath)
-+    base = Path(base_dir)
++[IGT Map](../igt-lib/igt__map_8c/index.html) - a linear-reprobing hashmap implementation
 +
-+    try:
-+        rel = p.relative_to(base)
-+    except ValueError:
-+        rel = p
++[msm](../igt-lib/igt__msm_8c/index.html) - msm support library
 +
-+    return str(rel.with_suffix(''))
++[pipe_crc](../igt-lib/igt__pipe__crc_8c/index.html) - Pipe CRC support
 +
++[Power Management](../igt-lib/igt__power_8c/index.html) - Power Management related helpers
 +
-+def build_markdown_table(tests):
-+    """Format test data as markdown table"""
-+    if not tests:
-+        return ""
++[Primes](../igt-lib/igt__primes_8c/index.html) - Prime numbers helper library
 +
-+    lines = ["| TEST | DESCRIPTION |", "|------|-------------|"]
++[Random](../igt-lib/igt__rand_8c/index.html) - Random numbers helper library
 +
-+    for name, desc in tests:
-+        name = name.replace('|', '\\|')
-+        desc = desc.replace('|', '\\|')
-+        lines.append(f"| {name} | {desc} |")
++[Stats](../igt-lib/igt__stats_8c/index.html) - Tools for statistical analysis
 +
-+    return '\n'.join(lines)
++[syncobj](../igt-lib/igt__syncobj_8c/index.html) - Library with syncobj helpers
 +
++[sysfs](../igt-lib/igt__sysfs_8c/index.html) - Support code for sysfs features
 +
-+def write_to_markdown(md_file, text):
-+    """Append text to markdown file"""
-+    md_path = Path(md_file)
-+    md_path.parent.mkdir(parents=True, exist_ok=True)
++[VC4](../igt-lib/igt__vc4_8c/index.html) - VC4 support library
 +
-+    if md_path.exists() and md_path.stat().st_size > 0:
-+        text = '\n\n' + text
++[VGEM](../igt-lib/igt__vgem_8c/index.html) - VGEM support library
 +
-+    with open(md_file, 'a', encoding='utf-8') as f:
-+        f.write(text)
++[x86](../igt-lib/igt__x86_8c/index.html) - x86 helper library
 +
++[Intel allocator](../igt-lib/intel__allocator_8c/index.html) - igt implementation of allocator
 +
-+def extract_vendor_testset(rel_path):
-+    """Extract vendor and test set from relative path"""
-+    vendor = None
-+    test_set = None
++[Batch Buffer](../igt-lib/intel__batchbuffer_8c/index.html) - Batchbuffer and blitter support
 +
-+    if '/' in rel_path:
-+        parts = rel_path.split('/', 1)
-+        vendor = parts[0]
-+        test_set = parts[1]
-+    else:
-+        if '_' in rel_path:
-+            vendor = rel_path.split('_', 1)[0]
-+            test_set = rel_path.split('_', 1)[1]
-+        else:
-+            vendor = rel_path
-+            test_set = rel_path
++[Buffer operations](../igt-lib/intel__bufops_8c/index.html) - Buffer operation on tiled surfaces
 +
-+    return vendor, test_set
++[Chipset](../igt-lib/intel__chipset_8c/index.html) - Feature macros and chipset helpers
 +
++[I/O](../igt-lib/intel__mmio_8c/index.html) - Register access and sideband I/O library
 +
-+def main():
++[ioctl wrappers](../igt-lib/ioctl__wrappers_8c/index.html) - ioctl wrappers and related functions
 +
-+    parser = argparse.ArgumentParser(description='Extract test docs from C files')
-+    parser.add_argument('-d', '--dir', default='.', help='source directory')
-+    parser.add_argument('-o', '--output', default='tests_documentation.md', 
-+                       help='output markdown file')
-+    parser.add_argument('-e', '--exclude', action='append', 
-+                       help='additional dirs to skip')
-+    parser.add_argument('--clear', action='store_true', 
-+                       help='clear output file first')
++[SW Sync](../igt-lib/sw__sync_8c/index.html) - Software sync (fencing) support library
 +
-+    args = parser.parse_args()
++## igt/i915 API Reference
 +
-+    if args.clear and Path(args.output).exists():
-+        Path(args.output).unlink()
++[GEM Create](../igt-lib/gem_8c/index.html) - Helpers for dealing with objects creation
 +
-+    skip_list = SKIP_DIRS.copy()
-+    if args.exclude:
-+        skip_list.extend(args.exclude)
++[GEM Context](../igt-lib/gem__context_8c/index.html) - Helpers for dealing with contexts
 +
-+    c_files = find_c_files(args.dir, skip_list)
++[GEM Engine Topology](../igt-lib/gem__engine__topology_8c/index.html) - Helpers for dealing engine topology
 +
-+    print(f"Found {len(c_files)} C files")
++[GEM Scheduler](../igt-lib/gem__scheduler_8c/index.html) - Helpers for querying scheduler capabilities
 +
-+    vendor_testset_map = {}
++[GEM Submission](../igt-lib/gem__submission_8c/index.html) - Helpers for determining submission method
 +
-+    for c_file in c_files:
-+        tests = extract_tests_from_file(c_file)
-+        if not tests:
-+            continue
++[Blitter library](../igt-lib/intel__blt_8c/index.html) - i915/xe blitter library
 +
-+        rel_path = make_relative_path(c_file, args.dir)
++[I915 GPU CRC](../igt-lib/i915__crc_8c/index.html) - i915 gpu crc
 +
-+        if '/' in rel_path:
-+            vendor, test_set = rel_path.split('/', 1)
-+        elif '_' in rel_path:
-+            vendor, test_set = rel_path.split('_', 1)
-+        else:
-+            vendor = test_set = rel_path
++[Intel Context Wrapper](../igt-lib/intel__ctx_8c/index.html) - Wrapper structs for dealing with contexts
 +
-+        key = (vendor, test_set)
-+        if key not in vendor_testset_map:
-+            vendor_testset_map[key] = []
-+
-+        vendor_testset_map[key].extend(t[0] for t in tests)
-+
-+    if vendor_testset_map:
-+        lines = [
-+            "## Test Modules by Category\n",
-+            "| Vendor | Test Set | Count | Test List |",
-+            "|--------|----------|-------|-----------|"
-+        ]
-+
-+        for (vendor, test_set), test_names in sorted(vendor_testset_map.items()):
-+            count = len(test_names)
-+            test_list = ', '.join(test_names)
-+            lines.append(f"| {vendor} | {test_set} | {count} | {test_list} |")
-+
-+        write_to_markdown(args.output, '\n'.join(lines) + '\n\n')
-+
-+    tests_list = "## Tests list per module\n\n"
-+
-+    write_to_markdown(args.output, tests_list)
-+
-+    file_count = 0
-+    test_count = 0
-+
-+    for c_file in c_files:
-+        tests = extract_tests_from_file(c_file)
-+
-+        if not tests:
-+            continue
-+
-+        file_count += 1
-+        test_count += len(tests)
-+
-+        rel_path = make_relative_path(c_file, args.dir)
-+        section = f"### {rel_path}\n\n"
-+        table = build_markdown_table(tests)
-+
-+        write_to_markdown(args.output, section + table)
-+        print(f"  {rel_path}: {len(tests)} tests")
-+
-+    print(f"\nProcessed {file_count} files, {test_count} tests total")
-+    print(f"Output: {args.output}")
-+
-+
-+if __name__ == '__main__':
-+    main()
-diff --git a/scripts/update_igt_version_in_docs.py b/scripts/update_igt_version_in_docs.py
+diff --git a/docs/api_tests_glossary.md b/docs/api_tests_glossary.md
 new file mode 100644
-index 000000000..96ee66c9d
+index 000000000..a87c2b5b4
 --- /dev/null
-+++ b/scripts/update_igt_version_in_docs.py
-@@ -0,0 +1,75 @@
-+#!/usr/bin/env python3
-+"""
-+Update version in markdown file from version file.
++++ b/docs/api_tests_glossary.md
+@@ -0,0 +1,5 @@
++# API Reference - Tests glossary
 +
-+Reads version from a file (e.g., meson.build) and updates
-+<IGT_GPU_TOOLS_VERSION> placeholder in test.md
-+"""
++Below you can find up-to-date list of tests with their descriptions.
 +
-+import re
-+import sys
-+
-+
-+def extract_version(version_file):
-+    """Extract version number from file with format: version : 'X.Y'"""
-+    try:
-+        with open(version_file, 'r') as f:
-+            content = f.read()
-+
-+        match = re.search(r"version\s*:\s*'([^']+)'", content)
-+
-+        if match:
-+            return match.group(1)
-+
-+        print(f"Error: No version found in {version_file}")
-+        return None
-+
-+    except FileNotFoundError:
-+        print(f"Error: File {version_file} not found")
-+        return None
-+    except Exception as e:
-+        print(f"Error reading {version_file}: {e}")
-+        return None
-+
-+
-+def update_markdown(md_file, version):
-+    """Replace <IGT_GPU_TOOLS_VERSION> with actual version in markdown file"""
-+    try:
-+        with open(md_file, 'r') as f:
-+            content = f.read()
-+
-+        updated_content = content.replace('<IGT_GPU_TOOLS_VERSION>', version)
-+
-+        # Write back
-+        with open(md_file, 'w') as f:
-+            f.write(updated_content)
-+
-+        print(f"Updated {md_file} with version {version}")
-+        return True
-+
-+    except FileNotFoundError:
-+        print(f"Error: File {md_file} not found")
-+        return False
-+    except Exception as e:
-+        print(f"Error updating {md_file}: {e}")
-+        return False
-+
-+
-+def main():
-+    version_file = 'meson.build'
-+    md_file = 'docs/api_reference.md'
-+
-+    version = extract_version(version_file)
-+    if not version:
-+        sys.exit(1)
-+
-+    print(f"Found version: {version}")
-+
-+    if update_markdown(md_file, version):
-+        print("Success!")
-+    else:
-+        sys.exit(1)
-+
-+
-+if __name__ == '__main__':
-+    main()
++For full reference and source code please look into [API Reference - Tests - Files](../igt-tests/files/index.html)
+diff --git a/mkdocs.yml b/mkdocs.yml
+index f511aeb95..62da23158 100644
+--- a/mkdocs.yml
++++ b/mkdocs.yml
+@@ -41,7 +41,6 @@ nav:
+     - Links to CI for a specific HW platform:
+       - Intel GFX CI: https://intel-gfx-ci.01.org
+   - Download: 'download.md'
+-  - API Reference: 'api_reference/index.html'
+   - News: 'NEWS.md'
+   - FAQ: 'faq.md'
+   - API:
+@@ -90,6 +89,7 @@ nav:
+       - Variables: "igt-lib/variables.md"
+       - Macros: "igt-lib/macros.md"
+       - Files: "igt-lib/files.md"
++    - Tests Glossary: 'api_tests_glossary.md'
+ 
+ extra:
+   repo_icon: 'gitlab'
 -- 
 2.51.0
 
