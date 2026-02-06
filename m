@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAC45EE20AC
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Feb 2026 15:01:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CFAFEE20AC
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Feb 2026 15:07:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8913110E802;
-	Fri,  6 Feb 2026 15:01:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 12D5C10E051;
+	Fri,  6 Feb 2026 15:07:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="GsznQBP/";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="IdHdaFEm";
 	dkim-atps=neutral
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A93610E831
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Feb 2026 15:01:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A7C0210E051
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Feb 2026 15:07:44 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 33395C250C5
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Feb 2026 15:01:55 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 822B2C250C6;
+ Fri,  6 Feb 2026 15:07:49 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 9E85360729;
- Fri,  6 Feb 2026 15:01:48 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id ED82F60729;
+ Fri,  6 Feb 2026 15:07:42 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id F1E06119D1F83; Fri,  6 Feb 2026 16:01:42 +0100 (CET)
+ with ESMTPSA id 1AACD119D1F1B; Fri,  6 Feb 2026 16:07:41 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1770390104; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1770390462; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=E+7j3BV7ggXka4PkndhKE6PP8eQ1QICYRlfBLEPLn+c=;
- b=GsznQBP/eX/Yt/EV9PSalLawT9MgA6bJgPfb9CBu6ovcYStqZEr9emeLdCcj5arPwaaeIl
- wj08Mkp+9vCVhxtkWeuFQtR7W3fe3SxFFs3eaLsTbZJ8wqah1paBAMfPxWEOOEfRe9Ibsw
- hfgpVUl+Tsi//5Xl2Vi9IWCL7OHDA/MDyyTAxpHRRX12qUo5EXsl1giQBlHgSsb+2H2SnR
- s9auffhYgLsLNR9FeBV0xb81BLedmKc/YvbQjjn/cjGFooW4YWvz9QdvzTUosysoSY+jr/
- u5/nmWF9NJJJNwSIxnevg4qBKw5oDjutcB11VUL+0IwlcnWwyHMLq5wLj7fXUA==
-Date: Fri, 6 Feb 2026 16:01:42 +0100
+ bh=hjSLNx0pyrONIQcQLgGjvILLzqZFKqJp4Q585KAWs3s=;
+ b=IdHdaFEmVI6nz6LNrZE0Dz54GCoVHUpIZQR4gTuJvnsZzVXv7odTPp6c9qvHfm1p/NUhOO
+ LutgSKQAOF330fH5RRMvjiZf8yPXke2GkvuViQIwDdshEhbOxkq/5Hr2IUWeRC7aAjVcBf
+ 3sCAcyGJYj+VItxfkaHMgL9jlPrP3ghsO6RO1pQ789ltfEd7euW8i6B9nULh0+gJpwL/ZV
+ xnxZqH1p7u9XJKGlTU+7DglQV9VNzxX9SZRwNPEwdoT8imAI4GFj7WjA33nqjc6Wyow4/0
+ SZ+wjQ5jTTdzCx9BAa8pDMe0GnHkXDwJHCiuH1ptWls/hksgkiM7OimY14ErNA==
+Date: Fri, 6 Feb 2026 16:07:39 +0100
 From: Kory Maincent <kory.maincent@bootlin.com>
 To: Louis Chauvet <louis.chauvet@bootlin.com>
 Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
  luca.ceresoli@bootlin.com, markyacoub@google.com,
  khaled.almahallawy@intel.com
-Subject: Re: [PATCH i-g-t v6 37/48] lib/i915/dp: Rename functions to avoid
- confusion
-Message-ID: <20260206160142.25b0ad70@kmaincent-XPS-13-7390>
-In-Reply-To: <20260202-unigraf-integration-v6-37-834af822eee7@bootlin.com>
+Subject: Re: [PATCH i-g-t v6 38/48] lib/i915/dp: Add helper to get maximum
+ supported rate
+Message-ID: <20260206160739.4bcad336@kmaincent-XPS-13-7390>
+In-Reply-To: <20260202-unigraf-integration-v6-38-834af822eee7@bootlin.com>
 References: <20260202-unigraf-integration-v6-0-834af822eee7@bootlin.com>
- <20260202-unigraf-integration-v6-37-834af822eee7@bootlin.com>
+ <20260202-unigraf-integration-v6-38-834af822eee7@bootlin.com>
 Organization: bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -65,15 +65,99 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 02 Feb 2026 15:33:16 +0100
+On Mon, 02 Feb 2026 15:33:17 +0100
 Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 
-> Add the proper prefix for i915 dp-related functions.
-> This will avoid confusion when using them.
+> Some GPU can't reach all the DP rates. To avoid false positive during
+> testing with unigraf, add an helper to filter tests based on the maximum
+> supported rate of the current GPU.
+>=20
+> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+> ---
+>  lib/i915/i915_dp.c | 35 +++++++++++++++++++++++++++++++++++
+>  lib/i915/i915_dp.h |  1 +
+>  2 files changed, 36 insertions(+)
+>=20
+> diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
+> index c5b9273ebafd..219f3d29e362 100644
+> --- a/lib/i915/i915_dp.c
+> +++ b/lib/i915/i915_dp.c
+> @@ -1,7 +1,9 @@
+>  // SPDX-License-Identifier: MIT
+> =20
+>  #include <ctype.h>
+> +#include <errno.h>
+>  #include <stdio.h>
+> +#include <stdlib.h>
+>  #include <string.h>
+> =20
+>  #include "i915_dp.h"
+> @@ -317,3 +319,36 @@ void i915_dp_set_link_params(int drm_fd, igt_output_t
+> *output, temp =3D drmModeGetConnector(drm_fd,
+> output->config.connector->connector_id); drmModeFreeConnector(temp);
+>  }
+> +
+> +/**
+> + * i915_dp_get_max_supported_rate:
+> + * @drm_fd: A drm file descriptor
+> + * @output: Target output
+> + *
+> + * Returns: Max supported link rate available for output, else -1
 
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+You should return -EINVAL for more error information.
 
-Thank you!
+> + */
+> +int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *outpu=
+t)
+> +{
+> +	char buf[512];
+> +	int res, max_rate =3D -1;
+> +	char *token;
+> +
+> +	res =3D igt_debugfs_read_connector_file(drm_fd,
+> igt_output_name(output),
+> +					      "i915_dp_force_link_rate",
+> +					      buf, sizeof(buf));
+> +	igt_assert_f(res =3D=3D 0, "Unable to read %s/i915_dp_force_link_rate\n=
+",
+> +		     igt_output_name(output));
+
+igt_assert_f(!res,...);
+
+> +
+> +	token =3D strtok(buf, " ");
+> +	while (token) {
+> +		int rate;
+> +
+> +		errno =3D 0;
+> +		rate =3D strtol(token, NULL, 0);
+> +		if (errno =3D=3D 0 && rate > max_rate)
+
+if (!errno && rate > max_rate)
+
+> +			max_rate =3D rate;
+> +		token =3D strtok(NULL, " ");
+> +	}
+> +
+> +	return max_rate;
+> +}
+> diff --git a/lib/i915/i915_dp.h b/lib/i915/i915_dp.h
+> index e4249d179543..b13629147804 100644
+> --- a/lib/i915/i915_dp.h
+> +++ b/lib/i915/i915_dp.h
+> @@ -18,5 +18,6 @@ int i915_dp_get_pending_retrain(int drm_fd, igt_output_t
+> *output); void i915_dp_reset_link_params(int drm_fd, igt_output_t *output=
+);
+>  void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
+>  			     char *link_rate, char *lane_count);
+> +int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *outpu=
+t);
+> =20
+>  #endif
+>=20
+
+
+
 --=20
 K=C3=B6ry Maincent, Bootlin
 Embedded Linux and kernel engineering
