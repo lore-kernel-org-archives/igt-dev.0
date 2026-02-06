@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDC29EB28F8
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Feb 2026 09:21:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02F18EB28FA
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Feb 2026 09:31:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6920F10E613;
-	Fri,  6 Feb 2026 09:21:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9BE0F10E6D0;
+	Fri,  6 Feb 2026 09:31:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A3ePhQH4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NV5XDuCq";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C739410E613
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Feb 2026 09:21:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 701FB10E675
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Feb 2026 09:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770369666; x=1801905666;
+ t=1770370289; x=1801906289;
  h=from:to:subject:in-reply-to:references:date:message-id:
  mime-version:content-transfer-encoding;
- bh=Tl8M7GrJgdt6MTgnbA99nQAd2w2Nu7pGujvH3hxrRuI=;
- b=A3ePhQH4f2x3+RuDstPnYpiDTmOjHWELpBeXbWqRomqw1r1HiftTAK8v
- 8pgBo7jO5VXkVSJsq44iL1erd8gSV+AZ38xhHejQRjoZlG/7QVpCT/KO4
- JTFrCy1rS0ZKqIhTplG4mn5pSmf5zhf30/zioDxvgOBxcDfMUa8embY50
- UxZ5CSIphxd3p/MFHjnun2aJIpBjo9L/lj2kN7n3EXI/VPdirh72u/Pd5
- 2wtK9fuwamINNw1wLfGk+tbsRrNARXYpbXTw8R3dKE7dieKkpYGuPhv2X
- rsMJWXBZm8WF/aMA+Iau6RBPNEGJ+hLb/SC5iQawwWlQLDfe9uhdL34px Q==;
-X-CSE-ConnectionGUID: HMCPj6iFTXKDdCeUkLO9zg==
-X-CSE-MsgGUID: R+U86eSIQH2zfcSxa4IJkg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="71476628"
-X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; d="scan'208";a="71476628"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2026 01:21:05 -0800
-X-CSE-ConnectionGUID: qiDlYS/BRaChCsXlR0MM9A==
-X-CSE-MsgGUID: GRICcHFeQ76LzBAabKyeqQ==
+ bh=Wvj1u04py+7QP6yoakpTaa/XcbE3AhmvlP/J0/mmkgU=;
+ b=NV5XDuCqyHwENKUh8JAo40TfH0ebhForQBZXSMjlyzhumTG4PCEW/t4I
+ IX5MpKPQOXAllIV8czIXZ/u25yQmyfMEomghImy1zq3XMe9ZWeitnzVQY
+ 9l/8MYpd+Cys2Yw04W4M9dhxxRb1na7VdwPi9geD4YWfHRWv7wRzLbIUQ
+ hBfaJdE8+RaXTlrXNaHKAilm+uVzDQbWT+GqLJzBylCEcXgJ6NdLoY0Dx
+ QuUaVXFezXjtKdheKoTTOdTv9kpGewDli0QY+FvyDt5LnYXU7S93l+dsR
+ oYrOQsfZvnu7LZQGlh9f0PTOGy3642zk4K5lBU5KD6NiXcUS8SQMZ9PIj A==;
+X-CSE-ConnectionGUID: XNjmfER5SVeTBE7Yfs7Bgw==
+X-CSE-MsgGUID: /UhsieDlS3atB0kbdXilDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="71676735"
+X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; d="scan'208";a="71676735"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2026 01:31:29 -0800
+X-CSE-ConnectionGUID: w5lLAsSeR8+313GylQkkLw==
+X-CSE-MsgGUID: mXfeNzpMQDaszcrhGOR0TA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; d="scan'208";a="248439721"
+X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; d="scan'208";a="210870170"
 Received: from lfiedoro-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.246.129])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Feb 2026 01:21:04 -0800
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Feb 2026 01:31:28 -0800
 From: Jani Nikula <jani.nikula@intel.com>
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 02/12] tests/intel/kms_legacy_colorkey: Convert to
+Subject: Re: [PATCH i-g-t 03/12] tests/kms: Convert problematic tests to use
  for_each_crtc()
-In-Reply-To: <20260205133019.9161-3-ville.syrjala@linux.intel.com>
+In-Reply-To: <20260205133019.9161-4-ville.syrjala@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 References: <20260205133019.9161-1-ville.syrjala@linux.intel.com>
- <20260205133019.9161-3-ville.syrjala@linux.intel.com>
-Date: Fri, 06 Feb 2026 11:21:00 +0200
-Message-ID: <6233a4d1889c25a9d9eab7d0b9cd9249bf48f250@intel.com>
+ <20260205133019.9161-4-ville.syrjala@linux.intel.com>
+Date: Fri, 06 Feb 2026 11:31:25 +0200
+Message-ID: <23774495c672ff6379caa521af350565a1e40221@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -75,100 +75,23 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 On Thu, 05 Feb 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
 > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >
-> Replace the for_each_pipe() with for_each_crtc().
-> kms_legacy_colorkey is a bit of a special case becasue
+> Convert more for_each_pipe()s into for_each_crtc().
+>
+> Take care of specific tests that are problemtic for
 
-*because
-
-> the iterator is a file level static variable.
-
-And yeah, that's icky.
+*problematic
 
 Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
+
+> coccinelle. The conversion is done mostly with cocci
+> but I did not manage to add the new 'crtc' iterator
+> declarations without hitting some pathological
+> performance problems in cocci. So that part was
+> done manually on top of the semantic patch.
 >
-> Done with cocci:
 >  #include "scripts/iterators.cocci"
 >
-> @find@
-> iterator name for_each_pipe;
-> identifier PIPE;
-> @@
-> for_each_pipe(..., PIPE) { ... }
->
-> @change depends on find@
-> typedef igt_crtc_t;
-> identifier find.PIPE;
-> @@
-> - static int PIPE;
-> + static igt_crtc_t *crtc;
->
-> @depends on find && change@
-> iterator name for_each_crtc;
-> identifier find.PIPE;
-> expression DISPLAY;
-> @@
-> - for_each_pipe(DISPLAY, PIPE)
-> + for_each_crtc(DISPLAY, crtc)
-> {
-> <...
-> (
-> - igt_crtc_for_pipe(..., PIPE)
-> + crtc
-> |
-> - kmstest_pipe_name(PIPE)
-> + igt_crtc_name(crtc)
-> |
-> - PIPE
-> + crtc->pipe
-> )
-> ...>
-> }
->
-> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
-> ---
->  tests/intel/kms_legacy_colorkey.c | 13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
->
-> diff --git a/tests/intel/kms_legacy_colorkey.c b/tests/intel/kms_legacy_c=
-olorkey.c
-> index b720ccf4394b..15def4f35936 100644
-> --- a/tests/intel/kms_legacy_colorkey.c
-> +++ b/tests/intel/kms_legacy_colorkey.c
-> @@ -44,7 +44,7 @@ IGT_TEST_DESCRIPTION("Check that the legacy set colorke=
-y ioctl only works on spr
->=20=20
->  static int drm_fd;
->  static igt_display_t display;
-> -static int p;
-> +static igt_crtc_t *crtc;
->  static igt_plane_t *plane;
->  static uint32_t max_id;
->=20=20
-> @@ -66,8 +66,8 @@ int igt_main()
->  		kmstest_set_vt_graphics_mode();
->=20=20
->  		igt_display_require(&display, drm_fd);
-> -		for_each_pipe(&display, p) {
-> -			for_each_plane_on_pipe(&display, p, plane) {
-> +		for_each_crtc(&display, crtc) {
-> +			for_each_plane_on_pipe(&display, crtc->pipe, plane) {
->  				max_id =3D max(max_id, plane->drm_plane->plane_id);
->  			}
->  		}
-> @@ -77,9 +77,10 @@ int igt_main()
->  	igt_describe("Test to check the legacy set colorkey ioctl "
->  		     "only works for sprite planes.\n");
->  	igt_subtest_with_dynamic("basic") {
-> -		for_each_pipe(&display, p) {
-> -			igt_dynamic_f("pipe-%s", kmstest_pipe_name(p)) {
-> -				for_each_plane_on_pipe(&display, p, plane) {
-> +		for_each_crtc(&display, crtc) {
-> +			igt_dynamic_f("pipe-%s", igt_crtc_name(crtc)) {
-> +				for_each_plane_on_pipe(&display, crtc->pipe,
-> +						       plane) {
->  					bool is_valid =3D (plane->type =3D=3D DRM_PLANE_TYPE_PRIMARY ||
->  							 plane->type =3D=3D DRM_PLANE_TYPE_CURSOR);
 
 --=20
 Jani Nikula, Intel
