@@ -4,68 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89705E81BCC
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 14:06:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 954B4E81BCC
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 14:19:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2E93C10E3FC;
-	Mon,  9 Feb 2026 14:06:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3B94110E0E0;
+	Mon,  9 Feb 2026 14:19:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L2B5GdAi";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CJMKU+ZH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F187F10E3F8;
- Mon,  9 Feb 2026 14:06:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E63410E403
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 14:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770645985; x=1802181985;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Vuwv11/YWv8Fv0lPLc1u4wv80/JZ0COAUUx4gr2pGUo=;
- b=L2B5GdAio9frrureQK7j2qTs+Aqsd3/LDOkSy7/wZ2e/8V56iBzZnELL
- IQkNFYYhGCDjR3IKVbsJFfLWjlcihUXDI6lO1rLcdhnNONcTcDxbUH/DL
- oP4hYYzMD9WfB1prgWkJjKfwm8PXNPHWeWj4HjrdSUGuQTDP8eGic4ekG
- /46fP4VWfPVEDph1sRFoRd435b+1dVKZmtOZhJqmBI2WecFp/OrXzPh4n
- yd1FUXEEG4TdXhUf2KskJOwoHw3JGEabzS7FMoGNKOvLjh78bfsDqx4/z
- rDSL+2VhMW18uzHVo6NJTyuoVFdrnV1grmOGK8ICKqS+IKAyHh4D7XNjP Q==;
-X-CSE-ConnectionGUID: CVgXD1dgTGuDm66D8nBBNQ==
-X-CSE-MsgGUID: TXns1LvWTNagidxsBbK0DA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="71657226"
-X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="71657226"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2026 06:06:25 -0800
-X-CSE-ConnectionGUID: RL2jKrQeQEClUqeFGZswCg==
-X-CSE-MsgGUID: qFxt+NnuQQ+FoAQUMzN6rA==
+ t=1770646774; x=1802182774;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=zYMXQ2GRk+1m5gZ/Hm/UbF28zLEprgJ7F7yJFUaPIgA=;
+ b=CJMKU+ZHktkDu6FtQj8NTckyl0ebsZJwrIG1wx5hocAisWBTTMT0nHYe
+ jytXyVKpx/Giiih8nOiGlRFhBEs2UBzla+Ib1fPFg0dfzJLTNnuqnQ7wQ
+ F81Iz7Qh0tMbaYltVauDKbStYqz7zyAIHoPiqJGphZBHN4dxmCbzWdfDY
+ tPesPqSVTRYvN45xQp2bTm9gbDQSd1U5bcLEp8tJaYGyYeCzHTtrWKdTB
+ VN3alA7iHJqAhV7mXnYjg/uzOIoveEfSn1iEwZ/PyxLnhWfyKgenY4OAh
+ agt/9shfemjHtNr/sxpr4CwHrrVuyZbPNa3Td+Mv9X9sD3TTnVQ29CO/S g==;
+X-CSE-ConnectionGUID: FzfotC8pRYSxJoOjkAwgkw==
+X-CSE-MsgGUID: 599jkacLTC6ny94rG8z4Ew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="71658894"
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="71658894"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Feb 2026 06:19:33 -0800
+X-CSE-ConnectionGUID: zDOOxF7oR56Uan8OiIac/w==
+X-CSE-MsgGUID: eq5WURq6RHGrQT+w+k8rWQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="216558142"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 06:06:23 -0800
-Date: Mon, 9 Feb 2026 15:06:08 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Subject: Re: [PATCH i-g-t v5 3/6] lib/igt_device_scan: Include PCIe bridge
- upstream port if available
-Message-ID: <20260209140608.gw5ww2pf3fvpq6gi@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-References: <20260205145427.1338534-8-janusz.krzysztofik@linux.intel.com>
- <20260205145427.1338534-11-janusz.krzysztofik@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="216089357"
+Received: from dut7069bmgfrd.fm.intel.com (HELO DUT7069BMGFRD..) ([10.1.84.79])
+ by fmviesa005.fm.intel.com with ESMTP; 09 Feb 2026 06:19:33 -0800
+From: nishit.sharma@intel.com
+To: igt-dev@lists.freedesktop.org, nishit.sharma@intel.com,
+ thomas.hellstrom@intel.com
+Subject: [PATCH i-g-t] tests/intel/xe_svm_usrptr_madvise: Add SVM to userptr
+ copy test with madvise
+Date: Mon,  9 Feb 2026 14:19:33 +0000
+Message-ID: <20260209141933.690263-1-nishit.sharma@intel.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260205145427.1338534-11-janusz.krzysztofik@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,304 +66,303 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Janusz,
-On 2026-02-05 at 15:51:52 +0100, Janusz Krzysztofik wrote:
-> Users of Intel discrete graphics adapters are confused with fake
-> information on PCIe link bandwidth (speed and size) of their GPU devices
-> reported by sysfs and userspace tools, including our lsgpu utility.  In
-> order for the lsgpu to show correct link bandwidth information, we need to
-> identify an upstream port of a PCIe bridge that sits on the GPU card and
-> get that information from that port.
-> 
-> Since the tool uses our udev based igt_device_scan library for identifying
-> GPU devices and printing their properties and attributes, modifications
-> that we need apply to that library.
-> 
-> When scanning for DRM devices and their PCI parents, the lsgpu utility
-> requests collection of all their attributes.  When running in this mode,
-> also try to collect information about upstream ports of PCIe bridges of
-> discrete GPU devices.  Once collected, the lsgpu utility will show that
-> information automatically while listing the devices.
-> 
-> While IGT tests are using libpciaccess library for processing PCI devices,
-> that library requires careful handling in order to avoid collisions among
-> multiple call sites potentially using it.  That protection is implemented
-> in igt_device with help of IGT exit handlers. That requires linking with
-> full igt_core library code, while the lsgpu tool now depends neither on
-> igt_device nor on igt_core.  To keep that independence, implement the new
-> code around libpci.  With that approach, refactoring of IGT use of either
-> libpciaccess or igt_device_scan is avoided.  As an additional benefit,
-> there is no need to re-implement some functionality, already provided by
-> libpci function pci_find_cap(), which has no equivalent in libpciaccess.
-> 
-> v5: Address PCI_HEADER_TYPE_MASK missing from <linux/pci_regs.h> in CI,
->   - add libpci to docker files.
-> v4: Replace 0x7f constant with PCI_HEADER_TYPE_MASK symbol (Krzysztof).
-> v3: Fix incorrect use of ffs(),
->   - fix bridge link attribute printing suppressed with DEVTYPE_DISCRETE,
->   - in commit description, elaborate more on reasons for using libpci.
-> v2: Drop unclear GET_REG_MASK macro (Sebastian),
->   - reuse no longer needed variable containing PCI_HEADER_TYPE for storing
->     PCI_EXP_FLAGS_TYPE,
->   - maintain a single instance of struct pci_access throughout processing
->     of the whole udev device list (Sebastian).
-> 
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10753
-> Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-> Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+This test validates GPU memory copy operations between SVM-allocated memory
+and userptr memory with explicit madvise and preferred location hints.
+This test helps ensure correct SVM, userptr, and madvise handling.
 
-Regards,
-Kamil
+Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+---
+ tests/intel/xe_svm_usrptr_madvise.c | 266 ++++++++++++++++++++++++++++
+ tests/meson.build                   |   1 +
+ 2 files changed, 267 insertions(+)
+ create mode 100644 tests/intel/xe_svm_usrptr_madvise.c
 
-> ---
->  Dockerfile.build-debian-arm64   |  1 +
->  Dockerfile.build-debian-armhf   |  1 +
->  Dockerfile.build-debian-minimal |  1 +
->  Dockerfile.build-fedora         |  1 +
->  lib/igt_device_scan.c           | 88 +++++++++++++++++++++++++++++++--
->  lib/meson.build                 |  2 +
->  meson.build                     |  1 +
->  7 files changed, 92 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Dockerfile.build-debian-arm64 b/Dockerfile.build-debian-arm64
-> index cf0625ac72..c3643d70ea 100644
-> --- a/Dockerfile.build-debian-arm64
-> +++ b/Dockerfile.build-debian-arm64
-> @@ -23,6 +23,7 @@ RUN apt-get install -y \
->  			zlib1g-dev:arm64 \
->  			liblzma-dev:arm64 \
->  			libcairo-dev:arm64 \
-> +			libpci-dev:arm64 \
->  			libpixman-1-dev:arm64 \
->  			libudev-dev:arm64 \
->  			libgsl-dev:arm64 \
-> diff --git a/Dockerfile.build-debian-armhf b/Dockerfile.build-debian-armhf
-> index 58b5be82a4..605668441a 100644
-> --- a/Dockerfile.build-debian-armhf
-> +++ b/Dockerfile.build-debian-armhf
-> @@ -23,6 +23,7 @@ RUN apt-get install -y \
->  			zlib1g-dev:armhf \
->  			liblzma-dev:armhf \
->  			libcairo-dev:armhf \
-> +			libpci-dev:armhf \
->  			libpixman-1-dev:armhf \
->  			libudev-dev:armhf \
->  			libgsl-dev:armhf \
-> diff --git a/Dockerfile.build-debian-minimal b/Dockerfile.build-debian-minimal
-> index 3850fb43e5..808d2e32e7 100644
-> --- a/Dockerfile.build-debian-minimal
-> +++ b/Dockerfile.build-debian-minimal
-> @@ -14,6 +14,7 @@ RUN apt-get install -y \
->  			zlib1g-dev \
->  			liblzma-dev \
->  			libcairo-dev \
-> +			libpci-dev \
->  			libpixman-1-dev \
->  			libudev-dev \
->  			libxrandr-dev \
-> diff --git a/Dockerfile.build-fedora b/Dockerfile.build-fedora
-> index 9399c0a7db..9dd7b73481 100644
-> --- a/Dockerfile.build-fedora
-> +++ b/Dockerfile.build-fedora
-> @@ -12,6 +12,7 @@ RUN dnf install -y \
->  	'pkgconfig(pixman-1)' \
->  	'pkgconfig(valgrind)' \
->  	'pkgconfig(cairo)' \
-> +	'pkgconfig(libpci)' \
->  	'pkgconfig(libudev)' \
->  	'pkgconfig(glib-2.0)' \
->  	'pkgconfig(gsl)' \
-> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> index 11b3034639..9549850005 100644
-> --- a/lib/igt_device_scan.c
-> +++ b/lib/igt_device_scan.c
-> @@ -35,7 +35,13 @@
->  #include <libudev.h>
->  #ifdef __linux__
->  #include <linux/limits.h>
-> +#include <linux/pci_regs.h>
->  #endif
-> +#ifndef PCI_HEADER_TYPE_MASK
-> +/* Either not linux, or <linux/pci_regs.h> too old */
-> +#define PCI_HEADER_TYPE_MASK 0x7f
-> +#endif
-> +#include <pci/pci.h>
->  #include <sys/stat.h>
->  #include <sys/time.h>
->  #include <sys/types.h>
-> @@ -913,6 +919,26 @@ static struct igt_device *igt_device_from_syspath(const char *syspath)
->  	return NULL;
->  }
->  
-> +static bool is_pcie_upstream_bridge(struct pci_dev *dev)
-> +{
-> +	struct pci_cap *pcie;
-> +	uint8_t type;
-> +
-> +	type = pci_read_byte(dev, PCI_HEADER_TYPE) & PCI_HEADER_TYPE_MASK;
-> +	if (type != PCI_HEADER_TYPE_BRIDGE)
-> +		return false;
-> +
-> +	pcie = pci_find_cap(dev, PCI_CAP_ID_EXP, PCI_CAP_NORMAL);
-> +	if (!pcie)
-> +		return false;
-> +
-> +	type = pci_read_word(dev, pcie->addr + PCI_EXP_FLAGS);
-> +	type &= PCI_EXP_FLAGS_TYPE;
-> +	type >>= ffs(PCI_EXP_FLAGS_TYPE) - 1;
-> +
-> +	return type == PCI_EXP_TYPE_UPSTREAM;
-> +}
-> +
->  #define RETRIES_GET_DEVICE 5
->  
->  static struct igt_device *find_or_add_igt_device(struct udev *udev,
-> @@ -952,18 +978,52 @@ static struct igt_device *find_or_add_igt_device(struct udev *udev,
->  	return idev;
->  }
->  
-> +static struct udev_device *get_pcie_upstream_bridge(struct udev *udev,
-> +						    struct udev_device *dev,
-> +						    struct pci_access *pacc)
-> +{
-> +	igt_assert(pacc);
-> +
-> +	for (dev = udev_device_get_parent(dev); dev; dev = udev_device_get_parent(dev)) {
-> +		struct pci_filter filter;
-> +		struct pci_dev *pci_dev;
-> +		const char *slot;
-> +
-> +		slot = udev_device_get_property_value(dev, "PCI_SLOT_NAME");
-> +		if (igt_debug_on(!slot))
-> +			continue;
-> +
-> +		pci_filter_init(pacc, &filter);
-> +		if (igt_debug_on(pci_filter_parse_slot(&filter, (char *)slot)))
-> +			continue;
-> +
-> +		pci_dev = pci_get_dev(pacc, filter.domain, filter.bus, filter.slot, filter.func);
-> +		if (igt_debug_on(!pci_dev))
-> +			continue;
-> +
-> +		if (is_pcie_upstream_bridge(pci_dev))
-> +			break;
-> +	}
-> +
-> +	return dev;
-> +}
-> +
->  /*
->   * For each drm igt_device add or update its parent igt_device to the array.
->   * As card/render drm devices mostly have same parent (vkms is an exception)
->   * link to it and update corresponding drm_card / drm_render fields.
-> + *
-> + * If collecting all attributes and the parent is a discrete GPU then also
-> + * add or update its bridge's upstream port.
->   */
->  static void update_or_add_parent(struct udev *udev,
->  				 struct udev_device *dev,
->  				 struct igt_device *idev,
-> +				 struct pci_access *pacc,
->  				 bool limit_attrs)
->  {
-> -	struct udev_device *parent_dev;
-> -	struct igt_device *parent_idev;
-> +	struct igt_device *parent_idev, *bridge_idev;
-> +	struct udev_device *parent_dev, *bridge_dev;
->  	const char *devname;
->  
->  	/*
-> @@ -983,6 +1043,19 @@ static void update_or_add_parent(struct udev *udev,
->  		parent_idev->drm_render = strdup(devname);
->  
->  	idev->parent = parent_idev;
-> +
-> +	if (!pacc || parent_idev->dev_type != DEVTYPE_DISCRETE)
-> +		return;
-> +
-> +	bridge_dev = get_pcie_upstream_bridge(udev, parent_dev, pacc);
-> +	if (!bridge_dev)
-> +		return;
-> +
-> +	bridge_idev = find_or_add_igt_device(udev, bridge_dev, limit_attrs);
-> +	igt_assert(bridge_idev);
-> +
-> +	/* override DEVTYPE_INTEGRATED so link attributes won't be omitted */
-> +	bridge_idev->dev_type = DEVTYPE_ALL;
->  }
->  
->  static struct igt_device *duplicate_device(struct igt_device *dev) {
-> @@ -1072,6 +1145,7 @@ static void scan_drm_devices(bool limit_attrs)
->  	struct udev *udev;
->  	struct udev_enumerate *enumerate;
->  	struct udev_list_entry *devices, *dev_list_entry;
-> +	struct pci_access *pacc = NULL;
->  	struct igt_device *dev;
->  	int ret;
->  
-> @@ -1095,6 +1169,12 @@ static void scan_drm_devices(bool limit_attrs)
->  	if (!devices)
->  		return;
->  
-> +	/* prepare for upstream bridge port scan if called from lsgpu */
-> +	if (!limit_attrs) {
-> +		pacc = pci_alloc();
-> +		pci_init(pacc);
-> +	}
-> +
->  	udev_list_entry_foreach(dev_list_entry, devices) {
->  		const char *path;
->  		struct udev_device *udev_dev;
-> @@ -1104,10 +1184,12 @@ static void scan_drm_devices(bool limit_attrs)
->  		udev_dev = udev_device_new_from_syspath(udev, path);
->  		idev = igt_device_new_from_udev(udev_dev, limit_attrs);
->  		igt_list_add_tail(&idev->link, &igt_devs.all);
-> -		update_or_add_parent(udev, udev_dev, idev, limit_attrs);
-> +		update_or_add_parent(udev, udev_dev, idev, pacc, limit_attrs);
->  
->  		udev_device_unref(udev_dev);
->  	}
-> +	if (pacc)
-> +		pci_cleanup(pacc);
->  	udev_enumerate_unref(enumerate);
->  	udev_unref(udev);
->  
-> diff --git a/lib/meson.build b/lib/meson.build
-> index d851029e04..d4d2ffa127 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -141,6 +141,7 @@ lib_deps = [
->  	libdrm,
->  	libdw,
->  	libkmod,
-> +	libpci,
->  	libudev,
->  	math,
->  	pciaccess,
-> @@ -334,6 +335,7 @@ lib_igt_perf = declare_dependency(link_with : lib_igt_perf_build,
->  
->  scan_dep = [
->  	glib,
-> +	libpci,
->  	libudev,
->  ]
->  
-> diff --git a/meson.build b/meson.build
-> index 4b2496c016..57849648a3 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -162,6 +162,7 @@ endif
->  build_info += 'Valgrind annotations: @0@'.format(valgrind.found())
->  
->  cairo = dependency('cairo', version : '>1.12.0', required : true)
-> +libpci = dependency('libpci', required : true)
->  libudev = dependency('libudev', required : true)
->  glib = dependency('glib-2.0', required : true)
->  
-> -- 
-> 2.52.0
-> 
+diff --git a/tests/intel/xe_svm_usrptr_madvise.c b/tests/intel/xe_svm_usrptr_madvise.c
+new file mode 100644
+index 000000000..0f70fd6e6
+--- /dev/null
++++ b/tests/intel/xe_svm_usrptr_madvise.c
+@@ -0,0 +1,266 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2026 Intel Corporation
++ *
++ * Authors:
++ *	Nishit Sharma <nishit.sharma@intel.com>
++ */
++
++#include <fcntl.h>
++#include <linux/mman.h>
++#include <string.h>
++#include <time.h>
++
++#include "igt.h"
++#include "intel_blt.h"
++#include "intel_mocs.h"
++#include "intel_pat.h"
++
++#include "xe/xe_gt.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe_drm.h"
++
++#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
++#define QUARTER_SEC             (NSEC_PER_SEC / 4)
++#define FIVE_SEC                (5LL * NSEC_PER_SEC)
++
++#define BATCH_SIZE(_fd) ALIGN(SZ_8K, xe_get_default_alignment(_fd))
++#define BIND_SYNC_VAL 0x686868
++#define EXEC_SYNC_VAL 0x676767
++
++#define SVM_VA_BASE 0x1000000
++#define USERPTR_VA_BASE 0x2000000
++#define BO_VA_BASE 0x3000000
++
++/**
++ * TEST: SVM functional and performance tests
++ * Description: Validate GPU copy from SVM memory to userptr and then to a buffer object
++ *		using madvise to set device memory preference and verifying data integrity
++ *
++ * Category: Core
++ * Mega feature: USM
++ * Sub-category: System allocator, SVM, userptr
++ * Functionality: fault mode, system allocator, SVM-userptr copy, madvise
++ * Test category: functional
++ *
++ * SUBTEST: svm-userptr-copy-madvise
++ * Description:
++ *		Test GPU copy from SVM memory to userptr, then from userptr to buffer object,
++ *		with madvise to device memory and data validation
++ *
++ */
++
++IGT_TEST_DESCRIPTION("SVM memory to userptr copy with madvise");
++
++static int va_bits;
++#define bind_system_allocator(__sync, __num_sync)			\
++	__xe_vm_bind_assert(fd, vm, 0,					\
++			     0, 0, 0, 0x1ull << va_bits,		\
++			     DRM_XE_VM_BIND_OP_MAP,			\
++			     DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR,	\
++			     (__sync), (__num_sync), 0, 0)
++
++#define unbind_system_allocator()				\
++	__xe_vm_bind(fd, vm, 0, 0, 0, 0, 0x1ull << va_bits,	\
++		     DRM_XE_VM_BIND_OP_UNMAP, 0,		\
++		     NULL, 0, 0, 0, 0)
++
++static void batch_fini(int fd, uint32_t vm, uint32_t bo, uint64_t addr)
++{
++	/* Unmap the batch bo by re-instating the SVM binding. */
++	xe_vm_bind_lr_sync(fd, vm, 0, 0, addr, BATCH_SIZE(fd),
++			   DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR);
++	gem_close(fd, bo);
++}
++
++static void
++create_vm_and_queue(int fd, struct drm_xe_engine_class_instance *eci,
++		    uint32_t *vm, uint32_t *exec_queue)
++{
++	struct xe_device *xe;
++
++	xe = xe_device_get(fd);
++	va_bits = xe->va_bits;
++	*vm = xe_vm_create(fd,
++			   DRM_XE_VM_CREATE_FLAG_LR_MODE | DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
++	*exec_queue = xe_exec_queue_create(fd, *vm, eci, 0);
++	xe_vm_bind_lr_sync(fd, *vm, 0, 0, 0, 1ull << xe->va_bits,
++			   DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR);
++}
++
++static void
++setup_sync(struct drm_xe_sync *sync, uint64_t **sync_addr,
++	   uint64_t timeline_value)
++{
++	*sync_addr = malloc(sizeof(**sync_addr));
++	igt_assert(*sync_addr);
++	sync->flags = DRM_XE_SYNC_FLAG_SIGNAL;
++	sync->type = DRM_XE_SYNC_TYPE_USER_FENCE;
++	sync->addr = to_user_pointer((uint64_t *)*sync_addr);
++	sync->timeline_value = timeline_value;
++	**sync_addr = 0;
++}
++
++static void
++gpu_batch_init(int fd, uint32_t vm, uint64_t src_addr,
++	       uint64_t dst_addr, uint64_t copy_size,
++	       uint32_t *bo, uint64_t *addr)
++{
++	uint32_t width = copy_size / 256;
++	uint32_t height = 1;
++	uint32_t batch_bo_size = BATCH_SIZE(fd);
++	uint32_t batch_bo;
++	uint64_t batch_addr;
++	void *batch;
++	uint32_t *cmd;
++	uint16_t dev_id = intel_get_drm_devid(fd);
++	uint32_t mocs_index = intel_get_uc_mocs_index(fd);
++	int i = 0;
++
++	batch_bo = xe_bo_create(fd, vm, batch_bo_size, vram_if_possible(fd, 0), 0);
++	batch = xe_bo_map(fd, batch_bo, batch_bo_size);
++	cmd = (uint32_t *)batch;
++	cmd[i++] = MEM_COPY_CMD | (1 << 19);
++	cmd[i++] = width - 1;
++	cmd[i++] = height - 1;
++	cmd[i++] = width - 1;
++	cmd[i++] = width - 1;
++	cmd[i++] = lower_32_bits(src_addr);
++	cmd[i++] = upper_32_bits(src_addr);
++	cmd[i++] = lower_32_bits(dst_addr);
++	cmd[i++] = upper_32_bits(dst_addr);
++	if (intel_graphics_ver(dev_id) >= IP_VER(20, 0))
++		cmd[i++] = mocs_index << XE2_MEM_COPY_SRC_MOCS_SHIFT | mocs_index;
++	else
++		cmd[i++] = mocs_index << GEN12_MEM_COPY_MOCS_SHIFT | mocs_index;
++
++	cmd[i++] = MI_BATCH_BUFFER_END;
++	cmd[i++] = MI_BATCH_BUFFER_END;
++
++	batch_addr = to_user_pointer(batch);
++
++	/* Punch a gap in the SVM map where we map the batch_bo */
++	xe_vm_bind_lr_sync(fd, vm, batch_bo, 0, batch_addr, batch_bo_size, 0);
++	*bo = batch_bo;
++	*addr = batch_addr;
++}
++
++static void
++gpu_batch_create(int fd, uint32_t vm, uint32_t exec_queue,
++		 uint64_t src_addr, uint64_t dst_addr,
++		 uint32_t *batch_bo, uint64_t *batch_addr)
++{
++	gpu_batch_init(fd, vm, src_addr, dst_addr, SZ_4K, batch_bo, batch_addr);
++}
++
++static void
++gpu_exec_sync(int fd, uint32_t vm, uint32_t exec_queue,
++	      uint64_t *batch_addr)
++{
++	struct drm_xe_sync sync = {};
++	uint64_t *sync_addr;
++
++	setup_sync(&sync, &sync_addr, BIND_SYNC_VAL);
++
++	sync_addr = (uint64_t *)((char *)from_user_pointer(*batch_addr) + SZ_4K);
++	sync.addr = to_user_pointer((uint64_t *)sync_addr);
++	sync.timeline_value = EXEC_SYNC_VAL;
++	WRITE_ONCE(*sync_addr, 0);
++
++	xe_exec_sync(fd, exec_queue, *batch_addr, &sync, 1);
++	if (READ_ONCE(*sync_addr) != EXEC_SYNC_VAL)
++		xe_wait_ufence(fd, (uint64_t *)sync_addr, EXEC_SYNC_VAL, exec_queue,
++			       NSEC_PER_SEC * 10);
++}
++
++static void test_svm_userptr_copy(int fd)
++{
++	const size_t size = 4096 * 4;
++	uint8_t *svm_ptr, *userptr_ptr, *bo_map;
++	uint32_t bo, batch_bo;
++	uint64_t bo_gpu_va, userptr_gpu_va, batch_addr;
++
++	struct drm_xe_sync sync = {
++		.type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.timeline_value = USER_FENCE_VALUE,
++	};
++	struct drm_xe_engine_class_instance eci = { .engine_class = DRM_XE_ENGINE_CLASS_COPY };
++	uint32_t vm, exec_queue;
++	struct bo_sync {
++		uint64_t sync;
++	} *bo_sync;
++
++	create_vm_and_queue(fd, &eci, &vm, &exec_queue);
++
++	bo_sync = aligned_alloc(xe_get_default_alignment(fd), sizeof(*bo_sync));
++	sync.addr = to_user_pointer(&bo_sync->sync);
++	bind_system_allocator(&sync, 1);
++	xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, 0, FIVE_SEC);
++
++	svm_ptr = aligned_alloc(SZ_4K, size);
++	igt_assert(svm_ptr);
++
++	userptr_ptr = aligned_alloc(SZ_4K, size);
++	igt_assert(userptr_ptr);
++
++	bo = xe_bo_create(fd, vm, size, system_memory(fd), 0);
++	bo_gpu_va = BO_VA_BASE;
++	xe_vm_bind_async(fd, vm, 0, bo, 0, bo_gpu_va, size, 0, 0);
++
++	userptr_gpu_va = USERPTR_VA_BASE;
++	xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(userptr_ptr),
++				 userptr_gpu_va, size, NULL, 0);
++
++	for (size_t i = 0; i < size; i++)
++		svm_ptr[i] = rand() & 0xFF;
++
++	xe_vm_madvise(fd, vm, to_user_pointer(svm_ptr), size, 0,
++		      DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
++		      DRM_XE_PREFERRED_LOC_DEFAULT_DEVICE, 0, 0);
++	xe_vm_madvise(fd, vm, to_user_pointer(userptr_ptr), size, 0,
++		      DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
++		      DRM_XE_PREFERRED_LOC_DEFAULT_DEVICE, 0, 0);
++
++	gpu_batch_create(fd, vm, exec_queue, to_user_pointer(svm_ptr),
++			 to_user_pointer(userptr_ptr), &batch_bo, &batch_addr);
++	gpu_exec_sync(fd, vm, exec_queue, &batch_addr);
++	igt_assert(memcmp(svm_ptr, userptr_ptr, SZ_4K) == 0);
++
++	gpu_batch_create(fd, vm, exec_queue, userptr_gpu_va, bo_gpu_va, &batch_bo, &batch_addr);
++	gpu_exec_sync(fd, vm, exec_queue, &batch_addr);
++
++	bo_map = xe_bo_map(fd, bo, size);
++	igt_assert(memcmp(bo_map, svm_ptr, SZ_4K) == 0);
++
++	unbind_system_allocator();
++	batch_fini(fd, vm, batch_bo, batch_addr);
++
++	free(svm_ptr);
++	free(userptr_ptr);
++	free(bo_sync);
++
++	xe_vm_unbind_async(fd, vm, 0, 0, bo_gpu_va, size, &sync, 0);
++	xe_vm_unbind_async(fd, vm, 0, 0, userptr_gpu_va, size, &sync, 0);
++
++	gem_close(fd, bo);
++	xe_exec_queue_destroy(fd, exec_queue);
++	xe_vm_destroy(fd, vm);
++}
++
++int igt_main()
++{
++	int fd;
++
++	igt_fixture() {
++		fd = drm_open_driver(DRIVER_XE);
++	}
++
++	igt_subtest("svm-userptr-copy-madvise")
++		test_svm_userptr_copy(fd);
++
++	igt_fixture() {
++		drm_close_driver(fd);
++	}
++}
++
+diff --git a/tests/meson.build b/tests/meson.build
+index ef4edaa0d..ac5dd5ce3 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -317,6 +317,7 @@ intel_xe_progs = [
+ 	'xe_mmap',
+         'xe_module_load',
+         'xe_multigpu_svm',
++        'xe_svm_usrptr_madvise',
+ 	'xe_noexec_ping_pong',
+ 	'xe_oa',
+ 	'xe_pat',
+-- 
+2.34.1
+
