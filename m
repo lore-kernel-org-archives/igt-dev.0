@@ -4,63 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EEA2E7E0C7
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 11:19:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05D02E7E0C7
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 11:24:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9DEF610E151;
-	Mon,  9 Feb 2026 11:19:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AD68110E14D;
+	Mon,  9 Feb 2026 11:24:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GwlR0SLb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R2MGwhuC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 165EC10E151
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 11:19:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D19B10E14D
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 11:24:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770635988; x=1802171988;
+ t=1770636293; x=1802172293;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=nWC9gIV9BBNghPyttUk+d0rFh+1z+X94eyC8WhsuXIk=;
- b=GwlR0SLb3gDElbcdxengHk7NPMvPMy+X2IUsOOUpuIxejXoIFuSTXI11
- SPaGXntphvhEu5h61DyD3Uw7uIN889P5e1s+tSRgD6k8+9iu9j0oBy+fQ
- YIaujyNw86QUVuo8qvTpimb3FCziE4iLPwDVZbA5FDxOS/melrYZMARdV
- lY5CV45ii0mp4Tvc6U4NAVENptbfO9quMGD11aIuzvir9w9Jfl8XQC4V6
- ZScY79Uluh6fl6R6aN4ARu9KoWNn8G/q6zWDLktNkNwV7/dHGAEPkLxJf
- aedWflmCpW8PuP8SROQwjjMGKlAlvZamp4xT/9yWXBS5bmGFUOp4qB1BV A==;
-X-CSE-ConnectionGUID: WMipDv3VQ/uQlQ9RcCRj/A==
-X-CSE-MsgGUID: wEjM9+tSSoe82rWsyJUS/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11695"; a="83115776"
-X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="83115776"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2026 03:19:48 -0800
-X-CSE-ConnectionGUID: zH+qgXs+Ra6ZlGQ6XifBTQ==
-X-CSE-MsgGUID: RY1FcTNqT0STpIWgEsVVTw==
+ bh=456DNEWa7HboG0UNx2qOLnc8OQ2Z+74Hkw+tnl1vLCs=;
+ b=R2MGwhuCqLfHmmyIPn3kMpLQdwOk12xe/Ilmjq+GQLGfiC+3ds5umihu
+ cpQ4UY8xOq5dyQY0sf3Yiuyc7xYfdjqdeONXxoCjk11ztFZJAoLymFwSF
+ O+rwSRn00XPjq1J+fU2QGW+NayV/+qs2S6O38prDDwDsi64ymbRpQAA5o
+ tPjx575JZxAXROBwbPHSw81TL4WiSREXnY+GaMxdHFWZ0+gk53kM+IjhG
+ Gnt2wQwfkneFzJteOE2/OeE6S7+XFRK3ClTrj5YuUFgmeSMLQ0OTU1Xu5
+ q+H4faLuxJuaS7gEjpu6w5+ity+ySzvfZVSCM/CUmmMMIl3IkPrhaJRMG A==;
+X-CSE-ConnectionGUID: oMt9omOuTqCQaVbdYwLCTw==
+X-CSE-MsgGUID: NviXbKUkS76PZ8CUQINkeQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11695"; a="89162915"
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="89162915"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Feb 2026 03:24:52 -0800
+X-CSE-ConnectionGUID: cga9Mj0QTS68cwzijZofsQ==
+X-CSE-MsgGUID: 4NQJy3hJS4SnHlTESz3mLw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="216063186"
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="215732836"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 03:19:47 -0800
-Date: Mon, 9 Feb 2026 12:19:23 +0100
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 03:24:51 -0800
+Date: Mon, 9 Feb 2026 12:24:48 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Nilawar, Badal" <badal.nilawar@intel.com>
-Cc: Karthik Poosa <karthik.poosa@intel.com>, igt-dev@lists.freedesktop.org,
- anshuman.gupta@intel.com, riana.tauro@intel.com, rodrigo.vivi@intel.com
-Subject: Re: [PATCH i-g-t v11 2/2] tests/intel/xe_pm_residency: Add subtest
- for ASPM Link state residency
-Message-ID: <20260209111923.yk33bdi4awunjsx3@kamilkon-DESK.igk.intel.com>
+To: Nitin Gote <nitin.r.gote@intel.com>
+Cc: igt-dev@lists.freedesktop.org, michal.wajdeczko@intel.com
+Subject: Re: [PATCH] tests/intel/xe_configfs: Reset configfs group after each
+ subtest
+Message-ID: <20260209112448.iuzegnjsokqztko5@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Nilawar, Badal" <badal.nilawar@intel.com>,
- Karthik Poosa <karthik.poosa@intel.com>,
- igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- riana.tauro@intel.com, rodrigo.vivi@intel.com
-References: <20260204183747.1960879-1-karthik.poosa@intel.com>
- <20260204183747.1960879-3-karthik.poosa@intel.com>
- <b99261d0-08da-410c-99f3-c558837f5539@intel.com>
+ Nitin Gote <nitin.r.gote@intel.com>, igt-dev@lists.freedesktop.org,
+ michal.wajdeczko@intel.com
+References: <20260204160308.107154-2-nitin.r.gote@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <b99261d0-08da-410c-99f3-c558837f5539@intel.com>
+In-Reply-To: <20260204160308.107154-2-nitin.r.gote@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,31 +71,126 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Nilawar,,
-On 2026-02-09 at 13:39:18 +0530, Nilawar, Badal wrote:
+Hi Nitin,
+On 2026-02-04 at 21:33:09 +0530, Nitin Gote wrote:
+> The xe_configfs test uses a shared configfs group across all subtests.
+> When subtests modify configfs attributes without resetting them, the
+> modified values persist and affect subsequent subtests. For example,
+> ctx-restore-mid-bb reports register value mismatches due to stale
+> batch buffer data from previous subtests.
 > 
-> On 05-02-2026 00:07, Karthik Poosa wrote:
-> > Add subtest aspm_link_residency to verify PCIe ASPM.
-> > Active State Power Management (ASPM) is a power management mechanism
-> > for PCI Express (PCIe) devices that aims to save power while the devices
-> > are in a fully active state.
-> > This test uses link state counters from the debugfs
-> > dgfx_pcie_link_residencies to verify this.
-> > 
-[cut]
+> Fix by removing the configfs device directory after each subtest and
+> letting the next subtest recreate it to get default values as
+> hardcoded in the driver.
+> 
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6204
+> Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+> ---
+> v1->v2:
+>   Instead of manually resetting each attribute,
+>   it's cleaner to remove and recreate the configfs group after
+>   each subtests. (Michal)
+> 
+>  tests/intel/xe_configfs.c | 47 +++++++++++++++++++++++++++++++--------
+>  1 file changed, 38 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
+> index d2dfd2e87..aa3435392 100644
+> --- a/tests/intel/xe_configfs.c
+> +++ b/tests/intel/xe_configfs.c
+> @@ -361,7 +361,6 @@ int igt_main()
+>  
+>  		configfs_fd = igt_configfs_open("xe");
+>  		igt_require(configfs_fd != -1);
+> -		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>  		igt_install_exit_handler(restore);
+>  	}
+>  
+> @@ -369,39 +368,69 @@ int igt_main()
+>  	igt_subtest("survivability-mode") {
+>  		igt_require(IS_BATTLEMAGE(devid));
+>  		igt_require_f(!is_vf_device, "survivability mode not supported in VF\n");
+> +		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>  		test_survivability_mode(configfs_device_fd);
+> +		close(configfs_device_fd);
+> +		igt_fs_remove_dir(configfs_fd, bus_addr);
+>  	}
+>  
+>  	igt_describe("Validate engines_allowed with invalid options");
+> -	igt_subtest("engines-allowed-invalid")
+> +	igt_subtest("engines-allowed-invalid") {
+> +		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>  		test_engines_allowed_invalid(configfs_device_fd);
+> +		close(configfs_device_fd);
+> +		igt_fs_remove_dir(configfs_fd, bus_addr);
 
-> 
-> Looks good to me.
-> 
-> Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
-> 
-> Thanks,
-> Badal
-> 
-
-
-Thank you all, I merged it.
+You added the same two lines, use helper function instead, here
+and below.
 
 Regards,
 Kamil
 
+> +	}
+>  
+>  	igt_describe("Validate engines_allowed");
+> -	igt_subtest("engines-allowed")
+> +	igt_subtest("engines-allowed") {
+> +		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>  		test_engines_allowed(configfs_device_fd);
+> +		close(configfs_device_fd);
+> +		igt_fs_remove_dir(configfs_fd, bus_addr);
+> +	}
+>  
+>  	igt_describe("Validate gt_types_allowed");
+> -	igt_subtest("gt-types-allowed")
+> +	igt_subtest("gt-types-allowed") {
+> +		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>  		test_gt_types_allowed(configfs_device_fd);
+> +		close(configfs_device_fd);
+> +		igt_fs_remove_dir(configfs_fd, bus_addr);
+> +	}
+>  
+>  	igt_describe("Validate ctx_restore_post_bb with invalid options");
+> -	igt_subtest("ctx-restore-post-bb-invalid")
+> +	igt_subtest("ctx-restore-post-bb-invalid") {
+> +		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>  		test_ctx_restore_invalid(configfs_device_fd, "post");
+> +		close(configfs_device_fd);
+> +		igt_fs_remove_dir(configfs_fd, bus_addr);
+> +	}
+>  
+>  	igt_describe("Validate ctx_restore_post_bb");
+> -	igt_subtest("ctx-restore-post-bb")
+> +	igt_subtest("ctx-restore-post-bb") {
+> +		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>  		test_ctx_restore(configfs_device_fd, "post");
+> +		close(configfs_device_fd);
+> +		igt_fs_remove_dir(configfs_fd, bus_addr);
+> +	}
+>  
+>  	igt_describe("Validate ctx_restore_mid_bb with invalid options");
+> -	igt_subtest("ctx-restore-mid-bb-invalid")
+> +	igt_subtest("ctx-restore-mid-bb-invalid") {
+> +		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>  		test_ctx_restore_invalid(configfs_device_fd, "mid");
+> +		close(configfs_device_fd);
+> +		igt_fs_remove_dir(configfs_fd, bus_addr);
+> +	}
+>  
+>  	igt_describe("Validate ctx_restore_mid_bb");
+> -	igt_subtest("ctx-restore-mid-bb")
+> +	igt_subtest("ctx-restore-mid-bb") {
+> +		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>  		test_ctx_restore(configfs_device_fd, "mid");
+> +		close(configfs_device_fd);
+> +		igt_fs_remove_dir(configfs_fd, bus_addr);
+> +	}
+>  
+>  	igt_fixture() {
+> -		close(configfs_device_fd);
+>  		close(configfs_fd);
+>  	}
+>  }
+> -- 
+> 2.50.1
+> 
