@@ -4,53 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 954B4E81BCC
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 14:19:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80F84E81BD8
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 15:15:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3B94110E0E0;
-	Mon,  9 Feb 2026 14:19:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2C12510E414;
+	Mon,  9 Feb 2026 15:15:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CJMKU+ZH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b3Yszivo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E63410E403
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 14:19:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E2A110E414
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 15:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770646774; x=1802182774;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=zYMXQ2GRk+1m5gZ/Hm/UbF28zLEprgJ7F7yJFUaPIgA=;
- b=CJMKU+ZHktkDu6FtQj8NTckyl0ebsZJwrIG1wx5hocAisWBTTMT0nHYe
- jytXyVKpx/Giiih8nOiGlRFhBEs2UBzla+Ib1fPFg0dfzJLTNnuqnQ7wQ
- F81Iz7Qh0tMbaYltVauDKbStYqz7zyAIHoPiqJGphZBHN4dxmCbzWdfDY
- tPesPqSVTRYvN45xQp2bTm9gbDQSd1U5bcLEp8tJaYGyYeCzHTtrWKdTB
- VN3alA7iHJqAhV7mXnYjg/uzOIoveEfSn1iEwZ/PyxLnhWfyKgenY4OAh
- agt/9shfemjHtNr/sxpr4CwHrrVuyZbPNa3Td+Mv9X9sD3TTnVQ29CO/S g==;
-X-CSE-ConnectionGUID: FzfotC8pRYSxJoOjkAwgkw==
-X-CSE-MsgGUID: 599jkacLTC6ny94rG8z4Ew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="71658894"
-X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="71658894"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2026 06:19:33 -0800
-X-CSE-ConnectionGUID: zDOOxF7oR56Uan8OiIac/w==
-X-CSE-MsgGUID: eq5WURq6RHGrQT+w+k8rWQ==
+ t=1770650146; x=1802186146;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Lp2i52pHGOCmmR56EqXKIpx/8bhH7FOah48H1FjI0+s=;
+ b=b3YszivoRj5JXquhAJLAr4uII0T2fq0fU2Z1kzPi/1tAYSFLzXG0AEwF
+ oRHw1kiAHzWMjjG4iD0JBi5k45f5tHX5vRN/tcySaU9l4FKgopyLEd+eZ
+ N44l938ltZhGmHlxqJB9CqmKh8IzxG22bl5h+qaWuv0NhJm04BuVTuhCX
+ 4yadvC0ltsre3BaOYNcaQr3haDor2OU38gwOOG9moox+So52YLOEgCTDh
+ m3HQO2KgwugjcjsnIXZ5WEXVB7pjIUHvE1xgAyqwjALP/UBiFQahuGnes
+ evd0bnxH/zXBUw38tqtD9J4qy+72YZ26rn3izq1l2Xj9OJbOdvD2+lQLk g==;
+X-CSE-ConnectionGUID: MIXF0vMeSAK2tbSLZ1nkKA==
+X-CSE-MsgGUID: JTCLYKnERkuqQOJrn5cQ0w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="82869889"
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="82869889"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Feb 2026 07:15:45 -0800
+X-CSE-ConnectionGUID: QNMdMpn9QOathr1gUwHdfg==
+X-CSE-MsgGUID: CfeguUCWR4ybDbFQOJSRYA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="216089357"
-Received: from dut7069bmgfrd.fm.intel.com (HELO DUT7069BMGFRD..) ([10.1.84.79])
- by fmviesa005.fm.intel.com with ESMTP; 09 Feb 2026 06:19:33 -0800
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, nishit.sharma@intel.com,
- thomas.hellstrom@intel.com
-Subject: [PATCH i-g-t] tests/intel/xe_svm_usrptr_madvise: Add SVM to userptr
- copy test with madvise
-Date: Mon,  9 Feb 2026 14:19:33 +0000
-Message-ID: <20260209141933.690263-1-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.48.1
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="216582445"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 07:15:44 -0800
+Date: Mon, 9 Feb 2026 16:15:41 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ Tvrtko Ursulin <tursulin@igalia.com>,
+ Rob Clark <robdclark@gmail.com>, Rob Clark <robdclark@chromium.org>
+Subject: Re: [PATCH i-g-t v1 4/4] Dockerfile.build: Replace json-c with jansson
+Message-ID: <20260209151541.zi2jkdiixpstoqch@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ Tvrtko Ursulin <tursulin@igalia.com>,
+ Rob Clark <robdclark@gmail.com>, Rob Clark <robdclark@chromium.org>
+References: <20260115175811.179898-1-kamil.konieczny@linux.intel.com>
+ <20260115175811.179898-5-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Disposition: inline
+In-Reply-To: <20260115175811.179898-5-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,303 +77,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+Hi all,
+On 2026-01-15 at 18:58:10 +0100, Kamil Konieczny wrote:
+> After replacing json-c with Jansson library in igt runner, the
+> dokerfiles needs similar update.
+> 
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-This test validates GPU memory copy operations between SVM-allocated memory
-and userptr memory with explicit madvise and preferred location hints.
-This test helps ensure correct SVM, userptr, and madvise handling.
+Please forward this to you CI teams, I plan to merge this soon.
+There is also one more change waiting, tools/lsgpu will have
+libpci-dev dependancy.
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- tests/intel/xe_svm_usrptr_madvise.c | 266 ++++++++++++++++++++++++++++
- tests/meson.build                   |   1 +
- 2 files changed, 267 insertions(+)
- create mode 100644 tests/intel/xe_svm_usrptr_madvise.c
+Regards,
+Kamil 
 
-diff --git a/tests/intel/xe_svm_usrptr_madvise.c b/tests/intel/xe_svm_usrptr_madvise.c
-new file mode 100644
-index 000000000..0f70fd6e6
---- /dev/null
-+++ b/tests/intel/xe_svm_usrptr_madvise.c
-@@ -0,0 +1,266 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ *
-+ * Authors:
-+ *	Nishit Sharma <nishit.sharma@intel.com>
-+ */
-+
-+#include <fcntl.h>
-+#include <linux/mman.h>
-+#include <string.h>
-+#include <time.h>
-+
-+#include "igt.h"
-+#include "intel_blt.h"
-+#include "intel_mocs.h"
-+#include "intel_pat.h"
-+
-+#include "xe/xe_gt.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+#include "xe_drm.h"
-+
-+#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
-+#define QUARTER_SEC             (NSEC_PER_SEC / 4)
-+#define FIVE_SEC                (5LL * NSEC_PER_SEC)
-+
-+#define BATCH_SIZE(_fd) ALIGN(SZ_8K, xe_get_default_alignment(_fd))
-+#define BIND_SYNC_VAL 0x686868
-+#define EXEC_SYNC_VAL 0x676767
-+
-+#define SVM_VA_BASE 0x1000000
-+#define USERPTR_VA_BASE 0x2000000
-+#define BO_VA_BASE 0x3000000
-+
-+/**
-+ * TEST: SVM functional and performance tests
-+ * Description: Validate GPU copy from SVM memory to userptr and then to a buffer object
-+ *		using madvise to set device memory preference and verifying data integrity
-+ *
-+ * Category: Core
-+ * Mega feature: USM
-+ * Sub-category: System allocator, SVM, userptr
-+ * Functionality: fault mode, system allocator, SVM-userptr copy, madvise
-+ * Test category: functional
-+ *
-+ * SUBTEST: svm-userptr-copy-madvise
-+ * Description:
-+ *		Test GPU copy from SVM memory to userptr, then from userptr to buffer object,
-+ *		with madvise to device memory and data validation
-+ *
-+ */
-+
-+IGT_TEST_DESCRIPTION("SVM memory to userptr copy with madvise");
-+
-+static int va_bits;
-+#define bind_system_allocator(__sync, __num_sync)			\
-+	__xe_vm_bind_assert(fd, vm, 0,					\
-+			     0, 0, 0, 0x1ull << va_bits,		\
-+			     DRM_XE_VM_BIND_OP_MAP,			\
-+			     DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR,	\
-+			     (__sync), (__num_sync), 0, 0)
-+
-+#define unbind_system_allocator()				\
-+	__xe_vm_bind(fd, vm, 0, 0, 0, 0, 0x1ull << va_bits,	\
-+		     DRM_XE_VM_BIND_OP_UNMAP, 0,		\
-+		     NULL, 0, 0, 0, 0)
-+
-+static void batch_fini(int fd, uint32_t vm, uint32_t bo, uint64_t addr)
-+{
-+	/* Unmap the batch bo by re-instating the SVM binding. */
-+	xe_vm_bind_lr_sync(fd, vm, 0, 0, addr, BATCH_SIZE(fd),
-+			   DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR);
-+	gem_close(fd, bo);
-+}
-+
-+static void
-+create_vm_and_queue(int fd, struct drm_xe_engine_class_instance *eci,
-+		    uint32_t *vm, uint32_t *exec_queue)
-+{
-+	struct xe_device *xe;
-+
-+	xe = xe_device_get(fd);
-+	va_bits = xe->va_bits;
-+	*vm = xe_vm_create(fd,
-+			   DRM_XE_VM_CREATE_FLAG_LR_MODE | DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-+	*exec_queue = xe_exec_queue_create(fd, *vm, eci, 0);
-+	xe_vm_bind_lr_sync(fd, *vm, 0, 0, 0, 1ull << xe->va_bits,
-+			   DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR);
-+}
-+
-+static void
-+setup_sync(struct drm_xe_sync *sync, uint64_t **sync_addr,
-+	   uint64_t timeline_value)
-+{
-+	*sync_addr = malloc(sizeof(**sync_addr));
-+	igt_assert(*sync_addr);
-+	sync->flags = DRM_XE_SYNC_FLAG_SIGNAL;
-+	sync->type = DRM_XE_SYNC_TYPE_USER_FENCE;
-+	sync->addr = to_user_pointer((uint64_t *)*sync_addr);
-+	sync->timeline_value = timeline_value;
-+	**sync_addr = 0;
-+}
-+
-+static void
-+gpu_batch_init(int fd, uint32_t vm, uint64_t src_addr,
-+	       uint64_t dst_addr, uint64_t copy_size,
-+	       uint32_t *bo, uint64_t *addr)
-+{
-+	uint32_t width = copy_size / 256;
-+	uint32_t height = 1;
-+	uint32_t batch_bo_size = BATCH_SIZE(fd);
-+	uint32_t batch_bo;
-+	uint64_t batch_addr;
-+	void *batch;
-+	uint32_t *cmd;
-+	uint16_t dev_id = intel_get_drm_devid(fd);
-+	uint32_t mocs_index = intel_get_uc_mocs_index(fd);
-+	int i = 0;
-+
-+	batch_bo = xe_bo_create(fd, vm, batch_bo_size, vram_if_possible(fd, 0), 0);
-+	batch = xe_bo_map(fd, batch_bo, batch_bo_size);
-+	cmd = (uint32_t *)batch;
-+	cmd[i++] = MEM_COPY_CMD | (1 << 19);
-+	cmd[i++] = width - 1;
-+	cmd[i++] = height - 1;
-+	cmd[i++] = width - 1;
-+	cmd[i++] = width - 1;
-+	cmd[i++] = lower_32_bits(src_addr);
-+	cmd[i++] = upper_32_bits(src_addr);
-+	cmd[i++] = lower_32_bits(dst_addr);
-+	cmd[i++] = upper_32_bits(dst_addr);
-+	if (intel_graphics_ver(dev_id) >= IP_VER(20, 0))
-+		cmd[i++] = mocs_index << XE2_MEM_COPY_SRC_MOCS_SHIFT | mocs_index;
-+	else
-+		cmd[i++] = mocs_index << GEN12_MEM_COPY_MOCS_SHIFT | mocs_index;
-+
-+	cmd[i++] = MI_BATCH_BUFFER_END;
-+	cmd[i++] = MI_BATCH_BUFFER_END;
-+
-+	batch_addr = to_user_pointer(batch);
-+
-+	/* Punch a gap in the SVM map where we map the batch_bo */
-+	xe_vm_bind_lr_sync(fd, vm, batch_bo, 0, batch_addr, batch_bo_size, 0);
-+	*bo = batch_bo;
-+	*addr = batch_addr;
-+}
-+
-+static void
-+gpu_batch_create(int fd, uint32_t vm, uint32_t exec_queue,
-+		 uint64_t src_addr, uint64_t dst_addr,
-+		 uint32_t *batch_bo, uint64_t *batch_addr)
-+{
-+	gpu_batch_init(fd, vm, src_addr, dst_addr, SZ_4K, batch_bo, batch_addr);
-+}
-+
-+static void
-+gpu_exec_sync(int fd, uint32_t vm, uint32_t exec_queue,
-+	      uint64_t *batch_addr)
-+{
-+	struct drm_xe_sync sync = {};
-+	uint64_t *sync_addr;
-+
-+	setup_sync(&sync, &sync_addr, BIND_SYNC_VAL);
-+
-+	sync_addr = (uint64_t *)((char *)from_user_pointer(*batch_addr) + SZ_4K);
-+	sync.addr = to_user_pointer((uint64_t *)sync_addr);
-+	sync.timeline_value = EXEC_SYNC_VAL;
-+	WRITE_ONCE(*sync_addr, 0);
-+
-+	xe_exec_sync(fd, exec_queue, *batch_addr, &sync, 1);
-+	if (READ_ONCE(*sync_addr) != EXEC_SYNC_VAL)
-+		xe_wait_ufence(fd, (uint64_t *)sync_addr, EXEC_SYNC_VAL, exec_queue,
-+			       NSEC_PER_SEC * 10);
-+}
-+
-+static void test_svm_userptr_copy(int fd)
-+{
-+	const size_t size = 4096 * 4;
-+	uint8_t *svm_ptr, *userptr_ptr, *bo_map;
-+	uint32_t bo, batch_bo;
-+	uint64_t bo_gpu_va, userptr_gpu_va, batch_addr;
-+
-+	struct drm_xe_sync sync = {
-+		.type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		.timeline_value = USER_FENCE_VALUE,
-+	};
-+	struct drm_xe_engine_class_instance eci = { .engine_class = DRM_XE_ENGINE_CLASS_COPY };
-+	uint32_t vm, exec_queue;
-+	struct bo_sync {
-+		uint64_t sync;
-+	} *bo_sync;
-+
-+	create_vm_and_queue(fd, &eci, &vm, &exec_queue);
-+
-+	bo_sync = aligned_alloc(xe_get_default_alignment(fd), sizeof(*bo_sync));
-+	sync.addr = to_user_pointer(&bo_sync->sync);
-+	bind_system_allocator(&sync, 1);
-+	xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, 0, FIVE_SEC);
-+
-+	svm_ptr = aligned_alloc(SZ_4K, size);
-+	igt_assert(svm_ptr);
-+
-+	userptr_ptr = aligned_alloc(SZ_4K, size);
-+	igt_assert(userptr_ptr);
-+
-+	bo = xe_bo_create(fd, vm, size, system_memory(fd), 0);
-+	bo_gpu_va = BO_VA_BASE;
-+	xe_vm_bind_async(fd, vm, 0, bo, 0, bo_gpu_va, size, 0, 0);
-+
-+	userptr_gpu_va = USERPTR_VA_BASE;
-+	xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(userptr_ptr),
-+				 userptr_gpu_va, size, NULL, 0);
-+
-+	for (size_t i = 0; i < size; i++)
-+		svm_ptr[i] = rand() & 0xFF;
-+
-+	xe_vm_madvise(fd, vm, to_user_pointer(svm_ptr), size, 0,
-+		      DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
-+		      DRM_XE_PREFERRED_LOC_DEFAULT_DEVICE, 0, 0);
-+	xe_vm_madvise(fd, vm, to_user_pointer(userptr_ptr), size, 0,
-+		      DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC,
-+		      DRM_XE_PREFERRED_LOC_DEFAULT_DEVICE, 0, 0);
-+
-+	gpu_batch_create(fd, vm, exec_queue, to_user_pointer(svm_ptr),
-+			 to_user_pointer(userptr_ptr), &batch_bo, &batch_addr);
-+	gpu_exec_sync(fd, vm, exec_queue, &batch_addr);
-+	igt_assert(memcmp(svm_ptr, userptr_ptr, SZ_4K) == 0);
-+
-+	gpu_batch_create(fd, vm, exec_queue, userptr_gpu_va, bo_gpu_va, &batch_bo, &batch_addr);
-+	gpu_exec_sync(fd, vm, exec_queue, &batch_addr);
-+
-+	bo_map = xe_bo_map(fd, bo, size);
-+	igt_assert(memcmp(bo_map, svm_ptr, SZ_4K) == 0);
-+
-+	unbind_system_allocator();
-+	batch_fini(fd, vm, batch_bo, batch_addr);
-+
-+	free(svm_ptr);
-+	free(userptr_ptr);
-+	free(bo_sync);
-+
-+	xe_vm_unbind_async(fd, vm, 0, 0, bo_gpu_va, size, &sync, 0);
-+	xe_vm_unbind_async(fd, vm, 0, 0, userptr_gpu_va, size, &sync, 0);
-+
-+	gem_close(fd, bo);
-+	xe_exec_queue_destroy(fd, exec_queue);
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+int igt_main()
-+{
-+	int fd;
-+
-+	igt_fixture() {
-+		fd = drm_open_driver(DRIVER_XE);
-+	}
-+
-+	igt_subtest("svm-userptr-copy-madvise")
-+		test_svm_userptr_copy(fd);
-+
-+	igt_fixture() {
-+		drm_close_driver(fd);
-+	}
-+}
-+
-diff --git a/tests/meson.build b/tests/meson.build
-index ef4edaa0d..ac5dd5ce3 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -317,6 +317,7 @@ intel_xe_progs = [
- 	'xe_mmap',
-         'xe_module_load',
-         'xe_multigpu_svm',
-+        'xe_svm_usrptr_madvise',
- 	'xe_noexec_ping_pong',
- 	'xe_oa',
- 	'xe_pat',
--- 
-2.34.1
++cc
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: Tvrtko Ursulin <tursulin@igalia.com>
+Cc: Rob Clark <robdclark@gmail.com>
+Cc: Rob Clark <robdclark@chromium.org>
 
+> ---
+>  Dockerfile.build-debian       | 2 +-
+>  Dockerfile.build-debian-arm64 | 2 +-
+>  Dockerfile.build-debian-armhf | 2 +-
+>  Dockerfile.build-fedora       | 2 +-
+>  4 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Dockerfile.build-debian b/Dockerfile.build-debian
+> index 52d7c42d1..cbc12875d 100644
+> --- a/Dockerfile.build-debian
+> +++ b/Dockerfile.build-debian
+> @@ -13,7 +13,7 @@ RUN apt-get install -y \
+>  			libgsl-dev \
+>  			libasound2-dev \
+>  			libxmlrpc-core-c3-dev \
+> -			libjson-c-dev \
+> +			libjansson-dev \
+>  			libcurl4-openssl-dev \
+>  			python3-docutils \
+>  			valgrind \
+> diff --git a/Dockerfile.build-debian-arm64 b/Dockerfile.build-debian-arm64
+> index cf0625ac7..9bbcdde92 100644
+> --- a/Dockerfile.build-debian-arm64
+> +++ b/Dockerfile.build-debian-arm64
+> @@ -27,7 +27,7 @@ RUN apt-get install -y \
+>  			libudev-dev:arm64 \
+>  			libgsl-dev:arm64 \
+>  			libasound2-dev:arm64 \
+> -			libjson-c-dev:arm64 \
+> +			libjansson-dev:arm64 \
+>  			libcurl4-openssl-dev:arm64 \
+>  			libxrandr-dev:arm64 \
+>  			libxv-dev:arm64 \
+> diff --git a/Dockerfile.build-debian-armhf b/Dockerfile.build-debian-armhf
+> index 58b5be82a..e307fbedb 100644
+> --- a/Dockerfile.build-debian-armhf
+> +++ b/Dockerfile.build-debian-armhf
+> @@ -27,7 +27,7 @@ RUN apt-get install -y \
+>  			libudev-dev:armhf \
+>  			libgsl-dev:armhf \
+>  			libasound2-dev:armhf \
+> -			libjson-c-dev:armhf \
+> +			libjansson-dev:armhf \
+>  			libcurl4-openssl-dev:armhf \
+>  			libxrandr-dev:armhf \
+>  			libxv-dev:armhf \
+> diff --git a/Dockerfile.build-fedora b/Dockerfile.build-fedora
+> index 9399c0a7d..4c3bdbbd0 100644
+> --- a/Dockerfile.build-fedora
+> +++ b/Dockerfile.build-fedora
+> @@ -19,7 +19,7 @@ RUN dnf install -y \
+>  	'pkgconfig(xmlrpc)' \
+>  	'pkgconfig(xmlrpc_util)' \
+>  	'pkgconfig(xmlrpc_client)' \
+> -	'pkgconfig(json-c)' \
+> +	'pkgconfig(jansson)' \
+>  	'pkgconfig(gtk-doc)' \
+>  	'pkgconfig(xv)' \
+>  	'pkgconfig(xrandr)' \
+> -- 
+> 2.52.0
+> 
