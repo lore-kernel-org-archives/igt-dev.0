@@ -4,58 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF013E81BA8
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 12:04:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80E54E81BA8
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 12:05:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9470D10E3CC;
-	Mon,  9 Feb 2026 12:04:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3003710E3CC;
+	Mon,  9 Feb 2026 12:05:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MoNTdlku";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YLxbOqCP";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BE1710E3CC
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 12:04:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB3A810E3CC
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 12:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770638662; x=1802174662;
+ t=1770638707; x=1802174707;
  h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=kD0C5dwGNvWfuc48kYmMVdhlMxaeZRZNVwow/RDHiVA=;
- b=MoNTdlkuPK6v+ATwDzmDhczJdMdbvCqkfm9+LgaAasjMdlJtyfN4Xe3g
- 1zKtdeUkdHANhGOt0ibbLVMOuJhm2jVau1/sbONTdp0XYI9VkVKLhf+dq
- s7BPQn96n+TyT+IPBu8JqckKUxfTLf+88DdprIJ00ZVpl2HWgMApamgDG
- r5dpKqYPuMyq8yYdtVkdGhpMSCOcf00VaNprpW8vKlSk0WX3Y/1xD5SmT
- P+dVOeAlR33GfRx5omlNF0IS0UeSxZOCGflqVrI/nHUCJAJGLsgUPAzSw
- zX2NyvWFRdr33tXA9fopeaO9jk5TW7HBSjN1oZH8F5hdY+9bTORmYRKd0 w==;
-X-CSE-ConnectionGUID: eDb1p5KVSbSe3Cl/B0jKcw==
-X-CSE-MsgGUID: 752Ctv48S+SoZAURP3QomQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="83118492"
-X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="83118492"
+ from:in-reply-to;
+ bh=HiUaBkfqHkvVLXUVYF/f9WnFAu9cPGEwGiBOLh/D5R4=;
+ b=YLxbOqCPlmdBkMYn+52BSSRkAeLIrI83kMmI5g+oo1imZO2rLfyVncxb
+ NbeMazcPds6f/YMaLaJa61ZY42rIeRad/LPJVhjOy3n2fpEYbt1/vdqCj
+ dSk61hYtB6/dtiCmfAO2G8IkoM6EnrVbxdd+TvI0rQQuAf0YtFfBX0Hnu
+ +l2Z03JvS36LsXKR1cfK9YN2fcksDKroefsZTz4Z6aJ6PkIp7ToRePX2x
+ OOlKTHhCAG4cZWM7R5qzuHVLF0ucGeDz/vnGBdDYPLImw51NG34Aw/Beb
+ riCPxGMJAW0w4rYbmDt5Gsf/8w/2m9wlIxzbsB2REYAw0sIOxFNFuCzrd g==;
+X-CSE-ConnectionGUID: 0TO7hFmTQXSfWZpiTXs9Hg==
+X-CSE-MsgGUID: YyEdGC0/Q9SMh7ZqScB86g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="83118543"
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208,217";a="83118543"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2026 04:04:21 -0800
-X-CSE-ConnectionGUID: mzhfZoqGQD6Vujte0tXl5Q==
-X-CSE-MsgGUID: hIvfVNzaQwO2PJKpjYfM4w==
+ 09 Feb 2026 04:05:06 -0800
+X-CSE-ConnectionGUID: evBOW26qS8SgpmfkGv1ZUg==
+X-CSE-MsgGUID: y+DXn70EQwudFkS01u7iRA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="210874714"
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; 
+ d="scan'208,217";a="210874734"
 Received: from jthakur-mobl.gar.corp.intel.com (HELO [10.247.183.166])
  ([10.247.183.166])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2026 04:04:19 -0800
-Message-ID: <9f0a5b0c-e154-4eab-9b87-048ce6b9f8e7@intel.com>
-Date: Mon, 9 Feb 2026 17:34:17 +0530
+ 09 Feb 2026 04:05:05 -0800
+Content-Type: multipart/alternative;
+ boundary="------------nPFJqbLTzHfF1oJPMZ6IgXSo"
+Message-ID: <54960699-b2d8-4fbf-ae4b-b1872b694baf@intel.com>
+Date: Mon, 9 Feb 2026 17:35:03 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t,v7,1/3] tests/chamelium/kms_chamelium: Add
- connector_test() macro
+Subject: Re: [i-g-t, v7,
+ 2/3] tests/chamelium/kms_chamelium: use helper function
+ for connector lookup in DP/HDMI/VGA tests
 To: Mohammed Bilal <mohammed.bilal@intel.com>, igt-dev@lists.freedesktop.org
 Cc: jeevan.b@intel.com, sameer.lattannavar@intel.com
-References: <20260203034546.1516152-2-mohammed.bilal@intel.com>
+References: <20260203034546.1516152-3-mohammed.bilal@intel.com>
 Content-Language: en-US
 From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20260203034546.1516152-2-mohammed.bilal@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20260203034546.1516152-3-mohammed.bilal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,12 +73,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+This is a multi-part message in MIME format.
+--------------nPFJqbLTzHfF1oJPMZ6IgXSo
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
 
 On 03-02-2026 09:15, Mohammed Bilal wrote:
-> Introduce a unified connector_test() helper macro that iterates over all
-> matching connected ports and executes tests accordingly, ensuring clean
-> skipping when no matching connector is present and avoiding unintended
-> fixture execution.
+> Use the connector_test() helper macro for chamelium hpd, audio, edid, and
+> frames tests to iterate over and test all matching connected ports. This
+> ensures clean skipping and consistent connector handling across DP/HDMI/VGA
+> tests, and avoids unintended execution of unrelated fixtures.
 >
-> Signed-off-by: Mohammed Bilal <mohammed.bilal@intel.com>
+> Signed-off-by: Mohammed Bilal<mohammed.bilal@intel.com>
+
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+
+--------------nPFJqbLTzHfF1oJPMZ6IgXSo
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 03-02-2026 09:15, Mohammed Bilal
+      wrote:<br>
+    </div>
+    <blockquote type="cite">
+      <pre wrap="" class="moz-quote-pre">Use the connector_test() helper macro for chamelium hpd, audio, edid, and
+frames tests to iterate over and test all matching connected ports. This
+ensures clean skipping and consistent connector handling across DP/HDMI/VGA
+tests, and avoids unintended execution of unrelated fixtures.
+
+Signed-off-by: Mohammed Bilal <a class="moz-txt-link-rfc2396E" href="mailto:mohammed.bilal@intel.com">&lt;mohammed.bilal@intel.com&gt;</a>
+</pre>
+    </blockquote>
+    <p>Reviewed-by: Kunal Joshi <a class="moz-txt-link-rfc2396E" href="mailto:kunal1.joshi@intel.com">&lt;kunal1.joshi@intel.com&gt;</a><span
+      style="white-space: pre-wrap">
+</span></p>
+  </body>
+</html>
+
+--------------nPFJqbLTzHfF1oJPMZ6IgXSo--
