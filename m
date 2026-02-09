@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 793F0E81BD3
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 16:42:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C050E7E0DA
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 19:28:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 254BC10E0A2;
-	Mon,  9 Feb 2026 16:42:49 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EYvliI/I";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 913B210E0A2
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 16:42:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770655367; x=1802191367;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=tpILNkaJ+1yCLXCO0ZVlGv2WlIo+9wNQbC4LIBTwCcE=;
- b=EYvliI/IO3uArPeGoeaib+rKcVtQU9ifzt1PEaXD9HsjFXwXnpUvyr6G
- cIkA3V3t6XnOrH+jAXnKoGtPnJBbQ/bvqIgcXoNouT3O7GEjq+B9U4agV
- q+SeHjJgMuGUDGU+1pfHCc3jZk5+e44ktlUVovILfQI8xPdS3lyBKNjP2
- Vtutm9AyDZ9ZxeNaT8APdbLE3RjvUXWbh+E4olGAWOS/fDlHuaGSFJIq0
- o2QTh1lvkN6G3t8QV0Z3aX07tKrNZy8l9NVsGxKAWlm4ZpXx4oCqACYuY
- SHSS6Fh+IRvIW4HCiUpRzETq41/NMqHrQJYMWXvmB+WapURZHc+ztzZ7z Q==;
-X-CSE-ConnectionGUID: 7DHcP2gCSDGU0/w/4ZbJIQ==
-X-CSE-MsgGUID: 9yVJeLzMRKC1QR3OHCpfmQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="82409757"
-X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="82409757"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2026 08:42:47 -0800
-X-CSE-ConnectionGUID: xvUsWbHmSVOLujqDGXGJ1A==
-X-CSE-MsgGUID: lG5JB6fHSWGI9a4KkSzZiA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="242253721"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 08:42:45 -0800
-Date: Mon, 9 Feb 2026 17:42:43 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jeevan B <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
- mohammed.thasleem@intel.com, mohammed.bilal@intel.com
-Subject: Re: [PATCH i-g-t] lib/igt_pm: Move DC State Counter Functions to
- common library
-Message-ID: <20260209164243.umy6o4yjoebtroiu@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org,
- karthik.b.s@intel.com, mohammed.thasleem@intel.com,
- mohammed.bilal@intel.com
-References: <20260209050451.240096-1-jeevan.b@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id D75B010E46E;
+	Mon,  9 Feb 2026 19:28:23 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 61A0A10E46E;
+ Mon,  9 Feb 2026 19:28:22 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0363979118701776337=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260209050451.240096-1-jeevan.b@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fcontent=5Fprote?=
+ =?utf-8?q?ction=3A_Fix_MST_outputs_assigned_to_same_pipe?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 09 Feb 2026 19:28:22 -0000
+Message-ID: <177066530237.238156.6477647227085119340@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260209080028.1464575-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20260209080028.1464575-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,565 +37,139 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jeevan,
-On 2026-02-09 at 10:34:51 +0530, Jeevan B wrote:
-> Move DC counter utility functions from tests/intel/kms_pm_dc.c
-> to lib/igt_pm.c for reuse across other tests.
-> 
-> v2: Add 'igt_' prefix before all functions.
-> v3: Fix typos, fix debugfs_fd type and add errno.h include.
-> 
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> ---
->  lib/igt_pm.c            | 170 ++++++++++++++++++++++++++++++++++++++
->  lib/igt_pm.h            |  15 ++++
->  tests/intel/kms_pm_dc.c | 179 +++++++---------------------------------
->  3 files changed, 216 insertions(+), 148 deletions(-)
-> 
-> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-> index 1ffcdcef3..d7bb9192e 100644
-> --- a/lib/igt_pm.c
-> +++ b/lib/igt_pm.c
-> @@ -31,6 +31,7 @@
->  #include <pciaccess.h>
->  #include <stdlib.h>
->  #include <string.h>
-> +#include <errno.h>
+--===============0363979118701776337==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Please move it up before fcntl.h, so it will be sorted alphabetically.
+== Series Details ==
 
->  #include <unistd.h>
->  #include <sys/stat.h>
->  #ifdef __linux__
-> @@ -1543,3 +1544,172 @@ void igt_pm_dpms_toggle(igt_output_t *output)
->  				   DRM_MODE_DPMS_ON);
->  	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
->  }
-> +
-> +/**
-> + * igt_get_dc_counter:
-> + * @dc_data: String containing DC counter data in format
-> + *
-> + * Returns the counter value as uint32_t
-> + */
-> +uint32_t igt_get_dc_counter(const char *dc_data)
-> +{
-> +	char *e;
-> +	long ret;
-> +	char *s = strchr(dc_data, ':');
-> +
-> +	igt_assert(s);
-> +	s++;
-> +	ret = strtol(s, &e, 10);
-> +	igt_assert(((ret != LONG_MIN && ret != LONG_MAX) || errno != ERANGE) &&
-> +		   e > s && *e == '\n' && ret >= 0);
-> +	return ret;
-> +}
-> +
-> +/**
-> + * igt_support_dc6:
-> + * @debugfs_fd: DRM file descriptor
-> + *
-> + * Returns true if DC6 is supported.
-> + */
-> +bool igt_support_dc6(int debugfs_fd)
-> +{
-> +	char buf[4096];
-> +
-> +	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info",
-> +				buf, sizeof(buf));
-> +	return !!strstr(buf, "DC5 -> DC6 count");
-> +}
-> +
-> +/**
-> + * igt_get_dc6_counter: Locate DC6 counter string in debugfs buffer
-> + * @buf: Buffer containing i915_dmc_info debugfs output
-> + *
-> + * Searches for DC6 counter information in the DMC info buffer.
-> + */
-> +char *igt_get_dc6_counter(const char *buf)
-> +{
-> +	char *str;
-> +
-> +	str = strstr(buf, "DC5 -> DC6 count");
-> +	if (!str)
-> +		str = strstr(buf, "DC5 -> DC6 allowed count");
-> +
-> +	return str;
-> +}
-> +
-> +/**
-> + * igt_read_dc_counter:
-> + * @debugfs_fd: DRM file descriptor
-> + * @dc_flag: DC state flag (CHECK_DC5, CHECK_DC6, or CHECK_DC3CO)
-> + *
-> + * Returns current counter value for the specified DC state
-> + */
-> +uint32_t igt_read_dc_counter(int debugfs_fd, int dc_flag)
-> +{
-> +	char buf[4096];
-> +	char *str;
-> +
-> +	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info", buf, sizeof(buf));
-> +
-> +	if (dc_flag & CHECK_DC5) {
-> +		str = strstr(buf, "DC3 -> DC5 count");
-> +		igt_assert_f(str, "DC5 counter is not available\n");
-> +	} else if (dc_flag & CHECK_DC6) {
-> +		str = igt_get_dc6_counter(buf);
-> +		igt_assert_f(str, "No DC6 counter available\n");
-> +	} else if (dc_flag & CHECK_DC3CO) {
-> +		str = strstr(buf, "DC3CO count");
-> +		igt_assert_f(str, "DC3CO counter is not available\n");
-> +	} else {
-> +		igt_assert(!"reached");
-> +		str = NULL;
-> +	}
-> +
-> +	return igt_get_dc_counter(str);
-> +}
-> +
-> +/**
-> + * igt_dc_state_wait_entry:
-> + * @debugfs_fd: DRM file descriptor
-> + * @dc_flag: DC state flag
-> + * @prev_dc_count: Previous counter value to compare against
-> + *
-> + * Returns true if DC state entry detected within timeout, false otherwise
-> + */
-> +bool igt_dc_state_wait_entry(int debugfs_fd, int dc_flag, int prev_dc_count)
-> +{
-> +	return igt_wait(igt_read_dc_counter(debugfs_fd, dc_flag) >
-> +			prev_dc_count, 3000, 100);
-> +}
-> +
-> +/**
-> + * igt_dc_state_name:
-> + * @dc_flag: DC state flag
-> + *
-> + * Converts DC state flag constants to readable string names
-> + */
-> +const char *igt_dc_state_name(int dc_flag)
-> +{
-> +	if (dc_flag & CHECK_DC3CO)
-> +		return "DC3CO";
-> +	else if (dc_flag & CHECK_DC5)
-> +		return "DC5";
-> +	else
-> +		return "DC6";
-> +}
-> +
-> +/**
-> + * igt_require_dc_counter:
-> + * @debugfs_fd: File descriptor for the debugfs
-> + * @dc_flag: DC counter type to check (CHECK_DC3CO, CHECK_DC5,
-> + * or CHECK_DC6)
-> + *
-> + * Skips the current test if the requested DC counter is not available
-> + * on the system.
-> + */
-> +void igt_require_dc_counter(int debugfs_fd, int dc_flag)
-> +{
-> +	char *str;
-> +	char buf[4096];
-> +
-> +	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info",
-> +				buf, sizeof(buf));
-> +
-> +	switch (dc_flag) {
-> +	case CHECK_DC3CO:
-> +		igt_skip_on_f(!strstr(buf, "DC3CO count"),
-> +			      "DC3CO counter is not available\n");
-> +		break;
-> +	case CHECK_DC5:
-> +		igt_skip_on_f(!strstr(buf, "DC3 -> DC5 count"),
-> +			      "DC5 counter is not available\n");
-> +		break;
-> +	case CHECK_DC6:
-> +		str = igt_get_dc6_counter(buf);
-> +		igt_skip_on_f(!str, "No DC6 counter available\n");
-> +		break;
-> +	default:
-> +		igt_assert_f(0, "Unknown DC counter %d\n", dc_flag);
-> +	}
-> +}
-> +
-> +/**
-> + * igt_read_pkgc_counter:
-> + * @debugfs_root_fd: File descriptor for the debugfs
-> + *
-> + * Returns PC10 counter value.
-> + */
-> +unsigned int igt_read_pkgc_counter(int debugfs_root_fd)
-> +{
-> +	char buf[4096];
-> +	char *str;
-> +	int len;
-> +
-> +	len = igt_sysfs_read(debugfs_root_fd, PACKAGE_CSTATE_PATH, buf, sizeof(buf) - 1);
-> +	igt_skip_on_f(len < 0, "PKGC state file not found\n");
-> +	buf[len] = '\0';
-> +	str = strstr(buf, "Package C10");
-> +	igt_skip_on_f(!str, "PKGC10 is not supported.\n");
-> +
-> +	return igt_get_dc_counter(str);
-> +}
-> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-> index e931e51af..709c27dc6 100644
-> --- a/lib/igt_pm.h
-> +++ b/lib/igt_pm.h
-> @@ -29,6 +29,13 @@
->  
->  #include "igt_kms.h"
->  
-> +#define PACKAGE_CSTATE_PATH  "pmc_core/package_cstate_show"
-> +
-> +/* DC State Flags */
-> +#define CHECK_DC5       (1 << 0)
-> +#define CHECK_DC6       (1 << 1)
-> +#define CHECK_DC3CO     (1 << 2)
+Series: tests/kms_content_protection: Fix MST outputs assigned to same pipe
+URL   : https://patchwork.freedesktop.org/series/161335/
+State : success
 
-I guess that all of above are Intel-specific, so please add
-IGT_INTEL_ prefix to all above constants, PACKAGE_... and CHECK_...
+== Summary ==
 
-Regards,
-Kamil
+CI Bug Log - changes from XEIGT_8746_BAT -> XEIGTPW_14514_BAT
+====================================================
 
-> +
->  void igt_pm_enable_audio_runtime_pm(void);
->  void igt_pm_enable_sata_link_power_management(void);
->  void igt_pm_restore_sata_link_power_management(void);
-> @@ -99,5 +106,13 @@ int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
->  void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val);
->  bool igt_has_pci_pm_capability(struct pci_device *pci_dev);
->  void igt_pm_dpms_toggle(igt_output_t *output);
-> +uint32_t igt_get_dc_counter(const char *dc_data);
-> +bool igt_support_dc6(int debugfs_fd);
-> +char *igt_get_dc6_counter(const char *buf);
-> +uint32_t igt_read_dc_counter(int debugfs_fd, int dc_flag);
-> +bool igt_dc_state_wait_entry(int debugfs_fd, int dc_flag, int prev_dc_count);
-> +const char *igt_dc_state_name(int dc_flag);
-> +void igt_require_dc_counter(int debugfs_fd, int dc_flag);
-> +unsigned int igt_read_pkgc_counter(int debugfs_root_fd);
->  
->  #endif /* IGT_PM_H */
-> diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-> index 83dbac296..32d83cd7d 100644
-> --- a/tests/intel/kms_pm_dc.c
-> +++ b/tests/intel/kms_pm_dc.c
-> @@ -79,15 +79,9 @@
->   * Description: This test validates display engine entry to DC5 state while PSR is active on Pipe B
->   */
->  
-> -/* DC State Flags */
-> -#define CHECK_DC5	(1 << 0)
-> -#define CHECK_DC6	(1 << 1)
-> -#define CHECK_DC3CO	(1 << 2)
-> -
->  #define PWR_DOMAIN_INFO "i915_power_domain_info"
->  #define RPM_STATUS "i915_runtime_pm_status"
->  #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
-> -#define PACKAGE_CSTATE_PATH  "pmc_core/package_cstate_show"
->  #define KMS_POLL_DISABLE 0
->  #define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid) || intel_display_ver(devid) >= 14))
->  #define SEC 1
-> @@ -116,7 +110,6 @@ typedef struct {
->  	bool runtime_suspend_disabled;
->  } data_t;
->  
-> -static bool dc_state_wait_entry(int drm_fd, int dc_flag, int prev_dc_count);
->  static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count);
->  
->  static void set_output_on_pipe_b(data_t *data)
-> @@ -260,82 +253,20 @@ static void create_color_fb(data_t *data, igt_fb_t *fb, color_t *fb_color)
->  	paint_rectangles(data, data->mode, fb_color, fb);
->  }
->  
-> -static uint32_t get_dc_counter(char *dc_data)
-> -{
-> -	char *e;
-> -	long ret;
-> -	char *s = strchr(dc_data, ':');
-> -
-> -	igt_assert(s);
-> -	s++;
-> -	ret = strtol(s, &e, 10);
-> -	igt_assert(((ret != LONG_MIN && ret != LONG_MAX) || errno != ERANGE) && e > s && *e == '\n' && ret >= 0);
-> -	return ret;
-> -}
-> -
-> -static char *get_dc6_counter(const char *buf)
-> -{
-> -	char *str;
-> -
-> -	str = strstr(buf, "DC5 -> DC6 count");
-> -	if (!str)
-> -		str = strstr(buf, "DC5 -> DC6 allowed count");
-> -
-> -	return str;
-> -}
-> -
-> -static uint32_t read_dc_counter(uint32_t debugfs_fd, int dc_flag)
-> -{
-> -	char buf[4096];
-> -	char *str;
-> -
-> -	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info", buf, sizeof(buf));
-> -
-> -	if (dc_flag & CHECK_DC5) {
-> -		str = strstr(buf, "DC3 -> DC5 count");
-> -		igt_assert_f(str, "DC5 counter is not available\n");
-> -	} else if (dc_flag & CHECK_DC6) {
-> -		str = get_dc6_counter(buf);
-> -		igt_assert_f(str, "No DC6 counter available\n");
-> -	} else if (dc_flag & CHECK_DC3CO) {
-> -		str = strstr(buf, "DC3CO count");
-> -		igt_assert_f(str, "DC3CO counter is not available\n");
-> -	} else {
-> -		igt_assert(!"reached");
-> -		str = NULL;
-> -	}
-> -
-> -	return get_dc_counter(str);
-> -}
-> -
-> -static bool dc_state_wait_entry(int debugfs_fd, int dc_flag, int prev_dc_count)
-> -{
-> -	return igt_wait(read_dc_counter(debugfs_fd, dc_flag) >
-> -			prev_dc_count, 3000, 100);
-> -}
-> -
-> -static const char *dc_state_name(int dc_flag)
-> -{
-> -	if (dc_flag & CHECK_DC3CO)
-> -		return "DC3CO";
-> -	else if (dc_flag & CHECK_DC5)
-> -		return "DC5";
-> -	else
-> -		return "DC6";
-> -}
-> -
->  static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count)
->  {
-> -	igt_assert_f(dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
-> -		     "%s state is not achieved\n%s:\n%s\n", dc_state_name(dc_flag), PWR_DOMAIN_INFO,
-> -		     data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
-> +	igt_assert_f(igt_dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
-> +		     "%s state is not achieved\n%s:\n%s\n", igt_dc_state_name(dc_flag),
-> +		     PWR_DOMAIN_INFO, data->debugfs_dump = igt_sysfs_get(data->debugfs_fd,
-> +		     PWR_DOMAIN_INFO));
->  }
->  
->  static void check_dc_counter_negative(data_t *data, int dc_flag, uint32_t prev_dc_count)
->  {
-> -	igt_assert_f(!dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
-> -		     "%s state is achieved\n%s:\n%s\n", dc_state_name(dc_flag), PWR_DOMAIN_INFO,
-> -		     data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
-> +	igt_assert_f(!igt_dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
-> +		     "%s state is achieved\n%s:\n%s\n", igt_dc_state_name(dc_flag),
-> +		     PWR_DOMAIN_INFO, data->debugfs_dump = igt_sysfs_get(data->debugfs_fd,
-> +		     PWR_DOMAIN_INFO));
->  }
->  
->  static void setup_videoplayback(data_t *data)
-> @@ -366,7 +297,7 @@ static void check_dc3co_with_videoplayback_like_load(data_t *data)
->  	primary = igt_output_get_plane_type(data->output,
->  					    DRM_PLANE_TYPE_PRIMARY);
->  	igt_plane_set_fb(primary, NULL);
-> -	dc3co_prev_cnt = read_dc_counter(data->debugfs_fd, CHECK_DC3CO);
-> +	dc3co_prev_cnt = igt_read_dc_counter(data->debugfs_fd, CHECK_DC3CO);
->  
->  	/* Calculate delay to generate idle frame in usec*/
->  	delay = 1.5 * ((1000 * 1000) / data->mode->vrefresh);
-> @@ -381,34 +312,8 @@ static void check_dc3co_with_videoplayback_like_load(data_t *data)
->  		usleep(delay);
->  	}
->  
-> -	igt_require_f(dc_state_wait_entry(data->debugfs_fd,
-> -		      CHECK_DC3CO, dc3co_prev_cnt), "dc3co-vpb-simulation not enabled\n");
-> -}
-> -
-> -static void require_dc_counter(int debugfs_fd, int dc_flag)
-> -{
-> -	char *str;
-> -	char buf[4096];
-> -
-> -	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info",
-> -				buf, sizeof(buf));
-> -
-> -	switch (dc_flag) {
-> -	case CHECK_DC3CO:
-> -		igt_skip_on_f(!strstr(buf, "DC3CO count"),
-> -			      "DC3CO counter is not available\n");
-> -		break;
-> -	case CHECK_DC5:
-> -		igt_skip_on_f(!strstr(buf, "DC3 -> DC5 count"),
-> -			      "DC5 counter is not available\n");
-> -		break;
-> -	case CHECK_DC6:
-> -		str = get_dc6_counter(buf);
-> -		igt_skip_on_f(!str, "No DC6 counter available\n");
-> -		break;
-> -	default:
-> -		igt_assert_f(0, "Unknown DC counter %d\n", dc_flag);
-> -	}
-> +	igt_require_f(igt_dc_state_wait_entry(data->debugfs_fd, CHECK_DC3CO, dc3co_prev_cnt),
-> +		      "dc3co-vpb-simulation not enabled\n");
->  }
->  
->  static void setup_dc3co(data_t *data)
-> @@ -421,7 +326,7 @@ static void setup_dc3co(data_t *data)
->  
->  static void test_dc3co_vpb_simulation(data_t *data)
->  {
-> -	require_dc_counter(data->debugfs_fd, CHECK_DC3CO);
-> +	igt_require_dc_counter(data->debugfs_fd, CHECK_DC3CO);
->  	setup_output(data);
->  	setup_dc3co(data);
->  	setup_videoplayback(data);
-> @@ -433,8 +338,8 @@ static void test_dc5_retention_flops(data_t *data, int dc_flag)
->  {
->  	uint32_t dc_counter_before_psr;
->  
-> -	require_dc_counter(data->debugfs_fd, dc_flag);
-> -	dc_counter_before_psr = read_dc_counter(data->debugfs_fd, dc_flag);
-> +	igt_require_dc_counter(data->debugfs_fd, dc_flag);
-> +	dc_counter_before_psr = igt_read_dc_counter(data->debugfs_fd, dc_flag);
->  	set_output_on_pipe_b(data);
->  	setup_primary(data);
->  	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
-> @@ -446,8 +351,8 @@ static void test_dc_state_psr(data_t *data, int dc_flag)
->  {
->  	uint32_t dc_counter_before_psr;
->  
-> -	require_dc_counter(data->debugfs_fd, dc_flag);
-> -	dc_counter_before_psr = read_dc_counter(data->debugfs_fd, dc_flag);
-> +	igt_require_dc_counter(data->debugfs_fd, dc_flag);
-> +	dc_counter_before_psr = igt_read_dc_counter(data->debugfs_fd, dc_flag);
->  	setup_output(data);
->  	setup_primary(data);
->  	igt_require(!psr_disabled_check(data->debugfs_fd));
-> @@ -510,9 +415,9 @@ static void test_dc_state_dpms(data_t *data, int dc_flag)
->  {
->  	uint32_t dc_counter;
->  
-> -	require_dc_counter(data->debugfs_fd, dc_flag);
-> +	igt_require_dc_counter(data->debugfs_fd, dc_flag);
->  	setup_dc_dpms(data);
-> -	dc_counter = read_dc_counter(data->debugfs_fd, dc_flag);
-> +	dc_counter = igt_read_dc_counter(data->debugfs_fd, dc_flag);
->  	dpms_off(data);
->  	check_dc_counter(data, dc_flag, dc_counter);
->  	dpms_on(data);
-> @@ -523,23 +428,14 @@ static void test_dc_state_dpms_negative(data_t *data, int dc_flag)
->  {
->  	uint32_t dc_counter;
->  
-> -	require_dc_counter(data->debugfs_fd, dc_flag);
-> +	igt_require_dc_counter(data->debugfs_fd, dc_flag);
->  	setup_dc_dpms(data);
-> -	dc_counter = read_dc_counter(data->debugfs_fd, dc_flag);
-> +	dc_counter = igt_read_dc_counter(data->debugfs_fd, dc_flag);
->  	dpms_on(data);
->  	check_dc_counter_negative(data, dc_flag, dc_counter);
->  	cleanup_dc_dpms(data);
->  }
->  
-> -static bool support_dc6(int debugfs_fd)
-> -{
-> -	char buf[4096];
-> -
-> -	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info",
-> -				buf, sizeof(buf));
-> -	return strstr(buf, "DC5 -> DC6 count");
-> -}
-> -
->  static uint64_t read_runtime_suspended_time(int drm_fd)
->  {
->  	struct pci_device *i915;
-> @@ -562,7 +458,8 @@ static bool dc9_wait_entry(data_t *data, int dc_target, int prev_dc, uint64_t pr
->  	 */
->  	return igt_wait((read_runtime_suspended_time(data->drm_fd) > prev_rpm) &&
->  			(!DC9_RESETS_DC_COUNTERS(data->devid) ||
-> -			(read_dc_counter(data->debugfs_fd, dc_target) < prev_dc)), msecs, 1000);
-> +			(igt_read_dc_counter(data->debugfs_fd, dc_target) < prev_dc)), msecs,
-> +			1000);
->  }
->  
->  static void check_dc9(data_t *data, int dc_target, int prev_dc, int prev_rpm)
-> @@ -582,12 +479,12 @@ static void setup_dc9_dpms(data_t *data, int dc_target)
->  	__igt_sysfs_set_boolean(sysfs_fd, "poll", KMS_POLL_DISABLE);
->  	close(sysfs_fd);
->  	if (DC9_RESETS_DC_COUNTERS(data->devid)) {
-> -		prev_dc = read_dc_counter(data->debugfs_fd, dc_target);
-> +		prev_dc = igt_read_dc_counter(data->debugfs_fd, dc_target);
->  		setup_dc_dpms(data);
->  		dpms_off(data);
-> -		igt_skip_on_f(!(igt_wait(read_dc_counter(data->debugfs_fd, dc_target) >
-> +		igt_skip_on_f(!(igt_wait(igt_read_dc_counter(data->debugfs_fd, dc_target) >
->  				prev_dc, 3000, 100)), "Unable to enters shallow DC states\n");
-> -		prev_dc = read_dc_counter(data->debugfs_fd, dc_target);
-> +		prev_dc = igt_read_dc_counter(data->debugfs_fd, dc_target);
->  		dpms_on(data);
->  		cleanup_dc_dpms(data);
->  	}
-> @@ -601,8 +498,8 @@ static void test_dc9_dpms(data_t *data)
->  {
->  	int dc_target;
->  
-> -	require_dc_counter(data->debugfs_fd, CHECK_DC5);
-> -	dc_target = support_dc6(data->debugfs_fd) ? CHECK_DC6 : CHECK_DC5;
-> +	igt_require_dc_counter(data->debugfs_fd, CHECK_DC5);
-> +	dc_target = igt_support_dc6(data->debugfs_fd) ? CHECK_DC6 : CHECK_DC5;
->  	setup_dc9_dpms(data, dc_target);
->  }
->  
-> @@ -621,21 +518,6 @@ static int has_panels_without_dc_support(igt_display_t *display)
->  	return external_panel;
->  }
->  
-> -static unsigned int read_pkgc_counter(int debugfs_root_fd)
-> -{
-> -	char buf[4096];
-> -	char *str;
-> -	int len;
-> -
-> -	len = igt_sysfs_read(debugfs_root_fd, PACKAGE_CSTATE_PATH, buf, sizeof(buf) - 1);
-> -	igt_skip_on_f(len < 0, "PKGC state file not found\n");
-> -	buf[len] = '\0';
-> -	str = strstr(buf, "Package C10");
-> -	igt_skip_on_f(!str, "PKGC10 is not supported.\n");
-> -
-> -	return get_dc_counter(str);
-> -}
-> -
->  static void test_deep_pkgc_state(data_t *data)
->  {
->  	unsigned int pre_val = 0, cur_val = 0;
-> @@ -697,7 +579,7 @@ static void test_deep_pkgc_state(data_t *data)
->  	igt_display_commit(&data->display);
->  	/* Wait for the vblank to sync the frame time */
->  	igt_wait_for_vblank_count(crtc, 1);
-> -	pre_val = read_pkgc_counter(data->debugfs_root_fd);
-> +	pre_val = igt_read_pkgc_counter(data->debugfs_root_fd);
->  	/* Add a half-frame delay to ensure the flip occurs when the frame is active. */
->  	usleep(delay * 0.5);
->  
-> @@ -706,8 +588,9 @@ static void test_deep_pkgc_state(data_t *data)
->  		igt_plane_set_fb(primary, flip ? &data->fb_rgb : &data->fb_rgr);
->  		igt_display_commit(&data->display);
->  
-> -		igt_wait((cur_val = read_pkgc_counter(data->debugfs_root_fd)) > pre_val,
-> -						      (delay * 2), (5 * MSEC));
-> +		igt_wait((cur_val = igt_read_pkgc_counter(data->debugfs_root_fd)) > pre_val,
-> +			 (delay * 2), (5 * MSEC));
-> +
->  		if (cur_val > pre_val) {
->  			pkgc_flag = true;
->  			break;
-> -- 
-> 2.43.0
-> 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 12)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14514_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_waitfence@abstime:
+    - bat-dg2-oem2:       [PASS][1] -> [TIMEOUT][2] ([Intel XE#6506])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8746/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14514/bat-dg2-oem2/igt@xe_waitfence@abstime.html
+
+  * igt@xe_waitfence@engine:
+    - bat-dg2-oem2:       [PASS][3] -> [FAIL][4] ([Intel XE#6519])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8746/bat-dg2-oem2/igt@xe_waitfence@engine.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14514/bat-dg2-oem2/igt@xe_waitfence@engine.html
+
+  
+  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
+  [Intel XE#6519]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8746 -> IGTPW_14514
+
+  IGTPW_14514: 14514
+  IGT_8746: 8746
+  xe-4529-5e0595fbb024e9b7e243a7ca8a028f93a37883f2: 5e0595fbb024e9b7e243a7ca8a028f93a37883f2
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14514/index.html
+
+--===============0363979118701776337==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_content_protection: Fix MST outputs assigned to same pipe</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161335/">https://patchwork.freedesktop.org/series/161335/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14514/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14514/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8746_BAT -&gt; XEIGTPW_14514_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14514_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_waitfence@abstime:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8746/bat-dg2-oem2/igt@xe_waitfence@abstime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14514/bat-dg2-oem2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_waitfence@engine:</p>
+<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8746/bat-dg2-oem2/igt@xe_waitfence@engine.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14514/bat-dg2-oem2/igt@xe_waitfence@engine.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519">Intel XE#6519</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8746 -&gt; IGTPW_14514</li>
+</ul>
+<p>IGTPW_14514: 14514<br />
+  IGT_8746: 8746<br />
+  xe-4529-5e0595fbb024e9b7e243a7ca8a028f93a37883f2: 5e0595fbb024e9b7e243a7ca8a028f93a37883f2</p>
+
+</body>
+</html>
+
+--===============0363979118701776337==--
