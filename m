@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE242E7E0BB
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 10:16:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65B4CE7E0C0
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 10:17:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8AA3810E3BB;
-	Mon,  9 Feb 2026 10:16:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1B11810E3BC;
+	Mon,  9 Feb 2026 10:17:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YGcWCjwg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LWDXOCcs";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6606710E3BB
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 10:16:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C3B310E3BC
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 10:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770632218; x=1802168218;
+ t=1770632278; x=1802168278;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=0kVYeRpEzPbpQ6wc9Jh7KZL1bs/j6XXeUPecA65Fc94=;
- b=YGcWCjwgV8ofMVoqCRLSd0HSoNWFtDOxSuraiqcq2wjDaGnC9x4gfk9V
- YvbCCourm0E7+eaSVB+n+J//iZsdqo1xPNBd/0rVQVnjHWUA7aRkAJ8js
- MqgcCDpMb9spjz5S+DG3CLbLYN4uzWSMfVZTM1AUDoeyt/vrcQP5JvHiT
- Jirz6pTSofci7Z6Qo6x5+3gftOlwTIDeKcC+/xtgaTwUxAaedJDIVyF4a
- /+Mvr/MOZoh5moGs+/pyIvb5GYDb5PizpN0q1BnNJo37Jo9US0iNhOOR1
- He375UdxMsOGuZ+T9Rc7IGdboI0ZogJZol1SMxRJpVirkwqtkp9twDsDn w==;
-X-CSE-ConnectionGUID: 66DyQo0tTE2Hb8ZGK2zhEw==
-X-CSE-MsgGUID: zt2V5dq9RmaDW218REKrgQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11695"; a="59306603"
-X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="59306603"
+ bh=N6ROJEqJ9zDumN9haeaFIT95smsok5R+NpAz15zbMGk=;
+ b=LWDXOCcsdzIXWu4nsYz+apbrP88fkpQTK6aOJ+d3lbd6kTMd4gAfYGR5
+ in5dh36vY7h2pGL+9hguL28WXgQeDEmiChRLoZaM+JTC/yFNgdlxkNaji
+ D3Q+BpTBSZevqqiIZccrzoW2ohPzFZFzYjAOD8HP3HcOqC8+xqC8odrEO
+ Tm7TOqgUOYxNEfSXXm7e+tIVTpSRqfh5+peD89g7tzNRIMH2MRVtg7Zxh
+ R9ojnoWfU0lmOblOoCRFXfiTRmMrbTJT5CdjdWqHtloHQdk7UgobSZxGO
+ GCdfuxucY7keJp8PQBTAN3UFnvGLUjZR9zRQW1pFzKyAfi9fG9PrRyRmL A==;
+X-CSE-ConnectionGUID: IE7zRNsnTRarTz0neNvNMQ==
+X-CSE-MsgGUID: wjRVyuA6TuKzVajd6dTc3Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11695"; a="59306735"
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="59306735"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2026 02:16:57 -0800
-X-CSE-ConnectionGUID: nMmI3/DPQq6COvdsfooWaw==
-X-CSE-MsgGUID: OUAnEvj8TueHD3lR/bT+bQ==
+ 09 Feb 2026 02:17:57 -0800
+X-CSE-ConnectionGUID: RWsMoSwETECSqP22iSsSFQ==
+X-CSE-MsgGUID: CGEeD+EUTOmOsOfcuNX9jg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="211270827"
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="211271077"
 Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Feb 2026 02:16:57 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ 09 Feb 2026 02:17:58 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
  fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 9 Feb 2026 02:16:56 -0800
+ 15.2.2562.35; Mon, 9 Feb 2026 02:17:57 -0800
 Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Mon, 9 Feb 2026 02:16:56 -0800
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.15) by
+ 15.2.2562.35 via Frontend Transport; Mon, 9 Feb 2026 02:17:57 -0800
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.4) by
  edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 9 Feb 2026 02:16:56 -0800
+ 15.2.2562.35; Mon, 9 Feb 2026 02:17:57 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Yq9xbt4tEP2/Vr0mBctuh47piFh7HG3rtfGyNuPOsKkjAvtmIR306am6FMZSYUxcVoxgaNL3nN16Cx/+MTEjN32ytCSSPCah01ph/zhR5bij5znPqQgP2P3oub7phHyXPAp0x2oiUIa2khAuVKm8mrWRnmPEihBKMGD8iQvWszDvwZwGx32CeMjaWDyTs0S7foSZjT36Dgf/FUO+6ff0S7kGwaEb/s265WTDt5PN5bIHY+3gifhcvWKMo4Vp1GB3r1qBpIZ7Nqt2lKD/mdqa5h0uinBiTJR3u8LAvUZoQ/RSGdzrCUw73c+ncQqgHPzRQ9btnFON6kUyc64+MBoS7g==
+ b=Bun7lx/wBqComlxe3r1XYdPTw5sWU9OdC45X8u6lgzpHi+gdnM6VW91uD/IR3/Z/Tc4kJNORZHUoD6M4PFD0wXdxrr5rDQTPn8YvRZr4VwTonDQ+4YCM24TYwK1QlnZM73O+yz6VkDX/F6duJxBR/1M09uvl/B/z8Gl7Ef9I6DXbw1GyjmcXNCaX4e+i+ppRPB7697XcIY9u3II/a+0GSP9XH0l0S7yeICkQD1kuTdas2g67MasoO58rmKnmM4QzZi9KMnqwXFNJ0mKbb5HKDiQvkQZHaHqVjZNjmNN3Nxw4XoIoJOQUsScFescJqp29nfJj1lEWkWK3mVrn9d959Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Boh2wg6gn6GHlNDFZe8I0pXQyup6PknpF4Cwk0DfX9w=;
- b=hAk9IZY34DCKv18KWMgxQCKBhCgd5l4qjHXSTQ9lMG0u9h0NObclmwl3vDge2i4InETenuMB2MyyZXh3ww2VEI9l/eGrC0dpP1Xl0IRS/arPTKAhkMv2VJv40nlB7D89UYaKj+6s7h7bRaPX0D47rtWgH/f/3feRd48yClo/GbxDbJhL6uxgqGOnyxFPgY5E4DtVEMgdOmkl/kwUOVcVFr7jK/ZNfE/d62cdtO9dUTrxKFkOn88IkqL1MDCSFCFdXtuvW1jUrShi1DeEJAtAUUTu9DrXYK3b3HfeMlRLpNywmS3jxPcqNMHoQtf8gII4N1vngyXVWNs6/KowyQ8RVg==
+ bh=NwP9zh+NYwb3aOXi8SO5yXpdCTHiiGyZcLkCM95sFXY=;
+ b=lbUNs7uT54Scd9H0z+Wm8Qseal9wB4JPuwlh+U9BJUBs5amQhDLWfupWyENUDH60FA3BeHNs7bWPNcYLKjYiiWOJIyMY2DXToM5ZUr6rWCEDanSUK7Z1L/Iwj9FrS/T1kiYVIvjwzXD85fyOI9UW+bMUWNW0wQlCrMReJQ9t3PQU22FEZKDK+jARLobRvzs168VZ9EP4ZikZ/afU/iu4KZ4V4U2uFbtgl6X7Xx855tAZipJzgGWxftZ156UMULukYOBy0rrS9A5PiOpZRAdbV39dpRieBJvrrr+cqYF3lOpDuH1EkT8NDpRXhfcMrqCq8k2G6uqguCCx+8W7TkVKhw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,125 +69,125 @@ Received: from BN9PR11MB5482.namprd11.prod.outlook.com (2603:10b6:408:103::16)
  by DS0PR11MB6421.namprd11.prod.outlook.com (2603:10b6:8:c7::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.18; Mon, 9 Feb
- 2026 10:16:54 +0000
+ 2026 10:17:55 +0000
 Received: from BN9PR11MB5482.namprd11.prod.outlook.com
  ([fe80::d269:c67e:1cc2:d1ca]) by BN9PR11MB5482.namprd11.prod.outlook.com
  ([fe80::d269:c67e:1cc2:d1ca%6]) with mapi id 15.20.9587.013; Mon, 9 Feb 2026
- 10:16:54 +0000
-Message-ID: <2ebfcc0d-49ca-4fde-a48f-27a014b5f729@intel.com>
-Date: Mon, 9 Feb 2026 11:16:50 +0100
+ 10:17:55 +0000
+Message-ID: <4d112e94-a54a-46b0-8545-6bce858e6c34@intel.com>
+Date: Mon, 9 Feb 2026 11:17:51 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 i-g-t 2/7] lib/igt_pci: Add generic PCI driver override
- and bind/unbind helpers
+Subject: Re: [PATCH v3 i-g-t 3/7] tests/intel/xe_sriov_flr: Attach VFs to
+ xe-vfio-pci before initiating FLR
 To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  <igt-dev@lists.freedesktop.org>
-CC: Adam Miszczak <adam.miszczak@linux.intel.com>, Jakub Kolakowski
- <jakub1.kolakowski@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>
+CC: =?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, "Adam
+ Miszczak" <adam.miszczak@linux.intel.com>, Jakub Kolakowski
+ <jakub1.kolakowski@intel.com>
 References: <20260204163217.121305-1-marcin.bernatowicz@linux.intel.com>
- <20260204163217.121305-3-marcin.bernatowicz@linux.intel.com>
+ <20260204163217.121305-4-marcin.bernatowicz@linux.intel.com>
 Content-Language: en-US
 From: "Laguna, Lukasz" <lukasz.laguna@intel.com>
-In-Reply-To: <20260204163217.121305-3-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20260204163217.121305-4-marcin.bernatowicz@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: WA2P291CA0033.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1f::13) To BN9PR11MB5482.namprd11.prod.outlook.com
+X-ClientProxiedBy: WA2P291CA0036.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d0:1f::9) To BN9PR11MB5482.namprd11.prod.outlook.com
  (2603:10b6:408:103::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BN9PR11MB5482:EE_|DS0PR11MB6421:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5eb965ad-35dc-4909-af0f-08de67c458fc
+X-MS-Office365-Filtering-Correlation-Id: 5d732b44-59a8-4880-8de3-08de67c47d99
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?TUJhS2tqcVVWQnlzbDQ4UW1iRS8zbEhoV0M4QlJybEZqQVBUN1ZuditjS2lw?=
- =?utf-8?B?bUhLYkdRV29iYndWL1VUSU5UYkRxSmJubFZacVpOVGQ2RFBFUndOcVdXRllp?=
- =?utf-8?B?UEQ4anBieW1DREsrK0dMNFZOa2NkT3lGSWg4SXZ5N091SFFNZDRrY1FJR1FU?=
- =?utf-8?B?MUxzMnJWYXhicDFrbVFWSVIwQTRPLzErdlRUK3VxdHBySEFWZDlIM3ZVT1Bz?=
- =?utf-8?B?bW9tSEF2NnVURW9iMHdrSjFKdThMRHRWOENOcUVZNGxJK0RYMUxkelZlWm54?=
- =?utf-8?B?bGc4eElKdGxabDFpVFNsTXlZNCtmV1N2S2dkemZYUFh6YThJS0hSWEVkcEh4?=
- =?utf-8?B?Qm8vODNtWGRSOUdNR3R4VlRYZmxrQ2ZaVkRxT3ZMV3I0d1ZBWldqZjc3UW5I?=
- =?utf-8?B?b2ZSZytyNDVDdHk2dDRRL1FsUUNhTnBmSUdDTDhndjNqMFZoRjU0TUxsZHpm?=
- =?utf-8?B?dWhQdXNkcHczcHhoYithdHl6ZWg2dlljYmEycm5BN2hFeldBZ2srTmxyVXZ2?=
- =?utf-8?B?OHRyRWhLZzRwZkF1cTRaTE81a3V2QXBIUk11SXcxWm5KWUo3WU5yeFZQVkdZ?=
- =?utf-8?B?VEtXZU4zQ0VmcXpFZnRmMVh6eWRpbFU0d2k3a20zNmlMQ1JYSTdyTForWWsr?=
- =?utf-8?B?N1E2Zm1XdWNRdjNlT1lncTBSaHdJMUNja1V0WVUrWmJMN0hNS3FFcFJDeVU0?=
- =?utf-8?B?MU9EZG1TYmplTlJxcWE4R3BzcXZvSERDc2lsMUlDMkZ2YWxTWlc4RVJuc1Uw?=
- =?utf-8?B?OFJTZ1g0dnFDNzdhUC9kei96NC9kUjZEcjRlWk16VzVUY1lwaTJ5WWN4Z0pn?=
- =?utf-8?B?UmgzTU5KNnI4aGRjRXpYSnowK28xdTJmVDY2M0kzb1VqOUdyZlV3Vzl6cVlB?=
- =?utf-8?B?NVlMTjZ2dnpleGk4Z3dtMVg5eERVN3NXQTV0cXEzK3BjNjU4QVpTenM2eUhs?=
- =?utf-8?B?c24rTXRPMTlBUVR3THo3eFZjTHlGbHYyZ09YTzhYNWpROC9Tc3k2VHB5Nk1L?=
- =?utf-8?B?Vi9Wa0YxcURYUWdZVFJFODVkWWowdHdoQ1p1M1ZyOERodS9Idjl4MXNNcERy?=
- =?utf-8?B?Zm5UVGJNbXhsanhjZlFsVHliK0k2SFdBQ1c2M3pxOFhEQ1RvUHRadCtFMDEz?=
- =?utf-8?B?K0Y3Zkl1NUtrQ1M1YjFxaVF3d1ozSnZzYnhseWVMbVVNbVBNQXhwOXYxYzZ1?=
- =?utf-8?B?VGJlbDJpRGxJcUpMTjRwM1owM21wNFpoR1N3QVphdjJUMnlwSjMyMU8raFN6?=
- =?utf-8?B?WmpoMlM4bGNkSGF1cW9rVy9Vb3JuTFlRYU5PYUw4NE5iZ1hDOE1MQSt6eUdj?=
- =?utf-8?B?b1Z6UUZsWGhpRS81TmtKeWVHTXZqdW8wOVdBZWwwbkI4Uk1tcm5salJocEMy?=
- =?utf-8?B?ZmFQQkFOVlV0RXk2dzVlVTdCNFVIZ3RjVFVyOWxoR3ZvdEt3Z2QxbHBzRmNn?=
- =?utf-8?B?ZS9BVGxac2x0Skx0UFNTaytoam40dDNxOFZKWlpQTXZuSkkyanpWUzY2dEtk?=
- =?utf-8?B?MkFqNFdrN3NXalhZc05nY0IzZHNTMHhWMzJ6WVZrWENleFdXS0pIZHN2VW5V?=
- =?utf-8?B?UWZxV0RKc0JQV1FrRWgrWVFteWNGUHk3dXJ5dXpOeXJLUkM4c1MwTjNaekRv?=
- =?utf-8?B?OWVZZ1NnMzViUmlnM1dZMEFlVHMrbnhDYS91Y3lzczhLd2d2ZjVNdTFNVVN5?=
- =?utf-8?B?MitsdUc5RXpudU94SkZkdkJMeDRLdGEwL2ZEdjdwTVNvQ2FKaU9GKzh4L1NX?=
- =?utf-8?B?M0JLdTNKU2pwbGR4K21xRmdPNVdKWGtrVWdPUUVqRFJCOThLeHFoV1RRQW44?=
- =?utf-8?B?aHpKRlZLWlNLdjNqaHI3cURVeHU2M05SWUhBWTdzaDQxOWZBb01wRnRySzZ5?=
- =?utf-8?B?WVpVL0ZFUTlMaXczM2wzWFdyZmIvRkhScTRWYnRuNVZVVkUzYVFRVXJ3RlYw?=
- =?utf-8?B?ckRhOWhyWnZYVFdIZ2pweHRPVkRZaW1zNFowYXdCTUJHM2YrZnlCSElmS0ND?=
- =?utf-8?B?bXVSVUlHaFhxZktWU2xMOGFyRjZWdHdyNUdJMWZTRitGZmFlekFlVXp0RGZS?=
- =?utf-8?B?ODNIWDV2a1E0LzZYMW82dmFDQnQrQ044YXFqQUNkL21iT1RTRDdXNE14T0ly?=
- =?utf-8?Q?o3mU=3D?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?aUlqZGxFRTExaVRkWHFTVkw4QjkvVnl6endIOXY5MnU0RFNESHg0SVhFMUdV?=
+ =?utf-8?B?WG8zbkpUNndjSEdYa3JFcUtlWFlPeTZ0eUEva0d6VHBZSzRrdXA1bm9pVTlm?=
+ =?utf-8?B?OW5uTzE4MGhnV0FiYnRNNSszWUI5NlRyb1R1cEs1NUFnN0U3eUtFekFXNENv?=
+ =?utf-8?B?UlpFdGJkTmhzQ2FqUWV1bW5vREhRZ1VDMkc3cVdpcEYxenY4cEczdDNST0hp?=
+ =?utf-8?B?WVNJZk8zNUlsM3ZNN0pRV1cyV1U2K0lVSVphY0V1NVdmSVZOd3dlMUNkMTVT?=
+ =?utf-8?B?aGpXQmV6SUwrckRrYUpIdVpjdEM2ekw2UmNQQmR4MkNIZStJNklieHFVQkdW?=
+ =?utf-8?B?cURFSHpiVWh4QTF4UUt5NWIveHBvWW1CQ1Fza2xtbXlzNFhiV3dVRUh5eTlC?=
+ =?utf-8?B?cmNhTlNGMHNaTG5tS0hXSWFZZlY1ZDdmMnMzZkhmNTJJK1Q1Sml0SEpzTHJW?=
+ =?utf-8?B?dVBVRUk2S1J4MnA0b3RFVEVGRFQ2ZS8rNS96YlpvU1dteE9VZ2l2czZIMm9F?=
+ =?utf-8?B?ak9FTm9Mdi9SUEV6OFZoRXNiWjhCa3FiU2VqbVFDaWdYY25zOTZ6bWJsRTFY?=
+ =?utf-8?B?ai9SRUdmWjFyT3JhK3Q3MWI0M29lYm9CUjBjTVlvbmdJY1B4TStLTnV6YUty?=
+ =?utf-8?B?SXA0d2pyeG9jOWNkSzZ2RysxQ016NEVvRmFNTUFkUnU4YzU3MTFmR092T2M4?=
+ =?utf-8?B?TWFqdGFHb3h0aU9nUjR3bTdKcW1yOVNJdGNXUkYrNmFxZzZPb0tvZ0R3eWNt?=
+ =?utf-8?B?V25EZk04T29PZ1MvcTJDTnFjNkM2bURLR2tydEFOd1gwV281ODVLT0tJckFU?=
+ =?utf-8?B?ajVaRHFTR01rSFBaNURubERKVVZoQVNoSWdtTVNjRFdHMG0wZ2xUZnVKb0J3?=
+ =?utf-8?B?WENNMHNRNEJLOHIvemNiQnFmTXZieXFONXBJaEFJUUlBQlptekhRejVqc3gv?=
+ =?utf-8?B?ZHpWbXV0cEZXQUxCMnNrN05BZ003V0pRMDJSc3lmYVVScUZlOWJjc2JyT2RP?=
+ =?utf-8?B?ZFpuVjErS2laUWFGc1F4bWJwek05ZmRsNE8xc3hpdjZlcjhieTU0UnFsVVJ5?=
+ =?utf-8?B?UUs4Qm9qTWxHWGtLdjhFNjRvVEpic2h6ZUhVN3B1UTRvUjZuVmVoY2toa0Uw?=
+ =?utf-8?B?ZktwUVNkTmMrbkhYUGlBa3J5VUxrS0lKV0dKSTNCbDhBZTA0UU1XZDFWUVpn?=
+ =?utf-8?B?U0hXZ0tRUmJzVG1QeTF5aDlhbFlJUjRiY05ST0hFQWZvOU9scWV6TFFpUzdV?=
+ =?utf-8?B?Zi80SXRiNUNNTVNCemR3K0pqSWxDV3p2Y2dBNmdEcHovQk1XSDRQVzQvZFZF?=
+ =?utf-8?B?NmdNMDhIN0YxbEVhVWltMCt3RjVKeXhGaGFMMStCMHhmdW5LWXFJWnJmUElx?=
+ =?utf-8?B?VUJoMkZleGpEVzRvZHJOQ1FZanI3VFpSdHViLzBYOUhTUlhGWG1zNzVnS2Rs?=
+ =?utf-8?B?YlZncHJ2d0FJQ3NDT3dBeURTem11N29HdzBrZTBLdm1KMGpBSVVKZkVKbDU2?=
+ =?utf-8?B?eEtFbFcxQnNZb3NVVjJ4LzV2UUkxdURyZEprWGxLK2JWdmthQWxseDM0Um9i?=
+ =?utf-8?B?TWxnVCtYTE8zNE4xT25zYkF6cUJtbzdZbUYrc2JabHdianUwS0dFdnlXUWFy?=
+ =?utf-8?B?dWFXN1RtWEhLLzV5dkVEaFU4dWQ3RldYVGV4T3plUmJHQnZmK2NiWEZnNlhm?=
+ =?utf-8?B?cFJrVlBQVzl5U1R4NCt6SWFka3BzajhZSU1MUjUxckpnTUU3bWhWeGRQVEZN?=
+ =?utf-8?B?elNwb3JkVnNBRWRKczJTSWIxSTg0YS90SWVBeGR6NjBVN2N6dmptaUdacUVL?=
+ =?utf-8?B?ZnU0OG5sbGRkeitWRUlSUEppdENSWGZKZUUzWnlxS25DS0tQejZ3NHp1d0tr?=
+ =?utf-8?B?TStVUWcwa3YyMVd6SitxazIrQzNSQjR1YnIrS1VQNzQyYXFFbW8vdU5PY2JP?=
+ =?utf-8?B?YzRxc01LUVh5V2dhMVNGa0V1ZFo3ZjRjRDF0b3FqWE5oaGJTYTM1eWxuVDVM?=
+ =?utf-8?B?elF0MG1vSlRBWjdWYUk5d0RIa0x5dEUwWWFxb2VyU2gwZmJsV1p6OFc3MWFQ?=
+ =?utf-8?B?cnlCVW9SWjVWTG9JN1Z0YTc0eFBTVE1JRFRBcnNCTDNXMTNrZU1pWnN6ZGVp?=
+ =?utf-8?Q?Z8sA=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BN9PR11MB5482.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(376014)(366016)(1800799024)(7053199007); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WEpERzNQY3NwWDdUSjdEYTRjenRWZkhIYTc1Y3ZmQjNTNGVXUXdKMVl2MGVU?=
- =?utf-8?B?TlVZS0pwMW8xUzMvTWQrckM3RWt3aytKWTIzcjY4UldSSFdJaWhYK3pGSEd2?=
- =?utf-8?B?TzNxN1JWVkhBVjNHUWdIODBUVUtSNHNFTEpZNDZOTS9uR3BjTU9sbDlzelpN?=
- =?utf-8?B?OVFVVG9wOTFLNmltTnZwNlpXeStVMEU4MTR3YXBOOUxEYTBRQmFTTSt2K3oz?=
- =?utf-8?B?dTFzZ1pYclBXMi96a3dXZE9kN1dhVHpSMWhEY0pESWpLTVJFbVNJb2I4dmR1?=
- =?utf-8?B?cVk2dzdCcFFMUEV0UmFZTzZvZVpDSWRrc0c0SFRkWTVUc1dNWWcvRm9jRVFn?=
- =?utf-8?B?cUUrL1RqRFpvVGszZzcydnNSSzRCVEhKemZWeWJuNGpoYXVGYmJNTU1BNjFj?=
- =?utf-8?B?cURDY1ZUNmpBTHg3SzNORHcrUkdVeVlKRHJVSUd0eXk3aTBRWjJGZmlvUU9D?=
- =?utf-8?B?N29LelVzY1JNNXhZU3RHTzRKNGkycUpTQ0lrQ3hkdnRCdm9DWHUrdGV5bmxD?=
- =?utf-8?B?dVBUMHFnTit6cUlkcmhiK3B0T0lKTVUrR1NkOFdrK0hvT0JsQ1N4ZGR0WGlm?=
- =?utf-8?B?U0RhWnYvS1VzcFBvUjV1d2pIMjVWZ1dHRE5NcnNDVE9PbUpycHNaYVZxcGJz?=
- =?utf-8?B?Q0c3V2VTSFprMVZBZHNvT01RaHBGNEltcVZacGxLbnVBT3g5NEVZbUdqTmow?=
- =?utf-8?B?TVIzNytqY3FSek5xQ250S0pQL2UzcDFIMWVVdGh1aUUvWkp0YnBaUTlNY2Vv?=
- =?utf-8?B?SEtQZUpWUWRpa3NVTnNoZTYyVkUyQ0ZLN3ZwZ2xDejJvb1QrdVdWY2QxVEw1?=
- =?utf-8?B?dEovRDB2NjA2anVVa1k1dVphRVNscXQyUnFlaVAwZUUzYjArdXVaVi9TeEVQ?=
- =?utf-8?B?N3JycXUrSkkybng1c295aHNoVzdjbk1DV2pCRFZ3OHNvbmVVZ21FRXRaejZF?=
- =?utf-8?B?OVowRWEyN0hjVDR3WlhmdEJPUHdzblExd1NRdlJhcVp2QkpxNHI0WDNtZG82?=
- =?utf-8?B?MDZqOHNVMlh6SzRZdEFwSEVDR1MrdWM4b2lydk9xVXk3SDYweDQxeTB2V2tl?=
- =?utf-8?B?NTdNZVVES2c3bFpZT1FtZkxpbXZ3S3FuSHF3R2MycEtIcFRacnN5dXRRVTc1?=
- =?utf-8?B?TXJXYXYxUmJGY280VXErUTdqZGMrWC9wdHZQcFZ1d0NieGpPN1BmUENyVkZ5?=
- =?utf-8?B?TXlVWFRQVjNxczc0S1hXQXVvSUh3ZE1nenQ4d3M2dEJQcWFEcXRkYnVuMktR?=
- =?utf-8?B?TTJ4K3UvWTYweWd6emRkd3o4c3gwT2lFZG1FalRla1Q5b3MwL1BGS0xQWWxZ?=
- =?utf-8?B?L1VaMUllZm5zRlFIaEw2ZUd3c2d2clUwUWhIblk3em84SHJDZlN5T1crWmxx?=
- =?utf-8?B?bTRHcFJnZ1hURWZ4NTJQL0M0U1hjQUhSeGRMYWtvMVUyZzg1RDZ6bGV2OUtP?=
- =?utf-8?B?cTdBK0thc1ZEZDhKbUhiWHZKL2l5MDV1SnUyeFBUWmt2SDhOMnk4eWV5K2hl?=
- =?utf-8?B?eDhUaTgyQm4vaEttWGlNbzJ2dHNBQXdhQ0dDRUlWNENYK3B4SVhaQjZDVGRY?=
- =?utf-8?B?WWkwa3IyNTFWVm1ZRnhqcldlbUNnSHhLZVQ3WFo2L1IrVTh1VUlCYXlYTGZY?=
- =?utf-8?B?NW1zeWcxUmhHaU9JOXNwRERDemhzMkk0U0doN09VUUZ2WFdBNjFXOGpVdnFp?=
- =?utf-8?B?WVBWQWd0c0JWOFdna0k3SU43cllhU2g5MVdOaUk5UVB2dWF3U1d0L2cxeTV5?=
- =?utf-8?B?QVZ1azhjZUVtdlUwWlE1WFAvaE4xamZ1ZzBINVp4c0pGNTFFSDlrWFhMSTBx?=
- =?utf-8?B?SlYvTFpIRCs4SlJtMUlMRWV6V2EwM2N3Sll6Vnh1THY4RjNOYm0yNE1HMFRJ?=
- =?utf-8?B?M1IxQWc3SFVaUEJnV2gwbnlQVWZGZ0dSeWJVV3ZkWUR5Qkl6b3dtQVE2ci9I?=
- =?utf-8?B?WjNHZ3Z2bitGaTJLVzVBU1hLa09ZQVN3UERmcHN4eGNONFlqYnc1Um1sTW5z?=
- =?utf-8?B?OWhZTDlIamhZWUtCVVE0eHdvRjNlT1JkOGpYT3oxWEU5QldyMmhrVWphNVlX?=
- =?utf-8?B?azgxemNoUGh1d01qUlBpYWZYMWhUMjQvdWx5MjJML1VNbXA5UEg0Z1Flajl6?=
- =?utf-8?B?RjNtOG9UUGdXaytpNlZWQSs2aUtBOGRsNmlGUWRWTjU0eTF4RmQ1OUJPQTMw?=
- =?utf-8?B?WXQzNkVjRlNwYlEwWnVGUnJUcEg1QmIwZC8vamYwTEZ6dDdJRVZpZXpIOHJt?=
- =?utf-8?B?anZrNWdCZklEYVZIRndJazFuTXpuR3o1WXplaC9WbEFYRnJ6N3hPaEFZRDBi?=
- =?utf-8?B?ZlV6cVpoTXpRdVMyUXp6NHA5dkZsUm51NllsN3BWd0xvS3VMczZrQT09?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5eb965ad-35dc-4909-af0f-08de67c458fc
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Vm96Zm9DcDBrZkdVUWhkNXJxNGpOdXdPbUdqYkdOMW11SlU2VGhhVzBiZXJy?=
+ =?utf-8?B?NXFrcC9aUlpJUGZSVFdCRFdnRENtcjhJMU00ekF5RlZqMDkyWWNDRHdGQ3ZO?=
+ =?utf-8?B?SEIzd2VlWGZWRUxmZjh0WVJyN0RXUDZzTmpXTEdQK3hHcTEwa2szNWxLaG96?=
+ =?utf-8?B?WHF1bkRBUFVYaDZORW50ZkdKSlhLMm5HTFdBRHF4M25ILzQ3NWVPMlRrMzM3?=
+ =?utf-8?B?bnNET09FenhtWTlwazEwYkp4SDc3NnpCV3F5aTlWc3kvd2s5SEVRektRQWhu?=
+ =?utf-8?B?cDR1S05mVDI0UDZydjJVWEZSUFloYzR2bzRTTDRaOVZYeTVzSUpDaEV3ZkNQ?=
+ =?utf-8?B?OHVxcmZrMmdHT0lBczl0TWlDeTJsK1dvdCsrZGtFM3hwczJLaUhRb0VQZmli?=
+ =?utf-8?B?dFE0SDhabC9FS2F2TFh1TVIxSC9Pa1U0UnNpVnpOY1gyK3FENnE4M245SE83?=
+ =?utf-8?B?OTlnUnlGRlU0NGJnN1d5RzN4cFU0aDdnd1lmaEVmYlZpU3VGS0pYcUdaVGdn?=
+ =?utf-8?B?L0tWdXlyVTdneTZBMjdBWmxmUVAvZzJVNGtRMk95YWNMQ09PZks4WGlScU40?=
+ =?utf-8?B?QWxlY1luR05kMmVZTWlHYnhrS3NPQXUyRWFRVXpFbzRVL1ZSUWZOWWZWbkll?=
+ =?utf-8?B?cGg2Qkd1N0lFQkJOelBWNzJmaDJGQlBMT3ZpRE1hRndDYjJvMXBsZzUrWm9r?=
+ =?utf-8?B?bFl6QXpwbWcxTUZoclM3aWZqMnVXRm1TOVF0a09wQlFiVU5EVFZQV3NYbzBJ?=
+ =?utf-8?B?TDIrbWdGdXBOT0lSS1ZWY0p1T3NFNEVranVhbUthYzcxaENqcHhaWEdCcGE5?=
+ =?utf-8?B?KzI2NDdyaHZoU0IrUGZRVDZ2SEFhZHY0ZmhjZ0FWdFFnQ2tLSCswWE91Ly8z?=
+ =?utf-8?B?bGw4M1NkeDYrMTAzMkdYNWl5TDlIcWdQY2R4cWtuWHB5aVo4dlZ2Q09pSXBY?=
+ =?utf-8?B?LzMydmN4RGNscTVSanRUcC9GajhpUEczeTduZ2t0MTdjbStzdUJqVDN5dEsr?=
+ =?utf-8?B?a051YjcwRVYzOXVjemhCV2JudDIzM0d1RSszQndkZ3FYUjJ5emNNb1FaZjdk?=
+ =?utf-8?B?QTR2RDk1R1l4NU9DR1Q1T1RVV05xUnM5TU55aVdadFlhSk5sUk1uNDgwVHdn?=
+ =?utf-8?B?bWNTcU5WdlpTdElUa1N2endSL1JGS0RsVzh3dlJXeDlNaEx3Y0t1MVVMZzZE?=
+ =?utf-8?B?ZUtHaGhDTU9QTkkxNmVxZkd1MGl5NHZVUzROazRVVU5qVjJSdExOMGtiN1lk?=
+ =?utf-8?B?TlF4MHM1cnJSaTdXeTlhbTExWmRhTTNVcG9qbmdqSVpDeW5FNkhHak9kNWhT?=
+ =?utf-8?B?ZkNETlM0bEdtczBjanp2UHFTK0N0KzJBSzRIRGlGdmdwZGtoTmwxdmxwcTN1?=
+ =?utf-8?B?V0VDQkhNUk1nTVc5N1RqbDVwU2VrWTJya3FqVkZGdTlSVVJNREhWZFVGdWNu?=
+ =?utf-8?B?elNJdjFnbFNuM0FBRUcrM3R2V1RKMmw5UWdQWEpiL1NPVFM2azIrSHkrd2p0?=
+ =?utf-8?B?SFd3T0VFRnEvZnVUaTRkR0JNMzl1RG9FWXUvTjhGenpwQTZINm9DSHQrODB0?=
+ =?utf-8?B?UXJOVzRBTk0rdm1DSWxaa2lJOTdha0FtMENFYWtJWDI3Z1huNHFUWkNjbnFx?=
+ =?utf-8?B?aWRyZ2hhbTNkN0pWSlB6YnBVR0dTbkp2aml0U2ltTWc2cy9sVXdnUERkc1h1?=
+ =?utf-8?B?eEx6c0NjTnorMkRjaDExYW5wYW5PMFhCN3ZXelEwc1N5UUhvM0Z2VE1kQXZH?=
+ =?utf-8?B?Z05iNm40QmZNZ3J5eHE3RzZhL0h2WXNlR29GVWZ0Mk1LNWgzdmNjaGpBdmVr?=
+ =?utf-8?B?Q3FEVkU5RWcwejhmUk1xL0xKUGc2ejdqY09UL0s1NVFaL1A0NHdVb0N4MUZN?=
+ =?utf-8?B?NUtsa2srS2tqOGcrSmswMFZONmppcXVRWC9DdmdPUHVjYlB2UFZUQUZlVGVz?=
+ =?utf-8?B?RXhwTjUycWhQN1Y5WUFtZXl4VlhweEwrZStVOEJoVEJ3VUtUbGFDZGd1ZWFX?=
+ =?utf-8?B?NEtJbVZsbTBpNXRCb3lISjZnbE95K0tOOXlhcktwQmFReSs1RGFhSWd1R01x?=
+ =?utf-8?B?N0V5cCs3aTJVTjdHWm9SZjhiOGpYOHV5T1dxSWlYanVQaENSVnFvcjIvOWtC?=
+ =?utf-8?B?L0hVZDM0czZ1b1lzMU1DTFk2Q2g2OG0xOVNRWUpIZE5EZ2ZXUlhjdFdnc01l?=
+ =?utf-8?B?ZnZWa3NaWHRqVDAwKzc2Y1ZJcDJuT3EvU2twV1hEM2dUZUJZb1BVTW1FOGFP?=
+ =?utf-8?B?SThqTzNZbWFRS2c3dTFPY1QrVHdRUHoyM2w4Y0lFcjFITnRBcFA1R0NaM0lM?=
+ =?utf-8?B?bG1pdnQ3TkNXZHZ1ZHlIbGdwMHRzSzJ0R2kxc1RrMHZrcTFnT1JIZz09?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5d732b44-59a8-4880-8de3-08de67c47d99
 X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5482.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 10:16:54.0441 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 10:17:55.3313 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Kg7lBGzWeU3YnaJSxGiKhMhmeHmhJ9fcgwJAUT0RcIazAlV6bDdK7S1JJvQd1JmRARhfHRsEMUSkt+OmqIA0AQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Zx8zxVqOLbGoRx00HfjNIgRWgrLy5XbEriGHkMTb+m0OQD8mzJEzHuLto+RqZsbKuECuqQNCrqSarkOL2axCmg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB6421
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -207,434 +207,135 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 2/4/2026 17:32, Marcin Bernatowicz wrote:
-> Add generic helpers for controlling PCI driver binding via sysfs.
->
-> The new APIs provide driver- and device-centric primitives for:
->    - setting and clearing driver_override
->    - triggering PCI driver reprobe
->    - binding and unbinding devices to a specific PCI driver
->    - query the currently bound PCI driver
+> Attach all VFs to the xe-vfio-pci driver before running the FLR scenario.
+> This allows the test to rely on xe-vfio-pci’s FLR wait handling, which is
+> triggered when writing to the VF reset sysfs attribute.
 >
 > Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Suggested-by: Michał Winiarski <michal.winiarski@intel.com>
 > Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
 > Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+
+Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
+
 >
 > ---
 > v2:
-> - Add igt_pci_get_bound_driver_name() to query the currently bound PCI
->    driver via the /sys/bus/pci/devices/<BDF>/driver symlink.
-> - Extend igt_pci_bind_driver_override() and igt_pci_unbind_driver_override()
->    with a timeout_ms parameter so callers can wait for bind/unbind to
->    actually complete, instead of relying on drivers_probe write success.
+> - Unbind VFs only if they were successfully bound.
 >
 > ---
->   lib/igt_pci.c | 351 ++++++++++++++++++++++++++++++++++++++++++++++++++
->   lib/igt_pci.h |  13 +-
->   2 files changed, 363 insertions(+), 1 deletion(-)
+>   tests/intel/xe_sriov_flr.c | 65 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 65 insertions(+)
 >
-> diff --git a/lib/igt_pci.c b/lib/igt_pci.c
-> index 61aaf939d..80aaf07c5 100644
-> --- a/lib/igt_pci.c
-> +++ b/lib/igt_pci.c
-> @@ -3,9 +3,18 @@
->    * Copyright © 2022 Intel Corporation
->    */
->   
-> +#include <ctype.h>
-> +#include <dirent.h>
-> +#include <errno.h>
-> +#include <fcntl.h>
-> +#include <limits.h>
-> +#include <string.h>
-> +#include <unistd.h>
->   #include <pciaccess.h>
-> +#include "igt_aux.h"
+> diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
+> index 12989d0f5..2f6b24cf0 100644
+> --- a/tests/intel/xe_sriov_flr.c
+> +++ b/tests/intel/xe_sriov_flr.c
+> @@ -9,6 +9,8 @@
+>   #include "drmtest.h"
 >   #include "igt_core.h"
->   #include "igt_pci.h"
-> +#include "igt_sysfs.h"
+>   #include "igt_device.h"
+> +#include "igt_kmod.h"
+> +#include "igt_pci.h"
+>   #include "igt_sriov_device.h"
+>   #include "intel_chipset.h"
+>   #include "intel_vram.h"
+> @@ -57,6 +59,8 @@ static const char STOP_REASON_ABORT[] = "ABORT";
+>   static const char STOP_REASON_FAIL[]  = "FAIL";
+>   static const char STOP_REASON_SKIP[]  = "SKIP";
 >   
->   static int find_pci_cap_offset_at(struct pci_device *dev, enum pci_cap_id cap_id,
->   				  int start_offset)
-> @@ -51,3 +60,345 @@ int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id)
->   {
->   	return find_pci_cap_offset_at(dev, cap_id, PCI_CAPS_START);
+> +#define DRIVER_OVERRIDE_TIMEOUT_MS 200
+> +
+>   static struct g_mmio {
+>   	struct xe_mmio *mmio;
+>   	unsigned int num_vfs;
+> @@ -276,6 +280,47 @@ static void subchecks_report_results(struct subcheck *checks, int num_checks)
+>   	igt_skip_on(skips == num_checks);
 >   }
-> +
-> +static int open_pci_driver_dir(const char *driver)
+>   
+> +static bool vf_bind_driver_override(int pf_fd, unsigned int vf_id,
+> +				    const char *driver)
 > +{
-> +	char path[PATH_MAX];
-> +
-> +	snprintf(path, sizeof(path), "/sys/bus/pci/drivers/%s", driver);
-> +	return open(path, O_RDONLY | O_CLOEXEC);
-> +}
-> +
-> +/**
-> + * igt_pci_device_unbind:
-> + * @pci_slot: BDF like "0000:01:00.0"
-> + *
-> + * Unbind @pci_slot from its currently bound driver, if any.
-> + * Returns 0 on success, or a negative errno-like value.
-> + */
-> +int igt_pci_device_unbind(const char *pci_slot)
-> +{
-> +	char path[PATH_MAX];
-> +	int dirfd;
+> +	char *slot = igt_sriov_get_vf_pci_slot_alloc(pf_fd, vf_id);
 > +	int ret;
-> +
-> +	snprintf(path, sizeof(path), "/sys/bus/pci/devices/%s/driver", pci_slot);
-> +	dirfd = open(path, O_RDONLY | O_CLOEXEC);
-> +	if (dirfd < 0)
-> +		return 0; /* already unbound */
-> +
-> +	ret = igt_sysfs_set(dirfd, "unbind", pci_slot) ? 0 : -errno;
-> +	close(dirfd);
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * igt_pci_driver_bind:
-> + * @driver: PCI driver name under /sys/bus/pci/drivers/<driver>
-> + * @pci_slot: device to bind
-> + *
-> + * Bind @pci_slot to @driver. Driver must be present/loaded.
-> + * Returns 0 on success, or a negative errno-like value.
-> + */
-> +int igt_pci_driver_bind(const char *driver, const char *pci_slot)
-> +{
-> +	int dirfd, ret;
-> +
-> +	dirfd = open_pci_driver_dir(driver);
-> +	if (dirfd < 0)
-> +		return -errno;
-> +
-> +	ret = igt_sysfs_set(dirfd, "bind", pci_slot) ? 0 : -errno;
-> +	close(dirfd);
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * igt_pci_driver_unbind:
-> + * @driver: PCI driver name
-> + * @pci_slot: device to unbind
-> + *
-> + * Unbind @pci_slot from @driver.
-> + * Returns 0 on success, or a negative errno-like value.
-> + */
-> +int igt_pci_driver_unbind(const char *driver, const char *pci_slot)
-> +{
-> +	int dirfd, ret;
-> +
-> +	dirfd = open_pci_driver_dir(driver);
-> +	if (dirfd < 0)
-> +		return -errno;
-> +
-> +	ret = igt_sysfs_set(dirfd, "unbind", pci_slot) ? 0 : -errno;
-> +	close(dirfd);
-> +
-> +	return ret;
-> +}
-> +
-> +/**
-> + * igt_pci_driver_unbind_all:
-> + * @driver: PCI driver name
-> + *
-> + * Unbind all devices currently bound to @driver.
-> + * Returns 0 on success, or a negative errno-like value.
-> + */
-> +int igt_pci_driver_unbind_all(const char *driver)
-> +{
-> +	char path[PATH_MAX];
-> +	DIR *dir;
-> +	struct dirent *de;
-> +	int driver_fd;
-> +
-> +	snprintf(path, sizeof(path), "/sys/bus/pci/drivers/%s", driver);
-> +	dir = opendir(path);
-> +	if (!dir)
-> +		return -errno;
-> +
-> +	driver_fd = dirfd(dir);
-> +
-> +	while ((de = readdir(dir))) {
-> +		bool ok;
-> +
-> +		/* BDF symlinks are like "0000:01:00.0" and start with digit */
-> +		if (de->d_type != DT_LNK || !isdigit(de->d_name[0]))
-> +			continue;
-> +
-> +		ok = igt_sysfs_set(driver_fd, "unbind", de->d_name);
-> +		if (!ok) {
-> +			int err = -errno;
-> +
-> +			closedir(dir);
-> +			return err;
-> +		}
-> +	}
-> +
-> +	closedir(dir);
-> +	return 0;
-> +}
-> +
-> +/**
-> + * igt_pci_set_driver_override:
-> + * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
-> + * @driver: PCI driver name to force-bind (e.g. "xe-vfio-pci"), or
-> + *          NULL / empty string to clear an existing override
-> + *
-> + * Set or clear the PCI driver_override for @pci_slot via sysfs.
-> + *
-> + * This does not trigger driver reprobe by itself. Call
-> + * igt_pci_probe_drivers() afterwards to apply the override.
-> + *
-> + * Returns: 0 on success, negative errno on failure.
-> + */
-> +int igt_pci_set_driver_override(const char *pci_slot, const char *driver)
-> +{
-> +	char devpath[PATH_MAX];
-> +	int dev;
-> +	bool ok;
-> +
-> +	snprintf(devpath, sizeof(devpath), "/sys/bus/pci/devices/%s", pci_slot);
-> +	dev = open(devpath, O_DIRECTORY | O_RDONLY);
-> +	if (dev < 0)
-> +		return -errno;
-> +
-> +	ok = igt_sysfs_set(dev, "driver_override", driver ? driver : "");
-> +	close(dev);
-> +
-> +	return ok ? 0 : -errno;
-> +}
-> +
-> +/**
-> + * igt_pci_probe_drivers:
-> + * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
-> + *
-> + * Trigger PCI driver reprobe for @pci_slot by writing to
-> + * /sys/bus/pci/drivers_probe.
-> + *
-> + * This causes the kernel to attempt binding the device, honoring any
-> + * driver_override previously set.
-> + *
-> + * Note: a successful write only means the reprobe request was accepted.
-> + * It does not guarantee that a driver actually bound to the device.
-> + *
-> + * Returns: 0 on success, negative errno on failure.
-> + */
-> +int igt_pci_probe_drivers(const char *pci_slot)
-> +{
-> +	int pci;
-> +	bool ok;
-> +
-> +	pci = open("/sys/bus/pci", O_DIRECTORY | O_RDONLY);
-> +	if (pci < 0)
-> +		return -errno;
-> +
-> +	ok = igt_sysfs_set(pci, "drivers_probe", pci_slot);
-> +	close(pci);
-> +
-> +	return ok ? 0 : -errno;
-> +}
-> +
-> +/**
-> + * igt_pci_get_bound_driver_name:
-> + * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
-> + * @driver: destination buffer for the bound driver name
-> + * @driver_len: size of @driver in bytes
-> + *
-> + * Read the currently bound PCI driver name for @pci_slot by inspecting the
-> + * /sys/bus/pci/devices/<BDF>/driver symlink.
-> + *
-> + * Return values:
-> + *  1: device is bound and @driver contains the driver name
-> + *  0: device is unbound (no driver symlink)
-> + * <0: negative errno-like value on error
-> + */
-> +int igt_pci_get_bound_driver_name(const char *pci_slot, char *driver, size_t driver_len)
-> +{
-> +	char path[PATH_MAX];
-> +	char link[PATH_MAX];
-> +	const char *base;
-> +	ssize_t len;
-> +
-> +	if (driver && driver_len)
-> +		driver[0] = '\0';
-> +
-> +	snprintf(path, sizeof(path), "/sys/bus/pci/devices/%s/driver", pci_slot);
-> +	len = readlink(path, link, sizeof(link) - 1);
-> +	if (len < 0) {
-> +		if (errno == ENOENT)
-> +			return 0; /* unbound */
-> +
-> +		return -errno;
-> +	}
-> +
-> +	link[len] = '\0';
-> +	base = strrchr(link, '/');
-> +	base = base ? base + 1 : link;
-> +
-> +	if (driver && driver_len)
-
-You can check the input params at the beginning of the function and 
-return error if they are invalid.
-
-> +		snprintf(driver, driver_len, "%s", base);
-> +
-> +	return 1;
-> +}
-> +
-> +/**
-> + * igt_pci_bind_driver_override:
-> + * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
-> + * @driver: PCI driver name to bind (must not be NULL or empty)
-> + * @timeout_ms: how long to wait for the device to become bound.
-> + *              If 0, don't wait (best-effort immediate check only).
-> + *
-> + * Bind @pci_slot to @driver using the driver_override mechanism.
-> + *
-> + * This helper sets driver_override and immediately triggers driver
-> + * reprobe so that the device is bound to the requested driver.
-> + *
-> + * Returns: 0 on success, negative errno-like value on failure.
-> + * A reprobe request can be accepted by sysfs while the driver probe
-> + * fails later; this helper verifies the device ended up bound.
-> + *
-> + * On bind failure, returns a negative error and the failure reason may
-> + * also be logged to dmesg by the kernel driver.
-> + */
-> +int igt_pci_bind_driver_override(const char *pci_slot, const char *driver,
-> +				 unsigned int timeout_ms)
-> +{
-> +	int ret;
-> +	char bound[64];
+> +	char bound[64] = "none";
 > +	int bound_ret;
-> +	bool bound_ok;
 > +
-> +	if (!driver || !driver[0])
-> +		return -EINVAL;
+> +	igt_assert(slot);
+> +	igt_assert(driver);
 > +
-> +	ret = igt_pci_set_driver_override(pci_slot, driver);
-> +	if (ret)
-> +		return ret;
+> +	ret = igt_pci_bind_driver_override(slot, driver, DRIVER_OVERRIDE_TIMEOUT_MS);
+> +	if (ret < 0) {
+> +		bound_ret = igt_pci_get_bound_driver_name(slot, bound, sizeof(bound));
+> +		if (bound_ret <= 0)
+> +			snprintf(bound, sizeof(bound), "%s", "none");
 > +
-> +	ret = igt_pci_probe_drivers(pci_slot);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/*
-> +	 * Writing to drivers_probe only tells us the kernel accepted the request.
-> +	 * The actual driver probe may still fail (and only be reported via dmesg).
-> +	 * Verify that the device ended up bound to the requested driver.
-> +	 */
-> +	bound_ret = igt_pci_get_bound_driver_name(pci_slot, bound, sizeof(bound));
-> +	if (bound_ret < 0)
-> +		return bound_ret;
-> +
-> +	if (timeout_ms == 0) {
-> +		/*
-> +		 * No waiting requested. If the device is already bound, validate
-> +		 * it is bound to the expected driver; otherwise treat as
-> +		 * best-effort request-only success.
-> +		 */
-> +		if (bound_ret > 0 && strcmp(bound, driver))
-> +			return -EBUSY;
-> +
-> +		return 0;
+> +		igt_warn_on_f(true,
+> +			      "bind %s (VF%u) to %s ret=%d (currently bound: %s)\n",
+> +			      slot, vf_id, driver, ret, bound);
 > +	}
 > +
-> +	bound_ok = igt_wait((bound_ret =
-> +			     igt_pci_get_bound_driver_name(pci_slot, bound, sizeof(bound))) != 0,
-> +			    timeout_ms, 1);
-> +	if (!bound_ok)
-> +		return -EIO;
+> +	free(slot);
 > +
-> +	if (bound_ret < 0)
-> +		return bound_ret;
-> +
-> +	if (strcmp(bound, driver))
-> +		return -EBUSY;
-> +
-> +	return 0;
+> +	return ret >= 0;
 > +}
 > +
-> +/**
-> + * igt_pci_unbind_driver_override:
-> + * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
-> + * @timeout_ms: how long to wait for the device to become unbound.
-> + *              If 0, don't wait (best-effort immediate check only).
-> + *
-> + * Unbind @pci_slot from its currently bound driver (if any) and clear
-> + * any driver_override setting.
-> + *
-> + * This is the inverse operation of igt_pci_bind_driver_override().
-> + *
-> + * Returns: 0 on success, negative errno on failure.
-> + */
-> +int igt_pci_unbind_driver_override(const char *pci_slot, unsigned int timeout_ms)
+> +static void vf_unbind_driver_override(int pf_fd, unsigned int vf_id)
 > +{
+> +	char *slot = igt_sriov_get_vf_pci_slot_alloc(pf_fd, vf_id);
 > +	int ret;
-> +	int bound_ret;
-> +	char bound[64];
-> +	bool unbound_ok;
 > +
-> +	ret = igt_pci_device_unbind(pci_slot);
-> +	if (ret)
-> +		return ret;
+> +	igt_assert(slot);
 > +
-> +	ret = igt_pci_set_driver_override(pci_slot, "");
-> +	if (ret)
-> +		return ret;
+> +	ret = igt_pci_unbind_driver_override(slot, DRIVER_OVERRIDE_TIMEOUT_MS);
+> +	igt_warn_on_f(ret < 0, "unbind %s (VF%u) driver_override ret=%d\n",
+> +		      slot, vf_id, ret);
 > +
-> +	bound_ret = igt_pci_get_bound_driver_name(pci_slot, bound, sizeof(bound));
-> +	if (bound_ret < 0)
-> +		return bound_ret;
-> +
-> +	if (timeout_ms == 0)
-> +		return 0;
-> +
-> +	/* Verify the device actually ends up unbound (driver symlink removed). */
-> +	unbound_ok = igt_wait((bound_ret =
-> +			       igt_pci_get_bound_driver_name(pci_slot, bound, sizeof(bound))) == 0,
-> +			      timeout_ms, 1);
-> +	if (!unbound_ok)
-> +		return -EBUSY;
-> +
-> +	if (bound_ret < 0)
-> +		return bound_ret;
-> +
-> +	return 0;
+> +	free(slot);
 > +}
-> diff --git a/lib/igt_pci.h b/lib/igt_pci.h
-> index 92b9cc392..a66eeebf2 100644
-> --- a/lib/igt_pci.h
-> +++ b/lib/igt_pci.h
-> @@ -6,8 +6,9 @@
->   #ifndef __IGT_PCI_H__
->   #define __IGT_PCI_H__
+> +
+>   /**
+>    * flr_exec_strategy - Function pointer for FLR execution strategy
+>    * @pf_fd: File descriptor for the Physical Function (PF).
+> @@ -325,6 +370,8 @@ static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks,
+>   {
+>   	const int wait_flr_ms = 200;
+>   	int i, vf_id, flr_vf_id = -1;
+> +	bool xe_vfio_loaded;
+> +	bool *vf_bound = NULL;
 >   
-> -#include <stdint.h>
->   #include <endian.h>
-> +#include <stddef.h>
-> +#include <stdint.h>
+>   	igt_sriov_disable_driver_autoprobe(pf_fd);
+>   	igt_sriov_enable_vfs(pf_fd, num_vfs);
+> @@ -335,6 +382,16 @@ static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks,
+>   	if (igt_warn_on(igt_pci_system_reinit()))
+>   		goto disable_vfs;
 >   
->   /* forward declaration */
->   struct pci_device;
-> @@ -24,5 +25,15 @@ enum pci_cap_id {
->   #define  PCI_SLOT_PWR_CTRL_PRESENT (1 << 1)
+> +	xe_vfio_loaded = igt_kmod_load("xe_vfio_pci", NULL) >= 0;
+> +	if (xe_vfio_loaded) {
+> +		vf_bound = calloc(num_vfs + 1, sizeof(*vf_bound));
+> +		igt_assert(vf_bound);
+> +
+> +		igt_sriov_enable_driver_autoprobe(pf_fd);
+> +		for (vf_id = 1; vf_id <= num_vfs; vf_id++)
+> +			vf_bound[vf_id] = vf_bind_driver_override(pf_fd, vf_id, "xe-vfio-pci");
+> +	}
+> +
+>   	init_mmio(pf_fd, num_vfs);
 >   
->   int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id);
-> +int igt_pci_device_unbind(const char *pci_slot);
-> +int igt_pci_driver_bind(const char *driver, const char *pci_slot);
-> +int igt_pci_driver_unbind(const char *driver, const char *pci_slot);
-> +int igt_pci_driver_unbind_all(const char *driver);
-> +int igt_pci_set_driver_override(const char *pci_slot, const char *driver);
-> +int igt_pci_probe_drivers(const char *pci_slot);
-> +int igt_pci_get_bound_driver_name(const char *pci_slot, char *driver, size_t driver_len);
-> +int igt_pci_bind_driver_override(const char *pci_slot, const char *driver,
-> +				 unsigned int timeout_ms);
-> +int igt_pci_unbind_driver_override(const char *pci_slot, unsigned int timeout_ms);
+>   	for (i = 0; i < num_checks; ++i)
+> @@ -357,6 +414,14 @@ cleanup:
 >   
->   #endif
+>   	cleanup_mmio();
+>   
+> +	if (xe_vfio_loaded) {
+> +		for (vf_id = 1; vf_id <= num_vfs; vf_id++)
+> +			if (vf_bound && vf_bound[vf_id])
+> +				vf_unbind_driver_override(pf_fd, vf_id);
+> +	}
+> +
+> +	free(vf_bound);
+> +
+>   disable_vfs:
+>   	igt_sriov_disable_vfs(pf_fd);
+>   
