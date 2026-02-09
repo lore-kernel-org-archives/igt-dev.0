@@ -4,66 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09CEDE81BD3
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 16:32:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49EF0E7E0BC
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 16:32:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A5D7010E434;
-	Mon,  9 Feb 2026 16:32:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EB8CC10E436;
+	Mon,  9 Feb 2026 16:32:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="IKv9IRiv";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="HiwtZFyz";
 	dkim-atps=neutral
-Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61A0110E434
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 16:32:32 +0000 (UTC)
-Received: by mail-dl1-f65.google.com with SMTP id
- a92af1059eb24-124a635476fso6037370c88.0
- for <igt-dev@lists.freedesktop.org>; Mon, 09 Feb 2026 08:32:32 -0800 (PST)
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46A4410E436
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 16:32:37 +0000 (UTC)
+Received: by mail-dl1-f44.google.com with SMTP id
+ a92af1059eb24-126ea4b77adso4953710c88.1
+ for <igt-dev@lists.freedesktop.org>; Mon, 09 Feb 2026 08:32:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1770654751; x=1771259551; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1770654756; x=1771259556; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kfR0q0MwxIkTwYUVsYjAFlJZjw+9ZDL9Y3z+KbKcgUA=;
- b=IKv9IRivbJRAOyroVlzuwYCCXI65c77eosS/Fh6FvupsQXGjICh8w/hMjhrXqY1RZ0
- sGMur13iVfUmW0YNQtkaqcyeWFvLH75IqImg7acM9vz8Uy2n7W0DA8S7hBwHgZBYwWXY
- hR/skk8ZrzmWYIo1LWQwP0wUpOcoK17wKgmL1ueM8/A+3L+2gKyj1Ck/vLC2uPffDfs1
- G7/TrKIBIeCv/3azpnd7FVGeAvWHVUiNYlbq79KrUNzMDWUquagFAfaKEHWh9MywiriL
- odXZW+/TGFiOfIB5VETIumrKahymtNBanTapyA9XU/mpRQMP2pQs/DiUhTS35PvRgt6K
- Q2kQ==
+ bh=mJIBPedqu15VlpN0OxwL4Z6gEbupWvTpvDCdcc1ut1Q=;
+ b=HiwtZFyzqryKaY2CKAuBgfKT9O2YIUHtIl+otZcn+Mibz/uX5EuFJOW6wQmyg12rTB
+ B+9Nl664ne4vsfEymPkxNktlKOoyMFkrScy/GNk99G7yfRnb4XwVEeIsA+xIRgb348hO
+ 8IpBmPyNFkHiihZZ9GgcEmDl7kRxp9AydH2eDv6mCzIgrMsivyBPn2sBBjGS42i3Lmj0
+ lGWZEBWtE/JqQPSwA00fmLW7C/P8LQUP/WG/RiCQknyS1RlaXkkkbN7iWhmHs0HIm+9+
+ SjzVjjQ7AdyBXdo9fxiFBjTKQ3FTAKTvoa66mUKJpGRT4K3rVtUfR2I98bepEXN26Yji
+ CT9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1770654751; x=1771259551;
+ d=1e100.net; s=20230601; t=1770654756; x=1771259556;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=kfR0q0MwxIkTwYUVsYjAFlJZjw+9ZDL9Y3z+KbKcgUA=;
- b=AJv3j2c9Vzz6vHCpl+U9kMVJXQka5uv631uDZZBkRHEtjA7/pKfQdreNbQZVyYA/sM
- 66QsPqZjvDfffBVFlj4s0iA9j39YM8txaIkhMYfjAW/MPbXTrP/dqqt1cIYf3XW1yiHM
- zDdP1m6I0uV2SLGKpI9reC8Bz/Ym0todJqndx2mQ2aUxXcDsbSMpYa1T7etUL9d18hCg
- KjU8oeSGo02Kx7HocMJ6JRvWGcHiJkY+wOYs/zNqz26W/e3Mba/+7zXE2qhaVNgBh/Lq
- 1Wn/zeEiakOOxqCk1cV8fTRIJvcCJKsaphIRdOXEhyHpIfLfFxwOHuE7+twQAj07P2Fh
- ZeUg==
-X-Gm-Message-State: AOJu0YxiUTS97U+kJuLpYwI5tIRjLcFhw1bI8mThEznIqkNng9EsvnSC
- ZhujV/4eObDhk8AH3vDqxb5YDHbs5L6m9M+GhTOIXDaisiqq4Y0QUCrvxkJHZX6tKyA=
-X-Gm-Gg: AZuq6aLE0PrYzjndm086sagNkpPA4xXcPoJmxrg5oKNksmcKwNjq9mfpR4R/fjA5blw
- sMJ4C1mRURz4SW6ZbuT14cESXAYe9mH2CdieExyhaEZtZh0Gl91Sd3xObOqPifjH3AXUglt6dOT
- /duEiJPTixklhf36+1zrjTFENhEJjniLBf+3+AUWeKDpyAVmc2DVC/3QTlNqSo8RtcR4ztZgTuv
- l0NOnn7y7wewRfs59WR2PCcJdqOG7et6t597oD6bTWbZGp/PPrnGe/I/a9F3J7ozcOLVenN4lxJ
- Plb1a94LkusQR0C5uU74Pze28ehTR1tcJG/8ebmXwD2YWScCbVPi5Kj1XJdouLHxdk4MD0buvdT
- iFmG4mz8jNpSoc15YDpML0RLlchz2p8HWQqKJ//rCecPjGoX92kh0erQ27qgrW8/4uF2j6pXqIN
- MRR4t7RiOCdIzCvHlrc2CjF+VQQuju48Zo7Q2OHD4fBWKa89f1
-X-Received: by 2002:a05:7022:4a4:b0:11b:9386:a38b with SMTP id
- a92af1059eb24-127040981efmr5890720c88.46.1770654751224; 
- Mon, 09 Feb 2026 08:32:31 -0800 (PST)
+ bh=mJIBPedqu15VlpN0OxwL4Z6gEbupWvTpvDCdcc1ut1Q=;
+ b=D+6Tz2Li0DH2om79yWHrq2ANfn+uECbsftjs5Xm9a0g364kEBnEsFiT85AJLG2Ty2S
+ 5pt8KzEgANzYi3uLhBVsmAbdFPeHXsUYfftXPnY5Tw54W1uVbDmUUUrAFS5sE9QKRkeR
+ VYV3qD4dXXD8dLTsElixLDJtQQApoRJBum0S68sEDNWoZT6dZD5Y84YYlK9jbGlvjgB3
+ XxK/EN0ByzlYb/PgiRBmR3TbFn0yqlIlq/j3rhy+qjxay2RLHoyOSx3pdv8jmfXryd7m
+ javdec4X/pnDb4ZTUD5OQ6QnGdfj44rssmzTBxQvGZHINrVtxUT8PvEtArcm/hOWX2oN
+ YbUQ==
+X-Gm-Message-State: AOJu0YwdMPZBa68GGOgVkR8BPLod1KgWWL5fHdKT8kWZbZvCwnbyYpgk
+ UPhZgoJ7+iXv0EWzWfW00/CsWkZdsQcSmKZbeL8t+TZHG7Tsyxg1AHhvaqc/Km2Y
+X-Gm-Gg: AZuq6aJ9WDpyDXwP/Wi0E1Zxu0zeiERQiMMamkC5B7GUs5MMpHeU08CHbgAqisHjZLu
+ oEXchAldBi+iVRkZ45kLx5BVQbkeC3hX3oOJRDbkV9vxIIMaG4buLgFmGGeyqxl7Xlg3HcZghS0
+ eb6NEF/loKbG2tXWHVIa4WdAxhNl0EmhUDewTmDyABj7+1npWoI0oeqLcX1UAdY2eMQfeGMvJnB
+ ZoKXUk1D7Qya6Mty7Fxf/b3v5nW6uT91GtGV1mjmVytEvEAdaD4gm9zPaxuLcUSYAa+kIodSmyF
+ 52pzFx7P6lTM2GNvEFOA1uVjLJvf2ts/Qgr0JBsqoJ3FHoofGOTTEsPR+AjGRr6Cu6Op+FVDq0V
+ X4dVWjHkaeryAo/9Ua6oSNfuHmOo5vQiYda+SOcFf88W4q4jlBlbB5FhtgMiksGDEYcMCN5RBl+
+ NrhfYbaHV40oXK/r2t5WRs2Vl/uE7QsUQMfhENw5uKuQsfiWd/
+X-Received: by 2002:a05:7022:6296:b0:119:e56c:18a0 with SMTP id
+ a92af1059eb24-12703f701c8mr5682745c88.8.1770654756202; 
+ Mon, 09 Feb 2026 08:32:36 -0800 (PST)
 Received: from localhost ([192.55.54.41]) by smtp.gmail.com with ESMTPSA id
- 5a478bee46e88-2b855af5ca2sm8777614eec.8.2026.02.09.08.32.29
+ 5a478bee46e88-2ba776c4a2bsm1698737eec.24.2026.02.09.08.32.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Feb 2026 08:32:30 -0800 (PST)
+ Mon, 09 Feb 2026 08:32:35 -0800 (PST)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 2/7] lib/xe: add xe_exec_queue_create_class_gt
-Date: Mon,  9 Feb 2026 18:32:08 +0200
-Message-ID: <20260209163213.1483598-3-juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 3/7] lib/intel_batchbuffer: add intel_bb_create_with_gt
+ function
+Date: Mon,  9 Feb 2026 18:32:09 +0200
+Message-ID: <20260209163213.1483598-4-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260209163213.1483598-1-juhapekka.heikkila@gmail.com>
 References: <20260209163213.1483598-1-juhapekka.heikkila@gmail.com>
@@ -84,58 +85,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-add function to create exec queue with class and gt id
+add possibility to use gt id with batchbuffer  when on xe
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/xe/xe_ioctl.c | 20 ++++++++++++++++++++
- lib/xe/xe_ioctl.h |  2 ++
- 2 files changed, 22 insertions(+)
+ lib/intel_batchbuffer.c | 25 +++++++++++++++++++++++++
+ lib/intel_batchbuffer.h |  3 +++
+ 2 files changed, 28 insertions(+)
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 16aae05c9..738985192 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -503,6 +503,26 @@ uint32_t xe_exec_queue_create_class(int fd, uint32_t vm, uint16_t class)
- 	return create.exec_queue_id;
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 3b25a385b..c12beed46 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -1158,6 +1158,31 @@ intel_bb_create_with_context(int fd, uint32_t ctx, uint32_t vm,
+ 				 is_i915 ? REGION_SMEM : vram_if_possible(fd, 0));
  }
  
-+uint32_t xe_exec_queue_create_class_gt(int fd, uint32_t vm, uint16_t class,
-+				       int gt_id)
++/**
++ * intel_bb_create_with_gt:
++ * @fd: drm fd - i915 or xe
++ * @gt: for i915 context id, for xe engine id
++ * @vm: for xe vm_id, unused for i915
++ * @size: size of the batchbuffer
++ *
++ * Creates bb with engine id passed in @gt
++ *
++ * Returns:
++ *
++ * Pointer the intel_bb, asserts on failure.
++ */
++struct intel_bb *intel_bb_create_with_gt(int fd, uint32_t size, int vm, int gt)
 +{
-+	struct drm_xe_engine_class_instance instance = {
-+		.engine_class = class,
-+		.engine_instance = 0,
-+		.gt_id = gt_id,
-+	};
-+	struct drm_xe_exec_queue_create create = {
-+		.vm_id = vm,
-+		.width = 1,
-+		.num_placements = 1,
-+		.instances = to_user_pointer(&instance),
-+	};
++	bool is_i915 = is_i915_device(fd);
++	bool relocs = is_i915 && gem_has_relocations(fd);
 +
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create), 0);
-+
-+	return create.exec_queue_id;
++	return __intel_bb_create(fd, gt, vm, NULL, size,
++				 relocs && !aux_needs_softpin(fd), 0, 0, 0,
++				 INTEL_ALLOCATOR_SIMPLE,
++				 ALLOC_STRATEGY_HIGH_TO_LOW,
++				 is_i915 ? REGION_SMEM : vram_if_possible(fd, gt));
 +}
 +
- int __xe_exec_queue_set_property(int fd, uint32_t exec_queue, uint32_t property,
- 				 uint64_t value)
- {
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index 3ea651063..e4fb5e838 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -83,6 +83,8 @@ uint32_t xe_exec_queue_create(int fd, uint32_t vm,
- 			  uint64_t ext);
- uint32_t xe_bind_exec_queue_create(int fd, uint32_t vm, uint64_t ext);
- uint32_t xe_exec_queue_create_class(int fd, uint32_t vm, uint16_t class);
-+uint32_t xe_exec_queue_create_class_gt(int fd, uint32_t vm, uint16_t class,
-+				       int gt_id);
- int __xe_exec_queue_set_property(int fd, uint32_t exec_queue, uint32_t property,
- 				 uint64_t value);
- void xe_exec_queue_set_property(int fd, uint32_t exec_queue, uint32_t property,
+ /**
+  * intel_bb_create_with_context_in_region:
+  * @fd: drm fd - i915 or xe
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index d0a7c8dc7..ffe09c9ac 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -323,6 +323,9 @@ struct intel_bb *intel_bb_create(int fd, uint32_t size);
+ struct intel_bb *
+ intel_bb_create_with_context(int fd, uint32_t ctx, uint32_t vm,
+ 			     const intel_ctx_cfg_t *cfg, uint32_t size);
++struct intel_bb *intel_bb_create_with_gt(int fd, uint32_t size, int vm,
++					 int gt);
++
+ struct intel_bb *
+ intel_bb_create_with_context_in_region(int fd, uint32_t ctx, uint32_t vm,
+ 				       const intel_ctx_cfg_t *cfg, uint32_t size, uint64_t region);
 -- 
 2.43.0
 
