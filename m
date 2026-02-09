@@ -4,62 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 050B3EF06EE
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 02:04:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B38FEF06EE
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 02:58:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 91AD710E0F0;
-	Mon,  9 Feb 2026 02:04:09 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=mediatek.com header.i=@mediatek.com header.b="BdJq/5vF";
-	dkim-atps=neutral
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7AB0510E0F0
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 02:04:07 +0000 (UTC)
-X-UUID: 996254d4055b11f1b7fc4fdb8733b2bc-20260209
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
- s=dk; 
- h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From;
- bh=GKbNKp4CbXAW4hyltGFwm1hwsC5mzfAc4tTmhkGaAFs=; 
- b=BdJq/5vFYzxpdEhnhVCtliNssQqdkfw9AJ9HkvpJeLy6QaIiAyOl8HAYQnygZSIvQ+8g8IksSyxDk6iHFHPGefRtuHssr5rlaEG1Ih75wOap6ZWHV83Anvclg8yZhItNPQucplON1GMjV2I1EenOd5bv/oGXAPsN6rllNkTgHC8=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11, REQID:34ca544a-ae74-41dd-b817-c1fb8301b322, IP:0,
- U
- RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
- release,TS:0
-X-CID-META: VersionHash:89c9d04, CLOUDID:dcb878f0-16bd-4243-b4ca-b08ca08ab1d8,
- B
- ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
- 0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
- :0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 996254d4055b11f1b7fc4fdb8733b2bc-20260209
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by
- mailgw02.mediatek.com (envelope-from <xiandong.wang@mediatek.com>)
- (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
- with ESMTP id 118498191; Mon, 09 Feb 2026 10:03:59 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 9 Feb 2026 10:03:58 +0800
-Received: from mhfsdcap04.gcn.mediatek.inc (10.17.3.154) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Mon, 9 Feb 2026 10:03:58 +0800
-From: Xiandong Wang <xiandong.wang@mediatek.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Jason-JH Lin <jason-jh.lin@mediatek.com>, Gil Dekel <gildekel@google.com>, 
- Yacoub <markyacoub@chromium.org>,
- <Project_Global_Chrome_Upstream_Group@mediatek.com>, xiandong.wang
- <xiandong.wang@mediatek.corp-partner.google.com>
-Subject: [PATCH i-g-t 1/1] Skip kms_flip for mtk
-Date: Mon, 9 Feb 2026 10:03:52 +0800
-Message-ID: <20260209020357.32744-1-xiandong.wang@mediatek.com>
-X-Mailer: git-send-email 2.46.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id B36BC10E25D;
+	Mon,  9 Feb 2026 02:58:18 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 885A810E130;
+ Mon,  9 Feb 2026 02:58:17 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2652368105229421905=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2C1/1=5D_Skip_kms=5Fflip_for_mtk?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Xiandong Wang" <xiandong.wang@mediatek.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 09 Feb 2026 02:58:17 -0000
+Message-ID: <177060589753.236561.4399496723803722349@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260209020357.32744-1-xiandong.wang@mediatek.com>
+In-Reply-To: <20260209020357.32744-1-xiandong.wang@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,41 +37,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: "xiandong.wang" <xiandong.wang@mediatek.corp-partner.google.com>
+--===============2652368105229421905==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Change-Id: I80b23c8c26254a29721ccdc02e69fa5643067c24
-Signed-off-by: xiandong.wang <xiandong.wang@mediatek.corp-partner.google.com>
----
- tests/kms_flip.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+== Series Details ==
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index a74e69c6f..9524a9d4e 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -1826,6 +1826,9 @@ static void run_test(int duration, int flags)
- 	if (is_xe_device(drm_fd) && flags & TEST_FENCE_STRESS)
- 		return;
- 
-+       if (is_mtk_device(drm_fd))
-+               return;
-+
- 	if (flags & TEST_BO_TOOBIG && !is_intel_device(drm_fd))
- 		return;
- 
-@@ -1903,6 +1906,9 @@ static void run_pair(int duration, int flags)
- 	if (is_xe_device(drm_fd) && flags & TEST_FENCE_STRESS)
- 		return;
- 
-+       if (is_mtk_device(drm_fd))
-+               return;
-+
- 	if (flags & TEST_BO_TOOBIG && !is_intel_device(drm_fd))
- 		return;
- 
--- 
-2.46.0
+Series: series starting with [i-g-t,1/1] Skip kms_flip for mtk
+URL   : https://patchwork.freedesktop.org/series/161324/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8744_BAT -> XEIGTPW_14511_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 12)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14511_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_waitfence@abstime:
+    - bat-bmg-1:          [PASS][1] -> [TIMEOUT][2] ([Intel XE#6506])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8744/bat-bmg-1/igt@xe_waitfence@abstime.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14511/bat-bmg-1/igt@xe_waitfence@abstime.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_pat@pat-index-xe2@render:
+    - bat-ptl-vm:         [DMESG-WARN][3] ([Intel XE#7110]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8744/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14511/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html
+
+  
+  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
+  [Intel XE#7110]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7110
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8744 -> IGTPW_14511
+  * Linux: xe-4522-e294156cfd0b6db73e96c58789049e8b504bb165 -> xe-4524-1d8de8bfed023d4f1e11f6978a0fcdbddc0f9b36
+
+  IGTPW_14511: 14511
+  IGT_8744: 8744
+  xe-4522-e294156cfd0b6db73e96c58789049e8b504bb165: e294156cfd0b6db73e96c58789049e8b504bb165
+  xe-4524-1d8de8bfed023d4f1e11f6978a0fcdbddc0f9b36: 1d8de8bfed023d4f1e11f6978a0fcdbddc0f9b36
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14511/index.html
+
+--===============2652368105229421905==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/1] Skip kms_flip for mtk</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161324/">https://patchwork.freedesktop.org/series/161324/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14511/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14511/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8744_BAT -&gt; XEIGTPW_14511_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14511_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_waitfence@abstime:<ul>
+<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8744/bat-bmg-1/igt@xe_waitfence@abstime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14511/bat-bmg-1/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_pat@pat-index-xe2@render:<ul>
+<li>bat-ptl-vm:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8744/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7110">Intel XE#7110</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14511/bat-ptl-vm/igt@xe_pat@pat-index-xe2@render.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8744 -&gt; IGTPW_14511</li>
+<li>Linux: xe-4522-e294156cfd0b6db73e96c58789049e8b504bb165 -&gt; xe-4524-1d8de8bfed023d4f1e11f6978a0fcdbddc0f9b36</li>
+</ul>
+<p>IGTPW_14511: 14511<br />
+  IGT_8744: 8744<br />
+  xe-4522-e294156cfd0b6db73e96c58789049e8b504bb165: e294156cfd0b6db73e96c58789049e8b504bb165<br />
+  xe-4524-1d8de8bfed023d4f1e11f6978a0fcdbddc0f9b36: 1d8de8bfed023d4f1e11f6978a0fcdbddc0f9b36</p>
+
+</body>
+</html>
+
+--===============2652368105229421905==--
