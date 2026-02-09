@@ -4,181 +4,194 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 528B4EF071B
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 07:13:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40F0BEF071D
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 07:15:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DA3F010E304;
-	Mon,  9 Feb 2026 07:13:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E225E10E334;
+	Mon,  9 Feb 2026 07:15:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BS9f0awa";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aNwC+Ktf";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33E8E10E304
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 07:13:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 331D010E304;
+ Mon,  9 Feb 2026 07:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770621236; x=1802157236;
+ t=1770621336; x=1802157336;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:mime-version;
- bh=W7oNCoHnmMnX276OhUfVxAdvVXkPfqjzdFtMAOudy2c=;
- b=BS9f0awajap+fhMBD0ZVorB2/loCdCfAYO/e+tgJ5etT8nLfqC1tN3ys
- bdUl2PnSjRW4duNacUBHH8J7RYfZgVr5fjYZMogHM5VBkHdaWPA5o2YpN
- ltYZqw/7zWjiJdmpxm66ZAeJsn0Gi3otTR5NQy+ocZXOntQtpzbbEf+0m
- cWb2N7KDjPhbJiNUJnKgObwBF9rj4Ip7qigqGUF+Bylvm8z43Ufr62U5m
- h+rNhKYZw3Pdwg/5jn2NyjEs9SG8OYq8ix3Kj/MRZlHP6X2OmGxd55Jqm
- EsK3Uf/eGCUJCU7I4roMGvtUxf+16Wh2518qrPExUhkLgh6hED1wHRoG5 w==;
-X-CSE-ConnectionGUID: +sybaqciS9acTgCbZnCrfg==
-X-CSE-MsgGUID: KX2kp6Q/R/izzo2qTCfBlg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11695"; a="71910611"
-X-IronPort-AV: E=Sophos;i="6.21,281,1763452800"; d="scan'208,217";a="71910611"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2026 23:13:56 -0800
-X-CSE-ConnectionGUID: 62YNxtFVROK5gy3L3W+DQg==
-X-CSE-MsgGUID: 8wWkdOKSQD2VfWAcC8lbrg==
+ bh=gYfG/KtLVd/ZRhPByhAog0NaTd7iUoleb1duJ9Bx7mE=;
+ b=aNwC+KtfdKalcpsdAL3TBr1O8y16FXs7esB6oXNq+RaFbx47Tw4EVdPP
+ eCp+PlOWQIt8CsGlkfDBHmLp2xGKCDJE2VLE4ADjKybnOxj3t0cSQhVcJ
+ i3uyD6LQ3i/sR3TtzGL4tdVilFxcP3HYqaooHDbChH706GEyVlAfSDZJF
+ cvk0QpXaNm/WmGQMPvnKPGyvMjG6SBJbximGvDhGQbbAmJJOtU3+57s4H
+ a563Z4/fQ2vUqhJvuvgF0ThmUsRMKRhUPn6ID6SSGbuAMt1Ed7qSTXTzm
+ oHmdDMIMXhTzRGbazdz2hCvnRWbESOmsoqHyqtScUt3z8eOmTlvGxHbyP Q==;
+X-CSE-ConnectionGUID: uEH08k97QaiQ+Lpca0GJmw==
+X-CSE-MsgGUID: u6/6r6lOTVuOzyRP7IJE0w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11695"; a="75347561"
+X-IronPort-AV: E=Sophos;i="6.21,281,1763452800"; d="scan'208,217";a="75347561"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2026 23:15:35 -0800
+X-CSE-ConnectionGUID: moHtEH3mTMGYaSoRPa5oag==
+X-CSE-MsgGUID: 319WopAJRXKjz5uTE22Hyg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,281,1763452800"; 
- d="scan'208,217";a="242132147"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Feb 2026 23:13:56 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ d="scan'208,217";a="216001805"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Feb 2026 23:15:35 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Sun, 8 Feb 2026 23:13:55 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.2.2562.35; Sun, 8 Feb 2026 23:15:34 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Sun, 8 Feb 2026 23:13:55 -0800
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.6) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ 15.2.2562.35 via Frontend Transport; Sun, 8 Feb 2026 23:15:34 -0800
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.50) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Sun, 8 Feb 2026 23:13:54 -0800
+ 15.2.2562.35; Sun, 8 Feb 2026 23:15:34 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p8vfErxIiJlFWwcooEL2JTEULeyZdASQHhLqKTWnAleKNjgV0KowevJHpx3aQULl6igHCO34K+TW778KObTtn+p5lU/Yk+8nHtneP+7gYVjjsbQ4QuvO6+C0/tOm5uyPDotGYpCdwuavl+DvyC9WHb1h2q42Sqr9OQXmYzcgyrtXkEtCreatD9JgeLXxQM/SYqs2sffqSFh4RzgBw94TnRegY0jrhkQ7CSIxFbkkSS9EACtLK3MnIuGGYInw34tqAFBEzUVp+RYqps7joa9gk74+fFffI4vLl8INMp2WL3cBf5Wuak2UsYKI8gKEgZiNhbvKY7RYqS8ki7s8q/++WQ==
+ b=B2RrU3blwl/OQpUc8OT/LgLT0BfKhtKEAYvDQb2tp+1ZonIVjoesBmeZ0NpbSiwcDM6AZ49mmB5VlXc30ycm6e0H8Xj1tTTBcXthVaUtNkgxvG67L47i/5bv5zGceSGS7QnWuNI06O7WtjcJeG92M/oqBfPeNI42I3c8pUdDWMT28w73AZME1E4F/x5gqWHwo5m63sKeQJEkI9ephFv7ihK4XFwlXvbM06IzxnfkYA3242JwCw6cxMUWpxHm9lUXvHeSo2cJCr9aqvmiVydCRK80L+H/hiYp+3S/IBQytPykF7/6v9gAPBtKVjxny9Mt92ZdKObfDIKRfCTPZIJiCw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W5iblEMDTloZnQG6Sn0ot24lIE6BzhvcL7Wvo3D0ooU=;
- b=u0cHX1d8AunlkzreWhsT3axAmZZH7E2jvzZ1mbwaEryOJJ23QuXzMPTWGii32SvWOowSDWNNS7rsiy+RoTgTfDhEal3aIIM9qw633tu7B8Th+NMr/nObX9m81asceV4K2uJU2JDZkH3VaXGBAWuHKzk5SW/peR2MTCQquAhlr1+DNCdy6tHjJtXVSBpwzNzsvLe4AQcY81uR5Gwu2HWxuBOt64G63wga02WzHxHj2/3gZrrvOxNeeSNUmMqVDR6qGNOB+KFWd2n2UydHF5LwLBD4XX1YKtQZq6Thzeyrt3zEYy500dFbAyX9PsDjI7Fpuj6aw2RgFzk08MlUB/0iIw==
+ bh=gYfG/KtLVd/ZRhPByhAog0NaTd7iUoleb1duJ9Bx7mE=;
+ b=QRiOPc1nnv0ygRI2DfvfD4V3SHsHKzq4BnB0wG3TY/rr00bXfQpLIRr64q/+LyoEd/m4Tu3baCHtxt5oCvrgmhj7VKu+mG/MU7ZcfUeGnZc9c+1kRSOrLgQz6kwkgIBNnsalgblsZsyW8kng2Vg5TLkqwoAo/ISGpD06W5804ub8awpELFYcejXwuU/r/C8nlSSTQizBjAxf9A/0Rnogm1GObIklaM662WZjpS/fr7jrZAKUnga10nINdZfF8NfzyCEmMYybKNoSdMc7OoHzpgerombrAR/EbbhleSflOSlaUUrN8G5ARMyNKNFYi/6/NQ8GDuVV2FwoAiws70484g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from CH0PR11MB5427.namprd11.prod.outlook.com (2603:10b6:610:d2::14)
- by CY5PR11MB6415.namprd11.prod.outlook.com (2603:10b6:930:35::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.19; Mon, 9 Feb
- 2026 07:13:51 +0000
-Received: from CH0PR11MB5427.namprd11.prod.outlook.com
- ([fe80::a4c2:eb7b:574b:ab2b]) by CH0PR11MB5427.namprd11.prod.outlook.com
- ([fe80::a4c2:eb7b:574b:ab2b%5]) with mapi id 15.20.9587.016; Mon, 9 Feb 2026
- 07:13:50 +0000
-From: "Sebinraj, S" <s.sebinraj@intel.com>
-To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-CC: "Santa, Carlos" <carlos.santa@intel.com>, "Badrappan, Jeevaka"
- <jeevaka.badrappan@intel.com>, "Karas, Krzysztof"
- <krzysztof.karas@intel.com>, "Konieczny, Kamil" <kamil.konieczny@intel.com>,
- "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t v2] tests/kms_explict_fence: Add Test for Explicit
- Fencing
-Thread-Topic: [PATCH i-g-t v2] tests/kms_explict_fence: Add Test for Explicit
- Fencing
-Thread-Index: AQHcip2rGcDssJeU+Eux2abG9OBM77V1MhuAgATewHA=
-Date: Mon, 9 Feb 2026 07:13:50 +0000
-Message-ID: <CH0PR11MB5427281EA2CF49992FCEEBEB9865A@CH0PR11MB5427.namprd11.prod.outlook.com>
-References: <20260121060909.2467562-1-s.sebinraj@intel.com>
- <a3f52916-c20d-41ab-8455-3a26ee40ed52@intel.com>
-In-Reply-To: <a3f52916-c20d-41ab-8455-3a26ee40ed52@intel.com>
+Received: from IA3PR11MB8987.namprd11.prod.outlook.com (2603:10b6:208:574::18)
+ by SJ0PR11MB6766.namprd11.prod.outlook.com (2603:10b6:a03:47c::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Mon, 9 Feb
+ 2026 07:15:32 +0000
+Received: from IA3PR11MB8987.namprd11.prod.outlook.com
+ ([fe80::f91f:4301:96d7:1925]) by IA3PR11MB8987.namprd11.prod.outlook.com
+ ([fe80::f91f:4301:96d7:1925%6]) with mapi id 15.20.9587.017; Mon, 9 Feb 2026
+ 07:15:32 +0000
+From: "Gote, Nitin R" <nitin.r.gote@intel.com>
+To: "i915-ci-infra@lists.freedesktop.org" <i915-ci-infra@lists.freedesktop.org>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: =?utf-8?B?UkU6IOKclyBYZS5DSS5GVUxMOiBmYWlsdXJlIGZvciB0ZXN0cy9pbnRlbC94?=
+ =?utf-8?B?ZV9jb25maWdmczogUmVzZXQgY29uZmlnZnMgZ3JvdXAgYWZ0ZXIgZWFjaCBz?=
+ =?utf-8?Q?ubtest?=
+Thread-Topic: =?utf-8?B?4pyXIFhlLkNJLkZVTEw6IGZhaWx1cmUgZm9yIHRlc3RzL2ludGVsL3hlX2Nv?=
+ =?utf-8?Q?nfigfs:_Reset_configfs_group_after_each_subtest?=
+Thread-Index: AQHcllbMbNEGOrnrEkWtwxOV57CUPLV58+0g
+Date: Mon, 9 Feb 2026 07:15:32 +0000
+Message-ID: <IA3PR11MB89871E055F5C6F0E1EA58B49D065A@IA3PR11MB8987.namprd11.prod.outlook.com>
+References: <20260204160308.107154-2-nitin.r.gote@intel.com>
+ <177026522253.226816.15151317560146936410@a3b018990fe9>
+In-Reply-To: <177026522253.226816.15151317560146936410@a3b018990fe9>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-msip_labels: 
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH0PR11MB5427:EE_|CY5PR11MB6415:EE_
-x-ms-office365-filtering-correlation-id: a49b67cd-1e1d-493b-649c-08de67aac6b0
+x-ms-traffictypediagnostic: IA3PR11MB8987:EE_|SJ0PR11MB6766:EE_
+x-ms-office365-filtering-correlation-id: c8e161f9-73cf-42b1-9430-08de67ab0322
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|376014|366016|1800799024|38070700021|8096899003|13003099007; 
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?ULF4Td/uJcdGJn1IRPk1CNJM2RA+H7ZL7mZ7O4d7VMnr9kdujavElOJeFU?=
- =?iso-8859-1?Q?Z2eV0+Bpu/MIY7vmUCJlAD0jXBdlbnfLRfB1+iwh+oRU2emTrrPHMhNgEU?=
- =?iso-8859-1?Q?UMzwsBPaGJN33WBO8VhpWPPQRG0WlJYnszpKPf4ZlTCI1ThNKVgR+g4JwF?=
- =?iso-8859-1?Q?ayQURuBIlQrbUd8jKQx5o8Cpw3DW4PIRVso5Hm0KvqnqQ0W8EVjkWnlZc0?=
- =?iso-8859-1?Q?V5ok37RD9wT/q8X4ykvYP3eA6Wfl8RXJqn0KEs8aGdPGEeV30FEdQm90HV?=
- =?iso-8859-1?Q?NIelzf9UYJwxeqLwGGJk1Dqff5GMIN2v+gx0aPTJgg1eFZSR9u5+5OKpcw?=
- =?iso-8859-1?Q?5yOZwu+XUN30Zd/gaqBhNo3VftyyGcvv1IwFwAcsUPuDv/u0VYBsX3uzf2?=
- =?iso-8859-1?Q?HaRjHOjp8F5qQcTR40SuRkRHCXX8P8MibDne4yCcQ7NXQcQaPLSfjrSsdx?=
- =?iso-8859-1?Q?22Z2xPGQQgDoN7BVEbkfMJP2YKmw1oJSsT9RJkGT292Ndf5tScbeF0i8yI?=
- =?iso-8859-1?Q?n1Et3YP7Tb8tQCOHmVL3TpD/E1gj1sS2KYMrCdXWkyOxrd0qSjSHhZyT9d?=
- =?iso-8859-1?Q?TuKCC6JftiHPV31NDxlxcfO1oO402q5pBPEJfV6VSrqV9Lerp13vlBK4Hc?=
- =?iso-8859-1?Q?/p474cx6NWIw+Z/RMPtmWVSr+5rEVdYoNYhVJqeOXl58/wa8M6F35g0Fin?=
- =?iso-8859-1?Q?Py/J5pMGYVPmZcuumPqIJpRK9F0PwcwujylpVJuPmwbjlNTZB2zcr6pI1n?=
- =?iso-8859-1?Q?uy7YKkdd4NtzvewD1Gh8L3UWOJSsYEA/gSxEV7e3VVZ0K3Gjzq9XTZfKDU?=
- =?iso-8859-1?Q?uXr5c48YhCIyE5Oyqf70USd8H+fxxZjAEUJY6ZGG47Ou6CnImVBR+qjpTa?=
- =?iso-8859-1?Q?5Q3go4Aj9EYO66LrYpUKTZQYUw+lLhk7NNgiy0pKpLw9k0M3+OkFnZENQy?=
- =?iso-8859-1?Q?rmEbkmOHsahJ51nzA5LPmWZ10DOT9D90y3gMmqEvtF+3L6sRb4tqdj1kfL?=
- =?iso-8859-1?Q?59eguAFApJvD1vK0bN9H22a+M5upmBAqYvDUFBIlR2SJk9/Ptynk9gtE1k?=
- =?iso-8859-1?Q?zRReVygE3sz31/2wPC5CDgdmhQgkVrMxucV51CDKS6ZR3Pi4N40g3Txp+P?=
- =?iso-8859-1?Q?JcGYtOD/z0UOOK+HKQ6Sez9F07OLRxCCKyJs2poOWCukR0ggM1tUtksiVH?=
- =?iso-8859-1?Q?t8qiG4P78et9EKa54p2/7BC6toV3W0MNtzZFpGE4X3mj112nhJFd0OU1aI?=
- =?iso-8859-1?Q?Q2fQTw1KHXBDmbD6xrmQ6b1A7AQSyGxC26XwjfAu9VYkQIpNqY8F5zIy8s?=
- =?iso-8859-1?Q?zf3L/+IVOUvlKzUHfezo4+STR6UFYEGxDAhhNwFIsw6r3XnAv8/KXTNy5N?=
- =?iso-8859-1?Q?nkblukVQqWjjKhUii4m5YYg4L0O2hfxX3Ms6swVBlsUO2+N49wKnGC39Rt?=
- =?iso-8859-1?Q?te0sb2uxcrpMDG9CJVN8k86YU61jjnXNvhAi/BB/OGfzLo9HotEUetfF6S?=
- =?iso-8859-1?Q?IrT6P8fkKeqOvgPp0yTd8Pa010dbvJzsr03ZptZgnMp7jtraw/LGGS3HiI?=
- =?iso-8859-1?Q?+td/yhEoxbB0mi3JNGZNaAKay4t8RyhTP1DIg9BLhHsnmSC4OFS7HsKr1v?=
- =?iso-8859-1?Q?oZeZnp0t5RqFqbH1cpD7I7UZspJgxojncx?=
+ ARA:13230040|376014|1800799024|366016|7053199007|38070700021|13003099007|8096899003;
+x-microsoft-antispam-message-info: =?utf-8?B?K3hQQ0JxN1YzckJVSEl1UjIrVUlIS01ZVmNLdkxqR2JYbWlkZTAvNThJNEhD?=
+ =?utf-8?B?TzEydkR2ZE1ZZUtLVm9NSC9zTWhsUG9oVW1HRnk2MmNBNCtPYzR2WFc2eUw0?=
+ =?utf-8?B?UmtXQkw1RUVCK0VSNVQ0Z0U4ZjZ1KzBtYXdRbjYrUyttSjQ0a3h5MGs2UG1n?=
+ =?utf-8?B?NDZXa1k2T2o4bmNmc3daUnRYK1ZYV2NCREtxcFlkdmNyejhyWkZwWHpMckdp?=
+ =?utf-8?B?NlRhYXR3d21UN0pXM0ZpcVBnOVpWWGRoQVREOVV2UnNrWTFBZEpJemJDcy82?=
+ =?utf-8?B?U0NlcWNELy9zZmJaRElETTIyR0NOZjVFZGtCWnNDa2NTd2pKaU9KalcvQ0RX?=
+ =?utf-8?B?TmptTVRHK1JZY0lEeUo2dDhlMUtkWHMrRlJvNnJ4NEFUWUdjZ1pFaGl0NG91?=
+ =?utf-8?B?Zi9JaXhsUFBxaEYvTGRCTTVRbFZYcFZXaDlDeXgrbXVOdUZhWmlzRnd4Q3VR?=
+ =?utf-8?B?RVlrSjZEeHVjWmpHMHJzN3ZhTW9KRVc4RC9rMjNpSDlTNG9ZK1ZuakQ5ZHV3?=
+ =?utf-8?B?UGZKYy9Ta0FYaXZ2ZWJzZmlYREx5Q3QxR2Rxa0tuTHEvV01VOEIyczk3VVBZ?=
+ =?utf-8?B?TEc2SnJldkhhTzlLd0RnSHFmM1NVZDdKTUlFUFo1Vk5LcUdLZ3YwNUppdTAx?=
+ =?utf-8?B?Uno5b1QyVnkwaGtUK2VYcnFSUkh6eG9HRDFOam1sQ3licmFuSWR3dXZ0T3V1?=
+ =?utf-8?B?aENSVVNINTF1eFM0dnU1REZhblpHYjFKdzJ2SFFpUEVBa2NTWWg0ZitJNllE?=
+ =?utf-8?B?eDlkd0xqTVJHYUhoY25RNjRHWHIzanFRVER0Q1BVWDF2dEFYc2ZVZ0VEMUp3?=
+ =?utf-8?B?cGM1UHZKQ3lIQ3NoQkdadlhwQlFZMXRscXluQ2ROQkRrSWlZR1lpbWdkZ1Jp?=
+ =?utf-8?B?UUMxczV5WkQ4dUdLRnRQSU5lN0FheHgwbmhMU3pONERmWXRyMlpXbWRSSkRx?=
+ =?utf-8?B?UWhkR25HTEJLWGhvOEoreDF0YnhtS2ZoeUxoSGcwcWN2eUpMOVJLK1dzTUlm?=
+ =?utf-8?B?UGFoQTlwNENKZHpTZ3FwbWI2dHdRd0hFcFMvTWx4VlpBVHNrV0RvTTJrdVZx?=
+ =?utf-8?B?L29lODRYQTFjdjd4NTFuOHlaUXhtamlOQ0Y1bFJ1NFB0Y3ZrejNZaWpwV0t1?=
+ =?utf-8?B?YTB5NC80dUMvTDE0MGwyLzFHR3dCQjV6Qmd2cE9yaTlab2RGY2tjRUdKb3RJ?=
+ =?utf-8?B?SEZ5bVZWRlRwRGlWYUYzdk1aTTFaWEtzaEU0QU1aM0RiY1BZT2MrUmpnLzJJ?=
+ =?utf-8?B?WjMxdjFCZTlkTWdhdHBWZE5RM0J6eDRYSFFMbHd5WmN3ZURnbzdSY1BmR2hu?=
+ =?utf-8?B?dnhLK2IxQy9oN1YxZGFEYkNvZUtVUmZLUmFLT1NBRTlIc0xCZVpLczNaMUEz?=
+ =?utf-8?B?S0c4VE9HMWZJNUpJNGZHRU9Sdk5BS0tmeGQvZkE5MTMyOFJTTHg4U2lWeXNM?=
+ =?utf-8?B?S0lhMHdzRDFCZFVSamp2NUZLL1dDV2VSYTlwVEtxc3NIcFB4c2p2bE5JSWND?=
+ =?utf-8?B?Yk1DY3RzOGNOUlg5cEkvcWlreVlVQjVhdzFKd2Z3Y3R2VXA4bzZFV0E4V05V?=
+ =?utf-8?B?ZFpRNTA2QlVxZTBETldoRjVVUys4U01SWDJaQmtNdkczM1JXQ0NOcTZrSUxs?=
+ =?utf-8?B?RTRDR1JpMFJNZWtyWkJObWNxaUJzb1ZmRlRXNzZiUktpM1BrMXdnSTFVRVlp?=
+ =?utf-8?B?Q3BrTUJkSVhSU1dVTmFLOW1KMU9JN0Mwc1c5Z3BObDJzUFV6WFZUR0Z1T2FB?=
+ =?utf-8?B?dEx2Tm1ja1JQZlowa04vQ0p0YlZzZUpvS0hoOTNFYnRyQ2VMWmVwQVpBTGVW?=
+ =?utf-8?B?K0RJZmo3QUU1cEpSWmpmZStKVnhxZUg3SkcvT1hrOHQ5QUhST1NDLzFjKzY4?=
+ =?utf-8?B?RjNlTjVldVh2T2ptZE0rbGxLQjJNWkI0MjlXWkpKKzlxWUtxSHR2N0dMdGEy?=
+ =?utf-8?B?K0hNdVdFanFGa2x4SktETXZsWE56VGFxZ2Y4NEd6L0V3VUhXOXNFWEhjc3VS?=
+ =?utf-8?B?WTZOVXRJQkNpV2prV0d3NVhHNlN2TEc0T1lJV21KeExhV3FzRXZWRXJZTzJz?=
+ =?utf-8?B?WFBhNk5FME9KSlZYaEVnS0wrOWk1V3laR3NMQVorSjdVZEx2MkJoQjBMdkhS?=
+ =?utf-8?Q?dloAHId28FOaMx8vQx9jQIF2b?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH0PR11MB5427.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024)(38070700021)(8096899003)(13003099007);
+ IPV:NLI; SFV:NSPM; H:IA3PR11MB8987.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(7053199007)(38070700021)(13003099007)(8096899003);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?I0UEJRu86N+7AWj+sdbIcG1iFh5cRF1KREenQ9zQEnCgsEbiAtfu/UOzgQ?=
- =?iso-8859-1?Q?0ynwsWuv7Bxg2ZYphaoM80Xw/Pz41S399twMX5mwJVXYFYVhCpVUpdrpV9?=
- =?iso-8859-1?Q?nR9BjynJK16XyXDk5bj2pbFF7FiFUx2l+oEKmEFvrCr2H/FD0ZuodO2/t7?=
- =?iso-8859-1?Q?uFL3r29b6t5KJG36WTDkMV0hOgwja+mzvcrezOpyozmFs239Sqi55SBezZ?=
- =?iso-8859-1?Q?1DifDmkZSUV+rV3zCERrZYwc+a1YIlI4a8ukOkLNDozzC6lpyfZ39Co+zM?=
- =?iso-8859-1?Q?3LuD66j6whU8iSENcMzy1Gsubq2J+nQ23Y0MU9XneUTg4Rn+X8aINKTl7l?=
- =?iso-8859-1?Q?pppXOOsnUgn+PspIUQmZfoHQR8drhdUnRfNF0WbcDZ+8ezWqy1HDecXxAU?=
- =?iso-8859-1?Q?VogGS3eFLZhcd2691loYe4k7PWbnc07WgxXAktCgs/9G46Eq03viZQg96q?=
- =?iso-8859-1?Q?0jwvVg6t9ZaWtub/6lqQIiWmjh2CaTkA9k1SJzw3J9VAqssIwi7mj4i4rF?=
- =?iso-8859-1?Q?ygIKO1laDQZ6Gc9EPZcnJ3RJlTqJQSVTcMtDYHvU4m9YXWCu7TPJ3J2ej3?=
- =?iso-8859-1?Q?o3Tj8Z6z/VwKmV8WhG76w8lIXveUbGEIgNJT+n7Wr1NaB6Wa34rZMIeBq1?=
- =?iso-8859-1?Q?rQzgNsjuMiKZyg3dP2Yd5SvsEdYdpieD/tqSd9ywYvqyXIyFiR/YEuvMDH?=
- =?iso-8859-1?Q?1rT7NvsbLnXevbGqVg65I45l16l4FAt9T0KelGOSUq1G8YM7VPw/mMisOy?=
- =?iso-8859-1?Q?UD8d1TADLP2dD/+YSBl9lXFrJHS7l5/QG+BL1ibaA066106bV4Drv0n+Ia?=
- =?iso-8859-1?Q?fuk7xtlcoqXyj0StDe16ZUzruWAKgH7lvidpEbpRadf5fj2NXp5lbUIXQe?=
- =?iso-8859-1?Q?UaNW9JqQ+DU5JbXqilDLvWCkPIIKOfVOOk0WdyjJcjEiByl5GcZ1rp8TPO?=
- =?iso-8859-1?Q?mq0afaZIq7CrPehI0NryfbejS/4LMQn7+vo0Knqgk3zhTqVTFVPvnFSlDZ?=
- =?iso-8859-1?Q?vYjSGR4gzPlAlUAMcPq9/4tbHLMy7W/WIIe0dkzo+9L8ccpl9HvsjUQ2xj?=
- =?iso-8859-1?Q?XVKDtX3X+OCZSd2eGP0M+CFI4ib4ySoN27ZJUITfA3R9OGREHX7W5Nq4FA?=
- =?iso-8859-1?Q?ThuXQPjr7itaDboLNdV/lPbdqd+aCVFNGv9isHhCABSDAQjhMuD/FuoP0Y?=
- =?iso-8859-1?Q?uqHHPq7VBrLBPP3aWlqWH4Y7Yjj/cwXIw8ORtdDUblrRCE1cH3ZPeNP6hJ?=
- =?iso-8859-1?Q?01poXVrz9a7oPY/YB7UwTwUGQJQc+AZtLaRO2PviEbjFz1uRepfqN+skEM?=
- =?iso-8859-1?Q?IMJhi13Do5Zh5Ve/yBQivaqj7oLVUKVKdrcKl5zsAk5a6zHHhWl678PlZB?=
- =?iso-8859-1?Q?tqRLzCyL2X/Gt++a8Ndt7x+GXC7X/ounWDp4rAGPTa+3nQQ7boyF19gwRV?=
- =?iso-8859-1?Q?UV+O6OIFMDBVlz6N8+TiMAxS1KvHIxc1UGANxRyu+XI1p8MesgUPvd5BIp?=
- =?iso-8859-1?Q?+BS8lPRAvUCaBWTnFn+zplciMNH5ZG7ya0qgk4y6e9yvpG4zBlwMG5OorS?=
- =?iso-8859-1?Q?6OLn4DQDVUgzebke/dB5EllkBcWIOk6bv9lySsTCSCpwz3DL3T7sp0sWjO?=
- =?iso-8859-1?Q?ATjsqeY3ymxAGoNnmbHd4+Eu/VhLEfFvLiFSft2ddYKrdzQhfQyEm4CgbL?=
- =?iso-8859-1?Q?rPosntrM3Q/H6IeiPU/CT7k/LWaqfgy5Wmx1hq/WoSBfohc7Sabz1TTJhI?=
- =?iso-8859-1?Q?+Ucgz6ausYM8mhn1LPwWQ+uo33cxAvQTvm4mEIUyCNlpSK?=
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cWJXR3EydERldWN1cHdCR2djalJDWDV3NG96OVovTHdEKzl4aUhpSVpIcmlh?=
+ =?utf-8?B?a2ppeVdBSVpBMk1qSldZYmdHQWdLQ2d4VnRJRFpVcFpHWWtONXdGWkNiK3NT?=
+ =?utf-8?B?MUx3Nk1oTFZJc1F5S3ZLZHRMVU50cnk2MVY0SlREVWVkZXdDZ2pkMEsrWGJT?=
+ =?utf-8?B?dU40MFB4bzZkOHZ6WDhzanVOOHBuWkc0UmlHOXUwdE10SzVwaEFPd0ZWY1VS?=
+ =?utf-8?B?eUkydnRpQkphYUs3Z0Q1SEZIYU8rUnJlMmZCbG1MWW9RcmZKTnFPQXZlWFNY?=
+ =?utf-8?B?cExCbVZoSENMT0NTV1NtTUtZbHo3Mk1qTHFIWm5EUVdVZHpNZWJVdXhnTk1E?=
+ =?utf-8?B?elpvbStNRWxGcHBnUkV2bHBvZEE4OHgzSU1Bam12SEcxRlA0QnZFL0Nianc5?=
+ =?utf-8?B?L2xFSWNEbmZXdEVvdnFMT1YvL0dRYzc5bUk4Y3pBbGR3MmxScFYrTTdiMTBT?=
+ =?utf-8?B?dVRkVjkrUHI2RDFCc2tJWE9reGZLTjNmYUE3YzlldllVMXFsbDNSTXpzWFNP?=
+ =?utf-8?B?Ym9QNTA1VU1TaGx0STlNNEV2ZzFFa29sOU5wV0orcVY3TXBpdWN5LzdLL3o4?=
+ =?utf-8?B?bXBVampIeHM2YlVnSmF4S1c1bTZhZ1RSM3ZvQU9LY2N2KzNqWGlwKzlSNEtq?=
+ =?utf-8?B?ZkVCK09rWmtGdUJyTTNQZmJmY241c2NiTEZWVXA3TkZ1cUI0cGx3Y1haNUJs?=
+ =?utf-8?B?UzJ6UStpWVc4WmI4aUN2Y2hQVTFSQjZNZi9JcWZZcC9rbkpjVjdIUHNOd0RL?=
+ =?utf-8?B?V0d2LzIyT3ZEcHRIcGQ3MzIyQnBOdzNlY2Q5a3hUZyswUUg1SWxtNlZ0dWYv?=
+ =?utf-8?B?eHcxWTBFVW95ZysxTXZVRGNNdWtPYzZoRDlHeHZGY0JxNUdNbEd6bXRKTDh5?=
+ =?utf-8?B?Q3pXZFpIck5qQkQvMVhaOXB0Y0oxMlhvZXU2Z3VXRjlucEJ2MjUwZE9ZR2Zy?=
+ =?utf-8?B?YlE1c3c4YUJOaElObDhmbnNiMWR4bkowYjRzcDhGZmtuSnlwZDdHbW5zOGJY?=
+ =?utf-8?B?MlBJYmoyNVI2MG1lT1U1TmtQKzRSOVJnai8yTDhIUlFXem1mdXlyZlpFRzNt?=
+ =?utf-8?B?TmFYcW1sSlVxTjBPL3R6Q2NoTWQydXNGVmxscmxHMWtNN2VMc2pKZ243SnNI?=
+ =?utf-8?B?TnhmU01qaisrbnM3YU5JbUNYNFltM1Q2aFNyS2lCakswYUJkRlYySWVMR29p?=
+ =?utf-8?B?V3hvZy9rQ0d2N0VGMXFkVGtGOWo1VUswT2dqTkthN2dhdjI4Si9MWGdSdUdW?=
+ =?utf-8?B?OElUWFVYK016N2NhRjhyTFZ2UkF0TmpTRkxjaFpob1cvTlozaHpIMmNnZ3or?=
+ =?utf-8?B?ZXp3b09nZ2twSDR2Q1k1aDVhdUt2YTZuKy9BSEdqc01tTWJ1MEdHUEZjYWpN?=
+ =?utf-8?B?V1Rmam14Nko5S0MwOHNLcENnVEV4NU1URGhNS1NBTEIwUFdKYzExaFhtZWtM?=
+ =?utf-8?B?dFNWaldLWFdLM2QyY2hXdTJzRkJpeVJ3S3ZIdjA5RW51R3VmZHV4MnRRTzhx?=
+ =?utf-8?B?MDFwTndQYmI4QWFpWDVudFFxaDFOMGNabFpiWEU2ekczRmZKUXY3UlV3UkRM?=
+ =?utf-8?B?eU0zOXFobEZyOGxYYUNpNHRaMkJ2b24zZklsOWIyTVpySDJDZHV2c3pIWk5L?=
+ =?utf-8?B?UWZyL3F4SmUwbjdhZVNJdXRSRE9jeFhibWwwbWtYR0FaOXArbjduT1lJZTcw?=
+ =?utf-8?B?aDFSSDhVMlJySjNqcG90dkJUeUxWMDIvK204SStwbDNlbWJrOG9Ta3dtK1FS?=
+ =?utf-8?B?MUs2UHZtREt6U0tsUHJNZUFkLzhaMFhqY1pIN1VnYnI5MjZvN1NYdW1vejBz?=
+ =?utf-8?B?UUY3MWZBbU1Xek9scGxyUXhiQVBwMzkyeG0rb1BDU0tPT0RLOEFkaVY2OEJw?=
+ =?utf-8?B?SHBEczV2aFF6L1RvUVpYT0lJdzNhZHliTi96b0x0aTI1VUFTaXVlSFhCdEUr?=
+ =?utf-8?B?Qk1XaS92M2hNMFF3bTU5SFRFMnpjZExlZFhjeUErdUx3VGFkUzFxNURTc3pq?=
+ =?utf-8?B?aktJTWtrS2lwaWtHdWRRTVhDbjZxZWd3bGJyeVZxd3FEVW9pNnJ3OHNsZEk5?=
+ =?utf-8?B?UFUyNVpPWjBXV0Q5cFJnN0VIM1B0ZllOaUNhTElrT1NPSktxdWV2M3NaRG5X?=
+ =?utf-8?B?dlpVcEZQRW1MUTkzbWFJZExod3ZlcDlKQURiamNyYmhIOE5HZ3dXUWpoaHp4?=
+ =?utf-8?B?Z3FBQ25wQmpBWFBKL0ZSL1NQNDNhSEJ4RHNjOElISWxLOEIwdDhRc2tGTVJU?=
+ =?utf-8?B?dzVGaFBlb1NhemQvUXNRSm9xTU5TVm13cndKZzk0dkNOanVBangxY0tpcVhD?=
+ =?utf-8?B?VWw2dUZwblorTmNMMWdPTEJxY29kcTVPRGtRaUh5dk16RDVZbVZJZz09?=
 Content-Type: multipart/alternative;
- boundary="_000_CH0PR11MB5427281EA2CF49992FCEEBEB9865ACH0PR11MB5427namp_"
+ boundary="_000_IA3PR11MB89871E055F5C6F0E1EA58B49D065AIA3PR11MB8987namp_"
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5427.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a49b67cd-1e1d-493b-649c-08de67aac6b0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Feb 2026 07:13:50.8642 (UTC)
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8987.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c8e161f9-73cf-42b1-9430-08de67ab0322
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Feb 2026 07:15:32.2617 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rGoeHbD8AwjIv3KsJwD8J1wrf5eQiT+v7cp2wxgw6KsyIo3YmKvDVbi6GXnn8awi9FTVTt2aIGy+Fewc+1NP+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6415
+X-MS-Exchange-CrossTenant-userprincipalname: v/tK2q3d74l7aNMbAAmxvHkUi0079Qw+CwYPA+5Lu+QH+7NlPhRibTp40sFo+iwngXvauhL3qPnUG/M1kEDjjg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6766
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -195,1280 +208,404 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---_000_CH0PR11MB5427281EA2CF49992FCEEBEB9865ACH0PR11MB5427namp_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+--_000_IA3PR11MB89871E055F5C6F0E1EA58B49D065AIA3PR11MB8987namp_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
+SGksDQpSZXBvcnRlZCBmYWlsdXJlcyBvbiBYZSBhbmQgSTkxNSBDSSBmdWxsIHJ1bnMgYXJlIG5v
+dCByZWxhdGVkIHRvIG15IGNoYW5nZXMuDQpDb3VsZCB5b3UgcGxlYXNlIHJlLXJlcG9ydCBpdD8N
+Cg0KVGhhbmtzLA0KTml0aW4NCg0KRnJvbTogUGF0Y2h3b3JrIDxwYXRjaHdvcmtAZW1lcmlsLmZy
+ZWVkZXNrdG9wLm9yZz4NClNlbnQ6IFRodXJzZGF5LCBGZWJydWFyeSA1LCAyMDI2IDk6NTAgQU0N
+ClRvOiBHb3RlLCBOaXRpbiBSIDxuaXRpbi5yLmdvdGVAaW50ZWwuY29tPg0KQ2M6IGlndC1kZXZA
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnDQpTdWJqZWN0OiDinJcgWGUuQ0kuRlVMTDogZmFpbHVyZSBm
+b3IgdGVzdHMvaW50ZWwveGVfY29uZmlnZnM6IFJlc2V0IGNvbmZpZ2ZzIGdyb3VwIGFmdGVyIGVh
+Y2ggc3VidGVzdA0KDQpQYXRjaCBEZXRhaWxzDQpTZXJpZXM6DQp0ZXN0cy9pbnRlbC94ZV9jb25m
+aWdmczogUmVzZXQgY29uZmlnZnMgZ3JvdXAgYWZ0ZXIgZWFjaCBzdWJ0ZXN0DQpVUkw6DQpodHRw
+czovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzE2MTE0Ny8NClN0YXRlOg0KZmFp
+bHVyZQ0KRGV0YWlsczoNCmh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2ludGVsLXhl
+L0lHVFBXXzE0NDkxL2luZGV4Lmh0bWwNCkNJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20gWEVJR1Rf
+ODczNl9GVUxMIC0+IFhFSUdUUFdfMTQ0OTFfRlVMTA0KU3VtbWFyeQ0KDQpGQUlMVVJFDQoNClNl
+cmlvdXMgdW5rbm93biBjaGFuZ2VzIGNvbWluZyB3aXRoIFhFSUdUUFdfMTQ0OTFfRlVMTCBhYnNv
+bHV0ZWx5IG5lZWQgdG8gYmUNCnZlcmlmaWVkIG1hbnVhbGx5Lg0KDQpJZiB5b3UgdGhpbmsgdGhl
+IHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNoYW5nZXMNCmlu
+dHJvZHVjZWQgaW4gWEVJR1RQV18xNDQ5MV9GVUxMLCBwbGVhc2Ugbm90aWZ5IHlvdXIgYnVnIHRl
+YW0gKEk5MTUtY2ktaW5mcmFAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPG1haWx0bzpJOTE1LWNpLWlu
+ZnJhQGxpc3RzLmZyZWVkZXNrdG9wLm9yZz4pIHRvIGFsbG93IHRoZW0NCnRvIGRvY3VtZW50IHRo
+aXMgbmV3IGZhaWx1cmUgbW9kZSwgd2hpY2ggd2lsbCByZWR1Y2UgZmFsc2UgcG9zaXRpdmVzIGlu
+IENJLg0KDQpQYXJ0aWNpcGF0aW5nIGhvc3RzICgyIC0+IDIpDQoNCk5vIGNoYW5nZXMgaW4gcGFy
+dGljaXBhdGluZyBob3N0cw0KDQpQb3NzaWJsZSBuZXcgaXNzdWVzDQoNCkhlcmUgYXJlIHRoZSB1
+bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVuIGludHJvZHVjZWQgaW4gWEVJR1RQV18x
+NDQ5MV9GVUxMOg0KDQpJR1QgY2hhbmdlcw0KUG9zc2libGUgcmVncmVzc2lvbnMNCg0KICAqICAg
+aWd0QGttc19wbGFuZUBwaXhlbC1mb3JtYXQtbGluZWFyLW1vZGlmaWVyLXNvdXJjZS1jbGFtcGlu
+Z0BwaXBlLWItcGxhbmUtMDoNCg0KICAgICAqICAgc2hhcmQtbG5sOiBQQVNTPGh0dHBzOi8vaW50
+ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2ludGVsLXhlL0lHVF84NzM2L3NoYXJkLWxubC02L2lndEBr
+bXNfcGxhbmVAcGl4ZWwtZm9ybWF0LWxpbmVhci1tb2RpZmllci1zb3VyY2UtY2xhbXBpbmdAcGlw
+ZS1iLXBsYW5lLTAuaHRtbD4gLT4gRkFJTDxodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJl
+ZS9pbnRlbC14ZS9JR1RQV18xNDQ5MS9zaGFyZC1sbmwtMS9pZ3RAa21zX3BsYW5lQHBpeGVsLWZv
+cm1hdC1saW5lYXItbW9kaWZpZXItc291cmNlLWNsYW1waW5nQHBpcGUtYi1wbGFuZS0wLmh0bWw+
+ICsxIG90aGVyIHRlc3QgZmFpbA0KDQogICogICBpZ3RAa21zX3BsYW5lX3NjYWxpbmdAcGxhbmVz
+LXVuaXR5LXNjYWxpbmctZG93bnNjYWxlLWZhY3Rvci0wLTU6DQoNCiAgICAgKiAgIHNoYXJkLWJt
+ZzogUEFTUzxodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9pbnRlbC14ZS9JR1RfODcz
+Ni9zaGFyZC1ibWctOC9pZ3RAa21zX3BsYW5lX3NjYWxpbmdAcGxhbmVzLXVuaXR5LXNjYWxpbmct
+ZG93bnNjYWxlLWZhY3Rvci0wLTUuaHRtbD4gLT4gQUJPUlQ8aHR0cHM6Ly9pbnRlbC1nZngtY2ku
+MDEub3JnL3RyZWUvaW50ZWwteGUvSUdUUFdfMTQ0OTEvc2hhcmQtYm1nLTIvaWd0QGttc19wbGFu
+ZV9zY2FsaW5nQHBsYW5lcy11bml0eS1zY2FsaW5nLWRvd25zY2FsZS1mYWN0b3ItMC01Lmh0bWw+
+ICsxIG90aGVyIHRlc3QgYWJvcnQNCg0KICAqICAgaWd0QGttc19wbGFuZV9zY2FsaW5nQHBsYW5l
+cy11bml0eS1zY2FsaW5nLWRvd25zY2FsZS1mYWN0b3ItMC01QHBpcGUtZDoNCg0KICAgICAqICAg
+c2hhcmQtYm1nOiBQQVNTPGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2ludGVsLXhl
+L0lHVF84NzM2L3NoYXJkLWJtZy04L2lndEBrbXNfcGxhbmVfc2NhbGluZ0BwbGFuZXMtdW5pdHkt
+c2NhbGluZy1kb3duc2NhbGUtZmFjdG9yLTAtNUBwaXBlLWQuaHRtbD4gLT4gRE1FU0ctV0FSTjxo
+dHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9pbnRlbC14ZS9JR1RQV18xNDQ5MS9zaGFy
+ZC1ibWctMi9pZ3RAa21zX3BsYW5lX3NjYWxpbmdAcGxhbmVzLXVuaXR5LXNjYWxpbmctZG93bnNj
+YWxlLWZhY3Rvci0wLTVAcGlwZS1kLmh0bWw+DQo=
 
+--_000_IA3PR11MB89871E055F5C6F0E1EA58B49D065AIA3PR11MB8987namp_
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-________________________________
+PGh0bWwgeG1sbnM6bz0idXJuOnNjaGVtYXMtbWljcm9zb2Z0LWNvbTpvZmZpY2U6b2ZmaWNlIiB4
+bWxuczp3PSJ1cm46c2NoZW1hcy1taWNyb3NvZnQtY29tOm9mZmljZTp3b3JkIiB4bWxuczptPSJo
+dHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL29mZmljZS8yMDA0LzEyL29tbWwiIHhtbG5zPSJo
+dHRwOi8vd3d3LnczLm9yZy9UUi9SRUMtaHRtbDQwIj4NCjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVp
+dj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0ZXh0L2h0bWw7IGNoYXJzZXQ9dXRmLTgiPg0KPG1l
+dGEgbmFtZT0iR2VuZXJhdG9yIiBjb250ZW50PSJNaWNyb3NvZnQgV29yZCAxNSAoZmlsdGVyZWQg
+bWVkaXVtKSI+DQo8dGl0bGU+UHJvamVjdCBMaXN0IC0gUGF0Y2h3b3JrPC90aXRsZT4NCjxzdHls
+ZT48IS0tDQovKiBGb250IERlZmluaXRpb25zICovDQpAZm9udC1mYWNlDQoJe2ZvbnQtZmFtaWx5
+OldpbmdkaW5nczsNCglwYW5vc2UtMTo1IDAgMCAwIDAgMCAwIDAgMCAwO30NCkBmb250LWZhY2UN
+Cgl7Zm9udC1mYW1pbHk6IkNhbWJyaWEgTWF0aCI7DQoJcGFub3NlLTE6MiA0IDUgMyA1IDQgNiAz
+IDIgNDt9DQpAZm9udC1mYWNlDQoJe2ZvbnQtZmFtaWx5OkNhbGlicmk7DQoJcGFub3NlLTE6MiAx
+NSA1IDIgMiAyIDQgMyAyIDQ7fQ0KQGZvbnQtZmFjZQ0KCXtmb250LWZhbWlseTpBcHRvczt9DQpA
+Zm9udC1mYWNlDQoJe2ZvbnQtZmFtaWx5OiJTZWdvZSBVSSBTeW1ib2wiOw0KCXBhbm9zZS0xOjIg
+MTEgNSAyIDQgMiA0IDIgMiAzO30NCi8qIFN0eWxlIERlZmluaXRpb25zICovDQpwLk1zb05vcm1h
+bCwgbGkuTXNvTm9ybWFsLCBkaXYuTXNvTm9ybWFsDQoJe21hcmdpbjowY207DQoJZm9udC1zaXpl
+OjEyLjBwdDsNCglmb250LWZhbWlseToiQXB0b3MiLHNhbnMtc2VyaWY7fQ0KaDENCgl7bXNvLXN0
+eWxlLXByaW9yaXR5Ojk7DQoJbXNvLXN0eWxlLWxpbms6IkhlYWRpbmcgMSBDaGFyIjsNCgltc28t
+bWFyZ2luLXRvcC1hbHQ6YXV0bzsNCgltYXJnaW4tcmlnaHQ6MGNtOw0KCW1zby1tYXJnaW4tYm90
+dG9tLWFsdDphdXRvOw0KCW1hcmdpbi1sZWZ0OjBjbTsNCglmb250LXNpemU6MjQuMHB0Ow0KCWZv
+bnQtZmFtaWx5OiJBcHRvcyIsc2Fucy1zZXJpZjsNCglmb250LXdlaWdodDpib2xkO30NCmgyDQoJ
+e21zby1zdHlsZS1wcmlvcml0eTo5Ow0KCW1zby1zdHlsZS1saW5rOiJIZWFkaW5nIDIgQ2hhciI7
+DQoJbXNvLW1hcmdpbi10b3AtYWx0OmF1dG87DQoJbWFyZ2luLXJpZ2h0OjBjbTsNCgltc28tbWFy
+Z2luLWJvdHRvbS1hbHQ6YXV0bzsNCgltYXJnaW4tbGVmdDowY207DQoJZm9udC1zaXplOjE4LjBw
+dDsNCglmb250LWZhbWlseToiQXB0b3MiLHNhbnMtc2VyaWY7DQoJZm9udC13ZWlnaHQ6Ym9sZDt9
+DQpoMw0KCXttc28tc3R5bGUtcHJpb3JpdHk6OTsNCgltc28tc3R5bGUtbGluazoiSGVhZGluZyAz
+IENoYXIiOw0KCW1zby1tYXJnaW4tdG9wLWFsdDphdXRvOw0KCW1hcmdpbi1yaWdodDowY207DQoJ
+bXNvLW1hcmdpbi1ib3R0b20tYWx0OmF1dG87DQoJbWFyZ2luLWxlZnQ6MGNtOw0KCWZvbnQtc2l6
+ZToxMy41cHQ7DQoJZm9udC1mYW1pbHk6IkFwdG9zIixzYW5zLXNlcmlmOw0KCWZvbnQtd2VpZ2h0
+OmJvbGQ7fQ0KaDQNCgl7bXNvLXN0eWxlLXByaW9yaXR5Ojk7DQoJbXNvLXN0eWxlLWxpbms6Ikhl
+YWRpbmcgNCBDaGFyIjsNCgltc28tbWFyZ2luLXRvcC1hbHQ6YXV0bzsNCgltYXJnaW4tcmlnaHQ6
+MGNtOw0KCW1zby1tYXJnaW4tYm90dG9tLWFsdDphdXRvOw0KCW1hcmdpbi1sZWZ0OjBjbTsNCglm
+b250LXNpemU6MTIuMHB0Ow0KCWZvbnQtZmFtaWx5OiJBcHRvcyIsc2Fucy1zZXJpZjsNCglmb250
+LXdlaWdodDpib2xkO30NCmE6bGluaywgc3Bhbi5Nc29IeXBlcmxpbmsNCgl7bXNvLXN0eWxlLXBy
+aW9yaXR5Ojk5Ow0KCWNvbG9yOmJsdWU7DQoJdGV4dC1kZWNvcmF0aW9uOnVuZGVybGluZTt9DQpz
+cGFuLkhlYWRpbmcxQ2hhcg0KCXttc28tc3R5bGUtbmFtZToiSGVhZGluZyAxIENoYXIiOw0KCW1z
+by1zdHlsZS1wcmlvcml0eTo5Ow0KCW1zby1zdHlsZS1saW5rOiJIZWFkaW5nIDEiOw0KCWZvbnQt
+ZmFtaWx5OiJBcHRvcyBEaXNwbGF5IixzYW5zLXNlcmlmOw0KCWNvbG9yOiMwRjQ3NjE7fQ0Kc3Bh
+bi5IZWFkaW5nMkNoYXINCgl7bXNvLXN0eWxlLW5hbWU6IkhlYWRpbmcgMiBDaGFyIjsNCgltc28t
+c3R5bGUtcHJpb3JpdHk6OTsNCgltc28tc3R5bGUtbGluazoiSGVhZGluZyAyIjsNCglmb250LWZh
+bWlseToiQXB0b3MgRGlzcGxheSIsc2Fucy1zZXJpZjsNCgljb2xvcjojMEY0NzYxO30NCnNwYW4u
+SGVhZGluZzNDaGFyDQoJe21zby1zdHlsZS1uYW1lOiJIZWFkaW5nIDMgQ2hhciI7DQoJbXNvLXN0
+eWxlLXByaW9yaXR5Ojk7DQoJbXNvLXN0eWxlLWxpbms6IkhlYWRpbmcgMyI7DQoJZm9udC1mYW1p
+bHk6IkFwdG9zIixzYW5zLXNlcmlmOw0KCWNvbG9yOiMwRjQ3NjE7fQ0Kc3Bhbi5IZWFkaW5nNENo
+YXINCgl7bXNvLXN0eWxlLW5hbWU6IkhlYWRpbmcgNCBDaGFyIjsNCgltc28tc3R5bGUtcHJpb3Jp
+dHk6OTsNCgltc28tc3R5bGUtbGluazoiSGVhZGluZyA0IjsNCglmb250LWZhbWlseToiQXB0b3Mi
+LHNhbnMtc2VyaWY7DQoJY29sb3I6IzBGNDc2MTsNCglmb250LXN0eWxlOml0YWxpYzt9DQpzcGFu
+LkVtYWlsU3R5bGUyNQ0KCXttc28tc3R5bGUtdHlwZTpwZXJzb25hbC1yZXBseTsNCglmb250LWZh
+bWlseToiQXB0b3MiLHNhbnMtc2VyaWY7DQoJY29sb3I6d2luZG93dGV4dDt9DQouTXNvQ2hwRGVm
+YXVsdA0KCXttc28tc3R5bGUtdHlwZTpleHBvcnQtb25seTsNCglmb250LXNpemU6MTAuMHB0Ow0K
+CW1zby1saWdhdHVyZXM6bm9uZTt9DQpAcGFnZSBXb3JkU2VjdGlvbjENCgl7c2l6ZTo2MTIuMHB0
+IDc5Mi4wcHQ7DQoJbWFyZ2luOjcyLjBwdCA3Mi4wcHQgNzIuMHB0IDcyLjBwdDt9DQpkaXYuV29y
+ZFNlY3Rpb24xDQoJe3BhZ2U6V29yZFNlY3Rpb24xO30NCi8qIExpc3QgRGVmaW5pdGlvbnMgKi8N
+CkBsaXN0IGwwDQoJe21zby1saXN0LWlkOjgxMDI4ODEzMTsNCgltc28tbGlzdC10ZW1wbGF0ZS1p
+ZHM6MzM1NTg3MjM4O30NCkBsaXN0IGwwOmxldmVsMQ0KCXttc28tbGV2ZWwtbnVtYmVyLWZvcm1h
+dDpidWxsZXQ7DQoJbXNvLWxldmVsLXRleHQ674K3Ow0KCW1zby1sZXZlbC10YWItc3RvcDozNi4w
+cHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0Ow0KCXRleHQtaW5kZW50Oi0xOC4w
+cHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsNCglmb250LWZhbWlseTpTeW1ib2w7fQ0K
+QGxpc3QgbDA6bGV2ZWwyDQoJe21zby1sZXZlbC1udW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28t
+bGV2ZWwtdGV4dDpvOw0KCW1zby1sZXZlbC10YWItc3RvcDo3Mi4wcHQ7DQoJbXNvLWxldmVsLW51
+bWJlci1wb3NpdGlvbjpsZWZ0Ow0KCXRleHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9u
+dC1zaXplOjEwLjBwdDsNCglmb250LWZhbWlseToiQ291cmllciBOZXciOw0KCW1zby1iaWRpLWZv
+bnQtZmFtaWx5OiJUaW1lcyBOZXcgUm9tYW4iO30NCkBsaXN0IGwwOmxldmVsMw0KCXttc28tbGV2
+ZWwtbnVtYmVyLWZvcm1hdDpidWxsZXQ7DQoJbXNvLWxldmVsLXRleHQ674KnOw0KCW1zby1sZXZl
+bC10YWItc3RvcDoxMDguMHB0Ow0KCW1zby1sZXZlbC1udW1iZXItcG9zaXRpb246bGVmdDsNCgl0
+ZXh0LWluZGVudDotMTguMHB0Ow0KCW1zby1hbnNpLWZvbnQtc2l6ZToxMC4wcHQ7DQoJZm9udC1m
+YW1pbHk6V2luZ2RpbmdzO30NCkBsaXN0IGwwOmxldmVsNA0KCXttc28tbGV2ZWwtbnVtYmVyLWZv
+cm1hdDpidWxsZXQ7DQoJbXNvLWxldmVsLXRleHQ674KnOw0KCW1zby1sZXZlbC10YWItc3RvcDox
+NDQuMHB0Ow0KCW1zby1sZXZlbC1udW1iZXItcG9zaXRpb246bGVmdDsNCgl0ZXh0LWluZGVudDot
+MTguMHB0Ow0KCW1zby1hbnNpLWZvbnQtc2l6ZToxMC4wcHQ7DQoJZm9udC1mYW1pbHk6V2luZ2Rp
+bmdzO30NCkBsaXN0IGwwOmxldmVsNQ0KCXttc28tbGV2ZWwtbnVtYmVyLWZvcm1hdDpidWxsZXQ7
+DQoJbXNvLWxldmVsLXRleHQ674KnOw0KCW1zby1sZXZlbC10YWItc3RvcDoxODAuMHB0Ow0KCW1z
+by1sZXZlbC1udW1iZXItcG9zaXRpb246bGVmdDsNCgl0ZXh0LWluZGVudDotMTguMHB0Ow0KCW1z
+by1hbnNpLWZvbnQtc2l6ZToxMC4wcHQ7DQoJZm9udC1mYW1pbHk6V2luZ2RpbmdzO30NCkBsaXN0
+IGwwOmxldmVsNg0KCXttc28tbGV2ZWwtbnVtYmVyLWZvcm1hdDpidWxsZXQ7DQoJbXNvLWxldmVs
+LXRleHQ674KnOw0KCW1zby1sZXZlbC10YWItc3RvcDoyMTYuMHB0Ow0KCW1zby1sZXZlbC1udW1i
+ZXItcG9zaXRpb246bGVmdDsNCgl0ZXh0LWluZGVudDotMTguMHB0Ow0KCW1zby1hbnNpLWZvbnQt
+c2l6ZToxMC4wcHQ7DQoJZm9udC1mYW1pbHk6V2luZ2RpbmdzO30NCkBsaXN0IGwwOmxldmVsNw0K
+CXttc28tbGV2ZWwtbnVtYmVyLWZvcm1hdDpidWxsZXQ7DQoJbXNvLWxldmVsLXRleHQ674KnOw0K
+CW1zby1sZXZlbC10YWItc3RvcDoyNTIuMHB0Ow0KCW1zby1sZXZlbC1udW1iZXItcG9zaXRpb246
+bGVmdDsNCgl0ZXh0LWluZGVudDotMTguMHB0Ow0KCW1zby1hbnNpLWZvbnQtc2l6ZToxMC4wcHQ7
+DQoJZm9udC1mYW1pbHk6V2luZ2RpbmdzO30NCkBsaXN0IGwwOmxldmVsOA0KCXttc28tbGV2ZWwt
+bnVtYmVyLWZvcm1hdDpidWxsZXQ7DQoJbXNvLWxldmVsLXRleHQ674KnOw0KCW1zby1sZXZlbC10
+YWItc3RvcDoyODguMHB0Ow0KCW1zby1sZXZlbC1udW1iZXItcG9zaXRpb246bGVmdDsNCgl0ZXh0
+LWluZGVudDotMTguMHB0Ow0KCW1zby1hbnNpLWZvbnQtc2l6ZToxMC4wcHQ7DQoJZm9udC1mYW1p
+bHk6V2luZ2RpbmdzO30NCkBsaXN0IGwwOmxldmVsOQ0KCXttc28tbGV2ZWwtbnVtYmVyLWZvcm1h
+dDpidWxsZXQ7DQoJbXNvLWxldmVsLXRleHQ674KnOw0KCW1zby1sZXZlbC10YWItc3RvcDozMjQu
+MHB0Ow0KCW1zby1sZXZlbC1udW1iZXItcG9zaXRpb246bGVmdDsNCgl0ZXh0LWluZGVudDotMTgu
+MHB0Ow0KCW1zby1hbnNpLWZvbnQtc2l6ZToxMC4wcHQ7DQoJZm9udC1mYW1pbHk6V2luZ2Rpbmdz
+O30NCkBsaXN0IGwxDQoJe21zby1saXN0LWlkOjEwOTYwNDk3NTQ7DQoJbXNvLWxpc3QtdGVtcGxh
+dGUtaWRzOjE0MzY4NjUyNTA7fQ0KQGxpc3QgbDE6bGV2ZWwxDQoJe21zby1sZXZlbC1udW1iZXIt
+Zm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgrc7DQoJbXNvLWxldmVsLXRhYi1zdG9w
+OjM2LjBwdDsNCgltc28tbGV2ZWwtbnVtYmVyLXBvc2l0aW9uOmxlZnQ7DQoJdGV4dC1pbmRlbnQ6
+LTE4LjBwdDsNCgltc28tYW5zaS1mb250LXNpemU6MTAuMHB0Ow0KCWZvbnQtZmFtaWx5OlN5bWJv
+bDt9DQpAbGlzdCBsMTpsZXZlbDINCgl7bXNvLWxldmVsLW51bWJlci1mb3JtYXQ6YnVsbGV0Ow0K
+CW1zby1sZXZlbC10ZXh0Om87DQoJbXNvLWxldmVsLXRhYi1zdG9wOjcyLjBwdDsNCgltc28tbGV2
+ZWwtbnVtYmVyLXBvc2l0aW9uOmxlZnQ7DQoJdGV4dC1pbmRlbnQ6LTE4LjBwdDsNCgltc28tYW5z
+aS1mb250LXNpemU6MTAuMHB0Ow0KCWZvbnQtZmFtaWx5OiJDb3VyaWVyIE5ldyI7DQoJbXNvLWJp
+ZGktZm9udC1mYW1pbHk6IlRpbWVzIE5ldyBSb21hbiI7fQ0KQGxpc3QgbDE6bGV2ZWwzDQoJe21z
+by1sZXZlbC1udW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgqc7DQoJbXNv
+LWxldmVsLXRhYi1zdG9wOjEwOC4wcHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0
+Ow0KCXRleHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsNCglm
+b250LWZhbWlseTpXaW5nZGluZ3M7fQ0KQGxpc3QgbDE6bGV2ZWw0DQoJe21zby1sZXZlbC1udW1i
+ZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgqc7DQoJbXNvLWxldmVsLXRhYi1z
+dG9wOjE0NC4wcHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0Ow0KCXRleHQtaW5k
+ZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsNCglmb250LWZhbWlseTpX
+aW5nZGluZ3M7fQ0KQGxpc3QgbDE6bGV2ZWw1DQoJe21zby1sZXZlbC1udW1iZXItZm9ybWF0OmJ1
+bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgqc7DQoJbXNvLWxldmVsLXRhYi1zdG9wOjE4MC4wcHQ7
+DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0Ow0KCXRleHQtaW5kZW50Oi0xOC4wcHQ7
+DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsNCglmb250LWZhbWlseTpXaW5nZGluZ3M7fQ0K
+QGxpc3QgbDE6bGV2ZWw2DQoJe21zby1sZXZlbC1udW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28t
+bGV2ZWwtdGV4dDrvgqc7DQoJbXNvLWxldmVsLXRhYi1zdG9wOjIxNi4wcHQ7DQoJbXNvLWxldmVs
+LW51bWJlci1wb3NpdGlvbjpsZWZ0Ow0KCXRleHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2kt
+Zm9udC1zaXplOjEwLjBwdDsNCglmb250LWZhbWlseTpXaW5nZGluZ3M7fQ0KQGxpc3QgbDE6bGV2
+ZWw3DQoJe21zby1sZXZlbC1udW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrv
+gqc7DQoJbXNvLWxldmVsLXRhYi1zdG9wOjI1Mi4wcHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3Np
+dGlvbjpsZWZ0Ow0KCXRleHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEw
+LjBwdDsNCglmb250LWZhbWlseTpXaW5nZGluZ3M7fQ0KQGxpc3QgbDE6bGV2ZWw4DQoJe21zby1s
+ZXZlbC1udW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgqc7DQoJbXNvLWxl
+dmVsLXRhYi1zdG9wOjI4OC4wcHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0Ow0K
+CXRleHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsNCglmb250
+LWZhbWlseTpXaW5nZGluZ3M7fQ0KQGxpc3QgbDE6bGV2ZWw5DQoJe21zby1sZXZlbC1udW1iZXIt
+Zm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgqc7DQoJbXNvLWxldmVsLXRhYi1zdG9w
+OjMyNC4wcHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0Ow0KCXRleHQtaW5kZW50
+Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsNCglmb250LWZhbWlseTpXaW5n
+ZGluZ3M7fQ0KQGxpc3QgbDINCgl7bXNvLWxpc3QtaWQ6MTMxNTMyODc0ODsNCgltc28tbGlzdC10
+ZW1wbGF0ZS1pZHM6LTEwNzkxOTkxNTY7fQ0KQGxpc3QgbDI6bGV2ZWwxDQoJe21zby1sZXZlbC1u
+dW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgrc7DQoJbXNvLWxldmVsLXRh
+Yi1zdG9wOjM2LjBwdDsNCgltc28tbGV2ZWwtbnVtYmVyLXBvc2l0aW9uOmxlZnQ7DQoJdGV4dC1p
+bmRlbnQ6LTE4LjBwdDsNCgltc28tYW5zaS1mb250LXNpemU6MTAuMHB0Ow0KCWZvbnQtZmFtaWx5
+OlN5bWJvbDt9DQpAbGlzdCBsMjpsZXZlbDINCgl7bXNvLWxldmVsLW51bWJlci1mb3JtYXQ6YnVs
+bGV0Ow0KCW1zby1sZXZlbC10ZXh0Om87DQoJbXNvLWxldmVsLXRhYi1zdG9wOjcyLjBwdDsNCglt
+c28tbGV2ZWwtbnVtYmVyLXBvc2l0aW9uOmxlZnQ7DQoJdGV4dC1pbmRlbnQ6LTE4LjBwdDsNCglt
+c28tYW5zaS1mb250LXNpemU6MTAuMHB0Ow0KCWZvbnQtZmFtaWx5OiJDb3VyaWVyIE5ldyI7DQoJ
+bXNvLWJpZGktZm9udC1mYW1pbHk6IlRpbWVzIE5ldyBSb21hbiI7fQ0KQGxpc3QgbDI6bGV2ZWwz
+DQoJe21zby1sZXZlbC1udW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgqc7
+DQoJbXNvLWxldmVsLXRhYi1zdG9wOjEwOC4wcHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlv
+bjpsZWZ0Ow0KCXRleHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBw
+dDsNCglmb250LWZhbWlseTpXaW5nZGluZ3M7fQ0KQGxpc3QgbDI6bGV2ZWw0DQoJe21zby1sZXZl
+bC1udW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgqc7DQoJbXNvLWxldmVs
+LXRhYi1zdG9wOjE0NC4wcHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0Ow0KCXRl
+eHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsNCglmb250LWZh
+bWlseTpXaW5nZGluZ3M7fQ0KQGxpc3QgbDI6bGV2ZWw1DQoJe21zby1sZXZlbC1udW1iZXItZm9y
+bWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgqc7DQoJbXNvLWxldmVsLXRhYi1zdG9wOjE4
+MC4wcHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0Ow0KCXRleHQtaW5kZW50Oi0x
+OC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsNCglmb250LWZhbWlseTpXaW5nZGlu
+Z3M7fQ0KQGxpc3QgbDI6bGV2ZWw2DQoJe21zby1sZXZlbC1udW1iZXItZm9ybWF0OmJ1bGxldDsN
+Cgltc28tbGV2ZWwtdGV4dDrvgqc7DQoJbXNvLWxldmVsLXRhYi1zdG9wOjIxNi4wcHQ7DQoJbXNv
+LWxldmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0Ow0KCXRleHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNv
+LWFuc2ktZm9udC1zaXplOjEwLjBwdDsNCglmb250LWZhbWlseTpXaW5nZGluZ3M7fQ0KQGxpc3Qg
+bDI6bGV2ZWw3DQoJe21zby1sZXZlbC1udW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwt
+dGV4dDrvgqc7DQoJbXNvLWxldmVsLXRhYi1zdG9wOjI1Mi4wcHQ7DQoJbXNvLWxldmVsLW51bWJl
+ci1wb3NpdGlvbjpsZWZ0Ow0KCXRleHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1z
+aXplOjEwLjBwdDsNCglmb250LWZhbWlseTpXaW5nZGluZ3M7fQ0KQGxpc3QgbDI6bGV2ZWw4DQoJ
+e21zby1sZXZlbC1udW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgqc7DQoJ
+bXNvLWxldmVsLXRhYi1zdG9wOjI4OC4wcHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjps
+ZWZ0Ow0KCXRleHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsN
+Cglmb250LWZhbWlseTpXaW5nZGluZ3M7fQ0KQGxpc3QgbDI6bGV2ZWw5DQoJe21zby1sZXZlbC1u
+dW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgqc7DQoJbXNvLWxldmVsLXRh
+Yi1zdG9wOjMyNC4wcHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0Ow0KCXRleHQt
+aW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsNCglmb250LWZhbWls
+eTpXaW5nZGluZ3M7fQ0KQGxpc3QgbDMNCgl7bXNvLWxpc3QtaWQ6MTQ1NDMyNTM3NDsNCgltc28t
+bGlzdC10ZW1wbGF0ZS1pZHM6ODQxMzY2NzM4O30NCkBsaXN0IGwzOmxldmVsMQ0KCXttc28tbGV2
+ZWwtbnVtYmVyLWZvcm1hdDpidWxsZXQ7DQoJbXNvLWxldmVsLXRleHQ674K3Ow0KCW1zby1sZXZl
+bC10YWItc3RvcDozNi4wcHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0Ow0KCXRl
+eHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsNCglmb250LWZh
+bWlseTpTeW1ib2w7fQ0KQGxpc3QgbDM6bGV2ZWwyDQoJe21zby1sZXZlbC1udW1iZXItZm9ybWF0
+OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDpvOw0KCW1zby1sZXZlbC10YWItc3RvcDo3Mi4wcHQ7
+DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0Ow0KCXRleHQtaW5kZW50Oi0xOC4wcHQ7
+DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsNCglmb250LWZhbWlseToiQ291cmllciBOZXci
+Ow0KCW1zby1iaWRpLWZvbnQtZmFtaWx5OiJUaW1lcyBOZXcgUm9tYW4iO30NCkBsaXN0IGwzOmxl
+dmVsMw0KCXttc28tbGV2ZWwtbnVtYmVyLWZvcm1hdDpidWxsZXQ7DQoJbXNvLWxldmVsLXRleHQ6
+74KnOw0KCW1zby1sZXZlbC10YWItc3RvcDoxMDguMHB0Ow0KCW1zby1sZXZlbC1udW1iZXItcG9z
+aXRpb246bGVmdDsNCgl0ZXh0LWluZGVudDotMTguMHB0Ow0KCW1zby1hbnNpLWZvbnQtc2l6ZTox
+MC4wcHQ7DQoJZm9udC1mYW1pbHk6V2luZ2RpbmdzO30NCkBsaXN0IGwzOmxldmVsNA0KCXttc28t
+bGV2ZWwtbnVtYmVyLWZvcm1hdDpidWxsZXQ7DQoJbXNvLWxldmVsLXRleHQ674KnOw0KCW1zby1s
+ZXZlbC10YWItc3RvcDoxNDQuMHB0Ow0KCW1zby1sZXZlbC1udW1iZXItcG9zaXRpb246bGVmdDsN
+Cgl0ZXh0LWluZGVudDotMTguMHB0Ow0KCW1zby1hbnNpLWZvbnQtc2l6ZToxMC4wcHQ7DQoJZm9u
+dC1mYW1pbHk6V2luZ2RpbmdzO30NCkBsaXN0IGwzOmxldmVsNQ0KCXttc28tbGV2ZWwtbnVtYmVy
+LWZvcm1hdDpidWxsZXQ7DQoJbXNvLWxldmVsLXRleHQ674KnOw0KCW1zby1sZXZlbC10YWItc3Rv
+cDoxODAuMHB0Ow0KCW1zby1sZXZlbC1udW1iZXItcG9zaXRpb246bGVmdDsNCgl0ZXh0LWluZGVu
+dDotMTguMHB0Ow0KCW1zby1hbnNpLWZvbnQtc2l6ZToxMC4wcHQ7DQoJZm9udC1mYW1pbHk6V2lu
+Z2RpbmdzO30NCkBsaXN0IGwzOmxldmVsNg0KCXttc28tbGV2ZWwtbnVtYmVyLWZvcm1hdDpidWxs
+ZXQ7DQoJbXNvLWxldmVsLXRleHQ674KnOw0KCW1zby1sZXZlbC10YWItc3RvcDoyMTYuMHB0Ow0K
+CW1zby1sZXZlbC1udW1iZXItcG9zaXRpb246bGVmdDsNCgl0ZXh0LWluZGVudDotMTguMHB0Ow0K
+CW1zby1hbnNpLWZvbnQtc2l6ZToxMC4wcHQ7DQoJZm9udC1mYW1pbHk6V2luZ2RpbmdzO30NCkBs
+aXN0IGwzOmxldmVsNw0KCXttc28tbGV2ZWwtbnVtYmVyLWZvcm1hdDpidWxsZXQ7DQoJbXNvLWxl
+dmVsLXRleHQ674KnOw0KCW1zby1sZXZlbC10YWItc3RvcDoyNTIuMHB0Ow0KCW1zby1sZXZlbC1u
+dW1iZXItcG9zaXRpb246bGVmdDsNCgl0ZXh0LWluZGVudDotMTguMHB0Ow0KCW1zby1hbnNpLWZv
+bnQtc2l6ZToxMC4wcHQ7DQoJZm9udC1mYW1pbHk6V2luZ2RpbmdzO30NCkBsaXN0IGwzOmxldmVs
+OA0KCXttc28tbGV2ZWwtbnVtYmVyLWZvcm1hdDpidWxsZXQ7DQoJbXNvLWxldmVsLXRleHQ674Kn
+Ow0KCW1zby1sZXZlbC10YWItc3RvcDoyODguMHB0Ow0KCW1zby1sZXZlbC1udW1iZXItcG9zaXRp
+b246bGVmdDsNCgl0ZXh0LWluZGVudDotMTguMHB0Ow0KCW1zby1hbnNpLWZvbnQtc2l6ZToxMC4w
+cHQ7DQoJZm9udC1mYW1pbHk6V2luZ2RpbmdzO30NCkBsaXN0IGwzOmxldmVsOQ0KCXttc28tbGV2
+ZWwtbnVtYmVyLWZvcm1hdDpidWxsZXQ7DQoJbXNvLWxldmVsLXRleHQ674KnOw0KCW1zby1sZXZl
+bC10YWItc3RvcDozMjQuMHB0Ow0KCW1zby1sZXZlbC1udW1iZXItcG9zaXRpb246bGVmdDsNCgl0
+ZXh0LWluZGVudDotMTguMHB0Ow0KCW1zby1hbnNpLWZvbnQtc2l6ZToxMC4wcHQ7DQoJZm9udC1m
+YW1pbHk6V2luZ2RpbmdzO30NCkBsaXN0IGw0DQoJe21zby1saXN0LWlkOjE4ODU4NzE4ODM7DQoJ
+bXNvLWxpc3QtdGVtcGxhdGUtaWRzOjE1NjYwODIyODY7fQ0KQGxpc3QgbDQ6bGV2ZWwxDQoJe21z
+by1sZXZlbC1udW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgrc7DQoJbXNv
+LWxldmVsLXRhYi1zdG9wOjM2LjBwdDsNCgltc28tbGV2ZWwtbnVtYmVyLXBvc2l0aW9uOmxlZnQ7
+DQoJdGV4dC1pbmRlbnQ6LTE4LjBwdDsNCgltc28tYW5zaS1mb250LXNpemU6MTAuMHB0Ow0KCWZv
+bnQtZmFtaWx5OlN5bWJvbDt9DQpAbGlzdCBsNDpsZXZlbDINCgl7bXNvLWxldmVsLW51bWJlci1m
+b3JtYXQ6YnVsbGV0Ow0KCW1zby1sZXZlbC10ZXh0Om87DQoJbXNvLWxldmVsLXRhYi1zdG9wOjcy
+LjBwdDsNCgltc28tbGV2ZWwtbnVtYmVyLXBvc2l0aW9uOmxlZnQ7DQoJdGV4dC1pbmRlbnQ6LTE4
+LjBwdDsNCgltc28tYW5zaS1mb250LXNpemU6MTAuMHB0Ow0KCWZvbnQtZmFtaWx5OiJDb3VyaWVy
+IE5ldyI7DQoJbXNvLWJpZGktZm9udC1mYW1pbHk6IlRpbWVzIE5ldyBSb21hbiI7fQ0KQGxpc3Qg
+bDQ6bGV2ZWwzDQoJe21zby1sZXZlbC1udW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwt
+dGV4dDrvgqc7DQoJbXNvLWxldmVsLXRhYi1zdG9wOjEwOC4wcHQ7DQoJbXNvLWxldmVsLW51bWJl
+ci1wb3NpdGlvbjpsZWZ0Ow0KCXRleHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1z
+aXplOjEwLjBwdDsNCglmb250LWZhbWlseTpXaW5nZGluZ3M7fQ0KQGxpc3QgbDQ6bGV2ZWw0DQoJ
+e21zby1sZXZlbC1udW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgqc7DQoJ
+bXNvLWxldmVsLXRhYi1zdG9wOjE0NC4wcHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjps
+ZWZ0Ow0KCXRleHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsN
+Cglmb250LWZhbWlseTpXaW5nZGluZ3M7fQ0KQGxpc3QgbDQ6bGV2ZWw1DQoJe21zby1sZXZlbC1u
+dW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgqc7DQoJbXNvLWxldmVsLXRh
+Yi1zdG9wOjE4MC4wcHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0Ow0KCXRleHQt
+aW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsNCglmb250LWZhbWls
+eTpXaW5nZGluZ3M7fQ0KQGxpc3QgbDQ6bGV2ZWw2DQoJe21zby1sZXZlbC1udW1iZXItZm9ybWF0
+OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgqc7DQoJbXNvLWxldmVsLXRhYi1zdG9wOjIxNi4w
+cHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0Ow0KCXRleHQtaW5kZW50Oi0xOC4w
+cHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsNCglmb250LWZhbWlseTpXaW5nZGluZ3M7
+fQ0KQGxpc3QgbDQ6bGV2ZWw3DQoJe21zby1sZXZlbC1udW1iZXItZm9ybWF0OmJ1bGxldDsNCglt
+c28tbGV2ZWwtdGV4dDrvgqc7DQoJbXNvLWxldmVsLXRhYi1zdG9wOjI1Mi4wcHQ7DQoJbXNvLWxl
+dmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0Ow0KCXRleHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFu
+c2ktZm9udC1zaXplOjEwLjBwdDsNCglmb250LWZhbWlseTpXaW5nZGluZ3M7fQ0KQGxpc3QgbDQ6
+bGV2ZWw4DQoJe21zby1sZXZlbC1udW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4
+dDrvgqc7DQoJbXNvLWxldmVsLXRhYi1zdG9wOjI4OC4wcHQ7DQoJbXNvLWxldmVsLW51bWJlci1w
+b3NpdGlvbjpsZWZ0Ow0KCXRleHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1zaXpl
+OjEwLjBwdDsNCglmb250LWZhbWlseTpXaW5nZGluZ3M7fQ0KQGxpc3QgbDQ6bGV2ZWw5DQoJe21z
+by1sZXZlbC1udW1iZXItZm9ybWF0OmJ1bGxldDsNCgltc28tbGV2ZWwtdGV4dDrvgqc7DQoJbXNv
+LWxldmVsLXRhYi1zdG9wOjMyNC4wcHQ7DQoJbXNvLWxldmVsLW51bWJlci1wb3NpdGlvbjpsZWZ0
+Ow0KCXRleHQtaW5kZW50Oi0xOC4wcHQ7DQoJbXNvLWFuc2ktZm9udC1zaXplOjEwLjBwdDsNCglm
+b250LWZhbWlseTpXaW5nZGluZ3M7fQ0Kb2wNCgl7bWFyZ2luLWJvdHRvbTowY207fQ0KdWwNCgl7
+bWFyZ2luLWJvdHRvbTowY207fQ0KLS0+PC9zdHlsZT4NCjwvaGVhZD4NCjxib2R5IGxhbmc9IkVO
+LUlOIiBsaW5rPSJibHVlIiB2bGluaz0icHVycGxlIiBzdHlsZT0id29yZC13cmFwOmJyZWFrLXdv
+cmQiPg0KPGRpdiBjbGFzcz0iV29yZFNlY3Rpb24xIj4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxz
+cGFuIHN0eWxlPSJmb250LXNpemU6MTEuMHB0O21zby1mYXJlYXN0LWxhbmd1YWdlOkVOLVVTIj5I
+aSw8bzpwPjwvbzpwPjwvc3Bhbj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHls
+ZT0iZm9udC1zaXplOjExLjBwdDttc28tZmFyZWFzdC1sYW5ndWFnZTpFTi1VUyI+UmVwb3J0ZWQg
+ZmFpbHVyZXMgb24gWGUgYW5kIEk5MTUgQ0kgZnVsbCBydW5zIGFyZSBub3QgcmVsYXRlZCB0byBt
+eSBjaGFuZ2VzLjxicj4NCkNvdWxkIHlvdSBwbGVhc2UgcmUtcmVwb3J0IGl0PzxvOnA+PC9vOnA+
+PC9zcGFuPjwvcD4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxzcGFuIHN0eWxlPSJmb250LXNpemU6
+MTEuMHB0O21zby1mYXJlYXN0LWxhbmd1YWdlOkVOLVVTIj48bzpwPiZuYnNwOzwvbzpwPjwvc3Bh
+bj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0iZm9udC1zaXplOjExLjBw
+dDttc28tZmFyZWFzdC1sYW5ndWFnZTpFTi1VUyI+VGhhbmtzLDxvOnA+PC9vOnA+PC9zcGFuPjwv
+cD4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxzcGFuIHN0eWxlPSJmb250LXNpemU6MTEuMHB0O21z
+by1mYXJlYXN0LWxhbmd1YWdlOkVOLVVTIj5OaXRpbjxvOnA+PC9vOnA+PC9zcGFuPjwvcD4NCjxw
+IGNsYXNzPSJNc29Ob3JtYWwiPjxzcGFuIHN0eWxlPSJmb250LXNpemU6MTEuMHB0O21zby1mYXJl
+YXN0LWxhbmd1YWdlOkVOLVVTIj48bzpwPiZuYnNwOzwvbzpwPjwvc3Bhbj48L3A+DQo8ZGl2IHN0
+eWxlPSJib3JkZXI6bm9uZTtib3JkZXItbGVmdDpzb2xpZCBibHVlIDEuNXB0O3BhZGRpbmc6MGNt
+IDBjbSAwY20gNC4wcHQiPg0KPGRpdj4NCjxkaXYgc3R5bGU9ImJvcmRlcjpub25lO2JvcmRlci10
+b3A6c29saWQgI0UxRTFFMSAxLjBwdDtwYWRkaW5nOjMuMHB0IDBjbSAwY20gMGNtIj4NCjxwIGNs
+YXNzPSJNc29Ob3JtYWwiPjxiPjxzcGFuIGxhbmc9IkVOLVVTIiBzdHlsZT0iZm9udC1zaXplOjEx
+LjBwdDtmb250LWZhbWlseTomcXVvdDtDYWxpYnJpJnF1b3Q7LHNhbnMtc2VyaWYiPkZyb206PC9z
+cGFuPjwvYj48c3BhbiBsYW5nPSJFTi1VUyIgc3R5bGU9ImZvbnQtc2l6ZToxMS4wcHQ7Zm9udC1m
+YW1pbHk6JnF1b3Q7Q2FsaWJyaSZxdW90OyxzYW5zLXNlcmlmIj4gUGF0Y2h3b3JrICZsdDtwYXRj
+aHdvcmtAZW1lcmlsLmZyZWVkZXNrdG9wLm9yZyZndDsNCjxicj4NCjxiPlNlbnQ6PC9iPiBUaHVy
+c2RheSwgRmVicnVhcnkgNSwgMjAyNiA5OjUwIEFNPGJyPg0KPGI+VG86PC9iPiBHb3RlLCBOaXRp
+biBSICZsdDtuaXRpbi5yLmdvdGVAaW50ZWwuY29tJmd0Ozxicj4NCjxiPkNjOjwvYj4gaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmc8YnI+DQo8Yj5TdWJqZWN0OjwvYj4gPC9zcGFuPjxzcGFu
+IGxhbmc9IkVOLVVTIiBzdHlsZT0iZm9udC1zaXplOjExLjBwdDtmb250LWZhbWlseTomcXVvdDtT
+ZWdvZSBVSSBTeW1ib2wmcXVvdDssc2Fucy1zZXJpZiI+4pyXPC9zcGFuPjxzcGFuIGxhbmc9IkVO
+LVVTIiBzdHlsZT0iZm9udC1zaXplOjExLjBwdDtmb250LWZhbWlseTomcXVvdDtDYWxpYnJpJnF1
+b3Q7LHNhbnMtc2VyaWYiPiBYZS5DSS5GVUxMOiBmYWlsdXJlIGZvciB0ZXN0cy9pbnRlbC94ZV9j
+b25maWdmczogUmVzZXQgY29uZmlnZnMNCiBncm91cCBhZnRlciBlYWNoIHN1YnRlc3Q8bzpwPjwv
+bzpwPjwvc3Bhbj48L3A+DQo8L2Rpdj4NCjwvZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PG86
+cD4mbmJzcDs8L286cD48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48Yj5QYXRjaCBEZXRhaWxz
+PC9iPiA8bzpwPjwvbzpwPjwvcD4NCjx0YWJsZSBjbGFzcz0iTXNvTm9ybWFsVGFibGUiIGJvcmRl
+cj0iMCIgY2VsbHNwYWNpbmc9IjMiIGNlbGxwYWRkaW5nPSIwIj4NCjx0Ym9keT4NCjx0cj4NCjx0
+ZCBzdHlsZT0icGFkZGluZzoyLjBwdCAyLjBwdCAyLjBwdCAyLjBwdCI+DQo8cCBjbGFzcz0iTXNv
+Tm9ybWFsIj48Yj5TZXJpZXM6PC9iPjxvOnA+PC9vOnA+PC9wPg0KPC90ZD4NCjx0ZCBzdHlsZT0i
+cGFkZGluZzoyLjBwdCAyLjBwdCAyLjBwdCAyLjBwdCI+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj50
+ZXN0cy9pbnRlbC94ZV9jb25maWdmczogUmVzZXQgY29uZmlnZnMgZ3JvdXAgYWZ0ZXIgZWFjaCBz
+dWJ0ZXN0PG86cD48L286cD48L3A+DQo8L3RkPg0KPC90cj4NCjx0cj4NCjx0ZCBzdHlsZT0icGFk
+ZGluZzoyLjBwdCAyLjBwdCAyLjBwdCAyLjBwdCI+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48Yj5V
+Ukw6PC9iPjxvOnA+PC9vOnA+PC9wPg0KPC90ZD4NCjx0ZCBzdHlsZT0icGFkZGluZzoyLjBwdCAy
+LjBwdCAyLjBwdCAyLjBwdCI+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48YSBocmVmPSJodHRwczov
+L3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzE2MTE0Ny8iPmh0dHBzOi8vcGF0Y2h3
+b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMTYxMTQ3LzwvYT48bzpwPjwvbzpwPjwvcD4NCjwv
+dGQ+DQo8L3RyPg0KPHRyPg0KPHRkIHN0eWxlPSJwYWRkaW5nOjIuMHB0IDIuMHB0IDIuMHB0IDIu
+MHB0Ij4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxiPlN0YXRlOjwvYj48bzpwPjwvbzpwPjwvcD4N
+CjwvdGQ+DQo8dGQgc3R5bGU9InBhZGRpbmc6Mi4wcHQgMi4wcHQgMi4wcHQgMi4wcHQiPg0KPHAg
+Y2xhc3M9Ik1zb05vcm1hbCI+ZmFpbHVyZTxvOnA+PC9vOnA+PC9wPg0KPC90ZD4NCjwvdHI+DQo8
+dHI+DQo8dGQgc3R5bGU9InBhZGRpbmc6Mi4wcHQgMi4wcHQgMi4wcHQgMi4wcHQiPg0KPHAgY2xh
+c3M9Ik1zb05vcm1hbCI+PGI+RGV0YWlsczo8L2I+PG86cD48L286cD48L3A+DQo8L3RkPg0KPHRk
+IHN0eWxlPSJwYWRkaW5nOjIuMHB0IDIuMHB0IDIuMHB0IDIuMHB0Ij4NCjxwIGNsYXNzPSJNc29O
+b3JtYWwiPjxhIGhyZWY9Imh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2ludGVsLXhl
+L0lHVFBXXzE0NDkxL2luZGV4Lmh0bWwiPmh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVl
+L2ludGVsLXhlL0lHVFBXXzE0NDkxL2luZGV4Lmh0bWw8L2E+PG86cD48L286cD48L3A+DQo8L3Rk
+Pg0KPC90cj4NCjwvdGJvZHk+DQo8L3RhYmxlPg0KPGgxPkNJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZy
+b20gWEVJR1RfODczNl9GVUxMIC0mZ3Q7IFhFSUdUUFdfMTQ0OTFfRlVMTDxvOnA+PC9vOnA+PC9o
+MT4NCjxoMj5TdW1tYXJ5PG86cD48L286cD48L2gyPg0KPHA+PHN0cm9uZz48c3BhbiBzdHlsZT0i
+Zm9udC1mYW1pbHk6JnF1b3Q7QXB0b3MmcXVvdDssc2Fucy1zZXJpZiI+RkFJTFVSRTwvc3Bhbj48
+L3N0cm9uZz48bzpwPjwvbzpwPjwvcD4NCjxwPlNlcmlvdXMgdW5rbm93biBjaGFuZ2VzIGNvbWlu
+ZyB3aXRoIFhFSUdUUFdfMTQ0OTFfRlVMTCBhYnNvbHV0ZWx5IG5lZWQgdG8gYmU8YnI+DQp2ZXJp
+ZmllZCBtYW51YWxseS48bzpwPjwvbzpwPjwvcD4NCjxwPklmIHlvdSB0aGluayB0aGUgcmVwb3J0
+ZWQgY2hhbmdlcyBoYXZlIG5vdGhpbmcgdG8gZG8gd2l0aCB0aGUgY2hhbmdlczxicj4NCmludHJv
+ZHVjZWQgaW4gWEVJR1RQV18xNDQ5MV9GVUxMLCBwbGVhc2Ugbm90aWZ5IHlvdXIgYnVnIHRlYW0g
+KDxhIGhyZWY9Im1haWx0bzpJOTE1LWNpLWluZnJhQGxpc3RzLmZyZWVkZXNrdG9wLm9yZyI+STkx
+NS1jaS1pbmZyYUBsaXN0cy5mcmVlZGVza3RvcC5vcmc8L2E+KSB0byBhbGxvdyB0aGVtPGJyPg0K
+dG8gZG9jdW1lbnQgdGhpcyBuZXcgZmFpbHVyZSBtb2RlLCB3aGljaCB3aWxsIHJlZHVjZSBmYWxz
+ZSBwb3NpdGl2ZXMgaW4gQ0kuPG86cD48L286cD48L3A+DQo8aDI+UGFydGljaXBhdGluZyBob3N0
+cyAoMiAtJmd0OyAyKTxvOnA+PC9vOnA+PC9oMj4NCjxwPk5vIGNoYW5nZXMgaW4gcGFydGljaXBh
+dGluZyBob3N0czxvOnA+PC9vOnA+PC9wPg0KPGgyPlBvc3NpYmxlIG5ldyBpc3N1ZXM8bzpwPjwv
+bzpwPjwvaDI+DQo8cD5IZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQgbWF5IGhhdmUg
+YmVlbiBpbnRyb2R1Y2VkIGluIFhFSUdUUFdfMTQ0OTFfRlVMTDo8bzpwPjwvbzpwPjwvcD4NCjxo
+Mz5JR1QgY2hhbmdlczxvOnA+PC9vOnA+PC9oMz4NCjxoND5Qb3NzaWJsZSByZWdyZXNzaW9uczxv
+OnA+PC9vOnA+PC9oND4NCjx1bCB0eXBlPSJkaXNjIj4NCjxsaSBzdHlsZT0ibXNvLWxpc3Q6bDEg
+bGV2ZWwxIGxmbzEiPmlndEBrbXNfcGxhbmVAcGl4ZWwtZm9ybWF0LWxpbmVhci1tb2RpZmllci1z
+b3VyY2UtY2xhbXBpbmdAcGlwZS1iLXBsYW5lLTA6PG86cD48L286cD48L2xpPjwvdWw+DQo8dWwg
+dHlwZT0iZGlzYyI+DQo8dWwgdHlwZT0iY2lyY2xlIj4NCjxsaSBjbGFzcz0iTXNvTm9ybWFsIiBz
+dHlsZT0ibXNvLW1hcmdpbi10b3AtYWx0OmF1dG87bXNvLW1hcmdpbi1ib3R0b20tYWx0OmF1dG87
+bXNvLWxpc3Q6bDEgbGV2ZWwyIGxmbzEiPg0Kc2hhcmQtbG5sOiA8YSBocmVmPSJodHRwczovL2lu
+dGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9pbnRlbC14ZS9JR1RfODczNi9zaGFyZC1sbmwtNi9pZ3RA
+a21zX3BsYW5lQHBpeGVsLWZvcm1hdC1saW5lYXItbW9kaWZpZXItc291cmNlLWNsYW1waW5nQHBp
+cGUtYi1wbGFuZS0wLmh0bWwiPg0KUEFTUzwvYT4gLSZndDsgPGEgaHJlZj0iaHR0cHM6Ly9pbnRl
+bC1nZngtY2kuMDEub3JnL3RyZWUvaW50ZWwteGUvSUdUUFdfMTQ0OTEvc2hhcmQtbG5sLTEvaWd0
+QGttc19wbGFuZUBwaXhlbC1mb3JtYXQtbGluZWFyLW1vZGlmaWVyLXNvdXJjZS1jbGFtcGluZ0Bw
+aXBlLWItcGxhbmUtMC5odG1sIj4NCkZBSUw8L2E+ICsxIG90aGVyIHRlc3QgZmFpbDxvOnA+PC9v
+OnA+PC9saT48L3VsPg0KPC91bD4NCjx1bCB0eXBlPSJkaXNjIj4NCjxsaSBzdHlsZT0ibXNvLWxp
+c3Q6bDEgbGV2ZWwxIGxmbzEiPmlndEBrbXNfcGxhbmVfc2NhbGluZ0BwbGFuZXMtdW5pdHktc2Nh
+bGluZy1kb3duc2NhbGUtZmFjdG9yLTAtNTo8bzpwPjwvbzpwPjwvbGk+PC91bD4NCjx1bCB0eXBl
+PSJkaXNjIj4NCjx1bCB0eXBlPSJjaXJjbGUiPg0KPGxpIGNsYXNzPSJNc29Ob3JtYWwiIHN0eWxl
+PSJtc28tbWFyZ2luLXRvcC1hbHQ6YXV0bzttc28tbWFyZ2luLWJvdHRvbS1hbHQ6YXV0bzttc28t
+bGlzdDpsMSBsZXZlbDIgbGZvMSI+DQpzaGFyZC1ibWc6IDxhIGhyZWY9Imh0dHBzOi8vaW50ZWwt
+Z2Z4LWNpLjAxLm9yZy90cmVlL2ludGVsLXhlL0lHVF84NzM2L3NoYXJkLWJtZy04L2lndEBrbXNf
+cGxhbmVfc2NhbGluZ0BwbGFuZXMtdW5pdHktc2NhbGluZy1kb3duc2NhbGUtZmFjdG9yLTAtNS5o
+dG1sIj4NClBBU1M8L2E+IC0mZ3Q7IDxhIGhyZWY9Imh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
+Zy90cmVlL2ludGVsLXhlL0lHVFBXXzE0NDkxL3NoYXJkLWJtZy0yL2lndEBrbXNfcGxhbmVfc2Nh
+bGluZ0BwbGFuZXMtdW5pdHktc2NhbGluZy1kb3duc2NhbGUtZmFjdG9yLTAtNS5odG1sIj4NCkFC
+T1JUPC9hPiArMSBvdGhlciB0ZXN0IGFib3J0PG86cD48L286cD48L2xpPjwvdWw+DQo8L3VsPg0K
+PHVsIHR5cGU9ImRpc2MiPg0KPGxpIHN0eWxlPSJtc28tbGlzdDpsMSBsZXZlbDEgbGZvMSI+aWd0
+QGttc19wbGFuZV9zY2FsaW5nQHBsYW5lcy11bml0eS1zY2FsaW5nLWRvd25zY2FsZS1mYWN0b3It
+MC01QHBpcGUtZDo8bzpwPjwvbzpwPjwvbGk+PC91bD4NCjx1bCB0eXBlPSJkaXNjIj4NCjx1bCB0
+eXBlPSJjaXJjbGUiPg0KPGxpIGNsYXNzPSJNc29Ob3JtYWwiIHN0eWxlPSJtc28tbWFyZ2luLXRv
+cC1hbHQ6YXV0bzttc28tbWFyZ2luLWJvdHRvbS1hbHQ6YXV0bzttc28tbGlzdDpsMSBsZXZlbDIg
+bGZvMSI+DQpzaGFyZC1ibWc6IDxhIGhyZWY9Imh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90
+cmVlL2ludGVsLXhlL0lHVF84NzM2L3NoYXJkLWJtZy04L2lndEBrbXNfcGxhbmVfc2NhbGluZ0Bw
+bGFuZXMtdW5pdHktc2NhbGluZy1kb3duc2NhbGUtZmFjdG9yLTAtNUBwaXBlLWQuaHRtbCI+DQpQ
+QVNTPC9hPiAtJmd0OyA8YSBocmVmPSJodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9p
+bnRlbC14ZS9JR1RQV18xNDQ5MS9zaGFyZC1ibWctMi9pZ3RAa21zX3BsYW5lX3NjYWxpbmdAcGxh
+bmVzLXVuaXR5LXNjYWxpbmctZG93bnNjYWxlLWZhY3Rvci0wLTVAcGlwZS1kLmh0bWwiPg0KRE1F
+U0ctV0FSTjwvYT48bzpwPjwvbzpwPjwvbGk+PC91bD4NCjwvdWw+DQo8L2Rpdj4NCjwvZGl2Pg0K
+PC9ib2R5Pg0KPC9odG1sPg0K
 
-On 1/21/2026 11:39 AM, S Sebinraj wrote:
-> Add a new test to validate explicit fencing.
-> This test handles multiple planes in a single atomic commit.
-> This test addresses a critical scenario where drivers must correctly
-> synchronize planes with mixed fence states.
->
-> Test Scenario:
-> - Creates three planes: one primary, two overlay
-> - Attaches fences with different states:
->     - Primary plane:   signaled fence (simulating completed GPU work)
->     - Overlay-1 plane: signaled fence (simulating completed GPU work)
->     - Overlay-2 plane: unsignaled fence (simulating long-running GPU job)
-> - Submits all planes in a single atomic commit with IN_FENCE_FD set
-> - Validates that display waits for ALL fences before updating ANY plane
->
-> Bug Detection:
-> This test catches driver bugs where:
->   - Planes with signaled fences update prematurely before unsignaled
->     fences complete, breaking atomic commit semantics
->   - Fence states are mismanaged across multiple planes causing visual
->     glitches or corruption
->   - The driver fails to wait on all IN_FENCE_FDs atomically
->
-> The test uses sw_sync timelines to create controllable fence states,
-> allowing precise validation of fence synchronization behavior. An
-> OUT_FENCE_PTR is requested to monitor when the display update actually
-> completes, enabling detection of premature updates.
->
-> Implementation Details:
-> - Uses sw_sync for creating fences with controlled signaling
-> - Monitors OUT_FENCE to detect premature display updates
-> - Validates atomic commit integrity across multiple planes
->
-> Background:
-> - A bug regressed for Xe driver on PTL (Android) i915/display handling
->    of explicit fences when provided two or more buffers at once,
->    with 1+ already-signaled fences and 1+ not-yet-signaled fences.
->    https://patchwork.freedesktop.org/patch/662982/
-> - Adding this test so that IGT contains sufficient testing for the
->    use of explicit fencing in the KMS Atomic Modesetting APIs.
->
-> Changes:
-> -v2
->    - Add crc check instead of visual inspection
->    - Reduce debug logging which are not needed
->    - Add a function for initial modset
->    - Make test not specific to Intel drivers alone
->    - Sort the included libs in alphabetical order
->    - Modify set_output func as we want only one
->      output per pipe
->
-> Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
-> ---
->   tests/kms_explicit_fence.c | 356 +++++++++++++++++++++++++++++++++++++
->   tests/meson.build          |   1 +
->   2 files changed, 357 insertions(+)
->   create mode 100644 tests/kms_explicit_fence.c
->
-> diff --git a/tests/kms_explicit_fence.c b/tests/kms_explicit_fence.c
-> new file mode 100644
-> index 000000000..774f49c4a
-> --- /dev/null
-> +++ b/tests/kms_explicit_fence.c
-> @@ -0,0 +1,356 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright =A9 2026 Intel Corporation
->> License format is still not right, Please check.
-
-Okay, I'll correct it as per reference.
-
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a
-> + * copy of this software and associated documentation files (the "Softwa=
-re"),
-> + * to deal in the Software without restriction, including without limita=
-tion
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
-se,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the =
-next
-> + * paragraph) shall be included in all copies or substantial portions of=
- the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
-SS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
-TY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
-ALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
-OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
-NG
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
-EALINGS
-> + * IN THE SOFTWARE.
-> + */
-> +
-> +/**
-> + * TEST: kms explicit fence multiplane
-> + * Category: Display
-> + * Description: Test explicit fencing with multiple planes and mixed fen=
-ce states
-> + * Driver requirement: i915, xe
-> + * Mega feature: General Display Features
-> + *
-> + * This test validates correct handling of explicit fences when multiple=
- planes
-> + * are updated in a single atomic commit with different fence states. Th=
-is is
-> + * critical for catching fence synchronization bugs where the driver mig=
-ht:
-> + * 1. Prematurely display buffers with signaled fences before unsignaled=
- fences complete
-> + * 2. Mismanage fence states across multiple planes causing visual glitc=
-hes
-> + * 3. Fail to wait on all fences atomically before updating the display
-> + */
-> +
-> +#include <errno.h>
-> +#include <poll.h>
-> +#include <stdbool.h>
-> +#include <stdio.h>
-> +#include <string.h>
-> +#include <sys/eventfd.h>
-> +
-> +#include "igt.h"
-> +#include "igt_aux.h"
-> +#include "sw_sync.h"
-> +
-> +/**
-> + * SUBTEST: multiplane-atomic-fence-wait
-> + * Description: Test 3 planes (1 primary, 2 overlay) with mixed fence st=
-ates:
-> + *              2 planes with signaled fences and 1 plane with unsignale=
-d fence.
-> + *              Validates that display waits for all fences before updat=
-ing any plane.
-> + */
-> +
-> +/* Test configuration macros */
-> +#define NUM_PLANES 3
-> +#define PLANE_PRIMARY_IDX 0
-> +#define PLANE_OVERLAY1_IDX 1
-> +#define PLANE_OVERLAY2_IDX 2
-> +#define OVERLAY_COUNT (NUM_PLANES - 1)
-> +
-> +#define FENCE_TIMEOUT_MS 2000
-> +
-> +#define OVERLAY_SIZE_DIVISOR 3
-> +#define OVERLAY1_POS_X 100
-> +#define OVERLAY1_POS_Y 100
-> +#define OVERLAY2_OFFSET 100
-> +
-> +typedef struct {
-> +     int drm_fd;
-> +     igt_display_t display;
-> +     igt_output_t *output;
-> +     enum pipe pipe;
-> +     igt_plane_t *primary;
-> +     igt_plane_t *overlay1;
-> +     igt_plane_t *overlay2;
-> +     struct igt_fb primary_fb;
-> +     struct igt_fb overlay1_fb;
-> +     struct igt_fb overlay2_fb;
-> +     drmModeModeInfo *mode;
-> +     int width, height;
-> +     igt_pipe_crc_t *pipe_crc;
-> +} data_t;
-> +
-> +static void setup_output(data_t *data)
-> +{
-> +     igt_display_t *display =3D &data->display;
-> +     igt_output_t *output;
-> +     enum pipe pipe;
-> +
-> +     for_each_pipe_with_single_output(display, pipe, output) {
-> +             data->primary =3D igt_pipe_get_plane_type(
-> +                     igt_crtc_for_pipe(display, pipe), DRM_PLANE_TYPE_PR=
-IMARY);
-> +             data->overlay1 =3D igt_pipe_get_plane_type_index(
-> +                     igt_crtc_for_pipe(display, pipe), DRM_PLANE_TYPE_OV=
-ERLAY, 0);
-> +             data->overlay2 =3D igt_pipe_get_plane_type_index(
-> +                     igt_crtc_for_pipe(display, pipe), DRM_PLANE_TYPE_OV=
-ERLAY, 1);
-
->> Please fix the styling here. "OPEN_ENDED_LINE: Lines should not end with
-a '(' "
-
-Okay, got it, I'll correct these.
-
-> +
-> +             /* We need at least OVERLAY_COUNT overlay planes for this t=
-est */
-> +             if (data->overlay1 && data->overlay2) {
-> +                     data->output =3D output;
-> +                     data->pipe =3D pipe;
-> +                     data->mode =3D igt_output_get_mode(output);
-> +                     data->width =3D data->mode->hdisplay;
-> +                     data->height =3D data->mode->vdisplay;
-> +                     return;
-> +             }
-> +     }
-> +
-> +     igt_skip("Need at least %d overlay planes for this test\n", OVERLAY=
-_COUNT);
-> +}
-> +
-> +static void cleanup_crtc(data_t *data)
-> +{
-> +     igt_display_reset(&data->display);
-> +
-> +     igt_remove_fb(data->drm_fd, &data->primary_fb);
-> +     igt_remove_fb(data->drm_fd, &data->overlay1_fb);
-> +     igt_remove_fb(data->drm_fd, &data->overlay2_fb);
-> +}
-> +
-> +static void create_fbs(data_t *data)
-> +{
-> +     int overlay_width =3D data->width / OVERLAY_SIZE_DIVISOR;
-> +     int overlay_height =3D data->height / OVERLAY_SIZE_DIVISOR;
-> +
-> +     /* Primary plane - Blue background */
-> +     igt_create_color_fb(data->drm_fd, data->width, data->height,
-> +                         DRM_FORMAT_XRGB8888,
-> +                         DRM_FORMAT_MOD_LINEAR,
-> +                         0.0, 0.0, 1.0, /* Blue */
-> +                         &data->primary_fb);
-> +
-> +     /* Overlay 1 - Red square */
-> +     igt_create_color_fb(data->drm_fd, overlay_width, overlay_height,
-> +                         DRM_FORMAT_XRGB8888,
-> +                         DRM_FORMAT_MOD_LINEAR,
-> +                         1.0, 0.0, 0.0, /* Red */
-> +                         &data->overlay1_fb);
-> +
-> +     /* Overlay 2 - Green square */
-> +     igt_create_color_fb(data->drm_fd, overlay_width, overlay_height,
-> +                         DRM_FORMAT_XRGB8888,
-> +                         DRM_FORMAT_MOD_LINEAR,
-> +                         0.0, 1.0, 0.0, /* Green */
-> +                         &data->overlay2_fb);
-> +}
-> +
-> +static void setup_initial_modeset(data_t *data)
-> +{
-> +     /* Initial modeset to establish baseline (no fences) */
-> +     igt_output_set_crtc(data->output, igt_crtc_for_pipe(&data->display,=
- data->pipe));
-> +     igt_plane_set_fb(data->primary, &data->primary_fb);
-> +     igt_plane_set_fb(data->overlay1, &data->overlay1_fb);
-> +     igt_plane_set_position(data->overlay1, OVERLAY1_POS_X, OVERLAY1_POS=
-_Y);
-> +     igt_plane_set_fb(data->overlay2, &data->overlay2_fb);
-> +     igt_plane_set_position(data->overlay2, data->width - OVERLAY2_OFFSE=
-T -
-> +                             data->overlay2_fb.width, OVERLAY1_POS_Y);
-> +     igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +}
-> +
-> +/**
-> + * multiplane_atomic_fence_wait - Test atomic commit with mixed fence st=
-ates
-> + *
-> + * This test reproduces the critical scenario where multiple planes are =
-updated
-> + * in a single atomic commit with different fence states. The key valida=
-tion is
-> + * that the display does NOT update any plane until ALL fences are signa=
-led.
-> + *
-> + * Test setup:
-> + * - Primary plane: buffer with a signaled fence (already retired)
-> + * - Overlay 1 plane: buffer with a signaled fence (already retired)
-> + * - Overlay 2 plane: buffer with an UNSIGNALED fence (long-running oper=
-ation)
-> + *
-> + * Expected behavior:
-> + * - Atomic commit succeeds immediately (non-blocking)
-> + * - Display waits internally for ALL fences before updating
-> + * - No plane shows its new buffer until the unsignaled fence completes
-> + * - After signaling the last fence, all planes update atomically
-> + *
-> + * Bug detection:
-> + * If the driver has a bug, it will either:
-> + * 1. Show the primary and overlay1 buffers prematurely (before overlay2=
-'s fence signals)
-> + * 2. Cause visual glitches from fence mismanagement
-> + * 3. Fail the atomic commit
-> + */
-> +static void multiplane_atomic_fence_wait(data_t *data)
-> +{
-> +     int timelines[NUM_PLANES];
-> +     int fences[NUM_PLANES];
-> +     int ret;
-> +     int out_fence;
-> +     igt_plane_t *planes[NUM_PLANES];
-> +     bool should_signal[NUM_PLANES] =3D { true, true, false };
-> +     igt_crc_t crc_before, crc_after;
-> +
-> +     igt_require_sw_sync();
-> +
-> +     setup_initial_modeset(data);
-> +
-> +     /* Setup arrays for loop-based processing */
-> +     planes[PLANE_PRIMARY_IDX] =3D data->primary;
-> +     planes[PLANE_OVERLAY1_IDX] =3D data->overlay1;
-> +     planes[PLANE_OVERLAY2_IDX] =3D data->overlay2;
-> +
-> +     /* Start CRC capture to verify no premature display updates */
-> +     igt_pipe_crc_start(data->pipe_crc);
-> +     igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc_before)=
-;
-> +
-> +     /* Create timelines and fences for all planes */
-> +     for (int i =3D 0; i < NUM_PLANES; i++) {
-> +             /* Create timeline */
-> +             timelines[i] =3D sw_sync_timeline_create();
-> +             igt_assert(timelines[i] >=3D 0);
-> +
-> +             /* Create fence at sequence 1 */
-> +             fences[i] =3D sw_sync_timeline_create_fence(timelines[i], 1=
-);
-> +             igt_assert(fences[i] >=3D 0);
-> +
-> +             /* Signal fence (first 2 planes) */
-> +             if (should_signal[i]) {
-> +                     sw_sync_timeline_inc(timelines[i], 1);
-> +                     igt_assert_eq(sync_fence_status(fences[i]), 1);
-> +             } else {
-> +                     /* Do not signal this fence yet, 3rd plane */
-> +                     igt_assert_eq(sync_fence_status(fences[i]), 0);
-> +             }
-> +
-> +             /* Attach IN_FENCE_FD to plane */
-> +             igt_plane_set_fence_fd(planes[i], fences[i]);
-> +     }
-> +
-> +     /* Swap overlay colors to detect scanout changes via CRC */
-> +     igt_plane_set_fb(data->overlay1, &data->overlay2_fb);
-> +     igt_plane_set_position(data->overlay1, OVERLAY1_POS_X, OVERLAY1_POS=
-_Y);
-> +     igt_plane_set_fb(data->overlay2, &data->overlay1_fb);
-> +     igt_plane_set_position(data->overlay2, data->width - OVERLAY2_OFFSE=
-T -
-> +                             data->overlay1_fb.width, OVERLAY1_POS_Y);
-> +
-> +     /* Request OUT_FENCE to track when display update completes */
-> +     igt_pipe_request_out_fence(igt_crtc_for_pipe(&data->display, data->=
-pipe));
-> +
-> +     /*
-> +      * The atomic commit should succeed immediately (NONBLOCK mode),
-> +      * but the display should NOT update any plane until ALL fences
-> +      * (including the unsignaled overlay2 fence) are signaled.
-> +      *
-> +      * A buggy driver might:
-> +      * - Show primary and overlay1 immediately
-> +      * - Cause visual corruption
-> +      * - Fail the commit
-> +      */
-> +     ret =3D igt_display_try_commit_atomic(&data->display,
-> +                                         DRM_MODE_ATOMIC_NONBLOCK,
-> +                                         NULL);
-> +     igt_assert_eq(ret, 0);
-> +
-> +     /* Get the out fence to monitor completion */
-> +     out_fence =3D igt_crtc_for_pipe(&data->display, data->pipe)->out_fe=
-nce_fd;
-> +     igt_assert(out_fence >=3D 0);
-> +
-> +     /* Verify overlay2 fence (last one) is still unsignaled */
-> +     igt_assert_eq(sync_fence_status(fences[PLANE_OVERLAY2_IDX]), 0);
-> +
-> +     /* Verify out fence is also unsignaled (display hasn't updated yet)=
- */
-> +     ret =3D sync_fence_status(out_fence);
-> +     igt_assert_f(ret !=3D 1,
-> +                  "OUT_FENCE already signaled while overlay2 fence is un=
-signaled - "
-> +                  "driver did not wait for all IN_FENCEs!");
-> +
-> +     /*
-> +      * Wait briefly and verify display hasn't updated via CRC check.
-> +      * In a buggy implementation, the display might update prematurely.
-> +      */
-> +     usleep(100000); /* 100ms */
-> +
-> +     /* Check if out fence signaled prematurely */
-> +     ret =3D sync_fence_status(out_fence);
-> +     igt_assert_f(ret !=3D 1,
-> +                  "OUT_FENCE signaled before overlay2 fence - "
-> +                  "driver updated display without waiting for all fences=
-");
-> +
-> +     /* CRC verify - check if display has not updated prematurely */
-> +     igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc_after);
-> +     igt_assert_crc_equal(&crc_before, &crc_after);
-> +
-> +     /* Now signal the blocking fence (overlay2) */
-> +     sw_sync_timeline_inc(timelines[PLANE_OVERLAY2_IDX], 1);
-> +
-> +     /* Wait for overlay2 fence to be signaled */
-> +     ret =3D sync_fence_wait(fences[PLANE_OVERLAY2_IDX], FENCE_TIMEOUT_M=
-S);
-> +     igt_assert_eq(ret, 0);
-> +     igt_assert_eq(sync_fence_status(fences[PLANE_OVERLAY2_IDX]), 1);
-> +
-> +     /* Now wait for the display update to complete (out fence signals) =
-*/
-> +     ret =3D sync_fence_wait(out_fence, FENCE_TIMEOUT_MS);
-> +     igt_assert_eq(ret, 0);
-> +     igt_assert_eq(sync_fence_status(out_fence), 1);
->> One more CRC check required here?
-
-You are right, I'll add that.
-
-> +
-> +     igt_pipe_crc_stop(data->pipe_crc);
-> +
-> +     /* Cleanup */
-> +     for (int i =3D 0; i < NUM_PLANES; i++) {
-> +             close(fences[i]);
-> +             close(timelines[i]);
-> +             igt_plane_set_fence_fd(planes[i], -1);
-> +     }
-> +     close(out_fence);
-> +     igt_crtc_for_pipe(&data->display, data->pipe)->out_fence_fd =3D -1;
-> +}
-> +
-> +static void reset_display_state(data_t *data)
-> +{
-> +     igt_plane_set_fb(data->primary, NULL);
-> +     igt_plane_set_fb(data->overlay1, NULL);
-> +     igt_plane_set_fb(data->overlay2, NULL);
-> +     igt_output_set_crtc(data->output, NULL);
-> +     igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +}
-> +
-> +int igt_main()
-> +{
-> +     data_t data =3D {};
-> +
-> +     igt_fixture() {
-> +             data.drm_fd =3D drm_open_driver_master(DRIVER_ANY);
-> +             kmstest_set_vt_graphics_mode();
-> +             igt_display_require(&data.display, data.drm_fd);
-> +             igt_display_require_output(&data.display);
-> +
-> +             setup_output(&data);
-> +             create_fbs(&data);
-> +
-> +             data.pipe_crc =3D igt_pipe_crc_new(data.drm_fd, data.pipe,
-> +                                              IGT_PIPE_CRC_SOURCE_AUTO);
-> +     }
-> +
-> +     igt_describe("Test atomic commit with 3 planes (1 primary, 2 overla=
-y) "
-> +                  "where 2 planes have signaled fences and 1 plane has a=
-n "
-> +                  "unsignaled fence. Validates that display does not upd=
-ate "
-> +                  "any plane until all fences are signaled, catching bug=
-s "
-
->> IMHO, the part of describe after this redundant. May be we can stop it
-at 'signaled'?
-
->> Thanks and Regards,
->> Karthik.B.S
-
-Okay got it.
-
-Thanks,
-Sebin
-
-> +                  "where drivers might prematurely display buffers or "
-> +                  "mismanage fence synchronization across multiple plane=
-s.");
-> +     igt_subtest("multiplane-atomic-fence-wait")
-> +             multiplane_atomic_fence_wait(&data);
-> +
-> +     igt_fixture() {
-> +             reset_display_state(&data);
-> +             igt_pipe_crc_free(data.pipe_crc);
-> +             cleanup_crtc(&data);
-> +             igt_display_fini(&data.display);
-> +             drm_close_driver(data.drm_fd);
-> +     }
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 0ad728b87..cc356610d 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -36,6 +36,7 @@ test_progs =3D [
->        'kms_dither',
->        'kms_display_modes',
->        'kms_dp_aux_dev',
-> +     'kms_explicit_fence',
->        'kms_feature_discovery',
->        'kms_flip',
->        'kms_flip_event_leak',
-
---_000_CH0PR11MB5427281EA2CF49992FCEEBEB9865ACH0PR11MB5427namp_
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-1">
-<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
-ttom:0;} </style>
-</head>
-<body dir=3D"ltr">
-<div><br>
-</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 12pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<hr style=3D"display: inline-block; width: 98%;">
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 12pt; color: rgb(0, 0, 0);">
-</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-On 1/21/2026 11:39 AM, S Sebinraj wrote:<br>
-&gt; Add a new test to validate explicit fencing.<br>
-&gt; This test handles multiple planes in a single atomic commit.<br>
-&gt; This test addresses a critical scenario where drivers must correctly<b=
-r>
-&gt; synchronize planes with mixed fence states.<br>
-&gt;<br>
-&gt; Test Scenario:<br>
-&gt; - Creates three planes: one primary, two overlay<br>
-&gt; - Attaches fences with different states:<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp; - Primary plane:&nbsp;&nbsp; signaled fence (s=
-imulating completed GPU work)<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp; - Overlay-1 plane: signaled fence (simulating =
-completed GPU work)<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp; - Overlay-2 plane: unsignaled fence (simulatin=
-g long-running GPU job)<br>
-&gt; - Submits all planes in a single atomic commit with IN_FENCE_FD set<br=
->
-&gt; - Validates that display waits for ALL fences before updating ANY plan=
-e<br>
-&gt;<br>
-&gt; Bug Detection:<br>
-&gt; This test catches driver bugs where:<br>
-&gt;&nbsp;&nbsp; - Planes with signaled fences update prematurely before un=
-signaled<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp; fences complete, breaking atomic commit semant=
-ics<br>
-&gt;&nbsp;&nbsp; - Fence states are mismanaged across multiple planes causi=
-ng visual<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp; glitches or corruption<br>
-&gt;&nbsp;&nbsp; - The driver fails to wait on all IN_FENCE_FDs atomically<=
-br>
-&gt;<br>
-&gt; The test uses sw_sync timelines to create controllable fence states,<b=
-r>
-&gt; allowing precise validation of fence synchronization behavior. An<br>
-&gt; OUT_FENCE_PTR is requested to monitor when the display update actually=
-<br>
-&gt; completes, enabling detection of premature updates.<br>
-&gt;<br>
-&gt; Implementation Details:<br>
-&gt; - Uses sw_sync for creating fences with controlled signaling<br>
-&gt; - Monitors OUT_FENCE to detect premature display updates<br>
-&gt; - Validates atomic commit integrity across multiple planes<br>
-&gt;<br>
-&gt; Background:<br>
-&gt; - A bug regressed for Xe driver on PTL (Android) i915/display handling=
-<br>
-&gt;&nbsp;&nbsp;&nbsp; of explicit fences when provided two or more buffers=
- at once,<br>
-&gt;&nbsp;&nbsp;&nbsp; with 1+ already-signaled fences and 1+ not-yet-signa=
-led fences.<br>
-&gt;&nbsp;&nbsp;&nbsp; <a data-auth=3D"NotApplicable" class=3D"OWAAutoLink"=
- id=3D"OWA2920c0cc-fc1f-8a73-1abe-a83b855c5731" href=3D"https://patchwork.f=
-reedesktop.org/patch/662982/">
-https://patchwork.freedesktop.org/patch/662982/</a><br>
-&gt; - Adding this test so that IGT contains sufficient testing for the<br>
-&gt;&nbsp;&nbsp;&nbsp; use of explicit fencing in the KMS Atomic Modesettin=
-g APIs.<br>
-&gt;<br>
-&gt; Changes:<br>
-&gt; -v2<br>
-&gt;&nbsp;&nbsp;&nbsp; - Add crc check instead of visual inspection<br>
-&gt;&nbsp;&nbsp;&nbsp; - Reduce debug logging which are not needed<br>
-&gt;&nbsp;&nbsp;&nbsp; - Add a function for initial modset<br>
-&gt;&nbsp;&nbsp;&nbsp; - Make test not specific to Intel drivers alone<br>
-&gt;&nbsp;&nbsp;&nbsp; - Sort the included libs in alphabetical order<br>
-&gt;&nbsp;&nbsp;&nbsp; - Modify set_output func as we want only one<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output per pipe<br>
-&gt;<br>
-&gt; Signed-off-by: S Sebinraj &lt;s.sebinraj@intel.com&gt;<br>
-&gt; ---<br>
-&gt;&nbsp;&nbsp; tests/kms_explicit_fence.c | 356 +++++++++++++++++++++++++=
-++++++++++++<br>
-&gt;&nbsp;&nbsp; tests/meson.build&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
-;&nbsp;&nbsp; |&nbsp;&nbsp; 1 +<br>
-&gt;&nbsp;&nbsp; 2 files changed, 357 insertions(+)<br>
-&gt;&nbsp;&nbsp; create mode 100644 tests/kms_explicit_fence.c<br>
-&gt;<br>
-&gt; diff --git a/tests/kms_explicit_fence.c b/tests/kms_explicit_fence.c<b=
-r>
-&gt; new file mode 100644<br>
-&gt; index 000000000..774f49c4a<br>
-&gt; --- /dev/null<br>
-&gt; +++ b/tests/kms_explicit_fence.c<br>
-&gt; @@ -0,0 +1,356 @@<br>
-&gt; +// SPDX-License-Identifier: MIT<br>
-&gt; +/*<br>
-&gt; + * Copyright =A9 2026 Intel Corporation<br>
-&gt;&gt; License format is still not right, Please check.</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
-Okay, I'll correct it as per reference.</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-&gt; + *<br>
-&gt; + * Permission is hereby granted, free of charge, to any person obtain=
-ing a<br>
-&gt; + * copy of this software and associated documentation files (the &quo=
-t;Software&quot;),<br>
-&gt; + * to deal in the Software without restriction, including without lim=
-itation<br>
-&gt; + * the rights to use, copy, modify, merge, publish, distribute, subli=
-cense,<br>
-&gt; + * and/or sell copies of the Software, and to permit persons to whom =
-the<br>
-&gt; + * Software is furnished to do so, subject to the following condition=
-s:<br>
-&gt; + *<br>
-&gt; + * The above copyright notice and this permission notice (including t=
-he next<br>
-&gt; + * paragraph) shall be included in all copies or substantial portions=
- of the<br>
-&gt; + * Software.<br>
-&gt; + *<br>
-&gt; + * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF AN=
-Y KIND, EXPRESS OR<br>
-&gt; + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTAB=
-ILITY,<br>
-&gt; + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.&nbsp; IN NO =
-EVENT SHALL<br>
-&gt; + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES =
-OR OTHER<br>
-&gt; + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, AR=
-ISING<br>
-&gt; + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHE=
-R DEALINGS<br>
-&gt; + * IN THE SOFTWARE.<br>
-&gt; + */<br>
-&gt; +<br>
-&gt; +/**<br>
-&gt; + * TEST: kms explicit fence multiplane<br>
-&gt; + * Category: Display<br>
-&gt; + * Description: Test explicit fencing with multiple planes and mixed =
-fence states<br>
-&gt; + * Driver requirement: i915, xe<br>
-&gt; + * Mega feature: General Display Features<br>
-&gt; + *<br>
-&gt; + * This test validates correct handling of explicit fences when multi=
-ple planes<br>
-&gt; + * are updated in a single atomic commit with different fence states.=
- This is<br>
-&gt; + * critical for catching fence synchronization bugs where the driver =
-might:<br>
-&gt; + * 1. Prematurely display buffers with signaled fences before unsigna=
-led fences complete<br>
-&gt; + * 2. Mismanage fence states across multiple planes causing visual gl=
-itches<br>
-&gt; + * 3. Fail to wait on all fences atomically before updating the displ=
-ay<br>
-&gt; + */<br>
-&gt; +<br>
-&gt; +#include &lt;errno.h&gt;<br>
-&gt; +#include &lt;poll.h&gt;<br>
-&gt; +#include &lt;stdbool.h&gt;<br>
-&gt; +#include &lt;stdio.h&gt;<br>
-&gt; +#include &lt;string.h&gt;<br>
-&gt; +#include &lt;sys/eventfd.h&gt;<br>
-&gt; +<br>
-&gt; +#include &quot;igt.h&quot;<br>
-&gt; +#include &quot;igt_aux.h&quot;<br>
-&gt; +#include &quot;sw_sync.h&quot;<br>
-&gt; +<br>
-&gt; +/**<br>
-&gt; + * SUBTEST: multiplane-atomic-fence-wait<br>
-&gt; + * Description: Test 3 planes (1 primary, 2 overlay) with mixed fence=
- states:<br>
-&gt; + *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp; 2 planes with signaled fences and 1 plane with unsignaled fence=
-.<br>
-&gt; + *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
-nbsp;&nbsp; Validates that display waits for all fences before updating any=
- plane.<br>
-&gt; + */<br>
-&gt; +<br>
-&gt; +/* Test configuration macros */<br>
-&gt; +#define NUM_PLANES 3<br>
-&gt; +#define PLANE_PRIMARY_IDX 0<br>
-&gt; +#define PLANE_OVERLAY1_IDX 1<br>
-&gt; +#define PLANE_OVERLAY2_IDX 2<br>
-&gt; +#define OVERLAY_COUNT (NUM_PLANES - 1)<br>
-&gt; +<br>
-&gt; +#define FENCE_TIMEOUT_MS 2000<br>
-&gt; +<br>
-&gt; +#define OVERLAY_SIZE_DIVISOR 3<br>
-&gt; +#define OVERLAY1_POS_X 100<br>
-&gt; +#define OVERLAY1_POS_Y 100<br>
-&gt; +#define OVERLAY2_OFFSET 100<br>
-&gt; +<br>
-&gt; +typedef struct {<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int drm_fd;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_display_t display;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_output_t *output;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; enum pipe pipe;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_t *primary;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_t *overlay1;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_t *overlay2;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; struct igt_fb primary_fb;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; struct igt_fb overlay1_fb;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; struct igt_fb overlay2_fb;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo *mode;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int width, height;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_pipe_crc_t *pipe_crc;<br>
-&gt; +} data_t;<br>
-&gt; +<br>
-&gt; +static void setup_output(data_t *data)<br>
-&gt; +{<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_display_t *display =3D &amp;data-&gt;dis=
-play;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_output_t *output;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; enum pipe pipe;<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; for_each_pipe_with_single_output(display, pi=
-pe, output) {<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; data-&gt;primary =3D igt_pipe_get_plane_type(<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_crtc_for_pipe(displ=
-ay, pipe), DRM_PLANE_TYPE_PRIMARY);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; data-&gt;overlay1 =3D igt_pipe_get_plane_type_index(<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_crtc_for_pipe(displ=
-ay, pipe), DRM_PLANE_TYPE_OVERLAY, 0);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; data-&gt;overlay2 =3D igt_pipe_get_plane_type_index(<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_crtc_for_pipe(displ=
-ay, pipe), DRM_PLANE_TYPE_OVERLAY, 1);<br>
-<br>
-&gt;&gt; Please fix the styling here. &quot;OPEN_ENDED_LINE: Lines should n=
-ot end with<br>
-a '(' &quot;<br>
-<br>
-Okay, got it, I'll correct these.<br>
-<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; /* We need at least OVERLAY_COUNT overlay planes for this test */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; if (data-&gt;overlay1 &amp;&amp; data-&gt;overlay2) {<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; data-&gt;output =3D out=
-put;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; data-&gt;pipe =3D pipe;=
-<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; data-&gt;mode =3D igt_o=
-utput_get_mode(output);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; data-&gt;width =3D data=
--&gt;mode-&gt;hdisplay;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; data-&gt;height =3D dat=
-a-&gt;mode-&gt;vdisplay;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; }<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_skip(&quot;Need at least %d overlay plan=
-es for this test\n&quot;, OVERLAY_COUNT);<br>
-&gt; +}<br>
-&gt; +<br>
-&gt; +static void cleanup_crtc(data_t *data)<br>
-&gt; +{<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_display_reset(&amp;data-&gt;display);<br=
->
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_remove_fb(data-&gt;drm_fd, &amp;data-&gt=
-;primary_fb);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_remove_fb(data-&gt;drm_fd, &amp;data-&gt=
-;overlay1_fb);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_remove_fb(data-&gt;drm_fd, &amp;data-&gt=
-;overlay2_fb);<br>
-&gt; +}<br>
-&gt; +<br>
-&gt; +static void create_fbs(data_t *data)<br>
-&gt; +{<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int overlay_width =3D data-&gt;width / OVERL=
-AY_SIZE_DIVISOR;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int overlay_height =3D data-&gt;height / OVE=
-RLAY_SIZE_DIVISOR;<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Primary plane - Blue background */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_create_color_fb(data-&gt;drm_fd, data-&g=
-t;width, data-&gt;height,<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
- DRM_FORMAT_XRGB8888,<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
- DRM_FORMAT_MOD_LINEAR,<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
- 0.0, 0.0, 1.0, /* Blue */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
- &amp;data-&gt;primary_fb);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Overlay 1 - Red square */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_create_color_fb(data-&gt;drm_fd, overlay=
-_width, overlay_height,<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
- DRM_FORMAT_XRGB8888,<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
- DRM_FORMAT_MOD_LINEAR,<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
- 1.0, 0.0, 0.0, /* Red */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
- &amp;data-&gt;overlay1_fb);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Overlay 2 - Green square */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_create_color_fb(data-&gt;drm_fd, overlay=
-_width, overlay_height,<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
- DRM_FORMAT_XRGB8888,<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
- DRM_FORMAT_MOD_LINEAR,<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
- 0.0, 1.0, 0.0, /* Green */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
- &amp;data-&gt;overlay2_fb);<br>
-&gt; +}<br>
-&gt; +<br>
-&gt; +static void setup_initial_modeset(data_t *data)<br>
-&gt; +{<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Initial modeset to establish baseline (no=
- fences) */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_output_set_crtc(data-&gt;output, igt_crt=
-c_for_pipe(&amp;data-&gt;display, data-&gt;pipe));<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_fb(data-&gt;primary, &amp;data=
--&gt;primary_fb);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_fb(data-&gt;overlay1, &amp;dat=
-a-&gt;overlay1_fb);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_position(data-&gt;overlay1, OV=
-ERLAY1_POS_X, OVERLAY1_POS_Y);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_fb(data-&gt;overlay2, &amp;dat=
-a-&gt;overlay2_fb);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_position(data-&gt;overlay2, da=
-ta-&gt;width - OVERLAY2_OFFSET -<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp; data-&gt;overlay2_fb.width, OVERLAY1_POS_Y);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_display_commit2(&amp;data-&gt;display, C=
-OMMIT_ATOMIC);<br>
-&gt; +}<br>
-&gt; +<br>
-&gt; +/**<br>
-&gt; + * multiplane_atomic_fence_wait - Test atomic commit with mixed fence=
- states<br>
-&gt; + *<br>
-&gt; + * This test reproduces the critical scenario where multiple planes a=
-re updated<br>
-&gt; + * in a single atomic commit with different fence states. The key val=
-idation is<br>
-&gt; + * that the display does NOT update any plane until ALL fences are si=
-gnaled.<br>
-&gt; + *<br>
-&gt; + * Test setup:<br>
-&gt; + * - Primary plane: buffer with a signaled fence (already retired)<br=
->
-&gt; + * - Overlay 1 plane: buffer with a signaled fence (already retired)<=
-br>
-&gt; + * - Overlay 2 plane: buffer with an UNSIGNALED fence (long-running o=
-peration)<br>
-&gt; + *<br>
-&gt; + * Expected behavior:<br>
-&gt; + * - Atomic commit succeeds immediately (non-blocking)<br>
-&gt; + * - Display waits internally for ALL fences before updating<br>
-&gt; + * - No plane shows its new buffer until the unsignaled fence complet=
-es<br>
-&gt; + * - After signaling the last fence, all planes update atomically<br>
-&gt; + *<br>
-&gt; + * Bug detection:<br>
-&gt; + * If the driver has a bug, it will either:<br>
-&gt; + * 1. Show the primary and overlay1 buffers prematurely (before overl=
-ay2's fence signals)<br>
-&gt; + * 2. Cause visual glitches from fence mismanagement<br>
-&gt; + * 3. Fail the atomic commit<br>
-&gt; + */<br>
-&gt; +static void multiplane_atomic_fence_wait(data_t *data)<br>
-&gt; +{<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int timelines[NUM_PLANES];<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int fences[NUM_PLANES];<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int ret;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; int out_fence;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_t *planes[NUM_PLANES];<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; bool should_signal[NUM_PLANES] =3D { true, t=
-rue, false };<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_crc_t crc_before, crc_after;<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_require_sw_sync();<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; setup_initial_modeset(data);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Setup arrays for loop-based processing */=
-<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; planes[PLANE_PRIMARY_IDX] =3D data-&gt;prima=
-ry;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; planes[PLANE_OVERLAY1_IDX] =3D data-&gt;over=
-lay1;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; planes[PLANE_OVERLAY2_IDX] =3D data-&gt;over=
-lay2;<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Start CRC capture to verify no premature =
-display updates */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_pipe_crc_start(data-&gt;pipe_crc);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_pipe_crc_get_current(data-&gt;drm_fd, da=
-ta-&gt;pipe_crc, &amp;crc_before);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Create timelines and fences for all plane=
-s */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; for (int i =3D 0; i &lt; NUM_PLANES; i++) {<=
-br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; /* Create timeline */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; timelines[i] =3D sw_sync_timeline_create();<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; igt_assert(timelines[i] &gt;=3D 0);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; /* Create fence at sequence 1 */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; fences[i] =3D sw_sync_timeline_create_fence(timelines[i], 1);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; igt_assert(fences[i] &gt;=3D 0);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; /* Signal fence (first 2 planes) */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; if (should_signal[i]) {<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sw_sync_timeline_inc(ti=
-melines[i], 1);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_eq(sync_fenc=
-e_status(fences[i]), 1);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; } else {<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Do not signal this f=
-ence yet, 3rd plane */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_eq(sync_fenc=
-e_status(fences[i]), 0);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; }<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; /* Attach IN_FENCE_FD to plane */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; igt_plane_set_fence_fd(planes[i], fences[i]);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Swap overlay colors to detect scanout cha=
-nges via CRC */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_fb(data-&gt;overlay1, &amp;dat=
-a-&gt;overlay2_fb);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_position(data-&gt;overlay1, OV=
-ERLAY1_POS_X, OVERLAY1_POS_Y);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_fb(data-&gt;overlay2, &amp;dat=
-a-&gt;overlay1_fb);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_position(data-&gt;overlay2, da=
-ta-&gt;width - OVERLAY2_OFFSET -<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp; data-&gt;overlay1_fb.width, OVERLAY1_POS_Y);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Request OUT_FENCE to track when display u=
-pdate completes */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_pipe_request_out_fence(igt_crtc_for_pipe=
-(&amp;data-&gt;display, data-&gt;pipe));<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /*<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * The atomic commit should succeed imm=
-ediately (NONBLOCK mode),<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * but the display should NOT update an=
-y plane until ALL fences<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * (including the unsignaled overlay2 f=
-ence) are signaled.<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * A buggy driver might:<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * - Show primary and overlay1 immediat=
-ely<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * - Cause visual corruption<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * - Fail the commit<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; ret =3D igt_display_try_commit_atomic(&amp;d=
-ata-&gt;display,<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp; DRM_MODE_ATOMIC_NONBLOCK,<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp; NULL);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_eq(ret, 0);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Get the out fence to monitor completion *=
-/<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; out_fence =3D igt_crtc_for_pipe(&amp;data-&g=
-t;display, data-&gt;pipe)-&gt;out_fence_fd;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_assert(out_fence &gt;=3D 0);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Verify overlay2 fence (last one) is still=
- unsignaled */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_eq(sync_fence_status(fences[PLANE=
-_OVERLAY2_IDX]), 0);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Verify out fence is also unsignaled (disp=
-lay hasn't updated yet) */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; ret =3D sync_fence_status(out_fence);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_f(ret !=3D 1,<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;OUT_FENCE already signaled while ov=
-erlay2 fence is unsignaled - &quot;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;driver did not wait for all IN_FENC=
-Es!&quot;);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /*<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * Wait briefly and verify display hasn=
-'t updated via CRC check.<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * In a buggy implementation, the displ=
-ay might update prematurely.<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; usleep(100000); /* 100ms */<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Check if out fence signaled prematurely *=
-/<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; ret =3D sync_fence_status(out_fence);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_f(ret !=3D 1,<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;OUT_FENCE signaled before overlay2 =
-fence - &quot;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;driver updated display without wait=
-ing for all fences&quot;);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* CRC verify - check if display has not upd=
-ated prematurely */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_pipe_crc_get_current(data-&gt;drm_fd, da=
-ta-&gt;pipe_crc, &amp;crc_after);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_crc_equal(&amp;crc_before, &amp;c=
-rc_after);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Now signal the blocking fence (overlay2) =
-*/<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; sw_sync_timeline_inc(timelines[PLANE_OVERLAY=
-2_IDX], 1);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Wait for overlay2 fence to be signaled */=
-<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; ret =3D sync_fence_wait(fences[PLANE_OVERLAY=
-2_IDX], FENCE_TIMEOUT_MS);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_eq(ret, 0);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_eq(sync_fence_status(fences[PLANE=
-_OVERLAY2_IDX]), 1);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Now wait for the display update to comple=
-te (out fence signals) */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; ret =3D sync_fence_wait(out_fence, FENCE_TIM=
-EOUT_MS);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_eq(ret, 0);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_eq(sync_fence_status(out_fence), =
-1);<br>
-&gt;&gt; One more CRC check required here?</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
-You are right, I'll add that.</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_pipe_crc_stop(data-&gt;pipe_crc);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Cleanup */<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; for (int i =3D 0; i &lt; NUM_PLANES; i++) {<=
-br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; close(fences[i]);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; close(timelines[i]);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; igt_plane_set_fence_fd(planes[i], -1);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; close(out_fence);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_crtc_for_pipe(&amp;data-&gt;display, dat=
-a-&gt;pipe)-&gt;out_fence_fd =3D -1;<br>
-&gt; +}<br>
-&gt; +<br>
-&gt; +static void reset_display_state(data_t *data)<br>
-&gt; +{<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_fb(data-&gt;primary, NULL);<br=
->
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_fb(data-&gt;overlay1, NULL);<b=
-r>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_fb(data-&gt;overlay2, NULL);<b=
-r>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_output_set_crtc(data-&gt;output, NULL);<=
-br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_display_commit2(&amp;data-&gt;display, C=
-OMMIT_ATOMIC);<br>
-&gt; +}<br>
-&gt; +<br>
-&gt; +int igt_main()<br>
-&gt; +{<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; data_t data =3D {};<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_fixture() {<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; data.drm_fd =3D drm_open_driver_master(DRIVER_ANY);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; kmstest_set_vt_graphics_mode();<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; igt_display_require(&amp;data.display, data.drm_fd);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; igt_display_require_output(&amp;data.display);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; setup_output(&amp;data);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; create_fbs(&amp;data);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; data.pipe_crc =3D igt_pipe_crc_new(data.drm_fd, data.pipe,<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IGT_PIPE_CRC_SOURCE_AUT=
-O);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_describe(&quot;Test atomic commit with 3=
- planes (1 primary, 2 overlay) &quot;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;where 2 planes have signaled fences=
- and 1 plane has an &quot;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;unsignaled fence. Validates that di=
-splay does not update &quot;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;any plane until all fences are sign=
-aled, catching bugs &quot;<br>
-<br>
-&gt;&gt; IMHO, the part of describe after this redundant. May be we can sto=
-p it<br>
-at 'signaled'?<br>
-<br>
-&gt;&gt; Thanks and Regards,<br>
-&gt;&gt; Karthik.B.S</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
-Okay got it.</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
-Thanks,</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
-Sebin</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
-<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;where drivers might prematurely dis=
-play buffers or &quot;<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;mismanage fence synchronization acr=
-oss multiple planes.&quot;);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_subtest(&quot;multiplane-atomic-fence-wa=
-it&quot;)<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; multiplane_atomic_fence_wait(&amp;data);<br>
-&gt; +<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_fixture() {<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; reset_display_state(&amp;data);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; igt_pipe_crc_free(data.pipe_crc);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; cleanup_crtc(&amp;data);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; igt_display_fini(&amp;data.display);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp; drm_close_driver(data.drm_fd);<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
-&gt; +}<br>
-&gt; diff --git a/tests/meson.build b/tests/meson.build<br>
-&gt; index 0ad728b87..cc356610d 100644<br>
-&gt; --- a/tests/meson.build<br>
-&gt; +++ b/tests/meson.build<br>
-&gt; @@ -36,6 +36,7 @@ test_progs =3D [<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'kms_dither',<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'kms_display_modes',<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'kms_dp_aux_dev',<br>
-&gt; +&nbsp;&nbsp;&nbsp;&nbsp; 'kms_explicit_fence',<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'kms_feature_discovery',<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'kms_flip',<br>
-&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'kms_flip_event_leak',<br>
-</div>
-</body>
-</html>
-
---_000_CH0PR11MB5427281EA2CF49992FCEEBEB9865ACH0PR11MB5427namp_--
+--_000_IA3PR11MB89871E055F5C6F0E1EA58B49D065AIA3PR11MB8987namp_--
