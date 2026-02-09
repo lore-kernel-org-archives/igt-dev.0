@@ -4,71 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A77CE7E0BC
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 16:32:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26118E7E0CD
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Feb 2026 16:35:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E01F810E434;
-	Mon,  9 Feb 2026 16:32:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CE0EA10E434;
+	Mon,  9 Feb 2026 16:35:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="BIPQOU6n";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eLKzkxAy";
 	dkim-atps=neutral
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A999010E439
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 16:32:57 +0000 (UTC)
-Received: by mail-dl1-f48.google.com with SMTP id
- a92af1059eb24-1233c155a42so5589477c88.1
- for <igt-dev@lists.freedesktop.org>; Mon, 09 Feb 2026 08:32:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1770654777; x=1771259577; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GQh5+rsf4DaykYrV9NH0Jiv0RMDBgbldZZ5mjuISJUw=;
- b=BIPQOU6n1XGOmdd189y12e8E8Dw00AwJ6pL/DBSwQGgg7mM3vK9BNz1xxnNsnZd8i6
- bKoQKpQECIwiuEwJyyOfKv9dgwveVXx4aa5PO49jHDVnw/LiPcFcBxJuwmQOWlha8AMJ
- PxeejYLD0Phlgr7MW2rJbAhOzNLyDb0DZ0Bf9abXjWsgYJ4HUpViHqtQKmFGU6Y8aPXO
- ldycwFpFbGEJMV4u6a85GfyHmV7YuVizhG+ePjidgA67jxYvF3qlaxlMivxnPhDaJOxP
- N071Tx5TxrjtcEqCnodRrFU7mYHV+lq5XMF1MBXzLvKxD9E2lpEQ976B+qrY0N7hVKpi
- QuTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1770654777; x=1771259577;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=GQh5+rsf4DaykYrV9NH0Jiv0RMDBgbldZZ5mjuISJUw=;
- b=jcALNIWBNQILijPDdE4MOmaGmxHpENl5jEBW0rrxNokfkD+XbmxSZKKgQja6GGoT3P
- aHwS+9XkFR50nqCZIufwXptPlwV63x0Txe7X25q+tbI0RNX65yDQGdX2w22fW4LNk/lH
- cLeKgSJ1IWJ0SeXwO+Al1GFiW5Nmm/W3BOA3afPiJjsM7woG2RrfwT5Nwc+PzO86lVw8
- Gb8dwYs0HJNM+XDghrG6w2AxOgpDRfT6jJgtOkxfrmdmIl17rpDQ8MMWo1d2puPA6U2j
- jpQZgfc3JHZhxveZ03flxNOWbsf/s8DVNohRowLhamI+3od4ho4jk1owWr3iXPpA9nIm
- kuPQ==
-X-Gm-Message-State: AOJu0YyGaMlhlL6Z7ma96jRWQZtTdFsAYFk1S9F6aF+544Ejpok1QeQ9
- 3lzM6VALigB41dQswxgEvwoy+d7mKE93aroiTNvZQmScSHpHt13ANsvBbP9RZE5Y
-X-Gm-Gg: AZuq6aKM3EMovdMYZfbKg+lGgxOLUisdLpYJYw7iLs2R9XVioB4sIO7RtAnMNF0QHtU
- txZy0qC5lJGz2FJ3w2MJtlGYYvWce/2SShqreLXBfwc52oZVh6BeN9oXiShUKCW4nmEYZimtecy
- ebhURfw7+L3DsWMYU+yoyBnura18IefTgDGMi/xEe1HhEFZ3kjaC+cdDvMm8MtXPpxF7E3/UVjQ
- mgLFHUrnOBSrMUQoj53HLdtW7Trg7ch1Pv7vMV42y6BJxkFUks8E0w5LuzP9CS/B+OFUuzbuRvP
- HOIPzI09fIYR0tyrftqQL4OWJEjlc/5o6kyO9/xuWtfdFB4Aqq0XLaQLJIoHL5nYCM2Osq4U3m0
- hhB41GE7KDXekF2m+2GEQL5mcD6ABDLlg4RnuCXIuLE2ZrqXokUfPuGM1HDxJes2ktpjAvSwq2/
- PepvDfBpNIP9Ye0L1LN3yo45l2A0H2QA1YyNiR4L1joGEkE+Qh
-X-Received: by 2002:a05:7022:920:b0:11d:f44d:401d with SMTP id
- a92af1059eb24-12704002359mr5432738c88.22.1770654776520; 
- Mon, 09 Feb 2026 08:32:56 -0800 (PST)
-Received: from localhost ([192.55.54.41]) by smtp.gmail.com with ESMTPSA id
- a92af1059eb24-12717d89610sm3915132c88.16.2026.02.09.08.32.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Feb 2026 08:32:56 -0800 (PST)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 7/7] lib/igt_fb: on Intel force Vebox copy on yuv formats
-Date: Mon,  9 Feb 2026 18:32:13 +0200
-Message-ID: <20260209163213.1483598-8-juhapekka.heikkila@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260209163213.1483598-1-juhapekka.heikkila@gmail.com>
-References: <20260209163213.1483598-1-juhapekka.heikkila@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6182210E434
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Feb 2026 16:35:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1770654950; x=1802190950;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=y5qRW+DqHc6euNKjPcmgya5WMWDerzqe1R4tdpDPlPs=;
+ b=eLKzkxAyT11ETFGoU/l0CMUAXvu2glqmFYhKuVQqqEz8C+map4KNux19
+ y6sgAJQWqx2uqeRgYNJEUHWFsDfdIWB+5Oj+I/QXzCX/C1eiOzWVMeeiJ
+ IzyVluItKoZLIXQRtXg/Fyc34O1dEzifzNN4Yq4HvrGZABPXAhBH4K/3U
+ KtPQNBP5cXolCqHOkWCf1iO/Gx5dbw6EU2D4//TMima3Zbt5+xHWVYR03
+ BMWVFFzrzOl4Ser+XC+cbqcW59v7vCI/WyR8EXLzL1GqfxpYDh6lYG4b5
+ g+IywcLYvslGcVL/Pl7piV74QVtIl5gj2esATYIGYQ/glJrXloqxMBCa/ Q==;
+X-CSE-ConnectionGUID: IusxU4p3QL2008b0fZJDXg==
+X-CSE-MsgGUID: GCW8+6XEQHalTmkUeow8Lg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="70785057"
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="70785057"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Feb 2026 08:35:50 -0800
+X-CSE-ConnectionGUID: AFcKj//nQLuuM/iDY/LGuw==
+X-CSE-MsgGUID: m0kd879iSOqIRg0FDQ24KQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; d="scan'208";a="215819831"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 08:35:47 -0800
+Date: Mon, 9 Feb 2026 17:35:29 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Xiandong Wang <xiandong.wang@mediatek.com>
+Cc: Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org,
+ Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com,
+ "xiandong.wang" <xiandong.wang@mediatek.corp-partner.google.com>
+Subject: Re: [PATCH i-g-t 1/1] Skip kms_flip for mtk
+Message-ID: <20260209163529.35pn4gkccl4sq23l@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Xiandong Wang <xiandong.wang@mediatek.com>,
+ Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com,
+ "xiandong.wang" <xiandong.wang@mediatek.corp-partner.google.com>
+References: <20260209020357.32744-1-xiandong.wang@mediatek.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260209020357.32744-1-xiandong.wang@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,74 +81,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This is to test Vebox engine along with other engines
+Hi Xiandong,
+On 2026-02-09 at 10:03:52 +0800, Xiandong Wang wrote:
+> From: "xiandong.wang" <xiandong.wang@mediatek.corp-partner.google.com>
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- lib/igt_fb.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+Hmm, this seems strange, do you mean:
+Xiandong Wang <xiandong.wang@mediatek.corp-partner.google.com>
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index cfd5d66fb..728c8cf71 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2596,6 +2596,14 @@ static bool block_copy_ok(const struct igt_fb *fb)
- 					       fb_tile_to_blt_tile(fb->modifier));
- }
- 
-+static bool use_vebox_copy(const struct igt_fb *src_fb,
-+			   const struct igt_fb *dst_fb)
-+{
-+	return igt_fb_is_gen12_mc_ccs_modifier(dst_fb->modifier) ||
-+		igt_format_is_yuv(src_fb->drm_format) ||
-+		igt_format_is_yuv(dst_fb->drm_format);
-+}
-+
- static bool ccs_needs_enginecopy(const struct igt_fb *fb)
- {
- 	if (igt_fb_is_gen12_rc_ccs_cc_modifier(fb->modifier))
-@@ -2624,6 +2632,12 @@ static bool blitter_ok(const struct igt_fb *fb)
- 	    is_xe_device(fb->fd))
- 		return false;
- 
-+	/*
-+	 * This is to utilize Vebox for testing
-+	 */
-+	if (use_vebox_copy(fb, fb))
-+		return false;
-+
- 	if (is_xe_device(fb->fd))
- 		return true;
- 
-@@ -2664,6 +2678,12 @@ static bool use_enginecopy(const struct igt_fb *fb)
- 	if (ccs_needs_enginecopy(fb))
- 		return true;
- 
-+	/*
-+	 * This is to utilize Vebox for testing
-+	 */
-+	if (use_vebox_copy(fb, fb))
-+		return true;
-+
- 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
- 		fb->modifier == I915_FORMAT_MOD_X_TILED;
- }
-@@ -2874,15 +2894,6 @@ static void fini_buf(struct intel_buf *buf)
- 	intel_buf_destroy(buf);
- }
- 
--static bool use_vebox_copy(const struct igt_fb *src_fb,
--			   const struct igt_fb *dst_fb)
--{
--
--	return igt_fb_is_gen12_mc_ccs_modifier(dst_fb->modifier) ||
--	       igt_format_is_yuv(src_fb->drm_format) ||
--	       igt_format_is_yuv(dst_fb->drm_format);
--}
--
- /**
-  * copy_with_engine:
-  * @blit: context for the copy operation
--- 
-2.43.0
+If yes, please update your git global config so next submissions
+will look like above.
 
+As for a subject, when it is only one test change, it should
+have a prefix with that test name, like:
+
+[PATCH i-g-t 1/1] tests/kms_flip: Skip test on MTK platforms
+> 
+
+Please add description here.
+
+> Change-Id: I80b23c8c26254a29721ccdc02e69fa5643067c24
+
+This change-id is useless, it should be removed. You can add
+it after '---' below, so it will not get merged.
+
++cc Karthik and Swati
+
+> Signed-off-by: xiandong.wang <xiandong.wang@mediatek.corp-partner.google.com>
+
+Same here, imho this should be:
+Signed-off-by: Xiandong Wang <xiandong.wang@mediatek.corp-partner.google.com>
+or
+Signed-off-by: Wang Xiandong <xiandong.wang@mediatek.corp-partner.google.com>
+
+Which one do you prefer? This is up to you, please choose one of those
+and use consitently in future.
+
+All of above could be done at merge time, so please just reply
+to this message with proposed description and I could merge it.
+
+With above fixed this is
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Regards,
+Kamil
+> ---
+>  tests/kms_flip.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+> index a74e69c6f..9524a9d4e 100755
+> --- a/tests/kms_flip.c
+> +++ b/tests/kms_flip.c
+> @@ -1826,6 +1826,9 @@ static void run_test(int duration, int flags)
+>  	if (is_xe_device(drm_fd) && flags & TEST_FENCE_STRESS)
+>  		return;
+>  
+> +       if (is_mtk_device(drm_fd))
+> +               return;
+> +
+>  	if (flags & TEST_BO_TOOBIG && !is_intel_device(drm_fd))
+>  		return;
+>  
+> @@ -1903,6 +1906,9 @@ static void run_pair(int duration, int flags)
+>  	if (is_xe_device(drm_fd) && flags & TEST_FENCE_STRESS)
+>  		return;
+>  
+> +       if (is_mtk_device(drm_fd))
+> +               return;
+> +
+>  	if (flags & TEST_BO_TOOBIG && !is_intel_device(drm_fd))
+>  		return;
+>  
+> -- 
+> 2.46.0
+> 
