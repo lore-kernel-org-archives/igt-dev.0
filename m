@@ -4,57 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0323DEA3F22
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Feb 2026 16:10:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1425EA8130
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Feb 2026 16:10:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A7E3F10E5D4;
-	Tue, 10 Feb 2026 16:10:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9666D10E5D5;
+	Tue, 10 Feb 2026 16:10:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BUZU3BTR";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="cwcp/RrT";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24BBF10E5D4
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Feb 2026 16:10:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770739838; x=1802275838;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=96GT7H05KfgeyTC3dWXgo9yxMlpsx0rNJikkOI6FFJ0=;
- b=BUZU3BTRTt9dgqKb5DjphfRGmvSV5JW9hsygtW5yqfn/0/nTqAY6WURd
- kyd5/M9+4yHE9ix3mdCaN7y8zIIMB1v5k4twCQTxS5kIqwG/XSepQ4TWm
- 6sTqW1C6J95War/3SofULZOG0nyFDkcVvjY94qNzLf3Cq++UtH3mQ2JBT
- xh7pOZQvrsfecrUiZ8jXqoaQq5mokEYvBXenwPk0unCQf/THbW1BRWipa
- dn3Fv7072yyHaf+706M/TOTO03U1ID2mNCxgBi0pMN2YA4FtKOdnEsJJC
- FhhkDOB/AJuPiSmKyT3jfUWYdfp3TiiV1aGi9Ki3o1/gIK8lEPHByAw8Z A==;
-X-CSE-ConnectionGUID: ZH0JvpoNTtObevbDFGIsLA==
-X-CSE-MsgGUID: BmFA+EDoQUapKNEYxVYJlw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="71770698"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="71770698"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Feb 2026 08:10:37 -0800
-X-CSE-ConnectionGUID: 5jnLkcBvSne1XiTslvalHg==
-X-CSE-MsgGUID: OOZOspeNS72JosuycCAsWw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="211061336"
-Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.244.136])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Feb 2026 08:10:36 -0800
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com
+ [209.85.215.178])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0822110E5D4
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Feb 2026 16:10:38 +0000 (UTC)
+Received: by mail-pg1-f178.google.com with SMTP id
+ 41be03b00d2f7-c06cb8004e8so2363129a12.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Feb 2026 08:10:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1770739837; x=1771344637; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hXMkMnOfM7OO8r3cmRFh0JFr9KQwzH3FlYlzIy9qB84=;
+ b=cwcp/RrTBH93GFfV4pP4z4S9nlmWVWsARE4IcWIxIqxn9h9nDWqenrw3qafKIqm4Il
+ 8Lx+52VDYN+US5nESgc8B1TswV+OnuZDWICnLfB/XPmfuNoO5ZedJc+JtBEvVvdSkDhK
+ TtIqSknMwlj1/qdyEIxMTVuSKQ6ceLmO6fnbsugWSjkdAqI6TdQJqQnSNW6BtiusrRUY
+ YdeWNrmVvCHaOrGYmPlARrn2jPZZ10sHEDn51sj0vsN6pO+RgtQleM7Bd//vOp/0GKjF
+ 0F9oF5aRN2A1g42qpND6Ez5JBkJTGcGyDGOxNIvFAKMXjKrcn7WL1mN6CovqFeBCIyOs
+ eltA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1770739837; x=1771344637;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=hXMkMnOfM7OO8r3cmRFh0JFr9KQwzH3FlYlzIy9qB84=;
+ b=r3IjbZ94C7K5MtOcuP2e7we/zgtKiaJqxaeccf3Mn/R6VWfIOtvg5o7su4OByNqVHf
+ I2ORYYRmz7WCRYDQAsM9/r4gTL9KpCH9Y3eFU8XisVox/X+WeS6Cvvw+uNYjd2ljoYId
+ NeRBaTYipMGCt9VUhXqGecv4V0iObAm1sPtKx5mRRktQ8VPHl/n+i+m3bBAd9nVkoVkD
+ vi+lFcfs4r1o8UCYNKhGmjuhMqTPWHwl9zJUGswjZlMQovTchzu1eAXdlLKfXeyA76fZ
+ B1aT5HcKt+6MNiQPKWEGnt0l3mNsDLagcDIcv2yRQGx4+TLJ1VBFVNbX4CtNa81lxK1v
+ 5Xdg==
+X-Gm-Message-State: AOJu0YyprmGTpp5vxu2JK84GAfbwVAOzksKKSEJFj60hWXpyy6CmAwD+
+ kRTBcC0we+h4V0Xq3DkvCgeIGAdLwgmzx7dTucc/MorYfqlvKXQ/yGWJqcBBfgYe
+X-Gm-Gg: AZuq6aI3eYiwuqvecEqTUi1FqUbsQ/kF7Xd5ImNsIUvaZNwTW+y26epLTbQ0h8cJZJR
+ Pg+UR/IczrT9IpAOQgoCaLntW4REn0eJokLUtvNwBGCD8DUOKNeF3jSDekvfsOu1kBLOesFSZM7
+ 1dS0BjHHAQsxHUJ8huzQ1jwUFZloSA6LzSbKNnH48SNQEQmaGGtSBjvGSgME8sEz04cTYi3va/c
+ OT2wgL6oOpFvTA/eL9LtVnT9WxCyAykmF+Payg5FgnvRXu21yXaQtZELCWPt54Ezc4Dp4B8bpoH
+ 52nMtPejbsX2T3ldbVPaPo0x7UwVKZKYVZTOgTllAZ+HyAkG2PRIWG7KPWmj8YO2FgRHAbnCV4p
+ 0+MLmT/jdsNAnrO6MONYC9saWfMbiMTBhED2FI6AICvus+v5a/FcfbYUxWdSk7fSX2Tg3V9y3PY
+ JXgFo3W7/ev3nGaNCHfuGJxItmF0PGCjqWlvEuPwI8tK1U8I35iO0AvXRRvYelQA==
+X-Received: by 2002:a17:90b:58e6:b0:340:d1a1:af8e with SMTP id
+ 98e67ed59e1d1-35667d8630dmr2488289a91.37.1770739837106; 
+ Tue, 10 Feb 2026 08:10:37 -0800 (PST)
+Received: from localhost ([134.134.139.69]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-354b465df51sm6834054a91.9.2026.02.10.08.10.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 10 Feb 2026 08:10:36 -0800 (PST)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 4/5] tests/kms: Pull igt_crtc_for_pipe() calls earlier,
- when dealing with planes
-Date: Tue, 10 Feb 2026 18:10:15 +0200
-Message-ID: <20260210161016.29459-5-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260210161016.29459-1-ville.syrjala@linux.intel.com>
-References: <20260210161016.29459-1-ville.syrjala@linux.intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 7/7] lib/igt_fb: on Intel force Vebox copy on yuv formats
+Date: Tue, 10 Feb 2026 18:09:41 +0200
+Message-ID: <20260210160942.2219370-8-juhapekka.heikkila@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260210160942.2219370-1-juhapekka.heikkila@gmail.com>
+References: <20260210160942.2219370-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,131 +85,78 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+This is to test Vebox engine along with other engines. Vebox is
+forced to be used when tiling convert is needed and destination
+is not linear.
 
-Do the igt_crtc_for_pipe() calls as early as possible.
-In this case we specifically deal witht the case where
-the local 'crtc' variable is populated via a plane->crtc
-pointer.
-
-This can make subsequent cocci cleanups around
-igt_crtc_for_pipe() usage a bit easier.
-
- #include "scripts/iterators.cocci"
-
-@@
-typedef igt_display_t;
-identifier DISPLAY;
-expression DISPLAY2, E;
-@@
-igt_display_t* DISPLAY = E;
-<+...
-igt_crtc_for_pipe(
-- DISPLAY2
-+ DISPLAY
-  ,...)
-...+>
-
-@find_1@
-identifier FUNC, DISPLAY, PIPE, CRTC, PLANE;
-expression E;
-@@
-FUNC(..., enum pipe PIPE, ...)
-{
-...
-igt_display_t *DISPLAY = E;
-...
-igt_crtc_t *CRTC;
-...
-PLANE = igt_output_get_plane_type(...);
-...
-CRTC = PLANE->crtc;
-...
-}
-
-@change_1 depends on find_1@
-identifier find_1.FUNC, find_1.DISPLAY, find_1.PIPE, find_1.CRTC, find_1.PLANE;
-expression find_1.E;
-@@
-FUNC(..., enum pipe PIPE, ...)
-{
-...
-igt_display_t *DISPLAY = E;
-+ igt_crtc_t *CRTC = igt_crtc_for_pipe(DISPLAY, PIPE);
-...
-- igt_crtc_t *CRTC;
-<+...
-(
-- CRTC = PLANE->crtc;
-|
-- igt_crtc_for_pipe(DISPLAY, PIPE)
-+ CRTC
-)
-...+>
-}
-
-@@
-identifier CRTC;
-@@
-- igt_crtc_t *CRTC = CRTC;
-
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- tests/kms_concurrent.c     | 5 ++---
- tests/kms_plane_multiple.c | 5 ++---
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ lib/igt_fb.c | 31 ++++++++++++++++++++++---------
+ 1 file changed, 22 insertions(+), 9 deletions(-)
 
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index 572d61d831d3..81f3944c29f6 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -158,8 +158,8 @@ prepare_planes(data_t *data, enum pipe pipe, int max_planes,
- 	       igt_output_t *output)
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index cfd5d66fb..47645ecd5 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2596,6 +2596,16 @@ static bool block_copy_ok(const struct igt_fb *fb)
+ 					       fb_tile_to_blt_tile(fb->modifier));
+ }
+ 
++static bool use_vebox_copy(const struct igt_fb *src_fb,
++			   const struct igt_fb *dst_fb)
++{
++	return igt_fb_is_gen12_mc_ccs_modifier(dst_fb->modifier) ||
++		(dst_fb->modifier != DRM_FORMAT_MOD_NONE &&
++		dst_fb->modifier != src_fb->modifier &&
++		(igt_format_is_yuv(src_fb->drm_format) ||
++		igt_format_is_yuv(dst_fb->drm_format)));
++}
++
+ static bool ccs_needs_enginecopy(const struct igt_fb *fb)
  {
- 	igt_display_t *display = &data->display;
-+	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
- 	drmModeModeInfo *mode;
--	igt_crtc_t *crtc;
- 	igt_plane_t *primary;
- 	int *x;
- 	int *y;
-@@ -167,10 +167,9 @@ prepare_planes(data_t *data, enum pipe pipe, int max_planes,
- 	int i;
- 	int format, modifier;
+ 	if (igt_fb_is_gen12_rc_ccs_cc_modifier(fb->modifier))
+@@ -2624,6 +2634,12 @@ static bool blitter_ok(const struct igt_fb *fb)
+ 	    is_xe_device(fb->fd))
+ 		return false;
  
--	igt_output_set_crtc(output, igt_crtc_for_pipe(display, pipe));
-+	igt_output_set_crtc(output, crtc);
++	/*
++	 * This is to utilize Vebox for testing
++	 */
++	if (use_vebox_copy(fb, fb))
++		return false;
++
+ 	if (is_xe_device(fb->fd))
+ 		return true;
  
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
--	crtc = primary->crtc;
+@@ -2664,6 +2680,12 @@ static bool use_enginecopy(const struct igt_fb *fb)
+ 	if (ccs_needs_enginecopy(fb))
+ 		return true;
  
- 	x = malloc(crtc->n_planes * sizeof(*x));
- 	igt_assert_f(x, "Failed to allocate %ld bytes for variable x\n",
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 624c1d42efb9..105ea50d464e 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -206,8 +206,8 @@ prepare_planes(data_t *data, enum pipe pipe_id, color_t *color, igt_plane_t **pl
- 	       uint64_t modifier, int max_planes, igt_output_t *output, igt_fb_t *fb)
- {
- 	igt_display_t *display = &data->display;
-+	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe_id);
- 	drmModeModeInfo *mode;
--	igt_crtc_t *crtc;
- 	igt_plane_t *primary;
- 	int *x;
- 	int *y;
-@@ -216,9 +216,8 @@ prepare_planes(data_t *data, enum pipe pipe_id, color_t *color, igt_plane_t **pl
- 	int* suffle;
++	/*
++	 * This is to utilize Vebox for testing
++	 */
++	if (use_vebox_copy(fb, fb))
++		return true;
++
+ 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+ 		fb->modifier == I915_FORMAT_MOD_X_TILED;
+ }
+@@ -2874,15 +2896,6 @@ static void fini_buf(struct intel_buf *buf)
+ 	intel_buf_destroy(buf);
+ }
  
- 	igt_output_set_crtc(output,
--			    igt_crtc_for_pipe(display, pipe_id));
-+			    crtc);
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
--	crtc = primary->crtc;
- 
- 	x = malloc(crtc->n_planes * sizeof(*x));
- 	igt_assert_f(x, "Failed to allocate %ld bytes for variable x\n",
+-static bool use_vebox_copy(const struct igt_fb *src_fb,
+-			   const struct igt_fb *dst_fb)
+-{
+-
+-	return igt_fb_is_gen12_mc_ccs_modifier(dst_fb->modifier) ||
+-	       igt_format_is_yuv(src_fb->drm_format) ||
+-	       igt_format_is_yuv(dst_fb->drm_format);
+-}
+-
+ /**
+  * copy_with_engine:
+  * @blit: context for the copy operation
 -- 
-2.52.0
+2.43.0
 
