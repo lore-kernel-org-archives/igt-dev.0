@@ -4,76 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C5CFEB26F2
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Feb 2026 17:28:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8735EB26F3
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Feb 2026 17:39:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C910C10E5C7;
-	Tue, 10 Feb 2026 17:28:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4813510E5E6;
+	Tue, 10 Feb 2026 17:39:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jPRqQqqY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KHb7b8FU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6545D10E5C7
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Feb 2026 17:28:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7986210E5C7
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Feb 2026 17:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770744535; x=1802280535;
+ t=1770745165; x=1802281165;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=9dzSboHaoBLCbbwWb5atLNP/aqmDFxFbjjEP/GjOqsM=;
- b=jPRqQqqYAmm7w5ybUqbT9EneMNfSbffilSzbE37IMCF82Q7HU0OUBoMX
- NB5/6BN1AZlrk1/7UXbG2/d+hnsttxf4yQhjHUrROKhJgkjlXKOJRM1EP
- X2cHhlb4jgna0yIDKKLalwxd8nOue8D+9ZH7QdPFnuNiNpdiicX8Ilc41
- vFIyFOMYDM6jb5uuLd1D72TCZK+FHyGYeWey2gqb0OQTeLvvCRv6rMM2r
- N2saMqDm16h2tPHY0Ceu8uLYFpI+76rKe5STB3yQHzs5zfJGGkP9hEyFY
- 0A+nelhSklMkXlPXosL97oUqYfMELFgES8zH/7Rr+NvsR43eb514FcJlg Q==;
-X-CSE-ConnectionGUID: wVfqepSBT2S/ZxQJsyaexQ==
-X-CSE-MsgGUID: Oqth1cIhSxmZ6b+OldNFtA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="71867419"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="71867419"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Feb 2026 09:28:54 -0800
-X-CSE-ConnectionGUID: 6anj9oU5Ta6e3SA4xu67Nw==
-X-CSE-MsgGUID: FUykWmwSTuatm9tr88aYsg==
+ bh=LVuP++I8krTTpRT4BaE2ydAHZAfTNgNQzwvSHhy2hC8=;
+ b=KHb7b8FUpqbshidLoMW0cXIW8bjzX9Xox9ff+/kMVMUwwaKMomRsuC6q
+ PxFloWl1AgpVoyu86da6R7edQF/gY50fZlimqH01BRl9B69ZgCZci/4mn
+ lxyNOSUCkkGC9lWZY/JFCB+pkA8oNU7vG8L2bM0pS66GNKUnR0mVc6gCE
+ DhVmLpHMeqrQogLfeHUPPN7xpUbbnNxXSPkbiGho3nzW9zplGqMORc2C5
+ e0uogLy4vv3lM5eKqlTFCgyFpoFXU9SqomrUFucugQGhUCK3jjW6P5qUD
+ yOuQJ64dvlyxOFvhaD58MjaczrqSZGVripB5YkUfl+vX4WERuFx5/VmzN Q==;
+X-CSE-ConnectionGUID: J1lNltx0QRm1pLjLFd6jLQ==
+X-CSE-MsgGUID: rJ64uk7fSJGRqrHZU5R/ZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="59445678"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="59445678"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Feb 2026 09:39:25 -0800
+X-CSE-ConnectionGUID: LEuA512XR4yG0Ye01yvJtw==
+X-CSE-MsgGUID: JBc07T09TWW4mJOrHKfLTA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="216943327"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="211085546"
 Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.244.136])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Feb 2026 09:28:50 -0800
-Date: Tue, 10 Feb 2026 19:28:47 +0200
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Feb 2026 09:39:24 -0800
+Date: Tue, 10 Feb 2026 19:39:21 +0200
 From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Jason-JH Lin =?utf-8?B?KOael+edv+elpSk=?= <Jason-JH.Lin@mediatek.com>
-Cc: "karthik.b.s@intel.com" <karthik.b.s@intel.com>,
- Singo Chang =?utf-8?B?KOW8teiIiOWciyk=?= <Singo.Chang@mediatek.com>,
- "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>,
- "jani.nikula@intel.com" <jani.nikula@intel.com>,
- "swati2.sharma@intel.com" <swati2.sharma@intel.com>,
- Project_Global_Chrome_Upstream_Group
- <Project_Global_Chrome_Upstream_Group@mediatek.com>, 
- "bhanuprakash.modem@gmail.com" <bhanuprakash.modem@gmail.com>,
- Nancy Lin =?utf-8?B?KOael+aso+ieoik=?= <Nancy.Lin@mediatek.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>,
- Paul-pl Chen =?utf-8?B?KOmZs+afj+mclik=?= <Paul-pl.Chen@mediatek.com>,
- "gildekel@google.com" <gildekel@google.com>,
- "fshao@chromium.org" <fshao@chromium.org>,
- "markyacoub@chromium.org" <markyacoub@chromium.org>
-Subject: Re: [PATCH i-g-t 1/2] test/kms_color: Clamp CTM values to -2.0~2.0
- for MediaTek devices
-Message-ID: <aYtqz9P6GC2_xgoq@intel.com>
-References: <20260128082517.920321-1-jason-jh.lin@mediatek.com>
- <20260128082517.920321-2-jason-jh.lin@mediatek.com>
- <aXtBQd_hHu3OgCG6@intel.com>
- <46faee5462bfcdc4e40fabaa6d9bc830fb2c51df.camel@mediatek.com>
- <aXzMAJT6ffwgpqZW@intel.com>
- <2baaf7f837b254b10688b697c7aaa62056079dce.camel@mediatek.com>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 07/11] lib/igt_kms: use for_each_crtc() for
+ iterating CRTCs
+Message-ID: <aYttSeO152W8Z-kN@intel.com>
+References: <cover.1770736961.git.jani.nikula@intel.com>
+ <ffbff2701a6e818380ac04b61d455d3a277f9a9f.1770736961.git.jani.nikula@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2baaf7f837b254b10688b697c7aaa62056079dce.camel@mediatek.com>
+In-Reply-To: <ffbff2701a6e818380ac04b61d455d3a277f9a9f.1770736961.git.jani.nikula@intel.com>
 X-Patchwork-Hint: comment
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
@@ -92,67 +74,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Sat, Jan 31, 2026 at 11:52:02AM +0000, Jason-JH Lin (林睿祥) wrote:
-> On Fri, 2026-01-30 at 17:19 +0200, Ville Syrjälä wrote:
+On Tue, Feb 10, 2026 at 05:23:48PM +0200, Jani Nikula wrote:
+> The loop still figures out the pipe mask, keep using pipe here. The main
+> thing is not using the loop index as pipe, as that is subject to change
+> in the future.
 > 
-> [snip]
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> ---
+>  lib/igt_kms.c | 8 +++-----
+>  1 file changed, 3 insertions(+), 5 deletions(-)
 > 
-> > > > >  	for (i = 0; i < ARRAY_SIZE(ctm_tests); i++) {
-> > > > > +		double fixed_ctm[CTM_SIZE];
-> > > > > +		const double *ctm_ptr = ctm_tests[i].ctm;
-> > > > > +
-> > > > > +		/* The valid value of MediaTek color matrix
-> > > > > range
-> > > > > is -2.0 ~ 2.0 */
-> > > > > +		if (is_mtk_device(data->drm_fd)) {
-> > > > > +			int j;
-> > > > > +
-> > > > > +			for (j = 0; j < CTM_SIZE; j++)
-> > > > > +				fixed_ctm[j] =
-> > > > > clamp(ctm_tests[i].ctm[j], -2.0, 2.0);
-> > > > > +
-> > > > > +			ctm_ptr = fixed_ctm;
-> > > > > +		}
-> > > > 
-> > > > The kernel is supposed to clamp this.
-> > > 
-> > > Thanks for the reviews!
-> > > 
-> > > The reason I added the clamp in here is that, without it, IGT will
-> > > generate a reference framebuffer using CTM=100.0 on the CPU side,
-> > > then
-> > > send CTM1.0 to kernel.
-> > > IGT will generate another framebuffer using CTM=1.0, then send
-> > > CTM=100.0 to the kernel.
-> > > 
-> > > The kernel will clamp the CTM from 100.0 to 2.0 due to hardware
-> > > limits,
-> > > so the hardware output will not match the CPU-generated reference,
-> > > resulting in a CRC mismatch and a test failure.
-> > > 
-> > > Therefore, I think I need to clamp CTM from 100.0 to 2.0 before IGT
-> > > generating a reference framebuffer on CPU side.
-> > 
-> > IIRC the way the test does things is that with the 100.0 (or
-> > whatever >1.0) the colors should end up fully saturated anyway.
-> > So whether it used 2.0 or 100.0 shouldn't matter.
-> > 
-> For MTK hardware, CTM values between 1.0 and 2.0 result in a gain
-> effect, while values between 0 and 1.0 cause attenuation. Values above
-> 2.0 are not supported by the hardware.
-> 
-> Therefore, if the reference framebuffer generated by the CPU using CTM
-> 2.0 does not match the hardware’s output, the CRC should theoretically
-> be different. However, in our current tests, the CRC results for CTM
-> 2.0 are actually identical.
-> 
-> This means that CTM values greater than 1.0 may not be equivalent to
-> CTM 1.0 in terms of output.
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index c4be889dc696..63fd8095c551 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -3622,16 +3622,14 @@ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display, igt_output_t
+>  {
+>  	unsigned full_pipe_mask = 0, assigned_pipes = 0;
+>  	igt_output_t *output;
+> +	igt_crtc_t *crtc;
+>  	int i, j;
+>  
+>  	memset(chosen_outputs, 0,
+>  	       sizeof(*chosen_outputs) * igt_display_n_crtcs(display));
+>  
+> -	for (i = 0; i < igt_display_n_crtcs(display); i++) {
+> -		igt_crtc_t *crtc = igt_crtc_for_pipe(display, i);
+> -		if (crtc->valid)
+> -			full_pipe_mask |= (1 << i);
+> -	}
+> +	for_each_crtc(display, crtc)
+> +		full_pipe_mask |= crtc->pipe;
 
-As I said IIRC the max-ctm test should only generate fully saturated
-colors for any value >=1.0. So it shouldn't matter what the hardware
-max is as long as it's >=1.0.
+1 << crtc->pipe
+
+>  
+>  	/*
+>  	 * Try to assign all outputs to the first available CRTC for
+> -- 
+> 2.47.3
 
 -- 
-Ville Syrjälä
+Ville Syrj�l�
 Intel
