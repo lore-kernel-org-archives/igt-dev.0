@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCD40EB26F6
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Feb 2026 17:46:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD3CEEB26F5
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Feb 2026 18:18:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 91DDE10E5E9;
-	Tue, 10 Feb 2026 17:46:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4FD7610E22B;
+	Tue, 10 Feb 2026 18:18:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DPX3Hn/H";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DvrN9dcm";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF98510E5ED
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Feb 2026 17:46:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 183DF10E22B
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Feb 2026 18:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770745587; x=1802281587;
+ t=1770747527; x=1802283527;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=jfka7jFmImAnFvdU0nYPY2lvzcBFMuvV7E+wKMyrxNk=;
- b=DPX3Hn/HGy6+/0O9lwdfbPpZwMSezqUNNUPsaMY2qgmp3sjTja6zk28A
- EEUDBUxBPa7BMav8tY+W4G8GnXK9QcFX51eX+4COkBlkkfviWzCsQTG7Q
- csrEp3unl7UuZYAJJUwQkome7BHuRaIYf+LcMgLJrzEDgiu6j/cGe9Qc5
- vJWMOm6bUxnTZecN/j6CJgAvCUyNZ0pYam8DOJXmuznDPs/+MEGTXz3KF
- yG2ruf3ovLf9+4m1KBy1sxsgOS3ZpR2/12MOQqo9+aR481O84ecZ44Osc
- ySCKtnqUTlolmTNU0wyWwvwa54aO5G0hNJvVF3DDKHAZWeNab9thAj9Ry A==;
-X-CSE-ConnectionGUID: lN7KkpsiQmeO6wsRHX0CCA==
-X-CSE-MsgGUID: wyUET1cPTwK9RBlsSwyC9Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="89295338"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="89295338"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Feb 2026 09:46:23 -0800
-X-CSE-ConnectionGUID: 10bEv9x2TU+L7UiLCyvpRg==
-X-CSE-MsgGUID: cYX3QxCPRumj2iDKgJVI7Q==
+ mime-version:in-reply-to;
+ bh=7dkXje5paapcSQk7NiIZZ2hLy11lHv6epa2pXmhdJmM=;
+ b=DvrN9dcmV22KDHN6SwC605PC9Ua+8Pz4HZWwaGKW+MzhYQVl+WsSk3hd
+ 0DjxsNwxop3/EvFpSkK0vbdq69xbCa4tH5AKDHhmZY/hC12+QKSzvx0K/
+ zo9XWhLXv4yytLpSN/3LKC1IqhsZ8qGTuprjvuGbonVeoBd5Kg+OveTY7
+ YYDVo/4jVdNP5Ac05EIYMkgrdwkj6r4xE7JCXV6VS5DjFddqSuItGzl/3
+ M+ytTiILeezx/FcCW+xyw9mSnc0tn3ygHonJ02/oytNvJoG86zPwdO+fA
+ 5LRIjdpefZLcHyFhk2HZOWQwSdok+6202LUQbOtRFJyuGysXAowRdzU+M w==;
+X-CSE-ConnectionGUID: SwUnyJQMQHimtU2HwuSTIg==
+X-CSE-MsgGUID: 2yPpHpSLTAKE4sw4M9lqXg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="71871808"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="71871808"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Feb 2026 10:18:47 -0800
+X-CSE-ConnectionGUID: jC8BV4oySEaKeyYGTPRMEw==
+X-CSE-MsgGUID: YfPrgr0hSDCzikEltJ+QQQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="211130983"
-Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.244.136])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Feb 2026 09:46:22 -0800
-Date: Tue, 10 Feb 2026 19:46:19 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="211022782"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 10:18:45 -0800
+Date: Tue, 10 Feb 2026 19:18:27 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 00/11] igt pipe vs crtc_index cleanups
-Message-ID: <aYtu6_aJSRtQwPtp@intel.com>
-References: <cover.1770736961.git.jani.nikula@intel.com>
+Subject: Re: [PATCH i-g-t 2/2] tools/intel_vbt_decode: sync intel_vbt_defs.h
+ with commit 1b85a9b04681
+Message-ID: <20260210181827.p67yzioejzuiutsj@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20260119111918.2686910-1-ankit.k.nautiyal@intel.com>
+ <20260119111918.2686910-3-ankit.k.nautiyal@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cover.1770736961.git.jani.nikula@intel.com>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+In-Reply-To: <20260119111918.2686910-3-ankit.k.nautiyal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,40 +72,52 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Feb 10, 2026 at 05:23:41PM +0200, Jani Nikula wrote:
-> While Ville's been focusing on mass conversions with cocci, here are
-> some specific manual pipe vs. crtc_index cleanups.
+Hi Ankit,
+On 2026-01-19 at 16:49:18 +0530, Ankit Nautiyal wrote:
+> Synchronize intel_vbt_defs.h with kernel commit:
+> 1b85a9b04681 ("drm/i915/vbt: Add edp pipe joiner enable/disable bits")
 > 
-> 
-> Jani Nikula (11):
->   lib/igt_kms: rename igt_crtc_t crtc_offset member to crtc_index
->   lib/igt_kms: rename the rest of crtc_offset to crtc_index
->   lib/kms: rename struct kmstest_connector_config pipe member to
->     crtc_index
->   lib/igt_kms: rename _kmstest_connector_config_find_encoder() pipe
->     parameter to crtc_index
->   tests/kms_flip: switch to CRTC index terminology
->   tests/testdisplay: switch to CRTC index terminology
->   lib/igt_kms: use for_each_crtc() for iterating CRTCs
->   lib/igt_kms: rename kmstest_get_vblank() param to crtc_index
->   lib/igt_kms: remove __get_crtc_mask_for_pipe()
->   lib/igt_kms: pass crtc to igt_crtc_init()
->   lib/igt_kms: use for_each_crtc() for cleaning up CRTCs
+> Bspec:20142
+> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-Apart from the missing 1<< in one patch the rest look reasonable to me:
+LGTM
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Regards,
+Kamil
 
+> ---
+>  tools/intel_vbt_decode.c | 4 ++++
+>  tools/intel_vbt_defs.h   | 1 +
+>  2 files changed, 5 insertions(+)
 > 
->  lib/igt_kms.c       | 106 ++++++++++++++++++--------------------------
->  lib/igt_kms.h       |  19 ++++----
->  tests/kms_flip.c    |  56 +++++++++++------------
->  tests/testdisplay.c |   6 +--
->  4 files changed, 80 insertions(+), 107 deletions(-)
-> 
+> diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+> index 6f6f70dcee63..1cc863f59808 100644
+> --- a/tools/intel_vbt_decode.c
+> +++ b/tools/intel_vbt_decode.c
+> @@ -2519,6 +2519,10 @@ static void dump_edp(struct context *context,
+>  		if (context->bdb->version >= 251)
+>  			printf("\t\teDP DSC disable: %s\n",
+>  			       YESNO(panel_bool(edp->edp_dsc_disable, i)));
+> +
+> +		if (context->bdb->version >= 261)
+> +			printf("\t\teDP Joiner Enable: %s\n",
+> +			       YESNO(panel_bool(edp->joiner_enable, i)));
+>  	}
+>  }
+>  
+> diff --git a/tools/intel_vbt_defs.h b/tools/intel_vbt_defs.h
+> index 932305df2320..acdd973bd006 100644
+> --- a/tools/intel_vbt_defs.h
+> +++ b/tools/intel_vbt_defs.h
+> @@ -1108,6 +1108,7 @@ struct bdb_edp {
+>  	u16 edp_dsc_disable;					/* 251+ */
+>  	u16 t6_delay_support;					/* 260+ */
+>  	u16 link_idle_time[16];					/* 260+ */
+> +	u16 joiner_enable;					/* 261+ */
+>  } __packed;
+>  
+>  /*
 > -- 
-> 2.47.3
-
--- 
-Ville Syrjälä
-Intel
+> 2.45.2
+> 
