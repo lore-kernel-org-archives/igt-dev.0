@@ -4,54 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAA9AEA3F27
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Feb 2026 16:10:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79127EA3F22
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Feb 2026 16:10:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 714BF10E5CC;
-	Tue, 10 Feb 2026 16:10:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 30DA710E5CE;
+	Tue, 10 Feb 2026 16:10:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k/c8nZOW";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="gMchpEaF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B947010E5CC
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Feb 2026 16:10:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770739821; x=1802275821;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=ZQWk+fSTHhRqKvTrrm3tRSEB9Eclq8LDLKWUpBkg5zY=;
- b=k/c8nZOWtcPF7Z2n6pCdk0n2PswGq+oq7Q7Y7tmmtXOs2i8qZMl1iw3B
- 5ZMvUaM4n+AGI5ZDDmfIkNOBTB0Peo4a6HeGoHjut1JyBjXdbnr3W8MEW
- f1xa0ymqfsFE5zWdYNgSZZ5tA/ze16RRKAzJT4b4sLUppL5/Gld/Xa2FP
- XWm25UeoJBqQKKPgCD83owSWQvbeK59wqjQSSyPWn2rLnDw36mlHIMJsp
- pDqElOx4y7r1EsJtWRFooAopQbPGPv3p5mm/Wfer8ds3iVMdo8j0AN2zh
- Jf4ZE0ybHHlVNwf9JkV9sDNDz1xQ16FDy07zOveoLx2T353aB2HwYZddP A==;
-X-CSE-ConnectionGUID: /h10JLJiQJag8DO1KQ2gFw==
-X-CSE-MsgGUID: zAfbBmgIS+qIVroCkkHZ4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="71770653"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="71770653"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Feb 2026 08:10:21 -0800
-X-CSE-ConnectionGUID: kn13Oe79R0ucDlxM4aO4Lg==
-X-CSE-MsgGUID: 6CiI6zQyQ2O2DrtfbMBfmQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="211061284"
-Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.244.136])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Feb 2026 08:10:19 -0800
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
+Received: from mail-dl1-f68.google.com (mail-dl1-f68.google.com [74.125.82.68])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38AED10E5D1
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Feb 2026 16:10:23 +0000 (UTC)
+Received: by mail-dl1-f68.google.com with SMTP id
+ a92af1059eb24-1248d27f293so167844c88.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Feb 2026 08:10:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1770739822; x=1771344622; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=uidwY+ItjIP3p2MgFzadCEq3egU62jiKI0BZ3Efc4ms=;
+ b=gMchpEaFE1lzTtQhEREKJXBg+K2Lyrnjrrv0SWpzFPZ0bPTRl4lceJfS0uUi9DZXj7
+ /J6fvwVtN1j2YYLzHcZhXXpghD29SqE6aemY0cmtB3VitnOHhq3Y78Feam2c7zlMHSMZ
+ +gkkDD7x99nu/rwWu2VO4cjzbIIRNF1bCaoN805Tr5bY7Ra+095vyyU/mJPmdlu8GMxb
+ fhQkD2gLvhObWW8ka0BpKgt7+z11rdcz6HlT3v/DXT31cYFCqzleTjM5gpawIB2Lxlhf
+ 0/76/b3fOcH1TSXYuBSLB0U0eXXl6/gL2ezOqkEAqfNe8W9W750jf6gpVUTIOMx0U8J/
+ Z2Tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1770739822; x=1771344622;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=uidwY+ItjIP3p2MgFzadCEq3egU62jiKI0BZ3Efc4ms=;
+ b=xCnUhAWSEK0i5RSHvB2QGUnqN8O0UTE9DcOZrlxKsCWKoPtG6L8hRIPNKqcU1FJ49a
+ vrFrvr/MlS4n8fiErUfYfN8qtS1Ih8PKTkBlYMkseCcrfI7pOYfUWSPlYBQlL41dyVCa
+ eApRl8XPXICXPyZK0CACsYsanusLLBgzAUPSXqyenaq5M2AoLzxxI/XMdjwHegbysE65
+ 40uHk7mT2oN1enAvJFmVILsRI0zL7sP3s0hIfm1dK8mSFhjAvq2m2dr7zNq3h3V4C5dL
+ xPbQtYqQAG4iBBQo/FwWRTwsbBjm7USTe8jGtAUfpwG1Kk8W3sazRn4FmivOW2YF8Ajg
+ AizA==
+X-Gm-Message-State: AOJu0YxTHjI2FGYOhqOrtqR0AeVlmR8ipvB2nCM7geRtoQ6jRaRrIajj
+ TtqEUTN/4/7aPFGqenrrCl7K0fQz4axTbanHmCbn74I2LB8B65w06dfx2IIDtD5zfYE=
+X-Gm-Gg: AZuq6aIlg+oOzsskpriY9MPSJKCPanX/myPdIjWyV1eK7jATTgQpWG+7Y8g6yhhVyoe
+ HFg0HcsjBo7JW5CX8Vf+NwnpN5JYMpxbJxUGNSiZ1peXR1wf7WKdv33jEvdYpayHjvGIlSywqT/
+ LP0ZPeFTjmWX1pTNC2DcwS6xm45lxvcxwYdyESSLOfwvqw9IZ8LNAiSx/xgD7u8RYCIPLedew8U
+ +1PKpYts0zhZFpG4iZuqE9lxbUr8mqM2nC3NRsLYPg0/RDuFwsxpyRUqPHifyMMtQ7vEcJkN+bv
+ V7SQo/4rxdxiYuqjUt3aJUejtxpyqVMUYl3TBG6+nC1qCmyBGNLyoZEICwwUdjVdq57F0ep4J5W
+ JyDPGeTUD8KyTmApQOT5J4SNBKBW4sczZ9usdr0B0GqZgPN5KwHL4r/6iYt7qeszG9Xx94X02qz
+ Gw7kjkSmUXX4+vL+0IvLRAK8M6QWAoZVyA11QKXh5brVGwHnv/DHD1nqqfUVDP
+X-Received: by 2002:a05:7022:6894:b0:122:153:d161 with SMTP id
+ a92af1059eb24-12704001972mr7862209c88.17.1770739822102; 
+ Tue, 10 Feb 2026 08:10:22 -0800 (PST)
+Received: from localhost ([192.55.54.45]) by smtp.gmail.com with ESMTPSA id
+ a92af1059eb24-127041e61b9sm13464642c88.8.2026.02.10.08.10.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 10 Feb 2026 08:10:21 -0800 (PST)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 0/5] tests/kms: Prep work for more pipe->crtc conversion
-Date: Tue, 10 Feb 2026 18:10:11 +0200
-Message-ID: <20260210161016.29459-1-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.52.0
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 4/7] lib/intel_batchbuffer: move engine class selection
+ to helper
+Date: Tue, 10 Feb 2026 18:09:38 +0200
+Message-ID: <20260210160942.2219370-5-juhapekka.heikkila@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260210160942.2219370-1-juhapekka.heikkila@gmail.com>
+References: <20260210160942.2219370-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,106 +85,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+move engine class selection to helper to avoid duplicate code
 
-Do some prep work that seems helpful for subsequent
-cocci based pipe->crtc conversions.
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ lib/intel_batchbuffer.c | 42 +++++++++++++++++++++--------------------
+ 1 file changed, 22 insertions(+), 20 deletions(-)
 
-Ville Syrjälä (5):
-  tests/kms: Clean up display varaibles used for igt_crtc_for_pipe()
-  tests/kms: Introduce more local 'display' variables
-  tests/kms: Pull the igt_crtc_for_pipe() call earlier
-  tests/kms: Pull igt_crtc_for_pipe() calls earlier, when dealing with
-    planes
-  tests/kms: Introduce local 'crtc' variables
-
- tests/amdgpu/amd_abm.c                        |   5 +-
- tests/amdgpu/amd_assr.c                       |   5 +-
- tests/amdgpu/amd_bypass.c                     |   2 +-
- tests/amdgpu/amd_color.c                      |   2 +-
- tests/amdgpu/amd_cursor_overlay.c             |  13 ++-
- tests/amdgpu/amd_dp_dsc.c                     |   8 +-
- tests/amdgpu/amd_freesync_video_mode.c        |   4 +-
- tests/amdgpu/amd_hotplug.c                    |   2 +-
- tests/amdgpu/amd_ilr.c                        |   3 +-
- tests/amdgpu/amd_link_settings.c              |   3 +-
- tests/amdgpu/amd_mall.c                       |   2 +-
- tests/amdgpu/amd_max_bpc.c                    |   2 +-
- tests/amdgpu/amd_mem_leak.c                   |   2 +-
- tests/amdgpu/amd_mode_switch.c                |   3 +-
- tests/amdgpu/amd_multidisplay_modeset.c       |   2 +-
- tests/amdgpu/amd_odm.c                        |   4 +-
- tests/amdgpu/amd_plane.c                      |  12 +-
- tests/amdgpu/amd_psr.c                        |  18 +--
- tests/amdgpu/amd_replay.c                     |   2 +-
- tests/amdgpu/amd_subvp.c                      |   2 +-
- tests/chamelium/kms_chamelium_color.c         |  25 +++--
- tests/chamelium/kms_chamelium_helper.c        |   2 +-
- .../kms_chamelium_sharpness_filter.c          |  38 ++++---
- tests/intel/gem_eio.c                         |   2 +-
- tests/intel/gem_exec_reloc.c                  |   2 +-
- tests/intel/kms_big_fb.c                      |  18 +--
- tests/intel/kms_busy.c                        |   8 +-
- tests/intel/kms_ccs.c                         |   5 +-
- tests/intel/kms_cdclk.c                       |   8 +-
- tests/intel/kms_dirtyfb.c                     |   5 +-
- tests/intel/kms_dp_linktrain_fallback.c       |   3 +-
- tests/intel/kms_dsc.c                         |   2 +-
- tests/intel/kms_fb_coherency.c                |   4 +-
- tests/intel/kms_fbc_dirty_rect.c              |   5 +-
- tests/intel/kms_fence_pin_leak.c              |   5 +-
- tests/intel/kms_flip_scaled_crc.c             |  21 ++--
- tests/intel/kms_flip_tiling.c                 |   3 +-
- tests/intel/kms_joiner.c                      |  28 +++--
- tests/intel/kms_mmap_write_crc.c              |   4 +-
- tests/intel/kms_pipe_b_c_ivb.c                |   8 +-
- tests/intel/kms_pipe_stress.c                 |  15 ++-
- tests/intel/kms_pm_lpsp.c                     |   3 +-
- tests/intel/kms_psr2_sf.c                     |   7 +-
- tests/intel/kms_psr2_su.c                     |   3 +-
- tests/intel/kms_pwrite_crc.c                  |   4 +-
- tests/intel/kms_sharpness_filter.c            |   6 +-
- tests/intel/perf_pmu.c                        |   2 +-
- tests/intel/prime_mmap_kms.c                  |   2 +-
- tests/kms_async_flips.c                       |   8 +-
- tests/kms_atomic.c                            |  20 ++--
- tests/kms_atomic_interruptible.c              |   4 +-
- tests/kms_atomic_transition.c                 | 105 +++++++++++-------
- tests/kms_bw.c                                |   2 +-
- tests/kms_color.c                             |  38 ++++---
- tests/kms_color_pipeline.c                    |   5 +-
- tests/kms_concurrent.c                        |  36 +++---
- tests/kms_content_protection.c                |   7 +-
- tests/kms_cursor_crc.c                        |  14 ++-
- tests/kms_cursor_edge_walk.c                  |   4 +-
- tests/kms_cursor_legacy.c                     |   8 +-
- tests/kms_display_modes.c                     |   8 +-
- tests/kms_dither.c                            |  13 ++-
- tests/kms_hdr.c                               |  28 +++--
- tests/kms_invalid_mode.c                      |   3 +-
- tests/kms_lease.c                             |   2 +-
- tests/kms_panel_fitting.c                     |   7 +-
- tests/kms_pipe_crc_basic.c                    |  23 ++--
- tests/kms_plane.c                             |  72 +++++++-----
- tests/kms_plane_alpha_blend.c                 |  35 +++---
- tests/kms_plane_cursor.c                      |  12 +-
- tests/kms_plane_lowres.c                      |   5 +-
- tests/kms_plane_multiple.c                    |  23 ++--
- tests/kms_plane_scaling.c                     |  51 +++++----
- tests/kms_properties.c                        |   2 +-
- tests/kms_rmfb.c                              |   9 +-
- tests/kms_rotation_crc.c                      |  27 +++--
- tests/kms_scaling_modes.c                     |   2 +-
- tests/kms_sequence.c                          |   2 +-
- tests/kms_tiled_display.c                     |   6 +-
- tests/kms_universal_plane.c                   |  58 ++++++----
- tests/kms_vblank.c                            |   6 +-
- tests/kms_vrr.c                               |  12 +-
- tests/nouveau_crc.c                           |  15 ++-
- tests/vmwgfx/vmw_prime.c                      |   4 +-
- tools/amd_hdmi_compliance.c                   |   2 +-
- 85 files changed, 612 insertions(+), 400 deletions(-)
-
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index c12beed46..198adf85b 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -2463,6 +2463,26 @@ static void update_offsets(struct intel_bb *ibb,
+ 	}
+ }
+ 
++static unsigned short get_engine_class(int fd, uint64_t flags)
++{
++	switch (flags & I915_EXEC_RING_MASK) {
++	case I915_EXEC_DEFAULT:
++	case I915_EXEC_BLT:
++		return DRM_XE_ENGINE_CLASS_COPY;
++	case I915_EXEC_BSD:
++		return DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
++	case I915_EXEC_RENDER:
++		if (xe_has_engine_class(fd, DRM_XE_ENGINE_CLASS_RENDER))
++			return DRM_XE_ENGINE_CLASS_RENDER;
++		else
++			return DRM_XE_ENGINE_CLASS_COMPUTE;
++	case I915_EXEC_VEBOX:
++		return DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
++	default:
++		igt_assert_f(false, "Unknown engine: %x", (uint32_t)flags);
++	}
++}
++
+ #define LINELEN 76
+ 
+ /*
+@@ -2505,26 +2525,8 @@ int __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
+ 		inst.engine_instance =
+ 			(flags & I915_EXEC_BSD_MASK) >> I915_EXEC_BSD_SHIFT;
+ 
+-		switch (flags & I915_EXEC_RING_MASK) {
+-		case I915_EXEC_DEFAULT:
+-		case I915_EXEC_BLT:
+-			inst.engine_class = DRM_XE_ENGINE_CLASS_COPY;
+-			break;
+-		case I915_EXEC_BSD:
+-			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
+-			break;
+-		case I915_EXEC_RENDER:
+-			if (xe_has_engine_class(ibb->fd, DRM_XE_ENGINE_CLASS_RENDER))
+-				inst.engine_class = DRM_XE_ENGINE_CLASS_RENDER;
+-			else
+-				inst.engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
+-			break;
+-		case I915_EXEC_VEBOX:
+-			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
+-			break;
+-		default:
+-			igt_assert_f(false, "Unknown engine: %x", (uint32_t) flags);
+-		}
++		inst.engine_class = get_engine_class(ibb->fd, flags);
++
+ 		igt_debug("Run on %s\n", xe_engine_class_string(inst.engine_class));
+ 
+ 		if (ibb->engine_id)
 -- 
-2.52.0
+2.43.0
 
