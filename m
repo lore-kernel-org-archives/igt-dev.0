@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E485ECD6C5
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 16:35:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E8D0ECD6C5
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 16:35:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EBF0710E631;
-	Wed, 11 Feb 2026 16:35:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 08BFE10E628;
+	Wed, 11 Feb 2026 16:35:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Msi7ET4o";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="brbCEC6Z";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D290B10E63C
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 16:34:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1734A10E628
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 16:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770827700; x=1802363700;
+ t=1770827704; x=1802363704;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=TSEnvEi25GoS5MuadjKV9Dj8e2ci7T+NaIGWqkvcrOk=;
- b=Msi7ET4oGTF9RpGTpAbIG18AAHvLZD1SyD5WU1b3gTrs8n+MXV/8FWUG
- YCJKtXFNUXwL0IPHIgG0Ssjt6ZYnMlQQBZAOxTrmQLsscSUNRuMlXFXvS
- BveRhegWP2GTjAXpaNkKaGo15r+XSBdWMlhkcZgfLo8LOYOxIP0zqK0VH
- J9zmHmEFIcPNwF85LJ8pg4nnDhU5w8xZwsUviDsVI/JnjA2OgTclHvy+O
- CaEHu6nU33ahAEzGLLsaixu+eRHPFE2kcQleqsC1c0EKXPa0hVqU0blI2
- mcW4m7NOSN02EB/3Z0fELSKDW08L2FxOAtaZ8bABaXAST91rKs6UMNZhm A==;
-X-CSE-ConnectionGUID: MDfv/oB3QWyDhw5n0f1VEg==
-X-CSE-MsgGUID: BoNwdxePTB6mLsZAnhc2Aw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="71879792"
-X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; d="scan'208";a="71879792"
+ bh=mWIpv4xxpxJnyJDI4+AmNiEnonrbl0kSWnzS66b9QT0=;
+ b=brbCEC6Zd4PhoJekyl7bDthKFbUCR4Mi+IxNkFsCBkI7a2foVI0ILKNl
+ VpMTN4JVUA7Nl5VpgyK1Y7/aD8PjQj1dqjYu8wLRb4bkhXe6Ux+LNwsek
+ ZUr6B0yxpbiCcKBC6k/Ds25uT9LdWkK0W55C1yDPm8qjODNpUx997KBep
+ eT7pJUF85Px5qmt+vbrwXrrCIZAGl6oYVj5FoCjabd3gD8vJXejG9Dv1C
+ YPUExIBoGvH68j3sR+VJaMfiHjrjYnTjx6lm+fRK4N/l5rdBoozhMlcW3
+ mkmO22tvE0klAe5pW0wSUee57fM/QPfSmng28oyXuw9y6mOmPtZT2m6Kp w==;
+X-CSE-ConnectionGUID: G32XnxNRRgKqr42dQOJnVw==
+X-CSE-MsgGUID: ETYnnBsXTiyX1He1iANaEw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="71879799"
+X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; d="scan'208";a="71879799"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2026 08:34:58 -0800
-X-CSE-ConnectionGUID: Vj5qOQLzQ3ixlSxMiPM3PA==
-X-CSE-MsgGUID: Gov+j0U3RTmsTplVB8Ektw==
+ 11 Feb 2026 08:34:59 -0800
+X-CSE-ConnectionGUID: sYnAww8jTDuKDD7GONiiCQ==
+X-CSE-MsgGUID: QhRCik5HTu+DsL+kD7sn7Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; d="scan'208";a="212394236"
+X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; d="scan'208";a="212394292"
 Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
  ([10.245.245.23])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2026 08:34:54 -0800
+ 11 Feb 2026 08:34:58 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 11/17] tests/kms_plane: Use igt_crtc_t instead of enum
- pipe
-Date: Wed, 11 Feb 2026 18:33:58 +0200
-Message-ID: <20260211163404.2018-12-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 12/17] tests/intel/kms_pipe_b_c_ivb: Use igt_crtc_t
+ instead of enum pipe
+Date: Wed, 11 Feb 2026 18:33:59 +0200
+Message-ID: <20260211163404.2018-13-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260211163404.2018-1-ville.syrjala@linux.intel.com>
 References: <20260211163404.2018-1-ville.syrjala@linux.intel.com>
@@ -74,105 +74,123 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
 Convert the use of enum pipe to igt_crtc_t in
-tests/kms_plane.
+tests/intel/kms_pipe_b_c_ivb.
 
-The use of function pointers makes this a bit more
-complicated than your average test.
+This test wants to specifically use pipes B and C,
+thus we are left with a few igt_crtc_for_pipe()
+calls even after the conversion.
 
  #include "scripts/iterators.cocci"
 
-@@
+@func1@
 typedef igt_crtc_t;
-typedef igt_display_t;
-identifier DISPLAY, PIPE;
-expression E;
-constant P;
+identifier FUNC, PIPE, CRTC;
+parameter list[N] P;
 @@
-{...
-igt_display_t *DISPLAY = E;
+FUNC(P
+- ,enum pipe PIPE
++ ,igt_crtc_t *CRTC
+ ,...)
+{
 ...
-- enum pipe PIPE = P;
-+ igt_crtc_t *crtc = igt_crtc_for_pipe(DISPLAY, P);
+(
+- igt_crtc_t *CRTC = igt_crtc_for_pipe(..., PIPE);
+|
+- igt_crtc_t *CRTC;
+... when != PIPE = ...
+- CRTC = igt_crtc_for_pipe(..., PIPE);
+)
+<... when != PIPE = ...
+(
+- igt_crtc_for_pipe(..., PIPE)
++ CRTC
+|
+- kmsetst_crtc_name(PIPE)
++ igt_crtc_name(CRTC)
+|
+- PIPE
++ CRTC->pipe
+)
+...>
+}
+
+@depends on func1@
+identifier func1.FUNC;
+expression list[func1.N] EP;
+expression PIPE;
+@@
+ FUNC(EP
+-	,PIPE
++	,igt_crtc_for_pipe(&data->display, PIPE)
+	,...)
+
+@func2@
+typedef igt_crtc_t;
+identifier FUNC, PIPE;
+parameter list[N] P;
+@@
+FUNC(P
+- ,enum pipe PIPE
++ ,igt_crtc_t *crtc
+ ,...)
+{
 <+... when != PIPE = ...
 (
+- igt_crtc_for_pipe(..., PIPE)
++ crtc
+|
+- kmsetst_crtc_name(PIPE)
++ igt_crtc_name(crtc)
+|
 - PIPE
 + crtc->pipe
 )
 ...+>
 }
 
-@func@
-typedef igt_crtc_t;
-identifier FUNC, PIPE;
-parameter list[N] P;
-@@
- FUNC(P
-- ,enum pipe PIPE
-+ ,igt_crtc_t *crtc
-  ,...)
-{
-<...
-(
-- igt_crtc_for_pipe(..., PIPE)
-+ crtc
-|
-- kmstest_pipe_name(PIPE)
-+ igt_crtc_name(crtc)
-|
-- PIPE
-+ crtc->pipe
-)
-...>
-}
-
-@depends on func@
-identifier func.FUNC;
-expression list[func.N] EP;
-expression PIPE;
-@@
-FUNC(EP
--    ,PIPE
-+    ,igt_crtc_for_pipe(display, PIPE)
-   ,...)
-
-@func_ptr@
-identifier FUNC;
-parameter list[N] P;
-type T;
-@@
-run_test(...,	T (*FUNC)(P
--	   ,enum pipe
-+	   ,igt_crtc_t *crtc
-	      ,...), ...)
-{...}
-
-@depends on func_ptr@
-identifier func_ptr.FUNC;
-expression list[func_ptr.N] EP;
+@depends on func2@
+identifier func2.FUNC;
+expression list[func2.N] EP;
 expression PIPE;
 @@
 FUNC(EP
 -	,PIPE
-+	,igt_crtc_for_pipe(display, PIPE)
++	,igt_crtc_for_pipe(&data->display, PIPE)
 	,...)
 
 @@
-identifier FUNC, CRTC;
+identifier FUNC;
+expression DISPLAY;
 @@
-FUNC(..., igt_crtc_t *CRTC, ...)
+FUNC(...)
 {
-...
++ igt_crtc_t *crtc_b = igt_crtc_for_pipe(DISPLAY, PIPE_B);
++ igt_crtc_t *crtc_c = igt_crtc_for_pipe(DISPLAY, PIPE_C);
+<+...
 (
-- igt_crtc_t *CRTC = CRTC;
+- igt_crtc_for_pipe(DISPLAY, PIPE_B)
++ crtc_b
 |
-- igt_crtc_t *CRTC = igt_crtc_for_pipe(...);
-|
-- igt_crtc_t *CRTC;
-...
-- CRTC = igt_crtc_for_pipe(...);
+- igt_crtc_for_pipe(DISPLAY, PIPE_C)
++ crtc_c
 )
-...
+...+>
 }
+
+@@
+identifier CRTC;
+expression PIPE;
+@@
+ igt_crtc_t *CRTC = igt_crtc_for_pipe(..., PIPE);
+<+...
+(
+- kmstest_pipe_name(PIPE)
++ igt_crtc_name(CRTC)
+|
+- PIPE
++ CRTC->pipe
+)
+...+>
 
 @@
 igt_crtc_t *CRTC;
@@ -181,532 +199,249 @@ igt_crtc_t *CRTC;
 + CRTC
 
 @@
+typedef igt_display_t;
 identifier DISPLAY;
-expression E;
 @@
-{...
-- igt_display_t *DISPLAY = E;
+- igt_display_t *DISPLAY = ...;
 ... when != DISPLAY
-}
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_plane.c | 179 ++++++++++++++++++++++++++--------------------
- 1 file changed, 101 insertions(+), 78 deletions(-)
+ tests/intel/kms_pipe_b_c_ivb.c | 102 ++++++++++++++++++++++-----------
+ 1 file changed, 68 insertions(+), 34 deletions(-)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 1ce3d98041ec..46459383d3c5 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -145,10 +145,8 @@ static color_t blue  = { 0.0f, 0.0f, 1.0f };
- /*
-  * Common code across all tests, acting on data_t
-  */
--static void test_init(data_t *data, enum pipe pipe)
-+static void test_init(data_t *data, igt_crtc_t *crtc)
- {
--	igt_display_t *display = &data->display;
--	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
- 	igt_require(crtc->n_planes > 0);
- 	if (data->pipe_crc)
- 		igt_pipe_crc_free(data->pipe_crc);
-@@ -231,11 +229,9 @@ create_fb_for_mode(data_t *data, drmModeModeInfo *mode,
- }
- 
- static void
--test_grab_crc(data_t *data, igt_output_t *output, enum pipe pipe,
-+test_grab_crc(data_t *data, igt_output_t *output, igt_crtc_t *crtc,
- 	      color_t *fb_color, unsigned int flags, igt_crc_t *crc /* out */)
- {
--	igt_display_t *display = &data->display;
--	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
- 	struct igt_fb fb;
- 	drmModeModeInfo *mode;
- 	igt_plane_t *primary;
-@@ -303,15 +299,12 @@ typedef struct {
- } test_position_t;
- 
- static void
--test_plane_position_with_output(data_t *data,
--				enum pipe pipe,
-+test_plane_position_with_output(data_t *data, igt_crtc_t *crtc,
- 				int plane,
- 				igt_output_t *output,
- 				igt_crc_t *reference_crc,
- 				unsigned int flags)
- {
--	igt_display_t *display = &data->display;
--	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
- 	rectangle_t rect = { .x = 100, .y = 100, .color = { 0.0, 0.0, 0.0 }};
- 	igt_plane_t *primary, *sprite;
- 	struct igt_fb primary_fb, sprite_fb;
-@@ -385,10 +378,8 @@ test_plane_position_with_output(data_t *data,
- }
- 
- static void
--test_plane_position(data_t *data, enum pipe pipe)
-+test_plane_position(data_t *data, igt_crtc_t *crtc)
- {
--	igt_display_t *display = &data->display;
--	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
- 	int n_planes = crtc->n_planes;
- 	igt_output_t *output = data->output;
- 	igt_crc_t reference_crc;
-@@ -396,13 +387,15 @@ test_plane_position(data_t *data, enum pipe pipe)
- 	igt_info("Using (pipe %s + %s) to run the subtest.\n",
- 		 igt_crtc_name(crtc), igt_output_name(output));
- 
--	test_init(data, crtc->pipe);
--	test_grab_crc(data, output, crtc->pipe, &green, data->flags,
-+	test_init(data, crtc);
-+	test_grab_crc(data, output, crtc,
-+		      &green, data->flags,
- 		      &reference_crc);
- 
- 	for (int plane = 1; plane < n_planes; plane++) {
- 		igt_dynamic_f("pipe-%s-plane-%d", igt_crtc_name(crtc), plane)
--			test_plane_position_with_output(data, crtc->pipe,
-+			test_plane_position_with_output(data,
-+							crtc,
- 							plane, output,
- 							&reference_crc, data->flags);
- 	}
-@@ -450,14 +443,11 @@ create_fb_for_mode_panning(data_t *data, drmModeModeInfo *mode,
- }
- 
- static void
--test_plane_panning_with_output(data_t *data,
--			       enum pipe pipe,
-+test_plane_panning_with_output(data_t *data, igt_crtc_t *crtc,
- 			       igt_output_t *output,
- 			       igt_crc_t *ref_crc,
- 			       unsigned int flags)
- {
--	igt_display_t *display = &data->display;
--	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
- 	igt_plane_t *primary;
- 	struct igt_fb primary_fb;
- 	drmModeModeInfo *mode;
-@@ -500,7 +490,7 @@ test_plane_panning_with_output(data_t *data,
- }
- 
- static void
--test_plane_panning(data_t *data, enum pipe pipe)
-+test_plane_panning(data_t *data, igt_crtc_t *crtc)
- {
- 	bool mode_found = false;
- 	uint64_t mem_size = 0;
-@@ -508,9 +498,9 @@ test_plane_panning(data_t *data, enum pipe pipe)
- 	igt_crc_t ref_crc;
- 
- 	igt_info("Using (pipe %s + %s) to run the subtest.\n",
--		 kmstest_pipe_name(pipe), igt_output_name(output));
-+		 igt_crtc_name(crtc), igt_output_name(output));
- 
--	test_init(data, pipe);
-+	test_init(data, crtc);
- 
- 	if (is_i915_device(data->drm_fd)) {
- 		for_each_memory_region(r, data->drm_fd)
-@@ -548,11 +538,20 @@ test_plane_panning(data_t *data, enum pipe pipe)
- 	igt_require_f(mode_found, "All connector modes are skipped due to low memory\n");
- 
- 	if (data->flags & TEST_PANNING_TOP_LEFT)
--		test_grab_crc(data, output, pipe, &red, data->flags, &ref_crc);
-+		test_grab_crc(data, output,
-+			      crtc, &red,
-+			      data->flags,
-+			      &ref_crc);
- 	else
--		test_grab_crc(data, output, pipe, &blue, data->flags, &ref_crc);
-+		test_grab_crc(data, output,
-+			      crtc, &blue,
-+			      data->flags,
-+			      &ref_crc);
- 
--	test_plane_panning_with_output(data, pipe, output, &ref_crc, data->flags);
-+	test_plane_panning_with_output(data,
-+				       crtc,
-+				       output, &ref_crc,
-+				       data->flags);
- 
- 	test_fini(data);
- }
-@@ -575,11 +574,9 @@ static const color_t colors_reduced[] = {
- 	{ 0.0f, 1.0f, 1.0f, },
+diff --git a/tests/intel/kms_pipe_b_c_ivb.c b/tests/intel/kms_pipe_b_c_ivb.c
+index 184d3b38fee7..d5c1ab3ff758 100644
+--- a/tests/intel/kms_pipe_b_c_ivb.c
++++ b/tests/intel/kms_pipe_b_c_ivb.c
+@@ -98,10 +98,8 @@ drmModeModeInfo mode_2_lanes = {
  };
  
--static void set_legacy_lut(data_t *data, enum pipe pipe,
-+static void set_legacy_lut(data_t *data, igt_crtc_t *crtc,
- 			   uint16_t mask)
+ static int
+-disable_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
++disable_pipe(data_t *data, igt_crtc_t *crtc, igt_output_t *output)
  {
 -	igt_display_t *display = &data->display;
 -	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
- 	drmModeCrtc *drm_crtc;
- 	uint16_t *lut;
- 	int i, lut_size;
-@@ -603,11 +600,9 @@ static void set_legacy_lut(data_t *data, enum pipe pipe,
- 	free(lut);
+ 	igt_plane_t *primary;
+ 
+ 	igt_output_set_crtc(output, crtc);
+@@ -111,10 +109,8 @@ disable_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
  }
  
--static bool set_c8_legacy_lut(data_t *data, enum pipe pipe,
-+static bool set_c8_legacy_lut(data_t *data, igt_crtc_t *crtc,
- 			      uint16_t mask)
+ static int
+-set_mode_on_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
++set_mode_on_pipe(data_t *data, igt_crtc_t *crtc, igt_output_t *output)
  {
 -	igt_display_t *display = &data->display;
 -	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
- 	drmModeCrtc *drm_crtc;
- 	uint16_t *r, *g, *b;
- 	int i, lut_size;
-@@ -745,7 +740,7 @@ static void capture_crc(data_t *data, unsigned int vblank, igt_crc_t *crc)
- 		      crc->frame, vblank);
- }
- 
--static void capture_format_crcs_single(data_t *data, enum pipe pipe,
-+static void capture_format_crcs_single(data_t *data, igt_crtc_t *crtc,
- 				       igt_plane_t *plane,
- 				       uint32_t format, uint64_t modifier,
- 				       int width, int height,
-@@ -767,7 +762,7 @@ static void capture_format_crcs_single(data_t *data, enum pipe pipe,
- 	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc[0]);
- }
- 
--static void capture_format_crcs_multiple(data_t *data, enum pipe pipe,
-+static void capture_format_crcs_multiple(data_t *data, igt_crtc_t *crtc,
- 					 igt_plane_t *plane,
- 					 uint32_t format, uint64_t modifier,
- 					 int width, int height,
-@@ -837,7 +832,9 @@ restart_round:
- 			 * is when the next flip latches.
- 			 */
- 			if (i >= 1)
--				vblank[i - 1] = kmstest_get_vblank(data->drm_fd, pipe, 0) + 1;
-+				vblank[i - 1] = kmstest_get_vblank(data->drm_fd,
-+								   crtc->pipe,
-+								   0) + 1;
- 
- 			/*
- 			 * Can't use drmModePageFlip() since we need to
-@@ -848,9 +845,7 @@ restart_round:
- 
- 			/* setplane for the cursor does not block */
- 			if (plane->type == DRM_PLANE_TYPE_CURSOR) {
--				igt_display_t *display = &data->display;
--
--				igt_wait_for_vblank(igt_crtc_for_pipe(display, pipe));
-+				igt_wait_for_vblank(crtc);
- 			}
- 		}
- 
-@@ -875,7 +870,8 @@ restart_round:
- 		 * The last crc is available earliest one
- 		 * frame after the last flip latched.
- 		 */
--		vblank[i - 1] = kmstest_get_vblank(data->drm_fd, pipe, 0) + 1;
-+		vblank[i - 1] = kmstest_get_vblank(data->drm_fd, crtc->pipe,
-+						   0) + 1;
- 	}
- 
- 	/*
-@@ -894,7 +890,7 @@ static bool use_multiple_colors(data_t *data, uint32_t format)
- 	return data->extended || igt_format_is_yuv_semiplanar(format);
- }
- 
--static bool test_format_plane_colors(data_t *data, enum pipe pipe,
-+static bool test_format_plane_colors(data_t *data, igt_crtc_t *crtc,
- 				     igt_plane_t *plane,
- 				     uint32_t format, uint64_t modifier,
- 				     int width, int height,
-@@ -910,12 +906,18 @@ static bool test_format_plane_colors(data_t *data, enum pipe pipe,
- 	int i, total_crcs = 1;
- 
- 	if (use_multiple_colors(data, format)) {
--		capture_format_crcs_multiple(data, pipe, plane, format, modifier,
-+		capture_format_crcs_multiple(data,
-+					     crtc,
-+					     plane, format,
-+					     modifier,
- 					     width, height, encoding, range, crc,
- 					     fb);
- 		total_crcs = data->num_colors;
- 	} else {
--		capture_format_crcs_single(data, pipe, plane, format, modifier,
-+		capture_format_crcs_single(data,
-+					   crtc,
-+					   plane, format,
-+					   modifier,
- 					   width, height, encoding, range, crc,
- 					   fb);
- 	}
-@@ -930,14 +932,14 @@ static bool test_format_plane_colors(data_t *data, enum pipe pipe,
- 
- 	igt_warn_on_f(crc_mismatch_count,
- 		      "CRC mismatches with format " IGT_FORMAT_FMT " on %s.%u with %d/%d solid colors tested (0x%X)\n",
--		      IGT_FORMAT_ARGS(format), kmstest_pipe_name(pipe),
-+		      IGT_FORMAT_ARGS(format), igt_crtc_name(crtc),
- 		      plane->index, crc_mismatch_count, data->num_colors,
- 		      crc_mismatch_mask);
- 
- 	return result;
- }
- 
--static bool test_format_plane_rgb(data_t *data, enum pipe pipe,
-+static bool test_format_plane_rgb(data_t *data, igt_crtc_t *crtc,
- 				  igt_plane_t *plane,
- 				  uint32_t format, uint64_t modifier,
- 				  int width, int height,
-@@ -946,9 +948,11 @@ static bool test_format_plane_rgb(data_t *data, enum pipe pipe,
- {
- 	igt_info("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
- 		 IGT_FORMAT_ARGS(format), IGT_MODIFIER_ARGS(modifier),
--		 kmstest_pipe_name(pipe), plane->index);
-+		 igt_crtc_name(crtc), plane->index);
- 
--	return test_format_plane_colors(data, pipe, plane,
-+	return test_format_plane_colors(data,
-+					crtc,
-+					plane,
- 					format, modifier,
- 					width, height,
- 					IGT_COLOR_YCBCR_BT601,
-@@ -956,7 +960,7 @@ static bool test_format_plane_rgb(data_t *data, enum pipe pipe,
- 					ref_crc, fb);
- }
- 
--static bool test_format_plane_yuv(data_t *data, enum pipe pipe,
-+static bool test_format_plane_yuv(data_t *data, igt_crtc_t *crtc,
- 				  igt_plane_t *plane,
- 				  uint32_t format, uint64_t modifier,
- 				  int width, int height,
-@@ -991,10 +995,12 @@ static bool test_format_plane_yuv(data_t *data, enum pipe pipe,
- 				 IGT_MODIFIER_ARGS(modifier),
- 				 igt_color_encoding_to_str(e),
- 				 igt_color_range_to_str(r),
--				 kmstest_pipe_name(pipe),
-+				 igt_crtc_name(crtc),
- 				 plane->index);
- 
--			result &= test_format_plane_colors(data, pipe, plane,
-+			result &= test_format_plane_colors(data,
-+							   crtc,
-+							   plane,
- 							   format, modifier,
- 							   width, height,
- 							   e, r, ref_crc, fb);
-@@ -1090,7 +1096,7 @@ static bool skip_format_mod(data_t *data,
- 	return false;
- }
- 
--static void test_format_plane(data_t *data, enum pipe pipe,
-+static void test_format_plane(data_t *data, igt_crtc_t *crtc,
- 			      igt_output_t *output, igt_plane_t *plane, igt_fb_t *primary_fb)
- {
- 	struct igt_fb fb = {};
-@@ -1141,22 +1147,28 @@ static void test_format_plane(data_t *data, enum pipe pipe,
- 
- 	igt_debug("Testing connector %s on %s plane %s.%u\n",
- 		  igt_output_name(output), kmstest_plane_type_name(plane->type),
--		  kmstest_pipe_name(pipe), plane->index);
-+		  igt_crtc_name(crtc), plane->index);
- 
- 	igt_pipe_crc_start(data->pipe_crc);
- 
- 	igt_info("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
- 		 IGT_FORMAT_ARGS(ref.format), IGT_MODIFIER_ARGS(ref.modifier),
--		 kmstest_pipe_name(pipe), plane->index);
-+		 igt_crtc_name(crtc), plane->index);
- 
- 	check_allowed_plane_size_64x64(data, plane, &width, &height, ref.format);
- 
--	capture_format_crcs_single(data, pipe, plane, ref.format, ref.modifier,
-+	capture_format_crcs_single(data,
-+				   crtc,
-+				   plane, ref.format,
-+				   ref.modifier,
- 				   width, height, IGT_COLOR_YCBCR_BT709,
- 				   IGT_COLOR_YCBCR_LIMITED_RANGE,
- 				   ref_crc[SINGLE_CRC_SET], &fb);
- 
--	capture_format_crcs_multiple(data, pipe, plane, ref.format, ref.modifier,
-+	capture_format_crcs_multiple(data,
-+				     crtc,
-+				     plane, ref.format,
-+				     ref.modifier,
- 				     width, height, IGT_COLOR_YCBCR_BT709,
- 				     IGT_COLOR_YCBCR_LIMITED_RANGE,
- 				     ref_crc[MULTIPLE_CRC_SET], &fb);
-@@ -1186,13 +1198,13 @@ static void test_format_plane(data_t *data, enum pipe pipe,
- 				 IGT_MODIFIER_FMT " on %s.%u\n",
- 				 IGT_FORMAT_ARGS(f.format),
- 				 IGT_MODIFIER_ARGS(f.modifier),
--				 kmstest_pipe_name(pipe),
-+				 igt_crtc_name(crtc),
- 				 plane->index);
- 			continue;
- 		}
- 
- 		if (f.format == DRM_FORMAT_C8) {
--			if (!set_c8_legacy_lut(data, pipe, LUT_MASK))
-+			if (!set_c8_legacy_lut(data, crtc, LUT_MASK))
- 				continue;
- 		} else {
- 			if (!igt_fb_supported_format(f.format))
-@@ -1203,18 +1215,24 @@ static void test_format_plane(data_t *data, enum pipe pipe,
- 				 MULTIPLE_CRC_SET : SINGLE_CRC_SET];
- 
- 		if (igt_format_is_yuv(f.format))
--			result &= test_format_plane_yuv(data, pipe, plane,
-+			result &= test_format_plane_yuv(data,
-+							crtc,
-+							plane,
- 							f.format, f.modifier,
- 							width, height,
- 							crcset, &fb);
- 		else
--			result &= test_format_plane_rgb(data, pipe, plane,
-+			result &= test_format_plane_rgb(data,
-+							crtc,
-+							plane,
- 							f.format, f.modifier,
- 							width, height,
- 							crcset, &fb);
- 
- 		if (f.format == DRM_FORMAT_C8)
--			set_legacy_lut(data, pipe, LUT_MASK);
-+			set_legacy_lut(data,
-+				       crtc,
-+				       LUT_MASK);
- 	}
- 
- 	igt_pipe_crc_stop(data->pipe_crc);
-@@ -1265,10 +1283,8 @@ static bool skip_plane(data_t *data, igt_plane_t *plane)
- }
- 
- static void
--test_pixel_formats(data_t *data, enum pipe pipe)
-+test_pixel_formats(data_t *data, igt_crtc_t *crtc)
- {
--	igt_display_t *display = &data->display;
--	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
- 	struct igt_fb primary_fb;
  	igt_plane_t *primary;
  	drmModeModeInfo *mode;
-@@ -1286,7 +1302,7 @@ test_pixel_formats(data_t *data, enum pipe pipe)
- 	igt_info("Using (pipe %s + %s) to run the subtest.\n",
- 		 igt_crtc_name(crtc), igt_output_name(output));
- 
--	test_init(data, crtc->pipe);
-+	test_init(data, crtc);
- 
- 	mode = igt_output_get_mode(output);
- 
-@@ -1299,20 +1315,22 @@ test_pixel_formats(data_t *data, enum pipe pipe)
- 
- 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 
--	set_legacy_lut(data, crtc->pipe, LUT_MASK);
-+	set_legacy_lut(data, crtc, LUT_MASK);
- 
- 	for_each_plane_on_pipe(&data->display, crtc->pipe, plane) {
- 		if (skip_plane(data, plane))
- 			continue;
- 		igt_dynamic_f("pipe-%s-plane-%u", igt_crtc_name(crtc),
- 			      plane->index)
--			test_format_plane(data, crtc->pipe, output, plane,
-+			test_format_plane(data,
-+					  crtc,
-+					  output, plane,
- 					  &primary_fb);
- 	}
- 
- 	test_fini(data);
- 
--	set_legacy_lut(data, crtc->pipe, 0xffff);
-+	set_legacy_lut(data, crtc, 0xffff);
- 
- 	igt_plane_set_fb(primary, NULL);
- 	igt_output_set_crtc(output, NULL);
-@@ -1324,7 +1342,7 @@ test_pixel_formats(data_t *data, enum pipe pipe)
- static void test_planar_settings(data_t *data)
- {
- 	igt_display_t *display = &data->display;
--	enum pipe pipe = PIPE_A;
-+	igt_crtc_t *crtc = igt_crtc_for_pipe(display, PIPE_A);
- 	igt_output_t *output;
- 	igt_fb_t fb, fb_ref;
- 	igt_plane_t *primary;
-@@ -1346,10 +1364,10 @@ static void test_planar_settings(data_t *data)
- 		igt_require(display_ver >= 9);
- 	}
- 
--	output = igt_get_single_output_for_pipe(&data->display, pipe);
-+	output = igt_get_single_output_for_pipe(&data->display, crtc->pipe);
- 	igt_require(output);
- 
--	igt_output_set_crtc(output, igt_crtc_for_pipe(display, pipe));
-+	igt_output_set_crtc(output, crtc);
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 
- 	igt_display_commit_atomic(&data->display,
-@@ -1443,10 +1461,12 @@ static void test_planar_settings(data_t *data)
- 						     DRM_MODE_ATOMIC_ALLOW_MODESET,
- 						     NULL);
- 		if (rval == 0) {
--			set_legacy_lut(data, pipe, LUT_MASK);
--			igt_wait_for_vblank_count(igt_crtc_for_pipe(display, pipe),
-+			set_legacy_lut(data,
-+				       crtc,
-+				       LUT_MASK);
-+			igt_wait_for_vblank_count(crtc,
- 						  1);
--			data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, pipe),
-+			data->pipe_crc = igt_crtc_crc_new(crtc,
- 							  IGT_PIPE_CRC_SOURCE_AUTO);
- 			igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
- 
-@@ -1461,7 +1481,9 @@ static void test_planar_settings(data_t *data)
- 						     NULL);
- 
- 			igt_pipe_crc_collect_crc(data->pipe_crc, &crc_ref);
--			set_legacy_lut(data, pipe, 0xffff);
-+			set_legacy_lut(data,
-+				       crtc,
-+				       0xffff);
- 
- 			igt_pipe_crc_free(data->pipe_crc);
- 			data->pipe_crc = NULL;
-@@ -1485,7 +1507,7 @@ static bool is_pipe_limit_reached(int count)
- 		return count >= CRTC_RESTRICT_CNT && !all_pipes;
+ 	struct igt_fb fb;
+@@ -137,17 +133,19 @@ set_mode_on_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
  }
  
--static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
-+static void run_test(data_t *data, void (*test)(data_t *, igt_crtc_t *crtc))
+ static int
+-set_big_mode_on_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
++set_big_mode_on_pipe(data_t *data, igt_crtc_t *crtc, igt_output_t *output)
  {
- 	igt_crtc_t *crtc;
- 	int count = 0;
-@@ -1499,17 +1521,18 @@ static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
- 			continue;
- 
- 		igt_output_set_crtc(data->output, NULL);
--		test(data, crtc->pipe);
-+		test(data, crtc);
- 
- 		if (is_pipe_limit_reached(++count))
- 			break;
- 	}
+ 	igt_output_override_mode(output, &mode_3_lanes);
+-	return set_mode_on_pipe(data, pipe, output);
++	return set_mode_on_pipe(data, crtc,
++				output);
  }
  
--static void dynamic_test_handler(data_t *data, enum pipe pipe)
-+static void dynamic_test_handler(data_t *data, igt_crtc_t *crtc)
+ static int
+-set_normal_mode_on_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
++set_normal_mode_on_pipe(data_t *data, igt_crtc_t *crtc, igt_output_t *output)
  {
--	igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
--		test_plane_panning(data, pipe);
-+	igt_dynamic_f("pipe-%s", igt_crtc_name(crtc))
-+		test_plane_panning(data,
-+				   crtc);
+ 	igt_output_override_mode(output, &mode_2_lanes);
+-	return set_mode_on_pipe(data, pipe, output);
++	return set_mode_on_pipe(data, crtc,
++				output);
  }
  
  static void
+@@ -175,6 +173,8 @@ find_outputs(data_t *data, igt_output_t **output1, igt_output_t **output2)
+ static void
+ test_dpms(data_t *data)
+ {
++	igt_crtc_t *crtc_b = igt_crtc_for_pipe(&data->display, PIPE_B);
++	igt_crtc_t *crtc_c = igt_crtc_for_pipe(&data->display, PIPE_C);
+ 	igt_output_t *output1, *output2;
+ 	int ret;
+ 
+@@ -182,22 +182,28 @@ test_dpms(data_t *data)
+ 	find_outputs(data, &output1, &output2);
+ 
+ 	igt_info("Pipe %s will use connector %s\n",
+-		 kmstest_pipe_name(PIPE_B), igt_output_name(output1));
++		 igt_crtc_name(crtc_b), igt_output_name(output1));
+ 	igt_info("Pipe %s will use connector %s\n",
+-		 kmstest_pipe_name(PIPE_C), igt_output_name(output2));
++		 igt_crtc_name(crtc_c), igt_output_name(output2));
+ 
+-	ret = set_big_mode_on_pipe(data, PIPE_B, output1);
++	ret = set_big_mode_on_pipe(data,
++				   crtc_b,
++				   output1);
+ 	igt_assert_eq(ret, 0);
+ 
+ 	kmstest_set_connector_dpms(data->drm_fd, output1->config.connector, DRM_MODE_DPMS_OFF);
+ 
+-	ret = set_big_mode_on_pipe(data, PIPE_C, output2);
++	ret = set_big_mode_on_pipe(data,
++				   crtc_c,
++				   output2);
+ 	igt_assert_neq(ret, 0);
+ }
+ 
+ static void
+ test_lane_reduction(data_t *data)
+ {
++	igt_crtc_t *crtc_b = igt_crtc_for_pipe(&data->display, PIPE_B);
++	igt_crtc_t *crtc_c = igt_crtc_for_pipe(&data->display, PIPE_C);
+ 	igt_output_t *output1, *output2;
+ 	int ret;
+ 
+@@ -206,23 +212,31 @@ test_lane_reduction(data_t *data)
+ 	find_outputs(data, &output1, &output2);
+ 
+ 	igt_info("Pipe %s will use connector %s\n",
+-		 kmstest_pipe_name(PIPE_B), igt_output_name(output1));
++		 igt_crtc_name(crtc_b), igt_output_name(output1));
+ 	igt_info("Pipe %s will use connector %s\n",
+-		 kmstest_pipe_name(PIPE_C), igt_output_name(output2));
++		 igt_crtc_name(crtc_c), igt_output_name(output2));
+ 
+-	ret = set_big_mode_on_pipe(data, PIPE_B, output1);
++	ret = set_big_mode_on_pipe(data,
++				   crtc_b,
++				   output1);
+ 	igt_assert_eq(ret, 0);
+ 
+-	ret = set_normal_mode_on_pipe(data, PIPE_B, output1);
++	ret = set_normal_mode_on_pipe(data,
++				      crtc_b,
++				      output1);
+ 	igt_assert_eq(ret, 0);
+ 
+-	ret = set_normal_mode_on_pipe(data, PIPE_C, output2);
++	ret = set_normal_mode_on_pipe(data,
++				      crtc_c,
++				      output2);
+ 	igt_assert_eq(ret, 0);
+ }
+ 
+ static void
+ test_disable_pipe_B(data_t *data)
+ {
++	igt_crtc_t *crtc_b = igt_crtc_for_pipe(&data->display, PIPE_B);
++	igt_crtc_t *crtc_c = igt_crtc_for_pipe(&data->display, PIPE_C);
+ 	igt_output_t *output1, *output2;
+ 	int ret;
+ 
+@@ -230,26 +244,35 @@ test_disable_pipe_B(data_t *data)
+ 	find_outputs(data, &output1, &output2);
+ 
+ 	igt_info("Pipe %s will use connector %s\n",
+-		 kmstest_pipe_name(PIPE_B), igt_output_name(output1));
++		 igt_crtc_name(crtc_b), igt_output_name(output1));
+ 	igt_info("Pipe %s will use connector %s\n",
+-		 kmstest_pipe_name(PIPE_C), igt_output_name(output2));
++		 igt_crtc_name(crtc_c), igt_output_name(output2));
+ 
+-	ret = set_big_mode_on_pipe(data, PIPE_B, output1);
++	ret = set_big_mode_on_pipe(data,
++				   crtc_b,
++				   output1);
+ 	igt_assert_eq(ret, 0);
+ 
+-	ret = disable_pipe(data, PIPE_B, output1);
++	ret = disable_pipe(data, crtc_b,
++			   output1);
+ 	igt_assert_eq(ret, 0);
+ 
+-	ret = set_normal_mode_on_pipe(data, PIPE_C, output2);
++	ret = set_normal_mode_on_pipe(data,
++				      crtc_c,
++				      output2);
+ 	igt_assert_eq(ret, 0);
+ 
+-	ret = set_normal_mode_on_pipe(data, PIPE_B, output1);
++	ret = set_normal_mode_on_pipe(data,
++				      crtc_b,
++				      output1);
+ 	igt_assert_eq(ret, 0);
+ }
+ 
+ static void
+ test_from_C_to_B_with_3_lanes(data_t *data)
+ {
++	igt_crtc_t *crtc_b = igt_crtc_for_pipe(&data->display, PIPE_B);
++	igt_crtc_t *crtc_c = igt_crtc_for_pipe(&data->display, PIPE_C);
+ 	igt_output_t *output1, *output2;
+ 	int ret;
+ 
+@@ -257,23 +280,30 @@ test_from_C_to_B_with_3_lanes(data_t *data)
+ 	find_outputs(data, &output1, &output2);
+ 
+ 	igt_info("Pipe %s will use connector %s\n",
+-		 kmstest_pipe_name(PIPE_B), igt_output_name(output1));
++		 igt_crtc_name(crtc_b), igt_output_name(output1));
+ 	igt_info("Pipe %s will use connector %s\n",
+-		 kmstest_pipe_name(PIPE_C), igt_output_name(output2));
++		 igt_crtc_name(crtc_c), igt_output_name(output2));
+ 
+-	ret = set_normal_mode_on_pipe(data, PIPE_C, output2);
++	ret = set_normal_mode_on_pipe(data,
++				      crtc_c,
++				      output2);
+ 	igt_assert_eq(ret, 0);
+ 
+-	ret = disable_pipe(data, PIPE_C, output2);
++	ret = disable_pipe(data, crtc_c,
++			   output2);
+ 	igt_assert_eq(ret, 0);
+ 
+-	ret = set_big_mode_on_pipe(data, PIPE_B, output1);
++	ret = set_big_mode_on_pipe(data,
++				   crtc_b,
++				   output1);
+ 	igt_assert_eq(ret, 0);
+ }
+ 
+ static void
+ test_fail_enable_pipe_C_while_B_has_3_lanes(data_t *data)
+ {
++	igt_crtc_t *crtc_b = igt_crtc_for_pipe(&data->display, PIPE_B);
++	igt_crtc_t *crtc_c = igt_crtc_for_pipe(&data->display, PIPE_C);
+ 	igt_output_t *output1, *output2;
+ 	int ret;
+ 
+@@ -281,14 +311,18 @@ test_fail_enable_pipe_C_while_B_has_3_lanes(data_t *data)
+ 	find_outputs(data, &output1, &output2);
+ 
+ 	igt_info("Pipe %s will use connector %s\n",
+-		 kmstest_pipe_name(PIPE_B), igt_output_name(output1));
++		 igt_crtc_name(crtc_b), igt_output_name(output1));
+ 	igt_info("Pipe %s will use connector %s\n",
+-		 kmstest_pipe_name(PIPE_C), igt_output_name(output2));
++		 igt_crtc_name(crtc_c), igt_output_name(output2));
+ 
+-	ret = set_big_mode_on_pipe(data, PIPE_B, output1);
++	ret = set_big_mode_on_pipe(data,
++				   crtc_b,
++				   output1);
+ 	igt_assert_eq(ret, 0);
+ 
+-	ret = set_normal_mode_on_pipe(data, PIPE_C, output2);
++	ret = set_normal_mode_on_pipe(data,
++				      crtc_c,
++				      output2);
+ 	igt_assert_neq(ret, 0);
+ }
+ 
 -- 
 2.52.0
 
