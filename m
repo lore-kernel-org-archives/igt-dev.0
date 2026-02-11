@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10D3DECD6C8
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 16:34:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE8AFECD6C5
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 16:34:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9B74210E62C;
-	Wed, 11 Feb 2026 16:34:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9AE6E10E628;
+	Wed, 11 Feb 2026 16:34:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mGPtYePT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gtWg0Kqt";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E3FF610E62D
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 16:34:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E976B10E62D
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 16:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770827661; x=1802363661;
+ t=1770827665; x=1802363665;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=Ntu/afxi77OeloU1pLTiJtSgGRh5vj6bDI10Thd+h38=;
- b=mGPtYePT/By6ja9nvLABKv9Nk/2UtmFqYHtQAEDSbKIbyz+lKhhSA3/l
- iONUK0PYOxOmmaTVxb+FAVwPvCkPrO5T0iLobYSsd6EWySkvsQhi2lyxB
- 0Z5PiOcE+nWZ78hdIRFAozpZoRHOJ+CSfPA7Of/LUBOdZJgZ5wwvcebRl
- jrl1xCcJADp2ldAJu+0F3L3R4Itfscc2ohEfl7w3RRZZsdpRx4Tw/WPUn
- IYbP/1t3w5bgYyfpyKDukI5EL9JDu2jfBsVIulJ/5y/D3MCITfC5awV4D
- TewN45oKki5MlEQogJaUuiyyDNocxofJ+O8MDg4pQEt9wROrXP7ozB5Kj g==;
-X-CSE-ConnectionGUID: WkMtRALbSGGL9BEm853t0Q==
-X-CSE-MsgGUID: z0p+HVw4QzqeHgnAqTfhKw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="83082161"
-X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; d="scan'208";a="83082161"
+ bh=t4wAVcLsUoD5cZzwvgvURbVmjaPuOaNuYzlZMgFvaQQ=;
+ b=gtWg0Kqt+7kbpfHwXwmPmMm6hZU+/XDdf11cvTxHCHfy0OArpYNQwdRe
+ M6HvbK4H9s9LEfTFkfiwMbuVNW1w68Ms9UTLJc9ZlJf99jZgC7qa/E9mw
+ KSjGq8WIMRntkRgkGTYXaCVhO+5uqKCHe2TpzFFAY5b2HnYyYWmCn6pel
+ k8w7xFhi4ZhmG2zPOS6qEmQr3EQeXOPwOO6bHXB/b8YtA+cYsT7KCXtzV
+ ITFx6kvhdYqh9dxv3yrX74T4xdV/0oT7RQs0FlBNZt7PZrWXmErIDzUyd
+ L1yttunaPRgtd6ieyijF/fcRjS+QxRUcrb6spPF6mHfiJiClMHiXN32E8 A==;
+X-CSE-ConnectionGUID: wajI+YBQRSq3PhagrH10mg==
+X-CSE-MsgGUID: PkrjCYxaR/OuqTdnewHUeA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="83082171"
+X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; d="scan'208";a="83082171"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2026 08:34:21 -0800
-X-CSE-ConnectionGUID: LbzsiC63QOyTKgPv9pO1NA==
-X-CSE-MsgGUID: l9dknatgT4i5soo3WtwVyQ==
+ 11 Feb 2026 08:34:25 -0800
+X-CSE-ConnectionGUID: qflRwDQQSvmx4XSQF9HcNw==
+X-CSE-MsgGUID: LFyBefngRYO+5t9AkrnOoQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; d="scan'208";a="211405358"
+X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; d="scan'208";a="211405373"
 Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
  ([10.245.245.23])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2026 08:34:20 -0800
+ 11 Feb 2026 08:34:24 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 03/17] tests/kms: Remove const qualifier from 'pipe'
- function parameters
-Date: Wed, 11 Feb 2026 18:33:50 +0200
-Message-ID: <20260211163404.2018-4-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 04/17] tests/intel/kms_busy: Use 'enum pipe' instead of
+ 'int'
+Date: Wed, 11 Feb 2026 18:33:51 +0200
+Message-ID: <20260211163404.2018-5-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260211163404.2018-1-ville.syrjala@linux.intel.com>
 References: <20260211163404.2018-1-ville.syrjala@linux.intel.com>
@@ -73,51 +73,46 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Some functions have a const qualifier on a 'pipe' function
-paramter. This ends up complicating cocci based efforts to
-convert from 'pipe' to 'crtc'. Get rid of the extra qualifiers.
+Change the type of the 'pipe' function paramteres from
+'int' to the more approproate 'enum pipe'. This will aid
+in cocci based 'pipe' to 'crtc' conversion.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_panel_fitting.c | 4 ++--
- tests/kms_scaling_modes.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ tests/intel/kms_busy.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
-index 296f09405e4e..723336c7ba35 100644
---- a/tests/kms_panel_fitting.c
-+++ b/tests/kms_panel_fitting.c
-@@ -105,7 +105,7 @@ static void prepare_crtc(data_t *data, igt_output_t *output, enum pipe pipe,
+diff --git a/tests/intel/kms_busy.c b/tests/intel/kms_busy.c
+index 2c8d365080e1..dd65585d41a2 100644
+--- a/tests/intel/kms_busy.c
++++ b/tests/intel/kms_busy.c
+@@ -73,7 +73,7 @@ IGT_TEST_DESCRIPTION("Basic check of KMS ABI with busy framebuffers.");
+ static bool all_pipes = false;
  
  static void
- test_panel_fitting_legacy(data_t *d, igt_display_t *display,
--			  const enum pipe pipe, igt_output_t *output)
-+			  enum pipe pipe, igt_output_t *output)
+-set_fb_on_crtc(igt_display_t *dpy, int pipe,
++set_fb_on_crtc(igt_display_t *dpy, enum pipe pipe,
+ 	       igt_output_t *output, struct igt_fb *fb)
  {
- 	drmModeModeInfo *mode, native_mode;
- 	bool is_plane_scaling_active = true;
-@@ -195,7 +195,7 @@ test_panel_fitting_legacy(data_t *d, igt_display_t *display,
+ 	drmModeModeInfoPtr mode;
+@@ -106,7 +106,7 @@ static void do_cleanup_display(igt_display_t *dpy)
+ 	igt_display_commit2(dpy, dpy->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
  }
  
- static void
--test_panel_fitting_fastset(igt_display_t *display, const enum pipe pipe, igt_output_t *output)
-+test_panel_fitting_fastset(igt_display_t *display, enum pipe pipe, igt_output_t *output)
- {
- 	igt_plane_t *primary, *sprite;
- 	drmModeModeInfo mode;
-diff --git a/tests/kms_scaling_modes.c b/tests/kms_scaling_modes.c
-index 7f9a031ddcc4..5b0d6485ebb3 100644
---- a/tests/kms_scaling_modes.c
-+++ b/tests/kms_scaling_modes.c
-@@ -54,7 +54,7 @@ typedef struct data {
- 	int drm_fd;
- } data_t;
+-static void flip_to_fb(igt_display_t *dpy, int pipe,
++static void flip_to_fb(igt_display_t *dpy, enum pipe pipe,
+ 		       igt_output_t *output,
+ 		       struct igt_fb *fb, int timeout,
+ 		       const char *name, bool modeset)
+@@ -172,7 +172,7 @@ static void flip_to_fb(igt_display_t *dpy, int pipe,
+ 	put_ahnd(ahnd);
+ }
  
--static void test_scaling_mode_on_output(igt_display_t *display, const enum pipe pipe,
-+static void test_scaling_mode_on_output(igt_display_t *display, enum pipe pipe,
- 					igt_output_t *output, uint32_t flags)
+-static void test_flip(igt_display_t *dpy, int pipe,
++static void test_flip(igt_display_t *dpy, enum pipe pipe,
+ 		      igt_output_t *output, bool modeset)
  {
- 	igt_plane_t *primary, *sprite;
+ 	struct igt_fb fb[2];
 -- 
 2.52.0
 
