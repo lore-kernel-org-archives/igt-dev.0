@@ -4,55 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFE36E9E2E4
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 11:19:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC151E9E2E4
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 11:19:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 922CB10E3A4;
-	Wed, 11 Feb 2026 11:19:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9C59C10E3A4;
+	Wed, 11 Feb 2026 11:19:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lDJq29ZL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZBTUYT7M";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C1CF410E3A4
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 11:19:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7FDAF10E3AF
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 11:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770808766; x=1802344766;
+ t=1770808771; x=1802344771;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=nP5pm2wKPwnmEhYTo/i2g/QSw4VCcvLBO1qxevjcKkE=;
- b=lDJq29ZLl5Xc5JALDg2nsyizkoV0uhbq4k8FL45kEVb/mX/ZOpZnGmb1
- OwV2LJPOfWquB8Ry62H6lA/Z68rvioToOh0Wyq37G1JfHzuhP/eGIYG5A
- UrlPy6bRW0RW2rH4SVRdCB6ehfKTsQTjV1h0yrV/VmxQ12h8vuf/rnXbg
- 1tZ1cIiK0jy1uaTzPU2pWtyqhQv0IFCRmnQaa5AwYqd+Lx5An4nTIWF0f
- 3yC9ijlSkP7vYYALWcjO5U4vgl6wIuZSACYvkdsDEXFxBIUL+PWcMDWso
- SfjxsrVe0CtJt3AemmWakD+wdnGVluYfxAoCAE00umfcc55Jm8NhXZ4PX w==;
-X-CSE-ConnectionGUID: FxyRGajXQJeGuBfDLUNQrQ==
-X-CSE-MsgGUID: hrMuDvQVTeO4+xB9RPiidQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="71996912"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="71996912"
+ bh=ENbaAQfUXxVyLCVAzMFfDgGkRKZuguQmRn1LnkF0WSo=;
+ b=ZBTUYT7Mtz2XL7Hpdauo2Rrv1z2LAgHE+7kECcDCSTmZVZqieDxmiQiJ
+ vVgCDUaqVaQPEkzhC+vvgBiyg2tkY8n8V+BTf9hsHEMKgZgONKgoI9asD
+ yuv5/cbXjIAEbXTzYXixvfnQS/pkCk7m4YiwUJGKuxOAe3CDo0ox1D+63
+ TaNjsLlEY8QhFZuv0aFH4eDWFbU145obCH76hoLi8Ee4utQ2U5f4zDaTX
+ JobTc3ZZrnNI0QaxiznTyNvFd3xQdybrfcXl+K1dhq8jtdJWmk6AqesNX
+ qVJcDS1jMLg0bBMHtNdwH2EbUtLOYMALVoRmAQsxrjpc8IwAxNLnxLbb3 w==;
+X-CSE-ConnectionGUID: G3EF8evRRnulBIFjMYsi7w==
+X-CSE-MsgGUID: pKMGgI5QQAmPMFb2dZ/fsg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="71996919"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="71996919"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2026 03:19:26 -0800
-X-CSE-ConnectionGUID: N8FRw7GPRF6lCAHxoenxxg==
-X-CSE-MsgGUID: YRe3ofz8RKWp0nUu0kOL5w==
+ 11 Feb 2026 03:19:31 -0800
+X-CSE-ConnectionGUID: 0qDHHAgRT8CEQXX4tnQxiA==
+X-CSE-MsgGUID: CSeEW34+Sy+lxc2JUKOCOg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="216727854"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="216727869"
 Received: from soc-5cg43972f8.clients.intel.com (HELO localhost)
  ([172.28.182.85])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2026 03:19:24 -0800
+ 11 Feb 2026 03:19:29 -0800
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Francois Dugast <francois.dugast@intel.com>,
  Lukasz Laguna <lukasz.laguna@intel.com>
-Subject: [PATCH v4 i-g-t 3/6] tests/intel/xe_sriov_flr: Attach VFs to
- xe-vfio-pci before initiating FLR
-Date: Wed, 11 Feb 2026 12:18:27 +0100
-Message-ID: <20260211111834.1140287-4-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v4 i-g-t 4/6] lib/igt_kmod: Fix PCI bind/unbind for
+ module/driver name mismatch
+Date: Wed, 11 Feb 2026 12:18:28 +0100
+Message-ID: <20260211111834.1140287-5-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260211111834.1140287-1-marcin.bernatowicz@linux.intel.com>
 References: <20260211111834.1140287-1-marcin.bernatowicz@linux.intel.com>
@@ -74,130 +73,166 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Attach all VFs to the xe-vfio-pci driver before running the FLR scenario.
-This allows the test to rely on xe-vfio-pci’s FLR wait handling, which is
-triggered when writing to the VF reset sysfs attribute.
+igt_kmod_bind() and igt_kmod_unbind() assumed that the PCI
+driver name was identical to the module name, which is not true
+for drivers such as xe_vfio_pci (module) vs xe-vfio-pci (driver).
+
+Resolve the registered PCI driver name via
+/sys/module/<module>/drivers/pci:* and forward bind/unbind operations
+to the generic PCI driver helpers.
+
+Mark these helpers as deprecated, as bind/unbind are fundamentally
+driver-level operations. New code should prefer the igt_pci_driver_*
+APIs, while these wrappers remain for backwards compatibility and
+“unbind before module unload” workflows.
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Suggested-by: Michał Winiarski <michal.winiarski@intel.com>
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
 Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
 ---
- tests/intel/xe_sriov_flr.c | 65 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 65 insertions(+)
+ lib/igt_kmod.c | 90 ++++++++++++++++++++++++++++----------------------
+ 1 file changed, 51 insertions(+), 39 deletions(-)
 
-diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
-index 12989d0f5..2f6b24cf0 100644
---- a/tests/intel/xe_sriov_flr.c
-+++ b/tests/intel/xe_sriov_flr.c
-@@ -9,6 +9,8 @@
- #include "drmtest.h"
- #include "igt_core.h"
- #include "igt_device.h"
-+#include "igt_kmod.h"
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index d1d7a3840..008752f29 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -44,6 +44,7 @@
+ #include "igt_hook.h"
+ #include "igt_kmod.h"
+ #include "igt_ktap.h"
 +#include "igt_pci.h"
- #include "igt_sriov_device.h"
- #include "intel_chipset.h"
- #include "intel_vram.h"
-@@ -57,6 +59,8 @@ static const char STOP_REASON_ABORT[] = "ABORT";
- static const char STOP_REASON_FAIL[]  = "FAIL";
- static const char STOP_REASON_SKIP[]  = "SKIP";
+ #include "igt_sysfs.h"
+ #include "igt_taints.h"
  
-+#define DRIVER_OVERRIDE_TIMEOUT_MS 200
-+
- static struct g_mmio {
- 	struct xe_mmio *mmio;
- 	unsigned int num_vfs;
-@@ -276,6 +280,47 @@ static void subchecks_report_results(struct subcheck *checks, int num_checks)
- 	igt_skip_on(skips == num_checks);
+@@ -598,43 +599,58 @@ int __igt_intel_driver_unload(char **who, const char *driver)
+ 	return 0;
  }
  
-+static bool vf_bind_driver_override(int pf_fd, unsigned int vf_id,
-+				    const char *driver)
++static char *kmod_pci_driver_from_module_alloc(const char *mod_name)
 +{
-+	char *slot = igt_sriov_get_vf_pci_slot_alloc(pf_fd, vf_id);
-+	int ret;
-+	char bound[64] = "none";
-+	int bound_ret;
++	char dirpath[PATH_MAX];
++	struct dirent *de;
++	DIR *d;
 +
-+	igt_assert(slot);
-+	igt_assert(driver);
++	snprintf(dirpath, sizeof(dirpath), "/sys/module/%s/drivers", mod_name);
++	d = opendir(dirpath);
++	if (!d)
++		return NULL;
 +
-+	ret = igt_pci_bind_driver_override(slot, driver, DRIVER_OVERRIDE_TIMEOUT_MS);
-+	if (ret < 0) {
-+		bound_ret = igt_pci_get_bound_driver_name(slot, bound, sizeof(bound));
-+		if (bound_ret <= 0)
-+			snprintf(bound, sizeof(bound), "%s", "none");
++	while ((de = readdir(d))) {
++		if (!strncmp(de->d_name, "pci:", 4)) {
++			char *drv = strdup(de->d_name + 4);
 +
-+		igt_warn_on_f(true,
-+			      "bind %s (VF%u) to %s ret=%d (currently bound: %s)\n",
-+			      slot, vf_id, driver, ret, bound);
++			closedir(d);
++			return drv;
++		}
 +	}
 +
-+	free(slot);
-+
-+	return ret >= 0;
-+}
-+
-+static void vf_unbind_driver_override(int pf_fd, unsigned int vf_id)
-+{
-+	char *slot = igt_sriov_get_vf_pci_slot_alloc(pf_fd, vf_id);
-+	int ret;
-+
-+	igt_assert(slot);
-+
-+	ret = igt_pci_unbind_driver_override(slot, DRIVER_OVERRIDE_TIMEOUT_MS);
-+	igt_warn_on_f(ret < 0, "unbind %s (VF%u) driver_override ret=%d\n",
-+		      slot, vf_id, ret);
-+
-+	free(slot);
++	closedir(d);
++	return NULL;
 +}
 +
  /**
-  * flr_exec_strategy - Function pointer for FLR execution strategy
-  * @pf_fd: File descriptor for the Physical Function (PF).
-@@ -325,6 +370,8 @@ static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks,
+  * igt_kmod_unbind: Unbind driver from devices. Currently supports only PCI bus
+  * @mod_name: name of the module to unbind
+  * @pci_device: if provided, unbind only this device, otherwise unbind all devices
++ *
++ * Deprecated: bind/unbind is a driver operation. Prefer using:
++ *   - igt_pci_driver_unbind()/igt_pci_driver_unbind_all()
++ *   - igt_pci_device_unbind()
++ *
++ * This helper remains for backwards compatibility and for “unbind before
++ * module unload” workflows.
+  */
+ int igt_kmod_unbind(const char *mod_name, const char *pci_device)
  {
- 	const int wait_flr_ms = 200;
- 	int i, vf_id, flr_vf_id = -1;
-+	bool xe_vfio_loaded;
-+	bool *vf_bound = NULL;
+ 	struct igt_hook *igt_hook = NULL;
+-	char path[PATH_MAX];
+-	struct dirent *de;
+-	int dirlen;
+-	DIR *dir;
+-
+-	dirlen = snprintf(path, sizeof(path), "/sys/module/%s/drivers/pci:%s/",
+-			  mod_name, mod_name);
+-	igt_assert(dirlen < sizeof(path));
+-
+-	dir = opendir(path);
+-
+-	/* Module not loaded, nothing to unbind */
+-	if (!dir)
+-		return 0;
+-
+-	while ((de = readdir(dir))) {
+-		bool ret;
+-
+-		if (de->d_type != DT_LNK || !isdigit(de->d_name[0]))
+-			continue;
++	char *driver;
++	int ret;
  
- 	igt_sriov_disable_driver_autoprobe(pf_fd);
- 	igt_sriov_enable_vfs(pf_fd, num_vfs);
-@@ -335,6 +382,16 @@ static void verify_flr(int pf_fd, int num_vfs, struct subcheck *checks,
- 	if (igt_warn_on(igt_pci_system_reinit()))
- 		goto disable_vfs;
+-		if (pci_device && strcmp(pci_device, de->d_name) != 0)
+-			continue;
++	driver = kmod_pci_driver_from_module_alloc(mod_name);
++	if (!driver)
++		return 0; /* module not loaded / no pci driver */
  
-+	xe_vfio_loaded = igt_kmod_load("xe_vfio_pci", NULL) >= 0;
-+	if (xe_vfio_loaded) {
-+		vf_bound = calloc(num_vfs + 1, sizeof(*vf_bound));
-+		igt_assert(vf_bound);
-+
-+		igt_sriov_enable_driver_autoprobe(pf_fd);
-+		for (vf_id = 1; vf_id <= num_vfs; vf_id++)
-+			vf_bound[vf_id] = vf_bind_driver_override(pf_fd, vf_id, "xe-vfio-pci");
-+	}
-+
- 	init_mmio(pf_fd, num_vfs);
+-		ret = igt_sysfs_set(dirfd(dir), "unbind", de->d_name);
+-		igt_assert(ret);
+-	}
++	if (pci_device)
++		ret = igt_pci_driver_unbind(driver, pci_device);
++	else
++		ret = igt_pci_driver_unbind_all(driver);
  
- 	for (i = 0; i < num_checks; ++i)
-@@ -357,6 +414,14 @@ cleanup:
+-	closedir(dir);
++	free(driver);
  
- 	cleanup_mmio();
+ 	igt_hook = igt_core_get_igt_hook();
+ 	igt_hook_event_notify(igt_hook, &(struct igt_hook_evt){
+@@ -642,7 +658,7 @@ int igt_kmod_unbind(const char *mod_name, const char *pci_device)
+ 		.target_name = mod_name,
+ 	});
  
-+	if (xe_vfio_loaded) {
-+		for (vf_id = 1; vf_id <= num_vfs; vf_id++)
-+			if (vf_bound && vf_bound[vf_id])
-+				vf_unbind_driver_override(pf_fd, vf_id);
-+	}
-+
-+	free(vf_bound);
-+
- disable_vfs:
- 	igt_sriov_disable_vfs(pf_fd);
+-	return 0;
++	return ret;
+ }
+ 
+ /**
+@@ -651,25 +667,21 @@ int igt_kmod_unbind(const char *mod_name, const char *pci_device)
+  * @pci_device: device to bind
+  *
+  * Module should already be loaded
++ *
++ * Deprecated: prefer igt_pci_driver_bind().
+  */
+ int igt_kmod_bind(const char *mod_name, const char *pci_device)
+ {
+-	char path[PATH_MAX];
+-	int dirlen, dirfd;
++	char *driver;
+ 	int ret;
+ 
+-	dirlen = snprintf(path, sizeof(path), "/sys/module/%s/drivers/pci:%s/",
+-			  mod_name, mod_name);
+-	igt_assert(dirlen < sizeof(path));
+-
+-	dirfd = open(path, O_RDONLY | O_CLOEXEC);
+-	if (dirfd < 0)
+-		return dirfd;
+-
+-	ret = igt_sysfs_set(dirfd, "bind", pci_device);
++	driver = kmod_pci_driver_from_module_alloc(mod_name);
++	if (!driver)
++		return -ENOENT;
+ 
+-	close(dirfd);
++	ret = igt_pci_driver_bind(driver, pci_device);
+ 
++	free(driver);
+ 	return ret;
+ }
  
 -- 
 2.43.0
