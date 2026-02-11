@@ -4,27 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C570E9E305
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 13:16:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FFC3E9E305
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 13:31:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A274210E02A;
-	Wed, 11 Feb 2026 13:16:16 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1ADA710E02A;
- Wed, 11 Feb 2026 13:16:15 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6721072470140976649=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 20CF310E124;
+	Wed, 11 Feb 2026 13:31:31 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="exLm6UMb";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 957D010E124
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 13:31:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1770816691; x=1802352691;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=T4fNEV6NOo54mA2Oud3lR2MPfrCawC0JET99AZax8nY=;
+ b=exLm6UMbKzTtI+bNHvNDNOAzE+4qUIlllSvZf1Ij8CGy3GvcivZC6dNz
+ 5BjRfYzsKN1H+maeG+CF76j3o6bFP8fP2bck9GTs3wfTRZIbWeiZmx30g
+ qPrJFVeSfT1AHL8RbK/Sa9dgjy0dFO24MZy1gRa6fCJMEX/mXHawGa+eO
+ I1ySa6RBCo7HeaedoF+OUVLOBpMbPhIPD8k4+Ep+jAQjVCe7rvcqkkreD
+ f8Qg8p9gy5mLrDTJTnov1X+8BE+6Lywi7s59O2z+TD8fhrzSgK0si4JJw
+ r7b6g6IHAETiD0W2ZXkGbZbPQ3cyMNs2qOm0dyaYNq6MaN+Ucpia3r+h1 g==;
+X-CSE-ConnectionGUID: xrP3fvNNSEyZR8933gTU2A==
+X-CSE-MsgGUID: 3jyaeCkRThWvFi/AfjPJ6A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="97421293"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="97421293"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Feb 2026 05:31:30 -0800
+X-CSE-ConnectionGUID: qwaNC6CxTdKXJZnbTZkMVg==
+X-CSE-MsgGUID: 0XCM5MJMTOKaGEtoWNUxnQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="235240255"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.23])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Feb 2026 05:31:26 -0800
+Date: Wed, 11 Feb 2026 15:31:23 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Jason-JH Lin =?utf-8?B?KOael+edv+elpSk=?= <Jason-JH.Lin@mediatek.com>
+Cc: "swati2.sharma@intel.com" <swati2.sharma@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "karthik.b.s@intel.com" <karthik.b.s@intel.com>,
+ "jani.nikula@intel.com" <jani.nikula@intel.com>,
+ "chaitanya.kumar.borah@intel.com" <chaitanya.kumar.borah@intel.com>,
+ Nancy Lin =?utf-8?B?KOael+aso+ieoik=?= <Nancy.Lin@mediatek.com>,
+ Project_Global_Chrome_Upstream_Group
+ <Project_Global_Chrome_Upstream_Group@mediatek.com>, 
+ "bhanuprakash.modem@gmail.com" <bhanuprakash.modem@gmail.com>,
+ Paul-pl Chen =?utf-8?B?KOmZs+afj+mclik=?= <Paul-pl.Chen@mediatek.com>,
+ "gildekel@google.com" <gildekel@google.com>,
+ "fshao@chromium.org" <fshao@chromium.org>,
+ "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>,
+ Singo Chang =?utf-8?B?KOW8teiIiOWciyk=?= <Singo.Chang@mediatek.com>,
+ "uma.shankar@intel.com" <uma.shankar@intel.com>,
+ "markyacoub@chromium.org" <markyacoub@chromium.org>,
+ "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH i-g-t v2] tests/kms_color: Always use atomic_commit for
+ setting color properties
+Message-ID: <aYyEq5jX_FnaP4wm@intel.com>
+References: <20251121075406.2006325-1-jason-jh.lin@mediatek.com>
+ <aSApNt1PwpgrX5E9@intel.com>
+ <0a2d25af2c0ba3c5bc26e445a46413c90a77a19e.camel@mediatek.com>
+ <aSBBG2n64m65CWLR@intel.com>
+ <cb616c5e6c96d838f9dc5dd9c9e7b8110e776cd4.camel@mediatek.com>
+ <aSTHiBaIAqNuggbt@intel.com>
+ <4beb7387818893db802d5ca90058336cd5059a3f.camel@mediatek.com>
+ <aSXiJ0gKJuUMZ0Am@intel.com>
+ <c7855c8fb18d4cc622e77706ade501b4b9750b77.camel@mediatek.com>
+ <2c3791e090ff1a074a044a5ac1f555e855c56aee.camel@mediatek.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_PCI_driver_helpers_and_xe-v?=
- =?utf-8?q?fio-pci_FLR_improvement_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Feb 2026 13:16:15 -0000
-Message-ID: <177081577508.246141.4619122331377786001@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260211111834.1140287-1-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20260211111834.1140287-1-marcin.bernatowicz@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2c3791e090ff1a074a044a5ac1f555e855c56aee.camel@mediatek.com>
+X-Patchwork-Hint: comment
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,182 +95,115 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6721072470140976649==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, Feb 11, 2026 at 11:24:43AM +0000, Jason-JH Lin (林睿祥) wrote:
+> On Wed, 2025-11-26 at 22:40 +0800, Jason-JH.Lin wrote:
+> > > > > > > > > 
+> > 
+> > [snip]
+> > 
+> > > > > > > > > 
+> > > > > > Looking into igt_pipe_commit(), it used
+> > > > > > drmModeObjectSetProperty()
+> > > > > > to
+> > > > > > set property to DRM and it used igt_plane_commit() to
+> > > > > > synchronize
+> > > > > > all
+> > > > > > plane states and only primary plane will call
+> > > > > > drmModeSetCrtc().
+> > > > > > 
+> > > > > > It think the reason we didn't get the new gamma_lut in crtc
+> > > > > > state
+> > > > > > is
+> > > > > > taht set_gamma() will only call igt_pipe_obj_prop_changed()
+> > > > > > to
+> > > > > > update
+> > > > > > pipe_obj->changed flag, but not update plane->changed flag.
+> > > > > > In igt_primary_plane_commit_legacy(), it'll return if
+> > > > > > primary-
+> > > > > > > changed
+> > > > > > flag is not set.
+> > > > > 
+> > > > > The LUT properties are supposed to be on the CRTC. So the plane
+> > > > > stuff should not matter, unless you driver is doing something
+> > > > > completely non-stanadard.
+> > > > > 
+> > > > 
+> > > > You're right. Plane stuff should not matter to CRTC.
+> > > > 
+> > > > So I means drmModeSetCrtc() won't be called if plane properties
+> > > > is
+> > > > not
+> > > > set in igt_primary_plane_commit_legacy() currently.
+> > > > 
+> > > > I think this legacy flow logic:
+> > > > {
+> > > > 
+> > > > if (!igt_plane_is_prop_changed(primary, IGT_PLANE_FB_ID)) &&
+> > > >     !(primary->changed & IGT_PLANE_COORD_CHANGED_MASK) &&
+> > > >     !igt_pipe_obj_is_prop_changed(primary->pipe,
+> > > > IGT_CRTC_MODE_ID))
+> > > >         return 0;
+> > > > ...
+> > > > 
+> > > > drmModeSetCrtc()
+> > > > 
+> > > > ...
+> > > > 
+> > > > }
+> > > > may block LUT properties being synchronized into crtc state when
+> > > > we
+> > > > only called set_gamma() and not updated any plane properties.
+> > > 
+> > > That doesn't affect CRTC properties apart from the mode.
+> > > For all other CRTC properties drmModeObjectSetProperty()
+> > > will be called regardless by igt_pipe_commit().
+> > > 
+> > 
+> > Okay, I checked that drm_mode_obj_set_property_ioctl() called from
+> > drmModeObjectSetProperty() will synchronize the CRTC properties, such
+> > as, gamm_lut into the CRTC state of atomic_state.
+> > 
+> > Our drm driver has implemented mode_config.funcs->atomic_commit(), 
+> > so maybe we have some bug in our drivers that cause the issue I
+> > encountered, the original IGT code should work fine.
+> > 
+> > I'll check out this later and send the wrapper API if needed.
+> > Thanks for the correction and guidance.
+> > 
+> 
+> Finally, I found the issue is that color_mgmt_changed is not set when
+> updating gamma_lut, causing gamma changes to not be applied to
+> hardware.
+> 
+> Root cause analysis:
+> - When updating GAMMA_LUT, color_mgmt_changed is set correctly.
+> - But when a subsequent unrelated property (e.g. VRR_ENABLED) is
+> committed, __drm_atomic_helper_crtc_duplicate_state() resets
+> color_mgmt_changed=0.
+> - This results in crtc->state having gamma_lut but
+> color_mgmt_changed=0, so gamma is never applied to hardware.
+> 
+> DRM framework design:
+> - color_mgmt_changed is a per-commit flag, reset on each new commit.
+> - Only set if color management properties change.
+> - In COMMIT_LEGACY mode (used by IGT), each property is committed
+> separately.
+> - Unrelated property commits overwrite color_mgmt_changed=1 from
+> previous gamma_lut update.
+> 
+> Solution in MTK DRM driver:
+> - Retain color_mgmt_changed if the old state has the flag and color
+> management blobs have not changed, preventing it from being overwritten
+> by unrelated property commits.
 
-== Series Details ==
+That shouldn't be needed because, as you noted, each property
+is commited separately. So the commit resulting from the GAMMA_LUT
+setproperty should have already updated the hardware before the
+next setproperty commit happens.
 
-Series: PCI driver helpers and xe-vfio-pci FLR improvement (rev4)
-URL   : https://patchwork.freedesktop.org/series/160140/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8749_BAT -> XEIGTPW_14539_BAT
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_14539_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_14539_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (9 -> 10)
-------------------------------
-
-  Additional (1): bat-bmg-3 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_14539_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-bmg-2:          [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8749/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14539/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind:
-    - bat-bmg-3:          NOTRUN -> [INCOMPLETE][3]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14539/bat-bmg-3/igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind.html
-
-  * igt@xe_sriov_flr@flr-vf1-clear:
-    - bat-adlp-7:         [PASS][4] -> [WARN][5]
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8749/bat-adlp-7/igt@xe_sriov_flr@flr-vf1-clear.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14539/bat-adlp-7/igt@xe_sriov_flr@flr-vf1-clear.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14539_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_waitfence@engine:
-    - bat-bmg-1:          [FAIL][6] ([Intel XE#6519]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8749/bat-bmg-1/igt@xe_waitfence@engine.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14539/bat-bmg-1/igt@xe_waitfence@engine.html
-
-  
-  [Intel XE#6519]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519
-
-
-Build changes
--------------
-
-  * IGT: IGT_8749 -> IGTPW_14539
-
-  IGTPW_14539: b896e43034c432c4a69c2b8a0cfb0d878d2c763c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8749: 195f101f25a7984686f36f340aa88d44a1716ec6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-4543-f37b96494b210e3ceec9c8c369dcd8f05fb30669: f37b96494b210e3ceec9c8c369dcd8f05fb30669
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14539/index.html
-
---===============6721072470140976649==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>PCI driver helpers and xe-vfio-pci FLR improvement (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160140/">https://patchwork.freedesktop.org/series/160140/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14539/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14539/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8749_BAT -&gt; XEIGTPW_14539_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_14539_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_14539_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (9 -&gt; 10)</h2>
-<p>Additional (1): bat-bmg-3 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_14539_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8749/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14539/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind:</p>
-<ul>
-<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14539/bat-bmg-3/igt@xe_exec_basic@multigpu-many-execqueues-many-vm-basic-defer-bind.html">INCOMPLETE</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8749/bat-adlp-7/igt@xe_sriov_flr@flr-vf1-clear.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14539/bat-adlp-7/igt@xe_sriov_flr@flr-vf1-clear.html">WARN</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14539_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_waitfence@engine:<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8749/bat-bmg-1/igt@xe_waitfence@engine.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519">Intel XE#6519</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14539/bat-bmg-1/igt@xe_waitfence@engine.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8749 -&gt; IGTPW_14539</li>
-</ul>
-<p>IGTPW_14539: b896e43034c432c4a69c2b8a0cfb0d878d2c763c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8749: 195f101f25a7984686f36f340aa88d44a1716ec6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-4543-f37b96494b210e3ceec9c8c369dcd8f05fb30669: f37b96494b210e3ceec9c8c369dcd8f05fb30669</p>
-
-</body>
-</html>
-
---===============6721072470140976649==--
+-- 
+Ville Syrjälä
+Intel
