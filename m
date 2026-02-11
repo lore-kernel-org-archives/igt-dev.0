@@ -4,61 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C93FDE9E305
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 13:32:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0EC8E9E30B
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 13:53:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 75FDF10E124;
-	Wed, 11 Feb 2026 13:32:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5145210E0C8;
+	Wed, 11 Feb 2026 13:53:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IDwzl/8a";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UXhaTmRy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDCEB10E124
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 13:32:09 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E29010E5C0
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 13:53:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770816730; x=1802352730;
+ t=1770818007; x=1802354007;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=o0koq7HmgOXJ/9MrIqaIpkQwQOcH0E7PcmMUUNFQB7w=;
- b=IDwzl/8aMHXlmLxbplTfafZMSjCYfr3+hTx7WJag2fj9aZUbuzJB1M9/
- HDzP35SYJeM2pAIexPHv9H+OoI0iIfDVfrx74jdGlsrGPI9bDwKIveAWy
- Il1i3ZGGmCZ6j5y9tvW7R/+auczNbC7WvSJwkyNdl3Z40Amm+5pBxzyhc
- Cpew2k8VJIraXojA9qss4YiIReooH0iL/PioqQFutQGhZTVDsLAkG2vW/
- Bp26cyFegSI2/mi260+sky/a6snfcOjS77TdRCBs6klW+oLCeqLDBMxpT
- Zb5Zme/AQrMMV7H7GriIOuKa20y6p2HLmPMTugqJsuNaCvfSy/1RSIXir g==;
-X-CSE-ConnectionGUID: 8X0rHHslQ2afd9/Jcxba7g==
-X-CSE-MsgGUID: NeBTSjh6S9yLtmC1bce4Hw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="83064242"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="83064242"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2026 05:32:09 -0800
-X-CSE-ConnectionGUID: RuFdU0/iQ8qO5oCGOcRQ9A==
-X-CSE-MsgGUID: DePGjdUUS76suCVDKeU1YA==
+ mime-version:in-reply-to;
+ bh=K7L3PSieT6VO6bGcqN64YmE8jEXFyL+xWqPJCPmYRKE=;
+ b=UXhaTmRygo6W6ZX/a/CJic9rwPpy48YZa91Wg9eB6ikhtBkx5RowxpT9
+ F5i7IIRJg/XT8XDylHjKhoGJ4D5pBmBqzZUutLlQUubL2YBQffaUn7RaP
+ VKFoHyEpsbKL65gK9LARtnKeMhb+oAf+M1yM9nicnspMIlN+sLzXb4AMH
+ Kc2kOPdssA+9qesi+Gqdt7rSYbPFD2Y9qG47nSs3Hr0Ef5jioMf8bKq18
+ 35+PzuV5NqCCRGQ5dZ6UiK67ZLbFD1MkLoqoZhRO8Eg1Ino/orFeGhjrp
+ g7mEv+vT6ADVUmWi+aXP1Mg4SFISBlKfcntW1ZBMVlxfg3XTY+Ln6E6DN A==;
+X-CSE-ConnectionGUID: 2ZU94XDvQn+mh6CSV7tkPg==
+X-CSE-MsgGUID: GsjXIfzyQLioegUOR2Xg8Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="82694578"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="82694578"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Feb 2026 05:53:27 -0800
+X-CSE-ConnectionGUID: mfzoYjZ+SRe7L/6WEhsRnw==
+X-CSE-MsgGUID: ZDu881sRQPy6g4yz+RIwNw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="211281213"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
- ([10.245.245.23])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2026 05:32:08 -0800
-Date: Wed, 11 Feb 2026 15:32:05 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v2] lib/igt_kms: use for_each_crtc() for iterating
- CRTCs
-Message-ID: <aYyE1aTDfiZUCgA-@intel.com>
-References: <ffbff2701a6e818380ac04b61d455d3a277f9a9f.1770736961.git.jani.nikula@intel.com>
- <20260211091635.1075060-1-jani.nikula@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="211633660"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 05:53:26 -0800
+Date: Wed, 11 Feb 2026 14:53:10 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Jeevan B <jeevan.b@intel.com>
+Cc: igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
+ mohammed.thasleem@intel.com, mohammed.bilal@intel.com
+Subject: Re: [PATCH i-g-t] lib/igt_pm: Move DC State Counter Functions to
+ common library
+Message-ID: <20260211135310.sbdexrm6chsubzln@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org,
+ karthik.b.s@intel.com, mohammed.thasleem@intel.com,
+ mohammed.bilal@intel.com
+References: <20260210032433.250680-1-jeevan.b@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260211091635.1075060-1-jani.nikula@intel.com>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+In-Reply-To: <20260210032433.250680-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,48 +73,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Feb 11, 2026 at 11:16:35AM +0200, Jani Nikula wrote:
-> The loop still figures out the pipe mask, keep using pipe here. The main
-> thing is not using the loop index as pipe, as that is subject to change
-> in the future.
+Hi Jeevan,
+On 2026-02-10 at 08:54:33 +0530, Jeevan B wrote:
+> Move DC counter utility functions from tests/intel/kms_pm_dc.c
+> to lib/igt_pm.c for reuse across other tests.
 > 
-> v2: 1 << pipe (Ville)
+> v2: Add 'igt_' prefix before all functions.
+> v3: Fix typos, fix debugfs_fd type and add errno.h include.
+> v4: Add IGT_INTEL_ prefix to all CHECK_DC* flag constants and
+>     PACKAGE_CSTATE_PATH constant.
 > 
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
 > ---
->  lib/igt_kms.c | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
+>  lib/igt_pm.c            | 170 +++++++++++++++++++++++++++++++++++
+>  lib/igt_pm.h            |  15 ++++
+>  tests/intel/kms_pm_dc.c | 191 ++++++++--------------------------------
+>  3 files changed, 222 insertions(+), 154 deletions(-)
 > 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index c4be889dc696..68d61472d9e8 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -3622,16 +3622,14 @@ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display, igt_output_t
->  {
->  	unsigned full_pipe_mask = 0, assigned_pipes = 0;
->  	igt_output_t *output;
-> +	igt_crtc_t *crtc;
->  	int i, j;
->  
->  	memset(chosen_outputs, 0,
->  	       sizeof(*chosen_outputs) * igt_display_n_crtcs(display));
->  
-> -	for (i = 0; i < igt_display_n_crtcs(display); i++) {
-> -		igt_crtc_t *crtc = igt_crtc_for_pipe(display, i);
-> -		if (crtc->valid)
-> -			full_pipe_mask |= (1 << i);
-> -	}
-> +	for_each_crtc(display, crtc)
-> +		full_pipe_mask |= 1 << crtc->pipe;
->  
->  	/*
->  	 * Try to assign all outputs to the first available CRTC for
-> -- 
-> 2.47.3
+> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+> index 1ffcdcef3..ebf39baab 100644
+> --- a/lib/igt_pm.c
+> +++ b/lib/igt_pm.c
+> @@ -31,6 +31,7 @@
+>  #include <pciaccess.h>
+>  #include <stdlib.h>
+>  #include <string.h>
+> +#include <errno.h>
 
--- 
-Ville Syrjälä
-Intel
+You forgot about this, it should be moved up before
+#include <fcntl.h>
+
+Regards,
+Kamil
+
+>  #include <unistd.h>
+>  #include <sys/stat.h>
+>  #ifdef __linux__
+> @@ -1543,3 +1544,172 @@ void igt_pm_dpms_toggle(igt_output_t *output)
+>  				   DRM_MODE_DPMS_ON);
+>  	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
+>  }
+[cut]
