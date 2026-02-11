@@ -4,54 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA837E9E2E4
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 11:19:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDB3AE9E2E4
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 11:19:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6A75A10E00B;
-	Wed, 11 Feb 2026 11:19:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8166010E3A4;
+	Wed, 11 Feb 2026 11:19:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EiAZICRQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HpacH/Ch";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 393B810E00B
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 11:19:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98E3E10E3A4
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 11:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770808748; x=1802344748;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=WOXIdDKhFWPVqlSFyvSVUlFCJlMQP6es7eRYLtdAP68=;
- b=EiAZICRQE9pxkhCPkycXCkYY5PgcIJ0NNJ13mw51ChNqhz+IsUqcixDE
- WHg6LiSUIfGTttJQguXMRZb7YLaFl71nqnMHjNUmzn05pygMKOMqw78Te
- WKV3ODVBKeNN/X5UcmdBL0kLlu/+WrZBPd+WOesXxbGW587+/h31qdbtT
- p+6Q6h8o6fZO+vSIY+iro4OsGu5v0qX7VbE1eV6gJ3sRflhjd9iJb/zQQ
- AGjrxUBnzPwuOzN5JdLReahMXdsoymcxIZxd7orOYERpUVsIt3G+ge/tx
- QfsCl2JKwWi7aIeDwgb6ejELtak+PfCRevibUV4s/0Y/9Gp6Ss2NiRVio Q==;
-X-CSE-ConnectionGUID: psKfJLOmRH2fmavG15oMEA==
-X-CSE-MsgGUID: eLI2y+ijTsSl08BdHxY44Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="82592135"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="82592135"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2026 03:19:08 -0800
-X-CSE-ConnectionGUID: pLfAYe+XRuq+MQgElThnyw==
-X-CSE-MsgGUID: K+0PACntQ4uQFf5j3qsgAg==
+ t=1770808757; x=1802344757;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=k1h1VSOkWN7mq7cxmIO6xDbFr9bro0/XxHzKIkQKyHo=;
+ b=HpacH/Chc9AwZnpCCvV6PULiBllJYHJHhzFrurGlr899z9HIG5/nH6iq
+ ftXRPRd7Wr8UmnDjigTC5yZaVEimo4I5+zTuxlRBke9KQeUEqBeNwdrFP
+ ZwxtD7T5Bww/ag1vNS8QNAyZzxy396fFUX5GIonzzfz8Y8ErgDEIcx+8b
+ Idwkmc39nrpaC3055N9zh98RI2Ajc5m19f13qmvZTXeISMpYXlNPfWbR/
+ /GsaCHZmdwvBzL6P9aMnT+eS6Pis9YUJMq5+KSwvkosbgsYV1XtDy5UBC
+ MQ8kYBhY3Wd9RUIrgGNVSBFwkx5VOdvrVd9D6jkHVPafQhdsdPOFg3Hz1 A==;
+X-CSE-ConnectionGUID: awxCezplR7+6aqSzLcAgrw==
+X-CSE-MsgGUID: xk39W9o/RAW6CyzVpCZUDA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="82275676"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="82275676"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Feb 2026 03:19:17 -0800
+X-CSE-ConnectionGUID: 6DPVDY7eQLS0/owmVX3njw==
+X-CSE-MsgGUID: I4diqsi+R/Ct7s36YvQfnw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="217182281"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="212053481"
 Received: from soc-5cg43972f8.clients.intel.com (HELO localhost)
  ([172.28.182.85])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2026 03:19:06 -0800
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Feb 2026 03:19:15 -0800
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH v4 i-g-t 0/6] PCI driver helpers and xe-vfio-pci FLR
- improvement
-Date: Wed, 11 Feb 2026 12:18:24 +0100
-Message-ID: <20260211111834.1140287-1-marcin.bernatowicz@linux.intel.com>
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>
+Subject: [PATCH v4 i-g-t 1/6] lib/igt_sriov_device: Add helper to get VF PCI
+ slot address
+Date: Wed, 11 Feb 2026 12:18:25 +0100
+Message-ID: <20260211111834.1140287-2-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260211111834.1140287-1-marcin.bernatowicz@linux.intel.com>
+References: <20260211111834.1140287-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,59 +73,69 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series improves PCI driver management infrastructure in IGT
-and updates the xe_sriov_flr test to rely on xe-vfio-pci FLR semantics.
+Add igt_sriov_get_vf_pci_slot_alloc() to resolve the PCI slot address
+of a VF by following the device/virtfnX symlink in the PF sysfs
+directory, returning a newly allocated string or NULL on failure.
 
-It introduces generic PCI driver helpers for driver_override handling
-and explicit bind/unbind operations.
-Adds a small SR-IOV utility to resolve VF PCI slot addresses.
-Fixes igt_kmod PCI bind/unbind logic to correctly handle module vs driver
-name mismatches (e.g. xe_vfio_pci vs xe-vfio-pci), marking those helpers
-as deprecated in favor of driver-level APIs.
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
+---
+ lib/igt_sriov_device.c | 25 +++++++++++++++++++++++++
+ lib/igt_sriov_device.h |  1 +
+ 2 files changed, 26 insertions(+)
 
-The xe_sriov_flr test is updated to attach VFs to xe-vfio-pci
-before initiating FLR, allowing the test to wait for FLR completion
-via the driver.
-
-V4 -> V3:
-- Clarify igt_pci_get_bound_driver_name() doc that driver/driver_len
-  are optional (NULL/0 valid when only checking bound/unbound) (Lukasz)
-- Drop patch checking IOMMU group presence before loading xe-vfio-pci
-  (Lukasz)
-
-V3 -> V2:
-- Add --wait-flr-ms option to configure post FLR sleep time
-- Add --no-xe-vfio-pci option to skip xe-vfio-pci load
-- Skip xe-vfio-pci load/bind when IOMMU is off
-
-V2 -> V1:
-- Add igt_pci_get_bound_driver_name() to query the currently bound PCI
-  driver via the /sys/bus/pci/devices/<BDF>/driver symlink.
-- Extend igt_pci_bind_driver_override() and
-  igt_pci_unbind_driver_override() with a timeout_ms parameter so callers
-  can wait for bind/unbind to actually complete, instead of relying on
-  drivers_probe write success. drivers_probe only initiates an async
-  reprobe, so a successful write does not mean bind/unbind succeeded -
-  verify the effective bound driver with a timeout.
-- Unbind VFs only if they were successfully bound.
-
-Marcin Bernatowicz (6):
-  lib/igt_sriov_device: Add helper to get VF PCI slot address
-  lib/igt_pci: Add generic PCI driver override and bind/unbind helpers
-  tests/intel/xe_sriov_flr: Attach VFs to xe-vfio-pci before initiating
-    FLR
-  lib/igt_kmod: Fix PCI bind/unbind for module/driver name mismatch
-  tests/intel/xe_sriov_flr: Add --wait-flr-ms option
-  tests/intel/xe_sriov_flr: Add --no-xe-vfio-pci option
-
- lib/igt_kmod.c             |  90 ++++++----
- lib/igt_pci.c              | 354 +++++++++++++++++++++++++++++++++++++
- lib/igt_pci.h              |  13 +-
- lib/igt_sriov_device.c     |  25 +++
- lib/igt_sriov_device.h     |   1 +
- tests/intel/xe_sriov_flr.c | 110 +++++++++++-
- 6 files changed, 551 insertions(+), 42 deletions(-)
-
+diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
+index 788ffbfa1..1f4c3ac04 100644
+--- a/lib/igt_sriov_device.c
++++ b/lib/igt_sriov_device.c
+@@ -354,6 +354,31 @@ static char *__igt_sriov_get_vf_pci_slot_alloc(int pf_sysfs, unsigned int vf_num
+ 	return pci_slot_addr ? strdup(pci_slot_addr) : NULL;
+ }
+ 
++/**
++ * igt_sriov_get_vf_pci_slot_alloc:
++ * @pf: PF device file descriptor
++ * @vf_num: VF number (1-based); 0 means PF
++ *
++ * Resolves the symlink under the PF sysfs directory (device/virtfnX) to obtain
++ * the PCI slot address of the VF (or PF if @vf_num is 0).
++ *
++ * Returns: newly allocated PCI slot address string (e.g. "0000:3b:00.4"),
++ * or NULL on failure. Caller must free().
++ */
++char *igt_sriov_get_vf_pci_slot_alloc(int pf, unsigned int vf_num)
++{
++	char *pci_slot;
++	int sysfs;
++
++	sysfs = igt_sysfs_open(pf);
++	igt_assert_fd(sysfs);
++
++	pci_slot = __igt_sriov_get_vf_pci_slot_alloc(sysfs, vf_num);
++	close(sysfs);
++
++	return pci_slot;
++}
++
+ static bool __igt_sriov_bind_vf_drm_driver(int pf, unsigned int vf_num, bool bind)
+ {
+ 	char *pci_slot;
+diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
+index 84d29b1bb..a417b30d8 100644
+--- a/lib/igt_sriov_device.h
++++ b/lib/igt_sriov_device.h
+@@ -28,6 +28,7 @@ void igt_sriov_enable_driver_autoprobe(int pf);
+ void igt_sriov_disable_driver_autoprobe(int pf);
+ int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
+ bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
++char *igt_sriov_get_vf_pci_slot_alloc(int pf, unsigned int vf_num);
+ void igt_sriov_bind_vf_drm_driver(int pf, unsigned int vf_num);
+ void igt_sriov_unbind_vf_drm_driver(int pf, unsigned int vf_num);
+ int igt_sriov_device_sysfs_open(int pf, unsigned int vf_num);
 -- 
 2.43.0
 
