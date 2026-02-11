@@ -4,27 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1856BEA3F18
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 09:01:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 985A9EA3F27
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 09:10:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B5D1210E041;
-	Wed, 11 Feb 2026 09:01:49 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA82B10E041;
- Wed, 11 Feb 2026 09:01:48 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0389132138016784268=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Enable_Vebox_engine_copy_?=
- =?utf-8?q?on_Intel_Xe_driver_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0B0AB10E060;
+	Wed, 11 Feb 2026 09:10:39 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lMv4Psmr";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA40B10E060
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 09:10:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1770801038; x=1802337038;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version:content-transfer-encoding;
+ bh=qGVwhMEOKOrnWLchcmtJ9SuhWflaa88tDTjOek78Y98=;
+ b=lMv4Psmr/DsU8jBeD36quE9bkvEQfHgyT0UgxSHk87OIxb/OHVII4nEa
+ LWjT/e5txMZIvj6nS4USFqEqFMM7eDIgJfOnSbHAanBwaHfVzHnTOpi06
+ ICbSIZrpZX6Sdio4wnRqBczJMuEXJyIfn/V0G9YBe/TmF3ryFf+zSx8Uf
+ 4GLESRWNsRwHLYSjubdPy60vcVwHPJwD9QV82zHK+G0I1sVVah2q+B7q4
+ uCJUL2BMEEAxdrh/fA9o8II9zQf1D2MYAXgyEdlpymolwG3p/354+hI8p
+ J+MpYZqlGi915++rN+J6dV+NfdjeIxj8lejt/rRSd62IYn83dPtKtdloj w==;
+X-CSE-ConnectionGUID: JMZUWtWdSby60J6lod/MlA==
+X-CSE-MsgGUID: 4/sh6NIOTSq1VFgGaAydEg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="83385091"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="83385091"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Feb 2026 01:10:32 -0800
+X-CSE-ConnectionGUID: 1P2KQ8+7SBOYuNwiOo7NRg==
+X-CSE-MsgGUID: uT0LbdarR6OhfaPp3PKHuw==
+X-ExtLoop1: 1
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.57])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Feb 2026 01:10:30 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Feb 2026 09:01:48 -0000
-Message-ID: <177080050874.244838.11292094591078220887@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260210160942.2219370-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20260210160942.2219370-1-juhapekka.heikkila@gmail.com>
+Subject: Re: [PATCH i-g-t 07/11] lib/igt_kms: use for_each_crtc() for
+ iterating CRTCs
+In-Reply-To: <aYttSeO152W8Z-kN@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <cover.1770736961.git.jani.nikula@intel.com>
+ <ffbff2701a6e818380ac04b61d455d3a277f9a9f.1770736961.git.jani.nikula@intel.com>
+ <aYttSeO152W8Z-kN@intel.com>
+Date: Wed, 11 Feb 2026 11:10:27 +0200
+Message-ID: <f0874979d29c952cea525fa43184bc04af2d22c4@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,147 +69,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0389132138016784268==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tue, 10 Feb 2026, Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com=
+> wrote:
+> On Tue, Feb 10, 2026 at 05:23:48PM +0200, Jani Nikula wrote:
+>> The loop still figures out the pipe mask, keep using pipe here. The main
+>> thing is not using the loop index as pipe, as that is subject to change
+>> in the future.
+>>=20
+>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+>> ---
+>>  lib/igt_kms.c | 8 +++-----
+>>  1 file changed, 3 insertions(+), 5 deletions(-)
+>>=20
+>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>> index c4be889dc696..63fd8095c551 100644
+>> --- a/lib/igt_kms.c
+>> +++ b/lib/igt_kms.c
+>> @@ -3622,16 +3622,14 @@ igt_output_t **__igt_pipe_populate_outputs(igt_d=
+isplay_t *display, igt_output_t
+>>  {
+>>  	unsigned full_pipe_mask =3D 0, assigned_pipes =3D 0;
+>>  	igt_output_t *output;
+>> +	igt_crtc_t *crtc;
+>>  	int i, j;
+>>=20=20
+>>  	memset(chosen_outputs, 0,
+>>  	       sizeof(*chosen_outputs) * igt_display_n_crtcs(display));
+>>=20=20
+>> -	for (i =3D 0; i < igt_display_n_crtcs(display); i++) {
+>> -		igt_crtc_t *crtc =3D igt_crtc_for_pipe(display, i);
+>> -		if (crtc->valid)
+>> -			full_pipe_mask |=3D (1 << i);
+>> -	}
+>> +	for_each_crtc(display, crtc)
+>> +		full_pipe_mask |=3D crtc->pipe;
+>
+> 1 << crtc->pipe
 
-== Series Details ==
+*facepalm* of course
 
-Series: Enable Vebox engine copy on Intel Xe driver (rev3)
-URL   : https://patchwork.freedesktop.org/series/161376/
-State : success
+>
+>>=20=20
+>>  	/*
+>>  	 * Try to assign all outputs to the first available CRTC for
+>> --=20
+>> 2.47.3
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8748 -> IGTPW_14536
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14536/index.html
-
-Participating hosts (43 -> 40)
-------------------------------
-
-  Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14536 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [DMESG-FAIL][1] ([i915#12061]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8748/bat-mtlp-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14536/bat-mtlp-8/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-2:         [DMESG-FAIL][3] ([i915#12061]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8748/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14536/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-    - bat-dg2-9:          [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8748/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14536/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8748 -> IGTPW_14536
-
-  CI-20190529: 20190529
-  CI_DRM_17973: 8ef710cfb81579fbf4107d77134e6e8d2c864ef0 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14536: 14536
-  IGT_8748: 8748
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14536/index.html
-
---===============0389132138016784268==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Enable Vebox engine copy on Intel Xe driver (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161376/">https://patchwork.freedesktop.org/series/161376/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14536/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14536/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8748 -&gt; IGTPW_14536</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14536/index.html</p>
-<h2>Participating hosts (43 -&gt; 40)</h2>
-<p>Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14536 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8748/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14536/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8748/bat-arlh-2/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14536/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8748/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14536/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8748 -&gt; IGTPW_14536</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17973: 8ef710cfb81579fbf4107d77134e6e8d2c864ef0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14536: 14536<br />
-  IGT_8748: 8748</p>
-
-</body>
-</html>
-
---===============0389132138016784268==--
+--=20
+Jani Nikula, Intel
