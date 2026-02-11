@@ -4,64 +4,217 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17A83E9E2E2
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 11:21:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CC8EE9E2E2
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 11:24:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B8C4A10E3AF;
-	Wed, 11 Feb 2026 11:21:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF2F210E3B2;
+	Wed, 11 Feb 2026 11:24:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CX7byyk4";
+	dkim=pass (1024-bit key; unprotected) header.d=mediatek.com header.i=@mediatek.com header.b="aoOByvH9";
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b="mq47SRdI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AABD410E3AD
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 11:21:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770808872; x=1802344872;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=mGfK6aYqOIxH9BX/k9OIX6PQzxtBO5dWQjHow7oT5Yw=;
- b=CX7byyk4tpMLDRo5Pa/FmZll66KxyN32dK62IJQjRa98uUWHjSyd02Yi
- /v15qLQQNxhqUzjoWWP3FejZkTxu0UYPN2SrkuXf5fHrPpERPJmt3enk+
- op84mrVPSFPAo+RAM29d8iHDgjWgShOwXYge3iQtdXSCpQJ54XtP58jUt
- Djl0H6akepBCHgt0aZHDtRhAKWBpxSS+4Dwzb6yeHjcpYbGUowxtbBIig
- BBDCv1rOx1vCQE5JF3K105dwb2YZuBsEoxzXEgAGHCiG09Ujdast1W6NI
- fSVDgndvNiXMnJLpQYGMV8N6BcDCKoDJ9SX8StX54tkWKSCZBWwnnXWO8 g==;
-X-CSE-ConnectionGUID: Jlcv88SxRnqyOlEi5/VdIg==
-X-CSE-MsgGUID: 154XfT39TWKqaMjRVV1lBA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="74552116"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="74552116"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2026 03:21:11 -0800
-X-CSE-ConnectionGUID: teFvhs37TYmJTeVxV2X5sw==
-X-CSE-MsgGUID: hPJWkTJSQhetCUpVwzqNiQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="211327999"
-Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.85])
- ([172.28.182.85])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2026 03:21:10 -0800
-Message-ID: <a5dce3b2-4627-4719-bf52-1f676e38ff0b@linux.intel.com>
-Date: Wed, 11 Feb 2026 12:21:07 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 i-g-t 2/7] lib/igt_pci: Add generic PCI driver override
- and bind/unbind helpers
-To: "Laguna, Lukasz" <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-References: <20260204163217.121305-1-marcin.bernatowicz@linux.intel.com>
- <20260204163217.121305-3-marcin.bernatowicz@linux.intel.com>
- <2ebfcc0d-49ca-4fde-a48f-27a014b5f729@intel.com>
- <1c068311-2769-4f90-9c7c-9733a45d9029@linux.intel.com>
- <3f0acb60-218d-4935-ba2f-0314ba481cf3@intel.com>
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B367410E3B2
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 11:24:51 +0000 (UTC)
+X-UUID: 45a41052073c11f185319dbc3099e8fb-20260211
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
+ s=dk; 
+ h=Content-Type:MIME-Version:Content-Transfer-Encoding:Content-ID:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From;
+ bh=vqD486NwgJxYrPnbq7hKKCtz6f//rOcjo+oNGAqK//M=; 
+ b=aoOByvH99+ZUqr4OOB8zT/SzrS5PSCVq0Jz35UnD8wDAAQRI+wIluWXGN33OkMUf3CRght3xiIJVd4ceaua5iWDrOJ7SERRkPMzxxcO9kDEvZE8XY4AMb7NBeV47K4k1itn/FBE3FiB1raj5IZSq/9NX13IE2kD2Trx7+/qUuJo=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11, REQID:a9c8846c-806d-4540-9d2c-ef307cb2b18e, IP:0,
+ U
+ RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+ release,TS:0
+X-CID-META: VersionHash:89c9d04, CLOUDID:b36c95f0-16bd-4243-b4ca-b08ca08ab1d8,
+ B
+ ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111|836|888|898,
+ TC:-5,Content:0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BE
+ C:-1,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 45a41052073c11f185319dbc3099e8fb-20260211
+Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by
+ mailgw01.mediatek.com (envelope-from <jason-jh.lin@mediatek.com>)
+ (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+ with ESMTP id 1682401706; Wed, 11 Feb 2026 19:24:47 +0800
+Received: from mtkmbs10n1.mediatek.inc (172.21.101.34) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 11 Feb 2026 19:24:46 +0800
+Received: from SG2PR04CU009.outbound.protection.outlook.com (172.21.101.237)
+ by mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Wed, 11 Feb 2026 19:24:45 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PgAXERx8U9q8umW7/Mg4jYeygWu2zTAWtDZELLc7TFRUdRd5mMhh7yYeeeo9iBqIWEKM3bpCMO+vWZKS5ioi3urSF0YKKWREIeBW/PIAVnXN+m5eiltCTA9IUs2qhPBTeBh1smf8Lv/8wd7W2rMZLu/VcSnmHs/zUhun1iUk4cxYoGgjWbSiwFxxlG1/EV37a1iJCJpF9uwpqFOgKJ4KxwZ+URq4RUDzeVE7RpRv8GCmiAVyynuzrsSLzCNDxBc+fI1TjwyUyXQpSMDAcoNlAg7q1HYzEa3GVnYzbBbkt7fa0rrd40hx3GP+4FHHGyqxuUMk6AtqwCOlhYc2Ht4P9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bQT0T6oJXYVbqJRgf8viL+v0gQEc4bxVPyUNgc5ZKQg=;
+ b=FxoVlit742lrZYNEMjHMgbJ0xCCduuGUixkxmmrJZiMwb2KCUePZ4GW6GJqFipHSmPMipcZcjTqlRd8xxecr0X9gMq5ObI8JwUI0jyxwI6Xmuek/nPtY0CK4Xs9eRBCz/WNy2+B94qGrHWhC99NOAMCxK0WLbHqub7H/BRTktwc/oFEyZDDOS61rWqEbkrua29EcI5HCG1CWbyjTCsGLWbfpY8vKYrMQVkJppyajG3yuL6YHhwiofx8ncWq72hMKQoNan+cVTY+y9lveMgGYueOapsMe+XvSSfBuoUGE6cn7Lc6Ez4tbl1X6GpC3i+2e+P9jNMp60FCOZWsb3LX4xg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
+ dkim=pass header.d=mediatek.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bQT0T6oJXYVbqJRgf8viL+v0gQEc4bxVPyUNgc5ZKQg=;
+ b=mq47SRdIAlmiESVIvha/Remlw/f55kFneZGx780HaqlB53Z2BPPyrJ+iDfxCQIU1mMcH9bkQke0Kf9fjVeqVhUILvnYyk+btfe0MC7JBTmFq7Uajg8awALgCgG3FH83lAiTqmpoNjwnaVt5Jy9IpGQJW1j4RoPLaq2fc6HjFpy8=
+Received: from SEYPR03MB7682.apcprd03.prod.outlook.com (2603:1096:101:149::11)
+ by KL1PR03MB7940.apcprd03.prod.outlook.com (2603:1096:820:f5::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.19; Wed, 11 Feb
+ 2026 11:24:43 +0000
+Received: from SEYPR03MB7682.apcprd03.prod.outlook.com
+ ([fe80::1fe4:fb59:1b1:1646]) by SEYPR03MB7682.apcprd03.prod.outlook.com
+ ([fe80::1fe4:fb59:1b1:1646%6]) with mapi id 15.20.9587.017; Wed, 11 Feb 2026
+ 11:24:43 +0000
+From: =?utf-8?B?SmFzb24tSkggTGluICjmnpfnnb/npaUp?= <Jason-JH.Lin@mediatek.com>
+To: "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>
+CC: "swati2.sharma@intel.com" <swati2.sharma@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "karthik.b.s@intel.com" <karthik.b.s@intel.com>, "jani.nikula@intel.com"
+ <jani.nikula@intel.com>, "chaitanya.kumar.borah@intel.com"
+ <chaitanya.kumar.borah@intel.com>, =?utf-8?B?TmFuY3kgTGluICjmnpfmrKPonqIp?=
+ <Nancy.Lin@mediatek.com>, Project_Global_Chrome_Upstream_Group
+ <Project_Global_Chrome_Upstream_Group@mediatek.com>,
+ "bhanuprakash.modem@gmail.com" <bhanuprakash.modem@gmail.com>,
+ =?utf-8?B?UGF1bC1wbCBDaGVuICjpmbPmn4/pnJYp?= <Paul-pl.Chen@mediatek.com>,
+ "gildekel@google.com" <gildekel@google.com>, "fshao@chromium.org"
+ <fshao@chromium.org>, "juhapekka.heikkila@gmail.com"
+ <juhapekka.heikkila@gmail.com>, =?utf-8?B?U2luZ28gQ2hhbmcgKOW8teiIiOWciyk=?=
+ <Singo.Chang@mediatek.com>, "uma.shankar@intel.com" <uma.shankar@intel.com>,
+ "markyacoub@chromium.org" <markyacoub@chromium.org>,
+ "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH i-g-t v2] tests/kms_color: Always use atomic_commit for
+ setting color properties
+Thread-Topic: [PATCH i-g-t v2] tests/kms_color: Always use atomic_commit for
+ setting color properties
+Thread-Index: AQHcWrwpN/KPT+cJ40GqSvcarZXIpA==
+Date: Wed, 11 Feb 2026 11:24:43 +0000
+Message-ID: <2c3791e090ff1a074a044a5ac1f555e855c56aee.camel@mediatek.com>
+References: <20251121075406.2006325-1-jason-jh.lin@mediatek.com>
+ <aSApNt1PwpgrX5E9@intel.com>
+ <0a2d25af2c0ba3c5bc26e445a46413c90a77a19e.camel@mediatek.com>
+ <aSBBG2n64m65CWLR@intel.com>
+ <cb616c5e6c96d838f9dc5dd9c9e7b8110e776cd4.camel@mediatek.com>
+ <aSTHiBaIAqNuggbt@intel.com>
+ <4beb7387818893db802d5ca90058336cd5059a3f.camel@mediatek.com>
+ <aSXiJ0gKJuUMZ0Am@intel.com>
+ <c7855c8fb18d4cc622e77706ade501b4b9750b77.camel@mediatek.com>
+In-Reply-To: <c7855c8fb18d4cc622e77706ade501b4b9750b77.camel@mediatek.com>
+Accept-Language: zh-TW, en-US
 Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <3f0acb60-218d-4935-ba2f-0314ba481cf3@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mediatek.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SEYPR03MB7682:EE_|KL1PR03MB7940:EE_
+x-ms-office365-filtering-correlation-id: 63ab3351-cde3-49e6-7f01-08de69602774
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|7416014|376014|1800799024|38070700021; 
+x-microsoft-antispam-message-info: =?utf-8?B?dnFtRmF1SXVaOGVqWkFZbVpvU1dXRUZEelJpYTVYQW8xdk80aXlUQ1Y1T2VJ?=
+ =?utf-8?B?UWlJSVA4TXhGWC9acXVBaTJkT1ovVWNzVXBkRk5tSE1BTk1ZZ0tXdzBwemJK?=
+ =?utf-8?B?YlJnM210RU8zaUpBaHo5RCs0M0NFeEZ1NGxUc1BQQXdUc0xzM3ZRdW04UlVB?=
+ =?utf-8?B?Mk9obkpJbXBmNVBJaEhQZUtuak04dmRZYm9HcThsNHVKSCtySjNwY3dXaFA0?=
+ =?utf-8?B?d1YyUElRSEsxaklIUHV2WGd1eitkNjd1cENpR3dFNHJoeTdJWnplMUkvOXRx?=
+ =?utf-8?B?djBrM2tRMDhuOFVVWGRnUDJuUlBSTDE5cGN2Qm1JYVVmbGxtd2d2RFFwejRk?=
+ =?utf-8?B?OGU1ZVBtRVhVdGFTaUxwa2xCUlJTMlJMaHN5V084aHVhWFZIOTF5aGZ0Qkox?=
+ =?utf-8?B?eXE5R1M3Ly9oTDluZGRWeFVib1JnbTk0SGJKczJnVzZHQnRSbjd4L3pvR3Nt?=
+ =?utf-8?B?LyswUHpKTkQ4aTczSDB4WDI4K1NLbDlMMCsrQk11bjJmZU1INlArazRZNmFB?=
+ =?utf-8?B?MUFSTVZ2aStrcjhQb2pmOVcrKzZTSXlNdmFGb3hLZDRPSDZ4NHRpT0Q2UWY3?=
+ =?utf-8?B?TVQ4SE95L1FrR3VZanU0eE9XTE8rb2dNMFg4VG52Rkc5ZWw2YlJjSlh0bllx?=
+ =?utf-8?B?cnIybXRNN3hUN29qUWRRUlFDTkUyZVJBMWllZlk4aE1BRWk4QWlWSjNia0Rr?=
+ =?utf-8?B?azJPeGlnMWdKa1pPQ2xoYXhzNEpRNGM0STZyckpSUlo5K0tNYTNqdE9RUmRa?=
+ =?utf-8?B?MjJyc241b2wxT3ZWQTRJcElBaElpSVZWOXBNTmRkWi9WVWV4MW0rVFBqVDMw?=
+ =?utf-8?B?cThtMVZZK09zU3pLVHprbm1BUDVXZ1BZZ2xMaUdocER4Q0l3a20yMVBkY3Ir?=
+ =?utf-8?B?UWF3S1JzaElKS2w2MHp6NjdldjlmeXZSR3gzK3VWQjY2OThVemdmQzRmQm1C?=
+ =?utf-8?B?dXFkRFdMb24ySjBjUXJ4aC8vOElHNm0yMndQZDJFeUkxY0FWLzRHTnZ0UmJv?=
+ =?utf-8?B?b0pVdHJDUlh3MWZ5ZDV5bWVmRkxSbXV4WmRBNnd5WFI5OGswWDNpcE8rK2JI?=
+ =?utf-8?B?c08vYVhqcHdXSURjUTN1N3lIS21GbDJsSXlyN1AvNFhiWlVEdmxKTGozN0Yr?=
+ =?utf-8?B?VWZGVUpKaFBrSXh3NzdrQWJSeEExNzBDdXovclVDWVV5SE1ybWh3dTFNWXJ0?=
+ =?utf-8?B?QVBjb3hxblJFeitFYjJWU2FWSjFtSXhXbHZTSzdzeTNWSHNJL2FiYmZDaE9U?=
+ =?utf-8?B?L3BDdWhNWjNUNXJJTE1WSzk2ZEZMVnFnQ25pRU16dE56UTFMbDNKWGsyMDdI?=
+ =?utf-8?B?Q1BpQ08vU0xValN3a28yRzE3NlNSRGY0WVRqUHNoci9KRFZ6RFBWWUhEdmJ5?=
+ =?utf-8?B?UUk3eWtOL2JjUmJTdHB0MHVITEJrQWRYYktuWGxESWMxR1htNHA3SnMrTTVI?=
+ =?utf-8?B?VjFicW1jd0x3S01UR0FGS2pxREFwNzJoczZNTjVJWlE4R2RrUWJ3eEx6b0Fp?=
+ =?utf-8?B?dHpUcWNtbmRINGJlU0Zsd2kzeDdqVW5LK01pUTlnUVNnSzhHc3hHaEx2WFh3?=
+ =?utf-8?B?Q3J1RHVSN0ZZeWcrNFgwbVllWmxuYTh0TUd6REpJMjFjOU42NmFQbGtjWjcv?=
+ =?utf-8?B?OElRR3NoN3ZTRjVBRngwYmRhcmhUczhZQklXWDlUcnRkZ01QL3NMNEZCRFRK?=
+ =?utf-8?B?S2dJQlIvaDlzOW9MTUVUWEZkK0lVUGdDampjR3BkbTY0VzgrRlZJaHdFS1JP?=
+ =?utf-8?B?ZWNrU1FoNVR0TElXK0RvWmhXZ0dLMXFwdXpVdkk3elpZSGZpeGcrOXMrZkFM?=
+ =?utf-8?B?MXRUL1FtSm5YbmdUN1B2Slc3MzF3OXFhRTdqZnlPSHpYZmdIZ2pyRXlVTWE5?=
+ =?utf-8?B?aE5zRVozVDgzMXduQ1g5VW5NQkl4NytBQWRBWXQwM2d2dG1hQXpWU0lZVlBS?=
+ =?utf-8?B?V3JldUxzdGZXUXQxV2FKZlpxUkNwS2dJWml2QmN2MEVGR2IwWEJEdmRMbnJC?=
+ =?utf-8?B?VWlpdUZCb2s3Mi9QUFYwRFdwY09TdE0ydFpkTEY3MGJVY1V3Ukl0b1lMeTQ4?=
+ =?utf-8?B?dFdFRnRwUDZBdGs3akhMaGVBbXR1NGhPalIvVW5qLzAzUkF4bEdJTkpqUFd3?=
+ =?utf-8?B?NDJjWlZwSEsyZDVueFAwazk2eXlHQk1Jb3BHUlNOTEI4TE8wdWw4WjNJYWZK?=
+ =?utf-8?Q?03rOF1wiUZmagWG3H2kzPi4=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SEYPR03MB7682.apcprd03.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(7416014)(376014)(1800799024)(38070700021); DIR:OUT;
+ SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?QTd5azlpRzNNSHJYc0xwWHIwVUxWTUVPRmxlMVplSzluS21TY3lCRHp4bzVE?=
+ =?utf-8?B?OUhaYXZqNGd5UWxyejBIYnZXWHpuVnFISUlFNE15Tk9CWUJUUUpGN2tRMFRX?=
+ =?utf-8?B?dkpRbkRyNkZlZlVLZ2pNQUh4N2ZvWmdKWk1BQkdxMnBDMkluN2dveWp1SVpM?=
+ =?utf-8?B?WkxJbll5ZVZBQ1d1bHI2VnVPU3QxYjh1TVlqYnRSdEhHT0pNSklnWHRZc3Jh?=
+ =?utf-8?B?M0IycDhzNk5sclA3RGZraTMwTGRHZmJwaGRBc1JOSFY5dExiQTU1eGIzVHFj?=
+ =?utf-8?B?OFhLL01xaHJseHU2T1VVdUxOWHIzU3pVZlErZFZQenNGb25OYTlwVEUyZFpE?=
+ =?utf-8?B?OU80bGpWNUNvdlZ4Z0pDYkVpQU1MdTYxOExrQklrTi9iUG0yN3dXYSt4MTJK?=
+ =?utf-8?B?bUh6RzI1Z3NiZFdOT2V6RWdVVkJRUEM2TitESXNWVjJUd1o2THd5SlFvYzRt?=
+ =?utf-8?B?SmprUVNnVllDS3l0LzJpUVY1Ykg3MGt1a01JTEFzS0pCOGg4ajBETVZWc1Er?=
+ =?utf-8?B?ZWhUSHA0R0VLQWcwazJGM29NNFQyVVFGb2NUVTM2WElXaUt3LzVCdHpvT1pN?=
+ =?utf-8?B?dC91QWFCNVpLOWRvVWd5RFloUlNWTG5ldFRHcVZQSCtJaHdDZlVBdWhWeVpM?=
+ =?utf-8?B?YUZud2VnbXh2blQrZVZtU1VhQ1UwVGs2NUpoSVBaNzNQdGdlQTQxT04yazVn?=
+ =?utf-8?B?OVJVRTdvd09hSHM0ekRKVG1QSFVpL1Nua2cyNjROS2kxVnIwVFZFd2F5VkZi?=
+ =?utf-8?B?dE9QZkVuN2RtQkRiM2R3aUhCQ3l2Y2xSN0dmaEtlZ2FNMnQvTVNVRWtYNDVv?=
+ =?utf-8?B?cSttZlRjME0xTzArRVR3WGxoK2lTSDRIWjZnK3lvSHFvdVZibzhJOXR3UTFX?=
+ =?utf-8?B?TElNaE8vTGx0VVlRLzFWaWRQUXpTM25nK3RuUy84NzJZM1AxS0REV0hnRXpR?=
+ =?utf-8?B?RXBidEFKMDFVblVBMnQwRXpkVXZPUmM0RmUzVzZlR2JReTlVSnBEaXVwd0t5?=
+ =?utf-8?B?aHo2Q0lsL0lTcytzS2VibjV1Z1B0dkZFRnVxL2ZkVUFFM1hUVVprWTBpcGJK?=
+ =?utf-8?B?TjRtNEx1eTRJTEVYZmxYWVpHaHk3Yjc1ZVhMTk9DMmpKNFROSGY4SFdWZmc1?=
+ =?utf-8?B?b0M2VGtZc3lud0pWTUxVc1YxalFCSWhBODFyOXpSZU9tcGF1U1M0clJiUU9M?=
+ =?utf-8?B?eVZJWHhtb25VeGw0WE5ma1VMZk5USCtydVZiNDhNYVI3K0FHTU1NMmt5L1R4?=
+ =?utf-8?B?Y0ZjeXNUamdBN0hKTGVXU3VTTUlEd3lhRjdaRGNlQUl6d3grMmh5cm9DaUdS?=
+ =?utf-8?B?aDdJb3JmNWxad2ZmM1drVXp4enN1ekt4VnpSV2pZdmdyUTdhUGFvWnRrTHpa?=
+ =?utf-8?B?aElNOHY0YWppOVZSME5HSWp4dGhoMVJsemJEb0tkOTVydTA5cFVqN1FRVHo3?=
+ =?utf-8?B?RVA1WUZBWDlaSUZ3RldGQ0JIMG8vY2d1TW4zY1ZnMm02OHpHVzZQRmhmd0dX?=
+ =?utf-8?B?QmRBRDJ0akFHWVdkSHhnc0xLYXZ3eFppMnFLc3BEbVZ5eUhhejFpSVkxZVV3?=
+ =?utf-8?B?M2lvc0hncDRzamJLcEhNQlVTd3VyM2xaS2VDc0w5akhlVDJYcnR5VlFYM3VD?=
+ =?utf-8?B?Qk0rSmxsdGQva2xlaWd5UkhhRlNrQlhUM09Ka1FtNThxNmRLYmpQM0lDeSt0?=
+ =?utf-8?B?bExRUzRlTWtkNVNWS0hwazcvV3RzNUlocXY5THFYUk8vTjE5Y1l6czBGT2x0?=
+ =?utf-8?B?dDZ2VFFzcjd6WVdJT0hLRXc3V01HYTRFYWVOd0RvOGtUWFB2a3gvdHRBN0JY?=
+ =?utf-8?B?OEVyd3NBcU1lb3lxSWdyYVQ5WkhKUEZEOVFleW45Y3E4bW80V1c1U3ZMMWRF?=
+ =?utf-8?B?ZFFrUE5HbHp1dGlQV0FSYUZEZkZLK09zdXppM1A4a2VnVUxqeGt4WmFtZXR5?=
+ =?utf-8?B?TXBQUUk5Kzd4eUFLVEZGc2lWcVdmNDIxbWpmOUFjcGlod2w5RUVJcnR1blpl?=
+ =?utf-8?B?WTM3UlNhVWtZWTd1TzVTck1XNnd5SmMyb0gyTjUwNTczZ1lVeEZQaHFjYm01?=
+ =?utf-8?B?aXFZNW1YdFdFc0JrRTg3TkxPK3d0ZWd3MGE1ckpjZUhISGowMmlhOUFwb0pU?=
+ =?utf-8?B?RHJpNWJOUHhyZW1ISkVBTUlRU0t0YUZnNTFWUzlqWTFMZjZXZnJQWFlIc3Iv?=
+ =?utf-8?B?OTlhYjdFNGZMQlZiWDc5b0xKMXpPZjN6NmxVcEhmbHFZQ3dUNUF4Nk54bHl5?=
+ =?utf-8?B?SkU4Y2NtZEJkNmVzMFFLSUIrV0g0VWE2RjJQaFlyekh3WUxBOWNkUE5EV2FJ?=
+ =?utf-8?B?UnhwLzBRcm9tU3JocFZzZmJKb3RoYWV3TElzYzZ4Qy83WkJGK2IxaEhiQ1Fr?=
+ =?utf-8?Q?CdDsOy5AlTI1JVLM=3D?=
+Content-ID: <E787E2C4065B674DB1206BC76C6E5F59@apcprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SEYPR03MB7682.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63ab3351-cde3-49e6-7f01-08de69602774
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Feb 2026 11:24:43.1761 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: E3dEqgDAPVD+qU1agU2VdT/jHEkLdKrbTYc5fudx42mA6GpAWi7DLWdSOCawA0ekMyvEq6su4+Vc1zwxycoMGK7IL8plCQCrbWL8bhAWBAY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR03MB7940
+Content-Type: multipart/alternative;
+ boundary="__=_Part_Boundary_007_103579885.1250308437"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,480 +230,246 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--__=_Part_Boundary_007_103579885.1250308437
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On 2/11/2026 7:39 AM, Laguna, Lukasz wrote:
->
-> On 2/10/2026 11:19, Bernatowicz, Marcin wrote:
->>
->> On 2/9/2026 11:16 AM, Laguna, Lukasz wrote:
->>>
->>> On 2/4/2026 17:32, Marcin Bernatowicz wrote:
->>>> Add generic helpers for controlling PCI driver binding via sysfs.
->>>>
->>>> The new APIs provide driver- and device-centric primitives for:
->>>>    - setting and clearing driver_override
->>>>    - triggering PCI driver reprobe
->>>>    - binding and unbinding devices to a specific PCI driver
->>>>    - query the currently bound PCI driver
->>>>
->>>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
->>>> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
->>>> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
->>>> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->>>> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
->>>>
->>>> ---
->>>> v2:
->>>> - Add igt_pci_get_bound_driver_name() to query the currently bound PCI
->>>>    driver via the /sys/bus/pci/devices/<BDF>/driver symlink.
->>>> - Extend igt_pci_bind_driver_override() and 
->>>> igt_pci_unbind_driver_override()
->>>>    with a timeout_ms parameter so callers can wait for bind/unbind to
->>>>    actually complete, instead of relying on drivers_probe write 
->>>> success.
->>>>
->>>> ---
->>>>   lib/igt_pci.c | 351 
->>>> ++++++++++++++++++++++++++++++++++++++++++++++++++
->>>>   lib/igt_pci.h |  13 +-
->>>>   2 files changed, 363 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/lib/igt_pci.c b/lib/igt_pci.c
->>>> index 61aaf939d..80aaf07c5 100644
->>>> --- a/lib/igt_pci.c
->>>> +++ b/lib/igt_pci.c
->>>> @@ -3,9 +3,18 @@
->>>>    * Copyright © 2022 Intel Corporation
->>>>    */
->>>>   +#include <ctype.h>
->>>> +#include <dirent.h>
->>>> +#include <errno.h>
->>>> +#include <fcntl.h>
->>>> +#include <limits.h>
->>>> +#include <string.h>
->>>> +#include <unistd.h>
->>>>   #include <pciaccess.h>
->>>> +#include "igt_aux.h"
->>>>   #include "igt_core.h"
->>>>   #include "igt_pci.h"
->>>> +#include "igt_sysfs.h"
->>>>     static int find_pci_cap_offset_at(struct pci_device *dev, enum 
->>>> pci_cap_id cap_id,
->>>>                     int start_offset)
->>>> @@ -51,3 +60,345 @@ int find_pci_cap_offset(struct pci_device *dev, 
->>>> enum pci_cap_id cap_id)
->>>>   {
->>>>       return find_pci_cap_offset_at(dev, cap_id, PCI_CAPS_START);
->>>>   }
->>>> +
->>>> +static int open_pci_driver_dir(const char *driver)
->>>> +{
->>>> +    char path[PATH_MAX];
->>>> +
->>>> +    snprintf(path, sizeof(path), "/sys/bus/pci/drivers/%s", driver);
->>>> +    return open(path, O_RDONLY | O_CLOEXEC);
->>>> +}
->>>> +
->>>> +/**
->>>> + * igt_pci_device_unbind:
->>>> + * @pci_slot: BDF like "0000:01:00.0"
->>>> + *
->>>> + * Unbind @pci_slot from its currently bound driver, if any.
->>>> + * Returns 0 on success, or a negative errno-like value.
->>>> + */
->>>> +int igt_pci_device_unbind(const char *pci_slot)
->>>> +{
->>>> +    char path[PATH_MAX];
->>>> +    int dirfd;
->>>> +    int ret;
->>>> +
->>>> +    snprintf(path, sizeof(path), "/sys/bus/pci/devices/%s/driver", 
->>>> pci_slot);
->>>> +    dirfd = open(path, O_RDONLY | O_CLOEXEC);
->>>> +    if (dirfd < 0)
->>>> +        return 0; /* already unbound */
->>>> +
->>>> +    ret = igt_sysfs_set(dirfd, "unbind", pci_slot) ? 0 : -errno;
->>>> +    close(dirfd);
->>>> +
->>>> +    return ret;
->>>> +}
->>>> +
->>>> +/**
->>>> + * igt_pci_driver_bind:
->>>> + * @driver: PCI driver name under /sys/bus/pci/drivers/<driver>
->>>> + * @pci_slot: device to bind
->>>> + *
->>>> + * Bind @pci_slot to @driver. Driver must be present/loaded.
->>>> + * Returns 0 on success, or a negative errno-like value.
->>>> + */
->>>> +int igt_pci_driver_bind(const char *driver, const char *pci_slot)
->>>> +{
->>>> +    int dirfd, ret;
->>>> +
->>>> +    dirfd = open_pci_driver_dir(driver);
->>>> +    if (dirfd < 0)
->>>> +        return -errno;
->>>> +
->>>> +    ret = igt_sysfs_set(dirfd, "bind", pci_slot) ? 0 : -errno;
->>>> +    close(dirfd);
->>>> +
->>>> +    return ret;
->>>> +}
->>>> +
->>>> +/**
->>>> + * igt_pci_driver_unbind:
->>>> + * @driver: PCI driver name
->>>> + * @pci_slot: device to unbind
->>>> + *
->>>> + * Unbind @pci_slot from @driver.
->>>> + * Returns 0 on success, or a negative errno-like value.
->>>> + */
->>>> +int igt_pci_driver_unbind(const char *driver, const char *pci_slot)
->>>> +{
->>>> +    int dirfd, ret;
->>>> +
->>>> +    dirfd = open_pci_driver_dir(driver);
->>>> +    if (dirfd < 0)
->>>> +        return -errno;
->>>> +
->>>> +    ret = igt_sysfs_set(dirfd, "unbind", pci_slot) ? 0 : -errno;
->>>> +    close(dirfd);
->>>> +
->>>> +    return ret;
->>>> +}
->>>> +
->>>> +/**
->>>> + * igt_pci_driver_unbind_all:
->>>> + * @driver: PCI driver name
->>>> + *
->>>> + * Unbind all devices currently bound to @driver.
->>>> + * Returns 0 on success, or a negative errno-like value.
->>>> + */
->>>> +int igt_pci_driver_unbind_all(const char *driver)
->>>> +{
->>>> +    char path[PATH_MAX];
->>>> +    DIR *dir;
->>>> +    struct dirent *de;
->>>> +    int driver_fd;
->>>> +
->>>> +    snprintf(path, sizeof(path), "/sys/bus/pci/drivers/%s", driver);
->>>> +    dir = opendir(path);
->>>> +    if (!dir)
->>>> +        return -errno;
->>>> +
->>>> +    driver_fd = dirfd(dir);
->>>> +
->>>> +    while ((de = readdir(dir))) {
->>>> +        bool ok;
->>>> +
->>>> +        /* BDF symlinks are like "0000:01:00.0" and start with 
->>>> digit */
->>>> +        if (de->d_type != DT_LNK || !isdigit(de->d_name[0]))
->>>> +            continue;
->>>> +
->>>> +        ok = igt_sysfs_set(driver_fd, "unbind", de->d_name);
->>>> +        if (!ok) {
->>>> +            int err = -errno;
->>>> +
->>>> +            closedir(dir);
->>>> +            return err;
->>>> +        }
->>>> +    }
->>>> +
->>>> +    closedir(dir);
->>>> +    return 0;
->>>> +}
->>>> +
->>>> +/**
->>>> + * igt_pci_set_driver_override:
->>>> + * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
->>>> + * @driver: PCI driver name to force-bind (e.g. "xe-vfio-pci"), or
->>>> + *          NULL / empty string to clear an existing override
->>>> + *
->>>> + * Set or clear the PCI driver_override for @pci_slot via sysfs.
->>>> + *
->>>> + * This does not trigger driver reprobe by itself. Call
->>>> + * igt_pci_probe_drivers() afterwards to apply the override.
->>>> + *
->>>> + * Returns: 0 on success, negative errno on failure.
->>>> + */
->>>> +int igt_pci_set_driver_override(const char *pci_slot, const char 
->>>> *driver)
->>>> +{
->>>> +    char devpath[PATH_MAX];
->>>> +    int dev;
->>>> +    bool ok;
->>>> +
->>>> +    snprintf(devpath, sizeof(devpath), "/sys/bus/pci/devices/%s", 
->>>> pci_slot);
->>>> +    dev = open(devpath, O_DIRECTORY | O_RDONLY);
->>>> +    if (dev < 0)
->>>> +        return -errno;
->>>> +
->>>> +    ok = igt_sysfs_set(dev, "driver_override", driver ? driver : "");
->>>> +    close(dev);
->>>> +
->>>> +    return ok ? 0 : -errno;
->>>> +}
->>>> +
->>>> +/**
->>>> + * igt_pci_probe_drivers:
->>>> + * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
->>>> + *
->>>> + * Trigger PCI driver reprobe for @pci_slot by writing to
->>>> + * /sys/bus/pci/drivers_probe.
->>>> + *
->>>> + * This causes the kernel to attempt binding the device, honoring any
->>>> + * driver_override previously set.
->>>> + *
->>>> + * Note: a successful write only means the reprobe request was 
->>>> accepted.
->>>> + * It does not guarantee that a driver actually bound to the device.
->>>> + *
->>>> + * Returns: 0 on success, negative errno on failure.
->>>> + */
->>>> +int igt_pci_probe_drivers(const char *pci_slot)
->>>> +{
->>>> +    int pci;
->>>> +    bool ok;
->>>> +
->>>> +    pci = open("/sys/bus/pci", O_DIRECTORY | O_RDONLY);
->>>> +    if (pci < 0)
->>>> +        return -errno;
->>>> +
->>>> +    ok = igt_sysfs_set(pci, "drivers_probe", pci_slot);
->>>> +    close(pci);
->>>> +
->>>> +    return ok ? 0 : -errno;
->>>> +}
->>>> +
->>>> +/**
->>>> + * igt_pci_get_bound_driver_name:
->>>> + * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
->>>> + * @driver: destination buffer for the bound driver name
->>>> + * @driver_len: size of @driver in bytes
->>>> + *
->>>> + * Read the currently bound PCI driver name for @pci_slot by 
->>>> inspecting the
->>>> + * /sys/bus/pci/devices/<BDF>/driver symlink.
->>>> + *
->>>> + * Return values:
->>>> + *  1: device is bound and @driver contains the driver name
->>>> + *  0: device is unbound (no driver symlink)
->>>> + * <0: negative errno-like value on error
->>>> + */
->>>> +int igt_pci_get_bound_driver_name(const char *pci_slot, char 
->>>> *driver, size_t driver_len)
->>>> +{
->>>> +    char path[PATH_MAX];
->>>> +    char link[PATH_MAX];
->>>> +    const char *base;
->>>> +    ssize_t len;
->>>> +
->>>> +    if (driver && driver_len)
->>>> +        driver[0] = '\0';
->>>> +
->>>> +    snprintf(path, sizeof(path), "/sys/bus/pci/devices/%s/driver", 
->>>> pci_slot);
->>>> +    len = readlink(path, link, sizeof(link) - 1);
->>>> +    if (len < 0) {
->>>> +        if (errno == ENOENT)
->>>> +            return 0; /* unbound */
->>>> +
->>>> +        return -errno;
->>>> +    }
->>>> +
->>>> +    link[len] = '\0';
->>>> +    base = strrchr(link, '/');
->>>> +    base = base ? base + 1 : link;
->>>> +
->>>> +    if (driver && driver_len)
->>>
->>> You can check the input params at the beginning of the function and 
->>> return error if they are invalid.
->>
->> driver/driver_len are optional, callers may pass NULL and/or 0 when 
->> they only need the
->>
->> return value (bound/unbound) and don’t care about the driver name...
->>
->
-> Right... now I see it, but it wasn't clear at first glance. Maybe 
-> function doc should be updated?
-> Or probably it would be even better to introduce separate helper 
-> igt_pci_is_driver_bound()? It would call 
-> igt_pci_get_bound_driver_name() without passing buffer.
->
-Send v4 with updated doc.
->>>
->>>> +        snprintf(driver, driver_len, "%s", base);
->>>> +
->>>> +    return 1;
->>>> +}
->>>> +
->>>> +/**
->>>> + * igt_pci_bind_driver_override:
->>>> + * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
->>>> + * @driver: PCI driver name to bind (must not be NULL or empty)
->>>> + * @timeout_ms: how long to wait for the device to become bound.
->>>> + *              If 0, don't wait (best-effort immediate check only).
->>>> + *
->>>> + * Bind @pci_slot to @driver using the driver_override mechanism.
->>>> + *
->>>> + * This helper sets driver_override and immediately triggers driver
->>>> + * reprobe so that the device is bound to the requested driver.
->>>> + *
->>>> + * Returns: 0 on success, negative errno-like value on failure.
->>>> + * A reprobe request can be accepted by sysfs while the driver probe
->>>> + * fails later; this helper verifies the device ended up bound.
->>>> + *
->>>> + * On bind failure, returns a negative error and the failure 
->>>> reason may
->>>> + * also be logged to dmesg by the kernel driver.
->>>> + */
->>>> +int igt_pci_bind_driver_override(const char *pci_slot, const char 
->>>> *driver,
->>>> +                 unsigned int timeout_ms)
->>>> +{
->>>> +    int ret;
->>>> +    char bound[64];
->>>> +    int bound_ret;
->>>> +    bool bound_ok;
->>>> +
->>>> +    if (!driver || !driver[0])
->>>> +        return -EINVAL;
->>>> +
->>>> +    ret = igt_pci_set_driver_override(pci_slot, driver);
->>>> +    if (ret)
->>>> +        return ret;
->>>> +
->>>> +    ret = igt_pci_probe_drivers(pci_slot);
->>>> +    if (ret)
->>>> +        return ret;
->>>> +
->>>> +    /*
->>>> +     * Writing to drivers_probe only tells us the kernel accepted 
->>>> the request.
->>>> +     * The actual driver probe may still fail (and only be 
->>>> reported via dmesg).
->>>> +     * Verify that the device ended up bound to the requested driver.
->>>> +     */
->>>> +    bound_ret = igt_pci_get_bound_driver_name(pci_slot, bound, 
->>>> sizeof(bound));
->>>> +    if (bound_ret < 0)
->>>> +        return bound_ret;
->>>> +
->>>> +    if (timeout_ms == 0) {
->>>> +        /*
->>>> +         * No waiting requested. If the device is already bound, 
->>>> validate
->>>> +         * it is bound to the expected driver; otherwise treat as
->>>> +         * best-effort request-only success.
->>>> +         */
->>>> +        if (bound_ret > 0 && strcmp(bound, driver))
->>>> +            return -EBUSY;
->>>> +
->>>> +        return 0;
->>>> +    }
->>>> +
->>>> +    bound_ok = igt_wait((bound_ret =
->>>> +                 igt_pci_get_bound_driver_name(pci_slot, bound, 
->>>> sizeof(bound))) != 0,
->>>> +                timeout_ms, 1);
->>>> +    if (!bound_ok)
->>>> +        return -EIO;
->>>> +
->>>> +    if (bound_ret < 0)
->>>> +        return bound_ret;
->>>> +
->>>> +    if (strcmp(bound, driver))
->>>> +        return -EBUSY;
->>>> +
->>>> +    return 0;
->>>> +}
->>>> +
->>>> +/**
->>>> + * igt_pci_unbind_driver_override:
->>>> + * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
->>>> + * @timeout_ms: how long to wait for the device to become unbound.
->>>> + *              If 0, don't wait (best-effort immediate check only).
->>>> + *
->>>> + * Unbind @pci_slot from its currently bound driver (if any) and 
->>>> clear
->>>> + * any driver_override setting.
->>>> + *
->>>> + * This is the inverse operation of igt_pci_bind_driver_override().
->>>> + *
->>>> + * Returns: 0 on success, negative errno on failure.
->>>> + */
->>>> +int igt_pci_unbind_driver_override(const char *pci_slot, unsigned 
->>>> int timeout_ms)
->>>> +{
->>>> +    int ret;
->>>> +    int bound_ret;
->>>> +    char bound[64];
->>>> +    bool unbound_ok;
->>>> +
->>>> +    ret = igt_pci_device_unbind(pci_slot);
->>>> +    if (ret)
->>>> +        return ret;
->>>> +
->>>> +    ret = igt_pci_set_driver_override(pci_slot, "");
->>>> +    if (ret)
->>>> +        return ret;
->>>> +
->>>> +    bound_ret = igt_pci_get_bound_driver_name(pci_slot, bound, 
->>>> sizeof(bound));
->>>> +    if (bound_ret < 0)
->>>> +        return bound_ret;
->>>> +
->>>> +    if (timeout_ms == 0)
->>>> +        return 0;
->>>> +
->>>> +    /* Verify the device actually ends up unbound (driver symlink 
->>>> removed). */
->>>> +    unbound_ok = igt_wait((bound_ret =
->>>> +                   igt_pci_get_bound_driver_name(pci_slot, bound, 
->>>> sizeof(bound))) == 0,
->>>> +                  timeout_ms, 1);
->>>> +    if (!unbound_ok)
->>>> +        return -EBUSY;
->>>> +
->>>> +    if (bound_ret < 0)
->>>> +        return bound_ret;
->>>> +
->>>> +    return 0;
->>>> +}
->>>> diff --git a/lib/igt_pci.h b/lib/igt_pci.h
->>>> index 92b9cc392..a66eeebf2 100644
->>>> --- a/lib/igt_pci.h
->>>> +++ b/lib/igt_pci.h
->>>> @@ -6,8 +6,9 @@
->>>>   #ifndef __IGT_PCI_H__
->>>>   #define __IGT_PCI_H__
->>>>   -#include <stdint.h>
->>>>   #include <endian.h>
->>>> +#include <stddef.h>
->>>> +#include <stdint.h>
->>>>     /* forward declaration */
->>>>   struct pci_device;
->>>> @@ -24,5 +25,15 @@ enum pci_cap_id {
->>>>   #define  PCI_SLOT_PWR_CTRL_PRESENT (1 << 1)
->>>>     int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id 
->>>> cap_id);
->>>> +int igt_pci_device_unbind(const char *pci_slot);
->>>> +int igt_pci_driver_bind(const char *driver, const char *pci_slot);
->>>> +int igt_pci_driver_unbind(const char *driver, const char *pci_slot);
->>>> +int igt_pci_driver_unbind_all(const char *driver);
->>>> +int igt_pci_set_driver_override(const char *pci_slot, const char 
->>>> *driver);
->>>> +int igt_pci_probe_drivers(const char *pci_slot);
->>>> +int igt_pci_get_bound_driver_name(const char *pci_slot, char 
->>>> *driver, size_t driver_len);
->>>> +int igt_pci_bind_driver_override(const char *pci_slot, const char 
->>>> *driver,
->>>> +                 unsigned int timeout_ms);
->>>> +int igt_pci_unbind_driver_override(const char *pci_slot, unsigned 
->>>> int timeout_ms);
->>>>     #endif
+T24gV2VkLCAyMDI1LTExLTI2IGF0IDIyOjQwICswODAwLCBKYXNvbi1KSC5MaW4gd3JvdGU6DQo+
+ID4gPiA+ID4gPiA+ID4gDQo+IA0KPiBbc25pcF0NCj4gDQo+ID4gPiA+ID4gPiA+ID4gDQo+ID4g
+PiA+ID4gTG9va2luZyBpbnRvIGlndF9waXBlX2NvbW1pdCgpLCBpdCB1c2VkDQo+ID4gPiA+ID4g
+ZHJtTW9kZU9iamVjdFNldFByb3BlcnR5KCkNCj4gPiA+ID4gPiB0bw0KPiA+ID4gPiA+IHNldCBw
+cm9wZXJ0eSB0byBEUk0gYW5kIGl0IHVzZWQgaWd0X3BsYW5lX2NvbW1pdCgpIHRvDQo+ID4gPiA+
+ID4gc3luY2hyb25pemUNCj4gPiA+ID4gPiBhbGwNCj4gPiA+ID4gPiBwbGFuZSBzdGF0ZXMgYW5k
+IG9ubHkgcHJpbWFyeSBwbGFuZSB3aWxsIGNhbGwNCj4gPiA+ID4gPiBkcm1Nb2RlU2V0Q3J0Yygp
+Lg0KPiA+ID4gPiA+IA0KPiA+ID4gPiA+IEl0IHRoaW5rIHRoZSByZWFzb24gd2UgZGlkbid0IGdl
+dCB0aGUgbmV3IGdhbW1hX2x1dCBpbiBjcnRjDQo+ID4gPiA+ID4gc3RhdGUNCj4gPiA+ID4gPiBp
+cw0KPiA+ID4gPiA+IHRhaHQgc2V0X2dhbW1hKCkgd2lsbCBvbmx5IGNhbGwgaWd0X3BpcGVfb2Jq
+X3Byb3BfY2hhbmdlZCgpDQo+ID4gPiA+ID4gdG8NCj4gPiA+ID4gPiB1cGRhdGUNCj4gPiA+ID4g
+PiBwaXBlX29iai0+Y2hhbmdlZCBmbGFnLCBidXQgbm90IHVwZGF0ZSBwbGFuZS0+Y2hhbmdlZCBm
+bGFnLg0KPiA+ID4gPiA+IEluIGlndF9wcmltYXJ5X3BsYW5lX2NvbW1pdF9sZWdhY3koKSwgaXQn
+bGwgcmV0dXJuIGlmDQo+ID4gPiA+ID4gcHJpbWFyeS0NCj4gPiA+ID4gPiA+IGNoYW5nZWQNCj4g
+PiA+ID4gPiBmbGFnIGlzIG5vdCBzZXQuDQo+ID4gPiA+IA0KPiA+ID4gPiBUaGUgTFVUIHByb3Bl
+cnRpZXMgYXJlIHN1cHBvc2VkIHRvIGJlIG9uIHRoZSBDUlRDLiBTbyB0aGUgcGxhbmUNCj4gPiA+
+ID4gc3R1ZmYgc2hvdWxkIG5vdCBtYXR0ZXIsIHVubGVzcyB5b3UgZHJpdmVyIGlzIGRvaW5nIHNv
+bWV0aGluZw0KPiA+ID4gPiBjb21wbGV0ZWx5IG5vbi1zdGFuYWRhcmQuDQo+ID4gPiA+IA0KPiA+
+ID4gDQo+ID4gPiBZb3UncmUgcmlnaHQuIFBsYW5lIHN0dWZmIHNob3VsZCBub3QgbWF0dGVyIHRv
+IENSVEMuDQo+ID4gPiANCj4gPiA+IFNvIEkgbWVhbnMgZHJtTW9kZVNldENydGMoKSB3b24ndCBi
+ZSBjYWxsZWQgaWYgcGxhbmUgcHJvcGVydGllcw0KPiA+ID4gaXMNCj4gPiA+IG5vdA0KPiA+ID4g
+c2V0IGluIGlndF9wcmltYXJ5X3BsYW5lX2NvbW1pdF9sZWdhY3koKSBjdXJyZW50bHkuDQo+ID4g
+PiANCj4gPiA+IEkgdGhpbmsgdGhpcyBsZWdhY3kgZmxvdyBsb2dpYzoNCj4gPiA+IHsNCj4gPiA+
+IA0KPiA+ID4gaWYgKCFpZ3RfcGxhbmVfaXNfcHJvcF9jaGFuZ2VkKHByaW1hcnksIElHVF9QTEFO
+RV9GQl9JRCkpICYmDQo+ID4gPiDCoMKgwqAgIShwcmltYXJ5LT5jaGFuZ2VkICYgSUdUX1BMQU5F
+X0NPT1JEX0NIQU5HRURfTUFTSykgJiYNCj4gPiA+IMKgwqDCoCAhaWd0X3BpcGVfb2JqX2lzX3By
+b3BfY2hhbmdlZChwcmltYXJ5LT5waXBlLA0KPiA+ID4gSUdUX0NSVENfTU9ERV9JRCkpDQo+ID4g
+PiDCoMKgwqDCoMKgwqDCoCByZXR1cm4gMDsNCj4gPiA+IC4uLg0KPiA+ID4gDQo+ID4gPiBkcm1N
+b2RlU2V0Q3J0YygpDQo+ID4gPiANCj4gPiA+IC4uLg0KPiA+ID4gDQo+ID4gPiB9DQo+ID4gPiBt
+YXkgYmxvY2sgTFVUIHByb3BlcnRpZXMgYmVpbmcgc3luY2hyb25pemVkIGludG8gY3J0YyBzdGF0
+ZSB3aGVuDQo+ID4gPiB3ZQ0KPiA+ID4gb25seSBjYWxsZWQgc2V0X2dhbW1hKCkgYW5kIG5vdCB1
+cGRhdGVkIGFueSBwbGFuZSBwcm9wZXJ0aWVzLg0KPiA+IA0KPiA+IFRoYXQgZG9lc24ndCBhZmZl
+Y3QgQ1JUQyBwcm9wZXJ0aWVzIGFwYXJ0IGZyb20gdGhlIG1vZGUuDQo+ID4gRm9yIGFsbCBvdGhl
+ciBDUlRDIHByb3BlcnRpZXMgZHJtTW9kZU9iamVjdFNldFByb3BlcnR5KCkNCj4gPiB3aWxsIGJl
+IGNhbGxlZCByZWdhcmRsZXNzIGJ5IGlndF9waXBlX2NvbW1pdCgpLg0KPiA+IA0KPiANCj4gT2th
+eSwgSSBjaGVja2VkIHRoYXQgZHJtX21vZGVfb2JqX3NldF9wcm9wZXJ0eV9pb2N0bCgpIGNhbGxl
+ZCBmcm9tDQo+IGRybU1vZGVPYmplY3RTZXRQcm9wZXJ0eSgpIHdpbGwgc3luY2hyb25pemUgdGhl
+IENSVEMgcHJvcGVydGllcywgc3VjaA0KPiBhcywgZ2FtbV9sdXQgaW50byB0aGUgQ1JUQyBzdGF0
+ZSBvZiBhdG9taWNfc3RhdGUuDQo+IA0KPiBPdXIgZHJtIGRyaXZlciBoYXMgaW1wbGVtZW50ZWQg
+bW9kZV9jb25maWcuZnVuY3MtPmF0b21pY19jb21taXQoKSwgDQo+IHNvIG1heWJlIHdlIGhhdmUg
+c29tZSBidWcgaW4gb3VyIGRyaXZlcnMgdGhhdCBjYXVzZSB0aGUgaXNzdWUgSQ0KPiBlbmNvdW50
+ZXJlZCwgdGhlIG9yaWdpbmFsIElHVCBjb2RlIHNob3VsZCB3b3JrIGZpbmUuDQo+IA0KPiBJJ2xs
+IGNoZWNrIG91dCB0aGlzIGxhdGVyIGFuZCBzZW5kIHRoZSB3cmFwcGVyIEFQSSBpZiBuZWVkZWQu
+DQo+IFRoYW5rcyBmb3IgdGhlIGNvcnJlY3Rpb24gYW5kIGd1aWRhbmNlLg0KPiANCg0KRmluYWxs
+eSwgSSBmb3VuZCB0aGUgaXNzdWUgaXMgdGhhdCBjb2xvcl9tZ210X2NoYW5nZWQgaXMgbm90IHNl
+dCB3aGVuDQp1cGRhdGluZyBnYW1tYV9sdXQsIGNhdXNpbmcgZ2FtbWEgY2hhbmdlcyB0byBub3Qg
+YmUgYXBwbGllZCB0bw0KaGFyZHdhcmUuDQoNClJvb3QgY2F1c2UgYW5hbHlzaXM6DQotIFdoZW4g
+dXBkYXRpbmcgR0FNTUFfTFVULCBjb2xvcl9tZ210X2NoYW5nZWQgaXMgc2V0IGNvcnJlY3RseS4N
+Ci0gQnV0IHdoZW4gYSBzdWJzZXF1ZW50IHVucmVsYXRlZCBwcm9wZXJ0eSAoZS5nLiBWUlJfRU5B
+QkxFRCkgaXMNCmNvbW1pdHRlZCwgX19kcm1fYXRvbWljX2hlbHBlcl9jcnRjX2R1cGxpY2F0ZV9z
+dGF0ZSgpIHJlc2V0cw0KY29sb3JfbWdtdF9jaGFuZ2VkPTAuDQotIFRoaXMgcmVzdWx0cyBpbiBj
+cnRjLT5zdGF0ZSBoYXZpbmcgZ2FtbWFfbHV0IGJ1dA0KY29sb3JfbWdtdF9jaGFuZ2VkPTAsIHNv
+IGdhbW1hIGlzIG5ldmVyIGFwcGxpZWQgdG8gaGFyZHdhcmUuDQoNCkRSTSBmcmFtZXdvcmsgZGVz
+aWduOg0KLSBjb2xvcl9tZ210X2NoYW5nZWQgaXMgYSBwZXItY29tbWl0IGZsYWcsIHJlc2V0IG9u
+IGVhY2ggbmV3IGNvbW1pdC4NCi0gT25seSBzZXQgaWYgY29sb3IgbWFuYWdlbWVudCBwcm9wZXJ0
+aWVzIGNoYW5nZS4NCi0gSW4gQ09NTUlUX0xFR0FDWSBtb2RlICh1c2VkIGJ5IElHVCksIGVhY2gg
+cHJvcGVydHkgaXMgY29tbWl0dGVkDQpzZXBhcmF0ZWx5Lg0KLSBVbnJlbGF0ZWQgcHJvcGVydHkg
+Y29tbWl0cyBvdmVyd3JpdGUgY29sb3JfbWdtdF9jaGFuZ2VkPTEgZnJvbQ0KcHJldmlvdXMgZ2Ft
+bWFfbHV0IHVwZGF0ZS4NCg0KU29sdXRpb24gaW4gTVRLIERSTSBkcml2ZXI6DQotIFJldGFpbiBj
+b2xvcl9tZ210X2NoYW5nZWQgaWYgdGhlIG9sZCBzdGF0ZSBoYXMgdGhlIGZsYWcgYW5kIGNvbG9y
+DQptYW5hZ2VtZW50IGJsb2JzIGhhdmUgbm90IGNoYW5nZWQsIHByZXZlbnRpbmcgaXQgZnJvbSBi
+ZWluZyBvdmVyd3JpdHRlbg0KYnkgdW5yZWxhdGVkIHByb3BlcnR5IGNvbW1pdHMuDQoNClNvIHdl
+IGRvbid0IG5lZWQgdGhpcyBwYXRjaCBub3cuDQpUaGFuayB5b3UgZm9yIHlvdXIgcGF0aWVuY2Ug
+YW5kIGd1aWRhbmNlLg0KDQpSZWdhcmRzLA0KSmFzb24tSkggTGluDQoNCj4gPiA+IA0KPiA+ID4g
+QnV0IEknbSBub3Qgc3VyZSB0aGUgbGVnYWN5IGZsb3cgd2lsbCB1cGRhdGUgdGhlIHByaW1hcnkg
+cGxhbmUNCj4gPiA+IHByb3BlcnRpZXMgd2hlbiBDUlRDIHByb3BlcnRpZXMgaXMgY2hhbmdlZCBp
+biBzb21lIHdoZXJlLg0KPiA+ID4gDQo+ID4gPiBTbyBJIHdvbid0IG1vZGlmeSB0aGlzIGxlZ2Fj
+eSBmbG93IGxvZ2ljLCBidXQgd2lsbCBvbmx5IGFkZCBhDQo+ID4gPiB3cmFwcGVyDQo+ID4gPiBB
+UEkgdGhhdCB5b3UgbWVudGlvbmVkIHRvIGZpeCB0aGUgYXRvbWljIGZsb3cgb2Ygb3VyIGRyaXZl
+cnMuDQo+ID4gPiANCj4gPiA+ID4gLS0NCj4gPiA+ID4gVmlsbGUgU3lyasOkbMOkDQo+ID4gPiA+
+IEludGVsDQo+ID4gPiANCj4gPiA+IFJlZ2FyZHMsDQo+ID4gPiBKYXNvbi1KSCBMaW4NCj4gPiA+
+IA0KPiA+IA0KPiA+IC0tDQo+ID4gVmlsbGUgU3lyasOkbMOkDQo+ID4gSW50ZWwNCj4gDQo+IFJl
+Z2FyZHMsDQo+IEphc29uLUpIIExpbg0KDQo=
+
+--__=_Part_Boundary_007_103579885.1250308437
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+
+PGh0bWw+PGJvZHk+PHA+DQo8cHJlPg0KT24mIzMyO1dlZCwmIzMyOzIwMjUtMTEtMjYmIzMyO2F0
+JiMzMjsyMjo0MCYjMzI7KzA4MDAsJiMzMjtKYXNvbi1KSC5MaW4mIzMyO3dyb3RlOg0KJmd0OyYj
+MzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7
+Jmd0OyYjMzI7DQomZ3Q7JiMzMjsNCiZndDsmIzMyO1tzbmlwXQ0KJmd0OyYjMzI7DQomZ3Q7JiMz
+MjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsm
+Z3Q7JiMzMjsNCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyO0xv
+b2tpbmcmIzMyO2ludG8mIzMyO2lndF9waXBlX2NvbW1pdCgpLCYjMzI7aXQmIzMyO3VzZWQNCiZn
+dDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyO2RybU1vZGVPYmplY3RT
+ZXRQcm9wZXJ0eSgpDQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMz
+Mjt0bw0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7c2V0JiMz
+Mjtwcm9wZXJ0eSYjMzI7dG8mIzMyO0RSTSYjMzI7YW5kJiMzMjtpdCYjMzI7dXNlZCYjMzI7aWd0
+X3BsYW5lX2NvbW1pdCgpJiMzMjt0bw0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYj
+MzI7Jmd0OyYjMzI7c3luY2hyb25pemUNCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyZndDsm
+IzMyOyZndDsmIzMyO2FsbA0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0
+OyYjMzI7cGxhbmUmIzMyO3N0YXRlcyYjMzI7YW5kJiMzMjtvbmx5JiMzMjtwcmltYXJ5JiMzMjtw
+bGFuZSYjMzI7d2lsbCYjMzI7Y2FsbA0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYj
+MzI7Jmd0OyYjMzI7ZHJtTW9kZVNldENydGMoKS4NCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMy
+OyZndDsmIzMyOyZndDsmIzMyOw0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7
+Jmd0OyYjMzI7SXQmIzMyO3RoaW5rJiMzMjt0aGUmIzMyO3JlYXNvbiYjMzI7d2UmIzMyO2RpZG4m
+IzM5O3QmIzMyO2dldCYjMzI7dGhlJiMzMjtuZXcmIzMyO2dhbW1hX2x1dCYjMzI7aW4mIzMyO2Ny
+dGMNCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyO3N0YXRlDQom
+Z3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjtpcw0KJmd0OyYjMzI7
+Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7dGFodCYjMzI7c2V0X2dhbW1hKCkm
+IzMyO3dpbGwmIzMyO29ubHkmIzMyO2NhbGwmIzMyO2lndF9waXBlX29ial9wcm9wX2NoYW5nZWQo
+KQ0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7dG8NCiZndDsm
+IzMyOyZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyO3VwZGF0ZQ0KJmd0OyYjMzI7
+Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7cGlwZV9vYmotJmd0O2NoYW5nZWQm
+IzMyO2ZsYWcsJiMzMjtidXQmIzMyO25vdCYjMzI7dXBkYXRlJiMzMjtwbGFuZS0mZ3Q7Y2hhbmdl
+ZCYjMzI7ZmxhZy4NCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMy
+O0luJiMzMjtpZ3RfcHJpbWFyeV9wbGFuZV9jb21taXRfbGVnYWN5KCksJiMzMjtpdCYjMzk7bGwm
+IzMyO3JldHVybiYjMzI7aWYNCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyZn
+dDsmIzMyO3ByaW1hcnktDQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7
+JiMzMjsmZ3Q7JiMzMjtjaGFuZ2VkDQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMz
+MjsmZ3Q7JiMzMjtmbGFnJiMzMjtpcyYjMzI7bm90JiMzMjtzZXQuDQomZ3Q7JiMzMjsmZ3Q7JiMz
+MjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsNCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMy
+O1RoZSYjMzI7TFVUJiMzMjtwcm9wZXJ0aWVzJiMzMjthcmUmIzMyO3N1cHBvc2VkJiMzMjt0byYj
+MzI7YmUmIzMyO29uJiMzMjt0aGUmIzMyO0NSVEMuJiMzMjtTbyYjMzI7dGhlJiMzMjtwbGFuZQ0K
+Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7c3R1ZmYmIzMyO3Nob3VsZCYjMzI7
+bm90JiMzMjttYXR0ZXIsJiMzMjt1bmxlc3MmIzMyO3lvdSYjMzI7ZHJpdmVyJiMzMjtpcyYjMzI7
+ZG9pbmcmIzMyO3NvbWV0aGluZw0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7
+Y29tcGxldGVseSYjMzI7bm9uLXN0YW5hZGFyZC4NCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMy
+OyZndDsmIzMyOw0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7DQomZ3Q7JiMzMjsmZ3Q7JiMz
+MjsmZ3Q7JiMzMjtZb3UmIzM5O3JlJiMzMjtyaWdodC4mIzMyO1BsYW5lJiMzMjtzdHVmZiYjMzI7
+c2hvdWxkJiMzMjtub3QmIzMyO21hdHRlciYjMzI7dG8mIzMyO0NSVEMuDQomZ3Q7JiMzMjsmZ3Q7
+JiMzMjsmZ3Q7JiMzMjsNCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyO1NvJiMzMjtJJiMzMjtt
+ZWFucyYjMzI7ZHJtTW9kZVNldENydGMoKSYjMzI7d29uJiMzOTt0JiMzMjtiZSYjMzI7Y2FsbGVk
+JiMzMjtpZiYjMzI7cGxhbmUmIzMyO3Byb3BlcnRpZXMNCiZndDsmIzMyOyZndDsmIzMyOyZndDsm
+IzMyO2lzDQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjtub3QNCiZndDsmIzMyOyZndDsmIzMy
+OyZndDsmIzMyO3NldCYjMzI7aW4mIzMyO2lndF9wcmltYXJ5X3BsYW5lX2NvbW1pdF9sZWdhY3ko
+KSYjMzI7Y3VycmVudGx5Lg0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7DQomZ3Q7JiMzMjsm
+Z3Q7JiMzMjsmZ3Q7JiMzMjtJJiMzMjt0aGluayYjMzI7dGhpcyYjMzI7bGVnYWN5JiMzMjtmbG93
+JiMzMjtsb2dpYzoNCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyO3sNCiZndDsmIzMyOyZndDsm
+IzMyOyZndDsmIzMyOw0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7aWYmIzMyOyghaWd0X3Bs
+YW5lX2lzX3Byb3BfY2hhbmdlZChwcmltYXJ5LCYjMzI7SUdUX1BMQU5FX0ZCX0lEKSkmIzMyOyZh
+bXA7JmFtcDsNCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyYjMTYwOyYjMTYwOyYjMTYwOyYj
+MzI7IShwcmltYXJ5LSZndDtjaGFuZ2VkJiMzMjsmYW1wOyYjMzI7SUdUX1BMQU5FX0NPT1JEX0NI
+QU5HRURfTUFTSykmIzMyOyZhbXA7JmFtcDsNCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyYj
+MTYwOyYjMTYwOyYjMTYwOyYjMzI7IWlndF9waXBlX29ial9pc19wcm9wX2NoYW5nZWQocHJpbWFy
+eS0mZ3Q7cGlwZSwNCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyO0lHVF9DUlRDX01PREVfSUQp
+KQ0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7JiMxNjA7JiMxNjA7JiMxNjA7JiMxNjA7JiMx
+NjA7JiMxNjA7JiMxNjA7JiMzMjtyZXR1cm4mIzMyOzA7DQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7
+JiMzMjsuLi4NCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOw0KJmd0OyYjMzI7Jmd0OyYjMzI7
+Jmd0OyYjMzI7ZHJtTW9kZVNldENydGMoKQ0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7DQom
+Z3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsuLi4NCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMy
+Ow0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7fQ0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYj
+MzI7bWF5JiMzMjtibG9jayYjMzI7TFVUJiMzMjtwcm9wZXJ0aWVzJiMzMjtiZWluZyYjMzI7c3lu
+Y2hyb25pemVkJiMzMjtpbnRvJiMzMjtjcnRjJiMzMjtzdGF0ZSYjMzI7d2hlbg0KJmd0OyYjMzI7
+Jmd0OyYjMzI7Jmd0OyYjMzI7d2UNCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyO29ubHkmIzMy
+O2NhbGxlZCYjMzI7c2V0X2dhbW1hKCkmIzMyO2FuZCYjMzI7bm90JiMzMjt1cGRhdGVkJiMzMjth
+bnkmIzMyO3BsYW5lJiMzMjtwcm9wZXJ0aWVzLg0KJmd0OyYjMzI7Jmd0OyYjMzI7DQomZ3Q7JiMz
+MjsmZ3Q7JiMzMjtUaGF0JiMzMjtkb2VzbiYjMzk7dCYjMzI7YWZmZWN0JiMzMjtDUlRDJiMzMjtw
+cm9wZXJ0aWVzJiMzMjthcGFydCYjMzI7ZnJvbSYjMzI7dGhlJiMzMjttb2RlLg0KJmd0OyYjMzI7
+Jmd0OyYjMzI7Rm9yJiMzMjthbGwmIzMyO290aGVyJiMzMjtDUlRDJiMzMjtwcm9wZXJ0aWVzJiMz
+Mjtkcm1Nb2RlT2JqZWN0U2V0UHJvcGVydHkoKQ0KJmd0OyYjMzI7Jmd0OyYjMzI7d2lsbCYjMzI7
+YmUmIzMyO2NhbGxlZCYjMzI7cmVnYXJkbGVzcyYjMzI7YnkmIzMyO2lndF9waXBlX2NvbW1pdCgp
+Lg0KJmd0OyYjMzI7Jmd0OyYjMzI7DQomZ3Q7JiMzMjsNCiZndDsmIzMyO09rYXksJiMzMjtJJiMz
+MjtjaGVja2VkJiMzMjt0aGF0JiMzMjtkcm1fbW9kZV9vYmpfc2V0X3Byb3BlcnR5X2lvY3RsKCkm
+IzMyO2NhbGxlZCYjMzI7ZnJvbQ0KJmd0OyYjMzI7ZHJtTW9kZU9iamVjdFNldFByb3BlcnR5KCkm
+IzMyO3dpbGwmIzMyO3N5bmNocm9uaXplJiMzMjt0aGUmIzMyO0NSVEMmIzMyO3Byb3BlcnRpZXMs
+JiMzMjtzdWNoDQomZ3Q7JiMzMjthcywmIzMyO2dhbW1fbHV0JiMzMjtpbnRvJiMzMjt0aGUmIzMy
+O0NSVEMmIzMyO3N0YXRlJiMzMjtvZiYjMzI7YXRvbWljX3N0YXRlLg0KJmd0OyYjMzI7DQomZ3Q7
+JiMzMjtPdXImIzMyO2RybSYjMzI7ZHJpdmVyJiMzMjtoYXMmIzMyO2ltcGxlbWVudGVkJiMzMjtt
+b2RlX2NvbmZpZy5mdW5jcy0mZ3Q7YXRvbWljX2NvbW1pdCgpLCYjMzI7DQomZ3Q7JiMzMjtzbyYj
+MzI7bWF5YmUmIzMyO3dlJiMzMjtoYXZlJiMzMjtzb21lJiMzMjtidWcmIzMyO2luJiMzMjtvdXIm
+IzMyO2RyaXZlcnMmIzMyO3RoYXQmIzMyO2NhdXNlJiMzMjt0aGUmIzMyO2lzc3VlJiMzMjtJDQom
+Z3Q7JiMzMjtlbmNvdW50ZXJlZCwmIzMyO3RoZSYjMzI7b3JpZ2luYWwmIzMyO0lHVCYjMzI7Y29k
+ZSYjMzI7c2hvdWxkJiMzMjt3b3JrJiMzMjtmaW5lLg0KJmd0OyYjMzI7DQomZ3Q7JiMzMjtJJiMz
+OTtsbCYjMzI7Y2hlY2smIzMyO291dCYjMzI7dGhpcyYjMzI7bGF0ZXImIzMyO2FuZCYjMzI7c2Vu
+ZCYjMzI7dGhlJiMzMjt3cmFwcGVyJiMzMjtBUEkmIzMyO2lmJiMzMjtuZWVkZWQuDQomZ3Q7JiMz
+MjtUaGFua3MmIzMyO2ZvciYjMzI7dGhlJiMzMjtjb3JyZWN0aW9uJiMzMjthbmQmIzMyO2d1aWRh
+bmNlLg0KJmd0OyYjMzI7DQoNCkZpbmFsbHksJiMzMjtJJiMzMjtmb3VuZCYjMzI7dGhlJiMzMjtp
+c3N1ZSYjMzI7aXMmIzMyO3RoYXQmIzMyO2NvbG9yX21nbXRfY2hhbmdlZCYjMzI7aXMmIzMyO25v
+dCYjMzI7c2V0JiMzMjt3aGVuDQp1cGRhdGluZyYjMzI7Z2FtbWFfbHV0LCYjMzI7Y2F1c2luZyYj
+MzI7Z2FtbWEmIzMyO2NoYW5nZXMmIzMyO3RvJiMzMjtub3QmIzMyO2JlJiMzMjthcHBsaWVkJiMz
+Mjt0bw0KaGFyZHdhcmUuDQoNClJvb3QmIzMyO2NhdXNlJiMzMjthbmFseXNpczoNCi0mIzMyO1do
+ZW4mIzMyO3VwZGF0aW5nJiMzMjtHQU1NQV9MVVQsJiMzMjtjb2xvcl9tZ210X2NoYW5nZWQmIzMy
+O2lzJiMzMjtzZXQmIzMyO2NvcnJlY3RseS4NCi0mIzMyO0J1dCYjMzI7d2hlbiYjMzI7YSYjMzI7
+c3Vic2VxdWVudCYjMzI7dW5yZWxhdGVkJiMzMjtwcm9wZXJ0eSYjMzI7KGUuZy4mIzMyO1ZSUl9F
+TkFCTEVEKSYjMzI7aXMNCmNvbW1pdHRlZCwmIzMyO19fZHJtX2F0b21pY19oZWxwZXJfY3J0Y19k
+dXBsaWNhdGVfc3RhdGUoKSYjMzI7cmVzZXRzDQpjb2xvcl9tZ210X2NoYW5nZWQ9MC4NCi0mIzMy
+O1RoaXMmIzMyO3Jlc3VsdHMmIzMyO2luJiMzMjtjcnRjLSZndDtzdGF0ZSYjMzI7aGF2aW5nJiMz
+MjtnYW1tYV9sdXQmIzMyO2J1dA0KY29sb3JfbWdtdF9jaGFuZ2VkPTAsJiMzMjtzbyYjMzI7Z2Ft
+bWEmIzMyO2lzJiMzMjtuZXZlciYjMzI7YXBwbGllZCYjMzI7dG8mIzMyO2hhcmR3YXJlLg0KDQpE
+Uk0mIzMyO2ZyYW1ld29yayYjMzI7ZGVzaWduOg0KLSYjMzI7Y29sb3JfbWdtdF9jaGFuZ2VkJiMz
+MjtpcyYjMzI7YSYjMzI7cGVyLWNvbW1pdCYjMzI7ZmxhZywmIzMyO3Jlc2V0JiMzMjtvbiYjMzI7
+ZWFjaCYjMzI7bmV3JiMzMjtjb21taXQuDQotJiMzMjtPbmx5JiMzMjtzZXQmIzMyO2lmJiMzMjtj
+b2xvciYjMzI7bWFuYWdlbWVudCYjMzI7cHJvcGVydGllcyYjMzI7Y2hhbmdlLg0KLSYjMzI7SW4m
+IzMyO0NPTU1JVF9MRUdBQ1kmIzMyO21vZGUmIzMyOyh1c2VkJiMzMjtieSYjMzI7SUdUKSwmIzMy
+O2VhY2gmIzMyO3Byb3BlcnR5JiMzMjtpcyYjMzI7Y29tbWl0dGVkDQpzZXBhcmF0ZWx5Lg0KLSYj
+MzI7VW5yZWxhdGVkJiMzMjtwcm9wZXJ0eSYjMzI7Y29tbWl0cyYjMzI7b3ZlcndyaXRlJiMzMjtj
+b2xvcl9tZ210X2NoYW5nZWQ9MSYjMzI7ZnJvbQ0KcHJldmlvdXMmIzMyO2dhbW1hX2x1dCYjMzI7
+dXBkYXRlLg0KDQpTb2x1dGlvbiYjMzI7aW4mIzMyO01USyYjMzI7RFJNJiMzMjtkcml2ZXI6DQot
+JiMzMjtSZXRhaW4mIzMyO2NvbG9yX21nbXRfY2hhbmdlZCYjMzI7aWYmIzMyO3RoZSYjMzI7b2xk
+JiMzMjtzdGF0ZSYjMzI7aGFzJiMzMjt0aGUmIzMyO2ZsYWcmIzMyO2FuZCYjMzI7Y29sb3INCm1h
+bmFnZW1lbnQmIzMyO2Jsb2JzJiMzMjtoYXZlJiMzMjtub3QmIzMyO2NoYW5nZWQsJiMzMjtwcmV2
+ZW50aW5nJiMzMjtpdCYjMzI7ZnJvbSYjMzI7YmVpbmcmIzMyO292ZXJ3cml0dGVuDQpieSYjMzI7
+dW5yZWxhdGVkJiMzMjtwcm9wZXJ0eSYjMzI7Y29tbWl0cy4NCg0KU28mIzMyO3dlJiMzMjtkb24m
+IzM5O3QmIzMyO25lZWQmIzMyO3RoaXMmIzMyO3BhdGNoJiMzMjtub3cuDQpUaGFuayYjMzI7eW91
+JiMzMjtmb3ImIzMyO3lvdXImIzMyO3BhdGllbmNlJiMzMjthbmQmIzMyO2d1aWRhbmNlLg0KDQpS
+ZWdhcmRzLA0KSmFzb24tSkgmIzMyO0xpbg0KDQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsN
+CiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyO0J1dCYjMzI7SSYjMzk7bSYjMzI7bm90JiMzMjtz
+dXJlJiMzMjt0aGUmIzMyO2xlZ2FjeSYjMzI7ZmxvdyYjMzI7d2lsbCYjMzI7dXBkYXRlJiMzMjt0
+aGUmIzMyO3ByaW1hcnkmIzMyO3BsYW5lDQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjtwcm9w
+ZXJ0aWVzJiMzMjt3aGVuJiMzMjtDUlRDJiMzMjtwcm9wZXJ0aWVzJiMzMjtpcyYjMzI7Y2hhbmdl
+ZCYjMzI7aW4mIzMyO3NvbWUmIzMyO3doZXJlLg0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7
+DQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjtTbyYjMzI7SSYjMzI7d29uJiMzOTt0JiMzMjtt
+b2RpZnkmIzMyO3RoaXMmIzMyO2xlZ2FjeSYjMzI7ZmxvdyYjMzI7bG9naWMsJiMzMjtidXQmIzMy
+O3dpbGwmIzMyO29ubHkmIzMyO2FkZCYjMzI7YQ0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7
+d3JhcHBlcg0KJmd0OyYjMzI7Jmd0OyYjMzI7Jmd0OyYjMzI7QVBJJiMzMjt0aGF0JiMzMjt5b3Um
+IzMyO21lbnRpb25lZCYjMzI7dG8mIzMyO2ZpeCYjMzI7dGhlJiMzMjthdG9taWMmIzMyO2Zsb3cm
+IzMyO29mJiMzMjtvdXImIzMyO2RyaXZlcnMuDQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMzMjsN
+CiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyOy0tDQomZ3Q7JiMzMjsmZ3Q7JiMz
+MjsmZ3Q7JiMzMjsmZ3Q7JiMzMjtWaWxsZSYjMzI7U3lyaiYjMjI4O2wmIzIyODsNCiZndDsmIzMy
+OyZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyO0ludGVsDQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7
+JiMzMjsNCiZndDsmIzMyOyZndDsmIzMyOyZndDsmIzMyO1JlZ2FyZHMsDQomZ3Q7JiMzMjsmZ3Q7
+JiMzMjsmZ3Q7JiMzMjtKYXNvbi1KSCYjMzI7TGluDQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmZ3Q7JiMz
+MjsNCiZndDsmIzMyOyZndDsmIzMyOw0KJmd0OyYjMzI7Jmd0OyYjMzI7LS0NCiZndDsmIzMyOyZn
+dDsmIzMyO1ZpbGxlJiMzMjtTeXJqJiMyMjg7bCYjMjI4Ow0KJmd0OyYjMzI7Jmd0OyYjMzI7SW50
+ZWwNCiZndDsmIzMyOw0KJmd0OyYjMzI7UmVnYXJkcywNCiZndDsmIzMyO0phc29uLUpIJiMzMjtM
+aW4NCg0KDQo8L3ByZT4NCjwvcD48L2JvZHk+PC9odG1sPjwhLS10eXBlOnRleHQtLT48IS0tey0t
+PjxwcmU+KioqKioqKioqKioqKiBNRURJQVRFSyBDb25maWRlbnRpYWxpdHkgTm90aWNlDQogKioq
+KioqKioqKioqKioqKioqKioNClRoZSBpbmZvcm1hdGlvbiBjb250YWluZWQgaW4gdGhpcyBlLW1h
+aWwgbWVzc2FnZSAoaW5jbHVkaW5nIGFueSANCmF0dGFjaG1lbnRzKSBtYXkgYmUgY29uZmlkZW50
+aWFsLCBwcm9wcmlldGFyeSwgcHJpdmlsZWdlZCwgb3Igb3RoZXJ3aXNlDQpleGVtcHQgZnJvbSBk
+aXNjbG9zdXJlIHVuZGVyIGFwcGxpY2FibGUgbGF3cy4gSXQgaXMgaW50ZW5kZWQgdG8gYmUgDQpj
+b252ZXllZCBvbmx5IHRvIHRoZSBkZXNpZ25hdGVkIHJlY2lwaWVudChzKS4gQW55IHVzZSwgZGlz
+c2VtaW5hdGlvbiwgDQpkaXN0cmlidXRpb24sIHByaW50aW5nLCByZXRhaW5pbmcgb3IgY29weWlu
+ZyBvZiB0aGlzIGUtbWFpbCAoaW5jbHVkaW5nIGl0cyANCmF0dGFjaG1lbnRzKSBieSB1bmludGVu
+ZGVkIHJlY2lwaWVudChzKSBpcyBzdHJpY3RseSBwcm9oaWJpdGVkIGFuZCBtYXkgDQpiZSB1bmxh
+d2Z1bC4gSWYgeW91IGFyZSBub3QgYW4gaW50ZW5kZWQgcmVjaXBpZW50IG9mIHRoaXMgZS1tYWls
+LCBvciBiZWxpZXZlDQogDQp0aGF0IHlvdSBoYXZlIHJlY2VpdmVkIHRoaXMgZS1tYWlsIGluIGVy
+cm9yLCBwbGVhc2Ugbm90aWZ5IHRoZSBzZW5kZXIgDQppbW1lZGlhdGVseSAoYnkgcmVwbHlpbmcg
+dG8gdGhpcyBlLW1haWwpLCBkZWxldGUgYW55IGFuZCBhbGwgY29waWVzIG9mIA0KdGhpcyBlLW1h
+aWwgKGluY2x1ZGluZyBhbnkgYXR0YWNobWVudHMpIGZyb20geW91ciBzeXN0ZW0sIGFuZCBkbyBu
+b3QNCmRpc2Nsb3NlIHRoZSBjb250ZW50IG9mIHRoaXMgZS1tYWlsIHRvIGFueSBvdGhlciBwZXJz
+b24uIFRoYW5rIHlvdSENCjwvcHJlPjwhLS19LS0+
+
+--__=_Part_Boundary_007_103579885.1250308437--
+
