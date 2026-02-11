@@ -4,51 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08D08E81BD2
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 09:18:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2162AEB5954
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 09:32:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ADD7F10E26C;
-	Wed, 11 Feb 2026 09:18:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B74E210E359;
+	Wed, 11 Feb 2026 09:32:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JZLQx7Vw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Cg1wTSg5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2CEF910E26C
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 09:18:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 041E310E359
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 09:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770801512; x=1802337512;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=vJlc5pqCgGnXDQ0Rp3O5wFx65fW5XuA14K3S6g0WSdM=;
- b=JZLQx7VwyHEt3AxD4g/OlvJkpKPIBnbLteIoko9v7AaLFbvXrW9a4GNq
- 6lF24Ipa3I/hMUDtx02IzaykamApPpQMnTAERoZG1ghR/v83r+LhUWeqN
- X4AlecEDJKRSL80ZItZCvGUXzNRVUGcKOSMblYZ8U3VSPss3DG45EnOfl
- pi23nxQ2f8oNbus498OUP03TwRZHGGTI3UoYxvcJD0K8Ij5cbop2txSN6
- 6mKnpZDesF3iDl37D4ZcPkBY1UOdppMOn9r7jIttrYLPaLCqDc5cWnoNg
- D0FQJLxZIo14JGLqUr7RJzayCZkGQ77JRTgEpWQLMLCw5A1jTbTcsuxwi Q==;
-X-CSE-ConnectionGUID: Bkv8HAf/QfOssWZ6fqqi/Q==
-X-CSE-MsgGUID: pXy8rPDqQdOZCsJqB3rphA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="83386736"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="83386736"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2026 01:18:31 -0800
-X-CSE-ConnectionGUID: w8NKgidRQSagalTPQqPdVA==
-X-CSE-MsgGUID: +L0A2syYTjSiB/9wsPheyQ==
+ t=1770802321; x=1802338321;
+ h=from:to:subject:in-reply-to:references:date:message-id:
+ mime-version:content-transfer-encoding;
+ bh=vsruIyW5CMEdHBlqr6HlpxTX9Cc6PZAudmmxmhC/1pQ=;
+ b=Cg1wTSg5N6cq0bArzAxABZuhEdOhm3GZYmDX4XVaHepiHSPyeloZ7W42
+ 6uy62oUY0jSi+Z7+YWIezLpFIhN5gby1JcCFPlyTDb52rIGkgMF/SmlaQ
+ NDTuOz0tkGhaNu+dEecRco6WINxU91KWLPSVp61FakTP4fpjm+yksqcLv
+ cUZKNNRgKmOiH2WLWdi62JtBLL/sr8ob3COwLxNEhnhR0L9XOp4gkw2dA
+ HRWvYz/KyR0stKNLrZ7cGsepZY2i4O0YDA/WzseHyEoGKaqpo0CNSfAPg
+ 8+Wr6Uu+pEqCY6dyDcyRl0mHCDiiddSVvGP8G+zdY1K+ZBeA8RKNru4MQ w==;
+X-CSE-ConnectionGUID: huLVw0sER1eypPwm9ExX1w==
+X-CSE-MsgGUID: K+9cAc9LQuyZp5T7tHhbqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="75571375"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="75571375"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Feb 2026 01:32:01 -0800
+X-CSE-ConnectionGUID: 32zdM8IGSR2vS59TqkGjKA==
+X-CSE-MsgGUID: n+xoDJ4wQ6G3ZzwzioHN+Q==
 X-ExtLoop1: 1
-Received: from dut7069bmgfrd.fm.intel.com (HELO DUT7069BMGFRD..) ([10.1.84.79])
- by fmviesa003.fm.intel.com with ESMTP; 11 Feb 2026 01:18:29 -0800
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, nishit.sharma@intel.com,
- pravalika.gurram@intel.com
-Subject: [PATCH i-g-t] tests/intel/xe_exec_system_allocator: Add helpers to
- enable and reset hugepages for test execution
-Date: Wed, 11 Feb 2026 09:18:29 +0000
-Message-ID: <20260211091829.1003250-1-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.48.1
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; d="scan'208";a="212228165"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.57])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Feb 2026 01:32:00 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 1/5] tests/kms: Clean up display varaibles used
+ for igt_crtc_for_pipe()
+In-Reply-To: <20260210161016.29459-2-ville.syrjala@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260210161016.29459-1-ville.syrjala@linux.intel.com>
+ <20260210161016.29459-2-ville.syrjala@linux.intel.com>
+Date: Wed, 11 Feb 2026 11:31:56 +0200
+Message-ID: <02e8dfc3181278e077db2ebd253e8a5b11256722@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,127 +72,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+On Tue, 10 Feb 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>
+> Currently the 'display' parameter passed to igt_crtc_for_pipe()
+> calls is a bit inconsistent. Reuse the local 'display' variable
+> in case have one, and otherwise try to grab it from out typical
+> 'data' structure.
 
-Introduce helper functions to programmatically control the number
-of hugepages via /proc/sys/vm/nr_hugepages. This allows tests that
-require hugepage-backed memory to be executed reliably instead of
-being skipped due to insufficient hugepages. The helpers ensure
-hugepages are enabled before relevant subtests and reset after
-improving test coverage and robustness.
+*our perhaps?
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- tests/intel/xe_exec_system_allocator.c | 44 ++++++++++++++++++++++++--
- 1 file changed, 41 insertions(+), 3 deletions(-)
+*variables in the subject.
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index fc987ac7f..14f5e358f 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -31,6 +31,7 @@
- #define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
- #define QUARTER_SEC		(NSEC_PER_SEC / 4)
- #define FIVE_SEC		(5LL * NSEC_PER_SEC)
-+#define NUM_HUGE_PAGES		128
- 
- struct test_exec_data {
- 	uint32_t batch[32];
-@@ -55,6 +56,28 @@ struct batch_data {
- })
- #define READ_VALUE(data__)	((data__)->expected_data)
- 
-+bool is_hugepg_enable = false;
-+
-+static void set_nr_hugepages(int n)
-+{
-+	char cmd[64];
-+
-+	snprintf(cmd, sizeof(cmd), "echo %d > /proc/sys/vm/nr_hugepages", n);
-+	igt_assert(system(cmd) == 0);
-+}
-+
-+static void reset_nr_hugepages(void)
-+{
-+	set_nr_hugepages(0);
-+	is_hugepg_enable = false;
-+}
-+
-+static void enable_hugepage(void)
-+{
-+	set_nr_hugepages(NUM_HUGE_PAGES);
-+	is_hugepg_enable = true;
-+}
-+
- static void __write_dword(uint32_t *batch, uint64_t sdi_addr, uint32_t wdata,
- 			int *idx)
- {
-@@ -1444,8 +1467,10 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	if (flags & EVERY_OTHER_CHECK && odd(n_execs))
- 		return;
- 
--	if (flags & HUGE_PAGE)
-+	if (flags & HUGE_PAGE) {
-+		enable_hugepage();
- 		igt_require_hugepages();
-+	}
- 
- 	if (flags & EVERY_OTHER_CHECK)
- 		igt_assert(flags & MREMAP);
-@@ -1984,6 +2009,9 @@ cleanup:
- 	}
- 	if (free_vm)
- 		xe_vm_destroy(fd, vm);
-+
-+	if (is_hugepg_enable)
-+		reset_nr_hugepages();
- }
- 
- struct thread_data {
-@@ -2036,8 +2064,10 @@ threads(int fd, int n_exec_queues, int n_execs, size_t bo_size,
- 	if ((FILE_BACKED | FORK_READ) & flags)
- 		return;
- 
--	if (flags & HUGE_PAGE)
-+	if (flags & HUGE_PAGE) {
-+		enable_hugepage();
- 		igt_require_hugepages();
-+	}
- 
- 	xe_for_each_engine(fd, hwe)
- 		++n_engines;
-@@ -2115,6 +2145,9 @@ threads(int fd, int n_exec_queues, int n_execs, size_t bo_size,
- 			free(alloc);
- 	}
- 	free(threads_data);
-+
-+	if (is_hugepg_enable)
-+		reset_nr_hugepages();
- }
- 
- static void process(struct drm_xe_engine_class_instance *hwe, int n_exec_queues,
-@@ -2150,8 +2183,10 @@ processes(int fd, int n_exec_queues, int n_execs, size_t bo_size,
- 	if (flags & FORK_READ)
- 		return;
- 
--	if (flags & HUGE_PAGE)
-+	if (flags & HUGE_PAGE) {
-+		enable_hugepage();
- 		igt_require_hugepages();
-+	}
- 
- 	map_fd = open(sync_file, O_RDWR | O_CREAT, 0x666);
- 	posix_fallocate(map_fd, 0, sizeof(*pdata));
-@@ -2171,6 +2206,9 @@ processes(int fd, int n_exec_queues, int n_execs, size_t bo_size,
- 
- 	close(map_fd);
- 	munmap(pdata, sizeof(*pdata));
-+
-+	if (is_hugepg_enable)
-+		reset_nr_hugepages();
- }
- 
- /* compute flags */
--- 
-2.34.1
+> Having a bit more common structure in the code will help
+> subsequent cocci cleanups around igt_crtc_for_pipe() usage.
+>
+>  #include "scripts/iterators.cocci"
+>
+> @find_data@
+> type T;
+> T DATA;
+> identifier DISPLAY;
+> @@
+> igt_display_require(&DATA.DISPLAY, ...);
 
+Yeah, it's a bit weird that we have ~100 local definitions for data_t. I
+did not manually check that each of them has display member
+initialized. Instead, I checked a few, and trust this cocci snippet and
+the compiler.
+
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+
+
+--=20
+Jani Nikula, Intel
