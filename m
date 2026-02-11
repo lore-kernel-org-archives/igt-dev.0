@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28C28ECD6C1
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 16:34:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C4CBECD6C8
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Feb 2026 16:34:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D31FA10E628;
-	Wed, 11 Feb 2026 16:34:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B4DAE10E62C;
+	Wed, 11 Feb 2026 16:34:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c8+X8Z0W";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VFTgDsiB";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33AAA10E628
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 16:34:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A30FF10E62C
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Feb 2026 16:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770827673; x=1802363673;
+ t=1770827677; x=1802363677;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=gEoUOElqAsiZyl5TofAr/8qHvFyhU9s0++/R7nF/rkw=;
- b=c8+X8Z0WarOyx1fwfY0wjZbUWdEkarQsY54yn4HqdrCDIV/dTamgDG8U
- y3H7GIR4uWb1FFKrXCtBkajaRKNl8hpyJvYaLzxFpjueMRGj2SDN/4Y+7
- 21kJWNhBy6bLMyjDz/mKZ/dW3CHZTQTEuYzL21muyGtGawyHjXkr+2JlK
- f1rsh2OlwmJ8yaGi3W0NRs6d1Ckjtzt8SaMD2MWw3pt4IegAFMLZMduIZ
- KkQbPahUsjzSr8zh8oFtaV43bUpoeR5I+Ol9aNnkBOjWDMiLk+d2IcmL6
- jLHiIKb/ypJdoe7dIraRZ7FOrar/oHflDVHdbGVOqREL/msGc2C3UW6Y+ Q==;
-X-CSE-ConnectionGUID: +lOgMmDJSrKzqRv7IZ1UUg==
-X-CSE-MsgGUID: zwhTedOVT6u2B1G89zo5Ww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="83082182"
-X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; d="scan'208";a="83082182"
+ bh=wPRxGMUSID5nR/m1C9ETyxPftb3Pq5FI9CLA5uK7SOk=;
+ b=VFTgDsiBl0fxgPG/A1CyZzpbyU8kzdvUkIOdFz8DpAZFz3b1rgPIxA31
+ h1SSuF0fKDL6AsPlbrTgzG95z9oUHXEn9kHSfzvAwFFNbwUG6y/8HuLHh
+ afvFQzkXxSD/ZnqoImi6YP1DreQXpBkBlioqy5AA9EW0JIoPsffzjgKDe
+ +2LKnfScpdv0HSFcI56IhFeyJ1PfW9Ugy0Hb6nFRjWMtnOM69iX6/5ty1
+ 7yTyc+SMnTIWDi4T7qSfpBitIC96zAGwzgB3xCmwYgRiCmWiQgD+QJBav
+ 9Q7UZHSC3Y0Xk2T5vy3QQ3+igiLjAEthAwS2BSG12yFXyVcvJpsK4tQiP w==;
+X-CSE-ConnectionGUID: G3sWWDBoSkmgGSfjlJ7fOg==
+X-CSE-MsgGUID: qhfxE/wCR3Ka2q5mX602SA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="83082187"
+X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; d="scan'208";a="83082187"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2026 08:34:33 -0800
-X-CSE-ConnectionGUID: 26zZko6OTLqfHVHY7YgLww==
-X-CSE-MsgGUID: ytWTCBcTS9+EEsr22i6ovw==
+ 11 Feb 2026 08:34:37 -0800
+X-CSE-ConnectionGUID: 71zZtN3gSM2nnfOcyV0nBg==
+X-CSE-MsgGUID: VjAsghD5Suu95rxZbaNIzg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; d="scan'208";a="211405387"
+X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; d="scan'208";a="211405391"
 Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
  ([10.245.245.23])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Feb 2026 08:34:32 -0800
+ 11 Feb 2026 08:34:36 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 06/17] tests/intel/kms_psr2_su: Use igt_crtc_t instead
- of enum pipe
-Date: Wed, 11 Feb 2026 18:33:53 +0200
-Message-ID: <20260211163404.2018-7-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 07/17] tests/intel/kms_dsc*: Use igt_crtc_t instead of
+ enum pipe
+Date: Wed, 11 Feb 2026 18:33:54 +0200
+Message-ID: <20260211163404.2018-8-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260211163404.2018-1-ville.syrjala@linux.intel.com>
 References: <20260211163404.2018-1-ville.syrjala@linux.intel.com>
@@ -73,78 +73,120 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Convert the use of enum pipe to igt_crtc_t in
-tests/intel/kms_psr2_su.
+Convert the use of enum pipe to igt_crtc_t tests/intel/kms_dsc*.
 
-The pipes[] array (afterwards crtcs[]) complicates this
-one sufficiently that the conversion was done by hand.
+The data.pipe thing complicates this one, so it was mostly done
+by hand. Mainly I wanted to get the tests/intel/kms_dsc_helper.c
+part out of the way.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/intel/kms_psr2_su.c | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ tests/intel/kms_dsc.c        | 15 +++++++--------
+ tests/intel/kms_dsc_helper.c |  8 +++++---
+ tests/intel/kms_dsc_helper.h |  3 ++-
+ 3 files changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/tests/intel/kms_psr2_su.c b/tests/intel/kms_psr2_su.c
-index f7652f165a2d..95bd4f605ff8 100644
---- a/tests/intel/kms_psr2_su.c
-+++ b/tests/intel/kms_psr2_su.c
-@@ -292,13 +292,12 @@ static void cleanup(data_t *data, igt_output_t *output)
- 	igt_remove_fb(data->drm_fd, &data->fb[0]);
+diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
+index ab9793f5168a..f832500b7eeb 100644
+--- a/tests/intel/kms_dsc.c
++++ b/tests/intel/kms_dsc.c
+@@ -79,7 +79,7 @@ typedef struct {
+ 	igt_output_t *output;
+ 	int input_bpc;
+ 	int disp_ver;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	bool limited;
+ } data_t;
+ 
+@@ -164,8 +164,7 @@ static void update_display(data_t *data, uint32_t test_type)
+ 		force_dsc_fractional_bpp_enable(data->drm_fd, data->output);
+ 	}
+ 
+-	igt_output_set_crtc(output,
+-			    igt_crtc_for_pipe(display, data->pipe));
++	igt_output_set_crtc(output, data->crtc);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
+ 	igt_skip_on(!igt_plane_has_format_mod(primary, data->plane_format,
+@@ -227,7 +226,7 @@ static void update_display(data_t *data, uint32_t test_type)
+ 	restore_force_dsc_fractional_bpp_en();
+ 
+ 	if (test_type & TEST_DSC_BPC) {
+-		current_bpc = igt_get_pipe_current_bpc(data->drm_fd, data->pipe);
++		current_bpc = igt_get_pipe_current_bpc(data->drm_fd, data->crtc->pipe);
+ 		igt_skip_on_f(data->input_bpc != current_bpc,
+ 			      "Input bpc = %d is not equal to current bpc = %d\n",
+ 			      data->input_bpc, current_bpc);
+@@ -236,7 +235,7 @@ static void update_display(data_t *data, uint32_t test_type)
+ 	igt_assert_f(enabled,
+ 		     "Default DSC enable failed on connector: %s pipe: %s\n",
+ 		     output->name,
+-		     kmstest_pipe_name(data->pipe));
++		     igt_crtc_name(data->crtc));
+ reset:
+ 	test_reset(data);
+ 
+@@ -265,10 +264,10 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+ 		data->plane_format = plane_format;
+ 		data->input_bpc = bpc;
+ 		data->output = output;
+-		data->pipe = crtc->pipe;
++		data->crtc = crtc;
+ 
+ 		if (!is_dsc_supported_by_sink(data->drm_fd, data->output) ||
+-		    !check_gen11_dp_constraint(data->drm_fd, data->output, data->pipe))
++		    !check_gen11_dp_constraint(data->drm_fd, data->output, data->crtc))
+ 			continue;
+ 
+ 		if (igt_get_output_max_bpc(data->drm_fd, output->name) < MIN_DSC_BPC) {
+@@ -293,7 +292,7 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+ 		if (test_type & TEST_DSC_BPC)
+ 			snprintf(&name[2][0], LEN, "-%dbpc", data->input_bpc);
+ 
+-		igt_dynamic_f("pipe-%s-%s%s%s%s",  kmstest_pipe_name(data->pipe), data->output->name,
++		igt_dynamic_f("pipe-%s-%s%s%s%s",  igt_crtc_name(data->crtc), data->output->name,
+ 			      &name[0][0], &name[1][0], &name[2][0])
+ 			update_display(data, test_type);
+ 
+diff --git a/tests/intel/kms_dsc_helper.c b/tests/intel/kms_dsc_helper.c
+index cea4304e48d3..77165b41f4bc 100644
+--- a/tests/intel/kms_dsc_helper.c
++++ b/tests/intel/kms_dsc_helper.c
+@@ -84,14 +84,16 @@ bool is_dsc_supported_by_sink(int drmfd, igt_output_t *output)
+ 	return true;
  }
  
--static int check_psr2_support(data_t *data, enum pipe pipe)
-+static int check_psr2_support(data_t *data, igt_crtc_t *crtc)
+-bool check_gen11_dp_constraint(int drmfd, igt_output_t *output, enum pipe pipe)
++bool check_gen11_dp_constraint(int drmfd, igt_output_t *output,
++			       igt_crtc_t *crtc)
  {
- 	int status;
+ 	uint32_t devid = intel_get_drm_devid(drmfd);
+ 	drmModeConnector *connector = output->config.connector;
  
- 	igt_output_t *output;
- 	igt_display_t *display = &data->display;
--	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
- 
- 	igt_display_reset(display);
- 	output = data->output;
-@@ -317,8 +316,8 @@ int igt_main()
- 	igt_crtc_t *crtc;
- 	int r, i;
- 	igt_output_t *outputs[IGT_MAX_PIPES * IGT_MAX_PIPES];
--	int pipes[IGT_MAX_PIPES * IGT_MAX_PIPES];
--	int n_pipes = 0;
-+	igt_crtc_t *crtcs[IGT_MAX_PIPES * IGT_MAX_PIPES];
-+	int n_crtcs = 0;
- 
- 	igt_fixture() {
- 		struct itimerspec interval;
-@@ -357,10 +356,10 @@ int igt_main()
- 
- 		for_each_crtc_with_valid_output(&data.display, crtc,
- 						data.output) {
--			if (check_psr2_support(&data, crtc->pipe)) {
--				pipes[n_pipes] = crtc->pipe;
--				outputs[n_pipes] = data.output;
--				n_pipes++;
-+			if (check_psr2_support(&data, crtc)) {
-+				crtcs[n_crtcs] = crtc;
-+				outputs[n_crtcs] = data.output;
-+				n_crtcs++;
- 			}
- 		}
+ 	if ((connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort) &&
+-	    (pipe == PIPE_A) && IS_GEN11(devid)) {
+-		igt_info("DSC not supported on pipe %s on %s in gen11 platforms\n", kmstest_pipe_name(pipe), output->name);
++	    (crtc->pipe == PIPE_A) && IS_GEN11(devid)) {
++		igt_info("DSC not supported on pipe %s on %s in gen11 platforms\n",
++			 kmstest_pipe_name(crtc->pipe), output->name);
+ 		return false;
  	}
-@@ -372,11 +371,10 @@ int igt_main()
- 			data.format = *format++;
- 			igt_describe("Test that selective update works when screen changes");
- 			igt_subtest_with_dynamic_f("%s-%s", op_str(data.op), igt_format_str(data.format)) {
--				for (i = 0; i < n_pipes; i++) {
--					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipes[i]),
--							igt_output_name(outputs[i])) {
--						igt_output_set_crtc(outputs[i],
--								    igt_crtc_for_pipe(outputs[i]->display, pipes[i]));
-+				for (i = 0; i < n_crtcs; i++) {
-+					igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtcs[i]),
-+						      igt_output_name(outputs[i])) {
-+						igt_output_set_crtc(outputs[i], crtcs[i]);
- 						if (data.op == FRONTBUFFER &&
- 						    intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 12) {
- 							/*
+ 
+diff --git a/tests/intel/kms_dsc_helper.h b/tests/intel/kms_dsc_helper.h
+index 4dbd88fe7b95..ee419c849836 100644
+--- a/tests/intel/kms_dsc_helper.h
++++ b/tests/intel/kms_dsc_helper.h
+@@ -28,7 +28,8 @@ void restore_force_dsc_en(void);
+ void kms_dsc_exit_handler(int sig);
+ bool is_dsc_supported_by_sink(int drmfd, igt_output_t *output);
+ bool is_dsc_supported_by_source(int drmfd);
+-bool check_gen11_dp_constraint(int drmfd, igt_output_t *output, enum pipe pipe);
++bool check_gen11_dp_constraint(int drmfd, igt_output_t *output,
++			       igt_crtc_t *crtc);
+ bool check_gen11_bpc_constraint(int drmfd, int input_bpc);
+ void force_dsc_output_format(int drmfd, igt_output_t *output,
+ 			     enum dsc_output_format output_format);
 -- 
 2.52.0
 
