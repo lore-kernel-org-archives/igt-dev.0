@@ -4,55 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 000A7EB48EC
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Feb 2026 09:09:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21D89EB48EF
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Feb 2026 09:09:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A674410E6FF;
-	Thu, 12 Feb 2026 09:09:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C87F010E143;
+	Thu, 12 Feb 2026 09:09:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q6nr62T/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aRBf5Fiq";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2276410E143
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Feb 2026 09:09:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7AD8B10E143
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Feb 2026 09:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770887377; x=1802423377;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=WBND5bWbMPWtekFoWGepRIYNEFvtpNmjKPzBzYMGvpc=;
- b=Q6nr62T/6Wb/VlkSLErRuTeWl4WSqDTtZ1YxpBD47q4RaE3mJnIq5raY
- A/XXjg2aOngN+TjshGqzwt2bu2c/5tChkJFuHJBMANE1SzFkfQaFtmjSl
- 3p6JcOOCnHWjhHB9wD5GQdHpoBHt+uEBtK42GteeVGLiuniGLlAFUsitM
- EptVEiV9jV0n4YIwX8ZzEiVKgyEZHoKQps+KK13kby1/YgDuqFEL2IBhz
- c1DZfbNrE2Hu9zpnQ3MAvCU7N23WFCSYkRaSYv9Fxj8PyaOEEQfAQAG57
- 2y8ugag2rIdpNg/2cPxCQpBVmByadm8DFaEqtbyiTMM6gtC0Bh1FW9Yae w==;
-X-CSE-ConnectionGUID: Fn/516EyQ7GNe7/3sH9FZw==
-X-CSE-MsgGUID: 4dB7nUYERp2wpwpEbMDfMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="74653244"
-X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; d="scan'208";a="74653244"
+ t=1770887378; x=1802423378;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=hz13zQw2KfjgFebmdUfdRJc+sytwwIF5LQc6mZfims0=;
+ b=aRBf5FiqOVP3Pm+BmQBBO7LyVvR7i5Pu9ieQXZv03QAgXxkW/VhpiC7h
+ rhj54TQwZ3VqfXU490HfgIK7d/0LYTOgr8EnVfurEVRE9UZRsZ2OnLQwj
+ SeC4nIpe/kYpICo6bqHBVI/O7sUMU1+3u5hjH5rT0fWoCVKa/oxUuCrb0
+ vrJTKqR2U324pJvhgwuTr2A5l1KZ87Y/LL2xIUYKLWOKrMb1aI9MgX7f8
+ YTNCdDkgc+tgyInusYFRwQP3K3xtZ395QyMj1FnEQSJlKUkO95jHWnPUw
+ Sdd4QI2z4mipQwzESj//Hd10f5Zyinu9X2XHVBugXDEO3jFMd2OH98qEW w==;
+X-CSE-ConnectionGUID: eVcVfTYCTGKx2u3zJH0Ulg==
+X-CSE-MsgGUID: YZlIFzshTiSwpUlrSIBMuA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="74653248"
+X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; d="scan'208";a="74653248"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2026 01:09:36 -0800
-X-CSE-ConnectionGUID: LNC3sk7+Rwa+pDyN7Mgdeg==
-X-CSE-MsgGUID: 7sGi6SGhT4SMjYMW2yObVw==
+ 12 Feb 2026 01:09:38 -0800
+X-CSE-ConnectionGUID: SEC2gEcLQ+K6GLxbsiSYSQ==
+X-CSE-MsgGUID: Lmall1WxT3S7WD1naH11rQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; d="scan'208";a="212636868"
+X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; d="scan'208";a="212636891"
 Received: from varungup-desk.iind.intel.com ([10.190.238.71])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2026 01:09:34 -0800
+ 12 Feb 2026 01:09:36 -0800
 From: Arvind Yadav <arvind.yadav@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: matthew.brost@intel.com, himal.prasad.ghimiray@intel.com,
  thomas.hellstrom@linux.intel.com, nishit.sharma@intel.com,
  pravalika.gurram@intel.com
-Subject: [PATCH i-g-t v2 0/3] tests/xe: Add purgeable memory madvise tests for
- system allocator
-Date: Thu, 12 Feb 2026 14:39:14 +0530
-Message-ID: <20260212090921.2079711-1-arvind.yadav@intel.com>
+Subject: [PATCH i-g-t v2 1/3] drm-uapi/xe_drm: Add UAPI support for purgeable
+ buffer objects
+Date: Thu, 12 Feb 2026 14:39:15 +0530
+Message-ID: <20260212090921.2079711-2-arvind.yadav@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260212090921.2079711-1-arvind.yadav@intel.com>
+References: <20260212090921.2079711-1-arvind.yadav@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=yes
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,87 +71,105 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series adds IGT tests for the purgeable memory madvise functionality
-in the XE driver's system allocator path.
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 
-Purgeable memory allows userspace to mark buffer objects as DONTNEED,
-making them eligible for kernel reclamation under memory pressure. This
-is critical for mobile and memory-constrained platforms to prevent OOM
-conditions while managing temporary or regeneratable GPU data.
+Extend the DRM_XE_MADVISE ioctl to support purgeable buffer object
+management by adding DRM_XE_VMA_ATTR_PURGEABLE_STATE attribute type.
 
-The test suite validates:
-- Basic purgeable lifecycle (WILLNEED -> DONTNEED -> PURGED)
-- "Once purged, always purged" semantics (i915 compatibility)
-- Per-VMA purgeable state tracking for shared buffers
-- CPU fault handling on purged BOs (SIGBUS/SIGSEGV)
-- GPU execution with purged memory and scratch page protection
-- Proper state transitions across multiple VMs
+This allows userspace applications to provide memory usage hints to
+the kernel for better memory management under pressure:
 
-Purgeable Memory States:-
- - **WILLNEED (0)**: Memory is actively needed, kernel should not
-		     reclaim it.
- - **DONTNEED (1)**: Application doesn't need this memory right now,
-                     kernel can reclaim it if needed
+This allows userspace applications to provide memory usage hints to
+the kernel for better memory management under pressure:
 
-Retained Value
- When querying purgeable state, the kernel returns:
- - retained = 1: Memory is still present (not purged)
- - retained = 0: Memory was purged/reclaimed
+- WILLNEED: Buffer is needed and should not be purged. If the BO was
+  previously purged, retained field returns 0 indicating backing store
+  was lost (once purged, always purged semantics matching i915).
 
-Kernel dependency: https://patchwork.freedesktop.org/series/156651/
+- DONTNEED: Buffer is not currently needed and may be purged by the
+  kernel under memory pressure to free resources. Only applies to
+  non-shared BOs.
 
-Test Cases :
-  1. madvise-purgeable-dontneed-before-mmap
-  	Purpose: Validate that mmap fails on already-purged BO
-
-  2. madvise-purgeable-dontneed-after-mmap
-	Purpose: Validate that accessing an existing mapping of purged memory
-	         triggers SIGBUS/SIGSEGV.
-
-  3. madvise-purgeable-dontneed-before-exec
-	Purpose: Validate GPU execution on purgeable BO (before it's used).
-
-  4. madvise-purgeable-dontneed-after-exec
-	Purpose: Validate that previously-used BO can be purged and becomes
-                 inaccessible.
-
-  5. madvise-purgeable-per-vma-tracking
-	Purpose: Validate per-VMA purgeable state tracking
-
-  6. madvise-purgeable-per-vma-protection
-	Purpose: Validate that WILLNEED VMA protects BO from purging during
-                 GPU operations.
+The implementation includes a 'retained' output field (matching i915's
+drm_i915_gem_madvise.retained) that indicates whether the BO's backing
+store still exists (1) or has been purged (0).
 
 v2:
-   - Move tests from xe_exec_system_allocator.c to dedicated
-     xe_madvise.c (Thomas Hellström).
-   - Fix trigger_memory_pressure to use scalable overpressure
-    (25% of VRAM, minimum 64MB instead of fixed 64MB). (Pravalika)
-   - Add MAP_FAILED check in trigger_memory_pressure.
-   - Touch all pages in allocated chunks, not just first 4KB. (Pravalika)
-   - Add 100ms sleep before freeing BOs to allow shrinker time
-     to process memory pressure.  (Pravalika)
-   - Rename 'bo2' to 'handle' for clarity in trigger_memory_pressure.(Pravalika)
-   - Add NEEDS_VISIBLE_VRAM flag to purgeable_setup_simple_bo
-     for consistent CPU mapping support on discrete GPUs.  (Pravalika)
-   - Add proper NULL mmap handling in test_dontneed_before_mmap
-      with cleanup and early return.  (Pravalika)
+  - Update UAPI documentation to clarify retained must be initialized
+    to 0(Thomas)
 
-Arvind Yadav (2):
-  lib/xe: Add purgeable memory ioctl support
-  tests/intel/xe_madvise: Add purgeable BO madvise tests
+Cc: Nishit Sharma <nishit.sharma@intel.com>
+Cc: Pravalika Gurram <pravalika.gurram@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
+---
+ include/drm-uapi/xe_drm.h | 44 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-Himal Prasad Ghimiray (1):
-  drm-uapi/xe_drm: Add UAPI support for purgeable buffer objects
-
- include/drm-uapi/xe_drm.h |  44 +++
- lib/xe/xe_ioctl.c         |  33 ++
- lib/xe/xe_ioctl.h         |   2 +
- tests/intel/xe_madvise.c  | 747 ++++++++++++++++++++++++++++++++++++++
- tests/meson.build         |   1 +
- 5 files changed, 827 insertions(+)
- create mode 100644 tests/intel/xe_madvise.c
-
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 077e66a68..3dd1ba875 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -2099,6 +2099,7 @@ struct drm_xe_madvise {
+ #define DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC	0
+ #define DRM_XE_MEM_RANGE_ATTR_ATOMIC		1
+ #define DRM_XE_MEM_RANGE_ATTR_PAT		2
++#define DRM_XE_VMA_ATTR_PURGEABLE_STATE		3
+ 	/** @type: type of attribute */
+ 	__u32 type;
+ 
+@@ -2189,6 +2190,49 @@ struct drm_xe_madvise {
+ 			/** @pat_index.reserved: Reserved */
+ 			__u64 reserved;
+ 		} pat_index;
++
++		/**
++		 * @purge_state_val: Purgeable state configuration
++		 *
++		 * Used when @type == DRM_XE_VMA_ATTR_PURGEABLE_STATE.
++		 *
++		 * Configures the purgeable state of buffer objects in the specified
++		 * virtual address range. This allows applications to hint to the kernel
++		 * about bo's usage patterns for better memory management.
++		 *
++		 * Supported values for @purge_state_val.val:
++		 *  - DRM_XE_VMA_PURGEABLE_STATE_WILLNEED (0): Marks BO as needed.
++		 *    If BO was purged, returns retained=0 (backing store lost).
++		 *
++		 *  - DRM_XE_VMA_PURGEABLE_STATE_DONTNEED (1): Hints that BO is not
++		 *    currently needed. Kernel may purge it under memory pressure.
++		 *    Only applies to non-shared BOs. Returns retained=1 if not purged.
++		 */
++		struct {
++#define DRM_XE_VMA_PURGEABLE_STATE_WILLNEED	0
++#define DRM_XE_VMA_PURGEABLE_STATE_DONTNEED	1
++			/** @purge_state_val.val: value for DRM_XE_VMA_ATTR_PURGEABLE_STATE */
++			__u32 val;
++
++			/* @purge_state_val.pad */
++			__u32 pad;
++			/**
++			 * @purge_state_val.retained: Pointer to output field for backing
++			 * store status.
++			 *
++			 * Userspace must initialize this u32 field to 0 before the
++			 * ioctl. Kernel writes to it after the operation:
++			 * - 1 if backing store exists (not purged)
++			 * - 0 if backing store was purged
++			 *
++			 * If userspace fails to initialize to 0, ioctl returns -EINVAL.
++			 * This ensures a safe default (0 = assume purged) if kernel
++			 * cannot write the result.
++			 *
++			 * Similar to i915's drm_i915_gem_madvise.retained field.
++			 */
++			__u64 retained;
++		} purge_state_val;
+ 	};
+ 
+ 	/** @reserved: Reserved */
 -- 
 2.43.0
 
