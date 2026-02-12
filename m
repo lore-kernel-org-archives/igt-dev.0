@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 162FFEB4901
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Feb 2026 11:09:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFAFAEB4901
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Feb 2026 11:10:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BDE4D10E728;
-	Thu, 12 Feb 2026 11:09:29 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F37110E723;
- Thu, 12 Feb 2026 11:09:29 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3360875138212806779=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8640110E723;
+	Thu, 12 Feb 2026 11:10:39 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZdZ1WXTW";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F56910E724
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Feb 2026 11:10:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1770894638; x=1802430638;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=W6iI7PqdsVvxzTmfc3REUPVhCSitb4KsdPv2fWnsTSk=;
+ b=ZdZ1WXTW2M5nMIyVcUzJaBIbD2SwArwWZWCZz980Lia9lnzt8D3tzEYT
+ /1yHauCuASLi8AC9stvU14FsuZTryhs+DyWxMgCg7gVEEyhHem2yjGwUN
+ K5hUtTTRGzDxW3ZpytWuDnkWK5JzkXZfDe9mIyZH/0WWJ1qdiTeazBjxJ
+ 0wjZi3P8Hm3lQ92gVtfWtx2OdoDTVWJDynSOIxU1KHJxzJhgRjGGN/47Y
+ gzWZBNynxJ7AmdtHRinMJ+RxpeU0JIepxBgB/ADaMCtKWL7zixfO4rAYO
+ WSAhg1Vf9cQ7AYAOCb7QYmInFg2fautbfeeCyR9Z1Ujzbha6RyrNGudpM A==;
+X-CSE-ConnectionGUID: fzkU0tY8TWSK/8w6qy3JYg==
+X-CSE-MsgGUID: H+1ib/Z/RTu5YepjgWYn+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="75907658"
+X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; d="scan'208";a="75907658"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Feb 2026 03:10:38 -0800
+X-CSE-ConnectionGUID: DTN/hTgbRmqJJpUo6qqf3A==
+X-CSE-MsgGUID: iT1AnK0rS0uxRZtHTSeJWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; d="scan'208";a="212674310"
+Received: from administrator-system-product-name.igk.intel.com (HELO
+ dev-417.igk.intel.com) ([10.91.214.181])
+ by orviesa007.jf.intel.com with ESMTP; 12 Feb 2026 03:10:37 -0800
+From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v4 0/4] kms_flip: limit number of subtests run
+Date: Thu, 12 Feb 2026 12:10:18 +0100
+Message-ID: <20260212111023.189261-1-michal.grzelak@intel.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/xe=3A_Add_purgeable?=
- =?utf-8?q?_memory_madvise_tests_for_system_allocator_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Arvind Yadav" <arvind.yadav@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 12 Feb 2026 11:09:29 -0000
-Message-ID: <177089456910.249681.392014428520478108@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260212090921.2079711-1-arvind.yadav@intel.com>
-In-Reply-To: <20260212090921.2079711-1-arvind.yadav@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,201 +66,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3360875138212806779==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Next version of [1]. This series addresses both 2x-* and single output
+tests. This series has been tested on config with 4 outputs connected.
 
-== Series Details ==
+[1] https://lore.kernel.org/igt-dev/20260210225546.153728-1-michal.grzelak@intel.com
 
-Series: tests/xe: Add purgeable memory madvise tests for system allocator (rev2)
-URL   : https://patchwork.freedesktop.org/series/160333/
-State : success
+BR,
+Michał
 
-== Summary ==
+---
+Changelog:
+v3->v4
+- change \gt into \ge sign
 
-CI Bug Log - changes from IGT_8752 -> IGTPW_14545
-====================================================
+v2->v3
+- ease counting of pairs of outputs
+- limit number of tested outputs
+- narrow pair & output limiting to suspend subtests
+- add separate param for pair and connector limiting
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/index.html
-
-Participating hosts (41 -> 40)
-------------------------------
-
-  Additional (1): fi-glk-j4005 
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14545 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][1] ([i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@i915_selftest@live:
-    - bat-dg2-8:          [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8752/bat-dg2-8/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/bat-dg2-8/igt@i915_selftest@live.html
-    - bat-rplp-1:         [PASS][5] -> [ABORT][6] ([i915#14365]) +1 other test abort
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8752/bat-rplp-1/igt@i915_selftest@live.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/bat-rplp-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-9:          [PASS][7] -> [DMESG-FAIL][8] ([i915#12061]) +1 other test dmesg-fail
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8752/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-    - bat-dg2-14:         [PASS][9] -> [DMESG-FAIL][10] ([i915#12061]) +1 other test dmesg-fail
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8752/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_psr@psr-primary-page-flip:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][11] +12 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [DMESG-FAIL][12] ([i915#12061]) -> [PASS][13] +1 other test pass
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8752/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/bat-arls-5/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#14365]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14365
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+v1->v2
+- split pipe limiting into 2x- and single subtests
+- add output pair limiting
 
 
-Build changes
--------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8752 -> IGTPW_14545
+Michał Grzelak (4):
+  tests/kms_flip: test suspend on one pair of pipes
+  tests/kms_flip: run suspend tests on one pipe per output
+  tests/kms_flip: limit output pairs when testing suspend
+  tests/kms_flip: limit number of outputs wrt suspend
 
-  CI-20190529: 20190529
-  CI_DRM_17977: b4bfe7d753afaf6ea4950111a309a4e2ef5aef68 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14545: 14545
-  IGT_8752: 8752
+ tests/kms_flip.c | 74 +++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 61 insertions(+), 13 deletions(-)
 
-== Logs ==
+-- 
+2.45.2
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/index.html
-
---===============3360875138212806779==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe: Add purgeable memory madvise tests for system allocator (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160333/">https://patchwork.freedesktop.org/series/160333/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8752 -&gt; IGTPW_14545</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/index.html</p>
-<h2>Participating hosts (41 -&gt; 40)</h2>
-<p>Additional (1): fi-glk-j4005 <br />
-  Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14545 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8752/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8752/bat-rplp-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/bat-rplp-1/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14365">i915#14365</a>) +1 other test abort</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8752/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8752/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-page-flip:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> +12 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8752/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14545/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8752 -&gt; IGTPW_14545</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_17977: b4bfe7d753afaf6ea4950111a309a4e2ef5aef68 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14545: 14545<br />
-  IGT_8752: 8752</p>
-
-</body>
-</html>
-
---===============3360875138212806779==--
