@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75A22EF48F0
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Feb 2026 08:50:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FBC9EF48EE
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Feb 2026 09:03:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 27F8010E7B1;
-	Fri, 13 Feb 2026 08:50:31 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YF5mTetB";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1195410E7BD
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Feb 2026 08:50:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770972629; x=1802508629;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Ers5HBHfF9AVXJ9+Hl0O29sbhQdbDMotxi88nDEEuxw=;
- b=YF5mTetBN67dFugqZafjsiAw4eqSu/TMUpmF5puOn98aTfb7JaVSKVc7
- Vj1aRAYnBWvjbpFNMSjRj1Qf/IbfDklL+/ynFwvPhPqTmUy5TCkUakHFz
- SUO9YVxI+2lFK5f4iGdW1NANuG20oo6tWtzKOVDCiNnMTflKoj63TWecy
- UBu/URtOCbJtq+KW/2vNxeqC0bXjKwe0AYWNBixX8eGdSN638mgHY6iNB
- wG7Hz4eGmR3QG6LNv1VA8kP2/9C6hYKKSpf5/VP2YSn6o37RZOHdNNmXp
- 1Ao0ge3a3/akM1jfNoTbiQQi/envXRbaGOiSRjnJCoVYnZ5XjQHICtRK+ A==;
-X-CSE-ConnectionGUID: KYO8Lo0CSJ6ZP0YTm55CVQ==
-X-CSE-MsgGUID: p7i6lrOLSYq+0/28ywZp6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="71181732"
-X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; d="scan'208";a="71181732"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2026 00:50:29 -0800
-X-CSE-ConnectionGUID: 1daXjLcBRkO4oYEXqXWaPw==
-X-CSE-MsgGUID: hkMgO0fVRceAAVFa/n1ZHA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; d="scan'208";a="211774856"
-Received: from administrator-system-product-name.igk.intel.com (HELO
- dev-417.igk.intel.com) ([10.91.214.181])
- by fmviesa007.fm.intel.com with ESMTP; 13 Feb 2026 00:50:27 -0800
-From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com, mohammed.thasleem@intel.com,
- =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v5 4/4] tests/kms_flip: limit number of outputs wrt
- suspend
-Date: Fri, 13 Feb 2026 09:49:30 +0100
-Message-ID: <20260213084930.252273-5-michal.grzelak@intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20260213084930.252273-1-michal.grzelak@intel.com>
-References: <20260213084930.252273-1-michal.grzelak@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id ECF4D10E7B7;
+	Fri, 13 Feb 2026 09:03:29 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D69FE10E7BD;
+ Fri, 13 Feb 2026 09:03:28 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3959811646127133646=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Finvalid=5Fmode?=
+ =?utf-8?q?=3A_Add_informative_skip_for_connectors_with_fixed_mode?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Swati Sharma" <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 13 Feb 2026 09:03:28 -0000
+Message-ID: <177097340885.251530.9714197152659085543@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260213081059.450804-1-swati2.sharma@intel.com>
+In-Reply-To: <20260213081059.450804-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,87 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When running suspend subtests on single output, we can still hit the
-timeout by testing too much outputs. Default to testing 3 outputs. Add
-commandline parameter to run on all outputs.
+--===============3959811646127133646==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
----
- tests/kms_flip.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+== Series Details ==
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index 1c8495ef1..80e42cabb 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -264,12 +264,14 @@
- #define RUN_PAIR		2
- 
- #define PAIR_LIMIT 		3
-+#define CONN_LIMIT 		3
- 
- #ifndef DRM_CAP_TIMESTAMP_MONOTONIC
- #define DRM_CAP_TIMESTAMP_MONOTONIC 6
- #endif
- 
- static bool all_crtcs = false;
-+static bool all_conns = false;
- static bool all_pairs = false;
- 
- drmModeRes *resources;
-@@ -1822,6 +1824,7 @@ static void run_test(int duration, int flags)
- {
- 	struct test_output o;
- 	int i, n, modes = 0;
-+	int conn_count = 0;
- 
- 	/* No tiling support in XE. */
- 	if (is_xe_device(drm_fd) && flags & TEST_FENCE_STRESS)
-@@ -1887,6 +1890,10 @@ static void run_test(int duration, int flags)
- 			if ((flags & TEST_SUSPEND) && !all_crtcs && n != 0)
- 				continue;
- 
-+			/* Limit number of displays run */
-+			if ((flags & TEST_SUSPEND) && !all_conns && conn_count >= CONN_LIMIT)
-+				continue;
-+
- 			memset(&o, 0, sizeof(o));
- 			o.count = 1;
- 			o._connector[0] = resources->connectors[i];
-@@ -1895,8 +1902,15 @@ static void run_test(int duration, int flags)
- 			o.depth = 24;
- 
- 			crtc_idx = n;
--			run_test_on_crtc_set(&o, &crtc_idx, RUN_TEST,
--					     resources->count_crtcs, duration);
-+
-+			connector_find_preferred_mode(o._connector[0], n, &o);
-+			if (o.mode_valid) {
-+				run_test_on_crtc_set(&o, &crtc_idx, RUN_TEST,
-+						     resources->count_crtcs, duration);
-+				conn_count++;
-+			} else {
-+				free_test_output(&o);
-+			}
- 		}
- 	}
- 
-@@ -2070,10 +2084,11 @@ static int opt_handler(int opt, int opt_index, void *data)
- }
- 
- const char *help_str =
-+	"  -c \tRun on all connectors. (By default suspend subtests will run on 3 connectors)\n"
- 	"  -e \tRun on all CRTCs. (By default subtests will run on two CRTCs)\n"
- 	"  -p \tRun on all output pairs. (By default 2x-* suspend subtests will run on 3 pairs)\n";
- 
--int igt_main_args("ep", NULL, help_str, opt_handler, NULL)
-+int igt_main_args("cep", NULL, help_str, opt_handler, NULL)
- {
- 	struct {
- 		int duration;
--- 
-2.45.2
+Series: tests/kms_invalid_mode: Add informative skip for connectors with fixed mode
+URL   : https://patchwork.freedesktop.org/series/161569/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8753_BAT -> XEIGTPW_14549_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (14 -> 14)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14549_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-bmg-2:          [PASS][1] -> [ABORT][2] ([Intel XE#7249])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8753/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14549/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+
+  
+  [Intel XE#7249]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7249
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8753 -> IGTPW_14549
+  * Linux: xe-4548-ec995dd44a15b6f448fa3c7c8967f71443264b92 -> xe-4552-cd76e45b9a192aa3d4f7a2efb8ee46767f098e07
+
+  IGTPW_14549: 4b0d878bb35cda19bad2ea6be545aa0fa2e27d0a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8753: 8753
+  xe-4548-ec995dd44a15b6f448fa3c7c8967f71443264b92: ec995dd44a15b6f448fa3c7c8967f71443264b92
+  xe-4552-cd76e45b9a192aa3d4f7a2efb8ee46767f098e07: cd76e45b9a192aa3d4f7a2efb8ee46767f098e07
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14549/index.html
+
+--===============3959811646127133646==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_invalid_mode: Add informative skip for connectors with fixed mode</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161569/">https://patchwork.freedesktop.org/series/161569/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14549/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14549/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8753_BAT -&gt; XEIGTPW_14549_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (14 -&gt; 14)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14549_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8753/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14549/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7249">Intel XE#7249</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8753 -&gt; IGTPW_14549</li>
+<li>Linux: xe-4548-ec995dd44a15b6f448fa3c7c8967f71443264b92 -&gt; xe-4552-cd76e45b9a192aa3d4f7a2efb8ee46767f098e07</li>
+</ul>
+<p>IGTPW_14549: 4b0d878bb35cda19bad2ea6be545aa0fa2e27d0a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8753: 8753<br />
+  xe-4548-ec995dd44a15b6f448fa3c7c8967f71443264b92: ec995dd44a15b6f448fa3c7c8967f71443264b92<br />
+  xe-4552-cd76e45b9a192aa3d4f7a2efb8ee46767f098e07: cd76e45b9a192aa3d4f7a2efb8ee46767f098e07</p>
+
+</body>
+</html>
+
+--===============3959811646127133646==--
