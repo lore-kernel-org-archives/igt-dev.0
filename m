@@ -4,192 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A32B9EF48DB
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Feb 2026 07:08:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68220EF48CC
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Feb 2026 07:16:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 479B710E79D;
-	Fri, 13 Feb 2026 07:08:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BFF9F10E79C;
+	Fri, 13 Feb 2026 07:16:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ifb6vJJ3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hSjLEH8Q";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F69E10E79C
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Feb 2026 07:08:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B92F10E79C
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Feb 2026 07:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770966532; x=1802502532;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=gOwKRQeRQtPs1vDBXEBaB/LXmNi1Xg3clfnozQ0ziS8=;
- b=Ifb6vJJ3cNzzESadzKO34mPkL1ubfTVWfuXY4TeHMNryt+mJfrQZxtbS
- 65ztmVlZsmdkikfaNN0WMeJjK4bK9WAV78T8RpOxhoYqeCx/C/ahVkb0I
- hlY3pjs/zCccrowUYfV+ffflPJ8mi10Ki26bNN0va8DhufJeyyeDkhfjI
- yLpnPuLt1+5amXLaVc/I+CVIBUJZYPfBnx6mfeqpLH7g1XPPQQwPYB4ax
- yuufZVmUcYrhej79fAJlN1j112CGRWcZloLa9AMlAWvGbgRwgJhlgdXXP
- riQyllr+iMzX6GWnnqjbopCAKAEyjhdsj9GPCUfEWUQt46sx2H5qPho6i g==;
-X-CSE-ConnectionGUID: USvy7HczTSC8Fp9IBoqhzQ==
-X-CSE-MsgGUID: s6TOiCJuS9eyrqUKBOuXmg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="71348321"
-X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; d="scan'208";a="71348321"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2026 23:08:52 -0800
-X-CSE-ConnectionGUID: xrRqbnrzTiaTn9+6AeoTGA==
-X-CSE-MsgGUID: 5oUu/S7ART6dwIU5z8mflg==
+ t=1770967013; x=1802503013;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=fCg6dVawobLLe9EoN+Je1+3NwKr4Sb8AIoBKW967dN4=;
+ b=hSjLEH8QFIBBI/wLo+Mj7vMoagv//cHKhuUDDTDS6aiu5kk3/IMuFDsw
+ ZRIAbGQcMOhoMT8yJBuyEYiBOyZj8Ba9bSYLe3YrFtEXSazoEf+P72Pkb
+ RVHnYRcSiuC+hgtSFFTTuU7mCO/mxevqVq9nC/UonYYkJUrZStJduog34
+ WIOQzx7W1dRvQ3IxwphPql/jtZjuohGSL4Y2BRpYl17t6zWi+5E8GzGqh
+ eoLkaa+CHLFz5YeNxYDQnRuE+ioG6JCzDez/d7hmQYtMdiOLbBBFfAk1h
+ b1IGZoZEi6/dVftEhuSarPaGyLa4LiyPO8bwd2gnAruSqneaYP/77VQjK A==;
+X-CSE-ConnectionGUID: qoqUtYnPTP+eBuaroWJEFQ==
+X-CSE-MsgGUID: T1vKtILwQECkR+1SqqrBQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="83592065"
+X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; d="scan'208";a="83592065"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Feb 2026 23:16:52 -0800
+X-CSE-ConnectionGUID: 3ntLLhigS7C+bUnJbEy/2g==
+X-CSE-MsgGUID: i4F/AO0NTdWqWFlA2TFI1A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; d="scan'208";a="212682775"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Feb 2026 23:08:51 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Thu, 12 Feb 2026 23:08:50 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Thu, 12 Feb 2026 23:08:50 -0800
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.11) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Thu, 12 Feb 2026 23:08:49 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bAIFZMficmESxNmZtVUlZHhMEtRXaSOMc79MrggTmbZ0T/NDRFBZPprK8yOtfQ+qBQdXAVUoY6MrzC8ouYsLquWEUt4TlX9EHt6XiBcq50Xo+s2PJ29+lZN9L684RLE0vvXEJQL6BvX6kiHYqKBv4xNMhFObFd2xjsVTWVzf673hbenxQkR3uvUSmc/5VhY+0NR/veyLKEflzqe/cT3/Z7GrrMo0/Gf4RpWff9BGIpHe8EFTzrdzVqJH49QMOhWwc1cuzPj5bFTLh4ZwulGXy2qvqDYKXSVMBGgeUTUpr2/Lfz3D/epRTM4OsVLZpM3F9EeSHfeMsGkz+0Kgt/sv2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZgzS3sABVcWq9qTQNUehlsYBnphcD0Naw04M+lWsHUk=;
- b=EMNbYqq8ZhYizO8HolUgLV3nc5JPJp0lbSkvZbcusXDgefR6RZmxj7DeVy+yGUk9jg+pLbg6FHaxGweS0PNRttr+keGl6dFe9PDGmH72ut4J0PkhzCC6ZSCQ59xEteKgacTBh0hfhY1YmRTD14GylF86pOLb/sAaspnMIa0FzA9VGKarnHfRsJ9TYHEzhDeOx4CFogBuX9Tm+aIIzNGfta01iCjW6RhWrk6ZUYxnIvDej5vutLerFOyhV+zKhK8HyaPWpnTrDQNoKxj2YyXtR1pYc+h+1vowTWnx6P83ndiWJEmcFxjJH1yCMkq5SoTK1U5rh8eXOI9DK+O0vamLQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH0PR11MB5690.namprd11.prod.outlook.com (2603:10b6:610:ed::9)
- by SA1PR11MB7110.namprd11.prod.outlook.com (2603:10b6:806:2b3::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Fri, 13 Feb
- 2026 07:08:41 +0000
-Received: from CH0PR11MB5690.namprd11.prod.outlook.com
- ([fe80::d0b2:7271:ad7e:cb1a]) by CH0PR11MB5690.namprd11.prod.outlook.com
- ([fe80::d0b2:7271:ad7e:cb1a%5]) with mapi id 15.20.9611.012; Fri, 13 Feb 2026
- 07:08:41 +0000
-Message-ID: <bcfaa59c-d085-4796-a3fd-0bd31de687d2@intel.com>
-Date: Fri, 13 Feb 2026 12:38:34 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v8 0/9] Add writeback changes for intel-supported
- formats
-To: "Kandpal, Suraj" <suraj.kandpal@intel.com>, "S, Sowmiya"
- <sowmiya.s@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-CC: "Sharma, Swati2" <swati2.sharma@intel.com>
-References: <20260204171819.292327-1-sowmiya.s@intel.com>
- <edac5f23-8a49-4594-adeb-367ace502dbf@intel.com>
- <DM3PPF208195D8DC7E8F714D7B83D39BA4CE365A@DM3PPF208195D8D.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Karthik B S <karthik.b.s@intel.com>
-In-Reply-To: <DM3PPF208195D8DC7E8F714D7B83D39BA4CE365A@DM3PPF208195D8D.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0196.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1aa::10) To CH0PR11MB5690.namprd11.prod.outlook.com
- (2603:10b6:610:ed::9)
+X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; d="scan'208";a="235820339"
+Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 23:16:49 -0800
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@intel.com, Jeevan B <jeevan.b@intel.com>,
+ Mohammed Thasleem <mohammed.thasleem@intel.com>
+Subject: [PATCH i-g-t] lib/igt_pm: Move DC State Counter Functions to common
+ library
+Date: Fri, 13 Feb 2026 12:46:58 +0530
+Message-ID: <20260213071658.265278-1-jeevan.b@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|SA1PR11MB7110:EE_
-X-MS-Office365-Filtering-Correlation-Id: e796bcb2-af1c-4819-4930-08de6aceb7a1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0; ARA:13230040|366016|1800799024|376014|42112799006;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?RUpGdVppV0V0SGFReXRzNjgvc1VhbnlGb1llQUtlaEsrS29TcGUySUU2Qm9E?=
- =?utf-8?B?UUVXQXZvSy9JK3ZwN2hGODFSTHJGK2lGYmNRaXN0d2JNekJCVFI4VHFwc1Ri?=
- =?utf-8?B?RVBsUkcrZWtMQ0xrUERjZ0hkbnNrWi9ERzlpdDRtdEplSko5bElJa0RPczNS?=
- =?utf-8?B?SklPZGhLdXA2SlRFUTBzMU5jVEIrN21WMjJ3TE5EV1V5T0pzL1MvbnRXdFR3?=
- =?utf-8?B?VUVLY2cwUThHOVhXbWQ2U0pzN0tYK2NLMVJPQWJjMlE1SmlJQ0FOVlloNHRR?=
- =?utf-8?B?WEQ5ZUUzY2tJYm91NXRQaE0waEtINW1MaVMzejJRV0plcUZoVWdXSmxXeVg3?=
- =?utf-8?B?SmQ5VE02OFNmYkgzMk5hVm95MGxjK3Bjb1ZrK3kyTW1Qd3RUV3dvMWdHQzRW?=
- =?utf-8?B?ejdEY3EzK3FZbDN4T1lJbWl5SEwrd0hqVm1DeWVjQUN5ZzhaVXVxcWhmaUJ1?=
- =?utf-8?B?c0xuQW5uekY5SHZuRjFtdDlodVVoQ0xWcFowTnNvV2VocEI2eW16YWpybkRv?=
- =?utf-8?B?K2VBa0hsd0RncWVOOFZua1N3c0pOODFDN3k1dm5uM0l2UVd2TEJvMGRzYjhV?=
- =?utf-8?B?L2l0SUtST3M4eHFuK21GSjVsRkZUUU1YaUFPWVo1bWNmenYrOHVCK1RTNGlG?=
- =?utf-8?B?TFdWNzd4eVRhR3VXMVlGczU3WU5CMXdFL2lWVmgvVlR4Qlk1Z2JQd2ZJbkQr?=
- =?utf-8?B?akFoNndSWkVneTBvSG1kWnVyNjZ2RHFzVUp5YTJRajhYLysxUHZ5N1RtQmpK?=
- =?utf-8?B?ajJ0dExFSmNQZnROUG1Xd0RpVGt1NnVVVU83UkFGYUVWc3MxWlllaDRlSC9i?=
- =?utf-8?B?N0M4a0hLV3BkcDR4RjdUNFdYV1BFc3ZlRFhHcWhXQ1JpK2RJdVdiRTkvVE55?=
- =?utf-8?B?TFNHZEdtYy94N2NQQVA4OXUreGhsUFlvc25JWGl0Y3c1dkxTbVN4SEVYeEhY?=
- =?utf-8?B?UThVdTZINXVWbWJKSS90MzlOaDdUTlQrZW0xYXJMMFA5dnlXejNpbldORTNX?=
- =?utf-8?B?QS9lUC9WTjg4U3cwVUxHb0ZkdEllbEtTY0dWNm8zb3pHRjZaWkZhcFdhd280?=
- =?utf-8?B?emdMM0R0T2lJdlJWbGoxKzM3dzFsbkloam1XdnBBZjlYR3JOaXU5WXJSYmhh?=
- =?utf-8?B?VlF5Mjd5Zkw1Q3FCV2F4S2R2dCtJWlFLeGxvS1UwYVpKM1M3RDYxYkt2TzI0?=
- =?utf-8?B?OGQrb0N3L0pMUlpZR3lpT3M5VkQzWlpyMW8vUGJrMFVrTWRsN29YL0EwNVhx?=
- =?utf-8?B?MVpJN3VKcE5kTlBLSWNWcDVWMEd0alBMekU0cnQxSEg2M3NETy80QXpRN0JN?=
- =?utf-8?B?Mkx6MGdIZFBZb3U4Z1VtSGVBS0llc3UzWmVCVXFtdGVYelpCN1pxK296UjYx?=
- =?utf-8?B?MFhFU0R2ZWdWZFlGWW0rZlUzMFd4WmZHMHlpSVQ5N2ErenF4ZVFoZGYzODR0?=
- =?utf-8?B?L3NQREtKdWVFS1JYK1E2Y3lJbHh3M3VBeXFBSmZzVndmSjF0ek1Eb1VnVFpV?=
- =?utf-8?B?K2lIbUdoWTdPZzUvTlgrKzFsanpsOHJGeHZrUWM5R0JtR01ISFMzOEZBZ2pY?=
- =?utf-8?B?cjVvYStQV0RKUy9ZVzExWDhPREVEa21pdHV6SGJsZWZlbitzdVRTT2NQSEJo?=
- =?utf-8?B?a2UvSHdlbEh1NDdUTGg4d0RCMzBkVWVMb2NxQUE4MkpKWVp6ZHd0T1pGczA0?=
- =?utf-8?B?cFdmTFhGSyt3bGEyV2ZXUGFtdlhPNWp4alZhN1JBTXVibnN0b0N0Q3BKU01F?=
- =?utf-8?B?VXVaL2dIUnBBOHdBZVF2R1dOTDVRdHlJanN5ZTA4b3EwMTNtQkZZd1hBUjl1?=
- =?utf-8?B?Wm9OUHBBdDZNM3RWR3UwRjN1eEZFYVM5K3h4NUdnSGczZjArbmlQV0R2U2I5?=
- =?utf-8?B?U08vcDNsOW1nMDdpVnlvY3g3ODlPTGxTdVJCOS9EQXF4UjhlT2Rhd3BydUJk?=
- =?utf-8?B?L0x5NUcvMmRjVUQ2bnVjb0FadDEwMEF1V1VZSk1weWxxMHRxMU1xKzFUdWFt?=
- =?utf-8?B?VklHYXdRZGpER1RUY1dPWmoyOG15KytlUHJ1NzE1SGdsTkpxL3ZWMmh6NzB6?=
- =?utf-8?B?OXFsc2xPT0VVWDJLTE1PM213dTZITnFKUGp4eXJaSFNDdmhUZVF6NmF4cmtV?=
- =?utf-8?Q?nP7Q=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH0PR11MB5690.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(42112799006); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?R3JUOC9ZUnVkUW5ydWxROFJJaU5kdTM5aFNGZEJUbDl2ZWVKQXFiWWl0Zmxi?=
- =?utf-8?B?cGdzbDBpS0E0YUlES3NLZFVnZ2R6K2VlRERGeG9kQlZVSTJYeGR1d1pVZVVR?=
- =?utf-8?B?eGxVTU1IaDJldno1bDdpb1k1MW50dk5xQkY2N0VpNG5WNFFHdS9lNitFVS9n?=
- =?utf-8?B?MzVNbXVQTHFac0JNMTF2VG03YjJsaTJuUWRITTZkeWJmdFVXUzF4ZEhsWHR0?=
- =?utf-8?B?cEd5SmxEZWQ3ZDhhZkx2SXZZNWNudWx2ZXN4Y2NDakI5T1Y0ZmpFU3F5MjVV?=
- =?utf-8?B?cjJYUFZiUDY1WXVqakwzenNoM1NIZ1pFQXhyMDVFTDRiMHViVWhPbXNnZmlV?=
- =?utf-8?B?VlI0Wkw4RnEzcThMMWlsdk5BdHB1djN0VHcyUjlFNFI2LzVQK213SWhzUXJD?=
- =?utf-8?B?WHNMeVhMMUhRSjVrQ3MyaGxRNnFBcHIyTyttbkl6aW5sNTJnZEV0VGY1R0h3?=
- =?utf-8?B?b2xqZFRHaUZtcWJTMnVkOU45MmFCbVZ6YWcwZHNpSWJScVE2SlJoS1FSUW13?=
- =?utf-8?B?dDdYRVAxWExHcC9lbGFYajg1Mnh4SmxWY2t5RytjUTdIRE05VTFvN1NLUktQ?=
- =?utf-8?B?bXYwd0R0TmtMNGFQN21vNVRKZFRUV0Jxc1ZwM04vUFh6WStDN01jL0d2dnRz?=
- =?utf-8?B?UnZiZ283SEdlemt4cGhldThyTjZYNk5hdU1RUk5yZVM3OXN6OUhoZGp4WEJs?=
- =?utf-8?B?R1cxUkxmckw2L285RENVZGdxdk9LamxyOFJmWWhEQlNmRk9uWVVlU1VOd0FB?=
- =?utf-8?B?QUpqKzZZeXZURjZOQnBwYjBPQVFXWDZseFNjSlo2RDJ6dTF0eTNXdC83UFF1?=
- =?utf-8?B?QlVJZzlTYnFLbmM0QjlkbDNoaG1wbjVQMEY0L084Z2xaVVVxOUQ1RUVPalJm?=
- =?utf-8?B?L05pYXAzWXBhTzJhNlBjemExc0ZDVkRRVkpScmlvY2Y2eCtKSnpBaFB5L1NQ?=
- =?utf-8?B?bmRPUWZ3enM0R0g5TFA5aFEwMkd4bTY3S09rSVpJalVqQ2cyVXVRZlI4K0ZL?=
- =?utf-8?B?c0xSOEt3Y21QZnhxYkIzVTVkaHdOSWNKY0ZpTC81SUIrZ3ZMZEtUZ2NNM1dX?=
- =?utf-8?B?THZxdXVFemUxM0NoU20zOTVkQjhZbFFFaVd3Vis4RDlVQnMyVDdMVHRCaHdJ?=
- =?utf-8?B?YnQ0OWZNbHFTbUhsbEpyTXhnMWREdWo1dE02NmhidCtnRHNvck1vTFljZHhT?=
- =?utf-8?B?NlgrM2ozekFGWXE2MEhPWEIyS0RZNXJBVFFjL09VNHJ0UHRZWHdJTjM3MVFH?=
- =?utf-8?B?cmFZdXZhUWxZZDFQWFpQaEdkZmNManBOeXF5TE90SnRub21idnBnOUtERDRv?=
- =?utf-8?B?Y01idlpoVjV6NWlMcFdIVWZFUXdjbWlmR0tLZTRUMStvOElsM1ViU0hMbWtu?=
- =?utf-8?B?ZVZnYWhRWnRWeHJIRzZkREJxSHJvVDB4OHR4eXN2d3ZZTFhYdW5zcW1yeGxr?=
- =?utf-8?B?L3N5RzdvZzd0ZU42enJVTFlXQVlkYys5MWZmd3lpNk9rMFErSXoreU15Q2x6?=
- =?utf-8?B?RU5Tb205SExza05RZndaTWRhR0dXU2U2RmpHRnFVM3lqclRyWmExNUpKYm56?=
- =?utf-8?B?RHJOcitXeENrSjBjMWcvYkRZK3RsZzEvbTQ0M2wrMkdwSkRhY0poTmlLNTcz?=
- =?utf-8?B?NFZScE95MlNrTzc1OTd2WTZWa1ppTHh3K1pkLzZlUW83UFdVcVpnQWVVUzV4?=
- =?utf-8?B?SWI5UHpFMWQ0K0lQQVcyUXpjcDc5Zjh3WkJJL05leHFDK2xHUE9IS2FHUjFF?=
- =?utf-8?B?R3RQcVRIb2dHU0tDWnpiZXFTTW9hanlIRGd4SkV2UFJVMHh2dVo3d2ttd0VG?=
- =?utf-8?B?YVg0bFNiTlowVXA2K3lPc2hUc2FQT3U1L2hTRW1oMHRNK0RKaTV2Smt4eFhp?=
- =?utf-8?B?VXNVNHpIQnpzMnBMUlVuVFdlSHNyQjlRSkZkZGx0NE5qWUFVdFhXNjl5dWxj?=
- =?utf-8?B?cHBLYjhyTTNoU0lvQzhrNzRoalhiaEFDaE1qOWRPb0tOVmsvRExsMHd2Risw?=
- =?utf-8?B?cTBaTlFza0I0TE5wbjN4c01BNW11ZEhBUTdKaTh4VkF1d1A1OGhjYVBpUlJ2?=
- =?utf-8?B?TEdtbHJUZURJZW5sQVcwQUV0RkQrT2NxTXNoeFlrOEdNUmIwMUFOeW9jK2Nu?=
- =?utf-8?B?MlZDOUVMT0dTbFNaSVJqTGpDMG1BWjBBeDQ1ZFBCV3QreGVCem54RGJTVUNu?=
- =?utf-8?B?dTBWazBiNTl4aUVKV2hZS2JuS29sWUpuOUFqTVJDcWdjb0x5RTVPdVl5RGNm?=
- =?utf-8?B?ZXNFZmxZYysvT3VZZCtNL0Y2UFhnanpFWkFORFZnc3RVajRHUUkwUXdPeWFh?=
- =?utf-8?B?UVJsMDJYZjQ1VkFZWmdaZjhvcWlCM2hyS2hQb1lPWEhjYk9UMHovUT09?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: e796bcb2-af1c-4819-4930-08de6aceb7a1
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5690.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2026 07:08:41.5402 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ViXovVqDXsfOLWNGlhYcAiz9nAkan0jA5L/8aS91tzA4f8C6W1dc2n34Up/ptmBPWcBCr4IYVbK5cOdN/0Lodg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB7110
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -205,50 +67,607 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Suraj,
+Move DC counter utility functions from tests/intel/kms_pm_dc.c
+to lib/igt_pm.c for reuse across other tests.
 
-On 2/9/2026 2:04 PM, Kandpal, Suraj wrote:
->> Subject: Re: [PATCH i-g-t v8 0/9] Add writeback changes for intel-supported
->> formats
->>
->> Hi Sowmiya,
->>
->> Could you please add a patch in this series to unblocklist kms_writeback on CI,
->> so that we get the results for this subtest before merging this series.
->>
-> Currently all tests will skip since our kernel still does not have support
+v2: Add 'igt_' prefix before all functions.
+v3: Fix typos, fix debugfs_fd type and add errno.h include.
+v4: Add IGT_INTEL_ prefix to all CHECK_DC* flag constants and
+    PACKAGE_CSTATE_PATH constant.
 
-Then IMHO, its better we hold the series merge until we've kernel 
-patches ready as we don't get any value with this currently.
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ lib/igt_pm.c            | 170 +++++++++++++++++++++++++++++++++++
+ lib/igt_pm.h            |  15 ++++
+ tests/intel/kms_pm_dc.c | 191 ++++++++--------------------------------
+ 3 files changed, 222 insertions(+), 154 deletions(-)
 
-We can get this merged (together with the unblocklist patch added) to 
-get some premerge results, when we're close to the merge of the kernel 
-series.
+diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+index 1ffcdcef3..64b15dd08 100644
+--- a/lib/igt_pm.c
++++ b/lib/igt_pm.c
+@@ -25,6 +25,7 @@
+  *    David Weinehall <david.weinehall@intel.com>
+  *
+  */
++#include <errno.h>
+ #include <fcntl.h>
+ #include <stdio.h>
+ #include <limits.h>
+@@ -1543,3 +1544,172 @@ void igt_pm_dpms_toggle(igt_output_t *output)
+ 				   DRM_MODE_DPMS_ON);
+ 	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
+ }
++
++/**
++ * igt_get_dc_counter:
++ * @dc_data: String containing DC counter data in format
++ *
++ * Returns the counter value as uint32_t
++ */
++uint32_t igt_get_dc_counter(const char *dc_data)
++{
++	char *e;
++	long ret;
++	char *s = strchr(dc_data, ':');
++
++	igt_assert(s);
++	s++;
++	ret = strtol(s, &e, 10);
++	igt_assert(((ret != LONG_MIN && ret != LONG_MAX) || errno != ERANGE) &&
++		   e > s && *e == '\n' && ret >= 0);
++	return ret;
++}
++
++/**
++ * igt_support_dc6:
++ * @debugfs_fd: DRM file descriptor
++ *
++ * Returns true if DC6 is supported.
++ */
++bool igt_support_dc6(int debugfs_fd)
++{
++	char buf[4096];
++
++	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info",
++				buf, sizeof(buf));
++	return !!strstr(buf, "DC5 -> DC6 count");
++}
++
++/**
++ * igt_get_dc6_counter: Locate DC6 counter string in debugfs buffer
++ * @buf: Buffer containing i915_dmc_info debugfs output
++ *
++ * Searches for DC6 counter information in the DMC info buffer.
++ */
++char *igt_get_dc6_counter(const char *buf)
++{
++	char *str;
++
++	str = strstr(buf, "DC5 -> DC6 count");
++	if (!str)
++		str = strstr(buf, "DC5 -> DC6 allowed count");
++
++	return str;
++}
++
++/**
++ * igt_read_dc_counter:
++ * @debugfs_fd: DRM file descriptor
++ * @dc_flag: DC state flag (IGT_INTEL_CHECK_DC5, IGT_INTEL_CHECK_DC6, or IGT_INTEL_CHECK_DC3CO)
++ *
++ * Returns current counter value for the specified DC state
++ */
++uint32_t igt_read_dc_counter(int debugfs_fd, int dc_flag)
++{
++	char buf[4096];
++	char *str;
++
++	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info", buf, sizeof(buf));
++
++	if (dc_flag & IGT_INTEL_CHECK_DC5) {
++		str = strstr(buf, "DC3 -> DC5 count");
++		igt_assert_f(str, "DC5 counter is not available\n");
++	} else if (dc_flag & IGT_INTEL_CHECK_DC6) {
++		str = igt_get_dc6_counter(buf);
++		igt_assert_f(str, "No DC6 counter available\n");
++	} else if (dc_flag & IGT_INTEL_CHECK_DC3CO) {
++		str = strstr(buf, "DC3CO count");
++		igt_assert_f(str, "DC3CO counter is not available\n");
++	} else {
++		igt_assert(!"reached");
++		str = NULL;
++	}
++
++	return igt_get_dc_counter(str);
++}
++
++/**
++ * igt_dc_state_wait_entry:
++ * @debugfs_fd: DRM file descriptor
++ * @dc_flag: DC state flag
++ * @prev_dc_count: Previous counter value to compare against
++ *
++ * Returns true if DC state entry detected within timeout, false otherwise
++ */
++bool igt_dc_state_wait_entry(int debugfs_fd, int dc_flag, int prev_dc_count)
++{
++	return igt_wait(igt_read_dc_counter(debugfs_fd, dc_flag) >
++			prev_dc_count, 3000, 100);
++}
++
++/**
++ * igt_dc_state_name:
++ * @dc_flag: DC state flag
++ *
++ * Converts DC state flag constants to readable string names
++ */
++const char *igt_dc_state_name(int dc_flag)
++{
++	if (dc_flag & IGT_INTEL_CHECK_DC3CO)
++		return "DC3CO";
++	else if (dc_flag & IGT_INTEL_CHECK_DC5)
++		return "DC5";
++	else
++		return "DC6";
++}
++
++/**
++ * igt_require_dc_counter:
++ * @debugfs_fd: File descriptor for the debugfs
++ * @dc_flag: DC counter type to check (IGT_INTEL_CHECK_DC3CO, IGT_INTEL_CHECK_DC5,
++ * or IGT_INTEL_CHECK_DC6)
++ *
++ * Skips the current test if the requested DC counter is not available
++ * on the system.
++ */
++void igt_require_dc_counter(int debugfs_fd, int dc_flag)
++{
++	char *str;
++	char buf[4096];
++
++	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info",
++				buf, sizeof(buf));
++
++	switch (dc_flag) {
++	case IGT_INTEL_CHECK_DC3CO:
++		igt_skip_on_f(!strstr(buf, "DC3CO count"),
++			      "DC3CO counter is not available\n");
++		break;
++	case IGT_INTEL_CHECK_DC5:
++		igt_skip_on_f(!strstr(buf, "DC3 -> DC5 count"),
++			      "DC5 counter is not available\n");
++		break;
++	case IGT_INTEL_CHECK_DC6:
++		str = igt_get_dc6_counter(buf);
++		igt_skip_on_f(!str, "No DC6 counter available\n");
++		break;
++	default:
++		igt_assert_f(0, "Unknown DC counter %d\n", dc_flag);
++	}
++}
++
++/**
++ * igt_read_pkgc_counter:
++ * @debugfs_root_fd: File descriptor for the debugfs
++ *
++ * Returns PC10 counter value.
++ */
++unsigned int igt_read_pkgc_counter(int debugfs_root_fd)
++{
++	char buf[4096];
++	char *str;
++	int len;
++
++	len = igt_sysfs_read(debugfs_root_fd, IGT_INTEL_PACKAGE_CSTATE_PATH, buf, sizeof(buf) - 1);
++	igt_skip_on_f(len < 0, "PKGC state file not found\n");
++	buf[len] = '\0';
++	str = strstr(buf, "Package C10");
++	igt_skip_on_f(!str, "PKGC10 is not supported.\n");
++
++	return igt_get_dc_counter(str);
++}
+diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+index e931e51af..6a33c6db2 100644
+--- a/lib/igt_pm.h
++++ b/lib/igt_pm.h
+@@ -29,6 +29,13 @@
+ 
+ #include "igt_kms.h"
+ 
++#define IGT_INTEL_PACKAGE_CSTATE_PATH  "pmc_core/package_cstate_show"
++
++/* DC State Flags */
++#define IGT_INTEL_CHECK_DC5       (1 << 0)
++#define IGT_INTEL_CHECK_DC6       (1 << 1)
++#define IGT_INTEL_CHECK_DC3CO     (1 << 2)
++
+ void igt_pm_enable_audio_runtime_pm(void);
+ void igt_pm_enable_sata_link_power_management(void);
+ void igt_pm_restore_sata_link_power_management(void);
+@@ -99,5 +106,13 @@ int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
+ void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val);
+ bool igt_has_pci_pm_capability(struct pci_device *pci_dev);
+ void igt_pm_dpms_toggle(igt_output_t *output);
++uint32_t igt_get_dc_counter(const char *dc_data);
++bool igt_support_dc6(int debugfs_fd);
++char *igt_get_dc6_counter(const char *buf);
++uint32_t igt_read_dc_counter(int debugfs_fd, int dc_flag);
++bool igt_dc_state_wait_entry(int debugfs_fd, int dc_flag, int prev_dc_count);
++const char *igt_dc_state_name(int dc_flag);
++void igt_require_dc_counter(int debugfs_fd, int dc_flag);
++unsigned int igt_read_pkgc_counter(int debugfs_root_fd);
+ 
+ #endif /* IGT_PM_H */
+diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+index 83dbac296..39e94f36b 100644
+--- a/tests/intel/kms_pm_dc.c
++++ b/tests/intel/kms_pm_dc.c
+@@ -79,15 +79,9 @@
+  * Description: This test validates display engine entry to DC5 state while PSR is active on Pipe B
+  */
+ 
+-/* DC State Flags */
+-#define CHECK_DC5	(1 << 0)
+-#define CHECK_DC6	(1 << 1)
+-#define CHECK_DC3CO	(1 << 2)
+-
+ #define PWR_DOMAIN_INFO "i915_power_domain_info"
+ #define RPM_STATUS "i915_runtime_pm_status"
+ #define KMS_HELPER "/sys/module/drm_kms_helper/parameters/"
+-#define PACKAGE_CSTATE_PATH  "pmc_core/package_cstate_show"
+ #define KMS_POLL_DISABLE 0
+ #define DC9_RESETS_DC_COUNTERS(devid) (!(IS_DG1(devid) || IS_DG2(devid) || intel_display_ver(devid) >= 14))
+ #define SEC 1
+@@ -116,7 +110,6 @@ typedef struct {
+ 	bool runtime_suspend_disabled;
+ } data_t;
+ 
+-static bool dc_state_wait_entry(int drm_fd, int dc_flag, int prev_dc_count);
+ static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count);
+ 
+ static void set_output_on_pipe_b(data_t *data)
+@@ -260,82 +253,20 @@ static void create_color_fb(data_t *data, igt_fb_t *fb, color_t *fb_color)
+ 	paint_rectangles(data, data->mode, fb_color, fb);
+ }
+ 
+-static uint32_t get_dc_counter(char *dc_data)
+-{
+-	char *e;
+-	long ret;
+-	char *s = strchr(dc_data, ':');
+-
+-	igt_assert(s);
+-	s++;
+-	ret = strtol(s, &e, 10);
+-	igt_assert(((ret != LONG_MIN && ret != LONG_MAX) || errno != ERANGE) && e > s && *e == '\n' && ret >= 0);
+-	return ret;
+-}
+-
+-static char *get_dc6_counter(const char *buf)
+-{
+-	char *str;
+-
+-	str = strstr(buf, "DC5 -> DC6 count");
+-	if (!str)
+-		str = strstr(buf, "DC5 -> DC6 allowed count");
+-
+-	return str;
+-}
+-
+-static uint32_t read_dc_counter(uint32_t debugfs_fd, int dc_flag)
+-{
+-	char buf[4096];
+-	char *str;
+-
+-	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info", buf, sizeof(buf));
+-
+-	if (dc_flag & CHECK_DC5) {
+-		str = strstr(buf, "DC3 -> DC5 count");
+-		igt_assert_f(str, "DC5 counter is not available\n");
+-	} else if (dc_flag & CHECK_DC6) {
+-		str = get_dc6_counter(buf);
+-		igt_assert_f(str, "No DC6 counter available\n");
+-	} else if (dc_flag & CHECK_DC3CO) {
+-		str = strstr(buf, "DC3CO count");
+-		igt_assert_f(str, "DC3CO counter is not available\n");
+-	} else {
+-		igt_assert(!"reached");
+-		str = NULL;
+-	}
+-
+-	return get_dc_counter(str);
+-}
+-
+-static bool dc_state_wait_entry(int debugfs_fd, int dc_flag, int prev_dc_count)
+-{
+-	return igt_wait(read_dc_counter(debugfs_fd, dc_flag) >
+-			prev_dc_count, 3000, 100);
+-}
+-
+-static const char *dc_state_name(int dc_flag)
+-{
+-	if (dc_flag & CHECK_DC3CO)
+-		return "DC3CO";
+-	else if (dc_flag & CHECK_DC5)
+-		return "DC5";
+-	else
+-		return "DC6";
+-}
+-
+ static void check_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count)
+ {
+-	igt_assert_f(dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
+-		     "%s state is not achieved\n%s:\n%s\n", dc_state_name(dc_flag), PWR_DOMAIN_INFO,
+-		     data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
++	igt_assert_f(igt_dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
++		     "%s state is not achieved\n%s:\n%s\n", igt_dc_state_name(dc_flag),
++		     PWR_DOMAIN_INFO, data->debugfs_dump = igt_sysfs_get(data->debugfs_fd,
++		     PWR_DOMAIN_INFO));
+ }
+ 
+ static void check_dc_counter_negative(data_t *data, int dc_flag, uint32_t prev_dc_count)
+ {
+-	igt_assert_f(!dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
+-		     "%s state is achieved\n%s:\n%s\n", dc_state_name(dc_flag), PWR_DOMAIN_INFO,
+-		     data->debugfs_dump = igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
++	igt_assert_f(!igt_dc_state_wait_entry(data->debugfs_fd, dc_flag, prev_dc_count),
++		     "%s state is achieved\n%s:\n%s\n", igt_dc_state_name(dc_flag),
++		     PWR_DOMAIN_INFO, data->debugfs_dump = igt_sysfs_get(data->debugfs_fd,
++		     PWR_DOMAIN_INFO));
+ }
+ 
+ static void setup_videoplayback(data_t *data)
+@@ -366,7 +297,7 @@ static void check_dc3co_with_videoplayback_like_load(data_t *data)
+ 	primary = igt_output_get_plane_type(data->output,
+ 					    DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, NULL);
+-	dc3co_prev_cnt = read_dc_counter(data->debugfs_fd, CHECK_DC3CO);
++	dc3co_prev_cnt = igt_read_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO);
+ 
+ 	/* Calculate delay to generate idle frame in usec*/
+ 	delay = 1.5 * ((1000 * 1000) / data->mode->vrefresh);
+@@ -381,34 +312,8 @@ static void check_dc3co_with_videoplayback_like_load(data_t *data)
+ 		usleep(delay);
+ 	}
+ 
+-	igt_require_f(dc_state_wait_entry(data->debugfs_fd,
+-		      CHECK_DC3CO, dc3co_prev_cnt), "dc3co-vpb-simulation not enabled\n");
+-}
+-
+-static void require_dc_counter(int debugfs_fd, int dc_flag)
+-{
+-	char *str;
+-	char buf[4096];
+-
+-	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info",
+-				buf, sizeof(buf));
+-
+-	switch (dc_flag) {
+-	case CHECK_DC3CO:
+-		igt_skip_on_f(!strstr(buf, "DC3CO count"),
+-			      "DC3CO counter is not available\n");
+-		break;
+-	case CHECK_DC5:
+-		igt_skip_on_f(!strstr(buf, "DC3 -> DC5 count"),
+-			      "DC5 counter is not available\n");
+-		break;
+-	case CHECK_DC6:
+-		str = get_dc6_counter(buf);
+-		igt_skip_on_f(!str, "No DC6 counter available\n");
+-		break;
+-	default:
+-		igt_assert_f(0, "Unknown DC counter %d\n", dc_flag);
+-	}
++	igt_require_f(igt_dc_state_wait_entry(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO,
++					      dc3co_prev_cnt), "dc3co-vpb-simulation not enabled\n");
+ }
+ 
+ static void setup_dc3co(data_t *data)
+@@ -421,7 +326,7 @@ static void setup_dc3co(data_t *data)
+ 
+ static void test_dc3co_vpb_simulation(data_t *data)
+ {
+-	require_dc_counter(data->debugfs_fd, CHECK_DC3CO);
++	igt_require_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO);
+ 	setup_output(data);
+ 	setup_dc3co(data);
+ 	setup_videoplayback(data);
+@@ -433,8 +338,8 @@ static void test_dc5_retention_flops(data_t *data, int dc_flag)
+ {
+ 	uint32_t dc_counter_before_psr;
+ 
+-	require_dc_counter(data->debugfs_fd, dc_flag);
+-	dc_counter_before_psr = read_dc_counter(data->debugfs_fd, dc_flag);
++	igt_require_dc_counter(data->debugfs_fd, dc_flag);
++	dc_counter_before_psr = igt_read_dc_counter(data->debugfs_fd, dc_flag);
+ 	set_output_on_pipe_b(data);
+ 	setup_primary(data);
+ 	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
+@@ -446,8 +351,8 @@ static void test_dc_state_psr(data_t *data, int dc_flag)
+ {
+ 	uint32_t dc_counter_before_psr;
+ 
+-	require_dc_counter(data->debugfs_fd, dc_flag);
+-	dc_counter_before_psr = read_dc_counter(data->debugfs_fd, dc_flag);
++	igt_require_dc_counter(data->debugfs_fd, dc_flag);
++	dc_counter_before_psr = igt_read_dc_counter(data->debugfs_fd, dc_flag);
+ 	setup_output(data);
+ 	setup_primary(data);
+ 	igt_require(!psr_disabled_check(data->debugfs_fd));
+@@ -510,9 +415,9 @@ static void test_dc_state_dpms(data_t *data, int dc_flag)
+ {
+ 	uint32_t dc_counter;
+ 
+-	require_dc_counter(data->debugfs_fd, dc_flag);
++	igt_require_dc_counter(data->debugfs_fd, dc_flag);
+ 	setup_dc_dpms(data);
+-	dc_counter = read_dc_counter(data->debugfs_fd, dc_flag);
++	dc_counter = igt_read_dc_counter(data->debugfs_fd, dc_flag);
+ 	dpms_off(data);
+ 	check_dc_counter(data, dc_flag, dc_counter);
+ 	dpms_on(data);
+@@ -523,23 +428,14 @@ static void test_dc_state_dpms_negative(data_t *data, int dc_flag)
+ {
+ 	uint32_t dc_counter;
+ 
+-	require_dc_counter(data->debugfs_fd, dc_flag);
++	igt_require_dc_counter(data->debugfs_fd, dc_flag);
+ 	setup_dc_dpms(data);
+-	dc_counter = read_dc_counter(data->debugfs_fd, dc_flag);
++	dc_counter = igt_read_dc_counter(data->debugfs_fd, dc_flag);
+ 	dpms_on(data);
+ 	check_dc_counter_negative(data, dc_flag, dc_counter);
+ 	cleanup_dc_dpms(data);
+ }
+ 
+-static bool support_dc6(int debugfs_fd)
+-{
+-	char buf[4096];
+-
+-	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info",
+-				buf, sizeof(buf));
+-	return strstr(buf, "DC5 -> DC6 count");
+-}
+-
+ static uint64_t read_runtime_suspended_time(int drm_fd)
+ {
+ 	struct pci_device *i915;
+@@ -562,7 +458,8 @@ static bool dc9_wait_entry(data_t *data, int dc_target, int prev_dc, uint64_t pr
+ 	 */
+ 	return igt_wait((read_runtime_suspended_time(data->drm_fd) > prev_rpm) &&
+ 			(!DC9_RESETS_DC_COUNTERS(data->devid) ||
+-			(read_dc_counter(data->debugfs_fd, dc_target) < prev_dc)), msecs, 1000);
++			(igt_read_dc_counter(data->debugfs_fd, dc_target) < prev_dc)), msecs,
++			1000);
+ }
+ 
+ static void check_dc9(data_t *data, int dc_target, int prev_dc, int prev_rpm)
+@@ -582,12 +479,12 @@ static void setup_dc9_dpms(data_t *data, int dc_target)
+ 	__igt_sysfs_set_boolean(sysfs_fd, "poll", KMS_POLL_DISABLE);
+ 	close(sysfs_fd);
+ 	if (DC9_RESETS_DC_COUNTERS(data->devid)) {
+-		prev_dc = read_dc_counter(data->debugfs_fd, dc_target);
++		prev_dc = igt_read_dc_counter(data->debugfs_fd, dc_target);
+ 		setup_dc_dpms(data);
+ 		dpms_off(data);
+-		igt_skip_on_f(!(igt_wait(read_dc_counter(data->debugfs_fd, dc_target) >
++		igt_skip_on_f(!(igt_wait(igt_read_dc_counter(data->debugfs_fd, dc_target) >
+ 				prev_dc, 3000, 100)), "Unable to enters shallow DC states\n");
+-		prev_dc = read_dc_counter(data->debugfs_fd, dc_target);
++		prev_dc = igt_read_dc_counter(data->debugfs_fd, dc_target);
+ 		dpms_on(data);
+ 		cleanup_dc_dpms(data);
+ 	}
+@@ -601,8 +498,8 @@ static void test_dc9_dpms(data_t *data)
+ {
+ 	int dc_target;
+ 
+-	require_dc_counter(data->debugfs_fd, CHECK_DC5);
+-	dc_target = support_dc6(data->debugfs_fd) ? CHECK_DC6 : CHECK_DC5;
++	igt_require_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC5);
++	dc_target = igt_support_dc6(data->debugfs_fd) ? IGT_INTEL_CHECK_DC6 : IGT_INTEL_CHECK_DC5;
+ 	setup_dc9_dpms(data, dc_target);
+ }
+ 
+@@ -621,21 +518,6 @@ static int has_panels_without_dc_support(igt_display_t *display)
+ 	return external_panel;
+ }
+ 
+-static unsigned int read_pkgc_counter(int debugfs_root_fd)
+-{
+-	char buf[4096];
+-	char *str;
+-	int len;
+-
+-	len = igt_sysfs_read(debugfs_root_fd, PACKAGE_CSTATE_PATH, buf, sizeof(buf) - 1);
+-	igt_skip_on_f(len < 0, "PKGC state file not found\n");
+-	buf[len] = '\0';
+-	str = strstr(buf, "Package C10");
+-	igt_skip_on_f(!str, "PKGC10 is not supported.\n");
+-
+-	return get_dc_counter(str);
+-}
+-
+ static void test_deep_pkgc_state(data_t *data)
+ {
+ 	unsigned int pre_val = 0, cur_val = 0;
+@@ -697,7 +579,7 @@ static void test_deep_pkgc_state(data_t *data)
+ 	igt_display_commit(&data->display);
+ 	/* Wait for the vblank to sync the frame time */
+ 	igt_wait_for_vblank_count(crtc, 1);
+-	pre_val = read_pkgc_counter(data->debugfs_root_fd);
++	pre_val = igt_read_pkgc_counter(data->debugfs_root_fd);
+ 	/* Add a half-frame delay to ensure the flip occurs when the frame is active. */
+ 	usleep(delay * 0.5);
+ 
+@@ -706,8 +588,9 @@ static void test_deep_pkgc_state(data_t *data)
+ 		igt_plane_set_fb(primary, flip ? &data->fb_rgb : &data->fb_rgr);
+ 		igt_display_commit(&data->display);
+ 
+-		igt_wait((cur_val = read_pkgc_counter(data->debugfs_root_fd)) > pre_val,
+-						      (delay * 2), (5 * MSEC));
++		igt_wait((cur_val = igt_read_pkgc_counter(data->debugfs_root_fd)) > pre_val,
++			 (delay * 2), (5 * MSEC));
++
+ 		if (cur_val > pre_val) {
+ 			pkgc_flag = true;
+ 			break;
+@@ -769,7 +652,7 @@ int igt_main()
+ 					     PSR_MODE_1, NULL));
+ 		data.op_psr_mode = PSR_MODE_1;
+ 		psr_enable(data.drm_fd, data.debugfs_fd, data.op_psr_mode, NULL);
+-		test_dc_state_psr(&data, CHECK_DC5);
++		test_dc_state_psr(&data, IGT_INTEL_CHECK_DC5);
+ 	}
+ 
+ 	igt_describe("This test validates display engine entry to DC6 state "
+@@ -781,7 +664,7 @@ int igt_main()
+ 		psr_enable(data.drm_fd, data.debugfs_fd, data.op_psr_mode, NULL);
+ 		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
+ 			      "PC8+ residencies not supported\n");
+-		test_dc_state_psr(&data, CHECK_DC6);
++		test_dc_state_psr(&data, IGT_INTEL_CHECK_DC6);
+ 	}
+ 
+ 	igt_describe("This test validates display engine entry to PKGC10 state "
+@@ -796,7 +679,7 @@ int igt_main()
+ 	igt_describe("This test validates display engine entry to DC5 state "
+ 		     "while all connectors's DPMS property set to OFF");
+ 	igt_subtest("dc5-dpms") {
+-		test_dc_state_dpms(&data, CHECK_DC5);
++		test_dc_state_dpms(&data, IGT_INTEL_CHECK_DC5);
+ 	}
+ 
+ 	igt_describe("This test validates display engine entry to DC5 state "
+@@ -809,7 +692,7 @@ int igt_main()
+ 		data.op_psr_mode = PSR_MODE_1;
+ 		psr_enable(data.drm_fd, data.debugfs_fd, data.op_psr_mode, NULL);
+ 		igt_require(!psr_disabled_check(data.debugfs_fd));
+-		test_dc5_retention_flops(&data, CHECK_DC5);
++		test_dc5_retention_flops(&data, IGT_INTEL_CHECK_DC5);
+ 	}
+ 
+ 	igt_describe("This test validates negative scenario of DC5 display "
+@@ -818,7 +701,7 @@ int igt_main()
+ 	igt_subtest("dc5-dpms-negative") {
+ 		igt_require_f(has_panels_without_dc_support(&data.display),
+ 			      "External panel not detected, skip execution\n");
+-		test_dc_state_dpms_negative(&data, CHECK_DC5);
++		test_dc_state_dpms_negative(&data, IGT_INTEL_CHECK_DC5);
+ 	}
+ 
+ 	igt_describe("This test validates display engine entry to DC6 state "
+@@ -826,7 +709,7 @@ int igt_main()
+ 	igt_subtest("dc6-dpms") {
+ 		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
+ 			      "PC8+ residencies not supported\n");
+-		test_dc_state_dpms(&data, CHECK_DC6);
++		test_dc_state_dpms(&data, IGT_INTEL_CHECK_DC6);
+ 
+ 	}
+ 
+-- 
+2.43.0
 
-Thanks and Regards,
-Karthik.B.S
->
-> Regards,
-> Suraj Kandpal
->
->> Thanks and Regards,
->> Karthik.B.S
->>
->> On 2/4/2026 10:48 PM, Sowmiya S wrote:
->>> This series introduces validation for writeback functionality across
->>> newly supported formats specific to Intel platforms.
->>> existing functions with limited format support were retained for
->>> compatibility. After validating new formats introduced by the
->>> platform, additional format support was added to the writeback test
->>> suite. Subtests leveraging common framebuffer creation logic were
->>> consolidated and dynamic subtest generation was implemented to
->>> efficiently handle format-specific variations.
->>> Add negative test cases to validate format and mode.Refactored
->>> existing test cases to improve efficiency.Add helper function to get
->>> the default format.
->>>
->>>    lib/igt_fb.c          |  39 +++++++-
->>>    lib/igt_fb.h          |   1 +
->>>    tests/kms_writeback.c | 211 +++++++++++++++++++++++++-----------------
->>>    3 files changed, 162 insertions(+), 89 deletions(-)
->>>
