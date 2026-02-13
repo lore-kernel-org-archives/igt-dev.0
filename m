@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9F9EEF48E8
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Feb 2026 08:46:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA377EF48F0
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Feb 2026 08:46:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7707F10E7B8;
-	Fri, 13 Feb 2026 08:46:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5AD6710E7BA;
+	Fri, 13 Feb 2026 08:46:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TG+/i78n";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NxGLx51a";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0793B10E7B8
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Feb 2026 08:46:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C7A1010E7BA
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Feb 2026 08:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1770972373; x=1802508373;
+ t=1770972374; x=1802508374;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=6W0vWLGdKzX7JQ4M972XEHBF6oRgSJqmoWvX0PvqHo0=;
- b=TG+/i78n7kLTd7UaR/0xuJA31pggvlyQKOtrnRkMAdD5lrseKLuHM9jK
- +V4ENHe+UnYvBrjQ+ABAJZIXcyd/U1NfHp90F2XwwQXVVs+s36fNDwlA8
- 7xRmt8In4fNovfMKMneDMBIUJZBDWJgTLo4iZ8NtLtGdpObREWFGY6L7e
- 8nP1BYU6XXeoWidlamQvAIca+LmRsaoIfjHLpZxanhbrXds+b+uW9JgBC
- gkbB0HzsXGqCDEDPOfmJ7b7StDvc12wFHs39DdQRbXg0VZSTfavCt2+lR
- /sbXR5DeGKuLDc5l3+4ffluZOwSntmZpNtwY5FCgzqUlw/I+E5DNS/Xq7 Q==;
-X-CSE-ConnectionGUID: OOGhRhQBQCmFEdCfa4RZdA==
-X-CSE-MsgGUID: gJq/BMcfQhSkss+no2e8Qw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="72142242"
-X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; d="scan'208";a="72142242"
+ bh=ixT4tdhc+mGnhFI3W/y3jeV5UrLrOEnzijdDgKaISEY=;
+ b=NxGLx51a4czh8sfAlE/scL4hcuYtpzhE52pQ+rE8AxKaP0w3iI/0WN7l
+ cmIfIcyEsi/h6BGew/89suzVF2T04DN6MDijmw9zMEWnf60MBiGLL3Vpe
+ lrtdI6ikC7OSHNMWoxpQdRzw85tHLBd/xPb2q5Ag5s7/C97EzYHsaO6O4
+ I4hxSjTWQFHpZojnmfYpOxPIcoIbOiUacyWv0Q/GhUJyRTPJkY8JkKJLw
+ SkrOdqpxDU7vR0R+8ambyix5mOPJQPPFDrtnFCE83d1Xkj06JWPhd8dQI
+ mChp7ORbBvgJwRhzu5iQmsOt5FEhWbMldRsxlB5H67PZzc+J2eR9ASl0M g==;
+X-CSE-ConnectionGUID: JUBdzJ7LTOKZqMWCD7seeQ==
+X-CSE-MsgGUID: FKaOflKPQaafAWs3tMKWAg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="72142243"
+X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; d="scan'208";a="72142243"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Feb 2026 00:46:12 -0800
-X-CSE-ConnectionGUID: swS0LU64QkOiK7yEww2vuw==
-X-CSE-MsgGUID: HPodVxjuRaOJvwtnA3OIoQ==
+ 13 Feb 2026 00:46:14 -0800
+X-CSE-ConnectionGUID: 8274BgRVSM2vUgQ77Gra8g==
+X-CSE-MsgGUID: 8i7fxK00SRGbpjT8GUjQWw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; d="scan'208";a="217337021"
+X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; d="scan'208";a="217337028"
 Received: from priyanka.iind.intel.com ([10.190.216.153])
- by fmviesa005.fm.intel.com with ESMTP; 13 Feb 2026 00:46:11 -0800
+ by fmviesa005.fm.intel.com with ESMTP; 13 Feb 2026 00:46:13 -0800
 From: priyanka.dandamudi@intel.com
 To: zbigniew.kempczynski@intel.com, matthew.auld@intel.com,
  igt-dev@lists.freedesktop.org, priyanka.dandamudi@intel.com
-Subject: [PATCH i-g-t 4/5] tests/intel/xe_pat: Use
- intel_get_defer_to_pat_mocs_index() to exercise coherency
-Date: Fri, 13 Feb 2026 14:16:02 +0530
-Message-ID: <20260213084603.1404162-5-priyanka.dandamudi@intel.com>
+Subject: [PATCH i-g-t 5/5] tests/intel/xe_pat: Validate XA App Transient
+ feature
+Date: Fri, 13 Feb 2026 14:16:03 +0530
+Message-ID: <20260213084603.1404162-6-priyanka.dandamudi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260213084603.1404162-1-priyanka.dandamudi@intel.com>
 References: <20260213084603.1404162-1-priyanka.dandamudi@intel.com>
@@ -69,119 +69,166 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-With the existing moc indices the render and blit with be uncached on GPU side,
-cached MOCS setting need to be selected specifically for blitter and render.
-Otherwise the caching in the PAT index is overridden which means GPU vs CPU coherency
-will not be exercised completely.
-So, used intel_get_defer_to_pat_mocs_index() for xe2 and above versions
-otherwise keep the existing UC MOCS setting.
+Test the scenarios when media is on/off.
+When media is off/on, for xa app transient buffer, data should be coherent
+between cpu and gpu. Coherency should be maintained from KMD side
+irrespective of media engine on/off.
 
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- tests/intel/xe_pat.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ tests/intel/xe_pat.c | 101 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 101 insertions(+)
 
 diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index 132ac4773..f2dff62a9 100644
+index f2dff62a9..30e427634 100644
 --- a/tests/intel/xe_pat.c
 +++ b/tests/intel/xe_pat.c
-@@ -338,9 +338,13 @@ static void pat_index_blt(struct xe_pat_param *p)
- 	int bpp = 32;
- 	uint32_t alias, name;
- 	int fd = p->fd;
-+	uint16_t dev_id = intel_get_drm_devid(fd);
-+	uint8_t mocs_index;
- 	int i;
+@@ -19,16 +19,24 @@
+ #include "intel_blt.h"
+ #include "intel_mocs.h"
+ #include "intel_pat.h"
++#include "igt_configfs.h"
++#include "igt_device.h"
++#include "igt_fs.h"
++#include "igt_kmod.h"
++#include "igt_sysfs.h"
+ #include "linux_scaffold.h"
  
- 	igt_require(blt_has_fast_copy(fd));
-+	mocs_index = intel_get_device_info(dev_id)->graphics_ver >= 20 ?
-+		     intel_get_defer_to_pat_mocs_index(fd) : intel_get_uc_mocs_index(fd);
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ #include "xe/xe_util.h"
++#include "xe/xe_gt.h"
  
- 	vm = xe_vm_create(fd, 0, 0);
- 	exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
-@@ -364,12 +368,12 @@ static void pat_index_blt(struct xe_pat_param *p)
- 	blt_copy_init(fd, &blt);
- 	blt.color_depth = CD_32bit;
+ #define XE_COH_NONE          1
+ #define XE_COH_AT_LEAST_1WAY 2
  
--	blt_set_object(&src, p->r1_bo, size, p->r1, intel_get_uc_mocs_index(fd),
-+	blt_set_object(&src, p->r1_bo, size, p->r1, mocs_index,
- 		       p->r1_pat_index, T_LINEAR,
- 		       COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
- 	blt_set_geom(&src, stride, 0, 0, width, height, 0, 0);
+ static bool do_slow_check;
++static char bus_addr[NAME_MAX];
++static struct pci_device *pci_dev;
  
--	blt_set_object(&dst, p->r2_bo, size, p->r2, intel_get_uc_mocs_index(fd),
-+	blt_set_object(&dst, p->r2_bo, size, p->r2, mocs_index,
- 		       p->r2_pat_index, T_LINEAR,
- 		       COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
- 	blt_set_geom(&dst, stride, 0, 0, width, height, 0, 0);
-@@ -448,6 +452,8 @@ static void pat_index_blt(struct xe_pat_param *p)
- static void pat_index_render(struct xe_pat_param *p)
- {
- 	int fd = p->fd;
-+	uint16_t dev_id = intel_get_drm_devid(fd);
-+	uint8_t mocs_index;
- 	igt_render_copyfunc_t render_copy = NULL;
- 	int size, stride, width = p->size->width, height = p->size->height;
- 	struct intel_buf src, dst;
-@@ -463,6 +469,9 @@ static void pat_index_render(struct xe_pat_param *p)
- 	if (p->r2_compressed) /* XXX */
- 		return;
+ static uint32_t create_object(int fd, int r, int size, uint16_t coh_mode,
+ 			      bool force_cpu_wc);
+@@ -1118,6 +1126,11 @@ const struct pat_index_entry bmg_g21_pat_index_modes[] = {
+ 	{ NULL, 27, false, "c2-2way",     XE_COH_AT_LEAST_1WAY       },
+ };
  
-+	mocs_index = intel_get_device_info(dev_id)->graphics_ver >= 20 ?
-+		     intel_get_defer_to_pat_mocs_index(fd) : DEFAULT_MOCS_INDEX;
++const struct pat_index_entry xe3p_lpg_coherency_pat_index_modes[] = {
++	{ NULL, 18, false, "xa-l3-uc",	 XE_COH_NONE          },
++	{ NULL, 19, false, "xa-l3-2way", XE_COH_AT_LEAST_1WAY },
++};
 +
- 	bops = buf_ops_create(fd);
+ /*
+  * Depending on 2M/1G GTT pages we might trigger different PTE layouts for the
+  * PAT bits, so make sure we test with and without huge-pages. Also ensure we
+@@ -1182,6 +1195,18 @@ static uint32_t create_object(int fd, int r, int size, uint16_t coh_mode,
+  * Description: Check some of the xe2 pat_index modes.
+  */
  
- 	ibb = intel_bb_create_full(fd, 0, 0, NULL, xe_get_default_alignment(fd),
-@@ -475,11 +484,11 @@ static void pat_index_render(struct xe_pat_param *p)
++/**
++ * SUBTEST: xa-app-transient-media-off
++ * Test category: functionality test
++ * Description: Check some of the xe4-lpg pat_index modes with media off.
++ */
++
++/**
++ * SUBTEST:  xa-app-transient-media-on
++ * Test category: functionality test
++ * Description: Check some of the xe3p-lpg pat_index modes with media on.
++ */
++
+ static void subtest_pat_index_modes_with_regions(int fd,
+ 						 const struct pat_index_entry *modes_arr,
+ 						 int n_modes)
+@@ -1495,6 +1520,52 @@ static void false_sharing(int fd)
+ 	}
+ }
  
- 	intel_buf_init_full(bops, p->r1_bo, &src, width, height, bpp, 0,
- 			    I915_TILING_NONE, I915_COMPRESSION_NONE, size,
--			    stride, p->r1, p->r1_pat_index, DEFAULT_MOCS_INDEX);
-+			    stride, p->r1, p->r1_pat_index, mocs_index);
- 
- 	intel_buf_init_full(bops, p->r2_bo, &dst, width, height, bpp, 0,
- 			    I915_TILING_NONE, I915_COMPRESSION_NONE, size,
--			    stride, p->r2, p->r2_pat_index, DEFAULT_MOCS_INDEX);
-+			    stride, p->r2, p->r2_pat_index, mocs_index);
- 
- 	/* Ensure we always see zeroes for the initial KMD zeroing */
- 	render_copy(ibb,
-@@ -557,6 +566,8 @@ static void pat_index_render(struct xe_pat_param *p)
- static void pat_index_dw(struct xe_pat_param *p)
++static void reset(int sig)
++{
++	int configfs_fd;
++
++	igt_kmod_unbind("xe", bus_addr);
++
++	/* Drop all custom configfs settings from subtests */
++	configfs_fd = igt_configfs_open("xe");
++	if (configfs_fd >= 0)
++		igt_fs_remove_dir(configfs_fd, bus_addr);
++	close(configfs_fd);
++
++	/* Bind again a clean driver with no custom settings */
++	igt_kmod_bind("xe", bus_addr);
++}
++
++static void xa_app_transient_test(int configfs_device_fd, bool media_on)
++{
++	int fd, fw_handle, gt;
++
++	igt_kmod_unbind("xe", bus_addr);
++
++	if (media_on)
++		igt_assert(igt_sysfs_set(configfs_device_fd,
++					 "gt_types_allowed", "primary,media"));
++	else
++		igt_assert(igt_sysfs_set(configfs_device_fd,
++					 "gt_types_allowed", "primary"));
++
++	igt_kmod_bind("xe", bus_addr);
++
++	fd = drm_open_driver(DRIVER_XE);
++
++	fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
++	igt_require(fw_handle >= 0);
++
++	subtest_pat_index_modes_with_regions(fd, xe3p_lpg_coherency_pat_index_modes,
++					     ARRAY_SIZE(xe3p_lpg_coherency_pat_index_modes));
++
++	/* check status of c state, it should not be in c6 due to forcewake. */
++	xe_for_each_gt(fd, gt)
++		igt_assert(!xe_gt_is_in_c6(fd, gt));
++
++	close(fw_handle);
++}
++
+ static int opt_handler(int opt, int opt_index, void *data)
  {
- 	int fd = p->fd;
-+	uint16_t dev_id = intel_get_drm_devid(fd);
-+	uint8_t mocs_index;
- 	int size, stride, width = p->size->width, height = p->size->height;
- 	struct drm_xe_engine_class_instance *hwe;
- 	struct intel_bb *ibb;
-@@ -579,6 +590,9 @@ static void pat_index_dw(struct xe_pat_param *p)
- 			break;
+ 	switch (opt) {
+@@ -1586,6 +1657,36 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
+ 		false_sharing(fd);
  	}
  
-+	mocs_index = intel_get_device_info(dev_id)->graphics_ver >= 20 ?
-+		     intel_get_defer_to_pat_mocs_index(fd) : DEFAULT_MOCS_INDEX;
++	igt_subtest_group() {
++		int configfs_fd, configfs_device_fd;
 +
- 	vm = xe_vm_create(fd, 0, 0);
- 	ctx = xe_exec_queue_create(fd, vm, hwe, 0);
- 
-@@ -592,12 +606,13 @@ static void pat_index_dw(struct xe_pat_param *p)
- 
- 	intel_buf_init_full(bops, p->r1_bo, &r1_buf, width, height, bpp, 0,
- 			    I915_TILING_NONE, I915_COMPRESSION_NONE, size,
--			    stride, p->r1, p->r1_pat_index, DEFAULT_MOCS_INDEX);
-+			    stride, p->r1, p->r1_pat_index, mocs_index);
- 	intel_bb_add_intel_buf(ibb, &r1_buf, true);
- 
- 	intel_buf_init_full(bops, p->r2_bo, &r2_buf, width, height, bpp, 0,
- 			    I915_TILING_NONE, I915_COMPRESSION_NONE, size,
--			    stride, p->r2, p->r2_pat_index, DEFAULT_MOCS_INDEX);
-+			    stride, p->r2, p->r2_pat_index, mocs_index);
++		igt_fixture() {
++			igt_require(intel_graphics_ver(dev_id) == IP_VER(35, 10));
 +
- 	intel_bb_add_intel_buf(ibb, &r2_buf, true);
- 
- 	/*
++			pci_dev = igt_device_get_pci_device(fd);
++			snprintf(bus_addr, sizeof(bus_addr), "%04x:%02x:%02x.%01x",
++				 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
++
++			configfs_fd = igt_configfs_open("xe");
++			igt_require(configfs_fd != -1);
++			configfs_device_fd = igt_fs_create_dir(configfs_fd, bus_addr,
++							       S_IRWXU | S_IRGRP | S_IXGRP |
++							       S_IROTH | S_IXOTH);
++			igt_install_exit_handler(reset);
++		}
++
++		igt_subtest_with_dynamic("xa-app-transient-media-off")
++			xa_app_transient_test(configfs_device_fd, false);
++
++		igt_subtest_with_dynamic("xa-app-transient-media-on")
++			xa_app_transient_test(configfs_device_fd, true);
++
++		igt_fixture() {
++			close(configfs_device_fd);
++			close(configfs_fd);
++		}
++	}
++
+ 	igt_fixture()
+ 		drm_close_driver(fd);
+ }
 -- 
 2.43.0
 
