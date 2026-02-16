@@ -4,46 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FC26E83820
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Feb 2026 18:44:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D494E83824
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Feb 2026 18:52:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D9D5C10E3DF;
-	Mon, 16 Feb 2026 18:44:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2F66410E0D7;
+	Mon, 16 Feb 2026 18:52:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="rQEAzjkj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ClQTKCDP";
 	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D86C010E3DE
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Feb 2026 18:44:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=BEif5VqzXt0WR7q4qY2f9CdmbJms/28Je8wflnWHAjI=; b=rQEAzjkjrxdLCTvcclQUfrNhcN
- 5autOGCVAzz5luHMPa5dHt03JJIjSZbj8FZsCA81AOpoco0n3GmWyRxsDJHDfO62B4COELTEqHL4+
- s2yQyrg6+KGKy7TqqFaKzrrBkd1hZiGDY4zm6y+ZAD3fMy0krD7j1yAfAMVoEbKNZtM5QeXpfo8Dt
- TfJwy9NxOiaOB+qRCQqNwhvBx/4+uN768c6HJWHil1DFtaY/pN8o2Vls7AERfq0bDqN6uhPZLdsdM
- sNOeXIdSJPO4C9Zm9GI3/HWhw/ADiZljmRUt3tAK5fFAvly1Supl8pi5s4dp7ykhWu+4cC3qWLCua
- gZQNKiXw==;
-Received: from c-73-157-168-91.hsd1.or.comcast.net ([73.157.168.91]
- helo=localhost.localdomain) by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1vs3Zi-001Ohv-Io; Mon, 16 Feb 2026 19:44:03 +0100
-From: John Harrison <John.Harrison@Igalia.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE46910E0D7
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Feb 2026 18:52:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1771267962; x=1802803962;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Ab4BVRNf9wkFc6iYFYQT7dWIPq6x8tW1iOrA+IAcbqI=;
+ b=ClQTKCDPGWH7XMa2z6xmB6EH4n+zhQdC7qYWK0HaQt7J/XPsq8/XnbsS
+ J0Id9jmDdSl9ZOz8s/SVkPVct/c59x0yX0O2opSGCA3bNWoauJ/QjSbco
+ X9ibzjo8psJr2prRk3a+18IRYoE7zcAq93d1wWEOnDYPldU9DM83QrSjB
+ 6HgNJXtw9XZVSaoyg8RCfNLdAUkqEeGFRwASn+QNOdVSVhiDezPzU+sWn
+ JJ0VEVxleRf+RKrEDlRxjrn416IZ7dwljk5syKLKmZSVO+PzDjugzl79e
+ Y36GlcXiPp3ICN+MSsSf0lbiKexo4DEzRt/kpJssykD0h9wh1MP3NBWOl Q==;
+X-CSE-ConnectionGUID: Uzc44DgJQjmJWFEBBiXn9g==
+X-CSE-MsgGUID: fGeXRvoLSb6kGN1vUysQ5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="83788122"
+X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; d="scan'208";a="83788122"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Feb 2026 10:52:42 -0800
+X-CSE-ConnectionGUID: gXcbVJdDSRaDwTvvoULXzA==
+X-CSE-MsgGUID: RE5ySazWRtecNk+DVZ46DA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; d="scan'208";a="218666917"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.237])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Feb 2026 10:52:40 -0800
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
- Suraj Kandpal <suraj.kandpal@intel.com>,
+Cc: Renjun Wang <renjunw0@foxmail.com>, Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>, Leo Li <sunpeng.li@amd.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v2 2/2] tool/intel_hdcp: Fix flickering when changing
- HDCP state
-Date: Mon, 16 Feb 2026 10:43:41 -0800
-Message-ID: <20260216184341.437722-3-John.Harrison@Igalia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260216184341.437722-1-John.Harrison@Igalia.com>
-References: <20260216184341.437722-1-John.Harrison@Igalia.com>
+Subject: [PATCH i-g-t] tests/kms_plane: Allow planar-pixel-format-settings to
+ pass on VKMS
+Date: Mon, 16 Feb 2026 19:52:31 +0100
+Message-ID: <20260216185231.164130-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -61,106 +70,116 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The menu system would redraw the screen with a special colour to
-denote the current HDCP status after a change was requested. However,
-the screen was immediately redrawn by the player thread with a
-background colour denoting the requested HDCP level. So all you
-actually got was a very brief full screen flicker of the background
-colour.
+From: Renjun Wang <renjunw0@foxmail.com>
 
-As the current HDCP status is now being shown as a separate line of
-text in the video player's output, there is no need to use the screen
-background to show the same. So, drop the menu updates once the video
-player is running to remove the flickering.
+Enable planar-pixel-format-settings subtests when running on VKMS
+driver. VKMS currently accepts odd width|height for NV12, odd
+horizontal panning for NV12, and odd vertical panning for P016
+formats.
 
-Also, don't stop the video player thread when HDCP is disabled so that
-the status update continues (given that the menu thread is no longer
-redrawing the screen now).
-
-v2: Split into two patches (review feedback by Kamil)
-
-CC: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-CC: Suraj Kandpal <suraj.kandpal@intel.com>
-Signed-off-by: John Harrison <John.Harrison@Igalia.com>
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Cc: Louis Chauvet <louis.chauvet@bootlin.com>
+Cc: Leo Li <sunpeng.li@amd.com>
+Signed-off-by: Renjun Wang <renjunw0@foxmail.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tools/intel_hdcp.c | 34 +++++-----------------------------
- 1 file changed, 5 insertions(+), 29 deletions(-)
+Reformatted descriptions, also left one comment for Intel. Kamil
 
-diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c
-index 8e29c5e32..56ed720cf 100644
---- a/tools/intel_hdcp.c
-+++ b/tools/intel_hdcp.c
-@@ -102,24 +102,13 @@ static void draw_menu_text(cairo_t *cr, data_t *data)
- 	}
- }
+ tests/kms_plane.c | 28 ++++++++++++++++------------
+ 1 file changed, 16 insertions(+), 12 deletions(-)
+
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 362748cdb..a6dcb5585 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -1331,11 +1331,9 @@ static void test_planar_settings(data_t *data)
+ 	int devid;
+ 	int display_ver = -1;
+ 	int rval;
++	bool is_intel = false;
++	bool is_vkms = false;
  
--static void draw_menu(data_t *data, const char *status)
-+static void draw_menu(data_t *data)
- {
- 	cairo_t *cr = igt_get_cairo_ctx(data->fd, &data->fb);
- 
--	/* Background color and text color based on HDCP status */
--	if (strcmp(status, "INIT") == 0) {
--		cairo_set_source_rgb(cr, 0.051, 0.278, 0.631);
--		cairo_paint(cr);
--		cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
--	} else if (strcmp(status, "Enabled") == 0) {
--		cairo_set_source_rgb(cr, 0.0, 1.0, 0.0);
--		cairo_paint(cr);
--		cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
--	} else {
--		cairo_set_source_rgb(cr, 1.0, 0.0, 0.0);
--		cairo_paint(cr);
--		cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
--	}
-+	cairo_set_source_rgb(cr, 0.051, 0.278, 0.631);
-+	cairo_paint(cr);
-+	cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
- 
- 	draw_menu_text(cr, data);
- 
-@@ -678,13 +667,12 @@ int main(int argc, char **argv)
- {
- 	data_t data;
- 	pthread_t tid;
--	const char *status = NULL;
- 	igt_plane_t *primary;
- 
- 	data.selected_connector = -1;
- 	test_init(&data);
- 
--	draw_menu(&data, "INIT");
-+	draw_menu(&data);
- 	primary = igt_output_get_plane_type(data.output, DRM_PLANE_TYPE_PRIMARY);
- 	igt_plane_set_fb(primary, &data.fb);
- 	igt_display_commit2(&data.display, COMMIT_ATOMIC);
-@@ -718,7 +706,6 @@ int main(int argc, char **argv)
- 			enable_hdcp_type(&data, HDCP_TYPE_2_2_TYPE_1);
- 			break;
- 		case 5:
--			stop_video_player(&data);
- 			set_hdcp_prop(&data, CP_UNDESIRED, HDCP_TYPE_2_2_TYPE_1,
- 				      data.selected_connector);
- 			data.hdcp_type = HDCP_TYPE_NONE;
-@@ -727,17 +714,6 @@ int main(int argc, char **argv)
- 			break;
- 		}
- 
--		if (cmd == 1) {
--			draw_menu(&data, "INIT");
--		} else {
--			status = get_hdcp_status(&data, data.selected_connector);
--			draw_menu(&data, status);
--		}
--
--		primary = igt_output_get_plane_type(data.output, DRM_PLANE_TYPE_PRIMARY);
--		igt_plane_set_fb(primary, &data.fb);
--		igt_display_commit2(&data.display, COMMIT_ATOMIC);
--
- 		usleep(200 * 1000);
+-	/*
+-	 * If here is added non-intel tests below require will need to be
+-	 * changed to if(..)
+-	 */
+ 	igt_require_f(data->display.is_atomic, "Atomic mode-set not supported\n");
+ 	if (is_intel_device(data->drm_fd)) {
+ 		igt_require_intel(data->drm_fd);
+@@ -1343,6 +1341,9 @@ static void test_planar_settings(data_t *data)
+ 		igt_require(intel_display_ver(devid) >= 9);
+ 		display_ver = intel_display_ver(devid);
+ 		igt_require(display_ver >= 9);
++		is_intel = true;
++	} else if (is_vkms_device(data->drm_fd)) {
++		is_vkms = true;
  	}
  
+ 	output = igt_get_single_output_for_pipe(&data->display, pipe);
+@@ -1354,13 +1355,15 @@ static void test_planar_settings(data_t *data)
+ 	igt_display_commit_atomic(&data->display,
+ 				  DRM_MODE_ATOMIC_ALLOW_MODESET,
+ 				  NULL);
+-
+-	/* test against intel_plane_check_src_coordinates() in i915 */
++	/*
++	 * Test odd width for NV12 format.
++	 * For Intel i915/xe test against intel_plane_check_src_coordinates()
++	 */
+ 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
+ 				     DRM_FORMAT_MOD_LINEAR)) {
+ 		int expected_rval = -EINVAL;
+ 
+-		if (display_ver >= 20)
++		if ((is_intel && display_ver >= 20) || is_vkms)
+ 			expected_rval = 0;
+ 
+ 		igt_create_fb(data->drm_fd, 257, 256,
+@@ -1376,12 +1379,12 @@ static void test_planar_settings(data_t *data)
+ 		igt_debug("Odd width NV12 framebuffer test skipped\n");
+ 	}
+ 
+-	/* test against intel_plane_check_src_coordinates() in i915 */
++	/* Test odd height for NV12 format. */
+ 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
+ 				     DRM_FORMAT_MOD_LINEAR)) {
+ 		int expected_rval = -EINVAL;
+ 
+-		if (display_ver >= 20 && display_ver < 35)
++		if ((is_intel && display_ver >= 20 && display_ver < 35) || is_vkms)
+ 			expected_rval = 0;
+ 
+ 		igt_create_fb(data->drm_fd, 256, 257,
+@@ -1397,12 +1400,12 @@ static void test_planar_settings(data_t *data)
+ 		igt_debug("Odd height NV12 framebuffer test skipped\n");
+ 	}
+ 
+-	/* test against intel_plane_check_src_coordinates() in i915 */
++	/* Test odd horizontal panning for NV12 format. */
+ 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_NV12,
+ 				     DRM_FORMAT_MOD_LINEAR)) {
+ 		int expected_rval = -EINVAL;
+ 
+-		if (display_ver >= 35)
++		if ((is_intel && display_ver >= 35) || is_vkms)
+ 			expected_rval = 0;
+ 
+ 		igt_create_fb(data->drm_fd, 810, 590,
+@@ -1419,11 +1422,12 @@ static void test_planar_settings(data_t *data)
+ 		igt_debug("Odd horizontal pan NV12 framebuffer test skipped\n");
+ 	}
+ 
++	/* Test odd vertical panning for P016 format. */
+ 	if (igt_plane_has_format_mod(primary, DRM_FORMAT_P016,
+ 					    DRM_FORMAT_MOD_LINEAR)) {
+ 		int expected_rval = -EINVAL;
+ 
+-		if (display_ver >= 20 && display_ver < 35)
++		if ((is_intel && display_ver >= 20 && display_ver < 35) || is_vkms)
+ 			expected_rval = 0;
+ 
+ 		igt_create_color_fb(data->drm_fd, 256, 260,
 -- 
-2.43.0
+2.53.0
 
