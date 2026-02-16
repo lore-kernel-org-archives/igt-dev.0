@@ -4,194 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDDFDE63F25
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Feb 2026 04:16:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5B4DE63F1E
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Feb 2026 05:38:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6C27910E11E;
-	Mon, 16 Feb 2026 04:16:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5558310E090;
+	Mon, 16 Feb 2026 05:38:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Eg1QO6wy";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="hR+8OgEl";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7CBFA10E11E
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Feb 2026 04:16:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771215398; x=1802751398;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=PDqwBqa6MOgIOk4hqESuuPawLa3tTssulSNfa5kgbFI=;
- b=Eg1QO6wy1JKcI1RkpQMp2Hhv3mfJlRT2E1kSvrp7ByhU6hIh7MLxJrDe
- YXE+BZGYwOqpRPb4BkuQ03Ec0gHJyHkRN0aDWIZcs1yybGLt6FUaUSo7D
- AwsDeEYi9UMkG7MjtBNE0/rnBb1ToXal22spatTD3oAmmhTMgtS8HwYEl
- tKhFqLtzdVaeQr2Jva+P8vH7QQ18cqYiwbwEAjNnkP0JG+PRZjvYxkM/t
- BMTTFMG6fDNlufx1JIJHZRfTKEScO+5S1tiRBs+cvdHy0JlGEhlTjN02+
- bRUp27T7U6kLcp4QALeoEiyrMGMwmCQXWdj26HuABgOyxJEo/Vmjw3d5f g==;
-X-CSE-ConnectionGUID: bS0ELy1ORSOBlJCL8AjXVw==
-X-CSE-MsgGUID: fzeFQvKCQ0aKHfI5Jmf/nQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11702"; a="72009006"
-X-IronPort-AV: E=Sophos;i="6.21,293,1763452800"; d="scan'208";a="72009006"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Feb 2026 20:16:38 -0800
-X-CSE-ConnectionGUID: ilwOXhrnToaNxyLnU81h9Q==
-X-CSE-MsgGUID: LPJDYnH+QCmZ6frcBby7iQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,293,1763452800"; d="scan'208";a="212732155"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Feb 2026 20:16:38 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Sun, 15 Feb 2026 20:16:37 -0800
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Sun, 15 Feb 2026 20:16:37 -0800
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.22)
- by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Sun, 15 Feb 2026 20:16:37 -0800
+Received: from CY7PR03CU001.outbound.protection.outlook.com
+ (mail-westcentralusazon11010033.outbound.protection.outlook.com
+ [40.93.198.33])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ADB0110E090
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Feb 2026 05:38:54 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hjDnibQVtSh9owi6NGdpOmy7lRLud7rmsXauVNsd3HJUqQyvZQYiHPEWiymKaH5Q8pu0q66jA5GbenpoyBf64M1UKiX6NbvItR8gHqA5j0AmNGokNZj/4oY8VVmxbUHdavfz9+MBMM10dslhp4MK/ch3xRvVmPSfr/8gjZ7aQ/f/Gk1NjCQ0d9pAhqMv+5PRTYLk94LGciuNHTDU5Km03rGNwoZnQ7yTw73qg4S82wf+trjkeWE2gVEgEtn4dxiI9tubAJZUTc16x3qsB1etyFz94+GcHEAQB6Menfx+P15NTEm2lwZatjI8JTWOX/Kd/vyS3DGa6YmZPxp8DqnRtg==
+ b=hBK2yNZPKMj1AllZmj51BTICvnYqYZXRPLGy0vuUTl13n790i2n0+ydSXgGWH+/kg2vrtSyWcBGyxM6hdqyLBuNGMpk5dNtqqPraYtaCq2d9msFezMnzEvaDxspDCMOHKkeo9/eEdOmzO5FKToCSt6q8ytm0SUIeIyylZ4RR6b/bhFLgdS4Xe9scyvu5SYj6OsFV34ut19zF/ikN9T0dcgXAsyJJoPAJo/gEtP4SJi+aayiHo5PjkfIXTounjYR21N27ViqZAJ00C2u+L/rcLwSYgpw8UQEhhf68dklA4NHpuRVTAUC9hyqmn37DAKdLqsAha58K3geCjmVP3VH+gg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nUWJkMaQRasnNvDicAwHlppaeDPh8FpwKf5cN9eseDg=;
- b=PfoXPfcRX9WXIK4C17TV7ydmbT1IR7BLuQG0ePf7fgqAjgcxS4XWbEolmCaiSa8MCEp4jG+0xvCRpaBglvtjgKOm96nla8mbUYH4Voeh+R8J7NY00/GLRKHdeZWsj0i3DD2YMtai5kgsfH617eqXzHyGoGAGlLxlONon/vcg5ES8/O5uO3PaodNfkYKxi+eI/pjrACrN9VlBjlusYRC9544tbbDMHPFYRnoDmHBmQuOjy/uQLC6XyD76XLdcBSfjmZTVLpzeLTuR6OpvcQX4wO//iKL7kwjRZ5KlzBMOKB4TXSrp2ZEeo2Tby4oRANqUrnxariXX5q5MdXVsw2I03w==
+ bh=C2hwbsk2OUUK1a66Rh2TbnLRcmwURfRzZ4ZVVlsY0Qs=;
+ b=K06vwn/Law+K5xTO2gPVmItfNBam4/NahItL0zSo75LLhZDhkE0pkUgMw8zlhJctRrLXdBYdpy9MML02eQR7SJWZESXupZ+D/lTl/q/uIGfgvk9mQP8cPfG7rS/r6/3fO1gMXs6hIjQtDohRCf5Zp059YdZBwIFENv0izuGWGzQIdipCSx+1un24NXxvF3YwKV2Nwpr6rKMAnrhRUEJ6pEqy6cBghXXz9m67/ELBKGnolnTr49yzuN3UzlF5aam80e/1edE9Nx9oLkp5awwGyH1NTB9FnS5PQ7C7YhHGmiHPvezbrb455e60ADZobwE2ICedorDt7V4GkU50wDin8g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=C2hwbsk2OUUK1a66Rh2TbnLRcmwURfRzZ4ZVVlsY0Qs=;
+ b=hR+8OgEl4FeNuqARpKuHDspdKy+sRW03hhTWDvZ1xz4MggS+jCdtVnJTU1MUFGglFgXRURaDfGE+hArP+KA0YpZ6gbTOsI2pvX/5OCes5KfTJOxywFHWVZB+bHFBv4LsTPMq7AzwdkNlBq+DP8Y2NLzYrwg+e7xPIHFq2LSETcI=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BN0PR11MB5709.namprd11.prod.outlook.com (2603:10b6:408:148::6)
- by CH2PR11MB8865.namprd11.prod.outlook.com (2603:10b6:610:282::12)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB6420.namprd12.prod.outlook.com (2603:10b6:510:1fc::18)
+ by LV8PR12MB9154.namprd12.prod.outlook.com (2603:10b6:408:190::18)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.16; Mon, 16 Feb
- 2026 04:16:34 +0000
-Received: from BN0PR11MB5709.namprd11.prod.outlook.com
- ([fe80::ad31:3f30:20b8:26c]) by BN0PR11MB5709.namprd11.prod.outlook.com
- ([fe80::ad31:3f30:20b8:26c%6]) with mapi id 15.20.9611.013; Mon, 16 Feb 2026
- 04:16:34 +0000
-Message-ID: <13d5fa0c-02a9-42d8-9932-0f41f9510864@intel.com>
-Date: Mon, 16 Feb 2026 09:46:27 +0530
+ 2026 05:38:51 +0000
+Received: from PH7PR12MB6420.namprd12.prod.outlook.com
+ ([fe80::3129:67e7:f119:5593]) by PH7PR12MB6420.namprd12.prod.outlook.com
+ ([fe80::3129:67e7:f119:5593%5]) with mapi id 15.20.9611.013; Mon, 16 Feb 2026
+ 05:38:51 +0000
+Content-Type: multipart/alternative;
+ boundary="------------59lYYKF1u0BlAopFOpKN603S"
+Message-ID: <232f11fe-f4b7-4e0b-a04d-e60a85d9794e@amd.com>
+Date: Mon, 16 Feb 2026 00:38:47 -0500
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 3/3] tests/intel/xe_madvise: Add purgeable BO
- madvise tests
-To: "Gurram, Pravalika" <pravalika.gurram@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Brost, Matthew" <matthew.brost@intel.com>, "Ghimiray, Himal Prasad"
- <himal.prasad.ghimiray@intel.com>, "thomas.hellstrom@linux.intel.com"
- <thomas.hellstrom@linux.intel.com>, "Sharma, Nishit"
- <nishit.sharma@intel.com>
-References: <20260212090921.2079711-1-arvind.yadav@intel.com>
- <20260212090921.2079711-4-arvind.yadav@intel.com>
- <BL1PR11MB552594265280ED17CDCB612E8461A@BL1PR11MB5525.namprd11.prod.outlook.com>
+Subject: Re: [PATCH i-g-t 1/2] lib/amdgpu: support FWM packet in user queue
+To: Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>,
+ igt-dev@lists.freedesktop.org
+Cc: vitaly.prosyak@amd.com
+References: <20260211113922.11211-1-yogesh.mohanmarimuthu@amd.com>
 Content-Language: en-US
-From: "Yadav, Arvind" <arvind.yadav@intel.com>
-In-Reply-To: <BL1PR11MB552594265280ED17CDCB612E8461A@BL1PR11MB5525.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5PR01CA0051.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1b8::13) To BN0PR11MB5709.namprd11.prod.outlook.com
- (2603:10b6:408:148::6)
+From: vitaly prosyak <vprosyak@amd.com>
+In-Reply-To: <20260211113922.11211-1-yogesh.mohanmarimuthu@amd.com>
+X-ClientProxiedBy: YQZPR01CA0005.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:85::29) To PH7PR12MB6420.namprd12.prod.outlook.com
+ (2603:10b6:510:1fc::18)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN0PR11MB5709:EE_|CH2PR11MB8865:EE_
-X-MS-Office365-Filtering-Correlation-Id: 27cd22a8-d3a7-49fa-1eee-08de6d122bc5
+X-MS-TrafficTypeDiagnostic: PH7PR12MB6420:EE_|LV8PR12MB9154:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9cff016f-3562-4376-6226-08de6d1daa32
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?L1FUWTNxYWNaQjh1Sm42QWxuK3puMFJMTWxCa20wS050TENWOUljTXB6RnpV?=
- =?utf-8?B?UnNBeWRzdTdGNTNhUHo1ZUVEL3FWc2VIWnhOVjcrVnJEMlNvdXhYakhaSnZk?=
- =?utf-8?B?REhacTU1WUdLQkprYzV0TENSUGpDWC95RXEvbEEvUk13YlY1dDcrZ2dvcVhI?=
- =?utf-8?B?RkM3cW1iKzB5VFdCeUpkcjhQWFE1c1FFSFRuS2xkNUQ4Y2xhQnUvZTZIcjkx?=
- =?utf-8?B?VGs4a2dQSWJrenltbVo4dDFIeVMwdkhwOVgvNjg5UU4rNHU3b005dW01c0dy?=
- =?utf-8?B?c0J2RUQvM3dmUlo1MHNmYWcwSkFWSy9EeHUrSjlOakgwcG1wSUlXWWEzdVd3?=
- =?utf-8?B?UHk4Wkt4MWh5QURORms4R1A2eGxqYzNDU0NzTlkxeFFyU2R6N3VtRnJFbFM5?=
- =?utf-8?B?STNoamJXN0J3Z2VYNjZObS9pdldLYVdBTnhnUDdXeE9mTmU5Q0oybGpibVo1?=
- =?utf-8?B?VWxoYXlPenRtaUJ5d25PaThnTk5DYkJrM2N6KzV6NDZLcTlFTE9HZGd5c3A4?=
- =?utf-8?B?WmErckZzQXRkOUxJcnpyTUd5VWorSVZwWjJlenRRc2tYUXRaSjhPNWd4R1Fk?=
- =?utf-8?B?NnVRblJLMDRqOGV6Z0JSVU42MDF3aDNlbGRXTTIvYithVnJSWE5ZRzU4cDBi?=
- =?utf-8?B?Tnd0Ukh5OTBObmFBZG5TUVdpb2UrejF2RkxmM0dPVWxJU3dneVR1cUsvMWUx?=
- =?utf-8?B?SGFveEhDWXlMMEg2RDdyMGMyOE9zU3F2dEJYV05qWmJELzgzWDNlMnBCeTVY?=
- =?utf-8?B?cHBVRGxPMnlYTDRsTURpa3ZrdnVoKy9LYmYyUXkxbFo5WnNNM25ieVJoNDRM?=
- =?utf-8?B?a0VpcjJ6aGVhTGE1VXE4Z1kwTjBEdzhma0xldkpJMmpJRzQrVVd0dnphcW8r?=
- =?utf-8?B?SHViMTNPSVlpMGhYN3VZY1pQMFlHK2lGaUZTUnhCOXQ4MTFEcXNiQ0Z1b2kx?=
- =?utf-8?B?RW9WMmZzRmxrdkVSRWxFZWhGczZabktQeXNMc1NtbDZyUi8rblR0MjdYOG04?=
- =?utf-8?B?VWEyejVHa2hXc3JiMXdiYkJhWEVjZmpPQ2p2UXlXVEZoUFBvWlV1SUFodlZy?=
- =?utf-8?B?Rjg0OXVEUTh1NzB3V1k4cjJ5Tk1FTVFjOFVmdVlqeHJKaXk4UUdxMHBOSWtS?=
- =?utf-8?B?Wmd2dzRGdDJTMERBMTlyaU83Wi81dnFsS01xWWg1Z0hjaTYrQUpleUdWNVJN?=
- =?utf-8?B?SnhTS1pKVm83bWxkZnFVbWUweDFSakt0Rlk1UjU1K01YczljSVNXU1Y0MVI1?=
- =?utf-8?B?dWU3K3MzWDJlZXo5RWNpcjdOUEdDSENUc3NpNmUrV2FiQ3VVcHNQYjNGbzlY?=
- =?utf-8?B?OWFHUXFXbjdRVUwzekgvbWxtbXNzOXZIa0JVK1M1azREWklPT1p5Sm5UY1oy?=
- =?utf-8?B?VFFaK3BuTmRoeEpoOThxTjh6ZnNzS0NEbTRnSk9SZVJRMDJBb1JQOXZsN3J6?=
- =?utf-8?B?bjVoSDAwelpmMzdtS2g2cGhYWWtNTnc1T1E1MzNlZUJtb2cxRE5zOCtId1BP?=
- =?utf-8?B?SWQvNTRiMmRGSkltZm1hZlFLVnlITkRXa2laRndSMm8vS3FJSFJSSyszK0ty?=
- =?utf-8?B?ZFVxM0NTcGRIazBBYzZhYnQ2ZnZHTVVQNXk0b2dMV1d1ZFhNMTh1My8zTzAx?=
- =?utf-8?B?UlNDd0ROVEQvOGxVUUZIN2NiTzhER2REanlTMzhweVluYk5kbWZ2TklhT295?=
- =?utf-8?B?YVRCeitoQzd2eCtBNHNrQWZRQlhYeUF3TS9MSmQ2N3ZNcERvaGduOVNKS2J3?=
- =?utf-8?B?QWNPb3VCSEIvSlVZZXUyM2RZYnpTSjY0d0lWSitZaTdtcnh5ZjdGREFiSTFP?=
- =?utf-8?B?eUhtVzdkbGFnSTZqbUx1azlqZk9Hc1gvTVAzVks1djM1a3VXR3E5ZGw0RUYx?=
- =?utf-8?B?aFdMOGp2UUc2UXU4Z0xCU1o5dkNSYVg2UWNacnVzS3NjT1k3aWJSR2t6dm95?=
- =?utf-8?B?Qm44Y04rK2J2Y1hlbm1FVmhyd013Q29RaGprOENNWkpHdDZ6aHhCZjJzcHRQ?=
- =?utf-8?B?MExORmZSRmN3QWZwTHQvWW9vZ2hqelc3QmFycnFEeSt4TUlxYUpyaHJZYWlz?=
- =?utf-8?B?cEQ2M1VlakxyeUJHbVdkQjhGQnJVclhFbGdqc3pub3lvNm1IeXBHVmZvTndG?=
- =?utf-8?Q?QQmU=3D?=
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|376014|366016|8096899003|7142099003; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Z2RGbS9RMXhUZHJBa0pYVkVFbG1TSzhLQXRFdEY0c2daUSt1VGdiOFJOTG5Z?=
+ =?utf-8?B?WWQ5QjAvYTZtUFFLU1NhRWpyYVNibDJ5blR2Z05vSlA5U2Fsczl6ZVdsQlc2?=
+ =?utf-8?B?QjliYnRtM3BDTDd2bS80QUh5UkFaWTdJbjkyNXhEUkpGVkFtY3Axd2hWUXc4?=
+ =?utf-8?B?ZnZTc2xxaU1UL01kL3YzcnB2UVRBWE10UVJidjI2Z3FTa1dNUU5SazJ3N3ZT?=
+ =?utf-8?B?WEVwU0w1WTJDZkplTkhLbXpoWG5yeTV3RTIwYzBJa1UvSzI0WUpYQi9BWVNR?=
+ =?utf-8?B?cXh5YjduOWdVZGw5ZjgydXVNNnJFWktkazF4b1VLMmVSV2hROWxBRTdtMlBI?=
+ =?utf-8?B?eTNuazRpbnB3VDVzb1hMb1kzd3Erd0NsMUY1aVRNL09BZEx5SzB4emNpUWFO?=
+ =?utf-8?B?MWtHeDcyU3Z1b1lmWHdBZFQwSU1SMjZQK09EMm1kVXMzcmwyejJUMlArRFJT?=
+ =?utf-8?B?ZlR2MnpCMExYeGV5VGtqaHRmVjJta0FuajVJUlpOWmxjZ1o4b3k2b3Qzdmg4?=
+ =?utf-8?B?YlZIUlpkMkNVVE5EeVRlMVlCTDdzL0EweTM5d1I0aGh6UXBDTlVBMWFOTXFp?=
+ =?utf-8?B?ZFRzQ0pnWWZBUU5NN081aG8wdks3OFdSYURwV3Jiek1IS0VOMzZOVEZNUnQz?=
+ =?utf-8?B?TFliaEVidHBTZjdvN0taV2xPK3ltcVhxV3ZobWI2eWV2K3JEQ3Z2SEZkaDVj?=
+ =?utf-8?B?T3RRWjJnV3NPQ1czYTRiaWJjU1hWa2ZPdGtpUCtkZGtZMDFocE9aV2JsQU82?=
+ =?utf-8?B?cE40MTVkK2ZTMTJ5UXNrZVlTQm11dFd1bHIxaFp3MVlUUUNRREJsNm4xcjJ5?=
+ =?utf-8?B?bk9wK05oKzU3QkYwSFNkS0xkMkxSSk03dmV4ZmY1TWo1TFRLcnFpYnVhYmln?=
+ =?utf-8?B?V2ZhTk5VTEczcmlLZ1hmVWt0N0ptOENyN3dMM3ZBUkxrZXU4c3BvUTQ5L0Zt?=
+ =?utf-8?B?Ris0YTNEK1UrK0FGdjUxbCtZbzZSV3lKSC9vOHZBWkhWN29SeGN4STBjQjYw?=
+ =?utf-8?B?WWFpQ1g3a3RYVm5INjZyM1BVM3FFK3NwOTdIWEpQNmZIWWRVRnRIQzRETjRM?=
+ =?utf-8?B?aVg5N2Ivb2xucVppc2lia0dFeWI4d0ZsZGFmSEpUODVBZjZsRTNLNURLa2Zx?=
+ =?utf-8?B?cllNc3g2bll6Vlc2SXp4MDVNb21sMnlDYzZuWXVnRlAwQUwrRkJPSGZHeFRE?=
+ =?utf-8?B?ZUNhd3hvSTcrSUNOdGxRME1Hek9VNzJmOFlGbE1WeEM2cTJNaFNwRnM3UFRW?=
+ =?utf-8?B?NURCZ2RRL3VSMEdPUHdIME9PT2Erd2dWTTJaVm5Eczl1YmtZUEducGQxZ2J6?=
+ =?utf-8?B?ZWYyanpNVnBwR1BBNDZ2VWNIWDJHVmxYdWV6VjhRVnVnV0N6MURvSks5VERE?=
+ =?utf-8?B?SGd1TkcwUEw2QzVUeVMzRUtRZXdvVnNCOE9hRG5OZWZNU3B4VDJmRVRoamlh?=
+ =?utf-8?B?RExCZjJaakFuZENDejBGYVBaUkMySk5QcVhuekVBWXpDQVRSWmxaeGNJTW41?=
+ =?utf-8?B?ZU5Dd1FYWWhnL05Pc2lOajZtaG9SOTJFQTF2U3FnNzJrcFFvRjg4R0c5aThJ?=
+ =?utf-8?B?STl1eVlsdTVER3VMdWhWTWkzd2pJdlNyM1VoNG1xN2E5anZhVy9yQkN4Y09i?=
+ =?utf-8?B?SGNYdU1ac29TaXlYVG9zSDBNdXovTzhycUwzclJlUUlzYm8xZW5PUlBtdUg0?=
+ =?utf-8?B?ekdkM0VkbmMwZjA4ZURQWXpLQVpTaG1EWUlkQUhwZDhtZjlmT1VhOFdJS2JT?=
+ =?utf-8?B?L0J3czNZeVVsdHptbVBzNlFRa2RBMXExWjRCNmpaK0N3aTdMcyswZFMrMnBh?=
+ =?utf-8?B?WWUwVGxaQTBIRzVaVVJXUkJCQzZKNWZ4MUFJZTJJVkZ4TVBsa1A3YXVwVFdv?=
+ =?utf-8?B?NHJzVUtCR1JsM3M3L3hoQVpJVGVlOS9hSnFpOXNHU1krc0tzZ0RubWJ4S21D?=
+ =?utf-8?B?cXBFMklWQnBvRmdhOUlSL3dyNXp3bWEzTjVwQkd2enJoM3dmQ2FvUEZBMVNS?=
+ =?utf-8?B?c3FYd0dmVHNPbkwvcCtxVm1keDc2c0pWZDBqU1JZekVoT25BMHpWNEM1S1JV?=
+ =?utf-8?B?aE1aOHNPU1RucFRNUWZFallvRkxvL3U2ZTloWkN1NzdzaU94RTlRa2pFQmQr?=
+ =?utf-8?Q?WKG8=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BN0PR11MB5709.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(7053199007); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:PH7PR12MB6420.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(8096899003)(7142099003); DIR:OUT;
+ SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eGZJTXNDNjY0Q2xUZWNpMkZDQkpDQXZOVmJJS21BL0pCazJvYWVWSnhTVFMv?=
- =?utf-8?B?Y1NWNTJwV2JUQzVGU2QydmdCVUNwTUMwSVhrYTdJTStDSnRhQVYvUnAvMXdU?=
- =?utf-8?B?NGtsdzZFZjFFWjFjb0RmSDBpdytTVmN0VmhnSjFIVnFlaFJEZnJkWEx3dENC?=
- =?utf-8?B?cXp5Mk0xa0Z1OTQ0bm84NTB1NDBqM1pBRFdPKzFLNytyYUNDRWxHMWhoU1Ns?=
- =?utf-8?B?enIydEs3cktTdXhWTHV0eTNmeG43dk1xcTRSbTZqQkQxaDhuSVA1dDdIVWx5?=
- =?utf-8?B?UzI3RzhZdW0xTlZNazVkcXNoYVFLZk5STmN3TnA2ZVVFd0MvM2txZzJkOUEx?=
- =?utf-8?B?eDhaSkZmS2VOZkw1MzRUdVdydFlyNHpwNFY2UkJIaW1MUkl5UEx3NlhXaHg1?=
- =?utf-8?B?RFFjVUNDU3M4N09LT3ltMllUNjNSbmMrL1U1YlBudHluTFVNMmx0YXdWRzdX?=
- =?utf-8?B?YzZHbnhCQXRkOWhLV2Q5L1Y0OFBYUkQraE5qVzY3V0lxR0owTW8zd0laVVJF?=
- =?utf-8?B?NXo1SDFqYWRadEhnMGhZZDZUN0h5aDQwZ1VvSVBScnVkbFkyaUNrT0hsQ1Rt?=
- =?utf-8?B?RXNZNHAzZ2xKWTVhT2hYV3hNcUw3SXFGd3dUS2dUdTBPYmhnakZKeTlDUTRW?=
- =?utf-8?B?OHBVMm4xcXM1OHluQ0w1ek5BWE4rMDRZRnBibmVnU1RvREVKUmcxK2s2MWlB?=
- =?utf-8?B?ZStQSUQ2OUJwaUxsVzRiSXBqZ2tmc1JCV29zNGhObXh3WWQ1VHIxdXVIS1Ns?=
- =?utf-8?B?MzVRQVo1TFcyM1NQY2FINE9iRytmdjRBY0FMVHdibnVXaTZFSFh3RkRrQStO?=
- =?utf-8?B?K0RSTzYyZU9WaStMOHhTMTFSTjlaUDVCVVBoaWJKZ0liVzN6N2VLZXhwVDh0?=
- =?utf-8?B?cm1ydWRHVlFiV0hGcklhUlF0RDBRRUdWWTBMT3BrcCtLU0ZsTzZLVFpPTUFz?=
- =?utf-8?B?TmVScnc2SEV0UmNlcXlvalYzL1NtNG1tVVNmZWlyZWdhM3g2bldwRW1wSHVM?=
- =?utf-8?B?aHRqY3VjNWJyVHBNUitZRTNmd1dIT3ZvamU3NDE2RWlzcmxzd0xPR0RkK2hC?=
- =?utf-8?B?QWVVR1krYmNPRG5UWGlIblIva0lYbGRNWTd6bXd3S3hTNmdCTjBDMUI2Z2dq?=
- =?utf-8?B?SUpCaXdMbExhYXc5YmJHRnI4b3gwUm1nb2svOEVUS042STFTMXJGbWFrNFQ3?=
- =?utf-8?B?TWl5YVFJcWxub3k2SUZJeTBtL0lnM3daVjBiSjZWc2kzakpCeUVYZUxxbWNp?=
- =?utf-8?B?MzFUOHdxM091MWlocWhyRnc5UUp2L1NSdGNvanlOUk05MzlPUHJaVGd6MitK?=
- =?utf-8?B?RllUNXN0M1Y3TnZ1VDg3VmVLVURPN3Rqb2VGbDBpeklKOVBiVFJqWjMyY0J1?=
- =?utf-8?B?UlJYS01xZ0JMclFlaTgwZE11UkdHOHBCUWtmYUxiRjVuVGp4Rkh6bmJqbDFu?=
- =?utf-8?B?RDY5bUdUQmxSTzRTTHFZWmxlNkFMOUlSVFFObXMva2Y0M1FrVFU1dno2MzlM?=
- =?utf-8?B?OWpqeS90R1RjZzNWOUZsM2d6VUZ0Wm9mUURaaHY4c25FV1VYVnBTaGhSSkxq?=
- =?utf-8?B?VE5KbzIxZXJwYkpUSC9zVTk3d0tnYWJLZVJ5NWU4QnhhQzRQdCtnM2lpcGlQ?=
- =?utf-8?B?SWpJY0J5L0ZDVkhrZXM2elFoclp5Y3VsY3hHTkp3blZzMjN1bVRlOGtGUVdL?=
- =?utf-8?B?dTlRWVY2UkpCUFRLU3I4OVZhN0hMU2pWZ1l1bjROb2s4ajFFUmJReEMvdW9P?=
- =?utf-8?B?R0dwaW54YWZUSFpKcmNFUnpreG5iWlBVUUhTRzZXVDArVE9NM0gxODJ1Q1RD?=
- =?utf-8?B?SWRtdEtiam5CLzBmdnZSZExJeDFLM1BZbjJ3M3FlSW12d0hoNWYyZXNJaG80?=
- =?utf-8?B?UVY2R2lYbGdicXFhTDByR2VOc2hBS3d0TWRRaGF3M3MyZVZMWE5UWUpzZlVa?=
- =?utf-8?B?bW51OFJaanF6YVZMZlJmUEFkOXN3YktWZzlIZ1RrRVp4UXJCUklpSXE1N0E1?=
- =?utf-8?B?RmFWNzdobVBBZzdPeVJlcy8xK29tOXpGUnV1Q3RVTW84SGgzSWlXenY3Tkxu?=
- =?utf-8?B?K0xKTFNqejJuSVNxRjJLQnpGWHhLWjNlaG50U28zTmRDT2pZaUc4clRTbXhY?=
- =?utf-8?B?UEQ3K3FSbUtEM1ZvTjFJUExWUmExcVhtZ2FSVGtMYTdEYnVaK2Y3OXB3NkR1?=
- =?utf-8?B?ZnVINHVrSjNVZlRwZDBJRHJpM1E5L2IzZktQT0dZb1dpRU1XK3l6dEIwa0VE?=
- =?utf-8?B?WTJOVUJUVFRXZkovcGx3SGY0azViMXgxQmtRSlArdG5EekRtLzhmWFhHTmZo?=
- =?utf-8?B?Y29UN1kwdzAvam5CV0plRGFtZlFodGQxWk56Q3dma2ZWZlU4dHNHUT09?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 27cd22a8-d3a7-49fa-1eee-08de6d122bc5
-X-MS-Exchange-CrossTenant-AuthSource: BN0PR11MB5709.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?a1JEZDJJb04rTHdCLzdmZUJGaTF2Y3A2VHpxa01tMG02V2FXSkprU3oyK1FY?=
+ =?utf-8?B?VWJKZXJlWGprdW1KWVB0MENIVDF1RlNnU1dTZUFJcmZieEFML3VDM3cvd1lC?=
+ =?utf-8?B?SEVqSEJQZE1DdmNaZ212UVd2MWYxaDFQb1F2R2xucVg5N2M3RVd1NFFtRXk5?=
+ =?utf-8?B?emZiRkpFenRDL1dXMjFWMENndHp5ckl4V3VTU0hHQkY2TFBnTWxrWGhhV3Bn?=
+ =?utf-8?B?VUlWdWEwOTVjamtMdTROV0hCMy9NbjZOcmVIRk91d1ZzajJNdGd5Yy8zdUx0?=
+ =?utf-8?B?ZTBSSkFndm1KSkNOVDhMa29wSUJEWnVDZ0wwTnZ0VDc0VzN1YzVWZlhUenV2?=
+ =?utf-8?B?WnN1VTJWTUxoV1ZvVCtLWCtNUG9ZL21QNVZpSXlKR0ZoWkpVUS9SVmJJb3h0?=
+ =?utf-8?B?SkRzUHNmYlpsVko5TFUyZEI2ZVluY1lmT08reWlRbnE5dEV6NWFVdjdIM3J4?=
+ =?utf-8?B?NUdCYjhHYzc3TU1sTHRwTFhsYTNsQUR4b1R6aUhpVlF0TXhEN2gyVEx0UHVX?=
+ =?utf-8?B?K2dpbDdJdVhvZ3B3UE0vbUNJdVhOWEppa0FSelppcWZaWm9zb1J5ZEtzZU02?=
+ =?utf-8?B?bWtSSDA0NjE1T0RrSUo3S2l3VDVKaTRNTk00ZXRxK0xlQlhNeFpaKy96Skpv?=
+ =?utf-8?B?aExpVEdmNkxRSlc2MzBmdTl2OTJQS1NyZUtoSVMxYURwRG9FS0YzU3Q3blQv?=
+ =?utf-8?B?MlJnK2lGSExQU283WHo4ZzNyRTdsZHBnMWtkeFBSdUFIV1BVb2IzNEhISFl1?=
+ =?utf-8?B?dFJ5NnBySHAyYXJ1REtEWDNPcjFWSUUyS3RVb3BwdE03YlorRnFYeTRncXNx?=
+ =?utf-8?B?VGhCaUJwMW5Td2lIYW4rODJ1YlNEL2wxY3ZnNUFqaVRBMFd3M2czS3FnVFQz?=
+ =?utf-8?B?NVlicXlYd091Q2hLemR3bjRkaG0wRDlBdTJJb3NOQkcxSnJGdndtam1VejZZ?=
+ =?utf-8?B?QTNtZVQ3WnJKTXhBSWdmOVB1bTV5cm5tUjFLYSsvUkVKRGVSUDRCd2R4THRE?=
+ =?utf-8?B?LzRxTTh2NktSem1QZDJwSnUvVXovV3RLVUQ1UXg3U29PNEw3dDlxQTRCVStt?=
+ =?utf-8?B?ZUkvbjNTZTd0S0R4STNaNU5nNGJiWSs5WXJzcnliOWdhdGJYdXlWOThIY0t3?=
+ =?utf-8?B?azZrM0JUZ3NBbXhGWFBMUVpyc0pXcENLN0VUQlkvR2tSRWt1c2Vxcm9iUkZr?=
+ =?utf-8?B?MUo3d0h0eCtKWUJLcmJJWk4vcHF3UHFObDZEek9vMGFhV1ZyU09Fd2xHMU9B?=
+ =?utf-8?B?aXp3ajJFeWY3THo0NndMUHBNYVMrd0Nad2dpekE0UDg1MmozMjJjd3pUb1lr?=
+ =?utf-8?B?bll4MGM5bUlCNk8rRHdJbGJpT2tWejB0bmhhTHhyeHpueWs0Yy9DSTF0NGx4?=
+ =?utf-8?B?dWtWQlNpamphWDBCL1p5RlVYQ1dqYWFtU2hoalh6WEVhdXMyZ3BUTTdUZkxD?=
+ =?utf-8?B?bU9Fd1BSMzN4VlVueUgxejVBNTByYnIybmFacXhWblBZRk9nWjh0cCt3cHhB?=
+ =?utf-8?B?MUhadlM3RjZRKytmSHMxL3lZelBXUkcxU0ROa3FqbmFuK0pCT1JZQkVnVmdH?=
+ =?utf-8?B?cW9pd2plcVRtcjRnaW5vRDRKeE9MSzZGZnJTQ2dTNWd0QzFFMTFqZUdIb09l?=
+ =?utf-8?B?SlFDWENEdTNJS2U1V0phUUZrclNzVkkvQzM0OUU3YWw2ZzlSSXI0SWo1WlBX?=
+ =?utf-8?B?RzEzRmVHSmpKZUc2UEtNOFo0ZlBtZHRyZGxSOEhhaTFSaEZZYUFyTEtuays5?=
+ =?utf-8?B?M1FqdjRvS3p4eEpRd0Z1UVRBNFpJT0hoS1NQVUFXcDFZbFFucFJmaTFjTzk2?=
+ =?utf-8?B?SDFaeUcvaXM0bUxoRm8rWWlHZjVjQW5ZYTJjVDFTMjM0dmM0LzVhUVVxZ3dj?=
+ =?utf-8?B?QW9LS243M0tzUlFKWHhJRFMzYlhlWTd2d3RjeXhPdUVDT3VDbDQzQW5hbzFl?=
+ =?utf-8?B?V0JoaVh3VlR5MmU1Yy8xVEdhNzl5RXNhcXJOUjhDSG9IL2tTWEtEaDlrazhs?=
+ =?utf-8?B?NUhJUU83M3dXYWxTTVRFODNqSk1uM3BuY2hpN294TWRCZDVSbkZya29aeHRC?=
+ =?utf-8?B?RnNPVmNLMEFyYnczRG0rRG1kTlI2NHlncklHcXFQem1wNjhOMEU5c0JWTllF?=
+ =?utf-8?B?VnpUZWZGUXRZYWVmVVJmWXI3VUpxNE5oN04vd1hxNGlOTlZmbUM4VHMrc2FN?=
+ =?utf-8?B?S3NqK0sveUdxa0I5bzBGYUZkKy9RbDhDVU4xeHQ1Tllkb0IrblVjUWEwLy9s?=
+ =?utf-8?B?WGdSdXlrVk10UG5wWVNRaWN1TEN2RWFFVm9SeHdpamwzWDEybndKaGlibnFX?=
+ =?utf-8?B?WXUrV0p1S2ZPdGMwREt3NFpIL3NDVGg4aTVMek5IVVNJUzB5RHhJQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9cff016f-3562-4376-6226-08de6d1daa32
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6420.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2026 04:16:34.8033 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2026 05:38:51.1878 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EKU0aCS4KXeRfjkvCPK7tFNjY6ZaJ1wzsz6D2xB2dChYVCKCBUYcDJXCGV88N2vS4Mfaoe3IrP0H8o2aJ3jwlw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR11MB8865
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: p/HucSJhrsblOVGsafa8J93VFQSGGApNyjlg5nYHVdEG50Qqa8IAxObYpDCeHxmCi4gMbI9wSKZBa5z2ae4EVw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9154
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -207,888 +171,304 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--------------59lYYKF1u0BlAopFOpKN603S
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 13-02-2026 15:18, Gurram, Pravalika wrote:
+
+On 2026-02-11 06:39, Yogesh Mohan Marimuthu wrote:
+> Also add WRITE_DATA job start marker packet optionally. This can be used
+> to know job has started and make FWM packet negative testing timeout to be
+> shorter.
+
+Please expand the FWM abbreviation (“Fence Wait Multi”) and add a more detailed description of what the test does and what it validates (including the negative check: the job must not complete while fences are unsatisfied, and the positive check: it completes once the fences are satisfied
+
 >
->> -----Original Message-----
->> From: Yadav, Arvind <arvind.yadav@intel.com>
->> Sent: Thursday, 12 February, 2026 02:39 PM
->> To: igt-dev@lists.freedesktop.org
->> Cc: Brost, Matthew <matthew.brost@intel.com>; Ghimiray, Himal Prasad
->> <himal.prasad.ghimiray@intel.com>; thomas.hellstrom@linux.intel.com;
->> Sharma, Nishit <nishit.sharma@intel.com>; Gurram, Pravalika
->> <pravalika.gurram@intel.com>
->> Subject: [PATCH i-g-t v2 3/3] tests/intel/xe_madvise: Add purgeable BO
->> madvise tests
->>
->> Create a dedicated IGT test app for purgeable buffer object madvise
->> functionality. Tests validate the DRM_XE_VMA_PURGEABLE_STATE ioctl for
->> marking VMA-backed BOs as DONTNEED/WILLNEED and verifying correct
->> purge behavior under memory pressure.
->>
->> Tests:
->> - dontneed-before-mmap: SIGBUS on mmap access after purge
->> - dontneed-after-mmap: SIGBUS on existing mapping after purge
->> - dontneed-before-exec: GPU exec behavior with purged data BO
->> - dontneed-after-exec: Purge after successful GPU write
->> - per-vma-tracking: Shared BO needs all VMAs DONTNEED to purge
->> - per-vma-protection: WILLNEED VMA in one VM protects shared BO
->>
->> v2:
->>     - Move tests from xe_exec_system_allocator.c to dedicated
->>       xe_madvise.c (Thomas Hellström).
->>     - Fix trigger_memory_pressure to use scalable overpressure
->>      (25% of VRAM, minimum 64MB instead of fixed 64MB). (Pravalika)
->>     - Add MAP_FAILED check in trigger_memory_pressure.
->>     - Touch all pages in allocated chunks, not just first 4KB. (Pravalika)
->>     - Add 100ms sleep before freeing BOs to allow shrinker time
->>       to process memory pressure.  (Pravalika)
->>     - Rename 'bo2' to 'handle' for clarity in trigger_memory_pressure.
->>       (Pravalika)
->>     - Add NEEDS_VISIBLE_VRAM flag to purgeable_setup_simple_bo
->>       for consistent CPU mapping support on discrete GPUs.  (Pravalika)
->>     - Add proper NULL mmap handling in test_dontneed_before_mmap
->>        with cleanup and early return.  (Pravalika)
->>
->> Cc: Nishit Sharma <nishit.sharma@intel.com>
->> Cc: Pravalika Gurram <pravalika.gurram@intel.com>
->> Cc: Matthew Brost <matthew.brost@intel.com>
->> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
->> Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
->> ---
->>   tests/intel/xe_madvise.c | 747
->> +++++++++++++++++++++++++++++++++++++++
->>   tests/meson.build        |   1 +
->>   2 files changed, 748 insertions(+)
->>   create mode 100644 tests/intel/xe_madvise.c
->>
->> diff --git a/tests/intel/xe_madvise.c b/tests/intel/xe_madvise.c new file mode
->> 100644 index 000000000..c08c7922e
->> --- /dev/null
->> +++ b/tests/intel/xe_madvise.c
->> @@ -0,0 +1,747 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright © 2025 Intel Corporation
->> + */
->> +
->> +/**
->> + * TEST: Validate purgeable BO madvise functionality
->> + * Category: Core
->> + * Mega feature: General Core features
->> + * Sub-category: Memory management tests
->> + * Functionality: madvise, purgeable
->> + */
->> +
->> +#include <fcntl.h>
->> +#include <setjmp.h>
->> +#include <signal.h>
->> +#include <string.h>
->> +#include <sys/mman.h>
->> +#include <unistd.h>
->> +
->> +#include "igt.h"
->> +#include "lib/igt_syncobj.h"
->> +#include "lib/intel_reg.h"
->> +#include "xe_drm.h"
->> +
->> +#include "xe/xe_ioctl.h"
->> +#include "xe/xe_query.h"
->> +
->> +/* Purgeable test constants */
->> +#define PURGEABLE_ADDR		0x1a0000
->> +#define PURGEABLE_ADDR2		0x2b0000
->> +#define PURGEABLE_BATCH_ADDR	0x3c0000
->> +#define PURGEABLE_BO_SIZE	4096
->> +#define PURGEABLE_FENCE_VAL	0xbeef
->> +#define PURGEABLE_TEST_PATTERN	0xc0ffee
->> +#define PURGEABLE_DEAD_PATTERN	0xdead
->> +
->> +/**
->> + * trigger_memory_pressure - Fill VRAM + 25% to force purgeable reclaim
->> + * @fd: DRM file descriptor
->> + * @vm: VM handle (unused, kept for API compatibility)
->> + *
->> + * Allocates BOs in a temporary VM until VRAM is overcommitted,
->> + * forcing the kernel to purge DONTNEED-marked BOs.
->> + */
->> +static void trigger_memory_pressure(int fd, uint32_t vm) {
->> +	uint64_t vram_size, overpressure;
->> +	const uint64_t chunk = 8ull << 20; /* 8 MiB */
->> +	int max_objs, n = 0;
->> +	uint32_t *handles;
->> +	uint64_t total;
->> +	void *p;
->> +	uint32_t handle, temp_vm;
->> +
->> +	/* Use a separate VM so pressure BOs don't affect the test VM */
->> +	temp_vm = xe_vm_create(fd, 0, 0);
->> +
->> +	vram_size = xe_visible_vram_size(fd, 0);
->> +	/* Scale overpressure to 25% of VRAM, minimum 64MB */
->> +	overpressure = vram_size / 4;
->> +	if (overpressure < (64 << 20))
->> +		overpressure = 64 << 20;
->> +
->> +	max_objs = (vram_size + overpressure) / chunk + 1;
->> +	handles = malloc(max_objs * sizeof(*handles));
->> +	igt_assert(handles);
->> +
->> +	total = 0;
->> +	while (total < vram_size + overpressure && n < max_objs) {
->> +		handle = xe_bo_create(fd, temp_vm, chunk,
->> +				      vram_if_possible(fd, 0),
->> +
->> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->> +		handles[n++] = handle;
->> +		total += chunk;
->> +
->> +		p = xe_bo_map(fd, handle, chunk);
->> +		igt_assert(p != MAP_FAILED);
->> +
->> +		/* Fault in all pages so they actually consume VRAM */
->> +		memset(p, 0xCD, chunk);
->> +		munmap(p, chunk);
->> +	}
->> +
->> +	/* Allow shrinker time to process pressure */
->> +	usleep(100000);
->> +
->> +	for (int i = 0; i < n; i++)
->> +		gem_close(fd, handles[i]);
->> +
->> +	free(handles);
->> +
->> +	xe_vm_destroy(fd, temp_vm);
->> +}
->> +
->> +static jmp_buf jmp;
->> +
->> +__noreturn static void sigtrap(int sig) {
->> +	siglongjmp(jmp, sig);
->> +}
->> +
->> +/**
->> + * purgeable_mark_and_verify_purged - Mark DONTNEED, pressure, check
->> +purged
->> + * @fd: DRM file descriptor
->> + * @vm: VM handle
->> + * @addr: Virtual address of the BO
->> + * @size: Size of the BO
->> + *
->> + * Returns true if the BO was purged under memory pressure.
->> + */
->> +static bool purgeable_mark_and_verify_purged(int fd, uint32_t vm,
->> +uint64_t addr, size_t size) {
->> +	uint32_t retained;
->> +
->> +	/* Mark as DONTNEED */
->> +	retained = xe_vm_madvise_purgeable(fd, vm, addr, size,
->> +
->> DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
->> +	if (retained != 1)
->> +		return false;
->> +
->> +	/* Trigger memory pressure */
->> +	trigger_memory_pressure(fd, vm);
->> +
->> +	/* Verify purged */
->> +	retained = xe_vm_madvise_purgeable(fd, vm, addr, size,
->> +
->> DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
->> +	return retained == 0;
->> +}
->> +
->> +/**
->> + * purgeable_setup_simple_bo - Setup VM and bind a single BO
->> + * @fd: DRM file descriptor
->> + * @vm: Output VM handle
->> + * @bo: Output BO handle
->> + * @addr: Virtual address to bind at
->> + * @size: Size of the BO
->> + * @use_scratch: Whether to use scratch page flag
->> + *
->> + * Helper to create VM, BO, and bind it at the specified address.
->> + */
->> +static void purgeable_setup_simple_bo(int fd, uint32_t *vm, uint32_t *bo,
->> +				      uint64_t addr, size_t size, bool
->> use_scratch) {
->> +	struct drm_xe_sync sync = {
->> +		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
->> +		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
->> +		.timeline_value = 1,
->> +	};
->> +	uint64_t sync_val = 0;
->> +
->> +	*vm = xe_vm_create(fd, use_scratch ?
->> DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE : 0, 0);
->> +	*bo = xe_bo_create(fd, *vm, size, vram_if_possible(fd, 0),
->> +
->> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->> +
->> +	sync.addr = to_user_pointer(&sync_val);
->> +	xe_vm_bind_async(fd, *vm, 0, *bo, 0, addr, size, &sync, 1);
->> +	xe_wait_ufence(fd, &sync_val, 1, 0, NSEC_PER_SEC); }
->> +
->> +/**
->> + * purgeable_setup_batch_and_data - Setup VM with batch and data BOs
->> +for GPU exec
->> + * @fd: DRM file descriptor
->> + * @vm: Output VM handle
->> + * @bind_engine: Output bind engine handle
->> + * @batch_bo: Output batch BO handle
->> + * @data_bo: Output data BO handle
->> + * @batch: Output batch buffer pointer
->> + * @data: Output data buffer pointer
->> + * @batch_addr: Batch virtual address
->> + * @data_addr: Data virtual address
->> + * @batch_size: Batch buffer size
->> + * @data_size: Data buffer size
->> + *
->> + * Helper to create VM, bind engine, batch and data BOs, and bind them.
->> + */
->> +static void purgeable_setup_batch_and_data(int fd, uint32_t *vm,
->> +					   uint32_t *bind_engine,
->> +					   uint32_t *batch_bo,
->> +					   uint32_t *data_bo,
->> +					   uint32_t **batch,
->> +					   uint32_t **data,
->> +					   uint64_t batch_addr,
->> +					   uint64_t data_addr,
->> +					   size_t batch_size,
->> +					   size_t data_size)
->> +{
->> +	struct drm_xe_sync sync = {
->> +		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
->> +		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
->> +		.timeline_value = PURGEABLE_FENCE_VAL,
->> +	};
->> +	uint64_t vm_sync = 0;
->> +
->> +	*vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE,
->> 0);
->> +	*bind_engine = xe_bind_exec_queue_create(fd, *vm, 0);
->> +
->> +	/* Create and bind batch BO */
->> +	*batch_bo = xe_bo_create(fd, *vm, batch_size, vram_if_possible(fd,
->> 0),
->> +
->> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->> +	*batch = xe_bo_map(fd, *batch_bo, batch_size);
->> +
->> +	sync.addr = to_user_pointer(&vm_sync);
->> +	xe_vm_bind_async(fd, *vm, *bind_engine, *batch_bo, 0, batch_addr,
->> batch_size, &sync, 1);
->> +	xe_wait_ufence(fd, &vm_sync, PURGEABLE_FENCE_VAL, 0,
->> NSEC_PER_SEC);
->> +
->> +	/* Create and bind data BO */
->> +	*data_bo = xe_bo_create(fd, *vm, data_size, vram_if_possible(fd, 0),
->> +
->> 	DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->> +	*data = xe_bo_map(fd, *data_bo, data_size);
->> +
->> +	vm_sync = 0;
->> +	xe_vm_bind_async(fd, *vm, *bind_engine, *data_bo, 0, data_addr,
->> data_size, &sync, 1);
->> +	xe_wait_ufence(fd, &vm_sync, PURGEABLE_FENCE_VAL, 0,
->> NSEC_PER_SEC); }
->> +
->> +/**
->> + * purgeable_setup_two_vms_shared_bo - Setup two VMs with one shared
->> BO
->> + * @fd: DRM file descriptor
->> + * @vm1: Output first VM handle
->> + * @vm2: Output second VM handle
->> + * @bo: Output shared BO handle
->> + * @addr1: Virtual address in VM1
->> + * @addr2: Virtual address in VM2
->> + * @size: Size of the BO
->> + * @use_scratch: Whether to use scratch page flag for VMs
->> + *
->> + * Helper to create two VMs and bind one shared BO in both VMs.
->> + * Returns mapped pointer to the BO.
->> + */
->> +static void *purgeable_setup_two_vms_shared_bo(int fd, uint32_t *vm1,
->> uint32_t *vm2,
->> +					       uint32_t *bo, uint64_t addr1,
->> +					       uint64_t addr2, size_t size,
->> +					       bool use_scratch)
->> +{
->> +	struct drm_xe_sync sync = {
->> +		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
->> +		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
->> +		.timeline_value = 1,
->> +	};
->> +	uint64_t sync_val = 0;
->> +	void *map;
->> +
->> +	/* Create two VMs */
->> +	*vm1 = xe_vm_create(fd, use_scratch ?
->> DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE : 0, 0);
->> +	*vm2 = xe_vm_create(fd, use_scratch ?
->> +DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE : 0, 0);
->> +
->> +	/* Create shared BO */
->> +	*bo = xe_bo_create(fd, 0, size, vram_if_possible(fd, 0),
->> +
->> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->> +
->> +	map = xe_bo_map(fd, *bo, size);
->> +	memset(map, 0xAB, size);
->> +
->> +	/* Bind BO in VM1 */
->> +	sync.addr = to_user_pointer(&sync_val);
->> +	sync_val = 0;
->> +	xe_vm_bind_async(fd, *vm1, 0, *bo, 0, addr1, size, &sync, 1);
->> +	xe_wait_ufence(fd, &sync_val, 1, 0, NSEC_PER_SEC);
->> +
->> +	/* Bind BO in VM2 */
->> +	sync_val = 0;
->> +	xe_vm_bind_async(fd, *vm2, 0, *bo, 0, addr2, size, &sync, 1);
->> +	xe_wait_ufence(fd, &sync_val, 1, 0, NSEC_PER_SEC);
->> +
->> +	return map;
->> +}
->> +
->> +/**
->> + * SUBTEST: dontneed-before-mmap
->> + * Description: Mark BO as DONTNEED before mmap, verify mmap fails or
->> +SIGBUS on access
->> + * Test category: functionality test
->> + */
->> +static void test_dontneed_before_mmap(int fd, struct
->> +drm_xe_engine_class_instance *hwe) {
->> +	uint32_t bo, vm;
->> +	uint64_t addr = PURGEABLE_ADDR;
->> +	size_t bo_size = PURGEABLE_BO_SIZE;
->> +	void *map;
->> +
->> +	purgeable_setup_simple_bo(fd, &vm, &bo, addr, bo_size, false);
->> +	if (!purgeable_mark_and_verify_purged(fd, vm, addr, bo_size))
->> +		igt_skip("Unable to induce purge on this platform/config");
->> +
->> +	/*
->> +	 * Kernel may either fail the mmap or succeed but SIGBUS on access.
->> +	 * Both are valid — handle like gem_madvise.
->> +	 */
->> +	map = __gem_mmap__device_coherent(fd, bo, 0, bo_size,
->> PROT_READ | PROT_WRITE);
-> Why the i915 mmap is used here we have xe_bo_map and xe call also and also please assert based on the condition like if it should not access but still its able to accessing
-> then its issue you should assert here.
-> as suggested before can you please split the each test into the each commits
+> Signed-off-by: Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>
+> ---
+>  lib/amdgpu/amd_PM4.h                |  6 ++++++
+>  lib/amdgpu/amd_command_submission.c |  5 +++++
+>  lib/amdgpu/amd_ip_blocks.c          | 27 +++++++++++++++++++++++++++
+>  lib/amdgpu/amd_ip_blocks.h          |  5 +++++
+>  4 files changed, 43 insertions(+)
+>
+> diff --git a/lib/amdgpu/amd_PM4.h b/lib/amdgpu/amd_PM4.h
+> index 8f59b4223..923826656 100644
+> --- a/lib/amdgpu/amd_PM4.h
+> +++ b/lib/amdgpu/amd_PM4.h
+> @@ -224,4 +224,10 @@
+>  #define	PACKET3_INCREMENT_CE_COUNTER		0x84
+>  #define	PACKET3_WAIT_ON_CE_COUNTER		0x86
+>  
+> +#define	PACKET3_FENCE_WAIT_MULTI		0xD1
+> +#define		FWM_ENGINE_SEL(x)		((x & 1) << 0)
+> +#define		FWM_PREEMPTABLE(x)		((x & 1) << 1)
+> +#define		FWM_CACHE_POLICY(x)		((x & 3) << 2)
+> +#define		FWM_POLL_INTERVAL(x)		((x & 0xFFFF) << 16)
+> +
+>  #endif
+> diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
+> index 52327c69e..399171b44 100644
+> --- a/lib/amdgpu/amd_command_submission.c
+> +++ b/lib/amdgpu/amd_command_submission.c
+> @@ -10,6 +10,7 @@
+>  #include "lib/amdgpu/amd_sdma.h"
+>  #include "lib/amdgpu/amd_PM4.h"
+>  #include "lib/amdgpu/amd_command_submission.h"
+> +#include "lib/amdgpu/amdgpu_asic_addr.h"
+>  #include "ioctl_wrappers.h"
+>  
+>  
+> @@ -185,6 +186,10 @@ static void amdgpu_create_ip_queues(amdgpu_device_handle device,
+>  		ring_context[ring_id].pm4_size = pm4_dw;
+>  		ring_context[ring_id].res_cnt = 1;
+>  		ring_context[ring_id].user_queue = user_queue;
+> +		if (ip_block->funcs->family_id == FAMILY_GFX1150)
+> +			ring_context[ring_id].max_num_fences_fwm = 4;
+> +		else
+> +			ring_context[ring_id].max_num_fences_fwm = 32;
+>  		igt_assert(ring_context[ring_id].pm4);
+>  
+>  		/* Copy the previously queried HW IP info instead of querying again */
+> diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+> index 12f92a1d5..e8803c6e2 100644
+> --- a/lib/amdgpu/amd_ip_blocks.c
+> +++ b/lib/amdgpu/amd_ip_blocks.c
+> @@ -659,6 +659,33 @@ user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_
+>  		amdgpu_sdma_pkt_end();
+>  	} else {
+>  		amdgpu_pkt_begin();
+> +
+> +		if (ring_context->job_start_write_data_va_addr) {
+> +			amdgpu_pkt_add_dw(PACKET3(PACKET3_WRITE_DATA, 4));
+> +			amdgpu_pkt_add_dw(WRITE_DATA_DST_SEL(5) | WR_CONFIRM | WRITE_DATA_CACHE_POLICY(3));
+> +			amdgpu_pkt_add_dw(ring_context->job_start_write_data_va_addr);
+> +			amdgpu_pkt_add_dw(ring_context->job_start_write_data_va_addr >> 32);
 
 
-Sure, I will make make separate patch for each test case.
-
->> +	if (!map) {
->> +		/* mmap failed on purged BO - acceptable behavior */
->> +		gem_close(fd, bo);
->> +		xe_vm_destroy(fd, vm);
->> +		return;
->> +	}
->> +
->> +	/* mmap succeeded - access must trigger SIGBUS */
->> +	{
->> +		sighandler_t old_sigsegv, old_sigbus;
->> +		char *ptr = (char *)map;
->> +		int sig;
->> +
->> +		old_sigsegv = signal(SIGSEGV, (__sighandler_t)sigtrap);
->> +		old_sigbus = signal(SIGBUS, (__sighandler_t)sigtrap);
->> +
->> +		sig = sigsetjmp(jmp, SIGBUS | SIGSEGV);
->> +		switch (sig) {
->> +		case SIGBUS:
->> +			break;
->> +		case 0:
->> +			*ptr = 0;
->> +			__attribute__ ((fallthrough));
->> +		default:
->> +			igt_assert_f(false,
->> +				     "Access to purged mmap should trigger
->> SIGBUS, got sig=%d\n",
->> +				     sig);
->> +			break;
->> +		}
->> +
->> +		signal(SIGBUS, old_sigbus);
->> +		signal(SIGSEGV, old_sigsegv);
->> +		munmap(map, bo_size);
->> +	}
->> +
->> +	gem_close(fd, bo);
->> +	xe_vm_destroy(fd, vm);
->> +}
->> +
->> +/**
->> + * SUBTEST: dontneed-after-mmap
->> + * Description: Mark BO as DONTNEED after mmap, verify SIGBUS on
->> +accessing purged mapping
->> + * Test category: functionality test
->> + */
->> +static void test_dontneed_after_mmap(int fd, struct
->> +drm_xe_engine_class_instance *hwe) {
->> +	uint32_t bo, vm;
->> +	uint64_t addr = PURGEABLE_ADDR;
->> +	size_t bo_size = PURGEABLE_BO_SIZE;
->> +	void *map;
->> +
->> +	purgeable_setup_simple_bo(fd, &vm, &bo, addr, bo_size, true);
->> +
->> +	map = xe_bo_map(fd, bo, bo_size);
->> +	memset(map, 0xAB, bo_size);
->> +
->> +	if (!purgeable_mark_and_verify_purged(fd, vm, addr, bo_size))
->> +		igt_skip("Unable to induce purge on this platform/config");
->> +
-> Where your access the bo here may flow here should be
-> do mmap -> Induce the purge  -> then do the mmap -> then catch the signal
+Please use lower_32_bits and upper_32_bits  everywhere as it is done into the upper part of the function!
 
 
-i915 is having  same pattern: mmap FIRST, then purge, then access the 
-EXISTING mapping.
-We will align the flow with that behavior.
+> +			amdgpu_pkt_add_dw(ring_context->job_start_write_data_val);
+> +			amdgpu_pkt_add_dw(ring_context->job_start_write_data_val >> 32);
+> +		}
+> +
+> +		if (ring_context->num_fences) {
+> +			unsigned num_fences_in_iter;
+> +
+> +			for (unsigned i = 0; i < ring_context->num_fences; i = i + ring_context->max_num_fences_fwm) {
+> +				num_fences_in_iter = (i + ring_context->max_num_fences_fwm > ring_context->num_fences) ?
+> +					ring_context->num_fences - i : ring_context->max_num_fences_fwm;
+> +				amdgpu_pkt_add_dw(PACKET3(PACKET3_FENCE_WAIT_MULTI, num_fences_in_iter * 4));
+> +				amdgpu_pkt_add_dw(FWM_ENGINE_SEL(1) | FWM_POLL_INTERVAL(4));
+> +				for (unsigned j = 0; j < num_fences_in_iter; j++) {
+Please use lower_32_bits and upper_32_bits macros:
+> +					amdgpu_pkt_add_dw(ring_context->fence_info[i + j].va);
+> +					amdgpu_pkt_add_dw(ring_context->fence_info[i + j].va >> 32);
+> +					amdgpu_pkt_add_dw(ring_context->fence_info[i + j].value);
+> +					amdgpu_pkt_add_dw(ring_context->fence_info[i + j].value >> 32);
+> +				}
+> +			}
+> +		}
+> +
+>  		/* Prepare the Indirect IB to submit the IB to user queue */
+>  		amdgpu_pkt_add_dw(PACKET3(PACKET3_INDIRECT_BUFFER, 2));
+>  		amdgpu_pkt_add_dw(lower_32_bits(mc_address));
+> diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+> index 424b3210a..17f94fd5b 100644
+> --- a/lib/amdgpu/amd_ip_blocks.h
+> +++ b/lib/amdgpu/amd_ip_blocks.h
+> @@ -279,6 +279,11 @@ struct amdgpu_ring_context {
+>  	bool user_queue;
+>  	uint64_t time_out;
+>  	enum uq_submission_mode submit_mode;
+> +	uint32_t max_num_fences_fwm;
+> +	uint64_t num_fences;
+> +	struct drm_amdgpu_userq_fence_info *fence_info;
 
+Please remove these variables and keep the logic local to the function.
 
-Thanks,
-Arvind
+We should only add fields to this struct when it’s absolutely necessary. We can’t balloon the struct size just for internal/test-specific logic—this struct is used across all tests.
 
->> +	/* Access purged mapping - should trigger SIGBUS/SIGSEGV */
->> +	{
->> +		sighandler_t old_sigsegv, old_sigbus;
->> +		char *ptr = (char *)map;
->> +		int sig;
->> +
->> +		old_sigsegv = signal(SIGSEGV, (__sighandler_t)sigtrap);
->> +		old_sigbus = signal(SIGBUS, (__sighandler_t)sigtrap);
->> +
->> +		sig = sigsetjmp(jmp, SIGBUS | SIGSEGV);
->> +		if (sig == SIGBUS || sig == SIGSEGV) {
->> +			/* Expected - purged mapping access failed */
->> +		} else if (sig == 0) {
->> +			*ptr = 0;
->> +			igt_assert_f(false, "Access to purged mapping should
->> trigger signal\n");
->> +		} else {
->> +			igt_assert_f(false, "unexpected signal %d\n", sig);
->> +		}
->> +
->> +		signal(SIGBUS, old_sigbus);
->> +		signal(SIGSEGV, old_sigsegv);
->> +	}
->> +
->> +	munmap(map, bo_size);
->> +	gem_close(fd, bo);
->> +	xe_vm_destroy(fd, vm);
->> +}
->> +
->> +/**
->> + * SUBTEST: dontneed-before-exec
->> + * Description: Mark BO as DONTNEED before GPU exec, verify GPU
->> +behavior with SCRATCH_PAGE
->> + * Test category: functionality test
->> + */
->> +static void test_dontneed_before_exec(int fd, struct
->> +drm_xe_engine_class_instance *hwe) {
->> +	uint32_t vm, exec_queue, bo, batch_bo, bind_engine;
->> +	uint64_t data_addr = PURGEABLE_ADDR;
->> +	uint64_t batch_addr = PURGEABLE_BATCH_ADDR;
->> +	size_t data_size = PURGEABLE_BO_SIZE;
->> +	size_t batch_size = PURGEABLE_BO_SIZE;
->> +	struct drm_xe_sync sync[1] = {
->> +		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
->> +		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
->> +		  .timeline_value = PURGEABLE_FENCE_VAL },
->> +	};
->> +	struct drm_xe_exec exec = {
->> +		.num_batch_buffer = 1,
->> +		.num_syncs = 1,
->> +		.syncs = to_user_pointer(sync),
->> +	};
->> +	uint32_t *data, *batch;
->> +	uint64_t vm_sync = 0;
->> +	int b, ret;
->> +
->> +	purgeable_setup_batch_and_data(fd, &vm, &bind_engine,
->> &batch_bo,
->> +				       &bo, &batch, &data, batch_addr,
->> +				       data_addr, batch_size, data_size);
->> +
->> +	/* Prepare batch */
->> +	b = 0;
->> +	batch[b++] = MI_STORE_DWORD_IMM_GEN4;
->> +	batch[b++] = data_addr;
->> +	batch[b++] = data_addr >> 32;
->> +	batch[b++] = PURGEABLE_DEAD_PATTERN;
->> +	batch[b++] = MI_BATCH_BUFFER_END;
->> +
->> +	/* Phase 1: Purge data BO, batch BO still valid */
->> +	igt_assert(purgeable_mark_and_verify_purged(fd, vm, data_addr,
->> +data_size));
->> +
->> +	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
->> +	exec.exec_queue_id = exec_queue;
->> +	exec.address = batch_addr;
->> +
->> +	vm_sync = 0;
->> +	sync[0].addr = to_user_pointer(&vm_sync);
->> +
->> +	/*
->> +	 * VM has SCRATCH_PAGE — exec may succeed with the GPU write
->> +	 * landing on scratch instead of the purged data BO.
->> +	 */
->> +	ret = __xe_exec(fd, &exec);
->> +	if (ret == 0) {
->> +		int64_t timeout = NSEC_PER_SEC;
->> +
->> +		__xe_wait_ufence(fd, &vm_sync, PURGEABLE_FENCE_VAL,
->> +				 exec_queue, &timeout);
->> +	}
->> +
->> +	/*
->> +	 * Don't purge the batch BO — GPU would fetch zeroed scratch
->> +	 * instructions and trigger an engine reset.
->> +	 */
->> +
->> +	munmap(data, data_size);
->> +	munmap(batch, batch_size);
->> +	gem_close(fd, bo);
->> +	gem_close(fd, batch_bo);
->> +	xe_exec_queue_destroy(fd, bind_engine);
->> +	xe_exec_queue_destroy(fd, exec_queue);
->> +	xe_vm_destroy(fd, vm);
->> +}
->> +
->> +/**
->> + * SUBTEST: dontneed-after-exec
->> + * Description: Mark BO as DONTNEED after GPU exec, verify memory
->> +becomes inaccessible
->> + * Test category: functionality test
->> + */
->> +static void test_dontneed_after_exec(int fd, struct
->> +drm_xe_engine_class_instance *hwe) {
->> +	uint32_t vm, exec_queue, bo, batch_bo, bind_engine;
->> +	uint64_t data_addr = PURGEABLE_ADDR;
->> +	uint64_t batch_addr = PURGEABLE_BATCH_ADDR;
->> +	size_t data_size = PURGEABLE_BO_SIZE;
->> +	size_t batch_size = PURGEABLE_BO_SIZE;
->> +	struct drm_xe_sync sync[2] = {
->> +		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
->> +		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
->> +		  .timeline_value = PURGEABLE_FENCE_VAL },
->> +		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
->> +		  .flags = DRM_XE_SYNC_FLAG_SIGNAL },
->> +	};
->> +	struct drm_xe_exec exec = {
->> +		.num_batch_buffer = 1,
->> +		.num_syncs = 2,
->> +		.syncs = to_user_pointer(sync),
->> +	};
->> +	uint32_t *data, *batch;
->> +	uint32_t syncobj;
->> +	int b, ret;
->> +
->> +	purgeable_setup_batch_and_data(fd, &vm, &bind_engine,
->> &batch_bo,
->> +				       &bo, &batch, &data, batch_addr,
->> +				       data_addr, batch_size, data_size);
->> +	memset(data, 0, data_size);
->> +
->> +	syncobj = syncobj_create(fd, 0);
->> +
->> +	/* Prepare batch to write to data BO */
->> +	b = 0;
->> +	batch[b++] = MI_STORE_DWORD_IMM_GEN4;
->> +	batch[b++] = data_addr;
->> +	batch[b++] = data_addr >> 32;
->> +	batch[b++] = 0xfeed0001;
->> +	batch[b++] = MI_BATCH_BUFFER_END;
->> +
->> +	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
->> +	exec.exec_queue_id = exec_queue;
->> +	exec.address = batch_addr;
->> +
->> +	/* Use only syncobj for exec (not USER_FENCE) */
->> +	sync[1].handle = syncobj;
->> +	exec.num_syncs = 1;
->> +	exec.syncs = to_user_pointer(&sync[1]);
->> +
->> +	ret = __xe_exec(fd, &exec);
->> +	igt_assert_eq(ret, 0);
->> +
->> +	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
->> +	munmap(data, data_size);
->> +	data = xe_bo_map(fd, bo, data_size);
->> +	igt_assert_eq(data[0], 0xfeed0001);
->> +
->> +	igt_assert(purgeable_mark_and_verify_purged(fd, vm, data_addr,
->> +data_size));
->> +
->> +	/* Prepare second batch (different value) */
->> +	b = 0;
->> +	batch[b++] = MI_STORE_DWORD_IMM_GEN4;
->> +	batch[b++] = data_addr;
->> +	batch[b++] = data_addr >> 32;
->> +	batch[b++] = 0xfeed0002;
->> +	batch[b++] = MI_BATCH_BUFFER_END;
->> +
->> +	ret = __xe_exec(fd, &exec);
->> +	if (ret == 0) {
->> +		/* Exec succeeded, but wait may fail on purged BO (both
->> behaviors valid) */
->> +		syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL);
->> +	}
->> +
->> +	munmap(data, data_size);
->> +	munmap(batch, batch_size);
->> +	gem_close(fd, bo);
->> +	gem_close(fd, batch_bo);
->> +	syncobj_destroy(fd, syncobj);
->> +	xe_exec_queue_destroy(fd, bind_engine);
->> +	xe_exec_queue_destroy(fd, exec_queue);
->> +	xe_vm_destroy(fd, vm);
->> +}
->> +
->> +/**
->> + * SUBTEST: per-vma-tracking
->> + * Description: One BO in two VMs becomes purgeable only when both
->> VMAs
->> +are DONTNEED
->> + * Test category: functionality test
->> + */
->> +static void test_per_vma_tracking(int fd, struct
->> +drm_xe_engine_class_instance *hwe) {
->> +	uint32_t bo, vm1, vm2;
->> +	uint64_t addr1 = PURGEABLE_ADDR;
->> +	uint64_t addr2 = PURGEABLE_ADDR2;
->> +	size_t bo_size = PURGEABLE_BO_SIZE;
->> +	uint32_t retained;
->> +	void *map;
->> +
->> +	map = purgeable_setup_two_vms_shared_bo(fd, &vm1, &vm2, &bo,
->> +						addr1, addr2,
->> +						bo_size, false);
->> +
->> +	/* Mark VMA1 as DONTNEED */
->> +	retained = xe_vm_madvise_purgeable(fd, vm1, addr1, bo_size,
->> +
->> DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
->> +	igt_assert_eq(retained, 1);
->> +
->> +	/* Verify BO NOT purgeable (VMA2 still WILLNEED) */
->> +	retained = xe_vm_madvise_purgeable(fd, vm1, addr1, bo_size,
->> +
->> DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
->> +	igt_assert_eq(retained, 1);
->> +
->> +	/* Mark both VMAs as DONTNEED */
->> +	retained = xe_vm_madvise_purgeable(fd, vm1, addr1, bo_size,
->> +
->> DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
->> +	igt_assert_eq(retained, 1);
->> +
->> +	retained = xe_vm_madvise_purgeable(fd, vm2, addr2, bo_size,
->> +
->> DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
->> +	igt_assert_eq(retained, 1);
->> +
->> +	/* Trigger pressure and verify BO was purged */
->> +	trigger_memory_pressure(fd, vm1);
->> +
->> +	retained = xe_vm_madvise_purgeable(fd, vm1, addr1, bo_size,
->> +
->> DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
->> +	igt_assert_eq(retained, 0);
->> +
->> +	munmap(map, bo_size);
->> +	gem_close(fd, bo);
->> +	xe_vm_destroy(fd, vm1);
->> +	xe_vm_destroy(fd, vm2);
->> +}
->> +
->> +/**
->> + * SUBTEST: per-vma-protection
->> + * Description: WILLNEED VMA protects BO from purging; both DONTNEED
->> +makes BO purgeable
->> + * Test category: functionality test
->> + */
->> +static void test_per_vma_protection(int fd, struct
->> +drm_xe_engine_class_instance *hwe) {
->> +	uint32_t vm1, vm2, exec_queue, bo, batch_bo, bind_engine;
->> +	uint64_t data_addr1 = PURGEABLE_ADDR;
->> +	uint64_t data_addr2 = PURGEABLE_ADDR2;
->> +	uint64_t batch_addr = PURGEABLE_BATCH_ADDR;
->> +	size_t data_size = PURGEABLE_BO_SIZE;
->> +	size_t batch_size = PURGEABLE_BO_SIZE;
->> +	struct drm_xe_sync sync[2] = {
->> +		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
->> +		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
->> +		  .timeline_value = PURGEABLE_FENCE_VAL },
->> +		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
->> +		  .flags = DRM_XE_SYNC_FLAG_SIGNAL },
->> +	};
->> +	struct drm_xe_exec exec = {
->> +		.num_batch_buffer = 1,
->> +		.num_syncs = 1,
->> +		.syncs = to_user_pointer(&sync[1]),
->> +	};
->> +	uint32_t *data, *batch;
->> +	uint64_t vm_sync = 0;
->> +	uint32_t retained, syncobj;
->> +	int b, ret;
->> +
->> +	/* Create two VMs and bind shared data BO */
->> +	data = purgeable_setup_two_vms_shared_bo(fd, &vm1, &vm2, &bo,
->> +						 data_addr1, data_addr2,
->> +						 data_size, true);
->> +	memset(data, 0, data_size);
->> +	bind_engine = xe_bind_exec_queue_create(fd, vm2, 0);
->> +
->> +	/* Create and bind batch BO in VM2 */
->> +	batch_bo = xe_bo_create(fd, vm2, batch_size, vram_if_possible(fd, 0),
->> +
->> 	DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->> +	batch = xe_bo_map(fd, batch_bo, batch_size);
->> +
->> +	sync[0].addr = to_user_pointer(&vm_sync);
->> +	vm_sync = 0;
->> +	xe_vm_bind_async(fd, vm2, bind_engine, batch_bo, 0, batch_addr,
->> batch_size, sync, 1);
->> +	xe_wait_ufence(fd, &vm_sync, PURGEABLE_FENCE_VAL, 0,
->> NSEC_PER_SEC);
->> +
->> +	/* Mark VMA1 as DONTNEED, VMA2 stays WILLNEED */
->> +	retained = xe_vm_madvise_purgeable(fd, vm1, data_addr1, data_size,
->> +
->> DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
->> +	igt_assert_eq(retained, 1);
->> +
->> +	/* Trigger pressure - BO should survive (VMA2 protects) */
->> +	trigger_memory_pressure(fd, vm1);
->> +
->> +	retained = xe_vm_madvise_purgeable(fd, vm2, data_addr2, data_size,
->> +
->> DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
->> +	igt_assert_eq(retained, 1);
->> +
->> +	/* GPU workload - should succeed */
->> +	b = 0;
->> +	batch[b++] = MI_STORE_DWORD_IMM_GEN4;
->> +	batch[b++] = data_addr2;
->> +	batch[b++] = data_addr2 >> 32;
->> +	batch[b++] = PURGEABLE_TEST_PATTERN;
->> +	batch[b++] = MI_BATCH_BUFFER_END;
->> +
->> +	syncobj = syncobj_create(fd, 0);
->> +	sync[1].handle = syncobj;
->> +	exec_queue = xe_exec_queue_create(fd, vm2, hwe, 0);
->> +	exec.exec_queue_id = exec_queue;
->> +	exec.address = batch_addr;
->> +
->> +	ret = __xe_exec(fd, &exec);
->> +	igt_assert_eq(ret, 0);
->> +	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
->> +
->> +	munmap(data, data_size);
->> +	data = xe_bo_map(fd, bo, data_size);
->> +	igt_assert_eq(data[0], PURGEABLE_TEST_PATTERN);
->> +
->> +	/* Mark both VMAs DONTNEED */
->> +	retained = xe_vm_madvise_purgeable(fd, vm2, data_addr2, data_size,
->> +
->> DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
->> +	igt_assert_eq(retained, 1);
->> +
->> +	/* Trigger pressure - BO should be purged */
->> +	trigger_memory_pressure(fd, vm1);
->> +
->> +	retained = xe_vm_madvise_purgeable(fd, vm2, data_addr2, data_size,
->> +
->> DRM_XE_VMA_PURGEABLE_STATE_WILLNEED);
->> +	igt_assert_eq(retained, 0);
->> +
->> +	/* GPU workload - should fail or succeed with NULL rebind */
->> +	batch[3] = PURGEABLE_DEAD_PATTERN;
->> +
->> +	ret = __xe_exec(fd, &exec);
->> +	/* Exec on purged BO — may succeed (scratch rebind) or fail, both OK
->> +*/
->> +
->> +	munmap(data, data_size);
->> +	munmap(batch, batch_size);
->> +	gem_close(fd, bo);
->> +	gem_close(fd, batch_bo);
->> +	syncobj_destroy(fd, syncobj);
->> +	xe_exec_queue_destroy(fd, bind_engine);
->> +	xe_exec_queue_destroy(fd, exec_queue);
->> +	xe_vm_destroy(fd, vm1);
->> +	xe_vm_destroy(fd, vm2);
->> +}
->> +
->> +int igt_main()
->> +{
->> +	struct drm_xe_engine_class_instance *hwe;
->> +	int fd;
->> +
->> +	igt_fixture() {
->> +		fd = drm_open_driver(DRIVER_XE);
->> +		xe_device_get(fd);
->> +	}
->> +
->> +	igt_subtest("dontneed-before-mmap")
->> +		xe_for_each_engine(fd, hwe) {
->> +			test_dontneed_before_mmap(fd, hwe);
->> +			break;
->> +		}
->> +
->> +	igt_subtest("dontneed-after-mmap")
->> +		xe_for_each_engine(fd, hwe) {
->> +			test_dontneed_after_mmap(fd, hwe);
->> +			break;
->> +		}
->> +
->> +	igt_subtest("dontneed-before-exec")
->> +		xe_for_each_engine(fd, hwe) {
->> +			test_dontneed_before_exec(fd, hwe);
->> +			break;
->> +		}
->> +
->> +	igt_subtest("dontneed-after-exec")
->> +		xe_for_each_engine(fd, hwe) {
->> +			test_dontneed_after_exec(fd, hwe);
->> +			break;
->> +		}
->> +
->> +	igt_subtest("per-vma-tracking")
->> +		xe_for_each_engine(fd, hwe) {
->> +			test_per_vma_tracking(fd, hwe);
->> +			break;
->> +		}
->> +
->> +	igt_subtest("per-vma-protection")
->> +		xe_for_each_engine(fd, hwe) {
->> +			test_per_vma_protection(fd, hwe);
->> +			break;
->> +		}
->> +
->> +	igt_fixture() {
->> +		xe_device_put(fd);
->> +		drm_close_driver(fd);
->> +	}
->> +}
->> diff --git a/tests/meson.build b/tests/meson.build index
->> 0ad728b87..9d41d7de6 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -313,6 +313,7 @@ intel_xe_progs = [
->>   	'xe_huc_copy',
->>   	'xe_intel_bb',
->>   	'xe_live_ktest',
->> +	'xe_madvise',
->>   	'xe_media_fill',
->>   	'xe_mmap',
->>           'xe_module_load',
->> --
->> 2.43.0
+> +	uint64_t job_start_write_data_va_addr;
+> +	uint64_t job_start_write_data_val;
+>  
+>  	struct drm_amdgpu_info_uq_fw_areas info;
+>  };
+--------------59lYYKF1u0BlAopFOpKN603S
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 2026-02-11 06:39, Yogesh Mohan
+      Marimuthu wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:20260211113922.11211-1-yogesh.mohanmarimuthu@amd.com">
+      <pre wrap="" class="moz-quote-pre">Also add WRITE_DATA job start marker packet optionally. This can be used
+to know job has started and make FWM packet negative testing timeout to be
+shorter.</pre>
+    </blockquote>
+    <br>
+    <article class="text-token-text-primary w-full focus:outline-none [--shadow-height:45px] has-data-writing-block:pointer-events-none has-data-writing-block:-mt-(--shadow-height) has-data-writing-block:pt-(--shadow-height) [&amp;:has([data-writing-block])&gt;*]:pointer-events-auto scroll-mt-(--header-height)" tabindex="-1" dir="auto" data-turn-id="e243ef76-06f6-4d89-8379-15ae92ca6e61" data-testid="conversation-turn-15" data-scroll-anchor="false" data-turn="user">
+      <div class="text-base my-auto mx-auto pt-12 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)">
+        <div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col" tabindex="-1">
+          <div class="z-0 flex justify-end"></div>
+        </div>
+      </div>
+    </article>
+    <article class="text-token-text-primary w-full focus:outline-none [--shadow-height:45px] has-data-writing-block:pointer-events-none has-data-writing-block:-mt-(--shadow-height) has-data-writing-block:pt-(--shadow-height) [&amp;:has([data-writing-block])&gt;*]:pointer-events-auto scroll-mt-[calc(var(--header-height)+min(200px,max(70px,20svh)))]" tabindex="-1" dir="auto" data-turn-id="request-WEB:83f986c4-e1b7-4c64-b335-74c9da614134-7" data-testid="conversation-turn-16" data-scroll-anchor="true" data-turn="assistant">
+      <div class="text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] @w-sm/main:[--thread-content-margin:--spacing(6)] @w-lg/main:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)">
+        <div class="[--thread-content-max-width:40rem] @w-lg/main:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn" tabindex="-1">
+          <div class="flex max-w-full flex-col grow">
+            <div data-message-author-role="assistant" data-message-id="eff6f699-5145-44b3-84df-8d13c6ad2446" dir="auto" class="min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1" data-message-model-slug="gpt-5-2-thinking">
+              <div class="flex w-full flex-col gap-1 empty:hidden first:pt-[1px]">
+                <div class="markdown prose dark:prose-invert w-full wrap-break-word light markdown-new-styling">
+                  <p data-start="0" data-end="291">Please expand the FWM
+                    abbreviation (“Fence Wait Multi”) and add a more
+                    detailed description of what the test does and what
+                    it validates (including the negative check: the job
+                    must not complete while fences are unsatisfied, and
+                    the positive check: it completes once the fences are
+                    satisfied</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+    <blockquote type="cite" cite="mid:20260211113922.11211-1-yogesh.mohanmarimuthu@amd.com">
+      <pre wrap="" class="moz-quote-pre">
+
+Signed-off-by: Yogesh Mohan Marimuthu <a class="moz-txt-link-rfc2396E" href="mailto:yogesh.mohanmarimuthu@amd.com">&lt;yogesh.mohanmarimuthu@amd.com&gt;</a>
+---
+ lib/amdgpu/amd_PM4.h                |  6 ++++++
+ lib/amdgpu/amd_command_submission.c |  5 +++++
+ lib/amdgpu/amd_ip_blocks.c          | 27 +++++++++++++++++++++++++++
+ lib/amdgpu/amd_ip_blocks.h          |  5 +++++
+ 4 files changed, 43 insertions(+)
+
+diff --git a/lib/amdgpu/amd_PM4.h b/lib/amdgpu/amd_PM4.h
+index 8f59b4223..923826656 100644
+--- a/lib/amdgpu/amd_PM4.h
++++ b/lib/amdgpu/amd_PM4.h
+@@ -224,4 +224,10 @@
+ #define	PACKET3_INCREMENT_CE_COUNTER		0x84
+ #define	PACKET3_WAIT_ON_CE_COUNTER		0x86
+ 
++#define	PACKET3_FENCE_WAIT_MULTI		0xD1
++#define		FWM_ENGINE_SEL(x)		((x &amp; 1) &lt;&lt; 0)
++#define		FWM_PREEMPTABLE(x)		((x &amp; 1) &lt;&lt; 1)
++#define		FWM_CACHE_POLICY(x)		((x &amp; 3) &lt;&lt; 2)
++#define		FWM_POLL_INTERVAL(x)		((x &amp; 0xFFFF) &lt;&lt; 16)
++
+ #endif
+diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
+index 52327c69e..399171b44 100644
+--- a/lib/amdgpu/amd_command_submission.c
++++ b/lib/amdgpu/amd_command_submission.c
+@@ -10,6 +10,7 @@
+ #include &quot;lib/amdgpu/amd_sdma.h&quot;
+ #include &quot;lib/amdgpu/amd_PM4.h&quot;
+ #include &quot;lib/amdgpu/amd_command_submission.h&quot;
++#include &quot;lib/amdgpu/amdgpu_asic_addr.h&quot;
+ #include &quot;ioctl_wrappers.h&quot;
+ 
+ 
+@@ -185,6 +186,10 @@ static void amdgpu_create_ip_queues(amdgpu_device_handle device,
+ 		ring_context[ring_id].pm4_size = pm4_dw;
+ 		ring_context[ring_id].res_cnt = 1;
+ 		ring_context[ring_id].user_queue = user_queue;
++		if (ip_block-&gt;funcs-&gt;family_id == FAMILY_GFX1150)
++			ring_context[ring_id].max_num_fences_fwm = 4;
++		else
++			ring_context[ring_id].max_num_fences_fwm = 32;
+ 		igt_assert(ring_context[ring_id].pm4);
+ 
+ 		/* Copy the previously queried HW IP info instead of querying again */
+diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+index 12f92a1d5..e8803c6e2 100644
+--- a/lib/amdgpu/amd_ip_blocks.c
++++ b/lib/amdgpu/amd_ip_blocks.c
+@@ -659,6 +659,33 @@ user_queue_submit(amdgpu_device_handle device, struct amdgpu_ring_context *ring_
+ 		amdgpu_sdma_pkt_end();
+ 	} else {
+ 		amdgpu_pkt_begin();
++
++		if (ring_context-&gt;job_start_write_data_va_addr) {
++			amdgpu_pkt_add_dw(PACKET3(PACKET3_WRITE_DATA, 4));
++			amdgpu_pkt_add_dw(WRITE_DATA_DST_SEL(5) | WR_CONFIRM | WRITE_DATA_CACHE_POLICY(3));
++			amdgpu_pkt_add_dw(ring_context-&gt;job_start_write_data_va_addr);
++			amdgpu_pkt_add_dw(ring_context-&gt;job_start_write_data_va_addr &gt;&gt; 32);</pre>
+    </blockquote>
+    <p><br>
+    </p>
+    <p>Please use&nbsp;lower_32_bits and&nbsp;upper_32_bits&nbsp; everywhere as it is
+      done into the upper part of the function!</p>
+    <br>
+    <blockquote type="cite" cite="mid:20260211113922.11211-1-yogesh.mohanmarimuthu@amd.com">
+      <pre wrap="" class="moz-quote-pre">
++			amdgpu_pkt_add_dw(ring_context-&gt;job_start_write_data_val);
++			amdgpu_pkt_add_dw(ring_context-&gt;job_start_write_data_val &gt;&gt; 32);
++		}
++
++		if (ring_context-&gt;num_fences) {
++			unsigned num_fences_in_iter;
++
++			for (unsigned i = 0; i &lt; ring_context-&gt;num_fences; i = i + ring_context-&gt;max_num_fences_fwm) {
++				num_fences_in_iter = (i + ring_context-&gt;max_num_fences_fwm &gt; ring_context-&gt;num_fences) ?
++					ring_context-&gt;num_fences - i : ring_context-&gt;max_num_fences_fwm;
++				amdgpu_pkt_add_dw(PACKET3(PACKET3_FENCE_WAIT_MULTI, num_fences_in_iter * 4));
++				amdgpu_pkt_add_dw(FWM_ENGINE_SEL(1) | FWM_POLL_INTERVAL(4));
++				for (unsigned j = 0; j &lt; num_fences_in_iter; j++) {</pre>
+    </blockquote>
+    Please use&nbsp;lower_32_bits and&nbsp;upper_32_bits macros:
+    <blockquote type="cite" cite="mid:20260211113922.11211-1-yogesh.mohanmarimuthu@amd.com">
+      <pre wrap="" class="moz-quote-pre">
++					amdgpu_pkt_add_dw(ring_context-&gt;fence_info[i + j].va);
++					amdgpu_pkt_add_dw(ring_context-&gt;fence_info[i + j].va &gt;&gt; 32);
++					amdgpu_pkt_add_dw(ring_context-&gt;fence_info[i + j].value);
++					amdgpu_pkt_add_dw(ring_context-&gt;fence_info[i + j].value &gt;&gt; 32);
++				}
++			}
++		}
++
+ 		/* Prepare the Indirect IB to submit the IB to user queue */
+ 		amdgpu_pkt_add_dw(PACKET3(PACKET3_INDIRECT_BUFFER, 2));
+ 		amdgpu_pkt_add_dw(lower_32_bits(mc_address));
+diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+index 424b3210a..17f94fd5b 100644
+--- a/lib/amdgpu/amd_ip_blocks.h
++++ b/lib/amdgpu/amd_ip_blocks.h
+@@ -279,6 +279,11 @@ struct amdgpu_ring_context {
+ 	bool user_queue;
+ 	uint64_t time_out;
+ 	enum uq_submission_mode submit_mode;
++	uint32_t max_num_fences_fwm;
++	uint64_t num_fences;
++	struct drm_amdgpu_userq_fence_info *fence_info;</pre>
+    </blockquote>
+    <p data-start="0" data-end="71">Please remove these variables and
+      keep the logic local to the function.</p>
+    <p data-start="73" data-end="254">We should only add fields to this
+      struct when it’s absolutely necessary. We can’t balloon the struct
+      size just for internal/test-specific logic—this struct is used
+      across all tests.</p>
+    <blockquote type="cite" cite="mid:20260211113922.11211-1-yogesh.mohanmarimuthu@amd.com">
+      <pre wrap="" class="moz-quote-pre">
++	uint64_t job_start_write_data_va_addr;
++	uint64_t job_start_write_data_val;
+ 
+ 	struct drm_amdgpu_info_uq_fw_areas info;
+ };
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------59lYYKF1u0BlAopFOpKN603S--
