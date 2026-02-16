@@ -4,17 +4,17 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34767E83823
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Feb 2026 18:44:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FC26E83820
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Feb 2026 18:44:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CAE9810E3DE;
-	Mon, 16 Feb 2026 18:44:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D9D5C10E3DF;
+	Mon, 16 Feb 2026 18:44:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="U3mNkILs";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="rQEAzjkj";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7CDF310E03C
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Feb 2026 18:44:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D86C010E3DE
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Feb 2026 18:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -22,24 +22,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=QQ5UpSTKhJRGWkWmtbbV4kQiA13/ZTvhig04xGrfGJM=; b=U3mNkILsYtLgOcjfT88IV+QEc3
- VOiMbQmFCBHTUugbhHiQaHiaAKGAgefUq2JwyFKg+jxEErRbhR0xpIxyNwy3Cyxk4L7doAc2jzJtX
- b61nRvD7kxqSNsz8L783vQeU2d8ceu23nOLO5zYOvGJF3tyLK0fFhVRC3W4NWmoH/cYouZMGQKd9S
- lPx7xb8HfVUKSe7baQ4ajxJoeeQ69oo2P3l2KGwu5YeQ/sg7kIe2iCY9hx9JHeqILoBBCiv4KvBdh
- MDBtTlU5sAwOKIDXryw6PQodPXiwcaWYdI8c7frez7sh7yo5JMlX+tdBuGH3F26OWr1ZzW32cl8sa
- Jbu6soqA==;
+ bh=BEif5VqzXt0WR7q4qY2f9CdmbJms/28Je8wflnWHAjI=; b=rQEAzjkjrxdLCTvcclQUfrNhcN
+ 5autOGCVAzz5luHMPa5dHt03JJIjSZbj8FZsCA81AOpoco0n3GmWyRxsDJHDfO62B4COELTEqHL4+
+ s2yQyrg6+KGKy7TqqFaKzrrBkd1hZiGDY4zm6y+ZAD3fMy0krD7j1yAfAMVoEbKNZtM5QeXpfo8Dt
+ TfJwy9NxOiaOB+qRCQqNwhvBx/4+uN768c6HJWHil1DFtaY/pN8o2Vls7AERfq0bDqN6uhPZLdsdM
+ sNOeXIdSJPO4C9Zm9GI3/HWhw/ADiZljmRUt3tAK5fFAvly1Supl8pi5s4dp7ykhWu+4cC3qWLCua
+ gZQNKiXw==;
 Received: from c-73-157-168-91.hsd1.or.comcast.net ([73.157.168.91]
  helo=localhost.localdomain) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1vs3Zg-001Ohv-77; Mon, 16 Feb 2026 19:44:00 +0100
+ id 1vs3Zi-001Ohv-Io; Mon, 16 Feb 2026 19:44:03 +0100
 From: John Harrison <John.Harrison@Igalia.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
  Suraj Kandpal <suraj.kandpal@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v2 1/2] tool/intel_hdcp: Show actual HDCP status
-Date: Mon, 16 Feb 2026 10:43:40 -0800
-Message-ID: <20260216184341.437722-2-John.Harrison@Igalia.com>
+Subject: [PATCH i-g-t v2 2/2] tool/intel_hdcp: Fix flickering when changing
+ HDCP state
+Date: Mon, 16 Feb 2026 10:43:41 -0800
+Message-ID: <20260216184341.437722-3-John.Harrison@Igalia.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260216184341.437722-1-John.Harrison@Igalia.com>
 References: <20260216184341.437722-1-John.Harrison@Igalia.com>
@@ -60,20 +61,21 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The 'video player' showed what the requested HDCP mode was but not the
-actual status. The menu system does redraw the screen with a special
-colour to denote the status, but that is immediately overwritten by
-the player thread. So all you get is a very brief full screen flicker
-(to be fixed in next patch).
+The menu system would redraw the screen with a special colour to
+denote the current HDCP status after a change was requested. However,
+the screen was immediately redrawn by the player thread with a
+background colour denoting the requested HDCP level. So all you
+actually got was a very brief full screen flicker of the background
+colour.
 
-Instead, add the current HDCP status as an extra text line of the
-video player's output so it is permanently visible and clear.
+As the current HDCP status is now being shown as a separate line of
+text in the video player's output, there is no need to use the screen
+background to show the same. So, drop the menu updates once the video
+player is running to remove the flickering.
 
-Also, move the enable of HDCP inside the mutex lock with the
-internal state change. That way, the newly added 'enabled/desired'
-line does not update in advance of the 'requested' line (due to the
-video player thread being asynchronous and managing to turn HDCP on
-while the menu thread is waiting on the mutex lock).
+Also, don't stop the video player thread when HDCP is disabled so that
+the status update continues (given that the menu thread is no longer
+redrawing the screen now).
 
 v2: Split into two patches (review feedback by Kamil)
 
@@ -82,60 +84,83 @@ CC: Suraj Kandpal <suraj.kandpal@intel.com>
 Signed-off-by: John Harrison <John.Harrison@Igalia.com>
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tools/intel_hdcp.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ tools/intel_hdcp.c | 34 +++++-----------------------------
+ 1 file changed, 5 insertions(+), 29 deletions(-)
 
 diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c
-index cd5d2b6be..8e29c5e32 100644
+index 8e29c5e32..56ed720cf 100644
 --- a/tools/intel_hdcp.c
 +++ b/tools/intel_hdcp.c
-@@ -482,6 +482,7 @@ static void *video_player_thread(void *arg)
- 	char timer_str[32];
- 	time_t current_time, elapsed;
- 	int minutes, seconds;
-+	const char *status = NULL;
+@@ -102,24 +102,13 @@ static void draw_menu_text(cairo_t *cr, data_t *data)
+ 	}
+ }
  
- 	data = (data_t *)arg;
- 	cur_type = data->hdcp_type;
-@@ -502,6 +503,8 @@ static void *video_player_thread(void *arg)
- 			prev_type = cur_type;
+-static void draw_menu(data_t *data, const char *status)
++static void draw_menu(data_t *data)
+ {
+ 	cairo_t *cr = igt_get_cairo_ctx(data->fd, &data->fb);
+ 
+-	/* Background color and text color based on HDCP status */
+-	if (strcmp(status, "INIT") == 0) {
+-		cairo_set_source_rgb(cr, 0.051, 0.278, 0.631);
+-		cairo_paint(cr);
+-		cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+-	} else if (strcmp(status, "Enabled") == 0) {
+-		cairo_set_source_rgb(cr, 0.0, 1.0, 0.0);
+-		cairo_paint(cr);
+-		cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
+-	} else {
+-		cairo_set_source_rgb(cr, 1.0, 0.0, 0.0);
+-		cairo_paint(cr);
+-		cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+-	}
++	cairo_set_source_rgb(cr, 0.051, 0.278, 0.631);
++	cairo_paint(cr);
++	cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+ 
+ 	draw_menu_text(cr, data);
+ 
+@@ -678,13 +667,12 @@ int main(int argc, char **argv)
+ {
+ 	data_t data;
+ 	pthread_t tid;
+-	const char *status = NULL;
+ 	igt_plane_t *primary;
+ 
+ 	data.selected_connector = -1;
+ 	test_init(&data);
+ 
+-	draw_menu(&data, "INIT");
++	draw_menu(&data);
+ 	primary = igt_output_get_plane_type(data.output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, &data.fb);
+ 	igt_display_commit2(&data.display, COMMIT_ATOMIC);
+@@ -718,7 +706,6 @@ int main(int argc, char **argv)
+ 			enable_hdcp_type(&data, HDCP_TYPE_2_2_TYPE_1);
+ 			break;
+ 		case 5:
+-			stop_video_player(&data);
+ 			set_hdcp_prop(&data, CP_UNDESIRED, HDCP_TYPE_2_2_TYPE_1,
+ 				      data.selected_connector);
+ 			data.hdcp_type = HDCP_TYPE_NONE;
+@@ -727,17 +714,6 @@ int main(int argc, char **argv)
+ 			break;
  		}
  
-+		status = get_hdcp_status(data, data->selected_connector);
-+
- 		switch (cur_type) {
- 		case HDCP_TYPE_1_4:
- 			bg_r = 0.0; bg_g = 0.7; bg_b = 0.0;
-@@ -544,10 +547,18 @@ static void *video_player_thread(void *arg)
- 		cairo_show_text(cr, timer_str);
+-		if (cmd == 1) {
+-			draw_menu(&data, "INIT");
+-		} else {
+-			status = get_hdcp_status(&data, data.selected_connector);
+-			draw_menu(&data, status);
+-		}
+-
+-		primary = igt_output_get_plane_type(data.output, DRM_PLANE_TYPE_PRIMARY);
+-		igt_plane_set_fb(primary, &data.fb);
+-		igt_display_commit2(&data.display, COMMIT_ATOMIC);
+-
+ 		usleep(200 * 1000);
+ 	}
  
- 		/* Draw HDCP status above timer */
-+		cairo_set_font_size(cr, font_size);
-+		cairo_text_extents(cr, status, &ext);
-+		x = data->width - ext.width - 20;
-+		y = data->height - ext.height - 20;
-+
-+		cairo_move_to(cr, x, y);
-+		cairo_show_text(cr, status);
-+
- 		cairo_set_font_size(cr, font_size);
- 		cairo_text_extents(cr, hdcp_str, &ext);
- 		x = data->width - ext.width - 20;
--		y = data->height - ext.height - 60;
-+		y = data->height - ext.height - 120;
- 
- 		cairo_move_to(cr, x, y);
- 		cairo_show_text(cr, hdcp_str);
-@@ -605,8 +616,8 @@ static void stop_video_player(data_t *data)
- 
- static void enable_hdcp_type(data_t *data, enum hdcp_type type)
- {
--		set_hdcp_prop(data, CP_DESIRED, type, data->selected_connector);
- 		pthread_mutex_lock(&data->lock);
-+		set_hdcp_prop(data, CP_DESIRED, type, data->selected_connector);
- 		data->hdcp_type = type;
- 		data->video_start_time = time(NULL);
- 		pthread_mutex_unlock(&data->lock);
 -- 
 2.43.0
 
