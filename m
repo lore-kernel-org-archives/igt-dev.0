@@ -4,55 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C8D5E83821
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Feb 2026 18:16:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35365E83820
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Feb 2026 18:44:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1CFAA10E06E;
-	Mon, 16 Feb 2026 18:16:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CB37610E03C;
+	Mon, 16 Feb 2026 18:44:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hYbdeLcz";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="S9hOTxyM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2865310E06E
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Feb 2026 18:16:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771265782; x=1802801782;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=05UoUZ0yDCfYqfezHkXQiClIvrUauW93C20pyP2DqlE=;
- b=hYbdeLcztNzQVvdlnJDXSnvdKaa2WeU5hyglDz59T2UCkZEVkppB88WO
- Rzw7qx8/D9hOLwGcrkY1gNer0sAsQM4EZtGzqzqWJELhku7J33jtWtsX/
- 5V9SaQx4hg1eIMAJcMPF18sFIWyNrZ1DsNoclNp4jNvOvvBhS6MVbwrX0
- FGk8mam/1ANMR6Pyi1Ar2dHHRFIQZBOutr9M1C7r4FFC5s9pHK3xdCrPk
- Xp6sY5HKzJYc4IL9iT7CzL85XdWk1qM9mYPoHcWjiA7X8zRr1yUQhhTtQ
- m7pIWICHJDBtNY2DYrnIUrbwPfOS+/ciLpnAWkmdzrNDsyeGpaCh9js9Y Q==;
-X-CSE-ConnectionGUID: uQaQyECMTnG5MePc2S4oEw==
-X-CSE-MsgGUID: RTdfA5msQC6XFStdVNbTKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="83448456"
-X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; d="scan'208";a="83448456"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Feb 2026 10:16:21 -0800
-X-CSE-ConnectionGUID: Szx/WaSzROu32JFCBpOM+A==
-X-CSE-MsgGUID: ERNG6UGvRq6XUEjA5anZMg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; d="scan'208";a="218205270"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
- ([10.245.244.237])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Feb 2026 10:16:20 -0800
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 350F310E03C
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Feb 2026 18:44:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+ Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+ Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+ In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=TOwtVSChphYEnmbRKK8WfWeW8bJ4o4GXq9dVzc0X4KU=; b=S9hOTxyM6FCHmgqNqK4YXMLiRB
+ dQWYyk3BT8luaCiuXTFKnP/fOwVM7psy/TIIFgZFZy4KHup8UoXTge0z/Su8fouUbJ0L673wT21eQ
+ pTaM9yG3XUO2QIW4mva04ulgX63+g9EftxwOm3kg6WAjN01hZ7XUy3JKMmFez66wN31s8JCirNWIc
+ uYdzXLaX15ujghd+xBhu+Vd7M1AjyrwfpvYCTWY/KBMuzJR5N6rP0QPFCLV0mkiXHT2apJBhk5Ece
+ zExFCHiyjFCghDDXlKYRBqT42QGkYIxwxa/M7GtJV5Sq79CRTyykE2/uvw8kqTILKbzNLaIZZtTpI
+ cW3Mr8Ug==;
+Received: from c-73-157-168-91.hsd1.or.comcast.net ([73.157.168.91]
+ helo=localhost.localdomain) by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1vs3Ze-001Ohv-0r; Mon, 16 Feb 2026 19:43:58 +0100
+From: John Harrison <John.Harrison@Igalia.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Renjun Wang <renjunw0@foxmail.com>,
- Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
- Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
+Cc: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
+ Suraj Kandpal <suraj.kandpal@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t] lib/igt_fb: add YUV|YVU-410|411|444 formats
-Date: Mon, 16 Feb 2026 19:16:10 +0100
-Message-ID: <20260216181610.129209-1-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.53.0
+Subject: [PATCH i-g-t v2 0/2] tool/intel_hdcp: Fix flickering and show actual
+ HDCP status
+Date: Mon, 16 Feb 2026 10:43:39 -0800
+Message-ID: <20260216184341.437722-1-John.Harrison@Igalia.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,227 +59,21 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Renjun Wang <renjunw0@foxmail.com>
+Make it clear what the current HDCP status is rather than relying on
+the user noticing a single frame flicker of the background colour.
 
-Add support for additional YUV and YVU format variants in
-framebuffer and color encoding handling. Extend format
-descriptors, color encoding configuration, YUV|YVU buffer
-clearing, parameter calculation, and format conversions to
-support 4:1:0, 4:1:1, and 4:4:4 chroma subsampling formats.
+CC: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+CC: Suraj Kandpal <suraj.kandpal@intel.com>
+Signed-off-by: John Harrison <John.Harrison@Igalia.com>
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Renjun Wang <renjunw0@foxmail.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
-Reformatted subject, added Cc [Kamil]
+John Harrison (2):
+  tool/intel_hdcp: Show actual HDCP status
+  tool/intel_hdcp: Fix flickering when changing HDCP state
 
- lib/igt_color_encoding.c |  6 ++++
- lib/igt_fb.c             | 72 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 78 insertions(+)
+ tools/intel_hdcp.c | 49 +++++++++++++++++-----------------------------
+ 1 file changed, 18 insertions(+), 31 deletions(-)
 
-diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
-index a7bd2b22f..da56b2b10 100644
---- a/lib/igt_color_encoding.c
-+++ b/lib/igt_color_encoding.c
-@@ -140,10 +140,16 @@ static const struct color_encoding_format {
- 	{ DRM_FORMAT_NV16, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_NV21, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_NV61, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YUV410, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YUV411, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YUV420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YUV422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YUV444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YVU410, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YVU411, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YVU420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YVU422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-+	{ DRM_FORMAT_YVU444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YUYV, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_YVYU, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- 	{ DRM_FORMAT_UYVY, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index d59fe133b..fa9220953 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -282,6 +282,16 @@ static const struct format_desc_struct {
- 	  .num_planes = 1, .plane_bpp = { 16, },
- 	  .hsub = 2, .vsub = 1,
- 	},
-+	{ .name = "YU10", .depth = -1, .drm_id = DRM_FORMAT_YUV410,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 4, .vsub = 4,
-+	},
-+	{ .name = "YU11", .depth = -1, .drm_id = DRM_FORMAT_YUV411,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 4, .vsub = 1,
-+	},
- 	{ .name = "YU12", .depth = -1, .drm_id = DRM_FORMAT_YUV420,
- 	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
- 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-@@ -292,6 +302,21 @@ static const struct format_desc_struct {
- 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
- 	  .hsub = 2, .vsub = 1,
- 	},
-+	{ .name = "YU24", .depth = -1, .drm_id = DRM_FORMAT_YUV444,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 1, .vsub = 1,
-+	},
-+	{ .name = "YV10", .depth = -1, .drm_id = DRM_FORMAT_YVU410,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 4, .vsub = 4,
-+	},
-+	{ .name = "YV11", .depth = -1, .drm_id = DRM_FORMAT_YVU411,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 4, .vsub = 1,
-+	},
- 	{ .name = "YV12", .depth = -1, .drm_id = DRM_FORMAT_YVU420,
- 	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
- 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-@@ -302,6 +327,11 @@ static const struct format_desc_struct {
- 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
- 	  .hsub = 2, .vsub = 1,
- 	},
-+	{ .name = "YV24", .depth = -1, .drm_id = DRM_FORMAT_YVU444,
-+	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-+	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-+	  .hsub = 1, .vsub = 1,
-+	},
- 	{ .name = "Y410", .depth = -1, .drm_id = DRM_FORMAT_Y410,
- 	  .cairo_id = CAIRO_FORMAT_RGBA128F, .convert = true,
- 	  .num_planes = 1, .plane_bpp = { 32, },
-@@ -1164,10 +1194,16 @@ static void clear_yuv_buffer(struct igt_fb *fb)
- 			 full_range ? 0x800000008000ULL : 0x800010008000ULL,
- 			 plane_size[0] / sizeof(uint64_t));
- 		break;
-+	case DRM_FORMAT_YUV410:
-+	case DRM_FORMAT_YUV411:
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
-+	case DRM_FORMAT_YVU410:
-+	case DRM_FORMAT_YVU411:
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 		igt_assert(ARRAY_SIZE(plane_size) == 3);
- 		memset(ptr + fb->offsets[0],
- 		       full_range ? 0x00 : 0x10,
-@@ -3675,10 +3711,16 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 		params->uv_inc = 2;
- 		break;
- 
-+	case DRM_FORMAT_YUV410:
-+	case DRM_FORMAT_YUV411:
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
-+	case DRM_FORMAT_YVU410:
-+	case DRM_FORMAT_YVU411:
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 		params->ay_inc = 1;
- 		params->uv_inc = 1;
- 		break;
-@@ -3709,10 +3751,16 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 	case DRM_FORMAT_NV16:
- 	case DRM_FORMAT_NV21:
- 	case DRM_FORMAT_NV61:
-+	case DRM_FORMAT_YUV410:
-+	case DRM_FORMAT_YUV411:
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
-+	case DRM_FORMAT_YVU410:
-+	case DRM_FORMAT_YVU411:
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 	case DRM_FORMAT_P010:
- 	case DRM_FORMAT_P012:
- 	case DRM_FORMAT_P016:
-@@ -3752,15 +3800,21 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 		params->v_offset = fb->offsets[1];
- 		break;
- 
-+	case DRM_FORMAT_YUV410:
-+	case DRM_FORMAT_YUV411:
- 	case DRM_FORMAT_YUV420:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
- 		params->y_offset = fb->offsets[0];
- 		params->u_offset = fb->offsets[1];
- 		params->v_offset = fb->offsets[2];
- 		break;
- 
-+	case DRM_FORMAT_YVU410:
-+	case DRM_FORMAT_YVU411:
- 	case DRM_FORMAT_YVU420:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 		params->y_offset = fb->offsets[0];
- 		params->u_offset = fb->offsets[2];
- 		params->v_offset = fb->offsets[1];
-@@ -4497,11 +4551,17 @@ static void fb_convert(struct fb_convert *cvt)
- 		case DRM_FORMAT_NV61:
- 		case DRM_FORMAT_UYVY:
- 		case DRM_FORMAT_VYUY:
-+		case DRM_FORMAT_YUV410:
-+		case DRM_FORMAT_YUV411:
- 		case DRM_FORMAT_YUV420:
- 		case DRM_FORMAT_YUV422:
-+		case DRM_FORMAT_YUV444:
- 		case DRM_FORMAT_YUYV:
-+		case DRM_FORMAT_YVU410:
-+		case DRM_FORMAT_YVU411:
- 		case DRM_FORMAT_YVU420:
- 		case DRM_FORMAT_YVU422:
-+		case DRM_FORMAT_YVU444:
- 		case DRM_FORMAT_YVYU:
- 			convert_yuv_to_rgb24(cvt);
- 			return;
-@@ -4515,11 +4575,17 @@ static void fb_convert(struct fb_convert *cvt)
- 		case DRM_FORMAT_NV61:
- 		case DRM_FORMAT_UYVY:
- 		case DRM_FORMAT_VYUY:
-+		case DRM_FORMAT_YUV410:
-+		case DRM_FORMAT_YUV411:
- 		case DRM_FORMAT_YUV420:
- 		case DRM_FORMAT_YUV422:
-+		case DRM_FORMAT_YUV444:
- 		case DRM_FORMAT_YUYV:
-+		case DRM_FORMAT_YVU410:
-+		case DRM_FORMAT_YVU411:
- 		case DRM_FORMAT_YVU420:
- 		case DRM_FORMAT_YVU422:
-+		case DRM_FORMAT_YVU444:
- 		case DRM_FORMAT_YVYU:
- 			convert_rgb24_to_yuv(cvt);
- 			return;
-@@ -5095,9 +5161,15 @@ bool igt_format_is_yuv(uint32_t drm_format)
- 	case DRM_FORMAT_NV21:
- 	case DRM_FORMAT_NV61:
- 	case DRM_FORMAT_YUV420:
-+	case DRM_FORMAT_YUV410:
-+	case DRM_FORMAT_YUV411:
- 	case DRM_FORMAT_YUV422:
-+	case DRM_FORMAT_YUV444:
- 	case DRM_FORMAT_YVU420:
-+	case DRM_FORMAT_YVU410:
-+	case DRM_FORMAT_YVU411:
- 	case DRM_FORMAT_YVU422:
-+	case DRM_FORMAT_YVU444:
- 	case DRM_FORMAT_P010:
- 	case DRM_FORMAT_P012:
- 	case DRM_FORMAT_P016:
 -- 
-2.53.0
+2.43.0
 
