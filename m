@@ -4,62 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97C2DE63F3F
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Feb 2026 17:51:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C8D5E83821
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Feb 2026 18:16:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4807610E3DD;
-	Mon, 16 Feb 2026 17:51:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1CFAA10E06E;
+	Mon, 16 Feb 2026 18:16:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gwbqxZc2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hYbdeLcz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5167610E3DD
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Feb 2026 17:51:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2865310E06E
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Feb 2026 18:16:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771264309; x=1802800309;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=EfipdGQXTvCjPJKS8pHK1HwHBVXjXm/sphRYrzQGZmQ=;
- b=gwbqxZc2RKxd247xo4a6im8fZ3NjhOZWVcYZk2fcThW2sCSK9gf0iftU
- XQgbG5b+2PUKOoXBw+3V0uIhm8jrr3m/lPRkE7JhC2rygrNW6LZlVjafh
- V0FKqROXVWsKiOnCAExgaPgQ5+FUG+UtvlFONZjfWz560fbQ2bTQNBQbw
- SOBmw/BFWCb1zXiWRkUC4xiooQ4EIfE+VlrULmNAvLs8y0xEdTayLMym/
- 2XB0l6+2czj3l9Hohv3WrGlKKYU2HeTv+4jmGA9MiOAlJ+TtGOKLJqXnN
- FOfRvIB+rpd0rY12a1+FMi4O1FwIthuhHVCZtAO+atLti6hcR+G72OrHv g==;
-X-CSE-ConnectionGUID: 1+6NApMOS1ekl0kjCMa8sA==
-X-CSE-MsgGUID: jJT7vZCJSfewDBggTDdGYg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="72519776"
-X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; d="scan'208";a="72519776"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Feb 2026 09:51:48 -0800
-X-CSE-ConnectionGUID: iswcluskSAGOyRJYszkalw==
-X-CSE-MsgGUID: yiHOd1eRQo6JAlKy7mHsXw==
+ t=1771265782; x=1802801782;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=05UoUZ0yDCfYqfezHkXQiClIvrUauW93C20pyP2DqlE=;
+ b=hYbdeLcztNzQVvdlnJDXSnvdKaa2WeU5hyglDz59T2UCkZEVkppB88WO
+ Rzw7qx8/D9hOLwGcrkY1gNer0sAsQM4EZtGzqzqWJELhku7J33jtWtsX/
+ 5V9SaQx4hg1eIMAJcMPF18sFIWyNrZ1DsNoclNp4jNvOvvBhS6MVbwrX0
+ FGk8mam/1ANMR6Pyi1Ar2dHHRFIQZBOutr9M1C7r4FFC5s9pHK3xdCrPk
+ Xp6sY5HKzJYc4IL9iT7CzL85XdWk1qM9mYPoHcWjiA7X8zRr1yUQhhTtQ
+ m7pIWICHJDBtNY2DYrnIUrbwPfOS+/ciLpnAWkmdzrNDsyeGpaCh9js9Y Q==;
+X-CSE-ConnectionGUID: uQaQyECMTnG5MePc2S4oEw==
+X-CSE-MsgGUID: RTdfA5msQC6XFStdVNbTKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="83448456"
+X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; d="scan'208";a="83448456"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Feb 2026 10:16:21 -0800
+X-CSE-ConnectionGUID: Szx/WaSzROu32JFCBpOM+A==
+X-CSE-MsgGUID: ERNG6UGvRq6XUEjA5anZMg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; d="scan'208";a="218197583"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 09:51:46 -0800
-Date: Mon, 16 Feb 2026 18:51:27 +0100
+X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; d="scan'208";a="218205270"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.237])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Feb 2026 10:16:20 -0800
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: John Harrison <John.Harrison@Igalia.com>
-Cc: igt-dev@lists.freedesktop.org,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
- Suraj Kandpal <suraj.kandpal@intel.com>
-Subject: Re: [PATCH i-g-t] tool/intel_hdcp: Fix flickering and show actual
- HDCP status
-Message-ID: <20260216175127.h7dfw3eokjbpmxcv@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- John Harrison <John.Harrison@Igalia.com>,
- igt-dev@lists.freedesktop.org,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
- Suraj Kandpal <suraj.kandpal@intel.com>
-References: <20260211214631.265577-1-John.Harrison@Igalia.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Renjun Wang <renjunw0@foxmail.com>,
+ Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t] lib/igt_fb: add YUV|YVU-410|411|444 formats
+Date: Mon, 16 Feb 2026 19:16:10 +0100
+Message-ID: <20260216181610.129209-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260211214631.265577-1-John.Harrison@Igalia.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,162 +70,227 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi John,
-On 2026-02-11 at 13:46:31 -0800, John Harrison wrote:
-> The 'video player' showed what the requested HDCP mode was but not the
-> actual status. The menu system did redraw the screen with a special
-> colour to denote the status, but that was immediately overwritten by
-> the player thread. So all you got was a very brief full screen flicker.
-> 
-> Instead, add the current HDCP status as an extra text line of the
-> video player's output. Also, drop the menu update once the video
-> player is running to remove the flickering.
-> 
-> Lastly, move the enable of HDCP inside the mutex lock with the
-> internal state change. That way, the 'enabled/desired' line does not
-> update in advance of the 'requested' line (due to the video player
-> thread being asynchronous and managing to turn HDCP on while the menu
-> thread is waiting on the mutex lock).
-> 
+From: Renjun Wang <renjunw0@foxmail.com>
 
-+cc
-Cc: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Cc: Suraj Kandpal <suraj.kandpal@intel.com>
+Add support for additional YUV and YVU format variants in
+framebuffer and color encoding handling. Extend format
+descriptors, color encoding configuration, YUV|YVU buffer
+clearing, parameter calculation, and format conversions to
+support 4:1:0, 4:1:1, and 4:4:4 chroma subsampling formats.
 
-Could it be splitted into two patches? One for a fix and second for
-showing actual status? It could help review. Up to you, this is
+Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Renjun Wang <renjunw0@foxmail.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+Reformatted subject, added Cc [Kamil]
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+ lib/igt_color_encoding.c |  6 ++++
+ lib/igt_fb.c             | 72 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 78 insertions(+)
 
-Regards,
-Kamil 
+diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
+index a7bd2b22f..da56b2b10 100644
+--- a/lib/igt_color_encoding.c
++++ b/lib/igt_color_encoding.c
+@@ -140,10 +140,16 @@ static const struct color_encoding_format {
+ 	{ DRM_FORMAT_NV16, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+ 	{ DRM_FORMAT_NV21, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+ 	{ DRM_FORMAT_NV61, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
++	{ DRM_FORMAT_YUV410, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
++	{ DRM_FORMAT_YUV411, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+ 	{ DRM_FORMAT_YUV420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+ 	{ DRM_FORMAT_YUV422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
++	{ DRM_FORMAT_YUV444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
++	{ DRM_FORMAT_YVU410, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
++	{ DRM_FORMAT_YVU411, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+ 	{ DRM_FORMAT_YVU420, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+ 	{ DRM_FORMAT_YVU422, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
++	{ DRM_FORMAT_YVU444, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+ 	{ DRM_FORMAT_YUYV, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+ 	{ DRM_FORMAT_YVYU, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+ 	{ DRM_FORMAT_UYVY, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index d59fe133b..fa9220953 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -282,6 +282,16 @@ static const struct format_desc_struct {
+ 	  .num_planes = 1, .plane_bpp = { 16, },
+ 	  .hsub = 2, .vsub = 1,
+ 	},
++	{ .name = "YU10", .depth = -1, .drm_id = DRM_FORMAT_YUV410,
++	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
++	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
++	  .hsub = 4, .vsub = 4,
++	},
++	{ .name = "YU11", .depth = -1, .drm_id = DRM_FORMAT_YUV411,
++	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
++	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
++	  .hsub = 4, .vsub = 1,
++	},
+ 	{ .name = "YU12", .depth = -1, .drm_id = DRM_FORMAT_YUV420,
+ 	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+ 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+@@ -292,6 +302,21 @@ static const struct format_desc_struct {
+ 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+ 	  .hsub = 2, .vsub = 1,
+ 	},
++	{ .name = "YU24", .depth = -1, .drm_id = DRM_FORMAT_YUV444,
++	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
++	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
++	  .hsub = 1, .vsub = 1,
++	},
++	{ .name = "YV10", .depth = -1, .drm_id = DRM_FORMAT_YVU410,
++	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
++	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
++	  .hsub = 4, .vsub = 4,
++	},
++	{ .name = "YV11", .depth = -1, .drm_id = DRM_FORMAT_YVU411,
++	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
++	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
++	  .hsub = 4, .vsub = 1,
++	},
+ 	{ .name = "YV12", .depth = -1, .drm_id = DRM_FORMAT_YVU420,
+ 	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+ 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+@@ -302,6 +327,11 @@ static const struct format_desc_struct {
+ 	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+ 	  .hsub = 2, .vsub = 1,
+ 	},
++	{ .name = "YV24", .depth = -1, .drm_id = DRM_FORMAT_YVU444,
++	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
++	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
++	  .hsub = 1, .vsub = 1,
++	},
+ 	{ .name = "Y410", .depth = -1, .drm_id = DRM_FORMAT_Y410,
+ 	  .cairo_id = CAIRO_FORMAT_RGBA128F, .convert = true,
+ 	  .num_planes = 1, .plane_bpp = { 32, },
+@@ -1164,10 +1194,16 @@ static void clear_yuv_buffer(struct igt_fb *fb)
+ 			 full_range ? 0x800000008000ULL : 0x800010008000ULL,
+ 			 plane_size[0] / sizeof(uint64_t));
+ 		break;
++	case DRM_FORMAT_YUV410:
++	case DRM_FORMAT_YUV411:
+ 	case DRM_FORMAT_YUV420:
+ 	case DRM_FORMAT_YUV422:
++	case DRM_FORMAT_YUV444:
++	case DRM_FORMAT_YVU410:
++	case DRM_FORMAT_YVU411:
+ 	case DRM_FORMAT_YVU420:
+ 	case DRM_FORMAT_YVU422:
++	case DRM_FORMAT_YVU444:
+ 		igt_assert(ARRAY_SIZE(plane_size) == 3);
+ 		memset(ptr + fb->offsets[0],
+ 		       full_range ? 0x00 : 0x10,
+@@ -3675,10 +3711,16 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+ 		params->uv_inc = 2;
+ 		break;
+ 
++	case DRM_FORMAT_YUV410:
++	case DRM_FORMAT_YUV411:
+ 	case DRM_FORMAT_YUV420:
+ 	case DRM_FORMAT_YUV422:
++	case DRM_FORMAT_YUV444:
++	case DRM_FORMAT_YVU410:
++	case DRM_FORMAT_YVU411:
+ 	case DRM_FORMAT_YVU420:
+ 	case DRM_FORMAT_YVU422:
++	case DRM_FORMAT_YVU444:
+ 		params->ay_inc = 1;
+ 		params->uv_inc = 1;
+ 		break;
+@@ -3709,10 +3751,16 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+ 	case DRM_FORMAT_NV16:
+ 	case DRM_FORMAT_NV21:
+ 	case DRM_FORMAT_NV61:
++	case DRM_FORMAT_YUV410:
++	case DRM_FORMAT_YUV411:
+ 	case DRM_FORMAT_YUV420:
+ 	case DRM_FORMAT_YUV422:
++	case DRM_FORMAT_YUV444:
++	case DRM_FORMAT_YVU410:
++	case DRM_FORMAT_YVU411:
+ 	case DRM_FORMAT_YVU420:
+ 	case DRM_FORMAT_YVU422:
++	case DRM_FORMAT_YVU444:
+ 	case DRM_FORMAT_P010:
+ 	case DRM_FORMAT_P012:
+ 	case DRM_FORMAT_P016:
+@@ -3752,15 +3800,21 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+ 		params->v_offset = fb->offsets[1];
+ 		break;
+ 
++	case DRM_FORMAT_YUV410:
++	case DRM_FORMAT_YUV411:
+ 	case DRM_FORMAT_YUV420:
+ 	case DRM_FORMAT_YUV422:
++	case DRM_FORMAT_YUV444:
+ 		params->y_offset = fb->offsets[0];
+ 		params->u_offset = fb->offsets[1];
+ 		params->v_offset = fb->offsets[2];
+ 		break;
+ 
++	case DRM_FORMAT_YVU410:
++	case DRM_FORMAT_YVU411:
+ 	case DRM_FORMAT_YVU420:
+ 	case DRM_FORMAT_YVU422:
++	case DRM_FORMAT_YVU444:
+ 		params->y_offset = fb->offsets[0];
+ 		params->u_offset = fb->offsets[2];
+ 		params->v_offset = fb->offsets[1];
+@@ -4497,11 +4551,17 @@ static void fb_convert(struct fb_convert *cvt)
+ 		case DRM_FORMAT_NV61:
+ 		case DRM_FORMAT_UYVY:
+ 		case DRM_FORMAT_VYUY:
++		case DRM_FORMAT_YUV410:
++		case DRM_FORMAT_YUV411:
+ 		case DRM_FORMAT_YUV420:
+ 		case DRM_FORMAT_YUV422:
++		case DRM_FORMAT_YUV444:
+ 		case DRM_FORMAT_YUYV:
++		case DRM_FORMAT_YVU410:
++		case DRM_FORMAT_YVU411:
+ 		case DRM_FORMAT_YVU420:
+ 		case DRM_FORMAT_YVU422:
++		case DRM_FORMAT_YVU444:
+ 		case DRM_FORMAT_YVYU:
+ 			convert_yuv_to_rgb24(cvt);
+ 			return;
+@@ -4515,11 +4575,17 @@ static void fb_convert(struct fb_convert *cvt)
+ 		case DRM_FORMAT_NV61:
+ 		case DRM_FORMAT_UYVY:
+ 		case DRM_FORMAT_VYUY:
++		case DRM_FORMAT_YUV410:
++		case DRM_FORMAT_YUV411:
+ 		case DRM_FORMAT_YUV420:
+ 		case DRM_FORMAT_YUV422:
++		case DRM_FORMAT_YUV444:
+ 		case DRM_FORMAT_YUYV:
++		case DRM_FORMAT_YVU410:
++		case DRM_FORMAT_YVU411:
+ 		case DRM_FORMAT_YVU420:
+ 		case DRM_FORMAT_YVU422:
++		case DRM_FORMAT_YVU444:
+ 		case DRM_FORMAT_YVYU:
+ 			convert_rgb24_to_yuv(cvt);
+ 			return;
+@@ -5095,9 +5161,15 @@ bool igt_format_is_yuv(uint32_t drm_format)
+ 	case DRM_FORMAT_NV21:
+ 	case DRM_FORMAT_NV61:
+ 	case DRM_FORMAT_YUV420:
++	case DRM_FORMAT_YUV410:
++	case DRM_FORMAT_YUV411:
+ 	case DRM_FORMAT_YUV422:
++	case DRM_FORMAT_YUV444:
+ 	case DRM_FORMAT_YVU420:
++	case DRM_FORMAT_YVU410:
++	case DRM_FORMAT_YVU411:
+ 	case DRM_FORMAT_YVU422:
++	case DRM_FORMAT_YVU444:
+ 	case DRM_FORMAT_P010:
+ 	case DRM_FORMAT_P012:
+ 	case DRM_FORMAT_P016:
+-- 
+2.53.0
 
-> Signed-off-by: John Harrison <John.Harrison@Igalia.com>
-> ---
->  tools/intel_hdcp.c | 49 +++++++++++++++++-----------------------------
->  1 file changed, 18 insertions(+), 31 deletions(-)
-> 
-> diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c
-> index cd5d2b6be..56ed720cf 100644
-> --- a/tools/intel_hdcp.c
-> +++ b/tools/intel_hdcp.c
-> @@ -102,24 +102,13 @@ static void draw_menu_text(cairo_t *cr, data_t *data)
->  	}
->  }
->  
-> -static void draw_menu(data_t *data, const char *status)
-> +static void draw_menu(data_t *data)
->  {
->  	cairo_t *cr = igt_get_cairo_ctx(data->fd, &data->fb);
->  
-> -	/* Background color and text color based on HDCP status */
-> -	if (strcmp(status, "INIT") == 0) {
-> -		cairo_set_source_rgb(cr, 0.051, 0.278, 0.631);
-> -		cairo_paint(cr);
-> -		cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
-> -	} else if (strcmp(status, "Enabled") == 0) {
-> -		cairo_set_source_rgb(cr, 0.0, 1.0, 0.0);
-> -		cairo_paint(cr);
-> -		cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
-> -	} else {
-> -		cairo_set_source_rgb(cr, 1.0, 0.0, 0.0);
-> -		cairo_paint(cr);
-> -		cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
-> -	}
-> +	cairo_set_source_rgb(cr, 0.051, 0.278, 0.631);
-> +	cairo_paint(cr);
-> +	cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
->  
->  	draw_menu_text(cr, data);
->  
-> @@ -482,6 +471,7 @@ static void *video_player_thread(void *arg)
->  	char timer_str[32];
->  	time_t current_time, elapsed;
->  	int minutes, seconds;
-> +	const char *status = NULL;
->  
->  	data = (data_t *)arg;
->  	cur_type = data->hdcp_type;
-> @@ -502,6 +492,8 @@ static void *video_player_thread(void *arg)
->  			prev_type = cur_type;
->  		}
->  
-> +		status = get_hdcp_status(data, data->selected_connector);
-> +
->  		switch (cur_type) {
->  		case HDCP_TYPE_1_4:
->  			bg_r = 0.0; bg_g = 0.7; bg_b = 0.0;
-> @@ -544,10 +536,18 @@ static void *video_player_thread(void *arg)
->  		cairo_show_text(cr, timer_str);
->  
->  		/* Draw HDCP status above timer */
-> +		cairo_set_font_size(cr, font_size);
-> +		cairo_text_extents(cr, status, &ext);
-> +		x = data->width - ext.width - 20;
-> +		y = data->height - ext.height - 20;
-> +
-> +		cairo_move_to(cr, x, y);
-> +		cairo_show_text(cr, status);
-> +
->  		cairo_set_font_size(cr, font_size);
->  		cairo_text_extents(cr, hdcp_str, &ext);
->  		x = data->width - ext.width - 20;
-> -		y = data->height - ext.height - 60;
-> +		y = data->height - ext.height - 120;
->  
->  		cairo_move_to(cr, x, y);
->  		cairo_show_text(cr, hdcp_str);
-> @@ -605,8 +605,8 @@ static void stop_video_player(data_t *data)
->  
->  static void enable_hdcp_type(data_t *data, enum hdcp_type type)
->  {
-> -		set_hdcp_prop(data, CP_DESIRED, type, data->selected_connector);
->  		pthread_mutex_lock(&data->lock);
-> +		set_hdcp_prop(data, CP_DESIRED, type, data->selected_connector);
->  		data->hdcp_type = type;
->  		data->video_start_time = time(NULL);
->  		pthread_mutex_unlock(&data->lock);
-> @@ -667,13 +667,12 @@ int main(int argc, char **argv)
->  {
->  	data_t data;
->  	pthread_t tid;
-> -	const char *status = NULL;
->  	igt_plane_t *primary;
->  
->  	data.selected_connector = -1;
->  	test_init(&data);
->  
-> -	draw_menu(&data, "INIT");
-> +	draw_menu(&data);
->  	primary = igt_output_get_plane_type(data.output, DRM_PLANE_TYPE_PRIMARY);
->  	igt_plane_set_fb(primary, &data.fb);
->  	igt_display_commit2(&data.display, COMMIT_ATOMIC);
-> @@ -707,7 +706,6 @@ int main(int argc, char **argv)
->  			enable_hdcp_type(&data, HDCP_TYPE_2_2_TYPE_1);
->  			break;
->  		case 5:
-> -			stop_video_player(&data);
->  			set_hdcp_prop(&data, CP_UNDESIRED, HDCP_TYPE_2_2_TYPE_1,
->  				      data.selected_connector);
->  			data.hdcp_type = HDCP_TYPE_NONE;
-> @@ -716,17 +714,6 @@ int main(int argc, char **argv)
->  			break;
->  		}
->  
-> -		if (cmd == 1) {
-> -			draw_menu(&data, "INIT");
-> -		} else {
-> -			status = get_hdcp_status(&data, data.selected_connector);
-> -			draw_menu(&data, status);
-> -		}
-> -
-> -		primary = igt_output_get_plane_type(data.output, DRM_PLANE_TYPE_PRIMARY);
-> -		igt_plane_set_fb(primary, &data.fb);
-> -		igt_display_commit2(&data.display, COMMIT_ATOMIC);
-> -
->  		usleep(200 * 1000);
->  	}
->  
-> -- 
-> 2.43.0
-> 
