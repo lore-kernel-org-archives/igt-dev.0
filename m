@@ -4,17 +4,17 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BC1CE909DD
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Feb 2026 16:58:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85D11E909DD
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Feb 2026 17:00:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9F6AA10E51E;
-	Tue, 17 Feb 2026 16:58:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1E86088DE5;
+	Tue, 17 Feb 2026 17:00:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="jdCoJmQN";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="kKg0XXar";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27A4E10E51E
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Feb 2026 16:58:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C28F910E51F
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Feb 2026 17:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
@@ -22,31 +22,32 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=uOGkXAWZjrAW3aIvkHo6cjV+7Q0DHn4CYrVZItJdso0=; b=jdCoJmQNOxMAgHQTROGg5iKb3w
- 939LW9Sv5ddvCQe+1iMUyoS9q716qu9Yx5q+7et1+HTeprbOjHa6PoHIqdEbCOsRB6gtAsaBidIi/
- NmXdbv/bogsRpI76AQDwdkZiQKHJKjYnC8pe04P7HjzMRo3elU6Gd+yDeXWu/j/nS3hcyr+6XmZCP
- XW2G7/GLm7Ss9t1ZNZUV13v5PGTFtrbBdFJ5LNJbC1dky58AhqpMp5fFekmQ/1ty06BYetYLCoVP8
- qb2EMrGgZ2QeKCosjkXStrDp+tEZzzlqxvI7osTw81iDcFLnUuENr1xni6XbrGs0Yk1tro5X/PRpV
- 9Yqf2CIg==;
+ bh=meyCP/foNUmLQaweWa+2h5yYN0LvcxAhNSfTCCtYy84=; b=kKg0XXar4vGaf+HxmHPYOmesrT
+ puJ6PFVqnYma5Ykcw2pzo6ATHnXh8WBpIzzBqZMBoqDsujCx1J/8SqH7o76JeSrPO7grdprw3isZ7
+ 1g99JxuQP7nZGDWWSzsqjibfINDc6HmaAC43gUGt7TAnKmypRsBPVOX3TQinpQ/v8JnYxoJ6WJZf2
+ zzITRLz4gsnLBkyf5S9IU7fwEteraUk5DPxCfpWSMjTlpnXlW/Dtr1S7L6biF4hi3UHNQXoqyxMVu
+ YlfydqMFbFvHtU24g8nr5/wI4d4SoPjB5u7lqYwOSG+15WbNmu/tTUgZ7Mug0F39+U5yoQQpVONHl
+ ym995uZA==;
 Received: from c-73-157-168-91.hsd1.or.comcast.net ([73.157.168.91]
  helo=[192.168.1.132]) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1vsOOk-001jzT-2C; Tue, 17 Feb 2026 17:58:06 +0100
-Message-ID: <852e3018-2ba2-4687-9794-49291636472d@Igalia.com>
-Date: Tue, 17 Feb 2026 08:58:01 -0800
+ id 1vsORH-001k2u-I9; Tue, 17 Feb 2026 18:00:43 +0100
+Message-ID: <dca6abad-9517-409e-8ad1-df8978d19362@Igalia.com>
+Date: Tue, 17 Feb 2026 09:00:38 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 1/2] tool/intel_hdcp: Show actual HDCP status
+Subject: Re: [PATCH i-g-t v2 2/2] tool/intel_hdcp: Fix flickering when
+ changing HDCP state
 To: "Kandpal, Suraj" <suraj.kandpal@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Cc: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
 References: <20260216184341.437722-1-John.Harrison@Igalia.com>
- <20260216184341.437722-2-John.Harrison@Igalia.com>
- <DM3PPF208195D8DAFED433B0156A8991F49E36DA@DM3PPF208195D8D.namprd11.prod.outlook.com>
+ <20260216184341.437722-3-John.Harrison@Igalia.com>
+ <DM3PPF208195D8D0D66091BFD0243899168E36DA@DM3PPF208195D8D.namprd11.prod.outlook.com>
 Content-Language: en-GB
 From: John Harrison <John.Harrison@Igalia.com>
-In-Reply-To: <DM3PPF208195D8DAFED433B0156A8991F49E36DA@DM3PPF208195D8D.namprd11.prod.outlook.com>
+In-Reply-To: <DM3PPF208195D8D0D66091BFD0243899168E36DA@DM3PPF208195D8D.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -64,101 +65,115 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 2/16/26 19:00, Kandpal, Suraj wrote:
->> Subject: [PATCH i-g-t v2 1/2] tool/intel_hdcp: Show actual HDCP status
+On 2/16/26 19:07, Kandpal, Suraj wrote:
+>> Subject: [PATCH i-g-t v2 2/2] tool/intel_hdcp: Fix flickering when changing
+>> HDCP state
 >>
->> The 'video player' showed what the requested HDCP mode was but not the
->> actual status. The menu system does redraw the screen with a special colour to
->> denote the status, but that is immediately overwritten by the player thread. So
->> all you get is a very brief full screen flicker (to be fixed in next patch).
-> So we do not want to refer to the next "patch" just mention what this patch is doing.
-> Also do not call it a "patch" since once it gets merged it becomes a commit.
-But this patch is part of a series and a series of tightly related 
-patches has always explained what is happening as a whole. Otherwise, 
-you effectively have this patch/commit saying "this is totally broken 
-and I'm not doing anything about it".
+>> The menu system would redraw the screen with a special colour to denote the
+> * color
+>
+>> current HDCP status after a change was requested. However, the screen was
+>> immediately redrawn by the player thread with a background colour denoting
+> *color
+>
+>> the requested HDCP level. So all you actually got was a very brief full screen
+>> flicker of the background colour.
+> *color
+>
+> You can keep this description here and remove it from the previous patch
+But this issue is the entire point of the previous patch. If you remove 
+the description as to why a change is being made then the review 
+feedback becomes 'why is this change being made?' and 'there is already 
+a display of the status - it's in the background colour'.
 
 >
->> Instead, add the current HDCP status as an extra text line of the video player's
->> output so it is permanently visible and clear.
+>> As the current HDCP status is now being shown as a separate line of text in
+>> the video player's output, there is no need to use the screen background to
+>> show the same. So, drop the menu updates once the video player is running to
+>> remove the flickering.
 >>
->> Also, move the enable of HDCP inside the mutex lock with the internal state
->> change. That way, the newly added 'enabled/desired'
->> line does not update in advance of the 'requested' line (due to the video player
->> thread being asynchronous and managing to turn HDCP on while the menu
->> thread is waiting on the mutex lock).
+>> Also, don't stop the video player thread when HDCP is disabled so that the
+>> status update continues (given that the menu thread is no longer redrawing
+>> the screen now).
+>>
 >> v2: Split into two patches (review feedback by Kamil)
-> You can just write (Kamil) here
->
+>>
 >> CC: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 >> CC: Suraj Kandpal <suraj.kandpal@intel.com>
 >> Signed-off-by: John Harrison <John.Harrison@Igalia.com>
 >> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 >> ---
->>   tools/intel_hdcp.c | 15 +++++++++++++--
->>   1 file changed, 13 insertions(+), 2 deletions(-)
+>>   tools/intel_hdcp.c | 34 +++++-----------------------------
+>>   1 file changed, 5 insertions(+), 29 deletions(-)
 >>
->> diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c index cd5d2b6be..8e29c5e32
->> 100644
+>> diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c index
+>> 8e29c5e32..56ed720cf 100644
 >> --- a/tools/intel_hdcp.c
 >> +++ b/tools/intel_hdcp.c
->> @@ -482,6 +482,7 @@ static void *video_player_thread(void *arg)
->>   	char timer_str[32];
->>   	time_t current_time, elapsed;
->>   	int minutes, seconds;
->> +	const char *status = NULL;
+>> @@ -102,24 +102,13 @@ static void draw_menu_text(cairo_t *cr, data_t
+>> *data)
+>>   	}
+>>   }
 >>
->>   	data = (data_t *)arg;
->>   	cur_type = data->hdcp_type;
->> @@ -502,6 +503,8 @@ static void *video_player_thread(void *arg)
->>   			prev_type = cur_type;
->>   		}
+>> -static void draw_menu(data_t *data, const char *status)
+>> +static void draw_menu(data_t *data)
+>>   {
+>>   	cairo_t *cr = igt_get_cairo_ctx(data->fd, &data->fb);
 >>
->> +		status = get_hdcp_status(data, data->selected_connector);
->> +
->>   		switch (cur_type) {
->>   		case HDCP_TYPE_1_4:
->>   			bg_r = 0.0; bg_g = 0.7; bg_b = 0.0;
->> @@ -544,10 +547,18 @@ static void *video_player_thread(void *arg)
->>   		cairo_show_text(cr, timer_str);
+>> -	/* Background color and text color based on HDCP status */
+>> -	if (strcmp(status, "INIT") == 0) {
+>> -		cairo_set_source_rgb(cr, 0.051, 0.278, 0.631);
+>> -		cairo_paint(cr);
+>> -		cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+>> -	} else if (strcmp(status, "Enabled") == 0) {
+>> -		cairo_set_source_rgb(cr, 0.0, 1.0, 0.0);
+>> -		cairo_paint(cr);
+>> -		cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
+>> -	} else {
+>> -		cairo_set_source_rgb(cr, 1.0, 0.0, 0.0);
+>> -		cairo_paint(cr);
+>> -		cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+>> -	}
+>> +	cairo_set_source_rgb(cr, 0.051, 0.278, 0.631);
+>> +	cairo_paint(cr);
+>> +	cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
 >>
->>   		/* Draw HDCP status above timer */
->> +		cairo_set_font_size(cr, font_size);
->> +		cairo_text_extents(cr, status, &ext);
->> +		x = data->width - ext.width - 20;
->> +		y = data->height - ext.height - 20;
->> +
->> +		cairo_move_to(cr, x, y);
->> +		cairo_show_text(cr, status);
->> +
->>   		cairo_set_font_size(cr, font_size);
->>   		cairo_text_extents(cr, hdcp_str, &ext);
->>   		x = data->width - ext.width - 20;
->> -		y = data->height - ext.height - 60;
->> +		y = data->height - ext.height - 120;
+>>   	draw_menu_text(cr, data);
 >>
->>   		cairo_move_to(cr, x, y);
->>   		cairo_show_text(cr, hdcp_str);
->> @@ -605,8 +616,8 @@ static void stop_video_player(data_t *data)
+>> @@ -678,13 +667,12 @@ int main(int argc, char **argv)  {
+>>   	data_t data;
+>>   	pthread_t tid;
+>> -	const char *status = NULL;
+>>   	igt_plane_t *primary;
 >>
->>   static void enable_hdcp_type(data_t *data, enum hdcp_type type)  {
->> -		set_hdcp_prop(data, CP_DESIRED, type, data-
->>> selected_connector);
->>   		pthread_mutex_lock(&data->lock);
->> +		set_hdcp_prop(data, CP_DESIRED, type, data-
->>> selected_connector);
-> Move this change into its own patch logically a different change
-But it is not a logically different change. As per the commit 
-description, the only reason for making this change is because the video 
-thread is now displaying the HDCP status. Without the display of the 
-status, it does not matter that the change occurs asynchronously to that 
-display (because there is nothing for it to be asynchronous to). So 
-splitting this out into a later patch means this patch would be 
-introducing a bug and the follow up patch would need a 'Fixes' tag. 
-Which is just pointless for the sake of a one line delta. Or it could be 
-a prior patch but then it would need to say 'doing this thing that is 
-pointless now but is required by a future patch' and you have already 
-said you don't like descriptions referring to future changes.
+>>   	data.selected_connector = -1;
+>>   	test_init(&data);
+>>
+>> -	draw_menu(&data, "INIT");
+>> +	draw_menu(&data);
+>>   	primary = igt_output_get_plane_type(data.output,
+>> DRM_PLANE_TYPE_PRIMARY);
+>>   	igt_plane_set_fb(primary, &data.fb);
+>>   	igt_display_commit2(&data.display, COMMIT_ATOMIC); @@ -718,7
+>> +706,6 @@ int main(int argc, char **argv)
+>>   			enable_hdcp_type(&data, HDCP_TYPE_2_2_TYPE_1);
+>>   			break;
+>>   		case 5:
+>> -			stop_video_player(&data);
+> This removal to stop video player should be in it's own patch
+>
+> As a rule of thumb if you have to add Also in the commit message keep it in a separate patch
+Again, the removal of the stop is because of the remove of the menu 
+redraw. If you don't do both together then you are introducing a bug 
+where disabling HDCP does not result in a display update so the user is 
+not aware that anything actually happened. On the kernel side, there is 
+an absolute rule that an intermediate patch in a series must not break 
+things and require a later patch to fix it again. You can split patches 
+up to help with review but they need to be squashed back into an atomic 
+change for merge. I would assume the same applies to the IGT tree. And a 
+one line change does not seem like it needs the extra work and 
+complication of splitting out and squashing back just to make the review 
+simpler.
 
 John.
 
@@ -166,9 +181,30 @@ John.
 > Regards,
 > Suraj Kandpal
 >
->>   		data->hdcp_type = type;
->>   		data->video_start_time = time(NULL);
->>   		pthread_mutex_unlock(&data->lock);
+>>   			set_hdcp_prop(&data, CP_UNDESIRED,
+>> HDCP_TYPE_2_2_TYPE_1,
+>>   				      data.selected_connector);
+>>   			data.hdcp_type = HDCP_TYPE_NONE;
+>> @@ -727,17 +714,6 @@ int main(int argc, char **argv)
+>>   			break;
+>>   		}
+>>
+>> -		if (cmd == 1) {
+>> -			draw_menu(&data, "INIT");
+>> -		} else {
+>> -			status = get_hdcp_status(&data,
+>> data.selected_connector);
+>> -			draw_menu(&data, status);
+>> -		}
+>> -
+>> -		primary = igt_output_get_plane_type(data.output,
+>> DRM_PLANE_TYPE_PRIMARY);
+>> -		igt_plane_set_fb(primary, &data.fb);
+>> -		igt_display_commit2(&data.display, COMMIT_ATOMIC);
+>> -
+>>   		usleep(200 * 1000);
+>>   	}
+>>
 >> --
 >> 2.43.0
 
