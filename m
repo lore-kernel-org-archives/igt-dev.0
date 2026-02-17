@@ -4,50 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46C67E83856
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Feb 2026 05:45:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B596E83856
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Feb 2026 06:08:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EE3BA10E43F;
-	Tue, 17 Feb 2026 05:45:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 74B7E10E441;
+	Tue, 17 Feb 2026 06:08:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GtOuCQ/G";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JtLpE8fF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB20C10E43F
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Feb 2026 05:45:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7AD7010E441
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Feb 2026 06:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771307127; x=1802843127;
+ t=1771308495; x=1802844495;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=RW93Ctd/aho2XswaYXSpYbCNE6ijov1GJ00GpA5gWXI=;
- b=GtOuCQ/Gc8+GijE4qHmmC4IuLfUjZsipuvYS0JgWyPUL/GFCczbo+z71
- 4sxzL5tnxMVOMx8sD5zwJJl5PM43WuHDigSS/T+umzYm+7tOhZVDqlaiW
- Z7Vr/C07rKgV2DL6sdi/R6QmYyECEorA6hpbbUNH5FtnLcUz+A1sWxh3g
- vkCjvwdj+Kt/Oyu4fcScxXV5EzIJyDZlHkfJEJgtHkozijKLfIm3DIbSb
- yYR2XasqxM5b3HjgJXnK8YlpSvgcB+8WFLTAzepHpxZnq5TkcJbzooAW1
- sQ1hS52wQk0JuwWAAxHBvDka6+YDWeGTcdhis92Czi5K024z++s4scRBO g==;
-X-CSE-ConnectionGUID: BRICRy/MRdq7/tWScMIpHQ==
-X-CSE-MsgGUID: J+HC0DySROaFseWbHFBs4w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="83736657"
-X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; d="scan'208";a="83736657"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Feb 2026 21:45:27 -0800
-X-CSE-ConnectionGUID: zT49ciXRRW+9qU5S8gZqxA==
-X-CSE-MsgGUID: RAwcHmdxS5ysYsGGjjyBNQ==
+ bh=6ecWORMtTf98hIhKEBtlCvdte3I0MrcfIcTqwy/IFVQ=;
+ b=JtLpE8fFCHlaA3K/TEHJWHiIKi02rAudnJr/gh9p8X69tRTQF54lAlGN
+ lbMFyyj5kCM7XiFpk0Ee0+6ot5t3V4vdlz4gTpPiLtRT45ZrGjMZsx49Z
+ 5NhRB63LFHzasU8XOFNXM0hDRWcCqujV4xoUr/eBT+9nceX8pQgOARJlZ
+ kMue2ZVXFmSJjCmKGNhrRVPIumednWNPuYIqegKOUkQWRSvVkWUxj+b6E
+ E0XmLYEOWqKA3eLj87xks0whx4tSo9VRYx7Hfvf3jFIY3e3SNg49CLwZV
+ CkpFvAdq2fmrSG4LchqqgfKMQElIYUu32lNfOBvW+aBXlMkUxIh4dD+6f Q==;
+X-CSE-ConnectionGUID: RkYvyCjTS4+xctl6fpWntg==
+X-CSE-MsgGUID: Ep9UYlWtRvSfYLCgN7fr3Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="76226888"
+X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; d="scan'208";a="76226888"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Feb 2026 22:08:15 -0800
+X-CSE-ConnectionGUID: 81dx7nEsSQ+HnR1KoaZyLg==
+X-CSE-MsgGUID: U8U8D1CqRoGBSlSustxXzw==
 X-ExtLoop1: 1
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
- by fmviesa003.fm.intel.com with ESMTP; 16 Feb 2026 21:45:26 -0800
-From: Pranay Samala <pranay.samala@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; d="scan'208";a="213890195"
+Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 22:08:14 -0800
+From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
- pranay.samala@intel.com
-Subject: [PATCH i-g-t] tests/kms_plane: Optimize modifier check for
- unsupported platforms
-Date: Tue, 17 Feb 2026 11:26:06 +0530
-Message-Id: <20260217055606.1595789-1-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.34.1
+Cc: karthik.b.s@intel.com,
+	Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t] tests/kms_rotation_crc: Add vblank wait for multiplane
+ rotation synchronization
+Date: Tue, 17 Feb 2026 11:38:25 +0530
+Message-ID: <20260217060825.517098-1-jeevan.b@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,45 +67,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Optimize the modifier check by moving it outside the CRTC/Output loop.
-This avoids redundancy and ensures the test is cleanly skipped.
+Add explicit vblank wait after atomic commit in test_multi_plane_rotation()
+to ensure both planes are fully synchronized before CRC capture. This fixes
+sporadic CRC mismatches observed on CI.
 
-Fixes: a4805b36cf23 ("tests/kms_plane: Skip unsupported modifiers")
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6946
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_plane.c | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ tests/kms_rotation_crc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 362748cdb..f37b019d1 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -1489,18 +1489,14 @@ static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
- 	igt_crtc_t *crtc;
- 	int count = 0;
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index 8721a8311..93e5c3e91 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -1032,6 +1032,7 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+ 							continue;
  
-+	igt_skip_on_f(((data->flags & TEST_PIXEL_FORMAT) &&
-+		       !igt_display_has_format_mod(&data->display,
-+		       DRM_FORMAT_XBGR8888, data->mod)),
-+		       "Skipping: Modifier " IGT_MODIFIER_FMT
-+		       " is not supported on this platform\n",
-+		       IGT_MODIFIER_ARGS(data->mod));
-+
- 	for_each_crtc_with_single_output(&data->display, crtc, data->output) {
--		if ((data->flags & TEST_PIXEL_FORMAT) &&
--		    !igt_display_has_format_mod(&data->display,
--						DRM_FORMAT_XBGR8888,
--						data->mod)) {
--			igt_info("Skipping: Modifier " IGT_MODIFIER_FMT
--				 " is not supported on pipe %s, output %s\n",
--				 IGT_MODIFIER_ARGS(data->mod),
--				 kmstest_pipe_name(crtc->pipe),
--				 igt_output_name(data->output));
--			continue;
--		}
- 
- 		igt_display_reset(&data->display);
- 
+ 						igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++						igt_wait_for_vblank(crtc);
+ 						fliphw = kmstest_get_vblank(data->gfx_fd,
+ 									    crtc->pipe,
+ 									    0) + 1;
 -- 
-2.34.1
+2.43.0
 
