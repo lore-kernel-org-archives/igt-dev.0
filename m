@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07788E68152
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Feb 2026 09:20:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07398E68153
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Feb 2026 09:20:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A8E6510E4AB;
-	Tue, 17 Feb 2026 09:20:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B021510E4AC;
+	Tue, 17 Feb 2026 09:20:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f1phI5ii";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WSTo8d04";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF0BA10E4AB
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Feb 2026 09:20:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48E1010E4AC
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Feb 2026 09:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771320043; x=1802856043;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=c+FNe4/XdcDaX3QBQsQGOXvDd76wOye3+BFoXTlhiCM=;
- b=f1phI5iifIiT0pew2BTr3+yl4QsFME93eJttcG1ZKqJSUBEiwh1Pa5Gp
- JEfHTbETsTWNkORoMyFLzV+px4o/DkZJhrTVu323vsmdNg/mzGE6FHEH9
- a43YtMOLGtW0IIM1L37fphA48giTvyg4KLu9RjM19Bg0Fjo9Uw3Jvw2Y4
- 0d6XkR/H/uyZaPC1DifxvxKm2d1Y0wdJ5VHXj2ZFUa91z25so7aPnm/Qy
- AyRe2mTk6/OwIsJyrlVxGg/n/JS/rrJa5erK/71BOD6UIfjfS6/5eFjGm
- a7pb4czqOu9Z2YI/8pv4VnZVIkJcZ2XekwFSP+AAcAlm9Rr8u93xblp2t Q==;
-X-CSE-ConnectionGUID: l7AQpH0pTk+Ik7YMgNdAVQ==
-X-CSE-MsgGUID: jNek2AQdR9CmfJZAUKoKPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="72558916"
-X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; d="scan'208";a="72558916"
+ t=1771320044; x=1802856044;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Ie48/sPW4Fc2Y+5P6dzTYIadXJ7aS9zBpsSNrpJsnaI=;
+ b=WSTo8d04PZ9r4Ojh/9FM3B3n/TCkmveGFx+eJupRhaa64ORAq0CLBMSz
+ 3iXFtr9Z++Lx+mVIMYE2X78RKpRcfgMk2KfFaGrlqS8KT1lCXwO9hTCIC
+ U/0wdKjrQSmQwITjU4QV8P0Pz0GPUJof0JqfOmhJtpJHm+/bNQV8KQ5q0
+ Qj5v8hZHSqBJv13sNXa5dwNUvfl/4JdeKaEQ5xXS7of8V5TI8Ac4YYbHV
+ f/mARlgZRBtA+iTtaofzc/QJxA67K4a8ItMBrcfJDqR4lkEulQSZhI361
+ dwrsiEMACHdvYAc5U2bhvFN8hNlG5FjhQ5i2yIh7qS8A0H1dmVdqgrC92 g==;
+X-CSE-ConnectionGUID: i20EgK66SgWbYnyIdXWGTA==
+X-CSE-MsgGUID: kK4zIiGTQeqdRXjDp8hdjA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="72558918"
+X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; d="scan'208";a="72558918"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Feb 2026 01:20:42 -0800
-X-CSE-ConnectionGUID: e8x9V1v+S9yOBTnYVHhKoA==
-X-CSE-MsgGUID: ESvAuJscSXqQPFUUpUoP7A==
+ 17 Feb 2026 01:20:44 -0800
+X-CSE-ConnectionGUID: We6++LbISeu6Pm9/Fnj3EA==
+X-CSE-MsgGUID: 6YBxSuGRTbeXuuuxvozmIg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; d="scan'208";a="212744441"
+X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; d="scan'208";a="212744455"
 Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Feb 2026 01:20:39 -0800
+ 17 Feb 2026 01:20:41 -0800
 From: Mohammed Bilal <mohammed.bilal@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: swati2.sharma@intel.com, kunal1.joshi@intel.com, karthik.b.s@intel.com,
  Mohammed Bilal <mohammed.bilal@intel.com>
-Subject: [PATCH v3 0/3] intel-ci: Split chamelium-only testlist for i915 and xe
-Date: Tue, 17 Feb 2026 14:48:35 +0530
-Message-ID: <20260217091838.2508942-1-mohammed.bilal@intel.com>
+Subject: [PATCH v3 1/3] intel-ci: Remove chamelium testlist symlinks
+Date: Tue, 17 Feb 2026 14:48:36 +0530
+Message-ID: <20260217091838.2508942-2-mohammed.bilal@intel.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20260217091838.2508942-1-mohammed.bilal@intel.com>
+References: <20260217091838.2508942-1-mohammed.bilal@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,29 +68,35 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-v2:
-- Move suspend resume tests to the end of the testlist (Kunal)
-- Comment out random-plane test (Kunal)
+Remove symlinks before splitting into driver-specific testlists.
 
-v3:
--Use move-fix-add approach (Kamil)
+v2:
 -Remove symlinks first before renaming (Kamil)
 
-Mohammed Bilal (3):
-  intel-ci: Remove chamelium testlist symlinks
-  intel-ci: Rename chamelium-only testlist to i915 specific
-  intel-ci: Add xe.chamelium-only testlist
+Signed-off-by: Mohammed Bilal <mohammed.bilal@intel.com>
+---
+ tests/intel-ci/i915.chamelium-only.testlist | 1 -
+ tests/intel-ci/xe.chamelium-only.testlist   | 1 -
+ 2 files changed, 2 deletions(-)
+ delete mode 120000 tests/intel-ci/i915.chamelium-only.testlist
+ delete mode 120000 tests/intel-ci/xe.chamelium-only.testlist
 
- tests/intel-ci/chamelium-only.testlist      | 77 --------------------
- tests/intel-ci/i915.chamelium-only.testlist | 81 ++++++++++++++++++++-
- tests/intel-ci/meson.build                  |  3 +-
- tests/intel-ci/xe.chamelium-only.testlist   | 72 +++++++++++++++++-
- tests/intel/kms_test_config.json            |  7 +-
- 5 files changed, 157 insertions(+), 83 deletions(-)
- delete mode 100644 tests/intel-ci/chamelium-only.testlist
- mode change 120000 => 100644 tests/intel-ci/i915.chamelium-only.testlist
- mode change 120000 => 100644 tests/intel-ci/xe.chamelium-only.testlist
-
+diff --git a/tests/intel-ci/i915.chamelium-only.testlist b/tests/intel-ci/i915.chamelium-only.testlist
+deleted file mode 120000
+index d7c492973..000000000
+--- a/tests/intel-ci/i915.chamelium-only.testlist
++++ /dev/null
+@@ -1 +0,0 @@
+-chamelium-only.testlist
+\ No newline at end of file
+diff --git a/tests/intel-ci/xe.chamelium-only.testlist b/tests/intel-ci/xe.chamelium-only.testlist
+deleted file mode 120000
+index d7c492973..000000000
+--- a/tests/intel-ci/xe.chamelium-only.testlist
++++ /dev/null
+@@ -1 +0,0 @@
+-chamelium-only.testlist
+\ No newline at end of file
 -- 
 2.48.1
 
