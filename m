@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A05C7E68149
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Feb 2026 09:20:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07788E68152
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Feb 2026 09:20:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 48EB010E4AB;
-	Tue, 17 Feb 2026 09:20:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A8E6510E4AB;
+	Tue, 17 Feb 2026 09:20:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jjrbVxjN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f1phI5ii";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B601B10E4AB
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Feb 2026 09:20:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF0BA10E4AB
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Feb 2026 09:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771320010; x=1802856010;
+ t=1771320043; x=1802856043;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=VroK6iKOxbB7+NaUDKcKCIVEuG3isSou8Xwf2c0TBrE=;
- b=jjrbVxjNhew1Y+6H1ZkFkEDX2GSxj5jVI+qdgn17C+aC9GtaXJdpw5G1
- 7hIBdjLrgB1nedjnY9iM8vey6fnfRz7hhHGYvm4ll+MTR7jF36LdccHJc
- 6rkafI8cUMBP0q2lnnOAF5vCSaqroO0JoJ1QG6XKjaFICGjbKBuvYeheg
- 0LHABFAihSQeJZ3ijG1KXtRHSGdwp6AV/5+w1vWL2DjOpPJP3LCc2speR
- mKTqkzC/7mVSgAFiekJdSS5kUEjTjCbwf6XDc7e1laax23Ox0xD3iOGZ2
- pREj2HOUA3tQ0jblTCPPLlXa3yExnpiYgrpL7jQjHpj01r84k3kNDumhl A==;
-X-CSE-ConnectionGUID: +IR5va4oTFeqJnZURAzRvg==
-X-CSE-MsgGUID: XKtsotBoQYGF5vezmYGmeQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="83823013"
-X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; d="scan'208";a="83823013"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Feb 2026 01:20:10 -0800
-X-CSE-ConnectionGUID: /wVE05iYQpW2oNQZY5OvAA==
-X-CSE-MsgGUID: wIZcKTSDTQOjp6NNmzBa/g==
+ bh=c+FNe4/XdcDaX3QBQsQGOXvDd76wOye3+BFoXTlhiCM=;
+ b=f1phI5iifIiT0pew2BTr3+yl4QsFME93eJttcG1ZKqJSUBEiwh1Pa5Gp
+ JEfHTbETsTWNkORoMyFLzV+px4o/DkZJhrTVu323vsmdNg/mzGE6FHEH9
+ a43YtMOLGtW0IIM1L37fphA48giTvyg4KLu9RjM19Bg0Fjo9Uw3Jvw2Y4
+ 0d6XkR/H/uyZaPC1DifxvxKm2d1Y0wdJ5VHXj2ZFUa91z25so7aPnm/Qy
+ AyRe2mTk6/OwIsJyrlVxGg/n/JS/rrJa5erK/71BOD6UIfjfS6/5eFjGm
+ a7pb4czqOu9Z2YI/8pv4VnZVIkJcZ2XekwFSP+AAcAlm9Rr8u93xblp2t Q==;
+X-CSE-ConnectionGUID: l7AQpH0pTk+Ik7YMgNdAVQ==
+X-CSE-MsgGUID: jNek2AQdR9CmfJZAUKoKPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="72558916"
+X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; d="scan'208";a="72558916"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Feb 2026 01:20:42 -0800
+X-CSE-ConnectionGUID: e8x9V1v+S9yOBTnYVHhKoA==
+X-CSE-MsgGUID: ESvAuJscSXqQPFUUpUoP7A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; d="scan'208";a="217964927"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
- by orviesa003.jf.intel.com with ESMTP; 17 Feb 2026 01:20:09 -0800
-From: Pranay Samala <pranay.samala@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,295,1763452800"; d="scan'208";a="212744441"
+Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Feb 2026 01:20:39 -0800
+From: Mohammed Bilal <mohammed.bilal@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
- pranay.samala@intel.com
-Subject: [PATCH i-g-t] tests/intel/kms_sharpness_filter: Restructure modifier
- validation into per-modifier subtests
-Date: Tue, 17 Feb 2026 15:00:48 +0530
-Message-Id: <20260217093048.1597495-1-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.34.1
+Cc: swati2.sharma@intel.com, kunal1.joshi@intel.com, karthik.b.s@intel.com,
+ Mohammed Bilal <mohammed.bilal@intel.com>
+Subject: [PATCH v3 0/3] intel-ci: Split chamelium-only testlist for i915 and xe
+Date: Tue, 17 Feb 2026 14:48:35 +0530
+Message-ID: <20260217091838.2508942-1-mohammed.bilal@intel.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,81 +66,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Previously, all modifiers were exercised within a single
-subtest, making failures/skips hard to isolate and debug.
-This new flow generates explicit subtest names (filter-modifier-%s)
-for each modifier, improving clarity and CI reporting.
+v2:
+- Move suspend resume tests to the end of the testlist (Kunal)
+- Comment out random-plane test (Kunal)
 
-Each subtest now validates only the selected modifier, and
-unsupported format/modifier combinations are cleanly skipped.
+v3:
+-Use move-fix-add approach (Kamil)
+-Remove symlinks first before renaming (Kamil)
 
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
----
- tests/intel/kms_sharpness_filter.c | 34 +++++++++++++++++++++---------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+Mohammed Bilal (3):
+  intel-ci: Remove chamelium testlist symlinks
+  intel-ci: Rename chamelium-only testlist to i915 specific
+  intel-ci: Add xe.chamelium-only testlist
 
-diff --git a/tests/intel/kms_sharpness_filter.c b/tests/intel/kms_sharpness_filter.c
-index eddfad6b9..0140363bc 100644
---- a/tests/intel/kms_sharpness_filter.c
-+++ b/tests/intel/kms_sharpness_filter.c
-@@ -21,9 +21,6 @@
-  * SUBTEST: filter-strength
-  * Description: Verify that varying strength (0-255), affects the degree of sharpeness applied.
-  *
-- * SUBTEST: filter-modifiers
-- * Description: Verify content adaptive sharpness filter with varying modifiers.
-- *
-  * SUBTEST: filter-rotations
-  * Description: Verify content adaptive sharpness filter with varying rotations.
-  *
-@@ -70,6 +67,17 @@
-  *              sharpness filter.
- */
- 
-+/**
-+ * SUBTEST: filter-modifier-%s
-+ * Description: Verify content adaptive sharpness filter with varying modifiers.
-+ *
-+ * arg[1]:
-+ *
-+ * @linear:	linear
-+ * @x-tiled:	x-tiled
-+ * @4-tiled:	4-tiled
-+ */
-+
- IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter");
- 
- /*
-@@ -596,16 +604,22 @@ int igt_main_args("l", NULL, help_str, opt_handler, &data)
- 		}
- 	}
- 
--	igt_describe("Verify content adaptive sharpness filter with "
--		     "varying modifiers.");
--	igt_subtest_with_dynamic("filter-modifiers") {
-+	for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
- 		data.rotation = IGT_ROTATION_0;
- 		data.format = DRM_FORMAT_XRGB8888;
- 		data.filter_strength = MID_FILTER_STRENGTH;
--
--		for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
--			data.modifier = modifiers[i].modifier;
--			data.modifier_name = modifiers[i].name;
-+		data.modifier = modifiers[i].modifier;
-+		data.modifier_name = modifiers[i].name;
-+
-+		igt_describe("Verify content adaptive sharpness filter with "
-+			     "varying modifiers.");
-+		igt_subtest_with_dynamic_f("filter-modifier-%s", data.modifier_name) {
-+			igt_skip_on_f((!igt_display_has_format_mod(&data.display,
-+								   DRM_FORMAT_XBGR8888,
-+								   data.modifier)),
-+				       "Skipping: Modifier " IGT_MODIFIER_FMT
-+				       " is not supported on this platform\n",
-+				       IGT_MODIFIER_ARGS(data.modifier));
- 
- 			run_sharpness_filter_test(&data, TEST_FILTER_MODIFIERS);
- 		}
+ tests/intel-ci/chamelium-only.testlist      | 77 --------------------
+ tests/intel-ci/i915.chamelium-only.testlist | 81 ++++++++++++++++++++-
+ tests/intel-ci/meson.build                  |  3 +-
+ tests/intel-ci/xe.chamelium-only.testlist   | 72 +++++++++++++++++-
+ tests/intel/kms_test_config.json            |  7 +-
+ 5 files changed, 157 insertions(+), 83 deletions(-)
+ delete mode 100644 tests/intel-ci/chamelium-only.testlist
+ mode change 120000 => 100644 tests/intel-ci/i915.chamelium-only.testlist
+ mode change 120000 => 100644 tests/intel-ci/xe.chamelium-only.testlist
+
 -- 
-2.34.1
+2.48.1
 
