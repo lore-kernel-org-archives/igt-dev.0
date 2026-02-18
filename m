@@ -4,63 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 564C8E9A047
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Feb 2026 11:01:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88CB3E9A047
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Feb 2026 11:09:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 044E610E5A3;
-	Wed, 18 Feb 2026 11:01:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1F48589F71;
+	Wed, 18 Feb 2026 11:09:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="htEdY1V5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c8ortgjU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E2BEA10E5A3
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Feb 2026 11:01:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85C6189F71
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Feb 2026 11:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771412489; x=1802948489;
+ t=1771412984; x=1802948984;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=JkyBIVbBnhlG8d515odSBNY+Dh5V5QdTkeCT7Arl+bk=;
- b=htEdY1V56TuzkzuzGiH3EQgi+O+yZf4Wxe8P1PoMeTA+NMYqelwXQRLq
- 5OGHbpLZAnbg3U3MqWHU9yfJ4ZM+B3DCmZ/Q2hgYp9dmcnRux8xGUdkpp
- iyTMQyW7IxeNZjFJv5gVDHtAdP0PRUTuJ7Po9o28YiSoPncU+30WemHae
- cbPK4Xin0B9OTCV0hit1zoILNfw/Jxx5oi1uv2m42uevZ+SDpxP/i/E/b
- l4KED1ffIVRAcPg9SNPcgc0KLKa1lUYGUjrWlQ+KQLPTLfeKEiivxzy67
- Y7XYcRkC4b62+NI/AsTLe4W8VqZVpAH0noWdX8v8bk4CcXSisuKbyKuKM w==;
-X-CSE-ConnectionGUID: buZwf8ieRQSsNxtkVi7lVg==
-X-CSE-MsgGUID: xmsmGzuxT7K6rb9lZOTeTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="72576545"
-X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; d="scan'208";a="72576545"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2026 03:01:29 -0800
-X-CSE-ConnectionGUID: kklNjCaMRkmTaX6RGOq9JQ==
-X-CSE-MsgGUID: S5YZWXgRSVKRBdVya9uR2w==
+ bh=/vs6Cd7GHblBvhVg8Ql7A9ZYyRMFq+ZCDaNrRif1N+4=;
+ b=c8ortgjU/X5+jCr4QNuRJvk7vB6rlEfEsUqrRyiXJhaBsgEG0wrz6q4E
+ gUulwxFAwQHt5ti9st30a5n29LtZrDjLSpRoDVSO1bpARB4yQDZFpUvxv
+ dxpbRGSR/52ssT5TnPbEqpZ1bscM/rK8wxJPFwA/MVTRXX6NmiLCvQpdR
+ 9CDCkFZEfvLrQ2zxdGbcq3id/y5xRKxBrgrkwbhkFU80M0VwjxcvvfrnY
+ V77jUjIvlALpj7FNbiZ15w09CEjnS4iYTx7MgRn3MG/HjzH6C9KoGzrj1
+ hrjbsyC4Fh96f1KJSMHA+nwpaebEpeHwTazZe39piA0QEIGZry3JLi5T9 Q==;
+X-CSE-ConnectionGUID: i8uU6ILIQg++3Eh27r50Lg==
+X-CSE-MsgGUID: JJ5/GI1sSqGtxXV+pyJgQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="71506955"
+X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; d="scan'208";a="71506955"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Feb 2026 03:09:44 -0800
+X-CSE-ConnectionGUID: lvF8X2HKQ6aJEZXwroTE5w==
+X-CSE-MsgGUID: 59e8LgiQSKqTEj9JT+K2MQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; d="scan'208";a="251857541"
+X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; d="scan'208";a="218694099"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2026 03:01:27 -0800
-Date: Wed, 18 Feb 2026 12:01:07 +0100
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2026 03:09:43 -0800
+Date: Wed, 18 Feb 2026 12:09:40 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Mohammed Bilal <mohammed.bilal@intel.com>
-Cc: igt-dev@lists.freedesktop.org, jeevan.b@intel.com,
- kunal1.joshi@intel.com, sameer.lattannavar@intel.com,
- sebastian.brzezinka@intel.com
-Subject: Re: [PATCH v1 1/2] tests/kms_vrr: Skip LOBF test when aux-less ALPM
- is not enabled
-Message-ID: <20260218110107.5huxxdkxor5ywvfh@kamilkon-DESK.igk.intel.com>
+To: priyanka.dandamudi@intel.com
+Cc: zbigniew.kempczynski@intel.com, matthew.auld@intel.com,
+ igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 5/5] tests/intel/xe_pat: Validate XA App Transient
+ feature
+Message-ID: <20260218110940.lz7bs4nwftwmsxpy@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mohammed Bilal <mohammed.bilal@intel.com>,
- igt-dev@lists.freedesktop.org, jeevan.b@intel.com,
- kunal1.joshi@intel.com, sameer.lattannavar@intel.com,
- sebastian.brzezinka@intel.com
-References: <20260218080511.2534901-1-mohammed.bilal@intel.com>
- <20260218080511.2534901-2-mohammed.bilal@intel.com>
+ priyanka.dandamudi@intel.com, zbigniew.kempczynski@intel.com,
+ matthew.auld@intel.com, igt-dev@lists.freedesktop.org
+References: <20260213084603.1404162-1-priyanka.dandamudi@intel.com>
+ <20260213084603.1404162-6-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260218080511.2534901-2-mohammed.bilal@intel.com>
+In-Reply-To: <20260213084603.1404162-6-priyanka.dandamudi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,107 +73,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Mohammed,
-On 2026-02-18 at 13:34:34 +0530, Mohammed Bilal wrote:
-> LOBF can operate in either Aux-less or Aux-wake ALPM modes. However,
-
-Please decipher here what ALPM is, my guess after googling:
-Aggressive Link Power Management (ALPM)
-
-> due to uncertainty around eDP version dependency and its impact
-> on LOBF execution, we currently restrict the test to run only when
-> Aux-less ALPM is enabled to avoid unexpected failures.
+Hi priyanka.dandamudi,
+On 2026-02-13 at 14:16:03 +0530, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > 
-> Add a helper to read the Aux-less ALPM status from debugfs and
-> skip the LOBF subtest when Aux-less ALPM is not enabled
-> on the panel, ensuring proper skip behavior and preventing
-> false negatives on unsupported configurations.
+> Test the scenarios when media is on/off.
+> When media is off/on, for xa app transient buffer, data should be coherent
+> between cpu and gpu. Coherency should be maintained from KMD side
+> irrespective of media engine on/off.
 > 
-> Signed-off-by: Mohammed Bilal <mohammed.bilal@intel.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > ---
->  lib/igt_kms.c   | 28 ++++++++++++++++++++++++++++
->  lib/igt_kms.h   |  1 +
->  tests/kms_vrr.c |  6 ++++++
->  3 files changed, 35 insertions(+)
+>  tests/intel/xe_pat.c | 101 +++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 101 insertions(+)
 > 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 5c4879604..48684b4b3 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -6578,6 +6578,34 @@ bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name)
->  	return strstr(buf, "LOBF status: enabled");
->  }
+> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+> index f2dff62a9..30e427634 100644
+> --- a/tests/intel/xe_pat.c
+> +++ b/tests/intel/xe_pat.c
+> @@ -19,16 +19,24 @@
+>  #include "intel_blt.h"
+>  #include "intel_mocs.h"
+>  #include "intel_pat.h"
+> +#include "igt_configfs.h"
+> +#include "igt_device.h"
+> +#include "igt_fs.h"
+> +#include "igt_kmod.h"
+> +#include "igt_sysfs.h"
+
+Please keep them sorted, they should be before intel_ ones,
+not here.
+
+>  #include "linux_scaffold.h"
 >  
-> +/**
-> + * igt_get_aux_less_alpm_status
-> + * @drmfd: A drm file descriptor
-> + * @connector_name: Name of the libdrm connector we're going to use
-> + *
-> + * Check if Aux-less ALPM mode is enabled by reading
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>  #include "xe/xe_util.h"
+> +#include "xe/xe_gt.h"
 
-Here also, write full name and then use shortcut for ALPM,
-for example:
-
- * Check if Aux-less Aggressive Link Power Management (ALPM)
- * mode is enabled by reading ....
+Same here, move before xe/xe_ioctl.h
 
 Regards,
 Kamil
 
-> + * the i915_edp_lobf_info debugfs.
-> + *
-> + * Return: True if aux-less ALPM is enabled.
-> + */
-> +bool igt_get_aux_less_alpm_status(int drmfd, char *connector_name)
-> +{
-> +	char buf[256];
-> +	int fd, res;
-> +
-> +	fd = igt_debugfs_connector_dir(drmfd, connector_name, O_RDONLY);
-> +	if (fd < 0)
-> +		return false;
-> +
-> +	res = igt_debugfs_simple_read(fd, "i915_edp_lobf_info", buf, sizeof(buf));
-> +	close(fd);
-> +
-> +	if (res <= 0)
-> +		return false;
-> +
-> +	return strstr(buf, "Aux-less alpm status: enabled") != NULL;
-> +}
-> +
->  /**
->   * igt_get_output_max_bpc:
->   * @drmfd: A drm file descriptor
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index dedc3f880..a1f52f452 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1257,6 +1257,7 @@ bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display);
->  bool igt_fit_modes_in_bw(igt_display_t *display);
->  bool igt_has_lobf_debugfs(int drmfd, igt_output_t *output);
->  bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name);
-> +bool igt_get_aux_less_alpm_status(int drmfd, char *connector_name);
->  unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name);
->  unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe);
->  void igt_assert_output_bpc_equal(int drmfd, enum pipe pipe,
-> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-> index 811596ec2..e46e98727 100644
-> --- a/tests/kms_vrr.c
-> +++ b/tests/kms_vrr.c
-> @@ -1013,6 +1013,12 @@ static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags
->  			return false;
->  		}
+
 >  
-> +		if (!igt_get_aux_less_alpm_status(data->drm_fd, output->name)) {
-> +			igt_info("%s: Aux-less ALPM not enabled, LOBF not supported.\n",
-> +				 igt_output_name(output));
-> +			return false;
-> +		}
-> +
->  		if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL) ||
->  		    psr_sink_support(data->drm_fd, data->debugfs_fd, PR_MODE, NULL))
->  			psr_disable(data->drm_fd, data->debugfs_fd, NULL);
-> -- 
-> 2.48.1
-> 
+>  #define XE_COH_NONE          1
+>  #define XE_COH_AT_LEAST_1WAY 2
+>  
+>  static bool do_slow_check;
+> +static char bus_addr[NAME_MAX];
+> +static struct pci_device *pci_dev;
+
+[cut]
+
