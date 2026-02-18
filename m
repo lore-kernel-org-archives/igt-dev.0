@@ -4,64 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 785BCE9A03B
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Feb 2026 11:22:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18C80E9A047
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Feb 2026 11:58:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 18E4E10E5AB;
-	Wed, 18 Feb 2026 11:22:43 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LNwrmZUf";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 605CE10E5A7
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Feb 2026 11:22:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771413761; x=1802949761;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=to1vt9D+INYvI5iUJgoBxy/fZbomxrScEtewZ1iziqU=;
- b=LNwrmZUfRO/Ww8eAocW3H+G683uF3Cgw2bbj9/Bxzyj8q7MOMkNW5r6M
- 9zz8y+oZE8TTb3p5NVVuMWM+rH7mWZIxu08fhyDzhplCLv1jJ/61Lu5W8
- xetceihcXjfBxKXiq/iD/Z+zF39E3Dcb6eG8MVUdbmIB/cYKr9ddPibqL
- 6+0ooiXdqCtjMS3cvf9SGGGM5+7DS84VUTE/yurpPsO814UFSWgzzQ+RA
- wj4Moh7mmYL+LfdGbdy1KtAJTPRl5rmtMnUrA3D2+K+JmrSo78CIteZDA
- jpmargofIvMj0utt6nFUPJaMUKnyJ4Q5vlsEeRdS/ajUkPwVZOtN/S8fX A==;
-X-CSE-ConnectionGUID: aDL5xBoPRdOErKQPBbzGPg==
-X-CSE-MsgGUID: wq+x7HpwQBe0rMfxbF/71w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="71508107"
-X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; d="scan'208";a="71508107"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2026 03:22:41 -0800
-X-CSE-ConnectionGUID: G+NwH8R+SpqcxvtubYt6GQ==
-X-CSE-MsgGUID: eAAN1Tb7QHK8pLXTsVcNJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; d="scan'208";a="214278402"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2026 03:22:39 -0800
-Date: Wed, 18 Feb 2026 12:22:36 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Arvind Yadav <arvind.yadav@intel.com>
-Cc: igt-dev@lists.freedesktop.org, matthew.brost@intel.com,
- himal.prasad.ghimiray@intel.com, thomas.hellstrom@linux.intel.com,
- nishit.sharma@intel.com, pravalika.gurram@intel.com
-Subject: Re: [PATCH i-g-t v3 1/8] drm-uapi/xe_drm: Add UAPI support for
- purgeable buffer objects
-Message-ID: <20260218112236.rjnw2lmhvlv3r3de@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Arvind Yadav <arvind.yadav@intel.com>,
- igt-dev@lists.freedesktop.org, matthew.brost@intel.com,
- himal.prasad.ghimiray@intel.com, thomas.hellstrom@linux.intel.com,
- nishit.sharma@intel.com, pravalika.gurram@intel.com
-References: <20260217023423.2632617-1-arvind.yadav@intel.com>
- <20260217023423.2632617-2-arvind.yadav@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A866510E5B0;
+	Wed, 18 Feb 2026 11:58:36 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D323910E5B0;
+ Wed, 18 Feb 2026 11:58:34 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1466344903072050416=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260217023423.2632617-2-arvind.yadav@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib/intel=5Fpat=3A_Handle?=
+ =?utf-8?q?_platforms_without_compressed_PAT_index?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sanjay Yadav" <sanjay.kumar.yadav@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 18 Feb 2026 11:58:34 -0000
+Message-ID: <177141591482.261925.13611035989130751817@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260218103608.2015045-2-sanjay.kumar.yadav@intel.com>
+In-Reply-To: <20260218103608.2015045-2-sanjay.kumar.yadav@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,117 +37,187 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Arvind,
-On 2026-02-17 at 08:04:12 +0530, Arvind Yadav wrote:
-> From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-> 
-> Extend the DRM_XE_MADVISE ioctl to support purgeable buffer object
-> management by adding DRM_XE_VMA_ATTR_PURGEABLE_STATE attribute type.
-> 
-> This allows userspace applications to provide memory usage hints to
-> the kernel for better memory management under pressure:
-> 
-> This allows userspace applications to provide memory usage hints to
-> the kernel for better memory management under pressure:
-> 
-> - WILLNEED: Buffer is needed and should not be purged. If the BO was
->   previously purged, retained field returns 0 indicating backing store
->   was lost (once purged, always purged semantics matching i915).
-> 
-> - DONTNEED: Buffer is not currently needed and may be purged by the
->   kernel under memory pressure to free resources. Only applies to
->   non-shared BOs.
-> 
-> The implementation includes a 'retained' output field (matching i915's
-> drm_i915_gem_madvise.retained) that indicates whether the BO's backing
-> store still exists (1) or has been purged (0).
-> 
-> v2:
->   - Update UAPI documentation to clarify retained must be initialized
->     to 0(Thomas)
+--===============1466344903072050416==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This should be a sync with a kernel commit from drm-next,
-see git log.
+== Series Details ==
 
-Regards,
-Kamil
+Series: lib/intel_pat: Handle platforms without compressed PAT index
+URL   : https://patchwork.freedesktop.org/series/161756/
+State : success
 
-> 
-> Cc: Nishit Sharma <nishit.sharma@intel.com>
-> Cc: Pravalika Gurram <pravalika.gurram@intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-> Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
-> ---
->  include/drm-uapi/xe_drm.h | 44 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 44 insertions(+)
-> 
-> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 077e66a68..3dd1ba875 100644
-> --- a/include/drm-uapi/xe_drm.h
-> +++ b/include/drm-uapi/xe_drm.h
-> @@ -2099,6 +2099,7 @@ struct drm_xe_madvise {
->  #define DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC	0
->  #define DRM_XE_MEM_RANGE_ATTR_ATOMIC		1
->  #define DRM_XE_MEM_RANGE_ATTR_PAT		2
-> +#define DRM_XE_VMA_ATTR_PURGEABLE_STATE		3
->  	/** @type: type of attribute */
->  	__u32 type;
->  
-> @@ -2189,6 +2190,49 @@ struct drm_xe_madvise {
->  			/** @pat_index.reserved: Reserved */
->  			__u64 reserved;
->  		} pat_index;
-> +
-> +		/**
-> +		 * @purge_state_val: Purgeable state configuration
-> +		 *
-> +		 * Used when @type == DRM_XE_VMA_ATTR_PURGEABLE_STATE.
-> +		 *
-> +		 * Configures the purgeable state of buffer objects in the specified
-> +		 * virtual address range. This allows applications to hint to the kernel
-> +		 * about bo's usage patterns for better memory management.
-> +		 *
-> +		 * Supported values for @purge_state_val.val:
-> +		 *  - DRM_XE_VMA_PURGEABLE_STATE_WILLNEED (0): Marks BO as needed.
-> +		 *    If BO was purged, returns retained=0 (backing store lost).
-> +		 *
-> +		 *  - DRM_XE_VMA_PURGEABLE_STATE_DONTNEED (1): Hints that BO is not
-> +		 *    currently needed. Kernel may purge it under memory pressure.
-> +		 *    Only applies to non-shared BOs. Returns retained=1 if not purged.
-> +		 */
-> +		struct {
-> +#define DRM_XE_VMA_PURGEABLE_STATE_WILLNEED	0
-> +#define DRM_XE_VMA_PURGEABLE_STATE_DONTNEED	1
-> +			/** @purge_state_val.val: value for DRM_XE_VMA_ATTR_PURGEABLE_STATE */
-> +			__u32 val;
-> +
-> +			/* @purge_state_val.pad */
-> +			__u32 pad;
-> +			/**
-> +			 * @purge_state_val.retained: Pointer to output field for backing
-> +			 * store status.
-> +			 *
-> +			 * Userspace must initialize this u32 field to 0 before the
-> +			 * ioctl. Kernel writes to it after the operation:
-> +			 * - 1 if backing store exists (not purged)
-> +			 * - 0 if backing store was purged
-> +			 *
-> +			 * If userspace fails to initialize to 0, ioctl returns -EINVAL.
-> +			 * This ensures a safe default (0 = assume purged) if kernel
-> +			 * cannot write the result.
-> +			 *
-> +			 * Similar to i915's drm_i915_gem_madvise.retained field.
-> +			 */
-> +			__u64 retained;
-> +		} purge_state_val;
->  	};
->  
->  	/** @reserved: Reserved */
-> -- 
-> 2.43.0
-> 
+== Summary ==
+
+CI Bug Log - changes from IGT_8758 -> IGTPW_14567
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/index.html
+
+Participating hosts (43 -> 40)
+------------------------------
+
+  Missing    (3): bat-dg2-13 bat-jsl-1 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14567 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@info:
+    - fi-ivb-3770:        [PASS][1] -> [SKIP][2] ([i915#1849])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8758/fi-ivb-3770/igt@fbdev@info.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/fi-ivb-3770/igt@fbdev@info.html
+
+  * igt@fbdev@read:
+    - fi-ivb-3770:        [PASS][3] -> [SKIP][4] +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8758/fi-ivb-3770/igt@fbdev@read.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/fi-ivb-3770/igt@fbdev@read.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-9:          [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8758/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8758/bat-mtlp-8/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [DMESG-FAIL][9] ([i915#12061]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8758/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-9:         [DMESG-FAIL][11] ([i915#12061]) -> [PASS][12] +1 other test pass
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8758/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8758 -> IGTPW_14567
+
+  CI-20190529: 20190529
+  CI_DRM_18003: fc9512d31fa2c190f58c85dbdf7313d2d0ad4b0d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14567: 40704d87ff91f1ce0ff2ae0d0e9e26a70ceb8b1a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8758: 8758
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/index.html
+
+--===============1466344903072050416==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/intel_pat: Handle platforms without compressed PAT index</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161756/">https://patchwork.freedesktop.org/series/161756/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8758 -&gt; IGTPW_14567</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/index.html</p>
+<h2>Participating hosts (43 -&gt; 40)</h2>
+<p>Missing    (3): bat-dg2-13 bat-jsl-1 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14567 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@info:</p>
+<ul>
+<li>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8758/fi-ivb-3770/igt@fbdev@info.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/fi-ivb-3770/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@fbdev@read:</p>
+<ul>
+<li>fi-ivb-3770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8758/fi-ivb-3770/igt@fbdev@read.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/fi-ivb-3770/igt@fbdev@read.html">SKIP</a> +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8758/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8758/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8758/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8758/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14567/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8758 -&gt; IGTPW_14567</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18003: fc9512d31fa2c190f58c85dbdf7313d2d0ad4b0d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14567: 40704d87ff91f1ce0ff2ae0d0e9e26a70ceb8b1a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8758: 8758</p>
+
+</body>
+</html>
+
+--===============1466344903072050416==--
