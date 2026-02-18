@@ -4,60 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88CB3E9A047
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Feb 2026 11:09:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 785BCE9A03B
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Feb 2026 11:22:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1F48589F71;
-	Wed, 18 Feb 2026 11:09:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 18E4E10E5AB;
+	Wed, 18 Feb 2026 11:22:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c8ortgjU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LNwrmZUf";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 85C6189F71
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Feb 2026 11:09:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 605CE10E5A7
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Feb 2026 11:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771412984; x=1802948984;
+ t=1771413761; x=1802949761;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=/vs6Cd7GHblBvhVg8Ql7A9ZYyRMFq+ZCDaNrRif1N+4=;
- b=c8ortgjU/X5+jCr4QNuRJvk7vB6rlEfEsUqrRyiXJhaBsgEG0wrz6q4E
- gUulwxFAwQHt5ti9st30a5n29LtZrDjLSpRoDVSO1bpARB4yQDZFpUvxv
- dxpbRGSR/52ssT5TnPbEqpZ1bscM/rK8wxJPFwA/MVTRXX6NmiLCvQpdR
- 9CDCkFZEfvLrQ2zxdGbcq3id/y5xRKxBrgrkwbhkFU80M0VwjxcvvfrnY
- V77jUjIvlALpj7FNbiZ15w09CEjnS4iYTx7MgRn3MG/HjzH6C9KoGzrj1
- hrjbsyC4Fh96f1KJSMHA+nwpaebEpeHwTazZe39piA0QEIGZry3JLi5T9 Q==;
-X-CSE-ConnectionGUID: i8uU6ILIQg++3Eh27r50Lg==
-X-CSE-MsgGUID: JJ5/GI1sSqGtxXV+pyJgQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="71506955"
-X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; d="scan'208";a="71506955"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=to1vt9D+INYvI5iUJgoBxy/fZbomxrScEtewZ1iziqU=;
+ b=LNwrmZUfRO/Ww8eAocW3H+G683uF3Cgw2bbj9/Bxzyj8q7MOMkNW5r6M
+ 9zz8y+oZE8TTb3p5NVVuMWM+rH7mWZIxu08fhyDzhplCLv1jJ/61Lu5W8
+ xetceihcXjfBxKXiq/iD/Z+zF39E3Dcb6eG8MVUdbmIB/cYKr9ddPibqL
+ 6+0ooiXdqCtjMS3cvf9SGGGM5+7DS84VUTE/yurpPsO814UFSWgzzQ+RA
+ wj4Moh7mmYL+LfdGbdy1KtAJTPRl5rmtMnUrA3D2+K+JmrSo78CIteZDA
+ jpmargofIvMj0utt6nFUPJaMUKnyJ4Q5vlsEeRdS/ajUkPwVZOtN/S8fX A==;
+X-CSE-ConnectionGUID: aDL5xBoPRdOErKQPBbzGPg==
+X-CSE-MsgGUID: wq+x7HpwQBe0rMfxbF/71w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="71508107"
+X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; d="scan'208";a="71508107"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2026 03:09:44 -0800
-X-CSE-ConnectionGUID: lvF8X2HKQ6aJEZXwroTE5w==
-X-CSE-MsgGUID: 59e8LgiQSKqTEj9JT+K2MQ==
+ 18 Feb 2026 03:22:41 -0800
+X-CSE-ConnectionGUID: G+NwH8R+SpqcxvtubYt6GQ==
+X-CSE-MsgGUID: eAAN1Tb7QHK8pLXTsVcNJw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; d="scan'208";a="218694099"
+X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; d="scan'208";a="214278402"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2026 03:09:43 -0800
-Date: Wed, 18 Feb 2026 12:09:40 +0100
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2026 03:22:39 -0800
+Date: Wed, 18 Feb 2026 12:22:36 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: priyanka.dandamudi@intel.com
-Cc: zbigniew.kempczynski@intel.com, matthew.auld@intel.com,
- igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 5/5] tests/intel/xe_pat: Validate XA App Transient
- feature
-Message-ID: <20260218110940.lz7bs4nwftwmsxpy@kamilkon-DESK.igk.intel.com>
+To: Arvind Yadav <arvind.yadav@intel.com>
+Cc: igt-dev@lists.freedesktop.org, matthew.brost@intel.com,
+ himal.prasad.ghimiray@intel.com, thomas.hellstrom@linux.intel.com,
+ nishit.sharma@intel.com, pravalika.gurram@intel.com
+Subject: Re: [PATCH i-g-t v3 1/8] drm-uapi/xe_drm: Add UAPI support for
+ purgeable buffer objects
+Message-ID: <20260218112236.rjnw2lmhvlv3r3de@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- priyanka.dandamudi@intel.com, zbigniew.kempczynski@intel.com,
- matthew.auld@intel.com, igt-dev@lists.freedesktop.org
-References: <20260213084603.1404162-1-priyanka.dandamudi@intel.com>
- <20260213084603.1404162-6-priyanka.dandamudi@intel.com>
+ Arvind Yadav <arvind.yadav@intel.com>,
+ igt-dev@lists.freedesktop.org, matthew.brost@intel.com,
+ himal.prasad.ghimiray@intel.com, thomas.hellstrom@linux.intel.com,
+ nishit.sharma@intel.com, pravalika.gurram@intel.com
+References: <20260217023423.2632617-1-arvind.yadav@intel.com>
+ <20260217023423.2632617-2-arvind.yadav@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260213084603.1404162-6-priyanka.dandamudi@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260217023423.2632617-2-arvind.yadav@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,57 +77,114 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi priyanka.dandamudi,
-On 2026-02-13 at 14:16:03 +0530, priyanka.dandamudi@intel.com wrote:
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Hi Arvind,
+On 2026-02-17 at 08:04:12 +0530, Arvind Yadav wrote:
+> From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 > 
-> Test the scenarios when media is on/off.
-> When media is off/on, for xa app transient buffer, data should be coherent
-> between cpu and gpu. Coherency should be maintained from KMD side
-> irrespective of media engine on/off.
+> Extend the DRM_XE_MADVISE ioctl to support purgeable buffer object
+> management by adding DRM_XE_VMA_ATTR_PURGEABLE_STATE attribute type.
 > 
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> ---
->  tests/intel/xe_pat.c | 101 +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 101 insertions(+)
+> This allows userspace applications to provide memory usage hints to
+> the kernel for better memory management under pressure:
 > 
-> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-> index f2dff62a9..30e427634 100644
-> --- a/tests/intel/xe_pat.c
-> +++ b/tests/intel/xe_pat.c
-> @@ -19,16 +19,24 @@
->  #include "intel_blt.h"
->  #include "intel_mocs.h"
->  #include "intel_pat.h"
-> +#include "igt_configfs.h"
-> +#include "igt_device.h"
-> +#include "igt_fs.h"
-> +#include "igt_kmod.h"
-> +#include "igt_sysfs.h"
+> This allows userspace applications to provide memory usage hints to
+> the kernel for better memory management under pressure:
+> 
+> - WILLNEED: Buffer is needed and should not be purged. If the BO was
+>   previously purged, retained field returns 0 indicating backing store
+>   was lost (once purged, always purged semantics matching i915).
+> 
+> - DONTNEED: Buffer is not currently needed and may be purged by the
+>   kernel under memory pressure to free resources. Only applies to
+>   non-shared BOs.
+> 
+> The implementation includes a 'retained' output field (matching i915's
+> drm_i915_gem_madvise.retained) that indicates whether the BO's backing
+> store still exists (1) or has been purged (0).
+> 
+> v2:
+>   - Update UAPI documentation to clarify retained must be initialized
+>     to 0(Thomas)
 
-Please keep them sorted, they should be before intel_ ones,
-not here.
-
->  #include "linux_scaffold.h"
->  
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
->  #include "xe/xe_util.h"
-> +#include "xe/xe_gt.h"
-
-Same here, move before xe/xe_ioctl.h
+This should be a sync with a kernel commit from drm-next,
+see git log.
 
 Regards,
 Kamil
 
-
+> 
+> Cc: Nishit Sharma <nishit.sharma@intel.com>
+> Cc: Pravalika Gurram <pravalika.gurram@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+> Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
+> ---
+>  include/drm-uapi/xe_drm.h | 44 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 44 insertions(+)
+> 
+> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+> index 077e66a68..3dd1ba875 100644
+> --- a/include/drm-uapi/xe_drm.h
+> +++ b/include/drm-uapi/xe_drm.h
+> @@ -2099,6 +2099,7 @@ struct drm_xe_madvise {
+>  #define DRM_XE_MEM_RANGE_ATTR_PREFERRED_LOC	0
+>  #define DRM_XE_MEM_RANGE_ATTR_ATOMIC		1
+>  #define DRM_XE_MEM_RANGE_ATTR_PAT		2
+> +#define DRM_XE_VMA_ATTR_PURGEABLE_STATE		3
+>  	/** @type: type of attribute */
+>  	__u32 type;
 >  
->  #define XE_COH_NONE          1
->  #define XE_COH_AT_LEAST_1WAY 2
+> @@ -2189,6 +2190,49 @@ struct drm_xe_madvise {
+>  			/** @pat_index.reserved: Reserved */
+>  			__u64 reserved;
+>  		} pat_index;
+> +
+> +		/**
+> +		 * @purge_state_val: Purgeable state configuration
+> +		 *
+> +		 * Used when @type == DRM_XE_VMA_ATTR_PURGEABLE_STATE.
+> +		 *
+> +		 * Configures the purgeable state of buffer objects in the specified
+> +		 * virtual address range. This allows applications to hint to the kernel
+> +		 * about bo's usage patterns for better memory management.
+> +		 *
+> +		 * Supported values for @purge_state_val.val:
+> +		 *  - DRM_XE_VMA_PURGEABLE_STATE_WILLNEED (0): Marks BO as needed.
+> +		 *    If BO was purged, returns retained=0 (backing store lost).
+> +		 *
+> +		 *  - DRM_XE_VMA_PURGEABLE_STATE_DONTNEED (1): Hints that BO is not
+> +		 *    currently needed. Kernel may purge it under memory pressure.
+> +		 *    Only applies to non-shared BOs. Returns retained=1 if not purged.
+> +		 */
+> +		struct {
+> +#define DRM_XE_VMA_PURGEABLE_STATE_WILLNEED	0
+> +#define DRM_XE_VMA_PURGEABLE_STATE_DONTNEED	1
+> +			/** @purge_state_val.val: value for DRM_XE_VMA_ATTR_PURGEABLE_STATE */
+> +			__u32 val;
+> +
+> +			/* @purge_state_val.pad */
+> +			__u32 pad;
+> +			/**
+> +			 * @purge_state_val.retained: Pointer to output field for backing
+> +			 * store status.
+> +			 *
+> +			 * Userspace must initialize this u32 field to 0 before the
+> +			 * ioctl. Kernel writes to it after the operation:
+> +			 * - 1 if backing store exists (not purged)
+> +			 * - 0 if backing store was purged
+> +			 *
+> +			 * If userspace fails to initialize to 0, ioctl returns -EINVAL.
+> +			 * This ensures a safe default (0 = assume purged) if kernel
+> +			 * cannot write the result.
+> +			 *
+> +			 * Similar to i915's drm_i915_gem_madvise.retained field.
+> +			 */
+> +			__u64 retained;
+> +		} purge_state_val;
+>  	};
 >  
->  static bool do_slow_check;
-> +static char bus_addr[NAME_MAX];
-> +static struct pci_device *pci_dev;
-
-[cut]
-
+>  	/** @reserved: Reserved */
+> -- 
+> 2.43.0
+> 
