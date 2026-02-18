@@ -4,52 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6100E9A03B
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Feb 2026 10:40:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 564C8E9A047
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Feb 2026 11:01:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6CC0E10E158;
-	Wed, 18 Feb 2026 10:40:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 044E610E5A3;
+	Wed, 18 Feb 2026 11:01:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DtwbFNhf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="htEdY1V5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C61110E158
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Feb 2026 10:40:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E2BEA10E5A3
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Feb 2026 11:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771411241; x=1802947241;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=lyqmHsCc313uNBwyzxvcfCldLFk6mKwtoqHYDeumApE=;
- b=DtwbFNhfk67BTAqFP+rjFeK9XOd8hu3SOMCNw2hvCB/fIBy7JHGtJsXZ
- 1CMN6l5GV4vWiQVK+0sJiD6xVVpuW1nvB2YLAq0TDdIibk7x+TAFZqM6Z
- ZNFYEv94qjMLa7btcT/t5bx9KPse7HY/Emg9y7gPOgsnCnbO8YyCXuZac
- yOpqzPfWp0yhUZaCF45wXnuU01ImseUNCmiqbyhguFU2rCH/GAxrwcGM8
- Ble6LwQOb+HXgubJwx9C+ENLkE9vNGZ+MHYzh1MK/eNgSyEl6VeuWlYhB
- TZ7257HyFXjDa8ppkCUYJw2ws7Zb30U+X145NU+kNFD1T+rfdygh+Xj9g w==;
-X-CSE-ConnectionGUID: mgC+tFHrTyqmfjRt9KZDBg==
-X-CSE-MsgGUID: s7n7hl7CSS+vSQtOdZnu4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="76344960"
-X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; d="scan'208";a="76344960"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2026 02:40:40 -0800
-X-CSE-ConnectionGUID: eQD3H+1iT7WnXtLOgHcthA==
-X-CSE-MsgGUID: amAlRrmIQgeuAPcLI21YDQ==
+ t=1771412489; x=1802948489;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=JkyBIVbBnhlG8d515odSBNY+Dh5V5QdTkeCT7Arl+bk=;
+ b=htEdY1V56TuzkzuzGiH3EQgi+O+yZf4Wxe8P1PoMeTA+NMYqelwXQRLq
+ 5OGHbpLZAnbg3U3MqWHU9yfJ4ZM+B3DCmZ/Q2hgYp9dmcnRux8xGUdkpp
+ iyTMQyW7IxeNZjFJv5gVDHtAdP0PRUTuJ7Po9o28YiSoPncU+30WemHae
+ cbPK4Xin0B9OTCV0hit1zoILNfw/Jxx5oi1uv2m42uevZ+SDpxP/i/E/b
+ l4KED1ffIVRAcPg9SNPcgc0KLKa1lUYGUjrWlQ+KQLPTLfeKEiivxzy67
+ Y7XYcRkC4b62+NI/AsTLe4W8VqZVpAH0noWdX8v8bk4CcXSisuKbyKuKM w==;
+X-CSE-ConnectionGUID: buZwf8ieRQSsNxtkVi7lVg==
+X-CSE-MsgGUID: xmsmGzuxT7K6rb9lZOTeTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="72576545"
+X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; d="scan'208";a="72576545"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Feb 2026 03:01:29 -0800
+X-CSE-ConnectionGUID: kklNjCaMRkmTaX6RGOq9JQ==
+X-CSE-MsgGUID: S5YZWXgRSVKRBdVya9uR2w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; d="scan'208";a="214148718"
-Received: from yadavs-z690i-a-ultra-plus.iind.intel.com ([10.190.216.90])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2026 02:40:38 -0800
-From: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: matthew.auld@intel.com
-Subject: [PATCH] lib/intel_pat: Handle platforms without compressed PAT index
-Date: Wed, 18 Feb 2026 16:06:09 +0530
-Message-ID: <20260218103608.2015045-2-sanjay.kumar.yadav@intel.com>
-X-Mailer: git-send-email 2.52.0
+X-IronPort-AV: E=Sophos;i="6.21,298,1763452800"; d="scan'208";a="251857541"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Feb 2026 03:01:27 -0800
+Date: Wed, 18 Feb 2026 12:01:07 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Mohammed Bilal <mohammed.bilal@intel.com>
+Cc: igt-dev@lists.freedesktop.org, jeevan.b@intel.com,
+ kunal1.joshi@intel.com, sameer.lattannavar@intel.com,
+ sebastian.brzezinka@intel.com
+Subject: Re: [PATCH v1 1/2] tests/kms_vrr: Skip LOBF test when aux-less ALPM
+ is not enabled
+Message-ID: <20260218110107.5huxxdkxor5ywvfh@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Mohammed Bilal <mohammed.bilal@intel.com>,
+ igt-dev@lists.freedesktop.org, jeevan.b@intel.com,
+ kunal1.joshi@intel.com, sameer.lattannavar@intel.com,
+ sebastian.brzezinka@intel.com
+References: <20260218080511.2534901-1-mohammed.bilal@intel.com>
+ <20260218080511.2534901-2-mohammed.bilal@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260218080511.2534901-2-mohammed.bilal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,126 +76,107 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Previously intel_get_pat_idx_uc_comp() would silently return zero on
-platforms where no compressed PAT index exists (e.g. CRI),
-since uc_comp was zero-initialized by default. This could lead to
-incorrect behavior when callers assume the returned index is valid.
+Hi Mohammed,
+On 2026-02-18 at 13:34:34 +0530, Mohammed Bilal wrote:
+> LOBF can operate in either Aux-less or Aux-wake ALPM modes. However,
 
-Fix this by:
-- Adding XE_PAT_IDX_INVALID sentinel to detect unsupported platforms
-- Initializing uc_comp to XE_PAT_IDX_INVALID in intel_get_pat_idx();
-  only platforms with CCS (graphics_ver 20/30) override it to a valid
-  index
-- Adding igt_assert_f() in intel_get_pat_idx_uc_comp() to fail with
-  a clear error instead of returning an invalid index
+Please decipher here what ALPM is, my guess after googling:
+Aggressive Link Power Management (ALPM)
 
-Also update the bo-comp-disable-bind test to distinguish between "CCS
-is disabled" and "CCS does not exist" using HAS_FLATCCS(). On platforms
-without CCS, the compressed PAT bind check is skipped since there is no
-valid compressed PAT index to test with.
+> due to uncertainty around eDP version dependency and its impact
+> on LOBF execution, we currently restrict the test to run only when
+> Aux-less ALPM is enabled to avoid unexpected failures.
+> 
+> Add a helper to read the Aux-less ALPM status from debugfs and
+> skip the LOBF subtest when Aux-less ALPM is not enabled
+> on the panel, ensuring proper skip behavior and preventing
+> false negatives on unsupported configurations.
+> 
+> Signed-off-by: Mohammed Bilal <mohammed.bilal@intel.com>
+> ---
+>  lib/igt_kms.c   | 28 ++++++++++++++++++++++++++++
+>  lib/igt_kms.h   |  1 +
+>  tests/kms_vrr.c |  6 ++++++
+>  3 files changed, 35 insertions(+)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 5c4879604..48684b4b3 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -6578,6 +6578,34 @@ bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name)
+>  	return strstr(buf, "LOBF status: enabled");
+>  }
+>  
+> +/**
+> + * igt_get_aux_less_alpm_status
+> + * @drmfd: A drm file descriptor
+> + * @connector_name: Name of the libdrm connector we're going to use
+> + *
+> + * Check if Aux-less ALPM mode is enabled by reading
 
-Suggested-by: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
----
- lib/intel_pat.c      |  5 +++++
- lib/intel_pat.h      |  1 +
- tests/intel/xe_pat.c | 30 ++++++++++++++++++++++--------
- 3 files changed, 28 insertions(+), 8 deletions(-)
+Here also, write full name and then use shortcut for ALPM,
+for example:
 
-diff --git a/lib/intel_pat.c b/lib/intel_pat.c
-index 9815efc18..d30bee453 100644
---- a/lib/intel_pat.c
-+++ b/lib/intel_pat.c
-@@ -98,6 +98,8 @@ static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
- {
- 	uint16_t dev_id = intel_get_drm_devid(fd);
- 
-+	pat->uc_comp = XE_PAT_IDX_INVALID;
-+
- 	if (intel_graphics_ver(dev_id) == IP_VER(35, 11)) {
- 		pat->uc = 3;
- 		pat->wb = 2;
-@@ -155,8 +157,11 @@ uint8_t intel_get_pat_idx_uc_comp(int fd)
- 	uint16_t dev_id = intel_get_drm_devid(fd);
- 
- 	igt_assert(intel_gen(dev_id) >= 20);
-+	igt_assert(HAS_FLATCCS(dev_id));
- 
- 	intel_get_pat_idx(fd, &pat);
-+	igt_assert_f(pat.uc_comp != XE_PAT_IDX_INVALID,
-+		     "No compressed PAT index available on this platform\n");
- 	return pat.uc_comp;
- }
- 
-diff --git a/lib/intel_pat.h b/lib/intel_pat.h
-index e9ade2e2e..e5dd8a0af 100644
---- a/lib/intel_pat.h
-+++ b/lib/intel_pat.h
-@@ -10,6 +10,7 @@
- #include <stdint.h>
- 
- #define DEFAULT_PAT_INDEX ((uint8_t)-1) /* igt-core can pick 1way or better */
-+#define XE_PAT_IDX_INVALID ((uint8_t)-2) /* no such PAT index on this platform */
- #define XE_PAT_MAX_ENTRIES 32
- 
- struct xe_pat_entry {
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index 21547c84e..052b7b699 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -844,15 +844,18 @@ static bool has_no_compression_hint(int fd)
-  * Test category: functionality test
-  * Description: Validates that binding a BO created with
-  * the NO_COMPRESSION flag using a compressed PAT index fails
-- * with -EINVAL on Xe2+ platforms.
-+ * with -EINVAL on Xe2+ platforms. On platforms where CCS
-+ * does not exist, the test verifies uncompressed access works.
-  */
- 
- static void bo_comp_disable_bind(int fd)
- {
- 	size_t size = xe_get_default_alignment(fd);
--	uint8_t comp_pat_index, uncomp_pat_index;
--	bool supported;
-+	uint16_t dev_id = intel_get_drm_devid(fd);
-+	bool has_flatccs = HAS_FLATCCS(dev_id);
-+	uint8_t uncomp_pat_index;
- 	uint32_t vm, bo;
-+	bool supported;
- 	int ret;
- 
- 	supported = has_no_compression_hint(fd);
-@@ -868,14 +871,25 @@ static void bo_comp_disable_bind(int fd)
- 	igt_assert_eq(ret, 0);
- 	vm = xe_vm_create(fd, 0, 0);
- 
--	comp_pat_index = intel_get_pat_idx_uc_comp(fd);
- 	uncomp_pat_index = intel_get_pat_idx_uc(fd);
- 
--	igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x100000,
--				   size, 0, 0, NULL, 0,
--				   0, comp_pat_index, 0),
--		      -EINVAL);
-+	/*
-+	 * On platforms with CCS, binding a NO_COMPRESSION BO with a
-+	 * compressed PAT index must fail. On platforms without CCS,
-+	 * there is no valid compressed PAT index, so skip this check.
-+	 */
-+	if (has_flatccs) {
-+		uint8_t comp_pat_index = intel_get_pat_idx_uc_comp(fd);
-+
-+		igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x100000,
-+					   size, 0, 0, NULL, 0,
-+					   0, comp_pat_index, 0),
-+			      -EINVAL);
-+	} else {
-+		igt_debug("Platform has no CCS, skipping compressed PAT bind check\n");
-+	}
- 
-+	/* Uncompressed bind must always succeed */
- 	igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x100000,
- 				   size, 0, 0, NULL, 0,
- 				   0, uncomp_pat_index, 0),
--- 
-2.52.0
+ * Check if Aux-less Aggressive Link Power Management (ALPM)
+ * mode is enabled by reading ....
 
+Regards,
+Kamil
+
+> + * the i915_edp_lobf_info debugfs.
+> + *
+> + * Return: True if aux-less ALPM is enabled.
+> + */
+> +bool igt_get_aux_less_alpm_status(int drmfd, char *connector_name)
+> +{
+> +	char buf[256];
+> +	int fd, res;
+> +
+> +	fd = igt_debugfs_connector_dir(drmfd, connector_name, O_RDONLY);
+> +	if (fd < 0)
+> +		return false;
+> +
+> +	res = igt_debugfs_simple_read(fd, "i915_edp_lobf_info", buf, sizeof(buf));
+> +	close(fd);
+> +
+> +	if (res <= 0)
+> +		return false;
+> +
+> +	return strstr(buf, "Aux-less alpm status: enabled") != NULL;
+> +}
+> +
+>  /**
+>   * igt_get_output_max_bpc:
+>   * @drmfd: A drm file descriptor
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index dedc3f880..a1f52f452 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -1257,6 +1257,7 @@ bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display);
+>  bool igt_fit_modes_in_bw(igt_display_t *display);
+>  bool igt_has_lobf_debugfs(int drmfd, igt_output_t *output);
+>  bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name);
+> +bool igt_get_aux_less_alpm_status(int drmfd, char *connector_name);
+>  unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name);
+>  unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe);
+>  void igt_assert_output_bpc_equal(int drmfd, enum pipe pipe,
+> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+> index 811596ec2..e46e98727 100644
+> --- a/tests/kms_vrr.c
+> +++ b/tests/kms_vrr.c
+> @@ -1013,6 +1013,12 @@ static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags
+>  			return false;
+>  		}
+>  
+> +		if (!igt_get_aux_less_alpm_status(data->drm_fd, output->name)) {
+> +			igt_info("%s: Aux-less ALPM not enabled, LOBF not supported.\n",
+> +				 igt_output_name(output));
+> +			return false;
+> +		}
+> +
+>  		if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL) ||
+>  		    psr_sink_support(data->drm_fd, data->debugfs_fd, PR_MODE, NULL))
+>  			psr_disable(data->drm_fd, data->debugfs_fd, NULL);
+> -- 
+> 2.48.1
+> 
