@@ -4,198 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F1E8E9A03B
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Feb 2026 05:01:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9661E9A03B
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Feb 2026 05:16:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 05A0C10E679;
-	Thu, 19 Feb 2026 05:01:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 48CA710E130;
+	Thu, 19 Feb 2026 05:16:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y7o2dv16";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="gf+pn8rB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 302C910E679
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Feb 2026 05:01:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771477280; x=1803013280;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=+pBge1+IL5iY+MIOM59h4DJK0HUDDGB+KFf1h02wWr8=;
- b=Y7o2dv16Uvxi2+ZWGzWKWBrVLxYcMmwwXGsIRu/LSYr5oVkwvMHsjzrI
- km6BdqDBAns8rnPg0hudxaoaqUQfyr+1gdjXzS886TkZ0rECpPhyMQfgR
- aMOn5wgciS9IastpisyahPtl7vPDsQGBtqCuuEM5XqCqPzzsOxpSbhtvg
- mDOXtpFstrIo8D9/RDM17IKVvBhyyKJ0rLQqAdN9V8t4IlChS4N6Uy+ZJ
- R8qVwfbvvb/0rv7f9TV3xXtFPSRjhYM8Rv6FP6JE3S24j0AwzLzwvkkeW
- gQSgCDxc8I+HQNtNO/xpDeOE+BW0kuM3WPXaagL/6R6WvpEaadcIHdUwm w==;
-X-CSE-ConnectionGUID: 9VEqbgUCTf2XjUovqUrTfA==
-X-CSE-MsgGUID: pMIf1D21SqOJtXjxBi2TZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11705"; a="72738667"
-X-IronPort-AV: E=Sophos;i="6.21,299,1763452800"; d="scan'208";a="72738667"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2026 21:01:20 -0800
-X-CSE-ConnectionGUID: wg7Op3gRTTu5pg20/V1Ajg==
-X-CSE-MsgGUID: Vx8XZSbfTZS4QMB0dAoxsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,299,1763452800"; d="scan'208";a="213489585"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Feb 2026 21:01:19 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Wed, 18 Feb 2026 21:01:19 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Wed, 18 Feb 2026 21:01:19 -0800
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.62) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Wed, 18 Feb 2026 21:01:17 -0800
+Received: from PH0PR06CU001.outbound.protection.outlook.com
+ (mail-westus3azon11011030.outbound.protection.outlook.com [40.107.208.30])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCB0410E130
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Feb 2026 05:16:39 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AfGIKvInBMnC8W+3Y2PfO0qOvsOda1EI+C2sL5MScGFFzfGBPJUzC1LT1/Brvc6XRmab9pyQnJFUPM6Dx++e+RhCrvDxqR7ykg/RY7sRs7mi9rGfPWfdx83Fv7q68/WvUknxLNd3wPZnREUS8FX5tbPxdj+ixGZUU+GuiXTYvAZSDSJyfbFJGJfetLoGcl3UGUP/Dj4YmDANsUcN7+FIx/Zce1hSgK+ziENFLrOC+ZJXyHAV5zSqSLz+o/kFJvzPscQ5MbBkP6nd8A0WjBsUrbjgOy6UQQjm6EFt3lfGlPoPFZZY7uDKWIB7mTbtRXRAGfOfRwO/EByfvVptfdehng==
+ b=Hd/mfQAznQlZqShXn2HSXzvefrtGm13FPepdPLh7djy2E9fN5kFdRW/3tmDl36lnWTCRxF5mJbeTHTj/osdKZYWIfKm/fLDkSlL42dLNRFyj02QUTKfEOXqDqAFUkUxKBp8P0FpHix4HgC3UnA1y7l4PB1O3s21foFChIcqvpTcrjlBYcYiX9Ty67LteqIEo2KkljrsOSncZUCgTX3MV0uoh+Gq6nrQna8wHz0g/orUSMwzG8m8eJxGDEzyf33dWIFQ+yIkZ0/EDg/nXFBBVWEjq+oFU4aLmRR8HaTXOXM2VNJpxIvcK0DYcafb/NVDZb9FATYzg/A9fHUBXU2cgKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+pBge1+IL5iY+MIOM59h4DJK0HUDDGB+KFf1h02wWr8=;
- b=UJoJQWvjjK275OWBp2ZqQy4EABQg7gw6VB5KyaCw3PO8f59XXJKQ8CIwS0/00jFWfieoOe1TbFYpHFFPO7lBC53d+H8wCIatoOiA6ZmyOke4nKHJ29xwsgO/Gw6x+WT0IicgcRlR8gC3rn8f1P9iVnfBICsZDEQGIgT7htxleaS0bmMDCXQJyS96j7OQj/ObV3IkyLCODK62OTtkRw2IFfD+2gW0y5BITBn+ig2WkdoW8nSousB7LFAK0Pbwn8kSbcc2jk6prFZh1Fjr4vApLRKKEYl6vmAr8KQJCsfeYnmE47ICibpnDaWt0qcv9jBbYU8fkbp2ixDjfmsT4GRXJQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BL1PR11MB5525.namprd11.prod.outlook.com (2603:10b6:208:31f::10)
- by SJ0PR11MB5133.namprd11.prod.outlook.com (2603:10b6:a03:2ac::24)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.15; Thu, 19 Feb
- 2026 05:01:10 +0000
-Received: from BL1PR11MB5525.namprd11.prod.outlook.com
- ([fe80::7181:6f6e:ae0e:3a4a]) by BL1PR11MB5525.namprd11.prod.outlook.com
- ([fe80::7181:6f6e:ae0e:3a4a%5]) with mapi id 15.20.9632.015; Thu, 19 Feb 2026
- 05:01:10 +0000
-From: "Gurram, Pravalika" <pravalika.gurram@intel.com>
-To: "Yadav, Arvind" <arvind.yadav@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-CC: "Brost, Matthew" <matthew.brost@intel.com>, "Ghimiray, Himal Prasad"
- <himal.prasad.ghimiray@intel.com>, "thomas.hellstrom@linux.intel.com"
- <thomas.hellstrom@linux.intel.com>, "Sharma, Nishit"
- <nishit.sharma@intel.com>
-Subject: RE: [PATCH i-g-t v3 4/8] tests/intel/xe_madvise: Add
- dontneed-after-mmap subtest
-Thread-Topic: [PATCH i-g-t v3 4/8] tests/intel/xe_madvise: Add
- dontneed-after-mmap subtest
-Thread-Index: AQHcn7Ylj2e7iacx0UKoOR9eoB6OebWJeYrQ
-Date: Thu, 19 Feb 2026 05:01:10 +0000
-Message-ID: <BL1PR11MB55259C519FCDBF2C9EBB0E0C846BA@BL1PR11MB5525.namprd11.prod.outlook.com>
-References: <20260217023423.2632617-1-arvind.yadav@intel.com>
- <20260217023423.2632617-5-arvind.yadav@intel.com>
-In-Reply-To: <20260217023423.2632617-5-arvind.yadav@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR11MB5525:EE_|SJ0PR11MB5133:EE_
-x-ms-office365-filtering-correlation-id: ea19cfe2-41d5-4251-c0e0-08de6f73e638
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|366016|376014|7053199007|38070700021; 
-x-microsoft-antispam-message-info: =?utf-8?B?Q09pZ2NJRTdvMnJVbGE3N3c1MW5nM0ZUeWNXZFlOM3BEV1ZnS0orajROUENG?=
- =?utf-8?B?aUNSL1FHOEptOTJlNUo0dGlTdW55Tzhlckxhd1lSZVJMNDZnSERKL2lQdkI3?=
- =?utf-8?B?UTZQSmRCQk9udDBZdkNPZ1MvcmxWZWFCT3JpTmRNeTNzZksvcmc5TllKMFE4?=
- =?utf-8?B?M2lUNE5Qek9iYVRHRFdJUWgwNk1IL2NsUW9sSTVUUUo3Z2R3WWlhRFY3ZUh0?=
- =?utf-8?B?TExxMytqOFFXcEJYbzhsSmZUMnJqclVYSEh2cnpKMWs0U1FEQTloaUlZM01K?=
- =?utf-8?B?NnA5NmxCQmdCNVNQcEdUZ3VTMkc0c2pOclg3d2ZMK3ZiK1BlblRLNjJQRmVs?=
- =?utf-8?B?b3JUbWtkNlhaRnJaWGhRYzE4SWwvdGFlWFhoWm4xV1ZwTzZZekM0d1o2ZFI2?=
- =?utf-8?B?OGhaL2djdUNoekorR05hTCs0b0MvMkxiOURRekY4YXlvTUFRUEJaamhVaGtw?=
- =?utf-8?B?czZXVnF2ZnFKemxIRXBVYWMwam5hYm56enIxVnZXekQ3ZGg0eUhxalU2c0Fy?=
- =?utf-8?B?QVhMYVMrTXZIMUR4V3FXU25sN0p5S0JIeU5qc1M2TGlDN0pPa3RqMWFLRGNV?=
- =?utf-8?B?Y0VkSkNRU1dGbDRBaXNVTHRtUkpidm1tUEpmRWpxNGJZRzhSYmkzQkNJa0ZX?=
- =?utf-8?B?eHVJN3J1YURlWjRyMzNXb3dFaFRjZkpoaWxZdjU4SWMyUXhCRUt3MGp6ZGZK?=
- =?utf-8?B?VUIyMGJkWWNUcFJGU01IZDFmdVZIZ3NBSm1xN000T2dTbDE3aDNtU3BWQy84?=
- =?utf-8?B?VVNXZ0lPOGV4MjE5UEo5QndralhFeFFZK2tPUTgvZU5tRkg0bFNnV3hjOXAv?=
- =?utf-8?B?MHBybmsyYVc0T2dVdWUrU2p2M2VEdFpIMlY5Y1RDYlV0ekFUZ1VaekJESUNL?=
- =?utf-8?B?Skp0UlJQV2Q1TzdqUEVuS0FmNSt0YStnb2ErdnI2emZqVmE1SUQyU0dVbjVr?=
- =?utf-8?B?bDU3M2JrOVpaak10Wi9tVE5HajF1cm9NNWNwSFJ0WVNZcFdQTlFoTjZ6NWJ0?=
- =?utf-8?B?YktFcGlMUzZoRS9oZ3FtQ1ZDUjRmaGZkUlIzR2FhRWtjZUJCM0xBeGNTNGt3?=
- =?utf-8?B?ZnBEdTVUR3VIbjc5ZGNaMnd3bS96NUdMZnIyVEZLVzJNVGVFYWNxK1R5YUI5?=
- =?utf-8?B?MTc1SWZZZWp5QlJ6Z0JFRU5oVDk1N1owWTR5eEZSVzJOMFRwTWdlTklEUWlo?=
- =?utf-8?B?MHhKV3VLZkxMN1RBYWpoVDRMY0R1M1hTYkNySkZDcEpYbzRpNUFDUTdUMjZy?=
- =?utf-8?B?WjNkcEIyMEVKUDkrbS84cy9vdHZoS2dJbVhMTVgvaFhHUFBuVGpSaUV3ZEpu?=
- =?utf-8?B?TFdOZUFEcmF0UUkzSC80QTk5Q2xUc0I3UWNXUXV6S2x6N2hXL0xiVEMwdE9Y?=
- =?utf-8?B?ZFFyU2pxOVltckZFN1dKR2hIT2NPM29KSWFlUGdVRHBWQm50aHFGYU5yZkky?=
- =?utf-8?B?akZzeWRhVTJKd1gwWjlrOWJ0alhhSUdxaXJNaTY1Y1FTWWhmNTJJYXVJZXhE?=
- =?utf-8?B?NFZJNWlCQ1lTZ2NkZStjY0FEbE1Ta0phR0tVQ2NySXk4TmttSWdLNmVoVk5Z?=
- =?utf-8?B?dnNOaXFUUUx2VWo0emwwRXBUMTR1eUVYZjNwY1BKOFl4Y0tzWk1ubGJ2S3Zo?=
- =?utf-8?B?WUJtTVhhcDNCQW5kM3huc2pnQjZqSDBXKzJCKzh3WlRrd2s5eEx1aHV1MnJG?=
- =?utf-8?B?L0NaSk5KNGlGUGp4R0J2SDVBcXU2V3BjSTllUkxXWGNXUlY3WktFL0xxWStJ?=
- =?utf-8?B?c01nR0xzNXBjTkFhRE5rekJvc1V3b3Rab1FuV0hOUnNlSWk4Q214WkFwOFNU?=
- =?utf-8?B?TDdSVDNRWElLNEkrRlgyaXoxWHBrNHpSWTYxK0ExVllWRUpFTDBNSGl4ekxY?=
- =?utf-8?B?Y1hvSG9ZZTdqclFUZG0zSXVMSk9ieTRIQ2F1VVVFajhBUisrVm9aM3c2M2l0?=
- =?utf-8?B?TTBOSGV0dkd2bnJ1MzcySmt5MWFqWkJJYXlmb0l5MFNBdnM3R3FBMUNtV3JL?=
- =?utf-8?B?aWdEaDcxTGRWdVkvdzhHeDFoOEowdWFkajJ6bTZnYjQ2RnlKYmFoY3h3VUIz?=
- =?utf-8?B?bFM5aWRUTi8xNm5keFZ6dXhScFZDYitZbEdqaERwYTdNZXQ3MmpGSTdRRFpY?=
- =?utf-8?B?cnFDMjZackswOVM3RVlUNEpzR3haL3ZlUlRhMjRXRDRldHBCdEM4MmZabWRC?=
- =?utf-8?Q?fYG6mw/Pj138Tv0rtHQwb1I=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL1PR11MB5525.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(7053199007)(38070700021); DIR:OUT;
- SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?SEswRkloVllramhtT2dzR0VqU2svT1UwTEdGM01pcVhGUDh4TTB3a0FWUmlI?=
- =?utf-8?B?ZDVtNHlYdFRNaHlFcUc2enU3Szl1TXhlYVhXc3JLdVdSVHpqeFFuSmZsS3A3?=
- =?utf-8?B?NXN6YWduOWN2azd0L1FNdkJuZXRyT3RoMmtYaXR3M3d2TGZLQkdIcGQwY01Z?=
- =?utf-8?B?bUxzbEx6NkVIQ2VxUWE3NEowWUNmOTd2dXpWRzFTV1M1VFRicXZjU1lRSURm?=
- =?utf-8?B?RHl0alZjTzhaTTZZY2NJc3RaWkhlakt4Z1NuRjRtMENpVVRnMkJ6L3pjd0lZ?=
- =?utf-8?B?TjhUSDQ5Q3Z6MVpvZVo4T043Sm5qejg4cURXOVIrL2hkaUpvYmIxUmhaZzlw?=
- =?utf-8?B?MWF4bHF1VE5pbU4vejBnMlJHa1VxM0FGMU4ycWp3Z2ZwZHV1ZnpFb3B2eWV5?=
- =?utf-8?B?SGFEOWluV1ZPY1ArSkdRQ3BQQTMyMFVRMWNMOG1LbmppbjAxaXZpUTdwOTJ6?=
- =?utf-8?B?QUlmeDMvVFFyQlJmOUwwdWtiaDF0TUxuV0ZWZ0lLMXZVc1pEZEduQ3RzMkRI?=
- =?utf-8?B?eE5xWVNRakxOMnpad29YRzdxUllJVGtLL1NlQmk0UnJkL1BqQWl5eDY4bjRN?=
- =?utf-8?B?TURCb3Nzc1B2WDhYNDNUbTVyRDc4VHU4NC83SzJWNFp4WGRESEQ3U1EwTXc1?=
- =?utf-8?B?dmlRdWxNSzl3TlI2S1V3NVVhTCtCUUFCeHV0c1dZMGhRMVp6RUV6dHgxbXdR?=
- =?utf-8?B?QVVKZnFUbGhOVldJWm93ZW5hbnREcXlZZ0ladkFPZ2pEcjg0VENFUXJCZzJu?=
- =?utf-8?B?SkdObXpoYS93SGtQVzVpeGJjK2RiT294U0t1T2FLdEIwdXNQZlp6Mk1FNHlz?=
- =?utf-8?B?aTE5VTZnOGxvS1QwalhVQ25XL3M0ZnBRSVUrT1VYRU9lYTNMSVRWanlOZC92?=
- =?utf-8?B?U1ZUYVd1SVdReU5YcFpVb1gwcXp5dkxUYk01RGh3dnNwY2dCWGlWUVhvelVJ?=
- =?utf-8?B?SlcyaEdVM2d2QWNUekFuVW5xeXV1QTBPelVqOXJEVFV6Z1JJYnQxcXE4TjBK?=
- =?utf-8?B?cUx6d2JxaXRNeEVDTUhLZG9yc2xlS2h3MHMzQUVMSlhlTWM0NmQvQ3JZYk1r?=
- =?utf-8?B?NE9oNDJFSngyM1pqK1ozTTM1VDlrU0cxRTRlSy9ZSmhDekpPM2NrRkQzbTBx?=
- =?utf-8?B?NEJGcisrMFRzQjVERTZRdkYwUHFzTnRGS1Uxdzd3eldqYWc0M3h4ditHR1ht?=
- =?utf-8?B?RmdpSEd1d3FZRUV3Y1NBMXJoWXNnV0ZVN1lzSDJFVFlHQzNVVjNkR00vbmZs?=
- =?utf-8?B?ZlFjZnJpQzZPR2JMTzFQbThSN2ozdXBuL0lIcUpKMmVtbGp0MU8rT2Y3azlE?=
- =?utf-8?B?Y0syUWRpV2QwTnhCMWtNaDFVQmwwNzlYR3A5QmIyaWtHNGducjBWc2Z4R3l5?=
- =?utf-8?B?d1EwVkJDYTdOcWxPNHQyd2pFcHlpckZ6V09NTkRDblZxYkVSOXhlRVNmS3A4?=
- =?utf-8?B?STRYckZmK2VJS2RaSVVOUVU0aThQaDFPUVBRQTJqd2ZyQ1BTQ3Q2MnY1K3NQ?=
- =?utf-8?B?NE9OUjdEMjFqTTYyVkV2bmdDTkVwTVJTNm5naVRZZUdicFhEeWkxaDJjcisx?=
- =?utf-8?B?MERxcXc4V09ybFlnRi9MN2hhVVVETWt1VXkxTDE2bEpPMGdzejhkdUVxekhZ?=
- =?utf-8?B?cVJyZDBneXN3TGNSR0pxV1FET2xNWFFBb2NqbHVSdS9kcHpxQUUvSjE0cXFn?=
- =?utf-8?B?dEs5b1h5dVlmaWRhSm1VU0NvaVB0eDZwTHVGbCtWSTlhb25pYldVbWt6WEt4?=
- =?utf-8?B?K0Y2SDh6REJDR3BHdVppMG9DZkdpY01zbzlBOHRReUg4SGR3bm5Zd2wzZVBH?=
- =?utf-8?B?T1p4WEtSMmdTUHdLTVlqR1psWktzcUQ5c0NHbmNBdlRqbW5Pb0p2aXJJYUVH?=
- =?utf-8?B?aGpndkFCUHVud1lqVE83NEZkZDJqaVRnM1BHaGgvZ2hRckdwUWVzL1gvTDdr?=
- =?utf-8?B?ZCtobDE0VVVBeUFkQTcvL2Q5N0VjRm53NWljNXV4YlNsRTFMZEpVSGI5UWlx?=
- =?utf-8?B?dXB6a1RMNUpLNWdUcDZMR1ZlaUhLamFOenlTRVVwVW85Ym43bk1VdXJqdHNk?=
- =?utf-8?B?MHFKeEZEL0NuL3FCU1Y5dTRMeUhsWFRPY2d2WmFESW15VEYvQ0N5bTkzWTI5?=
- =?utf-8?B?SER2VGZXWWljUy9NMGVaWnN3OXhVK1ZFRSsvQlVUOEFWNmxOWjBjMklNTUhC?=
- =?utf-8?B?N2lFSkhTQW9nTkRMN2lpRGl6V1ZqbmpZNEVSeWJOZnZVUmxibHExQ2laNTJr?=
- =?utf-8?B?NnNQRXF1eFdhMHd4YkFSVVVYUWgrMTVIQ0loZlNZT0p6TDVwZnlianV2TDlw?=
- =?utf-8?B?NDBJUExJKytXdDc2SjNiUWJBT3VXQWkvS3VQTXgxNjF0TFJqWUVsUT09?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ bh=FTpf70PpEXHATlpn2bH/MsmlnI6tMUeSFZyEunY/v7w=;
+ b=HzFrV3zftn7NI+SBxXDT4hwz0uoUjXPrwIa9z8lnTTgTLWXJ3Vnopxioc/PAkihFBImlydEt8YcNJl5aF8OYWoRAZn3sVdL6oD4xeOresitRptul2om9Cr1zqi7XKysd94ceEWXef4zrIUv9uUf0BKW1oT1U4D/l+VAKqgEPkdQdNwiWVVkTlBREr4voDTGoYOUYoRdTqPYClUC2iw4ylnh6xu92YbXf3F60+AHYB4k1a+feBfoVMm9E9iEPR5c2t3W9HODplmcW/HNtsgl+1HXjyMwZX6GvONgyJC+vzkZDyqr8hFoQIWAXNm2XH+4/5cc9zAKG+kgqudWEspxtDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FTpf70PpEXHATlpn2bH/MsmlnI6tMUeSFZyEunY/v7w=;
+ b=gf+pn8rBMvtwji5EeOaMTbfFjhK9E669VP929rlIZyJLQH6sFkeXOc6gyTuKYkLIa6isZhSKzkf+sujhv8SdbtjpFZonO3my6AQ+wmZA47JGeb+GG0GbihBOY2DaVdJr+cTzPfBFcKbwy/OM7ZHuEa3jMXlnuvqPOVAuFUR1HVM=
+Received: from BN0PR02CA0045.namprd02.prod.outlook.com (2603:10b6:408:e5::20)
+ by CH1PPF931B95D07.namprd12.prod.outlook.com
+ (2603:10b6:61f:fc00::619) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.20; Thu, 19 Feb
+ 2026 05:16:35 +0000
+Received: from BN2PEPF000044A2.namprd02.prod.outlook.com
+ (2603:10b6:408:e5:cafe::8d) by BN0PR02CA0045.outlook.office365.com
+ (2603:10b6:408:e5::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.15 via Frontend Transport; Thu,
+ 19 Feb 2026 05:16:35 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN2PEPF000044A2.mail.protection.outlook.com (10.167.243.153) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9632.12 via Frontend Transport; Thu, 19 Feb 2026 05:16:34 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 18 Feb
+ 2026 23:16:34 -0600
+Received: from AB350-desktop.amd.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Wed, 18 Feb 2026 23:16:33 -0600
+From: <vitaly.prosyak@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Christian Koenig
+ <christian.koenig@amd.com>, Alex Deucher <alexander.deucher@amd.com>, "Jesse
+ Zhang" <jesse.zhang@amd.com>
+Subject: [PATCH 1/4] lib/amdgpu: add DMA hardware limits struct and query API
+Date: Thu, 19 Feb 2026 00:14:16 -0500
+Message-ID: <20260219051630.127667-1-vitaly.prosyak@amd.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5525.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ea19cfe2-41d5-4251-c0e0-08de6f73e638
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Feb 2026 05:01:10.6922 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: HfeFachs5M4ZlsqQpHjhc7YU2OaYZpyl+kn+/RPszea/2Cqg9akX0NjvM75a2UcyIcQU1rjWZ0YOCurxZ8YKWRSu8DaPV65w70yX1wi6LHY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5133
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A2:EE_|CH1PPF931B95D07:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1764bcac-39db-48a1-033e-08de6f760d0c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|82310400026|1800799024|36860700013|376014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?JqS4IvK8O9vmy/2TdPnWpHmQRm4/gnaSsKW8iGigNqWkEs4/LTFTgtkZ9hg6?=
+ =?us-ascii?Q?DRpAGIFEagXZzBXDjWTyQLHKlhzpHw/6sq9uQjot8zOnMuRqvEwWICgBMHGl?=
+ =?us-ascii?Q?43x4+yNcJNg4DqYUkEIDWNEgrHIa/Xgsi5fy0b3UcXM6CRXeLE0YNPHKipo6?=
+ =?us-ascii?Q?4aBFtzu2tZxofJ+XcZETQ3zZYltlGuqOpQwHamys9u0UXNzW8RqWhedK20pJ?=
+ =?us-ascii?Q?HzNNGocuwjVUXZRl8MAmqL+Ha0uXavKNvjZnoBlXRGWedCAbwU/KsFiZM0Wz?=
+ =?us-ascii?Q?vweMD+WYGLda8PSazVkU5qEnkR9vbSflrrJ4O8nIwyWLW3d2G+kWkCxin+tJ?=
+ =?us-ascii?Q?Y6h0HYV7rLw6ycDc/iVsSN5wiCJo93m1OX+o6U/wRhDBbjmmEd4uS4siwFYe?=
+ =?us-ascii?Q?jhoj54tHDSWoo/YytlK/eCW5I72+YfuUsak9+ENV0p3OOe29EMduBFwFyHp4?=
+ =?us-ascii?Q?hXa3lDARg4BrmGLXgc+9uvwKf6koIiuxY7JWF1MCRqNh3B1VPcjxtrYhPD8j?=
+ =?us-ascii?Q?qwi8CD11zE3Kwjf7Ww7YkaxGDJLAnUj1TsdsgtwjsFmcfPTtoBNW6mWHyVcA?=
+ =?us-ascii?Q?g18/JFg5GDJ/ydpbZX1P1GwQ001+1TFMdlnHoiuwhY0kOFeZ5qq36sP9kEVm?=
+ =?us-ascii?Q?PyvdewHAHU2ETciNmeWiyd2Vw1AwfdVfrCRWbis6akZgZBZunXl8oKvnxE7j?=
+ =?us-ascii?Q?kBpMboSshzUtjWONhRwNEbAvMMK0Ljg0Ma2zpkSIbv3CWWroGrS66LCRxt8D?=
+ =?us-ascii?Q?aYTXmaosAktmS59MgUNt1r5HKg3hRdbR66syViXPWwgIvy4x2k7IqQjFLwQI?=
+ =?us-ascii?Q?eLXxIQrMm8/C6SIobVyWJ9wWGBbzA865mfaCF6u7VPazV1GSyZYKwVVQ7r7g?=
+ =?us-ascii?Q?6C9QLsG0ggRRIWliDzZrc3T0BwyIHEjut0GJRzO+kbEDyXSPG8TtCf9ygFUx?=
+ =?us-ascii?Q?T3HMKEg/6CIyBnSYM7kfjtd57n3NT8wTp2U8vomL6jazp+/+WDnMxDq8uk5K?=
+ =?us-ascii?Q?BRgbvyGqCu5gGhHm7eH4HBC+v/Re/1tZjBt/kOW4+OXtgNI1dlZVOAwITb3+?=
+ =?us-ascii?Q?xpJG0+xtVsXj3ZEy+qIAxLak7tAZl0Vr9aeSnqvf1OjMoB87T2xKAjb2rGq+?=
+ =?us-ascii?Q?/E8Duf29MEU0CIyKuGmeu6hJEQH8nL30Wjx6KfF++ika3PMMQbhq/B2SKtFn?=
+ =?us-ascii?Q?tWaBJggYKBQtHuwj+k/OEcIDDzoOWbgAstOi/PI9uKsjmdKbZqEyacEV6Oks?=
+ =?us-ascii?Q?finZYyVA3vbJHIfRDUlI+MUS2OoD5Cz/wkXqZw5JStCWj/lyz3ijBfnf3erM?=
+ =?us-ascii?Q?deUdQIrnJG+VonyMFMGuk9I4rKZJd+C5WrvK2JF+1vth54oOKiB/A64ctm5q?=
+ =?us-ascii?Q?QO3R2psbACWh6xNGCjVQdvbUNTCsxP7TpNSwzo+mNHVoEX47UCe/v5IhUUMh?=
+ =?us-ascii?Q?M8ROGmGiukLQ4vBdpLRi9ThMzzRbDifLvsGXVh9h03r6fQv/vajJWkkfCN3e?=
+ =?us-ascii?Q?9z0Cu1weucTpS6WhlO9JnDsGHg5OSaj3QYklWgwre159iTmMFqqBZh3F/Gfi?=
+ =?us-ascii?Q?A2aAc0+kucZr9VvsaqQlHie9IYMbVFg2zS49km4by+fwBOadwomrR5WG5Bwv?=
+ =?us-ascii?Q?HQx8yo4zLxIrVbPDCKz0SYnRr6NKmj6Swu702MUxZ9Qq?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014); DIR:OUT;
+ SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: T5BfgCY+XeAsPyNnrdnTZVfNlxhyxi3vLJriWfLxVwkFKLcYymOgxJ58sjQ5ooSsqC+UZKeYpukfmYwYFlnJT1rtNcT5+yk6TvIJ9i9SoNS2pLX+QiRonRgE48lGSo9dDxEIWogMVbqOw73DiWPiLd3D5CFXg82/HXhiRKV9Zzpg2bPScclaGJMcT6TwdOzSe9BASwZ2Gqt5fFV4hkmSKiNLki+cq6Af/3h8hpHxH12CdD1GN9IfOewl6cuhXn2/o/HZ7+hZsWlz+PFQX5YfqkIl2LuKAvrrkkxp0cq03fVM+XuaoLl3wywItiMR6IfdM4KKhWmbgczbTSi68WVEw8dYWl+RscIEfAMHBhY7ADFWRoBwbshGfaLcoUd+oujLpoiDK/FA2zFyJKPZzq65zQF+zwcZDo7KfWdB5licrnRoZq8Wl1Aml82if/DIojGq
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2026 05:16:34.8476 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1764bcac-39db-48a1-033e-08de6f760d0c
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044A2.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF931B95D07
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -211,71 +137,192 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogWWFkYXYsIEFydmluZCA8
-YXJ2aW5kLnlhZGF2QGludGVsLmNvbT4NCj4gU2VudDogVHVlc2RheSwgMTcgRmVicnVhcnksIDIw
-MjYgMDg6MDQgQU0NCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBC
-cm9zdCwgTWF0dGhldyA8bWF0dGhldy5icm9zdEBpbnRlbC5jb20+OyBHaGltaXJheSwgSGltYWwg
-UHJhc2FkDQo+IDxoaW1hbC5wcmFzYWQuZ2hpbWlyYXlAaW50ZWwuY29tPjsgdGhvbWFzLmhlbGxz
-dHJvbUBsaW51eC5pbnRlbC5jb207DQo+IFNoYXJtYSwgTmlzaGl0IDxuaXNoaXQuc2hhcm1hQGlu
-dGVsLmNvbT47IEd1cnJhbSwgUHJhdmFsaWthDQo+IDxwcmF2YWxpa2EuZ3VycmFtQGludGVsLmNv
-bT4NCj4gU3ViamVjdDogW1BBVENIIGktZy10IHYzIDQvOF0gdGVzdHMvaW50ZWwveGVfbWFkdmlz
-ZTogQWRkIGRvbnRuZWVkLWFmdGVyLQ0KPiBtbWFwIHN1YnRlc3QNCj4gDQo+IFRoaXMgdGVzdCB2
-ZXJpZmllcyB0aGF0IGFuIGV4aXN0aW5nIG1tYXAgYmVjb21lcyBpbnZhbGlkIGFmdGVyIHRoZSBC
-TyBpcyBtYXJrZWQNCj4gYXMgcHVyZ2VhYmxlIGFuZCBwdXJnZWQuIFRoZSB0ZXN0IGNyZWF0ZXMg
-YSBCTywgbWFwcyBpdCwgd3JpdGVzIGRhdGEsIHRoZW4NCj4gbWFya3MgaXQgRE9OVE5FRUQgYW5k
-IHRyaWdnZXJzIG1lbW9yeSBwcmVzc3VyZS4NCj4gQWNjZXNzaW5nIHRoZSBwcmV2aW91c2x5IHZh
-bGlkIG1hcHBpbmcgc2hvdWxkIG5vdyB0cmlnZ2VyIFNJR0JVUyBvciBTSUdTRUdWLA0KPiBjb25m
-aXJtaW5nIHRoYXQgZXhpc3RpbmcgbWFwcGluZ3MgYXJlIGNvcnJlY3RseSBpbnZhbGlkYXRlZCB3
-aGVuIHRoZSBiYWNraW5nDQo+IHN0b3JlIGlzIHB1cmdlZC4NCj4gDQo+IENjOiBOaXNoaXQgU2hh
-cm1hIDxuaXNoaXQuc2hhcm1hQGludGVsLmNvbT4NCj4gQ2M6IFByYXZhbGlrYSBHdXJyYW0gPHBy
-YXZhbGlrYS5ndXJyYW1AaW50ZWwuY29tPg0KPiBDYzogTWF0dGhldyBCcm9zdCA8bWF0dGhldy5i
-cm9zdEBpbnRlbC5jb20+DQo+IENjOiBUaG9tYXMgSGVsbHN0csO2bSA8dGhvbWFzLmhlbGxzdHJv
-bUBsaW51eC5pbnRlbC5jb20+DQo+IENjOiBIaW1hbCBQcmFzYWQgR2hpbWlyYXkgPGhpbWFsLnBy
-YXNhZC5naGltaXJheUBpbnRlbC5jb20+DQo+IFNpZ25lZC1vZmYtYnk6IEFydmluZCBZYWRhdiA8
-YXJ2aW5kLnlhZGF2QGludGVsLmNvbT4NCj4gLS0tDQo+ICB0ZXN0cy9pbnRlbC94ZV9tYWR2aXNl
-LmMgfCA1NA0KPiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQo+ICAx
-IGZpbGUgY2hhbmdlZCwgNTQgaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3Rz
-L2ludGVsL3hlX21hZHZpc2UuYyBiL3Rlc3RzL2ludGVsL3hlX21hZHZpc2UuYyBpbmRleA0KPiA3
-ZGJlNzBmNDIuLjVjNmEyNDU1MyAxMDA2NDQNCj4gLS0tIGEvdGVzdHMvaW50ZWwveGVfbWFkdmlz
-ZS5jDQo+ICsrKyBiL3Rlc3RzL2ludGVsL3hlX21hZHZpc2UuYw0KPiBAQCAtMTk2LDYgKzE5Niw1
-NCBAQCBzdGF0aWMgdm9pZCB0ZXN0X2RvbnRuZWVkX2JlZm9yZV9tbWFwKGludCBmZCwNCj4gc3Ry
-dWN0IGRybV94ZV9lbmdpbmVfY2xhc3NfaW5zdGFuYw0KPiAgCXhlX3ZtX2Rlc3Ryb3koZmQsIHZt
-KTsNCj4gIH0NCj4gDQo+ICsvKioNCj4gKyAqIFNVQlRFU1Q6IGRvbnRuZWVkLWFmdGVyLW1tYXAN
-Cj4gKyAqIERlc2NyaXB0aW9uOiBNYXJrIEJPIGFzIERPTlRORUVEIGFmdGVyIG1tYXAsIHZlcmlm
-eSBTSUdCVVMgb24NCj4gK2FjY2Vzc2luZyBwdXJnZWQgbWFwcGluZw0KPiArICogVGVzdCBjYXRl
-Z29yeTogZnVuY3Rpb25hbGl0eSB0ZXN0DQo+ICsgKi8NCj4gK3N0YXRpYyB2b2lkIHRlc3RfZG9u
-dG5lZWRfYWZ0ZXJfbW1hcChpbnQgZmQsIHN0cnVjdA0KPiArZHJtX3hlX2VuZ2luZV9jbGFzc19p
-bnN0YW5jZSAqaHdlKSB7DQo+ICsJdWludDMyX3QgYm8sIHZtOw0KPiArCXVpbnQ2NF90IGFkZHIg
-PSBQVVJHRUFCTEVfQUREUjsNCj4gKwlzaXplX3QgYm9fc2l6ZSA9IFBVUkdFQUJMRV9CT19TSVpF
-Ow0KPiArCXZvaWQgKm1hcDsNCj4gKw0KPiArCXB1cmdlYWJsZV9zZXR1cF9zaW1wbGVfYm8oZmQs
-ICZ2bSwgJmJvLCBhZGRyLCBib19zaXplLCB0cnVlKTsNCj4gKw0KPiArCW1hcCA9IHhlX2JvX21h
-cChmZCwgYm8sIGJvX3NpemUpOw0KPiArCW1lbXNldChtYXAsIDB4QUIsIGJvX3NpemUpOw0KPiAr
-DQo+ICsJaWYgKCFwdXJnZWFibGVfbWFya19hbmRfdmVyaWZ5X3B1cmdlZChmZCwgdm0sIGFkZHIs
-IGJvX3NpemUpKQ0KPiArCQlpZ3Rfc2tpcCgiVW5hYmxlIHRvIGluZHVjZSBwdXJnZSBvbiB0aGlz
-IHBsYXRmb3JtL2NvbmZpZyIpOw0KPiArDQpoZXJlIHlvdSBoYXZlIHB1cmdlZCB0aGUgYm8gYnkg
-dGhpcyB0aW1lLiBBbmQgaGVyZSB5b3Ugc2hvdWxkIHRyeSB0byBhY2Nlc3MgdGhlIGJvIGFnYWlu
-IGNvcnJlY3QgPw0KV2l0aCBvdXQgYWNjZXNzIHRoZSBibyBob3cgdGhlIFNJR1NFR1Ygc2lnbmFs
-IGNvbWU/IEhlcmUgYWxzbyBzYW1lIEkgZGlkIG5vdCByZWNlaXZlIGFueSBTSUdTRUdWIHNpZ25h
-bCBmcm9tIGtlcm5lbGwNCg0KUmVzdCBhbGwgbG9va3Mgb2theSB0byBtZSBwbGVhc2UgY2xhcmlm
-eSB0aGVzZSBwb2ludHMNClJlZ2FyZHMsDQpQUmF2YWxpa2ENCj4gKwkvKiBBY2Nlc3MgcHVyZ2Vk
-IG1hcHBpbmcgLSBzaG91bGQgdHJpZ2dlciBTSUdCVVMvU0lHU0VHViAqLw0KPiArCXsNCj4gKwkJ
-c2lnaGFuZGxlcl90IG9sZF9zaWdzZWd2LCBvbGRfc2lnYnVzOw0KPiArCQljaGFyICpwdHIgPSAo
-Y2hhciAqKW1hcDsNCj4gKwkJaW50IHNpZzsNCj4gKw0KPiArCQlvbGRfc2lnc2VndiA9IHNpZ25h
-bChTSUdTRUdWLCAoX19zaWdoYW5kbGVyX3Qpc2lndHJhcCk7DQo+ICsJCW9sZF9zaWdidXMgPSBz
-aWduYWwoU0lHQlVTLCAoX19zaWdoYW5kbGVyX3Qpc2lndHJhcCk7DQo+ICsNCj4gKwkJc2lnID0g
-c2lnc2V0am1wKGptcCwgU0lHQlVTIHwgU0lHU0VHVik7DQo+ICsJCWlmIChzaWcgPT0gU0lHQlVT
-IHx8IHNpZyA9PSBTSUdTRUdWKSB7DQo+ICsJCQkvKiBFeHBlY3RlZCAtIHB1cmdlZCBtYXBwaW5n
-IGFjY2VzcyBmYWlsZWQgKi8NCj4gKwkJfSBlbHNlIGlmIChzaWcgPT0gMCkgew0KPiArCQkJKnB0
-ciA9IDA7DQo+ICsJCQlpZ3RfYXNzZXJ0X2YoZmFsc2UsICJBY2Nlc3MgdG8gcHVyZ2VkIG1hcHBp
-bmcgc2hvdWxkDQo+IHRyaWdnZXIgc2lnbmFsXG4iKTsNCj4gKwkJfSBlbHNlIHsNCj4gKwkJCWln
-dF9hc3NlcnRfZihmYWxzZSwgInVuZXhwZWN0ZWQgc2lnbmFsICVkXG4iLCBzaWcpOw0KPiArCQl9
-DQo+ICsNCj4gKwkJc2lnbmFsKFNJR0JVUywgb2xkX3NpZ2J1cyk7DQo+ICsJCXNpZ25hbChTSUdT
-RUdWLCBvbGRfc2lnc2Vndik7DQo+ICsJfQ0KPiArDQo+ICsJbXVubWFwKG1hcCwgYm9fc2l6ZSk7
-DQo+ICsJZ2VtX2Nsb3NlKGZkLCBibyk7DQo+ICsJeGVfdm1fZGVzdHJveShmZCwgdm0pOw0KPiAr
-fQ0KPiArDQo+ICBpbnQgaWd0X21haW4oKQ0KPiAgew0KPiAgCXN0cnVjdCBkcm1feGVfZW5naW5l
-X2NsYXNzX2luc3RhbmNlICpod2U7IEBAIC0yMTIsNiArMjYwLDEyIEBADQo+IGludCBpZ3RfbWFp
-bigpDQo+ICAJCQlicmVhazsNCj4gIAkJfQ0KPiANCj4gKwlpZ3Rfc3VidGVzdCgiZG9udG5lZWQt
-YWZ0ZXItbW1hcCIpDQo+ICsJCXhlX2Zvcl9lYWNoX2VuZ2luZShmZCwgaHdlKSB7DQo+ICsJCQl0
-ZXN0X2RvbnRuZWVkX2FmdGVyX21tYXAoZmQsIGh3ZSk7DQo+ICsJCQlicmVhazsNCj4gKwkJfQ0K
-PiArDQo+ICAJaWd0X2ZpeHR1cmUoKSB7DQo+ICAJCXhlX2RldmljZV9wdXQoZmQpOw0KPiAgCQlk
-cm1fY2xvc2VfZHJpdmVyKGZkKTsNCj4gLS0NCj4gMi40My4wDQoNCg==
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+
+Add struct amdgpu_dma_limits to hold per-IP maximum transfer sizes
+and safe defaults, all expressed in BYTES.  Add amdgpu_dma_limits_query()
+to populate the struct by querying SDMA firmware version and using
+known GFX CP_DMA limits.
+
+Hardware limits by IP:
+  SDMA: varies by generation (21-30 bit COUNT field in bytes)
+    v1-2 (SI..VI):   ~2 MB  (0x1fffff)
+    v3   (AI):        ~4 MB  (0x3fffe0)
+    v4.0 (NV10):      ~4 MB  ((1<<22)-1)
+    v4.4+ / v5.2+:   ~1 GB  ((1<<30)-1)
+    v6+  (GC12):     ~1 GB  ((1<<30)-1)
+  GFX/Compute:  CP_DMA DMA_DATA size is 26 bits in bytes (64 MB max)
+
+Inline helpers amdgpu_dma_max_bytes() and amdgpu_dma_default_bytes()
+select the right limit or default for a given IP type.
+
+This is pure additive infrastructure: no behavior changes yet.
+
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Jesse Zhang <jesse.zhang@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Change-Id: Id407c254f15a6612db8fa986c0fc7c8ebf0f01e6
+---
+ lib/amdgpu/amd_command_submission.c | 69 +++++++++++++++++++++++++++++
+ lib/amdgpu/amd_command_submission.h |  8 ++++
+ lib/amdgpu/amd_ip_blocks.h          | 49 ++++++++++++++++++++
+ 3 files changed, 126 insertions(+)
+
+diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
+index 52327c69e..84f4d01d6 100644
+--- a/lib/amdgpu/amd_command_submission.c
++++ b/lib/amdgpu/amd_command_submission.c
+@@ -1439,3 +1439,72 @@ uint32_t cmd_get_available_rings(amdgpu_device_handle device,
+ 		return __builtin_popcountll(hw_ip_info.available_rings);
+ 	}
+ }
++
++/**
++ * get_sdma_max_bytes - query SDMA IP version and return max transfer size
++ *
++ * The SDMA COUNT field width varies by generation:
++ *   v1-2 (SI..VI):  21 bits = 0x1fffff bytes   (~2 MB)
++ *   v3   (AI):      22 bits, 32B aligned = 0x3fffe0 (~4 MB)
++ *   v4.0 (NV10):    22 bits = (1<<22)-1   (~4 MB)
++ *   v4.4+ (NV4x):   30 bits = (1<<30)-1   (~1 GB)
++ *   v5.0 (GC11):    22 bits = (1<<22)-1   (~4 MB)
++ *   v5.2+ (GC11.5): 30 bits = (1<<30)-1   (~1 GB)
++ *   v6+   (GC12):   30 bits = (1<<30)-1   (~1 GB)
++ */
++static uint64_t
++get_sdma_max_bytes(amdgpu_device_handle device)
++{
++	struct drm_amdgpu_info_hw_ip ip = {0};
++	int r;
++
++	r = amdgpu_query_hw_ip_info(device, AMDGPU_HW_IP_DMA, 0, &ip);
++	igt_assert_eq(r, 0);
++
++	if (ip.hw_ip_version_major <= 2)
++		return 0x1fffffULL;
++	else if (ip.hw_ip_version_major == 3)
++		return 0x3fffe0ULL;
++	else if (ip.hw_ip_version_major == 4 && ip.hw_ip_version_minor == 0)
++		return (1ULL << 22) - 1;
++	else if (ip.hw_ip_version_major == 4 && ip.hw_ip_version_minor >= 4)
++		return (1ULL << 30) - 1;
++	else if (ip.hw_ip_version_major == 5 && ip.hw_ip_version_minor == 0)
++		return (1ULL << 22) - 1;
++	else if (ip.hw_ip_version_major == 5 && ip.hw_ip_version_minor >= 2)
++		return (1ULL << 30) - 1;
++	else if (ip.hw_ip_version_major >= 6)
++		return (1ULL << 30) - 1;
++
++	igt_skip("Unknown SDMA IP version");
++	return 0;
++}
++
++/**
++ * GFX/Compute use PACKET3_DMA_DATA for fill/copy whose size field is
++ * 26 bits in BYTES (max 64 MB).  PACKET3_WRITE_DATA inline count
++ * is 14 bits in DWORDs (max 16384 DW = 64 KB), but that limit is
++ * handled by pm4 buffer sizing, not by this struct.
++ */
++#define GFX_CP_DMA_MAX_BYTES   (1ULL << 26)  /* 64 MB */
++
++void
++amdgpu_dma_limits_query(amdgpu_device_handle device,
++			    struct amdgpu_dma_limits *limits)
++{
++	memset(limits, 0, sizeof(*limits));
++
++	limits->sdma_max_bytes    = get_sdma_max_bytes(device);
++	limits->gfx_max_bytes     = GFX_CP_DMA_MAX_BYTES;
++	limits->compute_max_bytes = GFX_CP_DMA_MAX_BYTES;
++
++	/*
++	 * Default safe small sizes for quick smoke tests.
++	 * write_linear uses inline data so keep it small (512 bytes = 128 DW).
++	 * const_fill and copy_linear have no inline data, can be larger.
++	 */
++	limits->sdma_default_bytes    = 512;    /* 128 DWORDs */
++	limits->gfx_default_bytes     = 1024;   /* 256 DWORDs */
++	limits->compute_default_bytes = 1024;   /* 256 DWORDs */
++}
++
+diff --git a/lib/amdgpu/amd_command_submission.h b/lib/amdgpu/amd_command_submission.h
+index 7826c2d0f..331889161 100644
+--- a/lib/amdgpu/amd_command_submission.h
++++ b/lib/amdgpu/amd_command_submission.h
+@@ -121,4 +121,12 @@ bool cmd_ring_available(amdgpu_device_handle device,
+ uint32_t cmd_get_available_rings(amdgpu_device_handle device,
+                                  enum amd_ip_block_type ip_type,
+                                 bool user_queue);
++
++/**
++ * Query HW and populate DMA transfer limits.
++ * All fields in the returned struct are in BYTES.
++ */
++void amdgpu_dma_limits_query(amdgpu_device_handle device,
++                             struct amdgpu_dma_limits *limits);
++
+ #endif
+diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+index 424b3210a..bb10a9a0e 100644
+--- a/lib/amdgpu/amd_ip_blocks.h
++++ b/lib/amdgpu/amd_ip_blocks.h
+@@ -208,6 +208,55 @@ struct amdgpu_cs_err_codes {
+ 	int err_code_wait_for_fence;
+ };
+ 
++/**
++ * struct amdgpu_dma_limits - hardware transfer limits per IP block
++ *
++ * All sizes are in BYTES.  Packet builders convert internally
++ * (e.g. /4 for DWORD counts in SDMA inline data or GFX PACKET3).
++ *
++ * Queried once with amdgpu_dma_limits_query(), then passed to helpers.
++ */
++struct amdgpu_dma_limits {
++	uint64_t sdma_max_bytes;        /* max SDMA write/fill/copy per packet */
++	uint64_t gfx_max_bytes;         /* max GFX CP_DMA fill/copy per packet */
++	uint64_t compute_max_bytes;     /* max Compute CP_DMA per packet */
++
++	/* safe small sizes for quick smoke tests (bytes) */
++	uint64_t sdma_default_bytes;
++	uint64_t gfx_default_bytes;
++	uint64_t compute_default_bytes;
++};
++
++/**
++ * amdgpu_dma_max_bytes - return HW max transfer size for an IP type
++ */
++static inline uint64_t
++amdgpu_dma_max_bytes(const struct amdgpu_dma_limits *lim,
++		     unsigned int ip_type)
++{
++	switch (ip_type) {
++	case AMDGPU_HW_IP_DMA:     return lim->sdma_max_bytes;
++	case AMDGPU_HW_IP_GFX:     return lim->gfx_max_bytes;
++	case AMDGPU_HW_IP_COMPUTE: return lim->compute_max_bytes;
++	default:                    return lim->sdma_default_bytes;
++	}
++}
++
++/**
++ * amdgpu_dma_default_bytes - return safe small test size for an IP type
++ */
++static inline uint64_t
++amdgpu_dma_default_bytes(const struct amdgpu_dma_limits *lim,
++			 unsigned int ip_type)
++{
++	switch (ip_type) {
++	case AMDGPU_HW_IP_DMA:     return lim->sdma_default_bytes;
++	case AMDGPU_HW_IP_GFX:     return lim->gfx_default_bytes;
++	case AMDGPU_HW_IP_COMPUTE: return lim->compute_default_bytes;
++	default:                    return lim->sdma_default_bytes;
++	}
++}
++
+ /* aux struct to hold misc parameters for convenience to maintain */
+ struct amdgpu_ring_context {
+ 
+-- 
+2.52.0
+
