@@ -4,59 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 228C2E9A048
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Feb 2026 14:35:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA9CEE9A04A
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Feb 2026 14:36:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CBED410E194;
-	Thu, 19 Feb 2026 14:35:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 762D210E194;
+	Thu, 19 Feb 2026 14:36:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J377VCym";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bCGNl5oF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E61A10E6EA
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Feb 2026 14:35:09 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D67F10E194;
+ Thu, 19 Feb 2026 14:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771511709; x=1803047709;
+ t=1771511783; x=1803047783;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=AWSuLBKRS/drwBtFgT2N5Qq9vYHJAThlI12mTiiPEsE=;
- b=J377VCym6pGPQeJ5KtWgnA56ipXl4Ts1PvrDjEHOUYK4RkbHwSMU/7wp
- ZIdtWlSBQqki1bsU/vOmy7BAI3hiyNtgMA/HKJhh8MO5gWRmU7E9+YrdR
- op0Zsm5dKLdXe/8eHHG/jpJxEXgeijlFoXOKxoJyUZdtqcdTpIeFidOuR
- /sB1S0AvJkrOcASsN351C4lGa6Vyfw3D9cjeYs3uxfNJXquY0X/zbe0Hj
- jEhFK3CPEuzJMNCP9xc2YcOHMO5Ak+Jvzg4XuoXTtIEDtgeO5hOdYpFUQ
- iwRv44LoKmMiKtLHvU6/a1/f1B1OIV026VK8/B4YddV+CzdT5nLGWQ9bn g==;
-X-CSE-ConnectionGUID: z9fOUtQ+SheAqNiEuPc4pQ==
-X-CSE-MsgGUID: oF8aQV4tTUmVLCUD9ok/CQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11706"; a="90177234"
-X-IronPort-AV: E=Sophos;i="6.21,300,1763452800"; d="scan'208";a="90177234"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2026 06:35:09 -0800
-X-CSE-ConnectionGUID: IhifYBO6Sy2JwJUnSzB0AA==
-X-CSE-MsgGUID: GFl8awQQTLeLpDcAD/TRng==
+ bh=NKB6UwC+6WqGiuVYNukWjlhWJzgxy/BkmTf3m4wG1hQ=;
+ b=bCGNl5oFJy14RlamCrfsKFaw7WmGfmSAbkRz5/oczGYIJWkj9D57Dfzl
+ me1Fp5Z2IycSO3cFPTZn48h7qhuN6GOenzKsfZbTagtPUbjXT0M/aSBSv
+ A37u6ddMAp//FuPNYXU+zjD3+5d7hMC/PuKwyZwWml6JHMD1dkk499rKl
+ xq5PhZvOoaBw9ajX2ydipy6csE550PBEKm1lYoL3RtoT7FP3GVw7oawb2
+ 3nSV8kD2CFv4kHq/6mMJWMrdTCvujMOgjpoJtRity9OjPalhgMGA5yHx6
+ 9C6/4PP3KgTbjR1fKRrLaqmmbjPR61cmSboEVoA1ABiHZ33dAWIzoF8G+ Q==;
+X-CSE-ConnectionGUID: St/IJut+T5eQPjLPIkQ0Yw==
+X-CSE-MsgGUID: cRqVZbCXQtKWp2RvEWJl9w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11706"; a="72773225"
+X-IronPort-AV: E=Sophos;i="6.21,300,1763452800"; d="scan'208";a="72773225"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Feb 2026 06:36:22 -0800
+X-CSE-ConnectionGUID: PqZ3ou/8S6Cqr/QApFUdrA==
+X-CSE-MsgGUID: BVQv9vaNRfG3ndt7W6dMAg==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,300,1763452800"; d="scan'208";a="219532304"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 06:35:08 -0800
-Date: Thu, 19 Feb 2026 15:34:52 +0100
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2026 06:36:21 -0800
+Date: Thu, 19 Feb 2026 15:36:18 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: igt-dev@lists.freedesktop.org,
- Daniel Almeida <daniel.almeida@collabora.com>
-Subject: Re: [PATCH i-g-t] panthor: Enable compilation on big-endian arch
-Message-ID: <20260219143452.u3mz2iczwdo2d7cq@kamilkon-DESK.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZVTEw=?= =?utf-8?Q?=3A?= failure for
+ panthor: Enable compilation on big-endian arch
+Message-ID: <20260219143618.lcqgfbtyelovwsx6@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- igt-dev@lists.freedesktop.org,
- Daniel Almeida <daniel.almeida@collabora.com>
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
 References: <20260218153444.80754-1-kamil.konieczny@linux.intel.com>
- <20260218171657.6a4cd753@fedora>
+ <177144168751.262680.8056583558163614274@a3b018990fe9>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260218171657.6a4cd753@fedora>
+In-Reply-To: <177144168751.262680.8056583558163614274@a3b018990fe9>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,76 +71,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Boris,
-On 2026-02-18 at 17:16:57 +0100, Boris Brezillon wrote:
-> On Wed, 18 Feb 2026 16:34:44 +0100
-> Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
+Hi igt-dev,
+On 2026-02-18 at 19:08:07 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> > Compilation of Panthor was broken on big-endian due to a guard in
-> > pathor lib against such arch. Fix this and create and use a macro
-> > for skipping all panthor tests on such machines.
-> > 
-> > Also while at it, init fd so it could be safely used at last
-> > fixture.
-> > 
-> > Cc: Daniel Almeida <daniel.almeida@collabora.com>
-> > Cc: Boris Brezillon <boris.brezillon@collabora.com>
-> > Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/200
-> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > ---
-> >  lib/igt_panthor.c             | 17 +++++++++++++++++
-> >  lib/igt_panthor.h             |  6 ++----
-> >  tests/panthor/panthor_gem.c   |  3 ++-
-> >  tests/panthor/panthor_group.c |  3 ++-
-> >  tests/panthor/panthor_query.c |  3 ++-
-> >  tests/panthor/panthor_vm.c    |  3 ++-
-> >  6 files changed, 27 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/lib/igt_panthor.c b/lib/igt_panthor.c
-> > index 49b427d4f..cf065352d 100644
-> > --- a/lib/igt_panthor.c
-> > +++ b/lib/igt_panthor.c
-> > @@ -6,6 +6,23 @@
-> >  #include "ioctl_wrappers.h"
-> >  #include "panthor_drm.h"
-> >  
-> > +/**
-> > + * igt_panthor_skip_on_big_endian:
-> > + *
-> > + * Skip Panthor test on bing-endian machines.
+> Series: panthor: Enable compilation on big-endian arch
+> URL   : https://patchwork.freedesktop.org/series/161768/
+> State : failure
 > 
-> 			   ^ big-endian
+> == Summary ==
 > 
-> > + */
-> > +void igt_panthor_skip_on_big_endian(void)
-> > +{
-> > +#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-> > + #define IGT_PANTHOR_ON_BIG_ENDIAN 1
-> > +#else
-> > + #define IGT_PANTHOR_ON_BIG_ENDIAN 0
-> > +#endif
-> > +
-> > +	igt_skip_on_f(IGT_PANTHOR_ON_BIG_ENDIAN, "Panthor is unsupported on big-endian arch\n");
-> > +#undef IGT_PANTHOR_ON_BIG_ENDIAN
+> CI Bug Log - changes from XEIGT_8760_FULL -> XEIGTPW_14569_FULL
+> ====================================================
 > 
-> Can't we just go with
+> Summary
+> -------
 > 
-> 	igt_skip_on_f(__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__,
-> 		      "Panthor is unsupported on big-endian arch\n");
+>   **FAILURE**
 > 
-> and drop the IGT_PANTHOR_ON_BIG_ENDIAN definition?
+>   Serious unknown changes coming with XEIGTPW_14569_FULL absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_14569_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (2 -> 2)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_14569_FULL:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-modifier-source-clamping:
+>     - shard-bmg:          NOTRUN -> [SKIP][1] +4 other tests skip
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14569/shard-bmg-6/igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-modifier-source-clamping.html
+> 
+>   * igt@kms_plane@pixel-format-yf-tiled-modifier:
+>     - shard-lnl:          NOTRUN -> [SKIP][2]
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14569/shard-lnl-2/igt@kms_plane@pixel-format-yf-tiled-modifier.html
 > 
 
-Yes, it is much simpler, thank you for spotting this.
-I will send v2 soon.
+Unrelated to Panthor change (non-Intel HW).
 
 Regards,
 Kamil
 
-> > +}
+>   
+> Known issues
+> ------------
 > 
-> The rest looks good to me.
+>   Here are the changes found in XEIGTPW_14569_FULL that come from known issues:
 > 
-> Regards,
+> ### IGT changes ###
 > 
-> Boris
+> #### Issues hit ####
+> 
+>   * igt@kms_atomic_transition@plane-all-modeset-transition-fencing:
+>     - shard-lnl:          NOTRUN -> [SKIP][3] ([Intel XE#3279])
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14569/shard-lnl-8/igt@kms_atomic_transition@plane-all-modeset-transition-fencing.html
+> 
+...cut...
