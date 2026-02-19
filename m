@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92964E9A04C
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Feb 2026 05:16:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98541E9A03B
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Feb 2026 05:16:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3E78810E67D;
-	Thu, 19 Feb 2026 05:16:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 474A510E67F;
+	Thu, 19 Feb 2026 05:16:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="zm0LTIM8";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="Rlj77k7k";
 	dkim-atps=neutral
 Received: from BL2PR02CU003.outbound.protection.outlook.com
- (mail-eastusazon11011006.outbound.protection.outlook.com [52.101.52.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4A2B10E67E
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Feb 2026 05:16:41 +0000 (UTC)
+ (mail-eastusazon11011030.outbound.protection.outlook.com [52.101.52.30])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 643C310E130
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Feb 2026 05:16:45 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n68gYNBIjMQscmb0KY3RSPJOGlHdn32700FN+DIs2qpeUxRM7h1tfTw2TVtolWCqBR9MkBBkm5boL5pxfvTT8oSNuW3dU1WwAi08ogWgtXEt54UAIxvxbjMCCPDglUMM2JO/L2ioPcgDan28o+0uIAcUNJ/618W8HbeXvTeDTt0sh4Th5KCt6Z9TZ2qNs0PVEGeQK0re+FFWzIOgwyxIRhsO2/Vj9m5t0VpC2FhkmHSxVlr3+M0CinAdK6hlH9ICqF4QtU9zSGwGgNEARLPv1ymxIa0Fjm2zlUV2UEunvEOM3HjK78zzTPyEYAqnRc8eG9DeTL1+vd5laG83Kxd+ig==
+ b=NmaFRBXjisOMcBg7UjfdY1syE12eQdL9m3xP1IpjH2z2N/UWESM3ZxLb7oJXr8VoilEI+BG49Bn9bwEb2qJP0vEZ4grcKOPoxlibkc+MYXgWysifywK8zF0CI1Lpt1FyTK0045z6ArzBmbiSzo1dxS5nTwE5qtmF/Yfc5PJ7VYXoTww9McBH2YlxOf7rMAa198rmVrMIhdrQ0tCpKrUHPT0EeQ2ZTVKLhdf012V9ujlnsTOar1SnKy8p6Z75858GbLl0YIi0BdhmgsIRQG4IBHehuNm/zKU+zSl/HSE5K1qF3tXUR+wyPP8M0RneTWia/J1086upDlnaOXnOGm7PkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/6FVevsrSyj6cSeoqSDCQo7iBOZgkVykjDIwPZy3h5o=;
- b=pg+taU5nMQ3EkGyVy7zjPvRgNBdAdEcgthcXZq/xmc8yRzTIqe7VYXp2Plz3s1mje31t4EI6wEk+Bzz2XMA7lAMddNBG9OQHxv0EfT4mvmVMkS+baH3RcIM0OHXzcc6GvoVxrsEt86ANUr9oOzMxYb4RMwAkMzwa9AdYYHt6usW8RNP04fpobakqEglX7+3GasCiWchKVJeRwB7MlGvIyHNo2jexv05HVPP5AQyWJPiRrDrBMDovB3b5aBjyAWEikrfIs2Ch4QwIkFDtv3Oj9Cob8a0dIQbEWGhoDquz1e4u/tWG6wkzpHevSo/8r44m37CCTryhOWYuUt4Zmak50w==
+ bh=WUr3MeIxauUmK1MimKSkv7x6HU1pGGqQ+QbcFVy6bfQ=;
+ b=dw+Kl4RcQMs3s0tRVGL6poah2hJnWodFMkPfK51q5nVV/kRLohsdzTWZ5HoI8XFXLoqRAmX6SVwXfPkh+20tvjbmhqlQ71a3vCtU/IeM9xfU4sSe4no8/u2yY+oJHDBhen4NK+R8T5W/2t7RaPBL9gXMGjXOoCACt2yTcVwwlJhWYiap87aIGafh8LEVg1hv5iu2VfW1I1GFDnk/Wl5EbfySr4vlUDT7eJpQzcrgkgg76hGToNcKfGQLsje49xC5MABXcJourmeRPOP0QvcMkoh6PfeAIWkT0n/LxjzP7qDtZYklL+e4sIJBAcmKOVFGttBHpbRL6b4KmMga63sHFA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/6FVevsrSyj6cSeoqSDCQo7iBOZgkVykjDIwPZy3h5o=;
- b=zm0LTIM8TkGoHA3XNq6XCAQKzFyUhhpjccarJU9N7bnit/WiU/7OM4pA0WUlq8HVxmLs4I3EcOVuKc9Qzs8wfq41MEN+cRJ2Ba9iV92xPHtkFLExp/cam1Oyq/H2JtM/ocv53Kqiyu6Xrjp5iSbkigkj5vCFY8Yw/yaRLgSQV74=
-Received: from CH2PR04CA0009.namprd04.prod.outlook.com (2603:10b6:610:52::19)
- by MN2PR12MB4079.namprd12.prod.outlook.com (2603:10b6:208:1d5::17)
- with Microsoft SMTP Server (version=TLS1_2,
+ bh=WUr3MeIxauUmK1MimKSkv7x6HU1pGGqQ+QbcFVy6bfQ=;
+ b=Rlj77k7knO1lRD2chbMfNeeB+biBapI3I02jzVzHK21IwnTWMi5HZrtwSPFKouubLk2/5HjneaWRP5bwiLTJAfwSopjOXfg9fqt4QY/ElnPvCoCxD6yi7eFrT1jfYLMWnT1Ngx3cvJItfYvXGCYswi8EW/a/Zhk92BJn9YoiN7s=
+Received: from CH2PR04CA0005.namprd04.prod.outlook.com (2603:10b6:610:52::15)
+ by DS0PR12MB7947.namprd12.prod.outlook.com (2603:10b6:8:150::17) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.15; Thu, 19 Feb
- 2026 05:16:38 +0000
+ 2026 05:16:37 +0000
 Received: from DS3PEPF000099DD.namprd04.prod.outlook.com
- (2603:10b6:610:52:cafe::27) by CH2PR04CA0009.outlook.office365.com
- (2603:10b6:610:52::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.15 via Frontend Transport; Thu,
+ (2603:10b6:610:52:cafe::dc) by CH2PR04CA0005.outlook.office365.com
+ (2603:10b6:610:52::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.16 via Frontend Transport; Thu,
  19 Feb 2026 05:16:37 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
@@ -57,16 +57,16 @@ Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
  2026 23:16:36 -0600
 Received: from AB350-desktop.amd.com (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Wed, 18 Feb 2026 23:16:36 -0600
+ Transport; Wed, 18 Feb 2026 23:16:35 -0600
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>,
  =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
-Subject: [PATCH 4/4] lib/amdgpu: log transfer size before DMA/GFX/Compute
- submissions
-Date: Thu, 19 Feb 2026 00:14:19 -0500
-Message-ID: <20260219051630.127667-4-vitaly.prosyak@amd.com>
+Subject: [PATCH 3/4] lib/amdgpu: fix SDMA WRITE_LINEAR COUNT field to use
+ DWORDs
+Date: Thu, 19 Feb 2026 00:14:18 -0500
+Message-ID: <20260219051630.127667-3-vitaly.prosyak@amd.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260219051630.127667-1-vitaly.prosyak@amd.com>
 References: <20260219051630.127667-1-vitaly.prosyak@amd.com>
@@ -75,65 +75,66 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099DD:EE_|MN2PR12MB4079:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9fea2c06-30f6-4f1a-7891-08de6f760ec2
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099DD:EE_|DS0PR12MB7947:EE_
+X-MS-Office365-Filtering-Correlation-Id: 45a91c1e-a792-45a8-1a82-08de6f760e6e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|82310400026|36860700013; 
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Mnk0OTBEQTgrS1RyUyt0Rnd4ZUJSRGZaQnlvVkpVQzFLdk9jZDlwQTE5Qkty?=
- =?utf-8?B?V2s4TU5xU2ZCWnZqN1BzUm4wbGJ3bkZnMzFMQXlPNG41UzBJTHJTUk9qZHds?=
- =?utf-8?B?SXNZWFQyZTZqMEZwdUdocFo2dFhvajlrc3IyaDc2SkhjQk9sRy9URE9JbU1R?=
- =?utf-8?B?dWxONGp0STZybTI4QlBhTERPaTZnR1JrNUE3THVJTTYwYWdrZTJBTzE1OEY0?=
- =?utf-8?B?MHlPZUlERkt5dFdLVGFuajFTOXlsTTE4SFhIZzhkSGY5ZDdvMmJzRUtDalFD?=
- =?utf-8?B?Y3pmczBaeExQck5VYk1FRFFQaXdkVWIyYVc2Z09jRW43eFEyeDQ4STlVbkhm?=
- =?utf-8?B?YWVNNzlvVnVFK0NFMUlXSVFuOXJpdmN0YnZxb2hHbFNxdldRMWxOYXpJaDM0?=
- =?utf-8?B?Nk5qbWhZVFhuOWFnQ1puUVJsOW90WXVockc1cHBkT1lSODFuNThNalJHRTA2?=
- =?utf-8?B?RDBtZlpwaVV1akFIK2dwUDRsMS9lYWs2aG1hSHJjK0Z5TmNvNHRTSHM3T1pu?=
- =?utf-8?B?czRmZTMvRlA4TW5lK1ZnTU1yOGhBRkVDaHRDUDRzdGJYMmNjZWhpb1RqY0JP?=
- =?utf-8?B?ZGRweE1WYVRIanNicVp3clBpSThSa1VXQzJ3bU56TVE1Wk1UVTRnS2pwZzgy?=
- =?utf-8?B?QzlqYXhPaUJRenlaWTJibHlYUzVzYnZlWVRubkRxcUJ3aW92aWxlU3kra2hN?=
- =?utf-8?B?N2FkQ2hNTXZHTnBOMFdDTGp0WVFRK1BBVG1tNEpLUHk0eVlEM1VIT01ySkJj?=
- =?utf-8?B?R0U0eW4xcmhTTE4vbUpySXpNeEdvYktFczZLaWxEZW5waWZjY004bjgrZHVY?=
- =?utf-8?B?Y2MvVjhPNEhVOWMyMmV5enpUUGEyTG5jTHZobk1rdG83WHZKVDh0eHdxTXA5?=
- =?utf-8?B?RHgrV2FMSGFibXBkZVFFWkYwRThsZ29nWG9hM1cvT0xHZW1RamtZNUpqbk9v?=
- =?utf-8?B?bUYzVDFMWEV5SDhqOWxOeEJISEVueHNpbEZ3YnA4WVc4UmdHTG1nbW5OeVk0?=
- =?utf-8?B?Rkw3bUcxUUxaWkIvRlNySk5weXBWaVdpdDNtUWdkQlN6dU5Zem9kaTRJUi9j?=
- =?utf-8?B?ellLaE9oSExJM3dsbjI2bkcrV3VLVnhvQWU0aDJWbENoMkpwYnprdmhPTi9w?=
- =?utf-8?B?dlVEd2QrSEZaczR0Wm12NU85aVR6S2RnUGRreW9iQmZFN0VQSkt2bmwvRXhS?=
- =?utf-8?B?S2pZYm9nNFp2cGgvWU91SjZtOWN6TER0RVRBbHE1REtaOW9zU1R0WTRKZWlI?=
- =?utf-8?B?enc2RkVuWWQ0S1M2MDR4K0czY3N1dHBxYVdBTmFWSXFUV1NLSCtmWVZTV1ds?=
- =?utf-8?B?Qm1UZkVIc0o1SE9ibU43dTZiMnE3b1lIdVFOT0dXWGxoQ3JUWEFSY1pEVzNQ?=
- =?utf-8?B?UXpRTUQxc0VyWElPMjhQTy9rc25OL0VTT0tCdWpsRHJHdUxCRE8xK1ZNY1FG?=
- =?utf-8?B?YVRjRjB3Vy9UNFZFbWM4NVFKS0srd01hbHVtR3hPdnQvS2hhQ3E2QUxHNE1q?=
- =?utf-8?B?Z3Z0aTM3YkNtZXphRVdiaGMwSCt5UHJENmYrUGtIV0ZUdnozRU1SeFl0MDN1?=
- =?utf-8?B?R2tUc1E2UFFhMDJaQU5ORXBBSC9Gci9TTlhzWm1uVUJaQ1JpRWhWODBvT2Q5?=
- =?utf-8?B?MXdqaFgvRk5TRmhzUW1GYy9SYzFtb1l2WGNWV0pnMkRvd0tPaFVsY2tZNTZk?=
- =?utf-8?B?YkNBb3kyR2VucTYvME45SFZRdXhhajJzNjcyY2ZJbjV3VlRQYmRGWWYrcjFG?=
- =?utf-8?B?U2JRNWxxbmZhOEk2T2VXNzN5SWlSc2NPa3l1VnJ0LzN4SnlrKzRFNTlJekFs?=
- =?utf-8?B?UDZHVjljNW9DK1RIN2lIZEtBK3NzWm1HajJLV2ZQd1NZT1JoRHczV245LzZt?=
- =?utf-8?B?VFJ6T3FDUXo0S09rUXFjZGYxUW5IUXZMeWpHS0hMRUpiVkcrS3VmTVpvOGN2?=
- =?utf-8?B?TUNYeUdVTVh3d3hoZGx6M1RUNlVHOGtlYThSWi9JYitnYzlPRDB2MUNHcXBE?=
- =?utf-8?B?dTViY2tydndOT2JoZ2VWbU4zUlNza3R6Rm9tczJUUmtiK1QwUXRTY1hBRHlJ?=
- =?utf-8?B?NnRGbE90TFV3VHZ3QlVrczZ6QWJ3RzJrTkc2d3pHY29nOEpXMGYyZlBRV3kr?=
- =?utf-8?B?TE5PcktObnFjcWVBSTR2TkVIUW5zL2h2UEFUdnlYVkNNcmlOMmRZTEcybE4x?=
- =?utf-8?Q?NV8v49pLE/lNBk8GocCqA01Z7Gy2qbd4l+WYEZuZ7Z3z?=
+ ARA:13230040|36860700013|376014|82310400026|1800799024; 
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?TWxYbU1PTEFUWTB2SnhjM1JZcTV3SGxTRGp2V3ZpVW5PTmRmNFJiTGlQSzVl?=
+ =?utf-8?B?MXNpVUp6UVo4c0ZPUndxUTh4Q1F6K3NlTlhmcWpIY0dyWkFaa25HMVhUZ0RW?=
+ =?utf-8?B?QktEd1FLVGZVanVhOVg0UlpkL3ZpM0xweHdoYVBzK1QrbXpLTzJ4c3Q0ZG0w?=
+ =?utf-8?B?M0tacEs5blRrVEtFZUZ2RVZvaklZejhDMXlqZmhGc0hBRXQxMTJENWxmenYv?=
+ =?utf-8?B?ZmNNR2NxSy9TNVFibXJlSW9SOE4zbHQ0T2dJdXU3bGhjcnI2TUdQekxiTU02?=
+ =?utf-8?B?aXA0Y0NxSFFQSmwxVW9oTEQ2czhIZmlLMTA1V1NMSDIyNVpZdk45K1hyWGdu?=
+ =?utf-8?B?VTdaUzJ0eCtnTE9Rc1NoMUlpTDVlTm9HVUFtQWk0SUVsYkoxL0dUVkFXdmFy?=
+ =?utf-8?B?cElKVXZYZEZZUllwM1FHUXZTbUdwVUNLV0xYQ0JMQ3htUk5PQ3c0UlNUWG81?=
+ =?utf-8?B?R0FwVVlaUzNtaHVoSFdaVS9zVVlvaWJZMWZ5RURHTlphR1NYQ2JsZVFlaThG?=
+ =?utf-8?B?S2lPZ0xVTjBycXJnamxmQnVCUi96MDdOb0VIK1ZOaFhBQnJDNTZYWThrQlZN?=
+ =?utf-8?B?Yk9KV0I4ZjcvMm5vMWJkd2dUZVVPTXc0SVpuaExicnoxSytEdTh5ZTFicUdh?=
+ =?utf-8?B?SGFjc3Rsb1hxY0FIOUpmT3VvUjNrL1pOQnNrbFMzb0pSL2xJY21XWldXdFRv?=
+ =?utf-8?B?dWg1SG1LRWtsNjBMdnFtZCtUaEdxZnU0SHBMMEwxVFVNdWRabyszazJjR0pH?=
+ =?utf-8?B?ZlIzdk52VjhReWR4a1JCWVFKb2pPTC9XcXZ3WlRrK0ZjZEhGODZDV3lhSUVz?=
+ =?utf-8?B?aE9VcjMwdGJoVmxNSlJBcGdkMGlUMUl5NW4vZTVLZU9ZMTFrNGpVWjkrVmFQ?=
+ =?utf-8?B?OG96WnZmNEVoVHNxdWozS0NDNzllSTFiMlhzZW51aTRNL2VHem5Nd1Y2WTZP?=
+ =?utf-8?B?UmV5MGR5ZEZ6ZWE2L0NYVDRJanlhUXNEelJOcnA1eU9VY3lDREIra09veXBZ?=
+ =?utf-8?B?dXNkUGVjVGVDRVc0eUIxSEsxdkY1cW5PVkJJVnFBODBMeWtoRExRRC82bnQ1?=
+ =?utf-8?B?VXVzYjZ5VFFVVUxzcHIxL3JSZGk3N0RHc3Zmb1dkeXVNbWdBYU56OUNsRWwz?=
+ =?utf-8?B?QVh3bWpPY0V2SkRIR3lRU3UzTkV5WS9mazV4RVNSRGVEWGNBZnVJTHJzNnZT?=
+ =?utf-8?B?OWwvZm8zUFFtdUdjMGxhK1FJQURVT0Mxdy9qWU9hVTJkei85aHlGK2J6TTRL?=
+ =?utf-8?B?MEs1K1VnaThKUkNlM1BqNGx1TlZLeElpaGdDalNZR2E1aUlaREJzYmZVaWFR?=
+ =?utf-8?B?VWh4SnAyblhlVnBUYnRZdG44ZzY5a1d4R1c1T0tCa2lhT2VGUXVnd0U3YUw4?=
+ =?utf-8?B?cWIxWXY3d09OY0VUc0JtRDJ5WGNjRURBQWYramplUStQb3N4cDB1b3pQM2lG?=
+ =?utf-8?B?djNBU1FGeDhIRFhsdXZ4aEswajV4eEYwbW52N1NUdHIvQkVnYmxQQW96NVYz?=
+ =?utf-8?B?OG84SzAwRktueFdteVJXV3czTzI5SnlkWXdKMmFTRklNQ2hBL0pvNTVrVERW?=
+ =?utf-8?B?SWF2ckFnQmlwaGNsUlB1bU1Pa241dy9rVFdHNmdLQTlqR2xoYU5Gc0Y2UlpP?=
+ =?utf-8?B?eWZ2ZTVoQ296TnV1S1NjcGhRbnFiMTI3bnBVZExJcTJ5RUxYQlVmd0xoU2w1?=
+ =?utf-8?B?SDVDUlJpZjdFaE93UjVRTm9TbURTVndHSE9CMFRYcHlGOERHNUYrczV3RWp4?=
+ =?utf-8?B?TDlBZ3dubERlSzNDblpxdzdFTlRSNWphb3VUZ2llUXJpQVVYOHo3cXN2c3p3?=
+ =?utf-8?B?OTMyWU9VeVdFam9UUGJQRXJocVkzS1lodmtTT0FSU0VTblFCSllTQzVsQ3BF?=
+ =?utf-8?B?SXJkTVBYTGl0WEVCSjhEUjJBeHlwelBxSGgzWEJreEFSZktRalhNOWk4eWFr?=
+ =?utf-8?B?Q0tvZTdDV05GSTY2TmJvSythbjlhdlhLOUR4THdJeU1NTVpIcGtmVk1Ub2hS?=
+ =?utf-8?B?bGo5dlFKZDZqbm8xMjBSOEVzSHRNQ2N0cWFPVTEyRFljSVpHSjE2SU5heXht?=
+ =?utf-8?B?UWRVenBVRGxUQ0ZJUEdONUJTeS9vSndWNFk2YTVuR296a2hnRXJLb0x2T08r?=
+ =?utf-8?B?VzNERG1EdlZCT2VncjhxREM1ZW4rUU9SMk1ZTklBRlJVVDM4ZEFLamc1N1JS?=
+ =?utf-8?B?QVRZQ1ZYd1QzeWp1VnBwS0orNjU0VGxHVktBN1JLWS9WMWtDL09WQVk1TXlo?=
+ =?utf-8?B?bGl5eTBSMm1sTytDL1p6eEROR2F3PT0=?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013); DIR:OUT;
+ SFS:(13230040)(36860700013)(376014)(82310400026)(1800799024); DIR:OUT;
  SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: +7MO6YmMpu40+mbp3j/AduVn5wwcIOhFxlrNaKlKvgL+ULg1FmU8nW39tvdHuPshE7TcEpm+PfsG0EIs7sFINPLAFku78nkvYgAPegOT9E1AoneurWGEr9wrCojoFlTlPmDuoJjmtBaGD/GNvipIuFjGr7YdCThxmjUnynKNQUdH+BSGMRM1tS4mPaIZ09Z8KGWAC5k7Bu+sStJtbLXzOLm5UDnkKHrn51/i25Jl/dtWa9QUSVmNlCXV4TlZAkTa8bD1D97BVctY7ZQziXmqR29qJw3qwPUEtA3lcwpdJq6FGqx0+ezK3P62cVxQvOCMypRBivZwRCB55Xm3knDtyPCsZ/gcRBdjxToSF/YvieXyrpX/9qWOrUFN5i2K+KMTyEXpI8hE/DuLzH4SYN5YbVihyHQZ5cu07JI+ckvAA3bDWc/fidplzCa50oPAJYQU
+X-MS-Exchange-AntiSpam-MessageData-0: mn7Hu+Riis+MRiyZ5NbNEYeyD8Yhlh06gWm0kRvBo0MY/NMAV401O8aZbkOkSuFS7qS0yKGMTpGPbkLR1IeYqscc4jJq3NnBzZBvMquks+SQ+5foRlTs9ijnLOwVK2S8a2pMbEgUkROI6rnBgmKRr8Cp1zZoMKOpF4jv+NoaUOxVe58dMQvcJryGSsl6Gick3ZOlM39ocWq7xjqCFwM2Nz9dyjFHWfRa9oUGC65a3HgPbePlNm0trm8n8Os2acEUqApv1MGQK0rfFWqQng0FpCHihNbm/P7Q9cRDB8bnlJ5bay+ogfAHK6GaUMzqi/suZjHigu8YrfBIrm65O6fHQWwANtF2s/rUZTNPchBdYdt62WHQTOTJUh7r4CmPcHE0tcz/3wyseoVlbFo4dFxzjp1q/OebcHRlsF3ZWzaRs9fiPWBDWCLGeaSNQFLW98Yf
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2026 05:16:37.6847 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9fea2c06-30f6-4f1a-7891-08de6f760ec2
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2026 05:16:37.1286 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45a91c1e-a792-45a8-1a82-08de6f760e6e
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099DD.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4079
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7947
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -151,82 +152,102 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Add igt_info() logging before each amdgpu_test_exec_cs_helper() call
-in the write_linear, const_fill, and copy_linear helpers to show the
-IP engine name, ring index, and transfer size in bytes and KB.
+The SDMA WRITE_LINEAR packet COUNT field specifies the number of
+DWORDs of inline data (minus 1 for AI+), not bytes. After the
+write_length normalization to bytes in the previous patch, the COUNT
+was incorrectly set to the byte value causing the SDMA engine to
+read past the inline data into garbage memory, leading to GPU hangs
+and -63 (ETIME) timeouts (e.g. in amdgpu_userptr_test).
 
-This helps diagnose timeout issues by making it visible which large
-transfer is in progress when a GPU hang or -63 (ETIME) occurs.
+Fix by dividing write_length by 4 when setting the COUNT field in
+sdma_ring_write_linear and sdma_ring_bad_write_linear. Also fix the
+SI (Southern Islands) SDMA_PACKET_SI header and the stream_length
+computation in the bad_write_linear error injection path.
 
-Example output:
-  SDMA write_linear: ring 0, size 2097152 bytes (2048 KB)
-  GFX const_fill: ring 0, size 67108860 bytes (65536 KB)
+Note: SDMA CONST_FILL and COPY_LINEAR COUNT fields are in bytes,
+so those remain unchanged.
 
 Cc: Christian König <christian.koenig@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: Jesse Zhang <jesse.zhang@amd.com>
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Change-Id: I9e0f178caef61bb2c3eeebc57c5c1118ce7b496a
+Change-Id: Ibe462d8a41cc5196edb889dd87977a9c0982194d
 ---
- lib/amdgpu/amd_command_submission.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ lib/amdgpu/amd_command_submission.c |  2 +-
+ lib/amdgpu/amd_ip_blocks.c          | 16 ++++++++--------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
-index c14b2cb75..923febeeb 100644
+index 877ea8ecd..c14b2cb75 100644
 --- a/lib/amdgpu/amd_command_submission.c
 +++ b/lib/amdgpu/amd_command_submission.c
-@@ -10,6 +10,18 @@
- #include "lib/amdgpu/amd_sdma.h"
- #include "lib/amdgpu/amd_PM4.h"
- #include "lib/amdgpu/amd_command_submission.h"
-+
-+static const char *
-+amdgpu_ip_type_name(unsigned ip_type)
-+{
-+	switch (ip_type) {
-+	case AMDGPU_HW_IP_GFX:     return "GFX";
-+	case AMDGPU_HW_IP_COMPUTE: return "Compute";
-+	case AMDGPU_HW_IP_DMA:     return "SDMA";
-+	default:                    return "Unknown";
-+	}
-+}
-+
- #include "ioctl_wrappers.h"
+@@ -1502,7 +1502,7 @@ get_sdma_max_bytes(amdgpu_device_handle device)
+  * is 14 bits in DWORDs (max 16384 DW = 64 KB), but that limit is
+  * handled by pm4 buffer sizing, not by this struct.
+  */
+-#define GFX_CP_DMA_MAX_BYTES   (1ULL << 26)  /* 64 MB */
++#define GFX_CP_DMA_MAX_BYTES   ((1ULL << 26) - 4)  /* max for 26-bit PACKET3_DMA_DATA byte_count */
  
+ void
+ amdgpu_dma_limits_query(amdgpu_device_handle device,
+diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+index ec03babda..f993a6caa 100644
+--- a/lib/amdgpu/amd_ip_blocks.c
++++ b/lib/amdgpu/amd_ip_blocks.c
+@@ -42,7 +42,7 @@ sdma_ring_write_linear(const struct amdgpu_ip_funcs *func,
+ 		     (unsigned long)ring_context->write_length);
+ 	if (func->family_id == AMDGPU_FAMILY_SI)
+ 		ring_context->pm4[i++] = SDMA_PACKET_SI(SDMA_OPCODE_WRITE, 0, 0, 0,
+-					 ring_context->write_length);
++					 ring_context->write_length / 4);
+ 	else
+ 		ring_context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_WRITE,
+ 					 SDMA_WRITE_SUB_OPCODE_LINEAR,
+@@ -51,9 +51,9 @@ sdma_ring_write_linear(const struct amdgpu_ip_funcs *func,
+ 	ring_context->pm4[i++] = lower_32_bits(ring_context->bo_mc);
+ 	ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
+ 	if (func->family_id >= AMDGPU_FAMILY_AI)
+-		ring_context->pm4[i++] = ring_context->write_length - 1;
++		ring_context->pm4[i++] = ring_context->write_length / 4 - 1;
+ 	else
+-		ring_context->pm4[i++] = ring_context->write_length;
++		ring_context->pm4[i++] = ring_context->write_length / 4;
  
-@@ -440,6 +452,10 @@ void amdgpu_command_submission_write_linear_helper(amdgpu_device_handle device,
+ 	while (j++ < ring_context->write_length / 4)
+ 		ring_context->pm4[i++] = func->deadbeaf;
+@@ -80,9 +80,9 @@ sdma_ring_bad_write_linear(const struct amdgpu_ip_funcs *func,
+ 	j = 0;
  
- 			ring_context->ring_id = ring_id;
+ 	if (cmd_error == CMD_STREAM_EXEC_INVALID_PACKET_LENGTH)
+-		stream_length = ring_context->write_length / 16;
++		stream_length = ring_context->write_length / 4 / 16;
+ 	else
+-		stream_length = ring_context->write_length;
++		stream_length = ring_context->write_length / 4;
  
-+			igt_info("%s write_linear: ring %d, size %lu bytes (%lu KB)\n",
-+				amdgpu_ip_type_name(ip_block->type), ring_id,
-+				(unsigned long)ring_context->write_length,
-+				(unsigned long)ring_context->write_length / 1024);
- 			 amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
+ 	if (cmd_error == CMD_STREAM_EXEC_INVALID_OPCODE)
+ 		opcode = 0xf2;
+@@ -91,7 +91,7 @@ sdma_ring_bad_write_linear(const struct amdgpu_ip_funcs *func,
  
- 			/* verify if SDMA test result meets with expected */
-@@ -567,6 +583,10 @@ void amdgpu_command_submission_const_fill_helper(amdgpu_device_handle device,
- 			/* fulfill PM4: test DMA const fill */
- 			ip_block->funcs->const_fill(ip_block->funcs, ring_context, &ring_context->pm4_dw);
+ 	if (func->family_id == AMDGPU_FAMILY_SI)
+ 		ring_context->pm4[i++] = SDMA_PACKET_SI(opcode, 0, 0, 0,
+-					 ring_context->write_length);
++					 ring_context->write_length / 4);
+ 	else
+ 		ring_context->pm4[i++] = SDMA_PACKET(opcode,
+ 					 SDMA_WRITE_SUB_OPCODE_LINEAR,
+@@ -107,9 +107,9 @@ sdma_ring_bad_write_linear(const struct amdgpu_ip_funcs *func,
+ 		ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
+ 	}
+ 	if (func->family_id >= AMDGPU_FAMILY_AI)
+-		ring_context->pm4[i++] = ring_context->write_length - 1;
++		ring_context->pm4[i++] = ring_context->write_length / 4 - 1;
+ 	else
+-		ring_context->pm4[i++] = ring_context->write_length;
++		ring_context->pm4[i++] = ring_context->write_length / 4;
  
-+			igt_info("%s const_fill: ring %d, size %lu bytes (%lu KB)\n",
-+				amdgpu_ip_type_name(ip_block->type), ring_id,
-+				(unsigned long)ring_context->write_length,
-+				(unsigned long)ring_context->write_length / 1024);
- 			amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
- 
- 			/* verify if SDMA test result meets with expected */
-@@ -697,6 +717,10 @@ void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
- 
- 				ip_block->funcs->copy_linear(ip_block->funcs, ring_context, &ring_context->pm4_dw);
- 
-+				igt_info("%s copy_linear: ring %d, size %lu bytes (%lu KB)\n",
-+					amdgpu_ip_type_name(ip_block->type), ring_id,
-+					(unsigned long)ring_context->write_length,
-+					(unsigned long)ring_context->write_length / 1024);
- 				amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context, 0);
- 
- 				/* verify if SDMA test result meets with expected */
+ 	while (j++ < stream_length)
+ 		ring_context->pm4[i++] = func->deadbeaf;
 -- 
 2.52.0
 
