@@ -4,55 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C0D7E9A048
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Feb 2026 09:30:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 812E1E9A03B
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Feb 2026 09:36:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 19CD210E687;
-	Thu, 19 Feb 2026 09:30:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 21B3210E280;
+	Thu, 19 Feb 2026 09:36:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RWqe/5wf";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="ElPbKJ2Y";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8BE0210E1FB
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Feb 2026 09:30:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771493455; x=1803029455;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=PN3w9bAqHVshR0Es+sh0QALCPQmPGl29AetM2GeNibU=;
- b=RWqe/5wfEhGYXolKGLtIEqhJP9fTF4K4/W/lQZ/2nE9ZUqKoE1yYytU1
- DQmoIvi5ObYd5+dU2N530rc1L6tGj4FW+4R8Kh0Zl3rFcs1XQ6dLmOdVD
- Q4zlCb3Rni2rB0B42yiPP7AAnvsacBhAj4ZEeFE5iQZKZE2HhRo0IuxGV
- 4TnG9ES9/dPCxunOf6fmJs3xBcJC1xpIMSOPD3vctxWv3DODjlgDDNsTy
- ppDH8b/lSTUCk2TQuEynGjVaGWBKKauWq3yQ39SiSVUvIhGbgzsHOnFE5
- /vWpQJoQxSuREK62SxP/bnV2NubNGbRHxPkD9SCQQ1kYR5HuF8vYw+M8b w==;
-X-CSE-ConnectionGUID: +wQbDDCNSdmN42bNTmkKDQ==
-X-CSE-MsgGUID: wSjPOTUjSCunm8wCoRRJ9A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11705"; a="84025251"
-X-IronPort-AV: E=Sophos;i="6.21,299,1763452800"; d="scan'208";a="84025251"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Feb 2026 01:30:55 -0800
-X-CSE-ConnectionGUID: wAhFZ4H0TUaduglqCKQZww==
-X-CSE-MsgGUID: Pvv/HLseT5mt/i/K8L2CLw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,299,1763452800"; d="scan'208";a="218989887"
-Received: from dut-2a59.iind.intel.com ([10.190.239.113])
- by fmviesa005.fm.intel.com with ESMTP; 19 Feb 2026 01:30:54 -0800
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com,
-	chaitanya.kumar.borah@intel.com
-Subject: [PATCH i-g-t v2 4/4] tests/kms_color_pipeline: collect reference CRC
- once per pipe
-Date: Thu, 19 Feb 2026 14:35:45 +0530
-Message-Id: <20260219090545.340383-4-chaitanya.kumar.borah@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260219090545.340383-1-chaitanya.kumar.borah@intel.com>
-References: <20260219090545.340383-1-chaitanya.kumar.borah@intel.com>
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com
+ [74.125.224.49])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B2D2B10E25D
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Feb 2026 04:10:52 +0000 (UTC)
+Received: by mail-yx1-f49.google.com with SMTP id
+ 956f58d0204a3-649e97f1e1eso338644d50.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Feb 2026 20:10:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771474251; cv=none;
+ d=google.com; s=arc-20240605;
+ b=JawHBWOr7mcSI36XOmHvQpyeuDo4RPHsaA/lecvLoDaXDyJxgd8iHCLOFCoDChPHAW
+ mtWugngypNrUkAqhd6HT/ly22MOKDM6qWH9ILhRLJLMU2prWGIzx25XrzZ/AYKslxPbH
+ JzvthfdnrF2RmSIShxBYbZVljjLhN9rK9xnodwLls2UuJwt4IgHWvd81O3lQtvbNqvwy
+ yDz5sEKpe7rUGrVFwZXiKj1JT7CJVEu1viwov9z0MDo7YTNk90FZzaFDSDf5PhRe9QD/
+ 6ET7DVk/dAhH81MqQx+iAJny9gHXYRKFZ3Ah567OCMowSiozpqVhtM4XKaHKk3MILJSL
+ oKOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
+ s=arc-20240605; 
+ h=to:subject:message-id:date:from:mime-version:dkim-signature;
+ bh=vF7SsAkNR9eYmjWQZor3delLbaufeJNSW/hvl+P1Two=;
+ fh=EX0PTiD1xokl/cAGDPMTEx05jGXdhO5EftfjRYYG43A=;
+ b=NejpiItJJnZM4jVOjqSJZwcCvC788Z9OqnuMxHnJ8KchV+CZ8ljltR7R7YDR/F+0zx
+ qcRBHnuNkyJd7bOzhRLx2oBp8bkFgn4kpdHsgzlWwRgB8RaVP/GC88Qqtvr9yzFlWn/d
+ 0jljtrKR7tBt+4kv+/tWSAk7l7sqSqqIqJKGgHRIwKpejurazg4Q937RXHdaEvqkx9Ho
+ 7wMifFGxiUO9r/juULb4YoUMwXXB8zxkgEsLem8ZxCGXEStz1QM3/lko8L8CD4JmRDVZ
+ cnhKqlE/a2QX45oYvl9oTuGWdSTd8zTypNU4Jfh/usgEX6g8DMj30AA/WkduGhLKU6lv
+ ebzA==; darn=lists.freedesktop.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1771474251; x=1772079051; darn=lists.freedesktop.org;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=vF7SsAkNR9eYmjWQZor3delLbaufeJNSW/hvl+P1Two=;
+ b=ElPbKJ2Yc8mPsBPD58W0pbyBCF2I5OgdmpzyssIib5LDZtY4paTOZVwlAlYRlYkjM1
+ DYzMJ6VMKgCfEOHSVurneXJHm/1LXRLgIsRrQQpQAMn5o4rkJ5o6KKamOWSpkSaYUlsk
+ LKTYVLZESIVdCBINMBJFnfowp75wKYIhMDYyEi5SdKGPv3IyOUolBwiyAk+Z2xufiTjv
+ R8y0MBLyrbAGOrel3gVwZoQ7yTPwdoGc7pGp/3G8h+/zX8mMaEEn9W4ZWdHwKJnWTM4t
+ 8yI+qqkcoZmdrqxPJJtKPY0C5XQ/O+7A5Bq8/GrA32jmPaDRUl/NH61JaFk/6dnB6Qxx
+ n0IQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1771474251; x=1772079051;
+ h=to:subject:message-id:date:from:mime-version:x-gm-gg
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vF7SsAkNR9eYmjWQZor3delLbaufeJNSW/hvl+P1Two=;
+ b=BfXWvXTMZO3aIg+JoyKG87H3hVHhCNiBKL2akVksg8g6CehsCc3Vz8dEZAoBqk/HMA
+ 4ClEz5TV6bj0wG+6oBA9Wger3MCX9pWeEQrI0mV1g9KcHO1B0n2P/0xDyTVg0a1Gmcfw
+ GbDGOBGeZElgHsnKnapFcYBoM9coz/aTM2XOMkJk92eMiBNd+DDORYsXzvodRCXvXFLt
+ RlcKxxdyQh2mueRE6b0iwd3MwjOVFgxrEULXlk0xN9K4RAMttGmtBHvXJRfNpMqAQPwz
+ Q0EZmCKdVFPD3F7PXMnRnwrrhfuLWLuFVCz2x+dlhqhUv9glBy41SNUHxJ9w6H2Qwsdl
+ soBA==
+X-Gm-Message-State: AOJu0YyNc0h7tCXO5+CmarsJ4EdWPANhW7NBNIXDihPGN4Oq75FAg1wE
+ YG9Ww5QJiMZ43RrGMuwGnr78Kbiv7D77PyYxOxQRQAXIRRkj2MDrIBO/xsuE67eNtdIEt3H3Lbi
+ 7cKd8xQVRZniKNajbgsZvHyIG1+4cV5nPvReG
+X-Gm-Gg: AZuq6aKKKEUQ58B+icx6CZLLojBLkSL9Z+5Sr6m/BFz9b6pzaiy7IKPo8zqblQhrVQU
+ ItcLZpPearIXrZ93EI0Ug7rXr7dMauBGaE6D1Yv7oQjReaajUPDovEyadLFspQTzuStQ+9B2j3b
+ bFqKUQB5EpOEQ5FJCFf4/7CVBWgMyKkUmASXtMqgaRdLxYujEixMCPiEzKMF+m+c4BqQhe8eIql
+ 8ZZzgU8ime/P3kUKIl17Qgkz9wAtdq1BreKhSJ5ktTZEPdWlkLf/avEH/BfW4Kavut5l3KMBDFN
+ XWza
+X-Received: by 2002:a53:a383:0:b0:649:ef06:15f3 with SMTP id
+ 956f58d0204a3-64c14ac28a4mr14462932d50.10.1771474250559; Wed, 18 Feb 2026
+ 20:10:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: jim.cromie@gmail.com
+Date: Wed, 18 Feb 2026 21:10:24 -0700
+X-Gm-Features: AZwV_QjswIP-pCa8eQWr00yfcjDmILlaohBNh2v-8zqk9dJQi91Or_yLWNcwGjY
+Message-ID: <CAJfuBxwazTagCUjsTr3MW7X8v4byStriyif+-Cq_B9FraLzihw@mail.gmail.com>
+Subject: failing prime_busy@before,after tests
+To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Thu, 19 Feb 2026 09:36:31 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,139 +96,244 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The reference (software-equivalent) CRC is being recomputed
-for every plane even though it is identical across planes for
-a given test configuration. Refactor the test to collect the
-reference CRC once per pipe and reuse it for all planes.
+hey folks.
 
-v2:
- - Rebase
- - s/test_grab_crc/capture_ref_crc (Swati)
- - Use DRM_PLANE_TYPE_PRIMARY (Swati)
- - s/igt_skip_on/igt_assert/ (Swati)
- - Add a comment explaining why CRC capture on the
-   primary plane is sufficient (Swati)
- - Wait for vblank before CRC collection (Swati)
- - s/reference_crc/ref_crc (Swati)
+Im testing a patchset fixing DRM_USE_DYNAMIC_DEBUG=y,
+against DRM-CI on gitlab.freedesktop.org
 
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
----
- tests/kms_color_pipeline.c | 66 +++++++++++++++++++++++++++++---------
- 1 file changed, 50 insertions(+), 16 deletions(-)
+and its failing prime_busy tests before and after.
+and several more.
+https://gitlab.freedesktop.org/jim.cromie/kernel-drm-next-dd/-/jobs/93571016
 
-diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
-index 4ba4ea605..7da78b2a5 100644
---- a/tests/kms_color_pipeline.c
-+++ b/tests/kms_color_pipeline.c
-@@ -87,16 +87,58 @@ static bool ctm_colorop_only(kms_colorop_t *colorops[])
- 	return true;
- }
- 
-+static void
-+capture_ref_crc(data_t *data, igt_output_t *output,
-+		const color_t *fb_color, igt_crc_t *crc /* out */)
-+{
-+	struct igt_fb fb;
-+	drmModeModeInfo *mode;
-+	igt_plane_t *primary;
-+	char *crc_str;
-+	int ret;
-+
-+	/*
-+	 * Since CRC is collected at Pipe level,
-+	 * collecting crc for primary plane
-+	 * is enough for reference.
-+	 */
-+	primary = igt_output_get_plane(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	mode = igt_output_get_mode(output);
-+	igt_assert_fd(igt_create_fb(data->drm_fd,
-+				    mode->hdisplay, mode->vdisplay,
-+				    DRM_FORMAT_XRGB8888,
-+				    DRM_FORMAT_MOD_LINEAR,
-+				    &fb));
-+
-+	paint_rectangles(data, mode, fb_color, &fb);
-+	igt_plane_set_fb(primary, &fb);
-+	ret = igt_display_try_commit_atomic(&data->display, 0, NULL);
-+	igt_assert(!ret);
-+
-+	igt_wait_for_vblank(primary->crtc);
-+	igt_pipe_crc_collect_crc(data->pipe_crc, crc);
-+
-+	igt_plane_set_fb(primary, NULL);
-+	igt_display_commit_atomic(&data->display, 0, NULL);
-+
-+	igt_remove_fb(data->drm_fd, &fb);
-+
-+	crc_str = igt_crc_to_string(crc);
-+	igt_debug("CRC for reference fb: %s\n", crc_str);
-+	free(crc_str);
-+}
-+
- static void _test_plane_colorops(data_t *data,
- 				 igt_plane_t *plane,
- 				 const color_t *fb_colors,
--				 const color_t *exp_colors,
-+				 igt_crc_t *crc_ref,
- 				 kms_colorop_t *colorops[])
- {
- 	igt_display_t *display = &data->display;
- 	drmModeModeInfo *mode = data->mode;
- 	igt_colorop_t *color_pipeline;
--	igt_crc_t crc_ref, crc_pipe;
-+	igt_crc_t crc_pipe;
- 	struct igt_fb fb;
- 
- 	color_pipeline = get_color_pipeline(display, plane, colorops);
-@@ -109,18 +151,6 @@ static void _test_plane_colorops(data_t *data,
- 				 DRM_FORMAT_XRGB8888,
- 				 DRM_FORMAT_MOD_LINEAR,
- 				 &fb));
--	igt_plane_set_fb(plane, &fb);
--
--	igt_display_commit_atomic(&data->display, 0, NULL);
--
--	/* Reference (software-equivalent) CRC */
--	set_color_pipeline_bypass(plane);
--	paint_rectangles(data, mode, exp_colors, &fb);
--
--	igt_plane_set_fb(plane, &fb);
--	igt_display_commit_atomic(&data->display, 0, NULL);
--	igt_wait_for_vblank(plane->crtc);
--	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_ref);
- 
- 	/* Hardware pipeline CRC */
- 	set_color_pipeline(display, plane, colorops, color_pipeline);
-@@ -138,7 +168,7 @@ static void _test_plane_colorops(data_t *data,
- 	igt_wait_for_vblank(plane->crtc);
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_pipe);
- 
--	igt_assert_crc_equal(&crc_ref, &crc_pipe);
-+	igt_assert_crc_equal(crc_ref, &crc_pipe);
- 
- 	/* Cleanup per-test state */
- 	set_color_pipeline_bypass(plane);
-@@ -157,6 +187,9 @@ static void test_plane_colorops(data_t *data, igt_crtc_t *crtc,
- 	int n_planes = crtc->n_planes;
- 	igt_output_t *output = data->output;
- 	igt_plane_t *plane;
-+	igt_crc_t ref_crc;
-+
-+	capture_ref_crc(data, output, exp_colors, &ref_crc);
- 
- 	for (int plane_id = 0; plane_id < n_planes; plane_id++) {
- 		plane = igt_output_get_plane(output, plane_id);
-@@ -165,7 +198,8 @@ static void test_plane_colorops(data_t *data, igt_crtc_t *crtc,
- 			continue;
- 
- 		igt_dynamic_f("pipe-%s-plane-%u", kmstest_pipe_name(crtc->pipe), plane_id)
--			_test_plane_colorops(data, plane, fb_colors, exp_colors, colorops);
-+			_test_plane_colorops(data, plane, fb_colors,
-+					     &ref_crc, colorops);
- 	}
- }
- 
--- 
-2.25.1
+This is almost certainly because the overheads of toggling all the
+static-keys under all the altered drm-*dbg() calls are much bigger
+than just toggling a word: /sys/modules/drm/parameters/debug
 
+Whats a workable solution?
+
+is this timeout already parameterized, such that I could
+set some CI variable ?
+It seems to be something thats affecting multiple tests,
+probably each with a different scaling factor.
+
+this 1st one is 800/150 too long.
+
+00:16:12.165: ERROR - Igt error: (kms_sysfs_edid_timing:852) CRITICAL:
+Test assertion failure function __igt_unique____real_main60, file
+../tests/kms_sysfs_edid_timing.c:120:
+00:16:12.165: ERROR - Igt error: (kms_sysfs_edid_timing:852) CRITICAL:
+Failed assertion: mean.max < THRESHOLD_PER_CONNECTOR * 1e6
+00:16:12.165: ERROR - Igt error: (kms_sysfs_edid_timing:852) CRITICAL:
+card0-DP-2: single probe time exceeded 150ms, max=800.51ms,
+avg=800.05ms
+
+one of the prime-busy fails
+
+22:51:39.140: DEBUG - Begin test syncobj_timeline@invalid-signal-illegal-handle
+22:51:39.140: DEBUG - End test syncobj_timeline@invalid-signal-illegal-handle
+22:51:39.140: DEBUG - Begin test sw_sync@timeline_closed_signaled
+22:51:39.140: DEBUG - End test sw_sync@timeline_closed_signaled
+22:51:39.140: DEBUG - Begin test prime_busy@after-wait
+22:51:44.184: ERROR - Igt error: (prime_busy:296) CRITICAL: Test
+assertion failure function busy, file ../tests/intel/prime_busy.c:114:
+22:51:44.184: ERROR - Igt error: (prime_busy:296) CRITICAL: Failed
+assertion: poll(pfd, 1, timeout * 1000) == 1
+22:51:44.185: ERROR - Igt error: Dynamic subtest bcs0 failed.
+22:51:44.185: ERROR - Igt error: **** DEBUG ****
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_dummyload-DEBUG:
+Test requirement passed: nengine
+22:51:44.185: ERROR - Igt error: (prime_busy:296) CRITICAL: Test
+assertion failure function busy, file ../tests/intel/prime_busy.c:114:
+22:51:44.185: ERROR - Igt error: (prime_busy:296) CRITICAL: Failed
+assertion: poll(pfd, 1, timeout * 1000) == 1
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: Stack trace:
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #0
+../lib/igt_core.c:2075 __igt_fail_assert()
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #1
+../tests/intel/prime_busy.c:114 test_mode()
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #2
+../tests/intel/prime_busy.c:180 __igt_unique____real_main151()
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #3
+../tests/intel/prime_busy.c:151 main()
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #4
+[__libc_init_first+0x8a]
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #5
+[__libc_start_main+0x85]
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #6
+[_start+0x21]
+22:51:44.185: ERROR - Igt error: **** END ****
+22:51:44.185: ERROR - Igt error: (prime_busy:296) CRITICAL: Test
+assertion failure function busy, file ../tests/intel/prime_busy.c:114:
+22:51:44.185: ERROR - Igt error: (prime_busy:296) CRITICAL: Failed
+assertion: poll(pfd, 1, timeout * 1000) == 1
+22:51:44.185: ERROR - Igt error: Dynamic subtest vcs0 failed.
+22:51:44.185: ERROR - Igt error: **** DEBUG ****
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_dummyload-DEBUG:
+Test requirement passed: nengine
+22:51:44.185: ERROR - Igt error: (prime_busy:296) CRITICAL: Test
+assertion failure function busy, file ../tests/intel/prime_busy.c:114:
+22:51:44.185: ERROR - Igt error: (prime_busy:296) CRITICAL: Failed
+assertion: poll(pfd, 1, timeout * 1000) == 1
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: Stack trace:
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #0
+../lib/igt_core.c:2075 __igt_fail_assert()
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #1
+../tests/intel/prime_busy.c:114 test_mode()
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #2
+../tests/intel/prime_busy.c:180 __igt_unique____real_main151()
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #3
+../tests/intel/prime_busy.c:151 main()
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #4
+[__libc_init_first+0x8a]
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #5
+[__libc_start_main+0x85]
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #6
+[_start+0x21]
+22:51:44.185: ERROR - Igt error: **** END ****
+22:51:44.185: ERROR - Igt error: (prime_busy:296) CRITICAL: Test
+assertion failure function busy, file ../tests/intel/prime_busy.c:114:
+22:51:44.185: ERROR - Igt error: (prime_busy:296) CRITICAL: Failed
+assertion: poll(pfd, 1, timeout * 1000) == 1
+22:51:44.185: ERROR - Igt error: Dynamic subtest vecs0 failed.
+22:51:44.185: ERROR - Igt error: **** DEBUG ****
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_dummyload-DEBUG:
+Test requirement passed: nengine
+22:51:44.185: ERROR - Igt error: (prime_busy:296) CRITICAL: Test
+assertion failure function busy, file ../tests/intel/prime_busy.c:114:
+22:51:44.185: ERROR - Igt error: (prime_busy:296) CRITICAL: Failed
+assertion: poll(pfd, 1, timeout * 1000) == 1
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: Stack trace:
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #0
+../lib/igt_core.c:2075 __igt_fail_assert()
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #1
+../tests/intel/prime_busy.c:114 test_mode()
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #2
+../tests/intel/prime_busy.c:180 __igt_unique____real_main151()
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #3
+../tests/intel/prime_busy.c:151 main()
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #4
+[__libc_init_first+0x8a]
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #5
+[__libc_start_main+0x85]
+22:51:44.185: ERROR - Igt error: (prime_busy:296) igt_core-INFO: #6
+[_start+0x21]
+22:51:44.185: ERROR - Igt error: **** END ****
+22:51:44.185: ERROR - Test prime_busy@after-wait: Fail: See
+"/results/igt.prime_busy@after-wait.log"
+22:51:44.185: DEBUG - End test prime_busy@after-wait
+22:51:44.185: DEBUG - Begin test prime_busy@after-wait
+22:51:54.271: ERROR - Igt error: (prime_busy:298) CRITICAL: Test
+assertion failure function busy, file ../tests/intel/prime_busy.c:114:
+22:51:59.325: ERROR - Igt error: (prime_busy:298) CRITICAL: Failed
+assertion: poll(pfd, 1, timeout * 1000) == 1
+22:51:59.325: ERROR - Igt error: Dynamic subtest rcs0 failed.
+22:51:59.325: ERROR - Igt error: **** DEBUG ****
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_dummyload-DEBUG:
+Test requirement passed: nengine
+22:51:59.325: ERROR - Igt error: (prime_busy:298) CRITICAL: Test
+assertion failure function busy, file ../tests/intel/prime_busy.c:114:
+22:51:59.325: ERROR - Igt error: (prime_busy:298) CRITICAL: Failed
+assertion: poll(pfd, 1, timeout * 1000) == 1
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: Stack trace:
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #0
+../lib/igt_core.c:2075 __igt_fail_assert()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #1
+../tests/intel/prime_busy.c:114 test_mode()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #2
+../tests/intel/prime_busy.c:180 __igt_unique____real_main151()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #3
+../tests/intel/prime_busy.c:151 main()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #4
+[__libc_init_first+0x8a]
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #5
+[__libc_start_main+0x85]
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #6
+[_start+0x21]
+22:51:59.325: ERROR - Igt error: **** END ****
+22:51:59.325: ERROR - Igt error: (prime_busy:298) CRITICAL: Test
+assertion failure function busy, file ../tests/intel/prime_busy.c:114:
+22:51:59.325: ERROR - Igt error: (prime_busy:298) CRITICAL: Failed
+assertion: poll(pfd, 1, timeout * 1000) == 1
+22:51:59.325: ERROR - Igt error: Dynamic subtest bcs0 failed.
+22:51:59.325: ERROR - Igt error: **** DEBUG ****
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_dummyload-DEBUG:
+Test requirement passed: nengine
+22:51:59.325: ERROR - Igt error: (prime_busy:298) CRITICAL: Test
+assertion failure function busy, file ../tests/intel/prime_busy.c:114:
+22:51:59.325: ERROR - Igt error: (prime_busy:298) CRITICAL: Failed
+assertion: poll(pfd, 1, timeout * 1000) == 1
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: Stack trace:
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #0
+../lib/igt_core.c:2075 __igt_fail_assert()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #1
+../tests/intel/prime_busy.c:114 test_mode()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #2
+../tests/intel/prime_busy.c:180 __igt_unique____real_main151()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #3
+../tests/intel/prime_busy.c:151 main()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #4
+[__libc_init_first+0x8a]
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #5
+[__libc_start_main+0x85]
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #6
+[_start+0x21]
+22:51:59.325: ERROR - Igt error: **** END ****
+22:51:59.325: ERROR - Igt error: (prime_busy:298) CRITICAL: Test
+assertion failure function busy, file ../tests/intel/prime_busy.c:114:
+22:51:59.325: ERROR - Igt error: (prime_busy:298) CRITICAL: Failed
+assertion: poll(pfd, 1, timeout * 1000) == 1
+22:51:59.325: ERROR - Igt error: Dynamic subtest vcs0 failed.
+22:51:59.325: ERROR - Igt error: **** DEBUG ****
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_dummyload-DEBUG:
+Test requirement passed: nengine
+22:51:59.325: ERROR - Igt error: (prime_busy:298) CRITICAL: Test
+assertion failure function busy, file ../tests/intel/prime_busy.c:114:
+22:51:59.325: ERROR - Igt error: (prime_busy:298) CRITICAL: Failed
+assertion: poll(pfd, 1, timeout * 1000) == 1
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: Stack trace:
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #0
+../lib/igt_core.c:2075 __igt_fail_assert()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #1
+../tests/intel/prime_busy.c:114 test_mode()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #2
+../tests/intel/prime_busy.c:180 __igt_unique____real_main151()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #3
+../tests/intel/prime_busy.c:151 main()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #4
+[__libc_init_first+0x8a]
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #5
+[__libc_start_main+0x85]
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #6
+[_start+0x21]
+22:51:59.325: ERROR - Igt error: **** END ****
+22:51:59.325: ERROR - Igt error: (prime_busy:298) CRITICAL: Test
+assertion failure function busy, file ../tests/intel/prime_busy.c:114:
+22:51:59.325: ERROR - Igt error: (prime_busy:298) CRITICAL: Failed
+assertion: poll(pfd, 1, timeout * 1000) == 1
+22:51:59.325: ERROR - Igt error: Dynamic subtest vecs0 failed.
+22:51:59.325: ERROR - Igt error: **** DEBUG ****
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_dummyload-DEBUG:
+Test requirement passed: nengine
+22:51:59.325: ERROR - Igt error: (prime_busy:298) CRITICAL: Test
+assertion failure function busy, file ../tests/intel/prime_busy.c:114:
+22:51:59.325: ERROR - Igt error: (prime_busy:298) CRITICAL: Failed
+assertion: poll(pfd, 1, timeout * 1000) == 1
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: Stack trace:
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #0
+../lib/igt_core.c:2075 __igt_fail_assert()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #1
+../tests/intel/prime_busy.c:114 test_mode()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #2
+../tests/intel/prime_busy.c:180 __igt_unique____real_main151()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #3
+../tests/intel/prime_busy.c:151 main()
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #4
+[__libc_init_first+0x8a]
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #5
+[__libc_start_main+0x85]
+22:51:59.325: ERROR - Igt error: (prime_busy:298) igt_core-INFO: #6
+[_start+0x21]
+22:51:59.325: ERROR - Igt error: **** END ****
+22:51:59.325: ERROR - Test prime_busy@after-wait: Fail: See
+"/results/igt.prime_busy@after-wait.log"
+22:51:59.325: DEBUG - End test prime_busy@after-wait
