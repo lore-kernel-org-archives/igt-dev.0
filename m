@@ -4,72 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF342C5ACD1
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Feb 2026 16:18:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27E8EC5AD2B
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Feb 2026 17:33:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6100410E813;
-	Fri, 20 Feb 2026 16:18:20 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="FQUdOZlx";
-	dkim-atps=neutral
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com
- [74.125.82.178])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B014710E813
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 16:18:18 +0000 (UTC)
-Received: by mail-dy1-f178.google.com with SMTP id
- 5a478bee46e88-2baab3137bcso1989152eec.0
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 08:18:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1771604298; x=1772209098; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=oO8mBGHpRyngL6KZoGrDi19Ji1jFcGe9Y2PnTJL7pTE=;
- b=FQUdOZlxiFbV8aAH3/RV/w677vt7k1fBwGXrzAQesOk/p3sjk5GKvq7IH15RVB7uVC
- fFAW+x1bDQSheF8ucT7RTsgvDj5V8wOQBS50a6jMAXfWSGUASyMSlW3Gw6uPrczozMD0
- nqhvxOfafnNgLujEO5kdRPfDfwrmoN2UH15GkZM/yjgxOLdSIAAny/BvPJqQKzFkDQJZ
- 3ujV15oRQ9E0pyFsAIVoxmGRYj+PKbjZHB2F9XlcotWE5aFRvfS2kwKK72sIYpbEtRe0
- pr11J5Rl58RkKRtrYBo3KR6lQei2h5Y+ixa49LpOYFtibeYWacBmOT/2EnstqOvIj0Ct
- yzDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1771604298; x=1772209098;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=oO8mBGHpRyngL6KZoGrDi19Ji1jFcGe9Y2PnTJL7pTE=;
- b=FaFZWMBqPv84Ry1jMQGStcuiP6kCjHpKZiaSHbV/oVcrhK//aWoB1+J/sdQbm8kjsX
- LFkHFF+t/X6aN8p8ASCXc7zNMBQNSx8STLjY08F/5ldXk1nYjleAQUYBYP4zxy4awzf2
- xiEJVx6FqjYVKee45SRBaF9CpB0rcDVNsIBDHF5fjNbZn+ZoiviYhTaFS/TioePicVkr
- EILhDmqld3c+Ki8WJ5YOB5GM5OhEZqClBseIULh90s3Hd3HWM7tt5BYo/WTHYD81T2xm
- v35XU0KhCrZPtGGf6QuLzZg1XapBTD6odHQuUaqGfAMt266KVPC4XT1JmmOJEqqVghhk
- ZvZg==
-X-Gm-Message-State: AOJu0YwzOph3Ex5h3gVCtnttBotfutQDkiXV+Y+jlwOcpW0oObv7quw8
- nvkW1ueVZws23rCaPWvvQu9vglDglm6tn5/2iP1V/pgwf97BSq/rTREJ8fz2mvXk
-X-Gm-Gg: AZuq6aK3EoX8ZvgBshZQICM5Onn0CG44VlXpUftoG0e3qpwMxcwtKC1r+YFLBJZmWAK
- GNkzvngUGiM1jNfSqMH9Qf1G2UEeJVijA4PgbkRMeptlq4eBmOtFWZTd26XZTB6kJKP9A8cI+AV
- 9+ufeC2AUxD+Vcm4+Iswh9INbiP84mLdIbjCDF+AuYc8iyb41nqcR3sU00Gpv3b0qoLDak8aC9P
- jFBD93XbyCU1RjVDdZ80FOMFHL0LpYh/H27SC1o/mimr5cHBBJ7XdWy8tVrEaSm+IfWb6Bbtg6P
- AUh8DeGBgdT3IdMPiiO3ReZjb+kLeyc/7S/OWpcxGcyT4bFzS6m7TrRiXhOXJVYrnV4tkPZ8Lv8
- 0ftDS9B3JnWTw5oA6s1HMIa8d+Lo/8TWhYmN8NjpUPIr7vOpdYEuLpnil6/Qel59xkcmLufo9MN
- I5wAD35w3E5/iBkPMNs1hytdQ758M07imHy/1x2DVhy52rtg518GVOKhV1fLIPZoxVufUI0w==
-X-Received: by 2002:a05:7300:8ca2:b0:2ba:9115:2fab with SMTP id
- 5a478bee46e88-2bd7baea60emr66985eec.12.1771604297445; 
- Fri, 20 Feb 2026 08:18:17 -0800 (PST)
-Received: from localhost ([192.55.54.43]) by smtp.gmail.com with ESMTPSA id
- 5a478bee46e88-2bacb5622f2sm28371135eec.10.2026.02.20.08.18.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Feb 2026 08:18:17 -0800 (PST)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 8/8] lib/igt_fb: on Intel force Vebox copy on yuv formats
-Date: Fri, 20 Feb 2026 18:17:18 +0200
-Message-ID: <20260220161718.652862-9-juhapekka.heikkila@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260220161718.652862-1-juhapekka.heikkila@gmail.com>
-References: <20260220161718.652862-1-juhapekka.heikkila@gmail.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A54C110E821;
+	Fri, 20 Feb 2026 17:33:17 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 33AC110E821;
+ Fri, 20 Feb 2026 17:33:16 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6246292561919604352=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=3A_More_igt=5Fcrt?=
+ =?utf-8?q?c=5Ft_conversions?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Ville Syrjala" <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 20 Feb 2026 17:33:16 -0000
+Message-ID: <177160879617.270871.7646074991127315145@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260220140154.4138-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20260220140154.4138-1-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,79 +37,134 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This is to test Vebox engine along with other engines. Vebox is
-forced to be used when tiling convert is needed and destination
-is not linear.
+--===============6246292561919604352==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- lib/igt_fb.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+== Series Details ==
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index cfd5d66fb..0499dd590 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2596,6 +2596,14 @@ static bool block_copy_ok(const struct igt_fb *fb)
- 					       fb_tile_to_blt_tile(fb->modifier));
- }
- 
-+static bool use_vebox_copy(const struct igt_fb *src_fb,
-+			   const struct igt_fb *dst_fb)
-+{
-+	return igt_fb_is_gen12_mc_ccs_modifier(dst_fb->modifier) ||
-+		igt_format_is_yuv(src_fb->drm_format) ||
-+		igt_format_is_yuv(dst_fb->drm_format);
-+}
-+
- static bool ccs_needs_enginecopy(const struct igt_fb *fb)
- {
- 	if (igt_fb_is_gen12_rc_ccs_cc_modifier(fb->modifier))
-@@ -2624,6 +2632,12 @@ static bool blitter_ok(const struct igt_fb *fb)
- 	    is_xe_device(fb->fd))
- 		return false;
- 
-+	/*
-+	 * This is to utilize Vebox engine for testing on Xe driver.
-+	 */
-+	if (use_vebox_copy(fb, fb) && fb->modifier != DRM_FORMAT_MOD_NONE)
-+		return false;
-+
- 	if (is_xe_device(fb->fd))
- 		return true;
- 
-@@ -2664,6 +2678,12 @@ static bool use_enginecopy(const struct igt_fb *fb)
- 	if (ccs_needs_enginecopy(fb))
- 		return true;
- 
-+	/*
-+	 * This is to utilize Vebox for testing
-+	 */
-+	if (use_vebox_copy(fb, fb))
-+		return true;
-+
- 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
- 		fb->modifier == I915_FORMAT_MOD_X_TILED;
- }
-@@ -2874,15 +2894,6 @@ static void fini_buf(struct intel_buf *buf)
- 	intel_buf_destroy(buf);
- }
- 
--static bool use_vebox_copy(const struct igt_fb *src_fb,
--			   const struct igt_fb *dst_fb)
--{
--
--	return igt_fb_is_gen12_mc_ccs_modifier(dst_fb->modifier) ||
--	       igt_format_is_yuv(src_fb->drm_format) ||
--	       igt_format_is_yuv(dst_fb->drm_format);
--}
--
- /**
-  * copy_with_engine:
-  * @blit: context for the copy operation
--- 
-2.43.0
+Series: tests/kms: More igt_crtc_t conversions
+URL   : https://patchwork.freedesktop.org/series/161893/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8764_BAT -> XEIGTPW_14582_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (14 -> 14)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14582_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-adlp-7:         [SKIP][1] ([Intel XE#455]) -> [SKIP][2] ([Intel XE#2244] / [Intel XE#455])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8764/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14582/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+    - bat-dg2-oem2:       [SKIP][3] ([Intel XE#455]) -> [SKIP][4] ([Intel XE#2244] / [Intel XE#455])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8764/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14582/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+
+  
+  [Intel XE#2244]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8764 -> IGTPW_14582
+  * Linux: xe-4577-157c1f59af33fb9acf6e0e055e7317b634711120 -> xe-4581-4359810f1f728eb3dfe95476e5de93fed017d159
+
+  IGTPW_14582: 14582
+  IGT_8764: 8764
+  xe-4577-157c1f59af33fb9acf6e0e055e7317b634711120: 157c1f59af33fb9acf6e0e055e7317b634711120
+  xe-4581-4359810f1f728eb3dfe95476e5de93fed017d159: 4359810f1f728eb3dfe95476e5de93fed017d159
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14582/index.html
+
+--===============6246292561919604352==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms: More igt_crtc_t conversions</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161893/">https://patchwork.freedesktop.org/series/161893/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14582/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14582/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8764_BAT -&gt; XEIGTPW_14582_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (14 -&gt; 14)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14582_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_dsc@dsc-basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8764/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14582/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8764/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14582/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8764 -&gt; IGTPW_14582</li>
+<li>Linux: xe-4577-157c1f59af33fb9acf6e0e055e7317b634711120 -&gt; xe-4581-4359810f1f728eb3dfe95476e5de93fed017d159</li>
+</ul>
+<p>IGTPW_14582: 14582<br />
+  IGT_8764: 8764<br />
+  xe-4577-157c1f59af33fb9acf6e0e055e7317b634711120: 157c1f59af33fb9acf6e0e055e7317b634711120<br />
+  xe-4581-4359810f1f728eb3dfe95476e5de93fed017d159: 4359810f1f728eb3dfe95476e5de93fed017d159</p>
+
+</body>
+</html>
+
+--===============6246292561919604352==--
