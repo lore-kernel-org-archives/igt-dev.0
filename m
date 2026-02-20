@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1775FC56201
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Feb 2026 15:38:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DCB3C56206
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Feb 2026 15:38:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BB0E110E7F5;
-	Fri, 20 Feb 2026 15:38:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D409610E80D;
+	Fri, 20 Feb 2026 15:38:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jdyFZOMj";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S8KhImvw";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 45FB210E80F
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 15:38:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 481CE10E806
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 15:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771601902; x=1803137902;
+ t=1771601904; x=1803137904;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=KF31PiF5tMwsk52eyg1G4W7X/fpiWRBspG7GUIfp15I=;
- b=jdyFZOMjnVqGSex3Gnle9fVZA6ONbKssm0Gmgc/t8kC2w9H/x8ZtcfRO
- XiUVafM+v7cSLLEEgo156zJXczkoy/FPIl8Cs5rKfxfMrQ7u/OU8SiPHu
- OErWf3HE98DCFOi8uj0OnoSYfPGFCzg2IhfRCuwxXjz+Pu3PFDzxtdPZ8
- PMx3YxptZLGPsIMHCqTy2VzHuv/jdY5wZT8KYVHy8fZ0Jrt9qYsT9Xzcg
- fKL6BlHEJPGQqdJzGJ0h4xorLjrz+fmT4q8aM0otRw6gGHOV2PUyjSaeX
- 2jeI3EiOVY1Q3HcPub7aFK1Aezf5nh3fh7lTNRWu9DEF0scP0/JGAa9bG Q==;
-X-CSE-ConnectionGUID: StF9JNo0Sz2f0yg1nnbT4g==
-X-CSE-MsgGUID: VXPY/3rbTaaldeZ9ofl2Og==
-X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="90105381"
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="90105381"
+ bh=CLdJ7P4bpXhmo6GOuDTyhaLe/lhVgK+6AaoNEYBLg6I=;
+ b=S8KhImvwMU2DMP++zu8XGAVy8sH0u9U9REj9V5M4xj543fkUeYPmyLla
+ M/0gD+v3hWKFZrFndSypMA5UX0rs72P5ibWWCzyNUzEVnfJS7kBwotLPO
+ RshcehlV/172noc2sH1hxym53kmE/dzHfTcysYK/dXf92OujisXubt4JR
+ wJZloqVer0mn2XsZNlrwmt9Rmmi09aYehrAcmtAatHxtibgE9aTmac2WB
+ ZFHvdJC2dQ4U/HGYlBKRT78GcaLt7DgBCwSzU6CU6T2K6h2nm3UDswsSm
+ SUYZYAmOcYQswjEGUI0uosyjo4ngZ7ewg6W8N/+gzpwSJQVKmjuQRxOII A==;
+X-CSE-ConnectionGUID: u14lFqHuQMiGbrlWfIwCuw==
+X-CSE-MsgGUID: f06dmnBaS6uftW1EM2q0xQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="90105383"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="90105383"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 07:38:22 -0800
-X-CSE-ConnectionGUID: O2z2ZqRvRS6d8euVlrSKFg==
-X-CSE-MsgGUID: LaxJwaOXTCW4rFGd0n4cUQ==
+ 20 Feb 2026 07:38:24 -0800
+X-CSE-ConnectionGUID: QXp+dabWRzq42ReHddeavA==
+X-CSE-MsgGUID: Mh/bfsb+QIaO4fs04ynz3g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="215007711"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="215007725"
 Received: from cmanszew-dev.igk.intel.com ([10.91.214.222])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 07:38:20 -0800
+ 20 Feb 2026 07:38:22 -0800
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Rudnicki@freedesktop.org, Piotr <piotr.rudnicki@intel.com>,
@@ -48,14 +48,15 @@ Cc: Rudnicki@freedesktop.org, Piotr <piotr.rudnicki@intel.com>,
 	Dominik Karol <dominik.karol.piatkowski@intel.com>,
 	Jan Sokolowski <jan.sokolowski@intel.com>,
 	Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: [PATCH i-g-t v4 3/5] xe/xe_eudebug: Add reattach function and make
- plain connect private
-Date: Fri, 20 Feb 2026 16:37:52 +0100
-Message-ID: <20260220153748.210381-10-christoph.manszewski@intel.com>
+Subject: [PATCH i-g-t v4 4/5] lib/xe/xe_eudebug: Track active debugger
+ sessions and close when disabling
+Date: Fri, 20 Feb 2026 16:37:53 +0100
+Message-ID: <20260220153748.210381-11-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260220153748.210381-7-christoph.manszewski@intel.com>
 References: <20260220153748.210381-7-christoph.manszewski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
  80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
 Content-Transfer-Encoding: 8bit
@@ -74,171 +75,128 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Convert xe_eudebug_connect (the raw connect ioctl wrapper) back into
-a library private function and introduce a dedicated
-xe_eudebug_debugger_reattach function that is documented accordingly.
+Active debugger sessions prevent disabling EU Debug via the sysfs
+toggle. As a result when a test fails the igt_fixture will fail to
+disable EU Debug if the worker threads have open debugger fds.
 
-This ensures proper session management and awareness on the library level.
+Introduce active debugger session (debugger fd) tracking and use it to
+close leftover sessions before attempting to disable eudebug. The kernel
+'struct drm_driver.postclose' handler which removes the debugger
+sessions tracked by Xe EU Debug runs asynchronously to 'close' so retry
+disabling in a loop on '-EBUSY'.
 
+Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
 ---
- lib/xe/xe_eudebug.c             | 74 ++++++++++++++++++++-------------
- lib/xe/xe_eudebug.h             |  2 +-
- tests/intel/xe_eudebug_online.c |  6 +--
- 3 files changed, 48 insertions(+), 34 deletions(-)
+ lib/xe/xe_eudebug.c | 74 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 73 insertions(+), 1 deletion(-)
 
 diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
-index 41eed7614..7a641d2bd 100644
+index 7a641d2bd..a0caad2c3 100644
 --- a/lib/xe/xe_eudebug.c
 +++ b/lib/xe/xe_eudebug.c
-@@ -396,22 +396,6 @@ static void client_signal(struct xe_eudebug_client *c,
- 	token_signal(c->p_out, token, value);
- }
+@@ -18,6 +18,58 @@
+ #include "xe_ioctl.h"
+ #include "xe/xe_query.h"
  
--static int __xe_eudebug_connect(int fd, pid_t pid, uint32_t flags, uint64_t events)
--{
--	struct drm_xe_eudebug_connect param = {
--		.pid = pid,
--		.flags = flags,
--	};
--	int debugfd;
--
--	debugfd = igt_ioctl(fd, DRM_IOCTL_XE_EUDEBUG_CONNECT, &param);
--
--	if (debugfd < 0)
--		return -errno;
--
--	return debugfd;
--}
--
- static void event_log_write_to_fd(struct xe_eudebug_event_log *l, int fd)
- {
- 	igt_assert_eq(write(fd, &l->head, sizeof(l->head)),
-@@ -905,14 +889,20 @@ static void event_log_sort(struct xe_eudebug_event_log *l)
-  *
-  * Returns: 0 if the debugger was successfully attached, -errno otherwise.
-  */
--int xe_eudebug_connect(int fd, pid_t pid, uint32_t flags)
-+static int xe_eudebug_connect(int fd, pid_t pid, uint32_t flags)
- {
--	int ret;
--	uint64_t events = 0; /* events filtering not supported yet! */
-+	struct drm_xe_eudebug_connect param = {
-+		.pid = pid,
-+		.flags = flags,
-+	};
-+	int debugfd;
- 
--	ret = __xe_eudebug_connect(fd, pid, flags, events);
-+	debugfd = igt_ioctl(fd, DRM_IOCTL_XE_EUDEBUG_CONNECT, &param);
- 
--	return ret;
-+	if (debugfd < 0)
-+		return -errno;
++struct debugger_fd_entry {
++	int fd;
++	struct igt_list_head link;
++};
 +
-+	return debugfd;
- }
- 
- /**
-@@ -1266,6 +1256,39 @@ void xe_eudebug_debugger_destroy(struct xe_eudebug_debugger *d)
- 	free(d);
- }
- 
-+static int __xe_eudebug_debugger_attach(struct xe_eudebug_debugger *d, pid_t pid)
++static IGT_LIST_HEAD(active_debugger_fds);
++static pthread_mutex_t active_debugger_fds_lock = PTHREAD_MUTEX_INITIALIZER;
++
++static void register_debugger_fd(int fd)
 +{
-+	int ret;
++	struct debugger_fd_entry *entry;
 +
-+	igt_assert_eq(d->fd, -1);
-+	igt_assert_eq(d->target_pid, 0);
++	pthread_mutex_lock(&active_debugger_fds_lock);
 +
-+	ret = xe_eudebug_connect(d->master_fd, pid, 0);
-+	if (ret < 0)
-+		return ret;
++	entry = calloc(1, sizeof(*entry));
++	igt_assert(entry);
++	entry->fd = fd;
++	IGT_INIT_LIST_HEAD(&entry->link);
++	igt_list_add(&entry->link, &active_debugger_fds);
 +
-+	d->fd = ret;
-+	d->target_pid = pid;
-+
-+	return 0;
++	pthread_mutex_unlock(&active_debugger_fds_lock);
 +}
 +
-+/**
-+ * xe_eudebug_debugger_reattach:
-+ * @d: pointer to the debugger
-+ * @pid: pid of the process to attach to
-+ *
-+ * Re-establishes debugger connection to a process. To be used only for
-+ * reconnection scenarios where the debugger was previously attached using
-+ * xe_eudebug_debugger_attach() and detached with xe_eudebug_debugger_detach().
-+ *
-+ * Returns: 0 if the debugger was successfully reattached, -errno otherwise.
-+ */
-+int xe_eudebug_debugger_reattach(struct xe_eudebug_debugger *d, pid_t pid)
++static void unregister_debugger_fd(int fd)
 +{
-+	return  __xe_eudebug_debugger_attach(d, pid);
++	struct debugger_fd_entry *entry, *tmp;
++
++	pthread_mutex_lock(&active_debugger_fds_lock);
++	igt_list_for_each_entry_safe(entry, tmp, &active_debugger_fds, link) {
++		if (entry->fd == fd) {
++			igt_list_del(&entry->link);
++			free(entry);
++			break;
++		}
++	}
++	pthread_mutex_unlock(&active_debugger_fds_lock);
 +}
 +
- /**
-  * xe_eudebug_debugger_attach:
-  * @d: pointer to the debugger
-@@ -1280,20 +1303,13 @@ int xe_eudebug_debugger_attach(struct xe_eudebug_debugger *d,
- {
- 	int ret;
++static void close_all_debugger_fds(void)
++{
++	struct debugger_fd_entry *entry, *tmp;
++
++	pthread_mutex_lock(&active_debugger_fds_lock);
++	igt_list_for_each_entry_safe(entry, tmp, &active_debugger_fds, link) {
++		igt_debug("closing leftover debugger fd %d\n", entry->fd);
++		close(entry->fd);
++		igt_list_del(&entry->link);
++		free(entry);
++	}
++	pthread_mutex_unlock(&active_debugger_fds_lock);
++}
++
+ struct event_trigger {
+ 	xe_eudebug_trigger_fn fn;
+ 	int type;
+@@ -1270,6 +1322,8 @@ static int __xe_eudebug_debugger_attach(struct xe_eudebug_debugger *d, pid_t pid
+ 	d->fd = ret;
+ 	d->target_pid = pid;
  
--	igt_assert_eq(d->fd, -1);
--	igt_assert_neq(c->pid, 0);
--	ret = xe_eudebug_connect(d->master_fd, c->pid, 0);
--
-+	ret = __xe_eudebug_debugger_attach(d, c->pid);
- 	if (ret < 0)
- 		return ret;
- 
--	d->fd = ret;
--	d->target_pid = c->pid;
- 	d->p_client[0] = c->p_in[0];
- 	d->p_client[1] = c->p_in[1];
- 
--	igt_debug("debugger connected to %" PRIu64 "\n", d->target_pid);
--
++	register_debugger_fd(d->fd);
++
  	return 0;
  }
  
-diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
-index f1a2da4d8..23f0d7e34 100644
---- a/lib/xe/xe_eudebug.h
-+++ b/lib/xe/xe_eudebug.h
-@@ -175,7 +175,6 @@ next_event(struct drm_xe_eudebug_event *e, struct xe_eudebug_event_log *l)
- #define XE_EUDEBUG_FILTER_ALL				GENMASK(DRM_XE_EUDEBUG_EVENT_PAGEFAULT, 0)
- #define XE_EUDEBUG_EVENT_IS_FILTERED(_e, _f)		((1UL << (_e)) & (_f))
+@@ -1323,6 +1377,7 @@ int xe_eudebug_debugger_attach(struct xe_eudebug_debugger *d,
+ void xe_eudebug_debugger_detach(struct xe_eudebug_debugger *d)
+ {
+ 	igt_assert(d->target_pid);
++	unregister_debugger_fd(d->fd);
+ 	close(d->fd);
+ 	d->target_pid = 0;
+ 	d->fd = -1;
+@@ -1909,7 +1964,24 @@ bool xe_eudebug_enable(int fd, bool enable)
+ {
+ 	char sysfs_path[PATH_MAX];
+ 	bool old = false;
+-	int ret = __xe_eudebug_enable_getset(fd, &old, &enable);
++	int ret = 0;
++
++	/* When disabling eudebug, close all active debugger sessions first. */
++	if (!enable)
++		close_all_debugger_fds();
++
++	/* 'struct drm_driver.postclose' runs asynchronously to 'close', wait for it to complete */
++	for (int i = 0; i < 10; ++i) {
++		ret = __xe_eudebug_enable_getset(fd, &old, &enable);
++
++		if (ret != -EBUSY)
++			break;
++
++		if (i < 9) {
++			igt_debug("xe_eudebug_enable: Failed (%d), retrying...\n", ret);
++			sleep(1);
++		}
++	}
  
--int xe_eudebug_connect(int fd, pid_t pid, uint32_t flags);
- const char *xe_eudebug_event_to_str(struct drm_xe_eudebug_event *e, char *buf, size_t len);
- struct drm_xe_eudebug_event *
- xe_eudebug_event_log_find_seqno(struct xe_eudebug_event_log *l, uint64_t seqno);
-@@ -193,6 +192,7 @@ struct xe_eudebug_debugger *
- xe_eudebug_debugger_create(int xe, uint64_t flags, void *data);
- void xe_eudebug_debugger_destroy(struct xe_eudebug_debugger *d);
- int xe_eudebug_debugger_attach(struct xe_eudebug_debugger *d, struct xe_eudebug_client *c);
-+int xe_eudebug_debugger_reattach(struct xe_eudebug_debugger *d, pid_t pid);
- void xe_eudebug_debugger_start_worker(struct xe_eudebug_debugger *d);
- void xe_eudebug_debugger_stop_worker(struct xe_eudebug_debugger *d);
- void xe_eudebug_debugger_detach(struct xe_eudebug_debugger *d);
-diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-index 059f918a6..f5f7594e1 100644
---- a/tests/intel/xe_eudebug_online.c
-+++ b/tests/intel/xe_eudebug_online.c
-@@ -2225,10 +2225,8 @@ static void eu_attention_debugger_detach_trigger(struct xe_eudebug_debugger *d,
- 	 */
- 	reset_debugger_log(d);
- 
--	ret = xe_eudebug_connect(d->master_fd, c_pid, 0);
--	igt_assert(ret >= 0);
--	d->fd = ret;
--	d->target_pid = c_pid;
-+	ret = xe_eudebug_debugger_reattach(d, c_pid);
-+	igt_assert_eq(ret, 0);
- 
- 	/* Discovery worker will replay events that have occurred, which leads to
- 	 * a vm event being sent and vm_open_trigger being re-run, which would lead
+ 	if (ret == -ENOENT) {
+ 		igt_assert(igt_sysfs_path(fd, sysfs_path, sizeof(sysfs_path)));
 -- 
 2.47.1
 
