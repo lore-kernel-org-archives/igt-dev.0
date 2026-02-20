@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A2C0C5516D
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Feb 2026 09:30:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E446C55184
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Feb 2026 10:06:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B996110E7AA;
-	Fri, 20 Feb 2026 09:30:49 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IV4E2Lgo";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FE0710E7A9
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 09:30:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771579848; x=1803115848;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=bus4ixbCrzWg5HOflnduICXmVNVm5WSeo85n68LApZI=;
- b=IV4E2LgoU4HLyZvcAZWmoj/dCPgai4ttL1eefuw3hG1jTbsfteO5OKyT
- NhwzQxZYceF6b8t03hNNZwjQ0sHUuJU5gjfUgDkrRBfuYJENN/Wz1kr76
- nEK9WX8kRkHBOAE31Ej+kdJ0wF1HikpDugqtEQWZcFE4YXaRFoJ6bAHME
- PXf5MRV4tDsQX5SOuEK1+kDKlhK2dXzoz+NwuptCZQJO/YKvQZFKspxhy
- ihqZza+AcN/LRW/i+TsOcLIwMqgjNyRW9z84mCTCJNxXnFPs4vRFQCZwC
- I4Rob6Js6eYue7SUGZR040PTrfAzBjmHr9w29BWnPCuVt5z5fLv9T1S+M g==;
-X-CSE-ConnectionGUID: Wnaq2nUwSney1/RfxtkR7w==
-X-CSE-MsgGUID: HG7CHgsbSkK/iZ6brLTfsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11706"; a="72373789"
-X-IronPort-AV: E=Sophos;i="6.21,301,1763452800"; d="scan'208";a="72373789"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 01:30:48 -0800
-X-CSE-ConnectionGUID: u1IM8CejTNqAsB4Hrp6R7g==
-X-CSE-MsgGUID: XynRt9mfR8mGAfUZ8AW8LQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,301,1763452800"; d="scan'208";a="214030431"
-Received: from dut2084bmgfrd.iind.intel.com ([10.223.34.6])
- by orviesa010.jf.intel.com with ESMTP; 20 Feb 2026 01:30:47 -0800
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org,
-	priyanka.dandamudi@intel.com
-Subject: [PATCH i-g-t 3/3] tests/intel/xe_exec_store: Extending test scope for
- PCIE6 relax ordering
-Date: Fri, 20 Feb 2026 09:30:41 +0000
-Message-Id: <20260220093041.1911492-4-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260220093041.1911492-1-nishit.sharma@intel.com>
-References: <20260220093041.1911492-1-nishit.sharma@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7B31510E7DD;
+	Fri, 20 Feb 2026 10:06:59 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E315710E7D0;
+ Fri, 20 Feb 2026 10:06:57 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6393628513183216732=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_memory_write_ordering_v?=
+ =?utf-8?q?erification?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: nishit.sharma@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 20 Feb 2026 10:06:57 -0000
+Message-ID: <177158201791.269206.17785391597488670191@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260220093041.1911492-1-nishit.sharma@intel.com>
+In-Reply-To: <20260220093041.1911492-1-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,234 +37,182 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+--===============6393628513183216732==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This is extension of validating PCIe relax ordering to run on all possible
-memory region available in a device. Currently VRAM region is utilized for
-memory operations for discrete platforms. This extension utilizes both
-System and VRAM region of discrete GPU for performing memory operations.
+== Series Details ==
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- tests/intel/xe_exec_store.c | 107 ++++++++++++++++++++++--------------
- 1 file changed, 66 insertions(+), 41 deletions(-)
+Series: Add memory write ordering verification
+URL   : https://patchwork.freedesktop.org/series/161886/
+State : success
 
-diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-index 5930f16e5..f65c22779 100644
---- a/tests/intel/xe_exec_store.c
-+++ b/tests/intel/xe_exec_store.c
-@@ -114,7 +114,7 @@ static void persistance_batch(struct data *data, uint64_t addr)
-  * Description: Test to verify store dword on all available engines.
-  */
- static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instance *eci,
--		       uint16_t dev_id)
-+		       uint16_t dev_id, uint32_t region)
- {
- 	struct drm_xe_sync sync[2] = {
- 		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-@@ -143,8 +143,7 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
- 	bo_size = sizeof(*data);
- 	bo_size = xe_bb_size(fd, bo_size);
- 
--	bo = xe_bo_create(fd, vm, bo_size,
--			  vram_if_possible(fd, eci->gt_id),
-+	bo = xe_bo_create(fd, vm, bo_size, region,
- 			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 
- 	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-@@ -193,7 +192,7 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
-  * @page-sized: page-sized
-  */
- static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
--			     unsigned int flags)
-+			     unsigned int flags, uint32_t region)
- {
- 	struct drm_xe_sync sync[2] = {
- 		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-@@ -225,8 +224,7 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
- 	sync[0].handle = syncobj_create(fd, 0);
- 
- 	for (i = 0; i < count; i++) {
--		bo[i] = xe_bo_create(fd, vm, bo_size,
--				     vram_if_possible(fd, eci->gt_id),
-+		bo[i] = xe_bo_create(fd, vm, bo_size, region,
- 				     DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 		bo_map[i] = xe_bo_map(fd, bo[i], bo_size);
- 		dst_offset[i] = intel_allocator_alloc_with_strategy(ahnd, bo[i],
-@@ -282,7 +280,7 @@ static void store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
-  * SUBTEST: persistent
-  * Description: Validate MI_PRT_BATCH_BUFFER_START functionality
-  */
--static void persistent(int fd)
-+static void persistent(int fd, uint32_t region)
- {
- 	struct drm_xe_sync sync = {
- 		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-@@ -309,12 +307,10 @@ static void persistent(int fd)
- 	batch_size = xe_bb_size(fd, batch_size);
- 
- 	engine = xe_engine(fd, 1);
--	sd_batch = xe_bo_create(fd, vm, batch_size,
--			      vram_if_possible(fd, engine->instance.gt_id),
--			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
--	prt_batch = xe_bo_create(fd, vm, batch_size,
--			      vram_if_possible(fd, engine->instance.gt_id),
--			      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	sd_batch = xe_bo_create(fd, vm, batch_size, region,
-+				DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	prt_batch = xe_bo_create(fd, vm, batch_size, region,
-+				 DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
- 
- 	xe_vm_bind_sync(fd, vm, sd_batch, 0, addr, batch_size);
- 	sd_data = xe_bo_map(fd, sd_batch, batch_size);
-@@ -419,7 +415,7 @@ static void long_shader(int fd, struct drm_xe_engine_class_instance *hwe,
-  * Test category: functionality test
-  *
-  */
--static void mem_transection_ordering(int fd, size_t bo_size, bool fence)
-+static void mem_transaction_ordering(int fd, size_t bo_size, bool fence, uint32_t region)
- {
- 	struct drm_xe_engine_class_instance inst = {
- 		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-@@ -456,8 +452,7 @@ static void mem_transection_ordering(int fd, size_t bo_size, bool fence)
- 	sync[0].handle = syncobj_create(fd, 0);
- 
- 	for (i = 0; i < count; i++) {
--		bo[i] = xe_bo_create_caching(fd, vm, bo_size, system_memory(fd), 0,
--					     DRM_XE_GEM_CPU_CACHING_WC);
-+		bo[i] = xe_bo_create_caching(fd, vm, bo_size, region, 0, DRM_XE_GEM_CPU_CACHING_WC);
- 		bo_map[i] = xe_bo_map(fd, bo[i], bo_size);
- 		offset[i] = intel_allocator_alloc_with_strategy(ahnd, bo[i],
- 								bo_size, 0,
-@@ -493,7 +488,6 @@ static void mem_transection_ordering(int fd, size_t bo_size, bool fence)
- 	}
- 	if (fence)
- 		batch_map[b++] = MI_MEM_FENCE | MI_WRITE_FENCE;
--
- 	batch_map[b++] = MI_BATCH_BUFFER_END;
- 	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
- 	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-@@ -538,44 +532,72 @@ int igt_main()
- 	struct drm_xe_engine_class_instance *hwe;
- 	int fd;
- 	uint16_t dev_id;
-+	uint32_t region;
-+	uint64_t memreg;
- 	struct drm_xe_engine *engine;
- 
- 	igt_fixture() {
- 		fd = drm_open_driver(DRIVER_XE);
- 		xe_device_get(fd);
- 		dev_id = intel_get_drm_devid(fd);
-+		memreg = all_memory_regions(fd);
- 	}
- 
--	igt_subtest("basic-store") {
--		engine = xe_engine(fd, 1);
--		basic_inst(fd, STORE, &engine->instance, dev_id);
-+	igt_subtest_with_dynamic("basic-store") {
-+		xe_for_each_mem_region(fd, memreg, region) {
-+			igt_dynamic_f("region-%s", xe_region_name(region)) {
-+				engine = xe_engine(fd, 1);
-+				basic_inst(fd, STORE, &engine->instance, dev_id, region);
-+			}
-+		}
- 	}
- 
--	igt_subtest("basic-cond-batch") {
--		engine = xe_engine(fd, 1);
--		basic_inst(fd, COND_BATCH, &engine->instance, dev_id);
-+	igt_subtest_with_dynamic("basic-cond-batch") {
-+		xe_for_each_mem_region(fd, memreg, region) {
-+			igt_dynamic_f("region-%s", xe_region_name(region)) {
-+				engine = xe_engine(fd, 1);
-+				basic_inst(fd, COND_BATCH, &engine->instance, dev_id, region);
-+			}
-+		}
- 	}
- 
- 	igt_subtest_with_dynamic("basic-all") {
--		xe_for_each_engine(fd, hwe) {
--			igt_dynamic_f("Engine-%s-Instance-%d-Tile-%d",
--				      xe_engine_class_string(hwe->engine_class),
--				      hwe->engine_instance,
--				      hwe->gt_id);
--			basic_inst(fd, STORE, hwe, dev_id);
-+		xe_for_each_mem_region(fd, memreg, region) {
-+			xe_for_each_engine(fd, hwe) {
-+				igt_dynamic_f("Engine-%s-Instance-%d-Tile-%d-Region-%s",
-+					      xe_engine_class_string(hwe->engine_class),
-+					      hwe->engine_instance,
-+					      hwe->gt_id,
-+					      xe_region_name(region))
-+					basic_inst(fd, STORE, hwe, dev_id, region);
-+			}
- 		}
- 	}
- 
--	igt_subtest("cachelines")
--		xe_for_each_engine(fd, hwe)
--			store_cachelines(fd, hwe, 0);
-+	igt_subtest_with_dynamic("cachelines") {
-+		xe_for_each_mem_region(fd, memreg, region) {
-+			xe_for_each_engine(fd, hwe) {
-+				igt_dynamic_f("region-%s", xe_region_name(region))
-+					store_cachelines(fd, hwe, 0, region);
-+			}
-+		}
-+	}
- 
--	igt_subtest("page-sized")
--		xe_for_each_engine(fd, hwe)
--			store_cachelines(fd, hwe, PAGES);
-+	igt_subtest_with_dynamic("page-sized") {
-+		xe_for_each_mem_region(fd, memreg, region) {
-+			xe_for_each_engine(fd, hwe) {
-+				igt_dynamic_f("region-%s", xe_region_name(region))
-+					store_cachelines(fd, hwe, PAGES, region);
-+			}
-+		}
-+	}
- 
--	igt_subtest("persistent")
--		persistent(fd);
-+	igt_subtest_with_dynamic("persistent") {
-+		xe_for_each_mem_region(fd, memreg, region) {
-+			igt_dynamic_f("region-%s", xe_region_name(region))
-+				persistent(fd, region);
-+		}
-+	}
- 
- 	igt_subtest_with_dynamic("long-shader-bb-check") {
- 		struct igt_collection *set;
-@@ -604,6 +626,7 @@ int igt_main()
- 		igt_collection_destroy(set);
- 	}
- 
-+	igt_describe("Verify memory relax ordering using copy/write operations");
- 	igt_subtest_with_dynamic("mem-write-ordering-check") {
- 		struct {
- 			size_t size;
-@@ -614,10 +637,12 @@ int igt_main()
- 			{ SZ_8M,  "8M" },
- 		};
- 
--		for (size_t i = 0; i < ARRAY_SIZE(sizes); i++) {
--			igt_dynamic_f("size-%s", sizes[i].label) {
--				mem_transection_ordering(fd, sizes[i].size, true);
--				mem_transection_ordering(fd, sizes[i].size, false);
-+		xe_for_each_mem_region(fd, memreg, region) {
-+			for (size_t i = 0; i < ARRAY_SIZE(sizes); i++) {
-+				igt_dynamic_f("region-%s", xe_region_name(region)) {
-+					mem_transaction_ordering(fd, sizes[i].size, true, region);
-+					mem_transaction_ordering(fd, sizes[i].size, false, region);
-+				}
- 			}
- 		}
- 	}
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8764_BAT -> XEIGTPW_14580_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (14 -> 14)
+------------------------------
+
+  No changes in participating hosts
+
+New tests
+---------
+
+  New tests have been introduced between XEIGT_8764_BAT and XEIGTPW_14580_BAT:
+
+### New IGT tests (2) ###
+
+  * igt@xe_exec_store@basic-store@region-system:
+    - Statuses : 13 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@xe_exec_store@basic-store@region-vram0:
+    - Statuses : 4 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_14580_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_waitfence@reltime:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#6520])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8764/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14580/bat-dg2-oem2/igt@xe_waitfence@reltime.html
+
+  
+#### Warnings ####
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-adlp-7:         [SKIP][3] ([Intel XE#455]) -> [SKIP][4] ([Intel XE#2244] / [Intel XE#455])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8764/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14580/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+    - bat-dg2-oem2:       [SKIP][5] ([Intel XE#455]) -> [SKIP][6] ([Intel XE#2244] / [Intel XE#455])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8764/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14580/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html
+
+  
+  [Intel XE#2244]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8764 -> IGTPW_14580
+
+  IGTPW_14580: 14580
+  IGT_8764: 8764
+  xe-4577-157c1f59af33fb9acf6e0e055e7317b634711120: 157c1f59af33fb9acf6e0e055e7317b634711120
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14580/index.html
+
+--===============6393628513183216732==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add memory write ordering verification</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161886/">https://patchwork.freedesktop.org/series/161886/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14580/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14580/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8764_BAT -&gt; XEIGTPW_14580_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (14 -&gt; 14)</h2>
+<p>No changes in participating hosts</p>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8764_BAT and XEIGTPW_14580_BAT:</p>
+<h3>New IGT tests (2)</h3>
+<ul>
+<li>
+<p>igt@xe_exec_store@basic-store@region-system:</p>
+<ul>
+<li>Statuses : 13 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_store@basic-store@region-vram0:</p>
+<ul>
+<li>Statuses : 4 pass(s)</li>
+<li>Exec time: [0.00, 0.01] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_14580_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_waitfence@reltime:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8764/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14580/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_dsc@dsc-basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8764/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14580/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8764/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14580/bat-dg2-oem2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2244">Intel XE#2244</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8764 -&gt; IGTPW_14580</li>
+</ul>
+<p>IGTPW_14580: 14580<br />
+  IGT_8764: 8764<br />
+  xe-4577-157c1f59af33fb9acf6e0e055e7317b634711120: 157c1f59af33fb9acf6e0e055e7317b634711120</p>
+
+</body>
+</html>
+
+--===============6393628513183216732==--
