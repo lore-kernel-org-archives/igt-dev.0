@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B90BC56205
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Feb 2026 15:01:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 891ADC56205
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Feb 2026 15:01:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EF16510E80E;
-	Fri, 20 Feb 2026 15:01:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3B58510E366;
+	Fri, 20 Feb 2026 15:01:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RrW/C4/s";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RQmV/O02";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C67DA10E366
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 15:01:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DEEB10E366
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 15:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771599710; x=1803135710;
+ t=1771599714; x=1803135714;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=kzGyruqgVBcVcDL5cNDtoinEH4uiQmzlq4e2fQDu7XA=;
- b=RrW/C4/sQLTo6E+Up4wpJRqKOKdCY3t7Vqq5KH8E5JHuEN9qrUkeca9c
- PKUI0H/BF6b/C7giElLkM9vJfwMKk6z/t6PCY+/vcMAfOIIhTQg/hSYcq
- uxhlkJTPOIe0dZfOWK9/r2M0qARHkyQEcAvufrCDJxMj1DLo1BxWclkdN
- RY3x2sSIrr5eL735MlGliEc/3fNCXszddKK3QdUzQHfWru4TCntS08MAT
- Ilep46VGWl5F89ueSE3UwyV5ewkRcrJ0fbTD25X8pCZqVpa9iZ42WytH7
- Dv1TMcRAXkshrUI65yss+1utjZQk6s9DATOY149mIGsxCkiNGW4tIA2Oc Q==;
-X-CSE-ConnectionGUID: hPdJ7DUcSpqiUUhbxu0+Lg==
-X-CSE-MsgGUID: IwKUK7JDQde4+LQ5Efb6xw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="60266684"
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="60266684"
+ bh=e4YIXrjHtYmh6vgZfZe0ZbPPn8bX1jhW38fzY4pST1w=;
+ b=RQmV/O02l7TeZPiMNO2uBzKyF3i0EnchFe9tHiSIy9zk+6NiuntMfRhO
+ /96i1LDS3qad8RVWD9YYIRDYwqRhT1B1EX8yZFOu/K6lnmXXy+7fgrW31
+ NWrATHhWlV9rryQxQIKuBW9Ou1zzmPtSuexCPiXVyx0Dl02TYJ92mQViK
+ ALJkiJ846Ocfs2MLjRPJS3ppVjyGyCPEMuFHtym376X/2NcOx3hZl76pw
+ 4tPffVoWQRMgIsSy8H14YMkyNSgqzmAuRlgl7zWPmr8Rc3WYjP4J9CVj0
+ /SF7LjgM9gUvUpMkXIx4tiL+snk2IuHJkeRQ3i52GQVmYSTSTUex9cM3z A==;
+X-CSE-ConnectionGUID: lgO6JbBDReOaxN5kXmGZXw==
+X-CSE-MsgGUID: t+FrCDYNTgCTWUsIYD+/dg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="60266688"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="60266688"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 07:01:50 -0800
-X-CSE-ConnectionGUID: gbqbwxTiQKO3Hz4vn2uwqA==
-X-CSE-MsgGUID: 2UzPPEX6TZiyWoRhcbhV7w==
+ 20 Feb 2026 07:01:54 -0800
+X-CSE-ConnectionGUID: E1VLaMtPRLKRwzp9KnyzKg==
+X-CSE-MsgGUID: 37LBSDB9QtqnIor2Kglrtg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="252557952"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="252558036"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.245.6])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 07:01:48 -0800
+ 20 Feb 2026 07:01:52 -0800
 From: Pawel Sikora <pawel.sikora@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH i-g-t v1 3/6] dockerfiles: update debian and fedora dockerfiles
-Date: Fri, 20 Feb 2026 16:01:57 +0100
-Message-ID: <20260220150202.1013804-4-pawel.sikora@intel.com>
+Subject: [PATCH i-g-t v1 4/6] docs/css/extra.css: make nav/toc initial max
+ width
+Date: Fri, 20 Feb 2026 16:01:58 +0100
+Message-ID: <20260220150202.1013804-5-pawel.sikora@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260220150202.1013804-1-pawel.sikora@intel.com>
 References: <20260220150202.1013804-1-pawel.sikora@intel.com>
@@ -69,56 +70,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add clang python3 bindings and clang dev libraries
-to image installation process for mkdocs(cdoc).
+Due to the new API reference pages, some code examples
+contained in function documentation comments are now
+rendered side by side with the explanation. To improve
+readability, the navigation needs to be moved to the left
+side of the page, and the table of contents needs to be
+moved from the center to the right side of the screen.
 
 Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
 ---
- Dockerfile.build-debian         | 4 +++-
- Dockerfile.build-debian-minimal | 4 +++-
- Dockerfile.build-fedora         | 1 +
- 3 files changed, 7 insertions(+), 2 deletions(-)
+ docs/css/extra.css | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Dockerfile.build-debian b/Dockerfile.build-debian
-index cbc12875d..8d251598c 100644
---- a/Dockerfile.build-debian
-+++ b/Dockerfile.build-debian
-@@ -18,6 +18,8 @@ RUN apt-get install -y \
- 			python3-docutils \
- 			valgrind \
- 			peg \
--			libdrm-intel1
-+			libdrm-intel1 \
-+			python3-clang \
-+			libclang-dev
- 
- RUN apt-get clean
-diff --git a/Dockerfile.build-debian-minimal b/Dockerfile.build-debian-minimal
-index 808d2e32e..f481c83df 100644
---- a/Dockerfile.build-debian-minimal
-+++ b/Dockerfile.build-debian-minimal
-@@ -21,6 +21,8 @@ RUN apt-get install -y \
- 			libxv-dev \
- 			x11proto-dri2-dev \
- 			meson \
--			libdrm-dev
-+			libdrm-dev \
-+			python3-clang \
-+			libclang-dev
- 
- RUN apt-get clean
-diff --git a/Dockerfile.build-fedora b/Dockerfile.build-fedora
-index bae85a584..4e618fda7 100644
---- a/Dockerfile.build-fedora
-+++ b/Dockerfile.build-fedora
-@@ -38,6 +38,7 @@ RUN rm -fr /tmp/peg
- 
- # For compile-testing on clang
- RUN dnf install -y clang
-+RUN dnf install -y python3-clang clang-devel
- 
- # For test list comparison
- RUN dnf install -y diffutils
+diff --git a/docs/css/extra.css b/docs/css/extra.css
+index ff1b47cb8..094bdc443 100644
+--- a/docs/css/extra.css
++++ b/docs/css/extra.css
+@@ -321,3 +321,7 @@
+     transition: none !important;
+   }
+ }
++
++.md-grid {
++  max-width: initial;
++}
 -- 
 2.51.0
 
