@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 806BAC54FD2
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Feb 2026 14:02:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8181AC55ABE
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Feb 2026 14:02:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2AAC110E7DD;
-	Fri, 20 Feb 2026 14:02:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3111710E7C3;
+	Fri, 20 Feb 2026 14:02:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c3sysvgM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZAymUxqd";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0389B10E7DD
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 14:02:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7ED1610E7C3
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 14:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771596123; x=1803132123;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=+HfWPxkEG7YzUnyGD6u3m4BdAhhbkjgds7FpWuSgdm4=;
- b=c3sysvgMPK5EkOfqQKa+MVOjDqj7rYInZCmqGhDCA76XeN17n0F+xWrJ
- 4CMxTD6C9o2ROMNyYoLXh3LorWnhD1H/ARWd3heR9uPpfyg4BIkwS6luk
- XIwmDpHah6vXmgZ/LCiDEDeBHCmzA7lHcqMA9C9P0YseLTw3ed+5o0jkP
- i2EFRqFx4IaA5trXfP2VJBZMhN0izAEYV0vN1qAUSWaIeOwKva2b0K8ug
- SRs2lIe/FtD9G3YVy9CMCs1jj05xycmAi758nrkAPyUPxLbYyKVJkoHwB
- 9Lwcx5/29p6nTetTP+6xvqFCKmi7Ya+fB597O/Yy53E5FjWpnZ0NPkUyY g==;
-X-CSE-ConnectionGUID: HO4t+EQQSpmrdCVEtx2kVQ==
-X-CSE-MsgGUID: 7BGnQOytTBmNQIDpmC3fyQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="83006998"
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="83006998"
+ t=1771596127; x=1803132127;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=ylM7sJ6u472v46OWodCoXmRERhx9S2aH64KcRWcBQB8=;
+ b=ZAymUxqd+ri91mWQ1qoop2S5NNFWnDPrNGb7HPYleuKb4VdO1ddv0qYG
+ wOQb86Q2ow2cLjfyi+Vo5/gqn4QWl1sVbAhcX+GAMFzhVl0I2wT6iMHDm
+ peg/c4GdsDbWcwgtfPy6ZSAMspIBstdfjJJMP4hlY8RxZ9heDEpEMbg0C
+ cMALwGwW4O/tmTj1l49snixYllDgV9UQCH20eAdElF7Q0iV4tRWzd0aOW
+ bA7ouDbuTuETJBoThoij1y9+o3YMVq316KVobSO60Gs/3/cwfteqUsRd0
+ jQ3xnxwbMLYiDY7gXu0LSUZB6ulT958MqWtIzBfbBHwEd7hxu0Bb0fQ7n A==;
+X-CSE-ConnectionGUID: qCsnJm/pSJyDi1O46mt87Q==
+X-CSE-MsgGUID: FQVEjh/HQGar62K7cTW++A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="83007003"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="83007003"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 06:02:03 -0800
-X-CSE-ConnectionGUID: B2pwBNy8RL6KTxp2aDQUag==
-X-CSE-MsgGUID: bQZWuQQVTiqKx9N3kPNWWQ==
+ 20 Feb 2026 06:02:07 -0800
+X-CSE-ConnectionGUID: PFfqCYHTRGCaOB5+yejUaA==
+X-CSE-MsgGUID: RvSB1btUQZ+gaET1kDArlg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="214973626"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="214973640"
 Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.244.247])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 06:02:02 -0800
+ 20 Feb 2026 06:02:06 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 01/21] tests/intel/kms_flip_scaled_crc: Remove unused
- 'enum pipe pipe'
-Date: Fri, 20 Feb 2026 16:01:33 +0200
-Message-ID: <20260220140154.4138-2-ville.syrjala@linux.intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>, Karthik B S <karthik.b.s@intel.com>
+Subject: [PATCH i-g-t 02/21] tests/kms_concurrent: Actually run the test over
+ all connected crtcs
+Date: Fri, 20 Feb 2026 16:01:34 +0200
+Message-ID: <20260220140154.4138-3-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260220140154.4138-1-ville.syrjala@linux.intel.com>
 References: <20260220140154.4138-1-ville.syrjala@linux.intel.com>
@@ -73,61 +74,96 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-kms_flip_scaled_crc has a data.pipe member that it never uses
-for anythinh. Nuke it.
+Currently kms_concurrent uses for_each_valid_output_on_pipe() with an
+uninitialized pipe (meaning it probably contains stack garbage). The
+actual intention seems to have been to use
+for_each_pipe_with_valid_output(). It's even mentioned in the offending
+commit message, but the actual code was never changed to match.
+
+We no longer have for_each_pipe_with_valid_output() so we have to switch
+over to for_each_crtc_with_valid_output(), which also means we end up
+doing the pipe->crtc conversion in one go.
 
  #include "scripts/iterators.cocci"
 
-@find_pipe@
-typedef igt_crtc_t;
-typedef igt_display_t;
+@@
+iterator name for_each_valid_output_on_pipe;
+iterator name for_each_crtc_with_valid_output;
+expression DISPLAY, OUTPUT;
 identifier PIPE;
 type T;
 @@
-T {
-  ...
-  enum pipe PIPE;
-  ...
-};
-
-@use_pipe depends on find_pipe@
-identifier find_pipe.PIPE;
-find_pipe.T S;
-find_pipe.T *P;
-@@
+- T PIPE;
++ igt_crtc_t *crtc;
+<+... when != PIPE = ...
+- for_each_valid_output_on_pipe(DISPLAY, PIPE, OUTPUT)
++ for_each_crtc_with_valid_output(DISPLAY, crtc, OUTPUT)
+{
+<...
 (
-S.PIPE
+- igt_crtc_for_pipe(..., PIPE)
++ crtc
 |
-P->PIPE
+- kmstest_pipe_name(PIPE)
++ igt_crtc_name(crtc)
+|
+- PIPE
++ crtc->pipe
 )
+...>
+}
+...+>
 
-@remove_pipe depends on find_pipe && !use_pipe@
-identifier find_pipe.PIPE;
-type find_pipe.T;
 @@
-T {
-  ...
--  enum pipe PIPE;
-  ...
-};
+identifier DISPLAY;
+@@
+- igt_display_t *DISPLAY = ...;
+... when != DISPLAY
 
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Fixes: 6958319123d9 ("tests/kms_concurrent: remove pipe dependency in subtest name")
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/intel/kms_flip_scaled_crc.c | 1 -
- 1 file changed, 1 deletion(-)
+ tests/kms_concurrent.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/tests/intel/kms_flip_scaled_crc.c b/tests/intel/kms_flip_scaled_crc.c
-index 9a0b99e46ddd..83674d5c267f 100644
---- a/tests/intel/kms_flip_scaled_crc.c
-+++ b/tests/intel/kms_flip_scaled_crc.c
-@@ -143,7 +143,6 @@ typedef struct {
- 	int drm_fd;
- 	igt_display_t display;
+diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
+index bbc988aa2000..f31992a514a0 100644
+--- a/tests/kms_concurrent.c
++++ b/tests/kms_concurrent.c
+@@ -344,24 +344,24 @@ run_test(data_t *data, enum pipe pipe, igt_output_t *output)
+ static void
+ run_tests_for_pipe(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
  	igt_output_t *output;
 -	enum pipe pipe;
- 	uint32_t gen;
- 	struct igt_fb small_fb;
- 	struct igt_fb big_fb;
++	igt_crtc_t *crtc;
+ 
+ 	igt_describe("Test atomic mode setting concurrently with multiple planes and screen "
+ 		     "resolution.");
+ 	igt_subtest_with_dynamic("multi-plane-atomic-lowres") {
+-		for_each_valid_output_on_pipe(&data->display, pipe, output) {
++		for_each_crtc_with_valid_output(&data->display, crtc, output) {
+ 			igt_display_reset(&data->display);
+ 
+ 			igt_output_set_crtc(output,
+-					    igt_crtc_for_pipe(display, pipe));
++					    crtc);
+ 			if (!intel_pipe_output_combo_valid(&data->display))
+ 				continue;
+ 
+-			igt_require(igt_crtc_for_pipe(display, pipe)->n_planes > 0);
+-			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+-				run_test(data, pipe, output);
++			igt_require(crtc->n_planes > 0);
++			igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
++				      igt_output_name(output))
++				run_test(data, crtc->pipe, output);
+ 		}
+ 	}
+ }
 -- 
 2.52.0
 
