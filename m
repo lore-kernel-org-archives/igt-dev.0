@@ -4,67 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 629EDC5ACD1
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Feb 2026 16:17:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AE4AC5ACD1
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Feb 2026 16:17:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E78ED10E1D0;
-	Fri, 20 Feb 2026 16:17:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0742B10E1D0;
+	Fri, 20 Feb 2026 16:17:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="BwaU6jXy";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="IC5yJswr";
 	dkim-atps=neutral
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com
- [209.85.210.171])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D6DC910E1D0
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 16:17:39 +0000 (UTC)
-Received: by mail-pf1-f171.google.com with SMTP id
- d2e1a72fcca58-8249fc726e9so1169621b3a.2
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 08:17:39 -0800 (PST)
+Received: from mail-pg1-f193.google.com (mail-pg1-f193.google.com
+ [209.85.215.193])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 655ED10E806
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 16:17:44 +0000 (UTC)
+Received: by mail-pg1-f193.google.com with SMTP id
+ 41be03b00d2f7-c6e248aa446so926971a12.1
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 08:17:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1771604259; x=1772209059; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=IIkH8kWe0eTqfszr3w26iiMvpNkCHd7PyMAo7RLXhAA=;
- b=BwaU6jXyJ03Qws6hY2WwvThPEDz0mhHBSI1LsgJKz6hd12QfyNWvv7+UZBKrPw/siS
- KgBYIOCPv8Oyc4aWnII7iliLZddWHcCTCttNNlG2Y5M30R9erfwXTrpFWpFbRjHqsaTS
- EeTbhe1t/wUtXJtP5P/fmsV/SW4sBcpRGQ1Isgc8UIhDP6zzTu/ipwityWhhRG+JhX41
- I8DTh4wYhnlKPRagA1jB4rh4dBBDXoGESN1oJ5AxiMqCStg89yW+nX2ZTZuPRGcrhoNm
- 7LCK2o3VfbIKwZfBVpZyUK7PSEky/7YKy8/By4vJ0C+nCPqRAfW6GetNw5Lhk0oC/hfi
- MiQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1771604259; x=1772209059;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1771604264; x=1772209064; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IIkH8kWe0eTqfszr3w26iiMvpNkCHd7PyMAo7RLXhAA=;
- b=wqNup7oJR3pwdkEaf8u0ht74jXE676lQlvWa8TTgQ0mO3jr3CfV/EH3Wb572BCT2wr
- prB08fmqqzwzVrFuZQAYRlxjA0U4eBjgqj8vDh4HWKHHFCQr1TH6+WafU1fnU1Em4ArL
- D+Qm54LVPPMaUSYm9dtAV69liEcGWFav+kGv7CE8jSDjuvC4gQnAIyWPp5uRnjWH9zkR
- TxldasbHTwmA94V9VUFUo+rPOm8y1AqrBFfikLsgcuKWPHxZipy7EYl1bnabDst1VpOV
- 5cnDDbrGkoK+Oxcux3DSR+W9ZHGha4L3SLJ5kF/b5HKXuJo7GRPbLDUk4YW3vTKhfO2k
- bIlA==
-X-Gm-Message-State: AOJu0Ywu+DrkeqiWUzBQxTSc60rzQHjF5LlqWQLhUrK0TpvcUqtvoWsi
- sic3We2oUWs/wvaiJqfz5D30cI0EWHipxJdLx5tw8Rxt7wJU2qzttyjKVBwZtauo
-X-Gm-Gg: AZuq6aLFgQpPO6hLzoF7xtSbmqToMcMWHDIZAeAV0rfNXiclDnEyhoCOQVd9VuR8uvT
- VE9C2jwjfp2YSvwzRnf0Lcj9Bdf9QT8dkKgSCsUKPP86XhGHpOrYAm3fB6OFw5raL02GWZxsiRD
- D5gsKwqt3sCT32r4DCocEuyqfTkkd6RrsEI7qU5Zi/9eViq1jQZGhphu2x4A5jDrkxrCU0scClQ
- RX7NiVp2wL5lShjHmE68rxoMukOhsVGDbZzfGX/NIqBFwTjDbZ4pZzqymNw7BIGEc5TQrvK4aQ2
- zZ2260U1nuQTnFwndA6Qo/ntn/p4fBTaYfDWR5p5+dKeZC7R12cAfc4V+UxR/mF5WKC1xscqPs3
- fmU3kWPdClXgHSmVR4KZNlOw8ZUL+J4L1V4WEvAB+zoT8+U2Fa9y79GuEp8vefgSmjjJydxT481
- +f5JyZ+h7v7ulW5mQJTT3r4kgG+GyF5dNc1gpBgIsUbqK2uAFKTD6BY963/jfCvQ==
-X-Received: by 2002:a05:6a00:a804:b0:81f:4944:c38c with SMTP id
- d2e1a72fcca58-826daa6290amr366471b3a.43.1771604259064; 
- Fri, 20 Feb 2026 08:17:39 -0800 (PST)
+ bh=gfqX5btUAgIQRqB/Ppk3u9cH6aVYq6CEx0KKTcINtDM=;
+ b=IC5yJswrKF1gbEZtFSZrSDQPVK6EpjqmSg8B+XbuUlbmI3YEZZ3U0J94eSumhKGGz3
+ WsJBr2SutZZRD75Z/VwQhJ45jJdlkIArlEBRv5F3hzwgfK9rzlHcD/51jg/6KnA6bmZH
+ AKaW1YnqYynB+Ee7eqHL+uazROEKWg5o0A9vgLGp85x9ndyli0rAy0F9WqQzEyZ2R8Ik
+ 1BFwmbRnozK+QIzThcR9+LBdcnZbxfdmEaRYSLoquf6p0LLbBO+hRSnO6npsC1VD7Y5U
+ /nSejO1XsbS2qS6n9awx59IdCZ3lB4mJeTUUKl12jI6jQrot87kuFIhNZnhHt6GPBPYx
+ uVkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1771604264; x=1772209064;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=gfqX5btUAgIQRqB/Ppk3u9cH6aVYq6CEx0KKTcINtDM=;
+ b=PTNv0k99dNo/ZblNuHEePymVJIRlKnLfAvnTf7O22fF7/QO3d5czs6n5/C/tws8uNI
+ FnyYJDbqZqRS6PculHIJ25hEkmp76L2trhM0qGPgkmdRpKZ21oSVBUNUWhIOtOf0TtVy
+ IixVAbCDIcsrdRU15DQPZggvJabLYiuKzb3okq9SAUSNQD/AOhQuGGLYfk57RjGAco7K
+ c+Gv+qG/G+EsveCDRojwc+X/9VM8NaP24TQ9hL4kAbQ5nq+Ubclvejmx3kygKk30BpEc
+ uuaOsm6euzQRC0nOANSeXZaPwLTK//ZwVtG88HvC4CRTIW5Uv1hZFfh7DJ4fZVkfq+yG
+ 3K2w==
+X-Gm-Message-State: AOJu0Yz8pLV3eUMBZ1R1x4HqIUokEa23luWIYXWU5z1ZcKNfWXPVskTD
+ RWhBSLoOWbrCCk7m823wFMPRTAu0Gmdqs0DlPKd30R6yWb9tAoOkQRP3P36r6rvcHwQ=
+X-Gm-Gg: AZuq6aIwSOJKTcMIABRHOEJxXxGDJIpEEXyC8iIdVDKTcFUSOBrx1yU/pYKRtQ+td2A
+ ciwKWv73eFeUOG6fFscNY9onpIL+Sr7vEd67LDBjJdfxfQS9trCOeHzY/HKswEB+6g0fnHsEoEP
+ VW6TISF/AizRgqyvIMV2DwLsxpK965BhE7W7vXzdR1UURABYSJj3lsJezGKSWZMvu+ZnSpBiEOa
+ cTzKB48Ydg9GFRLrWA955VX7y8XvylRvcLk00t3wVRm6JMhyeXneU0ThnQ7s2b0Kg/7gCEJGaeb
+ FM7uBowquXtH7IfD71b+lppHPlqIpWDFWsI6xu5qZz6vvHkyDZuKwcNDuSwvoB1T9uQnj6f3nXf
+ EbojA8qXzUN30MZOIZCeeFgzNin4iLx4p8FwTudhjLWuBvmslrzDu+v8ym/ove0kiQt74PGzjrt
+ ru2/4CN3h6bhDxCjG7DUonHNy6NIIn6oW6GfBt2cnAqaToanSXn/oDpEg/HyvfVw==
+X-Received: by 2002:a17:903:2c08:b0:2a0:b467:a7cf with SMTP id
+ d9443c01a7336-2ad742b9cc1mr1262015ad.0.1771604263553; 
+ Fri, 20 Feb 2026 08:17:43 -0800 (PST)
 Received: from localhost ([134.134.137.72]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-824c6a29f0asm30980546b3a.9.2026.02.20.08.17.37
+ d9443c01a7336-2ad1a714786sm203312215ad.31.2026.02.20.08.17.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 20 Feb 2026 08:17:38 -0800 (PST)
+ Fri, 20 Feb 2026 08:17:43 -0800 (PST)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 0/8] Enable Vebox engine copy on Intel Xe driver
-Date: Fri, 20 Feb 2026 18:17:10 +0200
-Message-ID: <20260220161718.652862-1-juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 1/8] lib: take out duplicate assert
+Date: Fri, 20 Feb 2026 18:17:11 +0200
+Message-ID: <20260220161718.652862-2-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260220161718.652862-1-juhapekka.heikkila@gmail.com>
+References: <20260220161718.652862-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -82,28 +85,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Here enabled Vebox engine copy of framebuffers and force yuv framebuffers
-on Vebox path.
+in gen12_vebox_copyfunc there's the same assert few lines below
 
-Juha-Pekka Heikkila (8):
-  lib: take out duplicate assert
-  lib/intel_batchbuffer: make __intel_bb_create gt aware
-  lib/xe: add xe_exec_queue_create_class_gt
-  lib/intel_batchbuffer: add intel_bb_create_with_gt function
-  lib/intel_batchbuffer: move engine class selection to helper
-  lib/intel_batchbuffer/xe: add bb exec path to use specific engine and
-    gt
-  lib: Enable Vebox framebuffer copying on Intel Xe2
-  lib/igt_fb: on Intel force Vebox copy on yuv formats
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ lib/veboxcopy_gen12.c | 2 --
+ 1 file changed, 2 deletions(-)
 
- lib/igt_fb.c            | 49 +++++++++++++++-----
- lib/intel_batchbuffer.c | 99 ++++++++++++++++++++++++++++-------------
- lib/intel_batchbuffer.h |  3 ++
- lib/veboxcopy_gen12.c   |  2 -
- lib/xe/xe_ioctl.c       | 20 +++++++++
- lib/xe/xe_ioctl.h       |  2 +
- 6 files changed, 132 insertions(+), 43 deletions(-)
-
+diff --git a/lib/veboxcopy_gen12.c b/lib/veboxcopy_gen12.c
+index 2193433a1..9d07ebb91 100644
+--- a/lib/veboxcopy_gen12.c
++++ b/lib/veboxcopy_gen12.c
+@@ -314,8 +314,6 @@ void gen12_vebox_copyfunc(struct intel_bb *ibb,
+ 	uint32_t aux_pgtable_state;
+ 	int format;
+ 
+-	igt_assert(src->bpp == dst->bpp);
+-
+ 	intel_bb_flush(ibb, I915_EXEC_VEBOX);
+ 
+ 	intel_bb_add_intel_buf(ibb, dst, true);
 -- 
 2.43.0
 
