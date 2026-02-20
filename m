@@ -4,59 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4676AC56201
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Feb 2026 15:38:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 629EDC5ACD1
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Feb 2026 16:17:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C5A0210E7F5;
-	Fri, 20 Feb 2026 15:38:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E78ED10E1D0;
+	Fri, 20 Feb 2026 16:17:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ID6jL5iJ";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="BwaU6jXy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5509C10E806
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 15:38:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771601906; x=1803137906;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=2zhWl5I1dGgJbd825k/B45KvEV7oOQxWJgFJuY9NWFw=;
- b=ID6jL5iJ1hn/2wNMnvL4my/t+gOOqxtXW8EU5RQavQSDFSGEL00rzjki
- IhJHB43hQQXGbiJF+eGp3pZbRAeiRyZFgGpzi71pKx9XRj7/sA0DCF6Qy
- W4JQCwRWmLQ4Gl7F5H/EF9P13jXHuDMAdJ5l3O1eT5m0WWMFCk7GhYaQv
- 7KTc9jzfhATSAy1eXGNvZ0R4mKEQOc42b6F6LGMouwtm31PgbSJ/rFqi1
- atRRIQ+5GAKKqb0zzmGEKiXi16OQ+F5FSktyf8evMrBMtkVlKvNgVXx9O
- mE3Mm9xy7lNXvTxPM6A53Eyp6N4VBejBzQBQS+03ZNbKjzZtE+tbdAX1k A==;
-X-CSE-ConnectionGUID: sBYkAAAiThyMIwxuNuT/2g==
-X-CSE-MsgGUID: yyNBaD10SNSUMmcZCLpieQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="90105386"
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="90105386"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 07:38:26 -0800
-X-CSE-ConnectionGUID: ifBn0zJjRNGYC15ho/YsqA==
-X-CSE-MsgGUID: 8XZzoecNQlCn0k21q9mwmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="215007740"
-Received: from cmanszew-dev.igk.intel.com ([10.91.214.222])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 07:38:24 -0800
-From: Christoph Manszewski <christoph.manszewski@intel.com>
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com
+ [209.85.210.171])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D6DC910E1D0
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 16:17:39 +0000 (UTC)
+Received: by mail-pf1-f171.google.com with SMTP id
+ d2e1a72fcca58-8249fc726e9so1169621b3a.2
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Feb 2026 08:17:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1771604259; x=1772209059; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IIkH8kWe0eTqfszr3w26iiMvpNkCHd7PyMAo7RLXhAA=;
+ b=BwaU6jXyJ03Qws6hY2WwvThPEDz0mhHBSI1LsgJKz6hd12QfyNWvv7+UZBKrPw/siS
+ KgBYIOCPv8Oyc4aWnII7iliLZddWHcCTCttNNlG2Y5M30R9erfwXTrpFWpFbRjHqsaTS
+ EeTbhe1t/wUtXJtP5P/fmsV/SW4sBcpRGQ1Isgc8UIhDP6zzTu/ipwityWhhRG+JhX41
+ I8DTh4wYhnlKPRagA1jB4rh4dBBDXoGESN1oJ5AxiMqCStg89yW+nX2ZTZuPRGcrhoNm
+ 7LCK2o3VfbIKwZfBVpZyUK7PSEky/7YKy8/By4vJ0C+nCPqRAfW6GetNw5Lhk0oC/hfi
+ MiQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1771604259; x=1772209059;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=IIkH8kWe0eTqfszr3w26iiMvpNkCHd7PyMAo7RLXhAA=;
+ b=wqNup7oJR3pwdkEaf8u0ht74jXE676lQlvWa8TTgQ0mO3jr3CfV/EH3Wb572BCT2wr
+ prB08fmqqzwzVrFuZQAYRlxjA0U4eBjgqj8vDh4HWKHHFCQr1TH6+WafU1fnU1Em4ArL
+ D+Qm54LVPPMaUSYm9dtAV69liEcGWFav+kGv7CE8jSDjuvC4gQnAIyWPp5uRnjWH9zkR
+ TxldasbHTwmA94V9VUFUo+rPOm8y1AqrBFfikLsgcuKWPHxZipy7EYl1bnabDst1VpOV
+ 5cnDDbrGkoK+Oxcux3DSR+W9ZHGha4L3SLJ5kF/b5HKXuJo7GRPbLDUk4YW3vTKhfO2k
+ bIlA==
+X-Gm-Message-State: AOJu0Ywu+DrkeqiWUzBQxTSc60rzQHjF5LlqWQLhUrK0TpvcUqtvoWsi
+ sic3We2oUWs/wvaiJqfz5D30cI0EWHipxJdLx5tw8Rxt7wJU2qzttyjKVBwZtauo
+X-Gm-Gg: AZuq6aLFgQpPO6hLzoF7xtSbmqToMcMWHDIZAeAV0rfNXiclDnEyhoCOQVd9VuR8uvT
+ VE9C2jwjfp2YSvwzRnf0Lcj9Bdf9QT8dkKgSCsUKPP86XhGHpOrYAm3fB6OFw5raL02GWZxsiRD
+ D5gsKwqt3sCT32r4DCocEuyqfTkkd6RrsEI7qU5Zi/9eViq1jQZGhphu2x4A5jDrkxrCU0scClQ
+ RX7NiVp2wL5lShjHmE68rxoMukOhsVGDbZzfGX/NIqBFwTjDbZ4pZzqymNw7BIGEc5TQrvK4aQ2
+ zZ2260U1nuQTnFwndA6Qo/ntn/p4fBTaYfDWR5p5+dKeZC7R12cAfc4V+UxR/mF5WKC1xscqPs3
+ fmU3kWPdClXgHSmVR4KZNlOw8ZUL+J4L1V4WEvAB+zoT8+U2Fa9y79GuEp8vefgSmjjJydxT481
+ +f5JyZ+h7v7ulW5mQJTT3r4kgG+GyF5dNc1gpBgIsUbqK2uAFKTD6BY963/jfCvQ==
+X-Received: by 2002:a05:6a00:a804:b0:81f:4944:c38c with SMTP id
+ d2e1a72fcca58-826daa6290amr366471b3a.43.1771604259064; 
+ Fri, 20 Feb 2026 08:17:39 -0800 (PST)
+Received: from localhost ([134.134.137.72]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-824c6a29f0asm30980546b3a.9.2026.02.20.08.17.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 20 Feb 2026 08:17:38 -0800 (PST)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Rudnicki@freedesktop.org, Piotr <piotr.rudnicki@intel.com>,
-	Piatkowski@freedesktop.org,
-	Dominik Karol <dominik.karol.piatkowski@intel.com>,
-	Jan Sokolowski <jan.sokolowski@intel.com>,
-	Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: [PATCH i-g-t v4 5/5] lib/xe/xe_eudebug: Get drm card sysfs path
-Date: Fri, 20 Feb 2026 16:37:54 +0100
-Message-ID: <20260220153748.210381-12-christoph.manszewski@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260220153748.210381-7-christoph.manszewski@intel.com>
-References: <20260220153748.210381-7-christoph.manszewski@intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 0/8] Enable Vebox engine copy on Intel Xe driver
+Date: Fri, 20 Feb 2026 18:17:10 +0200
+Message-ID: <20260220161718.652862-1-juhapekka.heikkila@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -73,79 +82,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add helper function to get the card name as defined in the:
-'/sys/class/drm/card<N>' path.
+Here enabled Vebox engine copy of framebuffers and force yuv framebuffers
+on Vebox path.
 
-Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
----
- lib/xe/xe_eudebug.c | 40 ++++++++++++++++++++++++++++++++++++----
- 1 file changed, 36 insertions(+), 4 deletions(-)
+Juha-Pekka Heikkila (8):
+  lib: take out duplicate assert
+  lib/intel_batchbuffer: make __intel_bb_create gt aware
+  lib/xe: add xe_exec_queue_create_class_gt
+  lib/intel_batchbuffer: add intel_bb_create_with_gt function
+  lib/intel_batchbuffer: move engine class selection to helper
+  lib/intel_batchbuffer/xe: add bb exec path to use specific engine and
+    gt
+  lib: Enable Vebox framebuffer copying on Intel Xe2
+  lib/igt_fb: on Intel force Vebox copy on yuv formats
 
-diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
-index a0caad2c3..37ce1e2ac 100644
---- a/lib/xe/xe_eudebug.c
-+++ b/lib/xe/xe_eudebug.c
-@@ -1901,6 +1901,34 @@ static void metadata_event(struct xe_eudebug_client *c, uint32_t flags,
- }
- 
- #define EU_DEBUG_TOGGLE "device/enable_eudebug"
-+
-+static char *get_card_name(int fd, char *card_name, size_t len)
-+{
-+	char sysfs_path[PATH_MAX];
-+	char link_target[PATH_MAX];
-+	char *card_start;
-+	ssize_t link_len;
-+
-+	if (!igt_sysfs_path(fd, sysfs_path, sizeof(sysfs_path)))
-+		return NULL;
-+
-+	link_len = readlink(sysfs_path, link_target, sizeof(link_target) - 1);
-+	if (link_len < 0)
-+		return NULL;
-+
-+	link_target[link_len] = '\0';
-+
-+	card_start = strstr(link_target, "card");
-+	if (!card_start)
-+		return NULL;
-+
-+	snprintf(card_name, len, "%s", card_start);
-+	card_start = strchr(card_name, '/');
-+	if (card_start)
-+		*card_start = '\0';
-+
-+	return card_name;
-+}
- /**
-  * __xe_eudebug_enable_getset
-  * @fd: xe client
-@@ -1962,7 +1990,7 @@ out:
-  */
- bool xe_eudebug_enable(int fd, bool enable)
- {
--	char sysfs_path[PATH_MAX];
-+	char card_name[NAME_MAX];
- 	bool old = false;
- 	int ret = 0;
- 
-@@ -1984,9 +2012,13 @@ bool xe_eudebug_enable(int fd, bool enable)
- 	}
- 
- 	if (ret == -ENOENT) {
--		igt_assert(igt_sysfs_path(fd, sysfs_path, sizeof(sysfs_path)));
--		igt_skip("'%s/" EU_DEBUG_TOGGLE
--			 "' sysfs attribute not found, EU DEBUG not supported\n", sysfs_path);
-+		if (get_card_name(fd, card_name, sizeof(card_name)))
-+			igt_skip("'/sys/class/drm/%s/" EU_DEBUG_TOGGLE
-+				 "' sysfs attribute not found, EU DEBUG not supported\n",
-+				 card_name);
-+		else
-+			igt_skip("'" EU_DEBUG_TOGGLE
-+				 "' sysfs attribute not found, EU DEBUG not supported\n");
- 	}
- 
- 	igt_abort_on_f(ret, "xe_eudebug_enable: Failed to %s eudebug\n",
+ lib/igt_fb.c            | 49 +++++++++++++++-----
+ lib/intel_batchbuffer.c | 99 ++++++++++++++++++++++++++++-------------
+ lib/intel_batchbuffer.h |  3 ++
+ lib/veboxcopy_gen12.c   |  2 -
+ lib/xe/xe_ioctl.c       | 20 +++++++++
+ lib/xe/xe_ioctl.h       |  2 +
+ 6 files changed, 132 insertions(+), 43 deletions(-)
+
 -- 
-2.47.1
+2.43.0
 
