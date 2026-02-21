@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 936B0E9A049
-	for <igt-dev@archiver.kernel.org>; Sat, 21 Feb 2026 03:20:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5E5BC5DF70
+	for <igt-dev@archiver.kernel.org>; Sat, 21 Feb 2026 03:20:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 45FFC10E10E;
-	Sat, 21 Feb 2026 03:20:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 51A6210E109;
+	Sat, 21 Feb 2026 03:20:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CpA4oIyj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b2VpNM9m";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C303A10E865
- for <igt-dev@lists.freedesktop.org>; Sat, 21 Feb 2026 03:20:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EAFB410E109
+ for <igt-dev@lists.freedesktop.org>; Sat, 21 Feb 2026 03:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771644046; x=1803180046;
+ t=1771644051; x=1803180051;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=ciTYF00+nrZ5fDil64Yfwqg/ZHm/azXMYSf8kpDD4j8=;
- b=CpA4oIyjPe3SekIWqKPrcukgtT98JTae+p4CVqUGw7iThcH9L2VhMYh0
- 5h/5CKa3esy8D0b4eHLpJluKeZbQPf+syqCktxRUVf4MerTzL3JEu1R7C
- NQolVY4wSUXmXlOUSMa9Opd8zaAcwjnQjphnT+bfteuWkZUtWE0AdVt8m
- i09uHLQhOsGqN8LyPtCvIkZ3kWFAuJR+zY1X49GqmtCcOotrvaYWgB+sX
- 9aXGNkDJLP0cT8perdrW6etgkZkC6LMFJ9cMuGdelRK4jPdBn2j1s7I9V
- 7h7YOOOF4lKegjaAr8mD/lE/CSl1y0JA83P8phtigoVHAfxpZxnNObZGf w==;
-X-CSE-ConnectionGUID: ORLSQuzYTn2Oay7Kq50xVw==
-X-CSE-MsgGUID: 0xWZA50FRpORhbRpnZSkow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="84187199"
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="84187199"
+ bh=4jrsU/eoyZQuOnOxXiKeL30F8CYITGLdNXK7baaJDY0=;
+ b=b2VpNM9mbLAdr5b/33sKbyDqu+dQGcADDAFGwX84KK5HTP99YffJR8Yo
+ HDDNbw41l8Dvm6tCC0eleG8vYuttsQRc693nOjXzCT6M4gMJdJ7L2a4Nk
+ 6EXcN0FBRQdfP0GnUlP0XEqT16rpZWvBR9EInTu/AP0hb27IXmzSBHm/F
+ mapP3C/zZwTEVAXWa6nnAT4hEhR3Ff3iPfuyjeHdzLHiZd6LKdwMqo87D
+ LdxVBlKVHfPNF2l/wNdYjA4sl414oK0PqwzI0x9/lDuZm1S27BrJFArLa
+ rN5ch7iFENBu10lMXVZYxDcGhvXYcHwIqHAGKkyyUPFVVSSx+jHAAGWOz Q==;
+X-CSE-ConnectionGUID: //29A2ITTVGb67lc2qCFzQ==
+X-CSE-MsgGUID: CyaYiy35QDibPRUGPpi/yw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="84187202"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="84187202"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 19:20:46 -0800
-X-CSE-ConnectionGUID: comBh1XHRYGX4mQiVya1Xg==
-X-CSE-MsgGUID: qZSTPjWOQEa2jiPJNSIV8A==
+ 20 Feb 2026 19:20:50 -0800
+X-CSE-ConnectionGUID: VbB0iuYOQSuUiPowLa/P5w==
+X-CSE-MsgGUID: dPlA0iERSLirh4zhKWx/4g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="214256392"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="214256394"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.245.139])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 19:20:46 -0800
+ 20 Feb 2026 19:20:49 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 10/23] tests/intel/kms_frontbuffer_tracking: Use
- igt_crtc_t instead of enum pipe
-Date: Sat, 21 Feb 2026 05:19:49 +0200
-Message-ID: <20260221032003.30936-11-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2 11/23] tests/kms_plane_scaling: Use igt_crtc_t
+ instead of enum pipe
+Date: Sat, 21 Feb 2026 05:19:50 +0200
+Message-ID: <20260221032003.30936-12-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
 References: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
@@ -74,365 +74,580 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
 Convert kms_frontbuffer_tracking from 'enum pipe' to 'igt_crtc_t'.
-This is written in its own peculiar style, and getting cocci to
-grog it seems very hard, so the conversion was done manually.
+
+There are three noteworthy complications in this one:
+- two pipe/crtc usage in test_invalid_num_scalers()
+- find_connnected_pipe() return value
+- fixed PIPE_A usage in invalid_parameter_tests()
+
+ #include "scripts/iterators.cocci"
+
+@multi_pipe@
+typedef igt_crtc_t;
+typedef igt_display_t;
+identifier DISPLAY;
+enum pipe PIPE1, PIPE2;
+expression GET_PIPE1, GET_PIPE2;
+@@
+  igt_display_t *DISPLAY = ...;
++ igt_crtc_t *crtc1;
++ igt_crtc_t *crtc2;
+...
+- PIPE1 = GET_PIPE1;
++ crtc1 = igt_crtc_for_pipe(DISPLAY, GET_PIPE1);
+...
+- PIPE2 = GET_PIPE2;
++ crtc2 = igt_crtc_for_pipe(DISPLAY, GET_PIPE2);
+<...
+(
+- igt_crtc_for_pipe(..., PIPE1)
++ crtc1
+|
+- kmstest_pipe_name(PIPE1)
++ igt_crtc_name(crtc1)
+|
+- PIPE1
++ crtc1->pipe
+|
+- igt_crtc_for_pipe(..., PIPE2)
++ crtc2
+|
+- kmstest_pipe_name(PIPE2)
++ igt_crtc_name(crtc2)
+|
+- PIPE2
++ crtc2->pipe
+)
+...>
+
+@@
+identifier PIPE;
+@@
+- enum pipe PIPE;
+... when != PIPE
+
+@ret_pipe@
+typedef igt_output_t;
+typedef igt_crtc_t;
+identifier FUNC;
+igt_crtc_t *CRTC;
+parameter list[N] P;
+@@
+- enum pipe
++ igt_crtc_t *
+FUNC(P)
+{
+<...
+- return CRTC->pipe;
++ return CRTC;
+...>
+}
+
+@depends on ret_pipe@
+identifier ret_pipe.FUNC;
+@@
+FUNC(...)
++ ->pipe
+
+@func1@
+typedef igt_output_t;
+typedef igt_crtc_t;
+identifier FUNC, PIPE, CRTC;
+parameter list[N] P;
+@@
+FUNC(P
+-	,enum pipe PIPE
++	,igt_crtc_t *CRTC
+	,...)
+{
+...
+(
+- igt_crtc_t *CRTC = igt_crtc_for_pipe(..., PIPE);
+|
+- igt_crtc_t *CRTC;
+... when != PIPE = ...
+- CRTC = igt_crtc_for_pipe(..., PIPE);
+)
+<... when != PIPE = ...
+(
+- igt_crtc_for_pipe(..., PIPE)
++ CRTC
+|
+- kmstest_pipe_name(PIPE)
++ igt_crtc_name(CRTC)
+|
+- PIPE
++ CRTC->pipe
+)
+...>
+}
+
+@depends on func1@
+identifier func1.FUNC;
+expression list[func1.N] EP;
+expression PIPE;
+@@
+FUNC(EP
+-	,PIPE
++	,igt_crtc_for_pipe(display, PIPE)
+	,...)
+
+@func2@
+typedef igt_crtc_t;
+identifier FUNC, PIPE;
+parameter list[N] P;
+@@
+FUNC(P
+-	,enum pipe PIPE
++	,igt_crtc_t *crtc
+	,...)
+{
+<+... when != PIPE = ...
+(
+- igt_crtc_for_pipe(..., PIPE)
++ crtc
+|
+- kmstest_pipe_name(PIPE)
++ igt_crtc_name(crtc)
+|
+- PIPE
++ crtc->pipe
+)
+...+>
+}
+
+@depends on func2@
+identifier func2.FUNC;
+expression list[func2.N] EP;
+expression PIPE;
+@@
+FUNC(EP
+-	,PIPE
++	,igt_crtc_for_pipe(display, PIPE)
+	,...)
+
+@depends on ret_pipe@
+identifier ret_pipe.FUNC;
+expression list[ret_pipe.N] EP;
+@@
+- igt_crtc_for_pipe(..., FUNC(EP)->pipe)
++ FUNC(EP)
+
+@@
+igt_crtc_t *CRTC;
+@@
+- igt_crtc_for_pipe(..., CRTC->pipe)
++ CRTC
+
+@@
+typedef igt_display_t;
+identifier DISPLAY;
+@@
+- igt_display_t *DISPLAY = ...;
+... when != DISPLAY
+
+@fixed_pipe_a@
+identifier PIPE, DISPLAY;
+@@
+igt_display_t *DISPLAY = ...;
+...
+- enum pipe PIPE = PIPE_A;
++ igt_crtc_t *crtc;
+...
+igt_fixture() {
++ crtc = igt_crtc_for_pipe(DISPLAY, PIPE_A);
+<+... when != PIPE = ...
+(
+- igt_crtc_for_pipe(..., PIPE)
++ crtc
+|
+- kmstest_pipe_name(PIPE)
++ igt_crtc_name(crtc)
+|
+- PIPE
++ crtc->pipe
+)
+...+>
+}
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/intel/kms_frontbuffer_tracking.c | 99 ++++++++++++--------------
- 1 file changed, 46 insertions(+), 53 deletions(-)
+ tests/kms_plane_scaling.c | 114 ++++++++++++++++++++------------------
+ 1 file changed, 59 insertions(+), 55 deletions(-)
 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 58bc92a39422..ce0a646d4e80 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -1020,7 +1020,7 @@ struct {
- };
- 
- struct modeset_params {
--	enum pipe pipe;
-+	igt_crtc_t *crtc;
- 	igt_output_t *output;
- 	drmModeModeInfo mode;
- 
-@@ -1104,7 +1104,7 @@ static drmModeModeInfo *connector_get_mode(igt_output_t *output)
- }
- 
- static void init_mode_params(struct modeset_params *params,
--			     igt_output_t *output, enum pipe pipe)
-+			     igt_output_t *output, igt_crtc_t *crtc)
- {
- 	int i;
- 	drmModeModeInfo *mode;
-@@ -1112,11 +1112,11 @@ static void init_mode_params(struct modeset_params *params,
- 	igt_output_override_mode(output, NULL);
- 	mode = connector_get_mode(output);
- 
--	params->pipe = pipe;
-+	params->crtc = crtc;
- 	params->output = output;
- 	params->mode = *mode;
- 
--	params->primary.plane = igt_crtc_get_plane_type(igt_crtc_for_pipe(&drm.display, pipe),
-+	params->primary.plane = igt_crtc_get_plane_type(crtc,
- 							DRM_PLANE_TYPE_PRIMARY);
- 	params->primary.fb = NULL;
- 	params->primary.x = 0;
-@@ -1124,7 +1124,7 @@ static void init_mode_params(struct modeset_params *params,
- 	params->primary.w = mode->hdisplay;
- 	params->primary.h = mode->vdisplay;
- 
--	params->cursor.plane = igt_crtc_get_plane_type(igt_crtc_for_pipe(&drm.display, pipe),
-+	params->cursor.plane = igt_crtc_get_plane_type(crtc,
- 						       DRM_PLANE_TYPE_CURSOR);
- 	params->cursor.fb = NULL;
- 	params->cursor.x = 0;
-@@ -1132,7 +1132,7 @@ static void init_mode_params(struct modeset_params *params,
- 	params->cursor.w = 64;
- 	params->cursor.h = 64;
- 
--	params->sprite.plane = igt_crtc_get_plane_type(igt_crtc_for_pipe(&drm.display, pipe),
-+	params->sprite.plane = igt_crtc_get_plane_type(crtc,
- 						       DRM_PLANE_TYPE_OVERLAY);
- 	igt_require(params->sprite.plane);
- 	params->sprite.fb = NULL;
-@@ -1158,9 +1158,9 @@ static void init_mode_params(struct modeset_params *params,
- 
- static bool find_connector(bool edp_only, bool pipe_a,
- 			   igt_output_t *forbidden_output,
--			   enum pipe forbidden_pipe,
-+			   igt_crtc_t *forbidden_crtc,
- 			   igt_output_t **ret_output,
--			   enum pipe *ret_pipe)
-+			   igt_crtc_t **ret_crtc)
- {
- 	igt_output_t *output;
- 	igt_crtc_t *crtc;
-@@ -1174,7 +1174,7 @@ static bool find_connector(bool edp_only, bool pipe_a,
- 		if (pipe_a && crtc->pipe != PIPE_A)
- 			continue;
- 
--		if (output == forbidden_output || crtc->pipe == forbidden_pipe) {
-+		if (output == forbidden_output || crtc == forbidden_crtc) {
- 			igt_output_set_crtc(output,
- 					    crtc);
- 			igt_output_override_mode(output, connector_get_mode(output));
-@@ -1190,7 +1190,7 @@ static bool find_connector(bool edp_only, bool pipe_a,
- 		igt_output_override_mode(output, connector_get_mode(output));
- 		if (intel_pipe_output_combo_valid(&drm.display)) {
- 			*ret_output = output;
--			*ret_pipe = crtc->pipe;
-+			*ret_crtc = crtc;
- 			return true;
- 		}
- 	}
-@@ -1201,7 +1201,7 @@ static bool find_connector(bool edp_only, bool pipe_a,
- static bool init_modeset_cached_params(void)
- {
- 	igt_output_t *prim_output = NULL, *scnd_output = NULL;
--	enum pipe prim_pipe, scnd_pipe;
-+	igt_crtc_t *prim_crtc, *scnd_crtc;
- 
- 	/*
- 	 * We have this problem where PSR is only present on eDP monitors and
-@@ -1211,29 +1211,29 @@ static bool init_modeset_cached_params(void)
- 	 * TODO: refactor the code in a way that allows us to have different
- 	 * sets of prim/scnd structs for different features.
- 	 */
--	find_connector(true, true, NULL, PIPE_NONE, &prim_output, &prim_pipe);
-+	find_connector(true, true, NULL, NULL, &prim_output, &prim_crtc);
- 	if (!prim_output)
--		find_connector(true, false, NULL, PIPE_NONE, &prim_output, &prim_pipe);
-+		find_connector(true, false, NULL, NULL, &prim_output, &prim_crtc);
- 	if (!prim_output)
--		find_connector(false, true, NULL, PIPE_NONE, &prim_output, &prim_pipe);
-+		find_connector(false, true, NULL, NULL, &prim_output, &prim_crtc);
- 	if (!prim_output)
--		find_connector(false, false, NULL, PIPE_NONE, &prim_output, &prim_pipe);
-+		find_connector(false, false, NULL, NULL, &prim_output, &prim_crtc);
- 
- 	if (!prim_output)
- 		return false;
- 
--	find_connector(false, false, prim_output, prim_pipe,
--		       &scnd_output, &scnd_pipe);
-+	find_connector(false, false, prim_output, prim_crtc,
-+		       &scnd_output, &scnd_crtc);
- 
--	init_mode_params(&prim_mode_params, prim_output, prim_pipe);
-+	init_mode_params(&prim_mode_params, prim_output, prim_crtc);
- 
- 	if (!scnd_output) {
--		scnd_mode_params.pipe = PIPE_NONE;
-+		scnd_mode_params.crtc = NULL;
- 		scnd_mode_params.output = NULL;
- 		return true;
- 	}
- 
--	init_mode_params(&scnd_mode_params, scnd_output, scnd_pipe);
-+	init_mode_params(&scnd_mode_params, scnd_output, scnd_crtc);
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 887914ec8b79..893f2830b446 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -690,13 +690,13 @@ static bool test_format(data_t *data,
  	return true;
  }
  
-@@ -1520,8 +1520,7 @@ static void __set_prim_plane_for_params(struct modeset_params *params)
- static void __set_mode_for_params(struct modeset_params *params)
+-static bool test_pipe_iteration(data_t *data, enum pipe pipe, int iteration)
++static bool test_pipe_iteration(data_t *data, igt_crtc_t *crtc, int iteration)
  {
- 	igt_output_override_mode(params->output, &params->mode);
--	igt_output_set_crtc(params->output,
--			    igt_crtc_for_pipe(params->output->display, params->pipe));
-+	igt_output_set_crtc(params->output, params->crtc);
+ 	if (!is_intel_device(data->drm_fd) ||
+ 	    data->extended)
+ 		return true;
  
- 	__set_prim_plane_for_params(params);
- }
-@@ -1537,7 +1536,7 @@ static void __debugfs_read_crtc(const char *param, char *buf, int len)
- 	int dir;
- 	enum pipe pipe;
- 
--	pipe = prim_mode_params.pipe;
-+	pipe = prim_mode_params.crtc->pipe;
- 	dir = igt_debugfs_crtc_dir(drm.fd, pipe, O_DIRECTORY);
- 	igt_require_fd(dir);
- 	igt_debugfs_simple_read(dir, param, buf, len);
-@@ -1686,12 +1685,12 @@ static bool fbc_psr_not_possible(void)
- 	return strstr(buf, "FBC disabled: PSR1 enabled (Wa_14016291713)");
- }
- 
--static bool fbc_enable_per_plane(int plane_index, enum pipe pipe)
-+static bool fbc_enable_per_plane(int plane_index, igt_crtc_t *crtc)
- {
- 	char buf[PATH_MAX];
- 	char buf_plane[128];
- 
--	sprintf(buf_plane, "%d%s", plane_index, kmstest_pipe_name(pipe));
-+	sprintf(buf_plane, "%d%s", plane_index, igt_crtc_name(crtc));
- 
- 	debugfs_read_crtc("i915_fbc_status", buf);
- 	return strstr(strstr(buf, "*"), buf_plane);
-@@ -1906,7 +1905,7 @@ static bool disable_features(const struct test_mode *t)
+-	if ((pipe > PIPE_B) && (iteration >= 2))
++	if ((crtc->pipe > PIPE_B) && (iteration >= 2))
  		return false;
  
- 	intel_fbc_disable(drm.fd);
--	intel_drrs_disable(drm.fd, prim_mode_params.pipe);
-+	intel_drrs_disable(drm.fd, prim_mode_params.crtc->pipe);
- 
- 	return psr.can_test ? psr_disable(drm.fd, drm.debugfs, NULL) : false;
- }
-@@ -1980,14 +1979,13 @@ static void init_blue_crc(enum pixel_format format, enum tiling_type tiling)
- 
- 	fill_fb(&blue, COLOR_PRIM_BG);
- 
--	igt_output_set_crtc(prim_mode_params.output,
--			    igt_crtc_for_pipe(prim_mode_params.output->display, prim_mode_params.pipe));
-+	igt_output_set_crtc(prim_mode_params.output, prim_mode_params.crtc);
- 	igt_output_override_mode(prim_mode_params.output, &prim_mode_params.mode);
- 	igt_plane_set_fb(prim_mode_params.primary.plane, &blue);
- 	igt_display_commit(&drm.display);
- 
- 	if (!pipe_crc) {
--		pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(&drm.display, prim_mode_params.pipe),
-+		pipe_crc = igt_crtc_crc_new(prim_mode_params.crtc,
- 					    IGT_PIPE_CRC_SOURCE_AUTO);
- 		igt_assert(pipe_crc);
- 	}
-@@ -2036,8 +2034,7 @@ static void init_crcs(enum pixel_format format, enum tiling_type tiling,
- 					 IGT_DRAW_PWRITE : IGT_DRAW_BLT, r);
- 	}
- 
--	igt_output_set_crtc(prim_mode_params.output,
--			    igt_crtc_for_pipe(prim_mode_params.output->display, prim_mode_params.pipe));
-+	igt_output_set_crtc(prim_mode_params.output, prim_mode_params.crtc);
- 	igt_output_override_mode(prim_mode_params.output, &prim_mode_params.mode);
- 	for (r = 0; r < pattern->n_rects; r++) {
- 		igt_plane_set_fb(prim_mode_params.primary.plane, &tmp_fbs[r]);
-@@ -2155,7 +2152,7 @@ static void teardown_crcs(void)
- 
- static void setup_fbc(void)
+ 	return true;
+@@ -714,12 +714,10 @@ static uint32_t
+ test_scaler_with_modifier_pipe(data_t *d,
+ 			       double sf_plane,
+ 			       bool is_clip_clamp,
+-			       bool is_upscale,
+-			       enum pipe pipe,
++			       bool is_upscale, igt_crtc_t *crtc,
+ 			       igt_output_t *output)
  {
--	if (!intel_fbc_supported_on_chipset(drm.fd, prim_mode_params.pipe)) {
-+	if (!intel_fbc_supported_on_chipset(drm.fd, prim_mode_params.crtc->pipe)) {
- 		igt_info("Can't test FBC: not supported on this chipset\n");
- 		return;
- 	}
-@@ -2195,7 +2192,7 @@ static void setup_drrs(void)
- 		return;
- 	}
- 
--	if (!intel_is_drrs_supported(drm.fd, prim_mode_params.pipe)) {
-+	if (!intel_is_drrs_supported(drm.fd, prim_mode_params.crtc->pipe)) {
- 		igt_info("Can't test DRRS: Not supported.\n");
- 		return;
- 	}
-@@ -2352,7 +2349,7 @@ static void do_status_assertions(int flags)
- 			igt_assert_f(false, "DRRS LOW\n");
- 		}
- 	} else if (flags & ASSERT_DRRS_INACTIVE) {
--		if (!intel_is_drrs_inactive(drm.fd, prim_mode_params.pipe)) {
-+		if (!intel_is_drrs_inactive(drm.fd, prim_mode_params.crtc->pipe)) {
- 			drrs_print_status();
- 			igt_assert_f(false, "DRRS INACTIVE\n");
- 		}
-@@ -2363,9 +2360,9 @@ static void do_status_assertions(int flags)
- 		igt_require(!fbc_stride_not_supported());
- 		igt_require(!fbc_mode_too_large());
- 		igt_require(!fbc_psr_not_possible());
--		if (!intel_fbc_wait_until_enabled(drm.fd, prim_mode_params.pipe)) {
-+		if (!intel_fbc_wait_until_enabled(drm.fd, prim_mode_params.crtc->pipe)) {
- 			igt_assert_f(intel_fbc_is_enabled(drm.fd,
--						    prim_mode_params.pipe,
-+						    prim_mode_params.crtc->pipe,
- 						    IGT_LOG_WARN),
- 				     "FBC disabled\n");
- 		}
-@@ -2374,7 +2371,7 @@ static void do_status_assertions(int flags)
- 			igt_assert(fbc_wait_for_compression());
- 	} else if (flags & ASSERT_FBC_DISABLED) {
- 		igt_assert(!intel_fbc_wait_until_enabled(drm.fd,
--						   prim_mode_params.pipe));
-+						   prim_mode_params.crtc->pipe));
- 	}
- 
- 	if (flags & ASSERT_PSR_ENABLED) {
-@@ -2443,10 +2440,8 @@ static void update_modeset_cached_params(enum igt_draw_method method)
+ 	igt_display_t *display = &d->display;
+-	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
+ 	unsigned format = DRM_FORMAT_XRGB8888;
+ 	igt_plane_t *plane;
+ 	uint32_t ret;
+@@ -754,12 +752,10 @@ static uint32_t
+ test_scaler_with_rotation_pipe(data_t *d,
+ 			       double sf_plane,
+ 			       bool is_clip_clamp,
+-			       bool is_upscale,
+-			       enum pipe pipe,
++			       bool is_upscale, igt_crtc_t *crtc,
+ 			       igt_output_t *output)
  {
- 	bool found = false;
+ 	igt_display_t *display = &d->display;
+-	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
+ 	unsigned format = DRM_FORMAT_XRGB8888;
+ 	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
+ 	igt_plane_t *plane;
+@@ -794,12 +790,10 @@ test_scaler_with_rotation_pipe(data_t *d,
+ static uint32_t
+ test_scaler_with_pixel_format_pipe(data_t *d, double sf_plane,
+ 				   bool is_clip_clamp,
+-				   bool is_upscale,
+-				   enum pipe pipe,
++				   bool is_upscale, igt_crtc_t *crtc,
+ 				   igt_output_t *output)
+ {
+ 	igt_display_t *display = &d->display;
+-	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
+ 	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
+ 	igt_plane_t *plane;
+ 	uint32_t ret;
+@@ -819,7 +813,7 @@ test_scaler_with_pixel_format_pipe(data_t *d, double sf_plane,
+ 		for (int j = 0; j < plane->drm_plane->count_formats; j++) {
+ 			uint32_t format = plane->drm_plane->formats[j];
  
--	igt_output_set_crtc(prim_mode_params.output,
--			    igt_crtc_for_pipe(prim_mode_params.output->display, prim_mode_params.pipe));
--	igt_output_set_crtc(scnd_mode_params.output,
--			    igt_crtc_for_pipe(scnd_mode_params.output->display, scnd_mode_params.pipe));
-+	igt_output_set_crtc(prim_mode_params.output, prim_mode_params.crtc);
-+	igt_output_set_crtc(scnd_mode_params.output, scnd_mode_params.crtc);
+-			if (!test_pipe_iteration(d, crtc->pipe, j))
++			if (!test_pipe_iteration(d, crtc, j))
+ 				continue;
  
- 	found = igt_override_all_active_output_modes_to_fit_bw(&drm.display);
- 	igt_require_f(found, "No valid mode combo found.\n");
-@@ -2514,7 +2509,7 @@ static void set_plane_for_test_fbc(const struct test_mode *t, igt_plane_t *plane
- 	struct igt_fb fb;
- 	uint64_t color;
- 
--	igt_info("Testing fbc on plane %i%s\n", plane->index + 1, kmstest_pipe_name(prim_mode_params.pipe));
-+	igt_info("Testing fbc on plane %i%s\n", plane->index + 1, igt_crtc_name(prim_mode_params.crtc));
- 
- 	create_fb(t->format, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay, t->tiling, t->plane, &fb);
- 	color = pick_color(&fb, COLOR_PRIM_BG);
-@@ -2530,7 +2525,7 @@ static void set_plane_for_test_fbc(const struct test_mode *t, igt_plane_t *plane
- 
- 	fbc_update_last_action();
- 	do_assertions(ASSERT_FBC_ENABLED | ASSERT_NO_ACTION_CHANGE);
--	igt_assert_f(fbc_enable_per_plane(plane->index + 1, prim_mode_params.pipe), "FBC disabled\n");
-+	igt_assert_f(fbc_enable_per_plane(plane->index + 1, prim_mode_params.crtc), "FBC disabled\n");
- 
- 	igt_remove_fb(drm.fd, &fb);
- 	igt_plane_set_fb(plane, NULL);
-@@ -2549,7 +2544,7 @@ static bool enable_features_for_test(const struct test_mode *t)
- 	if (t->feature & FEATURE_PSR)
- 		ret = psr_enable(drm.fd, drm.debugfs, PSR_MODE_1, NULL);
- 	if (t->feature & FEATURE_DRRS)
--		intel_drrs_enable(drm.fd, prim_mode_params.pipe);
-+		intel_drrs_enable(drm.fd, prim_mode_params.crtc->pipe);
- 
+ 			if (test_format(d, &tested_formats, format) &&
+@@ -842,7 +836,7 @@ test_scaler_with_pixel_format_pipe(data_t *d, double sf_plane,
  	return ret;
  }
-@@ -2769,12 +2764,11 @@ static void plane_fbc_rte_subtest(const struct test_mode *t)
- 	do_assertions(ASSERT_FBC_DISABLED | DONT_ASSERT_CRC);
  
- 	igt_output_override_mode(prim_mode_params.output, &prim_mode_params.mode);
--	igt_output_set_crtc(prim_mode_params.output,
--			    igt_crtc_for_pipe(prim_mode_params.output->display, prim_mode_params.pipe));
-+	igt_output_set_crtc(prim_mode_params.output, prim_mode_params.crtc);
+-static enum pipe
++static igt_crtc_t *
+ find_connected_pipe(igt_display_t *display, bool second, igt_output_t **output)
+ {
+ 	igt_crtc_t *crtc;
+@@ -880,7 +874,7 @@ find_connected_pipe(igt_display_t *display, bool second, igt_output_t **output)
+ 	else
+ 		igt_require_f(found, "No valid outputs found\n");
  
- 	wanted_crc = &blue_crcs[t->format].crc;
+-	return crtc->pipe;
++	return crtc;
+ }
  
--	for_each_plane_on_pipe(&drm.display, prim_mode_params.pipe, plane) {
-+	for_each_plane_on_pipe(&drm.display, prim_mode_params.crtc->pipe, plane) {
- 		if (!is_valid_plane(plane))
- 			continue;
+ static int
+@@ -940,13 +934,11 @@ static void setup_fb(int fd, int width, int height, struct igt_fb *fb)
  
-@@ -3164,8 +3158,7 @@ static void page_flip_for_params(struct modeset_params *params,
+ static uint32_t
+ test_planes_scaling_combo(data_t *d, double sf_plane1,
+-			  double sf_plane2,
+-			  enum pipe pipe,
++			  double sf_plane2, igt_crtc_t *crtc,
+ 			  igt_output_t *output,
+ 			  enum scaler_combo_test_type test_type)
+ {
+ 	igt_display_t *display = &d->display;
+-	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
+ 	drmModeModeInfo *mode;
+ 	int n_planes;
+ 	int w1, h1, w2, h2;
+@@ -1014,10 +1006,9 @@ test_planes_scaling_combo(data_t *d, double sf_plane1,
+ }
  
- 	switch (type) {
- 	case FLIP_PAGEFLIP:
--		rc = drmModePageFlip(drm.fd,
--				     igt_crtc_for_pipe(&drm.display, params->pipe)->crtc_id,
-+		rc = drmModePageFlip(drm.fd, params->crtc->crtc_id,
- 				     params->primary.fb->fb_id,
- 				     DRM_MODE_PAGE_FLIP_EVENT, NULL);
- 		igt_assert_eq(rc, 0);
-@@ -3778,7 +3771,7 @@ static void stridechange_subtest(const struct test_mode *t)
- 	 * with the atomic page flip helper, but not with the legacy page flip.
- 	 */
- 	rc = drmModePageFlip(drm.fd,
--			     igt_crtc_for_pipe(&drm.display, params->pipe)->crtc_id,
-+			     params->crtc->crtc_id,
- 			     new_fb->fb_id, 0, NULL);
- 	igt_assert(rc == -EINVAL || rc == 0);
- 	do_assertions(rc ? 0 : DONT_ASSERT_FBC_STATUS);
-@@ -4210,7 +4203,7 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	igt_subtest_group() {
- 		igt_subtest_with_dynamic("pipe-fbc-rte") {
+ static void
+-test_invalid_num_scalers(data_t *d, enum pipe pipe, igt_output_t *output)
++test_invalid_num_scalers(data_t *d, igt_crtc_t *crtc, igt_output_t *output)
+ {
+ 	igt_display_t *display = &d->display;
+-	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
+ 	int width, height;
+ 	igt_plane_t *plane[3];
+ 	drmModeModeInfo *mode;
+@@ -1084,29 +1075,30 @@ test_invalid_num_scalers(data_t *d, enum pipe pipe, igt_output_t *output)
+ static void test_scaler_with_multi_pipe_plane(data_t *d)
+ {
+ 	igt_display_t *display = &d->display;
++	igt_crtc_t *crtc1;
++	igt_crtc_t *crtc2;
+ 	igt_output_t *output1, *output2;
+ 	drmModeModeInfo *mode1, *mode2;
+ 	igt_plane_t *plane[4];
+-	enum pipe pipe1, pipe2;
+ 	int ret1, ret2;
  
--			enum pipe default_pipe = prim_mode_params.pipe;
-+			igt_crtc_t *default_crtc = prim_mode_params.crtc;
+ 	cleanup_fbs(d);
  
- 			t.pipes = PIPE_SINGLE;
- 			t.feature = FEATURE_FBC;
-@@ -4226,7 +4219,7 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
- 				      "FBC isn't supported on BMG\n");
+-	pipe1 = find_connected_pipe(display, false, &output1);
+-	pipe2 = find_connected_pipe(display, true, &output2);
++	crtc1 = find_connected_pipe(display, false, &output1);
++	crtc2 = find_connected_pipe(display, true, &output2);
+ 	igt_skip_on(!output1 || !output2);
  
- 			for_each_crtc(&drm.display, crtc) {
--				if (crtc->pipe == default_pipe) {
-+				if (crtc == default_crtc) {
- 					igt_info("pipe-%s: FBC validated in other subtest\n", igt_crtc_name(crtc));
+ 	igt_info("Using (pipe %s + %s) and (pipe %s + %s) to run the subtest.\n",
+-		 kmstest_pipe_name(pipe1), igt_output_name(output1),
+-		 kmstest_pipe_name(pipe2), igt_output_name(output2));
++		 igt_crtc_name(crtc1), igt_output_name(output1),
++		 igt_crtc_name(crtc2), igt_output_name(output2));
+ 
+ 	igt_output_set_crtc(output1,
+-			    igt_crtc_for_pipe(display, pipe1));
++			    crtc1);
+ 	igt_output_set_crtc(output2,
+-			    igt_crtc_for_pipe(display, pipe2));
++			    crtc2);
+ 
+-	igt_require(get_num_scalers(display, pipe1) >= 2);
+-	igt_require(get_num_scalers(display, pipe2) >= 2);
++	igt_require(get_num_scalers(display, crtc1->pipe) >= 2);
++	igt_require(get_num_scalers(display, crtc2->pipe) >= 2);
+ 
+ 	plane[0] = igt_output_get_plane(output1, 0);
+ 	igt_require(plane[0]);
+@@ -1169,7 +1161,7 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
+ static void invalid_parameter_tests(data_t *d)
+ {
+ 	igt_display_t *display = &d->display;
+-	enum pipe pipe = PIPE_A;
++	igt_crtc_t *crtc;
+ 	igt_output_t *output;
+ 	igt_fb_t fb;
+ 	igt_plane_t *plane;
+@@ -1189,14 +1181,16 @@ static void invalid_parameter_tests(data_t *d)
+ 	};
+ 
+ 	igt_fixture() {
+-		output = igt_get_single_output_for_pipe(&d->display, pipe);
++		crtc = igt_crtc_for_pipe(display, PIPE_A);
++		output = igt_get_single_output_for_pipe(&d->display,
++							crtc->pipe);
+ 		igt_require(output);
+ 
+ 		igt_output_set_crtc(output,
+-				    igt_crtc_for_pipe(display, pipe));
++				    crtc);
+ 		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 
+-		igt_require(get_num_scalers(&d->display, pipe) >= 1);
++		igt_require(get_num_scalers(&d->display, crtc->pipe) >= 1);
+ 
+ 		igt_create_fb(d->drm_fd, 256, 256,
+ 			      DRM_FORMAT_XRGB8888,
+@@ -1280,11 +1274,10 @@ static drmModeModeInfo *find_mode(data_t *data, igt_output_t *output, const stru
+  *		max_dst_w = 8192
+  *		max_dst_h = 8192
+  */
+-static void intel_max_source_size_test(data_t *d, enum pipe pipe, igt_output_t *output,
++static void intel_max_source_size_test(data_t *d, igt_crtc_t *crtc,
++				       igt_output_t *output,
+ 				       const struct invalid_paramtests *param)
+ {
+-	igt_display_t *display = &d->display;
+-	igt_crtc_t *crtc = igt_crtc_for_pipe(display, pipe);
+ 	igt_fb_t fb;
+ 	igt_plane_t *plane;
+ 	int rval;
+@@ -1327,14 +1320,14 @@ static void intel_max_source_size_test(data_t *d, enum pipe pipe, igt_output_t *
+ }
+ 
+ static bool
+-pipe_output_combo_valid(igt_display_t *display,
+-			enum pipe pipe, igt_output_t *output)
++pipe_output_combo_valid(igt_display_t *display, igt_crtc_t *crtc,
++			igt_output_t *output)
+ {
+ 	bool ret = true;
+ 
+ 	igt_display_reset(display);
+ 
+-	igt_output_set_crtc(output, igt_crtc_for_pipe(display, pipe));
++	igt_output_set_crtc(output, crtc);
+ 	if (!intel_pipe_output_combo_valid(display))
+ 		ret = false;
+ 	igt_output_set_crtc(output, NULL);
+@@ -1388,7 +1381,7 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					igt_dynamic_f("pipe-%s", igt_crtc_name(crtc)) {
+ 						for_each_valid_output_on_pipe(&data.display, crtc->pipe, output) {
+ 							igt_info("Trying on %s\n", igt_output_name(output));
+-							if (!pipe_output_combo_valid(&data.display, crtc->pipe, output))
++							if (!pipe_output_combo_valid(&data.display, crtc, output))
+ 								continue;
+ 							if (get_num_scalers(&data.display, crtc->pipe) < 1)
+ 								continue;
+@@ -1397,7 +1390,8 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 									scaler_with_pixel_format_tests[index].sf,
+ 									false,
+ 									scaler_with_pixel_format_tests[index].is_upscale,
+-									crtc->pipe, output);
++									crtc,
++									output);
+ 							if (ret == 0)
+ 								break;
+ 							igt_info("Required scaling operation not supported on %s trying on next output\n",
+@@ -1416,7 +1410,7 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					igt_dynamic_f("pipe-%s", igt_crtc_name(crtc)) {
+ 						for_each_valid_output_on_pipe(&data.display, crtc->pipe, output) {
+ 							igt_info("Trying on %s\n", igt_output_name(output));
+-							if (!pipe_output_combo_valid(&data.display, crtc->pipe, output))
++							if (!pipe_output_combo_valid(&data.display, crtc, output))
+ 								continue;
+ 							if (get_num_scalers(&data.display, crtc->pipe) < 1)
+ 								continue;
+@@ -1425,7 +1419,8 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 									scaler_with_rotation_tests[index].sf,
+ 									false,
+ 									scaler_with_rotation_tests[index].is_upscale,
+-									crtc->pipe, output);
++									crtc,
++									output);
+ 							if (ret == 0)
+ 								break;
+ 							igt_info("Required scaling operation not supported on %s trying on next output\n",
+@@ -1444,7 +1439,7 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					igt_dynamic_f("pipe-%s", igt_crtc_name(crtc)) {
+ 						for_each_valid_output_on_pipe(&data.display, crtc->pipe, output) {
+ 							igt_info("Trying on %s\n", igt_output_name(output));
+-							if (!pipe_output_combo_valid(&data.display, crtc->pipe, output))
++							if (!pipe_output_combo_valid(&data.display, crtc, output))
+ 								continue;
+ 							if (get_num_scalers(&data.display, crtc->pipe) < 1)
+ 								continue;
+@@ -1453,7 +1448,8 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 									scaler_with_modifiers_tests[index].sf,
+ 									false,
+ 									scaler_with_modifiers_tests[index].is_upscale,
+-									crtc->pipe, output);
++									crtc,
++									output);
+ 							if (ret == 0)
+ 								break;
+ 							igt_info("Required scaling operation not supported on %s trying on next output\n",
+@@ -1471,13 +1467,14 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				igt_dynamic_f("pipe-%s", igt_crtc_name(crtc)) {
+ 					for_each_valid_output_on_pipe(&data.display, crtc->pipe, output) {
+ 						igt_info("Trying on %s\n", igt_output_name(output));
+-						if (!pipe_output_combo_valid(&data.display, crtc->pipe, output))
++						if (!pipe_output_combo_valid(&data.display, crtc, output))
+ 							continue;
+ 						if (get_num_scalers(&data.display, crtc->pipe) < 1)
+ 							continue;
+ 
+ 						ret = test_scaler_with_pixel_format_pipe(&data, 0.0, true,
+-											 false, crtc->pipe,
++											 false,
++											 crtc,
+ 											 output);
+ 						if (ret == 0)
+ 							break;
+@@ -1496,13 +1493,14 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				igt_dynamic_f("pipe-%s", igt_crtc_name(crtc)) {
+ 					for_each_valid_output_on_pipe(&data.display, crtc->pipe, output) {
+ 						igt_info("Trying on %s\n", igt_output_name(output));
+-						if (!pipe_output_combo_valid(&data.display, crtc->pipe, output))
++						if (!pipe_output_combo_valid(&data.display, crtc, output))
+ 							continue;
+ 						if (get_num_scalers(&data.display, crtc->pipe) < 1)
+ 							continue;
+ 
+ 						ret = test_scaler_with_rotation_pipe(&data, 0.0, true,
+-										     false, crtc->pipe,
++										     false,
++										     crtc,
+ 										     output);
+ 						if (ret == 0)
+ 							break;
+@@ -1520,13 +1518,14 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				igt_dynamic_f("pipe-%s", igt_crtc_name(crtc)) {
+ 					for_each_valid_output_on_pipe(&data.display, crtc->pipe, output) {
+ 						igt_info("Trying on %s\n", igt_output_name(output));
+-						if (!pipe_output_combo_valid(&data.display, crtc->pipe, output))
++						if (!pipe_output_combo_valid(&data.display, crtc, output))
+ 							continue;
+ 						if (get_num_scalers(&data.display, crtc->pipe) < 1)
+ 							continue;
+ 
+ 						ret = test_scaler_with_modifier_pipe(&data, 0.0, true,
+-										     false, crtc->pipe,
++										     false,
++										     crtc,
+ 										     output);
+ 						if (ret == 0)
+ 							break;
+@@ -1546,14 +1545,15 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 						for_each_valid_output_on_pipe(&data.display, crtc->pipe, output) {
+ 							igt_info("Trying on %s\n",
+ 								 igt_output_name(output));
+-							if (!pipe_output_combo_valid(&data.display, crtc->pipe, output))
++							if (!pipe_output_combo_valid(&data.display, crtc, output))
+ 								continue;
+ 							if (get_num_scalers(&data.display, crtc->pipe) < 2)
+ 								continue;
+ 							ret = test_planes_scaling_combo(&data,
+ 								scaler_with_2_planes_tests[index].sf_plane1,
+ 								scaler_with_2_planes_tests[index].sf_plane2,
+-								crtc->pipe, output,
++								crtc,
++								output,
+ 								scaler_with_2_planes_tests[index].test_type);
+ 							if (ret == 0)
+ 								break;
+@@ -1581,7 +1581,9 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 						if (find_mode(&data, output, &intel_paramtests[index]))
+ 							igt_dynamic_f("pipe-%s-%s",
+ 								      igt_crtc_name(crtc), igt_output_name(output))
+-								intel_max_source_size_test(&data, crtc->pipe, output,
++								intel_max_source_size_test(&data,
++											   crtc,
++											   output,
+ 											   &intel_paramtests[index]);
+ 						else
+ 							igt_info("Unable to find the lowest " \
+@@ -1599,14 +1601,16 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		igt_describe("Negative test for number of scalers per pipe.");
+ 		igt_subtest_with_dynamic("invalid-num-scalers") {
+ 			for_each_crtc_with_valid_output(&data.display, crtc, output) {
+-				if (!pipe_output_combo_valid(&data.display, crtc->pipe, output))
++				if (!pipe_output_combo_valid(&data.display, crtc, output))
  					continue;
- 				}
-@@ -4240,7 +4233,7 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
- 				setup_crcs();
+ 				if (get_num_scalers(&data.display, crtc->pipe) < 1)
+ 						continue;
  
- 				for_each_valid_output_on_pipe(&drm.display, crtc->pipe, output) {
--					init_mode_params(&prim_mode_params, output, crtc->pipe);
-+					init_mode_params(&prim_mode_params, output, crtc);
- 					setup_fbc();
- 
- 					igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
+ 				igt_dynamic_f("pipe-%s-%s-invalid-num-scalers",
+ 					      igt_crtc_name(crtc), igt_output_name(output))
+-					test_invalid_num_scalers(&data, crtc->pipe, output);
++					test_invalid_num_scalers(&data,
++								 crtc,
++								 output);
+ 			}
+ 		}
+ 	}
 -- 
 2.52.0
 
