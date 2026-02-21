@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39CA3C5DF70
-	for <igt-dev@archiver.kernel.org>; Sat, 21 Feb 2026 03:21:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09EF1E9A049
+	for <igt-dev@archiver.kernel.org>; Sat, 21 Feb 2026 03:21:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D651E10E866;
-	Sat, 21 Feb 2026 03:21:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A7C6D10E10E;
+	Sat, 21 Feb 2026 03:21:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W08Q2JhA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GBPzy0ad";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D3C910E866
- for <igt-dev@lists.freedesktop.org>; Sat, 21 Feb 2026 03:21:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D83910E10E
+ for <igt-dev@lists.freedesktop.org>; Sat, 21 Feb 2026 03:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771644087; x=1803180087;
+ t=1771644092; x=1803180092;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=hxWHmUHEG1F78vNoV2sSeV0uoPalf5upppeO0aZ5qSw=;
- b=W08Q2JhAxYiErKvEZLSmZmEO19shnOPGWrzDauvKPbYm0Yd5KgSUFRJx
- +tCJilAVTtCb74qG3qzuEzzs5FQ8Uo8fFSre31MyeqTt1pm2/TzzzgJ1b
- BfCEpPOL01E51RtLZ1V2EyRhkHY+wJ107IKkeSHGMO6tAvCwWEJleh96l
- CgNyzBsRrbkjG2xHp5BHoJlrPN+eUYKYqnn8IjwbeJRJ5e9PkpfMy0wgv
- m82ratwCxICRsE42AzNxKYJxVaBL+HJ0SzDZHYRoRc7LTCiTwKget4ngk
- WNDK1SEajG01kFkzxC/z/cpAw7jwV4zkU6c1SineNWodA/ZetaoPfAUme A==;
-X-CSE-ConnectionGUID: dpLZ3MFOTIqbJdXGIXnvNg==
-X-CSE-MsgGUID: P36TJ4bQQ0CJPKtFPHIf/w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="76597970"
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="76597970"
+ bh=FuHsMg7Z/Lftmw3D01g4XL0xo75BbCK9ldbPr90ZWg8=;
+ b=GBPzy0adFhbD28cx0TZTVIkBCX9GIBf56PShjnX34LYqIwv36u0G7MkK
+ krzEp1Pf2mtrdz8Oa/JfTcuSCDNxSBziK0o1ZVFuDWc4UjTGjED8mAvSB
+ 05VzYY2QwZ9GLpSqGuRw5SgKrrUr8HZH3mUBYgJpZ1lssBim/9mjL7Scj
+ /v1yf5bVGcvni+6Lm8mB2wBDTIY/faF63v3zU3EuEe3+bGc4mUQwe9QGM
+ FHDCs14z3TyVwzluQyFBO1nldfnobXed1fLRxxLKLdKF7jMm5+aO15KM2
+ WxK5H/XgwnYLUveEQX/9Ol2gnrTjC8VusKVaZCIMpNar1AuIEgI5bagPd A==;
+X-CSE-ConnectionGUID: ls1nDfEWQ5e3GpyqFEi9FQ==
+X-CSE-MsgGUID: hkWpjMcfR5aknZMqiMvVFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="76597972"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="76597972"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 19:21:27 -0800
-X-CSE-ConnectionGUID: JCOtfRg0TkeckuIO0Z3DgA==
-X-CSE-MsgGUID: 0A/UPPTESpCr4U6qLGUlKA==
+ 20 Feb 2026 19:21:31 -0800
+X-CSE-ConnectionGUID: 0EnP3n+LS0mscj/CMFy89Q==
+X-CSE-MsgGUID: qQBd953YSgGM3SeWGz0Y9w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="214128832"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="214128837"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.245.139])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 19:21:26 -0800
+ 20 Feb 2026 19:21:30 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 21/23] tests/kms: Use igt_crtc_t instead of enum pipe, part 2
-Date: Sat, 21 Feb 2026 05:20:00 +0200
-Message-ID: <20260221032003.30936-22-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2 22/23] tests/kms: Use igt_crtc_t instead of enum pipe, part 3
+Date: Sat, 21 Feb 2026 05:20:01 +0200
+Message-ID: <20260221032003.30936-23-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
 References: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
@@ -73,153 +73,137 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
 Convert several kms tests to use igt_crtc_t instead
-of enum pipe. These specific tests already track crtcs
-alongside pipes (both in arrays) in their data structure.
-Remove the redundant pipe information and just rely on the
-crtcs.
+of enum pipe. These specific tests currently track the pipe
+in their data structure. Replace that with the crtc instead.
 
  #include "scripts/iterators.cocci"
-
-@@
-igt_display_t DISPLAY;
-expression _PIPE;
-@@
-- &DISPLAY.crtcs[_PIPE]
-+ igt_crtc_for_pipe(&DISPLAY, _PIPE)
-
-@@
-igt_display_t *DISPLAY;
-expression _PIPE;
-@@
-- &DISPLAY->crtcs[_PIPE]
-+ igt_crtc_for_pipe(DISPLAY, _PIPE)
 
 @find_data@
 typedef igt_crtc_t;
 typedef igt_display_t;
-identifier DISPLAY, PIPE, CRTC;
+identifier DISPLAY, PIPE;
 type T;
 @@
 (
 T {
   ...
+- enum pipe PIPE;
++ igt_crtc_t *crtc;
+  ...
   igt_display_t DISPLAY;
-  ...
-  igt_crtc_t *CRTC[...];
-  ...
-- enum pipe PIPE[...];
   ...
 };
 |
 T {
   ...
-- enum pipe PIPE[...];
-  ...
   igt_display_t DISPLAY;
   ...
-  igt_crtc_t *CRTC[...];
+-  enum pipe PIPE;
++  igt_crtc_t *crtc;
   ...
 };
 )
 
 @depends on find_data@
 identifier find_data.PIPE;
-identifier find_data.CRTC;
 identifier find_data.DISPLAY;
 find_data.T S;
 find_data.T *P;
-expression _PIPE, I;
+expression _PIPE;
 @@
 (
-- S.PIPE[I] = _PIPE;
-+ S.CRTC[I] = igt_crtc_for_pipe(&S.DISPLAY, _PIPE);
+- S.PIPE = _PIPE;
++ S.crtc = igt_crtc_for_pipe(&S.DISPLAY, _PIPE);
 |
-- P->PIPE[I] = _PIPE;
-+ P->CRTC[I] = igt_crtc_for_pipe(&P->DISPLAY, _PIPE);
+- P->PIPE = _PIPE;
++ P->crtc = igt_crtc_for_pipe(&P->DISPLAY, _PIPE);
 )
 
 @depends on find_data@
 identifier find_data.PIPE;
-identifier find_data.CRTC;
 identifier find_data.DISPLAY;
 find_data.T S;
 find_data.T *P;
 expression E;
 @@
 (
-- S.PIPE[I] = E
-+ S.CRTC[I] = igt_crtc_for_pipe(&S.DISPLAY, E)
+- S.PIPE = E
++ S.crtc = igt_crtc_for_pipe(&S.DISPLAY, E)
 |
-- P->PIPE[I] = E
-+ P->CRTC[I] = igt_crtc_for_pipe(&P->DISPLAY, E)
+- P->PIPE = E
++ P->crtc = igt_crtc_for_pipe(&P->DISPLAY, E)
 |
-- igt_crtc_for_pipe(..., S.PIPE[I])
-+ S.CRTC[I]
+- igt_crtc_for_pipe(..., S.PIPE)
++ S.crtc
 |
-- igt_crtc_for_pipe(..., P->PIPE[I])
-+ P->CRTC[I]
+- igt_crtc_for_pipe(..., P->PIPE)
++ P->crtc
 |
-- kmstest_pipe_name(S.PIPE[I])
-+ igt_crtc_name(S.CRTC[I])
+- kmstest_pipe_name(S.PIPE)
++ igt_crtc_name(S.crtc)
 |
-- kmstest_pipe_name(P->PIPE[I])
-+ igt_crtc_name(P->CRTC[I])
+- kmstest_pipe_name(P->PIPE)
++ igt_crtc_name(P->crtc)
+)
+
+@depends on find_data@
+find_data.T S;
+find_data.T *P;
+@@
+(
+- S.crtc = S.crtc;
+|
+- P->crtc = P->crtc;
 )
 
 @depends on find_data@
 identifier find_data.PIPE;
-identifier find_data.CRTC;
 find_data.T S;
 find_data.T *P;
-expression I;
 @@
 (
-- S.PIPE[I]
-+ S.CRTC[I]->pipe
+- S.PIPE
++ S.crtc->pipe
 |
-- P->PIPE[I]
-+ P->CRTC[I]->pipe
+- P->PIPE
++ P->crtc->pipe
 )
+
+@depends on find_data@
+find_data.T S;
+find_data.T *P;
+binary operator OP = { ==, != };
+@@
+(
+- S.crtc->pipe OP PIPE_NONE
++ S.crtc OP NULL
+|
+- P->crtc->pipe OP PIPE_NONE
++ P->crtc OP NULL
+)
+
+@depends on find_data@
+expression CRTC;
+identifier PIPE;
+@@
+{...
+CRTC = igt_crtc_for_pipe(..., PIPE);
+<... when != PIPE = ...
+(
+- igt_crtc_for_pipe(..., PIPE)
++ CRTC
+|
+- PIPE
++ CRTC->pipe
+)
+...>
+}
 
 @@
 igt_crtc_t *CRTC;
 @@
 - igt_crtc_for_pipe(..., CRTC->pipe)
 + CRTC
-
-@depends on find_data@
-identifier find_data.CRTC;
-find_data.T S;
-find_data.T *P;
-expression I, E;
-@@
-(
-  S.CRTC[I] = E;
-  ...
-- S.CRTC[I] = E;
-|
-  P->CRTC[I] = E;
-  ...
-- P->CRTC[I] = E;
-)
-
-@depends on find_data@
-identifier find_data.CRTC;
-find_data.T S;
-find_data.T *P;
-igt_crtc_t *C;
-@@
-(
-S.CRTC[C->pipe] = ...;
-|
-P->CRTC[C->pipe] = ...;
-|
-- S.CRTC[C->pipe]
-+ C
-|
-- P->CRTC[C->pipe]
-+ C
-)
 
 @@
 typedef igt_display_t;
@@ -228,226 +212,1617 @@ identifier DISPLAY;
 - igt_display_t *DISPLAY = ...;
 ... when != DISPLAY
 
+v2: Rebase due to an earlier kms_psr2_sf fix
+
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/amdgpu/amd_dp_dsc.c  | 12 +++++-------
- tests/amdgpu/amd_hotplug.c |  4 +---
- tests/amdgpu/amd_plane.c   | 14 ++++++--------
- tests/amdgpu/amd_subvp.c   |  4 +---
- tests/kms_bw.c             |  2 --
- 5 files changed, 13 insertions(+), 23 deletions(-)
+ .../kms_chamelium_sharpness_filter.c          | 15 +++---
+ tests/intel/kms_big_fb.c                      | 28 +++++-----
+ tests/intel/kms_ccs.c                         |  8 +--
+ tests/intel/kms_dirtyfb.c                     | 25 +++++----
+ tests/intel/kms_dp_linktrain_fallback.c       | 11 ++--
+ tests/intel/kms_fb_coherency.c                |  8 +--
+ tests/intel/kms_fbc_dirty_rect.c              | 17 +++---
+ tests/intel/kms_mmap_write_crc.c              |  8 +--
+ tests/intel/kms_pm_lpsp.c                     |  7 ++-
+ tests/intel/kms_psr2_sf.c                     | 52 +++++++++----------
+ tests/intel/kms_pwrite_crc.c                  |  8 +--
+ tests/intel/perf_pmu.c                        | 10 ++--
+ tests/intel/prime_mmap_kms.c                  |  6 +--
+ tests/kms_async_flips.c                       | 13 +++--
+ tests/kms_cursor_crc.c                        | 40 +++++++-------
+ tests/kms_cursor_edge_walk.c                  | 13 +++--
+ tests/kms_invalid_mode.c                      |  7 ++-
+ tests/kms_plane_lowres.c                      | 11 ++--
+ tests/kms_sequence.c                          | 12 ++---
+ tests/nouveau_crc.c                           | 31 ++++++-----
+ tests/vmwgfx/vmw_prime.c                      | 10 ++--
+ tools/intel_hdcp.c                            |  4 +-
+ 22 files changed, 162 insertions(+), 182 deletions(-)
 
-diff --git a/tests/amdgpu/amd_dp_dsc.c b/tests/amdgpu/amd_dp_dsc.c
-index d02d66def18a..4403f9205d83 100644
---- a/tests/amdgpu/amd_dp_dsc.c
-+++ b/tests/amdgpu/amd_dp_dsc.c
-@@ -39,7 +39,6 @@ typedef struct data {
- 	igt_crtc_t *crtc[MAX_PIPES];
- 	igt_pipe_crc_t *pipe_crc[MAX_PIPES];
- 	drmModeModeInfo mode[MAX_PIPES];
--	enum pipe pipe_id[MAX_PIPES];
- 	int fd;
+diff --git a/tests/chamelium/kms_chamelium_sharpness_filter.c b/tests/chamelium/kms_chamelium_sharpness_filter.c
+index c8dc3ee879e3..b7a70d4a2f15 100644
+--- a/tests/chamelium/kms_chamelium_sharpness_filter.c
++++ b/tests/chamelium/kms_chamelium_sharpness_filter.c
+@@ -26,7 +26,7 @@ IGT_TEST_DESCRIPTION("Test to validate content adaptive sharpness filter using C
+ 
+ typedef struct {
+ 	int drm_fd;
+-	enum pipe pipe_id;
++	igt_crtc_t *crtc;
+ 	struct igt_fb fb;
+ 	igt_display_t display;
+ 	igt_output_t *output;
+@@ -55,16 +55,14 @@ static bool pipe_output_combo_valid(data_t *data, enum pipe pipe)
+ 
+ static void set_filter_strength_on_pipe(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+-	igt_crtc_set_prop_value(igt_crtc_for_pipe(display, data->pipe_id),
++	igt_crtc_set_prop_value(data->crtc,
+ 				    IGT_CRTC_SHARPNESS_STRENGTH,
+ 				    data->filter_strength);
+ }
+ 
+ static void reset_filter_strength_on_pipe(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+-	igt_crtc_set_prop_value(igt_crtc_for_pipe(display, data->pipe_id),
++	igt_crtc_set_prop_value(data->crtc,
+ 				    IGT_CRTC_SHARPNESS_STRENGTH, 0);
+ }
+ 
+@@ -115,14 +113,13 @@ static void cleanup(data_t *data)
+ static void test_t(data_t *data, igt_plane_t *primary,
+ 		   struct chamelium_port *port)
+ {
+-	igt_display_t *display = &data->display;
+ 	struct chamelium_frame_dump *frame[4];
+ 	drmModeModeInfo *mode;
+ 	int height, width;
+ 	bool match[4], match_ok = false;
+ 
+ 	igt_output_set_crtc(data->output,
+-			    igt_crtc_for_pipe(display, data->pipe_id));
++			    data->crtc);
+ 
+ 	mode = igt_output_get_mode(data->output);
+ 	height = mode->hdisplay;
+@@ -198,7 +195,7 @@ static int test_setup(data_t *data, enum pipe p)
+ 	 */
+         for_each_valid_output_on_pipe(&data->display, crtc->pipe,
+ 				      data->output) {
+-		data->pipe_id = crtc->pipe;
++		data->crtc = crtc;
+ 		for (i = 0; i < data->port_count; i++) {
+ 			if ((data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
+ 			     data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIB) &&
+@@ -209,7 +206,7 @@ static int test_setup(data_t *data, enum pipe p)
+ 
+ 	for_each_valid_output_on_pipe(&data->display, crtc->pipe,
+ 				      data->output) {
+-		data->pipe_id = crtc->pipe;
++		data->crtc = crtc;
+ 		for (i = 0; i < data->port_count; i++) {
+ 			if (strcmp(data->output->name,
+ 				   chamelium_port_get_name(data->ports[i])) == 0)
+diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+index d6aa8d6ec608..66d7c5428d1e 100644
+--- a/tests/intel/kms_big_fb.c
++++ b/tests/intel/kms_big_fb.c
+@@ -152,7 +152,7 @@ typedef struct {
+ 	int drm_fd;
+ 	uint32_t devid;
+ 	igt_display_t display;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	igt_output_t *output;
+ 	igt_plane_t *plane;
+ 	igt_pipe_crc_t *pipe_crc;
+@@ -376,8 +376,7 @@ static void prep_fb(data_t *data)
+ 
+ static void set_c8_lut(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+-	igt_crtc_t *crtc = igt_crtc_for_pipe(display, data->pipe);
++	igt_crtc_t *crtc = data->crtc;
+ 	struct drm_color_lut *lut;
+ 	int i, lut_size = 256;
+ 
+@@ -398,8 +397,7 @@ static void set_c8_lut(data_t *data)
+ 
+ static void unset_lut(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+-	igt_crtc_t *crtc = igt_crtc_for_pipe(display, data->pipe);
++	igt_crtc_t *crtc = data->crtc;
+ 
+ 	igt_crtc_replace_prop_blob(crtc, IGT_CRTC_GAMMA_LUT, NULL, 0);
+ }
+@@ -510,7 +508,6 @@ static bool test_plane(data_t *data)
+ 
+ static bool test_pipe(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+ 	uint16_t width, height;
+ 	drmModeModeInfo *mode;
+ 	igt_plane_t *primary;
+@@ -518,10 +515,10 @@ static bool test_pipe(data_t *data)
+ 	bool run_in_simulation = igt_run_in_simulation();
+ 
+ 	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+-		 kmstest_pipe_name(data->pipe), igt_output_name(data->output));
++		 igt_crtc_name(data->crtc), igt_output_name(data->output));
+ 
+ 	if (data->format == DRM_FORMAT_C8 &&
+-	    !igt_crtc_has_prop(igt_crtc_for_pipe(display, data->pipe),
++	    !igt_crtc_has_prop(data->crtc,
+ 				   IGT_CRTC_GAMMA_LUT))
+ 		return false;
+ 
+@@ -541,7 +538,7 @@ static bool test_pipe(data_t *data)
+ 		      data->format, data->modifier, &data->small_fb);
+ 
+ 	igt_output_set_crtc(data->output,
+-			    igt_crtc_for_pipe(display, data->pipe));
++			    data->crtc);
+ 
+ 	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, NULL);
+@@ -569,10 +566,10 @@ static bool test_pipe(data_t *data)
+ 	igt_display_commit2(&data->display, data->display.is_atomic ?
+ 			    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
+ 
+-	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, data->pipe),
++	data->pipe_crc = igt_crtc_crc_new(data->crtc,
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+-	for_each_plane_on_pipe(&data->display, data->pipe, data->plane) {
++	for_each_plane_on_pipe(&data->display, data->crtc->pipe, data->plane) {
+ 		ret = test_plane(data);
+ 		if (ret || run_in_simulation)
+ 			break;
+@@ -589,7 +586,6 @@ static bool test_pipe(data_t *data)
+ static bool
+ max_hw_stride_async_flip_test(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+ 	uint32_t ret;
+ 	const uint32_t w = data->output->config.default_mode.hdisplay,
+ 		       h = data->output->config.default_mode.vdisplay;
+@@ -599,10 +595,10 @@ max_hw_stride_async_flip_test(data_t *data)
+ 	igt_require(data->display.is_atomic);
+ 
+ 	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+-		 kmstest_pipe_name(data->pipe), igt_output_name(data->output));
++		 igt_crtc_name(data->crtc), igt_output_name(data->output));
+ 
+ 	igt_output_set_crtc(data->output,
+-			    igt_crtc_for_pipe(display, data->pipe));
++			    data->crtc);
+ 
+ 	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
+ 
+@@ -636,7 +632,7 @@ max_hw_stride_async_flip_test(data_t *data)
+ 		 data->hw_stride);
+ 	generate_pattern(data, &data->big_fb_flip[1], 640, 480);
+ 
+-	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, data->pipe),
++	data->pipe_crc = igt_crtc_crc_new(data->crtc,
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 	igt_pipe_crc_start(data->pipe_crc);
+ 
+@@ -714,7 +710,7 @@ static void test_scanout(data_t *data)
+ 		    data->format, data->modifier);
+ 
+ 	for_each_crtc_with_valid_output(&data->display, crtc, data->output) {
+-		data->pipe = crtc->pipe;
++		data->crtc = crtc;
+ 		igt_display_reset(&data->display);
+ 
+ 		igt_output_set_crtc(data->output,
+diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+index 37d21718bab4..19d12027b68f 100644
+--- a/tests/intel/kms_ccs.c
++++ b/tests/intel/kms_ccs.c
+@@ -177,7 +177,7 @@ typedef struct {
+ 	int drm_fd;
+ 	igt_display_t display;
+ 	igt_output_t *output;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	enum test_flags flags;
+ 	igt_plane_t *plane;
+ 	igt_pipe_crc_t *pipe_crc;
+@@ -1040,7 +1040,7 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
+ 
+ static int test_ccs(data_t *data)
+ {
+-	igt_display_t *display = &data->display;	int valid_tests = 0;
++	int valid_tests = 0;
+ 	igt_crc_t crc, ref_crc;
+ 	enum test_fb_flags fb_flags = 0;
+ 
+@@ -1053,7 +1053,7 @@ static int test_ccs(data_t *data)
+ 		 IGT_FORMAT_ARGS(data->format), IGT_MODIFIER_ARGS(data->ccs_modifier));
+ 
+ 	if (data->flags & TEST_CRC) {
+-		data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, data->pipe),
++		data->pipe_crc = igt_crtc_crc_new(data->crtc,
+ 						  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 		if (try_config(data, fb_flags | FB_COMPRESSED, &ref_crc) &&
+@@ -1154,7 +1154,7 @@ static void test_output(data_t *data, const int testnum)
+ 
+ 			for_each_crtc_with_valid_output(&data->display, crtc,
+ 							data->output) {
+-				data->pipe = crtc->pipe;
++				data->crtc = crtc;
+ 				igt_display_reset(&data->display);
+ 
+ 				igt_output_set_crtc(data->output,
+diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+index 03b6ea264678..47bb68f0753b 100644
+--- a/tests/intel/kms_dirtyfb.c
++++ b/tests/intel/kms_dirtyfb.c
+@@ -58,7 +58,7 @@ typedef struct {
+ 	uint64_t modifier;
+ 	igt_output_t *output;
+ 	igt_pipe_crc_t *pipe_crc;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 
+ 	struct igt_fb fbs[3];
+ 
+@@ -100,7 +100,7 @@ static bool check_support(data_t *data)
+ 	case FEATURE_NONE:
+ 		return true;
+ 	case FEATURE_FBC:
+-		if (!intel_fbc_supported_on_chipset(data->drm_fd, data->pipe)) {
++		if (!intel_fbc_supported_on_chipset(data->drm_fd, data->crtc->pipe)) {
+ 			igt_info("FBC is not supported on this chipset\n");
+ 			return false;
+ 		}
+@@ -127,7 +127,7 @@ static bool check_support(data_t *data)
+ 		return true;
+ 
+ 	case FEATURE_DRRS:
+-		if (!(intel_is_drrs_supported(data->drm_fd, data->pipe) &&
++		if (!(intel_is_drrs_supported(data->drm_fd, data->crtc->pipe) &&
+ 		      intel_output_has_drrs(data->drm_fd, data->output))) {
+ 			igt_info("Output doesn't support DRRS\n");
+ 			return false;
+@@ -153,7 +153,7 @@ static void enable_feature(data_t *data)
+ 		psr_enable(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL);
+ 		break;
+ 	case FEATURE_DRRS:
+-		intel_drrs_enable(data->drm_fd, data->pipe);
++		intel_drrs_enable(data->drm_fd, data->crtc->pipe);
+ 		break;
+ 	case FEATURE_DEFAULT:
+ 		break;
+@@ -169,7 +169,7 @@ static void check_feature_enabled(data_t *data)
+ 		break;
+ 	case FEATURE_FBC:
+ 		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
+-							  data->pipe),
++							  data->crtc->pipe),
+ 			     "FBC still disabled\n");
+ 		break;
+ 	case FEATURE_PSR:
+@@ -178,7 +178,7 @@ static void check_feature_enabled(data_t *data)
+ 			     "PSR still disabled\n");
+ 		break;
+ 	case FEATURE_DRRS:
+-		igt_assert_f(!intel_is_drrs_inactive(data->drm_fd, data->pipe),
++		igt_assert_f(!intel_is_drrs_inactive(data->drm_fd, data->crtc->pipe),
+ 			     "DRRS INACTIVE\n");
+ 		break;
+ 	case FEATURE_DEFAULT:
+@@ -195,7 +195,7 @@ static void check_feature(data_t *data)
+ 		break;
+ 	case FEATURE_FBC:
+ 		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
+-							  data->pipe),
++							  data->crtc->pipe),
+ 			     "FBC disabled\n");
+ 		/* TODO: Add compression check here */
+ 		break;
+@@ -205,7 +205,7 @@ static void check_feature(data_t *data)
+ 		psr_sink_error_check(data->debugfs_fd, PSR_MODE_1, data->output);
+ 		break;
+ 	case FEATURE_DRRS:
+-		igt_assert_f(!intel_is_drrs_inactive(data->drm_fd, data->pipe),
++		igt_assert_f(!intel_is_drrs_inactive(data->drm_fd, data->crtc->pipe),
+ 			     "DRRS INACTIVE\n");
+ 		break;
+ 	case FEATURE_DEFAULT:
+@@ -222,18 +222,17 @@ static void disable_features(data_t *data)
+ 	if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL))
+ 		psr_disable(data->drm_fd, data->debugfs_fd, NULL);
+ 
+-	intel_drrs_disable(data->drm_fd, data->pipe);
++	intel_drrs_disable(data->drm_fd, data->crtc->pipe);
+ }
+ 
+ static void prepare(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+ 	igt_plane_t *primary;
+ 
+ 	igt_output_set_crtc(data->output,
+-			    igt_crtc_for_pipe(display, data->pipe));
++			    data->crtc);
+ 
+-	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, data->pipe),
++	data->pipe_crc = igt_crtc_crc_new(data->crtc,
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
+@@ -378,7 +377,7 @@ int igt_main()
+ 			for_each_crtc(&data.display, crtc) {
+ 				int valid_tests = 0;
+ 
+-				data.pipe = crtc->pipe;
++				data.crtc = crtc;
+ 
+ 				for_each_valid_output_on_pipe(&data.display,
+ 							      crtc->pipe,
+diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
+index ad34b1fabc23..b7e02be2d8aa 100644
+--- a/tests/intel/kms_dp_linktrain_fallback.c
++++ b/tests/intel/kms_dp_linktrain_fallback.c
+@@ -40,7 +40,7 @@ typedef struct {
+ 	igt_display_t display;
+ 	drmModeModeInfo *mode;
+ 	igt_output_t *output;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	struct igt_fb fb;
+ 	struct igt_plane *primary;
+ 	int n_pipes;
+@@ -96,7 +96,7 @@ static void setup_pipe_on_outputs(data_t *data,
+ 		      data->n_pipes, *output_count);
+ 
+ 	for_each_crtc(&data->display, crtc) {
+-		data->pipe = crtc->pipe;
++		data->crtc = crtc;
+ 		if (i >= *output_count)
+ 			break;
+ 		/*
+@@ -459,7 +459,6 @@ static bool run_lt_fallback_test(data_t *data)
+ 
+ static void test_dsc_sst_fallback(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+ 	bool non_dsc_mode_found = false;
+ 	bool dsc_fallback_successful = false;
+ 	int ret;
+@@ -469,7 +468,7 @@ static void test_dsc_sst_fallback(data_t *data)
+ 	int output_count = 0;
+ 
+ 	igt_info("Checking DSC fallback on %s\n", igt_output_name(data->output));
+-	data->pipe = PIPE_A;
++	data->crtc = igt_crtc_for_pipe(&data->display, PIPE_A);
+ 
+ 	igt_display_reset(&data->display);
+ 	igt_reset_link_params(data->drm_fd, data->output);
+@@ -484,7 +483,7 @@ static void test_dsc_sst_fallback(data_t *data)
+ 				    &data->fb);
+ 		igt_output_override_mode(data->output, data->mode);
+ 		igt_output_set_crtc(data->output,
+-				    igt_crtc_for_pipe(display, data->pipe));
++				    data->crtc);
+ 		data->primary = igt_output_get_plane_type(data->output,
+ 						DRM_PLANE_TYPE_PRIMARY);
+ 		igt_plane_set_fb(data->primary, &data->fb);
+@@ -616,7 +615,7 @@ int igt_main()
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_display_require_output(&data.display);
+ 		for_each_crtc(&data.display, crtc) {
+-			data.pipe = crtc->pipe;
++			data.crtc = crtc;
+ 			data.n_pipes++;
+ 		}
+ 		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
+diff --git a/tests/intel/kms_fb_coherency.c b/tests/intel/kms_fb_coherency.c
+index 840da92e2e0e..1131555602d6 100644
+--- a/tests/intel/kms_fb_coherency.c
++++ b/tests/intel/kms_fb_coherency.c
+@@ -33,7 +33,7 @@ typedef struct {
+ 	struct igt_fb fb[2];
+ 	igt_output_t *output;
+ 	igt_plane_t *primary;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	igt_crc_t ref_crc;
+ 	igt_pipe_crc_t *pipe_crc;
+ 	uint32_t devid;
+@@ -48,7 +48,7 @@ static void prepare_crtc(data_t *data)
+ 	igt_display_reset(display);
+ 	/* select the pipe we want to use */
+ 	igt_output_set_crtc(output,
+-			    igt_crtc_for_pipe(display, data->pipe));
++			    data->crtc);
+ 
+ 	mode = igt_output_get_mode(output);
+ 
+@@ -65,7 +65,7 @@ static void prepare_crtc(data_t *data)
+ 	if (data->pipe_crc)
+ 		igt_pipe_crc_free(data->pipe_crc);
+ 
+-	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, data->pipe),
++	data->pipe_crc = igt_crtc_crc_new(data->crtc,
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	/* get reference crc for the white fb */
+@@ -226,7 +226,7 @@ static void select_valid_pipe_output_combo(data_t *data)
+ 	igt_display_t *display = &data->display;
+ 
+ 	for_each_crtc_with_valid_output(display, crtc, data->output) {
+-		data->pipe = crtc->pipe;
++		data->crtc = crtc;
+ 		igt_display_reset(display);
+ 
+ 		igt_output_set_crtc(data->output,
+diff --git a/tests/intel/kms_fbc_dirty_rect.c b/tests/intel/kms_fbc_dirty_rect.c
+index 393b787ae4e8..54ac7266eafb 100644
+--- a/tests/intel/kms_fbc_dirty_rect.c
++++ b/tests/intel/kms_fbc_dirty_rect.c
+@@ -60,7 +60,7 @@ typedef struct {
+ 	drmModeModeInfo *mode;
+ 	igt_output_t *output;
+ 	igt_pipe_crc_t *pipe_crc;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	u32 format;
+ 
+ 	struct igt_fb fb[N_FBS];
+@@ -122,7 +122,7 @@ set_fb_and_collect_crc(data_t *data, igt_plane_t *plane, struct igt_fb *fb,
+ 	igt_pipe_crc_start(data->pipe_crc);
+ 	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, crc);
+ 	igt_pipe_crc_stop(data->pipe_crc);
+-	igt_assert_f(intel_fbc_is_enabled(data->drm_fd, data->pipe,
++	igt_assert_f(intel_fbc_is_enabled(data->drm_fd, data->crtc->pipe,
+ 					  IGT_LOG_INFO),
+ 					  "FBC is not enabled\n");
+ }
+@@ -404,16 +404,15 @@ static void cleanup(data_t *data)
+ 
+ static bool prepare_test(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+ 	igt_display_reset(&data->display);
+ 
+ 	data->mode = igt_output_get_mode(data->output);
+ 	igt_output_set_crtc(data->output,
+-			    igt_crtc_for_pipe(display, data->pipe));
+-	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, data->pipe),
++			    data->crtc);
++	data->pipe_crc = igt_crtc_crc_new(data->crtc,
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+-	igt_require_f(intel_fbc_supported_on_chipset(data->drm_fd, data->pipe),
++	igt_require_f(intel_fbc_supported_on_chipset(data->drm_fd, data->crtc->pipe),
+ 		      "FBC not supported by the chipset on pipe\n");
+ 
+ 	if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL) ||
+@@ -461,7 +460,7 @@ int igt_main()
+ 		data.feature = FEATURE_FBC;
+ 
+ 		for_each_crtc(&data.display, crtc) {
+-			data.pipe = crtc->pipe;
++			data.crtc = crtc;
+ 			if (single_pipe)
+ 				break;
+ 			for_each_valid_output_on_pipe(&data.display,
+@@ -486,7 +485,7 @@ int igt_main()
+ 		data.feature = FEATURE_FBC;
+ 
+ 		for_each_crtc(&data.display, crtc) {
+-			data.pipe = crtc->pipe;
++			data.crtc = crtc;
+ 			if (single_pipe)
+ 				break;
+ 			for_each_valid_output_on_pipe(&data.display,
+@@ -513,7 +512,7 @@ int igt_main()
+ 		data.feature = FEATURE_FBC;
+ 
+ 		for_each_crtc(&data.display, crtc) {
+-			data.pipe = crtc->pipe;
++			data.crtc = crtc;
+ 			if (single_pipe)
+ 				break;
+ 			for_each_valid_output_on_pipe(&data.display,
+diff --git a/tests/intel/kms_mmap_write_crc.c b/tests/intel/kms_mmap_write_crc.c
+index 329605f30c15..48be830d8592 100644
+--- a/tests/intel/kms_mmap_write_crc.c
++++ b/tests/intel/kms_mmap_write_crc.c
+@@ -63,7 +63,7 @@ typedef struct {
+ 	struct igt_fb fb[2];
+ 	igt_output_t *output;
+ 	igt_plane_t *primary;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	igt_crc_t ref_crc;
+ 	igt_pipe_crc_t *pipe_crc;
+ 	uint32_t devid;
+@@ -189,7 +189,7 @@ static void prepare_crtc(data_t *data)
+ 
+ 	/* select the pipe we want to use */
+ 	igt_output_set_crtc(output,
+-			    igt_crtc_for_pipe(display, data->pipe));
++			    data->crtc);
+ 
+ 	mode = igt_output_get_mode(output);
+ 
+@@ -206,7 +206,7 @@ static void prepare_crtc(data_t *data)
+ 	if (data->pipe_crc)
+ 		igt_pipe_crc_free(data->pipe_crc);
+ 
+-	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, data->pipe),
++	data->pipe_crc = igt_crtc_crc_new(data->crtc,
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	/* get reference crc for the white fb */
+@@ -300,7 +300,7 @@ int igt_main_args("n", NULL, NULL, opt_handler, NULL)
+ 			igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
+ 				      igt_output_name(output)) {
+ 				data.output = output;
+-				data.pipe = crtc->pipe;
++				data.crtc = crtc;
+ 
+ 				igt_info("Using %d rounds for each pipe in the test\n", ROUNDS);
+ 				prepare_crtc(&data);
+diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
+index 43d58a8421e7..595c81f0e693 100644
+--- a/tests/intel/kms_pm_lpsp.c
++++ b/tests/intel/kms_pm_lpsp.c
+@@ -62,7 +62,7 @@ typedef struct {
+ 	igt_display_t display;
+ 	struct igt_fb fb;
+ 	igt_output_t *output;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
  } data_t;
  
-@@ -65,7 +64,6 @@ static void test_init(data_t *data)
- 	int i, n;
+ static int max_dotclock;
+@@ -153,12 +153,11 @@ static void test_cleanup(data_t *data)
  
- 	for_each_crtc(display, crtc) {
--		data->pipe_id[crtc->pipe] = crtc->pipe;
- 		data->crtc[crtc->pipe] = crtc;
- 		data->primary[crtc->pipe] = igt_crtc_get_plane_type(crtc,
- 								    DRM_PLANE_TYPE_PRIMARY);
-@@ -135,7 +133,7 @@ static void test_dsc_enable(data_t *data)
- 				      0,
- 				      &ref_fb);
- 		igt_output_set_crtc(output,
--				    igt_crtc_for_pipe(display, data->pipe_id[crtc->pipe]));
-+				    crtc);
- 		igt_plane_set_fb(data->primary[crtc->pipe], &ref_fb);
- 		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+ static bool test_constraint(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+ 	drmModeModeInfo *mode;
  
-@@ -283,7 +281,7 @@ static void test_dsc_slice_dimensions_change(data_t *data)
- 				      0,
- 				      &ref_fb);
- 		igt_output_set_crtc(output,
--				    igt_crtc_for_pipe(display, data->pipe_id[crtc->pipe]));
-+				    crtc);
- 		igt_plane_set_fb(data->primary[crtc->pipe], &ref_fb);
- 		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
+ 	igt_display_reset(&data->display);
+ 	igt_output_set_crtc(data->output,
+-			    igt_crtc_for_pipe(display, data->pipe));
++			    data->crtc);
  
-@@ -379,7 +377,7 @@ static void test_dsc_link_settings(data_t *data)
- 				      0,
- 				      &ref_fb[crtc->pipe]);
- 		igt_output_set_crtc(output,
--				    igt_crtc_for_pipe(display, data->pipe_id[crtc->pipe]));
-+				    crtc);
- 		igt_plane_set_fb(data->primary[crtc->pipe],
- 				 &ref_fb[crtc->pipe]);
+ 	mode = igt_output_get_mode(data->output);
+ 
+@@ -245,7 +244,7 @@ int igt_main()
+ 						     "LPSP support on external panel from Gen13+ platform\n");
+ 
+ 				data.output = output;
+-				data.pipe = crtc->pipe;
++				data.crtc = crtc;
+ 
+ 				if (!test_constraint(&data))
+ 					continue;
+diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
+index ff63a3c84f10..0b53cb5a40d8 100644
+--- a/tests/intel/kms_psr2_sf.c
++++ b/tests/intel/kms_psr2_sf.c
+@@ -227,7 +227,7 @@ typedef struct {
+ 	cairo_t *cr;
+ 	uint32_t screen_changes;
+ 	int cur_x, cur_y;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	enum psr_mode psr_mode;
+ 	enum {
+ 		FEATURE_NONE  = 0,
+@@ -396,7 +396,6 @@ static void plane_move_setup_square(data_t *data, igt_fb_t *fb, uint32_t h,
+ 
+ static void prepare(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+ 	igt_output_t *output = data->output;
+ 	igt_plane_t *primary, *sprite = NULL, *cursor = NULL;
+ 	int fb_w, fb_h, x, y, view_w, view_h;
+@@ -414,7 +413,7 @@ static void prepare(data_t *data)
  	}
-@@ -506,7 +504,7 @@ static void test_dsc_bpc(data_t *data)
- 					      0,
- 					      &ref_fb[crtc->pipe]);
- 			igt_output_set_crtc(output,
--					    igt_crtc_for_pipe(display, data->pipe_id[crtc->pipe]));
-+					    crtc);
- 			igt_plane_set_fb(data->primary[crtc->pipe],
- 					 &ref_fb[crtc->pipe]);
- 		}
-@@ -529,7 +527,7 @@ static void test_dsc_bpc(data_t *data)
- 			/* Check current bpc */
- 			igt_info("Verifying display %s has correct bpc\n", output->name);
- 			igt_assert_output_bpc_equal(data->fd,
--						    data->pipe_id[crtc->pipe],
-+						    crtc->pipe,
- 						    output->name,
- 						    bpc_vals[bpc]);
  
-diff --git a/tests/amdgpu/amd_hotplug.c b/tests/amdgpu/amd_hotplug.c
-index eff4ec42de00..15092cc9fdec 100644
---- a/tests/amdgpu/amd_hotplug.c
-+++ b/tests/amdgpu/amd_hotplug.c
-@@ -42,7 +42,6 @@ typedef struct data {
- 	igt_crtc_t *crtc[MAX_PIPES];
- 	igt_pipe_crc_t *pipe_crc[MAX_PIPES];
- 	drmModeModeInfo mode[MAX_PIPES];
--	enum pipe pipe_id[MAX_PIPES];
- 	int w[MAX_PIPES];
- 	int h[MAX_PIPES];
- 	int fd;
-@@ -55,7 +54,6 @@ static void test_init(data_t *data)
+ 	igt_output_set_crtc(output,
+-		            igt_crtc_for_pipe(display, data->pipe));
++		            data->crtc);
+ 
+ 	if (data->big_fb_test) {
+ 		fb_w = data->big_fb_width;
+@@ -959,7 +958,7 @@ static void run(data_t *data)
+ 
+ 	if (data->fbc_flag == true && data->op_fbc_mode == FBC_ENABLED)
+ 		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
+-							  data->pipe),
++							  data->crtc->pipe),
+ 							  "FBC still disabled\n");
+ 
+ 	if (is_et_check_needed(data))
+@@ -1041,11 +1040,11 @@ static void cleanup(data_t *data)
+ 
+ static bool sel_fetch_pipe_combo_valid(data_t *data)
+ {
+-	if (data->devid < 14 && !IS_ALDERLAKE_P(data->devid) && data->pipe != PIPE_A)
++	if (data->devid < 14 && !IS_ALDERLAKE_P(data->devid) && data->crtc->pipe != PIPE_A)
+ 		return false;
+ 
+ 	if (data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP &&
+-	    data->pipe != PIPE_A && data->pipe != PIPE_B)
++	    data->crtc->pipe != PIPE_A && data->crtc->pipe != PIPE_B)
+ 		return false;
+ 
+ 	return true;
+@@ -1054,7 +1053,6 @@ static bool sel_fetch_pipe_combo_valid(data_t *data)
+ static bool
+ pipe_output_combo_valid(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+ 	bool ret = psr_sink_support(data->drm_fd, data->debugfs_fd,
+ 				    data->psr_mode, data->output);
+ 	if (!ret)
+@@ -1067,7 +1065,7 @@ pipe_output_combo_valid(data_t *data)
+ 	igt_display_reset(&data->display);
+ 
+ 	igt_output_set_crtc(data->output,
+-			    igt_crtc_for_pipe(display, data->pipe));
++			    data->crtc);
+ 	if (!intel_pipe_output_combo_valid(&data->display))
+ 		ret = false;
+ 	igt_output_set_crtc(data->output, NULL);
+@@ -1080,7 +1078,7 @@ static void run_dynamic_test_damage_areas(data_t data, int i, int coexist_featur
+ 	for (int j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 		if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 			continue;
+-		igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(data.pipe),
++		igt_dynamic_f("pipe-%s-%s%s", igt_crtc_name(data.crtc),
+ 			      igt_output_name(data.output), coexist_feature_str(j)) {
+ 			data.coexist_feature = j;
+ 			for (int k = 1; k <= MAX_DAMAGE_AREAS; k++) {
+@@ -1098,7 +1096,7 @@ static void run_dynamic_test(data_t data, int i, int coexist_features[])
+ 	for (int j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 		if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 			continue;
+-		igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(data.pipe),
++		igt_dynamic_f("pipe-%s-%s%s", igt_crtc_name(data.crtc),
+ 			      igt_output_name(data.output), coexist_feature_str(j)) {
+ 			data.coexist_feature = j;
+ 			prepare(&data);
+@@ -1113,7 +1111,7 @@ static void run_plane_move(data_t data, int i, int coexist_features[])
+ 	for (int j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 		if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 			continue;
+-		igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(data.pipe),
++		igt_dynamic_f("pipe-%s-%s%s", igt_crtc_name(data.crtc),
+ 			      igt_output_name(data.output), coexist_feature_str(j)) {
+ 			data.test_plane_id = DRM_PLANE_TYPE_OVERLAY;
+ 			data.coexist_feature = j;
+@@ -1132,7 +1130,7 @@ static void run_plane_update_continuous(data_t data, int i, int coexist_features
+ 	for (int j = FEATURE_NONE; j < FEATURE_COUNT; j++) {
+ 		if (j != FEATURE_NONE && !(coexist_features[i] & j))
+ 			continue;
+-		igt_dynamic_f("pipe-%s-%s%s", kmstest_pipe_name(data.pipe),
++		igt_dynamic_f("pipe-%s-%s%s", igt_crtc_name(data.crtc),
+ 			      igt_output_name(data.output), coexist_feature_str(j)) {
+ 			data.damage_area_count = 1;
+ 			if (data.op_fbc_mode == FBC_ENABLED)
+@@ -1197,9 +1195,9 @@ int igt_main()
+ 
+ 		for_each_crtc_with_valid_output(&data.display, crtc,
+ 						data.output) {
+-			data.pipe = crtc->pipe;
++			data.crtc = crtc;
+ 
+-			if (!intel_fbc_supported_on_chipset(data.drm_fd, data.pipe))
++			if (!intel_fbc_supported_on_chipset(data.drm_fd, data.crtc->pipe))
+ 				fbc_chipset_support = false;
+ 
+ 			for (i = 0; i < ARRAY_SIZE(psr_status); i++) {
+@@ -1245,7 +1243,7 @@ int igt_main()
+ 						   append_psr_subtest[z],
+ 						   op_str(data.op)) {
+ 				for (i = 0; i < n_crtcs; i++) {
+-					data.pipe = crtcs[i]->pipe;
++					data.crtc = crtcs[i];
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1266,7 +1264,7 @@ int igt_main()
+ 							   append_psr_subtest[z],
+ 							   op_str(data.op)) {
+ 					for (i = 0; i < n_crtcs; i++) {
+-						data.pipe = crtcs[i]->pipe;
++						data.crtc = crtcs[i];
+ 						data.output = outputs[i];
+ 
+ 						if (!pipe_output_combo_valid(&data))
+@@ -1287,7 +1285,7 @@ int igt_main()
+ 						   append_psr_subtest[z],
+ 						   op_str(data.op)) {
+ 				for (i = 0; i < n_crtcs; i++) {
+-					data.pipe = crtcs[i]->pipe;
++					data.crtc = crtcs[i];
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1304,7 +1302,7 @@ int igt_main()
+ 			igt_subtest_with_dynamic_f("%s%scursor-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+ 				for (i = 0; i < n_crtcs; i++) {
+-					data.pipe = crtcs[i]->pipe;
++					data.crtc = crtcs[i];
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1321,7 +1319,7 @@ int igt_main()
+ 			igt_subtest_with_dynamic_f("%s%scursor-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+ 				for (i = 0; i < n_crtcs; i++) {
+-					data.pipe = crtcs[i]->pipe;
++					data.crtc = crtcs[i];
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1338,7 +1336,7 @@ int igt_main()
+ 			igt_subtest_with_dynamic_f("%s%scursor-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+ 				for (i = 0; i < n_crtcs; i++) {
+-					data.pipe = crtcs[i]->pipe;
++					data.crtc = crtcs[i];
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1355,7 +1353,7 @@ int igt_main()
+ 			igt_subtest_with_dynamic_f("%s%scursor-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+ 				for (i = 0; i < n_crtcs; i++) {
+-					data.pipe = crtcs[i]->pipe;
++					data.crtc = crtcs[i];
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1373,7 +1371,7 @@ int igt_main()
+ 			igt_subtest_with_dynamic_f("%s%s%s-sf-dmg-area", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+ 				for (i = 0; i < n_crtcs; i++) {
+-					data.pipe = crtcs[i]->pipe;
++					data.crtc = crtcs[i];
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1389,7 +1387,7 @@ int igt_main()
+ 			igt_subtest_with_dynamic_f("%s%soverlay-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+ 				for (i = 0; i < n_crtcs; i++) {
+-					data.pipe = crtcs[i]->pipe;
++					data.crtc = crtcs[i];
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1406,7 +1404,7 @@ int igt_main()
+ 			igt_subtest_with_dynamic_f("%s%soverlay-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+ 				for (i = 0; i < n_crtcs; i++) {
+-					data.pipe = crtcs[i]->pipe;
++					data.crtc = crtcs[i];
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1423,7 +1421,7 @@ int igt_main()
+ 			igt_subtest_with_dynamic_f("%s%soverlay-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+ 				for (i = 0; i < n_crtcs; i++) {
+-					data.pipe = crtcs[i]->pipe;
++					data.crtc = crtcs[i];
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1441,7 +1439,7 @@ int igt_main()
+ 			igt_subtest_with_dynamic_f("%s%s%s-sf-dmg-area", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+ 				for (i = 0; i < n_crtcs; i++) {
+-					data.pipe = crtcs[i]->pipe;
++					data.crtc = crtcs[i];
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1461,7 +1459,7 @@ int igt_main()
+ 			igt_subtest_with_dynamic_f("%s%soverlay-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+ 				for (i = 0; i < n_crtcs; i++) {
+-					data.pipe = crtcs[i]->pipe;
++					data.crtc = crtcs[i];
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+diff --git a/tests/intel/kms_pwrite_crc.c b/tests/intel/kms_pwrite_crc.c
+index 4728d252d467..bd536007c9a3 100644
+--- a/tests/intel/kms_pwrite_crc.c
++++ b/tests/intel/kms_pwrite_crc.c
+@@ -52,7 +52,7 @@ typedef struct {
+ 	struct igt_fb fb[2];
+ 	igt_output_t *output;
+ 	igt_plane_t *primary;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	igt_crc_t ref_crc;
+ 	igt_pipe_crc_t *pipe_crc;
+ 	uint32_t devid;
+@@ -125,7 +125,7 @@ static void prepare_crtc(data_t *data)
+ 
+ 	/* select the pipe we want to use */
+ 	igt_output_set_crtc(output,
+-			    igt_crtc_for_pipe(display, data->pipe));
++			    data->crtc);
+ 
+ 	mode = igt_output_get_mode(output);
+ 
+@@ -142,7 +142,7 @@ static void prepare_crtc(data_t *data)
+ 	if (data->pipe_crc)
+ 		igt_pipe_crc_free(data->pipe_crc);
+ 
+-	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, data->pipe),
++	data->pipe_crc = igt_crtc_crc_new(data->crtc,
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	/* get reference crc for the white fb */
+@@ -173,7 +173,7 @@ static void run_test(data_t *data)
+ 	igt_display_t *display = &data->display;
+ 
+ 	for_each_crtc_with_valid_output(display, crtc, data->output) {
+-		data->pipe = crtc->pipe;
++		data->crtc = crtc;
+ 		igt_display_reset(display);
+ 
+ 		igt_output_set_crtc(data->output,
+diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
+index 91f80f2e0a54..787fe81d21ca 100644
+--- a/tests/intel/perf_pmu.c
++++ b/tests/intel/perf_pmu.c
+@@ -1040,7 +1040,7 @@ typedef struct {
+ 	igt_display_t display;
+ 	struct igt_fb primary_fb;
+ 	igt_output_t *output;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ } data_t;
+ 
+ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
+@@ -1051,7 +1051,7 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
+ 
+ 	/* select the pipe we want to use */
+ 	igt_output_set_crtc(output,
+-			    igt_crtc_for_pipe(display, data->pipe));
++			    data->crtc);
+ 
+ 	/* create and set the primary plane fb */
+ 	mode = igt_output_get_mode(output);
+@@ -1066,7 +1066,7 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
+ 
+ 	igt_display_commit(display);
+ 
+-	igt_wait_for_vblank(igt_crtc_for_pipe(display, data->pipe));
++	igt_wait_for_vblank(data->crtc);
+ }
+ 
+ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
+@@ -1192,7 +1192,7 @@ event_wait(int gem_fd, const intel_ctx_t *ctx,
+ 
+ 		gem_write(gem_fd, obj.handle, 0, batch, sizeof(batch));
+ 
+-		data.pipe = crtc->pipe;
++		data.crtc = crtc;
+ 		prepare_crtc(&data, gem_fd, output);
+ 
+ 		fd = open_pmu(gem_fd,
+@@ -1202,7 +1202,7 @@ event_wait(int gem_fd, const intel_ctx_t *ctx,
+ 
+ 		igt_fork_helper(&waiter) {
+ 			const uint32_t pipe_id_flag =
+-					kmstest_get_vbl_flag(data.pipe);
++					kmstest_get_vbl_flag(data.crtc->pipe);
+ 
+ 			for (;;) {
+ 				union drm_wait_vblank vbl = { };
+diff --git a/tests/intel/prime_mmap_kms.c b/tests/intel/prime_mmap_kms.c
+index 74fe05ca9605..10e450114d0e 100644
+--- a/tests/intel/prime_mmap_kms.c
++++ b/tests/intel/prime_mmap_kms.c
+@@ -151,7 +151,7 @@ typedef struct {
+ 	struct igt_fb fb;
+ 	igt_output_t *output;
+ 	igt_plane_t *primary;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ } gpu_process_t;
+ 
+ static void cleanup_crtc(gpu_process_t *gpu)
+@@ -175,7 +175,7 @@ static void prepare_crtc(gpu_process_t *gpu)
+ 
+ 	/* select the pipe we want to use */
+ 	igt_output_set_crtc(output,
+-			    igt_crtc_for_pipe(display, gpu->pipe));
++			    gpu->crtc);
+ 
+ 	mode = igt_output_get_mode(output);
+ 
+@@ -207,7 +207,7 @@ static void run_test(gpu_process_t *gpu)
+ 		int prime_fd;
+ 
+ 		gpu->output = output;
+-		gpu->pipe = crtc->pipe;
++		gpu->crtc = crtc;
+ 
+ 		prepare_crtc(gpu);
+ 
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 1a4941ef76b8..014b7f3476be 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -140,7 +140,7 @@ typedef struct {
+ 	int flip_count;
+ 	int frame_count;
+ 	bool flip_pending;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	bool alternate_sync_async;
+ 	bool suspend_resume;
+ 	bool hang;
+@@ -292,7 +292,6 @@ static void require_overlay_flip_support(data_t *data)
+ 
+ static void test_init(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+ 	drmModeModeInfo *mode;
+ 
+ 	igt_display_reset(&data->display);
+@@ -300,11 +299,11 @@ static void test_init(data_t *data)
+ 
+ 	mode = igt_output_get_mode(data->output);
+ 
+-	data->crtc_id = igt_crtc_for_pipe(display, data->pipe)->crtc_id;
++	data->crtc_id = data->crtc->crtc_id;
+ 	data->refresh_rate = mode->vrefresh;
+ 
+ 	igt_output_set_crtc(data->output,
+-		            igt_crtc_for_pipe(display, data->pipe));
++		            data->crtc);
+ 
+ 	data->plane = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
+ 	if (data->overlay_path)
+@@ -912,7 +911,7 @@ static void run_test(data_t *data, void (*test)(data_t *))
+ 		require_atomic_async_cap(data);
+ 
+ 	for_each_crtc_with_valid_output(display, crtc, data->output) {
+-		data->pipe = crtc->pipe;
++		data->crtc = crtc;
+ 		igt_display_reset(display);
+ 
+ 		igt_output_set_crtc(data->output,
+@@ -980,7 +979,7 @@ static void run_test_with_async_format_modifiers(data_t *data, void (*test)(data
+ 	igt_vec_init(&tested_formats, sizeof(struct format_mod));
+ 
+ 	for_each_crtc_with_valid_output(&data->display, crtc, data->output) {
+-		data->pipe = crtc->pipe;
++		data->crtc = crtc;
+ 		test_init(data);
+ 
+ 		igt_assert_f(data->plane->async_format_mod_count > 0,
+@@ -1034,7 +1033,7 @@ static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
+ 		require_atomic_async_cap(data);
+ 
+ 	for_each_crtc_with_valid_output(&data->display, crtc, data->output) {
+-		data->pipe = crtc->pipe;
++		data->crtc = crtc;
+ 		test_init(data);
+ 
+ 		igt_require_f(data->plane->async_format_mod_count > 0,
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index 61a7de8eb00b..b6b155130edb 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -146,7 +146,7 @@ typedef struct {
+ 	struct igt_fb primary_fb[MAXCURSORBUFFER];
+ 	struct igt_fb fb;
+ 	igt_output_t *output;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	int left, right, top, bottom;
+ 	int screenw, screenh;
+ 	int refresh;
+@@ -209,13 +209,12 @@ static void cursor_enable(data_t *data)
+ 
+ static void cursor_disable(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+ 	igt_plane_set_fb(data->cursor, NULL);
+ 	igt_plane_set_position(data->cursor, 0, 0);
+ 	igt_display_commit(&data->display);
+ 
+ 	/* do this wait here so it will not need to be added everywhere */
+-	igt_wait_for_vblank_count(igt_crtc_for_pipe(display, data->pipe),
++	igt_wait_for_vblank_count(data->crtc,
+ 				  data->vblank_wait_count);
+ }
+ 
+@@ -241,7 +240,7 @@ static bool chv_cursor_broken(data_t *data, int x)
+ 	if (x >= 0)
+ 		return false;
+ 
+-	return IS_CHERRYVIEW(devid) && data->pipe == PIPE_C;
++	return IS_CHERRYVIEW(devid) && data->crtc->pipe == PIPE_C;
+ }
+ 
+ static bool cursor_visible(data_t *data, int x, int y)
+@@ -300,7 +299,7 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+ 		igt_display_commit(display);
+ 
+ 		/* Extra vblank wait is because nonblocking cursor ioctl */
+-		igt_wait_for_vblank_count(igt_crtc_for_pipe(display, data->pipe),
++		igt_wait_for_vblank_count(data->crtc,
+ 					  data->vblank_wait_count);
+ 
+ 		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, hwcrc);
+@@ -349,7 +348,7 @@ static void do_single_test(data_t *data, int x, int y, bool hw_test,
+ 		 * synchronized to the same frame on AMD HW
+ 		 */
+ 		if (is_amdgpu_device(data->drm_fd))
+-			igt_wait_for_vblank_count(igt_crtc_for_pipe(display, data->pipe),
++			igt_wait_for_vblank_count(data->crtc,
+ 						  data->vblank_wait_count);
+ 
+ 		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
+@@ -580,7 +579,7 @@ static void prepare_crtc(data_t *data, int cursor_w, int cursor_h)
+ 
+ 	/* select the pipe we want to use */
+ 	igt_output_set_crtc(output,
+-			    igt_crtc_for_pipe(display, data->pipe));
++			    data->crtc);
+ 
+ 	/* create and set the primary plane fbs */
+ 	mode = igt_output_get_mode(output);
+@@ -606,7 +605,7 @@ static void prepare_crtc(data_t *data, int cursor_w, int cursor_h)
+ 	/* create the pipe_crc object for this pipe */
+ 	if (data->pipe_crc)
+ 		igt_pipe_crc_free(data->pipe_crc);
+-	data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, data->pipe),
++	data->pipe_crc = igt_crtc_crc_new(data->crtc,
+ 					  IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	/* x/y position where the cursor is still fully visible */
+@@ -720,7 +719,6 @@ static void do_timed_cursor_fb_pos_change(data_t *data, enum cursor_change chang
+ 
+ static void timed_cursor_changes(data_t *data, void (changefunc)(data_t *, enum cursor_change))
+ {
+-	igt_display_t *display = &data->display;
+ 	igt_crc_t crc1, crc2;
+ 
+ 	/* Legacy cursor API does not guarantee that the cursor update happens at vBlank.
+@@ -735,7 +733,7 @@ static void timed_cursor_changes(data_t *data, void (changefunc)(data_t *, enum
+ 	igt_display_commit(&data->display);
+ 
+ 	/* Extra vblank wait is because nonblocking cursor ioctl */
+-	igt_wait_for_vblank_count(igt_crtc_for_pipe(display, data->pipe),
++	igt_wait_for_vblank_count(data->crtc,
+ 				  data->vblank_wait_count);
+ 
+ 	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc1);
+@@ -784,7 +782,7 @@ static bool cursor_size_supported(data_t *data, int w, int h)
+ 
+ 	igt_display_reset(display);
+ 	igt_output_set_crtc(output,
+-			    igt_crtc_for_pipe(display, data->pipe));
++			    data->crtc);
+ 
+ 	mode = igt_output_get_mode(output);
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+@@ -889,7 +887,7 @@ static bool valid_pipe_output_combo(data_t *data)
+ 
+ 	igt_display_reset(display);
+ 	igt_output_set_crtc(data->output,
+-			    igt_crtc_for_pipe(display, data->pipe));
++			    data->crtc);
+ 
+ 	if (intel_pipe_output_combo_valid(display))
+ 		ret = true;
+@@ -1013,7 +1011,7 @@ static void run_size_tests(data_t *data, int w, int h)
+ 				if (execution_constraint(crtc->pipe))
+ 					continue;
+ 
+-				data->pipe = crtc->pipe;
++				data->crtc = crtc;
+ 
+ 				if (!valid_pipe_output_combo(data))
+ 					continue;
+@@ -1054,7 +1052,7 @@ static void run_tests_on_pipe(data_t *data)
+ 			if (execution_constraint(crtc->pipe))
+ 				continue;
+ 
+-			data->pipe = crtc->pipe;
++			data->crtc = crtc;
+ 
+ 			if (!valid_pipe_output_combo(data))
+ 				continue;
+@@ -1075,7 +1073,7 @@ static void run_tests_on_pipe(data_t *data)
+ 			if (execution_constraint(crtc->pipe))
+ 				continue;
+ 
+-			data->pipe = crtc->pipe;
++			data->crtc = crtc;
+ 
+ 			if (!valid_pipe_output_combo(data))
+ 				continue;
+@@ -1096,7 +1094,7 @@ static void run_tests_on_pipe(data_t *data)
+ 			if (execution_constraint(crtc->pipe))
+ 				continue;
+ 
+-			data->pipe = crtc->pipe;
++			data->crtc = crtc;
+ 
+ 			if (!valid_pipe_output_combo(data))
+ 				continue;
+@@ -1126,7 +1124,7 @@ static void run_tests_on_pipe(data_t *data)
+ 			if (execution_constraint(crtc->pipe))
+ 				continue;
+ 
+-			data->pipe = crtc->pipe;
++			data->crtc = crtc;
+ 
+ 			if (!valid_pipe_output_combo(data))
+ 				continue;
+@@ -1146,7 +1144,7 @@ static void run_tests_on_pipe(data_t *data)
+ 			if (execution_constraint(crtc->pipe))
+ 				continue;
+ 
+-			data->pipe = crtc->pipe;
++			data->crtc = crtc;
+ 
+ 			if (!valid_pipe_output_combo(data))
+ 				continue;
+@@ -1173,7 +1171,7 @@ static void run_tests_on_pipe(data_t *data)
+ 			if (execution_constraint(crtc->pipe))
+ 				continue;
+ 
+-			data->pipe = crtc->pipe;
++			data->crtc = crtc;
+ 			data->flags = TEST_DPMS;
+ 
+ 			if (!valid_pipe_output_combo(data))
+@@ -1195,7 +1193,7 @@ static void run_tests_on_pipe(data_t *data)
+ 			if (execution_constraint(crtc->pipe))
+ 				continue;
+ 
+-			data->pipe = crtc->pipe;
++			data->crtc = crtc;
+ 			data->flags = TEST_SUSPEND;
+ 
+ 			if (!valid_pipe_output_combo(data))
+@@ -1220,7 +1218,7 @@ static void run_tests_on_pipe(data_t *data)
+ 			if (execution_constraint(crtc->pipe))
+ 				continue;
+ 
+-			data->pipe = crtc->pipe;
++			data->crtc = crtc;
+ 
+ 			if (!valid_pipe_output_combo(data))
+ 				continue;
+diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
+index 2a29cd62f408..08c9de601ce3 100644
+--- a/tests/kms_cursor_edge_walk.c
++++ b/tests/kms_cursor_edge_walk.c
+@@ -70,7 +70,7 @@ typedef struct {
+ 	struct igt_fb primary_fb;
+ 	struct igt_fb fb;
+ 	igt_output_t *output;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	igt_crc_t ref_crc;
+ 	int curw, curh; /* cursor size */
+ 	igt_pipe_crc_t *pipe_crc;
+@@ -114,7 +114,6 @@ static void create_cursor_fb(data_t *data, int cur_w, int cur_h)
+ static void cursor_move(data_t *data, int x, int y, int i)
+ {
+ 	int crtc_id = data->output->config.crtc->crtc_id;
+-	igt_display_t *display = &data->display;
+ 
+ 	igt_debug("[%d] x=%d, y=%d\n", i, x, y);
+ 
+@@ -124,9 +123,9 @@ static void cursor_move(data_t *data, int x, int y, int i)
+ 	 * fails). So let's accept a failure from the ioctl in that case.
+ 	 */
+ 	igt_assert(drmModeMoveCursor(data->drm_fd, crtc_id, x, y) == 0 ||
+-		   (IS_CHERRYVIEW(data->devid) && data->pipe == PIPE_C &&
++		   (IS_CHERRYVIEW(data->devid) && data->crtc->pipe == PIPE_C &&
+ 		    x < 0 && x > -data->curw));
+-	igt_wait_for_vblank(igt_crtc_for_pipe(display, data->pipe));
++	igt_wait_for_vblank(data->crtc);
+ }
+ 
+ #define XSTEP 8
+@@ -267,7 +266,7 @@ static void prepare_crtc(data_t *data)
+ 
+ 	/* select the pipe we want to use */
+ 	igt_output_set_crtc(data->output,
+-			    igt_crtc_for_pipe(display, data->pipe));
++			    data->crtc);
+ 
+ 	mode = igt_output_get_mode(data->output);
+ 	igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+@@ -284,7 +283,7 @@ static void prepare_crtc(data_t *data)
+ 	data->jump_y = (mode->vdisplay - data->curh) / 2;
+ 
+ 	/* create the pipe_crc object for this pipe */
+-	data->pipe_crc = igt_crtc_crc_new_nonblock(igt_crtc_for_pipe(display, data->pipe),
++	data->pipe_crc = igt_crtc_crc_new_nonblock(data->crtc,
+ 						   IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	/* get reference crc w/o cursor */
+@@ -397,7 +396,7 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				for_each_crtc_with_single_output(&data.display,
+ 								 crtc,
+ 								 data.output) {
+-					data.pipe = crtc->pipe;
++					data.crtc = crtc;
+ 					if (!extended && crtc->pipe != active_pipes[0] &&
+ 					    crtc->pipe != active_pipes[last_pipe])
+ 						continue;
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index 9f6b2df9ed7c..5edffb649ef4 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -64,7 +64,7 @@ typedef struct _data data_t;
+ 
+ struct _data {
+ 	int drm_fd;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	igt_display_t display;
+ 	igt_output_t *output;
+ 	drmModeResPtr res;
+@@ -255,7 +255,6 @@ adjust_mode_overflow_vrefresh(data_t *data, drmModeModeInfoPtr mode)
+ static void
+ test_output(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+ 	igt_output_t *output = data->output;
+ 	drmModeModeInfo mode;
+ 	struct igt_fb fb;
+@@ -278,7 +277,7 @@ test_output(data_t *data)
+ 
+ 	kmstest_unset_all_crtcs(data->drm_fd, data->res);
+ 
+-	crtc_id = igt_crtc_for_pipe(display, data->pipe)->crtc_id;
++	crtc_id = data->crtc->crtc_id;
+ 
+ 	ret = drmModeSetCrtc(data->drm_fd, crtc_id,
+ 			     fb.fb_id, 0, 0,
+@@ -370,7 +369,7 @@ int igt_main()
+ 					      igt_crtc_name(crtc),
+ 					      igt_output_name(output)) {
+ 					data.output = output;
+-					data.pipe = crtc->pipe;
++					data.crtc = crtc;
+ 					data.adjust_mode = subtests[i].adjust_mode;
+ 					test_output(&data);
+ 				}
+diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+index fb3980fade53..8b4e5809d14e 100644
+--- a/tests/kms_plane_lowres.c
++++ b/tests/kms_plane_lowres.c
+@@ -66,7 +66,7 @@ typedef struct {
+ 	igt_display_t display;
+ 	uint32_t devid;
+ 	igt_output_t *output;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	struct igt_fb fb_primary;
+ 	struct igt_fb fb_plane[2];
+ 	struct {
+@@ -273,7 +273,7 @@ test_planes_on_pipe(data_t *data, uint64_t modifier)
+ 	igt_plane_t *plane;
+ 	unsigned tested = 0;
+ 
+-	for_each_plane_on_pipe(&data->display, data->pipe, plane)
++	for_each_plane_on_pipe(&data->display, data->crtc->pipe, plane)
+ 		tested += test_planes_on_pipe_with_output(data, plane, modifier);
+ 
+ 	igt_assert(tested > 0);
+@@ -289,7 +289,6 @@ static void test_cleanup(data_t *data)
+ 
+ static void run_test(data_t *data, uint64_t modifier)
+ {
+-	igt_display_t *display = &data->display;
  	igt_crtc_t *crtc;
+ 	igt_output_t *output;
  
- 	for_each_crtc(display, crtc) {
--		data->pipe_id[crtc->pipe] = crtc->pipe;
- 		data->crtc[crtc->pipe] = crtc;
- 		data->primary[crtc->pipe] = igt_crtc_get_plane_type(crtc,
- 								    DRM_PLANE_TYPE_PRIMARY);
-@@ -165,7 +163,7 @@ static void test_hotplug_basic(data_t *data, bool suspend)
- 				      DRM_FORMAT_XRGB8888, 0,
- 				      &ref_fb[crtc->pipe]);
- 		igt_output_set_crtc(output,
--				    igt_crtc_for_pipe(display, data->pipe_id[crtc->pipe]));
-+				    crtc);
- 		igt_plane_set_fb(data->primary[crtc->pipe],
- 				 &ref_fb[crtc->pipe]);
- 	}
-diff --git a/tests/amdgpu/amd_plane.c b/tests/amdgpu/amd_plane.c
-index 296deb898e1d..6831fc43e4a6 100644
---- a/tests/amdgpu/amd_plane.c
-+++ b/tests/amdgpu/amd_plane.c
-@@ -47,7 +47,6 @@ typedef struct data {
-         igt_crtc_t *crtc[MAX_PIPES];
-         igt_pipe_crc_t *pipe_crc[MAX_PIPES];
-         drmModeModeInfo mode[MAX_PIPES];
--        enum pipe pipe_id[MAX_PIPES];
-         int w[MAX_PIPES];
-         int h[MAX_PIPES];
-         int fd;
-@@ -156,7 +155,6 @@ static void test_init(data_t *data)
- 	igt_crtc_t *crtc;
+@@ -299,17 +298,17 @@ static void run_test(data_t *data, uint64_t modifier)
+ 	for_each_crtc(&data->display, crtc) {
+ 		for_each_valid_output_on_pipe(&data->display, crtc->pipe,
+ 					      output) {
+-			data->pipe = crtc->pipe;
++			data->crtc = crtc;
+ 			data->output = output;
  
- 	for_each_crtc(display, crtc) {
--		data->pipe_id[crtc->pipe] = crtc->pipe;
- 		data->crtc[crtc->pipe] = crtc;
- 		data->primary[crtc->pipe] = igt_crtc_get_plane_type(crtc,
- 								    DRM_PLANE_TYPE_PRIMARY);
-@@ -570,7 +568,7 @@ static void test_multi_mpo_invalid(data_t *data)
- 	igt_skip_on(!data->overlay2[0]);
+ 			igt_display_reset(&data->display);
+ 			igt_output_set_crtc(data->output,
+-					    igt_crtc_for_pipe(display, data->pipe));
++					    data->crtc);
  
- 	igt_output_set_crtc(data->output[0],
--			    igt_crtc_for_pipe(display, data->pipe_id[0]));
-+			    data->crtc[0]);
+ 			if (!intel_pipe_output_combo_valid(&data->display))
+ 				continue;
  
- 	igt_create_color_fb(data->fd, w, h, DRM_FORMAT_XRGB8888, 0, 1.0, 1.0, 1.0, &fb[0].test_primary);
- 	igt_create_fb(data->fd, w, h, DRM_FORMAT_NV12, 0, &fb[0].test_overlay);
-@@ -647,7 +645,7 @@ static void test_display_mpo(data_t *data, enum test test, uint32_t format, int
- 		}
+-			data->pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, data->pipe),
++			data->pipe_crc = igt_crtc_crc_new(data->crtc,
+ 							  IGT_PIPE_CRC_SOURCE_AUTO);
  
- 		igt_output_set_crtc(data->output[n],
--				    igt_crtc_for_pipe(display, data->pipe_id[n]));
-+				    data->crtc[n]);
+ 			igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
+diff --git a/tests/kms_sequence.c b/tests/kms_sequence.c
+index ff1c1338c063..05f9149391a1 100644
+--- a/tests/kms_sequence.c
++++ b/tests/kms_sequence.c
+@@ -74,7 +74,7 @@ typedef struct {
+ 	struct igt_fb primary_fb;
+ 	igt_output_t *output;
+ 	uint32_t crtc_id;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	unsigned int flags;
+ #define IDLE 1
+ #define BUSY 2
+@@ -106,7 +106,7 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
  
- 		igt_create_fb(data->fd, w, h, DRM_FORMAT_XRGB8888, 0, &fb[n].ref_primary);
- 		igt_create_color_fb(data->fd, w, h, DRM_FORMAT_XRGB8888, 0, 1.0, 1.0, 1.0, &fb[n].ref_primary);
-@@ -735,7 +733,7 @@ static void test_mpo_4k(data_t *data)
- 			 0.00, 0.00, 0.00, 0.00);
+ 	/* select the pipe we want to use */
+ 	igt_output_set_crtc(output,
+-			    igt_crtc_for_pipe(display, data->pipe));
++			    data->crtc);
  
- 	igt_output_set_crtc(data->output[0],
--			    igt_crtc_for_pipe(display, data->pipe_id[0]));
-+			    data->crtc[0]);
- 	igt_plane_set_fb(data->primary[0], &r_fb);
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 	/* create and set the primary plane fb */
+ 	mode = igt_output_get_mode(output);
+@@ -123,7 +123,7 @@ static void prepare_crtc(data_t *data, int fd, igt_output_t *output)
  
-@@ -801,9 +799,9 @@ static void test_mpo_swizzle_toggle_multihead(data_t *data)
+ 	igt_display_commit(display);
  
- 	/* Initial modeset */
- 	igt_output_set_crtc(data->output[0],
--			    igt_crtc_for_pipe(display, data->pipe_id[0]));
-+			    data->crtc[0]);
- 	igt_output_set_crtc(data->output[1],
--			    igt_crtc_for_pipe(display, data->pipe_id[1]));
-+			    data->crtc[1]);
- 	force_output_mode(data, data->output[0], &test_mode_1);
- 	force_output_mode(data, data->output[1], &test_mode_2);
+-	igt_wait_for_vblank(igt_crtc_for_pipe(display, data->pipe));
++	igt_wait_for_vblank(data->crtc);
+ }
  
-@@ -872,7 +870,7 @@ static void test_mpo_swizzle_toggle(data_t *data)
+ static void cleanup_crtc(data_t *data, int fd, igt_output_t *output)
+@@ -171,7 +171,7 @@ static void run_test(data_t *data, int fd, void (*testfunc)(data_t *, int, int))
  
- 	/* Initial modeset */
- 	igt_output_set_crtc(data->output[0],
--			    igt_crtc_for_pipe(display, data->pipe_id[0]));
-+			    data->crtc[0]);
- 	force_output_mode(data, data->output[0], &test_mode_1);
+ 	igt_info("Beginning %s on pipe %s, connector %s (%d threads)\n",
+ 		 igt_subtest_name(),
+-		 kmstest_pipe_name(data->pipe),
++		 igt_crtc_name(data->crtc),
+ 		 igt_output_name(output),
+ 		 nchildren);
  
- 	igt_plane_set_fb(data->primary[0], &fb_1920_xb24_linear);
-diff --git a/tests/amdgpu/amd_subvp.c b/tests/amdgpu/amd_subvp.c
-index 6249490a4e5e..37879d167e08 100644
---- a/tests/amdgpu/amd_subvp.c
-+++ b/tests/amdgpu/amd_subvp.c
-@@ -19,7 +19,6 @@ struct data {
- 	igt_crtc_t *crtc[IGT_MAX_PIPES];
- 	igt_pipe_crc_t *pipe_crc[IGT_MAX_PIPES];
- 	drmModeModeInfo mode[IGT_MAX_PIPES];
--	enum pipe pipe_id[IGT_MAX_PIPES];
- 	int fd;
+@@ -199,7 +199,7 @@ static void run_test(data_t *data, int fd, void (*testfunc)(data_t *, int, int))
+ 
+ 	igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
+ 		 igt_subtest_name(),
+-		 kmstest_pipe_name(data->pipe),
++		 igt_crtc_name(data->crtc),
+ 		 igt_output_name(output));
+ 
+ 	/* cleanup what prepare_crtc() has done */
+@@ -321,7 +321,7 @@ int igt_main()
+ 					igt_dynamic_f("pipe-%s-%s",
+ 						      igt_crtc_name(crtc),
+ 						      igt_output_name(output)) {
+-						data.pipe = crtc->pipe;
++						data.crtc = crtc;
+ 						data.output = output;
+ 						data.flags = m->flags;
+ 						run_test(&data, fd, f->func);
+diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
+index b2f9f3bdd08d..3137884dcfc6 100644
+--- a/tests/nouveau_crc.c
++++ b/tests/nouveau_crc.c
+@@ -31,7 +31,7 @@ IGT_TEST_DESCRIPTION(
+ "such as context flipping.");
+ 
+ typedef struct {
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	int drm_fd;
+ 	int nv_crc_dir;
+ 	igt_display_t display;
+@@ -105,7 +105,6 @@ static void destroy_crc_colors(data_t *data, struct color_fb *colors, size_t len
+  */
+ static void test_ctx_flip_detection(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+ 	struct color_fb colors[] = {
+ 		HEX_COLOR(0xFF, 0x00, 0x18),
+ 		HEX_COLOR(0xFF, 0xA5, 0x2C),
+@@ -123,7 +122,7 @@ static void test_ctx_flip_detection(data_t *data)
+ 	int start = -1, frame, start_color = -1, i;
+ 	bool found_skip = false;
+ 
+-	pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, data->pipe),
++	pipe_crc = igt_crtc_crc_new(data->crtc,
+ 				    IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	create_crc_colors(data, colors, n_colors, pipe_crc);
+@@ -222,7 +221,6 @@ static void test_ctx_flip_detection(data_t *data)
+  */
+ static void test_ctx_flip_skip_current_frame(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+ 	struct color_fb colors[] = {
+ 		{ .r = 1.0, .g = 0.0, .b = 0.0 },
+ 		{ .r = 0.0, .g = 1.0, .b = 0.0 },
+@@ -235,7 +233,7 @@ static void test_ctx_flip_skip_current_frame(data_t *data)
+ 	const int n_colors = ARRAY_SIZE(colors);
+ 	const int n_crcs = 30;
+ 
+-	pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, data->pipe),
++	pipe_crc = igt_crtc_crc_new(data->crtc,
+ 				    IGT_PIPE_CRC_SOURCE_AUTO);
+ 	create_crc_colors(data, colors, n_colors, pipe_crc);
+ 
+@@ -265,11 +263,10 @@ static void test_ctx_flip_skip_current_frame(data_t *data)
+ 
+ static void test_ctx_flip_threshold_reset_after_capture(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+ 	igt_pipe_crc_t *pipe_crc;
+ 	uint32_t value = 0;
+ 
+-	pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, data->pipe),
++	pipe_crc = igt_crtc_crc_new(data->crtc,
+ 				    IGT_PIPE_CRC_SOURCE_AUTO);
+ 
+ 	set_crc_flip_threshold(data, 5);
+@@ -285,8 +282,7 @@ static void test_ctx_flip_threshold_reset_after_capture(data_t *data)
+ 
+ static void test_source(data_t *data, const char *source)
+ {
+-	igt_display_t *display = &data->display;
+-	igt_pipe_crc_t *pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, data->pipe),
++	igt_pipe_crc_t *pipe_crc = igt_crtc_crc_new(data->crtc,
+ 						    source);
+ 	igt_crc_t *crcs;
+ 
+@@ -303,7 +299,6 @@ static void test_source(data_t *data, const char *source)
+ 
+ static void test_source_outp_inactive(data_t *data)
+ {
+-	igt_display_t *display = &data->display;
+ 	struct color_fb colors[] = {
+ 		{ .r = 1.0, .g = 0.0, .b = 0.0 },
+ 		{ .r = 0.0, .g = 1.0, .b = 0.0 },
+@@ -311,7 +306,7 @@ static void test_source_outp_inactive(data_t *data)
+ 	igt_pipe_crc_t *pipe_crc;
+ 	const int n_colors = ARRAY_SIZE(colors);
+ 
+-	pipe_crc = igt_crtc_crc_new(igt_crtc_for_pipe(display, data->pipe),
++	pipe_crc = igt_crtc_crc_new(data->crtc,
+ 				    "outp-inactive");
+ 	create_crc_colors(data, colors, n_colors, pipe_crc);
+ 
+@@ -344,8 +339,9 @@ int igt_main()
+ 		igt_fixture() {
+ 			int dir;
+ 
+-			data.pipe = pipe;
+-			igt_display_require_output_on_pipe(&data.display, pipe);
++			data.crtc = igt_crtc_for_pipe(&data.display, pipe);
++			igt_display_require_output_on_pipe(&data.display,
++							   data.crtc->pipe);
+ 
+ 			/* Disable the output from the previous iteration of pipe tests, if there is
+ 			 * one
+@@ -355,14 +351,15 @@ int igt_main()
+ 				igt_display_commit(&data.display);
+ 			}
+ 
+-			data.output = igt_get_single_output_for_pipe(&data.display, pipe);
++			data.output = igt_get_single_output_for_pipe(&data.display,
++								     data.crtc->pipe);
+ 			data.mode = igt_output_get_mode(data.output);
+ 
+ 			/* None of these tests need to perform modesets, just page flips. So running
+ 			 * display setup here is fine
+ 			 */
+ 			igt_output_set_crtc(data.output,
+-					    igt_crtc_for_pipe(data.output->display, pipe));
++					    data.crtc);
+ 			data.primary = igt_output_get_plane(data.output, 0);
+ 			igt_create_color_fb(data.drm_fd,
+ 					    data.mode->hdisplay,
+@@ -374,7 +371,9 @@ int igt_main()
+ 			igt_plane_set_fb(data.primary, &data.default_fb);
+ 			igt_display_commit(&data.display);
+ 
+-			dir = igt_debugfs_crtc_dir(data.drm_fd, pipe, O_DIRECTORY);
++			dir = igt_debugfs_crtc_dir(data.drm_fd,
++						   data.crtc->pipe,
++						   O_DIRECTORY);
+ 			igt_require_fd(dir);
+ 			data.nv_crc_dir = openat(dir, "nv_crc", O_DIRECTORY);
+ 			close(dir);
+diff --git a/tests/vmwgfx/vmw_prime.c b/tests/vmwgfx/vmw_prime.c
+index 570bcc993496..0640b2476dc8 100644
+--- a/tests/vmwgfx/vmw_prime.c
++++ b/tests/vmwgfx/vmw_prime.c
+@@ -174,7 +174,7 @@ struct gpu_process_t {
+ 	struct vmw_surface *fb_surface;
+ 	igt_output_t *output;
+ 	igt_plane_t *primary;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	igt_crc_t reference_tri_crc;
  };
  
-@@ -65,7 +64,6 @@ static void test_init(struct data *data)
- 	bool subvp_en = false;
+@@ -204,7 +204,7 @@ static void prepare_crtc(struct gpu_process_t *gpu)
  
- 	for_each_crtc(display, crtc) {
--		data->pipe_id[crtc->pipe] = crtc->pipe;
- 		data->crtc[crtc->pipe] = crtc;
- 		data->primary[crtc->pipe] = igt_crtc_get_plane_type(crtc,
- 								    DRM_PLANE_TYPE_PRIMARY);
-@@ -141,7 +139,7 @@ static void test_subvp(struct data *data)
- 					&rfb);
+ 	/* select the pipe we want to use */
+ 	igt_output_set_crtc(output,
+-			    igt_crtc_for_pipe(display, gpu->pipe));
++			    gpu->crtc);
  
- 		igt_output_set_crtc(output,
--				    igt_crtc_for_pipe(display, data->pipe_id[crtc->pipe]));
-+				    crtc);
- 		igt_plane_set_fb(data->primary[crtc->pipe], &rfb);
- 		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
- 	}
-diff --git a/tests/kms_bw.c b/tests/kms_bw.c
-index 11f055b23464..778900d8c9f1 100644
---- a/tests/kms_bw.c
-+++ b/tests/kms_bw.c
-@@ -70,7 +70,6 @@ typedef struct data {
-         igt_crtc_t *crtc[IGT_MAX_PIPES];
-         igt_pipe_crc_t *pipe_crc[IGT_MAX_PIPES];
-         drmModeModeInfo mode[IGT_MAX_PIPES];
--        enum pipe pipe_id[IGT_MAX_PIPES];
-         int w[IGT_MAX_PIPES];
-         int h[IGT_MAX_PIPES];
-         int fd;
-@@ -126,7 +125,6 @@ static void test_init(data_t *data, bool physical)
- 	data->connected_outputs = 0;
+ 	mode = igt_output_get_mode(output);
  
- 	for_each_crtc(display, crtc) {
--		data->pipe_id[crtc->pipe] = crtc->pipe;
- 		data->crtc[crtc->pipe] = crtc;
- 		data->primary[crtc->pipe] = igt_crtc_get_plane_type(crtc,
- 								    DRM_PLANE_TYPE_PRIMARY);
+@@ -231,7 +231,7 @@ static void prepare_crtc_surface(struct gpu_process_t *gpu)
+ 
+ 	/* select the pipe we want to use */
+ 	igt_output_set_crtc(output,
+-			    igt_crtc_for_pipe(display, gpu->pipe));
++			    gpu->crtc);
+ 
+ 	mode = igt_output_get_mode(output);
+ 
+@@ -297,7 +297,7 @@ static void draw_triangle_3d(struct gpu_process_t *gpu, uint32_t draw_flags)
+ 		int prime_fd;
+ 
+ 		gpu->output = output;
+-		gpu->pipe = crtc->pipe;
++		gpu->crtc = crtc;
+ 
+ 		prepare_crtc(gpu);
+ 		pipe_crc = igt_pipe_crc_new(gpu->mdevice.drm_fd, crtc->pipe,
+@@ -364,7 +364,7 @@ static void draw_dumb_buffer(struct gpu_process_t *gpu)
+ 
+ 	for_each_crtc_with_valid_output(display, crtc, output) {
+ 		gpu->output = output;
+-		gpu->pipe = crtc->pipe;
++		gpu->crtc = crtc;
+ 
+ 		prepare_crtc_surface(gpu);
+ 		pipe_crc = igt_pipe_crc_new(gpu->mdevice.drm_fd, crtc->pipe,
+diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c
+index cd5d2b6be108..266ee196862d 100644
+--- a/tools/intel_hdcp.c
++++ b/tools/intel_hdcp.c
+@@ -28,7 +28,7 @@ typedef struct data {
+ 	struct igt_fb fb;
+ 	int height, width;
+ 	igt_output_t *output;
+-	enum pipe pipe;
++	igt_crtc_t *crtc;
+ 	enum hdcp_type hdcp_type;
+ 	int user_cmd;
+ 	bool running;
+@@ -628,7 +628,7 @@ static void test_init(data_t *data)
+ 	igt_display_reset(&data->display);
+ 
+ 	for_each_crtc_with_valid_output(&data->display, crtc, data->output) {
+-		data->pipe = crtc->pipe;
++		data->crtc = crtc;
+ 		if (!igt_output_has_prop(data->output, IGT_CONNECTOR_CONTENT_PROTECTION))
+ 			continue;
+ 
 -- 
 2.52.0
 
