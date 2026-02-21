@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AA7AC5DF70
-	for <igt-dev@archiver.kernel.org>; Sat, 21 Feb 2026 03:20:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C103AE9A049
+	for <igt-dev@archiver.kernel.org>; Sat, 21 Feb 2026 03:20:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4EE5F10E10E;
-	Sat, 21 Feb 2026 03:20:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 742D910E109;
+	Sat, 21 Feb 2026 03:20:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hOB0+EAq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HYkN6V2W";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3CCE10E10E
- for <igt-dev@lists.freedesktop.org>; Sat, 21 Feb 2026 03:20:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C6AD10E10E
+ for <igt-dev@lists.freedesktop.org>; Sat, 21 Feb 2026 03:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771644039; x=1803180039;
+ t=1771644043; x=1803180043;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=iaYXNTc5UltZldJV61Hr3wgfcGob5vBYDTa0q+hO4tA=;
- b=hOB0+EAquXaSgU0KTl00/AOPrtDdu/BsL+PpvHFy8gQh4ueFI8JAhlxE
- CJUZnhzW6iyArizODpksJkofp/dKrWTcuZGhnI7wYnbJeMx9VpIIE5iPF
- C4uYzdr5v2fQr9Aadv1UFTn3G2ZLpplGnqIs/JWkptQZSVEpq2JUrFdSF
- sLu300gO0VZNL0e1mA1j74TLVTcBBesa3b+/P5H2X5DDnxDRbeLxORZ7l
- zb9jfg0VNfa7bLp9v4JvuA+qeiLnygNQqDN28o4TIkIxTwqYW3U8CHT43
- ztcRRxBUcLtQOSetszmlaPSSIuPm43E6iTqF6Iiizto7U4lrkHHy4/uwY g==;
-X-CSE-ConnectionGUID: d0ZXHqNWQ96nymwRIzJW0w==
-X-CSE-MsgGUID: wZeiZVNDThmRwBZtlfcBQQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="84187191"
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="84187191"
+ bh=npTNoW2Zd869dJhNHOg9VapFRy7Ff7z+q/EyGxGeutY=;
+ b=HYkN6V2WEECTyQbNma8Uq6hG1+94smZety4tK4eL8yEH0iYj/EHZ9PSg
+ yPaJCQSDoL75v6m6tnncFJmUkooBNKK1KwCgbiI9qo5rgQf/epTHBeloP
+ p91lKLNqOxU2J+Ive7Y+Hk6yfcIrr88/q3tgNU9yIgmvsUPHASm7Xt1ND
+ c1NULd3CYA3D84bbSp4hZyq4cXgLnHAzKoS5vKterK+1dyC6lgjk6JZ6s
+ BXcuDsGOy+PQw06AHpgkE69hJFq7g3xdDhAH2cK8vHFC323hiiVWEkYqY
+ QUv9ywJnr0vkrPFoHlLVP4ZXTky8h56Pi+FDHdhJ0iQzcd7TRHwKOUUxW g==;
+X-CSE-ConnectionGUID: Eeh0oV+3Que/i2/i12IurQ==
+X-CSE-MsgGUID: IZWD+GoBTp64kUjlBj3M6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="84187195"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="84187195"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 19:20:39 -0800
-X-CSE-ConnectionGUID: ZnQjFJZUSf+Iqyfn1zp4ww==
-X-CSE-MsgGUID: fng2bZekSrKxCMinX35CQw==
+ 20 Feb 2026 19:20:43 -0800
+X-CSE-ConnectionGUID: xasYQeX2Ssul9q6O74bCzA==
+X-CSE-MsgGUID: pfKoPGSoSlWTR5G4CvOgqQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="214256389"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="214256391"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.245.139])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 19:20:38 -0800
+ 20 Feb 2026 19:20:42 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 08/23] tests/kms_lease: Use igt_crtc_t instead of
- enum pipe
-Date: Sat, 21 Feb 2026 05:19:47 +0200
-Message-ID: <20260221032003.30936-9-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2 09/23] tests/kms_lease: Pass lease_t to prepare_crtc()
+Date: Sat, 21 Feb 2026 05:19:48 +0200
+Message-ID: <20260221032003.30936-10-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
 References: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
@@ -73,127 +72,78 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Convert kms_lease from 'enum pipe' to 'igt_crtc_t'.
-
-The lessor and lessee each have their own igt_display_t and
-igt_crtc_ts. Thus we have to track the igt_crtc_t in the lease_t
-structure instead of the previous approach of tracking the pipe
-in the shared data_t structure.
-
-The CRTC ID will be the same for both lessor and lessee, so
-we can use that to locate the appropriate igt_crtc_t. The
-CRTC ID is already being tracked in the data_t structure.
+cleanup_crtc() gets passed the appropriate lease_t directly
+by the caller, but prepare_crtc() instead takes the same information
+as a boolean flag (and picks the appropriate lease_t based on that).
+Unify the approach to also pass the appropriate lease_t directly
+to prepare_crtc().
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_lease.c | 22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+ tests/kms_lease.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
 diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 39f5e69440b4..045cd62de0d7 100644
+index 045cd62de0d7..9f7935e99902 100644
 --- a/tests/kms_lease.c
 +++ b/tests/kms_lease.c
-@@ -126,6 +126,7 @@ typedef struct {
- 	uint32_t lessee_id;
- 	igt_display_t display;
- 	struct igt_fb primary_fb;
-+	igt_crtc_t *crtc;
- 	igt_output_t *output;
- 	drmModeModeInfo *mode;
- } lease_t;
-@@ -133,7 +134,6 @@ typedef struct {
- typedef struct {
- 	lease_t lease;
- 	lease_t master;
--	enum pipe pipe;
- 	uint32_t crtc_id;
- 	uint32_t connector_id;
- 	uint32_t plane_id;
-@@ -152,8 +152,8 @@ static int prepare_crtc(data_t *data, bool is_master)
- 	drmModeModeInfo *mode;
- 	lease_t *lease = is_master ? &data->master : &data->lease;
- 	igt_display_t *display = &lease->display;
-+	igt_crtc_t *crtc = igt_crtc_for_crtc_id(display, data->crtc_id);
- 	igt_output_t *output = connector_id_to_output(display, data->connector_id);
--	enum pipe pipe = igt_crtc_for_pipe(display, data->pipe)->pipe;
- 	igt_plane_t *primary;
- 	int ret;
+@@ -147,10 +147,9 @@ static igt_output_t *connector_id_to_output(igt_display_t *display, uint32_t con
+ 	return igt_output_from_connector(display, &connector);
+ }
  
-@@ -161,7 +161,7 @@ static int prepare_crtc(data_t *data, bool is_master)
- 		return -ENOENT;
- 
- 	/* select the pipe we want to use */
--	igt_output_set_crtc(output, igt_crtc_for_pipe(display, pipe));
-+	igt_output_set_crtc(output, crtc);
- 
- 	/* create and set the primary plane fb */
- 	mode = igt_output_get_mode(output);
-@@ -179,8 +179,9 @@ static int prepare_crtc(data_t *data, bool is_master)
- 	if (ret)
- 		return ret;
- 
--	igt_wait_for_vblank(igt_crtc_for_pipe(display, pipe));
-+	igt_wait_for_vblank(crtc);
- 
-+	lease->crtc = crtc;
- 	lease->output = output;
- 	lease->mode = mode;
- 	return 0;
-@@ -308,8 +309,6 @@ static int paint_fb(int drm_fd, struct igt_fb *fb, const char *test_name,
- 
- static void simple_lease(data_t *data)
+-static int prepare_crtc(data_t *data, bool is_master)
++static int prepare_crtc(data_t *data, lease_t *lease)
  {
--	enum pipe pipe = data->pipe;
--
- 	/* Create a valid lease */
- 	igt_assert_eq(make_lease(data), 0);
+ 	drmModeModeInfo *mode;
+-	lease_t *lease = is_master ? &data->master : &data->lease;
+ 	igt_display_t *display = &lease->display;
+ 	igt_crtc_t *crtc = igt_crtc_for_crtc_id(display, data->crtc_id);
+ 	igt_output_t *output = connector_id_to_output(display, data->connector_id);
+@@ -315,7 +314,7 @@ static void simple_lease(data_t *data)
+ 	igt_display_require(&data->lease.display, data->lease.fd);
  
-@@ -321,7 +320,7 @@ static void simple_lease(data_t *data)
+ 	/* Set a mode on the leased output */
+-	igt_assert_eq(0, prepare_crtc(data, false));
++	igt_assert_eq(0, prepare_crtc(data, &data->lease));
+ 
  	/* Paint something attractive */
  	paint_fb(data->lease.fd, &data->lease.primary_fb, "simple-lease",
- 		 data->lease.mode->name, igt_output_name(data->lease.output),
--		 kmstest_pipe_name(pipe));
-+		 igt_crtc_name(data->lease.crtc));
- 	igt_debug_wait_for_keypress("lease");
- 	cleanup_crtc(&data->lease,
- 		     connector_id_to_output(&data->lease.display, data->connector_id));
-@@ -341,8 +340,6 @@ static void page_flip_implicit_plane(data_t *data)
- 	drmModePlaneRes *plane_resources;
- 	uint32_t wrong_plane_id = 0;
- 	int i;
--	igt_display_t *display;
--	enum pipe pipe = data->pipe;
+@@ -364,7 +363,7 @@ static void page_flip_implicit_plane(data_t *data)
+ 	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
  
- 	/* find a plane which isn't the primary one for us */
- 	plane_resources = drmModeGetPlaneResources(data->master.fd);
-@@ -374,9 +371,7 @@ static void page_flip_implicit_plane(data_t *data)
- 			      data->master.primary_fb.fb_id,
- 			      0, NULL));
+ 	/* Set a mode on the leased output */
+-	igt_assert_eq(0, prepare_crtc(data, true));
++	igt_assert_eq(0, prepare_crtc(data, &data->master));
  
--	display = &data->master.display;
--
--	igt_wait_for_vblank(igt_crtc_for_pipe(display, pipe));
-+	igt_wait_for_vblank(data->master.crtc);
+ 	/* sanity check */
+ 	do_or_die(drmModePageFlip(data->master.fd, data->crtc_id,
+@@ -436,7 +435,7 @@ static void setcrtc_implicit_plane(data_t *data)
+ 	}
  
- 	do_or_die(drmModePageFlip(data->lease.fd, data->crtc_id,
- 			      data->master.primary_fb.fb_id,
-@@ -386,7 +381,7 @@ static void page_flip_implicit_plane(data_t *data)
- 	object_ids[mcl.object_count++] = wrong_plane_id;
- 	do_or_die(create_lease(data->master.fd, &mcl, &data->lease.fd));
+ 	/* Set a mode on the leased output */
+-	igt_assert_eq(0, prepare_crtc(data, true));
++	igt_assert_eq(0, prepare_crtc(data, &data->master));
  
--	igt_wait_for_vblank(igt_crtc_for_pipe(display, pipe));
-+	igt_wait_for_vblank(data->master.crtc);
+ 	/* sanity check */
+ 	ret = drmModeSetCrtc(data->master.fd, data->crtc_id, -1,
+@@ -477,7 +476,7 @@ static void cursor_implicit_plane(data_t *data)
+ 	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
  
- 	igt_assert_eq(drmModePageFlip(data->lease.fd, data->crtc_id,
- 				      data->master.primary_fb.fb_id,
-@@ -1290,7 +1285,6 @@ int igt_main()
- 			igt_subtest_with_dynamic_f("%s", f->name) {
- 				for_each_crtc_with_valid_output(display, crtc,
- 								output) {
--					data.pipe = crtc->pipe;
- 					igt_display_reset(display);
+ 	/* Set a mode on the leased output */
+-	igt_assert_eq(0, prepare_crtc(data, true));
++	igt_assert_eq(0, prepare_crtc(data, &data->master));
  
- 					igt_output_set_crtc(output,
+ 	/* sanity check */
+ 	do_or_die(drmModeSetCursor(data->master.fd, data->crtc_id, 0, 0, 0));
+@@ -788,7 +787,7 @@ static void lease_revoke(data_t *data)
+ 	igt_assert_eq(revoke_lease(data->master.fd, &mrl), 0);
+ 
+ 	/* Try to use the leased objects */
+-	ret = prepare_crtc(data, false);
++	ret = prepare_crtc(data, &data->lease);
+ 
+ 	/* Ensure that the expected error is returned */
+ 	igt_assert_eq(ret, -ENOENT);
 -- 
 2.52.0
 
