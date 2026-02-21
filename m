@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA23AE9A049
-	for <igt-dev@archiver.kernel.org>; Sat, 21 Feb 2026 03:20:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E054E9A049
+	for <igt-dev@archiver.kernel.org>; Sat, 21 Feb 2026 03:21:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 57AC210E10E;
-	Sat, 21 Feb 2026 03:20:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CBFF210E109;
+	Sat, 21 Feb 2026 03:20:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KR1W8O5x";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XcwTJCgs";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1EA1410E10E
- for <igt-dev@lists.freedesktop.org>; Sat, 21 Feb 2026 03:20:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E8FD10E865
+ for <igt-dev@lists.freedesktop.org>; Sat, 21 Feb 2026 03:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771644054; x=1803180054;
+ t=1771644058; x=1803180058;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=/exknYkrOkGXFqPiGnFS8YIcdRjoav/D7cWqHxGdLJE=;
- b=KR1W8O5xSYUNKgIj0bpDDHnqxmoGKfyoH7S616Kig07IuOWC2iT0jzQC
- dapmYPDhrRoRs1lIpLU0EmDcVB3/SDNaA1uHVJxv6EShuaL+YH1MER2rB
- E48rbMk5U95zsag0n+f5ehO/nQBnDhInbJu+6xlvtHrTDXsobX/UyS5jZ
- vXAWNjp3CWwY3bll+2FLSg2r7dZT1mrGaJi1WiaZEbPYHxfh+JdweFIwT
- fx3mLEgISUQrsEpt3+3dUHfTKxeoLMmWSLnGI7ciijK2C/xXASTMxtBjH
- nEpfTsAN0hAavSJUiBcCbcF2QGUgxHwIBP2q/uNPkPQWWDd71qg3EDn/A A==;
-X-CSE-ConnectionGUID: 5pHz6zooSuuPdnGPc311jg==
-X-CSE-MsgGUID: ObklT3HtTU2HNyZpkNTg8g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="84187206"
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="84187206"
+ bh=Y27a1vfb47qeCK56hvOWUBQWhio2A1rcmA3wXMWyviU=;
+ b=XcwTJCgs8jsxA+vWYzhY+qZxtbPWHrvJej6Na9dEGRjaj+CPVTpm6q5q
+ sAXpN+Rjls2P6134SOstpd161i3iYDREq7hNaACFKyDfgm76cjzYND1N/
+ Myth2mdIDUE10k/YsnmEpkI3u1LPuARk8QbcYG7G8KuDMEK+bXKSJHg74
+ 6FejXtW+JrrpATrwQqC0GyzoS8VL89C3ahEw8Q5bYZPLGitTYJNXzXReS
+ etJ+Jz7Vo2PcU/ZC4Y+UCeMe3lmYffceQduIIBzecnIa3pj1C/QmD9Njl
+ 9wq9AzMGxRjyJr0UxGuFreNqjBOGQy30j+ZClVDRiwkwysikgSM0uwqyq A==;
+X-CSE-ConnectionGUID: uD2aznKwQ5eospwOEXx2rA==
+X-CSE-MsgGUID: oEXkRSSqSUqhSklBFokQgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="84187208"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="84187208"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 19:20:54 -0800
-X-CSE-ConnectionGUID: Dx8bULMDSjmCNP7/x/3IGw==
-X-CSE-MsgGUID: VFgyUAs2SACvo2ucMQSAiA==
+ 20 Feb 2026 19:20:57 -0800
+X-CSE-ConnectionGUID: fsRnAY+VT9GqdVGQ8uSHeg==
+X-CSE-MsgGUID: xDzuRKFkT1OFT84Z9gpYOw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="214256398"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="214256402"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.245.139])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 19:20:53 -0800
+ 20 Feb 2026 19:20:57 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 12/23] tests/drm_read: Use igt_crtc_t instead of enum
- pipe
-Date: Sat, 21 Feb 2026 05:19:51 +0200
-Message-ID: <20260221032003.30936-13-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2 13/23] tests/intel/kms_psr2_sf: Convert pipes[] to
+ crtcs[]
+Date: Sat, 21 Feb 2026 05:19:52 +0200
+Message-ID: <20260221032003.30936-14-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
 References: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
@@ -73,257 +73,193 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Convert drm_read from 'enum pipe' to 'igt_crtc_t'.
-
-The pipe usage in igt_main() creates a slight complication
-is this one.
-
- #include "scripts/iterators.cocci"
-
-@clean_igt_main@
-identifier PIPE;
-identifier CRTC;
-@@
-- enum pipe PIPE;
-+ igt_crtc_t *CRTC;
-...
-igt_fixture() {
-...
-- igt_crtc_t *CRTC;
-<...
-(
-- PIPE = CRTC->pipe;
-|
-- PIPE
-+ CRTC->pipe
-)
-...>
-}
-<...
-- PIPE
-+ CRTC->pipe
-...>
-
-@func1@
-typedef igt_output_t;
-typedef igt_crtc_t;
-identifier FUNC, PIPE, CRTC;
-parameter list[N] P;
-@@
-FUNC(P
--	,enum pipe PIPE
-+	,igt_crtc_t *CRTC
-	,...)
-{
-...
-(
-- igt_crtc_t *CRTC = igt_crtc_for_pipe(..., PIPE);
-|
-- igt_crtc_t *CRTC;
-... when != PIPE = ...
-- CRTC = igt_crtc_for_pipe(..., PIPE);
-)
-<... when != PIPE = ...
-(
-- igt_crtc_for_pipe(..., PIPE)
-+ CRTC
-|
-- kmstest_pipe_name(PIPE)
-+ igt_crtc_name(CRTC)
-|
-- PIPE
-+ CRTC->pipe
-)
-...>
-}
-
-@depends on func1@
-identifier func1.FUNC;
-expression list[func1.N] EP;
-expression PIPE;
-@@
-FUNC(EP
--	,PIPE
-+	,igt_crtc_for_pipe(display, PIPE)
-	,...)
-
-@func2@
-typedef igt_crtc_t;
-identifier FUNC, PIPE;
-parameter list[N] P;
-@@
-FUNC(P
--	,enum pipe PIPE
-+	,igt_crtc_t *crtc
-	,...)
-{
-<+... when != PIPE = ...
-(
-- igt_crtc_for_pipe(..., PIPE)
-+ crtc
-|
-- kmstest_pipe_name(PIPE)
-+ igt_crtc_name(crtc)
-|
-- PIPE
-+ crtc->pipe
-)
-...+>
-}
-
-@depends on func2@
-identifier func2.FUNC;
-expression list[func2.N] EP;
-expression PIPE;
-@@
-FUNC(EP
--	,PIPE
-+	,igt_crtc_for_pipe(display, PIPE)
-	,...)
-
-@@
-igt_crtc_t *CRTC;
-@@
-- igt_crtc_for_pipe(..., CRTC->pipe)
-+ CRTC
-
-@@
-typedef igt_display_t;
-identifier DISPLAY;
-@@
-- igt_display_t *DISPLAY = ...;
-... when != DISPLAY
+Convert the pipes[] array to crtcs[] in kms_psr2_sf. The
+remainder of the pipe->crtc conversions will be handled
+with cocci.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/drm_read.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ tests/intel/kms_psr2_sf.c | 66 +++++++++++++++++++--------------------
+ 1 file changed, 33 insertions(+), 33 deletions(-)
 
-diff --git a/tests/drm_read.c b/tests/drm_read.c
-index e745e98534bd..23b9ebe0faa3 100644
---- a/tests/drm_read.c
-+++ b/tests/drm_read.c
-@@ -77,9 +77,9 @@ static void assert_empty(int fd)
- 	do_or_die(poll(&pfd, 1, 0));
- }
+diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
+index f79d9b0b751e..ff63a3c84f10 100644
+--- a/tests/intel/kms_psr2_sf.c
++++ b/tests/intel/kms_psr2_sf.c
+@@ -1157,8 +1157,8 @@ int igt_main()
+ 	data_t data = {};
+ 	igt_output_t *outputs[IGT_MAX_PIPES * IGT_MAX_PIPES];
+ 	int i, y, z;
+-	int pipes[IGT_MAX_PIPES * IGT_MAX_PIPES];
+-	int n_pipes = 0;
++	igt_crtc_t *crtcs[IGT_MAX_PIPES * IGT_MAX_PIPES];
++	int n_crtcs = 0;
+ 	int coexist_features[IGT_MAX_PIPES * IGT_MAX_PIPES];
+ 	const char *append_fbc_subtest[2] = {
+ 		"",
+@@ -1212,14 +1212,14 @@ int igt_main()
+ 			if (!output_supports_pr_psr2_sel_fetch)
+ 				continue;
  
--static void generate_event(int fd, enum pipe pipe)
-+static void generate_event(int fd, igt_crtc_t *crtc)
- {
--	igt_assert(kmstest_get_vblank(fd, pipe, DRM_VBLANK_EVENT));
-+	igt_assert(kmstest_get_vblank(fd, crtc->pipe, DRM_VBLANK_EVENT));
- }
+-			pipes[n_pipes] = data.pipe;
+-			outputs[n_pipes] = data.output;
++			crtcs[n_crtcs] = crtc;
++			outputs[n_crtcs] = data.output;
  
- static void wait_for_event(int fd)
-@@ -132,7 +132,7 @@ static void test_invalid_buffer(int in)
- 	teardown(fd);
- }
+-			coexist_features[n_pipes] = 0;
++			coexist_features[n_crtcs] = 0;
+ 			if (is_dsc_supported_by_sink(data.drm_fd, data.output))
+-				coexist_features[n_pipes] |= FEATURE_DSC;
++				coexist_features[n_crtcs] |= FEATURE_DSC;
  
--static void test_fault_buffer(int in, enum pipe pipe)
-+static void test_fault_buffer(int in, igt_crtc_t *crtc)
- {
- 	int fd = setup(in, 0);
- 	struct drm_mode_map_dumb arg;
-@@ -146,7 +146,7 @@ static void test_fault_buffer(int in, enum pipe pipe)
- 	buf = mmap(0, 4096, PROT_WRITE, MAP_SHARED, fd, arg.offset);
- 	igt_assert(buf != MAP_FAILED);
- 
--	generate_event(fd, pipe);
-+	generate_event(fd, crtc);
- 
- 	alarm(1);
- 
-@@ -168,13 +168,13 @@ static void test_empty(int in, int nonblock, int expected)
- 	teardown(fd);
- }
- 
--static void test_short_buffer(int in, int nonblock, enum pipe pipe)
-+static void test_short_buffer(int in, int nonblock, igt_crtc_t *crtc)
- {
- 	char buffer[1024]; /* events are typically 32 bytes */
- 	int fd = setup(in, nonblock);
- 
--	generate_event(fd, pipe);
--	generate_event(fd, pipe);
-+	generate_event(fd, crtc);
-+	generate_event(fd, crtc);
- 
- 	wait_for_event(fd);
- 
-@@ -214,7 +214,7 @@ static void *thread_short_buffer_wakeup(void *arg)
- 	return NULL;
- }
- 
--static void test_short_buffer_wakeup(int in, enum pipe pipe)
-+static void test_short_buffer_wakeup(int in, igt_crtc_t *crtc)
- {
- 	const int nt = sysconf(_SC_NPROCESSORS_ONLN) + 1;
- 	struct short_buffer_wakeup w = {
-@@ -243,7 +243,7 @@ static void test_short_buffer_wakeup(int in, enum pipe pipe)
- 		sched_yield();
- 
- 		/* One event should wake all threads as none consume */
--		generate_event(w.fd, pipe);
-+		generate_event(w.fd, crtc);
- 
- 		clock_gettime(CLOCK_REALTIME, &tv);
- 		tv.tv_sec += 5; /* Let's be very generous to the scheduler */
-@@ -274,13 +274,12 @@ int igt_main()
- {
- 	igt_display_t display;
- 	struct igt_fb fb;
--	enum pipe pipe;
-+	igt_crtc_t *crtc;
- 	igt_fd_t(fd);
- 
- 	igt_fixture() {
- 		struct sigaction alarm_action = {};
- 		igt_output_t *output;
--		igt_crtc_t *crtc;
- 
- 		igt_assert_neq(sigaction(SIGALRM, NULL, &alarm_action), -1);
- 		alarm_action.sa_flags &= ~SA_RESTART;
-@@ -302,20 +301,18 @@ int igt_main()
- 
- 			igt_output_set_crtc(output, crtc);
- 			igt_plane_set_fb(igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY), &fb);
--
--			pipe = crtc->pipe;
- 			break;
+-			n_pipes++;
++			n_crtcs++;
+ 			pr_psr2_sel_fetch_supported = true;
  		}
+ 		igt_require_f(pr_psr2_sel_fetch_supported,
+@@ -1244,8 +1244,8 @@ int igt_main()
+ 						   append_fbc_subtest[y],
+ 						   append_psr_subtest[z],
+ 						   op_str(data.op)) {
+-				for (i = 0; i < n_pipes; i++) {
+-					data.pipe = pipes[i];
++				for (i = 0; i < n_crtcs; i++) {
++					data.pipe = crtcs[i]->pipe;
+ 					data.output = outputs[i];
  
- 		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
--		igt_require(kmstest_get_vblank(fd, pipe, 0));
-+		igt_require(kmstest_get_vblank(fd, crtc->pipe, 0));
- 	}
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1265,8 +1265,8 @@ int igt_main()
+ 							   append_fbc_subtest[y],
+ 							   append_psr_subtest[z],
+ 							   op_str(data.op)) {
+-					for (i = 0; i < n_pipes; i++) {
+-						data.pipe = pipes[i];
++					for (i = 0; i < n_crtcs; i++) {
++						data.pipe = crtcs[i]->pipe;
+ 						data.output = outputs[i];
  
- 	igt_subtest("invalid-buffer")
- 		test_invalid_buffer(fd);
+ 						if (!pipe_output_combo_valid(&data))
+@@ -1286,8 +1286,8 @@ int igt_main()
+ 						   append_fbc_subtest[y],
+ 						   append_psr_subtest[z],
+ 						   op_str(data.op)) {
+-				for (i = 0; i < n_pipes; i++) {
+-					data.pipe = pipes[i];
++				for (i = 0; i < n_crtcs; i++) {
++					data.pipe = crtcs[i]->pipe;
+ 					data.output = outputs[i];
  
- 	igt_subtest("fault-buffer")
--		test_fault_buffer(fd, pipe);
-+		test_fault_buffer(fd, crtc);
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1303,8 +1303,8 @@ int igt_main()
+ 			igt_describe("Test that selective fetch works on cursor plane");
+ 			igt_subtest_with_dynamic_f("%s%scursor-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+-				for (i = 0; i < n_pipes; i++) {
+-					data.pipe = pipes[i];
++				for (i = 0; i < n_crtcs; i++) {
++					data.pipe = crtcs[i]->pipe;
+ 					data.output = outputs[i];
  
- 	igt_subtest("empty-block")
- 		test_empty(fd, 0, EINTR);
-@@ -324,11 +321,14 @@ int igt_main()
- 		test_empty(fd, 1, EAGAIN);
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1320,8 +1320,8 @@ int igt_main()
+ 				     "moving cursor plane (no update)");
+ 			igt_subtest_with_dynamic_f("%s%scursor-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+-				for (i = 0; i < n_pipes; i++) {
+-					data.pipe = pipes[i];
++				for (i = 0; i < n_crtcs; i++) {
++					data.pipe = crtcs[i]->pipe;
+ 					data.output = outputs[i];
  
- 	igt_subtest("short-buffer-block")
--		test_short_buffer(fd, 0, pipe);
-+		test_short_buffer(fd, 0,
-+				  crtc);
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1337,8 +1337,8 @@ int igt_main()
+ 				     "plane exceeding partially visible area (no update)");
+ 			igt_subtest_with_dynamic_f("%s%scursor-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+-				for (i = 0; i < n_pipes; i++) {
+-					data.pipe = pipes[i];
++				for (i = 0; i < n_crtcs; i++) {
++					data.pipe = crtcs[i]->pipe;
+ 					data.output = outputs[i];
  
- 	igt_subtest("short-buffer-nonblock")
--		test_short_buffer(fd, 1, pipe);
-+		test_short_buffer(fd, 1,
-+				  crtc);
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1354,8 +1354,8 @@ int igt_main()
+ 				     "exceeding fully visible area (no update)");
+ 			igt_subtest_with_dynamic_f("%s%scursor-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+-				for (i = 0; i < n_pipes; i++) {
+-					data.pipe = pipes[i];
++				for (i = 0; i < n_crtcs; i++) {
++					data.pipe = crtcs[i]->pipe;
+ 					data.output = outputs[i];
  
- 	igt_subtest("short-buffer-wakeup")
--		test_short_buffer_wakeup(fd, pipe);
-+		test_short_buffer_wakeup(fd,
-+					 crtc);
- }
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1372,8 +1372,8 @@ int igt_main()
+ 			igt_describe("Test that selective fetch works on moving overlay plane");
+ 			igt_subtest_with_dynamic_f("%s%s%s-sf-dmg-area", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+-				for (i = 0; i < n_pipes; i++) {
+-					data.pipe = pipes[i];
++				for (i = 0; i < n_crtcs; i++) {
++					data.pipe = crtcs[i]->pipe;
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1388,8 +1388,8 @@ int igt_main()
+ 				     "plane (no update)");
+ 			igt_subtest_with_dynamic_f("%s%soverlay-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+-				for (i = 0; i < n_pipes; i++) {
+-					data.pipe = pipes[i];
++				for (i = 0; i < n_crtcs; i++) {
++					data.pipe = crtcs[i]->pipe;
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1405,8 +1405,8 @@ int igt_main()
+ 				     "plane partially exceeding visible area (no update)");
+ 			igt_subtest_with_dynamic_f("%s%soverlay-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+-				for (i = 0; i < n_pipes; i++) {
+-					data.pipe = pipes[i];
++				for (i = 0; i < n_crtcs; i++) {
++					data.pipe = crtcs[i]->pipe;
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1422,8 +1422,8 @@ int igt_main()
+ 				     "fully exceeding visible area (no update)");
+ 			igt_subtest_with_dynamic_f("%s%soverlay-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+-				for (i = 0; i < n_pipes; i++) {
+-					data.pipe = pipes[i];
++				for (i = 0; i < n_crtcs; i++) {
++					data.pipe = crtcs[i]->pipe;
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1440,8 +1440,8 @@ int igt_main()
+ 				     "with blended overlay plane");
+ 			igt_subtest_with_dynamic_f("%s%s%s-sf-dmg-area", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+-				for (i = 0; i < n_pipes; i++) {
+-					data.pipe = pipes[i];
++				for (i = 0; i < n_crtcs; i++) {
++					data.pipe = crtcs[i]->pipe;
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
+@@ -1460,8 +1460,8 @@ int igt_main()
+ 			igt_describe("Test that selective fetch works on overlay plane");
+ 			igt_subtest_with_dynamic_f("%s%soverlay-%s-sf", append_fbc_subtest[y],
+ 						   append_psr_subtest[z], op_str(data.op)) {
+-				for (i = 0; i < n_pipes; i++) {
+-					data.pipe = pipes[i];
++				for (i = 0; i < n_crtcs; i++) {
++					data.pipe = crtcs[i]->pipe;
+ 					data.output = outputs[i];
+ 
+ 					if (!pipe_output_combo_valid(&data))
 -- 
 2.52.0
 
