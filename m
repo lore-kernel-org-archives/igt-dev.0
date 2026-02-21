@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68F18E9A049
-	for <igt-dev@archiver.kernel.org>; Sat, 21 Feb 2026 03:20:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95D4EC5DF70
+	for <igt-dev@archiver.kernel.org>; Sat, 21 Feb 2026 03:20:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F105810E109;
-	Sat, 21 Feb 2026 03:20:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4895210E866;
+	Sat, 21 Feb 2026 03:20:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="djSsSM9d";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DAaNYAPr";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1564210E109
- for <igt-dev@lists.freedesktop.org>; Sat, 21 Feb 2026 03:20:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E13110E866
+ for <igt-dev@lists.freedesktop.org>; Sat, 21 Feb 2026 03:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771644008; x=1803180008;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=bopkqbiecLz8Tx0v85qTJTp16OvziG+9DneUhSnCvwY=;
- b=djSsSM9dnbdENMCtS3EOVcJ3NQdMOcX0d0gm79LNRTUQO3xYyenjVB73
- 7LPRk3aS0j1Utabktp0sh33VOQfG2JCv68QErrv7C35L6pEKqhn4RgSQ6
- yuOmCyWyWWAnVRp0Rs39bVqVRTM0TamUfgdwlCpYN9MstkUITbiydDieD
- MNQS730K0k9wvvpAm8tMWRnh6RzuuypUcRH4Knn+k7lAFeVyIeVcIt8jC
- 5LZtTPUxMCVHYLLEeUcnauNKnJ0X6vBrZ7wIJSSyasSMNPM2tkgGk0DhK
- 8tPei7nUo+2Wm4Yz4F2ISzx1OOGuP0fQNAU3OGd6lY8QP/7sr286v5fmV g==;
-X-CSE-ConnectionGUID: Efg2NufoQNmxw5/j4M4cYw==
-X-CSE-MsgGUID: +iy8Q5Z3TZSANccLxV5frA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="75345743"
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="75345743"
+ t=1771644014; x=1803180014;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=pKu0ADtJrQtEhFZdNfMOAeefL4pASh9JZlGpbm0oc2A=;
+ b=DAaNYAPrLVByf9BlSaAhKMODZtr1WmcoLQnSkgJQiwM9mR/ko/0MiG9M
+ WXoxJSPxFzJ/aTdR+KuGkxdHTYqIdY0G+OS+7x0ie0Z2e/mWKToldry6/
+ qJZDBNaACM+Mc/sNhPNfu+OZjCLyrUMmMvwknMgZ8/T/Pl66ArtcajblL
+ Fjo+GsLQgFOaYena5ujyB9l5OOBKecmpXthkegNu0uRw92bs7Ie5dbktA
+ UEsX4Q/acqJfWgPycAXHktR6VqScbuczgig90Wn7EPApQ/cJIjGIx3cd9
+ x7aaQ+R/G+MN6NUYHQ6dpUV3WPOMAke7BNRQN602F6Ryua5CJcrsSCYCs Q==;
+X-CSE-ConnectionGUID: 9TdLkMtrQaWfEuXgBBo3Kg==
+X-CSE-MsgGUID: AqiPjr0HT52Jdbxx7RYkUQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="75345746"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="75345746"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 19:20:07 -0800
-X-CSE-ConnectionGUID: xTtXjfb3S9+k5bFw3/vQNg==
-X-CSE-MsgGUID: KowM7bCNR1yR17e7ULunNA==
+ 20 Feb 2026 19:20:14 -0800
+X-CSE-ConnectionGUID: iYGHh4DoTuqCilgPuVA8dg==
+X-CSE-MsgGUID: NMxCH38PRfGD7S0wzhosBA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="252720207"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="252720222"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.245.139])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 19:20:06 -0800
+ 20 Feb 2026 19:20:13 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 00/23] tests/kms: More igt_crtc_t conversions
-Date: Sat, 21 Feb 2026 05:19:39 +0200
-Message-ID: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2 02/23] tests/intel/kms_psr2_sf: Don't pass zero
+ initialized 'data.pipe' to intel_fbc_supported_on_chipset()
+Date: Sat, 21 Feb 2026 05:19:41 +0200
+Message-ID: <20260221032003.30936-3-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
+References: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
@@ -70,128 +73,48 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Convert more tests to track/pass around igt_crtc_t instead of
-enum pipe.
+Instead of alwas passing the zero initalized data.pipe
+(== PIPE_A) to intel_fbc_supported_on_chipset() iterate
+over all the CRTCs and properly check if any of them
+supports FBC.
 
-This gets rid of most 'enum pipe' typed variables under tests/.
-The remaining ones are:
-* active_pipes[] array
-  - kms_vblank
-  - kms_plane_alpha_blend
-  - kms_pipe_crc_basic
-  - kms_cursor_edge_walk
-  - kms_cursor_crc
-* incorrect pipe usage for igt_debugfs_crtc_dir()
-  - kms_frontbuffer_tracking
-* the big mess that still needs to be sorted:
-  - kms_joiner*
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ tests/intel/kms_psr2_sf.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Additionally a lot of crtc->pipe usage still remains:
-- some will disappear once all external igt_kms functions get
-  converted to igt_crtc_t. I still plan to send at least one
-  cocci series for that
-- some need to be converted to crtc->crtc_index for correctness
-- some are used for local array indexing which probably should also
-  be converted to crtc_index (or some other sensible thing)
-- what should remain in the end are the actual crtc->pipe vs. PIPE_?
-  comparisons used for hardware specific quirks and whatnot
-
-v2: Deal with pre-existing kms_psr* intel_fbc_supported_on_chipset() bugs
-
-Ville Syrjälä (23):
-  tests/intel/kms_psr: Don't pass uninitialized 'pipe' to
-    intel_fbc_supported_on_chipset()
-  tests/intel/kms_psr2_sf: Don't pass zero initialized 'data.pipe' to
-    intel_fbc_supported_on_chipset()
-  tests/intel/kms_flip_scaled_crc: Remove unused 'enum pipe pipe'
-  tests/kms_concurrent: Actually run the test over all connected crtcs
-  tests/amdgpu/amd_abm: Don't use uninitialized 'pipe'
-  tests/kms: Use 'enum pipe' over int'
-  lib/kms: Add igt_crtc_for_crtc_id()
-  tests/kms_lease: Use igt_crtc_t instead of enum pipe
-  tests/kms_lease: Pass lease_t to prepare_crtc()
-  tests/intel/kms_frontbuffer_tracking: Use igt_crtc_t instead of enum
-    pipe
-  tests/kms_plane_scaling: Use igt_crtc_t instead of enum pipe
-  tests/drm_read: Use igt_crtc_t instead of enum pipe
-  tests/intel/kms_psr2_sf: Convert pipes[] to crtcs[]
-  tests/kms_vblank: Use igt_crtc_t instead of enum pipe
-  tests/kms_plane_multiple: Use igt_crtc_t instead of enum pipe
-  tests/kms_tiled_display: Use igt_crtc_t instead of enum pipe
-  tests/intel/kms_psr: Use igt_crtc_t instead of enum pipe
-  tests/kms_prime: Use igt_crtc_t instead of enum pipe
-  tests/chamelium: Use igt_crtc_t instead of enum pipe
-  tests/kms: Use igt_crtc_t instead of enum pipe, part 1
-  tests/kms: Use igt_crtc_t instead of enum pipe, part 2
-  tests/kms: Use igt_crtc_t instead of enum pipe, part 3
-  tests/kms: Use igt_crtc_t instead of enum pipe, part 4
-
- lib/igt_kms.c                                 |  12 ++
- lib/igt_kms.h                                 |   1 +
- tests/amdgpu/amd_abm.c                        |  34 +++---
- tests/amdgpu/amd_bypass.c                     |   7 +-
- tests/amdgpu/amd_color.c                      |   7 +-
- tests/amdgpu/amd_cursor_overlay.c             |  28 ++---
- tests/amdgpu/amd_dp_dsc.c                     |  12 +-
- tests/amdgpu/amd_hotplug.c                    |   4 +-
- tests/amdgpu/amd_ilr.c                        |   8 +-
- tests/amdgpu/amd_link_settings.c              |   8 +-
- tests/amdgpu/amd_mall.c                       |   4 +-
- tests/amdgpu/amd_max_bpc.c                    |   6 +-
- tests/amdgpu/amd_mem_leak.c                   |   4 +-
- tests/amdgpu/amd_odm.c                        |   4 +-
- tests/amdgpu/amd_plane.c                      |  14 +--
- tests/amdgpu/amd_psr.c                        |  23 ++--
- tests/amdgpu/amd_replay.c                     |   7 +-
- tests/amdgpu/amd_subvp.c                      |   4 +-
- tests/chamelium/kms_chamelium_edid.c          |  13 +-
- tests/chamelium/kms_chamelium_helper.c        |  10 +-
- tests/chamelium/kms_chamelium_helper.h        |   2 +-
- tests/chamelium/kms_chamelium_hpd.c           |   8 +-
- .../kms_chamelium_sharpness_filter.c          |  35 +++---
- tests/drm_read.c                              |  36 +++---
- tests/intel/kms_big_fb.c                      |  28 ++---
- tests/intel/kms_ccs.c                         |   8 +-
- tests/intel/kms_cdclk.c                       |  16 ++-
- tests/intel/kms_dirtyfb.c                     |  25 ++--
- tests/intel/kms_dp_linktrain_fallback.c       |  11 +-
- tests/intel/kms_fb_coherency.c                |   8 +-
- tests/intel/kms_fbc_dirty_rect.c              |  17 ++-
- tests/intel/kms_flip_scaled_crc.c             |   1 -
- tests/intel/kms_flip_tiling.c                 |  12 +-
- tests/intel/kms_frontbuffer_tracking.c        |  99 +++++++--------
- tests/intel/kms_mmap_write_crc.c              |   8 +-
- tests/intel/kms_pipe_stress.c                 |  65 +++++-----
- tests/intel/kms_pm_lpsp.c                     |   7 +-
- tests/intel/kms_psr.c                         |  21 ++--
- tests/intel/kms_psr2_sf.c                     |  97 +++++++--------
- tests/intel/kms_pwrite_crc.c                  |   8 +-
- tests/intel/kms_sharpness_filter.c            |  25 ++--
- tests/intel/perf_pmu.c                        |  10 +-
- tests/intel/prime_mmap_kms.c                  |   6 +-
- tests/kms_async_flips.c                       |  13 +-
- tests/kms_bw.c                                |   2 -
- tests/kms_concurrent.c                        |  45 +++----
- tests/kms_content_protection.c                |   5 +-
- tests/kms_cursor_crc.c                        |  66 +++++-----
- tests/kms_cursor_edge_walk.c                  |  13 +-
- tests/kms_hdr.c                               |  32 ++---
- tests/kms_invalid_mode.c                      |   7 +-
- tests/kms_lease.c                             |  35 +++---
- tests/kms_plane_cursor.c                      |  20 ++-
- tests/kms_plane_lowres.c                      |  11 +-
- tests/kms_plane_multiple.c                    |  88 ++++++++------
- tests/kms_plane_scaling.c                     | 114 +++++++++---------
- tests/kms_prime.c                             |  14 +--
- tests/kms_sequence.c                          |  12 +-
- tests/kms_tiled_display.c                     |  14 +--
- tests/kms_vblank.c                            |  55 +++++----
- tests/nouveau_crc.c                           |  31 +++--
- tests/vmwgfx/vmw_prime.c                      |  10 +-
- tools/amd_hdmi_compliance.c                   |   4 +-
- tools/intel_hdcp.c                            |   4 +-
- 64 files changed, 663 insertions(+), 695 deletions(-)
-
+diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
+index 31db6760c73e..f79d9b0b751e 100644
+--- a/tests/intel/kms_psr2_sf.c
++++ b/tests/intel/kms_psr2_sf.c
+@@ -1171,7 +1171,7 @@ int igt_main()
+ 		"pr-"
+ 	};
+ 	int psr_status[] = {PSR_MODE_2, PR_MODE_SEL_FETCH};
+-	bool fbc_chipset_support;
++	bool fbc_chipset_support = true;
+ 	int disp_ver;
+ 
+ 	igt_fixture() {
+@@ -1185,7 +1185,6 @@ int igt_main()
+ 
+ 		data.devid = intel_get_drm_devid(data.drm_fd);
+ 		disp_ver = intel_display_ver(data.devid);
+-		fbc_chipset_support = intel_fbc_supported_on_chipset(data.drm_fd, data.pipe);
+ 
+ 		data.damage_area_count = MAX_DAMAGE_AREAS;
+ 		data.primary_format = DRM_FORMAT_XRGB8888;
+@@ -1199,6 +1198,10 @@ int igt_main()
+ 		for_each_crtc_with_valid_output(&data.display, crtc,
+ 						data.output) {
+ 			data.pipe = crtc->pipe;
++
++			if (!intel_fbc_supported_on_chipset(data.drm_fd, data.pipe))
++				fbc_chipset_support = false;
++
+ 			for (i = 0; i < ARRAY_SIZE(psr_status); i++) {
+ 				data.psr_mode = psr_status[i];
+ 				output_supports_pr_psr2_sel_fetch = pipe_output_combo_valid(&data);
 -- 
 2.52.0
 
