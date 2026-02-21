@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D1D4C5DF70
-	for <igt-dev@archiver.kernel.org>; Sat, 21 Feb 2026 03:21:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CF87C5DF70
+	for <igt-dev@archiver.kernel.org>; Sat, 21 Feb 2026 03:21:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BD5CF10E866;
-	Sat, 21 Feb 2026 03:21:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0DD9D10E10E;
+	Sat, 21 Feb 2026 03:21:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g2QEhuNm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZPf6FMZW";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF57D10E10E
- for <igt-dev@lists.freedesktop.org>; Sat, 21 Feb 2026 03:21:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CEE7B10E10E
+ for <igt-dev@lists.freedesktop.org>; Sat, 21 Feb 2026 03:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771644068; x=1803180068;
+ t=1771644073; x=1803180073;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=jEW1XqrjMB23aLT6JCokD1AKXcZ1jKvZBnUR6AZKYAw=;
- b=g2QEhuNmEyJSvsH+lbRtHhV2wbb7q5UnJFPoIl5RGmzDADgwx8ZmY1Us
- sk4AzdgYqyCG16lFfX/SNduBVXZuOt+HDIpEmKhwWxAs0WuI76hoawg2d
- G/OVmufaGjyh04zbx/p3frctbHe0YQDik7mCZnAPZ9j+VPosNi8CXzBB9
- gPzUQSE2KBxLA4HZzpS3dbJwYYybRusuhoYXYU9QHm0Gwu+iwpkWiajht
- 803n0RSms/D27ZLuWdSNN5QoOSEx3xpw3KCp9WO6MMBHmk2Vupye8PA2D
- ufNxUYFSWnlheocvb0eDoEknHbDNRgcXiB2aBkCfd3m5q3sNWyRscJ18A Q==;
-X-CSE-ConnectionGUID: RiHFdqLZReeZhC55iZ8org==
-X-CSE-MsgGUID: U55tV9n0SX+MdBKMo5qQvw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="84187216"
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="84187216"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 19:21:08 -0800
-X-CSE-ConnectionGUID: 77lCKi/qRJmyrIb/FObz3Q==
-X-CSE-MsgGUID: kGWcZPslTEqHdagtLf6mJw==
+ bh=Jeh7Gww7KTZa8ILpwLwKWoG7U7Ku9yL0xyy+HPtBtNQ=;
+ b=ZPf6FMZWO4xv+YxkEBIABGXl87856dy3DO5JS/vijHK7J/Uf7rg6r1H8
+ dZnEMTh8xCby6Unep2UCsJNMDkDlXvbDsjJCx8oHkteb1U+9RCW8MdC1n
+ JNIhMGfj3fFVoar+fH5AFj44kyl5AZgZvWdfA6XZCNYsQwhwXYTbsOREU
+ s3+8Hd5QbPkF8pxMY9nn9fxuNRgKc0niMXH5DEq7wp09lR53aNoizPbWt
+ NW4rFcXXxTr13xvO8oXiw3CPOHj+uPdXHfDvl0bb3Cd0pKHId+VjoMrPi
+ MrPEok5U75HdMqoTBZPAWXh9/9cWSmD8sPyK8OLzyyUyalfG3p4j4vy7b Q==;
+X-CSE-ConnectionGUID: VsycNuIVSyiKhIzd/7NIFw==
+X-CSE-MsgGUID: bfgWCgcwQbuB9f6RvPuLOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11707"; a="76597965"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="76597965"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2026 19:21:12 -0800
+X-CSE-ConnectionGUID: UmDebIa2SSK1JjiBNwAZBw==
+X-CSE-MsgGUID: YrQgdrnrT0a3YFgIc3uGyw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="214256433"
+X-IronPort-AV: E=Sophos;i="6.21,302,1763452800"; d="scan'208";a="214128805"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.245.139])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Feb 2026 19:21:08 -0800
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Feb 2026 19:21:11 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 16/23] tests/kms_tiled_display: Use igt_crtc_t
- instead of enum pipe
-Date: Sat, 21 Feb 2026 05:19:55 +0200
-Message-ID: <20260221032003.30936-17-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t v2 17/23] tests/intel/kms_psr: Use igt_crtc_t instead of
+ enum pipe
+Date: Sat, 21 Feb 2026 05:19:56 +0200
+Message-ID: <20260221032003.30936-18-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
 References: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
@@ -73,116 +73,75 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Convert kms_tiled_display from 'enum pipe' to 'igt_crtc_t'.
+Convert kms_psr to use igt_crtc_t instead of enum pipe.
 
-The data.pipe member gets directly replaced with data.crtc.
+The entire thing is about changing the return type of
+get_pipe_for_output().
 
  #include "scripts/iterators.cocci"
 
-@find_data@
+@ret_pipe@
+typedef igt_output_t;
 typedef igt_crtc_t;
-typedef igt_display_t;
-identifier PIPE;
-type T;
+identifier FUNC;
+igt_crtc_t *CRTC;
+parameter list[N] P;
 @@
-T {
-  ...
-- enum pipe PIPE;
+- enum pipe
++ igt_crtc_t *
+FUNC(P)
+{
+<...
+- return CRTC->pipe;
++ return CRTC;
+...>
+}
+
+@depends on ret_pipe@
+identifier ret_pipe.FUNC;
+@@
+- enum pipe
++ igt_crtc_t *
+FUNC(...);
+
+@depends on ret_pipe@
+identifier ret_pipe.FUNC;
+@@
+FUNC(...)
++ ->pipe
+
+@depends on ret_pipe@
+identifier ret_pipe.FUNC, PIPE;
+expression list[ret_pipe.N] EP;
+@@
+{ ...
+  enum pipe PIPE;
 + igt_crtc_t *crtc;
-  ...
-};
+<+... when != PIPE = ...
+- PIPE = FUNC(EP)->pipe;
++ crtc = FUNC(EP);
++ PIPE = crtc->pipe;
+...+>
+}
 
-@depends on find_data@
-identifier find_data.PIPE;
-identifier DISPLAY;
-find_data.T S;
-find_data.T *P;
-expression _PIPE;
+@depends on ret_pipe@
+identifier ret_pipe.FUNC;
+expression list[ret_pipe.N] EP;
 @@
-igt_display_t *DISPLAY = ...;
-<...
-(
-- S.PIPE = _PIPE;
-+ S.crtc = igt_crtc_for_pipe(display, _PIPE);
-|
-- P->PIPE = _PIPE;
-+ P->crtc = igt_crtc_for_pipe(display, _PIPE);
-)
-...>
+- igt_crtc_for_pipe(..., FUNC(EP)->pipe)
++ FUNC(EP)
 
-@depends on find_data@
-identifier find_data.PIPE;
-identifier DISPLAY;
-find_data.T S;
-find_data.T *P;
-expression E;
 @@
-igt_display_t *DISPLAY = ...;
-<...
-(
-- S.PIPE = E
-+ S.crtc = igt_crtc_for_pipe(DISPLAY, E)
-|
-- P->PIPE = E
-+ P->crtc = igt_crtc_for_pipe(DISPLAY, E)
-)
-...>
-
-@depends on find_data@
-identifier find_data.PIPE;
-find_data.T S;
-find_data.T *P;
-expression E;
+identifier PIPE;
+igt_crtc_t *CRTC;
 @@
-(
-- igt_crtc_for_pipe(..., S.PIPE)
-+ S.crtc
-|
-- igt_crtc_for_pipe(..., P->PIPE)
-+ P->crtc
-|
-- kmstest_pipe_name(S.PIPE)
-+ igt_crtc_name(S.crtc)
-|
-- kmstest_pipe_name(P->PIPE)
-+ igt_crtc_name(P->crtc)
-)
-
-@depends on find_data@
-find_data.T S;
-find_data.T *P;
-@@
-(
-- S.crtc = S.crtc;
-|
-- P->crtc = P->crtc;
-)
-
-@depends on find_data@
-identifier find_data.PIPE;
-find_data.T S;
-find_data.T *P;
-@@
-(
-- S.PIPE
-+ S.crtc->pipe
-|
-- P->PIPE
-+ P->crtc->pipe
-)
-
-@depends on find_data@
-find_data.T S;
-find_data.T *P;
-binary operator OP = { ==, != };
-@@
-(
-- S.crtc->pipe OP PIPE_NONE
-+ S.crtc OP NULL
-|
-- P->crtc->pipe OP PIPE_NONE
-+ P->crtc OP NULL
-)
+{...
+- PIPE = CRTC->pipe;
+<+... when != PIPE = ...
+- PIPE
++ CRTC->pipe
+...+>
+}
 
 @@
 igt_crtc_t *CRTC;
@@ -191,79 +150,76 @@ igt_crtc_t *CRTC;
 + CRTC
 
 @@
+identifier PIPE;
+@@
+{...
+- enum pipe PIPE;
+... when != PIPE
+}
+
+@@
 typedef igt_display_t;
 identifier DISPLAY;
 @@
 - igt_display_t *DISPLAY = ...;
 ... when != DISPLAY
 
+v2: The last 'enum pipe' is now gone due to an earlier fix
+
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_tiled_display.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ tests/intel/kms_psr.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tests/kms_tiled_display.c b/tests/kms_tiled_display.c
-index f587704eebe1..374ea0bf6a85 100644
---- a/tests/kms_tiled_display.c
-+++ b/tests/kms_tiled_display.c
-@@ -65,7 +65,7 @@ IGT_TEST_DESCRIPTION("Test for genlocked CRTCs with tiled displays");
- typedef struct {
- 	igt_output_t *output;
- 	igt_tile_info_t tile;
+diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
+index c730a6f23944..0475e68d6bf5 100644
+--- a/tests/intel/kms_psr.c
++++ b/tests/intel/kms_psr.c
+@@ -691,7 +691,7 @@ static void setup_test_plane(data_t *data, int test_plane)
+ 	igt_display_commit(&data->display);
+ }
+ 
+-static enum pipe get_pipe_for_output(igt_display_t *display,
++static igt_crtc_t * get_pipe_for_output(igt_display_t *display,
+ 				     igt_output_t *output)
+ {
+ 	igt_crtc_t *crtc;
+@@ -705,7 +705,7 @@ static enum pipe get_pipe_for_output(igt_display_t *display,
+ 			continue;
+ 		}
+ 
+-		return crtc->pipe;
++		return crtc;
+ 	}
+ 
+ 	igt_assert_f(false, "No pipe found for output %s\n",
+@@ -714,7 +714,7 @@ static enum pipe get_pipe_for_output(igt_display_t *display,
+ 
+ static void test_setup(data_t *data)
+ {
 -	enum pipe pipe;
 +	igt_crtc_t *crtc;
  	drmModeConnectorPtr connector;
- 	bool got_page_flip;
- } data_connector_t;
-@@ -213,7 +213,6 @@ static int mode_linetime_us(const drmModeModeInfo *mode)
+ 	bool psr_entered = false;
  
- static void setup_mode(data_t *data)
- {
--	igt_display_t *display = &data->display;
- 	int count = 0, prev = 0, i = 0;
- 	bool pipe_in_use = false, found = false;
- 	igt_crtc_t *crtc;
-@@ -238,7 +237,7 @@ static void setup_mode(data_t *data)
+@@ -729,7 +729,7 @@ static void test_setup(data_t *data)
+ 		igt_require_f(data->fbc_flag,
+ 			      "Can't test FBC with PSR\n");
  
- 			if (count > 0) {
- 				for (prev = count - 1; prev >= 0; prev--) {
--					if (crtc->pipe == conns[prev].pipe) {
-+					if (crtc->pipe == conns[prev].crtc->pipe) {
- 						pipe_in_use = true;
- 						break;
- 					}
-@@ -248,15 +247,15 @@ static void setup_mode(data_t *data)
- 			}
+-	pipe = get_pipe_for_output(&data->display, data->output);
++	crtc = get_pipe_for_output(&data->display, data->output);
+ 	data->crtc_id = data->output->config.crtc->crtc_id;
+ 	connector = data->output->config.connector;
  
- 			if (igt_pipe_connector_valid(crtc->pipe, output)) {
--				conns[count].pipe = crtc->pipe;
-+				conns[count].crtc = crtc;
- 				conns[count].output = output;
- 
- 				igt_output_set_crtc(conns[count].output,
--						    igt_crtc_for_pipe(display, conns[count].pipe));
-+						    conns[count].crtc);
- 				break;
- 			}
- 		}
--		igt_require(conns[count].pipe != PIPE_NONE);
-+		igt_require(conns[count].crtc != NULL);
- 
- 		for (i = 0; i < conns[count].connector->count_modes; i++) {
- 			mode = &conns[count].connector->modes[i];
-@@ -326,11 +325,10 @@ static void setup_framebuffer(data_t *data)
- 
- static data_connector_t *conn_for_crtc(data_t *data, unsigned int crtc_id)
- {
--	igt_display_t *display = &data->display;
- 	for (int i = 0; i < data->num_h_tiles; i++) {
- 		data_connector_t *conn = &data->conns[i];
- 
--		if (igt_crtc_for_pipe(display, conn->pipe)->crtc_id == crtc_id)
-+		if (conn->crtc->crtc_id == crtc_id)
- 			return conn;
- 	}
- 
+@@ -750,7 +750,7 @@ static void test_setup(data_t *data)
+ 		if (psr_wait_entry_if_enabled(data)) {
+ 			if (data->fbc_flag == true && data->op_fbc_mode == FBC_ENABLED)
+ 				igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
+-									  pipe),
++									  crtc->pipe),
+ 									  "FBC still disabled\n");
+ 			psr_entered = true;
+ 			break;
 -- 
 2.52.0
 
