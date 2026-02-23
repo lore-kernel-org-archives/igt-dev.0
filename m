@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E17E7EA4FB4
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5888EA4FB6
 	for <igt-dev@archiver.kernel.org>; Mon, 23 Feb 2026 12:09:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 821D010E380;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 836D510E381;
 	Mon, 23 Feb 2026 12:09:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="1gZM43I1";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="fKOKZ8sY";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B1F310E37D
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 12:09:01 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A87A10E384
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 12:08:55 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 5E8FD1A1170;
- Mon, 23 Feb 2026 12:09:00 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 514344E41030
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 12:08:54 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 360715FD43;
- Mon, 23 Feb 2026 12:09:00 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 283B75FD43;
+ Mon, 23 Feb 2026 12:08:54 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 10A1410368F92; Mon, 23 Feb 2026 13:08:58 +0100 (CET)
+ with ESMTPSA id ED11910368F8B; Mon, 23 Feb 2026 13:08:52 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1771848539; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1771848533; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=pO971DaVhDs+Fipu7ZLFEPhFFKJOpl6TVM/9HJeLTXo=;
- b=1gZM43I1PaSZy/1NxVxp0C6glgL2kxZVkiKL8RtWTFNFu+YYjlxEg92Yhc9LGEDeE4iag/
- SnispyH83yLgRdfJEOhXtqZyoRJfPrdMQMbkWWp51ZsOkfntd8oF0xVLRdhpclZJbt0Y/c
- MSlrOStqRH5CfBQBV9XDkLgjyZi261ODA7bE5A8kjLnTrliUjwq6/SyyIRLg9bFGpg3YKk
- BzVdiinGrSexBzvufniFgJgc1VPTGUB5fjWp+uVEBZqkIdbw2tz8G+FmO9VsUwraRYTfo3
- jfGRwmjMO/zYYRMxAU2WaH2EzvxrFrQOiTBQhVujkMZ/A+s37lJXGOHoIeZ8ag==
+ bh=skuRu3efiGDdrQfID1RglLEFM1D18bwi48T6bkaCik8=;
+ b=fKOKZ8sYkIZP85o7qVKXlxEQNM+R8n6vbQmL8ICHULnFdxlMi5tbASYy/rzKY0slq4bpBY
+ 9MKssJTvgIxjfa9VIrqD1AqA0hKcD8BoYfVLyFEbS4gMinTfWEBVAoFsfr9CNIkbs+gTCT
+ SXL/5HgX3R7ESKj6gL4VHqkc71zsAzUhyoo2OqTuIpy30bEmVrbfUgKUjOeEFUJ+ADGw5h
+ Y5q3mhBesol7cHGtlN/j4tuMZvwPhPhfyY1skG+ZXanQsf1i6VUInQ8Hx/cEDGiKNYW5pq
+ saBcoaIxbmZ7bw1yPpSnvz88L9jS+oAYoCsscdlXW+ITk0pQlCJ4AXvOHm8aXQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 23 Feb 2026 13:09:23 +0100
-Subject: [PATCH i-g-t v7 16/48] lib/monitor_edids: Add helper to print all
- available EDID names
+Date: Mon, 23 Feb 2026 13:09:17 +0100
+Subject: [PATCH i-g-t v7 10/48] lib/igt_debugfs: Move debugfs helpers to
+ the proper location
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260223-unigraf-integration-v7-16-73dc9143c8c1@bootlin.com>
+Message-Id: <20260223-unigraf-integration-v7-10-73dc9143c8c1@bootlin.com>
 References: <20260223-unigraf-integration-v7-0-73dc9143c8c1@bootlin.com>
 In-Reply-To: <20260223-unigraf-integration-v7-0-73dc9143c8c1@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -47,21 +47,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2062;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7734;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=WjIDlHnpIeb68LdX4dVZXkbg86NnVBBDd4jH8I3l/rk=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpnENoLLDGlAdLxrjEovRmdJwR72+Q0OGX1aYHf
- mkGTndPaEmJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaZxDaBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOIgHA//Wtpnzbmd1P2uenI1OP4ZV6Frdg+yut9
- K8MMgcgy+lcrRS5pecXMU5NzGm2Zd77mk6OljaNOHidILH3EahyJOpkrOsueDIti3b29iBF9VXY
- aLZCP2VIV4lAgwYTmxhDn1rlGUF67WtE/lMAnc4E+HXSPNtSOnzPNX3XbhRH/lIrXwLTS181JoW
- kVHyuUwEn8G7MGYDQMICLHR7XX+eyfP3zAAz4iOPKXLiKNQcOwlJI2FnNzcQ/MczonMaYF0XGR+
- R0FjZ2S5MiWEWR5xmls6FbVt+l4Gtrl5wLdRRCcKbU7hmRzCEaHOYWsiU/HUsu1Q6DIUsm+t7ww
- EYJHSp+s4nbxr/ViwCBVtHTG8WlE+/mxNR+uWAuwbdDqEdx0xQismqhwvoWPhCRwm4nVwNFzUTh
- eD4hq6pWyU/AEs7lkkbdcKPIT3IZvQ+VfyMJQn01I/jym6DPMQMLjssxt0Z8475RbsWLYKXAOBM
- 9EvVr6xe4yOTLTJRl0YtuoLMa+j169HFiScasEyqxHLgWTfELGUoMcAQVhXzmo5u/Ca7n0rNgEN
- bW7ChQ3aY89Q+7uBOz0uHmnS5sENuHyuMK0uSSFCB4OWxOCePxNRl/yDxlVPd9zccIZ5x4FYsyX
- S9O0FJo8QYT0iRAgklP2a4ZBAM4fKBzjZvhro7fwEkt4JErmfN9o=
+ bh=Sd3prrBRka7Jl6nf2AJ0P9UMgQvTAQ1n4IYhI8E6rQM=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpnENn6mNMtIU/DDHRNVCXTX8ihSgphQ9YCcrPZ
+ CaIgIyYe9OJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaZxDZxsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLoCQ/9Gdm/N/uZQ+UVtFF4Irf31v8dK7Qq/lI
+ KF4fQcCbob47gO7tEjro6l5yoEikTJFr1z1xhfdZSZQjUH10E7/gq84NeJ8LsD6Am50Eb7y46i1
+ tnh5kERe7pkt/s9Tw7zMxytx79fZ7pZw9Em/+pqcKZbmndc8eD/rmVk+FfONAeKFtVoXFmMduUL
+ ZWmcD3xWMybJCbmxUVukejWP+MeDwQuBZDixIep5MfMzh1jGmz/THqYs4V5Yco0vMXaKudeb4qT
+ /NBCQVLQQahv9iLBxB7Ojmmo8l7U7Xh7zWOTUU4X5LtCaxUODeKC+HXWWTz4/pqqkWBP6qN7/Zt
+ S6wzDDi8ouY8JDhs1JQRON3FNemLVFQBztCLN0dhKZYeTjlO9HDxv2i1QoX/bPyrp0XGhpoZN5H
+ Z5DCZmbzNINOKI+Wqeqo+4iBsSfFHvyt/+GearmggRpNBS5r/FD9oxCKRlohBr2kfx3+y9hTPak
+ iHXvt3/jRDU21PwCaw9WQbQeLAcyqFjWCivqPFntzqJQDjsSHDMCMKqZjDcR0OsliBv8u4jS6WN
+ BsiNFhmEMIoX1ld+/c/Ty5ArAQRfKfiVts5zjlp+LxdMKpzj0++X3Re4xrB4/L4AQNqZxqrt5jB
+ 4U2oJtOa+AJJmKfnD3TIvjEjO4OcGCcTA2LUUEk82r/Yy1lkn1bk=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,60 +80,268 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-During the unigraf configuration, it may be required to know the list
-of supported EDID names, so add an helper to print them.
+igt_debugfs_read_connector_file and igt_debugfs_write_connector_file are
+debugfs related helpers. To avoid mixing everything in igt_kms, move them
+to igt_debugfs.
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/monitor_edids/monitor_edids_helper.c | 16 ++++++++++++++++
- lib/monitor_edids/monitor_edids_helper.h |  2 ++
- 2 files changed, 18 insertions(+)
+ lib/igt_debugfs.c | 94 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_debugfs.h | 13 ++++++++
+ lib/igt_kms.c     | 93 ------------------------------------------------------
+ 3 files changed, 107 insertions(+), 93 deletions(-)
 
-diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
-index 34446066346e..091549ac7a49 100644
---- a/lib/monitor_edids/monitor_edids_helper.c
-+++ b/lib/monitor_edids/monitor_edids_helper.c
-@@ -200,3 +200,19 @@ struct edid *get_edid_by_name(const char *name)
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index 11f5ee9984ee..6072d7d68025 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -43,6 +43,7 @@
+ #include "igt_aux.h"
+ #include "igt_kms.h"
+ #include "igt_debugfs.h"
++#include "igt_device.h"
+ #include "igt_sysfs.h"
  
- 	return NULL;
+ /**
+@@ -776,3 +777,96 @@ void __igt_debugfs_dump(int device, const char *filename, int level)
+ 	igt_log(IGT_LOG_DOMAIN, level, "%s:\n%s\n", filename, contents);
+ 	free(contents);
  }
 +
-+/*
-+ * list_edid_names:
-+ * @level: Log level to write the names on
++/**
++ * igt_debugfs_read_connector_file:
++ * @drm_fd: A drm file descriptor
++ * @conn_name: Name of the output connector
++ * @filename: The file to read from in the connector's directory
++ * @buf: Buffer to store the read content
++ * @buf_size: Size of the buffer
 + *
-+ * Print all the EDID available in igt.
++ * Reads from a specific file in the connector's debugfs directory.
++ *
++ * Returns: 0 on success, -1 on failure.
 + */
-+void list_edid_names(enum igt_log_level level)
++int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
++				    const char *filename, char *buf,
++				    size_t buf_size)
 +{
-+	for (int i = 0; i < ARRAY_SIZE(ALL_EDIDS); i++) {
-+		for (int j = 0; j < ALL_EDIDS[i].list_size; j++) {
-+			igt_log(IGT_LOG_DOMAIN, level, " - \"%s\"\n",
-+				ALL_EDIDS[i].edid_list[j].name);
-+		}
-+	}
++	int dir, res;
++
++	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
++	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n", conn_name);
++
++	res = igt_debugfs_simple_read(dir, filename, buf, buf_size);
++	close(dir);
++
++	if (res < 0)
++		return -1;
++
++	return 0;
 +}
-diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
-index 6d9e3fc89592..7ae0fd40c041 100644
---- a/lib/monitor_edids/monitor_edids_helper.h
-+++ b/lib/monitor_edids/monitor_edids_helper.h
-@@ -15,6 +15,7 @@
- #include <stddef.h>
++
++/**
++ * igt_debugfs_write_connector_file:
++ * @drm_fd: A drm file descriptor
++ * @conn_name: Name of the output connector
++ * @filename: The file to write to in the connector's directory
++ * @data: Data to write to the file
++ * @data_size: Size of the data to write
++ *
++ * Writes to a specific file in the connector's debugfs directory.
++ *
++ * Returns: 0 on success, -1 on failure.
++ */
++int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
++				     const char *filename, const char *data,
++				     size_t data_size)
++{
++	int dir, res;
++
++	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
++	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
++		     conn_name);
++
++	res = igt_sysfs_write(dir, filename, data, data_size);
++	close(dir);
++
++	if (res < 0)
++		return -1;
++
++	return 0;
++}
++
++bool connector_attr_set_debugfs(int drm_fd,
++				drmModeConnector *connector,
++				const char *attr, const char *value,
++				const char *reset_value,
++				bool force_reset)
++{
++	char name[80];
++	int idx, dir;
++
++	idx = igt_device_get_card_index(drm_fd);
++	if (idx < 0 || idx > 63)
++		return false;
++
++	snprintf(name, sizeof(name), "%s-%d",
++		 kmstest_connector_type_str(connector->connector_type),
++		 connector->connector_type_id);
++
++	dir = igt_debugfs_connector_dir(drm_fd, name, O_DIRECTORY);
++	if (dir < 0)
++		return false;
++
++	if (!connector_attr_set(idx, connector, dir,
++				igt_sysfs_set, attr,
++				value, reset_value,
++				force_reset))
++		return false;
++
++	igt_info("Connector %s/%s is now %s\n", name, attr, value);
++
++	return true;
++}
+diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+index 2c546f299a43..49fbadd2a74c 100644
+--- a/lib/igt_debugfs.h
++++ b/lib/igt_debugfs.h
+@@ -28,6 +28,7 @@
  #include <stdbool.h>
+ #include <stdint.h>
+ #include <stdio.h>
++#include <xf86drmMode.h>
  
-+#include "igt_core.h"
- #include "igt_chamelium.h"
+ const char *igt_debugfs_mount(void);
+ char *igt_debugfs_path(int device, char *path, int pathlen);
+@@ -176,4 +177,16 @@ int igt_get_stable_obj_count(int driver);
+ void __igt_debugfs_dump(int device, const char *filename, int level);
+ #define igt_debugfs_dump(d, f) __igt_debugfs_dump(d, f, IGT_LOG_DEBUG)
  
- /* Max Length can be increased as needed, when new EDIDs are added. */
-@@ -35,5 +36,6 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
- struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
- struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
- struct edid *get_edid_by_name(const char *name);
-+void list_edid_names(enum igt_log_level level);
++int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
++				    const char *filename, char *buf,
++				    size_t buf_size);
++int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
++				     const char *filename, const char *data,
++				     size_t data_size);
++bool connector_attr_set_debugfs(int drm_fd,
++				drmModeConnector *connector,
++				const char *attr, const char *value,
++				const char *reset_value,
++				bool force_reset);
++
+ #endif /* __IGT_DEBUGFS_H__ */
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 043d7dd547c2..ae85d06a9b51 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -1755,38 +1755,6 @@ static bool connector_attr_set_sysfs(int drm_fd,
+ 	return true;
+ }
  
- #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
+-static bool connector_attr_set_debugfs(int drm_fd,
+-				       drmModeConnector *connector,
+-				       const char *attr, const char *value,
+-				       const char *reset_value,
+-				       bool force_reset)
+-{
+-	char name[80];
+-	int idx, dir;
+-
+-	idx = igt_device_get_card_index(drm_fd);
+-	if (idx < 0 || idx > 63)
+-		return false;
+-
+-	snprintf(name, sizeof(name), "%s-%d",
+-		 kmstest_connector_type_str(connector->connector_type),
+-		 connector->connector_type_id);
+-
+-	dir = igt_debugfs_connector_dir(drm_fd, name, O_DIRECTORY);
+-	if (dir < 0)
+-		return false;
+-
+-	if (!connector_attr_set(idx, connector, dir,
+-				igt_sysfs_set, attr,
+-				value, reset_value,
+-				force_reset))
+-		return false;
+-
+-	igt_info("Connector %s/%s is now %s\n", name, attr, value);
+-
+-	return true;
+-}
+-
+ /**
+  * dump_connector_attrs: Display on debug log all the connector attributes
+  */
+@@ -7466,67 +7434,6 @@ static int igt_parse_marked_value(const char *buf, char marked_char, int *result
+ 	return -1;
+ }
+ 
+-/**
+- * igt_debugfs_read_connector_file:
+- * @drm_fd: A drm file descriptor
+- * @conn_name: Name of the output connector
+- * @filename: The file to read from in the connector's directory
+- * @buf: Buffer to store the read content
+- * @buf_size: Size of the buffer
+- *
+- * Reads from a specific file in the connector's debugfs directory.
+- *
+- * Returns: 0 on success, -1 on failure.
+- */
+-static int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
+-				    const char *filename, char *buf,
+-				    size_t buf_size)
+-{
+-	int dir, res;
+-
+-	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
+-	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n", conn_name);
+-
+-	res = igt_debugfs_simple_read(dir, filename, buf, buf_size);
+-	close(dir);
+-
+-	if (res < 0)
+-		return -1;
+-
+-	return 0;
+-}
+-
+-/**
+- * igt_debugfs_write_connector_file:
+- * @drm_fd: A drm file descriptor
+- * @conn_name: Name of the output connector
+- * @filename: The file to write to in the connector's directory
+- * @data: Data to write to the file
+- * @data_size: Size of the data to write
+- *
+- * Writes to a specific file in the connector's debugfs directory.
+- *
+- * Returns: 0 on success, -1 on failure.
+- */
+-static int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
+-				     const char *filename, const char *data,
+-				     size_t data_size)
+-{
+-	int dir, res;
+-
+-	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
+-	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
+-		     conn_name);
+-
+-	res = igt_sysfs_write(dir, filename, data, data_size);
+-	close(dir);
+-
+-	if (res < 0)
+-		return -1;
+-
+-	return 0;
+-}
+-
+ /**
+  * igt_get_current_link_rate:
+  * @drm_fd: A drm file descriptor
 
 -- 
 2.52.0
