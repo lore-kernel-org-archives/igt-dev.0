@@ -4,42 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5888EA4FB6
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Feb 2026 12:09:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13723EA4FB7
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Feb 2026 12:09:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 836D510E381;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 81D2310E37F;
 	Mon, 23 Feb 2026 12:09:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="fKOKZ8sY";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="GbkUbwi1";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A87A10E384
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 12:08:55 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8AEE10E37D
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 12:09:02 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 514344E41030
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 12:08:54 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id BA0271A0993
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 12:09:01 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 283B75FD43;
- Mon, 23 Feb 2026 12:08:54 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 8EB715FD43;
+ Mon, 23 Feb 2026 12:09:01 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id ED11910368F8B; Mon, 23 Feb 2026 13:08:52 +0100 (CET)
+ with ESMTPSA id 23ACD10368F93; Mon, 23 Feb 2026 13:08:59 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1771848533; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1771848541; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=skuRu3efiGDdrQfID1RglLEFM1D18bwi48T6bkaCik8=;
- b=fKOKZ8sYkIZP85o7qVKXlxEQNM+R8n6vbQmL8ICHULnFdxlMi5tbASYy/rzKY0slq4bpBY
- 9MKssJTvgIxjfa9VIrqD1AqA0hKcD8BoYfVLyFEbS4gMinTfWEBVAoFsfr9CNIkbs+gTCT
- SXL/5HgX3R7ESKj6gL4VHqkc71zsAzUhyoo2OqTuIpy30bEmVrbfUgKUjOeEFUJ+ADGw5h
- Y5q3mhBesol7cHGtlN/j4tuMZvwPhPhfyY1skG+ZXanQsf1i6VUInQ8Hx/cEDGiKNYW5pq
- saBcoaIxbmZ7bw1yPpSnvz88L9jS+oAYoCsscdlXW+ITk0pQlCJ4AXvOHm8aXQ==
+ bh=505SuVCPuBljd/6y93uw0wy79oxxtCj2tugWie5CPsw=;
+ b=GbkUbwi11j/h1cMmLDXqa+9GfzSjRMtYZeT6idRnL4lj9x4I5gKkk0DO/KYp/GBRjvLdIr
+ FdPbvWJ/SUudCSECVsHagnLKlgXbYwc8dDL5KaPx3v/G99sZHBQBiK9O2QVVVv87AQDQFz
+ 2RK0YIPa6iL9bjV6ucOKsUNKAIsnj0HXeotAmlmfMKR5Zw/EjAsBcszFCKOd8L4As0x6FY
+ 0j4GEc4XI9CVXAkOLQKn7ileKALqTE88wTCi+oxpANg5+rsJ8cz2KBsO2MiYMoasDJy1IG
+ MBF7f6UfmdP1KFnjxiN0ok7iMQjXIM3v4tYLqSpE+KIZfS/k1bWoMcZKgtCCSg==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 23 Feb 2026 13:09:17 +0100
-Subject: [PATCH i-g-t v7 10/48] lib/igt_debugfs: Move debugfs helpers to
- the proper location
+Date: Mon, 23 Feb 2026 13:09:24 +0100
+Subject: [PATCH i-g-t v7 17/48] lib/unigraf: Add used defines for TSI_Types
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260223-unigraf-integration-v7-10-73dc9143c8c1@bootlin.com>
+Message-Id: <20260223-unigraf-integration-v7-17-73dc9143c8c1@bootlin.com>
 References: <20260223-unigraf-integration-v7-0-73dc9143c8c1@bootlin.com>
 In-Reply-To: <20260223-unigraf-integration-v7-0-73dc9143c8c1@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -47,21 +46,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7734;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6064;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=Sd3prrBRka7Jl6nf2AJ0P9UMgQvTAQ1n4IYhI8E6rQM=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpnENn6mNMtIU/DDHRNVCXTX8ihSgphQ9YCcrPZ
- CaIgIyYe9OJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaZxDZxsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLoCQ/9Gdm/N/uZQ+UVtFF4Irf31v8dK7Qq/lI
- KF4fQcCbob47gO7tEjro6l5yoEikTJFr1z1xhfdZSZQjUH10E7/gq84NeJ8LsD6Am50Eb7y46i1
- tnh5kERe7pkt/s9Tw7zMxytx79fZ7pZw9Em/+pqcKZbmndc8eD/rmVk+FfONAeKFtVoXFmMduUL
- ZWmcD3xWMybJCbmxUVukejWP+MeDwQuBZDixIep5MfMzh1jGmz/THqYs4V5Yco0vMXaKudeb4qT
- /NBCQVLQQahv9iLBxB7Ojmmo8l7U7Xh7zWOTUU4X5LtCaxUODeKC+HXWWTz4/pqqkWBP6qN7/Zt
- S6wzDDi8ouY8JDhs1JQRON3FNemLVFQBztCLN0dhKZYeTjlO9HDxv2i1QoX/bPyrp0XGhpoZN5H
- Z5DCZmbzNINOKI+Wqeqo+4iBsSfFHvyt/+GearmggRpNBS5r/FD9oxCKRlohBr2kfx3+y9hTPak
- iHXvt3/jRDU21PwCaw9WQbQeLAcyqFjWCivqPFntzqJQDjsSHDMCMKqZjDcR0OsliBv8u4jS6WN
- BsiNFhmEMIoX1ld+/c/Ty5ArAQRfKfiVts5zjlp+LxdMKpzj0++X3Re4xrB4/L4AQNqZxqrt5jB
- 4U2oJtOa+AJJmKfnD3TIvjEjO4OcGCcTA2LUUEk82r/Yy1lkn1bk=
+ bh=VC7Ced49IL4MEUBoMhflsmtRt/nXemq9wc/IY7PJFFA=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpnENoti6qyQ7wM1JxnWXARYtwIpbQzlknI07qp
+ hqbaHmxS/iJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaZxDaBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOK19RAAwd895uCAymOJ30dNLYlNcex5zX+tfYT
+ z2OrwVSmad3Ra5EPns6qKCS6tb51auTZxlm64MtcGC/pfldsuBXFzaMoPwp6qQ4vnMqkIJR3tl7
+ oOheQC4uHvjMH5elP5fmCJfHb7pi5hndxaOm0j8pptTvApa4CZkzKyaiI47Ltg7nJX1IqtvBihd
+ T0OsdqO58iywM/JwaqIG6C5lTVYPV3Q/VSAKYR2RwMcSyM8bIsu2iLVD77NkFRIroGcR4KJTGEb
+ EeaD1YJ3pAonsgx3KL+77F9QwCSUD8ahTQrQmgzOFtHATG29wYA2aF42v68PakD49AHpVigmOGJ
+ fHGUaR2Vj5KFsqS2FQJ9hiDbOnj9+CKNX5Y3ErhSGAD9NjcI10IncQwrfjeAaBz/vaQHphSrJsP
+ mWoAxVlFQsmgzwPrBudDhbPuToB4lJ3FqBC6ryUCS5DzIKYUOAZDN3cUnulERfSlqIZHYay9rGl
+ vDChgT1yEg6jhM1gw6QAmq9AitQCQK8LEQglFqBxH1bX5QLRycSu7exL2nLzol0CqBcGV2TBYIJ
+ MnV0T9XjyW3WFI7EIRS76OpzLKnQfQqoqhEtMRwXF7PYW1dxUtcestG5ngbyChNYS8ZJnzqO9wr
+ 9gW8TNdKEJhFzeAOdGZH6Trx4wfLu9Gxl83fBtF7VyoqAH/pquCs=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -80,268 +79,148 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-igt_debugfs_read_connector_file and igt_debugfs_write_connector_file are
-debugfs related helpers. To avoid mixing everything in igt_kms, move them
-to igt_debugfs.
+Current unigraf public release are not c-compatible, this file hardcode
+some values. One future release of libTSI may include a c-compatible
+TSI_types.h file with full structure definition, but until then.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_debugfs.c | 94 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_debugfs.h | 13 ++++++++
- lib/igt_kms.c     | 93 ------------------------------------------------------
- 3 files changed, 107 insertions(+), 93 deletions(-)
+ lib/unigraf/TSI_types.h | 126 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 126 insertions(+)
 
-diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-index 11f5ee9984ee..6072d7d68025 100644
---- a/lib/igt_debugfs.c
-+++ b/lib/igt_debugfs.c
-@@ -43,6 +43,7 @@
- #include "igt_aux.h"
- #include "igt_kms.h"
- #include "igt_debugfs.h"
-+#include "igt_device.h"
- #include "igt_sysfs.h"
- 
- /**
-@@ -776,3 +777,96 @@ void __igt_debugfs_dump(int device, const char *filename, int level)
- 	igt_log(IGT_LOG_DOMAIN, level, "%s:\n%s\n", filename, contents);
- 	free(contents);
- }
+diff --git a/lib/unigraf/TSI_types.h b/lib/unigraf/TSI_types.h
+new file mode 100644
+index 000000000000..c387ab4e1941
+--- /dev/null
++++ b/lib/unigraf/TSI_types.h
+@@ -0,0 +1,126 @@
++/* SPDX-License-Identifier: MIT */
++
++// Current unigraf public release are not c-compatible, this file hardcode some values.
++// The next release of libTSI should include a c-compatible TSI_types.h file, that will
++// be directly used in place of this file.
++
++#ifndef TSI_REG_H
++
++#include <stdbool.h>
++#include <stdint.h>
++
++#define TSI_VERSION_TEXT			0x80000001
++#define TSI_DEVCAP_VIDEO_CAPTURE		0x00000001
++#define TSI_SEARCHOPTIONS_SHOW_DEVICES_IN_USE	0x00000001
++
++#define TSI_EDID_TE_INPUT			0x1100
++#define TSI_EDID_SELECT_STREAM			0x1102
++
++#define TSI_BASE_LEGACY_GENERIC(offset)		(0x210 + (offset))
++#define	TSI_FORCE_HOT_PLUG_STATE_W		TSI_BASE_LEGACY_GENERIC(0x2)
++
++#define TSI_BASE_LEGACY_DPRX_MSA(offset)		(0x260 + (offset))
++#define TSI_DPRX_MSA_COMMAND_W				TSI_BASE_LEGACY_DPRX_MSA(0x0)
++#define TSI_DPRX_MSA_STREAM_COUNT_R			TSI_BASE_LEGACY_DPRX_MSA(0x1)
++#define TSI_DPRX_MSA_STREAM_SELECT			TSI_BASE_LEGACY_DPRX_MSA(0x3)
++#define TSI_DPRX_MSA_HTOTAL_R				TSI_BASE_LEGACY_DPRX_MSA(0x6)
++#define TSI_DPRX_MSA_VTOTAL_R				TSI_BASE_LEGACY_DPRX_MSA(0x7)
++#define TSI_DPRX_MSA_HACTIVE_R				TSI_BASE_LEGACY_DPRX_MSA(0x8)
++#define TSI_DPRX_MSA_VACTIVE_R				TSI_BASE_LEGACY_DPRX_MSA(0x9)
++#define TSI_DPRX_MSA_HSYNC_WIDTH_R			TSI_BASE_LEGACY_DPRX_MSA(0xa)
++#define TSI_DPRX_MSA_VSYNC_WIDTH_R			TSI_BASE_LEGACY_DPRX_MSA(0xb)
++#define TSI_DPRX_MSA_HSTART_R				TSI_BASE_LEGACY_DPRX_MSA(0xc)
++#define TSI_DPRX_MSA_VSTART_R				TSI_BASE_LEGACY_DPRX_MSA(0xd)
++
++#define TSI_DPRX_LINK_FLAGS_MST				0x01
++#define TSI_DPRX_LINK_FLAGS_TPS3			0x02
++#define TSI_DPRX_LINK_FLAGS_TPS4			0x03
++#define TSI_DPRX_LINK_FLAGS_EDP				0x04
++#define TSI_DPRX_NOT_DOCUMENTED_DP_128_132_SUPPORTED	0x10
++#define TSI_DPRX_NOT_DOCUMENTED_SIDEBAND_MSG_SUPPORT	0x20
++
++#define TSI_BASE_DPRX(offset)			(0x50000000u + 0x21000 + (offset))
++#define TSI_DPRX_HW_CAPS_R			TSI_BASE_DPRX(0x4)
 +
 +/**
-+ * igt_debugfs_read_connector_file:
-+ * @drm_fd: A drm file descriptor
-+ * @conn_name: Name of the output connector
-+ * @filename: The file to read from in the connector's directory
-+ * @buf: Buffer to store the read content
-+ * @buf_size: Size of the buffer
++ * struct TSI_DPRX_HW_CAPS_R_s - Structure representing the hardware capabilities of the DP RX.
 + *
-+ * Reads from a specific file in the connector's debugfs directory.
++ * This structure defines the bitfields and fields that describe the hardware
++ * capabilities of the DP RX (DisplayPort Receiver) interface. Each field
++ * corresponds to a specific capability or feature supported by the hardware.
 + *
-+ * Returns: 0 on success, -1 on failure.
++ * This structure is used to interpret the value read from the
++ * TSI_DPRX_HW_CAPS_R register.
++ *
++ * @mst: MST support
++ * @hdcp_1_x: HDCP 1.x support.
++ * @hdcp_2_x: HDCP 2.x support.
++ * @fec_8_10_b: FEC for 8/10 link support.
++ * @dsc_8_10_b: DSC for 8/10 link support.
++ * @three_lanes: Three lane link configuration support.
++ * @edp_link_rate: eDP link rates are supported.
++ * @mst_stream_count: Number of MST streams supported.
++ * @max_link_rate: Maximum link rate supported. The unit is not specified in documentation,
++ *                 it is probably like other config rate = 0.27GHz * value
++ * @force_link_config: Forced link configuration support.
++ * @power_provision: Power provision support on DP_PWR pin of receptacle connector.
++ * @aux_swing_voltage_control: AUX output voltage swing control support.
++ * @custom_dp_rate: Custom DP 2.0 rate support.
++ * @custom_bit_rate: Custom bit rate support.
++ * @fec_128_132_b: FEC for 128/132 link support.
++ * @dsc_128_132_b: DSC for 128/132 link support.
 + */
-+int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
-+				    const char *filename, char *buf,
-+				    size_t buf_size)
-+{
-+	int dir, res;
++struct TSI_DPRX_HW_CAPS_R_s {
++	bool mst:1;
++	bool hdcp_1_x:1;
++	bool hdcp_2_x:1;
++	bool fec_8_10_b:1;
++	bool dsc_8_10_b:1;
++	bool reserved_1:1;
++	bool three_lanes:1;
++	bool edp_link_rates_supported:1;
++	uint8_t mst_stream_count:3;
++	uint8_t reserved_2:5;
++	uint8_t max_link_rate;
++	bool force_link_config:1;
++	bool reserved_3:1;
++	bool power_provision:1;
++	bool aux_swing_voltage_control:1;
++	bool custom_dp_rate:1;
++	bool custom_bit_rate:1;
++	bool fec_128_132_b:1;
++	bool dsc_128_132_b:1;
++};
 +
-+	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
-+	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n", conn_name);
++#define TSI_DPRX_LT_LANE_COUNT_R		TSI_BASE_DPRX(0x0B)
++#define TSI_DPRX_LT_RATE_R			TSI_BASE_DPRX(0x0C)
++#define TSI_DPRX_HPD_FORCE			TSI_BASE_DPRX(0x12)
++#define TSI_DPRX_MST_SINK_COUNT			TSI_BASE_DPRX(0x9D)
 +
-+	res = igt_debugfs_simple_read(dir, filename, buf, buf_size);
-+	close(dir);
++#define TSI_BASE_DP_RX(offset)                  (0x00010100 + (offset))
++#define TSI_DP_RX_DUT_MAX_LANE_COUNT		TSI_BASE_DP_RX(0xf)
 +
-+	if (res < 0)
-+		return -1;
++#define TSI_BASE_DP_LTT(offset)                 (0x00010700 + (offset))
++#define TSI_DP_LTT_MAX_LANE_COUNT		TSI_BASE_DP_LTT(0x01)
 +
-+	return 0;
-+}
++#define TSI_BASE_LEGACY_DPRX(offset)		(0x2b0 + (offset))
++#define TSI_DPRX_DPCD_BASE_W			TSI_BASE_LEGACY_DPRX(0x9)
++#define TSI_DPRX_DPCD_DATA			TSI_BASE_LEGACY_DPRX(0xA)
++#define TSI_DPRX_MAX_LANES			TSI_BASE_LEGACY_DPRX(0x10)
++#define TSI_DPRX_MAX_LINK_RATE			TSI_BASE_LEGACY_DPRX(0x11)
++#define TSI_DPRX_LINK_FLAGS			TSI_BASE_LEGACY_DPRX(0x12)
++#define TSI_DPRX_STREAM_SELECT			TSI_BASE_LEGACY_DPRX(0x13)
++#define TSI_DPRX_CRC_R_R			TSI_BASE_LEGACY_DPRX(0x14)
++#define TSI_DPRX_CRC_G_R			TSI_BASE_LEGACY_DPRX(0x15)
++#define TSI_DPRX_CRC_B_R			TSI_BASE_LEGACY_DPRX(0x16)
++#define TSI_DPRX_HPD_PULSE_W			TSI_BASE_LEGACY_DPRX(0x1B)
 +
-+/**
-+ * igt_debugfs_write_connector_file:
-+ * @drm_fd: A drm file descriptor
-+ * @conn_name: Name of the output connector
-+ * @filename: The file to write to in the connector's directory
-+ * @data: Data to write to the file
-+ * @data_size: Size of the data to write
-+ *
-+ * Writes to a specific file in the connector's debugfs directory.
-+ *
-+ * Returns: 0 on success, -1 on failure.
-+ */
-+int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
-+				     const char *filename, const char *data,
-+				     size_t data_size)
-+{
-+	int dir, res;
++#define H2_SINK_LOAD_PROD_KEYS                         0x002
++#define H2_SINK_UNLOAD_KEYS                            0x003
++#define H2_SINK_SET_CAPABLE                            0x004
++#define H2_SINK_CLEAR_CAPABLE                          0x005
 +
-+	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
-+	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
-+		     conn_name);
++#define TSI_BASE_LEGACY_HDCP2(offset)                  (0x290 + (offset))
++#define TSI_HDCP_2X_COMMAND_W                          TSI_BASE_LEGACY_HDCP2(0x1)
 +
-+	res = igt_sysfs_write(dir, filename, data, data_size);
-+	close(dir);
-+
-+	if (res < 0)
-+		return -1;
-+
-+	return 0;
-+}
-+
-+bool connector_attr_set_debugfs(int drm_fd,
-+				drmModeConnector *connector,
-+				const char *attr, const char *value,
-+				const char *reset_value,
-+				bool force_reset)
-+{
-+	char name[80];
-+	int idx, dir;
-+
-+	idx = igt_device_get_card_index(drm_fd);
-+	if (idx < 0 || idx > 63)
-+		return false;
-+
-+	snprintf(name, sizeof(name), "%s-%d",
-+		 kmstest_connector_type_str(connector->connector_type),
-+		 connector->connector_type_id);
-+
-+	dir = igt_debugfs_connector_dir(drm_fd, name, O_DIRECTORY);
-+	if (dir < 0)
-+		return false;
-+
-+	if (!connector_attr_set(idx, connector, dir,
-+				igt_sysfs_set, attr,
-+				value, reset_value,
-+				force_reset))
-+		return false;
-+
-+	igt_info("Connector %s/%s is now %s\n", name, attr, value);
-+
-+	return true;
-+}
-diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-index 2c546f299a43..49fbadd2a74c 100644
---- a/lib/igt_debugfs.h
-+++ b/lib/igt_debugfs.h
-@@ -28,6 +28,7 @@
- #include <stdbool.h>
- #include <stdint.h>
- #include <stdio.h>
-+#include <xf86drmMode.h>
- 
- const char *igt_debugfs_mount(void);
- char *igt_debugfs_path(int device, char *path, int pathlen);
-@@ -176,4 +177,16 @@ int igt_get_stable_obj_count(int driver);
- void __igt_debugfs_dump(int device, const char *filename, int level);
- #define igt_debugfs_dump(d, f) __igt_debugfs_dump(d, f, IGT_LOG_DEBUG)
- 
-+int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
-+				    const char *filename, char *buf,
-+				    size_t buf_size);
-+int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
-+				     const char *filename, const char *data,
-+				     size_t data_size);
-+bool connector_attr_set_debugfs(int drm_fd,
-+				drmModeConnector *connector,
-+				const char *attr, const char *value,
-+				const char *reset_value,
-+				bool force_reset);
-+
- #endif /* __IGT_DEBUGFS_H__ */
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 043d7dd547c2..ae85d06a9b51 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1755,38 +1755,6 @@ static bool connector_attr_set_sysfs(int drm_fd,
- 	return true;
- }
- 
--static bool connector_attr_set_debugfs(int drm_fd,
--				       drmModeConnector *connector,
--				       const char *attr, const char *value,
--				       const char *reset_value,
--				       bool force_reset)
--{
--	char name[80];
--	int idx, dir;
--
--	idx = igt_device_get_card_index(drm_fd);
--	if (idx < 0 || idx > 63)
--		return false;
--
--	snprintf(name, sizeof(name), "%s-%d",
--		 kmstest_connector_type_str(connector->connector_type),
--		 connector->connector_type_id);
--
--	dir = igt_debugfs_connector_dir(drm_fd, name, O_DIRECTORY);
--	if (dir < 0)
--		return false;
--
--	if (!connector_attr_set(idx, connector, dir,
--				igt_sysfs_set, attr,
--				value, reset_value,
--				force_reset))
--		return false;
--
--	igt_info("Connector %s/%s is now %s\n", name, attr, value);
--
--	return true;
--}
--
- /**
-  * dump_connector_attrs: Display on debug log all the connector attributes
-  */
-@@ -7466,67 +7434,6 @@ static int igt_parse_marked_value(const char *buf, char marked_char, int *result
- 	return -1;
- }
- 
--/**
-- * igt_debugfs_read_connector_file:
-- * @drm_fd: A drm file descriptor
-- * @conn_name: Name of the output connector
-- * @filename: The file to read from in the connector's directory
-- * @buf: Buffer to store the read content
-- * @buf_size: Size of the buffer
-- *
-- * Reads from a specific file in the connector's debugfs directory.
-- *
-- * Returns: 0 on success, -1 on failure.
-- */
--static int igt_debugfs_read_connector_file(int drm_fd, char *conn_name,
--				    const char *filename, char *buf,
--				    size_t buf_size)
--{
--	int dir, res;
--
--	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
--	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n", conn_name);
--
--	res = igt_debugfs_simple_read(dir, filename, buf, buf_size);
--	close(dir);
--
--	if (res < 0)
--		return -1;
--
--	return 0;
--}
--
--/**
-- * igt_debugfs_write_connector_file:
-- * @drm_fd: A drm file descriptor
-- * @conn_name: Name of the output connector
-- * @filename: The file to write to in the connector's directory
-- * @data: Data to write to the file
-- * @data_size: Size of the data to write
-- *
-- * Writes to a specific file in the connector's debugfs directory.
-- *
-- * Returns: 0 on success, -1 on failure.
-- */
--static int igt_debugfs_write_connector_file(int drm_fd, char *conn_name,
--				     const char *filename, const char *data,
--				     size_t data_size)
--{
--	int dir, res;
--
--	dir = igt_debugfs_connector_dir(drm_fd, conn_name, O_RDONLY);
--	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
--		     conn_name);
--
--	res = igt_sysfs_write(dir, filename, data, data_size);
--	close(dir);
--
--	if (res < 0)
--		return -1;
--
--	return 0;
--}
--
- /**
-  * igt_get_current_link_rate:
-  * @drm_fd: A drm file descriptor
++#endif /* TSI_REG_H */
 
 -- 
 2.52.0
