@@ -4,55 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC8EEEA4FCB
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Feb 2026 14:57:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A63AEA4FCF
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Feb 2026 15:03:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 769FE10E3F9;
-	Mon, 23 Feb 2026 14:57:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 25DE010E3AD;
+	Mon, 23 Feb 2026 15:03:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cStoVNpu";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="tf2VlW86";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C03F110E3F0
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 14:57:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771858650; x=1803394650;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=uE/OGefc33bFBBk4o2IkleJxkYIkIrmwWTbBW8YxFUg=;
- b=cStoVNpu1Ec7GQcgpmePvHyOgm5xILA+29i9s//TOpwK8iWRu3txtNWE
- 46TVraffgRMXyy5jJ7eYdGWsXQ0UN+1DwwWq9bKmNPeZ4+RQN8R3cQpnT
- SFJzLjo0zc6Y0huzsAnovZXBLgZ6vDwlW7kScYp62uX6z8gm33H1oWAUX
- jKnTkJDgIkscnmA+8iRcsqj2OOSfvrHtOld30YqgdBOwse21CCEuGhqSA
- zSKU4J3P4g5kF5RRkUiILMfbLTnAO+P23e9JRhPN5MUwZy4kRN2DFk6sJ
- db/SH+fnE6eRtHb3M/aGj2Owp8iwF83TYJtP+7MND3uAhn42XcQBOWDV7 w==;
-X-CSE-ConnectionGUID: tCCH9U7nSROT0F5SQd84pg==
-X-CSE-MsgGUID: yI50Yp4OTtmMGj0urWfDUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="84215234"
-X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; d="scan'208";a="84215234"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Feb 2026 06:57:29 -0800
-X-CSE-ConnectionGUID: 5GfVfNbYQheXWh46JDnDDg==
-X-CSE-MsgGUID: mK+xuyb6SrO8cewbKWYGLg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; d="scan'208";a="213518197"
-Received: from dut-2a59.iind.intel.com ([10.190.239.113])
- by fmviesa006.fm.intel.com with ESMTP; 23 Feb 2026 06:57:28 -0800
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com,
-	chaitanya.kumar.borah@intel.com
-Subject: [PATCH i-g-t v3 4/4] tests/kms_color_pipeline: collect reference CRC
- once per pipe
-Date: Mon, 23 Feb 2026 20:02:21 +0530
-Message-Id: <20260223143221.807474-4-chaitanya.kumar.borah@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260223143221.807474-1-chaitanya.kumar.borah@intel.com>
-References: <20260223143221.807474-1-chaitanya.kumar.borah@intel.com>
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1606910E3AD
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 15:03:09 +0000 (UTC)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 9369B1A115C
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 15:03:07 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 6A0B25FD59;
+ Mon, 23 Feb 2026 15:03:07 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
+ with ESMTPSA id 8BA0110368E7B; Mon, 23 Feb 2026 16:03:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+ t=1771858986; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ content-transfer-encoding:in-reply-to:references;
+ bh=tXxf9JOk1m8CdL09U87LuxGKbQKW4Rz1VWnJJ4j5DG0=;
+ b=tf2VlW86tT6PlnM0CvkvYZsxNt2kYWRpy5Xsq78WjyZ0OcxqSQw7mgyBM7VO46vuMomb0o
+ 0ime2wFjTcKac4RTKA9PMZMIcILDwtSs/E4WWLta46//UuI9OgP0y29VzTVTL8FsjIcUjW
+ Oi7qEig66EeiT5zoq9O858+/TbPl/D+SPKOmlf/4w5RVvFdlxB/I/pIw1xRmMBtaWx80C7
+ lJBONuv5siYH9o0TRRB+efgNYWpLgD0g4l65OnYg3lkIBXpYbcwFnWlue4PIE0QO9MQag+
+ oU+AxHaBl+tmSUKnz/88ByapgNC3y2x95epgzFa3CNLeHuKXqWMScgtW/pO+AA==
+Date: Mon, 23 Feb 2026 16:03:03 +0100
+From: Kory Maincent <kory.maincent@bootlin.com>
+To: Louis Chauvet <louis.chauvet@bootlin.com>
+Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
+ luca.ceresoli@bootlin.com, markyacoub@google.com,
+ khaled.almahallawy@intel.com
+Subject: Re: [PATCH i-g-t v7 29/48] lib/unigraf: Add connector and EDID
+ configuration
+Message-ID: <20260223160303.12ed9321@kmaincent-XPS-13-7390>
+In-Reply-To: <20260223-unigraf-integration-v7-29-73dc9143c8c1@bootlin.com>
+References: <20260223-unigraf-integration-v7-0-73dc9143c8c1@bootlin.com>
+ <20260223-unigraf-integration-v7-29-73dc9143c8c1@bootlin.com>
+Organization: bootlin
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,143 +65,98 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The reference (software-equivalent) CRC is being recomputed
-for every plane even though it is identical across planes for
-a given test configuration. Refactor the test to collect the
-reference CRC once per pipe and reuse it for all planes.
+On Mon, 23 Feb 2026 13:09:36 +0100
+Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 
-v3:
- - Rebase
+> As multiple connectors can be present on the DUT, add a configuration to
+> tell which connector is used by the Unigraf and which EDID to use on the
+> Unigraf.
+>=20
+> Complete list of EDID name supported can be found in
+> lib/monitor_edids/{dp,hdmi}_edids.h
+>=20
+> The configuration will look like:
+>=20
+> [Unigraf]
+> Device=3DUCD-500 [2434C620]
+> Role=3DDisplayPort Source and Sink
+> Input=3DDP RX
+> Connector=3DDP-4
+> EDID=3DDEL_16543_DELL_P2314T_DP
+>=20
+> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+> ---
+>  lib/unigraf/unigraf.c | 125
+> +++++++++++++++++++++++++++++++++++++++++++++++++- lib/unigraf/unigraf.h |
+> 3 ++ 2 files changed, 126 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/lib/unigraf/unigraf.c b/lib/unigraf/unigraf.c
+> index 796848dd8fc7..549196bb90bd 100644
+> --- a/lib/unigraf/unigraf.c
+> +++ b/lib/unigraf/unigraf.c
+> @@ -13,7 +13,10 @@
+>  #include "unigraf.h"
+>  #include "TSI_types.h"
+>  #include "TSI.h"
+> +#include "igt_edid.h"
+> +#include "igt_kms.h"
+>  #include "igt_rc.h"
+> +#include "monitor_edids/monitor_edids_helper.h"
+> =20
+>  #define unigraf_debug(fmt, ...)	igt_debug("TSI:%p: " fmt,
+> unigraf_device, ##__VA_ARGS__)=20
+> @@ -46,6 +49,16 @@ static char *unigraf_connector_name;
+>   */
+>  #define UNIGRAF_CONFIG_INPUT_NAME "Input"
+> =20
+> +/**
+> + * UNIGRAF_CONFIG_CONNECTOR_NAME - Key of the connector name in the
+> configuration file
+> + */
+> +#define UNIGRAF_CONFIG_CONNECTOR_NAME "Connector"
+> +
+> +/**
+> + * UNIGRAF_CONFIG_EDID_NAME - Key of the EDID name in the configuration =
+file
+> + */
+> +#define UNIGRAF_CONFIG_EDID_NAME "EDID"
+> +
+>  /**
+>   * UNIGRAF_DEFAULT_ROLE_NAME - Default role name to search on the unigraf
+> device */
+> @@ -200,6 +213,82 @@ static int unigraf_find_input(const char *request)
+>  	return -ENODEV;
+>  }
+> =20
+> +static void unigraf_load_default_edid(void)
+> +{
+> +	struct edid *edid =3D get_edid_by_name(unigraf_default_edid);
+> +
+> +	if (edid) {
+> +		for (int i =3D unigraf_get_mst_stream_max_count(); i > 0; i--)
+> +			unigraf_write_edid(i - 1, edid, edid_get_size(edid));
+> +	} else {
+> +		igt_warn("Impossible to find an edid named \"%s\"",
+> unigraf_default_edid);
+> +		list_edid_names(IGT_LOG_WARN);
+> +	}
 
-v2:
- - Rebase
- - s/test_grab_crc/capture_ref_crc (Swati)
- - Use DRM_PLANE_TYPE_PRIMARY (Swati)
- - s/igt_skip_on/igt_assert/ (Swati)
- - Add a comment explaining why CRC capture on the
-   primary plane is sufficient (Swati)
- - Wait for vblank before CRC collection (Swati)
- - s/reference_crc/ref_crc (Swati)
+I am nitpicking but separating the check from the action improve code clari=
+ty:
 
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/kms_color_pipeline.c | 66 +++++++++++++++++++++++++++++---------
- 1 file changed, 50 insertions(+), 16 deletions(-)
+	if (!edid){
+		igt_warn("Impossible to find an edid named \"%s\"",
+			 unigraf_default_edid); list_edid_names(IGT_LOG_WARN);
+		return;
+	}
 
-diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
-index 41808718f..3b4b85758 100644
---- a/tests/kms_color_pipeline.c
-+++ b/tests/kms_color_pipeline.c
-@@ -84,16 +84,58 @@ static bool ctm_colorop_only(kms_colorop_t *colorops[])
- 	return true;
- }
- 
-+static void
-+capture_ref_crc(data_t *data, igt_output_t *output,
-+		const color_t *fb_color, igt_crc_t *crc /* out */)
-+{
-+	struct igt_fb fb;
-+	drmModeModeInfo *mode;
-+	igt_plane_t *primary;
-+	char *crc_str;
-+	int ret;
-+
-+	/*
-+	 * Since CRC is collected at Pipe level,
-+	 * collecting crc for primary plane
-+	 * is enough for reference.
-+	 */
-+	primary = igt_output_get_plane(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	mode = igt_output_get_mode(output);
-+	igt_assert_fd(igt_create_fb(data->drm_fd,
-+				    mode->hdisplay, mode->vdisplay,
-+				    DRM_FORMAT_XRGB8888,
-+				    DRM_FORMAT_MOD_LINEAR,
-+				    &fb));
-+
-+	paint_rectangles(data, mode, fb_color, &fb);
-+	igt_plane_set_fb(primary, &fb);
-+	ret = igt_display_try_commit_atomic(&data->display, 0, NULL);
-+	igt_assert(!ret);
-+
-+	igt_wait_for_vblank(primary->crtc);
-+	igt_pipe_crc_collect_crc(data->pipe_crc, crc);
-+
-+	igt_plane_set_fb(primary, NULL);
-+	igt_display_commit_atomic(&data->display, 0, NULL);
-+
-+	igt_remove_fb(data->drm_fd, &fb);
-+
-+	crc_str = igt_crc_to_string(crc);
-+	igt_debug("CRC for reference fb: %s\n", crc_str);
-+	free(crc_str);
-+}
-+
- static void _test_plane_colorops(data_t *data,
- 				 igt_plane_t *plane,
- 				 const color_t *fb_colors,
--				 const color_t *exp_colors,
-+				 igt_crc_t *crc_ref,
- 				 kms_colorop_t *colorops[])
- {
- 	igt_display_t *display = &data->display;
- 	drmModeModeInfo *mode = data->mode;
- 	igt_colorop_t *color_pipeline;
--	igt_crc_t crc_ref, crc_pipe;
-+	igt_crc_t crc_pipe;
- 	struct igt_fb fb;
- 
- 	color_pipeline = get_color_pipeline(display, plane, colorops);
-@@ -106,18 +148,6 @@ static void _test_plane_colorops(data_t *data,
- 				 DRM_FORMAT_XRGB8888,
- 				 DRM_FORMAT_MOD_LINEAR,
- 				 &fb));
--	igt_plane_set_fb(plane, &fb);
--
--	igt_display_commit_atomic(&data->display, 0, NULL);
--
--	/* Reference (software-equivalent) CRC */
--	set_color_pipeline_bypass(plane);
--	paint_rectangles(data, mode, exp_colors, &fb);
--
--	igt_plane_set_fb(plane, &fb);
--	igt_display_commit_atomic(&data->display, 0, NULL);
--	igt_wait_for_vblank(plane->crtc);
--	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_ref);
- 
- 	/* Hardware pipeline CRC */
- 	set_color_pipeline(display, plane, colorops, color_pipeline);
-@@ -135,7 +165,7 @@ static void _test_plane_colorops(data_t *data,
- 	igt_wait_for_vblank(plane->crtc);
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_pipe);
- 
--	igt_assert_crc_equal(&crc_ref, &crc_pipe);
-+	igt_assert_crc_equal(crc_ref, &crc_pipe);
- 
- 	/* Cleanup per-test state */
- 	set_color_pipeline_bypass(plane);
-@@ -154,6 +184,9 @@ static void test_plane_colorops(data_t *data, igt_crtc_t *crtc,
- 	int n_planes = crtc->n_planes;
- 	igt_output_t *output = data->output;
- 	igt_plane_t *plane;
-+	igt_crc_t ref_crc;
-+
-+	capture_ref_crc(data, output, exp_colors, &ref_crc);
- 
- 	for (int plane_id = 0; plane_id < n_planes; plane_id++) {
- 		plane = igt_output_get_plane(output, plane_id);
-@@ -162,7 +195,8 @@ static void test_plane_colorops(data_t *data, igt_crtc_t *crtc,
- 			continue;
- 
- 		igt_dynamic_f("pipe-%s-plane-%u", kmstest_pipe_name(crtc->pipe), plane_id)
--			_test_plane_colorops(data, plane, fb_colors, exp_colors, colorops);
-+			_test_plane_colorops(data, plane, fb_colors,
-+					     &ref_crc, colorops);
- 	}
- }
- 
--- 
-2.25.1
+	for(...)
 
+With this fixed:
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+
+Thank you!
+--=20
+K=C3=B6ry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
