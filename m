@@ -4,41 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0D94EA4FB2
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8D5BEA4FAE
 	for <igt-dev@archiver.kernel.org>; Mon, 23 Feb 2026 12:09:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5206010E35F;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6883810E374;
 	Mon, 23 Feb 2026 12:09:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="V9aH1gsZ";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="QlRv7XOR";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 919F710E38A
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 12:09:33 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 11AE610E38D
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 12:09:31 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 81A14C143C6
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 12:09:46 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id F05544E41032
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 12:09:29 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 66D985FD43;
- Mon, 23 Feb 2026 12:09:32 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id BB8BB5FD43;
+ Mon, 23 Feb 2026 12:09:29 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 8244410368F8E; Mon, 23 Feb 2026 13:09:30 +0100 (CET)
+ with ESMTPSA id D05E210368FD2; Mon, 23 Feb 2026 13:09:28 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1771848571; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1771848569; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=Q0NnLZmotD2/sCoNHFLjCUzcRZyZjWsGtT2ELJsb7+M=;
- b=V9aH1gsZe/XNjNwJcxdNDpyaEg9XOBD5N8mpS/W/i2W3WUGTU8s1nAN6Q4Xghsny1zHJWc
- dR1X0TFl9mc7eV1WUXeYpcDqRutvcDDJgCHopYAi20RnDaGnajkW2c3a9Rjb6U6Z9zABwU
- 63MndYrd4uJmAV4TkUkXeyo9Q8AwG5Ykzwl5hLkh8W9CbexG7ry09OKlssbBJzHyDfrfOq
- 3LUuslB+zYJhGxYvKpTLCRnMhC4vblzy6P7D/bAUvrfpwc/reBZ3PsWJUnKrJb76yEpups
- i18AUjZvdbmUt70lCi/xdaRbqEIVTvLk/bQpA9JzSGbv6M7Tt60QdGlxZjUddw==
+ bh=xY6bzYGsnp1GVFDW/v3owo+t83b81O+Iy6k6sXSd94Y=;
+ b=QlRv7XOR5KSUk9SX6zXBXIQ3pDcOhIjs11CRx67iIpUi9WM45TJA53Q+vCgbbaLbPYlbfC
+ 8vAd/zW1yKnDXjRhyCCG9lL2XYB7GAErHCOhhsbdu5yecLkWpyGAXwFGejCTK3NXI97YvT
+ g8jqi9H89eTPl6JgPeOTo12NnTgDK9CX/tJ24p00zGQEvQq3y8/T3a1MmdKCLgjJM2TZNN
+ 32IBunX3DgZ/P46ezrqpzkRGPvo/R6xLylCAFIY6KbBYotRYBZnfytdTRAStDdK2/AzW/Q
+ Veaz4EVgJHfRzqI9CLUpTtakfdCYc8oRFAMWGNviSq6+YjR1oXseo4u2j4IIvA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 23 Feb 2026 13:09:52 +0100
-Subject: [PATCH i-g-t v7 45/48] docs/unigraf: Add unigraf documentation
+Date: Mon, 23 Feb 2026 13:09:50 +0100
+Subject: [PATCH i-g-t v7 43/48] lib/igt_kms: Add helper to get a CRTC from
+ an output
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260223-unigraf-integration-v7-45-73dc9143c8c1@bootlin.com>
+Message-Id: <20260223-unigraf-integration-v7-43-73dc9143c8c1@bootlin.com>
 References: <20260223-unigraf-integration-v7-0-73dc9143c8c1@bootlin.com>
 In-Reply-To: <20260223-unigraf-integration-v7-0-73dc9143c8c1@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -46,21 +47,21 @@ Cc: thomas.petazzoni@bootlin.com, luca.ceresoli@bootlin.com,
  kory.maincent@bootlin.com, markyacoub@google.com, 
  khaled.almahallawy@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3663;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1447;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=3MoGbib6M/vjbZn42lzsjTZxhno9ZfmBzA+wzmP4sdY=;
- b=kA0DAAgBIK0uxlsQLOIByyZiAGmcQ2zIMjWCixtRua2sGDc9FoVbXcW8X2teLbMDNlGMEOkX6
- YkCTwQAAQgAORYhBE+PuD++eDwxDFBZBCCtLsZbECziBQJpnENsGxSAAAAAAAQADm1hbnUyLDIu
- NSsxLjExLDIsMgAKCRAgrS7GWxAs4uF6EAC0JHW+b/bQzzqzecPV7XtiybnnhBog1BvPk+Irj+t
- 7hJOvSr3CSkZ6OzQ0jpoNC/n8Ka+QjqtBSTf+64bpvLLj5EKUuvfVhTUXCqls2kxFtbL8ebGmPK
- /S5cwXUljV5zJrxwvbtfB2sA6lQLFmnfk6ycb2CRSoxm9HPny1/R766CUv3smCGPiM7+hY1+Qr2
- MmskpNg4NFPj5W6L12WRgSnHzygLRk25Npy7wvSucKTeq3Cwu6Cj3Nn9G2senypgTG62ILu4TVw
- KPYjmWyeEOkCkMnI37zV13ls1tvfDxTjDsqsF52K6jkH012seNS7NqZZ0A4hk0JIRDl98ku2SGN
- KkglGABFjHOBvhUK+Eroo7jD5y3ss3eyBXbXaZmWKLIOSPbRklBqe9uF2f/upEnDyVrD4l1t1P0
- QJWks8YJsvxcu+2/UoaTIXBftO4n7Pa5X2NFP8Is7SI7fMBIAxWPiHHza7VSGNnkE+qv3gTSBAN
- yCvteYvORxw3ND1hTFKXIA/8h1twjBqqLlCM8jiZl9CnotYIgsWKJXzMfaVGxJABVWA+mNWQXdY
- MbJcGBkXjf6yTEMhLLEnVq8AwUb1uOYLYfzy+EqYU8m5pQKFO79H4k4z+8K2ZpzgJJTaX5eZvO7
- X0PzI+KBLiP5hs9qCFC9MXo2w7O8NWVzTqQrjVea7ig==
+ bh=7ZUSTUWSP1K70BH6UVa6YafESjTuKG3O8zY6y56NbdY=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBpnENsLmM/pRTccWTlV84Q9Shr16kAnTwX4gDp+
+ 45AomvphKuJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCaZxDbBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQIK0uxlsQLOLmKA//S4+Qmit8/h6mgfee2WhGy7tTphN/hH7
+ l32HUX1BOVMZpTYnqPxRjlgomUMarPndcVwGgGfkJM0oxeIye9o2d7N+rdLCyuLYiP/DT3uCVsQ
+ O/+9+qSGvBjxmkWyGJ/qdPYuUZaQDqPIJGRRnDuTdwZAL7kFYwFkDhkc2kuZsWMYXit9/uHqavF
+ xR4pQRFZA3t/GwLm1i/rZyexgmfWmvs8iWhB8dqOFSt/9grW8SmgiEX7Q5eoC/3YTGpq9+4EK3g
+ dXoK6dMK/hozE6NMLCgi6K1Tl0RvcTuo1aN7NiuSJ7Ku4UsD5xceWb9ypXPdgA4QTMl74SmfdeE
+ rdChDzCo2YaX7P9HHJgfvEqQBaxO2ois3X4ObuANhddKqgDUGY00hGv5Kxt4kYdnuP4DZkjSkTw
+ aYO4L7nfWnnxWJqDfW7jwhOtaEE+msWYO1gz+ySq4t/AFd1B89Y/pyontaqnGwG8VSIGFc6O2Ry
+ JZuu0JiDU0Ukb6l2FIlPAy8KIj/dGEDVT9et0YkgjzD0ICyfX5iTv9yRWBzIm+70gJWZCFBsdYt
+ EWahS8YA3zp77oR909+KTr3izLzwpv5JvTNKxslJ0Kced/J8oaTDBKXpG2uRinll5oC+w1UKZq9
+ QIWuf8mFiSEMLekUinlzrReo8KAZcPwEeibZ0URAdXC36Ei7Hg/Q=
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,100 +80,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add unigraf documentation to explain how to compile and use it with IGT.
+Grabbing a valid CRTC from a specific output is useful when testing
+the output.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- docs/unigraf.txt | 81 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
+ lib/igt_kms.c | 20 ++++++++++++++++++++
+ lib/igt_kms.h |  2 ++
+ 2 files changed, 22 insertions(+)
 
-diff --git a/docs/unigraf.txt b/docs/unigraf.txt
-new file mode 100644
-index 000000000000..f8e56868b01a
---- /dev/null
-+++ b/docs/unigraf.txt
-@@ -0,0 +1,81 @@
-+Unigraf Support in IGT
-+========================
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 0c61ac6e2788..9f8e09008e19 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -7937,3 +7937,23 @@ int igt_get_crtc_index_from_connector_id(int drm_fd, int connector_id)
+ 	}
+ 	return 0;
+ }
 +
-+This document provides information, instructions and for Unigraf support in IGT.
++/*
++ * igt_get_crtc_for_output:
++ * @display: display to fetch the CRTC
++ * @output: output to use
++ *
++ * Get a valid CRTC for a specific output. The return value is the first valid CRTC for a
++ * specific output.
++ */
++igt_crtc_t *igt_get_crtc_for_output(igt_display_t *display,
++				    igt_output_t *output)
++{
++	igt_crtc_t *crtc;
 +
-+Introduction
-+------------
++	for_each_crtc(display, crtc)
++		if (igt_crtc_connector_valid(crtc, output))
++			return crtc;
 +
-+Unigraf devices are a set of devices that can be used to test all sort of graphical
-+interface and signals. See Unigraf website for more information about all the
-+capabilities of earch devices: https://unigraf.fi
-+
-+Unigraf documentation
-+---------------------
-+
-+All the documentation for libTSI, the library used to communicate with the unigraf,
-+can be found on unigraf website: https://www.unigraf.fi/downloads/
-+
-+Setting up Unigraf
-+------------------
-+
-+For most of the unigraf devices, this should be as simple as "plugging the
-+unigraf and plug the video cable". If you need to install some license, upgrade
-+the firmawre... please take a look at the official unigraf documentation.
-+
-+Compiling IGT with Unigraf support
-+----------------------------------
-+
-+Unfortunatly, the communication with the device use a proprietary library and the
-+underlaying protocol is not open. To use the unigraf you need to install the unigraf
-+SDK, grab the libTSI.so and make it available on the build machine and the DUT.
-+
-+Deploying the Unigraf with IGT
-+------------------------------
-+
-+Unigraf may work out of the box: by default if IGT find a unigraf device, it will
-+try to connect and configure it to use USB-C input. This allows running most of
-+the existing tests without an actual screens.
-+
-+Here is a complete example configuration:
-+
-+        [Unigraf]
-+        # Choose a device using his name, you can find it in UCDConsole (installed with the SDK)
-+        Device=UCD-500 [2434C620]
-+        # Choose a role for the device, you can find it UCDConsole
-+        Role=USB-C, DP Alt Mode Source and Sink
-+        # Choose active input for the device
-+        Input=DP RX
-+        # Set the connector name used by the unigraf device. If not set, IGT will try to
-+        # autodetect which connector is used.
-+        Connector=DP-2
-+        # Set the EDID used by Unigraf
-+        EDID=DEL_16543_DELL_P2314T_DP
-+        # Enable or disable the use of Unigraf's CRCs instead of the CRTC CRCs
-+        UseCRC=1
-+        # Set the number of emulated MST streams (0 = Single Stream Transport, >=1 = MST)
-+        MSTStreams=0'
-+
-+Current Support in IGT
-+----------------------
-+
-+Support for the Unigraf devices in IGT is found in the following places:
-+* lib/unigraf/unigraf.[ch] -> IGT API
-+* lib/unigraf/TSI.h -> Header for libTSI.so, not provided by Unigraf
-+* lib/unigraf/TSI_types.h -> Header containing all the relevant values from unigraf SDK. The unigraf SDK can't be used directly because it is only compatible with windows and c++.
-+
-+Current unigraf.c features are:
-+* Plug, unplug, hotplug pulse
-+* EDID management
-+* MST/SST stream management
-+* CRC calculation
-+
-+Current testing are:
-+* All igt tests that require a display and use a CRC (kms_plane, )
-+* Basic EDID and MST tests
-+
-+Planned tests:
-+* Link training scenarios (link rate, lane count, scrambling, ...)
-+* Bandwidth constraint management
-+* HDCP content protection
-+* Display stream compression
++	return NULL;
++}
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 4b5f6fcc929b..716d203a7c2e 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1329,5 +1329,7 @@ get_list_diff(const uint32_t *list_a, int list_a_len, const uint32_t *list_b, in
+ 	      uint32_t **diff);
+ 
+ int igt_get_crtc_index_from_connector_id(int drm_fd, int connector_id);
++igt_crtc_t *igt_get_crtc_for_output(igt_display_t *display,
++				    igt_output_t *output);
+ 
+ #endif /* __IGT_KMS_H__ */
 
 -- 
 2.52.0
