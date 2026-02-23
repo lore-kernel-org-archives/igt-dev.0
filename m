@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14794EC1122
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47EFFEC1120
 	for <igt-dev@archiver.kernel.org>; Mon, 23 Feb 2026 19:01:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B8F6510E41E;
+	by gabe.freedesktop.org (Postfix) with ESMTP id B913F10E421;
 	Mon, 23 Feb 2026 19:01:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ybam2iXC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k+iXNGX3";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 870CC10E421
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 19:01:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 31A6210E41E
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 19:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771873276; x=1803409276;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
+ t=1771873275; x=1803409275;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
  bh=/nr7g7k8Rtyhq4vfykU+vSEQ2tW/251cNv039ou8448=;
- b=Ybam2iXC5ryLeM0GmgvTX0bTArCM0D5KOD2tj4FfD+s01zV8M1eKQMt/
- lmlmq8W95RzOfSdOfiNTRU7yGcnyjBVD5wtjX8z7Xi8HNnKQY3qn1tX8g
- 11JeHomZJWTyCcAUOB4H3pZ/1NfMLkHxv4FwvxXx51wD1vtlCHzBJ3Ede
- m0BHrx3Mv7gEL+SHt9acLXjAr1aZNf4NPmxlAhWWKUVdRryOu6g50spei
- t7BJaQA1oxs0QbR5mrdLr3vvWf8Oemex48TQGql7uNYbXW95JiQpe8wgS
- AR7Sxt2f4JVSCjEZFw6EKYv3hawV4FkEvhXiDj50IwpvNYp/2AgZcsy0X Q==;
-X-CSE-ConnectionGUID: By/Q7TxwQ3WG1z6nZjINew==
-X-CSE-MsgGUID: r/UvPW6lQQO7uqqBJ8UDMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="72755000"
-X-IronPort-AV: E=Sophos;i="6.21,307,1763452800"; d="scan'208";a="72755000"
+ b=k+iXNGX3LETuI6xzgqWya1z95a3yTozvkiBlfaZsrklF+KEy8saZy/32
+ 5fEYG4idleOiw7XBMwgwiMxtImWJ19YRqP8ARXIjA3m537vlyd9VVcnaY
+ j7XBwdt5LgF0izt1dE1jy64IGD/6EtC/UxYE5jK7z38v76MZPMdLizEWs
+ izuoRAjo+yS42uu5ccMB2oVytXMZ+z0YUvWJnCVIqdOIgKRJ9NenK0TYV
+ WV5f6HvLZzBcrNyixFDFqOgNO00MuvqBA3dn5Jx6ie2tV8g+rwx/LP4nz
+ F7S/5a3Rc9O+Pl2tmgDjIcDDj9YyECu9hEXgp1JtU09QUqwWEEHV62ysJ g==;
+X-CSE-ConnectionGUID: vYMpr9szRWSmRL44B+ZdbA==
+X-CSE-MsgGUID: 2UpRkUo5Q++yCgzKTn7hmg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="72755025"
+X-IronPort-AV: E=Sophos;i="6.21,307,1763452800"; d="scan'208";a="72755025"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Feb 2026 10:59:18 -0800
-X-CSE-ConnectionGUID: u8N3jKaOThuxdXqsebep7Q==
-X-CSE-MsgGUID: XC0U1kUaRmqBat3/+7m2+A==
+ 23 Feb 2026 10:59:22 -0800
+X-CSE-ConnectionGUID: mrZmwSioQY+WnaDm7GlP1g==
+X-CSE-MsgGUID: a7mOsQsiS5+ckrOuVOKUmg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,307,1763452800"; d="scan'208";a="215674770"
+X-IronPort-AV: E=Sophos;i="6.21,307,1763452800"; d="scan'208";a="215674812"
 Received: from llaguna-dev.igk.intel.com (HELO localhost) ([10.91.214.40])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Feb 2026 10:59:17 -0800
+ 23 Feb 2026 10:59:20 -0800
 From: Lukasz Laguna <lukasz.laguna@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: zbigniew.kempczynski@intel.com,
 	lukasz.laguna@intel.com
 Subject: [PATCH i-g-t] lib/igt_device_scan: Fix attributes fetching
-Date: Mon, 23 Feb 2026 19:59:05 +0100
-Message-Id: <20260223185906.16168-1-lukasz.laguna@intel.com>
+Date: Mon, 23 Feb 2026 19:59:06 +0100
+Message-Id: <20260223185906.16168-2-lukasz.laguna@intel.com>
 X-Mailer: git-send-email 2.40.0
+In-Reply-To: <20260223185906.16168-1-lukasz.laguna@intel.com>
+References: <20260223185906.16168-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
