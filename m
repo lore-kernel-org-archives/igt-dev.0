@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5F26EA4FCE
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Feb 2026 14:57:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3A4AEA4FCF
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Feb 2026 14:57:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7220710E3D5;
-	Mon, 23 Feb 2026 14:57:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6AFC910E400;
+	Mon, 23 Feb 2026 14:57:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h0tXNAS+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Td2uYbQv";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 25E1710E2F2
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 14:57:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B62910E2F2
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 14:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771858646; x=1803394646;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=8xOXz01Ydjtb+xOrkJKIth/HEPGjpwYN684WhUl3as0=;
- b=h0tXNAS+MITV1PGSwAnGHbJ62++4AB4LNIpA7dxMw7qaTTOmNUFAgJHJ
- AHGF1CLu4BagQJ8cIpIFvOvid1UM1aU0v6/b4qDUn+/KX4+3AxjK18t8l
- 0a3M6fvqDu4HKiIFbRdUeBVWdAUwFQ7cAa0a43Fv51IDdEs7CZrhkZRTq
- KbPPeJpboDmx7SepKkFpCnwVyjaN8p5DAOYruie/aJj9ps4L8lBDYGLyw
- qYVszGATVsXF4K6Ni+itmdpkXJqOZaLjEm5yvslgya8PmBT56NDcyef1i
- 8GcsfEHbm4mBzh4SAVl28MW1Vlv/+nMmpccqrpLRkMayvF6VO933nC0D6 A==;
-X-CSE-ConnectionGUID: p50YhtNRT86/ekMY4Hzd4w==
-X-CSE-MsgGUID: YkjPcQ7YSFilYY5kkNC2ZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="84215208"
-X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; d="scan'208";a="84215208"
+ t=1771858648; x=1803394648;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=jynKyNtm12EvA8Syt2fDJrtH7ywIei5iIxbVaXlDnjU=;
+ b=Td2uYbQvUmMXnPDgKIBNbXeQZjHktjfcFYLnc1xlbRR7BsIydpzRFc30
+ NyRkZFQ9I9blOAEn3eUQttGYdTBb6VQLZ3EmhoTLesd8KevK28u8F0B1J
+ KFadrvwhHhMjgIp/zkbQz4BYywPWx41FmStJudS/GNlqMlBJsC2RVHBTH
+ zmvHrs+nCNzgFp/fy+U1ZU1YdsybvHccWtLjWRVzgIS5wF8jxWn56e3yT
+ TVRl4cdMqqZ4+6dcdx1SOaxKoEOOBdtmHJYZL5uYoW4PLInYez1iwPCpZ
+ cQSm8dt/RMoCVm1oxYhKgW9CqHMVCu8+P+8D5JCjb4vzgfsrjrjv0LdlK g==;
+X-CSE-ConnectionGUID: 5vkNEIFFT5CsrAj8jLifsw==
+X-CSE-MsgGUID: Ijg2Fii7SLW+pQf9oEJ2KA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="84215230"
+X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; d="scan'208";a="84215230"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Feb 2026 06:57:25 -0800
-X-CSE-ConnectionGUID: m7IPKjdUS42P2gjcra0YQA==
-X-CSE-MsgGUID: PbgdWnmxRfmbH/vR0akVLQ==
+ 23 Feb 2026 06:57:28 -0800
+X-CSE-ConnectionGUID: pBafc/RsSV2ajCVqm2B5kQ==
+X-CSE-MsgGUID: aphyIWMbSsOo+DXkGmfB1g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; d="scan'208";a="213518172"
+X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; d="scan'208";a="213518189"
 Received: from dut-2a59.iind.intel.com ([10.190.239.113])
- by fmviesa006.fm.intel.com with ESMTP; 23 Feb 2026 06:57:24 -0800
+ by fmviesa006.fm.intel.com with ESMTP; 23 Feb 2026 06:57:27 -0800
 From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: swati2.sharma@intel.com,
 	chaitanya.kumar.borah@intel.com
-Subject: [PATCH i-g-t v3 1/4] tests/kms_color_pipeline: use atomic commit
- helper consistently
-Date: Mon, 23 Feb 2026 20:02:18 +0530
-Message-Id: <20260223143221.807474-1-chaitanya.kumar.borah@intel.com>
+Subject: [PATCH i-g-t v3 3/4] tests/kms_color_pipeline: Disable pipe color
+ properties in test setup
+Date: Mon, 23 Feb 2026 20:02:20 +0530
+Message-Id: <20260223143221.807474-3-chaitanya.kumar.borah@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260223143221.807474-1-chaitanya.kumar.borah@intel.com>
+References: <20260223143221.807474-1-chaitanya.kumar.borah@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,14 +68,8 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The color pipeline is an atomic-only feature, so kms_color_pipeline
-should not rely on the legacy-compatible commit path.
-
-Replace igt_display_commit2(COMMIT_ATOMIC) with
-igt_display_commit_atomic() throughout the test to make the atomic
-requirement explicit and avoid any ambiguity around commit paths.
-
-No functional change intended.
+Move disabling of pipe-level color properties (CTM, degamma, gamma)
+from the individual plane color tests into the common test setup.
 
 v2:
  - Rebase
@@ -81,66 +77,36 @@ v2:
 Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_color_pipeline.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tests/kms_color_pipeline.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
-index 7445b1456..3b270e86e 100644
+index e5914e2cc..41808718f 100644
 --- a/tests/kms_color_pipeline.c
 +++ b/tests/kms_color_pipeline.c
-@@ -43,7 +43,7 @@ static void test_cleanup(data_t *data)
- 	}
- 
- 	igt_output_set_crtc(data->output, NULL);
--	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- }
- 
- static void test_setup(data_t *data, igt_crtc_t *crtc)
-@@ -61,7 +61,7 @@ static void test_setup(data_t *data, igt_crtc_t *crtc)
- 	data->pipe_crc = igt_crtc_crc_new(data->primary->crtc,
+@@ -61,6 +61,11 @@ static void test_setup(data_t *data, igt_crtc_t *crtc)
+ 	data->pipe_crc = igt_crtc_crc_new(crtc,
  					  IGT_PIPE_CRC_SOURCE_AUTO);
  
--	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	/* Disable Pipe color props. */
++	disable_ctm(crtc);
++	disable_degamma(crtc);
++	disable_gamma(crtc);
++
+ 	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
  }
  
- static bool ctm_colorop_only(kms_colorop_t *colorops[])
-@@ -108,14 +108,14 @@ static bool test_plane_colorops(data_t *data,
- 	disable_ctm(plane->crtc);
- 	disable_degamma(plane->crtc);
- 	disable_gamma(plane->crtc);
--	igt_display_commit2(display, COMMIT_ATOMIC);
-+	igt_display_commit_atomic(&data->display, 0, NULL);
+@@ -103,10 +108,6 @@ static void _test_plane_colorops(data_t *data,
+ 				 &fb));
+ 	igt_plane_set_fb(plane, &fb);
+ 
+-	/* Disable Pipe color props. */
+-	disable_ctm(plane->crtc);
+-	disable_degamma(plane->crtc);
+-	disable_gamma(plane->crtc);
+ 	igt_display_commit_atomic(&data->display, 0, NULL);
  
  	/* Reference (software-equivalent) CRC */
- 	set_color_pipeline_bypass(plane);
- 	paint_rectangles(data, mode, exp_colors, &fb);
- 
- 	igt_plane_set_fb(plane, &fb);
--	igt_display_commit2(display, COMMIT_ATOMIC);
-+	igt_display_commit_atomic(&data->display, 0, NULL);
- 	igt_wait_for_vblank(plane->crtc);
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_ref);
- 
-@@ -131,7 +131,7 @@ static bool test_plane_colorops(data_t *data,
- 		paint_gradient_rectangles(data, mode, fb_colors, &fb);
- 
- 	igt_plane_set_fb(plane, &fb);
--	igt_display_commit2(display, COMMIT_ATOMIC);
-+	igt_display_commit_atomic(&data->display, 0, NULL);
- 	igt_wait_for_vblank(plane->crtc);
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_pipe);
- 
-@@ -141,7 +141,7 @@ static bool test_plane_colorops(data_t *data,
- 	set_color_pipeline_bypass(plane);
- 	reset_colorops(colorops);
- 	igt_plane_set_fb(plane, NULL);
--	igt_display_commit2(display, COMMIT_ATOMIC);
-+	igt_display_commit_atomic(&data->display, 0, NULL);
- 
- 	igt_remove_fb(data->drm_fd, &fb);
- 
 -- 
 2.25.1
 
