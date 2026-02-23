@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F91BEA4FAD
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Feb 2026 11:44:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07D8BEA4FAD
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Feb 2026 11:46:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D3D2F10E2E5;
-	Mon, 23 Feb 2026 11:44:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6849010E2E5;
+	Mon, 23 Feb 2026 11:46:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LmdZZ+pD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kLm+25cd";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 92C6C10E2E5
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 11:44:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65AAE10E2E5
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 11:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771847061; x=1803383061;
+ t=1771847216; x=1803383216;
  h=from:to:subject:in-reply-to:references:date:message-id:
  mime-version:content-transfer-encoding;
- bh=lTnBPCYjd0o9zi7U/NmvG3nRl1q6q1hH76bwMfwt9XU=;
- b=LmdZZ+pDnPJeF99Qn0SYKHHU+QWbe0yviE+SviXU5xnNmnk7Ab4sRDRg
- XXPyNezap+LinzXUgBzhjG/XAEiJMdqQMdlPReClrLOnKuKsUq+4376t+
- qkklgDuEXKOfH/qT7cyoTyPIM6lU6LILf8Ki9TmVjd2l8joIuUIdQxFVz
- G3QBGakq472mPKxl3wa55jnQPIWBAdx8OsgkfyS8JtWEkGitnYeTiyCc0
- ilbqr/kD6GZ9BL1AetCeO5AWTwT2fWqiaI67l7+u7GkGFD3RrRa1EPwP0
- Ic9h1VvVv82CBNsKB/poO7ZzFja6Ph/SHrMpIKV4VW7zP+PUZfy8yXPwi g==;
-X-CSE-ConnectionGUID: B1pznLIhRUuwrf7G85ByyQ==
-X-CSE-MsgGUID: zl1A0zkwRRyFix6aN0XdFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11709"; a="83550778"
-X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; d="scan'208";a="83550778"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Feb 2026 03:44:21 -0800
-X-CSE-ConnectionGUID: h63glazWRVmBw01YOyXTlA==
-X-CSE-MsgGUID: YEQy5OirQkO9wJBZhHHc9g==
+ bh=04N/Dr/0hhLKaDnAhvMFFybaWxvqdEmOwaCbzG6udzc=;
+ b=kLm+25cd5WDjD/2/wsgqBL5tUXJpTIz971Tzn6QVWUYG7f9wRtLwjpwC
+ vN9G4AmXh4RjFhUExhCJe+TKWqB+Gfw3FJAHnb8vRalujuWc3W/hYb8IV
+ dKBD+w/mLNUnZzBoNE/i4C8GQR/sx2IHQceYZ6XphCPbR4qpkWHhjs5Fr
+ wujJH8pHFDpdw2e5S1HhxPKahAPXoIsVMmJaxPn6M2zG+FJJz/5i/AG3Y
+ yBwXy1rDIz/RDo7lnJfUi0txHXSyvxknMZLMDAQdG1KVXEZfqkFKW5WIP
+ DSCMajJlka2fEYHTEQzlazA85CRcBvAhVbLP8l1zFW1UcdOOBo6fv2xFO A==;
+X-CSE-ConnectionGUID: Fca1yDZOQi+FdD1oAdT9zw==
+X-CSE-MsgGUID: du53EPjiRlWvCv97+kbx5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11709"; a="73015672"
+X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; d="scan'208";a="73015672"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Feb 2026 03:46:51 -0800
+X-CSE-ConnectionGUID: LP9zY2vjR9er22t3z14aaA==
+X-CSE-MsgGUID: PhaPzuqeT6qV56lRk3uFhA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; d="scan'208";a="219650966"
+X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; d="scan'208";a="246142552"
 Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.246.249])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Feb 2026 03:44:19 -0800
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Feb 2026 03:46:48 -0800
 From: Jani Nikula <jani.nikula@intel.com>
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v2 06/23] tests/kms: Use 'enum pipe' over int'
-In-Reply-To: <20260221032003.30936-7-ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t v2 07/23] lib/kms: Add igt_crtc_for_crtc_id()
+In-Reply-To: <20260221032003.30936-8-ville.syrjala@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 References: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
- <20260221032003.30936-7-ville.syrjala@linux.intel.com>
-Date: Mon, 23 Feb 2026 13:44:15 +0200
-Message-ID: <deb35c0d88e64c72dd48257e9e795f0292e18b07@intel.com>
+ <20260221032003.30936-8-ville.syrjala@linux.intel.com>
+Date: Mon, 23 Feb 2026 13:46:44 +0200
+Message-ID: <2d9fd7ed1b319584cad9d19de3fecb52966acb5f@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -74,46 +74,57 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 On Sat, 21 Feb 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
 > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >
-> Convert a few 'int pipe's tp 'enum pipe pipe's. This will help
-> subsequent cocci based pipe->crtc conversions.
-
-*to
+> Introduce igt_crtc_for_crtc_id() as a helper to return the
+> appropriate igt_crtc_t* for a given KMS CRTC ID. This will
+> be useful for kms_lease which will need to match the CRTCs
+> between the lessor and lessee (each has a different view of
+> the same KMS objects, and thus also different igt_display_t).
+>
+> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 
 Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
->
-> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 > ---
->  tests/intel/kms_flip_tiling.c | 2 +-
->  tests/nouveau_crc.c           | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  lib/igt_kms.c | 12 ++++++++++++
+>  lib/igt_kms.h |  1 +
+>  2 files changed, 13 insertions(+)
 >
-> diff --git a/tests/intel/kms_flip_tiling.c b/tests/intel/kms_flip_tiling.c
-> index 453394343857..54446f2478ae 100644
-> --- a/tests/intel/kms_flip_tiling.c
-> +++ b/tests/intel/kms_flip_tiling.c
-> @@ -67,7 +67,7 @@ static void pipe_crc_free(data_t *data)
->  	data->pipe_crc =3D NULL;
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 5c48796040a2..bec96f2677ad 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -7952,3 +7952,15 @@ bool igt_has_lobf_debugfs(int drmfd, igt_output_t =
+*output)
+>                                                buf, sizeof(buf));
+>          return res =3D=3D 0;
 >  }
+> +
+> +igt_crtc_t *igt_crtc_for_crtc_id(igt_display_t *display, uint32_t crtc_i=
+d)
+> +{
+> +	igt_crtc_t *crtc;
+> +
+> +	for_each_crtc(display, crtc) {
+> +		if (crtc->crtc_id =3D=3D crtc_id)
+> +			return crtc;
+> +	}
+> +
+> +	return NULL;
+> +}
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index dedc3f88055b..5a2dd87b509f 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -582,6 +582,7 @@ static inline igt_crtc_t *igt_crtc_for_pipe(igt_displ=
+ay_t *display, enum pipe pi
 >=20=20
-> -static void pipe_crc_new(data_t *data, int pipe)
-> +static void pipe_crc_new(data_t *data, enum pipe pipe)
->  {
->  	igt_display_t *display =3D &data->display;
->  	if (data->pipe_crc)
-> diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
-> index 9013b7e53df8..b2f9f3bdd08d 100644
-> --- a/tests/nouveau_crc.c
-> +++ b/tests/nouveau_crc.c
-> @@ -31,7 +31,7 @@ IGT_TEST_DESCRIPTION(
->  "such as context flipping.");
+>  	return &display->crtcs[pipe];
+>  }
+> +igt_crtc_t *igt_crtc_for_crtc_id(igt_display_t *display, uint32_t crtc_i=
+d);
 >=20=20
->  typedef struct {
-> -	int pipe;
-> +	enum pipe pipe;
->  	int drm_fd;
->  	int nv_crc_dir;
->  	igt_display_t display;
+>  typedef struct _igt_pipe_crc igt_pipe_crc_t;
+>  igt_pipe_crc_t *igt_crtc_crc_new(igt_crtc_t *crtc, const char *source);
 
 --=20
 Jani Nikula, Intel
