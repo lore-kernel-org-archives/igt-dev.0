@@ -4,45 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76B93EA4FC7
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Feb 2026 14:26:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64F2FEA4FCA
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Feb 2026 14:27:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2CA7410E472;
-	Mon, 23 Feb 2026 14:26:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 16C2C10E48F;
+	Mon, 23 Feb 2026 14:27:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="fWogMOGL";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="aao/Pe9u";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3B3510E472
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 14:26:11 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 57ADF10E496
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 14:27:02 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 96F611A115F;
- Mon, 23 Feb 2026 14:26:10 +0000 (UTC)
+ by smtpout-04.galae.net (Postfix) with ESMTPS id 9678EC143C7
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 14:27:14 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 6E0C75FD43;
- Mon, 23 Feb 2026 14:26:10 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 691FC5FD43;
+ Mon, 23 Feb 2026 14:27:00 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 9516810368E00; Mon, 23 Feb 2026 15:26:08 +0100 (CET)
+ with ESMTPSA id C51A510368E1E; Mon, 23 Feb 2026 15:26:58 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1771856769; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1771856819; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=xO+BUU4Kp8It3mbWqmlkYVWgm3DKfvzcudNHpfGrSeA=;
- b=fWogMOGL9UYjb4hiVAROazG6jU35W1Qqu8ve2plXn69o3DNBm4ON0Cm0DmieaVL36kO4vi
- fp+8z11aFF3/fneIb4BMEUpf4kDSJjGnjTydi34NXc1L35jzVOIKvlUA36+/lXk9K8ko5U
- yOqqcHDI7c1LWAVkehbRutXmpZxgMoCMq7G10bac11v5xO1Q4oKm/0ehXUoJdiKz2Upswx
- Z30fHbZAWau/wMGkaYie2IZ03whkL/tv5SyuxeZPejY5ZFmer+KibJ3s5D+yX97+d7LCfT
- KxfxzgXCJncwfpz+8DTE9tr2maYNKDaICzmUEQxu6DyGK7pwdwP0GwR2NQ0XIg==
-Date: Mon, 23 Feb 2026 15:26:07 +0100
+ bh=AKMdEY4npuZQA5zeg/a0ZYgCf3olwQ6gZvcc8ki2uk8=;
+ b=aao/Pe9uNd0D202OIb0TAMLnQW3EBFhCrfWTQDVYDYB/Erayct9zuSsVtZDnzVdWPYQnqN
+ rSTKx+blwNZtFGf1TlqLqYFm6Kg9PaSgfAtyb8tXe56w+I0CN6TVUTV8qH+AJfoCbFyu/u
+ lnLBgZbAhcobzLPx+8hNIMVreQDsdlbKVGtm21r+R5p8K/cigMRJ1vDrgJxVe8klaz10lo
+ Yp322C/U6V3uIAPmo+9qEk7NMM7z2SGOH5jlwE94dCmCeTqcq+/qfrXXctTXZIbWF/UKSl
+ oUQDli/0dCfMS5UtN79YE7ul7t6pE8lX0lluPBrxoHZ/W/dhxJ6OWuHEDHdJRA==
+Date: Mon, 23 Feb 2026 15:26:58 +0100
 From: Kory Maincent <kory.maincent@bootlin.com>
 To: Louis Chauvet <louis.chauvet@bootlin.com>
 Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
  luca.ceresoli@bootlin.com, markyacoub@google.com,
  khaled.almahallawy@intel.com
-Subject: Re: [PATCH i-g-t v7 23/48] lib/unigraf: Introduce input configuration
-Message-ID: <20260223152607.32d532a6@kmaincent-XPS-13-7390>
-In-Reply-To: <20260223-unigraf-integration-v7-23-73dc9143c8c1@bootlin.com>
+Subject: Re: [PATCH i-g-t v7 24/48] lib/unigraf: Add reset function
+Message-ID: <20260223152658.583226d5@kmaincent-XPS-13-7390>
+In-Reply-To: <20260223-unigraf-integration-v7-24-73dc9143c8c1@bootlin.com>
 References: <20260223-unigraf-integration-v7-0-73dc9143c8c1@bootlin.com>
- <20260223-unigraf-integration-v7-23-73dc9143c8c1@bootlin.com>
+ <20260223-unigraf-integration-v7-24-73dc9143c8c1@bootlin.com>
 Organization: bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -64,19 +64,11 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 23 Feb 2026 13:09:30 +0100
+On Mon, 23 Feb 2026 13:09:31 +0100
 Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 
-> As multiple input can be present on unigraf devices, add a configuration
-> field to select the proper input. By default it will take the first
-> available.
->=20
-> The configuration can look like:
->=20
-> [Unigraf]
-> Device=3DUCD-500 [2434C620]
-> Role=3DDisplayPort Source and Sink
-> Input=3DDP RX
+> To have a consistent state at the beginning of tests, add a unigraf_reset
+> function that will restore a known state.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 
