@@ -4,46 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8907BE909BC
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Feb 2026 15:44:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53711EA4FD8
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Feb 2026 15:45:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3375B10E3D9;
-	Mon, 23 Feb 2026 15:44:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 03A6A10E2F4;
+	Mon, 23 Feb 2026 15:45:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Mm5XEv/z";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Tt2Cl/iF";
 	dkim-atps=neutral
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5284E10E3D9
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 15:43:58 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4FBA010E2F4
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 15:45:32 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-04.galae.net (Postfix) with ESMTPS id 73A87C143C2
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Feb 2026 15:44:10 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 127234E40F59;
+ Mon, 23 Feb 2026 15:45:31 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 17D215FD59;
- Mon, 23 Feb 2026 15:43:56 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id DDC1A5FD59;
+ Mon, 23 Feb 2026 15:45:30 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 10AF510369002; Mon, 23 Feb 2026 16:43:53 +0100 (CET)
+ with ESMTPSA id 3156E10368FE8; Mon, 23 Feb 2026 16:45:29 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1771861435; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1771861530; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=zkNTTYVqjlKbjT5gKsEK8VIOjlWEXRCRXIiP0Z6tRhM=;
- b=Mm5XEv/zItq6HEMRBfGqMvD0WJMQcmGAEJYpmz0kCFua3qg7cohwPEsz9AoPKkwUCGGYzX
- ao7/Z/sBmGyUhG3g4EGAe9AqkKS7C0qe8+leFUiF690hEnaCVviTzrFt6DBMYVuUg+KP2G
- gZwle/Pp73ZWYIBhTrgFBZm87UultTqwQzVC41EJSU56JiPxxlIMWpB07BK1slT6Lh8ax4
- estRGji4IJ4b6ABvWHYz1pKiOwTpDUQde98QAbWig3+rPXGsJiBUH/qE401/ObiuROIfsM
- wwMCC+4e2IFerOEPA04UIM5hdjeEYI2v1JTAzrMs0JCa4ijyeR5+4F1UHK4poA==
-Date: Mon, 23 Feb 2026 16:43:53 +0100
+ bh=UfQxZIv5NqR4yrKeOM0EmZXXlYYzp02j6v4TIAGMat8=;
+ b=Tt2Cl/iFn4sHKFzbHkooypIbJzm56RKumzFMn1uVdIX/UxWU9ymrLGULL8d76DADBhULWE
+ AhUbbFNXhJe6q3i0vJPw/B50r9gSPzzsNxG4QFc2ur3czZii5id3q+nVvDjIdKmr1OQvza
+ P0wEaZcANdCYMS5ZStjYBXesWuLaEJEHtfkGkG/eHD7VKUvt+NeyFssxyLkmJsNYVi0h5t
+ CDWBYQYItOy/qudrIl71NrvBy6+17AeuxVYipjdPlTaN9Leqy6AT1JROvoZ7AWxeGksfZ6
+ Rd0M1JKkzt15MMMDLdMVo92QxtRaXRpcQ/5ceVJIdCkT2xE32fcSNCYNOCqQdA==
+Date: Mon, 23 Feb 2026 16:45:28 +0100
 From: Kory Maincent <kory.maincent@bootlin.com>
 To: Louis Chauvet <louis.chauvet@bootlin.com>
 Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
  luca.ceresoli@bootlin.com, markyacoub@google.com,
  khaled.almahallawy@intel.com
-Subject: Re: [PATCH i-g-t v7 36/48] lib/i915/dp: Move DP-related function
- for i915 to proper folder
-Message-ID: <20260223164353.3e81321b@kmaincent-XPS-13-7390>
-In-Reply-To: <20260223-unigraf-integration-v7-36-73dc9143c8c1@bootlin.com>
+Subject: Re: [PATCH i-g-t v7 38/48] lib/i915/dp: Add helper to get maximum
+ supported rate
+Message-ID: <20260223164528.4ab457c7@kmaincent-XPS-13-7390>
+In-Reply-To: <20260223-unigraf-integration-v7-38-73dc9143c8c1@bootlin.com>
 References: <20260223-unigraf-integration-v7-0-73dc9143c8c1@bootlin.com>
- <20260223-unigraf-integration-v7-36-73dc9143c8c1@bootlin.com>
+ <20260223-unigraf-integration-v7-38-73dc9143c8c1@bootlin.com>
 Organization: bootlin
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -65,12 +65,12 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 23 Feb 2026 13:09:43 +0100
+On Mon, 23 Feb 2026 13:09:45 +0100
 Louis Chauvet <louis.chauvet@bootlin.com> wrote:
 
-> Some functions, prefixed with igt_ are not generic but specific to the
-> i915 intel driver. To avoid confusion and allows the introduction of
-> generic helpers, move those to a dedicated file.
+> Some GPU can't reach all the DP rates. To avoid false positive during
+> testing with unigraf, add an helper to filter tests based on the maximum
+> supported rate of the current GPU.
 
 Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 
