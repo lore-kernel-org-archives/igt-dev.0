@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3BFAEFB819
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 08:56:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 003CBEFB81C
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 08:58:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 52C8610E517;
-	Tue, 24 Feb 2026 08:56:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AAE5010E517;
+	Tue, 24 Feb 2026 08:58:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kASjGlg+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hDmcAK7G";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF3E810E517
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 08:56:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 443D110E517
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 08:58:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771923372; x=1803459372;
+ t=1771923513; x=1803459513;
  h=from:to:subject:in-reply-to:references:date:message-id:
  mime-version:content-transfer-encoding;
- bh=UQm0LL6DNVpWTdmk9g43kBVtK849zQaawtFZDlFN3pg=;
- b=kASjGlg+rZvQMghuu7OCPG7xDU8VlHLxWK/m7yJMcOVyKw9mzTlrdmL/
- O/DQ1byh3IL3BDEY0vMvyXrQZOZA+xlIWjflC6794/c2xRP1nnNrfZl2l
- H5YSxs70Zn55xgmukBEbUAU9ggKNQ9Li8EwVggnLsCvlINHO5DOnU7XV8
- hxlDMc3H9xUDhTGd513k80GyQNtIS3JeBQyOMuC8SB+9leuovsNBNu4Wf
- 9QtQqUTaD4tB7d/2GW2RQNsXROSSVWbGGTHoIMaj0Ssjqjwzbmqm3kQAx
- 3eyw7H/Wd/03nWllNCqkUrmv6UEsUywLlGb+Cq/wL6RXb24yg1nnzrdwi w==;
-X-CSE-ConnectionGUID: aCKisNCjSZ6mUA/vLDt3Bg==
-X-CSE-MsgGUID: 3e4IyobmT6aPXt6bDf+s1g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="84293958"
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="84293958"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 00:56:11 -0800
-X-CSE-ConnectionGUID: psc0XiYqQ7GZCs8fAJ6QRQ==
-X-CSE-MsgGUID: 28+dvI2OSwa+AQuxpKsTXQ==
+ bh=57dSjlvVCQ4NMOpe2+TXQAmisnNH5rr0N50GAkbRpsQ=;
+ b=hDmcAK7Gn/+mynATwIOsbEICCnKKBuMkU+FcTvvgi1xUhhofUysR5erB
+ Fm2xNIIs2h2Im9HC5WTOoA+se77CJSgvnQHst4SWULKZtmNBAMl8GV5d4
+ DkgI5rAUMfd5ZYBTTsl3MBWWNxhtf1y3Sr3JVbrsFzrcjmxRRd7QsiQDa
+ 1qtGx23oa+cd/m+LNadOtG+CCogyO7ncS0BSfrEDbSQTP7Ck7ELNYQagF
+ C5WkU/ZoG5af2RAE+clKw0o0JPnaRbRSQW5EbvgC9hVnPdM3m2CRiAxby
+ lqsosRT1n/Ixvd2bYGm6uwqfz1RERosoB572N/ccKBZcpeT+diWLUJW/k Q==;
+X-CSE-ConnectionGUID: /+boh3gnSE+5goUMMVuixA==
+X-CSE-MsgGUID: hET6QUZ5TgOe6yj4bPvKoA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="72997179"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="72997179"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2026 00:58:33 -0800
+X-CSE-ConnectionGUID: /hp1I0lNSvaDO4Esh4gc2w==
+X-CSE-MsgGUID: 0ZZx8VVtS/inGBTz+1im2Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="213121999"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="216002625"
 Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.246.20])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 00:56:10 -0800
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2026 00:58:31 -0800
 From: Jani Nikula <jani.nikula@intel.com>
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v3 02/23] tests/intel/kms_psr2_sf: Don't pass zero
- initialized 'data.pipe' to intel_fbc_supported_on_chipset()
-In-Reply-To: <20260224085103.12646-1-ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t v2 12/23] tests/drm_read: Use igt_crtc_t instead
+ of enum pipe
+In-Reply-To: <20260221032003.30936-13-ville.syrjala@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260221032003.30936-3-ville.syrjala@linux.intel.com>
- <20260224085103.12646-1-ville.syrjala@linux.intel.com>
-Date: Tue, 24 Feb 2026 10:56:07 +0200
-Message-ID: <b4e6642541214a743973af47cbc0cd92688a8421@intel.com>
+References: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
+ <20260221032003.30936-13-ville.syrjala@linux.intel.com>
+Date: Tue, 24 Feb 2026 10:58:28 +0200
+Message-ID: <b3ea0ae876a9b4f206389add4975c52dff6efb93@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -72,59 +72,267 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 24 Feb 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+On Sat, 21 Feb 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
 > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >
-> Instead of alwas passing the zero initalized data.pipe
-> (=3D=3D PIPE_A) to intel_fbc_supported_on_chipset() iterate
-> over all the CRTCs and properly check if any of them
-> supports FBC.
+> Convert drm_read from 'enum pipe' to 'igt_crtc_t'.
 >
-> v2: Reverse the logic to not require every CRTC to support FBC,
->     which is indeed not the case on gen2/gen3/hsw+ (Jani)
->
-> Cc: Jani Nikula <jani.nikula@intel.com>
-> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> The pipe usage in igt_main() creates a slight complication
+> is this one.
 
 Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
-> ---
->  tests/intel/kms_psr2_sf.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
 >
-> diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-> index 31db6760c73e..466d1ed876d8 100644
-> --- a/tests/intel/kms_psr2_sf.c
-> +++ b/tests/intel/kms_psr2_sf.c
-> @@ -1171,7 +1171,7 @@ int igt_main()
->  		"pr-"
->  	};
->  	int psr_status[] =3D {PSR_MODE_2, PR_MODE_SEL_FETCH};
-> -	bool fbc_chipset_support;
-> +	bool fbc_chipset_support =3D false;
->  	int disp_ver;
+>  #include "scripts/iterators.cocci"
+>
+> @clean_igt_main@
+> identifier PIPE;
+> identifier CRTC;
+> @@
+> - enum pipe PIPE;
+> + igt_crtc_t *CRTC;
+> ...
+> igt_fixture() {
+> ...
+> - igt_crtc_t *CRTC;
+> <...
+> (
+> - PIPE =3D CRTC->pipe;
+> |
+> - PIPE
+> + CRTC->pipe
+> )
+> ...>
+> }
+> <...
+> - PIPE
+> + CRTC->pipe
+> ...>
+>
+> @func1@
+> typedef igt_output_t;
+> typedef igt_crtc_t;
+> identifier FUNC, PIPE, CRTC;
+> parameter list[N] P;
+> @@
+> FUNC(P
+> -	,enum pipe PIPE
+> +	,igt_crtc_t *CRTC
+> 	,...)
+> {
+> ...
+> (
+> - igt_crtc_t *CRTC =3D igt_crtc_for_pipe(..., PIPE);
+> |
+> - igt_crtc_t *CRTC;
+> ... when !=3D PIPE =3D ...
+> - CRTC =3D igt_crtc_for_pipe(..., PIPE);
+> )
+> <... when !=3D PIPE =3D ...
+> (
+> - igt_crtc_for_pipe(..., PIPE)
+> + CRTC
+> |
+> - kmstest_pipe_name(PIPE)
+> + igt_crtc_name(CRTC)
+> |
+> - PIPE
+> + CRTC->pipe
+> )
+> ...>
+> }
+>
+> @depends on func1@
+> identifier func1.FUNC;
+> expression list[func1.N] EP;
+> expression PIPE;
+> @@
+> FUNC(EP
+> -	,PIPE
+> +	,igt_crtc_for_pipe(display, PIPE)
+> 	,...)
+>
+> @func2@
+> typedef igt_crtc_t;
+> identifier FUNC, PIPE;
+> parameter list[N] P;
+> @@
+> FUNC(P
+> -	,enum pipe PIPE
+> +	,igt_crtc_t *crtc
+> 	,...)
+> {
+> <+... when !=3D PIPE =3D ...
+> (
+> - igt_crtc_for_pipe(..., PIPE)
+> + crtc
+> |
+> - kmstest_pipe_name(PIPE)
+> + igt_crtc_name(crtc)
+> |
+> - PIPE
+> + crtc->pipe
+> )
+> ...+>
+> }
+>
+> @depends on func2@
+> identifier func2.FUNC;
+> expression list[func2.N] EP;
+> expression PIPE;
+> @@
+> FUNC(EP
+> -	,PIPE
+> +	,igt_crtc_for_pipe(display, PIPE)
+> 	,...)
+>
+> @@
+> igt_crtc_t *CRTC;
+> @@
+> - igt_crtc_for_pipe(..., CRTC->pipe)
+> + CRTC
+>
+> @@
+> typedef igt_display_t;
+> identifier DISPLAY;
+> @@
+> - igt_display_t *DISPLAY =3D ...;
+> ... when !=3D DISPLAY
+>
+> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> ---
+>  tests/drm_read.c | 36 ++++++++++++++++++------------------
+>  1 file changed, 18 insertions(+), 18 deletions(-)
+>
+> diff --git a/tests/drm_read.c b/tests/drm_read.c
+> index e745e98534bd..23b9ebe0faa3 100644
+> --- a/tests/drm_read.c
+> +++ b/tests/drm_read.c
+> @@ -77,9 +77,9 @@ static void assert_empty(int fd)
+>  	do_or_die(poll(&pfd, 1, 0));
+>  }
+>=20=20
+> -static void generate_event(int fd, enum pipe pipe)
+> +static void generate_event(int fd, igt_crtc_t *crtc)
+>  {
+> -	igt_assert(kmstest_get_vblank(fd, pipe, DRM_VBLANK_EVENT));
+> +	igt_assert(kmstest_get_vblank(fd, crtc->pipe, DRM_VBLANK_EVENT));
+>  }
+>=20=20
+>  static void wait_for_event(int fd)
+> @@ -132,7 +132,7 @@ static void test_invalid_buffer(int in)
+>  	teardown(fd);
+>  }
+>=20=20
+> -static void test_fault_buffer(int in, enum pipe pipe)
+> +static void test_fault_buffer(int in, igt_crtc_t *crtc)
+>  {
+>  	int fd =3D setup(in, 0);
+>  	struct drm_mode_map_dumb arg;
+> @@ -146,7 +146,7 @@ static void test_fault_buffer(int in, enum pipe pipe)
+>  	buf =3D mmap(0, 4096, PROT_WRITE, MAP_SHARED, fd, arg.offset);
+>  	igt_assert(buf !=3D MAP_FAILED);
+>=20=20
+> -	generate_event(fd, pipe);
+> +	generate_event(fd, crtc);
+>=20=20
+>  	alarm(1);
+>=20=20
+> @@ -168,13 +168,13 @@ static void test_empty(int in, int nonblock, int ex=
+pected)
+>  	teardown(fd);
+>  }
+>=20=20
+> -static void test_short_buffer(int in, int nonblock, enum pipe pipe)
+> +static void test_short_buffer(int in, int nonblock, igt_crtc_t *crtc)
+>  {
+>  	char buffer[1024]; /* events are typically 32 bytes */
+>  	int fd =3D setup(in, nonblock);
+>=20=20
+> -	generate_event(fd, pipe);
+> -	generate_event(fd, pipe);
+> +	generate_event(fd, crtc);
+> +	generate_event(fd, crtc);
+>=20=20
+>  	wait_for_event(fd);
+>=20=20
+> @@ -214,7 +214,7 @@ static void *thread_short_buffer_wakeup(void *arg)
+>  	return NULL;
+>  }
+>=20=20
+> -static void test_short_buffer_wakeup(int in, enum pipe pipe)
+> +static void test_short_buffer_wakeup(int in, igt_crtc_t *crtc)
+>  {
+>  	const int nt =3D sysconf(_SC_NPROCESSORS_ONLN) + 1;
+>  	struct short_buffer_wakeup w =3D {
+> @@ -243,7 +243,7 @@ static void test_short_buffer_wakeup(int in, enum pip=
+e pipe)
+>  		sched_yield();
+>=20=20
+>  		/* One event should wake all threads as none consume */
+> -		generate_event(w.fd, pipe);
+> +		generate_event(w.fd, crtc);
+>=20=20
+>  		clock_gettime(CLOCK_REALTIME, &tv);
+>  		tv.tv_sec +=3D 5; /* Let's be very generous to the scheduler */
+> @@ -274,13 +274,12 @@ int igt_main()
+>  {
+>  	igt_display_t display;
+>  	struct igt_fb fb;
+> -	enum pipe pipe;
+> +	igt_crtc_t *crtc;
+>  	igt_fd_t(fd);
 >=20=20
 >  	igt_fixture() {
-> @@ -1185,7 +1185,6 @@ int igt_main()
+>  		struct sigaction alarm_action =3D {};
+>  		igt_output_t *output;
+> -		igt_crtc_t *crtc;
 >=20=20
->  		data.devid =3D intel_get_drm_devid(data.drm_fd);
->  		disp_ver =3D intel_display_ver(data.devid);
-> -		fbc_chipset_support =3D intel_fbc_supported_on_chipset(data.drm_fd, da=
-ta.pipe);
+>  		igt_assert_neq(sigaction(SIGALRM, NULL, &alarm_action), -1);
+>  		alarm_action.sa_flags &=3D ~SA_RESTART;
+> @@ -302,20 +301,18 @@ int igt_main()
 >=20=20
->  		data.damage_area_count =3D MAX_DAMAGE_AREAS;
->  		data.primary_format =3D DRM_FORMAT_XRGB8888;
-> @@ -1199,6 +1198,10 @@ int igt_main()
->  		for_each_crtc_with_valid_output(&data.display, crtc,
->  						data.output) {
->  			data.pipe =3D crtc->pipe;
-> +
-> +			if (intel_fbc_supported_on_chipset(data.drm_fd, data.pipe))
-> +				fbc_chipset_support =3D true;
-> +
->  			for (i =3D 0; i < ARRAY_SIZE(psr_status); i++) {
->  				data.psr_mode =3D psr_status[i];
->  				output_supports_pr_psr2_sel_fetch =3D pipe_output_combo_valid(&data);
+>  			igt_output_set_crtc(output, crtc);
+>  			igt_plane_set_fb(igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRI=
+MARY), &fb);
+> -
+> -			pipe =3D crtc->pipe;
+>  			break;
+>  		}
+>=20=20
+>  		igt_display_commit2(&display, display.is_atomic ? COMMIT_ATOMIC : COMM=
+IT_LEGACY);
+> -		igt_require(kmstest_get_vblank(fd, pipe, 0));
+> +		igt_require(kmstest_get_vblank(fd, crtc->pipe, 0));
+>  	}
+>=20=20
+>  	igt_subtest("invalid-buffer")
+>  		test_invalid_buffer(fd);
+>=20=20
+>  	igt_subtest("fault-buffer")
+> -		test_fault_buffer(fd, pipe);
+> +		test_fault_buffer(fd, crtc);
+>=20=20
+>  	igt_subtest("empty-block")
+>  		test_empty(fd, 0, EINTR);
+> @@ -324,11 +321,14 @@ int igt_main()
+>  		test_empty(fd, 1, EAGAIN);
+>=20=20
+>  	igt_subtest("short-buffer-block")
+> -		test_short_buffer(fd, 0, pipe);
+> +		test_short_buffer(fd, 0,
+> +				  crtc);
+>=20=20
+>  	igt_subtest("short-buffer-nonblock")
+> -		test_short_buffer(fd, 1, pipe);
+> +		test_short_buffer(fd, 1,
+> +				  crtc);
+>=20=20
+>  	igt_subtest("short-buffer-wakeup")
+> -		test_short_buffer_wakeup(fd, pipe);
+> +		test_short_buffer_wakeup(fd,
+> +					 crtc);
+>  }
 
 --=20
 Jani Nikula, Intel
