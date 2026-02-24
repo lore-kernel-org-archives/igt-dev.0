@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48428EFB81C
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 08:55:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 536BFEFB81A
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 08:55:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ED9E410E534;
-	Tue, 24 Feb 2026 08:55:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DAA3D10E52C;
+	Tue, 24 Feb 2026 08:55:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Rddut0Gu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z7WcWu7S";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C393010E51C
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 08:55:09 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 399AE10E526
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 08:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771923310; x=1803459310;
+ t=1771923343; x=1803459343;
  h=from:to:subject:date:message-id:references:in-reply-to:
  content-transfer-encoding:mime-version;
- bh=9TsRD8ANyuz7zuBjESXeEqqKudiFyyH2EM2SwP5JoyE=;
- b=Rddut0Gudc3KZsGMGeohoUwOhTVepHnLeLq7Db9vE26Uz2Y113cjP2yA
- ZolhG6ANyZ00SZQGqhAhnuXWoW693bpqtgbwjEz75s84OAFeKvZxBufDC
- U1jZJfavEUbhwhdlOxwyEesCqmO/fVT6C69MdDi4Dw5z8VRU38kbory4/
- 5oynilML1V61Eq4yL5R+bbkpMjwWJ/n3jbPRfVOgM+e2ya1mlId7YhyxT
- jC44qwCLuBT3UCIk94HLMdAXB0EonwP3nfjcX2fO6VZ14dGSV2HNlcU0r
- p7Dy6qEjwtt5JRnaAv1+ngtKG4QlR414io06k2go5VVCkaXRPf6KF+Qw3 A==;
-X-CSE-ConnectionGUID: 2XmLl4iCSyGcQsd5SGi61A==
-X-CSE-MsgGUID: SFOr68RnS7CTQxdwtPMXuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="83554673"
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="83554673"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 00:55:09 -0800
-X-CSE-ConnectionGUID: +N/BAJZZQ4Oe3Yknvlba6Q==
-X-CSE-MsgGUID: NFMBB5tCSeSLHoDzjC4F0Q==
+ bh=yd7NPJvWo2oONA06sEPuo9kuh64NActzebPZ0djvLjM=;
+ b=Z7WcWu7S63HQyuueu7/9m6nY5o6zJ/VlQcoYVzq0NqiM/wrlq0GECS7n
+ /i9SP2ZM1oURiVGjdoJH6CvT29PstkY0R73W7CN9PcSGJzyZeRRQfeZg1
+ zxH/fbfWMhHSiXuxxzyeB6UGFGJqdurCRqTva2KXqT9PbX5crd8vqAwpW
+ zD8C+gZFrE0RD8cAxYGVJVuhgiZQ+frZhiT1OCwV1AUPdGPtBd4f2edA0
+ HI2y4/SEvLK5nM84UrTms984zJLh67foXvo4bTgTuO1ySBMshplN9OS8i
+ e1Hp+alxwQ5sm3JZXVt+bd87SLj72myW1KknM2iKDdUJnAPVAas/3pY3+ g==;
+X-CSE-ConnectionGUID: IDrXsQVVRTqN0wXfpexy0A==
+X-CSE-MsgGUID: l1XdQYCATqW7SOnmDuH+/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="83643391"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="83643391"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2026 00:55:43 -0800
+X-CSE-ConnectionGUID: b92fxjA3TziE0DFhjzTLqw==
+X-CSE-MsgGUID: DIk32Nz7Qi+ArlG9K52lFw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="220359319"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 00:55:09 -0800
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="219333487"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2026 00:55:42 -0800
 Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 24 Feb 2026 00:55:08 -0800
+ 15.2.2562.35; Tue, 24 Feb 2026 00:55:42 -0800
 Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Tue, 24 Feb 2026 00:55:08 -0800
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.67) by
+ 15.2.2562.35 via Frontend Transport; Tue, 24 Feb 2026 00:55:42 -0800
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.31) by
  edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 24 Feb 2026 00:55:08 -0800
+ 15.2.2562.35; Tue, 24 Feb 2026 00:55:42 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jRATFNFeksQ0dESHutqQRbr7shcl52HWIcr1niKpFdZTxijZsRF7++M8Or/tYoYJoq14tMAIlvNWsEuBceP5eoevQa+jIcrenNeml/w7iw3w4XYPVbiJ/AstbCI3pAqbGHaSbjhW+CQekhYxUtf4xsTd/7q8AvgJrjPPOitrRW64RpNQnOjHiPmtbnuCY3pukpJ+K3yHb+3pQLlwUDR1GzOyfXr/jcaxlEY1fckiFI8dHaaC7poRogSIniU4nHnq+1emCLi4PoPSqyvTMy9HBlrt/W8/5UL4Hjok97LyLQZa9GT8fm6p/ysiiGqEuFqwlzN0H+gTFAjfIifMN912zw==
+ b=BpcOKuWYv9N9szmgFucsUGEuRACnsgFxGj1j64iGMsfuT3TTTCIoDq8EjCnIr37uYz39IBQdA0O0//IzmZT2A8DwhlSkV/6AIlntrAkgb2a5vwc+AcYzX2hEUaiDuEN6YoamEd1+ULptuglkDacp2Xjmr7QWiyry4H2zytZk3Wt9Aj9x2caUEYg1C9i6W8TurXS3RJuaMJWxIko4rKmoLqcxNRLBOB+K2gfkKrvJkT5+Vf6EJvOvDbQW472SZwW4PYLJ/AmhMNu08KVpQP2JMJ2JZedYjVj/89lFMmscDCEH4wcZb0xU6AfHZHl9y+y7EzM8s8m4lTiuNWMIHNKvfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QZt4Dmk9hPSNrla97Qn3Horye1pvwpKz1EOPAQ4eWTk=;
- b=bI3T1RnpG2gWPCPylU8wRHa3Gvimjt/VmkLVdlkni5Awi+Vq7jhX72+U+0mOVQyrFseztKXnJClI3HvKgD8/Goqt5g2fQCDRTC4NQEGnOBjZTFyQyZf0w1J5phSQ4IYVKcZkS4tXYopsdPZRo78qaNsCXB8WSlBiw7xAH4rXqj4ZA+3NVpbZiRxPyLuFOGDi9BK4Kntgsj1Ep2Dxs4LDuUqXdiFygLJc2hGOJ+ziUqaDYVKc01JLI93uAK3OJbwXeUMFWXlqDndvFDsKNW8AIycqwQnvaJyxlQLQ4ZeUX/OyKF9yKEpDdDuNFZnOfRMATjYNXdjB46WqcMGxY4RwsA==
+ bh=8aDVlw6FJ/hw9XXKFGCqmcZTLt2F6ltRisr2ApGMyJs=;
+ b=K7xViXoibbijQaYXK0Cky7FhFWctMQLh+3u774OLFvrS+73KZ3VkY1Tof/lN5cOpjCps9AlmaHXfS8/mZZ6RnT+IsW0bpL44ltx1pnhVwel+zFQIXrMReZPwxflRSqC868LS0RV6vynb/vq6UYINMznB0l9xrd7xtzCIQbsXrwtfQffIdk9dQxd4GtaO2A+CCrs0au4Poz0CA7J+BrpjWqd4Adjtq/QDIhhFDNv6sPSYi+Xq8el06WQdozp2319LcDLRbL6WdRDwMmtcx9YuBVwra3nG5mVhZmmEkqfDF0cxzdUmpkXXVxURt3pdvE+solP1kpGRGIAKmiKzByMQyA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -67,24 +67,24 @@ Received: from CH3PR11MB8434.namprd11.prod.outlook.com (2603:10b6:610:176::19)
  by CO1PR11MB4977.namprd11.prod.outlook.com (2603:10b6:303:6d::14)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Tue, 24 Feb
- 2026 08:55:06 +0000
+ 2026 08:55:40 +0000
 Received: from CH3PR11MB8434.namprd11.prod.outlook.com
  ([fe80::52c4:16e1:a67e:63bc]) by CH3PR11MB8434.namprd11.prod.outlook.com
  ([fe80::52c4:16e1:a67e:63bc%4]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
- 08:55:06 +0000
+ 08:55:40 +0000
 From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
 To: "Sharma, Nishit" <nishit.sharma@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: RE: [PATCH i-g-t 1/2] tests/intel/xe_exec_store: Validate PCIe6 relax
- ordering
-Thread-Topic: [PATCH i-g-t 1/2] tests/intel/xe_exec_store: Validate PCIe6
- relax ordering
-Thread-Index: AQHcpU8fhinzB5/Hw0evqZwiLYrwKrWRV3jg
-Date: Tue, 24 Feb 2026 08:55:06 +0000
-Message-ID: <CH3PR11MB8434A321ED63C42E55EEB8808D74A@CH3PR11MB8434.namprd11.prod.outlook.com>
+Subject: RE: [PATCH i-g-t 2/2] tests/intel/xe_exec_store: Extend test coverage
+ to all memory regions
+Thread-Topic: [PATCH i-g-t 2/2] tests/intel/xe_exec_store: Extend test
+ coverage to all memory regions
+Thread-Index: AQHcpU8iltSDSBGxVEqaTMZcogzfQrWRi+/g
+Date: Tue, 24 Feb 2026 08:55:40 +0000
+Message-ID: <CH3PR11MB8434902236EC159B9767B1E18D74A@CH3PR11MB8434.namprd11.prod.outlook.com>
 References: <20260224053324.2354159-1-nishit.sharma@intel.com>
- <20260224053324.2354159-2-nishit.sharma@intel.com>
-In-Reply-To: <20260224053324.2354159-2-nishit.sharma@intel.com>
+ <20260224053324.2354159-3-nishit.sharma@intel.com>
+In-Reply-To: <20260224053324.2354159-3-nishit.sharma@intel.com>
 Accept-Language: en-IN, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -93,86 +93,86 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: CH3PR11MB8434:EE_|CO1PR11MB4977:EE_
-x-ms-office365-filtering-correlation-id: e28e13c4-56c9-4ae4-d1fd-08de73826832
+x-ms-office365-filtering-correlation-id: 5b48d11e-9dfe-42da-a1a2-08de73827c65
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
  ARA:13230040|366016|10070799003|1800799024|376014|7053199007|38070700021; 
-x-microsoft-antispam-message-info: =?us-ascii?Q?HYj2zSrO777ttB/tDxC2OlLwRQ/7xRjoWPWyShBNmEaHLvdSa8wEx/tf7xbf?=
- =?us-ascii?Q?iQgdKUC2iadvAXhU7VFPpGdEC7Y2/qR2UfEaW5RffE3fPSha/S4MZwUG0QlA?=
- =?us-ascii?Q?JTPjwJHxSXsqa2M8SqBQ4TwmuU9Z8/hzNLDOzWU6kZOtC7MgTLfX8Woixwzo?=
- =?us-ascii?Q?IAAGHXKeSxHwF+nN4tNSjchxTCgfVFQzG76AYdw4R0mp3+sPJTwPkEyU4Zyv?=
- =?us-ascii?Q?W1V96zXgwvNZgBgubQwSY+gcx8RiPK43Ujc5SFKyf59pI5yfhTu2mWEKt6JI?=
- =?us-ascii?Q?4/u3SQibl1aaNx3QYPOBkHyfa95gessPkgkNNu0Ns7KNaaicruRUtDeVH0cu?=
- =?us-ascii?Q?UnDnXnD20PzOKlbUlsz90y4EbV7lWigcP+WMhBbacl6YigVqazOjacNiwex6?=
- =?us-ascii?Q?lNXcrnuq98qps6ZrbTqEzxLkAF9EZGyXN0soupfkmgmsS7CHPOmdkrRwxMy+?=
- =?us-ascii?Q?dYgtieXN7wR1axfgh62J8UV+b4fIvTbxODfrGEBcGJHgsF1I/z5FVH6pIjln?=
- =?us-ascii?Q?ohketbRt0vq49LyizOsqBB+nAEoqngaXLQEjeAhtoSZ4AhwiiLJmqgu43Kae?=
- =?us-ascii?Q?PVSmAduho2AP6T48MAWHXz33DYCWqmqOdh+nJpBuGkiQuN2RsXhfryZFMtFc?=
- =?us-ascii?Q?xcmvapn5FO+OOevjpVwoNSxPjVnkPShmoiQjtLHPx5FpsURY4i7vlPN3nZtf?=
- =?us-ascii?Q?p9j2EUm+/ou7veTKi/i+vx6kbuYkrugoHrgUc7A5NH4NrtAhR49ZaUjEv02I?=
- =?us-ascii?Q?u7/UgaSLhpLHFnnf+tr3hYejYKsF3OOdDdmfgjSW5lG4ZK+pOH9mjc7NLftD?=
- =?us-ascii?Q?oAMzPZOJr9bsIWDEi6rkFwxMYwCFRXzi8xLHiDMVuyZxFqeMQWKPootPZ947?=
- =?us-ascii?Q?o75On0LEfnrESAn3gOFoFKKVxo34pfPmrgneEriKXKqdGKwGXie2AlI5w7CI?=
- =?us-ascii?Q?S3KWxY3Dk4NqRAqnpWLGaduC6JvP37MI++k9e4se78jugDGrhYkwDIfttxXP?=
- =?us-ascii?Q?/ElD/f9Pem5roOF4FN2E0sggTifeh0JtB3W47lRnGBE127PROr9Tpk8lkfLO?=
- =?us-ascii?Q?9DVwgGe+SFbz/maLxl6nPwCU6NldaZouJY93sduzIulkN1ibAf8O9SwqulmK?=
- =?us-ascii?Q?eYg0unvIBdxSWa/4pjqJhK2DiAWVrjmBPTuVcEP9tl85ikOk3LQnt2zcvkF4?=
- =?us-ascii?Q?Sf/Lls4Ba7GUfvFeTbpV+VAN+nuLLhJvCsDKVxjnqIbxGLMAdZNtPOg6G/an?=
- =?us-ascii?Q?rwx/auVY3m3WVrhgCKslLzs/yozSOBjysP3xRVjrvUds7MB9xxJJk5aAAk61?=
- =?us-ascii?Q?m7yxApoa9nfcgWr5JA1nGFL46ZcZ+3LEJTmX3AQekA7FK0HUCHgHRW/M7dSF?=
- =?us-ascii?Q?UzKGtMa2kE6qI5K8O0zkZs+DVCgRGgR2VufFxaR/CE+srttc++fBtYov/3fx?=
- =?us-ascii?Q?Iu2MyzuO7cYB7BO7tEROGtogy543cunfJQ7bBJa2lsM13bgmp2IH/zUhxT1H?=
- =?us-ascii?Q?FHBbYa7qIVyvKm+MdX7EE8YDG27oNuXley1BkANhM5fa7Mc6O+garqO5/9Xs?=
- =?us-ascii?Q?0cPIx6F1RlLn8xIqUsA2rYaKk1sU83Jzv1tAv4F/a1+lQqLa6VPv+2dvfHd4?=
- =?us-ascii?Q?PogOsGVJlAa+D0KOm46cmWo=3D?=
+x-microsoft-antispam-message-info: =?us-ascii?Q?ib8elAtKYapu+KvgrMBHr//8+OWsYRBZoigVHPzh4PXYUQjWzRmSUjW5G+c3?=
+ =?us-ascii?Q?kspCJwd5+TATBHfwcaJj1+/P2jdbO8LKoVjm3JMH+PtnmfR2ONG9q8MqzvyA?=
+ =?us-ascii?Q?XQrYhqonMCJO06N4nRdXVfvGRbskRVDNul9vXOyibm05WpIpb01z+4vps9GK?=
+ =?us-ascii?Q?Yd485LcoDy/Igzr18W7vnXoY7vSYhk172wCieogtO0hDqjgtjafGTD7n3Bzt?=
+ =?us-ascii?Q?XrD9m9spI82mo104O+XQzbwA4eRhmloCttWjVuyzN5jZxf8s18rQ2jKrWoWM?=
+ =?us-ascii?Q?DwtoBduLcNK4+3VNUsRvCZAZZnRQJLg1c9TCpIPWPqMfNX4g2cWfmCbQ7riQ?=
+ =?us-ascii?Q?64Wd3zejY/SZ1oVmBxm/BluWzMNXNOkdAiWEAupYIUFukkL/+cPYQY/iuL0y?=
+ =?us-ascii?Q?QBaUfrbwf9ZFmRA4bssuejpRjDPaZLLCiK7wmeLK/Xd3dTfIGrhy6PYZZ4rX?=
+ =?us-ascii?Q?iTHDvpasMKeNSlPhAl0waboeub9oNO41dTD+2o8qqdbjJHBhcO81l+YHYsl5?=
+ =?us-ascii?Q?rq4gbJwyPxvUBNUY67LUs8pw4MtCgdcLVglfQQkOu73VZmo2FssUUgTbTpg9?=
+ =?us-ascii?Q?09eJh1bnEltfXxQdwUwPgOU6SxKhFZZAA/XD4cgzx6cVifF3fwDjp8YeYUUW?=
+ =?us-ascii?Q?Fa6gmy9+Rj00BPQHvkwmg9NaWYY+038ozQM+MD2ECzdPnFejSlZZNnnTQL+z?=
+ =?us-ascii?Q?iNzrFFW69ONu1hu1DbJQgGchFqdlsE7rTP6sSkhJMUs9v0v09i20+zmcVs/N?=
+ =?us-ascii?Q?0xxodeU8ZilZE/EoRXStUlITSwDbFF3AbCemHem+N08LfRZMw/2eZ+kf0Izc?=
+ =?us-ascii?Q?TSIHZeBtufw0TGtmWvNcZg/+kBC+EZ92F4koLgZAD3/vUi9I3FrE8yP9tJp5?=
+ =?us-ascii?Q?RYy4hjlPtoH9JAhLI8tcEnl/w/N05qPF9+mtXwkzfe1fnyrU8Hp2poDB0Qty?=
+ =?us-ascii?Q?P8fVmFopQf66vGGWyPQEKeZZUoHBbQRcmCLXzlb5FEOknn2BReW2vkVmGrVz?=
+ =?us-ascii?Q?qPNkFEUq/8xjUNcQpLgHootUlRB1FGfx2mBSPO1xdH9hXpVmPj95J/UJkeih?=
+ =?us-ascii?Q?ZnYr9qj3I0FzDfVFhqpTTBKrggtI1vmYf/bb9qIhBwcyB8c6ucVIV4Sllw8H?=
+ =?us-ascii?Q?JVjw6912JZ5wtF/p+2mOGNSySYmjHQPggoUJx9TFUQqhsD1nTt7JSIQmA5OI?=
+ =?us-ascii?Q?zCfH1NN5X9Sgaoj4vF7/LYl2gThDBMpt1DaWdV2l/JZKCEl1UDDR4MC3GwF1?=
+ =?us-ascii?Q?lLm4RPIRwxpbzLdmM3tR8FcBv4gO+QSj9zK0bW4YGsdoz19CpXHR87ef79/L?=
+ =?us-ascii?Q?LzK34u5hLBIr1WhfvlbWyW1G4ROyq6Qq52Slrf5IuLOU/p0ibJNwZotd+FNu?=
+ =?us-ascii?Q?VaA9U2JhKWpje6BN6hWu0FsWHAm7aPj1yRZOrmoF9Ch1t+Ymo2kbzi2jhqH+?=
+ =?us-ascii?Q?GBXhpzhk+vVT3Klp66wcwserOnmtTryts1ngcGxXQlY+iJFxteYHuj6Se4oj?=
+ =?us-ascii?Q?YbDRTfqomMAa9+0FKSDFHxochlBFzO/YMhQlavuVQ+EZz5u0EXaG/2uF9bqL?=
+ =?us-ascii?Q?Qli/M/02nhtEU80XNRtBpG7CqrGCAfWdTVC4auvSjCskTH3+0MTZ4mwO+owt?=
+ =?us-ascii?Q?kx1Cl2vOTbyzO6RnYZ7ZSkU=3D?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CH3PR11MB8434.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(366016)(10070799003)(1800799024)(376014)(7053199007)(38070700021);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?O257WzM/WR6cL/saLsTLKrdVgSyd8q3sTU5Mit9lx1anjA0X/K3kWR4WZy4u?=
- =?us-ascii?Q?9kHrivmvaaIayVpWJp44EVj2gRnrmSyKCGb+FM3c3+SnJ5ddAb5SKLFX6+R6?=
- =?us-ascii?Q?mg+xfNuDIJRAnES4KW7yxa3z9Ugx5n9fdP90XKEZ73cV918KRNp8LMDnXrEv?=
- =?us-ascii?Q?fyXBTurCVc5a04PV7X1OO5JgR2U/n65DTCMjN04s/AmxTWFLU3W4aku0hTSj?=
- =?us-ascii?Q?qzvkeq90u0cIZLi8RTHnUNEaw+L6tJNu4eBvInB98EPDJcJ0OkX1xWPQ105S?=
- =?us-ascii?Q?q67j9RcnO/y3JYPuF97gAkvu6yTd1H/vNRJy6Nz9TisS6Qmy+eiXFARAfakU?=
- =?us-ascii?Q?AqWamTGsCMzr9qVeEKgU4p+SVaGdJ42jyNZnvQBlE84TT4J7N4KArh4icSdq?=
- =?us-ascii?Q?XQK8ALUhpCwQpCY5JSeC+USlfVc2y3cKpaRza0XWcOOl8nqf1ybbqLRooHbv?=
- =?us-ascii?Q?EaPBsyPcwwZ4JwGIdUfxfDDE9MMRMxj+1H4XxW5lnVl+GUyNBs9BkjB1STkm?=
- =?us-ascii?Q?M0zOZR9PuWr7LTmH8SuN7K1Eg6RNhNy4meAvM2xbRTn7W8ZIwU0SuVjoKLZy?=
- =?us-ascii?Q?xKHxJ4w/IvkgVuczSo4PcDBFKZDbNVBIwhQz/N5CJ2rIWvrssCOs4C/6Dsnr?=
- =?us-ascii?Q?Tz7rPxX+8OCWyeaRMLrs+Dkc1XVK/btlZV0rUpNVVstf1XP2AsnxvUo6yKWk?=
- =?us-ascii?Q?EMsM5N1FXzkxaFfArCsIxcvgvRZ4VrqdM/hHJYUAEBTgC3kx771xfzx1Rc38?=
- =?us-ascii?Q?Uuk/pUt+Zh65/3iUl3ekHVZwgWDEK4l+M7YSHBXQoyc+JlH6c3W2SVFpIPcm?=
- =?us-ascii?Q?jpYH27vpJPJQHPIsYPIn0RDHn5rj1awmjKGQNKE8sxJLMqEontveKUUBJiJk?=
- =?us-ascii?Q?vNSTRwfHpjA9j0tYSP9S7OgILyILYeDPWxb0Q+ZNHmOtYDVZ7fl+pusWMyQE?=
- =?us-ascii?Q?czz4Q4k2HMleipBZYgR5vDI6j3EaZHaK2DMmCN6CRxS05amQQQl77jHJeGDX?=
- =?us-ascii?Q?AtIuzme2IfCZS9I4ymW6zkU/Tkyv35BLXkAfe0/3TbVY0jT7vQzmhFctd7ma?=
- =?us-ascii?Q?0HKn43jas+PmrmDPR/ggbWAPT9M7+50uCfRceGVjqVMHcsYeU+UQpMB5+FcA?=
- =?us-ascii?Q?r3Jj6+aPfaF1zV8YlosLjYA6ImPpSmkCr30LBsrQmdXFjPwUH3jAO2m1SUE3?=
- =?us-ascii?Q?VS6fr/lfEes1LKLvefd4Pio6GU5vHUDXf2SWBhdkPaQORcOJpFOQ4ojTJyIx?=
- =?us-ascii?Q?6EDH98okvH8h3Pa4ZYiAASLd9UW551m+5aJW7Gm/5iV/FiArJ9Z2ld+Ul48C?=
- =?us-ascii?Q?yCD5TwM/rHDCirFDuBnNIlsPF27NiZHSeG1PN+5IMOr5ymHGV4iY7WW8ygrR?=
- =?us-ascii?Q?K66HDU4WIL7xNihGodHz+CP/V5T/tnRlMpfugS2hvtD9CxZlQLHK01HApvFL?=
- =?us-ascii?Q?PFh472g+chs64DiRTqOfXkRm6CdsJTUkE9iY+0MPST9CEYaqyp/Rt9bhKFhA?=
- =?us-ascii?Q?HsK9H8jF83LXTUhKrzfC33nxNmnIm8RlqLezBnQQZmFDVzxPQmtp3KVnkzOL?=
- =?us-ascii?Q?arRq4hgx3IDisohOQ85SxIwevSP6v34zsBTCkpZO4eATvTg4gJgUv9lnjnHT?=
- =?us-ascii?Q?QTjQkHkmQ2PEEBqUIlQhsJMqS/C/CJqivc3C5FKOzXXHL7g8FgrWpbTzyrqs?=
- =?us-ascii?Q?acrkMf9HN6u68ztgJfN5vz6MWrOI41s40MJ7XdU6SCSd58tRzZN+3avE+eIJ?=
- =?us-ascii?Q?jMcQAF5CxXbMIq+0KYtEM7TG9JbM0lMElRWqZjXXspvipZxPyIkC5sm491fA?=
-x-ms-exchange-antispam-messagedata-1: 0BeE6RdV8FkK+GTyIP6J/SzNN0FgkxT5/WA=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?vSTTP0zXzsQUM9+oipyH2RsjBEoVTnaFfzWlWexy6oCt4PXfub565x16NdOt?=
+ =?us-ascii?Q?bdtzsSV1H3rjp2Iv09KgyIHXbNVAEU2xn8ArJTEbMnbN/Ve/mAOWP25b8xzR?=
+ =?us-ascii?Q?MT5gqU4O59CINvg98xAlcGy3bx4HxXdnw+8W1ROw+wACEYB4dz18PJgidysp?=
+ =?us-ascii?Q?LNxsJsUDD80PjvNpcCvq6dZSWbMq7t7nQSfxI4lJPWbP16NaLT7LcNUYxeUz?=
+ =?us-ascii?Q?nmP1+MDxWtwdgdndSkgt7CSE1SsFmtzo9U5vCsdL5C1n0UjDIg0/z8NLuKiK?=
+ =?us-ascii?Q?gBS9C3/0VdDs0wWMg4IRVD0333OyKp4FMzF5iLc8cDQiFjEl5aKDdjR0/Xlj?=
+ =?us-ascii?Q?TdXq/Up229gaXC8BXWk3nQs4+1MHOFdi089cx+HJjgLobEfImuQGATndr3pW?=
+ =?us-ascii?Q?Gt87QgnYqcBNtuQvIEI7q3zPWqXrDpFxVLZa39301dnd9Z9a+UdIsTl+usRK?=
+ =?us-ascii?Q?OUFQ4qD7WQduwml9EQXXcERT6OV7zk+b4cpcOOD4j4uFmxPPGydVdCUYOdjr?=
+ =?us-ascii?Q?k1botwNwnTpS+fmFjyNxNobosb6nVTOMSJVpuIAbeZ3EHWgI9x3tKwd+JGgf?=
+ =?us-ascii?Q?fw1/XOIX6YkMr2mVhVgr/PMkObS/804A8y5juhaCR+422VD6XBstr2G4aFdg?=
+ =?us-ascii?Q?Zd4E0rAu30jxii/Ygzwgjv+0XjnS7vssxViGs+O/U3wCxoCPpb5iO1O2y8Ha?=
+ =?us-ascii?Q?3G2ZUcMBVgiI5WqCsO6Hw3G04bgqUuzuRfuHM5UNyR/cHtLUNJc0z9YL3P4T?=
+ =?us-ascii?Q?P1zOAm3QdP+3QXLlcA/FtWva9d5xSBr8j1NXFUv+Sgr0zt3l7j5DMfH4xIFc?=
+ =?us-ascii?Q?LH0roGl+5CpdSAoShzif7n3x0xBMZ+CJmFq82VUblyNAc8vnRnN32P2NgRnz?=
+ =?us-ascii?Q?mCvtipSIs6QsOAkJXoC5idTW/+GFtIxVcX4XUCI8olCt20JYDDUEuqnoCCRO?=
+ =?us-ascii?Q?+1K4anYHhAZQ1POEz97Z5Her8S+QhozHn+11coHFcZv6l0cjevCyZ8B+z/o2?=
+ =?us-ascii?Q?KtMB1Vq3lOO51IsvBSqoBl+pzYknJD2Z/Fgk9hqY64Oyqjcw6EtWDu9vST9U?=
+ =?us-ascii?Q?nv3aCDIGnBrTj+YmulpyqD5T7WcA81iebqHjJtXL6/KAc+9MTKA+2On9iKyD?=
+ =?us-ascii?Q?HBf2ckAA5pBFSXuiB/2kzeE5D8Xfid21Z/YgT9nesuM2+5WjY66JykQdvQpY?=
+ =?us-ascii?Q?i6efpLNXLH47A0CSwCrRtICXqT87K/ZmzuXcxOehrx7dHzY11TctVaH224zv?=
+ =?us-ascii?Q?L9Biu2ncr0IYU/6Db5QrtZS28iEWAjYIHLDL1v0IEf/2zYaP/EtiCU3XvBUO?=
+ =?us-ascii?Q?v+P2U5Dp0/NtCqvl98bkas2SsL4xBVkPIZ0+r/Z10ngw34dFrA9CtVi33/PE?=
+ =?us-ascii?Q?agkKTn/OWeYtTMnDlv8OPudFCzKsSqpU6BWERCXg6sM904CeXWCdYmukDwwX?=
+ =?us-ascii?Q?ABivCkSzZ0hA2MDFdBVvmnf+oy+0Id5naYmUgCc0/XwMO1LZ2U0Uz0oHQ2Bz?=
+ =?us-ascii?Q?9P37hthiogBB+VsRUXJYd69PDSs6OdquUtYlT5fYr6PlYqIjrzHvt8Ezh2zN?=
+ =?us-ascii?Q?4Aif2VctuqtM4aaJQe6xPbHwfg3GeEGOk761q0XBx99WITqs+r+6H/e/jmNX?=
+ =?us-ascii?Q?pEw1bL4BLtfkX9IPrycD2ULLYAlDb3zjD9FxpP8q+z52iG6n8iS2qNT2s8n8?=
+ =?us-ascii?Q?QJMdOs/iAYBWg4h1hdW6yD+q5heqElflgXXd+AA2ZO7im3mV/8cQM5zxuODt?=
+ =?us-ascii?Q?mmUZOVpOBDoMlwBTguAvusNUoCjElrviC6SWq6WRDmN2QSHoWhW1tICKjifj?=
+x-ms-exchange-antispam-messagedata-1: wu8B9hP/8ws+s/sMyLHztG5hVS40hlblPa8=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8434.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e28e13c4-56c9-4ae4-d1fd-08de73826832
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2026 08:55:06.3946 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5b48d11e-9dfe-42da-a1a2-08de73827c65
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2026 08:55:40.2970 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Izu2ALdzpm0zZY0FqNQr9yBPbE0rCTlHbgb0xVQ/FKQDUXq7p5D0gLxMB5FgzzMzWx/KLotNPtX/qQ2DJaIarEShkIvVMGS1u64VIxEPdVs=
+X-MS-Exchange-CrossTenant-userprincipalname: eCwFFN3ySBl2Niir9XZ4RSYP8N8rPvcdxze2KLJHNA7IKQ+5r2oBV8N7lbOFBq/2hbshjRuBjdBGj+MhXsU4ZujUPv9iyuIpDOwbM/b+7BY=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4977
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -197,211 +197,268 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 > Sent: 24 February 2026 11:03 AM
 > To: igt-dev@lists.freedesktop.org; Dandamudi, Priyanka
 > <priyanka.dandamudi@intel.com>
-> Subject: [PATCH i-g-t 1/2] tests/intel/xe_exec_store: Validate PCIe6 rela=
-x
-> ordering
+> Subject: [PATCH i-g-t 2/2] tests/intel/xe_exec_store: Extend test coverag=
+e to
+> all memory regions
 >=20
 > From: Nishit Sharma <nishit.sharma@intel.com>
 >=20
-> To improve GPU BW, certain copy engine write instructions to system
-> memory is using relaxed pcie transaction which can lead to out of order w=
-rite
-> to system memory.
-> The recommendation is to use MI_MEM_FENCE for such instructions like
-> MEM_COPY and MEM_SET to serialize the memory writes.
-> In this test the copy limit for MEM_COPY instruction is enforced to max d=
-ata
-> for linear mode.
+> This change generalizes the test to run on all available memory regions (=
+e.g.,
+> system and VRAM) in the device, instead of only VRAM. All relevant subtes=
+ts
+> now iterate over each memory region, improving coverage and validation.
 >=20
 > Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
 > ---
->  tests/intel/xe_exec_store.c | 140
-> ++++++++++++++++++++++++++++++++++++
->  1 file changed, 140 insertions(+)
+>  tests/intel/xe_exec_store.c | 106 ++++++++++++++++++++++--------------
+>  1 file changed, 65 insertions(+), 41 deletions(-)
 >=20
 > diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c in=
 dex
-> 6935fa8aa..1acaa5aaa 100644
+> 1acaa5aaa..faf2c7fa8 100644
 > --- a/tests/intel/xe_exec_store.c
 > +++ b/tests/intel/xe_exec_store.c
-> @@ -28,6 +28,7 @@
->=20
->  #define STORE 0
->  #define COND_BATCH 1
-> +#define MAX_DATA_WRITE ((size_t)(262143)) //Maximum data MEM_COPY
-> +operate for linear mode
->=20
->  struct data {
->  	uint32_t batch[16];
-> @@ -412,6 +413,126 @@ static void long_shader(int fd, struct
-> drm_xe_engine_class_instance *hwe,
->  	free(buf);
->  }
->=20
-> +/**
-> + * SUBTEST: mem-write-ordering-check
-> + * Description: Verify that copy engines writes to sys mem is ordered
-> + * Test category: functionality test
-> + *
-> + */
-> +static void mem_transaction_ordering(int fd, size_t bo_size, bool
-> +fence) {
-> +	struct drm_xe_engine_class_instance inst =3D {
-> +		.engine_class =3D DRM_XE_ENGINE_CLASS_COPY,
-> +	};
-> +	struct drm_xe_sync sync[2] =3D {
-> +		{ .type =3D DRM_XE_SYNC_TYPE_SYNCOBJ, .flags =3D
-> DRM_XE_SYNC_FLAG_SIGNAL, },
-> +		{ .type =3D DRM_XE_SYNC_TYPE_SYNCOBJ, .flags =3D
-> DRM_XE_SYNC_FLAG_SIGNAL, }
-> +	};
-> +
-> +	struct drm_xe_exec exec =3D {
-> +		.num_batch_buffer =3D 1,
-> +		.num_syncs =3D 2,
-> +		.syncs =3D to_user_pointer(&sync),
-> +	};
-> +
-> +	int count =3D 3; // src, dest, batch
-> +	int i, b =3D 0;
-> +	uint64_t offset[count];
-> +	uint64_t dst_offset;
-> +	uint64_t src_offset;
-> +	uint32_t exec_queues, vm, syncobjs;
-> +	uint32_t bo[count], *bo_map[count];
-> +	uint64_t ahnd;
-> +	uint32_t *batch_map;
-> +	int src_idx =3D 0, dst_idx =3D 1;
-> +	size_t bytes_written, size;
-> +
-> +	bo_size =3D ALIGN(bo_size, xe_get_default_alignment(fd));
-> +	bytes_written =3D bo_size;
-> +	vm =3D xe_vm_create(fd, 0, 0);
-> +	ahnd =3D intel_allocator_open(fd, 0, INTEL_ALLOCATOR_SIMPLE);
-> +	exec_queues =3D xe_exec_queue_create(fd, vm, &inst, 0);
-> +	syncobjs =3D syncobj_create(fd, 0);
-> +	sync[0].handle =3D syncobj_create(fd, 0);
-> +
-> +	for (i =3D 0; i < count; i++) {
-> +		bo[i] =3D xe_bo_create_caching(fd, vm, bo_size,
-> system_memory(fd), 0,
-> +
-> DRM_XE_GEM_CPU_CACHING_WC);
-> +		bo_map[i] =3D xe_bo_map(fd, bo[i], bo_size);
-> +		offset[i] =3D intel_allocator_alloc_with_strategy(ahnd, bo[i],
-> +								bo_size, 0,
-> +
-> 	ALLOC_STRATEGY_NONE);
-> +		xe_vm_bind_async(fd, vm, 0, bo[i], 0, offset[i], bo_size, sync,
-> 1);
-> +	}
-> +
-> +	batch_map =3D xe_bo_map(fd, bo[i - 1], bo_size);
-> +	exec.address =3D offset[i - 1];
-> +
-> +	// Fill source buffer with a pattern
-> +	for (i =3D 0; i < bo_size; i++)
-> +		((uint8_t *)bo_map[src_idx])[i] =3D i % bo_size;
-> +
-> +	dst_offset =3D offset[dst_idx];
-> +	src_offset =3D offset[src_idx];
-> +	while (bo_size) {
-> +		size =3D min(MAX_DATA_WRITE, bo_size);
-> +		batch_map[b++] =3D MEM_COPY_CMD;
-> +		batch_map[b++] =3D size - 1;// src # of bytes
-> +		batch_map[b++] =3D 0; //src height
-> +		batch_map[b++] =3D -1; // src pitch
-> +		batch_map[b++] =3D -1; // dist pitch
-> +		batch_map[b++] =3D src_offset;
-> +		batch_map[b++] =3D src_offset  >> 32;
-> +		batch_map[b++] =3D dst_offset;
-> +		batch_map[b++] =3D dst_offset  >> 32;
-> +		batch_map[b++] =3D intel_get_uc_mocs_index(fd) << 25 |
-> +intel_get_uc_mocs_index(fd);
-> +
-> +		src_offset +=3D size;
-> +		dst_offset +=3D size;
-> +		bo_size -=3D size;
-> +	}
-> +	if (fence)
-> +		batch_map[b++] =3D MI_MEM_FENCE | MI_WRITE_FENCE;
-> +
-> +	batch_map[b++] =3D MI_BATCH_BUFFER_END;
-> +	sync[0].flags &=3D ~DRM_XE_SYNC_FLAG_SIGNAL;
-> +	sync[1].flags |=3D DRM_XE_SYNC_FLAG_SIGNAL;
-> +	sync[1].handle =3D syncobjs;
-> +	exec.exec_queue_id =3D exec_queues;
-> +	xe_exec(fd, &exec);
-> +	igt_assert(syncobj_wait(fd, &syncobjs, 1, INT64_MAX, 0, NULL));
-> +
-> +	if (fence) {
-> +		igt_assert(memcmp(bo_map[src_idx], bo_map[dst_idx],
-> bytes_written) =3D=3D 0);
-> +	} else {
-> +		bool detected_out_of_order =3D false;
-> +
-> +		for (i =3D bo_size - 1; i >=3D 0; i--) {
-> +			if (((uint8_t *)bo_map[src_idx])[i] !=3D ((uint8_t
-> *)bo_map[dst_idx])[i]) {
-> +				detected_out_of_order =3D true;
-> +				break;
-> +			}
-> +		}
-> +
-> +		if (detected_out_of_order)
-> +			igt_info("Test detected out of order write at idx
-> %d\n", i);
-> +		else
-> +			igt_info("Test didn't detect out of order writes\n");
-> +	}
-> +
-> +	for (i =3D 0; i < count; i++) {
-> +		munmap(bo_map[i], bo_size);
-> +		gem_close(fd, bo[i]);
-> +	}
-> +
-> +	munmap(batch_map, bo_size);
-> +	put_ahnd(ahnd);
-> +	syncobj_destroy(fd, sync[0].handle);
-> +	syncobj_destroy(fd, syncobjs);
-> +	xe_exec_queue_destroy(fd, exec_queues);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
->  int igt_main()
+> @@ -114,7 +114,7 @@ static void persistance_batch(struct data *data,
+> uint64_t addr)
+>   * Description: Test to verify store dword on all available engines.
+>   */
+>  static void basic_inst(int fd, int inst_type, struct
+> drm_xe_engine_class_instance *eci,
+> -		       uint16_t dev_id)
+> +		       uint16_t dev_id, uint32_t region)
 >  {
->  	struct drm_xe_engine_class_instance *hwe; @@ -483,6 +604,25 @@
-> int igt_main()
->  		igt_collection_destroy(set);
+>  	struct drm_xe_sync sync[2] =3D {
+>  		{ .type =3D DRM_XE_SYNC_TYPE_SYNCOBJ, .flags =3D
+> DRM_XE_SYNC_FLAG_SIGNAL, }, @@ -143,8 +143,7 @@ static void
+> basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
+>  	bo_size =3D sizeof(*data);
+>  	bo_size =3D xe_bb_size(fd, bo_size);
+>=20
+> -	bo =3D xe_bo_create(fd, vm, bo_size,
+> -			  vram_if_possible(fd, eci->gt_id),
+> +	bo =3D xe_bo_create(fd, vm, bo_size, region,
+>=20
+> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+>=20
+>  	exec_queue =3D xe_exec_queue_create(fd, vm, eci, 0); @@ -193,7
+> +192,7 @@ static void basic_inst(int fd, int inst_type, struct
+> drm_xe_engine_class_instanc
+>   * @page-sized: page-sized
+>   */
+>  static void store_cachelines(int fd, struct drm_xe_engine_class_instance=
+ *eci,
+> -			     unsigned int flags)
+> +			     unsigned int flags, uint32_t region)
+>  {
+>  	struct drm_xe_sync sync[2] =3D {
+>  		{ .type =3D DRM_XE_SYNC_TYPE_SYNCOBJ, .flags =3D
+> DRM_XE_SYNC_FLAG_SIGNAL, }, @@ -225,8 +224,7 @@ static void
+> store_cachelines(int fd, struct drm_xe_engine_class_instance *eci,
+>  	sync[0].handle =3D syncobj_create(fd, 0);
+>=20
+>  	for (i =3D 0; i < count; i++) {
+> -		bo[i] =3D xe_bo_create(fd, vm, bo_size,
+> -				     vram_if_possible(fd, eci->gt_id),
+> +		bo[i] =3D xe_bo_create(fd, vm, bo_size, region,
+>=20
+> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+>  		bo_map[i] =3D xe_bo_map(fd, bo[i], bo_size);
+>  		dst_offset[i] =3D intel_allocator_alloc_with_strategy(ahnd,
+> bo[i], @@ -282,7 +280,7 @@ static void store_cachelines(int fd, struct
+> drm_xe_engine_class_instance *eci,
+>   * SUBTEST: persistent
+>   * Description: Validate MI_PRT_BATCH_BUFFER_START functionality
+>   */
+> -static void persistent(int fd)
+> +static void persistent(int fd, uint32_t region)
+>  {
+>  	struct drm_xe_sync sync =3D {
+>  		.type =3D DRM_XE_SYNC_TYPE_SYNCOBJ,
+> @@ -309,12 +307,10 @@ static void persistent(int fd)
+>  	batch_size =3D xe_bb_size(fd, batch_size);
+>=20
+>  	engine =3D xe_engine(fd, 1);
+> -	sd_batch =3D xe_bo_create(fd, vm, batch_size,
+> -			      vram_if_possible(fd, engine->instance.gt_id),
+> -
+> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> -	prt_batch =3D xe_bo_create(fd, vm, batch_size,
+> -			      vram_if_possible(fd, engine->instance.gt_id),
+> -
+> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +	sd_batch =3D xe_bo_create(fd, vm, batch_size, region,
+> +
+> 	DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +	prt_batch =3D xe_bo_create(fd, vm, batch_size, region,
+> +
+> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+>=20
+>  	xe_vm_bind_sync(fd, vm, sd_batch, 0, addr, batch_size);
+>  	sd_data =3D xe_bo_map(fd, sd_batch, batch_size); @@ -419,7 +415,7
+> @@ static void long_shader(int fd, struct drm_xe_engine_class_instance
+> *hwe,
+>   * Test category: functionality test
+>   *
+>   */
+> -static void mem_transaction_ordering(int fd, size_t bo_size, bool fence)
+> +static void mem_transaction_ordering(int fd, size_t bo_size, bool
+> +fence, uint32_t region)
+>  {
+>  	struct drm_xe_engine_class_instance inst =3D {
+>  		.engine_class =3D DRM_XE_ENGINE_CLASS_COPY, @@ -456,8
+> +452,7 @@ static void mem_transaction_ordering(int fd, size_t bo_size, bo=
+ol
+> fence)
+>  	sync[0].handle =3D syncobj_create(fd, 0);
+>=20
+>  	for (i =3D 0; i < count; i++) {
+> -		bo[i] =3D xe_bo_create_caching(fd, vm, bo_size,
+> system_memory(fd), 0,
+> -
+> DRM_XE_GEM_CPU_CACHING_WC);
+> +		bo[i] =3D xe_bo_create_caching(fd, vm, bo_size, region, 0,
+> +DRM_XE_GEM_CPU_CACHING_WC);
+>  		bo_map[i] =3D xe_bo_map(fd, bo[i], bo_size);
+>  		offset[i] =3D intel_allocator_alloc_with_strategy(ahnd, bo[i],
+>  								bo_size, 0,
+> @@ -493,7 +488,6 @@ static void mem_transaction_ordering(int fd, size_t
+> bo_size, bool fence)
+>  	}
+>  	if (fence)
+>  		batch_map[b++] =3D MI_MEM_FENCE | MI_WRITE_FENCE;
+> -
+>  	batch_map[b++] =3D MI_BATCH_BUFFER_END;
+>  	sync[0].flags &=3D ~DRM_XE_SYNC_FLAG_SIGNAL;
+>  	sync[1].flags |=3D DRM_XE_SYNC_FLAG_SIGNAL; @@ -538,44 +532,72
+> @@ int igt_main()
+>  	struct drm_xe_engine_class_instance *hwe;
+>  	int fd;
+>  	uint16_t dev_id;
+> +	uint32_t region;
+> +	uint64_t memreg;
+>  	struct drm_xe_engine *engine;
+>=20
+>  	igt_fixture() {
+>  		fd =3D drm_open_driver(DRIVER_XE);
+>  		xe_device_get(fd);
+>  		dev_id =3D intel_get_drm_devid(fd);
+> +		memreg =3D all_memory_regions(fd);
 >  	}
 >=20
-> +	igt_describe("Verify memory relax ordering using copy/write
-> operations");
-> +	igt_subtest_with_dynamic("mem-write-ordering-check") {
-> +		struct {
-> +			size_t size;
-> +			const char *label;
-> +		} sizes[] =3D {
-> +			{ SZ_1M,  "1M" },
-> +			{ SZ_2M,  "2M" },
-> +			{ SZ_8M,  "8M" },
-> +		};
-> +
-> +		for (size_t i =3D 0; i < ARRAY_SIZE(sizes); i++) {
-> +			igt_dynamic_f("size-%s", sizes[i].label) {
-> +				mem_transaction_ordering(fd, sizes[i].size,
-> true);
-> +				mem_transaction_ordering(fd, sizes[i].size,
-> false);
+> -	igt_subtest("basic-store") {
+> -		engine =3D xe_engine(fd, 1);
+> -		basic_inst(fd, STORE, &engine->instance, dev_id);
+> +	igt_subtest_with_dynamic("basic-store") {
+> +		xe_for_each_mem_region(fd, memreg, region) {
+> +			igt_dynamic_f("region-%s", xe_region_name(region))
+> {
+> +				engine =3D xe_engine(fd, 1);
+> +				basic_inst(fd, STORE, &engine->instance,
+> dev_id, region);
+> +			}
+> +		}
+>  	}
+>=20
+> -	igt_subtest("basic-cond-batch") {
+> -		engine =3D xe_engine(fd, 1);
+> -		basic_inst(fd, COND_BATCH, &engine->instance, dev_id);
+> +	igt_subtest_with_dynamic("basic-cond-batch") {
+> +		xe_for_each_mem_region(fd, memreg, region) {
+> +			igt_dynamic_f("region-%s", xe_region_name(region))
+> {
+> +				engine =3D xe_engine(fd, 1);
+> +				basic_inst(fd, COND_BATCH, &engine-
+> >instance, dev_id, region);
+> +			}
+> +		}
+>  	}
+>=20
+>  	igt_subtest_with_dynamic("basic-all") {
+> -		xe_for_each_engine(fd, hwe) {
+> -			igt_dynamic_f("Engine-%s-Instance-%d-Tile-%d",
+> -				      xe_engine_class_string(hwe-
+> >engine_class),
+> -				      hwe->engine_instance,
+> -				      hwe->gt_id);
+> -			basic_inst(fd, STORE, hwe, dev_id);
+> +		xe_for_each_mem_region(fd, memreg, region) {
+> +			xe_for_each_engine(fd, hwe) {
+> +				igt_dynamic_f("Engine-%s-Instance-%d-Tile-
+> %d-Region-%s",
+> +					      xe_engine_class_string(hwe-
+> >engine_class),
+> +					      hwe->engine_instance,
+> +					      hwe->gt_id,
+> +					      xe_region_name(region))
+> +					basic_inst(fd, STORE, hwe, dev_id,
+> region);
+> +			}
+>  		}
+>  	}
+>=20
+> -	igt_subtest("cachelines")
+> -		xe_for_each_engine(fd, hwe)
+> -			store_cachelines(fd, hwe, 0);
+> +	igt_subtest_with_dynamic("cachelines") {
+> +		xe_for_each_mem_region(fd, memreg, region) {
+> +			xe_for_each_engine(fd, hwe) {
+> +				igt_dynamic_f("region-%s",
+> xe_region_name(region))
+> +					store_cachelines(fd, hwe, 0, region);
 > +			}
 > +		}
 > +	}
-> +
+>=20
+> -	igt_subtest("page-sized")
+> -		xe_for_each_engine(fd, hwe)
+> -			store_cachelines(fd, hwe, PAGES);
+> +	igt_subtest_with_dynamic("page-sized") {
+> +		xe_for_each_mem_region(fd, memreg, region) {
+> +			xe_for_each_engine(fd, hwe) {
+> +				igt_dynamic_f("region-%s",
+> xe_region_name(region))
+> +					store_cachelines(fd, hwe, PAGES,
+> region);
+> +			}
+> +		}
+> +	}
+>=20
+> -	igt_subtest("persistent")
+> -		persistent(fd);
+> +	igt_subtest_with_dynamic("persistent") {
+> +		xe_for_each_mem_region(fd, memreg, region) {
+> +			igt_dynamic_f("region-%s", xe_region_name(region))
+> +				persistent(fd, region);
+> +		}
+> +	}
+>=20
+>  	igt_subtest_with_dynamic("long-shader-bb-check") {
+>  		struct igt_collection *set;
+> @@ -615,10 +637,12 @@ int igt_main()
+>  			{ SZ_8M,  "8M" },
+>  		};
+>=20
+> -		for (size_t i =3D 0; i < ARRAY_SIZE(sizes); i++) {
+> -			igt_dynamic_f("size-%s", sizes[i].label) {
+> -				mem_transaction_ordering(fd, sizes[i].size,
+> true);
+> -				mem_transaction_ordering(fd, sizes[i].size,
+> false);
+> +		xe_for_each_mem_region(fd, memreg, region) {
+> +			for (size_t i =3D 0; i < ARRAY_SIZE(sizes); i++) {
+> +				igt_dynamic_f("region-%s",
+> xe_region_name(region)) {
+> +					mem_transaction_ordering(fd,
+> sizes[i].size, true, region);
+> +					mem_transaction_ordering(fd,
+> sizes[i].size, false, region);
+> +				}
+>  			}
+>  		}
+>  	}
 LGTM,
-Reviewed-by: Priyanka Dandamudi <Priyanka.dandamudi@intel.com>
->  	igt_fixture() {
->  		xe_device_put(fd);
->  		close(fd);
+Reviewed-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > --
 > 2.34.1
 
