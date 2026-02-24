@@ -4,62 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E94CEEFB810
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 07:28:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 423F8EFB810
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 07:37:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 930C810E4CC;
-	Tue, 24 Feb 2026 07:28:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B3AB310E4CC;
+	Tue, 24 Feb 2026 07:37:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MzQdNr7M";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GX1NAMr1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E2D510E4CC
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 07:28:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6518510E4CC
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 07:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771918128; x=1803454128;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=woJnen/299NFwToodGF4V2tWTada8gYizK94Lgv+eIg=;
- b=MzQdNr7MdCYDFpBQiz7nqJLC2VEKN/fUJCUSAiCFoUsHfC4bNZR7zd/k
- GJFfihpueFd/g7zAmhxXHWD12SB9HnXRNWdFxvp51ewCspAO5hY8AX43N
- OQ5N4t/bupB8Xb31dYVqSZnufpuUU5RObxMIYYOZYYpFL28cqSHXaOrdS
- GNZ8NreLpJ+dS6NM6XwKQ+wVQvLDYDzQW3mmIOINYBnlkwu9rpANPM/fK
- Hs3ndyqOQNIrd7gYK2j5NbJSLjj7RfWAG8YdcxWPQ3V7Et9u2zKhNSD+5
- ks4yrMITsD2LNe0FB4O9JGox3mcdRTExWJZ5E8x6SoqwssGhyAR997doR g==;
-X-CSE-ConnectionGUID: lXFWJ15FTfuBNfccX9UDSw==
-X-CSE-MsgGUID: u6VyIWCBTCqVVZO0S+V62w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="90508560"
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="90508560"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Feb 2026 23:28:48 -0800
-X-CSE-ConnectionGUID: 1NRyDepYSxCpnhMUYdi+xg==
-X-CSE-MsgGUID: vYJR8kh5S0GuvtOTx9QTlw==
+ t=1771918658; x=1803454658;
+ h=date:from:to:subject:message-id:references:mime-version:
+ in-reply-to; bh=Zzqfj3kAD3tdghCromiEOkj/v8MdkdsIfWZO3As3gYY=;
+ b=GX1NAMr1q3LQLcf+zDs4xsdtOf7Z5O0FbceKJCSJdG3iTEbXhV1lbZfG
+ E1YeD6iEY9IADgJzKCbmUQGLIDMhZjIJhTsn1yXlyQWmoWw7mDNT5mgNu
+ lM1hEZ3SrmcVMEwTfatzrR5nGclCoUW2P3fkWW6vmlaDBhCvxAi5lmETJ
+ nM/8sZXoPwqUaS92+2Df0+eqTbl4bYajmGcH086A6UkxT73f+snJWDvHu
+ kp6SvD3u3Rsky7BYS47qbK5sixl+iJZxmA+4wZyws1IT+1PDbeUYks5gz
+ 8OANefaf+ORtY+MHG+r531F6U/YUK6omJzXZ8BR5WBEGvuk+ZadjlyeMx g==;
+X-CSE-ConnectionGUID: I+wTqO57RuuQdFpQJ0WXKg==
+X-CSE-MsgGUID: cJ0TlNTUT0ig9o9sQVH5Wg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="72137931"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="72137931"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Feb 2026 23:37:38 -0800
+X-CSE-ConnectionGUID: DIgjL4ogQq2xitlTYwunOg==
+X-CSE-MsgGUID: Rw2Sc2zTR9OPuroZwFhsig==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="219919890"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.244.101])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Feb 2026 23:28:47 -0800
-Date: Tue, 24 Feb 2026 09:28:44 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v2 01/23] tests/intel/kms_psr: Don't pass
- uninitialized 'pipe' to intel_fbc_supported_on_chipset()
-Message-ID: <aZ1TLBPrmYD9aDe8@intel.com>
-References: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
- <20260221032003.30936-2-ville.syrjala@linux.intel.com>
- <df675eff67bc754b59787a066c0afdf9bc8dbac7@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="215840968"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.91])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Feb 2026 23:37:37 -0800
+Date: Tue, 24 Feb 2026 08:37:34 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuQkFUOiBmYWlsdXI=?= =?utf-8?Q?e?= for
+ lib/rendercopy: Alter pipeline and add shader for Xe3p
+Message-ID: <jau2fuxqlvapszrsrbuqga4ucn4ok45ctezl3ri5nv5odldzqc@p62wkr2f2gcf>
+References: <20260223163544.1519449-2-zbigniew.kempczynski@intel.com>
+ <177188514499.277693.13301189144567946954@a3b018990fe9>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <df675eff67bc754b59787a066c0afdf9bc8dbac7@intel.com>
-X-Patchwork-Hint: comment
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+In-Reply-To: <177188514499.277693.13301189144567946954@a3b018990fe9>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,66 +68,83 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Feb 23, 2026 at 01:22:08PM +0200, Jani Nikula wrote:
-> On Sat, 21 Feb 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
-> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> >
-> > Instead passing stack garbage in 'pipe' to
-> > intel_fbc_supported_on_chipset() iterate over all the CRTCs
-> > and properly check if any of them supports FBC.
-> >
-> > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > ---
-> >  tests/intel/kms_psr.c | 11 ++++++++---
-> >  1 file changed, 8 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
-> > index c411981c0104..c730a6f23944 100644
-> > --- a/tests/intel/kms_psr.c
-> > +++ b/tests/intel/kms_psr.c
-> > @@ -774,7 +774,6 @@ int igt_main()
-> >  {
-> >  	int z, y;
-> >  	enum operations op;
-> > -	enum pipe pipe;
-> >  	const char *append_subtest_name[3] = {
-> >  		"psr-",
-> >  		"psr2-",
-> > @@ -787,10 +786,12 @@ int igt_main()
-> >  	int modes[] = {PSR_MODE_1, PSR_MODE_2, PR_MODE};
-> >  	int fbc_status[] = {FBC_DISABLED, FBC_ENABLED};
-> >  	igt_output_t *output;
-> > -	bool fbc_chipset_support;
-> > +	bool fbc_chipset_support = true;
-> >  	int disp_ver;
-> >  
-> >  	igt_fixture() {
-> > +		igt_crtc_t *crtc;
-> > +
-> >  		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
-> >  		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
-> >  		kmstest_set_vt_graphics_mode();
-> > @@ -799,7 +800,11 @@ int igt_main()
-> >  		igt_display_require(&data.display, data.drm_fd);
-> >  		igt_require_f(output_supports_psr(&data), "Sink does not support PSR/PSR2/PR\n");
-> >  		disp_ver = intel_display_ver(data.devid);
-> > -		fbc_chipset_support = intel_fbc_supported_on_chipset(data.drm_fd, pipe);
-> > +
-> > +		for_each_crtc(&data.display, crtc) {
-> > +			if (!intel_fbc_supported_on_chipset(data.drm_fd, crtc->pipe))
-> > +				fbc_chipset_support = false;
+On Mon, Feb 23, 2026 at 10:19:04PM +0000, Patchwork wrote:
+>    Patch Details
 > 
-> The commit message says "if any of them", but this requires all of them
-> to support FBC, which is unlikely.
+>    Series:  lib/rendercopy: Alter pipeline and add shader for Xe3p          
+>    URL:     https://patchwork.freedesktop.org/series/161991/                
+>    State:   failure                                                         
+>    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14597/index.html 
+> 
+>                CI Bug Log - changes from IGT_8766 -> IGTPW_14597
+> 
+> Summary
+> 
+>    FAILURE
+> 
+>    Serious unknown changes coming with IGTPW_14597 absolutely need to be
+>    verified manually.
+> 
+>    If you think the reported changes have nothing to do with the changes
+>    introduced in IGTPW_14597, please notify your bug team
+>    (I915-ci-infra@lists.freedesktop.org) to allow them
+>    to document this new failure mode, which will reduce false positives in
+>    CI.
+> 
+>    External URL:
+>    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14597/index.html
+> 
+> Participating hosts (43 -> 41)
+> 
+>    Missing (2): bat-dg2-13 fi-snb-2520m
+> 
+> Possible new issues
+> 
+>    Here are the unknown changes that may have been introduced in IGTPW_14597:
+> 
+>   IGT changes
+> 
+>     Possible regressions
+> 
+>      * igt@kms_pipe_crc_basic@read-crc:
+>           * fi-cfl-8109u: PASS -> DMESG-WARN +48 other tests dmesg-warn
 
-Hmm, yeah that is definitely a problem for hsw+. I guess I'll just
-reverse the logic here.
+Change is unrelated to above dmesg warning.
 
-intel_fbc_supported_on_chipset() should probably itself iterate all
-the CRTCs, but with the current low level API that'd be a bit
-inconvenient to implement. We should probably look into changing 
-the intel_fbc*() API to take igt_display_t/igt_crtc_t/etc. as well...
+--
+Zbigniew
 
--- 
-Ville Syrjälä
-Intel
+> 
+> Known issues
+> 
+>    Here are the changes found in IGTPW_14597 that come from known issues:
+> 
+>   IGT changes
+> 
+>     Issues hit
+> 
+>      * igt@i915_selftest@live:
+> 
+>           * bat-dg2-8: PASS -> DMESG-FAIL (i915#12061) +1 other test
+>             dmesg-fail
+>      * igt@i915_selftest@live@workarounds:
+> 
+>           * bat-arls-6: PASS -> DMESG-FAIL (i915#12061) +1 other test
+>             dmesg-fail
+> 
+>     Possible fixes
+> 
+>      * igt@i915_selftest@live:
+>           * bat-jsl-1: DMESG-FAIL (i915#15394) -> PASS +1 other test pass
+> 
+> Build changes
+> 
+>      * CI: CI-20190529 -> None
+>      * IGT: IGT_8766 -> IGTPW_14597
+> 
+>    CI-20190529: 20190529
+>    CI_DRM_18022: 45a3045fc0dc46a893cb8bbe304afafd4120c904 @
+>    git://anongit.freedesktop.org/gfx-ci/linux
+>    IGTPW_14597: 6a89e69be222393d3dd2f894a914c79f78f612ca @
+>    https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>    IGT_8766: 8766
