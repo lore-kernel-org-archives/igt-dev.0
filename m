@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F8BFEFB811
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 08:23:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A4F0EFB811
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 08:23:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EC44D10E4DC;
-	Tue, 24 Feb 2026 08:23:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F280010E0BA;
+	Tue, 24 Feb 2026 08:23:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IdDmzekA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U3gkIg0Q";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41FD610E4DC
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 08:23:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D4A810E0BA
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 08:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771921394; x=1803457394;
+ t=1771921397; x=1803457397;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=BkDtJ4rNMES2/xv8BoQpGJL6ywHDGcrrSMEAgmpxOs4=;
- b=IdDmzekASNk+tzjNz5c3VcLedQ00wrPULukpqYAqe1LwmdVAWuHwqZfT
- MmaVLVLwi+Oo5ZjlgQ4yf0FMHIhfenwTxlIn3Wx7y8xrtpmKlhL0KIN14
- cPklBx6siIHKZcJvSNjf/JIOUn1st+Q6Wynck3C1LS0AH/LRvPONCaBFs
- nqpZgSe+eeIRNGSg01/vndUpyglAHgvZ9Lbo0sEJKqkjj5NiBTo406Pjj
- hWPGLdapukpbb9Q0HrFq7sgvmcI+AyaAVJD7aZPS/08Q41enKjIt5hK8K
- enCAMVVnfEFIZMSUzTkogtF/4Wu8JL9Y7S2ysAWTLioBER4xagm2RVf/6 w==;
-X-CSE-ConnectionGUID: 1/nBjGbKQsOp/Z+8QLuwNA==
-X-CSE-MsgGUID: FIcqXOZOREeDEitaf6EVDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="76540558"
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="76540558"
+ bh=30gtuE5nqxhc5Onyubvt4vKi7sRuaCmcCyMOE+nnWRw=;
+ b=U3gkIg0QBd+YRYWzw5NyFcq+7YHGvU2QVAVO55LtDZwEUZX8M6c3U5Se
+ 44Sv2D+5EO2Ft2uN1Za+C6a9mlfNYvINWPnSebZm6pt35i0D9ksdHHWkh
+ 8Qh7YxErXIWrTZDJIzbgZbqt4mK//0CU0Jwic5RU5thRQjTYMwaoeXXpp
+ rOFMjQzUUoEJdx0j8e4zvDWef3lgFW2O3Wn4FiZEOGUcCS0I0nWj0FHc0
+ owbJvC7oOBeTKcbFQbO5Gl4zci5aI/Phvu7pNJdYUcGp5aqD5zSxBL3c2
+ 5sgL0JiJp7erl9wKkJQWVT8CaIcJijPcqdmR69SVN4LMF7VA1rxA3xrea w==;
+X-CSE-ConnectionGUID: c2U19vlRR8q6P96GSjNAFw==
+X-CSE-MsgGUID: Rt4ejll8Qf63M16u0iWLaw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="76540567"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="76540567"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 00:23:14 -0800
-X-CSE-ConnectionGUID: d4T0P76BTw+6GXb56/kppA==
-X-CSE-MsgGUID: C97czRBrRgyU2yaqzOyLGw==
+ 24 Feb 2026 00:23:17 -0800
+X-CSE-ConnectionGUID: qoBk+ihjRbCQ4Dpj0g3hcA==
+X-CSE-MsgGUID: DDoCheSnQwmPATFKvCQj1g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="220351665"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="220351673"
 Received: from amiszcza-desk-dev.igk.intel.com (HELO localhost)
  ([10.91.214.39])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 00:23:13 -0800
+ 24 Feb 2026 00:23:16 -0800
 From: Adam Miszczak <adam.miszczak@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: marcin.bernatowicz@linux.intel.com,
 	kamil.konieczny@linux.intel.com
-Subject: [PATCH i-g-t 03/10] tools/vmtb: Fix VM snapshot query handling
-Date: Tue, 24 Feb 2026 08:50:20 +0100
-Message-Id: <20260224075027.2409675-4-adam.miszczak@linux.intel.com>
+Subject: [PATCH i-g-t 04/10] tools/vmtb: Extend IGT and WSIM abstractions
+Date: Tue, 24 Feb 2026 08:50:21 +0100
+Message-Id: <20260224075027.2409675-5-adam.miszczak@linux.intel.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20260224075027.2409675-1-adam.miszczak@linux.intel.com>
 References: <20260224075027.2409675-1-adam.miszczak@linux.intel.com>
@@ -70,28 +70,69 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-QMP command 'query-named-block-nodes' is used to select a block device
-for saving VM snapshot (QMP 'snapshot-save').
+Introduce few improvements to IGT and gem_wsim executors:
 
-Add polling for the command's return message in QMP response queue.
-It sporadically happened that unsolicited QMP message like:
-[QMP RSP] <- {"timestamp": {...}, "event": "RTC_CHANGE" ...}
-was falsely taken as a response to previously submitted
-QMP 'query-named-block-nodes' command.
-Hence, no 'block device node' argument is passed to
-'snapshot-load' command which leads to migration tests fail.
-Also, add a condition to check if a given block node
-is writable (not read-only).
+1. Add gem_wsim workload descriptor resources config
+In order to place workload files in a common resources directory,
+extend VMTB config with a relevant entry and read the path in a conftest.
+
+Implement capability for device specific workload files in wsim resources
+directory (as different GPU devices may have various sets of engines).
+Wsim device specific path format looks as follows:
+[vmtb_root_path]/vmm_flows/resources/wsim/[device_name_abbr]/[wl_desc].wsim
+e.g.:
+- resources/wsim/ptl/wl.wsim
+- resources/wsim/bmg/wl.wsim
+
+2. Support gem_wsim workload files on VM
+So far GemWsim was initialized with a simple string workload descriptor
+passed with '-w <workload>' option.
+However, multiple complex workloads are expected for a busy VF migration
+scenarios - therefore it would be handy to define it as workload files.
+Gem_wsim input files will be deployed as VMTB resources on a host,
+whereas we want to execute it on VM as well.
+Hence, content of the wsim workload file is copied to /tmp on a guest/host
+and executed from that location.
+In case of the host, original (resources) location will work
+as a wsim file input, however temp file is still used for simplicity
+and consistency (to avoid instance type checks).
+
+3. Add IGT and WSIM results check function
+Extend IgtExecutor and GemWsim with new check_results() method to allow
+object-oriented approach for checking IGT/WSIM results and unify interfaces.
+Existing helper - igt_check(IgtExecutor) is still supported,
+but IgtExecutor.check_results() is now preferred.
+Also, implement IgtExecutor's is_running() (similarly to GemWsim)
+and keep the process state (ProcessResult).
+
+Introduced change simplifies supporting both IGT and gem_wsim workloads
+in busy migration tests.
+
+4. Support IGT tests repeated execution
+Few planned VF busy migration scenarios require executing short IGT tests
+in a longer time slot (in a loop).
+To achieve it, allow IgtExecutor to accept expected number of IGT test
+repeats and reflect it in a testlist passed to the igt_runner
+(multiply requested test entries).
+
+By default, IgtExecutor's 'num_repeats' input parameter is set to 1,
+so in the usual case (single IGT execution) it doesn't need to be
+explicitly provided.
 
 Signed-off-by: Adam Miszczak <adam.miszczak@linux.intel.com>
 ---
- .../machines/virtual/backends/qmp_monitor.py  | 25 ++++++++++---------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ tools/vmtb/bench/configurators/vmtb_config.py |  4 +-
+ tools/vmtb/bench/executors/gem_wsim.py        | 45 +++++++++++++++----
+ tools/vmtb/bench/executors/igt.py             | 36 ++++++++++++---
+ tools/vmtb/bench/machines/physical/device.py  |  2 +-
+ tools/vmtb/vmm_flows/conftest.py              |  8 +++-
+ tools/vmtb/vmtb_config.json                   |  1 +
+ 6 files changed, 78 insertions(+), 18 deletions(-)
 
-diff --git a/tools/vmtb/bench/machines/virtual/backends/qmp_monitor.py b/tools/vmtb/bench/machines/virtual/backends/qmp_monitor.py
-index ef3c8aa1c..d364a5711 100644
---- a/tools/vmtb/bench/machines/virtual/backends/qmp_monitor.py
-+++ b/tools/vmtb/bench/machines/virtual/backends/qmp_monitor.py
+diff --git a/tools/vmtb/bench/configurators/vmtb_config.py b/tools/vmtb/bench/configurators/vmtb_config.py
+index 49dde4589..8fd2b87d5 100644
+--- a/tools/vmtb/bench/configurators/vmtb_config.py
++++ b/tools/vmtb/bench/configurators/vmtb_config.py
 @@ -1,5 +1,5 @@
  # SPDX-License-Identifier: MIT
 -# Copyright © 2024 Intel Corporation
@@ -99,36 +140,229 @@ index ef3c8aa1c..d364a5711 100644
  
  import json
  import logging
-@@ -123,17 +123,18 @@ class QmpMonitor():
-         ret: typing.Dict = {}
+@@ -40,6 +40,7 @@ class VmtbConfig:
+     host_config: VmtbHostConfig
+     guest_config: VmtbGuestConfig
+     vgpu_profiles_path: str
++    wsim_wl_path: str
+     guc_ver_path: str
+     ci_host_dmesg_file: str
  
-         qmp_msg = self.qmp_queue.get()
--        # logger.debug('[QMP RSP Queue] -> %s', qmp_msg)
--        if 'return' in qmp_msg:
--            ret = qmp_msg.get('return')
--            for block in ret:
--                if block.get('drv') == 'qcow2':
--                    node_name = block.get('node-name')
--                    # Get the most recent state snapshot from the snapshots list:
--                    snapshots = block.get('image').get('snapshots')
--                    if snapshots:
--                        snapshot_tag = snapshots[-1].get('name')
--                    break
-+        while 'return' not in qmp_msg:
-+            qmp_msg = self.qmp_queue.get()
+@@ -104,6 +105,7 @@ class VmtbConfigJsonReader:
+             host_config=vmtb_host_config,
+             guest_config=vmtb_guest_config,
+             vgpu_profiles_path=config_json['resources']['vgpu_profiles_path'],
++            wsim_wl_path=config_json['resources']['wsim_wl_path'],
+             guc_ver_path=config_json['resources']['guc_ver_path'],
+             ci_host_dmesg_file=config_json['ci']['host_dmesg_file'])
+ 
+diff --git a/tools/vmtb/bench/executors/gem_wsim.py b/tools/vmtb/bench/executors/gem_wsim.py
+index 46fa2291c..0cdfcc7e4 100644
+--- a/tools/vmtb/bench/executors/gem_wsim.py
++++ b/tools/vmtb/bench/executors/gem_wsim.py
+@@ -1,9 +1,10 @@
+ # SPDX-License-Identifier: MIT
+-# Copyright © 2024 Intel Corporation
++# Copyright © 2024-2026 Intel Corporation
+ 
+ import logging
+ import re
+ import typing
++from pathlib import Path
+ 
+ from bench import exceptions
+ from bench.executors.shell import ShellExecutor
+@@ -23,13 +24,28 @@ PREEMPT_10MS_WORKLOAD = (f'1.DEFAULT.{int(ONE_CYCLE_DURATION_MS * 1000 / 2)}.0.0
+ NON_PREEMPT_10MS_WORKLOAD = f'X.1.0,X.2.0,{PREEMPT_10MS_WORKLOAD}'
+ 
+ class GemWsim(ShellExecutor):
+-    def __init__(self, machine: MachineInterface, num_clients: int = 1, num_repeats: int = 1,
+-                 workload: str = PREEMPT_10MS_WORKLOAD, timeout: int = DEFAULT_TIMEOUT) -> None:
+-        super().__init__(
+-            machine,
+-            f'/usr/local/libexec/igt-gpu-tools/benchmarks/gem_wsim -w {workload} -c {num_clients} -r {num_repeats}',
+-            timeout)
+-        self.machine_id = str(machine)
++    def __init__(self, target: MachineInterface,
++                 num_clients: int = 1,
++                 num_repeats: int = 1,
++                 workload: str = PREEMPT_10MS_WORKLOAD,
++                 timeout: int = DEFAULT_TIMEOUT) -> None:
 +
-+        ret = qmp_msg.get('return')
-+        for block in ret:
-+            if block.get('drv') == 'qcow2' and block.get('ro') is False:
-+                node_name = block.get('node-name')
-+                # Get the most recent state snapshot from the snapshots list:
-+                snapshots = block.get('image').get('snapshots')
-+                if snapshots:
-+                    snapshot_tag = snapshots[-1].get('name')
-+                break
++        self.machine_id = str(target)
++        wl_file_path = Path(workload)
++
++        if wl_file_path.is_file():
++            # Copy workload descriptor from the source host file
++            # to the requested target machine (VM or host)
++            workload = '/tmp/igt_workload.wsim'
++            wl_desc = wl_file_path.read_text(encoding='utf-8')
++            target.write_file_content(workload, wl_desc)
++
++            logger.debug("IGT/wsim workload descriptor:\n%s", wl_desc)
++
++        wsim_path = Path(target.get_igt_config().test_dir) / 'benchmarks' / 'gem_wsim'
++        command = f'{wsim_path} -w {workload} -c {num_clients} -r {num_repeats}'
++
++        super().__init__(target, command, timeout)
  
-         return (node_name, snapshot_tag)
+     def __str__(self) -> str:
+         return f'gem_wsim({self.machine_id}:{self.pid})'
+@@ -49,6 +65,19 @@ class GemWsim(ShellExecutor):
+         raise exceptions.GemWsimError(f'{self}: exit_code: {proc_result.exit_code}'
+                                       f' stdout: {proc_result.stdout} stderr: {proc_result.stderr}')
  
++    def check_results(self) -> bool:
++        """Verify gem_wsim execution results. Return True for workload success, False on fail."""
++        # TODO: support also checking wsim workload: 'Verify Xe spinner batch completion'
++        try:
++            wl_results: GemWsimResult = self.wait_results()
++        except exceptions.GemWsimError as exc:
++            logger.error("[%s] WSIM failed: %s", self.target, exc)
++            return False
++
++        logger.debug("[%s] WSIM passed in %ss (%s WL/s)",
++                      self.target, wl_results.elapsed_sec, wl_results.workloads_per_sec)
++        return True
++
+ 
+ def gem_wsim_parallel_exec_and_check(vms: typing.List[MachineInterface], workload: str, iterations: int,
+                                      expected: typing.Optional[GemWsimResult] = None) -> GemWsimResult:
+diff --git a/tools/vmtb/bench/executors/igt.py b/tools/vmtb/bench/executors/igt.py
+index 4296464c2..a08f71d54 100644
+--- a/tools/vmtb/bench/executors/igt.py
++++ b/tools/vmtb/bench/executors/igt.py
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: MIT
+-# Copyright © 2024 Intel Corporation
++# Copyright © 2024-2026 Intel Corporation
+ 
+ import enum
+ import json
+@@ -34,6 +34,7 @@ igt_tests: typing.Dict[IgtType, typing.Tuple[str, str]] = {
+ class IgtExecutor(ExecutorInterface):
+     def __init__(self, target: MachineInterface,
+                  test: typing.Union[str, IgtType],
++                 num_repeats: int = 1,
+                  timeout: int = DEFAULT_TIMEOUT) -> None:
+         self.igt_config = target.get_igt_config()
+ 
+@@ -46,18 +47,25 @@ class IgtExecutor(ExecutorInterface):
+         self.results: typing.Dict[str, typing.Any] = {}
+         self.target: MachineInterface = target
+         self.igt: str = test if isinstance(test, str) else self.select_igt_variant(target.get_drm_driver_name(), test)
+-        self.target.write_file_content(testlist, self.igt)
+-        self.timeout: int = timeout
+ 
+         logger.info("[%s] Execute IGT test: %s", target, self.igt)
++        if num_repeats > 1:
++            logger.debug("Repeat IGT execution %s times", num_repeats)
++            self.igt = (self.igt + '\n') * num_repeats
++
++        self.target.write_file_content(testlist, self.igt)
++        self.timeout: int = timeout
++        self.proc_result = ProcessResult()
+         self.pid: int = self.target.execute(command)
+ 
+     # Executor interface implementation
+     def status(self) -> ProcessResult:
+-        return self.target.execute_status(self.pid)
++        self.proc_result = self.target.execute_status(self.pid)
++        return self.proc_result
+ 
+     def wait(self) -> ProcessResult:
+-        return self.target.execute_wait(self.pid, self.timeout)
++        self.proc_result = self.target.execute_wait(self.pid, self.timeout)
++        return self.proc_result
+ 
+     def sendsig(self, sig: signal.Signals) -> None:
+         self.target.execute_signal(self.pid, sig)
+@@ -69,9 +77,25 @@ class IgtExecutor(ExecutorInterface):
+         self.sendsig(signal.SIGKILL)
+ 
+     # IGT specific methods
++    def is_running(self) -> bool:
++        return not self.status().exited
++
++    def check_results(self) -> bool:
++        """Verify IGT test results. Return True for test success, False on fail."""
++        if not self.proc_result.exited:
++            self.proc_result = self.wait()
++
++        if self.proc_result.exit_code == 0 and self.did_pass():
++            logger.debug("[%s] IGT passed", self.target)
++            return True
++
++        logger.error("[%s] IGT failed: %s", self.target, self.proc_result)
++        return False
++
+     def get_results_log(self) -> typing.Dict:
+         # Results are cached
+         if self.results:
++            logger.debug("Get available IGT results from cache")
+             return self.results
+         path = posixpath.join(self.igt_config.result_dir, 'results.json')
+         result = self.target.read_file_content(path)
+@@ -95,7 +119,7 @@ class IgtExecutor(ExecutorInterface):
+                 continue
+             fail_case = fail_case + aggregate[key]
+ 
+-        logger.debug('Full IGT test results:\n%s', json.dumps(results, indent=4))
++        logger.debug("[%s] Full IGT test results:\n%s", self.target, json.dumps(results, indent=4))
+ 
+         if fail_case > 0:
+             logger.error('Test failed!')
+diff --git a/tools/vmtb/bench/machines/physical/device.py b/tools/vmtb/bench/machines/physical/device.py
+index 887f607e4..a487c0e5f 100644
+--- a/tools/vmtb/bench/machines/physical/device.py
++++ b/tools/vmtb/bench/machines/physical/device.py
+@@ -45,7 +45,7 @@ class Device(DeviceInterface):
+ 
+     def __init__(self, bdf: str, driver: str) -> None:
+         self.pci_info = self.PciInfo(bdf)
+-        self.gpu_model: str = pci.get_gpu_model(self.pci_info.devid)
++        self.gpu_model = pci.get_gpu_model(self.pci_info.devid)
+         self.driver: DriverInterface = self.instantiate_driver(driver, self.pci_info.minor_number)
+ 
+     def __str__(self) -> str:
+diff --git a/tools/vmtb/vmm_flows/conftest.py b/tools/vmtb/vmm_flows/conftest.py
+index 3bfac01c4..28c0b5f00 100644
+--- a/tools/vmtb/vmm_flows/conftest.py
++++ b/tools/vmtb/vmm_flows/conftest.py
+@@ -79,8 +79,6 @@ class VmmTestingSetup:
+         self.guest_os_image = vmtb_config.get_guest_config().os_image_path if cmdline_config['vm_image'] is None \
+                          else cmdline_config['vm_image']
+ 
+-        self.vgpu_profiles_dir = vmtb_config.vmtb_config_file.parent / vmtb_config.config.vgpu_profiles_path
+-
+         self.host.drm_driver_name = vmtb_config.get_host_config().driver
+         self.host.igt_config = vmtb_config.get_host_config().igt_config
+ 
+@@ -103,6 +101,12 @@ class VmmTestingSetup:
+                     self.get_dut().driver.get_name(),
+                     vf_migration_support)
+ 
++        vmtb_root_path = vmtb_config.vmtb_config_file.parent
++        self.vgpu_profiles_dir = vmtb_root_path / vmtb_config.config.vgpu_profiles_path
++        # Device specific wsim descriptors directory path, e.g.:
++        # [vmtb_root]/vmm_flows/resources/wsim/ptl (last subdir is lowercase key/name from pci.GpuModel class)
++        self.wsim_wl_dir = vmtb_root_path / vmtb_config.config.wsim_wl_path / self.get_dut().gpu_model.name.lower()
++
+         self.vgpu_profile: VgpuProfile = self.get_vgpu_profile()
+ 
+         # Start maximum requested number of VMs, but not more than VFs supported by the given vGPU profile
+diff --git a/tools/vmtb/vmtb_config.json b/tools/vmtb/vmtb_config.json
+index 640a64123..2b8fb43f3 100644
+--- a/tools/vmtb/vmtb_config.json
++++ b/tools/vmtb/vmtb_config.json
+@@ -23,6 +23,7 @@
+     },
+     "resources": {
+         "vgpu_profiles_path": "vmm_flows/resources/vgpu_profiles",
++        "wsim_wl_path": "vmm_flows/resources/wsim",
+         "guc_ver_path": "vmm_flows/resources/guc"
+     },
+     "ci": {
 -- 
 2.39.1
 
