@@ -4,55 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86930EFB811
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 08:24:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0557AEFB811
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 08:25:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 34CB810E0BA;
-	Tue, 24 Feb 2026 08:24:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ABB2210E4DD;
+	Tue, 24 Feb 2026 08:25:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E7YArnPu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m59F5/Sy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1C1A10E0BA
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 08:24:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 26DD710E4DD
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 08:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771921487; x=1803457487;
+ t=1771921538; x=1803457538;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=TdrG00SkoWRLf+JRlGI4+Oy/E9MABiGDMntDZDFNewo=;
- b=E7YArnPuW+wL29y+99J2G4FLyIphqX5FrqsAeGccY4fopAlxjM3sStPu
- 4G0xTu5jF28NwGILiCxw0QzRPqaZnVEg6VLxvQbRK49kdvT1Q8PlD80nm
- iKoM89EU/gCKRHV8fax+YDfKjcn2/zy4WJUA68+rKg18QAQP/ayQtS3BD
- e+EsO5YB0c8cFAOd2qr66PXxZ7WRpwfFOHjztrJvW6ZwuIXHMlZdc/E12
- +HmCOzcYIhtlwyOttXygOZW/y4abhOnIiWw8Ns71Q552S7gMVOrZzE4Yl
- INcVU2q9F0awWl2q/w9mBVTngtl9IIoJgvfrYl0Pb51iLOCHMHzN7rcnl A==;
-X-CSE-ConnectionGUID: w1x/IsMdQXCAi/Vz9o/vig==
-X-CSE-MsgGUID: nzJ/I2eyRgiS0ojqXSlY0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="76540680"
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="76540680"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 00:24:34 -0800
-X-CSE-ConnectionGUID: QPYWhBAYS62Gko+vbrZaRQ==
-X-CSE-MsgGUID: wqxhSGnpR7imuwEXnHTmXA==
+ bh=6KPww8nevns1BwzXRmqCV3tlGqtDywA7U87K0CFYvgM=;
+ b=m59F5/Sy5LPaPjwLUcjsphZdLyC1aPW0dlHeU8qhgSNcxXvJRCWXZIgL
+ PEJraIHKlmTDXvWSzo63EnNE4ZxUlLkm0hHrVFPxAY3zXJ5XyhIXLYtf+
+ Y5K9C6s1Zwsqq+LR9XjcjNUdkHW94hEBjuXdoFHnUYnNXoNspjz4Dv3ab
+ Sn7GJtR3zg3rbQJBE2IwOhNvR7JYipDTECy5FxTQw/oRL5lHWP+DuZHLP
+ THdWZ1V8HFBhQx+3d7vqOSeC49aBdr+uxFhG4uPEWWJ6mPGm1y25SSwNN
+ pJuDVGzhNqK4ou9ux89i1qH35S0e4aXs71roEe4sVY7uQckpTjdL9zNag g==;
+X-CSE-ConnectionGUID: ZOacEdgPS2+NMHNAHJ9f/w==
+X-CSE-MsgGUID: FNUG4+NqRxWJcUwRhyuCsA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="72806483"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="72806483"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2026 00:25:38 -0800
+X-CSE-ConnectionGUID: MWXR6Em0T8S7wgYZ6tDQyQ==
+X-CSE-MsgGUID: 0H7yt/FNTVyAnFWCB2PPxw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="220351982"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="215687459"
 Received: from amiszcza-desk-dev.igk.intel.com (HELO localhost)
  ([10.91.214.39])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 00:24:33 -0800
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2026 00:25:37 -0800
 From: Adam Miszczak <adam.miszczak@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: marcin.bernatowicz@linux.intel.com,
 	kamil.konieczny@linux.intel.com
-Subject: [PATCH i-g-t 09/10] tools/vmtb: Support max VFs configuration
-Date: Tue, 24 Feb 2026 08:50:26 +0100
-Message-Id: <20260224075027.2409675-10-adam.miszczak@linux.intel.com>
+Subject: [PATCH i-g-t 10/10] tools/vmtb: Platform enabling: PTL and BMG support
+Date: Tue, 24 Feb 2026 08:50:27 +0100
+Message-Id: <20260224075027.2409675-11-adam.miszczak@linux.intel.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20260224075027.2409675-1-adam.miszczak@linux.intel.com>
 References: <20260224075027.2409675-1-adam.miszczak@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,110 +70,299 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Enable maximum VFs test configuration variant, for both:
-auto-provisioning and vGPU profiles.
-Max VFs is device-specific value read via sysfs.
-For auto-provisioning, max VFs always equals sysfs/sriov_totalvfs,
-but the highest supported number of VFs defined by vGPU profiles
-may differ from the hardware max value.
-
-Max VFs test config variant can be requested by passing MAX_VFS label
-to VmmTestingConfig structure (num_vfs) or convenience tuple, for example:
-test_variants = [(MAX_VFS, VfProvisioningMode.AUTO, VfSchedulingMode.INFINITE),
-                 (MAX_VFS, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE)]
+Add PCI Device IDs and example vGPU profiles for
+Panther Lake (PTL) and Battlemage (BMG).
+Remove unused ATS-M references.
 
 Signed-off-by: Adam Miszczak <adam.miszczak@linux.intel.com>
 ---
- tools/vmtb/vmm_flows/conftest.py | 29 ++++++++++++++++++++++++++---
- 1 file changed, 26 insertions(+), 3 deletions(-)
+ tools/vmtb/bench/configurators/pci.py         | 43 +++++---
+ .../{Flex170.json => Bmg_g21_12.json}         | 58 +++++------
+ .../resources/vgpu_profiles/Ptl.json          | 97 +++++++++++++++++++
+ 3 files changed, 154 insertions(+), 44 deletions(-)
+ rename tools/vmtb/vmm_flows/resources/vgpu_profiles/{Flex170.json => Bmg_g21_12.json} (73%)
+ create mode 100644 tools/vmtb/vmm_flows/resources/vgpu_profiles/Ptl.json
 
-diff --git a/tools/vmtb/vmm_flows/conftest.py b/tools/vmtb/vmm_flows/conftest.py
-index ae149d652..02c297f93 100644
---- a/tools/vmtb/vmm_flows/conftest.py
-+++ b/tools/vmtb/vmm_flows/conftest.py
-@@ -32,6 +32,10 @@ def pytest_addoption(parser):
-                      help='Device card index for test execution')
+diff --git a/tools/vmtb/bench/configurators/pci.py b/tools/vmtb/bench/configurators/pci.py
+index 8e8afb138..0b524d3c2 100644
+--- a/tools/vmtb/bench/configurators/pci.py
++++ b/tools/vmtb/bench/configurators/pci.py
+@@ -1,13 +1,13 @@
+ # SPDX-License-Identifier: MIT
+-# Copyright © 2024 Intel Corporation
++# Copyright © 2024-2026 Intel Corporation
+ 
+ import enum
+ import typing
  
  
-+# Label indicating Max VFs configurarion variant, intended for pass to VmmTestingConfig.
-+MAX_VFS = "Max"
-+
-+
- @dataclass
- class VmmTestingConfig:
-     """Structure represents test configuration used by a setup fixture.
-@@ -54,16 +58,23 @@ class VmmTestingConfig:
-     auto_poweron_vm: bool = True
-     auto_probe_vm_driver: bool = True
-     unload_host_drivers_on_teardown: bool = False
-+    enable_max_vfs: bool = False
-     # Temporary W/A: reduce size of LMEM assigned to VFs to speed up a VF state save-restore process
-     wa_reduce_vf_lmem: bool = False
+ class GpuModel(str, enum.Enum):
+-    ATSM150 = 'Arctic Sound M150 (ATS-M1)'
+-    ATSM75 = 'Arctic Sound M75 (ATS-M3)'
++    PTL = 'Panther Lake (PTL)'
++    BMG = 'Battlemage (BMG)'
+     Unknown = 'Unknown'
  
-+    def __post_init__(self):
-+        if self.num_vfs is MAX_VFS:
-+            self.enable_max_vfs = True
-+            self.num_vfs = 0 # Actual value set in VmmTestingSetup
-+
      def __str__(self) -> str:
--        test_config_id = f'{self.num_vfs}VF-(P:{self.provisioning_mode.name} S:{self.scheduling_mode.name})'
-+        test_config_id = (f'{self.num_vfs if not self.enable_max_vfs else "Max"}VF'
-+                          + f'-(P:{self.provisioning_mode.name} S:{self.scheduling_mode.name})')
-         return test_config_id
+@@ -21,28 +21,41 @@ def get_gpu_model(pci_id: str) -> GpuModel:
  
-     def __repr__(self) -> str:
-         return (f'\nVmmTestingConfig:'
--                f'\nNum VFs = {self.num_vfs} / max num VMs = {self.max_num_vms}'
-+                f'\nNum VFs = {self.num_vfs if not self.enable_max_vfs else "Max"} / max num VMs = {self.max_num_vms}'
-                 f'\nVF provisioning mode = {self.provisioning_mode.name}'
-                 f'\nVF scheduling mode = {self.scheduling_mode.name}'
-                 f'\nSetup flags:'
-@@ -89,6 +100,7 @@ class VmmTestingSetup:
-         self.host.load_drivers()
-         self.host.discover_devices()
-         self.dut: Device = self.host.get_device(self.dut_index)
-+        self.total_vfs: int = self.get_dut().driver.get_totalvfs()
+ def get_vgpu_profiles_file(gpu_model: GpuModel) -> str:
+     """Return vGPU profile definition JSON file for a given GPU model."""
+-    if gpu_model == GpuModel.ATSM150:
+-        vgpu_device_file = 'Flex170.json'
+-    elif gpu_model == GpuModel.ATSM75:
+-        vgpu_device_file = 'Flex140.json'
++    if gpu_model == GpuModel.PTL:
++        vgpu_device_file = 'Ptl.json'
++    elif gpu_model == GpuModel.BMG:
++        vgpu_device_file = 'Bmg_g21_12.json'
+     else: # GpuModel.Unknown
+         vgpu_device_file = 'N/A'
  
-         # VF migration requires vendor specific VFIO driver (e.g. xe-vfio-pci)
-         vf_migration_support: bool = self.host.is_driver_loaded(f'{self.host.drm_driver_name}-vfio-pci')
-@@ -98,11 +110,13 @@ class VmmTestingSetup:
-                     "\n\tPCI BDF: %s "
-                     "\n\tDevice ID: %s (%s)"
-                     "\n\tHost DRM driver: %s"
--                    "\n\tVF migration support: %s",
-+                    "\n\tMax VFs supported: %s"
-+                    "\n\tVF migration supported: %s",
-                     self.dut_index,
-                     self.get_dut().pci_info.bdf,
-                     self.get_dut().pci_info.devid, self.get_dut().gpu_model,
-                     self.get_dut().driver.get_name(),
-+                    self.total_vfs,
-                     vf_migration_support)
+     return vgpu_device_file
  
-         vmtb_root_path = vmtb_config.vmtb_config_file.parent
-@@ -115,6 +129,9 @@ class VmmTestingSetup:
-             or self.testing_config.scheduling_mode is not VfSchedulingMode.INFINITE):
-             self.vgpu_profile: VgpuProfile = self.get_vgpu_profile()
  
-+        if self.testing_config.provisioning_mode is VfProvisioningMode.AUTO and self.testing_config.enable_max_vfs:
-+            self.testing_config.num_vfs = self.total_vfs
-+
-         # Start maximum requested number of VMs, but not more than VFs supported by the given vGPU profile
-         self.vms: typing.List[VirtualMachine] = [
-             VirtualMachine(vm_idx, self.guest_os_image,
-@@ -125,6 +142,12 @@ class VmmTestingSetup:
+-# PCI Device IDs: ATS-M150 (M1)
+-_atsm150_pci_ids = {
+-    '56C0': GpuModel.ATSM150,
+-    '56C2': GpuModel.ATSM150
++# PCI Device IDs: PTL
++_ptl_pci_ids = {
++    'B080': GpuModel.PTL,
++    'B081': GpuModel.PTL,
++    'B082': GpuModel.PTL,
++    'B083': GpuModel.PTL,
++    'B084': GpuModel.PTL,
++    'B085': GpuModel.PTL,
++    'B086': GpuModel.PTL,
++    'B087': GpuModel.PTL,
++    'B08F': GpuModel.PTL,
++    'B090': GpuModel.PTL,
++    'B0A0': GpuModel.PTL,
++    'B0B0': GpuModel.PTL,
++    'FD80': GpuModel.PTL,
++    'FD81': GpuModel.PTL
+ }
  
-     def get_vgpu_profile(self) -> VgpuProfile:
-         configurator = VgpuProfileConfigurator(self.vgpu_profiles_dir, self.get_dut().gpu_model)
-+        if self.testing_config.enable_max_vfs:
-+            # Get a vGPU profile with the most VFs (not necessarily equal to sysfs/sriov_totalvfs)
-+            self.testing_config.num_vfs = max(configurator.supported_vgpu_profiles.vf_resources,
-+                                              key=lambda profile: profile.vf_count).vf_count
-+            logger.debug("Max VFs supported by vGPU profiles: %s", self.testing_config.num_vfs)
-+
-         try:
-             vgpu_profile = configurator.get_vgpu_profile(self.testing_config.num_vfs,
-                                                          self.testing_config.scheduling_mode)
+ 
+-# PCI Device IDs: ATS-M75 (M3)
+-_atsm75_pci_ids = {
+-    '56C1': GpuModel.ATSM75
++# PCI Device IDs: BMG (G21 - VRAM: 12GB / other)
++_bmg_pci_ids = {
++    'E20B': GpuModel.BMG # B36 / 12GB
+ }
+ 
+ 
+ # All PCI Device IDs to GPU Device Names mapping
+-pci_ids: typing.Dict[str, GpuModel] = {**_atsm150_pci_ids, **_atsm75_pci_ids}
++pci_ids: typing.Dict[str, GpuModel] = {**_ptl_pci_ids,
++                                       **_bmg_pci_ids}
+diff --git a/tools/vmtb/vmm_flows/resources/vgpu_profiles/Flex170.json b/tools/vmtb/vmm_flows/resources/vgpu_profiles/Bmg_g21_12.json
+similarity index 73%
+rename from tools/vmtb/vmm_flows/resources/vgpu_profiles/Flex170.json
+rename to tools/vmtb/vmm_flows/resources/vgpu_profiles/Bmg_g21_12.json
+index ff1fa7e20..75ca907ab 100644
+--- a/tools/vmtb/vmm_flows/resources/vgpu_profiles/Flex170.json
++++ b/tools/vmtb/vmm_flows/resources/vgpu_profiles/Bmg_g21_12.json
+@@ -1,58 +1,58 @@
+ {
+-    "version": "1.1",
++    "version": "1.2",
+     "PFResources": {
+         "Default": "MinimumPFResources",
+         "Profile": {
+             "MinimumPFResources": {
+-                "LocalMemoryEccOn": 402653184,
+-                "LocalMemoryEccOff": 402653184,
+-                "Contexts": 1024,
++                "LocalMemoryEccOn": 134217728,
++                "LocalMemoryEccOff": 134217728,
++                "Contexts": 256,
+                 "Doorbells": 16,
+-                "GGTTSize": 268435456
++                "GGTTSize": 67108864
+             }
+         }
+     },
+     "vGPUResources": {
+         "Default": null,
+         "Profile": {
+-            "Flex170_16": {
++            "Bmg_12": {
+                 "VFCount": 1,
+-                "LocalMemoryEccOff": 16777216000,
+-                "LocalMemoryEccOn": 2147483648,
++                "LocalMemoryEccOff": 12717129728,
++                "LocalMemoryEccOn": 12717129728,
+                 "Contexts": 1024,
+                 "Doorbells": 240,
+                 "GGTTSize": 4026531840
+             },
+-            "Flex170_8": {
++            "Bmg_6": {
+                 "VFCount": 2,
+-                "LocalMemoryEccOff": 8388608000,
+-                "LocalMemoryEccOn": 2147483648,
++                "LocalMemoryEccOff": 6341787648,
++                "LocalMemoryEccOn": 6341787648,
+                 "Contexts": 1024,
+                 "Doorbells": 120,
+                 "GGTTSize": 2013265920
+             },
+-            "Flex170_4": {
+-                "VFCount": 4,
+-                "LocalMemoryEccOff": 4194304000,
+-                "LocalMemoryEccOn": 2147483648,
++            "Bmg_4": {
++                "VFCount": 3,
++                "LocalMemoryEccOff": 4211081216,
++                "LocalMemoryEccOn": 4211081216,
+                 "Contexts": 1024,
+-                "Doorbells": 60,
+-                "GGTTSize": 1006632960
++                "Doorbells": 80,
++                "GGTTSize": 1342177280
+             },
+-            "Flex170_2": {
+-                "VFCount": 8,
+-                "LocalMemoryEccOff": 2097152000,
+-                "LocalMemoryEccOn": 1073741824,
++            "Bmg_2": {
++                "VFCount": 6,
++                "LocalMemoryEccOff": 2080374784,
++                "LocalMemoryEccOn": 2080374784,
+                 "Contexts": 1024,
+-                "Doorbells": 30,
+-                "GGTTSize": 503316480
++                "Doorbells": 40,
++                "GGTTSize": 671088640
+             },
+-            "Flex170_1": {
+-                "VFCount": 16,
+-                "LocalMemoryEccOff": 1048576000,
+-                "LocalMemoryEccOn": 536870912,
++            "Bmg_1": {
++                "VFCount": 12,
++                "LocalMemoryEccOff": 1023410176,
++                "LocalMemoryEccOn": 1023410176,
+                 "Contexts": 1024,
+-                "Doorbells": 15,
++                "Doorbells": 20,
+                 "GGTTSize": 251658240
+             }
+         }
+@@ -110,4 +110,4 @@
+             }
+         }
+     }
+-}
+\ No newline at end of file
++}
+diff --git a/tools/vmtb/vmm_flows/resources/vgpu_profiles/Ptl.json b/tools/vmtb/vmm_flows/resources/vgpu_profiles/Ptl.json
+new file mode 100644
+index 000000000..efc61bce1
+--- /dev/null
++++ b/tools/vmtb/vmm_flows/resources/vgpu_profiles/Ptl.json
+@@ -0,0 +1,97 @@
++{
++    "version": "0.1",
++    "PFResources": {
++        "Default": "MinimumPFResources",
++        "Profile": {
++            "MinimumPFResources": {
++                "LocalMemoryEccOn": 0,
++                "LocalMemoryEccOff": 0,
++                "Contexts": 256,
++                "Doorbells": 16,
++                "GGTTSize": 67108864
++            }
++        }
++    },
++    "vGPUResources": {
++        "Default": null,
++        "Profile": {
++            "Ptl_1": {
++                "VFCount": 1,
++                "LocalMemoryEccOff": 0,
++                "LocalMemoryEccOn": 0,
++                "Contexts": 1024,
++                "Doorbells": 240,
++                "GGTTSize": 4026531840
++            },
++            "Ptl_2": {
++                "VFCount": 2,
++                "LocalMemoryEccOff": 0,
++                "LocalMemoryEccOn": 0,
++                "Contexts": 1024,
++                "Doorbells": 120,
++                "GGTTSize": 2013265920
++            },
++            "Ptl_4": {
++                "VFCount": 4,
++                "LocalMemoryEccOff": 0,
++                "LocalMemoryEccOn": 0,
++                "Contexts": 1024,
++                "Doorbells": 60,
++                "GGTTSize": 1006632960
++            }
++        }
++    },
++    "vGPUScheduler": {
++        "Default": "Flexible_30fps_GPUTimeSlicing",
++        "Profile": {
++            "Flexible_30fps_GPUTimeSlicing": {
++                "GPUTimeSlicing": {
++                    "ScheduleIfIdle": false,
++                    "PFExecutionQuantum": 20,
++                    "PFPreemptionTimeout": 20000,
++                    "VFAttributes": {
++                        "VFExecutionQuantum": "lambda VFCount : max( 32 // VFCount, 1)",
++                        "VFPreemptionTimeout": "lambda VFCount : 128000 if (VFCount == 1) else max( 64000 // VFCount, 16000)"
++                    }
++                }
++            },
++            "Fixed_30fps_GPUTimeSlicing": {
++                "GPUTimeSlicing": {
++                    "ScheduleIfIdle": true,
++                    "PFExecutionQuantum": 20,
++                    "PFPreemptionTimeout": 20000,
++                    "VFAttributes": {
++                        "VFExecutionQuantum": "lambda VFCount : max( 32 // VFCount, 1)",
++                        "VFPreemptionTimeout": "lambda VFCount : 128000 if (VFCount == 1) else max( 64000 // VFCount, 16000)"
++                    }
++                }
++            },
++            "Flexible_BurstableQoS_GPUTimeSlicing": {
++                "GPUTimeSlicing": {
++                    "ScheduleIfIdle": false,
++                    "PFExecutionQuantum": 20,
++                    "PFPreemptionTimeout": 20000,
++                    "VFAttributes": {
++                        "VFExecutionQuantum": "lambda VFCount : min((2000 // max(VFCount-1,1)*0.5, 50))",
++                        "VFPreemptionTimeout": "lambda VFCount : (2000 // max(VFCount-1,1) - min((2000 // max(VFCount-1,1))*0.5, 50))*1000"
++                    }
++                }
++            }
++        }
++    },
++    "vGPUSecurity": {
++        "Default": "Disabled",
++        "Profile": {
++            "Disabled": {
++                "ResetAfterVfSwitch": false,
++                "GuCSamplingPeriod": 0,
++                "GuCThresholdCATError": 0,
++                "GuCThresholdPageFault": 0,
++                "GuCThresholdH2GStorm": 0,
++                "GuCThresholdDbStorm": 0,
++                "GuCThresholdGTIrqStorm": 0,
++                "GuCThresholdEngineReset": 0
++            }
++        }
++    }
++}
+\ No newline at end of file
 -- 
 2.39.1
 
