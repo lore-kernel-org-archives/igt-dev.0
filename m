@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C42E4E9B264
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B5FBE9B263
 	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 13:33:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2308510E58D;
-	Tue, 24 Feb 2026 13:33:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EE81210E151;
+	Tue, 24 Feb 2026 13:33:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dVpB5IJx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Fmj4qBSf";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B24610E589
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 13:32:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9339D10E328
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 13:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771939978; x=1803475978;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=l5SZZwgo+NgPbqMAPD9FH+YRJguIZqXdFrIddg8WntY=;
- b=dVpB5IJxU20gTAGqWYSueVQZYG1kLsCcC20slr89VeNgQuGdIR4XbLqP
- Hh2qGkvEDX9MDyckAacHZnMf9zBtM7JCYfyQDUaBE+7wJeAK0Okx0xT5K
- 1bNvXTHZZEWimq9G/YetPNPmyGQ4A33VOup52mXf27qDufnhGedezXxwu
- CzF24pdBWx5Gg4nRq9bHEuPyeXEaor7FtUEIu7Ms/Fb8TEcKcJoh6SN9+
- hPMR+3TePcNyouaZpUkEEs2RtlvYOPuqe9cMdSgAJt2cdT2SkIDAdmwKz
- YwKtDXEMmSgLub3QzHIjFkHwX7XaPhaiCXktkxQuubtu0JdVhM3r3arnm Q==;
-X-CSE-ConnectionGUID: r9L/PzZ8QaWcvRAEDL39mg==
-X-CSE-MsgGUID: uzt9zI4ASLCPNRPOxbYuFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="84410052"
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="84410052"
+ t=1771939980; x=1803475980;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=36dLB3Cq4xk83u4Fqgtt7dB3fLTkUwD0lNlKRsvceLI=;
+ b=Fmj4qBSfs5TTaRiLY8SvMU6tKCsoBk2pGaYRK1rpd5cuFGacyeccqRTC
+ +CeASFuCV4BKzV5kfvtE7M+9hlQuYlE3ZGi4IoahcG5kBNFEt1Uz29Pji
+ Wqd/+r35343i0XNk5XMnviAUHgRBso4y+xdSlnqIzi68w4uzb/zo1JFUK
+ c1Sf6+ELznxMUwJn+o9MG8oh4k8qz2sibqwFQx8RCMkFlYeiTXeJxBmnb
+ w9b2182+fhSGICoSRjS1RJU9jvkoVDJJP2Hja95Fjq4ERpDblwl9+kNHJ
+ 6tCjK00JszzrfcJQFpUT7kVR5m2nMGloqJnlkUOt4evpEcqZacEs09QTe A==;
+X-CSE-ConnectionGUID: NrxI+hxgSl6E0mKkYU6Aqw==
+X-CSE-MsgGUID: LXZh8/9DSN+BY7ma6Q+bsg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="84410059"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="84410059"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 05:32:57 -0800
-X-CSE-ConnectionGUID: EdIblFa5ROKoC5eJ5JtR5A==
-X-CSE-MsgGUID: 1o8DQPXoQDevZWr9KJSfAw==
+ 24 Feb 2026 05:33:00 -0800
+X-CSE-ConnectionGUID: rsSfeWS0STORNizxzlvKBw==
+X-CSE-MsgGUID: kPRr26ZKRCmwlN+WyFCJ3w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="246476791"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="246476837"
 Received: from administrator-system-product-name.igk.intel.com (HELO
  dev-417.igk.intel.com) ([10.91.214.181])
- by orviesa002.jf.intel.com with ESMTP; 24 Feb 2026 05:32:56 -0800
+ by orviesa002.jf.intel.com with ESMTP; 24 Feb 2026 05:33:00 -0800
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: mohammed.thasleem@intel.com,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v6 0/6] kms_flip: limit number of subtests run
-Date: Tue, 24 Feb 2026 14:32:36 +0100
-Message-ID: <20260224133242.1678232-1-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t 3/6] tests/kms_flip: limit output pairs when testing
+ suspend
+Date: Tue, 24 Feb 2026 14:32:39 +0100
+Message-ID: <20260224133242.1678232-4-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20260224133242.1678232-1-michal.grzelak@intel.com>
+References: <20260224133242.1678232-1-michal.grzelak@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
@@ -69,49 +72,109 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Next version of [1]. This series addresses both 2x-* and single output
-tests. It also handles timeouts seen on SNB. This series has been tested
-on config with 4 outputs connected.
+Currently 2x- subtests can still exceed timeout, even with limited
+number of pipes used. It can be seen when number of outputs is greater
+than 3.
 
-[1] https://lore.kernel.org/igt-dev/20260213084930.252273-1-michal.grzelak@intel.com
+Default to testing at max 3 pairs of outputs. Add a commandline
+parameter enabling suspend testing on all possible output pairs. Add a
+LIMIT_PAIR macro which controls maximum number of output pairs to test.
 
-BR,
-Michał
-
+Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 ---
-Changelog:
-v5->v6
-- fix typo in commit message (Thasleem)
-- clarify selecting compatible mode (Thasleem)
-- add init of devid & SNB WA
+ tests/kms_flip.c | 32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
-v4->v5
-- rename all_pipes to all_crtcs during rebase
-
-v3->v4
-- change \gt into \ge sign
-
-v2->v3
-- ease counting of pairs of outputs
-- limit number of tested outputs
-- narrow pair & output limiting to suspend subtests
-- add separate param for pair and connector limiting
-
-v1->v2
-- split pipe limiting into 2x- and single subtests
-- add output pair limiting
-
-Michał Grzelak (6):
-  tests/kms_flip: test suspend on one pair of pipes
-  tests/kms_flip: run suspend tests on one pipe per output
-  tests/kms_flip: limit output pairs when testing suspend
-  tests/kms_flip: limit number of outputs wrt suspend
-  tests/kms_flip: initialize global devid
-  tests/kms_flip: test suspend at most twice on SNB
-
- tests/kms_flip.c | 70 ++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 62 insertions(+), 8 deletions(-)
-
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index d09813f02..917c5ed6f 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -263,11 +263,14 @@
+ #define RUN_TEST		1
+ #define RUN_PAIR		2
+ 
++#define PAIR_LIMIT 		3
++
+ #ifndef DRM_CAP_TIMESTAMP_MONOTONIC
+ #define DRM_CAP_TIMESTAMP_MONOTONIC 6
+ #endif
+ 
+ static bool all_crtcs = false;
++static bool all_pairs = false;
+ 
+ drmModeRes *resources;
+ int drm_fd;
+@@ -1904,6 +1907,7 @@ static void run_pair(int duration, int flags)
+ {
+ 	struct test_output o;
+ 	int i, j, m, n, modes = 0;
++	int pair_count = 0;
+ 
+ 	/* No tiling support in XE. */
+ 	if (is_xe_device(drm_fd) && flags & TEST_FENCE_STRESS)
+@@ -1966,6 +1970,16 @@ static void run_pair(int duration, int flags)
+ 				for (m = n + 1; m < resources->count_crtcs; m++) {
+ 					int crtc_idxs[2];
+ 
++					/* Limit the execution to 2 CRTCs (first & last) for hang and suspend tests */
++					if (((flags & TEST_HANG) || (flags & TEST_SUSPEND)) && !all_crtcs &&
++					    ((n != 0 && n != resources->count_crtcs) ||
++					    m != resources->count_crtcs - 1))
++						continue;
++
++					/* Limit number of suspend tests */
++					if ((flags & TEST_SUSPEND) && !all_pairs && pair_count >= PAIR_LIMIT)
++						continue;
++
+ 					memset(&o, 0, sizeof(o));
+ 					o.count = 2;
+ 					o._connector[0] = resources->connectors[i];
+@@ -1977,16 +1991,18 @@ static void run_pair(int duration, int flags)
+ 					crtc_idxs[0] = n;
+ 					crtc_idxs[1] = m;
+ 
+-					/* Limit the execution to 2 CRTCs (first & last) for hang and suspend tests */
+-					if (((flags & TEST_HANG) || (flags & TEST_SUSPEND)) && !all_crtcs &&
+-					    ((n != 0 && n != resources->count_crtcs) ||
+-					    m != resources->count_crtcs - 1))
++					connector_find_compatible_mode(n, m, &o);
++
++					if (!o.mode_valid) {
++						free_test_output(&o);
+ 						continue;
++					}
+ 
+ 					run_test_on_crtc_set(&o, crtc_idxs,
+ 							     RUN_PAIR,
+ 							     resources->count_crtcs,
+ 							     duration);
++					pair_count++;
+ 				}
+ 			}
+ 		}
+@@ -2044,6 +2060,9 @@ static int opt_handler(int opt, int opt_index, void *data)
+ 		case 'e':
+ 			all_crtcs = true;
+ 			break;
++		case 'p':
++			all_pairs = true;
++			break;
+ 		default:
+ 			return IGT_OPT_HANDLER_ERROR;
+ 	}
+@@ -2052,9 +2071,10 @@ static int opt_handler(int opt, int opt_index, void *data)
+ }
+ 
+ const char *help_str =
+-	"  -e \tRun on all CRTCs. (By default subtests will run on two CRTCs)\n";
++	"  -e \tRun on all CRTCs. (By default subtests will run on two CRTCs)\n"
++	"  -p \tRun on all output pairs. (By default 2x-* suspend subtests will run on 3 pairs)\n";
+ 
+-int igt_main_args("e", NULL, help_str, opt_handler, NULL)
++int igt_main_args("ep", NULL, help_str, opt_handler, NULL)
+ {
+ 	struct {
+ 		int duration;
 -- 
 2.45.2
 
