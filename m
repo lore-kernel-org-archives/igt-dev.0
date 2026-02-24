@@ -4,49 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0253EFB801
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 08:28:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12354EFB815
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 08:28:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 545B710E4E4;
-	Tue, 24 Feb 2026 08:28:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C0B1510E4E6;
+	Tue, 24 Feb 2026 08:28:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A1f/08SI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l4yXpEdF";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6265B10E4E5
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 08:28:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E39B10E4E4
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 08:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771921684; x=1803457684;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=B9X/QLsiSW1cUYuBB/M1de5q+XtydSkbkRGEtr2t2fY=;
- b=A1f/08SIL/NBnNU9/5zrinEuyK+e66SEnjFO76e9XiIJTRa68xsG5fOm
- BD2iVQj6TxuR82KOJehWihPpxwUgx5h3Fz06vIMEbz3ujNnbcF/3gvw5Q
- lZ/yJoEsUjQLMZCwwUrR8Lg018ZgjyvVMi//2E1+kuhUI5UnXIJsJLpI1
- T/owRSWKQJLD+CeUi9LBIYnIhsXsXWgR3tW5tfldzYUHN+xUd0eVqIOUY
- qPZqmapZo7LqXkBVnYFgcybJJk06fHvG3nc1akuTkMPtjU8XlOnSMhJzF
- YrALRtOxrCfEXpP2NU7eP8w0+MjtgyO0QKakCD7Lj/hLVtazKbmvGeDV5 g==;
-X-CSE-ConnectionGUID: 2Tkwq4H6SKqav4Y0yYEM+Q==
-X-CSE-MsgGUID: OglaN1B+QYC+1MIhujUTTg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="72904055"
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="72904055"
+ t=1771921685; x=1803457685;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=BwiJ7b5A3gT70EDQ7Thsb+7gEI+bIT1+Rm0SH3rameQ=;
+ b=l4yXpEdF5k4BcoQ+psdP53m9DrZd83b0eekUn3YJJ/UdATXSoDFW129D
+ J2QZK+OGXed9DKwBhnRYUh/F15O5OHLcxd71KVGdgYY36JHD8LBXGkq2m
+ wHwrivMGQet7y+vf16HzN5EciT7BwZTkD8TftJrjCVrxqANQuJvEURxir
+ fTumyTQVJu59rRcJqELjUZBVWrdB8oQNOL6gdGNa1CXao+xvS5aafTtms
+ 4j/giJ0sadQ/DQALruTVBE+z5YyGKoN1TQDA4mjuZCeTHBg84LNT0kNdo
+ KJRl6P+eg3Trz4OflaMzc9di5vmWLSKpQ3aLnpPj8c+U0OW7TQL6ZV+gJ Q==;
+X-CSE-ConnectionGUID: lZb8GfXbQdmRG2p9OqhNfA==
+X-CSE-MsgGUID: 9Q6ws9xsRRCa7cKnYZ9NsA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="72904056"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="72904056"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 00:28:03 -0800
-X-CSE-ConnectionGUID: QGt0K4bMRkKY+wuNkIjOCQ==
-X-CSE-MsgGUID: EcLBoe1CRYePhSahT+vFPw==
+ 24 Feb 2026 00:28:05 -0800
+X-CSE-ConnectionGUID: OgMAIwVUT8aFureCnuUpyw==
+X-CSE-MsgGUID: 2jKVVqvKSG+TKi166sc33Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="214088056"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="214088059"
 Received: from priyanka.iind.intel.com ([10.190.216.153])
- by fmviesa010.fm.intel.com with ESMTP; 24 Feb 2026 00:28:01 -0800
+ by fmviesa010.fm.intel.com with ESMTP; 24 Feb 2026 00:28:02 -0800
 From: priyanka.dandamudi@intel.com
 To: igt-dev@lists.freedesktop.org,
 	priyanka.dandamudi@intel.com
-Subject: [PATCH i-g-t 0/5] Add support for xe3p and prefetch fault test
-Date: Tue, 24 Feb 2026 13:57:55 +0530
-Message-ID: <20260224082800.1581935-1-priyanka.dandamudi@intel.com>
+Subject: [PATCH i-g-t 1/5] lib/[gpu_cmds|xehp_media]: Introduce gpu execution
+ commands for an efficient 64bit mode.
+Date: Tue, 24 Feb 2026 13:57:56 +0530
+Message-ID: <20260224082800.1581935-2-priyanka.dandamudi@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260224082800.1581935-1-priyanka.dandamudi@intel.com>
+References: <20260224082800.1581935-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -64,47 +67,369 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 
-Patch series contain:
-Introduce gpu execution commands for an efficient 64bit mode.
-Add support for xe3p efficient 64bit addressing.
-Add canonicalize helper for 57 bit.
-Add support for xe3p and xe3 in generate_iga64_codes scripts.
-Add prefetch fault test.
+The efficient 64-bit mode introduced with XE3p and it makes manage all
+heaps by SW. In order to use efficient 64bit mode, the batchbuffer command
+have to use new introduced instructuctions (COMPUTE_WALKER2, etc) and
+new interface_descriptor for compute pipeline configuration and execution.
 
+Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+---
+ lib/gpu_cmds.c   | 210 +++++++++++++++++++++++++++++++++++++++++++++++
+ lib/gpu_cmds.h   |  17 ++++
+ lib/xehp_media.h |  65 +++++++++++++++
+ 3 files changed, 292 insertions(+)
 
-Andrzej Hajda (1):
-  lib/gpgpu_shader: Add support for xe3p efficient 64bit addressing
-
-Gwan-gyeong Mun (2):
-  lib/[gpu_cmds|xehp_media]: Introduce gpu execution commands for an
-    efficient 64bit mode.
-  lib/allocator: add canonicalize helper for 57 bit
-
-Priyanka Dandamudi (2):
-  scripts/generate_iga64_codes: Add support for xe3p and xe3
-  tests/intel/xe_prefetch_fault: Add test for prefetch fault
-
- lib/gpgpu_fill.c.gen.iga64_codes.c            |   2 +-
- lib/gpgpu_shader.c                            |  74 +++++-
- lib/gpgpu_shader.c.gen.iga64_codes.c          | 196 +++++++++++++++-
- lib/gpu_cmds.c                                | 210 +++++++++++++++++
- lib/gpu_cmds.h                                |  17 ++
- lib/iga64_macros.h                            |   5 +-
- lib/intel_allocator.h                         |   6 +
- lib/meson.build                               |   2 +-
- lib/xehp_media.h                              |  65 ++++++
- scripts/generate_iga64_codes                  |   2 +-
- .../xe_eudebug_online.c.gen.iga64_codes.c     |  45 +++-
- tests/intel/xe_prefetch_fault.c               | 217 ++++++++++++++++++
- .../xe_prefetch_fault.c.gen.iga64_codes.c     |  21 ++
- tests/meson.build                             |   1 +
- 14 files changed, 850 insertions(+), 13 deletions(-)
- create mode 100644 tests/intel/xe_prefetch_fault.c
- create mode 100644 tests/intel/xe_prefetch_fault.c.gen.iga64_codes.c
-
+diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+index a6a9247dce..dd12c046c7 100644
+--- a/lib/gpu_cmds.c
++++ b/lib/gpu_cmds.c
+@@ -934,6 +934,38 @@ xehp_fill_interface_descriptor(struct intel_bb *ibb,
+ 	idd->desc5.num_threads_in_tg = 1;
+ }
+ 
++/*
++ * XE3P
++ */
++void
++xe3p_fill_interface_descriptor(struct intel_bb *ibb,
++			       struct intel_buf *dst,
++			       const uint32_t kernel[][4],
++			       size_t size,
++			       struct xe3p_interface_descriptor_data *idd)
++{
++	uint64_t kernel_offset;
++
++	kernel_offset = gen7_fill_kernel(ibb, kernel, size);
++	kernel_offset += ibb->batch_offset;
++
++	memset(idd, 0, sizeof(*idd));
++
++	/* 64-bit canonical format setting is needed. */
++	idd->dw00.kernel_start_pointer = (((uint32_t)kernel_offset) >> 6);
++	idd->dw01.kernel_start_pointer_high = kernel_offset >> 32;
++
++	/* Single program flow has no SIMD-specific branching in SIMD exec in EU threads */
++	idd->dw02.single_program_flow = 1;
++	idd->dw02.floating_point_mode = GEN8_FLOATING_POINT_IEEE_754;
++
++	/*
++	* For testing purposes, use only one thread per thread group.
++	* This makes it possible to identify threads by thread group id.
++	*/
++	idd->dw05.number_of_threads_in_gpgpu_thread_group = 1;
++}
++
+ static uint32_t
+ xehp_fill_surface_state(struct intel_bb *ibb,
+ 			struct intel_buf *buf,
+@@ -1086,6 +1118,66 @@ xehp_emit_state_base_address(struct intel_bb *ibb)
+ 	intel_bb_out(ibb, 0);                                       //dw21
+ }
+ 
++void
++xe3p_emit_state_base_address(struct intel_bb *ibb)
++{
++	intel_bb_out(ibb, GEN8_STATE_BASE_ADDRESS | 0x14);            //dw0
++
++	/* general state */
++	intel_bb_out(ibb, 0 | BASE_ADDRESS_MODIFY);                   //dw1-dw2
++	intel_bb_out(ibb, 0);
++
++	/*
++	 * For full 64b Mode, set BASEADDR_DIS.
++	 * In Full 64b Mode, all heaps are managed by SW.
++	 * STATE_BASE_ADDRESS base addresses are ignored by HW
++	 * stateless data port moc not set, so EU threads have to access
++	 * only uncached without moc when load/store
++	 */
++	intel_bb_out(ibb, 1 << 30);                                   //dw3
++
++	/* surface state */
++	intel_bb_out(ibb, 0 | BASE_ADDRESS_MODIFY);                   //dw4-dw5
++	intel_bb_out(ibb, 0);
++
++	/* dynamic state */
++	intel_bb_out(ibb, 0 | BASE_ADDRESS_MODIFY);                   //dw6-dw7
++	intel_bb_out(ibb, 0);
++
++	intel_bb_out(ibb, 0);                                         //dw8-dw9
++	intel_bb_out(ibb, 0);
++
++	/* instruction */
++	intel_bb_emit_reloc(ibb, ibb->handle,
++			    I915_GEM_DOMAIN_INSTRUCTION,              //dw10-dw11
++			    0, BASE_ADDRESS_MODIFY, 0x0);
++
++	/* general state buffer size */
++	intel_bb_out(ibb, 0xfffff000 | 1);                            //dw12
++
++	/* dynamic state buffer size */
++	intel_bb_out(ibb, ALIGN(ibb->size, 1 << 12) | 1);             //dw13
++
++	intel_bb_out(ibb, 0);                          	              //dw14
++
++	/* intruction buffer size */
++	intel_bb_out(ibb, ALIGN(ibb->size, 1 << 12) | 1);             //dw15
++
++	/* Bindless surface state base address */
++	intel_bb_out(ibb, 0 | BASE_ADDRESS_MODIFY);                   //dw16-17
++	intel_bb_out(ibb, 0);
++
++	/* Bindless surface state size */
++	/* number of surface state entries in the Bindless Surface State buffer */
++	intel_bb_out(ibb, 0xfffff000);                                //dw18
++
++	/* Bindless sampler state */
++	intel_bb_out(ibb, 0 | BASE_ADDRESS_MODIFY);                   //dw19-20
++	intel_bb_out(ibb, 0);
++	/*  Bindless sampler state size */
++	intel_bb_out(ibb, 0);                                         //dw21
++}
++
+ void
+ xehp_emit_compute_walk(struct intel_bb *ibb,
+ 		       unsigned int x, unsigned int y,
+@@ -1175,3 +1267,121 @@ xehp_emit_compute_walk(struct intel_bb *ibb,
+ 		intel_bb_out(ibb, 0x0);
+ 	}
+ }
++
++void
++xe3p_emit_compute_walk2(struct intel_bb *ibb,
++			unsigned int x, unsigned int y,
++			unsigned int width, unsigned int height,
++			struct xe3p_interface_descriptor_data *pidd,
++			uint32_t max_threads)
++{
++	/*
++	 * Max Threads represent range: [1, 2^16-1],
++	 * Max Threads limit range: [64, number of subslices * number of EUs per SubSlice * number of threads per EU]
++	 * TODO: MAX_THREADS need to use (number of subslices * number of EUs per SubSlice * number of threads per EU)
++	 */
++	const uint32_t MAX_THREADS = (1 << 16) - 1;
++	uint32_t x_dim, y_dim, mask, max;
++
++	/*
++	 * Simply do SIMD16 based dispatch, so every thread uses
++	 * SIMD16 channels.
++	 *
++	 * Define our own thread group size, e.g 16x1 for every group, then
++	 * will have 1 thread each group in SIMD16 dispatch. So thread
++	 * width/height/depth are all 1.
++	 *
++	 * Then thread group X = width / 16 (aligned to 16)
++	 * thread group Y = height;
++	 */
++	x_dim = (x + width + 15) / 16;
++	y_dim = y + height;
++
++	mask = (x + width) & 15;
++	if (mask == 0)
++		mask = (1 << 16) - 1;
++	else
++		mask = (1 << mask) - 1;
++
++	intel_bb_out(ibb, XE3P_COMPUTE_WALKER2 | 0x3e);			//dw0, 0x32 => dw length: 62
++
++	intel_bb_out(ibb, 0); /* debug object id */			//dw0
++	intel_bb_out(ibb, 0);						//dw1
++
++	/* Maximum Number of Threads */
++	max = min_t(max_threads, max_t(max_threads, max_threads, 64), MAX_THREADS);
++	intel_bb_out(ibb, max << 16);					//dw2
++
++	/* SIMD size, size: SIMT16 | enable inline Parameter | Message SIMT16 */
++	intel_bb_out(ibb, 1 << 30 | 1 << 25 | 1 << 17);			//dw3
++
++	/* Execution mask: masking the use of some SIMD lanes by the last thread in a thread group */
++	intel_bb_out(ibb, mask);					//dw4
++
++	/*
++	 * LWS =(Local_X_Max+1)*(Local_Y_Max+1)*(Local_Z_Max+1).
++	 */
++	intel_bb_out(ibb, (x_dim << 20) | (y_dim << 10) | 1);		//dw5
++
++	/* Thread Group ID X Dimension */
++	intel_bb_out(ibb, x_dim);					//dw6
++
++	/* Thread Group ID Y Dimension */
++	intel_bb_out(ibb, y_dim);					//dw7
++
++	/* Thread Group ID Z Dimension */
++	intel_bb_out(ibb, 1);						//dw8
++
++	/* Thread Group ID Starting X, Y, Z */
++	intel_bb_out(ibb, x / 16);					//dw9
++	intel_bb_out(ibb, y);						//dw10
++	intel_bb_out(ibb, 0);						//dw11
++
++	/* partition type / id / size */
++	intel_bb_out(ibb, 0);						//dw12-13
++	intel_bb_out(ibb, 0);
++
++	/* Preempt X / Y / Z */
++	intel_bb_out(ibb, 0);						//dw14
++	intel_bb_out(ibb, 0);						//dw15
++	intel_bb_out(ibb, 0);						//dw16
++
++	/* APQID, PostSync ID, Over dispatch TG count, Walker ID for preemption restore */
++	intel_bb_out(ibb, 0);						//dw17
++
++	/* Interface descriptor data */
++	for (int i = 0; i < 8; i++) {					//dw18-25
++		intel_bb_out(ibb, ((uint32_t *) pidd)[i]);
++	}
++
++	/* Post Sync command payload 0 */
++	for (int i = 0; i < 5; i++) {					//dw26-30
++		intel_bb_out(ibb, 0);
++	}
++
++	/* Inline data */
++	/* DW31 and DW32 of Inline data will be copied into R0.14 and R0.15. */
++	/* The rest of DW33 through DW46 will be copied to the following GRFs. */
++	intel_bb_out(ibb, x_dim);					//dw31
++	for (int i = 0; i < 15; i++) {					//dw32-46
++		intel_bb_out(ibb, 0);
++	}
++
++	/* Post Sync command payload 1 */
++	for (int i = 0; i < 5; i++) {					//dw47-51
++		intel_bb_out(ibb, 0);
++	}
++
++	/* Post Sync command payload 2 */
++	for (int i = 0; i < 5; i++) {					//dw52-56
++		intel_bb_out(ibb, 0);
++	}
++
++	/* Post Sync command payload 3 */
++	for (int i = 0; i < 5; i++) {					//dw57-61
++		intel_bb_out(ibb, 0);
++	}
++
++	/* Preempt CS Interrupt Vector: Saved by HW on a TG preemption */
++	intel_bb_out(ibb, 0);						//dw62
++}
+diff --git a/lib/gpu_cmds.h b/lib/gpu_cmds.h
+index 846d2122ac..c38eaad865 100644
+--- a/lib/gpu_cmds.h
++++ b/lib/gpu_cmds.h
+@@ -126,6 +126,13 @@ xehp_fill_interface_descriptor(struct intel_bb *ibb,
+ void
+ xehp_emit_state_compute_mode(struct intel_bb *ibb, bool vrt);
+ 
++void
++xe3p_fill_interface_descriptor(struct intel_bb *ibb,
++			       struct intel_buf *dst,
++			       const uint32_t kernel[][4],
++			       size_t size,
++			       struct xe3p_interface_descriptor_data *idd);
++
+ void
+ xehp_emit_state_binding_table_pool_alloc(struct intel_bb *ibb);
+ 
+@@ -137,6 +144,9 @@ xehp_emit_cfe_state(struct intel_bb *ibb, uint32_t threads);
+ void
+ xehp_emit_state_base_address(struct intel_bb *ibb);
+ 
++void
++xe3p_emit_state_base_address(struct intel_bb *ibb);
++
+ void
+ xehp_emit_compute_walk(struct intel_bb *ibb,
+ 		       unsigned int x, unsigned int y,
+@@ -144,4 +154,11 @@ xehp_emit_compute_walk(struct intel_bb *ibb,
+ 		       struct xehp_interface_descriptor_data *pidd,
+ 		       uint8_t color);
+ 
++void
++xe3p_emit_compute_walk2(struct intel_bb *ibb,
++			unsigned int x, unsigned int y,
++			unsigned int width, unsigned int height,
++			struct xe3p_interface_descriptor_data *pidd,
++			uint32_t max_threads);
++
+ #endif /* GPU_CMDS_H */
+diff --git a/lib/xehp_media.h b/lib/xehp_media.h
+index 20227bd3a6..c88e0dfb62 100644
+--- a/lib/xehp_media.h
++++ b/lib/xehp_media.h
+@@ -83,6 +83,71 @@ struct xehp_interface_descriptor_data {
+ 	} desc7;
+ };
+ 
++struct xe3p_interface_descriptor_data {
++	struct {
++		uint32_t rsvd0:					BITRANGE(0, 5);
++		uint32_t kernel_start_pointer:			BITRANGE(6, 31);
++	} dw00;
++
++	struct {
++		uint32_t kernel_start_pointer_high:		BITRANGE(0, 31);
++	} dw01;
++
++	struct {
++		uint32_t eu_thread_scheduling_mode_override:	BITRANGE(0, 1);
++		uint32_t rsvd5:					BITRANGE(2, 6);
++		uint32_t software_exception_enable:		BITRANGE(7, 7);
++		uint32_t rsvd4:					BITRANGE(8, 12);
++		uint32_t illegal_opcode_exception_enable:	BITRANGE(13, 13);
++		uint32_t rsvd3:					BITRANGE(14, 15);
++		uint32_t floating_point_mode:			BITRANGE(16, 16);
++		uint32_t rsvd2:					BITRANGE(17, 17);
++		uint32_t single_program_flow:			BITRANGE(18, 18);
++		uint32_t denorm_mode:				BITRANGE(19, 19);
++		uint32_t thread_preemption:			BITRANGE(20, 20);
++		uint32_t rsvd1:					BITRANGE(21, 25);
++		uint32_t registers_per_thread:			BITRANGE(26, 30);
++		uint32_t rsvd0:					BITRANGE(31, 31);
++	} dw02;
++
++	struct {
++		uint32_t rsvd0:					BITRANGE(0, 31);
++	} dw03;
++
++	struct {
++		uint32_t rsvd0:					BITRANGE(0, 31);
++	} dw04;
++
++	struct {
++		uint32_t number_of_threads_in_gpgpu_thread_group: BITRANGE(0, 7);
++		uint32_t rsvd3:					BITRANGE(8, 12);
++		uint32_t thread_group_forward_progress_guarantee: BITRANGE(13, 13);
++		uint32_t rsvd2:					BITRANGE(14, 14);
++		uint32_t btd_mode:				BITRANGE(15, 15);
++		uint32_t shared_local_memory_size:		BITRANGE(16, 20);
++		uint32_t rsvd1:					BITRANGE(21, 21);
++		uint32_t rounding_mode:				BITRANGE(22, 23);
++		uint32_t rsvd0:					BITRANGE(24, 24);
++		uint32_t thread_group_dispatch_size:		BITRANGE(25, 27);
++		uint32_t number_of_barriers:			BITRANGE(28, 31);
++	} dw05;
++
++	struct {
++		uint32_t rsvd3:					BITRANGE(0, 7);
++		uint32_t z_pass_async_compute_thread_limit:	BITRANGE(8, 10);
++		uint32_t rsvd2:					BITRANGE(11, 11);
++		uint32_t np_z_async_throttle_settings:		BITRANGE(12, 13);
++		uint32_t rsvd1:					BITRANGE(14, 15);
++		uint32_t ps_async_thread_limit:			BITRANGE(16, 18);
++		uint32_t rsvd0:					BITRANGE(19, 31);
++	} dw06;
++
++	struct {
++		uint32_t preferred_slm_allocation_size:		BITRANGE(0, 3);
++		uint32_t rsvd0:					BITRANGE(4, 31);
++	} dw07;
++};
++
+ struct xehp_surface_state {
+ 	struct {
+ 		uint32_t cube_pos_z: BITRANGE(0, 0);
 -- 
 2.43.0
 
