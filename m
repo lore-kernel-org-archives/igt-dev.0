@@ -4,56 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0557AEFB811
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 08:25:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0253EFB801
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 08:28:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ABB2210E4DD;
-	Tue, 24 Feb 2026 08:25:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 545B710E4E4;
+	Tue, 24 Feb 2026 08:28:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m59F5/Sy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A1f/08SI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 26DD710E4DD
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 08:25:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6265B10E4E5
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 08:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771921538; x=1803457538;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=6KPww8nevns1BwzXRmqCV3tlGqtDywA7U87K0CFYvgM=;
- b=m59F5/Sy5LPaPjwLUcjsphZdLyC1aPW0dlHeU8qhgSNcxXvJRCWXZIgL
- PEJraIHKlmTDXvWSzo63EnNE4ZxUlLkm0hHrVFPxAY3zXJ5XyhIXLYtf+
- Y5K9C6s1Zwsqq+LR9XjcjNUdkHW94hEBjuXdoFHnUYnNXoNspjz4Dv3ab
- Sn7GJtR3zg3rbQJBE2IwOhNvR7JYipDTECy5FxTQw/oRL5lHWP+DuZHLP
- THdWZ1V8HFBhQx+3d7vqOSeC49aBdr+uxFhG4uPEWWJ6mPGm1y25SSwNN
- pJuDVGzhNqK4ou9ux89i1qH35S0e4aXs71roEe4sVY7uQckpTjdL9zNag g==;
-X-CSE-ConnectionGUID: ZOacEdgPS2+NMHNAHJ9f/w==
-X-CSE-MsgGUID: FNUG4+NqRxWJcUwRhyuCsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="72806483"
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="72806483"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 00:25:38 -0800
-X-CSE-ConnectionGUID: MWXR6Em0T8S7wgYZ6tDQyQ==
-X-CSE-MsgGUID: 0H7yt/FNTVyAnFWCB2PPxw==
+ t=1771921684; x=1803457684;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=B9X/QLsiSW1cUYuBB/M1de5q+XtydSkbkRGEtr2t2fY=;
+ b=A1f/08SIL/NBnNU9/5zrinEuyK+e66SEnjFO76e9XiIJTRa68xsG5fOm
+ BD2iVQj6TxuR82KOJehWihPpxwUgx5h3Fz06vIMEbz3ujNnbcF/3gvw5Q
+ lZ/yJoEsUjQLMZCwwUrR8Lg018ZgjyvVMi//2E1+kuhUI5UnXIJsJLpI1
+ T/owRSWKQJLD+CeUi9LBIYnIhsXsXWgR3tW5tfldzYUHN+xUd0eVqIOUY
+ qPZqmapZo7LqXkBVnYFgcybJJk06fHvG3nc1akuTkMPtjU8XlOnSMhJzF
+ YrALRtOxrCfEXpP2NU7eP8w0+MjtgyO0QKakCD7Lj/hLVtazKbmvGeDV5 g==;
+X-CSE-ConnectionGUID: 2Tkwq4H6SKqav4Y0yYEM+Q==
+X-CSE-MsgGUID: OglaN1B+QYC+1MIhujUTTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="72904055"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="72904055"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2026 00:28:03 -0800
+X-CSE-ConnectionGUID: QGt0K4bMRkKY+wuNkIjOCQ==
+X-CSE-MsgGUID: EcLBoe1CRYePhSahT+vFPw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="215687459"
-Received: from amiszcza-desk-dev.igk.intel.com (HELO localhost)
- ([10.91.214.39])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 00:25:37 -0800
-From: Adam Miszczak <adam.miszczak@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: marcin.bernatowicz@linux.intel.com,
-	kamil.konieczny@linux.intel.com
-Subject: [PATCH i-g-t 10/10] tools/vmtb: Platform enabling: PTL and BMG support
-Date: Tue, 24 Feb 2026 08:50:27 +0100
-Message-Id: <20260224075027.2409675-11-adam.miszczak@linux.intel.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20260224075027.2409675-1-adam.miszczak@linux.intel.com>
-References: <20260224075027.2409675-1-adam.miszczak@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="214088056"
+Received: from priyanka.iind.intel.com ([10.190.216.153])
+ by fmviesa010.fm.intel.com with ESMTP; 24 Feb 2026 00:28:01 -0800
+From: priyanka.dandamudi@intel.com
+To: igt-dev@lists.freedesktop.org,
+	priyanka.dandamudi@intel.com
+Subject: [PATCH i-g-t 0/5] Add support for xe3p and prefetch fault test
+Date: Tue, 24 Feb 2026 13:57:55 +0530
+Message-ID: <20260224082800.1581935-1-priyanka.dandamudi@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,299 +64,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add PCI Device IDs and example vGPU profiles for
-Panther Lake (PTL) and Battlemage (BMG).
-Remove unused ATS-M references.
+From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Signed-off-by: Adam Miszczak <adam.miszczak@linux.intel.com>
----
- tools/vmtb/bench/configurators/pci.py         | 43 +++++---
- .../{Flex170.json => Bmg_g21_12.json}         | 58 +++++------
- .../resources/vgpu_profiles/Ptl.json          | 97 +++++++++++++++++++
- 3 files changed, 154 insertions(+), 44 deletions(-)
- rename tools/vmtb/vmm_flows/resources/vgpu_profiles/{Flex170.json => Bmg_g21_12.json} (73%)
- create mode 100644 tools/vmtb/vmm_flows/resources/vgpu_profiles/Ptl.json
+Patch series contain:
+Introduce gpu execution commands for an efficient 64bit mode.
+Add support for xe3p efficient 64bit addressing.
+Add canonicalize helper for 57 bit.
+Add support for xe3p and xe3 in generate_iga64_codes scripts.
+Add prefetch fault test.
 
-diff --git a/tools/vmtb/bench/configurators/pci.py b/tools/vmtb/bench/configurators/pci.py
-index 8e8afb138..0b524d3c2 100644
---- a/tools/vmtb/bench/configurators/pci.py
-+++ b/tools/vmtb/bench/configurators/pci.py
-@@ -1,13 +1,13 @@
- # SPDX-License-Identifier: MIT
--# Copyright © 2024 Intel Corporation
-+# Copyright © 2024-2026 Intel Corporation
- 
- import enum
- import typing
- 
- 
- class GpuModel(str, enum.Enum):
--    ATSM150 = 'Arctic Sound M150 (ATS-M1)'
--    ATSM75 = 'Arctic Sound M75 (ATS-M3)'
-+    PTL = 'Panther Lake (PTL)'
-+    BMG = 'Battlemage (BMG)'
-     Unknown = 'Unknown'
- 
-     def __str__(self) -> str:
-@@ -21,28 +21,41 @@ def get_gpu_model(pci_id: str) -> GpuModel:
- 
- def get_vgpu_profiles_file(gpu_model: GpuModel) -> str:
-     """Return vGPU profile definition JSON file for a given GPU model."""
--    if gpu_model == GpuModel.ATSM150:
--        vgpu_device_file = 'Flex170.json'
--    elif gpu_model == GpuModel.ATSM75:
--        vgpu_device_file = 'Flex140.json'
-+    if gpu_model == GpuModel.PTL:
-+        vgpu_device_file = 'Ptl.json'
-+    elif gpu_model == GpuModel.BMG:
-+        vgpu_device_file = 'Bmg_g21_12.json'
-     else: # GpuModel.Unknown
-         vgpu_device_file = 'N/A'
- 
-     return vgpu_device_file
- 
- 
--# PCI Device IDs: ATS-M150 (M1)
--_atsm150_pci_ids = {
--    '56C0': GpuModel.ATSM150,
--    '56C2': GpuModel.ATSM150
-+# PCI Device IDs: PTL
-+_ptl_pci_ids = {
-+    'B080': GpuModel.PTL,
-+    'B081': GpuModel.PTL,
-+    'B082': GpuModel.PTL,
-+    'B083': GpuModel.PTL,
-+    'B084': GpuModel.PTL,
-+    'B085': GpuModel.PTL,
-+    'B086': GpuModel.PTL,
-+    'B087': GpuModel.PTL,
-+    'B08F': GpuModel.PTL,
-+    'B090': GpuModel.PTL,
-+    'B0A0': GpuModel.PTL,
-+    'B0B0': GpuModel.PTL,
-+    'FD80': GpuModel.PTL,
-+    'FD81': GpuModel.PTL
- }
- 
- 
--# PCI Device IDs: ATS-M75 (M3)
--_atsm75_pci_ids = {
--    '56C1': GpuModel.ATSM75
-+# PCI Device IDs: BMG (G21 - VRAM: 12GB / other)
-+_bmg_pci_ids = {
-+    'E20B': GpuModel.BMG # B36 / 12GB
- }
- 
- 
- # All PCI Device IDs to GPU Device Names mapping
--pci_ids: typing.Dict[str, GpuModel] = {**_atsm150_pci_ids, **_atsm75_pci_ids}
-+pci_ids: typing.Dict[str, GpuModel] = {**_ptl_pci_ids,
-+                                       **_bmg_pci_ids}
-diff --git a/tools/vmtb/vmm_flows/resources/vgpu_profiles/Flex170.json b/tools/vmtb/vmm_flows/resources/vgpu_profiles/Bmg_g21_12.json
-similarity index 73%
-rename from tools/vmtb/vmm_flows/resources/vgpu_profiles/Flex170.json
-rename to tools/vmtb/vmm_flows/resources/vgpu_profiles/Bmg_g21_12.json
-index ff1fa7e20..75ca907ab 100644
---- a/tools/vmtb/vmm_flows/resources/vgpu_profiles/Flex170.json
-+++ b/tools/vmtb/vmm_flows/resources/vgpu_profiles/Bmg_g21_12.json
-@@ -1,58 +1,58 @@
- {
--    "version": "1.1",
-+    "version": "1.2",
-     "PFResources": {
-         "Default": "MinimumPFResources",
-         "Profile": {
-             "MinimumPFResources": {
--                "LocalMemoryEccOn": 402653184,
--                "LocalMemoryEccOff": 402653184,
--                "Contexts": 1024,
-+                "LocalMemoryEccOn": 134217728,
-+                "LocalMemoryEccOff": 134217728,
-+                "Contexts": 256,
-                 "Doorbells": 16,
--                "GGTTSize": 268435456
-+                "GGTTSize": 67108864
-             }
-         }
-     },
-     "vGPUResources": {
-         "Default": null,
-         "Profile": {
--            "Flex170_16": {
-+            "Bmg_12": {
-                 "VFCount": 1,
--                "LocalMemoryEccOff": 16777216000,
--                "LocalMemoryEccOn": 2147483648,
-+                "LocalMemoryEccOff": 12717129728,
-+                "LocalMemoryEccOn": 12717129728,
-                 "Contexts": 1024,
-                 "Doorbells": 240,
-                 "GGTTSize": 4026531840
-             },
--            "Flex170_8": {
-+            "Bmg_6": {
-                 "VFCount": 2,
--                "LocalMemoryEccOff": 8388608000,
--                "LocalMemoryEccOn": 2147483648,
-+                "LocalMemoryEccOff": 6341787648,
-+                "LocalMemoryEccOn": 6341787648,
-                 "Contexts": 1024,
-                 "Doorbells": 120,
-                 "GGTTSize": 2013265920
-             },
--            "Flex170_4": {
--                "VFCount": 4,
--                "LocalMemoryEccOff": 4194304000,
--                "LocalMemoryEccOn": 2147483648,
-+            "Bmg_4": {
-+                "VFCount": 3,
-+                "LocalMemoryEccOff": 4211081216,
-+                "LocalMemoryEccOn": 4211081216,
-                 "Contexts": 1024,
--                "Doorbells": 60,
--                "GGTTSize": 1006632960
-+                "Doorbells": 80,
-+                "GGTTSize": 1342177280
-             },
--            "Flex170_2": {
--                "VFCount": 8,
--                "LocalMemoryEccOff": 2097152000,
--                "LocalMemoryEccOn": 1073741824,
-+            "Bmg_2": {
-+                "VFCount": 6,
-+                "LocalMemoryEccOff": 2080374784,
-+                "LocalMemoryEccOn": 2080374784,
-                 "Contexts": 1024,
--                "Doorbells": 30,
--                "GGTTSize": 503316480
-+                "Doorbells": 40,
-+                "GGTTSize": 671088640
-             },
--            "Flex170_1": {
--                "VFCount": 16,
--                "LocalMemoryEccOff": 1048576000,
--                "LocalMemoryEccOn": 536870912,
-+            "Bmg_1": {
-+                "VFCount": 12,
-+                "LocalMemoryEccOff": 1023410176,
-+                "LocalMemoryEccOn": 1023410176,
-                 "Contexts": 1024,
--                "Doorbells": 15,
-+                "Doorbells": 20,
-                 "GGTTSize": 251658240
-             }
-         }
-@@ -110,4 +110,4 @@
-             }
-         }
-     }
--}
-\ No newline at end of file
-+}
-diff --git a/tools/vmtb/vmm_flows/resources/vgpu_profiles/Ptl.json b/tools/vmtb/vmm_flows/resources/vgpu_profiles/Ptl.json
-new file mode 100644
-index 000000000..efc61bce1
---- /dev/null
-+++ b/tools/vmtb/vmm_flows/resources/vgpu_profiles/Ptl.json
-@@ -0,0 +1,97 @@
-+{
-+    "version": "0.1",
-+    "PFResources": {
-+        "Default": "MinimumPFResources",
-+        "Profile": {
-+            "MinimumPFResources": {
-+                "LocalMemoryEccOn": 0,
-+                "LocalMemoryEccOff": 0,
-+                "Contexts": 256,
-+                "Doorbells": 16,
-+                "GGTTSize": 67108864
-+            }
-+        }
-+    },
-+    "vGPUResources": {
-+        "Default": null,
-+        "Profile": {
-+            "Ptl_1": {
-+                "VFCount": 1,
-+                "LocalMemoryEccOff": 0,
-+                "LocalMemoryEccOn": 0,
-+                "Contexts": 1024,
-+                "Doorbells": 240,
-+                "GGTTSize": 4026531840
-+            },
-+            "Ptl_2": {
-+                "VFCount": 2,
-+                "LocalMemoryEccOff": 0,
-+                "LocalMemoryEccOn": 0,
-+                "Contexts": 1024,
-+                "Doorbells": 120,
-+                "GGTTSize": 2013265920
-+            },
-+            "Ptl_4": {
-+                "VFCount": 4,
-+                "LocalMemoryEccOff": 0,
-+                "LocalMemoryEccOn": 0,
-+                "Contexts": 1024,
-+                "Doorbells": 60,
-+                "GGTTSize": 1006632960
-+            }
-+        }
-+    },
-+    "vGPUScheduler": {
-+        "Default": "Flexible_30fps_GPUTimeSlicing",
-+        "Profile": {
-+            "Flexible_30fps_GPUTimeSlicing": {
-+                "GPUTimeSlicing": {
-+                    "ScheduleIfIdle": false,
-+                    "PFExecutionQuantum": 20,
-+                    "PFPreemptionTimeout": 20000,
-+                    "VFAttributes": {
-+                        "VFExecutionQuantum": "lambda VFCount : max( 32 // VFCount, 1)",
-+                        "VFPreemptionTimeout": "lambda VFCount : 128000 if (VFCount == 1) else max( 64000 // VFCount, 16000)"
-+                    }
-+                }
-+            },
-+            "Fixed_30fps_GPUTimeSlicing": {
-+                "GPUTimeSlicing": {
-+                    "ScheduleIfIdle": true,
-+                    "PFExecutionQuantum": 20,
-+                    "PFPreemptionTimeout": 20000,
-+                    "VFAttributes": {
-+                        "VFExecutionQuantum": "lambda VFCount : max( 32 // VFCount, 1)",
-+                        "VFPreemptionTimeout": "lambda VFCount : 128000 if (VFCount == 1) else max( 64000 // VFCount, 16000)"
-+                    }
-+                }
-+            },
-+            "Flexible_BurstableQoS_GPUTimeSlicing": {
-+                "GPUTimeSlicing": {
-+                    "ScheduleIfIdle": false,
-+                    "PFExecutionQuantum": 20,
-+                    "PFPreemptionTimeout": 20000,
-+                    "VFAttributes": {
-+                        "VFExecutionQuantum": "lambda VFCount : min((2000 // max(VFCount-1,1)*0.5, 50))",
-+                        "VFPreemptionTimeout": "lambda VFCount : (2000 // max(VFCount-1,1) - min((2000 // max(VFCount-1,1))*0.5, 50))*1000"
-+                    }
-+                }
-+            }
-+        }
-+    },
-+    "vGPUSecurity": {
-+        "Default": "Disabled",
-+        "Profile": {
-+            "Disabled": {
-+                "ResetAfterVfSwitch": false,
-+                "GuCSamplingPeriod": 0,
-+                "GuCThresholdCATError": 0,
-+                "GuCThresholdPageFault": 0,
-+                "GuCThresholdH2GStorm": 0,
-+                "GuCThresholdDbStorm": 0,
-+                "GuCThresholdGTIrqStorm": 0,
-+                "GuCThresholdEngineReset": 0
-+            }
-+        }
-+    }
-+}
-\ No newline at end of file
+Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+
+Andrzej Hajda (1):
+  lib/gpgpu_shader: Add support for xe3p efficient 64bit addressing
+
+Gwan-gyeong Mun (2):
+  lib/[gpu_cmds|xehp_media]: Introduce gpu execution commands for an
+    efficient 64bit mode.
+  lib/allocator: add canonicalize helper for 57 bit
+
+Priyanka Dandamudi (2):
+  scripts/generate_iga64_codes: Add support for xe3p and xe3
+  tests/intel/xe_prefetch_fault: Add test for prefetch fault
+
+ lib/gpgpu_fill.c.gen.iga64_codes.c            |   2 +-
+ lib/gpgpu_shader.c                            |  74 +++++-
+ lib/gpgpu_shader.c.gen.iga64_codes.c          | 196 +++++++++++++++-
+ lib/gpu_cmds.c                                | 210 +++++++++++++++++
+ lib/gpu_cmds.h                                |  17 ++
+ lib/iga64_macros.h                            |   5 +-
+ lib/intel_allocator.h                         |   6 +
+ lib/meson.build                               |   2 +-
+ lib/xehp_media.h                              |  65 ++++++
+ scripts/generate_iga64_codes                  |   2 +-
+ .../xe_eudebug_online.c.gen.iga64_codes.c     |  45 +++-
+ tests/intel/xe_prefetch_fault.c               | 217 ++++++++++++++++++
+ .../xe_prefetch_fault.c.gen.iga64_codes.c     |  21 ++
+ tests/meson.build                             |   1 +
+ 14 files changed, 850 insertions(+), 13 deletions(-)
+ create mode 100644 tests/intel/xe_prefetch_fault.c
+ create mode 100644 tests/intel/xe_prefetch_fault.c.gen.iga64_codes.c
+
 -- 
-2.39.1
+2.43.0
 
