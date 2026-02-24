@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98110E9B262
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 12:58:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A90E9E9B258
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 13:15:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 41D9210E57D;
-	Tue, 24 Feb 2026 12:58:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4DF7510E066;
+	Tue, 24 Feb 2026 13:15:10 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 852C810E57D;
- Tue, 24 Feb 2026 12:58:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2141710E066;
+ Tue, 24 Feb 2026 13:15:09 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2032993861127988406=="
+ boundary="===============1199588718216010915=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=3A_More_igt=5Fc?=
- =?utf-8?q?rtc=5Ft_conversions_=28rev5=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fconfigfs?=
+ =?utf-8?q?=3A_Skip_ctx-restore_subtests_on_SR-IOV_VF?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ville Syrjala" <ville.syrjala@linux.intel.com>
+To: "Nitin Gote" <nitin.r.gote@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 24 Feb 2026 12:58:25 -0000
-Message-ID: <177193790552.280493.4346474560417336348@a3b018990fe9>
+Date: Tue, 24 Feb 2026 13:15:09 -0000
+Message-ID: <177193890911.280493.13227099669056927959@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20260221032003.30936-1-ville.syrjala@linux.intel.com>
+References: <20260224112041.297334-2-nitin.r.gote@intel.com>
+In-Reply-To: <20260224112041.297334-2-nitin.r.gote@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2032993861127988406==
+--===============1199588718216010915==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms: More igt_crtc_t conversions (rev5)
-URL   : https://patchwork.freedesktop.org/series/161893/
+Series: tests/intel/xe_configfs: Skip ctx-restore subtests on SR-IOV VF
+URL   : https://patchwork.freedesktop.org/series/162056/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8768 -> IGTPW_14605
+CI Bug Log - changes from XEIGT_8768_BAT -> XEIGTPW_14606_BAT
 ====================================================
 
 Summary
@@ -64,61 +64,45 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14605/index.html
+  
 
-Participating hosts (43 -> 40)
+Participating hosts (14 -> 14)
 ------------------------------
 
-  Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 
+  No changes in participating hosts
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_14605 that come from known issues:
+  Here are the changes found in XEIGTPW_14606_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@i915_selftest@live:
-    - bat-jsl-1:          [PASS][1] -> [DMESG-FAIL][2] ([i915#15394]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8768/bat-jsl-1/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14605/bat-jsl-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8768/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14605/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+  * igt@xe_waitfence@engine:
+    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#6519])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8768/bat-dg2-oem2/igt@xe_waitfence@engine.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14606/bat-dg2-oem2/igt@xe_waitfence@engine.html
 
   
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8768/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14605/bat-arls-5/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#15394]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15394
+  [Intel XE#6519]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8768 -> IGTPW_14605
+  * IGT: IGT_8768 -> IGTPW_14606
 
-  CI-20190529: 20190529
-  CI_DRM_18022: 45a3045fc0dc46a893cb8bbe304afafd4120c904 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14605: 14605
+  IGTPW_14606: 14606
   IGT_8768: 8768
+  xe-4591-45a3045fc0dc46a893cb8bbe304afafd4120c904: 45a3045fc0dc46a893cb8bbe304afafd4120c904
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14605/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14606/index.html
 
---===============2032993861127988406==
+--===============1199588718216010915==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -138,58 +122,40 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms: More igt_crtc_t conversions (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161893/">https://patchwork.freedesktop.org/series/161893/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_configfs: Skip ctx-restore subtests on SR-IOV VF</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162056/">https://patchwork.freedesktop.org/series/162056/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14605/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14605/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14606/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14606/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_8768 -&gt; IGTPW_14605</h1>
+    <h1>CI Bug Log - changes from XEIGT_8768_BAT -&gt; XEIGTPW_14606_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14605/index.html</p>
-<h2>Participating hosts (43 -&gt; 40)</h2>
-<p>Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 </p>
+<h2>Participating hosts (14 -&gt; 14)</h2>
+<p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14605 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_14606_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-jsl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8768/bat-jsl-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14605/bat-jsl-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15394">i915#15394</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8768/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14605/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8768/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14605/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>igt@xe_waitfence@engine:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8768/bat-dg2-oem2/igt@xe_waitfence@engine.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14606/bat-dg2-oem2/igt@xe_waitfence@engine.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6519">Intel XE#6519</a>)</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8768 -&gt; IGTPW_14605</li>
+<li>IGT: IGT_8768 -&gt; IGTPW_14606</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18022: 45a3045fc0dc46a893cb8bbe304afafd4120c904 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14605: 14605<br />
-  IGT_8768: 8768</p>
+<p>IGTPW_14606: 14606<br />
+  IGT_8768: 8768<br />
+  xe-4591-45a3045fc0dc46a893cb8bbe304afafd4120c904: 45a3045fc0dc46a893cb8bbe304afafd4120c904</p>
 
 </body>
 </html>
 
---===============2032993861127988406==--
+--===============1199588718216010915==--
