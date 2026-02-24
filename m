@@ -4,189 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F63BE9B24E
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 10:27:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72397E9B24D
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 10:30:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3CD8110E1D5;
-	Tue, 24 Feb 2026 10:27:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 238D810E23C;
+	Tue, 24 Feb 2026 10:30:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OtOEcnBD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aIYwleZa";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 484A010E1D5
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 10:27:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9174F10E53D
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 10:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771928841; x=1803464841;
- h=message-id:date:subject:from:to:references:in-reply-to:
- mime-version; bh=K7Z3XqLDKw4l/j4hsEVnbN2iBUp6ajvBsla5BiZWGj0=;
- b=OtOEcnBDtEuT8p6jO45XSFD2QcbcmQKqSsLvGK/dlojOJ4JiwNdfw78c
- 4Wv2KIRqu57xPYkIavzLscvBr4sH83/TpIfxFQs2+xGdj5w3tzO+SIKce
- SEsUWBOHM7A/V2B0hAfw2ll9o1fG0Kqbwi2EUM3akvDIG1AtFcCGarEoQ
- nDsRyEiRdOxxn5KazybYMrrdYwZjW74nZaTM1LLp6E+jd9pDWcjMK9iXq
- mlcLopruaFLxKJ/bHrIUHPyiqSO+gG+jub7zRxebNTXuWXQUBsPhugeRA
- K+zywuxvXxQ6m/2TyMFh18KRBB1K0KfNfnjGwXRdYbBU/sdayjd3qRBkU w==;
-X-CSE-ConnectionGUID: VQv/6y6FSG6YUPNM7zn+LA==
-X-CSE-MsgGUID: ujluPax6TjCc8Yn3Py2lfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="71970257"
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208,217";a="71970257"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 02:27:21 -0800
-X-CSE-ConnectionGUID: ulEK940VRMSoymxng2wHpQ==
-X-CSE-MsgGUID: sky+LED2Qsq0UiHsKX4NGA==
+ t=1771929033; x=1803465033;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ mime-version; bh=r++WHIScuSVeVd4KWb01V2FL/RwNiLYhm5YdpY4FuoM=;
+ b=aIYwleZaHZXTwxElBgvRJI71aIa14BTY+qwvM9o5aDilaUwMYqwTpxwO
+ toSEr2rNG0HQHbgZBITBM45ch4N/324U9UcieWTuG5Eujcy1r+csfJAgT
+ Juz2YA562blNmdg/zdMP28iEm6Pdh9o3YuUHvQHoVdwcyugJwf5Jhjope
+ tNVvnuSSaGepooJ9ryh2+TIqM3/1xCJGOX/VdzJs+eitmir/dXbUFh7A2
+ mllH6QzKLV+1vDazMk9QIyiYUj8WWVhUB2w3xwkJhFUgTufrZFaBM2rn/
+ NBMNwBPRtJLnhmw7iW8WlUoaEICJL1s6AFY3qrs3Ky9nDrq37VH042Gps Q==;
+X-CSE-ConnectionGUID: 52yDIMDRT8mrtlYXlMp9ng==
+X-CSE-MsgGUID: 13QP5LIuRI6COBHPE8wksQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="73046400"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208,217";a="73046400"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2026 02:30:33 -0800
+X-CSE-ConnectionGUID: Yjga+1n4SheaH+6PPJqP9Q==
+X-CSE-MsgGUID: cusENx8sQrKpaKbdlbQeVg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; 
- d="scan'208,217";a="213690518"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 02:27:20 -0800
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2026 02:30:33 -0800
 Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 24 Feb 2026 02:27:20 -0800
+ 15.2.2562.35; Tue, 24 Feb 2026 02:30:32 -0800
 Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
  FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Tue, 24 Feb 2026 02:27:20 -0800
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.43) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ 15.2.2562.35 via Frontend Transport; Tue, 24 Feb 2026 02:30:32 -0800
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.59)
+ by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Tue, 24 Feb 2026 02:27:20 -0800
+ 15.2.2562.35; Tue, 24 Feb 2026 02:30:32 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xfdjL+/SaW4ypcwbquI3wambtYne+63BOcC95X6lrdz6coux7ZoyY8JuI7BbK7t0WFn4j1zF7mJa5pF/xu44vod3HkrTORhCliFjIOooMvonH2BO3E6EkPxMJwbIuqSxndINpHmqtrHWo8SOBW9ZiLyBnWbdi+xby0mY+fd8ZysA96wf6t9o6wtXN+JYhIY+NERK0khT8h2D9ryYgrCadMG+NUlZlhL5rHr9NdDAz+Pk74vXpWsQlLxib4rc5MrjBP7MK4GASyM642ikPgknPX6Q6Y4wA4LMHgB+3MP/a9I8stfQLwRAA04So9XxOzK7F0sxt7bQnWTwZUbRwAknow==
+ b=MZgK2xSXcltfveGJn1yMU1afxmNFa8f2CRMa3XgWjAvu5AT9kD4Sr5EZ2G/Bq+XdAu/u8sdtUPQAL6EO/CtohV72I1byvSv+lbwfPJfpvqPvcxNaGj2OhYgRgoGq/hHk0fGKvy8FC21zbMZoGEDUPcO+K8CZX0C2qdpuRob7Dwg9mUfJnmni/Ou0OXrTuY+eqRvYIXLuUMg1eaXWufeE8NYbagznUsVpWJETn7NbEArTlLYVhPwz3Vsg8gYlnnB1nqynz1+MZgkkHPTTfXuSnivONTvEIpeUO3ZOlubdXlR8FjruHG0eHddzZZaPwOMfVo9Y2ublvO5ZvtHJDQR8Lg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EtgvOwGkQxsMV+XVMzeK1KQlPo0NiI2lWGJmoWk5aho=;
- b=L4B7qfCpEKa1NtJrvbWx8Y6LDStQxSUkK94ZZvkjNUVbIA9VonDH5pU0JbTCH9v1QmcNbiLpuNLBhVMmhafQKrgwbaj/piqeCAp3hpu9t8ZXt34MPPNKPRgjv1D305pVm5w+3L0F6bBdQwl3WxvFykxlOXMLLeYxBB9KUomijOKGDQHvjOmO7BI+Jve/o8iuC0KvoDDaHa3jRl2zqHp/uA/p+iiJIxEIWqAFXWGFek+sYP1dYCHNmlw1y6oFZXm1I2XXXON2JYDFByLMVQpf8gy+zBRGOqj4vW/cMOlOWawqkTVD+E8h0G9pWCnMZmA86Sar/5DakSjFvGoGthJQDA==
+ bh=RJrBBSLXu4Nyby+G23CY7PHF1WMmE69kMVTYqmoGhmM=;
+ b=EYs+/K0vFkyYc3UWQEWqPKrWjNQ4jEfOxi5MBESq2lIQPRjdAQrF0VjjtKsi9yBrm8HIW6NtE3zrc8fIRBX5aamG8UOVV5Y7X+VgcaLqOuZUYAWgmjLxMmhBlsjx9yIJC/sUpdX00qwrHyDGWGVild2pUzIgKPRBEzFlOKlLYab/d41azNhbxHk0uO8R90DCu23hHqqjzE3TKCqgShx8+DZycQpl33CIL6vjd+1O2G5pBIiGLNmM43XNPGwVoDnXRTP5WMxCY5NxpPvXIkc7bBNOTBq57Y9OyUazjp5WISGH+Zx50PMlTUK+VtxnzLiOBxCQFSSD+opsUo51u260hQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from LV8PR11MB8485.namprd11.prod.outlook.com (2603:10b6:408:1e6::13)
- by SJ5PPF6E07EBAE7.namprd11.prod.outlook.com
- (2603:10b6:a0f:fc02::832) with Microsoft SMTP Server (version=TLS1_2,
+ by IA1PR11MB6465.namprd11.prod.outlook.com (2603:10b6:208:3a7::5)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Tue, 24 Feb
- 2026 10:27:18 +0000
+ 2026 10:30:30 +0000
 Received: from LV8PR11MB8485.namprd11.prod.outlook.com
  ([fe80::9ec6:998a:b515:890c]) by LV8PR11MB8485.namprd11.prod.outlook.com
  ([fe80::9ec6:998a:b515:890c%4]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
- 10:27:18 +0000
+ 10:30:30 +0000
 Content-Type: multipart/alternative;
- boundary="------------B6r5sQ0ITOvi1mqIDqAeUdou"
-Message-ID: <e9f9f48e-e907-4bbe-ad80-c1648a9ec4f5@intel.com>
-Date: Tue, 24 Feb 2026 15:57:12 +0530
+ boundary="------------oCPSa7F2n3TxNmnuvNWrmsSj"
+Message-ID: <baf8920f-d3fd-43df-9877-14625006d254@intel.com>
+Date: Tue, 24 Feb 2026 16:00:24 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 3/3] tests/kms_pipe_crc_basic: Add MST
- suspend-resume test
+Subject: Re: [PATCH i-g-t 2/3] lib/igt_kms: Fix max_non_joiner_mode_found
 Content-Language: en-GB
-From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
 To: Kunal Joshi <kunal1.joshi@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20260220152239.276034-1-kunal1.joshi@intel.com>
- <20260220152239.276034-4-kunal1.joshi@intel.com>
- <b2bf05a5-f786-484b-948c-3a7a99825d25@intel.com>
-In-Reply-To: <b2bf05a5-f786-484b-948c-3a7a99825d25@intel.com>
-X-ClientProxiedBy: MA5PR01CA0203.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1b0::7) To LV8PR11MB8485.namprd11.prod.outlook.com
+ <20260220152239.276034-3-kunal1.joshi@intel.com>
+From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
+In-Reply-To: <20260220152239.276034-3-kunal1.joshi@intel.com>
+X-ClientProxiedBy: MA5PR01CA0205.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b0::14) To LV8PR11MB8485.namprd11.prod.outlook.com
  (2603:10b6:408:1e6::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR11MB8485:EE_|SJ5PPF6E07EBAE7:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6fe3674d-7604-4069-9fbc-08de738f4904
+X-MS-TrafficTypeDiagnostic: LV8PR11MB8485:EE_|IA1PR11MB6465:EE_
+X-MS-Office365-Filtering-Correlation-Id: fe3302b5-ba75-4932-48d7-08de738fbbdd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|8096899003;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?OEx6dGw5cW12OVFnMXFkK0J6SjBMaXdFSUNXS2xnWHFBcm9NUTJIUU0vZkc3?=
- =?utf-8?B?L0YxUWFUUlpPeFkvbVFsT1FWZWFoUXB1UTAwalg5Q2dzQ0xSR1dJNlBOZFF5?=
- =?utf-8?B?VHlod0N1Z1B2dXUxL0x4ZEo5bmpQQTVVcVpMd0hoUDlKdDRtSDdmbldJb1Jz?=
- =?utf-8?B?bGRYZXNpZ1R3UEI3VUpOL3NKOGdkaEZmZFFON2JOWTljWVI1d2N5WXBCVkJX?=
- =?utf-8?B?ZDV0Vk5Sa2FWbU53WFgzR0N2cGs2b3d3L3MrT25pbkszdFAwUDI5OXBHdVVX?=
- =?utf-8?B?SDUzWmVBK0c1cXNPZUhrZFYyWUlrTmJ1OFZ1VWhrSi9oL2lobXRmbFRTM3NL?=
- =?utf-8?B?Q0t3K0N6MFpwempFRnBVMDZ4UmJkZXVmQytDK1B1TlNHNm9sWHFvbksrM0Yz?=
- =?utf-8?B?UDZBeHhOVUNFRWZyOWxjQmVGL096aHRDQWRHVHcxbXNXQmNVckxvMVdDZkpn?=
- =?utf-8?B?M09sSlF0NXZ2SkNiV2ZGSGdoVWhlM29DaDJ6d0tPUFVyS052cnpRM2cydXBS?=
- =?utf-8?B?Tkh0eUFVR2dwQUUzS3VxTTBXRS8vVjV6V3QrNjU2STU3UzRWN2U3cGF3MUhQ?=
- =?utf-8?B?VTlRSHVsOVpSMkd0dzhiNUM2elpCQmc3QlltcTcwQ1MwVjZVWUE5L0lZMmlz?=
- =?utf-8?B?Vy80Rkp1WlNHZitkTlBxZU1CNXhuSGZMTHZ5amwzWWlFenJ4Nzl0MkpOL1NS?=
- =?utf-8?B?ZFloUlF3dzIzZXNxQTF6Z3RwdFZtRTdHQjlqNjFUQ0Q5V1ovR2d6d3RpdkUr?=
- =?utf-8?B?ckd6cVl2NldCQTlHTm5JUGlHWncyVDZ2MkZRNUl5TTVRcnBBaldDcFR6VTB2?=
- =?utf-8?B?S0EyOHFnVHV3Vlo4aWZURlhCL3BqTGkwYUJLYWJDRkhCQWlkL1VrZTFlK2kv?=
- =?utf-8?B?bzFlMVRzM25sZjJjZW4vaEpzU2Qzcys0MzlManNIZytVcEhYVFZpSk5naVBv?=
- =?utf-8?B?ZC8yN0g2T1pteUQ3eHVBcWpUQWR3UzE0bmdDcUlhMk1ZMm1VSzlRZDlTOVlp?=
- =?utf-8?B?cVNPSEdqcFNCWUxiMXp3QWVUN2E5eEhDYVdtMEdJbkZ5SlJub25QR2lwd01Z?=
- =?utf-8?B?N283aE5VaFk2dDZPbm4zSnA3bzhQMDFEQ1dlQTkyTjUwMFV4eE9vSmE4LzlD?=
- =?utf-8?B?WXZJNDk3dExBaDd4UHljQ1JmbnZxb1lkdEpHWXRZcXlEUWlsRmVRZmh0M0V3?=
- =?utf-8?B?Z3hPck1aT2RyTnhxZHl2Nm93RzdyQ3k1REl1bVRhdWVlczl3RXBVNjIvWDVB?=
- =?utf-8?B?VXg4NDFib01vNGY0RS9FUTcxMVNVbWtKK2ZxUGp6MzVybTM3OWtnSHBIUjI1?=
- =?utf-8?B?OXQwVm1mVm1kOWFJNm44d2o4RjZTRGJHeCtyK3VzQjJvTm9hRVh5MEsxNytZ?=
- =?utf-8?B?Q05heU41V2pnR0JHNjhTVHBDaWMzWWhEaUNFbUtMWFA5dXFFeFE2c0R3ejl1?=
- =?utf-8?B?K1ZucXpsZ1dlS0Rwb2kxUERYRC9PcytCQ0oxZGJwUTJ0Mmc3OHJaMEduQjlQ?=
- =?utf-8?B?TTZjQmljTHhIenI4ck5JL0hjTTZVV1BCb0FsUTVhTG1LY0JSdzdFRnN4YnVy?=
- =?utf-8?B?Z0RNWndZNTN4T0dydkh1QnBWZS9XM0IyRnIyNEFkbGNoL2E5OXQxa0pxZnhM?=
- =?utf-8?B?ZXhvZStUdXhIUUNDbUF5M2FmMk81ekovTVNmT1lQY1ZkbXI5a3pONjlVTVBY?=
- =?utf-8?B?U2lZMnowTWdOL2tURzBVdVJkS2dHQWJ0U0cwQjQxbHZ6RnVYeG9VaGE1TjRV?=
- =?utf-8?B?bWVWb2R0dWxhM0UzQ0JtdTJtajJXWjdnQ2R0QlF3SEZpQ0VLeDBha3lGOGI4?=
- =?utf-8?B?WHFFT2k3c2xSOUdkTHdxSnAveEdlYjhhM0xvREJyM3krTFpISTdyQ3R6WmRJ?=
- =?utf-8?B?MHhoeXZEcVNFWnZXdThpYXRRRCtlZXNQdVdHeVgwMWRtYk4za2NCWnhjNDhR?=
- =?utf-8?B?ZW1CRG1lRFR4TE90dDdCZUdqTkNsTW9OY0RJUWZpVERpdXRQUVU0QkxudGFj?=
- =?utf-8?B?S0hCWHh5eUNNZDVaZDBJcGpFK3Iya1NCK1FUUlVBV0hZa3Nud0JnVCthbSs2?=
- =?utf-8?B?K29XTDNnOE8rOEhDSTE4OHdyVTBsZXBQejBQZExlSjRXUWorWVVlTGJUSjIv?=
- =?utf-8?Q?xSjw=3D?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?L3FOV0RxV1oyeHdxNGVoQXplcGliMk5WQjVzQjNmZTc0VGhyMWh6N0dFWXRt?=
+ =?utf-8?B?cExjeWJyQzVpdjR2cUprZmRxdkNEakJ0enZFNmpGODZueVFnK09uMnoxYVMz?=
+ =?utf-8?B?aUxQK0ZFU2tVNDhOYm1EUWMzUjRLMmhaRHdIcGdKcVo2MzMxNDhqcDJqYXBE?=
+ =?utf-8?B?SndjclhaK1VQNE5xUHdKRC9qVm5YenltS2JsZUducFRESjU5V1dCRFZCM3dI?=
+ =?utf-8?B?amtHSmNJU0hEbThHTDh0Zi9ZMzRQNTJHRXp1Ymtlb0Z5Y3J6ZjBUREdacGZ3?=
+ =?utf-8?B?dGdDdUQ1U2NiSDJlZnlIbGhVNDNYY1VaZlhBanBGZ29UdW54K0tEbnV5ajBu?=
+ =?utf-8?B?TWxibjFza2hWL2g0M2dqNSs5YXBZSkdab1Nnc20yYjlIVGpSRHRNc0J4cVFS?=
+ =?utf-8?B?UnR5QXF4Wkx3bmZyVkpMUlUxZXVLaWU1aXQ5U2J5SDRxUGxMYXlEZ1ErVU9Q?=
+ =?utf-8?B?TE1ZYmFMNmUreEJhVVFTNE9sRWt0ZFRvSUVaZHhNNm1DQVpabnd6TUJsVkVr?=
+ =?utf-8?B?MDQ2U2MyMFlSaWVzOUJod3dDaUpmOWREa0tHeDBVemFmR1YzeDhJcENENGtE?=
+ =?utf-8?B?d3lkSVB5OGJNcGpGYWU4WmQ4S3N3Yy9PVFJCZUNzbUdxUWgzeUhxZkR2VU1a?=
+ =?utf-8?B?cENtRUFtSTdZUk5CSVlidi8yVG5nbURwdjRDcE0yYm5BNjNXamNzTllVSkVx?=
+ =?utf-8?B?TWZIYm5CTTNDdkpadmorYnk1UDkycVhXVlhTNEowOGFVYW10WTB2M3F3WCs4?=
+ =?utf-8?B?T3hWTjVKMXEwRHNwNXpOS2NiQ1BUNk1xdEhEckxxRzVyVFRRUDBHNWN6MHAz?=
+ =?utf-8?B?dzJuOVdnSUh6bTNDODRQQ2Q4TDl5bU8rWEVWb3FvWjU0dnFQZ1prdTIzVis1?=
+ =?utf-8?B?QTNSNEVzeENFQ1FhUUZYZmQ3RWRxUzNmY3ZPRFZ3bVZPRjdvUGhQNkx0NGpY?=
+ =?utf-8?B?RUFuNmdaRVpYdzRLNkN4eWRNL0dLNHVmTllOQjlDZWJDWG5OV0dPYk9LOGh5?=
+ =?utf-8?B?RVZjVDNxTVlqT3M5SVJQaWFGaDBiNmV6WXN6ZGxJTHZ0RVEySlgxaHNLUHJz?=
+ =?utf-8?B?Y3JPaGZ3T0R5NGJtL2NPK1pmeW1GVjdWTU1UT2swYXFxYzhsRHVRdTRHM0JJ?=
+ =?utf-8?B?S2NPcVNWMER1cE1FR0trREJ0a2p4cWNkSjhuQXd6aGtDTk5hUlJYODBUUmkr?=
+ =?utf-8?B?MmZ0OEl2a1p2UU5RQVpicDNuWmkxY0pPMjVWSlBiUllITFRoNU0yOHlreHZh?=
+ =?utf-8?B?cFlrZGlpbm12VjRCY28xQ0xjRG9OWjd3VXJudmQ4ZHUyV3BVSlA0N1Y4TWFP?=
+ =?utf-8?B?cVNIYWdkKzk1dEpQNmtQTlA0QzBTZm1JTlpPekhlRWY0b0pxN0pFQTh5MzFQ?=
+ =?utf-8?B?YmpNa1YwQUE0VnZzc1NrdHVTSUh1Q0kvdW9RZXAremhkSTV0eE80R3JwalY2?=
+ =?utf-8?B?ZTJ1OTRJdlV0dXV5am5OS0MxY0ZqczRWUGxUd0hZbFVDQ2hnK2k3UGMweTR5?=
+ =?utf-8?B?VmZ5SUtiSmQrZjFmVFlOcEtWRlVJQTl6MnM2TzFlcWI4alZpdVNhVS82NHIw?=
+ =?utf-8?B?dERsS0xTdlZvY1Q1UU9NMm1yUEZWRldMK09YS1BqR0ZEb1pSQXhEWm1jS0h4?=
+ =?utf-8?B?S2duNHNmb1hlb2FJMG8yQmQ4Z2huY2Y2a0E0MHIxRXV2MVhMeG5XeFRXZmRn?=
+ =?utf-8?B?S1lVYlhHUWNQS0JRV3BndS9Gc04ya2xPaDNhTXJvRjZKOVVTY0wrV3Q1bjFy?=
+ =?utf-8?B?THhLQW1oQVd3WWM3d3J6S3ZuTm9NcTNmTWRIRjVqS1p4c29ySFhnbnoxREoy?=
+ =?utf-8?B?cFUvU1RBZDJyZFdKZ2s5cUpRNDREM0V5UWlWKyttbm1PMGhMVnRUM1FHMVFL?=
+ =?utf-8?B?bld3aW1WUjNJTlhCNGRuTGJoQ0doRHZXZlBNb2REREt3Qk5nSC9lVDdRYnZq?=
+ =?utf-8?B?L1F2Ny9ndUl2bW9wQUl0dVdZSlhRLzYrbWViKzNZVmdkTzFGa0QvdDFQR1Z4?=
+ =?utf-8?B?LzdLMUIrdmtJNUJJclRZK2ZKNmZSTW5DWXhaWm1Xc1NRL3R6UjkrOVRveTZy?=
+ =?utf-8?B?Mll4WHhHdWRaNkRZTFB6NEpkRFdjUyt1SS9wZ1hzR2t6YkpKQlRZYXVMdjND?=
+ =?utf-8?Q?8VB0=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:LV8PR11MB8485.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(366016)(1800799024)(376014)(8096899003); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RWZzdm14YllsblhHSEVmNVE3YWhDTzRGRElTeDRhcjZjRkViUnhyejhpeXhF?=
- =?utf-8?B?YUVKYlVYUGtEcm1ibTJxakNHbXJRM1BSNGx5UWVzRGdZSXoyNER1S0Yvcjht?=
- =?utf-8?B?eFdjY2FIdE43Q1ZXYkRxQndleVBpeVRDeDhCUkZ0N3p0dCtWU1FCMTd1Q2Zn?=
- =?utf-8?B?MS90MjhKa21lS2dxMUdFQnpodXloTFBiNGIyYVU0Q0Fjbys2Y3MzbVlmZ2Rq?=
- =?utf-8?B?VHpIL3FoUUNHc0ZOZ01yUmE4WWdYMWNucWNsSVl5UWtqZlQyaXYxdE5CV3dn?=
- =?utf-8?B?UytTR2V2N0NwZU5IRThOVDFRVDdRcStQMzF6aHdPOHVDemRlaVZ1MHJwdk5G?=
- =?utf-8?B?dmJoRjJ6UmJJOTcyZS96anBuWUhsZ0JkNHVnK1BxR2NnOFN4TmM3UTlIN3V6?=
- =?utf-8?B?em1Mb3VaSmtWRGUvV1JjejlhOXk1WTNNNXBHQVNWMU5iR0JGRTRFVnRNakM2?=
- =?utf-8?B?aTZFeElYc2tja3REVHVDQ0tDak5hME5XaHNVaExxS2tFd3pFN2JyOHlTS1N4?=
- =?utf-8?B?UW0rR1g2WnNhRkh5MmprNUtRbGZPSDRVVDZhdWM5OWNNRTN2UlNRc3FSM2tO?=
- =?utf-8?B?WXI0SHFqblhHVVAzK2U2aHJhdFJaWU8yQkNHZHJvZE5zMUxJdkhFTXdiaWk1?=
- =?utf-8?B?VnhpVUhGb25DNnhVWEU1c2dSakJUekJrcW1MQVROZ1FlcTlqVFpBeTV3WFBM?=
- =?utf-8?B?ZHhHSWl1dkhLUHpCRWtjamp2RElJbmUyOVJSbVowOUdLT1pGbHJQeXpwb1dV?=
- =?utf-8?B?ak5LUGhPcGpaQ1VRMkFnT05BaWdmdmhLSndMR2dlbkpmdWxvdmE5a3FmZ0Fs?=
- =?utf-8?B?QlNuZ2lMMm9iYmlIeWs0bGF3ZGhiZld6Qkg3REVvS0RvWitCWXRxbFhtQzI5?=
- =?utf-8?B?YW5obEUxRHlTMVRxdHJtV0NBYUtkcHZZWmxJOEt0RWJIdmtvTFk1Sm1vRVBp?=
- =?utf-8?B?WlA4S2N4MXJBU3hGamU2a1ZJUjRNUGZMMkdJU3owS0lTRjU4Wms5eE1xNHJ1?=
- =?utf-8?B?dTl1RUhpL1BRMURYM1VDVHZLQ2J2YU1yY1R6Yy9FK0p4aGFtTkVXS1U2U3RJ?=
- =?utf-8?B?eUJWNWI0TVdwdEZKeDJXT3gyTDJrWG5ZZE1QcnZma0RzV2xSeS8wUk5JN1Vv?=
- =?utf-8?B?WXZxYzZIdDFNMjBFUW9oVkc3SWN5QVhJMDVrcktWTnVVMFNOUG9kMVp4N3g1?=
- =?utf-8?B?TkFqd0QzM2ZIV2lpSk5rY0FJc3lFbDRQWHo4cHlDNVZFekt2RmRKMkhCZTB4?=
- =?utf-8?B?ZHh3OVA3VUw4UU1VUnNacE5BK2ZnNEExNUh4VUhUYWdPTzc1Zm1vcFZaTkRv?=
- =?utf-8?B?ZzB2MmFMcWZhVzZleXBBZnBhMVlQNE5nYjU2MDRBeVdUcWFRcVRMakRNWmVF?=
- =?utf-8?B?SnhHaDdJMlY2Qnk4Y1Fhc0RsMDJnUVBSV1BvVy9NTUFwN3BhMVg0b0VtVllp?=
- =?utf-8?B?NnVPMDdsYy9YT3Z1ak9WMXJTSTFpeUFZV2UxM0xmQXFWSGEzQjI5TkY2MStW?=
- =?utf-8?B?NjJTRnk5SHk0d1JpTk4wSk5IRHNFTVBlMU9iL0JVWWpncHFtTjdQaDNrK1Qw?=
- =?utf-8?B?b0V4cG0xNC9LcnlGYTJ4dnVpTlQ4NGY3SVMranIyVy9kcVJwYzRFKzdhVUpP?=
- =?utf-8?B?QTVSK1JTU2d0OW5UWnBHVWZNSlVPcldIM1ZpYlZJcHpVVTdQSTlyNndwd0VE?=
- =?utf-8?B?STFsVDBNblRsTkE2ZG92bnNXZ05TWkJHMHRMY0d6cDFudFQ1NmxDSWQ0WDUw?=
- =?utf-8?B?M1IzVzBHUU4zL0RVZVl3MVI0QnlJTkV4bEs5UEIzeDFlUkNXWXRBZi9mb0sx?=
- =?utf-8?B?Zm56VjkveG5HR0U0MFpkM1JuWStrVkxhSkN1U24xbUpTSXpZMXFHYURHS0R3?=
- =?utf-8?B?OWNtcjIzcUZPVzlxd01CdXpOUTFkQ0lzMVEvRnhGVk9TZnQ5UFg5dWNoM0FI?=
- =?utf-8?B?RkJ4ZmJCOEZ0SVdBbEptR0hwVlFmNTdDU0xic2s4VzNKa3J3MmNtazE2ZnZ6?=
- =?utf-8?B?NTZ1TWU4M2F5Uk96SktGTXFvRit5S2lER29UOWpNZm5lTWU2MlQ2aDM5UG5x?=
- =?utf-8?B?Z1FlVmNPUXFqY2xDL1h2ZmZMNlFGTW1vK1JlT1NZcjBPOWNxK0prYUF3OHNB?=
- =?utf-8?B?N1RMdU92d0hpc2NaRkM5RXFoUVBCL2hhZGFHcWM1OVVuaTduaGhsUmE0Lytn?=
- =?utf-8?B?d2NBcVlXMW9tTkhpZk9RU3RaaGRlTmNpN3FzaTdILzBiaFJOZ01Ed3dvNFV6?=
- =?utf-8?B?U283bGtzbDVGck1pWEYzUnAyMXd0cjJPRk9tY1BuT0ZIVllya3piTlI0RGZ5?=
- =?utf-8?B?OHdEVVE5RmVuSFR2UDRiZlNjN2t2VjEzVHYycTMvSWZnN2lvMUpKclhacjdy?=
- =?utf-8?Q?33DVYFbvCkWJA3fg=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6fe3674d-7604-4069-9fbc-08de738f4904
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZXc4OUtjWkRSODQ0RVkzaWtLUVJYb0M4cEdTRmRQbTBWOE42U3FXTmt3WUFP?=
+ =?utf-8?B?Z1FXbDM2Vk4yeFgyWWw3M09JUXpzUDd0UDRSeC84VC90a1NvcFg1aDhMZ1U4?=
+ =?utf-8?B?cHZMRzNQUUh6UUFGVzY5Y0kxdkVrTGIydCt4OG8wTEdIaDFyRzRxNXd6YTBY?=
+ =?utf-8?B?bjBVSk9DdGxQK1FjL1VsdGswd3VsMFBOY0p1MFh3YldvdzhqWWM0Z3NpKzMv?=
+ =?utf-8?B?UVg3ejBpMUgzRGVnU0FYU0laYi9RbnFsQk4vSnRJY3hBZnJVTlJmc20ramhw?=
+ =?utf-8?B?Si83V0Q3cUU1bWMza0RlZkhvTU5DVDB3YVJJc3ZqL2pVQnVsUGVWVU54aXps?=
+ =?utf-8?B?NUU0ZHZ4eG01NUJZci9aYkl4citPdWlKL3IvdzZqR1ZNaVJxNXQ4ZmtTVHIx?=
+ =?utf-8?B?NjZxRFdTbWQxVWdHbHFubWRXUU5aZVRxRG9GQ1ZYRTlhaXB4UE9pcFJNQ3Nu?=
+ =?utf-8?B?cjRiaDJOK2pERlRFTC9xdkFYK242VXF6YzRYdnJyQTZoZFpJMThkTklTM2or?=
+ =?utf-8?B?cDNaZHNRcnpMK21sd1hCTEV4VzU0ZzVMYTJHOG0zcVFZYWtnVUEzQzZjWGNE?=
+ =?utf-8?B?NGVOYURJMlNad2N4ZW15cWRNenBIL05SeTUvTG9aNWlmY2JXUHIveXh5dlQ1?=
+ =?utf-8?B?TDBIeERqdms4bzVaQ3hNblh0RjJxeGpMa3RoOVNPYUNmdUJxNVE5K0pqbXEx?=
+ =?utf-8?B?ZTV3cnM3N29zaXNSaTRXa3RTZ0V3WDVkaHpqWEpuU2ZGUHp1N0FaSkN3UWt5?=
+ =?utf-8?B?c3luTGxjWm5Ua0N3VWdFWnNhT2xRaktHU21CQnkrTm1WUklvRlpaR0NHQ29C?=
+ =?utf-8?B?dTA1U2hxMExoalE1anRLMUpJVEcwT1hpeXlaQTBHdjZzWjM2M0hVYkwyRHJT?=
+ =?utf-8?B?dGZtd3B6OG91d2FUVGZHeGlra1AwdjgyNkZLZ2N3MnIrS2VacHVOdW1qRXh4?=
+ =?utf-8?B?L1dOUWR0R1hrbTRQeHJmSjR2L2JhUnZhMnUwcnB5UGowT05seURmZWRIWDJD?=
+ =?utf-8?B?Zkh0dTZjejBSUm1WaHVjdURvRFplMCtSeUxMOGwwNzNmdzcvVmloUmRYMllI?=
+ =?utf-8?B?b0RFWTcxK05hS0xsRFNaMFp5RGpjSXNGc1lOQytHaDE4YXk5MWJ6SDliUzJ2?=
+ =?utf-8?B?UVhodDlEcEdNNXdSbDJLTThqNTV6cVZBcmt3V3E4VzVwbmtldXFyWVRDa05t?=
+ =?utf-8?B?UlNScXU5bGt5MC9WaCtZclljSkFmcU9QSUZqYTIzaFVkRnRzc25wUXQwdTNL?=
+ =?utf-8?B?alR2amIxMWJKOGd2Sm1LREdnVHJmMmdsVzcraWgxTWhXZ2FTTzBVQ2FIa29m?=
+ =?utf-8?B?USthUG1kYlVUd3NHd0xoMVBIb2cxYXhZdGh0N2R3SU1DK1BxdDJSYWJnenJ4?=
+ =?utf-8?B?RXVoQ1VkZWc1RDRkNWVoYU1HYkhZeGR1bXZvNit5SjcrMHl2WVduR1JQUzNI?=
+ =?utf-8?B?QXhsWmJvY1NOczg3TG11VzlGZjk4MVJ6RlZQMlR0dmZZYTBVdlVwckFEaFho?=
+ =?utf-8?B?U3pncWFEeGpZSnJlV1FOZGtudzFNZmxTYllJY3Z2WlhkNnVSSzV4Y0pjd3Mw?=
+ =?utf-8?B?YURTSkJLYlYzQnNybjZYc2RkV29EcXQ0c3Q1Z3NORDJOeThKZzNvcFdydnow?=
+ =?utf-8?B?czZpeVNSOVYzUE9LWWlTeWtZL0N5UnZjWUtDZUV0QWxBdmUvSS9NWFphK1hu?=
+ =?utf-8?B?dXhoT2pOa0lNRVBNd1pDRTJVbWhsdEordnV2Qk1aOExnNlNaWlZ0U3BHSnB5?=
+ =?utf-8?B?MVcxZXA1bGpHWng1dnc4QkpiRTNVVmN4RTNuVER6SWRTOGtCMkdPTWhoS2ky?=
+ =?utf-8?B?SENQLzJpVWhXUUthYkxSeEpuK0ZFdmFzRWQyRVoyeUcxaFR5eUJuRmxKMHRv?=
+ =?utf-8?B?d0hpQnBlKzBpNm5aTXJpQ1FVeXhGYTdSUUxycWVidDUxYzFjOFdrQTQxNjgr?=
+ =?utf-8?B?S1BlSWJtVDdJd2pLc1Q4a21Ta1VqSlNISGJNam1aQUlJMnFSMmdFTCtiZlpS?=
+ =?utf-8?B?QTRRd1BjN2tXVVRSVFlHbGZ2WElHNGk1K2pNWk9UVWxralpPVC8yUGZtM1Rk?=
+ =?utf-8?B?QnhrWWxhKy9aNnhENXZ6WDhBQ0VuVTB5MVlYMVIvOC9zUVpXRU9FcUdxTC9T?=
+ =?utf-8?B?bjRvNVdRN1VYcE9CWWY2aGxmZDhQd3lvQVhkQkx4VzdmMGs4S2pobjhLTHl6?=
+ =?utf-8?B?MmkzYnhaYzVOWjBIT3piM3BMZkZobHJwSVY5cmZDd01kb3JWa3hVOXFSbHIz?=
+ =?utf-8?B?UlZGdnBhSkpLRXFIdEdENktVRDkycEtsSCtXU3A4N2FudnV0b1htVUVMWkND?=
+ =?utf-8?B?Z0dySGlKQXhZNHNGSWR1aFpMWFNPcW93b3BlWmRCdFI5ZVVLMWZacUovWTFs?=
+ =?utf-8?Q?7qLRcrMl/ZJKvKTY=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe3302b5-ba75-4932-48d7-08de738fbbdd
 X-MS-Exchange-CrossTenant-AuthSource: LV8PR11MB8485.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 10:27:18.1962 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 10:30:30.6427 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zVRBpUadubsaY1iPR29uSTsbmq3KZlrxc0fX8iyuOmV0CDzgbpje2DIKbw2PjiqbUNHy1XY3sFCto6LgYm+zZvopHvR1C3Uv3dhiLmgFY/E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF6E07EBAE7
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ql3JIXdeAAdvSAW294MvMOxoc94SC9eqU0NzFVM6YLKeCaHo2RbbZbiDAio1+ok6uPxcgDoU/QvYA4h61xwn4bjX/yq4T9VXVo5GYLR8cgQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6465
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -203,428 +199,69 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------B6r5sQ0ITOvi1mqIDqAeUdou
+--------------oCPSa7F2n3TxNmnuvNWrmsSj
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Minor nits can be adressed while merging.
-LGTM.
+
+On 20-02-2026 08:52 pm, Kunal Joshi wrote:
+> The function previously required hdisplay == max_pipe_hdisplay (5120 on
+> pre-Gen30), which means it returned false for any connector whose maximum
+> resolution is below the pipe limit (e.g. a 4K MST output on a 5K-capable
+> platform).
+>
+> Fix this by iterating all modes and tracking the best one (highest
+> hdisplay, then highest clock as a tiebreaker) that does not require a
+> big joiner, as determined by igt_bigjoiner_possible(). This correctly
+> handles connectors with any max resolution.
+>
+> Fixes: 3830ca6a5068 ("lib/igt_kms: Add support to check joiner mode limit")
+> Signed-off-by: Kunal Joshi<kunal1.joshi@intel.com>
+
+  LGTM:
 
 Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 
 
-On 24-02-2026 02:05 pm, Thasleem, Mohammed wrote:
+> ---
+>   lib/igt_kms.c | 15 ++++++++++-----
+>   1 file changed, 10 insertions(+), 5 deletions(-)
 >
-> On 20-02-2026 08:52 pm, Kunal Joshi wrote:
->> Add a new subtest mst-suspend-read-crc that verifies MST outputs
->> preserve display content (via CRC comparison) across S3 suspend/resume.
->>
->> The test enumerates all connected DP MST topologies, and for each root
->> connector exercises all non-empty subsets of the discovered MST outputs.
->> For each subset it:
->>   - Assigns pipes and selects non-joiner modes
->>   - Fits modes within bandwidth constraints
->>   - Creates green FBs, commits, and collects pre-suspend CRCs
->>   - Suspends to memory and resumes
->>   - Collects post-suspend CRCs and asserts they match
->>
->> v2:
->> - Add error handling for igt_pipe_crc_new (Thasleem)
->> - Improve log format with index for clarity (Thasleem)
->> - Order declarations in decreasing line length (Thasleem)
->> - Add print message when no MST found (Thasleem)
->> - Add bounds check for idx in subset loop (Thasleem)
->> - Use igt_crtc_crc_new() instead of igt_pipe_crc_new() (Ville)
->>
->> v3:
->> - framebuffers missing in commit (Bilal)
->>
->> v4:
->> - Drop cleanup framework
->>
->> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
->> ---
->>   tests/kms_pipe_crc_basic.c | 314 +++++++++++++++++++++++++++++++++++++
->>   tests/meson.build          |   3 +
->>   2 files changed, 317 insertions(+)
->>
->> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
->> index f7b6ec293..59a44e92e 100644
->> --- a/tests/kms_pipe_crc_basic.c
->> +++ b/tests/kms_pipe_crc_basic.c
->> @@ -32,7 +32,10 @@
->>     #include "igt.h"
->>   #include "igt_sysfs.h"
->> +#include "intel/kms_mst_helper.h"
->> +#include "intel/kms_joiner_helper.h"
->>   #include <errno.h>
->> +#include <limits.h>
->>   #include <stdbool.h>
->>   #include <stdio.h>
->>   #include <string.h>
->> @@ -77,6 +80,11 @@
->>    *              CRTC does not cause issues.
->>    */
->>   +/**
->> + * SUBTEST: mst-suspend-read-crc
->> + * Description: MST suspend test for pipe CRC reads.
->> + */
->> +
->>   static bool extended;
->>   static enum pipe active_pipes[IGT_MAX_PIPES];
->>   static uint32_t last_pipe;
->> @@ -96,6 +104,306 @@ static struct {
->>       { .r = 0.0, .g = 1.0, .b = 1.0 },
->>   };
->>   +#define MAX_MST_OUTPUT 3
->> +
->> +static void collect_single_crc(igt_crtc_t *crtc, igt_crc_t *crc)
->> +{
->> +    igt_pipe_crc_t *pipe_crc;
->> +
->> +    pipe_crc = igt_crtc_crc_new(crtc, IGT_PIPE_CRC_SOURCE_AUTO);
->> +    igt_assert(pipe_crc);
->> +    igt_pipe_crc_collect_crc(pipe_crc, crc);
->> +    igt_pipe_crc_free(pipe_crc);
->> +}
->> +
->> +static void collect_crc_for_active_outputs(igt_output_t **outputs,
->> +                       int num_outputs,
->> +                       igt_crc_t *crcs,
->> +                       bool post_suspend)
->> +{
->> +    int i;
->> +
->> +    for (i = 0; i < num_outputs; i++) {
->> +        igt_output_t *output = outputs[i];
->> +        igt_crtc_t *crtc = igt_output_get_driving_crtc(output);
->> +
->> +        if (post_suspend)
->> +            igt_require_f(crtc,
->> +                      "POST-SUSPEND: no driving CRTC for %s 
->> (topology changed?)\n",
->> +                      output->name);
->> +        else
->> +            igt_assert_f(crtc,
->> +                     "PRE-SUSPEND: no driving CRTC for %s (bad pipe 
->> assignment?)\n",
->> +                     output->name);
->> +
->> +        collect_single_crc(crtc, &crcs[i]);
->> +    }
->> +}
->> +
->> +static void wait_for_vblanks(igt_output_t **outputs, int num_outputs,
->> +                 bool post_suspend)
->> +{
->> +    int i;
->> +
->> +    for (i = 0; i < num_outputs; i++) {
->> +        igt_crtc_t *crtc = igt_output_get_driving_crtc(outputs[i]);
->> +
->> +        if (post_suspend)
->> +            igt_require_f(crtc,
->> +                      "POST-SUSPEND: no driving CRTC for %s during 
->> vblank wait (topology changed?)\n",
->> +                      outputs[i]->name);
->> +        else
->> +            igt_assert_f(crtc,
->> +                     "PRE-SUSPEND: no driving CRTC for %s during 
->> vblank wait (bad pipe assignment?)\n",
->> +                     outputs[i]->name);
->> +
->> +        igt_wait_for_vblank(crtc);
->> +    }
->> +}
->> +
->> +static void log_crc_for_outputs(igt_output_t **outputs, int 
->> num_outputs,
->> +                igt_crc_t *crcs, const char *stage)
->> +{
->> +    int i;
->> +
->> +    for (i = 0; i < num_outputs; i++) {
->> +        igt_output_t *o = outputs[i];
->> +        drmModeModeInfo *m = igt_output_get_mode(o);
->> +        char *s = igt_crc_to_string(&crcs[i]);
->> +        igt_crtc_t *crtc = igt_output_get_driving_crtc(o);
->> +
->> +        igt_info("[%d] %s: output %s -> crtc %s, CRC %s, mode 
->> %dx%d@%d\n",
->> +             i, stage, o->name,
->> +             igt_crtc_name(crtc),
->> +             s,
->> +             m ? m->hdisplay : -1,
->> +             m ? m->vdisplay : -1,
->> +             m ? m->vrefresh : 0);
-> --> I think we can guard this using igt_debug() instead of igt_info().
->> +        free(s);
->> +    }
->> +}
->> +
->> +/*
->> + * Select non-joiner modes for all outputs to ensure CRC collection 
->> works.
->> + * Joiner configurations consume multiple pipes and are not yet 
->> validated here.
->> + * Must be called before igt_fit_modes_in_bw() so that bandwidth 
->> fitting uses
->> + * the correct (non-joiner) modes.
->> + */
->> +static void select_non_joiner_modes(int drm_fd, igt_output_t **outputs,
->> +                    int num_outputs)
->> +{
->> +    int max_dotclock = igt_get_max_dotclock(drm_fd);
->> +    int i;
->> +
->> +    if (max_dotclock <= 0)
->> +        max_dotclock = INT_MAX;
->> +
->> +    for (i = 0; i < num_outputs; i++) {
->> +        igt_output_t *output = outputs[i];
->> +        drmModeModeInfo non_joiner_mode;
->> +
->> +        igt_require_f(max_non_joiner_mode_found(drm_fd,
->> +                            output->config.connector,
->> +                            max_dotclock,
->> +                            &non_joiner_mode),
->> +                  "No non-joiner mode found for %s\n",
->> +                  output->name);
->> +        igt_output_override_mode(output, &non_joiner_mode);
->> +    }
->> +}
->> +
->> +static void create_fbs_for_outputs(int drm_fd, igt_output_t **outputs,
->> +                   int num_outputs, struct igt_fb *fbs)
->> +{
->> +    int i;
->> +
->> +    for (i = 0; i < num_outputs; i++) {
->> +        igt_output_t *output = outputs[i];
->> +        drmModeModeInfo *mode = igt_output_get_mode(output);
->> +        igt_plane_t *primary;
->> +
->> +        igt_require_f(mode, "No mode available for output %s\n", 
->> output->name);
->> +
->> +        primary = igt_output_get_plane_type(output, 
->> DRM_PLANE_TYPE_PRIMARY);
->> +
->> +        igt_create_color_fb(drm_fd,
->> +                    mode->hdisplay, mode->vdisplay,
->> +                    DRM_FORMAT_XRGB8888,
->> +                    DRM_FORMAT_MOD_LINEAR,
->> +                    0.0, 1.0, 0.0,  /* Green color */
->> +                    &fbs[i]);
->> +        igt_plane_set_fb(primary, &fbs[i]);
->> +    }
->> +}
->> +
->> +static void run_mst_subset_and_verify(igt_display_t *display,
->> +                      igt_output_t **active_outputs,
->> +                      int num_active,
->> +                      int n_crtcs,
->> +                      uint32_t master_pipes_mask,
->> +                      uint32_t valid_pipes_mask)
->> +{
->> +    igt_crc_t pre_crcs[MAX_MST_OUTPUT];
->> +    igt_crc_t post_crcs[MAX_MST_OUTPUT];
->> +    struct igt_fb fbs[MAX_MST_OUTPUT];
->> +    uint32_t used_pipes_mask = 0;
->> +    enum igt_suspend_test stest = SUSPEND_TEST_NONE;
->> +    int drm_fd = display->drm_fd;
->> +    int a;
->> +
->> +    igt_require_f(num_active <= n_crtcs,
->> +              "Not enough crtcs for MST subset\n");
->> +
->> +    igt_require(igt_assign_pipes_for_outputs(drm_fd,
->> +                         active_outputs,
->> +                         num_active,
->> +                         n_crtcs,
->> +                         &used_pipes_mask,
->> +                         master_pipes_mask,
->> +                         valid_pipes_mask));
->> +
->> +    select_non_joiner_modes(drm_fd, active_outputs, num_active);
->> +
->> +    igt_require_f(igt_fit_modes_in_bw(display),
->> +              "Unable to fit modes in bw\n");
->> +
->> +    create_fbs_for_outputs(drm_fd, active_outputs, num_active, fbs);
->> +
->> +    igt_display_commit2(display, COMMIT_ATOMIC);
->> +
->> +    /* rtcwake cmd is not supported on MTK devices */
->> +    if (is_mtk_device(drm_fd))
->> +        stest = SUSPEND_TEST_DEVICES;
->> +
->> +    igt_info("MST subset: %d outputs, n_crtcs=%d\n",
->> +         num_active, n_crtcs);
->> +
->> +    wait_for_vblanks(active_outputs, num_active, false);
->> +    wait_for_vblanks(active_outputs, num_active, false);
->> +
->> +    collect_crc_for_active_outputs(active_outputs,
->> +                       num_active,
->> +                       pre_crcs, false);
->> +
->> +    log_crc_for_outputs(active_outputs, num_active, pre_crcs, 
->> "PRE-SUSPEND");
->> +
->> +    igt_system_suspend_autoresume(SUSPEND_STATE_MEM, stest);
->> +
->> +    wait_for_vblanks(active_outputs, num_active, true);
->> +    wait_for_vblanks(active_outputs, num_active, true);
->> +
->> +    collect_crc_for_active_outputs(active_outputs,
->> +                       num_active,
->> +                       post_crcs, true);
->> +
->> +    log_crc_for_outputs(active_outputs, num_active, post_crcs, 
->> "POST-SUSPEND");
->> +
->     Variable naming -->'a' could be more descriptive, might be --> 
-> output_idx? or any suitable..
->> +    for (a = 0; a < num_active; a++)
->> +        igt_assert_crc_equal(&pre_crcs[a], &post_crcs[a]);
->> +
->> +    /* Detach FBs from planes and remove them to leave a clean state */
->> +    for (a = 0; a < num_active; a++) {
->> +        igt_plane_t *primary =
->> +            igt_output_get_plane_type(active_outputs[a],
->> +                         DRM_PLANE_TYPE_PRIMARY);
->> +        igt_plane_set_fb(primary, NULL);
->> +        igt_remove_fb(drm_fd, &fbs[a]);
->> +    }
->> +}
->> +
->> +static void mst_suspend_read_crc(igt_display_t *display)
->> +{
->> +    int n_crtcs = igt_display_n_crtcs(display);
->> +    igt_output_t *active_outputs[MAX_MST_OUTPUT];
->> +    /*
->> +     * igt_find_all_mst_output_in_topology() internally caps
->> +     * discovery at IGT_MAX_PIPES entries, so this is the
->> +     * correct upper bound for the buffer.
->> +     */
->> +    igt_output_t *mst_outputs[IGT_MAX_PIPES];
->> +    /* Fixed upper bound for tracking traversed root connectors. */
->> +    int traversed_roots[IGT_MAX_PIPES] = { 0 };
->> +    int drm_fd = display->drm_fd;
->> +    uint32_t valid_pipes_mask = 0;
->> +    int num_mst, i, num_active;
->> +    uint32_t master_pipes_mask;
->> +    igt_output_t *output;
->> +    igt_crtc_t *crtc;
->> +    int num_roots = 0;
->> +
->> +    for_each_crtc(display, crtc)
->> +        valid_pipes_mask |= BIT(crtc->pipe);
->> +
->> +    igt_set_all_master_pipes_for_platform(display, &master_pipes_mask);
->> +
->> +    for_each_connected_output(display, output) {
->> +        int root_id;
->> +        bool root_seen = false;
->> +
->> +        root_id = igt_get_dp_mst_connector_id(output);
->> +        if (root_id < 0) {
->> +            igt_info("Skipping non-mst output %s\n", output->name);
->> +            continue;
->> +        }
->> +
->> +        for (i = 0; i < num_roots; i++)
->> +            if (traversed_roots[i] == root_id)
->> +                root_seen = true;
->> +
->> +        if (root_seen)
->> +            continue;
->> +
->> +        num_mst = 0;
->> +        igt_require(igt_find_all_mst_output_in_topology(drm_fd, 
->> display,
->> +                            output, mst_outputs,
->> +                            &num_mst) == 0);
->> +        igt_assert_f(num_mst <= IGT_MAX_PIPES,
->> +                 "MST topology discovery overflow: num_mst=%d > 
->> IGT_MAX_PIPES=%d\n",
->> +                 num_mst, IGT_MAX_PIPES);
->> +        if (num_mst == 0) {
->> +            igt_info("No MST outputs found in topology for output 
->> %s\n",
->> +                 output->name);
->> +            igt_skip("No MST outputs found in topology\n");
->> +        }
->> +
->> +        if (num_roots < IGT_MAX_PIPES)
->> +            traversed_roots[num_roots++] = root_id;
->> +
->> +        if (num_mst > MAX_MST_OUTPUT)
->> +            num_mst = MAX_MST_OUTPUT;
->> +
->> +        igt_dynamic_f("mst-root-%d", root_id) {
->> +            int mask;
->> +
->> +            for (mask = 1; mask < (1 << num_mst); mask++) {
->> +                int bit, idx = 0;
->> +
->> +                /* build subset for this bitmask */
->> +                for (bit = 0; bit < num_mst; bit++) {
->> +                    if (!(mask & (1 << bit)))
->> +                        continue;
->> +
->> +                    if (idx >= MAX_MST_OUTPUT)
->> +                        break;
->> +
->> +                    active_outputs[idx++] = mst_outputs[bit];
->> +                }
->> +
->> +                num_active = idx;
->> +                if (!num_active)
->> +                    continue;
->> +
->> +                igt_display_reset(display);
->> +
->> +                run_mst_subset_and_verify(display, active_outputs,
->> +                              num_active, n_crtcs,
->> +                              master_pipes_mask,
->> +                              valid_pipes_mask);
->> +            }
->> +        }
->> +    }
->> +}
->> +
->>   static bool simulation_constraint(igt_crtc_t *crtc)
->>   {
->>       if (igt_run_in_simulation() && !extended &&
->> @@ -525,6 +833,12 @@ int igt_main_args("e", NULL, help_str, 
->> opt_handler, NULL)
->>           }
->>       }
->>   +    igt_describe("MST suspend test for pipe CRC reads.");
->> +    igt_subtest_with_dynamic("mst-suspend-read-crc") {
->> + igt_require(igt_display_has_mst_output(&data.display));
->> +        mst_suspend_read_crc(&data.display);
->> +    }
->> +
->>       igt_fixture() {
->>           igt_display_fini(&data.display);
->>           drm_close_driver(data.drm_fd);
->> diff --git a/tests/meson.build b/tests/meson.build
->> index 7f356de9b..06c0d8e98 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -399,6 +399,9 @@ extra_sources = {
->>              join_paths ('intel', 'kms_joiner_helper.c') ],
->>       'kms_dsc': [ join_paths ('intel', 'kms_dsc_helper.c') ],
->>       'kms_joiner': [ join_paths ('intel', 'kms_joiner_helper.c') ],
->> +    'kms_pipe_crc_basic': [
->> +        join_paths ('intel', 'kms_mst_helper.c'),
->> +        join_paths ('intel', 'kms_joiner_helper.c') ],
->>       'kms_psr2_sf':  [ join_paths ('intel', 'kms_dsc_helper.c') ],
->>   }
---------------B6r5sQ0ITOvi1mqIDqAeUdou
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 5c4879604..c6678b02b 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -6904,19 +6904,24 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
+>   bool max_non_joiner_mode_found(int drm_fd, drmModeConnector *connector,
+>   			   int max_dotclock, drmModeModeInfo *mode)
+>   {
+> -	int max_hdisplay = get_max_pipe_hdisplay(drm_fd);
+> +	bool found = false;
+>   
+>   	for (int i = 0; i < connector->count_modes; i++) {
+>   		drmModeModeInfo *current_mode = &connector->modes[i];
+>   
+> -		if (current_mode->hdisplay == max_hdisplay &&
+> -		    current_mode->clock < max_dotclock) {
+> +		if (igt_bigjoiner_possible(drm_fd, current_mode, max_dotclock))
+> +			continue;
+> +
+> +		if (!found ||
+> +		    current_mode->hdisplay > mode->hdisplay ||
+> +		    (current_mode->hdisplay == mode->hdisplay &&
+> +		     current_mode->clock > mode->clock)) {
+>   			*mode = *current_mode;
+> -			return true;
+> +			found = true;
+>   		}
+>   	}
+>   
+> -	return false;
+> +	return found;
+>   }
+>   
+>   /* TODO: Move these lib functions to the joiner-specific library file
+--------------oCPSa7F2n3TxNmnuvNWrmsSj
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 
@@ -632,8 +269,25 @@ Content-Transfer-Encoding: 8bit
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   </head>
   <body>
-    Minor nits can be adressed while merging.<br>
-    LGTM.<br>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 20-02-2026 08:52 pm, Kunal Joshi
+      wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:20260220152239.276034-3-kunal1.joshi@intel.com">
+      <pre wrap="" class="moz-quote-pre">The function previously required hdisplay == max_pipe_hdisplay (5120 on
+pre-Gen30), which means it returned false for any connector whose maximum
+resolution is below the pipe limit (e.g. a 4K MST output on a 5K-capable
+platform).
+
+Fix this by iterating all modes and tracking the best one (highest
+hdisplay, then highest clock as a tiebreaker) that does not require a
+big joiner, as determined by igt_bigjoiner_possible(). This correctly
+handles connectors with any max resolution.
+
+Fixes: 3830ca6a5068 (&quot;lib/igt_kms: Add support to check joiner mode limit&quot;)
+Signed-off-by: Kunal Joshi <a class="moz-txt-link-rfc2396E" href="mailto:kunal1.joshi@intel.com">&lt;kunal1.joshi@intel.com&gt;</a></pre>
+    </blockquote>
     <!--[if gte mso 9]><xml>
  <o:OfficeDocumentSettings>
   <o:AllowPNG/>
@@ -1273,839 +927,53 @@ Content-Transfer-Encoding: 8bit
 	font-family:"Times New Roman",serif;}
 </style>
 <![endif]-->
+    <p class="MsoNormal"><span style="">&nbsp;LGTM:
+      </span></p>
     <p class="MsoPlainText">Reviewed-by: Mohammed Thasleem &lt;<a href="mailto:mohammed.thasleem@intel.com" class="moz-txt-link-freetext">mohammed.thasleem@intel.com</a>&gt;</p>
     <br>
-    <div class="moz-cite-prefix">On 24-02-2026 02:05 pm, Thasleem,
-      Mohammed wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:b2bf05a5-f786-484b-948c-3a7a99825d25@intel.com">
-      <br>
-      On 20-02-2026 08:52 pm, Kunal Joshi wrote:
-      <br>
-      <blockquote type="cite">Add a new subtest mst-suspend-read-crc
-        that verifies MST outputs
-        <br>
-        preserve display content (via CRC comparison) across S3
-        suspend/resume.
-        <br>
-        <br>
-        The test enumerates all connected DP MST topologies, and for
-        each root
-        <br>
-        connector exercises all non-empty subsets of the discovered MST
-        outputs.
-        <br>
-        For each subset it:
-        <br>
-        &nbsp; - Assigns pipes and selects non-joiner modes
-        <br>
-        &nbsp; - Fits modes within bandwidth constraints
-        <br>
-        &nbsp; - Creates green FBs, commits, and collects pre-suspend CRCs
-        <br>
-        &nbsp; - Suspends to memory and resumes
-        <br>
-        &nbsp; - Collects post-suspend CRCs and asserts they match
-        <br>
-        <br>
-        v2:
-        <br>
-        - Add error handling for igt_pipe_crc_new (Thasleem)
-        <br>
-        - Improve log format with index for clarity (Thasleem)
-        <br>
-        - Order declarations in decreasing line length (Thasleem)
-        <br>
-        - Add print message when no MST found (Thasleem)
-        <br>
-        - Add bounds check for idx in subset loop (Thasleem)
-        <br>
-        - Use igt_crtc_crc_new() instead of igt_pipe_crc_new() (Ville)
-        <br>
-        <br>
-        v3:
-        <br>
-        - framebuffers missing in commit (Bilal)
-        <br>
-        <br>
-        v4:
-        <br>
-        - Drop cleanup framework
-        <br>
-        <br>
-        Signed-off-by: Kunal Joshi <a class="moz-txt-link-rfc2396E" href="mailto:kunal1.joshi@intel.com">&lt;kunal1.joshi@intel.com&gt;</a>
-        <br>
-        ---
-        <br>
-        &nbsp; tests/kms_pipe_crc_basic.c | 314
-        +++++++++++++++++++++++++++++++++++++
-        <br>
-        &nbsp; tests/meson.build&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp; 3 +
-        <br>
-        &nbsp; 2 files changed, 317 insertions(+)
-        <br>
-        <br>
-        diff --git a/tests/kms_pipe_crc_basic.c
-        b/tests/kms_pipe_crc_basic.c
-        <br>
-        index f7b6ec293..59a44e92e 100644
-        <br>
-        --- a/tests/kms_pipe_crc_basic.c
-        <br>
-        +++ b/tests/kms_pipe_crc_basic.c
-        <br>
-        @@ -32,7 +32,10 @@
-        <br>
-        &nbsp; &nbsp; #include &quot;igt.h&quot;
-        <br>
-        &nbsp; #include &quot;igt_sysfs.h&quot;
-        <br>
-        +#include &quot;intel/kms_mst_helper.h&quot;
-        <br>
-        +#include &quot;intel/kms_joiner_helper.h&quot;
-        <br>
-        &nbsp; #include &lt;errno.h&gt;
-        <br>
-        +#include &lt;limits.h&gt;
-        <br>
-        &nbsp; #include &lt;stdbool.h&gt;
-        <br>
-        &nbsp; #include &lt;stdio.h&gt;
-        <br>
-        &nbsp; #include &lt;string.h&gt;
-        <br>
-        @@ -77,6 +80,11 @@
-        <br>
-        &nbsp;&nbsp; *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CRTC does not cause issues.
-        <br>
-        &nbsp;&nbsp; */
-        <br>
-        &nbsp; +/**
-        <br>
-        + * SUBTEST: mst-suspend-read-crc
-        <br>
-        + * Description: MST suspend test for pipe CRC reads.
-        <br>
-        + */
-        <br>
-        +
-        <br>
-        &nbsp; static bool extended;
-        <br>
-        &nbsp; static enum pipe active_pipes[IGT_MAX_PIPES];
-        <br>
-        &nbsp; static uint32_t last_pipe;
-        <br>
-        @@ -96,6 +104,306 @@ static struct {
-        <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { .r = 0.0, .g = 1.0, .b = 1.0 },
-        <br>
-        &nbsp; };
-        <br>
-        &nbsp; +#define MAX_MST_OUTPUT 3
-        <br>
-        +
-        <br>
-        +static void collect_single_crc(igt_crtc_t *crtc, igt_crc_t
-        *crc)
-        <br>
-        +{
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_pipe_crc_t *pipe_crc;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; pipe_crc = igt_crtc_crc_new(crtc,
-        IGT_PIPE_CRC_SOURCE_AUTO);
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_assert(pipe_crc);
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_pipe_crc_collect_crc(pipe_crc, crc);
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_pipe_crc_free(pipe_crc);
-        <br>
-        +}
-        <br>
-        +
-        <br>
-        +static void collect_crc_for_active_outputs(igt_output_t
-        **outputs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int num_outputs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_crc_t *crcs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool post_suspend)
-        <br>
-        +{
-        <br>
-        +&nbsp;&nbsp;&nbsp; int i;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; for (i = 0; i &lt; num_outputs; i++) {
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_t *output = outputs[i];
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_crtc_t *crtc = igt_output_get_driving_crtc(output);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (post_suspend)
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_require_f(crtc,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;POST-SUSPEND: no driving CRTC for %s
-        (topology changed?)\n&quot;,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output-&gt;name);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_f(crtc,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;PRE-SUSPEND: no driving CRTC for %s (bad
-        pipe assignment?)\n&quot;,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output-&gt;name);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; collect_single_crc(crtc, &amp;crcs[i]);
-        <br>
-        +&nbsp;&nbsp;&nbsp; }
-        <br>
-        +}
-        <br>
-        +
-        <br>
-        +static void wait_for_vblanks(igt_output_t **outputs, int
-        num_outputs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool post_suspend)
-        <br>
-        +{
-        <br>
-        +&nbsp;&nbsp;&nbsp; int i;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; for (i = 0; i &lt; num_outputs; i++) {
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_crtc_t *crtc =
-        igt_output_get_driving_crtc(outputs[i]);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (post_suspend)
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_require_f(crtc,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;POST-SUSPEND: no driving CRTC for %s
-        during vblank wait (topology changed?)\n&quot;,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; outputs[i]-&gt;name);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_f(crtc,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;PRE-SUSPEND: no driving CRTC for %s
-        during vblank wait (bad pipe assignment?)\n&quot;,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; outputs[i]-&gt;name);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_wait_for_vblank(crtc);
-        <br>
-        +&nbsp;&nbsp;&nbsp; }
-        <br>
-        +}
-        <br>
-        +
-        <br>
-        +static void log_crc_for_outputs(igt_output_t **outputs, int
-        num_outputs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_crc_t *crcs, const char *stage)
-        <br>
-        +{
-        <br>
-        +&nbsp;&nbsp;&nbsp; int i;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; for (i = 0; i &lt; num_outputs; i++) {
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_t *o = outputs[i];
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo *m = igt_output_get_mode(o);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; char *s = igt_crc_to_string(&amp;crcs[i]);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_crtc_t *crtc = igt_output_get_driving_crtc(o);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_info(&quot;[%d] %s: output %s -&gt; crtc %s, CRC %s,
-        mode %dx%d@%d\n&quot;,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i, stage, o-&gt;name,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_crtc_name(crtc),
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; s,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m ? m-&gt;hdisplay : -1,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m ? m-&gt;vdisplay : -1,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m ? m-&gt;vrefresh : 0);
-        <br>
-      </blockquote>
-      --&gt; I think we can guard this using igt_debug() instead of
-      igt_info().
-      <br>
-      <blockquote type="cite">+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; free(s);
-        <br>
-        +&nbsp;&nbsp;&nbsp; }
-        <br>
-        +}
-        <br>
-        +
-        <br>
-        +/*
-        <br>
-        + * Select non-joiner modes for all outputs to ensure CRC
-        collection works.
-        <br>
-        + * Joiner configurations consume multiple pipes and are not yet
-        validated here.
-        <br>
-        + * Must be called before igt_fit_modes_in_bw() so that
-        bandwidth fitting uses
-        <br>
-        + * the correct (non-joiner) modes.
-        <br>
-        + */
-        <br>
-        +static void select_non_joiner_modes(int drm_fd, igt_output_t
-        **outputs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int num_outputs)
-        <br>
-        +{
-        <br>
-        +&nbsp;&nbsp;&nbsp; int max_dotclock = igt_get_max_dotclock(drm_fd);
-        <br>
-        +&nbsp;&nbsp;&nbsp; int i;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; if (max_dotclock &lt;= 0)
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max_dotclock = INT_MAX;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; for (i = 0; i &lt; num_outputs; i++) {
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_t *output = outputs[i];
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo non_joiner_mode;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_require_f(max_non_joiner_mode_found(drm_fd,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output-&gt;config.connector,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; max_dotclock,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;non_joiner_mode),
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;No non-joiner mode found for %s\n&quot;,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output-&gt;name);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_override_mode(output, &amp;non_joiner_mode);
-        <br>
-        +&nbsp;&nbsp;&nbsp; }
-        <br>
-        +}
-        <br>
-        +
-        <br>
-        +static void create_fbs_for_outputs(int drm_fd, igt_output_t
-        **outputs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int num_outputs, struct igt_fb *fbs)
-        <br>
-        +{
-        <br>
-        +&nbsp;&nbsp;&nbsp; int i;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; for (i = 0; i &lt; num_outputs; i++) {
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_t *output = outputs[i];
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drmModeModeInfo *mode = igt_output_get_mode(output);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_t *primary;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_require_f(mode, &quot;No mode available for output
-        %s\n&quot;, output-&gt;name);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; primary = igt_output_get_plane_type(output,
-        DRM_PLANE_TYPE_PRIMARY);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_create_color_fb(drm_fd,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mode-&gt;hdisplay, mode-&gt;vdisplay,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DRM_FORMAT_XRGB8888,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DRM_FORMAT_MOD_LINEAR,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.0, 1.0, 0.0,&nbsp; /* Green color */
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;fbs[i]);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_fb(primary, &amp;fbs[i]);
-        <br>
-        +&nbsp;&nbsp;&nbsp; }
-        <br>
-        +}
-        <br>
-        +
-        <br>
-        +static void run_mst_subset_and_verify(igt_display_t *display,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_t **active_outputs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int num_active,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int n_crtcs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; uint32_t master_pipes_mask,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; uint32_t valid_pipes_mask)
-        <br>
-        +{
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_crc_t pre_crcs[MAX_MST_OUTPUT];
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_crc_t post_crcs[MAX_MST_OUTPUT];
-        <br>
-        +&nbsp;&nbsp;&nbsp; struct igt_fb fbs[MAX_MST_OUTPUT];
-        <br>
-        +&nbsp;&nbsp;&nbsp; uint32_t used_pipes_mask = 0;
-        <br>
-        +&nbsp;&nbsp;&nbsp; enum igt_suspend_test stest = SUSPEND_TEST_NONE;
-        <br>
-        +&nbsp;&nbsp;&nbsp; int drm_fd = display-&gt;drm_fd;
-        <br>
-        +&nbsp;&nbsp;&nbsp; int a;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_require_f(num_active &lt;= n_crtcs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;Not enough crtcs for MST subset\n&quot;);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_require(igt_assign_pipes_for_outputs(drm_fd,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; active_outputs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; num_active,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; n_crtcs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;used_pipes_mask,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; master_pipes_mask,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; valid_pipes_mask));
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; select_non_joiner_modes(drm_fd, active_outputs,
-        num_active);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_require_f(igt_fit_modes_in_bw(display),
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;Unable to fit modes in bw\n&quot;);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; create_fbs_for_outputs(drm_fd, active_outputs, num_active,
-        fbs);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_display_commit2(display, COMMIT_ATOMIC);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; /* rtcwake cmd is not supported on MTK devices */
-        <br>
-        +&nbsp;&nbsp;&nbsp; if (is_mtk_device(drm_fd))
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; stest = SUSPEND_TEST_DEVICES;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_info(&quot;MST subset: %d outputs, n_crtcs=%d\n&quot;,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; num_active, n_crtcs);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; wait_for_vblanks(active_outputs, num_active, false);
-        <br>
-        +&nbsp;&nbsp;&nbsp; wait_for_vblanks(active_outputs, num_active, false);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; collect_crc_for_active_outputs(active_outputs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; num_active,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pre_crcs, false);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; log_crc_for_outputs(active_outputs, num_active, pre_crcs,
-        &quot;PRE-SUSPEND&quot;);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_system_suspend_autoresume(SUSPEND_STATE_MEM, stest);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; wait_for_vblanks(active_outputs, num_active, true);
-        <br>
-        +&nbsp;&nbsp;&nbsp; wait_for_vblanks(active_outputs, num_active, true);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; collect_crc_for_active_outputs(active_outputs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; num_active,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; post_crcs, true);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; log_crc_for_outputs(active_outputs, num_active, post_crcs,
-        &quot;POST-SUSPEND&quot;);
-        <br>
-        +
-        <br>
-      </blockquote>
-      &nbsp; &nbsp; Variable naming --&gt;'a' could be more descriptive, might be
-      --&gt; output_idx? or any suitable..
-      <br>
-      <blockquote type="cite">+&nbsp;&nbsp;&nbsp; for (a = 0; a &lt; num_active; a++)
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_crc_equal(&amp;pre_crcs[a],
-        &amp;post_crcs[a]);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; /* Detach FBs from planes and remove them to leave a clean
-        state */
-        <br>
-        +&nbsp;&nbsp;&nbsp; for (a = 0; a &lt; num_active; a++) {
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_t *primary =
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_output_get_plane_type(active_outputs[a],
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DRM_PLANE_TYPE_PRIMARY);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_plane_set_fb(primary, NULL);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_remove_fb(drm_fd, &amp;fbs[a]);
-        <br>
-        +&nbsp;&nbsp;&nbsp; }
-        <br>
-        +}
-        <br>
-        +
-        <br>
-        +static void mst_suspend_read_crc(igt_display_t *display)
-        <br>
-        +{
-        <br>
-        +&nbsp;&nbsp;&nbsp; int n_crtcs = igt_display_n_crtcs(display);
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_output_t *active_outputs[MAX_MST_OUTPUT];
-        <br>
-        +&nbsp;&nbsp;&nbsp; /*
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp; * igt_find_all_mst_output_in_topology() internally caps
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp; * discovery at IGT_MAX_PIPES entries, so this is the
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp; * correct upper bound for the buffer.
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp; */
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_output_t *mst_outputs[IGT_MAX_PIPES];
-        <br>
-        +&nbsp;&nbsp;&nbsp; /* Fixed upper bound for tracking traversed root
-        connectors. */
-        <br>
-        +&nbsp;&nbsp;&nbsp; int traversed_roots[IGT_MAX_PIPES] = { 0 };
-        <br>
-        +&nbsp;&nbsp;&nbsp; int drm_fd = display-&gt;drm_fd;
-        <br>
-        +&nbsp;&nbsp;&nbsp; uint32_t valid_pipes_mask = 0;
-        <br>
-        +&nbsp;&nbsp;&nbsp; int num_mst, i, num_active;
-        <br>
-        +&nbsp;&nbsp;&nbsp; uint32_t master_pipes_mask;
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_output_t *output;
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_crtc_t *crtc;
-        <br>
-        +&nbsp;&nbsp;&nbsp; int num_roots = 0;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; for_each_crtc(display, crtc)
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; valid_pipes_mask |= BIT(crtc-&gt;pipe);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_set_all_master_pipes_for_platform(display,
-        &amp;master_pipes_mask);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp; for_each_connected_output(display, output) {
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int root_id;
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; bool root_seen = false;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root_id = igt_get_dp_mst_connector_id(output);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (root_id &lt; 0) {
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_info(&quot;Skipping non-mst output %s\n&quot;,
-        output-&gt;name);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (i = 0; i &lt; num_roots; i++)
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (traversed_roots[i] == root_id)
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; root_seen = true;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (root_seen)
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; num_mst = 0;
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_require(igt_find_all_mst_output_in_topology(drm_fd,
-        display,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output, mst_outputs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &amp;num_mst) == 0);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_f(num_mst &lt;= IGT_MAX_PIPES,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;MST topology discovery overflow: num_mst=%d
-        &gt; IGT_MAX_PIPES=%d\n&quot;,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; num_mst, IGT_MAX_PIPES);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (num_mst == 0) {
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_info(&quot;No MST outputs found in topology for
-        output %s\n&quot;,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; output-&gt;name);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_skip(&quot;No MST outputs found in topology\n&quot;);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (num_roots &lt; IGT_MAX_PIPES)
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; traversed_roots[num_roots++] = root_id;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (num_mst &gt; MAX_MST_OUTPUT)
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; num_mst = MAX_MST_OUTPUT;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_dynamic_f(&quot;mst-root-%d&quot;, root_id) {
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int mask;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (mask = 1; mask &lt; (1 &lt;&lt; num_mst);
-        mask++) {
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int bit, idx = 0;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* build subset for this bitmask */
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (bit = 0; bit &lt; num_mst; bit++) {
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!(mask &amp; (1 &lt;&lt; bit)))
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (idx &gt;= MAX_MST_OUTPUT)
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; active_outputs[idx++] = mst_outputs[bit];
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; num_active = idx;
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!num_active)
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; continue;
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_display_reset(display);
-        <br>
-        +
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; run_mst_subset_and_verify(display,
-        active_outputs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; num_active, n_crtcs,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; master_pipes_mask,
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; valid_pipes_mask);
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
-        <br>
-        +&nbsp;&nbsp;&nbsp; }
-        <br>
-        +}
-        <br>
-        +
-        <br>
-        &nbsp; static bool simulation_constraint(igt_crtc_t *crtc)
-        <br>
-        &nbsp; {
-        <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (igt_run_in_simulation() &amp;&amp; !extended
-        &amp;&amp;
-        <br>
-        @@ -525,6 +833,12 @@ int igt_main_args(&quot;e&quot;, NULL, help_str,
-        opt_handler, NULL)
-        <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
-        <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
-        <br>
-        &nbsp; +&nbsp;&nbsp;&nbsp; igt_describe(&quot;MST suspend test for pipe CRC reads.&quot;);
-        <br>
-        +&nbsp;&nbsp;&nbsp; igt_subtest_with_dynamic(&quot;mst-suspend-read-crc&quot;) {
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        igt_require(igt_display_has_mst_output(&amp;data.display));
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mst_suspend_read_crc(&amp;data.display);
-        <br>
-        +&nbsp;&nbsp;&nbsp; }
-        <br>
-        +
-        <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_fixture() {
-        <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_display_fini(&amp;data.display);
-        <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; drm_close_driver(data.drm_fd);
-        <br>
-        diff --git a/tests/meson.build b/tests/meson.build
-        <br>
-        index 7f356de9b..06c0d8e98 100644
-        <br>
-        --- a/tests/meson.build
-        <br>
-        +++ b/tests/meson.build
-        <br>
-        @@ -399,6 +399,9 @@ extra_sources = {
-        <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; join_paths ('intel', 'kms_joiner_helper.c') ],
-        <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'kms_dsc': [ join_paths ('intel', 'kms_dsc_helper.c') ],
-        <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'kms_joiner': [ join_paths ('intel',
-        'kms_joiner_helper.c') ],
-        <br>
-        +&nbsp;&nbsp;&nbsp; 'kms_pipe_crc_basic': [
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; join_paths ('intel', 'kms_mst_helper.c'),
-        <br>
-        +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; join_paths ('intel', 'kms_joiner_helper.c') ],
-        <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 'kms_psr2_sf':&nbsp; [ join_paths ('intel', 'kms_dsc_helper.c')
-        ],
-        <br>
-        &nbsp; }
-        <br>
-        &nbsp; </blockquote>
+    <blockquote type="cite" cite="mid:20260220152239.276034-3-kunal1.joshi@intel.com">
+      <pre wrap="" class="moz-quote-pre">
+---
+ lib/igt_kms.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 5c4879604..c6678b02b 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6904,19 +6904,24 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
+ bool max_non_joiner_mode_found(int drm_fd, drmModeConnector *connector,
+ 			   int max_dotclock, drmModeModeInfo *mode)
+ {
+-	int max_hdisplay = get_max_pipe_hdisplay(drm_fd);
++	bool found = false;
+ 
+ 	for (int i = 0; i &lt; connector-&gt;count_modes; i++) {
+ 		drmModeModeInfo *current_mode = &amp;connector-&gt;modes[i];
+ 
+-		if (current_mode-&gt;hdisplay == max_hdisplay &amp;&amp;
+-		    current_mode-&gt;clock &lt; max_dotclock) {
++		if (igt_bigjoiner_possible(drm_fd, current_mode, max_dotclock))
++			continue;
++
++		if (!found ||
++		    current_mode-&gt;hdisplay &gt; mode-&gt;hdisplay ||
++		    (current_mode-&gt;hdisplay == mode-&gt;hdisplay &amp;&amp;
++		     current_mode-&gt;clock &gt; mode-&gt;clock)) {
+ 			*mode = *current_mode;
+-			return true;
++			found = true;
+ 		}
+ 	}
+ 
+-	return false;
++	return found;
+ }
+ 
+ /* TODO: Move these lib functions to the joiner-specific library file
+</pre>
     </blockquote>
   </body>
 </html>
 
---------------B6r5sQ0ITOvi1mqIDqAeUdou--
+--------------oCPSa7F2n3TxNmnuvNWrmsSj--
