@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A4F0EFB811
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 08:23:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB163EFB801
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 08:24:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F280010E0BA;
-	Tue, 24 Feb 2026 08:23:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8A8EE10E4DE;
+	Tue, 24 Feb 2026 08:24:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U3gkIg0Q";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kVI+JiNA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D4A810E0BA
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 08:23:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E24E10E0BA
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 08:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771921397; x=1803457397;
+ t=1771921461; x=1803457461;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=30gtuE5nqxhc5Onyubvt4vKi7sRuaCmcCyMOE+nnWRw=;
- b=U3gkIg0QBd+YRYWzw5NyFcq+7YHGvU2QVAVO55LtDZwEUZX8M6c3U5Se
- 44Sv2D+5EO2Ft2uN1Za+C6a9mlfNYvINWPnSebZm6pt35i0D9ksdHHWkh
- 8Qh7YxErXIWrTZDJIzbgZbqt4mK//0CU0Jwic5RU5thRQjTYMwaoeXXpp
- rOFMjQzUUoEJdx0j8e4zvDWef3lgFW2O3Wn4FiZEOGUcCS0I0nWj0FHc0
- owbJvC7oOBeTKcbFQbO5Gl4zci5aI/Phvu7pNJdYUcGp5aqD5zSxBL3c2
- 5sgL0JiJp7erl9wKkJQWVT8CaIcJijPcqdmR69SVN4LMF7VA1rxA3xrea w==;
-X-CSE-ConnectionGUID: c2U19vlRR8q6P96GSjNAFw==
-X-CSE-MsgGUID: Rt4ejll8Qf63M16u0iWLaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="76540567"
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="76540567"
+ bh=YO1VNDxgqpciHEZWHILaU/8s2C3WWJvdWpEn+w6FrLU=;
+ b=kVI+JiNA6/F2KCWCZ55ahvOCdkkNlwCWK6PaW9audIKLctOSWZ/nsZ7b
+ Un9/sVBul17pTabisF59fIQ9Y01Schz+NfaOh0SXs4Se1HoiMtQpOClEx
+ bN0LqPtuh9iRjN8vtQd/U5nd0enRp4tkZOr9NYkW55Wb6Wm6GohBU4hZd
+ J/zQOFElATh08NC0da2EU75W0c74kPfVag02g516aLZ4T3uSbglh07vej
+ hXLpJJ9OJSfy+hCMcMaLjUVmepWW9PPUhfrOysQvSw68fZd9PrXiJM44F
+ EWSLFiKv7DBoMguBPXSUQJj+c6WOHlIVZe1fWnRzQl7V0IlijNGsR21rj A==;
+X-CSE-ConnectionGUID: TOuJQAIdRXCdxm4OIEhlmw==
+X-CSE-MsgGUID: E/5Z9TgyS3KrAAcvsgJPPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="76540650"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="76540650"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 00:23:17 -0800
-X-CSE-ConnectionGUID: qoBk+ihjRbCQ4Dpj0g3hcA==
-X-CSE-MsgGUID: DDoCheSnQwmPATFKvCQj1g==
+ 24 Feb 2026 00:24:21 -0800
+X-CSE-ConnectionGUID: xX2Ncs3AQaubkxZdc/0Ltw==
+X-CSE-MsgGUID: mq359xOSTMCTPmfyndtKng==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="220351673"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="220351949"
 Received: from amiszcza-desk-dev.igk.intel.com (HELO localhost)
  ([10.91.214.39])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 00:23:16 -0800
+ 24 Feb 2026 00:24:19 -0800
 From: Adam Miszczak <adam.miszczak@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: marcin.bernatowicz@linux.intel.com,
 	kamil.konieczny@linux.intel.com
-Subject: [PATCH i-g-t 04/10] tools/vmtb: Extend IGT and WSIM abstractions
-Date: Tue, 24 Feb 2026 08:50:21 +0100
-Message-Id: <20260224075027.2409675-5-adam.miszczak@linux.intel.com>
+Subject: [PATCH i-g-t 05/10] tools/vmtb: VF auto/fair provisioning support
+Date: Tue, 24 Feb 2026 08:50:22 +0100
+Message-Id: <20260224075027.2409675-6-adam.miszczak@linux.intel.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20260224075027.2409675-1-adam.miszczak@linux.intel.com>
 References: <20260224075027.2409675-1-adam.miszczak@linux.intel.com>
@@ -70,69 +70,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce few improvements to IGT and gem_wsim executors:
+Currently test variants allow provisioning with vGPU profiles only,
+however, xe KMD supports also fair resources allocation (auto-provisioning).
+Therefore, the following provisioning modes shall be supported from now:
+- vGPU profile: both PF/VF resources and scheduling (via debugfs)
+- fair/auto provisioning (driver defaults for resources and scheduling)
+- fair/auto resources provisioning with concrete scheduling profile
 
-1. Add gem_wsim workload descriptor resources config
-In order to place workload files in a common resources directory,
-extend VMTB config with a relevant entry and read the path in a conftest.
+Test variants are now specified as a list of 3-element tuples:
+   test_variants_N = [(num_of_vfs, VfProvisioningMode.X, VfSchedulingMode.Y), ...]
+Test ID printed in the following format:
+   test_name[NxVF-(P:provisioning_mode S:scheduling_mode)]
 
-Implement capability for device specific workload files in wsim resources
-directory (as different GPU devices may have various sets of engines).
-Wsim device specific path format looks as follows:
-[vmtb_root_path]/vmm_flows/resources/wsim/[device_name_abbr]/[wl_desc].wsim
-e.g.:
-- resources/wsim/ptl/wl.wsim
-- resources/wsim/bmg/wl.wsim
-
-2. Support gem_wsim workload files on VM
-So far GemWsim was initialized with a simple string workload descriptor
-passed with '-w <workload>' option.
-However, multiple complex workloads are expected for a busy VF migration
-scenarios - therefore it would be handy to define it as workload files.
-Gem_wsim input files will be deployed as VMTB resources on a host,
-whereas we want to execute it on VM as well.
-Hence, content of the wsim workload file is copied to /tmp on a guest/host
-and executed from that location.
-In case of the host, original (resources) location will work
-as a wsim file input, however temp file is still used for simplicity
-and consistency (to avoid instance type checks).
-
-3. Add IGT and WSIM results check function
-Extend IgtExecutor and GemWsim with new check_results() method to allow
-object-oriented approach for checking IGT/WSIM results and unify interfaces.
-Existing helper - igt_check(IgtExecutor) is still supported,
-but IgtExecutor.check_results() is now preferred.
-Also, implement IgtExecutor's is_running() (similarly to GemWsim)
-and keep the process state (ProcessResult).
-
-Introduced change simplifies supporting both IGT and gem_wsim workloads
-in busy migration tests.
-
-4. Support IGT tests repeated execution
-Few planned VF busy migration scenarios require executing short IGT tests
-in a longer time slot (in a loop).
-To achieve it, allow IgtExecutor to accept expected number of IGT test
-repeats and reflect it in a testlist passed to the igt_runner
-(multiply requested test entries).
-
-By default, IgtExecutor's 'num_repeats' input parameter is set to 1,
-so in the usual case (single IGT execution) it doesn't need to be
-explicitly provided.
+Additional changes:
+- align parametrized tests with the new variants format
+- use Device methods: set_resources and set_scheduling
+  for relevant provisioning modes
+- split vGPU profile printing to resources and scheduler part
+- fix PF lmem_spare getter/setter to check for LMEM presence
+- detect standalone media GT for proper VF provisioning
 
 Signed-off-by: Adam Miszczak <adam.miszczak@linux.intel.com>
 ---
- tools/vmtb/bench/configurators/vmtb_config.py |  4 +-
- tools/vmtb/bench/executors/gem_wsim.py        | 45 +++++++++++++++----
- tools/vmtb/bench/executors/igt.py             | 36 ++++++++++++---
- tools/vmtb/bench/machines/physical/device.py  |  2 +-
- tools/vmtb/vmm_flows/conftest.py              |  8 +++-
- tools/vmtb/vmtb_config.json                   |  1 +
- 6 files changed, 78 insertions(+), 18 deletions(-)
+ .../vmtb/bench/configurators/vgpu_profile.py  | 37 +++++---
+ .../configurators/vgpu_profile_config.py      |  7 +-
+ tools/vmtb/bench/drivers/driver_interface.py  |  6 +-
+ tools/vmtb/bench/drivers/xe.py                | 16 +++-
+ tools/vmtb/bench/machines/physical/device.py  | 58 +++++++-----
+ tools/vmtb/vmm_flows/conftest.py              | 89 ++++++++++++++-----
+ tools/vmtb/vmm_flows/test_basic.py            | 21 +++--
+ 7 files changed, 164 insertions(+), 70 deletions(-)
 
-diff --git a/tools/vmtb/bench/configurators/vmtb_config.py b/tools/vmtb/bench/configurators/vmtb_config.py
-index 49dde4589..8fd2b87d5 100644
---- a/tools/vmtb/bench/configurators/vmtb_config.py
-+++ b/tools/vmtb/bench/configurators/vmtb_config.py
+diff --git a/tools/vmtb/bench/configurators/vgpu_profile.py b/tools/vmtb/bench/configurators/vgpu_profile.py
+index 7c536c1d0..c680fdb83 100644
+--- a/tools/vmtb/bench/configurators/vgpu_profile.py
++++ b/tools/vmtb/bench/configurators/vgpu_profile.py
 @@ -1,5 +1,5 @@
  # SPDX-License-Identifier: MIT
 -# Copyright © 2024 Intel Corporation
@@ -140,229 +112,483 @@ index 49dde4589..8fd2b87d5 100644
  
  import json
  import logging
-@@ -40,6 +40,7 @@ class VmtbConfig:
-     host_config: VmtbHostConfig
-     guest_config: VmtbGuestConfig
-     vgpu_profiles_path: str
-+    wsim_wl_path: str
-     guc_ver_path: str
-     ci_host_dmesg_file: str
- 
-@@ -104,6 +105,7 @@ class VmtbConfigJsonReader:
-             host_config=vmtb_host_config,
-             guest_config=vmtb_guest_config,
-             vgpu_profiles_path=config_json['resources']['vgpu_profiles_path'],
-+            wsim_wl_path=config_json['resources']['wsim_wl_path'],
-             guc_ver_path=config_json['resources']['guc_ver_path'],
-             ci_host_dmesg_file=config_json['ci']['host_dmesg_file'])
- 
-diff --git a/tools/vmtb/bench/executors/gem_wsim.py b/tools/vmtb/bench/executors/gem_wsim.py
-index 46fa2291c..0cdfcc7e4 100644
---- a/tools/vmtb/bench/executors/gem_wsim.py
-+++ b/tools/vmtb/bench/executors/gem_wsim.py
-@@ -1,9 +1,10 @@
- # SPDX-License-Identifier: MIT
--# Copyright © 2024 Intel Corporation
-+# Copyright © 2024-2026 Intel Corporation
- 
- import logging
- import re
- import typing
-+from pathlib import Path
- 
- from bench import exceptions
- from bench.executors.shell import ShellExecutor
-@@ -23,13 +24,28 @@ PREEMPT_10MS_WORKLOAD = (f'1.DEFAULT.{int(ONE_CYCLE_DURATION_MS * 1000 / 2)}.0.0
- NON_PREEMPT_10MS_WORKLOAD = f'X.1.0,X.2.0,{PREEMPT_10MS_WORKLOAD}'
- 
- class GemWsim(ShellExecutor):
--    def __init__(self, machine: MachineInterface, num_clients: int = 1, num_repeats: int = 1,
--                 workload: str = PREEMPT_10MS_WORKLOAD, timeout: int = DEFAULT_TIMEOUT) -> None:
--        super().__init__(
--            machine,
--            f'/usr/local/libexec/igt-gpu-tools/benchmarks/gem_wsim -w {workload} -c {num_clients} -r {num_repeats}',
--            timeout)
--        self.machine_id = str(machine)
-+    def __init__(self, target: MachineInterface,
-+                 num_clients: int = 1,
-+                 num_repeats: int = 1,
-+                 workload: str = PREEMPT_10MS_WORKLOAD,
-+                 timeout: int = DEFAULT_TIMEOUT) -> None:
+@@ -55,8 +55,19 @@ class VgpuProfile:
+     def print_parameters(self) -> None:
+         logger.info(
+             "\nvGPU Profile:\n"
+-            "   Num VFs = %s\n"
+-            "\nResources:\n"
++            "   Num VFs = %s\n",
++            self.num_vfs)
++        self.print_resources_config()
++        self.print_scheduler_config()
++        logger.info(
++            "\nSecurity:\n"
++            "   Reset After Vf Switch = %s\n",
++            self.security.reset_after_vf_switch
++        )
 +
-+        self.machine_id = str(target)
-+        wl_file_path = Path(workload)
++    def print_resources_config(self) -> None:
++        logger.info(
++            "\nResources config:\n"
+             "   PF:\n"
+             "\tLMEM = %s B\n"
+             "\tContexts = %s\n"
+@@ -66,24 +77,24 @@ class VgpuProfile:
+             "\tLMEM = %s B\n"
+             "\tContexts = %s\n"
+             "\tDoorbells = %s\n"
+-            "\tGGTT = %s B\n"
+-            "\nScheduling:\n"
++            "\tGGTT = %s B\n",
++            self.resources.pfLmem, self.resources.pfContexts, self.resources.pfDoorbells, self.resources.pfGgtt,
++            self.resources.vfLmem, self.resources.vfContexts, self.resources.vfDoorbells, self.resources.vfGgtt,
++        )
 +
-+        if wl_file_path.is_file():
-+            # Copy workload descriptor from the source host file
-+            # to the requested target machine (VM or host)
-+            workload = '/tmp/igt_workload.wsim'
-+            wl_desc = wl_file_path.read_text(encoding='utf-8')
-+            target.write_file_content(workload, wl_desc)
-+
-+            logger.debug("IGT/wsim workload descriptor:\n%s", wl_desc)
-+
-+        wsim_path = Path(target.get_igt_config().test_dir) / 'benchmarks' / 'gem_wsim'
-+        command = f'{wsim_path} -w {workload} -c {num_clients} -r {num_repeats}'
-+
-+        super().__init__(target, command, timeout)
++    def print_scheduler_config(self) -> None:
++        logger.info(
++            "\nScheduling config:\n"
+             "   Schedule If Idle = %s\n"
+             "   PF:\n"
+             "\tExecution Quanta = %s ms\n"
+             "\tPreemption Timeout = %s us\n"
+             "   VF:\n"
+             "\tExecution Quanta = %s ms\n"
+-            "\tPreemption Timeout = %s us\n"
+-            "\nSecurity:\n"
+-            "   Reset After Vf Switch = %s\n",
+-            self.num_vfs,
+-            self.resources.pfLmem, self.resources.pfContexts, self.resources.pfDoorbells, self.resources.pfGgtt,
+-            self.resources.vfLmem, self.resources.vfContexts, self.resources.vfDoorbells, self.resources.vfGgtt,
++            "\tPreemption Timeout = %s us\n",
+             self.scheduler.scheduleIfIdle,
+             self.scheduler.pfExecutionQuanta, self.scheduler.pfPreemptionTimeout,
+-            self.scheduler.vfExecutionQuanta, self.scheduler.vfPreemptionTimeout,
+-            self.security.reset_after_vf_switch
++            self.scheduler.vfExecutionQuanta, self.scheduler.vfPreemptionTimeout
+         )
  
-     def __str__(self) -> str:
-         return f'gem_wsim({self.machine_id}:{self.pid})'
-@@ -49,6 +65,19 @@ class GemWsim(ShellExecutor):
-         raise exceptions.GemWsimError(f'{self}: exit_code: {proc_result.exit_code}'
-                                       f' stdout: {proc_result.stdout} stderr: {proc_result.stderr}')
  
-+    def check_results(self) -> bool:
-+        """Verify gem_wsim execution results. Return True for workload success, False on fail."""
-+        # TODO: support also checking wsim workload: 'Verify Xe spinner batch completion'
-+        try:
-+            wl_results: GemWsimResult = self.wait_results()
-+        except exceptions.GemWsimError as exc:
-+            logger.error("[%s] WSIM failed: %s", self.target, exc)
-+            return False
-+
-+        logger.debug("[%s] WSIM passed in %ss (%s WL/s)",
-+                      self.target, wl_results.elapsed_sec, wl_results.workloads_per_sec)
-+        return True
-+
- 
- def gem_wsim_parallel_exec_and_check(vms: typing.List[MachineInterface], workload: str, iterations: int,
-                                      expected: typing.Optional[GemWsimResult] = None) -> GemWsimResult:
-diff --git a/tools/vmtb/bench/executors/igt.py b/tools/vmtb/bench/executors/igt.py
-index 4296464c2..a08f71d54 100644
---- a/tools/vmtb/bench/executors/igt.py
-+++ b/tools/vmtb/bench/executors/igt.py
+diff --git a/tools/vmtb/bench/configurators/vgpu_profile_config.py b/tools/vmtb/bench/configurators/vgpu_profile_config.py
+index 915cfb2b8..4bddb641e 100644
+--- a/tools/vmtb/bench/configurators/vgpu_profile_config.py
++++ b/tools/vmtb/bench/configurators/vgpu_profile_config.py
 @@ -1,5 +1,5 @@
  # SPDX-License-Identifier: MIT
 -# Copyright © 2024 Intel Corporation
 +# Copyright © 2024-2026 Intel Corporation
  
+ import logging
+ from enum import Enum
+@@ -17,6 +17,11 @@ from bench.configurators.vgpu_profile import (VgpuProfile,
+ logger = logging.getLogger('DeviceConfigurator')
+ 
+ 
++class VfProvisioningMode(Enum):
++    VGPU_PROFILE = 0
++    AUTO = 1
++
++
+ class VfSchedulingMode(str, Enum):
+     INFINITE = 'Infinite' # Infinite EQ/PT - HW default
+     DEFAULT_PROFILE = 'Default_Profile' # Default vGPU scheduler profile
+diff --git a/tools/vmtb/bench/drivers/driver_interface.py b/tools/vmtb/bench/drivers/driver_interface.py
+index af2f96837..3026fece7 100644
+--- a/tools/vmtb/bench/drivers/driver_interface.py
++++ b/tools/vmtb/bench/drivers/driver_interface.py
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: MIT
+-# Copyright © 2024 Intel Corporation
++# Copyright © 2024-2026 Intel Corporation
+ 
+ import abc
  import enum
- import json
-@@ -34,6 +34,7 @@ igt_tests: typing.Dict[IgtType, typing.Tuple[str, str]] = {
- class IgtExecutor(ExecutorInterface):
-     def __init__(self, target: MachineInterface,
-                  test: typing.Union[str, IgtType],
-+                 num_repeats: int = 1,
-                  timeout: int = DEFAULT_TIMEOUT) -> None:
-         self.igt_config = target.get_igt_config()
+@@ -65,6 +65,10 @@ class DriverInterface(abc.ABC):
+     def has_lmem(self) -> bool:
+         raise NotImplementedError
  
-@@ -46,18 +47,25 @@ class IgtExecutor(ExecutorInterface):
-         self.results: typing.Dict[str, typing.Any] = {}
-         self.target: MachineInterface = target
-         self.igt: str = test if isinstance(test, str) else self.select_igt_variant(target.get_drm_driver_name(), test)
--        self.target.write_file_content(testlist, self.igt)
--        self.timeout: int = timeout
- 
-         logger.info("[%s] Execute IGT test: %s", target, self.igt)
-+        if num_repeats > 1:
-+            logger.debug("Repeat IGT execution %s times", num_repeats)
-+            self.igt = (self.igt + '\n') * num_repeats
++    @abc.abstractmethod
++    def is_media_gt(self, gt_num: int) -> bool:
++        raise NotImplementedError
 +
-+        self.target.write_file_content(testlist, self.igt)
-+        self.timeout: int = timeout
-+        self.proc_result = ProcessResult()
-         self.pid: int = self.target.execute(command)
+     @abc.abstractmethod
+     def get_auto_provisioning(self) -> bool:
+         raise NotImplementedError
+diff --git a/tools/vmtb/bench/drivers/xe.py b/tools/vmtb/bench/drivers/xe.py
+index 009cec5be..c2b9643bb 100644
+--- a/tools/vmtb/bench/drivers/xe.py
++++ b/tools/vmtb/bench/drivers/xe.py
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: MIT
+-# Copyright © 2024 Intel Corporation
++# Copyright © 2024-2026 Intel Corporation
  
-     # Executor interface implementation
-     def status(self) -> ProcessResult:
--        return self.target.execute_status(self.pid)
-+        self.proc_result = self.target.execute_status(self.pid)
-+        return self.proc_result
+ import logging
+ import typing
+@@ -95,11 +95,18 @@ class XeDriver(DriverInterface):
+         path = self.debugfs_path / 'gt0' / 'pf' / 'lmem_spare'
+         return path.exists()
  
-     def wait(self) -> ProcessResult:
--        return self.target.execute_wait(self.pid, self.timeout)
-+        self.proc_result = self.target.execute_wait(self.pid, self.timeout)
-+        return self.proc_result
- 
-     def sendsig(self, sig: signal.Signals) -> None:
-         self.target.execute_signal(self.pid, sig)
-@@ -69,9 +77,25 @@ class IgtExecutor(ExecutorInterface):
-         self.sendsig(signal.SIGKILL)
- 
-     # IGT specific methods
-+    def is_running(self) -> bool:
-+        return not self.status().exited
++    def is_media_gt(self, gt_num: int) -> bool:
++        # XXX: is lack of PF's ggtt/lmem_spare or VF's ggtt/lmem_quota
++        # a best way to check for standalone media GT?
++        path = self.debugfs_path / f'gt{gt_num}' / 'pf' / 'ggtt_spare'
++        return not path.exists()
 +
-+    def check_results(self) -> bool:
-+        """Verify IGT test results. Return True for test success, False on fail."""
-+        if not self.proc_result.exited:
-+            self.proc_result = self.wait()
-+
-+        if self.proc_result.exit_code == 0 and self.did_pass():
-+            logger.debug("[%s] IGT passed", self.target)
-+            return True
-+
-+        logger.error("[%s] IGT failed: %s", self.target, self.proc_result)
-+        return False
-+
-     def get_results_log(self) -> typing.Dict:
-         # Results are cached
-         if self.results:
-+            logger.debug("Get available IGT results from cache")
-             return self.results
-         path = posixpath.join(self.igt_config.result_dir, 'results.json')
-         result = self.target.read_file_content(path)
-@@ -95,7 +119,7 @@ class IgtExecutor(ExecutorInterface):
-                 continue
-             fail_case = fail_case + aggregate[key]
+     def get_auto_provisioning(self) -> bool:
+         raise exceptions.NotAvailableError('auto_provisioning attribute not available')
  
--        logger.debug('Full IGT test results:\n%s', json.dumps(results, indent=4))
-+        logger.debug("[%s] Full IGT test results:\n%s", self.target, json.dumps(results, indent=4))
+     def set_auto_provisioning(self, val: bool) -> None:
+-        raise exceptions.NotAvailableError('auto_provisioning attribute not available')
++        # No-op - xe driver doesn't publish this attribute
++        pass
  
-         if fail_case > 0:
-             logger.error('Test failed!')
+     def cancel_work(self) -> None:
+         # Function to cancel all remaing work on GPU (for test cleanup).
+@@ -129,11 +136,12 @@ class XeDriver(DriverInterface):
+ 
+     def get_pf_lmem_spare(self, gt_num: int) -> int:
+         path = self.__helper_create_debugfs_path(0, gt_num, '', 'lmem_spare')
+-        return int(self.__read_debugfs(path))
++        return int(self.__read_debugfs(path)) if self.has_lmem() else 0
+ 
+     def set_pf_lmem_spare(self, gt_num: int, val: int) -> None:
+         path = self.__helper_create_debugfs_path(0, gt_num, '', 'lmem_spare')
+-        self.__write_debugfs(path, str(val))
++        if self.has_lmem():
++            self.__write_debugfs(path, str(val))
+ 
+     def get_pf_contexts_spare(self, gt_num: int) -> int:
+         path = self.__helper_create_debugfs_path(0, gt_num, '', 'contexts_spare')
 diff --git a/tools/vmtb/bench/machines/physical/device.py b/tools/vmtb/bench/machines/physical/device.py
-index 887f607e4..a487c0e5f 100644
+index a487c0e5f..250466733 100644
 --- a/tools/vmtb/bench/machines/physical/device.py
 +++ b/tools/vmtb/bench/machines/physical/device.py
-@@ -45,7 +45,7 @@ class Device(DeviceInterface):
+@@ -83,6 +83,9 @@ class Device(DeviceInterface):
+     def has_lmem(self) -> bool:
+         return self.driver.has_lmem()
  
-     def __init__(self, bdf: str, driver: str) -> None:
-         self.pci_info = self.PciInfo(bdf)
--        self.gpu_model: str = pci.get_gpu_model(self.pci_info.devid)
-+        self.gpu_model = pci.get_gpu_model(self.pci_info.devid)
-         self.driver: DriverInterface = self.instantiate_driver(driver, self.pci_info.minor_number)
++    def is_gt_media_type(self, gt_num: int) -> bool:
++        return self.driver.is_media_gt(gt_num)
++
+     def create_vf(self, num: int) -> int:
+         """Enable a requested number of VFs.
+         Disable SRIOV drivers autoprobe to allow VFIO driver override for VFs.
+@@ -156,37 +159,44 @@ class Device(DeviceInterface):
+         bdf_list = [self.get_vf_bdf(vf) for vf in vf_list]
+         return bdf_list
  
-     def __str__(self) -> str:
+-    def provision(self, profile: VgpuProfile) -> None:
+-        logger.info("[%s] Provision VFs - set vGPU profile for %s VFs", self.pci_info.bdf, profile.num_vfs)
++    def __set_provisioning(self, num_vfs: int, profile: VgpuProfile, set_resources: bool) -> None:
++        """Helper to write provisioning attributes over sysfs/debugfs for PF and requested number of VFs.
++        If 'set_resources' parameter is True - apply the full vGPU profile (hard resources and scheduling).
++        Otherwise, set only scheduling profile (e.g. in case of auto resources provisioning).
++        """
++        main_gt_nums = [gt_num for gt_num in range(self.get_num_gts()) if not self.is_gt_media_type(gt_num)]
+ 
+-        num_vfs = profile.num_vfs
+-        num_gts = self.get_num_gts() # Number of tiles (GTs)
+-        gt_nums = [0] if num_gts == 1 else [0, 1] # Tile (GT) numbers/indexes
++        logger.info("[%s] Provision %sxVFs on main GT%s", self.pci_info.bdf, num_vfs, main_gt_nums)
+ 
+-        for gt_num in gt_nums:
+-            self.driver.set_pf_policy_sched_if_idle(gt_num, int(profile.scheduler.scheduleIfIdle))
++        for gt_num in main_gt_nums:
++            if set_resources:
++                self.set_resources(0, gt_num, profile.resources)
++            self.set_scheduling(0, gt_num, profile.scheduler)
+             self.driver.set_pf_policy_reset_engine(gt_num, int(profile.security.reset_after_vf_switch))
+-            self.driver.set_exec_quantum_ms(0, gt_num, profile.scheduler.pfExecutionQuanta)
+-            self.driver.set_preempt_timeout_us(0, gt_num, profile.scheduler.pfPreemptionTimeout)
+-            self.driver.set_doorbells_quota(0, gt_num, profile.resources.pfDoorbells)
+-            # PF contexts are currently assigned by the driver and cannot be reprovisioned from sysfs
+ 
+         for vf_num in range(1, num_vfs + 1):
+-            if num_gts > 1 and num_vfs > 1:
++            gt_nums = main_gt_nums
++            if len(main_gt_nums) > 1 and num_vfs > 1:
+                 # Multi-tile device Mode 2|3 - odd VFs on GT0, even on GT1
+-                gt_nums = [0] if vf_num % 2 else [1]
++                gt_nums = [main_gt_nums[0] if vf_num % 2 else main_gt_nums[1]]
+ 
+             for gt_num in gt_nums:
+-                self.driver.set_lmem_quota(vf_num, gt_num, profile.resources.vfLmem)
+-                self.driver.set_ggtt_quota(vf_num, gt_num, profile.resources.vfGgtt)
+-                self.driver.set_contexts_quota(vf_num, gt_num, profile.resources.vfContexts)
+-                self.driver.set_doorbells_quota(vf_num, gt_num, profile.resources.vfDoorbells)
+-                self.driver.set_exec_quantum_ms(vf_num, gt_num, profile.scheduler.vfExecutionQuanta)
+-                self.driver.set_preempt_timeout_us(vf_num, gt_num, profile.scheduler.vfPreemptionTimeout)
++                if set_resources:
++                    self.set_resources(vf_num, gt_num, profile.resources)
++                self.set_scheduling(vf_num, gt_num, profile.scheduler)
++
++    def provision(self, profile: VgpuProfile) -> None:
++        """Provision PF and VF(s) based on requested vGPU profile."""
++        self.__set_provisioning(profile.num_vfs, profile, set_resources=True)
++
++    def provision_scheduling(self, num_vfs: int, profile: VgpuProfile) -> None:
++        """Provision PF and VF(s) scheduling based on requested vGPU profile's scheduler config."""
++        self.__set_provisioning(num_vfs, profile, set_resources=False)
+ 
+     # fn_num = 0 for PF, 1..n for VF
+     def set_scheduling(self, fn_num: int, gt_num: int, scheduling_config: VgpuSchedulerConfig) -> None:
+-        logger.info("[%s] Provision scheduling config for PCI Function %s", self.pci_info.bdf, fn_num)
++        """Write sysfs/debugfs PF/VF scheduling attributes."""
++        logger.debug("[%s] Set scheduling for PCI Function %s", self.pci_info.bdf, fn_num)
+         if fn_num == 0:
+             self.driver.set_pf_policy_sched_if_idle(gt_num, int(scheduling_config.scheduleIfIdle))
+             self.driver.set_exec_quantum_ms(0, gt_num, scheduling_config.pfExecutionQuanta)
+@@ -196,7 +206,8 @@ class Device(DeviceInterface):
+             self.driver.set_preempt_timeout_us(fn_num, gt_num, scheduling_config.vfPreemptionTimeout)
+ 
+     def set_resources(self, fn_num: int, gt_num: int, resources_config: VgpuResourcesConfig) -> None:
+-        logger.info("[%s] Provision resources config for PCI Function %s", self.pci_info.bdf, fn_num)
++        """Write sysfs/debugfs PF/VF resources attributes."""
++        logger.debug("[%s] Set resources for PCI Function %s", self.pci_info.bdf, fn_num)
+         if fn_num == 0:
+             self.driver.set_pf_ggtt_spare(gt_num, resources_config.pfGgtt)
+             self.driver.set_pf_lmem_spare(gt_num, resources_config.pfLmem)
+@@ -227,8 +238,9 @@ class Device(DeviceInterface):
+             for vf_num in range(1, num_vfs + 1):
+                 self.driver.set_contexts_quota(vf_num, gt_num, 0)
+                 self.driver.set_doorbells_quota(vf_num, gt_num, 0)
+-                self.driver.set_ggtt_quota(vf_num, gt_num, 0)
+-                self.driver.set_lmem_quota(vf_num, gt_num, 0)
++                if not self.is_gt_media_type(gt_num):
++                    self.driver.set_ggtt_quota(vf_num, gt_num, 0)
++                    self.driver.set_lmem_quota(vf_num, gt_num, 0)
+ 
+     def cancel_work(self) -> None:
+         """Drop and reset remaining GPU execution at exit."""
 diff --git a/tools/vmtb/vmm_flows/conftest.py b/tools/vmtb/vmm_flows/conftest.py
-index 3bfac01c4..28c0b5f00 100644
+index 28c0b5f00..12726416f 100644
 --- a/tools/vmtb/vmm_flows/conftest.py
 +++ b/tools/vmtb/vmm_flows/conftest.py
-@@ -79,8 +79,6 @@ class VmmTestingSetup:
-         self.guest_os_image = vmtb_config.get_guest_config().os_image_path if cmdline_config['vm_image'] is None \
-                          else cmdline_config['vm_image']
+@@ -12,7 +12,8 @@ import pytest
  
--        self.vgpu_profiles_dir = vmtb_config.vmtb_config_file.parent / vmtb_config.config.vgpu_profiles_path
--
-         self.host.drm_driver_name = vmtb_config.get_host_config().driver
-         self.host.igt_config = vmtb_config.get_host_config().igt_config
+ from bench import exceptions
+ from bench.configurators.vgpu_profile import VgpuProfile
+-from bench.configurators.vgpu_profile_config import (VfSchedulingMode,
++from bench.configurators.vgpu_profile_config import (VfProvisioningMode,
++                                                     VfSchedulingMode,
+                                                      VgpuProfileConfigurator)
+ from bench.configurators.vmtb_config import VmtbConfigurator
+ from bench.helpers.helpers import modprobe_driver, modprobe_driver_check
+@@ -39,6 +40,7 @@ class VmmTestingConfig:
+     Available settings:
+     - num_vfs: requested number of VFs to enable
+     - max_num_vms: maximal number of VMs (the value can be different than enabled number of VFs)
++    - provisioning_mode: auto (fair resources allocation by a driver) or vGPU profile
+     - scheduling_mode: requested vGPU scheduling profile (infinite maps to default 0's)
+     - auto_poweron_vm: assign VFs and power on VMs automatically in setup fixture
+     - auto_probe_vm_driver: probe guest DRM driver in setup fixture (VM must be powered on)
+@@ -47,6 +49,7 @@ class VmmTestingConfig:
+     """
+     num_vfs: int = 1
+     max_num_vms: int = 2
++    provisioning_mode: VfProvisioningMode = VfProvisioningMode.AUTO
+     scheduling_mode: VfSchedulingMode = VfSchedulingMode.INFINITE
  
-@@ -103,6 +101,12 @@ class VmmTestingSetup:
-                     self.get_dut().driver.get_name(),
-                     vf_migration_support)
+     auto_poweron_vm: bool = True
+@@ -56,12 +59,14 @@ class VmmTestingConfig:
+     wa_reduce_vf_lmem: bool = False
  
-+        vmtb_root_path = vmtb_config.vmtb_config_file.parent
-+        self.vgpu_profiles_dir = vmtb_root_path / vmtb_config.config.vgpu_profiles_path
-+        # Device specific wsim descriptors directory path, e.g.:
-+        # [vmtb_root]/vmm_flows/resources/wsim/ptl (last subdir is lowercase key/name from pci.GpuModel class)
-+        self.wsim_wl_dir = vmtb_root_path / vmtb_config.config.wsim_wl_path / self.get_dut().gpu_model.name.lower()
-+
-         self.vgpu_profile: VgpuProfile = self.get_vgpu_profile()
+     def __str__(self) -> str:
+-        return f'{self.num_vfs}VF'
++        test_config_id = f'{self.num_vfs}VF-(P:{self.provisioning_mode.name} S:{self.scheduling_mode.name})'
++        return test_config_id
+ 
+     def __repr__(self) -> str:
+         return (f'\nVmmTestingConfig:'
+                 f'\nNum VFs = {self.num_vfs} / max num VMs = {self.max_num_vms}'
+-                f'\nVF scheduling mode = {self.scheduling_mode}'
++                f'\nVF provisioning mode = {self.provisioning_mode.name}'
++                f'\nVF scheduling mode = {self.scheduling_mode.name}'
+                 f'\nSetup flags:'
+                 f'\n\tVM - auto power-on = {self.auto_poweron_vm}'
+                 f'\n\tVM - auto DRM driver probe = {self.auto_probe_vm_driver}'
+@@ -107,7 +112,9 @@ class VmmTestingSetup:
+         # [vmtb_root]/vmm_flows/resources/wsim/ptl (last subdir is lowercase key/name from pci.GpuModel class)
+         self.wsim_wl_dir = vmtb_root_path / vmtb_config.config.wsim_wl_path / self.get_dut().gpu_model.name.lower()
+ 
+-        self.vgpu_profile: VgpuProfile = self.get_vgpu_profile()
++        if (self.testing_config.provisioning_mode is VfProvisioningMode.VGPU_PROFILE
++            or self.testing_config.scheduling_mode is not VfSchedulingMode.INFINITE):
++            self.vgpu_profile: VgpuProfile = self.get_vgpu_profile()
  
          # Start maximum requested number of VMs, but not more than VFs supported by the given vGPU profile
-diff --git a/tools/vmtb/vmtb_config.json b/tools/vmtb/vmtb_config.json
-index 640a64123..2b8fb43f3 100644
---- a/tools/vmtb/vmtb_config.json
-+++ b/tools/vmtb/vmtb_config.json
-@@ -23,6 +23,7 @@
-     },
-     "resources": {
-         "vgpu_profiles_path": "vmm_flows/resources/vgpu_profiles",
-+        "wsim_wl_path": "vmm_flows/resources/wsim",
-         "guc_ver_path": "vmm_flows/resources/guc"
-     },
-     "ci": {
+         self.vms: typing.List[VirtualMachine] = [
+@@ -115,7 +122,7 @@ class VmmTestingSetup:
+                            vmtb_config.get_guest_config().driver,
+                            vmtb_config.get_guest_config().igt_config,
+                            vf_migration_support)
+-            for vm_idx in range(min(self.vgpu_profile.num_vfs, self.testing_config.max_num_vms))]
++            for vm_idx in range(min(self.testing_config.num_vfs, self.testing_config.max_num_vms))]
+ 
+     def get_vgpu_profile(self) -> VgpuProfile:
+         configurator = VgpuProfileConfigurator(self.vgpu_profiles_dir, self.get_dut().gpu_model)
+@@ -126,8 +133,6 @@ class VmmTestingSetup:
+             logger.error("Suitable vGPU profile not found: %s", exc)
+             raise exceptions.VgpuProfileError('Invalid test setup - vGPU profile not found!')
+ 
+-        vgpu_profile.print_parameters()
+-
+         return vgpu_profile
+ 
+     def get_dut(self) -> Device:
+@@ -224,20 +229,35 @@ def fixture_setup_vms(get_vmtb_config, get_cmdline_config, get_host, request):
+     ts: VmmTestingSetup = VmmTestingSetup(get_vmtb_config, get_cmdline_config, host, tc)
+ 
+     device: Device = ts.get_dut()
+-    num_vfs = ts.vgpu_profile.num_vfs
++    num_vfs = ts.testing_config.num_vfs
+     num_vms = ts.get_num_vms()
+ 
+     logger.info('[Test setup: %sVF-%sVM]', num_vfs, num_vms)
+ 
+-    # XXX: VF migration on discrete devices (with LMEM) is currently quite slow.
+-    # As a temporary workaround, reduce size of LMEM assigned to VFs to speed up a state save/load process.
+-    if tc.wa_reduce_vf_lmem and device.has_lmem():
+-        logger.debug("W/A: reduce VFs LMEM quota to accelerate state save/restore")
+-        org_vgpu_profile_vfLmem = ts.vgpu_profile.resources.vfLmem
+-        # Assign max 512 MB to VF
+-        ts.vgpu_profile.resources.vfLmem = min(ts.vgpu_profile.resources.vfLmem // 2, 536870912)
+-
+-    device.provision(ts.vgpu_profile)
++    if ts.testing_config.provisioning_mode is VfProvisioningMode.VGPU_PROFILE:
++        # XXX: Double migration is slow on discrete GPUs (with VRAM),
++        # As a workaround, reduce VRAM size assigned to VFs to speed up a save process.
++        # This w/a should be removed when a save/restore time improves.
++        if tc.wa_reduce_vf_lmem and device.has_lmem():
++            logger.debug("W/A: reduce VFs LMEM quota to accelerate state save")
++            org_vgpu_profile_vfLmem = ts.vgpu_profile.resources.vfLmem
++            # Assign max 512 MB to VF
++            ts.vgpu_profile.resources.vfLmem = min(ts.vgpu_profile.resources.vfLmem // 2, 536870912)
++
++        ts.vgpu_profile.print_parameters()
++        device.provision(ts.vgpu_profile)
++
++        # XXX: cleanup counterpart for VFs LMEM quota workaround:
++        # restore original value after vGPU profile applied
++        if tc.wa_reduce_vf_lmem and device.has_lmem():
++            ts.vgpu_profile.resources.vfLmem = org_vgpu_profile_vfLmem
++
++    else:
++        device.driver.set_auto_provisioning(True)
++        if ts.testing_config.scheduling_mode is not VfSchedulingMode.INFINITE:
++            # Auto provisioning with concrete scheduling (i.e. different than HW default: infinite)
++            ts.vgpu_profile.print_scheduler_config()
++            device.provision_scheduling(num_vfs, ts.vgpu_profile)
+ 
+     assert device.create_vf(num_vfs) == num_vfs
+ 
+@@ -257,10 +277,39 @@ def fixture_setup_vms(get_vmtb_config, get_cmdline_config, get_host, request):
+     yield ts
+ 
+     logger.info('[Test teardown: %sVF-%sVM]', num_vfs, num_vms)
+-    # XXX: cleanup counterpart for VFs LMEM quota workaround - restore original value
+-    if tc.wa_reduce_vf_lmem and device.has_lmem():
+-        ts.vgpu_profile.resources.vfLmem = org_vgpu_profile_vfLmem
++    ts.teardown()
+ 
++
++# Obsolete fixtures 'create_Xhost_Yvm' - 'fixture_setup_vms' is preferred
++@pytest.fixture(scope='function')
++def create_1host_1vm(get_vmtb_config, get_cmdline_config, get_host):
++    num_vfs, num_vms = 1, 1
++    ts: VmmTestingSetup = VmmTestingSetup(get_vmtb_config, get_cmdline_config, get_host,
++                                          VmmTestingConfig(num_vfs, num_vms))
++
++    logger.info('[Test setup: %sVF-%sVM]', num_vfs, num_vms)
++    logger.debug(repr(ts.testing_config))
++
++    logger.info('[Test execution: %sVF-%sVM]', num_vfs, num_vms)
++    yield ts
++
++    logger.info('[Test teardown: %sVF-%sVM]', num_vfs, num_vms)
++    ts.teardown()
++
++
++@pytest.fixture(scope='function')
++def create_1host_2vm(get_vmtb_config, get_cmdline_config, get_host):
++    num_vfs, num_vms = 2, 2
++    ts: VmmTestingSetup = VmmTestingSetup(get_vmtb_config, get_cmdline_config, get_host,
++                                          VmmTestingConfig(num_vfs, num_vms))
++
++    logger.info('[Test setup: %sVF-%sVM]', num_vfs, num_vms)
++    logger.debug(repr(ts.testing_config))
++
++    logger.info('[Test execution: %sVF-%sVM]', num_vfs, num_vms)
++    yield ts
++
++    logger.info('[Test teardown: %sVF-%sVM]', num_vfs, num_vms)
+     ts.teardown()
+ 
+ 
+diff --git a/tools/vmtb/vmm_flows/test_basic.py b/tools/vmtb/vmm_flows/test_basic.py
+index 1d3a68b36..9b8731273 100644
+--- a/tools/vmtb/vmm_flows/test_basic.py
++++ b/tools/vmtb/vmm_flows/test_basic.py
+@@ -7,7 +7,7 @@ from typing import List, Tuple
+ 
+ import pytest
+ 
+-from bench.configurators.vgpu_profile_config import VfSchedulingMode
++from bench.configurators.vgpu_profile_config import VfProvisioningMode, VfSchedulingMode
+ from bench.executors.gem_wsim import (ONE_CYCLE_DURATION_MS,
+                                       PREEMPT_10MS_WORKLOAD, GemWsim,
+                                       GemWsimResult,
+@@ -27,20 +27,23 @@ DELAY_FOR_WORKLOAD_SEC = 2 # Waiting gem_wsim to be running [seconds]
+ DELAY_FOR_RELOAD_SEC = 3 # Waiting before driver reloading [seconds]
+ 
+ 
+-def set_test_config(test_variants: List[Tuple[int, VfSchedulingMode]],
++def set_test_config(test_variants: List[Tuple[int, VfProvisioningMode, VfSchedulingMode]],
+                     max_vms: int = 2, vf_driver_load: bool = True) -> List[VmmTestingConfig]:
+     """Helper function to provide a parametrized test with a list of test configuration variants."""
+     logger.debug("Init test variants: %s", test_variants)
+     test_configs: List[VmmTestingConfig] = []
+ 
+     for config in test_variants:
+-        (num_vfs, scheduling_mode) = config
+-        test_configs.append(VmmTestingConfig(num_vfs, max_vms, scheduling_mode, auto_probe_vm_driver=vf_driver_load))
++        (num_vfs, provisioning_mode, scheduling_mode) = config
++        test_configs.append(VmmTestingConfig(num_vfs, max_vms, provisioning_mode, scheduling_mode,
++                                             auto_probe_vm_driver=vf_driver_load))
+ 
+     return test_configs
+ 
+ 
+-test_variants_1 = [(1, VfSchedulingMode.DEFAULT_PROFILE), (2, VfSchedulingMode.DEFAULT_PROFILE)]
++test_variants_1 = [(1, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE),
++                   (2, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE),
++                   (2, VfProvisioningMode.AUTO, VfSchedulingMode.INFINITE)]
+ 
+ @pytest.mark.parametrize('setup_vms', set_test_config(test_variants_1), ids=idfn_test_config, indirect=['setup_vms'])
+ class TestVmSetup:
+@@ -60,8 +63,9 @@ class TestVmSetup:
+             assert driver_check(vm)
+ 
+ 
+-test_variants_2 = [(1, VfSchedulingMode.DEFAULT_PROFILE), (2, VfSchedulingMode.DEFAULT_PROFILE),
+-                   (4, VfSchedulingMode.DEFAULT_PROFILE)]
++test_variants_2 = [(1, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE),
++                   (2, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE),
++                   (4, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE)]
+ 
+ @pytest.mark.parametrize('setup_vms', set_test_config(test_variants_2), ids=idfn_test_config, indirect=['setup_vms'])
+ class TestVmWorkload:
+@@ -102,7 +106,8 @@ class TestVmWorkload:
+         logger.info("Execute wsim parallel on VMs - results: %s", result)
+ 
+ 
+-test_variants_3 = [(2, VfSchedulingMode.DEFAULT_PROFILE), (4, VfSchedulingMode.DEFAULT_PROFILE)]
++test_variants_3 = [(2, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE),
++                   (4, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE)]
+ 
+ @pytest.mark.parametrize('setup_vms', set_test_config(test_variants=test_variants_3, max_vms=4, vf_driver_load=False),
+                          ids = idfn_test_config, indirect=['setup_vms'])
 -- 
 2.39.1
 
