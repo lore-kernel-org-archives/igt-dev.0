@@ -4,60 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07878E9B258
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 13:15:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11097E9B258
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Feb 2026 13:20:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9671E10E151;
-	Tue, 24 Feb 2026 13:15:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B262E10E584;
+	Tue, 24 Feb 2026 13:20:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JwOLdfI2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="McTj6Y+4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 22DD910E151
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 13:15:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE0C010E589
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Feb 2026 13:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1771938935; x=1803474935;
+ t=1771939217; x=1803475217;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=4OQiQ9agCdmWqUJuOXIUDSzqhlgtU+i7Xwg/brBzj9c=;
- b=JwOLdfI2/KmPK9K2+9l8vLABd+S4zTqb29ZO5NTDETWZYtgiNlrJZn+n
- sLI+TzAN79/Op1tut2kyb5GPfr69sICv3MTCO9dRDsd5JrltG2nN3Aqu/
- 1NjP819ijYaWadO8mSnnxvDeY5RZq/GMoT3nAEHG3TWr3r0dw8198DYzm
- /qD+ssc55DY4VApEXCtObGxC9POaSuJMawREzA/gXN5sl1JtcVowGwObW
- VWl1l6A3QvknbdC5VvC/5hmO7C/zOVDCqGueHw4ZUFYeR7Ky4LLXP3+0c
- 89S61TGgnazK16gOl8PIyKdoM8hvEKB1aAy0QAxO1zyZOfc8GwB8PeKaS g==;
-X-CSE-ConnectionGUID: m7ix1jeuSMmTGZY5RZchLg==
-X-CSE-MsgGUID: N4IH85++QCa5dOhxEib3xQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="60527875"
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="60527875"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Feb 2026 05:15:35 -0800
-X-CSE-ConnectionGUID: Axurmd/TSKe39minsyRmaQ==
-X-CSE-MsgGUID: m4xviyjURhWOC5luYqj6Tg==
+ bh=r7IG30XKdk81NXEtlY8vkK2fq2o+tQLkn8T5l46ykrw=;
+ b=McTj6Y+4MOqeOTER08rkwObIkZTpDD2rqE7eMot4x238fK1k6RtCRskF
+ UPsMxiURETAnNVD2yOkWYveguwa7e9+cBNDiZ8RNEelk5mKiwHfTecXga
+ NsIE84DVQpfrq4N1RJE4HCOnmBv//KdXfsvNfz41Jcx0CrDlCmG4CrLHs
+ Snwp9GsLH3lPaY6sY98fQDDlhQRMZwww10QVLFOidwhWFNuOjHn+h4BJE
+ qvzsIhw+WEjKYYbG1+DRy06gtqEyBYktE0Gw/I9qWSYvxt4q0dxi02Xdk
+ s0Ro+8w2FJexev/qSTiPUTNFdujkNp/bg3RasROh3XRnjEzNMAzoRIMAz Q==;
+X-CSE-ConnectionGUID: Kx3nW2Z9TN644axdkqagvA==
+X-CSE-MsgGUID: GvlfHiMTQjuVAeRBP52PgA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="73016015"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="73016015"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Feb 2026 05:20:16 -0800
+X-CSE-ConnectionGUID: v6y6yuPHSNa743b38RHccA==
+X-CSE-MsgGUID: iDDDFKgSR62uSPhgdZmAkA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="220891098"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; d="scan'208";a="215134962"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 05:15:33 -0800
-Date: Tue, 24 Feb 2026 14:15:18 +0100
+ by orviesa010-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 05:20:15 -0800
+Date: Tue, 24 Feb 2026 14:20:12 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Cc: igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com,
- Marek Beyer <mbey-mw@gitlab.freedesktop.org>
-Subject: Re: [PATCH i-g-t] tools/intel_gpu_top: fix JSON comma tracking with
- per-level state
-Message-ID: <20260224131518.n6ag25nkzix6pobb@kamilkon-DESK.igk.intel.com>
+To: Nitin Gote <nitin.r.gote@intel.com>
+Cc: igt-dev@lists.freedesktop.org, michal.wajdeczko@intel.com,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>
+Subject: Re: [PATCH] tests/intel/xe_configfs: Skip ctx-restore subtests on
+ SR-IOV VF
+Message-ID: <20260224132012.prlzw36las3j4uzk@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com,
- Marek Beyer <mbey-mw@gitlab.freedesktop.org>
-References: <4edeeeddd4141f3de463548785d3d9a4ca696823.1771848992.git.sebastian.brzezinka@intel.com>
+ Nitin Gote <nitin.r.gote@intel.com>, igt-dev@lists.freedesktop.org,
+ michal.wajdeczko@intel.com,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>
+References: <20260224112041.297334-2-nitin.r.gote@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <4edeeeddd4141f3de463548785d3d9a4ca696823.1771848992.git.sebastian.brzezinka@intel.com>
+In-Reply-To: <20260224112041.297334-2-nitin.r.gote@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,109 +75,62 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sebastian,
-On 2026-02-23 at 13:23:42 +0100, Sebastian Brzezinka wrote:
-> The previous implementation used two global counters,
-> json_prev_struct_members and json_struct_members, to decide whether
-> a comma separator is needed before each JSON element. This approach
-> only preserved one level of context: opening a third nesting level
-> overwrote the saved parent count, and closing a nested struct left
-> json_struct_members at the inner value. As a result, when an empty
-> (or any) nested struct was closed and the parent then emitted
-> another member at depth >= 2, the leading comma was silently
-> dropped, producing invalid JSON.
+Hi Nitin,
+On 2026-02-24 at 16:50:42 +0530, Nitin Gote wrote:
+> The ctx-restore subtests use intel_register_read() via direct MMIO
+> (PCI BAR) access to verify that the batch buffer wrote the expected
+> register values. On SR-IOV Virtual Functions (VF), only a very limited
+> subset of registers is accessible. Registers like 0x4F100 are not
+> exposed to VFs, so the read always returns 0, causing a false test
+> failure.
 > 
-> Replace both counters with a bool array indexed by json_indent_level,
-> sized to ARRAY_SIZE(json_indent) - the same hard limit already
-> enforced by the existing asserts. Each nesting level now tracks its
-> own "has preceding output" state independently.
+> Skip all ctx-restore subtests (post-bb, mid-bb, and their invalid
+> variants) when the device is running in SR-IOV VF mode.
 > 
-> Suggested-by: Marek Beyer <mbey-mw@gitlab.freedesktop.org>
-> Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/199
-> Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
 
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
++cc Lukasz and Marcin
 
-Regards,
-Kamil
-
+> Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
 > ---
->  tools/intel_gpu_top.c | 20 +++++++++-----------
->  1 file changed, 9 insertions(+), 11 deletions(-)
+>  tests/intel/xe_configfs.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-> index b94604232..d8ebb20ac 100644
-> --- a/tools/intel_gpu_top.c
-> +++ b/tools/intel_gpu_top.c
-> @@ -1117,8 +1117,7 @@ static const char *json_indent[] = {
->  	"\t\t\t\t\t",
->  };
+> diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
+> index 0db4af201..ab55e333b 100644
+> --- a/tests/intel/xe_configfs.c
+> +++ b/tests/intel/xe_configfs.c
+> @@ -409,6 +409,7 @@ int igt_main()
 >  
-> -static unsigned int json_prev_struct_members;
-> -static unsigned int json_struct_members;
-> +static bool json_has_member[ARRAY_SIZE(json_indent)];
+>  	igt_describe("Validate ctx_restore_post_bb with invalid options");
+>  	igt_subtest("ctx-restore-post-bb-invalid") {
+> +		igt_require_f(!is_vf_device, "ctx-restore not supported in VF\n");
+>  		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>  		test_ctx_restore_invalid(configfs_device_fd, "post");
+>  		close_configfs_group(configfs_fd, configfs_device_fd);
+> @@ -416,6 +417,7 @@ int igt_main()
 >  
->  FILE *out;
+>  	igt_describe("Validate ctx_restore_post_bb");
+>  	igt_subtest("ctx-restore-post-bb") {
+> +		igt_require_f(!is_vf_device, "ctx-restore not supported in VF\n");
+>  		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>  		test_ctx_restore(configfs_device_fd, "post");
+>  		close_configfs_group(configfs_fd, configfs_device_fd);
+> @@ -423,6 +425,7 @@ int igt_main()
 >  
-> @@ -1127,20 +1126,18 @@ json_open_struct(const char *name)
->  {
->  	assert(json_indent_level < ARRAY_SIZE(json_indent));
+>  	igt_describe("Validate ctx_restore_mid_bb with invalid options");
+>  	igt_subtest("ctx-restore-mid-bb-invalid") {
+> +		igt_require_f(!is_vf_device, "ctx-restore not supported in VF\n");
+>  		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>  		test_ctx_restore_invalid(configfs_device_fd, "mid");
+>  		close_configfs_group(configfs_fd, configfs_device_fd);
+> @@ -430,6 +433,7 @@ int igt_main()
 >  
-> -	json_prev_struct_members = json_struct_members;
-> -	json_struct_members = 0;
-> -
->  	if (name)
->  		fprintf(out, "%s%s\"%s\": {\n",
-> -			json_prev_struct_members ? ",\n" : "",
-> +			json_has_member[json_indent_level] ? ",\n" : "",
->  			json_indent[json_indent_level],
->  			name);
->  	else
->  		fprintf(out, "%s\n%s{\n",
-> -			json_prev_struct_members ? "," : "",
-> +			json_has_member[json_indent_level] ? "," : "",
->  			json_indent[json_indent_level]);
->  
->  	json_indent_level++;
-> +	json_has_member[json_indent_level] = false;
->  }
->  
->  static void
-> @@ -1149,6 +1146,7 @@ json_close_struct(void)
->  	assert(json_indent_level > 0);
->  
->  	fprintf(out, "\n%s}", json_indent[--json_indent_level]);
-> +	json_has_member[json_indent_level] = true;
->  
->  	if (json_indent_level == 0)
->  		fflush(stdout);
-> @@ -1160,10 +1158,10 @@ __json_add_member(const char *key, const char *val)
->  	assert(json_indent_level < ARRAY_SIZE(json_indent));
->  
->  	fprintf(out, "%s%s\"%s\": \"%s\"",
-> -		json_struct_members ? ",\n" : "",
-> +		json_has_member[json_indent_level] ? ",\n" : "",
->  		json_indent[json_indent_level], key, val);
->  
-> -	json_struct_members++;
-> +	json_has_member[json_indent_level] = true;
->  }
->  
->  static unsigned int
-> @@ -1173,10 +1171,10 @@ json_add_member(const struct cnt_group *parent, struct cnt_item *item,
->  	assert(json_indent_level < ARRAY_SIZE(json_indent));
->  
->  	fprintf(out, "%s%s\"%s\": ",
-> -		json_struct_members ? ",\n" : "",
-> +		json_has_member[json_indent_level] ? ",\n" : "",
->  		json_indent[json_indent_level], item->name);
->  
-> -	json_struct_members++;
-> +	json_has_member[json_indent_level] = true;
->  
->  	if (!strcmp(item->name, "unit"))
->  		fprintf(out, "\"%s\"", item->unit);
+>  	igt_describe("Validate ctx_restore_mid_bb");
+>  	igt_subtest("ctx-restore-mid-bb") {
+> +		igt_require_f(!is_vf_device, "ctx-restore not supported in VF\n");
+>  		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>  		test_ctx_restore(configfs_device_fd, "mid");
+>  		close_configfs_group(configfs_fd, configfs_device_fd);
 > -- 
-> 2.52.0
+> 2.50.1
 > 
