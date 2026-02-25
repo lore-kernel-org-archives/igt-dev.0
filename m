@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5794DFD45F4
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90D50FD45F1
 	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 21:07:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EC3C510E834;
-	Wed, 25 Feb 2026 21:07:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0B2BA10E837;
+	Wed, 25 Feb 2026 21:07:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WgbbZUmD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QRrQLnAn";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C635C10E834
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 21:07:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6BBB810E834
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 21:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772053664; x=1803589664;
+ t=1772053665; x=1803589665;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=9idUeKmtnCZqasZGu4IkE9y0Gd+TmdbSS/VOifiTeoM=;
- b=WgbbZUmDp/i+HSyD3Ezx+uH6TvPMJCj2fShINml/0mYHThnzU0Tn+XhG
- LTu7+VuOBQv3SWd9vd14TJoJnU8D276U+A0cNeS/grgO2QKsdties0Zbq
- 4eJI0XjRwJWhJG7U5fAwCncyESRq9/SFAfEOX7QBWFblV0BEzfS/LCMVT
- ZZpXRez2h9FMWA4Ey83WeYjs8f+EPw0QDE5lg2+tjyEluDMFxYIAgyLm5
- mcg05UkZ8RHuRtKNkuQaaOas4trNfO965nn06QjMChQ+FtzcRS5z1Vps5
- PX4BJzGzgD64UujdUR5BriIZT/JG1xn7NP5G3vx2XghqU28mfMfSFSvbE Q==;
-X-CSE-ConnectionGUID: lMA8UCD9Q7GekXArXx9imA==
-X-CSE-MsgGUID: TXuk0KaHStexQZjJGIfm1g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="75710612"
-X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="75710612"
+ bh=M03PXcRvLmCmWBLEPZLixRnh4cV620k5BUS1kulx+3c=;
+ b=QRrQLnAnfX7CLuFEfTXXxfsNACcJvXm6o/0atFTEYnlTjZuYJyAz6PHf
+ YT1h50u3LN+nXBAEjIDuemca9k/InYBGDfekktGWmSrmW+/PnkcddQwLh
+ Mh0xmMCN5cF2AR3KjFPJR6Vel5oE0gjgi0fJ9DTYr9YFLNr2vyFuhIXgB
+ Ws0IeDpyrvJ49P+W9hZ2tO6qb3i3b7icLy0G1IQoOHcQOLqi/M4E9aM7w
+ UwqJ4qC145RIt2x+DU5kiQDz5s+0FruTnSqeiP1Fku5yFSGLoAsaWP/CW
+ BuW1UjQfkDz+AzaODEvnsPpnsC7gg/y5OPFegjWmwLhwB3bTrgacqex4h g==;
+X-CSE-ConnectionGUID: lRt658jVShyrvC4B0Y9HGg==
+X-CSE-MsgGUID: ebYKoOz+TmuCK9sWA5KWRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="75710618"
+X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="75710618"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2026 13:07:43 -0800
-X-CSE-ConnectionGUID: wn2DxivrRhOmuY/zgFsdqA==
-X-CSE-MsgGUID: 4CM73mZjRwqmIdKVpZW3vA==
+ 25 Feb 2026 13:07:45 -0800
+X-CSE-ConnectionGUID: QAkUmL4AT6OCwWn+zwXMTw==
+X-CSE-MsgGUID: 6ZmYoJGfRmKS7w+fA128WA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="220489338"
+X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="220489344"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 13:07:42 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 13:07:44 -0800
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 3/6] lib/igt_serial: add generic serial communication
- helper
-Date: Thu, 26 Feb 2026 02:58:56 +0530
-Message-Id: <20260225212859.876713-4-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 4/6] lib/igt_usb4_switch: add helper library for USB4
+ Switch 3141
+Date: Thu, 26 Feb 2026 02:58:57 +0530
+Message-Id: <20260225212859.876713-5-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260225212859.876713-1-kunal1.joshi@intel.com>
 References: <20260225212859.876713-1-kunal1.joshi@intel.com>
@@ -69,514 +69,1258 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a reusable serial communication library for host-to-device
+Add a control library for the Microsft USB4 Switch 3141 test equipment,
+used for automated USB4/Thunderbolt dock/undock testing:
 
- - igt_serial_open()/close(): lifecycle with configurable baud rate
- - igt_serial_send()/read(): raw data transfer
- - igt_serial_command(): send command and capture response
- - igt_serial_flush(): drain stale data from receive buffer
- - igt_serial_set_timeout(): adjust per-operation VTIME timeouts
-
-Used by lib/igt_usb4_switch to communicate with the Microsoft USB4
-Switch 3141 over its serial/USB interface.
+ - usb4switch_init()/deinit(): lifecycle with
+   .igtrc config or autodiscovery
+ - usb4switch_port_enable()/disable(): port control with optional HW delay
+ - usb4switch_get_active_port(): query current port state
+ - usb4switch_get_voltage_mv()/get_current_ma(): VBUS monitoring
+ - usb4switch_get_orientation(): USB-C cable orientation
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_serial.c | 435 +++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_serial.h |  32 ++++
- lib/meson.build  |   1 +
- 3 files changed, 468 insertions(+)
- create mode 100644 lib/igt_serial.c
- create mode 100644 lib/igt_serial.h
+ lib/igt_usb4_switch.c | 1055 +++++++++++++++++++++++++++++++++++++++++
+ lib/igt_usb4_switch.h |  157 ++++++
+ lib/meson.build       |    1 +
+ 3 files changed, 1213 insertions(+)
+ create mode 100644 lib/igt_usb4_switch.c
+ create mode 100644 lib/igt_usb4_switch.h
 
-diff --git a/lib/igt_serial.c b/lib/igt_serial.c
+diff --git a/lib/igt_usb4_switch.c b/lib/igt_usb4_switch.c
 new file mode 100644
-index 000000000..35fbadd7c
+index 000000000..5cede4d60
 --- /dev/null
-+++ b/lib/igt_serial.c
-@@ -0,0 +1,435 @@
++++ b/lib/igt_usb4_switch.c
+@@ -0,0 +1,1055 @@
 +// SPDX-License-Identifier: MIT
 +/*
 + * Copyright © 2026 Intel Corporation
 + */
 +
 +/**
-+ * SECTION:igt_serial
-+ * @short_description: Generic serial port communication library
-+ * @title: Serial Communication
-+ * @include: igt_serial.h
++ * SECTION:igt_usb4_switch
++ * @short_description: USB4 Switch 3141 control library
++ * @title: USB4 Switch
++ * @include: igt_usb4_switch.h
 + *
-+ * This library provides a clean API for serial port communication,
-+ * useful for test equipment that uses serial/USB-CDC interfaces.
++ * This library provides control and status functions for the Microsoft
++ * USB4 Switch 3141 test equipment, used for automated USB4/Thunderbolt
++ * dock/undock testing.
++ *
++ * The library handles serial communication, port control, and
++ * configuration parsing.
 + */
 +
-+#include <errno.h>
-+#include <fcntl.h>
 +#include <stdlib.h>
 +#include <string.h>
-+#include <termios.h>
++#include <strings.h>
++#include <time.h>
 +#include <unistd.h>
 +
 +#include "igt_core.h"
++#include "igt_rc.h"
 +#include "igt_serial.h"
++#include "igt_usb4_switch.h"
++#include "igt_connector_helper.h"
 +
-+struct igt_serial {
-+	int fd;
-+	char *device;
-+	struct termios orig_termios;
-+	bool termios_saved;
-+	int read_timeout_ds;
++struct usb4switch {
++	struct igt_serial *serial;
++
++	/* Configuration */
++	char *device_path;
++	int hotplug_timeout_s;
++	int iterations;
++	int min_switch_interval_ms;
++
++	/* Timestamp of last port change for minimum interval enforcement */
++	struct timespec last_port_change;
++
++	/* Port configuration */
++	struct usb4switch_port ports[USB4_SWITCH_MAX_PORTS];
++	int port_count;
 +};
 +
-+static speed_t baud_to_speed(int baud)
-+{
-+	switch (baud) {
-+	case 9600:   return B9600;
-+	case 19200:  return B19200;
-+	case 38400:  return B38400;
-+	case 57600:  return B57600;
-+	case 115200: return B115200;
-+	case 230400: return B230400;
-+	case 460800: return B460800;
-+	case 921600: return B921600;
-+	default:
-+		return 0;
-+	}
-+}
++/* .igtrc section and key names */
++#define USB4_SWITCH_SECTION "USB4Switch"
++#define USB4_SWITCH_KEY_DEVICE "Device"
++#define USB4_SWITCH_KEY_HOTPLUG_TIMEOUT "HotplugTimeout"
++#define USB4_SWITCH_KEY_ITERATIONS "DockUndockIterations"
++#define USB4_SWITCH_KEY_MIN_INTERVAL "MinSwitchInterval"
 +
-+/**
-+ * igt_serial_open:
-+ * @device: path to the serial device (e.g., "/dev/ttyACM0")
-+ * @baud_rate: baud rate (e.g., 115200)
++/*
++ * response_is_ok - Check that a firmware response does not indicate an error.
 + *
-+ * Opens a serial port with the specified baud rate.
-+ * Uses 8N1 configuration (8 data bits, no parity, 1 stop bit).
++ * The 3141 prefixes error replies with "ERR" (e.g. "ERR: unknown command").
++ * An empty response after a successful transport exchange is also treated as
++ * failure because no meaningful control command produces an empty reply.
 + *
-+ * Returns: A serial handle on success, NULL on failure.
++ * This is a transport vs. command-level distinction: send_command() only
++ * guarantees that bytes were exchanged; callers that need to know whether
++ * the firmware actually accepted the command must call response_is_ok().
 + */
-+struct igt_serial *igt_serial_open(const char *device, int baud_rate)
++static bool response_is_ok(const char *response)
 +{
-+	struct igt_serial *s;
-+	struct termios tty;
-+	speed_t speed;
-+
-+	if (!device) {
-+		igt_debug("Serial: NULL device path\n");
-+		return NULL;
-+	}
-+
-+	s = calloc(1, sizeof(*s));
-+	if (!s) {
-+		igt_debug("Serial: Failed to allocate memory\n");
-+		return NULL;
-+	}
-+
-+	s->fd = -1;
-+
-+	s->device = strdup(device);
-+	if (!s->device)
-+		goto err_free;
-+
-+	/* Default timeout: 1 second (10 deciseconds) */
-+	s->read_timeout_ds = 10;
-+	s->fd = open(device, O_RDWR | O_NOCTTY);
-+
-+	if (s->fd < 0) {
-+		igt_debug("Serial: Failed to open %s: %s\n",
-+			  device, strerror(errno));
-+		goto err_free_device;
-+	}
-+
-+	if (tcgetattr(s->fd, &tty) != 0) {
-+		igt_debug("Serial: tcgetattr failed: %s\n", strerror(errno));
-+		goto err_close;
-+	}
-+
-+	s->orig_termios = tty;
-+	s->termios_saved = true;
-+	speed = baud_to_speed(baud_rate);
-+
-+	if (!speed) {
-+		igt_debug("Serial: Unsupported baud rate %d\n", baud_rate);
-+		goto err_close;
-+	}
-+
-+	cfsetospeed(&tty, speed);
-+	cfsetispeed(&tty, speed);
-+
-+	/* 8N1: 8 data bits, no parity, 1 stop bit */
-+	tty.c_cflag &= ~PARENB;
-+	tty.c_cflag &= ~CSTOPB;
-+	tty.c_cflag &= ~CSIZE;
-+	tty.c_cflag |= CS8;
-+	tty.c_cflag &= ~CRTSCTS;
-+	tty.c_cflag |= CREAD | CLOCAL;
-+
-+	/* Disable canonical mode, echo, and signals */
-+	tty.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);
-+
-+	/* Disable output post-processing */
-+	tty.c_oflag &= ~OPOST;
-+
-+	/* Disable software flow control and input translations */
-+	tty.c_iflag &= ~(IXON | IXOFF | IXANY);
-+	tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP |
-+			  INLCR | IGNCR | ICRNL);
-+
-+	/*
-+	 * Blocking read with timeout.
-+	 * VMIN=0, VTIME>0: return after timeout or when data available.
-+	 */
-+	tty.c_cc[VMIN] = 0;
-+	tty.c_cc[VTIME] = s->read_timeout_ds;
-+
-+	if (tcsetattr(s->fd, TCSANOW, &tty) != 0) {
-+		igt_debug("Serial: tcsetattr failed: %s\n", strerror(errno));
-+		goto err_close;
-+	}
-+
-+	/* Flush any stale input */
-+	if (tcflush(s->fd, TCIFLUSH) != 0)
-+		igt_debug("Serial: tcflush failed: %s\n", strerror(errno));
-+
-+	igt_debug("Serial: Opened %s at %d baud (timeout=%dms)\n",
-+		  s->device, baud_rate, s->read_timeout_ds * 100);
-+	return s;
-+
-+err_close:
-+	close(s->fd);
-+err_free_device:
-+	free(s->device);
-+err_free:
-+	free(s);
-+	return NULL;
-+}
-+
-+/**
-+ * igt_serial_close:
-+ * @s: serial handle
-+ *
-+ * Closes the serial port and frees resources.
-+ */
-+void igt_serial_close(struct igt_serial *s)
-+{
-+	if (!s)
-+		return;
-+
-+	if (s->termios_saved) {
-+		if (tcsetattr(s->fd, TCSANOW, &s->orig_termios) != 0)
-+			igt_debug("Serial: tcsetattr restore failed: %s\n",
-+				  strerror(errno));
-+	}
-+
-+	if (s->fd >= 0)
-+		close(s->fd);
-+	igt_debug("Serial: Closed %s\n", s->device ? s->device : "(unknown)");
-+	free(s->device);
-+	free(s);
-+}
-+
-+/**
-+ * igt_serial_set_timeout:
-+ * @s: serial handle
-+ * @timeout_ms: timeout in milliseconds (0 enables polling mode)
-+ *
-+ * Sets the read timeout for the serial port. VTIME has a granularity
-+ * of 100 ms (deciseconds); non-zero values are rounded up. Setting
-+ * @timeout_ms to 0 configures polling mode where reads return
-+ * immediately if no data is available.
-+ *
-+ * Returns: true on success, false on failure.
-+ */
-+bool igt_serial_set_timeout(struct igt_serial *s, int timeout_ms)
-+{
-+	struct termios tty;
-+	int new_timeout_ds;
-+
-+	if (!s || timeout_ms < 0)
++	if (!response || response[0] == '\0')
 +		return false;
 +
-+	if (tcgetattr(s->fd, &tty) != 0) {
-+		igt_debug("Serial: tcgetattr failed: %s\n", strerror(errno));
-+		return false;
-+	}
-+
-+	/* Convert ms to deciseconds (0.1s units), clamp to cc_t max (255) */
-+	new_timeout_ds = (timeout_ms + 99) / 100;
-+	if (new_timeout_ds > 255)
-+		new_timeout_ds = 255;
-+
-+	tty.c_cc[VTIME] = new_timeout_ds;
-+
-+	if (tcsetattr(s->fd, TCSANOW, &tty) != 0) {
-+		igt_debug("Serial: tcsetattr failed: %s\n", strerror(errno));
-+		return false;
-+	}
-+	s->read_timeout_ds = new_timeout_ds;
-+	igt_debug("Serial: Timeout set to %dms (applied %dms)\n",
-+		  timeout_ms, s->read_timeout_ds * 100);
-+	return true;
-+}
-+
-+/**
-+ * igt_serial_send:
-+ * @s: serial handle
-+ * @cmd: command string to send
-+ *
-+ * Sends a command string to the serial port exactly as provided.
-+ * The caller is responsible for adding any required line endings.
-+ * Handles short writes that may occur on USB-CDC devices under load.
-+ *
-+ * Returns: true on success, false on failure.
-+ */
-+bool igt_serial_send(struct igt_serial *s, const char *cmd)
-+{
-+	size_t len, total = 0;
-+	ssize_t written;
-+
-+	if (!s || !cmd)
++	if (strncasecmp(response, "ERR", 3) == 0)
 +		return false;
 +
-+	len = strlen(cmd);
-+	if (len == 0)
-+		return true;
-+
-+	while (total < len) {
-+		written = write(s->fd, cmd + total, len - total);
-+		if (written <= 0) {
-+			if (written < 0 && errno == EINTR)
-+				continue;
-+			igt_debug("Serial: Write failed: %s\n",
-+				  written < 0 ? strerror(errno) : "zero bytes written");
-+			return false;
-+		}
-+		total += written;
-+	}
-+
-+	if (tcdrain(s->fd) != 0) {
-+		igt_debug("Serial: tcdrain failed: %s\n", strerror(errno));
-+		return false;
-+	}
-+
-+	igt_debug("Serial: Sent '%s'\n", cmd);
 +	return true;
 +}
 +
 +/*
-+ * igt_serial_readline - Read a line from serial port (until newline or timeout).
-+ *
-+ * Returns number of bytes in buf (0 means timeout/no data), or -1 on error.
++ * Minimum-interval helpers - enforce a floor between successive port
++ * operations to protect hardware from rapid switching.
 + */
-+static ssize_t igt_serial_readline(struct igt_serial *s, char *buf, size_t size)
++static void enforce_min_interval(struct usb4switch *sw)
 +{
-+	size_t total = 0;
-+	ssize_t n;
++	struct timespec now;
++	int elapsed_ms;
 +
-+	if (!s || !buf || size == 0)
-+		return -1;
++	if (sw->last_port_change.tv_sec == 0 &&
++	    sw->last_port_change.tv_nsec == 0)
++		return;
 +
-+	/*
-+	 * Read one byte at a time until newline or timeout.
-+	 * VTIME timeout ensures read() returns 0 on timeout.
-+	 */
-+	while (total < size - 1) {
-+		n = read(s->fd, buf + total, 1);
-+		if (n < 0) {
-+			if (errno == EINTR)
-+				continue;
-+			igt_debug("Serial: Read error: %s\n", strerror(errno));
-+			return -1;
-+		}
-+		if (n == 0)
-+			break;
++	clock_gettime(CLOCK_MONOTONIC, &now);
++	elapsed_ms = (now.tv_sec - sw->last_port_change.tv_sec) * 1000 +
++		     (now.tv_nsec - sw->last_port_change.tv_nsec) / 1000000;
 +
-+		total++;
++	if (elapsed_ms < sw->min_switch_interval_ms) {
++		int wait = sw->min_switch_interval_ms - elapsed_ms;
 +
-+		if (buf[total - 1] == '\n')
-+			break;
++		igt_debug("USB4Switch: enforcing %d ms minimum interval "
++			  "(sleeping %d ms)\n",
++			  sw->min_switch_interval_ms, wait);
++		usleep(wait * 1000);
 +	}
-+
-+	buf[total] = '\0';
-+	return (ssize_t)total;
 +}
 +
 +/**
-+ * igt_serial_read:
-+ * @s: serial handle
-+ * @buf: buffer to read into
-+ * @size: size of buffer
-+ *
-+ * Reads one line (up to newline or timeout) from the serial port.
-+ * This is a line-oriented read, not an arbitrary byte read — it stops
-+ * at the first newline character or when the VTIME timeout expires.
-+ * Use igt_serial_set_timeout() to adjust the timeout before calling.
-+ *
-+ * Returns: Number of bytes read, 0 on timeout/no data, or -1 on error.
-+ */
-+ssize_t igt_serial_read(struct igt_serial *s, char *buf, size_t size)
-+{
-+	ssize_t n;
-+
-+	n = igt_serial_readline(s, buf, size);
-+
-+	igt_debug("Serial: Read %zd bytes: '%s'\n", n, n > 0 ? buf : "");
-+	return n;
-+}
-+
-+/**
-+ * igt_serial_command:
-+ * @s: serial handle
-+ * @cmd: command string to send
++ * send_command:
++ * @sw: switch handle
++ * @cmd: command string (without line ending)
 + * @response: buffer for response
 + * @resp_size: size of response buffer
 + *
-+ * Convenience function to send a command and read the response.
-+ * Flushes stale input before sending, sends the command, then reads
-+ * one response line. If @response is non-NULL, at least one byte must
-+ * be received before the configured VTIME timeout for success.
++ * Sends a command to the USB4 Switch 3141.
++ * Appends CRLF as required by the switch protocol.
 + *
-+ * Returns: true if the send succeeded and, when @response is given,
-+ * at least one response byte was received; false otherwise.
++ * Note: success means the serial exchange completed and at least one byte
++ * was received. It does not validate the firmware response payload — callers
++ * that care about command-level success must check response_is_ok().
++ *
++ * Returns: true if the exchange succeeded, false on transport error.
 + */
-+bool igt_serial_command(struct igt_serial *s, const char *cmd,
-+			char *response, size_t resp_size)
++static bool send_command(struct usb4switch *sw, const char *cmd,
++			 char *response, size_t resp_size)
 +{
-+	ssize_t n;
++	char cmd_with_crlf[256];
++	int len;
 +
-+	if (!s || !cmd)
++	if (!sw || !sw->serial || !cmd)
 +		return false;
 +
-+	igt_serial_flush(s);
-+
-+	if (!igt_serial_send(s, cmd))
++	len = snprintf(cmd_with_crlf, sizeof(cmd_with_crlf), "%s\r\n", cmd);
++	if (len < 0 || (size_t)len >= sizeof(cmd_with_crlf))
 +		return false;
 +
-+	if (response && resp_size > 0) {
-+		n = igt_serial_readline(s, response, resp_size);
-+		if (n <= 0) {
-+			igt_debug("Serial: No response received\n");
-+			return false;
-+		}
-+		igt_debug("Serial: Response: '%s'\n", response);
++	return igt_serial_command(sw->serial, cmd_with_crlf,
++				  response, resp_size);
++}
++
++static bool verify_communication(struct usb4switch *sw)
++{
++	char response[256];
++
++	if (!send_command(sw, "version", response, sizeof(response))) {
++		igt_debug("USB4Switch: Failed to query version\n");
++		return false;
 +	}
++
++	if (!response_is_ok(response)) {
++		igt_debug("USB4Switch: Version command rejected: '%s'\n",
++			  response);
++		return false;
++	}
++
++	/*
++	 * The device was already identified by VID:PID in
++	 * discover_usb4_switch_device(). Here we just confirm the serial
++	 * link is alive.  The firmware returns only its firmware version
++	 * (e.g. "0201"), not the model number.
++	 */
++	igt_debug("USB4Switch: Version response: %s\n", response);
++	return true;
++}
++
++static char *get_config_string(const char *key)
++{
++	char *value = NULL;
++	GError *error = NULL;
++
++	value = g_key_file_get_string(igt_key_file, USB4_SWITCH_SECTION,
++				      key, &error);
++	if (error) {
++		g_error_free(error);
++		return NULL;
++	}
++	return value;
++}
++
++static int get_config_int(const char *key, int default_value)
++{
++	GError *error = NULL;
++	int value;
++
++	value = g_key_file_get_integer(igt_key_file, USB4_SWITCH_SECTION,
++				       key, &error);
++	if (error) {
++		g_error_free(error);
++		return default_value;
++	}
++	return value;
++}
++
++static void free_display_config(struct usb4switch_display *disp)
++{
++	free(disp->connector_path);
++	disp->connector_path = NULL;
++	free(disp->connector_name);
++	disp->connector_name = NULL;
++	free(disp->edid_serial);
++	disp->edid_serial = NULL;
++}
++
++static void free_port_config(struct usb4switch_port *port)
++{
++	int i;
++
++	free(port->name);
++	for (i = 0; i < USB4_SWITCH_MAX_DISPLAYS_PER_PORT; i++)
++		free_display_config(&port->displays[i]);
++}
++
++static void free_config(struct usb4switch *sw)
++{
++	int i;
++
++	free(sw->device_path);
++	for (i = 0; i < USB4_SWITCH_MAX_PORTS; i++)
++		free_port_config(&sw->ports[i]);
++}
++
++static void parse_display_config(struct usb4switch *sw, int port_idx,
++				 int disp_idx)
++{
++	struct usb4switch_display *disp;
++	char key[64];
++
++	disp = &sw->ports[port_idx].displays[disp_idx];
++
++	/* Path takes precedence for MST */
++	snprintf(key, sizeof(key), "Port%d.Display%d.Path",
++		 port_idx + 1, disp_idx + 1);
++	disp->connector_path = get_config_string(key);
++
++	/* Connector name as fallback */
++	snprintf(key, sizeof(key), "Port%d.Display%d.Connector",
++		 port_idx + 1, disp_idx + 1);
++	disp->connector_name = get_config_string(key);
++
++	/* EDID serial for verification */
++	snprintf(key, sizeof(key), "Port%d.Display%d.EDIDSerial",
++		 port_idx + 1, disp_idx + 1);
++	disp->edid_serial = get_config_string(key);
++}
++
++static void parse_port_config(struct usb4switch *sw, int port_idx)
++{
++	struct usb4switch_port *port;
++	char key[64];
++	int i;
++
++	port = &sw->ports[port_idx];
++	port->port_num = port_idx + 1;
++
++	snprintf(key, sizeof(key), "Port%d.Name", port_idx + 1);
++	port->name = get_config_string(key);
++	if (!port->name) {
++		port->name = malloc(16);
++		if (port->name)
++			snprintf(port->name, 16, "Port %d", port_idx + 1);
++	}
++
++	/*
++	 * Parse all display slots, then count the leading contiguous
++	 * prefix.  display_count is the exact number of valid entries
++	 * accessible via displays[0..display_count-1].
++	 */
++	for (i = 0; i < USB4_SWITCH_MAX_DISPLAYS_PER_PORT; i++)
++		parse_display_config(sw, port_idx, i);
++
++	/* Count leading contiguous displays (Display1, Display2, ...) */
++	port->display_count = 0;
++	for (i = 0; i < USB4_SWITCH_MAX_DISPLAYS_PER_PORT; i++) {
++		if (sw->ports[port_idx].displays[i].connector_path ||
++		    sw->ports[port_idx].displays[i].connector_name)
++			port->display_count++;
++		else
++			break;
++	}
++
++	/* Warn about and free any sparse entries beyond the contiguous prefix */
++	for (; i < USB4_SWITCH_MAX_DISPLAYS_PER_PORT; i++) {
++		if (sw->ports[port_idx].displays[i].connector_path ||
++		    sw->ports[port_idx].displays[i].connector_name) {
++			igt_warn("USB4Switch: Port%d.Display%d configured "
++				 "but Display%d is missing; displays must "
++				 "be contiguous from 1 — ignoring\n",
++				 port_idx + 1, i + 1,
++				 port->display_count + 1);
++			free_display_config(&sw->ports[port_idx].displays[i]);
++		}
++	}
++}
++
++static bool parse_config(struct usb4switch *sw)
++{
++	int i;
++
++	sw->device_path = get_config_string(USB4_SWITCH_KEY_DEVICE);
++	if (!sw->device_path) {
++		igt_debug("USB4Switch: No Device configured\n");
++		return false;
++	}
++
++	sw->hotplug_timeout_s =
++		get_config_int(USB4_SWITCH_KEY_HOTPLUG_TIMEOUT,
++			       USB4_SWITCH_DEFAULT_HOTPLUG_TIMEOUT_S);
++	sw->iterations =
++		get_config_int(USB4_SWITCH_KEY_ITERATIONS,
++			       USB4_SWITCH_DEFAULT_ITERATIONS);
++	sw->min_switch_interval_ms =
++		get_config_int(USB4_SWITCH_KEY_MIN_INTERVAL,
++			       USB4_SWITCH_DEFAULT_MIN_INTERVAL_MS);
++
++	/*
++	 * Count only leading contiguous ports that have at least one display.
++	 * Stop at the first port with no displays — this enforces contiguous
++	 * port numbering (Port1, Port2, ...) and means port_count is the exact
++	 * number of valid ports accessible via ports[0..port_count-1].
++	 */
++	sw->port_count = 0;
++	for (i = 0; i < USB4_SWITCH_MAX_PORTS; i++) {
++		parse_port_config(sw, i);
++		if (sw->ports[i].display_count > 0)
++			sw->port_count++;
++		else
++			break;
++	}
++
++	if (sw->port_count == 0)
++		igt_warn("USB4Switch: Device configured but no display keys found\n");
++
++	igt_debug("USB4Switch: Device=%s, Timeout=%ds, Iterations=%d, Ports=%d\n",
++		  sw->device_path, sw->hotplug_timeout_s, sw->iterations,
++		  sw->port_count);
 +
 +	return true;
 +}
 +
-+/**
-+ * igt_serial_flush:
-+ * @s: serial handle
-+ *
-+ * Discards stale input. Does not touch pending output.
-+ * Calls TCIFLUSH to drop kernel-queued input, then temporarily sets
-+ * O_NONBLOCK and drains any bytes already readable to reduce races
-+ * with in-flight input. Assumes single-threaded access.
-+ */
-+void igt_serial_flush(struct igt_serial *s)
++static void stamp_port_change(struct usb4switch *sw)
 +{
-+	char discard[256];
-+	ssize_t n;
-+	int flags;
++	clock_gettime(CLOCK_MONOTONIC, &sw->last_port_change);
++}
 +
-+	if (!s)
-+		return;
++static bool usb4switch_queue_port_change_delayed(struct usb4switch *sw,
++						 int port,
++						 int delay_seconds,
++						 const char *action)
++{
++	char cmd[32];
++	char response[256];
 +
-+	/* Discard kernel-queued input; never touch pending output */
-+	if (tcflush(s->fd, TCIFLUSH) != 0)
-+		igt_debug("Serial: tcflush failed: %s\n", strerror(errno));
++	if (!sw)
++		return false;
 +
-+	/* Drain bytes already readable to reduce races with in-flight input */
-+	flags = fcntl(s->fd, F_GETFL);
-+	if (flags < 0) {
-+		igt_debug("Serial: fcntl(F_GETFL) failed: %s\n", strerror(errno));
-+		return;
++	if (port < 0 || port > USB4_SWITCH_MAX_PORTS) {
++		igt_warn("USB4Switch: Invalid port %d\n", port);
++		return false;
 +	}
 +
-+	if (fcntl(s->fd, F_SETFL, flags | O_NONBLOCK) < 0) {
-+		igt_debug("Serial: fcntl(F_SETFL) failed: %s\n", strerror(errno));
-+		return;
++	if (delay_seconds < 0 || delay_seconds > 3600) {
++		igt_warn("USB4Switch: Invalid delay %d (must be 0-3600)\n",
++			 delay_seconds);
++		return false;
 +	}
 +
-+	for (;;) {
-+		n = read(s->fd, discard, sizeof(discard));
-+		if (n > 0)
++	enforce_min_interval(sw);
++
++	snprintf(cmd, sizeof(cmd), "delay %d", delay_seconds);
++	if (!send_command(sw, cmd, response, sizeof(response))) {
++		igt_warn("USB4Switch: Failed to set delay %d\n", delay_seconds);
++		return false;
++	}
++
++	if (!response_is_ok(response)) {
++		igt_warn("USB4Switch: Failed to set delay %d (response: '%s')\n",
++			 delay_seconds, response);
++		return false;
++	}
++
++	snprintf(cmd, sizeof(cmd), "port %d", port);
++	if (!send_command(sw, cmd, response, sizeof(response))) {
++		igt_warn("USB4Switch: Failed to queue %s command\n", action);
++		return false;
++	}
++
++	if (!response_is_ok(response)) {
++		igt_warn("USB4Switch: Failed to queue %s command (response: '%s')\n",
++			 action, response);
++		return false;
++	}
++
++	stamp_port_change(sw);
++	igt_debug("USB4Switch: Queued %s with %ds delay\n",
++		  action, delay_seconds);
++
++	return true;
++}
++
++/*
++ * USB VID:PID for Microsoft USB4 Switch 3141
++ */
++#define USB4_SWITCH_VID "045e"
++#define USB4_SWITCH_PID "0646"
++
++/*
++ * Linux USB uevent PRODUCT= format uses lowercase hex without leading
++ * zeros: VID 0x045e → "45e", PID 0x0646 → "646".
++ */
++#define USB4_SWITCH_UEVENT_MATCH "PRODUCT=45e/646/"
++
++/*
++ * When no .igtrc configuration is present, autodiscover:
++ * - USB4 switch device by scanning /sys/class/tty for matching VID:PID
++ * - Displays behind each port by comparing connectors before/after docking
++ */
++static char *discover_usb4_switch_device(void)
++{
++	char path[256];
++	char uevent[512];
++	char *device_path = NULL;
++	FILE *fp;
++	int i;
++
++	/*
++	 * Scan ttyACM0..63. The 3141 almost always lands in the low
++	 * range, but the upper bound is generous to handle busy systems.
++	 */
++	for (i = 0; i < 64; i++) {
++		snprintf(path, sizeof(path),
++			 "/sys/class/tty/ttyACM%d/device/uevent", i);
++
++		fp = fopen(path, "r");
++		if (!fp)
 +			continue;
-+		if (n == 0)
++
++		while (fgets(uevent, sizeof(uevent), fp)) {
++			if (strstr(uevent, USB4_SWITCH_UEVENT_MATCH)) {
++				device_path = malloc(32);
++				if (device_path)
++					snprintf(device_path, 32,
++						 "/dev/ttyACM%d", i);
++				break;
++			}
++		}
++
++		fclose(fp);
++		if (device_path)
 +			break;
-+		/* n < 0 */
-+		if (errno == EINTR)
-+			continue;
-+		if (errno != EAGAIN)
-+			igt_debug("Serial: unexpected read error in flush: %s\n",
-+				  strerror(errno));
-+		break;
 +	}
 +
-+	if (fcntl(s->fd, F_SETFL, flags) < 0)
-+		igt_debug("Serial: fcntl(F_SETFL) restore failed: %s\n", strerror(errno));
++	if (device_path)
++		igt_debug("USB4Switch: Autodiscovered device at %s\n",
++			  device_path);
++	else
++		igt_debug("USB4Switch: No device found during autodiscovery\n");
 +
-+	igt_debug("Serial: Flushed\n");
++	return device_path;
++}
++
++/*
++ * discover_port_displays - Dock a port and compare connectors to find
++ * which displays appear. drm_fd is passed as parameter, NOT stored.
++ */
++static bool discover_port_displays(struct usb4switch *sw, int drm_fd,
++				   int port_num, uint32_t *before,
++				   int before_count)
++{
++	struct usb4switch_port *port = &sw->ports[port_num - 1];
++	uint32_t after[32];
++	int after_count;
++	char name[32];
++	char serial[64];
++	int i, j, wait;
++	bool found;
++
++	if (!usb4switch_port_enable(sw, port_num)) {
++		igt_debug("USB4Switch: Failed to enable port %d\n", port_num);
++		return false;
++	}
++
++	igt_debug("USB4Switch: Waiting for port %d displays...\n", port_num);
++	/* Poll for new connectors (max 10s) instead of fixed sleep */
++	after_count = 0;
++	for (wait = 0; wait < 10; wait++) {
++		sleep(1);
++		igt_connector_reprobe_all(drm_fd);
++		after_count = igt_connector_get_connected(drm_fd, after, 32);
++		if (after_count > before_count)
++			break;
++	}
++
++	if (after_count <= before_count) {
++		igt_debug("USB4Switch: No new connectors detected on port %d\n",
++			  port_num);
++		usb4switch_port_disable_and_wait(sw);
++		return false;
++	}
++
++	port->port_num = port_num;
++	port->name = malloc(16);
++	if (port->name)
++		snprintf(port->name, 16, "port-%d", port_num);
++	port->display_count = 0;
++
++	for (i = 0; i < after_count; i++) {
++		found = false;
++		for (j = 0; j < before_count; j++) {
++			if (after[i] == before[j]) {
++				found = true;
++				break;
++			}
++		}
++
++		if (!found &&
++		    port->display_count < USB4_SWITCH_MAX_DISPLAYS_PER_PORT) {
++			char path[256];
++
++			if (igt_connector_get_info(drm_fd, after[i],
++						   name, sizeof(name),
++						   serial, sizeof(serial),
++						   path, sizeof(path))) {
++				struct usb4switch_display *disp;
++
++				disp = &port->displays[port->display_count];
++				disp->connector_name = strdup(name);
++				if (!disp->connector_name)
++					continue;
++				disp->edid_serial = serial[0] ?
++						    strdup(serial) : NULL;
++				disp->connector_path = path[0] ?
++						       strdup(path) : NULL;
++
++				igt_info("USB4Switch: Port %d Display %d: %s (EDID: %s)\n",
++					 port_num, port->display_count + 1,
++					 name,
++					 serial[0] ? serial : "none");
++
++				port->display_count++;
++			}
++		}
++	}
++
++	usb4switch_port_disable_and_wait(sw);
++	igt_connector_reprobe_all(drm_fd);
++
++	if (port->display_count > 0)
++		sw->port_count++;
++
++	return port->display_count > 0;
++}
++
++/*
++ * autodiscover_config - Autodiscover switch device and port displays.
++ */
++static bool autodiscover_config(struct usb4switch *sw, int drm_fd)
++{
++	uint32_t before[32];
++	int before_count;
++	int p;
++
++	sw->device_path = discover_usb4_switch_device();
++	if (!sw->device_path)
++		return false;
++
++	sw->hotplug_timeout_s = USB4_SWITCH_DEFAULT_HOTPLUG_TIMEOUT_S;
++	sw->iterations = USB4_SWITCH_DEFAULT_ITERATIONS;
++	sw->min_switch_interval_ms = USB4_SWITCH_DEFAULT_MIN_INTERVAL_MS;
++	sw->port_count = 0;
++
++	sw->serial = igt_serial_open(sw->device_path, 115200);
++	if (!sw->serial) {
++		igt_debug("USB4Switch: Failed to open autodiscovered device %s\n",
++			  sw->device_path);
++		free(sw->device_path);
++		sw->device_path = NULL;
++		return false;
++	}
++
++	if (!verify_communication(sw)) {
++		igt_serial_close(sw->serial);
++		sw->serial = NULL;
++		free(sw->device_path);
++		sw->device_path = NULL;
++		return false;
++	}
++
++	igt_info("USB4Switch: Autodiscovering displays...\n");
++
++	usb4switch_port_disable_and_wait(sw);
++
++	igt_connector_reprobe_all(drm_fd);
++
++	before_count = igt_connector_get_connected(drm_fd, before, 32);
++	if (before_count >= 32)
++		igt_warn("USB4Switch: Connector count %d may exceed array size\n",
++			 before_count);
++	igt_debug("USB4Switch: %d connectors before autodiscovery\n",
++		  before_count);
++
++	/*
++	 * Probe ports sequentially. Stop at the first port that yields no
++	 * displays — same contiguity rule as config-based port counting.
++	 */
++	for (p = 1; p <= USB4_SWITCH_MAX_PORTS; p++) {
++		if (!discover_port_displays(sw, drm_fd, p, before, before_count))
++			break;
++	}
++
++	usb4switch_port_disable(sw);
++
++	igt_info("USB4Switch: Autodiscovery complete - %d ports with displays\n",
++		 sw->port_count);
++
++	return sw->port_count > 0;
 +}
 +
 +/**
-+ * igt_serial_get_fd:
-+ * @s: serial handle
++ * usb4switch_init:
++ * @drm_fd: DRM file descriptor (used only for autodiscovery, not stored)
 + *
-+ * Gets the underlying file descriptor for advanced operations.
++ * Initializes USB4 switch from .igtrc configuration.
++ * If no configuration is present, attempts
++ * autodiscovery of the switch device and displays behind each port.
 + *
-+ * Returns: File descriptor, or -1 if handle is NULL.
++ * Returns: Switch handle on success, NULL on failure.
 + */
-+int igt_serial_get_fd(struct igt_serial *s)
++struct usb4switch *usb4switch_init(int drm_fd)
 +{
-+	return s ? s->fd : -1;
++	struct usb4switch *sw;
++	bool config_ok;
++
++	sw = calloc(1, sizeof(*sw));
++	if (!sw)
++		return NULL;
++
++	config_ok = parse_config(sw);
++
++	if (!config_ok) {
++		if (drm_fd < 0) {
++			igt_debug("USB4Switch: No config and no DRM fd for autodiscovery\n");
++			free_config(sw);
++			free(sw);
++			return NULL;
++		}
++
++		igt_info("USB4Switch: No configuration found, attempting autodiscovery...\n");
++		if (!autodiscover_config(sw, drm_fd)) {
++			igt_debug("USB4Switch: Autodiscovery failed\n");
++			if (sw->serial)
++				igt_serial_close(sw->serial);
++			free_config(sw);
++			free(sw);
++			return NULL;
++		}
++		igt_info("USB4Switch: Initialized via autodiscovery (Model 3141)\n");
++		return sw;
++	}
++
++	sw->serial = igt_serial_open(sw->device_path, 115200);
++	if (!sw->serial) {
++		igt_debug("USB4Switch: Failed to open serial port %s\n",
++			  sw->device_path);
++		free_config(sw);
++		free(sw);
++		return NULL;
++	}
++
++	if (!verify_communication(sw)) {
++		igt_serial_close(sw->serial);
++		free_config(sw);
++		free(sw);
++		return NULL;
++	}
++
++	igt_info("USB4Switch: Initialized (Model 3141)\n");
++	return sw;
 +}
-diff --git a/lib/igt_serial.h b/lib/igt_serial.h
++
++/**
++ * usb4switch_deinit:
++ * @sw: switch handle
++ *
++ * Closes the switch and frees resources.
++ * Disables all ports before closing.
++ */
++void usb4switch_deinit(struct usb4switch *sw)
++{
++	if (!sw)
++		return;
++
++	usb4switch_port_disable(sw);
++
++	if (sw->serial)
++		igt_serial_close(sw->serial);
++	free_config(sw);
++	free(sw);
++
++	igt_debug("USB4Switch: Deinitialized\n");
++}
++
++/**
++ * usb4switch_port_enable:
++ * @sw: switch handle
++ * @port: port number (1 or 2)
++ *
++ * Enables the specified port.
++ *
++ * Returns: true on success, false on failure.
++ */
++bool usb4switch_port_enable(struct usb4switch *sw, int port)
++{
++	char cmd[32];
++	char response[256];
++
++	if (!sw || port < 1 || port > USB4_SWITCH_MAX_PORTS)
++		return false;
++
++	enforce_min_interval(sw);
++
++	snprintf(cmd, sizeof(cmd), "port %d", port);
++
++	if (!send_command(sw, cmd, response, sizeof(response))) {
++		igt_warn("USB4Switch: Failed to enable port %d\n", port);
++		return false;
++	}
++	if (!response_is_ok(response)) {
++		igt_warn("USB4Switch: Failed to enable port %d (response: '%s')\n",
++			 port, response);
++		return false;
++	}
++
++	stamp_port_change(sw);
++	igt_debug("USB4Switch: Enabled port %d\n", port);
++	return true;
++}
++
++/**
++ * usb4switch_port_enable_delayed:
++ * @sw: switch handle
++ * @port: port number (1 or 2)
++ * @delay_seconds: delay in seconds before port change executes
++ *
++ * Schedules a port enable after the specified delay using the hardware
++ * delay command on Model 3141. Useful for hotplug-during-suspend tests.
++ *
++ * Returns: true on success, false on failure.
++ */
++bool usb4switch_port_enable_delayed(struct usb4switch *sw, int port,
++				    int delay_seconds)
++{
++	return usb4switch_queue_port_change_delayed(sw, port, delay_seconds,
++						    "port enable");
++}
++
++/**
++ * usb4switch_port_disable_delayed:
++ * @sw: switch handle
++ * @delay_seconds: delay in seconds before port disable executes
++ *
++ * Schedules a port disable (undock) after the specified delay.
++ * Useful for undock-during-suspend tests.
++ *
++ * Returns: true on success, false on failure.
++ */
++bool usb4switch_port_disable_delayed(struct usb4switch *sw, int delay_seconds)
++{
++	return usb4switch_queue_port_change_delayed(sw, 0, delay_seconds,
++						    "port disable");
++}
++
++/**
++ * usb4switch_port_disable:
++ * @sw: switch handle
++ *
++ * Disables all ports.
++ *
++ * Returns: true on success, false on failure.
++ */
++bool usb4switch_port_disable(struct usb4switch *sw)
++{
++	char response[256];
++
++	if (!sw)
++		return false;
++
++	enforce_min_interval(sw);
++
++	if (!send_command(sw, "port 0", response, sizeof(response))) {
++		igt_warn("USB4Switch: Failed to disable ports\n");
++		return false;
++	}
++	if (!response_is_ok(response)) {
++		igt_warn("USB4Switch: Failed to disable ports (response: '%s')\n",
++			 response);
++		return false;
++	}
++
++	stamp_port_change(sw);
++	igt_debug("USB4Switch: Disabled all ports\n");
++	return true;
++}
++
++/**
++ * usb4switch_get_active_port:
++ * @sw: switch handle
++ *
++ * Gets currently active port.
++ *
++ * Returns: Port number (1 or 2), 0 if disabled, -1 on error.
++ */
++int usb4switch_get_active_port(struct usb4switch *sw)
++{
++	char response[256];
++	int port;
++
++	if (!sw)
++		return -1;
++
++	if (!send_command(sw, "port ?", response, sizeof(response)))
++		return -1;
++
++	if (!response_is_ok(response)) {
++		igt_warn("USB4Switch: Port query rejected: '%s'\n", response);
++		return -1;
++	}
++
++	if (sscanf(response, "port: %d", &port) == 1 ||
++	    sscanf(response, "port %d", &port) == 1 ||
++	    sscanf(response, "%d", &port) == 1)
++		return port;
++
++	igt_warn("USB4Switch: Could not parse port response: '%s'\n",
++		 response);
++	return -1;
++}
++
++/**
++ * usb4switch_get_status:
++ * @sw: switch handle
++ * @buf: buffer for status
++ * @size: buffer size
++ *
++ * Gets full status from switch.
++ *
++ * Returns: true on success.
++ */
++bool usb4switch_get_status(struct usb4switch *sw, char *buf, size_t size)
++{
++	if (!sw || !buf || size == 0)
++		return false;
++
++	if (!send_command(sw, "status", buf, size))
++		return false;
++
++	return response_is_ok(buf);
++}
++
++/**
++ * usb4switch_get_voltage_mv:
++ * @sw: switch handle
++ *
++ * Gets VBUS voltage by sending the "volts" command.
++ * The 3141 firmware responds with "X.XX V" (e.g. "4.85 V").
++ *
++ * Note: The 3141 hardware may not have accurate VBUS sense circuitry.
++ * Voltage readback may not be meaningful on all units.
++ *
++ * Returns: Voltage in mV, -1 on error.
++ */
++int usb4switch_get_voltage_mv(struct usb4switch *sw)
++{
++	char response[256];
++	float volts;
++
++	if (!sw)
++		return -1;
++
++	if (!send_command(sw, "volts", response, sizeof(response)))
++		return -1;
++
++	if (sscanf(response, "%f", &volts) == 1)
++		return (int)(volts * 1000);
++
++	return -1;
++}
++
++/**
++ * usb4switch_get_current_ma:
++ * @sw: switch handle
++ *
++ * Gets VBUS current by sending the "amps" command.
++ * The 3141 firmware responds with "XXX mA" (e.g. "125 mA").
++ *
++ * Note: The 3141 hardware may not have accurate current sense circuitry.
++ *
++ * Returns: Current in mA, -1 on error.
++ */
++int usb4switch_get_current_ma(struct usb4switch *sw)
++{
++	char response[256];
++	int current;
++
++	if (!sw)
++		return -1;
++
++	if (!send_command(sw, "amps", response, sizeof(response)))
++		return -1;
++
++	if (sscanf(response, "%d", &current) == 1)
++		return current;
++
++	return -1;
++}
++
++/**
++ * usb4switch_wait_vbus_safe:
++ * @sw: switch handle
++ * @timeout_ms: maximum time to wait in milliseconds
++ *
++ * Waits for VBUS voltage to drop below the Vsafe0V threshold (800 mV)
++ * after a port disable. Polls using the "volts" command. If voltage
++ * readback is not supported or returns errors, falls back to a fixed
++ * 1-second delay.
++ *
++ * Returns: true when VBUS is safe (or after fallback delay).
++ */
++bool usb4switch_wait_vbus_safe(struct usb4switch *sw, int timeout_ms)
++{
++	int elapsed = 0;
++	int mv = -1;
++
++	if (!sw)
++		return false;
++
++	while (elapsed < timeout_ms) {
++		mv = usb4switch_get_voltage_mv(sw);
++		if (mv < 0) {
++			/* Voltage readback not supported; use fixed delay */
++			igt_debug("USB4Switch: voltage readback failed, "
++				  "using 1s fallback delay\n");
++			sleep(1);
++			return true;
++		}
++		if (mv < USB4_SWITCH_VBUS_SAFE_MV) {
++			igt_debug("USB4Switch: VBUS safe at %d mV\n", mv);
++			return true;
++		}
++		usleep(USB4_SWITCH_VBUS_SAFE_POLL_MS * 1000);
++		elapsed += USB4_SWITCH_VBUS_SAFE_POLL_MS;
++	}
++
++	igt_warn("USB4Switch: VBUS still at %d mV after %d ms\n",
++		 mv, timeout_ms);
++	return false;
++}
++
++/**
++ * usb4switch_port_disable_and_wait:
++ * @sw: switch handle
++ *
++ * Disables all ports and waits for VBUS to reach safe levels.
++ *
++ * Returns: true on success.
++ */
++bool usb4switch_port_disable_and_wait(struct usb4switch *sw)
++{
++	if (!usb4switch_port_disable(sw))
++		return false;
++
++	return usb4switch_wait_vbus_safe(sw, USB4_SWITCH_VBUS_SAFE_TIMEOUT_MS);
++}
++
++/**
++ * usb4switch_port_switch:
++ * @sw: switch handle
++ * @new_port: target port number (1..MAX_PORTS)
++ *
++ * Safely switches from the currently active port to @new_port.
++ * If another port is active, disables it first and waits for VBUS
++ * discharge before enabling the new port. If @new_port is already
++ * active, this is a no-op.
++ *
++ * Returns: true on success.
++ */
++bool usb4switch_port_switch(struct usb4switch *sw, int new_port)
++{
++	int active;
++
++	if (!sw || new_port < 1 || new_port > USB4_SWITCH_MAX_PORTS)
++		return false;
++
++	active = usb4switch_get_active_port(sw);
++
++	if (active == new_port) {
++		igt_debug("USB4Switch: Port %d already active\n", new_port);
++		return true;
++	}
++
++	if (active > 0) {
++		igt_debug("USB4Switch: Disabling port %d before switching "
++			  "to port %d\n", active, new_port);
++		if (!usb4switch_port_disable_and_wait(sw))
++			return false;
++	}
++
++	return usb4switch_port_enable(sw, new_port);
++}
++
++/**
++ * usb4switch_get_port_config:
++ * @sw: switch handle
++ * @port_index: port index (0-based)
++ *
++ * Returns: Pointer to port config, NULL if invalid.
++ */
++const struct usb4switch_port *usb4switch_get_port_config(struct usb4switch *sw,
++							 int port_index)
++{
++	if (!sw || port_index < 0 || port_index >= sw->port_count)
++		return NULL;
++
++	return &sw->ports[port_index];
++}
++
++/**
++ * usb4switch_get_port_count:
++ * @sw: switch handle
++ *
++ * Returns: Number of configured ports.
++ */
++int usb4switch_get_port_count(struct usb4switch *sw)
++{
++	return sw ? sw->port_count : 0;
++}
++
++/**
++ * usb4switch_get_hotplug_timeout:
++ * @sw: switch handle
++ *
++ * Returns: Hotplug timeout in seconds.
++ */
++int usb4switch_get_hotplug_timeout(struct usb4switch *sw)
++{
++	return sw ? sw->hotplug_timeout_s :
++		    USB4_SWITCH_DEFAULT_HOTPLUG_TIMEOUT_S;
++}
++
++/**
++ * usb4switch_get_iterations:
++ * @sw: switch handle
++ *
++ * Returns: Configured iterations.
++ */
++int usb4switch_get_iterations(struct usb4switch *sw)
++{
++	return sw ? sw->iterations : USB4_SWITCH_DEFAULT_ITERATIONS;
++}
+diff --git a/lib/igt_usb4_switch.h b/lib/igt_usb4_switch.h
 new file mode 100644
-index 000000000..b460fbf16
+index 000000000..5f1a0d334
 --- /dev/null
-+++ b/lib/igt_serial.h
-@@ -0,0 +1,32 @@
++++ b/lib/igt_usb4_switch.h
+@@ -0,0 +1,157 @@
 +/* SPDX-License-Identifier: MIT */
 +/*
 + * Copyright © 2026 Intel Corporation
 + */
 +
-+#ifndef IGT_SERIAL_H
-+#define IGT_SERIAL_H
++#ifndef IGT_USB4_SWITCH_H
++#define IGT_USB4_SWITCH_H
 +
 +#include <stdbool.h>
 +#include <stddef.h>
-+#include <sys/types.h>
++#include <stdint.h>
 +
 +/**
-+ * IGT_SERIAL_DEFAULT_TIMEOUT_MS:
++ * USB4_SWITCH_MODEL_3141:
 + *
-+ * Default timeout for serial read operations in milliseconds.
++ * Model number for Switch 3141.
 + */
-+#define IGT_SERIAL_DEFAULT_TIMEOUT_MS 1000
++#define USB4_SWITCH_MODEL_3141 3141
 +
-+struct igt_serial;
++/**
++ * USB4_SWITCH_MAX_PORTS:
++ *
++ * Maximum number of ports on the switch.
++ */
++#define USB4_SWITCH_MAX_PORTS 2
 +
-+struct igt_serial *igt_serial_open(const char *device, int baud_rate);
-+void igt_serial_close(struct igt_serial *s);
-+bool igt_serial_set_timeout(struct igt_serial *s, int timeout_ms);
-+bool igt_serial_send(struct igt_serial *s, const char *cmd);
-+ssize_t igt_serial_read(struct igt_serial *s, char *buf, size_t size);
-+bool igt_serial_command(struct igt_serial *s, const char *cmd,
-+			char *response, size_t resp_size);
-+void igt_serial_flush(struct igt_serial *s);
-+int igt_serial_get_fd(struct igt_serial *s);
++/**
++ * USB4_SWITCH_MAX_DISPLAYS_PER_PORT:
++ *
++ * Maximum displays per port (for MST hubs).
++ */
++#define USB4_SWITCH_MAX_DISPLAYS_PER_PORT 4
 +
-+#endif /* IGT_SERIAL_H */
++/**
++ * USB4_SWITCH_RESPONSE_MAX_LEN:
++ *
++ * Recommended buffer size for usb4switch_get_status() callers.
++ * Internal commands use smaller buffers since responses are short.
++ */
++#define USB4_SWITCH_RESPONSE_MAX_LEN 1024
++
++/**
++ * USB4_SWITCH_DEFAULT_TIMEOUT_MS:
++ *
++ * Default command timeout in milliseconds.
++ */
++#define USB4_SWITCH_DEFAULT_TIMEOUT_MS 2000
++
++/**
++ * USB4_SWITCH_DEFAULT_HOTPLUG_TIMEOUT_S:
++ *
++ * Default hotplug wait timeout in seconds.
++ */
++#define USB4_SWITCH_DEFAULT_HOTPLUG_TIMEOUT_S 10
++
++/**
++ * USB4_SWITCH_DEFAULT_ITERATIONS:
++ *
++ * Default dock/undock iterations.
++ */
++#define USB4_SWITCH_DEFAULT_ITERATIONS 3
++
++/**
++ * USB4_SWITCH_VBUS_SAFE_MV:
++ *
++ * VBUS voltage threshold in mV below which VBUS is considered safe
++ * (Vsafe0V per USB PD specification).
++ */
++#define USB4_SWITCH_VBUS_SAFE_MV 800
++
++/**
++ * USB4_SWITCH_VBUS_SAFE_TIMEOUT_MS:
++ *
++ * Maximum time in milliseconds to wait for VBUS to discharge to safe levels.
++ */
++#define USB4_SWITCH_VBUS_SAFE_TIMEOUT_MS 3000
++
++/**
++ * USB4_SWITCH_VBUS_SAFE_POLL_MS:
++ *
++ * Polling interval in milliseconds when waiting for VBUS discharge.
++ */
++#define USB4_SWITCH_VBUS_SAFE_POLL_MS 100
++
++/**
++ * USB4_SWITCH_DEFAULT_MIN_INTERVAL_MS:
++ *
++ * Default minimum interval in milliseconds between successive port
++ * operations.  Matches Cricket UI's 1-second safety guard.
++ */
++#define USB4_SWITCH_DEFAULT_MIN_INTERVAL_MS 1000
++
++/**
++ * struct usb4switch_display:
++ * @connector_path: MST PATH property (e.g., "mst:5-2-8"), preferred for MST
++ * @connector_name: Fallback connector name (e.g., "DP-6") for non-MST
++ * @edid_serial: Expected EDID serial string for verification
++ *
++ * Configuration for an expected display on a switch port.
++ * For MST displays, use connector_path which is stable across hotplug.
++ * For non-MST displays, connector_name can be used.
++ */
++struct usb4switch_display {
++	char *connector_path;
++	char *connector_name;
++	char *edid_serial;
++};
++
++/**
++ * struct usb4switch_port:
++ * @port_num: Port number (1 or 2)
++ * @name: Human-readable port name
++ * @displays: Array of expected displays on this port
++ * @display_count: Number of displays configured
++ *
++ * Configuration for a switch port.
++ */
++struct usb4switch_port {
++	int port_num;
++	char *name;
++	struct usb4switch_display displays[USB4_SWITCH_MAX_DISPLAYS_PER_PORT];
++	int display_count;
++};
++
++struct usb4switch;
++
++/* Lifecycle */
++struct usb4switch *usb4switch_init(int drm_fd);
++void usb4switch_deinit(struct usb4switch *sw);
++
++/* Port control */
++bool usb4switch_port_enable(struct usb4switch *sw, int port);
++bool usb4switch_port_enable_delayed(struct usb4switch *sw, int port,
++				    int delay_seconds);
++bool usb4switch_port_disable(struct usb4switch *sw);
++bool usb4switch_port_disable_delayed(struct usb4switch *sw,
++				     int delay_seconds);
++
++/* VBUS safety */
++bool usb4switch_wait_vbus_safe(struct usb4switch *sw, int timeout_ms);
++bool usb4switch_port_disable_and_wait(struct usb4switch *sw);
++bool usb4switch_port_switch(struct usb4switch *sw, int new_port);
++
++/* Status queries */
++int usb4switch_get_active_port(struct usb4switch *sw);
++bool usb4switch_get_status(struct usb4switch *sw, char *buf, size_t size);
++int usb4switch_get_voltage_mv(struct usb4switch *sw);
++int usb4switch_get_current_ma(struct usb4switch *sw);
++
++/* Configuration getters */
++const struct usb4switch_port *usb4switch_get_port_config(struct usb4switch *sw,
++							 int port_index);
++int usb4switch_get_port_count(struct usb4switch *sw);
++int usb4switch_get_hotplug_timeout(struct usb4switch *sw);
++int usb4switch_get_iterations(struct usb4switch *sw);
++
++#endif /* IGT_USB4_SWITCH_H */
 diff --git a/lib/meson.build b/lib/meson.build
-index 074b21fdf..67b57533c 100644
+index 67b57533c..d03bef209 100644
 --- a/lib/meson.build
 +++ b/lib/meson.build
-@@ -123,6 +123,7 @@ lib_sources = [
- 	'igt_msm.c',
+@@ -124,6 +124,7 @@ lib_sources = [
  	'igt_dsc.c',
  	'igt_hook.c',
-+	'igt_serial.c',
+ 	'igt_serial.c',
++	'igt_usb4_switch.c',
  	'xe/xe_gt.c',
  	'xe/xe_ioctl.c',
  	'xe/xe_legacy.c',
