@@ -4,55 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FD5FFD45F1
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 21:07:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54D24FD45EC
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 21:07:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EA17F10E0E5;
-	Wed, 25 Feb 2026 21:07:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 00CD410E836;
+	Wed, 25 Feb 2026 21:07:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cd7sNMQ8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BudnTQKT";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4702A10E0E5
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 21:07:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B4FA110E834
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 21:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772053662; x=1803589662;
+ t=1772053667; x=1803589667;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/vnZTJ6TiTb189yJtZ8rdPjg4xvGEjBzwf8I9FJY6aI=;
- b=cd7sNMQ8sf8H3tm4lBxL29u8OaT0X0wdv0fIdNKw/zolFdkRIB6j3YMI
- EMsrt2nmYSnSue3wpGvDXD1PjY59Xy0D4E55/pujtdYyVVMAA/SZuDm0J
- hDWfc06GL3ydCE6RCOxyi6QJ4tisx9my/U9KAudIC2lqCF5p11yVnWhYW
- LwQ9y5n0oa5hBr7J13zZlYCBVp8w+9Ye3Q8JNw/YJUXGCUq6vAJ/w7fqS
- r9zQiQ53K7AMx+NPZK+imchiJOvrDPwtxfu/Gy2eMjrxomm2FR7ZleLLv
- yyEfwm/U4pQkBCRD5BD4dFcfmbu62jAaLqcF/mt5lAeXK1V8JOYRUmczQ Q==;
-X-CSE-ConnectionGUID: GlkH2PpzScW0VD8dc4jDvQ==
-X-CSE-MsgGUID: /USksrWYSfyDYiNZG5x6XA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="75710610"
-X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="75710610"
+ bh=EfQNmthUUN2fpJKnAVUdT1YEH/aMHrSCmgqbyWE1G4w=;
+ b=BudnTQKToGbpHGWLDUG6MJOCxaewyM5Jl9rhsGOQEu26J3mBkcRnXePJ
+ vbgQee7ngB5MSHwOjQtuOyo6KD03QRlIhvEMuGR1sKrx7AOHRso/EL3Vc
+ Gjr2Djzqz0MZF1JxEAswCvPzdGX4b8pbQ5ZOcouA3ha3gTlYpyXU6L5Tl
+ zn03dCs3vD9BbeiU7kPY7tVG2/e3aDZ+vA4pqgvFpR5047PLEzm62tgie
+ xkXouGvrE/sD8s6vp14ebUkvDw8s9h4kWGIZGxQdTiItI8Pb3C2iTEONB
+ oA41ZAHhBTw8rjnksKZxjx9hQx9dItcaWAc0hePrWQ3w04eUKCOne8XBC g==;
+X-CSE-ConnectionGUID: tKoWCR0FS6asK7ApU4yROw==
+X-CSE-MsgGUID: AxU9q8wjQzunnhfd+EGDNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="75710620"
+X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="75710620"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2026 13:07:42 -0800
-X-CSE-ConnectionGUID: o0coAm9jRiys81DhK0qXKg==
-X-CSE-MsgGUID: 8pFkAkfRQoSZ/44t+Jc5Vg==
+ 25 Feb 2026 13:07:46 -0800
+X-CSE-ConnectionGUID: +IBkIm6JQRObfCnzMCriNA==
+X-CSE-MsgGUID: ByeGVZI+TlWFaxmawxsuYw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="220489331"
+X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="220489347"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 13:07:41 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 13:07:46 -0800
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 2/6] lib/igt_connector_helper: Add generic connector
- helpers
-Date: Thu, 26 Feb 2026 02:58:55 +0530
-Message-Id: <20260225212859.876713-3-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 5/6] tests/kms_feature_discovery: add basic usb4 switch
+ discovery
+Date: Thu, 26 Feb 2026 02:58:58 +0530
+Message-Id: <20260225212859.876713-6-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260225212859.876713-1-kunal1.joshi@intel.com>
 References: <20260225212859.876713-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,378 +68,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a lightweight helper library for DRM connector operations used
-by USB4 switch and other dock/undock tests:
+Add a 'usb4-switch' subtest that verifies the Microsoft USB4 Switch
+3141 is reachable. The test initializes the switch library and queries
+the active port to confirm communication works.
 
- - igt_connector_get_connected(): enumerate connected connectors
- - igt_connector_get_info(): query name, EDID serial, and MST path
- - igt_connector_find_by_path(): PATH-based connector lookup (MST)
- - igt_connector_find_by_name(): name-based connector lookup
- - igt_connector_reprobe_all(): force reprobe all connectors by
-   iterating each connector to trigger DRM core re-detection
-
-These helpers abstract common DRM connector patterns that are needed
-by multiple test suites for display enumeration and verification.
+This enables CI to detect when USB4 switch hardware is available
+before running the full kms_usb4_switch test suite.
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_connector_helper.c | 299 +++++++++++++++++++++++++++++++++++++
- lib/igt_connector_helper.h |  27 ++++
- lib/meson.build            |   1 +
- 3 files changed, 327 insertions(+)
- create mode 100644 lib/igt_connector_helper.c
- create mode 100644 lib/igt_connector_helper.h
+ tests/kms_feature_discovery.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/lib/igt_connector_helper.c b/lib/igt_connector_helper.c
-new file mode 100644
-index 000000000..6be849b7a
---- /dev/null
-+++ b/lib/igt_connector_helper.c
-@@ -0,0 +1,299 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+/**
-+ * SECTION:igt_connector_helper
-+ * @short_description: Generic connector helper functions for DRM/KMS
-+ * @title: Connector Helper
-+ * @include: igt_connector_helper.h
+diff --git a/tests/kms_feature_discovery.c b/tests/kms_feature_discovery.c
+index f0216a4ce..b05055186 100644
+--- a/tests/kms_feature_discovery.c
++++ b/tests/kms_feature_discovery.c
+@@ -40,6 +40,7 @@
+ #include "igt_psr.h"
+ #include "igt_sysfs.h"
+ #include "igt_types.h"
++#include "igt_usb4_switch.h"
+ 
+ /**
+  * SUBTEST: display
+@@ -63,6 +64,9 @@
+  * SUBTEST: dp-mst
+  * Description: Make sure that we have DP-MST configuration.
+  *
++ * SUBTEST: usb4-switch
++ * Description: Verify that USB4 Switch 3141 is available and responding.
 + *
-+ * Helper functions for DRM connector operations including enumeration,
-+ * lookup by name/path, and EDID serial extraction.
-+ */
+  * arg[1].values: 1, 2, 3, 4
+  */
+ 
+@@ -147,6 +151,25 @@ int igt_main() {
+ 		}
+ #endif
+ 
++		igt_describe("Verify that USB4 Switch 3141 is available and responding.");
++		igt_subtest("usb4-switch") {
++			struct usb4switch *sw;
++			int port;
 +
-+#include <string.h>
-+#include <xf86drm.h>
-+#include <xf86drmMode.h>
++			sw = usb4switch_init(fd);
++			igt_require_f(sw,
++				      "USB4 Switch 3141 not available\n");
 +
-+#include "igt_core.h"
-+#include "igt_edid.h"
-+#include "igt_kms.h"
-+#include "igt_connector_helper.h"
++			/* Verify communication works by querying active port */
++			port = usb4switch_get_active_port(sw);
++			igt_assert_f(port >= 0,
++				     "Cannot communicate with USB4 switch\n");
 +
-+/**
-+ * igt_connector_get_connected:
-+ * @drm_fd: DRM file descriptor
-+ * @connectors: array to store connector IDs; must be valid if @max_connectors > 0
-+ * @max_connectors: maximum number of connectors to store
-+ *
-+ * Walks all DRM connectors and stores the IDs of those currently connected.
-+ * Scanning stops once @max_connectors IDs have been collected; later
-+ * connectors are not examined.
-+ *
-+ * Returns: number of connector IDs written to @connectors, capped by
-+ * @max_connectors.
-+ */
-+int igt_connector_get_connected(int drm_fd, uint32_t *connectors,
-+				int max_connectors)
-+{
-+	drmModeRes *res;
-+	drmModeConnector *conn;
-+	int count = 0;
-+	int i;
-+
-+	igt_assert(max_connectors >= 0);
-+	if (max_connectors > 0)
-+		igt_assert(connectors);
-+
-+	res = drmModeGetResources(drm_fd);
-+	if (!res)
-+		return 0;
-+
-+	for (i = 0; i < res->count_connectors && count < max_connectors; i++) {
-+		conn = drmModeGetConnector(drm_fd, res->connectors[i]);
-+		if (!conn)
-+			continue;
-+
-+		if (conn->connection == DRM_MODE_CONNECTED)
-+			connectors[count++] = conn->connector_id;
-+
-+		drmModeFreeConnector(conn);
-+	}
-+
-+	drmModeFreeResources(res);
-+	return count;
-+}
-+
-+/**
-+ * igt_connector_get_info:
-+ * @drm_fd: DRM file descriptor
-+ * @connector_id: connector ID
-+ * @name: buffer for connector name (mandatory)
-+ * @name_size: size of @name; must be > 0
-+ * @serial: buffer for EDID-derived serial (mandatory)
-+ * @serial_size: size of @serial; must be > 1
-+ * @path: buffer for MST PATH property (optional, may be NULL)
-+ * @path_size: size of @path buffer
-+ *
-+ * Fills connector name, MST PATH, and EDID-derived serial for a connector.
-+ * @name is always filled when the connector is found. @serial is filled from
-+ * the ASCII serial string descriptor (0xFF) if present, else from the 32-bit
-+ * header serial number; left empty if no EDID is available. @path is filled
-+ * only if requested and the PATH property exists.
-+ *
-+ * Success means the connector object was found and @name was filled.
-+ * @serial and @path are best-effort and may still be empty on success.
-+ *
-+ * Returns: true if the connector was found, false otherwise.
-+ */
-+bool igt_connector_get_info(int drm_fd, uint32_t connector_id,
-+			    char *name, size_t name_size,
-+			    char *serial, size_t serial_size,
-+			    char *path, size_t path_size)
-+{
-+	drmModeConnector *conn;
-+	drmModePropertyBlobPtr edid_blob = NULL;
-+	uint64_t blob_id = 0;
-+	drmModePropertyPtr prop;
-+	const struct edid *edid;
-+	int i;
-+
-+	igt_assert(name && name_size > 0);
-+	igt_assert(serial && serial_size > 1);
-+	igt_assert(!path || path_size > 0);
-+
-+	name[0] = '\0';
-+	serial[0] = '\0';
-+	if (path)
-+		path[0] = '\0';
-+
-+	conn = drmModeGetConnector(drm_fd, connector_id);
-+	if (!conn)
-+		return false;
-+
-+	snprintf(name, name_size, "%s-%d",
-+		 kmstest_connector_type_str(conn->connector_type),
-+		 conn->connector_type_id);
-+
-+	for (i = 0; i < conn->count_props; i++) {
-+		prop = drmModeGetProperty(drm_fd, conn->props[i]);
-+		if (!prop)
-+			continue;
-+
-+		if (strcmp(prop->name, "EDID") == 0)
-+			blob_id = conn->prop_values[i];
-+
-+		drmModeFreeProperty(prop);
-+		if (blob_id)
-+			break;
-+	}
-+
-+	/* Extract MST PATH if requested */
-+	if (path) {
-+		drmModePropertyBlobPtr path_blob;
-+
-+		/* PATH blob payload is a NUL-terminated string */
-+		path_blob = kmstest_get_path_blob(drm_fd, connector_id);
-+		if (path_blob) {
-+			snprintf(path, path_size, "%s",
-+				 (const char *)path_blob->data);
-+			drmModeFreePropertyBlob(path_blob);
-+		}
-+	}
-+
-+	drmModeFreeConnector(conn);
-+
-+	if (blob_id) {
-+		edid_blob = drmModeGetPropertyBlob(drm_fd, blob_id);
-+		if (edid_blob) {
-+			if (edid_blob->length >= sizeof(struct edid)) {
-+				edid = edid_blob->data;
-+				edid_get_any_serial(edid, serial, serial_size);
-+			}
-+			drmModeFreePropertyBlob(edid_blob);
-+		}
-+	}
-+
-+	return true;
-+}
-+
-+/**
-+ * igt_connector_find_by_path:
-+ * @drm_fd: DRM file descriptor
-+ * @path: MST PATH property value to match
-+ * @connector_id: output for connector ID (filled on success)
-+ *
-+ * Finds the currently connected connector whose PATH property matches @path
-+ * (exact string comparison).  PATH is the preferred stable identity for MST
-+ * connectors; connector IDs may change across hotplug events.
-+ *
-+ * Returns: true if a matching connected connector was found.
-+ */
-+bool igt_connector_find_by_path(int drm_fd, const char *path,
-+				uint32_t *connector_id)
-+{
-+	drmModeRes *res;
-+	drmModeConnector *conn;
-+	drmModePropertyBlobPtr path_blob;
-+	bool found = false;
-+	int i;
-+
-+	if (!path || !connector_id)
-+		return false;
-+
-+	res = drmModeGetResources(drm_fd);
-+	if (!res)
-+		return false;
-+
-+	for (i = 0; i < res->count_connectors && !found; i++) {
-+		conn = drmModeGetConnector(drm_fd, res->connectors[i]);
-+		if (!conn)
-+			continue;
-+
-+		if (conn->connection == DRM_MODE_CONNECTED) {
-+			path_blob = kmstest_get_path_blob(drm_fd,
-+							  conn->connector_id);
-+			if (path_blob) {
-+				if (strcmp(path_blob->data, path) == 0) {
-+					*connector_id = conn->connector_id;
-+					found = true;
-+				}
-+				drmModeFreePropertyBlob(path_blob);
-+			}
++			igt_info("USB4 Switch 3141 available (active port: %d)\n",
++				 port);
++			usb4switch_deinit(sw);
 +		}
 +
-+		drmModeFreeConnector(conn);
-+	}
-+
-+	drmModeFreeResources(res);
-+
-+	if (found)
-+		igt_debug("igt_connector: Found connector %u for path '%s'\n",
-+			  *connector_id, path);
-+
-+	return found;
-+}
-+
-+/**
-+ * igt_connector_find_by_name:
-+ * @drm_fd: DRM file descriptor
-+ * @name: connector name to match (e.g., "DP-6")
-+ * @connector_id: output for connector ID (filled on success)
-+ *
-+ * Name-based lookup helper.  Prefer igt_connector_find_by_path() for MST
-+ * connectors, since connector names and IDs may change across hotplug events.
-+ *
-+ * Returns: true if a matching connected connector was found.
-+ */
-+bool igt_connector_find_by_name(int drm_fd, const char *name,
-+				uint32_t *connector_id)
-+{
-+	drmModeRes *res;
-+	drmModeConnector *conn;
-+	char conn_name[IGT_CONNECTOR_NAME_MAX];
-+	bool found = false;
-+	int i;
-+
-+	if (!name || !connector_id)
-+		return false;
-+
-+	res = drmModeGetResources(drm_fd);
-+	if (!res)
-+		return false;
-+
-+	for (i = 0; i < res->count_connectors && !found; i++) {
-+		conn = drmModeGetConnector(drm_fd, res->connectors[i]);
-+		if (!conn)
-+			continue;
-+
-+		snprintf(conn_name, sizeof(conn_name), "%s-%d",
-+			 kmstest_connector_type_str(conn->connector_type),
-+			 conn->connector_type_id);
-+
-+		if (strcmp(conn_name, name) == 0 &&
-+		    conn->connection == DRM_MODE_CONNECTED) {
-+			*connector_id = conn->connector_id;
-+			found = true;
-+		}
-+
-+		drmModeFreeConnector(conn);
-+	}
-+
-+	drmModeFreeResources(res);
-+
-+	if (found)
-+		igt_debug("igt_connector: Found connector %u for name '%s'\n",
-+			  *connector_id, name);
-+
-+	return found;
-+}
-+
-+/**
-+ * igt_connector_reprobe_all:
-+ * @drm_fd: DRM file descriptor
-+ *
-+ * Issues a GETCONNECTOR ioctl for every connector, requesting fresh state
-+ * from the kernel. This is often sufficient to refresh connector status and
-+ * MST topology visibility after hotplug events, but does not guarantee a
-+ * full hardware reprobe in all driver paths.
-+ */
-+void igt_connector_reprobe_all(int drm_fd)
-+{
-+	drmModeRes *res;
-+	drmModeConnector *conn;
-+	int i;
-+
-+	res = drmModeGetResources(drm_fd);
-+	if (!res)
-+		return;
-+
-+	for (i = 0; i < res->count_connectors; i++) {
-+		conn = drmModeGetConnector(drm_fd, res->connectors[i]);
-+		if (conn)
-+			drmModeFreeConnector(conn);
-+	}
-+
-+	drmModeFreeResources(res);
-+}
-diff --git a/lib/igt_connector_helper.h b/lib/igt_connector_helper.h
-new file mode 100644
-index 000000000..fffb2661b
---- /dev/null
-+++ b/lib/igt_connector_helper.h
-@@ -0,0 +1,27 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+#ifndef IGT_CONNECTOR_HELPER_H
-+#define IGT_CONNECTOR_HELPER_H
-+
-+#include <stdbool.h>
-+#include <stddef.h>
-+#include <stdint.h>
-+
-+#define IGT_CONNECTOR_NAME_MAX 32
-+
-+int igt_connector_get_connected(int drm_fd, uint32_t *connectors,
-+				int max_connectors);
-+bool igt_connector_get_info(int drm_fd, uint32_t connector_id,
-+			    char *name, size_t name_size,
-+			    char *serial, size_t serial_size,
-+			    char *path, size_t path_size);
-+bool igt_connector_find_by_path(int drm_fd, const char *path,
-+				uint32_t *connector_id);
-+bool igt_connector_find_by_name(int drm_fd, const char *name,
-+				uint32_t *connector_id);
-+void igt_connector_reprobe_all(int drm_fd);
-+
-+#endif /* IGT_CONNECTOR_HELPER_H */
-diff --git a/lib/meson.build b/lib/meson.build
-index ea721ecf7..074b21fdf 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -113,6 +113,7 @@ lib_sources = [
- 	'igt_vmwgfx.c',
- 	'igt_psr.c',
- 	'igt_amd.c',
-+	'igt_connector_helper.c',
- 	'igt_edid.c',
- 	'igt_eld.c',
- 	'igt_infoframe.c',
+ 		igt_describe("Make sure that we have eDP panel with PSR1 support.");
+ 		igt_subtest("psr1") {
+ 			igt_require(psr_sink_support(fd, debugfs_fd, PSR_MODE_1, NULL));
 -- 
 2.25.1
 
