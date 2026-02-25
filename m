@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76E59FD45EC
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 21:07:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFCADFD45F4
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 21:07:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E40B310E013;
-	Wed, 25 Feb 2026 21:07:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F20C910E833;
+	Wed, 25 Feb 2026 21:07:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aWxINVYu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jUTfSvGU";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE23010E013
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 21:07:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A62D910E013
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 21:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1772053660; x=1803589660;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=R3FH3TfoQk9T6KiQgCjhQXhHPbxf48JMQp4x8ZFhUrM=;
- b=aWxINVYuJIGdKsmwUgq0TGkuNWrN7oDJc14kd3douf0SSDLTYqYQIqiz
- hJeGrg2bB10hJYOQ2TnfR3OpDevym6Uu+XvwtxTxC0oCBoM4p9cdvdRe6
- iLi95SFZOxeezxecy1j+R6mxoug8d2e/UHkhVWalwfnJ9kW0Mwpy/jDnm
- aKf20qpZElNJo47jAmfQ/hvPackgyxxlbXAdeG7sMjNz6UuyeFUVfKP+2
- NhAEksetsdbAtju1VMikR87sgpsDgHY0lflM5QexQH+RGgxQJbYNfJ6oZ
- tLSFBoJGvHBh4U98rkjIEOrSichZaqt0OC/XdcBKKQIBPm+du8pgLoQRK A==;
-X-CSE-ConnectionGUID: 7RU+7RtoQwGAeVeJoBfvSg==
-X-CSE-MsgGUID: HlBxpa1GTcqjR+kE+dqFkg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="75710605"
-X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="75710605"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=oBgtyUvjWZV9DMFy4Zpm+igAKnRlPnbc0K8GAs5wkPo=;
+ b=jUTfSvGUAhmUsq2mc/kblRZDI5fqgfLtncjK+X+QVfuGPzP4UAOe4uui
+ 6HXxCIK67T3w8Nb/qfbcFmOmR0v12Nm2gO4/zAW/uMQ2s0tjyJIpCLl0h
+ qCnENI0hrh6yKc4NiqsULknrRP7tCofB38+XlOKsCUopX6sTGxfgDWV9f
+ k+Gqzorx6/7XBgAeRcs/6FRHCqi8Xo7TkgP3qzdWYfpSHCObXyONuxK23
+ NvHVzPsXun7o78/TaTIb59SOKeMz4d3trge07ex5sQkuXeCXhSKOvcJkk
+ KcDZuhmNiYX5qAMATsEIF70B5g+LdSnI4EJSs4bTUZFlkUky7UA7gfMVW g==;
+X-CSE-ConnectionGUID: fVcEWT1tShqLSlzKcpn2/A==
+X-CSE-MsgGUID: 36oUD+PxTmeclU46DpG4JA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="75710606"
+X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="75710606"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2026 13:07:39 -0800
-X-CSE-ConnectionGUID: IBNIG7fVSIetG5/a+2A9uw==
-X-CSE-MsgGUID: 94qBeu9YQ4SwN/wqp+WuPA==
+ 25 Feb 2026 13:07:40 -0800
+X-CSE-ConnectionGUID: 2zWfD55XRa2noI8MvWpaZA==
+X-CSE-MsgGUID: IkYHM2gkQeGMC+ZDPn5FGA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="220489303"
+X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="220489313"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 13:07:38 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 13:07:39 -0800
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 0/6] add test to validate dock/undock and switch
-Date: Thu, 26 Feb 2026 02:58:53 +0530
-Message-Id: <20260225212859.876713-1-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 1/6] lib/igt_edid: add EDID serial extraction helpers
+Date: Thu, 26 Feb 2026 02:58:54 +0530
+Message-Id: <20260225212859.876713-2-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260225212859.876713-1-kunal1.joshi@intel.com>
+References: <20260225212859.876713-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -65,42 +68,139 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test to validate docking/undocking scenarios on TBT Hub
-and switching from TBT/DP-ALT to DP-ALT/TBT mode.
+Add helpers to extract serial identification from EDID data.
 
-Relies on Microsoft USB4 switch 3141 for the same
-Below is link to documentation for Microsoft USB4 switch 3141
-https://mcci.com/wp-content/uploads/2021/09/950001601a_Model-3141-USB4%E2%84%A2-Switch-User-Manual.pdf
+ - edid_get_serial_string(): extract ASCII serial from descriptor 0xFF
+ - edid_get_serial_number(): extract 32-bit serial from EDID header
+ - edid_get_any_serial(): convenience helper that tries ASCII serial
+   first, then falls back to 32-bit header serial formatted as hex
 
-Kunal Joshi (6):
-  lib/igt_edid: add EDID serial extraction helpers
-  lib/igt_connector_helper: Add generic connector helpers
-  lib/igt_serial: add generic serial communication helper
-  lib/igt_usb4_switch: add helper library for USB4 Switch 3141
-  tests/kms_feature_discovery: add basic usb4 switch discovery
-  tests/intel/kms_usb4_switch: Add USB4 switch test suite
+These are needed by the connector helper and USB4 switch test suite
+for EDID-based display verification after dock/undock events.
 
- lib/igt_connector_helper.c    |  299 ++++++++
- lib/igt_connector_helper.h    |   27 +
- lib/igt_edid.c                |   91 +++
- lib/igt_edid.h                |    5 +
- lib/igt_serial.c              |  435 ++++++++++++
- lib/igt_serial.h              |   32 +
- lib/igt_usb4_switch.c         | 1055 +++++++++++++++++++++++++++
- lib/igt_usb4_switch.h         |  157 +++++
- lib/meson.build               |    3 +
- tests/intel/kms_usb4_switch.c | 1254 +++++++++++++++++++++++++++++++++
- tests/kms_feature_discovery.c |   23 +
- tests/meson.build             |    2 +
- 12 files changed, 3383 insertions(+)
- create mode 100644 lib/igt_connector_helper.c
- create mode 100644 lib/igt_connector_helper.h
- create mode 100644 lib/igt_serial.c
- create mode 100644 lib/igt_serial.h
- create mode 100644 lib/igt_usb4_switch.c
- create mode 100644 lib/igt_usb4_switch.h
- create mode 100644 tests/intel/kms_usb4_switch.c
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ lib/igt_edid.c | 91 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_edid.h |  5 +++
+ 2 files changed, 96 insertions(+)
 
+diff --git a/lib/igt_edid.c b/lib/igt_edid.c
+index c68ccf671..e7fcbf0b9 100644
+--- a/lib/igt_edid.c
++++ b/lib/igt_edid.c
+@@ -249,6 +249,97 @@ void edid_get_monitor_name(const struct edid *edid, char *name, size_t name_size
+ 	name[0] = '\0';
+ }
+ 
++/**
++ * edid_get_serial_string:
++ * @edid: EDID structure
++ * @serial: buffer to write serial string
++ * @serial_size: size of serial buffer; must be > 1
++ *
++ * Extract the serial string from EDID descriptor block type 0xFF.
++ * The descriptor payload is a 13-byte fixed-width field; trailing
++ * whitespace is stripped and the result is NUL-terminated.
++ * @serial is left empty when no 0xFF descriptor is found.
++ */
++void edid_get_serial_string(const struct edid *edid,
++			    char *serial, size_t serial_size)
++{
++	size_t copy_len, i, n;
++
++	igt_assert(edid);
++	igt_assert(serial);
++	igt_assert(serial_size > 1);
++	serial[0] = '\0';
++
++	for (i = 0; i < DETAILED_TIMINGS_LEN; i++) {
++		const uint8_t *d = (const uint8_t *)&edid->detailed_timings[i];
++
++		if (d[0] != 0x00 || d[1] != 0x00 || d[2] != 0x00)
++			continue;
++
++		if (d[3] != EDID_DETAIL_MONITOR_SERIAL || d[4] != 0x00)
++			continue;
++
++		/* Descriptor string payload is 13 bytes starting at d[5] */
++		copy_len = serial_size - 1 < 13 ? serial_size - 1 : 13;
++		memcpy(serial, &d[5], copy_len);
++		serial[copy_len] = '\0';
++
++		for (n = strlen(serial);
++		     n > 0 && isspace((unsigned char)serial[n - 1]); n--)
++			serial[n - 1] = '\0';
++
++		return;
++	}
++}
++
++/**
++ * edid_get_serial_number:
++ * @edid: EDID structure
++ *
++ * Extract the 32-bit serial number from the EDID base block header
++ * (bytes 12–15, the manufacturer/product section).  This is different
++ * from the ASCII serial string in descriptor block 0xFF.
++ *
++ * Returns: 32-bit serial number (little-endian), 0 if absent.
++ */
++uint32_t edid_get_serial_number(const struct edid *edid)
++{
++	return (uint32_t)edid->serial[0] |
++	       ((uint32_t)edid->serial[1] << 8) |
++	       ((uint32_t)edid->serial[2] << 16) |
++	       ((uint32_t)edid->serial[3] << 24);
++}
++
++/**
++ * edid_get_any_serial:
++ * @edid: EDID structure
++ * @serial: buffer to write serial string
++ * @serial_size: size of serial buffer; must be > 1
++ *
++ * Convenience helper that tries to extract a serial identifier from EDID.
++ * First tries the ASCII serial string descriptor (0xFF). If that is empty,
++ * falls back to the 32-bit header serial number formatted as 8-char hex.
++ * If neither source provides a usable serial (no 0xFF descriptor and the
++ * header serial is 0), @serial is left empty.
++ */
++void edid_get_any_serial(const struct edid *edid,
++			 char *serial, size_t serial_size)
++{
++	uint32_t serial_num;
++
++	igt_assert(edid);
++	igt_assert(serial);
++	igt_assert(serial_size > 1);
++
++	edid_get_serial_string(edid, serial, serial_size);
++	if (serial[0])
++		return;
++
++	serial_num = edid_get_serial_number(edid);
++	if (serial_num != 0)
++		snprintf(serial, serial_size, "%08X", serial_num);
++}
++
+ static void edid_set_mfg(struct edid *edid, const char mfg[static 3])
+ {
+ 	edid->mfg_id[0] = (mfg[0] - '@') << 2 | (mfg[1] - '@') >> 3;
+diff --git a/lib/igt_edid.h b/lib/igt_edid.h
+index be0ccf529..d9e396065 100644
+--- a/lib/igt_edid.h
++++ b/lib/igt_edid.h
+@@ -457,5 +457,10 @@ void *dispid_block_tiled(void *ptr,
+ 			 int hsize, int vsize,
+ 			 const char *topology_id);
+ void edid_get_monitor_name(const struct edid *edid, char *name, size_t name_size);
++void edid_get_serial_string(const struct edid *edid,
++			    char *serial, size_t serial_size);
++uint32_t edid_get_serial_number(const struct edid *edid);
++void edid_get_any_serial(const struct edid *edid,
++			 char *serial, size_t serial_size);
+ 
+ #endif
 -- 
 2.25.1
 
