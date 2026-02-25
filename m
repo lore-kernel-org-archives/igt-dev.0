@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D6EAF357D5
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 10:20:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E99F4FCEE81
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 11:10:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D623F10E737;
-	Wed, 25 Feb 2026 10:20:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8F04E10E221;
+	Wed, 25 Feb 2026 11:10:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="M549RjQo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VxVdpVqR";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7509610E737
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 10:20:07 +0000 (UTC)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id A9AE24E4105C;
- Wed, 25 Feb 2026 10:20:05 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 79C815FDE5;
- Wed, 25 Feb 2026 10:20:05 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 944C210369219; Wed, 25 Feb 2026 11:20:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1772014805; h=from:subject:date:message-id:to:cc:mime-version:content-type:
- content-transfer-encoding:in-reply-to:references;
- bh=IJumvMoUNUES9cntvrKtp5dM5a80UdZrtZGbAz5nJGI=;
- b=M549RjQoZS81TW1S8Nc/x2vfojjYYIeXyU8S5wUnYSkFqpk6THAy5uCoMe8eZmiD45bryI
- ga9Mr/UBm8qzlX/p1IQf6YvTGzBG4PUMOuMZJFYYEAnxFMZNkUuSyF2EaJKl0jD24/RThW
- 5y5VQVZsHKIPZzr/6vkDlBt6EJs3X/kImv/P67nM2cBsVfJW936JWqBaOPuY2cYOH2rVeA
- b2Dyx/2B4srKzjwEdYGhz3xIJ5nFlRgxO/8T44FP9xGmIauonxXtc1WzGuqINRWDH//iey
- MKVyXX5586NzXR+IWxrnO6kV2PB56vpzsT9MWGEo+Er2ARlUdY3vI97M6XMe/A==
-Date: Wed, 25 Feb 2026 11:20:02 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Louis Chauvet <louis.chauvet@bootlin.com>
-Cc: igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
- luca.ceresoli@bootlin.com, markyacoub@google.com,
- khaled.almahallawy@intel.com
-Subject: Re: [PATCH i-g-t v7 41/48] lib/igt_dp: Create generic helpers for
- DP information
-Message-ID: <20260225112002.20ac9158@kmaincent-XPS-13-7390>
-In-Reply-To: <848b0604-01e1-4d24-a53b-b7e6c5e9a2f5@bootlin.com>
-References: <20260223-unigraf-integration-v7-0-73dc9143c8c1@bootlin.com>
- <20260223-unigraf-integration-v7-41-73dc9143c8c1@bootlin.com>
- <20260223165631.4e296595@kmaincent-XPS-13-7390>
- <848b0604-01e1-4d24-a53b-b7e6c5e9a2f5@bootlin.com>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D955810E221
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 11:10:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1772017840; x=1803553840;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=CgZfxmZQvXeq3jkU/I3LpvHYn/nu4EYNNC1ct9oBJ2k=;
+ b=VxVdpVqR1GVMNZ/xI1OVU+cjSWL/xP9LNYqQl2tOHCLmypvi+7toYUBA
+ 1toMY6unWizRckZ2CbAwrwjY1Quz0hfYpPC+ZGQlF9/ytciN4OhjAuTRN
+ VUoenqiUPoClr9iO6rxI4dUsbMo8AL1Mg54UhUhxOtiM5Q9jpG3yReo0G
+ ZsczOx+fjbovW3vKeRN+iBry5ECo72sps17r0FVapMQ4PLsvQdzvZpBQi
+ /7egj5sGRycup8buelm43ejDwHACWOzFdvYyQU98TUu2jUHoGkk0DPl6w
+ OEnOu7IrydA/rr1bXZLtgzjrR76kv329CnA+EeYa9jKO5JqR745U8Bfcg Q==;
+X-CSE-ConnectionGUID: qbiItbGmSDmCvsmp3BaE4Q==
+X-CSE-MsgGUID: pb7DLzexThu5MNGR00Gxvw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11711"; a="75659713"
+X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; d="scan'208";a="75659713"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Feb 2026 03:10:39 -0800
+X-CSE-ConnectionGUID: kbs7gZZkT52ObIhEDkYjXg==
+X-CSE-MsgGUID: igzlA4UXQdOXgLN3yH4PhQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; d="scan'208";a="220807481"
+Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 03:10:37 -0800
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v1] tests/kms_async_flips: validate mode before
+ proceeding with fb creation
+Date: Wed, 25 Feb 2026 16:35:10 +0530
+Message-Id: <20260225110510.1801049-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,98 +67,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, 25 Feb 2026 11:00:27 +0100
-Louis Chauvet <louis.chauvet@bootlin.com> wrote:
+Validate mode before proceeding with creating frame buffers to avoid
+passing invalid parameters to the ioctl.
 
-> On 2/23/26 16:56, Kory Maincent wrote:
-> > On Mon, 23 Feb 2026 13:09:48 +0100
-> > Louis Chauvet <louis.chauvet@bootlin.com> wrote:
-> >  =20
-> >> With the introduction of unigraf tests, there is no reason to limit the
-> >> implementation to intel. Create easly extendable generic functions to
-> >> help supporting multiple GPU.
-> >>
-> >> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> >> ---
-> >>   lib/igt_dp.c    | 177
-> >> ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ lib/igt_dp.h =
-   |
-> >> 30 ++++++++++ lib/meson.build |   1 +
-> >>   3 files changed, 208 insertions(+)
-> >>
-> >> diff --git a/lib/igt_dp.c b/lib/igt_dp.c
-> >> new file mode 100644
-> >> index 000000000000..0920a43af5e9
-> >> --- /dev/null
-> >> +++ b/lib/igt_dp.c
-> >> @@ -0,0 +1,177 @@
-> >> +// SPDX-License-Identifier: MIT
-> >> +/*
-> >> + * Copyright =C2=A9 2026 Google
-> >> + *
-> >> + * Authors:
-> >> + *   Louis Chauvet <louis.chauvet@bootlin.com>
-> >> + */
-> >> +
-> >> +#include "drmtest.h"
-> >> +#include "i915/i915_dp.h"
-> >> +#include "igt_amd.h" =20
-> >=20
-> > I think this header is useless, there is no amd function call here.
-> >  =20
-> >> +#include "igt_core.h"
-> >> +#include "igt_kms.h"
-> >> +#include <stdint.h>
-> >> +#include "igt_dp.h" =20
-> >=20
-> > stdint include should be at the top.
-> > We often put system header before local header.
-> >  =20
-> >> +
-> >> +/**
-> >> + * igt_dp_get_current_link_rate: Get current link rate on a display p=
-ort
-> >> + * @drm_fd: DRM file descriptor
-> >> + * @output: igt_output_t object representing the display port
-> >> + *
-> >> + * Returns:
-> >> + * The current link rate in kb/s, or a negative error code on failure.
-> >> + */
-> >> +int igt_dp_get_current_link_rate(int drm_fd, igt_output_t *output)
-> >> +{
-> >> +	if (is_intel_device(drm_fd))
-> >> +		/*
-> >> +		 * i915_dp_get_current_link_rate returns the value in tens
-> >> of kb/s because
-> >> +		 * that what the kernel uses. Convert it to kb/s to have a
-> >> sane unit...
-> >> +		 */
-> >> +		return i915_dp_get_current_link_rate(drm_fd, output) * 10;
-> >> +
-> >> +	igt_assert_f(false, "Current drm device is not able to report used
-> >> link rate\n");
-> >> +	return -EINVAL;
-> >> +} =20
-> >=20
-> > I usually do the other way around:
-> > if (!is_intel_device(...)) {
-> > 	igt_assert(...);
-> > 	return -EINVAL
-> > }
-> >=20
-> > return i915_dp_get_current_link_rate(drm_fd, output) * 10;
-> >=20
-> > but well that's only my coding style I am also ok with that. =20
->=20
-> The goal is to be able to easly add amd, qualcom, whatever like this:
->=20
-> if (is_intel())
-> 	return intel_...
-> if (is_amd())
-> 	return amd_...
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+---
+ tests/kms_async_flips.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-Oh ok legit.
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 014b7f347..d00b36544 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -298,6 +298,12 @@ static void test_init(data_t *data)
+ 	igt_display_commit(&data->display);
+ 
+ 	mode = igt_output_get_mode(data->output);
++	igt_require_f(kmstest_mode_is_valid(mode),
++		      "Invalid mode on %s (%dx%d@%d)",
++		      data->output->name,
++		      mode ? mode->hdisplay : 0,
++		      mode ? mode->vdisplay : 0,
++		      mode ? mode->vrefresh : 0);
+ 
+ 	data->crtc_id = data->crtc->crtc_id;
+ 	data->refresh_rate = mode->vrefresh;
+@@ -327,6 +333,12 @@ static void test_init_fbs(data_t *data)
+ 	drmModeModeInfo *mode;
+ 
+ 	mode = igt_output_get_mode(data->output);
++	igt_require_f(kmstest_mode_is_valid(mode),
++		      "Invalid mode on %s (%dx%d@%d)",
++		      data->output->name,
++		      mode ? mode->hdisplay : 0,
++		      mode ? mode->vdisplay : 0,
++		      mode ? mode->vrefresh : 0);
+ 	width = mode->hdisplay;
+ 	height = mode->vdisplay;
+ 
+@@ -672,6 +684,12 @@ static void test_invalid(data_t *data)
+ 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+ 	mode = igt_output_get_mode(data->output);
++	igt_require_f(kmstest_mode_is_valid(mode),
++		      "Invalid mode on %s (%dx%d@%d)",
++		      data->output->name,
++		      mode ? mode->hdisplay : 0,
++		      mode ? mode->vdisplay : 0,
++		      mode ? mode->vrefresh : 0);
+ 	width = mode->hdisplay;
+ 	height = mode->vdisplay;
+ 
+-- 
+2.34.1
+
