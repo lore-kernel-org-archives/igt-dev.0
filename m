@@ -4,37 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BBFDEFD239
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 09:43:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7670EFD23A
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 09:46:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0745510E72C;
-	Wed, 25 Feb 2026 09:43:03 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=lankhorst.se header.i=@lankhorst.se header.b="cFOkaZ6w";
-	dkim-atps=neutral
-Received: from lankhorst.se (unknown [141.105.120.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3DDEA10E72C
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 09:43:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lankhorst.se;
- s=default; t=1772012578;
- bh=IWTFxaQuf74bFZG5ykfkiZVNHQc2vG47VU0HRUWv7Q0=;
- h=From:To:Cc:Subject:Date:From;
- b=cFOkaZ6wUqjK0J4x8nSa1HgehKHqJeWU9ZEqc44UaeWw2XSD9LiV1F+BXrpHzhG1i
- bMai4vhXUXikbqbm8YCtc78v7JLeWXIV7P9MAmutvR2yoVdksW/wfB5f3ptLezigTD
- Iy0CszvGstYG7EDA5ADQdLfFhVwI2MK06g/IC4r8KqvTMcHNLI9WxBO19W3hTTqL/u
- 7wUhcogy+Wu8Z1Q9usFwy1O5eb2rm+6WB9ZQoOdQf1n31B67qxRPLLkY+AgAqmoTQp
- yYF5CSSwDJnLsNDKVQVIbLesxTP1V3UzRee/8VoWpfO5fUuEpVkm/OoDFMgP0iULV+
- PcCShR/4S32hQ==
-From: Maarten Lankhorst <dev@lankhorst.se>
-To: igt-dev@lists.freedesktop.org
-Cc: Maarten Lankhorst <dev@lankhorst.se>
-Subject: [PATCH i-g-t] tests/intel/xe_module_load: Add subtest to test with
- active fd teardown
-Date: Wed, 25 Feb 2026 10:42:56 +0100
-Message-ID: <20260225094255.10335-2-dev@lankhorst.se>
-X-Mailer: git-send-email 2.51.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5A7C110E730;
+	Wed, 25 Feb 2026 09:46:34 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1598110E730;
+ Wed, 25 Feb 2026 09:46:33 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5922195652109343388=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fexplict=5Ffence?=
+ =?utf-8?q?=3A_Add_Test_for_Explicit_Fencing_=28rev5=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sebinraj, S" <s.sebinraj@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 25 Feb 2026 09:46:33 -0000
+Message-ID: <177201279307.284988.2339858292758319923@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260217075953.3220732-1-s.sebinraj@intel.com>
+In-Reply-To: <20260217075953.3220732-1-s.sebinraj@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,79 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Create an evil testcase to ensure we also unload when the device is
-still sort of active.
+--===============5922195652109343388==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-igt_create_fb will create a framebuffer and probably a backing BO,
-while I also saw a crash related to property blobs.
+== Series Details ==
 
-This tests that we can teardown with buffer objects,
-property blobs and framebuffers on the list.
+Series: tests/kms_explict_fence: Add Test for Explicit Fencing (rev5)
+URL   : https://patchwork.freedesktop.org/series/160078/
+State : success
 
-There should probably be another test for a VM and engine too,
-but this should be enough for a first attempt.
+== Summary ==
 
-Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
----
- tests/intel/xe_module_load.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+CI Bug Log - changes from XEIGT_8770_BAT -> XEIGTPW_14612_BAT
+====================================================
 
-diff --git a/tests/intel/xe_module_load.c b/tests/intel/xe_module_load.c
-index 0c75c4ebc1..4be7b44482 100644
---- a/tests/intel/xe_module_load.c
-+++ b/tests/intel/xe_module_load.c
-@@ -91,6 +91,27 @@ static void load_and_check_xe(const char *opts)
- 	drm_close_driver(drm_fd);
- }
- 
-+static void display_opened_unload(void)
-+{
-+	igt_display_t display;
-+	int drm_fd;
-+	struct igt_fb fb;
-+	uint32_t blob_id;
-+
-+	/* drm_open_driver loads xe module if needed */
-+	drm_fd = drm_open_driver(DRIVER_XE);
-+	igt_display_require(&display, drm_fd);
-+
-+	/* Create a property blob and a FB, hopefully with a separate backing BO */
-+	igt_create_fb(drm_fd, 640, 480, DRM_FORMAT_XRGB8888, 0, &fb);
-+	igt_assert_eq(0, drmModeCreatePropertyBlob(drm_fd, &fb, sizeof(fb), &blob_id));
-+
-+	/* Unbind, close, unload, check for booms */
-+	igt_kmod_unbind("xe", NULL);
-+	drm_close_driver(drm_fd);
-+	igt_xe_driver_unload();
-+}
-+
- static const char * const unwanted_drivers[] = {
- 	"xe",
- 	"i915",
-@@ -107,6 +128,9 @@ static const char * const unwanted_drivers[] = {
-  * SUBTEST: unload
-  * Description: Unload the Xe driver
-  *
-+ * SUBTEST: display-opened-unload
-+ * Description: Test behavior of xe driver unloading while fd is still opened.
-+ *
-  * SUBTEST: reload
-  * Description: Reload the Xe driver
-  *
-@@ -132,6 +156,10 @@ int igt_main()
- 		igt_xe_driver_unload();
- 	}
- 
-+	igt_subtest("display-opened-unload") {
-+		display_opened_unload();
-+	}
-+
- 	igt_subtest("force-load") {
- 		for (int i = 0; unwanted_drivers[i] != NULL; i++) {
- 			igt_intel_driver_unload(unwanted_drivers[i]);
--- 
-2.51.0
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (14 -> 14)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8770 -> IGTPW_14612
+  * Linux: xe-4609-4caa4c7d4ff7bd4d24bca8e795773e460eb8bbfe -> xe-4613-5c29c0e4516d76d8072fe1bc65eea3b5a62d2e5d
+
+  IGTPW_14612: d8cad73c8884ed4f7a4f9bc43c703a6fd5762c75 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8770: 8770
+  xe-4609-4caa4c7d4ff7bd4d24bca8e795773e460eb8bbfe: 4caa4c7d4ff7bd4d24bca8e795773e460eb8bbfe
+  xe-4613-5c29c0e4516d76d8072fe1bc65eea3b5a62d2e5d: 5c29c0e4516d76d8072fe1bc65eea3b5a62d2e5d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14612/index.html
+
+--===============5922195652109343388==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_explict_fence: Add Test for Explicit Fencing (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160078/">https://patchwork.freedesktop.org/series/160078/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14612/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14612/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8770_BAT -&gt; XEIGTPW_14612_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (14 -&gt; 14)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8770 -&gt; IGTPW_14612</li>
+<li>Linux: xe-4609-4caa4c7d4ff7bd4d24bca8e795773e460eb8bbfe -&gt; xe-4613-5c29c0e4516d76d8072fe1bc65eea3b5a62d2e5d</li>
+</ul>
+<p>IGTPW_14612: d8cad73c8884ed4f7a4f9bc43c703a6fd5762c75 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8770: 8770<br />
+  xe-4609-4caa4c7d4ff7bd4d24bca8e795773e460eb8bbfe: 4caa4c7d4ff7bd4d24bca8e795773e460eb8bbfe<br />
+  xe-4613-5c29c0e4516d76d8072fe1bc65eea3b5a62d2e5d: 5c29c0e4516d76d8072fe1bc65eea3b5a62d2e5d</p>
+
+</body>
+</html>
+
+--===============5922195652109343388==--
