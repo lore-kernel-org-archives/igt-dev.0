@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3600F55436
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 01:00:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19BC5F55434
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 01:20:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6300010E64C;
-	Wed, 25 Feb 2026 01:00:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B2DF410E659;
+	Wed, 25 Feb 2026 01:20:52 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B182410E63E;
- Wed, 25 Feb 2026 01:00:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C72A410E659;
+ Wed, 25 Feb 2026 01:20:50 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============5462622003853067131=="
+ boundary="===============0863047309467089970=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_xe=5Fexec=5Fbalancer=3A_Rep?=
- =?utf-8?q?ort_skip_when_test_is_unable_to_run?=
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_lib/intel=5Fpat=3A_use_ke?=
+ =?utf-8?q?rnel_debugfs_as_authoritative_PAT_source_for_Xe_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matt Roper" <matthew.d.roper@intel.com>
+To: himanshu.girotra@intel.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 25 Feb 2026 01:00:02 -0000
-Message-ID: <177198120270.284008.13356809810795604967@a3b018990fe9>
+Date: Wed, 25 Feb 2026 01:20:50 -0000
+Message-ID: <177198245079.284662.11263469691285351915@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260224211612.2944788-2-matthew.d.roper@intel.com>
-In-Reply-To: <20260224211612.2944788-2-matthew.d.roper@intel.com>
+References: <20260224170737.12151-1-himanshu.girotra@intel.com>
+In-Reply-To: <20260224170737.12151-1-himanshu.girotra@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5462622003853067131==
+--===============0863047309467089970==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: xe_exec_balancer: Report skip when test is unable to run
-URL   : https://patchwork.freedesktop.org/series/162088/
+Series: lib/intel_pat: use kernel debugfs as authoritative PAT source for Xe (rev2)
+URL   : https://patchwork.freedesktop.org/series/161927/
 State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8769_BAT -> XEIGTPW_14611_BAT
+CI Bug Log - changes from IGT_8769 -> IGTPW_14610
 ====================================================
 
 Summary
@@ -62,52 +62,81 @@ Summary
 
   **FAILURE**
 
-  Serious unknown changes coming with XEIGTPW_14611_BAT absolutely need to be
+  Serious unknown changes coming with IGTPW_14610 absolutely need to be
   verified manually.
   
   If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_14611_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  introduced in IGTPW_14610, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
   to document this new failure mode, which will reduce false positives in CI.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14610/index.html
 
-Participating hosts (13 -> 14)
+Participating hosts (43 -> 41)
 ------------------------------
 
-  Additional (1): bat-bmg-3 
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
 
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in XEIGTPW_14611_BAT:
+  Here are the unknown changes that may have been introduced in IGTPW_14610:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
-  * igt@xe_multigpu_svm@mgpu-xgpu-access-basic:
-    - bat-bmg-3:          NOTRUN -> [ABORT][1]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14611/bat-bmg-3/igt@xe_multigpu_svm@mgpu-xgpu-access-basic.html
+  * igt@gem_lmem_swapping@basic:
+    - bat-dg2-8:          [PASS][1] -> [ABORT][2] +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8769/bat-dg2-8/igt@gem_lmem_swapping@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14610/bat-dg2-8/igt@gem_lmem_swapping@basic.html
 
   
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14610 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-2:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8769/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14610/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+    - bat-atsm-1:         NOTRUN -> [DMESG-FAIL][5] ([i915#12061]) +1 other test dmesg-fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14610/bat-atsm-1/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - bat-atsm-1:         [ABORT][6] -> [PASS][7] +1 other test pass
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8769/bat-atsm-1/igt@gem_lmem_swapping@parallel-random-engines.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14610/bat-atsm-1/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8769 -> IGTPW_14611
-  * Linux: xe-4607-189174b3312588d97dc467dca7cfb9dce42ab81b -> xe-4609-4caa4c7d4ff7bd4d24bca8e795773e460eb8bbfe
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8769 -> IGTPW_14610
+  * Linux: CI_DRM_18038 -> CI_DRM_18040
 
-  IGTPW_14611: 14611
+  CI-20190529: 20190529
+  CI_DRM_18038: 189174b3312588d97dc467dca7cfb9dce42ab81b @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18040: 4caa4c7d4ff7bd4d24bca8e795773e460eb8bbfe @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14610: 14610
   IGT_8769: 8769
-  xe-4607-189174b3312588d97dc467dca7cfb9dce42ab81b: 189174b3312588d97dc467dca7cfb9dce42ab81b
-  xe-4609-4caa4c7d4ff7bd4d24bca8e795773e460eb8bbfe: 4caa4c7d4ff7bd4d24bca8e795773e460eb8bbfe
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14611/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14610/index.html
 
---===============5462622003853067131==
+--===============0863047309467089970==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -127,46 +156,67 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>xe_exec_balancer: Report skip when test is unable to run</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162088/">https://patchwork.freedesktop.org/series/162088/</a></td></tr>
+<tr><td><b>Series:</b></td><td>lib/intel_pat: use kernel debugfs as authoritative PAT source for Xe (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161927/">https://patchwork.freedesktop.org/series/161927/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14611/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14611/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14610/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14610/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8769_BAT -&gt; XEIGTPW_14611_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_8769 -&gt; IGTPW_14610</h1>
 <h2>Summary</h2>
 <p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_14611_BAT absolutely need to be<br />
+<p>Serious unknown changes coming with IGTPW_14610 absolutely need to be<br />
   verified manually.</p>
 <p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_14611_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  introduced in IGTPW_14610, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
   to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (13 -&gt; 14)</h2>
-<p>Additional (1): bat-bmg-3 </p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14610/index.html</p>
+<h2>Participating hosts (43 -&gt; 41)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_14611_BAT:</p>
+<p>Here are the unknown changes that may have been introduced in IGTPW_14610:</p>
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
-<li>igt@xe_multigpu_svm@mgpu-xgpu-access-basic:<ul>
-<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14611/bat-bmg-3/igt@xe_multigpu_svm@mgpu-xgpu-access-basic.html">ABORT</a></li>
+<li>igt@gem_lmem_swapping@basic:<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8769/bat-dg2-8/igt@gem_lmem_swapping@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14610/bat-dg2-8/igt@gem_lmem_swapping@basic.html">ABORT</a> +1 other test abort</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14610 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8769/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14610/bat-arlh-2/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14610/bat-atsm-1/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_lmem_swapping@parallel-random-engines:<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8769/bat-atsm-1/igt@gem_lmem_swapping@parallel-random-engines.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14610/bat-atsm-1/igt@gem_lmem_swapping@parallel-random-engines.html">PASS</a> +1 other test pass</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8769 -&gt; IGTPW_14611</li>
-<li>Linux: xe-4607-189174b3312588d97dc467dca7cfb9dce42ab81b -&gt; xe-4609-4caa4c7d4ff7bd4d24bca8e795773e460eb8bbfe</li>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8769 -&gt; IGTPW_14610</li>
+<li>Linux: CI_DRM_18038 -&gt; CI_DRM_18040</li>
 </ul>
-<p>IGTPW_14611: 14611<br />
-  IGT_8769: 8769<br />
-  xe-4607-189174b3312588d97dc467dca7cfb9dce42ab81b: 189174b3312588d97dc467dca7cfb9dce42ab81b<br />
-  xe-4609-4caa4c7d4ff7bd4d24bca8e795773e460eb8bbfe: 4caa4c7d4ff7bd4d24bca8e795773e460eb8bbfe</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18038: 189174b3312588d97dc467dca7cfb9dce42ab81b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18040: 4caa4c7d4ff7bd4d24bca8e795773e460eb8bbfe @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14610: 14610<br />
+  IGT_8769: 8769</p>
 
 </body>
 </html>
 
---===============5462622003853067131==--
+--===============0863047309467089970==--
