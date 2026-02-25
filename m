@@ -4,56 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7CCFFD374E
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 14:07:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E35BFD3770
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 16:04:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9C43F10E7DA;
-	Wed, 25 Feb 2026 14:07:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0DD2910E1C6;
+	Wed, 25 Feb 2026 16:04:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n71CWY8N";
+	dkim=pass (1024-bit key; unprotected) header.d=mediatek.com header.i=@mediatek.com header.b="tADCm1uF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E70C610E7DA
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 14:07:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772028477; x=1803564477;
- h=from:to:subject:in-reply-to:references:date:message-id:
- mime-version:content-transfer-encoding;
- bh=z51GSeu3nhIOhD7rt75c3GU1fqOKZPxyN5DjU5C0v7w=;
- b=n71CWY8NTl+ph1eDtU1OlKG4cIN7OMPFRoy/WKxMRjW7713aBDoeO2+S
- 5GFWih8bEsU4SbgFoTvOG+rcX1XvJe9RYm3HL8JQ0zOdzEuTu5oMXHkCS
- Da7f1+Q+EwsMoDIVfuExDJ7WMN3yyMvExvDwsx1Jn1Ldoi8xzixNbNYpo
- vPgOVJdMobbsyb9fAN4dFGChEVxy5KeWvc33kE2TkboCRf9JqLW2iL+vK
- w7yLDcXExEMjdWmzHxkrBEeog52tU/9g6kmgIdwm/8yGgGsmYzk+ueoKh
- 2N5z3y7tIut1tvxAdHYBOw4i4Q21BTFv8DC6rztssTa6vLbIOTZy0h1Zh A==;
-X-CSE-ConnectionGUID: pk7Ugs+1Tru3kndwyRN6JQ==
-X-CSE-MsgGUID: vz5qwc4cROuTItKJY4bMFw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="98534130"
-X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; d="scan'208";a="98534130"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2026 06:07:56 -0800
-X-CSE-ConnectionGUID: YGEQN0oQRRurfwQhgOHexw==
-X-CSE-MsgGUID: T6pJctDHTPqGu6LYYk28CA==
-X-ExtLoop1: 1
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.68])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2026 06:07:55 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 00/19] lib/kms: Clean up more of igt_kms API
-In-Reply-To: <20260225125108.31119-1-ville.syrjala@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260225125108.31119-1-ville.syrjala@linux.intel.com>
-Date: Wed, 25 Feb 2026 16:07:52 +0200
-Message-ID: <8dbdb0294d1741024d41c6130597891d398e67fc@intel.com>
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D0DA210E1C6
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 16:04:14 +0000 (UTC)
+X-UUID: 9f053c20126311f1b7fc4fdb8733b2bc-20260226
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
+ s=dk; 
+ h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From;
+ bh=lE7fQBHzWdifHPPJve182GF6W9T2Litvex4TKsNi8H0=; 
+ b=tADCm1uFAUiVjpNSjbidZdU0T/jmemLCA+k9c67KrpwSQ2BJ3Zf+nvBQRugHJ9T+sHoaBVa6RIEf9ZMhl6p9M9GK2Lv4ecG5DFyJS/KeOXhg0PYr+MLLUZXuT4sJflka2Q8r66Iqm5gq5ZE7WfVOGnojlxpk7wGhBwsVWZXQ8QQ=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11, REQID:84466960-e60a-4c01-b878-8ff3632f264f, IP:0,
+ U
+ RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+ :release,TS:-5
+X-CID-META: VersionHash:89c9d04, CLOUDID:ac999a5b-a957-4259-bcca-d3af718d7034,
+ B
+ ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
+ 0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
+ :0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 9f053c20126311f1b7fc4fdb8733b2bc-20260226
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by
+ mailgw02.mediatek.com (envelope-from <jason-jh.lin@mediatek.com>)
+ (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+ with ESMTP id 1877991262; Thu, 26 Feb 2026 00:04:10 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 26 Feb 2026 00:04:09 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Thu, 26 Feb 2026 00:04:09 +0800
+From: Jason-JH Lin <jason-jh.lin@mediatek.com>
+To: <igt-dev@lists.freedesktop.org>, Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
+ <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
+ <bhanuprakash.modem@gmail.com>, Fei Shao <fshao@chromium.org>
+CC: Jani <jani.nikula@intel.com>, Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ Paul-PL Chen <paul-pl.chen@mediatek.com>, Nancy Lin <nancy.lin@mediatek.com>, 
+ Singo Chang <singo.chang@mediatek.com>, Gil Dekel <gildekel@google.com>,
+ Yacoub <markyacoub@chromium.org>,
+ <Project_Global_Chrome_Upstream_Group@mediatek.com>
+Subject: [PATCH i-g-t] tests/kms_bw: Skip tests when outputs don't support the
+ mode
+Date: Thu, 26 Feb 2026 00:03:47 +0800
+Message-ID: <20260225160408.4116524-1-jason-jh.lin@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,117 +82,109 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, 25 Feb 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
-> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
->
-> Adjust more of the igt_kms API to pass around igt_crtc_t*
-> instead of enum pipe.
->
-> I also wanted to have a better idea where in the tests we're
-> still using igt_crtc_for_pipe(), so there's some cleanup
-> around that. And then I added some new functions into igt_kms
-> to replace some of those with more sensible things.
->
-> This was supposed to be the last treewide series I'd do, but
-> it naturally became too big. So I cut it roughly in the middle,
-> and this is the first part. The second part is already done,
-> but I'll hang on to it until this gets in.
+The kms_bw test uses hardcoded display timings that may not match
+what connected panels support. This causes test failures when forcing
+unsupported modes on fixed-mode panels like DSI.
 
-Apart from a handful of comments inline, mostly about typos and cocci
-being silly with whitespace or braces,
+Add output_mode_supported() to check if a mode exists in the
+connector's mode list before using it. Skip outputs that don't
+support the requested mode during buffer creation, CRC collection,
+and cleanup.
 
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+For multi-output tests, proceed if at least one output supports
+the mode. Skip only if all outputs reject it.
 
-Good stuff. I think all of this underlines the importance setting a good
-example in the codebase, because the worst stuff gets copied around
-everywhere.
+Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+---
+ tests/kms_bw.c | 39 +++++++++++++++++++++++++++++++++++----
+ 1 file changed, 35 insertions(+), 4 deletions(-)
 
+diff --git a/tests/kms_bw.c b/tests/kms_bw.c
+index 778900d8c9f1..dc79ccc001f1 100644
+--- a/tests/kms_bw.c
++++ b/tests/kms_bw.c
+@@ -187,6 +187,35 @@ static void force_output_mode(data_t *d, igt_output_t *output,
+ 	igt_output_override_mode(output, mode);
+ }
+ 
++static bool output_mode_supported(igt_output_t *output, const drmModeModeInfo *mode)
++{
++	drmModeConnector *connector = output->config.connector;
++	int i;
++
++	/* Virtual/forced sinks support all modes */
++	if (!igt_output_is_connected(output))
++		return true;
++
++	for (i = 0; i < connector->count_modes; i++) {
++		drmModeModeInfo *conn_mode = &connector->modes[i];
++
++		if (conn_mode->hdisplay == mode->hdisplay &&
++		    conn_mode->vdisplay == mode->vdisplay &&
++		    conn_mode->vrefresh == mode->vrefresh) {
++			igt_info("Found matching mode for %dx%d@%dHz on %s\n",
++				 mode->hdisplay, mode->vdisplay, mode->vrefresh,
++				 igt_output_name(output));
++			return true;
++		}
++	}
++
++	igt_info("Mode %dx%d@%dHz not supported by %s (has %d modes)\n",
++		 mode->hdisplay, mode->vdisplay, mode->vrefresh,
++		 igt_output_name(output), connector->count_modes);
++
++	return false;
++}
++
+ static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo *mode, bool physical) {
+ 	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
+@@ -194,7 +223,7 @@ static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo
+ 	igt_crc_t zero, captured[IGT_MAX_PIPES];
+ 	int i = 0, num_pipes = 0;
+ 	igt_crtc_t *crtc;
+-	int ret;
++	int ret = -EINVAL;
+ 
+ 	/* Cannot use igt_display_n_crtcs() due to fused pipes on i915 where they do
+ 	 * not give the numver of valid crtcs and always return IGT_MAX_PIPES */
+@@ -211,7 +240,7 @@ static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo
+ 	/* create buffers */
+ 	for (i = 0; i <= pipe; i++) {
+ 		output = physical ? data->connected_output[i] : data->output[i];
+-		if (!output) {
++		if (!output || !output_mode_supported(output, mode)) {
+ 			continue;
+ 		}
+ 
+@@ -228,7 +257,9 @@ static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo
+ 		igt_plane_set_fb(data->primary[i], &buffer[i]);
+ 		igt_info("Assigning pipe %s to output %s with mode %s\n",
+ 			 kmstest_pipe_name(i), igt_output_name(output), mode->name);
++		ret = 0;
+ 	}
++	igt_skip_on_f(ret != 0, "Unsupported mode for all pipes\n");
+ 
+ 	ret = igt_display_try_commit_atomic(display,
+ 					    DRM_MODE_ATOMIC_ALLOW_MODESET |
+@@ -240,7 +271,7 @@ static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo
+ 
+ 	for (i = 0; i <= pipe; i++) {
+ 		output = physical ? data->connected_output[i] : data->output[i];
+-		if (!output) {
++		if (!output || !output_mode_supported(output, mode)) {
+ 			continue;
+ 		}
+ 
+@@ -251,7 +282,7 @@ static void run_test_linear_tiling(data_t *data, int pipe, const drmModeModeInfo
+ 
+ 	for (i = pipe; i >= 0; i--) {
+ 		output = physical ? data->connected_output[i] : data->output[i];
+-		if (!output)
++		if (!output || !output_mode_supported(output, mode))
+ 			continue;
+ 
+ 		igt_remove_fb(display->drm_fd, &buffer[i]);
+-- 
+2.43.0
 
->
-> Ville Syrj=C3=A4l=C3=A4 (19):
->   tests/kms_plane_multiple: Clean up n_planes stuff
->   tests/kms_async_flips: Remove redundant data.crtc_id
->   tests/kms_lease: Consolidate igt_crtc_for_pipe() calls
->   tests/kms: Consolidate igt_crtc_for_pipe() calls
->   lib/kms: Introduce igt_first_crtc_with_single_output()
->   tests/kms: Use igt_first_crtc_with_single_output()
->   lib/kms: Introduce and use igt_first_crtc()
->   tests/kms: Stop using igt_require_pipe()
->   lib/kms: Replace get_num_scalers() with igt_crtc_num_scalers()
->   lib/kms: Pass igt_crtc_t* to igt_max_bpc_constraint()
->   lib/kms: Introduce for_each_plane_on_crtc()
->   tests/kms: Use for_each_plane_on_crtc()
->   lib/kms: Nuke for_each_plane_on_pipe()
->   tests/kms: Switch to for_each_valid_output_on_crtc_local()
->   tests/kms: Replace igt_pipe_connector_valid() with
->     igt_crtc_connector_valid()
->   lib/kms: Intreoduce for_each_valid_output_on_crtc()
->   tests/intel/kms_frontbuffer_tracking: Use
->     for_each_valid_output_on_crtc()
->   tests/kms: Use for_each_valid_output_on_crtc()
->   lib/kms: Nuke for_each_valid_output_on_pipe()
->
->  lib/igt_kms.c                                 | 83 +++++++++++++------
->  lib/igt_kms.h                                 | 60 ++++----------
->  tests/amdgpu/amd_abm.c                        | 20 +++--
->  tests/amdgpu/amd_assr.c                       |  2 +-
->  tests/amdgpu/amd_bypass.c                     |  2 +-
->  tests/amdgpu/amd_color.c                      |  2 +-
->  tests/amdgpu/amd_cursor_overlay.c             |  2 +-
->  tests/amdgpu/amd_freesync_video_mode.c        |  2 +-
->  tests/amdgpu/amd_ilr.c                        |  2 +-
->  tests/amdgpu/amd_link_settings.c              |  2 +-
->  tests/amdgpu/amd_mall.c                       |  2 +-
->  tests/amdgpu/amd_max_bpc.c                    |  2 +-
->  tests/amdgpu/amd_mem_leak.c                   |  2 +-
->  tests/amdgpu/amd_mode_switch.c                |  5 +-
->  tests/amdgpu/amd_multidisplay_modeset.c       |  7 +-
->  tests/amdgpu/amd_odm.c                        |  6 +-
->  tests/amdgpu/amd_psr.c                        |  2 +-
->  tests/amdgpu/amd_replay.c                     |  2 +-
->  tests/chamelium/kms_chamelium_color.c         |  8 +-
->  .../kms_chamelium_sharpness_filter.c          |  6 +-
->  tests/intel/gem_eio.c                         | 11 ++-
->  tests/intel/gem_exec_reloc.c                  |  9 +-
->  tests/intel/gem_pxp.c                         |  4 +-
->  tests/intel/kms_big_fb.c                      |  3 +-
->  tests/intel/kms_busy.c                        |  3 +-
->  tests/intel/kms_ccs.c                         |  3 +-
->  tests/intel/kms_cdclk.c                       | 14 ++--
->  tests/intel/kms_dirtyfb.c                     |  4 +-
->  tests/intel/kms_dp_linktrain_fallback.c       |  2 +-
->  tests/intel/kms_fbc_dirty_rect.c              | 15 ++--
->  tests/intel/kms_flip_scaled_crc.c             |  8 +-
->  tests/intel/kms_frontbuffer_tracking.c        |  5 +-
->  tests/intel/kms_legacy_colorkey.c             |  5 +-
->  tests/intel/kms_pipe_stress.c                 | 30 ++++---
->  tests/intel/kms_pm_lpsp.c                     |  2 +-
->  tests/intel/xe_pxp.c                          |  6 +-
->  tests/kms_async_flips.c                       | 29 +++----
->  tests/kms_atomic.c                            |  3 +-
->  tests/kms_atomic_transition.c                 | 36 +++++---
->  tests/kms_bw.c                                |  5 +-
->  tests/kms_color.c                             | 11 +--
->  tests/kms_colorop.c                           |  3 +-
->  tests/kms_content_protection.c                |  2 +-
->  tests/kms_cursor_legacy.c                     |  6 +-
->  tests/kms_debugfs.c                           |  7 +-
->  tests/kms_display_modes.c                     | 11 +--
->  tests/kms_dither.c                            |  4 +-
->  tests/kms_feature_discovery.c                 |  4 +-
->  tests/kms_hdr.c                               |  6 +-
->  tests/kms_lease.c                             | 31 ++++---
->  tests/kms_plane.c                             |  9 +-
->  tests/kms_plane_alpha_blend.c                 |  8 +-
->  tests/kms_plane_lowres.c                      |  6 +-
->  tests/kms_plane_multiple.c                    | 25 +++---
->  tests/kms_plane_scaling.c                     | 78 +++++++++--------
->  tests/kms_properties.c                        | 16 ++--
->  tests/kms_rmfb.c                              |  6 +-
->  tests/kms_rotation_crc.c                      | 19 +++--
->  tests/kms_tiled_display.c                     |  2 +-
->  tools/amd_hdmi_compliance.c                   |  2 +-
->  60 files changed, 378 insertions(+), 294 deletions(-)
-
---=20
-Jani Nikula, Intel
