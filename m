@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B74B5FD3758
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 12:52:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 221AAFD375F
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 12:52:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B20510E772;
-	Wed, 25 Feb 2026 12:52:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B798D10E773;
+	Wed, 25 Feb 2026 12:52:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FBIAOmUB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Sf6cwLK2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4788D10E772
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 12:52:09 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0651F10E773
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 12:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772023929; x=1803559929;
+ t=1772023933; x=1803559933;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=gwwDGs/pWKI9f2PKTRghYt6C62gLiNRFiDVwN1T+G6w=;
- b=FBIAOmUBDe2Gl59e2RMrfpi7y4b7GQhy3e41HFX0WTod7pQ3Uhbr+zie
- CZqXAoTE7gHxW5thcOh9K8obB45zjHJTuBM9Zh2AjJJySP/HwK0BJYCXt
- am29MFPNBqzHLa0swi8rCmqiJe42IYFj9B5426bdyZ9bKi6H6diC64cqS
- CNIs9K7ezxeV/5xBFIYndQqV3lA9U5pFuG3onU/tgFAkqDuK4iXxN/h0s
- mChy+4RKWxtro0n2bUJ5VNK+ilsq66xsDMuBqO3FRZDJrxVeBL2zBCmi4
- T58j4l8cD+eqabzDVxkN+J1rF1ZC50Rj0UMxq0SVvlK1DMAKJR3L7ck+v A==;
-X-CSE-ConnectionGUID: GT2BRQzWQiu8dZLhzph3PA==
-X-CSE-MsgGUID: 4nFQQduHSEyVAX9vgJ07oQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11711"; a="83772238"
-X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; d="scan'208";a="83772238"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2026 04:52:09 -0800
-X-CSE-ConnectionGUID: eMrs5O8PRveEeSeuQSatOw==
-X-CSE-MsgGUID: ZU8CowxyTkqnf1jUH9MHpA==
+ bh=aeXl66s+SwWJs+MmeAMflp1a7nKUIzguu8vedMTx5Nk=;
+ b=Sf6cwLK2j452Ipj2P7Zx2XXpP3zd2qmgF8UUwn+410d/r7d+4NnzMvyQ
+ cZuio6Ws24m81SyK3Ab2iYxDtZyGmMXrLm3yxJXHsiKvazUFNeQnKRZ9O
+ H2xQwhWMtErNSBU4Y8mxB5tJ/4wpVQAO3D4YQadqc4StzJorYOsiDwCvI
+ fpzZN8GyVVR0Dv5r+OImaswCdcNFrGGgvqHIts8vciBS9sNTUjUChTBck
+ 0mJ/mJOHGpcW3s869a39uME51K2EPdrFNCFXgYjLpJ1lVU0TbIn2GVvb8
+ Auy9st8uDkFxDq/gu3Mcd+aNOfAmWZpt0+isqFRh/ypcavZmvIJR7nLvg w==;
+X-CSE-ConnectionGUID: 5AOfU3vmQcy27v4tQ6UNwg==
+X-CSE-MsgGUID: RtbA/wqHTCuFT5fI/BekKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11711"; a="98527413"
+X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; d="scan'208";a="98527413"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Feb 2026 04:52:12 -0800
+X-CSE-ConnectionGUID: Hb13Hk71QGOnuRAevGrZ6Q==
+X-CSE-MsgGUID: +lRVVcZQRZOvJ8gLg6Zlpw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; d="scan'208";a="213350088"
+X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; d="scan'208";a="214344555"
 Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.244.16])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2026 04:52:08 -0800
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Feb 2026 04:52:12 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 16/19] lib/kms: Intreoduce
+Subject: [PATCH i-g-t 17/19] tests/intel/kms_frontbuffer_tracking: Use
  for_each_valid_output_on_crtc()
-Date: Wed, 25 Feb 2026 14:51:05 +0200
-Message-ID: <20260225125108.31119-17-ville.syrjala@linux.intel.com>
+Date: Wed, 25 Feb 2026 14:51:06 +0200
+Message-ID: <20260225125108.31119-18-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260225125108.31119-1-ville.syrjala@linux.intel.com>
 References: <20260225125108.31119-1-ville.syrjala@linux.intel.com>
@@ -73,39 +73,30 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Add for_each_valid_output_on_crtc() as the crtc based replacement
-for for_each_valid_output_on_pipe().
+Replace the pipe based for_each_valid_output_on_pipe() with
+the crtc based for_each_valid_output_on_crtc().
+
+Coccinelle can't handle kms_frontbuffer_tracking so this was done
+by hand.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_kms.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ tests/intel/kms_frontbuffer_tracking.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index c721675ea817..8a3919a55e77 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -815,6 +815,20 @@ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
- 	for_each_connected_output((display), (output)) \
- 		for_each_if (igt_pipe_connector_valid((pipe), (output)))
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index 101ceea1f0bc..08e08c594c0d 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -4233,7 +4233,7 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 				pipe_crc = NULL;
+ 				setup_crcs();
  
-+/**
-+ * for_each_valid_output_on_crtc:
-+ * @display: a pointer to an #igt_display_t structure
-+ * @crtc: CRTC to enumerate valid outputs over
-+ * @output: The enumerated output.
-+ *
-+ * This for loop is called over all connected @output that can be used
-+ * on this @crtc . If there are no valid outputs for this CRTC, nothing
-+ * happens.
-+ */
-+#define for_each_valid_output_on_crtc(display, crtc, output) \
-+	for_each_connected_output((display), (output)) \
-+		for_each_if (igt_crtc_connector_valid((crtc), (output)))
-+
- /**
-  * for_each_plane_on_crtc:
-  * @crtc: CRTC to enumerate valid outputs over
+-				for_each_valid_output_on_pipe(&drm.display, crtc->pipe, output) {
++				for_each_valid_output_on_crtc(&drm.display, crtc, output) {
+ 					init_mode_params(&prim_mode_params, output, crtc);
+ 					setup_fbc();
+ 
 -- 
 2.52.0
 
