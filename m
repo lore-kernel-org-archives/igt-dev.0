@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 470F4FD45E0
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 19:21:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06B71FD45E3
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 19:21:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B610B10E807;
-	Wed, 25 Feb 2026 19:21:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AACC410E7F5;
+	Wed, 25 Feb 2026 19:21:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NjXvJHGn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cq2ILLBL";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E29F10E22A
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 19:21:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C3BFD10E80C
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 19:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772047276; x=1803583276;
+ t=1772047278; x=1803583278;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=jcWrWom7ED5t/KMDZ5m5qnKy2msg9U5mdz2vggwUqMQ=;
- b=NjXvJHGn48qwr8xnfUVE8QYzKxaJSfrF+3RHsVI6p4GYi8Neabu+jUkH
- Dk57TlDxy6lQp5UkLr7P6mVwuLw0Ge/JcjAE6gQIFC9vkQsETvFbSI7xy
- HpVLHX9VY/4nbiR0X0oDaztVtfkJY/NNXJPMo/+ShOiG0Wyx0w/DOllKN
- FxpO6SnWyhAz0dNLnzuTJzKcwisDXgiNy6Y1/OTafrshaBcOT9NOFui1I
- Ym7HX3cfZwh2UgTxpTzQ8Hx1HFgeJP1qGNtkkdhLPeE1Ft3o43b9VA0ML
- ixCB9vws+7uT6TxqsvCojD6kl5mvxdrfBScKM9vbF+OENkSiLSpiRcRNY g==;
-X-CSE-ConnectionGUID: zVFP3+TyRwyumSLkW+n9Ww==
-X-CSE-MsgGUID: ADsDxQF8QL2r4/sJVC8z9A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="73074293"
-X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="73074293"
+ bh=xP6ziEAqAr2qzlZblh2aprEewOTmX7fB5mK4qCuKqH8=;
+ b=cq2ILLBLe1UDLu/wzR9zIL+IjuzEUggbcnxiWz29f5zM5XGGMuggbf6k
+ hwqkoDoxUdmEjxbNZFVT1w28++6A1EZDuSOReQ7CCyw0OYOoTtcNUCEUk
+ 8/iUgtKDfLiMFRU8msPQBR3hls1r7xY+QWcpsRzcSSjG6RsdZavAGgM+R
+ LAlxs8kt/DidNrlSpCRQHPJ+3GIY6dur1lnxzoD+In/FTYfI1ZUUlCCYZ
+ lh5+D8Tdd2fm21GbZl1h+IcQ+wBHJF5ymkJvUJ+UZQCFHKesSiWfI/1g5
+ r+4SAf7VjClZlp97iCVro3DWIInTKNP25oDCTA6/J2GftesbwHBqFth4l A==;
+X-CSE-ConnectionGUID: No6vowrSQv2aMzPEY8sCmQ==
+X-CSE-MsgGUID: aaN3Df0YRXa51CbWqNTWmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="73074294"
+X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="73074294"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2026 11:21:16 -0800
-X-CSE-ConnectionGUID: NHWgVdb+Sl2g5QFyEZPvTw==
-X-CSE-MsgGUID: KLYDT0qCR6uzrKj/vfTXtw==
+ 25 Feb 2026 11:21:18 -0800
+X-CSE-ConnectionGUID: ITSXWUVxSTe05Qp5h0z8Cg==
+X-CSE-MsgGUID: nhXIVpE8QNio/4R3Mo3EFQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="221314356"
+X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; d="scan'208";a="221314361"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 11:21:14 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 11:21:16 -0800
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 2/6] lib/igt_connector_helper: Add generic connector
- helpers
-Date: Thu, 26 Feb 2026 01:12:24 +0530
-Message-Id: <20260225194228.853418-3-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 3/6] lib/igt_serial: add generic serial communication
+ helper
+Date: Thu, 26 Feb 2026 01:12:25 +0530
+Message-Id: <20260225194228.853418-4-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260225194228.853418-1-kunal1.joshi@intel.com>
 References: <20260225194228.853418-1-kunal1.joshi@intel.com>
@@ -69,378 +69,518 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a lightweight helper library for DRM connector operations used
-by USB4 switch and other dock/undock tests:
+Add a reusable serial communication library for host-to-device
+interaction.
 
- - igt_connector_get_connected(): enumerate connected connectors
- - igt_connector_get_info(): query name, EDID serial, and MST path
- - igt_connector_find_by_path(): PATH-based connector lookup (MST)
- - igt_connector_find_by_name(): name-based connector lookup
- - igt_connector_reprobe_all(): force reprobe all connectors by
-   iterating each connector to trigger DRM core re-detection
+ - igt_serial_open()/close(): lifecycle with configurable baud rate
+ - igt_serial_send()/read(): raw data transfer
+ - igt_serial_command(): send command and capture response
+ - igt_serial_flush(): drain stale data from receive buffer
+ - igt_serial_set_timeout(): adjust per-operation VTIME timeouts
 
-These helpers abstract common DRM connector patterns that are needed
-by multiple test suites for display enumeration and verification.
+Used by lib/igt_usb4_switch to communicate with the Microsoft USB4
+Switch 3141 over its serial/USB interface.
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_connector_helper.c | 299 +++++++++++++++++++++++++++++++++++++
- lib/igt_connector_helper.h |  27 ++++
- lib/meson.build            |   1 +
- 3 files changed, 327 insertions(+)
- create mode 100644 lib/igt_connector_helper.c
- create mode 100644 lib/igt_connector_helper.h
+ lib/igt_serial.c | 435 +++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_serial.h |  32 ++++
+ lib/meson.build  |   1 +
+ 3 files changed, 468 insertions(+)
+ create mode 100644 lib/igt_serial.c
+ create mode 100644 lib/igt_serial.h
 
-diff --git a/lib/igt_connector_helper.c b/lib/igt_connector_helper.c
+diff --git a/lib/igt_serial.c b/lib/igt_serial.c
 new file mode 100644
-index 000000000..1b3d77e4c
+index 000000000..35fbadd7c
 --- /dev/null
-+++ b/lib/igt_connector_helper.c
-@@ -0,0 +1,299 @@
++++ b/lib/igt_serial.c
+@@ -0,0 +1,435 @@
 +// SPDX-License-Identifier: MIT
 +/*
 + * Copyright © 2026 Intel Corporation
 + */
 +
 +/**
-+ * SECTION:igt_connector_helper
-+ * @short_description: Generic connector helper functions for DRM/KMS
-+ * @title: Connector Helper
-+ * @include: igt_connector_helper.h
++ * SECTION:igt_serial
++ * @short_description: Generic serial port communication library
++ * @title: Serial Communication
++ * @include: igt_serial.h
 + *
-+ * Helper functions for DRM connector operations including enumeration,
-+ * lookup by name/path, and EDID serial extraction.
++ * This library provides a clean API for serial port communication,
++ * useful for test equipment that uses serial/USB-CDC interfaces.
 + */
 +
++#include <errno.h>
++#include <fcntl.h>
++#include <stdlib.h>
 +#include <string.h>
-+#include <xf86drm.h>
-+#include <xf86drmMode.h>
++#include <termios.h>
++#include <unistd.h>
 +
 +#include "igt_core.h"
-+#include "igt_edid.h"
-+#include "igt_kms.h"
-+#include "igt_connector_helper.h"
++#include "igt_serial.h"
 +
-+/**
-+ * igt_connector_get_connected:
-+ * @drm_fd: DRM file descriptor
-+ * @connectors: array to store connector IDs; must be valid if @max_connectors > 0
-+ * @max_connectors: maximum number of connectors to store
-+ *
-+ * Walks all DRM connectors and stores the IDs of those currently connected.
-+ * Scanning stops once @max_connectors IDs have been collected; later
-+ * connectors are not examined.
-+ *
-+ * Returns: number of connector IDs written to @connectors, capped by
-+ * @max_connectors.
-+ */
-+int igt_connector_get_connected(int drm_fd, uint32_t *connectors,
-+				int max_connectors)
++struct igt_serial {
++	int fd;
++	char *device;
++	struct termios orig_termios;
++	bool termios_saved;
++	int read_timeout_ds;
++};
++
++static speed_t baud_to_speed(int baud)
 +{
-+	drmModeRes *res;
-+	drmModeConnector *conn;
-+	int count = 0;
-+	int i;
-+
-+	igt_assert(max_connectors >= 0);
-+	if (max_connectors > 0)
-+		igt_assert(connectors);
-+
-+	res = drmModeGetResources(drm_fd);
-+	if (!res)
++	switch (baud) {
++	case 9600:   return B9600;
++	case 19200:  return B19200;
++	case 38400:  return B38400;
++	case 57600:  return B57600;
++	case 115200: return B115200;
++	case 230400: return B230400;
++	case 460800: return B460800;
++	case 921600: return B921600;
++	default:
 +		return 0;
-+
-+	for (i = 0; i < res->count_connectors && count < max_connectors; i++) {
-+		conn = drmModeGetConnector(drm_fd, res->connectors[i]);
-+		if (!conn)
-+			continue;
-+
-+		if (conn->connection == DRM_MODE_CONNECTED)
-+			connectors[count++] = conn->connector_id;
-+
-+		drmModeFreeConnector(conn);
 +	}
-+
-+	drmModeFreeResources(res);
-+	return count;
 +}
 +
 +/**
-+ * igt_connector_get_info:
-+ * @drm_fd: DRM file descriptor
-+ * @connector_id: connector ID
-+ * @name: buffer for connector name (mandatory)
-+ * @name_size: size of @name; must be > 0
-+ * @serial: buffer for EDID-derived serial (mandatory)
-+ * @serial_size: size of @serial; must be > 1
-+ * @path: buffer for MST PATH property (optional, may be NULL)
-+ * @path_size: size of @path buffer
++ * igt_serial_open:
++ * @device: path to the serial device (e.g., "/dev/ttyACM0")
++ * @baud_rate: baud rate (e.g., 115200)
 + *
-+ * Fills connector name, MST PATH, and EDID-derived serial for a connector.
-+ * @name is always filled when the connector is found. @serial is filled from
-+ * the ASCII serial string descriptor (0xFF) if present, else from the 32-bit
-+ * header serial number; left empty if no EDID is available. @path is filled
-+ * only if requested and the PATH property exists.
++ * Opens a serial port with the specified baud rate.
++ * Uses 8N1 configuration (8 data bits, no parity, 1 stop bit).
 + *
-+ * Success means the connector object was found and @name was filled.
-+ * @serial and @path are best-effort and may still be empty on success.
-+ *
-+ * Returns: true if the connector was found, false otherwise.
++ * Returns: A serial handle on success, NULL on failure.
 + */
-+bool igt_connector_get_info(int drm_fd, uint32_t connector_id,
-+			    char *name, size_t name_size,
-+			    char *serial, size_t serial_size,
-+			    char *path, size_t path_size)
++struct igt_serial *igt_serial_open(const char *device, int baud_rate)
 +{
-+	drmModeConnector *conn;
-+	drmModePropertyBlobPtr edid_blob = NULL;
-+	uint64_t blob_id = 0;
-+	drmModePropertyPtr prop;
-+	const struct edid *edid;
-+	int i;
++	struct igt_serial *s;
++	struct termios tty;
++	speed_t speed;
 +
-+	igt_assert(name && name_size > 0);
-+	igt_assert(serial && serial_size > 1);
-+	igt_assert(!path || path_size > 0);
++	if (!device) {
++		igt_debug("Serial: NULL device path\n");
++		return NULL;
++	}
 +
-+	name[0] = '\0';
-+	serial[0] = '\0';
-+	if (path)
-+		path[0] = '\0';
++	s = calloc(1, sizeof(*s));
++	if (!s) {
++		igt_debug("Serial: Failed to allocate memory\n");
++		return NULL;
++	}
 +
-+	conn = drmModeGetConnector(drm_fd, connector_id);
-+	if (!conn)
++	s->fd = -1;
++
++	s->device = strdup(device);
++	if (!s->device)
++		goto err_free;
++
++	/* Default timeout: 1 second (10 deciseconds) */
++	s->read_timeout_ds = 10;
++	s->fd = open(device, O_RDWR | O_NOCTTY);
++
++	if (s->fd < 0) {
++		igt_debug("Serial: Failed to open %s: %s\n",
++			  device, strerror(errno));
++		goto err_free_device;
++	}
++
++	if (tcgetattr(s->fd, &tty) != 0) {
++		igt_debug("Serial: tcgetattr failed: %s\n", strerror(errno));
++		goto err_close;
++	}
++
++	s->orig_termios = tty;
++	s->termios_saved = true;
++	speed = baud_to_speed(baud_rate);
++
++	if (!speed) {
++		igt_debug("Serial: Unsupported baud rate %d\n", baud_rate);
++		goto err_close;
++	}
++
++	cfsetospeed(&tty, speed);
++	cfsetispeed(&tty, speed);
++
++	/* 8N1: 8 data bits, no parity, 1 stop bit */
++	tty.c_cflag &= ~PARENB;
++	tty.c_cflag &= ~CSTOPB;
++	tty.c_cflag &= ~CSIZE;
++	tty.c_cflag |= CS8;
++	tty.c_cflag &= ~CRTSCTS;
++	tty.c_cflag |= CREAD | CLOCAL;
++
++	/* Disable canonical mode, echo, and signals */
++	tty.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);
++
++	/* Disable output post-processing */
++	tty.c_oflag &= ~OPOST;
++
++	/* Disable software flow control and input translations */
++	tty.c_iflag &= ~(IXON | IXOFF | IXANY);
++	tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP |
++			  INLCR | IGNCR | ICRNL);
++
++	/*
++	 * Blocking read with timeout.
++	 * VMIN=0, VTIME>0: return after timeout or when data available.
++	 */
++	tty.c_cc[VMIN] = 0;
++	tty.c_cc[VTIME] = s->read_timeout_ds;
++
++	if (tcsetattr(s->fd, TCSANOW, &tty) != 0) {
++		igt_debug("Serial: tcsetattr failed: %s\n", strerror(errno));
++		goto err_close;
++	}
++
++	/* Flush any stale input */
++	if (tcflush(s->fd, TCIFLUSH) != 0)
++		igt_debug("Serial: tcflush failed: %s\n", strerror(errno));
++
++	igt_debug("Serial: Opened %s at %d baud (timeout=%dms)\n",
++		  s->device, baud_rate, s->read_timeout_ds * 100);
++	return s;
++
++err_close:
++	close(s->fd);
++err_free_device:
++	free(s->device);
++err_free:
++	free(s);
++	return NULL;
++}
++
++/**
++ * igt_serial_close:
++ * @s: serial handle
++ *
++ * Closes the serial port and frees resources.
++ */
++void igt_serial_close(struct igt_serial *s)
++{
++	if (!s)
++		return;
++
++	if (s->termios_saved) {
++		if (tcsetattr(s->fd, TCSANOW, &s->orig_termios) != 0)
++			igt_debug("Serial: tcsetattr restore failed: %s\n",
++				  strerror(errno));
++	}
++
++	if (s->fd >= 0)
++		close(s->fd);
++	igt_debug("Serial: Closed %s\n", s->device ? s->device : "(unknown)");
++	free(s->device);
++	free(s);
++}
++
++/**
++ * igt_serial_set_timeout:
++ * @s: serial handle
++ * @timeout_ms: timeout in milliseconds (0 enables polling mode)
++ *
++ * Sets the read timeout for the serial port. VTIME has a granularity
++ * of 100 ms (deciseconds); non-zero values are rounded up. Setting
++ * @timeout_ms to 0 configures polling mode where reads return
++ * immediately if no data is available.
++ *
++ * Returns: true on success, false on failure.
++ */
++bool igt_serial_set_timeout(struct igt_serial *s, int timeout_ms)
++{
++	struct termios tty;
++	int new_timeout_ds;
++
++	if (!s || timeout_ms < 0)
 +		return false;
 +
-+	snprintf(name, name_size, "%s-%d",
-+		 kmstest_connector_type_str(conn->connector_type),
-+		 conn->connector_type_id);
++	if (tcgetattr(s->fd, &tty) != 0) {
++		igt_debug("Serial: tcgetattr failed: %s\n", strerror(errno));
++		return false;
++	}
 +
-+	for (i = 0; i < conn->count_props; i++) {
-+		prop = drmModeGetProperty(drm_fd, conn->props[i]);
-+		if (!prop)
-+			continue;
++	/* Convert ms to deciseconds (0.1s units), clamp to cc_t max (255) */
++	new_timeout_ds = (timeout_ms + 99) / 100;
++	if (new_timeout_ds > 255)
++		new_timeout_ds = 255;
 +
-+		if (strcmp(prop->name, "EDID") == 0)
-+			blob_id = conn->prop_values[i];
++	tty.c_cc[VTIME] = new_timeout_ds;
 +
-+		drmModeFreeProperty(prop);
-+		if (blob_id)
++	if (tcsetattr(s->fd, TCSANOW, &tty) != 0) {
++		igt_debug("Serial: tcsetattr failed: %s\n", strerror(errno));
++		return false;
++	}
++	s->read_timeout_ds = new_timeout_ds;
++	igt_debug("Serial: Timeout set to %dms (applied %dms)\n",
++		  timeout_ms, s->read_timeout_ds * 100);
++	return true;
++}
++
++/**
++ * igt_serial_send:
++ * @s: serial handle
++ * @cmd: command string to send
++ *
++ * Sends a command string to the serial port exactly as provided.
++ * The caller is responsible for adding any required line endings.
++ * Handles short writes that may occur on USB-CDC devices under load.
++ *
++ * Returns: true on success, false on failure.
++ */
++bool igt_serial_send(struct igt_serial *s, const char *cmd)
++{
++	size_t len, total = 0;
++	ssize_t written;
++
++	if (!s || !cmd)
++		return false;
++
++	len = strlen(cmd);
++	if (len == 0)
++		return true;
++
++	while (total < len) {
++		written = write(s->fd, cmd + total, len - total);
++		if (written <= 0) {
++			if (written < 0 && errno == EINTR)
++				continue;
++			igt_debug("Serial: Write failed: %s\n",
++				  written < 0 ? strerror(errno) : "zero bytes written");
++			return false;
++		}
++		total += written;
++	}
++
++	if (tcdrain(s->fd) != 0) {
++		igt_debug("Serial: tcdrain failed: %s\n", strerror(errno));
++		return false;
++	}
++
++	igt_debug("Serial: Sent '%s'\n", cmd);
++	return true;
++}
++
++/*
++ * igt_serial_readline - Read a line from serial port (until newline or timeout).
++ *
++ * Returns number of bytes in buf (0 means timeout/no data), or -1 on error.
++ */
++static ssize_t igt_serial_readline(struct igt_serial *s, char *buf, size_t size)
++{
++	size_t total = 0;
++	ssize_t n;
++
++	if (!s || !buf || size == 0)
++		return -1;
++
++	/*
++	 * Read one byte at a time until newline or timeout.
++	 * VTIME timeout ensures read() returns 0 on timeout.
++	 */
++	while (total < size - 1) {
++		n = read(s->fd, buf + total, 1);
++		if (n < 0) {
++			if (errno == EINTR)
++				continue;
++			igt_debug("Serial: Read error: %s\n", strerror(errno));
++			return -1;
++		}
++		if (n == 0)
++			break;
++
++		total++;
++
++		if (buf[total - 1] == '\n')
 +			break;
 +	}
 +
-+	/* Extract MST PATH if requested */
-+	if (path) {
-+		drmModePropertyBlobPtr path_blob;
++	buf[total] = '\0';
++	return (ssize_t)total;
++}
 +
-+		/* PATH blob payload is a NUL-terminated string */
-+		path_blob = kmstest_get_path_blob(drm_fd, connector_id);
-+		if (path_blob) {
-+			snprintf(path, path_size, "%s",
-+				 (const char *)path_blob->data);
-+			drmModeFreePropertyBlob(path_blob);
++/**
++ * igt_serial_read:
++ * @s: serial handle
++ * @buf: buffer to read into
++ * @size: size of buffer
++ *
++ * Reads one line (up to newline or timeout) from the serial port.
++ * This is a line-oriented read, not an arbitrary byte read — it stops
++ * at the first newline character or when the VTIME timeout expires.
++ * Use igt_serial_set_timeout() to adjust the timeout before calling.
++ *
++ * Returns: Number of bytes read, 0 on timeout/no data, or -1 on error.
++ */
++ssize_t igt_serial_read(struct igt_serial *s, char *buf, size_t size)
++{
++	ssize_t n;
++
++	n = igt_serial_readline(s, buf, size);
++
++	igt_debug("Serial: Read %zd bytes: '%s'\n", n, n > 0 ? buf : "");
++	return n;
++}
++
++/**
++ * igt_serial_command:
++ * @s: serial handle
++ * @cmd: command string to send
++ * @response: buffer for response
++ * @resp_size: size of response buffer
++ *
++ * Convenience function to send a command and read the response.
++ * Flushes stale input before sending, sends the command, then reads
++ * one response line. If @response is non-NULL, at least one byte must
++ * be received before the configured VTIME timeout for success.
++ *
++ * Returns: true if the send succeeded and, when @response is given,
++ * at least one response byte was received; false otherwise.
++ */
++bool igt_serial_command(struct igt_serial *s, const char *cmd,
++			char *response, size_t resp_size)
++{
++	ssize_t n;
++
++	if (!s || !cmd)
++		return false;
++
++	igt_serial_flush(s);
++
++	if (!igt_serial_send(s, cmd))
++		return false;
++
++	if (response && resp_size > 0) {
++		n = igt_serial_readline(s, response, resp_size);
++		if (n <= 0) {
++			igt_debug("Serial: No response received\n");
++			return false;
 +		}
-+	}
-+
-+	drmModeFreeConnector(conn);
-+
-+	if (blob_id) {
-+		edid_blob = drmModeGetPropertyBlob(drm_fd, blob_id);
-+		if (edid_blob) {
-+			if (edid_blob->length >= sizeof(struct edid)) {
-+				edid = edid_blob->data;
-+				edid_get_any_serial(edid, serial, serial_size);
-+			}
-+			drmModeFreePropertyBlob(edid_blob);
-+		}
++		igt_debug("Serial: Response: '%s'\n", response);
 +	}
 +
 +	return true;
 +}
 +
 +/**
-+ * igt_connector_find_by_path:
-+ * @drm_fd: DRM file descriptor
-+ * @path: MST PATH property value to match
-+ * @connector_id: output for connector ID (filled on success)
++ * igt_serial_flush:
++ * @s: serial handle
 + *
-+ * Finds the currently connected connector whose PATH property matches @path
-+ * (exact string comparison).  PATH is the preferred stable identity for MST
-+ * connectors; connector IDs may change across hotplug events.
-+ *
-+ * Returns: true if a matching connected connector was found.
++ * Discards stale input. Does not touch pending output.
++ * Calls TCIFLUSH to drop kernel-queued input, then temporarily sets
++ * O_NONBLOCK and drains any bytes already readable to reduce races
++ * with in-flight input. Assumes single-threaded access.
 + */
-+bool igt_connector_find_by_path(int drm_fd, const char *path,
-+			        uint32_t *connector_id)
++void igt_serial_flush(struct igt_serial *s)
 +{
-+	drmModeRes *res;
-+	drmModeConnector *conn;
-+	drmModePropertyBlobPtr path_blob;
-+	bool found = false;
-+	int i;
++	char discard[256];
++	ssize_t n;
++	int flags;
 +
-+	if (!path || !connector_id)
-+		return false;
-+
-+	res = drmModeGetResources(drm_fd);
-+	if (!res)
-+		return false;
-+
-+	for (i = 0; i < res->count_connectors && !found; i++) {
-+		conn = drmModeGetConnector(drm_fd, res->connectors[i]);
-+		if (!conn)
-+			continue;
-+
-+		if (conn->connection == DRM_MODE_CONNECTED) {
-+			path_blob = kmstest_get_path_blob(drm_fd,
-+							  conn->connector_id);
-+			if (path_blob) {
-+				if (strcmp(path_blob->data, path) == 0) {
-+					*connector_id = conn->connector_id;
-+					found = true;
-+				}
-+				drmModeFreePropertyBlob(path_blob);
-+			}
-+		}
-+
-+		drmModeFreeConnector(conn);
-+	}
-+
-+	drmModeFreeResources(res);
-+
-+	if (found)
-+		igt_debug("igt_connector: Found connector %u for path '%s'\n",
-+			  *connector_id, path);
-+
-+	return found;
-+}
-+
-+/**
-+ * igt_connector_find_by_name:
-+ * @drm_fd: DRM file descriptor
-+ * @name: connector name to match (e.g., "DP-6")
-+ * @connector_id: output for connector ID (filled on success)
-+ *
-+ * Name-based lookup helper.  Prefer igt_connector_find_by_path() for MST
-+ * connectors, since connector names and IDs may change across hotplug events.
-+ *
-+ * Returns: true if a matching connected connector was found.
-+ */
-+bool igt_connector_find_by_name(int drm_fd, const char *name,
-+			        uint32_t *connector_id)
-+{
-+	drmModeRes *res;
-+	drmModeConnector *conn;
-+	char conn_name[IGT_CONNECTOR_NAME_MAX];
-+	bool found = false;
-+	int i;
-+
-+	if (!name || !connector_id)
-+		return false;
-+
-+	res = drmModeGetResources(drm_fd);
-+	if (!res)
-+		return false;
-+
-+	for (i = 0; i < res->count_connectors && !found; i++) {
-+		conn = drmModeGetConnector(drm_fd, res->connectors[i]);
-+		if (!conn)
-+			continue;
-+
-+		snprintf(conn_name, sizeof(conn_name), "%s-%d",
-+			 kmstest_connector_type_str(conn->connector_type),
-+			 conn->connector_type_id);
-+
-+		if (strcmp(conn_name, name) == 0 &&
-+		    conn->connection == DRM_MODE_CONNECTED) {
-+			*connector_id = conn->connector_id;
-+			found = true;
-+		}
-+
-+		drmModeFreeConnector(conn);
-+	}
-+
-+	drmModeFreeResources(res);
-+
-+	if (found)
-+		igt_debug("igt_connector: Found connector %u for name '%s'\n",
-+			  *connector_id, name);
-+
-+	return found;
-+}
-+
-+/**
-+ * igt_connector_reprobe_all:
-+ * @drm_fd: DRM file descriptor
-+ *
-+ * Issues a GETCONNECTOR ioctl for every connector, requesting fresh state
-+ * from the kernel. This is often sufficient to refresh connector status and
-+ * MST topology visibility after hotplug events, but does not guarantee a
-+ * full hardware reprobe in all driver paths.
-+ */
-+void igt_connector_reprobe_all(int drm_fd)
-+{
-+	drmModeRes *res;
-+	drmModeConnector *conn;
-+	int i;
-+
-+	res = drmModeGetResources(drm_fd);
-+	if (!res)
++	if (!s)
 +		return;
 +
-+	for (i = 0; i < res->count_connectors; i++) {
-+		conn = drmModeGetConnector(drm_fd, res->connectors[i]);
-+		if (conn)
-+			drmModeFreeConnector(conn);
++	/* Discard kernel-queued input; never touch pending output */
++	if (tcflush(s->fd, TCIFLUSH) != 0)
++		igt_debug("Serial: tcflush failed: %s\n", strerror(errno));
++
++	/* Drain bytes already readable to reduce races with in-flight input */
++	flags = fcntl(s->fd, F_GETFL);
++	if (flags < 0) {
++		igt_debug("Serial: fcntl(F_GETFL) failed: %s\n", strerror(errno));
++		return;
 +	}
 +
-+	drmModeFreeResources(res);
++	if (fcntl(s->fd, F_SETFL, flags | O_NONBLOCK) < 0) {
++		igt_debug("Serial: fcntl(F_SETFL) failed: %s\n", strerror(errno));
++		return;
++	}
++
++	for (;;) {
++		n = read(s->fd, discard, sizeof(discard));
++		if (n > 0)
++			continue;
++		if (n == 0)
++			break;
++		/* n < 0 */
++		if (errno == EINTR)
++			continue;
++		if (errno != EAGAIN)
++			igt_debug("Serial: unexpected read error in flush: %s\n",
++				  strerror(errno));
++		break;
++	}
++
++	if (fcntl(s->fd, F_SETFL, flags) < 0)
++		igt_debug("Serial: fcntl(F_SETFL) restore failed: %s\n", strerror(errno));
++
++	igt_debug("Serial: Flushed\n");
 +}
-diff --git a/lib/igt_connector_helper.h b/lib/igt_connector_helper.h
++
++/**
++ * igt_serial_get_fd:
++ * @s: serial handle
++ *
++ * Gets the underlying file descriptor for advanced operations.
++ *
++ * Returns: File descriptor, or -1 if handle is NULL.
++ */
++int igt_serial_get_fd(struct igt_serial *s)
++{
++	return s ? s->fd : -1;
++}
+diff --git a/lib/igt_serial.h b/lib/igt_serial.h
 new file mode 100644
-index 000000000..2bf2b7467
+index 000000000..b460fbf16
 --- /dev/null
-+++ b/lib/igt_connector_helper.h
-@@ -0,0 +1,27 @@
++++ b/lib/igt_serial.h
+@@ -0,0 +1,32 @@
 +/* SPDX-License-Identifier: MIT */
 +/*
 + * Copyright © 2026 Intel Corporation
 + */
 +
-+#ifndef IGT_CONNECTOR_HELPER_H
-+#define IGT_CONNECTOR_HELPER_H
++#ifndef IGT_SERIAL_H
++#define IGT_SERIAL_H
 +
 +#include <stdbool.h>
 +#include <stddef.h>
-+#include <stdint.h>
++#include <sys/types.h>
 +
-+#define IGT_CONNECTOR_NAME_MAX 32
++/**
++ * IGT_SERIAL_DEFAULT_TIMEOUT_MS:
++ *
++ * Default timeout for serial read operations in milliseconds.
++ */
++#define IGT_SERIAL_DEFAULT_TIMEOUT_MS 1000
 +
-+int igt_connector_get_connected(int drm_fd, uint32_t *connectors,
-+				int max_connectors);
-+bool igt_connector_get_info(int drm_fd, uint32_t connector_id,
-+			    char *name, size_t name_size,
-+			    char *serial, size_t serial_size,
-+			    char *path, size_t path_size);
-+bool igt_connector_find_by_path(int drm_fd, const char *path,
-+			        uint32_t *connector_id);
-+bool igt_connector_find_by_name(int drm_fd, const char *name,
-+			        uint32_t *connector_id);
-+void igt_connector_reprobe_all(int drm_fd);
++struct igt_serial;
 +
-+#endif /* IGT_CONNECTOR_HELPER_H */
++struct igt_serial *igt_serial_open(const char *device, int baud_rate);
++void igt_serial_close(struct igt_serial *s);
++bool igt_serial_set_timeout(struct igt_serial *s, int timeout_ms);
++bool igt_serial_send(struct igt_serial *s, const char *cmd);
++ssize_t igt_serial_read(struct igt_serial *s, char *buf, size_t size);
++bool igt_serial_command(struct igt_serial *s, const char *cmd,
++			char *response, size_t resp_size);
++void igt_serial_flush(struct igt_serial *s);
++int igt_serial_get_fd(struct igt_serial *s);
++
++#endif /* IGT_SERIAL_H */
 diff --git a/lib/meson.build b/lib/meson.build
-index ea721ecf7..074b21fdf 100644
+index 074b21fdf..67b57533c 100644
 --- a/lib/meson.build
 +++ b/lib/meson.build
-@@ -113,6 +113,7 @@ lib_sources = [
- 	'igt_vmwgfx.c',
- 	'igt_psr.c',
- 	'igt_amd.c',
-+	'igt_connector_helper.c',
- 	'igt_edid.c',
- 	'igt_eld.c',
- 	'igt_infoframe.c',
+@@ -123,6 +123,7 @@ lib_sources = [
+ 	'igt_msm.c',
+ 	'igt_dsc.c',
+ 	'igt_hook.c',
++	'igt_serial.c',
+ 	'xe/xe_gt.c',
+ 	'xe/xe_ioctl.c',
+ 	'xe/xe_legacy.c',
 -- 
 2.25.1
 
