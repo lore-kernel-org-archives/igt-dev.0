@@ -4,55 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E8CEFD374E
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 14:06:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7CCFFD374E
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Feb 2026 14:07:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D47AD10E780;
-	Wed, 25 Feb 2026 14:06:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9C43F10E7DA;
+	Wed, 25 Feb 2026 14:07:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R5ziTUS2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n71CWY8N";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B96210E780
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 14:06:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E70C610E7DA
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Feb 2026 14:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772028381; x=1803564381;
+ t=1772028477; x=1803564477;
  h=from:to:subject:in-reply-to:references:date:message-id:
  mime-version:content-transfer-encoding;
- bh=1FVj3rRxI4Zem2ArqSSvAj1AOimQM+kHGsUsy+kDyLk=;
- b=R5ziTUS2WbRW3+HDaL4qM8lLHLTRhXUS/pIyKWN8C+c81BBYUb8cXFXh
- 34eK7QHHH6Ak+jjjNARFWFpbZfowIUxAJNS2n83HrYbxUlNdaL5K+UFaD
- 62B2Ldb6zUxYJ3ZXvp83E/ea5HRfoZIumO/ayTHEyd8FbiSu/GR6mFR5q
- 2UidiTTZc3fND1PAEIpyVsAB/+9KJWP36cQsq5XNyJuoYl5bgKD1oy50V
- 6E/q5Yt5Dq7f6Z9mgVXPdNUUj3bh+ncVl+CreJV8wvwpE2D63llqfqU0l
- cWQWuR1YTBxbgPLu+2tlkJwRaIc7NMj46IZf93ARgITjFIlTr+9xOMV+N Q==;
-X-CSE-ConnectionGUID: lxrb7xzFSESSYRYB3peM7Q==
-X-CSE-MsgGUID: SrI2MDr1RBqUEmixp+VEoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="72972335"
-X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; d="scan'208";a="72972335"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2026 06:06:20 -0800
-X-CSE-ConnectionGUID: WidfndyhQfmZtq0eWvosGQ==
-X-CSE-MsgGUID: bApK0h/zQtOL9BTvTBPLOQ==
+ bh=z51GSeu3nhIOhD7rt75c3GU1fqOKZPxyN5DjU5C0v7w=;
+ b=n71CWY8NTl+ph1eDtU1OlKG4cIN7OMPFRoy/WKxMRjW7713aBDoeO2+S
+ 5GFWih8bEsU4SbgFoTvOG+rcX1XvJe9RYm3HL8JQ0zOdzEuTu5oMXHkCS
+ Da7f1+Q+EwsMoDIVfuExDJ7WMN3yyMvExvDwsx1Jn1Ldoi8xzixNbNYpo
+ vPgOVJdMobbsyb9fAN4dFGChEVxy5KeWvc33kE2TkboCRf9JqLW2iL+vK
+ w7yLDcXExEMjdWmzHxkrBEeog52tU/9g6kmgIdwm/8yGgGsmYzk+ueoKh
+ 2N5z3y7tIut1tvxAdHYBOw4i4Q21BTFv8DC6rztssTa6vLbIOTZy0h1Zh A==;
+X-CSE-ConnectionGUID: pk7Ugs+1Tru3kndwyRN6JQ==
+X-CSE-MsgGUID: vz5qwc4cROuTItKJY4bMFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="98534130"
+X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; d="scan'208";a="98534130"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Feb 2026 06:07:56 -0800
+X-CSE-ConnectionGUID: YGEQN0oQRRurfwQhgOHexw==
+X-CSE-MsgGUID: T6pJctDHTPqGu6LYYk28CA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; d="scan'208";a="220735368"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.68])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Feb 2026 06:06:18 -0800
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Feb 2026 06:07:55 -0800
 From: Jani Nikula <jani.nikula@intel.com>
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 19/19] lib/kms: Nuke for_each_valid_output_on_pipe()
-In-Reply-To: <20260225125108.31119-20-ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t 00/19] lib/kms: Clean up more of igt_kms API
+In-Reply-To: <20260225125108.31119-1-ville.syrjala@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 References: <20260225125108.31119-1-ville.syrjala@linux.intel.com>
- <20260225125108.31119-20-ville.syrjala@linux.intel.com>
-Date: Wed, 25 Feb 2026 16:06:13 +0200
-Message-ID: <bf862627b376668c360a5566fb324f5279474dc3@intel.com>
+Date: Wed, 25 Feb 2026 16:07:52 +0200
+Message-ID: <8dbdb0294d1741024d41c6130597891d398e67fc@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -74,68 +72,114 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 On Wed, 25 Feb 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
 > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >
-> for_each_valid_output_on_pipe() is no unused. Get rid of it.
+> Adjust more of the igt_kms API to pass around igt_crtc_t*
+> instead of enum pipe.
+>
+> I also wanted to have a better idea where in the tests we're
+> still using igt_crtc_for_pipe(), so there's some cleanup
+> around that. And then I added some new functions into igt_kms
+> to replace some of those with more sensible things.
+>
+> This was supposed to be the last treewide series I'd do, but
+> it naturally became too big. So I cut it roughly in the middle,
+> and this is the first part. The second part is already done,
+> but I'll hang on to it until this gets in.
 
-*now
+Apart from a handful of comments inline, mostly about typos and cocci
+being silly with whitespace or braces,
+
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+
+Good stuff. I think all of this underlines the importance setting a good
+example in the codebase, because the worst stuff gets copied around
+everywhere.
+
 
 >
-> And with that we also lose the last caller of
-> igt_pipe_connector_valid() so nuke that one too.
+> Ville Syrj=C3=A4l=C3=A4 (19):
+>   tests/kms_plane_multiple: Clean up n_planes stuff
+>   tests/kms_async_flips: Remove redundant data.crtc_id
+>   tests/kms_lease: Consolidate igt_crtc_for_pipe() calls
+>   tests/kms: Consolidate igt_crtc_for_pipe() calls
+>   lib/kms: Introduce igt_first_crtc_with_single_output()
+>   tests/kms: Use igt_first_crtc_with_single_output()
+>   lib/kms: Introduce and use igt_first_crtc()
+>   tests/kms: Stop using igt_require_pipe()
+>   lib/kms: Replace get_num_scalers() with igt_crtc_num_scalers()
+>   lib/kms: Pass igt_crtc_t* to igt_max_bpc_constraint()
+>   lib/kms: Introduce for_each_plane_on_crtc()
+>   tests/kms: Use for_each_plane_on_crtc()
+>   lib/kms: Nuke for_each_plane_on_pipe()
+>   tests/kms: Switch to for_each_valid_output_on_crtc_local()
+>   tests/kms: Replace igt_pipe_connector_valid() with
+>     igt_crtc_connector_valid()
+>   lib/kms: Intreoduce for_each_valid_output_on_crtc()
+>   tests/intel/kms_frontbuffer_tracking: Use
+>     for_each_valid_output_on_crtc()
+>   tests/kms: Use for_each_valid_output_on_crtc()
+>   lib/kms: Nuke for_each_valid_output_on_pipe()
 >
-> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
-> ---
->  lib/igt_kms.h | 27 ---------------------------
->  1 file changed, 27 deletions(-)
->
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 8a3919a55e77..fb2597193467 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -670,19 +670,6 @@ static inline bool igt_output_is_connected(igt_outpu=
-t_t *output)
->  	return false;
->  }
->=20=20
-> -/**
-> - * igt_pipe_connector_valid:
-> - * @pipe: pipe to check.
-> - * @output: #igt_output_t to check.
-> - *
-> - * Checks whether the given pipe and output can be used together.
-> - */
-> -static inline bool igt_pipe_connector_valid(enum pipe pipe, igt_output_t=
- *output)
-> -{
-> -	return igt_output_is_connected(output) &&
-> -		output->config.valid_crtc_index_mask & (1 << (pipe));
-> -}
-> -
->  /**
->   * igt_crtc_connector_valid:
->   * @crtc: CRTC to check.
-> @@ -801,20 +788,6 @@ igt_output_t **__igt_pipe_populate_outputs(igt_displ=
-ay_t *display,
->  		for_each_if (*__output && \
->  			     ((crtc) =3D igt_crtc_for_pipe((display), (__output - __outputs))=
-, (output) =3D *__output, 1))
->=20=20
-> -/**
-> - * for_each_valid_output_on_pipe:
-> - * @display: a pointer to an #igt_display_t structure
-> - * @pipe: Pipe to enumerate valid outputs over
-> - * @output: The enumerated output.
-> - *
-> - * This for loop is called over all connected @output that can be used
-> - * on this @pipe . If there are no valid outputs for this pipe, nothing
-> - * happens.
-> - */
-> -#define for_each_valid_output_on_pipe(display, pipe, output) \
-> -	for_each_connected_output((display), (output)) \
-> -		for_each_if (igt_pipe_connector_valid((pipe), (output)))
-> -
->  /**
->   * for_each_valid_output_on_crtc:
->   * @display: a pointer to an #igt_display_t structure
+>  lib/igt_kms.c                                 | 83 +++++++++++++------
+>  lib/igt_kms.h                                 | 60 ++++----------
+>  tests/amdgpu/amd_abm.c                        | 20 +++--
+>  tests/amdgpu/amd_assr.c                       |  2 +-
+>  tests/amdgpu/amd_bypass.c                     |  2 +-
+>  tests/amdgpu/amd_color.c                      |  2 +-
+>  tests/amdgpu/amd_cursor_overlay.c             |  2 +-
+>  tests/amdgpu/amd_freesync_video_mode.c        |  2 +-
+>  tests/amdgpu/amd_ilr.c                        |  2 +-
+>  tests/amdgpu/amd_link_settings.c              |  2 +-
+>  tests/amdgpu/amd_mall.c                       |  2 +-
+>  tests/amdgpu/amd_max_bpc.c                    |  2 +-
+>  tests/amdgpu/amd_mem_leak.c                   |  2 +-
+>  tests/amdgpu/amd_mode_switch.c                |  5 +-
+>  tests/amdgpu/amd_multidisplay_modeset.c       |  7 +-
+>  tests/amdgpu/amd_odm.c                        |  6 +-
+>  tests/amdgpu/amd_psr.c                        |  2 +-
+>  tests/amdgpu/amd_replay.c                     |  2 +-
+>  tests/chamelium/kms_chamelium_color.c         |  8 +-
+>  .../kms_chamelium_sharpness_filter.c          |  6 +-
+>  tests/intel/gem_eio.c                         | 11 ++-
+>  tests/intel/gem_exec_reloc.c                  |  9 +-
+>  tests/intel/gem_pxp.c                         |  4 +-
+>  tests/intel/kms_big_fb.c                      |  3 +-
+>  tests/intel/kms_busy.c                        |  3 +-
+>  tests/intel/kms_ccs.c                         |  3 +-
+>  tests/intel/kms_cdclk.c                       | 14 ++--
+>  tests/intel/kms_dirtyfb.c                     |  4 +-
+>  tests/intel/kms_dp_linktrain_fallback.c       |  2 +-
+>  tests/intel/kms_fbc_dirty_rect.c              | 15 ++--
+>  tests/intel/kms_flip_scaled_crc.c             |  8 +-
+>  tests/intel/kms_frontbuffer_tracking.c        |  5 +-
+>  tests/intel/kms_legacy_colorkey.c             |  5 +-
+>  tests/intel/kms_pipe_stress.c                 | 30 ++++---
+>  tests/intel/kms_pm_lpsp.c                     |  2 +-
+>  tests/intel/xe_pxp.c                          |  6 +-
+>  tests/kms_async_flips.c                       | 29 +++----
+>  tests/kms_atomic.c                            |  3 +-
+>  tests/kms_atomic_transition.c                 | 36 +++++---
+>  tests/kms_bw.c                                |  5 +-
+>  tests/kms_color.c                             | 11 +--
+>  tests/kms_colorop.c                           |  3 +-
+>  tests/kms_content_protection.c                |  2 +-
+>  tests/kms_cursor_legacy.c                     |  6 +-
+>  tests/kms_debugfs.c                           |  7 +-
+>  tests/kms_display_modes.c                     | 11 +--
+>  tests/kms_dither.c                            |  4 +-
+>  tests/kms_feature_discovery.c                 |  4 +-
+>  tests/kms_hdr.c                               |  6 +-
+>  tests/kms_lease.c                             | 31 ++++---
+>  tests/kms_plane.c                             |  9 +-
+>  tests/kms_plane_alpha_blend.c                 |  8 +-
+>  tests/kms_plane_lowres.c                      |  6 +-
+>  tests/kms_plane_multiple.c                    | 25 +++---
+>  tests/kms_plane_scaling.c                     | 78 +++++++++--------
+>  tests/kms_properties.c                        | 16 ++--
+>  tests/kms_rmfb.c                              |  6 +-
+>  tests/kms_rotation_crc.c                      | 19 +++--
+>  tests/kms_tiled_display.c                     |  2 +-
+>  tools/amd_hdmi_compliance.c                   |  2 +-
+>  60 files changed, 378 insertions(+), 294 deletions(-)
 
 --=20
 Jani Nikula, Intel
