@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1CA8FD8FD6
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Feb 2026 16:40:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1226FD8FD8
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Feb 2026 16:53:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7B98810E9B3;
-	Thu, 26 Feb 2026 16:40:21 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2470510E99B;
- Thu, 26 Feb 2026 16:40:21 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8070045671099848052=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 91E9410E9D2;
+	Thu, 26 Feb 2026 16:53:17 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P9XL3lJp";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B953910E9D2
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Feb 2026 16:53:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1772124796; x=1803660796;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=sTOBYO1T6xym+EMyNSFCs+W4f8GVsFbPMX6TOUKpjrA=;
+ b=P9XL3lJpuTEFi9Lu88mkEifmA5KoWDlF56ZmoyC6OntHo8uaLyvm0IwF
+ qnAlqJCo8obNJ21vb5eEdHVPGypiokQ4bpLy1jzviSB/6GGpaZ+6J7BRs
+ sJ/LKF8jTkPib5EgiytAxuUTkODLd2SeKuaaqeYqaYUdNA/TAWC6cjhiG
+ wVIEBgzw7JOr34yxEMKJGuEKYvYE/QhQQ6CU1SrtQp+crxU5M736XQWLr
+ 5xaKZx1d3lETwToGK1I0gKspdrf4fG0NBqyZYtXhB3eoIoxxoXPidAPM0
+ J2jC4ronffaBULBcXVJDWNvJNOqGkn9Jq8aW2DZnpxK/aud35GzS8foN1 Q==;
+X-CSE-ConnectionGUID: zTrBucOiRRGxEfxXeV0cdQ==
+X-CSE-MsgGUID: O2jczyhZQnytXk4OGW+5wQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="83523844"
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="83523844"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2026 08:53:15 -0800
+X-CSE-ConnectionGUID: wnkn8AomQHmE66RIYLpqrw==
+X-CSE-MsgGUID: jVQYJ5VyQf6THcZuKPo1AA==
+X-ExtLoop1: 1
+Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2026 08:53:13 -0800
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, suraj.kandpal@intel.com,
+ mohammed.thasleem@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v1] tests/kms_content_protection: check sink capability
+ after modeset
+Date: Thu, 26 Feb 2026 22:17:42 +0530
+Message-Id: <20260226164742.1845906-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fexplict=5Ffence?=
- =?utf-8?q?=3A_Add_Test_for_Explicit_Fencing_=28rev6=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "S Sebinraj" <s.sebinraj@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 26 Feb 2026 16:40:21 -0000
-Message-ID: <177212402112.292161.8012890919379236415@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260226093127.2882485-1-s.sebinraj@intel.com>
-In-Reply-To: <20260226093127.2882485-1-s.sebinraj@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,129 +64,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8070045671099848052==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The loop checks HDCP sink capability too early, this makes test skips
+on multi display panels with "Sink has no HDCP support"
+on valid connectors.
 
-== Series Details ==
+Fix this by validating output/crtc combo, do modeset and then check for
+sink capability.
 
-Series: tests/kms_explict_fence: Add Test for Explicit Fencing (rev6)
-URL   : https://patchwork.freedesktop.org/series/160078/
-State : success
+Fixes: a85208a45759 ("tests/kms: Use igt_crtc_t instead of enum pipe, part 4")
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+---
+ tests/kms_content_protection.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-== Summary ==
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index 2c2ffa150..1f1f45fe6 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -725,21 +725,22 @@ test_content_protection(enum igt_commit_style commit_style, int content_type)
+ 
+ 	for_each_connected_output(display, output) {
+ 		for_each_crtc(display, crtc) {
+-			if (!output_hdcp_capable(output, content_type))
++			igt_display_reset(display);
++			igt_output_set_crtc(output, crtc);
++			if (!intel_pipe_output_combo_valid(display))
+ 				continue;
++
++			modeset_with_fb(output, commit_style);
++
+ 			if (is_output_hdcp_test_exempt(output)) {
+ 				igt_info("Skipping HDCP test on %s, as the panel is blocklisted\n",
+ 					  output->name);
+ 				continue;
+ 			}
+ 
+-			igt_display_reset(display);
+-			igt_output_set_crtc(output,
+-				            crtc);
+-			if (!intel_pipe_output_combo_valid(display))
++			if (!output_hdcp_capable(output, content_type))
+ 				continue;
+ 
+-			modeset_with_fb(output, commit_style);
+ 			if (data.is_force_hdcp14)
+ 				set_i915_force_hdcp14(output);
+ 
+-- 
+2.34.1
 
-CI Bug Log - changes from XEIGT_8773_BAT -> XEIGTPW_14624_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (14 -> 14)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14624_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_waitfence@reltime:
-    - bat-dg2-oem2:       [PASS][1] -> [FAIL][2] ([Intel XE#6520])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8773/bat-dg2-oem2/igt@xe_waitfence@reltime.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14624/bat-dg2-oem2/igt@xe_waitfence@reltime.html
-
-  
-  [Intel XE#6520]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520
-
-
-Build changes
--------------
-
-  * IGT: IGT_8773 -> IGTPW_14624
-  * Linux: xe-4620-f0ec6252eb6d9a4f0cb5a437f5c21fec16d0a440 -> xe-4622-50b03c02e68b265fb85f3844a4c24e57c5ad3b4f
-
-  IGTPW_14624: 14624
-  IGT_8773: 8773
-  xe-4620-f0ec6252eb6d9a4f0cb5a437f5c21fec16d0a440: f0ec6252eb6d9a4f0cb5a437f5c21fec16d0a440
-  xe-4622-50b03c02e68b265fb85f3844a4c24e57c5ad3b4f: 50b03c02e68b265fb85f3844a4c24e57c5ad3b4f
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14624/index.html
-
---===============8070045671099848052==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_explict_fence: Add Test for Explicit Fencing (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/160078/">https://patchwork.freedesktop.org/series/160078/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14624/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14624/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8773_BAT -&gt; XEIGTPW_14624_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (14 -&gt; 14)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14624_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_waitfence@reltime:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8773/bat-dg2-oem2/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14624/bat-dg2-oem2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6520">Intel XE#6520</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8773 -&gt; IGTPW_14624</li>
-<li>Linux: xe-4620-f0ec6252eb6d9a4f0cb5a437f5c21fec16d0a440 -&gt; xe-4622-50b03c02e68b265fb85f3844a4c24e57c5ad3b4f</li>
-</ul>
-<p>IGTPW_14624: 14624<br />
-  IGT_8773: 8773<br />
-  xe-4620-f0ec6252eb6d9a4f0cb5a437f5c21fec16d0a440: f0ec6252eb6d9a4f0cb5a437f5c21fec16d0a440<br />
-  xe-4622-50b03c02e68b265fb85f3844a4c24e57c5ad3b4f: 50b03c02e68b265fb85f3844a4c24e57c5ad3b4f</p>
-
-</body>
-</html>
-
---===============8070045671099848052==--
