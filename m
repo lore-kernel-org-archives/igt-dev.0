@@ -4,59 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8838FC590F
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Feb 2026 08:32:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01CB0FC590F
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Feb 2026 08:36:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 71FA710E864;
-	Thu, 26 Feb 2026 08:32:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A1BE610E179;
+	Thu, 26 Feb 2026 08:36:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n/aC+78/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Vwv+mopi";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9FD7310E863
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Feb 2026 08:31:58 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D0C6410E16D
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Feb 2026 08:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772094719; x=1803630719;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Z70JUTURl9vRTnsLKLhvYUH5+M9itK0jGAKyCKjqR2c=;
- b=n/aC+78/3GT7CA4gs7SeWHQPB2Od8ct+TD9IcoyHs8B+heqQYB5gGS5U
- Z2xxE6FzWooDwbJTQl0ZHTeIYt5MBxPvIfMrQgnrXFjMZellApT6hrltI
- /NFhCQGPB4cJPbp76YoCay5NNKHgLCNXvXUBkI7nwDoLApZD5+ALp0wOo
- MEPCPX3+M62GDN/VU8FPR8aKTrelKC2LugxlYrEsHbA1UGdV0S0DodVSq
- 5xltC2p5/D9Qb5PBwMofNxd5igqJUIeQLJVkxtNGRzB48625eVvfRpj+V
- mgGAmbMF7JkZxQqicyopCgYu0ALlpuw1CL6n1qyaF96RF7TGUCQi0mxWJ w==;
-X-CSE-ConnectionGUID: bNe69UuwTBOvVNvxz3E4ZQ==
-X-CSE-MsgGUID: K6mY3/kFTcuwfVVdOzUxoA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="72849673"
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="72849673"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2026 00:31:58 -0800
-X-CSE-ConnectionGUID: GehJSNLRTKu4oivFBF/Wrg==
-X-CSE-MsgGUID: 1pohnfwKRfO6NcFKn5Nusw==
+ t=1772094965; x=1803630965;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=sQcu5xAP1RVQVWwfWOoJVIv8xmuqlr310+Rm2SY9EEk=;
+ b=Vwv+mopi/RVSylhkJ593dVAu2dXDkGT0cjSLIAJZcN2TYuNR5tbTZVhg
+ 1/dQ8GXD42svOYnzPW2Pb6jpOi9j8qL0S8Gp9Na1PSAeTF/Tvj1W0nMy5
+ VlzpkYPbm3/ubSIB4Zse+zsWymfhJHbPRFTqhOLjkWRC4MknCmjhzyQU+
+ UXa97JbdMp0OqnCbkbts1BUm5tLXVP2w6oUILWNToN+hpNOIHuhdknHwt
+ wwiOO11c3+cZ8WnYgcQRa7bj0ZhpTKQtxDUh9417BrUSv/MRW0AykoR31
+ jyJeYIHwELqWY3wOvBPMVuVrU4RxHNICidR9SwVRj423njc8iDfy0OiQA Q==;
+X-CSE-ConnectionGUID: 6nFkKfNFTG+Y1KGe7C45hg==
+X-CSE-MsgGUID: LVuCFnKwR7O8WtLuh0vpuA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="73060943"
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="73060943"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2026 00:36:01 -0800
+X-CSE-ConnectionGUID: jCu7GOGNQDGzHMdyRQl/pQ==
+X-CSE-MsgGUID: ZnC5m289Qaa0F3pQMtP8CQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="214740022"
-Received: from administrator-system-product-name.igk.intel.com (HELO
- dev-417.igk.intel.com) ([10.91.214.181])
- by fmviesa007.fm.intel.com with ESMTP; 26 Feb 2026 00:31:51 -0800
-From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
- Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t v7 5/6] tests/kms_flip: staticize & remove unused global
- vars
-Date: Thu, 26 Feb 2026 09:31:14 +0100
-Message-ID: <20260226083115.1747856-6-michal.grzelak@intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20260226083115.1747856-1-michal.grzelak@intel.com>
-References: <20260226083115.1747856-1-michal.grzelak@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="254256259"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2026 00:36:00 -0800
+Date: Thu, 26 Feb 2026 09:35:40 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Louis Chauvet <louis.chauvet@bootlin.com>,
+ igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
+ luca.ceresoli@bootlin.com, markyacoub@google.com,
+ khaled.almahallawy@intel.com
+Subject: Re: [PATCH i-g-t v7 03/48] lib/igt_kms: Add function to list
+ connected connectors
+Message-ID: <20260226083540.sv27zkbcuy3ai55g@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Kory Maincent <kory.maincent@bootlin.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>,
+ igt-dev@lists.freedesktop.org, thomas.petazzoni@bootlin.com,
+ luca.ceresoli@bootlin.com, markyacoub@google.com,
+ khaled.almahallawy@intel.com
+References: <20260223-unigraf-integration-v7-0-73dc9143c8c1@bootlin.com>
+ <20260223-unigraf-integration-v7-3-73dc9143c8c1@bootlin.com>
+ <20260223144150.6b053827@kmaincent-XPS-13-7390>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260223144150.6b053827@kmaincent-XPS-13-7390>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,40 +80,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Global variables devid, fb_ptr and test_time are never used. Remove
-them. Staticize leftover global vars.
+Hi Kory,
+On 2026-02-23 at 14:41:50 +0100, Kory Maincent wrote:
+> On Mon, 23 Feb 2026 13:09:10 +0100
+> Louis Chauvet <louis.chauvet@bootlin.com> wrote:
+> 
+> > Introduce the igt_get_connected_connectors() function, which returns a
+> > list of connector IDs that are currently connected according to DRM.
+> > 
+> > This function includes a timeout mechanism because connectors can be
+> > unplugged at any time. Also, especially with MST, the connector can be
+> > listed by drmModeGetResources() but not yet accessible with
+> > drmModeGetConnector().
+> 
+> There are memory leaks but it seems accepted by design in IGT. Then:
 
-Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
----
- tests/kms_flip.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+Please point them out, lets try to remove them if possible,
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index ae38096aa..f17d027cc 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -274,19 +274,15 @@ static bool all_crtcs = false;
- static bool all_conns = false;
- static bool all_pairs = false;
- 
--drmModeRes *resources;
--int drm_fd;
-+static drmModeRes *resources;
-+static int drm_fd;
- static struct buf_ops *bops;
--uint32_t devid;
--int test_time = 3;
- static bool monotonic_timestamp;
- static pthread_t vblank_wait_thread;
- static int max_dotclock;
- 
- static drmModeConnector *last_connector;
- 
--uint32_t *fb_ptr;
--
- static igt_display_t display;
- 
- struct type_name {
--- 
-2.45.2
+Regards,
+Kamil
 
+> Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+> 
+> Thank you!
+> -- 
+> Köry Maincent, Bootlin
+> Embedded Linux and kernel engineering
+> https://bootlin.com
