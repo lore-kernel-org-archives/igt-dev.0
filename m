@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DE00FC590A
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8838FC590F
 	for <igt-dev@archiver.kernel.org>; Thu, 26 Feb 2026 08:32:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 37E8A10E179;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 71FA710E864;
 	Thu, 26 Feb 2026 08:32:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AMqt07fb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n/aC+78/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7864F10E179
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FD7310E863
  for <igt-dev@lists.freedesktop.org>; Thu, 26 Feb 2026 08:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772094718; x=1803630718;
+ t=1772094719; x=1803630719;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=WIBhf2THKIz41o2e9/NI/ngkOCCjffMcK8eVAoGZ2sk=;
- b=AMqt07fbDmnVYX+59OfiFCh6hZ8ZKn6Ghl9kP5TLadVWE9K6CmD+ackR
- d37J+A6H7mGcEO74/BYn7TcDQMpzUul2VOtJ2Ay41el794JQI27J4bfGn
- EoWOOTHl22YrK2cuoIwf6yCZPphiW43WLMM1P7ndwieZ0z4Ma+fv2KCUm
- dX3FYpelGLTOKBhMZWbYnV5wsgdMiwzgefaS9ef9YZ3IXlvh6MBQsq7sd
- xlsjSs11Hq1zKUx9+xFTqa+PjEnZCZb2hRuzaOublzqV1nlwHnE7JClKg
- 1kJSXXwLGhQ960s57sELGboGR39SVz2ZwfcvI4b2f6k+EmCILGtSe4PpQ Q==;
-X-CSE-ConnectionGUID: o/Z6M4vIQ26bKccSpnTqdA==
-X-CSE-MsgGUID: 1Z4PbKrVTvKHQajJ5pCU/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="72849674"
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="72849674"
+ bh=Z70JUTURl9vRTnsLKLhvYUH5+M9itK0jGAKyCKjqR2c=;
+ b=n/aC+78/3GT7CA4gs7SeWHQPB2Od8ct+TD9IcoyHs8B+heqQYB5gGS5U
+ Z2xxE6FzWooDwbJTQl0ZHTeIYt5MBxPvIfMrQgnrXFjMZellApT6hrltI
+ /NFhCQGPB4cJPbp76YoCay5NNKHgLCNXvXUBkI7nwDoLApZD5+ALp0wOo
+ MEPCPX3+M62GDN/VU8FPR8aKTrelKC2LugxlYrEsHbA1UGdV0S0DodVSq
+ 5xltC2p5/D9Qb5PBwMofNxd5igqJUIeQLJVkxtNGRzB48625eVvfRpj+V
+ mgGAmbMF7JkZxQqicyopCgYu0ALlpuw1CL6n1qyaF96RF7TGUCQi0mxWJ w==;
+X-CSE-ConnectionGUID: bNe69UuwTBOvVNvxz3E4ZQ==
+X-CSE-MsgGUID: K6mY3/kFTcuwfVVdOzUxoA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="72849673"
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="72849673"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  26 Feb 2026 00:31:58 -0800
-X-CSE-ConnectionGUID: MLD/q/EcTwuAtFJbeGhQNw==
-X-CSE-MsgGUID: lhxzP5rTTb2bHP5b3VMx2w==
+X-CSE-ConnectionGUID: GehJSNLRTKu4oivFBF/Wrg==
+X-CSE-MsgGUID: 1pohnfwKRfO6NcFKn5Nusw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="214740045"
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="214740022"
 Received: from administrator-system-product-name.igk.intel.com (HELO
  dev-417.igk.intel.com) ([10.91.214.181])
- by fmviesa007.fm.intel.com with ESMTP; 26 Feb 2026 00:31:53 -0800
+ by fmviesa007.fm.intel.com with ESMTP; 26 Feb 2026 00:31:51 -0800
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
  Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t v7 6/6] tests/kms_flip: test suspend at most twice on SNB
-Date: Thu, 26 Feb 2026 09:31:15 +0100
-Message-ID: <20260226083115.1747856-7-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v7 5/6] tests/kms_flip: staticize & remove unused global
+ vars
+Date: Thu, 26 Feb 2026 09:31:14 +0100
+Message-ID: <20260226083115.1747856-6-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260226083115.1747856-1-michal.grzelak@intel.com>
 References: <20260226083115.1747856-1-michal.grzelak@intel.com>
@@ -71,38 +72,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When SNB suspends, so does gettime_us(). This results in too many sleeps
-before we hit the duration_ms. Break the loop on second execution.
+Global variables devid, fb_ptr and test_time are never used. Remove
+them. Staticize leftover global vars.
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 ---
- tests/kms_flip.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/kms_flip.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index f17d027cc..f02e9b7cf 100755
+index ae38096aa..f17d027cc 100755
 --- a/tests/kms_flip.c
 +++ b/tests/kms_flip.c
-@@ -1322,6 +1322,9 @@ static bool event_loop(struct test_output *o, unsigned duration_ms,
- {
- 	unsigned long start, end;
- 	int count = 0;
-+	int devid;
-+
-+	devid = intel_get_drm_devid(drm_fd);
+@@ -274,19 +274,15 @@ static bool all_crtcs = false;
+ static bool all_conns = false;
+ static bool all_pairs = false;
  
- 	start = gettime_us();
+-drmModeRes *resources;
+-int drm_fd;
++static drmModeRes *resources;
++static int drm_fd;
+ static struct buf_ops *bops;
+-uint32_t devid;
+-int test_time = 3;
+ static bool monotonic_timestamp;
+ static pthread_t vblank_wait_thread;
+ static int max_dotclock;
  
-@@ -1342,6 +1345,9 @@ static bool event_loop(struct test_output *o, unsigned duration_ms,
- 		if (count && (gettime_us() - start) / 1000 >= duration_ms)
- 			break;
+ static drmModeConnector *last_connector;
  
-+		if (count && IS_SANDYBRIDGE(devid) && o->flags & TEST_SUSPEND)
-+			break;
-+
- 		count++;
- 	}
+-uint32_t *fb_ptr;
+-
+ static igt_display_t display;
  
+ struct type_name {
 -- 
 2.45.2
 
