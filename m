@@ -4,156 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15571FC592C
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Feb 2026 11:20:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3D04FC5933
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Feb 2026 11:28:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B298810E8D4;
-	Thu, 26 Feb 2026 11:20:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5D00810E011;
+	Thu, 26 Feb 2026 11:28:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PsUM9CuQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BurAV7fl";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F285110E8D4
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Feb 2026 11:20:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E08B10E011
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Feb 2026 11:28:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772104803; x=1803640803;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=65Heuo4stQyQ3hsaKqO2/UIYdJuZv0p3tie+O2UQ+AM=;
- b=PsUM9CuQu+/syYjPZpWALG3nSB8suOyGwjpS15GBEUALOUU+SRKgM2Is
- UHkpx9Q0ExwcbnHqoIYbZaYhSL9kDKf8JJi+IZsdZipHm63ZBxLAlhgM0
- B4IpbAuhzc7FYjvm0PM5e2tpjhOKF87no4HpXTuiOaO7fzGYfRXcG/6b0
- XvgCTgPfa56ZYBcFJ4AbOSMN7SgW56R9Dfs07yN4gdNaPSHrs2cIUsPj1
- Oy4RSlKu/CA6/9SMGIGA/xaUHpP0wHstRXpuVK4sG/qkkheEZAeoRK0p7
- oakjlRN1GODUA3Yy2glDq7iyppPH6YL8fNbrCXk/dVLUWwWWQlixkgtF+ Q==;
-X-CSE-ConnectionGUID: YS8XXS4xRPe5n+yMJVfTjw==
-X-CSE-MsgGUID: +vrveaYKTFGW6mKVt8O/EA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="73207049"
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="73207049"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2026 03:20:02 -0800
-X-CSE-ConnectionGUID: 5risI5UmRKSby/YG+n+tEA==
-X-CSE-MsgGUID: PsMJ4T0LQ6CumoFh4iZBEA==
+ t=1772105296; x=1803641296;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=C1IAX8tZI9aJa/aQPexC3rgghbQZfCTgJiCuH8MRvx4=;
+ b=BurAV7fljFxN4itMUSjg4MYcD7LTpwfrhwuDNnXt26XP/pBw5Pdau13a
+ xv9CBkwnycdcVMFqSvReOPE+ipFC4i7D3F6i58XVbJmu3sei04LhHhFI6
+ RiGZBV66uI1MlmJavpe9/LXqLMbJyH64Kug2G20EXNax957An0LYcGLTL
+ 4hHJewsl8GqqXAStG4WS6ztils3QvCC0hFk7QJp7t3aXSIwADiM+5ZRyH
+ cRjdh7qvotn1K60ZXw7EipaorbEAUiAMp/nnohgR6CgI/UDUPBkRslxmL
+ vj2YgX12WFcFa+M1VdZyezWpVSEv70vd/nWJfj4qNBvYI68N66P0s2Nz5 A==;
+X-CSE-ConnectionGUID: bpattd91RH2LXeh9O8tDbw==
+X-CSE-MsgGUID: ON4IPE4vR3iGzpdCqoFiQw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="84518423"
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="84518423"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2026 03:28:16 -0800
+X-CSE-ConnectionGUID: psm5fmvUSzKQHa5cS9xqAg==
+X-CSE-MsgGUID: 9AWy7OtdSJCwJJplYpyhWw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="215649820"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2026 03:20:02 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 26 Feb 2026 03:20:01 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 26 Feb 2026 03:20:01 -0800
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.33) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 26 Feb 2026 03:20:00 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QGfcYEJMdH46qrWap5RjDoUtCA8vRZC5cDX+mSTDD3U3S/yXH6EarCGDe5vgVi1BNAF4ohJh4sa84HX2yR6Jdv+NOvkEE2moLtjn5m5FvstVCXxuQWuul1KLVu3f8ZEAqol3VpGCPC6DYm0z6pTC6JDO8fJUv/IneYcyQTGUsCwxTPqo8GBw2ngfGE8JAb9KGD46yABu2qCXYPvsepbsTP0X7IGonAQyiIwUPBZ2CaJVFl7ebwwlaecNDMaV1O8yYFHsIbX+aQ3TpM7fBF9N9bxHZEiKjhIG1D05zSi7c9kX0rqmRw2vyXnA3v9Fd7lmE+6CJOC5XS7EHWAshDn/Xw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eS2P2JZUWh4uYVfQHxo9Aqqzt990d+j6wql44qIldxU=;
- b=GIjN5vjck9mHvpZp1XvCrfSaL9o9QzXPTCntY45fXeP5EraVx5RoSVPn+G+pd38GPr33pmKjzb4H83HkuDpElyBSBbxmsKeTELRc4nA346MU4SkgDSs3x0X/2qyabXqneLUfHzmSzo8mPt+WLMDj0Oz4up9pvXkgKrRhOg2q6dst41XAp+mZbWaPDfwqfaptqvrihDhpU7AzGFpW1sYZAYVCi6u0yvik+WM9ua6zVIfHOaGX03kd2oQsw42O1jCTNkcaoC0yVcWunlAaP8Kj0Jl4SJjtfWc5YUpl57YnuA3W6hkdlahXj+Jzy2aO7/W5ZARL8TyTpusLm7z+K2udDg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB5309.namprd11.prod.outlook.com (2603:10b6:5:390::5) by
- DM4PR11MB6335.namprd11.prod.outlook.com (2603:10b6:8:b7::10) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9654.14; Thu, 26 Feb 2026 11:19:53 +0000
-Received: from DM4PR11MB5309.namprd11.prod.outlook.com
- ([fe80::89e3:7ceb:6511:dd36]) by DM4PR11MB5309.namprd11.prod.outlook.com
- ([fe80::89e3:7ceb:6511:dd36%4]) with mapi id 15.20.9654.007; Thu, 26 Feb 2026
- 11:19:52 +0000
-Message-ID: <b81e0542-eae0-4983-8a5f-fa52c78a4f91@intel.com>
-Date: Thu, 26 Feb 2026 16:49:41 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v1] tests/kms_async_flips: validate mode before
- proceeding with fb creation
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-CC: <igt-dev@lists.freedesktop.org>, <karthik.b.s@intel.com>,
- <swati2.sharma@intel.com>
-References: <20260225110510.1801049-1-santhosh.reddy.guddati@intel.com>
- <aaAI0zP8UVB6TAjS@intel.com>
-Content-Language: en-US
-From: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
-In-Reply-To: <aaAI0zP8UVB6TAjS@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0013.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:179::11) To DM4PR11MB5309.namprd11.prod.outlook.com
- (2603:10b6:5:390::5)
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="214529703"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.244.242])
+ ([10.245.244.242])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2026 03:28:14 -0800
+Message-ID: <1955d031-9bf5-4fdc-b4c0-323f636574d7@intel.com>
+Date: Thu, 26 Feb 2026 11:28:12 +0000
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB5309:EE_|DM4PR11MB6335:EE_
-X-MS-Office365-Filtering-Correlation-Id: f44ffc1e-9fbb-4f48-f35c-08de7528f64c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: 2dhh4Z/t31AcUtE+eKEppRwDkmp3rK60aCRZUwVhzu3FXSVnffnehV1kXJbOW/9NafPIFvjTf1hDn1PNT8FbgNO6kdqiKH4Ubeu9RaWYJoS9Tum+OopKKEVmN5SdL7lpe+wvGXTdZzuxvCB4KAwLL2qpvXzoDxayWs/65U4BNRZwONaCzqyPVib7Vw3Zca40twCCPIBKXJiqcmKKFenDKRWdHaa+Supml3/ymYc78TAqI4KEwpalYtdL8ZsW8ULRo2uqduNKFR8/JsyNKzCgAwrmaCt75+bkDsjHu2uk6hRrDS0g/2G8XAGZ20kvU1AICNYe+AmTnJMhR6PLMBiasqKFDRPX70SPCTBG9VsbaLABe3LiacPEqC85tUTGFjUMPtZD00UjL4/ctLK0bK8+slRZB54jbvlUAzsp+xFgJPBcSXm9EfR2kloz3ABj/2JL8hCi06XwmYIRHHyqZ/7h4FB4v7P0ON8BX1goC/TeF2mTNyG737VHoHgoOSyGBGRP6ZLTo3HL3HjsjGiy/3/8k4JnA9AC39G41PBthEai8UWElAMCKSlcL8mli3TQmMENDBrJKBUrqNNlduZkJK2zBfccyUvSOIN+Eko8WcazIILsP0HE3ITS4W85Wi2E8rQJIKGGUb4QqRQ/sXUR3HK4vg4+bgm2A4IdUmWBDddaUUXfp771Q9lgQvUgDToXSbXC
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB5309.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WEl0SjRuWkJEVkk2SVpyczBKRmo5OVRjR3IzM2xUWXJsenNHMFdINGhnb1cz?=
- =?utf-8?B?c3JaRTZXNW9hMVFyZXdmNHB1WEF5eGhqV1FxS3hQTVhBRVJDZGZuWnBFQ0t1?=
- =?utf-8?B?c2ZOcjRIR1lLQnN5WE5HZ2tHNlhrS1dRSGNLdnM4RjRScVBNbXZldFJIT3JH?=
- =?utf-8?B?TjEwWUhLeFVPSTJEZkJobnRmNlk1dHY5Y0tBbkZDMDl5YUNYdHVUYTJsUUZy?=
- =?utf-8?B?dDhkeCtVWUhrZ1ExdnFGNWhVQno3akh0ckUzY0FibS9GREVIRDMzbUgxSjBX?=
- =?utf-8?B?dHVNUG01MDg0MlF0cyszdXMzSG5Tck5mUEZvYkZMUm5hVURHcEVNbUNQcFVH?=
- =?utf-8?B?Yy9adERhd3hyK2JTV0xEN0xONUJoOWJBdFh1bjNhTHA2V2E3ME9pUkhvWFRD?=
- =?utf-8?B?a3hqVTlhdXdJM0pLTEV6U0pjbjg0eGZxbGl1cDNYNUQ1VHZwd0ZHdHhNZjlC?=
- =?utf-8?B?eEFtek5DTnZtMnp3SFEybTJBMTVIYVJ5ZjF2YysxaWxIaFhOd3lndmUzYnFo?=
- =?utf-8?B?Vk9qaFBGemhlU2JtOUJZdmJabTRpUjZ3R2RrSWgvSW1OZEZ0L0t4cFIxYkN2?=
- =?utf-8?B?a2pyYWp3NWN5T2YyVDBqRzI1QTF6V1NYZnY0eWNZcGxWWmVMYThKU21oTmFk?=
- =?utf-8?B?VWRxWHFETWcrKzNTVHVFUVBuZHlhVUZ4MHZRa1NyZlhwamtBSGdqZnY5RTdD?=
- =?utf-8?B?NFRobktsN3JZbDdWQUhsSm5rMDJWR1l2QUIzME5QSGczSDNEYVFJYjdpa1gr?=
- =?utf-8?B?eWtTVzRMMXQ4Z1JuZUFKTnJTVTMzamlGM3FVZlFGVDhtNEtsT1Q1L3RUM1BJ?=
- =?utf-8?B?TVh4VWRsL2g2UDRkemtvbmlmYXJxL0xHRkJUM0dJTjZnZnp4ME1ZcnhLcWdT?=
- =?utf-8?B?TWREeUhFWk5OSkNMTmt3aWtBYjBKbkwwWTRBZGNzVkhQNy83R3lpcmlPRUla?=
- =?utf-8?B?MGlSdStGSXV5YzRFaEZVQVFZVVA0NzdQbTVKNjhiZnZlS05DYmNPS2xxeVpF?=
- =?utf-8?B?ckVnVm1WTXZPRk9vVkVTbXM5a0liaWZ6b1JUMHZmRHd6eVJxSlNkZGp2Q0p1?=
- =?utf-8?B?b1M0VjRQRGFHcTloYmpFT2hjWjBhaU5hd1pxYlFrK1ZFOHU4L3l6TTFjNlly?=
- =?utf-8?B?MTk3a0xEa2xVc2UrdGRXeWxaN2hOT1FWSFQyUGsya1gxMEM4Qms0NjU4bjJF?=
- =?utf-8?B?TGFEWXBVZFJwWmxOREM0RzZ1Mm9pd1R1d2kwdnVBUnNQVXUrdXZkaGFSTUY0?=
- =?utf-8?B?dGVySlRkNUtGUGwyazVHb0ZHa1VFa09xS2VURlRhTkRaR3lLQzZ2amRCWTBW?=
- =?utf-8?B?R1dSSHB4cmdBbkRSeEJBN0NKM0ZEdGsvSXVrdWU2YlZVcy80SVVYQW8wVGVq?=
- =?utf-8?B?UUs2SWlRV0dNV1BtdC90OExYdWZXM0UycDYwNDZKVXZUQ0FtMWJYc0RsQzA2?=
- =?utf-8?B?LzQxSURXVDBVaVNhUXBQeGpWS3NvRzNESGF2cTNId2RCSm1uM3h3MDZFTmht?=
- =?utf-8?B?azI0TlNOVzJFZW4xZXliVHhGYkxzVlpkci8xdDBZUmxRNEFUTmFBTHgyRXBq?=
- =?utf-8?B?eEJmSW9KN01kWHpyTzlxTWZQSWpOZXIvckE3ak96YUwxVmIxRUduWW5kWUps?=
- =?utf-8?B?NTdkYnhlSTEyQW1ZTEErdWpGdWpLU1Q2dmZSUk1xaEtybFRLTWVlcnhKMmJE?=
- =?utf-8?B?RTh5R2U1bmxPUUJjYWtxVUkzbENrTDZRY2RWcEZSVE5BSklzbDJjenNQYy9Q?=
- =?utf-8?B?d1MwSE05OFJ3S0xxRm9hUnVVYTJwWUxZM1IvTTVuQ0Z0YlJGYW9GN1M0ek95?=
- =?utf-8?B?bXJiR2thbjIzSzk1aTNlQTJGdGtxSklPNEJicU5FZUphTy9HUnlTTnAva2F2?=
- =?utf-8?B?MW9tSDIxYzJXOXk4RHZpUkROcGdtcWFmVTlWV2R6cXkxM2FPNmw3TFRrWHdD?=
- =?utf-8?B?M2hYUTEzeGRRdUhaaytTNVFRSGpDMjNNaUdHbDBqN2ZPTkMzNHZvV05PME1X?=
- =?utf-8?B?TjI4aWJBQTYraWpTMzBLVTlEeE0rYlFtemthcVFmazhyMytudTVxeUl1dE5k?=
- =?utf-8?B?Q0MxbEtsYzRlcm41U1lpVVdBNFZ2Y1FTRjIrM1k0dXNBT0ZoTTF1dExKYjVn?=
- =?utf-8?B?L0RPN2pTU29UdXlEN0ZDNUFGSnRKdHFYR0RWUXJVYWFJbzVUMUYzOTdvU2g1?=
- =?utf-8?B?MllzUlZRaVFDUFQ0T29sMVZndDRLZ3FHMk14N1pyQWVZUE1hVWdpREhadk1p?=
- =?utf-8?B?Q0UzU2NmKzhTZ05SZ2tZWEM4RituQjIvSmVWK3FmdmVyako3VFlDOGludG5R?=
- =?utf-8?B?YlA0SVNhNVF6dUV2aExzaGZDaTVPTG5VdDdURlJJZ3NjRUc1Mi9xRlNKeVFD?=
- =?utf-8?Q?HA9JRcdsjMiwS5LTXGkgB+BKnjduMxA5fD7z+?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: f44ffc1e-9fbb-4f48-f35c-08de7528f64c
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5309.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 11:19:52.5608 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7HUn85hbO/dsDNqjO0AOL06IlSPVtulcveHfZFvueeo1ecHsnNhSrQmrgagHghbtdb3UD7s+S2Fc7X1XEWHP0KrP7S5nhNj4zAD5+jv9eCUGXuF7XkzrNbeRjojle2x/
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6335
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 5/5] tests/intel/xe_pat: Validate XA App Transient
+ feature
+To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>,
+ "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+References: <20260213084603.1404162-1-priyanka.dandamudi@intel.com>
+ <20260213084603.1404162-6-priyanka.dandamudi@intel.com>
+ <2967e3e4-4f55-46d2-a482-dd6db54085bc@intel.com>
+ <CH3PR11MB84343FD184DEDC4CF06711498D72A@CH3PR11MB8434.namprd11.prod.outlook.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <CH3PR11MB84343FD184DEDC4CF06711498D72A@CH3PR11MB8434.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -169,82 +76,253 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-
-On 26-02-2026 14:18, Ville Syrjälä wrote:
-> On Wed, Feb 25, 2026 at 04:35:10PM +0530, Santhosh Reddy Guddati wrote:
->> Validate mode before proceeding with creating frame buffers to avoid
->> passing invalid parameters to the ioctl.
->>
->> Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
->> ---
->>   tests/kms_async_flips.c | 18 ++++++++++++++++++
->>   1 file changed, 18 insertions(+)
->>
->> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
->> index 014b7f347..d00b36544 100644
->> --- a/tests/kms_async_flips.c
->> +++ b/tests/kms_async_flips.c
->> @@ -298,6 +298,12 @@ static void test_init(data_t *data)
->>   	igt_display_commit(&data->display);
->>   
->>   	mode = igt_output_get_mode(data->output);
+On 26/02/2026 04:56, Dandamudi, Priyanka wrote:
 > 
-> How would that even return some kind of invalid mode?
-> And why would it be a problem only for kms_async_flips?
-
-Please refer to below gitlab issue which occurs very sporadically 
-(Closed now)
-https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7043
-
-I agree this igt_output_get_mode() doesn't return an invalid mode but in 
-the failure logs, fb creation is done with width=0, height=0 , so as a 
-defensive checck, this is added to validate here rather asserting in 
-xe_bo_create.
-
-It is not specific to kms_async_flips, but it just exposed in this test 
-path.
-
-Thanks,
-Santhosh
-
 > 
->> +	igt_require_f(kmstest_mode_is_valid(mode),
->> +		      "Invalid mode on %s (%dx%d@%d)",
->> +		      data->output->name,
->> +		      mode ? mode->hdisplay : 0,
->> +		      mode ? mode->vdisplay : 0,
->> +		      mode ? mode->vrefresh : 0);
->>   
->>   	data->crtc_id = data->crtc->crtc_id;
->>   	data->refresh_rate = mode->vrefresh;
->> @@ -327,6 +333,12 @@ static void test_init_fbs(data_t *data)
->>   	drmModeModeInfo *mode;
->>   
->>   	mode = igt_output_get_mode(data->output);
->> +	igt_require_f(kmstest_mode_is_valid(mode),
->> +		      "Invalid mode on %s (%dx%d@%d)",
->> +		      data->output->name,
->> +		      mode ? mode->hdisplay : 0,
->> +		      mode ? mode->vdisplay : 0,
->> +		      mode ? mode->vrefresh : 0);
->>   	width = mode->hdisplay;
->>   	height = mode->vdisplay;
->>   
->> @@ -672,6 +684,12 @@ static void test_invalid(data_t *data)
->>   	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
->>   
->>   	mode = igt_output_get_mode(data->output);
->> +	igt_require_f(kmstest_mode_is_valid(mode),
->> +		      "Invalid mode on %s (%dx%d@%d)",
->> +		      data->output->name,
->> +		      mode ? mode->hdisplay : 0,
->> +		      mode ? mode->vdisplay : 0,
->> +		      mode ? mode->vrefresh : 0);
->>   	width = mode->hdisplay;
->>   	height = mode->vdisplay;
->>   
->> -- 
->> 2.34.1
+>> -----Original Message-----
+>> From: Auld, Matthew <matthew.auld@intel.com>
+>> Sent: 17 February 2026 06:01 PM
+>> To: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>; Kempczynski,
+>> Zbigniew <zbigniew.kempczynski@intel.com>; igt-dev@lists.freedesktop.org;
+>> Thomas Hellström <thomas.hellstrom@linux.intel.com>
+>> Subject: Re: [PATCH i-g-t 5/5] tests/intel/xe_pat: Validate XA App Transient
+>> feature
+>>
+>> On 13/02/2026 08:46, priyanka.dandamudi@intel.com wrote:
+>>> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+>>>
+>>> Test the scenarios when media is on/off.
+>>> When media is off/on, for xa app transient buffer, data should be
+>>> coherent between cpu and gpu. Coherency should be maintained from
+>> KMD
+>>> side irrespective of media engine on/off.
+>>>
+>>> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+>>
+>> + Thomas, in case he has some input here.
+>>
+>>> ---
+>>>    tests/intel/xe_pat.c | 101
+>> +++++++++++++++++++++++++++++++++++++++++++
+>>>    1 file changed, 101 insertions(+)
+>>>
+>>> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c index
+>>> f2dff62a9..30e427634 100644
+>>> --- a/tests/intel/xe_pat.c
+>>> +++ b/tests/intel/xe_pat.c
+>>> @@ -19,16 +19,24 @@
+>>>    #include "intel_blt.h"
+>>>    #include "intel_mocs.h"
+>>>    #include "intel_pat.h"
+>>> +#include "igt_configfs.h"
+>>> +#include "igt_device.h"
+>>> +#include "igt_fs.h"
+>>> +#include "igt_kmod.h"
+>>> +#include "igt_sysfs.h"
+>>>    #include "linux_scaffold.h"
+>>>
+>>>    #include "xe/xe_ioctl.h"
+>>>    #include "xe/xe_query.h"
+>>>    #include "xe/xe_util.h"
+>>> +#include "xe/xe_gt.h"
+>>>
+>>>    #define XE_COH_NONE          1
+>>>    #define XE_COH_AT_LEAST_1WAY 2
+>>>
+>>>    static bool do_slow_check;
+>>> +static char bus_addr[NAME_MAX];
+>>> +static struct pci_device *pci_dev;
+>>>
+>>>    static uint32_t create_object(int fd, int r, int size, uint16_t coh_mode,
+>>>    			      bool force_cpu_wc);
+>>> @@ -1118,6 +1126,11 @@ const struct pat_index_entry
+>> bmg_g21_pat_index_modes[] = {
+>>>    	{ NULL, 27, false, "c2-2way",     XE_COH_AT_LEAST_1WAY       },
+>>>    };
+>>>
+>>> +const struct pat_index_entry xe3p_lpg_coherency_pat_index_modes[] = {
+>>> +	{ NULL, 18, false, "xa-l3-uc",	 XE_COH_NONE          },
+>>> +	{ NULL, 19, false, "xa-l3-2way", XE_COH_AT_LEAST_1WAY },
+>>
+>> Both of these are XA, so the string is not really accurate here?
+>>
+>> Also should we maybe add 2WAY here also?
+> @Auld, Matthew But we thought that default is 2way in the lib, here also is it required?
+
+Right, but thinking on this again it might be good to hit 2WAY with 
+Media explicitly off, if we don't already.
+
+>>
+>>> +};
+>>> +
+>>>    /*
+>>>     * Depending on 2M/1G GTT pages we might trigger different PTE layouts
+>> for the
+>>>     * PAT bits, so make sure we test with and without huge-pages. Also
+>>> ensure we @@ -1182,6 +1195,18 @@ static uint32_t create_object(int fd, int
+>> r, int size, uint16_t coh_mode,
+>>>     * Description: Check some of the xe2 pat_index modes.
+>>>     */
+>>>
+>>> +/**
+>>> + * SUBTEST: xa-app-transient-media-off
+>>> + * Test category: functionality test
+>>> + * Description: Check some of the xe4-lpg pat_index modes with media off.
+>>> + */
+>>> +
+>>> +/**
+>>> + * SUBTEST:  xa-app-transient-media-on
+>>> + * Test category: functionality test
+>>> + * Description: Check some of the xe3p-lpg pat_index modes with media
+>> on.
+>>> + */
+>>> +
+>>>    static void subtest_pat_index_modes_with_regions(int fd,
+>>>    						 const struct pat_index_entry
+>> *modes_arr,
+>>>    						 int n_modes)
+>>> @@ -1495,6 +1520,52 @@ static void false_sharing(int fd)
+>>>    	}
+>>>    }
+>>>
+>>> +static void reset(int sig)
+>>> +{
+>>> +	int configfs_fd;
+>>> +
+>>> +	igt_kmod_unbind("xe", bus_addr);
+>>> +
+>>> +	/* Drop all custom configfs settings from subtests */
+>>> +	configfs_fd = igt_configfs_open("xe");
+>>> +	if (configfs_fd >= 0)
+>>> +		igt_fs_remove_dir(configfs_fd, bus_addr);
+>>> +	close(configfs_fd);
+>>> +
+>>> +	/* Bind again a clean driver with no custom settings */
+>>> +	igt_kmod_bind("xe", bus_addr);
+>>> +}
+>>> +
+>>> +static void xa_app_transient_test(int configfs_device_fd, bool
+>>> +media_on) {
+>>> +	int fd, fw_handle, gt;
+>>> +
+>>> +	igt_kmod_unbind("xe", bus_addr);
+>>> +
+>>> +	if (media_on)
+>>> +		igt_assert(igt_sysfs_set(configfs_device_fd,
+>>> +					 "gt_types_allowed",
+>> "primary,media"));
+>>> +	else
+>>> +		igt_assert(igt_sysfs_set(configfs_device_fd,
+>>> +					 "gt_types_allowed", "primary"));
+>>> +
+>>> +	igt_kmod_bind("xe", bus_addr);
+>>> +
+>>> +	fd = drm_open_driver(DRIVER_XE);
+>>> +
+>>> +	fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
+>>
+>> I think comment here to explain that this is to prevent entering rc6 for the
+>> duration of the test, which would otherwise invoke full PPC flushes.
+> I will update.
+>>
+>>> +	igt_require(fw_handle >= 0);
+>>> +
+>>> +	subtest_pat_index_modes_with_regions(fd,
+>> xe3p_lpg_coherency_pat_index_modes,
+>>> +
+>> ARRAY_SIZE(xe3p_lpg_coherency_pat_index_modes));
+>>
+>> Ok, so this will hammer these indexes accross blt, render and dw (partial
+>> cache-lines), including mixing CPU/GPU access.
+> @Auld, Matthew Can you elaborate on this. What is the change expected here?
+
+Just thinking out aloud as I was reading it. Nothing to change :)
+
+>>
+>>> +
+>>> +	/* check status of c state, it should not be in c6 due to forcewake. */
+>>> +	xe_for_each_gt(fd, gt)
+>>> +		igt_assert(!xe_gt_is_in_c6(fd, gt));
+>>> +
+>>> +	close(fw_handle);
+>>> +}
+>>> +
+>>>    static int opt_handler(int opt, int opt_index, void *data)
+>>>    {
+>>>    	switch (opt) {
+>>> @@ -1586,6 +1657,36 @@ int igt_main_args("V", NULL, help_str,
+>> opt_handler, NULL)
+>>>    		false_sharing(fd);
+>>>    	}
+>>>
+>>> +	igt_subtest_group() {
+>>> +		int configfs_fd, configfs_device_fd;
+>>> +
+>>> +		igt_fixture() {
+>>> +			igt_require(intel_graphics_ver(dev_id) == IP_VER(35,
+>> 10));
+>>> +
+>>> +			pci_dev = igt_device_get_pci_device(fd);
+>>> +			snprintf(bus_addr, sizeof(bus_addr),
+>> "%04x:%02x:%02x.%01x",
+>>> +				 pci_dev->domain, pci_dev->bus, pci_dev-
+>>> dev, pci_dev->func);
+>>> +
+>>> +			configfs_fd = igt_configfs_open("xe");
+>>> +			igt_require(configfs_fd != -1);
+>>> +			configfs_device_fd = igt_fs_create_dir(configfs_fd,
+>> bus_addr,
+>>> +							       S_IRWXU |
+>> S_IRGRP | S_IXGRP |
+>>> +							       S_IROTH |
+>> S_IXOTH);
+>>> +			igt_install_exit_handler(reset);
+>>> +		}
+>>> +
+>>> +		igt_subtest_with_dynamic("xa-app-transient-media-off")
+>>> +			xa_app_transient_test(configfs_device_fd, false);
+>>> +
+>>> +		igt_subtest_with_dynamic("xa-app-transient-media-on")
+>>> +			xa_app_transient_test(configfs_device_fd, true);
+>>
+>> And this will repeat the above, one with Media forcibly off, and with it
+>> potentially on. Hopefully giving us both paths.
+>>
+>> Some other angles to potentially consider:
+>>
+>> 1) userptr. Still TBD on the exact KMD behaviour with allowing non-XA/non-
+>> 2WAY, or banning it. If we ban it then we should verify that.
+>> If we allow it, then what we could maybe do is submit a GPU workload to fill
+>> some userptr, then do something to trigger an invalidation to the CPU
+>> mapping, then read from the CPU to check that we see the GPU writes (this
+>> would be with Media off). KMD should flush those cachelines upon triggering
+>> invalidation.
+>>
+>> 2) dma-buf. Still TBD on this also. But same as above where we would want to
+>> add some validation for this. If this ends up being banned we should validate
+>> that somewhere. If allowed then I guess we need something to at least
+>> attempt to write to it from the GPU on importer side using non-xa (exported
+>> from vgem), then maybe destroy the importer side and read it from the CPU
+>> on exporter/native side? In theory it should all be flushed, so we should see
+>> the GPU writes. Thomas, any ideas here?
+> @Thomas Hellström any ideas here?
+
+With latest version we are leaning more towards requiring 2WAY or 
+XA+coh_1way with dma-buf, userptr and SVM.
+
+With that it might be more a case of checking that the invalid combos 
+are rejected.
+
+>>
+>>> +
+>>> +		igt_fixture() {
+>>> +			close(configfs_device_fd);
+>>> +			close(configfs_fd);
+>>> +		}
+>>> +	}
+>>> +
+>>>    	igt_fixture()
+>>>    		drm_close_driver(fd);
+>>>    }
 > 
 
