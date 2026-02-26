@@ -4,63 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3D04FC5933
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Feb 2026 11:28:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DDDAFC5937
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Feb 2026 12:09:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5D00810E011;
-	Thu, 26 Feb 2026 11:28:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4C16D10E907;
+	Thu, 26 Feb 2026 12:09:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BurAV7fl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dTZ/c6Li";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E08B10E011
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Feb 2026 11:28:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 61E2710E907
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Feb 2026 12:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772105296; x=1803641296;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=C1IAX8tZI9aJa/aQPexC3rgghbQZfCTgJiCuH8MRvx4=;
- b=BurAV7fljFxN4itMUSjg4MYcD7LTpwfrhwuDNnXt26XP/pBw5Pdau13a
- xv9CBkwnycdcVMFqSvReOPE+ipFC4i7D3F6i58XVbJmu3sei04LhHhFI6
- RiGZBV66uI1MlmJavpe9/LXqLMbJyH64Kug2G20EXNax957An0LYcGLTL
- 4hHJewsl8GqqXAStG4WS6ztils3QvCC0hFk7QJp7t3aXSIwADiM+5ZRyH
- cRjdh7qvotn1K60ZXw7EipaorbEAUiAMp/nnohgR6CgI/UDUPBkRslxmL
- vj2YgX12WFcFa+M1VdZyezWpVSEv70vd/nWJfj4qNBvYI68N66P0s2Nz5 A==;
-X-CSE-ConnectionGUID: bpattd91RH2LXeh9O8tDbw==
-X-CSE-MsgGUID: ON4IPE4vR3iGzpdCqoFiQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="84518423"
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="84518423"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2026 03:28:16 -0800
-X-CSE-ConnectionGUID: psm5fmvUSzKQHa5cS9xqAg==
-X-CSE-MsgGUID: 9AWy7OtdSJCwJJplYpyhWw==
+ t=1772107764; x=1803643764;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=whs9nJsJXDp4M7aKtrHtT+wUJ014tinGPEmqfXmmHF0=;
+ b=dTZ/c6LiAw3xTGViMPagqJzN6MEYfz1Vlz2IewYo+6yRpAybzeFHiFrR
+ f4i23ZLcue7kmbbAMGnxmKK4vTetblohCwgAvseK6elO2cKEpm+zIxmdr
+ yvGIV9KHodZkCN1sBb7nhp8N1xJlwrlSCRv5Z8HDiyT7deS95sG+A763N
+ v4o6+is5cNnmnFL+KFARtMCswGWO9TbVR+QHNN2Nl2mQqNwPyOgN5JvYK
+ hRpPs1nqPJm2QzfOyHLMNewm8rG6KV3wtfOhBWPc6ZLF49bDknWBOcEY+
+ s4fNsSLKrHH0ALxpeXeaIbDogrx04wCYJbPvIx5mfYwbGSh/V7ThaCiIW A==;
+X-CSE-ConnectionGUID: l4QIo0JBT6uOdHtCFqQSJg==
+X-CSE-MsgGUID: fxLmD7/+S52Tw/YQl8l2Wg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="98635869"
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="98635869"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2026 04:09:24 -0800
+X-CSE-ConnectionGUID: 4glL9YCjSOuefL+hU2GwBQ==
+X-CSE-MsgGUID: sMF4QhfFSA+IJIrpRwpoGA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="214529703"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.244.242])
- ([10.245.244.242])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2026 03:28:14 -0800
-Message-ID: <1955d031-9bf5-4fdc-b4c0-323f636574d7@intel.com>
-Date: Thu, 26 Feb 2026 11:28:12 +0000
-MIME-Version: 1.0
+X-IronPort-AV: E=Sophos;i="6.21,312,1763452800"; d="scan'208";a="221163581"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2026 04:09:24 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 26 Feb 2026 04:09:23 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 26 Feb 2026 04:09:23 -0800
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.63) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 26 Feb 2026 04:09:23 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=A3nQkIFCU/RuZuS31qAyc8WcrFy7rfuqkRx2oK4NmvAcvca3OKaVnDfsIS7aXNulI9N+ZT1QQ9bc5HxsuCssBccfWpzSNYdnJ+tP+Zj1JNk9S7MRUU9EegqSdMAhotG9QZuJcQHe4E94/nF04EaX1iM6ud/l0WFLYKva96WLFpBP/dqrG30yjrJ2F98NA5kQivpIOywbQnRV6c+8xNF6ifRaNuqTFiAQMNca+58cjDWnAmfRVkiP6xCF2X+04UVEJfLNIyoKqsM51mU8AezRFcEHorMa3lOjnX5dFbxgYpCFT6XDbxpgEoNBy8h+uyi4215b/pX2ykANL8fNZeVRBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sv2jJxKAqZQVL6LGJmQogrHnZZMnhyIYU9m2ygOzzvY=;
+ b=WWdrdkH3yuOXM3R/YbqvDelYbGNiX4fePKFFNcF0n4AUtIIdvxCKZ1V/3aoxJ/rNP7hLiGnlC7O1+DBfCzuQcjYsau+82J40UUl16enGMM9S3cyc9P0igKTAZvo/OoY9sIfv+YWjODbP2Nvu+e66EgpCgo2qOWNHCU9OFFME2fsATJqE4HmuMP0+fkbuvWf0ixpzHBokk9osWqutabop58bZSFNS38KbwpWOF6ejyjpKHYr7J4fQiCoPc7DtesG/ItTUjl5H8Fr3LRa/+3ilwkqK2yBvY6le7vfvRp8zWPByo+6JePiSsVc8FcmwrGWUgxKIiuE7UutvswyolO/88Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM4PR11MB5309.namprd11.prod.outlook.com (2603:10b6:5:390::5) by
+ PH0PR11MB5205.namprd11.prod.outlook.com (2603:10b6:510:3d::24) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9654.11; Thu, 26 Feb 2026 12:09:21 +0000
+Received: from DM4PR11MB5309.namprd11.prod.outlook.com
+ ([fe80::89e3:7ceb:6511:dd36]) by DM4PR11MB5309.namprd11.prod.outlook.com
+ ([fe80::89e3:7ceb:6511:dd36%4]) with mapi id 15.20.9654.007; Thu, 26 Feb 2026
+ 12:09:21 +0000
+Message-ID: <c6a64d29-5b5a-4f25-8afd-d7d5a326dcde@intel.com>
+Date: Thu, 26 Feb 2026 17:39:13 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 5/5] tests/intel/xe_pat: Validate XA App Transient
- feature
-To: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>,
- "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-References: <20260213084603.1404162-1-priyanka.dandamudi@intel.com>
- <20260213084603.1404162-6-priyanka.dandamudi@intel.com>
- <2967e3e4-4f55-46d2-a482-dd6db54085bc@intel.com>
- <CH3PR11MB84343FD184DEDC4CF06711498D72A@CH3PR11MB8434.namprd11.prod.outlook.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <CH3PR11MB84343FD184DEDC4CF06711498D72A@CH3PR11MB8434.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH i-g-t 1/2] lib/igt_kms: Add helper to get non-joiner mode
+To: <igt-dev@lists.freedesktop.org>
+References: <20260223093443.1797078-1-pranay.samala@intel.com>
+ <20260223093443.1797078-2-pranay.samala@intel.com>
+Content-Language: en-US
+From: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20260223093443.1797078-2-pranay.samala@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5PR01CA0218.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1f3::13) To DM4PR11MB5309.namprd11.prod.outlook.com
+ (2603:10b6:5:390::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR11MB5309:EE_|PH0PR11MB5205:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3afeea8d-f7d4-4b37-f573-08de752fdf76
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: wAWans4D3kTknJkqJpL6ULniBgJGzGxRSxAVyPHKObRYbpZDLr2CLq4AZijy67zzUbtBqBmcRUJ1KvkKnKGCmCQ3VJNn8MQsXXki1XAXtsB0rQ9jHKwSjAhpq9ItUoTQzQN+u+N/jrkAbKWTOK4pdGNrGg6YRe2O5wV0LIa7i0Mgb+CDvFiymTrAU88JDG4EJokYsuNO2j4kF+zSZ9XewHEAAczuMQFe7IQNqCXNx2hczDLqUhrm2h6IvLjPzM1rs0PkxisK9Vxhf5zIJN0H3/YMXimV6MYge6Zwvcua352f9LOxsorAfBXbTW0PJ7OZUzgpQCBi53R9Xe1eAOiBkrFHevhHXg7XKx7Pdl9dWxveeEVgGlhR8sdDMqiE0M2zyODe/lIdYHJWdpItYHrPDIMxJMSPEaew8PHwiZiYFfgm/ewxG/CnLMD4aSME00k5QstLeU8U7DlwbBNs8+iUqnTrOehhRTkId+V7C+1MQ2wn72ienq93WPr8dyRTQ3hacOX2ZwCdC8x0SQYb1pSHdiyINNe6h81+CLCe7aTr9S9J0m93N+OPQmCStx2/W/qT+1OeYr1oXYD+sQrOl4b2/GyoRZwwcT6Y813zC0ZN5aB0I2LAXwGhe8bgSH4hYtctrQfFnHWylw8RYRxapyw/+wuUTJCvl0Khcff1+xn/qhYsLUyqtNxm8bKFYiNg/E+5FplScecFD/hOX2CfmMGu2k4IAfoUynPfe0ATEb8iyno=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB5309.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Wlp4TGpKQUUzWGNBVGJvNWp3VDRkM1lUSVRmTncwNjlFTmtGOGd1dGpxNGVl?=
+ =?utf-8?B?MXlld2MyaHhpeFFZYTZWb0E0Sm1UTWJmcEFEZE1wdWQ1a3RkcXNBSGR3eGhG?=
+ =?utf-8?B?cmgyMlBNZm1zbWlVSHRHUXVVelg0SVljbThaZHFLaWxkZ3BMVHZYUDlsZ2dj?=
+ =?utf-8?B?N0kvdXRRTDk2MGdnbHdoV096cHltbFVHSVNMLy9iSVh3YXc5cDY4aGhSUzQy?=
+ =?utf-8?B?TnA2L2JIbWZ3UGNUQytFWDB1cWtaZFN5U3NvbkJDVEhjY1pURjlZVkcrTE4y?=
+ =?utf-8?B?Y29TRmgwdnBDaXkxS1dYY01LbC9leW9kMkhsaXZSVVppZEg0SFBuK2E1aTk1?=
+ =?utf-8?B?aXlMSitJTG85YlBXMDZucDY3NFByOGJSeng5b3IwT0gwSjJTV3dsakFJSndX?=
+ =?utf-8?B?V09VcEZJaFB4SDlvMFc0K1pPRVVtSE5TT0I2d0IzcURLSUJiQzlQajZQN0ts?=
+ =?utf-8?B?YkFQQURsLzVCVW9UY1lLL01FWmxuaGZaaVlrdlhsQnkwN1FBdjBPQzFuc2RP?=
+ =?utf-8?B?QVB2WlZUR1Bxbk93ejVYSTZmTnFLZnJTQnUwVWdUQURnYnNEV0hKMXNza1lK?=
+ =?utf-8?B?L2NDMVpFMzZUOHFLV05Yd28wck1qQm9CeVVXYnBJbzFadEptS0NkSjlLR3Bi?=
+ =?utf-8?B?a1drampTNWtCRmJLcjZPVDR5d21XTXhzcGU3WUZkV3BWY0w0UTMxZzZ5enVQ?=
+ =?utf-8?B?YlpiejFNZ0dPVkcrS3NkaFoxMEd0bVNPWndRUTVQMDB6Z3N2Y2MxYWpmRDZC?=
+ =?utf-8?B?alVvSUFQays2R2lGRTlOTyt5V3RUTVBEM0JKMHFJZEN3cU5NK2MraVIyOEhG?=
+ =?utf-8?B?MkNJVmRZa2dMZUR2WUJlblNrcmlLRDdKQ0dFRHI0bUF1cHB0dFo2SnZZR29o?=
+ =?utf-8?B?UW1MZVQ2TUxMdXZnTEU4V0xnTUJ1elMzMkx3c29iYzhSY3hYSWRTQ2c5N2ZB?=
+ =?utf-8?B?cEl4ZEFrYjhUR0FsRDFOZ3MyVjd3d01oWVJoeUxrb1Z4eEZqZ2JmTUJMbEVy?=
+ =?utf-8?B?WnowOWNLRk9JT2VNcFFpVXh5ekVTTkZhREJaR0lRNzRDRmJqa1BzMnJRUXFj?=
+ =?utf-8?B?V2RmaWVXV1RzTGs3RWwyUlFRbk0yQldiZktlWHVvR3BEZUM3NHVIdkZuZzVN?=
+ =?utf-8?B?c29yVVdwWWljNlg4UXFCWEZFZEo2MnNxL3N5dGxicDZ3Ym9nOVZKKzVoZkRX?=
+ =?utf-8?B?VFdlSnBLNVMxRTdtR1o2NW9Id0xEcjd4Zmg1bzNKVDNrTVh1dGhBOVkvL2hi?=
+ =?utf-8?B?aEpRTnhVbzZHOHVLWE54YXFaMEk1NFd6RmlJbmFzSjMwcC9IODEwQW15QjVI?=
+ =?utf-8?B?OHBBczN6SVNoU1czc3B6azNvanZRYUhISDdoWXdyQ2lhVWRVMVc1aTBYeEdn?=
+ =?utf-8?B?Q2dmelhGVkpPaXBlbmVHc041aCsyVzVjajZxTkNLOVF2RWUzcGlYYUs3Y3Rs?=
+ =?utf-8?B?em1yTS9ZalhqWGE2d2hqeU5ONkdFeHF4TjIzWHZrZC80dmY5UDZOcXBBamx6?=
+ =?utf-8?B?cWFBRjZXRmVSTzhSelo4ekJabDE0MTFzNk04cDF1Sk9aYjVwZmlObG5Ebmtw?=
+ =?utf-8?B?VFZSYmZwbmcrb3FhWTRQVTJVTGpJQXFWOVBEUGQ0b0UrbWhWVWxiNXZLZTNN?=
+ =?utf-8?B?MFR6VmYyUFBYaC9tRW52eW5QUnB0UFBQY0M2cHVTN1JFdUVMWVVQdk1rd01D?=
+ =?utf-8?B?Q2RXSDF3aXl4V1VUVzgvNFJuMU8ySmE5M1lROXJpekthOFBiNm81UFQwNHFB?=
+ =?utf-8?B?U0JsR3VIamZSZXg5SWFCazBORGRnN0ZrekJQb2lST29wYjRxNFphUHY0bU9G?=
+ =?utf-8?B?V3JJelhQY2F6c3FjWXFYckFtTGExQWdSKzB4dXV5eFJVMlFNcG5GL3lxbGR1?=
+ =?utf-8?B?dXlKeFU1R2NXSDZCZEhackZqL1pjTFlaTXNqazBQWVJhNkc4YkYwczFLTjgx?=
+ =?utf-8?B?U3AyaGRmVjVoSWJrSWpFM2dtb2VrWXUyTEdJczZUTWo1OXdMUVA4bThtaFRB?=
+ =?utf-8?B?NXlXa3JOeC9LTmFBYjVTOVJMNlhhZ3YwYjkzaFF2Q21UbUc4SzRvZDNKTDg0?=
+ =?utf-8?B?THJVbkFqMmRrZEQvdk5QNUFKMENrNlBuUkIyRzJwQ3ZnK2tqY0lPemVER2Er?=
+ =?utf-8?B?eU5ZKzBEVkRrTTJZRXZYd1NjT0FJTDFrSFF3emlweWw3eENlUm1ORExpZFpI?=
+ =?utf-8?B?b1Fzcnp6eTVRek1QSlNzQitLaFhkMGpvOElXME11cVk3M3poQTVvZHFVNGlO?=
+ =?utf-8?B?Z25oZGRVa1hLTmNCc2dpOFVQeUVXWVUwL011Rjg2Vm03MWtOeGpIamM2ZktP?=
+ =?utf-8?B?TlhncDk2S0pJWXFPQVdYZHlpUmNMMUVnQndkMWJKc1dFbXFqdHRlTHZnaVlE?=
+ =?utf-8?Q?510dBePdLnOXbWyKgwEuNSDMAaLholLTfKFwj?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3afeea8d-f7d4-4b37-f573-08de752fdf76
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5309.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 12:09:21.0126 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: B00QBUOT+14LcupKetEIOhZQ+DKPvwc6rBuO3yY4YLrUyfSBJ7DV1Jl48D6fL6wrqbe9thN8PX0eZOsnGqxa3kt01lz3c9GTN4YNPtaHPYo9lp0VzPTIR/uadDi7vtwR
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5205
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,253 +166,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 26/02/2026 04:56, Dandamudi, Priyanka wrote:
+Hi Pranay,
+
+On 23-02-2026 15:04, Pranay Samala wrote:
+> Add igt_get_non_joiner_mode() helper function to find a suitable
+> display mode from an output that does not require Big Joiner or
+> Ultra Joiner support. This is useful for tests that want to avoid
+> joiner modes and use a single pipe configuration.
 > 
+> The function returns a pointer to the mode if found, or NULL if
+> all modes require joiner support.
 > 
->> -----Original Message-----
->> From: Auld, Matthew <matthew.auld@intel.com>
->> Sent: 17 February 2026 06:01 PM
->> To: Dandamudi, Priyanka <priyanka.dandamudi@intel.com>; Kempczynski,
->> Zbigniew <zbigniew.kempczynski@intel.com>; igt-dev@lists.freedesktop.org;
->> Thomas Hellström <thomas.hellstrom@linux.intel.com>
->> Subject: Re: [PATCH i-g-t 5/5] tests/intel/xe_pat: Validate XA App Transient
->> feature
->>
->> On 13/02/2026 08:46, priyanka.dandamudi@intel.com wrote:
->>> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
->>>
->>> Test the scenarios when media is on/off.
->>> When media is off/on, for xa app transient buffer, data should be
->>> coherent between cpu and gpu. Coherency should be maintained from
->> KMD
->>> side irrespective of media engine on/off.
->>>
->>> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
->>
->> + Thomas, in case he has some input here.
->>
->>> ---
->>>    tests/intel/xe_pat.c | 101
->> +++++++++++++++++++++++++++++++++++++++++++
->>>    1 file changed, 101 insertions(+)
->>>
->>> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c index
->>> f2dff62a9..30e427634 100644
->>> --- a/tests/intel/xe_pat.c
->>> +++ b/tests/intel/xe_pat.c
->>> @@ -19,16 +19,24 @@
->>>    #include "intel_blt.h"
->>>    #include "intel_mocs.h"
->>>    #include "intel_pat.h"
->>> +#include "igt_configfs.h"
->>> +#include "igt_device.h"
->>> +#include "igt_fs.h"
->>> +#include "igt_kmod.h"
->>> +#include "igt_sysfs.h"
->>>    #include "linux_scaffold.h"
->>>
->>>    #include "xe/xe_ioctl.h"
->>>    #include "xe/xe_query.h"
->>>    #include "xe/xe_util.h"
->>> +#include "xe/xe_gt.h"
->>>
->>>    #define XE_COH_NONE          1
->>>    #define XE_COH_AT_LEAST_1WAY 2
->>>
->>>    static bool do_slow_check;
->>> +static char bus_addr[NAME_MAX];
->>> +static struct pci_device *pci_dev;
->>>
->>>    static uint32_t create_object(int fd, int r, int size, uint16_t coh_mode,
->>>    			      bool force_cpu_wc);
->>> @@ -1118,6 +1126,11 @@ const struct pat_index_entry
->> bmg_g21_pat_index_modes[] = {
->>>    	{ NULL, 27, false, "c2-2way",     XE_COH_AT_LEAST_1WAY       },
->>>    };
->>>
->>> +const struct pat_index_entry xe3p_lpg_coherency_pat_index_modes[] = {
->>> +	{ NULL, 18, false, "xa-l3-uc",	 XE_COH_NONE          },
->>> +	{ NULL, 19, false, "xa-l3-2way", XE_COH_AT_LEAST_1WAY },
->>
->> Both of these are XA, so the string is not really accurate here?
->>
->> Also should we maybe add 2WAY here also?
-> @Auld, Matthew But we thought that default is 2way in the lib, here also is it required?
-
-Right, but thinking on this again it might be good to hit 2WAY with 
-Media explicitly off, if we don't already.
-
->>
->>> +};
->>> +
->>>    /*
->>>     * Depending on 2M/1G GTT pages we might trigger different PTE layouts
->> for the
->>>     * PAT bits, so make sure we test with and without huge-pages. Also
->>> ensure we @@ -1182,6 +1195,18 @@ static uint32_t create_object(int fd, int
->> r, int size, uint16_t coh_mode,
->>>     * Description: Check some of the xe2 pat_index modes.
->>>     */
->>>
->>> +/**
->>> + * SUBTEST: xa-app-transient-media-off
->>> + * Test category: functionality test
->>> + * Description: Check some of the xe4-lpg pat_index modes with media off.
->>> + */
->>> +
->>> +/**
->>> + * SUBTEST:  xa-app-transient-media-on
->>> + * Test category: functionality test
->>> + * Description: Check some of the xe3p-lpg pat_index modes with media
->> on.
->>> + */
->>> +
->>>    static void subtest_pat_index_modes_with_regions(int fd,
->>>    						 const struct pat_index_entry
->> *modes_arr,
->>>    						 int n_modes)
->>> @@ -1495,6 +1520,52 @@ static void false_sharing(int fd)
->>>    	}
->>>    }
->>>
->>> +static void reset(int sig)
->>> +{
->>> +	int configfs_fd;
->>> +
->>> +	igt_kmod_unbind("xe", bus_addr);
->>> +
->>> +	/* Drop all custom configfs settings from subtests */
->>> +	configfs_fd = igt_configfs_open("xe");
->>> +	if (configfs_fd >= 0)
->>> +		igt_fs_remove_dir(configfs_fd, bus_addr);
->>> +	close(configfs_fd);
->>> +
->>> +	/* Bind again a clean driver with no custom settings */
->>> +	igt_kmod_bind("xe", bus_addr);
->>> +}
->>> +
->>> +static void xa_app_transient_test(int configfs_device_fd, bool
->>> +media_on) {
->>> +	int fd, fw_handle, gt;
->>> +
->>> +	igt_kmod_unbind("xe", bus_addr);
->>> +
->>> +	if (media_on)
->>> +		igt_assert(igt_sysfs_set(configfs_device_fd,
->>> +					 "gt_types_allowed",
->> "primary,media"));
->>> +	else
->>> +		igt_assert(igt_sysfs_set(configfs_device_fd,
->>> +					 "gt_types_allowed", "primary"));
->>> +
->>> +	igt_kmod_bind("xe", bus_addr);
->>> +
->>> +	fd = drm_open_driver(DRIVER_XE);
->>> +
->>> +	fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
->>
->> I think comment here to explain that this is to prevent entering rc6 for the
->> duration of the test, which would otherwise invoke full PPC flushes.
-> I will update.
->>
->>> +	igt_require(fw_handle >= 0);
->>> +
->>> +	subtest_pat_index_modes_with_regions(fd,
->> xe3p_lpg_coherency_pat_index_modes,
->>> +
->> ARRAY_SIZE(xe3p_lpg_coherency_pat_index_modes));
->>
->> Ok, so this will hammer these indexes accross blt, render and dw (partial
->> cache-lines), including mixing CPU/GPU access.
-> @Auld, Matthew Can you elaborate on this. What is the change expected here?
-
-Just thinking out aloud as I was reading it. Nothing to change :)
-
->>
->>> +
->>> +	/* check status of c state, it should not be in c6 due to forcewake. */
->>> +	xe_for_each_gt(fd, gt)
->>> +		igt_assert(!xe_gt_is_in_c6(fd, gt));
->>> +
->>> +	close(fw_handle);
->>> +}
->>> +
->>>    static int opt_handler(int opt, int opt_index, void *data)
->>>    {
->>>    	switch (opt) {
->>> @@ -1586,6 +1657,36 @@ int igt_main_args("V", NULL, help_str,
->> opt_handler, NULL)
->>>    		false_sharing(fd);
->>>    	}
->>>
->>> +	igt_subtest_group() {
->>> +		int configfs_fd, configfs_device_fd;
->>> +
->>> +		igt_fixture() {
->>> +			igt_require(intel_graphics_ver(dev_id) == IP_VER(35,
->> 10));
->>> +
->>> +			pci_dev = igt_device_get_pci_device(fd);
->>> +			snprintf(bus_addr, sizeof(bus_addr),
->> "%04x:%02x:%02x.%01x",
->>> +				 pci_dev->domain, pci_dev->bus, pci_dev-
->>> dev, pci_dev->func);
->>> +
->>> +			configfs_fd = igt_configfs_open("xe");
->>> +			igt_require(configfs_fd != -1);
->>> +			configfs_device_fd = igt_fs_create_dir(configfs_fd,
->> bus_addr,
->>> +							       S_IRWXU |
->> S_IRGRP | S_IXGRP |
->>> +							       S_IROTH |
->> S_IXOTH);
->>> +			igt_install_exit_handler(reset);
->>> +		}
->>> +
->>> +		igt_subtest_with_dynamic("xa-app-transient-media-off")
->>> +			xa_app_transient_test(configfs_device_fd, false);
->>> +
->>> +		igt_subtest_with_dynamic("xa-app-transient-media-on")
->>> +			xa_app_transient_test(configfs_device_fd, true);
->>
->> And this will repeat the above, one with Media forcibly off, and with it
->> potentially on. Hopefully giving us both paths.
->>
->> Some other angles to potentially consider:
->>
->> 1) userptr. Still TBD on the exact KMD behaviour with allowing non-XA/non-
->> 2WAY, or banning it. If we ban it then we should verify that.
->> If we allow it, then what we could maybe do is submit a GPU workload to fill
->> some userptr, then do something to trigger an invalidation to the CPU
->> mapping, then read from the CPU to check that we see the GPU writes (this
->> would be with Media off). KMD should flush those cachelines upon triggering
->> invalidation.
->>
->> 2) dma-buf. Still TBD on this also. But same as above where we would want to
->> add some validation for this. If this ends up being banned we should validate
->> that somewhere. If allowed then I guess we need something to at least
->> attempt to write to it from the GPU on importer side using non-xa (exported
->> from vgem), then maybe destroy the importer side and read it from the CPU
->> on exporter/native side? In theory it should all be flushed, so we should see
->> the GPU writes. Thomas, any ideas here?
-> @Thomas Hellström any ideas here?
-
-With latest version we are leaning more towards requiring 2WAY or 
-XA+coh_1way with dma-buf, userptr and SVM.
-
-With that it might be more a case of checking that the invalid combos 
-are rejected.
-
->>
->>> +
->>> +		igt_fixture() {
->>> +			close(configfs_device_fd);
->>> +			close(configfs_fd);
->>> +		}
->>> +	}
->>> +
->>>    	igt_fixture()
->>>    		drm_close_driver(fd);
->>>    }
+> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+> ---
+>   lib/igt_kms.c | 31 +++++++++++++++++++++++++++++++
+>   lib/igt_kms.h |  1 +
+>   2 files changed, 32 insertions(+)
 > 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 5c4879604..107db512d 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -6997,6 +6997,37 @@ bool ultrajoiner_mode_found(int drm_fd, drmModeConnector *connector,
+>   	return found;
+>   }
+>   
+> +/**
+> + * igt_get_non_joiner_mode:
+> + * @drm_fd: drm file descriptor
+> + * @output: pointer to the output structure
+> + *
+> + * Finds the display mode from the output that does not require
+> + * Big Joiner or Ultra Joiner.
+> + *
+> + * Returns: Pointer to non-joiner mode, or NULL if not found.
+> + */
+> +drmModeModeInfo *igt_get_non_joiner_mode(int drm_fd, igt_output_t *output)
+> +{
+> +	drmModeConnector *connector;
+> +	int max_dotclock;
+> +
+> +	connector = output->config.connector;
+> +	max_dotclock = igt_get_max_dotclock(drm_fd);
+> +
+> +	for (int i = 0; i < connector->count_modes; i++) {
+> +		drmModeModeInfo *current_mode = &connector->modes[i];
+> +
+> +		/* Check if mode requires joiner */
+> +		if (!igt_bigjoiner_possible(drm_fd, current_mode, max_dotclock) &&
+> +		    !igt_ultrajoiner_possible(drm_fd, current_mode, max_dotclock)) {
+> +			return current_mode;
+> +		}
+Consider moving this to a function mode_nees_joiner() or something,
+Otherwise LGTM.
+Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+>   /**
+>    * is_joiner_mode:
+>    * @drm_fd: drm file descriptor
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index dedc3f880..9a95e8e0a 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -1285,6 +1285,7 @@ bool igt_is_joiner_enabled_for_pipe(int drmfd, enum pipe pipe);
+>   bool igt_ultrajoiner_possible(int drmfd, drmModeModeInfo *mode, int max_dotclock);
+>   bool ultrajoiner_mode_found(int drm_fd, drmModeConnector *connector,
+>   			  int max_dotclock, drmModeModeInfo *mode);
+> +drmModeModeInfo *igt_get_non_joiner_mode(int drm_fd, igt_output_t *output);
+>   bool igt_has_force_joiner_debugfs(int drmfd, char *conn_name);
+>   bool is_joiner_mode(int drm_fd, igt_output_t *output);
+>   bool igt_check_force_joiner_status(int drmfd, char *connector_name);
 
