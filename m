@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E660EFD530E
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Feb 2026 08:07:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5963BFD530E
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Feb 2026 08:07:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 81E9810EA53;
-	Fri, 27 Feb 2026 08:07:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E647010EA4E;
+	Fri, 27 Feb 2026 08:07:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jSHSny/9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OZioPzZk";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C2C6E10EA54
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Feb 2026 08:07:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E61F10EA4E
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Feb 2026 08:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772179648; x=1803715648;
+ t=1772179651; x=1803715651;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=Rti6XkQdnp9AVvO4p69AnK8dlHJ8MXJ5P2PNd3bm6HE=;
- b=jSHSny/9jsGxOVe9LfkBmQfHgTdBvcyo25K3XwK+fRDVeKgv9WocTDTo
- VOzgZsoyg0SCFtPEYde4U7WUf01xwQ/KNk8+NYHhjSXlwDAZyI2V4UmvU
- gRWCLqCkdcvyGnW05FQL/tJVJRy7vS5MaWNxFS16Moha114zvy/aImIbp
- TJq+LPrTeT6BonyhrpR1DZU/2qYH2foRIRcCnNcC6PCF+nJvg/ZhckVs9
- eIM/nx9UZkrvWeAkzFMgN4onhFhFGCO5yd9rBHWbJTKUJp3R3yW8HLiQg
- Y5SVXYxJCrKmJn7BUUuqtQZqJnV9KgHeFKdSPor8HDFm7TqsdegmF4NeZ w==;
-X-CSE-ConnectionGUID: wVXKEVOkRkGwoDO8b0K2Kw==
-X-CSE-MsgGUID: gqek3lEFQou6cFQJHfDZEA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="75859408"
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="75859408"
+ bh=9M1BLmiV6latvnMN02W4lO8/w0NvrdlsZCv6W4o4H0I=;
+ b=OZioPzZkqgEGwzEq1QKzjj4g1gxWk2p7TlP4bN5RnDhKEYEg5/HUiVhH
+ JtEiaCmtPX6IGHc8XC+Tt1t0GghWK4ql3sfGa1Cco1A6rlh11dGogdUlJ
+ 7EauA/R22CKRVxN36U4YPeoGUeC5Vr69duOw3oZVWH8zM1zjjE4YyTEH2
+ yCkluL/fMz12JooxLvzWFGyv0sb15LfyuuCmxDaB1CjZV9jIm9b55dCfo
+ QS9159DkaHnhodwkEuzAQEF0zXybYR4Ol0PWslXHkO8QwgD1V1DMgkXBH
+ ZX8pTlORSsHHw0yRM9dXrrmJAlPO2Rro9XwcAEAkb6WrP+sKUTFexNHmO g==;
+X-CSE-ConnectionGUID: qFLaHm6jQL6LWsNHm2ZxOw==
+X-CSE-MsgGUID: t+0/rOL/TjeM0G8uTQbw4g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="75859411"
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="75859411"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2026 00:07:27 -0800
-X-CSE-ConnectionGUID: M1rFEtprR2mPiPnlaZ1dbA==
-X-CSE-MsgGUID: 6+w/lkXsRnehs75dnUCg6A==
+ 27 Feb 2026 00:07:31 -0800
+X-CSE-ConnectionGUID: W67zrMyIRo2y+osho/ZUpg==
+X-CSE-MsgGUID: 7Yyx2X7yTxmnESSNHJqXzw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="216731148"
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="216731154"
 Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
  ([10.245.245.74])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2026 00:07:26 -0800
+ 27 Feb 2026 00:07:30 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 07/17] tests/vmwgfx/vmw_prime: Replace
- igt_pipe_crc_new() with igt_crtc_crc_new()
-Date: Fri, 27 Feb 2026 10:06:43 +0200
-Message-ID: <20260227080653.30389-8-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 08/17] lib/kms: Prefer "crtc" over "pipe" in function
+ names
+Date: Fri, 27 Feb 2026 10:06:44 +0200
+Message-ID: <20260227080653.30389-9-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260227080653.30389-1-ville.syrjala@linux.intel.com>
 References: <20260227080653.30389-1-ville.syrjala@linux.intel.com>
@@ -73,45 +73,120 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-vmw_prime wasn't caught by the earlier igt_crtc_crc_new() conversions
-for some reason. Clean it up.
+Rename a bunch of functions that operate on igt_crtc_t from
+the old "pipe" terminology to the new "crtc" terminology.
 
  #include "scripts/iterators.cocci"
 
+@func@
+typedef igt_crtc_t;
+identifier OLD_FUNC =~ "pipe";
+identifier CRTC;
+type T;
 @@
-igt_crtc_t *CRTC;
+T OLD_FUNC(..., igt_crtc_t *CRTC, ...);
+
+@script:python rename@
+OLD_FUNC << func.OLD_FUNC;
+NEW_FUNC;
 @@
-- igt_pipe_crc_new(..., CRTC->pipe
-+ igt_crtc_crc_new(CRTC
-  ,...)
+coccinelle.NEW_FUNC = OLD_FUNC.replace("pipe", "crtc")
+
+@@
+identifier func.OLD_FUNC;
+identifier rename.NEW_FUNC;
+@@
+- OLD_FUNC
++ NEW_FUNC
+  (...) { ... }
+
+@@
+identifier func.OLD_FUNC;
+identifier rename.NEW_FUNC;
+type T;
+@@
+T
+- OLD_FUNC
++ NEW_FUNC
+  (...);
+
+@@
+identifier func.OLD_FUNC;
+identifier rename.NEW_FUNC;
+@@
+- OLD_FUNC
++ NEW_FUNC
+  (...)
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/vmwgfx/vmw_prime.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/igt_kms.c         | 4 ++--
+ lib/igt_kms.h         | 2 +-
+ tests/intel/kms_dsc.c | 2 +-
+ tests/kms_dither.c    | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tests/vmwgfx/vmw_prime.c b/tests/vmwgfx/vmw_prime.c
-index 0640b2476dc8..c32ae268d0b7 100644
---- a/tests/vmwgfx/vmw_prime.c
-+++ b/tests/vmwgfx/vmw_prime.c
-@@ -300,7 +300,7 @@ static void draw_triangle_3d(struct gpu_process_t *gpu, uint32_t draw_flags)
- 		gpu->crtc = crtc;
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 85dcff02efbc..60f16efa9562 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6598,7 +6598,7 @@ unsigned int igt_get_output_max_bpc(igt_output_t *output)
+  *
+  * Returns: The current bpc from the crtc debugfs.
+  */
+-unsigned int igt_get_pipe_current_bpc(igt_crtc_t *crtc)
++unsigned int igt_get_crtc_current_bpc(igt_crtc_t *crtc)
+ {
+ 	igt_display_t *display = crtc->display;
+ 	int drmfd = display->drm_fd;
+@@ -6633,7 +6633,7 @@ static unsigned int get_current_bpc(igt_crtc_t *crtc, igt_output_t *output,
+ 				    unsigned int bpc)
+ {
+ 	unsigned int maximum = igt_get_output_max_bpc(output);
+-	unsigned int current = igt_get_pipe_current_bpc(crtc);
++	unsigned int current = igt_get_crtc_current_bpc(crtc);
  
- 		prepare_crtc(gpu);
--		pipe_crc = igt_pipe_crc_new(gpu->mdevice.drm_fd, crtc->pipe,
-+		pipe_crc = igt_crtc_crc_new(crtc,
- 					    IGT_PIPE_CRC_SOURCE_AUTO);
- 		igt_pipe_crc_collect_crc(pipe_crc, &blank_crc);
+ 	igt_require_f(maximum >= bpc,
+ 		      "Monitor doesn't support %u bpc, max is %u\n", bpc,
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 24fe6db70128..b38f62f354fc 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1234,7 +1234,7 @@ bool igt_fit_modes_in_bw(igt_display_t *display);
+ bool igt_has_lobf_debugfs(int drmfd, igt_output_t *output);
+ bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name);
+ unsigned int igt_get_output_max_bpc(igt_output_t *output);
+-unsigned int igt_get_pipe_current_bpc(igt_crtc_t *crtc);
++unsigned int igt_get_crtc_current_bpc(igt_crtc_t *crtc);
+ void igt_assert_output_bpc_equal(igt_crtc_t *crtc, igt_output_t *output,
+ 				 unsigned int bpc);
+ bool igt_check_output_bpc_equal(igt_crtc_t *crtc, igt_output_t *output,
+diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
+index 74bc4af53ceb..69f335da34ec 100644
+--- a/tests/intel/kms_dsc.c
++++ b/tests/intel/kms_dsc.c
+@@ -226,7 +226,7 @@ static void update_display(data_t *data, uint32_t test_type)
+ 	restore_force_dsc_fractional_bpp_en();
  
-@@ -367,7 +367,7 @@ static void draw_dumb_buffer(struct gpu_process_t *gpu)
- 		gpu->crtc = crtc;
+ 	if (test_type & TEST_DSC_BPC) {
+-		current_bpc = igt_get_pipe_current_bpc(data->crtc);
++		current_bpc = igt_get_crtc_current_bpc(data->crtc);
+ 		igt_skip_on_f(data->input_bpc != current_bpc,
+ 			      "Input bpc = %d is not equal to current bpc = %d\n",
+ 			      data->input_bpc, current_bpc);
+diff --git a/tests/kms_dither.c b/tests/kms_dither.c
+index ca3b76b62459..ca367db613d4 100644
+--- a/tests/kms_dither.c
++++ b/tests/kms_dither.c
+@@ -103,7 +103,7 @@ static dither_status_t get_dither_state(data_t *data, igt_crtc_t *crtc)
+ 	igt_assert_eq(sscanf(start_loc, ", dither=%s", tmp), 1);
+ 	status.dither = !strcmp(tmp, "yes,");
  
- 		prepare_crtc_surface(gpu);
--		pipe_crc = igt_pipe_crc_new(gpu->mdevice.drm_fd, crtc->pipe,
-+		pipe_crc = igt_crtc_crc_new(crtc,
- 					    IGT_PIPE_CRC_SOURCE_AUTO);
- 		igt_pipe_crc_collect_crc(pipe_crc, &blank_crc);
+-	status.bpc = igt_get_pipe_current_bpc(crtc);
++	status.bpc = igt_get_crtc_current_bpc(crtc);
  
+ 	return status;
+ }
 -- 
 2.52.0
 
