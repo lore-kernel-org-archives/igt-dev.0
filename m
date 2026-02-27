@@ -4,60 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB4F9FD5333
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Feb 2026 10:07:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3824CFD7F8E
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Feb 2026 10:22:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5E56210EAE9;
-	Fri, 27 Feb 2026 10:07:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D081010E136;
+	Fri, 27 Feb 2026 10:22:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VXSnshGL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UaGWm0eP";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE8A710EAE9
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Feb 2026 10:07:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C919110E136
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Feb 2026 10:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772186835; x=1803722835;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=o2w4yKIw7/3RIqDkWWeT8rWSQttdrqKSgMQrAJ9oxWU=;
- b=VXSnshGLHAqTUcB7IVG3ylduquCzsaPcEi7A3JTQ+yfRbasU1SSEFvEI
- FRG5yJ08JDNh2D9EBtXyvsXx1PVIco6DM5qDgvVCVgr3DcY9rUhtXm6SA
- qZqrQgBTCWO99Z79Z/aTAemSxW30O0FTTEL/Ll/FJI/hTGNUdzE7SaLQ6
- ExnYY2my34nE8cBohMxFPA+sj00R5tfQi2W+YZjCrEuBh+A3doSMiUnsi
- vMikXwgoJl+XwO8J8dGxKTfEIZnodE3MVLr61g0ulcDXp7SBH3TShc2UB
- 2/b1KXJVgdT7XaKwyvYinnkMW6Nmjs9QWAnPjV877j8kh8tKje3kNmY1x g==;
-X-CSE-ConnectionGUID: L3yNBlHMQfSWGis67OlTRA==
-X-CSE-MsgGUID: OiRFIRTPRlyffQI9XswzEg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="73172343"
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="73172343"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2026 02:07:15 -0800
-X-CSE-ConnectionGUID: 8qzSqvSkRfCipiRjFUCtqQ==
-X-CSE-MsgGUID: jsnU0gjIRQye7kdlVbu37w==
+ t=1772187745; x=1803723745;
+ h=from:to:subject:in-reply-to:references:date:message-id:
+ mime-version:content-transfer-encoding;
+ bh=cZxLzYMR1r3z3OaQWm95Lxx8ujOgxJm7l6J0UXhPVCE=;
+ b=UaGWm0ePFcfDJLehgY6vVr4B9ODXf1TYLrlF+Zgao2t1m5f4gc+vq3kd
+ 0NHXNcsq7PiOCIrjg+/ULYGVKbzCQxQM2az/g4UWDhUcUVrfVDq/55sry
+ Z1SsmX9c1MRt9AK03biKvj1D28sLzcIZpWK1OPqTtr7PYmkY85220lEUb
+ XUpgKLFgo0tR3ZoaCYZWSk0xEU4dbirQO0Es/cuJiOJgGwxsTPgF/K26u
+ oyL6M/FJq6a5z8tHp2ZcNCtBWsUpma2l2Rnh7JPh/vSyWt6XTN1UouePB
+ sx4fLFcMCwkwb9nMeKgyImdSB1Dxx+DzbP9Gy/teu9IO03FY+OD69keI1 g==;
+X-CSE-ConnectionGUID: G6WKH8kzSz+mkuGo2c3U9w==
+X-CSE-MsgGUID: H9m6KQbBTQ+HhmfupRE8+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="77107100"
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="77107100"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2026 02:22:25 -0800
+X-CSE-ConnectionGUID: l18N1TyUThyTLC2dTsK0Jg==
+X-CSE-MsgGUID: C7SgEpQKSv2cT7ICo5OEwg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="221362789"
-Received: from amongesa-mobl.ger.corp.intel.com (HELO [10.94.249.110])
- ([10.94.249.110])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2026 02:07:14 -0800
-Message-ID: <84c4e68b-6b0a-459f-b604-9dd408a81070@linux.intel.com>
-Date: Fri, 27 Feb 2026 11:07:07 +0100
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="247381689"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.185])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2026 02:22:24 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 03/17] lib/kms: Replace
+ igt_get_single_output_for_pipe() with igt_get_single_output_for_crtc()
+In-Reply-To: <20260227080653.30389-4-ville.syrjala@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260227080653.30389-1-ville.syrjala@linux.intel.com>
+ <20260227080653.30389-4-ville.syrjala@linux.intel.com>
+Date: Fri, 27 Feb 2026 12:22:21 +0200
+Message-ID: <8f23edefdc5671cf06d614748c058b06e96f8d33@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/2] tests/intel/xe_sriov_flr: Add reset-only FLR
- subtest
-To: =?UTF-8?Q?Piotr_Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, lukasz.laguna@intel.com
-References: <20260226173137.3221419-1-marcin.bernatowicz@linux.intel.com>
- <20260226173137.3221419-2-marcin.bernatowicz@linux.intel.com>
- <20260227085809.dehznq3jz735x3rm@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20260227085809.dehznq3jz735x3rm@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,145 +72,274 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-On 2/27/2026 9:58 AM, Piotr Piórkowski wrote:
-> Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com> wrote on czw [2026-lut-26 18:31:36 +0100]:
->> Add flr-reset-only subtest intended as a minimal smoke test
->> for the VF reset sysfs write path while still using the xe-vfio-pci
->> based synchronization: the test skips if xe-vfio-pci binding is disabled,
->> if the xe_vfio_pci module is not loaded, or if any VF under test is
->> not bound to xe-vfio-pci.
->>
->> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
->> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
->> Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
->> ---
->>   tests/intel/xe_sriov_flr.c | 65 ++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 65 insertions(+)
->>
->> diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
->> index b73727787..846731697 100644
->> --- a/tests/intel/xe_sriov_flr.c
->> +++ b/tests/intel/xe_sriov_flr.c
->> @@ -29,6 +29,12 @@
->>    * Functionality: FLR
->>    * Description: Examine behavior of SR-IOV VF FLR
->>    *
->> + * SUBTEST: flr-reset-only
-> Or maybe just flr-basic?
+On Fri, 27 Feb 2026, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >
->> + * Run type: BAT
->> + * Description:
->> + *   Initiates FLR without any additional state checks.
->> + *   Useful as a basic smoke test of the reset sysfs write path.
->> + *
->>    * SUBTEST: flr-vf1-clear
->>    * Run type: BAT
->>    * Description:
->> @@ -1016,6 +1022,60 @@ static void regs_subcheck_cleanup(struct subcheck_data *data)
->>   {
->>   }
->>   
->> +static void reset_only_subcheck_init(struct subcheck_data *data)
->> +{
->> +	if (!g_use_xe_vfio_pci) {
->> +		set_skip_reason(data, "xe-vfio-pci binding is disabled\n");
->> +		return;
->> +	}
->> +
->> +	if (!igt_kmod_is_loaded("xe_vfio_pci"))
-> Sometimes it is xe_vfio_pci, sometimes xe-vfio-pci
+> Replace the pipe based igt_get_single_output_for_pipe() with
+> the crtc based igt_get_single_output_for_crtc()
 
-xe_vfio_pci is a module name
-
-xe-vfio-pci is a driver name
-
-> What is the reason for this difference? Shouldn't we keep it somewhere as a constant?
-I'll add some constants with xe_sriov_vfio test
-> Or have helpers to handle this module at all?
->
->> +		set_skip_reason(data, "xe_vfio_pci is not loaded\n");
->> +}
->> +
->> +static void reset_only_subcheck_prepare_vf(int vf_id, struct subcheck_data *data)
->> +{
->> +	char *slot = igt_sriov_get_vf_pci_slot_alloc(data->pf_fd, vf_id);
->> +	char bound[64];
->> +	int bound_ret;
->> +
->> +	igt_assert(slot);
->> +
->> +	bound_ret = igt_pci_get_bound_driver_name(slot, bound, sizeof(bound));
->> +	if (bound_ret <= 0 || strcmp(bound, "xe-vfio-pci") != 0)
->> +		set_skip_reason(data, "VF%u not bound to xe-vfio-pci\n", vf_id);
->> +
->> +	free(slot);
->> +}
->> +
->> +static void noop_subcheck_verify_vf(int vf_id, int flr_vf_id, struct subcheck_data *data)
->> +{
->> +}
->> +
->> +static void noop_subcheck_cleanup(struct subcheck_data *data)
->> +{
->> +}
->> +
->> +static void reset_only_test(int pf_fd, int num_vfs, flr_exec_strategy exec_strategy)
->> +{
->> +	struct subcheck_data base = {
->> +		.pf_fd = pf_fd,
->> +		.num_vfs = num_vfs,
->> +		.tile = 0,
->> +		.stop_reason = NULL,
->> +	};
->> +	struct subcheck check = {
->> +		.data = &base,
->> +		.name = "reset-only",
->> +		.init = reset_only_subcheck_init,
->> +		.prepare_vf = reset_only_subcheck_prepare_vf,
->> +		.verify_vf = noop_subcheck_verify_vf,
->> +		.cleanup = noop_subcheck_cleanup,
->> +	};
->> +
->> +	verify_flr(pf_fd, num_vfs, &check, 1, exec_strategy);
->> +}
->> +
->>   static void clear_tests(int pf_fd, int num_vfs, flr_exec_strategy exec_strategy)
->>   {
->>   	const uint8_t num_tiles = xe_tiles_count(pf_fd);
->> @@ -1141,6 +1201,11 @@ int igt_main_args("vw:", long_options, help_str, opt_handler, NULL)
->>   		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
->>   	}
->>   
->> +	igt_describe("Initiate FLR without any additional state checks.");
->> +	igt_subtest("flr-reset-only") {
->> +		reset_only_test(pf_fd, 1, execute_sequential_flr);
-> In this case, shouldn't we have dynamic subtests regarding the number of VFs?
-> I know that this will be expanded in the next patch, but maybe it should be the default.
-> Because if someone wants to run tests on only one Vf's, they can still use
-> the dynamic subtets filter.
-Currently VF1 is default to keep CI time bounded.
-In --extended mode (next patch), if numvfs-N is specified, we enable N 
-VFs and run FLR sequentially on each.
-If no specific numvfs-* dynamic subtest is selected, we iterate over the 
-full range (numvfs-1 … numvfs-totalVFs).
-
-If you prefer dynamic by default, which set would you suggest running - 
-VF1 only, random number of VFs, total VFs ?
-
-Thanks,
-
-Marcin
+Should also mention this removes the last user of igt_require_pipe(),
+and the whole function.
 
 >
-> Thanks,
-> Piotr
+>  #include "scripts/iterators.cocci"
 >
->> +	}
->> +
->>   	igt_describe("Verify LMEM, GGTT, and SCRATCH_REGS are properly cleared after VF1 FLR");
->>   	igt_subtest("flr-vf1-clear") {
->>   		clear_tests(pf_fd, 1, execute_sequential_flr);
->> -- 
->> 2.43.0
->>
+> @@
+> expression DISPLAY, PIPE;
+> @@
+> - igt_get_single_output_for_pipe(DISPLAY, PIPE)
+> + igt_get_single_output_for_crtc(igt_crtc_for_pipe(DISPLAY, PIPE))
+>
+> @@
+> igt_crtc_t *CRTC;
+> @@
+> - igt_crtc_for_pipe(..., CRTC->pipe)
+> + CRTC
+>
+> @@
+> type T;
+> @@
+> T igt_get_single_output_for_pipe(...);
+> +igt_output_t *igt_get_single_output_for_crtc(igt_crtc_t *crtc);
+>
+> @@
+> @@
+> igt_get_single_output_for_pipe(...)
+> { ... }
+> +/**
+> + * igt_get_single_output_for_crtc:
+> + * @crtc: The CRTC for which an #igt_output_t must be returned.
+> + *
+> + * Get a compatible output for a CRTC.
+> + *
+> + * Returns: A compatible output for a given CRTC, or NULL.
+> + */
+> +igt_output_t *igt_get_single_output_for_crtc(igt_crtc_t *crtc)
+> +{
+> +       igt_display_t *display =3D crtc->display;
+> +       igt_output_t *chosen_outputs[igt_display_n_crtcs(display)];
+> +
+> +       __igt_pipe_populate_outputs(display, chosen_outputs);
+> +
+> +       return chosen_outputs[crtc->pipe];
+> +}
+>
+> @@
+> @@
+> - igt_get_single_output_for_pipe(...) { ... }
+>
+> @@
+> @@
+> - igt_require_pipe(...) { ... }
+>
+> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> ---
+>  lib/igt_kms.c                           | 26 ++++++++-----------------
+>  lib/igt_kms.h                           |  2 +-
+>  tests/amdgpu/amd_abm.c                  |  3 +--
+>  tests/amdgpu/amd_bypass.c               |  3 +--
+>  tests/amdgpu/amd_color.c                |  3 +--
+>  tests/amdgpu/amd_multidisplay_modeset.c |  2 +-
+>  tests/amdgpu/amd_psr.c                  |  3 +--
+>  tests/amdgpu/amd_replay.c               |  3 +--
+>  tests/intel/gem_eio.c                   |  2 +-
+>  tests/nouveau_crc.c                     |  3 +--
+>  10 files changed, 17 insertions(+), 33 deletions(-)
+>
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 11ed109d74fb..5c2e101f08be 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -2814,13 +2814,6 @@ void igt_display_reset(igt_display_t *display)
+>  static void igt_fill_plane_format_mod(igt_display_t *display, igt_plane_=
+t *plane);
+>  static void igt_fill_display_format_mod(igt_display_t *display);
+>=20=20
+> -static void igt_require_pipe(igt_display_t *display, enum pipe pipe)
+> -{
+> -	igt_skip_on_f(pipe >=3D igt_display_n_crtcs(display) || !igt_crtc_for_p=
+ipe(display, pipe)->valid,
+> -			"Pipe %s does not exist\n",
+> -			kmstest_pipe_name(pipe));
+> -}
+> -
+>  static bool igt_crtc_has_valid_output(igt_crtc_t *crtc)
+>  {
+>  	igt_display_t *display =3D crtc->display;
+> @@ -2949,7 +2942,7 @@ void igt_display_reset_outputs(igt_display_t *displ=
+ay)
+>  		if (!igt_crtc_has_valid_output(crtc))
+>  			continue;
+>=20=20
+> -		output =3D igt_get_single_output_for_pipe(display, crtc->pipe);
+> +		output =3D igt_get_single_output_for_crtc(crtc);
+>=20=20
+>  		if (crtc->num_primary_planes > 1) {
+>  			igt_plane_t *old_primary =3D &crtc->planes[0];
+> @@ -3655,24 +3648,21 @@ igt_output_t **__igt_pipe_populate_outputs(igt_di=
+splay_t *display, igt_output_t
+>  }
+>=20=20
+>  /**
+> - * igt_get_single_output_for_pipe:
+> - * @display: a pointer to an #igt_display_t structure
+> - * @pipe: The pipe for which an #igt_output_t must be returned.
+> + * igt_get_single_output_for_crtc:
+> + * @crtc: The CRTC for which an #igt_output_t must be returned.
+>   *
+> - * Get a compatible output for a pipe.
+> + * Get a compatible output for a CRTC.
+>   *
+> - * Returns: A compatible output for a given pipe, or NULL.
+> + * Returns: A compatible output for a given CRTC, or NULL.
+>   */
+> -igt_output_t *igt_get_single_output_for_pipe(igt_display_t *display, enu=
+m pipe pipe)
+> +igt_output_t *igt_get_single_output_for_crtc(igt_crtc_t *crtc)
+>  {
+> +	igt_display_t *display =3D crtc->display;
+>  	igt_output_t *chosen_outputs[igt_display_n_crtcs(display)];
+>=20=20
+> -	igt_assert(pipe !=3D PIPE_NONE);
+> -	igt_require_pipe(display, pipe);
+> -
+>  	__igt_pipe_populate_outputs(display, chosen_outputs);
+>=20=20
+> -	return chosen_outputs[pipe];
+> +	return chosen_outputs[crtc->pipe];
+>  }
+>=20=20
+>  static igt_output_t *igt_crtc_get_output(igt_crtc_t *crtc)
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index c79c8664e9a9..08573316eea6 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -616,7 +616,7 @@ int igt_crtc_count_plane_type(igt_crtc_t *crtc, int p=
+lane_type);
+>  igt_plane_t *igt_crtc_get_plane_type_index(igt_crtc_t *crtc, int plane_t=
+ype,
+>  					   int index);
+>  bool output_is_internal_panel(igt_output_t *output);
+> -igt_output_t *igt_get_single_output_for_pipe(igt_display_t *display, enu=
+m pipe pipe);
+> +igt_output_t *igt_get_single_output_for_crtc(igt_crtc_t *crtc);
+>=20=20
+>  void igt_crtc_request_out_fence(igt_crtc_t *crtc);
+>=20=20
+> diff --git a/tests/amdgpu/amd_abm.c b/tests/amdgpu/amd_abm.c
+> index bd700b90f361..1752a7e5c48d 100644
+> --- a/tests/amdgpu/amd_abm.c
+> +++ b/tests/amdgpu/amd_abm.c
+> @@ -133,8 +133,7 @@ static void test_init(data_t *data)
+>=20=20
+>  	igt_display_reset(display);
+>=20=20
+> -	data->output =3D igt_get_single_output_for_pipe(display,
+> -						      data->crtc->pipe);
+> +	data->output =3D igt_get_single_output_for_crtc(data->crtc);
+>  	igt_require(data->output);
+>  	igt_info("output %s\n", data->output->name);
+>=20=20
+> diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
+> index 25136e83e6ad..9d5f3dd71c89 100644
+> --- a/tests/amdgpu/amd_bypass.c
+> +++ b/tests/amdgpu/amd_bypass.c
+> @@ -67,8 +67,7 @@ static void test_init(data_t *data)
+>=20=20
+>  	igt_display_reset(display);
+>=20=20
+> -	data->output =3D igt_get_single_output_for_pipe(display,
+> -						      data->crtc->pipe);
+> +	data->output =3D igt_get_single_output_for_crtc(data->crtc);
+>  	igt_assert(data->output);
+>=20=20
+>  	if (data->output->config.connector->connector_type =3D=3D DRM_MODE_CONN=
+ECTOR_eDP) {
+> diff --git a/tests/amdgpu/amd_color.c b/tests/amdgpu/amd_color.c
+> index cdc6f3e6abd8..68f541d64d63 100644
+> --- a/tests/amdgpu/amd_color.c
+> +++ b/tests/amdgpu/amd_color.c
+> @@ -182,8 +182,7 @@ static void test_init(data_t *data)
+>=20=20
+>  	igt_display_reset(display);
+>=20=20
+> -	data->output =3D igt_get_single_output_for_pipe(display,
+> -						      data->crtc->pipe);
+> +	data->output =3D igt_get_single_output_for_crtc(data->crtc);
+>  	igt_require(data->output);
+>=20=20
+>  	data->mode =3D igt_output_get_mode(data->output);
+> diff --git a/tests/amdgpu/amd_multidisplay_modeset.c b/tests/amdgpu/amd_m=
+ultidisplay_modeset.c
+> index a2853e73225a..40d1e5d7f42b 100644
+> --- a/tests/amdgpu/amd_multidisplay_modeset.c
+> +++ b/tests/amdgpu/amd_multidisplay_modeset.c
+> @@ -159,7 +159,7 @@ static void test_init(struct data_t *data)
+>  		 * This will let displays connected to MST hub be
+>  		 * tested
+>  		 */
+> -		output =3D igt_get_single_output_for_pipe(display, crtc->pipe);
+> +		output =3D igt_get_single_output_for_crtc(crtc);
+>  		data->primary[crtc->pipe] =3D igt_crtc_get_plane_type(crtc,
+>  							   DRM_PLANE_TYPE_PRIMARY);
+>  		data->output[crtc->pipe] =3D output;
+> diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
+> index b1d6d1631e26..85247d0e20da 100644
+> --- a/tests/amdgpu/amd_psr.c
+> +++ b/tests/amdgpu/amd_psr.c
+> @@ -174,8 +174,7 @@ static void test_init(data_t *data)
+>=20=20
+>  	igt_display_reset(display);
+>=20=20
+> -	data->output =3D igt_get_single_output_for_pipe(display,
+> -						      data->crtc->pipe);
+> +	data->output =3D igt_get_single_output_for_crtc(data->crtc);
+>  	igt_require(data->output);
+>  	igt_info("output %s\n", data->output->name);
+>=20=20
+> diff --git a/tests/amdgpu/amd_replay.c b/tests/amdgpu/amd_replay.c
+> index 5f62465d6b72..775bed190adf 100644
+> --- a/tests/amdgpu/amd_replay.c
+> +++ b/tests/amdgpu/amd_replay.c
+> @@ -64,8 +64,7 @@ static void test_init(struct test_data *data)
+>=20=20
+>  	igt_display_reset(display);
+>=20=20
+> -	data->output =3D igt_get_single_output_for_pipe(display,
+> -						      data->crtc->pipe);
+> +	data->output =3D igt_get_single_output_for_crtc(data->crtc);
+>  	igt_require(data->output);
+>  	igt_info("output %s\n", data->output->name);
+>=20=20
+> diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
+> index 361fd24744c4..546fff14bd5b 100644
+> --- a/tests/intel/gem_eio.c
+> +++ b/tests/intel/gem_eio.c
+> @@ -1041,7 +1041,7 @@ static void display_helper(igt_display_t *dpy, int =
+*done)
+>  		if (!crtc || !crtc->valid)
+>  			continue;
+>=20=20
+> -		output =3D igt_get_single_output_for_pipe(dpy, crtc->pipe);
+> +		output =3D igt_get_single_output_for_crtc(crtc);
+>  		if (!output)
+>  			continue;
+>=20=20
+> diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
+> index 98394674e463..eeb544acad76 100644
+> --- a/tests/nouveau_crc.c
+> +++ b/tests/nouveau_crc.c
+> @@ -350,8 +350,7 @@ int igt_main()
+>  				igt_display_commit(&data.display);
+>  			}
+>=20=20
+> -			data.output =3D igt_get_single_output_for_pipe(&data.display,
+> -								     data.crtc->pipe);
+> +			data.output =3D igt_get_single_output_for_crtc(data.crtc);
+>  			data.mode =3D igt_output_get_mode(data.output);
+>=20=20
+>  			/* None of these tests need to perform modesets, just page flips. So =
+running
+
+--=20
+Jani Nikula, Intel
