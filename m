@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51E79FD530E
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Feb 2026 08:07:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E660EFD530E
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Feb 2026 08:07:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D8A8D10EA52;
-	Fri, 27 Feb 2026 08:07:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 81E9810EA53;
+	Fri, 27 Feb 2026 08:07:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q2x29w7C";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jSHSny/9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3F1910EA52
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Feb 2026 08:07:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C2C6E10EA54
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Feb 2026 08:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772179643; x=1803715643;
+ t=1772179648; x=1803715648;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=gX+SeZxFjfLXdGAcYUb4p++eiOroon0jfMbvrcGy0pY=;
- b=Q2x29w7Cqzt9aT6LMjf8Tc26EdoF1kBE1PJtmp3f043oeDYgEQWOufPH
- apdkaBA8HyUy0skXQ+PeKOx9g2FG105u8/VAopdraKApd1bGapvppaNvO
- XF/pOnUnKDCBYJCjbeStyy33P2vdi6TlnWKaleKYYG8xSvFwA/ilU3mHo
- ueFWaJtcNATlw6Rsuf1LaBZ6our03i6bo1EH4WbXJ/GFHlfmkiN7tNmtl
- FpqykNuDBBVwnWdv6kHnimg9qNoYfozQx1CEXVC/kgLIJHR+QbMVP+3lu
- NaxQJbb6/FMvvZCHOxoFwYhATj6q9AGTIE4M/kw3N/3+d/OWovV4OrDp6 g==;
-X-CSE-ConnectionGUID: X4rB+Y1lRLe+K64+W/k9Ug==
-X-CSE-MsgGUID: /iDrll7eTrOwnDhwRoXC9w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="98727100"
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="98727100"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2026 00:07:22 -0800
-X-CSE-ConnectionGUID: GM6EBbE6R1KXhHKpxVtLug==
-X-CSE-MsgGUID: SP0StrWYSFKnLxwhkKptiA==
+ bh=Rti6XkQdnp9AVvO4p69AnK8dlHJ8MXJ5P2PNd3bm6HE=;
+ b=jSHSny/9jsGxOVe9LfkBmQfHgTdBvcyo25K3XwK+fRDVeKgv9WocTDTo
+ VOzgZsoyg0SCFtPEYde4U7WUf01xwQ/KNk8+NYHhjSXlwDAZyI2V4UmvU
+ gRWCLqCkdcvyGnW05FQL/tJVJRy7vS5MaWNxFS16Moha114zvy/aImIbp
+ TJq+LPrTeT6BonyhrpR1DZU/2qYH2foRIRcCnNcC6PCF+nJvg/ZhckVs9
+ eIM/nx9UZkrvWeAkzFMgN4onhFhFGCO5yd9rBHWbJTKUJp3R3yW8HLiQg
+ Y5SVXYxJCrKmJn7BUUuqtQZqJnV9KgHeFKdSPor8HDFm7TqsdegmF4NeZ w==;
+X-CSE-ConnectionGUID: wVXKEVOkRkGwoDO8b0K2Kw==
+X-CSE-MsgGUID: gqek3lEFQou6cFQJHfDZEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="75859408"
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="75859408"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2026 00:07:27 -0800
+X-CSE-ConnectionGUID: M1rFEtprR2mPiPnlaZ1dbA==
+X-CSE-MsgGUID: 6+w/lkXsRnehs75dnUCg6A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="216065780"
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="216731148"
 Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
  ([10.245.245.74])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2026 00:07:21 -0800
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2026 00:07:26 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 06/17] tests/kms: Clean up crtc->pipe comparions
-Date: Fri, 27 Feb 2026 10:06:42 +0200
-Message-ID: <20260227080653.30389-7-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 07/17] tests/vmwgfx/vmw_prime: Replace
+ igt_pipe_crc_new() with igt_crtc_crc_new()
+Date: Fri, 27 Feb 2026 10:06:43 +0200
+Message-ID: <20260227080653.30389-8-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260227080653.30389-1-ville.syrjala@linux.intel.com>
 References: <20260227080653.30389-1-ville.syrjala@linux.intel.com>
@@ -72,66 +73,45 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Change a few leftover crtc->pipe comparisons to
-just compare the crtc pointers instead.
+vmw_prime wasn't caught by the earlier igt_crtc_crc_new() conversions
+for some reason. Clean it up.
 
  #include "scripts/iterators.cocci"
 
 @@
-typedef igt_crtc_t;
-igt_crtc_t *CRTC1;
-igt_crtc_t *CRTC2;
-binary operator OP = { ==, != };
+igt_crtc_t *CRTC;
 @@
-- CRTC1->pipe OP CRTC2->pipe
-+ CRTC1 OP CRTC2
+- igt_pipe_crc_new(..., CRTC->pipe
++ igt_crtc_crc_new(CRTC
+  ,...)
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_display_modes.c  | 2 +-
- tests/kms_plane_multiple.c | 2 +-
- tests/kms_tiled_display.c  | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ tests/vmwgfx/vmw_prime.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-index 6c17f002d8c8..18582cf1500c 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -201,7 +201,7 @@ static void run_extendedmode_test(data_t *data) {
- 					      output1) {
+diff --git a/tests/vmwgfx/vmw_prime.c b/tests/vmwgfx/vmw_prime.c
+index 0640b2476dc8..c32ae268d0b7 100644
+--- a/tests/vmwgfx/vmw_prime.c
++++ b/tests/vmwgfx/vmw_prime.c
+@@ -300,7 +300,7 @@ static void draw_triangle_3d(struct gpu_process_t *gpu, uint32_t draw_flags)
+ 		gpu->crtc = crtc;
  
- 			for_each_crtc(display, crtc2) {
--				if (crtc->pipe == crtc2->pipe)
-+				if (crtc == crtc2)
- 					continue;
+ 		prepare_crtc(gpu);
+-		pipe_crc = igt_pipe_crc_new(gpu->mdevice.drm_fd, crtc->pipe,
++		pipe_crc = igt_crtc_crc_new(crtc,
+ 					    IGT_PIPE_CRC_SOURCE_AUTO);
+ 		igt_pipe_crc_collect_crc(pipe_crc, &blank_crc);
  
- 				for_each_valid_output_on_crtc_local(display, crtc2,
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 660283df751d..d8a32d9526ad 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -548,7 +548,7 @@ static void run_2_display_test(data_t *data, uint64_t modifier, const char *name
- 					      crtc,
- 					      output1) {
- 			for_each_crtc(display, crtc2) {
--				if (crtc->pipe == crtc2->pipe)
-+				if (crtc == crtc2)
- 					continue;
+@@ -367,7 +367,7 @@ static void draw_dumb_buffer(struct gpu_process_t *gpu)
+ 		gpu->crtc = crtc;
  
- 				for_each_valid_output_on_crtc_local(display, crtc2,
-diff --git a/tests/kms_tiled_display.c b/tests/kms_tiled_display.c
-index 8aae2bcaadba..95e45ed416d1 100644
---- a/tests/kms_tiled_display.c
-+++ b/tests/kms_tiled_display.c
-@@ -237,7 +237,7 @@ static void setup_mode(data_t *data)
+ 		prepare_crtc_surface(gpu);
+-		pipe_crc = igt_pipe_crc_new(gpu->mdevice.drm_fd, crtc->pipe,
++		pipe_crc = igt_crtc_crc_new(crtc,
+ 					    IGT_PIPE_CRC_SOURCE_AUTO);
+ 		igt_pipe_crc_collect_crc(pipe_crc, &blank_crc);
  
- 			if (count > 0) {
- 				for (prev = count - 1; prev >= 0; prev--) {
--					if (crtc->pipe == conns[prev].crtc->pipe) {
-+					if (crtc == conns[prev].crtc) {
- 						pipe_in_use = true;
- 						break;
- 					}
 -- 
 2.52.0
 
