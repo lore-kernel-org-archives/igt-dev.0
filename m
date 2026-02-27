@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59C01FEFB5D
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Feb 2026 15:09:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A90FFEFB5D
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Feb 2026 15:27:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D9ED110EBB6;
-	Fri, 27 Feb 2026 15:09:34 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A35310EBB6;
- Fri, 27 Feb 2026 15:09:33 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3666802763734403298=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 38AF310EBC0;
+	Fri, 27 Feb 2026 15:27:43 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Hz7wdOYJ";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE36310EBC0
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Feb 2026 15:27:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1772206061; x=1803742061;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=cAOa8vz7TFyMJn+45y0bcSZ62ZGNCIfmy8CbKiIPEqA=;
+ b=Hz7wdOYJeGR57lkRndg9irgYSHgbo8fFL54Ov0FTdrCJZCZvMH3Lbila
+ tlUwY9kGFCnZiAd3W2PJOCPNQM/Eoo0V9izkd5cc8IPpBqQOTD4QeQYnF
+ sXXUIw1RmBJAKav7pTm3TtVJZBRMMVBC7DItp7QhHZUesxqHHOFB5to1C
+ HyKH/E0HqMh5EWUR09j0j2MjoLd8sNQXoiunr1jvxPZTW3vA9tqO5/4dM
+ KFoLllRw9rCq4KW6yVqm0cviet8HIjWvj64Ehluchi/opI7v6NQJFUP6d
+ TV6M4Z9cpBPGrYYAe73xFnIQNtjJHWukc/ec23gsUWO0Kccjh/wtRXFsR w==;
+X-CSE-ConnectionGUID: VVH5k+UGRSm4ioaGVz4SpQ==
+X-CSE-MsgGUID: CxOJf50mSCqZChQwCVFhaA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11714"; a="76899220"
+X-IronPort-AV: E=Sophos;i="6.21,314,1763452800"; d="scan'208";a="76899220"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2026 07:27:40 -0800
+X-CSE-ConnectionGUID: hjgNpIrPTnqBDU7hU5Mw+g==
+X-CSE-MsgGUID: Av6NZ1WoQvW+ZSSnLbDVEA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,314,1763452800"; d="scan'208";a="247438879"
+Received: from pdudkiew-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.246.25.85])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2026 07:27:39 -0800
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: lukasz.laguna@intel.com, piotr.piorkowski@intel.com,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v2 i-g-t 0/2] xe_sriov_flr: basic FLR smoke test
+Date: Fri, 27 Feb 2026 16:27:32 +0100
+Message-ID: <20260227152734.256604-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_test/kms=5Fcontent=5Fprotec?=
- =?utf-8?q?tion=3A_add_debug_prints_and_remove_non-traceable_check?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "sumit kishore" <sumit.kishore@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 27 Feb 2026 15:09:33 -0000
-Message-ID: <177220497308.296914.3730597127961098842@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260227110745.203101-1-sumit.kishore@intel.com>
-In-Reply-To: <20260227110745.203101-1-sumit.kishore@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,126 +65,27 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3666802763734403298==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This series adds a minimal FLR smoke test to xe_sriov_flr.
 
-== Series Details ==
+Patch 1 introduces the flr-basic subtest intended as a minimal smoke
+test for the VF reset sysfs write path while still using the xe-vfio-pci
+based synchronization.
 
-Series: test/kms_content_protection: add debug prints and remove non-traceable check
-URL   : https://patchwork.freedesktop.org/series/162286/
-State : success
+Patch 2 adds --extended to generate additional dynamic variants (numvfs-%u)
+beyond the default numvfs-1.
 
-== Summary ==
+v2: Rename flr-reset-only to flr-basic, and adjust commit messages.
 
-CI Bug Log - changes from XEIGT_8775_BAT -> XEIGTPW_14633_BAT
-====================================================
+Marcin Bernatowicz (2):
+  tests/intel/xe_sriov_flr: Add basic FLR subtest
+  tests/intel/xe_sriov_flr: Add --extended for flr-basic
 
-Summary
--------
+ tests/intel/xe_sriov_flr.c | 79 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 78 insertions(+), 1 deletion(-)
 
-  **SUCCESS**
+-- 
+2.43.0
 
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  Additional (1): bat-bmg-3 
-  Missing    (1): bat-atsm-2 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14633_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_peer2peer@read@read-gpua-vram01-gpub-system-p2p:
-    - bat-bmg-3:          NOTRUN -> [SKIP][1] ([Intel XE#6566]) +3 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14633/bat-bmg-3/igt@xe_peer2peer@read@read-gpua-vram01-gpub-system-p2p.html
-
-  
-  [Intel XE#6566]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6566
-
-
-Build changes
--------------
-
-  * IGT: IGT_8775 -> IGTPW_14633
-
-  IGTPW_14633: 14633
-  IGT_8775: 8775
-  xe-4632-568403859ba7182ce2a59553664b34d58467adeb: 568403859ba7182ce2a59553664b34d58467adeb
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14633/index.html
-
---===============3666802763734403298==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>test/kms_content_protection: add debug prints and remove non-traceable check</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162286/">https://patchwork.freedesktop.org/series/162286/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14633/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14633/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8775_BAT -&gt; XEIGTPW_14633_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>Additional (1): bat-bmg-3 <br />
-  Missing    (1): bat-atsm-2 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14633_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_peer2peer@read@read-gpua-vram01-gpub-system-p2p:<ul>
-<li>bat-bmg-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14633/bat-bmg-3/igt@xe_peer2peer@read@read-gpua-vram01-gpub-system-p2p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6566">Intel XE#6566</a>) +3 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8775 -&gt; IGTPW_14633</li>
-</ul>
-<p>IGTPW_14633: 14633<br />
-  IGT_8775: 8775<br />
-  xe-4632-568403859ba7182ce2a59553664b34d58467adeb: 568403859ba7182ce2a59553664b34d58467adeb</p>
-
-</body>
-</html>
-
---===============3666802763734403298==--
