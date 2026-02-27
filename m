@@ -4,58 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 239F6FD5304
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Feb 2026 07:00:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68D1BFD5306
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Feb 2026 07:09:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CF26810E13A;
-	Fri, 27 Feb 2026 07:00:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0579010E5E7;
+	Fri, 27 Feb 2026 07:09:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CCk6koIy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OVo3PtiS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5391610E13A
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Feb 2026 07:00:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B114510E5E9
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Feb 2026 07:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772175626; x=1803711626;
+ t=1772176167; x=1803712167;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=FKSMJUYigPonzNynkkURbkvYuczOP6QBgo+AZl+C0RU=;
- b=CCk6koIyb+r6cVNsFkf/q7+g9A3T5Gg6WvU8sBlVL8ur/i4v3iPqMmbh
- TPCQJhJfIIBARcCPtudNKyxsTMb2NigXyVQS+uvcuyAwrHVZAZGZXubyO
- zEwVHgBZ6YHb24w9eARvDGjNrlBuv/yFSzD5deidiV0D6C6L+gj/1fDBb
- Uf8ZKs1U1Q6SpxT5gQI+LMubgaRHRX/O1QcZ0JJKwkDeoCqTb5PEQY0dp
- JAhio4NqLsHhTilpkkSfLZcYoEdCwrWA/S22R3C2A0J9XGD2TPF/A7+ym
- Rt0D2cG5duc4ff+V3/kqRRaJ8G6MCy9kQ1c1ByjGlgKw1mewW7IT2h9Z3 g==;
-X-CSE-ConnectionGUID: howwRkZ4TzegQRgviM9/WQ==
-X-CSE-MsgGUID: FUKL4Y2cT1e9uzSyc9muaQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="73360198"
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="73360198"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2026 23:00:26 -0800
-X-CSE-ConnectionGUID: LhwXXjDrRrWL9KB6oluFmw==
-X-CSE-MsgGUID: CbEzFalBT6ObUKY2fEaV5g==
+ bh=tNDHFK2+lWZ6lHK9T/DEagBCOl4g3K8Ie0EtpIoIN0c=;
+ b=OVo3PtiSv1fJva/qV4jKnFAC6ZF+4z/eP6Kc0UCg63ibOTwYbSizBgPD
+ cZ1ooPu21KRnyrup6/novCtvDXxWO+eF9wYIhAaz9wERN4JL1/nEvwaUE
+ Y4wILeyCFycLt+L9H8fuf4La8j/sSrbKDhpZVuzIepC1m15hVdrLUa3R0
+ 1nCI+4F55l/7PSjIf24GMykxxJIh2sxvzg2Ajuo4sJmZpBh7ehwcBr8Z1
+ ZF+Icb+nJQDzjfXEMSbfnUZ3Lult+EEHXv0fyh07u/UwantUhyS55dpsK
+ JyyXCw0RwCV/srrh5UegvCddgZyP+LErjVBR3xomTe4M9qFl//6HU03S4 w==;
+X-CSE-ConnectionGUID: DnCvGVUcTRqw6qN9x8fM4A==
+X-CSE-MsgGUID: N2JUksMyT6yHZlw/0hRTxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="73319728"
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="73319728"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2026 23:09:27 -0800
+X-CSE-ConnectionGUID: 5ErlYi86RMO2zLEVhBo/Cw==
+X-CSE-MsgGUID: LWPbrS2mRaCPGIq4q7Od2A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="214697738"
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="247338353"
 Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
- ([10.245.245.84])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Feb 2026 23:00:25 -0800
-Date: Fri, 27 Feb 2026 08:00:22 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: priyanka.dandamudi@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 4/5] scripts/generate_iga64_codes: Add support for
- xe3p and xe3
-Message-ID: <drllq6ildilxq6abmgy6yaemssgywluictyiap6uxvrxe2b6mp@73pidwkar3xe>
-References: <20260224082800.1581935-1-priyanka.dandamudi@intel.com>
- <20260224082800.1581935-5-priyanka.dandamudi@intel.com>
+ ([10.245.245.74])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Feb 2026 23:09:25 -0800
+Date: Fri, 27 Feb 2026 09:09:22 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Pranay Samala <pranay.samala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, karthik.b.s@intel.com,
+ sameer.lattannavar@intel.com
+Subject: Re: [PATCH i-g-t] tests/intel/kms_big_fb: Skip 90/270 rotation on
+ Display Ver >= 13
+Message-ID: <aaFDIopUYrpOWgXl@intel.com>
+References: <20260227063333.2044616-1-pranay.samala@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260224082800.1581935-5-priyanka.dandamudi@intel.com>
+In-Reply-To: <20260227063333.2044616-1-pranay.samala@intel.com>
+X-Patchwork-Hint: comment
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,366 +74,87 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Feb 24, 2026 at 01:57:59PM +0530, priyanka.dandamudi@intel.com wrote:
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> 
-> Add support for xe3p and xe3 for the existing tests and generate dynamic iga64
-> codes for xe3p and xe3 for those tests.
+On Fri, Feb 27, 2026 at 12:03:33PM +0530, Pranay Samala wrote:
+> >From Display Ver 13, 90/270 hardware rotation no longer
+> supported. Skip these tests on affected platforms. Also move
+> plane capability checks to the outer loop to continue testing
+> other planes.
 
-Reviewed-by: Zbigniew Kempczy≈Ñski <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
+That's two different things -> should be two patches
 
 > 
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 > ---
->  lib/gpgpu_fill.c.gen.iga64_codes.c            |   2 +-
->  lib/gpgpu_shader.c.gen.iga64_codes.c          | 196 +++++++++++++++++-
->  scripts/generate_iga64_codes                  |   2 +-
->  .../xe_eudebug_online.c.gen.iga64_codes.c     |  45 +++-
->  4 files changed, 241 insertions(+), 4 deletions(-)
+>  tests/intel/kms_big_fb.c | 15 +++++++++------
+>  1 file changed, 9 insertions(+), 6 deletions(-)
 > 
-> diff --git a/lib/gpgpu_fill.c.gen.iga64_codes.c b/lib/gpgpu_fill.c.gen.iga64_codes.c
-> index 15ffb6f2d8..400ff7b18a 100644
-> --- a/lib/gpgpu_fill.c.gen.iga64_codes.c
-> +++ b/lib/gpgpu_fill.c.gen.iga64_codes.c
-> @@ -3,7 +3,7 @@
+> diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+> index 66d7c5428..171b38602 100644
+> --- a/tests/intel/kms_big_fb.c
+> +++ b/tests/intel/kms_big_fb.c
+> @@ -172,6 +172,7 @@ typedef struct {
+>  	int hw_stride;
+>  	int max_hw_fb_width;
+>  	double planeclearrgb[3];
+> +	int disp_ver;
+>  } data_t;
 >  
->  #include "gpgpu_shader.h"
+>  static struct intel_buf *init_buf(data_t *data,
+> @@ -422,12 +423,6 @@ static bool test_plane(data_t *data)
+>  		{ w, h, },
+>  	};
 >  
-> -#define MD5_SUM_IGA64_ASMS b785dce133b8fcf480cd65b219b3e008
-> +#define MD5_SUM_IGA64_ASMS ebaa9e23021939d874c576c7cea482bf
+> -	if (!igt_plane_has_format_mod(plane, data->format, data->modifier))
+> -		return false;
+> -
+> -	if (!igt_plane_has_rotation(plane, data->rotation))
+> -		return false;
+> -
+>  	if (igt_plane_has_prop(plane, IGT_PLANE_ROTATION))
+>  		igt_plane_set_rotation(plane, data->rotation);
+>  	igt_plane_set_position(plane, 0, 0);
+> @@ -570,6 +565,10 @@ static bool test_pipe(data_t *data)
+>  					  IGT_PIPE_CRC_SOURCE_AUTO);
 >  
->  struct iga64_template const iga64_code_gpgpu_fill[] = {
->  	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
-> diff --git a/lib/gpgpu_shader.c.gen.iga64_codes.c b/lib/gpgpu_shader.c.gen.iga64_codes.c
-> index ee45f8263d..59172cdfd1 100644
-> --- a/lib/gpgpu_shader.c.gen.iga64_codes.c
-> +++ b/lib/gpgpu_shader.c.gen.iga64_codes.c
-> @@ -3,7 +3,7 @@
+>  	for_each_plane_on_pipe(&data->display, data->crtc->pipe, data->plane) {
+> +		if (!igt_plane_has_rotation(data->plane, data->rotation))
+> +			continue;
+> +		if (!igt_plane_has_format_mod(data->plane, data->format, data->modifier))
+> +			continue;
+>  		ret = test_plane(data);
+>  		if (ret || run_in_simulation)
+
+That whole run_in_simulation nonsense seems to be the reason why
+you need to change something here. Just remove the nonsense and
+this should work fine.
+
+>  			break;
+> @@ -688,6 +687,9 @@ static void test_scanout(data_t *data)
+>  	igt_crtc_t *crtc;
+>  	igt_output_t *output;
 >  
->  #include "gpgpu_shader.h"
+> +	if (igt_rotation_90_or_270(data->rotation))
+> +		igt_require_f(data->disp_ver < 13, "90/270 rotation not supported by platform\n");
+
+Please don't add yet more platform checks when the test already has
+the hardware agnostic logic to skip everything when the thing isn't
+supported.
+
+> +
+>  	igt_require(data->format == DRM_FORMAT_C8 ||
+>  		    igt_fb_supported_format(data->format));
 >  
-> -#define MD5_SUM_IGA64_ASMS b3ca58d01d637034cf62ec574656a2f0
-> +#define MD5_SUM_IGA64_ASMS 4311fff3bece03802f3220b7d239c33b
+> @@ -983,6 +985,7 @@ int igt_main()
+>  		igt_require(is_intel_device(data.drm_fd));
 >  
->  struct iga64_template const iga64_code_read_a64_d32[] = {
->  	{ .gen_ver = 2000, .size = 40, .code = (const uint32_t []) {
-> @@ -44,6 +44,40 @@ struct iga64_template const iga64_code_write_a64_d32[] = {
->  };
+>  		data.devid = intel_get_drm_devid(data.drm_fd);
+> +		data.disp_ver = intel_display_ver(data.devid);
 >  
->  struct iga64_template const iga64_code_end_system_routine_step_if_eq[] = {
-> +	{ .gen_ver = 3500, .size = 60, .code = (const uint32_t []) {
-> +		0x80000966, 0x80018220, 0x02008000, 0x00008000,
-> +		0x80000965, 0x80118220, 0x02008010, 0xc0ded000,
-> +		0x80000961, 0x1e050330, 0x00000104, 0x00000000,
-> +		0x80000040, 0x1e258220, 0x06000124, 0xffffffff,
-> +		0x80000040, 0x1e358220, 0x06000134, 0xffffffff,
-> +		0x80000040, 0x1e458220, 0x06000124, 0xffffffff,
-> +		0x80000061, 0x1e554220, 0x00000000, 0x00000000,
-> +		0x80000061, 0x1e654220, 0x00000000, 0xc0ded000,
-> +		0x80000061, 0x1e754220, 0x00000000, 0x00000003,
-> +		0x80032033, 0x1f000002, 0xf0021e0c, 0x80030000,
-> +		0x80000061, 0x30014220, 0x00000000, 0x00000000,
-> +		0x80008070, 0x00018220, 0x22001f04, 0xc0ded002,
-> +		0x84000965, 0x80118220, 0x02008010, 0xc0ded003,
-> +		0x80000965, 0x80018220, 0x02008000, 0x7ffffffd,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
-> +	{ .gen_ver = 3000, .size = 60, .code = (const uint32_t []) {
-> +		0x80000966, 0x80018220, 0x02008000, 0x00008000,
-> +		0x80000965, 0x80118220, 0x02008010, 0xc0ded000,
-> +		0x80000961, 0x1e050330, 0x00000104, 0x00000000,
-> +		0x80000040, 0x1e258220, 0x06000124, 0xffffffff,
-> +		0x80000040, 0x1e358220, 0x06000134, 0xffffffff,
-> +		0x80000040, 0x1e458220, 0x06000124, 0xffffffff,
-> +		0x80000061, 0x1e554220, 0x00000000, 0x00000000,
-> +		0x80000061, 0x1e654220, 0x00000000, 0xc0ded000,
-> +		0x80000061, 0x1e754220, 0x00000000, 0x00000003,
-> +		0x80032031, 0x1f0c0000, 0xf0061e0c, 0x00800000,
-> +		0x80000061, 0x30014220, 0x00000000, 0x00000000,
-> +		0x80008070, 0x00018220, 0x22001f04, 0xc0ded002,
-> +		0x84000965, 0x80118220, 0x02008010, 0xc0ded003,
-> +		0x80000965, 0x80018220, 0x02008000, 0x7ffffffd,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
->  	{ .gen_ver = 2000, .size = 48, .code = (const uint32_t []) {
->  		0x80000966, 0x80018220, 0x02008000, 0x00008000,
->  		0x80000965, 0x80118220, 0x02008010, 0xc0ded000,
-> @@ -158,6 +192,42 @@ struct iga64_template const iga64_code_breakpoint_suppress[] = {
->  };
+>  		kmstest_set_vt_graphics_mode();
 >  
->  struct iga64_template const iga64_code_write_on_exception[] = {
-> +	{ .gen_ver = 3500, .size = 64, .code = (const uint32_t []) {
-> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded002,
-> +		0x80000061, 0x04050330, 0x00000104, 0x00000000,
-> +		0x80000040, 0x04258220, 0x06000124, 0xffffffff,
-> +		0x80000040, 0x04358220, 0x06000134, 0xffffffff,
-> +		0x80000040, 0x04458220, 0x06000124, 0xffffffff,
-> +		0x80000069, 0x04558220, 0x02000014, 0x00000002,
-> +		0x80001940, 0x04558220, 0x02000454, 0xc0ded000,
-> +		0x80000040, 0x04658220, 0x02000064, 0xc0ded001,
-> +		0x80000061, 0x04754220, 0x00000000, 0x00000003,
-> +		0x80000965, 0x03058220, 0x02008010, 0xc0ded003,
-> +		0x80000961, 0x30014220, 0x00000000, 0x00000000,
-> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded004,
-> +		0x84032033, 0x00000000, 0xf002040c, 0x8007050c,
-> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
-> +	{ .gen_ver = 3000, .size = 64, .code = (const uint32_t []) {
-> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded002,
-> +		0x80000061, 0x04050330, 0x00000104, 0x00000000,
-> +		0x80000040, 0x04258220, 0x06000124, 0xffffffff,
-> +		0x80000040, 0x04358220, 0x06000134, 0xffffffff,
-> +		0x80000040, 0x04458220, 0x06000124, 0xffffffff,
-> +		0x80000069, 0x04558220, 0x02000014, 0x00000002,
-> +		0x80001940, 0x04558220, 0x02000454, 0xc0ded000,
-> +		0x80000040, 0x04658220, 0x02000064, 0xc0ded001,
-> +		0x80000061, 0x04754220, 0x00000000, 0x00000003,
-> +		0x80000965, 0x03058220, 0x02008010, 0xc0ded003,
-> +		0x80000961, 0x30014220, 0x00000000, 0x00000000,
-> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded004,
-> +		0x84032031, 0x00000000, 0xf00e040c, 0x0080050c,
-> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
->  	{ .gen_ver = 2000, .size = 52, .code = (const uint32_t []) {
->  		0x80000061, 0x05054220, 0x00000000, 0xc0ded002,
->  		0x800c0061, 0x04054220, 0x00000000, 0x00000000,
-> @@ -288,6 +358,36 @@ struct iga64_template const iga64_code_clear_exception[] = {
->  };
->  
->  struct iga64_template const iga64_code_media_block_write[] = {
-> +	{ .gen_ver = 3500, .size = 52, .code = (const uint32_t []) {
-> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded001,
-> +		0x80000061, 0x04050330, 0x00000104, 0x00000000,
-> +		0x80000040, 0x04258220, 0x06000124, 0xffffffff,
-> +		0x80000040, 0x04358220, 0x06000134, 0xffffffff,
-> +		0x80000040, 0x04458220, 0x06000124, 0xffffffff,
-> +		0x80000069, 0x04558220, 0x02000014, 0x00000002,
-> +		0x80001940, 0x04558220, 0x02000454, 0x00000000,
-> +		0x80000040, 0x04658220, 0x02000064, 0xc0ded000,
-> +		0x80000061, 0x04754220, 0x00000000, 0x00000003,
-> +		0x80032033, 0x00000000, 0xf002040c, 0x8007050c,
-> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
-> +	{ .gen_ver = 3000, .size = 52, .code = (const uint32_t []) {
-> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded001,
-> +		0x80000061, 0x04050330, 0x00000104, 0x00000000,
-> +		0x80000040, 0x04258220, 0x06000124, 0xffffffff,
-> +		0x80000040, 0x04358220, 0x06000134, 0xffffffff,
-> +		0x80000040, 0x04458220, 0x06000124, 0xffffffff,
-> +		0x80000069, 0x04558220, 0x02000014, 0x00000002,
-> +		0x80001940, 0x04558220, 0x02000454, 0x00000000,
-> +		0x80000040, 0x04658220, 0x02000064, 0xc0ded000,
-> +		0x80000061, 0x04754220, 0x00000000, 0x00000003,
-> +		0x80032031, 0x00000000, 0xf00e040c, 0x0080050c,
-> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
->  	{ .gen_ver = 2000, .size = 40, .code = (const uint32_t []) {
->  		0x80000061, 0x05054220, 0x00000000, 0xc0ded001,
->  		0x800c0061, 0x04054220, 0x00000000, 0x00000000,
-> @@ -380,6 +480,36 @@ struct iga64_template const iga64_code_write_aip[] = {
->  };
->  
->  struct iga64_template const iga64_code_media_block_write_aip[] = {
-> +	{ .gen_ver = 3500, .size = 52, .code = (const uint32_t []) {
-> +		0x80000961, 0x05050220, 0x00008020, 0x00000000,
-> +		0x80000961, 0x04050330, 0x00000104, 0x00000000,
-> +		0x80000040, 0x04258220, 0x06000124, 0xffffffff,
-> +		0x80000040, 0x04358220, 0x06000134, 0xffffffff,
-> +		0x80000040, 0x04458220, 0x06000124, 0xffffffff,
-> +		0x80000069, 0x04558220, 0x02000014, 0x00000002,
-> +		0x80001940, 0x04558220, 0x02000454, 0x00000000,
-> +		0x80000040, 0x04658220, 0x02000064, 0xc0ded000,
-> +		0x80000061, 0x04754220, 0x00000000, 0x00000003,
-> +		0x80032033, 0x00000000, 0xf002040c, 0x8007050c,
-> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
-> +	{ .gen_ver = 3000, .size = 52, .code = (const uint32_t []) {
-> +		0x80000961, 0x05050220, 0x00008020, 0x00000000,
-> +		0x80000961, 0x04050330, 0x00000104, 0x00000000,
-> +		0x80000040, 0x04258220, 0x06000124, 0xffffffff,
-> +		0x80000040, 0x04358220, 0x06000134, 0xffffffff,
-> +		0x80000040, 0x04458220, 0x06000124, 0xffffffff,
-> +		0x80000069, 0x04558220, 0x02000014, 0x00000002,
-> +		0x80001940, 0x04558220, 0x02000454, 0x00000000,
-> +		0x80000040, 0x04658220, 0x02000064, 0xc0ded000,
-> +		0x80000061, 0x04754220, 0x00000000, 0x00000003,
-> +		0x80032031, 0x00000000, 0xf00e040c, 0x0080050c,
-> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
->  	{ .gen_ver = 2000, .size = 40, .code = (const uint32_t []) {
->  		0x80000961, 0x05050220, 0x00008020, 0x00000000,
->  		0x800c0961, 0x04054220, 0x00000000, 0x00000000,
-> @@ -449,6 +579,42 @@ struct iga64_template const iga64_code_media_block_write_aip[] = {
->  };
->  
->  struct iga64_template const iga64_code_common_target_write[] = {
-> +	{ .gen_ver = 3500, .size = 64, .code = (const uint32_t []) {
-> +		0x80100061, 0x1f054220, 0x00000000, 0x00000000,
-> +		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
-> +		0x80000061, 0x1f154220, 0x00000000, 0xc0ded002,
-> +		0x80000061, 0x1f254220, 0x00000000, 0xc0ded003,
-> +		0x80000061, 0x1f354220, 0x00000000, 0xc0ded004,
-> +		0x80000061, 0x1e050330, 0x00000104, 0x00000000,
-> +		0x80000040, 0x1e258220, 0x06000124, 0xffffffff,
-> +		0x80000040, 0x1e358220, 0x06000134, 0xffffffff,
-> +		0x80000040, 0x1e458220, 0x06000124, 0xffffffff,
-> +		0x80000061, 0x1e554220, 0x00000000, 0x00000000,
-> +		0x80000061, 0x1e654220, 0x00000000, 0xc0ded000,
-> +		0x80000061, 0x1e754220, 0x00000000, 0x0000000f,
-> +		0x80032033, 0x00000000, 0xf0021e0c, 0x80071f0c,
-> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
-> +	{ .gen_ver = 3000, .size = 64, .code = (const uint32_t []) {
-> +		0x80100061, 0x1f054220, 0x00000000, 0x00000000,
-> +		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
-> +		0x80000061, 0x1f154220, 0x00000000, 0xc0ded002,
-> +		0x80000061, 0x1f254220, 0x00000000, 0xc0ded003,
-> +		0x80000061, 0x1f354220, 0x00000000, 0xc0ded004,
-> +		0x80000061, 0x1e050330, 0x00000104, 0x00000000,
-> +		0x80000040, 0x1e258220, 0x06000124, 0xffffffff,
-> +		0x80000040, 0x1e358220, 0x06000134, 0xffffffff,
-> +		0x80000040, 0x1e458220, 0x06000124, 0xffffffff,
-> +		0x80000061, 0x1e554220, 0x00000000, 0x00000000,
-> +		0x80000061, 0x1e654220, 0x00000000, 0xc0ded000,
-> +		0x80000061, 0x1e754220, 0x00000000, 0x0000000f,
-> +		0x80032031, 0x00000000, 0xf00e1e0c, 0x00801f0c,
-> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
->  	{ .gen_ver = 2000, .size = 52, .code = (const uint32_t []) {
->  		0x80100061, 0x1f054220, 0x00000000, 0x00000000,
->  		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
-> @@ -578,6 +744,34 @@ struct iga64_template const iga64_code_clear_r40[] = {
->  };
->  
->  struct iga64_template const iga64_code_jump_dw_neq[] = {
-> +	{ .gen_ver = 3500, .size = 48, .code = (const uint32_t []) {
-> +		0x80000061, 0x1e050330, 0x00000104, 0x00000000,
-> +		0x80000040, 0x1e258220, 0x06000124, 0xffffffff,
-> +		0x80000040, 0x1e358220, 0x06000134, 0xffffffff,
-> +		0x80000040, 0x1e458220, 0x06000124, 0xffffffff,
-> +		0x80000061, 0x1e554220, 0x00000000, 0x00000000,
-> +		0x80000061, 0x1e654220, 0x00000000, 0xc0ded000,
-> +		0x80000061, 0x1e754220, 0x00000000, 0x00000003,
-> +		0x80032033, 0x1f000002, 0xf0021e0c, 0x80030000,
-> +		0x80000061, 0x30014220, 0x00000000, 0x00000000,
-> +		0x80008070, 0x00018220, 0x22001f04, 0xc0ded001,
-> +		0x84000020, 0x00004000, 0x00000000, 0xffffff60,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
-> +	{ .gen_ver = 3000, .size = 48, .code = (const uint32_t []) {
-> +		0x80000061, 0x1e050330, 0x00000104, 0x00000000,
-> +		0x80000040, 0x1e258220, 0x06000124, 0xffffffff,
-> +		0x80000040, 0x1e358220, 0x06000134, 0xffffffff,
-> +		0x80000040, 0x1e458220, 0x06000124, 0xffffffff,
-> +		0x80000061, 0x1e554220, 0x00000000, 0x00000000,
-> +		0x80000061, 0x1e654220, 0x00000000, 0xc0ded000,
-> +		0x80000061, 0x1e754220, 0x00000000, 0x00000003,
-> +		0x80032031, 0x1f0c0000, 0xf0061e0c, 0x00800000,
-> +		0x80000061, 0x30014220, 0x00000000, 0x00000000,
-> +		0x80008070, 0x00018220, 0x22001f04, 0xc0ded001,
-> +		0x84000020, 0x00004000, 0x00000000, 0xffffff60,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
->  	{ .gen_ver = 2000, .size = 36, .code = (const uint32_t []) {
->  		0x800c0061, 0x1e054220, 0x00000000, 0x00000000,
->  		0x80000061, 0x1e554220, 0x00000000, 0x00000000,
-> diff --git a/scripts/generate_iga64_codes b/scripts/generate_iga64_codes
-> index d196c7a016..24271ecd76 100755
-> --- a/scripts/generate_iga64_codes
-> +++ b/scripts/generate_iga64_codes
-> @@ -7,7 +7,7 @@
->  # to minimal GPU generation supported by platform multiplied by 100 and platform
->  # is one of platforms supported by -p switch of iga64.
->  # Must be in decreasing order, the last one must have gen100 equal 0.
-> -GEN_VERSIONS="2000:2 1270:12p71 1260:12p72 1250:12p5 0:12p1"
-> +GEN_VERSIONS="3500:3px 3000:3 2000:2 1270:12p71 1260:12p72 1250:12p5 0:12p1"
->  
->  # Magic values to encode asm template args, must be the the same as in gpgpu_shader.c.
->  IGA64_ARG0=0xc0ded000
-> diff --git a/tests/intel/xe_eudebug_online.c.gen.iga64_codes.c b/tests/intel/xe_eudebug_online.c.gen.iga64_codes.c
-> index 32009e40fe..333281a39a 100644
-> --- a/tests/intel/xe_eudebug_online.c.gen.iga64_codes.c
-> +++ b/tests/intel/xe_eudebug_online.c.gen.iga64_codes.c
-> @@ -3,9 +3,39 @@
->  
->  #include "gpgpu_shader.h"
->  
-> -#define MD5_SUM_IGA64_ASMS d8acd22fb8afb78633ac79a0ca42d8da
-> +#define MD5_SUM_IGA64_ASMS e184c9b1ac9287f33544ad0737b2831a
->  
->  struct iga64_template const iga64_code_store_sr0_0[] = {
-> +	{ .gen_ver = 3500, .size = 52, .code = (const uint32_t []) {
-> +		0x00000961, 0x05050220, 0x00007000, 0x00000000,
-> +		0x80000961, 0x04050330, 0x00000104, 0x00000000,
-> +		0x80000040, 0x04258220, 0x06000124, 0xffffffff,
-> +		0x80000040, 0x04358220, 0x06000134, 0xffffffff,
-> +		0x80000040, 0x04458220, 0x06000124, 0xffffffff,
-> +		0x80000069, 0x04558220, 0x02000014, 0x00000002,
-> +		0x80001940, 0x04558220, 0x02000454, 0x00000000,
-> +		0x80000040, 0x04658220, 0x02000064, 0x00000000,
-> +		0x80000061, 0x04754220, 0x00000000, 0x00000003,
-> +		0x00032033, 0x00000000, 0xf002040c, 0x8007050c,
-> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
-> +	{ .gen_ver = 3000, .size = 52, .code = (const uint32_t []) {
-> +		0x00000961, 0x05050220, 0x00007000, 0x00000000,
-> +		0x80000961, 0x04050330, 0x00000104, 0x00000000,
-> +		0x80000040, 0x04258220, 0x06000124, 0xffffffff,
-> +		0x80000040, 0x04358220, 0x06000134, 0xffffffff,
-> +		0x80000040, 0x04458220, 0x06000124, 0xffffffff,
-> +		0x80000069, 0x04558220, 0x02000014, 0x00000002,
-> +		0x80001940, 0x04558220, 0x02000454, 0x00000000,
-> +		0x80000040, 0x04658220, 0x02000064, 0x00000000,
-> +		0x80000061, 0x04754220, 0x00000000, 0x00000003,
-> +		0x00032031, 0x00000000, 0xf00e040c, 0x0080050c,
-> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
->  	{ .gen_ver = 2000, .size = 40, .code = (const uint32_t []) {
->  		0x00000961, 0x05050220, 0x00007000, 0x00000000,
->  		0x800c0961, 0x04054220, 0x00000000, 0x00000000,
-> @@ -24,6 +54,19 @@ struct iga64_template const iga64_code_store_sr0_0[] = {
->  };
->  
->  struct iga64_template const iga64_code_pagefault_one_of_many[] = {
-> +	{ .gen_ver = 3500, .size = 44, .code = (const uint32_t []) {
-> +		0x000c0061, 0x1e054330, 0x00000000, 0x00000000,
-> +		0x00000061, 0x1e054330, 0x00000123, 0x45678000,
-> +		0x00000061, 0x1e254220, 0x00000000, 0x0000003f,
-> +		0x00000061, 0x1e454220, 0x00000000, 0x0000003f,
-> +		0x00000061, 0x1e754220, 0x00000000, 0x00000003,
-> +		0x0000005b, 0x14060220, 0x02020014, 0x01440064,
-> +		0x00001970, 0x00018220, 0x12001404, 0xc0ded000,
-> +		0x04032031, 0x1f0c0000, 0xf8061e0c, 0x00a00000,
-> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-> +	}},
->  	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
->  		0x000c0061, 0x1e054330, 0x00000000, 0x00000000,
->  		0x00000061, 0x1e054330, 0x00000123, 0x45678000,
 > -- 
-> 2.43.0
-> 
+> 2.34.1
+
+-- 
+Ville Syrj‰l‰
+Intel
