@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 841CEFEFB56
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Feb 2026 14:24:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D6D9FEFB54
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Feb 2026 14:27:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3B3EA10EBA3;
-	Fri, 27 Feb 2026 14:24:34 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E07710EB9C;
- Fri, 27 Feb 2026 14:24:33 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0327359101029592017=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id B029C10E190;
+	Fri, 27 Feb 2026 14:27:08 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jfzVvzRt";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 61C2310E190
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Feb 2026 14:27:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1772202427; x=1803738427;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=tDCJJvpwy+PGGOSaXu1SkAiyDISo/Z5GdXYst3FAatQ=;
+ b=jfzVvzRtO5zKRy+p1gtfp8q62Z1o4paGp40ElXTyZYMu6ogIx9YrA/rA
+ Yw1vaEjANVZLM2wAfNzQS4MyGlKeBN44hAOBtLzS7DDxmhxj4RasG1hO6
+ KNg9puW9ev4cDvchEd9GIpupU90/r6egkM+pKkDYB19AHXOC/fCNtp8Xn
+ 0te7DP+HnFk8TJhY70U/UCIGASk/N2wVF+ai26fwRV9AdHD6F7IA/uw/l
+ 8NtvvKdQGVa5TCT8OHCybqwWwLU1m+B6RPXki0g1ZxQKut6lx4IPyexom
+ +SSf6Cb58Bp8YTeyHTX0iN+NfWDS0ecPevaHDt9YL+Ur4u7tgF58w1CQi A==;
+X-CSE-ConnectionGUID: ul9bQ4gXSjW5Tx5e9A1xzA==
+X-CSE-MsgGUID: qi3wPdgNTPiPf7PuXCho/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11714"; a="73157023"
+X-IronPort-AV: E=Sophos;i="6.21,314,1763452800"; d="scan'208";a="73157023"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2026 06:27:07 -0800
+X-CSE-ConnectionGUID: VDaoP7VGSS2W7IQn8GmR7Q==
+X-CSE-MsgGUID: BY5jLQAWTAWpXq32ilM1QA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,314,1763452800"; d="scan'208";a="214757264"
+Received: from art-dev-395.igk.intel.com ([10.211.135.233])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Feb 2026 06:27:05 -0800
+From: Jan Maslak <jan.maslak@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: maciej.patelczyk@intel.com,
+	Jan Maslak <jan.maslak@intel.com>
+Subject: [PATCH 0/1] tests/intel/xe_eudebug: Add basic-vm-bind-ufence-no-ack
+ test
+Date: Fri, 27 Feb 2026 15:26:37 +0100
+Message-Id: <20260227142638.3264013-1-jan.maslak@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/kms=3A_Finish_the_igt?=
- =?utf-8?q?=5Fcrtc=5Ft_API_refactoring?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ville Syrjala" <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 27 Feb 2026 14:24:33 -0000
-Message-ID: <177220227348.296915.11666333177212787107@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260227080653.30389-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20260227080653.30389-1-ville.syrjala@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,125 +64,15 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0327359101029592017==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Jan Maslak (1):
+  tests/intel/xe_eudebug: Add basic-vm-bind-ufence-no-ack test
 
-== Series Details ==
+ tests/intel/xe_eudebug.c | 144 +++++++++++++++++++++++++++++++++------
+ 1 file changed, 124 insertions(+), 20 deletions(-)
 
-Series: lib/kms: Finish the igt_crtc_t API refactoring
-URL   : https://patchwork.freedesktop.org/series/162275/
-State : success
+-- 
+2.34.1
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8775_BAT -> XEIGTPW_14632_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14632_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_waitfence@abstime:
-    - bat-atsm-2:         [TIMEOUT][1] ([Intel XE#6506]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8775/bat-atsm-2/igt@xe_waitfence@abstime.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14632/bat-atsm-2/igt@xe_waitfence@abstime.html
-
-  
-  [Intel XE#6506]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506
-
-
-Build changes
--------------
-
-  * IGT: IGT_8775 -> IGTPW_14632
-
-  IGTPW_14632: 661f5a01a987eec6532dc8d4ff3e12c4cca7117e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8775: 8775
-  xe-4632-568403859ba7182ce2a59553664b34d58467adeb: 568403859ba7182ce2a59553664b34d58467adeb
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14632/index.html
-
---===============0327359101029592017==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/kms: Finish the igt_crtc_t API refactoring</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162275/">https://patchwork.freedesktop.org/series/162275/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14632/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14632/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8775_BAT -&gt; XEIGTPW_14632_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14632_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_waitfence@abstime:<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8775/bat-atsm-2/igt@xe_waitfence@abstime.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6506">Intel XE#6506</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14632/bat-atsm-2/igt@xe_waitfence@abstime.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8775 -&gt; IGTPW_14632</li>
-</ul>
-<p>IGTPW_14632: 661f5a01a987eec6532dc8d4ff3e12c4cca7117e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8775: 8775<br />
-  xe-4632-568403859ba7182ce2a59553664b34d58467adeb: 568403859ba7182ce2a59553664b34d58467adeb</p>
-
-</body>
-</html>
-
---===============0327359101029592017==--
