@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28C6BFD530D
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Feb 2026 08:07:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8BE2FD530E
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Feb 2026 08:07:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A925210EA4E;
-	Fri, 27 Feb 2026 08:07:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7F66A10EA54;
+	Fri, 27 Feb 2026 08:07:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j7csPbQP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R1Ch6RxZ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7958F10EA4E
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Feb 2026 08:07:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E46C10EA52
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Feb 2026 08:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772179630; x=1803715630;
+ t=1772179634; x=1803715634;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=MzvHp3uYAS2m+oH94LZ69soMdlvSkrsX/76NF7uWl/A=;
- b=j7csPbQPwqQW/yCCdo1uFCdvImXK5+yvrFTJxJBPUSekSPCKz5ef/Vd0
- 0jwKRdRyMR8g2/7sHqpwex5mOw27Yl4hU2FAqdtSK55e8x20e1YA6xlum
- XO9umqzWRqYrb4HnWDN8GXBd/AN1IN8UGgDYBZv5qDK/2OTKNJWeX/OQS
- X389kb+C0mq0F42tedOxvBj0DqOA7FrCwCVd7sY4pIkYGt80l/726jAFr
- E8xzKDfeH/WiHy2OrnK3HyN4JdLmoaR3aXmpPhcT7BEgqCPtMVsledF/D
- A3cblNPqnQQ1OdW5fSHda7MTkYcREaNtSrk5wyZ6uUpboHCFF7WUPSnGW g==;
-X-CSE-ConnectionGUID: 7shNoRAGRd2jstE2dfKFfQ==
-X-CSE-MsgGUID: HP6hEdKISvuoFDAMHuRlHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="75859385"
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="75859385"
+ bh=GgE42hAad2+YLkVbmM9yLfHYF0c1rNSFks7wD/e9b4g=;
+ b=R1Ch6RxZSc7Fmf6R4ZY889FVPHcnTUaIIxr/8bJ72VQyELXJ6eqXLAS1
+ OLpUvTEZprudaIejVl1W9Gh25ZASTELgZi3VxfGMtCjF42zbomoLerMYZ
+ PlF4gUVzx8iguRV960J7MrP0sgC5DJN/f3IDdp43TMMUyfn85XFxGWHbs
+ 3lwpuBZnSNOEpDWVMyFZ7kRz8m5oLtxcHHvdSsY6mEyC3QwnzKNlxGGMy
+ FSgW7g+swFPcT0bR7btTKzn4ZSaQMACM+TI+McF+c+SjiAU0oa72XCoJR
+ 4sn+SnnJlxndMjWpWPikykQAtHzD2AMgoO/JTtQw/7juFwclF3LF3wJZW g==;
+X-CSE-ConnectionGUID: Waa/fy2CRQmV7WJXRUq4GA==
+X-CSE-MsgGUID: klADggkRQMaCD8ii4DJq0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="75859391"
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="75859391"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2026 00:07:10 -0800
-X-CSE-ConnectionGUID: qlvvKXTRQCum2NztdcVDXg==
-X-CSE-MsgGUID: A9yjOHQrTqCs/eC+dhB6Ow==
+ 27 Feb 2026 00:07:14 -0800
+X-CSE-ConnectionGUID: 6RfEWNWIQE2NcpnLjD8c2w==
+X-CSE-MsgGUID: Fu2sVqqDQVi+LNJSPejZcg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="216731082"
+X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; d="scan'208";a="216731100"
 Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost)
  ([10.245.245.74])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Feb 2026 00:07:09 -0800
+ 27 Feb 2026 00:07:13 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 03/17] lib/kms: Replace igt_get_single_output_for_pipe()
- with igt_get_single_output_for_crtc()
-Date: Fri, 27 Feb 2026 10:06:39 +0200
-Message-ID: <20260227080653.30389-4-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 04/17] lib/kms: Make the igt_*_bpc_*() interfaces more
+ abstract
+Date: Fri, 27 Feb 2026 10:06:40 +0200
+Message-ID: <20260227080653.30389-5-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260227080653.30389-1-ville.syrjala@linux.intel.com>
 References: <20260227080653.30389-1-ville.syrjala@linux.intel.com>
@@ -73,16 +73,100 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Replace the pipe based igt_get_single_output_for_pipe() with
-the crtc based igt_get_single_output_for_crtc()
+Various igt_*_bpc_*() functions are way too low level. Instead of
+passing cumbersome things like fds and strings just pass in the
+proper igt_crtc_t* and/or igt_output_t*. All the callers have
+those around already anyway.
 
  #include "scripts/iterators.cocci"
 
+@pipe_and_output@
+typedef igt_output_t;
+identifier FUNC =~ "^(igt_check_output_bpc_equal|get_current_bpc|igt_assert_output_bpc_equal)$";
+identifier FD, PIPE, OUTPUT_NAME;
 @@
-expression DISPLAY, PIPE;
+FUNC(
+-	int FD, enum pipe PIPE, char *OUTPUT_NAME
++	igt_crtc_t *crtc, igt_output_t *output
+	,...)
+{
++	igt_display_t *display = output->display;
++	int FD = display->drm_fd;
+<...
+(
+- OUTPUT_NAME
++ output->name
+|
+- PIPE
++ crtc->pipe
+)
+...>
+}
+
 @@
-- igt_get_single_output_for_pipe(DISPLAY, PIPE)
-+ igt_get_single_output_for_crtc(igt_crtc_for_pipe(DISPLAY, PIPE))
+identifier FUNC =~ "^(igt_check_output_bpc_equal|get_current_bpc|igt_assert_output_bpc_equal)$";
+igt_output_t *OUTPUT;
+expression FD, PIPE;
+@@
+FUNC(
+-	FD, PIPE, OUTPUT->name
++ 	igt_crtc_for_pipe(display, PIPE), OUTPUT
+	,...)
+
+@output_only@
+typedef igt_output_t;
+identifier FUNC =~ "^(igt_get_output_max_bpc|panel_supports_deep_color)$";
+identifier FD, OUTPUT_NAME;
+@@
+FUNC(
+-	int FD, char *OUTPUT_NAME
++	igt_output_t *output
+	,...)
+{
++	igt_display_t *display = output->display;
++	int FD = display->drm_fd;
+<...
+- OUTPUT_NAME
++ output->name
+...>
+}
+
+@@
+identifier FUNC =~ "^(igt_get_output_max_bpc|panel_supports_deep_color)$";
+igt_output_t *OUTPUT;
+expression FD;
+@@
+FUNC(
+-	FD, OUTPUT->name
++ 	OUTPUT
+	,...)
+
+@pipe_only@
+typedef igt_output_t;
+identifier FUNC =~ "^(igt_get_pipe_current_bpc)$";
+identifier FD, PIPE;
+@@
+FUNC(
+-	int FD, enum pipe PIPE
++	igt_crtc_t *crtc
+	,...)
+{
++	igt_display_t *display = crtc->display;
++	int FD = display->drm_fd;
+<...
+- PIPE
++ crtc->pipe
+...>
+}
+
+@@
+identifier FUNC =~ "^(igt_get_pipe_current_bpc)$";
+expression FD, PIPE;
+@@
+FUNC(
+-	FD, PIPE
++ 	igt_crtc_for_pipe(display, PIPE)
+	,...)
 
 @@
 igt_crtc_t *CRTC;
@@ -91,237 +175,406 @@ igt_crtc_t *CRTC;
 + CRTC
 
 @@
-type T;
+identifier DISPLAY, FD;
 @@
-T igt_get_single_output_for_pipe(...);
-+igt_output_t *igt_get_single_output_for_crtc(igt_crtc_t *crtc);
+  igt_display_t *DISPLAY = ...;
+- int FD = DISPLAY->drm_fd;
+... when != FD
 
 @@
+identifier DISPLAY;
 @@
-igt_get_single_output_for_pipe(...)
-{ ... }
-+/**
-+ * igt_get_single_output_for_crtc:
-+ * @crtc: The CRTC for which an #igt_output_t must be returned.
-+ *
-+ * Get a compatible output for a CRTC.
-+ *
-+ * Returns: A compatible output for a given CRTC, or NULL.
-+ */
-+igt_output_t *igt_get_single_output_for_crtc(igt_crtc_t *crtc)
-+{
-+       igt_display_t *display = crtc->display;
-+       igt_output_t *chosen_outputs[igt_display_n_crtcs(display)];
-+
-+       __igt_pipe_populate_outputs(display, chosen_outputs);
-+
-+       return chosen_outputs[crtc->pipe];
-+}
-
-@@
-@@
-- igt_get_single_output_for_pipe(...) { ... }
-
-@@
-@@
-- igt_require_pipe(...) { ... }
+- igt_display_t *DISPLAY = ...;
+... when != DISPLAY
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_kms.c                           | 26 ++++++++-----------------
- lib/igt_kms.h                           |  2 +-
- tests/amdgpu/amd_abm.c                  |  3 +--
- tests/amdgpu/amd_bypass.c               |  3 +--
- tests/amdgpu/amd_color.c                |  3 +--
- tests/amdgpu/amd_multidisplay_modeset.c |  2 +-
- tests/amdgpu/amd_psr.c                  |  3 +--
- tests/amdgpu/amd_replay.c               |  3 +--
- tests/intel/gem_eio.c                   |  2 +-
- tests/nouveau_crc.c                     |  3 +--
- 10 files changed, 17 insertions(+), 33 deletions(-)
+ lib/igt_kms.c              | 37 +++++++++++++++++++++----------------
+ lib/igt_kms.h              | 12 ++++++------
+ tests/amdgpu/amd_bypass.c  |  2 +-
+ tests/amdgpu/amd_dp_dsc.c  |  7 +++----
+ tests/amdgpu/amd_max_bpc.c |  4 ++--
+ tests/intel/kms_dsc.c      |  4 ++--
+ tests/kms_color.c          |  2 +-
+ tests/kms_color_helper.c   |  4 ++--
+ tests/kms_color_helper.h   |  2 +-
+ tests/kms_dither.c         |  4 ++--
+ tests/kms_hdr.c            | 31 ++++++++++++++++++++-----------
+ 11 files changed, 61 insertions(+), 48 deletions(-)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 11ed109d74fb..5c2e101f08be 100644
+index 5c2e101f08be..85dcff02efbc 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -2814,13 +2814,6 @@ void igt_display_reset(igt_display_t *display)
- static void igt_fill_plane_format_mod(igt_display_t *display, igt_plane_t *plane);
- static void igt_fill_display_format_mod(igt_display_t *display);
- 
--static void igt_require_pipe(igt_display_t *display, enum pipe pipe)
--{
--	igt_skip_on_f(pipe >= igt_display_n_crtcs(display) || !igt_crtc_for_pipe(display, pipe)->valid,
--			"Pipe %s does not exist\n",
--			kmstest_pipe_name(pipe));
--}
--
- static bool igt_crtc_has_valid_output(igt_crtc_t *crtc)
- {
- 	igt_display_t *display = crtc->display;
-@@ -2949,7 +2942,7 @@ void igt_display_reset_outputs(igt_display_t *display)
- 		if (!igt_crtc_has_valid_output(crtc))
- 			continue;
- 
--		output = igt_get_single_output_for_pipe(display, crtc->pipe);
-+		output = igt_get_single_output_for_crtc(crtc);
- 
- 		if (crtc->num_primary_planes > 1) {
- 			igt_plane_t *old_primary = &crtc->planes[0];
-@@ -3655,24 +3648,21 @@ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display, igt_output_t
- }
- 
- /**
-- * igt_get_single_output_for_pipe:
-- * @display: a pointer to an #igt_display_t structure
-- * @pipe: The pipe for which an #igt_output_t must be returned.
-+ * igt_get_single_output_for_crtc:
-+ * @crtc: The CRTC for which an #igt_output_t must be returned.
+@@ -6568,14 +6568,16 @@ bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name)
   *
-- * Get a compatible output for a pipe.
-+ * Get a compatible output for a CRTC.
-  *
-- * Returns: A compatible output for a given pipe, or NULL.
-+ * Returns: A compatible output for a given CRTC, or NULL.
+  * Returns: The maximum bpc from the connector debugfs.
   */
--igt_output_t *igt_get_single_output_for_pipe(igt_display_t *display, enum pipe pipe)
-+igt_output_t *igt_get_single_output_for_crtc(igt_crtc_t *crtc)
+-unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name)
++unsigned int igt_get_output_max_bpc(igt_output_t *output)
+ {
++	igt_display_t *display = output->display;
++	int drmfd = display->drm_fd;
+ 	char buf[24];
+ 	char *start_loc;
+ 	int fd, res;
+ 	unsigned int maximum;
+ 
+-	fd = igt_debugfs_connector_dir(drmfd, connector_name, O_RDONLY);
++	fd = igt_debugfs_connector_dir(drmfd, output->name, O_RDONLY);
+ 	igt_assert(fd >= 0);
+ 
+ 	res = igt_debugfs_simple_read(fd, "output_bpc", buf, sizeof(buf));
+@@ -6596,15 +6598,17 @@ unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name)
+  *
+  * Returns: The current bpc from the crtc debugfs.
+  */
+-unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe)
++unsigned int igt_get_pipe_current_bpc(igt_crtc_t *crtc)
  {
 +	igt_display_t *display = crtc->display;
- 	igt_output_t *chosen_outputs[igt_display_n_crtcs(display)];
++	int drmfd = display->drm_fd;
+ 	char buf[24];
+ 	char debugfs_name[24];
+ 	char *start_loc;
+ 	int fd, res;
+ 	unsigned int current;
  
--	igt_assert(pipe != PIPE_NONE);
--	igt_require_pipe(display, pipe);
--
- 	__igt_pipe_populate_outputs(display, chosen_outputs);
+-	fd = igt_debugfs_crtc_dir(drmfd, pipe, O_RDONLY);
++	fd = igt_debugfs_crtc_dir(drmfd, crtc->pipe, O_RDONLY);
+ 	igt_assert(fd >= 0);
  
--	return chosen_outputs[pipe];
-+	return chosen_outputs[crtc->pipe];
+ 	if (is_intel_device(drmfd))
+@@ -6625,11 +6629,11 @@ unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe)
+ 	return current;
  }
  
- static igt_output_t *igt_crtc_get_output(igt_crtc_t *crtc)
+-static unsigned int get_current_bpc(int drmfd, enum pipe pipe,
+-				    char *output_name, unsigned int bpc)
++static unsigned int get_current_bpc(igt_crtc_t *crtc, igt_output_t *output,
++				    unsigned int bpc)
+ {
+-	unsigned int maximum = igt_get_output_max_bpc(drmfd, output_name);
+-	unsigned int current = igt_get_pipe_current_bpc(drmfd, pipe);
++	unsigned int maximum = igt_get_output_max_bpc(output);
++	unsigned int current = igt_get_pipe_current_bpc(crtc);
+ 
+ 	igt_require_f(maximum >= bpc,
+ 		      "Monitor doesn't support %u bpc, max is %u\n", bpc,
+@@ -6647,10 +6651,11 @@ static unsigned int get_current_bpc(int drmfd, enum pipe pipe,
+  *
+  * Assert if crtc's current bpc is not matched with the requested one.
+  */
+-void igt_assert_output_bpc_equal(int drmfd, enum pipe pipe,
+-				 char *output_name, unsigned int bpc)
++void igt_assert_output_bpc_equal(igt_crtc_t *crtc, igt_output_t *output,
++				 unsigned int bpc)
+ {
+-	unsigned int current = get_current_bpc(drmfd, pipe, output_name, bpc);
++	unsigned int current = get_current_bpc(crtc,
++					       output, bpc);
+ 
+ 	igt_assert_eq(current, bpc);
+ }
+@@ -6668,10 +6673,11 @@ void igt_assert_output_bpc_equal(int drmfd, enum pipe pipe,
+  * Returns: True if crtc's current bpc is matched with the requested bpc,
+  * else False.
+  */
+-bool igt_check_output_bpc_equal(int drmfd, enum pipe pipe,
+-				char *output_name, unsigned int bpc)
++bool igt_check_output_bpc_equal(igt_crtc_t *crtc, igt_output_t *output,
++				unsigned int bpc)
+ {
+-	unsigned int current = get_current_bpc(drmfd, pipe, output_name, bpc);
++	unsigned int current = get_current_bpc(crtc,
++					       output, bpc);
+ 
+ 	return (current == bpc);
+ }
+@@ -6710,8 +6716,7 @@ bool igt_max_bpc_constraint(igt_display_t *display, igt_crtc_t *crtc,
+ 					    display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY))
+ 			continue;
+ 
+-		if (!igt_check_output_bpc_equal(display->drm_fd, crtc->pipe,
+-						output->name, bpc))
++		if (!igt_check_output_bpc_equal(crtc, output, bpc))
+ 			continue;
+ 
+ 		return true;
 diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index c79c8664e9a9..08573316eea6 100644
+index 08573316eea6..24fe6db70128 100644
 --- a/lib/igt_kms.h
 +++ b/lib/igt_kms.h
-@@ -616,7 +616,7 @@ int igt_crtc_count_plane_type(igt_crtc_t *crtc, int plane_type);
- igt_plane_t *igt_crtc_get_plane_type_index(igt_crtc_t *crtc, int plane_type,
- 					   int index);
- bool output_is_internal_panel(igt_output_t *output);
--igt_output_t *igt_get_single_output_for_pipe(igt_display_t *display, enum pipe pipe);
-+igt_output_t *igt_get_single_output_for_crtc(igt_crtc_t *crtc);
+@@ -1233,12 +1233,12 @@ bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display);
+ bool igt_fit_modes_in_bw(igt_display_t *display);
+ bool igt_has_lobf_debugfs(int drmfd, igt_output_t *output);
+ bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name);
+-unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name);
+-unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe);
+-void igt_assert_output_bpc_equal(int drmfd, enum pipe pipe,
+-				char *output_name, unsigned int bpc);
+-bool igt_check_output_bpc_equal(int drmfd, enum pipe pipe,
+-				char *output_name, unsigned int bpc);
++unsigned int igt_get_output_max_bpc(igt_output_t *output);
++unsigned int igt_get_pipe_current_bpc(igt_crtc_t *crtc);
++void igt_assert_output_bpc_equal(igt_crtc_t *crtc, igt_output_t *output,
++				 unsigned int bpc);
++bool igt_check_output_bpc_equal(igt_crtc_t *crtc, igt_output_t *output,
++				unsigned int bpc);
  
- void igt_crtc_request_out_fence(igt_crtc_t *crtc);
- 
-diff --git a/tests/amdgpu/amd_abm.c b/tests/amdgpu/amd_abm.c
-index bd700b90f361..1752a7e5c48d 100644
---- a/tests/amdgpu/amd_abm.c
-+++ b/tests/amdgpu/amd_abm.c
-@@ -133,8 +133,7 @@ static void test_init(data_t *data)
- 
- 	igt_display_reset(display);
- 
--	data->output = igt_get_single_output_for_pipe(display,
--						      data->crtc->pipe);
-+	data->output = igt_get_single_output_for_crtc(data->crtc);
- 	igt_require(data->output);
- 	igt_info("output %s\n", data->output->name);
- 
+ int sort_drm_modes_by_clk_dsc(const void *a, const void *b);
+ int sort_drm_modes_by_clk_asc(const void *a, const void *b);
 diff --git a/tests/amdgpu/amd_bypass.c b/tests/amdgpu/amd_bypass.c
-index 25136e83e6ad..9d5f3dd71c89 100644
+index 9d5f3dd71c89..3c537ea9e24f 100644
 --- a/tests/amdgpu/amd_bypass.c
 +++ b/tests/amdgpu/amd_bypass.c
-@@ -67,8 +67,7 @@ static void test_init(data_t *data)
+@@ -345,7 +345,7 @@ static void bypass_8bpc_test(data_t *data)
+ 	 * Rx supports only up to 6bpc, Rx-crc will different from crtc-crc
+ 	 * with 8bpc.
+ 	 */
+-	igt_skip_on_f(igt_get_output_max_bpc(data->drm_fd, data->output->name) <= 6,
++	igt_skip_on_f(igt_get_output_max_bpc(data->output) <= 6,
+ 		      "check /sys/kernel/debug/dri/0/eDP-1 (connector)/output_bpc\n");
  
- 	igt_display_reset(display);
+ 	igt_create_fb(data->drm_fd, data->width, data->height,
+diff --git a/tests/amdgpu/amd_dp_dsc.c b/tests/amdgpu/amd_dp_dsc.c
+index 4403f9205d83..3874e4a88ca9 100644
+--- a/tests/amdgpu/amd_dp_dsc.c
++++ b/tests/amdgpu/amd_dp_dsc.c
+@@ -478,7 +478,7 @@ static void test_dsc_bpc(data_t *data)
+ 		if (!output || !igt_output_is_connected(output))
+ 			continue;
+ 		igt_info("Checking bpc support of conn %s\n", output->name);
+-		max_supported_bpc[crtc->pipe] = igt_get_output_max_bpc(data->fd, output->name);
++		max_supported_bpc[crtc->pipe] = igt_get_output_max_bpc(output);
+ 	}
  
--	data->output = igt_get_single_output_for_pipe(display,
--						      data->crtc->pipe);
-+	data->output = igt_get_single_output_for_crtc(data->crtc);
- 	igt_assert(data->output);
+ 	/* Setup all outputs */
+@@ -526,9 +526,8 @@ static void test_dsc_bpc(data_t *data)
  
- 	if (data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
-diff --git a/tests/amdgpu/amd_color.c b/tests/amdgpu/amd_color.c
-index cdc6f3e6abd8..68f541d64d63 100644
---- a/tests/amdgpu/amd_color.c
-+++ b/tests/amdgpu/amd_color.c
-@@ -182,8 +182,7 @@ static void test_init(data_t *data)
+ 			/* Check current bpc */
+ 			igt_info("Verifying display %s has correct bpc\n", output->name);
+-			igt_assert_output_bpc_equal(data->fd,
+-						    crtc->pipe,
+-						    output->name,
++			igt_assert_output_bpc_equal(crtc,
++						    output,
+ 						    bpc_vals[bpc]);
  
- 	igt_display_reset(display);
- 
--	data->output = igt_get_single_output_for_pipe(display,
--						      data->crtc->pipe);
-+	data->output = igt_get_single_output_for_crtc(data->crtc);
- 	igt_require(data->output);
+ 			/* Log current mode and DSC status */
+diff --git a/tests/amdgpu/amd_max_bpc.c b/tests/amdgpu/amd_max_bpc.c
+index eb76762fa954..627ed87441a7 100644
+--- a/tests/amdgpu/amd_max_bpc.c
++++ b/tests/amdgpu/amd_max_bpc.c
+@@ -74,8 +74,8 @@ static void test_init(data_t *data)
  
  	data->mode = igt_output_get_mode(data->output);
-diff --git a/tests/amdgpu/amd_multidisplay_modeset.c b/tests/amdgpu/amd_multidisplay_modeset.c
-index a2853e73225a..40d1e5d7f42b 100644
---- a/tests/amdgpu/amd_multidisplay_modeset.c
-+++ b/tests/amdgpu/amd_multidisplay_modeset.c
-@@ -159,7 +159,7 @@ static void test_init(struct data_t *data)
- 		 * This will let displays connected to MST hub be
- 		 * tested
- 		 */
--		output = igt_get_single_output_for_pipe(display, crtc->pipe);
-+		output = igt_get_single_output_for_crtc(crtc);
- 		data->primary[crtc->pipe] = igt_crtc_get_plane_type(crtc,
- 							   DRM_PLANE_TYPE_PRIMARY);
- 		data->output[crtc->pipe] = output;
-diff --git a/tests/amdgpu/amd_psr.c b/tests/amdgpu/amd_psr.c
-index b1d6d1631e26..85247d0e20da 100644
---- a/tests/amdgpu/amd_psr.c
-+++ b/tests/amdgpu/amd_psr.c
-@@ -174,8 +174,7 @@ static void test_init(data_t *data)
+ 	igt_assert(data->mode);
+-	igt_assert_output_bpc_equal(data->fd, data->crtc->pipe,
+-				    data->output->name, 8);
++	igt_assert_output_bpc_equal(data->crtc,
++				    data->output, 8);
  
- 	igt_display_reset(display);
+ 	data->primary =
+ 		igt_crtc_get_plane_type(data->crtc, DRM_PLANE_TYPE_PRIMARY);
+diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
+index f832500b7eeb..74bc4af53ceb 100644
+--- a/tests/intel/kms_dsc.c
++++ b/tests/intel/kms_dsc.c
+@@ -226,7 +226,7 @@ static void update_display(data_t *data, uint32_t test_type)
+ 	restore_force_dsc_fractional_bpp_en();
  
--	data->output = igt_get_single_output_for_pipe(display,
--						      data->crtc->pipe);
-+	data->output = igt_get_single_output_for_crtc(data->crtc);
- 	igt_require(data->output);
- 	igt_info("output %s\n", data->output->name);
- 
-diff --git a/tests/amdgpu/amd_replay.c b/tests/amdgpu/amd_replay.c
-index 5f62465d6b72..775bed190adf 100644
---- a/tests/amdgpu/amd_replay.c
-+++ b/tests/amdgpu/amd_replay.c
-@@ -64,8 +64,7 @@ static void test_init(struct test_data *data)
- 
- 	igt_display_reset(display);
- 
--	data->output = igt_get_single_output_for_pipe(display,
--						      data->crtc->pipe);
-+	data->output = igt_get_single_output_for_crtc(data->crtc);
- 	igt_require(data->output);
- 	igt_info("output %s\n", data->output->name);
- 
-diff --git a/tests/intel/gem_eio.c b/tests/intel/gem_eio.c
-index 361fd24744c4..546fff14bd5b 100644
---- a/tests/intel/gem_eio.c
-+++ b/tests/intel/gem_eio.c
-@@ -1041,7 +1041,7 @@ static void display_helper(igt_display_t *dpy, int *done)
- 		if (!crtc || !crtc->valid)
+ 	if (test_type & TEST_DSC_BPC) {
+-		current_bpc = igt_get_pipe_current_bpc(data->drm_fd, data->crtc->pipe);
++		current_bpc = igt_get_pipe_current_bpc(data->crtc);
+ 		igt_skip_on_f(data->input_bpc != current_bpc,
+ 			      "Input bpc = %d is not equal to current bpc = %d\n",
+ 			      data->input_bpc, current_bpc);
+@@ -270,7 +270,7 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
+ 		    !check_gen11_dp_constraint(data->drm_fd, data->output, data->crtc))
  			continue;
  
--		output = igt_get_single_output_for_pipe(dpy, crtc->pipe);
-+		output = igt_get_single_output_for_crtc(crtc);
- 		if (!output)
+-		if (igt_get_output_max_bpc(data->drm_fd, output->name) < MIN_DSC_BPC) {
++		if (igt_get_output_max_bpc(output) < MIN_DSC_BPC) {
+ 			igt_info("Output %s doesn't support min %d-bpc\n", igt_output_name(data->output), MIN_DSC_BPC);
  			continue;
+ 		}
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index bc6405c5947d..f54911b204a6 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -875,7 +875,7 @@ run_deep_color_tests_for_pipe(data_t *data, igt_crtc_t *crtc)
+ 			continue;
+ 		}
  
-diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
-index 98394674e463..eeb544acad76 100644
---- a/tests/nouveau_crc.c
-+++ b/tests/nouveau_crc.c
-@@ -350,8 +350,7 @@ int igt_main()
- 				igt_display_commit(&data.display);
- 			}
+-		if (!panel_supports_deep_color(data->drm_fd, output->name)) {
++		if (!panel_supports_deep_color(output)) {
+ 			igt_info("Output %s: Doesn't support deep-color.\n",
+ 				 igt_output_name(output));
+ 			continue;
+diff --git a/tests/kms_color_helper.c b/tests/kms_color_helper.c
+index aa47324dff6a..3cd282cbbee3 100644
+--- a/tests/kms_color_helper.c
++++ b/tests/kms_color_helper.c
+@@ -38,9 +38,9 @@ bool pipe_output_combo_valid(data_t *data, igt_crtc_t *crtc)
+ }
  
--			data.output = igt_get_single_output_for_pipe(&data.display,
--								     data.crtc->pipe);
-+			data.output = igt_get_single_output_for_crtc(data.crtc);
- 			data.mode = igt_output_get_mode(data.output);
+ bool
+-panel_supports_deep_color(int drm_fd, char *output_name)
++panel_supports_deep_color(igt_output_t *output)
+ {
+-	unsigned int maximum = igt_get_output_max_bpc(drm_fd, output_name);
++	unsigned int maximum = igt_get_output_max_bpc(output);
  
- 			/* None of these tests need to perform modesets, just page flips. So running
+ 	igt_info("Max supported bit depth: %d\n", maximum);
+ 
+diff --git a/tests/kms_color_helper.h b/tests/kms_color_helper.h
+index 6a700d4610fe..daa0a729c9c6 100644
+--- a/tests/kms_color_helper.h
++++ b/tests/kms_color_helper.h
+@@ -69,7 +69,7 @@ typedef struct {
+ } gamma_lut_t;
+ 
+ bool pipe_output_combo_valid(data_t *data, igt_crtc_t *crtc);
+-bool panel_supports_deep_color(int fd, char *output_name);
++bool panel_supports_deep_color(igt_output_t *output);
+ uint64_t get_max_bpc(igt_output_t *output);
+ void paint_gradient_rectangles(data_t *data,
+ 			       drmModeModeInfo *mode,
+diff --git a/tests/kms_dither.c b/tests/kms_dither.c
+index fc6f794f5ea1..ca3b76b62459 100644
+--- a/tests/kms_dither.c
++++ b/tests/kms_dither.c
+@@ -103,7 +103,7 @@ static dither_status_t get_dither_state(data_t *data, igt_crtc_t *crtc)
+ 	igt_assert_eq(sscanf(start_loc, ", dither=%s", tmp), 1);
+ 	status.dither = !strcmp(tmp, "yes,");
+ 
+-	status.bpc = igt_get_pipe_current_bpc(data->drm_fd, crtc->pipe);
++	status.bpc = igt_get_pipe_current_bpc(crtc);
+ 
+ 	return status;
+ }
+@@ -213,7 +213,7 @@ run_dither_test(data_t *data, int fb_bpc, int fb_format, int output_bpc)
+ 			continue;
+ 		}
+ 
+-		if (igt_get_output_max_bpc(data->drm_fd, output->name) < output_bpc) {
++		if (igt_get_output_max_bpc(output) < output_bpc) {
+ 			igt_info("Output %s: Doesn't support %d-bpc.\n",
+ 				 igt_output_name(output), output_bpc);
+ 			continue;
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index d9d8a17adaf8..f30902b72bb6 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -265,7 +265,8 @@ static void test_bpc_switch_on_output(data_t *data, igt_crtc_t *crtc,
+ 	/* Start in 8bpc. */
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	igt_assert_output_bpc_equal(data->fd, crtc->pipe, output->name, 8);
++	igt_assert_output_bpc_equal(crtc,
++				    output, 8);
+ 
+ 	/*
+ 	 * amdgpu requires a primary plane when the CRTC is enabled.
+@@ -279,7 +280,8 @@ static void test_bpc_switch_on_output(data_t *data, igt_crtc_t *crtc,
+ 	/* Switch to 10bpc. */
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	igt_assert_output_bpc_equal(data->fd, crtc->pipe, output->name, 10);
++	igt_assert_output_bpc_equal(crtc,
++				    output, 10);
+ 
+ 	/* Verify that the CRC are equal after DPMS or suspend. */
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+@@ -289,7 +291,8 @@ static void test_bpc_switch_on_output(data_t *data, igt_crtc_t *crtc,
+ 	/* Drop back to 8bpc. */
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	igt_assert_output_bpc_equal(data->fd, crtc->pipe, output->name, 8);
++	igt_assert_output_bpc_equal(crtc,
++				    output, 8);
+ 
+ 	/* CRC capture is clamped to 8bpc, so capture should match. */
+ 	igt_assert_crc_equal(&ref_crc, &new_crc);
+@@ -321,7 +324,7 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
+ 			continue;
+ 		}
+ 
+-		if (igt_get_output_max_bpc(data->fd, output->name) < 10) {
++		if (igt_get_output_max_bpc(output) < 10) {
+ 			igt_info("%s: Doesn't support 10 bpc.\n", igt_output_name(output));
+ 			continue;
+ 		}
+@@ -501,7 +504,8 @@ static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
+ 	}
+ 
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	igt_assert_output_bpc_equal(data->fd, crtc->pipe, output->name, 8);
++	igt_assert_output_bpc_equal(crtc,
++				    output, 8);
+ 
+ 	if (flags & TEST_NEEDS_DSC) {
+ 		igt_force_dsc_disable(data->fd, output->name);
+@@ -522,7 +526,8 @@ static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
+ 		adjust_brightness(data, flags);
+ 	}
+ 
+-	igt_assert_output_bpc_equal(data->fd, crtc->pipe, output->name, 10);
++	igt_assert_output_bpc_equal(crtc,
++				    output, 10);
+ 
+ 	/* Verify that the CRC are equal after DPMS or suspend. */
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+@@ -539,7 +544,8 @@ static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
+ 	}
+ 
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	igt_assert_output_bpc_equal(data->fd, crtc->pipe, output->name, 8);
++	igt_assert_output_bpc_equal(crtc,
++				    output, 8);
+ 
+ 	igt_assert_crc_equal(&ref_crc, &new_crc);
+ 
+@@ -610,7 +616,8 @@ static void test_static_swap(data_t *data, igt_crtc_t *crtc,
+ 	}
+ 
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	igt_assert_output_bpc_equal(data->fd, crtc->pipe, output->name, 8);
++	igt_assert_output_bpc_equal(crtc,
++				    output, 8);
+ 
+ 	if (flags & TEST_NEEDS_DSC) {
+ 		igt_force_dsc_disable(data->fd, output->name);
+@@ -622,7 +629,8 @@ static void test_static_swap(data_t *data, igt_crtc_t *crtc,
+ 	set_hdr_output_metadata(data, &hdr);
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	igt_assert_output_bpc_equal(data->fd, crtc->pipe, output->name, 10);
++	igt_assert_output_bpc_equal(crtc,
++				    output, 10);
+ 
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+ 
+@@ -659,7 +667,8 @@ static void test_static_swap(data_t *data, igt_crtc_t *crtc,
+ 	set_hdr_output_metadata(data, NULL);
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-	igt_assert_output_bpc_equal(data->fd, crtc->pipe, output->name, 8);
++	igt_assert_output_bpc_equal(crtc,
++				    output, 8);
+ 
+ 	/* Verify that the CRC didn't change while cycling metadata. */
+ 	igt_assert_crc_equal(&ref_crc, &new_crc);
+@@ -728,7 +737,7 @@ static void test_hdr(data_t *data, uint32_t flags)
+ 			continue;
+ 		}
+ 
+-		if (igt_get_output_max_bpc(data->fd, output->name) < 10) {
++		if (igt_get_output_max_bpc(output) < 10) {
+ 			igt_info("%s: Doesn't support 10 bpc.\n", igt_output_name(output));
+ 			continue;
+ 		}
 -- 
 2.52.0
 
