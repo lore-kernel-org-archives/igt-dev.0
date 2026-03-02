@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1176EA4E09
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93ACAEA4E07
 	for <igt-dev@archiver.kernel.org>; Mon,  2 Mar 2026 14:09:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2EAF210E500;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2629D10E4FF;
 	Mon,  2 Mar 2026 14:09:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Chxp54oU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YLscns5S";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3AE510E4FF
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4901110E4FF
  for <igt-dev@lists.freedesktop.org>; Mon,  2 Mar 2026 14:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772460562; x=1803996562;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=jbN16FllEvlvKCMqij7XCNIZUTY8WbrCF7HzZ7IMMxU=;
- b=Chxp54oUMAWtV15Yg8pkeby2c/ZO98NyFevdZGJ5Xp0wXJ5LYrKEZq6A
- w4KHAjp8KUqWz/8knKQp3paggKyCjiQY6oE2Ct5rKr5SYCCUKfXjqmE3z
- aVPnolOVULdaedcAM9R+J4nhJHQ3veUJyR4W1fNkwGbESXo0Mbsh8MQTA
- TmI1la3GyPoK8GnC7jNzr9Dc7qv3SmCf/BPS01Qipplosu5eiBey/A1sq
- 4lAJLLkjCgXD/yZD/R3D2VEhW5r5NQwE7C+PzerpRWnSyWIUh9LqtIbr+
- 4jTbplq0nB7LsTTKNGGDF0FCX1O1w0KdoFMZEhX05J3W2TQmaHPxzPthc Q==;
-X-CSE-ConnectionGUID: 5nFS/t02RrqL6Cl5JrkDrQ==
-X-CSE-MsgGUID: 0OfU5ZzQR36zrYWdQ8uujA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="84932945"
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; d="scan'208";a="84932945"
+ t=1772460561; x=1803996561;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=9ieky9GQFdRte7AORFNKcXhNAi3u89DznqCyg74l2oQ=;
+ b=YLscns5Srf3Lzor8b/NhBK9XyCFfvFSZVB2IkFdVNgxUGZbn8fFpsOsA
+ vYMgZG8k6dswIk94okHzHQ8eDXuovRy7/zCgkJB3QRJ16yggl540zcoWy
+ oIan+es7be5D9lWsRZUYco+96WGEvUAhaETuDsH+1RMuQetPEl4qusSPi
+ rmkVRrdRa1IFm4Z9YWXTk8W32sm6PzxHqnQq2y2498tIHVcwWf1MmZ9gJ
+ fq4SAZa8yRNcnzcEZbI/aZwSrg0WpApZJ7hkx2Ta7ns1yYhfuO0cNjq5e
+ DubqrjbG0f2yrkMoDOYIQ03wjCTR6QSeayOboE45TkcPoeDKdpUknlTrs A==;
+X-CSE-ConnectionGUID: ne64t+7tRMuJ9u0GyJ/NRw==
+X-CSE-MsgGUID: YY4d8p5PRqeENOfIYt22yA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="84932940"
+X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; d="scan'208";a="84932940"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Mar 2026 06:09:22 -0800
-X-CSE-ConnectionGUID: fAKu1Qz0QJS4Nlo8/lq1+w==
-X-CSE-MsgGUID: /LZnfE+tSrKR0lafY9P2Zg==
+ 02 Mar 2026 06:09:20 -0800
+X-CSE-ConnectionGUID: 4QSW6ejBQ5Kmh/+vHi6VvQ==
+X-CSE-MsgGUID: qZ8dQmOsTLy5/Z0r36CA2Q==
 X-ExtLoop1: 1
 Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Mar 2026 06:09:20 -0800
+ 02 Mar 2026 06:09:18 -0800
 From: Sowmiya S <sowmiya.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
  Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v1 1/2] tests/kms_properties: Refresh connector when
- property fetch fails
-Date: Mon,  2 Mar 2026 20:00:12 +0530
-Message-ID: <20260302143013.264657-2-sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v1 0/2] Refresh connector when property fetch fails and
+ update proper atomic flag
+Date: Mon,  2 Mar 2026 20:00:11 +0530
+Message-ID: <20260302143013.264657-1-sowmiya.s@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260302143013.264657-1-sowmiya.s@intel.com>
-References: <20260302143013.264657-1-sowmiya.s@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,85 +70,16 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 drmModeObjectGetProperties() may fail for connectors
 that have just changed state (e.g., hotplug, reprobing)
 and whose connector ID is now stale. Add a connector
-specific recovery path to test_properties
+specific recovery path to test_properties.
+Also update proper atomic flag for each specific subtest.
 
-Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
----
- tests/kms_properties.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+Sowmiya S (2):
+  tests/kms_properties: Refresh connector when property fetch fails
+  tests/kms_properties: Use per-subtest atomic flag
 
-diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-index 86d05c6d4..8ac122850 100644
---- a/tests/kms_properties.c
-+++ b/tests/kms_properties.c
-@@ -178,14 +178,26 @@ static bool has_additional_test_lookup(uint32_t obj_type, const char *name,
- 
- 	return false;
- }
--static void test_properties(int fd, uint32_t type, uint32_t id, bool atomic, bool has_color_pipeline)
-+
-+static void test_properties(int fd, uint32_t type, uint32_t id, bool atomic,
-+			    bool has_color_pipeline, igt_output_t *output)
- {
- 	drmModeObjectPropertiesPtr props =
- 		drmModeObjectGetProperties(fd, id, type);
- 	int i, j, ret;
- 	drmModeAtomicReqPtr req = NULL;
- 
--	igt_assert(props);
-+	if (!props && type == DRM_MODE_OBJECT_CONNECTOR && output) {
-+		igt_info("Connector properties query failed on id=%u, refreshing output and retrying\n",
-+			 id);
-+		igt_output_refresh(output);
-+		id = output->id;
-+		props = drmModeObjectGetProperties(fd, id, type);
-+	}
-+
-+	igt_assert_f(props,
-+		     "Failed to get properties for object id=%u type=%u after retry (output: %s)\n",
-+		     id, type, output ? output->name : "N/A");
- 
- 	if (atomic)
- 		req = drmModeAtomicAlloc();
-@@ -261,7 +273,7 @@ static void run_colorop_property_tests(igt_display_t *display,
- 					  colorop->id,
- 					  kmstest_plane_type_name(plane->type), output->name);
- 				test_properties(display->drm_fd, DRM_MODE_OBJECT_COLOROP, colorop->id,
--						atomic, display->has_plane_color_pipeline);
-+						atomic, display->has_plane_color_pipeline, output);
- 
- 				colorop_id = igt_colorop_get_prop(display, colorop,
- 								IGT_COLOROP_NEXT);
-@@ -288,7 +300,8 @@ static void run_plane_property_tests(igt_display_t *display, igt_crtc_t *crtc,
- 			 igt_crtc_name(crtc), plane->index,
- 			 kmstest_plane_type_name(plane->type), output->name);
- 
--		test_properties(display->drm_fd, DRM_MODE_OBJECT_PLANE, plane->drm_plane->plane_id, atomic, display->has_plane_color_pipeline);
-+		test_properties(display->drm_fd, DRM_MODE_OBJECT_PLANE, plane->drm_plane->plane_id,
-+				atomic, display->has_plane_color_pipeline, output);
- 	}
- 
- 	cleanup_pipe(display, crtc, output,
-@@ -309,7 +322,8 @@ static void run_crtc_property_tests(igt_display_t *display, igt_crtc_t *crtc,
- 	test_properties(display->drm_fd, DRM_MODE_OBJECT_CRTC,
- 			crtc->crtc_id,
- 			atomic,
--			false);
-+			false,
-+			output);
- 
- 	cleanup_pipe(display, crtc, output,
- 		     &fb);
-@@ -328,7 +342,8 @@ static void run_connector_property_tests(igt_display_t *display,
- 	igt_info("Testing connector properties on output %s (pipe: %s)\n", output->name,
- 		 igt_crtc_name(crtc));
- 
--	test_properties(display->drm_fd, DRM_MODE_OBJECT_CONNECTOR, output->id, atomic, false);
-+	test_properties(display->drm_fd, DRM_MODE_OBJECT_CONNECTOR, output->id,
-+			atomic, false, output);
- 
- 	if (crtc != NULL)
- 		cleanup_pipe(display, crtc,
+ tests/kms_properties.c | 31 +++++++++++++++++++++++--------
+ 1 file changed, 23 insertions(+), 8 deletions(-)
+
 -- 
 2.43.0
 
