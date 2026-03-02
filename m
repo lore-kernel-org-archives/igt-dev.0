@@ -4,56 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92395E9B357
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Mar 2026 10:22:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADF75E9B360
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Mar 2026 10:45:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3BCF910E35E;
-	Mon,  2 Mar 2026 10:22:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6579210E489;
+	Mon,  2 Mar 2026 10:45:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kidBDcCP";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="ZXPqUBJj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CDC5310E47D
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Mar 2026 10:22:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772446928; x=1803982928;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=N27NIW96k3LZLNx3tbcO51Ad/ekPe+gAT4xrCMuXofA=;
- b=kidBDcCPAx2Dcseg7m+bj6costLV/txHopZzUTsJolymySuQxYotB5SB
- 4WAh9TRgKDF2He4XejL5+yxuZ7mEVmZZE0j+Flj8saasS5UdAptueRKkr
- EUwMKltYHbn37tj7Is6nqQ1aMv9OqEsEiYzIdJtW+Vq3GH8d5Ma7oDc9b
- a5AZJ1p/hrJVTD/fQVjAhgYaD2aMrvQ19B+zqrtnoMzOZtJw4vR75/zBf
- fRX5v0yzF23uNz9CNeK6C76ZVTxKepKRnpP7oIq3E+9jS8UWxuf3shJBU
- IjOfF+EIn49l93lqzyx0n9SPTk2IDeb83SQ9RL96bWuk+zZOPB4IVfGxL g==;
-X-CSE-ConnectionGUID: 6JnbjcmLTx2b9Ns8XKeqoA==
-X-CSE-MsgGUID: zywesJhIRUGomvaASAnNYg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="84917536"
-X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; d="scan'208";a="84917536"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Mar 2026 02:22:08 -0800
-X-CSE-ConnectionGUID: CphyyR4WR86/sAPwzqGcQA==
-X-CSE-MsgGUID: PHgREe3lRuCjFf4TW/oaeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; d="scan'208";a="214844333"
-Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Mar 2026 02:22:05 -0800
-From: Mohammed Bilal <mohammed.bilal@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com, kamil.konieczny@intel.com, kunal1.joshi@intel.com,
- karol.krol@intel.com, ryszard.knop@intel.com,
- Mohammed Bilal <mohammed.bilal@intel.com>
-Subject: [PATCH v4 5/5] intel-ci: Apply xe chamelium delta changes
-Date: Mon,  2 Mar 2026 15:49:26 +0530
-Message-ID: <20260302101926.3015380-6-mohammed.bilal@intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260302101926.3015380-1-mohammed.bilal@intel.com>
-References: <20260302101926.3015380-1-mohammed.bilal@intel.com>
+Received: from bali.collaboradmins.com (bali.collaboradmins.com
+ [148.251.105.195])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1336510E489
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Mar 2026 10:45:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+ s=mail; t=1772448328;
+ bh=AJAQuhh6n34xhvf0H2rUw8Cc2fb8mvc43Ch/BsGKvGQ=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=ZXPqUBJj3YR0og/NKBI0Sv8E+TBGqZxRjDNXDS9uUqiVOeOPUx0P5mDpiJXLW082l
+ azJUdLaJhG3oKWv3wkMefcuCxPHI4Smsa8cp+FpKr3PJmQg1kq+mqGta2Qvr/rnXLH
+ Lz6iT4vcd+9TMHhdDz4zTAHEhb/DPlbegujQeu/G5IlgZ89oo8nLGtRD7tllvTxurN
+ 0wpQQYIRV8B6s24dlnJ3q64DUWuccpP2lGnDj6DdJ/mLbW4peLc6aiasU7gaMOqcCF
+ 9ss7mBdDzcEPKKIZlpsPkA6AMfhgyyjvwdNBkoViJKEsO8HywSo/tEKBNAYPKtO5qT
+ fxoOQZUHSiavA==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits)
+ server-digest SHA256) (No client certificate requested)
+ (Authenticated sender: bbrezillon)
+ by bali.collaboradmins.com (Postfix) with ESMTPSA id 8340217E0D04;
+ Mon,  2 Mar 2026 11:45:28 +0100 (CET)
+Date: Mon, 2 Mar 2026 11:45:24 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Daniel Almeida
+ <daniel.almeida@collabora.com>
+Subject: Re: [PATCH i-g-t v2] panthor: Enable compilation on big-endian arch
+Message-ID: <20260302114524.57fa1959@fedora>
+In-Reply-To: <e863d999b0bc37aba10242c707320aabb6cffd4e@intel.com>
+References: <20260219150524.92665-1-kamil.konieczny@linux.intel.com>
+ <e863d999b0bc37aba10242c707320aabb6cffd4e@intel.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,65 +64,25 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Apply xe-specific delta updates to the FULL chamelium testlist by
-removing VGA-related subtests and keeping the remaining entries
-aligned with the i915-based baseline.
+On Mon, 23 Feb 2026 12:49:38 +0200
+Jani Nikula <jani.nikula@intel.com> wrote:
 
-v2:
-- Move suspend resume tests to the end of the testlist (Kunal)
-- Comment out random-plane test (Kunal)
+> On Thu, 19 Feb 2026, Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
+> > Compilation of Panthor was broken on big-endian due to a guard in
+> > pathor lib against such arch. Fix this and create and use
+> > function for skipping all panthor tests on such machines.
+> >
+> > Also while at it, init fd so it could be safely used at last
+> > fixture.  
+> 
+> What about DRIVER_ANY tests?
+> 
+> Seems like the cleaner option would be to amend drm_open_driver() with
+> something like:
+> 
+> 	if (chipset & DRIVER_PANTHOR)
+> 		skip on big endian
+> 
+> instead of sprinkling the skips everywhere.
 
-v3:
--Use move-fix-add approach (Kamil)
-
-v4:
--Restructure move-fix-add approach (Kamil)
-
-Signed-off-by: Mohammed Bilal <mohammed.bilal@intel.com>
----
- tests/intel-ci/xe.chamelium-only.testlist | 9 ---------
- 1 file changed, 9 deletions(-)
-
-diff --git a/tests/intel-ci/xe.chamelium-only.testlist b/tests/intel-ci/xe.chamelium-only.testlist
-index 56bffd8de..4428fb48e 100644
---- a/tests/intel-ci/xe.chamelium-only.testlist
-+++ b/tests/intel-ci/xe.chamelium-only.testlist
-@@ -24,7 +24,6 @@ igt@kms_chamelium_edid@hdmi-edid-read
- #igt@kms_chamelium_edid@hdmi-edid-stress-resolution-4k
- igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k
- igt@kms_chamelium_edid@hdmi-mode-timings
--igt@kms_chamelium_edid@vga-edid-read
- igt@kms_chamelium_frames@dp-crc-fast
- igt@kms_chamelium_frames@dp-crc-multiple
- igt@kms_chamelium_frames@dp-crc-single
-@@ -40,7 +39,6 @@ igt@kms_chamelium_frames@hdmi-crc-multiple
- igt@kms_chamelium_frames@hdmi-crc-nonplanar-formats
- igt@kms_chamelium_frames@hdmi-crc-single
- igt@kms_chamelium_frames@hdmi-frame-dump
--igt@kms_chamelium_frames@vga-frame-dump
- igt@kms_chamelium_hpd@dp-hpd
- igt@kms_chamelium_hpd@dp-hpd-enable-disable-mode
- igt@kms_chamelium_hpd@dp-hpd-fast
-@@ -57,19 +55,12 @@ igt@kms_chamelium_hpd@hdmi-hpd-storm-disable
- igt@kms_chamelium_hpd@hdmi-hpd-with-enabled-mode
- igt@kms_chamelium_audio@hdmi-audio
- igt@kms_chamelium_audio@hdmi-audio-edid
--igt@kms_chamelium_hpd@vga-hpd
--igt@kms_chamelium_hpd@vga-hpd-enable-disable-mode
--igt@kms_chamelium_hpd@vga-hpd-fast
--igt@kms_chamelium_hpd@vga-hpd-for-each-pipe
--igt@kms_chamelium_hpd@vga-hpd-with-enabled-mode
--igt@kms_chamelium_hpd@vga-hpd-without-ddc
- igt@kms_chamelium_sharpness_filter@filter-basic
- igt@kms_tiled_display@basic-test-pattern-with-chamelium
- #Place suspend tests at end
- igt@kms_chamelium_hpd@common-hpd-after-suspend
- igt@kms_chamelium_hpd@dp-hpd-after-suspend
- igt@kms_chamelium_hpd@hdmi-hpd-after-suspend
--igt@kms_chamelium_hpd@vga-hpd-after-suspend
- igt@kms_chamelium_edid@dp-edid-change-during-suspend
- igt@kms_chamelium_edid@hdmi-edid-change-during-suspend
- #Place hibernate tests at end
--- 
-2.48.1
-
+FWIW, I'm fine with this approach too.
