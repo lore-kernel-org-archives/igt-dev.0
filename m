@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADF75E9B360
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Mar 2026 10:45:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D007E9B365
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Mar 2026 11:24:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6579210E489;
-	Mon,  2 Mar 2026 10:45:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 91E6910E010;
+	Mon,  2 Mar 2026 11:24:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="ZXPqUBJj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RmswhlhN";
 	dkim-atps=neutral
-Received: from bali.collaboradmins.com (bali.collaboradmins.com
- [148.251.105.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1336510E489
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Mar 2026 10:45:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1772448328;
- bh=AJAQuhh6n34xhvf0H2rUw8Cc2fb8mvc43Ch/BsGKvGQ=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=ZXPqUBJj3YR0og/NKBI0Sv8E+TBGqZxRjDNXDS9uUqiVOeOPUx0P5mDpiJXLW082l
- azJUdLaJhG3oKWv3wkMefcuCxPHI4Smsa8cp+FpKr3PJmQg1kq+mqGta2Qvr/rnXLH
- Lz6iT4vcd+9TMHhdDz4zTAHEhb/DPlbegujQeu/G5IlgZ89oo8nLGtRD7tllvTxurN
- 0wpQQYIRV8B6s24dlnJ3q64DUWuccpP2lGnDj6DdJ/mLbW4peLc6aiasU7gaMOqcCF
- 9ss7mBdDzcEPKKIZlpsPkA6AMfhgyyjvwdNBkoViJKEsO8HywSo/tEKBNAYPKtO5qT
- fxoOQZUHSiavA==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits)
- server-digest SHA256) (No client certificate requested)
- (Authenticated sender: bbrezillon)
- by bali.collaboradmins.com (Postfix) with ESMTPSA id 8340217E0D04;
- Mon,  2 Mar 2026 11:45:28 +0100 (CET)
-Date: Mon, 2 Mar 2026 11:45:24 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Daniel Almeida
- <daniel.almeida@collabora.com>
-Subject: Re: [PATCH i-g-t v2] panthor: Enable compilation on big-endian arch
-Message-ID: <20260302114524.57fa1959@fedora>
-In-Reply-To: <e863d999b0bc37aba10242c707320aabb6cffd4e@intel.com>
-References: <20260219150524.92665-1-kamil.konieczny@linux.intel.com>
- <e863d999b0bc37aba10242c707320aabb6cffd4e@intel.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B0BE10E010
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Mar 2026 11:24:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1772450679; x=1803986679;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=BEeV9wnt0Fdi+mh+ejxBV/0cqTMx5WF40mB5nHaYYpE=;
+ b=RmswhlhNeUszS4chGfcizgv0jtr3qeUNP+y+O5dUaAEBgpGExQ9oLHW0
+ UhrhtI8PO9O3d+7AApTeVxC4lnps2uKF4S8UZVXw1ZZuodnefCQPetaql
+ EQwKPJZgHy+Nq+nztLPpDA86TAs9695xDWgNTMR4tcMUYRYMC3ccNU3PD
+ tNpKM1HwHUISMVNG7hAeEFYATUkSkp+LcefbMjdlhOMZGaE4Ew9hrKYDb
+ CB/Ebbcaq67qu5RI2lLy4IMk2GfPeV6D33XqxxMFKSWCHwQcyzDGMVJOv
+ Ps9DdCuJ36BZqJSIIFRJ4cJxsr75tPRruTOgySq3mIOLJbHsrEu3iE8xq w==;
+X-CSE-ConnectionGUID: SNaA9b0aQW+Xnxw6DuWbJA==
+X-CSE-MsgGUID: 7VfUOc2EQt2URiswj4L+gw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="73640290"
+X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; d="scan'208";a="73640290"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Mar 2026 03:24:39 -0800
+X-CSE-ConnectionGUID: h11okTGyQLSHGYnIsThRRQ==
+X-CSE-MsgGUID: rQcaUQ+TQXCoIDnNEMkJ4w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; d="scan'208";a="255482856"
+Received: from skishor1-nuc12snki73.iind.intel.com ([10.227.88.189])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Mar 2026 03:24:38 -0800
+From: sumit kishore <sumit.kishore@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kunal1.joshi@intel.com,
+	sumit kishore <sumit.kishore@intel.com>
+Subject: [PATCH i-g-t v1] tests/kms_invalid_mode: add prints when test skips
+Date: Mon,  2 Mar 2026 16:53:39 +0530
+Message-ID: <20260302112339.214912-1-sumit.kishore@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,25 +66,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 23 Feb 2026 12:49:38 +0200
-Jani Nikula <jani.nikula@intel.com> wrote:
+add debug print to display the reason for test skip
 
-> On Thu, 19 Feb 2026, Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
-> > Compilation of Panthor was broken on big-endian due to a guard in
-> > pathor lib against such arch. Fix this and create and use
-> > function for skipping all panthor tests on such machines.
-> >
-> > Also while at it, init fd so it could be safely used at last
-> > fixture.  
-> 
-> What about DRIVER_ANY tests?
-> 
-> Seems like the cleaner option would be to amend drm_open_driver() with
-> something like:
-> 
-> 	if (chipset & DRIVER_PANTHOR)
-> 		skip on big endian
-> 
-> instead of sprinkling the skips everywhere.
+Signed-off-by: sumit kishore <sumit.kishore@intel.com>
+---
+ tests/kms_invalid_mode.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-FWIW, I'm fine with this approach too.
+diff --git a/tests/kms_invalid_mode.c b/tests/kms_invalid_mode.c
+index 5edffb649..8ba488812 100644
+--- a/tests/kms_invalid_mode.c
++++ b/tests/kms_invalid_mode.c
+@@ -266,7 +266,9 @@ test_output(data_t *data)
+ 	 * sure everything is really getting rejected?
+ 	 */
+ 	mode = *igt_output_get_mode(output);
+-	igt_require(data->adjust_mode(data, &mode));
++	igt_require_f(data->adjust_mode(data, &mode),
++		"Skipping as %s has scaling properties\n", igt_output_name(output));
++
+ 
+ 	igt_create_fb(data->drm_fd,
+ 		      max_t(uint16_t, mode.hdisplay, 64),
+-- 
+2.43.0
+
