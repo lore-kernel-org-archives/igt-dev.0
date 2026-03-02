@@ -4,58 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7D70D58E4C
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Mar 2026 09:32:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A394AE9B357
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Mar 2026 10:21:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5FDC710E209;
-	Mon,  2 Mar 2026 09:32:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4C68710E35E;
+	Mon,  2 Mar 2026 10:21:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GR3uEX/p";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MpVobP4Q";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E022A10E209
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Mar 2026 09:32:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ADEB810E35E
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Mar 2026 10:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772443963; x=1803979963;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=NvNvbOuDHHfokvFPxSdBMtVnYFCv7I5OstVTBXPkgs0=;
- b=GR3uEX/prpl3DcZSeJcSazMd3l2SoEFhY9VSfU9IgKHoj0mTqLRXPvUy
- IJPGrz5JAVf2FJCB0VsSDDqMYi5DE5Gk0r0xgKBP2wlYWsR0nPLruELn+
- GILPR96kawkAKi67CTVY8MKowIGMFiuo8/5qF6haONprmGqLnyuroNa4U
- 7mkQXl9Ew48njDTatns5hIsL4bIITlUKDLPC603BJMjCUO3JyRxE3kgB9
- AKVqFdywi4+ib5drlkWStJm+mAXuR/bRuQ6BxIGkxP3+oi4URKnFCoQz8
- 1rEcxwLOBjb36WRbCCBfhXyCRYxxJZZfq3Bhi8QUx+UCiLvtnRY1CRl2D w==;
-X-CSE-ConnectionGUID: ESa+NIuyTHqRoBCwMI1h+Q==
-X-CSE-MsgGUID: yzfWDLpQRu2du86RPWYhIQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="72473684"
-X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; d="scan'208";a="72473684"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Mar 2026 01:32:42 -0800
-X-CSE-ConnectionGUID: 4HDW5vg1Tpm/ZADBIdTILQ==
-X-CSE-MsgGUID: XOeXgyeURaKRMnyqWp0s6w==
+ t=1772446917; x=1803982917;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=gcxFMUKvTJTGb0OPN2wLohaMzROihMKr31DUP6kQ2Qk=;
+ b=MpVobP4QvsT9Bb6/Xb+lmar7shXofmlwJlyU258FWd39m3HCFDk9C01t
+ 1q2loJ3VCdCXuy6oOYfXM0VwK4QiyDzD4HDuilafOYhDj3pSN0PFMxus6
+ ltuP4GisbHbNbBgqjKge8SOY4ECs6/AYO1r/fihs4spwzgy2RxJx6/T4R
+ zwOQTAXTCC3EwnsHYWunF2SzI3VQRUPdUN1ttY6ZQJHAlif8c0mvi0Ctm
+ cGiEiGkdkJOwmZtCbRv0uWYZCjDeMhCKA4XkcBWRYKmjWcE4YZGHRJb+0
+ FmfjvzuyvxgtVFpn9Dz5C+84k1V47+eYR02uOU+RB2RKOlM5IVQy2Xyq/ Q==;
+X-CSE-ConnectionGUID: ceDROqY1RGqMH0imkmH6cA==
+X-CSE-MsgGUID: 7Y7nk9CCQwSpFdYxvEOL9g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="84917518"
+X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; d="scan'208";a="84917518"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Mar 2026 02:21:56 -0800
+X-CSE-ConnectionGUID: dJdx0G4xTzemnXOYgyFHRw==
+X-CSE-MsgGUID: BepaWyMgQDGmy5fEcyi3yw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; d="scan'208";a="217708830"
-Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.55])
- ([172.28.182.55])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Mar 2026 01:32:41 -0800
-Message-ID: <55530661-8050-4722-8cdc-c5c0a0af871b@linux.intel.com>
-Date: Mon, 2 Mar 2026 10:32:26 +0100
+X-IronPort-AV: E=Sophos;i="6.21,319,1763452800"; d="scan'208";a="214844298"
+Received: from bilal-nuc7i7bnh.iind.intel.com ([10.190.239.45])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Mar 2026 02:21:53 -0800
+From: Mohammed Bilal <mohammed.bilal@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: swati2.sharma@intel.com, kamil.konieczny@intel.com, kunal1.joshi@intel.com,
+ karol.krol@intel.com, ryszard.knop@intel.com,
+ Mohammed Bilal <mohammed.bilal@intel.com>
+Subject: [PATCH v4 0/5] intel-ci: Split chamelium-only testlist for i915 and xe
+Date: Mon,  2 Mar 2026 15:49:21 +0530
+Message-ID: <20260302101926.3015380-1-mohammed.bilal@intel.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?B?UmU6IOKclyBYZS5DSS5GVUxMOiBmYWlsdXJlIGZvciB4ZV9zcmlvdl9m?=
- =?UTF-8?Q?lr=3A_basic_FLR_smoke_test?=
-To: igt-dev@lists.freedesktop.org, lgci.bug.filing@intel.com
-References: <20260227152734.256604-1-marcin.bernatowicz@linux.intel.com>
- <177227643444.299615.5996489730320556996@a3b018990fe9>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <177227643444.299615.5996489730320556996@a3b018990fe9>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,93 +67,35 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+v2:
+- Move suspend resume tests to the end of the testlist (Kunal)
+- Comment out random-plane test (Kunal)
 
-On 2/28/2026 12:00 PM, Patchwork wrote:
-> == Series Details ==
->
-> Series: xe_sriov_flr: basic FLR smoke test
-> URL   : https://patchwork.freedesktop.org/series/162326/
-> State : failure
->
-> == Summary ==
->
-> CI Bug Log - changes from XEIGT_8775_FULL -> XEIGTPW_14636_FULL
-> ====================================================
->
-> Summary
-> -------
->
->    **FAILURE**
->
->    Serious unknown changes coming with XEIGTPW_14636_FULL absolutely need to be
->    verified manually.
->    
->    If you think the reported changes have nothing to do with the changes
->    introduced in XEIGTPW_14636_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->    to document this new failure mode, which will reduce false positives in CI.
->
->    
->
-> Participating hosts (2 -> 2)
-> ------------------------------
->
->    No changes in participating hosts
->
-> Possible new issues
-> -------------------
->
->    Here are the unknown changes that may have been introduced in XEIGTPW_14636_FULL:
->
-> ### IGT changes ###
->
-> #### Possible regressions ####
->
->    * igt@kms_plane_cursor@primary:
->      - shard-bmg:          [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
->     [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8775/shard-bmg-6/igt@kms_plane_cursor@primary.html
->     [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14636/shard-bmg-2/igt@kms_plane_cursor@primary.html
-Unrelated
->
->    * {igt@xe_sriov_flr@flr-basic} (NEW):
->      - shard-lnl:          NOTRUN -> [SKIP][3]
->     [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14636/shard-lnl-7/igt@xe_sriov_flr@flr-basic.html
+v3:
+-Use move-fix-add approach (Kamil)
+-Remove symlinks first before renaming (Kamil)
 
-Expected skip.
+v4:
+-Restructure move-fix-add approach (Kamil)
+-Rename run-type labels(Swati)
 
----
+Mohammed Bilal (5):
+  intel-ci: Remove chamelium testlist symlinks
+  intel-ci: Rename chamelium-only testlist to i915 specific
+  intel-ci: Apply i915 chamelium delta changes
+  intel-ci: Copy i915 chamelium testlist for xe
+  intel-ci: Apply xe chamelium delta changes
 
-marcin
+ tests/intel-ci/chamelium-only.testlist      | 77 --------------------
+ tests/intel-ci/i915.chamelium-only.testlist | 81 ++++++++++++++++++++-
+ tests/intel-ci/meson.build                  |  3 +-
+ tests/intel-ci/xe.chamelium-only.testlist   | 72 +++++++++++++++++-
+ tests/intel/kms_test_config.json            |  9 ++-
+ 5 files changed, 158 insertions(+), 84 deletions(-)
+ delete mode 100644 tests/intel-ci/chamelium-only.testlist
+ mode change 120000 => 100644 tests/intel-ci/i915.chamelium-only.testlist
+ mode change 120000 => 100644 tests/intel-ci/xe.chamelium-only.testlist
 
->    
-> New tests
-> ---------
->
->    New tests have been introduced between XEIGT_8775_FULL and XEIGTPW_14636_FULL:
->
-> ### New IGT tests (1) ###
->
->    * igt@xe_sriov_flr@flr-basic:
->      - Statuses : 1 skip(s)
->      - Exec time: [0.0] s
->    
->
-> Known issues
-> ------------
-[...]
->
->
-> Build changes
-> -------------
->
->    * IGT: IGT_8775 -> IGTPW_14636
->    * Linux: xe-4632-568403859ba7182ce2a59553664b34d58467adeb -> xe-4635-a0a6a2fc5a08dc2e936c43e5d181dd0975a251a1
->
->    IGTPW_14636: 14636
->    IGT_8775: 8775
->    xe-4632-568403859ba7182ce2a59553664b34d58467adeb: 568403859ba7182ce2a59553664b34d58467adeb
->    xe-4635-a0a6a2fc5a08dc2e936c43e5d181dd0975a251a1: a0a6a2fc5a08dc2e936c43e5d181dd0975a251a1
->
-> == Logs ==
->
-> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14636/index.html
->
+-- 
+2.48.1
+
