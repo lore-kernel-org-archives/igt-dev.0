@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8D49E9B36D
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Mar 2026 12:25:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 930D0E9B36A
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Mar 2026 12:25:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9DF8A10E132;
-	Mon,  2 Mar 2026 12:25:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 46D4610E4B0;
+	Mon,  2 Mar 2026 12:25:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Cy93C5XO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e2yrSgMA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 17EFF10E4B0
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Mar 2026 12:25:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A7CBC10E4B0
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Mar 2026 12:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772454339; x=1803990339;
+ t=1772454343; x=1803990343;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Rsnfq6gOkoOkX9DdZdxVFqAKamFNGZtydYQqs0Zpzxc=;
- b=Cy93C5XO4RYGn2BX33SZlNl7yWz6jEcQBEC2U3MG22czc7S3c1d+dRd3
- Js3f84svRrx8QEoS/07zjepU38PqdtAtYb3+nNttuEQUnzo2NuwAaZRRW
- 58dyB6uR0sPwVah5SyY/dytMEr0dI9eteN6kGaR8y5h6ZLkxE3YG7/PIZ
- WAvqYisawgtdqPsqN2f3vZDMnKp8DqC5SCAFrkXfNa4+PzBAZm5BSBfEu
- G5MfcWXzxWNv2qHSU+7R8czjs/k8/QyhdarR9cqGcGP2Ah4n7TF+yW+V6
- exr29xe+Wj4mCDZkaYoaSwISI7okhV2+QLeFuuV3VvdZcbTZlo81lgDgA Q==;
-X-CSE-ConnectionGUID: G4sH3NPDRpeOE5JYqmzFWA==
-X-CSE-MsgGUID: gwyueelZR769TqXNVQVQFQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="84098049"
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; d="scan'208";a="84098049"
+ bh=ctKUdeqRhiAN1u+K7jTTMxaW9go2THxi6et6TEFtvx8=;
+ b=e2yrSgMAUjzaahiOyBi2SpkJcyLojz3eBKCNQ7XdoCgbjj56C4iFIGd+
+ RS5rIcI6WiBgXrWtIIJsTSO5FvoaVlvz67SOCkRve2/JlNAzkgPUOFXsc
+ 4He6mXhybrLeJ8fihRebHerZDQMKhNC/dyqzpSwwrClRWOOdDERlDzKQL
+ p/anYuapIhYwCBTdbVbmc+io1gY0/G9X7ePRx/ky/SY2YeLHQ1JSVM/TL
+ nlGXRhrZ4DfSzH/pHZVSCVP4eEh++5lcoTHc9+p5Irp2TMzttZCWR0LZN
+ kZhXXYUssxa8lWX7cAe1yztsYGTV4M6m9kNWeXJ2CD+36cM3fi2+LG85Q g==;
+X-CSE-ConnectionGUID: 3EWbp0ePR6W6QXIIEfofuA==
+X-CSE-MsgGUID: QDgWudR3Q8u0JkWCv6UahQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11716"; a="84098054"
+X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; d="scan'208";a="84098054"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Mar 2026 04:25:39 -0800
-X-CSE-ConnectionGUID: wlgoREIGRNSPsltsjT+GpA==
-X-CSE-MsgGUID: vvJZ4w5LRYG2TOpqxn+PsQ==
+ 02 Mar 2026 04:25:42 -0800
+X-CSE-ConnectionGUID: oFvJD0dNRwKL2OLOKZPOmw==
+X-CSE-MsgGUID: ToN8ijC/QxWE27/3vLVztA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; d="scan'208";a="217663005"
+X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; d="scan'208";a="217663016"
 Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.244.35])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Mar 2026 04:25:38 -0800
+ 02 Mar 2026 04:25:42 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Nishit Sharma <nishit.sharma@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t v2 4/5] tests/xe_compute: Exercise user passed buffers
-Date: Mon,  2 Mar 2026 13:25:22 +0100
-Message-ID: <20260302122517.4126472-11-zbigniew.kempczynski@intel.com>
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v2 5/5] tests/xe_compute: Use appropriate feature in
+ compute-square tests
+Date: Mon,  2 Mar 2026 13:25:23 +0100
+Message-ID: <20260302122517.4126472-12-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260302122517.4126472-7-zbigniew.kempczynski@intel.com>
 References: <20260302122517.4126472-7-zbigniew.kempczynski@intel.com>
@@ -71,145 +71,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Verify input and output buffers added to execenv are properly handled
-and data within are fully on user control.
-
-Do compute-square on input buffer and verify output contain computed
-square root for floats of input buffer.
+Test is doing compute-square calculation so pick 'Compute' instead
+of 'WMTP' is better choice.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
-v2: Adding SVM part by Nishit
----
- tests/intel/xe_compute.c | 106 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 106 insertions(+)
+ tests/intel/xe_compute.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index 310093fc56..ed652ffedf 100644
+index ed652ffedf..a36d3e8cd2 100644
 --- a/tests/intel/xe_compute.c
 +++ b/tests/intel/xe_compute.c
-@@ -510,6 +510,106 @@ test_compute_square(int fd)
- 		      "GPU not supported\n");
- }
+@@ -495,8 +495,8 @@ test_eu_busy(uint64_t duration_sec)
  
-+/**
-+ * SUBTEST: compute-square-userenv
+ /**
+  * SUBTEST: compute-square
+- * Mega feature: WMTP
+- * Sub-category: wmtp tests
 + * Mega feature: Compute
 + * Sub-category: compute tests
-+ * Functionality: OpenCL kernel
-+ * Description:
-+ *	Run an openCL Kernel that returns output[i] = input[i] * input[i],
-+ *	taking buffers from userenv.
-+ *
-+ * SUBTEST: compute-square-userenv-svm
-+ * Mega feature: Compute
-+ * Sub-category: compute tests
-+ * Functionality: OpenCL kernel
-+ * Description:
-+ *	Run an openCL Kernel that returns output[i] = input[i] * input[i],
-+ *	taking buffers from userenv where input is svm buffer.
-+ */
-+
-+#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
-+#define FIVE_SEC		(5LL * NSEC_PER_SEC)
-+#define bind_system_allocator(__sync, __num_sync)			\
-+	__xe_vm_bind_assert(fd, vm, 0,					\
-+			    0, 0, 0, 0x1ull << va_bits,			\
-+			    DRM_XE_VM_BIND_OP_MAP,			\
-+			    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR,	\
-+			    (__sync), (__num_sync), 0, 0)
-+
-+static void
-+test_compute_square_userenv(int fd, bool input_in_svm)
-+{
-+	uint32_t size = SZ_4K, vm;
-+	struct user_execenv env = {
-+		.array_size = size / sizeof(float),
-+	};
-+	uint32_t input_bo, output_bo;
-+	int va_bits = xe_va_bits(fd);
-+	float *input, *output;
-+	int i;
-+
-+	vm = env.vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+				   DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-+	if (input_in_svm) {
-+		struct drm_xe_sync sync = {
-+			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+			.timeline_value = USER_FENCE_VALUE,
-+		};
-+		struct bo_sync {
-+			uint64_t sync;
-+		} *bo_sync;
-+
-+		bo_sync = aligned_alloc(xe_get_default_alignment(fd), sizeof(*bo_sync));
-+		igt_assert(bo_sync);
-+		sync.addr = to_user_pointer(&bo_sync->sync);
-+		bind_system_allocator(&sync, 1);
-+		xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, 0, FIVE_SEC);
-+		input = aligned_alloc(xe_get_default_alignment(fd), size);
-+		env.input_addr = to_user_pointer(input);
-+		free(bo_sync);
-+	} else {
-+		input_bo = xe_bo_create(fd, env.vm, size, vram_if_possible(fd, 0),
-+					DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+		input = xe_bo_map(fd, input_bo, size);
-+		env.input_bo = input_bo;
-+		env.input_addr = 0x30000000;
-+	}
-+	output_bo = xe_bo_create(fd, env.vm, size, vram_if_possible(fd, 0),
-+				 DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	output = xe_bo_map(fd, output_bo, size);
-+
-+	env.loop_count = env.array_size / 2;
-+	env.skip_results_check = true;
-+	env.output_bo = output_bo;
-+	env.output_addr = 0x31000000;
-+
-+	for (i = 0; i < env.array_size; i++)
-+		input[i] = (float)i;
-+
-+	run_intel_compute_kernel(fd, &env, EXECENV_PREF_SYSTEM);
-+
-+	for (i = 0; i < env.loop_count; i++) {
-+		float expected_output = input[i] * input[i];
-+
-+		if (output[i] != expected_output || output[i] == 0.0f)
-+			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
-+				  i, input[i], output[i], expected_output);
-+		igt_assert_eq_double(output[i], expected_output);
-+	}
-+
-+	if (input_in_svm) {
-+		free(input);
-+	} else {
-+		munmap(input, size);
-+		gem_close(fd, input_bo);
-+	}
-+	munmap(output, size);
-+	gem_close(fd, output_bo);
-+	xe_vm_destroy(fd, env.vm);
-+}
-+
- int igt_main()
- {
- 	int xe, ccs_mode[4];
-@@ -525,6 +625,12 @@ int igt_main()
- 	igt_subtest("compute-square")
- 		test_compute_square(xe);
- 
-+	igt_subtest("compute-square-userenv")
-+		test_compute_square_userenv(xe, false);
-+
-+	igt_subtest("compute-square-userenv-svm")
-+		test_compute_square_userenv(xe, true);
-+
- 	igt_fixture()
- 		drm_close_driver(xe);
- 
+  * Functionality: OpenCL kernel
+  * GPU requirement: TGL, PVC, LNL, PTL
+  * Description:
 -- 
 2.43.0
 
