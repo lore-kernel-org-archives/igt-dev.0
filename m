@@ -4,54 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3959EA4E07
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Mar 2026 14:01:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDF71EA4E08
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Mar 2026 14:01:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8BAEB10E4FF;
-	Mon,  2 Mar 2026 14:01:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8900110E4FE;
+	Mon,  2 Mar 2026 14:01:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ip478q/V";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DfLbunTS";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2559210E502
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Mar 2026 14:01:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49FAE10E4FF
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Mar 2026 14:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772460091; x=1803996091;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=mqanBWTB+VJfyIbNsjLXsqYGHcd7hg6IKKCZ+f1mGvA=;
- b=Ip478q/VKWNPQP79/0hoVPG0yl9YDWkEtM9gbmjI1b73mbLSOd8pzbSu
- s+1W+5Ep2zAppf1u5cbkA1ZnYQAqoPgMSSRYxCKuJ8Tw//RyJv7AsKpO+
- mgYjbWBlUJKgXW03nkI0a6K0FOoDqlR3P5LmxfrgJQqkue4xcMtnl9h+s
- jOc4Ztnw4SKUiZZxWJPNGSRWddiDMIWYYBe+h1EFrSJJhjzH45NrDNl07
- 5K9uZgKcRZVDLap1uYl2XtTK8ogbtXvIMFZeH5tE1jg29xYulCjYkmOUA
- We7+V74Qy8H7cpraCBduKphbsEA3s5fEbwFZsIurKOzaOq0KZErnpAk9y w==;
-X-CSE-ConnectionGUID: +hdKbrBZSbOM0k75JOS6qg==
-X-CSE-MsgGUID: wxx5e91vRiWR2+P8soui7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="84170698"
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; d="scan'208";a="84170698"
+ t=1772460092; x=1803996092;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=kJXEYrGbFmf/nUk7Z7SAZl/8MlWy/EM6ZkqoJ50cCdU=;
+ b=DfLbunTSVKf6kIJtMBos0qbhLFkBtFbAj+9KchAwzAXODzE4QuvqQ4T2
+ WRENljn/qSjLKLbzH45z/rLdihPC7+/2CixyyU4MXqMuVk3oLMiidPDtj
+ NglN/Dd8HEYuVimxSklbBhzH2dBaC9A5od5bQNdfdRW4Y0bCYP2ZFwB7g
+ 4aorkgXfBRzOzsyBpXAwIfw8f+Gf3/LmiyxN5Mb7jsFZn6XPAjO04yfnz
+ 8Gby9uHDeU7d1CZqG0+4vheCCMBcoi9bdKKHviiWlBR2lr4AoWI/v9i+a
+ vr2iAXYDdTLGBIOUOBxdhzrOEy9jja1E0RkwoBck8LSeoTtvGv/mOcCpq g==;
+X-CSE-ConnectionGUID: 2CeIYmUBTGKNp2F+dYfiwg==
+X-CSE-MsgGUID: sGwCZ0y4QZml8+lFURkfzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="84170712"
+X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; d="scan'208";a="84170712"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Mar 2026 06:01:30 -0800
-X-CSE-ConnectionGUID: x0BAw9xITxuFv2pKTnxK4A==
-X-CSE-MsgGUID: 09HnC2mmQEOGLyMZb+pLUw==
+ 02 Mar 2026 06:01:32 -0800
+X-CSE-ConnectionGUID: P4k/eNx7QvCgd9iGeDCL/w==
+X-CSE-MsgGUID: tu4wuKs3Qvutq4rfcJmqpg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; d="scan'208";a="214126792"
+X-IronPort-AV: E=Sophos;i="6.21,320,1763452800"; d="scan'208";a="214126800"
 Received: from dut6245dg2frd.fm.intel.com ([10.80.54.109])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Mar 2026 06:01:30 -0800
+ 02 Mar 2026 06:01:32 -0800
 From: Sobin Thomas <sobin.thomas@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	thomas.hellstrom@intel.com
 Cc: nishit.sharma@intel.com,
 	Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH i-g-t v2 0/2] test/intel/xe_vm: Add overcommit and no‑overcommit handling tests
-Date: Mon,  2 Mar 2026 14:00:08 +0000
-Message-ID: <20260302140010.1009564-1-sobin.thomas@intel.com>
+Subject: [PATCH v2 i-g-t 1/2] drm-uapi/xe: Add support for No Overcommit flag
+Date: Mon,  2 Mar 2026 14:00:09 +0000
+Message-ID: <20260302140010.1009564-2-sobin.thomas@intel.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260302140010.1009564-1-sobin.thomas@intel.com>
+References: <20260302140010.1009564-1-sobin.thomas@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,26 +69,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series introduces support for No Overcommit flags in the xe_uapi
-and adds IGT tests to validate overcommit behaviour across different
-VM modes.
+Align with kernel commit 369cc8804985 ("drm/xe/uapi: Introduce a flag to
+disallow VM overcommit in fault mode"). This adds support for the No
+Overcommit flag in IGT to match the kernel UAPI behavior.
 
-Patch 1 updates the drm-uapi/xe flags in IGT to align with the
-kernel changes that introduced NO_VM_OVERCOMMIT.
+Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+---
+ include/drm-uapi/xe_drm.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Patch 2 increase coverage to xe_vm tests by adding tests for
- - Over-commit test in fault and non fault mode
- - No-Over-Commit tests in fault mode
-
-
-Sobin Thomas (2):
-  drm-uapi/xe: Add support for No Overcommit flag
-  tests/intel/xe_vm: Add support for overcommit tests
-
- include/drm-uapi/xe_drm.h |   2 +
- tests/intel/xe_vm.c       | 517 ++++++++++++++++++++++++++++++++++++++
- 2 files changed, 519 insertions(+)
-
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 077e66a68..12a9da045 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -983,6 +983,8 @@ struct drm_xe_vm_create {
+ #define DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE	(1 << 0)
+ #define DRM_XE_VM_CREATE_FLAG_LR_MODE	        (1 << 1)
+ #define DRM_XE_VM_CREATE_FLAG_FAULT_MODE	(1 << 2)
++#define DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT  (1 << 3)
++
+ 	/** @flags: Flags */
+ 	__u32 flags;
+ 
 -- 
 2.52.0
 
