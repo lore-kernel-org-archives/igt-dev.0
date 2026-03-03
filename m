@@ -4,55 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C075EC1449
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 13:38:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37BADEC1450
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 13:47:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B95A810E80F;
-	Tue,  3 Mar 2026 13:38:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D5FE510E820;
+	Tue,  3 Mar 2026 13:47:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="key not found in DNS" (0-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H2Ci2cEg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P4uyKIcz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBEC110E80F
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 13:38:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4862110E81F
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 13:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772545113; x=1804081113;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=S+qCfe09EhLIeoS0WnHtUTtRD9zmEP5eG9bSSwhIaRQ=;
- b=H2Ci2cEghngnIchwYKoxcSussKiohHr5xpBMOjJ+EseZYvtmepKeinhk
- w5QnXtY2hDIM294BGo5L1NHG4visi4lhuphoNpIaisI/rfv4SCzlXWXEk
- NzkQBvyYtjJETR7FYsx5s7KeuS3tR7iQGNMy43nHweN3veqTYcPknfH6a
- wTq7dRSttWTxwTMX1kunEdYZzENIie1fDnOY1UF0xO+kvEQMuygJpokrf
- AqIdZflu1nF3dcOzYWcUJMAuPzHDQhciR5x/y2RIsi8u8PmK0X3tlFE/l
- wsTQqyR5hMnPal7nbXjbhgYqt82OoaAEkj9Ed/12WqyfxTbkG7b98uLY4 A==;
-X-CSE-ConnectionGUID: od/WshoTQk6y973sc6Mqnw==
-X-CSE-MsgGUID: rp/mTbDlTp+GX7mMfMYfdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="90977808"
-X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="90977808"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2026 05:38:33 -0800
-X-CSE-ConnectionGUID: KP6b7x+XS6mbCIYqNRZiIw==
-X-CSE-MsgGUID: m3eI5FjkT3ygHHYjd2aJwA==
+ t=1772545632; x=1804081632;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=kYTruJxBYrSZfwA4fBFPVpyEJTro2+CtCrd6fsBfLC8=;
+ b=P4uyKIczYpK7gFAbmZIbsJdsaybXmaMdQrVi6dH6WnLDy1LKdP+G/00n
+ IgWu4Y+y0VDl93X6b1jyZ7/awvYLFvXAk4jGPO4u/uEmX8fIWBLUVObZM
+ qcHOHHj1gLuDWIDXV2S3kBDN5kgaduevEun7g7JFKrGGR5WOD+28huSjV
+ he011fHA1S0blut9TRaYuAqngpfbZZ30K4uClwWXHqVFemfzaX52aeij7
+ tpUb3hLTDA+hFBhzX2r4SXtwXIBr7EvgC1sQmocpXWhNSPBmkpUlnkPlQ
+ ayVyviKruNBXl+K3X9NRZ2MExAF0jG/A8ZmmSeIQy6SMnaZDTopRrXupT w==;
+X-CSE-ConnectionGUID: qV0ABxBrTz6MoW55HSjfRQ==
+X-CSE-MsgGUID: 9/7qESw4QoOCV0mMeD3Rjg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="73643882"
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="73643882"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2026 05:47:12 -0800
+X-CSE-ConnectionGUID: oSBPGdegSlqmOrBcnz0T/g==
+X-CSE-MsgGUID: dLwYpjRsTAqcl4mKXlDHFQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="248496876"
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="214320681"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.245.58])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2026 05:38:31 -0800
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2026 05:47:11 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v3 5/5] tests/xe_compute: Use appropriate feature in
- compute-square tests
-Date: Tue,  3 Mar 2026 14:38:04 +0100
-Message-ID: <20260303133758.36553-12-zbigniew.kempczynski@intel.com>
+ Francois Dugast <francois.dugast@intel.com>,
+ Nishit Sharma <nishit.sharma@intel.com>
+Subject: [PATCH i-g-t v4 0/5] Extend compute userenv to support user passed
+ buffers
+Date: Tue,  3 Mar 2026 14:47:07 +0100
+Message-ID: <20260303134706.41948-7-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260303133758.36553-7-zbigniew.kempczynski@intel.com>
-References: <20260303133758.36553-7-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -71,31 +70,25 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Test is doing compute-square calculation so pick 'Compute' instead
-of 'WMTP' is better choice.
+Add support for user passed buffers in compute userenv. This allows
+users to pass their own input and output buffers to compute tests, which
+can be useful for testing specific scenarios.
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/intel/xe_compute.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Nishit Sharma <nishit.sharma@intel.com>
 
-diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index d46cc4208b..27acc1d0e6 100644
---- a/tests/intel/xe_compute.c
-+++ b/tests/intel/xe_compute.c
-@@ -495,8 +495,8 @@ test_eu_busy(uint64_t duration_sec)
- 
- /**
-  * SUBTEST: compute-square
-- * Mega feature: WMTP
-- * Sub-category: wmtp tests
-+ * Mega feature: Compute
-+ * Sub-category: compute tests
-  * Functionality: OpenCL kernel
-  * GPU requirement: TGL, PVC, LNL, PTL
-  * Description:
+Zbigniew Kempczyński (4):
+  lib/intel_compute: Add types for input and output buffers
+  lib/intel_compute: Extend userenv by adding input and output bos
+  lib/intel_compute: Use user offsets and loop size if provided
+  tests/xe_compute: Exercise user passed buffers
+  tests/xe_compute: Use appropriate feature in compute-square tests
+
+ lib/intel_compute.c      | 191 ++++++++++++++++++++++++++++-----------
+ lib/intel_compute.h      |   4 +
+ tests/intel/xe_compute.c | 154 ++++++++++++++++++++++++++++++-
+ 3 files changed, 294 insertions(+), 55 deletions(-)
+
 -- 
 2.43.0
 
