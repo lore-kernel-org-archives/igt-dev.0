@@ -4,54 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37BADEC1450
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 13:47:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38269EC1449
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 13:47:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D5FE510E820;
-	Tue,  3 Mar 2026 13:47:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E247D10E819;
+	Tue,  3 Mar 2026 13:47:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P4uyKIcz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q1jA8GHL";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4862110E81F
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 13:47:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 294B410E81E
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 13:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772545632; x=1804081632;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=kYTruJxBYrSZfwA4fBFPVpyEJTro2+CtCrd6fsBfLC8=;
- b=P4uyKIczYpK7gFAbmZIbsJdsaybXmaMdQrVi6dH6WnLDy1LKdP+G/00n
- IgWu4Y+y0VDl93X6b1jyZ7/awvYLFvXAk4jGPO4u/uEmX8fIWBLUVObZM
- qcHOHHj1gLuDWIDXV2S3kBDN5kgaduevEun7g7JFKrGGR5WOD+28huSjV
- he011fHA1S0blut9TRaYuAqngpfbZZ30K4uClwWXHqVFemfzaX52aeij7
- tpUb3hLTDA+hFBhzX2r4SXtwXIBr7EvgC1sQmocpXWhNSPBmkpUlnkPlQ
- ayVyviKruNBXl+K3X9NRZ2MExAF0jG/A8ZmmSeIQy6SMnaZDTopRrXupT w==;
-X-CSE-ConnectionGUID: qV0ABxBrTz6MoW55HSjfRQ==
-X-CSE-MsgGUID: 9/7qESw4QoOCV0mMeD3Rjg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="73643882"
-X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="73643882"
+ t=1772545636; x=1804081636;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=enLjLed9f5xtckEJBVZCQTK2BmfXWNmMdtlz/CkbRnw=;
+ b=Q1jA8GHLeDkBciUURWZluFZo1U4iqg799t0kWW+D4nQwoO1i6Fd5hZoL
+ rST5EG/rxXbuZzgUW7nQVtuArJ9J4axqN+eZTLN1rKD03n1w5Qv/d+85T
+ d85u81Me7sSaoT/64kTNhHCnnAfBUTAw/CVLb8oI6NJvbP0nCPFHb9FGH
+ qop/+GwgaT1sQadGnwfrR5tewMvODciADEwu4rM3xnbA+ZUgI9WY80pFE
+ KaFPDkw5HXIG+W4Oq1atGS5/3cIlbkeJRjAC+7W3TjCYHEBolNYwyE3BB
+ b7u5F4Q5hFdHxHg3bFcTdeKTJPu5m5kUYHMIjO/J8tpdQLUvJhCoel3us w==;
+X-CSE-ConnectionGUID: ERbnD06KQZKfsVb8k/1iAQ==
+X-CSE-MsgGUID: U2A2ypPWSg+jDtnFR7qmqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="73643886"
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="73643886"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2026 05:47:12 -0800
-X-CSE-ConnectionGUID: oSBPGdegSlqmOrBcnz0T/g==
-X-CSE-MsgGUID: dLwYpjRsTAqcl4mKXlDHFQ==
+ 03 Mar 2026 05:47:16 -0800
+X-CSE-ConnectionGUID: EpquRnsFQZyhdDVe9rG66g==
+X-CSE-MsgGUID: 70pZdAOOQxOSJL3Ay4Tjlg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="214320681"
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="214320702"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.245.58])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2026 05:47:11 -0800
+ 03 Mar 2026 05:47:15 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Francois Dugast <francois.dugast@intel.com>,
- Nishit Sharma <nishit.sharma@intel.com>
-Subject: [PATCH i-g-t v4 0/5] Extend compute userenv to support user passed
- buffers
-Date: Tue,  3 Mar 2026 14:47:07 +0100
-Message-ID: <20260303134706.41948-7-zbigniew.kempczynski@intel.com>
+ Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH i-g-t v4 1/5] lib/intel_compute: Add types for input and
+ output buffers
+Date: Tue,  3 Mar 2026 14:47:08 +0100
+Message-ID: <20260303134706.41948-8-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260303134706.41948-7-zbigniew.kempczynski@intel.com>
+References: <20260303134706.41948-7-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -70,25 +71,280 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add support for user passed buffers in compute userenv. This allows
-users to pass their own input and output buffers to compute tests, which
-can be useful for testing specific scenarios.
+Instead of selecting input and output buffers by direct indices mark
+them in provided arrays as typed, allowing to search them instead
+of hardcoded index.
 
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Francois Dugast <francois.dugast@intel.com>
-Cc: Nishit Sharma <nishit.sharma@intel.com>
+---
+ lib/intel_compute.c | 115 ++++++++++++++++++++++++++++++--------------
+ 1 file changed, 80 insertions(+), 35 deletions(-)
 
-Zbigniew Kempczyński (4):
-  lib/intel_compute: Add types for input and output buffers
-  lib/intel_compute: Extend userenv by adding input and output bos
-  lib/intel_compute: Use user offsets and loop size if provided
-  tests/xe_compute: Exercise user passed buffers
-  tests/xe_compute: Use appropriate feature in compute-square tests
-
- lib/intel_compute.c      | 191 ++++++++++++++++++++++++++++-----------
- lib/intel_compute.h      |   4 +
- tests/intel/xe_compute.c | 154 ++++++++++++++++++++++++++++++-
- 3 files changed, 294 insertions(+), 55 deletions(-)
-
+diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+index eab6accfbc..dfd38b8d8c 100644
+--- a/lib/intel_compute.c
++++ b/lib/intel_compute.c
+@@ -77,12 +77,18 @@
+ #define TGP_long_kernel_loop_count		10
+ #define XE2_THREADGROUP_PREEMPT_XDIM		0x4000
+ 
++enum bo_dict_type {
++	BO_TYPE_INPUT = 1,
++	BO_TYPE_OUTPUT
++};
++
+ struct bo_dict_entry {
+ 	uint64_t addr;
+ 	uint32_t size;
+ 	void *data;
+ 	const char *name;
+ 	uint32_t handle;
++	enum bo_dict_type bo_type;
+ };
+ 
+ struct bo_sync {
+@@ -142,16 +148,34 @@ static void bo_check_square(float *input, float *output, int size)
+ 	}
+ }
+ 
++static struct bo_dict_entry *bo_dict_find_by_type(struct bo_dict_entry *bo_dict,
++						  int entries,
++						  enum bo_dict_type bo_type)
++{
++	struct bo_dict_entry *entry = NULL;
++
++	for (int i = 0; i < entries; i++)
++		if (bo_dict[i].bo_type == bo_type)
++			entry = &bo_dict[i];
++	igt_assert_f(entry, "bo_type %d not found in bo_dict\n", bo_type);
++
++	return entry;
++}
++
+ static float *get_input_data(const struct bo_execenv *execenv,
+-			     const struct user_execenv *user,
+-			     void *data)
++			     struct bo_dict_entry *bo_dict,
++			     int entries)
+ {
++	const struct user_execenv *user = execenv->user;
+ 	float *input_data;
+ 
+ 	if (user && user->input_addr) {
+ 		input_data = from_user_pointer(user->input_addr);
+ 	} else {
+-		input_data = (float *) data;
++		struct bo_dict_entry *entry;
++
++		entry = bo_dict_find_by_type(bo_dict, entries, BO_TYPE_INPUT);
++		input_data = (float *) entry->data;
+ 		bo_randomize(input_data, execenv->loop_count);
+ 	}
+ 
+@@ -159,15 +183,20 @@ static float *get_input_data(const struct bo_execenv *execenv,
+ }
+ 
+ static float *get_output_data(const struct bo_execenv *execenv,
+-			      const struct user_execenv *user,
+-			      void *data)
++			      struct bo_dict_entry *bo_dict,
++			      int entries)
+ {
++	const struct user_execenv *user = execenv->user;
+ 	float *output_data;
+ 
+ 	if (user && user->output_addr)
+ 		output_data = from_user_pointer(user->output_addr);
+-	else
+-		output_data = (float *) data;
++	else {
++		struct bo_dict_entry *entry;
++
++		entry = bo_dict_find_by_type(bo_dict, entries, BO_TYPE_OUTPUT);
++		output_data = (float *) entry->data;
++	}
+ 
+ 	return output_data;
+ }
+@@ -863,9 +892,11 @@ static void compute_exec(int fd, const unsigned char *kernel,
+ 		  .size = SIZE_INDIRECT_OBJECT,
+ 		  .name = "indirect data start" },
+ 		{ .addr = ADDR_INPUT,
+-		  .name = "input" },
++		  .name = "input",
++		  .bo_type = BO_TYPE_INPUT },
+ 		{ .addr = ADDR_OUTPUT,
+-		  .name = "output" },
++		  .name = "output",
++		  .bo_type = BO_TYPE_OUTPUT },
+ 		{ .addr = ADDR_BATCH,
+ 		  .size = SIZE_BATCH,
+ 		  .name = "batch" },
+@@ -895,8 +926,8 @@ static void compute_exec(int fd, const unsigned char *kernel,
+ 	create_indirect_data(bo_dict[3].data, bind_input_addr, bind_output_addr,
+ 			     IS_DG1(devid) ? 0x200 : 0x40, execenv.loop_count);
+ 
+-	input_data = get_input_data(&execenv, user, bo_dict[4].data);
+-	output_data = get_output_data(&execenv, user, bo_dict[5].data);
++	input_data = get_input_data(&execenv, bo_dict, entries);
++	output_data = get_output_data(&execenv, bo_dict, entries);
+ 
+ 	if (IS_DG1(devid))
+ 		dg1_compute_exec_compute(bo_dict[6].data,
+@@ -1144,9 +1175,11 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 		  .size = SIZE_INDIRECT_OBJECT,
+ 		  .name = "indirect object base"},
+ 		{ .addr = ADDR_INPUT,
+-		  .name = "addr input"},
++		  .name = "addr input",
++		  .bo_type = BO_TYPE_INPUT },
+ 		{ .addr = ADDR_OUTPUT,
+-		  .name = "addr output" },
++		  .name = "addr output",
++		  .bo_type = BO_TYPE_OUTPUT },
+ 		{ .addr = ADDR_GENERAL_STATE_BASE,
+ 		  .size = SIZE_GENERAL_STATE,
+ 		  .name = "general state base" },
+@@ -1184,8 +1217,8 @@ static void xehp_compute_exec(int fd, const unsigned char *kernel,
+ 				  execenv.loop_count);
+ 	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
+ 
+-	input_data = get_input_data(&execenv, user, bo_dict[4].data);
+-	output_data = get_output_data(&execenv, user, bo_dict[5].data);
++	input_data = get_input_data(&execenv, bo_dict, entries);
++	output_data = get_output_data(&execenv, bo_dict, entries);
+ 
+ 	xehp_compute_exec_compute(fd,
+ 				  bo_dict[8].data,
+@@ -1365,9 +1398,11 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ 		  .size = SIZE_INDIRECT_OBJECT,
+ 		  .name = "indirect object base"},
+ 		{ .addr = ADDR_INPUT,
+-		  .name = "addr input"},
++		  .name = "addr input",
++		  .bo_type = BO_TYPE_INPUT },
+ 		{ .addr = ADDR_OUTPUT,
+-		  .name = "addr output" },
++		  .name = "addr output",
++		  .bo_type = BO_TYPE_OUTPUT },
+ 		{ .addr = ADDR_GENERAL_STATE_BASE,
+ 		  .size = SIZE_GENERAL_STATE,
+ 		  .name = "general state base" },
+@@ -1396,8 +1431,8 @@ static void xehpc_compute_exec(int fd, const unsigned char *kernel,
+ 	xehpc_create_indirect_data(bo_dict[1].data, bind_input_addr, bind_output_addr,
+ 				   execenv.loop_count);
+ 
+-	input_data = get_input_data(&execenv, user, bo_dict[2].data);
+-	output_data = get_output_data(&execenv, user, bo_dict[3].data);
++	input_data = get_input_data(&execenv, bo_dict, entries);
++	output_data = get_output_data(&execenv, bo_dict, entries);
+ 
+ 	xehpc_compute_exec_compute(fd,
+ 				   bo_dict[5].data,
+@@ -1757,9 +1792,11 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ 		  .size = SIZE_INDIRECT_OBJECT,
+ 		  .name = "indirect object base"},
+ 		{ .addr = ADDR_INPUT,
+-		  .name = "addr input"},
++		  .name = "addr input",
++		  .bo_type = BO_TYPE_INPUT },
+ 		{ .addr = ADDR_OUTPUT,
+-		  .name = "addr output" },
++		  .name = "addr output",
++		  .bo_type = BO_TYPE_OUTPUT },
+ 		{ .addr = ADDR_GENERAL_STATE_BASE,
+ 		  .size = SIZE_GENERAL_STATE,
+ 		  .name = "general state base" },
+@@ -1800,8 +1837,8 @@ static void xelpg_compute_exec(int fd, const unsigned char *kernel,
+ 				   execenv.loop_count);
+ 	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
+ 
+-	input_data = get_input_data(&execenv, user, bo_dict[4].data);
+-	output_data = get_output_data(&execenv, user, bo_dict[5].data);
++	input_data = get_input_data(&execenv, bo_dict, entries);
++	output_data = get_output_data(&execenv, bo_dict, entries);
+ 
+ 	xelpg_compute_exec_compute(bo_dict[8].data,
+ 				   ADDR_GENERAL_STATE_BASE,
+@@ -1848,9 +1885,11 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 		  .size = SIZE_INDIRECT_OBJECT,
+ 		  .name = "indirect object base"},
+ 		{ .addr = ADDR_INPUT,
+-		  .name = "addr input"},
++		  .name = "addr input",
++		  .bo_type = BO_TYPE_INPUT },
+ 		{ .addr = ADDR_OUTPUT,
+-		  .name = "addr output" },
++		  .name = "addr output",
++		  .bo_type = BO_TYPE_OUTPUT },
+ 		{ .addr = ADDR_GENERAL_STATE_BASE,
+ 		  .size = SIZE_GENERAL_STATE,
+ 		  .name = "general state base" },
+@@ -1888,8 +1927,8 @@ static void xe2lpg_compute_exec(int fd, const unsigned char *kernel,
+ 				   execenv.loop_count);
+ 	xehp_create_surface_state(bo_dict[7].data, bind_input_addr, bind_output_addr);
+ 
+-	input_data = get_input_data(&execenv, user, bo_dict[4].data);
+-	output_data = get_output_data(&execenv, user, bo_dict[5].data);
++	input_data = get_input_data(&execenv, bo_dict, entries);
++	output_data = get_output_data(&execenv, bo_dict, entries);
+ 
+ 	xe2lpg_compute_exec_compute(fd,
+ 				    bo_dict[8].data,
+@@ -2097,9 +2136,11 @@ static void xe3p_compute_exec(int fd, const unsigned char *kernel,
+ 		  .size =  0x1000,
+ 		  .name = "indirect object base"},
+ 		{ .addr = ADDR_INPUT,
+-		  .name = "addr input"},
++		  .name = "addr input",
++		  .bo_type = BO_TYPE_INPUT },
+ 		{ .addr = ADDR_OUTPUT,
+-		  .name = "addr output" },
++		  .name = "addr output",
++		  .bo_type = BO_TYPE_OUTPUT },
+ 		{ .addr = ADDR_BATCH,
+ 		  .size = SIZE_BATCH,
+ 		  .name = "batch" },
+@@ -2131,8 +2172,8 @@ static void xe3p_compute_exec(int fd, const unsigned char *kernel,
+ 	idata.xe3p.indirect_addr_lo = indirect_addr;
+ 	idata.xe3p.indirect_addr_hi = indirect_addr >> 32;
+ 
+-	input_data = get_input_data(&execenv, user, bo_dict[2].data);
+-	output_data = get_output_data(&execenv, user, bo_dict[3].data);
++	input_data = get_input_data(&execenv, bo_dict, entries);
++	output_data = get_output_data(&execenv, bo_dict, entries);
+ 
+ 	xe3p_compute_exec_compute(fd, &idata,
+ 				  bo_dict[4].data,
+@@ -2421,9 +2462,11 @@ static void xe2lpg_compute_preempt_exec(int fd, const unsigned char *long_kernel
+ 		  .size = SIZE_INDIRECT_OBJECT,
+ 		  .name = "indirect object base"},
+ 		{ .addr = ADDR_INPUT, .size = MAX(sizeof(float) * SIZE_DATA, 0x10000),
+-		  .name = "addr input"},
++		  .name = "addr input",
++		  .bo_type = BO_TYPE_INPUT },
+ 		{ .addr = ADDR_OUTPUT, .size = MAX(sizeof(float) * SIZE_DATA, 0x10000),
+-		  .name = "addr output" },
++		  .name = "addr output",
++		  .bo_type = BO_TYPE_OUTPUT },
+ 		{ .addr = ADDR_GENERAL_STATE_BASE,
+ 		  .size = SIZE_GENERAL_STATE,
+ 		  .name = "general state base" },
+@@ -2566,9 +2609,11 @@ static void xe3p_compute_preempt_exec(int fd, const unsigned char *long_kernel,
+ 		  .size =  0x1000,
+ 		  .name = "indirect object base"},
+ 		{ .addr = ADDR_INPUT, .size = MAX(sizeof(float) * SIZE_DATA, 0x10000),
+-		  .name = "addr input"},
++		  .name = "addr input",
++		  .bo_type = BO_TYPE_INPUT },
+ 		{ .addr = ADDR_OUTPUT, .size = MAX(sizeof(float) * SIZE_DATA, 0x10000),
+-		  .name = "addr output" },
++		  .name = "addr output",
++		  .bo_type = BO_TYPE_OUTPUT },
+ 		{ .addr = ADDR_BATCH,
+ 		  .size = SIZE_BATCH,
+ 		  .name = "batch" },
 -- 
 2.43.0
 
