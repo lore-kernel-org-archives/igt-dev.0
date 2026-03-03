@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAB2EEDA68E
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 15:29:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE73EEDA68D
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 15:29:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2CE4610E836;
-	Tue,  3 Mar 2026 15:29:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9CF0710E83B;
+	Tue,  3 Mar 2026 15:29:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HqCJtEHP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eg7K/yU6";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 31F4D10E833
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 15:29:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 590C310E839
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 15:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772551764; x=1804087764;
+ t=1772551768; x=1804087768;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=NdDXkBX61I4GX2xvcuEnivCiganxH7S1aG3Z18X6RB8=;
- b=HqCJtEHPxx2aijNGRAL7BOFt6YFyoYYEZua+zhM+S72w9wsiOycHGDM+
- yjs9ZxNLehTcQHXBdUPJTd7KpLnXIxdchUIYZFuaV1hHDtfh6CWwP8nXY
- FBYD3UNkAdUrlQKQrwMI2UevWLF0m0/nQCommeG351zQxR1TKCKxYPVQj
- S55W9/SuM4PP17YJdiGbmEKBZBrsqrQP0mJhaf4MfJNwf5HXi4wtjqYub
- 4Hjc2zDpzb4fwT9m2fEAkOuE/F8hNQT1TeXdXS4yQp6PrdC8Rc5tH0YSu
- q5YSIxLbGm59TpmSQy+FrOZz2mrjOfR17U7qC0pPTKCx6bBqnewe73L8O Q==;
-X-CSE-ConnectionGUID: bz6WMOprSCSmcXQP2b3JMA==
-X-CSE-MsgGUID: 5ZrCHTeYTc+x7F+IEC0Bvg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="76193142"
-X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="76193142"
+ bh=DoCRtimN4d2gbS8fvJxfT6k1vENwgx2P5O21MOnGgps=;
+ b=eg7K/yU6U/nijQO9sDuFWoN0LLFWT4KSQ0CHG4ZMiR/IHft8cu5RgDvP
+ oG9BIPUyqqNuDABCk1aYtxaUN9PkiteBX+S+wnSNDNw2KKZQeYuP7WZij
+ UJd1Dx1bh9kV3ZKBkq+RW7QNYCTvRNoYvwzFaoE5EbyTQM90+Dz8YkYtI
+ rcIjTOZOdrIfDNfxdbeIP4utrGScknQc2ML7R1PtdcpgvDE7GByShZOiY
+ kEYL+lQSH5Rfqka7C30MWVRfJ2O/9980gBmcdRVRlf2F0EPkcyiRz+N2m
+ Jp+djgDHb0EEsetG6RrqGD4I5ToPzWRBrDmlq3ITDe47xssR1Mp0LKyVl Q==;
+X-CSE-ConnectionGUID: 7buu/LTxTyCTIL9tnd/iNw==
+X-CSE-MsgGUID: z77B+sZPQUmztpJsB713nw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="76193152"
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="76193152"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2026 07:29:24 -0800
-X-CSE-ConnectionGUID: NDht3nYWShCGtWY+ECSgEw==
-X-CSE-MsgGUID: V8ZQa80BQtux57iYx8G74A==
+ 03 Mar 2026 07:29:28 -0800
+X-CSE-ConnectionGUID: bQe/atu9S/yjzhvTT5Xw/w==
+X-CSE-MsgGUID: 9+En+NWwS+uQZ6cp8g0V7A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="215098684"
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="215098698"
 Received: from varungup-desk.iind.intel.com ([10.190.238.71])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2026 07:29:22 -0800
+ 03 Mar 2026 07:29:26 -0800
 From: Arvind Yadav <arvind.yadav@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: matthew.brost@intel.com, himal.prasad.ghimiray@intel.com,
  thomas.hellstrom@linux.intel.com, nishit.sharma@intel.com,
  pravalika.gurram@intel.com
-Subject: [PATCH i-g-t v5 2/9] lib/xe: Add purgeable memory ioctl support
-Date: Tue,  3 Mar 2026 20:58:55 +0530
-Message-ID: <20260303152909.3503461-3-arvind.yadav@intel.com>
+Subject: [PATCH i-g-t v5 4/9] tests/intel/xe_madvise: Add purged-mmap-blocked
+ subtest
+Date: Tue,  3 Mar 2026 20:58:57 +0530
+Message-ID: <20260303152909.3503461-5-arvind.yadav@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260303152909.3503461-1-arvind.yadav@intel.com>
 References: <20260303152909.3503461-1-arvind.yadav@intel.com>
@@ -70,26 +71,19 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add xe_vm_madvise_purgeable() helper function to support purgeable
-memory management through the XE madvise ioctl. This allows applications
-to hint to the kernel about buffer object usage patterns for better
-memory management under pressure.
+Add a new purged-mmap-blocked subtest that triggers an actual purge
+via memory pressure and verifies that DRM_IOCTL_XE_GEM_MMAP_OFFSET
+returns -EINVAL once the BO backing store has been permanently
+discarded.
 
-The function provides a clean interface to:
-- Mark buffer objects as DONTNEED (purgeable)
-- Mark buffer objects as WILLNEED (not purgeable)
-
-Returns the retained value directly (1 if backing store exists, 0 if
-purged).
-
-Also update __xe_vm_madvise() to reject purgeable state operations
-and direct users to the dedicated helper.
-
-v2:
-  - retained must be initialized to 0(Thomas)
+  - DONTNEED BOs: return -EBUSY (temporary purgeable state, BO still
+    has backing store but can be purged at any time)
+  - Purged BOs: return -EINVAL (permanent, backing store discarded)
 
 v5:
-  - Rename retained to retained_ptr. (Jose)
+  - Add purged-mmap-blocked subtest to verify
+    DRM_IOCTL_XE_GEM_MMAP_OFFSET returns -EINVAL after BO
+    backing store is permanently purged.
 
 Cc: Nishit Sharma <nishit.sharma@intel.com>
 Cc: Matthew Brost <matthew.brost@intel.com>
@@ -98,74 +92,61 @@ Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 Cc: Pravalika Gurram <pravalika.gurram@intel.com>
 Signed-off-by: Arvind Yadav <arvind.yadav@intel.com>
 ---
- lib/xe/xe_ioctl.c | 33 +++++++++++++++++++++++++++++++++
- lib/xe/xe_ioctl.h |  2 ++
- 2 files changed, 35 insertions(+)
+ tests/intel/xe_madvise.c | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 16aae05c9..922c1480f 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -739,6 +739,9 @@ int __xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range,
- 	case DRM_XE_MEM_RANGE_ATTR_PAT:
- 		madvise.pat_index.val = op_val;
- 		break;
-+	case DRM_XE_VMA_ATTR_PURGEABLE_STATE:
-+		/* Purgeable state handled by xe_vm_madvise_purgeable */
-+		return -EINVAL;
- 	default:
- 		igt_warn("Unknown attribute\n");
- 		return -EINVAL;
-@@ -775,6 +778,36 @@ void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range,
- 				      instance), 0);
+diff --git a/tests/intel/xe_madvise.c b/tests/intel/xe_madvise.c
+index 435dd939e..8dc568a92 100644
+--- a/tests/intel/xe_madvise.c
++++ b/tests/intel/xe_madvise.c
+@@ -152,6 +152,34 @@ static void purgeable_setup_simple_bo(int fd, uint32_t *vm, uint32_t *bo,
+ 	xe_wait_ufence(fd, &sync_val, 1, 0, NSEC_PER_SEC);
  }
  
 +/**
-+ * xe_vm_madvise_purgeable:
-+ * @fd: xe device fd
-+ * @vm_id: vm_id of the virtual range
-+ * @start: start of the virtual address range
-+ * @range: size of the virtual address range
-+ * @state: purgeable state (DRM_XE_VMA_PURGEABLE_STATE_WILLNEED or DONTNEED)
-+ *
-+ * Sets the purgeable state for a virtual memory range. This allows applications
-+ * to hint to the kernel about buffer object usage patterns for better memory management.
-+ *
-+ * Returns: retained value (1 if backing store exists, 0 if purged)
++ * SUBTEST: purged-mmap-blocked
++ * Description: After BO is purged, verify mmap offset fails with -EINVAL
++ * Test category: functionality test
 + */
-+uint32_t xe_vm_madvise_purgeable(int fd, uint32_t vm_id, uint64_t start,
-+				 uint64_t range, uint32_t state)
++static void test_purged_mmap_blocked(int fd, struct drm_xe_engine_class_instance *hwe)
 +{
-+	uint32_t retained_val = 0;
-+	struct drm_xe_madvise madvise = {
-+		.vm_id = vm_id,
-+		.start = start,
-+		.range = range,
-+		.type = DRM_XE_VMA_ATTR_PURGEABLE_STATE,
-+		.purge_state_val.val = state,
-+		.purge_state_val.retained_ptr = (uint64_t)(uintptr_t)&retained_val,
-+	};
++	uint32_t bo, vm;
++	uint64_t addr = PURGEABLE_ADDR;
++	size_t bo_size = PURGEABLE_BO_SIZE;
++	struct drm_xe_gem_mmap_offset mmo = {};
 +
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_MADVISE, &madvise), 0);
-+	return retained_val;
++	purgeable_setup_simple_bo(fd, &vm, &bo, addr, bo_size, false);
++	if (!purgeable_mark_and_verify_purged(fd, vm, addr, bo_size)) {
++		gem_close(fd, bo);
++		xe_vm_destroy(fd, vm);
++		igt_skip("Unable to induce purge on this platform/config");
++	}
++
++	/* Attempt to get mmap offset for purged BO - should fail with EINVAL */
++	mmo.handle = bo;
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_GEM_MMAP_OFFSET, &mmo), -1);
++	igt_assert_eq(errno, EINVAL);
++
++	gem_close(fd, bo);
++	xe_vm_destroy(fd, vm);
 +}
 +
- #define	BIND_SYNC_VAL	0x686868
- void xe_vm_bind_lr_sync(int fd, uint32_t vm, uint32_t bo, uint64_t offset,
- 			uint64_t addr, uint64_t size, uint32_t flags)
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index 3ea651063..8eb506915 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -107,6 +107,8 @@ int __xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range, uint64_t
- 		    uint32_t type, uint32_t op_val, uint16_t policy, uint16_t instance);
- void xe_vm_madvise(int fd, uint32_t vm, uint64_t addr, uint64_t range, uint64_t ext,
- 		   uint32_t type, uint32_t op_val, uint16_t policy, uint16_t instance);
-+uint32_t xe_vm_madvise_purgeable(int fd, uint32_t vm_id, uint64_t start,
-+				 uint64_t range, uint32_t state);
- int xe_vm_number_vmas_in_range(int fd, struct drm_xe_vm_query_mem_range_attr *vmas_attr);
- int xe_vm_vma_attrs(int fd, struct drm_xe_vm_query_mem_range_attr *vmas_attr,
- 		    struct drm_xe_mem_range_attr *mem_attr);
+ /**
+  * SUBTEST: dontneed-before-mmap
+  * Description: Mark BO as DONTNEED before mmap, verify mmap offset fails with -EBUSY
+@@ -203,6 +231,12 @@ int igt_main()
+ 			break;
+ 		}
+ 
++	igt_subtest("purged-mmap-blocked")
++		xe_for_each_engine(fd, hwe) {
++			test_purged_mmap_blocked(fd, hwe);
++			break;
++		}
++
+ 	igt_fixture() {
+ 		xe_device_put(fd);
+ 		drm_close_driver(fd);
 -- 
 2.43.0
 
