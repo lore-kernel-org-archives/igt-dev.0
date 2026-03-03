@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E034EC0463
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 09:39:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30AA0EC047F
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 09:39:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C910D10E13E;
-	Tue,  3 Mar 2026 09:39:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E222D10E740;
+	Tue,  3 Mar 2026 09:39:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B2xstG+o";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A/zWMMws";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DBBC310E754
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 09:39:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 55D4E10E754
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 09:39:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772530760; x=1804066760;
+ t=1772530762; x=1804066762;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=IwVKfxTn/d/oykgDrmGWGyWctSjNxVIs955appjYjw4=;
- b=B2xstG+otfdCE+z0m+XDe9Gvkr+/NDl+ylo7uzmnDZU63gL1+V33E0tS
- xsFatqat/wPq79VMXGn8m/1fo5+DxusrisrJNdEh6rvtgLj7BbmtRppcs
- P87BJt942J8kQQmr0tCd3pnB/ZYxSSZ4Ts+mIxRWf64YjUi6yuxwvtI3l
- SXVGxK1D3rCvL7MMQFXo+D9oIxjzz4UsWFJyQWVRASZNskz/SjkGejbXH
- 5EIR49rYj7Cz0pKSUABH+yynD4Z8hKKnPC8aOfQLHN/tHKDs2iYMUBr2d
- nLRxzenlZ4gKAPnx5OoMoCF1QBHdj2MYc/m/qEEczxLhzBzT8/eebJXmw Q==;
-X-CSE-ConnectionGUID: 3rbA0xJ9Rhqe/yatV87Dow==
-X-CSE-MsgGUID: W+ano4/6TFG9zzU3kNIdyQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="76160017"
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="76160017"
+ bh=bo1+bm32uNuw7oJMUy/NhmhUX1HBoUNNl3G+5m9iq+k=;
+ b=A/zWMMws3HL6Oh61EjFdvUmjfPYyBqdXiXQv3aVx8dv0q0dLI9aQ60Tt
+ dbZTHANls+lFsw7gXmNOyrywiUqS0+aM52EXNyba7uI02HgCr9Be13mz3
+ Zked7PzxOx8566iwjldn/mcOBQ/hEuphvkq7zjfxl7UADw/hXr1/46lHw
+ IolEmnIA3rVo1uWllg3Te1VrQ5szSs5S4SGeHWp0Z1qXt3f9md9vuWgzD
+ Jo8hfK3h45TyjnXtsRIjuxeWoXpvV//md5Q1AbyiSu59RnBE4Zsc8En7g
+ 9tdj7M0eoSKPQ9/F3bsjA32NNK1zyf1wSYovUTPvp2MyQUQ71lPGGtFlQ A==;
+X-CSE-ConnectionGUID: YdMXy29NQDObPhDItAr5ww==
+X-CSE-MsgGUID: piC8b/BZQ/u1DtDPr+7KUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="76160018"
+X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="76160018"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2026 01:39:20 -0800
-X-CSE-ConnectionGUID: sf1ScEQaQceXWrPtbgLDag==
-X-CSE-MsgGUID: FZN98bGYTIShmvJ7FFqUig==
+ 03 Mar 2026 01:39:22 -0800
+X-CSE-ConnectionGUID: wZw6SFZ0Sdq5dCpSnAqCsw==
+X-CSE-MsgGUID: QWcz/BycQZC+1h2N2QWnxA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="222097852"
+X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="222097855"
 Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
  by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 01:39:18 -0800
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 01:39:20 -0800
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: dibin.moolakadan.subrahmanian@intel.com, mohammed.thasleem@intel.com,
  Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t 3/4] tests/kms_vrr: Add new test for DC3CO validation
- with LOBF
-Date: Tue,  3 Mar 2026 15:09:27 +0530
-Message-ID: <20260303093928.569925-4-jeevan.b@intel.com>
+Subject: [PATCH i-g-t 4/4] tests/intel/kms_pm_dc: Add new test for dc3co
+ framedrop validation
+Date: Tue,  3 Mar 2026 15:09:28 +0530
+Message-ID: <20260303093928.569925-5-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260303093928.569925-1-jeevan.b@intel.com>
 References: <20260303093928.569925-1-jeevan.b@intel.com>
@@ -69,69 +69,130 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add lobf-dc3co subtest to validate DC3CO entry during link-off
-between frames.
+Add a new subtest to validate that no frame drops occur during
+DC3CO entry, ensuring that no frame drops are detected and DC3CO
+is successfully triggered during the test.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_vrr.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ tests/intel/kms_pm_dc.c | 83 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 83 insertions(+)
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 569000fee..1f2b4ada8 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -29,6 +29,7 @@
-  */
- 
- #include "igt.h"
-+#include "igt_pm.h"
- #include "igt_psr.h"
- #include "i915/intel_drrs.h"
- #include "sw_sync.h"
-@@ -942,6 +943,25 @@ test_lobf(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
- 	igt_assert_f(lobf_enabled, "LOBF not enabled\n");
+diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+index 10450474a..b0e35dca1 100644
+--- a/tests/intel/kms_pm_dc.c
++++ b/tests/intel/kms_pm_dc.c
+@@ -51,6 +51,10 @@
+  * Description: Make sure that system enters DC3CO when PSR2 is active and system
+  *              is in SLEEP state
+  *
++ * SUBTEST: dc3co-framedrop-check
++ * Description: Verify that DC3CO entry does not cause frame drops and successfully
++ * 		enters the power state
++ *
+  * SUBTEST: dc5-dpms
+  * Description: Validate display engine entry to DC5 state while all connectors's
+  *              DPMS property set to OFF
+@@ -315,6 +319,50 @@ static void check_dc3co_with_videoplayback_like_load(data_t *data)
+ 	check_dc_counter(data, IGT_INTEL_CHECK_DC3CO, dc3co_prev_cnt);
  }
  
-+static void test_lobf_dc3co(data_t *data, igt_crtc_t *crtc,
-+			    igt_output_t *output, uint32_t flags)
++static void check_framedrop(data_t *data)
 +{
-+	unsigned long dc3co_count_before, dc3co_count_after;
++	igt_plane_t *primary;
++	uint32_t dc3co_prev_cnt, dc3co_cnt;
++	int delay, frame_count, max_count = 100, ret;
++	bool dc3co_flag = false;
++	drmVBlank wait;
 +
-+	dc3co_count_before = igt_read_dc_counter(data->debugfs_fd,
-+						 IGT_INTEL_CHECK_DC3CO);
++	primary = igt_output_get_plane_type(data->output,
++					    DRM_PLANE_TYPE_PRIMARY);
++	igt_plane_set_fb(primary, NULL);
++	dc3co_prev_cnt = igt_read_dc_counter(data->debugfs_fd,
++					     IGT_INTEL_CHECK_DC3CO);
 +
-+	test_lobf(data, crtc, output, flags);
++	/* Calculate delay to generate idle frame in usec*/
++	delay = 1.5 * ((1000 * 1000) / data->mode->vrefresh);
 +
-+	dc3co_count_after = igt_read_dc_counter(data->debugfs_fd,
++	for (int i = 0; i < max_count; i++) {
++		if (i % 2 == 0)
++			igt_plane_set_fb(primary, &data->fb_rgb);
++		else
++			igt_plane_set_fb(primary, &data->fb_rgr);
++
++		igt_display_commit(&data->display);
++		frame_count++;
++
++		memset(&wait, 0, sizeof(wait));
++		wait.request.type = DRM_VBLANK_RELATIVE;
++		wait.request.sequence = 1;
++
++		ret = drmWaitVBlank(data->drm_fd, &wait);
++		igt_assert_eq(ret, 0);
++		dc3co_cnt = igt_read_dc_counter(data->debugfs_fd,
 +						IGT_INTEL_CHECK_DC3CO);
++		if (dc3co_cnt > dc3co_prev_cnt)
++			dc3co_flag = true;
 +
-+	igt_assert_f(dc3co_count_after > dc3co_count_before,
-+		     "DC3CO should be entered during link-off periods. "
-+		     "Before: %lu, After: %lu\n",
-+		     dc3co_count_before, dc3co_count_after);
++		usleep(delay);
++	}
++
++	igt_assert_f(dc3co_flag, "DC3CO entry failed.\n");
++	igt_assert_f(frame_count == max_count, "Framedrop seen during vpb scenario.\n");
 +}
 +
- static void
- test_cmrr(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
- 	  uint32_t flags)
-@@ -1237,6 +1257,16 @@ int igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
+ static void setup_dc3co(data_t *data, enum psr_mode mode)
+ {
+ 	data->op_psr_mode = mode;
+@@ -333,6 +381,16 @@ static void test_dc3co_vpb_simulation(data_t *data, enum psr_mode mode)
+ 	cleanup_dc3co_fbs(data);
+ }
  
- 			run_vrr_test(&data, test_lobf, TEST_LINK_OFF);
++static void test_framedrop_dc3co(data_t *data, enum psr_mode mode)
++{
++	igt_require_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO);
++	setup_output(data);
++	setup_dc3co(data, mode);
++	setup_videoplayback(data);
++	check_framedrop(data);
++	cleanup_dc3co_fbs(data);
++}
++
+ static void test_dc5_retention_flops(data_t *data, int dc_flag)
+ {
+ 	uint32_t dc_counter_before_psr;
+@@ -660,6 +718,31 @@ int igt_main()
  		}
-+
-+		igt_describe("Test to validate DC3CO entry during link-off between active "
-+			     "frames in non-PSR operation non-PSR operation.");
-+		igt_subtest_with_dynamic("lobf-dc3co") {
-+			igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 35);
-+
-+			igt_require_dc_counter(data.debugfs_fd, IGT_INTEL_CHECK_DC3CO);
-+
-+			run_vrr_test(&data, test_lobf_dc3co, TEST_LINK_OFF | IGT_INTEL_CHECK_DC3CO);
-+		}
  	}
  
- 	igt_fixture() {
++	igt_describe("Verify that DC3CO entry does not cause frame drops "
++		     "and successfully enters the power state");
++	igt_subtest_with_dynamic("dc3co-framedrop-check") {
++		int modes[] = {PSR_MODE_2, PR_MODE};
++		const char *append_subtest_name[2] = {
++			"psr2-",
++			"pr-",
++		};
++
++		for (int i = 0; i < ARRAY_SIZE(modes); i++) {
++			igt_dynamic_f("%s-dc3co-framedrop", append_subtest_name[i]) {
++				igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
++							     modes[i], NULL));
++
++				if (modes[i] == PSR_MODE_2)
++					igt_require(IS_TIGERLAKE(data.devid) ||
++						    intel_display_ver(data.devid) >= 35);
++				else if (modes[i] == PR_MODE)
++					igt_require(intel_display_ver(data.devid) >= 35);
++
++				test_framedrop_dc3co(&data, modes[i]);
++			}
++		}
++	}
++
+ 	igt_describe("This test validates display engine entry to DC5 state "
+ 		     "while PSR is active");
+ 	igt_subtest("dc5-psr") {
 -- 
 2.43.0
 
