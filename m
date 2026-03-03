@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 432ADEC1444
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 13:47:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A29ADEC1449
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 13:47:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E478910E817;
-	Tue,  3 Mar 2026 13:47:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4DAEE10E81F;
+	Tue,  3 Mar 2026 13:47:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L7t7/NVo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n3G999NC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4DB9110E817
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 13:47:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D54110E81F
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 13:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772545640; x=1804081640;
+ t=1772545645; x=1804081645;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=yWRTMrgTD2x5rdWthSFUDaTyd6B3h4P8QwsfIvCnDHw=;
- b=L7t7/NVoWs7ueeSqrPxQtSYhoBZgJM/8L5U/l7SZ8g5aw+t2/QcaF4Uf
- QivLmwPVqPMs2GpGUU7Z/rQveBLJC7bMTHGttHP1Eboj4f1vRocxVFUYg
- xTFskaenx1DhNsAM1cGZNGGurdF2XLqAUKf1iwTS3urbLD1lc7Pg4D5jv
- 5LC2rocWWxApnbfV1yexAYhly23Z/Hkoh9Tr83PG+npRk9EBpHXPyz98K
- KVjVuHP7g659qpOG1NS6HDrTZ5gqd9lePGEpsAzvr1gJnXSdyft80W7xE
- 9v3JCS9yX59PNOJaDi57ckP7ydhBKXE7A5Spk+p6VoCU+nOF78DF8A7ym Q==;
-X-CSE-ConnectionGUID: m49ABUuKRWS4HBP4RHeWYg==
-X-CSE-MsgGUID: 0mKesQk5Q6KsTjxzr+sCFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="73643890"
-X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="73643890"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2026 05:47:20 -0800
-X-CSE-ConnectionGUID: NhL+AFxDQwOCcZwE92WrRw==
-X-CSE-MsgGUID: 48/PUv87RFS++oXqsfHCnw==
+ bh=gqWeivFkI0WzohERaG35+EZO39Upa7g2BXPUNH63bTg=;
+ b=n3G999NCg83izgxWx26I0Aiu2/X8Sqt//wkgSoMEZnzuXoiB4OLxaR3N
+ pImX/gzOrCoib9J6aMMY46ttFq7TGGAFI0VeWkMbWZmr5lhZxNMo3TcTy
+ 0+fnDplOZGE+zskzv48+deS8gn228ANhwDq9tkzbLqwnBP0rdbJXnhFhI
+ DSvdzS/Yt5wHtijO1v+SzyoO8m5EjlOGuynAuqF+RPJzK1GX5vB5QN/o/
+ O3mmMdOB/Xh9+nc8lU74FwpwELK/RhCsZmNL3xoNYRksKy/5S5hb+pBS5
+ 2PzQp4yN/PARLKeUb6fUZkIAVo4jFyrz6iCAXbbs9t/5vCS7CcjwG5TKS w==;
+X-CSE-ConnectionGUID: +ADiIrveR8aySyEmPbG2Kg==
+X-CSE-MsgGUID: 2PeMiI44SNK6hLdWj136vg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="76180670"
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="76180670"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2026 05:47:25 -0800
+X-CSE-ConnectionGUID: LwjMbGZzSl+q/P9Wt/u18w==
+X-CSE-MsgGUID: kRbSke03RmGIn8ZuV5UF7A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="214320718"
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; d="scan'208";a="255877780"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.245.58])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2026 05:47:19 -0800
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2026 05:47:24 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Nishit Sharma <nishit.sharma@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t v4 2/5] lib/intel_compute: Extend userenv by adding
- input and output bos
-Date: Tue,  3 Mar 2026 14:47:09 +0100
-Message-ID: <20260303134706.41948-9-zbigniew.kempczynski@intel.com>
+ Nishit Sharma <nishit.sharma@intel.com>
+Subject: [PATCH i-g-t v4 3/5] lib/intel_compute: Use user offsets and loop
+ size if provided
+Date: Tue,  3 Mar 2026 14:47:10 +0100
+Message-ID: <20260303134706.41948-10-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260303134706.41948-7-zbigniew.kempczynski@intel.com>
 References: <20260303134706.41948-7-zbigniew.kempczynski@intel.com>
@@ -72,158 +71,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Input and output addresses if were passed by userenv were related to
-SVM addresses so buffers were created in the library and only bound
-to offsets user wanted.
-
-Extend this allowing user to pass addresses as well buffer objects
-what allows user to set its own input and output data.
+If user passes its own input/output or number of iterations start
+to use it instead of hardcoded ones. This pattern was already used
+in other pipelines and only Xe3p missed this.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Nishit Sharma <nishit.sharma@intel.com>
 ---
- lib/intel_compute.c | 70 ++++++++++++++++++++++++++++++++++-----------
- lib/intel_compute.h |  4 +++
- 2 files changed, 58 insertions(+), 16 deletions(-)
+ lib/intel_compute.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-index dfd38b8d8c..1165bdafd9 100644
+index 1165bdafd9..bfe0a75a7c 100644
 --- a/lib/intel_compute.c
 +++ b/lib/intel_compute.c
-@@ -89,6 +89,7 @@ struct bo_dict_entry {
- 	const char *name;
- 	uint32_t handle;
- 	enum bo_dict_type bo_type;
-+	bool is_owner;
- };
+@@ -2189,6 +2189,8 @@ static void xe3p_compute_exec(int fd, const unsigned char *kernel,
+ 	struct inline_data idata = {};
+ 	struct bo_execenv execenv;
+ 	float *input_data, *output_data;
++	uint64_t bind_input_addr = (user && user->input_addr) ? user->input_addr : ADDR_INPUT;
++	uint64_t bind_output_addr = (user && user->output_addr) ? user->output_addr : ADDR_OUTPUT;
+ 	uint64_t indirect_addr = ADDR_GENERAL_STATE_BASE + OFFSET_INDIRECT_DATA_START;
+ 	int entries = ARRAY_SIZE(bo_dict);
+ 	int64_t timeout_one_ns = 1;
+@@ -2205,7 +2207,7 @@ static void xe3p_compute_exec(int fd, const unsigned char *kernel,
+ 	memcpy(bo_dict[0].data, kernel, size);
+ 	memset(bo_dict[1].data, 0, 4096);
  
- struct bo_sync {
-@@ -169,14 +170,17 @@ static float *get_input_data(const struct bo_execenv *execenv,
- 	const struct user_execenv *user = execenv->user;
- 	float *input_data;
- 
--	if (user && user->input_addr) {
-+	if (user && user->input_addr && !user->input_bo) {
- 		input_data = from_user_pointer(user->input_addr);
- 	} else {
- 		struct bo_dict_entry *entry;
- 
- 		entry = bo_dict_find_by_type(bo_dict, entries, BO_TYPE_INPUT);
- 		input_data = (float *) entry->data;
--		bo_randomize(input_data, execenv->loop_count);
-+
-+		/* Don't randomize on user passed bo */
-+		if ((!user) || (user && !user->input_bo))
-+			bo_randomize(input_data, execenv->loop_count);
+-	xe3p_create_indirect_data(bo_dict[1].data, ADDR_INPUT, ADDR_OUTPUT,
++	xe3p_create_indirect_data(bo_dict[1].data, bind_input_addr, bind_output_addr,
+ 				  execenv.loop_count);
+ 	idata.xe3p.indirect_addr_lo = indirect_addr;
+ 	idata.xe3p.indirect_addr_hi = indirect_addr >> 32;
+@@ -2233,7 +2235,7 @@ static void xe3p_compute_exec(int fd, const unsigned char *kernel,
  	}
  
- 	return input_data;
-@@ -189,7 +193,7 @@ static float *get_output_data(const struct bo_execenv *execenv,
- 	const struct user_execenv *user = execenv->user;
- 	float *output_data;
+ 	if (!user || (user && !user->skip_results_check))
+-		bo_check_square(input_data, output_data, execenv.array_size);
++		bo_check_square(input_data, output_data, execenv.loop_count);
  
--	if (user && user->output_addr)
-+	if (user && user->output_addr && !user->output_bo)
- 		output_data = from_user_pointer(user->output_addr);
- 	else {
- 		struct bo_dict_entry *entry;
-@@ -297,6 +301,7 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
- 			uint32_t placement, flags = 0;
- 
- 			bo_sync->sync = 0;
-+			bo_dict[i].is_owner = true;
- 
- 			switch (alloc_prefs) {
- 			case EXECENV_PREF_SYSTEM:
-@@ -312,14 +317,38 @@ static void bo_execenv_bind(struct bo_execenv *execenv,
- 				break;
- 			}
- 
--			bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
--							 placement, flags);
--			bo_dict[i].data = xe_bo_map(fd, bo_dict[i].handle, bo_dict[i].size);
--			xe_vm_bind_async(fd, vm, 0, bo_dict[i].handle, 0, bo_dict[i].addr,
--					 bo_dict[i].size, &sync, 1);
--			xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue,
--				       INT64_MAX);
--			memset(bo_dict[i].data, 0, bo_dict[i].size);
-+			/*
-+			 * For input/output buffers skip their creation if
-+			 * were passed from the user
-+			 */
-+			if (execenv->user && bo_dict[i].bo_type == BO_TYPE_INPUT &&
-+			    execenv->user->input_addr) {
-+				bo_dict[i].handle = execenv->user->input_bo;
-+				bo_dict[i].addr = execenv->user->input_addr;
-+				bo_dict[i].size = execenv->array_size * sizeof(float);
-+				bo_dict[i].is_owner = false;
-+			} else if (execenv->user && bo_dict[i].bo_type == BO_TYPE_OUTPUT &&
-+				   execenv->user->output_addr) {
-+				bo_dict[i].handle = execenv->user->output_bo;
-+				bo_dict[i].addr = execenv->user->output_addr;
-+				bo_dict[i].size = execenv->array_size * sizeof(float);
-+				bo_dict[i].is_owner = false;
-+			} else {
-+				bo_dict[i].handle = xe_bo_create(fd, execenv->vm, bo_dict[i].size,
-+								 placement, flags);
-+			}
-+
-+			if (bo_dict[i].handle) {
-+				xe_vm_bind_async(fd, vm, 0, bo_dict[i].handle, 0, bo_dict[i].addr,
-+						 bo_dict[i].size, &sync, 1);
-+				xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue,
-+					       INT64_MAX);
-+			}
-+
-+			if (bo_dict[i].is_owner) {
-+				bo_dict[i].data = xe_bo_map(fd, bo_dict[i].handle, bo_dict[i].size);
-+				memset(bo_dict[i].data, 0, bo_dict[i].size);
-+			}
- 
- 			igt_debug("[i: %2d name: %20s] data: %p, addr: %16llx, size: %llx\n",
- 				  i, bo_dict[i].name, bo_dict[i].data,
-@@ -385,11 +414,20 @@ static void bo_execenv_unbind(struct bo_execenv *execenv,
- 
- 		for (int i = 0; i < entries; i++) {
- 			bo_sync->sync = 0;
--			xe_vm_unbind_async(fd, vm, 0, 0, bo_dict[i].addr, bo_dict[i].size, &sync, 1);
--			xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue,
--				       INT64_MAX);
--			munmap(bo_dict[i].data, bo_dict[i].size);
--			gem_close(fd, bo_dict[i].handle);
-+			if (bo_dict[i].is_owner) {
-+				xe_vm_unbind_async(fd, vm, 0, 0, bo_dict[i].addr, bo_dict[i].size, &sync, 1);
-+				xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, exec_queue,
-+					       INT64_MAX);
-+				munmap(bo_dict[i].data, bo_dict[i].size);
-+			}
-+			/* Keep user buffers intact */
-+			if (execenv->user)
-+				if ((execenv->user->input_bo && bo_dict[i].bo_type == BO_TYPE_INPUT) ||
-+				    (execenv->user->output_bo && bo_dict[i].bo_type == BO_TYPE_OUTPUT))
-+					continue;
-+
-+			if (bo_dict[i].handle)
-+				gem_close(fd, bo_dict[i].handle);
- 		}
- 
- 		munmap(bo_sync, bo_size);
-diff --git a/lib/intel_compute.h b/lib/intel_compute.h
-index 28c1efd55f..0775c8e86c 100644
---- a/lib/intel_compute.h
-+++ b/lib/intel_compute.h
-@@ -59,6 +59,10 @@ struct user_execenv {
- 	bool skip_results_check;
- 	/** @array_size: size of input and output arrays */
- 	uint32_t array_size;
-+	/** @input_bo: override default bo input handle if provided */
-+	uint32_t input_bo;
-+	/** @output_bo: override default bo output handle if provided */
-+	uint32_t output_bo;
- 	/** @input_addr: override default address of the input array if provided */
- 	uint64_t input_addr;
- 	/** @output_addr: override default address of the output array if provided */
+ 	bo_execenv_unbind(&execenv, bo_dict, entries);
+ 	bo_execenv_destroy(&execenv);
 -- 
 2.43.0
 
