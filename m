@@ -4,56 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30AA0EC047F
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 09:39:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FF3EEC047D
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 09:46:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E222D10E740;
-	Tue,  3 Mar 2026 09:39:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C7D3010E758;
+	Tue,  3 Mar 2026 09:46:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A/zWMMws";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gjbdhmRJ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 55D4E10E754
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 09:39:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9F50F10E0A5
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 09:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772530762; x=1804066762;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=bo1+bm32uNuw7oJMUy/NhmhUX1HBoUNNl3G+5m9iq+k=;
- b=A/zWMMws3HL6Oh61EjFdvUmjfPYyBqdXiXQv3aVx8dv0q0dLI9aQ60Tt
- dbZTHANls+lFsw7gXmNOyrywiUqS0+aM52EXNyba7uI02HgCr9Be13mz3
- Zked7PzxOx8566iwjldn/mcOBQ/hEuphvkq7zjfxl7UADw/hXr1/46lHw
- IolEmnIA3rVo1uWllg3Te1VrQ5szSs5S4SGeHWp0Z1qXt3f9md9vuWgzD
- Jo8hfK3h45TyjnXtsRIjuxeWoXpvV//md5Q1AbyiSu59RnBE4Zsc8En7g
- 9tdj7M0eoSKPQ9/F3bsjA32NNK1zyf1wSYovUTPvp2MyQUQ71lPGGtFlQ A==;
-X-CSE-ConnectionGUID: YdMXy29NQDObPhDItAr5ww==
-X-CSE-MsgGUID: piC8b/BZQ/u1DtDPr+7KUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="76160018"
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="76160018"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2026 01:39:22 -0800
-X-CSE-ConnectionGUID: wZw6SFZ0Sdq5dCpSnAqCsw==
-X-CSE-MsgGUID: QWcz/BycQZC+1h2N2QWnxA==
+ t=1772531194; x=1804067194;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=iciXUjgqFocir9LGJngfEinNBFeBumMqNUpwy6RYBrY=;
+ b=gjbdhmRJlOOyGqfCweOioBNyrRv+t7I3zffkNfkI88POV64+BiWIJu9f
+ f0jUGq3cDN1Hlo8pNdTXKHecBEanecvaexcPA3kxUyNGXxGX6hkortlaV
+ xTad1g2s35b+iSyFdGs4zJzENDBbzoAjBneOoOnYvmVNiOUbb0RT9dKmC
+ K2Lif/Du+DjGsl6DbzqV4YQwIUX/vGBqpx5HQJKJtdbY8/gicEFs5HKzp
+ D44J5DWZ+ILdHByvQAuF8b6HL9YXOBmvp7vQUaCC42zbxw1DpY9Tfe26d
+ bloXMtQ96DgzlGJYYlYVtSGGtY6V7kC7IyiCg1Ql4d8YSl1EevosbABFG A==;
+X-CSE-ConnectionGUID: nyLrGqQpRMegOZZL/yIYMQ==
+X-CSE-MsgGUID: saS629/HRZ6MeRbo5N0N+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73625193"
+X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="73625193"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2026 01:46:32 -0800
+X-CSE-ConnectionGUID: 2RVGRIZERZSoOkwZnvlrQw==
+X-CSE-MsgGUID: fkvD894oTh+4/KDE+kEb0A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="222097855"
-Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 01:39:20 -0800
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: dibin.moolakadan.subrahmanian@intel.com, mohammed.thasleem@intel.com,
- Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t 4/4] tests/intel/kms_pm_dc: Add new test for dc3co
- framedrop validation
-Date: Tue,  3 Mar 2026 15:09:28 +0530
-Message-ID: <20260303093928.569925-5-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260303093928.569925-1-jeevan.b@intel.com>
-References: <20260303093928.569925-1-jeevan.b@intel.com>
+X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="255831656"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO [10.245.245.26])
+ ([10.245.245.26])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2026 01:46:32 -0800
+Message-ID: <34d574bb-9330-4145-bc30-d8d59f1667c4@intel.com>
+Date: Tue, 3 Mar 2026 09:46:28 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] include/drm-uapi-experimental: Remove temporary
+ NO_COMPRESSION experimental macros
+To: Sanjay Yadav <sanjay.kumar.yadav@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Pravalika Gurram <pravalika.gurram@intel.com>
+References: <20260303065112.159575-2-sanjay.kumar.yadav@intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20260303065112.159575-2-sanjay.kumar.yadav@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,130 +71,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a new subtest to validate that no frame drops occur during
-DC3CO entry, ensuring that no frame drops are detected and DC3CO
-is successfully triggered during the test.
+On 03/03/2026 06:51, Sanjay Yadav wrote:
+> Remove the temporary NO_COMPRESSION macros
+> (DRM_XE_GEM_CREATE_FLAG_NO_COMPRESSION and
+> DRM_XE_QUERY_CONFIG_FLAG_HAS_NO_COMPRESSION_HINT) from intel_drm_local.h.
+> These macros are now part of upstream drm-next and provided through
+> include/drm-uapi/xe_drm.h. They were originally added for early
+> development and are no longer needed.
+> 
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: Pravalika Gurram <pravalika.gurram@intel.com>
+> Signed-off-by: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/intel/kms_pm_dc.c | 83 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 10450474a..b0e35dca1 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -51,6 +51,10 @@
-  * Description: Make sure that system enters DC3CO when PSR2 is active and system
-  *              is in SLEEP state
-  *
-+ * SUBTEST: dc3co-framedrop-check
-+ * Description: Verify that DC3CO entry does not cause frame drops and successfully
-+ * 		enters the power state
-+ *
-  * SUBTEST: dc5-dpms
-  * Description: Validate display engine entry to DC5 state while all connectors's
-  *              DPMS property set to OFF
-@@ -315,6 +319,50 @@ static void check_dc3co_with_videoplayback_like_load(data_t *data)
- 	check_dc_counter(data, IGT_INTEL_CHECK_DC3CO, dc3co_prev_cnt);
- }
- 
-+static void check_framedrop(data_t *data)
-+{
-+	igt_plane_t *primary;
-+	uint32_t dc3co_prev_cnt, dc3co_cnt;
-+	int delay, frame_count, max_count = 100, ret;
-+	bool dc3co_flag = false;
-+	drmVBlank wait;
-+
-+	primary = igt_output_get_plane_type(data->output,
-+					    DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, NULL);
-+	dc3co_prev_cnt = igt_read_dc_counter(data->debugfs_fd,
-+					     IGT_INTEL_CHECK_DC3CO);
-+
-+	/* Calculate delay to generate idle frame in usec*/
-+	delay = 1.5 * ((1000 * 1000) / data->mode->vrefresh);
-+
-+	for (int i = 0; i < max_count; i++) {
-+		if (i % 2 == 0)
-+			igt_plane_set_fb(primary, &data->fb_rgb);
-+		else
-+			igt_plane_set_fb(primary, &data->fb_rgr);
-+
-+		igt_display_commit(&data->display);
-+		frame_count++;
-+
-+		memset(&wait, 0, sizeof(wait));
-+		wait.request.type = DRM_VBLANK_RELATIVE;
-+		wait.request.sequence = 1;
-+
-+		ret = drmWaitVBlank(data->drm_fd, &wait);
-+		igt_assert_eq(ret, 0);
-+		dc3co_cnt = igt_read_dc_counter(data->debugfs_fd,
-+						IGT_INTEL_CHECK_DC3CO);
-+		if (dc3co_cnt > dc3co_prev_cnt)
-+			dc3co_flag = true;
-+
-+		usleep(delay);
-+	}
-+
-+	igt_assert_f(dc3co_flag, "DC3CO entry failed.\n");
-+	igt_assert_f(frame_count == max_count, "Framedrop seen during vpb scenario.\n");
-+}
-+
- static void setup_dc3co(data_t *data, enum psr_mode mode)
- {
- 	data->op_psr_mode = mode;
-@@ -333,6 +381,16 @@ static void test_dc3co_vpb_simulation(data_t *data, enum psr_mode mode)
- 	cleanup_dc3co_fbs(data);
- }
- 
-+static void test_framedrop_dc3co(data_t *data, enum psr_mode mode)
-+{
-+	igt_require_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO);
-+	setup_output(data);
-+	setup_dc3co(data, mode);
-+	setup_videoplayback(data);
-+	check_framedrop(data);
-+	cleanup_dc3co_fbs(data);
-+}
-+
- static void test_dc5_retention_flops(data_t *data, int dc_flag)
- {
- 	uint32_t dc_counter_before_psr;
-@@ -660,6 +718,31 @@ int igt_main()
- 		}
- 	}
- 
-+	igt_describe("Verify that DC3CO entry does not cause frame drops "
-+		     "and successfully enters the power state");
-+	igt_subtest_with_dynamic("dc3co-framedrop-check") {
-+		int modes[] = {PSR_MODE_2, PR_MODE};
-+		const char *append_subtest_name[2] = {
-+			"psr2-",
-+			"pr-",
-+		};
-+
-+		for (int i = 0; i < ARRAY_SIZE(modes); i++) {
-+			igt_dynamic_f("%s-dc3co-framedrop", append_subtest_name[i]) {
-+				igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
-+							     modes[i], NULL));
-+
-+				if (modes[i] == PSR_MODE_2)
-+					igt_require(IS_TIGERLAKE(data.devid) ||
-+						    intel_display_ver(data.devid) >= 35);
-+				else if (modes[i] == PR_MODE)
-+					igt_require(intel_display_ver(data.devid) >= 35);
-+
-+				test_framedrop_dc3co(&data, modes[i]);
-+			}
-+		}
-+	}
-+
- 	igt_describe("This test validates display engine entry to DC5 state "
- 		     "while PSR is active");
- 	igt_subtest("dc5-psr") {
--- 
-2.43.0
+> ---
+>   include/drm-uapi-experimental/intel_drm_local.h | 3 ---
+>   1 file changed, 3 deletions(-)
+> 
+> diff --git a/include/drm-uapi-experimental/intel_drm_local.h b/include/drm-uapi-experimental/intel_drm_local.h
+> index 9949d5350..b48c9e219 100644
+> --- a/include/drm-uapi-experimental/intel_drm_local.h
+> +++ b/include/drm-uapi-experimental/intel_drm_local.h
+> @@ -20,9 +20,6 @@ extern "C" {
+>    * clean these up when kernel uapi headers are sync'd.
+>    */
+>   
+> -#define DRM_XE_GEM_CREATE_FLAG_NO_COMPRESSION (1 << 3)
+> -#define DRM_XE_QUERY_CONFIG_FLAG_HAS_NO_COMPRESSION_HINT (1 << 3)
+> -
+>   #if defined(__cplusplus)
+>   }
+>   #endif
 
