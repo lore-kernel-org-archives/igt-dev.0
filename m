@@ -4,53 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FC6FE67A69
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 04:39:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52A6CE67A69
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 05:31:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BFD0D10E0C7;
-	Tue,  3 Mar 2026 04:39:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0773910E630;
+	Tue,  3 Mar 2026 05:31:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QQydaz3+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TIGwz7ht";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1FA6A10E0C7
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 04:39:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B83C210E62F
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 05:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772512744; x=1804048744;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=wvK368owuZviari4aY0UqJgDMDHYyooIPqXnOA/PmYw=;
- b=QQydaz3+6WVY0S5vpuYo0+NX0bAFNOudpLGIocuX7jhyfeW0uR5vees9
- sTyhPYwmIDTlUt/YdQ88tk/D/SGYyhUu6uDnLrr92r4f19xNZGAzr/p+V
- MGKHyX1nnsGEHwqJu+QXO2FoGfJKWkZoanEFMvZrb6pfQ/AJxlMv6CpX9
- XYYw0mLnlOR5Ozg7Cf8z8L2tQext2WrgfrlDQoBm9JAVBIWf5eKvHLkQx
- /GAYoBzxTe0W/ntT8+bOiG+l0XHguAkJpa6NvBgaz29SIl5AGOjXctayj
- 5SdRne8tN2s16OLlHQqZIAoIiAo4GfYTSRDFbs/2rCxTkuus4D3mYdy2x g==;
-X-CSE-ConnectionGUID: S8W5uARTS56eUfELmNxqLA==
-X-CSE-MsgGUID: 60tdKpp1RMixD2myZKWfsw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="96148685"
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="96148685"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Mar 2026 20:39:04 -0800
-X-CSE-ConnectionGUID: SrGGqxu8SkqCaCPYCdE0bQ==
-X-CSE-MsgGUID: WTvC7h/ISH+mm0SDDklrrg==
+ t=1772515867; x=1804051867;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=/MX/D1zCk5aeFLlQG08NC3hE5PKt2/wf/C5bsZjwvRQ=;
+ b=TIGwz7htqrYYe+68u4kDYSzoNnCwK1m3TB9as8omhVxyTY/BJ2d5ZbMq
+ XmbOEAmmftfWszkT+OS7/Kq3Kc9CRlMyY6cWdDFlI3Jod7nsQwx7BgBsw
+ +4RkLv4Bl3z+PUyZxGGFOno2jrYu6GmoBxfSwPeCBSHHBBkFbmHGr4KEo
+ eW9iUkYSWHVwg6nO0Dj7RvyaCqEWDrMcPLbbSLhfL5Zg8tGoVUfqW/Xs/
+ kIk6UBqXt5kSYt3zTa8SzA8kKREA+6QvRBvwnda/nmO3NGpbhG2icWAP+
+ d0H5RDb/yYbE+B/v8nEGo3KljM6moWufp1FGE6gEGyKJPt2nf+ZUgE2zG w==;
+X-CSE-ConnectionGUID: 71g0pJnJSTm0+pMkjb0Ctg==
+X-CSE-MsgGUID: Kg3+eTS2QGuhrM6YTa36HA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="84630036"
+X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="84630036"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Mar 2026 21:31:06 -0800
+X-CSE-ConnectionGUID: HLvYU5lLSquRaeSN/MqLKQ==
+X-CSE-MsgGUID: +KB1yE4zQTeBX/voOeM6rg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="244805109"
 Received: from priyanka.iind.intel.com ([10.190.216.153])
- by fmviesa001.fm.intel.com with ESMTP; 02 Mar 2026 20:39:02 -0800
+ by fmviesa003.fm.intel.com with ESMTP; 02 Mar 2026 21:31:04 -0800
 From: priyanka.dandamudi@intel.com
-To: zbigniew.kempczynski@intel.com, matthew.auld@intel.com,
- igt-dev@lists.freedesktop.org, priyanka.dandamudi@intel.com
-Subject: [PATCH i-g-t 5/5] tests/intel/xe_pat: Validate XA App Transient
- feature
-Date: Tue,  3 Mar 2026 10:08:53 +0530
-Message-ID: <20260303043853.1656156-6-priyanka.dandamudi@intel.com>
+To: igt-dev@lists.freedesktop.org, priyanka.dandamudi@intel.com,
+ zbigniew.kempczynski@intel.com, andrzej.hajda@intel.com
+Subject: [PATCH i-g-t v2 0/5] Add support for xe3p and prefetch fault test
+Date: Tue,  3 Mar 2026 11:00:59 +0530
+Message-ID: <20260303053104.1674811-1-priyanka.dandamudi@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260303043853.1656156-1-priyanka.dandamudi@intel.com>
-References: <20260303043853.1656156-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,174 +66,49 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Test the scenarios when media is on/off.
-When media is off/on, for xa app transient buffer, data should be coherent
-between cpu and gpu. Coherency should be maintained from KMD side
-irrespective of media engine on/off.
+Patch series contain:
+Introduce gpu execution commands for an efficient 64bit mode.
+Add support for xe3p efficient 64bit addressing.
+Add canonical helper for 48/57 bit vas
+Add support for xe3p and xe3 in generate_iga64_codes scripts.
+Add prefetch fault test.
 
-v2: Added comment to explain the reason of forcewaking.
-Added 2way also in the index along with XA.(Matt)
-Reordered headers.(Kamil)
+v2: Address comments related to xe_canonical_va, use it wherever
+required. Make some minute changes.
 
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
----
- tests/intel/xe_pat.c | 103 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 103 insertions(+)
+Andrzej Hajda (1):
+  lib/gpgpu_shader: Add support for xe3p efficient 64bit addressing
 
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index aeb84dbb7..dbeb7c7d9 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -16,11 +16,17 @@
- #include "igt.h"
- #include "igt_syncobj.h"
- #include "igt_vgem.h"
-+#include "igt_configfs.h"
-+#include "igt_device.h"
-+#include "igt_fs.h"
-+#include "igt_kmod.h"
-+#include "igt_sysfs.h"
- #include "intel_blt.h"
- #include "intel_mocs.h"
- #include "intel_pat.h"
- #include "linux_scaffold.h"
- 
-+#include "xe/xe_gt.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- #include "xe/xe_util.h"
-@@ -29,6 +35,8 @@
- #define XE_COH_AT_LEAST_1WAY 2
- 
- static bool do_slow_check;
-+static char bus_addr[NAME_MAX];
-+static struct pci_device *pci_dev;
- 
- static uint32_t create_object(int fd, int r, int size, uint16_t coh_mode,
- 			      bool force_cpu_wc);
-@@ -1184,6 +1192,12 @@ const struct pat_index_entry bmg_g21_pat_index_modes[] = {
- 	{ NULL, 27, false, "c2-2way",     XE_COH_AT_LEAST_1WAY       },
- };
- 
-+const struct pat_index_entry xe3p_lpg_coherency_pat_index_modes[] = {
-+	{ NULL, 18, false, "xa-l3-uc",	 XE_COH_NONE          },
-+	{ NULL, 19, false, "xa-l3-2way", XE_COH_AT_LEAST_1WAY },
-+	{ NULL, 2,  false, "2way",       XE_COH_AT_LEAST_1WAY },
-+};
-+
- /*
-  * Depending on 2M/1G GTT pages we might trigger different PTE layouts for the
-  * PAT bits, so make sure we test with and without huge-pages. Also ensure we
-@@ -1248,6 +1262,18 @@ static uint32_t create_object(int fd, int r, int size, uint16_t coh_mode,
-  * Description: Check some of the xe2 pat_index modes.
-  */
- 
-+/**
-+ * SUBTEST: xa-app-transient-media-off
-+ * Test category: functionality test
-+ * Description: Check some of the xe4-lpg pat_index modes with media off.
-+ */
-+
-+/**
-+ * SUBTEST:  xa-app-transient-media-on
-+ * Test category: functionality test
-+ * Description: Check some of the xe3p-lpg pat_index modes with media on.
-+ */
-+
- static void subtest_pat_index_modes_with_regions(int fd,
- 						 const struct pat_index_entry *modes_arr,
- 						 int n_modes)
-@@ -1561,6 +1587,53 @@ static void false_sharing(int fd)
- 	}
- }
- 
-+static void reset(int sig)
-+{
-+	int configfs_fd;
-+
-+	igt_kmod_unbind("xe", bus_addr);
-+
-+	/* Drop all custom configfs settings from subtests */
-+	configfs_fd = igt_configfs_open("xe");
-+	if (configfs_fd >= 0)
-+		igt_fs_remove_dir(configfs_fd, bus_addr);
-+	close(configfs_fd);
-+
-+	/* Bind again a clean driver with no custom settings */
-+	igt_kmod_bind("xe", bus_addr);
-+}
-+
-+static void xa_app_transient_test(int configfs_device_fd, bool media_on)
-+{
-+	int fd, fw_handle, gt;
-+
-+	igt_kmod_unbind("xe", bus_addr);
-+
-+	if (media_on)
-+		igt_assert(igt_sysfs_set(configfs_device_fd,
-+					 "gt_types_allowed", "primary,media"));
-+	else
-+		igt_assert(igt_sysfs_set(configfs_device_fd,
-+					 "gt_types_allowed", "primary"));
-+
-+	igt_kmod_bind("xe", bus_addr);
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+
-+	/* To prevent entering into rc6 for the duration of test. */
-+	fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
-+	igt_require(fw_handle >= 0);
-+
-+	subtest_pat_index_modes_with_regions(fd, xe3p_lpg_coherency_pat_index_modes,
-+					     ARRAY_SIZE(xe3p_lpg_coherency_pat_index_modes));
-+
-+	/* check status of c state, it should not be in c6 due to forcewake. */
-+	xe_for_each_gt(fd, gt)
-+		igt_assert(!xe_gt_is_in_c6(fd, gt));
-+
-+	close(fw_handle);
-+}
-+
- static int opt_handler(int opt, int opt_index, void *data)
- {
- 	switch (opt) {
-@@ -1652,6 +1725,36 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
- 		false_sharing(fd);
- 	}
- 
-+	igt_subtest_group() {
-+		int configfs_fd, configfs_device_fd;
-+
-+		igt_fixture() {
-+			igt_require(intel_graphics_ver(dev_id) == IP_VER(35, 10));
-+
-+			pci_dev = igt_device_get_pci_device(fd);
-+			snprintf(bus_addr, sizeof(bus_addr), "%04x:%02x:%02x.%01x",
-+				 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-+
-+			configfs_fd = igt_configfs_open("xe");
-+			igt_require(configfs_fd != -1);
-+			configfs_device_fd = igt_fs_create_dir(configfs_fd, bus_addr,
-+							       S_IRWXU | S_IRGRP | S_IXGRP |
-+							       S_IROTH | S_IXOTH);
-+			igt_install_exit_handler(reset);
-+		}
-+
-+		igt_subtest_with_dynamic("xa-app-transient-media-off")
-+			xa_app_transient_test(configfs_device_fd, false);
-+
-+		igt_subtest_with_dynamic("xa-app-transient-media-on")
-+			xa_app_transient_test(configfs_device_fd, true);
-+
-+		igt_fixture() {
-+			close(configfs_device_fd);
-+			close(configfs_fd);
-+		}
-+	}
-+
- 	igt_fixture()
- 		drm_close_driver(fd);
- }
+Gwan-gyeong Mun (1):
+  lib/[gpu_cmds|xehp_media]: Introduce gpu execution commands for an
+    efficient 64bit mode.
+
+Priyanka Dandamudi (2):
+  scripts/generate_iga64_codes: Add support for xe3p and xe3
+  tests/intel/xe_prefetch_fault: Add test for prefetch fault
+
+Zbigniew Kempczyński (1):
+  lib/xe_util.h: add canonical helper for 48/57 bit vas
+
+ include/intel_gpu_commands.h                  |   1 +
+ lib/gpgpu_fill.c.gen.iga64_codes.c            |   2 +-
+ lib/gpgpu_shader.c                            |  75 +++++-
+ lib/gpgpu_shader.c.gen.iga64_codes.c          | 196 +++++++++++++++-
+ lib/gpu_cmds.c                                | 208 +++++++++++++++++
+ lib/gpu_cmds.h                                |  17 ++
+ lib/iga64_macros.h                            |   5 +-
+ lib/meson.build                               |   2 +-
+ lib/xe/xe_util.h                              |   5 +
+ lib/xehp_media.h                              |  65 ++++++
+ scripts/generate_iga64_codes                  |   2 +-
+ .../xe_eudebug_online.c.gen.iga64_codes.c     |  45 +++-
+ tests/intel/xe_prefetch_fault.c               | 215 ++++++++++++++++++
+ .../xe_prefetch_fault.c.gen.iga64_codes.c     |  21 ++
+ tests/meson.build                             |   1 +
+ 15 files changed, 847 insertions(+), 13 deletions(-)
+ create mode 100644 tests/intel/xe_prefetch_fault.c
+ create mode 100644 tests/intel/xe_prefetch_fault.c.gen.iga64_codes.c
+
 -- 
 2.43.0
 
