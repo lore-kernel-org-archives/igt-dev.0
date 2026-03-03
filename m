@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D56F9EC0461
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 09:15:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BB24EC0461
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 09:17:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E40B10E069;
-	Tue,  3 Mar 2026 09:15:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 078EE10E069;
+	Tue,  3 Mar 2026 09:17:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Mw7foDT6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AzosZ/0H";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DBC1310E069
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 09:15:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F2AF210E069
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 09:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772529357; x=1804065357;
+ t=1772529432; x=1804065432;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=NpO/O+ORTcIlVJ6/XdUkbudlwJzMGr2L55s/uVKbTXw=;
- b=Mw7foDT6Vgyx5WiL43xO7+vLq7YWyAmVYFiDMelbxycuc7M6Ku2iEJGr
- pcJXV6F/Eg2SDIj3HJJIUUbaL06qJTdS5T8ZUbF2okbNMMrBdM3Rloc5A
- iipPp5qKTO6i3TvBy9xxNMO2OlBWRhl2y8LD3LrJJjuyNoZpbiyBfFsG7
- 9ZOsnZUeR9x23Gn7mz+eBgMkYdOlk1DV6LFvVvk7lE4SK2mYED8XJKgt9
- m8IUOjZ24ivbqGBAloMwJ9t7xfbbfVAT2gpxoeyZKmizj00zstVqGqUv/
- G6x20+z4bkqCq90DJqx9xWSyouqj5G+sYBMx8RVGyQ0/ELdJQAP2AxTvv Q==;
-X-CSE-ConnectionGUID: IiFIHdJwTKq9ljf6RADm/g==
-X-CSE-MsgGUID: KeLfpsXRTPeLlL3TuXDFPA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="91128416"
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="91128416"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2026 01:15:56 -0800
-X-CSE-ConnectionGUID: 5r2+ExKfQn2jS1lLqQqCrg==
-X-CSE-MsgGUID: 6IE2lGTORhKaquPzGgMfMg==
+ bh=MULup8ERXGU4jp8azAVMcEinVER3n37QuQkYvFVs4DA=;
+ b=AzosZ/0HKn9mfngHb06x1LngNeQlESB4x2aolEClkVC9N8/wZOmhm2gv
+ qhrQQvlO0OSdYL9neOf8jZpC0OD42NwVgekltFjFI/OcceaSyacMaLtON
+ 9DY8ESxFz4GugoboMytVdkDglivH9/+JraK3IR7JcT/jnuz0ZpekrQWH8
+ 7XZdyhFRQkcZ5PwSFUoWeL6pDyo77mDk05JQgbRgdYdM+Vc6NBrr0EL7a
+ CTZ8IS80lxmcSaSymH3lA7kmi9oviUpcZp9h/B9cRMKnqMaF8kRssok75
+ yguzG8dV0ZpYw/AcyhKE3m+HFjYkpjbimo7jkk6W8y6ce4SJ4B+SDlcKu A==;
+X-CSE-ConnectionGUID: d4RcIkDpTwyVF4j8weMLCA==
+X-CSE-MsgGUID: 5Mtf6EzZTZWr1tErOpoz4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73621988"
+X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="73621988"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2026 01:17:10 -0800
+X-CSE-ConnectionGUID: 1v3hyHHFQh+agWABSyFT7g==
+X-CSE-MsgGUID: gERz4H89SHaMueaDzuxzMw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="217087856"
+X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="240959352"
 Received: from fpallare-mobl4.ger.corp.intel.com (HELO localhost)
  ([10.245.244.235])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2026 01:15:54 -0800
-Date: Tue, 3 Mar 2026 10:15:51 +0100
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2026 01:17:09 -0800
+Date: Tue, 3 Mar 2026 10:17:06 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: priyanka.dandamudi@intel.com
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t RESEND v1 1/2] lib/gpu_cmds: Add support for
- compute walker interrupt
-Message-ID: <4kheayldwwkmrbnrvznrzbgy3f43vk6nafqkber7ygwushu25m@pxpsxbf7rjs3>
+Subject: Re: [PATCH i-g-t RESEND v1 2/2] tests/intel/xe_non_msix: Test
+ compute walker interrupt on non msix
+Message-ID: <xkp46jfvmbffn6a3kmaov4oogohrbbbqixge5u43argjsxgftt@g4e4ztlvy77b>
 References: <20260303064451.1685885-1-priyanka.dandamudi@intel.com>
- <20260303064451.1685885-2-priyanka.dandamudi@intel.com>
+ <20260303064451.1685885-3-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260303064451.1685885-2-priyanka.dandamudi@intel.com>
+In-Reply-To: <20260303064451.1685885-3-priyanka.dandamudi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,124 +71,365 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Mar 03, 2026 at 12:14:50PM +0530, priyanka.dandamudi@intel.com wrote:
+On Tue, Mar 03, 2026 at 12:14:51PM +0530, priyanka.dandamudi@intel.com wrote:
 > From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > 
-> Make some lib functions global to be used in compute walker interrupt test.
-> Add support for compute walker interrupts and its post sync operations.
-> Make some dependent library functions globally accessible.
+> Validate compute walker interrupt notification on non msix mode.
+> Create 2 threads.
+> Thread 1:
+> a. Submit a batch buffer containing CW(short workload followed by computer
+> interrupt bit enabled with post sync B), CW (loop), PIPE_CONTROL BBE)
+> without sync.
+> b. Block the thread using barrier and wait for the signal from thread 1.
+> c. After the signal from the thread 2, stop the CW loop from CPU.
+> d. Wait for the signal from user interrupt handler to ensure completion
+> of batch buffer.
+> e. Validate short workload, poll and post sync data.
+> 
+> Thread 2:
+> a. Parallely, wait for the signal from the compute walker interrupt handler
+> using wait user fence at post sync address.
+> b. Signal the thread 1 to continue execution.
+> 
+> As the CW's are asynchronous, pipe control is used to ensure completion
+> of both the CW's. Above process help to validate that the interrupt is
+> coming from compute walker.
+> 
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-LGTM, but wait for previous series to land and resubmit to allow CI
-to verify there's no regression. But for this change:
+Same as for 1/2 - resubmit after rebase when previous series will be
+merged to check by CI. For code:
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
 
-> 
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > ---
->  lib/gpgpu_shader.c |  4 ++--
->  lib/gpgpu_shader.h |  2 ++
->  lib/gpu_cmds.c     | 15 ++++++++++++---
->  lib/gpu_cmds.h     |  9 ++++++++-
->  4 files changed, 24 insertions(+), 6 deletions(-)
+>  tests/intel/xe_non_msix.c | 301 ++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build         |   1 +
+>  2 files changed, 302 insertions(+)
+>  create mode 100644 tests/intel/xe_non_msix.c
 > 
-> diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
-> index 874f2c63d6..20f39aa769 100644
-> --- a/lib/gpgpu_shader.c
-> +++ b/lib/gpgpu_shader.c
-> @@ -151,7 +151,7 @@ __xelp_gpgpu_execfunc(struct intel_bb *ibb,
->  		      engine | I915_EXEC_NO_RELOC, false);
->  }
->  
-> -static void
-> +void
->  fill_inline_data(uint32_t *inline_data, uint64_t target_offset, struct intel_buf *target,
->  		 uint32_t x_dim)
->  {
-> @@ -265,7 +265,7 @@ __xe3p_gpgpu_execfunc(struct intel_bb *ibb,
->  	/* Inline data is at 32th dword of COMPUTE_WALKER_2 */
->  	inline_data = intel_bb_ptr(ibb) + 4 * 32;
->  	/* Pass a value of "SIMD_SIZE(16) * x_dim" as the argument for width */
-> -	xe3p_emit_compute_walk2(ibb, 0, 0, x_dim * 16, y_dim, &idd, x_dim * y_dim);
-> +	xe3p_emit_compute_walk2(ibb, 0, 0, x_dim * 16, y_dim, &idd, x_dim * y_dim, NULL);
->  	fill_inline_data(inline_data, xe_canonical_va(ibb->fd, target->addr.offset), target, x_dim);
->  
->  	intel_bb_out(ibb, MI_BATCH_BUFFER_END);
-> diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
-> index fc931a72b4..7c10572bca 100644
-> --- a/lib/gpgpu_shader.h
-> +++ b/lib/gpgpu_shader.h
-> @@ -83,6 +83,8 @@ void gpgpu_shader_set_vrt(struct gpgpu_shader *shdr, enum gpgpu_shader_vrt_modes
->  
->  uint32_t gpgpu_shader__get_max_threads_in_tg(struct gpgpu_shader *shdr);
->  
-> +void fill_inline_data(uint32_t *inline_data, uint64_t target_offset,
-> +		      struct intel_buf *target, uint32_t x_dim);
->  void gpgpu_shader__wait(struct gpgpu_shader *shdr);
->  void gpgpu_shader__breakpoint_on(struct gpgpu_shader *shdr, uint32_t cmd_no);
->  void gpgpu_shader__breakpoint(struct gpgpu_shader *shdr);
-> diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
-> index cd912eb2ac..10c8bfb8dd 100644
-> --- a/lib/gpu_cmds.c
-> +++ b/lib/gpu_cmds.c
-> @@ -1272,7 +1272,8 @@ xe3p_emit_compute_walk2(struct intel_bb *ibb,
->  			unsigned int x, unsigned int y,
->  			unsigned int width, unsigned int height,
->  			struct xe3p_interface_descriptor_data *pidd,
-> -			uint32_t max_threads)
-> +			uint32_t max_threads,
-> +			struct xe3p_cw2_interrupt_data *intdata)
->  {
->  	/*
->  	 * Max Threads represent range: [1, 2^16-1],
-> @@ -1353,8 +1354,16 @@ xe3p_emit_compute_walk2(struct intel_bb *ibb,
->  	}
->  
->  	/* Post Sync command payload 0 */
-> -	for (int i = 0; i < 5; i++) {					//dw26-30
-> -		intel_bb_out(ibb, 0);
-> +	if (intdata != NULL) {
-> +		intel_bb_out(ibb, intdata->post_sync_op);
-> +		intel_bb_out(ibb, intdata->post_sync_addr);
-> +		intel_bb_out(ibb, intdata->post_sync_addr >> 32);
-> +		intel_bb_out(ibb, intdata->post_sync_val);
-> +		intel_bb_out(ibb, intdata->post_sync_val >> 32);
-> +	} else {
-> +		for (int i = 0; i < 5; i++) {					//dw26-30
-> +			intel_bb_out(ibb, 0);
-> +		}
->  	}
->  
->  	/* Inline data */
-> diff --git a/lib/gpu_cmds.h b/lib/gpu_cmds.h
-> index c38eaad865..b3bfb137b0 100644
-> --- a/lib/gpu_cmds.h
-> +++ b/lib/gpu_cmds.h
-> @@ -39,6 +39,12 @@
->  #include "intel_bufops.h"
->  #include <assert.h>
->  
-> +struct xe3p_cw2_interrupt_data {
-> +	uint32_t post_sync_op;
-> +	uint64_t post_sync_addr;
-> +	uint64_t post_sync_val;
+> diff --git a/tests/intel/xe_non_msix.c b/tests/intel/xe_non_msix.c
+> new file mode 100644
+> index 0000000000..9515dc487a
+> --- /dev/null
+> +++ b/tests/intel/xe_non_msix.c
+> @@ -0,0 +1,301 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2026 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: Tests for Compute walker interrupt on non msix mode.
+> + * Category: Core
+> + * Mega feature: General Core features
+> + * Sub-category: Compute walker interrupt
+> + * Functionality: Compute walker interrupt on non msix mode
+> + * Test category: functionality test
+> + */
+> +#include "gpgpu_shader.h"
+> +#include "lib/gpu_cmds.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include "xe/xe_util.h"
+> +#include "igt.h"
+> +
+> +#define BATCH_STATE_SPLIT 2048
+> +#define WALKER_X_DIM	1
+> +#define WALKER_Y_DIM	512
+> +#define COLOR_C4 0xC4C4C4C4
+> +#define SHADER_CANARY 0x01010101
+> +#define STOP_CANARY 0x12345678
+> +#define SHADER_LOOP 1
+> +#define SHADER_SIMPLE_DWORD 2
+> +#define POST_SYNC_ADDR  0x10000ULL
+> +#define POST_SYNC_VALUE 0x80050004
+> +#define USER_FENCE_VALUE   0xdeadbeefdeadbeefull
+> +#define WRITE_IMMEDIATE_OP (1 << 16)
+> +#define CW_INTERRUPT_ENABLE (1 << 3)
+> +#define PIPE_CONTROL 0x7a000004
+> +#define WIDTH 1
+> +#define HEIGHT 512
+> +
+> +struct dim_t {
+> +	uint32_t x;
+> +	uint32_t y;
+> +} w_dim;
+> +
+> +struct thread_data {
+> +	struct intel_buf *post_sync;
+> +	uint32_t *post_sync_ptr;
+> +	uint32_t vm;
+> +	uint32_t exec_queue_id;
+> +	pthread_barrier_t barrier;
+> +	int fd;
 > +};
 > +
->  uint32_t
->  gen7_fill_curbe_buffer_data(struct intel_bb *ibb, uint8_t color);
->  
-> @@ -159,6 +165,7 @@ xe3p_emit_compute_walk2(struct intel_bb *ibb,
->  			unsigned int x, unsigned int y,
->  			unsigned int width, unsigned int height,
->  			struct xe3p_interface_descriptor_data *pidd,
-> -			uint32_t max_threads);
-> +			uint32_t max_threads,
-> +			struct xe3p_cw2_interrupt_data *intdata);
->  
->  #endif /* GPU_CMDS_H */
+> +static struct intel_buf *
+> +create_buf(int fd, int width, int height, uint32_t color)
+> +{
+> +	struct intel_buf *buf;
+> +	uint32_t *ptr;
+> +	size_t i;
+> +
+> +	buf = intel_buf_create(buf_ops_create(fd), width, height, 32, 0,
+> +			       I915_TILING_NONE, 0);
+> +
+> +	ptr = xe_bo_map(fd, buf->handle, buf->size);
+> +	igt_assert(ptr != MAP_FAILED);
+> +
+> +	for (i = 0; i < buf->size / sizeof(uint32_t); i++)
+> +		ptr[i] = color;
+> +
+> +	munmap(ptr, buf->size);
+> +
+> +	return buf;
+> +}
+> +
+> +static struct intel_bb *xe_bb_create_on_offset(int fd, uint32_t exec_queue, uint32_t vm,
+> +					       uint64_t offset, uint32_t size)
+> +{
+> +	struct intel_bb *ibb;
+> +
+> +	ibb = intel_bb_create_with_context(fd, exec_queue, vm, NULL, size);
+> +
+> +	/* update intel bb offset */
+> +	intel_bb_remove_object(ibb, ibb->handle, ibb->batch_offset, ibb->size);
+> +	intel_bb_add_object(ibb, ibb->handle,
+> +			    ibb->size, offset, ibb->alignment, false);
+> +	ibb->batch_offset = offset;
+> +
+> +	return ibb;
+> +}
+> +
+> +static struct gpgpu_shader *get_non_msix_shader(int fd, const uint64_t flags)
+> +{
+> +	static struct gpgpu_shader *shader;
+> +
+> +	shader = gpgpu_shader_create(fd);
+> +
+> +	if (flags & SHADER_LOOP) {
+> +		gpgpu_shader__label(shader, 0);
+> +		gpgpu_shader__jump_neq(shader, 0, 0, STOP_CANARY);
+> +	} else {
+> +		gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
+> +	}
+> +
+> +	gpgpu_shader__eot(shader);
+> +
+> +	return shader;
+> +}
+> +
+> +static void *thread1_fn(void *arg)
+> +{
+> +	const uint64_t bb_offset = 0x1b000000;
+> +	const size_t bb_size = 4096;
+> +	struct thread_data *t_data = arg;
+> +	struct xe3p_interface_descriptor_data idd1, idd2;
+> +	struct gpgpu_shader *shader1, *shader2;
+> +	struct intel_buf *short_buf, *poll_buf;
+> +	struct intel_bb *ibb;
+> +	struct xe3p_cw2_interrupt_data intdata;
+> +	uint32_t *inline_data1, *inline_data2;
+> +	uint32_t *short_ptr, *poll_ptr;
+> +	unsigned int width;
+> +	uint64_t engine;
+> +	int ret = 0;
+> +
+> +	w_dim.x = WALKER_X_DIM;
+> +	w_dim.y = WALKER_Y_DIM;
+> +
+> +	ibb = xe_bb_create_on_offset(t_data->fd, t_data->exec_queue_id, t_data->vm,
+> +				     bb_offset, bb_size);
+> +	short_buf = create_buf(t_data->fd, WIDTH, HEIGHT, (uint8_t)COLOR_C4);
+> +	poll_buf = create_buf(t_data->fd, WIDTH, HEIGHT, (uint8_t)COLOR_C4);
+> +
+> +	short_ptr = xe_bo_mmap_ext(t_data->fd, short_buf->handle,
+> +				   short_buf->size, PROT_READ | PROT_WRITE);
+> +	poll_ptr = xe_bo_mmap_ext(t_data->fd, poll_buf->handle,
+> +				  poll_buf->size, PROT_READ | PROT_WRITE);
+> +
+> +	intel_bb_add_intel_buf(ibb, short_buf, true);
+> +	intel_bb_add_intel_buf(ibb, t_data->post_sync, true);
+> +	intel_bb_add_intel_buf(ibb, poll_buf, true);
+> +
+> +	shader1 = get_non_msix_shader(t_data->fd, SHADER_SIMPLE_DWORD);
+> +	shader2 = get_non_msix_shader(t_data->fd, SHADER_LOOP);
+> +
+> +	intel_bb_ptr_set(ibb, BATCH_STATE_SPLIT);
+> +
+> +	xe3p_fill_interface_descriptor(ibb, short_buf, shader1->instr,
+> +				       4 * shader1->size, &idd1);
+> +	xe3p_fill_interface_descriptor(ibb, poll_buf, shader2->instr,
+> +				       4 * shader2->size, &idd2);
+> +
+> +	intel_bb_ptr_set(ibb, 0);
+> +	intel_bb_out(ibb, GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
+> +		     PIPELINE_SELECT_GPGPU);
+> +
+> +	xe3p_emit_state_base_address(ibb);
+> +	xehp_emit_state_compute_mode(ibb, shader1->vrt != VRT_DISABLED);
+> +
+> +	inline_data1 = intel_bb_ptr(ibb) + 4 * 32;
+> +	width = w_dim.x * 16;
+> +
+> +	intdata.post_sync_op = WRITE_IMMEDIATE_OP | CW_INTERRUPT_ENABLE;
+> +	intdata.post_sync_addr = xe_canonical_va(t_data->fd,
+> +						 t_data->post_sync->addr.offset);
+> +	intdata.post_sync_val = POST_SYNC_VALUE;
+> +	xe3p_emit_compute_walk2(ibb, 0, 0, width, w_dim.y, &idd1,
+> +				w_dim.x * w_dim.y, &intdata);
+> +	fill_inline_data(inline_data1,
+> +			 xe_canonical_va(t_data->fd, short_buf->addr.offset),
+> +			 short_buf, w_dim.x);
+> +
+> +	xehp_emit_state_compute_mode(ibb, shader2->vrt != VRT_DISABLED);
+> +	inline_data2 = intel_bb_ptr(ibb) + 4 * 32;
+> +	xe3p_emit_compute_walk2(ibb, 0, 0, width, w_dim.y, &idd2,
+> +				w_dim.x * w_dim.y, NULL);
+> +	fill_inline_data(inline_data2,
+> +			 xe_canonical_va(t_data->fd, poll_buf->addr.offset),
+> +			 poll_buf, w_dim.x);
+> +
+> +	intel_bb_out(ibb, PIPE_CONTROL);
+> +	intel_bb_out(ibb, 0x00100000);
+> +	intel_bb_out(ibb, 0x00000000);
+> +	intel_bb_out(ibb, 0x00000000);
+> +	intel_bb_out(ibb, 0x00000000);
+> +	intel_bb_out(ibb, 0x00000000);
+> +	intel_bb_out(ibb, MI_BATCH_BUFFER_END);
+> +	intel_bb_ptr_align(ibb, 32);
+> +
+> +	engine = I915_EXEC_DEFAULT;
+> +
+> +	intel_bb_exec(ibb, engine | I915_EXEC_NO_RELOC, false, false);
+> +
+> +	gpgpu_shader_destroy(shader1);
+> +	gpgpu_shader_destroy(shader2);
+> +
+> +	igt_assert_neq(poll_ptr[0], STOP_CANARY);
+> +
+> +	/* Wait for the signal from thread 2 to stop the CW loop.
+> +	 * Also ensure User interrupt is not generated before
+> +	 * Compute walker interrupt.
+> +	 */
+> +	ret = pthread_barrier_wait(&t_data->barrier);
+> +	igt_assert_f(ret == 0 || ret == PTHREAD_BARRIER_SERIAL_THREAD,
+> +		     "Barrier synchronization failed: %s\n", strerror(ret));
+> +	/* Stop the CW loop. */
+> +	poll_ptr[0] = STOP_CANARY;
+> +
+> +	intel_bb_sync(ibb);
+> +
+> +	igt_assert_eq(short_ptr[0], SHADER_CANARY);
+> +	igt_assert_eq(poll_ptr[0], STOP_CANARY);
+> +	igt_assert_eq(t_data->post_sync_ptr[0], POST_SYNC_VALUE);
+> +
+> +	munmap(short_ptr, short_buf->size);
+> +	munmap(poll_ptr, poll_buf->size);
+> +
+> +	intel_buf_destroy(short_buf);
+> +	intel_buf_destroy(poll_buf);
+> +	intel_bb_destroy(ibb);
+> +
+> +	return NULL;
+> +}
+> +
+> +static void *thread2_fn(void *arg)
+> +{
+> +	struct thread_data *t_data = arg;
+> +	int ret = 0;
+> +
+> +	/* Wait for the signal from the compute walker interrupt handler. */
+> +	xe_wait_ufence(t_data->fd, (uint64_t *)t_data->post_sync_ptr,
+> +		       POST_SYNC_VALUE, t_data->exec_queue_id, NSEC_PER_MSEC * 50000);
+> +
+> +	ret = pthread_barrier_wait(&t_data->barrier);
+> +	igt_assert_f(ret == 0 || ret == PTHREAD_BARRIER_SERIAL_THREAD,
+> +		     "Barrier synchronization failed: %s\n", strerror(ret));
+> +
+> +	return NULL;
+> +}
+> +
+> +/**
+> + * SUBTEST: walker-interrupt-notification-non-msix
+> + * Description: Validate walker interrupt notification in non msix mode.
+> + * Run type: FULL
+> + */
+> +static void test_walker_notification(int fd, struct drm_xe_engine_class_instance *hwe)
+> +{
+> +	pthread_t t1, t2;
+> +	struct thread_data t_data;
+> +	int r = 0;
+> +
+> +	t_data.fd = fd;
+> +	t_data.vm = xe_vm_create(fd,  0, 0);
+> +	t_data.exec_queue_id = xe_exec_queue_create(fd, t_data.vm, hwe, 0);
+> +	t_data.post_sync = create_buf(fd, WIDTH, HEIGHT, (uint8_t)COLOR_C4);
+> +	t_data.post_sync_ptr = xe_bo_mmap_ext(fd, t_data.post_sync->handle,
+> +					      t_data.post_sync->size,
+> +					      PROT_READ | PROT_WRITE);
+> +
+> +	r = pthread_barrier_init(&t_data.barrier, NULL, 2);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = pthread_create(&t1, NULL, thread1_fn, &t_data);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = pthread_create(&t2, NULL, thread2_fn, &t_data);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = pthread_join(t1, NULL);
+> +	igt_assert_eq(r, 0);
+> +
+> +	r = pthread_join(t2, NULL);
+> +	igt_assert_eq(r, 0);
+> +
+> +	pthread_barrier_destroy(&t_data.barrier);
+> +	munmap(t_data.post_sync_ptr, t_data.post_sync->size);
+> +	intel_buf_destroy(t_data.post_sync);
+> +}
+> +
+> +int igt_main()
+> +{
+> +	struct drm_xe_engine_class_instance *hwe;
+> +	int fd;
+> +
+> +	igt_fixture() {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) == IP_VER(35, 11));
+> +	}
+> +
+> +	igt_subtest_with_dynamic("walker-interrupt-notification-non-msix") {
+> +		xe_for_each_engine(fd, hwe) {
+> +			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
+> +				igt_dynamic_f("%s%d", xe_engine_class_string(hwe->engine_class),
+> +					      hwe->engine_instance)
+> +					test_walker_notification(fd, hwe);
+> +				break;
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_fixture() {
+> +		drm_close_driver(fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index c008826923..6d01649ab4 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -318,6 +318,7 @@ intel_xe_progs = [
+>          'xe_module_load',
+>          'xe_multigpu_svm',
+>  	'xe_noexec_ping_pong',
+> +        'xe_non_msix',
+>  	'xe_oa',
+>  	'xe_pat',
+>  	'xe_peer2peer',
 > -- 
 > 2.43.0
 > 
