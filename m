@@ -4,156 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA81AEC1423
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 10:31:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACC85EC1427
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Mar 2026 10:37:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6C12810E178;
-	Tue,  3 Mar 2026 10:31:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6139410E774;
+	Tue,  3 Mar 2026 10:37:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q5CTjvIx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OKhI0rFY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 783C510E178
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 10:31:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B296210E774
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2026 10:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772533869; x=1804069869;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=ozfbJViAdWMPn9L8IEM5HMf34fwVfHzSDSZ2cCQfCcI=;
- b=Q5CTjvIxqvXeR7RbadmCYcdlC3d2JyMnQkhVLPWqJy9TCS9Xqf1//ZM9
- VQ2WTc6ajni+B+y7F9BqXTk5O6LHVPl8x70BV39jVhwevF7x5yx0UdjQW
- QslR9c2ancl9mkFb5CSOIGiv5uFHaZJs2uG/fPPcEouPObDzMkPEDzQ06
- GTA3Zc2Jcjyvi0WPt06ENXzEqIt55UL4l8z3BxIgY4iBp4NVMFfsVgdsR
- G8A1ieHfdjt2IaHY7NEZ+/Jh2YmWc4/E8xI/ceHP44dAayDzGRDmps29X
- 7+M8sxmFLw/mRrZ+9FevmGkrhM3LuKYECHjZPDNPkySMCLcCjagu1DYnY g==;
-X-CSE-ConnectionGUID: 58JXTb9VTr6NoAnwISd/qw==
-X-CSE-MsgGUID: GxBKvr8sQ7ulTI7xkY3YPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73474828"
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="73474828"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2026 02:31:08 -0800
-X-CSE-ConnectionGUID: lSxTnF23Teq555SF/IVpYA==
-X-CSE-MsgGUID: fHWdL1zCQGOF0iMm0ENnvA==
+ t=1772534262; x=1804070262;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=4l+LzH+No8Oty4BO6PpLjN3Ch3AVcSOklrwmHVLyx8A=;
+ b=OKhI0rFY+R8EbpiLQlBmRcHyIDj2+dYx14Mxrux5/wAzVFNWIAabVILa
+ /4GI9SB7NyEe7P2hhPZq042UVgizMhDfRYIzcZWbqrQnyoz211OKg0nnK
+ rGw6MApQ1QAFQfsGHMDOYpX0o5u1n9EAZfmOIgsxpnj3a7s8CvOYgw72G
+ C38rR/ze2QJsq43i4WLCakTcUvqlbYcFwTfiE94IxmRE+MHMismHUcMn4
+ PBBkv5CoOiLHy3D61k8o2J9uMPzHShIGGYZSzNWSR0NCwa63IpL6fmcgH
+ 9/x4C/EQ8mR69eo/tOQOsGAcIijnpxdrnyU2v01/XV4Tvh5gq0L/ittZJ Q==;
+X-CSE-ConnectionGUID: uMxunA4tQ/KcjTYDTyKXGQ==
+X-CSE-MsgGUID: jl3aLWH2Rgmp75/2IUbByA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="73268074"
+X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="73268074"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2026 02:37:42 -0800
+X-CSE-ConnectionGUID: ev6h7WiaSZKzP4X82/aghQ==
+X-CSE-MsgGUID: 34JQujnWShuupfX0x7cJwA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="222109773"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Mar 2026 02:31:08 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 3 Mar 2026 02:31:06 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 3 Mar 2026 02:31:06 -0800
-Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.32) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 3 Mar 2026 02:31:04 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EagnAsJVevv6BKMxY0OTVNFuZfW4YnyPeWl1YryilmZEeR+QZUYDhOmf7h24Mayj1OE/M/Ai/s/aF9vYoVqU5TKF6j5xHIO9gMDg8Qvpfs4StRJ1wFrnIiFx/p5YrI/G1S2E6+Z9nQ0tSrKe6r4S7lmgaVx9lblqOxu0YZS/Uqmua8X7PZ7ZS0XlAuPhEgW/lvSSEDm+9RanyyiS+Bcojp+VGRRWcjT+tDDfLENYUp6mhz8CUiDbDEUBVvFzZQL9jrf+QKcnvprWyFiolssNIbotKCBAW8/3/UPAGkWZc7zOwbCIVfmoniBWJczvCGH/VTL5r2aOVyUMUQbx7vCLvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KvRalCztTZ29yr5F/40U/PAAL3I8sHN6u2f/h/5xO0Y=;
- b=CbEDLnft7jRVEzeBz7MsLLLGxpNanpy2msiOqb+zIj+scuF5/5p0TIvNu5Os3b5syOB6EQ4akpAKpARu6MqBoWYxvXzaXZZxkmEtiGT0w2gAezVy2LBUNFgXGBKKofWG6tsf4tKsV0jQ9Z+/FYmG0J0kJF9egNQsdb0XEq3qPJVz0+i22MxczwJfUDxwBNAZ/noEBINXUw3/wntRulteCov9PQaO0LwwtuIPFVUre5yqpug9Fvl8/LMJ9E1mrBdxGYAIwlfdnrBMZOVNMCzdqB6bLxY/VsUeIIXIwdIPu6D7K3AgCjIjacuAH2+IJaL/L2d/2tecoG6bN3s2GtrJ4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8208.namprd11.prod.outlook.com (2603:10b6:8:165::18)
- by DS0PR11MB8205.namprd11.prod.outlook.com (2603:10b6:8:162::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Tue, 3 Mar
- 2026 10:31:02 +0000
-Received: from DS0PR11MB8208.namprd11.prod.outlook.com
- ([fe80::ecb0:7475:84de:ca9c]) by DS0PR11MB8208.namprd11.prod.outlook.com
- ([fe80::ecb0:7475:84de:ca9c%5]) with mapi id 15.20.9654.022; Tue, 3 Mar 2026
- 10:31:02 +0000
-Message-ID: <cc6fb449-b15d-4f56-b2c2-4ac7f391b7af@intel.com>
-Date: Tue, 3 Mar 2026 16:00:54 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] lib/intel_pat: Handle platforms without compressed PAT
- index
-To: "Gurram, Pravalika" <pravalika.gurram@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Auld, Matthew" <matthew.auld@intel.com>
-References: <20260218103608.2015045-2-sanjay.kumar.yadav@intel.com>
- <BL1PR11MB552518C35C193641C8AC3DB9847FA@BL1PR11MB5525.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: "Yadav, Sanjay Kumar" <sanjay.kumar.yadav@intel.com>
-In-Reply-To: <BL1PR11MB552518C35C193641C8AC3DB9847FA@BL1PR11MB5525.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5PR01CA0173.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1a9::7) To DS0PR11MB8208.namprd11.prod.outlook.com
- (2603:10b6:8:165::18)
+X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; d="scan'208";a="215488063"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO [10.245.245.26])
+ ([10.245.245.26])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Mar 2026 02:37:40 -0800
+Message-ID: <4524e97d-4da5-4776-a877-493ca023c801@intel.com>
+Date: Tue, 3 Mar 2026 10:37:38 +0000
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8208:EE_|DS0PR11MB8205:EE_
-X-MS-Office365-Filtering-Correlation-Id: 329ac01a-15e1-45d0-f4e0-08de790ff7b9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: p6ViCr6bvFqaYRl+2dMgddGSNxXiA0okCPQm3Arz8SUfnie2c2lZ5cXhHinmz/Oq1207mkS3/rvn35WHfXGnHsU3BSOUHvyNrSBebf4k1yxg/GEejLiEXEcdYBes7mOQ0l6MNNISb4gVuvn3EHNOMHU4xkbt6L+CqVd15ukUOVnr2AoCly0/jfSzo+vtEWitnZp5L5mtelRWZleB2gaYpLzLdcxGreenk4WMmO/od7NH/N1AqDsTqiHYlNxFGOOMBqfk3Ws0YApXqO10SSisV+/5qRlLtp/6fgp6lv4QE81huuPruRNEoryrYqcitFrOrIZXjqy5ed/kjT5efP2Stf1e9pNBjD6lXyTbx7xYaCwITzGSpWeOx61Q3XRwZi2EzApLbYrkTSjIZkiX4XFlo9CSl1pxpC2rgijNqtUILZ3E8EFhBAyortBwCS7e6CeFfGYaIvv68+abUMeZrI/NVbvWpXPv7cMnxMwFMqSq/31Mp5Y6Bh8alToOWTUjD21CL8bHJUtM9MCWnFVPbaCoehJhrMVKJyyFQDp5Tx7CBd8MPfrtCnEXymGB2RKyJBmwjvOAkAimwfgtzxdIbVpMZ7vkshJahCc7Jo3jCN5CULSGfxrSL356cvUUxZg3r/wLWmoZE5/vR7IB/67+fN9G48SUygWKZdUCyECEYXh+v3YS5IVZxz35Eb+fXqeyO/ubDFoKR13M754Auhk1nWo5wCugMn9mb8OjBN/+sPbnyOM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR11MB8208.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(7053199007); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VjVrWHA1NFpKa2JGKzBEV2V2NnQyNVBvVVNYeVN6OGM1ZFQwbHhXdGVvVTd6?=
- =?utf-8?B?QnpZS2Fic1RaaDF5Wkw0TEF4VWczZFRub1hKTkpOS1ZjQmNYVXVTbThndGpJ?=
- =?utf-8?B?NmRGakFSN0RaLzFwS01WRzE0VG42QklNTlJCRnlzUUhvYzJPa3A4V1BpMnRl?=
- =?utf-8?B?Y1p2SGFPSjRPVXlvd0w1SC9WNm9WaFFrZGpaYUd1bUZtQTlLalpvazZCbExH?=
- =?utf-8?B?YTZ1MFQrNmNNaThqN1RaUVc0QlFDa1F6T2lkdkdBaFViWEtuREZjSUM2bVZy?=
- =?utf-8?B?VjJHa0dYOHZrZ2p5Q09lYU0xQXQzU0J2L0tKdWVHVkhEWXRHVit4K25WOHhL?=
- =?utf-8?B?dDBmVExEWlRscjM1am9PV0RuS0FMeGN0bjFFSFdzRU9GUlM0aFJhR2dpZ3hh?=
- =?utf-8?B?NnpMMXRKTGswc0VabklFRDRhYnV3Y21WM1hLN1U5ckYvcllUaURaaG15eEE0?=
- =?utf-8?B?YkZ2SWZlek5rUWtvWlVjK1lBUFp1K1I0S0tweEtWdndhbUJQRE1NeWgyZWM2?=
- =?utf-8?B?UzJNd1NmREFzUEZHR1FSMDlsT1h2OGh6Q1hUQXNXeW9SM1U0d2wveExhMmtQ?=
- =?utf-8?B?TkE1Rk80QURVUGtBVERTTUtlaVRZYW1FaVVzZkdWVVkxN2VYcGw2RVZoLzRX?=
- =?utf-8?B?U0VkNTVNNWtWN0xVZjJTbklhaTZBVnRZR0t6OHhSUWd5NnVwaUVVSnlwOXBB?=
- =?utf-8?B?bFdBaEVnVFl1SzRhNmt0QytOQzcySEdZZ1gvMTRqaEdxdkRUR3kwT0M5VkI5?=
- =?utf-8?B?SFFaUG5Kak9PWW5iaWdzMXl5VXFFWU93OTkrRmRwM0hJWWR3cmh6aUxQRTVt?=
- =?utf-8?B?cmpLb0xFVG5lNzV3VDR5UEFZUUdHS0loUURhQ3JnWmM2Qllmai9hYkxPeGUx?=
- =?utf-8?B?WWQ5dVU1WXBTV1lLNWFudHRqVHFnVDRTK0wzN0VvR29UOHpVYlJCS1ZWcEVU?=
- =?utf-8?B?czhPVEpuYUVTWmdMWk03V3MzZXJNUEludTY2Ujh3b0JhN25TNDUxSVNjNVdY?=
- =?utf-8?B?aFVPVHlQRmNpZEloTTd1VWhDck1jK1llUXFmZUs3TzdsV0gybkFzb3BBUStD?=
- =?utf-8?B?NlNySEFuUWRkS25zOW54VFFES2F1TDUyeWhQd2pZZ0xBWk9qcFRGc2lJMVJn?=
- =?utf-8?B?QVFiRDBxY2h2b1hRSVF5RWovYWRaK3NBbnhNNFdBTmFhclVsSGpMUnQrTTVj?=
- =?utf-8?B?RHpMM01PMUNtUFY1d1BoTkhIdVVaejNHdGY0a2dsd2J1SlpQZHRVZXMyM0dx?=
- =?utf-8?B?aW9zNFFyYk83NDY4TjFrUmNaZS9OOTYyU0JLM1pIbDJ6cStMUGpYNzFHbytr?=
- =?utf-8?B?OUlqYlZnRDZIU1Z5S3VXLzZ1WVdtT00xdWRGaElvVUYzQ3lDSXNZL2FZbVJr?=
- =?utf-8?B?UmFnMmJGRjV2YUpia1NoNWhOb29NWWVxeERsOWhTLzhVaFpjVy9OYlFKRjVB?=
- =?utf-8?B?TWsrS0JGeFVVQzJwNFNveldNNmVYRllwT2FFZDIvdjZKUS9WcDhaRDNrb0hD?=
- =?utf-8?B?bjEzVEpTbkpWQ09HWkRKNkxHQ3VxNDY3czJOWnI5bGVNMFJoWmo3WGZZUE9Q?=
- =?utf-8?B?WmREenZqS29RMUVrV0ZGWVpYYlh6cVVYUms4eWM1SFArYW9GT3JTZi9aRVRG?=
- =?utf-8?B?Rjc2S1FlcVpRTDRsbzkwLzFRcHBGNExLSitQNXI2Z0s2L3k5WWU3d3hidnVL?=
- =?utf-8?B?Zm5RMWdISlIxQmhSNENsdld6UTUwOUhhZVlpell3dXRRNnV2Qmh2QmYyR2VQ?=
- =?utf-8?B?ekp3U1FicTlqbUJ3S3RsQTE2blViUnVwaDBMQ1ZLYWkzaDFFK0IxeERsN3Fr?=
- =?utf-8?B?QTVJeENUaUtUdWVxUThjdW5kTXVUdExnRTl4YVU3Y2tUQ2VhVlBZKzNyMnhZ?=
- =?utf-8?B?YkIzVXpGN3JNSStTcXVUWGJFZjkvWlU2alhRUlJtQzRNQnZDcjJva2g2WG1S?=
- =?utf-8?B?cmdmMVF4QlZCcGY2akFIUXRISGxnYVZ6S3c0Z3d1RVZSWUFEeXFkdUN1NU1z?=
- =?utf-8?B?Y3BRNkwxTDlUb2VDd0RmMHBZMUJac2JhcDB1ZTJ6cVV4Zk03TWlGZE0wRjFa?=
- =?utf-8?B?dXd4S1p2dW5LT0lFNjVJMlFlODhVRDhKbTVHMEZHU1VXdVJIVEIyVXVVWUpK?=
- =?utf-8?B?ZkRpQzZkdzdKVFo4TnBweTY3WGs3b2NYR3llSzFmY1ZKaUVZYjM3OVRvUzNk?=
- =?utf-8?B?VzI4d1d2a0tia1lSVEVYVU8wMXFRa3UwclEvbFZ5eFYrQkQ0dmxoWjRkK0pz?=
- =?utf-8?B?ejVWT2QvM2hiMzNNR2QzQVh0WW0xNWdEN3ZtazRNeExhaGx5TS9Jeld5UWxD?=
- =?utf-8?B?OFRsQ0w4ejgvR3E3UXV2UForVkV2YzRYckRCWVI1WlZoZ3dSdjlGWGdlYUdS?=
- =?utf-8?Q?/E3b/DUFFy2AsE1Q=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 329ac01a-15e1-45d0-f4e0-08de790ff7b9
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8208.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 10:31:02.4677 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: H/q8qG+zEl73OAPa2ZkY6zf1ZlClPIlGEHNpvzaPJMbr9XdCpnOsOSKtUp5WcKDQedZgPZ7xrHa9DtxOf42O9E5DXVOy1qum59D4Womlhas=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8205
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 5/5] tests/intel/xe_pat: Validate XA App Transient
+ feature
+To: priyanka.dandamudi@intel.com, zbigniew.kempczynski@intel.com,
+ igt-dev@lists.freedesktop.org
+References: <20260303043853.1656156-1-priyanka.dandamudi@intel.com>
+ <20260303043853.1656156-6-priyanka.dandamudi@intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20260303043853.1656156-6-priyanka.dandamudi@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -169,147 +72,191 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+On 03/03/2026 04:38, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> 
+> Test the scenarios when media is on/off.
+> When media is off/on, for xa app transient buffer, data should be coherent
+> between cpu and gpu. Coherency should be maintained from KMD side
+> irrespective of media engine on/off.
+> 
+> v2: Added comment to explain the reason of forcewaking.
+> Added 2way also in the index along with XA.(Matt)
+> Reordered headers.(Kamil)
+> 
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> ---
+>   tests/intel/xe_pat.c | 103 +++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 103 insertions(+)
+> 
+> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+> index aeb84dbb7..dbeb7c7d9 100644
+> --- a/tests/intel/xe_pat.c
+> +++ b/tests/intel/xe_pat.c
+> @@ -16,11 +16,17 @@
+>   #include "igt.h"
+>   #include "igt_syncobj.h"
+>   #include "igt_vgem.h"
+> +#include "igt_configfs.h"
+> +#include "igt_device.h"
+> +#include "igt_fs.h"
+> +#include "igt_kmod.h"
+> +#include "igt_sysfs.h"
+>   #include "intel_blt.h"
+>   #include "intel_mocs.h"
+>   #include "intel_pat.h"
+>   #include "linux_scaffold.h"
+>   
+> +#include "xe/xe_gt.h"
+>   #include "xe/xe_ioctl.h"
+>   #include "xe/xe_query.h"
+>   #include "xe/xe_util.h"
+> @@ -29,6 +35,8 @@
+>   #define XE_COH_AT_LEAST_1WAY 2
+>   
+>   static bool do_slow_check;
+> +static char bus_addr[NAME_MAX];
+> +static struct pci_device *pci_dev;
+>   
+>   static uint32_t create_object(int fd, int r, int size, uint16_t coh_mode,
+>   			      bool force_cpu_wc);
+> @@ -1184,6 +1192,12 @@ const struct pat_index_entry bmg_g21_pat_index_modes[] = {
+>   	{ NULL, 27, false, "c2-2way",     XE_COH_AT_LEAST_1WAY       },
+>   };
+>   
+> +const struct pat_index_entry xe3p_lpg_coherency_pat_index_modes[] = {
+> +	{ NULL, 18, false, "xa-l3-uc",	 XE_COH_NONE          },
+> +	{ NULL, 19, false, "xa-l3-2way", XE_COH_AT_LEAST_1WAY },
 
-On 03-03-2026 15:20, Gurram, Pravalika wrote:
->
->> -----Original Message-----
->> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Sanjay
->> Yadav
->> Sent: Wednesday, 18 February, 2026 04:06 PM
->> To: igt-dev@lists.freedesktop.org
->> Cc: Auld, Matthew <matthew.auld@intel.com>
->> Subject: [PATCH] lib/intel_pat: Handle platforms without compressed PAT
->> index
->>
->> Previously intel_get_pat_idx_uc_comp() would silently return zero on
->> platforms where no compressed PAT index exists (e.g. CRI), since uc_comp was
->> zero-initialized by default. This could lead to incorrect behavior when callers
->> assume the returned index is valid.
->>
->> Fix this by:
->> - Adding XE_PAT_IDX_INVALID sentinel to detect unsupported platforms
->> - Initializing uc_comp to XE_PAT_IDX_INVALID in intel_get_pat_idx();
->>    only platforms with CCS (graphics_ver 20/30) override it to a valid
->>    index
->> - Adding igt_assert_f() in intel_get_pat_idx_uc_comp() to fail with
->>    a clear error instead of returning an invalid index
->>
->> Also update the bo-comp-disable-bind test to distinguish between "CCS is
->> disabled" and "CCS does not exist" using HAS_FLATCCS(). On platforms
->> without CCS, the compressed PAT bind check is skipped since there is no valid
->> compressed PAT index to test with.
->>
->> Suggested-by: Matthew Auld <matthew.auld@intel.com>
->> Signed-off-by: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
->> ---
->>   lib/intel_pat.c      |  5 +++++
->>   lib/intel_pat.h      |  1 +
->>   tests/intel/xe_pat.c | 30 ++++++++++++++++++++++--------
->>   3 files changed, 28 insertions(+), 8 deletions(-)
->>
->> diff --git a/lib/intel_pat.c b/lib/intel_pat.c index 9815efc18..d30bee453
->> 100644
->> --- a/lib/intel_pat.c
->> +++ b/lib/intel_pat.c
->> @@ -98,6 +98,8 @@ static void intel_get_pat_idx(int fd, struct
->> intel_pat_cache *pat)  {
->>   	uint16_t dev_id = intel_get_drm_devid(fd);
->>
->> +	pat->uc_comp = XE_PAT_IDX_INVALID;
->> +
->>   	if (intel_graphics_ver(dev_id) == IP_VER(35, 11)) {
->>   		pat->uc = 3;
->>   		pat->wb = 2;
->> @@ -155,8 +157,11 @@ uint8_t intel_get_pat_idx_uc_comp(int fd)
->>   	uint16_t dev_id = intel_get_drm_devid(fd);
->>
->>   	igt_assert(intel_gen(dev_id) >= 20);
->> +	igt_assert(HAS_FLATCCS(dev_id));
->>
->>   	intel_get_pat_idx(fd, &pat);
->> +	igt_assert_f(pat.uc_comp != XE_PAT_IDX_INVALID,
->> +		     "No compressed PAT index available on this platform\n");
->>   	return pat.uc_comp;
->>   }
->>
->> diff --git a/lib/intel_pat.h b/lib/intel_pat.h index e9ade2e2e..e5dd8a0af
->> 100644
->> --- a/lib/intel_pat.h
->> +++ b/lib/intel_pat.h
->> @@ -10,6 +10,7 @@
->>   #include <stdint.h>
->>
->>   #define DEFAULT_PAT_INDEX ((uint8_t)-1) /* igt-core can pick 1way or better
->> */
->> +#define XE_PAT_IDX_INVALID ((uint8_t)-2) /* no such PAT index on this
->> +platform */
->>   #define XE_PAT_MAX_ENTRIES 32
->>
->>   struct xe_pat_entry {
->> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c index
->> 21547c84e..052b7b699 100644
->> --- a/tests/intel/xe_pat.c
->> +++ b/tests/intel/xe_pat.c
->> @@ -844,15 +844,18 @@ static bool has_no_compression_hint(int fd)
->>    * Test category: functionality test
->>    * Description: Validates that binding a BO created with
->>    * the NO_COMPRESSION flag using a compressed PAT index fails
->> - * with -EINVAL on Xe2+ platforms.
->> + * with -EINVAL on Xe2+ platforms. On platforms where CCS
->> + * does not exist, the test verifies uncompressed access works.
->>    */
->>
->>   static void bo_comp_disable_bind(int fd)  {
->>   	size_t size = xe_get_default_alignment(fd);
->> -	uint8_t comp_pat_index, uncomp_pat_index;
->> -	bool supported;
->> +	uint16_t dev_id = intel_get_drm_devid(fd);
->> +	bool has_flatccs = HAS_FLATCCS(dev_id);
->> +	uint8_t uncomp_pat_index;
->>   	uint32_t vm, bo;
->> +	bool supported;
->>   	int ret;
->>
->>   	supported = has_no_compression_hint(fd); @@ -868,14 +871,25
->> @@ static void bo_comp_disable_bind(int fd)
->>   	igt_assert_eq(ret, 0);
->>   	vm = xe_vm_create(fd, 0, 0);
->>
->> -	comp_pat_index = intel_get_pat_idx_uc_comp(fd);
->>   	uncomp_pat_index = intel_get_pat_idx_uc(fd);
->>
->> -	igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x100000,
->> -				   size, 0, 0, NULL, 0,
->> -				   0, comp_pat_index, 0),
->> -		      -EINVAL);
->> +	/*
->> +	 * On platforms with CCS, binding a NO_COMPRESSION BO with a
->> +	 * compressed PAT index must fail. On platforms without CCS,
->> +	 * there is no valid compressed PAT index, so skip this check.
->> +	 */
->> +	if (has_flatccs) {
->> +		uint8_t comp_pat_index = intel_get_pat_idx_uc_comp(fd);
->> +
->> +		igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x100000,
->> +					   size, 0, 0, NULL, 0,
->> +					   0, comp_pat_index, 0),
->> +			      -EINVAL);
->> +	} else {
->> +		igt_debug("Platform has no CCS, skipping compressed PAT
->> bind check\n");
->> +	}
-> Does this test needs to be skipped here? If yes you need to use igt_skip
-> And handle the resource cleanup
-No. The test still has a valid positive path on platforms without CCS: 
-it verifies that binding with the uncompressed
-PAT index succeeds. Only the compressed-path assertion is not applicable 
-when HAS_FLATCCS(dev_id) is false, so I kept
-the test running and added a debug log to make that explicit. Skipping 
-the test with igt_skip would drop that coverage.
+Nit: there is no 2way+xa, so the string here is not really accurate.
 
->> +	/* Uncompressed bind must always succeed */
->>   	igt_assert_eq(__xe_vm_bind(fd, vm, 0, bo, 0, 0x100000,
->>   				   size, 0, 0, NULL, 0,
->>   				   0, uncomp_pat_index, 0),
->> --
->> 2.52.0
+> +	{ NULL, 2,  false, "2way",       XE_COH_AT_LEAST_1WAY },
+> +};
+> +
+>   /*
+>    * Depending on 2M/1G GTT pages we might trigger different PTE layouts for the
+>    * PAT bits, so make sure we test with and without huge-pages. Also ensure we
+> @@ -1248,6 +1262,18 @@ static uint32_t create_object(int fd, int r, int size, uint16_t coh_mode,
+>    * Description: Check some of the xe2 pat_index modes.
+>    */
+>   
+> +/**
+> + * SUBTEST: xa-app-transient-media-off
+> + * Test category: functionality test
+> + * Description: Check some of the xe4-lpg pat_index modes with media off.
+> + */
+> +
+> +/**
+> + * SUBTEST:  xa-app-transient-media-on
+> + * Test category: functionality test
+> + * Description: Check some of the xe3p-lpg pat_index modes with media on.
+> + */
+> +
+>   static void subtest_pat_index_modes_with_regions(int fd,
+>   						 const struct pat_index_entry *modes_arr,
+>   						 int n_modes)
+> @@ -1561,6 +1587,53 @@ static void false_sharing(int fd)
+>   	}
+>   }
+>   
+> +static void reset(int sig)
+> +{
+> +	int configfs_fd;
+> +
+> +	igt_kmod_unbind("xe", bus_addr);
+> +
+> +	/* Drop all custom configfs settings from subtests */
+> +	configfs_fd = igt_configfs_open("xe");
+> +	if (configfs_fd >= 0)
+> +		igt_fs_remove_dir(configfs_fd, bus_addr);
+> +	close(configfs_fd);
+> +
+> +	/* Bind again a clean driver with no custom settings */
+> +	igt_kmod_bind("xe", bus_addr);
+> +}
+> +
+> +static void xa_app_transient_test(int configfs_device_fd, bool media_on)
+> +{
+> +	int fd, fw_handle, gt;
+> +
+> +	igt_kmod_unbind("xe", bus_addr);
+> +
+> +	if (media_on)
+> +		igt_assert(igt_sysfs_set(configfs_device_fd,
+> +					 "gt_types_allowed", "primary,media"));
+> +	else
+> +		igt_assert(igt_sysfs_set(configfs_device_fd,
+> +					 "gt_types_allowed", "primary"));
+> +
+> +	igt_kmod_bind("xe", bus_addr);
+> +
+> +	fd = drm_open_driver(DRIVER_XE);
+> +
+> +	/* To prevent entering into rc6 for the duration of test. */
+
+"Prevent entering C6 for the duration of the test, since this can result 
+in randomly flushing the entire device side caches, invalidating our XA 
+testing."
+
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+
+But please do keep an eye on:
+https://patchwork.freedesktop.org/patch/708272/?series=158017&rev=6
+
+Anything which claims to be rejected by uAPI we will want a negative test.
+
+
+> +	fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
+> +	igt_require(fw_handle >= 0);
+> +
+> +	subtest_pat_index_modes_with_regions(fd, xe3p_lpg_coherency_pat_index_modes,
+> +					     ARRAY_SIZE(xe3p_lpg_coherency_pat_index_modes));
+> +
+> +	/* check status of c state, it should not be in c6 due to forcewake. */
+> +	xe_for_each_gt(fd, gt)
+> +		igt_assert(!xe_gt_is_in_c6(fd, gt));
+> +
+> +	close(fw_handle);
+> +}
+> +
+>   static int opt_handler(int opt, int opt_index, void *data)
+>   {
+>   	switch (opt) {
+> @@ -1652,6 +1725,36 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
+>   		false_sharing(fd);
+>   	}
+>   
+> +	igt_subtest_group() {
+> +		int configfs_fd, configfs_device_fd;
+> +
+> +		igt_fixture() {
+> +			igt_require(intel_graphics_ver(dev_id) == IP_VER(35, 10));
+> +
+> +			pci_dev = igt_device_get_pci_device(fd);
+> +			snprintf(bus_addr, sizeof(bus_addr), "%04x:%02x:%02x.%01x",
+> +				 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+> +
+> +			configfs_fd = igt_configfs_open("xe");
+> +			igt_require(configfs_fd != -1);
+> +			configfs_device_fd = igt_fs_create_dir(configfs_fd, bus_addr,
+> +							       S_IRWXU | S_IRGRP | S_IXGRP |
+> +							       S_IROTH | S_IXOTH);
+> +			igt_install_exit_handler(reset);
+> +		}
+> +
+> +		igt_subtest_with_dynamic("xa-app-transient-media-off")
+> +			xa_app_transient_test(configfs_device_fd, false);
+> +
+> +		igt_subtest_with_dynamic("xa-app-transient-media-on")
+> +			xa_app_transient_test(configfs_device_fd, true);
+> +
+> +		igt_fixture() {
+> +			close(configfs_device_fd);
+> +			close(configfs_fd);
+> +		}
+> +	}
+> +
+>   	igt_fixture()
+>   		drm_close_driver(fd);
+>   }
+
