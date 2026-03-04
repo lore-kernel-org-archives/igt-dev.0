@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43C20EB7ECE
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Mar 2026 11:05:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC906EB7ECE
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Mar 2026 11:05:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A7CB910E9B1;
-	Wed,  4 Mar 2026 11:05:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 73B1F10E9B2;
+	Wed,  4 Mar 2026 11:05:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Re/xe7Ut";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a9nMtp0Q";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C5CD710E9B1
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Mar 2026 11:05:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFF7310E9B2
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Mar 2026 11:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772622315; x=1804158315;
+ t=1772622317; x=1804158317;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=GfcXmWqn2vt6t8ZrSIrdiD0PWBdCloY/01bvpF86e6M=;
- b=Re/xe7UtI1DATqYqVmK6WZH10ipEJF7XdqPK++7peD7e9sl4mPUlMniK
- 9PUqdZrokTVuuHSu1ZmhvAFI5V1YAAA9xpIDTj1ouiHBnWWnGsIwko/cs
- 1EpwbGx7/E/bnsnIQcdpTAJmkT97Iagq7BktVgF131bFeQ3KeEpRAsbs8
- cltaeU/iVQPj/cKg0GQd2vvSfNY1P2UZw6HuFnO/JrdW6tOu7ahehhygb
- AxAToYZ4NU9J7Psm3KncPNP32gZAfPw61rnVq/Q8ZxIUja/YgDA3TR/3/
- cYGJwH7/iv2R0rtwPftHGsZOsAsYamMVyv+AHZKkiFmkfyFJGWrsryR49 w==;
-X-CSE-ConnectionGUID: 2Myv0/HRRl6cer+qqGTA4A==
-X-CSE-MsgGUID: lPaEG2tNT7GAG3wZ2jDneA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="72876894"
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; d="scan'208";a="72876894"
+ bh=QQrkgZOFaGDZs9RT7FWiTjKB7n7j0XmCjlg5D+j7TdQ=;
+ b=a9nMtp0QKNLbHWB6vAbDTIascsu/YhEBl8GeQ1f7zpEd2cgXoLel8OUI
+ kA6iXu+M6LYwSly4Ijqd03Ez4JBHQu23LGOwO7xmPvjjDO0kwR+IM01gI
+ 7DvgG3XAV/v94i/fUhy3n+9UjdwUTTDg4RDDQE9IO8QuSLxTxS7gQXYlF
+ R29amXTcWWAXUMdkuXg6FcHpeaQSuU5V7AjbskjIWnadQuagQjSZy2Pqy
+ dgu/s5LSPyjRGXTx/wqSm/vMJEvGpzwgQ00sbiRfKklcjvdeyO3V6I+Bc
+ WS31WgU34ztboxQTdeg+SHO/tGHVnZzwFLUBGONgGtAyOieWUKLglB6DQ w==;
+X-CSE-ConnectionGUID: jptb53y2QX2c23Fv/2fDSw==
+X-CSE-MsgGUID: V4dcSOTcSv6GTWkdlzfAAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="72876898"
+X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; d="scan'208";a="72876898"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2026 03:05:15 -0800
-X-CSE-ConnectionGUID: SAqk/pCeTnOzqwrP00b67Q==
-X-CSE-MsgGUID: Y8AH0PhURye4xb6kyvRkMg==
+ 04 Mar 2026 03:05:16 -0800
+X-CSE-ConnectionGUID: wgf6j+HoSRGAR95OgQ/QNA==
+X-CSE-MsgGUID: 7chspEU2Rhms/lxbs2GgQg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; d="scan'208";a="217546346"
+X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; d="scan'208";a="217546351"
 Received: from dut6245dg2frd.fm.intel.com ([10.80.54.109])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2026 03:05:14 -0800
+ 04 Mar 2026 03:05:16 -0800
 From: Sobin Thomas <sobin.thomas@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	thomas.hellstrom@intel.com
 Cc: nishit.sharma@intel.com,
 	Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH v3 i-g-t 1/2] drm-uapi/xe: sync with kernel header
-Date: Wed,  4 Mar 2026 11:04:59 +0000
-Message-ID: <20260304110501.1193980-2-sobin.thomas@intel.com>
+Subject: [PATCH v3 i-g-t 2/2] tests/intel/xe_vm: Add support for overcommit
+ tests
+Date: Wed,  4 Mar 2026 11:05:00 +0000
+Message-ID: <20260304110501.1193980-3-sobin.thomas@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260304110501.1193980-1-sobin.thomas@intel.com>
 References: <20260304110501.1193980-1-sobin.thomas@intel.com>
@@ -70,87 +71,549 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This commit is for sync with kernel header.
-Align with kernel commit 369cc8804985 ("drm/xe/uapi: Introduce a flag to
-disallow VM overcommit in fault mode").
+Current tests focus on VM creation with basic mode selection and do not
+support overcommit scenarios.
+
+This change adds tests to verify overcommit behavior across different VM
+modes.
+
+Non-fault mode tests:
+ - vram-lr-defer: DEFER_BACKING rejects overcommit at bind time
+ - vram-lr-external-nodefer: Long-running mode with defer backing
+ - vram-no-lr: Non-LR mode
+
+Fault mode tests:
+ - vram-lr-fault: Fault handling allows graceful overcommit via page
+   faults
+ - vram-lr-fault-no-overcommit: Verifies NO_VM_OVERCOMMIT blocks same-VM
+   BO eviction during VM_BIND while still allowing eviction during
+   pagefault OOM
+
+These tests validate that VMs handle memory pressure appropriately based
+on their configuration—rejecting at bind, failing at exec, or handling
+it gracefully via page faults.
+
+v2 - Added Additional test cases for LR mode and No Overcommit.
+ 
+v3 - Refactored into single api call  based on the VM / BO Flags.
 
 Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ tests/intel/xe_vm.c | 494 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 494 insertions(+)
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 077e66a68..fc71a6cd1 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -3,8 +3,8 @@
-  * Copyright © 2023 Intel Corporation
-  */
- 
--#ifndef _UAPI_XE_DRM_H_
--#define _UAPI_XE_DRM_H_
-+#ifndef _XE_DRM_H_
-+#define _XE_DRM_H_
- 
- #include "drm.h"
- 
-@@ -142,7 +142,7 @@ extern "C" {
-  * redefine the interface more easily than an ever growing struct of
-  * increasing complexity, and for large parts of that interface to be
-  * entirely optional. The downside is more pointer chasing; chasing across
-- * the __user boundary with pointers encapsulated inside u64.
-+ * the boundary with pointers encapsulated inside u64.
-  *
-  * Example chaining:
-  *
-@@ -335,10 +335,6 @@ struct drm_xe_mem_region {
- 	__u64 total_size;
- 	/**
- 	 * @used: Estimate of the memory used in bytes for this region.
--	 *
--	 * Requires CAP_PERFMON or CAP_SYS_ADMIN to get reliable
--	 * accounting.  Without this the value here will always equal
--	 * zero.
- 	 */
- 	__u64 used;
- 	/**
-@@ -363,9 +359,7 @@ struct drm_xe_mem_region {
- 	 * @cpu_visible_used: Estimate of CPU visible memory used, in
- 	 * bytes.
- 	 *
--	 * Requires CAP_PERFMON or CAP_SYS_ADMIN to get reliable
--	 * accounting. Without this the value here will always equal
--	 * zero.  Note this is only currently tracked for
-+	 * Note this is only currently tracked for
- 	 * DRM_XE_MEM_REGION_CLASS_VRAM regions (for other types the value
- 	 * here will always be zero).
- 	 */
-@@ -975,6 +969,11 @@ struct drm_xe_gem_mmap_offset {
-  *    demand when accessed, and also allows per-VM overcommit of memory.
-  *    The xe driver internally uses recoverable pagefaults to implement
-  *    this.
-+ *  - %DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT - Requires also
-+ *    DRM_XE_VM_CREATE_FLAG_FAULT_MODE. This disallows per-VM overcommit
-+ *    but only during a &DRM_IOCTL_XE_VM_BIND operation with the
-+ *    %DRM_XE_VM_BIND_FLAG_IMMEDIATE flag set. This may be useful for
-+ *    user-space naively probing the amount of available memory.
-  */
- struct drm_xe_vm_create {
- 	/** @extensions: Pointer to the first extension struct, if any */
-@@ -983,6 +982,7 @@ struct drm_xe_vm_create {
- #define DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE	(1 << 0)
- #define DRM_XE_VM_CREATE_FLAG_LR_MODE	        (1 << 1)
- #define DRM_XE_VM_CREATE_FLAG_FAULT_MODE	(1 << 2)
-+#define DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT  (1 << 3)
- 	/** @flags: Flags */
- 	__u32 flags;
- 
-@@ -2361,4 +2361,4 @@ struct drm_xe_exec_queue_set_property {
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index ccff8f804..61853a425 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -2376,6 +2376,488 @@ static void invalid_vm_id(int fd)
+ 	do_ioctl_err(fd, DRM_IOCTL_XE_VM_DESTROY, &destroy, ENOENT);
  }
- #endif
  
--#endif /* _UAPI_XE_DRM_H_ */
-+#endif /* _XE_DRM_H_ */
++static int wait_fault(int fd, uint32_t exec_queue, void *sync_data,
++		      int64_t *timeout)
++{
++	uint64_t *user_fence = sync_data;
++	int64_t wait_ns = timeout ? *timeout : INT64_MAX;
++	int res;
++	#define USER_FENCE_VALUE        0xdeadbeefdeadbeefull
++	(void)exec_queue;
++
++	res = __xe_wait_ufence(fd, user_fence, USER_FENCE_VALUE, exec_queue, &wait_ns);
++
++	return res;
++}
++
++static int wait_nonfault(int fd, uint32_t exec_queue, void *sync_data,
++			 int64_t *timeout)
++{
++	struct drm_xe_sync *exec_sync = sync_data;
++
++	(void)exec_queue;
++	(void)timeout;
++
++	if (!syncobj_wait(fd, &exec_sync[0].handle, 1, INT64_MAX, 0,
++			  NULL))
++		return -1;
++
++	return 0;
++}
++
++static int
++vm_overcommit_create_bo(int fd, uint32_t vm, size_t bo_size, uint32_t bo_flags,
++			uint16_t gt_id, bool use_vram, bool external,
++			uint32_t *bo)
++{
++	uint32_t placement;
++
++	if (use_vram) {
++		placement = vram_memory(fd, gt_id) ?: system_memory(fd);
++		igt_debug("Using VRAM placement: 0x%x\n", placement);
++	} else {
++		igt_debug("Placement is in system memory\n");
++		placement = system_memory(fd);
++		igt_debug("Using system memory placement: 0x%x\n", placement);
++	}
++	igt_assert_f(placement != 0, "Invalid placement: system_memory(fd) returned 0\n");
++
++	return __xe_bo_create(fd, external ? 0 : vm, bo_size, placement,
++			      bo_flags, NULL, bo);
++}
++
++/**
++ * SUBTEST: overcommit-fault-%s
++ * Description: Test VM overcommit behavior in fault mode with %arg[1] configuration
++ * Functionality: overcommit
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @vram-lr-fault:VRAM with LR and fault mode, expects exec to pass
++ * @vram-lr-fault-no-overcommit:VRAM with LR, fault and NO_VM_OVERCOMMIT, expects bind rejection
++ */
++
++/**
++ * SUBTEST: overcommit-nonfault-%s
++ * Description: Test VM overcommit behavior in nonfault mode with %arg[1] configuration
++ * Functionality: overcommit
++ * Test category: functionality test
++ *
++ * arg[1]:
++ *
++ * @vram-lr-defer:VRAM with LR and defer backing, expects bind rejection
++ * @vram-lr-external-nodefer:VRAM with LR and external BO without defer, expects exec fail
++ * @vram-no-lr:VRAM without LR mode, expects exec to fail
++ */
++struct vm_overcommit_case {
++	const char *name;
++	uint32_t vm_flags;
++	uint32_t bo_flags;
++	bool use_vram;
++	bool external;
++	uint64_t data_addr;
++	uint32_t pat_index;
++	double overcommit_mult;
++};
++
++static const struct vm_overcommit_case overcommit_cases[] = {
++	/* Case 1: DEFER_BACKING */
++	{
++		.name = "vram-lr-defer",
++		.vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE,
++		.bo_flags = DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING |
++			    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
++		.external = false,
++		.use_vram = true,
++		.data_addr = 0x1a0000,
++		.pat_index = DEFAULT_PAT_INDEX,
++		.overcommit_mult = 2.0,
++	},
++	/* Case 1b: External BO without defer backing */
++	{
++		.name = "vram-lr-external-nodefer",
++		.vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE,
++		.bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
++		.external = true,
++		.use_vram = true,
++		.data_addr = 0x1a0000,
++		.pat_index = DEFAULT_PAT_INDEX,
++		.overcommit_mult = 2.0,
++	},
++	/* Case 2: LR + FAULT - should not fail on exec */
++	{
++		.name = "vram-lr-fault",
++		.vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE |
++			    DRM_XE_VM_CREATE_FLAG_FAULT_MODE,
++		.bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
++		.external = false,
++		.use_vram = true,
++		.data_addr = 0x300000000,
++		.pat_index = 0,
++		.overcommit_mult = 2.0,
++	},
++	/* Case 3: !LR - overcommit should fail on exec */
++	{
++		.name = "vram-no-lr",
++		.vm_flags = 0,
++		.bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
++		.external = false,
++		.use_vram = true,
++		.data_addr = 0x300000000,
++		.pat_index = 0,
++		.overcommit_mult = 2.0,
++	},
++	/* Case 4: LR + FAULT + NO_VM_OVERCOMMIT */
++	{
++		.name = "vram-lr-fault-no-overcommit",
++		.vm_flags = DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT | DRM_XE_VM_CREATE_FLAG_LR_MODE |
++			    DRM_XE_VM_CREATE_FLAG_FAULT_MODE,
++		.bo_flags = DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING |
++			    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
++		.external = false,
++		.use_vram = true,
++		.data_addr = 0x300000000,
++		.pat_index = 0,
++		.overcommit_mult = 2.0,
++	},
++	{ }
++};
++
++static void
++test_vm_overcommit(int fd, struct drm_xe_engine_class_instance *eci,
++		   const struct vm_overcommit_case *c,
++		   uint64_t system_size, uint64_t vram_size)
++{
++	uint64_t overcommit_size;
++	uint32_t vm;
++	uint32_t *bos;
++	int num_bos;
++	uint64_t off;
++	size_t nf_bo_size = 64 * 1024 * 1024;  // 64MB per BO
++	uint32_t batch_bo;
++	size_t sync_size;
++	uint32_t bind_exec_queue;
++	uint64_t sync_addr = 0x101a0000;
++	uint64_t batch_addr = 0x200000000;
++	uint64_t data_addr;
++	uint32_t exec_queue;
++	uint64_t stride = 1024 * 1024;
++	int64_t timeout = 20 * NSEC_PER_SEC;
++	int i, b;
++	int create_ret;
++	int64_t ret;
++	int bind_err;
++	int res;
++	uint64_t base_size;
++	bool overcommit_detected = false;
++	bool is_fault_mode = (c->vm_flags & DRM_XE_VM_CREATE_FLAG_FAULT_MODE) != 0;
++	bool is_lr_mode = (c->vm_flags & DRM_XE_VM_CREATE_FLAG_LR_MODE) != 0;
++	uint64_t lr_vm_sync = 0;
++	struct drm_xe_sync bind_sync[1] = {
++		{
++			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++			.timeline_value = USER_FENCE_VALUE
++		},
++	};
++	struct drm_xe_sync lr_sync[1] = {
++		{
++			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++			.timeline_value = USER_FENCE_VALUE,
++			.addr = to_user_pointer(&lr_vm_sync),
++		},
++	};
++
++	#define USER_FENCE_VALUE 0xdeadbeefdeadbeefull
++
++	/* For fault mode: user fence, for non-fault mode: syncobj */
++	struct drm_xe_sync exec_sync[1] = {
++		{
++			.type = (is_fault_mode || is_lr_mode) ?
++				DRM_XE_SYNC_TYPE_USER_FENCE : DRM_XE_SYNC_TYPE_SYNCOBJ,
++			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++			.timeline_value = (is_fault_mode || is_lr_mode) ? USER_FENCE_VALUE : 0,
++		},
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(exec_sync),
++	};
++	struct {
++		uint32_t batch[16];
++		uint64_t pad;
++		uint32_t data;
++		uint64_t vm_sync;
++	} *batch_data;
++	uint64_t *user_fence_sync = NULL;
++
++	data_addr = c->data_addr;
++
++	base_size = c->use_vram ? vram_size : system_size;
++	overcommit_size = (uint64_t)(base_size * c->overcommit_mult);
++	overcommit_size = ALIGN(overcommit_size, 4096);
++	if (overcommit_size > system_size) {
++		igt_debug("Limiting overcommit size from %llu MB to %llu MB\n",
++			  (unsigned long long)(overcommit_size >> 20),
++			  (unsigned long long)(system_size >> 20));
++		overcommit_size = ALIGN(system_size, 4096);
++	}
++
++	num_bos = (overcommit_size / nf_bo_size) + 1;
++	bos = calloc(num_bos, sizeof(*bos));
++	igt_assert(bos);
++
++	igt_debug("Overcommit test: allocating %d BOs of %llu MB each",
++		 num_bos, (unsigned long long)(nf_bo_size >> 20));
++	igt_debug(" total=%llu MB, vram=%llu MB\n",
++		 (unsigned long long)(num_bos * nf_bo_size >> 20),
++		 (unsigned long long)(vram_size >> 20));
++	/* Create VM with appropriate flags */
++	vm = xe_vm_create(fd, c->vm_flags, 0);
++	igt_assert(vm);
++	bind_exec_queue = xe_bind_exec_queue_create(fd, vm, 0);
++	/* For fault mode: create user fence sync area */
++	if (is_fault_mode) {
++		sync_size = sizeof(uint64_t) * num_bos;
++		sync_size = xe_bb_size(fd, sync_size);
++		user_fence_sync = mmap(NULL, sync_size, PROT_READ | PROT_WRITE,
++				       MAP_SHARED | MAP_ANONYMOUS, -1, 0);
++		igt_assert(user_fence_sync != MAP_FAILED);
++		memset(user_fence_sync, 0, sync_size);
++	}
++	/* Create and bind BOs */
++	for (i = 0; i < num_bos; i++) {
++		struct {
++			uint64_t vm_sync;
++		} *data;
++
++	/* Create BO using the case's create function */
++		create_ret = vm_overcommit_create_bo(fd, vm, nf_bo_size, c->bo_flags,
++						     eci->gt_id, c->use_vram, c->external, &bos[i]);
++
++		if (create_ret) {
++			igt_debug("BO create failed at %d/%d with error %d (%s)\n",
++				  i, num_bos, -create_ret, strerror(-create_ret));
++			igt_assert_f(create_ret == -ENOMEM || create_ret == -ENOSPC ||
++				     create_ret == -E2BIG || create_ret == -EPERM,
++				     "Unexpected error %d (%s)\n",
++				     -create_ret, strerror(-create_ret));
++			overcommit_detected = true;
++			num_bos = i;
++			break;
++		}
++
++		/* Map and bind BO */
++		data = xe_bo_map(fd, bos[i], 4096);
++		memset(data, 0, 4096);
++		bind_sync[0].addr = to_user_pointer(&data->vm_sync);
++
++		bind_err = __xe_vm_bind(fd, vm, bind_exec_queue, bos[i], 0,
++					data_addr + (i * nf_bo_size), nf_bo_size,
++					DRM_XE_VM_BIND_OP_MAP, 0, bind_sync, 1, 0,
++					c->pat_index, 0);
++
++		if (bind_err) {
++			igt_debug("Bind failed at %d/%d with error %d (%s)\n",
++				 i, num_bos, -bind_err, strerror(-bind_err));
++			igt_assert_f(bind_err == -ENOMEM || bind_err == -ENOSPC ||
++				     bind_err == -EPERM,
++				     "Unexpected bind error %d (%s)\n",
++				     -bind_err, strerror(-bind_err));
++			munmap(data, 4096);
++			gem_close(fd, bos[i]);
++			bos[i] = 0;
++			overcommit_detected = true;
++			num_bos = i;
++			break;
++		}
++
++		xe_wait_ufence(fd, &data->vm_sync, USER_FENCE_VALUE,
++			       bind_exec_queue, 20 * NSEC_PER_SEC);
++		munmap(data, 4096);
++
++		igt_debug("Created and bound BO %d/%d at 0x%llx\n",
++			  i + 1, num_bos,
++			  (unsigned long long)(data_addr + (i * nf_bo_size)));
++	}
++	if (overcommit_detected) {
++		igt_debug("\nOvercommit correctly rejected at BO creation/bind (created %d BOs)\n",
++			 num_bos);
++		goto cleanup;
++	}
++
++	 /* Create batch buffer */
++	batch_bo = xe_bo_create(fd, vm, 0x1000, vram_memory(fd, eci->gt_id),
++				DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	igt_debug("\n Mapping the created BO");
++	batch_data = xe_bo_map(fd, batch_bo, 0x1000);
++	memset(batch_data, 0, 0x1000);
++
++	/* Bind batch buffer and sync areas */
++	if (is_fault_mode) {
++		batch_data[0].vm_sync = 0;
++		bind_sync[0].addr = to_user_pointer(&batch_data[0].vm_sync);
++
++		xe_vm_bind_userptr_async(fd, vm, bind_exec_queue, to_user_pointer(user_fence_sync),
++					 sync_addr, sync_size, bind_sync, 1);
++		xe_wait_ufence(fd, &batch_data[0].vm_sync, USER_FENCE_VALUE, bind_exec_queue,
++			       NSEC_PER_SEC);
++
++		xe_vm_bind_async(fd, vm, bind_exec_queue, batch_bo, 0, batch_addr, 0x1000,
++				 bind_sync, 1);
++		xe_wait_ufence(fd, &batch_data[0].vm_sync, USER_FENCE_VALUE,
++			       bind_exec_queue, NSEC_PER_SEC);
++	} else if (is_lr_mode) {
++		/* LR mode without fault - bind batch using user fence */
++		lr_vm_sync = 0;  /* Reset before use */
++		lr_sync[0].addr = to_user_pointer(&lr_vm_sync);
++		bind_err = __xe_vm_bind(fd, vm, 0, batch_bo, 0, batch_addr, 0x1000,
++					DRM_XE_VM_BIND_OP_MAP, 0, lr_sync, 1, 0, c->pat_index, 0);
++		if (bind_err) {
++			igt_debug("Batch buffer bind failed with error %d (%s) - skipping GPU test\n",
++				 -bind_err, strerror(-bind_err));
++			goto cleanup;
++		}
++		xe_wait_ufence(fd, &lr_vm_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
++	} else {
++		igt_debug("\n Going for vm bind sync");
++		xe_vm_bind_sync(fd, vm, batch_bo, 0, batch_addr, 0x1000);
++	}
++
++	igt_debug("VM binds done - batch_bo at 0x%llx\n", (unsigned long long)batch_addr);
++	/* Create exec queue */
++	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
++
++	/* Setup sync for exec */
++	if (is_fault_mode) {
++		exec_sync[0].addr = sync_addr;
++	} else if (is_lr_mode) {
++		/* LR mode - use batch_data->vm_sync (GPU accessible memory) */
++		batch_data->vm_sync = 0;
++		exec_sync[0].addr = to_user_pointer(&batch_data->vm_sync);
++	} else {
++		exec_sync[0].handle = syncobj_create(fd, 0);
++	}
++
++	/* Use GPU to write to each BO */
++	for (i = 0; i < num_bos; i++) {
++		igt_debug("Writing to BO %d/%d via GPU\n", i + 1, num_bos);
++
++		for (off = 0; off < nf_bo_size; off += stride) {
++			uint64_t target_addr = data_addr + (i * nf_bo_size) + off;
++
++			b = 0;
++			batch_data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++			batch_data->batch[b++] = target_addr & 0xFFFFFFFF;
++			batch_data->batch[b++] = (target_addr >> 32) & 0xFFFFFFFF;
++			batch_data->batch[b++] = 0xBB;
++			batch_data->batch[b++] = MI_BATCH_BUFFER_END;
++
++			/* Reset sync for next exec */
++			if (is_fault_mode) {
++				user_fence_sync[0] = 0;
++			} else if (is_lr_mode) {
++				batch_data->vm_sync = 0;
++			} else {
++				if (off != 0 || i != 0) {
++					igt_assert(syncobj_wait(fd, &exec_sync[0].handle,
++								1, INT64_MAX, 0, NULL));
++				}
++				syncobj_reset(fd, &exec_sync[0].handle, 1);
++			}
++
++			/* Submit batch */
++			exec.exec_queue_id = exec_queue;
++			exec.address = batch_addr;
++
++			res = igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec);
++			if (res != 0) {
++				if (errno == ENOMEM || errno == ENOSPC) {
++					igt_debug("Expected fault/error: %d (%s)\n",
++						 errno, strerror(errno));
++					goto gpu_done;
++				}
++				igt_assert_f(0, "Unexpected exec error: %d\n", errno);
++			}
++
++			/* Wait for completion using appropriate method */
++			if (is_fault_mode) {
++				ret =  wait_fault(fd, exec_queue, &user_fence_sync[0], &timeout);
++			} else if (is_lr_mode) {
++				timeout = 5 * NSEC_PER_SEC;
++				ret = __xe_wait_ufence(fd, &batch_data->vm_sync, USER_FENCE_VALUE,
++						       exec_queue, &timeout);
++			} else {
++				ret = wait_nonfault(fd, exec_queue, &exec_sync[0].handle, &timeout);
++			}
++
++			if (ret != 0) {
++				igt_debug("Batch wait failed at BO %d offset 0x%lx\n",
++					  i, off);
++				goto gpu_done;
++			}
++		}
++
++		igt_debug("Accessed BO %d/%d via GPU\n", i + 1, num_bos);
++	}
++
++	igt_debug("All batches completed successfully\n");
++	/* Verify GPU writes */
++	igt_debug("Verifying GPU writes to BOs...\n");
++	for (i = 0; i < num_bos; i++) {
++		uint32_t *verify_data;
++		int errors = 0;
++
++		verify_data = xe_bo_map(fd, bos[i], nf_bo_size);
++
++		for (off = 0; off < nf_bo_size; off += stride) {
++			uint32_t expected = 0xBB;
++			uint32_t actual = verify_data[off / 4];
++
++			if (actual != expected) {
++				if (errors < 5)
++					igt_debug("Mismatch at BO %d offset 0x%llx\n",
++						 i, (unsigned long long)off);
++				errors++;
++			}
++		}
++
++		munmap(verify_data, nf_bo_size);
++
++		if (errors == 0)
++			igt_debug("BO %d/%d verified successfully\n", i + 1, num_bos);
++		else
++			igt_debug("BO %d/%d had %d errors\n", i + 1, num_bos, errors);
++	}
++
++gpu_done:
++	igt_debug("Overcommit test completed\n");
++
++	/* Cleanup */
++	if (!is_fault_mode && !is_lr_mode)
++		syncobj_destroy(fd, exec_sync[0].handle);
++
++	xe_exec_queue_destroy(fd, exec_queue);
++	xe_exec_queue_destroy(fd, bind_exec_queue);
++	munmap(batch_data, 0x1000);
++	gem_close(fd, batch_bo);
++
++cleanup:
++	if (is_fault_mode && user_fence_sync)
++		munmap(user_fence_sync, sync_size);
++
++	for (i = 0; i < num_bos; i++) {
++		if (bos[i])
++			gem_close(fd, bos[i]);
++	}
++
++	free(bos);
++	xe_vm_destroy(fd, vm);
++}
++
+ /**
+  * SUBTEST: out-of-memory
+  * Description: Test if vm_bind ioctl results in oom
+@@ -2850,6 +3332,18 @@ int igt_main()
+ 		test_oom(fd);
+ 	}
+ 
++	for (int i = 0; overcommit_cases[i].name; i++) {
++		const struct vm_overcommit_case *c = &overcommit_cases[i];
++		const char *mode = (c->vm_flags & DRM_XE_VM_CREATE_FLAG_FAULT_MODE) ?
++					"fault" : "nonfault";
++		igt_subtest_f("overcommit-%s-%s", mode, c->name) {
++			igt_require(xe_has_vram(fd));
++			igt_assert(xe_visible_vram_size(fd, 0));
++			test_vm_overcommit(fd, hwe, c, (igt_get_avail_ram_mb() << 20),
++					   xe_visible_vram_size(fd, 0));
++		}
++	}
++
+ 	igt_fixture()
+ 		drm_close_driver(fd);
+ }
 -- 
 2.52.0
 
