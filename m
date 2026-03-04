@@ -4,58 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB35FEF9014
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Mar 2026 16:58:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F050AEF8FFC
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Mar 2026 17:02:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5DB6210EA6F;
-	Wed,  4 Mar 2026 16:58:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8C06110EA78;
+	Wed,  4 Mar 2026 17:02:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a/TmpYP6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LJf9gBrF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1F3710EA78
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Mar 2026 16:58:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC5D210EA78
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Mar 2026 17:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772643526; x=1804179526;
+ t=1772643736; x=1804179736;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=4YZyuSfhADfldZvD4Z7NJjimhaQ8aPhMzmAnpqSshSA=;
- b=a/TmpYP6WeCousolLQbCTrky5AXYEjVgGktskq/fKO4GFSsIjnDiwgzp
- gEDcyPUVpkj5p/oZhPl8B1amZ+7zZ0VPKAEtfduRCjcVpI27pXVd1CWyC
- iJX8xQ44OfSZYUbbO/9XAKL6drJ9kjVWjkurMw48OlEkim9qPpJVSefyD
- 0iD65YmOMPd5oxWYvMiAZfxtfUtnB0oypbGCk/C1uwmEVPz02cOxx5GN9
- bVcTDWcPCMFi5aFqbAXV+7ZbsW1XR04+9ujBegtN0kOa4aLfeeozLd48l
- ZpaGTWhfda6kXTS490/Yz4FpgnrDA7n1S2TFLYFgra+ReGGvIYBYsaqqR Q==;
-X-CSE-ConnectionGUID: 5wiGffBtQ2a2afUtiP7hwQ==
-X-CSE-MsgGUID: osgIc4+TTV238J8Pw4vJDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="84798447"
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; d="scan'208";a="84798447"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2026 08:58:46 -0800
-X-CSE-ConnectionGUID: 64toaE7JQa+ustFQMnJRiQ==
-X-CSE-MsgGUID: kE2qgr71TO2NwW6v0aUsAQ==
+ bh=ciopUSCRDyWYXOrsCnRGzOhKEgeWG9h4yLRHQIC//RA=;
+ b=LJf9gBrFTXPybwKNRiaEKDoYVafdf96buAZJAyZpW77dgw6mXUaTAQGD
+ K3PskVgANDOftMgM0DKySp+EaceCFT5mQimkUdiYVGRHxl1A0vhYT6Pzu
+ sTplqspGpmY97GXBmvO/sWCAYAyuqL9vCYm7h+d4SUvVDYLIvthzVt9Ud
+ DKnRUGEgQPBGEwgOdzzQ+o+Z+gamnFeFEumGFFbl1ok4vVhdK2HCGgcvE
+ 9Mf4Tlm4QTup+AQxZeCVSIak5YuS88l7KWCVQzI98Tcs9D6B1FoVFkfc4
+ hpjyS86VRL1FbFwmvHG782ZpRPzx/MMvPyMbJEqKZLcLw1eu+jBEaRPmP w==;
+X-CSE-ConnectionGUID: iuB+HtpuT/C+MptJ1VWXpw==
+X-CSE-MsgGUID: urgiIVu2SwWhzLlHqb8UTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="73759728"
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; d="scan'208";a="73759728"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2026 09:02:15 -0800
+X-CSE-ConnectionGUID: mfx7EiIdRUC7eJZFeQTZRw==
+X-CSE-MsgGUID: fJiDXsFqRXyuLDkTfKX0Kg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; d="scan'208";a="218342069"
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; d="scan'208";a="248871863"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 08:58:45 -0800
-Date: Wed, 4 Mar 2026 17:58:42 +0100
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 09:02:13 -0800
+Date: Wed, 4 Mar 2026 18:02:10 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Cc: igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com
-Subject: Re: [PATCH i-g-t v3] tools/intel_gpu_top: explicitly reject Xe
- devices and update documentation
-Message-ID: <20260304165842.tyj3ikos5ev43us3@kamilkon-DESK.igk.intel.com>
+To: Mohammed Bilal <mohammed.bilal@intel.com>
+Cc: igt-dev@lists.freedesktop.org, swati2.sharma@intel.com,
+ kamil.konieczny@intel.com, kunal1.joshi@intel.com,
+ karol.krol@intel.com, ryszard.knop@intel.com
+Subject: Re: [PATCH v4 2/5] intel-ci: Rename chamelium-only testlist to i915
+ specific
+Message-ID: <20260304170210.c32pclliiwc7emxh@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com
-References: <944742bd9f27945878791856a8a641ffe5e54d0c.1772637555.git.sebastian.brzezinka@intel.com>
+ Mohammed Bilal <mohammed.bilal@intel.com>,
+ igt-dev@lists.freedesktop.org, swati2.sharma@intel.com,
+ kamil.konieczny@intel.com, kunal1.joshi@intel.com,
+ karol.krol@intel.com, ryszard.knop@intel.com
+References: <20260302101926.3015380-1-mohammed.bilal@intel.com>
+ <20260302101926.3015380-3-mohammed.bilal@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <944742bd9f27945878791856a8a641ffe5e54d0c.1772637555.git.sebastian.brzezinka@intel.com>
+In-Reply-To: <20260302101926.3015380-3-mohammed.bilal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,94 +76,68 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sebastian,
-On 2026-03-04 at 16:20:53 +0100, Sebastian Brzezinka wrote:
-
-nit about subject, imho could be shorter:
-
-[PATCH i-g-t v3] tools/intel_gpu_top: explicitly reject Xe devices
-
-as 'update documentation' is not main topic. See also below for one
-more nit.
-
-> Add checks to detect Xe driver devices and report that they are not
-> supported by intel_gpu_top, directing users to the gputop tool instead.
-> The man page is updated accordingly, and the tool now prints clear error
-> messages when Xe hardware is detected.
+Hi Mohammed,
+On 2026-03-02 at 15:49:23 +0530, Mohammed Bilal wrote:
+> Rename chamelium-only.testlist to i915.chamelium-only.testlist.
 > 
-> Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-> ---
-> v2 -> v3:
-> 	- Reword the message.
-> v1 -> v2:
-> 	- Reword the manpage message,
-> 	- Reorder the messages about the unsupported Xe driver.
-> ---
->  man/intel_gpu_top.rst |  2 ++
->  tools/intel_gpu_top.c | 18 +++++++++++++++++-
->  2 files changed, 19 insertions(+), 1 deletion(-)
+> v3:
+> -Use move-fix-add approach (Kamil)
 > 
-> diff --git a/man/intel_gpu_top.rst b/man/intel_gpu_top.rst
-> index 20204fdcf..25196d7e5 100644
-> --- a/man/intel_gpu_top.rst
-> +++ b/man/intel_gpu_top.rst
-> @@ -102,6 +102,8 @@ JSON output will be correctly terminated when the tool cleanly exits, otherwise
->  LIMITATIONS
->  ===========
->  
-> +* Xe driver devices are not supported, please use the **gputop** tool instead.
-> +
->  * Not all metrics are supported on all platforms. Where a metric is unsupported it's value will be replaced by a dashed line.
->  
->  * Non-root access to perf counters is controlled by the *perf_event_paranoid* sysctl.
-> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-> index ee38829e1..bd4191613 100644
-> --- a/tools/intel_gpu_top.c
-> +++ b/tools/intel_gpu_top.c
-> @@ -2734,8 +2734,17 @@ int main(int argc, char **argv)
->  		ret = igt_device_find_first_i915_discrete_card(&card);
->  		if (!ret)
->  			ret = igt_device_find_integrated_card(&card);
-> -		if (!ret)
-> +		if (!ret) {
-> +			struct igt_device_card xe_card;
-> +
->  			fprintf(stderr, "No device filter specified and no discrete/integrated i915 devices found\n");
-> +
-> +			if (igt_device_find_first_xe_discrete_card(&xe_card) ||
-> +			    igt_device_find_xe_integrated_card(&xe_card)) {
-> +				fprintf(stderr, "Detected Xe device which is not supported by intel_gpu_top.\n");
-> +				fprintf(stderr, "Please use 'gputop' tool for Xe devices instead.\n");
-
-imho could be shorter:
-				fprintf(stderr, "Please use 'gputop' tool instead.\n");
-
-This could be done at merge, no need for resend.
+> v4:
+> -Restructure move-fix-add approach (Kamil)
+> -Rename run-type labels(Swati)
+> 
+> Signed-off-by: Mohammed Bilal <mohammed.bilal@intel.com>
 LGTM
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
-> +			}
-> +		}
->  	}
+> ---
+>  .../{chamelium-only.testlist => i915.chamelium-only.testlist} | 0
+>  tests/intel-ci/meson.build                                    | 2 +-
+>  tests/intel/kms_test_config.json                              | 4 ++--
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+>  rename tests/intel-ci/{chamelium-only.testlist => i915.chamelium-only.testlist} (100%)
+> 
+> diff --git a/tests/intel-ci/chamelium-only.testlist b/tests/intel-ci/i915.chamelium-only.testlist
+> similarity index 100%
+> rename from tests/intel-ci/chamelium-only.testlist
+> rename to tests/intel-ci/i915.chamelium-only.testlist
+> diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
+> index cf0023c63..1a13dd52a 100644
+> --- a/tests/intel-ci/meson.build
+> +++ b/tests/intel-ci/meson.build
+> @@ -2,7 +2,7 @@
 >  
->  	if (!ret) {
-> @@ -2743,6 +2752,13 @@ int main(int argc, char **argv)
->  		goto exit;
->  	}
+>  intelci_files = [
+>    'README',
+> -  'chamelium-only.testlist',
+> +  'i915.chamelium-only.testlist',
+>    'fast-feedback.testlist',
+>    'fast-feedback-chamelium-only.testlist',
+>    'i915.blocklist.txt',
+> diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
+> index 61a70a9bb..4ed6e5405 100644
+> --- a/tests/intel/kms_test_config.json
+> +++ b/tests/intel/kms_test_config.json
+> @@ -15,13 +15,13 @@
+>                      "include": [
+>                          { "i915 BAT": "../intel-ci/i915.fast-feedback.testlist" },
+>                          { "i915 BAT chamelium": "../intel-ci/i915.fast-feedback-chamelium-only.testlist" },
+> -                        { "i915 chamelium": "../intel-ci/chamelium-only.testlist" },
+> +                        { "i915 FULL chamelium": "../intel-ci/i915.chamelium-only.testlist" },
 >  
-> +	if (!strcmp(card.driver, "xe")) {
-> +		fprintf(stderr, "Xe devices are not supported by intel_gpu_top.\n");
-> +		fprintf(stderr, "Please use 'gputop' tool for Xe devices instead.\n");
-> +		ret = EXIT_FAILURE;
-> +		goto exit;
-> +	}
-> +
->  	if (card.pci_slot_name[0] && !is_igpu_pci(card.pci_slot_name))
->  		pmu_device = tr_pmu_name(&card);
->  	else
+>                          { "Xe BAT": "../intel-ci/xe.fast-feedback.testlist" },
+>                          { "Xe BAT chamelium": "../intel-ci/xe.fast-feedback-chamelium-only.testlist" }
+>                      ],
+>                      "exclude": [
+> -                        { "i915 BAT, i915 BAT chamelium, i915 chamelium, i915 FULL": "../intel-ci/i915.blocklist.txt" },
+> +                        { "i915 BAT, i915 BAT chamelium, i915 FULL chamelium, i915 FULL": "../intel-ci/i915.blocklist.txt" },
+>                              { "Xe BAT, Xe BAT chamelium, Xe FULL": "../intel-ci/xe.blocklist.txt" }
+>                      ]
+>                  }
 > -- 
-> 2.52.0
+> 2.48.1
 > 
