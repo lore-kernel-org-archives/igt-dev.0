@@ -4,61 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 897A7EF8FE5
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Mar 2026 13:46:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09E92EF8FE5
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Mar 2026 13:56:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 19DBC10E9FB;
-	Wed,  4 Mar 2026 13:46:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B038610EA3B;
+	Wed,  4 Mar 2026 13:56:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RwnmLM1i";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U2za9EYj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C43D10E9FB
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Mar 2026 13:46:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D141010EA3B
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Mar 2026 13:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772631977; x=1804167977;
+ t=1772632567; x=1804168567;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=uC/WnbeK8m4aA1nUwkTk4JaaGGMiCOrnM3DuZ6jVhag=;
- b=RwnmLM1iLyaVTMDbH3v420U1l6BX/7p2fgPHQjElnz6qrUNkwn57mEcv
- LLIYJag9njWWQNSjMJR9Hei0+z9i5H6tcRpB0aSAa9OY1bxlLkHZMDcFN
- Tfa0XKURDVqN02mQJTA5P5ps66JsGx9OwaXlz885PtXFjpUuX9R8A5+SK
- aZfmTIL0ieu9GD+P4t2VcFWgbq1b11MXLQwtycRfgfgDCxluAbl+GjB0L
- tJTq3ylgHD36XdCLm9iXu4pyuzsctA8aiD120rHtkra/yHjkU4qeEIn1R
- VM5zj1NY+EBcA/aXU6AMUR4yJLkH4LFqd3JD+dfk0fkmOJPQYtV9RLOji Q==;
-X-CSE-ConnectionGUID: 7YXkGXunToiQavxkKZ8exQ==
-X-CSE-MsgGUID: jJXFbg7XSRyhawv8Af/tAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="96306911"
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; d="scan'208";a="96306911"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2026 05:46:16 -0800
-X-CSE-ConnectionGUID: aB0UmxdDSzeV7UYmj7vamw==
-X-CSE-MsgGUID: M4jFCQ0wQIeT6gtweNBwWA==
+ bh=4gqNNfcJcWqRNIl6wvA55Sm9iXlfnlcxQ5PRQDHA8mE=;
+ b=U2za9EYjBhVF16EhC5GObf3IK2OzK62rzwVw2VfszJ5SDYunmJF6rlMg
+ SpUJgd023ess1qAceWSwVhrfMC1m6cjGa7y2byTP5Z4b+IvKh9wiRCg2u
+ TLBVH45A4BHrV/iAKQ1f18O/3iUXd8M/E0P2V8Oi0m5LqI3VWbgbZ3IPK
+ lwPGPiWXGK6LZaIHqn7LPFjKUTVSEw6EeH0AVF20fR5b9T+jAMWg5mLxf
+ HqWASuXcg52un3ZKzUXGLg4HO2pAC84gOQD0zyglQbMJC2QLkgB2Xuy5v
+ eqAVRFaPXo07P5YoJ6AYmZCoJHJj5u40iuxA8X9pjLH6JcqQGsyupVXNx A==;
+X-CSE-ConnectionGUID: ASoy94x6TnqNjmoPB2Rl2w==
+X-CSE-MsgGUID: 8anqk3j2SYGRj3/fz7vdyQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="91082387"
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; d="scan'208";a="91082387"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Mar 2026 05:56:04 -0800
+X-CSE-ConnectionGUID: s2kgLKgPQQ6tdOOWNavdyw==
+X-CSE-MsgGUID: Gn2zrassSB2Vx4HKkCzyHQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; d="scan'208";a="223322090"
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; d="scan'208";a="215712885"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 05:46:14 -0800
-Date: Wed, 4 Mar 2026 14:45:53 +0100
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 05:56:03 -0800
+Date: Wed, 4 Mar 2026 14:56:01 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Sobin Thomas <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org, thomas.hellstrom@intel.com,
- nishit.sharma@intel.com
-Subject: Re: [PATCH v3 i-g-t 1/2] drm-uapi/xe: sync with kernel header
-Message-ID: <20260304134553.2wbkeehjydjshdko@kamilkon-DESK.igk.intel.com>
+To: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+Cc: igt-dev@lists.freedesktop.org, stuart.summers@intel.com,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: Re: [i-g-t] tests/core_hotunplug: Open render capable DRM device
+Message-ID: <20260304135601.iwue6vspcb5oxbo5@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Sobin Thomas <sobin.thomas@intel.com>,
- igt-dev@lists.freedesktop.org, thomas.hellstrom@intel.com,
- nishit.sharma@intel.com
-References: <20260304110501.1193980-1-sobin.thomas@intel.com>
- <20260304110501.1193980-2-sobin.thomas@intel.com>
+ Jagmeet Randhawa <jagmeet.randhawa@intel.com>,
+ igt-dev@lists.freedesktop.org, stuart.summers@intel.com,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+References: <9e4d3126426686f9fde73011753ca1e85a32dd0d.1772578021.git.jagmeet.randhawa@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260304110501.1193980-2-sobin.thomas@intel.com>
+In-Reply-To: <9e4d3126426686f9fde73011753ca1e85a32dd0d.1772578021.git.jagmeet.randhawa@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,100 +75,52 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sobin,
-On 2026-03-04 at 11:04:59 +0000, Sobin Thomas wrote:
-> This commit is for sync with kernel header.
-> Align with kernel commit 369cc8804985 ("drm/xe/uapi: Introduce a flag to
-> disallow VM overcommit in fault mode").
+Hi Jagmeet,
+On 2026-03-04 at 06:53:32 +0800, Jagmeet Randhawa wrote:
+> The test may select simpledrm when opening DRIVER_ANY,
+> which does not expose a render node. This causes the
+> later render open to fail.
+> 
+> Open a render capable device initially using
+> __drm_open_driver_render(DRIVER_ANY) to avoid
+> selecting simpledrm.
 
-Please add here, that this will also bring documentation changes
-from commit dc90ead44054 ("drm/xe/uapi: update used tracking kernel-doc")
+This is strange, as this test assumes card open and then tries
+uses render for verification so I am not sure if you could
+start with render. Adding Janusz to Cc.
 
-This could be done at merge, unless you will send new version.
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Could you also add links to issues on GitLab, if there are any?
+
+Other idea to solve this would be to add simpledrm to known
+drivers and a blocked ones, like VGEM.
 
 Regards,
 Kamil
 
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+
 > 
-> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+> Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
 > ---
->  include/drm-uapi/xe_drm.h | 22 +++++++++++-----------
->  1 file changed, 11 insertions(+), 11 deletions(-)
+>  tests/core_hotunplug.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 077e66a68..fc71a6cd1 100644
-> --- a/include/drm-uapi/xe_drm.h
-> +++ b/include/drm-uapi/xe_drm.h
-> @@ -3,8 +3,8 @@
->   * Copyright © 2023 Intel Corporation
->   */
+> diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+> index 7c9dae1bf..3a612fce2 100644
+> --- a/tests/core_hotunplug.c
+> +++ b/tests/core_hotunplug.c
+> @@ -696,8 +696,8 @@ int igt_main()
+>  		int fd_drm;
+>  		char driver[32] = {};
 >  
-> -#ifndef _UAPI_XE_DRM_H_
-> -#define _UAPI_XE_DRM_H_
-> +#ifndef _XE_DRM_H_
-> +#define _XE_DRM_H_
+> -		fd_drm = __drm_open_driver(DRIVER_ANY);
+> -		igt_skip_on_f(fd_drm < 0, "No known DRM device found\n");
+> +		fd_drm = __drm_open_driver_render(DRIVER_ANY);
+> +		igt_skip_on_f(fd_drm < 0, "No known DRM render device found\n");
 >  
->  #include "drm.h"
->  
-> @@ -142,7 +142,7 @@ extern "C" {
->   * redefine the interface more easily than an ever growing struct of
->   * increasing complexity, and for large parts of that interface to be
->   * entirely optional. The downside is more pointer chasing; chasing across
-> - * the __user boundary with pointers encapsulated inside u64.
-> + * the boundary with pointers encapsulated inside u64.
->   *
->   * Example chaining:
->   *
-> @@ -335,10 +335,6 @@ struct drm_xe_mem_region {
->  	__u64 total_size;
->  	/**
->  	 * @used: Estimate of the memory used in bytes for this region.
-> -	 *
-> -	 * Requires CAP_PERFMON or CAP_SYS_ADMIN to get reliable
-> -	 * accounting.  Without this the value here will always equal
-> -	 * zero.
->  	 */
->  	__u64 used;
->  	/**
-> @@ -363,9 +359,7 @@ struct drm_xe_mem_region {
->  	 * @cpu_visible_used: Estimate of CPU visible memory used, in
->  	 * bytes.
->  	 *
-> -	 * Requires CAP_PERFMON or CAP_SYS_ADMIN to get reliable
-> -	 * accounting. Without this the value here will always equal
-> -	 * zero.  Note this is only currently tracked for
-> +	 * Note this is only currently tracked for
->  	 * DRM_XE_MEM_REGION_CLASS_VRAM regions (for other types the value
->  	 * here will always be zero).
->  	 */
-> @@ -975,6 +969,11 @@ struct drm_xe_gem_mmap_offset {
->   *    demand when accessed, and also allows per-VM overcommit of memory.
->   *    The xe driver internally uses recoverable pagefaults to implement
->   *    this.
-> + *  - %DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT - Requires also
-> + *    DRM_XE_VM_CREATE_FLAG_FAULT_MODE. This disallows per-VM overcommit
-> + *    but only during a &DRM_IOCTL_XE_VM_BIND operation with the
-> + *    %DRM_XE_VM_BIND_FLAG_IMMEDIATE flag set. This may be useful for
-> + *    user-space naively probing the amount of available memory.
->   */
->  struct drm_xe_vm_create {
->  	/** @extensions: Pointer to the first extension struct, if any */
-> @@ -983,6 +982,7 @@ struct drm_xe_vm_create {
->  #define DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE	(1 << 0)
->  #define DRM_XE_VM_CREATE_FLAG_LR_MODE	        (1 << 1)
->  #define DRM_XE_VM_CREATE_FLAG_FAULT_MODE	(1 << 2)
-> +#define DRM_XE_VM_CREATE_FLAG_NO_VM_OVERCOMMIT  (1 << 3)
->  	/** @flags: Flags */
->  	__u32 flags;
->  
-> @@ -2361,4 +2361,4 @@ struct drm_xe_exec_queue_set_property {
->  }
->  #endif
->  
-> -#endif /* _UAPI_XE_DRM_H_ */
-> +#endif /* _XE_DRM_H_ */
+>  		priv.chipset = drm_get_chipset(fd_drm);
+>  		/* Make sure it opens the same driver */
 > -- 
 > 2.52.0
 > 
