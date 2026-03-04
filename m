@@ -4,54 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90298EB7EB2
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Mar 2026 09:28:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F018EB7EB5
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Mar 2026 09:36:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2F8B610E1BE;
-	Wed,  4 Mar 2026 09:28:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0CCD810E98E;
+	Wed,  4 Mar 2026 09:36:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ikNzdYiw";
+	dkim=pass (1024-bit key; unprotected) header.d=mediatek.com header.i=@mediatek.com header.b="FoIlnsU0";
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b="cdhZchoV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CCAD310E1BE
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Mar 2026 09:28:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772616526; x=1804152526;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=63SwFDgxo5GpcrbuEemWZWxLeJVjRc4t3CmZDlowJUY=;
- b=ikNzdYiwil7W0HzNXRc2aJQ+BoTY1PIzQfUHAPABa7NUHQZnw0+EOvpz
- RinELocKoTP6AWcLOo+mJXFvcz9CuVykhzbQmMVKv2g+fpSLVKZ2Kaamg
- cPWo70Q0R62koqNXefEeKPHoQiiWROzw9paPxK5iR4RtKz/8GqJHV018W
- vG6YChFZHYBoe1Iyd7pfwwvaOce1fB3q3ztwtICwtnmkMXBmguUDJ74Ay
- F7zXLanXG5I1/thMdy0zj0RRls8GGkO7PHj9kAagaLJBQrBfYf8K44HFL
- J1nPgxc3sdJhdiXlUZPNGK35FzvM72nEk9GTKpCLAoC+6IVFQVQp1E/Dc w==;
-X-CSE-ConnectionGUID: oIayhuxhTZSJ6E4M2LF+qQ==
-X-CSE-MsgGUID: RDMkmp2nSau3v3sqSD/L8w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="73580531"
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; d="scan'208";a="73580531"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Mar 2026 01:28:46 -0800
-X-CSE-ConnectionGUID: n3PamX1NTOC+iGI1v9VemA==
-X-CSE-MsgGUID: LU6fexhxQViOg+l7/DH29w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; d="scan'208";a="218239006"
-Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 01:28:44 -0800
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t] tests/kms_chamelium_color_pipeline: Add plane color
- pipeline validation
-Date: Wed,  4 Mar 2026 15:07:18 +0530
-Message-Id: <20260304093718.513512-1-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49A6610E98E
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Mar 2026 09:36:33 +0000 (UTC)
+X-UUID: 9d3bcc8417ad11f1b7fc4fdb8733b2bc-20260304
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
+ s=dk; 
+ h=Content-Type:MIME-Version:Content-Transfer-Encoding:Content-ID:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From;
+ bh=9Bme23uGhRhi+zRvJw9eABGZ/UF6tKn3KyKTlsEsL7c=; 
+ b=FoIlnsU0PmCMosAVF6fuuPGr1GLmHjHXeaXASCROd1k6fh/819UFiq8a5puWbBqELk+pFjfHfM/voLDuGeI+NpGIAvwwzx74YTPNC8TY6LkQfqSifxqEvjfRdPBQnDfBel7Ui9Y0mTalw3oxAxSyk8QFOVu+Ym/S6R084t2EvdQ=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11, REQID:28f4b892-a38f-4888-8645-9ab7d3fab983, IP:0,
+ U
+ RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+ :release,TS:-5
+X-CID-META: VersionHash:89c9d04, CLOUDID:7fee3ff1-16bd-4243-b4ca-b08ca08ab1d8,
+ B
+ ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111|836|888|898,
+ TC:-5,Content:0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BE
+ C:-1,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 9d3bcc8417ad11f1b7fc4fdb8733b2bc-20260304
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by
+ mailgw02.mediatek.com (envelope-from <xiandong.wang@mediatek.com>)
+ (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+ with ESMTP id 1871756925; Wed, 04 Mar 2026 17:36:25 +0800
+Received: from mtkmbs10n1.mediatek.inc (172.21.101.34) by
+ mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 4 Mar 2026 17:36:24 +0800
+Received: from SG2PR04CU009.outbound.protection.outlook.com (172.21.101.237)
+ by mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Wed, 4 Mar 2026 17:36:24 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ikxmE06Gpv3rcfZnFMSBrhvMUVTit0rbyHEB40pb3pFUgls7qnbFBKcBTeDM73rfX5+mCNObdx6RMxZMRu875oV8V9/vhNV72W9CnGSr5qhCVEg6uCYIkVgldZv2A026qlIqw9pQaQcEny06PaUsS6wCM/cnG3MUfPbsrMVp6eLTYrOpOhqcQu4EWXnvmWAQkOFOU8nemfg2MXuTHitvlDgWipGtDS57wzbuBrG1TotDVfF5kMrwQFAQyhmATLzyElholwHhXFvCazQUy2mtt2TvCEzTEXLDcvJYYQTCh5DEnWPSmdpt3p0d2pSLxjPclkzxQpluXTTzz4GKNH4ROA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PgsE738cwAH5PEJTG+ckk/StK3bmWHkMVIchNjt46jA=;
+ b=xbc6Ozrmao37dKMNfsHhWcICpZKRXnfu0lpWeODE+wnAzmp32UFgNhWtxOchVq15qUEyWIoiZ4Azi//J2kTbZaL19kZXTQlRVFNWGwF9aDU+92JdEwIj6QFlhXimapjHttOcy90PyKP/XCMlXkZfftWyBXCuGsMxbyKarVcQTQW8LgIIAVVyQvZB9Wb05Xd50mx+RUZNAhfIdPeoady5jpcSiD8lGJcOUuxPYOo7tleaTP6T28mSW5jeVyfHzdB8pqkwKJ1H9xujrY2WPSNK8ERJDQ9+tBGqs9O57S4JaPS53wHZRgyAKNYSegXIpaGHYL6vvHsIwPGSEockmCGJ6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
+ dkim=pass header.d=mediatek.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PgsE738cwAH5PEJTG+ckk/StK3bmWHkMVIchNjt46jA=;
+ b=cdhZchoVYPj7jxjSgZaQ7NtrkRBNnMkA3fHI0/52P+15dlYyNWMN2n4aSoBCMnHKI8QajaCWUx2Q4hUvrAYnpaMTt+AyGKT8R5N3N9yQ32ttTIhd2CBf8U0K3EZJ8jo4PXVy9WmPpU4GyTJGRvjOay2wqM7YnNFyYVFYLeexcOo=
+Received: from KL1PR03MB5731.apcprd03.prod.outlook.com (2603:1096:820:6c::5)
+ by TYPPR03MB9367.apcprd03.prod.outlook.com (2603:1096:405:2b7::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Wed, 4 Mar
+ 2026 09:36:18 +0000
+Received: from KL1PR03MB5731.apcprd03.prod.outlook.com
+ ([fe80::fa0f:189b:dbaf:8a1e]) by KL1PR03MB5731.apcprd03.prod.outlook.com
+ ([fe80::fa0f:189b:dbaf:8a1e%6]) with mapi id 15.20.9678.016; Wed, 4 Mar 2026
+ 09:36:18 +0000
+From: =?utf-8?B?WGlhbmRvbmcgV2FuZyAo546L5YWI5YasKQ==?=
+ <Xiandong.Wang@mediatek.com>
+To: "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
+CC: "swati2.sharma@intel.com" <swati2.sharma@intel.com>,
+ =?utf-8?B?SmFzb24tSkggTGluICjmnpfnnb/npaUp?= <Jason-JH.Lin@mediatek.com>,
+ "karthik.b.s@intel.com" <karthik.b.s@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ Project_Global_Chrome_Upstream_Group
+ <Project_Global_Chrome_Upstream_Group@mediatek.com>, "gildekel@google.com"
+ <gildekel@google.com>, "xiandong.wang@mediatek.corp-partner.google.com"
+ <xiandong.wang@mediatek.corp-partner.google.com>, "markyacoub@chromium.org"
+ <markyacoub@chromium.org>
+Subject: Re: [PATCH i-g-t 1/1] Skip kms_flip for mtk
+Thread-Topic: [PATCH i-g-t 1/1] Skip kms_flip for mtk
+Thread-Index: AQHcmWh0kWwPn8n/FEKjBGNUX1arOrV6kWKAgCOwfwA=
+Date: Wed, 4 Mar 2026 09:36:18 +0000
+Message-ID: <b746080f9e9a6e04b8a2e32a8b95146a1f460b15.camel@mediatek.com>
+References: <20260209020357.32744-1-xiandong.wang@mediatek.com>
+ <20260209163529.35pn4gkccl4sq23l@kamilkon-DESK.igk.intel.com>
+In-Reply-To: <20260209163529.35pn4gkccl4sq23l@kamilkon-DESK.igk.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mediatek.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: KL1PR03MB5731:EE_|TYPPR03MB9367:EE_
+x-ms-office365-filtering-correlation-id: 504a3203-ee3b-47d4-f2b9-08de79d17ccd
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|366016|376014|1800799024|38070700021;
+x-microsoft-antispam-message-info: 6ogwB/NMxagSN94VOEv6sAVJZ48RG36+Ahv3UdkYUzUOhg9SHZVQ27ZU/FbFvm6hl+MaVFLwIy1AldTF95EB2EEWpOEhgjMbRizjlfHqLGzOXfkht+/5vz13ByA/XlWBRvryIMrUPxd6olmMCM62VQP+RET2ilJjygwE06nAPs4fMaqVxOZ68guwewKXWNCZSlUwhxEfBp2piKsoKpfK9wNhuQ0LoqNH8CSfvqELHC+lyyP9CaKRPvOp0z1yn43hBOXPAG70fdRwsvbJPpJATVZkgnjmocQOFk64lo3d17mcWZ+tG7NuNk4T3e2TDtrYi6xkp9A5o+AYDn3bxudK+0FWVqlHanjGEQOzMkkeK56oWTIX5TVCNr6lJHCcwKqYrD91XL9wjT8rALzsW2v6jWS+TJF+n5g+LKNYPFMuaRo9p0CHydLUNDXqus/JCegP76MNNbq2WF+gHqLCn+gQkUziJowodHSXZuRZfrnFWxBusbMIVJUVYWovCZTliEhV9REPINII4soUgUvjkoKJAyTogQYCzY3zMtdu6gxK48jV4R24GIT2Bqnk220BcuOLLanxJdMan8wwuLl1i8TKOFamS0HApnCxrf6dyJWkRCZZTpAuJMSP/2Bf5k7eVIv7HA+JcgZtqvPmECz5XLgAD6I2sqvQZ7/n332Rx2AC2J0+ZU9GESIIY0nQ+FggEchK/8RiwRjb9Xdt5VBzN2J59tx+W66N4LkNnRCHrkBPwj4iankP/PK5hbnm26HM2D0LJQPR+vVrnzkiJt1cCjfqGMNgfGHZJDUifYBI2tktr+0=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:KL1PR03MB5731.apcprd03.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(38070700021); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?enJIbjVpT01rckZoNjRTNG5LNTJZOHFjRWZHRnZjbkc1bXpzaDhPb1Q1RkFj?=
+ =?utf-8?B?U3cvWGcxMERwMC91N0tINWxBZXpYdVRQZWZJYjhjNWdvNTRCb0lUWmRESUhQ?=
+ =?utf-8?B?bnVTYXh5M0JXMVI4YUdrTjQ1aGhaT1pBY1dWdXl6TDJ0SnVCUnpwMjZ2RGor?=
+ =?utf-8?B?d0NpSzROUUhIQmhNOFdoZm8vdDl5U0ZnRTl5ZzZFU2FlWWJ1Tm9oZmRMWWg3?=
+ =?utf-8?B?VXpnZlBGMFJhNnFoWjZlV1haRXBJQTdseXF4elp6ZmtIQ0dKT2MyRmtwSTEy?=
+ =?utf-8?B?UnZGQ2wvbVdPNXA4N2xhOWt3OXJBWVBpK1M2RUtEa2ROaVFPbFRGZnpoQ21Q?=
+ =?utf-8?B?ZWFvUTYxTjkzRzFCRVVvbHhqODdzS0daODR3dWEwa09INWttZSthd3prdnly?=
+ =?utf-8?B?Ly9COWRyaFFQS0owOHhwNzNQaWRWMzRtUThKenJDOCtuRWUxY0s3T2E5S2JI?=
+ =?utf-8?B?eU9TOGk4QmluRCtUVWVEMWtFNjhJbDhyZWxEMXh6K0l0dlY0NXpqQ1lYTlo2?=
+ =?utf-8?B?eXN3aU9Id0tWQVNhTlA3UHFsbzdOaWdBeUNhT29WOXJpUXpEWW94ZlZ4M1FP?=
+ =?utf-8?B?Wml0OVc1TUkycUQ1Q0JqRUQ5WHEvcFVOVTgvNmt3ZDFlbmVjUFNpZGtBbCt6?=
+ =?utf-8?B?SXRIYnpvTDBxcS9HUkdHMWxxa0hORy8xd1FRQ24rRnIycGR4RWVoMnluL05j?=
+ =?utf-8?B?b1dRSUNDVDUrUjlOekJrUG1wYWNYckp1RHl4MUcwRUtmYkkvcE5DWnFjV0h1?=
+ =?utf-8?B?Z0VycEtrRUw3R1dhY3A3WDNMOHFMU3hwNXc1OWV6cWtEOUd3MkE4d0NLdlBi?=
+ =?utf-8?B?Z2FtdmR4QUxNUnJBWkY1dFlnNTN4V3dlZ1FaNU1qUFNNbVB6Mk1MUkk5Q1U0?=
+ =?utf-8?B?WjVWcjNPMVFFemxFTCs5ZDdWWE5BZmR3MWgvbXZkVmduVFRNQ2JpUDNpZG9T?=
+ =?utf-8?B?bkZpcVFMYWxrbjIvWnBiQzRibjZWOUZ5Tm52T3RKV3dNZ1djY0syM0E0bHdJ?=
+ =?utf-8?B?WXE1NUlzN2NEaWNmQ0RwcUpJMUp5aXR2SFJtV3BxK0EyaVgzRk82Ym50U0FI?=
+ =?utf-8?B?eEhKVCtGcHQydkFVNVJScEYrSmQ3bnBYdHVIb3pabjdFS3JsV2sxc0F0VHJM?=
+ =?utf-8?B?MFJIT0FodG9FMUJBS2dycnFsc0IvMUdRc1MzcW9ydmVlU29hME55WmR4N0ZS?=
+ =?utf-8?B?K1VaYnNWcjlmQ3hiTHdJWjFkaEhPU2tqWlhaRWwzZTZza1ZPVWhVL29MODYr?=
+ =?utf-8?B?SFFGYjdjQks0a1ZZMlErV3RDLy84YmQwbmw2eWVYamx5TlF6Zy9oSXBNRWVy?=
+ =?utf-8?B?NWluWjkyU1VsSU85L2tpOWpteXBDZW5icEV3Mkl4OUZGMjhqbmNtcy9Uclhm?=
+ =?utf-8?B?UGRBaFFPOFhzcWp0a2NHUFF5dTVaS2pCemR2b1RPQmtLNGp4a3pwWWoxcEU1?=
+ =?utf-8?B?MFZkNWs0ak5EbVRrVStHNWowdmVXSVBibENBamk2Szdaa1lGMS9PMWFYeFpF?=
+ =?utf-8?B?blppQytMSFYvVlJVVVFtaXNNWE1IbEpoUU0yQ0trWTVaeXFFNHQvTHl0N0Vr?=
+ =?utf-8?B?YjJCdmhYdURtcm12UFhhYm5nTy93MFppcGJ2NXJOTGVIZWhmTndNMjhvc2Ey?=
+ =?utf-8?B?RVVNUzMyNUNJODNYU3FzS0RzOHNVMFpZVldaVUp4RWFvOTl5Vkh2RDZjQWFC?=
+ =?utf-8?B?czd2UjlkQ0E1V3N3MUl2dUVqRGthY3VOUk5YSFZadkVHR1hFZDI0MzRRY3ZR?=
+ =?utf-8?B?OHN3b2JwZDVoV0M0UzJvMXlCV28yZU1LSk5XZnJGbzl6ai9hQW5VOG5NOHNB?=
+ =?utf-8?B?MStRdFAzSUtsb3pZTU1OUk9ud2x6Q1lLbFlrU0dLNkJYU291b3poOEN5a1R3?=
+ =?utf-8?B?aENkRjdwNTdyMUg2OVJzQkF2V3F2MkQ0Vm4vTmw1ZGpMK04xbWQ4LzJFcVhO?=
+ =?utf-8?B?WXdPbFU1TDh1aU1Pc0lPU2hFYi93OUxhSDY2ZFFWNjBRRGRnZ2tBc1J5SzdD?=
+ =?utf-8?B?ZGhaWVAweVRZQWZBSzJPZ251Tlo3L3VGZXIxV2FtSngyeGtUd0wyNWNGN01H?=
+ =?utf-8?B?SGlQdFF5NStYblQwUGt0eFdKVU8yUHl3Z2hrd1dIMnlwZHdPOUhjTG02ZnVK?=
+ =?utf-8?B?cXBTOGhMc084K0Q4RVhqbWdIRncvY2pzWFlKeHdFeEg4VEYrdXk0eDdNMS9L?=
+ =?utf-8?B?N0QxU3NQeStRK0xHNllNcFR2NXFxWDg5dUdhbWpuanorOXAyVkRrYVpjTDh6?=
+ =?utf-8?B?SE5ySVR4QmU1U3JBc2pJalBJWU9mNWQ4Y0QzTUt4cnAvOUdNSklHMU52czBW?=
+ =?utf-8?B?dEFVRGNiQWpWVE9KSmtHK2orc3cxK09YL0crNFd4cHZsZ2NXenFyN2szYytu?=
+ =?utf-8?Q?oE5v7DmvAikYCtiE=3D?=
+Content-ID: <92C16D0C79B6514AAAB22FD34D8E3981@apcprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: EB/9gADRpLlfqxG9jY4QHu4+Aai9PZESnHlXm2jtHJoEFtuU+jCPmxAEIELPRPyLPqxslILxyvjoc2J6B3vJEZTDS+0gfI1sMRQVb94csoxC0IMhzJzkvp/ze51RK7t5QxqKivlcvlnBidTAodz+XQr4ckKoqnf5FWytXuPsVmCl6T6rP6LjyaU7bYk2g609sG+CHt/fYhHMTsqsgsrmbDezrzdjiEnQqOQvriJj/1QVnk2khxU2Y44M5wYuTIY6iTEj4xtxpJ2sm5hLlMgSZVH4SEFrjRXHxr4PyNK6caRJqLk+bwUpjmM/c7xdbNJzq95Vt0OzHQawOz+FSGi8Pg==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: KL1PR03MB5731.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 504a3203-ee3b-47d4-f2b9-08de79d17ccd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Mar 2026 09:36:18.1961 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: te5NwkN3bxGh9I0xyrQ6Qv2oLxnITE/SHP8RHAGTs4acans5gIZvgdsY3zQfyQDs70Ocv9eo4gI+Zq/kedJNV+eP4TcDN1GtYPJELs2o7lw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYPPR03MB9367
+Content-Type: multipart/alternative;
+ boundary="__=_Part_Boundary_008_843224313.1830896981"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,456 +179,164 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a Chamelium-backed test to validate DRM plane colorops
-using frame capture instead of pipe CRC comparison.
+--__=_Part_Boundary_008_843224313.1830896981
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
 
-The test generates a software reference framebuffer by
-applying the expected color transformation in bypass mode.
-It then enables the plane color pipeline in hardware,
-renders the input framebuffer, and captures the output
-signal using Chamelium.
+SGksS2FtaWw6DQpJIHdpbGwgdXBkYXRlIHRoZSBwYXRjaCBpbmZvcm1hdGlvbiBiYXNlZCBvbiB5
+b3VyIHN1Z2dlc3Rpb25zLGFkZCB0aGUgU1NpZ25lZC1vZmYtYnk6WGlhbmRvbmcgV2FuZyA8PiB4
+aWFuZG9uZy53YW5nQG1lZGlhdGVrLmNvcnAtcGFydG5lci5nb29nbGUuY29tPiwgYW5kIHJlbW92
+ZSB0aGUNCj4gY2hhbmdlLWlkLg0KDQpUaGFuayB5b3UgZm9yIHlvdXIgc3VnZ2VzdGlvbi4NCk9u
+IE1vbiwgMjAyNi0wMi0wOSBhdCAxNzozNSArMDEwMCwgS2FtaWwgS29uaWVjem55IHdyb3RlOg0K
+PiBIaSBYaWFuZG9uZywNCj4gT24gMjAyNi0wMi0wOSBhdCAxMDowMzo1MiArMDgwMCwgWGlhbmRv
+bmcgV2FuZyB3cm90ZToNCj4gPiBGcm9tOiAieGlhbmRvbmcud2FuZyIgPA0KPiA+IHhpYW5kb25n
+LndhbmdAbWVkaWF0ZWsuY29ycC1wYXJ0bmVyLmdvb2dsZS5jb20+DQo+IA0KPiBIbW0sIHRoaXMg
+c2VlbXMgc3RyYW5nZSwgZG8geW91IG1lYW46DQo+IFhpYW5kb25nIFdhbmcgPHhpYW5kb25nLndh
+bmdAbWVkaWF0ZWsuY29ycC1wYXJ0bmVyLmdvb2dsZS5jb20+DQo+IA0KPiBJZiB5ZXMsIHBsZWFz
+ZSB1cGRhdGUgeW91ciBnaXQgZ2xvYmFsIGNvbmZpZyBzbyBuZXh0IHN1Ym1pc3Npb25zDQo+IHdp
+bGwgbG9vayBsaWtlIGFib3ZlLg0KPiANCj4gQXMgZm9yIGEgc3ViamVjdCwgd2hlbiBpdCBpcyBv
+bmx5IG9uZSB0ZXN0IGNoYW5nZSwgaXQgc2hvdWxkDQo+IGhhdmUgYSBwcmVmaXggd2l0aCB0aGF0
+IHRlc3QgbmFtZSwgbGlrZToNCj4gDQo+IFtQQVRDSCBpLWctdCAxLzFdIHRlc3RzL2ttc19mbGlw
+OiBTa2lwIHRlc3Qgb24gTVRLIHBsYXRmb3Jtcw0KPiA+IA0KPiANCj4gUGxlYXNlIGFkZCBkZXNj
+cmlwdGlvbiBoZXJlLg0KPiANCj4gPiBDaGFuZ2UtSWQ6IEk4MGIyM2M4YzI2MjU0YTI5NzIxY2Nk
+YzAyZTY5ZmE1NjQzMDY3YzI0DQo+IA0KPiBUaGlzIGNoYW5nZS1pZCBpcyB1c2VsZXNzLCBpdCBz
+aG91bGQgYmUgcmVtb3ZlZC4gWW91IGNhbiBhZGQNCj4gaXQgYWZ0ZXIgJy0tLScgYmVsb3csIHNv
+IGl0IHdpbGwgbm90IGdldCBtZXJnZWQuDQo+IA0KPiArY2MgS2FydGhpayBhbmQgU3dhdGkNCj4g
+DQo+ID4gU2lnbmVkLW9mZi1ieTogeGlhbmRvbmcud2FuZyA8DQo+ID4geGlhbmRvbmcud2FuZ0Bt
+ZWRpYXRlay5jb3JwLXBhcnRuZXIuZ29vZ2xlLmNvbT4NCj4gDQo+IFNhbWUgaGVyZSwgaW1obyB0
+aGlzIHNob3VsZCBiZToNCj4gU2lnbmVkLW9mZi1ieTogWGlhbmRvbmcgV2FuZyA8DQo+IHhpYW5k
+b25nLndhbmdAbWVkaWF0ZWsuY29ycC1wYXJ0bmVyLmdvb2dsZS5jb20+DQo+IG9yDQo+IFNpZ25l
+ZC1vZmYtYnk6IFdhbmcgWGlhbmRvbmcgPA0KPiB4aWFuZG9uZy53YW5nQG1lZGlhdGVrLmNvcnAt
+cGFydG5lci5nb29nbGUuY29tPg0KPiANCj4gV2hpY2ggb25lIGRvIHlvdSBwcmVmZXI/IFRoaXMg
+aXMgdXAgdG8geW91LCBwbGVhc2UgY2hvb3NlIG9uZSBvZg0KPiB0aG9zZQ0KPiBhbmQgdXNlIGNv
+bnNpdGVudGx5IGluIGZ1dHVyZS4NCj4gDQo+IEFsbCBvZiBhYm92ZSBjb3VsZCBiZSBkb25lIGF0
+IG1lcmdlIHRpbWUsIHNvIHBsZWFzZSBqdXN0IHJlcGx5DQo+IHRvIHRoaXMgbWVzc2FnZSB3aXRo
+IHByb3Bvc2VkIGRlc2NyaXB0aW9uIGFuZCBJIGNvdWxkIG1lcmdlIGl0Lg0KPiANCj4gV2l0aCBh
+Ym92ZSBmaXhlZCB0aGlzIGlzDQo+IEFja2VkLWJ5OiBLYW1pbCBLb25pZWN6bnkgPGthbWlsLmtv
+bmllY3pueUBsaW51eC5pbnRlbC5jb20+DQo+IA0KPiBSZWdhcmRzLA0KPiBLYW1pbA0KPiA+IC0t
+LQ0KPiA+ICB0ZXN0cy9rbXNfZmxpcC5jIHwgNiArKysrKysNCj4gPiAgMSBmaWxlIGNoYW5nZWQs
+IDYgaW5zZXJ0aW9ucygrKQ0KPiA+IA0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfZmxpcC5j
+IGIvdGVzdHMva21zX2ZsaXAuYw0KPiA+IGluZGV4IGE3NGU2OWM2Zi4uOTUyNGE5ZDRlIDEwMDc1
+NQ0KPiA+IC0tLSBhL3Rlc3RzL2ttc19mbGlwLmMNCj4gPiArKysgYi90ZXN0cy9rbXNfZmxpcC5j
+DQo+ID4gQEAgLTE4MjYsNiArMTgyNiw5IEBAIHN0YXRpYyB2b2lkIHJ1bl90ZXN0KGludCBkdXJh
+dGlvbiwgaW50IGZsYWdzKQ0KPiA+ICAJaWYgKGlzX3hlX2RldmljZShkcm1fZmQpICYmIGZsYWdz
+ICYgVEVTVF9GRU5DRV9TVFJFU1MpDQo+ID4gIAkJcmV0dXJuOw0KPiA+ICANCj4gPiArICAgICAg
+IGlmIChpc19tdGtfZGV2aWNlKGRybV9mZCkpDQo+ID4gKyAgICAgICAgICAgICAgIHJldHVybjsN
+Cj4gPiArDQo+ID4gIAlpZiAoZmxhZ3MgJiBURVNUX0JPX1RPT0JJRyAmJiAhaXNfaW50ZWxfZGV2
+aWNlKGRybV9mZCkpDQo+ID4gIAkJcmV0dXJuOw0KPiA+ICANCj4gPiBAQCAtMTkwMyw2ICsxOTA2
+LDkgQEAgc3RhdGljIHZvaWQgcnVuX3BhaXIoaW50IGR1cmF0aW9uLCBpbnQgZmxhZ3MpDQo+ID4g
+IAlpZiAoaXNfeGVfZGV2aWNlKGRybV9mZCkgJiYgZmxhZ3MgJiBURVNUX0ZFTkNFX1NUUkVTUykN
+Cj4gPiAgCQlyZXR1cm47DQo+ID4gIA0KPiA+ICsgICAgICAgaWYgKGlzX210a19kZXZpY2UoZHJt
+X2ZkKSkNCj4gPiArICAgICAgICAgICAgICAgcmV0dXJuOw0KPiA+ICsNCj4gPiAgCWlmIChmbGFn
+cyAmIFRFU1RfQk9fVE9PQklHICYmICFpc19pbnRlbF9kZXZpY2UoZHJtX2ZkKSkNCj4gPiAgCQly
+ZXR1cm47DQo+ID4gIA0KPiA+IC0tIA0KPiA+IDIuNDYuMA0KPiA+IA0K
 
-The test passes if the captured frame matches the
-software reference framebuffer within the allowed tolerance.
+--__=_Part_Boundary_008_843224313.1830896981
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
 
-The test fails if the captured frame differs from the
-reference, indicating incorrect color transformation,
-pipeline misconfiguration, or hardware output mismatch.
+PGh0bWw+PGJvZHk+PHA+DQo8cHJlPg0KSGksS2FtaWw6DQpJJiMzMjt3aWxsJiMzMjt1cGRhdGUm
+IzMyO3RoZSYjMzI7cGF0Y2gmIzMyO2luZm9ybWF0aW9uJiMzMjtiYXNlZCYjMzI7b24mIzMyO3lv
+dXImIzMyO3N1Z2dlc3Rpb25zLGFkZCYjMzI7dGhlJiMzMjtTU2lnbmVkLW9mZi1ieTpYaWFuZG9u
+ZyYjMzI7V2FuZyYjMzI7Jmx0OyZndDsmIzMyO3hpYW5kb25nLndhbmdAbWVkaWF0ZWsuY29ycC1w
+YXJ0bmVyLmdvb2dsZS5jb20mZ3Q7LCYjMzI7YW5kJiMzMjtyZW1vdmUmIzMyO3RoZQ0KJmd0OyYj
+MzI7Y2hhbmdlLWlkLg0KDQpUaGFuayYjMzI7eW91JiMzMjtmb3ImIzMyO3lvdXImIzMyO3N1Z2dl
+c3Rpb24uDQpPbiYjMzI7TW9uLCYjMzI7MjAyNi0wMi0wOSYjMzI7YXQmIzMyOzE3OjM1JiMzMjsr
+MDEwMCwmIzMyO0thbWlsJiMzMjtLb25pZWN6bnkmIzMyO3dyb3RlOg0KJmd0OyYjMzI7SGkmIzMy
+O1hpYW5kb25nLA0KJmd0OyYjMzI7T24mIzMyOzIwMjYtMDItMDkmIzMyO2F0JiMzMjsxMDowMzo1
+MiYjMzI7KzA4MDAsJiMzMjtYaWFuZG9uZyYjMzI7V2FuZyYjMzI7d3JvdGU6DQomZ3Q7JiMzMjsm
+Z3Q7JiMzMjtGcm9tOiYjMzI7JnF1b3Q7eGlhbmRvbmcud2FuZyZxdW90OyYjMzI7Jmx0Ow0KJmd0
+OyYjMzI7Jmd0OyYjMzI7eGlhbmRvbmcud2FuZ0BtZWRpYXRlay5jb3JwLXBhcnRuZXIuZ29vZ2xl
+LmNvbSZndDsNCiZndDsmIzMyOw0KJmd0OyYjMzI7SG1tLCYjMzI7dGhpcyYjMzI7c2VlbXMmIzMy
+O3N0cmFuZ2UsJiMzMjtkbyYjMzI7eW91JiMzMjttZWFuOg0KJmd0OyYjMzI7WGlhbmRvbmcmIzMy
+O1dhbmcmIzMyOyZsdDt4aWFuZG9uZy53YW5nQG1lZGlhdGVrLmNvcnAtcGFydG5lci5nb29nbGUu
+Y29tJmd0Ow0KJmd0OyYjMzI7DQomZ3Q7JiMzMjtJZiYjMzI7eWVzLCYjMzI7cGxlYXNlJiMzMjt1
+cGRhdGUmIzMyO3lvdXImIzMyO2dpdCYjMzI7Z2xvYmFsJiMzMjtjb25maWcmIzMyO3NvJiMzMjtu
+ZXh0JiMzMjtzdWJtaXNzaW9ucw0KJmd0OyYjMzI7d2lsbCYjMzI7bG9vayYjMzI7bGlrZSYjMzI7
+YWJvdmUuDQomZ3Q7JiMzMjsNCiZndDsmIzMyO0FzJiMzMjtmb3ImIzMyO2EmIzMyO3N1YmplY3Qs
+JiMzMjt3aGVuJiMzMjtpdCYjMzI7aXMmIzMyO29ubHkmIzMyO29uZSYjMzI7dGVzdCYjMzI7Y2hh
+bmdlLCYjMzI7aXQmIzMyO3Nob3VsZA0KJmd0OyYjMzI7aGF2ZSYjMzI7YSYjMzI7cHJlZml4JiMz
+Mjt3aXRoJiMzMjt0aGF0JiMzMjt0ZXN0JiMzMjtuYW1lLCYjMzI7bGlrZToNCiZndDsmIzMyOw0K
+Jmd0OyYjMzI7W1BBVENIJiMzMjtpLWctdCYjMzI7MS8xXSYjMzI7dGVzdHMva21zX2ZsaXA6JiMz
+MjtTa2lwJiMzMjt0ZXN0JiMzMjtvbiYjMzI7TVRLJiMzMjtwbGF0Zm9ybXMNCiZndDsmIzMyOyZn
+dDsmIzMyOw0KJmd0OyYjMzI7DQomZ3Q7JiMzMjtQbGVhc2UmIzMyO2FkZCYjMzI7ZGVzY3JpcHRp
+b24mIzMyO2hlcmUuDQomZ3Q7JiMzMjsNCiZndDsmIzMyOyZndDsmIzMyO0NoYW5nZS1JZDomIzMy
+O0k4MGIyM2M4YzI2MjU0YTI5NzIxY2NkYzAyZTY5ZmE1NjQzMDY3YzI0DQomZ3Q7JiMzMjsNCiZn
+dDsmIzMyO1RoaXMmIzMyO2NoYW5nZS1pZCYjMzI7aXMmIzMyO3VzZWxlc3MsJiMzMjtpdCYjMzI7
+c2hvdWxkJiMzMjtiZSYjMzI7cmVtb3ZlZC4mIzMyO1lvdSYjMzI7Y2FuJiMzMjthZGQNCiZndDsm
+IzMyO2l0JiMzMjthZnRlciYjMzI7JiMzOTstLS0mIzM5OyYjMzI7YmVsb3csJiMzMjtzbyYjMzI7
+aXQmIzMyO3dpbGwmIzMyO25vdCYjMzI7Z2V0JiMzMjttZXJnZWQuDQomZ3Q7JiMzMjsNCiZndDsm
+IzMyOytjYyYjMzI7S2FydGhpayYjMzI7YW5kJiMzMjtTd2F0aQ0KJmd0OyYjMzI7DQomZ3Q7JiMz
+MjsmZ3Q7JiMzMjtTaWduZWQtb2ZmLWJ5OiYjMzI7eGlhbmRvbmcud2FuZyYjMzI7Jmx0Ow0KJmd0
+OyYjMzI7Jmd0OyYjMzI7eGlhbmRvbmcud2FuZ0BtZWRpYXRlay5jb3JwLXBhcnRuZXIuZ29vZ2xl
+LmNvbSZndDsNCiZndDsmIzMyOw0KJmd0OyYjMzI7U2FtZSYjMzI7aGVyZSwmIzMyO2ltaG8mIzMy
+O3RoaXMmIzMyO3Nob3VsZCYjMzI7YmU6DQomZ3Q7JiMzMjtTaWduZWQtb2ZmLWJ5OiYjMzI7WGlh
+bmRvbmcmIzMyO1dhbmcmIzMyOyZsdDsNCiZndDsmIzMyO3hpYW5kb25nLndhbmdAbWVkaWF0ZWsu
+Y29ycC1wYXJ0bmVyLmdvb2dsZS5jb20mZ3Q7DQomZ3Q7JiMzMjtvcg0KJmd0OyYjMzI7U2lnbmVk
+LW9mZi1ieTomIzMyO1dhbmcmIzMyO1hpYW5kb25nJiMzMjsmbHQ7DQomZ3Q7JiMzMjt4aWFuZG9u
+Zy53YW5nQG1lZGlhdGVrLmNvcnAtcGFydG5lci5nb29nbGUuY29tJmd0Ow0KJmd0OyYjMzI7DQom
+Z3Q7JiMzMjtXaGljaCYjMzI7b25lJiMzMjtkbyYjMzI7eW91JiMzMjtwcmVmZXImIzYzOyYjMzI7
+VGhpcyYjMzI7aXMmIzMyO3VwJiMzMjt0byYjMzI7eW91LCYjMzI7cGxlYXNlJiMzMjtjaG9vc2Um
+IzMyO29uZSYjMzI7b2YNCiZndDsmIzMyO3Rob3NlDQomZ3Q7JiMzMjthbmQmIzMyO3VzZSYjMzI7
+Y29uc2l0ZW50bHkmIzMyO2luJiMzMjtmdXR1cmUuDQomZ3Q7JiMzMjsNCiZndDsmIzMyO0FsbCYj
+MzI7b2YmIzMyO2Fib3ZlJiMzMjtjb3VsZCYjMzI7YmUmIzMyO2RvbmUmIzMyO2F0JiMzMjttZXJn
+ZSYjMzI7dGltZSwmIzMyO3NvJiMzMjtwbGVhc2UmIzMyO2p1c3QmIzMyO3JlcGx5DQomZ3Q7JiMz
+Mjt0byYjMzI7dGhpcyYjMzI7bWVzc2FnZSYjMzI7d2l0aCYjMzI7cHJvcG9zZWQmIzMyO2Rlc2Ny
+aXB0aW9uJiMzMjthbmQmIzMyO0kmIzMyO2NvdWxkJiMzMjttZXJnZSYjMzI7aXQuDQomZ3Q7JiMz
+MjsNCiZndDsmIzMyO1dpdGgmIzMyO2Fib3ZlJiMzMjtmaXhlZCYjMzI7dGhpcyYjMzI7aXMNCiZn
+dDsmIzMyO0Fja2VkLWJ5OiYjMzI7S2FtaWwmIzMyO0tvbmllY3pueSYjMzI7Jmx0O2thbWlsLmtv
+bmllY3pueUBsaW51eC5pbnRlbC5jb20mZ3Q7DQomZ3Q7JiMzMjsNCiZndDsmIzMyO1JlZ2FyZHMs
+DQomZ3Q7JiMzMjtLYW1pbA0KJmd0OyYjMzI7Jmd0OyYjMzI7LS0tDQomZ3Q7JiMzMjsmZ3Q7JiMz
+MjsmIzMyO3Rlc3RzL2ttc19mbGlwLmMmIzMyO3wmIzMyOzYmIzMyOysrKysrKw0KJmd0OyYjMzI7
+Jmd0OyYjMzI7JiMzMjsxJiMzMjtmaWxlJiMzMjtjaGFuZ2VkLCYjMzI7NiYjMzI7aW5zZXJ0aW9u
+cygrKQ0KJmd0OyYjMzI7Jmd0OyYjMzI7DQomZ3Q7JiMzMjsmZ3Q7JiMzMjtkaWZmJiMzMjstLWdp
+dCYjMzI7YS90ZXN0cy9rbXNfZmxpcC5jJiMzMjtiL3Rlc3RzL2ttc19mbGlwLmMNCiZndDsmIzMy
+OyZndDsmIzMyO2luZGV4JiMzMjthNzRlNjljNmYuLjk1MjRhOWQ0ZSYjMzI7MTAwNzU1DQomZ3Q7
+JiMzMjsmZ3Q7JiMzMjstLS0mIzMyO2EvdGVzdHMva21zX2ZsaXAuYw0KJmd0OyYjMzI7Jmd0OyYj
+MzI7KysrJiMzMjtiL3Rlc3RzL2ttc19mbGlwLmMNCiZndDsmIzMyOyZndDsmIzMyO0BAJiMzMjst
+MTgyNiw2JiMzMjsrMTgyNiw5JiMzMjtAQCYjMzI7c3RhdGljJiMzMjt2b2lkJiMzMjtydW5fdGVz
+dChpbnQmIzMyO2R1cmF0aW9uLCYjMzI7aW50JiMzMjtmbGFncykNCiZndDsmIzMyOyZndDsmIzMy
+OyYjMzI7aWYmIzMyOyhpc194ZV9kZXZpY2UoZHJtX2ZkKSYjMzI7JmFtcDsmYW1wOyYjMzI7Zmxh
+Z3MmIzMyOyZhbXA7JiMzMjtURVNUX0ZFTkNFX1NUUkVTUykNCiZndDsmIzMyOyZndDsmIzMyOyYj
+MzI7cmV0dXJuOw0KJmd0OyYjMzI7Jmd0OyYjMzI7JiMzMjsNCiZndDsmIzMyOyZndDsmIzMyOysm
+IzMyOyYjMzI7JiMzMjsmIzMyOyYjMzI7JiMzMjsmIzMyO2lmJiMzMjsoaXNfbXRrX2RldmljZShk
+cm1fZmQpKQ0KJmd0OyYjMzI7Jmd0OyYjMzI7KyYjMzI7JiMzMjsmIzMyOyYjMzI7JiMzMjsmIzMy
+OyYjMzI7JiMzMjsmIzMyOyYjMzI7JiMzMjsmIzMyOyYjMzI7JiMzMjsmIzMyO3JldHVybjsNCiZn
+dDsmIzMyOyZndDsmIzMyOysNCiZndDsmIzMyOyZndDsmIzMyOyYjMzI7aWYmIzMyOyhmbGFncyYj
+MzI7JmFtcDsmIzMyO1RFU1RfQk9fVE9PQklHJiMzMjsmYW1wOyZhbXA7JiMzMjshaXNfaW50ZWxf
+ZGV2aWNlKGRybV9mZCkpDQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmIzMyO3JldHVybjsNCiZndDsmIzMy
+OyZndDsmIzMyOyYjMzI7DQomZ3Q7JiMzMjsmZ3Q7JiMzMjtAQCYjMzI7LTE5MDMsNiYjMzI7KzE5
+MDYsOSYjMzI7QEAmIzMyO3N0YXRpYyYjMzI7dm9pZCYjMzI7cnVuX3BhaXIoaW50JiMzMjtkdXJh
+dGlvbiwmIzMyO2ludCYjMzI7ZmxhZ3MpDQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmIzMyO2lmJiMzMjso
+aXNfeGVfZGV2aWNlKGRybV9mZCkmIzMyOyZhbXA7JmFtcDsmIzMyO2ZsYWdzJiMzMjsmYW1wOyYj
+MzI7VEVTVF9GRU5DRV9TVFJFU1MpDQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmIzMyO3JldHVybjsNCiZn
+dDsmIzMyOyZndDsmIzMyOyYjMzI7DQomZ3Q7JiMzMjsmZ3Q7JiMzMjsrJiMzMjsmIzMyOyYjMzI7
+JiMzMjsmIzMyOyYjMzI7JiMzMjtpZiYjMzI7KGlzX210a19kZXZpY2UoZHJtX2ZkKSkNCiZndDsm
+IzMyOyZndDsmIzMyOysmIzMyOyYjMzI7JiMzMjsmIzMyOyYjMzI7JiMzMjsmIzMyOyYjMzI7JiMz
+MjsmIzMyOyYjMzI7JiMzMjsmIzMyOyYjMzI7JiMzMjtyZXR1cm47DQomZ3Q7JiMzMjsmZ3Q7JiMz
+MjsrDQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmIzMyO2lmJiMzMjsoZmxhZ3MmIzMyOyZhbXA7JiMzMjtU
+RVNUX0JPX1RPT0JJRyYjMzI7JmFtcDsmYW1wOyYjMzI7IWlzX2ludGVsX2RldmljZShkcm1fZmQp
+KQ0KJmd0OyYjMzI7Jmd0OyYjMzI7JiMzMjtyZXR1cm47DQomZ3Q7JiMzMjsmZ3Q7JiMzMjsmIzMy
+Ow0KJmd0OyYjMzI7Jmd0OyYjMzI7LS0mIzMyOw0KJmd0OyYjMzI7Jmd0OyYjMzI7Mi40Ni4wDQom
+Z3Q7JiMzMjsmZ3Q7JiMzMjsNCg0KPC9wcmU+DQo8L3A+PC9ib2R5PjwvaHRtbD48IS0tdHlwZTp0
+ZXh0LS0+PCEtLXstLT48cHJlPioqKioqKioqKioqKiogTUVESUFURUsgQ29uZmlkZW50aWFsaXR5
+IE5vdGljZQ0KICoqKioqKioqKioqKioqKioqKioqDQpUaGUgaW5mb3JtYXRpb24gY29udGFpbmVk
+IGluIHRoaXMgZS1tYWlsIG1lc3NhZ2UgKGluY2x1ZGluZyBhbnkgDQphdHRhY2htZW50cykgbWF5
+IGJlIGNvbmZpZGVudGlhbCwgcHJvcHJpZXRhcnksIHByaXZpbGVnZWQsIG9yIG90aGVyd2lzZQ0K
+ZXhlbXB0IGZyb20gZGlzY2xvc3VyZSB1bmRlciBhcHBsaWNhYmxlIGxhd3MuIEl0IGlzIGludGVu
+ZGVkIHRvIGJlIA0KY29udmV5ZWQgb25seSB0byB0aGUgZGVzaWduYXRlZCByZWNpcGllbnQocyku
+IEFueSB1c2UsIGRpc3NlbWluYXRpb24sIA0KZGlzdHJpYnV0aW9uLCBwcmludGluZywgcmV0YWlu
+aW5nIG9yIGNvcHlpbmcgb2YgdGhpcyBlLW1haWwgKGluY2x1ZGluZyBpdHMgDQphdHRhY2htZW50
+cykgYnkgdW5pbnRlbmRlZCByZWNpcGllbnQocykgaXMgc3RyaWN0bHkgcHJvaGliaXRlZCBhbmQg
+bWF5IA0KYmUgdW5sYXdmdWwuIElmIHlvdSBhcmUgbm90IGFuIGludGVuZGVkIHJlY2lwaWVudCBv
+ZiB0aGlzIGUtbWFpbCwgb3IgYmVsaWV2ZQ0KIA0KdGhhdCB5b3UgaGF2ZSByZWNlaXZlZCB0aGlz
+IGUtbWFpbCBpbiBlcnJvciwgcGxlYXNlIG5vdGlmeSB0aGUgc2VuZGVyIA0KaW1tZWRpYXRlbHkg
+KGJ5IHJlcGx5aW5nIHRvIHRoaXMgZS1tYWlsKSwgZGVsZXRlIGFueSBhbmQgYWxsIGNvcGllcyBv
+ZiANCnRoaXMgZS1tYWlsIChpbmNsdWRpbmcgYW55IGF0dGFjaG1lbnRzKSBmcm9tIHlvdXIgc3lz
+dGVtLCBhbmQgZG8gbm90DQpkaXNjbG9zZSB0aGUgY29udGVudCBvZiB0aGlzIGUtbWFpbCB0byBh
+bnkgb3RoZXIgcGVyc29uLiBUaGFuayB5b3UhDQo8L3ByZT48IS0tfS0tPg==
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- .../chamelium/kms_chamelium_color_pipeline.c  | 401 ++++++++++++++++++
- tests/meson.build                             |   2 +
- 2 files changed, 403 insertions(+)
- create mode 100644 tests/chamelium/kms_chamelium_color_pipeline.c
-
-diff --git a/tests/chamelium/kms_chamelium_color_pipeline.c b/tests/chamelium/kms_chamelium_color_pipeline.c
-new file mode 100644
-index 000000000..19828c5f3
---- /dev/null
-+++ b/tests/chamelium/kms_chamelium_color_pipeline.c
-@@ -0,0 +1,401 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: kms chamelium color pipeline
-+ * Category: Display
-+ * Description: Test to validate DRM colorops at plane level using Chamelium to verify instead of CRC
-+ * Driver requirement: i915, xe
-+ * Mega feature: Color Management
-+ */
-+
-+#include "kms_chamelium_helper.h"
-+#include "kms_color_helper.h"
-+#include "kms_colorop_helper.h"
-+
-+#define MAX_COLOROPS	5
-+
-+/**
-+ * SUBTEST: plane-%s
-+ * Description: Test plane color pipeline with colorops: %arg[1].
-+ *
-+ * arg[1]:
-+ *
-+ * @lut1d:			1D LUT
-+ * @lut1d-pre-ctm3x4:		1D LUT PRE CTM 3x4
-+ * @lut1d-post-ctm3x4:		1D LUT POST CTM 3x4
-+ * @ctm3x4:			3X4 CTM
-+ * @lut1d-ctm3x4:		1D LUT --> 3X4 CTM
-+ * @ctm3x4-lut1d:		3X4 CTM --> 1D LUT
-+ * @lut1d-lut1d:		1D LUT --> 1D LUT
-+ * @lut1d-ctm3x4-lut1d:		1D LUT --> 3X4 CTM --> 1D LUT
-+ * @lut3d-green-only:		3D LUT
-+ */
-+
-+IGT_TEST_DESCRIPTION("Test DRM colorops at plane level using Chamelium to verify instead of CRC");
-+
-+static void test_cleanup(data_t *data)
-+{
-+	igt_output_set_crtc(data->output, NULL);
-+	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+}
-+
-+static int test_setup(data_t *data, igt_crtc_t *crtc)
-+{
-+	int i;
-+
-+	igt_require(crtc);
-+	igt_require(crtc->n_planes > 0);
-+
-+	igt_output_set_crtc(data->output, crtc);
-+
-+	data->primary = igt_crtc_get_plane_type(crtc, DRM_PLANE_TYPE_PRIMARY);
-+	data->mode = igt_output_get_mode(data->output);
-+	igt_require(data->mode);
-+
-+	/* Disable pipe color props. */
-+	disable_ctm(crtc);
-+	disable_degamma(crtc);
-+	disable_gamma(crtc);
-+
-+	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+
-+	/* Find matching chamelium port */
-+	for (i = 0; i < data->port_count; i++) {
-+		if (!strcmp(data->output->name,
-+		    chamelium_port_get_name(data->ports[i])))
-+		return i;
-+	}
-+
-+	return -1;
-+}
-+
-+static bool ctm_colorop_only(kms_colorop_t *colorops[])
-+{
-+	int i;
-+
-+	if (!colorops[0])
-+		return false;
-+
-+	for (i = 0; colorops[i]; i++) {
-+		if (colorops[i]->type != KMS_COLOROP_CTM_3X4)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
-+static void _test_plane_colorops(data_t *data,
-+				 igt_plane_t *plane,
-+				 const color_t *fb_colors,
-+				 const color_t *exp_colors,
-+				 kms_colorop_t *colorops[],
-+				 struct chamelium_port *port)
-+{
-+	igt_display_t *display = &data->display;
-+	drmModeModeInfo *mode = data->mode;
-+	igt_colorop_t *color_pipeline;
-+	struct igt_fb fb, fbref;
-+	struct chamelium_frame_dump *frame;
-+	bool ret;
-+
-+	color_pipeline = get_color_pipeline(display, plane, colorops);
-+	igt_skip_on(!color_pipeline);
-+
-+	/* Create HW framebuffer */
-+	igt_assert(igt_create_fb(data->drm_fd,
-+				 mode->hdisplay,
-+				 mode->vdisplay,
-+				 DRM_FORMAT_XRGB8888,
-+				 DRM_FORMAT_MOD_LINEAR,
-+				 &fb));
-+
-+	/* Create reference framebuffer */
-+	igt_assert(igt_create_fb(data->drm_fd,
-+				 mode->hdisplay,
-+				 mode->vdisplay,
-+				 DRM_FORMAT_XRGB8888,
-+				 DRM_FORMAT_MOD_LINEAR,
-+				 &fbref));
-+
-+	/* ---- Software reference ---- */
-+	set_color_pipeline_bypass(plane);
-+	paint_rectangles(data, mode, exp_colors, &fbref);
-+
-+	/* ---- Hardware path ---- */
-+	set_color_pipeline(display, plane, colorops, color_pipeline);
-+
-+	if (ctm_colorop_only(colorops))
-+		paint_rectangles(data, mode, fb_colors, &fb);
-+	else
-+		paint_gradient_rectangles(data, mode, fb_colors, &fb);
-+
-+	igt_plane_set_fb(plane, &fb);
-+	igt_display_commit_atomic(&data->display, 0, NULL);
-+
-+	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
-+
-+	frame = chamelium_read_captured_frame(data->chamelium, 0);
-+
-+	ret = chamelium_frame_match_or_dump(data->chamelium,
-+					    port,
-+					    frame,
-+					    &fbref,
-+					    CHAMELIUM_CHECK_ANALOG);
-+
-+	igt_assert(ret);
-+
-+	/* Cleanup */
-+	set_color_pipeline_bypass(plane);
-+	reset_colorops(colorops);
-+
-+	igt_plane_set_fb(plane, NULL);
-+	igt_display_commit_atomic(&data->display, 0, NULL);
-+
-+	igt_remove_fb(data->drm_fd, &fb);
-+	igt_remove_fb(data->drm_fd, &fbref);
-+}
-+
-+static void
-+test_plane_colorops(data_t *data, igt_crtc_t *crtc,
-+		    const color_t *fb_colors,
-+		    const color_t *exp_colors,
-+		    kms_colorop_t *colorops[],
-+		    int port_idx)
-+{
-+	int n_planes = crtc->n_planes;
-+	igt_output_t *output = data->output;
-+	igt_plane_t *plane;
-+
-+	for (int plane_id = 0; plane_id < n_planes; plane_id++) {
-+		plane = igt_output_get_plane(output, plane_id);
-+
-+		if (!igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
-+			continue;
-+
-+		igt_dynamic_f("pipe-%s-plane-%u", kmstest_pipe_name(crtc->pipe), plane_id)
-+			_test_plane_colorops(data, plane, fb_colors,
-+					     exp_colors, colorops,
-+					     data->ports[port_idx]);
-+	}
-+}
-+
-+static void
-+run_tests_for_plane(data_t *data)
-+{
-+	igt_crtc_t *crtc;
-+	igt_output_t *output = NULL;
-+	int port_idx = 0;
-+	static const color_t colors_rgb[] = {
-+	        { 1.0, 0.0, 0.0 },
-+	        { 0.0, 1.0, 0.0 },
-+	        { 0.0, 0.0, 1.0 },
-+	};
-+	static const color_t colors_red_to_blue[] = {
-+		{ 0.0, 0.0, 1.0 },
-+		{ 0.0, 1.0, 0.0 },
-+		{ 0.0, 0.0, 1.0 },
-+	};
-+	static const color_t colors_red_and_green[] = {
-+		{ 1.0, 1.0, 0.0 },
-+		{ 1.0, 1.0, 0.0 },
-+		{ 1.0, 1.0, 0.0 }
-+	};
-+	static const color_t colors_only_green[] = {
-+		{ 0.0, 1.0, 0.0 },
-+		{ 0.0, 1.0, 0.0 },
-+		{ 0.0, 1.0, 0.0 }
-+	};
-+	const igt_matrix_3x4_t ctm_red_to_blue = { {
-+		0.0, 0.0, 0.0, 0.0,
-+		0.0, 1.0, 0.0, 0.0,
-+		1.0, 0.0, 1.0, 0.0,
-+	} };
-+	const igt_matrix_3x4_t ctm_linear = { {
-+		1.0, 0.0, 0.0, 0.0,
-+		0.0, 1.0, 0.0, 0.0,
-+		0.0, 0.0, 1.0, 0.0,
-+	} };
-+	kms_colorop_t lut1d_linear = {
-+		.type = KMS_COLOROP_CUSTOM_LUT1D,
-+		.name = "Pre/Post CSC GAMMA (linear LUT)",
-+		.lut1d = &igt_1dlut_linear,
-+		.transform = &igt_color_linear,
-+	};
-+	kms_colorop_t lut1d_max = {
-+		.type = KMS_COLOROP_CUSTOM_LUT1D,
-+		.lut1d = &igt_1dlut_max,
-+		.name = "Pre/Post CSC GAMMA (max LUT)",
-+		.transform = &igt_color_max,
-+	};
-+	kms_colorop_t lut3d = {
-+		.type = KMS_COLOROP_LUT3D,
-+		.lut3d = &igt_3dlut_17_green_only,
-+		.lut3d_info = {
-+			.size = 17,
-+			.interpolation = DRM_COLOROP_LUT3D_INTERPOLATION_TETRAHEDRAL,
-+		},
-+		.name = "3dlut passing only green channel (RGB order)",
-+		.transform = NULL,
-+	};
-+	kms_colorop_t ctm_3x4 = {
-+		.type = KMS_COLOROP_CTM_3X4,
-+		.name = "CTM 3X4 (red to blue)",
-+		.matrix_3x4 = &ctm_red_to_blue,
-+	};
-+	kms_colorop_t ctm_3x4_linear = {
-+		.type = KMS_COLOROP_CTM_3X4,
-+		.name = "CTM 3X4 (linear)",
-+		.matrix_3x4 = &ctm_linear,
-+	};
-+
-+	struct {
-+		const char *name;
-+		const color_t *fb_colors;
-+		const color_t *exp_colors;
-+		kms_colorop_t *colorops[MAX_COLOROPS];
-+	} plane_colorops_tests[] = {
-+		{ .name = "lut1d",
-+		  .fb_colors = colors_rgb,
-+		  .exp_colors = colors_rgb,
-+		  .colorops = { &lut1d_max, NULL },
-+		},
-+		{ .name = "lut1d-pre-ctm3x4",
-+		  .fb_colors = colors_rgb,
-+		  .exp_colors = colors_rgb,
-+		  .colorops = { &lut1d_max, &ctm_3x4_linear, NULL },
-+		},
-+		{ .name = "lut1d-post-ctm3x4",
-+		  .fb_colors = colors_rgb,
-+		  .exp_colors = colors_rgb,
-+		  .colorops = { &ctm_3x4_linear, &lut1d_max, NULL },
-+		},
-+		{ .name = "ctm3x4",
-+		  .fb_colors = colors_rgb,
-+		  .exp_colors = colors_red_to_blue,
-+		  .colorops = { &ctm_3x4, NULL },
-+		},
-+		{ .name = "lut1d-ctm3x4",
-+		  .fb_colors = colors_rgb,
-+		  .exp_colors = colors_red_to_blue,
-+		  .colorops = { &lut1d_max, &ctm_3x4, NULL },
-+		},
-+		{ .name = "ctm3x4-lut1d",
-+		  .fb_colors = colors_rgb,
-+		  .exp_colors = colors_red_to_blue,
-+		  .colorops = { &ctm_3x4, &lut1d_max, NULL },
-+		},
-+		{ .name = "lut1d-lut1d",
-+		  .fb_colors = colors_rgb,
-+		  .exp_colors = colors_rgb,
-+		  .colorops = { &lut1d_linear, &lut1d_max, NULL },
-+		},
-+		{ .name = "lut1d-ctm3x4-lut1d",
-+		  .fb_colors = colors_rgb,
-+		  .exp_colors = colors_red_to_blue,
-+		  .colorops = { &lut1d_linear, &ctm_3x4, &lut1d_max, NULL },
-+		},
-+		{ .name = "lut3d-green-only",
-+		  .fb_colors = colors_red_and_green,
-+		  .exp_colors = colors_only_green,
-+		  .colorops = { &lut3d, NULL },
-+		},
-+	};
-+
-+	for (int i = 0; i < ARRAY_SIZE(plane_colorops_tests); i++) {
-+		igt_describe_f("Test plane color pipeline with colorops: %s", plane_colorops_tests[i].name);
-+		igt_subtest_with_dynamic_f("plane-%s", plane_colorops_tests[i].name) {
-+			for_each_crtc_with_single_output(&data->display, crtc,
-+							 output) {
-+				data->output = output;
-+
-+				if (!pipe_output_combo_valid(data, crtc))
-+					continue;
-+
-+				port_idx = test_setup(data, crtc);
-+				igt_require(port_idx >= 0);
-+
-+				data->color_depth = 8;
-+				data->drm_format = DRM_FORMAT_XRGB8888;
-+
-+				test_plane_colorops(data, crtc,
-+						    plane_colorops_tests[i].fb_colors,
-+						    plane_colorops_tests[i].exp_colors,
-+						    plane_colorops_tests[i].colorops,
-+						    port_idx);
-+
-+				test_cleanup(data);
-+			}
-+		}
-+	}
-+}
-+
-+int igt_main()
-+{
-+	int i;
-+	int has_plane_color_pipeline = 0;
-+	data_t data = {};
-+
-+	igt_fixture() {
-+		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-+
-+		/*
-+		 * Plane color pipeline support requires atomic modesetting.
-+		 * The atomic capability is enabled here as a prerequisite;
-+		 * igt_display_require() will reinitialize the display state.
-+		 */
-+		if (drmSetClientCap(data.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
-+			data.display.is_atomic = 1;
-+
-+		if (drmSetClientCap(data.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
-+			has_plane_color_pipeline = 1;
-+
-+		kmstest_set_vt_graphics_mode();
-+
-+		igt_display_require(&data.display, data.drm_fd);
-+		data.display.has_plane_color_pipeline = has_plane_color_pipeline;
-+		igt_require(data.display.is_atomic);
-+
-+		/* Chamelium init */
-+		data.chamelium = chamelium_init(data.drm_fd, &data.display);
-+		igt_require(data.chamelium);
-+
-+		data.ports = chamelium_get_ports(data.chamelium,
-+						 &data.port_count);
-+
-+		if (!data.port_count)
-+			igt_skip("No ports connected\n");
-+
-+		/*
-+		 * The behavior differs based on the availability of port mappings:
-+		 * - When using port mappings (chamelium_read_port_mappings),
-+		 *   ports are not plugged
-+		 * - During autodiscovery, all ports are plugged at the end.
-+		 *
-+		 * This quick workaround (unplug, plug, and re-probe the connectors)
-+		 * prevents any ports from being unintentionally skipped in test_setup.
-+		 */
-+		for (i = 0; i < data.port_count; i++) {
-+			chamelium_unplug(data.chamelium, data.ports[i]);
-+			chamelium_plug(data.chamelium, data.ports[i]);
-+			chamelium_wait_for_conn_status_change(&data.display,
-+							      data.chamelium,
-+							      data.ports[i],
-+							      DRM_MODE_CONNECTED);
-+			igt_assert_f(chamelium_reprobe_connector(&data.display,
-+								 data.chamelium,
-+								 data.ports[i]) == DRM_MODE_CONNECTED,
-+								 "Output not connected\n");
-+		}
-+	}
-+
-+	igt_subtest_group()
-+		run_tests_for_plane(&data);
-+
-+	igt_fixture() {
-+		igt_display_fini(&data.display);
-+		drm_close_driver(data.drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 7f356de9b..3f50a3b92 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -359,6 +359,7 @@ endif
- chamelium_progs = [
- 	'kms_chamelium_audio',
- 	'kms_chamelium_color',
-+	'kms_chamelium_color_pipeline',
- 	'kms_chamelium_edid',
- 	'kms_chamelium_frames',
- 	'kms_chamelium_hpd',
-@@ -387,6 +388,7 @@ extra_sources = {
- 	'kms_colorop':  [ 'kms_colorop_helper.c' ],
- 	'kms_chamelium_audio': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_color':  [ 'kms_color_helper.c', join_paths ('chamelium', 'kms_chamelium_helper.c') ],
-+	'kms_chamelium_color_pipeline': [ 'kms_color_helper.c', 'kms_colorop_helper.c', join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_edid': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
- 	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
--- 
-2.25.1
+--__=_Part_Boundary_008_843224313.1830896981--
 
