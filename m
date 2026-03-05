@@ -4,54 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3211F3D319
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Mar 2026 16:02:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D1A4F3D31C
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Mar 2026 16:21:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3C5EA10EC1F;
-	Thu,  5 Mar 2026 16:02:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 46DCF10EC52;
+	Thu,  5 Mar 2026 16:21:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bp+PP+Bw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aqpFQKEk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A3E110EC1F
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2026 16:02:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 494DD10E2CA
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2026 16:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772726571; x=1804262571;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=0sQzUgydkxv0FfY3DrTCXdtbTtF61lhcaQCEdKmThQA=;
- b=bp+PP+Bw+0Zta48pSrpMtnnr5Kn5r578BTNWGDzPEK9IARf+FWsyh0If
- 918Tv7yIyC1g311bPDt1J+tNymT92PSLI9893AdYr6tshbUQday5XROgX
- wTO9+Ngirse6u5aSGCRVW+I9RkTUpS7PvKWdtWUoS0dBchxw+qA25GK6D
- kr6I/L64zcw9zparA9gPXjuR9fG3Qic+tbIwjz8oxiCxMJqmJFBDELqKn
- h8McJOyQHhOPBV0a2LjV3us/IrmDMf9yT1NwbYOXptJUr28bTMX9aFUA7
- PopGeW0AljiraLGK8mA0MEyWqEc2S5OF49c3UNHklX/d0ujQEmVZHe7+3 Q==;
-X-CSE-ConnectionGUID: k7qrgUcyR4+hbldeA723Wg==
-X-CSE-MsgGUID: ZCat6d2SR72ECade+28oJA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="91208418"
-X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; d="scan'208";a="91208418"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2026 08:02:50 -0800
-X-CSE-ConnectionGUID: 9ayCR3grRjurOseViNvBeQ==
-X-CSE-MsgGUID: QkU5IHTNR/il3qqVrTzexg==
+ t=1772727686; x=1804263686;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=W+M1b/xj3MlFw+iRn8cWIUp+dM6VKvQjF5zPPAoLxC8=;
+ b=aqpFQKEk3pwWwkWikyOtdb1r1lO/Os2eGgCIKxkSV9xyp9zyKrFOR1sL
+ xF3j166xra3Di00JLOYKa9OPVKULGeELTKVMu3YT6vhbLjJ2M3MuykrgV
+ 2AeSyipdtvFbTihyb1ZnRH30I1jJSQc0bpHKsOSAXtdrDL9osNJ8qVmAj
+ 1cWWyyqL9De/i+HrUrLOWe0VBjhSE34baYbDKNi6+4BZI2747Q7kP9gE9
+ bkvhTz3L91lBgk3zUqUmIoBE3/PHgEUeYzK3kkosy8dme/2jIOzKP5LDr
+ 6+fcWiUGJHab2edQcDGsMj9Q1YcCzySxFzQu/ynqUSfkJ0oBGbqqd/5do Q==;
+X-CSE-ConnectionGUID: MKMqUXYtTjCO91YdjmNeFA==
+X-CSE-MsgGUID: 3boCXTEDTOaP2IVfUOrzag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="84904946"
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; d="scan'208";a="84904946"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2026 08:21:25 -0800
+X-CSE-ConnectionGUID: RkZjswhfTzuudfZzRokcYw==
+X-CSE-MsgGUID: LW0dvKvKRTS5N6Bd7dzGag==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; d="scan'208";a="241737812"
-Received: from himanshu-h97m-d3h.iind.intel.com ([10.223.55.10])
- by fmviesa002.fm.intel.com with ESMTP; 05 Mar 2026 08:02:48 -0800
-From: himanshu.girotra@intel.com
-To: matthew.d.roper@intel.com, x.wang@intel.com, igt-dev@lists.freedesktop.org,
- nishit.sharma@intel.com, zbigniew.kempczynski@intel.com,
- ashutosh.dixit@intel.com
-Subject: [PATCH v3 i-g-t] lib/intel_pat: Cache PAT config for unprivileged
- processes
-Date: Thu,  5 Mar 2026 21:32:46 +0530
-Message-ID: <20260305160246.12557-1-himanshu.girotra@intel.com>
-X-Mailer: git-send-email 2.50.1
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; d="scan'208";a="215943150"
+Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.54])
+ ([172.28.182.54])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2026 08:21:24 -0800
+Message-ID: <09f01ecd-46dd-4712-90e7-a51aea8cd219@linux.intel.com>
+Date: Thu, 5 Mar 2026 17:21:21 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/intel/xe_configfs: Skip ctx-restore subtests on
+ SR-IOV VF
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Nitin Gote <nitin.r.gote@intel.com>, igt-dev@lists.freedesktop.org,
+ michal.wajdeczko@intel.com, Lukasz Laguna <lukasz.laguna@intel.com>
+References: <20260224112041.297334-2-nitin.r.gote@intel.com>
+ <20260224132012.prlzw36las3j4uzk@kamilkon-DESK.igk.intel.com>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20260224132012.prlzw36las3j4uzk@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,153 +73,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Himanshu Girotra <himanshu.girotra@intel.com>
 
-Commit 4e59b8e7779b ("lib/intel_pat: use kernel debugfs as
-authoritative PAT source for Xe") changed the Xe PAT lookup to
-read from debugfs, which requires root access. Some xe_oa subtests
-fork a child process that drops root privileges before performing
-GPU operations that internally need the PAT write-back index.
-After dropping root, the debugfs read fails.
-
-Fix this by caching the PAT configuration in struct xe_device at
-xe_device_get() time. Since xe_device_get() is called while still
-root, the cache is available to forked children even after
-igt_drop_root(). Tests that open a new fd after forking must call
-xe_device_get() explicitly before dropping root to populate the
-cache for that fd.
-
-v2: Cache PAT in struct xe_device instead of a global static;
-    drop the intel_pat_precache() helper — xe_device_get() already
-    populates the cache, so call it directly in xe_oa before
-    igt_drop_root() (Ashutosh Dixit)
-
-v3: Use pat_cache pointer, NULL indicates unpopulated cache;
-    remove redundant xe_oa.c change (Ashutosh Dixit)
-
-    Add FIXME for multi-GPU (Zbigniew Kempczyński)
-
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Xin Wang <x.wang@intel.com>
-Cc: Nishit Sharma <nishit.sharma@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
----
- lib/intel_pat.c   | 18 ++++++++++--------
- lib/xe/xe_query.c | 20 ++++++++++++++++++++
- lib/xe/xe_query.h |  5 +++++
- 3 files changed, 35 insertions(+), 8 deletions(-)
-
-diff --git a/lib/intel_pat.c b/lib/intel_pat.c
-index 8660a2515..e758ce9be 100644
---- a/lib/intel_pat.c
-+++ b/lib/intel_pat.c
-@@ -6,6 +6,7 @@
- #include <fcntl.h>
- #include "igt.h"
- #include "intel_pat.h"
-+#include "xe/xe_query.h"
- 
- /**
-  * xe_get_pat_sw_config - Helper to read PAT (Page Attribute Table) software configuration
-@@ -99,17 +100,18 @@ static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
- 	uint16_t dev_id;
- 
- 	/*
--	 * For Xe driver, query the kernel's PAT software configuration
--	 * via debugfs. The kernel is the authoritative source for PAT
--	 * indices, accounting for platform-specific workarounds
--	 * (e.g. Wa_16023588340) at runtime.
-+	 * For Xe, use the PAT cache stored in struct xe_device.
-+	 * xe_device_get() populates the cache while still root; forked
-+	 * children that inherit the xe_device can use it post-drop_root().
- 	 */
- 	if (is_xe_device(fd)) {
--		int32_t parsed = xe_get_pat_sw_config(fd, pat);
-+		struct xe_device *xe_dev = xe_device_get(fd);
- 
--		igt_assert_f(parsed > 0,
--			     "Failed to get PAT sw_config from debugfs (parsed=%d)\n",
--			     parsed);
-+		igt_assert_f(xe_dev->pat_cache,
-+			     "PAT sw_config not available for fd %d -- "
-+			     "debugfs not accessible (missing root or not mounted?)\n",
-+			     fd);
-+		*pat = *xe_dev->pat_cache;
- 		return;
- 	}
- 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 981d76948..ea8889f3b 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -22,6 +22,7 @@
- #include "ioctl_wrappers.h"
- #include "igt_map.h"
- 
-+#include "intel_pat.h"
- #include "xe_query.h"
- #include "xe_ioctl.h"
- 
-@@ -235,6 +236,7 @@ static void xe_device_free(struct xe_device *xe_dev)
- 	free(xe_dev->mem_regions);
- 	free(xe_dev->vram_size);
- 	free(xe_dev->eu_stall);
-+	free(xe_dev->pat_cache);
- 	free(xe_dev);
- }
- 
-@@ -299,6 +301,24 @@ struct xe_device *xe_device_get(int fd)
- 	xe_dev->default_alignment = __mem_default_alignment(xe_dev->mem_regions);
- 	xe_dev->has_vram = __mem_has_vram(xe_dev->mem_regions);
- 
-+	/*
-+	 * Populate the PAT cache while we still have sufficient privileges
-+	 * to read debugfs.  Forked children that inherit this xe_device
-+	 * (via fork()) will be able to use the cached values even after
-+	 * dropping root with igt_drop_root(). pat_cache is left NULL if
-+	 * debugfs is not accessible.
-+	 *
-+	 * FIXME: the cache is keyed by fd; for multi-GPU support this
-+	 * should be extended to cache PAT entries by platform version/
-+	 * revision instead.
-+	 */
-+	xe_dev->pat_cache = calloc(1, sizeof(*xe_dev->pat_cache));
-+	igt_assert(xe_dev->pat_cache);
-+	if (xe_get_pat_sw_config(xe_dev->fd, xe_dev->pat_cache) <= 0) {
-+		free(xe_dev->pat_cache);
-+		xe_dev->pat_cache = NULL;
-+	}
-+
- 	/* We may get here from multiple threads, use first cached xe_dev */
- 	pthread_mutex_lock(&cache.cache_mutex);
- 	prev = find_in_cache_unlocked(fd);
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index d7a9f95f9..53a32e4b1 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -9,6 +9,8 @@
- #ifndef XE_QUERY_H
- #define XE_QUERY_H
- 
-+#include "intel_pat.h"
-+
- #include <stdint.h>
- #include <xe_drm.h>
- 
-@@ -74,6 +76,9 @@ struct xe_device {
- 
- 	/** @dev_id: Device id of xe device */
- 	uint16_t dev_id;
-+
-+	/** @pat_cache: cached PAT index configuration, NULL if not yet populated */
-+	struct intel_pat_cache *pat_cache;
- };
- 
- #define xe_for_each_engine(__fd, __hwe) \
--- 
-2.50.1
-
+On 2/24/2026 2:20 PM, Kamil Konieczny wrote:
+> Hi Nitin,
+> On 2026-02-24 at 16:50:42 +0530, Nitin Gote wrote:
+>> The ctx-restore subtests use intel_register_read() via direct MMIO
+>> (PCI BAR) access to verify that the batch buffer wrote the expected
+>> register values. On SR-IOV Virtual Functions (VF), only a very limited
+>> subset of registers is accessible. Registers like 0x4F100 are not
+>> exposed to VFs, so the read always returns 0, causing a false test
+>> failure.
+>>
+>> Skip all ctx-restore subtests (post-bb, mid-bb, and their invalid
+>> variants) when the device is running in SR-IOV VF mode.
+Does it mean the feature is not applicable to VFs or just the 
+verification is a bit harder ?
+> +cc Lukasz and Marcin
+>
+>> Signed-off-by: Nitin Gote <nitin.r.gote@intel.com>
+>> ---
+>>   tests/intel/xe_configfs.c | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
+>> index 0db4af201..ab55e333b 100644
+>> --- a/tests/intel/xe_configfs.c
+>> +++ b/tests/intel/xe_configfs.c
+>> @@ -409,6 +409,7 @@ int igt_main()
+>>   
+>>   	igt_describe("Validate ctx_restore_post_bb with invalid options");
+>>   	igt_subtest("ctx-restore-post-bb-invalid") {
+>> +		igt_require_f(!is_vf_device, "ctx-restore not supported in VF\n");
+>>   		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>>   		test_ctx_restore_invalid(configfs_device_fd, "post");
+>>   		close_configfs_group(configfs_fd, configfs_device_fd);
+>> @@ -416,6 +417,7 @@ int igt_main()
+>>   
+>>   	igt_describe("Validate ctx_restore_post_bb");
+>>   	igt_subtest("ctx-restore-post-bb") {
+>> +		igt_require_f(!is_vf_device, "ctx-restore not supported in VF\n");
+>>   		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>>   		test_ctx_restore(configfs_device_fd, "post");
+>>   		close_configfs_group(configfs_fd, configfs_device_fd);
+>> @@ -423,6 +425,7 @@ int igt_main()
+>>   
+>>   	igt_describe("Validate ctx_restore_mid_bb with invalid options");
+>>   	igt_subtest("ctx-restore-mid-bb-invalid") {
+>> +		igt_require_f(!is_vf_device, "ctx-restore not supported in VF\n");
+>>   		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>>   		test_ctx_restore_invalid(configfs_device_fd, "mid");
+>>   		close_configfs_group(configfs_fd, configfs_device_fd);
+>> @@ -430,6 +433,7 @@ int igt_main()
+>>   
+>>   	igt_describe("Validate ctx_restore_mid_bb");
+>>   	igt_subtest("ctx-restore-mid-bb") {
+>> +		igt_require_f(!is_vf_device, "ctx-restore not supported in VF\n");
+>>   		configfs_device_fd = create_device_configfs_group(configfs_fd);
+>>   		test_ctx_restore(configfs_device_fd, "mid");
+>>   		close_configfs_group(configfs_fd, configfs_device_fd);
+>> -- 
+>> 2.50.1
+>>
