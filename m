@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2F0EF3093A
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Mar 2026 11:17:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B9E0F30947
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Mar 2026 11:33:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 83F4410E278;
-	Thu,  5 Mar 2026 11:17:31 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BEu6txae";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9536410E278
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2026 11:17:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772709450; x=1804245450;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=ptncmB3d4iw3QsnDoyBIbSUh5HHDuFOzojaZrHmmio4=;
- b=BEu6txaeHCn7DjtbYRuAV9EuOBNkgTud8gvE7HVaLHoysXAgOVWcb3nZ
- dXrlSxM7NaqsEGiLH+4EQiDFOlkit1anv8KaVXA9q40iO6h+zUo9vYZs6
- E/5Dc9b6+P+faCTipM0HPntgEp+5kiPkvmVtpHeMcl99SQqjiNafXHRan
- kW2VanSMAmPBIXc+yE0VPfwLjm1eZx/ycLojBCx/XxmeTSGdeQHoDqZxl
- KxS8BgYUPuYIvh8xM+p81YG82SD7FE44r2AhHVQRt3VcgI+7JJ03xMe2e
- cw2Sy0erErpuk2mestkg60LsH2nB8HYS6VKvzW0YfvGLjF4/ZVhFLarEz w==;
-X-CSE-ConnectionGUID: a2W9aOoKSHyWbv5qlQ0/wQ==
-X-CSE-MsgGUID: ctB9hJKUTeubMW/AcbePkg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="96410101"
-X-IronPort-AV: E=Sophos;i="6.23,102,1770624000"; d="scan'208";a="96410101"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2026 03:17:29 -0800
-X-CSE-ConnectionGUID: bfHaeHuBQMuQjpecvzj2SA==
-X-CSE-MsgGUID: xwwLkiTLQiy2Ip3Wva8PyA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,102,1770624000"; d="scan'208";a="223139934"
-Received: from intel-s2600wft.iind.intel.com ([10.223.26.143])
- by orviesa004.jf.intel.com with ESMTP; 05 Mar 2026 03:17:26 -0800
-From: S Sebinraj <s.sebinraj@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: carlos.santa@intel.com, karthik.b.s@intel.com, krzysztof.karas@intel.com,
- kamil.konieczny@intel.com, zbigniew.kempczynski@intel.com,
- S Sebinraj <s.sebinraj@intel.com>
-Subject: [PATCH i-g-t v7] tests/kms_explict_fence: Add Test for Explicit
- Fencing
-Date: Thu,  5 Mar 2026 16:33:09 +0530
-Message-Id: <20260305110309.1244130-1-s.sebinraj@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 239BC10E002;
+	Thu,  5 Mar 2026 11:33:46 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3372B10E002;
+ Thu,  5 Mar 2026 11:33:45 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7343968500391169909=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/xe=5Fuserptr=5Fpres?=
+ =?utf-8?q?sure=3A_Add_rebind-under-compaction_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jan Maslak" <jan.maslak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 05 Mar 2026 11:33:45 -0000
+Message-ID: <177271042518.318933.12382602553424510002@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260304221203.4053291-1-jan.maslak@intel.com>
+In-Reply-To: <20260304221203.4053291-1-jan.maslak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,472 +37,452 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a new test to validate explicit fencing.
-This test handles multiple planes in a single atomic commit.
-This test addresses a critical scenario where drivers must correctly
-synchronize planes with mixed fence states.
+--===============7343968500391169909==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Test Scenario:
-- Creates three planes: one primary, two overlay
-- Attaches fences with different states:
-   - Primary plane:   signaled fence (simulating completed GPU work)
-   - Overlay-1 plane: signaled fence (simulating completed GPU work)
-   - Overlay-2 plane: unsignaled fence (simulating long-running GPU job)
-- Submits all planes in a single atomic commit with IN_FENCE_FD set
-- Validates that display waits for ALL fences before updating ANY plane
+== Series Details ==
 
-Bug Detection:
-This test catches driver bugs where:
- - Planes with signaled fences update prematurely before unsignaled
-   fences complete, breaking atomic commit semantics
- - Fence states are mismanaged across multiple planes causing visual
-   glitches or corruption
- - The driver fails to wait on all IN_FENCE_FDs atomically
+Series: tests/xe_userptr_pressure: Add rebind-under-compaction test
+URL   : https://patchwork.freedesktop.org/series/162610/
+State : success
 
-The test uses sw_sync timelines to create controllable fence states,
-allowing precise validation of fence synchronization behavior. An
-OUT_FENCE_PTR is requested to monitor when the display update actually
-completes, enabling detection of premature updates.
+== Summary ==
 
-Implementation Details:
-- Uses sw_sync for creating fences with controlled signaling
-- Monitors OUT_FENCE to detect premature display updates
-- Validates atomic commit integrity across multiple planes
+CI Bug Log - changes from IGT_8777 -> IGTPW_14672
+====================================================
 
-Background:
-- A bug regressed for Xe driver on PTL (Android) display handling
-  of explicit fences when provided two or more buffers at once,
-  with 1+ already-signaled fences and 1+ not-yet-signaled fences.
-  https://patchwork.freedesktop.org/patch/662982/
-- Adding this test so that IGT contains sufficient testing for the
-  use of explicit fencing in the KMS Atomic Modesetting APIs.
+Summary
+-------
 
-Changes:
--v7
-  - Remove redundant crc check
-  - Correct Code Styling
--v6
-  - Add crc check of expected frame with
-    reference frame
--v5
-  - Make overlay plane validation scalable with
-    overlay count.
-  - Modify commit message.
--v4
-  - Fix build errors as per latest API name
--v3
-  - Add crc check on display update
-  - Adding proper License entry
-  - Reduce test description
--v2
-  - Add crc check instead of visual inspection
-  - Reduce debug logging which are not needed
-  - Add a function for initial modset
-  - Make test not specific to Intel drivers alone
-  - Sort the included libs in alphabetical order
-  - Modify set_output func as we want only one
-    output per pipe
+  **SUCCESS**
 
-Reviewed-by: Karthik B S <karthik.b.s@intel.com>
-Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-Signed-off-by: S Sebinraj <s.sebinraj@intel.com>
----
- tests/kms_explicit_fence.c | 370 +++++++++++++++++++++++++++++++++++++
- tests/meson.build          |   1 +
- 2 files changed, 371 insertions(+)
- create mode 100644 tests/kms_explicit_fence.c
+  No regressions found.
 
-diff --git a/tests/kms_explicit_fence.c b/tests/kms_explicit_fence.c
-new file mode 100644
-index 000000000..a7d127c93
---- /dev/null
-+++ b/tests/kms_explicit_fence.c
-@@ -0,0 +1,370 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: kms explicit fence multiplane
-+ * Category: Display
-+ * Description: Test explicit fencing with multiple planes and mixed fence states
-+ * Driver requirement: i915, xe
-+ * Mega feature: General Display Features
-+ *
-+ * This test validates correct handling of explicit fences when multiple planes
-+ * are updated in a single atomic commit with different fence states. This is
-+ * critical for catching fence synchronization bugs where the driver might:
-+ * 1. Prematurely display buffers with signaled fences before unsignaled fences complete
-+ * 2. Mismanage fence states across multiple planes causing visual glitches
-+ * 3. Fail to wait on all fences atomically before updating the display
-+ */
-+
-+#include <errno.h>
-+#include <poll.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <sys/eventfd.h>
-+
-+#include "igt.h"
-+#include "igt_aux.h"
-+#include "sw_sync.h"
-+
-+/**
-+ * SUBTEST: multiplane-atomic-fence-wait
-+ * Description: Test 3 planes (1 primary, 2 overlay) with mixed fence states:
-+ *              2 planes with signaled fences and 1 plane with unsignaled fence.
-+ *              Validates that display waits for all fences before updating any plane.
-+ */
-+
-+/* Test configuration macros */
-+#define NUM_PLANES 3
-+#define PLANE_PRIMARY_IDX 0
-+#define PLANE_OVERLAY1_IDX 1
-+#define PLANE_OVERLAY2_IDX 2
-+#define OVERLAY_COUNT (NUM_PLANES - 1)
-+
-+#define FENCE_TIMEOUT_MS 2000
-+
-+#define OVERLAY_SIZE_DIVISOR 3
-+#define OVERLAY1_POS_X 100
-+#define OVERLAY1_POS_Y 100
-+#define OVERLAY2_OFFSET 100
-+
-+typedef struct {
-+	int drm_fd;
-+	igt_display_t display;
-+	igt_output_t *output;
-+	enum pipe pipe;
-+	igt_plane_t *primary;
-+	igt_plane_t *overlay1;
-+	igt_plane_t *overlay2;
-+	struct igt_fb primary_fb;
-+	struct igt_fb overlay1_fb;
-+	struct igt_fb overlay2_fb;
-+	drmModeModeInfo *mode;
-+	int width, height;
-+	igt_pipe_crc_t *pipe_crc;
-+} data_t;
-+
-+static void setup_output(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	igt_crtc_t *crtc;
-+	igt_output_t *output;
-+
-+	for_each_crtc_with_single_output(display, crtc, output) {
-+		int overlay_count = 0;
-+
-+		data->primary = igt_crtc_get_plane_type(crtc, DRM_PLANE_TYPE_PRIMARY);
-+
-+		/* Count available overlays - we need at least OVERLAY_COUNT */
-+		for (int i = 0; i < OVERLAY_COUNT; i++) {
-+			if (igt_crtc_get_plane_type_index(crtc, DRM_PLANE_TYPE_OVERLAY, i))
-+				overlay_count++;
-+		}
-+
-+		if (overlay_count >= OVERLAY_COUNT) {
-+			data->overlay1 = igt_crtc_get_plane_type_index(crtc,
-+								       DRM_PLANE_TYPE_OVERLAY,
-+								       0);
-+			data->overlay2 = igt_crtc_get_plane_type_index(crtc,
-+								       DRM_PLANE_TYPE_OVERLAY,
-+								       1);
-+			data->output = output;
-+			data->pipe = crtc->pipe;
-+			data->mode = igt_output_get_mode(output);
-+			data->width = data->mode->hdisplay;
-+			data->height = data->mode->vdisplay;
-+			return;
-+		}
-+	}
-+
-+	igt_skip("Need at least %d overlay planes for this test\n", OVERLAY_COUNT);
-+}
-+
-+static void cleanup_crtc(data_t *data)
-+{
-+	igt_display_reset(&data->display);
-+
-+	igt_remove_fb(data->drm_fd, &data->primary_fb);
-+	igt_remove_fb(data->drm_fd, &data->overlay1_fb);
-+	igt_remove_fb(data->drm_fd, &data->overlay2_fb);
-+}
-+
-+static void create_fbs(data_t *data)
-+{
-+	int overlay_width = data->width / OVERLAY_SIZE_DIVISOR;
-+	int overlay_height = data->height / OVERLAY_SIZE_DIVISOR;
-+
-+	/* Primary plane - Blue background */
-+	igt_create_color_fb(data->drm_fd, data->width, data->height,
-+			    DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR,
-+			    0.0, 0.0, 1.0, /* Blue */
-+			    &data->primary_fb);
-+
-+	/* Overlay 1 - Red square */
-+	igt_create_color_fb(data->drm_fd, overlay_width, overlay_height,
-+			    DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR,
-+			    1.0, 0.0, 0.0, /* Red */
-+			    &data->overlay1_fb);
-+
-+	/* Overlay 2 - Green square */
-+	igt_create_color_fb(data->drm_fd, overlay_width, overlay_height,
-+			    DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR,
-+			    0.0, 1.0, 0.0, /* Green */
-+			    &data->overlay2_fb);
-+}
-+
-+static void setup_initial_modeset(data_t *data)
-+{
-+	/* Initial modeset to establish baseline (no fences) */
-+	igt_output_set_crtc(data->output, igt_crtc_for_pipe(&data->display, data->pipe));
-+	igt_plane_set_fb(data->primary, &data->primary_fb);
-+	igt_plane_set_fb(data->overlay1, &data->overlay1_fb);
-+	igt_plane_set_position(data->overlay1, OVERLAY1_POS_X, OVERLAY1_POS_Y);
-+	igt_plane_set_fb(data->overlay2, &data->overlay2_fb);
-+	igt_plane_set_position(data->overlay2, data->width - OVERLAY2_OFFSET -
-+				data->overlay2_fb.width, OVERLAY1_POS_Y);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+
-+/**
-+ * multiplane_atomic_fence_wait - Test atomic commit with mixed fence states
-+ *
-+ * This test reproduces the critical scenario where multiple planes are updated
-+ * in a single atomic commit with different fence states. The key validation is
-+ * that the display does NOT update any plane until ALL fences are signaled.
-+ *
-+ * Test setup:
-+ * - Primary plane: buffer with a signaled fence (already retired)
-+ * - Overlay 1 plane: buffer with a signaled fence (already retired)
-+ * - Overlay 2 plane: buffer with an UNSIGNALED fence (long-running operation)
-+ *
-+ * Expected behavior:
-+ * - Atomic commit succeeds immediately (non-blocking)
-+ * - Display waits internally for ALL fences before updating
-+ * - No plane shows its new buffer until the unsignaled fence completes
-+ * - After signaling the last fence, all planes update atomically
-+ *
-+ * Bug detection:
-+ * If the driver has a bug, it will either:
-+ * 1. Show the primary and overlay1 buffers prematurely (before overlay2's fence signals)
-+ * 2. Cause visual glitches from fence mismanagement
-+ * 3. Fail the atomic commit
-+ */
-+static void multiplane_atomic_fence_wait(data_t *data)
-+{
-+	int timelines[NUM_PLANES];
-+	int fences[NUM_PLANES];
-+	int ret;
-+	int out_fence;
-+	igt_plane_t *planes[NUM_PLANES];
-+	bool should_signal[NUM_PLANES] = { true, true, false };
-+	igt_crc_t crc_before, crc_after, crc_reference, crc_final;
-+
-+	igt_require_sw_sync();
-+
-+	setup_initial_modeset(data);
-+
-+	/* Setup arrays for loop-based processing */
-+	planes[PLANE_PRIMARY_IDX] = data->primary;
-+	planes[PLANE_OVERLAY1_IDX] = data->overlay1;
-+	planes[PLANE_OVERLAY2_IDX] = data->overlay2;
-+
-+	/* Start CRC capture to verify no premature display updates */
-+	igt_pipe_crc_start(data->pipe_crc);
-+	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc_before);
-+
-+	/*
-+	 * Capture reference CRC of expected final state (swapped overlays).
-+	 * This allows us to validate not just that the display updated,
-+	 * but that it shows the correct content without corruption.
-+	 */
-+	igt_plane_set_fb(data->overlay1, &data->overlay2_fb);
-+	igt_plane_set_position(data->overlay1, OVERLAY1_POS_X, OVERLAY1_POS_Y);
-+	igt_plane_set_fb(data->overlay2, &data->overlay1_fb);
-+	igt_plane_set_position(data->overlay2, data->width - OVERLAY2_OFFSET -
-+				data->overlay1_fb.width, OVERLAY1_POS_Y);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc_reference);
-+
-+	/* Reset back to initial state (original overlay positions) */
-+	igt_plane_set_fb(data->overlay1, &data->overlay1_fb);
-+	igt_plane_set_position(data->overlay1, OVERLAY1_POS_X, OVERLAY1_POS_Y);
-+	igt_plane_set_fb(data->overlay2, &data->overlay2_fb);
-+	igt_plane_set_position(data->overlay2, data->width - OVERLAY2_OFFSET -
-+				data->overlay2_fb.width, OVERLAY1_POS_Y);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	/* Create timelines and fences for all planes */
-+	for (int i = 0; i < NUM_PLANES; i++) {
-+		/* Create timeline */
-+		timelines[i] = sw_sync_timeline_create();
-+		igt_assert(timelines[i] >= 0);
-+
-+		/* Create fence at sequence 1 */
-+		fences[i] = sw_sync_timeline_create_fence(timelines[i], 1);
-+		igt_assert(fences[i] >= 0);
-+
-+		/* Signal fence (first 2 planes) */
-+		if (should_signal[i]) {
-+			sw_sync_timeline_inc(timelines[i], 1);
-+			igt_assert_eq(sync_fence_status(fences[i]), 1);
-+		} else {
-+			/* Do not signal this fence yet, 3rd plane */
-+			igt_assert_eq(sync_fence_status(fences[i]), 0);
-+		}
-+
-+		/* Attach IN_FENCE_FD to plane */
-+		igt_plane_set_fence_fd(planes[i], fences[i]);
-+	}
-+
-+	/* Swap overlay colors to detect scanout changes via CRC */
-+	igt_plane_set_fb(data->overlay1, &data->overlay2_fb);
-+	igt_plane_set_position(data->overlay1, OVERLAY1_POS_X, OVERLAY1_POS_Y);
-+	igt_plane_set_fb(data->overlay2, &data->overlay1_fb);
-+	igt_plane_set_position(data->overlay2, data->width - OVERLAY2_OFFSET -
-+				data->overlay1_fb.width, OVERLAY1_POS_Y);
-+
-+	/* Request OUT_FENCE to track when display update completes */
-+	igt_crtc_request_out_fence(igt_crtc_for_pipe(&data->display, data->pipe));
-+
-+	/*
-+	 * The atomic commit should succeed immediately (NONBLOCK mode),
-+	 * but the display should NOT update any plane until ALL fences
-+	 * (including the unsignaled overlay2 fence) are signaled.
-+	 *
-+	 * A buggy driver might:
-+	 * - Show primary and overlay1 immediately
-+	 * - Cause visual corruption
-+	 * - Fail the commit
-+	 */
-+	ret = igt_display_try_commit_atomic(&data->display,
-+					    DRM_MODE_ATOMIC_NONBLOCK,
-+					    NULL);
-+	igt_assert_eq(ret, 0);
-+
-+	/* Get the out fence to monitor completion */
-+	out_fence = igt_crtc_for_pipe(&data->display, data->pipe)->out_fence_fd;
-+	igt_assert(out_fence >= 0);
-+
-+	/* Verify overlay2 fence (last one) is still unsignaled */
-+	igt_assert_eq(sync_fence_status(fences[PLANE_OVERLAY2_IDX]), 0);
-+
-+	/* Verify out fence is also unsignaled (display hasn't updated yet) */
-+	ret = sync_fence_status(out_fence);
-+	igt_assert_f(ret != 1,
-+		     "OUT_FENCE already signaled while overlay2 fence is unsignaled - "
-+		     "driver did not wait for all IN_FENCEs!");
-+
-+	/*
-+	 * Wait briefly and verify display hasn't updated via CRC check.
-+	 * In a buggy implementation, the display might update prematurely.
-+	 */
-+	usleep(100000); /* 100ms */
-+
-+	/* Check if out fence signaled prematurely */
-+	ret = sync_fence_status(out_fence);
-+	igt_assert_f(ret != 1,
-+		     "OUT_FENCE signaled before overlay2 fence - "
-+		     "driver updated display without waiting for all fences");
-+
-+	/* CRC verify - check if display has not updated prematurely */
-+	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc_after);
-+	igt_assert_crc_equal(&crc_before, &crc_after);
-+
-+	/* Now signal the blocking fence (overlay2) */
-+	sw_sync_timeline_inc(timelines[PLANE_OVERLAY2_IDX], 1);
-+
-+	/* Wait for overlay2 fence to be signaled */
-+	ret = sync_fence_wait(fences[PLANE_OVERLAY2_IDX], FENCE_TIMEOUT_MS);
-+	igt_assert_eq(ret, 0);
-+	igt_assert_eq(sync_fence_status(fences[PLANE_OVERLAY2_IDX]), 1);
-+
-+	/* Now wait for the display update to complete (out fence signals) */
-+	ret = sync_fence_wait(out_fence, FENCE_TIMEOUT_MS);
-+	igt_assert_eq(ret, 0);
-+	igt_assert_eq(sync_fence_status(out_fence), 1);
-+
-+	/* Verify display has now updated (CRC should differ from baseline) */
-+	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &crc_final);
-+
-+	/* Validate final CRC matches reference (no corruption) */
-+	igt_assert_crc_equal(&crc_final, &crc_reference);
-+
-+	igt_pipe_crc_stop(data->pipe_crc);
-+
-+	/* Cleanup */
-+	for (int i = 0; i < NUM_PLANES; i++) {
-+		close(fences[i]);
-+		close(timelines[i]);
-+		igt_plane_set_fence_fd(planes[i], -1);
-+	}
-+	close(out_fence);
-+	igt_crtc_for_pipe(&data->display, data->pipe)->out_fence_fd = -1;
-+}
-+
-+static void reset_display_state(data_t *data)
-+{
-+	igt_plane_set_fb(data->primary, NULL);
-+	igt_plane_set_fb(data->overlay1, NULL);
-+	igt_plane_set_fb(data->overlay2, NULL);
-+	igt_output_set_crtc(data->output, NULL);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+
-+int igt_main()
-+{
-+	data_t data = {};
-+
-+	igt_fixture() {
-+		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-+		kmstest_set_vt_graphics_mode();
-+		igt_display_require(&data.display, data.drm_fd);
-+		igt_display_require_output(&data.display);
-+
-+		setup_output(&data);
-+		create_fbs(&data);
-+
-+		data.pipe_crc = igt_pipe_crc_new(data.drm_fd, data.pipe,
-+						 IGT_PIPE_CRC_SOURCE_AUTO);
-+	}
-+
-+	igt_describe("Test atomic commit with 3 planes (1 primary, 2 overlay) "
-+		     "where 2 planes have signaled fences and 1 plane has an "
-+		     "unsignaled fence. Validates that display does not update "
-+		     "any plane until all fences are signaled");
-+	igt_subtest("multiplane-atomic-fence-wait")
-+		multiplane_atomic_fence_wait(&data);
-+
-+	igt_fixture() {
-+		reset_display_state(&data);
-+		igt_pipe_crc_free(data.pipe_crc);
-+		cleanup_crtc(&data);
-+		igt_display_fini(&data.display);
-+		drm_close_driver(data.drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 7f356de9b..eb7c8b13b 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -36,6 +36,7 @@ test_progs = [
- 	'kms_dither',
- 	'kms_display_modes',
- 	'kms_dp_aux_dev',
-+	'kms_explicit_fence',
- 	'kms_feature_discovery',
- 	'kms_flip',
- 	'kms_flip_event_leak',
--- 
-2.43.0
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/index.html
 
+Participating hosts (39 -> 39)
+------------------------------
+
+  Additional (2): bat-adls-6 fi-pnv-d510 
+  Missing    (2): bat-dg2-13 bat-adlp-9 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14672 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - bat-adls-6:         NOTRUN -> [SKIP][1] ([i915#4613]) +3 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@gem_mmap@basic:
+    - bat-atsm-1:         NOTRUN -> [SKIP][2] ([i915#4083])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@gem_mmap@basic.html
+
+  * igt@gem_render_tiled_blits@basic:
+    - bat-atsm-1:         NOTRUN -> [SKIP][3] ([i915#4079])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@gem_render_tiled_blits@basic.html
+
+  * igt@gem_tiled_fence_blits@basic:
+    - bat-atsm-1:         NOTRUN -> [SKIP][4] ([i915#4077]) +4 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@gem_tiled_fence_blits@basic.html
+
+  * igt@gem_tiled_pread_basic@basic:
+    - bat-atsm-1:         NOTRUN -> [SKIP][5] ([i915#15657])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@gem_tiled_pread_basic@basic.html
+    - bat-adls-6:         NOTRUN -> [SKIP][6] ([i915#15656])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@gem_tiled_pread_basic@basic.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-atsm-1:         NOTRUN -> [SKIP][7] ([i915#6621])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [PASS][8] -> [DMESG-FAIL][9] ([i915#12061])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-arls-5/igt@i915_selftest@live@workarounds.html
+    - bat-dg2-14:         [PASS][10] -> [DMESG-FAIL][11] ([i915#12061]) +1 other test dmesg-fail
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+    - bat-atsm-1:         NOTRUN -> [DMESG-FAIL][12] ([i915#12061]) +1 other test dmesg-fail
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-9:         [PASS][13] -> [DMESG-FAIL][14] ([i915#12061]) +1 other test dmesg-fail
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  * igt@intel_hwmon@hwmon-read:
+    - bat-adls-6:         NOTRUN -> [SKIP][15] ([i915#7707]) +1 other test skip
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@intel_hwmon@hwmon-read.html
+
+  * igt@kms_addfb_basic@size-max:
+    - bat-atsm-1:         NOTRUN -> [SKIP][16] ([i915#6077]) +37 other tests skip
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@kms_addfb_basic@size-max.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - bat-adls-6:         NOTRUN -> [SKIP][17] ([i915#4103]) +1 other test skip
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - bat-atsm-1:         NOTRUN -> [SKIP][18] ([i915#6078]) +22 other tests skip
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-adls-6:         NOTRUN -> [SKIP][19] ([i915#3555] / [i915#3840])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-atsm-1:         NOTRUN -> [SKIP][20] ([i915#6093]) +4 other tests skip
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@kms_force_connector_basic@force-load-detect.html
+    - bat-adls-6:         NOTRUN -> [SKIP][21]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
+    - bat-atsm-1:         NOTRUN -> [SKIP][22] ([i915#1836]) +6 other tests skip
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - bat-adls-6:         NOTRUN -> [SKIP][23] ([i915#5354])
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_prop_blob@basic:
+    - bat-atsm-1:         NOTRUN -> [SKIP][24] ([i915#7357])
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@kms_prop_blob@basic.html
+
+  * igt@kms_psr@psr-primary-mmap-gtt:
+    - fi-pnv-d510:        NOTRUN -> [SKIP][25] +35 other tests skip
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/fi-pnv-d510/igt@kms_psr@psr-primary-mmap-gtt.html
+    - bat-adls-6:         NOTRUN -> [SKIP][26] ([i915#1072] / [i915#9732]) +3 other tests skip
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-atsm-1:         NOTRUN -> [SKIP][27] ([i915#6094])
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@kms_setmode@basic-clone-single-crtc.html
+    - bat-adls-6:         NOTRUN -> [SKIP][28] ([i915#3555])
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-read:
+    - bat-adls-6:         NOTRUN -> [SKIP][29] ([i915#3291]) +2 other tests skip
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@prime_vgem@basic-fence-read.html
+
+  * igt@prime_vgem@basic-write:
+    - bat-atsm-1:         NOTRUN -> [SKIP][30] +2 other tests skip
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@prime_vgem@basic-write.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_create@basic@lmem0:
+    - bat-atsm-1:         [ABORT][31] ([i915#15759]) -> [PASS][32] +1 other test pass
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/bat-atsm-1/igt@gem_exec_create@basic@lmem0.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@gem_exec_create@basic@lmem0.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - bat-arls-5:         [DMESG-FAIL][33] ([i915#15784]) -> [PASS][34]
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/bat-arls-5/igt@i915_selftest@live@gt_pm.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-arls-5/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@sanitycheck:
+    - fi-kbl-7567u:       [DMESG-WARN][35] ([i915#13735]) -> [PASS][36] +79 other tests pass
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [DMESG-FAIL][37] ([i915#12061]) -> [PASS][38] +1 other test pass
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_pm_rpm@basic-pci-d3-state:
+    - fi-kbl-7567u:       [DMESG-WARN][39] ([i915#13735] / [i915#180]) -> [PASS][40] +53 other tests pass
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-arls-5:         [DMESG-FAIL][41] ([i915#15784]) -> [DMESG-FAIL][42] ([i915#12061])
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/bat-arls-5/igt@i915_selftest@live.html
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-arls-5/igt@i915_selftest@live.html
+
+  
+  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
+  [i915#15656]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15656
+  [i915#15657]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15657
+  [i915#15759]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15759
+  [i915#15784]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15784
+  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
+  [i915#1836]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1836
+  [i915#3291]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
+  [i915#4077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083
+  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
+  [i915#6077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6077
+  [i915#6078]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078
+  [i915#6093]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6093
+  [i915#6094]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6094
+  [i915#6621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621
+  [i915#7357]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7357
+  [i915#7707]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707
+  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8777 -> IGTPW_14672
+  * Linux: CI_DRM_18075 -> CI_DRM_18096
+
+  CI-20190529: 20190529
+  CI_DRM_18075: 3fe1f7a93adf8e03fb044eb57b63394afe6e139c @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18096: 704ff20b65b8a8037c10332bad4ecabbfeab7cdc @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14672: cb1eb991e629b1650f842bd62d2fda9e6820eca8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8777: a50285a68dbef0fe11140adef4016a756f57b324 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/index.html
+
+--===============7343968500391169909==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe_userptr_pressure: Add rebind-under-compaction test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162610/">https://patchwork.freedesktop.org/series/162610/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8777 -&gt; IGTPW_14672</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/index.html</p>
+<h2>Participating hosts (39 -&gt; 39)</h2>
+<p>Additional (2): bat-adls-6 fi-pnv-d510 <br />
+  Missing    (2): bat-dg2-13 bat-adlp-9 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14672 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_mmap@basic:</p>
+<ul>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083">i915#4083</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_tiled_blits@basic:</p>
+<ul>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@gem_render_tiled_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079">i915#4079</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_fence_blits@basic:</p>
+<ul>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@gem_tiled_fence_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077">i915#4077</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic@basic:</p>
+<ul>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@gem_tiled_pread_basic@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15657">i915#15657</a>)</li>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@gem_tiled_pread_basic@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15656">i915#15656</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621">i915#6621</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@intel_hwmon@hwmon-read:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@intel_hwmon@hwmon-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707">i915#7707</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@size-max:</p>
+<ul>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@kms_addfb_basic@size-max.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6077">i915#6077</a>) +37 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
+<ul>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078">i915#6078</a>) +22 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840">i915#3840</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6093">i915#6093</a>) +4 other tests skip</li>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence:</p>
+<ul>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1836">i915#1836</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@basic-brightness:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_prop_blob@basic:</p>
+<ul>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@kms_prop_blob@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7357">i915#7357</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-primary-mmap-gtt:</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/fi-pnv-d510/igt@kms_psr@psr-primary-mmap-gtt.html">SKIP</a> +35 other tests skip</li>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6094">i915#6094</a>)</li>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-read:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-adls-6/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291">i915#3291</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@prime_vgem@basic-write.html">SKIP</a> +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_create@basic@lmem0:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/bat-atsm-1/igt@gem_exec_create@basic@lmem0.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15759">i915#15759</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-atsm-1/igt@gem_exec_create@basic@lmem0.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/bat-arls-5/igt@i915_selftest@live@gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15784">i915#15784</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-arls-5/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@sanitycheck:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> +79 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/bat-arlh-3/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> +53 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8777/bat-arls-5/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15784">i915#15784</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14672/bat-arls-5/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8777 -&gt; IGTPW_14672</li>
+<li>Linux: CI_DRM_18075 -&gt; CI_DRM_18096</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18075: 3fe1f7a93adf8e03fb044eb57b63394afe6e139c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18096: 704ff20b65b8a8037c10332bad4ecabbfeab7cdc @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14672: cb1eb991e629b1650f842bd62d2fda9e6820eca8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8777: a50285a68dbef0fe11140adef4016a756f57b324 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7343968500391169909==--
