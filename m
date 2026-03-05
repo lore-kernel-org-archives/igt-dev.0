@@ -4,156 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19B00F3092B
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Mar 2026 10:25:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F34DF3092A
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Mar 2026 10:36:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C0F6210E24D;
-	Thu,  5 Mar 2026 10:25:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5ABF110E262;
+	Thu,  5 Mar 2026 10:36:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ifo14RXZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dB9PkIL8";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B71DE10E24D
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2026 10:25:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D5A2910E262
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2026 10:36:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772706333; x=1804242333;
- h=date:from:to:cc:subject:message-id:references:
+ t=1772706976; x=1804242976;
+ h=from:to:cc:subject:date:message-id:references:
  in-reply-to:mime-version;
- bh=fzWaQJIalqH4PrHkDKqO44jKJZpxraQ6CifavKWB214=;
- b=ifo14RXZ//0de/ZOSGLDpaQmptEi1vOsuk4sGfHEfozDORcqbuUXz9wh
- qSXx4th88F+1qz+03zXljuI55hkW69XuRsbyFvonrOwsyXvlcEB/AHyv1
- rBLEQI+GR1YHmkPhJMhc0dPt/78KqshMgQplBShB8dxEFwMjI7C/9g6QT
- 0kPy8W00yiGSLxz4C0MaA1J1Kd2vVVLH44IQWpMNLpsrB+zfhnzH5ZeWX
- r5P0+5FoPjTJcqhyW5LC6W6KN61bmIUz+UsbAZhbBrY1UBVEW01YFAdFU
- +pgcZ9Xi+zXY/T9XSURILlFnt2h9oNtALJFCvw4tfVpd7gkPiWHb4IXgt A==;
-X-CSE-ConnectionGUID: rWAGawwxQRS0KH+2y4eH9A==
-X-CSE-MsgGUID: +qjcXq+PRgKuliCpnQuCEQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="73858585"
-X-IronPort-AV: E=Sophos;i="6.23,102,1770624000"; d="scan'208";a="73858585"
+ bh=MAARYrEKhutZczV2hg9ZsEOjUe7Ez1gkbSfob9StX4o=;
+ b=dB9PkIL8hoZjKE2xcctfnh+SDGfdKvmQEyGpBpEF2QduycLlmpC65S5e
+ RWP1gH7Qtx3NnbteqBeTuQV1uf2bpr38OFfaez55spsWa0mECz9HzZFUj
+ UTvkFr1gws4UIeN4eexfxnsJ215szhsY3Rv0xfeCt1mLMfeeUfF979+20
+ 4gppymPfGNkEKlKzi7Nu4+7XtpDZQ6n8MOX2cW4iA1vHzfGaUSqFjjg5/
+ sZXYDTnhK6+o4Kq2imTppeEcGJuAmPeSvmNELFeDUTV3hflckm2smOjU4
+ K+cUyrG9ix12AeKFuLzRTHzRoT78V+EMRzLBSfK+F0JSBdkGOlB4ddE83 Q==;
+X-CSE-ConnectionGUID: yJn07AguSJ+VcVf6ipgLsQ==
+X-CSE-MsgGUID: r2/6eJ5CQeyf+FOC0Dz1xQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="73859264"
+X-IronPort-AV: E=Sophos;i="6.23,102,1770624000"; d="scan'208,217";a="73859264"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2026 02:25:33 -0800
-X-CSE-ConnectionGUID: LKOgkX6NTUaM/lbeFhkGHw==
-X-CSE-MsgGUID: Of9Oaa5jRmm/cKMhLk+Tag==
+ 05 Mar 2026 02:36:15 -0800
+X-CSE-ConnectionGUID: AYEo0t/bTl6s8iV8yerlTg==
+X-CSE-MsgGUID: mzCyD2/5RCuMO0+P0EG0kg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,102,1770624000"; d="scan'208";a="222788392"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+X-IronPort-AV: E=Sophos;i="6.23,102,1770624000"; 
+ d="scan'208,217";a="222791732"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2026 02:25:33 -0800
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 05 Mar 2026 02:36:15 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 5 Mar 2026 02:25:32 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ 15.2.2562.37; Thu, 5 Mar 2026 02:36:14 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Thu, 5 Mar 2026 02:25:32 -0800
-Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.63) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Thu, 5 Mar 2026 02:36:14 -0800
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.19) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Thu, 5 Mar 2026 02:25:31 -0800
+ 15.2.2562.37; Thu, 5 Mar 2026 02:36:14 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t+mtYZfZG0N5d9bZHO8LdrN9EblOlgcb83WnLfwWNF8YnHV1OjqteSWrE4E/PFIANKywO1HkubdaXdhPzzeRd8075Yny/7gaq4wUvk8fn/in8V1J78PYg1Ov3snUG9ARNYdcFti1lGZCNXMhV23RB7LaV39OTafC2WJJ9IabCXRURrla7AodXFo2F9aKpyTyv1qOe2XWa3TAws15a9BrHgOYNP6rtnGLaJQE713B1+0lrS62oVQVhPyGEglow9QFkEGie2ZxoyA+v9z0zgMyc4bbRkTGZXJzwiEGUVMGqZsISDXkXn4qq56A3D/9WoC7FpXIC8lVQXGXyBD3HFk7wQ==
+ b=XnUNpGUvJtdcStGeTzpGEo3IufoNDh8VCp2jd/gXOmI4CseDvjGiDk4QW8mq3k7z6UwmpzHwt8LRgsTF3fVIGrKH9WQvX8hkwgl3ugfl/WU5oF2FPqM7zam/C6VrG55KBJyciuOlRrQxvEYA4Aco/qyaf6a5rj2eTHGS2CXEQc/fqOrAA/wBT4VgfsQr35xsVpUw7KSG0gVfIdI9Pd/N5bli2phUmRN6tM39Ob3lUdtfgANKuV9xY6ieIzChpbzXGH3rR5m+WMzdWIagFW/XXWDhXkYRBet3iu95nAKisVfRerkkCSVwoaNEyrexcm0hNhLvo8D/IFBRmqIDXVhM/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PCUO0Bpt1BnycFu9Z013KpfC+WsVDqD8bxg1507CNdA=;
- b=LllcudPVKnjsclTOGyItFV887qKTkYXdjnMQI+X0Hwwk3ttFaO5HH9fuCCD+8SVtmdJonGI4QQOPO5daCccTjbYrWWENcMGpP3mYhOVVmYYQEkWVUWcE+MxkwndkQjhCgcVV59llAxUDWVVCzuBpQ7scTHpRUd0O2DR3gWf6NZmLMjtwO/xdrUiQWBVineixwfJdXLv/g+kCU5f2aDRr7eTKVCacyfCRz5eI9+sI6FkSrRVDXDlGwLzPd3HNo+Wk2RbEegmsLgoJ2/DYBzhSAkfhvw54ncikMkouT2KvASDlaYz+8Ea+Krr5Xmb50WN77VmhzMk/gDQYWxzJHvidvg==
+ bh=VSgISRvSOqwknR3hbFEPvAzVNF5puSlivry0w8bfKHI=;
+ b=dYOPPrM5M0GRBabTDGgXN8naZWw1n/EDwXCdGiYRt/SCivxQHUq1qyUu22nwIVbM0sIsdLpTcSHwTbc4k0SkFP4fhljX2HxyAPzyCDW1PaIHnczzcyEqkufO3D4EG2C/RltetnEQNUU6Px3ofZQ/PxrC2lpHxTyYCkrLIVQMmhPkcaUWIwwUkq6K3wbkWEw6QbQqa+9BkFATg7C+dM/8lBmJrjdQqIRhyQ7b3kD+ZofvypbJGSyXj+oB9m5WKn8zrq2iEovrtUJtHz11Eo8iPmvlxNwMO6BrOmeHDZhGHg6hC0HBsiWhJbNtquCeMjqCDl4nPVbQvXubtxUvsHBu4w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CO1PR11MB5057.namprd11.prod.outlook.com (2603:10b6:303:6c::15)
- by MW4PR11MB6692.namprd11.prod.outlook.com (2603:10b6:303:20e::7)
+Received: from CH0PR11MB5427.namprd11.prod.outlook.com (2603:10b6:610:d2::14)
+ by IA0PR11MB7741.namprd11.prod.outlook.com (2603:10b6:208:400::21)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Thu, 5 Mar
- 2026 10:25:28 +0000
-Received: from CO1PR11MB5057.namprd11.prod.outlook.com
- ([fe80::3b75:a8d2:464e:30cc]) by CO1PR11MB5057.namprd11.prod.outlook.com
- ([fe80::3b75:a8d2:464e:30cc%6]) with mapi id 15.20.9678.016; Thu, 5 Mar 2026
- 10:25:26 +0000
-Date: Thu, 5 Mar 2026 10:25:01 +0000
-From: Krzysztof Karas <krzysztof.karas@intel.com>
-To: S Sebinraj <s.sebinraj@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, <jeevaka.badrappan@intel.com>,
- <kamil.konieczny@intel.com>, <zbigniew.kempczynski@intel.com>,
- <soham.purkait@intel.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.18; Thu, 5 Mar
+ 2026 10:36:06 +0000
+Received: from CH0PR11MB5427.namprd11.prod.outlook.com
+ ([fe80::a4c2:eb7b:574b:ab2b]) by CH0PR11MB5427.namprd11.prod.outlook.com
+ ([fe80::a4c2:eb7b:574b:ab2b%7]) with mapi id 15.20.9678.017; Thu, 5 Mar 2026
+ 10:36:06 +0000
+From: "Sebinraj, S" <s.sebinraj@intel.com>
+To: "Karas, Krzysztof" <krzysztof.karas@intel.com>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Badrappan, Jeevaka" <jeevaka.badrappan@intel.com>, "Konieczny, Kamil"
+ <kamil.konieczny@intel.com>, "Kempczynski, Zbigniew"
+ <zbigniew.kempczynski@intel.com>, "Purkait, Soham" <soham.purkait@intel.com>
 Subject: Re: [PATCH i-g-t v9] tools/gputop: Add GPU frequencies to the client
  headers
-Message-ID: <xocuvxchd3uo7rbewv463aes7sqgziyidmm3gre5om7i2z6vrr@udl5kmjtgypd>
-"Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316"
+Thread-Topic: [PATCH i-g-t v9] tools/gputop: Add GPU frequencies to the client
+ headers
+Thread-Index: AQHcmxti7PqgBCz07kuwexrUPysrBbWf3m6AgAABRn8=
+Date: Thu, 5 Mar 2026 10:36:06 +0000
+Message-ID: <CH0PR11MB54277E7C8A083A6629CD3CCE987DA@CH0PR11MB5427.namprd11.prod.outlook.com>
 References: <20260211054638.4090041-1-s.sebinraj@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <20260211054638.4090041-1-s.sebinraj@intel.com>
-X-ClientProxiedBy: TL2P290CA0013.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:2::7)
- To CO1PR11MB5057.namprd11.prod.outlook.com
- (2603:10b6:303:6c::15)
+ <xocuvxchd3uo7rbewv463aes7sqgziyidmm3gre5om7i2z6vrr@udl5kmjtgypd>
+In-Reply-To: <xocuvxchd3uo7rbewv463aes7sqgziyidmm3gre5om7i2z6vrr@udl5kmjtgypd>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH0PR11MB5427:EE_|IA0PR11MB7741:EE_
+x-ms-office365-filtering-correlation-id: 1edd7108-71b7-4196-c797-08de7aa301fd
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|1800799024|366016|8096899003|38070700021|7053199007; 
+x-microsoft-antispam-message-info: NkNUN8Eq0JJRuwLq4HppDJyU4GGqwaBXSdt/3DFmiqFMEWsUBPNoldKqQy3ZWoxeLQiSFcamSs9/KFdSVjvMwfNOGPNKURPpmYvdMJW8QmxBYZy0wtWSmJrl1zG2X7G/cZotPDU39n120zQBHDjSD52Wi7QB3zOi9sqvNL0qSWzsq2INSh26Hj3zMdzz+FWeX5o0J1p7uEVipvOByJPWNzuYd4StOY995mVKNgBEzTU6KTcHMrL9WYQ18RSQiQ/9FBF62JPaCjrfE3u2YBKwIIGAOFuo33wvxiSK8nN711pjBhRH6FaH4wAOEDwfpSWtco2NyXwXSwa5eoB7Gg2jSEpXJLM5mG/oidu3th/pLqLYXcVyjoYaYEIqBJCbp+Wl5nNz4RGok+BbYuMZr6SYE7pdhYi+CHUAaxcz0MpbuiedR8rcbeQzL9WHwh6Be6PrrdkPWIMUkb0/35QOo9D2nc9g0/0GRV3pAjKObJYNCDszCbsB6vmckC/RZRn4MeiAddqnaZwvAobpuaFnXk/cTJTIxQgaxMV9NMfdQrBENns/3vkK0HZTK3JLEAupFSzfa0r5ES/Xk0Sb0p5EXX15aUkIqcOpRt5ToGzku4XhSESE4PbqBML4i9w123RS2zcXhNJyiAOMIv0BWgP8JNPMyGf4OKX9auBxAwbpVsnrRh93fTcD8AYMjOxYJQPTTWx4wqSNLSZAG2Y4UV4TkADma6f1HCYKQILoimgGZAiSSu0tg7P/yhKZzJRC32kaUyE/55SEGG9a09tpTM46dIPnK29wNGtUgijM0IOWZx0rD2Q=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH0PR11MB5427.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(8096899003)(38070700021)(7053199007);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?HgsSO40SineE+ZN17HY/tAba0fscrrprVdGOAwrgWlPQFHeu+H9/zoqaW8?=
+ =?iso-8859-1?Q?B1WmYjV2ZnuK1Jgru8Q9DK6JOQzwi+jYvUY2G17e+q3Uh6CeX0KWEZw1jl?=
+ =?iso-8859-1?Q?o+JDt5TeeyIIB7B/pxqC7IcnRPjfCSKK8VEha0iWDSyoYn6qK/0qLKI5GG?=
+ =?iso-8859-1?Q?Je7nWagPXKXlRH5lUUC+wcy06oUIIAa1iIxo3c88qHegdNGzfTCNwny8GS?=
+ =?iso-8859-1?Q?6d6pnQ3le9bC2UqIM6hjqRY8YFQRcJxqHr0eizgfb4IwLeKn5wqOyeMN4i?=
+ =?iso-8859-1?Q?brHBRKRtbBZAM2sYwzX/1HB1+DuNR1cdmgXhsfKKTCrOLnjDxKnFRwiOzD?=
+ =?iso-8859-1?Q?WyeCe4eenNQ5d+O75uhdLtEyE228zbMW5pe4i1YKFOWoO34gfyEmZF5Jq9?=
+ =?iso-8859-1?Q?mPnOYSu8meLKwwTh3RagfquGakuAj49DmIBxwguQlD29pjGkPkkbpZH6JI?=
+ =?iso-8859-1?Q?uH68G27hybCOiugv+G4q+nOBTB9Oz6gRzXFPL0Bfp9Kh5wu3tCe1ATZO0p?=
+ =?iso-8859-1?Q?rBuyuBM2tZWa+RAawSyHC67wwK3EbigKBfcOAZj79Ykn1NLpnGKh/OH9OW?=
+ =?iso-8859-1?Q?QD7AYuB94UOZxGxJsQiESCwQljJEKzPWP0mpGr0Avr2VxiYGKb38YJGyFs?=
+ =?iso-8859-1?Q?xgMUM/qjpc0aOfV/VktiffQPpy3bo3AjuN55Hv0RMZWV+tS/EWWPtzIx0Q?=
+ =?iso-8859-1?Q?0uDbCriy6v87W2reMFcpL3Dr6ZRrxn5A/O7JfK5W1qbSDtBcp/nfyyoe9u?=
+ =?iso-8859-1?Q?0FETHwo+RBkwAMK2J0TOGV5CAv6/IsJUktv1yViIXbV/pXpmFe3Icwx82u?=
+ =?iso-8859-1?Q?pVqHYBTSdsiWqkLNyf9ZTfclu6zko7c7siJmIRubiv/aC4DRu6GROrnpIS?=
+ =?iso-8859-1?Q?b24uT1oQQ7qVdFxzHRtPKTeJfknWveUeiS/IIx/K1Q7cqZnA+BKWoMK5X7?=
+ =?iso-8859-1?Q?xUljjAfKn95bpioCpp+moWx2dO+FpQRxtTE8J96E77h+bKz6nGvDOTGM5k?=
+ =?iso-8859-1?Q?RVl9i4asjyEYBwPlSWCiwEMYzttWZrwL9X2h1+uqJTZLI0kVBcqap0waAm?=
+ =?iso-8859-1?Q?UkyMsZMmu82hf3/7u6PImtM4V/Voj4piIjy6ItKt3cgJmNEFj6YuSW7dP3?=
+ =?iso-8859-1?Q?FdZXhZqd4V6h9Iu4CMGn8XQhkus/TPzRmV/phj1GYpCGRFa1BrIqx58jOu?=
+ =?iso-8859-1?Q?ZmwtQDOoHY3BFzU9SqVzn0Sf7njqBvIjsAOYkX2qDQIqZosHtnYLUfC8z7?=
+ =?iso-8859-1?Q?3LEjp+5oC+XvhwBnRzmPWp9CgHyBMAYUmoFYEG9BVgmbs8RaXEJelF0EeR?=
+ =?iso-8859-1?Q?9pXk3lRf9f49txncxCRJdDxOu+65zfFLk4hTfv9/n3ChdzrCGoJQZMRCJT?=
+ =?iso-8859-1?Q?8nKSuGpFFWjHHZIW7ygpnScPa3Mzerna8lyKrwa0L2J/Tsk8tcwMScyO66?=
+ =?iso-8859-1?Q?fb5p01rLaj8UY1EhpW/vt2iriWLA6W1W7mkMpOchPPCjstOJy5IzHeGp51?=
+ =?iso-8859-1?Q?vJWXI4xKTVdMvRH2qAv3cDbHLWNHYIqcHIDYyQ7ordNA1jL24n0pOTWqgU?=
+ =?iso-8859-1?Q?KkQP1xyLTBzQ9oBhwzXRHN3p113hjJb3Ic+5T5cF5TeCjHINedKrShpe6g?=
+ =?iso-8859-1?Q?PWW7FrLXLeGs7ihWCX2hifLqDf6LwA61NU7Iqax/LVhr9PVD/6tCnhsfFK?=
+ =?iso-8859-1?Q?Te+YZhfB4k7APBIFwzhslkfTvLTdXIZ3qpYvLnR/B+O7GXzepX8T2nDBPT?=
+ =?iso-8859-1?Q?b2OsPDpaMdG/annZpNs9tl5WczSsxm2LxIJ1XsKfDIvq7S?=
+Content-Type: multipart/alternative;
+ boundary="_000_CH0PR11MB54277E7C8A083A6629CD3CCE987DACH0PR11MB5427namp_"
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR11MB5057:EE_|MW4PR11MB6692:EE_
-X-MS-Office365-Filtering-Correlation-Id: fdbda0c7-5e0c-4055-0534-08de7aa17d44
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: 2ohUOy32X+KOFCHzTSJtRXNpSnsQBXESt7JZ7UR0NHHykEzMxMzVzN1KlLFrKeeVhJgg1Qst1gZSd7kKh2SeXDdIYM+f8E7hnTcHjWwetXMqNg3KybMJkDfY6KMEysuGZMQ2cAig/slBQyd1DTT9YpzfOlyfGLMZxPthM8bUoSEcX1sLep/NOUK1EkvHnYF+TjTRGQ9tXUYmrZGvl+vNDFjxy/ScV34iHmByfYc2vCxRPaO77NmXRA0TEBeQz9aMWCqQGISm2RKZ007bBlzeEKMHS16P7VrS5Wzjh4QBWRPCQmJPh6MFUINqFXvmkL+ZCbEdtGSM9ONFvq2mOI+6GYOA3biCEYIcwNIs3RZC10GTwKopO6Ip9gQAf+KCPMLyW/juqlQRcisSed9qVjCnP9HeyyBcuG7eSMFsx7tPKbU2QKkHnAG50e368/TGHkue2BE9geNQ6ksZqgra1A1qGipIt6V9i0tYRVBj/STjtUIfDELBMU3C5AEHrT//LSIZUNTN//6jfHNtO0yEzS89dFwhGE32Mkcv2AA9zHAw8LcHxnWBHdxzWnotEplBcY/ePOPmXeKmawX5BnoY13LXM0NBEV4fRqPmmRYkdZOFVUnlnjMAWQUxMECd1r2xNX74abgljbwuHDOgZsKZjp/1CMFGSiKqZ/Gpy4zuGf9LZwrsPiq33UeXQkFBygPB8wQ3K1H3TXwRgG/l7ToKqq5PAMkT04E6TWmdSFr5YWulK/8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CO1PR11MB5057.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dUQ4ODhtYlhaNkhTSGpTa2dvbnJ1ZjRWSU5wK2VIbCs1bzd4RXpKN0huUzAz?=
- =?utf-8?B?czF2VUpSSjBXd29kYmd3VFBxUStHanhlNnBwYkkxZDNrS2g5dlBTV0RjZ1VP?=
- =?utf-8?B?WXdjT1UxUytGU2xiR3RacmNCUDdnVzVVVVA2bEtrdENLOWpJV3JDbXV5YzNl?=
- =?utf-8?B?elo4U0k1RWloWmJRbklDc1JJY0trMldldDFIbkxBdnlQQUlTbk5hSnFxaEZO?=
- =?utf-8?B?S0p4SnhLcWVGTDd4ZmkrTmc3NE15UlZPaStPTmRsVjBiK1ZtOWtWbWdiRkZm?=
- =?utf-8?B?Y0lOd2x3QzJpZjRnQnMrYVFXYTJFM2kvSkluWEp5b1NwOFB3b1kvaGVTUDRD?=
- =?utf-8?B?dC94NmFodHRYNUlkNVVMNU1BVHk2OVdOWVNkSjRaQy96RXd5UEhRODBLLzBU?=
- =?utf-8?B?WThXcG03ZmpubkFla3RrOXQ4U0NzcXdpVE1jbzB5cXAwbkJWb1M3NHRqdWpN?=
- =?utf-8?B?M3E0dWtyTXA5R01nbUZrSzMrTERZZThtS29zaXk0NjRxblZPU0RVZEJlbHM3?=
- =?utf-8?B?QUE1THEvd2NkQTVabWljc0RGNVBTbFF3MExkV1VTZzlzN2dZd2hySlNkcHR2?=
- =?utf-8?B?NTFka3FHbDE0WUt2TEV0cUxidVY3elFDeW9RRGRuTkNoTmpYRGRIQytSS3Zm?=
- =?utf-8?B?Y1R3dzhNb2xDMms3Q3dWaWxha1JBc1JUa0xJd2RIVStDQ3BiNkRpUXpGSG1F?=
- =?utf-8?B?ZzhXOGVCcHJSSElYNmJod05jWHg3ajYxZjlWUmFYU1FHVHYzMXM1Qm1NU2hz?=
- =?utf-8?B?NG9McEQvcTVTdFZFa2xlY09tazBVU3REQXp3WG5jNUV2eEpwRTJRVW9CczZT?=
- =?utf-8?B?S0lZWjBVNUc3YlI3TENjR0ozWEk4TzBlaitzS1cwTGI2K2xKME9rZGc2eEFS?=
- =?utf-8?B?V3pmeHEyN3RValN5RXdJekRyOW1Qa2lJNkNuR0RHY1E3bnR2cFNSdXY4TFYy?=
- =?utf-8?B?RitiZFkvSG11ejRlRjBaR2lmaGYzTm91ajVCRE5majdkcmRlcnZPQXFNT1BS?=
- =?utf-8?B?L0o2WTB3SEo4V0JnNEhCNDVWY0ZPdWU0NnpIdU1yL3o3NWZTRGNLazJ0em5n?=
- =?utf-8?B?SVlJdWlOWTM2VlVhMEpMQ0FTM2NOc2o3WHFhelU4eEUvaW1iUXZPakR3aWd5?=
- =?utf-8?B?emY0d2ZwWWJaSTAxYmJkRENLemdiZElTMjRsWUcvdmhHZWpydEU1S1NDSEtR?=
- =?utf-8?B?UzhEV0pwYXlZbHNpQ2dyU0xIQUxjYXpHaXlYU0ZxMXdlMDkvZ1V5YmF2dWNm?=
- =?utf-8?B?dzRWSWtmZ01UQXB2N3dQdG1TdDdkMTludkpUbEJmdDVFRjk0aFNPRXZNUmtr?=
- =?utf-8?B?YXBtSzIvZUI5QUZSQXNkRGJOTDVQaFgzQ0RXd0tNc2JKQTJBaWJRVlVxTEVR?=
- =?utf-8?B?VENtOU9FRVhQT0JPQlJ5c040Y0hwRzdEQ2hQQ0N2WEZJUWZLSmhFak5Id3Zp?=
- =?utf-8?B?aWVXeDN4OE9MOGl3aFZpeGFkRFZmRDFlYm9KNjlPM200ZEpGcnV4MTRNTlFM?=
- =?utf-8?B?QktkRDUzbnZ4eVVGZTZCaWViZE5jazhVZEVwd1ZSaW9WS0xOcUlHRzUvWTA4?=
- =?utf-8?B?OTZIVTFPWkNCdWt6Nk1FT0dsZllLZFU4OWZMWjR1SEkwTk4wNEdJNllmNWw2?=
- =?utf-8?B?WFMvL1ZJcWR4U0Q1NloxbTkzUlUzTlZxMVpETHZhSkNMQkNIc1N4a3B5a2xp?=
- =?utf-8?B?UHpJekEvRVNDM1BzS0pxajRkRktlTlE5ZGZuYXdMUG8zTHl5WUxkVGNjYjAr?=
- =?utf-8?B?WDhWTndUaWlvVllsWWpxTHN4MDc0c2l0UFRqLzhiOEFsbUt2V3FHckovQ2h5?=
- =?utf-8?B?Zkp0TnRFVjZWWEVldkRxNmx1R1JudmwzTDltSGt3ZVorM1p6bWhuNThZdlk5?=
- =?utf-8?B?MXh5M1UyWWRIYWpJSmZ5bW5GMmlkc2hxcms3L2lDZ1B4ajU0N0hMYzRqOElD?=
- =?utf-8?B?U0NsMTMxaGc0Lzh5bHZZS0ZuUWFBeUVEdGtUWm01ZFhDUGxWU1lSc2ZoWjcz?=
- =?utf-8?B?eHkwWHVqbXdUOHc4azlYU2dUbXVvZTU0OG5XZTR1cm5VRTEwMXNwU20rRGUr?=
- =?utf-8?B?eEdaL0c2L1FmTloxMFBxK0dML0hDWWVZVnZ6RG5NVXJCeFhMeHRoaVlMSzUv?=
- =?utf-8?B?MTJUNkxkVENzSlE2QmZLL3ZmdzlWUE50SFJnS0hjb0Z4OHVuUUIyODh3dDdj?=
- =?utf-8?B?WGl5T3RmaFlZRVU2UlUrS0ZodWtoTjc4SXh5VCtKa1ZoaDNIeW92QWJSU1hX?=
- =?utf-8?B?Y01HSWRDbHVkQnU2WHZ1WEdWM3ZjUjc4WmNzNXpBZVdIWmk5bHZaMmRwWUpW?=
- =?utf-8?B?RFlQblYvTnN4SXVoVWd5REhnUFdybkloM1dSL3FLZk5HdkM3Z2JIR011Vmdu?=
- =?utf-8?Q?OLi1ZA9JXycer4YA=3D?=
-X-Exchange-RoutingPolicyChecked: T9+0GXngq2OHSF2lsVWfwkaVH5EtJsp1LVn6wA3ywFICOw2xthqsByEMC1SzIxM7qxZ50146jX+DwaTAgsAD5nzZLhOeJ54d3KmmRpDTdtMHGcHzVsNNFTQU+I3YMdQp34GJDLPaUmAOAMeokCNY6Rc+yDpa7QedNdhkmZ+yimz0YUMDwD3pQmqKzEaJCFMqsOhlJ+4T7Or5oS4FayIdYtjmzbhHpD63MVX5azIgV1H5zIvEjLT43mzSuq7GQXb3NsLT7PnG9Ju+mPuhPuvGu/4SLXERBDY0VbDuePyEfcQRGtGXT459f75+6aQKeq+TRRrR/umR5kM3UfLNVtDKwA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: fdbda0c7-5e0c-4055-0534-08de7aa17d44
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5057.namprd11.prod.outlook.com
+X-Exchange-RoutingPolicyChecked: RqWDHRsKYlxnuBy1QuY5iOrXkCIIw5JrgvExZ+xfP1AxA2IY19Vq+sm3yRWyJeKFC4TktKW5DePXX949Mj3/u9rt9mtbRyGQDVH3sx/YQPsTjLQQBRVJmygQ9p23916n3dFJePAUnikeJkVw4XFzMc+HP+sYqwDnA6pJytznUeqC8OCAsNFblpGQnWaMAvySkyTF50FpjW1zyV2SgMxuYpLLl2VjGg5nAdB67LPN+5WNGsD28jws+JGDhgv0ytA2QfGXJxZ5PFfZNVI8XYqaEEMx55KnmAoXfljI7V0R0K2/MTMYfVAW9nDwehJOBtF4ImYG4iKajH5pJ7uXIHbWBg==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 10:25:26.3083 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yMKsng+7Wy3GhSoY+h+gEm1tknyUxgIx7goDbdAO/abNJUnKrNAsgMl3pkQdwI04hrCvy/qezaAt8g9nlmEJJT/Il6LDTySGH+rHYfmItxg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6692
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5427.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1edd7108-71b7-4196-c797-08de7aa301fd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Mar 2026 10:36:06.4500 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: aJ+EvYgIaVhbTEjEt+M2/e1hwUkA+AHiz/OCHrPGrcfwPjL3R5Whm+IzMpjXalApzBmyP1ITgLwNLCjY4jLBlg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7741
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -170,46 +168,204 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--_000_CH0PR11MB54277E7C8A083A6629CD3CCE987DACH0PR11MB5427namp_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+
+
+
+________________________________
+From: Karas, Krzysztof <krzysztof.karas@intel.com>
+Sent: Thursday, March 5, 2026 3:55 PM
+To: Sebinraj, S <s.sebinraj@intel.com>
+Cc: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>; Badrappa=
+n, Jeevaka <jeevaka.badrappan@intel.com>; Konieczny, Kamil <kamil.konieczny=
+@intel.com>; Kempczynski, Zbigniew <zbigniew.kempczynski@intel.com>; Purkai=
+t, Soham <soham.purkait@intel.com>
+Subject: Re: [PATCH i-g-t v9] tools/gputop: Add GPU frequencies to the clie=
+nt headers
+
 Hi S Sebinraj,
 
 [...]
 
 > +/* Detect which driver is bound to the device */
-This comment still does not answer "which" - it does not give
-you the driver, which is bound, but it checks if the driver you
-gave it is bound.
-This is a minor thing though, so address it only if you plan to
-prepare v10, otherwise ignore it.
+>This comment still does not answer "which" - it does not give
+>you the driver, which is bound, but it checks if the driver you
+>gave it is bound.
+>This is a minor thing though, so address it only if you plan to
+>prepare v10, otherwise ignore it.
 
-Rest of the code looks good to me:
-Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+This makes sense, but I hope w.r.t 'function name' the meaning is
+as expected ie. ''if the driver you gave is bound or not".
+Also I'm not planning for a v10 here, so ignoring this as you have
+suggested.
+
+Thanks for the Review,
+S Sebinraj
+
+>Rest of the code looks good to me:
+>Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
 
 > +static bool is_bound(unsigned int drm_minor, const char *driver_name)
 > +{
-> +	char path[256];
-> +	char link[256];
-> +	char *driver;
-> +	ssize_t len;
+> +     char path[256];
+> +     char link[256];
+> +     char *driver;
+> +     ssize_t len;
 > +
-> +	/* Read the driver symlink */
-> +	snprintf(path, sizeof(path), "%s%u/device/driver", 
-> +		 get_sysfs_drm_path(drm_minor), drm_minor);
-> +	len = readlink(path, link, sizeof(link) - 1);
-> +	if (len == -1)
-> +		return false;
+> +     /* Read the driver symlink */
+> +     snprintf(path, sizeof(path), "%s%u/device/driver",
+> +              get_sysfs_drm_path(drm_minor), drm_minor);
+> +     len =3D readlink(path, link, sizeof(link) - 1);
+> +     if (len =3D=3D -1)
+> +             return false;
 > +
-> +	link[len] = '\0';
+> +     link[len] =3D '\0';
 > +
-> +	/* Extract driver name from path (e.g., "bus/pci/drivers/i915" -> "i915") */
-> +	driver = strrchr(link, '/');
-> +	if (!driver)
-> +		return false;
+> +     /* Extract driver name from path (e.g., "bus/pci/drivers/i915" -> "=
+i915") */
+> +     driver =3D strrchr(link, '/');
+> +     if (!driver)
+> +             return false;
 > +
-> +	driver++; /* Skip the '/' */
-> +	
-> +	return strcmp(driver, driver_name) == 0;
+> +     driver++; /* Skip the '/' */
+> +
+> +     return strcmp(driver, driver_name) =3D=3D 0;
 > +}
 
--- 
+--
 Best Regards,
 Krzysztof
+
+--_000_CH0PR11MB54277E7C8A083A6629CD3CCE987DACH0PR11MB5427namp_
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+<br>
+</div>
+<div><br>
+</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<hr style=3D"display: inline-block; width: 98%;">
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+<b>From:</b>&nbsp;Karas, Krzysztof &lt;krzysztof.karas@intel.com&gt;<br>
+<b>Sent:</b>&nbsp;Thursday, March 5, 2026 3:55 PM<br>
+<b>To:</b>&nbsp;Sebinraj, S &lt;s.sebinraj@intel.com&gt;<br>
+<b>Cc:</b>&nbsp;igt-dev@lists.freedesktop.org &lt;igt-dev@lists.freedesktop=
+.org&gt;; Badrappan, Jeevaka &lt;jeevaka.badrappan@intel.com&gt;; Konieczny=
+, Kamil &lt;kamil.konieczny@intel.com&gt;; Kempczynski, Zbigniew &lt;zbigni=
+ew.kempczynski@intel.com&gt;; Purkait, Soham &lt;soham.purkait@intel.com&gt=
+;<br>
+<b>Subject:</b>&nbsp;Re: [PATCH i-g-t v9] tools/gputop: Add GPU frequencies=
+ to the client headers
+</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<div style=3D"font-size: 11pt;" class=3D"elementToProof">Hi S Sebinraj,<br>
+<br>
+[...]<br>
+<br>
+&gt; +/* Detect which driver is bound to the device */<br>
+&gt;This comment still does not answer &quot;which&quot; - it does not give=
+<br>
+&gt;you the driver, which is bound, but it checks if the driver you<br>
+&gt;gave it is bound.<br>
+&gt;This is a minor thing though, so address it only if you plan to<br>
+&gt;prepare v10, otherwise ignore it.<br>
+</div>
+<div style=3D"font-size: 11pt;" class=3D"elementToProof"><br>
+</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+This makes sense, but I hope w.r.t 'function name' the meaning is</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+as expected ie. ''if the driver you gave is bound or not&quot;.</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Also I'm not planning for a v10 here, so ignoring this as you have</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+suggested.</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+Thanks for the Review,</div>
+<div style=3D"font-family: Aptos, Aptos_EmbeddedFont, Aptos_MSFontService, =
+Calibri, Helvetica, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);" clas=
+s=3D"elementToProof">
+S Sebinraj</div>
+<div style=3D"font-size: 11pt;" class=3D"elementToProof"><br>
+&gt;Rest of the code looks good to me:<br>
+&gt;Reviewed-by: Krzysztof Karas &lt;krzysztof.karas@intel.com&gt;<br>
+<br>
+&gt; +static bool is_bound(unsigned int drm_minor, const char *driver_name)=
+<br>
+&gt; +{<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; char path[256];<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; char link[256];<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; char *driver;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; ssize_t len;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Read the driver symlink */<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; snprintf(path, sizeof(path), &quot;%s%u/devi=
+ce/driver&quot;,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; get_sysfs_drm_path(drm_minor), drm_minor);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; len =3D readlink(path, link, sizeof(link) - =
+1);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; if (len =3D=3D -1)<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; return false;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; link[len] =3D '\0';<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; /* Extract driver name from path (e.g., &quo=
+t;bus/pci/drivers/i915&quot; -&gt; &quot;i915&quot;) */<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; driver =3D strrchr(link, '/');<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; if (!driver)<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; return false;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; driver++; /* Skip the '/' */<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; return strcmp(driver, driver_name) =3D=3D 0;=
+<br>
+&gt; +}<br>
+<br>
+--<br>
+Best Regards,<br>
+Krzysztof<br>
+</div>
+</body>
+</html>
+
+--_000_CH0PR11MB54277E7C8A083A6629CD3CCE987DACH0PR11MB5427namp_--
