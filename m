@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B243BEF9014
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Mar 2026 13:40:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2E96EF8FE4
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Mar 2026 13:40:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 655E710E29D;
-	Thu,  5 Mar 2026 13:40:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9208610E2A5;
+	Thu,  5 Mar 2026 13:40:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ed2K86e0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EBzfZIR1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7BE0B10E29D
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2026 13:40:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9281810E2A5
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2026 13:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772718047; x=1804254047;
+ t=1772718053; x=1804254053;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=HTvqnfYyu31UrWi8gWy58BB10tdXkGOjlbqPC4/gF6M=;
- b=ed2K86e0/Gxh9E+K48ocLrr6argCRTebLov0Z/dzlPs9jCNexlpm8FGJ
- fPBTw7A3TlY/ErR3/lYkPVPpg3/yTUYYYQGHWngLHOZQC0E7OwyO7MZ4M
- foN9MIZEmahD9rBWYSx7zP6ZCBOcwJgAU9HLDbYMfJDEceZKj4jQ5mx/1
- 8dhHS6AAEwvvuG4UgCcwYYBY7SCW+6b/f0NEJeuhR7mUCG4zf3AVZJ1bk
- JZszr9M472y0MSeiYcYc72/5rsJUNPflI5xdfAwU34HFHxuuQpiIp9kt1
- Pi0M2nKe/G92a/pcyff80IPVTqC6EKLhB27JqiX932EB2d7T60DUYvl+6 Q==;
-X-CSE-ConnectionGUID: uESHUky7TZ63EslNfDa8/Q==
-X-CSE-MsgGUID: P+y0scLaTGWTW9XpffWKSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="99270800"
-X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; d="scan'208";a="99270800"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2026 05:40:47 -0800
-X-CSE-ConnectionGUID: 8k9mw8aRRdGScGoMMNvDtw==
-X-CSE-MsgGUID: s5I3zHxDQVOkAo6u1TTkJw==
+ bh=VMcTEytojxmHY3K1lbGlMQ6fKZBeXYwUD8yrARFtHW8=;
+ b=EBzfZIR1cCfJUiONeQpghLSzt+QP02/GZFf/a3froYh/FmOQLtYdFGQc
+ 8Hfw2dd8oiywxgFaSWEdIKhFcKdhPGSave6FLzW1XFpmhgPu53Lh+c7gj
+ +X5Hb+iyvoYn8Jd/XF6ZJ1h60l9ftJZ5YJpDr4PDwbYsoVLU3JqVghp7A
+ soRxcZOJtYWM52pNhRo/BYqSXZUDinH+9mE9jIM+kK0Ri+S8En7AizlRs
+ iJEdAKJ0HvtV5tXgFR69JevCmYtph5Lqd8F4e+aAq3lcW8+TAVieRkR/6
+ WhrBsUyLG/wdBVihze/82KIXJuAWTDznO3qNzVQlQnx/EMdkD4YXAg6JG Q==;
+X-CSE-ConnectionGUID: 38T65IDPRkGYLY/exMPddw==
+X-CSE-MsgGUID: 2Y+U/vwiTBmS5VbWAwgzcw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="76404980"
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; d="scan'208";a="76404980"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2026 05:40:52 -0800
+X-CSE-ConnectionGUID: a1VnGDMnSdafkU6LmKIziA==
+X-CSE-MsgGUID: Is3pZ1uGTFWLXKou71RY2Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; d="scan'208";a="218818829"
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; d="scan'208";a="218641225"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.244.91])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2026 05:40:46 -0800
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2026 05:40:50 -0800
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Lyude Paul <lyude@redhat.com>
-Subject: [PATCH i-g-t 1/5] tests/nouveau_crc: Extract {setup,cleanup}_test()
-Date: Thu,  5 Mar 2026 15:40:34 +0200
-Message-ID: <20260305134038.6995-2-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 2/5] tests/nouveau_crc: Convert to dynamic subtests
+Date: Thu,  5 Mar 2026 15:40:35 +0200
+Message-ID: <20260305134038.6995-3-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260305134038.6995-1-ville.syrjala@linux.intel.com>
 References: <20260305134038.6995-1-ville.syrjala@linux.intel.com>
@@ -73,129 +73,183 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Prep for dynamic subtests by extracting the per-subtest setup/cleanup
-fixtures to separate functions.
+nouveau_crc is the last holdout for for_each_pipe_static(). Convert
+the tests to use dynamic per-pipe subtests so that we can nuke
+for_each_pipe_static() and convert everything to use igt_crtc_t.
+
+Untested due to lack of hardware.
 
 Cc: Lyude Paul <lyude@redhat.com>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/nouveau_crc.c | 89 +++++++++++++++++++++++++--------------------
- 1 file changed, 50 insertions(+), 39 deletions(-)
+ lib/igt_kms.h       |  12 -----
+ tests/nouveau_crc.c | 113 ++++++++++++++++++++++++++------------------
+ 2 files changed, 68 insertions(+), 57 deletions(-)
 
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index e91c6567757e..9514ef03f0e8 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -720,18 +720,6 @@ static inline bool igt_crtc_connector_valid(igt_crtc_t *crtc, igt_output_t *outp
+ 	for_each_output((display), (output))	\
+ 		for_each_if ((!(igt_output_is_connected((output)))))
+ 
+-/**
+- * for_each_pipe_static:
+- * @pipe: The pipe to iterate.
+- *
+- * This for loop iterates over all pipes supported by IGT libraries.
+- *
+- * This should be used to enumerate per-pipe subtests since it has no runtime
+- * depencies.
+- */
+-#define for_each_pipe_static(pipe) \
+-	for (pipe = 0; pipe < IGT_MAX_PIPES; pipe++)
+-
+ /**
+  * for_each_crtc:
+  * @display: a pointer to an #igt_display_t structure
 diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
-index c080ded3e621..393414339ab0 100644
+index 393414339ab0..59fa8a2daeb8 100644
 --- a/tests/nouveau_crc.c
 +++ b/tests/nouveau_crc.c
-@@ -317,6 +317,54 @@ static void test_source_outp_inactive(data_t *data)
- 	destroy_crc_colors(data, colors, n_colors);
+@@ -297,6 +297,16 @@ static void test_source(data_t *data, const char *source)
+ 	free(crcs);
  }
  
-+static void setup_test(data_t *data)
++static void test_source_outp_complete(data_t *data)
 +{
-+	int dir;
-+
-+	igt_display_require_output_on_crtc(data->crtc);
-+
-+	/* Disable the output from the previous iteration of pipe tests, if there is
-+	 * one
-+	 */
-+	if (data->output) {
-+		igt_output_set_crtc(data->output, NULL);
-+		igt_display_commit(&data->display);
-+	}
-+
-+	data->output = igt_get_single_output_for_crtc(data->crtc);
-+	data->mode = igt_output_get_mode(data->output);
-+
-+	/* None of these tests need to perform modesets, just page flips. So running
-+	 * display setup here is fine
-+	 */
-+	igt_output_set_crtc(data->output,
-+			    data->crtc);
-+	data->primary = igt_output_get_plane(data->output, 0);
-+	igt_create_color_fb(data->drm_fd,
-+			    data->mode->hdisplay,
-+			    data->mode->vdisplay,
-+			    DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR,
-+			    0.0, 0.0, 0.0,
-+			    &data->default_fb);
-+	igt_plane_set_fb(data->primary, &data->default_fb);
-+	igt_display_commit(&data->display);
-+
-+	dir = igt_debugfs_crtc_dir(data->drm_fd,
-+				   data->crtc->pipe,
-+				   O_DIRECTORY);
-+	igt_require_fd(dir);
-+	data->nv_crc_dir = openat(dir, "nv_crc", O_DIRECTORY);
-+	close(dir);
-+	igt_require_fd(data->nv_crc_dir);
++	test_source(data, "outp-complete");
 +}
 +
-+static void cleanup_test(data_t *data)
++static void test_source_rg(data_t *data)
 +{
-+	igt_remove_fb(data->drm_fd, &data->default_fb);
-+	close(data->nv_crc_dir);
++	test_source(data, "rg");
++}
++
+ static void test_source_outp_inactive(data_t *data)
+ {
+ 	struct color_fb colors[] = {
+@@ -365,13 +375,17 @@ static void cleanup_test(data_t *data)
+ 	close(data->nv_crc_dir);
+ }
+ 
++static void run_test(data_t *data, void (*test)(data_t *data))
++{
++	setup_test(data);
++	test(data);
++	cleanup_test(data);
 +}
 +
  data_t data = {0};
  
- #define pipe_test(name) igt_subtest_f("pipe-%s-" name, kmstest_pipe_name(pipe))
-@@ -337,46 +385,10 @@ int igt_main()
+-#define pipe_test(name) igt_subtest_f("pipe-%s-" name, kmstest_pipe_name(pipe))
+ int igt_main()
+ {
+-	int pipe;
+-
+ 	igt_fixture() {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 		igt_require_nouveau(data.drm_fd);
+@@ -383,50 +397,59 @@ int igt_main()
+ 		igt_display_reset(&data.display);
+ 	}
  
- 	for_each_pipe_static(pipe) {
- 		igt_fixture() {
--			int dir;
+-	for_each_pipe_static(pipe) {
+-		igt_fixture() {
+-			data.crtc = igt_crtc_for_pipe(&data.display, pipe);
+-			igt_require(data.crtc->valid);
 -
- 			data.crtc = igt_crtc_for_pipe(&data.display, pipe);
- 			igt_require(data.crtc->valid);
--			igt_display_require_output_on_crtc(data.crtc);
- 
--			/* Disable the output from the previous iteration of pipe tests, if there is
--			 * one
--			 */
--			if (data.output) {
--				igt_output_set_crtc(data.output, NULL);
--				igt_display_commit(&data.display);
--			}
--
--			data.output = igt_get_single_output_for_crtc(data.crtc);
--			data.mode = igt_output_get_mode(data.output);
--
--			/* None of these tests need to perform modesets, just page flips. So running
--			 * display setup here is fine
--			 */
--			igt_output_set_crtc(data.output,
--					    data.crtc);
--			data.primary = igt_output_get_plane(data.output, 0);
--			igt_create_color_fb(data.drm_fd,
--					    data.mode->hdisplay,
--					    data.mode->vdisplay,
--					    DRM_FORMAT_XRGB8888,
--					    DRM_FORMAT_MOD_LINEAR,
--					    0.0, 0.0, 0.0,
--					    &data.default_fb);
--			igt_plane_set_fb(data.primary, &data.default_fb);
--			igt_display_commit(&data.display);
--
--			dir = igt_debugfs_crtc_dir(data.drm_fd,
--						   data.crtc->pipe,
--						   O_DIRECTORY);
--			igt_require_fd(dir);
--			data.nv_crc_dir = openat(dir, "nv_crc", O_DIRECTORY);
--			close(dir);
--			igt_require_fd(data.nv_crc_dir);
-+			setup_test(&data);
+-			setup_test(&data);
++	/* We don't need to test this on every pipe, but the setup is the same */
++	igt_describe("Make sure that the CRC notifier context flip threshold "
++		     "is reset to its default value after a single capture.");
++	igt_subtest("ctx-flip-threshold-reset-after-capture") {
++		data.crtc = igt_crtc_for_pipe(&data.display, PIPE_A);
++		igt_require(data.crtc->valid);
++
++		run_test(&data, test_ctx_flip_threshold_reset_after_capture);
++	}
++
++	igt_describe("Make sure the association between each CRC and its "
++		     "respective frame index is not broken when the driver "
++		     "performs a notifier context flip.");
++	igt_subtest("ctx-flip-detection") {
++		for_each_crtc(&data.display, data.crtc) {
++			igt_dynamic_f("pipe-%s", igt_crtc_name(data.crtc))
++				run_test(&data, test_ctx_flip_detection);
  		}
- 
- 		/* We don't need to test this on every pipe, but the setup is the same */
-@@ -414,8 +426,7 @@ int igt_main()
- 			test_source_outp_inactive(&data);
- 
- 		igt_fixture() {
--			igt_remove_fb(data.drm_fd, &data.default_fb);
--			close(data.nv_crc_dir);
-+			cleanup_test(&data);
+-
+-		/* We don't need to test this on every pipe, but the setup is the same */
+-		if (pipe == PIPE_A) {
+-			igt_describe("Make sure that the CRC notifier context flip threshold "
+-				     "is reset to its default value after a single capture.");
+-			igt_subtest("ctx-flip-threshold-reset-after-capture")
+-				test_ctx_flip_threshold_reset_after_capture(&data);
++	}
++
++	igt_describe("Make sure that igt_pipe_crc_get_current() works even "
++		     "when the CRC for the current frame index is lost.");
++	igt_subtest("ctx-flip-skip-current-frame") {
++		for_each_crtc(&data.display, data.crtc) {
++			igt_dynamic_f("pipe-%s", igt_crtc_name(data.crtc))
++				run_test(&data, test_ctx_flip_skip_current_frame);
+ 		}
+-
+-		igt_describe("Make sure the association between each CRC and its "
+-			     "respective frame index is not broken when the driver "
+-			     "performs a notifier context flip.");
+-		pipe_test("ctx-flip-detection")
+-			test_ctx_flip_detection(&data);
+-
+-		igt_describe("Make sure that igt_pipe_crc_get_current() works even "
+-			     "when the CRC for the current frame index is lost.");
+-		pipe_test("ctx-flip-skip-current-frame")
+-			test_ctx_flip_skip_current_frame(&data);
+-
+-		igt_describe("Check that basic CRC readback using the outp-complete "
+-			     "source works.");
+-		pipe_test("source-outp-complete")
+-			test_source(&data, "outp-complete");
+-
+-		igt_describe("Check that basic CRC readback using the rg source "
+-			     "works.");
+-		pipe_test("source-rg")
+-			test_source(&data, "rg");
+-
+-		igt_describe("Make sure that the outp-inactive source is actually "
+-			     "capturing the inactive raster.");
+-		pipe_test("source-outp-inactive")
+-			test_source_outp_inactive(&data);
+-
+-		igt_fixture() {
+-			cleanup_test(&data);
++	}
++
++	igt_describe("Check that basic CRC readback using the outp-complete "
++		     "source works.");
++	igt_subtest("source-outp-complete") {
++		for_each_crtc(&data.display, data.crtc) {
++			igt_dynamic_f("pipe-%s", igt_crtc_name(data.crtc))
++				run_test(&data, test_source_outp_complete);
++		}
++	}
++
++	igt_describe("Check that basic CRC readback using the rg source "
++		     "works.");
++	igt_subtest("source-rg") {
++		for_each_crtc(&data.display, data.crtc) {
++			igt_dynamic_f("pipe-%s", igt_crtc_name(data.crtc))
++				run_test(&data, test_source_rg);
++		}
++	}
++
++	igt_describe("Make sure that the outp-inactive source is actually "
++		     "capturing the inactive raster.");
++	igt_subtest("source-outp-inactive") {
++		for_each_crtc(&data.display, data.crtc) {
++			igt_dynamic_f("pipe-%s", igt_crtc_name(data.crtc))
++				run_test(&data, test_source_outp_inactive);
  		}
  	}
  
