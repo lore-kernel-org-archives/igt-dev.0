@@ -4,27 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F7CAF30946
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Mar 2026 12:36:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB98AF30946
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Mar 2026 12:48:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2CC3510E29E;
-	Thu,  5 Mar 2026 12:36:14 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24F8F10E295;
- Thu,  5 Mar 2026 12:36:13 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============9067232779096262106=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7C3F510EB53;
+	Thu,  5 Mar 2026 12:48:35 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VGr7Y9fu";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7996A10EB53
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2026 12:48:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1772714914; x=1804250914;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=QzCUe25C7e5O33fBQ75NsDK21mVxlxhEL0gXRbQRrWk=;
+ b=VGr7Y9fuBES2xCtwUU9ARdAPQrPdqTTG0dSlLfDyZHaOkCwDkSq+spX7
+ 4pkVqXtUQe08Fq+0SctKiXCuKHil+VvU0Be5K9PeqNSn090WovI7keeh7
+ vOnCPLxZSGX7D+05GtcIeqo1q1s7cKKspxVwdaIGlaj41Lqo3Pz8QqwYD
+ AE+vHZY7FYn8luKXc7+5oE67jq5GWbRferwV/X49jHoeRqUkpp83fCa8d
+ elBOrnCV5SNqBiRjnqabvPboPl4xhNHLXnCiySjOzTK/XqfdjHzaNSkwl
+ j1ZQaqOTb/GezFe4+6PmD+/j+LONE4P0UbvRrg3Rd+nS0Yb/zLzKXOYiY A==;
+X-CSE-ConnectionGUID: omc28+naTOGGZBNy9NzVNA==
+X-CSE-MsgGUID: d5MJ7WUTTC2ctotRmwusWw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="85273145"
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; d="scan'208";a="85273145"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2026 04:48:34 -0800
+X-CSE-ConnectionGUID: lAxqLl4WQvSrjBfG5orC7A==
+X-CSE-MsgGUID: qruPzAwPSturw4MqbDdhjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; d="scan'208";a="218807241"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.31])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2026 04:48:32 -0800
+Date: Thu, 5 Mar 2026 13:48:29 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Matt Roper <matthew.d.roper@intel.com>
+Cc: "Sharma, Nishit" <nishit.sharma@intel.com>, 
+ "Dixit, Ashutosh" <ashutosh.dixit@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, 
+ "Girotra, Himanshu" <himanshu.girotra@intel.com>
+Subject: Re: [PATCH i-g-t] Revert "lib/intel_pat: use kernel debugfs as
+ authoritative PAT source for Xe"
+Message-ID: <ljwf3d6umvacbwlaohpphkbx2apcp4gdztcf7fqhsadafrxse5@dkntriwzboki>
+References: <20260305003047.2290389-1-ashutosh.dixit@intel.com>
+ <MW4PR11MB71513EA99A9655ED36977DD5E47DA@MW4PR11MB7151.namprd11.prod.outlook.com>
+ <20260305040517.GM4694@mdroper-desk1.amr.corp.intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_include/android=3A_Define_a?=
- =?utf-8?q?dditional_types_in_glib=2Eh?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mark Yacoub" <markyacoub@google.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 05 Mar 2026 12:36:13 -0000
-Message-ID: <177271417311.320895.14970289621658269277@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260304200809.2562643-1-markyacoub@google.com>
-In-Reply-To: <20260304200809.2562643-1-markyacoub@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260305040517.GM4694@mdroper-desk1.amr.corp.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,319 +71,284 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============9067232779096262106==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, Mar 04, 2026 at 08:05:17PM -0800, Matt Roper wrote:
+> On one hand, we shouldn't let buggy tests dictate IGT library behavior
+> and prevent us from developing the libraries that we need across the
+> entire codebase.  But on the other hand, we also don't want to leave
+> individual tests that we have in CI in a failing state with no
+> documented plans on how to fix things.
 
-== Series Details ==
+I agree with Ashutosh. We shouldn't allow to merge code which breaks
+another one regardless intention and necessity to expand the library.
 
-Series: include/android: Define additional types in glib.h
-URL   : https://patchwork.freedesktop.org/series/162608/
-State : success
+> 
+> If a fix of xe_oa is easy, then we should develop that immediately (and
+> if we'd done that early we probably could even have submitted it in the
+> same series as the library changes so that they'd go in together). But
+> in this case the issues with the xe_oa test are a bit deeper and
+> probably non-trivial to fix:
+> 
+>  * Some of the tests are just plain wrong.  E.g., rather than checking
+>    for the behavior expected by userspace (e.g., "can I access this
+>    register for read/write as expected?") they're checking internal
+>    implementation details that userspace has no business being aware of
+>    in the first place ("is this register specifically programmed in the
+>    FORCE_TO_NONPRIV registers?") and what they're trying to confirm is
+>    itself incorrect (and will fail once we make some fixes on the KMD
+>    side).
 
-== Summary ==
+Fully agree.
 
-CI Bug Log - changes from XEIGT_8777_BAT -> XEIGTPW_14671_BAT
-====================================================
+> 
+>  * Other tests are logically correct at the high-level, but rather than
+>    being written as a proper Xe test that uses the Xe interfaces that
+>    real userspace would, they're using an IGT library that's mostly
+>    intended for display tests that need to run on both i915 and Xe.
+>    Since important uapi details like PAT index don't exist on i915,
+>    they're not part of this library's interface and thus the test can't
+>    pick the values it wants and pass them in; instead the library
+>    handles them implicitly internally.  That's fine for tests that are
+>    running as root, but once we stopped hardcoding magic numbers into
+>    the library, there was an implicit requirement that the test calling
+>    the library have root privilege to access debugfs --- since the xe_oa
+>    test drops privileges, this doesn't work.
 
-Summary
--------
+You may blame me for this. When xe was initially released we had to
+enable kms tests and easiest part was to adopt previous library to
+support xe. I didn't know the answer for the question how long will
+we support both drivers and keeping some compatibility layer was
+imo only reasonable choice. Differencies between drivers may be more
+or less addressed, but when we want to fully control what we're doing
+library not always is the best choice.
 
-  **SUCCESS**
+> 
+>  * Even the tests that are 100% functionally correct are still hard to
+>    follow because the i915-compatibility libraries are trying to cobble
+>    together something that works across a couple decades worth of i915
+>    uapi evolution, followed by a switch to an entirely different driver.
+>    For pure-Xe tests we really need to cut out all the unnecessary
+>    compatibility layers so that it's clear what a test is doing and so
+>    that it can be accurately debugged if/when it reports failures.
 
-  No regressions found.
+xe_oa uses render-copy, so it's not so easy to detach from intel_bb
+library.
 
-  
+> 
+> So maybe in the short term we need to blacklist the test to prevent CI
+> from trying to run it, and then as the test gets rewritten to fix its
+> issues the various subtests can be removed from the blacklist to let
+> them start running again?
+> 
+> Another option which might be quicker in the short term would be to add
+> a new library function like "intel_bb_prepare_to_drop_priv()" which
+> could be called at the beginning of any test using intel_bb that plans
+> to drop privileges so that the library can grab all the necessary
+> details from debugfs while it still has root powers and cache them
+> internally.  Then it could use that internal cache later once it has
+> dropped privilege and can no longer get values directly from debugfs.
+> But I don't know if we really want to add a new interface to the
+> intel_bb library's house of cards if we really want to re-write the test
+> anyway.
 
-Participating hosts (13 -> 14)
-------------------------------
+ATM I think simplest would be to to add drop function you've mentioned.
+Unless someone will provide render-copy replacement.
 
-  Additional (1): bat-atsm-2 
+We already started to go toward intel-bb free implementation for common
+part (blitter) in intel_blt. It still contains some old code reference
+(intel_ctx) but this can be removed or replaced with xe-only code.
 
-Known issues
-------------
+--
+Zbigniew
 
-  Here are the changes found in XEIGTPW_14671_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@fbdev@write:
-    - bat-atsm-2:         NOTRUN -> [SKIP][1] ([Intel XE#2134]) +4 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@fbdev@write.html
-
-  * igt@kms_addfb_basic@addfb25-yf-tiled-legacy:
-    - bat-atsm-2:         NOTRUN -> [SKIP][2] ([i915#6077]) +30 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
-    - bat-atsm-2:         NOTRUN -> [SKIP][3] ([Intel XE#1024] / [Intel XE#782] / [Intel XE#947]) +5 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-atsm-2:         NOTRUN -> [SKIP][4] ([Intel XE#1024] / [Intel XE#784] / [Intel XE#947])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-atsm-2:         NOTRUN -> [SKIP][5] ([Intel XE#1024] / [Intel XE#783] / [Intel XE#947])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - bat-atsm-2:         NOTRUN -> [SKIP][6] ([Intel XE#540]) +3 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc:
-    - bat-atsm-2:         NOTRUN -> [SKIP][7] ([Intel XE#829] / [i915#1836]) +6 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_pipe_crc_basic@nonblocking-crc.html
-
-  * igt@kms_prop_blob@basic:
-    - bat-atsm-2:         NOTRUN -> [SKIP][8] ([Intel XE#780])
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_prop_blob@basic.html
-
-  * igt@kms_psr@psr-primary-page-flip:
-    - bat-atsm-2:         NOTRUN -> [SKIP][9] ([Intel XE#1024] / [Intel XE#947]) +6 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_psr@psr-primary-page-flip.html
-
-  * igt@xe_exec_fault_mode@twice-userptr-prefetch:
-    - bat-atsm-2:         NOTRUN -> [SKIP][10] ([Intel XE#288]) +32 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@xe_exec_fault_mode@twice-userptr-prefetch.html
-
-  * igt@xe_huc_copy@huc_copy:
-    - bat-atsm-2:         NOTRUN -> [SKIP][11] ([Intel XE#255])
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@xe_huc_copy@huc_copy.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-atsm-2:         NOTRUN -> [SKIP][12] ([Intel XE#2229])
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  * igt@xe_pat@pat-index-xe2:
-    - bat-atsm-2:         NOTRUN -> [SKIP][13] ([Intel XE#977])
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@xe_pat@pat-index-xe2.html
-
-  * igt@xe_pat@pat-index-xehpc:
-    - bat-atsm-2:         NOTRUN -> [SKIP][14] ([Intel XE#2838] / [Intel XE#979])
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@xe_pat@pat-index-xehpc.html
-
-  * igt@xe_pat@pat-index-xelpg:
-    - bat-atsm-2:         NOTRUN -> [SKIP][15] ([Intel XE#979])
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@xe_pat@pat-index-xelpg.html
-
-  
-#### Possible fixes ####
-
-  * igt@sriov_basic@enable-vfs-autoprobe-on:
-    - bat-bmg-2:          [DMESG-WARN][16] ([Intel XE#7433]) -> [PASS][17] +3 other tests pass
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8777/bat-bmg-2/igt@sriov_basic@enable-vfs-autoprobe-on.html
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-bmg-2/igt@sriov_basic@enable-vfs-autoprobe-on.html
-    - bat-bmg-1:          [DMESG-WARN][18] ([Intel XE#7433]) -> [PASS][19] +3 other tests pass
-   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8777/bat-bmg-1/igt@sriov_basic@enable-vfs-autoprobe-on.html
-   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-bmg-1/igt@sriov_basic@enable-vfs-autoprobe-on.html
-
-  * igt@xe_module_load@load:
-    - bat-bmg-3:          [DMESG-WARN][20] ([Intel XE#7433]) -> [PASS][21]
-   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8777/bat-bmg-3/igt@xe_module_load@load.html
-   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-bmg-3/igt@xe_module_load@load.html
-
-  
-  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
-  [Intel XE#2134]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
-  [Intel XE#2838]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/540
-  [Intel XE#7433]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7433
-  [Intel XE#780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/780
-  [Intel XE#782]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/782
-  [Intel XE#783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/783
-  [Intel XE#784]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/784
-  [Intel XE#829]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/829
-  [Intel XE#947]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/947
-  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
-  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
-  [i915#1836]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1836
-  [i915#6077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6077
-
-
-Build changes
--------------
-
-  * IGT: IGT_8777 -> IGTPW_14671
-  * Linux: xe-4645-3fe1f7a93adf8e03fb044eb57b63394afe6e139c -> xe-4658-d17c843163eeb774261fd8b0ea9e278c0e57db50
-
-  IGTPW_14671: acbf10c0a6a82fbe521ab3b1e023db6376527512 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8777: a50285a68dbef0fe11140adef4016a756f57b324 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-4645-3fe1f7a93adf8e03fb044eb57b63394afe6e139c: 3fe1f7a93adf8e03fb044eb57b63394afe6e139c
-  xe-4658-d17c843163eeb774261fd8b0ea9e278c0e57db50: d17c843163eeb774261fd8b0ea9e278c0e57db50
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/index.html
-
---===============9067232779096262106==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>include/android: Define additional types in glib.h</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162608/">https://patchwork.freedesktop.org/series/162608/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8777_BAT -&gt; XEIGTPW_14671_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 14)</h2>
-<p>Additional (1): bat-atsm-2 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14671_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@fbdev@write:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@fbdev@write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134">Intel XE#2134</a>) +4 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@addfb25-yf-tiled-legacy:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_addfb_basic@addfb25-yf-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6077">i915#6077</a>) +30 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/782">Intel XE#782</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/947">Intel XE#947</a>) +5 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/784">Intel XE#784</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/947">Intel XE#947</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/783">Intel XE#783</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/947">Intel XE#947</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/540">Intel XE#540</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_pipe_crc_basic@nonblocking-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/829">Intel XE#829</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1836">i915#1836</a>) +6 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_prop_blob@basic:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_prop_blob@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/780">Intel XE#780</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-page-flip:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/947">Intel XE#947</a>) +6 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-userptr-prefetch:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@xe_exec_fault_mode@twice-userptr-prefetch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_huc_copy@huc_copy:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xe2:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2838">Intel XE#2838</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelpg:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-atsm-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@sriov_basic@enable-vfs-autoprobe-on:</p>
-<ul>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8777/bat-bmg-2/igt@sriov_basic@enable-vfs-autoprobe-on.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7433">Intel XE#7433</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-bmg-2/igt@sriov_basic@enable-vfs-autoprobe-on.html">PASS</a> +3 other tests pass</li>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8777/bat-bmg-1/igt@sriov_basic@enable-vfs-autoprobe-on.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7433">Intel XE#7433</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-bmg-1/igt@sriov_basic@enable-vfs-autoprobe-on.html">PASS</a> +3 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_module_load@load:</p>
-<ul>
-<li>bat-bmg-3:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8777/bat-bmg-3/igt@xe_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7433">Intel XE#7433</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14671/bat-bmg-3/igt@xe_module_load@load.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8777 -&gt; IGTPW_14671</li>
-<li>Linux: xe-4645-3fe1f7a93adf8e03fb044eb57b63394afe6e139c -&gt; xe-4658-d17c843163eeb774261fd8b0ea9e278c0e57db50</li>
-</ul>
-<p>IGTPW_14671: acbf10c0a6a82fbe521ab3b1e023db6376527512 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8777: a50285a68dbef0fe11140adef4016a756f57b324 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-4645-3fe1f7a93adf8e03fb044eb57b63394afe6e139c: 3fe1f7a93adf8e03fb044eb57b63394afe6e139c<br />
-  xe-4658-d17c843163eeb774261fd8b0ea9e278c0e57db50: d17c843163eeb774261fd8b0ea9e278c0e57db50</p>
-
-</body>
-</html>
-
---===============9067232779096262106==--
+> 
+> 
+> Matt
+> 
+> On Wed, Mar 04, 2026 at 06:27:43PM -0800, Sharma, Nishit wrote:
+> > Hi Ashutosh,
+> > 
+> > I understand the concern but the xe_pat patch was reviewed and +1 given by MattR and with reasoning regarding xe_oa https://patchwork.freedesktop.org/patch/706754/?series=161927&rev=2
+> > Hence, we went ahead with the merge. In case if you feel it's major regression a partial revert of lib changes can be done.
+> > 
+> > Regards
+> > Nishit
+> > 
+> > -----Original Message-----
+> > From: Dixit, Ashutosh <ashutosh.dixit@intel.com> 
+> > Sent: Thursday, March 5, 2026 6:01 AM
+> > To: igt-dev@lists.freedesktop.org
+> > Cc: Girotra, Himanshu <himanshu.girotra@intel.com>; Sharma, Nishit <nishit.sharma@intel.com>
+> > Subject: [PATCH i-g-t] Revert "lib/intel_pat: use kernel debugfs as authoritative PAT source for Xe"
+> > 
+> > This reverts commit 4e59b8e7779b04ba982cd5b17c023511ee2f0ed7.
+> > 
+> > This patch caused a major regression in xe_oa tests and should not have been merged. Revert for now and re-merge after the regression is fixed.
+> > 
+> > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > ---
+> >  lib/intel_pat.c      | 37 ++++++++++----------
+> >  tests/intel/xe_pat.c | 80 ++++----------------------------------------
+> >  2 files changed, 24 insertions(+), 93 deletions(-)
+> > 
+> > diff --git a/lib/intel_pat.c b/lib/intel_pat.c index 8660a25153..9815efc187 100644
+> > --- a/lib/intel_pat.c
+> > +++ b/lib/intel_pat.c
+> > @@ -96,27 +96,24 @@ int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache)
+> >  
+> >  static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)  {
+> > -	uint16_t dev_id;
+> > -
+> > -	/*
+> > -	 * For Xe driver, query the kernel's PAT software configuration
+> > -	 * via debugfs. The kernel is the authoritative source for PAT
+> > -	 * indices, accounting for platform-specific workarounds
+> > -	 * (e.g. Wa_16023588340) at runtime.
+> > -	 */
+> > -	if (is_xe_device(fd)) {
+> > -		int32_t parsed = xe_get_pat_sw_config(fd, pat);
+> > -
+> > -		igt_assert_f(parsed > 0,
+> > -			     "Failed to get PAT sw_config from debugfs (parsed=%d)\n",
+> > -			     parsed);
+> > -		return;
+> > -	}
+> > -
+> > -	/* i915 fallback: hardcoded PAT indices */
+> > -	dev_id = intel_get_drm_devid(fd);
+> > +	uint16_t dev_id = intel_get_drm_devid(fd);
+> >  
+> > -	if (IS_METEORLAKE(dev_id)) {
+> > +	if (intel_graphics_ver(dev_id) == IP_VER(35, 11)) {
+> > +		pat->uc = 3;
+> > +		pat->wb = 2;
+> > +		pat->max_index = 31;
+> > +	} else if (intel_get_device_info(dev_id)->graphics_ver == 30 ||
+> > +		   intel_get_device_info(dev_id)->graphics_ver == 20) {
+> > +		pat->uc = 3;
+> > +		pat->wt = 15; /* Compressed + WB-transient */
+> > +		pat->wb = 2;
+> > +		pat->uc_comp = 12; /* Compressed + UC, XE2 and later */
+> > +		pat->max_index = 31;
+> > +
+> > +		/* Wa_16023588340: CLOS3 entries at end of table are unusable */
+> > +		if (intel_graphics_ver(dev_id) == IP_VER(20, 1))
+> > +			pat->max_index -= 4;
+> > +	} else if (IS_METEORLAKE(dev_id)) {
+> >  		pat->uc = 2;
+> >  		pat->wt = 1;
+> >  		pat->wb = 3;
+> > diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c index ab519aab0f..21547c84e7 100644
+> > --- a/tests/intel/xe_pat.c
+> > +++ b/tests/intel/xe_pat.c
+> > @@ -103,55 +103,6 @@ static void userptr_coh_none(int fd)
+> >  #define COH_MODE_1WAY		2
+> >  #define COH_MODE_2WAY		3
+> >  
+> > -/* Pre-Xe2 PAT bit fields (from kernel xe_pat.c) */
+> > -#define XELP_MEM_TYPE_MASK	GENMASK(1, 0)
+> > -
+> > -static bool pat_entry_is_uc(unsigned int gfx_ver, uint32_t pat) -{
+> > -	if (gfx_ver >= IP_VER(20, 0))
+> > -		return REG_FIELD_GET(XE2_L3_POLICY, pat) == L3_CACHE_POLICY_UC &&
+> > -		       REG_FIELD_GET(XE2_L4_POLICY, pat) == L4_CACHE_POLICY_UC;
+> > -
+> > -	if (gfx_ver >= IP_VER(12, 70))
+> > -		return REG_FIELD_GET(XE2_L4_POLICY, pat) == L4_CACHE_POLICY_UC;
+> > -
+> > -	return REG_FIELD_GET(XELP_MEM_TYPE_MASK, pat) == 0;
+> > -}
+> > -
+> > -static bool pat_entry_is_wb(unsigned int gfx_ver, uint32_t pat) -{
+> > -	if (gfx_ver >= IP_VER(20, 0)) {
+> > -		uint32_t l3 = REG_FIELD_GET(XE2_L3_POLICY, pat);
+> > -
+> > -		return l3 == L3_CACHE_POLICY_WB || l3 == L3_CACHE_POLICY_XD;
+> > -	}
+> > -
+> > -	if (gfx_ver >= IP_VER(12, 70))
+> > -		return REG_FIELD_GET(XE2_L4_POLICY, pat) == L4_CACHE_POLICY_WB;
+> > -
+> > -	return REG_FIELD_GET(XELP_MEM_TYPE_MASK, pat) == 3;
+> > -}
+> > -
+> > -static bool pat_entry_is_wt(unsigned int gfx_ver, uint32_t pat) -{
+> > -	if (gfx_ver >= IP_VER(20, 0))
+> > -		return REG_FIELD_GET(XE2_L3_POLICY, pat) == L3_CACHE_POLICY_XD &&
+> > -		       REG_FIELD_GET(XE2_L4_POLICY, pat) == L4_CACHE_POLICY_WT;
+> > -
+> > -	if (gfx_ver >= IP_VER(12, 70))
+> > -		return REG_FIELD_GET(XE2_L4_POLICY, pat) == L4_CACHE_POLICY_WT;
+> > -
+> > -	return REG_FIELD_GET(XELP_MEM_TYPE_MASK, pat) == 2;
+> > -}
+> > -
+> > -static bool pat_entry_is_compressed(unsigned int gfx_ver, uint32_t pat) -{
+> > -	if (gfx_ver < IP_VER(20, 0))
+> > -		return false;
+> > -
+> > -	return !!(pat & XE2_COMP_EN);
+> > -}
+> > -
+> >  static int xe_fetch_pat_sw_config(int fd, struct intel_pat_cache *pat_sw_config)  {
+> >  	int32_t parsed = xe_get_pat_sw_config(fd, pat_sw_config); @@ -169,14 +120,13 @@ static int xe_fetch_pat_sw_config(int fd, struct intel_pat_cache *pat_sw_config)  static void pat_sanity(int fd)  {
+> >  	uint16_t dev_id = intel_get_drm_devid(fd);
+> > -	unsigned int gfx_ver = intel_graphics_ver(dev_id);
+> >  	struct intel_pat_cache pat_sw_config = {};
+> >  	int32_t parsed;
+> >  	bool has_uc_comp = false, has_wt = false;
+> >  
+> >  	parsed = xe_fetch_pat_sw_config(fd, &pat_sw_config);
+> >  
+> > -	if (gfx_ver >= IP_VER(20, 0)) {
+> > +	if (intel_graphics_ver(dev_id) >= IP_VER(20, 0)) {
+> >  		for (int i = 0; i < parsed; i++) {
+> >  			uint32_t pat = pat_sw_config.entries[i].pat;
+> >  			if (pat_sw_config.entries[i].rsvd)
+> > @@ -194,29 +144,13 @@ static void pat_sanity(int fd)
+> >  	} else {
+> >  		has_wt = true;
+> >  	}
+> > -
+> > -	/*
+> > -	 * Validate that the selected PAT indices actually have the expected
+> > -	 * cache types rather than comparing against hardcoded values.
+> > -	 */
+> > -	igt_assert_f(pat_entry_is_uc(gfx_ver, pat_sw_config.entries[pat_sw_config.uc].pat),
+> > -		     "UC index %d does not point to an uncached entry (pat=%#x)\n",
+> > -		     pat_sw_config.uc, pat_sw_config.entries[pat_sw_config.uc].pat);
+> > -	igt_assert_f(pat_entry_is_wb(gfx_ver, pat_sw_config.entries[pat_sw_config.wb].pat),
+> > -		     "WB index %d does not point to a WB/XA/XD entry (pat=%#x)\n",
+> > -		     pat_sw_config.wb, pat_sw_config.entries[pat_sw_config.wb].pat);
+> > +	igt_assert_eq(pat_sw_config.max_index, intel_get_max_pat_index(fd));
+> > +	igt_assert_eq(pat_sw_config.uc, intel_get_pat_idx_uc(fd));
+> > +	igt_assert_eq(pat_sw_config.wb, intel_get_pat_idx_wb(fd));
+> >  	if (has_wt)
+> > -		igt_assert_f(pat_entry_is_wt(gfx_ver, pat_sw_config.entries[pat_sw_config.wt].pat),
+> > -			     "WT index %d does not point to a WT entry (pat=%#x)\n",
+> > -			     pat_sw_config.wt, pat_sw_config.entries[pat_sw_config.wt].pat);
+> > -	if (has_uc_comp) {
+> > -		uint32_t uc_comp_pat = pat_sw_config.entries[pat_sw_config.uc_comp].pat;
+> > -
+> > -		igt_assert_f(pat_entry_is_compressed(gfx_ver, uc_comp_pat) &&
+> > -			     pat_entry_is_uc(gfx_ver, uc_comp_pat),
+> > -			     "UC_COMP index %d does not point to a compressed UC entry (pat=%#x)\n",
+> > -			     pat_sw_config.uc_comp, uc_comp_pat);
+> > -	}
+> > +		igt_assert_eq(pat_sw_config.wt, intel_get_pat_idx_wt(fd));
+> > +	if (has_uc_comp)
+> > +		igt_assert_eq(pat_sw_config.uc_comp, intel_get_pat_idx_uc_comp(fd));
+> >  }
+> >  
+> >  /**
+> > --
+> > 2.48.1
+> > 
+> 
+> -- 
+> Matt Roper
+> Graphics Software Engineer
+> Linux GPU Platform Enablement
+> Intel Corporation
