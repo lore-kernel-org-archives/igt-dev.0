@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC42AF33A61
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Mar 2026 13:48:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52448F33A65
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Mar 2026 13:57:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5130C10EB99;
-	Thu,  5 Mar 2026 13:48:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EB48710EB99;
+	Thu,  5 Mar 2026 13:57:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E6Ov+AN1";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JLVYRZco";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8913110EB99
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2026 13:48:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 59FE910EB99
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2026 13:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772718497; x=1804254497;
+ t=1772719043; x=1804255043;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=hLJ7pL8iXE8eqLERpYVo/68sSmYA1meAKCe2eC0hmi0=;
- b=E6Ov+AN1RXQ++Geoo8V+A4gyxLbS1oJUfbcdMyxn1q8SCLHEqO9FJMPQ
- EAxJZHoio+Iq5VQYDEe9slF/AB4bsSmO7t0q2q6mMzIVJTCeHqKqoTPtS
- /RYqxHrA6+rSSMvYtgIcfBInmgfgYKAN3GTjv1TxUs0psvQ/x9oVjdU2i
- sIxn/hsFVei84LXGrA27fcZyXs2pMyCfdoD35bbsSXriW7NMUYuUJ/UpX
- OhHNAOR/pUupYbUpSCiVXJ/sJBYgrBKXyRyvGVj5lHVo06561BCaaCA7r
- WnXBx5BZv9QDLq7KSB1hVuBW10Yy/RlT4w3jxtDeNQMsii0xCaunkYDNb g==;
-X-CSE-ConnectionGUID: qqsJGrn0TbyJe8+ps6AmJA==
-X-CSE-MsgGUID: 3CjFeieqSIKJJdApjl688Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="84439745"
-X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; d="scan'208";a="84439745"
+ bh=egaP2p85VKEHkJbcHoJr/cbixQ37ctfmUdbIDNmN9ME=;
+ b=JLVYRZcoR8LmF2s8jzGmbeB61k0OXxqCblfkcF6/G1KDaBAn8rHlGUeN
+ C1iGxkACR/UP/C3EWQn8XAdCQWqZy1V9RaBH2KAPCfybJUNjQTBPIdlj5
+ 5dDMuTWanf/ZZIWwGGIFAwH2lFksWYzISFQGT3r5Kr5FcvA1tIalrV88+
+ ql5wHr7vRH2aHFBVbWpnZvgjWWod1fDufru4743sMn9Vacv8h2vDZUiQo
+ MlUaPMTglPHB6gbTSW3CKHg2HNiZOqELLt/27dUyGFPYWuRlXJBYi5nTF
+ 2Ic9VyxPN3Qa7FDA3smke53SAZgTknSPgmHN6i4qDU/xDA2UojDHjzCH0 w==;
+X-CSE-ConnectionGUID: 98TZNBduT8mapYzFKk0c+Q==
+X-CSE-MsgGUID: 3NiELCWFTZ+r+Z95Zi4p2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="73926623"
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; d="scan'208";a="73926623"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2026 05:48:15 -0800
-X-CSE-ConnectionGUID: InOZsDrYSGa/vUJL2PiuvA==
-X-CSE-MsgGUID: Z89AA6CDQH6iFH1nV+O3bg==
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2026 05:57:23 -0800
+X-CSE-ConnectionGUID: NbpOcbdZRguGWLaiKcuJog==
+X-CSE-MsgGUID: F9nCY6cDT+yEv0SOncTFug==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; d="scan'208";a="218683532"
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; d="scan'208";a="218686865"
 Received: from cohendav-mobl1.ger.corp.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.125.161.186])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2026 05:48:14 -0800
-Date: Thu, 05 Mar 2026 05:48:13 -0800
-Message-ID: <87o6l25qw2.wl-ashutosh.dixit@intel.com>
+ 05 Mar 2026 05:57:23 -0800
+Date: Thu, 05 Mar 2026 05:57:21 -0800
+Message-ID: <87ms0m5qgu.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: <himanshu.girotra@intel.com>
 Cc: <matthew.d.roper@intel.com>, <x.wang@intel.com>,
- <igt-dev@lists.freedesktop.org>, <nishit.sharma@intel.com>,
- Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
+ <igt-dev@lists.freedesktop.org>, <nishit.sharma@intel.com>
 Subject: Re: [PATCH v2 i-g-t] lib/intel_pat: Cache PAT config for unprivileged
  processes
 In-Reply-To: <20260305122548.28328-1-himanshu.girotra@intel.com>
@@ -75,90 +74,45 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 On Thu, 05 Mar 2026 04:25:48 -0800, <himanshu.girotra@intel.com> wrote:
 >
-> diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-> index 981d76948..256ec1d4d 100644
-> --- a/lib/xe/xe_query.c
-> +++ b/lib/xe/xe_query.c
-> @@ -22,6 +22,7 @@
->  #include "ioctl_wrappers.h"
->  #include "igt_map.h"
+> diff --git a/lib/intel_pat.c b/lib/intel_pat.c
+> index 8660a2515..1dcb84cc6 100644
+> --- a/lib/intel_pat.c
+> +++ b/lib/intel_pat.c
+> @@ -6,6 +6,7 @@
+>  #include <fcntl.h>
+>  #include "igt.h"
+>  #include "intel_pat.h"
+> +#include "xe/xe_query.h"
 >
-> +#include "intel_pat.h"
->  #include "xe_query.h"
->  #include "xe_ioctl.h"
->
-> @@ -299,6 +300,15 @@ struct xe_device *xe_device_get(int fd)
->	xe_dev->default_alignment = __mem_default_alignment(xe_dev->mem_regions);
->	xe_dev->has_vram = __mem_has_vram(xe_dev->mem_regions);
->
-> +	/*
-> +	 * Populate the PAT cache while we still have sufficient privileges
-> +	 * to read debugfs.  Forked children that inherit this xe_device
-> +	 * (via fork()) will be able to use the cached values even after
-> +	 * dropping root with igt_drop_root().
-> +	 */
-> +	if (xe_get_pat_sw_config(xe_dev->fd, &xe_dev->pat_cache) > 0)
-> +		xe_dev->pat_cached = true;
-> +
-x>	/* We may get here from multiple threads, use first cached xe_dev */
->	pthread_mutex_lock(&cache.cache_mutex);
->	prev = find_in_cache_unlocked(fd);
-> diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-> index d7a9f95f9..97bcf0d32 100644
-> --- a/lib/xe/xe_query.h
-> +++ b/lib/xe/xe_query.h
-> @@ -9,6 +9,8 @@
->  #ifndef XE_QUERY_H
->  #define XE_QUERY_H
->
-> +#include "intel_pat.h"
-> +
->  #include <stdint.h>
->  #include <xe_drm.h>
->
-> @@ -74,6 +76,12 @@ struct xe_device {
->
->	/** @dev_id: Device id of xe device */
+>  /**
+>   * xe_get_pat_sw_config - Helper to read PAT (Page Attribute Table) software configuration
+> @@ -99,17 +100,18 @@ static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
 >	uint16_t dev_id;
-> +
-> +	/** @pat_cache: cached PAT index configuration */
-> +	struct intel_pat_cache pat_cache;
-
-This should just be "struct intel_pat_cache *pat_cache";
-
-> +
-> +	/** @pat_cached: true once @pat_cache has been populated */
-> +	bool pat_cached;
-
-And then we don't need this, we can just check for NULL pointer, like has
-been done for other members of 'struct xe_device'.
-
->  };
 >
->  #define xe_for_each_engine(__fd, __hwe) \
-> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index 927f3f4f2..9ce828619 100644
-> --- a/tests/intel/xe_oa.c
-> +++ b/tests/intel/xe_oa.c
-> @@ -3453,6 +3453,14 @@ test_single_ctx_render_target_writes_a_counter(const struct drm_xe_oa_unit *oau)
->			/* A local device for local resources. */
->			drm_fd = drm_reopen_driver(drm_fd);
+>	/*
+> -	 * For Xe driver, query the kernel's PAT software configuration
+> -	 * via debugfs. The kernel is the authoritative source for PAT
+> -	 * indices, accounting for platform-specific workarounds
+> -	 * (e.g. Wa_16023588340) at runtime.
+> +	 * For Xe, use the PAT cache stored in struct xe_device.
+> +	 * xe_device_get() populates the cache while still root; forked
+> +	 * children that inherit the xe_device can use it post-drop_root().
+>	 */
+>	if (is_xe_device(fd)) {
+> -		int32_t parsed = xe_get_pat_sw_config(fd, pat);
+> +		struct xe_device *xe_dev = xe_device_get(fd);
 >
-> +			/*
-> +			 * Populate the xe_device cache (including PAT) for
-> +			 * the new fd while we still have root privileges.
-> +			 * intel_get_pat_idx_*() reads PAT from xe_device,
-> +			 * so this must happen before igt_drop_root().
-> +			 */
-> +			xe_device_get(drm_fd);
+> -		igt_assert_f(parsed > 0,
+> -			     "Failed to get PAT sw_config from debugfs (parsed=%d)\n",
+> -			     parsed);
+> +		igt_assert_f(xe_dev->pat_cached,
+> +			     "PAT not cached in xe_device for fd %d -- "
+> +			     "was xe_device_get() called before igt_drop_root()?\n",
+> +			     fd);
 
-This is not needed, this is done in igt_main() in xe_oa.c. Also you have
-done a xe_device_get() in lib/intel_pat.c in this patch itself.
+Maybe change this print too since we are doing xe_device_get() right above.
 
-> +
->			igt_drop_root();
->
->			single_ctx_helper(oau);
-> --
-> 2.50.1
+> +		*pat = xe_dev->pat_cache;
+>		return;
+>	}
 >
