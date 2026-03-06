@@ -4,53 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0F1EF01804
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Mar 2026 07:58:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51474F01804
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Mar 2026 07:58:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A830D10E3A2;
-	Fri,  6 Mar 2026 07:58:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0A29310E3A1;
+	Fri,  6 Mar 2026 07:58:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ly+s4/yv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IRWNiqRX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD56110E3A2
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Mar 2026 07:58:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7302310E3A1
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Mar 2026 07:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772783904; x=1804319904;
+ t=1772783909; x=1804319909;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=cy+rSs+X/wuaR/wmYzosSfokstk4tSYuDm4aZMYZmG4=;
- b=Ly+s4/yvkrX0UfR7JW1tHfDnRtMsQiMu8Uve0S5a2trbuV06k2gtOJBV
- cCj70JO2m9rLxcxxBSgE0gBKRa+tbecwqyw24nodEIfWmFoQjPN/wpu/j
- pnwaS8CfQpyCJhKW4XfbClxXdbU5lfTjWmfEFXe79pDU45eF82R5QrPYG
- RzXTa4suv7hEvrpyi7LBWBwLcnkgX3Dun9b1wtmCrm9KPWQ04cCWsw2ds
- cY+3/UM+ibsPOQhg0pZ4w26TAAifFnrYeMLIupAfrGxl2feayDTbQanXy
- GEpJbcB0KeXfpa2XGWuDNVFkEci7bxqovrlG+8Z/Ii6i4XNU9c/Ql9kA4 w==;
-X-CSE-ConnectionGUID: RLlP8J5rRxC0DP6MVLHvTQ==
-X-CSE-MsgGUID: qyf3TFvwTHysg2ZliuMS0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="84521448"
-X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; d="scan'208";a="84521448"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2026 23:58:24 -0800
-X-CSE-ConnectionGUID: EJK1kmsWQBmh6txcGvHrMQ==
-X-CSE-MsgGUID: hnZ5t+gORkG8XPM+APz6ag==
+ bh=JQizWapDMcmhFdkb9R0ncurEmIvlFlavl0u6P7p8UIk=;
+ b=IRWNiqRXiRIWyMEFbKZ0GayR7wcwf5Ve3vq4cIIleblU5ZyHzb41wR1j
+ bgOI+f3uHqEXRJgJO3/KLV3da+qMqlTIcnxxqWpoj9ALA0yqNQasf858s
+ aZofldPpP91kd6ni2AQBvc8ua99IQVqrMr7CI1/kZcZknS5pNSzAuXg0y
+ seHDxnAKQqBc05KnW3FDojf8PaY4ME9MBovcpD/sWd+VrIPIMH4fJA9aC
+ CCTDuTnBHd7VvecNH1tIHAjFCarz3gzhPFrfe/cXJ/wNfCzkOvZkcvRbb
+ r/MyHi55lp1aoQNhITyNRMVbp9Z6QwCxKxis3QV5dIPjEp7A+EbFAKOyi w==;
+X-CSE-ConnectionGUID: 23qdP0ZkR5q9lU7DfT6g0Q==
+X-CSE-MsgGUID: KkUwBnk9Tgi06IhTrLV2kg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="73934235"
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; d="scan'208";a="73934235"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2026 23:58:28 -0800
+X-CSE-ConnectionGUID: 8tC3Gl6RRDiMKosyZxtedg==
+X-CSE-MsgGUID: b9QlPUHdS7ygzUd4E/EPMg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; d="scan'208";a="219071519"
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; d="scan'208";a="249416208"
 Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost)
  ([10.245.244.167])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2026 23:58:23 -0800
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2026 23:58:27 -0800
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Nishit Sharma <nishit.sharma@intel.com>
-Subject: [PATCH i-g-t v6 5/6] tests/xe_compute: Use appropriate feature in
- compute-square tests
-Date: Fri,  6 Mar 2026 08:58:05 +0100
-Message-ID: <20260306075759.1153032-13-zbigniew.kempczynski@intel.com>
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v6 6/6] tests/xe_compute: Limit loop count on PVC
+Date: Fri,  6 Mar 2026 08:58:06 +0100
+Message-ID: <20260306075759.1153032-14-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260306075759.1153032-8-zbigniew.kempczynski@intel.com>
 References: <20260306075759.1153032-8-zbigniew.kempczynski@intel.com>
@@ -72,32 +70,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Test is doing compute-square calculation so pick 'Compute' instead
-of 'WMTP' is better choice.
+New compiler changes argument positions what requires altering
+the pipeline. Limit number of loops to 64 what is currently
+supported and leave to fix this limitation for the future.
 
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Acked-by: Nishit Sharma <nishit.sharma@intel.com>
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_compute.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/intel/xe_compute.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
-index e5367b4c10..2a4e428699 100644
+index 2a4e428699..4017bafdc2 100644
 --- a/tests/intel/xe_compute.c
 +++ b/tests/intel/xe_compute.c
-@@ -495,8 +495,8 @@ test_eu_busy(uint64_t duration_sec)
+@@ -614,7 +614,12 @@ test_compute_square_userenv(int fd, uint32_t flags)
+ 		env.output_addr = OUTPUT_BO_ADDR;
+ 	}
  
- /**
-  * SUBTEST: compute-square
-- * Mega feature: WMTP
-- * Sub-category: wmtp tests
-+ * Mega feature: Compute
-+ * Sub-category: compute tests
-  * Functionality: OpenCL kernel
-  * GPU requirement: TGL, PVC, LNL, PTL
-  * Description:
+-	env.loop_count = env.array_size / 2;
++	/* FIXME: remove shader limitation to 64 elements */
++	if (IS_PONTEVECCHIO(intel_get_drm_devid(fd)))
++		env.loop_count = 64;
++	else
++		env.loop_count /= 2;
++
+ 	env.skip_results_check = true;
+ 
+ 	for (i = 0; i < env.array_size; i++)
 -- 
 2.43.0
 
