@@ -4,27 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF5FAF513F6
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Mar 2026 05:20:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AF48F513F7
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Mar 2026 05:29:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 567AE10E144;
-	Fri,  6 Mar 2026 05:20:38 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C7FE710E144;
- Fri,  6 Mar 2026 05:20:36 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5254343393476011048=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1BA4910E243;
+	Fri,  6 Mar 2026 05:29:46 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QwyoHsBl";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 937FE10E243
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Mar 2026 05:29:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1772774983; x=1804310983;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=7LjUPNWiqlhY3QQlLqyQwF1NVAziZvNM+ijT2NG6Q7o=;
+ b=QwyoHsBlYBOEFJ9CEUZO6w4dCoEtSbWDmRLWLtU28zluCLB3HpaxneJ+
+ vl+puh5fyyoj2HpCgE6Ajje6rARIr0iIEMwiF8GRO+zfWEI1ay3xfjp1I
+ Ces+rISNvXfLWNVkJrPDuaLAIUqmXj0qkqUwJGuXdUntw79D7QF6YDjTK
+ j94p9WZoiiaNHAGOAcW6JMav26pdY5u9Zc8V3V7/ha28Nt+ICHcE7MVys
+ aCIiwGFxDAorp/VepYlbnm378eKcEN7t2h9MIko8bYsYMSQc89DeP7bTx
+ pSB/q8CTUb4EG8Dusd4DUQy/02BDmiO/gUmiYjPV8gQSV+vEVZn9k0OMc w==;
+X-CSE-ConnectionGUID: WHQYI9TQSR2NjpKBwyU41A==
+X-CSE-MsgGUID: +3CHV9tRRXqosK5lGaRcEg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="73070417"
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; d="scan'208";a="73070417"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2026 21:29:43 -0800
+X-CSE-ConnectionGUID: PxLDTpmeRXKrG6HtdRvw3A==
+X-CSE-MsgGUID: 5TviiFf1RnCmDI75U8W4Qg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; d="scan'208";a="218861665"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.167])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Mar 2026 21:29:41 -0800
+Date: Fri, 6 Mar 2026 06:29:38 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Francois Dugast <francois.dugast@intel.com>
+Cc: igt-dev@lists.freedesktop.org, matthew.brost@intel.com, 
+ thomas.hellstrom@linux.intel.com
+Subject: Re: [PATCH i-g-t 2/5] tests/intel/xe_exec_system_allocator: Allow
+ looping in compute
+Message-ID: <i5idvrdsdwesgw354uh7oquasqtmcah5mkzdjb7zefpd7t5sxq@p4ljqukw3j7i>
+References: <20260128173412.1319610-1-francois.dugast@intel.com>
+ <20260128173412.1319610-3-francois.dugast@intel.com>
+ <5ms7xdrpvj4vvcoyn5vl4uzwmggd6djvbe6eemxqcvnkyygjso@wxplbrztpzzo>
+ <aalQu6yX-vP3XWeH@fdugast-desk>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_false_sharing_and_XA_ap?=
- =?utf-8?q?p_transient_tests_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: priyanka.dandamudi@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 06 Mar 2026 05:20:36 -0000
-Message-ID: <177277443676.324694.5892669519320903852@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260306041720.1760867-7-priyanka.dandamudi@intel.com>
-In-Reply-To: <20260306041720.1760867-7-priyanka.dandamudi@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aalQu6yX-vP3XWeH@fdugast-desk>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,144 +71,138 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5254343393476011048==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, Mar 05, 2026 at 10:45:31AM +0100, Francois Dugast wrote:
+> On Wed, Mar 04, 2026 at 05:16:52PM +0100, Zbigniew Kempczyński wrote:
+> > On Wed, Jan 28, 2026 at 06:29:07PM +0100, Francois Dugast wrote:
+> > > The default behavior remains unchanged but the user can decide to
+> > > stress the system by setting this environment variable:
+> > > IGT_SVM_COMPUTE_LOOPS. For example:
+> > > 
+> > >     IGT_SVM_COMPUTE_LOOPS=10 xe_exec_system_allocator --r eu-fault-2m-once-device
+> > 
+> > Wouldn't better choice be to use getopt argument? You always have better
+> > control during parsing input to do sth with this.
+> 
+> Not sure if we need more control, or if we should expect more arguments to
+> xe_exec_system_allocator in the future. This particular knob is not really
+> a runtime option expected to be set manually by users to influence behavior, 
+> it is meant as help to get reproducible performance numbers when optimizing
+> KMD.
 
-== Series Details ==
+If your preference is to pass env instead of getopt I'm fine. I would
+pick getopt because I tend to run binary with -h/--help to see what are
+args I can pass. Env requires to read the code so if you want to hide
+this it is better choice.
 
-Series: Add false sharing and XA app transient tests (rev3)
-URL   : https://patchwork.freedesktop.org/series/161572/
-State : success
+For the code:
 
-== Summary ==
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-CI Bug Log - changes from XEIGT_8782_BAT -> XEIGTPW_14685_BAT
-====================================================
+--
+Zbigniew
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (14 -> 13)
-------------------------------
-
-  Missing    (1): bat-bmg-3 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14685_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#7483])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8782/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14685/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#7483]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8782/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14685/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  
-  [Intel XE#7483]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483
-
-
-Build changes
--------------
-
-  * IGT: IGT_8782 -> IGTPW_14685
-  * Linux: xe-4665-d927c128e21f0543a0998af896d9fe22629b3532 -> xe-4671-0173caacd7e64feb97afe9bd5dcd51ad20c9f77a
-
-  IGTPW_14685: 70074873ea421fc9e85c9a37a4aa23e0609cee3f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8782: eac3b04d1f76b82ac3a183fb293c44e9185d8dba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-4665-d927c128e21f0543a0998af896d9fe22629b3532: d927c128e21f0543a0998af896d9fe22629b3532
-  xe-4671-0173caacd7e64feb97afe9bd5dcd51ad20c9f77a: 0173caacd7e64feb97afe9bd5dcd51ad20c9f77a
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14685/index.html
-
---===============5254343393476011048==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add false sharing and XA app transient tests (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161572/">https://patchwork.freedesktop.org/series/161572/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14685/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14685/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8782_BAT -&gt; XEIGTPW_14685_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (14 -&gt; 13)</h2>
-<p>Missing    (1): bat-bmg-3 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14685_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8782/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14685/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8782/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14685/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8782 -&gt; IGTPW_14685</li>
-<li>Linux: xe-4665-d927c128e21f0543a0998af896d9fe22629b3532 -&gt; xe-4671-0173caacd7e64feb97afe9bd5dcd51ad20c9f77a</li>
-</ul>
-<p>IGTPW_14685: 70074873ea421fc9e85c9a37a4aa23e0609cee3f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8782: eac3b04d1f76b82ac3a183fb293c44e9185d8dba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-4665-d927c128e21f0543a0998af896d9fe22629b3532: d927c128e21f0543a0998af896d9fe22629b3532<br />
-  xe-4671-0173caacd7e64feb97afe9bd5dcd51ad20c9f77a: 0173caacd7e64feb97afe9bd5dcd51ad20c9f77a</p>
-
-</body>
-</html>
-
---===============5254343393476011048==--
+> 
+> Francois
+> 
+> > 
+> > --
+> > Zbigniew
+> > 
+> > > 
+> > > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> > > ---
+> > >  tests/intel/xe_exec_system_allocator.c | 36 ++++++++++++++++----------
+> > >  1 file changed, 23 insertions(+), 13 deletions(-)
+> > > 
+> > > diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
+> > > index 23a429f24..c5193f81e 100644
+> > > --- a/tests/intel/xe_exec_system_allocator.c
+> > > +++ b/tests/intel/xe_exec_system_allocator.c
+> > > @@ -2202,7 +2202,7 @@ processes(int fd, int n_exec_queues, int n_execs, size_t bo_size,
+> > >   * @range-device-host:				touch the whole buffer, from the device then from the host
+> > >   */
+> > >  static void
+> > > -test_compute(int fd, size_t size, unsigned int flags)
+> > > +test_compute(int fd, size_t size, unsigned int flags, int loops)
+> > >  {
+> > >  	struct drm_xe_sync sync = {
+> > >  		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+> > > @@ -2227,19 +2227,22 @@ test_compute(int fd, size_t size, unsigned int flags)
+> > >  	bind_system_allocator(&sync, 1);
+> > >  	xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, 0, FIVE_SEC);
+> > >  
+> > > -	compute_input = aligned_alloc(size, size);
+> > > -	igt_assert(compute_input);
+> > > -
+> > >  	env.loop_count = (flags & TOUCH_ONCE) ? 1 : env.array_size;
+> > >  	env.skip_results_check = !(flags & ACCESS_DEVICE_HOST);
+> > > -	env.input_addr = to_user_pointer(compute_input);
+> > >  	env.vm = vm;
+> > >  
+> > > -	memset(compute_input, (rand() & 0xff), size);
+> > > +	for (int i = 0; i < loops; i++) {
+> > > +		compute_input = aligned_alloc(size, size);
+> > > +		igt_assert(compute_input);
+> > > +		env.input_addr = to_user_pointer(compute_input);
+> > > +
+> > > +		memset(compute_input, (rand() & 0xff), size);
+> > >  
+> > > -	run_intel_compute_kernel(fd, &env, EXECENV_PREF_SYSTEM);
+> > > +		run_intel_compute_kernel(fd, &env, EXECENV_PREF_SYSTEM);
+> > > +
+> > > +		free(compute_input);
+> > > +	}
+> > >  
+> > > -	free(compute_input);
+> > >  	unbind_system_allocator();
+> > >  	xe_vm_destroy(fd, vm);
+> > >  }
+> > > @@ -2250,6 +2253,13 @@ struct section {
+> > >  	uint8_t (*fn)(int pat);
+> > >  };
+> > >  
+> > > +static int getenv_int(const char *var, int def_val)
+> > > +{
+> > > +	char *env = getenv(var);
+> > > +
+> > > +	return env ? atoi(env) : def_val;
+> > > +}
+> > > +
+> > >  int igt_main()
+> > >  {
+> > >  	struct drm_xe_engine_class_instance *hwe;
+> > > @@ -2420,7 +2430,7 @@ int igt_main()
+> > >  		{ NULL },
+> > >  	};
+> > >  
+> > > -	int fd;
+> > > +	int fd, svm_compute_loops = getenv_int("IGT_SVM_COMPUTE_LOOPS", 1);
+> > >  
+> > >  	igt_fixture() {
+> > >  		struct xe_device *xe;
+> > > @@ -2637,15 +2647,15 @@ int igt_main()
+> > >  	}
+> > >  
+> > >  	igt_subtest("compute")
+> > > -		test_compute(fd, SZ_2M, 0);
+> > > +		test_compute(fd, SZ_2M, 0, svm_compute_loops);
+> > >  
+> > >  	for (const struct section *s = csections; s->name; s++) {
+> > >  		igt_subtest_f("eu-fault-4k-%s", s->name)
+> > > -			test_compute(fd, SZ_4K, s->flags);
+> > > +			test_compute(fd, SZ_4K, s->flags, svm_compute_loops);
+> > >  		igt_subtest_f("eu-fault-64k-%s", s->name)
+> > > -			test_compute(fd, SZ_64K, s->flags);
+> > > +			test_compute(fd, SZ_64K, s->flags, svm_compute_loops);
+> > >  		igt_subtest_f("eu-fault-2m-%s", s->name)
+> > > -			test_compute(fd, SZ_2M, s->flags);
+> > > +			test_compute(fd, SZ_2M, s->flags, svm_compute_loops);
+> > >  	}
+> > >  
+> > >  	igt_fixture() {
+> > > -- 
+> > > 2.43.0
+> > > 
