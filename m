@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92F08FCC074
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Mar 2026 20:57:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC8D8FCC076
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Mar 2026 20:57:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3A9C010E3FB;
-	Fri,  6 Mar 2026 20:57:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8DFE810E3FB;
+	Fri,  6 Mar 2026 20:57:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.b="D1rnVnJH";
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.b="Stm6aCbZ";
 	dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com
  (us-smtp-delivery-124.mimecast.com [170.10.129.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4B7510E3FB
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Mar 2026 20:57:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 62B9810E3FB
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Mar 2026 20:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1772830642;
+ s=mimecast20190719; t=1772830667;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=k8ZxE8ElLejT/CVCdFA+kcyQ7lYwTQZTtLBO/RoEqsw=;
- b=D1rnVnJHmzxCGUAFRJsjpIRMW9FBi/y7NKJsdlWaem9z/DFwXiPo3PxTqoEtqQHtRSR3Zy
- tSn3S7JYcpZY6YNJW0UKjmvLY9jl9TTR3VfhgElW7AlJxzsP12zFgl14wr1+GyRmV7uGtZ
- 9r8UWuG4eMWsc8qk/AFWAAf5b0ghfsk=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kgIhIQUy7H27U26QjyJk8lUD4MBqs7sXgkpF0jC8/kA=;
+ b=Stm6aCbZ4L3jYvd0n80A/M8I/Ptx7wSAQ1f3VdjrWYQwl40MSh3y6lVSwnyZnx/qWMDaLS
+ L9o8Z6sqK7Q8Za6Td4f+pXt6PINLUpIAvyO1FiQz1NvHkfBxGR86QK3nx+iCOFzC54N/XJ
+ wlBAcKc2HZRHrVOlMFjZVf/TVNWCEnw=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-xLSxgbhuOSO4NYsGH8ty4A-1; Fri, 06 Mar 2026 15:57:21 -0500
-X-MC-Unique: xLSxgbhuOSO4NYsGH8ty4A-1
-X-Mimecast-MFC-AGG-ID: xLSxgbhuOSO4NYsGH8ty4A_1772830641
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-506afabb8d3so836847051cf.0
- for <igt-dev@lists.freedesktop.org>; Fri, 06 Mar 2026 12:57:21 -0800 (PST)
+ us-mta-661-TIY7XQA0NkWBhXu-reX6Rg-1; Fri, 06 Mar 2026 15:57:44 -0500
+X-MC-Unique: TIY7XQA0NkWBhXu-reX6Rg-1
+X-Mimecast-MFC-AGG-ID: TIY7XQA0NkWBhXu-reX6Rg_1772830664
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-506b3fb32a1so240978851cf.0
+ for <igt-dev@lists.freedesktop.org>; Fri, 06 Mar 2026 12:57:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1772830641; x=1773435441;
+ d=1e100.net; s=20230601; t=1772830664; x=1773435464;
  h=mime-version:user-agent:content-transfer-encoding:organization
  :references:in-reply-to:date:to:from:subject:message-id:x-gm-gg
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=r6sYT6dIzHVY1XZs50ThlTSbitiOTas0Mz1flmKCOyU=;
- b=vOyxUROgv5KzorWM0sXy/Fy94WjWNPCuw5MmVqF3SHoVvAEuG74knXOgAcI0WrWq6U
- qRemx7t7u16yE81go20HYt0KzRfa6U7GeS/QVTGJJJsYV1EBqTH4hoFS5gBgjNonfdOL
- m8xQ0aDwC/bwMF2CJlQXz4iiu/C9ujW/ur/w53ZqASvE2aFPlA8ZmYraK5sQ8Tg2lJ2M
- HGV8i3PNPc2oDFrd0v7gXIpRDjEVu9c5mGrxDgogcDxZ2HOgacLlUqcbL+9NV65NVP7l
- oCwnSNzv4PQcoQSjlXQcuFeqoPB3d5rbtJjdFqA7sUZQuxyavlp1lCV5B62IzQB6Hwn2
- 5PwA==
+ bh=PEw5YYBdpc2MJfEQsOl9EWnzm9s3FpJndAuYvB9TQTk=;
+ b=bzQuCHXQvoZ23IvOISKXPF8pcZKdMIlc+wCrV2aP6+KBFoaRoMhd/ghQT6QqPV5YLQ
+ dHJNchaG2uoqJRwSFyPrLNGin+jWklfy7JKm5n9kgoAU70HIfDYvAk39Iu18L8xzLLYh
+ rlrlWxoo3gADlspddypLCN/y0bJB9V3oT0VjkMqhu4e81DQkKQ4Qi5aDIy5faaW07ec1
+ 1Dqko+Z6a7UETu7H4I4gSzGZLkBU65RGtfAwUyR+FoGktf/2G0jU6VMEAp7zBHiBHmMe
+ XN04O2u5fw1zJY+2VWI9/KJXVrHY7RfwBKo/sWw5uMZ+TqxM+sO7ab/6DFe37BSJZ316
+ gHOQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXwDjpaBUcZN/BOnp2I8CdShNXRUOhYbYHpo0BdqSmdpYwSM35bCZHLdefmw3+KMsDpk3Abzwc9@lists.freedesktop.org
-X-Gm-Message-State: AOJu0Yw50eHHrNqw7IdHr+RTiDmX1kfgjvBk8fdasZ5J7Aywgc0/LSMf
- bjwerArwHPHBDoVSti+D1gdzDCji111w9HCwsXWLMCHQ0Gw1pAnFfwLX94VoxTbxWN7f9/XXxk9
- jDUYU2j8/x+aGOdarnzPCslLDOHg61f57lr5Ld7R4O+clv/1gfp628jMMeJUx7E34j4ckZcnvyd
- 8=
-X-Gm-Gg: ATEYQzwzSA3VQZhPabtTy2ZIMFqM/mshplHPFlC9q7Ne9vVosGfPpU5YlQkQBuOHPpk
- 16cyAeOv6zqLBJsA8IU0RghNouxSwZ+kstAT6mjqrdG+C6JlwyYtRgeedktTN6w4G2TNBbH7jXs
- OdHAsx+iiL9UZiwgcbNuTupSo4LWaDhFwSGwhKg0zeSZ+06ThK2LTtrYr/3lnfz+/daar5pNlK5
- iy1lSgTltyVAV2gkcmePb6O0LbL3BqznvpJ8Xi5pTmklzyydXSsuwojYeV02VT5Rf2teESj+gM8
- /PsNgJEZ5/V+Y72kcZd7AGMc4BJbERaxTstmG0DO4DcMyaGBaNdO9jqf43EtzBG4P814ErX4/YQ
- VYhpdwzCdnGcGgenHpTaNcosvFsq3lPCwASyr+eda4TPpbHYa7njiegv+TSij
-X-Received: by 2002:ac8:7f96:0:b0:4ee:13dc:1040 with SMTP id
- d75a77b69052e-508f4a8a338mr41557081cf.3.1772830641239; 
- Fri, 06 Mar 2026 12:57:21 -0800 (PST)
-X-Received: by 2002:ac8:7f96:0:b0:4ee:13dc:1040 with SMTP id
- d75a77b69052e-508f4a8a338mr41556841cf.3.1772830640824; 
- Fri, 06 Mar 2026 12:57:20 -0800 (PST)
+ AJvYcCWOYxvpJXYOQALJbgx2A3Eeay8zRBW24RJcUP7vwG1SUSdh1R845FLTJJojY1hJXuNasmWCfcPR@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YzIJThFn1JGWSiMqovhuBmIJFrBW3AC9JBRFxYb/JwCq0KexRpU
+ 6mp6v70f/nXMdOwQXCIY+KMcf2hHZnRAmUljMVeRSpkYhQcnQJgpy5GctSvw5zIrLTVZvf1PrFY
+ kFtuEY9bJmeELdT9g/Rk/bpFLN1eq3XOuJHSbYiPAeMT3CPkJEwjYOyoxK7OE6+TxGETnnh/8iH
+ A=
+X-Gm-Gg: ATEYQzxVuoei/YKLviYworwAZLnyaBdNk1maAfBdX4HXhisd1ep7ESYP0G4f9IV3Goe
+ pa3LFKkpOYMz7kvKkuWd7ZJgQNRjXn05vkFOxey9R5vZcbsV6IsPn7naIUffAXnnSWDCQhwEDjD
+ SfR8D/qTI+zYMIshiXr1aZq3OU7o3f60xVr7LBNEmxhSALVHPiNyGvbhAor//sFRpEwAXAxFC2E
+ 5ySiyGubnfLBfhFswZ0ranpK11D5+OzChvKV6kZ7cutau+CEbBQpXGxh++30vpnyEO/P+Vv7pMT
+ XyZt+SmgZvWtOOVoaugYKkEqpwCFWVdwtURGduNtu3Ps6BbgOG8Iu4V3SoywdvbouBopiKv56BM
+ HDVI0eaw84EX299x/tRRJvN+RyhQ0f036Ba++7RhDFNsT7BdJEkmRa3W9GZ7/
+X-Received: by 2002:a05:622a:15c1:b0:507:340b:251b with SMTP id
+ d75a77b69052e-508f491ce80mr46474041cf.28.1772830663709; 
+ Fri, 06 Mar 2026 12:57:43 -0800 (PST)
+X-Received: by 2002:a05:622a:15c1:b0:507:340b:251b with SMTP id
+ d75a77b69052e-508f491ce80mr46473871cf.28.1772830663253; 
+ Fri, 06 Mar 2026 12:57:43 -0800 (PST)
 Received: from [192.168.2.155] (c-24-62-127-128.hsd1.ma.comcast.net.
  [24.62.127.128]) by smtp.gmail.com with ESMTPSA id
- d75a77b69052e-508fd453ff3sm9773811cf.17.2026.03.06.12.57.18
+ d75a77b69052e-508f654fca0sm16687701cf.10.2026.03.06.12.57.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Mar 2026 12:57:19 -0800 (PST)
-Message-ID: <967975b33ca9a6e17548e9cbf1ff53086d2b1c76.camel@redhat.com>
-Subject: Re: [PATCH i-g-t 1/5] tests/nouveau_crc: Extract
- {setup,cleanup}_test()
+ Fri, 06 Mar 2026 12:57:42 -0800 (PST)
+Message-ID: <0491de5987c875cbbf4d0f455bb886ff45f87d9d.camel@redhat.com>
+Subject: Re: [PATCH i-g-t 3/5] tests/nouveau_crc: Use igt_first_crtc()
+ instead of igt_crtc_for_pipe()
 From: Lyude Paul <lyude@redhat.com>
 To: Ville Syrjala <ville.syrjala@linux.intel.com>, 
  igt-dev@lists.freedesktop.org
-Date: Fri, 06 Mar 2026 15:57:18 -0500
-In-Reply-To: <20260305134038.6995-2-ville.syrjala@linux.intel.com>
+Date: Fri, 06 Mar 2026 15:57:41 -0500
+In-Reply-To: <20260305134038.6995-4-ville.syrjala@linux.intel.com>
 References: <20260305134038.6995-1-ville.syrjala@linux.intel.com>
- <20260305134038.6995-2-ville.syrjala@linux.intel.com>
+ <20260305134038.6995-4-ville.syrjala@linux.intel.com>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.58.3 (3.58.3-1.fc43)
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: CMT5iioPr1rkYNj4QDFkxbcdfpvoyiWYEB7bMeJpYio_1772830641
+X-Mimecast-MFC-PROC-ID: msDer_nxJrXosZABMTBjJxblrEeBHXdbkGP3bvSCXgc_1772830664
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -103,143 +103,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Acked-by: Lyude Paul <lyude@redhat.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
 
 On Thu, 2026-03-05 at 15:40 +0200, Ville Syrjala wrote:
 > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 >=20
-> Prep for dynamic subtests by extracting the per-subtest setup/cleanup
-> fixtures to separate functions.
+> The specific CRTC used for the ctx-flip-threshold-reset-after-capture
+> subtest supposedly doesn't matter, so find one using the more hardware
+> agnostic igt_first_crtc() rather than igt_crtc_for_pipe().
 >=20
 > Cc: Lyude Paul <lyude@redhat.com>
 > Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 > ---
->  tests/nouveau_crc.c | 89 +++++++++++++++++++++++++--------------------
->  1 file changed, 50 insertions(+), 39 deletions(-)
+>  tests/nouveau_crc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >=20
 > diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
-> index c080ded3e621..393414339ab0 100644
+> index 59fa8a2daeb8..b71aac45bb79 100644
 > --- a/tests/nouveau_crc.c
 > +++ b/tests/nouveau_crc.c
-> @@ -317,6 +317,54 @@ static void test_source_outp_inactive(data_t *data)
->  =09destroy_crc_colors(data, colors, n_colors);
->  }
+> @@ -401,8 +401,8 @@ int igt_main()
+>  =09igt_describe("Make sure that the CRC notifier context flip threshold =
+"
+>  =09=09     "is reset to its default value after a single capture.");
+>  =09igt_subtest("ctx-flip-threshold-reset-after-capture") {
+> -=09=09data.crtc =3D igt_crtc_for_pipe(&data.display, PIPE_A);
+> -=09=09igt_require(data.crtc->valid);
+> +=09=09data.crtc =3D igt_first_crtc(&data.display);
+> +=09=09igt_require(data.crtc);
 > =20
-> +static void setup_test(data_t *data)
-> +{
-> +=09int dir;
-> +
-> +=09igt_display_require_output_on_crtc(data->crtc);
-> +
-> +=09/* Disable the output from the previous iteration of pipe tests, if t=
-here is
-> +=09 * one
-> +=09 */
-> +=09if (data->output) {
-> +=09=09igt_output_set_crtc(data->output, NULL);
-> +=09=09igt_display_commit(&data->display);
-> +=09}
-> +
-> +=09data->output =3D igt_get_single_output_for_crtc(data->crtc);
-> +=09data->mode =3D igt_output_get_mode(data->output);
-> +
-> +=09/* None of these tests need to perform modesets, just page flips. So =
-running
-> +=09 * display setup here is fine
-> +=09 */
-> +=09igt_output_set_crtc(data->output,
-> +=09=09=09    data->crtc);
-> +=09data->primary =3D igt_output_get_plane(data->output, 0);
-> +=09igt_create_color_fb(data->drm_fd,
-> +=09=09=09    data->mode->hdisplay,
-> +=09=09=09    data->mode->vdisplay,
-> +=09=09=09    DRM_FORMAT_XRGB8888,
-> +=09=09=09    DRM_FORMAT_MOD_LINEAR,
-> +=09=09=09    0.0, 0.0, 0.0,
-> +=09=09=09    &data->default_fb);
-> +=09igt_plane_set_fb(data->primary, &data->default_fb);
-> +=09igt_display_commit(&data->display);
-> +
-> +=09dir =3D igt_debugfs_crtc_dir(data->drm_fd,
-> +=09=09=09=09   data->crtc->pipe,
-> +=09=09=09=09   O_DIRECTORY);
-> +=09igt_require_fd(dir);
-> +=09data->nv_crc_dir =3D openat(dir, "nv_crc", O_DIRECTORY);
-> +=09close(dir);
-> +=09igt_require_fd(data->nv_crc_dir);
-> +}
-> +
-> +static void cleanup_test(data_t *data)
-> +{
-> +=09igt_remove_fb(data->drm_fd, &data->default_fb);
-> +=09close(data->nv_crc_dir);
-> +}
-> +
->  data_t data =3D {0};
-> =20
->  #define pipe_test(name) igt_subtest_f("pipe-%s-" name, kmstest_pipe_name=
-(pipe))
-> @@ -337,46 +385,10 @@ int igt_main()
-> =20
->  =09for_each_pipe_static(pipe) {
->  =09=09igt_fixture() {
-> -=09=09=09int dir;
-> -
->  =09=09=09data.crtc =3D igt_crtc_for_pipe(&data.display, pipe);
->  =09=09=09igt_require(data.crtc->valid);
-> -=09=09=09igt_display_require_output_on_crtc(data.crtc);
-> =20
-> -=09=09=09/* Disable the output from the previous iteration of pipe tests=
-, if there is
-> -=09=09=09 * one
-> -=09=09=09 */
-> -=09=09=09if (data.output) {
-> -=09=09=09=09igt_output_set_crtc(data.output, NULL);
-> -=09=09=09=09igt_display_commit(&data.display);
-> -=09=09=09}
-> -
-> -=09=09=09data.output =3D igt_get_single_output_for_crtc(data.crtc);
-> -=09=09=09data.mode =3D igt_output_get_mode(data.output);
-> -
-> -=09=09=09/* None of these tests need to perform modesets, just page flip=
-s. So running
-> -=09=09=09 * display setup here is fine
-> -=09=09=09 */
-> -=09=09=09igt_output_set_crtc(data.output,
-> -=09=09=09=09=09    data.crtc);
-> -=09=09=09data.primary =3D igt_output_get_plane(data.output, 0);
-> -=09=09=09igt_create_color_fb(data.drm_fd,
-> -=09=09=09=09=09    data.mode->hdisplay,
-> -=09=09=09=09=09    data.mode->vdisplay,
-> -=09=09=09=09=09    DRM_FORMAT_XRGB8888,
-> -=09=09=09=09=09    DRM_FORMAT_MOD_LINEAR,
-> -=09=09=09=09=09    0.0, 0.0, 0.0,
-> -=09=09=09=09=09    &data.default_fb);
-> -=09=09=09igt_plane_set_fb(data.primary, &data.default_fb);
-> -=09=09=09igt_display_commit(&data.display);
-> -
-> -=09=09=09dir =3D igt_debugfs_crtc_dir(data.drm_fd,
-> -=09=09=09=09=09=09   data.crtc->pipe,
-> -=09=09=09=09=09=09   O_DIRECTORY);
-> -=09=09=09igt_require_fd(dir);
-> -=09=09=09data.nv_crc_dir =3D openat(dir, "nv_crc", O_DIRECTORY);
-> -=09=09=09close(dir);
-> -=09=09=09igt_require_fd(data.nv_crc_dir);
-> +=09=09=09setup_test(&data);
->  =09=09}
-> =20
->  =09=09/* We don't need to test this on every pipe, but the setup is the =
-same */
-> @@ -414,8 +426,7 @@ int igt_main()
->  =09=09=09test_source_outp_inactive(&data);
-> =20
->  =09=09igt_fixture() {
-> -=09=09=09igt_remove_fb(data.drm_fd, &data.default_fb);
-> -=09=09=09close(data.nv_crc_dir);
-> +=09=09=09cleanup_test(&data);
->  =09=09}
+>  =09=09run_test(&data, test_ctx_flip_threshold_reset_after_capture);
 >  =09}
-> =20
 
 --=20
 Cheers,
