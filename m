@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FAEAF513FA
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B831F513F8
 	for <igt-dev@archiver.kernel.org>; Fri,  6 Mar 2026 04:17:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C4B4E10E346;
+	by gabe.freedesktop.org (Postfix) with ESMTP id BA5E710E333;
 	Fri,  6 Mar 2026 04:17:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EQzciFP2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NGERSsWH";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6FBDF10E333
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Mar 2026 04:17:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCE0210E333
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Mar 2026 04:17:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772770652; x=1804306652;
+ t=1772770654; x=1804306654;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=oK4P5J7bRdck8Q6exVlSyVrUQJqy5I+FRRtGYFdINbA=;
- b=EQzciFP2lcTJTBukJLz6zGXraVM3CY/k8r7jmH9hQ7L+4lcyxeTFg/of
- zGVDyCbadMvtfjIBlZea4fPZoSx8zcj16OK74Q0nsw9J7of+ON6G1S48Z
- nqn3LjpuAb3i4iEU+I42pl2jmhJle+1qdtp1PMPK0pIEcQqMTfGq9jRSq
- oKrCUNfoNdWHjec0UOjJWzVB488fghCx0yP8Wfuje7W/86wgndHVzgDOC
- xmUmj5HYHzLKK7qOhNY7uAdZXQKZnsHqOYLEf6+AUQLaajj2/q/9suwLT
- ++LDc/rwKq4ncHgu5bETqvQ0sDIlxG0TQEGBxK1Hzta8P7DdePhjR2du2 Q==;
-X-CSE-ConnectionGUID: BzhgWReyTieSn46ANvN+hg==
-X-CSE-MsgGUID: +hXuWjs1Qh+iO6N6bepUzA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="85223358"
-X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; d="scan'208";a="85223358"
+ bh=1CR4ACAmron/wuPEhh7mK9y0lnIxCU1tlz5Q5yAXZ6E=;
+ b=NGERSsWHHvdOzQT0C+dm5GvmMSg4NDDsBB3MF3/Am2w8D763jj+EA0n+
+ h9pH29CNJ9CeFqke8eG4c/V9mXyTdb3UNw+XEso6M2+srbVhEPhHcv9aF
+ myMRr9Y9plj6UyZW4G3eRYO9kjQ15C2TvdBEO8VNw1JmkLRJnLmlBMDv8
+ GrOjt8uyzUiCyW4gPkSRyp6TRr9pVDB22NaULoLnDhqY5cUtFDWY8yp+2
+ Trklof75zf8hbPBm0YgLgVx0YWUF0qAM9qJtuqGS11tKQ6q9oiwVOc/P+
+ k7tP9zRQ9NebjTDZr4vkA99MLPwZp/rnMYN4MjpnWJ7KkHKuBn9A4jbTQ g==;
+X-CSE-ConnectionGUID: DDlpw6y4QWup6ZAXZlVjZg==
+X-CSE-MsgGUID: o9UBqYUNTsCwad0XQabHdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="85223361"
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; d="scan'208";a="85223361"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2026 20:17:32 -0800
-X-CSE-ConnectionGUID: WY1LbSHcTISDd0mbaslopA==
-X-CSE-MsgGUID: USs2bLSgROixVrBbaq4IMw==
+ 05 Mar 2026 20:17:34 -0800
+X-CSE-ConnectionGUID: RoSkCSRhSnyEws5lHzLzMA==
+X-CSE-MsgGUID: YknqDWkOTQmMrdkn/UAk1w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; d="scan'208";a="256799131"
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; d="scan'208";a="256799136"
 Received: from priyanka.iind.intel.com ([10.190.216.153])
- by orviesa001.jf.intel.com with ESMTP; 05 Mar 2026 20:17:31 -0800
+ by orviesa001.jf.intel.com with ESMTP; 05 Mar 2026 20:17:32 -0800
 From: priyanka.dandamudi@intel.com
 To: igt-dev@lists.freedesktop.org,
 	priyanka.dandamudi@intel.com
-Subject: [PATCH i-g-t 3/5] tests/xe_pat: Add pat indices for XA App Transient
- in false-sharing test
-Date: Fri,  6 Mar 2026 09:47:24 +0530
-Message-ID: <20260306041720.1760867-10-priyanka.dandamudi@intel.com>
+Subject: [PATCH i-g-t 4/5] tests/intel/xe_pat: Use
+ intel_get_defer_to_pat_mocs_index() to exercise coherency
+Date: Fri,  6 Mar 2026 09:47:25 +0530
+Message-ID: <20260306041720.1760867-11-priyanka.dandamudi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260306041720.1760867-7-priyanka.dandamudi@intel.com>
 References: <20260306041720.1760867-7-priyanka.dandamudi@intel.com>
@@ -69,45 +69,120 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Added PAT 18,19 indices to test new XA WB-App Transient where buffer is being
-shared by both CPU and GPU.XA WB-App Transient is a feature where
-specific l3 cache lines marked as XA WB-App Transient will get invalidated
-instead of whole l3 cache when CPU wanted to access the same buffer of
-GPU. These pat indices are added as part of false-sharing test.
+With the existing moc indices the render and blit will be uncached on GPU side,
+cached MOCS setting need to be selected specifically for blitter and render.
+Otherwise the caching in the PAT index is overridden which means GPU vs CPU coherency
+will not be exercised completely.
+So, used intel_get_defer_to_pat_mocs_index() for xe2 and above versions
+otherwise keep the existing UC MOCS setting.
 
 Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 ---
- tests/intel/xe_pat.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tests/intel/xe_pat.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
 diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index d160dde9d..166941812 100644
+index 166941812..aeb84dbb7 100644
 --- a/tests/intel/xe_pat.c
 +++ b/tests/intel/xe_pat.c
-@@ -1373,6 +1373,12 @@ const struct fs_pat_entry fs_xe3p_xpc[] = {
- 	{ 4, "cpu-wb-gpu-uc-1way", DRM_XE_GEM_CPU_CACHING_WB, true },
- };
+@@ -404,9 +404,13 @@ static void pat_index_blt(struct xe_pat_param *p)
+ 	int bpp = 32;
+ 	uint32_t alias, name;
+ 	int fd = p->fd;
++	uint16_t dev_id = intel_get_drm_devid(fd);
++	uint8_t mocs_index;
+ 	int i;
  
-+const struct fs_pat_entry fs_xe3p_lpg[] = {
-+	{ 2, "cpu-wb-gpu-l3-2way", DRM_XE_GEM_CPU_CACHING_WB, true },
-+	{ 18, "cpu-wc-gpu-xa-non-coh", DRM_XE_GEM_CPU_CACHING_WC, true },
-+	{ 19, "cpu-wb-gpu-xa-1way", DRM_XE_GEM_CPU_CACHING_WB, true },
-+};
+ 	igt_require(blt_has_fast_copy(fd));
++	mocs_index = intel_get_device_info(dev_id)->graphics_ver >= 20 ?
++		     intel_get_defer_to_pat_mocs_index(fd) : intel_get_uc_mocs_index(fd);
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
+@@ -430,12 +434,12 @@ static void pat_index_blt(struct xe_pat_param *p)
+ 	blt_copy_init(fd, &blt);
+ 	blt.color_depth = CD_32bit;
+ 
+-	blt_set_object(&src, p->r1_bo, size, p->r1, intel_get_uc_mocs_index(fd),
++	blt_set_object(&src, p->r1_bo, size, p->r1, mocs_index,
+ 		       p->r1_pat_index, T_LINEAR,
+ 		       COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
+ 	blt_set_geom(&src, stride, 0, 0, width, height, 0, 0);
+ 
+-	blt_set_object(&dst, p->r2_bo, size, p->r2, intel_get_uc_mocs_index(fd),
++	blt_set_object(&dst, p->r2_bo, size, p->r2, mocs_index,
+ 		       p->r2_pat_index, T_LINEAR,
+ 		       COMPRESSION_DISABLED, COMPRESSION_TYPE_3D);
+ 	blt_set_geom(&dst, stride, 0, 0, width, height, 0, 0);
+@@ -514,6 +518,8 @@ static void pat_index_blt(struct xe_pat_param *p)
+ static void pat_index_render(struct xe_pat_param *p)
+ {
+ 	int fd = p->fd;
++	uint16_t dev_id = intel_get_drm_devid(fd);
++	uint8_t mocs_index;
+ 	igt_render_copyfunc_t render_copy = NULL;
+ 	int size, stride, width = p->size->width, height = p->size->height;
+ 	struct intel_buf src, dst;
+@@ -529,6 +535,9 @@ static void pat_index_render(struct xe_pat_param *p)
+ 	if (p->r2_compressed) /* XXX */
+ 		return;
+ 
++	mocs_index = intel_get_device_info(dev_id)->graphics_ver >= 20 ?
++		     intel_get_defer_to_pat_mocs_index(fd) : DEFAULT_MOCS_INDEX;
 +
- #define CPUDW_INC   0x0
- #define GPUDW_WRITE 0x4
- #define GPUDW_READY 0x40
-@@ -1517,6 +1523,9 @@ static void false_sharing(int fd)
- 	if (intel_graphics_ver(dev_id) == IP_VER(35, 11)) {
- 		num_entries = ARRAY_SIZE(fs_xe3p_xpc);
- 		fs_entries = fs_xe3p_xpc;
-+	} else if (intel_graphics_ver(dev_id) == IP_VER(35, 10)) {
-+		num_entries = ARRAY_SIZE(fs_xe3p_lpg);
-+		fs_entries = fs_xe3p_lpg;
- 	} else if (graphics_ver == 20) {
- 		if (is_dgfx) {
- 			num_entries = ARRAY_SIZE(fs_xe2_discrete);
+ 	bops = buf_ops_create(fd);
+ 
+ 	ibb = intel_bb_create_full(fd, 0, 0, NULL, xe_get_default_alignment(fd),
+@@ -541,11 +550,11 @@ static void pat_index_render(struct xe_pat_param *p)
+ 
+ 	intel_buf_init_full(bops, p->r1_bo, &src, width, height, bpp, 0,
+ 			    I915_TILING_NONE, I915_COMPRESSION_NONE, size,
+-			    stride, p->r1, p->r1_pat_index, DEFAULT_MOCS_INDEX);
++			    stride, p->r1, p->r1_pat_index, mocs_index);
+ 
+ 	intel_buf_init_full(bops, p->r2_bo, &dst, width, height, bpp, 0,
+ 			    I915_TILING_NONE, I915_COMPRESSION_NONE, size,
+-			    stride, p->r2, p->r2_pat_index, DEFAULT_MOCS_INDEX);
++			    stride, p->r2, p->r2_pat_index, mocs_index);
+ 
+ 	/* Ensure we always see zeroes for the initial KMD zeroing */
+ 	render_copy(ibb,
+@@ -623,6 +632,8 @@ static void pat_index_render(struct xe_pat_param *p)
+ static void pat_index_dw(struct xe_pat_param *p)
+ {
+ 	int fd = p->fd;
++	uint16_t dev_id = intel_get_drm_devid(fd);
++	uint8_t mocs_index;
+ 	int size, stride, width = p->size->width, height = p->size->height;
+ 	struct drm_xe_engine_class_instance *hwe;
+ 	struct intel_bb *ibb;
+@@ -645,6 +656,9 @@ static void pat_index_dw(struct xe_pat_param *p)
+ 			break;
+ 	}
+ 
++	mocs_index = intel_get_device_info(dev_id)->graphics_ver >= 20 ?
++		     intel_get_defer_to_pat_mocs_index(fd) : DEFAULT_MOCS_INDEX;
++
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	ctx = xe_exec_queue_create(fd, vm, hwe, 0);
+ 
+@@ -658,12 +672,13 @@ static void pat_index_dw(struct xe_pat_param *p)
+ 
+ 	intel_buf_init_full(bops, p->r1_bo, &r1_buf, width, height, bpp, 0,
+ 			    I915_TILING_NONE, I915_COMPRESSION_NONE, size,
+-			    stride, p->r1, p->r1_pat_index, DEFAULT_MOCS_INDEX);
++			    stride, p->r1, p->r1_pat_index, mocs_index);
+ 	intel_bb_add_intel_buf(ibb, &r1_buf, true);
+ 
+ 	intel_buf_init_full(bops, p->r2_bo, &r2_buf, width, height, bpp, 0,
+ 			    I915_TILING_NONE, I915_COMPRESSION_NONE, size,
+-			    stride, p->r2, p->r2_pat_index, DEFAULT_MOCS_INDEX);
++			    stride, p->r2, p->r2_pat_index, mocs_index);
++
+ 	intel_bb_add_intel_buf(ibb, &r2_buf, true);
+ 
+ 	/*
 -- 
 2.43.0
 
