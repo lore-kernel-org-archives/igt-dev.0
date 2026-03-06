@@ -4,57 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F24EF0182F
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Mar 2026 13:31:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AC14F01832
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Mar 2026 13:49:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 33C3210ED42;
-	Fri,  6 Mar 2026 13:31:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A015310ED41;
+	Fri,  6 Mar 2026 13:49:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K+8st9Yu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bys0o0Ld";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6730510ED41
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Mar 2026 13:31:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 865AF10E3CA
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Mar 2026 13:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772803881; x=1804339881;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=abFjUYjjsM4Q49t/N4Coa31AKgt7y+TyjFE98U6wfzE=;
- b=K+8st9YuhvtS0EEwO/UgcKifpuZIS57Uez6RjVxLK5n6pfhdFjEqgw2p
- Nge5w2OxswGer4HLiwSCJoof9NRMc5t64CjRXcagFOvv1/sKhfqdvdAwp
- 3N0UAeZLtNgFoXCYRwsnf82luri7h4iPBaGieDd3jvLfxjyL1JIs/SdeW
- YjgWF8fpsBNe9tpNFAKn1zrLG8Bl2hKo0z7rlfbLBT5nmROvLuIScsJ0S
- KcI7O8ZEOfJkNrqvn8xjswdIrA2bKspoeu2h8bQLwB90ITzWfDxzhprv5
- Y01vwDKGyeC9H8GX2tKpJ5OLU6eiwzJ9RkptVUArUnLzq4RaIsp53zVmb A==;
-X-CSE-ConnectionGUID: 33ia9wCWRuOtMtwBzo2hPg==
-X-CSE-MsgGUID: WAuwGr1XRYuPmlUpqOf+RA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="84236849"
-X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; d="scan'208";a="84236849"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2026 05:31:21 -0800
-X-CSE-ConnectionGUID: uV+mB/4uSWWfBHjDIbwumg==
-X-CSE-MsgGUID: xCB4tGBXQdavf5MbpEZl/g==
+ t=1772804983; x=1804340983;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=cYMDVu+1tKA0Tr4O4/vsrLgrljmqblkXBrSycQpmj+0=;
+ b=bys0o0LdaNzM5skYl2oSBKO3baHuFMdXKk4sG8CuKszNHHottbXGjVsx
+ IDEs83tsFrEjgnLOmkwPgCyUjip4T5RoPyjI96QvVu7loFTLEbvr6AXa3
+ u68lRRHK3FR6bcvxRb1JHKMVNX+uVCyDqeT0y6pXMFnh7WE7CzNr2d6zD
+ h6wY3fPwnNqiAdyuplEyAg8NUsAAdKKKEU+H/zA76HcZ5llaKXYytAtYm
+ BoOvEW+weDKZaE1QagNocs/qsaELnpE7XoDPkHkRtUA/1XssRGBLDwQzx
+ euuRlwH6LTY1L4wFEf8t/Actw7Bn5h8IUK1dLM39hUacTxH/HvjMYSiaJ w==;
+X-CSE-ConnectionGUID: kFQhOh3GSrCWib8iKZ/74Q==
+X-CSE-MsgGUID: 4p02sloeQPW7vTDHXbogvA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="73784816"
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; d="scan'208";a="73784816"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Mar 2026 05:49:43 -0800
+X-CSE-ConnectionGUID: 6B1ToSVQTVOMcmHVLzmySQ==
+X-CSE-MsgGUID: KnHh8W6WRt6n7GSwO1yFTg==
 X-ExtLoop1: 1
-Received: from abityuts-desk.ger.corp.intel.com (HELO fdugast-desk.home)
- ([10.245.244.208])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Mar 2026 05:31:19 -0800
-From: Francois Dugast <francois.dugast@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; d="scan'208";a="242029389"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.191])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Mar 2026 05:49:41 -0800
+From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Francois Dugast <francois.dugast@intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t,
- v2 3/4] tests/intel/xe_exec_system_allocator: Add hw engine argument
- for compute
-Date: Fri,  6 Mar 2026 14:29:11 +0100
-Message-ID: <20260306133059.859625-4-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260306133059.859625-1-francois.dugast@intel.com>
-References: <20260306133059.859625-1-francois.dugast@intel.com>
+Cc: ville.syrjala@linux.intel.com,
+	jani.nikula@intel.com
+Subject: [PATCH i-g-t] tests/amdgpu/amd_mode_switch: switch to for_each_crtc()
+Date: Fri,  6 Mar 2026 15:49:37 +0200
+Message-ID: <20260306134937.136749-1-jani.nikula@intel.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,67 +69,169 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Until now the hardware engine was selected implicitely during execution
-of run_intel_compute_kernel(). Instead, allow user to use a specific
-hardware engine, which will be helpful when reading GT stats.
+Convert the test to use for_each_crtc() to avoid having to use
+igt_crtc_for_pipe(). Prefer crtc->crtc_index over crtc->pipe.
 
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+As a side effect, fix an off-by-one in i <= num_pipes loop.
+
+Note: The implementation relies on the fact that on AMD hardware
+for_each_crtc() returns CRTCs in CRTC index order.
+
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- tests/intel/xe_exec_system_allocator.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ tests/amdgpu/amd_mode_switch.c | 60 +++++++++++++++++++---------------
+ 1 file changed, 34 insertions(+), 26 deletions(-)
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index ff85a67dc..7458b8572 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -2240,7 +2240,8 @@ processes(int fd, int n_exec_queues, int n_execs, size_t bo_size,
-  * @range-device-host:				touch the whole buffer, from the device then from the host
-  */
- static void
--test_compute(int fd, size_t size, unsigned int flags, int loops)
-+test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
-+	     unsigned int flags, int loops)
+diff --git a/tests/amdgpu/amd_mode_switch.c b/tests/amdgpu/amd_mode_switch.c
+index 4da07c412996..5815ec34cb12 100644
+--- a/tests/amdgpu/amd_mode_switch.c
++++ b/tests/amdgpu/amd_mode_switch.c
+@@ -39,12 +39,12 @@ static void test_init(data_t *data)
+ 	igt_crtc_t *crtc;
+ 
+ 	for_each_crtc(display, crtc) {
+-		igt_output_t *output = &display->outputs[crtc->pipe];
++		igt_output_t *output = &display->outputs[crtc->crtc_index];
+ 
+-		data->primary[crtc->pipe] = igt_crtc_get_plane_type(crtc,
+-								    DRM_PLANE_TYPE_PRIMARY);
++		data->primary[crtc->crtc_index] = igt_crtc_get_plane_type(crtc,
++									  DRM_PLANE_TYPE_PRIMARY);
+ 
+-		data->output[crtc->pipe] = output;
++		data->output[crtc->crtc_index] = output;
+ 	}
+ 
+ 	igt_require(data->output[0]);
+@@ -79,13 +79,12 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
  {
- 	struct drm_xe_sync sync = {
- 		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-@@ -2276,7 +2277,7 @@ test_compute(int fd, size_t size, unsigned int flags, int loops)
+ 	igt_display_t *display = &data->display;
+ 	igt_output_t *output;
++	igt_crtc_t *crtc;
+ 	struct igt_fb *buffer1[MAX_PIPES] = { NULL };
+ 	struct igt_fb *buffer2[MAX_PIPES] = { NULL };
+ 	drmModeConnectorPtr conn;
+ 	drmModeModeInfoPtr kmode;
+ 	void *user_data = NULL;
+-	int i = 0;
+-	int j = 0;
  
- 		memset(compute_input, rand() % 255 + 1, size);
+ 	test_init(data);
  
--		run_intel_compute_kernel(fd, &env, EXECENV_PREF_SYSTEM);
-+		xe_run_intel_compute_kernel_on_engine(fd, eci, &env, EXECENV_PREF_SYSTEM);
+@@ -94,11 +93,11 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
+ 		      "ASIC does not have %d outputs/pipes\n", num_pipes);
  
- 		free(compute_input);
+ 	/* First supported mode */
++	for_each_crtc(display, crtc) {
++		if (crtc->crtc_index >= num_pipes)
++			break;
+ 
+-	for (j = 0; j < num_pipes; j++) {
+-		igt_crtc_t *crtc = igt_crtc_for_pipe(display, j);
+-
+-		output = data->output[j];
++		output = data->output[crtc->crtc_index];
+ 		if (!igt_output_is_connected(output))
+ 			continue;
+ 
+@@ -106,18 +105,18 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
+ 			data->fd, output->config.connector->connector_id);
+ 
+ 		kmode = &conn->modes[0];
+-		if (buffer1[j] == NULL) {
++		if (buffer1[crtc->crtc_index] == NULL) {
+ 			igt_fb_t fb;
+-			buffer1[j] = &fb;
++			buffer1[crtc->crtc_index] = &fb;
+ 			igt_create_color_fb(data->fd, kmode->hdisplay,
+ 					    kmode->vdisplay,
+ 					    DRM_FORMAT_XRGB8888,
+ 					    DRM_FORMAT_MOD_NONE, 1.f, 0.f,
+-					    0.f, buffer1[j]);
++					    0.f, buffer1[crtc->crtc_index]);
+ 		}
+ 		igt_output_set_crtc(output, crtc);
+ 		force_output_mode(data, output, kmode);
+-		igt_plane_set_fb(data->primary[j], buffer1[j]);
++		igt_plane_set_fb(data->primary[crtc->crtc_index], buffer1[crtc->crtc_index]);
+ 		drmModeFreeConnector(conn);
  	}
-@@ -2685,15 +2686,23 @@ int igt_main()
+ 
+@@ -126,8 +125,11 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
+ 
+ 	/* Last supported mode */
+ 
+-	for (j = 0; j < num_pipes; j++) {
+-		output = data->output[j];
++	for_each_crtc(display, crtc) {
++		if (crtc->crtc_index >= num_pipes)
++			break;
++
++		output = data->output[crtc->crtc_index];
+ 		if (!igt_output_is_connected(output))
+ 			continue;
+ 
+@@ -135,17 +137,17 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
+ 			data->fd, output->config.connector->connector_id);
+ 
+ 		kmode = &conn->modes[conn->count_modes - 1];
+-		if (buffer2[j] == NULL) {
++		if (buffer2[crtc->crtc_index] == NULL) {
+ 			igt_fb_t fb;
+-			buffer2[j] = &fb;
++			buffer2[crtc->crtc_index] = &fb;
+ 			igt_create_color_fb(data->fd, kmode->hdisplay,
+ 					    kmode->vdisplay,
+ 					    DRM_FORMAT_XRGB8888,
+ 					    DRM_FORMAT_MOD_NONE, 1.f, 0.f,
+-					    0.f, buffer2[j]);
++					    0.f, buffer2[crtc->crtc_index]);
+ 		}
+ 		force_output_mode(data, output, kmode);
+-		igt_plane_set_fb(data->primary[j], buffer2[j]);
++		igt_plane_set_fb(data->primary[crtc->crtc_index], buffer2[crtc->crtc_index]);
+ 		drmModeFreeConnector(conn);
  	}
  
- 	igt_subtest("compute")
--		test_compute(fd, SZ_2M, 0, svm_compute_loops);
-+		xe_for_each_engine(fd, hwe)
-+			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-+				test_compute(fd, hwe, SZ_2M, 0, svm_compute_loops);
+@@ -153,8 +155,11 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
+ 				  user_data);
  
- 	for (const struct section *s = csections; s->name; s++) {
- 		igt_subtest_f("eu-fault-4k-%s", s->name)
--			test_compute(fd, SZ_4K, s->flags, svm_compute_loops);
-+			xe_for_each_engine(fd, hwe)
-+				if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-+					test_compute(fd, hwe, SZ_4K, s->flags, svm_compute_loops);
- 		igt_subtest_f("eu-fault-64k-%s", s->name)
--			test_compute(fd, SZ_64K, s->flags, svm_compute_loops);
-+			xe_for_each_engine(fd, hwe)
-+				if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-+					test_compute(fd, hwe, SZ_64K, s->flags, svm_compute_loops);
- 		igt_subtest_f("eu-fault-2m-%s", s->name)
--			test_compute(fd, SZ_2M, s->flags, svm_compute_loops);
-+			xe_for_each_engine(fd, hwe)
-+				if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-+					test_compute(fd, hwe, SZ_2M, s->flags, svm_compute_loops);
+ 	/* First supported again */
+-	for (j = 0; j < num_pipes; j++) {
+-		output = data->output[j];
++	for_each_crtc(display, crtc) {
++		if (crtc->crtc_index >= num_pipes)
++			break;
++
++		output = data->output[crtc->crtc_index];
+ 		if (!igt_output_is_connected(output))
+ 			continue;
+ 
+@@ -163,7 +168,7 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
+ 
+ 		kmode = &conn->modes[0];
+ 		force_output_mode(data, output, kmode);
+-		igt_plane_set_fb(data->primary[j], buffer1[j]);
++		igt_plane_set_fb(data->primary[crtc->crtc_index], buffer1[crtc->crtc_index]);
+ 		drmModeFreeConnector(conn);
  	}
  
- 	igt_fixture() {
+@@ -172,9 +177,12 @@ static void run_mode_switch_first_last(data_t *data, int num_pipes)
+ 
+ 	test_fini(data);
+ 
+-	for (i = 0; i <= num_pipes; i++) {
+-		igt_remove_fb(data->fd, buffer1[i]);
+-		igt_remove_fb(data->fd, buffer2[i]);
++	for_each_crtc(display, crtc) {
++		if (crtc->crtc_index >= num_pipes)
++			break;
++
++		igt_remove_fb(data->fd, buffer1[crtc->crtc_index]);
++		igt_remove_fb(data->fd, buffer2[crtc->crtc_index]);
+ 	}
+ }
+ 
 -- 
-2.43.0
+2.47.3
 
