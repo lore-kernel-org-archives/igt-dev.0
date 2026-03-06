@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27F81F513F9
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Mar 2026 04:17:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CE19F513F4
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Mar 2026 05:12:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C54AA10E344;
-	Fri,  6 Mar 2026 04:17:37 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dMdwrXMy";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5BC2E10E323
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Mar 2026 04:17:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1772770655; x=1804306655;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=Rgvyco56kUmttjaKVraPx/rYTyHAQGbfV8VRUP6fwjE=;
- b=dMdwrXMyIGSkW0lyznzO86jToPcr6LUTzCyf+a44WuzMTcQcClVF0gXH
- RevIy7InhGunXB99BY8EKEpjJ4vt3XI266O3c9BGU+3F/ZjzJDQRQHDkT
- /zKle9o8xQdeQC0tPeNXUGwbP4jzrmy9VpGJ+tFbdLumlrvgxgZHQ9dxs
- MSbOKaNc3PozHpSS/Je6KzPLdpi75zGWPpXFX8fziocKI6n8nPhBOYIHr
- 7xOb+wkRaQqG3fmil8+WbiTZPmP5YpqKpo/Bc4bmnnmLfk2kxIXG8PwkY
- hs0fiDYBb/NfHluBwu/KtwHbhDRRYmlb2HPCGNeyLIg1H6eUti30BWXXJ Q==;
-X-CSE-ConnectionGUID: EASjdRERTo2kdQf6nFEKfg==
-X-CSE-MsgGUID: MYQUY9DqREWHIoPIRajBRg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="85223365"
-X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; d="scan'208";a="85223365"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Mar 2026 20:17:35 -0800
-X-CSE-ConnectionGUID: TkxEeIC/QqaL9EeMLNThUQ==
-X-CSE-MsgGUID: I2seXL+SQB6tSj7UqB6q7g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; d="scan'208";a="256799146"
-Received: from priyanka.iind.intel.com ([10.190.216.153])
- by orviesa001.jf.intel.com with ESMTP; 05 Mar 2026 20:17:34 -0800
-From: priyanka.dandamudi@intel.com
-To: igt-dev@lists.freedesktop.org,
-	priyanka.dandamudi@intel.com
-Subject: [PATCH i-g-t 5/5] tests/intel/xe_pat: Validate XA App Transient
- feature
-Date: Fri,  6 Mar 2026 09:47:26 +0530
-Message-ID: <20260306041720.1760867-12-priyanka.dandamudi@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260306041720.1760867-7-priyanka.dandamudi@intel.com>
-References: <20260306041720.1760867-7-priyanka.dandamudi@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 30B5410E144;
+	Fri,  6 Mar 2026 05:12:15 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A463610E144;
+ Fri,  6 Mar 2026 05:12:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2475747155662033518=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Add_false_sharing_and_XA_?=
+ =?utf-8?q?app_transient_tests_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: priyanka.dandamudi@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 06 Mar 2026 05:12:13 -0000
+Message-ID: <177277393365.324340.13820397799126779824@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260306041720.1760867-7-priyanka.dandamudi@intel.com>
+In-Reply-To: <20260306041720.1760867-7-priyanka.dandamudi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,188 +37,191 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+--===============2475747155662033518==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Test the scenarios when media is on/off.
-When media is off/on, for xa app transient buffer, data should be coherent
-between cpu and gpu. Coherency should be maintained from KMD side
-irrespective of media engine on/off.
+== Series Details ==
 
-v2: Added comment to explain the reason of forcewaking.
-Added 2way also in the index along with XA.(Matt)
-Reordered headers.(Kamil)
+Series: Add false sharing and XA app transient tests (rev3)
+URL   : https://patchwork.freedesktop.org/series/161572/
+State : success
 
-v3:Reordered headers.Renamed string xa-l3-2way to xa-l3-1way
-in xe3p_lpg_coherency_pat_index_modes structure.Updated comments for
-forcewaking.
+== Summary ==
 
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
----
- tests/intel/xe_pat.c | 105 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 105 insertions(+)
+CI Bug Log - changes from IGT_8782 -> IGTPW_14685
+====================================================
 
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index aeb84dbb7..b92512164 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -14,13 +14,19 @@
- #include <fcntl.h>
- 
- #include "igt.h"
-+#include "igt_configfs.h"
-+#include "igt_device.h"
-+#include "igt_fs.h"
-+#include "igt_kmod.h"
- #include "igt_syncobj.h"
-+#include "igt_sysfs.h"
- #include "igt_vgem.h"
- #include "intel_blt.h"
- #include "intel_mocs.h"
- #include "intel_pat.h"
- #include "linux_scaffold.h"
- 
-+#include "xe/xe_gt.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- #include "xe/xe_util.h"
-@@ -29,6 +35,8 @@
- #define XE_COH_AT_LEAST_1WAY 2
- 
- static bool do_slow_check;
-+static char bus_addr[NAME_MAX];
-+static struct pci_device *pci_dev;
- 
- static uint32_t create_object(int fd, int r, int size, uint16_t coh_mode,
- 			      bool force_cpu_wc);
-@@ -1184,6 +1192,11 @@ const struct pat_index_entry bmg_g21_pat_index_modes[] = {
- 	{ NULL, 27, false, "c2-2way",     XE_COH_AT_LEAST_1WAY       },
- };
- 
-+const struct pat_index_entry xe3p_lpg_coherency_pat_index_modes[] = {
-+	{ NULL, 18, false, "xa-l3-uc",	 XE_COH_NONE          },
-+	{ NULL, 19, false, "xa-l3-1way", XE_COH_AT_LEAST_1WAY },
-+};
-+
- /*
-  * Depending on 2M/1G GTT pages we might trigger different PTE layouts for the
-  * PAT bits, so make sure we test with and without huge-pages. Also ensure we
-@@ -1248,6 +1261,18 @@ static uint32_t create_object(int fd, int r, int size, uint16_t coh_mode,
-  * Description: Check some of the xe2 pat_index modes.
-  */
- 
-+/**
-+ * SUBTEST: xa-app-transient-media-off
-+ * Test category: functionality test
-+ * Description: Check some of the xe4-lpg pat_index modes with media off.
-+ */
-+
-+/**
-+ * SUBTEST:  xa-app-transient-media-on
-+ * Test category: functionality test
-+ * Description: Check some of the xe3p-lpg pat_index modes with media on.
-+ */
-+
- static void subtest_pat_index_modes_with_regions(int fd,
- 						 const struct pat_index_entry *modes_arr,
- 						 int n_modes)
-@@ -1561,6 +1586,56 @@ static void false_sharing(int fd)
- 	}
- }
- 
-+static void reset(int sig)
-+{
-+	int configfs_fd;
-+
-+	igt_kmod_unbind("xe", bus_addr);
-+
-+	/* Drop all custom configfs settings from subtests */
-+	configfs_fd = igt_configfs_open("xe");
-+	if (configfs_fd >= 0)
-+		igt_fs_remove_dir(configfs_fd, bus_addr);
-+	close(configfs_fd);
-+
-+	/* Bind again a clean driver with no custom settings */
-+	igt_kmod_bind("xe", bus_addr);
-+}
-+
-+static void xa_app_transient_test(int configfs_device_fd, bool media_on)
-+{
-+	int fd, fw_handle, gt;
-+
-+	igt_kmod_unbind("xe", bus_addr);
-+
-+	if (media_on)
-+		igt_assert(igt_sysfs_set(configfs_device_fd,
-+					 "gt_types_allowed", "primary,media"));
-+	else
-+		igt_assert(igt_sysfs_set(configfs_device_fd,
-+					 "gt_types_allowed", "primary"));
-+
-+	igt_kmod_bind("xe", bus_addr);
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+
-+	/* Prevent entering C6 for the duration of the test, since this can result
-+	 * in randomly flushing the entire device side caches, invalidating our XA
-+	 * testing.
-+	 */
-+	fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
-+	igt_require(fw_handle >= 0);
-+
-+	subtest_pat_index_modes_with_regions(fd, xe3p_lpg_coherency_pat_index_modes,
-+					     ARRAY_SIZE(xe3p_lpg_coherency_pat_index_modes));
-+
-+	/* check status of c state, it should not be in c6 due to forcewake. */
-+	xe_for_each_gt(fd, gt)
-+		igt_assert(!xe_gt_is_in_c6(fd, gt));
-+
-+	close(fw_handle);
-+}
-+
- static int opt_handler(int opt, int opt_index, void *data)
- {
- 	switch (opt) {
-@@ -1652,6 +1727,36 @@ int igt_main_args("V", NULL, help_str, opt_handler, NULL)
- 		false_sharing(fd);
- 	}
- 
-+	igt_subtest_group() {
-+		int configfs_fd, configfs_device_fd;
-+
-+		igt_fixture() {
-+			igt_require(intel_graphics_ver(dev_id) == IP_VER(35, 10));
-+
-+			pci_dev = igt_device_get_pci_device(fd);
-+			snprintf(bus_addr, sizeof(bus_addr), "%04x:%02x:%02x.%01x",
-+				 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
-+
-+			configfs_fd = igt_configfs_open("xe");
-+			igt_require(configfs_fd != -1);
-+			configfs_device_fd = igt_fs_create_dir(configfs_fd, bus_addr,
-+							       S_IRWXU | S_IRGRP | S_IXGRP |
-+							       S_IROTH | S_IXOTH);
-+			igt_install_exit_handler(reset);
-+		}
-+
-+		igt_subtest_with_dynamic("xa-app-transient-media-off")
-+			xa_app_transient_test(configfs_device_fd, false);
-+
-+		igt_subtest_with_dynamic("xa-app-transient-media-on")
-+			xa_app_transient_test(configfs_device_fd, true);
-+
-+		igt_fixture() {
-+			close(configfs_device_fd);
-+			close(configfs_fd);
-+		}
-+	}
-+
- 	igt_fixture()
- 		drm_close_driver(fd);
- }
--- 
-2.43.0
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/index.html
+
+Participating hosts (40 -> 38)
+------------------------------
+
+  Missing    (2): bat-dg2-13 bat-adls-6 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14685 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-dg2-8:          [DMESG-FAIL][1] ([i915#12061]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8782/bat-dg2-8/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/bat-dg2-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@sanitycheck:
+    - fi-kbl-7567u:       [DMESG-WARN][3] ([i915#13735]) -> [PASS][4] +79 other tests pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8782/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8782/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/bat-arls-5/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-9:         [DMESG-FAIL][7] ([i915#12061]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8782/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_pm_rpm@basic-pci-d3-state:
+    - fi-kbl-7567u:       [DMESG-WARN][9] ([i915#13735] / [i915#180]) -> [PASS][10] +53 other tests pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8782/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-arls-5:         [DMESG-FAIL][11] ([i915#12061] / [i915#15784]) -> [DMESG-FAIL][12] ([i915#15784])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8782/bat-arls-5/igt@i915_selftest@live.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/bat-arls-5/igt@i915_selftest@live.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
+  [i915#15784]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15784
+  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8782 -> IGTPW_14685
+  * Linux: CI_DRM_18100 -> CI_DRM_18103
+
+  CI-20190529: 20190529
+  CI_DRM_18100: ce63d46cc8fc3bb754efb93026b55acaa616cfa2 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18103: 79792a2fc5d37b5446e543f1de05158ab0f551c9 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14685: 70074873ea421fc9e85c9a37a4aa23e0609cee3f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8782: eac3b04d1f76b82ac3a183fb293c44e9185d8dba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/index.html
+
+--===============2475747155662033518==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add false sharing and XA app transient tests (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161572/">https://patchwork.freedesktop.org/series/161572/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8782 -&gt; IGTPW_14685</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/index.html</p>
+<h2>Participating hosts (40 -&gt; 38)</h2>
+<p>Missing    (2): bat-dg2-13 bat-adls-6 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14685 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8782/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@sanitycheck:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8782/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> +79 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8782/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8782/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8782/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> +53 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8782/bat-arls-5/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15784">i915#15784</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14685/bat-arls-5/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15784">i915#15784</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8782 -&gt; IGTPW_14685</li>
+<li>Linux: CI_DRM_18100 -&gt; CI_DRM_18103</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18100: ce63d46cc8fc3bb754efb93026b55acaa616cfa2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18103: 79792a2fc5d37b5446e543f1de05158ab0f551c9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14685: 70074873ea421fc9e85c9a37a4aa23e0609cee3f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8782: eac3b04d1f76b82ac3a183fb293c44e9185d8dba @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2475747155662033518==--
