@@ -4,153 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBE3AEFCD77
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 10:05:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF4ACEFCD7C
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 10:10:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 85B6F10E111;
-	Mon,  9 Mar 2026 10:05:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7B4E810E4CD;
+	Mon,  9 Mar 2026 10:10:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YTK5GWcT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HU/CY8mm";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 815D810E111
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2026 10:05:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF13C10E4CD
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2026 10:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773050751; x=1804586751;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=k2ACSvT8almcsWNR1WPiBKCGuzzFQrVJIFwM8V0euQQ=;
- b=YTK5GWcTz2wX/OaEY919vlM2vMi0sAEcp0IwsFzSaub9CST4GZL/jDih
- b4JBlGKTnZ8yUpX7Oct2XI5E5IoZTONnHdgXK9KkDfyjo5BM/vDXcvaTk
- 1uGY0jLbVSYMe8pq1DGXcdwsGjm5YVHfj426VHva+RpXnE7rIY9zSM7/8
- CTosF1ozxg8B73TQksuxHZKpgxWNmNsFwBN1kMQ3E76SXPtkG9SysZ98s
- ONx9dMLM9E2Px2r5UmxH6kDcydRsFdUS4x+i2QqNZEK1OSMhrullrhpSz
- EwGSomA65o5GasEENfMVVaXK8OlY21H1/+E/42+1sgMT7dr6syRNsUqwR w==;
-X-CSE-ConnectionGUID: ZQpkfVbSR++QhUq6FD7wKA==
-X-CSE-MsgGUID: TJyUjOZ+Rvah8l9PhtQOWA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="84704754"
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="84704754"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Mar 2026 03:05:51 -0700
-X-CSE-ConnectionGUID: c08l3QHRTCawij8pTwU0PA==
-X-CSE-MsgGUID: kuSTNHn/QwmeifMMWNhbFw==
+ t=1773051021; x=1804587021;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=Vc2usSZoF+8uG6VwkZeNf6iHHVH2YaYyKbuMfXC3jVo=;
+ b=HU/CY8mmwEgTXhjKXW4Ew2QTivy1xObgq21AQndGgZOgPrKDSP9Acwv+
+ eNuT2dvcfqyQP5pGoBEIcpJ2xpm4/x6wAZrWhFHo912XFWS+sg0tbv0wF
+ zqh0IBFJ6iGyJfmYsKYWg1/mHmNdJZ/AN88HgO7JDzxHBx+idL7vdTS1m
+ 2fAcKuVHhSlx98bXxrbtt7xt9v6z5UUnYdYoWql+WY2tmDLR86VT2D5XQ
+ RhEzjyH3sWdydXPe+4FZJEE+J3oVAKojR1+VEujaIFntOn0wCBBD0XwGY
+ FcTy017K57LzUHACncwRW83pU9vd2u2ndFlssIj+8LOPDJPXXBQYot5V2 g==;
+X-CSE-ConnectionGUID: nabhAOa/Tsa9wwJkLv3Cjw==
+X-CSE-MsgGUID: 0lRpQekbT5Gs9+71emrQTQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="73090564"
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="73090564"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Mar 2026 03:10:20 -0700
+X-CSE-ConnectionGUID: N2i70AtNShCdfiNvQNZQFQ==
+X-CSE-MsgGUID: 9GJH4lO8QDWifO/FQE2tlA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="218911692"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Mar 2026 03:05:51 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 9 Mar 2026 03:05:49 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 9 Mar 2026 03:05:49 -0700
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.43) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 9 Mar 2026 03:05:49 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DS3kWFjEl1Lrk7VaX6Ay+ub9sC30PpFcfoVb35wd/Lpx7k2C+mtJtGyR9mgnSAALVKKjd6ZG5wDvzEaqpAdrDiCjfviWUm2kwyuFdWKaReBq6lRshP+r42wAF0WKShoJxs+mYP3uGRL5rTuIhhIvIdd5y6lx2Y/6j+y1n4lghxYFs/vtqia/LXHFnGWfvwgca6z21hxGc1/tCilLmzo8NgUsJjQ7wOX10C2DIss3z2ARoZNS3x47piFv3ZEQcIQlrLx5q07xBInHgUlT7z1ZP0SWe7TDrEv/giQdQJMIy3wtY34T3BKYzgezoWRgDS/yGXMW1bZmManN4Gz0CtEghQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CF5LAi5pvkBdYqSbONo6XiAc3ufLkRx/ChgD7a3tvYk=;
- b=oyWC7BCQi6kFRdZY7IaXQzj9womr/myVgW0/K2cPdIWvvVKmZmqwYx0p+n2m36l5oUhf/tzHfH9yLqyZlbOfW7RubE24cyblJcoyKcrFo+yryG+wUHCx84Zcop0NXUIBgemYgal/uRKhrMmUUVbYy8wKfhC4ptbTOXgfasZRDMS8jVK8Mwsk6V19WfOfpxn6xJvz/i39j2KF1/AnKEKsgUdzEHaVt66WDOU7xczjjH/uuRaQNZWyDBg01iZRKL1RZGNV89TR3znhZpOwJpd1pJx8XWOFkM8ekcOGvq51+2rkLngfKvGqQmdiHqwgKdnvv8NrPIeqNqVUcVbXOIlUFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA0PR11MB7307.namprd11.prod.outlook.com (2603:10b6:208:437::10)
- by SN7PR11MB6970.namprd11.prod.outlook.com (2603:10b6:806:2aa::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.7; Mon, 9 Mar
- 2026 10:05:42 +0000
-Received: from IA0PR11MB7307.namprd11.prod.outlook.com
- ([fe80::9d4a:f89:f548:dbc7]) by IA0PR11MB7307.namprd11.prod.outlook.com
- ([fe80::9d4a:f89:f548:dbc7%6]) with mapi id 15.20.9700.010; Mon, 9 Mar 2026
- 10:05:42 +0000
-Message-ID: <fd0e2b38-7f86-4eb8-985e-68cba8c1a44b@intel.com>
-Date: Mon, 9 Mar 2026 15:35:36 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t,5/6] tests/kms_feature_discovery: add basic usb4 switch
- discovery
-To: Kunal Joshi <kunal1.joshi@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20260225212859.876713-6-kunal1.joshi@intel.com>
-Content-Language: en-US
-From: "Murthy, Arun R" <arun.r.murthy@intel.com>
-In-Reply-To: <20260225212859.876713-6-kunal1.joshi@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0198.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1aa::11) To IA0PR11MB7307.namprd11.prod.outlook.com
- (2603:10b6:208:437::10)
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="224408496"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.144])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Mar 2026 03:10:19 -0700
+Date: Mon, 9 Mar 2026 11:10:18 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: priyanka.dandamudi@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t v3 5/5] tests/intel/xe_prefetch_fault: Add test for
+ prefetch fault
+Message-ID: <wq4si4zsce4e5zcg4lpczwwbkgguo4gmejzfb6eslerowgdwvd@xcmv6zffibxl>
+References: <20260305053413.1734922-7-priyanka.dandamudi@intel.com>
+ <20260305053413.1734922-12-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR11MB7307:EE_|SN7PR11MB6970:EE_
-X-MS-Office365-Filtering-Correlation-Id: 20c02d89-4da7-478e-4f03-08de7dc36c06
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: El+0pfsdlV+EtuJqefaq2xRG1BjB913fmdZbNiYfPSsDnNFfdLJNKDOQUaLiOMCjROSYgtd9uIK11C9gz+yMxRqbPDkaJyTBjg1ERWRVsEBq8Pn497RdpNbTm3uY512bzQ3xbKIIzhDq19a9U8QdnGD5fjAgdgmqy/K+8NJOoedmmbwH+8nH2h+lnF364fzkWBTkq4aeBUJH/qbV2JGeiTR08ITk59+cmFERvvDk+eeTYhAR+Jrcvzl9hpay6Ni1NQh1WEom+wchAYlhMAsnzHBh4JI3ccszuMUcyLRCNH0Voh2znfBMujREuQMWWfJpGrPKcJGXvW8nEftHM3ZUAyoXet2dngHleBWeb7VOkfR98iqF4R9M5hlHie8BFkx2WspHAMM1duNk0kZcMRgi+fSEA+/JjxOKW7mxYvncI5Q7PS8Y+7B4A7CuHsgbgO7d50kmKb2fqVfJNlPsDRVaanDomB+E9QCliKPMCFrB3u3JEy/KFQ/GjODynzmwtmQMZuCYvezm2oQfsYPT9JbWNJAnbDioQzyMlk3huvaNm32WtXq32lkUjG90MTN9vpN6r/xMMllKZcoTbtKasXEw6b5RUqE1opEIyCf1ZN9OneJbZaox1Hs3YrSCY4zgiK35RwGUCRFpu7d3XTYeRJiJGes4bRJ44QnRzEbuuHlw74Ch0GcZXNMcOMHeTsQV1BrkBH7G9siXcmx4TezoLD6a5Za8peTrsod1rv3SS2Su1/M=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA0PR11MB7307.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QzkraXc3SmJMZm9CbHgvQSs5aE11c0VKT3NxcWFKQktrb01HTUo2dnlidjBv?=
- =?utf-8?B?WGxhUlhabUgzVHVMcTJSSlBmUTJnU3BlZ3BYUDhhTElLUnFZeURnUlRrMkdT?=
- =?utf-8?B?N29qd0JFQzhLWW9ZUHlKcElNZXVuSEs0T3AxbjIvOXVhZ2VlQjYvMFp6aGwy?=
- =?utf-8?B?aG9RN0NzbUhHNEJ4RzJMdjAweUVXRHhnMzdTWk5WWUs0QXAyeGZ4WHFiQ0s1?=
- =?utf-8?B?V09PL1NXdU1UcE5RRE9tU0NrWmNxWXdYYW9VZk5KdWFWN09XUVh1Um4wbWFU?=
- =?utf-8?B?WW5pbDdtbENRL0VTUlN2MEtKWGJ0NjltU0ZnNE1VSmJZMUFLYlNOdDNOSk9Q?=
- =?utf-8?B?Y25pcys0U0ZVc1A3QkdlSDdUK1VuRDhBbFlxeFdCUHRTS2QxSGlvV2pZVFdk?=
- =?utf-8?B?UFVIWEVPdzdLMk1DdUZSOVFDZ1F3OHFaQ3pVUkloRE4vaDhEa2htbTRmNTZ3?=
- =?utf-8?B?cjhDSHFpS2RRME5LRmRWd21NYlcya0NCSGVPaXFNek1lZzZPdWIzVnRaK2hu?=
- =?utf-8?B?RDJVeVI5ZDMrdXZRbW5FWGtIU01Hc1JBZ0RoKzE0ditpSEt3UDRDV1RiR1Jp?=
- =?utf-8?B?WlRwYlBrSEIzZjR1K21BQXlDMmVvYUkrbWNSTk8rWlF1R2tLbjFpWmFVclQ2?=
- =?utf-8?B?Q2VKTldVSERxNHZlQS81SW5nTllBd3ZiZE4zWnpkNUJId01XRmE3YkNHaDND?=
- =?utf-8?B?U3h4aHQ3QmNrS1dDT2R1RHVxaTBDV05WUkVmbXRKQ053a0FYb0hlM3pSK0Ur?=
- =?utf-8?B?aVVrZXl0dUdpZVh1ZWhPa2ExWmVhelhjb2FtTUVKazdzWnJnUEs5M2Q0ZExj?=
- =?utf-8?B?WFB5UFppVllrS0hkam9DWVRPOWM1N0k1RUowRFZmK1dOY0xLaDUzcFdyU1FY?=
- =?utf-8?B?Q29IYVRjUU9naEE0V3NwUitWVjRHV3lVWnNHdnhzTHVXaDh2RDA5dGl0ZUFW?=
- =?utf-8?B?M2FnM1BoZGpzQkU4ZGU0dGNLY2Q3Q29CTS9KVkEzMVl1OW9pR1oreE1OOUFa?=
- =?utf-8?B?TmhyWnUwYXJ2VEtSd1RvT0twS1BSeCtQQ2VLQ2h3d3dJQnZoT245M3RkMjJy?=
- =?utf-8?B?cUFGVFpkMGVwcUhNTnIvTndRYm9sd0N0QmlBZkVNMytJcCsyMWhUT0pOOWVX?=
- =?utf-8?B?TTRvbkhVN21yQzFJUERNVnJpdHpUUXZnc1ppWmpiQVNmamRZUEZpZXVuMjZL?=
- =?utf-8?B?bDNseEVMSEpWeDRqYkN5QnNSU1MxdUVSeDIzWmV4YjJhZHYyUEJqS2M2Y0pu?=
- =?utf-8?B?L1IxK3NHYUFsM2dWRlpMeitvVkN5NWcrTlNOTWdqbEJzTlAyREJkZmxJZ3Nh?=
- =?utf-8?B?OVF3cUY0d3hXcThTMVVIQW1xN3Rjc0FJK1YvV2czaEtnMnZDWGxRZithRTNj?=
- =?utf-8?B?REgxTURxVS9BKzU3elJuZUdFaHdQL3ZhZ2lFL3VBbjJXRDJNbnJNakxQK0hS?=
- =?utf-8?B?QzVxSEt3TzBBV210cG50N1lNRzVONG1HMlhCc1hhcnlYbysrbEVGUlFZblZi?=
- =?utf-8?B?MDJidDJYQktxVjd2Y0Z3SEdvZm9TdER3THFBZkVneUJRaVpFU2RXSm9udFpH?=
- =?utf-8?B?TnRicjhYUndkb1RKeHY3MWxxc1l6dWxtQmVRaEFOZjZTODhMMVdtUWlCV3Vh?=
- =?utf-8?B?aVNmUlR2MXlPTitHTHNKaGQxT0Jjbi9VTlhkcFZjMWFMaGhOSVF5aFl6UGpx?=
- =?utf-8?B?QW1EMXN3MUlQeEpHRFFVdVJGNmlBc0dHMHgzTVUxOGtpTVdmdVZ6dHJuYVls?=
- =?utf-8?B?UTBJZ1d3V3FLaVBLbDdJNTIrOTBVRGJXOHVFeElVOTdUV0tXK1lDZU0yc2pi?=
- =?utf-8?B?VlRybHdMeEh1L2NzNWp5aUhiKzhCNFozSUJ4NGYvNzBLZFd5eFV6U3ZhNVNa?=
- =?utf-8?B?RGJIeVprWXBlZXNxd1AyVWJYcHUxS0xqZFFYY1lvQTNJNlJIN1lFK1VTNU1O?=
- =?utf-8?B?bTVRV2VzMmFzLzgwR1FVRzd3TXovMXNwVTdPNVl5V2MyUDBBRDczVHhCTXRx?=
- =?utf-8?B?VzVrSVhJZmhMcGVRQ1lPSEUzcFBicFN2YkF3alpZejFVaEx5RDJWcFE3Y2xR?=
- =?utf-8?B?bFRLT1NaQjRKRG9ZWk9GZ09RdWdVVW9qZ3owbU5uVEJFWTBCWksrOFhqSUl3?=
- =?utf-8?B?ZEVHSXZZSUs2Z2RpVEQrVnFCNGkzb2VLL29aZlFpL25KZXJlMExCOUU3eU5m?=
- =?utf-8?B?dkRpTC90VEVrdmg1VEVwZUhRTStGTld5ZmNkMkVXNkUxYWpWbnBLTS9iNXhW?=
- =?utf-8?B?VzFSSnBFQUl2NlVUN3VTazQrdVhzMWtsd1d1SU5Da0tWbkcyQzVWMUxhOU9O?=
- =?utf-8?B?Q25rZ1lGdkQ1QS9UUTJGZnZaUDNCU3FkS3Y1a3JieGc4RGtKYkVIQT09?=
-X-Exchange-RoutingPolicyChecked: IPS+LQ8hyx2T/wOlzbMgLfu4emojOtm8jqMVFQE6L7JwGoWM5JnTD/khtuKVrbGslK1muifdR6uiwxBKOhlsBUKtrQV6FWK8/yc6g/ZfZWjblMPiNqadePKLT2Osb7LIebrNW2wirhxLRbH/nkW3/beHBVRwAm8zH8r9bN8JErqVTXo1Q9oZ+cC0N19wTVco58zKOrKtDpo0cgxyvAVoZ6ZqjrWVh94tF2zROBEAHX870JvJVONVVehwvwQwbfBZnrwB80PxYSLo9xusqZw3dqfZX3IzsAw6hIL9RCcmPk94UeVvyJWvK7iEDa1AQ6+hySxiQoJmyke4+tcuRIl6dQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 20c02d89-4da7-478e-4f03-08de7dc36c06
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7307.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 10:05:42.1138 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: l28lVy3Ahp67xHqMVRhWvbJzHH0eO8nAQ9DZ8Kg0UgxZvvKTJyEg7c4SyLyEyGvHZSM1sGN1dD1YG4uEPChzEg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6970
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260305053413.1734922-12-priyanka.dandamudi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -166,73 +71,311 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-On 26-02-2026 02:58, Kunal Joshi wrote:
-> Add a 'usb4-switch' subtest that verifies the Microsoft USB4 Switch
-> 3141 is reachable. The test initializes the switch library and queries
-> the active port to confirm communication works.
->
-> This enables CI to detect when USB4 switch hardware is available
-> before running the full kms_usb4_switch test suite.
->
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-Looks good to me
-
-Reviewed-by: Arun R Murthy <arun.r.murthy@intel.com>
-
-Thanks and Regards,
-Arun R Murthy
---------------------
-
+On Thu, Mar 05, 2026 at 11:04:19AM +0530, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> 
+> L1 prefetch uses CTYPE = Prefetch, such page faults are ignored by HW.
+> Added a test to check for L1/L2 prefetch fault handling support. It has
+> been implemented using compute pipeline.
+> Prefetch operations are implemented using a Load instruction with a NULL
+> destination register. This indicates to the LSC to perform the requested
+> cache fill operation but without returning data to the EU.
+> Added gpgpu shader prefetch fault template to support the test.
+> 
+> v2: Use xe_canonical_va instead of CANONICAL_57B.
+> 
+> v3: Remove unrequired graphics version in asm.
+> 
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > ---
->   tests/kms_feature_discovery.c | 23 +++++++++++++++++++++++
->   1 file changed, 23 insertions(+)
->
-> diff --git a/tests/kms_feature_discovery.c b/tests/kms_feature_discovery.c
-> index f0216a4ce..b05055186 100644
-> --- a/tests/kms_feature_discovery.c
-> +++ b/tests/kms_feature_discovery.c
-> @@ -40,6 +40,7 @@
->   #include "igt_psr.h"
->   #include "igt_sysfs.h"
->   #include "igt_types.h"
-> +#include "igt_usb4_switch.h"
->   
->   /**
->    * SUBTEST: display
-> @@ -63,6 +64,9 @@
->    * SUBTEST: dp-mst
->    * Description: Make sure that we have DP-MST configuration.
->    *
-> + * SUBTEST: usb4-switch
-> + * Description: Verify that USB4 Switch 3141 is available and responding.
+>  lib/meson.build                               |   2 +-
+>  tests/intel/xe_prefetch_fault.c               | 212 ++++++++++++++++++
+>  .../xe_prefetch_fault.c.gen.iga64_codes.c     |  21 ++
+>  tests/meson.build                             |   1 +
+>  4 files changed, 235 insertions(+), 1 deletion(-)
+>  create mode 100644 tests/intel/xe_prefetch_fault.c
+>  create mode 100644 tests/intel/xe_prefetch_fault.c.gen.iga64_codes.c
+> 
+> diff --git a/lib/meson.build b/lib/meson.build
+> index ea721ecf70..cd03e8f634 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -262,7 +262,7 @@ lib_version = vcs_tag(input : 'version.h.in', output : 'version.h',
+>  		      fallback : 'NO-GIT',
+>  		      command : vcs_command )
+>  
+> -iga64_assembly_sources = [ 'gpgpu_shader.c', 'gpgpu_fill.c', '../tests/intel/xe_eudebug_online.c' ]
+> +iga64_assembly_sources = [ 'gpgpu_shader.c', 'gpgpu_fill.c', '../tests/intel/xe_eudebug_online.c', '../tests/intel/xe_prefetch_fault.c']
+>  libiga64_asms = static_library('iga64_asms',
+>  	iga64_assembly_sources,
+>  	include_directories: inc,
+> diff --git a/tests/intel/xe_prefetch_fault.c b/tests/intel/xe_prefetch_fault.c
+> new file mode 100644
+> index 0000000000..b7484aae0b
+> --- /dev/null
+> +++ b/tests/intel/xe_prefetch_fault.c
+> @@ -0,0 +1,212 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2024 Intel Corporation
+
+2026.
+
+> + */
+> +
+> +/**
+> + * TEST: Tests for prefetch fault functionality
+> + * Category: Core
+> + * Mega feature: General Core features
+> + * Sub-category: prefetch fault
+> + * Functionality: prefetch fault
+> + * Test category: functionality test
+> + */
+> +#include "gpgpu_shader.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include "xe/xe_gt.h"
+> +#include "xe/xe_util.h"
+> +#include "igt.h"
+> +#include "igt_sysfs.h"
+> +#include "intel_pat.h"
+> +#include "intel_mocs.h"
+> +
+> +#define WALKER_X_DIM	4
+> +#define WALKER_Y_DIM	1
+> +#define PAGE_SIZE 4096
+> +#define COLOR_C4 0xC4C4C4C4
+> +
+> +struct dim_t {
+> +	uint32_t x;
+> +	uint32_t y;
+> +	uint32_t alignment;
+> +};
+> +
+> +/**
+> + * gpgpu_shader__e64b_prefetch_fault:
+> + * @shdr: shader to be modified
+> + * @addr: ppgtt virtual address to raise prefetch fault
 > + *
->    * arg[1].values: 1, 2, 3, 4
->    */
->   
-> @@ -147,6 +151,25 @@ int igt_main() {
->   		}
->   #endif
->   
-> +		igt_describe("Verify that USB4 Switch 3141 is available and responding.");
-> +		igt_subtest("usb4-switch") {
-> +			struct usb4switch *sw;
-> +			int port;
+> + * This shader can only be used when in efficient 64bit mode.
+> + * For a given arbitrary ppgtt virtual address, it raises prefetch fault using load instruction.
+> + */
+> +static void gpgpu_shader__prefetch_fault(struct gpgpu_shader *shdr,
+> +					 uint64_t addr)
+> +{
+> +	igt_assert_f((addr & 0x3) == 0, "address must be aligned to DWord!\n");
 > +
-> +			sw = usb4switch_init(fd);
-> +			igt_require_f(sw,
-> +				      "USB4 Switch 3141 not available\n");
+> +	emit_iga64_code(shdr, xe_prefetch_fault_prefetch, "			\n\
+> +#define IGA64_FLAGS \"\"							\n\
+> +#if GEN_VER >= 3500								\n\
+> +L0:										\n\
+> +// Set base address with scalar register					\n\
+> +(W)	mov (1)		s0.0<1>:ud		ARG(0):ud			\n\
+> +(W)	mov (1)		s0.1<1>:ud		ARG(1):ud			\n\
+> +										\n\
+> +// A64 offset									\n\
+> +(W)	mov (8)		r30.0<1>:uq		0x0:uq				\n\
+> +										\n\
+> +// efficient 64bit Read with cached L1, cached L2 and cached L3			\n\
+> +// sendg ugm load with SBID 3							\n\
+> +// Message Descriptor								\n\
+> +//      bspec:71885								\n\
+> +//      0x99C00 =>								\n\
+> +//      [45:44] Offset Scaling: 0 (disable)					\n\
+> +//      [43:22] Global Offset: 0						\n\
+> +//      [21] Overfetch: 0 (disable)						\n\
+> +//      [19:16] Cache: 9 (L1 cached, L2 cached and L3 cached)			\n\
+> +//      [15:14] Address Type and Size: 2 (Flat A64 Base, A64 Index)		\n\
+> +//      [13:11] Data Size: 3 (D64)						\n\
+> +//      [10:10] Transpose : 1 (enable)						\n\
+> +//      [9:7] Vector Size: 0 (Vector length 1)					\n\
+> +//      [5:0] Opcode: 0 (Load)							\n\
+> +// Prefetch operations are implemented using a NULL destination register.       \n\
+> +(W)	sendg.ugm (1|M0)	null	r30:1	null:0	s0.0	0x99C00	{A@1,$5}\n\
+> +										\n\
+> +#endif										\n\
+> +	", lower_32_bits(addr), upper_32_bits(addr));
+> +}
 > +
-> +			/* Verify communication works by querying active port */
-> +			port = usb4switch_get_active_port(sw);
-> +			igt_assert_f(port >= 0,
-> +				     "Cannot communicate with USB4 switch\n");
+> +static struct intel_buf *
+> +create_buf(int fd, int width, int height, uint32_t color)
+> +{
+> +	struct intel_buf *buf;
+> +	uint32_t *ptr;
+> +	size_t i;
 > +
-> +			igt_info("USB4 Switch 3141 available (active port: %d)\n",
-> +				 port);
-> +			usb4switch_deinit(sw);
+> +	buf = intel_buf_create(buf_ops_create(fd), width, height, 32, 0,
+> +			       I915_TILING_NONE, 0);
+> +
+> +	ptr = xe_bo_map(fd, buf->handle, buf->size);
+> +	igt_assert(ptr != MAP_FAILED);
+> +
+> +	for (i = 0; i < buf->size / sizeof(uint32_t); i++)
+> +		ptr[i] = color;
+> +
+> +	munmap(ptr, buf->size);
+> +
+> +	return buf;
+> +}
+> +
+> +static struct intel_bb *xe_bb_create_on_offset(int fd, uint32_t exec_queue, uint32_t vm,
+> +					       uint64_t offset, uint32_t size)
+> +{
+> +	struct intel_bb *ibb;
+> +
+> +	ibb = intel_bb_create_with_context(fd, exec_queue, vm, NULL, size);
+> +
+> +	/* update intel bb offset */
+> +	intel_bb_remove_object(ibb, ibb->handle, ibb->batch_offset, ibb->size);
+> +	intel_bb_add_object(ibb, ibb->handle, ibb->size, offset, ibb->alignment, false);
+> +	ibb->batch_offset = offset;
+> +
+> +	return ibb;
+> +}
+> +
+> +static struct gpgpu_shader *get_prefetch_shader(int fd)
+> +{
+> +	static struct gpgpu_shader *shader;
+> +
+> +	shader = gpgpu_shader_create(fd);
+> +	gpgpu_shader__prefetch_fault(shader, xe_canonical_va(fd, 0x1f000000));
+> +	gpgpu_shader__eot(shader);
+> +
+> +	return shader;
+> +}
+> +
+> +/**
+> + * SUBTEST: prefetch-fault
+> + * Description: Validate L1/L2 cache prefetch fault.
+> + * Run type: FULL
+> + */
+> +
+> +static void test_prefetch(int fd, struct drm_xe_engine_class_instance *hwe)
+> +{
+> +	/* faulty address 0x1f000000 should be beyond bb_offset+bb_size. */
+> +	const uint64_t bb_offset = 0x1b000000;
+> +	const size_t bb_size = 4096;
+> +	struct dim_t w_dim;
+> +	struct gpgpu_shader *shader;
+> +	struct intel_bb *ibb;
+> +	struct intel_buf *buf;
+> +	uint32_t *ptr;
+> +	uint32_t exec_queue_id, vm;
+> +	int prefetch_pre, prefetch_pos;
+> +	static const char *stat = "prefetch_pagefault_count";
+> +
+> +	w_dim.x = WALKER_X_DIM;
+> +	w_dim.y = WALKER_Y_DIM;
+> +
+> +	buf = create_buf(fd, w_dim.x, w_dim.y, COLOR_C4);
+> +
+> +	prefetch_pre = xe_gt_stats_get_count(fd, hwe->gt_id, stat);
+> +
+> +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
+> +			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
+> +
+> +	exec_queue_id = xe_exec_queue_create(fd, vm, hwe, 0);
+> +
+> +	ibb = xe_bb_create_on_offset(fd, exec_queue_id, vm,
+> +				     bb_offset, bb_size);
+> +	intel_bb_set_lr_mode(ibb, true);
+> +
+> +	shader = get_prefetch_shader(fd);
+> +
+> +	gpgpu_shader_exec(ibb, buf, w_dim.x, w_dim.y, shader, NULL, 0, 0);
+> +
+> +	gpgpu_shader_destroy(shader);
+> +
+> +	intel_bb_sync(ibb);
+> +
+> +	ptr = xe_bo_mmap_ext(fd, buf->handle, buf->size, PROT_READ);
+> +
+> +	for (int j = 0; j < w_dim.y; j++)
+> +		for (int i = 0; i < w_dim.x; i++) {
+> +			igt_assert_f(ptr[j * w_dim.x + i] == COLOR_C4,
+> +				     "Expected 0x%02x, found 0x%02x at (%d,%d)\n",
+> +				     COLOR_C4, ptr[j * w_dim.x + i], i, j);
 > +		}
+> +	/* Validate prefetch count. */
+> +	prefetch_pos = xe_gt_stats_get_count(fd, hwe->gt_id, stat);
+> +	igt_assert_eq(prefetch_pos, prefetch_pre + w_dim.x * w_dim.y);
 > +
->   		igt_describe("Make sure that we have eDP panel with PSR1 support.");
->   		igt_subtest("psr1") {
->   			igt_require(psr_sink_support(fd, debugfs_fd, PSR_MODE_1, NULL));
+> +	munmap(ptr, buf->size);
+> +
+> +	intel_bb_destroy(ibb);
+> +}
+> +
+> +int igt_main()
+> +{
+> +	struct drm_xe_engine_class_instance *hwe;
+> +	int fd;
+> +
+> +	igt_fixture() {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		igt_require(intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(35, 0));
+> +	}
+> +
+> +	igt_subtest_with_dynamic("prefetch-fault") {
+> +		xe_for_each_engine(fd, hwe) {
+> +			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
+> +			    hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
+> +				igt_dynamic_f("%s%d", xe_engine_class_string(hwe->engine_class),
+> +					      hwe->engine_instance)
+> +					test_prefetch(fd, hwe);
+> +			}
+> +		}
+> +	}
+> +
+> +	igt_fixture() {
+> +		drm_close_driver(fd);
+> +	}
+> +}
+> diff --git a/tests/intel/xe_prefetch_fault.c.gen.iga64_codes.c b/tests/intel/xe_prefetch_fault.c.gen.iga64_codes.c
+> new file mode 100644
+> index 0000000000..63d625a653
+> --- /dev/null
+> +++ b/tests/intel/xe_prefetch_fault.c.gen.iga64_codes.c
+> @@ -0,0 +1,21 @@
+> +// SPDX-License-Identifier: MIT
+> +// Generated using Intel Graphics Assembler 1.1.0-int
+> +
+> +#include "gpgpu_shader.h"
+> +
+> +#define MD5_SUM_IGA64_ASMS e7208e50b70deaed9d16527ee184bc5b
+> +
+> +struct iga64_template const iga64_code_xe_prefetch_fault_prefetch[] = {
+> +	{ .gen_ver = 3500, .size = 28, .code = (const uint32_t []) {
+> +		0x80000061, 0x60014220, 0x00000000, 0xc0ded000,
+> +		0x80000061, 0x60114220, 0x00000000, 0xc0ded001,
+> +		0x800c0061, 0x1e054330, 0x00000000, 0x00000000,
+> +		0x80012033, 0x00000004, 0xf0091e0c, 0x9c000000,
+> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+> +	}},
+> +	{ .gen_ver = 0, .size = 0, .code = (const uint32_t []) {
+> +
+> +	}}
+> +};
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 7f356de9be..c008826923 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -324,6 +324,7 @@ intel_xe_progs = [
+>  	'xe_pm',
+>  	'xe_pm_residency',
+>  	'xe_pmu',
+> +        'xe_prefetch_fault',
+
+Spaces instead tab. Rest LGTM. With two nits fixed:
+
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+--
+Zbigniew
+
+>  	'xe_prime_self_import',
+>  	'xe_pxp',
+>  	'xe_query',
+> -- 
+> 2.43.0
+> 
