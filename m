@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71E50EFCD61
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 09:14:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3A95EFCD6E
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 09:23:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2A6E410E4AE;
-	Mon,  9 Mar 2026 09:14:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8789A10E4B0;
+	Mon,  9 Mar 2026 09:23:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YeHzLJJp";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U7L0hXQt";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3FEC10E4AE
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2026 09:14:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E49C710E4B0
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2026 09:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773047670; x=1804583670;
+ t=1773048188; x=1804584188;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=7qHGAKllPK2nNVSqrD41jkkdli2iNVCtVTtsGZce8vk=;
- b=YeHzLJJpPOfbkGNRPM90V2SHyxf3ZZsL8m4svJkAMYZigokjZkQa9u8u
- gOhcwlZlEbUCi/UCSCNi+n7BMWD2RdzGvpo3qjGx9k3YlEV1rw5UKdpwz
- +oi8+L56aL67dgCpoDkgaF2Tp49mbNZDHLpsJQxScodCFlQH88OEojPrJ
- 8NTcfJRljWiE26+uX2miLKeAddUUYh3gWMXyfAQgX22nvMYjfrGQBkv9G
- g77Eyk9Z4dXEQkBzT9ACwtBSYC2ONKqPZTwU2sjTjr0K+rPijJt2ptyk8
- fcL0N0Gvev+S3zUvskhDMWln2sncTkTh+tQmYzrxax36MDObNZH3dzRNU A==;
-X-CSE-ConnectionGUID: 7bRlUPo3RAe+IJVO/N+51Q==
-X-CSE-MsgGUID: Y4EOFla2T6iMHimKCbULGg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="85538308"
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="85538308"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Mar 2026 02:14:26 -0700
-X-CSE-ConnectionGUID: FJrIKs5hQI22LSkOZh3WzQ==
-X-CSE-MsgGUID: ewbjucS6QZqklRUE7A2D3Q==
+ bh=93E7DzzCeFzPbwnVzPpqC/FlyZf8EuLr60TMEf2yBIo=;
+ b=U7L0hXQtJ55prblFhCtvh9JKOnj9WzlXfQD+AfxsHiBSNzXBIOfjyiPv
+ soptTQKW2UJ8K93ZoH1XmnGhISRxeeEhuAnBFz68RtWfFNLmMvwCgQGuN
+ oVMs/sZGn/llwV5fMgMoqVW9d1ZqHIJ/2TC24Pe78MgyCzxMOiKIcJPIc
+ wjr37JuSBTHthL54aA5bRiefNtuKhoNdNuT+W6DMqYiqH1jzvA8m2xjMk
+ HIfRlY/RqNdy4FOoS8br5fL3CFKKf47aHSwhzCwY6N81N2q68ibSs/f12
+ EeTE8Ymilmlj4aUjKjNqk3WLqboVOhAKw2Po2h7ni9oIwKojAQw+4djr0 A==;
+X-CSE-ConnectionGUID: elnq9LX0Q2CItBXaGdT78A==
+X-CSE-MsgGUID: JkIjrM83RdiDsSp9VGraOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="77918172"
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="77918172"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Mar 2026 02:23:07 -0700
+X-CSE-ConnectionGUID: 4yxJ6aJMR82m9LMe/kPUyg==
+X-CSE-MsgGUID: o2k0Pu+vSGu7olNOdUthMg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="224148364"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Mar 2026 02:14:26 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="257619232"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Mar 2026 02:23:08 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 9 Mar 2026 02:14:24 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.2.2562.37; Mon, 9 Mar 2026 02:23:07 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 9 Mar 2026 02:14:24 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.66) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Mon, 9 Mar 2026 02:23:07 -0700
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.32) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 9 Mar 2026 02:14:24 -0700
+ 15.2.2562.37; Mon, 9 Mar 2026 02:23:06 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ETPpwWh0+A7NrYhf2RaV0mLJzGdGhtSO/8SA+famD21Fe+6cKyDSYM7XPzqs9b1y/Usny+aWvHmvp0kj7Zeptqit8UV7jA9gzjfva9+uWX2X6GvBZJRGsaxJFbOeBq2734/VijhSsXF2dDdw97iSENy/IrtCnHfTdlKDxOVj6OXSGbf5uhEiA9qNmrrLryQaoV/h71q3MrJlwy9LX9daUxUChcDrUmlTkiDexkESK2snX+HxnEpDhO7CqJivHiMtmo8TPWVawub57nK02hE8XyCSOO9ZO1kYGVfRDaZx45jf+f3CssrPNkcTKbCK8tbR08agRbHOn9GkRfj5imt8YA==
+ b=f3Pgq2MucKB5vtHVQMlLqKWjtOtVJJeqyKKOMWEOo+8yIz0TL4AH2t5HB66lRkuUuETFY5VQfvEhkM0v41FW4JlM90skBM4dScovvKsJs8NJ7oed/c0Hp2YF5eziPv9tTdD6Q7+4JG9th8IfLxIcCD37I4/shxeh3xFhJFVJquSBDl3o+Gl92E9xNp/SkEAF6a3vV3R4ohHE6EO72E4+asZcltuHZ0KoedHSUPCryqg5M5lHJL5r4GLawnj7VLR71y53pKLySzQWphOm0WOm9yvNyKxP/3H8pyw/iJODimxXx0Ivx9ila7jNuUUhkBdINu4qUmC9NWAhG0OjwBgKAg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A6pKY7Actq8ZRF1lGldHj+GbxnktSrHm1pNjmnmqe1Y=;
- b=KSRyXw/gqbXuvVql+CxArfE8pX1jt4Pokm33g9ovyl1b9yM2M0J3XUVyau65KTbomarom8E1doaqdrsmrSPoaUWaxvwOhwc1Fxargt1kOLjPSQGofyc5AFsbXhBMVd5sjG26oCQn0QiF2PeKapkU5JGOXF2XEOQjDy1DvKsN2WkhJBW5hfBtGzoJnDzVZ1hX2dBw4n3rdwkUSICTPRgOcmwCZpopKPA1Burwsgpo1hKDhKnyvVd/lJl/q4JrAuWf5Cb2C0yE/BVOG8TmMjcWbpdfDJf4uYV/wIIwlrdyy946pS4+FfNvU1wBBHsBspmW+UBmg/P4yBlOvJDJ2PcoRw==
+ bh=bYzHZg0XTX5IP6oMgFcWAQukxSvurHUERFA87JHIfvk=;
+ b=FUt32xrvxNSgFHMiJbUu4SivbLeIzc90Y7dWBF7lkJ65Bichrss1DabSpAfVXtrmH8u2cQADO6mwfuZ4bJqavXtLiXTyp10RYLNor0xqrGgYHjWAZ2lMgwih8Q7UTjJrl5YnF2wgZe3ytKonXwn1QacvVXO+coNUeq0W+3Iox1BnE42q49Wh8LEeH/kKzDhWlpSjqYzwaLTQOuB438JAhb7INjm6xoS6lkkgkFV35EZ3p/5ll8VNAkrhMbgEQvWBQ6sFccbClmg2QZRSaY58mLQcQWl90ZG52xQAiebwidNS74FVfIupAyRoj1wTpiqofKjGhNSt8DTISHUU2qDZaQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from BL1PR11MB6050.namprd11.prod.outlook.com (2603:10b6:208:392::8)
- by IA0PR11MB8398.namprd11.prod.outlook.com (2603:10b6:208:487::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Mon, 9 Mar
- 2026 09:14:22 +0000
-Received: from BL1PR11MB6050.namprd11.prod.outlook.com
- ([fe80::37cd:d599:fc6f:eef4]) by BL1PR11MB6050.namprd11.prod.outlook.com
- ([fe80::37cd:d599:fc6f:eef4%5]) with mapi id 15.20.9700.009; Mon, 9 Mar 2026
- 09:14:22 +0000
-From: "Samala, Pranay" <pranay.samala@intel.com>
-To: Xiandong Wang <xiandong.wang@mediatek.com>,
+Received: from DM4PR11MB6312.namprd11.prod.outlook.com (2603:10b6:8:a5::11) by
+ DM4PR11MB6309.namprd11.prod.outlook.com (2603:10b6:8:a8::22) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9700.10; Mon, 9 Mar 2026 09:23:03 +0000
+Received: from DM4PR11MB6312.namprd11.prod.outlook.com
+ ([fe80::9d51:565a:7572:5318]) by DM4PR11MB6312.namprd11.prod.outlook.com
+ ([fe80::9d51:565a:7572:5318%5]) with mapi id 15.20.9700.010; Mon, 9 Mar 2026
+ 09:23:03 +0000
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "Bilal, Mohammed" <mohammed.bilal@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: Jason-JH Lin <jason-jh.lin@mediatek.com>, Nancy Lin
- <nancy.lin@mediatek.com>, Singo Chang <singo.chang@mediatek.com>, Gil Dekel
- <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
- "Project_Global_Chrome_Upstream_Group@mediatek.com"
- <Project_Global_Chrome_Upstream_Group@mediatek.com>
-Subject: RE: [PATCH i-g-t v1] Modify the vbl.sequence *2 for mtk driver
-Thread-Topic: [PATCH i-g-t v1] Modify the vbl.sequence *2 for mtk driver
-Thread-Index: AQHcr54ws4WsB8pnnka+jUGd1FY+2rWl4KwQ
-Date: Mon, 9 Mar 2026 09:14:22 +0000
-Message-ID: <BL1PR11MB60503E73ED68D87122A83C75E779A@BL1PR11MB6050.namprd11.prod.outlook.com>
-References: <20260309082400.19767-1-xiandong.wang@mediatek.com>
-In-Reply-To: <20260309082400.19767-1-xiandong.wang@mediatek.com>
+CC: "Brzezinka, Sebastian" <sebastian.brzezinka@intel.com>
+Subject: RE: [PATCH v2 2/2] tests/chamelium/audio: Fix resource leaks on
+ assertion failure
+Thread-Topic: [PATCH v2 2/2] tests/chamelium/audio: Fix resource leaks on
+ assertion failure
+Thread-Index: AQHcrIMflbF2cmceQkidx9BMuUIVjrWl8Z2w
+Date: Mon, 9 Mar 2026 09:23:03 +0000
+Message-ID: <DM4PR11MB6312FBDCA175D13650AD0EFC9079A@DM4PR11MB6312.namprd11.prod.outlook.com>
+References: <20260305093025.3107101-1-mohammed.bilal@intel.com>
+ <20260305093025.3107101-3-mohammed.bilal@intel.com>
+In-Reply-To: <20260305093025.3107101-3-mohammed.bilal@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -94,59 +93,60 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR11MB6050:EE_|IA0PR11MB8398:EE_
-x-ms-office365-filtering-correlation-id: fd493556-1af5-4c21-e121-08de7dbc40a2
+x-ms-traffictypediagnostic: DM4PR11MB6312:EE_|DM4PR11MB6309:EE_
+x-ms-office365-filtering-correlation-id: 14474445-8d39-48fa-64dd-08de7dbd7737
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|366016|376014|38070700021;
-x-microsoft-antispam-message-info: NEb7mjUlcMhwK0KWEac0kyXH321gcuiNc+R9SzrosGRSux1zdvcuVFQEQux7+cSya+9MNE2TT30+x81z9qfh1WJCefOVi20yJK2NrO3z08L9RbHLjoeXR3K9blX6nsf/+kpUmdGLza+XjwGztjPtyzdOvVE4e/RIveaSop64vmYlzFq5goX6ANBPNSY1/u+fn8JvnJVbITyF91IWF+GcJkS/pqm/AHZS5iYI5M7/GFCFGFLsafQQQcQle0X0cMA/gSSP697zKt0ul/olnV0PCoWNxeFdr/3UUCv9B82lsYYtwCHMxb9TfJTgcF5j2itlDXesB69OwjoNOahr3nRBd5sRTmNWPxDm/AhzKp5XRGM8fuFVMxeBVCjDXOU5GailMFkgXhxL9hU11nzHEfKNLjN6JCHUPW1zVgyBhqqmwxaigu0nunaWo6gnednFS+tP7kOgBQVi03ppzS95s+hM4T9PDkzuG3vKFuDF5kiPwoncXMUItpQh/teUv8q3s08bCIR+33ImVhILUNgCUNgoPzGRBT8Yq7FsvlpgQaxPxg/X77GNAv5X6jQcR293CIMXAczXboHf/pTd+jOIS1WKkVx9z2kxVH4VASm6wQ6ovfnrBwimiYHJqCHMzaB1TZl40jmR7xiYfhJPLPbNmAaMq3iAqfpmtYDVv7DQr1b7fS5f9d1tSCsshpcwEK0pNclmQkXSMTgZpYVuEkxl2XzO54vZAdVJDZyVsze1E+prQy/J5q0S4mNCAPXRxXGAIZXVbJEYxpPSC/fC71do9HMa62hssjJKNdfdTjSBOWCkGyA=
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|376014|1800799024|38070700021|7053199007; 
+x-microsoft-antispam-message-info: e9PNEAY0MKDOIwf7BjDiM+NulnbCHH7RPxBw4teYa4pZNfGFKN6Ux92d6HVEk485s1NDeoK3iAIaVNhHw2xeyX7ue8zWsh9hgc73TOfoyAnq5fGzYbLWaQxRaFGCuDZS44JWCAMMYBlddpx4J4GJJHtL2egfnAPEltb4mhK2FkSLtERBYxu7EwB6GARypdIn6stHbpPUayA9BdxE22WbV92QlUQqtSb0b4Q6kJKFCwt70lTblnVMDPZbWlHtGRs3wjOAbofWIvInnLZLyWMGdpwE/+VVo5KOrvPhky2yt8E1DTXLO+6Dy0ZTTLRARPbcQC3NjcydV7HtuW9VwVDKmpcP5V4g0MRVPbRVOIZZd6lCuUYQAfMowt0D6F3CYoK5hfGPUq7BL8zMh4hxwQCOb4D4JFG0wyxfOJKlxwnGPBjqwCaAdZM0lSZnhIsaznaUqgIDn4b+oy59t1Fs/V6R2t+8K8OJ05a4wgjVRU31GlOagcFBezQgRR9Q38HCU8Melbj0Dpouz1sheKmFk534dHTfGR+ykTXY204XMR6700Y8miGH5k108hQFtdwYB0sbJC/ttWcgzpzqw4SLrhS4F+TqrMSGxZWeFG1x82A7oiikLdJ4cEOGqoaqF+EyERNm94TDsXHV+shtA0RMYmfb3GqTZu/qM6/txibZoYWD/OZ8e7Y34+JnlIkcvMwqrPCgHIIngtgdHJocedyz1CCJPqQyussQkMlMLcaausj9/3wyCw99NVmKwHcOu4Dn1YSLgs8hFIYvuRngGbMsMoFqlzadcKICGHlNZvvNHT7wdjM=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL1PR11MB6050.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(38070700021); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB6312.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(38070700021)(7053199007); DIR:OUT;
+ SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Q4Awfgu+e1mAoS0jnlzjrxaoKMahMX6pkQXTZAQ2Fo3TF2yTEnS31BEMeS6/?=
- =?us-ascii?Q?/zxckCtkXPHRwG8aktwH+Xa7Egmdbgx8GPNmDE/GThWKCFgtlwqrMS4glmuO?=
- =?us-ascii?Q?tahRY10rR0eN/imrTXdow8OMJOU/fjou8A6/sisQcfxCanBceTCfgRsMN5oo?=
- =?us-ascii?Q?OY6zxTzWYIyQE+UXeSrq101psRa8zjrqsGuzD9HYYI0zNfJBLDMIIAIhQsjZ?=
- =?us-ascii?Q?KSXKocPanUmJ8Rl8bGY45rdPh9iO9/7snN3DPF6V+nS37ffjZ0NhJgov1pgu?=
- =?us-ascii?Q?kOTPM7FKxGOeoJm0+YSpFEHLq7hXJ07NLRQueltx7eWLX8JUAF+VpfW+k8QL?=
- =?us-ascii?Q?i7UUBrrmjkd/7m0BrZPPF/VWM3b+Ba3duS2VeTSvM+XBdq4jIsvqo81OYbJ8?=
- =?us-ascii?Q?JgvZv94u+APqVAkHiy8wgOkxwEc2l6HFjNpMNnspue7b5wuuDbb88vdfNSMI?=
- =?us-ascii?Q?nBZu0pbVCdsATb2nNFsz0f+aCgt4isleLB/Pig7oIaMIv+LAjao4EPLQyE8N?=
- =?us-ascii?Q?OMwdjx4KboNuXvTU8n2UsFGE+mYMbO8jAP2NrojYS3hVAk8/DlaKy6Jc+zfn?=
- =?us-ascii?Q?Bqpt6OFDOGSB8Q/rD4MKdvGcJeXuzPp/MzFnLA/EOYM1dyhdCbiPLdcoBdGk?=
- =?us-ascii?Q?KEVgHl5YXOSNIeLk+XA6k8QilXyhk9xAOPrvvIh/kjKk9cK55bgwU/xtbvDw?=
- =?us-ascii?Q?8ww6VVpEeTInjFTjR+FyMVO+V2RUpp/zDzI/XNE4Z8RB/D9GUzHVZc4xvlPf?=
- =?us-ascii?Q?cZfQQOluhZw2dI8PxF1q15HBuPQrm03qKTmO6cq8u+WMvsc5wAAoMh4vT+DL?=
- =?us-ascii?Q?cG51FmcJMldvs7ClUnOL3D4zhaNZmb/pbq2hQmYN4CyS2NLhp3HBe/47eOOh?=
- =?us-ascii?Q?3DSNQQV2o450KLF4JVV7c/ZqA1P/P4gY81YE1RLgee4mId9xkV1COV8npB3B?=
- =?us-ascii?Q?NxS+pROl5FjYPmTTCVbTyH5IfTF+NbD9URxbxJVsY8VkjdaWirdmPeegx/kj?=
- =?us-ascii?Q?egnqt+xxqupFixNXkLZCnhKanv+w8d3YB/BK4xT1uJZRxfQf3qEjlwQmXf3i?=
- =?us-ascii?Q?2icyuEJgDXZCVyO7pL/SH6WsY3kUXrQBhhz0l/GVbhRLEzldtyoTu0BifoWP?=
- =?us-ascii?Q?+5r57niw4yN/RRzEanBNp8IT0/TM7VKMkYF2Ib8bnr4KDiQ25lddW+Wsaw+3?=
- =?us-ascii?Q?tawblpsm+Enn8JfcJoz513WExPNWstvukbGKij5151ngiaPUzrmICucJ02h+?=
- =?us-ascii?Q?PqNBKucF4WA3AbMabaGODVNsHBduxDqrRzVVH5QoNZgwn8Fr16uBpwG0sM14?=
- =?us-ascii?Q?0IWpCex5WfI1g3CbG+PzyL9PZolfgzGWoUZC65EYMt8R7ADFRZ2mFBAJzlVP?=
- =?us-ascii?Q?3IsSasAh8RKpTXMvyoejNorqs6ahnYwZ/jXjIxIMUknEY6Nh5IWTxdOJZEJp?=
- =?us-ascii?Q?sF5atbN68BhpJUdSFWwT9WFP2RGFnm0TesH2k4uaWREp7QR5k98UFlhJnZhO?=
- =?us-ascii?Q?3XmKgX/1qX2YE3KGpc3TXzck523zm4so45A+DkwLtDQLDN+2KH6dG1VKqU0/?=
- =?us-ascii?Q?GXvH3ht5t6Vmja+e8K3HkDBAbia5c1HeBybrTC3P7lqM1rLbtPnXc6Buxgf7?=
- =?us-ascii?Q?t8DoDG9g1dCfrO45RL0wP7mPzYb26IwbWOPfCaq1PdMLU3hl+iDs4SPgAe2r?=
- =?us-ascii?Q?IJuDDr2RzteiyVM1OQzX8EiVyWzgLPf2iZzEQKlPSSdRjxAn6CYlK2UQElRz?=
- =?us-ascii?Q?Pa1y3RWvwQ=3D=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?yUGL2hqif4WPXqMCavyUSXdqo8fNTeYd8MdM0MeMLmDYSZ7orA6KFcueCk4p?=
+ =?us-ascii?Q?k5N6yUlsAbPdrpIvHrnQZYHoDbRYBHd6NZIMnDCXG7oech+JMv8RbUDuqLTB?=
+ =?us-ascii?Q?cHDAyZHzdB2AWFNGpk836MLCa0OskBFydCbg0JsJljlP/8dRers8z9YVCq+8?=
+ =?us-ascii?Q?9fk5ehIJFXzaAKrJouw0oaLcy5yowB9tMR3+M695JXWP+mfU9VByLZdrLEY8?=
+ =?us-ascii?Q?FC/Wj1pW037FBBWeTK28mEn8ZL3Grv42fQWIrW77n4k9i9jXW/v0XWO5trCf?=
+ =?us-ascii?Q?Z+PDilfE35YNdRFiDw2la1gnzK9bOzUJElKTm9KEk0rlw67d49WFEgxEWxco?=
+ =?us-ascii?Q?UhEF4g8ZDGHi0eH42YP9T6h90VxLecu6/+8qv+wCpsOVKc/JHCU4zCJ6D19p?=
+ =?us-ascii?Q?FNz98PG/7no8TxQU4AWhDdqfX+8pgxbZtFoBwNsrhvcPMAa7Ej+jmqSeSI7L?=
+ =?us-ascii?Q?Gk0FBS5If+MKYeB6vOmERI4uvdMe/x+ZG+wiGs2wqBgZi2dyYi+vOIQaa5nE?=
+ =?us-ascii?Q?+lt7tkgFPyxvTAW3DSlM3fP9OT/DRQ3PMyVpV/JAPZl1jWT5W+UmkPGvzUh7?=
+ =?us-ascii?Q?th0KLatO3ymDOv34FHQi9Nh//Y9j/qdDBsphkKytH4dqWjCVALF+OeE3KYsQ?=
+ =?us-ascii?Q?V6v45goSVjUc3QDuyatuAiZZoQoWE/Y4AJXxvoH/hSL4oDOJGVMLfCg5KNcS?=
+ =?us-ascii?Q?BWtxRHi7bi0wyW7g+KoxoC5pHUDtmhhxDYpCM8kggtxTu1/y/RMonsKs6A1o?=
+ =?us-ascii?Q?0pVLjUgen1T1nS/23zt9MOyEbh4B75YRivyYM23WKvU+Oe04RLa1JOY/6EVj?=
+ =?us-ascii?Q?QX8IOwyAT0e5ZVdvBYSXma/PEza7PO3RhcmE2ybeC6LBQeY20KQbgQXrkn4x?=
+ =?us-ascii?Q?a8FHSx9+XH99EsKe9/FA2XBkaIcVhcGfFkZHqvG4rxfDfCjHiUMEjH04nJBW?=
+ =?us-ascii?Q?b3KXihXhcfxOtiWOKnxrRs+UHURi+HJQdsoDmI0/yg/pCQNb0cMkqKC3fWqf?=
+ =?us-ascii?Q?fRnTpo67vQih2zmhLxVYSrJAerC2nyEBoAoNc6gMJFEAJi6o8hOinziGKty3?=
+ =?us-ascii?Q?Gq07LVXFSQo4qloWat8hGw9hEdqfUMNUQa5yJuPgb1wMoSBklND1fyG7A1Vo?=
+ =?us-ascii?Q?pS71LXZSMndMxhJRgy7b2actlNE8tqpmTBpuQDeV3JmQUuajFc7SLr62oY2s?=
+ =?us-ascii?Q?YwlUPjEC/w6vgxwoVljTGFDMbqNuZvLcjEu/ullhqW2fIB3mJS1oNlEPCrq+?=
+ =?us-ascii?Q?hWBkxacWkyLwDgGSRq5A+/nFSEOvgQ7tHmQGPm+06bldfXfvqidsTU4QxpJE?=
+ =?us-ascii?Q?ryRorbBNqXNCw4orjo4O1bYHA6yBh6eeYa1nl7XW6GVRqKXkp7bnoz/PgeEr?=
+ =?us-ascii?Q?4SmLp9GcJXbxfqhVXlfSfYm4Y0ITHH2yPikW/uQcpsyA7Ld7s8OGUyERxEus?=
+ =?us-ascii?Q?TC3htyIKnb7HLqLzi8n1wNx/85bGtMmYmucTuAQyfTK82R1H+WvLiG2OI5QG?=
+ =?us-ascii?Q?inIRNKYczbdhBkEaCqmRoYo47bFR0vTmGHXe68zkhLwx6rUBQNkkb8uCwsR1?=
+ =?us-ascii?Q?uyre6PxSFPxNMsSPihhJ7399h95hjMxGdkpao9ZMxbLG5j/kfXGulQOeOQds?=
+ =?us-ascii?Q?pB0Gl2mAeSoCaBuLD/TJoLN5yQh+47phYnnsl5J3ZcaSLT+cisgzrmp8DEHN?=
+ =?us-ascii?Q?KDoYdVfHC5Nc41qnokBUF+WdBBGcuRUv5u+6/OcxPMgxG+Oj?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: UXTwPKGTPGK/4DQ48poCWHUxwIOluugSfJ3iurR1KL5t3YmLYxLLkriHm7fW0zWihhMa+v1Yvc1Y330uOej2bFaHeFZndMOjOz2s81HzzGmUinb+9CW1cB/vG5hehzm3SO16wmdyL7fhbXMYoM4e4m6pJpZmFeKW0t/ca+xuESZKI59Pn4UBeGdAAoxTlwLZQBkgXDpGBG3RI748Db80h9HU/XAU2sJ0tCLm71MBY4dDnjJiw1OXuOn/kM0uX7s+hEXwz4OKkAm9MTnu99SL2O6xdhTBwH5RBQ0p3UD1YJJlhxH1M9BDNiwui+nrhrvbP3pRxPyf51fbA5EPRH45bg==
+X-Exchange-RoutingPolicyChecked: X+kopUW0DUve6741lPj/S89cLTf43RKAQyDVpaSHte5POKG983Y30G77KDgoHkqu00Pk0dtYCt45Sjg+el0RzZS0K7F+ROLgvQAJEwPczzbIcKymQJvYDFim1Aiu6BYaj4kzayEooQ/0PYkc6yMDJzjhE7pmaEaAxpWUFxnYoGiOZ5faCBSqGq8lscu/4TY9C37aLg+M/+HgNMPaNA7eKveA6+f2MSKRpSv5rca574/eng3uNoxLwguS7bGy+e+GwcJPxncKPSwzK+s1RKsvNwNNP4dhSPIT260sjorjZlLgVWWeSRMwVgOxdzcfLb2fDBjENXm7umTC35VRA3NXIQ==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB6050.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd493556-1af5-4c21-e121-08de7dbc40a2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Mar 2026 09:14:22.4850 (UTC)
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6312.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 14474445-8d39-48fa-64dd-08de7dbd7737
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Mar 2026 09:23:03.5341 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: CTHsJ8qaSrpUBpsuEVE5A+cYQlGU//rF8Qz1puDhjIhMtlxF7//Jesdb9I78pwxKqvnaroSfMIOFZyYODMnG4w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB8398
+X-MS-Exchange-CrossTenant-userprincipalname: CbBdf89YSdGr7f7Dnqaix4NczRThMhf4SpRU62Iib5pIuyaudv0+pIlB4FZcvTGmAQic4xJYTOEkNbGSiLu+Lg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6309
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -163,67 +163,155 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-Hi Wang,
-
 > -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> Xiandong Wang
-> Sent: Monday, March 9, 2026 1:54 PM
+> From: Bilal, Mohammed <mohammed.bilal@intel.com>
+> Sent: Thursday, March 5, 2026 3:00 PM
 > To: igt-dev@lists.freedesktop.org
-> Cc: Jason-JH Lin <jason-jh.lin@mediatek.com>; Nancy Lin
-> <nancy.lin@mediatek.com>; Singo Chang <singo.chang@mediatek.com>; Gil
-> Dekel <gildekel@google.com>; Yacoub <markyacoub@chromium.org>;
-> Project_Global_Chrome_Upstream_Group@mediatek.com; Xiandong Wang
-> <xiandong.wang@mediatek.com>
-> Subject: [PATCH i-g-t v1] Modify the vbl.sequence *2 for mtk driver
+> Cc: B, Jeevan <jeevan.b@intel.com>; Brzezinka, Sebastian
+> <sebastian.brzezinka@intel.com>; Bilal, Mohammed
+> <mohammed.bilal@intel.com>
+> Subject: [PATCH v2 2/2] tests/chamelium/audio: Fix resource leaks on
+> assertion failure
 >=20
-> For MTK drm driver the vbl should be *2X, since the cpu frequency to 2.2G=
-Hz
-> reduces the number of missed frames, confirming that this problem is
-> related to CPU loading.
+> Fatal assertions can bypass cleanup paths, causing resources to remain
+> unreleased when failures occur during audio tests.
 >=20
-> Signed-off-by: Xiandong Wang <xiandong.wang@mediatek.com>
+> Replace fatal assertions with non-fatal checks and route failures through=
+ a
+> common cleanup path to ensure proper cleanup.
+>=20
+> Signed-off-by: Mohammed Bilal <mohammed.bilal@intel.com>
 > ---
->  tests/kms_cursor_legacy.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->=20
-> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c index
-> ad2a15d0f..33ae3778a 100644
-> --- a/tests/kms_cursor_legacy.c
-> +++ b/tests/kms_cursor_legacy.c
-> @@ -1426,6 +1426,13 @@ static void cursor_vs_flip(igt_display_t *display,
-> enum flip_test mode, int nloo
->  		if (!cursor_slowpath(display, mode))
->  			igt_assert_lte(vbl.sequence, vblank_start + 5 *
-> vrefresh / 8);
-
-This existing assert should be removed. For MTK devices, this existing=20
-assertion will fail before reaching your new code below.
-
->=20
-> +		if (!cursor_slowpath(display, mode)) {
-> +			if (is_mtk_device(display->drm_fd))
-> +				igt_assert_lte(vbl.sequence, (vblank_start + 5
-> * vrefresh / 8) * 2);
-
-Here this also doubles vblank_start. As per the commit message I think it s=
-hould as below, isn't it?
-vblank_start + (5 * vrefresh / 8) * 2.
-
-Correct me if I am wrong.
-
-Regards,
-Pranay
-
-> +			else
-> +				igt_assert_lte(vbl.sequence, vblank_start + 5
-> * vrefresh / 8);
-> +		}
-> +
->  		shared[0] =3D 1;
->  		igt_waitchildren();
->  		if (shared[0] <=3D vrefresh*target / 2) {
+>  tests/chamelium/kms_chamelium_audio.c | 42 ++++++++++++++++++-------
 > --
-> 2.45.2
+>  1 file changed, 28 insertions(+), 14 deletions(-)
+>=20
+> diff --git a/tests/chamelium/kms_chamelium_audio.c
+> b/tests/chamelium/kms_chamelium_audio.c
+> index 2967e3c50..201be0ba2 100644
+> --- a/tests/chamelium/kms_chamelium_audio.c
+> +++ b/tests/chamelium/kms_chamelium_audio.c
+> @@ -389,11 +389,11 @@ static int audio_output_frequencies_callback(void
+> *data, void *buffer,  static bool test_audio_frequencies(struct audio_sta=
+te
+> *state)  {
+>  	int freq, step;
+> -	int32_t *recv, *buf;
+> -	double *channel;
+> +	int32_t *recv =3D NULL, *buf =3D NULL;
+> +	double *channel =3D NULL;
+>  	size_t i, j, streak;
+> -	size_t recv_len, buf_len, buf_cap, channel_len;
+> -	bool success;
+> +	size_t recv_len =3D 0, buf_len, buf_cap, channel_len;
+> +	bool success =3D false;
+>  	int capture_chan;
+>=20
+>  	state->signal =3D audio_signal_init(state->playback.channels,
+> @@ -426,9 +426,12 @@ static bool test_audio_frequencies(struct
+> audio_state *state)
+>=20
+>  	audio_state_start(state, "frequencies");
+>=20
+> -	igt_assert_f(state->capture.rate =3D=3D state->playback.rate,
+> -		     "Capture rate (%dHz) doesn't match playback rate
+> (%dHz)\n",
+> -		     state->capture.rate, state->playback.rate);
+> +	if (state->capture.rate !=3D state->playback.rate) {
+> +		igt_critical("Capture rate (%dHz) doesn't match playback "
+> +			     "rate (%dHz)\n",
+> +			     state->capture.rate, state->playback.rate);
+> +		goto out;
+
+After goto, the stream will be stopped and the test will continue. The test=
+ should fail after cleanup.
+We can add a flag and assert after cleanup based on the status.
+
+Thanks=20
+Jeevan B=20
+
+> +	}
+>=20
+>  	/* Needs to be a multiple of 128, because that's the number of
+> samples
+>  	 * we get per channel each time we receive an audio page from the
+> @@ -447,10 +450,6 @@ static bool test_audio_frequencies(struct
+> audio_state *state)
+>  	buf =3D malloc(sizeof(int32_t) * buf_cap);
+>  	buf_len =3D 0;
+>=20
+> -	recv =3D NULL;
+> -	recv_len =3D 0;
+> -
+> -	success =3D false;
+>  	streak =3D 0;
+>  	while (!success && state->msec < AUDIO_TIMEOUT) {
+>  		audio_state_receive(state, &recv, &recv_len); @@ -460,13
+> +459,21 @@ static bool test_audio_frequencies(struct audio_state *state)
+>=20
+>  		if (buf_len < buf_cap)
+>  			continue;
+> -		igt_assert(buf_len =3D=3D buf_cap);
+> +		if (buf_len > buf_cap) {
+> +			igt_critical("Buffer overflow: %zu > %zu\n",
+> +				     buf_len, buf_cap);
+> +			goto out;
+> +		}
+>=20
+>  		igt_debug("Detecting audio signal, t=3D%d msec\n", state-
+> >msec);
+>=20
+>  		for (j =3D 0; j < state->playback.channels; j++) {
+>  			capture_chan =3D state->channel_mapping[j];
+> -			igt_assert(capture_chan >=3D 0);
+> +			if (capture_chan < 0) {
+> +				igt_critical("Invalid channel mapping for "
+> +					     "channel %zu\n", j);
+> +				goto out;
+> +			}
+>  			igt_debug("Processing channel %zu (captured as "
+>  				  "channel %d)\n",
+>  				  j, capture_chan);
+> @@ -489,6 +496,7 @@ static bool test_audio_frequencies(struct audio_state
+> *state)
+>  		success =3D streak =3D=3D MIN_STREAK * state->playback.channels;
+>  	}
+>=20
+> +out:
+>  	audio_state_stop(state, success);
+>=20
+>  	free(recv);
+> @@ -587,6 +595,7 @@ static bool test_audio_flatline(struct audio_state
+> *state)
+>  	recv =3D NULL;
+>  	recv_len =3D 0;
+>  	amp_success =3D false;
+> +	align_success =3D false;
+>  	streak =3D 0;
+>  	while (!amp_success && state->msec < AUDIO_TIMEOUT) {
+>  		audio_state_receive(state, &recv, &recv_len); @@ -595,7
+> +604,11 @@ static bool test_audio_flatline(struct audio_state *state)
+>=20
+>  		for (i =3D 0; i < state->playback.channels; i++) {
+>  			capture_chan =3D state->channel_mapping[i];
+> -			igt_assert(capture_chan >=3D 0);
+> +			if (capture_chan < 0) {
+> +				igt_critical("Invalid channel mapping for "
+> +					     "channel %zu\n", i);
+> +				goto out;
+> +			}
+>  			igt_debug("Processing channel %zu (captured as "
+>  				  "channel %d)\n",
+>  				  i, capture_chan);
+> @@ -661,6 +674,7 @@ static bool test_audio_flatline(struct audio_state
+> *state)
+>  		}
+>  	}
+>=20
+> +out:
+>  	success =3D amp_success && align_success;
+>  	audio_state_stop(state, success);
+>=20
+> --
+> 2.48.1
 
