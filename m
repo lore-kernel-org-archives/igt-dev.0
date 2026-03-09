@@ -4,151 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D75CFEFCD63
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 09:30:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0417EFCD70
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 09:38:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8D8BF896C7;
-	Mon,  9 Mar 2026 09:30:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7D7A010E4BF;
+	Mon,  9 Mar 2026 09:38:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YVQZl0zk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZpOrRnFR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0443E896C7
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2026 09:30:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E335E10E4BF
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2026 09:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773048619; x=1804584619;
+ t=1773049129; x=1804585129;
  h=message-id:date:subject:to:references:from:in-reply-to:
  content-transfer-encoding:mime-version;
- bh=KTiibnqkfml/5GedYgBeVMY22DOgB8GOHtf31FnQb8E=;
- b=YVQZl0zkMlt9B0LdFRVEYK53BsCUmJCKHISDpTEHYZnF/eRZ9vgqnbBk
- n5JFVuXO3ZF1kJ8fdOybEuLHr/2BrRKXBBg5az1OwPi/ccxdk88NLFSps
- U/UhhrRHaQmdu4MqBMO23otUqGGwoe6XBkznRVZ9hyuWcEmSSfmxJT8Ot
- tdaf0VGn+EwhdscqPBGLntZ+U3yWk+A3Cl/FosgphnA0/+NiBSVauvNXb
- X6R2J51hqBW5wnL/p+6OMFzRAsOZhFV4x3KZs+yqD6cLAL0wArh4X4onN
- v8XDndrUay1vz7vjy2jMM101WEJjYNYfM6N4BWkC6bwMsb+aGHAp5phlZ w==;
-X-CSE-ConnectionGUID: hCvcCuc1QGacs4qp/Fimqw==
-X-CSE-MsgGUID: g74x+OjXTca8Ym4Rtg2K/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="84778262"
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="84778262"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Mar 2026 02:30:18 -0700
-X-CSE-ConnectionGUID: ZtBFYguVTEi4CQvEFlBg5g==
-X-CSE-MsgGUID: VuggUv4fR2u9HveYv9d1uA==
+ bh=CicQjvan0vApGcFA6J6EoQl608DdW4xr/NX228PKwQ4=;
+ b=ZpOrRnFRmkTXJNQm4jKL5eTTWNW3/qp4LZ35v7tS9bkP7g9Mo0uUuHuk
+ YEXosXHOb66hEo9ryWIal1gkZT4Gv4E1aFwPNY2fxYtH4bPsxTCNXcqeh
+ HhGotZpSQy7m78CtU4sLvJ7adAi7bWBxSAlnAcT51bCvUm0Ctv5RRh5z8
+ WrdcpgC7dIMVU6WW0M0sgy2UpXJvoOMi5T6iZCxi8mbj6e9YFQN0g0z0V
+ hJnlKc7XKbDHoOUiMjnHiFyM89PHbGgIaJQQWMnXTSEIxSwLacMgRaBst
+ EzeQRi0l5thk0Rwyw33Rx68Oi8CpgjRPwtO/I57q70EuOwaNzebH40pvT Q==;
+X-CSE-ConnectionGUID: WZ9l88KTSx6XgXFGJpTEmA==
+X-CSE-MsgGUID: JdtHdXl4RI6jsvmZ437NOw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="84702018"
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="84702018"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Mar 2026 02:38:49 -0700
+X-CSE-ConnectionGUID: z+kW6e4PS2ulFg5Cy9gcRA==
+X-CSE-MsgGUID: PyVIE6NXSh6cYEvrBohERg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="219641382"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Mar 2026 02:30:17 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="219828868"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Mar 2026 02:38:49 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 9 Mar 2026 02:30:17 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.2.2562.37; Mon, 9 Mar 2026 02:38:48 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Mon, 9 Mar 2026 02:30:17 -0700
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.39) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.37 via Frontend Transport; Mon, 9 Mar 2026 02:38:48 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.44) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Mon, 9 Mar 2026 02:30:16 -0700
+ 15.2.2562.37; Mon, 9 Mar 2026 02:38:47 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hkbTwdTddHmx4ykYydiXz2CaURHeIopscHN0Vvp9TrwQDkhfacdytAlTQf8KipxmWiXQJfv+7bh3oV0zsd8U76Bt28xMOgyE35wDWClkECRaPj9Pk+/uzXz3a51+cXy7WzEhXyA5lxMQmPB7iF4g2NPd/ncnKG1fionAmlcujwIyBgKCCpnLh2n2FW+96f8G8M6c8IgK5OCOPP7nvfg/MNzRMnbQfho5i1GMSjDOwPqoxjgQJTBtNkCpohCz4sEITGGbdygASEpSN1TjVkD0eZ9yT2LRlfIexplkHLl23FdvWg/6EqIWVL9Nr3WubarikAlIpopGFjU9L7SU8FnTnA==
+ b=D8/gPThagSXC9hL1naSzTqwctVaMYotcxFczw7YTG2uHfgkx4rdsfa72bGhsLtEbcbNhv5Eues3ABV/YPemRpCvl8LRHFh194LQCo7RUesFuNZk1QZlAHarseeTYZxwCi9myjYTSImoHC6Mtpgkw59pnh9fG7Rf2lN0ys/RqCuTPQHRhLMJ8t71VJjCeFZ1AHtbSA2bhope9zhKzqFTdhto7P6GS3nEjpjMi1QlqDaM9dm1U7arRZrzB12oTg6PNI1RhJ/I0dM6a8b/7TI0VcbM6sEgI1EbJXwDIXqR9CEn2Sn20dorIVjhn6+OMuVUijhX57Ne3XH6Qs4v5Q8vmKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cGag8gifiaQSRSqMl+SuTqis3eG2CZwRMDokjuKcjtE=;
- b=PYiX3q72jnyha3XNfCbMtuZICLzfy0pwu6fnb8yPVcBTt06zdpNXz/uePKfT27eaoSJQQDqh9s6dV4v1zZyXX5tAYny7sFTYo+fY2TReYHolk6WKPvrYaANcsnUmjpWtJk4HZRDgMbXzQQ9jnN1/58Z+5FNzYIfItJDlyOCGrxWwHpKEevffKWep3fBtTJXkgiioOWgajaXxUehpKGGqen20qyr2jvFsXLfV1K34RIm7eKeIdJXfCexRQV5Yb3tP8OLE61luLpMneF59JBQNKTWlpja08nRdd4SrmnEVQK0rUmW4ec3qhjBrTYEnWSDUEETyu5lGJ3UAw5t9KpNCdg==
+ bh=mnHGXzWj2Vp8hfoC2hPCpT60t1ydWej5khVo6HBDsM8=;
+ b=JhXvy9V9optUwMLzUwlmrPLQxJl2fnNEND0pkwC+G0kHk9fCDYr3j0JNENuavkpHIv8MoMOxq5EHIxNLiDwrXFoarilPvq9W53nmCc/YS7RatxMoZyCR2Kn4aRmHeyD7dGSnVKpDDjGEeNp2d8XVkZ4LvbPpu4noxkwSIprH6bVqkuynHrw1Vul9VBeHCMqXXwe+19LiVrlWQfjuKKAoqRCkQbvt/XrK/niGb4mHWhtr7t4kIqN5pc9Aq1Zz/h8i8/NPFiF09XmNVR27asbByi2QV7nEmMWILveedrxBQ3sssL39TDIlrXq4XsqMp/LfMo4wCyunxOGWyNKno+rWmA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from IA0PR11MB7307.namprd11.prod.outlook.com (2603:10b6:208:437::10)
- by SJ5PPF44E8B88DF.namprd11.prod.outlook.com
- (2603:10b6:a0f:fc02::825) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.9; Mon, 9 Mar
- 2026 09:30:10 +0000
+ by SJ0PR11MB5039.namprd11.prod.outlook.com (2603:10b6:a03:2da::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Mon, 9 Mar
+ 2026 09:38:45 +0000
 Received: from IA0PR11MB7307.namprd11.prod.outlook.com
  ([fe80::9d4a:f89:f548:dbc7]) by IA0PR11MB7307.namprd11.prod.outlook.com
  ([fe80::9d4a:f89:f548:dbc7%6]) with mapi id 15.20.9700.010; Mon, 9 Mar 2026
- 09:30:09 +0000
-Message-ID: <64b4bad8-09ff-4c5c-81d8-7d6767f4c472@intel.com>
-Date: Mon, 9 Mar 2026 15:00:03 +0530
+ 09:38:45 +0000
+Message-ID: <d256aedf-2e67-41be-a440-a6e39ad5d18b@intel.com>
+Date: Mon, 9 Mar 2026 15:08:39 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t,1/6] lib/igt_edid: add EDID serial extraction helpers
+Subject: Re: [i-g-t,2/6] lib/igt_connector_helper: Add generic connector
+ helpers
 To: Kunal Joshi <kunal1.joshi@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20260225212859.876713-2-kunal1.joshi@intel.com>
+References: <20260225212859.876713-3-kunal1.joshi@intel.com>
 Content-Language: en-US
 From: "Murthy, Arun R" <arun.r.murthy@intel.com>
-In-Reply-To: <20260225212859.876713-2-kunal1.joshi@intel.com>
+In-Reply-To: <20260225212859.876713-3-kunal1.joshi@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0058.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ac::16) To IA0PR11MB7307.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA5P287CA0109.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b5::14) To IA0PR11MB7307.namprd11.prod.outlook.com
  (2603:10b6:208:437::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR11MB7307:EE_|SJ5PPF44E8B88DF:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb875577-0c35-4f26-5760-08de7dbe7521
+X-MS-TrafficTypeDiagnostic: IA0PR11MB7307:EE_|SJ0PR11MB5039:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9baadd59-b104-48ab-42a2-08de7dbfa8a0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: Vkw2cvggNZPzFsIeerUwmguLUo/dVA70lZIlKGQ+OMWuH6u53KxQO+9XhwBspLzWyeJzTSA9X7MiGTlrh1Y0XnOUwpArnh9m0jXj6ugJxbY9cOEQ3CpKsnQIh0vaXuCemdfqI9/Da9T8/4Sa1iJJtRLi3BoYTcYf8+6a3AlOscfDTd7EcqMkUDwvvOzvi5QOecwfnO/7N9PQiV7R+G+atEqfxmcDspH6uYm8I0Qn/R5FlRiAX4RxGNNP/p191Mcha+GsV8TolQy79cQvcGg/LflAs90oSt+v6nooScsVeVM+yc14WDAGwvxin5apqRir9yDBWwu6NOlor65+YB43i4l9Uoa/SUhVE1iiW48OghkRXk5nCXI+pFfaDp2cfntxBnHiYVI/2tR9/kNQtaWwRKShJ09t4iWpyjh2ucI9uHgIf9uJwWOOqW0xWEPjh6abFfVcBispyx8sGuGA83DKBVZ/yYhuOB1W7WBrn14salO4ZXHFvyDVnnL98R9dqE8cqLluWTHcO3UKgl6RETi579Og2JpQvZSmFOd5SJLaituHLws/c9kHB3EIMb2AJpcmG/E0cI6+JYO35pL86o3kb+4ejtoQFleNGYMcN/mwfqH/xWChM6i8AipBi+CheWg9NHwiC0vHHBWd4llOZ6NqJM/qqtho4Xh8ZlotNBtKQcXo2jcxGumZ4itLYnIzJsFkNVL+h+/nNgeyedcX+huZYJlvhO5tOT8ybnd7ieUKUYY=
+X-Microsoft-Antispam-Message-Info: KhfAkQCX1udlS8OY79ozm1dIfhx9zQwAeUWRcNDl1KDB05fpOIXtK+I7QK2V6nNyWFAi2T4klSxixcK3Yt+zypH9UCmE1dk1flGBx6X7+E/++f9tlhApEzRj3lMzk07rAtF7McfvBjLBCnuxuAMSl+wp/gI+AcP1JkPNBqYNOmdoUuFT8qMRUapCejgLH3aVh6uPnbfWmhJ2MTrJKK6qAXpvgdPvy6Wx4RZ0T2cbXd0YAEq6jBJ9uzpo5+LUHvG1vksVj1M/oWGI2y98qlzVnk0zx9XTmTGNvAcqE5NPK/yPNfyq+6SPMG3rXfphxWRZSFd4PGI019JqdxBg5XaooDa/5F6iZ3+b2nl2+bi6JIN2hHhYHEPseZW+zzhkOj1+umlx7dhyrztMDShVqbwQKMlHBjgkITUSxWUx2jOvklkqCKIe8lmRn9MyzM40qGgrkp215Nko9tN5hxTNspDKgBxBZPmvDrkRwbIYKot9iT/VrtBNumVP57cV+gXjNXgbzlc1rPRW+ZPbCQgryZA9H8m2I42ZXkICcClGGn9pavxR9lSthFcuo+HHrIFvGp3OGhBMgkti21ywGWGPCaf6ITCo7Enyp+AnFReRV54SLpvXYAtCq4NDvPOp+VjDi8VxGYL7QgMvOOcWW80+Fv27isDjOh8cRglVfW1UD0KfuRj+Pxecyvj3SC6MFWoZz8hLNSd6GY06Y/8NE10QmRKnBS7q59vkutSeNeulrd4M4U4=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:IA0PR11MB7307.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RmJBd0JPS05yNGVRbU9mcjh5ZGRZaU9IOUZ3MVM0Qk53OTVwLzRIZ09sNWRp?=
- =?utf-8?B?S3czVGdZdDUyRytrdElRRkQzcDVGMU8zK20rYStSbk1yK2IxZmZkVmdPdmNH?=
- =?utf-8?B?dFJZMGFOTVN0d3FiRWo4UVRkUmltOGhBLzF6UjdLK2FhRnFlOFcyRk8ra293?=
- =?utf-8?B?U3Z2NWovdytDdVdMb1BFUFFYR09xSS9HeXhza0ZVZVRrMzV0UTlGdlJPU0Ny?=
- =?utf-8?B?aTFoS0c4MDhVbVpwRVpBZkQwUFJZbUljeFZRcTAwdGJIUmVKTTRwOEFDbzBo?=
- =?utf-8?B?TWd4Z2pueUhSOFlQOVMzOVVFTms0ck13d05kZFR4Z2dBdUR1ckVlTzZhdWM1?=
- =?utf-8?B?SWh2WUlHT0FoVkRFcFR1alBaREE1NG0zNXAyeWNVd3IrSlR4WG56RzRCeWFs?=
- =?utf-8?B?TjFBSFdPaXNDOXBEb2cwbHpvUlZjZkhaZWVFOTV0Um43VTYveXUweXBWcGhj?=
- =?utf-8?B?ZUpNVWcyN1BPa3R6N3JUM0xaeTdzeEdKR0Z6UHVzY2QzcmJ5MnNKeDFYNS93?=
- =?utf-8?B?NGk4a1ppZkR3YkRuZmdQMXV6SHplVG9FQkVUL3RsVlQwK2trUmpDV2ZsTDFv?=
- =?utf-8?B?aWRzeW53RDBSSjJFYlVseXk1UkNoTmVvSkZNOFNZNS9tbkNHOStrL3dwWWpM?=
- =?utf-8?B?bXREZFNQL0E1QmF4dWY3RkpnelFqK3NPTmx3N29hdFgwSlY4NUI1M1F4M0M2?=
- =?utf-8?B?bTMyWE8xR3BUQUxBb3BYVUtXTjdlcEhoWGRxdDVqaFdJakJmTU5nSU5icXdz?=
- =?utf-8?B?ZkxVR0NjQk9qbzhvV0g3b1BuZnM0QSs0S3ZFSGppRGZ3TDdkTSt6Z1RseTF0?=
- =?utf-8?B?cGozRW0reElmMFFYRjUvV2NUamorSGw1TVdMQmNaWXZjWld6elN5TXk0OFVk?=
- =?utf-8?B?ODRSb2R5RGFycmQyMzNNMnI4c0toTkJwT2hPek9SbURFcjFvemp4dFVJT1pm?=
- =?utf-8?B?M2MxR2k3bDZjQVFhWmVzYzZVL2ZsZDg5aVdKYnBTV3phRi9XQTNZNEUxaW1O?=
- =?utf-8?B?bUxjK010cHUxQjl2Q2x5cnF0T0xSYWQ0UGV4dHlKWFIrUDRpdzZ5OU9kNkxI?=
- =?utf-8?B?WmxkUVh1Nis3MC9kMmRMekhzUDVLdEduT1c4My9WZkJaV0FOa2pSMzVsZkZT?=
- =?utf-8?B?ZVI5bkQ0RWhVS1NtSm9Ud2VOOXhlbk1Eb1BpTDlQbzRSdUcyK1FOL1lsQlRO?=
- =?utf-8?B?MzFoa0h3ZWJYaERtTXZQbXlOR1BqdmpZUERGSnF3dGNtQW5RRVQrSDVaOGJs?=
- =?utf-8?B?S3k5dXZhK1Z4TU1IRFhITmdkMTR4bUVCR0lXY3hLdEt0QTRyV2t5MHlmd0E1?=
- =?utf-8?B?TVNaRmtPQ0VnRHQ4TXQyK1gydVZrcXlVcStYQ3BjL05tSTJOa1hJWENDSFpu?=
- =?utf-8?B?REVhbTJublQxQjEybmtYWkV6ZkppNWNPamhHR3IwNkh3bkNZVWNPTGdzWXY2?=
- =?utf-8?B?WWdMeXpRRGR3cTRISHJQNUI2U1hPS09UZGduOFFveGJpVFFjVkFVaXFDaUdB?=
- =?utf-8?B?TjRiS2duV2pvVlBrTkxDRlFoNGIydy9HTzZKN0tnZExkbVdleFV0Y1h6WUZu?=
- =?utf-8?B?dFB6Y0NkbGNGekJUUWhiamFMZ1AxNlp0b0Q3TUZaMG9iUmxIUVA2MDdLTWNr?=
- =?utf-8?B?bGJkNUlxYU9ZUzk1WVRNOEMrR3JrblVISGRZTTVuSlRldWFPS3NWRlJOVVMx?=
- =?utf-8?B?Mlp2RExESUc1UVFPbUdONmpjS2dzdTh5SjF5OTBaOHBFbkV5ZUJ4bkJoeG8z?=
- =?utf-8?B?Ui8yNWM0TzB0TWJ6U0ZKQXF6dm1kbU1lUFBMMGxjVnBHWWozQURCbjk4YVFR?=
- =?utf-8?B?MlBoRVkyS0hrQ3U0clJVQlh5cys5amFYaTdvVHJDMGZiMXBlM2pxV2RqSzdV?=
- =?utf-8?B?Q3EwdTZab0h6a2lVckd0cXJDU1VOc2lUWFRGZS91VkNDWEQwQlV6VFpxdHdz?=
- =?utf-8?B?V2NvSGxQZ2xrQVBUajMwNnF6UkVRL2EydmpMcU13ZDVpOVdpd0ROWVc2bGNU?=
- =?utf-8?B?bGtuVE5kTTRjWUJHOFQ5RE1PalZweHVaNWh0RVBNNFhYcDFIZmhSd3RBTk9x?=
- =?utf-8?B?b1BEVG9ETHcvekVNZ2ZjTVdMajY2THI0QkJ3NWJST0s5NEplcFE4UmxBcE5i?=
- =?utf-8?B?ZE0vUzI2VnViT2ZVeUtpVmVTckFlbE1FdXplbHBneXpaQW16aDJGQ01qYVJy?=
- =?utf-8?B?N2JlaE41ZnR3OHhQK2hvbGtPeWpJdzM4SVA2N0MyNVVQTEZzcWdWL1RmdFF0?=
- =?utf-8?B?TmFuRnJCb21FOEhORG5NNnFWSVI1T2hyTXlyRm1aZFRESG1RcS9paHZTelFF?=
- =?utf-8?B?N0djLytZbEE3K3RXcUR2T3pYbEVuNXVScmNCVlFZcWFFbzBlTTFKdz09?=
-X-Exchange-RoutingPolicyChecked: EuXH7+3ScN6zbCPgYLu+xSicstnKRgUbQ+DUNlVS6CD52K0Jks75W/ArwZ5/rnKxECpiCcVxw7PQQdIEPycgT3B3GqN5tuOmh+dufom8HdUW+chrsIBK4hQXQcOi0mxizCn4/0z4edkYw8AZoYCDVsZ9FMbGIuAuixNfYZWGQSfE9mWyfrKzwmXjTLWVIyC3DzwGAGmSe+iu10h1mL3sEtEtk14Ej1rD82EnSRT2E5pThG+K5eMh0+uqM+KyQGaJDwMiK1540P9OmZr9Xj0mCs/TPHWP5Et6Hz/cyaPTFSOWG21BwYbcymn83z35BqgxqVFOkXJNn5PWjZlBqy3+Lw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb875577-0c35-4f26-5760-08de7dbe7521
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cmJZNW1HRENDWit3YWlRRnRneUtvUmRzUld1YjAyUkhFalVrTHNaZ0tXVkRr?=
+ =?utf-8?B?aTZSS280MDhYUFR5S3E5RmxKZFBrejBvV0VHRFJuL2Z2dmZ5T1hlcUVUeElQ?=
+ =?utf-8?B?dXQvUCtpVDRXb25NN2lYeTNqQ2JNeE5PUWduRWZEWkxudjhQZW51aXZ6cUJI?=
+ =?utf-8?B?cVZUZUZGYXQ1SnUxdGpnUEhrWWVzb2JhK1FzQXQ4ZVFpWEFac1NIY1JiaTdq?=
+ =?utf-8?B?U3dFdW5EMEZVbk9iWkF5V0xNRjRCSERPelNOSEp0THNuQXVINkZzMk5JRXd0?=
+ =?utf-8?B?d0o0dFlucmErNkt3S3VXYkRBeWppbmIrL21yRVZlcXFyUGJHbnNhZVdHNmVO?=
+ =?utf-8?B?MGNLSDhIRWZ5enRtUlpDMUhSaENxdWZLUUdnbitwK0NSdjJtVHFweHZVTm0w?=
+ =?utf-8?B?dERXRzk4ZndyblBDZXR5SXFDeFBSNjRMWnN3R0xrZ1lRMGp6ZkpLSVRGYW16?=
+ =?utf-8?B?L0pLdWN2cE12dTZhM1BvelFsZzRnbmxwNkVwUnFIdXpHckZXU1hkMUFOUHhE?=
+ =?utf-8?B?THIzNXRBYmNOQ0VCbEZ4TjJLc1lXNDdYeVpmK1hKdnhKZGtEcHVjWTdsUTNY?=
+ =?utf-8?B?dXFVTkMvNU54SG5VRTlTWStzemJjK2NkOXBMQk1wajFNUjBaMlFvSk9xd3M3?=
+ =?utf-8?B?WmpNejVwR1QzbFBqRHZBQmI2dUEwYjM3Y2t0Ky9SWXlBOFlkcEprbWtPcDJ3?=
+ =?utf-8?B?TVIrc1FWTzdKSTJOcElyV2hwRUlnYmxaajZxdzI4bFFiWVAyMmQ1MUZYd0E5?=
+ =?utf-8?B?OU4zN0VvR3JjamdXMWRwelFvQVd0RXN4bUVWSVNpd3dXRE45VDQ1UjQwR1Qz?=
+ =?utf-8?B?VXJGK1VMbFJSenNhSUFiTlZsN1NwKzV4Szd4cHcwR0JJcU5iYnBWL0w1dDVU?=
+ =?utf-8?B?ZnY3cXpTOG5CMTNJM2dJQU5lWi9sZzl4NFBsSU52aDRIMmszVDloRk9EcG02?=
+ =?utf-8?B?aTJrQ2dZMndNZGpBOGtNV2RHM1VLeFcyZHBtZ0d4ZTFwa2JsdFJQTTRkRWUy?=
+ =?utf-8?B?T2JCT3EvSWNZeG1MbTZoN0pod0J6RXRVU2dJamdxUDZlVzBWNTdhMEZWUHAy?=
+ =?utf-8?B?OUJDOHprbEh3RW44ajBhaWVIcDBzRzI3N1pTTGRmcTZkbkpXd2I5VkI1Y25B?=
+ =?utf-8?B?cVJrRGJ6L3dSV204ZEMwR1N0ekFLNnllTGd1RUVDNS8zd2VGU3R1elJDZGZz?=
+ =?utf-8?B?N2JzQmF6OTh6QmhudXFyQTluQlZlNEp2R09OQjlaVmtEV09qbmJZNDFRQUI1?=
+ =?utf-8?B?M1BOMU95ZzRHNG1XZS8wRFlsNXhQY2t3ckVvYS8xMjZvSVNORkdXSVRTVnpn?=
+ =?utf-8?B?UFNERTBwM3pnQTJObXVtRUVNdWZzUWNJcjdqM2tpWUd4RkJNWEFpWmlrNUtL?=
+ =?utf-8?B?WVJ3enE1V1JnYlI2VWN1eU4rcEJ1ZjBuRTVkM1dwaWFONXlFSExoZGxlanpq?=
+ =?utf-8?B?b2tIMm9RVTdBd1pNZEMvN1dhUkNyYnRiRzN5eGJqb1NEbWNpajFFWGdJQWN3?=
+ =?utf-8?B?NXRpYjVvOW5BTnFDQnM2WjhkL2FzN01SNFc3ZGVuQjR4U09CNlZVRUg3L2I5?=
+ =?utf-8?B?S3ZDWXptZjVFN2pHQXlBOGdGS3dIRUJtODBnMUtqeWxiSnRzaWJLdDlwSUs5?=
+ =?utf-8?B?cE80WmhPMUJIM3R5UkFiRXQ0MnFlSW5WL0daZHVlZnhrUFVXY3Fxc0R3SVkw?=
+ =?utf-8?B?QlJuQ3JEWW1uVXl4R0dMejhxbytpRHpteTBLbEtybnBlQzV2ejdBamE5ZlVF?=
+ =?utf-8?B?eUthdzQvQ0JEdnBlNGk3anZvOUJhd2l4N0RyanZkZ1puR05lamJCYTFBWTlL?=
+ =?utf-8?B?MS8wdWIrL21sOEVOZGNCcFU2ZHpLK29Cd294andIWG5DOW9VUC9uamRVczNR?=
+ =?utf-8?B?WmJGczJVRElhYWUraDAwOC9jNERjb3RqN2hMWW9QbHAxRnBtMTFMdU1JNE1z?=
+ =?utf-8?B?RkM4UVlTWldjNjNvRkpPekdERkpQT0lHM1BCcHpLSnEyNHozZnROTzFMdFFB?=
+ =?utf-8?B?MWJkdENNL3dMWWNFSDltZkkxNjJ1cFpTSUJCNjNCRzkrRjZUWGR6MkpoRlE2?=
+ =?utf-8?B?czViN0kvVUpxVGV6UjJEaXZseHFISnBLQ0I1ZGtlRGppZXVNalZjTld6eVFR?=
+ =?utf-8?B?MThUSERHMFQ1RkUxRHN3U0VxdXJHSlVJbEZNNE5OaTNBRWRTMC9malltT1JM?=
+ =?utf-8?B?Y1pEaG1tdTBZTmQvbWg0SEVyVmlKazgyWjVZN1l1OXArYVJ5WUtGNEl4a1Zl?=
+ =?utf-8?B?Mm9HT0VleXRIU3hKREwxR0hsVzdNcnJockl5V2VhN20zWStmb2ZCdUdxcDdN?=
+ =?utf-8?B?eDV2VDhEUml2akdPN2k3b1M5c3FWRE92OCtzanhEcmswZmI2aWpHQT09?=
+X-Exchange-RoutingPolicyChecked: jy2lnuYYtRIHFQCtkWxWvzyZTTHd++0f5djf5NyA/aJOz377YLmH9HDtFhcBZ0xyfu42CIGJ5+KvcnvKFDmRQJWwGeLyd8lNV62h/izgKsyuyL1X4+vCwdpLdYIUjioavoXW9FSJ5Y3Shh5g/LpQhEL/7ZYBqTMlHYubpNMjOGFQ397i2hg3JHswHRd0efzxC43qJL4yOCuuQgbS/KpxPr7QND1nX8ETaviCo/wHbgRpzo37qecFIfEVEy31WUi+mDzH6Y6d4CXV31Qpd4T67i1JoHSpFOX0MY6MZeZPJw20DAFWYKBou9+rrTRBbAx6niKFqlJhenawkOLuGwmqgQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9baadd59-b104-48ab-42a2-08de7dbfa8a0
 X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7307.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 09:30:09.9317 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 09:38:45.7880 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: W6RqF1tFAMcMY+WGDfgtN4TUXMIyM0nvkD/SFyHwgAri3upgofXI1++IhuCffqm/oDjQHQqP6popank6D4x6bA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF44E8B88DF
+X-MS-Exchange-CrossTenant-UserPrincipalName: oqov9xt/WovdKKJEh7SbBabyg4aLt9sdr9E5NL8lI4r2jZyS7590Ntiv9NXemnAv0U8p2vD9pReoit2gBX4ynw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5039
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -166,144 +167,384 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 On 26-02-2026 02:58, Kunal Joshi wrote:
-> Add helpers to extract serial identification from EDID data.
+> Add a lightweight helper library for DRM connector operations used
+> by USB4 switch and other dock/undock tests:
 >
->   - edid_get_serial_string(): extract ASCII serial from descriptor 0xFF
->   - edid_get_serial_number(): extract 32-bit serial from EDID header
->   - edid_get_any_serial(): convenience helper that tries ASCII serial
->     first, then falls back to 32-bit header serial formatted as hex
+>   - igt_connector_get_connected(): enumerate connected connectors
+>   - igt_connector_get_info(): query name, EDID serial, and MST path
+>   - igt_connector_find_by_path(): PATH-based connector lookup (MST)
+>   - igt_connector_find_by_name(): name-based connector lookup
+>   - igt_connector_reprobe_all(): force reprobe all connectors by
+>     iterating each connector to trigger DRM core re-detection
 >
-> These are needed by the connector helper and USB4 switch test suite
-> for EDID-based display verification after dock/undock events.
->
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> ---
->   lib/igt_edid.c | 91 ++++++++++++++++++++++++++++++++++++++++++++++++++
->   lib/igt_edid.h |  5 +++
->   2 files changed, 96 insertions(+)
->
-> diff --git a/lib/igt_edid.c b/lib/igt_edid.c
-> index c68ccf671..e7fcbf0b9 100644
-> --- a/lib/igt_edid.c
-> +++ b/lib/igt_edid.c
-> @@ -249,6 +249,97 @@ void edid_get_monitor_name(const struct edid *edid, char *name, size_t name_size
->   	name[0] = '\0';
->   }
->   
-> +/**
-> + * edid_get_serial_string:
-> + * @edid: EDID structure
-> + * @serial: buffer to write serial string
-> + * @serial_size: size of serial buffer; must be > 1
-> + *
-> + * Extract the serial string from EDID descriptor block type 0xFF.
-> + * The descriptor payload is a 13-byte fixed-width field; trailing
-> + * whitespace is stripped and the result is NUL-terminated.
-> + * @serial is left empty when no 0xFF descriptor is found.
-> + */
-> +void edid_get_serial_string(const struct edid *edid,
-> +			    char *serial, size_t serial_size)
-We are trying to get the timings so rather than a generic name 
-serial_string, can this be replaced with get_detailed_timings ?
-> +{
-> +	size_t copy_len, i, n;
-> +
-> +	igt_assert(edid);
-> +	igt_assert(serial);
-> +	igt_assert(serial_size > 1);
-> +	serial[0] = '\0';
-> +
-> +	for (i = 0; i < DETAILED_TIMINGS_LEN; i++) {
-> +		const uint8_t *d = (const uint8_t *)&edid->detailed_timings[i];
-> +
-> +		if (d[0] != 0x00 || d[1] != 0x00 || d[2] != 0x00)
-> +			continue;
-> +
-> +		if (d[3] != EDID_DETAIL_MONITOR_SERIAL || d[4] != 0x00)
-> +			continue;
-> +
-> +		/* Descriptor string payload is 13 bytes starting at d[5] */
-> +		copy_len = serial_size - 1 < 13 ? serial_size - 1 : 13;
-> +		memcpy(serial, &d[5], copy_len);
-Can strncpy() be used instead?
-> +		serial[copy_len] = '\0';
-> +
-> +		for (n = strlen(serial);
-> +		     n > 0 && isspace((unsigned char)serial[n - 1]); n--)
-> +			serial[n - 1] = '\0';
-> +
-> +		return;
-> +	}
-> +}
-> +
-> +/**
-> + * edid_get_serial_number:
-> + * @edid: EDID structure
-> + *
-> + * Extract the 32-bit serial number from the EDID base block header
-> + * (bytes 12–15, the manufacturer/product section).  This is different
-> + * from the ASCII serial string in descriptor block 0xFF.
-> + *
-> + * Returns: 32-bit serial number (little-endian), 0 if absent.
-> + */
-> +uint32_t edid_get_serial_number(const struct edid *edid)
-> +{
-> +	return (uint32_t)edid->serial[0] |
-> +	       ((uint32_t)edid->serial[1] << 8) |
-> +	       ((uint32_t)edid->serial[2] << 16) |
-> +	       ((uint32_t)edid->serial[3] << 24);
-> +}
-> +
-> +/**
-> + * edid_get_any_serial:
-No description added?
+> These helpers abstract common DRM connector patterns that are needed
+> by multiple test suites for display enumeration and verification.
+The contents of these are already present in lib/igt__kms.c
+
+Instead of a new file, can these be exported from lib/igt_kms.c ?
+
 
 Thanks and Regards,
 Arun R Murthy
---------------------
-> + * @edid: EDID structure
-> + * @serial: buffer to write serial string
-> + * @serial_size: size of serial buffer; must be > 1
-> + *
-> + * Convenience helper that tries to extract a serial identifier from EDID.
-> + * First tries the ASCII serial string descriptor (0xFF). If that is empty,
-> + * falls back to the 32-bit header serial number formatted as 8-char hex.
-> + * If neither source provides a usable serial (no 0xFF descriptor and the
-> + * header serial is 0), @serial is left empty.
+-------------------
+
+>
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> ---
+>   lib/igt_connector_helper.c | 299 +++++++++++++++++++++++++++++++++++++
+>   lib/igt_connector_helper.h |  27 ++++
+>   lib/meson.build            |   1 +
+>   3 files changed, 327 insertions(+)
+>   create mode 100644 lib/igt_connector_helper.c
+>   create mode 100644 lib/igt_connector_helper.h
+>
+> diff --git a/lib/igt_connector_helper.c b/lib/igt_connector_helper.c
+> new file mode 100644
+> index 000000000..6be849b7a
+> --- /dev/null
+> +++ b/lib/igt_connector_helper.c
+> @@ -0,0 +1,299 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2026 Intel Corporation
 > + */
-> +void edid_get_any_serial(const struct edid *edid,
-> +			 char *serial, size_t serial_size)
+> +
+> +/**
+> + * SECTION:igt_connector_helper
+> + * @short_description: Generic connector helper functions for DRM/KMS
+> + * @title: Connector Helper
+> + * @include: igt_connector_helper.h
+> + *
+> + * Helper functions for DRM connector operations including enumeration,
+> + * lookup by name/path, and EDID serial extraction.
+> + */
+> +
+> +#include <string.h>
+> +#include <xf86drm.h>
+> +#include <xf86drmMode.h>
+> +
+> +#include "igt_core.h"
+> +#include "igt_edid.h"
+> +#include "igt_kms.h"
+> +#include "igt_connector_helper.h"
+> +
+> +/**
+> + * igt_connector_get_connected:
+> + * @drm_fd: DRM file descriptor
+> + * @connectors: array to store connector IDs; must be valid if @max_connectors > 0
+> + * @max_connectors: maximum number of connectors to store
+> + *
+> + * Walks all DRM connectors and stores the IDs of those currently connected.
+> + * Scanning stops once @max_connectors IDs have been collected; later
+> + * connectors are not examined.
+> + *
+> + * Returns: number of connector IDs written to @connectors, capped by
+> + * @max_connectors.
+> + */
+> +int igt_connector_get_connected(int drm_fd, uint32_t *connectors,
+> +				int max_connectors)
 > +{
-> +	uint32_t serial_num;
+> +	drmModeRes *res;
+> +	drmModeConnector *conn;
+> +	int count = 0;
+> +	int i;
 > +
-> +	igt_assert(edid);
-> +	igt_assert(serial);
-> +	igt_assert(serial_size > 1);
+> +	igt_assert(max_connectors >= 0);
+> +	if (max_connectors > 0)
+> +		igt_assert(connectors);
 > +
-> +	edid_get_serial_string(edid, serial, serial_size);
-> +	if (serial[0])
-> +		return;
+> +	res = drmModeGetResources(drm_fd);
+> +	if (!res)
+> +		return 0;
 > +
-> +	serial_num = edid_get_serial_number(edid);
-> +	if (serial_num != 0)
-> +		snprintf(serial, serial_size, "%08X", serial_num);
+> +	for (i = 0; i < res->count_connectors && count < max_connectors; i++) {
+> +		conn = drmModeGetConnector(drm_fd, res->connectors[i]);
+> +		if (!conn)
+> +			continue;
+> +
+> +		if (conn->connection == DRM_MODE_CONNECTED)
+> +			connectors[count++] = conn->connector_id;
+> +
+> +		drmModeFreeConnector(conn);
+> +	}
+> +
+> +	drmModeFreeResources(res);
+> +	return count;
 > +}
 > +
->   static void edid_set_mfg(struct edid *edid, const char mfg[static 3])
->   {
->   	edid->mfg_id[0] = (mfg[0] - '@') << 2 | (mfg[1] - '@') >> 3;
-> diff --git a/lib/igt_edid.h b/lib/igt_edid.h
-> index be0ccf529..d9e396065 100644
-> --- a/lib/igt_edid.h
-> +++ b/lib/igt_edid.h
-> @@ -457,5 +457,10 @@ void *dispid_block_tiled(void *ptr,
->   			 int hsize, int vsize,
->   			 const char *topology_id);
->   void edid_get_monitor_name(const struct edid *edid, char *name, size_t name_size);
-> +void edid_get_serial_string(const struct edid *edid,
-> +			    char *serial, size_t serial_size);
-> +uint32_t edid_get_serial_number(const struct edid *edid);
-> +void edid_get_any_serial(const struct edid *edid,
-> +			 char *serial, size_t serial_size);
->   
->   #endif
+> +/**
+> + * igt_connector_get_info:
+> + * @drm_fd: DRM file descriptor
+> + * @connector_id: connector ID
+> + * @name: buffer for connector name (mandatory)
+> + * @name_size: size of @name; must be > 0
+> + * @serial: buffer for EDID-derived serial (mandatory)
+> + * @serial_size: size of @serial; must be > 1
+> + * @path: buffer for MST PATH property (optional, may be NULL)
+> + * @path_size: size of @path buffer
+> + *
+> + * Fills connector name, MST PATH, and EDID-derived serial for a connector.
+> + * @name is always filled when the connector is found. @serial is filled from
+> + * the ASCII serial string descriptor (0xFF) if present, else from the 32-bit
+> + * header serial number; left empty if no EDID is available. @path is filled
+> + * only if requested and the PATH property exists.
+> + *
+> + * Success means the connector object was found and @name was filled.
+> + * @serial and @path are best-effort and may still be empty on success.
+> + *
+> + * Returns: true if the connector was found, false otherwise.
+> + */
+> +bool igt_connector_get_info(int drm_fd, uint32_t connector_id,
+> +			    char *name, size_t name_size,
+> +			    char *serial, size_t serial_size,
+> +			    char *path, size_t path_size)
+> +{
+> +	drmModeConnector *conn;
+> +	drmModePropertyBlobPtr edid_blob = NULL;
+> +	uint64_t blob_id = 0;
+> +	drmModePropertyPtr prop;
+> +	const struct edid *edid;
+> +	int i;
+> +
+> +	igt_assert(name && name_size > 0);
+> +	igt_assert(serial && serial_size > 1);
+> +	igt_assert(!path || path_size > 0);
+> +
+> +	name[0] = '\0';
+> +	serial[0] = '\0';
+> +	if (path)
+> +		path[0] = '\0';
+> +
+> +	conn = drmModeGetConnector(drm_fd, connector_id);
+> +	if (!conn)
+> +		return false;
+> +
+> +	snprintf(name, name_size, "%s-%d",
+> +		 kmstest_connector_type_str(conn->connector_type),
+> +		 conn->connector_type_id);
+> +
+> +	for (i = 0; i < conn->count_props; i++) {
+> +		prop = drmModeGetProperty(drm_fd, conn->props[i]);
+> +		if (!prop)
+> +			continue;
+> +
+> +		if (strcmp(prop->name, "EDID") == 0)
+> +			blob_id = conn->prop_values[i];
+> +
+> +		drmModeFreeProperty(prop);
+> +		if (blob_id)
+> +			break;
+> +	}
+> +
+> +	/* Extract MST PATH if requested */
+> +	if (path) {
+> +		drmModePropertyBlobPtr path_blob;
+> +
+> +		/* PATH blob payload is a NUL-terminated string */
+> +		path_blob = kmstest_get_path_blob(drm_fd, connector_id);
+> +		if (path_blob) {
+> +			snprintf(path, path_size, "%s",
+> +				 (const char *)path_blob->data);
+> +			drmModeFreePropertyBlob(path_blob);
+> +		}
+> +	}
+> +
+> +	drmModeFreeConnector(conn);
+> +
+> +	if (blob_id) {
+> +		edid_blob = drmModeGetPropertyBlob(drm_fd, blob_id);
+> +		if (edid_blob) {
+> +			if (edid_blob->length >= sizeof(struct edid)) {
+> +				edid = edid_blob->data;
+> +				edid_get_any_serial(edid, serial, serial_size);
+> +			}
+> +			drmModeFreePropertyBlob(edid_blob);
+> +		}
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +/**
+> + * igt_connector_find_by_path:
+> + * @drm_fd: DRM file descriptor
+> + * @path: MST PATH property value to match
+> + * @connector_id: output for connector ID (filled on success)
+> + *
+> + * Finds the currently connected connector whose PATH property matches @path
+> + * (exact string comparison).  PATH is the preferred stable identity for MST
+> + * connectors; connector IDs may change across hotplug events.
+> + *
+> + * Returns: true if a matching connected connector was found.
+> + */
+> +bool igt_connector_find_by_path(int drm_fd, const char *path,
+> +				uint32_t *connector_id)
+> +{
+> +	drmModeRes *res;
+> +	drmModeConnector *conn;
+> +	drmModePropertyBlobPtr path_blob;
+> +	bool found = false;
+> +	int i;
+> +
+> +	if (!path || !connector_id)
+> +		return false;
+> +
+> +	res = drmModeGetResources(drm_fd);
+> +	if (!res)
+> +		return false;
+> +
+> +	for (i = 0; i < res->count_connectors && !found; i++) {
+> +		conn = drmModeGetConnector(drm_fd, res->connectors[i]);
+> +		if (!conn)
+> +			continue;
+> +
+> +		if (conn->connection == DRM_MODE_CONNECTED) {
+> +			path_blob = kmstest_get_path_blob(drm_fd,
+> +							  conn->connector_id);
+> +			if (path_blob) {
+> +				if (strcmp(path_blob->data, path) == 0) {
+> +					*connector_id = conn->connector_id;
+> +					found = true;
+> +				}
+> +				drmModeFreePropertyBlob(path_blob);
+> +			}
+> +		}
+> +
+> +		drmModeFreeConnector(conn);
+> +	}
+> +
+> +	drmModeFreeResources(res);
+> +
+> +	if (found)
+> +		igt_debug("igt_connector: Found connector %u for path '%s'\n",
+> +			  *connector_id, path);
+> +
+> +	return found;
+> +}
+> +
+> +/**
+> + * igt_connector_find_by_name:
+> + * @drm_fd: DRM file descriptor
+> + * @name: connector name to match (e.g., "DP-6")
+> + * @connector_id: output for connector ID (filled on success)
+> + *
+> + * Name-based lookup helper.  Prefer igt_connector_find_by_path() for MST
+> + * connectors, since connector names and IDs may change across hotplug events.
+> + *
+> + * Returns: true if a matching connected connector was found.
+> + */
+> +bool igt_connector_find_by_name(int drm_fd, const char *name,
+> +				uint32_t *connector_id)
+> +{
+> +	drmModeRes *res;
+> +	drmModeConnector *conn;
+> +	char conn_name[IGT_CONNECTOR_NAME_MAX];
+> +	bool found = false;
+> +	int i;
+> +
+> +	if (!name || !connector_id)
+> +		return false;
+> +
+> +	res = drmModeGetResources(drm_fd);
+> +	if (!res)
+> +		return false;
+> +
+> +	for (i = 0; i < res->count_connectors && !found; i++) {
+> +		conn = drmModeGetConnector(drm_fd, res->connectors[i]);
+> +		if (!conn)
+> +			continue;
+> +
+> +		snprintf(conn_name, sizeof(conn_name), "%s-%d",
+> +			 kmstest_connector_type_str(conn->connector_type),
+> +			 conn->connector_type_id);
+> +
+> +		if (strcmp(conn_name, name) == 0 &&
+> +		    conn->connection == DRM_MODE_CONNECTED) {
+> +			*connector_id = conn->connector_id;
+> +			found = true;
+> +		}
+> +
+> +		drmModeFreeConnector(conn);
+> +	}
+> +
+> +	drmModeFreeResources(res);
+> +
+> +	if (found)
+> +		igt_debug("igt_connector: Found connector %u for name '%s'\n",
+> +			  *connector_id, name);
+> +
+> +	return found;
+> +}
+> +
+> +/**
+> + * igt_connector_reprobe_all:
+> + * @drm_fd: DRM file descriptor
+> + *
+> + * Issues a GETCONNECTOR ioctl for every connector, requesting fresh state
+> + * from the kernel. This is often sufficient to refresh connector status and
+> + * MST topology visibility after hotplug events, but does not guarantee a
+> + * full hardware reprobe in all driver paths.
+> + */
+> +void igt_connector_reprobe_all(int drm_fd)
+> +{
+> +	drmModeRes *res;
+> +	drmModeConnector *conn;
+> +	int i;
+> +
+> +	res = drmModeGetResources(drm_fd);
+> +	if (!res)
+> +		return;
+> +
+> +	for (i = 0; i < res->count_connectors; i++) {
+> +		conn = drmModeGetConnector(drm_fd, res->connectors[i]);
+> +		if (conn)
+> +			drmModeFreeConnector(conn);
+> +	}
+> +
+> +	drmModeFreeResources(res);
+> +}
+> diff --git a/lib/igt_connector_helper.h b/lib/igt_connector_helper.h
+> new file mode 100644
+> index 000000000..fffb2661b
+> --- /dev/null
+> +++ b/lib/igt_connector_helper.h
+> @@ -0,0 +1,27 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2026 Intel Corporation
+> + */
+> +
+> +#ifndef IGT_CONNECTOR_HELPER_H
+> +#define IGT_CONNECTOR_HELPER_H
+> +
+> +#include <stdbool.h>
+> +#include <stddef.h>
+> +#include <stdint.h>
+> +
+> +#define IGT_CONNECTOR_NAME_MAX 32
+> +
+> +int igt_connector_get_connected(int drm_fd, uint32_t *connectors,
+> +				int max_connectors);
+> +bool igt_connector_get_info(int drm_fd, uint32_t connector_id,
+> +			    char *name, size_t name_size,
+> +			    char *serial, size_t serial_size,
+> +			    char *path, size_t path_size);
+> +bool igt_connector_find_by_path(int drm_fd, const char *path,
+> +				uint32_t *connector_id);
+> +bool igt_connector_find_by_name(int drm_fd, const char *name,
+> +				uint32_t *connector_id);
+> +void igt_connector_reprobe_all(int drm_fd);
+> +
+> +#endif /* IGT_CONNECTOR_HELPER_H */
+> diff --git a/lib/meson.build b/lib/meson.build
+> index ea721ecf7..074b21fdf 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -113,6 +113,7 @@ lib_sources = [
+>   	'igt_vmwgfx.c',
+>   	'igt_psr.c',
+>   	'igt_amd.c',
+> +	'igt_connector_helper.c',
+>   	'igt_edid.c',
+>   	'igt_eld.c',
+>   	'igt_infoframe.c',
