@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0813FF3C26D
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 14:25:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EA0AF3C26E
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 14:25:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AEDD710E15A;
-	Mon,  9 Mar 2026 14:25:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 448AF10E15A;
+	Mon,  9 Mar 2026 14:25:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GJ4IFe6U";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MOxIJDB5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB27A10E15A
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2026 14:25:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 410E110E15A
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2026 14:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773066307; x=1804602307;
+ t=1773066343; x=1804602343;
  h=from:to:cc:subject:in-reply-to:references:date:
  message-id:mime-version;
- bh=pujtpZhluLRbJVqhzIOtPXCh2sysTLwX6iv8SmOpON8=;
- b=GJ4IFe6Uts9wUgs5gTmGmBjOzBNOqmy0c+cxPzZMr0WekF86OUx4Tkon
- QRZ2GC8uUq8j3gj94Gg3AM82zDqiVjDsEZ08YqDGfsQgqz3q5ui2uw7PA
- jaQWItFIbIGDleut2xecKPvebP8jJ7DMiEoTBKmoubMBgbiBYhJOufpks
- nE8RhH3djDBqbvPG4hSnQQzVoApr4N0nye6NIfQr9a3v/jSqswB4XTpSn
- 8ayxbqQLx+bg+Z89K/5eLd/G5YsbYM6ZE6r9xDOkkxY1pEr0YII6uiqep
- V6ue6fTz3bPIf9vXFrmU2JDWcuzXl7rtxOBD13+qb+P+s7oazanizPKgw Q==;
-X-CSE-ConnectionGUID: tGOs5w62R9mGhCqPkvutFw==
-X-CSE-MsgGUID: k92Yj9JPRwm0UcMfvu8cag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="73287321"
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="73287321"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Mar 2026 07:25:07 -0700
-X-CSE-ConnectionGUID: GwPJKJZZSfCkYTr0CoH04w==
-X-CSE-MsgGUID: yx6J14VDSjqU9LrrhSx4pQ==
+ bh=L1VMncctwmQYTdNaOB3o+U4PL3Sn1QsaTJ3XAyO9NBc=;
+ b=MOxIJDB5hb+lPtZm+qV0IxtLbnsKqMlZq36ai+r3NJa7Euk0pUuSlmV/
+ eau8eLbJNC/W1AkObYhHooPG1Q/zcBrgSgcGl0E1+JAK+C9QehDcBcxM1
+ PXFxaEoqo+DHXSDG4WC940+Lx3eVsOfaHekZ3u4x5XhPfixdzYHX2h56G
+ hOWR5dgP6GegHMjudTGmRak9CJ5FHqqBMf3QVNmcjz5B358/TBs78tMFW
+ 3QdaK622RFz317xSE2D0oYcxgbv1jKIBcCX4P9sFLUp7xFWrdIOgkP1qu
+ fm9OjmgZ8lsJKC2Y9gxPnriq5u0Ax2xJl6XpqZWvxOEsDPVzOCmxbmIC8 g==;
+X-CSE-ConnectionGUID: 2QFWVW9nRBSZ8iN+zASS3A==
+X-CSE-MsgGUID: 2ZrJMGRmT9yHL3JJ6RzMqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="85178821"
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="85178821"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Mar 2026 07:25:43 -0700
+X-CSE-ConnectionGUID: 8yPJcv5PR+qJNaHL7YJv3g==
+X-CSE-MsgGUID: ZtV7qtlqRSm0LGLCwBS2EA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="216279679"
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="224212644"
 Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.246.239])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Mar 2026 07:25:05 -0700
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Mar 2026 07:25:41 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ville.syrjala@linux.intel.com
-Subject: Re: [PATCH i-g-t 05/10] tests/kms_cursor_edge_walk: use CRTC
- indexes instead of pipes for CRTC tracking
-In-Reply-To: <c95cad26d78f52c2102a9bdedeb4062af5257f21.1773066012.git.jani.nikula@intel.com>
+Subject: Re: [PATCH i-g-t 08/10] tests/kms_vblank: use CRTC indexes instead
+ of pipes for CRTC tracking
+In-Reply-To: <e5066cc6d24aad560a51f9de37e5d26a46e4dd47.1773066012.git.jani.nikula@intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 References: <cover.1773066012.git.jani.nikula@intel.com>
- <c95cad26d78f52c2102a9bdedeb4062af5257f21.1773066012.git.jani.nikula@intel.com>
-Date: Mon, 09 Mar 2026 16:25:02 +0200
-Message-ID: <e93bb7158f8d7bd6b2a2247c82306aeff8e528f7@intel.com>
+ <e5066cc6d24aad560a51f9de37e5d26a46e4dd47.1773066012.git.jani.nikula@intel.com>
+Date: Mon, 09 Mar 2026 16:25:38 +0200
+Message-ID: <afbad5d884c8c21009146876aab0a43d4cd668ae@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -74,56 +74,75 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 On Mon, 09 Mar 2026, Jani Nikula <jani.nikula@intel.com> wrote:
 > The test tracks	"active" CRTCs in a dedicated array. This does not
 > depend on pipes in any way. Switch to using CRTC indexes instead.
-
-Apparently copy-pasted some tabs here and other commit messages
-accidentally.
-
 >
 > Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 > ---
->  tests/kms_cursor_edge_walk.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+>  tests/kms_vblank.c | 20 ++++++++++----------
+>  1 file changed, 10 insertions(+), 10 deletions(-)
 >
-> diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-> index 08c9de601ce3..8036d43d5eef 100644
-> --- a/tests/kms_cursor_edge_walk.c
-> +++ b/tests/kms_cursor_edge_walk.c
-> @@ -87,8 +87,8 @@ enum {
->  };
+> diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+> index e79b2535c599..395a722bdb13 100644
+> --- a/tests/kms_vblank.c
+> +++ b/tests/kms_vblank.c
+> @@ -110,8 +110,8 @@ typedef struct {
+>  } data_t;
 >  
->  static bool extended;
+>  static bool all_pipes;
 > -static enum pipe active_pipes[IGT_MAX_PIPES];
 > -static uint32_t last_pipe;
-> +static int active_crtcs[IGT_MAX_PIPES];
+> +static enum pipe active_crtcs[IGT_MAX_PIPES];
+
+This should be switched to int.
+
 > +static uint32_t last_crtc_index;
 >  
->  static void create_cursor_fb(data_t *data, int cur_w, int cur_h)
->  {
-> @@ -377,10 +377,10 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
->  		kmstest_set_vt_graphics_mode();
+>  static double elapsed(const struct timespec *start,
+>  		      const struct timespec *end,
+> @@ -522,8 +522,8 @@ static void run_subtests(data_t *data)
+>  					if (!crtc_output_combo_valid(&data->display, crtc, data->output))
+>  						continue;
 >  
+> -					if (!all_pipes && crtc->pipe != active_pipes[0] &&
+> -					    crtc->pipe != active_pipes[last_pipe]) {
+> +					if (!all_pipes && crtc->crtc_index != active_crtcs[0] &&
+> +					    crtc->crtc_index != active_crtcs[last_crtc_index]) {
+>  						igt_info("Skipping pipe %s\n",
+>  							 igt_crtc_name(crtc));
+>  						continue;
+> @@ -554,8 +554,8 @@ static void run_subtests(data_t *data)
+>  					if (!crtc_output_combo_valid(&data->display, crtc, data->output))
+>  						continue;
+>  
+> -					if (!all_pipes && crtc->pipe != active_pipes[0] &&
+> -					    crtc->pipe != active_pipes[last_pipe]) {
+> +					if (!all_pipes && crtc->crtc_index != active_crtcs[0] &&
+> +					    crtc->crtc_index != active_crtcs[last_crtc_index]) {
+>  						igt_info("Skipping pipe %s\n",
+>  							 igt_crtc_name(crtc));
+>  						continue;
+> @@ -650,9 +650,9 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
 >  		/* Get active pipes. */
-> -		last_pipe = 0;
-> +		last_crtc_index = 0;
->  		for_each_crtc(&data.display, crtc)
+>  		for_each_crtc(&data.display, crtc) {
+>  			data.crtc = crtc;
 > -			active_pipes[last_pipe++] = crtc->pipe;
-> -		last_pipe--;
 > +			active_crtcs[last_crtc_index++] = crtc->crtc_index;
+>  		}
+> -		last_pipe--;
 > +		last_crtc_index--;
 >  	}
 >  
->  	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-> @@ -397,8 +397,8 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
->  								 crtc,
->  								 data.output) {
->  					data.crtc = crtc;
-> -					if (!extended && crtc->pipe != active_pipes[0] &&
-> -					    crtc->pipe != active_pipes[last_pipe])
-> +					if (!extended && crtc->crtc_index != active_crtcs[0] &&
-> +					    crtc->crtc_index != active_crtcs[last_crtc_index])
->  						continue;
+>  	igt_describe("Negative test for vblank request.");
+> @@ -679,8 +679,8 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>  			if (!crtc_output_combo_valid(&data.display, crtc, data.output))
+>  				continue;
 >  
->  					igt_display_reset(&data.display);
+> -			if (!all_pipes && crtc->pipe != active_pipes[0] &&
+> -					  crtc->pipe != active_pipes[last_pipe]) {
+> +			if (!all_pipes && crtc->crtc_index != active_crtcs[0] &&
+> +					  crtc->crtc_index != active_crtcs[last_crtc_index]) {
+>  				igt_info("Skipping pipe %s\n",
+>  					 igt_crtc_name(crtc));
+>  				continue;
 
 -- 
 Jani Nikula, Intel
