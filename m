@@ -4,58 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C76FFEFCD9A
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 11:07:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C40BEFCD9A
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 11:14:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 732F910E4D3;
-	Mon,  9 Mar 2026 11:07:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C5DE510E4DB;
+	Mon,  9 Mar 2026 11:14:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iknTuDaT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="D6t9pfyj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6797D10E4D3
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2026 11:07:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C16D210E4DB
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2026 11:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773054423; x=1804590423;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=kWxII44snJoacYl1c7zjQREuOGZnw6OXyIa244n+WAY=;
- b=iknTuDaTDgSSXl7/rE3Neh67ZUKatB8JVcgDL4QLVpCgGstPT17Ze0Ft
- W/oyWMGDwxLJPE9dQwbndbtd0MLn3HSy09EpdRh3xyTuWSNIDVugzck7D
- XcYfyw1oCld1jLTFHhkUOnWU3/MkuWBDxTX7YmFmCXLzMorOok+ixP/S4
- yIHwwb7Sz1hYK3s3vOFaznwVuMnRKwjf6Ghi540HPOFuIAuj1o9ooVTDd
- vBF2xIj6JXevITAA5qTXNtT/FAiDr0xTrRNUGs64ASrzkLktAqxeyGrM7
- keVF4llRAznLD4lUlA2SubmqCcO+9TRfvZlnERBCH9eoAiG8WvcTTpDxq g==;
-X-CSE-ConnectionGUID: OeBJL5upSNe18E8El5SbCw==
-X-CSE-MsgGUID: odhZWjLLScGamI99n1sOEA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="73094032"
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="73094032"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Mar 2026 04:07:01 -0700
-X-CSE-ConnectionGUID: edS9oVeYRbGvBURcnx70Wg==
-X-CSE-MsgGUID: AniuIjwHQeav1cIa9I3TSA==
+ t=1773054846; x=1804590846;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=4Mg5AviL8MqhRqLnkxSx3cFRjpQuWh+hV/s5xdqH+mE=;
+ b=D6t9pfyjF0tEPueRipNJrqmPyYXBm7ZFlv7MyuAHxxAO8pgNv+uv+yCi
+ cnRgey+ExK0aVS0HqOju8tgBsfoK4SbA+0KQCyYL2KMHPwPxXarm9lMFJ
+ 2PUE/siMwvQnzGzKpYL+NUqCqfxnRGEyFyfDzid8MdzRF43jzmYmGYgz5
+ iz8StS7VSBIJs73XOJTLOg4eOulGTPq4cJwAj5DNZ5sWOQJilY0Nl42Lp
+ efat1TE/wAV+xJA2A3Eb3kF8dt6wphdIOgN6zScgJDtzGpYhoFWlJg4rb
+ PFW5Jw1byM/OODzn5fdpOHmyWqVGlPT0zX4CHkuzpCaF4KZ14npPQHXy2 g==;
+X-CSE-ConnectionGUID: qeUnZD0NRGaVBhL7paae8A==
+X-CSE-MsgGUID: 5acgwOlQTP2TPYzZcoPc6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="99544119"
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="99544119"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Mar 2026 04:14:05 -0700
+X-CSE-ConnectionGUID: uKhCUE7UTlyKsNw/tOnwxA==
+X-CSE-MsgGUID: rfV5K8pGRAWjGxhHUC5Tyw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="218926786"
-Received: from rvinayku-mobl1.gar.corp.intel.com (HELO [10.247.170.133])
- ([10.247.170.133])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Mar 2026 04:07:00 -0700
-Message-ID: <d3322c0b-8bd6-4242-8a74-ad5dfacb3909@intel.com>
-Date: Mon, 9 Mar 2026 16:36:58 +0530
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="224167558"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.144])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Mar 2026 04:14:03 -0700
+Date: Mon, 9 Mar 2026 12:14:01 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Francois Dugast <francois.dugast@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Nishit Sharma <nishit.sharma@intel.com>
+Subject: Re: [PATCH i-g-t v7 4/6] tests/xe_compute: Extend compute test to
+ cover user passed buffers
+Message-ID: <o7lhuimythzhzjqdadjylmgh3pw7e36tsbr5qwiue37hiutr6l@se3agvt6zgam>
+References: <20260306091430.1234990-8-zbigniew.kempczynski@intel.com>
+ <20260306091430.1234990-12-zbigniew.kempczynski@intel.com>
+ <aa6mkV3qNtFsgXjB@fdugast-desk>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t,2/6] lib/igt_connector_helper: Add generic connector
- helpers
-To: "Murthy, Arun R" <arun.r.murthy@intel.com>, igt-dev@lists.freedesktop.org
-References: <20260225212859.876713-3-kunal1.joshi@intel.com>
- <d256aedf-2e67-41be-a440-a6e39ad5d18b@intel.com>
-Content-Language: en-US
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <d256aedf-2e67-41be-a440-a6e39ad5d18b@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <aa6mkV3qNtFsgXjB@fdugast-desk>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,411 +72,229 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hello Arun,
+On Mon, Mar 09, 2026 at 11:53:05AM +0100, Francois Dugast wrote:
+> Hi,
+> 
+> On Fri, Mar 06, 2026 at 10:14:35AM +0100, Zbigniew Kempczyński wrote:
+> > Compute library allows user to pass its own buffers. They may be
+> > normal buffer objects or system allocated buffers (SVM).
+> > 
+> > Verify input and output buffers added to user_execenv are properly
+> > handled and data within are fully on user control. Execute compute
+> > square on these buffers and check data are correct regardless
+> > allocation strategy.
+> > 
+> > Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+> > Cc: Francois Dugast <francois.dugast@intel.com>
+> > Acked-by: Nishit Sharma <nishit.sharma@intel.com>
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > ---
+> >  tests/intel/xe_compute.c | 150 +++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 150 insertions(+)
+> > 
+> > diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+> > index 310093fc56..e5367b4c10 100644
+> > --- a/tests/intel/xe_compute.c
+> > +++ b/tests/intel/xe_compute.c
+> > @@ -510,6 +510,144 @@ test_compute_square(int fd)
+> >  		      "GPU not supported\n");
+> >  }
+> >  
+> > +/**
+> > + * SUBTEST: compute-square-userenv
+> > + * Mega feature: Compute
+> > + * Sub-category: compute tests
+> > + * Functionality: OpenCL kernel
+> > + * Description:
+> > + *	Run an openCL Kernel that returns output[i] = input[i] * input[i],
+> > + *	taking buffers from userenv.
+> > + *
+> > + * SUBTEST: compute-square-userenv-isvm
+> > + * Mega feature: Compute
+> > + * Sub-category: compute tests
+> > + * Functionality: OpenCL kernel
+> > + * Description:
+> > + *	Run an openCL Kernel that returns output[i] = input[i] * input[i],
+> > + *	taking buffers from userenv where input is svm buffer.
+> > + *
+> > + * SUBTEST: compute-square-userenv-osvm
+> > + * Mega feature: Compute
+> > + * Sub-category: compute tests
+> > + * Functionality: OpenCL kernel
+> > + * Description:
+> > + *	Run an openCL Kernel that returns output[i] = input[i] * input[i],
+> > + *	taking buffers from userenv where output buffer is svm buffer.
+> > + *
+> > + * SUBTEST: compute-square-userenv-iosvm
+> > + * Mega feature: Compute
+> > + * Sub-category: compute tests
+> > + * Functionality: OpenCL kernel
+> > + * Description:
+> > + *	Run an openCL Kernel that returns output[i] = input[i] * input[i],
+> > + *	taking buffers from userenv where input and output buffers are svm buffer.
+> > + */
+> > +
+> > +#define INPUT_IN_SVM		(1 << 0)
+> > +#define OUTPUT_IN_SVM		(1 << 1)
+> > +#define INPUT_BO_ADDR		0x30000000
+> > +#define OUTPUT_BO_ADDR		0x31000000
+> > +#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
+> > +#define FIVE_SEC		(5LL * NSEC_PER_SEC)
+> > +
+> > +#define bind_system_allocator(__sync, __num_sync)			\
+> > +	__xe_vm_bind_assert(fd, vm, 0,					\
+> > +			    0, 0, 0, 0x1ull << va_bits,			\
+> > +			    DRM_XE_VM_BIND_OP_MAP,			\
+> > +			    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR,	\
+> > +			    (__sync), (__num_sync), 0, 0)
+> 
+> Not sure about the reason for moving system allocator tests outside of
+> xe_exec_system_allocator.c but if we go this way then this ^ should be
+> moved to libs as helper instead of being duplicated.
 
-On 09-03-2026 15:08, Murthy, Arun R wrote:
-> On 26-02-2026 02:58, Kunal Joshi wrote:
->> Add a lightweight helper library for DRM connector operations used
->> by USB4 switch and other dock/undock tests:
->>
->>   - igt_connector_get_connected(): enumerate connected connectors
->>   - igt_connector_get_info(): query name, EDID serial, and MST path
->>   - igt_connector_find_by_path(): PATH-based connector lookup (MST)
->>   - igt_connector_find_by_name(): name-based connector lookup
->>   - igt_connector_reprobe_all(): force reprobe all connectors by
->>     iterating each connector to trigger DRM core re-detection
->>
->> These helpers abstract common DRM connector patterns that are needed
->> by multiple test suites for display enumeration and verification.
-> The contents of these are already present in lib/igt__kms.c
->
-Wasn't able to find similar helper that maybe already present,
-Could you please point to those function names?
-> Instead of a new file, can these be exported from lib/igt_kms.c ?
-It was intentional, since igt_kms is already over 8k lines, want to have 
-separate lib's grouped by entity,
-In this case created connector_helper for having all connector related 
-helpers at one place.
+Because it on one leg is in xe_compute and second one on
+xe_exec_system_allocator. Tests here exercises both kind of buffers
+(bo/svm) and their input/output variations passed in userenv.
+I picked xe_compute as imo it matches better.
 
-Thanks and Regards
-Kunal Joshi
->
->
-> Thanks and Regards,
-> Arun R Murthy
-> -------------------
->
->>
->> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
->> ---
->>   lib/igt_connector_helper.c | 299 +++++++++++++++++++++++++++++++++++++
->>   lib/igt_connector_helper.h |  27 ++++
->>   lib/meson.build            |   1 +
->>   3 files changed, 327 insertions(+)
->>   create mode 100644 lib/igt_connector_helper.c
->>   create mode 100644 lib/igt_connector_helper.h
->>
->> diff --git a/lib/igt_connector_helper.c b/lib/igt_connector_helper.c
->> new file mode 100644
->> index 000000000..6be849b7a
->> --- /dev/null
->> +++ b/lib/igt_connector_helper.c
->> @@ -0,0 +1,299 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright © 2026 Intel Corporation
->> + */
->> +
->> +/**
->> + * SECTION:igt_connector_helper
->> + * @short_description: Generic connector helper functions for DRM/KMS
->> + * @title: Connector Helper
->> + * @include: igt_connector_helper.h
->> + *
->> + * Helper functions for DRM connector operations including enumeration,
->> + * lookup by name/path, and EDID serial extraction.
->> + */
->> +
->> +#include <string.h>
->> +#include <xf86drm.h>
->> +#include <xf86drmMode.h>
->> +
->> +#include "igt_core.h"
->> +#include "igt_edid.h"
->> +#include "igt_kms.h"
->> +#include "igt_connector_helper.h"
->> +
->> +/**
->> + * igt_connector_get_connected:
->> + * @drm_fd: DRM file descriptor
->> + * @connectors: array to store connector IDs; must be valid if 
->> @max_connectors > 0
->> + * @max_connectors: maximum number of connectors to store
->> + *
->> + * Walks all DRM connectors and stores the IDs of those currently 
->> connected.
->> + * Scanning stops once @max_connectors IDs have been collected; later
->> + * connectors are not examined.
->> + *
->> + * Returns: number of connector IDs written to @connectors, capped by
->> + * @max_connectors.
->> + */
->> +int igt_connector_get_connected(int drm_fd, uint32_t *connectors,
->> +                int max_connectors)
->> +{
->> +    drmModeRes *res;
->> +    drmModeConnector *conn;
->> +    int count = 0;
->> +    int i;
->> +
->> +    igt_assert(max_connectors >= 0);
->> +    if (max_connectors > 0)
->> +        igt_assert(connectors);
->> +
->> +    res = drmModeGetResources(drm_fd);
->> +    if (!res)
->> +        return 0;
->> +
->> +    for (i = 0; i < res->count_connectors && count < max_connectors; 
->> i++) {
->> +        conn = drmModeGetConnector(drm_fd, res->connectors[i]);
->> +        if (!conn)
->> +            continue;
->> +
->> +        if (conn->connection == DRM_MODE_CONNECTED)
->> +            connectors[count++] = conn->connector_id;
->> +
->> +        drmModeFreeConnector(conn);
->> +    }
->> +
->> +    drmModeFreeResources(res);
->> +    return count;
->> +}
->> +
->> +/**
->> + * igt_connector_get_info:
->> + * @drm_fd: DRM file descriptor
->> + * @connector_id: connector ID
->> + * @name: buffer for connector name (mandatory)
->> + * @name_size: size of @name; must be > 0
->> + * @serial: buffer for EDID-derived serial (mandatory)
->> + * @serial_size: size of @serial; must be > 1
->> + * @path: buffer for MST PATH property (optional, may be NULL)
->> + * @path_size: size of @path buffer
->> + *
->> + * Fills connector name, MST PATH, and EDID-derived serial for a 
->> connector.
->> + * @name is always filled when the connector is found. @serial is 
->> filled from
->> + * the ASCII serial string descriptor (0xFF) if present, else from 
->> the 32-bit
->> + * header serial number; left empty if no EDID is available. @path 
->> is filled
->> + * only if requested and the PATH property exists.
->> + *
->> + * Success means the connector object was found and @name was filled.
->> + * @serial and @path are best-effort and may still be empty on success.
->> + *
->> + * Returns: true if the connector was found, false otherwise.
->> + */
->> +bool igt_connector_get_info(int drm_fd, uint32_t connector_id,
->> +                char *name, size_t name_size,
->> +                char *serial, size_t serial_size,
->> +                char *path, size_t path_size)
->> +{
->> +    drmModeConnector *conn;
->> +    drmModePropertyBlobPtr edid_blob = NULL;
->> +    uint64_t blob_id = 0;
->> +    drmModePropertyPtr prop;
->> +    const struct edid *edid;
->> +    int i;
->> +
->> +    igt_assert(name && name_size > 0);
->> +    igt_assert(serial && serial_size > 1);
->> +    igt_assert(!path || path_size > 0);
->> +
->> +    name[0] = '\0';
->> +    serial[0] = '\0';
->> +    if (path)
->> +        path[0] = '\0';
->> +
->> +    conn = drmModeGetConnector(drm_fd, connector_id);
->> +    if (!conn)
->> +        return false;
->> +
->> +    snprintf(name, name_size, "%s-%d",
->> +         kmstest_connector_type_str(conn->connector_type),
->> +         conn->connector_type_id);
->> +
->> +    for (i = 0; i < conn->count_props; i++) {
->> +        prop = drmModeGetProperty(drm_fd, conn->props[i]);
->> +        if (!prop)
->> +            continue;
->> +
->> +        if (strcmp(prop->name, "EDID") == 0)
->> +            blob_id = conn->prop_values[i];
->> +
->> +        drmModeFreeProperty(prop);
->> +        if (blob_id)
->> +            break;
->> +    }
->> +
->> +    /* Extract MST PATH if requested */
->> +    if (path) {
->> +        drmModePropertyBlobPtr path_blob;
->> +
->> +        /* PATH blob payload is a NUL-terminated string */
->> +        path_blob = kmstest_get_path_blob(drm_fd, connector_id);
->> +        if (path_blob) {
->> +            snprintf(path, path_size, "%s",
->> +                 (const char *)path_blob->data);
->> +            drmModeFreePropertyBlob(path_blob);
->> +        }
->> +    }
->> +
->> +    drmModeFreeConnector(conn);
->> +
->> +    if (blob_id) {
->> +        edid_blob = drmModeGetPropertyBlob(drm_fd, blob_id);
->> +        if (edid_blob) {
->> +            if (edid_blob->length >= sizeof(struct edid)) {
->> +                edid = edid_blob->data;
->> +                edid_get_any_serial(edid, serial, serial_size);
->> +            }
->> +            drmModeFreePropertyBlob(edid_blob);
->> +        }
->> +    }
->> +
->> +    return true;
->> +}
->> +
->> +/**
->> + * igt_connector_find_by_path:
->> + * @drm_fd: DRM file descriptor
->> + * @path: MST PATH property value to match
->> + * @connector_id: output for connector ID (filled on success)
->> + *
->> + * Finds the currently connected connector whose PATH property 
->> matches @path
->> + * (exact string comparison).  PATH is the preferred stable identity 
->> for MST
->> + * connectors; connector IDs may change across hotplug events.
->> + *
->> + * Returns: true if a matching connected connector was found.
->> + */
->> +bool igt_connector_find_by_path(int drm_fd, const char *path,
->> +                uint32_t *connector_id)
->> +{
->> +    drmModeRes *res;
->> +    drmModeConnector *conn;
->> +    drmModePropertyBlobPtr path_blob;
->> +    bool found = false;
->> +    int i;
->> +
->> +    if (!path || !connector_id)
->> +        return false;
->> +
->> +    res = drmModeGetResources(drm_fd);
->> +    if (!res)
->> +        return false;
->> +
->> +    for (i = 0; i < res->count_connectors && !found; i++) {
->> +        conn = drmModeGetConnector(drm_fd, res->connectors[i]);
->> +        if (!conn)
->> +            continue;
->> +
->> +        if (conn->connection == DRM_MODE_CONNECTED) {
->> +            path_blob = kmstest_get_path_blob(drm_fd,
->> +                              conn->connector_id);
->> +            if (path_blob) {
->> +                if (strcmp(path_blob->data, path) == 0) {
->> +                    *connector_id = conn->connector_id;
->> +                    found = true;
->> +                }
->> +                drmModeFreePropertyBlob(path_blob);
->> +            }
->> +        }
->> +
->> +        drmModeFreeConnector(conn);
->> +    }
->> +
->> +    drmModeFreeResources(res);
->> +
->> +    if (found)
->> +        igt_debug("igt_connector: Found connector %u for path '%s'\n",
->> +              *connector_id, path);
->> +
->> +    return found;
->> +}
->> +
->> +/**
->> + * igt_connector_find_by_name:
->> + * @drm_fd: DRM file descriptor
->> + * @name: connector name to match (e.g., "DP-6")
->> + * @connector_id: output for connector ID (filled on success)
->> + *
->> + * Name-based lookup helper.  Prefer igt_connector_find_by_path() 
->> for MST
->> + * connectors, since connector names and IDs may change across 
->> hotplug events.
->> + *
->> + * Returns: true if a matching connected connector was found.
->> + */
->> +bool igt_connector_find_by_name(int drm_fd, const char *name,
->> +                uint32_t *connector_id)
->> +{
->> +    drmModeRes *res;
->> +    drmModeConnector *conn;
->> +    char conn_name[IGT_CONNECTOR_NAME_MAX];
->> +    bool found = false;
->> +    int i;
->> +
->> +    if (!name || !connector_id)
->> +        return false;
->> +
->> +    res = drmModeGetResources(drm_fd);
->> +    if (!res)
->> +        return false;
->> +
->> +    for (i = 0; i < res->count_connectors && !found; i++) {
->> +        conn = drmModeGetConnector(drm_fd, res->connectors[i]);
->> +        if (!conn)
->> +            continue;
->> +
->> +        snprintf(conn_name, sizeof(conn_name), "%s-%d",
->> + kmstest_connector_type_str(conn->connector_type),
->> +             conn->connector_type_id);
->> +
->> +        if (strcmp(conn_name, name) == 0 &&
->> +            conn->connection == DRM_MODE_CONNECTED) {
->> +            *connector_id = conn->connector_id;
->> +            found = true;
->> +        }
->> +
->> +        drmModeFreeConnector(conn);
->> +    }
->> +
->> +    drmModeFreeResources(res);
->> +
->> +    if (found)
->> +        igt_debug("igt_connector: Found connector %u for name '%s'\n",
->> +              *connector_id, name);
->> +
->> +    return found;
->> +}
->> +
->> +/**
->> + * igt_connector_reprobe_all:
->> + * @drm_fd: DRM file descriptor
->> + *
->> + * Issues a GETCONNECTOR ioctl for every connector, requesting fresh 
->> state
->> + * from the kernel. This is often sufficient to refresh connector 
->> status and
->> + * MST topology visibility after hotplug events, but does not 
->> guarantee a
->> + * full hardware reprobe in all driver paths.
->> + */
->> +void igt_connector_reprobe_all(int drm_fd)
->> +{
->> +    drmModeRes *res;
->> +    drmModeConnector *conn;
->> +    int i;
->> +
->> +    res = drmModeGetResources(drm_fd);
->> +    if (!res)
->> +        return;
->> +
->> +    for (i = 0; i < res->count_connectors; i++) {
->> +        conn = drmModeGetConnector(drm_fd, res->connectors[i]);
->> +        if (conn)
->> +            drmModeFreeConnector(conn);
->> +    }
->> +
->> +    drmModeFreeResources(res);
->> +}
->> diff --git a/lib/igt_connector_helper.h b/lib/igt_connector_helper.h
->> new file mode 100644
->> index 000000000..fffb2661b
->> --- /dev/null
->> +++ b/lib/igt_connector_helper.h
->> @@ -0,0 +1,27 @@
->> +/* SPDX-License-Identifier: MIT */
->> +/*
->> + * Copyright © 2026 Intel Corporation
->> + */
->> +
->> +#ifndef IGT_CONNECTOR_HELPER_H
->> +#define IGT_CONNECTOR_HELPER_H
->> +
->> +#include <stdbool.h>
->> +#include <stddef.h>
->> +#include <stdint.h>
->> +
->> +#define IGT_CONNECTOR_NAME_MAX 32
->> +
->> +int igt_connector_get_connected(int drm_fd, uint32_t *connectors,
->> +                int max_connectors);
->> +bool igt_connector_get_info(int drm_fd, uint32_t connector_id,
->> +                char *name, size_t name_size,
->> +                char *serial, size_t serial_size,
->> +                char *path, size_t path_size);
->> +bool igt_connector_find_by_path(int drm_fd, const char *path,
->> +                uint32_t *connector_id);
->> +bool igt_connector_find_by_name(int drm_fd, const char *name,
->> +                uint32_t *connector_id);
->> +void igt_connector_reprobe_all(int drm_fd);
->> +
->> +#endif /* IGT_CONNECTOR_HELPER_H */
->> diff --git a/lib/meson.build b/lib/meson.build
->> index ea721ecf7..074b21fdf 100644
->> --- a/lib/meson.build
->> +++ b/lib/meson.build
->> @@ -113,6 +113,7 @@ lib_sources = [
->>       'igt_vmwgfx.c',
->>       'igt_psr.c',
->>       'igt_amd.c',
->> +    'igt_connector_helper.c',
->>       'igt_edid.c',
->>       'igt_eld.c',
->>       'igt_infoframe.c',
+Regarding macro - yes, this is copy/paste and depends implicitly
+on fd, vm, va_bits. May this be follow up series or you want to
+refactor it now?
+
+> 
+> > +
+> > +static void
+> > +test_compute_square_userenv(int fd, uint32_t flags)
+> > +{
+> > +	struct user_execenv env = {};
+> > +	uint32_t input_bo, output_bo, vm, size = SZ_4K;
+> > +	int va_bits = xe_va_bits(fd);
+> > +	float *input, *output;
+> > +	int i;
+> > +
+> > +	size = ALIGN(size, xe_get_default_alignment(fd));
+> > +	env.array_size = size / sizeof(float);
+> > +
+> > +	vm = env.vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
+> > +				   DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
+> > +
+> > +	if ((flags & INPUT_IN_SVM) || (flags & OUTPUT_IN_SVM)) {
+> > +		struct drm_xe_sync sync = {
+> > +			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+> > +			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> > +			.timeline_value = USER_FENCE_VALUE,
+> > +		};
+> > +		struct bo_sync {
+> > +			uint64_t sync;
+> > +		} *bo_sync;
+> > +
+> > +		bo_sync = aligned_alloc(xe_get_default_alignment(fd), sizeof(*bo_sync));
+> > +		igt_assert(bo_sync);
+> > +		sync.addr = to_user_pointer(&bo_sync->sync);
+> > +		bind_system_allocator(&sync, 1);
+> > +		xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, 0, FIVE_SEC);
+> > +		free(bo_sync);
+> > +	}
+> > +
+> > +	if (flags & INPUT_IN_SVM) {
+> > +		input = aligned_alloc(xe_get_default_alignment(fd), size);
+> > +		env.input_addr = to_user_pointer(input);
+> > +
+> > +	} else {
+> > +		input_bo = xe_bo_create(fd, env.vm, size, vram_if_possible(fd, 0),
+> > +					DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> > +		input = xe_bo_map(fd, input_bo, size);
+> > +		env.input_bo = input_bo;
+> > +		env.input_addr = INPUT_BO_ADDR;
+> > +	}
+> > +
+> > +	if (flags & OUTPUT_IN_SVM) {
+> > +		output = aligned_alloc(xe_get_default_alignment(fd), size);
+> > +		env.output_addr = to_user_pointer(output);
+> > +	} else {
+> > +		output_bo = xe_bo_create(fd, env.vm, size, vram_if_possible(fd, 0),
+> > +					 DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> > +		output = xe_bo_map(fd, output_bo, size);
+> > +		env.output_bo = output_bo;
+> > +		env.output_addr = OUTPUT_BO_ADDR;
+> > +	}
+> > +
+> > +	env.loop_count = env.array_size / 2;
+> > +	env.skip_results_check = true;
+> > +
+> > +	for (i = 0; i < env.array_size; i++)
+> > +		input[i] = (float)i + 2.0f;
+> > +
+> > +	run_intel_compute_kernel(fd, &env, EXECENV_PREF_SYSTEM);
+> > +
+> > +	for (i = 0; i < env.loop_count; i++) {
+> > +		float expected_output = input[i] * input[i];
+> > +
+> > +		if (output[i] != expected_output || output[i] == 0.0f)
+> > +			igt_debug("[%4d] input:%f output:%f expected_output:%f\n",
+> > +				  i, input[i], output[i], expected_output);
+> > +		igt_assert_eq_double(output[i], expected_output);
+> > +	}
+> 
+> This seems like a copy/paste from bo_check_square(). Besides, a few lines
+> above we set:
+> 
+>     env.skip_results_check = true
+> 
+> to skip the result check, which seems contradictory. Is there a reason for
+> this duplication?
+
+Results check assumes square what if we provide own kernel might not
+be true. And in the test I show how to control input/output set/check
+from userenv side.
+
+--
+Zbigniew
+
+> 
+> Thanks,
+> Francois
+> 
+> > +
+> > +	if (flags & INPUT_IN_SVM) {
+> > +		free(input);
+> > +	} else {
+> > +		munmap(input, size);
+> > +		gem_close(fd, input_bo);
+> > +	}
+> > +
+> > +	if (flags & OUTPUT_IN_SVM) {
+> > +		free(output);
+> > +	} else {
+> > +		munmap(output, size);
+> > +		gem_close(fd, output_bo);
+> > +	}
+> > +
+> > +	xe_vm_destroy(fd, env.vm);
+> > +}
+> > +
+> >  int igt_main()
+> >  {
+> >  	int xe, ccs_mode[4];
+> > @@ -525,6 +663,18 @@ int igt_main()
+> >  	igt_subtest("compute-square")
+> >  		test_compute_square(xe);
+> >  
+> > +	igt_subtest("compute-square-userenv")
+> > +		test_compute_square_userenv(xe, 0);
+> > +
+> > +	igt_subtest("compute-square-userenv-isvm")
+> > +		test_compute_square_userenv(xe, INPUT_IN_SVM);
+> > +
+> > +	igt_subtest("compute-square-userenv-osvm")
+> > +		test_compute_square_userenv(xe, OUTPUT_IN_SVM);
+> > +
+> > +	igt_subtest("compute-square-userenv-iosvm")
+> > +		test_compute_square_userenv(xe, INPUT_IN_SVM | OUTPUT_IN_SVM);
+> > +
+> >  	igt_fixture()
+> >  		drm_close_driver(xe);
+> >  
+> > -- 
+> > 2.43.0
+> > 
