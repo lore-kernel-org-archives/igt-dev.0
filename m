@@ -4,27 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A38E3F5513A
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 06:04:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 618A7FC9EDF
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 06:07:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 387DD10E131;
-	Mon,  9 Mar 2026 06:04:30 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00F9C10E0ED;
- Mon,  9 Mar 2026 06:04:28 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2702796984470805326=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E27DE10E131;
+	Mon,  9 Mar 2026 06:07:25 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jIXhJcs+";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 673AA10E0ED
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2026 06:07:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1773036444; x=1804572444;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=0kfpIrCC0kMWR4MZ2ysBh6Znh+QA6kdKTQFpqV1mOU0=;
+ b=jIXhJcs+fN2kSualr9Dg7EEQNi26LaxCoqz3oH0CKG5fl/p8Pfq1vhdc
+ YES+lmtywnn3jkcdnzs6s20bwwPHaF91n27ZLrw9sI2OfuCPUOnRg7L9B
+ JNTC/X+DtmlLVEguGxlMEeqFubBDpMx5yOFQhwabJpUX4cqStvdFN7u6g
+ tpjLMqN2hxwgaUVasvu0C9512D6hXN/RsH8JZFfgjywci/r552LRU04O0
+ hAavC4g84wXjlglhcvz63pJh2NoNlB1p48K59Dnp7OdCzx554AF1FuzMY
+ EVudJXda+zv3SqU19kyA0FF/b3W+QLeenS1AAWC/09T/PLfYqJ0dAryRM Q==;
+X-CSE-ConnectionGUID: AZcs92g+TxCPEbJlIfTn2g==
+X-CSE-MsgGUID: 8TONK4p9TL6Cho2D/N7xPA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="73073610"
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="73073610"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Mar 2026 23:07:24 -0700
+X-CSE-ConnectionGUID: gHNPL25kQXiUvR4flzOElA==
+X-CSE-MsgGUID: eglvCFyqTe22LpEyFgmD8A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="219627751"
+Received: from jeevan24.iind.intel.com ([10.223.74.58])
+ by orviesa008.jf.intel.com with ESMTP; 08 Mar 2026 23:07:23 -0700
+From: Smitha Balasubramanyam <smitha.balasubramanyam@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH 0/3] Implementation of Negative tests for VM_BIND Decomp
+Date: Mon,  9 Mar 2026 11:37:57 +0530
+Message-ID: <20260309060800.642378-1-smitha.balasubramanyam@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fsys?=
- =?utf-8?q?tem=5Fallocator=3A_Enhance_SVM_compute_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 09 Mar 2026 06:04:28 -0000
-Message-ID: <177303626897.332072.4699688558777037579@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260309043400.2280535-1-nishit.sharma@intel.com>
-In-Reply-To: <20260309043400.2280535-1-nishit.sharma@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,171 +60,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2702796984470805326==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This series adds negative test coverage for VM_BIND Decompression.
 
-== Series Details ==
+Patch 1 introduces temporary helpers and UAPI definitions required
+for the tests while the corresponding positive test series is still
+under review.
 
-Series: tests/intel/xe_exec_system_allocator: Enhance SVM compute test
-URL   : https://patchwork.freedesktop.org/series/162832/
-State : success
+Patch 2 adds resource management structures and helper utilities
+used by the VM_BIND Decomp Negative tests.
 
-== Summary ==
+Patch 3 implements the actual negative tests covering invalid uapi parameters and
+ccs corruption scenarios.
 
-CI Bug Log - changes from XEIGT_8784_BAT -> XEIGTPW_14693_BAT
-====================================================
+Smitha Balasubramanyam (3):
+  igt/xe: Add temporary helpers for VM_Bind neg test
+  tests/intel : Add data structs & helper utilities for VM_Bind Neg
+    tests
+  tests/intel : Add Neg tests for VM_Bind Decomp
 
-Summary
--------
+ include/drm-uapi/xe_drm.h |    1 +
+ tests/intel/xe_ccs.c      | 1395 +++++++++++++++++++++++++++++++++----
+ 2 files changed, 1275 insertions(+), 121 deletions(-)
 
-  **SUCCESS**
+-- 
+2.43.0
 
-  No regressions found.
-
-  
-
-Participating hosts (14 -> 14)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_14693_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#7483])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8784/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14693/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
-    - bat-bmg-2:          NOTRUN -> [SKIP][3] ([Intel XE#2229])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14693/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
-
-  
-#### Possible fixes ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-bmg-2:          [ABORT][4] ([Intel XE#7249]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8784/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14693/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - bat-adlp-7:         [DMESG-WARN][6] ([Intel XE#7483]) -> [PASS][7]
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8784/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14693/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html
-
-  
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#7249]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7249
-  [Intel XE#7483]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483
-
-
-Build changes
--------------
-
-  * IGT: IGT_8784 -> IGTPW_14693
-  * Linux: xe-4675-fce8d7fb2107068c269b868d51aba5f9cf85998a -> xe-4678-6884fe03ff2bc5a2f501ba4710f950dd4933ac84
-
-  IGTPW_14693: 14693
-  IGT_8784: c7d12b3499ef1698373f246748e68c05ada0579e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-4675-fce8d7fb2107068c269b868d51aba5f9cf85998a: fce8d7fb2107068c269b868d51aba5f9cf85998a
-  xe-4678-6884fe03ff2bc5a2f501ba4710f950dd4933ac84: 6884fe03ff2bc5a2f501ba4710f950dd4933ac84
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14693/index.html
-
---===============2702796984470805326==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_system_allocator: Enhance SVM compute test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162832/">https://patchwork.freedesktop.org/series/162832/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14693/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14693/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8784_BAT -&gt; XEIGTPW_14693_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (14 -&gt; 14)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_14693_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8784/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14693/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
-<ul>
-<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14693/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8784/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7249">Intel XE#7249</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14693/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8784/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7483">Intel XE#7483</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14693/bat-adlp-7/igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8784 -&gt; IGTPW_14693</li>
-<li>Linux: xe-4675-fce8d7fb2107068c269b868d51aba5f9cf85998a -&gt; xe-4678-6884fe03ff2bc5a2f501ba4710f950dd4933ac84</li>
-</ul>
-<p>IGTPW_14693: 14693<br />
-  IGT_8784: c7d12b3499ef1698373f246748e68c05ada0579e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-4675-fce8d7fb2107068c269b868d51aba5f9cf85998a: fce8d7fb2107068c269b868d51aba5f9cf85998a<br />
-  xe-4678-6884fe03ff2bc5a2f501ba4710f950dd4933ac84: 6884fe03ff2bc5a2f501ba4710f950dd4933ac84</p>
-
-</body>
-</html>
-
---===============2702796984470805326==--
