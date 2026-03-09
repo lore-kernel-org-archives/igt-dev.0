@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B15E5F4180E
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 16:42:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1A53F4180E
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 16:48:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5F11610E556;
-	Mon,  9 Mar 2026 16:42:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 82B3310E55F;
+	Mon,  9 Mar 2026 16:48:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G3GwLXvM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fCjd98FS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 430EC10E556
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2026 16:42:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3EA7710E55F
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2026 16:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773074551; x=1804610551;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=6DiqXYJirXIQ1xZG8OwSXAdasDVP7ZxHgyS0p76xB5U=;
- b=G3GwLXvMMxRf/jyHCGtEVD9vNqm9lC7o5EnwIJW6jAm36kcQL+kmTwVF
- V/USc3q4LWhMym0j2SNGtTWftshX1+MK40S642PxumfsO0Ht4XWA2EJbO
- nj7ppgfVtqKXn6OcNiMqgoRDyvncJWvNZUBNzTouegkPakjOUIihnI93m
- 5QkwqkEXSXXC0crQzuAe+zRTqr/x3UWWfuo8pHLIdVx5ieM7TAiJtWIeM
- AlkaKYsMhkvTNCPO+ceGBvdwM/Ltq4olk8OJ6daXs4f1fIf7ltBYr06Hh
- v8DsJQlUQvoECsy/1fy33U/3Drm7hbpLDd8wL/xOaRQ+g2Y25GJ7lQ3PN w==;
-X-CSE-ConnectionGUID: vczcH2vARA2acADdE0vnbw==
-X-CSE-MsgGUID: QHOl9l3cT26wUWT20YInOg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="84740277"
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="84740277"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Mar 2026 09:42:31 -0700
-X-CSE-ConnectionGUID: r7Z64izPR0+pY2IC6teh7w==
-X-CSE-MsgGUID: ygkKOrAcQhePwN38yAN9qg==
+ t=1773074911; x=1804610911;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=t7J5BAILMcURNK7jDrC9fVkmkAcScHDIqh6okgDYgN4=;
+ b=fCjd98FSgAWGizRpGtOhY5xspfNQGczLWbT6SrRslo4iz1hVmIlqBXV3
+ cQAEaIBI6eap36MGSmkCoF13QacOQBVnnJ8BNMIOMZuiEAyl5rdU0gW8R
+ eUit1isY6FJezVJwTILsZE3WyopRhTVTAoAVTLepj/HEi7b4phndeZgnO
+ 1mcIxSS+FkithnG0PUhCAb/LLZDD04hSWH7WQ6ytkDkDDTTgRm50LwEiD
+ OZ2Ladj9Vx9W5A64mzGTeYRl3i64l91rsXfTJxXiHCjCz3XaCLEjL1/W5
+ Wdllkkpxtr8uMwlQ+9GuKo4g052WnH2Cy+twuLC7TT9vscX7p8YNDeuBC A==;
+X-CSE-ConnectionGUID: yOKJCAxbT+qdWy89yEdgEA==
+X-CSE-MsgGUID: 35PRD7NjSvSm7i5mQwJOSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="73304278"
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="73304278"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Mar 2026 09:48:31 -0700
+X-CSE-ConnectionGUID: Mxd+cTgRQDOUu6Dkjw2/lA==
+X-CSE-MsgGUID: inWI2XKOT8yrNh3suP65jQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="242829120"
 Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.246.239])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Mar 2026 09:42:29 -0700
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Mar 2026 09:48:29 -0700
 From: Jani Nikula <jani.nikula@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ville.syrjala@linux.intel.com,
-	jani.nikula@intel.com
-Subject: [PATCH i-g-t] lib/i915/fbc: switch the interface from pipe to CRTC
-Date: Mon,  9 Mar 2026 18:42:25 +0200
-Message-ID: <20260309164225.716195-1-jani.nikula@intel.com>
+To: Jani Nikula <jani.nikula@intel.com>,
+	igt-dev@lists.freedesktop.org
+Cc: ville.syrjala@linux.intel.com
+Subject: [PATCH i-g-t v2] tests/kms_vblank: use CRTC indexes instead of pipes
+ for CRTC tracking
+Date: Mon,  9 Mar 2026 18:48:25 +0200
+Message-ID: <20260309164825.720712-1-jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <e5066cc6d24aad560a51f9de37e5d26a46e4dd47.1773066012.git.jani.nikula@intel.com>
+References: <e5066cc6d24aad560a51f9de37e5d26a46e4dd47.1773066012.git.jani.nikula@intel.com>
 MIME-Version: 1.0
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
@@ -69,283 +71,76 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-All of the FBC functionality assumes CRTC index, even though the
-functions have enum pipe as parameter. Switch to CRTC to reflect what
-the functions expect in reality.
+The test tracks	"active" CRTCs in a dedicated array. This does not
+depend on pipes in any way. Switch to using CRTC indexes instead.
+
+v2: Switch active_crtcs[] type from enum pipe to int
 
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- lib/i915/intel_fbc.c                   | 33 ++++++++++++--------------
- lib/i915/intel_fbc.h                   |  6 ++---
- tests/intel/kms_dirtyfb.c              |  8 +++----
- tests/intel/kms_fbc_dirty_rect.c       |  7 +++---
- tests/intel/kms_frontbuffer_tracking.c | 13 ++++------
- tests/intel/kms_psr.c                  |  7 +++---
- tests/intel/kms_psr2_sf.c              |  7 +++---
- 7 files changed, 35 insertions(+), 46 deletions(-)
+ tests/kms_vblank.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
-index 84c66929dabc..9ea5e3cf68fd 100644
---- a/lib/i915/intel_fbc.c
-+++ b/lib/i915/intel_fbc.c
-@@ -14,21 +14,20 @@
- #define FBC_STATUS_BUF_LEN 128
+diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+index e79b2535c599..7fb7de0a70c1 100644
+--- a/tests/kms_vblank.c
++++ b/tests/kms_vblank.c
+@@ -110,8 +110,8 @@ typedef struct {
+ } data_t;
  
- /**
-- * intel_fbc_supported_on_chipset:
-- * @device: fd of the device
-- * @pipe: Display pipe
-+ * intel_fbc_supported:
-+ * @crtc: CRTC
-  *
-- * Check if FBC is supported by chipset on given pipe.
-+ * Check if FBC is supported by chipset on given CRTC.
-  *
-  * Returns:
-  * true if FBC is supported and false otherwise.
-  */
--bool intel_fbc_supported_on_chipset(int device, enum pipe pipe)
-+bool intel_fbc_supported(igt_crtc_t *crtc)
- {
- 	char buf[FBC_STATUS_BUF_LEN];
- 	int dir;
+ static bool all_pipes;
+-static enum pipe active_pipes[IGT_MAX_PIPES];
+-static uint32_t last_pipe;
++static int active_crtcs[IGT_MAX_PIPES];
++static uint32_t last_crtc_index;
  
--	dir = igt_debugfs_crtc_dir(device, pipe, O_DIRECTORY);
-+	dir = igt_debugfs_crtc_dir(crtc->display->drm_fd, crtc->crtc_index, O_DIRECTORY);
- 	igt_require_fd(dir);
- 	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
- 	close(dir);
-@@ -39,13 +38,13 @@ bool intel_fbc_supported_on_chipset(int device, enum pipe pipe)
- 		!strstr(buf, "stolen memory not initialised\n");
- }
+ static double elapsed(const struct timespec *start,
+ 		      const struct timespec *end,
+@@ -522,8 +522,8 @@ static void run_subtests(data_t *data)
+ 					if (!crtc_output_combo_valid(&data->display, crtc, data->output))
+ 						continue;
  
--static bool _intel_fbc_is_enabled(int device, enum pipe pipe, int log_level, char *last_fbc_buf)
-+static bool _intel_fbc_is_enabled(igt_crtc_t *crtc, int log_level, char *last_fbc_buf)
- {
- 	char buf[FBC_STATUS_BUF_LEN];
- 	bool print = true;
- 	int dir;
+-					if (!all_pipes && crtc->pipe != active_pipes[0] &&
+-					    crtc->pipe != active_pipes[last_pipe]) {
++					if (!all_pipes && crtc->crtc_index != active_crtcs[0] &&
++					    crtc->crtc_index != active_crtcs[last_crtc_index]) {
+ 						igt_info("Skipping pipe %s\n",
+ 							 igt_crtc_name(crtc));
+ 						continue;
+@@ -554,8 +554,8 @@ static void run_subtests(data_t *data)
+ 					if (!crtc_output_combo_valid(&data->display, crtc, data->output))
+ 						continue;
  
--	dir = igt_debugfs_crtc_dir(device, pipe, O_DIRECTORY);
-+	dir = igt_debugfs_crtc_dir(crtc->display->drm_fd, crtc->crtc_index, O_DIRECTORY);
- 	igt_require_fd(dir);
- 	igt_debugfs_simple_read(dir, "i915_fbc_status", buf, sizeof(buf));
- 	close(dir);
-@@ -64,37 +63,35 @@ static bool _intel_fbc_is_enabled(int device, enum pipe pipe, int log_level, cha
- 
- /**
-  * intel_fbc_is_enabled:
-- * @device: fd of the device
-- * @pipe: Display pipe
-+ * @crtc: CRTC
-  * @log_level: Wanted loglevel
-  *
-- * Check if FBC is enabled on given pipe. Loglevel can be used to
-- * control at which loglevel current state is printed out.
-+ * Check if FBC is enabled on given CRTC. Loglevel can be used to control
-+ * at which loglevel current state is printed out.
-  *
-  * Returns:
-  * true if FBC is enabled.
-  */
--bool intel_fbc_is_enabled(int device, enum pipe pipe, int log_level)
-+bool intel_fbc_is_enabled(igt_crtc_t *crtc, int log_level)
- {
- 	char last_fbc_buf[FBC_STATUS_BUF_LEN] = {'\0'};
- 
--	return _intel_fbc_is_enabled(device, pipe, log_level, last_fbc_buf);
-+	return _intel_fbc_is_enabled(crtc, log_level, last_fbc_buf);
- }
- 
- /**
-  * intel_fbc_wait_until_enabled:
-- * @device: fd of the device
-- * @pipe: Display pipe
-+ * @crtc: CRTC
-  *
-  * Wait until fbc is enabled. Used timeout is constant 2 seconds.
-  *
-  * Returns:
-  * true if FBC got enabled.
-  */
--bool intel_fbc_wait_until_enabled(int device, enum pipe pipe)
-+bool intel_fbc_wait_until_enabled(igt_crtc_t *crtc)
- {
- 	char last_fbc_buf[FBC_STATUS_BUF_LEN] = {'\0'};
--	bool enabled = igt_wait(_intel_fbc_is_enabled(device, pipe, IGT_LOG_DEBUG, last_fbc_buf), 2000, 1);
-+	bool enabled = igt_wait(_intel_fbc_is_enabled(crtc, IGT_LOG_DEBUG, last_fbc_buf), 2000, 1);
- 
- 	if (!enabled)
- 		igt_info("FBC is not enabled: \n%s\n", last_fbc_buf);
-diff --git a/lib/i915/intel_fbc.h b/lib/i915/intel_fbc.h
-index fe9edcbc31cf..6d188995de3c 100644
---- a/lib/i915/intel_fbc.h
-+++ b/lib/i915/intel_fbc.h
-@@ -13,9 +13,9 @@
- 
- enum psr_mode;
- 
--bool intel_fbc_supported_on_chipset(int device, enum pipe pipe);
--bool intel_fbc_wait_until_enabled(int device, enum pipe pipe);
--bool intel_fbc_is_enabled(int device, enum pipe pipe, int log_level);
-+bool intel_fbc_supported(igt_crtc_t *crtc);
-+bool intel_fbc_wait_until_enabled(igt_crtc_t *crtc);
-+bool intel_fbc_is_enabled(igt_crtc_t *crtc, int log_level);
- void intel_fbc_max_plane_size(int fd, uint32_t *width, uint32_t *height);
- bool intel_fbc_plane_size_supported(int device, uint32_t width, uint32_t height);
- bool intel_fbc_supported_for_psr_mode(int disp_ver, enum psr_mode mode);
-diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
-index 0ee0fe43c463..d5e7e61a4a1b 100644
---- a/tests/intel/kms_dirtyfb.c
-+++ b/tests/intel/kms_dirtyfb.c
-@@ -100,7 +100,7 @@ static bool check_support(data_t *data)
- 	case FEATURE_NONE:
- 		return true;
- 	case FEATURE_FBC:
--		if (!intel_fbc_supported_on_chipset(data->drm_fd, data->crtc->pipe)) {
-+		if (!intel_fbc_supported(data->crtc)) {
- 			igt_info("FBC is not supported on this chipset\n");
- 			return false;
- 		}
-@@ -168,8 +168,7 @@ static void check_feature_enabled(data_t *data)
- 	case FEATURE_NONE:
- 		break;
- 	case FEATURE_FBC:
--		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
--							  data->crtc->pipe),
-+		igt_assert_f(intel_fbc_wait_until_enabled(data->crtc),
- 			     "FBC still disabled\n");
- 		break;
- 	case FEATURE_PSR:
-@@ -194,8 +193,7 @@ static void check_feature(data_t *data)
- 	case FEATURE_NONE:
- 		break;
- 	case FEATURE_FBC:
--		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
--							  data->crtc->pipe),
-+		igt_assert_f(intel_fbc_wait_until_enabled(data->crtc),
- 			     "FBC disabled\n");
- 		/* TODO: Add compression check here */
- 		break;
-diff --git a/tests/intel/kms_fbc_dirty_rect.c b/tests/intel/kms_fbc_dirty_rect.c
-index ce2da42dde8f..9a0146460b18 100644
---- a/tests/intel/kms_fbc_dirty_rect.c
-+++ b/tests/intel/kms_fbc_dirty_rect.c
-@@ -122,9 +122,8 @@ set_fb_and_collect_crc(data_t *data, igt_plane_t *plane, struct igt_fb *fb,
- 	igt_pipe_crc_start(data->pipe_crc);
- 	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, crc);
- 	igt_pipe_crc_stop(data->pipe_crc);
--	igt_assert_f(intel_fbc_is_enabled(data->drm_fd, data->crtc->pipe,
--					  IGT_LOG_INFO),
--					  "FBC is not enabled\n");
-+	igt_assert_f(intel_fbc_is_enabled(data->crtc, IGT_LOG_INFO),
-+		     "FBC is not enabled\n");
- }
- 
- static void
-@@ -412,7 +411,7 @@ static bool prepare_test(data_t *data)
- 	data->pipe_crc = igt_crtc_crc_new(data->crtc,
- 					  IGT_PIPE_CRC_SOURCE_AUTO);
- 
--	igt_require_f(intel_fbc_supported_on_chipset(data->drm_fd, data->crtc->pipe),
-+	igt_require_f(intel_fbc_supported(data->crtc),
- 		      "FBC not supported by the chipset on pipe\n");
- 
- 	if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL) ||
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 08e08c594c0d..12f51047d286 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -2152,7 +2152,7 @@ static void teardown_crcs(void)
- 
- static void setup_fbc(void)
- {
--	if (!intel_fbc_supported_on_chipset(drm.fd, prim_mode_params.crtc->pipe)) {
-+	if (!intel_fbc_supported(prim_mode_params.crtc)) {
- 		igt_info("Can't test FBC: not supported on this chipset\n");
- 		return;
- 	}
-@@ -2360,18 +2360,15 @@ static void do_status_assertions(int flags)
- 		igt_require(!fbc_stride_not_supported());
- 		igt_require(!fbc_mode_too_large());
- 		igt_require(!fbc_psr_not_possible());
--		if (!intel_fbc_wait_until_enabled(drm.fd, prim_mode_params.crtc->pipe)) {
--			igt_assert_f(intel_fbc_is_enabled(drm.fd,
--						    prim_mode_params.crtc->pipe,
--						    IGT_LOG_WARN),
-+		if (!intel_fbc_wait_until_enabled(prim_mode_params.crtc)) {
-+			igt_assert_f(intel_fbc_is_enabled(prim_mode_params.crtc, IGT_LOG_WARN),
- 				     "FBC disabled\n");
- 		}
- 
- 		if (opt.fbc_check_compression)
- 			igt_assert(fbc_wait_for_compression());
- 	} else if (flags & ASSERT_FBC_DISABLED) {
--		igt_assert(!intel_fbc_wait_until_enabled(drm.fd,
--						   prim_mode_params.crtc->pipe));
-+		igt_assert(!intel_fbc_wait_until_enabled(prim_mode_params.crtc));
- 	}
- 
- 	if (flags & ASSERT_PSR_ENABLED) {
-@@ -4225,7 +4222,7 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
- 					continue;
- 				}
- 
--				if (!intel_fbc_supported_on_chipset(drm.fd, crtc->pipe)) {
-+				if (!intel_fbc_supported(crtc)) {
- 					igt_info("Can't test FBC: not supported on pipe-%s\n", igt_crtc_name(crtc));
- 					continue;
- 				}
-diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
-index ff9c23cec032..862b9f2ffe87 100644
---- a/tests/intel/kms_psr.c
-+++ b/tests/intel/kms_psr.c
-@@ -749,9 +749,8 @@ static void test_setup(data_t *data)
- 		setup_test_plane(data, data->test_plane_id);
- 		if (psr_wait_entry_if_enabled(data)) {
- 			if (data->fbc_flag == true && data->op_fbc_mode == FBC_ENABLED)
--				igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
--									  crtc->pipe),
--									  "FBC still disabled\n");
-+				igt_assert_f(intel_fbc_wait_until_enabled(crtc),
-+					     "FBC still disabled\n");
- 			psr_entered = true;
- 			break;
- 		}
-@@ -802,7 +801,7 @@ int igt_main()
- 		disp_ver = intel_display_ver(data.devid);
- 
+-					if (!all_pipes && crtc->pipe != active_pipes[0] &&
+-					    crtc->pipe != active_pipes[last_pipe]) {
++					if (!all_pipes && crtc->crtc_index != active_crtcs[0] &&
++					    crtc->crtc_index != active_crtcs[last_crtc_index]) {
+ 						igt_info("Skipping pipe %s\n",
+ 							 igt_crtc_name(crtc));
+ 						continue;
+@@ -650,9 +650,9 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 		/* Get active pipes. */
  		for_each_crtc(&data.display, crtc) {
--			if (intel_fbc_supported_on_chipset(data.drm_fd, crtc->pipe))
-+			if (intel_fbc_supported(crtc))
- 				fbc_chipset_support = true;
- 		}
- 	}
-diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-index 5bcbc8df4741..7a8b7826b3a7 100644
---- a/tests/intel/kms_psr2_sf.c
-+++ b/tests/intel/kms_psr2_sf.c
-@@ -957,9 +957,8 @@ static void run(data_t *data)
- 	igt_assert(psr_wait_entry(data->debugfs_fd, data->psr_mode, data->output));
- 
- 	if (data->fbc_flag == true && data->op_fbc_mode == FBC_ENABLED)
--		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
--							  data->crtc->pipe),
--							  "FBC still disabled\n");
-+		igt_assert_f(intel_fbc_wait_until_enabled(data->crtc),
-+			     "FBC still disabled\n");
- 
- 	if (is_et_check_needed(data))
- 		igt_assert_f(early_transport_check(data->debugfs_fd),
-@@ -1197,7 +1196,7 @@ int igt_main()
- 						data.output) {
  			data.crtc = crtc;
+-			active_pipes[last_pipe++] = crtc->pipe;
++			active_crtcs[last_crtc_index++] = crtc->crtc_index;
+ 		}
+-		last_pipe--;
++		last_crtc_index--;
+ 	}
  
--			if (intel_fbc_supported_on_chipset(data.drm_fd, data.crtc->pipe))
-+			if (intel_fbc_supported(data.crtc))
- 				fbc_chipset_support = true;
+ 	igt_describe("Negative test for vblank request.");
+@@ -679,8 +679,8 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 			if (!crtc_output_combo_valid(&data.display, crtc, data.output))
+ 				continue;
  
- 			for (i = 0; i < ARRAY_SIZE(psr_status); i++) {
+-			if (!all_pipes && crtc->pipe != active_pipes[0] &&
+-					  crtc->pipe != active_pipes[last_pipe]) {
++			if (!all_pipes && crtc->crtc_index != active_crtcs[0] &&
++					  crtc->crtc_index != active_crtcs[last_crtc_index]) {
+ 				igt_info("Skipping pipe %s\n",
+ 					 igt_crtc_name(crtc));
+ 				continue;
 -- 
 2.47.3
 
