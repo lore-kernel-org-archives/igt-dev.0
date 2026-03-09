@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EA0AF3C26E
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 14:25:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3840F417E0
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Mar 2026 14:29:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 448AF10E15A;
-	Mon,  9 Mar 2026 14:25:45 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MOxIJDB5";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 410E110E15A
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2026 14:25:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773066343; x=1804602343;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=L1VMncctwmQYTdNaOB3o+U4PL3Sn1QsaTJ3XAyO9NBc=;
- b=MOxIJDB5hb+lPtZm+qV0IxtLbnsKqMlZq36ai+r3NJa7Euk0pUuSlmV/
- eau8eLbJNC/W1AkObYhHooPG1Q/zcBrgSgcGl0E1+JAK+C9QehDcBcxM1
- PXFxaEoqo+DHXSDG4WC940+Lx3eVsOfaHekZ3u4x5XhPfixdzYHX2h56G
- hOWR5dgP6GegHMjudTGmRak9CJ5FHqqBMf3QVNmcjz5B358/TBs78tMFW
- 3QdaK622RFz317xSE2D0oYcxgbv1jKIBcCX4P9sFLUp7xFWrdIOgkP1qu
- fm9OjmgZ8lsJKC2Y9gxPnriq5u0Ax2xJl6XpqZWvxOEsDPVzOCmxbmIC8 g==;
-X-CSE-ConnectionGUID: 2QFWVW9nRBSZ8iN+zASS3A==
-X-CSE-MsgGUID: 2ZrJMGRmT9yHL3JJ6RzMqQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="85178821"
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="85178821"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Mar 2026 07:25:43 -0700
-X-CSE-ConnectionGUID: 8yPJcv5PR+qJNaHL7YJv3g==
-X-CSE-MsgGUID: ZtV7qtlqRSm0LGLCwBS2EA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; d="scan'208";a="224212644"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.246.239])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Mar 2026 07:25:41 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ville.syrjala@linux.intel.com
-Subject: Re: [PATCH i-g-t 08/10] tests/kms_vblank: use CRTC indexes instead
- of pipes for CRTC tracking
-In-Reply-To: <e5066cc6d24aad560a51f9de37e5d26a46e4dd47.1773066012.git.jani.nikula@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <cover.1773066012.git.jani.nikula@intel.com>
- <e5066cc6d24aad560a51f9de37e5d26a46e4dd47.1773066012.git.jani.nikula@intel.com>
-Date: Mon, 09 Mar 2026 16:25:38 +0200
-Message-ID: <afbad5d884c8c21009146876aab0a43d4cd668ae@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 588C810E50A;
+	Mon,  9 Mar 2026 14:29:03 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E512510E50A;
+ Mon,  9 Mar 2026 14:29:01 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8143412852345755798=="
 MIME-Version: 1.0
-Content-Type: text/plain
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_kms=5Fflip=3A_limit_numbe?=
+ =?utf-8?q?r_of_subtests_run_=28rev10=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Micha=C5=82_Grzelak?= <michal.grzelak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 09 Mar 2026 14:29:01 -0000
+Message-ID: <177306654191.333603.409388076238645343@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260309092528.3336467-1-michal.grzelak@intel.com>
+In-Reply-To: <20260309092528.3336467-1-michal.grzelak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,81 +37,227 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 09 Mar 2026, Jani Nikula <jani.nikula@intel.com> wrote:
-> The test tracks	"active" CRTCs in a dedicated array. This does not
-> depend on pipes in any way. Switch to using CRTC indexes instead.
->
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> ---
->  tests/kms_vblank.c | 20 ++++++++++----------
->  1 file changed, 10 insertions(+), 10 deletions(-)
->
-> diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-> index e79b2535c599..395a722bdb13 100644
-> --- a/tests/kms_vblank.c
-> +++ b/tests/kms_vblank.c
-> @@ -110,8 +110,8 @@ typedef struct {
->  } data_t;
->  
->  static bool all_pipes;
-> -static enum pipe active_pipes[IGT_MAX_PIPES];
-> -static uint32_t last_pipe;
-> +static enum pipe active_crtcs[IGT_MAX_PIPES];
+--===============8143412852345755798==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This should be switched to int.
+== Series Details ==
 
-> +static uint32_t last_crtc_index;
->  
->  static double elapsed(const struct timespec *start,
->  		      const struct timespec *end,
-> @@ -522,8 +522,8 @@ static void run_subtests(data_t *data)
->  					if (!crtc_output_combo_valid(&data->display, crtc, data->output))
->  						continue;
->  
-> -					if (!all_pipes && crtc->pipe != active_pipes[0] &&
-> -					    crtc->pipe != active_pipes[last_pipe]) {
-> +					if (!all_pipes && crtc->crtc_index != active_crtcs[0] &&
-> +					    crtc->crtc_index != active_crtcs[last_crtc_index]) {
->  						igt_info("Skipping pipe %s\n",
->  							 igt_crtc_name(crtc));
->  						continue;
-> @@ -554,8 +554,8 @@ static void run_subtests(data_t *data)
->  					if (!crtc_output_combo_valid(&data->display, crtc, data->output))
->  						continue;
->  
-> -					if (!all_pipes && crtc->pipe != active_pipes[0] &&
-> -					    crtc->pipe != active_pipes[last_pipe]) {
-> +					if (!all_pipes && crtc->crtc_index != active_crtcs[0] &&
-> +					    crtc->crtc_index != active_crtcs[last_crtc_index]) {
->  						igt_info("Skipping pipe %s\n",
->  							 igt_crtc_name(crtc));
->  						continue;
-> @@ -650,9 +650,9 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
->  		/* Get active pipes. */
->  		for_each_crtc(&data.display, crtc) {
->  			data.crtc = crtc;
-> -			active_pipes[last_pipe++] = crtc->pipe;
-> +			active_crtcs[last_crtc_index++] = crtc->crtc_index;
->  		}
-> -		last_pipe--;
-> +		last_crtc_index--;
->  	}
->  
->  	igt_describe("Negative test for vblank request.");
-> @@ -679,8 +679,8 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
->  			if (!crtc_output_combo_valid(&data.display, crtc, data.output))
->  				continue;
->  
-> -			if (!all_pipes && crtc->pipe != active_pipes[0] &&
-> -					  crtc->pipe != active_pipes[last_pipe]) {
-> +			if (!all_pipes && crtc->crtc_index != active_crtcs[0] &&
-> +					  crtc->crtc_index != active_crtcs[last_crtc_index]) {
->  				igt_info("Skipping pipe %s\n",
->  					 igt_crtc_name(crtc));
->  				continue;
+Series: kms_flip: limit number of subtests run (rev10)
+URL   : https://patchwork.freedesktop.org/series/161389/
+State : failure
 
--- 
-Jani Nikula, Intel
+== Summary ==
+
+CI Bug Log - changes from IGT_8785 -> IGTPW_14697
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_14697 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_14697, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/index.html
+
+Participating hosts (40 -> 38)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_14697:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@client:
+    - bat-mtlp-8:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/bat-mtlp-8/igt@i915_selftest@live@client.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/bat-mtlp-8/igt@i915_selftest@live@client.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14697 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [PASS][3] -> [INCOMPLETE][4] ([i915#15176])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/bat-mtlp-8/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-8:         [PASS][7] -> [DMESG-FAIL][8] ([i915#12061])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/bat-mtlp-8/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/bat-mtlp-8/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_pipe_crc_basic@read-crc:
+    - fi-cfl-8109u:       [PASS][9] -> [DMESG-WARN][10] ([i915#15673]) +48 other tests dmesg-warn
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-dg2-8:          [DMESG-FAIL][11] ([i915#12061]) -> [PASS][12] +1 other test pass
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/bat-dg2-8/igt@i915_selftest@live.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/bat-dg2-8/igt@i915_selftest@live.html
+    - fi-tgl-1115g4:      [DMESG-FAIL][13] -> [PASS][14] +1 other test pass
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/fi-tgl-1115g4/igt@i915_selftest@live.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/fi-tgl-1115g4/igt@i915_selftest@live.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - fi-tgl-1115g4:      [SKIP][15] ([i915#13030]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#13030]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13030
+  [i915#15176]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15176
+  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8785 -> IGTPW_14697
+
+  CI-20190529: 20190529
+  CI_DRM_18111: 5bb4c677496179faf77e5c4f6fa0c2a44c4ee75d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14697: 49c367f1e5d00ce8b35820f35aeb5c3cd4570b09 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8785: 8785
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/index.html
+
+--===============8143412852345755798==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>kms_flip: limit number of subtests run (rev10)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/161389/">https://patchwork.freedesktop.org/series/161389/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8785 -&gt; IGTPW_14697</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_14697 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_14697, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/index.html</p>
+<h2>Participating hosts (40 -&gt; 38)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_14697:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@client:<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/bat-mtlp-8/igt@i915_selftest@live@client.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/bat-mtlp-8/igt@i915_selftest@live@client.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14697 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/bat-mtlp-8/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15176">i915#15176</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/bat-mtlp-8/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/bat-mtlp-8/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) +48 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/fi-tgl-1115g4/igt@i915_selftest@live.html">DMESG-FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/fi-tgl-1115g4/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8785/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13030">i915#13030</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14697/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8785 -&gt; IGTPW_14697</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18111: 5bb4c677496179faf77e5c4f6fa0c2a44c4ee75d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14697: 49c367f1e5d00ce8b35820f35aeb5c3cd4570b09 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8785: 8785</p>
+
+</body>
+</html>
+
+--===============8143412852345755798==--
