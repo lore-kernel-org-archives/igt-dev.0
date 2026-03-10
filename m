@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD799FD2D62
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Mar 2026 12:00:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEA69FD2D62
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Mar 2026 12:06:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8DBCE10E6FD;
-	Tue, 10 Mar 2026 12:00:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7DD8C10E24D;
+	Tue, 10 Mar 2026 12:06:33 +0000 (UTC)
 Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5508910E27F;
- Tue, 10 Mar 2026 12:00:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9868510E24D;
+ Tue, 10 Mar 2026 12:06:31 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3075203676233804810=="
+ boundary="===============1559397341493822826=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/chamelium/audio=3A_Fi?=
- =?utf-8?q?x_resource_leaks_in_audio_tests_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/i915/fbc=3A_switch_the_?=
+ =?utf-8?q?interface_from_pipe_to_CRTC_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Bilal" <mohammed.bilal@intel.com>
+To: "Jani Nikula" <jani.nikula@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 10 Mar 2026 12:00:35 -0000
-Message-ID: <177314403526.337956.15216805534642844297@a3b018990fe9>
+Date: Tue, 10 Mar 2026 12:06:31 -0000
+Message-ID: <177314439159.338934.1199305557250225355@a3b018990fe9>
 X-Patchwork-Hint: ignore
-References: <20260310091956.3171295-1-mohammed.bilal@intel.com>
-In-Reply-To: <20260310091956.3171295-1-mohammed.bilal@intel.com>
+References: <20260309164225.716195-1-jani.nikula@intel.com>
+In-Reply-To: <20260309164225.716195-1-jani.nikula@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3075203676233804810==
+--===============1559397341493822826==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/chamelium/audio: Fix resource leaks in audio tests (rev3)
-URL   : https://patchwork.freedesktop.org/series/162565/
+Series: lib/i915/fbc: switch the interface from pipe to CRTC (rev2)
+URL   : https://patchwork.freedesktop.org/series/162888/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8789_BAT -> XEIGTPW_14713_BAT
+CI Bug Log - changes from XEIGT_8789_BAT -> XEIGTPW_14714_BAT
 ====================================================
 
 Summary
@@ -66,10 +66,10 @@ Summary
 
   
 
-Participating hosts (14 -> 13)
+Participating hosts (14 -> 14)
 ------------------------------
 
-  Missing    (1): bat-atsm-2 
+  No changes in participating hosts
 
 
 Changes
@@ -81,17 +81,17 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_8789 -> IGTPW_14713
+  * IGT: IGT_8789 -> IGTPW_14714
 
-  IGTPW_14713: 6e767c0d1d76325aa6cf5eb6e02092905745637a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_14714: 14714
   IGT_8789: 8789
   xe-4686-77e176657e782bb81270c230d1cfec91f7707162: 77e176657e782bb81270c230d1cfec91f7707162
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14713/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14714/index.html
 
---===============3075203676233804810==
+--===============1559397341493822826==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,32 +111,32 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/chamelium/audio: Fix resource leaks in audio tests (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162565/">https://patchwork.freedesktop.org/series/162565/</a></td></tr>
+<tr><td><b>Series:</b></td><td>lib/i915/fbc: switch the interface from pipe to CRTC (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162888/">https://patchwork.freedesktop.org/series/162888/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14713/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14713/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14714/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14714/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8789_BAT -&gt; XEIGTPW_14713_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8789_BAT -&gt; XEIGTPW_14714_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (14 -&gt; 13)</h2>
-<p>Missing    (1): bat-atsm-2 </p>
+<h2>Participating hosts (14 -&gt; 14)</h2>
+<p>No changes in participating hosts</p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8789 -&gt; IGTPW_14713</li>
+<li>IGT: IGT_8789 -&gt; IGTPW_14714</li>
 </ul>
-<p>IGTPW_14713: 6e767c0d1d76325aa6cf5eb6e02092905745637a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_14714: 14714<br />
   IGT_8789: 8789<br />
   xe-4686-77e176657e782bb81270c230d1cfec91f7707162: 77e176657e782bb81270c230d1cfec91f7707162</p>
 
 </body>
 </html>
 
---===============3075203676233804810==--
+--===============1559397341493822826==--
