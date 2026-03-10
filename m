@@ -4,64 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C879AFD2D72
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Mar 2026 12:28:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66BEBFD2D69
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Mar 2026 12:39:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B340C10E715;
-	Tue, 10 Mar 2026 12:28:36 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NAYso16l";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 682F810E6FE;
- Tue, 10 Mar 2026 12:28:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773145714; x=1804681714;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=Mz5W6IsG06K8tm83wwprgAnuBod40/c65e/YlHvDgnI=;
- b=NAYso16luSH28eDoVo1Jj+WptKyCEdBBxFHHug479bYgDYi0DMm4r8Q8
- zttKukAqLRX66QPBslDCNX+ekd5PX/GLni40E4nKTKUy9OowUuhsx3s5P
- Uw6XRYqMZ4KRh1kW2Z20OnPGQW2qEIW3EscM1FSv7addpI0CGmDf/0yNo
- //aYrJ2CcrsNdSBM/GWeX5ht87xiQJ36pMXzYe3IxwicbrQUjeDcK6ZSb
- HmeLvW7/OT0dZrfjd8fUDy3XJTwpSNIt2xA1eS2lzDiwBPZjA7nnTGyTZ
- VgiOZGXZDnkZ1SBXMoVCHD8fwM6RrDTCxW9H2Lu2zbaakSpblDkFRVwt3 Q==;
-X-CSE-ConnectionGUID: UUF3MIGUQAOaPeZpCERMCw==
-X-CSE-MsgGUID: cqX79rX9RcWwzagnw3VHUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11724"; a="85277734"
-X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; d="scan'208";a="85277734"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2026 05:28:34 -0700
-X-CSE-ConnectionGUID: /FFCMA54TCyWcXGI+z/cSg==
-X-CSE-MsgGUID: sEAb4hBBQ8G9cBdx7PVk7A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; d="scan'208";a="219228349"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.42])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2026 05:28:32 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- Zbigniew =?UTF-8?B?S2VtcGN6ecWEc2tp?= <zbigniew.kempczynski@intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Subject: Re: [PATCH i-g-t] tests/intel/gem_lmem_swapping: Expect gem leak
- helper crashes
-Date: Tue, 10 Mar 2026 13:28:28 +0100
-Message-ID: <5082590.31r3eYUQgx@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20260310115003.wwffggwsyzsbxw5k@kamilkon-DESK.igk.intel.com>
-References: <20260302131817.3744919-2-janusz.krzysztofik@linux.intel.com>
- <20260310115003.wwffggwsyzsbxw5k@kamilkon-DESK.igk.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 14CE010E6E0;
+	Tue, 10 Mar 2026 12:39:16 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 387E710E6D1;
+ Tue, 10 Mar 2026 12:39:14 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6872805077215628592=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/chamelium/audio=3A_?=
+ =?utf-8?q?Fix_resource_leaks_in_audio_tests_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Bilal" <mohammed.bilal@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 10 Mar 2026 12:39:14 -0000
+Message-ID: <177314635420.338934.6627629823398378914@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260310091956.3171295-1-mohammed.bilal@intel.com>
+In-Reply-To: <20260310091956.3171295-1-mohammed.bilal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,146 +37,187 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kamil,
+--===============6872805077215628592==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thank you for looking at this.
+== Series Details ==
 
-On Tuesday, 10 March 2026 12:50:03 CET Kamil Konieczny wrote:
-> Hi Janusz,
-> On 2026-03-02 at 14:12:45 +0100, Janusz Krzysztofik wrote:
-> > When trying to exhaust system memory in order to exercise LMEM eviction
-> > under OOM conditions, a gem_leak helper process may itself become a victim
-> > of memory shortage.  If our i915 TTM VM fault handler fails to allocate a
-> > page and responds with a SIGBUS signal when the helper process is trying
-> > to store data in a mmaped i915 GEM object with memset then the process
-> > crashes.  Unfortunately, such crash is not only reported on stdout, strerr
-> > and dmesg as premature, additional result from the subtest while it is
-> > still in progress, but also renders the final result as failed.
-> > 
-> > Starting subtest: smem-oom
-> > Starting dynamic subtest: lmem0
-> > Received signal SIGBUS.
-> > Stack trace:
-> >  #0 [fatal_sig_handler+0x17b]
-> >  #1 [__sigaction+0x50]
-> >  #2 [__igt_unique____real_main808+0xdbc]
-> >  #3 [main+0x3f]
-> >  #4 [__libc_init_first+0x8a]
-> >  #5 [__libc_start_main+0x8b]
-> >  #6 [_start+0x25]
-> > Dynamic subtest lmem0: CRASH (20.804s)
-> > Subtest smem-oom: SUCCESS (20.807s)
-> > Received signal SIGABRT.
-> > Stack trace:
-> >  #0 [fatal_sig_handler+0x17b]
-> >  #1 [__sigaction+0x50]
-> >  #2 [pthread_kill+0x11c]
-> >  #3 [gsignal+0x1e]
-> >  #4 [abort+0xdf]
-> >  #5 [<unknown>+0xdf]
-> >  #6 [__assert_fail+0x47]
-> >  #7 [__igt_waitchildren+0x1c0]
-> >  #8 [igt_waitchildren_timeout+0x9d]
-> >  #9 [intel_allocator_multiprocess_stop+0xbb]
-> >  #10 [__igt_unique____real_main808+0x551]
-> >  #11 [main+0x3f]
-> >  #12 [__libc_init_first+0x8a]
-> >  #13 [__libc_start_main+0x8b]
-> >  #14 [_start+0x25]
-> > (gem_lmem_swapping:2347) CRITICAL: Test assertion failure function test_smem_oom, file ../tests/intel/gem_lmem_swapping.c:777:
-> > (gem_lmem_swapping:2347) CRITICAL: Failed assertion: lmem_err == 0
-> > (gem_lmem_swapping:2347) CRITICAL: Last errno: 3, No such process
-> > (gem_lmem_swapping:2347) CRITICAL: error: 137 != 0
-> > Dynamic subtest lmem0 failed.
-> > ...
-> > runner: Dynamic subtest lmem0 result when not inside a subtest. This is a test bug.
-> > Subtest smem-oom: FAIL (22.672s)
-> > 
-> > Since page allocation failures are unavoidable under OOM conditions, and
-> > the SIGBUS signal response from our TTM fault handler is correct in such
-> > cases, catch those signals and let the helper process continue.
-> > 
-> > Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5493
-> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > ---
-> > That's an improved and better documented new version of my former
-> > https://patchwork.freedesktop.org/patch/685572/
-> > 
-> >  tests/intel/gem_lmem_swapping.c | 18 +++++++++++++++++-
-> >  1 file changed, 17 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
-> > index 77e18f1a3c..514423f470 100644
-> > --- a/tests/intel/gem_lmem_swapping.c
-> > +++ b/tests/intel/gem_lmem_swapping.c
-> > @@ -11,6 +11,8 @@
-> >  #include "igt_kmod.h"
-> >  #include "runnercomms.h"
-> >  #include <unistd.h>
-> > +#include <setjmp.h>
-> > +#include <signal.h>
-> >  #include <stdlib.h>
-> >  #include <stdint.h>
-> >  #include <stdio.h>
-> > @@ -651,13 +653,21 @@ static void leak(uint64_t alloc)
-> >  	}
-> >  }
-> >  
-> > +static sigjmp_buf sigbus_jmp;
-> > +
-> > +static void sigbus_handler(int sig, siginfo_t *si, void *ctx)
-> > +{
-> > +	siglongjmp(sigbus_jmp, 1);
-> > +}
-> > +
-> >  static void gem_leak(int fd, uint64_t alloc)
-> >  {
-> >  	uint32_t handle = gem_create(fd, alloc);
-> >  	void *buf;
-> >  
-> >  	buf = gem_mmap_offset__fixed(fd, handle, 0, PAGE_SIZE, PROT_WRITE);
-> > -	memset(buf, 0, PAGE_SIZE);
-> > +	if (!igt_debug_on_f(sigsetjmp(sigbus_jmp, 1), "PID %d: SIGBUS caught\n", getpid()))
-> > +		memset(buf, 0, PAGE_SIZE);
-> 
-> There are other uses for signal masking in igt, all of them do:
-> mask + op + unmask
+Series: tests/chamelium/audio: Fix resource leaks in audio tests (rev3)
+URL   : https://patchwork.freedesktop.org/series/162565/
+State : success
 
-I'm not sure what your point is.  IOW, what conclusion I should derive from 
-that statement that just says there are other similar flows in IGT.  Are you 
-trying to say that you think those SIGBUS signals should not be ignored here 
-but reported as test failures, and the driver should be fixed so it doesn't 
-respond with those SIGBUSes under conditions arranged by this test?
+== Summary ==
 
-Thanks,
-Janusz
+CI Bug Log - changes from IGT_8789 -> IGTPW_14713
+====================================================
 
-> 
-> Regards,
-> Kamil 
-> >  	munmap(buf, PAGE_SIZE);
-> >  
-> >  	gem_madvise(fd, handle, I915_MADV_DONTNEED);
-> > @@ -745,8 +755,14 @@ static void test_smem_oom(int i915,
-> >  				}
-> >  			}
-> >  			igt_fork(child, 1) {
-> > +				struct sigaction sa = {
-> > +					.sa_sigaction = sigbus_handler,
-> > +					.sa_flags = SA_SIGINFO | SA_NODEFER,
-> > +				};
-> >  				int fd = drm_reopen_driver(i915);
-> >  
-> > +				sigaction(SIGBUS, &sa, NULL);
-> > +
-> >  				for (int pass = 0; pass < num_alloc; pass++) {
-> >  					if (READ_ONCE(*lmem_done))
-> >  						break;
-> 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/index.html
+
+Participating hosts (40 -> 38)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14713 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-dg2-8:          [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8789/bat-dg2-8/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/bat-dg2-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8789/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+    - bat-arls-6:         [PASS][5] -> [DMESG-FAIL][6] ([i915#12061]) +1 other test dmesg-fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8789/bat-arls-6/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/bat-arls-6/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_pipe_crc_basic@read-crc:
+    - fi-cfl-8109u:       [PASS][7] -> [DMESG-WARN][8] ([i915#15673]) +48 other tests dmesg-warn
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8789/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [DMESG-FAIL][9] ([i915#12061]) -> [PASS][10] +1 other test pass
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8789/bat-mtlp-8/igt@i915_selftest@live.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/bat-mtlp-8/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-9:         [DMESG-FAIL][11] ([i915#12061]) -> [PASS][12] +1 other test pass
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8789/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
 
 
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8789 -> IGTPW_14713
+
+  CI-20190529: 20190529
+  CI_DRM_18116: 77e176657e782bb81270c230d1cfec91f7707162 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14713: 6e767c0d1d76325aa6cf5eb6e02092905745637a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8789: 8789
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/index.html
+
+--===============6872805077215628592==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/chamelium/audio: Fix resource leaks in audio tests (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162565/">https://patchwork.freedesktop.org/series/162565/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8789 -&gt; IGTPW_14713</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/index.html</p>
+<h2>Participating hosts (40 -&gt; 38)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14713 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8789/bat-dg2-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/bat-dg2-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8789/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-arls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8789/bat-arls-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/bat-arls-6/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8789/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) +48 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8789/bat-mtlp-8/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8789/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14713/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8789 -&gt; IGTPW_14713</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18116: 77e176657e782bb81270c230d1cfec91f7707162 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14713: 6e767c0d1d76325aa6cf5eb6e02092905745637a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8789: 8789</p>
+
+</body>
+</html>
+
+--===============6872805077215628592==--
