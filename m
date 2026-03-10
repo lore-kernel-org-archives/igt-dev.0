@@ -4,58 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CBDEEB104A
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Mar 2026 11:25:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26CFEEB1052
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Mar 2026 11:50:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CBE0710E129;
-	Tue, 10 Mar 2026 11:25:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CB0B910E262;
+	Tue, 10 Mar 2026 11:50:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jUP1atet";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IML7jWg7";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F0F5310E129
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Mar 2026 11:25:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB82D10E202;
+ Tue, 10 Mar 2026 11:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773141903; x=1804677903;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version:content-transfer-encoding;
- bh=PpfY2TTpaN4b0+I9oyiR0/G1GT9z0YYpE/RYkSYi86Q=;
- b=jUP1atetP0/h9FTfUdTjln9lE0QnFirkIbQO5dW21wkeIiZPaqHl/ebn
- LRONST9Bnagd6mppDSfGx/At7go9bJZYB5ZrBjYlBy1BIEwU/VhbiIGsf
- 3+UFPEq3bsjX+xycfk3GlxPbUknRSaedcXahPgB7Bn2G9YTx4B9BzhegO
- T35N/di0xsvKMD8+2feZra09K4O9sZh/dALownYPzoHIdUE5l/6i8iApp
- AJQGrxBO9a38BDeOqJwrp26Re3d3pHWwS1az2FRwi/5ia2NVq/qhyZCFw
- JxHQi+4nxybpG7C2NLKEsZLuzL3GLeHXKT5xVwyj0SAyU9Y2VWGPUQc8f A==;
-X-CSE-ConnectionGUID: LDXaEQNoSnaY1y2ZtNj+jg==
-X-CSE-MsgGUID: 3ZoHBw85TzuT57eCkWuD+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11724"; a="84895850"
-X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; d="scan'208";a="84895850"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2026 04:25:03 -0700
-X-CSE-ConnectionGUID: LxcO2QZDRMq5wDxPbylaDg==
-X-CSE-MsgGUID: tvabuk2jRwyDaYSerJtNjw==
+ t=1773143423; x=1804679423;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=d21oLiqDe/wh/XNZHzEftdKTvWWVa5DZev68iwNTTTI=;
+ b=IML7jWg719DGlzq7tZI7yrje//ZEVXkHu1BSG7ouq/DvdS5Nfw312uU7
+ MXbzpNsOQ0kKg6pfvHLfg1ze2eUwCgIskm+kEudJpmafJIvm51gCVxR3P
+ fW55FRWIo9c7xZWmu+rfDbdO9MUFmAPNuFf9oBUREmBsE1kNzEFG9DImt
+ pALqkdpY8SdkAgvrU9Cr37Vp/LELnL1bmSDDlLFQo1rQQha4sijf6d2cP
+ 2xX3SotXGD57PVpHPWJR/RG/i9RrAEBLc5AqPQ3MRUh7nCzbqDnIY1Kvn
+ F1q1EUEj3N1JG3OLFzKSObnt6qRUgJ/pm848BIsDP5ZuEXyz8++s4puiA g==;
+X-CSE-ConnectionGUID: M+WrzopySXeLLO8AuxJS5w==
+X-CSE-MsgGUID: mX46fiifRTqRQVLGm8eWGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11724"; a="77792475"
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; d="scan'208";a="77792475"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Mar 2026 04:50:23 -0700
+X-CSE-ConnectionGUID: Ige3gh1MQDOo7M97PT8+zg==
+X-CSE-MsgGUID: Qls9i9EjS1Obis60CUpA/A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; d="scan'208";a="216874204"
-Received: from wtcline-desk20.amr.corp.intel.com (HELO localhost)
- ([10.245.246.50])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2026 04:25:01 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 00/10] tests: avoid using crtc->pipe where possible
-In-Reply-To: <aa_wYugxXowLvlTI@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <cover.1773066012.git.jani.nikula@intel.com>
- <aa_wYugxXowLvlTI@intel.com>
-Date: Tue, 10 Mar 2026 13:24:58 +0200
-Message-ID: <c3b6c540d1b644a7c0576b8df9a4daa9287e8946@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; d="scan'208";a="224771906"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 04:50:20 -0700
+Date: Tue, 10 Mar 2026 12:50:03 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/gem_lmem_swapping: Expect gem leak
+ helper crashes
+Message-ID: <20260310115003.wwffggwsyzsbxw5k@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+References: <20260302131817.3744919-2-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <20260302131817.3744919-2-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,44 +81,126 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 10 Mar 2026, Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com=
-> wrote:
-> On Mon, Mar 09, 2026 at 04:21:34PM +0200, Jani Nikula wrote:
->> Tests should generally avoid using crtc->pipe if possible. It's an Intel
->> implementation detail, and crtc->crtc_index is the generic thing to
->> use. Do some conversions to crtc_index use.
->>=20
->>=20
->> Jani Nikula (10):
->>   tests/kms_writeback: use igt_crtc_name()
->>   tests/kms_colorop: use igt_crtc_name()
->>   tests/kms_color_pipeline: use igt_crtc_name()
->>   tests/kms_cursor_crc: use CRTC indexes instead of pipes for CRTC
->>     tracking
->>   tests/kms_cursor_edge_walk: use CRTC indexes instead of pipes for CRTC
->>     tracking
->>   tests/kms_pipe_crc_basic: use CRTC indexes instead of pipes for CRTC
->>     tracking
->>   tests/kms_plane_alpha_blend: use CRTC indexes instead of pipes for
->>     CRTC tracking
->>   tests/kms_vblank: use CRTC indexes instead of pipes for CRTC tracking
->>   tests/kms_cursor_legacy: use CRTC indexes instead of pipes for CRTC
->>     tracking
->>   tests/kms_debugfs: use CRTC indexes instead of pipes for fb tracking
->
-> I'd just nuke the array from kms_debugfs.
->
-> But no big deal either way. Series is
+Hi Janusz,
+On 2026-03-02 at 14:12:45 +0100, Janusz Krzysztofik wrote:
+> When trying to exhaust system memory in order to exercise LMEM eviction
+> under OOM conditions, a gem_leak helper process may itself become a victim
+> of memory shortage.  If our i915 TTM VM fault handler fails to allocate a
+> page and responds with a SIGBUS signal when the helper process is trying
+> to store data in a mmaped i915 GEM object with memset then the process
+> crashes.  Unfortunately, such crash is not only reported on stdout, strerr
+> and dmesg as premature, additional result from the subtest while it is
+> still in progress, but also renders the final result as failed.
+> 
+> Starting subtest: smem-oom
+> Starting dynamic subtest: lmem0
+> Received signal SIGBUS.
+> Stack trace:
+>  #0 [fatal_sig_handler+0x17b]
+>  #1 [__sigaction+0x50]
+>  #2 [__igt_unique____real_main808+0xdbc]
+>  #3 [main+0x3f]
+>  #4 [__libc_init_first+0x8a]
+>  #5 [__libc_start_main+0x8b]
+>  #6 [_start+0x25]
+> Dynamic subtest lmem0: CRASH (20.804s)
+> Subtest smem-oom: SUCCESS (20.807s)
+> Received signal SIGABRT.
+> Stack trace:
+>  #0 [fatal_sig_handler+0x17b]
+>  #1 [__sigaction+0x50]
+>  #2 [pthread_kill+0x11c]
+>  #3 [gsignal+0x1e]
+>  #4 [abort+0xdf]
+>  #5 [<unknown>+0xdf]
+>  #6 [__assert_fail+0x47]
+>  #7 [__igt_waitchildren+0x1c0]
+>  #8 [igt_waitchildren_timeout+0x9d]
+>  #9 [intel_allocator_multiprocess_stop+0xbb]
+>  #10 [__igt_unique____real_main808+0x551]
+>  #11 [main+0x3f]
+>  #12 [__libc_init_first+0x8a]
+>  #13 [__libc_start_main+0x8b]
+>  #14 [_start+0x25]
+> (gem_lmem_swapping:2347) CRITICAL: Test assertion failure function test_smem_oom, file ../tests/intel/gem_lmem_swapping.c:777:
+> (gem_lmem_swapping:2347) CRITICAL: Failed assertion: lmem_err == 0
+> (gem_lmem_swapping:2347) CRITICAL: Last errno: 3, No such process
+> (gem_lmem_swapping:2347) CRITICAL: error: 137 != 0
+> Dynamic subtest lmem0 failed.
+> ...
+> runner: Dynamic subtest lmem0 result when not inside a subtest. This is a test bug.
+> Subtest smem-oom: FAIL (22.672s)
+> 
+> Since page allocation failures are unavoidable under OOM conditions, and
+> the SIGBUS signal response from our TTM fault handler is correct in such
+> cases, catch those signals and let the helper process continue.
+> 
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5493
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> ---
+> That's an improved and better documented new version of my former
+> https://patchwork.freedesktop.org/patch/685572/
+> 
+>  tests/intel/gem_lmem_swapping.c | 18 +++++++++++++++++-
+>  1 file changed, 17 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+> index 77e18f1a3c..514423f470 100644
+> --- a/tests/intel/gem_lmem_swapping.c
+> +++ b/tests/intel/gem_lmem_swapping.c
+> @@ -11,6 +11,8 @@
+>  #include "igt_kmod.h"
+>  #include "runnercomms.h"
+>  #include <unistd.h>
+> +#include <setjmp.h>
+> +#include <signal.h>
+>  #include <stdlib.h>
+>  #include <stdint.h>
+>  #include <stdio.h>
+> @@ -651,13 +653,21 @@ static void leak(uint64_t alloc)
+>  	}
+>  }
+>  
+> +static sigjmp_buf sigbus_jmp;
+> +
+> +static void sigbus_handler(int sig, siginfo_t *si, void *ctx)
+> +{
+> +	siglongjmp(sigbus_jmp, 1);
+> +}
+> +
+>  static void gem_leak(int fd, uint64_t alloc)
+>  {
+>  	uint32_t handle = gem_create(fd, alloc);
+>  	void *buf;
+>  
+>  	buf = gem_mmap_offset__fixed(fd, handle, 0, PAGE_SIZE, PROT_WRITE);
+> -	memset(buf, 0, PAGE_SIZE);
+> +	if (!igt_debug_on_f(sigsetjmp(sigbus_jmp, 1), "PID %d: SIGBUS caught\n", getpid()))
+> +		memset(buf, 0, PAGE_SIZE);
 
-I opted to leave that refactor for another patch.
+There are other uses for signal masking in igt, all of them do:
+mask + op + unmask
 
-> Reviewed-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
-
-Thanks, pushed the lot.
-
-BR,
-Jani.
-
-
---=20
-Jani Nikula, Intel
+Regards,
+Kamil 
+>  	munmap(buf, PAGE_SIZE);
+>  
+>  	gem_madvise(fd, handle, I915_MADV_DONTNEED);
+> @@ -745,8 +755,14 @@ static void test_smem_oom(int i915,
+>  				}
+>  			}
+>  			igt_fork(child, 1) {
+> +				struct sigaction sa = {
+> +					.sa_sigaction = sigbus_handler,
+> +					.sa_flags = SA_SIGINFO | SA_NODEFER,
+> +				};
+>  				int fd = drm_reopen_driver(i915);
+>  
+> +				sigaction(SIGBUS, &sa, NULL);
+> +
+>  				for (int pass = 0; pass < num_alloc; pass++) {
+>  					if (READ_ONCE(*lmem_done))
+>  						break;
+> -- 
+> 2.52.0
+> 
