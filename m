@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC2C7FD4F05
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Mar 2026 16:49:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BFA9FD4F06
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Mar 2026 16:51:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9248510E2C0;
-	Tue, 10 Mar 2026 16:49:12 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0522F10E2C0;
- Tue, 10 Mar 2026 16:49:10 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2984834286970778820=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0069710E1E5;
+	Tue, 10 Mar 2026 16:51:17 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LIkEqu0K";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 801C510E1E5
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Mar 2026 16:51:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1773161477; x=1804697477;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=/BjMNWquHZTQXu1GBLgkS9UUQcg6Tbifaussd16alNg=;
+ b=LIkEqu0KQGid/GFIzZLdme+4xnuMa5rZXvg3Db8JBPwcHxFiWyhZqaTa
+ bauHMn0MxLPla7v9zZyDFc/wu1A1iawQAFyHSNl4hGmuSlJr4RrBBrv8q
+ B0P+6OUCfWnsGJ3wDQ2KKBY1FUitwXERDVoYvp3ce9SAyXL5wS4lkEt8Q
+ i0LfhdEXIlP6x1lO/ovvirye6REXJaGefCrC7hrkEZkjiuFfrtpwPoujI
+ IY6K2ZCSojpMitGY9SEqCPDEVT6jGjBwKhXmsXy7YkexCCtjPwlDlUotj
+ oLffcMt5upyXxcdkfna2BD5VQ6nCWy7BGm9g7s4n6jgu13Of3Oby2vBxl A==;
+X-CSE-ConnectionGUID: 5qI8domaSZ6U9QEETP1WOA==
+X-CSE-MsgGUID: Zp42PHq9Qduycf3dtQECdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="74405633"
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; d="scan'208";a="74405633"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Mar 2026 09:51:16 -0700
+X-CSE-ConnectionGUID: od7HJT8lSpWoFdHZ45KpHQ==
+X-CSE-MsgGUID: 1J43Qj88QL2g2pnmCKwS8w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; d="scan'208";a="224635732"
+Received: from himanshu-h97m-d3h.iind.intel.com ([10.223.55.10])
+ by orviesa004.jf.intel.com with ESMTP; 10 Mar 2026 09:51:14 -0700
+From: himanshu.girotra@intel.com
+To: ramadevi.gandi@intel.com, aditya.chauhan@intel.com,
+ shekhar.chauhan@intel.com, kamil.konieczny@intel.com,
+ igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t 0/2] lib: Add NVL-P (Novalake-P) support
+Date: Tue, 10 Mar 2026 22:21:11 +0530
+Message-ID: <20260310165113.8994-1-himanshu.girotra@intel.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib=3A_Add_NVL-P_=28Noval?=
- =?utf-8?q?ake-P=29_device_IDs?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: himanshu.girotra@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 10 Mar 2026 16:49:10 -0000
-Message-ID: <177316135000.340795.3917189869104601794@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260310101335.8995-1-himanshu.girotra@intel.com>
-In-Reply-To: <20260310101335.8995-1-himanshu.girotra@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,130 +62,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2984834286970778820==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Himanshu Girotra <himanshu.girotra@intel.com>
 
-== Series Details ==
+This series adds NVL-P (Novalake-P) platform support to IGT.
 
-Series: lib: Add NVL-P (Novalake-P) device IDs
-URL   : https://patchwork.freedesktop.org/series/162939/
-State : success
+Patch 1 syncs pciids.h with upstream kernel up to
+commit be07d8f707e4 ("drm/xe/nvlp: Add NVL-P platform definition"),
+following the established pattern of keeping pciids.h as a direct
+copy of include/drm/intel/pciids.h from the kernel.
 
-== Summary ==
+Patch 2 adds the device descriptor and platform detection macros
+for NVL-P.
 
-CI Bug Log - changes from IGT_8791 -> IGTPW_14715
-====================================================
+This series supersedes the earlier single patch:
+https://patchwork.freedesktop.org/series/162939/
 
-Summary
--------
+Himanshu Girotra (2):
+  lib/pciids: sync with kernel commit be07d8f707e4
+  lib: Add NVL-P support
 
-  **SUCCESS**
+ lib/intel_chipset.h     |  2 ++
+ lib/intel_device_info.c | 14 ++++++++++++++
+ lib/pciids.h            | 19 +++++++++++++++++--
+ 3 files changed, 33 insertions(+), 2 deletions(-)
 
-  No regressions found.
+-- 
+2.50.1
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14715/index.html
-
-Participating hosts (41 -> 39)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_14715 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-14:         [DMESG-FAIL][1] ([i915#12061]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8791/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14715/bat-dg2-14/igt@i915_selftest@live@workarounds.html
-
-  
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8791 -> IGTPW_14715
-
-  CI-20190529: 20190529
-  CI_DRM_18118: 7282a0941df77adea4aeae319d4ff11358c98584 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_14715: ed13bd77dd88f5103a90028e8646497668aad74f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8791: b319fd1815d426b3f24094113d614d08dee374d8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14715/index.html
-
---===============2984834286970778820==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib: Add NVL-P (Novalake-P) device IDs</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/162939/">https://patchwork.freedesktop.org/series/162939/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14715/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14715/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8791 -&gt; IGTPW_14715</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14715/index.html</p>
-<h2>Participating hosts (41 -&gt; 39)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_14715 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8791/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14715/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8791 -&gt; IGTPW_14715</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18118: 7282a0941df77adea4aeae319d4ff11358c98584 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_14715: ed13bd77dd88f5103a90028e8646497668aad74f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8791: b319fd1815d426b3f24094113d614d08dee374d8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2984834286970778820==--
