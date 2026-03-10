@@ -4,59 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38D52EB1043
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Mar 2026 10:52:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54430EB1043
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Mar 2026 10:52:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B7E0210E250;
-	Tue, 10 Mar 2026 10:52:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D6E3B10E249;
+	Tue, 10 Mar 2026 10:52:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JL5cOmFu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gsyTKmiv";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67D1B10E6AC
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Mar 2026 10:52:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7204110E249
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Mar 2026 10:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773139926; x=1804675926;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=Kf5XsWXmaQpDhNuU0rluQ20YacMDKeGUUMZ0NFCSh90=;
- b=JL5cOmFuenwHx+DXDR2DuO5Lob0anPS/J/Zt+g46jVGJQgwBJFwMOPPe
- 4R8LOJul8yc7n2BRVPNTWWgRq1zU1Qz1GhSLyI+92seRi3cKHW60y/w/w
- M3XhbqMi47LXsLfYZrD5y+XhmcbXjTxJ/gGqoIXqRNYSNrTxeNW5XvuvV
- XeMCV5WDXBLOHOfvXcB5vIacqzMkbYSWxhQIm0AnK2uMTNUuG3FZ8Nnsl
- rSXF0eSJFZJM1j8Gb4kCTQAkGU9Uw5cTyyKJYypgTLiFtMF3OJiOFAoVa
- vfs0Dprhp+zDK/Ao6BEJWBM/pT7z9XFSxB+IVQHkcyQsHHwa0+pF2kZtj g==;
-X-CSE-ConnectionGUID: di5lcslCSy2oMRjuOLhRxw==
-X-CSE-MsgGUID: 4O36X+L9Td+P2DgYfswTXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11724"; a="74060641"
-X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; d="scan'208";a="74060641"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2026 03:52:06 -0700
-X-CSE-ConnectionGUID: P0U612oGRwazy3PbR+xyOA==
-X-CSE-MsgGUID: pJJ21e0NT4mQo7E1Y96y7A==
+ t=1773139942; x=1804675942;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version:content-transfer-encoding;
+ bh=022op5jlKFby7TUeeqBog98nHbM43C6HO9JyOP51Wpw=;
+ b=gsyTKmivhG2aguojTv+90+/auaUdnaLQwrTE0EfzLJBHVyvyRVBCCo2r
+ qTYEy99EFXtI1qjDQcnGsAjjv/JqECM0VTUdKE9hQeonshx6nRN1GojVj
+ bkqdn263yDQZ/nM4VSy3wQ8mB0npZ3t+o3KV1qN8s6OgK+/SaWpdS3LT4
+ BcUuyMiPmB9Ie1dp9RSi/ptbli6BHHTZ+Hdm7MDN7EJBhbwkB1SwaS9+9
+ rsvOkaV3PlekVUGBiPRmHGDsaP4D50nxPfvb5Gk4D9UixM5uRdkubMMrJ
+ 5Tl5+NUBzxDGadHvnmPlGAYAKsW79s4iapdw6xJ4prxkyimI7FG1IPGb4 Q==;
+X-CSE-ConnectionGUID: Af/HfMhiSZqRDJB1ZlLJhA==
+X-CSE-MsgGUID: 9O38iVsaQ4i/m8DaknmueQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11724"; a="74224245"
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; d="scan'208";a="74224245"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Mar 2026 03:52:22 -0700
+X-CSE-ConnectionGUID: YbxjbSLCTnqfPqH49Z5Zuw==
+X-CSE-MsgGUID: T/GKIQ1NQ6+PG2PIJUZrfA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; d="scan'208";a="220029227"
-Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.180.135])
- ([172.28.180.135])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2026 03:52:05 -0700
-Message-ID: <a95129bc-6cb5-4ebb-aa60-438cda7bf961@linux.intel.com>
-Date: Tue, 10 Mar 2026 11:52:03 +0100
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; d="scan'208";a="224760138"
+Received: from krybak-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.32])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Mar 2026 03:52:20 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 04/10] tests/kms_cursor_crc: use CRTC indexes
+ instead of pipes for CRTC tracking
+In-Reply-To: <aa_s-h2k_J0GpCuh@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <cover.1773066012.git.jani.nikula@intel.com>
+ <788880adc41b3640311190a8dbf794c6226d25e2.1773066012.git.jani.nikula@intel.com>
+ <aa_s-h2k_J0GpCuh@intel.com>
+Date: Tue, 10 Mar 2026 12:52:17 +0200
+Message-ID: <17908e9bb5293de962f7a82d2fc865bf9d5b7467@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 09/10] tools/vmtb: Support max VFs configuration
-To: Adam Miszczak <adam.miszczak@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com
-References: <20260224075027.2409675-1-adam.miszczak@linux.intel.com>
- <20260224075027.2409675-10-adam.miszczak@linux.intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20260224075027.2409675-10-adam.miszczak@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,111 +73,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+On Tue, 10 Mar 2026, Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com=
+> wrote:
+> On Mon, Mar 09, 2026 at 04:21:38PM +0200, Jani Nikula wrote:
+>> @@ -1286,8 +1286,8 @@ int igt_main_args("e", NULL, help_str, opt_handler=
+, NULL)
+>>  		igt_display_require_output(&data.display);
+>>  		/* Get active pipes. */
+>>  		for_each_crtc(&data.display, crtc)
+>> -			active_pipes[last_pipe++] =3D crtc->pipe;
+>> -		last_pipe--;
+>> +			active_crtcs[last_crtc_index++] =3D crtc->crtc_index;
+>> +		last_crtc_index--;
+>
+> It looks like when we get rid of the n_crtcs=3D=3DMAX_PIPES mess
+> all of these array things could just be nuked. But I suppose
+> we're not quite there yet.
 
-On 2/24/2026 8:50 AM, Adam Miszczak wrote:
-> Enable maximum VFs test configuration variant, for both:
-> auto-provisioning and vGPU profiles.
-> Max VFs is device-specific value read via sysfs.
-> For auto-provisioning, max VFs always equals sysfs/sriov_totalvfs,
-> but the highest supported number of VFs defined by vGPU profiles
-> may differ from the hardware max value.
->
-> Max VFs test config variant can be requested by passing MAX_VFS label
-> to VmmTestingConfig structure (num_vfs) or convenience tuple, for example:
-> test_variants = [(MAX_VFS, VfProvisioningMode.AUTO, VfSchedulingMode.INFINITE),
->                   (MAX_VFS, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE)]
->
-> Signed-off-by: Adam Miszczak <adam.miszczak@linux.intel.com>
-> ---
->   tools/vmtb/vmm_flows/conftest.py | 29 ++++++++++++++++++++++++++---
->   1 file changed, 26 insertions(+), 3 deletions(-)
->
-> diff --git a/tools/vmtb/vmm_flows/conftest.py b/tools/vmtb/vmm_flows/conftest.py
-> index ae149d652..02c297f93 100644
-> --- a/tools/vmtb/vmm_flows/conftest.py
-> +++ b/tools/vmtb/vmm_flows/conftest.py
-> @@ -32,6 +32,10 @@ def pytest_addoption(parser):
->                        help='Device card index for test execution')
->   
->   
-> +# Label indicating Max VFs configurarion variant, intended for pass to VmmTestingConfig.
-> +MAX_VFS = "Max"
-> +
-> +
->   @dataclass
->   class VmmTestingConfig:
->       """Structure represents test configuration used by a setup fixture.
-> @@ -54,16 +58,23 @@ class VmmTestingConfig:
->       auto_poweron_vm: bool = True
->       auto_probe_vm_driver: bool = True
->       unload_host_drivers_on_teardown: bool = False
-> +    enable_max_vfs: bool = False
->       # Temporary W/A: reduce size of LMEM assigned to VFs to speed up a VF state save-restore process
->       wa_reduce_vf_lmem: bool = False
->   
-> +    def __post_init__(self):
-> +        if self.num_vfs is MAX_VFS:
-> +            self.enable_max_vfs = True
-> +            self.num_vfs = 0 # Actual value set in VmmTestingSetup
-> +
->       def __str__(self) -> str:
-> -        test_config_id = f'{self.num_vfs}VF-(P:{self.provisioning_mode.name} S:{self.scheduling_mode.name})'
-> +        test_config_id = (f'{self.num_vfs if not self.enable_max_vfs else "Max"}VF'
-> +                          + f'-(P:{self.provisioning_mode.name} S:{self.scheduling_mode.name})')
->           return test_config_id
->   
->       def __repr__(self) -> str:
->           return (f'\nVmmTestingConfig:'
-> -                f'\nNum VFs = {self.num_vfs} / max num VMs = {self.max_num_vms}'
-> +                f'\nNum VFs = {self.num_vfs if not self.enable_max_vfs else "Max"} / max num VMs = {self.max_num_vms}'
->                   f'\nVF provisioning mode = {self.provisioning_mode.name}'
->                   f'\nVF scheduling mode = {self.scheduling_mode.name}'
->                   f'\nSetup flags:'
-> @@ -89,6 +100,7 @@ class VmmTestingSetup:
->           self.host.load_drivers()
->           self.host.discover_devices()
->           self.dut: Device = self.host.get_device(self.dut_index)
-> +        self.total_vfs: int = self.get_dut().driver.get_totalvfs()
->   
->           # VF migration requires vendor specific VFIO driver (e.g. xe-vfio-pci)
->           vf_migration_support: bool = self.host.is_driver_loaded(f'{self.host.drm_driver_name}-vfio-pci')
-> @@ -98,11 +110,13 @@ class VmmTestingSetup:
->                       "\n\tPCI BDF: %s "
->                       "\n\tDevice ID: %s (%s)"
->                       "\n\tHost DRM driver: %s"
-> -                    "\n\tVF migration support: %s",
-> +                    "\n\tMax VFs supported: %s"
-> +                    "\n\tVF migration supported: %s",
->                       self.dut_index,
->                       self.get_dut().pci_info.bdf,
->                       self.get_dut().pci_info.devid, self.get_dut().gpu_model,
->                       self.get_dut().driver.get_name(),
-> +                    self.total_vfs,
->                       vf_migration_support)
->   
->           vmtb_root_path = vmtb_config.vmtb_config_file.parent
-> @@ -115,6 +129,9 @@ class VmmTestingSetup:
->               or self.testing_config.scheduling_mode is not VfSchedulingMode.INFINITE):
->               self.vgpu_profile: VgpuProfile = self.get_vgpu_profile()
->   
-> +        if self.testing_config.provisioning_mode is VfProvisioningMode.AUTO and self.testing_config.enable_max_vfs:
-> +            self.testing_config.num_vfs = self.total_vfs
-> +
->           # Start maximum requested number of VMs, but not more than VFs supported by the given vGPU profile
->           self.vms: typing.List[VirtualMachine] = [
->               VirtualMachine(vm_idx, self.guest_os_image,
-> @@ -125,6 +142,12 @@ class VmmTestingSetup:
->   
->       def get_vgpu_profile(self) -> VgpuProfile:
->           configurator = VgpuProfileConfigurator(self.vgpu_profiles_dir, self.get_dut().gpu_model)
-> +        if self.testing_config.enable_max_vfs:
-> +            # Get a vGPU profile with the most VFs (not necessarily equal to sysfs/sriov_totalvfs)
-> +            self.testing_config.num_vfs = max(configurator.supported_vgpu_profiles.vf_resources,
-> +                                              key=lambda profile: profile.vf_count).vf_count
-> +            logger.debug("Max VFs supported by vGPU profiles: %s", self.testing_config.num_vfs)
-> +
-LGTM,
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
->           try:
->               vgpu_profile = configurator.get_vgpu_profile(self.testing_config.num_vfs,
->                                                            self.testing_config.scheduling_mode)
+Yeah, we're close. At least one prerequisite is returning NULL from
+igt_crtc_for_pipe() for non-existing pipes. After that, display->crtcs
+could be just the valid CRTCs in pipe order. And then n_crtcs could be
+shrunk to match valid CRTCs. And there are other possible cleanups after
+that.
+
+Of course, display->crtcs couldn't be indexed with pipe anymore, but
+there are so few igt_crtc_for_pipe() users left that it shouldn't really
+matter.
+
+Also, I believe changing the order from pipe to CRTC index order might
+be really hard to review. Probably not worth it, at least for now.
+
+Once we've gotten rid of most of the crtc->pipe and enum pipe uses, I've
+wondered if we shouldn't rename them crtc->vendor_pipe and enum
+vendor_pipe or something along those lines, to emphasize folks should
+probably steer clear for regular use.
+
+BR,
+Jani.
+
+
+--=20
+Jani Nikula, Intel
