@@ -4,54 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7591B104950F
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Mar 2026 09:12:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B8271049518
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Mar 2026 09:36:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 261AD10E3B1;
-	Wed, 11 Mar 2026 09:12:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D1B3B10E879;
+	Wed, 11 Mar 2026 09:36:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hmOfaecW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HevMHllR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1969610E3B3
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Mar 2026 09:12:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE51210E3C4
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Mar 2026 09:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773220362; x=1804756362;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=KDH1PeqUvi+qReQjn5fgVWyR0a1OAvyNqtxVOHUytYg=;
- b=hmOfaecWKjOY7xpHd+zFfY5ZVi4aKzcWOg/PsnN7U8TCr6ENm4Ktq239
- 07GRSVwDOrXze5HOHIzBrk31ci2W+GY9RyjsX3uxTGzHl8TL44pdoXjzl
- RKe/MnZAtf18Wgt7jmE9lEeonHQM7l3bhRAosYhjL2TVhRQXAXPfiyTnd
- nqITSXyQIecE/ynFXZ4/mdH4AUZvZ21cAl2GtVZjVcmKJv4SC01CGugVm
- YC1t5+iWF0hNviR6X4M9KHxcYFM5NGyqHQPVB9Ct22bFJlVym9yHiLk/2
- KfUTNzszAU/WC1cc0E5fP5sH+txL31c3CAn22bsyttk3x/Vv/Psrvi/JO A==;
-X-CSE-ConnectionGUID: yUN5CEfaQhGHjn6+T/oioA==
-X-CSE-MsgGUID: n+0bg+IfQBOBUBCI7md1Hw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="96897749"
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="96897749"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2026 02:12:42 -0700
-X-CSE-ConnectionGUID: 7LO9SDo7Sc6G8x5Z35ivRw==
-X-CSE-MsgGUID: DvpLs3fQRDqmbmEJckappQ==
+ t=1773221801; x=1804757801;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ mime-version; bh=SBoma3NQ08SXSO7iua+VqBofR8yUvv9YQzaeO6mRmDg=;
+ b=HevMHllRSNJW2XD6awriHKGGCxCpVwqi+cY7hrbHsPYQy7BC2JOlgMTw
+ eO10W+BM0cZRx14yNnpt7D0X9MNy8TeBba77ahLj2gSpoF7rFHCK3ovB8
+ ZZ4rGEgNSLD2OYFqCLtiXUpKVyjT+Jl/B8HCBqgFGqD5AG3NxKa6RYCtH
+ 0S1qDYOTpH7Hg+dVQ3BKu6nSR5pxuW1gsmBGwqeMPNHLMHXE+yY7/QEfh
+ 01Vrb97yhD60l3Qw9ZAFHeqhV6gKzE4+yO5yFXNpLUs77e+mpLVzYCC0c
+ /V302Jsdwu+q9yojRbiAQJpmwafVdpLjuR62Wi1OSFkzjBlAe4jYJRj5Z g==;
+X-CSE-ConnectionGUID: /jxX5o/4Sm+d9KqJ6MEqzg==
+X-CSE-MsgGUID: kBzWDPs4T+Sn0bF1hHaKcA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="74475374"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208,217";a="74475374"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2026 02:36:20 -0700
+X-CSE-ConnectionGUID: I8HUBDzhT2eZQ5eGCxAv4w==
+X-CSE-MsgGUID: MWBdtOLUQgq28O+iP7mBwA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="220351012"
-Received: from varungup-desk.iind.intel.com ([10.190.238.71])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2026 02:12:41 -0700
-From: Varun Gupta <varun.gupta@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: priyanka.dandamudi@intel.com,
-	varun.gupta@intel.com
-Subject: [PATCH i-g-t] tests/intel/xe_prefetch_fault: Add SVM and
- hit-under-miss validation
-Date: Wed, 11 Mar 2026 14:42:30 +0530
-Message-ID: <20260311091230.28360-1-varun.gupta@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; 
+ d="scan'208,217";a="217092328"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2026 02:36:20 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 11 Mar 2026 02:36:19 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Wed, 11 Mar 2026 02:36:19 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.28)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 11 Mar 2026 02:36:18 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MQVxTLnCPlCOCfvoUgXGMqmt5MyqggjOY2xcwnNPaEZbGELCIALun79nCTLXBSqE8rjkejaJtEHqr3eKK5bxTyqPTBBDp5L4wyG1a7VaEl6ljFZAvugjNzUN1WXMDCy8R50oo8cREqoafR3jWz1keGo89xkEWWPQmaWm5iwBatDeaOmuBJllV8uKu2O2xrYhhFCx+ze3BcIQA/4e/zvP4ThlmX+VdBQId8NRNkpkEM5EWXKj2d1xfWi9c4RY7KRmEBfH8z48uLzrS6qVi5z/5u7HRI8Rd/kJ3dJWNQ1nKm/SinKfN5ZIG4lzNMrtumoMPjpDEuPRDz5/3L/2BlWkgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SBoma3NQ08SXSO7iua+VqBofR8yUvv9YQzaeO6mRmDg=;
+ b=geqDC3q75ZpF7oKGRjDmGvFUX7vx3F0eIMa331R1n+cAOSp139DkUvh8XsGAptFiTCQPM3E5flep5wTudqDpG/U9WAih0wuuupclzAH4+YKG1Nckm5ar73rtxgwE5rgs7m4C3dfBMxkNFd0UNZW31e4pj+sEyH9szwa6/fRlvxVN2vvG7TCuL2l/jij8PdraGS/R2PNE0RN2fZIPOS++giKozundSC7AJo93VkhT1MnTDLO5iog4h8aZM26X30efa8r6R2KN81KDiYyiYAtrPNf1Hr7nt3AytsvttDVMFhz/r3npOQLqDxsfD2tUEL6YfznrT03JOdwUhEJBuTNIOg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM4PR11MB6019.namprd11.prod.outlook.com (2603:10b6:8:60::5) by
+ SA1PR11MB8325.namprd11.prod.outlook.com (2603:10b6:806:38c::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.3; Wed, 11 Mar
+ 2026 09:36:12 +0000
+Received: from DM4PR11MB6019.namprd11.prod.outlook.com
+ ([fe80::9086:5e0b:ad24:762]) by DM4PR11MB6019.namprd11.prod.outlook.com
+ ([fe80::9086:5e0b:ad24:762%6]) with mapi id 15.20.9700.010; Wed, 11 Mar 2026
+ 09:36:12 +0000
+From: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>
+Subject: Re: [PATCH i-g-t v2] tests/kms_async_flips: Do not skip any tests due
+ to Selective Fetch
+Thread-Topic: [PATCH i-g-t v2] tests/kms_async_flips: Do not skip any tests
+ due to Selective Fetch
+Thread-Index: AQHcsGwN2Cw96NYG/0a0KPNU30RO1rWnz0iAgAFE3YA=
+Date: Wed, 11 Mar 2026 09:36:11 +0000
+Message-ID: <d2ec45b1af645c326580f3511879c125c7180db5.camel@intel.com>
+References: <20260310085757.1314235-1-jouni.hogander@intel.com>
+ <4c31d910-f897-4331-a3a9-1b6be7c9cdb8@intel.com>
+In-Reply-To: <4c31d910-f897-4331-a3a9-1b6be7c9cdb8@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR11MB6019:EE_|SA1PR11MB8325:EE_
+x-ms-office365-filtering-correlation-id: bb899304-b0ee-4ac1-a481-08de7f51a205
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|1800799024|366016|10070799003|22082099003|18002099003|56012099003|38070700021|13003099007|8096899003;
+x-microsoft-antispam-message-info: eWxnBKxsNOdoytrTag3C3MwTdprazX7HKVeVmC9HiH61FPShA6JS0/mURF6voxvAckeetUyICfp8PaDAZUTNGsexTAwiIqiGXXxs7HAQsHRIsZm9cxlOcxsWai/rsspihYAhFAvu3JLV1qdZcW8JRU1cep/DR3sz9aBDqjnGu4yEOCnRiOiTskAyYm5ICDaPFZdQpNE3hBzG3lGNfgCKCxfD5PVOzlHlkQZ7IELk45W+cSX842ntSj6gocDL8MU2sDtUgpWPX01EwQ2VzGWU6iF3lCUrvop5NES5Qa2CxioLk2oQzsRG8J4529V83wU0+uwU8rJCg86CD/qr0PiFlX77WoPmERgStfsWNjpdTJU0olNETu8PvQEBQ7LbRmgPPooI21xWwBf3EWFy9mhufWSOj9CeCEFWJS4QwJWE3bbOuyASGMwEpmoP+0CDPhX5RrfPs+QuNhQK+J52zbMXkp3tyrVu/wiWGmnxHo7rjp6PzHV6GSd19z/okdoWbAxn7CUtdwwcwnxCmbVCIhNA7Wc/2DUExMkDjQp3uGXvk8ppqbwqTwJmT2LbUSDLfUC1l1xNdgSocwrJMOLXIN8e0Yyh0lUWnD1EVuPIYl9BqiYDGsiuesvlCSJ1K7FtH0YIEU8N4uFsg2kg2z3Ra5U7EPYRiyhn7xFTGTsgs1nJmEQk2cVioHoi5+J/tYPNR+ZdVfpO2iidgUlWD1B/PjWGQIcJPxZbXjO+eTVeAvmD+eHDRcB5+NdgbGplS+uwlsEY
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB6019.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(10070799003)(22082099003)(18002099003)(56012099003)(38070700021)(13003099007)(8096899003);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 2
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?eGhaU3RWWGRKVy9BalBFeG9wbEFhaHVPWjY5UjVVZ3QxdDhXNTVOSWN3cjBY?=
+ =?utf-8?B?aTdwc2pEUnBHUEk2ZkxIWUttb1NLbjdLMTBGWmpqSDRwc0xndUNORzY2KzRE?=
+ =?utf-8?B?KzVmc2d6dmx2clk2czEvOVVxUkhKQ0tRV2V3ZzNiMXFSdGNzR3dtdXdWQVM2?=
+ =?utf-8?B?WTkxVjhOa2hmcWhYVU03TzlUYWdycjFOV2c2TUJXWHNWYkNHc1RIMk5tRlYv?=
+ =?utf-8?B?L1YraVlzYnZIUGtCdUtXNTlYZUdiL2ZZdmxpRyswUytvUHhsWmxLcnZMN1JO?=
+ =?utf-8?B?MmdpQlBKd0ppT3FvMnpsQVgzaGFtSEpDUC9tMmsrMGJLUDkwbnJjWndaSmFz?=
+ =?utf-8?B?Unl6U0dHTEZLODZacWNhcGxOMXdFb0VIbFFiL1lyK1R2Zk91dFFNZS9jUmts?=
+ =?utf-8?B?SFpnL3Z6KzRwMkw0dzhxWTFMaGJBRkp1akduMVFsaFB2YnBqYU1WV1BnL1dC?=
+ =?utf-8?B?VktWeXV5SnZ2T0xONWxSbU93R1g2QmkvOXBWZXBkVjNkOGEzSFVyUUJFYytF?=
+ =?utf-8?B?dWNyRmVvVzR0dGRpWXRlRjNSeDdtSHorcDNRdk4vUThDeVg1TDdoYTJkcDlQ?=
+ =?utf-8?B?VXVMTS8wKzBWOEU5QVZGamptSG9jSm9VUG5qU2VPWFNxZkdOWlpLdnZ3NkQ3?=
+ =?utf-8?B?M3U3bkFoSS9jNXp2QnhkeGpJV2VyRTNEMWhjUWV1ejF4SUJ3U29PdVRDdktK?=
+ =?utf-8?B?ME05eHJoODBNQlc2RmdZUzdKdE1GL0ZzQktPeWpiVi9HdHJqWmt3blBLclJt?=
+ =?utf-8?B?T204VU5MdFJxZTZOaDNuL29BdlpHVWVvakV6R1o3MXhKMFVSY2FzSzNVSHl4?=
+ =?utf-8?B?eXBqaWM0dktvdC9GVWZqdlRtUzY0YnJteEJBRU91YTh3N3AyWlhkRHJZei9O?=
+ =?utf-8?B?dTZPeWJuUENTZzBmalZHTGtlaGtmRVlHWHhRZ2ZqZ0xvQ0hNK2t4VC83S2xu?=
+ =?utf-8?B?YWhZUWJxQ2d0cGNGRW1GdytGcklPNFloNmRGeDR5dzdlSTFiRGJhNEZYZ0VZ?=
+ =?utf-8?B?TnJlWXVOY0xWTHJSWjhlb00yZWJ1MG9uanNpQnhPaUJyanpRY2xBQ0IxZFF5?=
+ =?utf-8?B?aS9Kc3JGd1pzTUlleWtWZktpUUJKcTk4TEtBUi9hVkZ1RHpuaE5aaGNET1hh?=
+ =?utf-8?B?cE1DcmdHdTNQdTVnZ2Fja2kyRUg3dE1KanZzWFhNc0FoYlRJcy81d2tUTzBm?=
+ =?utf-8?B?L1J1WEJVWU16aXlLRzl5bENLZzRNNlpHMng3bFpLVlloQzl5YmpPMStjeHNE?=
+ =?utf-8?B?SjF1dzE0U21LRThJSUZZeHZkUTZKV1FJTDFubEVtbEJNTnBGUUpTeU5WdVdN?=
+ =?utf-8?B?MURsQ3RtOVRtWk55ODdRU0pGbWttMDdSWTVWTlUybTJwY2g2cjhlWjZjdjdG?=
+ =?utf-8?B?aW04SSs1dHAyMzQwN3R3VGk1c3RqK0lTcXphcU1oWHNRVjhyWGZOaEkwNjRM?=
+ =?utf-8?B?c3AzRjM2dXpOelB1UnRibVpsSFZNWHc5cW1tbm12bmJsNFcxdkgwVk5oYUI1?=
+ =?utf-8?B?M1RacTZIcGJBVndFTzNCWkM4ZU4yUUtuUXhCTWhiYXpteDAxaW5WYkE2Sy9N?=
+ =?utf-8?B?TUtqT2NGZGViaExKSHZLWW92QkF4WDMyMTdGMFV3dm5hU0tNTnFqQktvOXhW?=
+ =?utf-8?B?T2hxemdQTmJxd2dOMEs2dkNZdEZ5aCtvNkhSUEVMSGEzZlNKbmtyMFYrM0FP?=
+ =?utf-8?B?SVlrME1TNVVnQjJuYk9xbitjazNGME5DekpvVUhuUWVEM0lXR2toZEVjVVBW?=
+ =?utf-8?B?MzBFb2YvQU9aNnlsSmRtbHFTUmxVcHJIMnN5eDVsR3RZR01lVzRSbWVKajA0?=
+ =?utf-8?B?T2ptdjRWUG8rM09JTWZDcTJYelRxenU1VGUzVGxBREx0OHBVTWtBdVJCMmxP?=
+ =?utf-8?B?N2FNUGdRdXA3RjJYTGlGZlhDd2VrNmYwbVJHeWN2VTJFTTZGTmd0NzEwZ2x3?=
+ =?utf-8?B?NDQzcGlYREdERWtURmhpRGZwMW9xMFVsWHdHNmw2S2VGanNVcWZFZ3E1Z0tG?=
+ =?utf-8?B?VEdHOFZmMXgzNlpTWlE2cGhaZDdjT3VFbUFaeFdYODdQUTlYSVEzL1p1bkNI?=
+ =?utf-8?B?bnRiRUVWVzdPZ2JCejdyMnlNbnQwMDZKa3lPVWh0dUROTkN0a3JlQVdGMWJS?=
+ =?utf-8?B?b0hwMmxXdDdVdkNqbkRLWERULzNsRHhObmpZNnFvQ1hZcm5pU21HTTVxUFJR?=
+ =?utf-8?B?TzBtVzRLbjhySTdPTmxDcWE4VnVkYTh5b0tOdGV5YTV2YTczWWpXTmtYZmZV?=
+ =?utf-8?B?ZzRxQys0V0NYSjRCQVpyWVp6KzBUek9DbDNVYnpmcDNwV3poVDVjVkE5NEts?=
+ =?utf-8?B?RE9FNWJJd0drZGZZR3lFOGZxZ0ZwRzV2RGg2emliVVFHMUtlWjAzVmNkSGhx?=
+ =?utf-8?Q?emVKE1pl/rWAtu2h4Vg9/Mt0DBYAC6OZlscnJlhAkO90N?=
+x-ms-exchange-antispam-messagedata-1: pHtD5IlbdJG7yW+U7PEMvEcQPuwjQPFzZlI=
+Content-Type: multipart/alternative;
+ boundary="_000_d2ec45b1af645c326580f3511879c125c7180db5camelintelcom_"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: YjTEE6Vck4x1aLaOZrNtVauhqQwuI00p/DBHWDVFi8a7DQXZ0AyxgaeNLlaOdfq8MxSylkeyMoVyaZ++6tJJMRatPVNK2tS2Mfe9qu/zynG8k+pLi/KfqT8vrLSrrUH2CNszKNxxSrCTMo1yJgL8PeNiiT0y7RjvIF90Tgh493/4k9EHqE7Q2iw85PA55yg9CwAxLizMKvTbiE7VPXBvuZ3c1WHDlxOD714/uGlUjydRgz3saRfXfyxipX9OSHmy9LZuAg9oR4MXoEpmTpc4frnarBdgZqITIp6+vo/ztVLmaeuV+3+bd53cON2qNab3QuRBm4Hp5Bdr+oLnUAiE+w==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6019.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb899304-b0ee-4ac1-a481-08de7f51a205
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Mar 2026 09:36:11.9931 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: HNt4HGepwbrGA2rJecz+1dE/xq6nUUtHQQnHa+XwnkzQLw7hOmOW8ehecSLeIfNyjXiaI9T1WwgOOlyOPrW32+zttwgR25UY6c0TBY/ZVPg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8325
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,199 +174,148 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a second batch to validate hit-under-miss behavior: placing the BB
-at PREFETCH_ADDR ensures the page is already mapped when the shader
-prefetch runs, so the prefetch fault counter should not increment.
+--_000_d2ec45b1af645c326580f3511879c125c7180db5camelintelcom_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Add SVM mode (prefetch-fault-svm subtest) that creates the VM with
-CPU_ADDR_MIRROR and uses mmap() at PREFETCH_ADDR to make the page
-GPU-accessible before the hit-under-miss batch.
+T24gVHVlLCAyMDI2LTAzLTEwIGF0IDE5OjQzICswNTMwLCBOYWxhZGFsYSwgUmFtYW5haWR1IHdy
+b3RlOg0KDQpIaSBKb3VuaSwNCg0KT24gMy8xMC8yMDI2IDI6MjcgUE0sIEpvdW5pIEjDtmdhbmRl
+ciB3cm90ZToNCg0KDQpUaGVyZSBhcmUgcmVjZW50IGNoYW5nZXMgaW4gZHJpdmVyIGZpeGluZyBh
+c3luYyBmbGlwIGhhbmRsaW5nIHdoZW4NCg0Kc2VsZWN0aXZlIGZldGNoIGlzIGVuYWJsZWQuIFRo
+ZXJlIGlzIG5vIG5lZWQgdG8gc2tpcCBhbnkgYXN5bmMgZmxpcCB0ZXN0cw0KDQpkdWUgdG8gU2Vs
+ZWN0aXZlIEZldGNoIGFueW1vcmUuIFJlbW92ZSBjaGVja2luZyBTZWxlY3RpdmUgRmV0Y2guDQoN
+Cg0KdjI6DQoNCiAgLSBkcm9wcGVkIHVudXNlZCBwc3IgaGVhZGVyDQoNCiAgLSBkcm9wcGVkIHVu
+dXNlZCBkZWJ1Z2ZzX2ZkIGxvY2FsIHZhcmlhYmxlDQoNCiAgLSByZWJhc2VkDQoNCg0KQ2xvc2Vz
+OiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2k5MTUva2VybmVsLy0vaXNzdWVz
+LzE1NzkxDQoNCkFkZCBhIExpbms6IHRhZyB0byB0aGUgcmVmZXJlbmNlIGRyaXZlciBwYXRjaCBm
+b3IgdHJhY2VhYmlsaXR5Lg0KDQpTaWduZWQtb2ZmLWJ5OiBKb3VuaSBIw7ZnYW5kZXIgPGpvdW5p
+LmhvZ2FuZGVyQGludGVsLmNvbT48bWFpbHRvOmpvdW5pLmhvZ2FuZGVyQGludGVsLmNvbT4NCg0K
+LS0tDQoNCiB0ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYyB8IDE3ICstLS0tLS0tLS0tLS0tLS0tDQoN
+CiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDE2IGRlbGV0aW9ucygtKQ0KDQoNCmRp
+ZmYgLS1naXQgYS90ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYyBiL3Rlc3RzL2ttc19hc3luY19mbGlw
+cy5jDQoNCmluZGV4IGE0MjQwNzM2My4uNGEyOTMwOTY4IDEwMDY0NA0KDQotLS0gYS90ZXN0cy9r
+bXNfYXN5bmNfZmxpcHMuYw0KDQorKysgYi90ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYw0KDQpAQCAt
+MzUsNyArMzUsNiBAQA0KDQoNCg0KICNpbmNsdWRlICJpZ3QuaCINCg0KICNpbmNsdWRlICJpZ3Rf
+YXV4LmgiDQoNCi0jaW5jbHVkZSAiaWd0X3Bzci5oIg0KDQogI2luY2x1ZGUgImlndF92ZWMuaCIN
+Cg0KICNpbmNsdWRlIDxzeXMvaW9jdGwuaD4NCg0KICNpbmNsdWRlIDxzeXMvdGltZS5oPg0KDQpA
+QCAtNjEyLDI3ICs2MTEsMTMgQEAgc3RhdGljIHZvaWQgdGVzdF90aW1lc3RhbXAoZGF0YV90ICpk
+YXRhKQ0KDQogc3RhdGljIHZvaWQgdGVzdF9jdXJzb3IoZGF0YV90ICpkYXRhKQ0KDQogew0KDQog
+ICAgICAgIGludCBmbGFncyA9IERSTV9NT0RFX1BBR0VfRkxJUF9BU1lOQyB8IERSTV9NT0RFX1BB
+R0VfRkxJUF9FVkVOVDsNCg0KLSAgICAgICBpbnQgcmV0LCBkZWJ1Z2ZzX2ZkOw0KDQorICAgICAg
+IGludCByZXQ7DQoNCiAgICAgICAgdWludDY0X3Qgd2lkdGgsIGhlaWdodDsNCg0KICAgICAgICBz
+dHJ1Y3QgaWd0X2ZiIGN1cnNvcl9mYjsNCg0KICAgICAgICBzdHJ1Y3QgZHJtX21vZGVfY3Vyc29y
+IGN1cjsNCg0KDQoNCiAgICAgICAgaWd0X2Rpc3BsYXlfY29tbWl0MigmZGF0YS0+ZGlzcGxheSwg
+ZGF0YS0+ZGlzcGxheS5pc19hdG9taWMgPyBDT01NSVRfQVRPTUlDIDogQ09NTUlUX0xFR0FDWSk7
+DQoNCg0KDQotICAgICAgIC8qDQoNCi0gICAgICAgICogSW50ZWwncyBQU1IyIHNlbGVjdGl2ZSBm
+ZXRjaCBhZGRzIG90aGVyIHBsYW5lcyB0byBzdGF0ZSB3aGVuDQoNCi0gICAgICAgICogbmVjZXNz
+YXJ5LCBjYXVzaW5nIHRoZSBhc3luYyBmbGlwIHRvIGZhaWwgYmVjYXVzZSBhc3luYyBmbGlwIGlz
+IG5vdA0KDQotICAgICAgICAqIHN1cHBvcnRlZCBpbiBjdXJzb3IgcGxhbmUuDQoNCi0gICAgICAg
+ICovDQoNCi0gICAgICAgaWYgKGlzX2ludGVsX2RldmljZShkYXRhLT5kcm1fZmQpKSB7DQoNCi0g
+ICAgICAgICAgICAgICBkZWJ1Z2ZzX2ZkID0gaWd0X2RlYnVnZnNfZGlyKGRhdGEtPmRybV9mZCk7
+DQoNCi0gICAgICAgICAgICAgICBpZ3Rfc2tpcF9vbl9mKHBzcl9zaW5rX3N1cHBvcnQoZGF0YS0+
+ZHJtX2ZkLCBkZWJ1Z2ZzX2ZkLA0KDQotICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIFBTUl9NT0RFXzJfU0VMX0ZFVENILCBkYXRhLT5vdXRwdXQpLA0KDQotICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAiUFNSMiBzZWxlY3RpdmUgZmV0Y2ggYWRkcyBjdXJz
+b3IgdG8gcHJpbWFyeSBwbGFuZSBmbGlwcywiDQoNCi0gICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICJicmVha2luZyBhc3luYyBmbGlwIHN1cHBvcnRcbiIpOw0KDQotICAgICAgICAgICAgICAg
+Y2xvc2UoZGVidWdmc19mZCk7DQoNCi0gICAgICAgfQ0KDQotDQoNCiAgICAgICAgZG9fb3JfZGll
+KGRybUdldENhcChkYXRhLT5kcm1fZmQsIERSTV9DQVBfQ1VSU09SX1dJRFRILCAmd2lkdGgpKTsN
+Cg0KICAgICAgICBkb19vcl9kaWUoZHJtR2V0Q2FwKGRhdGEtPmRybV9mZCwgRFJNX0NBUF9DVVJT
+T1JfV0lEVEgsICZoZWlnaHQpKTsNCg0KDQoNCldpdGggYWJvdmUgY2hhbmdlIGxvb2tzIGdvb2Qg
+dG8gbWUuDQoNClJldmlld2VkLWJ5OiBOYWxhZGFsYSBSYW1hbmFpZHUgPHJhbWFuYWlkdS5uYWxh
+ZGFsYUBpbnRlbC5jb20+PG1haWx0bzpyYW1hbmFpZHUubmFsYWRhbGFAaW50ZWwuY29tPg0KDQoN
+ClRoYW5rIHlvdSBSYW1hbmFpZHUgZm9yIGNoZWNraW5nIG15IHBhdGNoLiBUaGlzIGlzIG5vdyBw
+dXNoZWQgdG8gbWFzdGVyLg0KDQpCUiwNCkpvdW5pIEjDtmdhbmRlcg0K
 
-Other changes:
-  - Extract PREFETCH_ADDR and USER_FENCE_VALUE into defines
-  - Update stat name to 'invalid_prefetch_pagefault_count'
-  - Add missing cleanup (intel_buf_destroy, xe_exec_queue_destroy,
-    xe_vm_destroy)
+--_000_d2ec45b1af645c326580f3511879c125c7180db5camelintelcom_
+Content-Type: text/html; charset="utf-8"
+Content-ID: <6B570A1C18F036478D4185373B43979A@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 
-Signed-off-by: Varun Gupta <varun.gupta@intel.com>
----
- tests/intel/xe_prefetch_fault.c | 108 ++++++++++++++++++++++++--------
- 1 file changed, 83 insertions(+), 25 deletions(-)
+PGh0bWw+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIgY29udGVudD0i
+dGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04Ij4NCjxzdHlsZT5wcmUsY29kZSxhZGRyZXNzIHsNCiAg
+bWFyZ2luOiAwcHg7DQp9DQpoMSxoMixoMyxoNCxoNSxoNiB7DQogIG1hcmdpbi10b3A6IDAuMmVt
+Ow0KICBtYXJnaW4tYm90dG9tOiAwLjJlbTsNCn0NCm9sLHVsIHsNCiAgbWFyZ2luLXRvcDogMGVt
+Ow0KICBtYXJnaW4tYm90dG9tOiAwZW07DQp9DQpibG9ja3F1b3RlIHsNCiAgbWFyZ2luLXRvcDog
+MGVtOw0KICBtYXJnaW4tYm90dG9tOiAwZW07DQp9DQo8L3N0eWxlPg0KPC9oZWFkPg0KPGJvZHk+
+DQo8ZGl2Pk9uIFR1ZSwgMjAyNi0wMy0xMCBhdCAxOTo0MyArMDUzMCwgTmFsYWRhbGEsIFJhbWFu
+YWlkdSB3cm90ZTo8L2Rpdj4NCjxibG9ja3F1b3RlIHR5cGU9ImNpdGUiIHN0eWxlPSJtYXJnaW46
+MCAwIDAgLjhleDsgYm9yZGVyLWxlZnQ6MnB4ICM3MjlmY2Ygc29saWQ7cGFkZGluZy1sZWZ0OjFl
+eCI+DQo8ZGl2PjwvZGl2Pg0KPHA+SGkgSm91bmksPC9wPg0KPGRpdj48L2Rpdj4NCjxkaXYgY2xh
+c3M9Im1vei1jaXRlLXByZWZpeCI+T24gMy8xMC8yMDI2IDI6MjcgUE0sIEpvdW5pIEjDtmdhbmRl
+ciB3cm90ZTo8YnI+DQo8L2Rpdj4NCjxkaXY+PGJyPg0KPC9kaXY+DQo8YmxvY2txdW90ZSB0eXBl
+PSJjaXRlIiBjaXRlPSJtaWQ6MjAyNjAzMTAwODU3NTcuMTMxNDIzNS0xLWpvdW5pLmhvZ2FuZGVy
+QGludGVsLmNvbSIgc3R5bGU9Im1hcmdpbjowIDAgMCAuOGV4OyBib3JkZXItbGVmdDoycHggIzcy
+OWZjZiBzb2xpZDtwYWRkaW5nLWxlZnQ6MWV4Ij4NCjxkaXY+PC9kaXY+DQo8cHJlPlRoZXJlIGFy
+ZSByZWNlbnQgY2hhbmdlcyBpbiBkcml2ZXIgZml4aW5nIGFzeW5jIGZsaXAgaGFuZGxpbmcgd2hl
+bjwvcHJlPg0KPHByZT5zZWxlY3RpdmUgZmV0Y2ggaXMgZW5hYmxlZC4gVGhlcmUgaXMgbm8gbmVl
+ZCB0byBza2lwIGFueSBhc3luYyBmbGlwIHRlc3RzPC9wcmU+DQo8cHJlPmR1ZSB0byBTZWxlY3Rp
+dmUgRmV0Y2ggYW55bW9yZS4gUmVtb3ZlIGNoZWNraW5nIFNlbGVjdGl2ZSBGZXRjaC48L3ByZT4N
+CjxwcmU+PGJyPjwvcHJlPg0KPHByZT52Mjo8L3ByZT4NCjxwcmU+ICAtIGRyb3BwZWQgdW51c2Vk
+IHBzciBoZWFkZXI8L3ByZT4NCjxwcmU+ICAtIGRyb3BwZWQgdW51c2VkIGRlYnVnZnNfZmQgbG9j
+YWwgdmFyaWFibGU8L3ByZT4NCjxwcmU+ICAtIHJlYmFzZWQ8L3ByZT4NCjxwcmU+PGJyPjwvcHJl
+Pg0KPHByZT5DbG9zZXM6IDxhIGNsYXNzPSJtb3otdHh0LWxpbmstZnJlZXRleHQiIGhyZWY9Imh0
+dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwvLS9pc3N1ZXMvMTU3
+OTEiPmh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwvLS9pc3N1
+ZXMvMTU3OTE8L2E+PC9wcmU+DQo8ZGl2PjwvZGl2Pg0KPC9ibG9ja3F1b3RlPg0KPGRpdj5BZGQg
+YSBMaW5rOiB0YWcgdG8gdGhlIHJlZmVyZW5jZSBkcml2ZXIgcGF0Y2ggZm9yIHRyYWNlYWJpbGl0
+eS4gPGJyPg0KPC9kaXY+DQo8YmxvY2txdW90ZSB0eXBlPSJjaXRlIiBjaXRlPSJtaWQ6MjAyNjAz
+MTAwODU3NTcuMTMxNDIzNS0xLWpvdW5pLmhvZ2FuZGVyQGludGVsLmNvbSIgc3R5bGU9Im1hcmdp
+bjowIDAgMCAuOGV4OyBib3JkZXItbGVmdDoycHggIzcyOWZjZiBzb2xpZDtwYWRkaW5nLWxlZnQ6
+MWV4Ij4NCjxkaXY+PC9kaXY+DQo8cHJlPlNpZ25lZC1vZmYtYnk6IEpvdW5pIEjDtmdhbmRlciA8
+YSBjbGFzcz0ibW96LXR4dC1saW5rLXJmYzIzOTZFIiBocmVmPSJtYWlsdG86am91bmkuaG9nYW5k
+ZXJAaW50ZWwuY29tIj4mbHQ7am91bmkuaG9nYW5kZXJAaW50ZWwuY29tJmd0OzwvYT48L3ByZT4N
+CjxwcmU+LS0tPC9wcmU+DQo8cHJlPiB0ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYyB8IDE3ICstLS0t
+LS0tLS0tLS0tLS0tPC9wcmU+DQo8cHJlPiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyks
+IDE2IGRlbGV0aW9ucygtKTwvcHJlPg0KPHByZT48YnI+PC9wcmU+DQo8cHJlPmRpZmYgLS1naXQg
+YS90ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYyBiL3Rlc3RzL2ttc19hc3luY19mbGlwcy5jPC9wcmU+
+DQo8cHJlPmluZGV4IGE0MjQwNzM2My4uNGEyOTMwOTY4IDEwMDY0NDwvcHJlPg0KPHByZT4tLS0g
+YS90ZXN0cy9rbXNfYXN5bmNfZmxpcHMuYzwvcHJlPg0KPHByZT4rKysgYi90ZXN0cy9rbXNfYXN5
+bmNfZmxpcHMuYzwvcHJlPg0KPHByZT5AQCAtMzUsNyArMzUsNiBAQDwvcHJlPg0KPHByZT4gPC9w
+cmU+DQo8cHJlPiAjaW5jbHVkZSAmcXVvdDtpZ3QuaCZxdW90OzwvcHJlPg0KPHByZT4gI2luY2x1
+ZGUgJnF1b3Q7aWd0X2F1eC5oJnF1b3Q7PC9wcmU+DQo8cHJlPi0jaW5jbHVkZSAmcXVvdDtpZ3Rf
+cHNyLmgmcXVvdDs8L3ByZT4NCjxwcmU+ICNpbmNsdWRlICZxdW90O2lndF92ZWMuaCZxdW90Ozwv
+cHJlPg0KPHByZT4gI2luY2x1ZGUgJmx0O3N5cy9pb2N0bC5oJmd0OzwvcHJlPg0KPHByZT4gI2lu
+Y2x1ZGUgJmx0O3N5cy90aW1lLmgmZ3Q7PC9wcmU+DQo8cHJlPkBAIC02MTIsMjcgKzYxMSwxMyBA
+QCBzdGF0aWMgdm9pZCB0ZXN0X3RpbWVzdGFtcChkYXRhX3QgKmRhdGEpPC9wcmU+DQo8cHJlPiBz
+dGF0aWMgdm9pZCB0ZXN0X2N1cnNvcihkYXRhX3QgKmRhdGEpPC9wcmU+DQo8cHJlPiB7PC9wcmU+
+DQo8cHJlPiAJaW50IGZsYWdzID0gRFJNX01PREVfUEFHRV9GTElQX0FTWU5DIHwgRFJNX01PREVf
+UEFHRV9GTElQX0VWRU5UOzwvcHJlPg0KPHByZT4tCWludCByZXQsIGRlYnVnZnNfZmQ7PC9wcmU+
+DQo8cHJlPisJaW50IHJldDs8L3ByZT4NCjxwcmU+IAl1aW50NjRfdCB3aWR0aCwgaGVpZ2h0Ozwv
+cHJlPg0KPHByZT4gCXN0cnVjdCBpZ3RfZmIgY3Vyc29yX2ZiOzwvcHJlPg0KPHByZT4gCXN0cnVj
+dCBkcm1fbW9kZV9jdXJzb3IgY3VyOzwvcHJlPg0KPHByZT4gPC9wcmU+DQo8cHJlPiAJaWd0X2Rp
+c3BsYXlfY29tbWl0MigmYW1wO2RhdGEtJmd0O2Rpc3BsYXksIGRhdGEtJmd0O2Rpc3BsYXkuaXNf
+YXRvbWljID8gQ09NTUlUX0FUT01JQyA6IENPTU1JVF9MRUdBQ1kpOzwvcHJlPg0KPHByZT4gPC9w
+cmU+DQo8cHJlPi0JLyo8L3ByZT4NCjxwcmU+LQkgKiBJbnRlbCdzIFBTUjIgc2VsZWN0aXZlIGZl
+dGNoIGFkZHMgb3RoZXIgcGxhbmVzIHRvIHN0YXRlIHdoZW48L3ByZT4NCjxwcmU+LQkgKiBuZWNl
+c3NhcnksIGNhdXNpbmcgdGhlIGFzeW5jIGZsaXAgdG8gZmFpbCBiZWNhdXNlIGFzeW5jIGZsaXAg
+aXMgbm90PC9wcmU+DQo8cHJlPi0JICogc3VwcG9ydGVkIGluIGN1cnNvciBwbGFuZS48L3ByZT4N
+CjxwcmU+LQkgKi88L3ByZT4NCjxwcmU+LQlpZiAoaXNfaW50ZWxfZGV2aWNlKGRhdGEtJmd0O2Ry
+bV9mZCkpIHs8L3ByZT4NCjxwcmU+LQkJZGVidWdmc19mZCA9IGlndF9kZWJ1Z2ZzX2RpcihkYXRh
+LSZndDtkcm1fZmQpOzwvcHJlPg0KPHByZT4tCQlpZ3Rfc2tpcF9vbl9mKHBzcl9zaW5rX3N1cHBv
+cnQoZGF0YS0mZ3Q7ZHJtX2ZkLCBkZWJ1Z2ZzX2ZkLDwvcHJlPg0KPHByZT4tCQkJCQkgICAgICAg
+UFNSX01PREVfMl9TRUxfRkVUQ0gsIGRhdGEtJmd0O291dHB1dCksPC9wcmU+DQo8cHJlPi0JCQkg
+ICAgICAmcXVvdDtQU1IyIHNlbGVjdGl2ZSBmZXRjaCBhZGRzIGN1cnNvciB0byBwcmltYXJ5IHBs
+YW5lIGZsaXBzLCZxdW90OzwvcHJlPg0KPHByZT4tCQkJICAgICAgJnF1b3Q7YnJlYWtpbmcgYXN5
+bmMgZmxpcCBzdXBwb3J0XG4mcXVvdDspOzwvcHJlPg0KPHByZT4tCQljbG9zZShkZWJ1Z2ZzX2Zk
+KTs8L3ByZT4NCjxwcmU+LQl9PC9wcmU+DQo8cHJlPi08L3ByZT4NCjxwcmU+IAlkb19vcl9kaWUo
+ZHJtR2V0Q2FwKGRhdGEtJmd0O2RybV9mZCwgRFJNX0NBUF9DVVJTT1JfV0lEVEgsICZhbXA7d2lk
+dGgpKTs8L3ByZT4NCjxwcmU+IAlkb19vcl9kaWUoZHJtR2V0Q2FwKGRhdGEtJmd0O2RybV9mZCwg
+RFJNX0NBUF9DVVJTT1JfV0lEVEgsICZhbXA7aGVpZ2h0KSk7PC9wcmU+DQo8cHJlPiA8L3ByZT4N
+CjxkaXY+PC9kaXY+DQo8L2Jsb2NrcXVvdGU+DQo8ZGl2PjwvZGl2Pg0KPHA+V2l0aCBhYm92ZSBj
+aGFuZ2UgbG9va3MgZ29vZCB0byBtZS48L3A+DQo8ZGl2PjwvZGl2Pg0KPHA+PC9wPg0KPGRpdj48
+L2Rpdj4NCjxwIHN0eWxlPSJtYXJnaW46MGluO2ZvbnQtZmFtaWx5Ok1lbmxvO2ZvbnQtc2l6ZTo5
+Ljc1cHQ7Y29sb3I6IzMzMzMzMyI+PHNwYW4gc3R5bGU9ImJhY2tncm91bmQ6d2hpdGUiPlJldmll
+d2VkLWJ5OiBOYWxhZGFsYSBSYW1hbmFpZHUNCjxhIGNsYXNzPSJtb3otdHh0LWxpbmstcmZjMjM5
+NkUiIGhyZWY9Im1haWx0bzpyYW1hbmFpZHUubmFsYWRhbGFAaW50ZWwuY29tIj4mbHQ7cmFtYW5h
+aWR1Lm5hbGFkYWxhQGludGVsLmNvbSZndDs8L2E+PC9zcGFuPjwvcD4NCjxkaXY+PGJyPg0KPC9k
+aXY+DQo8YmxvY2txdW90ZSB0eXBlPSJjaXRlIiBjaXRlPSJtaWQ6MjAyNjAzMTAwODU3NTcuMTMx
+NDIzNS0xLWpvdW5pLmhvZ2FuZGVyQGludGVsLmNvbSIgc3R5bGU9Im1hcmdpbjowIDAgMCAuOGV4
+OyBib3JkZXItbGVmdDoycHggIzcyOWZjZiBzb2xpZDtwYWRkaW5nLWxlZnQ6MWV4Ij4NCjxkaXY+
+PC9kaXY+DQo8L2Jsb2NrcXVvdGU+DQo8ZGl2PjwvZGl2Pg0KPC9ibG9ja3F1b3RlPg0KPGRpdj48
+YnI+DQo8L2Rpdj4NCjxkaXY+VGhhbmsgeW91IFJhbWFuYWlkdSBmb3IgY2hlY2tpbmcgbXkgcGF0
+Y2guIFRoaXMgaXMgbm93IHB1c2hlZCB0byBtYXN0ZXIuPC9kaXY+DQo8ZGl2Pjxicj4NCjwvZGl2
+Pg0KPGRpdj5CUiw8L2Rpdj4NCjxkaXY+Sm91bmkgSMO2Z2FuZGVyPC9kaXY+DQo8ZGl2PjxzcGFu
+Pjwvc3Bhbj48L2Rpdj4NCjwvYm9keT4NCjwvaHRtbD4NCg==
 
-diff --git a/tests/intel/xe_prefetch_fault.c b/tests/intel/xe_prefetch_fault.c
-index 4a143374a..fb0afb0a8 100644
---- a/tests/intel/xe_prefetch_fault.c
-+++ b/tests/intel/xe_prefetch_fault.c
-@@ -25,6 +25,8 @@
- #define WALKER_Y_DIM	1
- #define PAGE_SIZE 4096
- #define COLOR_C4 0xC4C4C4C4
-+#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
-+#define PREFETCH_ADDR	0x1f000000
- 
- struct dim_t {
- 	uint32_t x;
-@@ -118,7 +120,7 @@ static struct gpgpu_shader *get_prefetch_shader(int fd)
- 	static struct gpgpu_shader *shader;
- 
- 	shader = gpgpu_shader_create(fd);
--	gpgpu_shader__prefetch_fault(shader, xe_canonical_va(fd, 0x1f000000));
-+	gpgpu_shader__prefetch_fault(shader, xe_canonical_va(fd, PREFETCH_ADDR));
- 	gpgpu_shader__eot(shader);
- 
- 	return shader;
-@@ -126,63 +128,108 @@ static struct gpgpu_shader *get_prefetch_shader(int fd)
- 
- /**
-  * SUBTEST: prefetch-fault
-- * Description: Validate L1/L2 cache prefetch fault.
-+ * Description: Validate prefetch fault and hit-under-miss behavior
-+ * Run type: FULL
-+ *
-+ * SUBTEST: prefetch-fault-svm
-+ * Description: Validate prefetch fault and hit-under-miss behavior in SVM mode
-  * Run type: FULL
-  */
--
--static void test_prefetch(int fd, struct drm_xe_engine_class_instance *hwe)
-+static void test_prefetch_fault(int fd, struct drm_xe_engine_class_instance *hwe, bool svm)
- {
--	/* faulty address 0x1f000000 should be beyond bb_offset+bb_size. */
- 	const uint64_t bb_offset = 0x1b000000;
-+	const uint64_t bb_offset2 = 0x1f000000;
- 	const size_t bb_size = 4096;
--	struct dim_t w_dim;
-+	static const char *stat = "invalid_prefetch_pagefault_count";
-+	struct drm_xe_sync sync[1] = {
-+		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		  .timeline_value = USER_FENCE_VALUE },
-+	};
-+	struct xe_device *xe = xe_device_get(fd);
-+	struct dim_t w_dim = { .x = WALKER_X_DIM, .y = WALKER_Y_DIM };
- 	struct gpgpu_shader *shader;
- 	struct intel_bb *ibb;
- 	struct intel_buf *buf;
--	uint32_t *ptr;
- 	uint32_t exec_queue_id, vm;
-+	uint64_t vm_sync = 0;
-+	void *cpu_data = NULL;
- 	int prefetch_pre, prefetch_pos;
--	static const char *stat = "prefetch_pagefault_count";
--
--	w_dim.x = WALKER_X_DIM;
--	w_dim.y = WALKER_Y_DIM;
-+	uint32_t *ptr;
- 
- 	buf = create_buf(fd, w_dim.x, w_dim.y, COLOR_C4);
- 
--	prefetch_pre = xe_gt_stats_get_count(fd, hwe->gt_id, stat);
--
--	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
--			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-+	/* Create VM based on mode */
-+	if (svm) {
-+		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+				  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-+		sync[0].addr = to_user_pointer(&vm_sync);
-+		__xe_vm_bind_assert(fd, vm, 0, 0, 0, 0, 0x1ull << xe->va_bits,
-+				    DRM_XE_VM_BIND_OP_MAP,
-+				    DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR,
-+				    sync, 1, 0, 0);
-+		xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
-+	} else {
-+		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+				  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
-+	}
- 
- 	exec_queue_id = xe_exec_queue_create(fd, vm, hwe, 0);
- 
--	ibb = xe_bb_create_on_offset(fd, exec_queue_id, vm,
--				     bb_offset, bb_size);
-+	prefetch_pre = xe_gt_stats_get_count(fd, hwe->gt_id, stat);
-+
-+	ibb = xe_bb_create_on_offset(fd, exec_queue_id, vm, bb_offset, bb_size);
- 	intel_bb_set_lr_mode(ibb, true);
- 
- 	shader = get_prefetch_shader(fd);
--
- 	gpgpu_shader_exec(ibb, buf, w_dim.x, w_dim.y, shader, NULL, 0, 0);
--
- 	gpgpu_shader_destroy(shader);
-+	intel_bb_sync(ibb);
-+	intel_bb_destroy(ibb);
-+
-+	prefetch_pos = xe_gt_stats_get_count(fd, hwe->gt_id, stat);
-+	igt_assert_eq(prefetch_pos, prefetch_pre + w_dim.x * w_dim.y);
-+	prefetch_pre = prefetch_pos;
-+
-+	if (svm) {
-+		cpu_data = mmap((void *)PREFETCH_ADDR, PAGE_SIZE,
-+				PROT_READ | PROT_WRITE,
-+				MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED,
-+				-1, 0);
-+		igt_assert(cpu_data == (void *)PREFETCH_ADDR);
-+		memset(cpu_data, 0xAB, PAGE_SIZE);
-+		prefetch_pre = xe_gt_stats_get_count(fd, hwe->gt_id, stat);
-+	}
-+
-+	/* Hit-under-miss: BB at PREFETCH_ADDR ensures page is mapped before prefetch */
-+	ibb = xe_bb_create_on_offset(fd, exec_queue_id, vm, bb_offset2, bb_size);
-+	intel_bb_set_lr_mode(ibb, true);
- 
-+	shader = get_prefetch_shader(fd);
-+	gpgpu_shader_exec(ibb, buf, w_dim.x, w_dim.y, shader, NULL, 0, 0);
-+	gpgpu_shader_destroy(shader);
- 	intel_bb_sync(ibb);
- 
--	ptr = xe_bo_mmap_ext(fd, buf->handle, buf->size, PROT_READ);
-+	prefetch_pos = xe_gt_stats_get_count(fd, hwe->gt_id, stat);
-+	igt_assert_eq(prefetch_pos, prefetch_pre);
- 
-+	/* Verify buffer contents */
-+	ptr = xe_bo_mmap_ext(fd, buf->handle, buf->size, PROT_READ);
- 	for (int j = 0; j < w_dim.y; j++)
- 		for (int i = 0; i < w_dim.x; i++) {
- 			igt_assert_f(ptr[j * w_dim.x + i] == COLOR_C4,
- 				     "Expected 0x%02x, found 0x%02x at (%d,%d)\n",
- 				     COLOR_C4, ptr[j * w_dim.x + i], i, j);
- 		}
--	/* Validate prefetch count. */
--	prefetch_pos = xe_gt_stats_get_count(fd, hwe->gt_id, stat);
--	igt_assert_eq(prefetch_pos, prefetch_pre + w_dim.x * w_dim.y);
--
- 	munmap(ptr, buf->size);
- 
-+	/* Cleanup */
-+	if (svm && cpu_data)
-+		munmap(cpu_data, PAGE_SIZE);
-+
- 	intel_bb_destroy(ibb);
-+	intel_buf_destroy(buf);
-+	xe_exec_queue_destroy(fd, exec_queue_id);
-+	xe_vm_destroy(fd, vm);
- }
- 
- int igt_main()
-@@ -201,7 +248,18 @@ int igt_main()
- 			    hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
- 				igt_dynamic_f("%s%d", xe_engine_class_string(hwe->engine_class),
- 					      hwe->engine_instance)
--					test_prefetch(fd, hwe);
-+					test_prefetch_fault(fd, hwe, false);
-+			}
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("prefetch-fault-svm") {
-+		xe_for_each_engine(fd, hwe) {
-+			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
-+			    hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
-+				igt_dynamic_f("%s%d", xe_engine_class_string(hwe->engine_class),
-+					      hwe->engine_instance)
-+					test_prefetch_fault(fd, hwe, true);
- 			}
- 		}
- 	}
--- 
-2.43.0
-
+--_000_d2ec45b1af645c326580f3511879c125c7180db5camelintelcom_--
