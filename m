@@ -4,16 +4,16 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEF0FFD0622
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Mar 2026 06:23:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29914FD0620
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Mar 2026 06:23:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 87ABA10E329;
-	Wed, 11 Mar 2026 06:23:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D187510E32A;
+	Wed, 11 Mar 2026 06:23:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U52zhY5T";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b4jhl8dv";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 325A410E325
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7253C10E327
  for <igt-dev@lists.freedesktop.org>; Wed, 11 Mar 2026 06:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
@@ -21,32 +21,32 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
  bh=W70V2rV1yREGzLeFoYqxCL0CA4upNf3svvfOBQ6Go1Y=;
- b=U52zhY5TRWiwNGo6QTtPY8S07mksOvG2KSNXtaQc9EIvekKxpy4Q2yD1
- EecYDTNHKIzp9/S318ZcX3+YyOjnehy9pYSxXli2UjBXOjdSmBDUmCHzG
- HU5V9EhNJg1FWhQmC6SNP2n7+JuvCxp3cehUmrcugBTK19qTnckxUYSui
- FeDf/ECxwDubUsIiW+7djxsJAChzAvdaAgOc9ARvy9dSGqq843wYQeTvL
- lEYuItYxs6mK7qx5DWCRYNuL6vJGu33ZXb05pZoZlLB3B6Ol+dsc3cNdp
- S8Z9Cqq8GyeLDgk+z19JYoW3yj5NEX8ShgoQXCotWpUkDfdoGUu3QfEO6 A==;
-X-CSE-ConnectionGUID: yi11pZB/TX2EQIyDNAnxnQ==
-X-CSE-MsgGUID: o9DOET6YQ9+FKfzHEsEHmQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="77875558"
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="77875558"
+ b=b4jhl8dvG3JP79GQwpl9CgFz5OHELztAPV5/sPTRE5r1hqeBilTVwi3p
+ vTPUltR35MB3HkIOO47szUw/cZwSKbmki0Fqqakn8cX1x16XVHime+eJ3
+ WVX3/fo9y65b+YXe3QfOD66LBZ+eZEiF8ZXdTqo7pMtS9dXfFGWd3mm2a
+ L5feC8dhovy6fcZtBYIDso2B5IZhO0dybFu9Twj9O7I0LQqqsc6imqHAA
+ ar06v6wenue1bM8gvmBummf9QZwkpZfDoQ4UZfXnIITT5HWQ2u1+ivhQ6
+ Cu90Cdfp/i91evYl+v5KFmWeTfG4JfnNR+CQSaqAZp5OKQ5XNFRHMz1Cr A==;
+X-CSE-ConnectionGUID: MoS/l1WJTUqO90+RwIeQtg==
+X-CSE-MsgGUID: kaBPdUowSWuWC5coQzHUag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="77875556"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="77875556"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2026 23:23:27 -0700
-X-CSE-ConnectionGUID: aotRui0jQ6ygeIR4OhXVWQ==
-X-CSE-MsgGUID: Jw9M1cMSROGqiR+H+IT90w==
+ 10 Mar 2026 23:23:26 -0700
+X-CSE-ConnectionGUID: vnc1qKspTYeX4lkbkclGeA==
+X-CSE-MsgGUID: vAW1gVS9REqApOHrCdhCPQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="220309083"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="220309080"
 Received: from xwang-desk.fm.intel.com ([10.121.64.134])
  by orviesa009.jf.intel.com with ESMTP; 10 Mar 2026 23:23:15 -0700
 From: Xin Wang <x.wang@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Xin Wang <x.wang@intel.com>
-Subject: [PATCH v5 4/4] lib/intel_device_info: remove the graphics_rel from
+Subject: [PATCH v5 4/4] lib/intel_device_info: remove the graphcs_rel from
  xe2+ devices
-Date: Tue, 10 Mar 2026 23:23:10 -0700
-Message-ID: <20260311062311.1623823-6-x.wang@intel.com>
+Date: Tue, 10 Mar 2026 23:23:09 -0700
+Message-ID: <20260311062311.1623823-5-x.wang@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260311062311.1623823-1-x.wang@intel.com>
 References: <20260311062311.1623823-1-x.wang@intel.com>
