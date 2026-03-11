@@ -4,159 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02DF21125857
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Mar 2026 17:19:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85BB31125857
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Mar 2026 17:27:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A50E110E0D4;
-	Wed, 11 Mar 2026 17:19:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2598010E133;
+	Wed, 11 Mar 2026 17:27:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Nrocgdem";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G1XzU03A";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ADF6610E0D4
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Mar 2026 17:19:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 490BD10E90B
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Mar 2026 17:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773249571; x=1804785571;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=/owbaEJgvuTRLW+Zix1muZbzavWPtxvEwdpEsfRC4us=;
- b=NrocgdemsgF5UyT+CvYCBt/mwbFi6qa9Cll0NYyZtVyuBTHlIMv+KHjY
- DX/42rxQoq6lw51GWGBvTArBot39yhm08DWJGZ6UMiMLRULYVVo7Ncao+
- tT2sHeli/k4elQez2z3R6JVS5Qn9qrx3y0WyaxioijP7J7P7ixUlm1ZnI
- FH7PaUgnxtWVVvHPgSLWU4OFjdk+ot8v9KoVY7OUcU6MTTgB7wlRVMfCA
- CknaLDvrgcYLKc/iOTjjukDR3p6mljssnD0EBtO8nyQNkA5qZLiXLPJ20
- CM8z0vpILOuSSGancJOuTInfHQ85LeIjq2ezBZaYaZpoWhL/b8PF88DSi w==;
-X-CSE-ConnectionGUID: fbWJOJPKSaGp+55DvxQc/Q==
-X-CSE-MsgGUID: WWsLF0gFQ4qGIAVZKvRYgw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="76938856"
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="76938856"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2026 10:19:30 -0700
-X-CSE-ConnectionGUID: dAoGAPG3QDiRlIuz1zNCaA==
-X-CSE-MsgGUID: OrD+vdcRTymiRikndcTN+A==
+ t=1773250063; x=1804786063;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=g0HynjPbnzW84OwDbDH2AyuNq37uis1Sm/GK2A8Dl7w=;
+ b=G1XzU03AHWmSOQ1ZUmeJcFVvub0OnV1utiKoDPsyD1UXNRPyxTc67Kit
+ hCB1pb/0YqiQ/SX8BZKTf0tk87p4WJsJgKoRopRIwrvv2FjAqbub2l53B
+ 6NCaM5144z6PbqaBD47mKJx6+LJ1LqBHGsN5BiXtBqL62ztbQHPW8Twl6
+ TpE5FCq/9vxao9ffapKLURSB4aiqJYqFe34FQin41OEqCxnrYSoiYIBlU
+ 5qzIjiy/zqMETzYthb6TTjxElvUIDOR+STfu/l3seNIotKHKBDRa2HpmF
+ gTvhNdJN2rijNjFJ9t7gjf5InGP+sTIr89L9lbSnGeB0DHGVv013DBNGs Q==;
+X-CSE-ConnectionGUID: WsuznGoRRAu0AyB74b7wKg==
+X-CSE-MsgGUID: ySo7LYv7QX62v5PqLX3hiA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="78181001"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="78181001"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2026 10:27:42 -0700
+X-CSE-ConnectionGUID: 0bLKQiO/QtKxVQL5tCyGWQ==
+X-CSE-MsgGUID: b7jChPDMRmi2yxCxMKagVQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="220584631"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2026 10:19:30 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 11 Mar 2026 10:19:29 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Wed, 11 Mar 2026 10:19:29 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.0) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Wed, 11 Mar 2026 10:19:28 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GvHAESDQe6qgt9Jrm3OVvxyaCvwWwjOK6Azd7rCuH/IlSViwHvIf3rjbP6PF0qBJvhrS0Spe5VXeJxYmR5jIUrcADAHxUKt7Y0ZphAFgv8F/eBnvalhue92Kf4PEYPRhSVpVGAwTgCWuPqjmxxnfqP8UhaSALkuzbvYON8ZZzx/+twk50cXBfhkJkVWRGQq9rtz3Pz0p7yVq+rwka9Hq7kMdiQqdoadp2/4HF6AfRZOncj5SjmKrNWOgUTDcokPAlec6H0iDgjZ33EbmIpjT6e3KPosjdT/0t3Z5/jj7PIB/Ea9MWsuukSD/cQL5JRgc9PRG5uzlAVpsHvw12lD7jQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FQD+vl19vxMXkq4IhMDz+QgOoTDyAVoU5EujCcIHbfk=;
- b=M/jhy/Jg28K9CryQeCHbZbnJicwy8ooWOSBxe/uVvfGc+XMYXz2Q4zlIbZRV29c45kfGU+VHJrKWLXLFtLSPAzcJdx1AU1Dx5h48cxDC183ornGHbeuD2C1KZVldnDtTbMMYkRg2dX95iHgO/pgiEkdWicKPPga+dWlyvKLFVLabI90e9U1JeryhAFeivJ5yUynt/puOa4W8T39EnlN65p0Xkb1+Qgvu2IkiWoaONpe7d/USZo31TiFf859bX3yWZ72Sm7T2hjAciYjSsgiVT5AEW5ZfryhDkmHUgX9CYWVpFPawDTQ77tc8jbxsF1acxwG1R1OLaDvm7xwaPpm40A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MN2PR11MB4271.namprd11.prod.outlook.com (2603:10b6:208:188::20)
- by SA3PR11MB7581.namprd11.prod.outlook.com (2603:10b6:806:31b::21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Wed, 11 Mar
- 2026 17:19:20 +0000
-Received: from MN2PR11MB4271.namprd11.prod.outlook.com
- ([fe80::ad93:3c20:1286:59a2]) by MN2PR11MB4271.namprd11.prod.outlook.com
- ([fe80::ad93:3c20:1286:59a2%4]) with mapi id 15.20.9723.000; Wed, 11 Mar 2026
- 17:19:20 +0000
-Message-ID: <19f9cc71-574b-4c99-8972-46ac3d130605@intel.com>
-Date: Wed, 11 Mar 2026 22:49:13 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v1] tests/kms_async_flips: Use lowest mode for crc
- subtest
-To: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20260309082450.1897617-1-santhosh.reddy.guddati@intel.com>
- <2f87eb4b-8aa8-463f-9b45-36453b48d0df@intel.com>
- <b2583d17-b950-42d9-9aaf-6b74a841f35b@intel.com>
-Content-Language: en-US
-From: "Naladala, Ramanaidu" <Ramanaidu.naladala@intel.com>
-In-Reply-To: <b2583d17-b950-42d9-9aaf-6b74a841f35b@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0249.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1ae::15) To MN2PR11MB4271.namprd11.prod.outlook.com
- (2603:10b6:208:188::20)
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="217179638"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 10:27:40 -0700
+Date: Wed, 11 Mar 2026 18:27:26 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Soham Purkait <soham.purkait@intel.com>
+Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
+ badal.nilawar@intel.com, kamil.konieczny@intel.com,
+ ashutosh.dixit@intel.com, vinay.belgaumkar@intel.com,
+ anshuman.gupta@intel.com, umesh.nerlige.ramappa@intel.com
+Subject: Re: [PATCH i-g-t v8 4/5] tools/gputop.src/gputop: Enable support for
+ multiple GPUs and instances
+Message-ID: <20260311172726.mgydvoq6s4fpcalc@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Soham Purkait <soham.purkait@intel.com>,
+ igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
+ badal.nilawar@intel.com, kamil.konieczny@intel.com,
+ ashutosh.dixit@intel.com, vinay.belgaumkar@intel.com,
+ anshuman.gupta@intel.com, umesh.nerlige.ramappa@intel.com
+References: <20260219094804.835429-1-soham.purkait@intel.com>
+ <20260219094804.835429-5-soham.purkait@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR11MB4271:EE_|SA3PR11MB7581:EE_
-X-MS-Office365-Filtering-Correlation-Id: 26dc91be-e837-471a-5fc5-08de7f925545
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|366016|22082099003|56012099003|18002099003; 
-X-Microsoft-Antispam-Message-Info: A+7WCRwwRNJP5KSU6mqZRX5AsEke1uVvUTU6BAdrvr7+A59I7RWfEZVGSlbuklvOsxgRfAdita8hqZ1Fzpb3lqyYQ/7PF7rZIB3VcsvFD4V31gKrwo9qMLgNamWi81MscRO1tZcv2avnsVefCdD73yborQVoB3sbjr59zlXg/swpPDjaZScOsR9SeqpqzUNR0VxT7/ZMvCeI3yd3Y01iCLJzZJLbwHjYaDLX3uN7x5NC6q9IjtgeW9T+ydDL0uDsdRKNPArdNEd8Ls5mVPfXUX8R/3fj13ZdYOWh9spHy/t+MRhtWJnNquuOguXd8H8bwn92P7GIv6NQL8pwDGTvSCqpCwFw3TVGoLzR9IpqU9C/hI+3t7NME/y2op+Tb5APzXTpBIH+4eDIPqZYXb2lb7b62TQetxOo8zXf3xT8jLHF7QUrySuyzL/EKH6aFT4PsmkoRnMxMuryTJizlgtFD+f9v2u7jcfIHZsscUVaRK1HC+IJnZYcGD3U7nSEx4/22stgBCDD7NkdmwhXvGm8TX206/lBi3/l7jgr12DCrSzLqgj+zaA20ZpqdmJtqi2eHnJe+uKCR09ohu9uPGQ7YNIlv7D0cdjDYRpn69u96VpKOQV1OOTRwe8l1GCiZuPHNSuBK8dPlBoz5R2+VnxA2DkAcZDKQ2Ycx0eD4z+GP7h4c8fPc/yYo73k5c+ocILt
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MN2PR11MB4271.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(22082099003)(56012099003)(18002099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MVUxVzhzOTZnRVZYU1llWERBeWcra0hpZzd4eGxjVWxucndmb2hJYmtyUFVk?=
- =?utf-8?B?dHFscDFQTm5PTDU2NHMybTAyM0k0ZnhLWldZeVV6cG5YNmlWTHprb3B4cTY2?=
- =?utf-8?B?TWlYQ3VOWFV2eXRTcms2WHhocmRzdGZpTXBaQjNrSmJVL1NaeUxrMklXZUI2?=
- =?utf-8?B?N3VBY2VjRHZKWWJTeS9FYVNSWHAwYks4T09KekpLelNzVXJmNEE3ZTNiQ0Ez?=
- =?utf-8?B?MWZGYTJaTk0vbFZxVnZDRHZaNVZ0OWp0NURTKzhGNGlwN1FIK285UVVVY0Ns?=
- =?utf-8?B?L1o4UVpGOGtQWmFDUFhvOFZIRlgrdUZKUnArWkRVVXZESk51MlFHb2lUQVU5?=
- =?utf-8?B?MVVmdHc0OGFyTkRYTUl1dnRZay8wWkNwcXc3RTI2SmdKbXA2aE5wR3VveXEw?=
- =?utf-8?B?T2EvWWVQRk5SdHdnVWZDeDZ5RUdvN0Z1WkNtZlpDc01ha2pXU3NVRHhsTm5W?=
- =?utf-8?B?UEJ3ZVliNDk1eXdjc0wvUWpid1hEaldFdEt2ZjJqN2xwR1ZVbnRRVi9SK2lJ?=
- =?utf-8?B?VERIY0cxMXdoSEkrR2I3bHZTOTh3eXpJcXNEUWUwUDRMNUQrZFFtM01Xdy91?=
- =?utf-8?B?TWVadUt4UEpwQXpMTVlHd1N6YkNxNDFvOXIrSm5RSVUzcGhwNEJzSWpkYU5M?=
- =?utf-8?B?a3hhVTBMMkRndlNoYjNWNWVuZHdGRGJYZHB6dkUvOG05RzM3UjNrL1Nac25v?=
- =?utf-8?B?U2tRcVhxWXFzN1JGNW1LSGlhNlhJTkVaamZuQjFPWmltK2lUekk1ZVdTQzJq?=
- =?utf-8?B?VGhBaDJITFNpUFBiSUJyMVY4U0VXbFQwMzJRYTJtNStQam9vd04xbk9JbWNF?=
- =?utf-8?B?MnFyZ1ZtZHRrN0xpNVN3ZmV5Y01xc1l6SkRWcCtabGVpMmJYc0FxZ1JUczdF?=
- =?utf-8?B?OUhTUWZDTlpjSGpRMXVmcWlxRS9jdjI2ZmZMbnhrLzB3ZGVzYi9YK3JlVUhn?=
- =?utf-8?B?azNiQ0NaSlc2Um5sWkxPeWJXeHZoVGd0NUFiTG4rc2VRbUZ2ZFFjQnZHNEpp?=
- =?utf-8?B?RVZOTjdYM2phTGZkV2dFVm9JMDhnQldKak1YMjFHaG5nUGRSL2dTR2V3SmZT?=
- =?utf-8?B?Z1dxd1ZQV1Zxb2NKc3F1ZVkvN3dXaU1jNUptRXh6RWtuMFUvT08yTUlhd1VN?=
- =?utf-8?B?WHVGOGFPZEU1UDhsQjYzQXVrR0RvdDdoSTd2REI4ZnU2eVNhUDlTSjdVb0Y4?=
- =?utf-8?B?Y2RoOU5nMmwzbGR1TmlKczU3aHhyeGY3UEZueGhucXVTV0N5dzFHQ1pYdy9z?=
- =?utf-8?B?VHd0ZjZRQXBRaURRb0w0RW42dVE2VVpKT0JLVlZBWFp4T1dteHRDTzZaKzM2?=
- =?utf-8?B?R3pwOWJxZ05jYWIvMFhXZUF0dUFsM0pxVDErTEwwM2RhRE5mei9jQ2RyQnV4?=
- =?utf-8?B?NnQvR3V4dTYwbmtaOHByb2ppdTFKSDlNZHZVUVJ1em9iSjRGejVLVkxwakVp?=
- =?utf-8?B?bVJGUDI5UzVqUHUrYTNyMWFRZEo3bzRVVGN6bThvUW1FUC9VZ3NsRXlIQ3or?=
- =?utf-8?B?NXQ1ZXF2T1I1d2VCSUpkNmlWdjBjNlphQlJxQ0lTS3AxcjJCSGFsbm82cG1N?=
- =?utf-8?B?ZGYzanAwZVN2VWszVTRvMlFZQ3MwNllaSjV4TWZtbXlrcm1CZjVtNk5RKzRC?=
- =?utf-8?B?c0poaHNTVUpEZjJWbnJyOTQzYXFwaWU0TFd2NFEzSEJIWjZ2N2tQbE14bWIz?=
- =?utf-8?B?OWNYbk13NXpYQ1RRMjArR09xSmhScjJyQjJ1Rk1HemxHYllaN2MvbUgxVmM4?=
- =?utf-8?B?SFVVVzhhaU9Sdzg0MTNlQnZKRVJvZjkvcDlKaTEvUFV2Uk8wTjRvL2dmV1Bp?=
- =?utf-8?B?am5vZEUycjY3OUppVEIwQ0tzSmxKY3k5YUlSU3BmMVI5WDZBZEtYY2REMUk3?=
- =?utf-8?B?cTVxSVQ5Nmo2akFpZEgwWE9wYVluV2JGaTM3eDNCdnQ2cVRyVXpaa2pGYjZN?=
- =?utf-8?B?M1pEYjNoSzR4YzhFTjNrNkJub1JnazdvWDU5SUprTG9hUXdNQ1pCUUFHNits?=
- =?utf-8?B?K2RyT2YvQW1jMk5mRnI0RkQrVkZPcUNPQ3lVbWtmOWxnMmZ1MFlGOTNEejY0?=
- =?utf-8?B?ckpXd2tFSUdnQXkvV05DT3ZnNkszTEV4RlRUVWdPZnQ0c1p0QmlBKzRzNlJ6?=
- =?utf-8?B?dExveXBaU0hhNnUvc01WL2t2VFFtN3NaODdhbHVMM0pkNHhMd3RrTlk0VWRL?=
- =?utf-8?B?UGxUdlU1ZXhnU3BUNStkQ2kxTTVyQzdZcVFGNnRZWjZ3ejF5SnBUVjVmR3Iw?=
- =?utf-8?B?Q2ZadmRCMDhvaGFHdFRUTnFPdTZqNnBlZTljMVJydnpHUFRyS2xlejJJa1Rx?=
- =?utf-8?B?OENPaSsrSjlodkxZUVVkYVF6RjJZdVZnd3F2YVIxL1htSUV4TkFPOW01U1lm?=
- =?utf-8?Q?SImvpCS26No/QH9k=3D?=
-X-Exchange-RoutingPolicyChecked: hZSSUoDM/F3yy0C0Pcmn/3KA64LiQd5GdseeYAChUy0R75pzcWzNCk/yPL7nvEucUNIKCe+i6E5LlpmEIyPbxYiZG9ATuHWqqlVZqO+G+TZqTT64phMC37SKG8HiOmJc631mlG5ola3NYah/dtMSP8IZBpCcrQtAkNWtCtajER6kfbAHn8NZIId8o0IyeBZ7vuYsWNGLwy0t49H6PeToQrfgLUwiZnJJsGhIvd5r7MKx4/rM96G1MI+TNTBRzCOIP2Olw3EnjCxAPTSsXdJukn7a9Ep7UEU/2KArTESn2AFJ9kzvDF/aiTrkFAmTGFi5UR4ptkEhy3knld1yX7/jaA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 26dc91be-e837-471a-5fc5-08de7f925545
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR11MB4271.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2026 17:19:20.6969 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Of+mBw3YBgfvqZomnLB6817AInxHOKXy5qlgW4SygNE1fubCkxruLsDU5auvpTVkC43RhXzd5++8wbNBR5rdbj92qmYgskBHhZnOoQYJ0Q8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7581
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260219094804.835429-5-soham.purkait@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -172,85 +79,455 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Santhosh,
+Hi Soham,
+On 2026-02-19 at 15:18:03 +0530, Soham Purkait wrote:
+> Introduce vendor-agnostic support for handling multiple GPUs and
+> instances in gputop. Improve the tool's adaptability to various GPU
+> configurations.
 
-Thanks for the clarification.
+You wrote that you enable it for multiply GPUs but there is a root
+mode with PMU for Intel. Could you split this into separate patch?
 
-On 3/11/2026 11:19 AM, Reddy Guddati, Santhosh wrote:
-> Hi Rama,
->
-> On 10-03-2026 20:37, Naladala, Ramanaidu wrote:
->> Hi Santhosh,
->>
->> On 3/9/2026 1:54 PM, Santhosh Reddy Guddati wrote:
->>> Currently The CRC subtest uses mode[0] which maps to preffered high
->>> refresh mode. On panels with multiple modes, pick the lower mode to
->>> speed up crc test.
->>>
->>> Signed-off-by: Santhosh Reddy Guddati 
->>> <santhosh.reddy.guddati@intel.com>
->>> ---
->>>   tests/kms_async_flips.c | 15 +++++++++++++--
->>>   1 file changed, 13 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
->>> index a42407363..8639e2299 100644
->>> --- a/tests/kms_async_flips.c
->>> +++ b/tests/kms_async_flips.c
->>> @@ -825,6 +825,17 @@ static void paint_fb(data_t *data, struct 
->>> igt_fb *fb,
->>>       }
->>>   }
->>> +static drmModeModeInfoPtr get_lower_mode_for_crc(igt_output_t *output)
->>> +{
->>> +    drmModeConnector *connector = output->config.connector;
->>> +
->>> +    igt_assert(connector->count_modes > 0);
-Instead of simple assert, change to the igt_require_f with right message.
->>> +
->>> +    igt_sort_connector_modes(connector, sort_drm_modes_by_clk_asc);
->>> +
->>> +    return &connector->modes[0];
->>> +}
-Imho, Rename the function name and move it into lib/igt_kms.c for future 
-use.
->>> +
->>>   static void test_crc(data_t *data)
->>>   {
->>>       unsigned int frame = 0;
->>> @@ -834,8 +845,8 @@ static void test_crc(data_t *data)
->>>       igt_display_commit2(&data->display, data->display.is_atomic ? 
->>> COMMIT_ATOMIC : COMMIT_LEGACY);
->>> -    /* make things faster by using a smallish mode */
->>> -    mode = &data->output->config.connector->modes[0];
->>> +    /* make things faster by using a lower bandwidth mode */
->>> +    mode = get_lower_mode_for_crc(data->output);
->>
->> This optimization is for simulation? if yes, Add a check for 
->> simulation then change to lower mode. On Hardware it won't take much 
->> time. Why this time optimization required on hardware?
->>
->> is any issues seen?
->
-> Thanks for the comment.
->
-> This change is not for simulation.
->
-> The purpose is to fix CRC subtest mode selection on panels with 
-> multiple modes (especially when there are HRR modes). Earlier we used 
-> `connector->modes[0]`, which can pick a high-refresh/high-bandwidth 
-> mode (if modes[0] has highest) and make this test path more sensitive.
->
-> Now we select a lower-bandwidth mode using `get_lower_mode_for_crc()`. 
-> The async flip + CRC validation logic is unchanged. So this is a 
-> focused fix to make the test stable on HRR panels, not a new behavior 
-> change.
->
-> In past , we have seen issues related to this and the test was handled 
-> to adjust the criteria.
->
-> https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8247
->>
->>>       width = mode->hdisplay;
->>>       height = mode->vdisplay;
->
+> 
+> v1:
+>  - Refactor GPUTOP into a vendor-agnostic tool. (Lucas)
+> v2:
+>  - Cosmetic changes. (Riana)
+>  - Avoid three level indentation. (Riana)
+> v3:
+>  - Add device filter to populate the array of cards for
+>    all supported drivers. (Zbigniew)
+> v4:
+>  - Add user message for running without root privileges. (Kamil)
+>  - Add support for GPU client-only busyness on unsupported
+>    drivers as a fallback mechanism. (Kamil)
+>  - Remove unused dependencies and headers. (Kamil)
+> v5:
+>  - Replace hardcoded values with Enum for driver number. (Vinay)
+>  - Rename driver_no to driver_num for better readability. (Vinay)
+> 
+> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+> ---
+>  tools/gputop.src/gputop.c    | 284 ++++++++++++++++++++++++++++++-----
+>  tools/gputop.src/meson.build |   2 +-
+>  tools/meson.build            |   3 +-
+>  3 files changed, 246 insertions(+), 43 deletions(-)
+> 
+> diff --git a/tools/gputop.src/gputop.c b/tools/gputop.src/gputop.c
+> index f577a1750..d04c408f9 100644
+> --- a/tools/gputop.src/gputop.c
+> +++ b/tools/gputop.src/gputop.c
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: MIT
+>  /*
+> - * Copyright © 2023 Intel Corporation
+> + * Copyright © 2023-2025 Intel Corporation
+>   */
+>  
+>  #include <assert.h>
+> @@ -14,66 +14,151 @@
+>  #include <math.h>
+>  #include <poll.h>
+>  #include <signal.h>
+> +#include <stdbool.h>
+>  #include <stdint.h>
+>  #include <stdio.h>
+>  #include <stdlib.h>
+>  #include <string.h>
+>  #include <sys/ioctl.h>
+>  #include <sys/stat.h>
+> +#include <sys/sysmacros.h>
+>  #include <sys/types.h>
+> -#include <unistd.h>
+>  #include <termios.h>
+> -#include <sys/sysmacros.h>
+> -#include <stdbool.h>
+> +#include <unistd.h>
+>  
+> -#include "igt_core.h"
+>  #include "igt_drm_clients.h"
+>  #include "igt_drm_fdinfo.h"
+>  #include "igt_profiling.h"
+> -#include "drmtest.h"
+> +#include "xe_gputop.h"
+> +
+> +/**
+> + * Supported Drivers
+> + *
+> + * Adhere to the following requirements when implementing support for the
+> + * new driver:
+> + * @drivers: Update drivers[] with new driver string and so the enum drivers
+> + * with the new driver entry.
+> + * @sizeof_gputop_obj: Update this function as per new driver support included.
+> + * @operations: Update the respective operations of the new driver:
+> + * gputop_init,
+> + * discover_engines,
+> + * pmu_init,
+> + * pmu_sample,
+> + * print_engines,
+> + * clean_up
+> + * @per_driver_contexts: Update per_driver_contexts[] array of type "struct gputop_driver" with the
+> + * initial values.
+> + */
+> +static const char * const drivers[] = {
+> +	"xe",
+> +    /* Keep the last one as NULL */
+> +	NULL
+> +};
+> +
+> +enum drivers {
+> +	INTEL_XE_DRIVER = 0,
+> +};
+> +
+> +static size_t sizeof_gputop_obj(int driver_num)
+> +{
+> +	switch (driver_num) {
+> +	case INTEL_XE_DRIVER:
+> +		return sizeof(struct xe_gputop);
+> +	default:
+> +		fprintf(stderr,
+> +			"Driver object size does not exist.\n");
+> +		exit(EXIT_FAILURE);
+> +	}
+> +}
+> +
+> +/**
+> + * Supported operations on driver instances. Update the ops[] array for
+> + * each individual driver specific function. Maintain the sequence as per
+> + * drivers[] array.
+> + */
+> +struct device_operations ops[] = {
+> +	{
+> +		xe_gputop_init,
+> +		xe_populate_engines,
+> +		xe_pmu_init,
+> +		xe_pmu_sample,
+> +		xe_print_engines,
+> +		xe_clean_up
+> +	}
+> +};
+> +
+> +/*
+> + * per_driver_contexts[] array of type struct gputop_driver which keeps track of the devices
+> + * and related info discovered per driver.
+> + */
+> +struct gputop_driver per_driver_contexts[] = {
+> +	{false, 0, NULL}
+> +};
+>  
+>  enum utilization_type {
+>  	UTILIZATION_TYPE_ENGINE_TIME,
+>  	UTILIZATION_TYPE_TOTAL_CYCLES,
+>  };
+>  
+> -static const char *bars[] = { " ", "▏", "▎", "▍", "▌", "▋", "▊", "▉", "█" };
+> -
+> -#define ANSI_HEADER "\033[7m"
+> -#define ANSI_RESET "\033[0m"
+> -
+> -static void n_spaces(const unsigned int n)
+> +static void gputop_clean_up(void)
+>  {
+> -	unsigned int i;
+> -
+> -	for (i = 0; i < n; i++)
+> -		putchar(' ');
+> +	for (int i = 0; drivers[i]; i++) {
+> +		ops[i].clean_up(per_driver_contexts[i].instances, per_driver_contexts[i].len);
+> +		free(per_driver_contexts[i].instances);
+> +		per_driver_contexts[i].device_present = false;
+> +		per_driver_contexts[i].len = 0;
+> +	}
+>  }
+>  
+> -static void print_percentage_bar(double percent, int max_len)
+> +static int find_driver(struct igt_device_card *card)
+>  {
+> -	int bar_len, i, len = max_len - 1;
+> -	const int w = 8;
+> -
+> -	len -= printf("|%5.1f%% ", percent);
+> -
+> -	/* no space left for bars, do what we can */
+> -	if (len < 0)
+> -		len = 0;
+> -
+> -	bar_len = ceil(w * percent * len / 100.0);
+> -	if (bar_len > w * len)
+> -		bar_len = w * len;
+> +	for (int i = 0; drivers[i]; i++) {
+> +		if (strcmp(drivers[i], card->driver) == 0)
+> +			return i;
+> +	}
+> +	return -1;
+> +}
+>  
+> -	for (i = bar_len; i >= w; i -= w)
+> -		printf("%s", bars[w]);
+> -	if (i)
+> -		printf("%s", bars[i]);
+> +static int populate_device_instances(const char *filter)
+> +{
+> +	struct igt_device_card *cards = NULL;
+> +	struct igt_device_card *card_inplace = NULL;
+> +	struct gputop_driver *driver_entry =  NULL;
+> +	int driver_num;
+> +	int count, final_count = 0;
+> +
+> +	count = igt_device_card_match_all(filter, &cards);
+> +	for (int j = 0; j < count; j++) {
+> +		if (strcmp(cards[j].subsystem, "pci") != 0)
+> +			continue;
+>  
+> -	len -= (bar_len + (w - 1)) / w;
+> -	n_spaces(len);
+> +		driver_num = find_driver(&cards[j]);
+> +		if (driver_num < 0)
+> +			continue;
+>  
+> -	putchar('|');
+> +		driver_entry = &per_driver_contexts[driver_num];
+> +		if (!driver_entry->device_present)
+> +			driver_entry->device_present = true;
+> +		driver_entry->len++;
+> +		driver_entry->instances = realloc(driver_entry->instances,
+> +						  driver_entry->len
+> +						  * sizeof_gputop_obj(driver_num));
+> +		if (!driver_entry->instances) {
+> +			fprintf(stderr,
+> +				"Device instance realloc failed (%s)\n",
+> +				strerror(errno));
+> +			exit(EXIT_FAILURE);
+> +		}
+> +		card_inplace = (struct igt_device_card *)
+> +				calloc(1, sizeof(struct igt_device_card));
+> +		memcpy(card_inplace, &cards[j], sizeof(struct igt_device_card));
+> +		ops[driver_num].gputop_init(driver_entry->instances, (driver_entry->len - 1),
+> +			card_inplace);
+> +		final_count++;
+> +	}
+> +	if (count)
+> +		free(cards);
+> +	return final_count;
+>  }
+>  
+>  static int
+> @@ -335,6 +420,28 @@ struct gputop_args {
+>  	unsigned long delay_usec;
+>  };
+>  
+> +static void countdown(const char *msg, const int start_sec)
+> +{
+> +	struct pollfd pfd;
+> +	int i, ret;
+> +	char ch;
+> +
+> +	for (i = start_sec; i > 0; i--) {
+> +		printf("\r%s%d... second(s)", msg, i);
+> +		fflush(stdout);
+> +
+> +		pfd.fd = STDIN_FILENO;
+> +		pfd.events = POLLIN;
+> +
+> +		ret = poll(&pfd, 1, 1000);
+> +		if (ret > 0 && (pfd.revents & POLLIN)) {
+> +			while ((ch = getchar()) != '\n' && ch != EOF)
+> +				continue;
+> +			return;
+> +		}
+> +	}
+> +}
+> +
+>  static void help(char *full_path)
+>  {
+>  	const char *short_program_name = strrchr(full_path, '/');
+> @@ -349,7 +456,32 @@ static void help(char *full_path)
+>  	       "Options:\n"
+>  	       "\t-h, --help                show this help\n"
+>  	       "\t-d, --delay =SEC[.TENTHS] iterative delay as SECS [.TENTHS]\n"
+> -	       "\t-n, --iterations =NUMBER  number of executions\n"
+> +	       "\t-n, --iterations =NUMBER  number of executions\n\n"
+> +	       "Running without root:\n"
+> +	       "\tAs a non-root user, CAP_PERFMON or perf_event_paranoid is required to\n"
+> +	       "\taccess engine busyness\n"
+> +	       "\t" ANSI_HEADER "Steps to run without root (using CAP_PERFMON):"
+> +		ANSI_RESET "\n"
+> +	       "\tcd /path/to/igt-gpu-tools/\n"
+> +	       "\tsudo setcap cap_perfmon=+ep $(pwd)/build/tools/gputop\n"
+> +	       "\tsudo sh -c \"echo $(pwd)/build/lib > /etc/ld.so.conf.d/lib-igt.conf\"\n"
+> +	       "\tsudo ldconfig\n"
+> +	       "\t" ANSI_HEADER "Steps to revert once done:" ANSI_RESET "\n"
+> +	       "\tsudo setcap cap_perfmon=-ep $(pwd)/build/tools/gputop\n"
+> +	       "\tsudo rm /etc/ld.so.conf.d/lib-igt.conf\n"
+> +	       "\tsudo ldconfig\n"
+> +	       "\n"
+> +	       "\t" ANSI_HEADER "Steps to run without root (using perf_event_paranoid):"
+> +	       ANSI_RESET "\n"
+> +	       "\t\033[32m# Save current perf_event_paranoid value\033[0m\n"
+> +	       "\torig_val=$(sysctl -n kernel.perf_event_paranoid)\n"
+> +	       "\tsudo sysctl -w kernel.perf_event_paranoid=-1\n"
+> +	       "\t" ANSI_HEADER "Steps to revert once done:" ANSI_RESET "\n"
+> +	       "\t\033[32m# Restore original value\033[0m\n"
+> +	       "\tsudo sysctl -w kernel.perf_event_paranoid=$orig_val\n\n"
+> +	       "\tFor details, see 'Perf events and tool security':\n"
+> +	       "\thttps://www.kernel.org/doc/html/"
+> +	       "latest/admin-guide/perf-security.html\n\n"
+>  	       , short_program_name);
+>  }
+>  
+> @@ -417,9 +549,12 @@ int main(int argc, char **argv)
+>  	struct igt_profiled_device *profiled_devices = NULL;
+>  	struct igt_drm_clients *clients = NULL;
+>  	int con_w = -1, con_h = -1;
+> +	bool is_root;
+>  	int ret;
+>  	long n;
+>  
+> +	is_root = (geteuid() == 0);
+> +
+>  	ret = parse_args(argc, argv, &args);
+>  	if (ret < 0)
+>  		return EXIT_FAILURE;
+> @@ -428,6 +563,53 @@ int main(int argc, char **argv)
+>  
+>  	n = args.n_iter;
+>  	period_us = args.delay_usec;
+> +	populate_device_instances("device:subsystem=pci,card=all");
+> +
+> +	for (int i = 0; drivers[i]; i++) {
+> +		if (!per_driver_contexts[i].device_present)
+> +			continue;
+> +
+> +		for (int j = 0; j < per_driver_contexts[i].len; j++) {
+> +			if (!ops[i].init_engines(per_driver_contexts[i].instances, j)) {
+> +				fprintf(stderr,
+> +					"Failed to initialize engines! (%s)\n",
+> +					strerror(errno));
+> +					gputop_clean_up();
+> +				return EXIT_FAILURE;
+> +			}
+> +			ret = ops[i].pmu_init(per_driver_contexts[i].instances, j);
+> +
+> +			if (ret) {
+> +				if (errno == EACCES && !is_root) {
+> +					fprintf(stderr,
+> +						"\n"
+> +						"Running without root privileges.\n"
+> +						"Engine busyness may not be available "
+> +						"without root privileges.\n"
+> +						"See \"--help\" to enable engine "
+> +						"busyness without root.\n\n");
+> +					igt_devices_free();
+> +					gputop_clean_up();
+> +					countdown("Resuming with only gpu client "
+> +						  "busyness in ", 5);
+
+Please do this countdown only when user gives an option,
+gputop should start working already when run. Imho
+something like --dry-run or --verbose? One of those two.
+Other option would be to display non-root mode?
+
+Regards,
+Kamil
+
+> +				} else {
+> +					fprintf(stderr,
+> +						"Failed to initialize PMU! (%s)\n",
+> +						strerror(errno));
+> +					igt_devices_free();
+> +					gputop_clean_up();
+> +					return EXIT_FAILURE;
+> +				}
+> +			}
+> +		}
+> +	}
+> +
+> +	for (int i = 0; drivers[i]; i++) {
+> +		for (int j = 0;
+> +		     per_driver_contexts[i].device_present && j < per_driver_contexts[i].len;
+> +		     j++)
+> +			ops[i].pmu_sample(per_driver_contexts[i].instances, j);
+> +	}
+>  
+>  	clients = igt_drm_clients_init(NULL);
+>  	if (!clients)
+> @@ -449,22 +631,42 @@ int main(int argc, char **argv)
+>  
+>  	while ((n != 0) && !stop_top) {
+>  		struct igt_drm_client *c, *prevc = NULL;
+> -		int i, engine_w = 0, lines = 0;
+> +		int k, engine_w = 0, lines = 0;
+>  
+>  		igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
+> +
+> +		for (int i = 0; drivers[i]; i++) {
+> +			for (int j = 0;
+> +			     per_driver_contexts[i].device_present &&
+> +			     j < per_driver_contexts[i].len;
+> +			     j++)
+> +				ops[i].pmu_sample(per_driver_contexts[i].instances, j);
+> +		}
+> +
+>  		igt_drm_clients_sort(clients, client_cmp);
+>  
+>  		update_console_size(&con_w, &con_h);
+>  		clrscr();
+>  
+> +		for (int i = 0; drivers[i]; i++) {
+> +			for (int j = 0;
+> +			     per_driver_contexts[i].device_present &&
+> +			     j < per_driver_contexts[i].len;
+> +			     j++) {
+> +				lines = ops[i].print_engines(per_driver_contexts[i].instances, j,
+> +							 lines, con_w, con_h);
+> +			}
+> +		}
+> +
+>  		if (!clients->num_clients) {
+> -			const char *msg = " (No GPU clients yet. Start workload to see stats)";
+> +			const char *msg;
+>  
+> +			msg = " (No GPU clients yet. Start workload to see stats)";
+>  			printf(ANSI_HEADER "%-*s" ANSI_RESET "\n",
+>  			       (int)(con_w - strlen(msg) - 1), msg);
+>  		}
+>  
+> -		igt_for_each_drm_client(clients, c, i) {
+> +		igt_for_each_drm_client(clients, c, k) {
+>  			assert(c->status != IGT_DRM_CLIENT_PROBE);
+>  			if (c->status != IGT_DRM_CLIENT_ALIVE)
+>  				break; /* Active clients are first in the array. */
+> @@ -488,11 +690,11 @@ int main(int argc, char **argv)
+>  	}
+>  
+>  	igt_drm_clients_free(clients);
+> +	gputop_clean_up();
+>  
+>  	if (profiled_devices != NULL) {
+>  		igt_devices_configure_profiling(profiled_devices, false);
+>  		igt_devices_free_profiling(profiled_devices);
+>  	}
+> -
+>  	return 0;
+>  }
+> diff --git a/tools/gputop.src/meson.build b/tools/gputop.src/meson.build
+> index ec39f4c7a..e95657fca 100644
+> --- a/tools/gputop.src/meson.build
+> +++ b/tools/gputop.src/meson.build
+> @@ -1 +1 @@
+> -gputop_src = files('gputop.c')
+> +gputop_src = files('gputop.c', 'utils.c', 'xe_gputop.c')
+> diff --git a/tools/meson.build b/tools/meson.build
+> index 521607a4c..caca57d0e 100644
+> --- a/tools/meson.build
+> +++ b/tools/meson.build
+> @@ -123,4 +123,5 @@ subdir('gputop.src')
+>  executable('gputop', sources : gputop_src,
+>  	   install : true,
+>  	   install_rpath : bindir_rpathdir,
+> -	   dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math],)
+> +	   dependencies : [lib_igt_perf,lib_igt_device_scan,lib_igt_drm_clients,
+> +	   		   lib_igt_drm_fdinfo,lib_igt_profiling,math],)
+> -- 
+> 2.34.1
+> 
