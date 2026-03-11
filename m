@@ -4,53 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD8C11062889
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Mar 2026 12:26:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA0B61062894
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Mar 2026 12:46:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 55E7A10E8B2;
-	Wed, 11 Mar 2026 12:26:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 604EA10E134;
+	Wed, 11 Mar 2026 12:46:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L3/+9A2T";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZVqdhd13";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A33210E1C8
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Mar 2026 12:26:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6BCD510E134;
+ Wed, 11 Mar 2026 12:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773231973; x=1804767973;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=OA6c4DG1Ts+LxWtFi49SR5Kb5PvwqoXJYA/U8Vu9qmI=;
- b=L3/+9A2TPBYch5NfwHlPS/PLVH82r4AKbWort2POUKZnIl7O7YowUOdT
- 0v0G/aPtdE1AX9C8JqUJTbI9MIdKjcbl00OeOkbBy2R1GR8aQBnMOUYFr
- mtIIVDzB/KNagqkWFO+TrR0irVS+rW/AVqtpR9VxuPCP93DVPQXFAEk5s
- NoklkiDIXIiRUGIRZ6wzdTK2e8siWOJ86p1xEIOQHMdrhsDWiT6uFtZV1
- +1SRla5eYJQDRICTutQctCrnXkBxF2IyJdng8b8rki97ot2IAwhAm6RZn
- WmelZS0ArG13bAgziBAXpLAFWOPxW1g9Y2ld540VDVItDXFKwT1KIPu4Q A==;
-X-CSE-ConnectionGUID: MyWBfwJLQ364oqtSSUE/+Q==
-X-CSE-MsgGUID: Npm2IabbTmO8xTesvKEEZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="74335546"
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="74335546"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Mar 2026 05:26:13 -0700
-X-CSE-ConnectionGUID: Xmf7FuzeSKayHtQSZZg4Bg==
-X-CSE-MsgGUID: I77s4z9MRSuoV8QfAbcI8A==
+ t=1773233165; x=1804769165;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=iXYOteEigPOAPqGl/r/DN3nYj6uqabmCRt5o12c07GY=;
+ b=ZVqdhd13MAbVVh880nDRkaFFNGevkZL1uct6WfCxDlrt+4/ZS47RtKpG
+ 5s4NJzq/x4l7Lu5VZoTmxHFmmW+bQawFs9uF6cPMb431w51zIXJ3yMmsQ
+ fhoqvNLV/c0tmL3lQNNT+L1avBDLlOF9VgPX4EAd+Y/5tcfqQz4CeFweM
+ XnERdaIAAk3SNGyfA/btnDF6BkpvshVN1JMlQ6A15XQmTXvU1bS+RpCKC
+ /zxweL+DcJVUYvNLE7dayjIc2NiJkdpomPOcu88HRVyzaNPIMyMJgC5rV
+ eonsJc2gNkv8Qapw23nzFIYShe10DF1r33IuFdX89BMRGHBXJJt37QBVK A==;
+X-CSE-ConnectionGUID: sC9bRO8vTAa0ikW8SzAe7g==
+X-CSE-MsgGUID: 1pFyxyDeTKapoHKfxF4fLg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="85775110"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="85775110"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Mar 2026 05:46:03 -0700
+X-CSE-ConnectionGUID: 7k9nsyU8TAuZW/JXiGKTyA==
+X-CSE-MsgGUID: S5pan9gbSIm9diA5GglBVw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="225148297"
-Received: from cml-cometlake-client-platform.iind.intel.com ([10.223.55.11])
- by fmviesa005.fm.intel.com with ESMTP; 11 Mar 2026 05:26:10 -0700
-From: aditya.chauhan@intel.com
-To: ramadevi.gandi@intel.com, himanshu.girotra@intel.com,
- swati2.sharma@intel.com, igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 2/2] tests/ci: Add NVL Display blocklist to meson.build
-Date: Wed, 11 Mar 2026 17:56:06 +0530
-Message-Id: <20260311122606.42223-3-aditya.chauhan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260311122606.42223-1-aditya.chauhan@intel.com>
-References: <20260311122606.42223-1-aditya.chauhan@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="220404224"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2026 05:46:00 -0700
+Date: Wed, 11 Mar 2026 13:45:42 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/gem_lmem_swapping: Expect gem leak
+ helper crashes
+Message-ID: <20260311124542.alcgu25gocfxbv6i@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+References: <20260302131817.3744919-2-janusz.krzysztofik@linux.intel.com>
+ <20260310115003.wwffggwsyzsbxw5k@kamilkon-DESK.igk.intel.com>
+ <1921025.atdPhlSkOF@jkrzyszt-mobl2.ger.corp.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <1921025.atdPhlSkOF@jkrzyszt-mobl2.ger.corp.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,27 +83,177 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Aditya Chauhan <aditya.chauhan@intel.com>
+Hi Janusz,
+On 2026-03-11 at 13:13:35 +0100, Janusz Krzysztofik wrote:
+> Hi Kamil,
+> 
+> Please disregard my previously asked question, I've had a more deep look 
+> into your statement and I think I've understood what you had on mind.
+> 
+> On Tuesday, 10 March 2026 12:50:03 CET Kamil Konieczny wrote:
+> > Hi Janusz,
+> > On 2026-03-02 at 14:12:45 +0100, Janusz Krzysztofik wrote:
+> > > When trying to exhaust system memory in order to exercise LMEM eviction
+> > > under OOM conditions, a gem_leak helper process may itself become a victim
+> > > of memory shortage.  If our i915 TTM VM fault handler fails to allocate a
+> > > page and responds with a SIGBUS signal when the helper process is trying
+> > > to store data in a mmaped i915 GEM object with memset then the process
+> > > crashes.  Unfortunately, such crash is not only reported on stdout, strerr
+> > > and dmesg as premature, additional result from the subtest while it is
+> > > still in progress, but also renders the final result as failed.
+> > > 
+> > > Starting subtest: smem-oom
+> > > Starting dynamic subtest: lmem0
+> > > Received signal SIGBUS.
+> > > Stack trace:
+> > >  #0 [fatal_sig_handler+0x17b]
+> > >  #1 [__sigaction+0x50]
+> > >  #2 [__igt_unique____real_main808+0xdbc]
+> > >  #3 [main+0x3f]
+> > >  #4 [__libc_init_first+0x8a]
+> > >  #5 [__libc_start_main+0x8b]
+> > >  #6 [_start+0x25]
+> > > Dynamic subtest lmem0: CRASH (20.804s)
+> > > Subtest smem-oom: SUCCESS (20.807s)
+> > > Received signal SIGABRT.
+> > > Stack trace:
+> > >  #0 [fatal_sig_handler+0x17b]
+> > >  #1 [__sigaction+0x50]
+> > >  #2 [pthread_kill+0x11c]
+> > >  #3 [gsignal+0x1e]
+> > >  #4 [abort+0xdf]
+> > >  #5 [<unknown>+0xdf]
+> > >  #6 [__assert_fail+0x47]
+> > >  #7 [__igt_waitchildren+0x1c0]
+> > >  #8 [igt_waitchildren_timeout+0x9d]
+> > >  #9 [intel_allocator_multiprocess_stop+0xbb]
+> > >  #10 [__igt_unique____real_main808+0x551]
+> > >  #11 [main+0x3f]
+> > >  #12 [__libc_init_first+0x8a]
+> > >  #13 [__libc_start_main+0x8b]
+> > >  #14 [_start+0x25]
+> > > (gem_lmem_swapping:2347) CRITICAL: Test assertion failure function test_smem_oom, file ../tests/intel/gem_lmem_swapping.c:777:
+> > > (gem_lmem_swapping:2347) CRITICAL: Failed assertion: lmem_err == 0
+> > > (gem_lmem_swapping:2347) CRITICAL: Last errno: 3, No such process
+> > > (gem_lmem_swapping:2347) CRITICAL: error: 137 != 0
+> > > Dynamic subtest lmem0 failed.
+> > > ...
+> > > runner: Dynamic subtest lmem0 result when not inside a subtest. This is a test bug.
+> > > Subtest smem-oom: FAIL (22.672s)
+> > > 
+> > > Since page allocation failures are unavoidable under OOM conditions, and
+> > > the SIGBUS signal response from our TTM fault handler is correct in such
+> > > cases, catch those signals and let the helper process continue.
+> > > 
+> > > Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5493
+> > > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > > ---
+> > > That's an improved and better documented new version of my former
+> > > https://patchwork.freedesktop.org/patch/685572/
+> > > 
+> > >  tests/intel/gem_lmem_swapping.c | 18 +++++++++++++++++-
+> > >  1 file changed, 17 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+> > > index 77e18f1a3c..514423f470 100644
+> > > --- a/tests/intel/gem_lmem_swapping.c
+> > > +++ b/tests/intel/gem_lmem_swapping.c
+> > > @@ -11,6 +11,8 @@
+> > >  #include "igt_kmod.h"
+> > >  #include "runnercomms.h"
+> > >  #include <unistd.h>
+> > > +#include <setjmp.h>
+> > > +#include <signal.h>
+> > >  #include <stdlib.h>
+> > >  #include <stdint.h>
+> > >  #include <stdio.h>
+> > > @@ -651,13 +653,21 @@ static void leak(uint64_t alloc)
+> > >  	}
+> > >  }
+> > >  
+> > > +static sigjmp_buf sigbus_jmp;
+> > > +
+> > > +static void sigbus_handler(int sig, siginfo_t *si, void *ctx)
+> > > +{
+> > > +	siglongjmp(sigbus_jmp, 1);
+> > > +}
+> > > +
+> > >  static void gem_leak(int fd, uint64_t alloc)
+> > >  {
+> > >  	uint32_t handle = gem_create(fd, alloc);
+> > >  	void *buf;
+> > >  
+> > >  	buf = gem_mmap_offset__fixed(fd, handle, 0, PAGE_SIZE, PROT_WRITE);
+> > > -	memset(buf, 0, PAGE_SIZE);
+> > > +	if (!igt_debug_on_f(sigsetjmp(sigbus_jmp, 1), "PID %d: SIGBUS caught\n", getpid()))
+> > > +		memset(buf, 0, PAGE_SIZE);
+> > 
+> > There are other uses for signal masking in igt, all of them do:
+> > mask + op + unmask
+> 
+> That pattern (mask + op + unmask) is fully justified, and even mandatory, 
+> in cases when applicable only to specific steps of a test, usually in a 
+> preparation phase, before the real exercise starts.  But here we have a 
+> helper process that is not part of the exercise itself, in the sense its 
+> failures should not count.  As my commit message explains, those failures 
+> are expected, and their root cause is understood.  Here the helper process 
+> is expected to acquire and leak pages of GEM memory in a loop, and then 
+> just exit when signaled with a flag, with no follow up steps that would 
+> require the masked signal restored.   We don't have to care about unmask.  
 
-Fixes: 04db3b26c52b ("intel-ci: Add NVL display blocklist")
+Could you add a comment in code for this?
 
-Signed-off-by: Aditya Chauhan <aditya.chauhan@intel.com>
----
- tests/intel-ci/meson.build | 1 +
- 1 file changed, 1 insertion(+)
+> 
+> Besides, there are already other justified "mask and forget" cases in IGT, 
+> see:
+> lib/xe/xe_eudebug.c:xe_eudebug_debugger_start_worker()
+> tests/amdgpu/amd_mem.c:test_signal_handling()
+> tests/intel/gem_close_race.c:multigpu_threads()
+> tests/intel/gem_exec_alignment.c:naughty_child()
+> tests/intel/gem_exec_fence.c:test_keep_in_fence()
+> tests/intel/gem_exec_schedule.c:test_pi_ringfull()
+> tests/intel/i915_pm_rc6_residency.c:bg_load()
+> tests/intel/xe_eu_stall.c:test_eustall()
+> tests/testdisplay.c:set_single()
+> 
+> See also one auto-correction below while being at it.
+> 
+> > 
+> > Regards,
+> > Kamil 
+> > >  	munmap(buf, PAGE_SIZE);
+> > >  
+> > >  	gem_madvise(fd, handle, I915_MADV_DONTNEED);
+> > > @@ -745,8 +755,14 @@ static void test_smem_oom(int i915,
+> > >  				}
+> > >  			}
+> > >  			igt_fork(child, 1) {
+> > > +				struct sigaction sa = {
+> > > +					.sa_sigaction = sigbus_handler,
+> > > +					.sa_flags = SA_SIGINFO | SA_NODEFER,
+> > > +				};
+> > >  				int fd = drm_reopen_driver(i915);
+> > >  
+> 
+> sigemptyset() is missing in front of sigaction(), we shouldn't depend on 
+> zero initialized .sa_mask, that's not portable.
+> 
+> Thanks,
+> Janusz
+> 
 
-diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
-index a1e9dff55..2e40b2179 100644
---- a/tests/intel-ci/meson.build
-+++ b/tests/intel-ci/meson.build
-@@ -26,6 +26,7 @@ intelci_files = [
-   'xe.ptl.core.blocklist.txt',
-   'xe.ptl.display.blocklist.txt',
-   'xe.nvl.core.blocklist.txt',
-+  'xe.nvl.display.blocklist.txt',
-   'xe.sriov-vf.blocklist.txt',
-   'xe-sriov-vf.blocklist.txt',
-   'xe.sriov-vm.blocklist.txt',
--- 
-2.34.1
+Thank you for looking again into this.
 
+Regards,
+Kamil 
+> 
+> > > +				sigaction(SIGBUS, &sa, NULL);
+> > > +
+> > >  				for (int pass = 0; pass < num_alloc; pass++) {
+> > >  					if (READ_ONCE(*lmem_done))
+> > >  						break;
+> > 
+> 
+> 
+> 
+> 
