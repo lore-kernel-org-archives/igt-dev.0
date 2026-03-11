@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7A7EFD88DF
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Mar 2026 03:35:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8909FD88EC
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Mar 2026 03:35:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5518810E1CB;
-	Wed, 11 Mar 2026 03:35:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5FDEC10E7E1;
+	Wed, 11 Mar 2026 03:35:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BnVRNmB2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Dzmn3Uwn";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7D1810E7B6
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E5D010E1CB
  for <igt-dev@lists.freedesktop.org>; Wed, 11 Mar 2026 03:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773200156; x=1804736156;
+ t=1773200155; x=1804736155;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=f0a7MQVWvCsddqDqSStGt/Mief/BUwcGhfMI/s7NjEY=;
- b=BnVRNmB2debEOC7MREWTMiIagGzO77h1ZgFQnRpqCnZMWdT9pbFZaLZp
- WcoF012NZSSWmOsN5wfsVClyXYC/pm3bHCXYy9lwukZQBev6ku7Nf4h82
- 1ne1hfMrMeXtPrkKmSrPd1Z0bVj+2ff11xeh5OCV/0k36P+rUIMbjlRik
- YrinAcQqhq/9fhr0SXLdQqxk5vtYAO6AIBQ9HwA1oKZqTwbNjE3TKidTu
- BEvqzjLpjAQqF6BVLYVMMSOm5aCo/R5+LjBOFRjZ6LDo9kveNTOP09TrS
- r8m4hkexCXf3rBgLqHwJGANNfGJiOKqMk/ARfI+rBx5/SKK7SvMDZsjBC A==;
-X-CSE-ConnectionGUID: jsCcO3PxQieWJ3wcg0UHIg==
-X-CSE-MsgGUID: u1RhJLyARl2E1XOGupMaAg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="78147486"
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="78147486"
+ bh=KYQHuj4ULuWMaEl7UChZdZqAc+cQNK3OExzUYn9/99w=;
+ b=Dzmn3UwnEwxx+eMYId4lFRwVZhAebXYhvXCcxQsm3CNdFUyO7yXwO4bz
+ hNyt60JiEm5gtyadHJDH3Ao4C2s2BFKizc1D7pvbxK/641LhWuOS2q8rf
+ VwemZIriNdmdBUjqqWUo8VhpuiPmjcih2sOite9ga4F34V7qKaYYfXMH9
+ 5l78ydYxjwKlK/rcZSO5rG2r4dyMAXWqXeFuxOscuqa9Zm5AInKlX1flF
+ nkxQeaif9+wAsWhaFpyYnH37R+O146lHjc+5CctIJXPcENY5cXCmZ0kCq
+ 7XQ+8y+JhD/is+acYMngkRBdXclKWpBMKsFk0BaZloXEU9I+MCL2niAgv g==;
+X-CSE-ConnectionGUID: jDtFDf1uT1Sg2oHXDKC/qg==
+X-CSE-MsgGUID: i1zXCGhHQKaqhp6ZVis83Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="78147484"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="78147484"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2026 20:35:55 -0700
-X-CSE-ConnectionGUID: Tw+9Xy3+QIiEBtw6MoaTdA==
-X-CSE-MsgGUID: 9mHI4tHuTeStDfxoq4eIgw==
+ 10 Mar 2026 20:35:54 -0700
+X-CSE-ConnectionGUID: UR4wgb0FSmaxeEMZ0w7Frg==
+X-CSE-MsgGUID: MXLBbX44SgCUJuM5pj+0DQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="220501807"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="220501804"
 Received: from himanshu-h97m-d3h.iind.intel.com ([10.223.55.10])
- by orviesa007.jf.intel.com with ESMTP; 10 Mar 2026 20:35:54 -0700
+ by orviesa007.jf.intel.com with ESMTP; 10 Mar 2026 20:35:52 -0700
 From: himanshu.girotra@intel.com
 To: ramadevi.gandi@intel.com, aditya.chauhan@intel.com,
  shekhar.chauhan@intel.com, kamil.konieczny@intel.com,
  igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 1/3] lib/pciids: sync with kernel commit be07d8f707e4
-Date: Wed, 11 Mar 2026 09:05:48 +0530
-Message-ID: <20260311033550.16336-2-himanshu.girotra@intel.com>
+Subject: [PATCH i-g-t v2 0/3] lib: Add NVL-P and WCL support
+Date: Wed, 11 Mar 2026 09:05:47 +0530
+Message-ID: <20260311033550.16336-1-himanshu.girotra@intel.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260311033550.16336-1-himanshu.girotra@intel.com>
+In-Reply-To: <20260310165113.8994-1-himanshu.girotra@intel.com>
 References: <20260310165113.8994-1-himanshu.girotra@intel.com>
- <20260311033550.16336-1-himanshu.girotra@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,61 +69,38 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Himanshu Girotra <himanshu.girotra@intel.com>
 
-Synchronize PCI IDs with drm-next kernel up to be07d8f707e4,
-which includes the following changes:
+This series adds NVL-P (Novalake-P) and WildcatLake platform
+support to IGT.
 
-commit be07d8f707e4 ("drm/xe/nvlp: Add NVL-P platform definition")
-commit 32620e176443 ("drm/pcids: Split PTL pciids group to make wcl subplatform")
-commit aaecfadc22cc ("drm/intel/bmg: Allow device ID usage with single-argument macros")
+Patch 1 syncs pciids.h with upstream kernel up to
+commit be07d8f707e4 ("drm/xe/nvlp: Add NVL-P platform definition"),
+following the established pattern of keeping pciids.h as a direct
+copy of include/drm/intel/pciids.h from the kernel.
 
-Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- lib/pciids.h | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+Patch 2 adds the device descriptor and platform detection macros
+for NVL-P.
 
-diff --git a/lib/pciids.h b/lib/pciids.h
-index 6e53fb4cd..33b91cb2e 100644
---- a/lib/pciids.h
-+++ b/lib/pciids.h
-@@ -861,7 +861,7 @@
- 	MACRO__(0xE216, ## __VA_ARGS__)
- 
- #define INTEL_BMG_IDS(MACRO__, ...) \
--	INTEL_BMG_G21_IDS(MACRO__, __VA_ARGS__), \
-+	INTEL_BMG_G21_IDS(MACRO__, ## __VA_ARGS__), \
- 	MACRO__(0xE220, ## __VA_ARGS__), \
- 	MACRO__(0xE221, ## __VA_ARGS__), \
- 	MACRO__(0xE222, ## __VA_ARGS__), \
-@@ -880,7 +880,10 @@
- 	MACRO__(0xB08F, ## __VA_ARGS__), \
- 	MACRO__(0xB090, ## __VA_ARGS__), \
- 	MACRO__(0xB0A0, ## __VA_ARGS__), \
--	MACRO__(0xB0B0, ## __VA_ARGS__), \
-+	MACRO__(0xB0B0, ## __VA_ARGS__)
-+
-+/* WCL */
-+#define INTEL_WCL_IDS(MACRO__, ...) \
- 	MACRO__(0xFD80, ## __VA_ARGS__), \
- 	MACRO__(0xFD81, ## __VA_ARGS__)
- 
-@@ -897,4 +900,16 @@
- #define INTEL_CRI_IDS(MACRO__, ...) \
- 	MACRO__(0x674C, ## __VA_ARGS__)
- 
-+/* NVL-P */
-+#define INTEL_NVLP_IDS(MACRO__, ...) \
-+	MACRO__(0xD750, ## __VA_ARGS__), \
-+	MACRO__(0xD751, ## __VA_ARGS__), \
-+	MACRO__(0xD752, ## __VA_ARGS__), \
-+	MACRO__(0xD753, ## __VA_ARGS__), \
-+	MACRO__(0XD754, ## __VA_ARGS__), \
-+	MACRO__(0XD755, ## __VA_ARGS__), \
-+	MACRO__(0XD756, ## __VA_ARGS__), \
-+	MACRO__(0XD757, ## __VA_ARGS__), \
-+	MACRO__(0xD75F, ## __VA_ARGS__)
-+
- #endif /* __PCIIDS_H__ */
+Patch 3 adds WildcatLake support. WCL was previously consumed
+under INTEL_PTL_IDS but now has dedicated PCI IDs following
+kernel commit 32620e176443 ("drm/pcids: Split PTL pciids group
+to make wcl subplatform").
+
+Changes in v2:
+- Add patch 3: WildcatLake support (Kamil Konieczny)
+
+This series supersedes v1:
+https://patchwork.freedesktop.org/series/162971/
+
+Himanshu Girotra (3):
+  lib/pciids: sync with kernel commit be07d8f707e4
+  lib: Add NVL-P support
+  lib: Add WildcatLake support
+
+ lib/intel_chipset.h     |  4 ++++
+ lib/intel_device_info.c | 27 +++++++++++++++++++++++++++
+ lib/pciids.h            | 19 +++++++++++++++++--
+ 3 files changed, 48 insertions(+), 2 deletions(-)
+
 -- 
 2.50.1
 
