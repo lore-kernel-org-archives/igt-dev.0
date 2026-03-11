@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29914FD0620
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Mar 2026 06:23:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE92BFD0622
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Mar 2026 06:23:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D187510E32A;
-	Wed, 11 Mar 2026 06:23:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8D8E710E323;
+	Wed, 11 Mar 2026 06:23:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b4jhl8dv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LRjY7eSl";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7253C10E327
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFE0E10E325
  for <igt-dev@lists.freedesktop.org>; Wed, 11 Mar 2026 06:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773210207; x=1804746207;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=W70V2rV1yREGzLeFoYqxCL0CA4upNf3svvfOBQ6Go1Y=;
- b=b4jhl8dvG3JP79GQwpl9CgFz5OHELztAPV5/sPTRE5r1hqeBilTVwi3p
- vTPUltR35MB3HkIOO47szUw/cZwSKbmki0Fqqakn8cX1x16XVHime+eJ3
- WVX3/fo9y65b+YXe3QfOD66LBZ+eZEiF8ZXdTqo7pMtS9dXfFGWd3mm2a
- L5feC8dhovy6fcZtBYIDso2B5IZhO0dybFu9Twj9O7I0LQqqsc6imqHAA
- ar06v6wenue1bM8gvmBummf9QZwkpZfDoQ4UZfXnIITT5HWQ2u1+ivhQ6
- Cu90Cdfp/i91evYl+v5KFmWeTfG4JfnNR+CQSaqAZp5OKQ5XNFRHMz1Cr A==;
-X-CSE-ConnectionGUID: MoS/l1WJTUqO90+RwIeQtg==
-X-CSE-MsgGUID: kaBPdUowSWuWC5coQzHUag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="77875556"
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="77875556"
+ t=1773210208; x=1804746208;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=dxbxYfyc8127Np+d1FCAwqlP3LYD9PkPrK8wP86xE1M=;
+ b=LRjY7eSl/EKC0m0KQupK/tIn19t2KCp66VREUui+sYnHTZWnAHi4xsnX
+ gdFPbP3psQ/KouEZkg8899jrlCBlh0njtWGXyFyoSn7n57uyRZtTp11HK
+ p9ZEt2fJ85twuW6BCI3l1gkfhbAc8fyDyTh3bEmkc6MclyDpNReGRXnKW
+ kUoagUm4hRHjwuESX/ea0MFVfM3G+I7m53z98O71jL1RbqUeylXuysK+2
+ yuX7wplA4NBuQMraB/3wJU691i5p/96em4twsYTG9HgPsStkOFeZnmLZg
+ KF2sV62pTghg5SxfmczNthFF3BzBcHzoFV6vVzBqgEM+pPWwMbmP2I/6V g==;
+X-CSE-ConnectionGUID: FKJxi2crRPOXPDgr5JKBPw==
+X-CSE-MsgGUID: sDBkSOfXRk+lxtAkP1UuKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="77875560"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="77875560"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2026 23:23:26 -0700
-X-CSE-ConnectionGUID: vnc1qKspTYeX4lkbkclGeA==
-X-CSE-MsgGUID: vAW1gVS9REqApOHrCdhCPQ==
+ 10 Mar 2026 23:23:27 -0700
+X-CSE-ConnectionGUID: 6EL1sztnTraWF/BObinSZw==
+X-CSE-MsgGUID: ltzYsmbzQZGlDtD42FbuYQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="220309080"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="220309067"
 Received: from xwang-desk.fm.intel.com ([10.121.64.134])
- by orviesa009.jf.intel.com with ESMTP; 10 Mar 2026 23:23:15 -0700
+ by orviesa009.jf.intel.com with ESMTP; 10 Mar 2026 23:23:14 -0700
 From: Xin Wang <x.wang@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Xin Wang <x.wang@intel.com>
-Subject: [PATCH v5 4/4] lib/intel_device_info: remove the graphcs_rel from
- xe2+ devices
-Date: Tue, 10 Mar 2026 23:23:09 -0700
-Message-ID: <20260311062311.1623823-5-x.wang@intel.com>
+Subject: [PATCH v5 0/4] lib/intel: switch graphics/IP version queries to
+ fd-based APIs
+Date: Tue, 10 Mar 2026 23:23:05 -0700
+Message-ID: <20260311062311.1623823-1-x.wang@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260311062311.1623823-1-x.wang@intel.com>
-References: <20260311062311.1623823-1-x.wang@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,60 +66,164 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Xe2+ platforms, the graphics/media IP version is no longer a stable
-property of a PCI ID "device type". After IP disaggregation, devices
-sharing the same PCI ID can potentially report different IP versions, so
-encoding graphics_rel in the static PCI-ID table is misleading.
+This series separates PCI ID–based device traits from per‑device IP version
+queries. It introduces fd‑based intel_gfx_ver()/intel_gfx_ver_major() using Xe
+query data when available, keeps PCI ID translation as _from_pciid, and
+updates libs/tests to use the fd‑based APIs. This aligns IGT with post‑MTL 
+IP disaggregation while preserving i915 safety fallback.
 
-Signed-off-by: Xin Wang <x.wang@intel.com>
----
- lib/intel_device_info.c | 5 -----
- 1 file changed, 5 deletions(-)
+v5:
+ - rebase to fix the compile error
 
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index c0fde6182..2a9c09d01 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -505,7 +505,6 @@ static const struct intel_device_info intel_pontevecchio_info = {
- 
- static const struct intel_device_info intel_lunarlake_info = {
- 	.graphics_ver = 20,
--	.graphics_rel = 4,
- 	.display_ver = 20,
- 	.has_4tile = true,
- 	.has_flatccs = true,
-@@ -517,7 +516,6 @@ static const struct intel_device_info intel_lunarlake_info = {
- 
- static const struct intel_device_info intel_battlemage_info = {
- 	.graphics_ver = 20,
--	.graphics_rel = 1,
- 	.display_ver = 14,
- 	.has_4tile = true,
- 	.has_flatccs = true,
-@@ -529,7 +527,6 @@ static const struct intel_device_info intel_battlemage_info = {
- 
- static const struct intel_device_info intel_pantherlake_info = {
- 	.graphics_ver = 30,
--	.graphics_rel = 0,
- 	.display_ver = 30,
- 	.has_4tile = true,
- 	.has_flatccs = true,
-@@ -541,7 +538,6 @@ static const struct intel_device_info intel_pantherlake_info = {
- 
- static const struct intel_device_info intel_novalake_s_info = {
- 	.graphics_ver = 30,
--	.graphics_rel = 04,
- 	.display_ver = 35,
- 	.has_4tile = true,
- 	.has_oam = true,
-@@ -553,7 +549,6 @@ static const struct intel_device_info intel_novalake_s_info = {
- 
- static const struct intel_device_info intel_crescentisland_info = {
- 	.graphics_ver = 35,
--	.graphics_rel = 11,
- 	.display_ver = 0,
- 	.has_oam = true,
- 	.is_crescentisland = true,
+Xin Wang (4):
+  lib/intel: rename intel_gen() and intel_graphics_ver() to
+    *_from_pciid() variants
+  lib/intel: add fd-based graphics IP version query helpers
+  intel/{lib,tests}: switch fd-backed version checks to intel_gfx_ver*
+  lib/intel_device_info: remove the graphics_rel from xe2+ devices
+
+ benchmarks/gem_blt.c                     |  2 +-
+ benchmarks/gem_busy.c                    |  2 +-
+ benchmarks/gem_latency.c                 |  2 +-
+ benchmarks/gem_wsim.c                    |  8 ++--
+ benchmarks/intel_upload_blit_large.c     |  2 +-
+ benchmarks/intel_upload_blit_large_gtt.c |  2 +-
+ benchmarks/intel_upload_blit_large_map.c |  2 +-
+ benchmarks/intel_upload_blit_small.c     |  2 +-
+ lib/gpgpu_shader.c                       |  6 +--
+ lib/gpu_cmds.c                           | 21 +++++----
+ lib/i915/gem_engine_topology.c           | 10 ++---
+ lib/i915/gem_mman.c                      |  2 +-
+ lib/i915/gem_submission.c                |  8 ++--
+ lib/i915/i915_crc.c                      |  6 +--
+ lib/i915/intel_decode.c                  |  4 +-
+ lib/igt_dummyload.c                      |  3 +-
+ lib/igt_fb.c                             |  2 +-
+ lib/igt_gt.c                             |  4 +-
+ lib/igt_store.c                          |  2 +-
+ lib/instdone.c                           |  2 +-
+ lib/intel_batchbuffer.c                  | 56 ++++++++++++------------
+ lib/intel_batchbuffer.h                  |  4 +-
+ lib/intel_blt.c                          | 22 ++++------
+ lib/intel_blt.h                          |  2 +-
+ lib/intel_bufops.c                       | 10 ++---
+ lib/intel_chipset.c                      | 43 ++++++++++++++++++
+ lib/intel_chipset.h                      | 14 +++---
+ lib/intel_common.c                       |  2 +-
+ lib/intel_compute.c                      |  6 +--
+ lib/intel_device_info.c                  | 32 +++++++++-----
+ lib/intel_mmio.c                         |  8 ++--
+ lib/intel_mocs.c                         | 13 +++---
+ lib/intel_pat.c                          | 14 +++---
+ lib/intel_reg_map.c                      |  2 +-
+ lib/ioctl_wrappers.c                     |  2 +-
+ lib/rendercopy_gen9.c                    | 24 +++++-----
+ lib/xe/xe_legacy.c                       |  2 +-
+ lib/xe/xe_oa.c                           |  4 +-
+ lib/xe/xe_query.c                        | 25 +++++++++++
+ lib/xe/xe_query.h                        |  1 +
+ lib/xe/xe_spin.c                         |  4 +-
+ lib/xe/xe_sriov_provisioning.c           |  4 +-
+ tests/intel/api_intel_allocator.c        |  2 +-
+ tests/intel/api_intel_bb.c               | 11 +++--
+ tests/intel/gem_bad_reloc.c              |  4 +-
+ tests/intel/gem_blits.c                  |  2 +-
+ tests/intel/gem_close_race.c             |  2 +-
+ tests/intel/gem_concurrent_all.c         |  2 +-
+ tests/intel/gem_ctx_create.c             |  4 +-
+ tests/intel/gem_ctx_engines.c            |  6 +--
+ tests/intel/gem_ctx_isolation.c          | 14 +++---
+ tests/intel/gem_ctx_shared.c             |  8 ++--
+ tests/intel/gem_ctx_sseu.c               |  2 +-
+ tests/intel/gem_eio.c                    |  6 +--
+ tests/intel/gem_evict_alignment.c        |  6 +--
+ tests/intel/gem_evict_everything.c       |  8 ++--
+ tests/intel/gem_exec_async.c             |  2 +-
+ tests/intel/gem_exec_await.c             |  2 +-
+ tests/intel/gem_exec_balancer.c          |  4 +-
+ tests/intel/gem_exec_big.c               |  2 +-
+ tests/intel/gem_exec_capture.c           |  9 ++--
+ tests/intel/gem_exec_fair.c              | 20 ++++-----
+ tests/intel/gem_exec_fence.c             | 20 ++++-----
+ tests/intel/gem_exec_flush.c             |  4 +-
+ tests/intel/gem_exec_gttfill.c           |  2 +-
+ tests/intel/gem_exec_latency.c           |  6 +--
+ tests/intel/gem_exec_nop.c               |  4 +-
+ tests/intel/gem_exec_parallel.c          |  2 +-
+ tests/intel/gem_exec_params.c            |  8 ++--
+ tests/intel/gem_exec_reloc.c             | 10 ++---
+ tests/intel/gem_exec_schedule.c          | 20 ++++-----
+ tests/intel/gem_exec_store.c             |  6 +--
+ tests/intel/gem_exec_suspend.c           |  2 +-
+ tests/intel/gem_exec_whisper.c           |  6 +--
+ tests/intel/gem_fenced_exec_thrash.c     |  5 +--
+ tests/intel/gem_gpgpu_fill.c             |  2 +-
+ tests/intel/gem_gtt_hog.c                |  2 +-
+ tests/intel/gem_linear_blits.c           | 11 ++---
+ tests/intel/gem_media_fill.c             |  2 +-
+ tests/intel/gem_media_vme.c              |  2 +-
+ tests/intel/gem_mmap_gtt.c               | 12 ++---
+ tests/intel/gem_read_read_speed.c        |  4 +-
+ tests/intel/gem_render_copy.c            | 10 ++---
+ tests/intel/gem_ringfill.c               |  4 +-
+ tests/intel/gem_set_tiling_vs_blt.c      |  2 +-
+ tests/intel/gem_softpin.c                |  6 +--
+ tests/intel/gem_streaming_writes.c       |  4 +-
+ tests/intel/gem_sync.c                   |  8 ++--
+ tests/intel/gem_tiled_fence_blits.c      |  4 +-
+ tests/intel/gem_tiling_max_stride.c      |  8 ++--
+ tests/intel/gem_userptr_blits.c          | 25 +++++------
+ tests/intel/gem_vm_create.c              |  2 +-
+ tests/intel/gem_watchdog.c               |  4 +-
+ tests/intel/gem_workarounds.c            |  2 +-
+ tests/intel/gen7_exec_parse.c            |  2 +-
+ tests/intel/gen9_exec_parse.c            |  2 +-
+ tests/intel/i915_getparams_basic.c       |  7 +--
+ tests/intel/i915_module_load.c           |  2 +-
+ tests/intel/i915_pm_rc6_residency.c      |  6 +--
+ tests/intel/i915_pm_rpm.c                |  2 +-
+ tests/intel/i915_pm_sseu.c               |  2 +-
+ tests/intel/kms_ccs.c                    | 13 ++----
+ tests/intel/kms_fbcon_fbt.c              |  2 +-
+ tests/intel/kms_frontbuffer_tracking.c   | 11 +++--
+ tests/intel/kms_pipe_stress.c            |  6 +--
+ tests/intel/perf.c                       | 55 ++++++++++++-----------
+ tests/intel/perf_pmu.c                   |  8 ++--
+ tests/intel/sysfs_preempt_timeout.c      |  2 +-
+ tests/intel/sysfs_timeslice_duration.c   |  2 +-
+ tests/intel/xe_ccs.c                     | 16 +++----
+ tests/intel/xe_compute.c                 |  8 ++--
+ tests/intel/xe_copy_basic.c              |  6 +--
+ tests/intel/xe_debugfs.c                 |  3 +-
+ tests/intel/xe_eu_stall.c                |  4 +-
+ tests/intel/xe_eudebug_online.c          |  9 ++--
+ tests/intel/xe_evict.c                   |  6 +--
+ tests/intel/xe_exec_fault_mode.c         |  2 +-
+ tests/intel/xe_exec_multi_queue.c        |  2 +-
+ tests/intel/xe_exec_store.c              |  6 +--
+ tests/intel/xe_exec_threads.c            |  4 +-
+ tests/intel/xe_fault_injection.c         |  2 +-
+ tests/intel/xe_gpgpu_fill.c              |  2 +-
+ tests/intel/xe_intel_bb.c                |  7 ++-
+ tests/intel/xe_media_fill.c              |  2 +-
+ tests/intel/xe_multigpu_svm.c            |  3 +-
+ tests/intel/xe_oa.c                      | 23 +++++-----
+ tests/intel/xe_pat.c                     | 38 +++++++---------
+ tests/intel/xe_prefetch_fault.c          |  3 +-
+ tests/intel/xe_query.c                   |  4 +-
+ tests/intel/xe_render_copy.c             |  3 +-
+ tests/intel/xe_svm_usrptr_madvise.c      |  3 +-
+ tests/prime_vgem.c                       |  2 +-
+ tools/intel_dp_compliance.c              |  2 +-
+ tools/intel_error_decode.c               | 12 ++---
+ tools/intel_gtt.c                        | 12 ++---
+ tools/intel_l3_parity.c                  |  2 +-
+ tools/intel_reg.c                        |  6 +--
+ tools/intel_reg_decode.c                 |  4 +-
+ tools/intel_tiling_detect.c              |  2 +-
+ tools/intel_vbt_decode.c                 |  2 +-
+ 140 files changed, 535 insertions(+), 498 deletions(-)
+
 -- 
 2.43.0
 
