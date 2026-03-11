@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 208E7FD88FF
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Mar 2026 05:50:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 298FBFCC9B1
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Mar 2026 05:50:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BC7CB10E31C;
-	Wed, 11 Mar 2026 05:50:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C5D4410E31E;
+	Wed, 11 Mar 2026 05:50:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S5IEoDK8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="St78Onzw";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 483F610E31B
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Mar 2026 05:50:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8937010E31B
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Mar 2026 05:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773208203; x=1804744203;
+ t=1773208204; x=1804744204;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=f0a7MQVWvCsddqDqSStGt/Mief/BUwcGhfMI/s7NjEY=;
- b=S5IEoDK8kclntjTQvmVcnXbjxxHXeuZAVg0EBeBW/lwpdtwnxEjCQtrk
- eXL4g7y6CTxywpnEfygwSHUsvF9SgErlmbO13ULpf2WssumeaAzgD7rvh
- wuUw0fTe/UFhHRzREYm0WzoMB1IyLw5A1YDL1VgUH0aLJ8xnFaWa5CwEk
- YC0oCTGk9sKOFbR5+GIm2eAoAkkIn+vsxIsHoNYGsVP4UEVAlBondnLxd
- YpTfPbMmBDr+kzZKjeOZ2LTYZhCif4qAuEdc1nictP7zUV2hqkSQtLmuc
- brJm7ZEE86u6UWafK4qKricH9xVqsV8ukb6V/iUWkBCpqKudMIdv/496z Q==;
-X-CSE-ConnectionGUID: OT+aNNKvSq2SgC7Tym8Aww==
-X-CSE-MsgGUID: p29MNHxVQQiUxulRqVn98w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="96881956"
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="96881956"
+ bh=MkcT0fUZFFtajcviXIAM3Q6/KgbGczBnMCAsfJecdYA=;
+ b=St78OnzwueFVvWVpmKdZJSRJ3PXQ4vlkvzYb8Wa/bRrAN/6v6jGSRKC4
+ Gi2L4A58Gfn0+KgjFI+ENm/D679Bs/Uy5faI/oYgc15d8QgVHhUInmtYT
+ 39qq7wZ1rR3QnCPqQuzXfWI225nIloxjL6yivqqHDKLI9r0/YEimaIjf4
+ eU6X2a1cYQmv/oNKMIxtUvcGdjkA7gav/Xqi836qy7dnIzAArUMmP3rzy
+ PMWPq9BdpF+DpyWOv/P8u8SS1wzx3lye794Jy3ViUUNTcs5bKrxHgWkHN
+ DO3EbeQWHI5z05MIRL1pJwMcVk9+xcqt6bvg6vkAV4ypvE43m2kqg+ICA w==;
+X-CSE-ConnectionGUID: jaR1TCBzQAWi/4yu7tBDwA==
+X-CSE-MsgGUID: 9ZS9dVTgRUm9q1rmRtAqdw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="96881958"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="96881958"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2026 22:50:03 -0700
-X-CSE-ConnectionGUID: 0EMeDbdER9CA515AQU78/w==
-X-CSE-MsgGUID: l9wZ4op4SG2zCrje7eHFSQ==
+ 10 Mar 2026 22:50:04 -0700
+X-CSE-ConnectionGUID: rKFKyp7LROyC/h2pfvzyDw==
+X-CSE-MsgGUID: l70c7LuoRv6ypm2syvXnsQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="219483629"
+X-IronPort-AV: E=Sophos;i="6.23,113,1770624000"; d="scan'208";a="219483639"
 Received: from himanshu-h97m-d3h.iind.intel.com ([10.223.55.10])
- by orviesa006.jf.intel.com with ESMTP; 10 Mar 2026 22:50:02 -0700
+ by orviesa006.jf.intel.com with ESMTP; 10 Mar 2026 22:50:03 -0700
 From: himanshu.girotra@intel.com
 To: kamil.konieczny@intel.com,
 	igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 1/3] lib/pciids: sync with kernel commit be07d8f707e4
-Date: Wed, 11 Mar 2026 11:19:56 +0530
-Message-ID: <20260311054958.9770-2-himanshu.girotra@intel.com>
+Subject: [PATCH i-g-t 2/3] lib: Add NVL-P support
+Date: Wed, 11 Mar 2026 11:19:57 +0530
+Message-ID: <20260311054958.9770-3-himanshu.girotra@intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260311054958.9770-1-himanshu.girotra@intel.com>
 References: <20260311054958.9770-1-himanshu.girotra@intel.com>
@@ -68,61 +68,66 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Himanshu Girotra <himanshu.girotra@intel.com>
 
-Synchronize PCI IDs with drm-next kernel up to be07d8f707e4,
-which includes the following changes:
-
-commit be07d8f707e4 ("drm/xe/nvlp: Add NVL-P platform definition")
-commit 32620e176443 ("drm/pcids: Split PTL pciids group to make wcl subplatform")
-commit aaecfadc22cc ("drm/intel/bmg: Allow device ID usage with single-argument macros")
+Add NVL-P device info.
 
 Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/pciids.h | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ lib/intel_chipset.h     |  2 ++
+ lib/intel_device_info.c | 14 ++++++++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/lib/pciids.h b/lib/pciids.h
-index 6e53fb4cd..33b91cb2e 100644
---- a/lib/pciids.h
-+++ b/lib/pciids.h
-@@ -861,7 +861,7 @@
- 	MACRO__(0xE216, ## __VA_ARGS__)
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index cc2225110..5df7349df 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -94,6 +94,7 @@ struct intel_device_info {
+ 	bool is_battlemage : 1;
+ 	bool is_pantherlake : 1;
+ 	bool is_novalake_s: 1;
++	bool is_novalake_p : 1;
+ 	bool is_crescentisland: 1;
  
- #define INTEL_BMG_IDS(MACRO__, ...) \
--	INTEL_BMG_G21_IDS(MACRO__, __VA_ARGS__), \
-+	INTEL_BMG_G21_IDS(MACRO__, ## __VA_ARGS__), \
- 	MACRO__(0xE220, ## __VA_ARGS__), \
- 	MACRO__(0xE221, ## __VA_ARGS__), \
- 	MACRO__(0xE222, ## __VA_ARGS__), \
-@@ -880,7 +880,10 @@
- 	MACRO__(0xB08F, ## __VA_ARGS__), \
- 	MACRO__(0xB090, ## __VA_ARGS__), \
- 	MACRO__(0xB0A0, ## __VA_ARGS__), \
--	MACRO__(0xB0B0, ## __VA_ARGS__), \
-+	MACRO__(0xB0B0, ## __VA_ARGS__)
+ 	const struct intel_cmds_info *cmds_info;
+@@ -213,6 +214,7 @@ void intel_check_pch(void);
+ #define IS_BATTLEMAGE(devid)	(intel_get_device_info(devid)->is_battlemage)
+ #define IS_PANTHERLAKE(devid)	(intel_get_device_info(devid)->is_pantherlake)
+ #define IS_NOVALAKE_S(devid)	(intel_get_device_info(devid)->is_novalake_s)
++#define IS_NOVALAKE_P(devid)	(intel_get_device_info(devid)->is_novalake_p)
+ #define IS_CRESCENTISLAND(devid)	(intel_get_device_info(devid)->is_crescentisland)
+ 
+ #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 89fa6788f..b44b24223 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -551,6 +551,18 @@ static const struct intel_device_info intel_novalake_s_info = {
+ 	.cmds_info = &xe2_cmds_info,
+ };
+ 
++static const struct intel_device_info intel_novalake_p_info = {
++	.graphics_ver = 35,
++	.graphics_rel = 10,
++	.display_ver = 35,
++	.has_4tile = true,
++	.has_oam = true,
++	.has_flatccs = true,
++	.is_novalake_p = true,
++	.codename = "novalake_p",
++	.cmds_info = &xe2_cmds_info,
++};
 +
-+/* WCL */
-+#define INTEL_WCL_IDS(MACRO__, ...) \
- 	MACRO__(0xFD80, ## __VA_ARGS__), \
- 	MACRO__(0xFD81, ## __VA_ARGS__)
+ static const struct intel_device_info intel_crescentisland_info = {
+ 	.graphics_ver = 35,
+ 	.graphics_rel = 11,
+@@ -681,6 +693,8 @@ static const struct pci_id_match intel_device_match[] = {
  
-@@ -897,4 +900,16 @@
- #define INTEL_CRI_IDS(MACRO__, ...) \
- 	MACRO__(0x674C, ## __VA_ARGS__)
+ 	INTEL_NVLS_IDS(INTEL_PCI_ID_INIT, &intel_novalake_s_info),
  
-+/* NVL-P */
-+#define INTEL_NVLP_IDS(MACRO__, ...) \
-+	MACRO__(0xD750, ## __VA_ARGS__), \
-+	MACRO__(0xD751, ## __VA_ARGS__), \
-+	MACRO__(0xD752, ## __VA_ARGS__), \
-+	MACRO__(0xD753, ## __VA_ARGS__), \
-+	MACRO__(0XD754, ## __VA_ARGS__), \
-+	MACRO__(0XD755, ## __VA_ARGS__), \
-+	MACRO__(0XD756, ## __VA_ARGS__), \
-+	MACRO__(0XD757, ## __VA_ARGS__), \
-+	MACRO__(0xD75F, ## __VA_ARGS__)
++	INTEL_NVLP_IDS(INTEL_PCI_ID_INIT, &intel_novalake_p_info),
 +
- #endif /* __PCIIDS_H__ */
+ 	INTEL_CRI_IDS(INTEL_PCI_ID_INIT, &intel_crescentisland_info),
+ 
+ 	INTEL_PCI_ID_INIT(PCI_MATCH_ANY, &intel_generic_info),
 -- 
 2.50.1
 
