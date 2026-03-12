@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB683FED2DD
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 07:47:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E041FED2E1
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 07:48:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 91B4C10E982;
-	Thu, 12 Mar 2026 07:47:53 +0000 (UTC)
-Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD47C10E982;
- Thu, 12 Mar 2026 07:47:50 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0794712425810216477=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2292810E98C;
+	Thu, 12 Mar 2026 07:48:39 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WH///4om";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 568BA10E98C
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2026 07:48:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1773301716; x=1804837716;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=IAwWf4mtQ8TpVN5WQEjoQn1Pcl6rKTDcxl+4jBu83Q4=;
+ b=WH///4om+fcfGrldoohq6zZr2Tyh4aFA+tQiNXw2IwrHQtUjuBXVsBsr
+ 0ggqA0jVithkJ2H/GUtltKi6nNaXqH6SEMfgZTJGi1HPu38gmmqLnoqSQ
+ 0oVqOQ0Lqo+jMnHtk7brX5HKEodd52YKuOb/qPiZlt4IyavgQq9X/v05S
+ wzvTfrDfi2ixJKxCwCvAArGtP/RfMsrt147Uqc8Raudufwa9qYIoj3jdG
+ aN/wiX+dXfo1Dy8rds76vp5Taw87AsvPkI0bpVbZTsz5vduC2tPuy+SMJ
+ 6Ev1c3JX8Tzek7vL695McDQG3IPENpsnoYaXlv7MUFDGn2pbqm2QzhZOC Q==;
+X-CSE-ConnectionGUID: cLhbx18CRaKlOoPm07dM6g==
+X-CSE-MsgGUID: c6u6+uDaSIKOKL1IQeaJpw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="61962305"
+X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; d="scan'208";a="61962305"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2026 00:48:35 -0700
+X-CSE-ConnectionGUID: IVE6+1QyS26zSds4u6fSnQ==
+X-CSE-MsgGUID: L4tHlxxfSzerK1aEzCaz6g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; d="scan'208";a="225189258"
+Received: from cml-cometlake-client-platform.iind.intel.com ([10.223.55.11])
+ by orviesa004.jf.intel.com with ESMTP; 12 Mar 2026 00:48:33 -0700
+From: Aditya Chauhan <aditya.chauhan@intel.com>
+To: ramadevi.gandi@intel.com, himanshu.girotra@intel.com,
+ swati2.sharma@intel.com, igt-dev@lists.freedesktop.org
+Subject: [PATCH v2 i-g-t 0/2] tests/intel-ci: Add NVL display and core
+ blocklists
+Date: Thu, 12 Mar 2026 13:18:30 +0530
+Message-Id: <20260312074832.51575-1-aditya.chauhan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/igt=5Fkms=3A_Fix_joiner?=
- =?utf-8?q?_force_debugfs_entry_and_expected_value_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 12 Mar 2026 07:47:50 -0000
-Message-ID: <177330167068.349381.16509305451352734501@a3b018990fe9>
-X-Patchwork-Hint: ignore
-References: <20260311105033.220652-1-ramanaidu.naladala@intel.com>
-In-Reply-To: <20260311105033.220652-1-ramanaidu.naladala@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +62,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0794712425810216477==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This series adds blocklist files for the NVL platform under intel-ci.
 
-== Series Details ==
+Patch 1 introduces the xe.nvl.core.blocklist file and registers it
+in meson.build to track known failing core tests on NVL.
 
-Series: lib/igt_kms: Fix joiner force debugfs entry and expected value (rev3)
-URL   : https://patchwork.freedesktop.org/series/163022/
-State : success
+Patch 2 fixes a missing meson.build entry for the NVL display blocklist
+that was added in commit 04db3b26c52b
+("intel-ci: Add NVL display blocklist").
 
-== Summary ==
+Changes in v2: Add more descriptive commit messages(Swati Sharma)
 
-CI Bug Log - changes from XEIGT_8797_BAT -> XEIGTPW_14741_BAT
-====================================================
+Aditya Chauhan (2):
+  tests/intel-ci: Add NVL core blocklist
+  tests/ci: Add NVL Display blocklist to meson.build
 
-Summary
--------
+ tests/intel-ci/meson.build               |  2 +
+ tests/intel-ci/xe.nvl.core.blocklist.txt | 69 ++++++++++++++++++++++++
+ 2 files changed, 71 insertions(+)
+ create mode 100644 tests/intel-ci/xe.nvl.core.blocklist.txt
 
-  **SUCCESS**
+-- 
+2.34.1
 
-  No regressions found.
-
-  
-
-Participating hosts (14 -> 13)
-------------------------------
-
-  Missing    (1): bat-atsm-2 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8797 -> IGTPW_14741
-  * Linux: xe-4702-4f823cb4f9faf6611f35c6a8a71ab696e3a734d6 -> xe-4703-389757a158d828affd3a4c242b98ffac9646daf3
-
-  IGTPW_14741: 14741
-  IGT_8797: 8797
-  xe-4702-4f823cb4f9faf6611f35c6a8a71ab696e3a734d6: 4f823cb4f9faf6611f35c6a8a71ab696e3a734d6
-  xe-4703-389757a158d828affd3a4c242b98ffac9646daf3: 389757a158d828affd3a4c242b98ffac9646daf3
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14741/index.html
-
---===============0794712425810216477==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_kms: Fix joiner force debugfs entry and expected value (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163022/">https://patchwork.freedesktop.org/series/163022/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14741/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_14741/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8797_BAT -&gt; XEIGTPW_14741_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (14 -&gt; 13)</h2>
-<p>Missing    (1): bat-atsm-2 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8797 -&gt; IGTPW_14741</li>
-<li>Linux: xe-4702-4f823cb4f9faf6611f35c6a8a71ab696e3a734d6 -&gt; xe-4703-389757a158d828affd3a4c242b98ffac9646daf3</li>
-</ul>
-<p>IGTPW_14741: 14741<br />
-  IGT_8797: 8797<br />
-  xe-4702-4f823cb4f9faf6611f35c6a8a71ab696e3a734d6: 4f823cb4f9faf6611f35c6a8a71ab696e3a734d6<br />
-  xe-4703-389757a158d828affd3a4c242b98ffac9646daf3: 389757a158d828affd3a4c242b98ffac9646daf3</p>
-
-</body>
-</html>
-
---===============0794712425810216477==--
