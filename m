@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C162106ACCD
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 18:10:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DE42106ACD6
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 18:11:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C51710EA82;
-	Thu, 12 Mar 2026 18:10:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E899310E363;
+	Thu, 12 Mar 2026 18:11:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SehTZxFq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PGST+ZYm";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0EAF410E361;
- Thu, 12 Mar 2026 18:10:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D8B010EA83;
+ Thu, 12 Mar 2026 18:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773339053; x=1804875053;
+ t=1773339058; x=1804875058;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=bbzyyHIdwDjoDVFX7mQXGFLu5F9UU/UHvUHC61hpUlc=;
- b=SehTZxFqRcOMJK9f9dC7OKQjyfiOwVwMwt/uw56KazWBx6YRmH5jOOlj
- 4Efx6/8/FD74AneR1p+e88WwbJ2tBKFN3dECRDpGKRWWmyrAXno1Rg5gj
- 8ZHIYS8wAIjbaB5SKKvvaIjwvU9fmXD1SXSypNrkPj/nlAx5lYrZ8L7cJ
- 4Kj7jiRDvpF5JRvqtVoMbthY5XwZUfbsKyLBAX0SrUIroztfx8OPsUBdn
- YGxZJMJS43SK5C2uwinCZMHTkcx1HMoT/bDVhg8RRwHzZsSxkJ43t5MKv
- rs+ZN7DPtBX9Qj9ERmdc0S6FZ5yHje9mVMEgBXlpF44j2RXF109eWgW1H Q==;
-X-CSE-ConnectionGUID: gu3ksDs8QEWHP3S687Irnw==
-X-CSE-MsgGUID: Gmbdr5TfSim4poyvRj5HOg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="92016967"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="92016967"
+ bh=H79Oanbvfu89pYxuWf8dIN2ngH3lLtift3s9wGMkRMk=;
+ b=PGST+ZYmm6NHSSm3MpxegTih4oN58obu7zK5svWMvZx55X6c23VIQeKk
+ oWEOUPqlL2hYw0dCTLc7ZNuxYSMckmL+7uclfHA9mREg1XeGPG/fgaIC1
+ A3Gs1Ma8LnRsw7/zgKY5C9sup8s5fWhQvgggEW+EW2TLoK8njeUhunUrH
+ kBGYZ71HBWUlJbzyAR5aMZ0wCXhnv1DiBI5WxpFsVzx/qq6AdwUiDm8z2
+ Z4nh4KIEktBg3X0o94MvEWZ9QsfCVpWLD6lAezix/j5lZBUktIboH82+r
+ 3qT1OReAmIiTM4Anljjhpu9fwwDe+GdeL46oHDdvc71ZfZ1JLjnsUuoNF w==;
+X-CSE-ConnectionGUID: 3BNUVmopSna1Emg2XK8nkw==
+X-CSE-MsgGUID: ozSHsZzVSe+YLq91OsqP0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="92016974"
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="92016974"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2026 11:10:53 -0700
-X-CSE-ConnectionGUID: +rdmOxPCRpy87aXE6+Ijnw==
-X-CSE-MsgGUID: mFT/5sh+RV6AzzHIM+2Ymg==
+ 12 Mar 2026 11:10:58 -0700
+X-CSE-ConnectionGUID: ugWsfhd9R6KSlFrAJu+i4g==
+X-CSE-MsgGUID: fG/SjjOiS8inu7tVEvsX6A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="243936355"
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="243936365"
 Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.152])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2026 11:10:50 -0700
+ 12 Mar 2026 11:10:56 -0700
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org,
@@ -52,10 +52,10 @@ Cc: intel-gfx@lists.freedesktop.org,
  Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
  Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
  Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t v2 1/3] tests/gem_lmem_swapping: Improve concurrency of
- smem-oom helpers.
-Date: Thu, 12 Mar 2026 19:07:33 +0100
-Message-ID: <20260312181032.20485-6-janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t v2 3/3] tests/intel/gem_lmem_swapping: Expect gem leak
+ helper crashes
+Date: Thu, 12 Mar 2026 19:07:35 +0100
+Message-ID: <20260312181032.20485-8-janusz.krzysztofik@linux.intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260312181032.20485-5-janusz.krzysztofik@linux.intel.com>
 References: <20260312181032.20485-5-janusz.krzysztofik@linux.intel.com>
@@ -76,86 +76,127 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The smem-oom subtests re-spawns two different memory leak helpers.  Any of
-those two may either complete or be killed before the other and not
-respawned until the other is also completed or killed.  That imbalance may
-actually affect the shape of OOM conditions, most probably intended to be
-a compound result of those two memory exhaustion activities of different
-nature.
+When trying to exhaust system memory in order to exercise LMEM eviction
+under OOM conditions, a gem_leak helper process may itself become a victim
+of memory shortage.  If our i915 TTM VM fault handler fails to allocate a
+page and responds with a SIGBUS signal when the helper process is trying
+to store data in a mmaped i915 GEM object with memset then the process
+crashes.  Unfortunately, such crash is not only reported on stdout, strerr
+and dmesg as premature, additional result from the subtest while it is
+still in progress, but also renders the final result as failed.
 
-Respawn each helper from its own loop.
+Starting subtest: smem-oom
+Starting dynamic subtest: lmem0
+Received signal SIGBUS.
+Stack trace:
+ #0 [fatal_sig_handler+0x17b]
+ #1 [__sigaction+0x50]
+ #2 [__igt_unique____real_main808+0xdbc]
+ #3 [main+0x3f]
+ #4 [__libc_init_first+0x8a]
+ #5 [__libc_start_main+0x8b]
+ #6 [_start+0x25]
+Dynamic subtest lmem0: CRASH (20.804s)
+Subtest smem-oom: SUCCESS (20.807s)
+Received signal SIGABRT.
+Stack trace:
+ #0 [fatal_sig_handler+0x17b]
+ #1 [__sigaction+0x50]
+ #2 [pthread_kill+0x11c]
+ #3 [gsignal+0x1e]
+ #4 [abort+0xdf]
+ #5 [<unknown>+0xdf]
+ #6 [__assert_fail+0x47]
+ #7 [__igt_waitchildren+0x1c0]
+ #8 [igt_waitchildren_timeout+0x9d]
+ #9 [intel_allocator_multiprocess_stop+0xbb]
+ #10 [__igt_unique____real_main808+0x551]
+ #11 [main+0x3f]
+ #12 [__libc_init_first+0x8a]
+ #13 [__libc_start_main+0x8b]
+ #14 [_start+0x25]
+(gem_lmem_swapping:2347) CRITICAL: Test assertion failure function test_smem_oom, file ../tests/intel/gem_lmem_swapping.c:777:
+(gem_lmem_swapping:2347) CRITICAL: Failed assertion: lmem_err == 0
+(gem_lmem_swapping:2347) CRITICAL: Last errno: 3, No such process
+(gem_lmem_swapping:2347) CRITICAL: error: 137 != 0
+Dynamic subtest lmem0 failed.
+...
+runner: Dynamic subtest lmem0 result when not inside a subtest. This is a test bug.
+Subtest smem-oom: FAIL (22.672s)
 
+Since page allocation failures are unavoidable under OOM conditions, and
+the SIGBUS signal response from our TTM fault handler is correct in such
+cases, catch those signals and let the helper process continue.
+
+v2: Add a comment about no need to restore default SIGBUS handler (Kamil),
+  - fix missing initialization of sa.sa_mask with sigemptyset().
+
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5493
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- tests/intel/gem_lmem_swapping.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ tests/intel/gem_lmem_swapping.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
 diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
-index 77e18f1a3c..3a35318a74 100644
+index f790dc66e9..91a9ef6d2e 100644
 --- a/tests/intel/gem_lmem_swapping.c
 +++ b/tests/intel/gem_lmem_swapping.c
-@@ -707,7 +707,7 @@ static void test_smem_oom(int i915,
- 		igt_get_total_swap_mb();
- 	const unsigned int alloc = 256 * 1024 * 1024;
- 	const unsigned int num_alloc = 1 + smem_size / (alloc >> 20);
--	struct igt_helper_process smem_proc = {};
-+	struct igt_helper_process smem_loop[2] = {};
- 	unsigned int n;
- 	int lmem_err;
- 
-@@ -734,8 +734,8 @@ static void test_smem_oom(int i915,
- 		drm_close_driver(fd);
+@@ -11,6 +11,8 @@
+ #include "igt_kmod.h"
+ #include "runnercomms.h"
+ #include <unistd.h>
++#include <setjmp.h>
++#include <signal.h>
+ #include <stdlib.h>
+ #include <stdint.h>
+ #include <stdio.h>
+@@ -651,13 +653,21 @@ static void leak(uint64_t alloc)
  	}
+ }
  
--	/* smem memory hog process, respawn till the lmem process completes */
--	igt_fork_helper(&smem_proc) {
-+	/* smem memory hog processes, respawn till the lmem process completes */
-+	igt_fork_helper(&smem_loop[0]) {
- 		while (!READ_ONCE(*lmem_done)) {
- 			igt_fork(child, 1) {
- 				for (int pass = 0; pass < num_alloc; pass++) {
-@@ -744,6 +744,16 @@ static void test_smem_oom(int i915,
- 					leak(alloc);
- 				}
- 			}
-+			/*
-+			 * Wait for grand-child process to finish or be
-+			 * killed by the oom killer, don't call
-+			 * igt_waitchildren because of the noise
-+			 */
-+			wait(NULL);
-+		}
-+	}
-+	igt_fork_helper(&smem_loop[1]) {
-+		while (!READ_ONCE(*lmem_done)) {
- 			igt_fork(child, 1) {
++static sigjmp_buf sigbus_jmp;
++
++static void sigbus_handler(int sig, siginfo_t *si, void *ctx)
++{
++	siglongjmp(sigbus_jmp, 1);
++}
++
+ static void gem_leak(int fd, uint64_t alloc)
+ {
+ 	uint32_t handle = gem_create(fd, alloc);
+ 	void *buf;
+ 
+ 	buf = gem_mmap_offset__fixed(fd, handle, 0, PAGE_SIZE, PROT_WRITE);
+-	memset(buf, 0, PAGE_SIZE);
++	if (!igt_debug_on_f(sigsetjmp(sigbus_jmp, 1), "PID %d: SIGBUS caught\n", getpid()))
++		memset(buf, 0, PAGE_SIZE);
+ 	munmap(buf, PAGE_SIZE);
+ 
+ 	gem_madvise(fd, handle, I915_MADV_DONTNEED);
+@@ -759,8 +769,21 @@ static void test_smem_oom(int i915,
+ 			struct igt_helper_process smem_proc = {};
+ 
+ 			igt_fork_helper(&smem_proc) {
++				struct sigaction sa = {
++					.sa_sigaction = sigbus_handler,
++					.sa_flags = SA_SIGINFO | SA_NODEFER,
++				};
  				int fd = drm_reopen_driver(i915);
  
-@@ -754,13 +764,7 @@ static void test_smem_oom(int i915,
- 				}
- 				drm_close_driver(fd);
- 			}
--			/*
--			 * Wait for grand-child processes to finish or be
--			 * killed by the oom killer, don't call
--			 * igt_waitchildren because of the noise
--			 */
--			for (n = 0; n < 2; n++)
--				wait(NULL);
-+			wait(NULL);
- 		}
- 	}
- 
-@@ -772,7 +776,8 @@ static void test_smem_oom(int i915,
- 		(*lmem_done)++;
- 	munmap(lmem_done, sizeof(*lmem_done));
- 
--	igt_wait_helper(&smem_proc);
-+	for (n = 0; n < 2; n++)
-+		igt_wait_helper(&smem_loop[n]);
- 
- 	igt_assert_eq(lmem_err, 0);
- }
++				sigemptyset(&sa.sa_mask);
++
++				/*
++				 * This helper process is allowed to ignore
++				 * SIGBUS signals and continue, no need to
++				 * restore default SIGBUS handler ever.
++				 */
++				sigaction(SIGBUS, &sa, NULL);
++
+ 				for (int pass = 0; pass < num_alloc; pass++) {
+ 					if (READ_ONCE(*lmem_done))
+ 						break;
 -- 
 2.53.0
 
