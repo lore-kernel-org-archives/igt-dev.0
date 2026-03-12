@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 121AA1067021
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 13:49:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5D741067027
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 14:09:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BCBDD10EA0C;
-	Thu, 12 Mar 2026 13:49:02 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f2z1AfDm";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6FB5310EA0C
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2026 13:48:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773323336; x=1804859336;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=yvmL92wNUol/h8q74LVNEOF6TnUiGYvpBnZhq5dA4tM=;
- b=f2z1AfDmahJdKKAm2reRAK183JooWmV4R/3vbK/CmEb3wGTcKRiTQBDk
- f22i83TAmlEINpAu9aARbI/eMBH3UMkcPXca/hBozuacN9bxy1LZGWR/0
- Dz3VMscSsH6KjvxptoygypCoasxPf3b6Fc/3jA96gRjWtn9PIYJCFCObw
- 9groEKMzv7jFNoQ/SVi3O5AiiMDcaU0lvab8jJp9dCY9eLkRmSCL3L7PM
- Y4W6LwlTQQfKsbkPhmZOicvIsgFPVSWH6n63LSrNCUoelNu5HPv3dCKj0
- YkrNaTQGx6s1FZSATH5VHUmk+QkPZvHBUxXFVbeP3jTJrOobcsTdi+0bC Q==;
-X-CSE-ConnectionGUID: ZEHRYmVHSn+KUbJJ3jisQw==
-X-CSE-MsgGUID: Vk14ZGtbQBewvOuieYdSww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="78268092"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="78268092"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2026 06:48:56 -0700
-X-CSE-ConnectionGUID: QDryUJsUTruw36JHAe/Zrw==
-X-CSE-MsgGUID: uSOWLWzNT+uOu15XeUotEQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="220767530"
-Received: from dut2084bmgfrd.iind.intel.com ([10.223.34.11])
- by orviesa009.jf.intel.com with ESMTP; 12 Mar 2026 06:48:54 -0700
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, thomas.hellstrom@intel.com,
- kamil.konieczny@intel.com
-Subject: [PATCH i-g-t v4 1/2] lib/xe: Introduce aligned buffer mapping
-Date: Thu, 12 Mar 2026 13:48:50 +0000
-Message-Id: <20260312134851.647568-2-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260312134851.647568-1-nishit.sharma@intel.com>
-References: <20260312134851.647568-1-nishit.sharma@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9767710EA1D;
+	Thu, 12 Mar 2026 14:09:05 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F86510EA1D;
+ Thu, 12 Mar 2026 14:09:03 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3294534214517002817=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel=3A_Add_powerg?=
+ =?utf-8?q?ate_info_to_GT_C6_assertions?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sk Anirban" <sk.anirban@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 12 Mar 2026 14:09:03 -0000
+Message-ID: <177332454310.351162.4572684569007421120@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260312091605.600466-2-sk.anirban@intel.com>
+In-Reply-To: <20260312091605.600466-2-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,92 +37,153 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+--===============3294534214517002817==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Added aligned buffer mapping which is providing an interface for mapping
-buffer objects with a specified alignment. This API improves
-cross-platform compatibility and simplifies batch buffer setup by
-eliminating the need for platform-specific address handling.
+== Series Details ==
 
-Signed-off-by: Thomas Hellstrom <thomas.hellstrom@intel.com>
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- lib/xe/xe_ioctl.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_ioctl.h |  1 +
- 2 files changed, 47 insertions(+)
+Series: tests/intel: Add powergate info to GT C6 assertions
+URL   : https://patchwork.freedesktop.org/series/163104/
+State : success
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index 16aae05c9..ea3f2fcaa 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -579,6 +579,52 @@ void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, uint64_t addr)
- 	return map;
- }
- 
-+/**
-+ * xe_bo_map_aligned: Maps a buffer object (bo) into CPU address space with a specified alignment
-+ * @fd: The device file-descriptor
-+ * @bo: The buffer object
-+ * @size: The size of the map
-+ * @alignment: The requested map alignment
-+ *
-+ * This function reserves a virtual memory range, computes the first aligned address,
-+ * maps the buffer object at that address, and asserts on errors. It unmaps any unused
-+ * regions before and after the mapped buffer, freeing up memory and leaving only the
-+ * aligned mapping.
-+ *
-+ * Return: Pointer to CPU-Mapped BO with requested alignment
-+ */
-+void *xe_bo_map_aligned(int fd, uint32_t bo, size_t size, size_t alignment)
-+{
-+	size_t anon_size = size + alignment;
-+	uint64_t anon_addr;
-+	void *anon_map, *map;
-+	uint64_t map_addr;
-+	size_t hole_size;
-+
-+	/* Reserve a range of virtual space where we can fit an aligned map */
-+	anon_map = mmap(NULL, anon_size, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	igt_assert(anon_map != MAP_FAILED);
-+	anon_addr = to_user_pointer(anon_map);
-+
-+	/* Compute the first aligned address within the virtual space. */
-+	map_addr = ALIGN(anon_addr, alignment);
-+	/* Map the bo there, replacing part of the reserved virtual range. */
-+	map = xe_bo_map_fixed(fd, bo, size, map_addr);
-+	igt_assert_eq((uintptr_t)map % alignment, 0);
-+
-+	/* Unreserve part of the virtual range (if any) *before* the bo map */
-+	hole_size = map_addr - anon_addr;
-+	if (hole_size)
-+		igt_assert_eq(munmap(anon_map, hole_size), 0);
-+
-+	/* Unreserve part of the virtual range (if any) *after* the bo map */
-+	hole_size = anon_size - hole_size - size;
-+	if (hole_size)
-+		igt_assert_eq(munmap(map + size, hole_size), 0);
-+
-+	return map;
-+}
-+
- void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot)
- {
- 	return __xe_bo_map(fd, bo, size, prot);
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index 3ea651063..b62d259fd 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -91,6 +91,7 @@ void xe_exec_queue_destroy(int fd, uint32_t exec_queue);
- uint64_t xe_bo_mmap_offset(int fd, uint32_t bo);
- void *xe_bo_map(int fd, uint32_t bo, size_t size);
- void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, uint64_t addr);
-+void *xe_bo_map_aligned(int fd, uint32_t bo, size_t size, size_t alignment);
- void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot);
- int __xe_exec(int fd, struct drm_xe_exec *exec);
- void xe_exec(int fd, struct drm_xe_exec *exec);
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from IGT_8798 -> IGTPW_14745
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14745/index.html
+
+Participating hosts (41 -> 39)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14745 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [PASS][1] -> [DMESG-FAIL][2] ([i915#12061]) +1 other test dmesg-fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8798/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14745/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+    - bat-mtlp-9:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8798/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14745/bat-mtlp-9/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-2:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8798/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14745/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8798 -> IGTPW_14745
+  * Linux: CI_DRM_18134 -> CI_DRM_18136
+
+  CI-20190529: 20190529
+  CI_DRM_18134: 169ea69ad8f2fb0a126608399386e4580bb2d0b0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18136: 72190ebdd4c0e9a2b454b04ba382beeb6020e047 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14745: 05103efc50179767d554e948bc91bc1b3ec1745b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8798: 8798
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14745/index.html
+
+--===============3294534214517002817==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel: Add powergate info to GT C6 assertions</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163104/">https://patchwork.freedesktop.org/series/163104/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14745/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14745/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8798 -&gt; IGTPW_14745</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14745/index.html</p>
+<h2>Participating hosts (41 -&gt; 39)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14745 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8798/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14745/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8798/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14745/bat-mtlp-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8798/bat-arlh-2/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14745/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8798 -&gt; IGTPW_14745</li>
+<li>Linux: CI_DRM_18134 -&gt; CI_DRM_18136</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18134: 169ea69ad8f2fb0a126608399386e4580bb2d0b0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18136: 72190ebdd4c0e9a2b454b04ba382beeb6020e047 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14745: 05103efc50179767d554e948bc91bc1b3ec1745b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8798: 8798</p>
+
+</body>
+</html>
+
+--===============3294534214517002817==--
