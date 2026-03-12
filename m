@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FC9C105A597
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 13:06:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C643105A597
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 13:08:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3D2BD10E9E2;
-	Thu, 12 Mar 2026 13:06:21 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="li4lnktW";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A4C910E9E2
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2026 13:06:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773320778; x=1804856778;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=4wAI26bP21Mk5uOBQtRz68QAYq6+pWfeiorOm17dW/o=;
- b=li4lnktWIxcEY41V0+xm4xpfLUejNMi/2+9oL0TixkA6VJG1TJw4NPc5
- yrKVq0eee0Ihe3CsY43DUM9C3I5MDMYVvynwYfv8+f2zFT2KCHFevNp8A
- hD+Apkm+gMbjRIgMO7BXK0U14OhGWkVcCGELWUfByWJFW0v33g77E9CW+
- 2PxtgAh1ouZlGhAs6l+sJQG3/LzM7lU7pLu/tWSi60blj/JS/3h/8fXb4
- +wtsZwUloI7lD6D4PZmndOPAPwP+t4a5ErRVFn8KJ1ZnFBENCPOPhQKBi
- ZEHew82DkOArzu/vP5vCdcCykrk9xfeO8XyBj4O+fiMmE4t/mAtJ9Ladv w==;
-X-CSE-ConnectionGUID: yn4HEEbRSgmuW4t42sxCQQ==
-X-CSE-MsgGUID: kFKXuBN2SsCIU2D8IEkGbA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="74110683"
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="74110683"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2026 06:06:18 -0700
-X-CSE-ConnectionGUID: Xbyu7NAjRG++WcQFTMg5oA==
-X-CSE-MsgGUID: lhr765VyRVKNEdPJ5NGaAA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="258722688"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2026 06:06:16 -0700
-Date: Thu, 12 Mar 2026 14:06:14 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org, thomas.hellstrom@intel.com,
- kamil.konieczny@intel.com
-Subject: Re: [PATCH i-g-t v3 1/2] lib/xe: Introduce aligned buffer mapping
-Message-ID: <20260312130614.qynoeuphnitvnkqu@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- nishit.sharma@intel.com, igt-dev@lists.freedesktop.org,
- thomas.hellstrom@intel.com, kamil.konieczny@intel.com
-References: <20260312083731.644793-1-nishit.sharma@intel.com>
- <20260312083731.644793-2-nishit.sharma@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A1EE310E9E3;
+	Thu, 12 Mar 2026 13:08:25 +0000 (UTC)
+Received: from a3b018990fe9 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F10E10E9E2;
+ Thu, 12 Mar 2026 13:08:23 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5564524723242728667=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260312083731.644793-2-nishit.sharma@intel.com>
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/intel/kms=5Fpm=5Fdc?=
+ =?utf-8?q?=3A_Avoid_PIPE=5FB_conflict_on_dual-eDP_systems?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 12 Mar 2026 13:08:23 -0000
+Message-ID: <177332090317.350677.14208694665470109177@a3b018990fe9>
+X-Patchwork-Hint: ignore
+References: <20260312080305.43449-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20260312080305.43449-1-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,114 +37,183 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Nishit,
-On 2026-03-12 at 08:37:30 +0000, nishit.sharma@intel.com wrote:
-> From: Nishit Sharma <nishit.sharma@intel.com>
-> 
-> Added aligned buffer mapping which is providing an interface for mapping
-> buffer objects with a specified alignment. This API improves
-> cross-platform compatibility and simplifies batch buffer setup by
-> eliminating the need for platform-specific address handling.
-> 
-> Signed-off-by: Thomas Hellstrom <thomas.hellstrom@intel.com>
-> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
-> ---
->  lib/xe/xe_ioctl.c | 42 ++++++++++++++++++++++++++++++++++++++++++
->  lib/xe/xe_ioctl.h |  1 +
->  2 files changed, 43 insertions(+)
-> 
-> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-> index 16aae05c9..566a08a8f 100644
-> --- a/lib/xe/xe_ioctl.c
-> +++ b/lib/xe/xe_ioctl.c
-> @@ -579,6 +579,48 @@ void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, uint64_t addr)
->  	return map;
->  }
->  
-> +/**
-> + * xe_bo_map_aligned: Maps a buffer object (bo) into
-> + * CPU address space with a specified alignment
+--===============5564524723242728667==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Please add few more spaces before 'CPU' or just write it in one line.
+== Series Details ==
 
-> + * @fd: The device file-descriptor
-> + * @bo: The buffer object
-> + * @size: The size of the map
-> + * @alignment: The requested map alignment
-> + *
-> + * Return: pointer to CPU-Mapped BO with requested alignment
+Series: tests/intel/kms_pm_dc: Avoid PIPE_B conflict on dual-eDP systems
+URL   : https://patchwork.freedesktop.org/series/163091/
+State : failure
 
-Describe also that function will assert on error.
+== Summary ==
 
-> + */
-> +void *xe_bo_map_aligned(int fd, uint32_t bo, size_t size, size_t alignment)
-> +{
-> +	size_t anon_size = size + alignment;
-> +	uint64_t anon_addr;
-> +	void *anon_map, *map;
-> +	uint64_t map_addr;
-> +	size_t hole_size;
-> +
-> +	/* Reserve a range of virtual space where we can fit an aligned map */
-> +	anon_map = mmap(NULL, anon_size, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> +	igt_assert(anon_map != MAP_FAILED);
-> +	anon_addr = to_user_pointer(anon_map);
-> +
-> +	/* Compute the first aligned address within the virtual space. */
-> +	map_addr = ALIGN(anon_addr, alignment);
-> +	/* Map the bo there, replacing part of the reserved virtual range. */
-> +	map = xe_bo_map_fixed(fd, bo, size, map_addr);
-> +	igt_assert(((uintptr_t)map % alignment) == 0);
+CI Bug Log - changes from IGT_8798 -> IGTPW_14743
+====================================================
 
-igt_assert_eq() would be better.
+Summary
+-------
 
-> +
-> +	/* Unreserve part of the virtual range (if any) *before* the bo map */
+  **FAILURE**
 
-Add this to desciption of this function.
+  Serious unknown changes coming with IGTPW_14743 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_14743, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-> +	hole_size = map_addr - anon_addr;
-> +	if (hole_size)
-> +		igt_assert(munmap(anon_map, hole_size) == 0);
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14743/index.html
 
-Same here.
+Participating hosts (41 -> 37)
+------------------------------
 
-> +
-> +	/* Unreserve part of the virtual range (if any) *after* the bo map */
+  Missing    (4): bat-dg2-13 bat-mtlp-9 fi-snb-2520m bat-adls-6 
 
-Add to description.
+Possible new issues
+-------------------
 
-> +	hole_size = anon_size - hole_size - size;
-> +	if (hole_size)
-> +		igt_assert(munmap(map + size, hole_size) == 0);
+  Here are the unknown changes that may have been introduced in IGTPW_14743:
 
-Same here.
+### IGT changes ###
 
-Regards,
-Kamil
+#### Possible regressions ####
 
-> +
-> +	return map;
-> +}
-> +
->  void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot)
->  {
->  	return __xe_bo_map(fd, bo, size, prot);
-> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-> index 3ea651063..b62d259fd 100644
-> --- a/lib/xe/xe_ioctl.h
-> +++ b/lib/xe/xe_ioctl.h
-> @@ -91,6 +91,7 @@ void xe_exec_queue_destroy(int fd, uint32_t exec_queue);
->  uint64_t xe_bo_mmap_offset(int fd, uint32_t bo);
->  void *xe_bo_map(int fd, uint32_t bo, size_t size);
->  void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, uint64_t addr);
-> +void *xe_bo_map_aligned(int fd, uint32_t bo, size_t size, size_t alignment);
->  void *xe_bo_mmap_ext(int fd, uint32_t bo, size_t size, int prot);
->  int __xe_exec(int fd, struct drm_xe_exec *exec);
->  void xe_exec(int fd, struct drm_xe_exec *exec);
-> -- 
-> 2.34.1
-> 
+  * igt@i915_selftest@live:
+    - bat-jsl-5:          [PASS][1] -> [TIMEOUT][2] +1 other test timeout
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8798/bat-jsl-5/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14743/bat-jsl-5/igt@i915_selftest@live.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_14743 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-dg2-14:         [PASS][3] -> [DMESG-FAIL][4] ([i915#12061]) +1 other test dmesg-fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8798/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14743/bat-dg2-14/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-2:         [DMESG-FAIL][5] ([i915#12061]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8798/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14743/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8798 -> IGTPW_14743
+  * Linux: CI_DRM_18134 -> CI_DRM_18136
+
+  CI-20190529: 20190529
+  CI_DRM_18134: 169ea69ad8f2fb0a126608399386e4580bb2d0b0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18136: 72190ebdd4c0e9a2b454b04ba382beeb6020e047 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_14743: 14743
+  IGT_8798: 8798
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14743/index.html
+
+--===============5564524723242728667==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_pm_dc: Avoid PIPE_B conflict on dual-eDP systems</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/163091/">https://patchwork.freedesktop.org/series/163091/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14743/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14743/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8798 -&gt; IGTPW_14743</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_14743 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_14743, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14743/index.html</p>
+<h2>Participating hosts (41 -&gt; 37)</h2>
+<p>Missing    (4): bat-dg2-13 bat-mtlp-9 fi-snb-2520m bat-adls-6 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_14743:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-jsl-5:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8798/bat-jsl-5/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14743/bat-jsl-5/igt@i915_selftest@live.html">TIMEOUT</a> +1 other test timeout</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_14743 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-dg2-14:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8798/bat-dg2-14/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14743/bat-dg2-14/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8798/bat-arlh-2/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_14743/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8798 -&gt; IGTPW_14743</li>
+<li>Linux: CI_DRM_18134 -&gt; CI_DRM_18136</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18134: 169ea69ad8f2fb0a126608399386e4580bb2d0b0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18136: 72190ebdd4c0e9a2b454b04ba382beeb6020e047 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_14743: 14743<br />
+  IGT_8798: 8798</p>
+
+</body>
+</html>
+
+--===============5564524723242728667==--
