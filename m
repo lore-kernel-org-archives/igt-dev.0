@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5F49FED2F0
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 08:37:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11354FED2F6
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Mar 2026 09:16:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 55DA910EA25;
-	Thu, 12 Mar 2026 08:37:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B897210E1E3;
+	Thu, 12 Mar 2026 09:16:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZV8HW9Eg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OAugBcCc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 59E4710EA16
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2026 08:37:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB26510E1E3
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2026 09:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1773304657; x=1804840657;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=LYCxtgfAgvmJszSyIUJY/ODBVkdgZN7mXG1JLpBjOqc=;
- b=ZV8HW9EgkRMLB3LNvgTaCQqh+Zz2h9SLqq4zLxwnOe1kJhLA8B0xcLmT
- AkIi3WpmP7irOTUGnc3kqod6wkHjVx/6wSdBya4niEKQcbnx+10pYa7v/
- O8lBpVflSUUhi/YwsQmeE5NviBn4R/nDxVAWBMUBJnJ8jcw1H11GvBPdD
- 0kckrQHSiuiSLqpZzo2+AMk/xto1RTMP4kDJTcbihyWpBYuw2QcA/WGkc
- eo19+4vm40DIm5nPswLcMbWBYH7pZkxXhxR31DfFHzy/BUSbbASGNCKgn
- LxnI4spkFjstJRgdSyh6zogeo1y/UQEXy0NraHqvRJj7eeW7u29vK7HGC Q==;
-X-CSE-ConnectionGUID: BZIBYv5PQZ6f3BBE/0RHiA==
-X-CSE-MsgGUID: uea7E9VQRreK0+6toH1euA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="85089914"
-X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; d="scan'208";a="85089914"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2026 01:37:36 -0700
-X-CSE-ConnectionGUID: L6XYbcCATR+1wEV1/c8r7w==
-X-CSE-MsgGUID: IFB5xZs2R9ORRP04wX/msw==
+ t=1773306987; x=1804842987;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=IXzq0lKmERS3bNKcjd0G7UUlRGQiJuDwx6lAXxN6shI=;
+ b=OAugBcCcVXNssbg5wffbBKT799UNOzg03e3Z1uIdmWuo+4Q2rx7ZCXHC
+ K+alniQZlwixf1FUr1+WjdLXjUTZ5GpOip/K+ww88SJKrPpQh1eaLnSlz
+ KRugu9st6vH4hn8uW+JcR1bLSkXdHYVd3zbi53TOFR0YHiTzLllPLsMJK
+ 7kqprbev3o0hpLxU+H3T2PAvr68V7yKMLULltcLKCaA4/Z+kXd8OqcEUq
+ dUZZY0q4/0PjalrOjs17GaKP7kiNFTERklMas/IAGmEvpwYy3eh7qhBSn
+ UPN1DAQJHKtewNsS/oHQX322SSTIOkrcOFDh2518hbBhSG+M4U6wFPo7S w==;
+X-CSE-ConnectionGUID: ZhIg3NJCSmS4v84XoV9zRw==
+X-CSE-MsgGUID: LNppVwzDRT697uT8XdOcHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11726"; a="74271569"
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="74271569"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2026 02:16:26 -0700
+X-CSE-ConnectionGUID: OK6yKvDtS76fy8bPPwPRpQ==
+X-CSE-MsgGUID: +BPn7f33SvKC7dH+Ev85Qw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,115,1770624000"; d="scan'208";a="225450934"
-Received: from dut2084bmgfrd.iind.intel.com ([10.223.34.11])
- by fmviesa005.fm.intel.com with ESMTP; 12 Mar 2026 01:37:35 -0700
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org, thomas.hellstrom@intel.com,
- kamil.konieczny@intel.com
-Subject: [PATCH i-g-t v3 2/2] tests/intel/xe_svm_usrptr_madvise: Unify batch
- buffer alignment
-Date: Thu, 12 Mar 2026 08:37:31 +0000
-Message-Id: <20260312083731.644793-3-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260312083731.644793-1-nishit.sharma@intel.com>
-References: <20260312083731.644793-1-nishit.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.23,116,1770624000"; d="scan'208";a="216902731"
+Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2026 02:16:23 -0700
+From: Sk Anirban <sk.anirban@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
+ karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
+ mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
+Subject: [PATCH] tests/intel: Add powergate info to GT C6 assertions
+Date: Thu, 12 Mar 2026 14:46:06 +0530
+Message-ID: <20260312091605.600466-2-sk.anirban@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,66 +67,195 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+Add xe_gt_dump_powergate_info() calls to xe_gt_is_in_c6() assertions
+to provide detailed power state information when GT C6 checks fail.
+This improves debugging by showing exact powergate status instead of
+just reporting that GT is not in C6.
 
-This patch refactors the SVM userptr copy test and batch buffer setup
-to use aligned buffer mapping for batch buffers, ensuring compatibility
-across both Ponte Vecchio (PVC) and BMG platforms.
-Batch buffer mapping now uses platform-required alignment, eliminating
-the need for platform-specific address assignment and conditional code
-paths.
-
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Sk Anirban <sk.anirban@intel.com>
 ---
- tests/intel/xe_svm_usrptr_madvise.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ lib/xe/xe_gt.c                | 18 ++++++++++++++++++
+ lib/xe/xe_gt.h                |  1 +
+ tests/intel/xe_gt_freq.c      | 21 ++++++++++++++-------
+ tests/intel/xe_pm_residency.c | 13 +++++++++----
+ tests/intel/xe_pmu.c          |  4 +++-
+ 5 files changed, 45 insertions(+), 12 deletions(-)
 
-diff --git a/tests/intel/xe_svm_usrptr_madvise.c b/tests/intel/xe_svm_usrptr_madvise.c
-index bfa5864e4..db7b9ee35 100644
---- a/tests/intel/xe_svm_usrptr_madvise.c
-+++ b/tests/intel/xe_svm_usrptr_madvise.c
-@@ -98,7 +98,8 @@ gpu_batch_init(int fd, uint32_t vm, uint64_t src_addr,
- {
- 	uint32_t width = copy_size / 256;
- 	uint32_t height = 1;
--	uint32_t batch_bo_size = BATCH_SIZE(fd);
-+	uint64_t alignment = xe_get_default_alignment(fd);
-+	uint32_t batch_bo_size = ALIGN(BATCH_SIZE(fd), alignment);
- 	uint32_t batch_bo;
- 	uint64_t batch_addr;
- 	void *batch;
-@@ -108,7 +109,7 @@ gpu_batch_init(int fd, uint32_t vm, uint64_t src_addr,
- 	int i = 0;
- 
- 	batch_bo = xe_bo_create(fd, vm, batch_bo_size, vram_if_possible(fd, 0), 0);
--	batch = xe_bo_map(fd, batch_bo, batch_bo_size);
-+	batch = xe_bo_map_aligned(fd, batch_bo, batch_bo_size, alignment);
- 	cmd = (uint32_t *)batch;
- 	cmd[i++] = MEM_COPY_CMD | (1 << 19);
- 	cmd[i++] = width - 1;
-@@ -140,7 +141,7 @@ gpu_copy_batch_create(int fd, uint32_t vm, uint32_t exec_queue,
- 		      uint64_t src_addr, uint64_t dst_addr,
- 		      uint32_t *batch_bo, uint64_t *batch_addr)
- {
--	gpu_batch_init(fd, vm, src_addr, dst_addr, SZ_4K, batch_bo, batch_addr);
-+	gpu_batch_init(fd, vm, src_addr, dst_addr, SZ_16K, batch_bo, batch_addr);
+diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
+index 8f54b6e25..0cefeddd9 100644
+--- a/lib/xe/xe_gt.c
++++ b/lib/xe/xe_gt.c
+@@ -228,6 +228,24 @@ bool xe_gt_is_in_c6(int fd, int gt)
+ 	return false;
  }
  
- static void
-@@ -209,10 +210,10 @@ static void test_svm_userptr_copy(int fd)
- 			      &batch_bo, &batch_addr);
- 	gpu_exec_sync(fd, vm, exec_queue, &batch_addr);
++/**
++ * xe_gt_dump_powergate_info:
++ * @fd: pointer to xe drm fd
++ * @gt: gt number
++ *
++ * Print gt powergate_info debugfs details.
++ */
++const char *xe_gt_dump_powergate_info(int fd, int gt)
++{
++	static char str[1024];
++	char path[64];
++
++	str[0] = '\0';
++	snprintf(path, sizeof(path), "gt%d/powergate_info", gt);
++	igt_debugfs_read(fd, path, str);
++	return str;
++}
++
+ /**
+  * xe_gt_fill_engines_by_class:
+  * @fd: pointer to xe drm fd
+diff --git a/lib/xe/xe_gt.h b/lib/xe/xe_gt.h
+index 93525ea35..e2177eb20 100644
+--- a/lib/xe/xe_gt.h
++++ b/lib/xe/xe_gt.h
+@@ -21,6 +21,7 @@ void xe_post_hang_ring(int fd, igt_hang_t arg);
+ int xe_gt_stats_get_count(int fd, int gt, const char *stat);
  
--	igt_assert(memcmp(svm_ptr, userptr_ptr, SZ_4K) == 0);
-+	igt_assert(memcmp(svm_ptr, userptr_ptr, 64) == 0);
+ bool xe_gt_is_in_c6(int fd, int gt);
++const char *xe_gt_dump_powergate_info(int fd, int gt);
  
- 	bo_map = xe_bo_map(fd, bo, size);
--	igt_assert(memcmp(bo_map, svm_ptr, SZ_4K) == 0);
-+	igt_assert(memcmp(bo_map, svm_ptr, 64) == 0);
+ int xe_gt_fill_engines_by_class(int fd, int gt, int class,
+ 				struct drm_xe_engine_class_instance eci[static XE_MAX_ENGINE_INSTANCE]);
+diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
+index 19306dc41..75d77e96f 100644
+--- a/tests/intel/xe_gt_freq.c
++++ b/tests/intel/xe_gt_freq.c
+@@ -58,7 +58,8 @@ static void test_throttle_basic_api(int fd, int gt_id)
+ 	int gt_fd;
  
- 	xe_vm_bind_lr_sync(fd, vm, 0, 0, batch_addr, BATCH_SIZE(fd),
- 			   DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR);
+ 	igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
+-		     "GT %d should be in C6\n", gt_id);
++		     "GT %d should be in C6\nPower Gate info:\n%s\n",
++		     gt_id, xe_gt_dump_powergate_info(fd, gt_id));
+ 
+ 	gt_fd = xe_sysfs_gt_open(fd, gt_id);
+ 	igt_assert_lte(0, gt_fd);
+@@ -146,7 +147,8 @@ static void test_freq_fixed(int fd, int gt_id, bool gt_idle)
+ 	if (gt_idle) {
+ 		/* Wait for GT to go in C6 as previous xe_gt_get_freq wakes up GT*/
+ 		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
+-			     "GT %d should be in C6\n", gt_id);
++			     "GT %d should be in C6\nPower Gate info:\n%s\n",
++			     gt_id, xe_gt_dump_powergate_info(fd, gt_id));
+ 		igt_assert(xe_gt_get_freq(fd, gt_id, "act") == 0);
+ 	} else {
+ 		igt_assert_eq_u32(xe_gt_get_freq(fd, gt_id, "act"), rpn);
+@@ -161,7 +163,8 @@ static void test_freq_fixed(int fd, int gt_id, bool gt_idle)
+ 
+ 	if (gt_idle) {
+ 		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
+-			     "GT %d should be in C6\n", gt_id);
++			     "GT %d should be in C6\nPower Gate info:\n%s\n",
++			     gt_id, xe_gt_dump_powergate_info(fd, gt_id));
+ 		igt_assert(xe_gt_get_freq(fd, gt_id, "act") == 0);
+ 	} else {
+ 		act_freq = xe_gt_get_freq(fd, gt_id, "act");
+@@ -180,7 +183,8 @@ static void test_freq_fixed(int fd, int gt_id, bool gt_idle)
+ 
+ 	if (gt_idle) {
+ 		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
+-			     "GT %d should be in C6\n", gt_id);
++			     "GT %d should be in C6\nPower Gate info:\n%s\n",
++			     gt_id, xe_gt_dump_powergate_info(fd, gt_id));
+ 		igt_assert(xe_gt_get_freq(fd, gt_id, "act") == 0);
+ 	}
+ 
+@@ -211,7 +215,8 @@ static void test_freq_range(int fd, int gt_id, bool gt_idle)
+ 
+ 	if (gt_idle) {
+ 		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
+-			     "GT %d should be in C6\n", gt_id);
++			     "GT %d should be in C6\nPower Gate info:\n%s\n",
++			     gt_id, xe_gt_dump_powergate_info(fd, gt_id));
+ 		igt_assert(xe_gt_get_freq(fd, gt_id, "act") == 0);
+ 	} else {
+ 		act = xe_gt_get_freq(fd, gt_id, "act");
+@@ -412,7 +417,8 @@ int igt_main()
+ 	igt_subtest("freq_fixed_idle") {
+ 		xe_for_each_gt(fd, gt) {
+ 			igt_require_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 10),
+-				      "GT %d should be in C6\n", gt);
++				      "GT %d should be in C6\nPower Gate info:\n%s\n",
++				      gt, xe_gt_dump_powergate_info(fd, gt));
+ 			test_freq_fixed(fd, gt, true);
+ 		}
+ 	}
+@@ -430,7 +436,8 @@ int igt_main()
+ 	igt_subtest("freq_range_idle") {
+ 		xe_for_each_gt(fd, gt) {
+ 			igt_require_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 10),
+-				      "GT %d should be in C6\n", gt);
++				      "GT %d should be in C6\nPower Gate info:\n%s\n",
++				      gt, xe_gt_dump_powergate_info(fd, gt));
+ 			test_freq_range(fd, gt, true);
+ 		}
+ 	}
+diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+index 61b63ed4f..21d5595bb 100644
+--- a/tests/intel/xe_pm_residency.c
++++ b/tests/intel/xe_pm_residency.c
+@@ -216,7 +216,9 @@ static void test_idle_residency(int fd, int gt, enum test_type flag)
+ {
+ 	unsigned long elapsed_ms, residency_start, residency_end;
+ 
+-	igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1), "GT %d not in C6\n", gt);
++	igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1),
++		     "GT %d not in C6\nPower Gate info:\n%s\n",
++		     gt, xe_gt_dump_powergate_info(fd, gt));
+ 
+ 	if (flag == TEST_S2IDLE) {
+ 		/*
+@@ -326,7 +328,8 @@ static void toggle_gt_c6(int fd, int n)
+ 		/* check if all gts are in C0 after forcewake is acquired */
+ 		xe_for_each_gt(fd, gt)
+ 			igt_assert_f(!xe_gt_is_in_c6(fd, gt),
+-				     "Forcewake acquired, GT %d should be in C0\n", gt);
++				     "Forcewake acquired, GT %d should be in C0\nPower Gate info:\n%s\n",
++				     gt, xe_gt_dump_powergate_info(fd, gt));
+ 
+ 		if (n == NUM_REPS)
+ 			measure_power(&gpu, &gt_c0_power);
+@@ -335,7 +338,8 @@ static void toggle_gt_c6(int fd, int n)
+ 		/* check if all gts are in C6 after forcewake is released */
+ 		xe_for_each_gt(fd, gt)
+ 			igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1),
+-				     "Forcewake released, GT %d should be in C6\n", gt);
++				     "Forcewake released, GT %d should be in C6\nPower Gate info:\n%s\n",
++				     gt, xe_gt_dump_powergate_info(fd, gt));
+ 
+ 		if (n == NUM_REPS)
+ 			measure_power(&gpu, &gt_c6_power);
+@@ -585,7 +589,8 @@ int igt_main()
+ 		xe_for_each_gt(fd, gt)
+ 			igt_dynamic_f("gt%u", gt)
+ 				igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1),
+-					     "GT %d not in C6\n", gt);
++					     "GT %d not in C6\nPower Gate info:\n%s\n",
++					     gt, xe_gt_dump_powergate_info(fd, gt));
+ 	}
+ 
+ 	igt_describe("Validate idle residency measured over suspend cycle is within the tolerance");
+diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
+index fb4b871e7..5031772f0 100644
+--- a/tests/intel/xe_pmu.c
++++ b/tests/intel/xe_pmu.c
+@@ -876,7 +876,9 @@ static void test_gt_c6_idle(int xe, unsigned int gt)
+ 
+ 	pmu_fd = open_pmu(xe, pmu_config);
+ 
+-	igt_require_f(igt_wait(xe_gt_is_in_c6(xe, gt), 1000, 10), "GT %d should be in C6\n", gt);
++	igt_require_f(igt_wait(xe_gt_is_in_c6(xe, gt), 1000, 10),
++		      "GT %d should be in C6\nPower Gate info:\n%s\n",
++		      gt, xe_gt_dump_powergate_info(xe, gt));
+ 
+ 	/* While idle check full RC6. */
+ 	start = read_idle_residency(xe, gt);
 -- 
-2.34.1
+2.43.0
 
